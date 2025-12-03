@@ -35,7 +35,7 @@
   v5 = v4;
   v9 = v5;
   v10 = &v11;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);
@@ -45,9 +45,9 @@
 - (uint64_t)__ck_indexOfTransfer:()CKChatItems
 {
   v4 = a3;
-  v5 = [v4 guid];
+  guid = [v4 guid];
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([v5 length])
+  if ([guid length])
   {
     v11 = 0;
     v12 = &v11;
@@ -57,9 +57,9 @@
     v8[1] = 3221225472;
     v8[2] = __45__NSArray_CKChatItems____ck_indexOfTransfer___block_invoke;
     v8[3] = &unk_1E72ED100;
-    v9 = v5;
+    v9 = guid;
     v10 = &v11;
-    [a1 enumerateObjectsUsingBlock:v8];
+    [self enumerateObjectsUsingBlock:v8];
     v6 = v12[3];
 
     _Block_object_dispose(&v11, 8);
@@ -70,7 +70,7 @@
 
 - (void)__ck_unloadSizesAtIndexes:()CKChatItems
 {
-  v1 = [a1 objectsAtIndexes:?];
+  v1 = [self objectsAtIndexes:?];
   [CKChatItem unloadSizesOfChatItems:v1];
 }
 
@@ -79,20 +79,20 @@
   v4 = a3;
   if ([v4 count])
   {
-    [a1 enumerateObjectsAtIndexes:v4 options:0 usingBlock:&__block_literal_global_81];
+    [self enumerateObjectsAtIndexes:v4 options:0 usingBlock:&__block_literal_global_81];
   }
 }
 
 - (id)__ck_indexesOfUnplayedAudioMessages
 {
-  v2 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__NSArray_CKChatItems____ck_indexesOfUnplayedAudioMessages__block_invoke;
   v5[3] = &unk_1E72F0918;
-  v3 = v2;
+  v3 = indexSet;
   v6 = v3;
-  [a1 enumerateObjectsUsingBlock:v5];
+  [self enumerateObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -109,7 +109,7 @@
     v8[3] = &unk_1E72F0918;
     v6 = v5;
     v9 = v6;
-    [a1 enumerateObjectsAtIndexes:v4 options:0 usingBlock:v8];
+    [self enumerateObjectsAtIndexes:v4 options:0 usingBlock:v8];
   }
 
   else
@@ -122,21 +122,21 @@
 
 - (id)__ck_messageForChatItemAtIndex:()CKChatItems
 {
-  v1 = [a1 objectAtIndex:?];
-  v2 = [v1 IMChatItem];
+  v1 = [self objectAtIndex:?];
+  iMChatItem = [v1 IMChatItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 message];
+    message = [iMChatItem message];
   }
 
   else
   {
-    v3 = 0;
+    message = 0;
   }
 
-  return v3;
+  return message;
 }
 
 - (id)__ck_failedMessagesForChatItemsWithConversationID:()CKChatItems
@@ -156,7 +156,7 @@
   v13 = a3;
   v6 = v5;
   v11 = v6;
-  [a1 enumerateObjectsWithOptions:2 usingBlock:v10];
+  [self enumerateObjectsWithOptions:2 usingBlock:v10];
   v7 = v11;
   v8 = v6;
 
@@ -185,7 +185,7 @@
   v9 = v5;
   v10 = v17;
   v11 = &v12;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
   v6 = v13[4];
   if (v13[5] == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -201,16 +201,16 @@
 - (id)__ck_indexesOfPartsOfMessageWithGUID:()CKChatItems
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__NSArray_CKChatItems____ck_indexesOfPartsOfMessageWithGUID___block_invoke;
   v11[3] = &unk_1E72EE4E8;
   v12 = v4;
-  v6 = v5;
+  v6 = indexSet;
   v13 = v6;
   v7 = v4;
-  [a1 enumerateObjectsWithOptions:2 usingBlock:v11];
+  [self enumerateObjectsWithOptions:2 usingBlock:v11];
   v8 = v13;
   v9 = v6;
 
@@ -232,7 +232,7 @@
   v12 = &v14;
   v13 = a4;
   v11 = v7;
-  [a1 enumerateObjectsWithOptions:2 usingBlock:v10];
+  [self enumerateObjectsWithOptions:2 usingBlock:v10];
   v8 = v15[3];
 
   _Block_object_dispose(&v14, 8);
@@ -241,8 +241,8 @@
 
 - (uint64_t)__ck_indexOfPartOfMessage:()CKChatItems withMessagePartIndex:
 {
-  v6 = [a3 guid];
-  v7 = [a1 __ck_indexOfPartOfMessageGUID:v6 withMessagePartIndex:a4];
+  guid = [a3 guid];
+  v7 = [self __ck_indexOfPartOfMessageGUID:guid withMessagePartIndex:a4];
 
   return v7;
 }
@@ -251,7 +251,7 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v21 = 0u;
   v22 = 0u;
@@ -273,8 +273,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v21 + 1) + 8 * v11) guid];
-        [v6 addObject:v12];
+        guid = [*(*(&v21 + 1) + 8 * v11) guid];
+        [v6 addObject:guid];
 
         ++v11;
       }
@@ -291,10 +291,10 @@
   v18[2] = __67__NSArray_CKChatItems____ck_indexesOfPartsOfNonAttachmentMessages___block_invoke;
   v18[3] = &unk_1E72EE4E8;
   v19 = v6;
-  v13 = v5;
+  v13 = indexSet;
   v20 = v13;
   v14 = v6;
-  [a1 enumerateObjectsWithOptions:2 usingBlock:v18];
+  [self enumerateObjectsWithOptions:2 usingBlock:v18];
   v15 = v20;
   v16 = v13;
 
@@ -305,7 +305,7 @@
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v4, "count")}];
   v24 = 0u;
   v25 = 0u;
@@ -325,8 +325,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * i) guid];
-        [v6 addObject:v11];
+        guid = [*(*(&v24 + 1) + 8 * i) guid];
+        [v6 addObject:guid];
       }
 
       v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -351,10 +351,10 @@
   v17[3] = &unk_1E72F0EA0;
   v12 = v6;
   v18 = v12;
-  v13 = v5;
+  v13 = indexSet;
   v19 = v13;
   v20 = v22;
-  [a1 enumerateObjectsWithOptions:2 usingBlock:v17];
+  [self enumerateObjectsWithOptions:2 usingBlock:v17];
   v14 = v19;
   v15 = v13;
 
@@ -371,8 +371,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -386,12 +386,12 @@ LABEL_3:
     {
       if (*v17 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
-      v12 = [*(*(&v16 + 1) + 8 * v10) IMChatItem];
-      v13 = [v12 guid];
-      v14 = [v13 isEqualToString:v4];
+      iMChatItem = [*(*(&v16 + 1) + 8 * v10) IMChatItem];
+      guid = [iMChatItem guid];
+      v14 = [guid isEqualToString:v4];
 
       if (v14)
       {
@@ -401,7 +401,7 @@ LABEL_3:
       ++v11;
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -423,7 +423,7 @@ LABEL_9:
 
 - (id)__ck_chatItemWithGUID:()CKChatItems
 {
-  v2 = [a1 __ck_indexOfChatItemWithGUID:?];
+  v2 = [self __ck_indexOfChatItemWithGUID:?];
   if (v2 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
@@ -431,7 +431,7 @@ LABEL_9:
 
   else
   {
-    v3 = [a1 objectAtIndexedSubscript:v2];
+    v3 = [self objectAtIndexedSubscript:v2];
   }
 
   return v3;
@@ -447,8 +447,8 @@ LABEL_9:
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = a1;
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    selfCopy = self;
+    v6 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -462,23 +462,23 @@ LABEL_9:
         {
           if (*v23 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v22 + 1) + 8 * v10);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 IMChatItem];
-            v13 = [v12 guid];
-            if ([v13 containsString:v21] && !objc_msgSend(v11, "itemIsReplyContextPreview"))
+            iMChatItem = [v11 IMChatItem];
+            guid = [iMChatItem guid];
+            if ([guid containsString:v21] && !objc_msgSend(v11, "itemIsReplyContextPreview"))
             {
-              v14 = [v11 isEditedMessageHistory];
+              isEditedMessageHistory = [v11 isEditedMessageHistory];
 
-              if ((v14 & 1) == 0)
+              if ((isEditedMessageHistory & 1) == 0)
               {
-                v15 = [v11 originalMessagePartRange];
-                if (a4 >= v15 && a4 - v15 < v16)
+                originalMessagePartRange = [v11 originalMessagePartRange];
+                if (a4 >= originalMessagePartRange && a4 - originalMessagePartRange < v16)
                 {
                   goto LABEL_19;
                 }
@@ -495,7 +495,7 @@ LABEL_9:
         }
 
         while (v7 != v10);
-        v17 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v17 = [selfCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
         v7 = v17;
         v8 = v19;
       }
@@ -517,15 +517,15 @@ LABEL_19:
 
 - (id)__ck_parentChatItemWithMesssageGUID:()CKChatItems associatedMessageRange:
 {
-  v2 = [a1 __ck_indexOfParentChatItemWithMesssageGUID:? associatedMessageRange:?];
-  if (v2 >= [a1 count])
+  v2 = [self __ck_indexOfParentChatItemWithMesssageGUID:? associatedMessageRange:?];
+  if (v2 >= [self count])
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = [a1 objectAtIndex:v2];
+    v3 = [self objectAtIndex:v2];
   }
 
   return v3;

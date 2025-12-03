@@ -1,20 +1,20 @@
 @interface NTKUnity2025MiniClockView
-- (NTKUnity2025MiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (NTKUnity2025MiniClockView)initWithDevice:(id)device clockTimer:(id)timer;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)updateImageIfHourChanged:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)updateImageIfHourChanged:(id)changed;
 @end
 
 @implementation NTKUnity2025MiniClockView
 
-- (NTKUnity2025MiniClockView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (NTKUnity2025MiniClockView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v19.receiver = self;
   v19.super_class = NTKUnity2025MiniClockView;
-  v8 = [(CLKUIAnalogTimeView *)&v19 initWithDevice:v6 clockTimer:v7];
+  v8 = [(CLKUIAnalogTimeView *)&v19 initWithDevice:deviceCopy clockTimer:timerCopy];
   if (v8)
   {
     v9 = [(NTKFaceBundle *)NTKUnity2025FaceBundle imageWithName:@"MiniClockHour00"];
@@ -32,7 +32,7 @@
     v16[2] = sub_23C09CCCC;
     v16[3] = &unk_278BADF40;
     objc_copyWeak(&v17, &location);
-    v13 = [v7 startUpdatesWithUpdateFrequency:0 withHandler:v16 identificationLog:&unk_284EDCB00];
+    v13 = [timerCopy startUpdatesWithUpdateFrequency:0 withHandler:v16 identificationLog:&unk_284EDCB00];
     token = v8->_token;
     v8->_token = v13;
 
@@ -47,8 +47,8 @@
 {
   if (self->_token)
   {
-    v3 = [(CLKUITimeView *)self clockTimer];
-    [v3 stopUpdatesForToken:self->_token];
+    clockTimer = [(CLKUITimeView *)self clockTimer];
+    [clockTimer stopUpdatesForToken:self->_token];
   }
 
   v4.receiver = self;
@@ -65,10 +65,10 @@
   [(UIImageView *)self->_view setFrame:?];
 }
 
-- (void)updateImageIfHourChanged:(id)a3
+- (void)updateImageIfHourChanged:(id)changed
 {
   v8 = 0;
-  getHourAndMinuteFromDate(a3, &v8, &v7);
+  getHourAndMinuteFromDate(changed, &v8, &v7);
   v4 = v8;
   if (v8 != self->_hour)
   {
@@ -79,24 +79,24 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = NTKUnity2025MiniClockView;
-  [(CLKUIAnalogTimeView *)&v15 setConfiguration:v4];
-  v5 = [v4 greyscale];
-  v6 = [(UIImageView *)self->_view layer];
-  v7 = v6;
-  if (!v5)
+  [(CLKUIAnalogTimeView *)&v15 setConfiguration:configurationCopy];
+  greyscale = [configurationCopy greyscale];
+  layer = [(UIImageView *)self->_view layer];
+  v7 = layer;
+  if (!greyscale)
   {
-    [v6 setFilters:MEMORY[0x277CBEBF8]];
+    [layer setFilters:MEMORY[0x277CBEBF8]];
     goto LABEL_5;
   }
 
-  v8 = [v6 filters];
-  v9 = [v8 count];
+  filters = [layer filters];
+  v9 = [filters count];
 
   if (v9 != 1)
   {
@@ -111,8 +111,8 @@
 
     v16[0] = v7;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    v12 = [(UIImageView *)self->_view layer];
-    [v12 setFilters:v11];
+    layer2 = [(UIImageView *)self->_view layer];
+    [layer2 setFilters:v11];
 
 LABEL_5:
   }

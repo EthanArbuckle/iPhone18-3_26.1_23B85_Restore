@@ -1,10 +1,10 @@
 @interface YearViewYearHeader
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3;
-+ (double)headerYInsetForWindowSize:(CGSize)a3;
-+ (double)heightForWindowSize:(CGSize)a3;
-+ (double)middleHeightForWindowSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (YearViewYearHeader)initWithCalendarDate:(id)a3;
++ (double)headerDaySpacingForWindowSize:(CGSize)size;
++ (double)headerYInsetForWindowSize:(CGSize)size;
++ (double)heightForWindowSize:(CGSize)size;
++ (double)middleHeightForWindowSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (YearViewYearHeader)initWithCalendarDate:(id)date;
 - (double)heightBetweenLineAndNumber;
 - (double)yearNumberHeaderFontSize;
 - (id)_thinLineColor;
@@ -18,28 +18,28 @@
 - (void)_updateOverlayLegend;
 - (void)layoutSubviews;
 - (void)localeChanged;
-- (void)setCalendarDate:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setCalendarDate:(id)date;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation YearViewYearHeader
 
-- (YearViewYearHeader)initWithCalendarDate:(id)a3
+- (YearViewYearHeader)initWithCalendarDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = YearViewYearHeader;
   v6 = [(YearViewYearHeader *)&v14 init];
   if (v6)
   {
-    if (!v5)
+    if (!dateCopy)
     {
       sub_100170048();
     }
 
-    objc_storeStrong(&v6->_calendarDate, a3);
-    v7 = [objc_opt_class() _headerBackgroundColor];
-    [(YearViewYearHeader *)v6 setBackgroundColor:v7];
+    objc_storeStrong(&v6->_calendarDate, date);
+    _headerBackgroundColor = [objc_opt_class() _headerBackgroundColor];
+    [(YearViewYearHeader *)v6 setBackgroundColor:_headerBackgroundColor];
 
     [(YearViewYearHeader *)v6 _reloadYearNumberLabel];
     [(YearViewYearHeader *)v6 _initializeThinLine];
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = objc_opt_class();
   EKUICurrentWindowSize();
   [v4 heightForWindowSize:?];
@@ -76,9 +76,9 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(YearViewYearHeader *)self window];
+  window = [(YearViewYearHeader *)self window];
 
-  if (v3)
+  if (window)
   {
     v4.receiver = self;
     v4.super_class = YearViewYearHeader;
@@ -94,13 +94,13 @@
   }
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     if (self->_layoutWhenJoiningViewHierarchy)
     {
-      v4 = a3;
+      windowCopy = window;
       EKUIPushFallbackSizingContextWithViewHierarchy();
       [(YearViewYearHeader *)self layoutSubviews];
       EKUIPopFallbackSizingContextWithViewHierarchy();
@@ -110,11 +110,11 @@
   }
 }
 
-+ (double)heightForWindowSize:(CGSize)a3
++ (double)heightForWindowSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  [objc_opt_class() headerYInsetForWindowSize:{a3.width, a3.height}];
+  height = size.height;
+  width = size.width;
+  [objc_opt_class() headerYInsetForWindowSize:{size.width, size.height}];
   v6 = v5;
   [objc_opt_class() middleHeightForWindowSize:{width, height}];
   v8 = v7;
@@ -130,16 +130,16 @@
   return result;
 }
 
-- (void)setCalendarDate:(id)a3
+- (void)setCalendarDate:(id)date
 {
-  v5 = a3;
-  if (self->_calendarDate != v5)
+  dateCopy = date;
+  if (self->_calendarDate != dateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_calendarDate, a3);
+    v6 = dateCopy;
+    objc_storeStrong(&self->_calendarDate, date);
     [(YearViewYearHeader *)self _reloadYearNumberLabel];
     [(YearViewYearHeader *)self _updateOverlayLegend];
-    v5 = v6;
+    dateCopy = v6;
   }
 }
 
@@ -180,8 +180,8 @@
     thinLine = self->_thinLine;
     self->_thinLine = v4;
 
-    v6 = [(YearViewYearHeader *)self _thinLineColor];
-    [(UIView *)self->_thinLine setBackgroundColor:v6];
+    _thinLineColor = [(YearViewYearHeader *)self _thinLineColor];
+    [(UIView *)self->_thinLine setBackgroundColor:_thinLineColor];
 
     v7 = self->_thinLine;
 
@@ -197,16 +197,16 @@
     yearNumber = self->_yearNumber;
     self->_yearNumber = v3;
 
-    v5 = [objc_opt_class() _headerBackgroundColor];
-    [(UILabel *)self->_yearNumber setBackgroundColor:v5];
+    _headerBackgroundColor = [objc_opt_class() _headerBackgroundColor];
+    [(UILabel *)self->_yearNumber setBackgroundColor:_headerBackgroundColor];
 
     [(YearViewYearHeader *)self addSubview:self->_yearNumber];
   }
 
   v6 = objc_alloc_init(NSMutableParagraphStyle);
   [v6 setAlignment:0];
-  v7 = [(YearViewYearHeader *)self calendarDate];
-  v8 = [v7 date];
+  calendarDate = [(YearViewYearHeader *)self calendarDate];
+  date = [calendarDate date];
   if (CUIKNSDateIsThisYear())
   {
     CalendarAppTintColor();
@@ -219,8 +219,8 @@
   v9 = ;
 
   v22[0] = NSFontAttributeName;
-  v10 = [(YearViewYearHeader *)self yearNumberFont];
-  v23[0] = v10;
+  yearNumberFont = [(YearViewYearHeader *)self yearNumberFont];
+  v23[0] = yearNumberFont;
   v23[1] = v6;
   v22[1] = NSParagraphStyleAttributeName;
   v22[2] = NSForegroundColorAttributeName;
@@ -232,8 +232,8 @@
   v23[3] = v12;
   v13 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:4];
 
-  v14 = [(YearViewYearHeader *)self _yearString];
-  v15 = [[NSAttributedString alloc] initWithString:v14 attributes:v13];
+  _yearString = [(YearViewYearHeader *)self _yearString];
+  v15 = [[NSAttributedString alloc] initWithString:_yearString attributes:v13];
   [(UILabel *)self->_yearNumber setAttributedText:v15];
   [(UILabel *)self->_yearNumber sizeToFit];
   [(UILabel *)self->_yearNumber frame];
@@ -243,8 +243,8 @@
   v20 = CGRectGetWidth(v24) + 10.0;
   [(UILabel *)self->_yearNumber bounds];
   [(UILabel *)self->_yearNumber setFrame:v17, v19, v20, CGRectGetHeight(v25)];
-  v21 = [objc_opt_class() _headerBackgroundColor];
-  [(UILabel *)self->_yearNumber setBackgroundColor:v21];
+  _headerBackgroundColor2 = [objc_opt_class() _headerBackgroundColor];
+  [(UILabel *)self->_yearNumber setBackgroundColor:_headerBackgroundColor2];
 
   [(YearViewYearHeader *)self setNeedsLayout];
   [(YearViewYearHeader *)self setNeedsDisplay];
@@ -253,42 +253,42 @@
 - (id)_yearString
 {
   v3 = +[NSCalendar currentCalendar];
-  v4 = [v3 calendarIdentifier];
-  v5 = [NSCalendarIdentifierJapanese isEqualToString:v4];
+  calendarIdentifier = [v3 calendarIdentifier];
+  v5 = [NSCalendarIdentifierJapanese isEqualToString:calendarIdentifier];
 
   if (!v5)
   {
     goto LABEL_4;
   }
 
-  v6 = [(YearViewYearHeader *)self calendarDate];
-  v7 = [v6 date];
-  v8 = [v3 component:2 fromDate:v7];
+  calendarDate = [(YearViewYearHeader *)self calendarDate];
+  date = [calendarDate date];
+  v8 = [v3 component:2 fromDate:date];
 
-  v9 = [(YearViewYearHeader *)self calendarDate];
-  v10 = [v9 calendarDateForEndOfYear];
+  calendarDate2 = [(YearViewYearHeader *)self calendarDate];
+  calendarDateForEndOfYear = [calendarDate2 calendarDateForEndOfYear];
 
-  v11 = [v10 date];
-  v12 = [v3 component:2 fromDate:v11];
+  date2 = [calendarDateForEndOfYear date];
+  v12 = [v3 component:2 fromDate:date2];
 
   if (v8 == v12)
   {
 
 LABEL_4:
     self->_showingMultiEraYear = 0;
-    v10 = [(YearViewYearHeader *)self calendarDate];
-    v13 = [v10 date];
+    calendarDateForEndOfYear = [(YearViewYearHeader *)self calendarDate];
+    date3 = [calendarDateForEndOfYear date];
     v14 = CUIKStringForYear();
     goto LABEL_6;
   }
 
   self->_showingMultiEraYear = 1;
-  v13 = [NSBundle bundleForClass:objc_opt_class()];
-  v15 = [v13 localizedStringForKey:@"%@ / %@" value:&stru_1002133B8 table:0];
-  v16 = [(YearViewYearHeader *)self calendarDate];
-  v17 = [v16 date];
+  date3 = [NSBundle bundleForClass:objc_opt_class()];
+  v15 = [date3 localizedStringForKey:@"%@ / %@" value:&stru_1002133B8 table:0];
+  calendarDate3 = [(YearViewYearHeader *)self calendarDate];
+  date4 = [calendarDate3 date];
   v18 = CUIKStringForYear();
-  v19 = [v10 date];
+  date5 = [calendarDateForEndOfYear date];
   v20 = CUIKStringForYear();
   v14 = [NSString localizedStringWithFormat:v15, v18, v20];
 
@@ -338,8 +338,8 @@ LABEL_6:
       v13 = +[UIColor systemGrayColor];
       [(UILabel *)self->_overlayLegendYearStartLabel setTextColor:v13];
 
-      v14 = [(YearViewYearHeader *)self overlayLegendFont];
-      [(UILabel *)self->_overlayLegendYearStartLabel setFont:v14];
+      overlayLegendFont = [(YearViewYearHeader *)self overlayLegendFont];
+      [(UILabel *)self->_overlayLegendYearStartLabel setFont:overlayLegendFont];
 
       [(YearViewYearHeader *)self addSubview:self->_overlayLegendYearStartLabel];
       v15 = objc_opt_new();
@@ -349,8 +349,8 @@ LABEL_6:
       v17 = +[UIColor systemGrayColor];
       [(UILabel *)self->_overlayLegendMonthStartLabel setTextColor:v17];
 
-      v18 = [(YearViewYearHeader *)self overlayLegendFont];
-      [(UILabel *)self->_overlayLegendMonthStartLabel setFont:v18];
+      overlayLegendFont2 = [(YearViewYearHeader *)self overlayLegendFont];
+      [(UILabel *)self->_overlayLegendMonthStartLabel setFont:overlayLegendFont2];
 
       [(YearViewYearHeader *)self addSubview:self->_overlayLegendMonthStartLabel];
 LABEL_6:
@@ -589,7 +589,7 @@ LABEL_6:
   }
 }
 
-+ (double)headerYInsetForWindowSize:(CGSize)a3
++ (double)headerYInsetForWindowSize:(CGSize)size
 {
   sub_10007FD08();
   objc_opt_class();
@@ -597,7 +597,7 @@ LABEL_6:
   return 0.0;
 }
 
-+ (double)middleHeightForWindowSize:(CGSize)a3
++ (double)middleHeightForWindowSize:(CGSize)size
 {
   sub_10007FD08();
   objc_opt_class();
@@ -605,7 +605,7 @@ LABEL_6:
   return 0.0;
 }
 
-+ (double)headerDaySpacingForWindowSize:(CGSize)a3
++ (double)headerDaySpacingForWindowSize:(CGSize)size
 {
   sub_10007FD08();
   objc_opt_class();

@@ -1,53 +1,53 @@
 @interface CompactDayNavigationViewCell
-+ (double)contentHeightForFontSize:(double)a3 overlayFontSize:(double)a4;
-+ (double)largeOverlayCircleDiameterForSizeClass:(int64_t)a3;
++ (double)contentHeightForFontSize:(double)size overlayFontSize:(double)fontSize;
++ (double)largeOverlayCircleDiameterForSizeClass:(int64_t)class;
 + (double)roundedRectHeightToMatchMonthView;
-+ (double)standardCircleDiameterForSizeClass:(int64_t)a3;
++ (double)standardCircleDiameterForSizeClass:(int64_t)class;
 - (CGRect)circleFrame;
 - (CGRect)dayCircleFrame;
-- (CompactDayNavigationViewCell)initWithFrame:(CGRect)a3;
-- (CompactDayNavigationViewCell)initWithFrame:(CGRect)a3 loadMonthAnimationState:(BOOL)a4 hasOverlay:(BOOL)a5 sizeClass:(int64_t)a6;
+- (CompactDayNavigationViewCell)initWithFrame:(CGRect)frame;
+- (CompactDayNavigationViewCell)initWithFrame:(CGRect)frame loadMonthAnimationState:(BOOL)state hasOverlay:(BOOL)overlay sizeClass:(int64_t)class;
 - (UIColor)weekendColor;
 - (double)_circleDiameter;
-- (double)_circleXForDiameter:(double)a3;
+- (double)_circleXForDiameter:(double)diameter;
 - (double)baselineOffsetFromTop;
 - (double)contentWidth;
 - (double)yCenterForDayNumbers;
 - (id)badgeColor;
 - (id)preferredPointerShape;
 - (void)_createMonthAnimationStateModeSubviews;
-- (void)_createSubviewsWithSizeClass:(int64_t)a3;
+- (void)_createSubviewsWithSizeClass:(int64_t)class;
 - (void)_loadMonthAnimationStateBadgeIfNeeded;
 - (void)_loadMonthAnimationStateOverlayIfNeeded;
 - (void)_updateBadge;
 - (void)_updateDisplayedString;
-- (void)_updateMonthAnimationStateBadgeToState:(BOOL)a3;
+- (void)_updateMonthAnimationStateBadgeToState:(BOOL)state;
 - (void)_updateTextColor;
 - (void)_updateToMatchMonthViewIfNeeded;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)pulseToday;
-- (void)setApplyMonthAnimationStateAdjustments:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBadgeColor:(id)a3;
-- (void)setBadgeLocale:(id)a3;
-- (void)setBadgeType:(int64_t)a3;
-- (void)setCircleDiameter:(double)a3 overlayDiameter:(double)a4 largeOverlayDiameter:(double)a5;
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4;
-- (void)setDisplayedString:(id)a3;
-- (void)setFontSize:(double)a3;
-- (void)setIsToday:(BOOL)a3;
-- (void)setIsWeekend:(BOOL)a3;
-- (void)setLabelElementsVisible:(BOOL)a3;
-- (void)setMatchesMonthView:(BOOL)a3;
-- (void)setMonthAnimationState:(BOOL)a3;
+- (void)setApplyMonthAnimationStateAdjustments:(BOOL)adjustments;
+- (void)setBackgroundColor:(id)color;
+- (void)setBadgeColor:(id)color;
+- (void)setBadgeLocale:(id)locale;
+- (void)setBadgeType:(int64_t)type;
+- (void)setCircleDiameter:(double)diameter overlayDiameter:(double)overlayDiameter largeOverlayDiameter:(double)largeOverlayDiameter;
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated;
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update;
+- (void)setDisplayedString:(id)string;
+- (void)setFontSize:(double)size;
+- (void)setIsToday:(BOOL)today;
+- (void)setIsWeekend:(BOOL)weekend;
+- (void)setLabelElementsVisible:(BOOL)visible;
+- (void)setMatchesMonthView:(BOOL)view;
+- (void)setMonthAnimationState:(BOOL)state;
 - (void)setNeedsDisplay;
-- (void)setOverlayFontSize:(double)a3;
-- (void)setOverlayString:(id)a3;
-- (void)setWeekendColor:(id)a3;
+- (void)setOverlayFontSize:(double)size;
+- (void)setOverlayString:(id)string;
+- (void)setWeekendColor:(id)color;
 - (void)stopPulsing;
-- (void)touchUpOccurred:(id)a3;
+- (void)touchUpOccurred:(id)occurred;
 - (void)updateOverlay;
 @end
 
@@ -93,8 +93,8 @@
   CGRectGetMinY(v35);
   CalRoundRectToScreenScale();
   [(UIImageView *)self->_dayBadge setFrame:?];
-  v18 = [(UIImageView *)self->_dayBadge layer];
-  [v18 setCornerRadius:v12 * 0.5];
+  layer = [(UIImageView *)self->_dayBadge layer];
+  [layer setCornerRadius:v12 * 0.5];
 
   monthAnimationStateDayNumber = self->_monthAnimationStateDayNumber;
   if (monthAnimationStateDayNumber)
@@ -134,8 +134,8 @@
     [CompactMonthWeekView dayTypeBadgeFrameFromDayNumberFrame:[(CompactDayNavigationViewCell *)self verticallyCompressedState] compressed:v4, v6, v8, v10];
     v32 = v31;
     [(UIImageView *)self->_monthAnimationStateDayBadge setFrame:?];
-    v33 = [(UIImageView *)self->_monthAnimationStateDayBadge layer];
-    [v33 setCornerRadius:v32 * 0.5];
+    layer2 = [(UIImageView *)self->_monthAnimationStateDayBadge layer];
+    [layer2 setCornerRadius:v32 * 0.5];
   }
 }
 
@@ -170,14 +170,14 @@
   if ([(CompactDayNavigationViewCell *)self monthAnimationState]|| [(CompactDayNavigationViewCell *)self applyMonthAnimationStateAdjustments])
   {
     [CompactMonthWeekView dayNumberLayerYOffsetCompressed:[(CompactDayNavigationViewCell *)self verticallyCompressedState] containsFirstDayOfMonth:0];
-    v14 = [(TappableDayNumber *)self->_dateNumber titleLabel];
-    [v14 bounds];
+    titleLabel = [(TappableDayNumber *)self->_dateNumber titleLabel];
+    [titleLabel bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(TappableDayNumber *)self->_dateNumber titleLabel];
-    [(CompactDayNavigationViewCell *)self convertRect:v23 fromView:v16, v18, v20, v22];
+    titleLabel2 = [(TappableDayNumber *)self->_dateNumber titleLabel];
+    [(CompactDayNavigationViewCell *)self convertRect:titleLabel2 fromView:v16, v18, v20, v22];
   }
 
   else
@@ -211,8 +211,8 @@
 
   if (self->_hasOverlay)
   {
-    v4 = [(TappableDayNumber *)self->_dateNumber text];
-    if ([v4 length] >= 2)
+    text = [(TappableDayNumber *)self->_dateNumber text];
+    if ([text length] >= 2)
     {
 
       v7 = &OBJC_IVAR___CompactDayNavigationViewCell__circleDiameterOverlayLarge;
@@ -220,8 +220,8 @@
 
     else
     {
-      v5 = [(TappableDayNumber *)self->_dateNumber overlayText];
-      v6 = [v5 length];
+      overlayText = [(TappableDayNumber *)self->_dateNumber overlayText];
+      v6 = [overlayText length];
 
       v7 = &OBJC_IVAR___CompactDayNavigationViewCell__circleDiameterOverlay;
       if (v6 > 2)
@@ -241,9 +241,9 @@
 
 - (double)yCenterForDayNumbers
 {
-  v3 = [(CompactDayNavigationViewCell *)self usesRoundedRectInsteadOfCircle];
+  usesRoundedRectInsteadOfCircle = [(CompactDayNavigationViewCell *)self usesRoundedRectInsteadOfCircle];
   result = 21.0;
-  if (v3)
+  if (usesRoundedRectInsteadOfCircle)
   {
     [(DayNavigationViewCell *)self roundedRectSize];
     return v5 * 0.5;
@@ -272,7 +272,7 @@
 
     [CompactMonthWeekView dayNumberOverlayFontSize:[(CompactDayNavigationViewCell *)self verticallyCompressedState]];
     [(CompactDayNavigationViewCell *)self setOverlayFontSize:?];
-    v6 = [(CompactDayNavigationViewCell *)self traitCollection];
+    traitCollection = [(CompactDayNavigationViewCell *)self traitCollection];
     [(CompactDayNavigationViewCell *)self setUsesRoundedRectInsteadOfCircle:EKUIUsesRoundedRectsInsteadOfCircles()];
 
     if ([(CompactDayNavigationViewCell *)self usesRoundedRectInsteadOfCircle])
@@ -315,11 +315,11 @@
   v9 = CUIKGetOverlayCalendar();
   if (v9)
   {
-    v3 = [(DayNavigationViewCell *)self date];
-    v4 = [CUIKDateStrings overlayShortStringForDate:v3 inCalendar:v9];
+    date = [(DayNavigationViewCell *)self date];
+    v4 = [CUIKDateStrings overlayShortStringForDate:date inCalendar:v9];
 
-    v5 = [(DayNavigationViewCell *)self date];
-    v6 = [v9 components:1073741848 fromDate:v5];
+    date2 = [(DayNavigationViewCell *)self date];
+    v6 = [v9 components:1073741848 fromDate:date2];
 
     v7 = 0.0;
     if ([v6 day] != 1 || (v7 = 1.0, objc_msgSend(v6, "month") != 1) || (v8 = 1.5, objc_msgSend(v6, "isLeapMonth")))
@@ -379,11 +379,11 @@
   }
 }
 
-+ (double)standardCircleDiameterForSizeClass:(int64_t)a3
++ (double)standardCircleDiameterForSizeClass:(int64_t)class
 {
   EKUIMultiwindowAssert();
   result = 35.0;
-  if (a3 == 2)
+  if (class == 2)
   {
     return 28.0;
   }
@@ -391,9 +391,9 @@
   return result;
 }
 
-+ (double)largeOverlayCircleDiameterForSizeClass:(int64_t)a3
++ (double)largeOverlayCircleDiameterForSizeClass:(int64_t)class
 {
-  v3 = a3 == 2;
+  v3 = class == 2;
   EKUIMultiwindowAssert();
   return dbl_1001F8060[v3];
 }
@@ -411,15 +411,15 @@
   return result;
 }
 
-+ (double)contentHeightForFontSize:(double)a3 overlayFontSize:(double)a4
++ (double)contentHeightForFontSize:(double)size overlayFontSize:(double)fontSize
 {
-  v5 = [TappableDayNumber circledFontForSize:a3];
+  v5 = [TappableDayNumber circledFontForSize:size];
   [v5 lineHeight];
   v7 = v6;
 
-  if (a4 > 0.0)
+  if (fontSize > 0.0)
   {
-    v8 = [TappableDayNumber overlayFontForSize:a4];
+    v8 = [TappableDayNumber overlayFontForSize:fontSize];
     [v8 lineHeight];
     v7 = v7 + v9;
   }
@@ -427,42 +427,42 @@
   return v7;
 }
 
-- (CompactDayNavigationViewCell)initWithFrame:(CGRect)a3
+- (CompactDayNavigationViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = CUIKGetOverlayCalendar();
   v9 = v8 != 0;
 
   return [(CompactDayNavigationViewCell *)self initWithFrame:0 loadMonthAnimationState:v9 hasOverlay:1 sizeClass:x, y, width, height];
 }
 
-- (CompactDayNavigationViewCell)initWithFrame:(CGRect)a3 loadMonthAnimationState:(BOOL)a4 hasOverlay:(BOOL)a5 sizeClass:(int64_t)a6
+- (CompactDayNavigationViewCell)initWithFrame:(CGRect)frame loadMonthAnimationState:(BOOL)state hasOverlay:(BOOL)overlay sizeClass:(int64_t)class
 {
-  v8 = a4;
+  stateCopy = state;
   v20.receiver = self;
   v20.super_class = CompactDayNavigationViewCell;
-  v9 = [(DayNavigationViewCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v9 = [(DayNavigationViewCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v10 = v9;
   if (v9)
   {
     v9->_monthAnimationState = 0;
-    v9->_hasOverlay = a5;
-    [(CompactDayNavigationViewCell *)v9 _createSubviewsWithSizeClass:a6];
-    if (v8)
+    v9->_hasOverlay = overlay;
+    [(CompactDayNavigationViewCell *)v9 _createSubviewsWithSizeClass:class];
+    if (stateCopy)
     {
       [(CompactDayNavigationViewCell *)v10 _createMonthAnimationStateModeSubviews];
     }
 
     [(CompactDayNavigationViewCell *)v10 layoutSubviews];
     [(CompactDayNavigationViewCell *)v10 setCircled:0];
-    [objc_opt_class() standardCircleDiameterForSizeClass:a6];
+    [objc_opt_class() standardCircleDiameterForSizeClass:class];
     v10->_circleDiameter = v11;
-    [objc_opt_class() overlayCircleDiameterForSizeClass:a6];
+    [objc_opt_class() overlayCircleDiameterForSizeClass:class];
     v10->_circleDiameterOverlay = v12;
-    [objc_opt_class() largeOverlayCircleDiameterForSizeClass:a6];
+    [objc_opt_class() largeOverlayCircleDiameterForSizeClass:class];
     v10->_circleDiameterOverlayLarge = v13;
     objc_initWeak(&location, v10);
     v21 = objc_opt_class();
@@ -500,16 +500,16 @@
   return result;
 }
 
-- (void)_createSubviewsWithSizeClass:(int64_t)a3
+- (void)_createSubviewsWithSizeClass:(int64_t)class
 {
   if (!self->_dateNumber)
   {
-    v4 = [[TappableDayNumber alloc] initWithSizeClass:a3];
+    v4 = [[TappableDayNumber alloc] initWithSizeClass:class];
     dateNumber = self->_dateNumber;
     self->_dateNumber = v4;
 
-    v6 = [(CompactDayNavigationViewCell *)self backgroundColor];
-    [(TappableDayNumber *)self->_dateNumber setBackgroundColor:v6];
+    backgroundColor = [(CompactDayNavigationViewCell *)self backgroundColor];
+    [(TappableDayNumber *)self->_dateNumber setBackgroundColor:backgroundColor];
 
     [(TappableDayNumber *)self->_dateNumber setUserInteractionEnabled:0];
     [(TappableDayNumber *)self->_dateNumber setIsToday:[(DayNavigationViewCell *)self isToday]];
@@ -534,8 +534,8 @@
   self->_monthAnimationStateDayNumber = v3;
 
   [(UILabel *)self->_monthAnimationStateDayNumber setTextAlignment:1];
-  v5 = [(CompactDayNavigationViewCell *)self backgroundColor];
-  [(UILabel *)self->_monthAnimationStateDayNumber setBackgroundColor:v5];
+  backgroundColor = [(CompactDayNavigationViewCell *)self backgroundColor];
+  [(UILabel *)self->_monthAnimationStateDayNumber setBackgroundColor:backgroundColor];
 
   [(CompactDayNavigationViewCell *)self addSubview:self->_monthAnimationStateDayNumber];
   [(CompactDayNavigationViewCell *)self _loadMonthAnimationStateOverlayIfNeeded];
@@ -558,17 +558,17 @@
   [(UILabel *)self->_monthAnimationStateDayNumber setFont:v6];
 }
 
-- (void)setMonthAnimationState:(BOOL)a3
+- (void)setMonthAnimationState:(BOOL)state
 {
-  if (self->_monthAnimationState != a3)
+  if (self->_monthAnimationState != state)
   {
     v13 = v8;
     v14 = v7;
     v15 = v4;
     v16 = v3;
-    v9 = a3;
-    self->_monthAnimationState = a3;
-    if (a3)
+    stateCopy = state;
+    self->_monthAnimationState = state;
+    if (state)
     {
       v11 = 0.0;
     }
@@ -578,7 +578,7 @@
       v11 = 1.0;
     }
 
-    if (a3)
+    if (state)
     {
       v12 = 1.0;
     }
@@ -593,15 +593,15 @@
     [(UILabel *)self->_monthAnimationStateDayNumber setAlpha:v12];
     [(UILabel *)self->_monthAnimationStateOverlay setAlpha:v12];
 
-    [(CompactDayNavigationViewCell *)self _updateMonthAnimationStateBadgeToState:v9];
+    [(CompactDayNavigationViewCell *)self _updateMonthAnimationStateBadgeToState:stateCopy];
   }
 }
 
-- (void)setApplyMonthAnimationStateAdjustments:(BOOL)a3
+- (void)setApplyMonthAnimationStateAdjustments:(BOOL)adjustments
 {
-  if (self->_applyMonthAnimationStateAdjustments != a3)
+  if (self->_applyMonthAnimationStateAdjustments != adjustments)
   {
-    self->_applyMonthAnimationStateAdjustments = a3;
+    self->_applyMonthAnimationStateAdjustments = adjustments;
     [(CompactDayNavigationViewCell *)self _updateMonthAnimationStateBadgeToState:?];
   }
 }
@@ -619,8 +619,8 @@
     v5 = [TappableDayNumber overlayFontForSize:?];
     [(UILabel *)self->_monthAnimationStateOverlay setFont:v5];
 
-    v6 = [(CompactDayNavigationViewCell *)self backgroundColor];
-    [(UILabel *)self->_monthAnimationStateOverlay setBackgroundColor:v6];
+    backgroundColor = [(CompactDayNavigationViewCell *)self backgroundColor];
+    [(UILabel *)self->_monthAnimationStateOverlay setBackgroundColor:backgroundColor];
 
     v7 = self->_monthAnimationStateOverlay;
 
@@ -636,8 +636,8 @@
     monthAnimationStateDayBadge = self->_monthAnimationStateDayBadge;
     self->_monthAnimationStateDayBadge = v3;
 
-    v5 = [(UIImageView *)self->_dayBadge backgroundColor];
-    [(UIImageView *)self->_monthAnimationStateDayBadge setBackgroundColor:v5];
+    backgroundColor = [(UIImageView *)self->_dayBadge backgroundColor];
+    [(UIImageView *)self->_monthAnimationStateDayBadge setBackgroundColor:backgroundColor];
 
     v6 = self->_monthAnimationStateDayBadge;
 
@@ -645,10 +645,10 @@
   }
 }
 
-- (void)_updateMonthAnimationStateBadgeToState:(BOOL)a3
+- (void)_updateMonthAnimationStateBadgeToState:(BOOL)state
 {
   monthAnimationStateDayBadge = self->_monthAnimationStateDayBadge;
-  if (!a3)
+  if (!state)
   {
     [(UIImageView *)monthAnimationStateDayBadge setAlpha:0.0];
     [(UIImageView *)self->_dayBadge setAlpha:1.0];
@@ -657,13 +657,13 @@
     goto LABEL_11;
   }
 
-  v5 = [(UIImageView *)monthAnimationStateDayBadge image];
+  image = [(UIImageView *)monthAnimationStateDayBadge image];
 
-  if (!v5)
+  if (!image)
   {
     [CompactMonthWeekView dayTypeBadgeDiameter:[(CompactDayNavigationViewCell *)self verticallyCompressedState]];
-    v6 = [(CompactDayNavigationViewCell *)self traitCollection];
-    [v6 userInterfaceStyle];
+    traitCollection = [(CompactDayNavigationViewCell *)self traitCollection];
+    [traitCollection userInterfaceStyle];
 
     badgeType = self->_badgeType;
     if (badgeType == 3)
@@ -701,29 +701,29 @@ LABEL_11:
   [(UILabel *)self->_monthAnimationStateDayNumber setFont:v9];
 }
 
-- (void)setIsToday:(BOOL)a3
+- (void)setIsToday:(BOOL)today
 {
   v4.receiver = self;
   v4.super_class = CompactDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v4 setIsToday:a3];
+  [(DayNavigationViewCell *)&v4 setIsToday:today];
   [(TappableDayNumber *)self->_dateNumber setIsToday:[(DayNavigationViewCell *)self isToday]];
   [(CompactDayNavigationViewCell *)self _updateTextColor];
 }
 
-- (void)setIsWeekend:(BOOL)a3
+- (void)setIsWeekend:(BOOL)weekend
 {
   v4.receiver = self;
   v4.super_class = CompactDayNavigationViewCell;
-  [(DayNavigationViewCell *)&v4 setIsWeekend:a3];
+  [(DayNavigationViewCell *)&v4 setIsWeekend:weekend];
   [(TappableDayNumber *)self->_dateNumber setIsWeekend:[(DayNavigationViewCell *)self isWeekend]];
   [(CompactDayNavigationViewCell *)self _updateTextColor];
 }
 
-- (void)setWeekendColor:(id)a3
+- (void)setWeekendColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   dateNumber = self->_dateNumber;
-  v7 = v5;
+  v7 = colorCopy;
   if (dateNumber)
   {
     [(TappableDayNumber *)dateNumber setWeekendColor:?];
@@ -731,7 +731,7 @@ LABEL_11:
 
   else
   {
-    objc_storeStrong(&self->_weekendColor, a3);
+    objc_storeStrong(&self->_weekendColor, color);
     if ([(DayNavigationViewCell *)self isWeekend])
     {
       [(UILabel *)self->_monthAnimationStateDayNumber setTextColor:v7];
@@ -744,46 +744,46 @@ LABEL_11:
 {
   if (self->_dateNumber)
   {
-    v2 = [(TappableDayNumber *)self->_dateNumber weekendColor];
+    weekendColor = [(TappableDayNumber *)self->_dateNumber weekendColor];
   }
 
   else
   {
-    v2 = self->_weekendColor;
+    weekendColor = self->_weekendColor;
   }
 
-  return v2;
+  return weekendColor;
 }
 
-- (void)setCircled:(BOOL)a3 animated:(BOOL)a4
+- (void)setCircled:(BOOL)circled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if ([(DayNavigationViewCell *)self circled]!= a3)
+  animatedCopy = animated;
+  circledCopy = circled;
+  if ([(DayNavigationViewCell *)self circled]!= circled)
   {
     v7.receiver = self;
     v7.super_class = CompactDayNavigationViewCell;
-    [(DayNavigationViewCell *)&v7 setCircled:v5];
-    [(TappableDayNumber *)self->_dateNumber setCircled:v5 animated:v4];
+    [(DayNavigationViewCell *)&v7 setCircled:circledCopy];
+    [(TappableDayNumber *)self->_dateNumber setCircled:circledCopy animated:animatedCopy];
     [(CompactDayNavigationViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDate:(id)a3 forceStringUpdate:(BOOL)a4
+- (void)setDate:(id)date forceStringUpdate:(BOOL)update
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(DayNavigationViewCell *)self date];
-  v8 = [v6 isEqualToDate:v7];
+  updateCopy = update;
+  dateCopy = date;
+  date = [(DayNavigationViewCell *)self date];
+  v8 = [dateCopy isEqualToDate:date];
 
-  if (!v8 || v4)
+  if (!v8 || updateCopy)
   {
     v13.receiver = self;
     v13.super_class = CompactDayNavigationViewCell;
-    [(DayNavigationViewCell *)&v13 setDate:v6];
+    [(DayNavigationViewCell *)&v13 setDate:dateCopy];
     v9 = [EKCalendarDate alloc];
     v10 = +[NSTimeZone calendarTimeZone];
-    v11 = [v9 initWithDate:v6 timeZone:v10];
+    v11 = [v9 initWithDate:dateCopy timeZone:v10];
 
     [v11 day];
     v12 = CUIKLocalizedStringForInteger();
@@ -794,26 +794,26 @@ LABEL_11:
   }
 }
 
-- (void)setDisplayedString:(id)a3
+- (void)setDisplayedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_displayString isEqualToString:?])
   {
-    objc_storeStrong(&self->_displayString, a3);
+    objc_storeStrong(&self->_displayString, string);
     [(CompactDayNavigationViewCell *)self _updateDisplayedString];
   }
 }
 
-- (void)setOverlayString:(id)a3
+- (void)setOverlayString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   overlayString = self->_overlayString;
-  if (overlayString != v5)
+  if (overlayString != stringCopy)
   {
-    v9 = v5;
-    if (!v5 || ![(NSString *)overlayString isEqualToString:v5])
+    v9 = stringCopy;
+    if (!stringCopy || ![(NSString *)overlayString isEqualToString:stringCopy])
     {
-      objc_storeStrong(&self->_overlayString, a3);
+      objc_storeStrong(&self->_overlayString, string);
       self->_hasOverlay = [(NSString *)v9 length]!= 0;
       dateNumber = self->_dateNumber;
       if (dateNumber)
@@ -836,19 +836,19 @@ LABEL_11:
   _objc_release_x1();
 }
 
-- (void)setCircleDiameter:(double)a3 overlayDiameter:(double)a4 largeOverlayDiameter:(double)a5
+- (void)setCircleDiameter:(double)diameter overlayDiameter:(double)overlayDiameter largeOverlayDiameter:(double)largeOverlayDiameter
 {
-  self->_circleDiameter = a3;
-  self->_circleDiameterOverlay = a4;
-  self->_circleDiameterOverlayLarge = a5;
+  self->_circleDiameter = diameter;
+  self->_circleDiameterOverlay = overlayDiameter;
+  self->_circleDiameterOverlayLarge = largeOverlayDiameter;
   [(CompactDayNavigationViewCell *)self setNeedsLayout];
 }
 
-- (void)setBadgeType:(int64_t)a3
+- (void)setBadgeType:(int64_t)type
 {
-  if (self->_badgeType != a3)
+  if (self->_badgeType != type)
   {
-    self->_badgeType = a3;
+    self->_badgeType = type;
     [(CompactDayNavigationViewCell *)self _updateBadge];
   }
 }
@@ -869,26 +869,26 @@ LABEL_11:
   return v3;
 }
 
-- (void)setBadgeColor:(id)a3
+- (void)setBadgeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   badgeColor = self->_badgeColor;
-  if (v5 | badgeColor && ([(UIColor *)badgeColor isEqual:v5]& 1) == 0)
+  if (colorCopy | badgeColor && ([(UIColor *)badgeColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_badgeColor, a3);
+    objc_storeStrong(&self->_badgeColor, color);
     [(CompactDayNavigationViewCell *)self _updateBadge];
   }
 
   _objc_release_x1();
 }
 
-- (void)setBadgeLocale:(id)a3
+- (void)setBadgeLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   badgeLocale = self->_badgeLocale;
-  if (v5 | badgeLocale && ([(NSString *)badgeLocale isEqual:v5]& 1) == 0)
+  if (localeCopy | badgeLocale && ([(NSString *)badgeLocale isEqual:localeCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_badgeLocale, a3);
+    objc_storeStrong(&self->_badgeLocale, locale);
     [(CompactDayNavigationViewCell *)self _updateBadge];
   }
 
@@ -897,22 +897,22 @@ LABEL_11:
 
 - (void)_updateBadge
 {
-  v3 = [(CompactDayNavigationViewCell *)self badgeColor];
+  badgeColor = [(CompactDayNavigationViewCell *)self badgeColor];
 
-  if (!v3)
+  if (!badgeColor)
   {
     goto LABEL_10;
   }
 
-  v4 = [(CompactDayNavigationViewCell *)self traitCollection];
-  [v4 userInterfaceStyle];
+  traitCollection = [(CompactDayNavigationViewCell *)self traitCollection];
+  [traitCollection userInterfaceStyle];
 
   badgeType = self->_badgeType;
   if (badgeType == 3)
   {
     [objc_opt_class() badgeDiameter];
-    v6 = [(CompactDayNavigationViewCell *)self badgeColor];
-    v7 = [(CompactDayNavigationViewCell *)self badgeLocale];
+    badgeColor2 = [(CompactDayNavigationViewCell *)self badgeColor];
+    badgeLocale = [(CompactDayNavigationViewCell *)self badgeLocale];
     v8 = BadgeImageForAlternateWorkday();
   }
 
@@ -924,8 +924,8 @@ LABEL_11:
     }
 
     [objc_opt_class() badgeDiameter];
-    v6 = [(CompactDayNavigationViewCell *)self badgeColor];
-    v7 = [(CompactDayNavigationViewCell *)self badgeLocale];
+    badgeColor2 = [(CompactDayNavigationViewCell *)self badgeColor];
+    badgeLocale = [(CompactDayNavigationViewCell *)self badgeLocale];
     v8 = BadgeImageForHoliday();
   }
 
@@ -945,17 +945,17 @@ LABEL_10:
   [(UIImageView *)dayBadge setHidden:1];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v7.receiver = self;
   v7.super_class = CompactDayNavigationViewCell;
-  [(CompactDayNavigationViewCell *)&v7 setBackgroundColor:v4];
-  [(TappableDayNumber *)self->_dateNumber setBackgroundColor:v4];
-  [(UILabel *)self->_monthAnimationStateDayNumber setBackgroundColor:v4];
-  [(UILabel *)self->_monthAnimationStateOverlay setBackgroundColor:v4];
+  [(CompactDayNavigationViewCell *)&v7 setBackgroundColor:colorCopy];
+  [(TappableDayNumber *)self->_dateNumber setBackgroundColor:colorCopy];
+  [(UILabel *)self->_monthAnimationStateDayNumber setBackgroundColor:colorCopy];
+  [(UILabel *)self->_monthAnimationStateOverlay setBackgroundColor:colorCopy];
   v5 = +[UIColor clearColor];
-  if ([v4 isEqual:v5])
+  if ([colorCopy isEqual:v5])
   {
     v6 = +[UIColor systemBackgroundColor];
     [(UIImageView *)self->_dayBadge setBackgroundColor:v6];
@@ -963,13 +963,13 @@ LABEL_10:
 
   else
   {
-    [(UIImageView *)self->_dayBadge setBackgroundColor:v4];
+    [(UIImageView *)self->_dayBadge setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setFontSize:(double)a3
+- (void)setFontSize:(double)size
 {
-  [(TappableDayNumber *)self->_dateNumber setFontSize:a3];
+  [(TappableDayNumber *)self->_dateNumber setFontSize:size];
   if (self->_monthAnimationStateDayNumber)
   {
     if (self->_monthAnimationState)
@@ -988,12 +988,12 @@ LABEL_10:
   }
 }
 
-- (void)setOverlayFontSize:(double)a3
+- (void)setOverlayFontSize:(double)size
 {
-  v3 = a3;
+  sizeCopy = size;
   if (self->_overlayString)
   {
-    v5 = [TappableDayNumber overlayFontForSize:a3];
+    v5 = [TappableDayNumber overlayFontForSize:size];
     v17 = NSFontAttributeName;
     v18 = v5;
     v6 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
@@ -1010,23 +1010,23 @@ LABEL_10:
       [v5 pointSize];
       v14 = v13;
       [v11 actualScaleFactor];
-      v3 = v14 * v15;
+      sizeCopy = v14 * v15;
     }
   }
 
-  [(TappableDayNumber *)self->_dateNumber setOverlayFontSize:v3];
+  [(TappableDayNumber *)self->_dateNumber setOverlayFontSize:sizeCopy];
   if (self->_monthAnimationStateOverlay)
   {
-    v16 = [TappableDayNumber overlayFontForSize:v3];
+    v16 = [TappableDayNumber overlayFontForSize:sizeCopy];
     [(UILabel *)self->_monthAnimationStateOverlay setFont:v16];
   }
 }
 
-- (void)setMatchesMonthView:(BOOL)a3
+- (void)setMatchesMonthView:(BOOL)view
 {
-  if (self->_matchesMonthView != a3)
+  if (self->_matchesMonthView != view)
   {
-    self->_matchesMonthView = a3;
+    self->_matchesMonthView = view;
     [(CompactDayNavigationViewCell *)self _updateToMatchMonthViewIfNeeded];
   }
 }
@@ -1047,23 +1047,23 @@ LABEL_10:
   [(TappableDayNumber *)self->_dateNumber frame];
   v6 = v5;
   v8 = v7;
-  v9 = [(TappableDayNumber *)self->_dateNumber superview];
-  [(CompactDayNavigationViewCell *)self convertPoint:v9 fromView:v6, v8];
+  superview = [(TappableDayNumber *)self->_dateNumber superview];
+  [(CompactDayNavigationViewCell *)self convertPoint:superview fromView:v6, v8];
   v11 = v10;
 
   return v4 + v11;
 }
 
-- (void)setLabelElementsVisible:(BOOL)a3
+- (void)setLabelElementsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = CompactDayNavigationViewCell;
   [(DayNavigationViewCell *)&v5 setLabelElementsVisible:?];
-  [(TappableDayNumber *)self->_dateNumber setHidden:!v3];
+  [(TappableDayNumber *)self->_dateNumber setHidden:!visibleCopy];
 }
 
-- (double)_circleXForDiameter:(double)a3
+- (double)_circleXForDiameter:(double)diameter
 {
   [(CompactDayNavigationViewCell *)self bounds];
   EKUIScaleFactor();
@@ -1072,14 +1072,14 @@ LABEL_10:
   return result;
 }
 
-- (void)touchUpOccurred:(id)a3
+- (void)touchUpOccurred:(id)occurred
 {
-  v4 = [(DayNavigationViewCell *)self delegate];
+  delegate = [(DayNavigationViewCell *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(DayNavigationViewCell *)self delegate];
-    [v5 dayNavigationCellTouchUpOccurred:self];
+    delegate2 = [(DayNavigationViewCell *)self delegate];
+    [delegate2 dayNavigationCellTouchUpOccurred:self];
   }
 }
 
@@ -1097,10 +1097,10 @@ LABEL_10:
       v6 = v6 + 2.0;
     }
 
-    v11 = [(CompactDayNavigationViewCell *)self superview];
-    v12 = [v11 superview];
+    superview = [(CompactDayNavigationViewCell *)self superview];
+    v11Superview = [superview superview];
 
-    [v12 convertRect:self fromView:{v4, v6, v8, v10}];
+    [v11Superview convertRect:self fromView:{v4, v6, v8, v10}];
     v17 = [[EKUITodayCirclePulseView alloc] initWithFrame:{v13, v14, v15, v16}];
     pulseView = self->_pulseView;
     self->_pulseView = v17;
@@ -1146,7 +1146,7 @@ LABEL_10:
     }
 
     [(EKUITodayCirclePulseView *)self->_pulseView layoutIfNeeded];
-    [v12 addSubview:self->_pulseView];
+    [v11Superview addSubview:self->_pulseView];
     [(TappableDayNumber *)self->_dateNumber setHidden:1];
     v22 = self->_pulseView;
     v23[0] = _NSConcreteStackBlock;

@@ -1,7 +1,7 @@
 @interface _HDStateOfMindEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -14,37 +14,37 @@
   v9[1] = @"valence";
   v9[2] = @"context";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
-  v4 = [(HDEntityEncoder *)self superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCDA30]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCDA30]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = [(HDEntityEncoder *)self transaction];
-  v10 = [HDStateOfMindLabelEntity labelsForObjectID:a3 transaction:v9 error:a5];
+  transaction = [(HDEntityEncoder *)self transaction];
+  v10 = [HDStateOfMindLabelEntity labelsForObjectID:d transaction:transaction error:error];
 
   if (v10)
   {
-    v11 = [(HDEntityEncoder *)self transaction];
-    v12 = [HDStateOfMindDomainEntity domainsForObjectID:a3 transaction:v11 error:a5];
+    transaction2 = [(HDEntityEncoder *)self transaction];
+    v12 = [HDStateOfMindDomainEntity domainsForObjectID:d transaction:transaction2 error:error];
 
     if (v12)
     {
-      v13 = [(HDEntityEncoder *)self superclassEncoder];
-      v14 = [v13 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+      superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+      v14 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
       if (v14)
       {
@@ -138,35 +138,35 @@
   return v15;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
-    v13 = [(HDEntityEncoder *)self transaction];
-    v14 = [HDStateOfMindLabelEntity labelsForObjectID:a4 transaction:v13 error:a6];
+    transaction = [(HDEntityEncoder *)self transaction];
+    v14 = [HDStateOfMindLabelEntity labelsForObjectID:d transaction:transaction error:error];
 
     if (v14)
     {
-      v15 = [(HDEntityEncoder *)self transaction];
-      v16 = [HDStateOfMindDomainEntity domainsForObjectID:a4 transaction:v15 error:a6];
+      transaction2 = [(HDEntityEncoder *)self transaction];
+      v16 = [HDStateOfMindDomainEntity domainsForObjectID:d transaction:transaction2 error:error];
 
       v17 = v16 != 0;
       if (v16)
       {
         HDSQLiteColumnWithNameAsInt64();
-        [v10 _setKind:HKStateOfMindKindFromReflectiveInterval()];
+        [objectCopy _setKind:HKStateOfMindKindFromReflectiveInterval()];
         HDSQLiteColumnWithNameAsDouble();
-        [v10 _setValence:?];
+        [objectCopy _setValence:?];
         v18 = HDSQLiteColumnWithNameAsString();
-        [v10 _setContext:v18];
+        [objectCopy _setContext:v18];
 
-        [v10 _setLabels:v14];
+        [objectCopy _setLabels:v14];
         v19 = [v16 hk_map:&__block_literal_global_202];
-        [v10 _setAssociations:v19];
+        [objectCopy _setAssociations:v19];
       }
     }
 

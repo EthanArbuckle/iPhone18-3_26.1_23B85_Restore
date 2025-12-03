@@ -1,28 +1,28 @@
 @interface SiriHearstLongPressButtonContext
-- (SiriHearstLongPressButtonContext)initWithCoder:(id)a3;
-- (SiriHearstLongPressButtonContext)initWithSpeechRequestOptions:(id)a3;
+- (SiriHearstLongPressButtonContext)initWithCoder:(id)coder;
+- (SiriHearstLongPressButtonContext)initWithSpeechRequestOptions:(id)options;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriHearstLongPressButtonContext
 
-- (SiriHearstLongPressButtonContext)initWithSpeechRequestOptions:(id)a3
+- (SiriHearstLongPressButtonContext)initWithSpeechRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = SiriHearstLongPressButtonContext;
-  v5 = [(SiriContext *)&v12 initWithSpeechRequestOptions:v4];
+  v5 = [(SiriContext *)&v12 initWithSpeechRequestOptions:optionsCopy];
   v6 = v5;
   if (v5)
   {
     v5->_isTemporaryDevice = 0;
-    v7 = [v4 activationDeviceIdentifier];
-    if (v7)
+    activationDeviceIdentifier = [optionsCopy activationDeviceIdentifier];
+    if (activationDeviceIdentifier)
     {
-      v8 = [MEMORY[0x1E698F468] sharedInstance];
-      v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v7];
-      v10 = [v8 deviceFromIdentifier:v9];
+      mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+      v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:activationDeviceIdentifier];
+      v10 = [mEMORY[0x1E698F468] deviceFromIdentifier:v9];
 
       if (v10)
       {
@@ -39,36 +39,36 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SiriContext *)self contextOverride];
+  contextOverride = [(SiriContext *)self contextOverride];
   isTemporaryDevice = self->_isTemporaryDevice;
   v6 = NSStringFromBOOL();
-  v7 = [(SiriContext *)self speechRequestOptions];
-  v8 = [v3 stringWithFormat:@"<SiriHearstLongPressButtonContext contextOverride:%@ isTemporaryDevice:%@ speechRequestOptions:%@>", v4, v6, v7];
+  speechRequestOptions = [(SiriContext *)self speechRequestOptions];
+  v8 = [v3 stringWithFormat:@"<SiriHearstLongPressButtonContext contextOverride:%@ isTemporaryDevice:%@ speechRequestOptions:%@>", contextOverride, v6, speechRequestOptions];
 
   return v8;
 }
 
-- (SiriHearstLongPressButtonContext)initWithCoder:(id)a3
+- (SiriHearstLongPressButtonContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SiriHearstLongPressButtonContext;
-  v5 = [(SiriLongPressButtonContext *)&v7 initWithCoder:v4];
+  v5 = [(SiriLongPressButtonContext *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_isTemporaryDevice = [v4 decodeBoolForKey:@"isTemporaryDevice"];
+    v5->_isTemporaryDevice = [coderCopy decodeBoolForKey:@"isTemporaryDevice"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SiriHearstLongPressButtonContext;
-  v4 = a3;
-  [(SiriLongPressButtonContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isTemporaryDevice forKey:{@"isTemporaryDevice", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SiriLongPressButtonContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isTemporaryDevice forKey:{@"isTemporaryDevice", v5.receiver, v5.super_class}];
 }
 
 @end

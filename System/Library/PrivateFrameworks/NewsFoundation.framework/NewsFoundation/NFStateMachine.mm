@@ -1,13 +1,13 @@
 @interface NFStateMachine
-- (NFStateMachine)initWithState:(id)a3 withOwner:(id)a4;
+- (NFStateMachine)initWithState:(id)state withOwner:(id)owner;
 - (id)debugDescription;
 - (id)description;
-- (id)fireEventWithName:(id)a3 withContext:(id)a4;
+- (id)fireEventWithName:(id)name withContext:(id)context;
 - (id)owner;
 - (void)activate;
 - (void)activateIfNeeded;
-- (void)addEvent:(id)a3;
-- (void)addState:(id)a3;
+- (void)addEvent:(id)event;
+- (void)addState:(id)state;
 - (void)deactivate;
 - (void)deactivateIfNeeded;
 @end
@@ -32,23 +32,23 @@
   return WeakRetained;
 }
 
-- (NFStateMachine)initWithState:(id)a3 withOwner:(id)a4
+- (NFStateMachine)initWithState:(id)state withOwner:(id)owner
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  ownerCopy = owner;
   v20.receiver = self;
   v20.super_class = NFStateMachine;
   v9 = [(NFStateMachine *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_owner, v8);
-    objc_storeStrong(&v10->_state, a3);
+    objc_storeWeak(&v9->_owner, ownerCopy);
+    objc_storeStrong(&v10->_state, state);
     v10->_status = 0;
     v10->_statusToken = 0;
     v11 = MEMORY[0x277CBEB38];
-    v12 = [v7 name];
-    v13 = [v11 dictionaryWithObject:v7 forKey:v12];
+    name = [stateCopy name];
+    v13 = [v11 dictionaryWithObject:stateCopy forKey:name];
     states = v10->_states;
     v10->_states = v13;
 
@@ -67,8 +67,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NFStateMachine *)self state];
-  v5 = [v3 stringWithFormat:@"{%p state=%@, status=%ld, statusToken=%ld}", self, v4, -[NFStateMachine status](self, "status"), -[NFStateMachine statusToken](self, "statusToken")];
+  state = [(NFStateMachine *)self state];
+  v5 = [v3 stringWithFormat:@"{%p state=%@, status=%ld, statusToken=%ld}", self, state, -[NFStateMachine status](self, "status"), -[NFStateMachine statusToken](self, "statusToken")];
 
   return v5;
 }
@@ -76,12 +76,12 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NFStateMachine *)self state];
-  v5 = [(NFStateMachine *)self status];
-  v6 = [(NFStateMachine *)self statusToken];
-  v7 = [(NFStateMachine *)self states];
-  v8 = [(NFStateMachine *)self events];
-  v9 = [v3 stringWithFormat:@"{%p state=%@, status=%ld, statusToken=%ld, states=%@, events=%@}", self, v4, v5, v6, v7, v8];
+  state = [(NFStateMachine *)self state];
+  status = [(NFStateMachine *)self status];
+  statusToken = [(NFStateMachine *)self statusToken];
+  states = [(NFStateMachine *)self states];
+  events = [(NFStateMachine *)self events];
+  v9 = [v3 stringWithFormat:@"{%p state=%@, status=%ld, statusToken=%ld, states=%@, events=%@}", self, state, status, statusToken, states, events];
 
   return v9;
 }
@@ -117,86 +117,86 @@
   }
 }
 
-- (void)addState:(id)a3
+- (void)addState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [MEMORY[0x277CCACC8] isMainThread];
-  v5 = [(NFStateMachine *)self states];
-  v6 = [v4 name];
-  v7 = [v5 objectForKey:v6];
+  states = [(NFStateMachine *)self states];
+  name = [stateCopy name];
+  v7 = [states objectForKey:name];
 
   if (v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NFStateMachine addState:];
   }
 
-  v8 = [(NFStateMachine *)self states];
-  v9 = [v4 name];
-  [v8 setObject:v4 forKey:v9];
+  states2 = [(NFStateMachine *)self states];
+  name2 = [stateCopy name];
+  [states2 setObject:stateCopy forKey:name2];
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [MEMORY[0x277CCACC8] isMainThread];
-  v5 = [(NFStateMachine *)self events];
-  v6 = [v4 name];
-  v7 = [v5 objectForKey:v6];
+  events = [(NFStateMachine *)self events];
+  name = [eventCopy name];
+  v7 = [events objectForKey:name];
 
   if (v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NFStateMachine addEvent:];
   }
 
-  v8 = [(NFStateMachine *)self events];
-  v9 = [v4 name];
-  [v8 setObject:v4 forKey:v9];
+  events2 = [(NFStateMachine *)self events];
+  name2 = [eventCopy name];
+  [events2 setObject:eventCopy forKey:name2];
 }
 
-- (id)fireEventWithName:(id)a3 withContext:(id)a4
+- (id)fireEventWithName:(id)name withContext:(id)context
 {
   v61[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   [MEMORY[0x277CCACC8] isMainThread];
-  v8 = [(NFStateMachine *)self owner];
-  v9 = v8;
-  if (!v8)
+  owner = [(NFStateMachine *)self owner];
+  v9 = owner;
+  if (!owner)
   {
     v23 = __48__NFStateMachine_fireEventWithName_withContext___block_invoke();
     goto LABEL_16;
   }
 
-  v10 = v8;
+  v10 = owner;
   if ([(NFStateMachine *)self status]== 1)
   {
-    v11 = [(NFStateMachine *)self events];
-    v12 = [v11 objectForKey:v6];
+    events = [(NFStateMachine *)self events];
+    v12 = [events objectForKey:nameCopy];
 
     if (v12)
     {
-      v13 = [v12 states];
-      v14 = [(NFStateMachine *)self state];
-      v15 = [v13 containsObject:v14];
+      states = [v12 states];
+      state = [(NFStateMachine *)self state];
+      v15 = [states containsObject:state];
 
       if (v15)
       {
-        v16 = [(NFStateMachine *)self state];
-        v17 = [v12 destinationState];
-        v18 = [[NFStateMachineTransition alloc] initWithStateMachine:self event:v12 fromState:v16 toState:v17 context:v7];
-        if ([v17 canTry:v18 withOwner:v10])
+        state2 = [(NFStateMachine *)self state];
+        destinationState = [v12 destinationState];
+        v18 = [[NFStateMachineTransition alloc] initWithStateMachine:self event:v12 fromState:state2 toState:destinationState context:contextCopy];
+        if ([destinationState canTry:v18 withOwner:v10])
         {
-          v19 = [(NFStateMachine *)self lock];
-          [v19 lock];
+          lock = [(NFStateMachine *)self lock];
+          [lock lock];
 
-          [v16 willExit:v18 withOwner:v10];
-          [v17 willEnter:v18 withOwner:v10];
-          [(NFStateMachine *)self setState:v17];
+          [state2 willExit:v18 withOwner:v10];
+          [destinationState willEnter:v18 withOwner:v10];
+          [(NFStateMachine *)self setState:destinationState];
           v52[0] = MEMORY[0x277D85DD0];
           v52[1] = 3221225472;
           v52[2] = __48__NFStateMachine_fireEventWithName_withContext___block_invoke_3;
           v52[3] = &unk_27997DA40;
-          v53 = v16;
+          v53 = state2;
           v41 = v18;
           v20 = v18;
           v54 = v20;
@@ -208,7 +208,7 @@
           v48[1] = 3221225472;
           v48[2] = __48__NFStateMachine_fireEventWithName_withContext___block_invoke_4;
           v48[3] = &unk_27997DA68;
-          v49 = v17;
+          v49 = destinationState;
           v36 = v20;
           v50 = v36;
           v35 = v38;
@@ -248,11 +248,11 @@
       v57[0] = @"event does not allow transition from current state";
       v56[0] = v29;
       v56[1] = @"currentState";
-      v30 = [(NFStateMachine *)self state];
+      state3 = [(NFStateMachine *)self state];
       v56[2] = @"event";
-      v57[1] = v30;
+      v57[1] = state3;
       v57[2] = v12;
-      v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:3];
+      state2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:3];
 
       v27 = MEMORY[0x277CCA9B8];
       v28 = -102;
@@ -261,16 +261,16 @@
     else
     {
       v58[0] = *MEMORY[0x277CCA450];
-      v58[1] = v6;
+      v58[1] = nameCopy;
       v59[0] = @"event for name not found in state machine";
       v59[1] = @"eventName";
-      v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
+      state2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
       v27 = MEMORY[0x277CCA9B8];
       v28 = -101;
     }
 
-    v17 = [v27 fc_createStateMachineErrorForCode:v28 userInfo:v16];
-    v23 = [NFPromise asVoid:v17];
+    destinationState = [v27 fc_createStateMachineErrorForCode:v28 userInfo:state2];
+    v23 = [NFPromise asVoid:destinationState];
 LABEL_14:
 
     goto LABEL_15;
@@ -287,8 +287,8 @@ LABEL_14:
   v61[2] = v26;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v61 forKeys:v60 count:3];
 
-  v16 = [MEMORY[0x277CCA9B8] fc_createStateMachineErrorForCode:-100 userInfo:v12];
-  v23 = [NFPromise asVoid:v16];
+  state2 = [MEMORY[0x277CCA9B8] fc_createStateMachineErrorForCode:-100 userInfo:v12];
+  v23 = [NFPromise asVoid:state2];
 LABEL_15:
 
 LABEL_16:

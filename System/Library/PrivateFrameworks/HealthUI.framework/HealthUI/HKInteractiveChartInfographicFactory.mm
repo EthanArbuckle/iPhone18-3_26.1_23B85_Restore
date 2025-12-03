@@ -1,40 +1,40 @@
 @interface HKInteractiveChartInfographicFactory
-+ (BOOL)infographicSupportedForDisplayType:(id)a3 factorDisplayType:(id)a4 healthStore:(id)a5;
-+ (id)_appleSleepingBreathingDisturbancesInfographicForDisplayType:(id)a3;
-+ (id)_appleSleepingBreathingDisturbancesItemWithTitleKey:(id)a3 descriptionKey:(id)a4;
-+ (id)_appleSleepingWristTemperatureInfographicForDisplayType:(id)a3;
-+ (id)_appleSleepingWristTemperatureItemWithTitleKey:(id)a3 descriptionKey:(id)a4;
-+ (id)_appleWalkingSteadinessInfographicForDisplayType:(id)a3;
-+ (id)_attributedSymbolForAudioClassification:(unint64_t)a3 textStyle:(id)a4;
++ (BOOL)infographicSupportedForDisplayType:(id)type factorDisplayType:(id)displayType healthStore:(id)store;
++ (id)_appleSleepingBreathingDisturbancesInfographicForDisplayType:(id)type;
++ (id)_appleSleepingBreathingDisturbancesItemWithTitleKey:(id)key descriptionKey:(id)descriptionKey;
++ (id)_appleSleepingWristTemperatureInfographicForDisplayType:(id)type;
++ (id)_appleSleepingWristTemperatureItemWithTitleKey:(id)key descriptionKey:(id)descriptionKey;
++ (id)_appleWalkingSteadinessInfographicForDisplayType:(id)type;
++ (id)_attributedSymbolForAudioClassification:(unint64_t)classification textStyle:(id)style;
 + (id)_environmentalAudioExposureInfographic;
 + (id)_exposureLimitTextItem;
-+ (id)_factorDescriptionForDisplayType:(id)a3 factorDisplayType:(id)a4;
++ (id)_factorDescriptionForDisplayType:(id)type factorDisplayType:(id)displayType;
 + (id)_headphoneAudioExposureInfographic;
-+ (id)_itemForAppleWalkingSteadinessInfographicWithClassification:(int64_t)a3;
-+ (id)_itemForAudioInfographicWithClassification:(unint64_t)a3 descriptionKey:(id)a4;
-+ (id)_itemWithTitleKey:(id)a3 valueKey:(id)a4 hideSeparator:(BOOL)a5;
-+ (id)_pregnancyHealthFactorDescriptionTitleKey:(id)a3 bodyKeys:(id)a4;
-+ (id)_undefinedFactorDescriptionViewController:(id)a3 factorDisplayType:(id)a4;
++ (id)_itemForAppleWalkingSteadinessInfographicWithClassification:(int64_t)classification;
++ (id)_itemForAudioInfographicWithClassification:(unint64_t)classification descriptionKey:(id)key;
++ (id)_itemWithTitleKey:(id)key valueKey:(id)valueKey hideSeparator:(BOOL)separator;
++ (id)_pregnancyHealthFactorDescriptionTitleKey:(id)key bodyKeys:(id)keys;
++ (id)_undefinedFactorDescriptionViewController:(id)controller factorDisplayType:(id)type;
 + (id)_whoExposureTextItem;
-+ (id)infographicViewControllerForDisplayType:(id)a3 factorDisplayType:(id)a4 healthStore:(id)a5;
++ (id)infographicViewControllerForDisplayType:(id)type factorDisplayType:(id)displayType healthStore:(id)store;
 @end
 
 @implementation HKInteractiveChartInfographicFactory
 
-+ (BOOL)infographicSupportedForDisplayType:(id)a3 factorDisplayType:(id)a4 healthStore:(id)a5
++ (BOOL)infographicSupportedForDisplayType:(id)type factorDisplayType:(id)displayType healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  v8 = typeCopy;
   objc_opt_class();
-  v9 = v8;
+  baseDisplayType = v8;
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    baseDisplayType = v8;
     do
     {
-      v10 = v9;
-      v9 = [v10 baseDisplayType];
+      v10 = baseDisplayType;
+      baseDisplayType = [v10 baseDisplayType];
 
       objc_opt_class();
     }
@@ -42,10 +42,10 @@
     while ((objc_opt_isKindOfClass() & 1) != 0);
   }
 
-  if (v7)
+  if (displayTypeCopy)
   {
-    v11 = [v9 hk_chartFactorDescriptionDisplayTypes];
-    v12 = [v11 containsObject:v7];
+    hk_chartFactorDescriptionDisplayTypes = [baseDisplayType hk_chartFactorDescriptionDisplayTypes];
+    v12 = [hk_chartFactorDescriptionDisplayTypes containsObject:displayTypeCopy];
 
     if ((v12 & 1) == 0)
     {
@@ -61,7 +61,7 @@ LABEL_10:
     while (1)
     {
       v15 = _supportedDisplayTypes[v14];
-      if (v15 == [v9 displayTypeIdentifier])
+      if (v15 == [baseDisplayType displayTypeIdentifier])
       {
         break;
       }
@@ -79,10 +79,10 @@ LABEL_11:
   return v13;
 }
 
-+ (id)infographicViewControllerForDisplayType:(id)a3 factorDisplayType:(id)a4 healthStore:(id)a5
++ (id)infographicViewControllerForDisplayType:(id)type factorDisplayType:(id)displayType healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  displayTypeCopy = displayType;
   while (1)
   {
     objc_opt_class();
@@ -91,49 +91,49 @@ LABEL_11:
       break;
     }
 
-    v9 = v7;
-    v7 = [v9 baseDisplayType];
+    v9 = typeCopy;
+    typeCopy = [v9 baseDisplayType];
   }
 
-  if ([v7 displayTypeIdentifier] == 172)
+  if ([typeCopy displayTypeIdentifier] == 172)
   {
-    v10 = [a1 _environmentalAudioExposureInfographic];
+    _environmentalAudioExposureInfographic = [self _environmentalAudioExposureInfographic];
   }
 
   else
   {
-    v10 = 0;
+    _environmentalAudioExposureInfographic = 0;
   }
 
-  if ([v7 displayTypeIdentifier] == 173)
+  if ([typeCopy displayTypeIdentifier] == 173)
   {
-    v11 = [a1 _headphoneAudioExposureInfographic];
+    _headphoneAudioExposureInfographic = [self _headphoneAudioExposureInfographic];
 
-    v10 = v11;
+    _environmentalAudioExposureInfographic = _headphoneAudioExposureInfographic;
   }
 
-  if ([v7 displayTypeIdentifier] == 249)
+  if ([typeCopy displayTypeIdentifier] == 249)
   {
-    v12 = [a1 _appleWalkingSteadinessInfographicForDisplayType:v7];
+    v12 = [self _appleWalkingSteadinessInfographicForDisplayType:typeCopy];
 
-    v10 = v12;
+    _environmentalAudioExposureInfographic = v12;
   }
 
-  if ([v7 displayTypeIdentifier] == 256)
+  if ([typeCopy displayTypeIdentifier] == 256)
   {
-    v13 = [a1 _appleSleepingWristTemperatureInfographicForDisplayType:v7];
+    v13 = [self _appleSleepingWristTemperatureInfographicForDisplayType:typeCopy];
 
-    v10 = v13;
+    _environmentalAudioExposureInfographic = v13;
   }
 
-  if ([v7 displayTypeIdentifier] == 275)
+  if ([typeCopy displayTypeIdentifier] == 275)
   {
-    v14 = [a1 _appleSleepingBreathingDisturbancesInfographicForDisplayType:v7];
+    v14 = [self _appleSleepingBreathingDisturbancesInfographicForDisplayType:typeCopy];
 
-    v10 = v14;
+    _environmentalAudioExposureInfographic = v14;
   }
 
-  if (v8)
+  if (displayTypeCopy)
   {
     while (1)
     {
@@ -143,18 +143,18 @@ LABEL_11:
         break;
       }
 
-      v15 = v8;
-      v8 = [v15 baseDisplayType];
+      v15 = displayTypeCopy;
+      displayTypeCopy = [v15 baseDisplayType];
     }
 
-    v16 = [a1 _factorDescriptionForDisplayType:v7 factorDisplayType:v8];
+    v16 = [self _factorDescriptionForDisplayType:typeCopy factorDisplayType:displayTypeCopy];
 
-    v10 = v16;
+    _environmentalAudioExposureInfographic = v16;
   }
 
-  if (v10)
+  if (_environmentalAudioExposureInfographic)
   {
-    v17 = [[HKModalNavigationController alloc] initWithRootViewController:v10];
+    v17 = [[HKModalNavigationController alloc] initWithRootViewController:_environmentalAudioExposureInfographic];
   }
 
   else
@@ -168,26 +168,26 @@ LABEL_11:
 + (id)_environmentalAudioExposureInfographic
 {
   v18[10] = *MEMORY[0x1E69E9840];
-  v17 = [a1 _itemForAudioInfographicWithClassification:1 descriptionKey:@"ENVIRONMENTAL_EXPOSURE_OK_DESCRIPTION"];
+  v17 = [self _itemForAudioInfographicWithClassification:1 descriptionKey:@"ENVIRONMENTAL_EXPOSURE_OK_DESCRIPTION"];
   v18[0] = v17;
-  v3 = [a1 _itemForAudioInfographicWithClassification:2 descriptionKey:@"ENVIRONMENTAL_EXPOSURE_LOUD_DESCRIPTION"];
+  v3 = [self _itemForAudioInfographicWithClassification:2 descriptionKey:@"ENVIRONMENTAL_EXPOSURE_LOUD_DESCRIPTION"];
   v18[1] = v3;
-  v4 = [a1 _exposureLimitTextItem];
-  v18[2] = v4;
-  v5 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_75" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_75"];
+  _exposureLimitTextItem = [self _exposureLimitTextItem];
+  v18[2] = _exposureLimitTextItem;
+  v5 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_75" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_75"];
   v18[3] = v5;
-  v6 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_80" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_80"];
+  v6 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_80" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_80"];
   v18[4] = v6;
-  v7 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_90" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_90"];
+  v7 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_90" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_90"];
   v18[5] = v7;
-  v8 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_100" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_100"];
+  v8 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_100" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_100"];
   v18[6] = v8;
-  v9 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_110" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_110"];
+  v9 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_110" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_110"];
   v18[7] = v9;
-  v10 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_120" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_120" hideSeparator:1];
+  v10 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_120" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_120" hideSeparator:1];
   v18[8] = v10;
-  v11 = [a1 _whoExposureTextItem];
-  v18[9] = v11;
+  _whoExposureTextItem = [self _whoExposureTextItem];
+  v18[9] = _whoExposureTextItem;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:10];
 
   v13 = [[HKInfographicViewController alloc] initWithItems:v12];
@@ -201,26 +201,26 @@ LABEL_11:
 + (id)_headphoneAudioExposureInfographic
 {
   v18[10] = *MEMORY[0x1E69E9840];
-  v17 = [a1 _itemForAudioInfographicWithClassification:1 descriptionKey:@"HEADPHONE_EXPOSURE_OK_DESCRIPTION"];
+  v17 = [self _itemForAudioInfographicWithClassification:1 descriptionKey:@"HEADPHONE_EXPOSURE_OK_DESCRIPTION"];
   v18[0] = v17;
-  v3 = [a1 _itemForAudioInfographicWithClassification:2 descriptionKey:@"HEADPHONE_EXPOSURE_LOUD_DESCRIPTION"];
+  v3 = [self _itemForAudioInfographicWithClassification:2 descriptionKey:@"HEADPHONE_EXPOSURE_LOUD_DESCRIPTION"];
   v18[1] = v3;
-  v4 = [a1 _exposureLimitTextItem];
-  v18[2] = v4;
-  v5 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_75" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_75"];
+  _exposureLimitTextItem = [self _exposureLimitTextItem];
+  v18[2] = _exposureLimitTextItem;
+  v5 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_75" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_75"];
   v18[3] = v5;
-  v6 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_80" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_80"];
+  v6 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_80" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_80"];
   v18[4] = v6;
-  v7 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_90" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_90"];
+  v7 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_90" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_90"];
   v18[5] = v7;
-  v8 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_100" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_100"];
+  v8 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_100" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_100"];
   v18[6] = v8;
-  v9 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_110" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_110"];
+  v9 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_110" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_110"];
   v18[7] = v9;
-  v10 = [a1 _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_120" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_120" hideSeparator:1];
+  v10 = [self _itemWithTitleKey:@"EXPOSURE_EXAMPLE_QUANTITY_120" valueKey:@"EXPOSURE_EXAMPLE_DESCRIPTION_120" hideSeparator:1];
   v18[8] = v10;
-  v11 = [a1 _whoExposureTextItem];
-  v18[9] = v11;
+  _whoExposureTextItem = [self _whoExposureTextItem];
+  v18[9] = _whoExposureTextItem;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:10];
 
   v13 = [[HKInfographicViewController alloc] initWithItems:v12];
@@ -231,48 +231,48 @@ LABEL_11:
   return v13;
 }
 
-+ (id)_appleWalkingSteadinessInfographicForDisplayType:(id)a3
++ (id)_appleWalkingSteadinessInfographicForDisplayType:(id)type
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _itemForAppleWalkingSteadinessInfographicWithClassification:1];
-  v6 = [a1 _itemForAppleWalkingSteadinessInfographicWithClassification:{2, v5}];
+  typeCopy = type;
+  v5 = [self _itemForAppleWalkingSteadinessInfographicWithClassification:1];
+  v6 = [self _itemForAppleWalkingSteadinessInfographicWithClassification:{2, v5}];
   v13[1] = v6;
-  v7 = [a1 _itemForAppleWalkingSteadinessInfographicWithClassification:3];
+  v7 = [self _itemForAppleWalkingSteadinessInfographicWithClassification:3];
   v13[2] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
 
   v9 = [[HKInfographicViewController alloc] initWithItems:v8];
-  v10 = [v4 localization];
+  localization = [typeCopy localization];
 
-  v11 = [v10 displayName];
-  [(HKInfographicViewController *)v9 setTitle:v11];
+  displayName = [localization displayName];
+  [(HKInfographicViewController *)v9 setTitle:displayName];
 
   return v9;
 }
 
-+ (id)_appleSleepingWristTemperatureInfographicForDisplayType:(id)a3
++ (id)_appleSleepingWristTemperatureInfographicForDisplayType:(id)type
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DC740];
-  v5 = a3;
-  v6 = [v4 plainButtonConfiguration];
+  typeCopy = type;
+  plainButtonConfiguration = [v4 plainButtonConfiguration];
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_LEARN_MORE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
-  [v6 setTitle:v8];
+  [plainButtonConfiguration setTitle:v8];
 
-  v9 = [[HKInfographicButtonItem alloc] initWithConfiguration:v6 buttonTapHandler:&__block_literal_global_52];
-  v10 = [a1 _appleSleepingWristTemperatureItemWithTitleKey:@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_YOUR_BASELINE_TITLE" descriptionKey:@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_YOUR_BASELINE_BODY"];
-  v11 = [a1 _appleSleepingWristTemperatureItemWithTitleKey:@"ESTABLISHING_BASELINE" descriptionKey:{@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_ESTABLISHING_BASELINE_BODY", v10}];
+  v9 = [[HKInfographicButtonItem alloc] initWithConfiguration:plainButtonConfiguration buttonTapHandler:&__block_literal_global_52];
+  v10 = [self _appleSleepingWristTemperatureItemWithTitleKey:@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_YOUR_BASELINE_TITLE" descriptionKey:@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_YOUR_BASELINE_BODY"];
+  v11 = [self _appleSleepingWristTemperatureItemWithTitleKey:@"ESTABLISHING_BASELINE" descriptionKey:{@"SLEEPING_WRIST_TEMPERATURE_INFOGRAPHIC_ESTABLISHING_BASELINE_BODY", v10}];
   v17[1] = v11;
   v17[2] = v9;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:3];
 
   v13 = [[HKInfographicViewController alloc] initWithItems:v12];
-  v14 = [v5 localization];
+  localization = [typeCopy localization];
 
-  v15 = [v14 displayName];
-  [(HKInfographicViewController *)v13 setTitle:v15];
+  displayName = [localization displayName];
+  [(HKInfographicViewController *)v13 setTitle:displayName];
 
   return v13;
 }
@@ -288,32 +288,32 @@ void __96__HKInteractiveChartInfographicFactory__appleSleepingWristTemperatureIn
   [v3 openURL:v4 withOptions:0];
 }
 
-+ (id)_appleSleepingBreathingDisturbancesInfographicForDisplayType:(id)a3
++ (id)_appleSleepingBreathingDisturbancesInfographicForDisplayType:(id)type
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DC740];
-  v5 = a3;
-  v6 = [v4 plainButtonConfiguration];
+  typeCopy = type;
+  plainButtonConfiguration = [v4 plainButtonConfiguration];
   v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v8 = [v7 localizedStringForKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_LEARN_MORE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Nebula"];
-  [v6 setTitle:v8];
+  [plainButtonConfiguration setTitle:v8];
 
-  v9 = [[HKInfographicButtonItem alloc] initWithConfiguration:v6 buttonTapHandler:&__block_literal_global_392];
-  v10 = [a1 _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_1_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_1_BODY"];
-  v11 = [a1 _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_2_TITLE" descriptionKey:{@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_2_BODY", v10}];
+  v9 = [[HKInfographicButtonItem alloc] initWithConfiguration:plainButtonConfiguration buttonTapHandler:&__block_literal_global_392];
+  v10 = [self _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_1_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_1_BODY"];
+  v11 = [self _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_2_TITLE" descriptionKey:{@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_2_BODY", v10}];
   v19[1] = v11;
-  v12 = [a1 _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_3_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_3_BODY"];
+  v12 = [self _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_3_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_3_BODY"];
   v19[2] = v12;
-  v13 = [a1 _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_4_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_4_BODY"];
+  v13 = [self _appleSleepingBreathingDisturbancesItemWithTitleKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_4_TITLE" descriptionKey:@"SLEEP_BREATHING_DISTURBANCES_INFOGRAPHIC_SECTION_4_BODY"];
   v19[3] = v13;
   v19[4] = v9;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:5];
 
   v15 = [[HKInfographicViewController alloc] initWithItems:v14];
-  v16 = [v5 localization];
+  localization = [typeCopy localization];
 
-  v17 = [v16 displayName];
-  [(HKInfographicViewController *)v15 setTitle:v17];
+  displayName = [localization displayName];
+  [(HKInfographicViewController *)v15 setTitle:displayName];
 
   return v15;
 }
@@ -329,22 +329,22 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   [v3 openURL:v4 withOptions:0];
 }
 
-+ (id)_itemForAudioInfographicWithClassification:(unint64_t)a3 descriptionKey:(id)a4
++ (id)_itemForAudioInfographicWithClassification:(unint64_t)classification descriptionKey:(id)key
 {
   v6 = *MEMORY[0x1E69DDDC0];
-  v7 = a4;
-  v8 = [a1 _attributedSymbolForAudioClassification:a3 textStyle:v6];
+  keyCopy = key;
+  v8 = [self _attributedSymbolForAudioClassification:classification textStyle:v6];
   v9 = [v8 mutableCopy];
 
-  v10 = [MEMORY[0x1E696BF20] localizedDisplayNameForClassification:a3];
+  v10 = [MEMORY[0x1E696BF20] localizedDisplayNameForClassification:classification];
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v12 = [a1 _titleAttributes];
-  v13 = [v11 initWithString:v10 attributes:v12];
+  _titleAttributes = [self _titleAttributes];
+  v13 = [v11 initWithString:v10 attributes:_titleAttributes];
   [v9 appendAttributedString:v13];
 
   v14 = objc_alloc(MEMORY[0x1E696AAB0]);
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v16 = [v15 localizedStringForKey:v7 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+  v16 = [v15 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
   v17 = [v14 initWithString:v16];
   v18 = [[HKInfographicContentItem alloc] initWithTitle:v9 description:v17];
@@ -362,8 +362,8 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   v5 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] symbolicTraits:2];
   v12[0] = v5;
   v11[1] = *MEMORY[0x1E69DB650];
-  v6 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v12[1] = v6;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v12[1] = hk_chartLollipopValueColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = [v2 initWithString:v4 attributes:v7];
 
@@ -382,8 +382,8 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   v5 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDD30] symbolicTraits:2];
   v12[0] = v5;
   v11[1] = *MEMORY[0x1E69DB650];
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v12[1] = v6;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v12[1] = secondaryLabelColor;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = [v2 initWithString:v4 attributes:v7];
 
@@ -392,36 +392,36 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   return v9;
 }
 
-+ (id)_itemWithTitleKey:(id)a3 valueKey:(id)a4 hideSeparator:(BOOL)a5
++ (id)_itemWithTitleKey:(id)key valueKey:(id)valueKey hideSeparator:(BOOL)separator
 {
-  v21 = a5;
+  separatorCopy = separator;
   v7 = MEMORY[0x1E696AAB0];
-  v8 = a4;
-  v9 = a3;
+  valueKeyCopy = valueKey;
+  keyCopy = key;
   v10 = [v7 alloc];
   v11 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v12 = [v11 localizedStringForKey:v9 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+  v12 = [v11 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
-  v13 = [a1 _tableTitleAttributes];
-  v14 = [v10 initWithString:v12 attributes:v13];
+  _tableTitleAttributes = [self _tableTitleAttributes];
+  v14 = [v10 initWithString:v12 attributes:_tableTitleAttributes];
 
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v17 = [v16 localizedStringForKey:v8 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+  v17 = [v16 localizedStringForKey:valueKeyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 
   v18 = [v15 initWithString:v17];
-  v19 = [[HKInfographicTableItem alloc] initWithTitle:v14 value:v18 separatorHidden:v21];
+  v19 = [[HKInfographicTableItem alloc] initWithTitle:v14 value:v18 separatorHidden:separatorCopy];
 
   return v19;
 }
 
-+ (id)_attributedSymbolForAudioClassification:(unint64_t)a3 textStyle:(id)a4
++ (id)_attributedSymbolForAudioClassification:(unint64_t)classification textStyle:(id)style
 {
   v5 = MEMORY[0x1E69DCAB8];
   v6 = MEMORY[0x1E69DB878];
-  v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:a4];
+  v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:style];
   v8 = [v6 fontWithDescriptor:v7 size:0.0];
-  v9 = [v5 hk_hearingHealthAudioExposureSymbolForClassification:a3 font:v8];
+  v9 = [v5 hk_hearingHealthAudioExposureSymbolForClassification:classification font:v8];
 
   v10 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v9];
   v11 = objc_alloc_init(MEMORY[0x1E696AD40]);
@@ -432,7 +432,7 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   [v11 appendAttributedString:v13];
 
   v14 = *MEMORY[0x1E69DB650];
-  v15 = [MEMORY[0x1E69DC888] hk_hearingHealthAudioExposureColorForClassification:a3];
+  v15 = [MEMORY[0x1E69DC888] hk_hearingHealthAudioExposureColorForClassification:classification];
   [v11 addAttribute:v14 value:v15 range:{0, objc_msgSend(v11, "length")}];
 
   v16 = [v11 copy];
@@ -440,13 +440,13 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   return v16;
 }
 
-+ (id)_itemForAppleWalkingSteadinessInfographicWithClassification:(int64_t)a3
++ (id)_itemForAppleWalkingSteadinessInfographicWithClassification:(int64_t)classification
 {
   v5 = [HKMobilityUtilities localizedTitleForClassification:?];
-  v6 = [HKMobilityUtilities localizedDescriptionForClassification:a3];
+  v6 = [HKMobilityUtilities localizedDescriptionForClassification:classification];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v8 = [a1 _titleAttributes];
-  v9 = [v7 initWithString:v5 attributes:v8];
+  _titleAttributes = [self _titleAttributes];
+  v9 = [v7 initWithString:v5 attributes:_titleAttributes];
 
   v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6];
   v11 = [[HKInfographicContentItem alloc] initWithTitle:v9 description:v10];
@@ -454,29 +454,29 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   return v11;
 }
 
-+ (id)_appleSleepingWristTemperatureItemWithTitleKey:(id)a3 descriptionKey:(id)a4
++ (id)_appleSleepingWristTemperatureItemWithTitleKey:(id)key descriptionKey:(id)descriptionKey
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v22[0] = *MEMORY[0x1E69DB648];
   v5 = MEMORY[0x1E69DB878];
   v6 = *MEMORY[0x1E69DDDC0];
-  v21 = a4;
-  v7 = a3;
+  descriptionKeyCopy = descriptionKey;
+  keyCopy = key;
   v8 = [v5 _preferredFontForTextStyle:v6 variant:66560];
   v23[0] = v8;
   v22[1] = *MEMORY[0x1E69DB650];
-  v9 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v23[1] = v9;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v23[1] = hk_chartLollipopValueColor;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
 
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v13 = [v12 localizedStringForKey:v7 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
+  v13 = [v12 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
 
   v14 = [v11 initWithString:v13 attributes:v10];
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v17 = [v16 localizedStringForKey:v21 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
+  v17 = [v16 localizedStringForKey:descriptionKeyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Kali"];
 
   v18 = [v15 initWithString:v17];
   v19 = [[HKInfographicContentItem alloc] initWithTitle:v14 description:v18];
@@ -484,21 +484,21 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   return v19;
 }
 
-+ (id)_appleSleepingBreathingDisturbancesItemWithTitleKey:(id)a3 descriptionKey:(id)a4
++ (id)_appleSleepingBreathingDisturbancesItemWithTitleKey:(id)key descriptionKey:(id)descriptionKey
 {
   v6 = MEMORY[0x1E696AAB0];
-  v7 = a4;
-  v8 = a3;
+  descriptionKeyCopy = descriptionKey;
+  keyCopy = key;
   v9 = [v6 alloc];
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v11 = [v10 localizedStringForKey:v8 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Nebula"];
+  v11 = [v10 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Nebula"];
 
-  v12 = [a1 _titleAttributes];
-  v13 = [v9 initWithString:v11 attributes:v12];
+  _titleAttributes = [self _titleAttributes];
+  v13 = [v9 initWithString:v11 attributes:_titleAttributes];
 
   v14 = objc_alloc(MEMORY[0x1E696AAB0]);
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v16 = [v15 localizedStringForKey:v7 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Nebula"];
+  v16 = [v15 localizedStringForKey:descriptionKeyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Nebula"];
 
   v17 = [v14 initWithString:v16];
   v18 = [[HKInfographicContentItem alloc] initWithTitle:v13 description:v17];
@@ -506,16 +506,16 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
   return v18;
 }
 
-+ (id)_factorDescriptionForDisplayType:(id)a3 factorDisplayType:(id)a4
++ (id)_factorDescriptionForDisplayType:(id)type factorDisplayType:(id)displayType
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 displayTypeIdentifier];
-  if (v8 > 136)
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  displayTypeIdentifier = [typeCopy displayTypeIdentifier];
+  if (displayTypeIdentifier > 136)
   {
-    if (v8 == 137)
+    if (displayTypeIdentifier == 137)
     {
-      if ([v7 displayTypeIdentifier] == 191)
+      if ([displayTypeCopy displayTypeIdentifier] == 191)
       {
         v9 = @"WALKING_HEARTRATE_PREGNANCY_TITLE";
         v10 = &unk_1F4381360;
@@ -523,9 +523,9 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
       }
     }
 
-    else if (v8 == 248)
+    else if (displayTypeIdentifier == 248)
     {
-      if ([v7 displayTypeIdentifier] == 191)
+      if ([displayTypeCopy displayTypeIdentifier] == 191)
       {
         v9 = @"AFIB_BURDEN_PREGNANCY_TITLE";
         v10 = &unk_1F4381390;
@@ -533,7 +533,7 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
       }
     }
 
-    else if (v8 == 284 && [v7 displayTypeIdentifier] == 191)
+    else if (displayTypeIdentifier == 284 && [displayTypeCopy displayTypeIdentifier] == 191)
     {
       v9 = @"STATE_OF_MIND_PREGNANCY_TITLE";
       v10 = &unk_1F43813A8;
@@ -541,9 +541,9 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
     }
   }
 
-  else if (v8 == 3)
+  else if (displayTypeIdentifier == 3)
   {
-    if ([v7 displayTypeIdentifier] == 191)
+    if ([displayTypeCopy displayTypeIdentifier] == 191)
     {
       v9 = @"BODY_MASS_PREGNANCY_TITLE";
       v10 = &unk_1F4381330;
@@ -551,9 +551,9 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
     }
   }
 
-  else if (v8 == 118)
+  else if (displayTypeIdentifier == 118)
   {
-    if ([v7 displayTypeIdentifier] == 191)
+    if ([displayTypeCopy displayTypeIdentifier] == 191)
     {
       v9 = @"RESTING_HEARTRATE_PREGNANCY_TITLE";
       v10 = &unk_1F4381348;
@@ -561,40 +561,40 @@ void __101__HKInteractiveChartInfographicFactory__appleSleepingBreathingDisturba
     }
   }
 
-  else if (v8 == 124 && [v7 displayTypeIdentifier] == 191)
+  else if (displayTypeIdentifier == 124 && [displayTypeCopy displayTypeIdentifier] == 191)
   {
     v9 = @"CARDIO_FITNESS_PREGNANCY_TITLE";
     v10 = &unk_1F4381378;
 LABEL_20:
-    v11 = [a1 _pregnancyHealthFactorDescriptionTitleKey:v9 bodyKeys:v10];
+    v11 = [self _pregnancyHealthFactorDescriptionTitleKey:v9 bodyKeys:v10];
     goto LABEL_22;
   }
 
-  v11 = [a1 _undefinedFactorDescriptionViewController:v6 factorDisplayType:v7];
+  v11 = [self _undefinedFactorDescriptionViewController:typeCopy factorDisplayType:displayTypeCopy];
 LABEL_22:
   v12 = v11;
 
   return v12;
 }
 
-+ (id)_undefinedFactorDescriptionViewController:(id)a3 factorDisplayType:(id)a4
++ (id)_undefinedFactorDescriptionViewController:(id)controller factorDisplayType:(id)type
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696AAB0];
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  controllerCopy = controller;
   v9 = [v6 alloc];
-  v10 = [a1 _tableTitleAttributes];
-  v11 = [v9 initWithString:@"Undefined Factor Description" attributes:v10];
+  _tableTitleAttributes = [self _tableTitleAttributes];
+  v11 = [v9 initWithString:@"Undefined Factor Description" attributes:_tableTitleAttributes];
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v8 localization];
+  localization = [controllerCopy localization];
 
-  v14 = [v13 displayName];
-  v15 = [v7 localization];
+  displayName = [localization displayName];
+  localization2 = [typeCopy localization];
 
-  v16 = [v15 displayName];
-  v17 = [v12 stringWithFormat:@"No description is available for %@ with the factor %@.", v14, v16];
+  displayName2 = [localization2 displayName];
+  v17 = [v12 stringWithFormat:@"No description is available for %@ with the factor %@.", displayName, displayName2];
 
   v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v17];
   v19 = [[HKInfographicContentItem alloc] initWithTitle:v11 description:v18];
@@ -609,16 +609,16 @@ LABEL_22:
   return v21;
 }
 
-+ (id)_pregnancyHealthFactorDescriptionTitleKey:(id)a3 bodyKeys:(id)a4
++ (id)_pregnancyHealthFactorDescriptionTitleKey:(id)key bodyKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keysCopy = keys;
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-  v9 = [v8 localizedStringForKey:v6 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pregnancy"];
+  v9 = [v8 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Pregnancy"];
 
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v11 = [a1 _titleAttributes];
-  v12 = [v10 initWithString:v9 attributes:v11];
+  _titleAttributes = [self _titleAttributes];
+  v12 = [v10 initWithString:v9 attributes:_titleAttributes];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -631,7 +631,7 @@ LABEL_22:
   v25 = v26;
   v13 = v12;
   v24 = v13;
-  v14 = [v7 hk_map:&v20];
+  v14 = [keysCopy hk_map:&v20];
   v15 = [HKInfographicViewController alloc];
   v16 = [(HKInfographicViewController *)v15 initWithItems:v14, v20, v21, v22, v23];
   v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];

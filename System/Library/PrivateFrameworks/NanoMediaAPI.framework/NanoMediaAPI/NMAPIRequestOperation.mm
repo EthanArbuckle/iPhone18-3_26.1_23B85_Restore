@@ -1,47 +1,47 @@
 @interface NMAPIRequestOperation
-- (NMAPIRequestOperation)initWithRequest:(id)a3;
-- (NMAPIRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4;
-- (id)_adjustedPayload:(id)a3 path:(id)a4;
+- (NMAPIRequestOperation)initWithRequest:(id)request;
+- (NMAPIRequestOperation)initWithRequest:(id)request responseHandler:(id)handler;
+- (id)_adjustedPayload:(id)payload path:(id)path;
 - (id)_readResponseDictionaryFromDisk;
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4;
-- (void)_personalizeResponse:(id)a3 completion:(id)a4;
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error;
+- (void)_personalizeResponse:(id)response completion:(id)completion;
 - (void)_readResponseDictionaryFromDisk;
-- (void)_writeResponseDictionaryToDisk:(id)a3;
+- (void)_writeResponseDictionaryToDisk:(id)disk;
 - (void)execute;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation NMAPIRequestOperation
 
-- (NMAPIRequestOperation)initWithRequest:(id)a3
+- (NMAPIRequestOperation)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = NMAPIRequestOperation;
   v5 = [(MPStoreModelRequestOperation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MPStoreModelRequestOperation *)v5 setRequest:v4];
+    [(MPStoreModelRequestOperation *)v5 setRequest:requestCopy];
   }
 
   return v6;
 }
 
-- (NMAPIRequestOperation)initWithRequest:(id)a3 responseHandler:(id)a4
+- (NMAPIRequestOperation)initWithRequest:(id)request responseHandler:(id)handler
 {
   v5.receiver = self;
   v5.super_class = NMAPIRequestOperation;
-  return [(MPStoreModelRequestOperation *)&v5 initWithRequest:a3 responseHandler:a4];
+  return [(MPStoreModelRequestOperation *)&v5 initWithRequest:request responseHandler:handler];
 }
 
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  objc_storeStrong(&self->_storeURLBag, a3);
-  v8 = [(MPStoreModelRequestOperation *)self request];
-  v9 = [v8 urlComponentsWithStoreURLBag:v7 error:a4];
+  bagCopy = bag;
+  objc_storeStrong(&self->_storeURLBag, bag);
+  request = [(MPStoreModelRequestOperation *)self request];
+  v9 = [request urlComponentsWithStoreURLBag:bagCopy error:error];
 
   if (v9)
   {
@@ -58,10 +58,10 @@
     v15 = [v13 initWithURLRequests:v14];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7101 userInfo:0];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
@@ -74,10 +74,10 @@
   return v15;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  completionCopy = completion;
   v8 = NMLogForCategory(10);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -88,15 +88,15 @@
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_alloc(MEMORY[0x277CD6060]);
-    v10 = [(NMAPIRequestOperation *)self _adjustedPayload:v6 path:&stru_286C7C680];
+    v10 = [(NMAPIRequestOperation *)self _adjustedPayload:outputCopy path:&stru_286C7C680];
     v11 = [v9 initWithPayload:v10];
 
-    v12 = [(MPAsyncOperation *)self userIdentity];
-    [v11 setUserIdentity:v12];
+    userIdentity = [(MPAsyncOperation *)self userIdentity];
+    [v11 setUserIdentity:userIdentity];
 
-    v13 = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
+    mEMORY[0x277CD6058] = [MEMORY[0x277CD6058] sharedServerObjectDatabase];
     v37 = 0;
-    v14 = [v13 importObjectsFromRequest:v11 options:1 error:&v37];
+    v14 = [mEMORY[0x277CD6058] importObjectsFromRequest:v11 options:1 error:&v37];
     v15 = v37;
 
     if (v15)
@@ -107,17 +107,17 @@
         [NMAPIRequestOperation produceResponseWithLoadedOutput:completion:];
       }
 
-      v7[2](v7, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
 
     else
     {
-      v18 = [(MPStoreModelRequestOperation *)self request];
-      v19 = objc_alloc_init([v18 responseParserClass]);
+      request = [(MPStoreModelRequestOperation *)self request];
+      v19 = objc_alloc_init([request responseParserClass]);
 
-      v20 = [v14 annotatedPayload];
+      annotatedPayload = [v14 annotatedPayload];
       v36 = 0;
-      v21 = [v19 resultsWithDictionary:v20 error:&v36];
+      v21 = [v19 resultsWithDictionary:annotatedPayload error:&v36];
       v22 = v36;
 
       if (v22)
@@ -128,35 +128,35 @@
           [NMAPIRequestOperation produceResponseWithLoadedOutput:completion:];
         }
 
-        v7[2](v7, 0, v22);
+        completionCopy[2](completionCopy, 0, v22);
       }
 
       else
       {
         v35 = v19;
         v24 = v21;
-        v25 = [(MPStoreModelRequestOperation *)self request];
-        v26 = [v25 cachePolicy];
+        request2 = [(MPStoreModelRequestOperation *)self request];
+        cachePolicy = [request2 cachePolicy];
 
-        if ((v26 & 0xFFFFFFFFFFFFFFFELL) == 2)
+        if ((cachePolicy & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          [(NMAPIRequestOperation *)self _writeResponseDictionaryToDisk:v6];
+          [(NMAPIRequestOperation *)self _writeResponseDictionaryToDisk:outputCopy];
         }
 
         v27 = [NMAPIDefaultSectionedCollectionDataSource alloc];
-        v28 = [(MPStoreModelRequestOperation *)self request];
+        request3 = [(MPStoreModelRequestOperation *)self request];
         v34 = v24;
-        v29 = [(NMAPIDefaultSectionedCollectionDataSource *)v27 initWithRequest:v28 results:v24 storeURLBag:self->_storeURLBag];
+        v29 = [(NMAPIDefaultSectionedCollectionDataSource *)v27 initWithRequest:request3 results:v24 storeURLBag:self->_storeURLBag];
 
         v30 = objc_alloc(MEMORY[0x277CD5F40]);
-        v31 = [(MPStoreModelRequestOperation *)self request];
-        v32 = [v30 initWithRequest:v31];
+        request4 = [(MPStoreModelRequestOperation *)self request];
+        v32 = [v30 initWithRequest:request4];
 
         v33 = [objc_alloc(MEMORY[0x277CD5DB0]) initWithDataSource:v29];
         [v32 setResults:v33];
 
         v21 = v34;
-        [(NMAPIRequestOperation *)self _personalizeResponse:v32 completion:v7];
+        [(NMAPIRequestOperation *)self _personalizeResponse:v32 completion:completionCopy];
 
         v19 = v35;
       }
@@ -172,27 +172,27 @@
     }
 
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7102 userInfo:0];
-    v7[2](v7, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 }
 
 - (void)execute
 {
-  v3 = [(MPStoreModelRequestOperation *)self request];
-  v4 = [v3 cachePolicy];
+  request = [(MPStoreModelRequestOperation *)self request];
+  cachePolicy = [request cachePolicy];
 
-  if (v4 > 1)
+  if (cachePolicy > 1)
   {
-    if (v4 != 3)
+    if (cachePolicy != 3)
     {
-      if (v4 != 2)
+      if (cachePolicy != 2)
       {
         return;
       }
 
-      v6 = [(NMAPIRequestOperation *)self _readResponseDictionaryFromDisk];
+      _readResponseDictionaryFromDisk = [(NMAPIRequestOperation *)self _readResponseDictionaryFromDisk];
 
-      if (v6)
+      if (_readResponseDictionaryFromDisk)
       {
         v5 = 0;
         goto LABEL_9;
@@ -206,27 +206,27 @@ LABEL_11:
     return;
   }
 
-  if (!v4)
+  if (!cachePolicy)
   {
     goto LABEL_11;
   }
 
-  if (v4 != 1)
+  if (cachePolicy != 1)
   {
     return;
   }
 
   v5 = 1;
 LABEL_9:
-  v7 = [(NMAPIRequestOperation *)self _readResponseDictionaryFromDisk];
-  if (v7)
+  _readResponseDictionaryFromDisk2 = [(NMAPIRequestOperation *)self _readResponseDictionaryFromDisk];
+  if (_readResponseDictionaryFromDisk2)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __32__NMAPIRequestOperation_execute__block_invoke;
     v9[3] = &unk_27993B050;
     v9[4] = self;
-    [(NMAPIRequestOperation *)self produceResponseWithLoadedOutput:v7 completion:v9];
+    [(NMAPIRequestOperation *)self produceResponseWithLoadedOutput:_readResponseDictionaryFromDisk2 completion:v9];
   }
 
   else
@@ -240,19 +240,19 @@ LABEL_9:
   }
 }
 
-- (void)_writeResponseDictionaryToDisk:(id)a3
+- (void)_writeResponseDictionaryToDisk:(id)disk
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MPStoreModelRequestOperation *)self request];
-  v6 = [v5 cacheURL];
+  diskCopy = disk;
+  request = [(MPStoreModelRequestOperation *)self request];
+  cacheURL = [request cacheURL];
 
-  if (v6)
+  if (cacheURL)
   {
-    if (v4)
+    if (diskCopy)
     {
       v20 = 0;
-      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v4 options:0 error:&v20];
+      v7 = [MEMORY[0x277CCAAA0] dataWithJSONObject:diskCopy options:0 error:&v20];
       v8 = v20;
       if (v8)
       {
@@ -265,10 +265,10 @@ LABEL_9:
 
       else
       {
-        v10 = [(MPStoreModelRequestOperation *)self request];
-        v11 = [v10 cacheURL];
+        request2 = [(MPStoreModelRequestOperation *)self request];
+        cacheURL2 = [request2 cacheURL];
         v19 = 0;
-        v12 = [v7 writeToURL:v11 options:1 error:&v19];
+        v12 = [v7 writeToURL:cacheURL2 options:1 error:&v19];
         v9 = v19;
 
         v13 = NMLogForCategory(9);
@@ -277,13 +277,13 @@ LABEL_9:
         {
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v15 = [(MPStoreModelRequestOperation *)self request];
-            v16 = [(MPStoreModelRequestOperation *)self request];
-            v17 = [v16 cacheURL];
+            request3 = [(MPStoreModelRequestOperation *)self request];
+            request4 = [(MPStoreModelRequestOperation *)self request];
+            cacheURL3 = [request4 cacheURL];
             *buf = 138412546;
-            v22 = v15;
+            v22 = request3;
             v23 = 2112;
-            v24 = v17;
+            v24 = cacheURL3;
             _os_log_impl(&dword_25B251000, v14, OS_LOG_TYPE_DEFAULT, "[NMAPIRequestOperation] Cached new response for %@ at cacheURL %@", buf, 0x16u);
           }
         }
@@ -320,16 +320,16 @@ LABEL_9:
 - (id)_readResponseDictionaryFromDisk
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(MPStoreModelRequestOperation *)self request];
-  v4 = [v3 cacheURL];
+  request = [(MPStoreModelRequestOperation *)self request];
+  cacheURL = [request cacheURL];
 
-  if (v4)
+  if (cacheURL)
   {
     v5 = MEMORY[0x277CBEA90];
-    v6 = [(MPStoreModelRequestOperation *)self request];
-    v7 = [v6 cacheURL];
+    request2 = [(MPStoreModelRequestOperation *)self request];
+    cacheURL2 = [request2 cacheURL];
     v19 = 0;
-    v8 = [v5 dataWithContentsOfURL:v7 options:0 error:&v19];
+    v8 = [v5 dataWithContentsOfURL:cacheURL2 options:0 error:&v19];
     v9 = v19;
 
     if (v9)
@@ -360,10 +360,10 @@ LABEL_9:
 
       else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(MPStoreModelRequestOperation *)self request];
-        v15 = [v14 cacheURL];
+        request3 = [(MPStoreModelRequestOperation *)self request];
+        cacheURL3 = [request3 cacheURL];
         *buf = 138412290;
-        v21 = v15;
+        v21 = cacheURL3;
         _os_log_impl(&dword_25B251000, v13, OS_LOG_TYPE_DEFAULT, "[NMAPIRequestOperation] Found file at cacheURL (%@)", buf, 0xCu);
       }
     }
@@ -385,22 +385,22 @@ LABEL_9:
   return v11;
 }
 
-- (id)_adjustedPayload:(id)a3 path:(id)a4
+- (id)_adjustedPayload:(id)payload path:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 mutableCopy];
+    v8 = [payloadCopy mutableCopy];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __47__NMAPIRequestOperation__adjustedPayload_path___block_invoke;
     v24[3] = &unk_27993B078;
     v25 = v8;
-    v26 = self;
-    v27 = v7;
+    selfCopy = self;
+    v27 = pathCopy;
     v9 = v8;
     [v9 enumerateKeysAndObjectsUsingBlock:v24];
     v10 = [v9 copy];
@@ -412,12 +412,12 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(payloadCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v6;
+    v11 = payloadCopy;
     v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
     if (v12)
     {
@@ -432,7 +432,7 @@ LABEL_12:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [(NMAPIRequestOperation *)self _adjustedPayload:*(*(&v20 + 1) + 8 * i) path:v7, v20];
+          v16 = [(NMAPIRequestOperation *)self _adjustedPayload:*(*(&v20 + 1) + 8 * i) path:pathCopy, v20];
           [v9 addObject:v16];
         }
 
@@ -447,14 +447,14 @@ LABEL_12:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 hasSuffix:@"/data/attributes/artwork/url"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [pathCopy hasSuffix:@"/data/attributes/artwork/url"])
   {
-    v17 = [v6 stringByReplacingOccurrencesOfString:@"{w}x{h}{c}.{f}" withString:@"{w}x{h}cc.{f}"];
+    v17 = [payloadCopy stringByReplacingOccurrencesOfString:@"{w}x{h}{c}.{f}" withString:@"{w}x{h}cc.{f}"];
   }
 
   else
   {
-    v17 = v6;
+    v17 = payloadCopy;
   }
 
   v10 = v17;
@@ -478,30 +478,30 @@ void __47__NMAPIRequestOperation__adjustedPayload_path___block_invoke(void *a1, 
   [v4 setObject:v9 forKey:v8];
 }
 
-- (void)_personalizeResponse:(id)a3 completion:(id)a4
+- (void)_personalizeResponse:(id)response completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 results];
+  completionCopy = completion;
+  results = [response results];
   v8 = objc_alloc_init(MEMORY[0x277CD5FD0]);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __57__NMAPIRequestOperation__personalizeResponse_completion___block_invoke;
   v17[3] = &unk_27993B0C8;
   v18 = v8;
-  v19 = v7;
-  v9 = v7;
+  v19 = results;
+  v9 = results;
   v10 = v8;
   [v9 enumerateSectionsUsingBlock:v17];
   v11 = objc_alloc(MEMORY[0x277CD60A8]);
-  v12 = [(MPStoreModelRequestOperation *)self request];
-  v13 = [v11 initWithUnpersonalizedRequest:v12 unpersonalizedContentDescriptors:v10];
+  request = [(MPStoreModelRequestOperation *)self request];
+  v13 = [v11 initWithUnpersonalizedRequest:request unpersonalizedContentDescriptors:v10];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__NMAPIRequestOperation__personalizeResponse_completion___block_invoke_3;
   v15[3] = &unk_27993B0F0;
-  v16 = v6;
-  v14 = v6;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [v13 performWithResponseHandler:v15];
 }
 
@@ -603,8 +603,8 @@ void __57__NMAPIRequestOperation__personalizeResponse_completion___block_invoke_
 {
   OUTLINED_FUNCTION_4();
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [v0 request];
-  v2 = [v1 cacheURL];
+  request = [v0 request];
+  cacheURL = [request cacheURL];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v3, v4, v5, v6, v7, 0x16u);

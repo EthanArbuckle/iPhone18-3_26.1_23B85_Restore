@@ -1,20 +1,20 @@
 @interface ATXPredictionContextDomain
-- (ATXPredictionContextDomain)initWithProto:(id)a3;
-- (ATXPredictionContextDomain)initWithProtoData:(id)a3;
+- (ATXPredictionContextDomain)initWithProto:(id)proto;
+- (ATXPredictionContextDomain)initWithProtoData:(id)data;
 @end
 
 @implementation ATXPredictionContextDomain
 
-- (ATXPredictionContextDomain)initWithProtoData:(id)a3
+- (ATXPredictionContextDomain)initWithProtoData:(id)data
 {
-  result = a3;
+  result = data;
   __break(1u);
   return result;
 }
 
-- (ATXPredictionContextDomain)initWithProto:(id)a3
+- (ATXPredictionContextDomain)initWithProto:(id)proto
 {
-  result = a3;
+  result = proto;
   __break(1u);
   return result;
 }

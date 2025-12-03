@@ -2,19 +2,19 @@
 + (void)initialize;
 - (BWInferenceSharedResourceManager)init;
 - (id)description;
-- (id)retrieveSharedResourceForResourceCategoryAndLockIfNotAvailable:(id)a3;
-- (uint64_t)_addSharedResource:(uint64_t)a3 toSharedResourceDirectoryForResourceCategory:;
+- (id)retrieveSharedResourceForResourceCategoryAndLockIfNotAvailable:(id)available;
+- (uint64_t)_addSharedResource:(uint64_t)resource toSharedResourceDirectoryForResourceCategory:;
 - (uint64_t)_purgeAllSharedResources;
 - (void)dealloc;
-- (void)finalizeResourceCreationAttemptForCategory:(id)a3;
-- (void)stashSharedResource:(id)a3 forResourceCategory:(id)a4;
+- (void)finalizeResourceCreationAttemptForCategory:(id)category;
+- (void)stashSharedResource:(id)resource forResourceCategory:(id)category;
 @end
 
 @implementation BWInferenceSharedResourceManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     fig_note_initialize_category_with_default_work_cf();
 
@@ -47,32 +47,32 @@
   [(BWInferenceSharedResourceManager *)&v3 dealloc];
 }
 
-- (void)stashSharedResource:(id)a3 forResourceCategory:(id)a4
+- (void)stashSharedResource:(id)resource forResourceCategory:(id)category
 {
   pthread_rwlock_wrlock(&self->_sharedResourceDirectoryRWLock);
-  [(BWInferenceSharedResourceManager *)self _addSharedResource:a3 toSharedResourceDirectoryForResourceCategory:a4];
+  [(BWInferenceSharedResourceManager *)self _addSharedResource:resource toSharedResourceDirectoryForResourceCategory:category];
   __dmb(0xBu);
   pthread_rwlock_unlock(&self->_sharedResourceDirectoryRWLock);
   pthread_mutex_lock(&self->_resourceCreationMutex);
-  pthread_cond_broadcast([-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{a4), "pointerValue"}]);
-  [(NSMutableSet *)self->_resourcesBeingCreated removeObject:a4];
+  pthread_cond_broadcast([-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{category), "pointerValue"}]);
+  [(NSMutableSet *)self->_resourcesBeingCreated removeObject:category];
 
   pthread_mutex_unlock(&self->_resourceCreationMutex);
 }
 
-- (id)retrieveSharedResourceForResourceCategoryAndLockIfNotAvailable:(id)a3
+- (id)retrieveSharedResourceForResourceCategoryAndLockIfNotAvailable:(id)available
 {
   pthread_rwlock_rdlock(&self->_sharedResourceDirectoryRWLock);
-  v5 = [(NSMutableDictionary *)self->_sharedResourceDirectoryByCategory objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)self->_sharedResourceDirectoryByCategory objectForKeyedSubscript:available];
   pthread_rwlock_unlock(&self->_sharedResourceDirectoryRWLock);
   if (!v5)
   {
     pthread_mutex_lock(&self->_resourceCreationMutex);
-    if ([(NSMutableSet *)self->_resourcesBeingCreated containsObject:a3])
+    if ([(NSMutableSet *)self->_resourcesBeingCreated containsObject:available])
     {
       do
       {
-        v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{a3), "pointerValue"}];
+        v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{available), "pointerValue"}];
         __tp.tv_sec = 0;
         __tp.tv_nsec = 0;
         clock_gettime(_CLOCK_REALTIME, &__tp);
@@ -85,32 +85,32 @@
           v8 = _os_log_send_and_compose_impl();
           FigCapturePleaseFileRadar(11, v8, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Inference/Scheduling/SharedResourceManagement/BWInferenceSharedResourceManager.m", 182, @"LastShownDate:BWInferenceSharedResourceManager.m:182", @"LastShownBuild:BWInferenceSharedResourceManager.m:182", 0);
           free(v8);
-          [(NSMutableSet *)self->_resourcesBeingCreated removeObject:a3];
+          [(NSMutableSet *)self->_resourcesBeingCreated removeObject:available];
         }
 
         else
         {
           pthread_rwlock_rdlock(&self->_sharedResourceDirectoryRWLock);
-          v5 = [(NSMutableDictionary *)self->_sharedResourceDirectoryByCategory objectForKeyedSubscript:a3];
+          v5 = [(NSMutableDictionary *)self->_sharedResourceDirectoryByCategory objectForKeyedSubscript:available];
           pthread_rwlock_unlock(&self->_sharedResourceDirectoryRWLock);
           if (v5)
           {
             goto LABEL_11;
           }
 
-          [(NSMutableSet *)self->_resourcesBeingCreated containsObject:a3];
+          [(NSMutableSet *)self->_resourcesBeingCreated containsObject:available];
         }
       }
 
-      while (([(NSMutableSet *)self->_resourcesBeingCreated containsObject:a3]& 1) != 0);
+      while (([(NSMutableSet *)self->_resourcesBeingCreated containsObject:available]& 1) != 0);
     }
 
-    [(NSMutableSet *)self->_resourcesBeingCreated addObject:a3];
-    if (![(NSMutableDictionary *)self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:a3])
+    [(NSMutableSet *)self->_resourcesBeingCreated addObject:available];
+    if (![(NSMutableDictionary *)self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:available])
     {
       v9 = malloc_type_malloc(0x30uLL, 0x1000040EED21634uLL);
       pthread_cond_init(v9, 0);
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory, "setObject:forKeyedSubscript:", [MEMORY[0x1E696B098] valueWithPointer:v9], a3);
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory, "setObject:forKeyedSubscript:", [MEMORY[0x1E696B098] valueWithPointer:v9], available);
     }
 
     pthread_mutex_unlock(&self->_resourceCreationMutex);
@@ -122,13 +122,13 @@ LABEL_11:
   return v5;
 }
 
-- (void)finalizeResourceCreationAttemptForCategory:(id)a3
+- (void)finalizeResourceCreationAttemptForCategory:(id)category
 {
   pthread_mutex_lock(&self->_resourceCreationMutex);
-  if ([(NSMutableSet *)self->_resourcesBeingCreated containsObject:a3])
+  if ([(NSMutableSet *)self->_resourcesBeingCreated containsObject:category])
   {
-    pthread_cond_broadcast([-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{a3), "pointerValue"}]);
-    [(NSMutableSet *)self->_resourcesBeingCreated removeObject:a3];
+    pthread_cond_broadcast([-[NSMutableDictionary objectForKeyedSubscript:](self->_conditionVariablesTrackedByResourceCategory objectForKeyedSubscript:{category), "pointerValue"}]);
+    [(NSMutableSet *)self->_resourcesBeingCreated removeObject:category];
   }
 
   pthread_mutex_unlock(&self->_resourceCreationMutex);
@@ -249,7 +249,7 @@ uint64_t __85__BWInferenceSharedResourceManager__removeSharedResourcesFromShared
   return result;
 }
 
-- (uint64_t)_addSharedResource:(uint64_t)a3 toSharedResourceDirectoryForResourceCategory:
+- (uint64_t)_addSharedResource:(uint64_t)resource toSharedResourceDirectoryForResourceCategory:
 {
   if (result)
   {
@@ -262,7 +262,7 @@ uint64_t __85__BWInferenceSharedResourceManager__removeSharedResourcesFromShared
 
     v6 = *(v5 + 208);
 
-    return [v6 setObject:a2 forKeyedSubscript:a3];
+    return [v6 setObject:a2 forKeyedSubscript:resource];
   }
 
   return result;

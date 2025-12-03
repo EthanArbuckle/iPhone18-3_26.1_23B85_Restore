@@ -1,8 +1,8 @@
 @interface TRIStorageManagement
 - (BOOL)_clearContainerStorage;
 - (BOOL)_clearStorage;
-- (BOOL)_readSchemaVersion:(unsigned int *)a3 fileExists:(BOOL *)a4;
-- (BOOL)_runNamespaceDatabaseBlock:(id)a3;
+- (BOOL)_readSchemaVersion:(unsigned int *)version fileExists:(BOOL *)exists;
+- (BOOL)_runNamespaceDatabaseBlock:(id)block;
 - (BOOL)prepareTrialStorage;
 - (BOOL)requestTrialStorageResetOnNextLaunch;
 - (void)_eliminateAllMAAssets;
@@ -15,20 +15,20 @@
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = os_transaction_create();
-  v25 = [MEMORY[0x277D737E0] legacySchemaVersion];
+  legacySchemaVersion = [MEMORY[0x277D737E0] legacySchemaVersion];
   v24 = 0;
   v4 = 0;
-  if ([(TRIStorageManagement *)self _readSchemaVersion:&v25 fileExists:&v24])
+  if ([(TRIStorageManagement *)self _readSchemaVersion:&legacySchemaVersion fileExists:&v24])
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v25;
+      *&buf[4] = legacySchemaVersion;
       _os_log_impl(&dword_26F567000, v5, OS_LOG_TYPE_DEFAULT, "TRIStorageManagement on-disk schema version is %u.", buf, 8u);
     }
 
-    v6 = v25;
+    v6 = legacySchemaVersion;
     if (v6 == [MEMORY[0x277D737E0] currentSchemaVersion])
     {
 LABEL_5:
@@ -36,11 +36,11 @@ LABEL_5:
       goto LABEL_26;
     }
 
-    v7 = v25;
-    v8 = [MEMORY[0x277D737E0] resetStorageRequestSchemaVersion];
+    v7 = legacySchemaVersion;
+    resetStorageRequestSchemaVersion = [MEMORY[0x277D737E0] resetStorageRequestSchemaVersion];
     v9 = TRILogCategory_Server();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-    if (v7 == v8)
+    if (v7 == resetStorageRequestSchemaVersion)
     {
       if (!v10)
       {
@@ -48,7 +48,7 @@ LABEL_5:
       }
 
       *buf = 67109120;
-      *&buf[4] = v25;
+      *&buf[4] = legacySchemaVersion;
       v11 = "TRIStorageManagement schema version %u indicates an explicit request for storage reset; will attempt to clear user data.";
       v12 = v9;
       v13 = 8;
@@ -61,12 +61,12 @@ LABEL_5:
         goto LABEL_12;
       }
 
-      v14 = v25;
-      v15 = [MEMORY[0x277D737E0] currentSchemaVersion];
+      v14 = legacySchemaVersion;
+      currentSchemaVersion = [MEMORY[0x277D737E0] currentSchemaVersion];
       *buf = 67109376;
       *&buf[4] = v14;
       v29 = 1024;
-      v30 = v15;
+      v30 = currentSchemaVersion;
       v11 = "TRIStorageManagement schema version has changed (%u --> %u); will attempt to clear user data.";
       v12 = v9;
       v13 = 14;
@@ -76,7 +76,7 @@ LABEL_5:
 LABEL_12:
 
     *buf = 0;
-    if (![(TRIStorageManagement *)self _readDeviceIdWithSchemaVersion:v25 intoData:buf])
+    if (![(TRIStorageManagement *)self _readDeviceIdWithSchemaVersion:legacySchemaVersion intoData:buf])
     {
       goto LABEL_25;
     }
@@ -86,23 +86,23 @@ LABEL_12:
       [(TRIStorageManagement *)self _eliminateAllMAAssets];
     }
 
-    v16 = [(TRIStorageManagement *)self _clearStorage];
-    v17 = v16;
+    _clearStorage = [(TRIStorageManagement *)self _clearStorage];
+    v17 = _clearStorage;
     v18 = *buf;
     if (*buf)
     {
-      if (v16)
+      if (_clearStorage)
       {
-        v19 = [MEMORY[0x277D737E0] currentSchemaVersion];
+        currentSchemaVersion2 = [MEMORY[0x277D737E0] currentSchemaVersion];
         v18 = *buf;
       }
 
       else
       {
-        v19 = v25;
+        currentSchemaVersion2 = legacySchemaVersion;
       }
 
-      [(TRIStorageManagement *)self _writeDeviceIdWithData:v18 schemaVersion:v19];
+      [(TRIStorageManagement *)self _writeDeviceIdWithData:v18 schemaVersion:currentSchemaVersion2];
     }
 
     if (!v17 || (-[TRIStorageManagement _notifyNamespaceUpdated](self, "_notifyNamespaceUpdated"), !-[TRIStorageManagement _writeSchemaVersion:](self, "_writeSchemaVersion:", [MEMORY[0x277D737E0] currentSchemaVersion])))
@@ -116,9 +116,9 @@ LABEL_25:
     v20 = TRILogCategory_Server();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [MEMORY[0x277D737E0] currentSchemaVersion];
+      currentSchemaVersion3 = [MEMORY[0x277D737E0] currentSchemaVersion];
       *v26 = 67109120;
-      v27 = v21;
+      v27 = currentSchemaVersion3;
       _os_log_impl(&dword_26F567000, v20, OS_LOG_TYPE_DEFAULT, "TRIStorageManagement user data cleared successfully; schema version is now %u.", v26, 8u);
     }
 
@@ -133,54 +133,54 @@ LABEL_26:
 
 - (BOOL)requestTrialStorageResetOnNextLaunch
 {
-  v3 = [MEMORY[0x277D737E0] resetStorageRequestSchemaVersion];
+  resetStorageRequestSchemaVersion = [MEMORY[0x277D737E0] resetStorageRequestSchemaVersion];
 
-  return [(TRIStorageManagement *)self _writeSchemaVersion:v3];
+  return [(TRIStorageManagement *)self _writeSchemaVersion:resetStorageRequestSchemaVersion];
 }
 
-- (BOOL)_readSchemaVersion:(unsigned int *)a3 fileExists:(BOOL *)a4
+- (BOOL)_readSchemaVersion:(unsigned int *)version fileExists:(BOOL *)exists
 {
   v41 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!version)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"TRIStorageManagement.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"version"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIStorageManagement.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"version"}];
   }
 
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x277CBEA90]);
-  v8 = [MEMORY[0x277D737E0] schemaVersionFile];
+  schemaVersionFile = [MEMORY[0x277D737E0] schemaVersionFile];
   v34 = 0;
-  v9 = [v7 initWithContentsOfFile:v8 options:1 error:&v34];
+  v9 = [v7 initWithContentsOfFile:schemaVersionFile options:1 error:&v34];
   v10 = v34;
 
   if (v9)
   {
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
-    *a4 = 1;
+    *exists = 1;
     if (v11)
     {
       v33 = -1;
-      if (![MEMORY[0x277D73748] convertFromString:v11 usingBase:10 toI64:&v33] || (v12 = v33, HIDWORD(v33)))
+      if (![MEMORY[0x277D73748] convertFromString:v11 usingBase:10 toI64:&v33] || (legacySchemaVersion2 = v33, HIDWORD(v33)))
       {
         v13 = TRILogCategory_Server();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v28 = [MEMORY[0x277D737E0] schemaVersionFile];
-          v29 = [MEMORY[0x277D737E0] legacySchemaVersion];
+          schemaVersionFile2 = [MEMORY[0x277D737E0] schemaVersionFile];
+          legacySchemaVersion = [MEMORY[0x277D737E0] legacySchemaVersion];
           *buf = 138543874;
           v36 = v11;
           v37 = 2114;
-          v38 = v28;
+          v38 = schemaVersionFile2;
           v39 = 1024;
-          v40 = v29;
+          v40 = legacySchemaVersion;
           _os_log_error_impl(&dword_26F567000, v13, OS_LOG_TYPE_ERROR, "Could not parse string %{public}@ from schema version file %{public}@ as an unsigned int; treating as version %u.", buf, 0x1Cu);
         }
 
-        v12 = [MEMORY[0x277D737E0] legacySchemaVersion];
+        legacySchemaVersion2 = [MEMORY[0x277D737E0] legacySchemaVersion];
       }
 
-      *a3 = v12;
+      *version = legacySchemaVersion2;
     }
 
     else
@@ -188,16 +188,16 @@ LABEL_26:
       v16 = TRILogCategory_Server();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v26 = [MEMORY[0x277D737E0] schemaVersionFile];
-        v27 = [MEMORY[0x277D737E0] legacySchemaVersion];
+        schemaVersionFile3 = [MEMORY[0x277D737E0] schemaVersionFile];
+        legacySchemaVersion3 = [MEMORY[0x277D737E0] legacySchemaVersion];
         *buf = 138543618;
-        v36 = v26;
+        v36 = schemaVersionFile3;
         v37 = 1024;
-        LODWORD(v38) = v27;
+        LODWORD(v38) = legacySchemaVersion3;
         _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "Schema version file %{public}@ contains non-UTF-8 content; treating as version %u.", buf, 0x12u);
       }
 
-      *a3 = [MEMORY[0x277D737E0] legacySchemaVersion];
+      *version = [MEMORY[0x277D737E0] legacySchemaVersion];
     }
 
 LABEL_17:
@@ -205,28 +205,28 @@ LABEL_17:
     goto LABEL_25;
   }
 
-  v14 = [v10 domain];
-  v15 = v14;
-  if (v14 == *MEMORY[0x277CCA050])
+  domain = [v10 domain];
+  v15 = domain;
+  if (domain == *MEMORY[0x277CCA050])
   {
-    v18 = [v10 code];
+    code = [v10 code];
 
-    if (v18 == 260)
+    if (code == 260)
     {
-      *a4 = 0;
+      *exists = 0;
       v19 = TRILogCategory_Server();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [MEMORY[0x277D737E0] schemaVersionFile];
-        v21 = [MEMORY[0x277D737E0] legacySchemaVersion];
+        schemaVersionFile4 = [MEMORY[0x277D737E0] schemaVersionFile];
+        legacySchemaVersion4 = [MEMORY[0x277D737E0] legacySchemaVersion];
         *buf = 138543618;
-        v36 = v20;
+        v36 = schemaVersionFile4;
         v37 = 1024;
-        LODWORD(v38) = v21;
+        LODWORD(v38) = legacySchemaVersion4;
         _os_log_impl(&dword_26F567000, v19, OS_LOG_TYPE_DEFAULT, "Schema version file %{public}@ is not present; treating as version %u.", buf, 0x12u);
       }
 
-      *a3 = [MEMORY[0x277D737E0] legacySchemaVersion];
+      *version = [MEMORY[0x277D737E0] legacySchemaVersion];
       goto LABEL_17;
     }
   }
@@ -238,9 +238,9 @@ LABEL_17:
   v22 = TRILogCategory_Server();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    v25 = [MEMORY[0x277D737E0] schemaVersionFile];
+    schemaVersionFile5 = [MEMORY[0x277D737E0] schemaVersionFile];
     *buf = 138543618;
-    v36 = v25;
+    v36 = schemaVersionFile5;
     v37 = 2114;
     v38 = v10;
     _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "Schema version file %{public}@ is unreadable: %{public}@", buf, 0x16u);
@@ -308,11 +308,11 @@ void __45__TRIStorageManagement__eliminateAllMAAssets__block_invoke(uint64_t a1,
     }
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [MEMORY[0x277D737E0] sharedPaths];
-  v7 = [v6 trialRootDir];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
   v19 = 0;
-  v8 = [v5 triForceRemoveItemAtPath:v7 error:&v19];
+  v8 = [defaultManager triForceRemoveItemAtPath:trialRootDir error:&v19];
   v9 = v19;
 
   if (v8)
@@ -320,13 +320,13 @@ void __45__TRIStorageManagement__eliminateAllMAAssets__block_invoke(uint64_t a1,
     goto LABEL_8;
   }
 
-  v11 = [v9 domain];
-  v12 = v11;
-  if (v11 == *MEMORY[0x277CCA050])
+  domain = [v9 domain];
+  v12 = domain;
+  if (domain == *MEMORY[0x277CCA050])
   {
-    v13 = [v9 code];
+    code = [v9 code];
 
-    if (v13 == 4)
+    if (code == 4)
     {
 LABEL_8:
       v10 = 1;
@@ -341,10 +341,10 @@ LABEL_8:
   v14 = TRILogCategory_Server();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    v17 = [MEMORY[0x277D737E0] sharedPaths];
-    v18 = [v17 trialRootDir];
+    mEMORY[0x277D737E0]2 = [MEMORY[0x277D737E0] sharedPaths];
+    trialRootDir2 = [mEMORY[0x277D737E0]2 trialRootDir];
     *buf = 138543618;
-    v21 = v18;
+    v21 = trialRootDir2;
     v22 = 2114;
     v23 = v9;
     _os_log_error_impl(&dword_26F567000, v14, OS_LOG_TYPE_ERROR, "Failed to remove Trial data directory %{public}@: %{public}@", buf, 0x16u);
@@ -357,15 +357,15 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_runNamespaceDatabaseBlock:(id)a3
+- (BOOL)_runNamespaceDatabaseBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D737E0] sharedPaths];
-  v6 = [[TRIDatabase alloc] initWithPaths:v5 storageManagement:self];
+  blockCopy = block;
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  v6 = [[TRIDatabase alloc] initWithPaths:mEMORY[0x277D737E0] storageManagement:self];
   if (v6)
   {
     v7 = [[TRINamespaceDatabase alloc] initWithDatabase:v6];
-    v8 = v4[2](v4, v7);
+    v8 = blockCopy[2](blockCopy, v7);
     [(TRIDatabase *)v6 closePermanently];
   }
 
@@ -420,32 +420,32 @@ LABEL_15:
 
           v10 = *(*(&v29 + 1) + 8 * i);
           v11 = objc_autoreleasePoolPush();
-          v12 = [MEMORY[0x277D737E0] sharedPaths];
-          v13 = v12;
-          if (v12)
+          mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+          v13 = mEMORY[0x277D737E0];
+          if (mEMORY[0x277D737E0])
           {
-            v14 = [v12 trialRootDir];
+            trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
             v15 = TRILogCategory_Server();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138543362;
-              v36 = v14;
+              v36 = trialRootDir;
               _os_log_debug_impl(&dword_26F567000, v15, OS_LOG_TYPE_DEBUG, "removing container Trial data directory %{public}@", buf, 0xCu);
             }
 
-            v16 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
             v28 = 0;
-            v17 = [v16 triForceRemoveItemAtPath:v14 error:&v28];
-            v18 = v28;
+            v17 = [defaultManager triForceRemoveItemAtPath:trialRootDir error:&v28];
+            identifier = v28;
 
             if (v17)
             {
               goto LABEL_19;
             }
 
-            v19 = [v18 domain];
-            v20 = v19;
-            if (v19 != v26)
+            domain = [identifier domain];
+            v20 = domain;
+            if (domain != v26)
             {
 
 LABEL_16:
@@ -453,9 +453,9 @@ LABEL_16:
               if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543618;
-                v36 = v14;
+                v36 = trialRootDir;
                 v37 = 2114;
-                v38 = v18;
+                v38 = identifier;
                 _os_log_error_impl(&dword_26F567000, v22, OS_LOG_TYPE_ERROR, "Failed to remove container Trial data directory %{public}@: %{public}@", buf, 0x16u);
               }
 
@@ -463,9 +463,9 @@ LABEL_16:
               goto LABEL_19;
             }
 
-            v21 = [v18 code];
+            code = [identifier code];
 
-            if (v21 != 4)
+            if (code != 4)
             {
               goto LABEL_16;
             }
@@ -473,16 +473,16 @@ LABEL_16:
 
           else
           {
-            v14 = TRILogCategory_Server();
-            if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+            trialRootDir = TRILogCategory_Server();
+            if (!os_log_type_enabled(trialRootDir, OS_LOG_TYPE_DEFAULT))
             {
               goto LABEL_20;
             }
 
-            v18 = [v10 identifier];
+            identifier = [v10 identifier];
             *buf = 138543362;
-            v36 = v18;
-            _os_log_impl(&dword_26F567000, v14, OS_LOG_TYPE_DEFAULT, "not clearing Trial data from missing app container: %{public}@", buf, 0xCu);
+            v36 = identifier;
+            _os_log_impl(&dword_26F567000, trialRootDir, OS_LOG_TYPE_DEFAULT, "not clearing Trial data from missing app container: %{public}@", buf, 0xCu);
           }
 
 LABEL_19:
@@ -544,9 +544,9 @@ void __46__TRIStorageManagement__clearContainerStorage__block_invoke_2(uint64_t 
   }
 
   v3 = MEMORY[0x277D73750];
-  v4 = [MEMORY[0x277D737E0] sharedPaths];
-  v5 = [v4 namespaceDescriptorsDefaultDir];
-  v6 = [v3 descriptorsForDirectory:v5 filterBlock:0];
+  mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
+  namespaceDescriptorsDefaultDir = [mEMORY[0x277D737E0] namespaceDescriptorsDefaultDir];
+  v6 = [v3 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:0];
 
   [v6 enumerateObjectsUsingBlock:&__block_literal_global_346_0];
 }

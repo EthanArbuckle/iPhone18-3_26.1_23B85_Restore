@@ -1,20 +1,20 @@
 @interface CNUICoreFamilyMemberContactsController
 + (NSArray)propertyKeysContainingSenstiveData;
-+ (id)contactByRemovingSensitiveDataFromContact:(id)a3;
++ (id)contactByRemovingSensitiveDataFromContact:(id)contact;
 - (CNUICoreFamilyMemberContactsController)init;
-- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)a3 modelFetcher:(id)a4 familyMemberContactsUpdator:(id)a5 schedulerProvider:(id)a6;
-- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4;
+- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)member modelFetcher:(id)fetcher familyMemberContactsUpdator:(id)updator schedulerProvider:(id)provider;
+- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)member schedulerProvider:(id)provider;
 - (CNUICoreFamilyMemberContactsObserver)observer;
 - (NSNumber)countOfFamilyMemberContacts;
 - (id)countOfFamilyMemberContactsFutureFromFetcher;
 - (int64_t)fetchStatus;
 - (void)cancelCountOfFamilyMemberContactsFetch;
 - (void)dealloc;
-- (void)setCountOfFamilyMemberContacts:(id)a3;
+- (void)setCountOfFamilyMemberContacts:(id)contacts;
 - (void)setupChangeNotificationResponse;
 - (void)triggerCountOfFamilyMemberContactsFetch;
-- (void)updateListByAddingContacts:(id)a3;
-- (void)updateListByRemovingContacts:(id)a3;
+- (void)updateListByAddingContacts:(id)contacts;
+- (void)updateListByRemovingContacts:(id)contacts;
 @end
 
 @implementation CNUICoreFamilyMemberContactsController
@@ -34,42 +34,42 @@
   return v4;
 }
 
-+ (id)contactByRemovingSensitiveDataFromContact:(id)a3
++ (id)contactByRemovingSensitiveDataFromContact:(id)contact
 {
-  v3 = [a3 mutableCopy];
+  v3 = [contact mutableCopy];
   v4 = +[CNUICoreContactPropertyFilterBuilder managedContactsFilterBuilder];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  [v5 filterPropertyValuesFromContact:v3];
+  [build filterPropertyValuesFromContact:v3];
 
   return v3;
 }
 
 - (CNUICoreFamilyMemberContactsController)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)a3 schedulerProvider:(id)a4
+- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)member schedulerProvider:(id)provider
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CNUICoreFamilyMemberContactsModelRetriever alloc] initWithFamilyMember:v7 schedulerProvider:v6];
-  v9 = [[CNUICoreFamilyMemberContactsStore alloc] initWithFamilyMember:v7 schedulerProvider:v6];
-  v10 = [(CNUICoreFamilyMemberContactsController *)self initWithFamilyMember:v7 modelFetcher:v8 familyMemberContactsUpdator:v9 schedulerProvider:v6];
+  providerCopy = provider;
+  memberCopy = member;
+  v8 = [[CNUICoreFamilyMemberContactsModelRetriever alloc] initWithFamilyMember:memberCopy schedulerProvider:providerCopy];
+  v9 = [[CNUICoreFamilyMemberContactsStore alloc] initWithFamilyMember:memberCopy schedulerProvider:providerCopy];
+  v10 = [(CNUICoreFamilyMemberContactsController *)self initWithFamilyMember:memberCopy modelFetcher:v8 familyMemberContactsUpdator:v9 schedulerProvider:providerCopy];
 
   return v10;
 }
 
-- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)a3 modelFetcher:(id)a4 familyMemberContactsUpdator:(id)a5 schedulerProvider:(id)a6
+- (CNUICoreFamilyMemberContactsController)initWithFamilyMember:(id)member modelFetcher:(id)fetcher familyMemberContactsUpdator:(id)updator schedulerProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  memberCopy = member;
+  fetcherCopy = fetcher;
+  updatorCopy = updator;
+  providerCopy = provider;
+  if (memberCopy)
   {
     goto LABEL_5;
   }
@@ -82,7 +82,7 @@
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_16, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreFamilyMemberContactsStore initWithFamilyMemberScopedContactStoreFacade:familyMember:contactsSyncTrigger:schedulerProvider:];
-    if (v12)
+    if (fetcherCopy)
     {
       goto LABEL_10;
     }
@@ -91,7 +91,7 @@
   else
   {
 LABEL_5:
-    if (v12)
+    if (fetcherCopy)
     {
       goto LABEL_10;
     }
@@ -107,7 +107,7 @@ LABEL_5:
     [CNUICoreFamilyMemberWhitelistedContactsController initWithModelFetcher:familyMemberContactsUpdator:familyMemberScopedContactStoreFacade:mainContactStoreFacade:schedulerProvider:];
   }
 
-  if (v13)
+  if (updatorCopy)
   {
     goto LABEL_14;
   }
@@ -121,7 +121,7 @@ LABEL_10:
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_16, OS_LOG_TYPE_FAULT))
   {
     [CNUICoreFamilyMemberWhitelistedContactsController initWithModelFetcher:familyMemberContactsUpdator:familyMemberScopedContactStoreFacade:mainContactStoreFacade:schedulerProvider:];
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_19;
     }
@@ -130,7 +130,7 @@ LABEL_10:
   else
   {
 LABEL_14:
-    if (v14)
+    if (providerCopy)
     {
       goto LABEL_19;
     }
@@ -153,10 +153,10 @@ LABEL_19:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_familyMember, a3);
-    objc_storeStrong(&v16->_modelFetcher, a4);
-    objc_storeStrong(&v16->_familyMemberContactsUpdator, a5);
-    objc_storeStrong(&v16->_schedulerProvider, a6);
+    objc_storeStrong(&v15->_familyMember, member);
+    objc_storeStrong(&v16->_modelFetcher, fetcher);
+    objc_storeStrong(&v16->_familyMemberContactsUpdator, updator);
+    objc_storeStrong(&v16->_schedulerProvider, provider);
     [(CNUICoreFamilyMemberContactsController *)v16 setupChangeNotificationResponse];
     v17 = v16;
   }
@@ -167,11 +167,11 @@ LABEL_19:
 - (void)setupChangeNotificationResponse
 {
   v3 = MEMORY[0x1E6996798];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [v3 observableOnNotificationCenter:v4 withName:*MEMORY[0x1E695C3D8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v5 = [v3 observableOnNotificationCenter:defaultCenter withName:*MEMORY[0x1E695C3D8] object:0];
 
-  v6 = [(CNSchedulerProvider *)self->_schedulerProvider mainThreadScheduler];
-  v7 = [v5 observeOn:v6];
+  mainThreadScheduler = [(CNSchedulerProvider *)self->_schedulerProvider mainThreadScheduler];
+  v7 = [v5 observeOn:mainThreadScheduler];
 
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69967A0];
@@ -209,24 +209,24 @@ void __73__CNUICoreFamilyMemberContactsController_setupChangeNotificationRespons
 
 - (int64_t)fetchStatus
 {
-  v3 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  countOfFamilyMemberContactsFuture = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
 
-  if (!v3)
+  if (!countOfFamilyMemberContactsFuture)
   {
     return 0;
   }
 
-  v4 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
-  v5 = [v4 isFinished];
+  countOfFamilyMemberContactsFuture2 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  isFinished = [countOfFamilyMemberContactsFuture2 isFinished];
 
-  if (!v5)
+  if (!isFinished)
   {
     return 2;
   }
 
-  v6 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  countOfFamilyMemberContactsFuture3 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
   v11 = 0;
-  v7 = [v6 result:&v11];
+  v7 = [countOfFamilyMemberContactsFuture3 result:&v11];
   v8 = v11;
 
   if (v8)
@@ -244,9 +244,9 @@ void __73__CNUICoreFamilyMemberContactsController_setupChangeNotificationRespons
 
 - (NSNumber)countOfFamilyMemberContacts
 {
-  v3 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  countOfFamilyMemberContactsFuture = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
 
-  if (!v3)
+  if (!countOfFamilyMemberContactsFuture)
   {
     [(CNUICoreFamilyMemberContactsController *)self triggerCountOfFamilyMemberContactsFetch];
   }
@@ -256,39 +256,39 @@ void __73__CNUICoreFamilyMemberContactsController_setupChangeNotificationRespons
   return countOfFamilyMemberContacts;
 }
 
-- (void)setCountOfFamilyMemberContacts:(id)a3
+- (void)setCountOfFamilyMemberContacts:(id)contacts
 {
-  objc_storeStrong(&self->_countOfFamilyMemberContacts, a3);
-  v4 = [(CNUICoreFamilyMemberContactsController *)self observer];
-  [v4 familyMemberContactItemsDidChange];
+  objc_storeStrong(&self->_countOfFamilyMemberContacts, contacts);
+  observer = [(CNUICoreFamilyMemberContactsController *)self observer];
+  [observer familyMemberContactItemsDidChange];
 }
 
 - (void)triggerCountOfFamilyMemberContactsFetch
 {
   [(CNUICoreFamilyMemberContactsController *)self cancelCountOfFamilyMemberContactsFetch];
-  v3 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFutureFromFetcher];
-  [(CNUICoreFamilyMemberContactsController *)self setCountOfFamilyMemberContactsFuture:v3];
+  countOfFamilyMemberContactsFutureFromFetcher = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFutureFromFetcher];
+  [(CNUICoreFamilyMemberContactsController *)self setCountOfFamilyMemberContactsFuture:countOfFamilyMemberContactsFutureFromFetcher];
 
   objc_initWeak(&location, self);
-  v4 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  countOfFamilyMemberContactsFuture = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__CNUICoreFamilyMemberContactsController_triggerCountOfFamilyMemberContactsFetch__block_invoke;
   v12[3] = &unk_1E76E9C18;
   objc_copyWeak(&v13, &location);
-  v5 = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
-  v6 = [v5 mainThreadScheduler];
-  [v4 addSuccessBlock:v12 scheduler:v6];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
+  mainThreadScheduler = [schedulerProvider mainThreadScheduler];
+  [countOfFamilyMemberContactsFuture addSuccessBlock:v12 scheduler:mainThreadScheduler];
 
-  v7 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  countOfFamilyMemberContactsFuture2 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__CNUICoreFamilyMemberContactsController_triggerCountOfFamilyMemberContactsFetch__block_invoke_2;
   v10[3] = &unk_1E76E9018;
   objc_copyWeak(&v11, &location);
-  v8 = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
-  v9 = [v8 mainThreadScheduler];
-  [v7 addFailureBlock:v10 scheduler:v9];
+  schedulerProvider2 = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
+  mainThreadScheduler2 = [schedulerProvider2 mainThreadScheduler];
+  [countOfFamilyMemberContactsFuture2 addFailureBlock:v10 scheduler:mainThreadScheduler2];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -330,18 +330,18 @@ LABEL_6:
 
 - (void)cancelCountOfFamilyMemberContactsFetch
 {
-  v3 = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
-  [v3 cancel];
+  countOfFamilyMemberContactsFuture = [(CNUICoreFamilyMemberContactsController *)self countOfFamilyMemberContactsFuture];
+  [countOfFamilyMemberContactsFuture cancel];
 
   [(CNUICoreFamilyMemberContactsController *)self setCountOfFamilyMemberContactsFuture:0];
 }
 
 - (id)countOfFamilyMemberContactsFutureFromFetcher
 {
-  v3 = [(CNUICoreFamilyMemberContactsController *)self modelFetcher];
-  v4 = [v3 allContactsModel];
-  v5 = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
-  v6 = [v4 flatMap:&__block_literal_global_59 schedulerProvider:v5];
+  modelFetcher = [(CNUICoreFamilyMemberContactsController *)self modelFetcher];
+  allContactsModel = [modelFetcher allContactsModel];
+  schedulerProvider = [(CNUICoreFamilyMemberContactsController *)self schedulerProvider];
+  v6 = [allContactsModel flatMap:&__block_literal_global_59 schedulerProvider:schedulerProvider];
 
   return v6;
 }
@@ -357,26 +357,26 @@ id __86__CNUICoreFamilyMemberContactsController_countOfFamilyMemberContactsFutur
   return v6;
 }
 
-- (void)updateListByAddingContacts:(id)a3
+- (void)updateListByAddingContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(CNUICoreFamilyMemberContactsController *)self updateContactListByAddingContactsFuture];
-  [v5 cancel];
+  contactsCopy = contacts;
+  updateContactListByAddingContactsFuture = [(CNUICoreFamilyMemberContactsController *)self updateContactListByAddingContactsFuture];
+  [updateContactListByAddingContactsFuture cancel];
 
-  v7 = [(CNUICoreFamilyMemberContactsController *)self familyMemberContactsUpdator];
-  v6 = [v7 updateContactListByAddingContacts:v4];
+  familyMemberContactsUpdator = [(CNUICoreFamilyMemberContactsController *)self familyMemberContactsUpdator];
+  v6 = [familyMemberContactsUpdator updateContactListByAddingContacts:contactsCopy];
 
   [(CNUICoreFamilyMemberContactsController *)self setUpdateContactListByAddingContactsFuture:v6];
 }
 
-- (void)updateListByRemovingContacts:(id)a3
+- (void)updateListByRemovingContacts:(id)contacts
 {
-  v4 = a3;
-  v5 = [(CNUICoreFamilyMemberContactsController *)self updateContactListByRemovingContactsFuture];
-  [v5 cancel];
+  contactsCopy = contacts;
+  updateContactListByRemovingContactsFuture = [(CNUICoreFamilyMemberContactsController *)self updateContactListByRemovingContactsFuture];
+  [updateContactListByRemovingContactsFuture cancel];
 
-  v7 = [(CNUICoreFamilyMemberContactsController *)self familyMemberContactsUpdator];
-  v6 = [v7 updateContactListByRemovingContacts:v4];
+  familyMemberContactsUpdator = [(CNUICoreFamilyMemberContactsController *)self familyMemberContactsUpdator];
+  v6 = [familyMemberContactsUpdator updateContactListByRemovingContacts:contactsCopy];
 
   [(CNUICoreFamilyMemberContactsController *)self setUpdateContactListByRemovingContactsFuture:v6];
 }

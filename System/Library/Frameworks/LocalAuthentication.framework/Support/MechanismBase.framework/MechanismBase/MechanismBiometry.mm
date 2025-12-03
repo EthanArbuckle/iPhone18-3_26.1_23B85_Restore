@@ -1,26 +1,26 @@
 @interface MechanismBiometry
-- (BOOL)canRecoverFromAvailabilityError:(id)a3 request:(id)a4;
-- (BOOL)checkLockoutState:(int64_t)a3 isEffectiveLockoutForMatchWithPurpose:(int64_t)a4;
+- (BOOL)canRecoverFromAvailabilityError:(id)error request:(id)request;
+- (BOOL)checkLockoutState:(int64_t)state isEffectiveLockoutForMatchWithPurpose:(int64_t)purpose;
 - (BOOL)isBiometryRequiredForPolicy;
 - (BOOL)isFallbackVisible;
 - (BOOL)willTryToRecover;
-- (MechanismBiometry)initWithEventIdentifier:(int64_t)a3 remoteViewController:(int64_t)a4 acmContextRecord:(id)a5 request:(id)a6 evaluationMode:(int64_t)a7 userId:(id)a8;
-- (id)failuresInfoDictionaryWithError:(id)a3 unboundMatch:(BOOL)a4;
+- (MechanismBiometry)initWithEventIdentifier:(int64_t)identifier remoteViewController:(int64_t)controller acmContextRecord:(id)record request:(id)request evaluationMode:(int64_t)mode userId:(id)id;
+- (id)failuresInfoDictionaryWithError:(id)error unboundMatch:(BOOL)match;
 @end
 
 @implementation MechanismBiometry
 
-- (MechanismBiometry)initWithEventIdentifier:(int64_t)a3 remoteViewController:(int64_t)a4 acmContextRecord:(id)a5 request:(id)a6 evaluationMode:(int64_t)a7 userId:(id)a8
+- (MechanismBiometry)initWithEventIdentifier:(int64_t)identifier remoteViewController:(int64_t)controller acmContextRecord:(id)record request:(id)request evaluationMode:(int64_t)mode userId:(id)id
 {
-  v15 = a8;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = MechanismBiometry;
-  v16 = [(MechanismACM *)&v19 initWithEventIdentifier:a3 remoteViewController:a4 acmContextRecord:a5 request:a6];
+  v16 = [(MechanismACM *)&v19 initWithEventIdentifier:identifier remoteViewController:controller acmContextRecord:record request:request];
   v17 = v16;
   if (v16)
   {
-    v16->_evaluationMode = a7;
-    objc_storeStrong(&v16->_userId, a8);
+    v16->_evaluationMode = mode;
+    objc_storeStrong(&v16->_userId, id);
   }
 
   return v17;
@@ -35,14 +35,14 @@
 
   else
   {
-    v4 = [(MechanismBase *)self policyOptions];
+    policyOptions = [(MechanismBase *)self policyOptions];
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F60]];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 BOOLValue];
+    v6 = [policyOptions objectForKeyedSubscript:v5];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(MechanismBase *)self policyOptions];
+    policyOptions2 = [(MechanismBase *)self policyOptions];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F68]];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    v10 = [policyOptions2 objectForKeyedSubscript:v9];
 
     if (v10)
     {
@@ -54,42 +54,42 @@
       v11 = 1;
     }
 
-    v3 = (v7 & v11) == 1 && self->_biolockout;
+    v3 = (bOOLValue & v11) == 1 && self->_biolockout;
   }
 
   return v3;
 }
 
-- (BOOL)canRecoverFromAvailabilityError:(id)a3 request:(id)a4
+- (BOOL)canRecoverFromAvailabilityError:(id)error request:(id)request
 {
-  v5 = a3;
-  v6 = a4;
-  if ([MEMORY[0x277CD47F0] error:v5 hasCode:-8] && (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", v5, -8, 15) & 1) == 0)
+  errorCopy = error;
+  requestCopy = request;
+  if ([MEMORY[0x277CD47F0] error:errorCopy hasCode:-8] && (objc_msgSend(MEMORY[0x277CD47F0], "error:hasCode:subcode:", errorCopy, -8, 15) & 1) == 0)
   {
-    v8 = [v6 options];
+    options = [requestCopy options];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F60]];
-    v10 = [v8 objectForKeyedSubscript:v9];
-    v7 = [v10 BOOLValue];
+    v10 = [options objectForKeyedSubscript:v9];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)checkLockoutState:(int64_t)a3 isEffectiveLockoutForMatchWithPurpose:(int64_t)a4
+- (BOOL)checkLockoutState:(int64_t)state isEffectiveLockoutForMatchWithPurpose:(int64_t)purpose
 {
-  if (a4 == 4 || a4 == 2)
+  if (purpose == 4 || purpose == 2)
   {
-    v4 = a3 != 1;
+    v4 = state != 1;
   }
 
-  else if (a3 <= 8)
+  else if (state <= 8)
   {
-    v4 = 0xDDu >> a3;
+    v4 = 0xDDu >> state;
   }
 
   else
@@ -103,39 +103,39 @@
 - (BOOL)isBiometryRequiredForPolicy
 {
   v3 = MEMORY[0x277D240C0];
-  v4 = [(MechanismBase *)self policy];
-  v5 = [(MechanismBase *)self policyOptions];
-  LOBYTE(v3) = [v3 isDTOPolicy:v4 options:v5];
+  policy = [(MechanismBase *)self policy];
+  policyOptions = [(MechanismBase *)self policyOptions];
+  LOBYTE(v3) = [v3 isDTOPolicy:policy options:policyOptions];
 
   return v3;
 }
 
 - (BOOL)isFallbackVisible
 {
-  v2 = [(MechanismBase *)self policyOptions];
+  policyOptions = [(MechanismBase *)self policyOptions];
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F88]];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [policyOptions objectForKeyedSubscript:v3];
 
   if (v4)
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)failuresInfoDictionaryWithError:(id)a3 unboundMatch:(BOOL)a4
+- (id)failuresInfoDictionaryWithError:(id)error unboundMatch:(BOOL)match
 {
   v9.receiver = self;
   v9.super_class = MechanismBiometry;
-  v5 = [(MechanismBase *)&v9 failuresInfoDictionaryWithError:a3];
+  v5 = [(MechanismBase *)&v9 failuresInfoDictionaryWithError:error];
   v6 = v5;
-  if (a4)
+  if (match)
   {
     v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v5];
     [v7 setObject:MEMORY[0x277CBEC38] forKey:&unk_284B78A68];

@@ -1,6 +1,6 @@
 @interface FBSHardwareSource
 - (_TtC13ShellSceneKit17FBSHardwareSource)init;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
 @end
 
 @implementation FBSHardwareSource
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
   sub_265FEC250();
-  v8[2] = a4;
+  v8[2] = identity;
   v8[3] = self;
-  v6 = a4;
-  v7 = self;
+  identityCopy = identity;
+  selfCopy = self;
   sub_265FE2014(sub_265FCBE4C, v8);
 }
 

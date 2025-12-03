@@ -1,38 +1,38 @@
 @interface UARPSoCUpdaterInstance
 - (BOOL)applyStagedFirmware;
 - (BOOL)initUARP;
-- (BOOL)initUARPWithFirmware:(id)a3;
-- (BOOL)offerFirmwareData:(id)a3;
-- (BOOL)offerPersonalizationResponse:(id)a3;
-- (BOOL)receievePersonalizationRequestByOfferFirmwareData:(id)a3;
+- (BOOL)initUARPWithFirmware:(id)firmware;
+- (BOOL)offerFirmwareData:(id)data;
+- (BOOL)offerPersonalizationResponse:(id)response;
+- (BOOL)receievePersonalizationRequestByOfferFirmwareData:(id)data;
 - (NSString)firmwareTagName;
 - (NSString)ticketName;
-- (UARPSoCUpdaterInstance)initWithHelper:(id)a3 options:(id)a4;
-- (UARPSoCUpdaterInstance)initWithLogicUnitNumber:(unsigned int)a3 helper:(id)a4 options:(id)a5;
-- (UARPSoCUpdaterInstance)initWithRouterID:(unsigned __int8)a3 helper:(id)a4 options:(id)a5;
+- (UARPSoCUpdaterInstance)initWithHelper:(id)helper options:(id)options;
+- (UARPSoCUpdaterInstance)initWithLogicUnitNumber:(unsigned int)number helper:(id)helper options:(id)options;
+- (UARPSoCUpdaterInstance)initWithRouterID:(unsigned __int8)d helper:(id)helper options:(id)options;
 - (const)uarpRestoreQueueName;
 - (id)name;
 - (uarpRestoreLayer4Callbacks)uarpRestoreLayer4Callbacks;
 - (void)printUpdaterMode;
-- (void)tssRequestWithOptions:(id)a3 serverURL:(id)a4 assetCtx:(void *)a5 siliconCtx:(_UARPSiliconContext *)a6;
+- (void)tssRequestWithOptions:(id)options serverURL:(id)l assetCtx:(void *)ctx siliconCtx:(_UARPSiliconContext *)siliconCtx;
 - (void)uarpRestoreInitOptions;
-- (void)updateAppleProperty:(unsigned int)a3 siliconCtx:(_UARPSiliconContext *)a4;
-- (void)updateStagingProgressWithBytesSent:(unsigned int)a3 bytesTotal:(unsigned int)a4;
+- (void)updateAppleProperty:(unsigned int)property siliconCtx:(_UARPSiliconContext *)ctx;
+- (void)updateStagingProgressWithBytesSent:(unsigned int)sent bytesTotal:(unsigned int)total;
 @end
 
 @implementation UARPSoCUpdaterInstance
 
-- (UARPSoCUpdaterInstance)initWithHelper:(id)a3 options:(id)a4
+- (UARPSoCUpdaterInstance)initWithHelper:(id)helper options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  helperCopy = helper;
+  optionsCopy = options;
   v26.receiver = self;
   v26.super_class = UARPSoCUpdaterInstance;
   v9 = [(UARPSoCUpdaterInstance *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_log, a3);
+    objc_storeStrong(&v9->_log, helper);
     v11 = dispatch_semaphore_create(0);
     initUARPSemaphore = v10->_initUARPSemaphore;
     v10->_initUARPSemaphore = v11;
@@ -45,7 +45,7 @@
     applyAssetUARPSemaphore = v10->_applyAssetUARPSemaphore;
     v10->_applyAssetUARPSemaphore = v15;
 
-    v10->_updaterMode = SoCUpdaterGetMode(v8);
+    v10->_updaterMode = SoCUpdaterGetMode(optionsCopy);
     v10->_uarpContext = 0;
     v10->_isDone = 0;
     tssRequest = v10->_tssRequest;
@@ -65,7 +65,7 @@
     v10->_requiresPersonalization = 0;
     v10->_logicUnitNumberFromDevice = -1;
     *&v10->_prefixNeedsLogicalUnitNumber = 0;
-    v10->_skipSameVersion = SoCUpdaterShouldSkipSameVersion(v8);
+    v10->_skipSameVersion = SoCUpdaterShouldSkipSameVersion(optionsCopy);
     if (![(UARPSoCUpdaterInstance *)v10 uarpRestoreInitOptions]|| ![(UARPSoCUpdaterInstance *)v10 uarpRestoreLayer4Callbacks]|| ![(UARPSoCUpdaterInstance *)v10 uarpRestoreQueueName])
     {
       v24 = 0;
@@ -84,13 +84,13 @@ LABEL_8:
   return v24;
 }
 
-- (UARPSoCUpdaterInstance)initWithLogicUnitNumber:(unsigned int)a3 helper:(id)a4 options:(id)a5
+- (UARPSoCUpdaterInstance)initWithLogicUnitNumber:(unsigned int)number helper:(id)helper options:(id)options
 {
-  v6 = [(UARPSoCUpdaterInstance *)self initWithHelper:a4 options:a5];
+  v6 = [(UARPSoCUpdaterInstance *)self initWithHelper:helper options:options];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    v6->_logicUnitNumber = a3;
+    v6->_logicUnitNumber = number;
     v6->_routerID = -1;
     if (![(UARPSoCUpdaterInstance *)v6 initUARPRestoreQueryInfo])
     {
@@ -108,13 +108,13 @@ LABEL_6:
   return v8;
 }
 
-- (UARPSoCUpdaterInstance)initWithRouterID:(unsigned __int8)a3 helper:(id)a4 options:(id)a5
+- (UARPSoCUpdaterInstance)initWithRouterID:(unsigned __int8)d helper:(id)helper options:(id)options
 {
-  v6 = [(UARPSoCUpdaterInstance *)self initWithHelper:a4 options:a5];
+  v6 = [(UARPSoCUpdaterInstance *)self initWithHelper:helper options:options];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    v6->_routerID = a3;
+    v6->_routerID = d;
     v6->_logicUnitNumber = -1;
     if (![(UARPSoCUpdaterInstance *)v6 initUARPRestoreQueryInfo])
     {
@@ -132,11 +132,11 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)receievePersonalizationRequestByOfferFirmwareData:(id)a3
+- (BOOL)receievePersonalizationRequestByOfferFirmwareData:(id)data
 {
   log = self->_log;
-  v5 = a3;
-  [(SoCUpdaterHelper *)log log:@"%s: data = %@", "[UARPSoCUpdaterInstance receievePersonalizationRequestByOfferFirmwareData:]", v5];
+  dataCopy = data;
+  [(SoCUpdaterHelper *)log log:@"%s: data = %@", "[UARPSoCUpdaterInstance receievePersonalizationRequestByOfferFirmwareData:]", dataCopy];
   tssRequest = self->_tssRequest;
   self->_tssRequest = 0;
 
@@ -146,10 +146,10 @@ LABEL_6:
   self->_pAssetContext = 0;
   self->_endpoint = 0;
   v8 = self->_log;
-  v9 = [(UARPSoCUpdaterInstance *)self name];
-  [(SoCUpdaterHelper *)v8 log:@"%s: %@ Offering Firmware", "[UARPSoCUpdaterInstance receievePersonalizationRequestByOfferFirmwareData:]", v9];
+  name = [(UARPSoCUpdaterInstance *)self name];
+  [(SoCUpdaterHelper *)v8 log:@"%s: %@ Offering Firmware", "[UARPSoCUpdaterInstance receievePersonalizationRequestByOfferFirmwareData:]", name];
 
-  LOBYTE(v8) = [(UARPSoCUpdaterInstance *)self initUARPWithFirmware:v5];
+  LOBYTE(v8) = [(UARPSoCUpdaterInstance *)self initUARPWithFirmware:dataCopy];
   if ((v8 & 1) == 0)
   {
     [(SoCUpdaterHelper *)self->_log log:@"%s: Failed to init Restore UARP.", "[UARPSoCUpdaterInstance receievePersonalizationRequestByOfferFirmwareData:]"];
@@ -158,13 +158,13 @@ LABEL_6:
 
   self->_stagingResult = 0;
   v10 = self->_log;
-  v11 = [(UARPSoCUpdaterInstance *)self name];
-  [(SoCUpdaterHelper *)v10 log:@"%@: Waiting for staging to complete...", v11];
+  name2 = [(UARPSoCUpdaterInstance *)self name];
+  [(SoCUpdaterHelper *)v10 log:@"%@: Waiting for staging to complete...", name2];
 
   dispatch_semaphore_wait(self->_assetTransferUARPSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v12 = self->_log;
-  v13 = [(UARPSoCUpdaterInstance *)self name];
-  [(SoCUpdaterHelper *)v12 log:@"%@: Continuing after staging.", v13];
+  name3 = [(UARPSoCUpdaterInstance *)self name];
+  [(SoCUpdaterHelper *)v12 log:@"%@: Continuing after staging.", name3];
 
   v14 = self->_tssRequest;
   if (!v14)
@@ -184,38 +184,38 @@ LABEL_5:
   return self->_stagingResult;
 }
 
-- (BOOL)offerFirmwareData:(id)a3
+- (BOOL)offerFirmwareData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   log = self->_log;
-  v6 = [(UARPSoCUpdaterInstance *)self name];
-  [(SoCUpdaterHelper *)log log:@"%@: Maybe Offer / Stage Firmware", v6];
+  name = [(UARPSoCUpdaterInstance *)self name];
+  [(SoCUpdaterHelper *)log log:@"%@: Maybe Offer / Stage Firmware", name];
 
   tssRequest = self->_tssRequest;
   v8 = self->_log;
-  v9 = [(UARPSoCUpdaterInstance *)self name];
-  v10 = v9;
+  name2 = [(UARPSoCUpdaterInstance *)self name];
+  v10 = name2;
   if (tssRequest)
   {
-    [(SoCUpdaterHelper *)v8 log:@"%@: Don't Offer / Stage Firmware", v9];
+    [(SoCUpdaterHelper *)v8 log:@"%@: Don't Offer / Stage Firmware", name2];
 
     v11 = 1;
   }
 
   else
   {
-    [(SoCUpdaterHelper *)v8 log:@"%@: Really Offer / Stage Firmware", v9];
+    [(SoCUpdaterHelper *)v8 log:@"%@: Really Offer / Stage Firmware", name2];
 
-    v11 = [(UARPSoCUpdaterInstance *)self receievePersonalizationRequestByOfferFirmwareData:v4];
+    v11 = [(UARPSoCUpdaterInstance *)self receievePersonalizationRequestByOfferFirmwareData:dataCopy];
   }
 
   return v11;
 }
 
-- (BOOL)offerPersonalizationResponse:(id)a3
+- (BOOL)offerPersonalizationResponse:(id)response
 {
-  v4 = a3;
-  [(SoCUpdaterHelper *)self->_log log:@"%s: Tss Response: %@", "[UARPSoCUpdaterInstance offerPersonalizationResponse:]", v4];
+  responseCopy = response;
+  [(SoCUpdaterHelper *)self->_log log:@"%s: Tss Response: %@", "[UARPSoCUpdaterInstance offerPersonalizationResponse:]", responseCopy];
   if ([(UARPSoCUpdaterInstance *)self useLocalSigning])
   {
     [(SoCUpdaterHelper *)self->_log log:@"%s: Local Signing is enabled, no personalization data expected.", "[UARPSoCUpdaterInstance offerPersonalizationResponse:]"];
@@ -223,7 +223,7 @@ LABEL_5:
 
   else
   {
-    if (!v4 && ![(UARPSoCUpdaterInstance *)self useLocalSigning])
+    if (!responseCopy && ![(UARPSoCUpdaterInstance *)self useLocalSigning])
     {
       [(SoCUpdaterHelper *)self->_log log:@"%s: Personalization data is expected but empty.", "[UARPSoCUpdaterInstance offerPersonalizationResponse:]"];
       v15 = 0;
@@ -232,18 +232,18 @@ LABEL_5:
 
     tssRequest = self->_tssRequest;
     [(SoCUpdaterHelper *)self->_log log:@"%s: Offering Tss Response", "[UARPSoCUpdaterInstance offerPersonalizationResponse:]"];
-    CoreUARPRestorePersonalizationTssResponse(self->_endpoint, self->_pAssetContext, tssRequest, v4, v6, v7, v8, v9);
+    CoreUARPRestorePersonalizationTssResponse(self->_endpoint, self->_pAssetContext, tssRequest, responseCopy, v6, v7, v8, v9);
     v10 = self->_tssRequest;
     self->_tssRequest = 0;
 
     log = self->_log;
-    v12 = [(UARPSoCUpdaterInstance *)self name];
-    [(SoCUpdaterHelper *)log log:@"%@: Waiting for TSS offer to complete...", v12];
+    name = [(UARPSoCUpdaterInstance *)self name];
+    [(SoCUpdaterHelper *)log log:@"%@: Waiting for TSS offer to complete...", name];
 
     dispatch_semaphore_wait(self->_assetTransferUARPSemaphore, 0xFFFFFFFFFFFFFFFFLL);
     v13 = self->_log;
-    v14 = [(UARPSoCUpdaterInstance *)self name];
-    [(SoCUpdaterHelper *)v13 log:@"%@: Continuing after TSS offer.", v14];
+    name2 = [(UARPSoCUpdaterInstance *)self name];
+    [(SoCUpdaterHelper *)v13 log:@"%@: Continuing after TSS offer.", name2];
   }
 
   v15 = 1;
@@ -288,17 +288,17 @@ LABEL_7:
   return 0;
 }
 
-- (void)tssRequestWithOptions:(id)a3 serverURL:(id)a4 assetCtx:(void *)a5 siliconCtx:(_UARPSiliconContext *)a6
+- (void)tssRequestWithOptions:(id)options serverURL:(id)l assetCtx:(void *)ctx siliconCtx:(_UARPSiliconContext *)siliconCtx
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = v19;
-  if (v19)
+  optionsCopy = options;
+  lCopy = l;
+  v11 = optionsCopy;
+  if (optionsCopy)
   {
     v12 = [(UARPSoCUpdaterInstance *)self log];
     [v12 log:{@"%s: Received Invalid tssOptions", "-[UARPSoCUpdaterInstance tssRequestWithOptions:serverURL:assetCtx:siliconCtx:]"}];
 
-    v11 = v19;
+    v11 = optionsCopy;
   }
 
   if (self->_tssRequest)
@@ -309,67 +309,67 @@ LABEL_7:
 
   else
   {
-    var4 = a6->var4;
-    self->_pAssetContext = a5;
+    var4 = siliconCtx->var4;
+    self->_pAssetContext = ctx;
     self->_endpoint = var4;
     v15 = [v11 copy];
     tssRequest = self->_tssRequest;
     self->_tssRequest = v15;
 
-    objc_storeStrong(&self->_tssRequestServerURL, a4);
+    objc_storeStrong(&self->_tssRequestServerURL, l);
     log = self->_log;
-    v18 = [(UARPSoCUpdaterInstance *)self name];
-    [(SoCUpdaterHelper *)log log:@"%@: TSS request signal waiting callbacks", v18];
+    name = [(UARPSoCUpdaterInstance *)self name];
+    [(SoCUpdaterHelper *)log log:@"%@: TSS request signal waiting callbacks", name];
 
     self->_stagingResult = 1;
     [(UARPSoCUpdaterInstance *)self assetTransferUARPComplete];
   }
 }
 
-- (void)updateAppleProperty:(unsigned int)a3 siliconCtx:(_UARPSiliconContext *)a4
+- (void)updateAppleProperty:(unsigned int)property siliconCtx:(_UARPSiliconContext *)ctx
 {
-  if (a3 > 15)
+  if (property > 15)
   {
-    if (a3 == 16)
+    if (property == 16)
     {
-      self->_logicUnitNumberFromDevice = UarpRestoreInfoPropertyLogicalUnitNumber(a4);
+      self->_logicUnitNumberFromDevice = UarpRestoreInfoPropertyLogicalUnitNumber(ctx);
       return;
     }
 
-    if (a3 == 18)
+    if (property == 18)
     {
-      self->_requiresPersonalization = UarpRestoreInfoPropertyRequiresPersonalization(a4) != 0;
+      self->_requiresPersonalization = UarpRestoreInfoPropertyRequiresPersonalization(ctx) != 0;
       return;
     }
 
-    if (a3 != 17)
+    if (property != 17)
     {
       return;
     }
 
-    v5 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:UarpRestoreInfoPropertyTicketLongName(a4)];
+    v5 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:UarpRestoreInfoPropertyTicketLongName(ctx)];
     ticketLongName = self->_ticketLongName;
     self->_ticketLongName = v5;
   }
 
   else
   {
-    if (a3 != 3)
+    if (property != 3)
     {
-      if (a3 == 14)
+      if (property == 14)
       {
-        self->_prefixNeedsLogicalUnitNumber = UarpRestoreInfoPropertyPrefixNeedsLUN(a4) != 0;
+        self->_prefixNeedsLogicalUnitNumber = UarpRestoreInfoPropertyPrefixNeedsLUN(ctx) != 0;
       }
 
-      else if (a3 == 15)
+      else if (property == 15)
       {
-        self->_suffixNeedsLogicalUnitNumber = UarpRestoreInfoPropertySuffixNeedsLUN(a4) != 0;
+        self->_suffixNeedsLogicalUnitNumber = UarpRestoreInfoPropertySuffixNeedsLUN(ctx) != 0;
       }
 
       return;
     }
 
-    v7 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:UarpRestoreInfoPropertyManifestPrefix(a4)];
+    v7 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:UarpRestoreInfoPropertyManifestPrefix(ctx)];
     manifestPrefixName = self->_manifestPrefixName;
     self->_manifestPrefixName = v7;
   }
@@ -382,27 +382,27 @@ LABEL_7:
   logicUnitNumberFromDevice = self->_logicUnitNumberFromDevice;
   if (self->_prefixNeedsLogicalUnitNumber)
   {
-    v4 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_manifestPrefixName, logicUnitNumberFromDevice];
+    logicUnitNumberFromDevice = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_manifestPrefixName, logicUnitNumberFromDevice];
   }
 
   else
   {
-    v4 = self->_manifestPrefixName;
+    logicUnitNumberFromDevice = self->_manifestPrefixName;
   }
 
-  v5 = v4;
+  v5 = logicUnitNumberFromDevice;
   if (self->_suffixNeedsLogicalUnitNumber)
   {
-    v6 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_ticketLongName, logicUnitNumberFromDevice];
+    logicUnitNumberFromDevice2 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_ticketLongName, logicUnitNumberFromDevice];
   }
 
   else
   {
-    v6 = self->_ticketLongName;
+    logicUnitNumberFromDevice2 = self->_ticketLongName;
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v5, v6];
+  v7 = logicUnitNumberFromDevice2;
+  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v5, logicUnitNumberFromDevice2];
 
   return v8;
 }
@@ -412,23 +412,23 @@ LABEL_7:
   logicUnitNumberFromDevice = self->_logicUnitNumberFromDevice;
   if (self->_prefixNeedsLogicalUnitNumber)
   {
-    v4 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_manifestPrefixName, logicUnitNumberFromDevice];
+    logicUnitNumberFromDevice = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", self->_manifestPrefixName, logicUnitNumberFromDevice];
   }
 
   else
   {
-    v4 = self->_manifestPrefixName;
+    logicUnitNumberFromDevice = self->_manifestPrefixName;
   }
 
-  v5 = v4;
+  v5 = logicUnitNumberFromDevice;
   suffixNeedsLogicalUnitNumber = self->_suffixNeedsLogicalUnitNumber;
-  v7 = @"Ticket";
+  logicUnitNumberFromDevice2 = @"Ticket";
   if (suffixNeedsLogicalUnitNumber)
   {
-    v7 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", @"Ticket", logicUnitNumberFromDevice];
+    logicUnitNumberFromDevice2 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@%d", @"Ticket", logicUnitNumberFromDevice];
   }
 
-  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v5, v7];
+  v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v5, logicUnitNumberFromDevice2];
 
   return v8;
 }
@@ -461,115 +461,115 @@ LABEL_7:
 {
   if (self->_uarpContext)
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(uarpRestoreInitOptions) = 1;
   }
 
   else
   {
     block[9] = v2;
     block[10] = v3;
-    v4 = [(UARPSoCUpdaterInstance *)self uarpRestoreInitOptions];
-    if (v4)
+    uarpRestoreInitOptions = [(UARPSoCUpdaterInstance *)self uarpRestoreInitOptions];
+    if (uarpRestoreInitOptions)
     {
-      v6 = v4;
-      v4 = [(UARPSoCUpdaterInstance *)self uarpRestoreLayer4Callbacks];
-      if (v4)
+      v6 = uarpRestoreInitOptions;
+      uarpRestoreInitOptions = [(UARPSoCUpdaterInstance *)self uarpRestoreLayer4Callbacks];
+      if (uarpRestoreInitOptions)
       {
-        v7 = v4;
-        if (!v4->var11)
+        v7 = uarpRestoreInitOptions;
+        if (!uarpRestoreInitOptions->var11)
         {
-          v4->var11 = UARPSoCUpdaterLayer4UARPPropertyUpdate;
+          uarpRestoreInitOptions->var11 = UARPSoCUpdaterLayer4UARPPropertyUpdate;
         }
 
-        if (!v4->var12)
+        if (!uarpRestoreInitOptions->var12)
         {
-          v4->var12 = UARPSoCUpdaterLayer4ApplePropertyUpdate;
+          uarpRestoreInitOptions->var12 = UARPSoCUpdaterLayer4ApplePropertyUpdate;
         }
 
-        if (!v4->var13)
+        if (!uarpRestoreInitOptions->var13)
         {
-          v4->var13 = UARPSoCUpdaterLayer4PropertiesComplete;
+          uarpRestoreInitOptions->var13 = UARPSoCUpdaterLayer4PropertiesComplete;
         }
 
-        if (!v4->var5)
+        if (!uarpRestoreInitOptions->var5)
         {
-          v4->var5 = UARPSoCUpdaterStagingProgress;
+          uarpRestoreInitOptions->var5 = UARPSoCUpdaterStagingProgress;
         }
 
-        if (!v4->var6)
+        if (!uarpRestoreInitOptions->var6)
         {
-          v4->var6 = UARPSoCUpdaterStagingComplete;
+          uarpRestoreInitOptions->var6 = UARPSoCUpdaterStagingComplete;
         }
 
-        if (!v4->var7)
+        if (!uarpRestoreInitOptions->var7)
         {
-          v4->var7 = UARPSoCUpdaterApplyComplete;
+          uarpRestoreInitOptions->var7 = UARPSoCUpdaterApplyComplete;
         }
 
-        if (!v4->var10)
+        if (!uarpRestoreInitOptions->var10)
         {
-          v4->var10 = UARPSoCUpdaterFirmwareTssRequest;
+          uarpRestoreInitOptions->var10 = UARPSoCUpdaterFirmwareTssRequest;
         }
 
-        if (!v4->var15)
+        if (!uarpRestoreInitOptions->var15)
         {
-          v4->var15 = UARPSoCUpdaterFirmwareLogCommon;
+          uarpRestoreInitOptions->var15 = UARPSoCUpdaterFirmwareLogCommon;
         }
 
-        if (!v4->var16)
+        if (!uarpRestoreInitOptions->var16)
         {
-          v4->var16 = UARPSoCUpdaterFirmwareLogCommon;
+          uarpRestoreInitOptions->var16 = UARPSoCUpdaterFirmwareLogCommon;
         }
 
-        if (!v4->var17)
+        if (!uarpRestoreInitOptions->var17)
         {
-          v4->var17 = UARPSoCUpdaterFirmwareLogCommon;
+          uarpRestoreInitOptions->var17 = UARPSoCUpdaterFirmwareLogCommon;
         }
 
-        if (!v4->var18)
+        if (!uarpRestoreInitOptions->var18)
         {
-          v4->var18 = UARPSoCUpdaterFirmwareLogCommon;
+          uarpRestoreInitOptions->var18 = UARPSoCUpdaterFirmwareLogCommon;
         }
 
-        v8 = self;
-        v9 = UarpRestoreInitializeEndpoint(v8, v6, v7, [(UARPSoCUpdaterInstance *)v8 uarpRestoreQueueName]);
+        selfCopy = self;
+        v9 = UarpRestoreInitializeEndpoint(selfCopy, v6, v7, [(UARPSoCUpdaterInstance *)selfCopy uarpRestoreQueueName]);
         self->_uarpContext = v9;
         if (v9)
         {
-          queue = v8->_queue;
+          queue = selfCopy->_queue;
           block[0] = MEMORY[0x29EDCA5F8];
           block[1] = 3221225472;
           block[2] = __34__UARPSoCUpdaterInstance_initUARP__block_invoke;
           block[3] = &unk_29F28FB00;
-          block[4] = v8;
+          block[4] = selfCopy;
           dispatch_async(queue, block);
-          dispatch_semaphore_wait(v8->_initUARPSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-          LOBYTE(v4) = 1;
+          dispatch_semaphore_wait(selfCopy->_initUARPSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+          LOBYTE(uarpRestoreInitOptions) = 1;
         }
 
         else
         {
-          v11 = [(UARPSoCUpdaterInstance *)v8 log];
+          v11 = [(UARPSoCUpdaterInstance *)selfCopy log];
           [v11 log:{@"%s: UarpRestoreInitializeEndpoint() returns NULL.", "-[UARPSoCUpdaterInstance initUARP]"}];
 
-          LOBYTE(v4) = 0;
+          LOBYTE(uarpRestoreInitOptions) = 0;
         }
       }
     }
   }
 
-  return v4;
+  return uarpRestoreInitOptions;
 }
 
-- (BOOL)initUARPWithFirmware:(id)a3
+- (BOOL)initUARPWithFirmware:(id)firmware
 {
-  v4 = a3;
+  firmwareCopy = firmware;
   if ([(UARPSoCUpdaterInstance *)self initUARP])
   {
     uarpContext = self->_uarpContext;
-    v6 = [v4 bytes];
-    v7 = [v4 length];
-    v13 = UarpRestoreStageFirmwareDataBuffer(uarpContext, v6, v7, v8, v9, v10, v11, v12);
+    bytes = [firmwareCopy bytes];
+    v7 = [firmwareCopy length];
+    v13 = UarpRestoreStageFirmwareDataBuffer(uarpContext, bytes, v7, v8, v9, v10, v11, v12);
     if (!v13)
     {
       v16 = 1;
@@ -590,8 +590,8 @@ LABEL_5:
 - (void)printUpdaterMode
 {
   log = self->_log;
-  v4 = [(UARPSoCUpdaterInstance *)self name];
-  [(SoCUpdaterHelper *)log log:@"%@: Detected updater mode %s", v4, StringForSoCRestoreUpdateMode(self->_updaterMode)];
+  name = [(UARPSoCUpdaterInstance *)self name];
+  [(SoCUpdaterHelper *)log log:@"%@: Detected updater mode %s", name, StringForSoCRestoreUpdateMode(self->_updaterMode)];
 }
 
 - (id)name
@@ -602,14 +602,14 @@ LABEL_5:
     {
       logicUnitNumber = self->_logicUnitNumber;
       v4 = MEMORY[0x29EDBA0F8];
-      v5 = [(UARPSoCUpdaterInstance *)self namePrefix];
+      namePrefix = [(UARPSoCUpdaterInstance *)self namePrefix];
       if (logicUnitNumber == -1)
       {
-        v6 = [v4 stringWithUTF8String:v5];
+        v6 = [v4 stringWithUTF8String:namePrefix];
         goto LABEL_7;
       }
 
-      [v4 stringWithFormat:@"%s[%u]", v5, self->_logicUnitNumber];
+      [v4 stringWithFormat:@"%s[%u]", namePrefix, self->_logicUnitNumber];
     }
 
     else
@@ -627,15 +627,15 @@ LABEL_7:
   return v8;
 }
 
-- (void)updateStagingProgressWithBytesSent:(unsigned int)a3 bytesTotal:(unsigned int)a4
+- (void)updateStagingProgressWithBytesSent:(unsigned int)sent bytesTotal:(unsigned int)total
 {
-  v4 = ((a3 / a4) * 100.0);
+  v4 = ((sent / total) * 100.0);
   self->_lastPercentComplete = v4;
   if (self->_nextUpdateProgressReportPercentThreshold <= v4)
   {
     log = self->_log;
-    v7 = [(UARPSoCUpdaterInstance *)self name];
-    [(SoCUpdaterHelper *)log log:@"%@ Update: %u%%", v7, self->_lastPercentComplete];
+    name = [(UARPSoCUpdaterInstance *)self name];
+    [(SoCUpdaterHelper *)log log:@"%@ Update: %u%%", name, self->_lastPercentComplete];
 
     self->_nextUpdateProgressReportPercentThreshold = self->_lastPercentComplete + 10;
   }

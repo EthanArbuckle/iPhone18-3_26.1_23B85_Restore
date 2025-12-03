@@ -1,14 +1,14 @@
 @interface WFWorkoutGoalQuantityFieldParameter
 + (id)unitConversion;
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (WFAction)action;
 - (id)currentWorkoutActivityType;
 - (id)defaultSerializedRepresentation;
 - (id)defaultState;
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
-- (void)setAction:(id)a3;
-- (void)updateCurrentStateWithNewUnitString:(id)a3 currentState:(id)a4;
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
+- (void)setAction:(id)action;
+- (void)updateCurrentStateWithNewUnitString:(id)string currentState:(id)state;
 - (void)updatePossibleUnits;
 - (void)wasAddedToWorkflow;
 - (void)wasRemovedFromWorkflow;
@@ -23,13 +23,13 @@
   return WeakRetained;
 }
 
-- (id)localizedLabelForPossibleUnit:(id)a3 magnitude:(id)a4 style:(unint64_t)a5
+- (id)localizedLabelForPossibleUnit:(id)unit magnitude:(id)magnitude style:(unint64_t)style
 {
   v6 = MEMORY[0x277CCDAB0];
-  v7 = a4;
-  v8 = [v6 wf_safeUnitFromString:a3];
+  magnitudeCopy = magnitude;
+  v8 = [v6 wf_safeUnitFromString:unit];
   v9 = MEMORY[0x277CCABB0];
-  [v7 doubleValue];
+  [magnitudeCopy doubleValue];
   v11 = v10;
 
   v12 = [v9 numberWithDouble:v11];
@@ -38,16 +38,16 @@
   return v13;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
+  validCopy = valid;
+  possibleUnits = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
 
-  if (v5)
+  if (possibleUnits)
   {
-    v6 = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
-    v7 = [v4 unitString];
-    v8 = [v6 containsObject:v7];
+    possibleUnits2 = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
+    unitString = [validCopy unitString];
+    v8 = [possibleUnits2 containsObject:unitString];
   }
 
   else
@@ -60,12 +60,12 @@
 
 - (void)updatePossibleUnits
 {
-  v3 = [(WFWorkoutGoalQuantityFieldParameter *)self action];
+  action = [(WFWorkoutGoalQuantityFieldParameter *)self action];
   v4 = [(WFWorkoutGoalQuantityFieldParameter *)self key];
-  v5 = [v3 parameterStateForKey:v4];
+  v5 = [action parameterStateForKey:v4];
 
-  v6 = [v5 unitString];
-  v7 = [v6 copy];
+  unitString = [v5 unitString];
+  v7 = [unitString copy];
 
   v8 = [MEMORY[0x277CCDAB0] unitFromString:v7];
   v9 = +[WFWorkoutGoalQuantityFieldParameter unitConversion];
@@ -78,7 +78,7 @@
   v24[4] = __Block_byref_object_dispose__19562;
   v25 = 0;
   objc_initWeak(&location, self);
-  v11 = [(WFWorkoutGoalQuantityFieldParameter *)self currentWorkoutActivityType];
+  currentWorkoutActivityType = [(WFWorkoutGoalQuantityFieldParameter *)self currentWorkoutActivityType];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke;
@@ -94,7 +94,7 @@
   v19 = v14;
   v15 = v5;
   v20 = v15;
-  [WFFitnessUIHelper preferredUnitsForActivityType:v11 completion:v16];
+  [WFFitnessUIHelper preferredUnitsForActivityType:currentWorkoutActivityType completion:v16];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -215,25 +215,25 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
   }
 }
 
-- (void)updateCurrentStateWithNewUnitString:(id)a3 currentState:(id)a4
+- (void)updateCurrentStateWithNewUnitString:(id)string currentState:(id)state
 {
   v6 = MEMORY[0x277D7C788];
-  v7 = a4;
-  v8 = a3;
+  stateCopy = state;
+  stringCopy = string;
   v9 = [v6 alloc];
-  v10 = [v7 magnitudeState];
+  magnitudeState = [stateCopy magnitudeState];
 
-  v13 = [v9 initWithMagnitudeState:v10 unitString:v8];
-  v11 = [(WFWorkoutGoalQuantityFieldParameter *)self action];
+  v13 = [v9 initWithMagnitudeState:magnitudeState unitString:stringCopy];
+  action = [(WFWorkoutGoalQuantityFieldParameter *)self action];
   v12 = [(WFWorkoutGoalQuantityFieldParameter *)self key];
-  [v11 setParameterState:v13 forKey:v12];
+  [action setParameterState:v13 forKey:v12];
 }
 
 - (id)defaultState
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
-  v4 = [v3 objectForKey:*MEMORY[0x277D7CE00]];
+  definition = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
+  v4 = [definition objectForKey:*MEMORY[0x277D7CE00]];
   v5 = objc_opt_class();
   v6 = v4;
   if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -261,8 +261,8 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
     v7 = v6;
   }
 
-  v10 = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
-  v11 = [v10 firstObject];
+  possibleUnits = [(WFWorkoutGoalQuantityFieldParameter *)self possibleUnits];
+  firstObject = [possibleUnits firstObject];
 
   if (v7)
   {
@@ -274,7 +274,7 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
     v12 = 0;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D7C788]) initWithMagnitudeState:v12 unitString:v11];
+  v13 = [objc_alloc(MEMORY[0x277D7C788]) initWithMagnitudeState:v12 unitString:firstObject];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -286,10 +286,10 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
   defaultSerializedRepresentation = self->_defaultSerializedRepresentation;
   if (!defaultSerializedRepresentation)
   {
-    v4 = [(WFWorkoutGoalQuantityFieldParameter *)self defaultState];
-    v5 = [v4 serializedRepresentation];
+    defaultState = [(WFWorkoutGoalQuantityFieldParameter *)self defaultState];
+    serializedRepresentation = [defaultState serializedRepresentation];
     v6 = self->_defaultSerializedRepresentation;
-    self->_defaultSerializedRepresentation = v5;
+    self->_defaultSerializedRepresentation = serializedRepresentation;
 
     defaultSerializedRepresentation = self->_defaultSerializedRepresentation;
   }
@@ -299,22 +299,22 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
 
 - (id)currentWorkoutActivityType
 {
-  v3 = [(WFWorkoutGoalQuantityFieldParameter *)self action];
-  v4 = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
-  v5 = [v4 objectForKey:@"WFWorkoutGoalKey"];
-  v6 = [v3 parameterStateForKey:v5];
+  action = [(WFWorkoutGoalQuantityFieldParameter *)self action];
+  definition = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
+  v5 = [definition objectForKey:@"WFWorkoutGoalKey"];
+  v6 = [action parameterStateForKey:v5];
 
-  v7 = [v6 value];
+  value = [v6 value];
 
-  return v7;
+  return value;
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v5 = a4;
-  v6 = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
-  v7 = [v6 objectForKey:@"WFWorkoutGoalKey"];
-  v8 = [v5 isEqualToString:v7];
+  keyCopy = key;
+  definition = [(WFWorkoutGoalQuantityFieldParameter *)self definition];
+  v7 = [definition objectForKey:@"WFWorkoutGoalKey"];
+  v8 = [keyCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -328,8 +328,8 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
   v4.receiver = self;
   v4.super_class = WFWorkoutGoalQuantityFieldParameter;
   [(WFWorkoutGoalQuantityFieldParameter *)&v4 wasRemovedFromWorkflow];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CCCE80] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CCCE80] object:0];
 }
 
 - (void)wasAddedToWorkflow
@@ -337,13 +337,13 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
   v4.receiver = self;
   v4.super_class = WFWorkoutGoalQuantityFieldParameter;
   [(WFWorkoutGoalQuantityFieldParameter *)&v4 wasAddedToWorkflow];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_updatePossibleUnits name:*MEMORY[0x277CCCE80] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updatePossibleUnits name:*MEMORY[0x277CCCE80] object:0];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  obj = a3;
+  obj = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
 
   if (WeakRetained != obj)
@@ -361,21 +361,21 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
 + (id)unitConversion
 {
   v25[7] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCDAB0] largeCalorieUnit];
-  v3 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  largeCalorieUnit = [MEMORY[0x277CCDAB0] largeCalorieUnit];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
   v4 = [MEMORY[0x277CCDAB0] jouleUnitWithMetricPrefix:9];
-  v5 = [MEMORY[0x277CBEB98] setWithObjects:{v2, v3, v4, 0}];
+  v5 = [MEMORY[0x277CBEB98] setWithObjects:{largeCalorieUnit, kilocalorieUnit, v4, 0}];
   v6 = [MEMORY[0x277CCDAB0] meterUnitWithMetricPrefix:9];
-  v7 = [MEMORY[0x277CCDAB0] mileUnit];
-  v8 = [MEMORY[0x277CCDAB0] meterUnit];
-  v9 = [MEMORY[0x277CCDAB0] yardUnit];
-  v23 = v2;
-  v24[0] = v2;
-  v20 = [v5 setByRemovingObject:v2];
+  mileUnit = [MEMORY[0x277CCDAB0] mileUnit];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  yardUnit = [MEMORY[0x277CCDAB0] yardUnit];
+  v23 = largeCalorieUnit;
+  v24[0] = largeCalorieUnit;
+  v20 = [v5 setByRemovingObject:largeCalorieUnit];
   v25[0] = v20;
-  v22 = v3;
-  v24[1] = v3;
-  v10 = [v5 setByRemovingObject:v3];
+  v22 = kilocalorieUnit;
+  v24[1] = kilocalorieUnit;
+  v10 = [v5 setByRemovingObject:kilocalorieUnit];
   v25[1] = v10;
   v21 = v4;
   v24[2] = v4;
@@ -383,16 +383,16 @@ void __58__WFWorkoutGoalQuantityFieldParameter_updatePossibleUnits__block_invoke
   v25[2] = v11;
   v19 = v6;
   v24[3] = v6;
-  v12 = [MEMORY[0x277CBEB98] setWithObject:v7];
+  v12 = [MEMORY[0x277CBEB98] setWithObject:mileUnit];
   v25[3] = v12;
-  v24[4] = v7;
+  v24[4] = mileUnit;
   v13 = [MEMORY[0x277CBEB98] setWithObject:v6];
   v25[4] = v13;
-  v24[5] = v8;
-  v14 = [MEMORY[0x277CBEB98] setWithObject:v9];
+  v24[5] = meterUnit;
+  v14 = [MEMORY[0x277CBEB98] setWithObject:yardUnit];
   v25[5] = v14;
-  v24[6] = v9;
-  v15 = [MEMORY[0x277CBEB98] setWithObject:v8];
+  v24[6] = yardUnit;
+  v15 = [MEMORY[0x277CBEB98] setWithObject:meterUnit];
   v25[6] = v15;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:7];
 

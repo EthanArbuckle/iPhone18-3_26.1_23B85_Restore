@@ -1,8 +1,8 @@
 @interface HAPMetadataCharacteristicValue
-+ (id)initWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HAPMetadataCharacteristicValue)initWithMinLength:(id)a3 maxLength:(id)a4;
-- (HAPMetadataCharacteristicValue)initWithMinValue:(id)a3 maxValue:(id)a4 stepValue:(id)a5 validValues:(id)a6;
++ (id)initWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (HAPMetadataCharacteristicValue)initWithMinLength:(id)length maxLength:(id)maxLength;
+- (HAPMetadataCharacteristicValue)initWithMinValue:(id)value maxValue:(id)maxValue stepValue:(id)stepValue validValues:(id)values;
 - (id)description;
 - (id)generateDictionary;
 - (unint64_t)hash;
@@ -13,31 +13,31 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HAPMetadataCharacteristicValue *)self minLength];
-  v4 = [v3 hash];
-  v5 = [(HAPMetadataCharacteristicValue *)self maxLength];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HAPMetadataCharacteristicValue *)self minValue];
-  v8 = [v7 hash];
-  v9 = [(HAPMetadataCharacteristicValue *)self maxValue];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HAPMetadataCharacteristicValue *)self stepValue];
-  v12 = [v11 hash];
-  v13 = [(HAPMetadataCharacteristicValue *)self validValues];
-  v14 = v12 ^ [v13 hash];
+  minLength = [(HAPMetadataCharacteristicValue *)self minLength];
+  v4 = [minLength hash];
+  maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
+  v6 = [maxLength hash] ^ v4;
+  minValue = [(HAPMetadataCharacteristicValue *)self minValue];
+  v8 = [minValue hash];
+  maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
+  v10 = v6 ^ v8 ^ [maxValue hash];
+  stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
+  v12 = [stepValue hash];
+  validValues = [(HAPMetadataCharacteristicValue *)self validValues];
+  v14 = v12 ^ [validValues hash];
 
   return v10 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self != v8)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = equalCopy;
     }
 
     else
@@ -54,12 +54,12 @@ LABEL_71:
       goto LABEL_72;
     }
 
-    v11 = [(HAPMetadataCharacteristicValue *)self minLength];
-    if (v11 || ([(HAPMetadataCharacteristicValue *)v10 minLength], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
+    minLength = [(HAPMetadataCharacteristicValue *)self minLength];
+    if (minLength || ([(HAPMetadataCharacteristicValue *)v10 minLength], (v48 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v3 = [(HAPMetadataCharacteristicValue *)self minLength];
-      v4 = [(HAPMetadataCharacteristicValue *)v10 minLength];
-      if (([v3 isEqualToNumber:v4] & 1) == 0)
+      minLength2 = [(HAPMetadataCharacteristicValue *)self minLength];
+      minLength3 = [(HAPMetadataCharacteristicValue *)v10 minLength];
+      if (([minLength2 isEqualToNumber:minLength3] & 1) == 0)
       {
 
         v12 = 0;
@@ -75,34 +75,34 @@ LABEL_71:
       v49 = 0;
     }
 
-    v13 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    if (!v13)
+    maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
+    if (!maxLength)
     {
-      v45 = [(HAPMetadataCharacteristicValue *)v10 maxLength];
-      if (!v45)
+      maxLength2 = [(HAPMetadataCharacteristicValue *)v10 maxLength];
+      if (!maxLength2)
       {
-        v45 = 0;
+        maxLength2 = 0;
         v46 = 0;
         goto LABEL_24;
       }
     }
 
-    v6 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    v5 = [(HAPMetadataCharacteristicValue *)v10 maxLength];
-    if ([v6 isEqualToNumber:v5])
+    maxLength3 = [(HAPMetadataCharacteristicValue *)self maxLength];
+    maxLength4 = [(HAPMetadataCharacteristicValue *)v10 maxLength];
+    if ([maxLength3 isEqualToNumber:maxLength4])
     {
-      v42 = v6;
+      v42 = maxLength3;
       v46 = 1;
 LABEL_24:
-      v47 = [(HAPMetadataCharacteristicValue *)self minValue];
-      if (v47 || ([(HAPMetadataCharacteristicValue *)v10 minValue], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
+      minValue = [(HAPMetadataCharacteristicValue *)self minValue];
+      if (minValue || ([(HAPMetadataCharacteristicValue *)v10 minValue], (v38 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v14 = [(HAPMetadataCharacteristicValue *)self minValue];
-        v15 = [(HAPMetadataCharacteristicValue *)v10 minValue];
-        v44 = v14;
-        v16 = v14;
-        v6 = v15;
-        if (![v16 isEqualToNumber:v15])
+        minValue2 = [(HAPMetadataCharacteristicValue *)self minValue];
+        minValue3 = [(HAPMetadataCharacteristicValue *)v10 minValue];
+        v44 = minValue2;
+        v16 = minValue2;
+        maxLength3 = minValue3;
+        if (![v16 isEqualToNumber:minValue3])
         {
           v12 = 0;
           goto LABEL_59;
@@ -117,14 +117,14 @@ LABEL_24:
         v40 = 0;
       }
 
-      v41 = v5;
-      v43 = [(HAPMetadataCharacteristicValue *)self maxValue];
-      if (v43 || ([(HAPMetadataCharacteristicValue *)v10 maxValue], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+      v41 = maxLength4;
+      maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
+      if (maxValue || ([(HAPMetadataCharacteristicValue *)v10 maxValue], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v17 = [(HAPMetadataCharacteristicValue *)self maxValue];
-        v5 = [(HAPMetadataCharacteristicValue *)v10 maxValue];
-        v39 = v17;
-        if (![v17 isEqualToNumber:v5])
+        maxValue2 = [(HAPMetadataCharacteristicValue *)self maxValue];
+        maxLength4 = [(HAPMetadataCharacteristicValue *)v10 maxValue];
+        v39 = maxValue2;
+        if (![maxValue2 isEqualToNumber:maxLength4])
         {
           v12 = 0;
           goto LABEL_55;
@@ -139,20 +139,20 @@ LABEL_24:
         v36 = 0;
       }
 
-      v37 = [(HAPMetadataCharacteristicValue *)self stepValue];
-      if (v37 || ([(HAPMetadataCharacteristicValue *)v10 stepValue], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+      stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
+      if (stepValue || ([(HAPMetadataCharacteristicValue *)v10 stepValue], (v29 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v18 = [(HAPMetadataCharacteristicValue *)self stepValue];
-        v34 = [(HAPMetadataCharacteristicValue *)v10 stepValue];
-        v35 = v18;
-        if (![v18 isEqualToNumber:?])
+        stepValue2 = [(HAPMetadataCharacteristicValue *)self stepValue];
+        stepValue3 = [(HAPMetadataCharacteristicValue *)v10 stepValue];
+        v35 = stepValue2;
+        if (![stepValue2 isEqualToNumber:?])
         {
           v12 = 0;
 LABEL_51:
 
 LABEL_52:
-          v24 = v37;
-          if (!v37)
+          v24 = stepValue;
+          if (!stepValue)
           {
 
             v24 = 0;
@@ -161,19 +161,19 @@ LABEL_52:
           if (!v36)
           {
 LABEL_56:
-            v25 = v43;
-            if (!v43)
+            v25 = maxValue;
+            if (!maxValue)
             {
 
               v25 = 0;
             }
 
-            v5 = v41;
+            maxLength4 = v41;
             if (!v40)
             {
 LABEL_60:
-              v26 = v47;
-              if (!v47)
+              v26 = minValue;
+              if (!minValue)
               {
 
                 v26 = 0;
@@ -183,7 +183,7 @@ LABEL_60:
               {
               }
 
-              if (!v13)
+              if (!maxLength)
               {
               }
 
@@ -205,41 +205,41 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        v32 = v6;
+        v32 = maxLength3;
         v19 = 1;
       }
 
       else
       {
-        v32 = v6;
+        v32 = maxLength3;
         v29 = 0;
         v19 = 0;
       }
 
-      v20 = [(HAPMetadataCharacteristicValue *)self validValues];
-      if (v20 || ([(HAPMetadataCharacteristicValue *)v10 validValues], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
+      validValues = [(HAPMetadataCharacteristicValue *)self validValues];
+      if (validValues || ([(HAPMetadataCharacteristicValue *)v10 validValues], (v28 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v30 = v19;
-        v31 = v5;
-        v21 = [(HAPMetadataCharacteristicValue *)self validValues];
-        v22 = [(HAPMetadataCharacteristicValue *)v10 validValues];
-        v12 = [v21 isEqualToArray:v22];
+        v31 = maxLength4;
+        validValues2 = [(HAPMetadataCharacteristicValue *)self validValues];
+        validValues3 = [(HAPMetadataCharacteristicValue *)v10 validValues];
+        v12 = [validValues2 isEqualToArray:validValues3];
 
-        if (v20)
+        if (validValues)
         {
 
-          v5 = v31;
+          maxLength4 = v31;
           if (!v30)
           {
-            v6 = v32;
+            maxLength3 = v32;
             goto LABEL_52;
           }
 
-          v6 = v32;
+          maxLength3 = v32;
           goto LABEL_51;
         }
 
-        v5 = v31;
+        maxLength4 = v31;
         LOBYTE(v19) = v30;
         v23 = v28;
       }
@@ -250,7 +250,7 @@ LABEL_55:
         v12 = 1;
       }
 
-      v6 = v32;
+      maxLength3 = v32;
       if ((v19 & 1) == 0)
       {
         goto LABEL_52;
@@ -259,7 +259,7 @@ LABEL_55:
       goto LABEL_51;
     }
 
-    if (v13)
+    if (maxLength)
     {
     }
 
@@ -274,7 +274,7 @@ LABEL_67:
     }
 
 LABEL_68:
-    if (!v11)
+    if (!minLength)
     {
     }
 
@@ -310,52 +310,52 @@ LABEL_72:
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"ValueMetadata"];
-  v4 = [(HAPMetadataCharacteristicValue *)self minLength];
+  minLength = [(HAPMetadataCharacteristicValue *)self minLength];
 
-  if (v4)
+  if (minLength)
   {
-    v5 = [(HAPMetadataCharacteristicValue *)self minLength];
-    [v3 appendFormat:@"  minLength:%@", v5];
+    minLength2 = [(HAPMetadataCharacteristicValue *)self minLength];
+    [v3 appendFormat:@"  minLength:%@", minLength2];
   }
 
-  v6 = [(HAPMetadataCharacteristicValue *)self maxLength];
+  maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
 
-  if (v6)
+  if (maxLength)
   {
-    v7 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    [v3 appendFormat:@"  maxLength:%@", v7];
+    maxLength2 = [(HAPMetadataCharacteristicValue *)self maxLength];
+    [v3 appendFormat:@"  maxLength:%@", maxLength2];
   }
 
-  v8 = [(HAPMetadataCharacteristicValue *)self minValue];
+  minValue = [(HAPMetadataCharacteristicValue *)self minValue];
 
-  if (v8)
+  if (minValue)
   {
-    v9 = [(HAPMetadataCharacteristicValue *)self minValue];
-    [v3 appendFormat:@"  minValue:%@", v9];
+    minValue2 = [(HAPMetadataCharacteristicValue *)self minValue];
+    [v3 appendFormat:@"  minValue:%@", minValue2];
   }
 
-  v10 = [(HAPMetadataCharacteristicValue *)self maxValue];
+  maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
 
-  if (v10)
+  if (maxValue)
   {
-    v11 = [(HAPMetadataCharacteristicValue *)self maxValue];
-    [v3 appendFormat:@"  maxValue:%@", v11];
+    maxValue2 = [(HAPMetadataCharacteristicValue *)self maxValue];
+    [v3 appendFormat:@"  maxValue:%@", maxValue2];
   }
 
-  v12 = [(HAPMetadataCharacteristicValue *)self stepValue];
+  stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
 
-  if (v12)
+  if (stepValue)
   {
-    v13 = [(HAPMetadataCharacteristicValue *)self stepValue];
-    [v3 appendFormat:@"  stepValue:%@", v13];
+    stepValue2 = [(HAPMetadataCharacteristicValue *)self stepValue];
+    [v3 appendFormat:@"  stepValue:%@", stepValue2];
   }
 
-  v14 = [(HAPMetadataCharacteristicValue *)self validValues];
+  validValues = [(HAPMetadataCharacteristicValue *)self validValues];
 
-  if (v14)
+  if (validValues)
   {
-    v15 = [(HAPMetadataCharacteristicValue *)self validValues];
-    [v3 appendFormat:@"  validValues:%@", v15];
+    validValues2 = [(HAPMetadataCharacteristicValue *)self validValues];
+    [v3 appendFormat:@"  validValues:%@", validValues2];
   }
 
   return v3;
@@ -363,66 +363,66 @@ LABEL_72:
 
 - (id)generateDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HAPMetadataCharacteristicValue *)self minLength];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  minLength = [(HAPMetadataCharacteristicValue *)self minLength];
 
-  if (v4)
+  if (minLength)
   {
-    v5 = [(HAPMetadataCharacteristicValue *)self minLength];
-    [v3 setObject:v5 forKeyedSubscript:@"MinLength"];
+    minLength2 = [(HAPMetadataCharacteristicValue *)self minLength];
+    [dictionary setObject:minLength2 forKeyedSubscript:@"MinLength"];
   }
 
-  v6 = [(HAPMetadataCharacteristicValue *)self maxLength];
+  maxLength = [(HAPMetadataCharacteristicValue *)self maxLength];
 
-  if (v6)
+  if (maxLength)
   {
-    v7 = [(HAPMetadataCharacteristicValue *)self maxLength];
-    [v3 setObject:v7 forKeyedSubscript:@"MaxLength"];
+    maxLength2 = [(HAPMetadataCharacteristicValue *)self maxLength];
+    [dictionary setObject:maxLength2 forKeyedSubscript:@"MaxLength"];
   }
 
-  v8 = [(HAPMetadataCharacteristicValue *)self minValue];
+  minValue = [(HAPMetadataCharacteristicValue *)self minValue];
 
-  if (v8)
+  if (minValue)
   {
-    v9 = [(HAPMetadataCharacteristicValue *)self minValue];
-    [v3 setObject:v9 forKeyedSubscript:@"MinValue"];
+    minValue2 = [(HAPMetadataCharacteristicValue *)self minValue];
+    [dictionary setObject:minValue2 forKeyedSubscript:@"MinValue"];
   }
 
-  v10 = [(HAPMetadataCharacteristicValue *)self maxValue];
+  maxValue = [(HAPMetadataCharacteristicValue *)self maxValue];
 
-  if (v10)
+  if (maxValue)
   {
-    v11 = [(HAPMetadataCharacteristicValue *)self maxValue];
-    [v3 setObject:v11 forKeyedSubscript:@"MaxValue"];
+    maxValue2 = [(HAPMetadataCharacteristicValue *)self maxValue];
+    [dictionary setObject:maxValue2 forKeyedSubscript:@"MaxValue"];
   }
 
-  v12 = [(HAPMetadataCharacteristicValue *)self stepValue];
+  stepValue = [(HAPMetadataCharacteristicValue *)self stepValue];
 
-  if (v12)
+  if (stepValue)
   {
-    v13 = [(HAPMetadataCharacteristicValue *)self stepValue];
-    [v3 setObject:v13 forKeyedSubscript:@"StepValue"];
+    stepValue2 = [(HAPMetadataCharacteristicValue *)self stepValue];
+    [dictionary setObject:stepValue2 forKeyedSubscript:@"StepValue"];
   }
 
-  v14 = [(HAPMetadataCharacteristicValue *)self validValues];
-  v15 = [v14 count];
+  validValues = [(HAPMetadataCharacteristicValue *)self validValues];
+  v15 = [validValues count];
 
   if (v15)
   {
-    v16 = [(HAPMetadataCharacteristicValue *)self validValues];
-    [v3 setObject:v16 forKeyedSubscript:@"ValidValues"];
+    validValues2 = [(HAPMetadataCharacteristicValue *)self validValues];
+    [dictionary setObject:validValues2 forKeyedSubscript:@"ValidValues"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (HAPMetadataCharacteristicValue)initWithMinValue:(id)a3 maxValue:(id)a4 stepValue:(id)a5 validValues:(id)a6
+- (HAPMetadataCharacteristicValue)initWithMinValue:(id)value maxValue:(id)maxValue stepValue:(id)stepValue validValues:(id)values
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11 || v12 || v13)
+  valueCopy = value;
+  maxValueCopy = maxValue;
+  stepValueCopy = stepValue;
+  valuesCopy = values;
+  if (valueCopy || maxValueCopy || stepValueCopy)
   {
     v19.receiver = self;
     v19.super_class = HAPMetadataCharacteristicValue;
@@ -430,10 +430,10 @@ LABEL_72:
     v15 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_minValue, a3);
-      objc_storeStrong(&v15->_maxValue, a4);
-      objc_storeStrong(&v15->_stepValue, a5);
-      v17 = v14;
+      objc_storeStrong(&v16->_minValue, value);
+      objc_storeStrong(&v15->_maxValue, maxValue);
+      objc_storeStrong(&v15->_stepValue, stepValue);
+      v17 = valuesCopy;
       self = v15->_validValues;
       v15->_validValues = v17;
     }
@@ -452,11 +452,11 @@ LABEL_72:
   return v15;
 }
 
-- (HAPMetadataCharacteristicValue)initWithMinLength:(id)a3 maxLength:(id)a4
+- (HAPMetadataCharacteristicValue)initWithMinLength:(id)length maxLength:(id)maxLength
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  lengthCopy = length;
+  maxLengthCopy = maxLength;
+  if (lengthCopy | maxLengthCopy)
   {
     v13.receiver = self;
     v13.super_class = HAPMetadataCharacteristicValue;
@@ -464,8 +464,8 @@ LABEL_72:
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_minLength, a3);
-      v11 = v8;
+      objc_storeStrong(&v9->_minLength, length);
+      v11 = maxLengthCopy;
       self = v10->_maxLength;
       v10->_maxLength = v11;
     }
@@ -484,12 +484,12 @@ LABEL_72:
   return v10;
 }
 
-+ (id)initWithDictionary:(id)a3
++ (id)initWithDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 hmf_numberForKey:@"MinLength"];
-  v5 = [v3 hmf_numberForKey:@"MaxLength"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy hmf_numberForKey:@"MinLength"];
+  v5 = [dictionaryCopy hmf_numberForKey:@"MaxLength"];
   if (v4 | v5)
   {
     v6 = [[HAPMetadataCharacteristicValue alloc] initWithMinLength:v4 maxLength:v5];
@@ -500,10 +500,10 @@ LABEL_72:
     v6 = 0;
   }
 
-  v7 = [v3 hmf_numberForKey:@"MinValue"];
-  v8 = [v3 hmf_numberForKey:@"MaxValue"];
-  v9 = [v3 hmf_numberForKey:@"StepValue"];
-  v10 = [v3 hmf_arrayForKey:@"ValidValues"];
+  v7 = [dictionaryCopy hmf_numberForKey:@"MinValue"];
+  v8 = [dictionaryCopy hmf_numberForKey:@"MaxValue"];
+  v9 = [dictionaryCopy hmf_numberForKey:@"StepValue"];
+  v10 = [dictionaryCopy hmf_arrayForKey:@"ValidValues"];
   if (v7 || v8 || v9)
   {
     if (v6)
@@ -513,7 +513,7 @@ LABEL_72:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v16 = HMFGetLogIdentifier();
-        [v3 hmf_stringForKey:@"ShortUUID"];
+        [dictionaryCopy hmf_stringForKey:@"ShortUUID"];
         *buf = 138544898;
         v19 = v16;
         v21 = v20 = 2112;

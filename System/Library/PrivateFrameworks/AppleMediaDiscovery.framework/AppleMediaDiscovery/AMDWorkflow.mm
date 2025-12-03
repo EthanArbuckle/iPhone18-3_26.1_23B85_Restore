@@ -1,46 +1,46 @@
 @interface AMDWorkflow
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4;
-+ (id)deleteWorkflowForDomain:(int64_t)a3 withModelId:(id)a4 withSecondaryModelId:(id)a5 andUsecaseId:(id)a6 andTreatmentId:(id)a7 error:(id *)a8;
-+ (id)deleteWorkflowsForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6;
-+ (id)deleteWorkflowsForDomain:(int64_t)a3 error:(id *)a4;
-+ (id)deleteWorkflowsForModelId:(id)a3 error:(id *)a4;
-+ (id)fetchAllWorkflows:(id *)a3;
-+ (id)fetchWithPredicates:(id)a3 error:(id *)a4;
-+ (id)getAllActiveWorkflowsForDomain:(int64_t)a3 andUseCaseId:(id)a4 error:(id *)a5;
-+ (id)getAllWorkflowsForDomain:(int64_t)a3 withUseCaseId:(id)a4 error:(id *)a5;
-+ (id)getCurrentWorkflowForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6;
-+ (id)getWorkflowsForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6;
-+ (id)getWorkflowsForDomain:(int64_t)a3 error:(id *)a4;
-+ (id)getWorkflowsForModelId:(id)a3 error:(id *)a4;
-+ (id)performWorkflowCleanupForDomain:(int64_t)a3 error:(id *)a4;
-+ (void)addWorkflowsFromInflightTable:(id)a3 error:(id *)a4;
-+ (void)saveWorkflow:(id)a3 forDomain:(int64_t)a4 withCallUUID:(id)a5 error:(id *)a6;
++ (id)deleteWithPredicate:(id)predicate error:(id *)error;
++ (id)deleteWorkflowForDomain:(int64_t)domain withModelId:(id)id withSecondaryModelId:(id)modelId andUsecaseId:(id)usecaseId andTreatmentId:(id)treatmentId error:(id *)error;
++ (id)deleteWorkflowsForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error;
++ (id)deleteWorkflowsForDomain:(int64_t)domain error:(id *)error;
++ (id)deleteWorkflowsForModelId:(id)id error:(id *)error;
++ (id)fetchAllWorkflows:(id *)workflows;
++ (id)fetchWithPredicates:(id)predicates error:(id *)error;
++ (id)getAllActiveWorkflowsForDomain:(int64_t)domain andUseCaseId:(id)id error:(id *)error;
++ (id)getAllWorkflowsForDomain:(int64_t)domain withUseCaseId:(id)id error:(id *)error;
++ (id)getCurrentWorkflowForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error;
++ (id)getWorkflowsForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error;
++ (id)getWorkflowsForDomain:(int64_t)domain error:(id *)error;
++ (id)getWorkflowsForModelId:(id)id error:(id *)error;
++ (id)performWorkflowCleanupForDomain:(int64_t)domain error:(id *)error;
++ (void)addWorkflowsFromInflightTable:(id)table error:(id *)error;
++ (void)saveWorkflow:(id)workflow forDomain:(int64_t)domain withCallUUID:(id)d error:(id *)error;
 @end
 
 @implementation AMDWorkflow
 
-+ (void)saveWorkflow:(id)a3 forDomain:(int64_t)a4 withCallUUID:(id)a5 error:(id *)a6
++ (void)saveWorkflow:(id)workflow forDomain:(int64_t)domain withCallUUID:(id)d error:(id *)error
 {
   v55 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v51 = a4;
+  objc_storeStrong(location, workflow);
+  domainCopy = domain;
   v50 = 0;
-  objc_storeStrong(&v50, a5);
-  v49 = a6;
+  objc_storeStrong(&v50, d);
+  errorCopy = error;
   v16 = [AMDUseCaseWorkflow alloc];
   v48 = [(AMDUseCaseWorkflow *)v16 initWithDictionary:location[0]];
   if ([v48 isValid])
   {
-    v43 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:v49];
-    if (*v49)
+    v43 = [MEMORY[0x277CCAAA0] dataWithJSONObject:location[0] options:6 error:errorCopy];
+    if (*errorCopy)
     {
       v11 = MEMORY[0x277CCACA8];
-      v10 = [*v49 localizedDescription];
-      v42 = [v11 stringWithFormat:@"Error serializing segment workflow: '%@'", v10];
-      MEMORY[0x277D82BD8](v10);
+      localizedDescription = [*errorCopy localizedDescription];
+      v42 = [v11 stringWithFormat:@"Error serializing segment workflow: '%@'", localizedDescription];
+      MEMORY[0x277D82BD8](localizedDescription);
       v41 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v40 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
@@ -65,15 +65,15 @@
       v38 = __Block_byref_object_dispose__1;
       v39 = 0;
       v32 = +[AMDCoreDataPersistentContainer sharedContainer];
-      v31 = [v32 getManagedObjectContext];
-      v9 = v31;
+      getManagedObjectContext = [v32 getManagedObjectContext];
+      v9 = getManagedObjectContext;
       v20 = MEMORY[0x277D85DD0];
       v21 = -1073741824;
       v22 = 0;
       v23 = __57__AMDWorkflow_saveWorkflow_forDomain_withCallUUID_error___block_invoke;
       v24 = &unk_278CB5CF8;
-      v25 = MEMORY[0x277D82BE0](v31);
-      v30[2] = v51;
+      v25 = MEMORY[0x277D82BE0](getManagedObjectContext);
+      v30[2] = domainCopy;
       v26 = MEMORY[0x277D82BE0](v48);
       v27 = MEMORY[0x277D82BE0](v50);
       v28 = MEMORY[0x277D82BE0](v43);
@@ -85,7 +85,7 @@
       {
         v8 = v34[5];
         v7 = v8;
-        *v49 = v8;
+        *errorCopy = v8;
       }
 
       objc_storeStrong(v30, 0);
@@ -94,7 +94,7 @@
       objc_storeStrong(&v27, 0);
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v25, 0);
-      objc_storeStrong(&v31, 0);
+      objc_storeStrong(&getManagedObjectContext, 0);
       objc_storeStrong(&v32, 0);
       _Block_object_dispose(&v33, 8);
       objc_storeStrong(&v39, 0);
@@ -124,7 +124,7 @@
     [AMDFrameworkMetrics log:v47 withKey:@"SaveSegmentWorkflowFailure" atVerbosity:0];
     v12 = [AMDError allocError:19 withMessage:v47];
     v6 = v12;
-    *v49 = v12;
+    *errorCopy = v12;
     v44 = 1;
     objc_storeStrong(&v47, 0);
   }
@@ -194,13 +194,13 @@ void __57__AMDWorkflow_saveWorkflow_forDomain_withCallUUID_error___block_invoke(
   objc_storeStrong(v17, 0);
 }
 
-+ (void)addWorkflowsFromInflightTable:(id)a3 error:(id *)a4
++ (void)addWorkflowsFromInflightTable:(id)table error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, table);
+  errorCopy = error;
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -209,15 +209,15 @@ void __57__AMDWorkflow_saveWorkflow_forDomain_withCallUUID_error___block_invoke(
   v23 = __Block_byref_object_dispose__1;
   v24 = 0;
   v17 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v16 = [v17 getManagedObjectContext];
-  v6 = v16;
+  getManagedObjectContext = [v17 getManagedObjectContext];
+  v6 = getManagedObjectContext;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke;
   v12 = &unk_278CB5A08;
   v13 = MEMORY[0x277D82BE0](location[0]);
-  v14 = MEMORY[0x277D82BE0](v16);
+  v14 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v15[0] = MEMORY[0x277D82BE0](v17);
   v15[1] = &v18;
   [v6 performBlockAndWait:&v8];
@@ -225,13 +225,13 @@ void __57__AMDWorkflow_saveWorkflow_forDomain_withCallUUID_error___block_invoke(
   {
     v5 = v19[5];
     v4 = v5;
-    *v25 = v5;
+    *errorCopy = v5;
   }
 
   objc_storeStrong(v15, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v17, 0);
   _Block_object_dispose(&v18, 8);
   objc_storeStrong(&v24, 0);
@@ -326,13 +326,13 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)deleteWorkflowsForModelId:(id)a3 error:(id *)a4
++ (id)deleteWorkflowsForModelId:(id)id error:(id *)error
 {
-  v9 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v9;
+  objc_storeStrong(location, id);
+  v5 = selfCopy;
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"modelId == %d", location[0]];
   v7 = [v5 deleteWithPredicate:? error:?];
   MEMORY[0x277D82BD8](v6);
@@ -341,44 +341,44 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   return v7;
 }
 
-+ (id)deleteWorkflowsForDomain:(int64_t)a3 error:(id *)a4
++ (id)deleteWorkflowsForDomain:(int64_t)domain error:(id *)error
 {
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", a3];
-  v7 = [a1 deleteWithPredicate:? error:?];
-  MEMORY[0x277D82BD8](v6);
+  domain = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", domain];
+  v7 = [self deleteWithPredicate:? error:?];
+  MEMORY[0x277D82BD8](domain);
 
   return v7;
 }
 
-+ (id)deleteWorkflowForDomain:(int64_t)a3 withModelId:(id)a4 withSecondaryModelId:(id)a5 andUsecaseId:(id)a6 andTreatmentId:(id)a7 error:(id *)a8
++ (id)deleteWorkflowForDomain:(int64_t)domain withModelId:(id)id withSecondaryModelId:(id)modelId andUsecaseId:(id)usecaseId andTreatmentId:(id)treatmentId error:(id *)error
 {
-  v24 = a1;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, id);
   v20 = 0;
-  objc_storeStrong(&v20, a5);
+  objc_storeStrong(&v20, modelId);
   v19 = 0;
-  objc_storeStrong(&v19, a6);
+  objc_storeStrong(&v19, usecaseId);
   v18 = 0;
-  objc_storeStrong(&v18, a7);
-  v17 = a8;
+  objc_storeStrong(&v18, treatmentId);
+  errorCopy = error;
   v16 = 0;
   if (v20)
   {
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && modelId == %@ && secondaryModelId == %@ && useCaseId == %@ && treatmentId == %@", v22, location, v20, v19, v18];
+    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && modelId == %@ && secondaryModelId == %@ && useCaseId == %@ && treatmentId == %@", domainCopy, location, v20, v19, v18];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && modelId == %@ && useCaseId == %@ && treatmentId == %@", v22, location, v19, v18];
+    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && modelId == %@ && useCaseId == %@ && treatmentId == %@", domainCopy, location, v19, v18];
   }
 
   v9 = v16;
   v16 = v8;
   MEMORY[0x277D82BD8](v9);
-  v11 = [v24 deleteWithPredicate:v16 error:v17];
+  v11 = [selfCopy deleteWithPredicate:v16 error:errorCopy];
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
@@ -388,18 +388,18 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   return v11;
 }
 
-+ (id)deleteWorkflowsForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6
++ (id)deleteWorkflowsForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, id);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v10[1] = a6;
-  v10[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && treatmentId == %@ && useCaseId == %@", v13, location, v11];
-  v9 = [v15 deleteWithPredicate:v10[0] error:a6];
+  objc_storeStrong(&v11, caseId);
+  v10[1] = error;
+  v10[0] = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d && treatmentId == %@ && useCaseId == %@", domainCopy, location, v11];
+  v9 = [selfCopy deleteWithPredicate:v10[0] error:error];
   objc_storeStrong(v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&location, 0);
@@ -407,13 +407,13 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   return v9;
 }
 
-+ (id)deleteWithPredicate:(id)a3 error:(id *)a4
++ (id)deleteWithPredicate:(id)predicate error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v34 = a4;
+  objc_storeStrong(location, predicate);
+  errorCopy = error;
   v27 = 0;
   v28 = &v27;
   v29 = 838860800;
@@ -429,15 +429,15 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
   v19 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v18 = [v19 getManagedObjectContext];
-  v8 = v18;
+  getManagedObjectContext = [v19 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
   v13 = __41__AMDWorkflow_deleteWithPredicate_error___block_invoke;
   v14 = &unk_278CB5A58;
   v15 = MEMORY[0x277D82BE0](location[0]);
-  v16 = MEMORY[0x277D82BE0](v18);
+  v16 = MEMORY[0x277D82BE0](getManagedObjectContext);
   v17[1] = &v27;
   v17[0] = MEMORY[0x277D82BE0](v19);
   v17[2] = &v20;
@@ -446,7 +446,7 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   {
     v7 = v28[5];
     v4 = v7;
-    *v34 = v7;
+    *errorCopy = v7;
     v36 = 0;
   }
 
@@ -458,7 +458,7 @@ void __51__AMDWorkflow_addWorkflowsFromInflightTable_error___block_invoke(void *
   objc_storeStrong(v17, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v19, 0);
   _Block_object_dispose(&v20, 8);
   objc_storeStrong(&v26, 0);
@@ -518,13 +518,13 @@ void __41__AMDWorkflow_deleteWithPredicate_error___block_invoke(void *a1)
   objc_storeStrong(v18, 0);
 }
 
-+ (id)fetchWithPredicates:(id)a3 error:(id *)a4
++ (id)fetchWithPredicates:(id)predicates error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, predicates);
+  errorCopy = error;
   v26 = 0;
   v27 = &v26;
   v28 = 838860800;
@@ -540,8 +540,8 @@ void __41__AMDWorkflow_deleteWithPredicate_error___block_invoke(void *a1)
   v24 = __Block_byref_object_dispose__1;
   v25 = 0;
   v18 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v17 = [v18 getManagedObjectContext];
-  v8 = v17;
+  getManagedObjectContext = [v18 getManagedObjectContext];
+  v8 = getManagedObjectContext;
   v10 = MEMORY[0x277D85DD0];
   v11 = -1073741824;
   v12 = 0;
@@ -549,14 +549,14 @@ void __41__AMDWorkflow_deleteWithPredicate_error___block_invoke(void *a1)
   v14 = &unk_278CB5AA8;
   v15 = MEMORY[0x277D82BE0](location[0]);
   v16[1] = &v19;
-  v16[0] = MEMORY[0x277D82BE0](v17);
+  v16[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v16[2] = &v26;
   [v8 performBlockAndWait:&v10];
   if (v27[5])
   {
     v7 = v27[5];
     v4 = v7;
-    *v33 = v7;
+    *errorCopy = v7;
     v35 = 0;
   }
 
@@ -567,7 +567,7 @@ void __41__AMDWorkflow_deleteWithPredicate_error___block_invoke(void *a1)
 
   objc_storeStrong(v16, 0);
   objc_storeStrong(&v15, 0);
-  objc_storeStrong(&v17, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   objc_storeStrong(&v18, 0);
   _Block_object_dispose(&v19, 8);
   objc_storeStrong(&v25, 0);
@@ -609,31 +609,31 @@ void __41__AMDWorkflow_fetchWithPredicates_error___block_invoke(void *a1)
   objc_storeStrong(v12, 0);
 }
 
-+ (id)getWorkflowsForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6
++ (id)getWorkflowsForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error
 {
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, id);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v14 = a6;
+  objc_storeStrong(&v15, caseId);
+  errorCopy = error;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", v17];
+  domainCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", domainCopy];
   [v13 addObject:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](domainCopy);
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"useCaseId == %@", v15];
   [v13 addObject:?];
   MEMORY[0x277D82BD8](v12);
   if (location)
   {
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"treatmentId == %@ || treatmentId == %@", @"__defaultTreatment", location];
+    location = [MEMORY[0x277CCAC30] predicateWithFormat:@"treatmentId == %@ || treatmentId == %@", @"__defaultTreatment", location];
     [v13 addObject:?];
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](location);
   }
 
-  v7 = [v19 fetchWithPredicates:v13 error:v14];
+  v7 = [selfCopy fetchWithPredicates:v13 error:errorCopy];
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&location, 0);
@@ -641,77 +641,77 @@ void __41__AMDWorkflow_fetchWithPredicates_error___block_invoke(void *a1)
   return v7;
 }
 
-+ (id)getWorkflowsForDomain:(int64_t)a3 error:(id *)a4
++ (id)getWorkflowsForDomain:(int64_t)domain error:(id *)error
 {
-  v12 = a1;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = a4;
+  domainCopy = domain;
+  errorCopy = error;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = v8;
-  v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", v10];
+  domainCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", domainCopy];
   [v5 addObject:?];
-  MEMORY[0x277D82BD8](v6);
-  v7 = [v12 fetchWithPredicates:v8 error:v9];
+  MEMORY[0x277D82BD8](domainCopy);
+  v7 = [selfCopy fetchWithPredicates:v8 error:errorCopy];
   objc_storeStrong(&v8, 0);
 
   return v7;
 }
 
-+ (id)getAllWorkflowsForDomain:(int64_t)a3 withUseCaseId:(id)a4 error:(id *)a5
++ (id)getAllWorkflowsForDomain:(int64_t)domain withUseCaseId:(id)id error:(id *)error
 {
-  v17 = a1;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v13 = a5;
+  objc_storeStrong(&location, id);
+  errorCopy = error;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v7 = v12;
-  v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", v15];
+  domainCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"domain == %d", domainCopy];
   [v7 addObject:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](domainCopy);
   v9 = v12;
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"useCaseId == %@", location];
+  location = [MEMORY[0x277CCAC30] predicateWithFormat:@"useCaseId == %@", location];
   [v9 addObject:?];
-  MEMORY[0x277D82BD8](v10);
-  v11 = [v17 fetchWithPredicates:v12 error:v13];
+  MEMORY[0x277D82BD8](location);
+  v11 = [selfCopy fetchWithPredicates:v12 error:errorCopy];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&location, 0);
 
   return v11;
 }
 
-+ (id)getWorkflowsForModelId:(id)a3 error:(id *)a4
++ (id)getWorkflowsForModelId:(id)id error:(id *)error
 {
-  v12 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, id);
+  errorCopy = error;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = v9;
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"modelId == %@ || secondaryModelId == %@", location[0], location[0]];
   [v6 addObject:?];
   MEMORY[0x277D82BD8](v7);
-  v8 = [v12 fetchWithPredicates:v9 error:v10];
+  v8 = [selfCopy fetchWithPredicates:v9 error:errorCopy];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 
   return v8;
 }
 
-+ (id)getAllActiveWorkflowsForDomain:(int64_t)a3 andUseCaseId:(id)a4 error:(id *)a5
++ (id)getAllActiveWorkflowsForDomain:(int64_t)domain andUseCaseId:(id)id error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v28 = a1;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v24 = a5;
-  v23 = [AMDWorkflow getAllWorkflowsForDomain:v26 withUseCaseId:location error:a5];
-  if (*a5)
+  objc_storeStrong(&location, id);
+  errorCopy = error;
+  v23 = [AMDWorkflow getAllWorkflowsForDomain:domainCopy withUseCaseId:location error:error];
+  if (*error)
   {
     v29 = 0;
     v22 = 1;
@@ -738,8 +738,8 @@ void __41__AMDWorkflow_fetchWithPredicates_error___block_invoke(void *a1)
 
         v17 = *(__b[1] + 8 * v9);
         v15 = [v17 objectForKey:@"workflow"];
-        v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v15 options:4 error:v24];
-        if (*v24)
+        v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v15 options:4 error:errorCopy];
+        if (*errorCopy)
         {
           v29 = 0;
           v22 = 1;
@@ -789,20 +789,20 @@ LABEL_18:
 
   else
   {
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"No workflows for useCase '%@'", location];
+    location = [MEMORY[0x277CCACA8] stringWithFormat:@"No workflows for useCase '%@'", location];
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_1_8_64(v31, v21);
+      __os_log_helper_16_2_1_8_64(v31, location);
       _os_log_error_impl(&dword_240CB9000, oslog, type, "%@", v31, 0xCu);
     }
 
     objc_storeStrong(&oslog, 0);
-    [AMDFrameworkMetrics log:v21 withKey:@"getWorkflowFailure" atVerbosity:0];
+    [AMDFrameworkMetrics log:location withKey:@"getWorkflowFailure" atVerbosity:0];
     v29 = 0;
     v22 = 1;
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&location, 0);
   }
 
   objc_storeStrong(&v23, 0);
@@ -813,11 +813,11 @@ LABEL_18:
   return v5;
 }
 
-+ (id)fetchAllWorkflows:(id *)a3
++ (id)fetchAllWorkflows:(id *)workflows
 {
-  v32 = a1;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  workflowsCopy = workflows;
   v23 = 0;
   v24 = &v23;
   v25 = 838860800;
@@ -833,15 +833,15 @@ LABEL_18:
   v21 = __Block_byref_object_dispose__1;
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = +[AMDCoreDataPersistentContainer sharedContainer];
-  v15 = [v8 getManagedObjectContext];
+  getManagedObjectContext = [v8 getManagedObjectContext];
   MEMORY[0x277D82BD8](v8);
-  v7 = v15;
+  v7 = getManagedObjectContext;
   v9 = MEMORY[0x277D85DD0];
   v10 = -1073741824;
   v11 = 0;
   v12 = __33__AMDWorkflow_fetchAllWorkflows___block_invoke;
   v13 = &unk_278CB5D20;
-  v14[0] = MEMORY[0x277D82BE0](v15);
+  v14[0] = MEMORY[0x277D82BE0](getManagedObjectContext);
   v14[1] = &v23;
   v14[2] = &v16;
   [v7 performBlockAndWait:&v9];
@@ -849,7 +849,7 @@ LABEL_18:
   {
     v6 = v24[5];
     v3 = v6;
-    *v30 = v6;
+    *workflowsCopy = v6;
     v33 = 0;
   }
 
@@ -859,7 +859,7 @@ LABEL_18:
   }
 
   objc_storeStrong(v14, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&getManagedObjectContext, 0);
   _Block_object_dispose(&v16, 8);
   objc_storeStrong(&v22, 0);
   _Block_object_dispose(&v23, 8);
@@ -958,19 +958,19 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
   *MEMORY[0x277D85DE8];
 }
 
-+ (id)getCurrentWorkflowForDomain:(int64_t)a3 andTreatmentId:(id)a4 andUseCaseId:(id)a5 error:(id *)a6
++ (id)getCurrentWorkflowForDomain:(int64_t)domain andTreatmentId:(id)id andUseCaseId:(id)caseId error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v51 = a1;
+  selfCopy = self;
   v50 = a2;
-  v49 = a3;
+  domainCopy = domain;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, id);
   v47 = 0;
-  objc_storeStrong(&v47, a5);
-  v46 = a6;
-  v45 = [v51 getWorkflowsForDomain:v49 andTreatmentId:location andUseCaseId:v47 error:a6];
-  if (!*a6 && v45 && [v45 count])
+  objc_storeStrong(&v47, caseId);
+  errorCopy = error;
+  v45 = [selfCopy getWorkflowsForDomain:domainCopy andTreatmentId:location andUseCaseId:v47 error:error];
+  if (!*error && v45 && [v45 count])
   {
     v43 = 0;
     memset(__b, 0, sizeof(__b));
@@ -992,13 +992,13 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
         v42 = *(__b[1] + 8 * v22);
         v40 = [v42 objectForKey:@"treatmentId"];
         v16 = [v42 objectForKey:@"startTime"];
-        v17 = [v16 longLongValue];
+        longLongValue = [v16 longLongValue];
         MEMORY[0x277D82BD8](v16);
-        v39 = v17;
+        v39 = longLongValue;
         v18 = [v42 objectForKey:@"endTime"];
-        v19 = [v18 longLongValue];
+        longLongValue2 = [v18 longLongValue];
         MEMORY[0x277D82BD8](v18);
-        v38 = v19;
+        v38 = longLongValue2;
         if ([v40 isEqual:@"__defaultTreatment"])
         {
           if (!v43)
@@ -1009,10 +1009,10 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
 
         else
         {
-          v14 = [MEMORY[0x277CBEAA8] date];
-          [v14 timeIntervalSince1970];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSince1970];
           v15 = v6;
-          MEMORY[0x277D82BD8](v14);
+          MEMORY[0x277D82BD8](date);
           v37 = v15;
           if (v15 >= v39 && v37 <= v38)
           {
@@ -1049,12 +1049,12 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
       }
 
       objc_storeStrong(&v30, 0);
-      v28 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v31 options:4 error:v46];
+      v28 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v31 options:4 error:errorCopy];
       v11 = v32;
       v12 = [v47 stringByAppendingString:@"UUID"];
       [AMDFrameworkMetrics log:"log:withKey:atVerbosity:" withKey:v11 atVerbosity:?];
       MEMORY[0x277D82BD8](v12);
-      if (*v46)
+      if (*errorCopy)
       {
         v52 = 0;
       }
@@ -1086,7 +1086,7 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
       objc_storeStrong(&oslog, 0);
       v13 = [AMDError allocError:15 withMessage:v36];
       v7 = v13;
-      *v46 = v13;
+      *errorCopy = v13;
       v52 = 0;
       v44 = 1;
       objc_storeStrong(&v36, 0);
@@ -1110,15 +1110,15 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
   return v9;
 }
 
-+ (id)performWorkflowCleanupForDomain:(int64_t)a3 error:(id *)a4
++ (id)performWorkflowCleanupForDomain:(int64_t)domain error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v49 = a1;
+  selfCopy = self;
   v48 = a2;
-  v47 = a3;
-  v46 = a4;
-  v45 = [a1 getWorkflowsForDomain:a3 error:a4];
-  if (*v46)
+  domainCopy = domain;
+  errorCopy = error;
+  v45 = [self getWorkflowsForDomain:domain error:error];
+  if (*errorCopy)
   {
     oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     type = OS_LOG_TYPE_ERROR;
@@ -1126,11 +1126,11 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
     {
       log = oslog;
       v23 = type;
-      v24 = [*v46 localizedDescription];
-      v42 = MEMORY[0x277D82BE0](v24);
+      localizedDescription = [*errorCopy localizedDescription];
+      v42 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v55, v42);
       _os_log_error_impl(&dword_240CB9000, log, v23, "Workflow fetch error: %@", v55, 0xCu);
-      MEMORY[0x277D82BD8](v24);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v42, 0);
     }
 
@@ -1141,10 +1141,10 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
 
   else if (v45)
   {
-    v16 = [MEMORY[0x277CBEAA8] date];
-    [v16 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v17 = v4;
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](date);
     v37 = v17;
     v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
     memset(__b, 0, sizeof(__b));
@@ -1182,11 +1182,11 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
           v31 = [v35 objectForKey:@"useCaseId"];
           v30 = 0;
           v29 = 0;
-          v5 = [v49 deleteWorkflowsForDomain:v47 andTreatmentId:v33 andUseCaseId:v31 error:&v29];
+          v5 = [selfCopy deleteWorkflowsForDomain:domainCopy andTreatmentId:v33 andUseCaseId:v31 error:&v29];
           objc_storeStrong(&v30, v29);
           if (v30)
           {
-            v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error deleting workflow with domain: %ld, usecase: %@, treatmentId: %@", v47, v31, v33];
+            v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error deleting workflow with domain: %ld, usecase: %@, treatmentId: %@", domainCopy, v31, v33];
             v27 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             v26 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1210,7 +1210,7 @@ void __33__AMDWorkflow_fetchAllWorkflows___block_invoke(void *a1)
             v51[1] = @"treatmentId";
             v52[1] = v33;
             v51[2] = @"domain";
-            v8 = [MEMORY[0x277CCABB0] numberWithInteger:v47];
+            v8 = [MEMORY[0x277CCABB0] numberWithInteger:domainCopy];
             v52[2] = v8;
             v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:v51 count:3];
             MEMORY[0x277D82BD8](v8);

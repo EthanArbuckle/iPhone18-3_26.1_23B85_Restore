@@ -1,50 +1,50 @@
 @interface VSPersistentSubscription
 + (id)keyPathsForValuesAffectingDerivedSubscriptionInfo;
-- (BOOL)_validateNullableValue:(id *)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)validateCreationDate:(id *)a3 error:(id *)a4;
-- (BOOL)validateModificationDate:(id *)a3 error:(id *)a4;
-- (BOOL)validateTierIdentifiers:(id *)a3 error:(id *)a4;
-- (void)_deriveValuesFromProvidedInfo:(id)a3;
-- (void)_setNullResettableValue:(id)a3 forKey:(id)a4;
+- (BOOL)_validateNullableValue:(id *)value forKey:(id)key error:(id *)error;
+- (BOOL)validateCreationDate:(id *)date error:(id *)error;
+- (BOOL)validateModificationDate:(id *)date error:(id *)error;
+- (BOOL)validateTierIdentifiers:(id *)identifiers error:(id *)error;
+- (void)_deriveValuesFromProvidedInfo:(id)info;
+- (void)_setNullResettableValue:(id)value forKey:(id)key;
 - (void)_updateDerivedSubscriptionInfo;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setAccessLevel:(id)a3;
-- (void)setBillingIdentifier:(id)a3;
-- (void)setProvidedSubscriptionInfo:(id)a3;
-- (void)setSubscriberIdentifierHash:(id)a3;
-- (void)setTierIdentifiers:(id)a3;
+- (void)didChangeValueForKey:(id)key;
+- (void)setAccessLevel:(id)level;
+- (void)setBillingIdentifier:(id)identifier;
+- (void)setProvidedSubscriptionInfo:(id)info;
+- (void)setSubscriberIdentifierHash:(id)hash;
+- (void)setTierIdentifiers:(id)identifiers;
 @end
 
 @implementation VSPersistentSubscription
 
-- (void)_setNullResettableValue:(id)a3 forKey:(id)a4
+- (void)_setNullResettableValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  valueCopy = value;
+  keyCopy = key;
+  if (!valueCopy)
   {
     v9 = 0;
-    [(VSPersistentSubscription *)self validateValue:&v9 forKey:v7 error:0];
-    v6 = v9;
+    [(VSPersistentSubscription *)self validateValue:&v9 forKey:keyCopy error:0];
+    valueCopy = v9;
   }
 
-  [(VSPersistentSubscription *)self willChangeValueForKey:v7];
-  v8 = [v6 copy];
-  [(VSPersistentSubscription *)self setPrimitiveValue:v8 forKey:v7];
+  [(VSPersistentSubscription *)self willChangeValueForKey:keyCopy];
+  v8 = [valueCopy copy];
+  [(VSPersistentSubscription *)self setPrimitiveValue:v8 forKey:keyCopy];
 
-  [(VSPersistentSubscription *)self didChangeValueForKey:v7];
+  [(VSPersistentSubscription *)self didChangeValueForKey:keyCopy];
 }
 
-- (BOOL)_validateNullableValue:(id *)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)_validateNullableValue:(id *)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  if (!*a3)
+  keyCopy = key;
+  if (!*value)
   {
-    v10 = [(VSPersistentSubscription *)self entity];
-    v11 = [v10 attributesByName];
-    v12 = [v11 objectForKey:v8];
+    entity = [(VSPersistentSubscription *)self entity];
+    attributesByName = [entity attributesByName];
+    v12 = [attributesByName objectForKey:keyCopy];
 
     if ([v12 isOptional])
     {
@@ -53,17 +53,17 @@
 
     else
     {
-      v13 = [v12 defaultValue];
-      if (v13)
+      defaultValue = [v12 defaultValue];
+      if (defaultValue)
       {
-        v14 = v13;
-        *a3 = v13;
+        v14 = defaultValue;
+        *value = defaultValue;
         v9 = 1;
       }
 
       else
       {
-        if (!a5)
+        if (!error)
         {
           v9 = 0;
           goto LABEL_10;
@@ -71,9 +71,9 @@
 
         v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
         [v14 setObject:self forKey:*MEMORY[0x277CBE320]];
-        [v14 setObject:v8 forKey:*MEMORY[0x277CBE318]];
+        [v14 setObject:keyCopy forKey:*MEMORY[0x277CBE318]];
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:1570 userInfo:v14];
-        *a5 = v9 = 0;
+        *error = v9 = 0;
       }
     }
 
@@ -124,31 +124,31 @@ id __77__VSPersistentSubscription_keyPathsForValuesAffectingDerivedSubscriptionI
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  v5 = [v4 length];
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  v5 = [providedSubscriptionInfo length];
 
   if (v5)
   {
-    v6 = VSDefaultLogObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    entity = VSDefaultLogObject();
+    if (os_log_type_enabled(entity, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v7 = "Provided info will be used.";
 LABEL_7:
-      _os_log_impl(&dword_23AB8E000, v6, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
+      _os_log_impl(&dword_23AB8E000, entity, OS_LOG_TYPE_DEFAULT, v7, buf, 2u);
       goto LABEL_8;
     }
 
     goto LABEL_8;
   }
 
-  v8 = [(VSPersistentSubscription *)self accessLevel];
-  v9 = [v8 isEqual:&unk_284DF32E0];
+  accessLevel = [(VSPersistentSubscription *)self accessLevel];
+  v9 = [accessLevel isEqual:&unk_284DF32E0];
 
   if (v9)
   {
-    v6 = VSDefaultLogObject();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    entity = VSDefaultLogObject();
+    if (os_log_type_enabled(entity, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v7 = "Access level is unknown; will not derive subscription info.";
@@ -160,9 +160,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = [(VSPersistentSubscription *)self entity];
+  entity = [(VSPersistentSubscription *)self entity];
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v13 = [v6 attributesByName];
+  attributesByName = [entity attributesByName];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __58__VSPersistentSubscription__updateDerivedSubscriptionInfo__block_invoke;
@@ -170,7 +170,7 @@ LABEL_8:
   v20[4] = self;
   v14 = v12;
   v21 = v14;
-  [v13 enumerateKeysAndObjectsUsingBlock:v20];
+  [attributesByName enumerateKeysAndObjectsUsingBlock:v20];
 
   v19 = 0;
   v15 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v14 options:2 error:&v19];
@@ -237,13 +237,13 @@ void __58__VSPersistentSubscription__updateDerivedSubscriptionInfo__block_invoke
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_deriveValuesFromProvidedInfo:(id)a3
+- (void)_deriveValuesFromProvidedInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_autoreleasePoolPush();
-  if ([v4 length])
+  if ([infoCopy length])
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [infoCopy dataUsingEncoding:4];
     if (v6)
     {
       v24 = 0;
@@ -267,8 +267,8 @@ void __58__VSPersistentSubscription__updateDerivedSubscriptionInfo__block_invoke
 
           v14 = v9;
           v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v19 = [(VSPersistentSubscription *)self entity];
-          v16 = [v19 attributesByName];
+          entity = [(VSPersistentSubscription *)self entity];
+          attributesByName = [entity attributesByName];
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke;
@@ -277,7 +277,7 @@ void __58__VSPersistentSubscription__updateDerivedSubscriptionInfo__block_invoke
           v22 = v17;
           v18 = v15;
           v23 = v18;
-          [v16 enumerateKeysAndObjectsUsingBlock:v21];
+          [attributesByName enumerateKeysAndObjectsUsingBlock:v21];
 
           if ([v18 count])
           {
@@ -514,12 +514,12 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
   [*(a1 + 32) _setNullResettableValue:v9 forKey:v6];
 }
 
-- (void)setProvidedSubscriptionInfo:(id)a3
+- (void)setProvidedSubscriptionInfo:(id)info
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   [(VSPersistentSubscription *)self willChangeValueForKey:@"providedSubscriptionInfo"];
-  v5 = [v4 copy];
+  v5 = [infoCopy copy];
 
   [(VSPersistentSubscription *)self _deriveValuesFromProvidedInfo:v5];
   v6 = VSDefaultLogObject();
@@ -534,12 +534,12 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
   [(VSPersistentSubscription *)self didChangeValueForKey:@"providedSubscriptionInfo"];
 }
 
-- (void)setAccessLevel:(id)a3
+- (void)setAccessLevel:(id)level
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  v6 = [v5 length];
+  levelCopy = level;
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  v6 = [providedSubscriptionInfo length];
 
   if (v6)
   {
@@ -547,23 +547,23 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = levelCopy;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring access level %@ because of subscription info.", &v8, 0xCu);
     }
   }
 
   else
   {
-    [(VSPersistentSubscription *)self _setNullResettableValue:v4 forKey:@"accessLevel"];
+    [(VSPersistentSubscription *)self _setNullResettableValue:levelCopy forKey:@"accessLevel"];
   }
 }
 
-- (void)setSubscriberIdentifierHash:(id)a3
+- (void)setSubscriberIdentifierHash:(id)hash
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  v6 = [v5 length];
+  hashCopy = hash;
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  v6 = [providedSubscriptionInfo length];
 
   if (v6)
   {
@@ -571,23 +571,23 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = hashCopy;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring subscriber identifier hash %@ because of subscription info.", &v8, 0xCu);
     }
   }
 
   else
   {
-    [(VSPersistentSubscription *)self _setNullResettableValue:v4 forKey:@"subscriberIdentifierHash"];
+    [(VSPersistentSubscription *)self _setNullResettableValue:hashCopy forKey:@"subscriberIdentifierHash"];
   }
 }
 
-- (void)setBillingIdentifier:(id)a3
+- (void)setBillingIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  v6 = [v5 length];
+  identifierCopy = identifier;
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  v6 = [providedSubscriptionInfo length];
 
   if (v6)
   {
@@ -595,23 +595,23 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring billing identifier %@ because of subscription info.", &v8, 0xCu);
     }
   }
 
   else
   {
-    [(VSPersistentSubscription *)self _setNullResettableValue:v4 forKey:@"billingIdentifier"];
+    [(VSPersistentSubscription *)self _setNullResettableValue:identifierCopy forKey:@"billingIdentifier"];
   }
 }
 
-- (void)setTierIdentifiers:(id)a3
+- (void)setTierIdentifiers:(id)identifiers
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  v6 = [v5 length];
+  identifiersCopy = identifiers;
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  v6 = [providedSubscriptionInfo length];
 
   if (v6)
   {
@@ -619,14 +619,14 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = identifiersCopy;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Ignoring tier identifiers %@ because of subscription info.", &v8, 0xCu);
     }
   }
 
   else
   {
-    [(VSPersistentSubscription *)self _setNullResettableValue:v4 forKey:@"tierIdentifiers"];
+    [(VSPersistentSubscription *)self _setNullResettableValue:identifiersCopy forKey:@"tierIdentifiers"];
   }
 }
 
@@ -663,28 +663,28 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
   }
 
   [(VSPersistentSubscription *)self _updateDerivedSubscriptionInfo];
-  v4 = [(VSPersistentSubscription *)self providedSubscriptionInfo];
-  [(VSPersistentSubscription *)self _deriveValuesFromProvidedInfo:v4];
+  providedSubscriptionInfo = [(VSPersistentSubscription *)self providedSubscriptionInfo];
+  [(VSPersistentSubscription *)self _deriveValuesFromProvidedInfo:providedSubscriptionInfo];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = VSPersistentSubscription;
-  [(VSPersistentSubscription *)&v9 didChangeValueForKey:v4];
-  v5 = [objc_opt_class() keyPathsForValuesAffectingDerivedSubscriptionInfo];
-  v6 = [v5 containsObject:v4];
+  [(VSPersistentSubscription *)&v9 didChangeValueForKey:keyCopy];
+  keyPathsForValuesAffectingDerivedSubscriptionInfo = [objc_opt_class() keyPathsForValuesAffectingDerivedSubscriptionInfo];
+  v6 = [keyPathsForValuesAffectingDerivedSubscriptionInfo containsObject:keyCopy];
 
   if (v6)
   {
     v7 = VSDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(VSPersistentSubscription *)self valueForKey:v4];
+      v8 = [(VSPersistentSubscription *)self valueForKey:keyCopy];
       *buf = 138412546;
-      v11 = v4;
+      v11 = keyCopy;
       v12 = 2112;
       v13 = v8;
       _os_log_impl(&dword_23AB8E000, v7, OS_LOG_TYPE_DEFAULT, "Did change value for %@ key to %@, triggering derivation.", buf, 0x16u);
@@ -694,52 +694,52 @@ void __58__VSPersistentSubscription__deriveValuesFromProvidedInfo___block_invoke
   }
 }
 
-- (BOOL)validateCreationDate:(id *)a3 error:(id *)a4
+- (BOOL)validateCreationDate:(id *)date error:(id *)error
 {
-  if (!*a3)
+  if (!*date)
   {
     v5 = MEMORY[0x277CBEAA8];
     v6 = 0;
-    v7 = [v5 vs_currentDate];
-    v8 = v7;
+    vs_currentDate = [v5 vs_currentDate];
+    v8 = vs_currentDate;
 
-    *a3 = v7;
+    *date = vs_currentDate;
   }
 
   return 1;
 }
 
-- (BOOL)validateModificationDate:(id *)a3 error:(id *)a4
+- (BOOL)validateModificationDate:(id *)date error:(id *)error
 {
-  if (!*a3)
+  if (!*date)
   {
     v5 = MEMORY[0x277CBEAA8];
     v6 = 0;
-    v7 = [v5 vs_currentDate];
-    v8 = v7;
+    vs_currentDate = [v5 vs_currentDate];
+    v8 = vs_currentDate;
 
-    *a3 = v7;
+    *date = vs_currentDate;
   }
 
   return 1;
 }
 
-- (BOOL)validateTierIdentifiers:(id *)a3 error:(id *)a4
+- (BOOL)validateTierIdentifiers:(id *)identifiers error:(id *)error
 {
-  v7 = *a3;
+  v7 = *identifiers;
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v7];
-    v9 = [v8 allObjects];
+    allObjects = [v8 allObjects];
 
-    *a3 = [v9 sortedArrayUsingSelector:sel_compare_];
+    *identifiers = [allObjects sortedArrayUsingSelector:sel_compare_];
 
     v10 = 1;
   }
 
   else
   {
-    v10 = [(VSPersistentSubscription *)self _validateNullableValue:a3 forKey:@"tierIdentifiers" error:a4];
+    v10 = [(VSPersistentSubscription *)self _validateNullableValue:identifiers forKey:@"tierIdentifiers" error:error];
   }
 
   return v10;

@@ -1,24 +1,24 @@
 @interface HUAccessoryFirmwareUpdateOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUAccessoryFirmwareUpdateOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUAccessoryFirmwareUpdateOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUAccessoryFirmwareUpdateOnboardingFlow
 
-- (HUAccessoryFirmwareUpdateOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUAccessoryFirmwareUpdateOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HUAccessoryFirmwareUpdateOnboardingFlow;
   v8 = [(HUAccessoryFirmwareUpdateOnboardingFlow *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __69__HUAccessoryFirmwareUpdateOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -71,51 +71,51 @@ void __69__HUAccessoryFirmwareUpdateOnboardingFlow_initWithUsageOptions_home___b
   }
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUAccessoryFirmwareUpdateOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUAccessoryFirmwareUpdateOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v8;
     v16 = 2112;
-    v17 = v5;
+    v17 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] && objc_msgSend(v6, "integerValue") != 1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUAccessoryFirmwareUpdateOnboardingFlow.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUAccessoryFirmwareUpdateOnboardingValue_Setup) || (userInputValue.integerValue == HUAccessoryFirmwareUpdateOnboardingValue_DontSetup)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAccessoryFirmwareUpdateOnboardingFlow.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUAccessoryFirmwareUpdateOnboardingValue_Setup) || (userInputValue.integerValue == HUAccessoryFirmwareUpdateOnboardingValue_DontSetup)"}];
   }
 
-  [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_AccessoryFirmwareUpdate_FinishedOnboarding"];
-  v9 = [(HUAccessoryFirmwareUpdateOnboardingFlow *)self onboardingFuture];
-  [v9 finishWithNoResult];
+  [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_AccessoryFirmwareUpdate_FinishedOnboarding"];
+  onboardingFuture = [(HUAccessoryFirmwareUpdateOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture finishWithNoResult];
 
   return 0;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_initWeak(&location, a1);
+  homeCopy = home;
+  optionsCopy = options;
+  objc_initWeak(&location, self);
   v9 = MEMORY[0x277D2C900];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __74__HUAccessoryFirmwareUpdateOnboardingFlow_needsOnboardingForHome_options___block_invoke;
   v14[3] = &unk_277DBCAB8;
   objc_copyWeak(v17, &location);
-  v10 = v7;
+  v10 = homeCopy;
   v15 = v10;
-  v11 = v8;
+  v11 = optionsCopy;
   v16 = v11;
   v17[1] = a2;
   v12 = [v9 futureWithBlock:v14];

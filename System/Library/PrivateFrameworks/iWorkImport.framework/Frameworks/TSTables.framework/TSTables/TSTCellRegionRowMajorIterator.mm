@@ -1,6 +1,6 @@
 @interface TSTCellRegionRowMajorIterator
-- (TSTCellRegionRowMajorIterator)initWithCellRegion:(id)a3;
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3;
+- (TSTCellRegionRowMajorIterator)initWithCellRegion:(id)region;
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d;
 - (TSUCellCoord)getNext;
 - (id).cxx_construct;
 - (void)terminate;
@@ -8,17 +8,17 @@
 
 @implementation TSTCellRegionRowMajorIterator
 
-- (TSTCellRegionRowMajorIterator)initWithCellRegion:(id)a3
+- (TSTCellRegionRowMajorIterator)initWithCellRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v15.receiver = self;
   v15.super_class = TSTCellRegionRowMajorIterator;
   v5 = [(TSTCellRegionRowMajorIterator *)&v15 init];
   v8 = v5;
   if (v5)
   {
-    objc_msgSend_fillCellRangeRowMajorSet_leftToRight_(v4, v6, &v5->mCellRangeSet, 1, v7);
-    v8->mBoundingCellRange.origin = objc_msgSend_boundingCellRange(v4, v9, v10, v11, v12);
+    objc_msgSend_fillCellRangeRowMajorSet_leftToRight_(regionCopy, v6, &v5->mCellRangeSet, 1, v7);
+    v8->mBoundingCellRange.origin = objc_msgSend_boundingCellRange(regionCopy, v9, v10, v11, v12);
     v8->mBoundingCellRange.size = v13;
     v8->mCellID = *(v8->mCellRangeSet.__tree_.__begin_node_ + 28);
   }
@@ -71,10 +71,10 @@
   return mCellID;
 }
 
-- (TSUCellCoord)advanceToCellID:(TSUCellCoord)a3
+- (TSUCellCoord)advanceToCellID:(TSUCellCoord)d
 {
   row = self->mCellID.row;
-  if (row > a3.row || row == a3.row && self->mCellID.column > a3.column || a3.row == 0x7FFFFFFF || (*&a3 & 0xFFFF00000000) == 0x7FFF00000000)
+  if (row > d.row || row == d.row && self->mCellID.column > d.column || d.row == 0x7FFFFFFF || (*&d & 0xFFFF00000000) == 0x7FFF00000000)
   {
     return self->mCellID;
   }
@@ -86,7 +86,7 @@ LABEL_35:
     goto LABEL_37;
   }
 
-  column = a3.column;
+  column = d.column;
   while (1)
   {
     begin_node = self->mCellRangeSet.__tree_.__begin_node_;
@@ -102,7 +102,7 @@ LABEL_35:
       v10 = v18.origin.row;
     }
 
-    if (v10 > a3.row)
+    if (v10 > d.row)
     {
       origin = *(begin_node + 28);
       goto LABEL_37;
@@ -128,14 +128,14 @@ LABEL_35:
       v12 = v18.origin.row + v18.size.numberOfRows - 1;
     }
 
-    if (v12 < a3.row)
+    if (v12 < d.row)
     {
       sub_22112C950(&self->mCellRangeSet, begin_node);
       operator delete(begin_node);
       goto LABEL_34;
     }
 
-    if (v10 < a3.row)
+    if (v10 < d.row)
     {
       sub_22112C950(&self->mCellRangeSet, begin_node);
       operator delete(begin_node);
@@ -167,9 +167,9 @@ LABEL_34:
     }
   }
 
-  if (v18.origin.row != 0x7FFFFFFF && (*&v18.origin & 0xFFFF00000000) == 0x7FFF00000000 || v18.origin.column <= a3.column)
+  if (v18.origin.row != 0x7FFFFFFF && (*&v18.origin & 0xFFFF00000000) == 0x7FFF00000000 || v18.origin.column <= d.column)
   {
-    origin = a3;
+    origin = d;
   }
 
 LABEL_37:

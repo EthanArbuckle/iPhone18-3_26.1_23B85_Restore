@@ -1,12 +1,12 @@
 @interface MTLTextureDescriptorInternal
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithDevice:(id)device;
 - (MTLTextureDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
-- (void)setCompressionType:(int64_t)a3;
-- (void)setResourceOptions:(unint64_t)a3;
-- (void)setStorageMode:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
+- (void)setCompressionType:(int64_t)type;
+- (void)setResourceOptions:(unint64_t)options;
+- (void)setStorageMode:(unint64_t)mode;
 @end
 
 @implementation MTLTextureDescriptorInternal
@@ -44,20 +44,20 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && memcmp(&self->_private, a3 + 16, 0xC0uLL) == 0;
+  return Class == object_getClass(equal) && memcmp(&self->_private, equal + 16, 0xC0uLL) == 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     v5 = *&self->_private.width;
@@ -89,10 +89,10 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v26[66] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v25.receiver = self;
   v25.super_class = MTLTextureDescriptorInternal;
@@ -123,15 +123,15 @@
   v26[23] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_private.arrayLength];
   v26[24] = v4;
   v26[25] = @"cpuCacheMode =";
-  v7 = [(MTLTextureDescriptorInternal *)self cpuCacheMode];
+  cpuCacheMode = [(MTLTextureDescriptorInternal *)self cpuCacheMode];
   v8 = @"Invalid";
   v9 = @"MTLCPUCacheModeDefaultCache";
-  if (v7)
+  if (cpuCacheMode)
   {
     v9 = @"Invalid";
   }
 
-  if (v7 == 1)
+  if (cpuCacheMode == 1)
   {
     v9 = @"MTLCPUCacheModeWriteCombined";
   }
@@ -139,11 +139,11 @@
   v26[26] = v9;
   v26[27] = v4;
   v26[28] = @"storageMode =";
-  v10 = [(MTLTextureDescriptorInternal *)self storageMode];
+  storageMode = [(MTLTextureDescriptorInternal *)self storageMode];
   v11 = @"Invalid";
-  if (v10 <= 3)
+  if (storageMode <= 3)
   {
-    v11 = *(&off_1E6EEB7C8 + v10);
+    v11 = *(&off_1E6EEB7C8 + storageMode);
   }
 
   v26[29] = v11;
@@ -239,9 +239,9 @@
   return result;
 }
 
-- (void)setStorageMode:(unint64_t)a3
+- (void)setStorageMode:(unint64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
     if (isMemoryLessStorageDisabled_onceToken != -1)
     {
@@ -250,27 +250,27 @@
 
     if (isMemoryLessStorageDisabled_result)
     {
-      a3 = 2;
+      mode = 2;
     }
 
     else
     {
-      a3 = 3;
+      mode = 3;
     }
   }
 
-  self->_private.resourceOptions = self->_private.resourceOptions & 0xFFFFFFFFFFFFFF0FLL | (16 * a3);
-  self->_private.storageMode = a3;
+  self->_private.resourceOptions = self->_private.resourceOptions & 0xFFFFFFFFFFFFFF0FLL | (16 * mode);
+  self->_private.storageMode = mode;
 }
 
-- (void)setResourceOptions:(unint64_t)a3
+- (void)setResourceOptions:(unint64_t)options
 {
   if (!dyld_program_sdk_at_least())
   {
-    a3 &= 0xFFFFFFFFFFFFFCFFLL;
+    options &= 0xFFFFFFFFFFFFFCFFLL;
   }
 
-  v5 = a3 >> 4;
+  v5 = options >> 4;
   if (v5 == 3)
   {
     if (isMemoryLessStorageDisabled_onceToken != -1)
@@ -285,29 +285,29 @@
     }
   }
 
-  self->_private.resourceOptions = a3 & 0xFFFFFFFFFFFFFF0FLL | (16 * v5);
-  self->_private.cpuCacheMode = a3 & 0xF;
+  self->_private.resourceOptions = options & 0xFFFFFFFFFFFFFF0FLL | (16 * v5);
+  self->_private.cpuCacheMode = options & 0xF;
   self->_private.storageMode = v5;
 }
 
-- (void)setCompressionType:(int64_t)a3
+- (void)setCompressionType:(int64_t)type
 {
   self->_private.compressionMode = 0;
   v3 = 3;
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = 0;
   }
 
   self->_private.compressionFootprint = v3;
-  self->_private.compressionType = a3;
+  self->_private.compressionType = type;
 }
 
-- (BOOL)validateWithDevice:(id)a3
+- (BOOL)validateWithDevice:(id)device
 {
   v147 = 0;
   memset(v146, 0, sizeof(v146));
-  _MTLMessageContextBegin_(v146, "[MTLTextureDescriptorInternal validateWithDevice:]", 1416, a3, 0, "Texture Descriptor Validation");
+  _MTLMessageContextBegin_(v146, "[MTLTextureDescriptorInternal validateWithDevice:]", 1416, device, 0, "Texture Descriptor Validation");
   p_private = &self->_private;
   textureUsage = self->_private.var0.textureUsage;
   if (textureUsage)
@@ -332,25 +332,25 @@
 
   self->_private.resolvedUsage = v7;
 LABEL_7:
-  v8 = [(MTLTextureDescriptorInternal *)self textureType];
-  if (v8 >= 0xA)
+  textureType = [(MTLTextureDescriptorInternal *)self textureType];
+  if (textureType >= 0xA)
   {
-    _MTLMessageContextPush_(v146, 4, @"type (%lu) is not a valid MTLTextureType.", v9, v10, v11, v12, v13, v8);
+    _MTLMessageContextPush_(v146, 4, @"type (%lu) is not a valid MTLTextureType.", v9, v10, v11, v12, v13, textureType);
   }
 
-  v14 = [(MTLTextureDescriptorInternal *)self cpuCacheMode];
-  if (v14 >= 2)
+  cpuCacheMode = [(MTLTextureDescriptorInternal *)self cpuCacheMode];
+  if (cpuCacheMode >= 2)
   {
-    _MTLMessageContextPush_(v146, 4, @"invalid cpuCacheMode (%lu)", v15, v16, v17, v18, v19, v14);
+    _MTLMessageContextPush_(v146, 4, @"invalid cpuCacheMode (%lu)", v15, v16, v17, v18, v19, cpuCacheMode);
   }
 
   validateMTLStorageMode([(MTLTextureDescriptorInternal *)self storageMode], v146);
-  v20 = [(MTLTextureDescriptorInternal *)self resourceOptions];
-  validateMTLResourceOptions(v20, v146, v21, v22, v23, v24, v25, v26);
-  v27 = [(MTLTextureDescriptorInternal *)self usage];
-  if (v27 && (v27 & 0xFFFFFFFFFFFEBFC0) != 0)
+  resourceOptions = [(MTLTextureDescriptorInternal *)self resourceOptions];
+  validateMTLResourceOptions(resourceOptions, v146, v21, v22, v23, v24, v25, v26);
+  usage = [(MTLTextureDescriptorInternal *)self usage];
+  if (usage && (usage & 0xFFFFFFFFFFFEBFC0) != 0)
   {
-    _MTLMessageContextPush_(v146, 4, @"MTLTextureUsage has unknown bits 0x%lx.", v28, v29, v30, v31, v32, v27 & 0xFFFFFFFFFFFEBFC0);
+    _MTLMessageContextPush_(v146, 4, @"MTLTextureUsage has unknown bits 0x%lx.", v28, v29, v30, v31, v32, usage & 0xFFFFFFFFFFFEBFC0);
   }
 
   textureType = p_private->textureType;
@@ -360,18 +360,18 @@ LABEL_7:
     {
       if (textureType == 5)
       {
-        v34 = [a3 maxTextureDimensionCube];
-        v43 = 1;
-        v40 = v34;
+        maxTextureDimensionCube = [device maxTextureDimensionCube];
+        maxTextureDepth3D = 1;
+        maxTextureHeight3D = maxTextureDimensionCube;
         goto LABEL_38;
       }
 
       if (textureType == 6)
       {
-        v34 = [a3 maxTextureDimensionCube];
-        v42 = [a3 maxTextureLayers];
-        v43 = 1;
-        v40 = v34;
+        maxTextureDimensionCube = [device maxTextureDimensionCube];
+        maxTextureLayers = [device maxTextureLayers];
+        maxTextureDepth3D = 1;
+        maxTextureHeight3D = maxTextureDimensionCube;
         goto LABEL_39;
       }
 
@@ -380,9 +380,9 @@ LABEL_7:
 
     if (textureType == 7)
     {
-      v34 = [a3 maxTextureWidth3D];
-      v40 = [a3 maxTextureHeight3D];
-      v43 = [a3 maxTextureDepth3D];
+      maxTextureDimensionCube = [device maxTextureWidth3D];
+      maxTextureHeight3D = [device maxTextureHeight3D];
+      maxTextureDepth3D = [device maxTextureDepth3D];
       goto LABEL_38;
     }
 
@@ -396,10 +396,10 @@ LABEL_7:
       goto LABEL_240;
     }
 
-    v41 = [a3 maxTextureBufferWidth];
+    maxTextureBufferWidth = [device maxTextureBufferWidth];
 LABEL_34:
-    v34 = v41;
-    v40 = 1;
+    maxTextureDimensionCube = maxTextureBufferWidth;
+    maxTextureHeight3D = 1;
     goto LABEL_35;
   }
 
@@ -412,15 +412,15 @@ LABEL_34:
         goto LABEL_240;
       }
 
-      v34 = [a3 maxTextureWidth1D];
-      v42 = [a3 maxTextureLayers];
-      v40 = 1;
+      maxTextureDimensionCube = [device maxTextureWidth1D];
+      maxTextureLayers = [device maxTextureLayers];
+      maxTextureHeight3D = 1;
 LABEL_32:
-      v43 = 1;
+      maxTextureDepth3D = 1;
       goto LABEL_39;
     }
 
-    v41 = [a3 maxTextureWidth1D];
+    maxTextureBufferWidth = [device maxTextureWidth1D];
     goto LABEL_34;
   }
 
@@ -438,19 +438,19 @@ LABEL_240:
     }
 
 LABEL_31:
-    v34 = [a3 maxTextureWidth2D];
-    v40 = [a3 maxTextureHeight2D];
-    v42 = [a3 maxTextureLayers];
+    maxTextureDimensionCube = [device maxTextureWidth2D];
+    maxTextureHeight3D = [device maxTextureHeight2D];
+    maxTextureLayers = [device maxTextureLayers];
     goto LABEL_32;
   }
 
 LABEL_19:
-  v34 = [a3 maxTextureWidth2D];
-  v40 = [a3 maxTextureHeight2D];
+  maxTextureDimensionCube = [device maxTextureWidth2D];
+  maxTextureHeight3D = [device maxTextureHeight2D];
 LABEL_35:
-  v43 = 1;
+  maxTextureDepth3D = 1;
 LABEL_38:
-  v42 = 1;
+  maxTextureLayers = 1;
 LABEL_39:
   width = self->_private.width;
   if (!width)
@@ -459,7 +459,7 @@ LABEL_39:
     width = self->_private.width;
   }
 
-  if (width > v34)
+  if (width > maxTextureDimensionCube)
   {
     _MTLMessageContextPush_(v146, 4, @"MTLTextureDescriptor has width (%lu) greater than the maximum allowed size of %lu.", v35, v36, v37, v38, v39, width);
   }
@@ -471,7 +471,7 @@ LABEL_39:
     height = self->_private.height;
   }
 
-  if (height > v40)
+  if (height > maxTextureHeight3D)
   {
     _MTLMessageContextPush_(v146, 4, @"MTLTextureDescriptor has height (%lu) greater than the maximum allowed size of %lu.", v35, v36, v37, v38, v39, height);
   }
@@ -483,7 +483,7 @@ LABEL_39:
     depth = self->_private.depth;
   }
 
-  if (depth > v43)
+  if (depth > maxTextureDepth3D)
   {
     _MTLMessageContextPush_(v146, 4, @"MTLTextureDescriptor has depth (%lu) greater than the maximum allowed size of %lu.", v35, v36, v37, v38, v39, depth);
   }
@@ -495,7 +495,7 @@ LABEL_39:
     arrayLength = self->_private.arrayLength;
   }
 
-  if (arrayLength > v42)
+  if (arrayLength > maxTextureLayers)
   {
     _MTLMessageContextPush_(v146, 4, @"MTLTextureDescriptor has arrayLength (%lu) greater than the maximum allowed size of %lu.", v35, v36, v37, v38, v39, arrayLength);
   }
@@ -522,7 +522,7 @@ LABEL_39:
     {
       if (pixelFormat == 103)
       {
-        if ([a3 supportsAtomicUlongVoidMinMax])
+        if ([device supportsAtomicUlongVoidMinMax])
         {
           goto LABEL_68;
         }
@@ -543,7 +543,7 @@ LABEL_39:
 LABEL_68:
   v145 = 0;
   memset(v144, 0, sizeof(v144));
-  MTLPixelFormatGetInfoForDevice(a3, self->_private.pixelFormat, v144);
+  MTLPixelFormatGetInfoForDevice(device, self->_private.pixelFormat, v144);
   compressionFootprint = self->_private.compressionFootprint;
   compressionType = self->_private.compressionType;
   if (compressionType >= 2)
@@ -553,7 +553,7 @@ LABEL_68:
 
   if (compressionType == 1 || compressionFootprint)
   {
-    if (![a3 supportsLossyCompression])
+    if (![device supportsLossyCompression])
     {
       v130 = @"MTLTextureDescriptor has compressionType set to MTLTextureCompressionTypeLossy, but the device does not support lossy compression";
       goto LABEL_225;
@@ -685,13 +685,13 @@ LABEL_106:
 
   if (p_private->textureType == 6)
   {
-    MTLValidateFeatureSupport(a3, 108, 0);
+    MTLValidateFeatureSupport(device, 108, 0);
   }
 
   _mtlValidateMTLTextureSwizzleKey(p_private->swizzle, v70, v71, v72, v73, v74, v75, v76);
   if (p_private->swizzle != 84148994)
   {
-    MTLValidateFeatureSupport(a3, 94, 0);
+    MTLValidateFeatureSupport(device, 94, 0);
     v89 = 6;
     if (p_private->writeSwizzleEnabled)
     {
@@ -778,7 +778,7 @@ LABEL_123:
       sampleCount = p_private->sampleCount;
     }
 
-    if (([a3 supportsTextureSampleCount:?] & 1) == 0)
+    if (([device supportsTextureSampleCount:?] & 1) == 0)
     {
       _MTLMessageContextPush_(v146, 4, @"MTLTextureDescriptor sampleCount (%lu) is not supported by device.", v84, v85, v86, v87, v88, p_private->sampleCount);
     }
@@ -798,15 +798,15 @@ LABEL_123:
 
   if (v99 <= 8 && ((1 << v99) & 0x14A) != 0)
   {
-    v100 = [a3 maxTextureLayers];
+    maxTextureLayers2 = [device maxTextureLayers];
     if (p_private->textureType == 6)
     {
-      v101 = v100 / 6;
+      v101 = maxTextureLayers2 / 6;
     }
 
     else
     {
-      v101 = v100;
+      v101 = maxTextureLayers2;
     }
 
     if (p_private->arrayLength - 1 >= v101)
@@ -835,7 +835,7 @@ LABEL_123:
 
     if ((v103 & 0x1000) != 0 && p_private->textureType == 7)
     {
-      MTLValidateFeatureSupport(a3, 72, 0);
+      MTLValidateFeatureSupport(device, 72, 0);
       goto LABEL_168;
     }
 
@@ -903,14 +903,14 @@ LABEL_168:
     }
   }
 
-  v108 = [a3 supportsNonPrivateDepthStencilTextures];
-  v109 = [a3 supportsNonPrivateMSAATextures];
-  v110 = [a3 supportsMemorylessRenderTargets];
+  supportsNonPrivateDepthStencilTextures = [device supportsNonPrivateDepthStencilTextures];
+  supportsNonPrivateMSAATextures = [device supportsNonPrivateMSAATextures];
+  supportsMemorylessRenderTargets = [device supportsMemorylessRenderTargets];
   v116 = BYTE8(v144[0]) & 0x60;
   resourceOptions = p_private->resourceOptions;
   if ((resourceOptions & 0xF0) == 0x30)
   {
-    v118 = v110;
+    v118 = supportsMemorylessRenderTargets;
   }
 
   else
@@ -939,7 +939,7 @@ LABEL_190:
 
     else
     {
-      v119 = v108;
+      v119 = supportsNonPrivateDepthStencilTextures;
     }
 
     if (v119)
@@ -978,7 +978,7 @@ LABEL_196:
 
     else
     {
-      v120 = v109;
+      v120 = supportsNonPrivateMSAATextures;
     }
 
     if (v120)
@@ -1007,7 +1007,7 @@ LABEL_203:
     goto LABEL_209;
   }
 
-  if (![a3 supportsTexture2DMultisampleArray])
+  if (![device supportsTexture2DMultisampleArray])
   {
     if ((resourceOptions & 0xF0) == 0x30)
     {
@@ -1031,7 +1031,7 @@ LABEL_209:
     goto LABEL_212;
   }
 
-  if ([a3 supportsColorSpaceConversionMatrixSelection])
+  if ([device supportsColorSpaceConversionMatrixSelection])
   {
     if (p_private->colorSpaceConversionMatrix < 0xB)
     {

@@ -1,15 +1,15 @@
 @interface _UISceneWindowingControlClientSettings
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation _UISceneWindowingControlClientSettings
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 matchesProperty:sel_preferredWindowingControlStyleType])
+  settingCopy = setting;
+  if ([settingCopy matchesProperty:sel_preferredWindowingControlStyleType])
   {
-    [v3 setDescriptionProvider:&__block_literal_global_447];
+    [settingCopy setDescriptionProvider:&__block_literal_global_447];
   }
 }
 

@@ -1,12 +1,12 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = handleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -14,7 +14,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received a connection!", buf, 2u);
   }
 
-  v6 = [v4 valueForEntitlement:off_100016580];
+  v6 = [connectionCopy valueForEntitlement:off_100016580];
   if (!v6)
   {
     v29 = handleForCategory();
@@ -61,12 +61,12 @@ LABEL_38:
     v8 = 0;
     v7 = 0;
 LABEL_39:
-    [v4 invalidate];
+    [connectionCopy invalidate];
     v27 = 0;
     goto LABEL_25;
   }
 
-  v7 = [v4 valueForEntitlement:off_100016588];
+  v7 = [connectionCopy valueForEntitlement:off_100016588];
   if (v7)
   {
     objc_opt_class();
@@ -87,11 +87,11 @@ LABEL_39:
     }
   }
 
-  v8 = [v4 valueForEntitlement:off_100016590];
+  v8 = [connectionCopy valueForEntitlement:off_100016590];
   if (!v8)
   {
     v23 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreRepairHelperProtocol];
-    [v4 setExportedInterface:v23];
+    [connectionCopy setExportedInterface:v23];
 
 LABEL_15:
     if (v7 && ([v7 BOOLValue] & 1) != 0)
@@ -118,7 +118,7 @@ LABEL_15:
       v25 = CoreRepairHelper;
     }
 
-    v22 = [(__objc2_class *)v25 sharedInstance];
+    sharedInstance = [(__objc2_class *)v25 sharedInstance];
     goto LABEL_24;
   }
 
@@ -139,7 +139,7 @@ LABEL_15:
   }
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreRepairHelperProtocol];
-  [v4 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
   if (![v8 BOOLValue])
   {
@@ -155,14 +155,14 @@ LABEL_15:
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [NSSet setWithObjects:v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0];
-  v18 = [v4 exportedInterface];
-  [v18 setClasses:v17 forSelector:"challengeComponentsWith:withReply:" argumentIndex:0 ofReply:0];
+  exportedInterface = [connectionCopy exportedInterface];
+  [exportedInterface setClasses:v17 forSelector:"challengeComponentsWith:withReply:" argumentIndex:0 ofReply:0];
 
-  v19 = [v4 exportedInterface];
-  [v19 setClasses:v17 forSelector:"challengeComponentsWith:withReply:" argumentIndex:1 ofReply:1];
+  exportedInterface2 = [connectionCopy exportedInterface];
+  [exportedInterface2 setClasses:v17 forSelector:"challengeComponentsWith:withReply:" argumentIndex:1 ofReply:1];
 
-  v20 = [v4 exportedInterface];
-  [v20 setClasses:v17 forSelector:"getStrongComponentsWithReply:" argumentIndex:1 ofReply:1];
+  exportedInterface3 = [connectionCopy exportedInterface];
+  [exportedInterface3 setClasses:v17 forSelector:"getStrongComponentsWithReply:" argumentIndex:1 ofReply:1];
 
   v21 = handleForCategory();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -171,12 +171,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Set exportedObject as a CRAttestationHelper instance", buf, 2u);
   }
 
-  v22 = +[CoreRepairHelper sharedInstance];
+  sharedInstance = +[CoreRepairHelper sharedInstance];
 
   v6 = v33;
 LABEL_24:
-  [v4 setExportedObject:v22];
-  [v4 resume];
+  [connectionCopy setExportedObject:sharedInstance];
+  [connectionCopy resume];
 
   v27 = 1;
 LABEL_25:

@@ -6,7 +6,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FA5484();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECF31D30);

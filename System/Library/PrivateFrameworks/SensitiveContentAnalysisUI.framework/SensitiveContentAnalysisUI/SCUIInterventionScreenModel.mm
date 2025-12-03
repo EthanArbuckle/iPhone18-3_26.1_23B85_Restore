@@ -10,9 +10,9 @@
 - (id)nextModel;
 - (int64_t)interventionType;
 - (int64_t)workflow;
-- (void)bypassInterventionForContainer:(id)a3 delegate:(id)a4;
-- (void)didAskForMoreHelpWithPresentingViewController:(id)a3;
-- (void)setAuthority:(id)a3;
+- (void)bypassInterventionForContainer:(id)container delegate:(id)delegate;
+- (void)didAskForMoreHelpWithPresentingViewController:(id)controller;
+- (void)setAuthority:(id)authority;
 @end
 
 @implementation SCUIInterventionScreenModel
@@ -24,18 +24,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAuthority:(id)a3
+- (void)setAuthority:(id)authority
 {
   v5 = OBJC_IVAR___SCUIInterventionScreenModel_authority;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = authority;
+  authorityCopy = authority;
 }
 
 - (int64_t)workflow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC6E4800();
 
   return v3;
@@ -43,7 +43,7 @@
 
 - (int64_t)interventionType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC6E4990();
 
   return v3;
@@ -61,7 +61,7 @@
   sub_1BC66FDD8(self + OBJC_IVAR___SCUIInterventionScreenModel_config, &v16[-v9], type metadata accessor for InterventionConfig);
   v17 = 5;
   v11 = *(v4 + 40);
-  v12 = self;
+  selfCopy = self;
   sub_1BC665984(&v17);
   sub_1BC66FDD8(v10, v8, type metadata accessor for InterventionConfig);
   v13 = objc_allocWithZone(type metadata accessor for InterventionScreenModel());
@@ -82,7 +82,7 @@
 - (NSString)title
 {
   sub_1BC75BDE0();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_1BC75C210();
   sub_1BC66C60C(&v7, v4);
 
@@ -93,7 +93,7 @@
 
 - (NSString)subtitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BC66D37C(v5);
 
   if (v5[1])
@@ -151,9 +151,9 @@
   v3 = self + OBJC_IVAR___SCUIInterventionScreenModel_config;
   v4 = *(type metadata accessor for InterventionConfig(0) + 20);
   v5 = *(&self->super.isa + OBJC_IVAR___SCUIInterventionScreenModel_screen);
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1BC66B9E4();
-  static InterventionScreenModel.generateBullets(for:layout:screen:canShowScreenTimePasscodeWarningBullet:participantContactCache:)(&v3[v4], v3, v5, v7 & 1, *(&v6->super.isa + OBJC_IVAR___SCUIInterventionScreenModel_participantContactCache));
+  static InterventionScreenModel.generateBullets(for:layout:screen:canShowScreenTimePasscodeWarningBullet:participantContactCache:)(&v3[v4], v3, v5, v7 & 1, *(&selfCopy->super.isa + OBJC_IVAR___SCUIInterventionScreenModel_participantContactCache));
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDC1F0, &qword_1BC761168);
   v8 = sub_1BC75BCF0();
@@ -163,7 +163,7 @@
 
 - (NSArray)actions
 {
-  v2 = self;
+  selfCopy = self;
   InterventionScreenModel.actions.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDC118, &unk_1BC761098);
@@ -172,21 +172,21 @@
   return v3;
 }
 
-- (void)bypassInterventionForContainer:(id)a3 delegate:(id)a4
+- (void)bypassInterventionForContainer:(id)container delegate:(id)delegate
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1BC6A8FC0(a3, a4);
+  selfCopy = self;
+  sub_1BC6A8FC0(container, delegate);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)didAskForMoreHelpWithPresentingViewController:(id)a3
+- (void)didAskForMoreHelpWithPresentingViewController:(id)controller
 {
   v5 = self + *(type metadata accessor for InterventionConfig(0) + 20);
-  v6 = a3;
-  v12 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   v7 = sub_1BC6F39FC();
   if (v8)
   {
@@ -198,11 +198,11 @@
     v9 = v7;
   }
 
-  v10 = [objc_allocWithZone(SCUIMoreHelpWebViewController) initWithType_];
-  if (v10)
+  initWithType_ = [objc_allocWithZone(SCUIMoreHelpWebViewController) initWithType_];
+  if (initWithType_)
   {
-    v11 = v10;
-    [v6 presentViewController:v10 animated:1 completion:0];
+    v11 = initWithType_;
+    [controllerCopy presentViewController:initWithType_ animated:1 completion:0];
   }
 }
 

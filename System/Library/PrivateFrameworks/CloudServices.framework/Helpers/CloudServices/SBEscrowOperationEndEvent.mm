@@ -1,29 +1,29 @@
 @interface SBEscrowOperationEndEvent
-- (SBEscrowOperationEndEvent)initWithCoder:(id)a3;
-- (SBEscrowOperationEndEvent)initWithStartEvent:(id)a3 results:(id)a4 error:(id)a5 context:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SBEscrowOperationEndEvent)initWithCoder:(id)coder;
+- (SBEscrowOperationEndEvent)initWithStartEvent:(id)event results:(id)results error:(id)error context:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBEscrowOperationEndEvent
 
-- (SBEscrowOperationEndEvent)initWithStartEvent:(id)a3 results:(id)a4 error:(id)a5 context:(id)a6
+- (SBEscrowOperationEndEvent)initWithStartEvent:(id)event results:(id)results error:(id)error context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [v11 operationId];
-  v13 = [v11 activityId];
-  v14 = [v11 activityLabel];
-  v15 = [v11 recordId];
-  v16 = [v11 type];
+  errorCopy = error;
+  contextCopy = context;
+  eventCopy = event;
+  operationId = [eventCopy operationId];
+  activityId = [eventCopy activityId];
+  activityLabel = [eventCopy activityLabel];
+  recordId = [eventCopy recordId];
+  type = [eventCopy type];
 
   v21.receiver = self;
   v21.super_class = SBEscrowOperationEndEvent;
-  v17 = [(SBEscrowOperationEvent *)&v21 initWithOperationId:v12 activityId:v13 activityLabel:v14 recordId:v15 type:v16 context:v10];
+  v17 = [(SBEscrowOperationEvent *)&v21 initWithOperationId:operationId activityId:activityId activityLabel:activityLabel recordId:recordId type:type context:contextCopy];
 
   if (v17)
   {
-    v18 = [v9 copy];
+    v18 = [errorCopy copy];
     error = v17->_error;
     v17->_error = v18;
   }
@@ -31,24 +31,24 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SBEscrowOperationEndEvent;
-  v4 = a3;
-  [(SBEscrowOperationEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_error forKey:{@"error", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SBEscrowOperationEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_error forKey:{@"error", v5.receiver, v5.super_class}];
 }
 
-- (SBEscrowOperationEndEvent)initWithCoder:(id)a3
+- (SBEscrowOperationEndEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SBEscrowOperationEndEvent;
-  v5 = [(SBEscrowOperationEvent *)&v11 initWithCoder:v4];
+  v5 = [(SBEscrowOperationEvent *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
     v7 = objc_opt_self();
 
     error = v5->_error;

@@ -32,30 +32,30 @@
 - (int64_t)libraryPlaceSavedState;
 - (int64_t)mapStyle;
 - (int64_t)numberOfReportsInReview;
-- (void)setCanMakeCalls:(BOOL)a3;
-- (void)setCanShowDetourTime:(BOOL)a3;
-- (void)setCanShowDirections:(BOOL)a3;
-- (void)setCanShowDownloadOffline:(BOOL)a3;
-- (void)setCanShowOpenFindMyAction:(BOOL)a3;
-- (void)setCanShowRequestLocation:(BOOL)a3;
-- (void)setDetourTime:(float)a3;
-- (void)setDistanceToPlace:(float)a3;
-- (void)setIsAdditionalStop:(BOOL)a3;
-- (void)setIsCurrentLocation:(BOOL)a3;
-- (void)setIsDeveloperPlacecard:(BOOL)a3;
-- (void)setIsHomeWorkSchool:(BOOL)a3;
-- (void)setIsSearchAlongRoute:(BOOL)a3;
-- (void)setLibraryPlaceSavedState:(int64_t)a3;
-- (void)setMapStyle:(int64_t)a3;
-- (void)setNumberOfReportsInReview:(int64_t)a3;
-- (void)setPlaceInShortcuts:(BOOL)a3;
-- (void)setShouldDisableReportAProblem:(BOOL)a3;
-- (void)setShouldExcludeFlyover:(BOOL)a3;
-- (void)setShowMoreButton:(BOOL)a3;
-- (void)setSupportsShowingCoordinates:(BOOL)a3;
-- (void)setUserCanAddPhotos:(BOOL)a3;
-- (void)setUserCanEdit:(BOOL)a3;
-- (void)setUserCanRate:(BOOL)a3;
+- (void)setCanMakeCalls:(BOOL)calls;
+- (void)setCanShowDetourTime:(BOOL)time;
+- (void)setCanShowDirections:(BOOL)directions;
+- (void)setCanShowDownloadOffline:(BOOL)offline;
+- (void)setCanShowOpenFindMyAction:(BOOL)action;
+- (void)setCanShowRequestLocation:(BOOL)location;
+- (void)setDetourTime:(float)time;
+- (void)setDistanceToPlace:(float)place;
+- (void)setIsAdditionalStop:(BOOL)stop;
+- (void)setIsCurrentLocation:(BOOL)location;
+- (void)setIsDeveloperPlacecard:(BOOL)placecard;
+- (void)setIsHomeWorkSchool:(BOOL)school;
+- (void)setIsSearchAlongRoute:(BOOL)route;
+- (void)setLibraryPlaceSavedState:(int64_t)state;
+- (void)setMapStyle:(int64_t)style;
+- (void)setNumberOfReportsInReview:(int64_t)review;
+- (void)setPlaceInShortcuts:(BOOL)shortcuts;
+- (void)setShouldDisableReportAProblem:(BOOL)problem;
+- (void)setShouldExcludeFlyover:(BOOL)flyover;
+- (void)setShowMoreButton:(BOOL)button;
+- (void)setSupportsShowingCoordinates:(BOOL)coordinates;
+- (void)setUserCanAddPhotos:(BOOL)photos;
+- (void)setUserCanEdit:(BOOL)edit;
+- (void)setUserCanRate:(BOOL)rate;
 @end
 
 @implementation MUWebBasedPlacecardSectionControllerConfiguration
@@ -103,11 +103,11 @@
   return *(self + v3);
 }
 
-- (void)setPlaceInShortcuts:(BOOL)a3
+- (void)setPlaceInShortcuts:(BOOL)shortcuts
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_placeInShortcuts;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = shortcuts;
 }
 
 - (BOOL)userCanAddPhotos
@@ -117,11 +117,11 @@
   return *(self + v3);
 }
 
-- (void)setUserCanAddPhotos:(BOOL)a3
+- (void)setUserCanAddPhotos:(BOOL)photos
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_userCanAddPhotos;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = photos;
 }
 
 - (BOOL)userCanRate
@@ -131,11 +131,11 @@
   return *(self + v3);
 }
 
-- (void)setUserCanRate:(BOOL)a3
+- (void)setUserCanRate:(BOOL)rate
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_userCanRate;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = rate;
 }
 
 - (MUARPSuggestionViewModel)userARPSuggestion
@@ -152,11 +152,11 @@
   return *(self + v3);
 }
 
-- (void)setNumberOfReportsInReview:(int64_t)a3
+- (void)setNumberOfReportsInReview:(int64_t)review
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_numberOfReportsInReview;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = review;
 }
 
 - (BOOL)shouldDisableReportAProblem
@@ -166,11 +166,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldDisableReportAProblem:(BOOL)a3
+- (void)setShouldDisableReportAProblem:(BOOL)problem
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_shouldDisableReportAProblem;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = problem;
 }
 
 - (BOOL)shouldExcludeFlyover
@@ -180,11 +180,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldExcludeFlyover:(BOOL)a3
+- (void)setShouldExcludeFlyover:(BOOL)flyover
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_shouldExcludeFlyover;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = flyover;
 }
 
 - (BOOL)supportsShowingCoordinates
@@ -194,11 +194,11 @@
   return *(self + v3);
 }
 
-- (void)setSupportsShowingCoordinates:(BOOL)a3
+- (void)setSupportsShowingCoordinates:(BOOL)coordinates
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_supportsShowingCoordinates;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = coordinates;
 }
 
 - (UIImage)userIcon
@@ -222,11 +222,11 @@
   return *(self + v3);
 }
 
-- (void)setIsDeveloperPlacecard:(BOOL)a3
+- (void)setIsDeveloperPlacecard:(BOOL)placecard
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_isDeveloperPlacecard;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = placecard;
 }
 
 - (BOOL)isHomeWorkSchool
@@ -236,11 +236,11 @@
   return *(self + v3);
 }
 
-- (void)setIsHomeWorkSchool:(BOOL)a3
+- (void)setIsHomeWorkSchool:(BOOL)school
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_isHomeWorkSchool;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = school;
 }
 
 - (BOOL)userCanEdit
@@ -250,11 +250,11 @@
   return *(self + v3);
 }
 
-- (void)setUserCanEdit:(BOOL)a3
+- (void)setUserCanEdit:(BOOL)edit
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_userCanEdit;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = edit;
 }
 
 - (BOOL)canShowOpenFindMyAction
@@ -264,11 +264,11 @@
   return *(self + v3);
 }
 
-- (void)setCanShowOpenFindMyAction:(BOOL)a3
+- (void)setCanShowOpenFindMyAction:(BOOL)action
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canShowOpenFindMyAction;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = action;
 }
 
 - (BOOL)canShowRequestLocation
@@ -278,11 +278,11 @@
   return *(self + v3);
 }
 
-- (void)setCanShowRequestLocation:(BOOL)a3
+- (void)setCanShowRequestLocation:(BOOL)location
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canShowRequestLocation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = location;
 }
 
 - (BOOL)showMoreButton
@@ -292,11 +292,11 @@
   return *(self + v3);
 }
 
-- (void)setShowMoreButton:(BOOL)a3
+- (void)setShowMoreButton:(BOOL)button
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_showMoreButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (BOOL)canShowDownloadOffline
@@ -306,11 +306,11 @@
   return *(self + v3);
 }
 
-- (void)setCanShowDownloadOffline:(BOOL)a3
+- (void)setCanShowDownloadOffline:(BOOL)offline
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canShowDownloadOffline;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = offline;
 }
 
 - (MKETAProvider)etaProvider
@@ -327,11 +327,11 @@
   return *(self + v3);
 }
 
-- (void)setCanShowDetourTime:(BOOL)a3
+- (void)setCanShowDetourTime:(BOOL)time
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canShowDetourTime;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = time;
 }
 
 - (BOOL)isCurrentLocation
@@ -341,11 +341,11 @@
   return *(self + v3);
 }
 
-- (void)setIsCurrentLocation:(BOOL)a3
+- (void)setIsCurrentLocation:(BOOL)location
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_isCurrentLocation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = location;
 }
 
 - (BOOL)canShowDirections
@@ -355,11 +355,11 @@
   return *(self + v3);
 }
 
-- (void)setCanShowDirections:(BOOL)a3
+- (void)setCanShowDirections:(BOOL)directions
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canShowDirections;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = directions;
 }
 
 - (BOOL)isAdditionalStop
@@ -369,11 +369,11 @@
   return *(self + v3);
 }
 
-- (void)setIsAdditionalStop:(BOOL)a3
+- (void)setIsAdditionalStop:(BOOL)stop
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_isAdditionalStop;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = stop;
 }
 
 - (BOOL)isSearchAlongRoute
@@ -383,11 +383,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSearchAlongRoute:(BOOL)a3
+- (void)setIsSearchAlongRoute:(BOOL)route
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_isSearchAlongRoute;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = route;
 }
 
 - (float)detourTime
@@ -397,11 +397,11 @@
   return *v2;
 }
 
-- (void)setDetourTime:(float)a3
+- (void)setDetourTime:(float)time
 {
   v4 = (self + OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_detourTime);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = time;
 }
 
 - (float)distanceToPlace
@@ -411,11 +411,11 @@
   return *v2;
 }
 
-- (void)setDistanceToPlace:(float)a3
+- (void)setDistanceToPlace:(float)place
 {
   v4 = (self + OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_distanceToPlace);
   swift_beginAccess();
-  *v4 = a3;
+  *v4 = place;
 }
 
 - (int64_t)libraryPlaceSavedState
@@ -425,11 +425,11 @@
   return *(self + v3);
 }
 
-- (void)setLibraryPlaceSavedState:(int64_t)a3
+- (void)setLibraryPlaceSavedState:(int64_t)state
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_libraryPlaceSavedState;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = state;
 }
 
 - (int64_t)mapStyle
@@ -439,11 +439,11 @@
   return *(self + v3);
 }
 
-- (void)setMapStyle:(int64_t)a3
+- (void)setMapStyle:(int64_t)style
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_mapStyle;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = style;
 }
 
 - (BOOL)canMakeCalls
@@ -453,11 +453,11 @@
   return *(self + v3);
 }
 
-- (void)setCanMakeCalls:(BOOL)a3
+- (void)setCanMakeCalls:(BOOL)calls
 {
   v5 = OBJC_IVAR____TtC6MapsUI49MUWebBasedPlacecardSectionControllerConfiguration_canMakeCalls;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = calls;
 }
 
 @end

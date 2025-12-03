@@ -1,21 +1,21 @@
 @interface PIAutoLoopExportJob
 + (BOOL)shouldUseMetalRenderer;
 + (id)metalRenderer;
-- (BOOL)writeVideoFrom:(id)a3 toWriter:(id)a4 stillImageTime:(id *)a5 createCustomMetadata:(BOOL)a6 geometryTransform:(id)a7 inputSize:(CGSize)a8 outputSize:(CGSize)a9 error:(id *)a10;
-- (PIAutoLoopExportJob)initWithAutoLoopExportRequest:(id)a3;
-- (PIAutoLoopExportJob)initWithVideoExportRequest:(id)a3;
-- (id)renderer:(id *)a3;
+- (BOOL)writeVideoFrom:(id)from toWriter:(id)writer stillImageTime:(id *)time createCustomMetadata:(BOOL)metadata geometryTransform:(id)transform inputSize:(CGSize)size outputSize:(CGSize)outputSize error:(id *)self0;
+- (PIAutoLoopExportJob)initWithAutoLoopExportRequest:(id)request;
+- (PIAutoLoopExportJob)initWithVideoExportRequest:(id)request;
+- (id)renderer:(id *)renderer;
 @end
 
 @implementation PIAutoLoopExportJob
 
-- (BOOL)writeVideoFrom:(id)a3 toWriter:(id)a4 stillImageTime:(id *)a5 createCustomMetadata:(BOOL)a6 geometryTransform:(id)a7 inputSize:(CGSize)a8 outputSize:(CGSize)a9 error:(id *)a10
+- (BOOL)writeVideoFrom:(id)from toWriter:(id)writer stillImageTime:(id *)time createCustomMetadata:(BOOL)metadata geometryTransform:(id)transform inputSize:(CGSize)size outputSize:(CGSize)outputSize error:(id *)self0
 {
   v111 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  if (!a10)
+  fromCopy = from;
+  writerCopy = writer;
+  transformCopy = transform;
+  if (!error)
   {
     v71 = NUAssertLogger_19733();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
@@ -37,8 +37,8 @@
         v77 = dispatch_get_specific(*v73);
         v78 = MEMORY[0x1E696AF00];
         v79 = v77;
-        v80 = [v78 callStackSymbols];
-        v81 = [v80 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v78 callStackSymbols];
+        v81 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v77;
         *&buf[12] = 2114;
@@ -50,8 +50,8 @@
     else if (v76)
     {
 LABEL_53:
-      v87 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v88 = [v87 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v88 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v88;
       _os_log_error_impl(&dword_1C7694000, v75, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -63,51 +63,51 @@ LABEL_56:
     __break(1u);
   }
 
-  v96 = v16;
-  v98 = v15;
-  v97 = [(PIAutoLoopExportJob *)self renderer:a10];
+  v96 = transformCopy;
+  v98 = writerCopy;
+  v97 = [(PIAutoLoopExportJob *)self renderer:error];
   if (v97)
   {
     if ([(NURenderJob *)self isCanceled])
     {
       v17 = MEMORY[0x1E69B3A48];
-      v18 = [(NURenderJob *)self request];
-      v19 = [v18 copy];
-      v20 = [v17 canceledError:@"AL export was canceled" object:v19];
+      request = [(NURenderJob *)self request];
+      error = [request copy];
+      v20 = [v17 canceledError:@"AL export was canceled" object:error];
 LABEL_5:
-      *a10 = v20;
+      *error = v20;
 
 LABEL_20:
       goto LABEL_21;
     }
 
-    if (([v14 startReading] & 1) == 0)
+    if (([fromCopy startReading] & 1) == 0)
     {
       v52 = MEMORY[0x1E69B3A48];
-      v18 = [v14 error];
-      *a10 = [v52 errorWithCode:1 reason:@"Could not start reading AVAsset" object:v14 underlyingError:v18];
+      request = [fromCopy error];
+      *error = [v52 errorWithCode:1 reason:@"Could not start reading AVAsset" object:fromCopy underlyingError:request];
       goto LABEL_20;
     }
 
-    if (([v15 startWriting] & 1) == 0)
+    if (([writerCopy startWriting] & 1) == 0)
     {
       v54 = MEMORY[0x1E696AEC0];
-      v55 = [v15 outputURL];
-      v18 = [v54 stringWithFormat:@"Could not start writing AVAsset %@", v55];
+      outputURL = [writerCopy outputURL];
+      request = [v54 stringWithFormat:@"Could not start writing AVAsset %@", outputURL];
 
       v56 = MEMORY[0x1E69B3A48];
-      v19 = [v15 error];
-      v20 = [v56 errorWithCode:1 reason:v18 object:v15 underlyingError:v19];
+      error = [writerCopy error];
+      v20 = [v56 errorWithCode:1 reason:request object:writerCopy underlyingError:error];
       goto LABEL_5;
     }
 
     *buf = *MEMORY[0x1E6960CC0];
     *&buf[16] = *(MEMORY[0x1E6960CC0] + 16);
-    [v15 startSessionAtSourceTime:buf];
-    v21 = [v14 outputs];
-    v22 = [v21 count];
-    v23 = [v15 inputs];
-    v24 = v22 == [v23 count];
+    [writerCopy startSessionAtSourceTime:buf];
+    outputs = [fromCopy outputs];
+    v22 = [outputs count];
+    inputs = [writerCopy inputs];
+    v24 = v22 == [inputs count];
 
     if (v24)
     {
@@ -124,12 +124,12 @@ LABEL_20:
         _os_log_impl(&dword_1C7694000, v25, OS_LOG_TYPE_DEFAULT, "AL Export video using renderer: %{public}@", buf, 0xCu);
       }
 
-      v26 = [(NURenderJob *)self outputGeometry];
-      v27 = [v26 scaledSize];
+      outputGeometry = [(NURenderJob *)self outputGeometry];
+      scaledSize = [outputGeometry scaledSize];
       v29 = v28;
 
-      v95 = [[PILongExposureAccumulator alloc] initWithSize:v27 renderer:v29 jobNumber:v97, [(NURenderJob *)self jobNumber]];
-      if (![(PILongExposureAccumulator *)v95 start:a10])
+      v95 = [[PILongExposureAccumulator alloc] initWithSize:scaledSize renderer:v29 jobNumber:v97, [(NURenderJob *)self jobNumber]];
+      if (![(PILongExposureAccumulator *)v95 start:error])
       {
         v51 = 0;
 LABEL_39:
@@ -140,19 +140,19 @@ LABEL_39:
       NUAbsoluteTime();
       v31 = v30;
       group = dispatch_group_create();
-      v32 = [v14 outputs];
-      v33 = [v32 count] == 0;
+      outputs2 = [fromCopy outputs];
+      v33 = [outputs2 count] == 0;
 
       if (!v33)
       {
         v34 = 0;
         do
         {
-          v35 = [v98 inputs];
-          v36 = [v35 objectAtIndexedSubscript:v34];
+          inputs2 = [v98 inputs];
+          v36 = [inputs2 objectAtIndexedSubscript:v34];
 
-          v37 = [v14 outputs];
-          v38 = [v37 objectAtIndexedSubscript:v34];
+          outputs3 = [fromCopy outputs];
+          v38 = [outputs3 objectAtIndexedSubscript:v34];
 
           v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"export_track_queue_%lu", v34];
           v40 = v39;
@@ -169,17 +169,17 @@ LABEL_39:
           v107 = buf;
           v42 = v36;
           v102 = v42;
-          v103 = self;
+          selfCopy = self;
           v104 = v95;
           v43 = v38;
           v105 = v43;
-          v108 = a10;
+          errorCopy = error;
           v106 = group;
           [v42 requestMediaDataWhenReadyOnQueue:v41 usingBlock:v101];
 
           _Block_object_dispose(buf, 8);
-          v44 = [v14 outputs];
-          v45 = [v44 count];
+          outputs4 = [fromCopy outputs];
+          v45 = [outputs4 count];
 
           ++v34;
         }
@@ -193,9 +193,9 @@ LABEL_39:
       if ([(NURenderJob *)self isCanceled])
       {
         v48 = MEMORY[0x1E69B3A48];
-        v49 = [(NURenderJob *)self request];
-        v50 = [v49 copy];
-        *a10 = [v48 canceledError:@"AL export was canceled" object:v50];
+        request2 = [(NURenderJob *)self request];
+        v50 = [request2 copy];
+        *error = [v48 canceledError:@"AL export was canceled" object:v50];
 
         v51 = 0;
 LABEL_38:
@@ -211,15 +211,15 @@ LABEL_38:
       v57 = group;
       v100 = v57;
       [v98 finishWritingWithCompletionHandler:v99];
-      v58 = [(PIAutoLoopExportJob *)self autoLoopExportRequest];
-      v59 = [v58 destinationLongExposureURL];
-      v60 = [v58 destinationUTI];
-      v61 = [v58 outputColorSpace];
-      if ([(PILongExposureAccumulator *)v95 writeLongExposureImage:v59 UTI:v60 colorSpace:v61 error:a10])
+      autoLoopExportRequest = [(PIAutoLoopExportJob *)self autoLoopExportRequest];
+      destinationLongExposureURL = [autoLoopExportRequest destinationLongExposureURL];
+      destinationUTI = [autoLoopExportRequest destinationUTI];
+      outputColorSpace = [autoLoopExportRequest outputColorSpace];
+      if ([(PILongExposureAccumulator *)v95 writeLongExposureImage:destinationLongExposureURL UTI:destinationUTI colorSpace:outputColorSpace error:error])
       {
-        v62 = [v58 destinationMaskURL];
-        v63 = [v58 destinationUTI];
-        v64 = [(PILongExposureAccumulator *)v95 writeMaskImage:v62 UTI:v63 error:a10];
+        destinationMaskURL = [autoLoopExportRequest destinationMaskURL];
+        destinationUTI2 = [autoLoopExportRequest destinationUTI];
+        v64 = [(PILongExposureAccumulator *)v95 writeMaskImage:destinationMaskURL UTI:destinationUTI2 error:error];
 
         if (!v64)
         {
@@ -227,7 +227,7 @@ LABEL_36:
           v51 = 0;
 LABEL_37:
 
-          v49 = v100;
+          request2 = v100;
           goto LABEL_38;
         }
 
@@ -246,11 +246,11 @@ LABEL_37:
           _os_log_impl(&dword_1C7694000, v67, OS_LOG_TYPE_DEFAULT, "AL Export timings: loop = %g s, finish = %g s, total = %g s", buf, 0x20u);
         }
 
-        if ([v14 status] == 3)
+        if ([fromCopy status] == 3)
         {
           v68 = MEMORY[0x1E69B3A48];
-          v59 = [v14 error];
-          v69 = [v68 errorWithCode:1 reason:@"Failed to read from AVAsset" object:v14 underlyingError:v59];
+          destinationLongExposureURL = [fromCopy error];
+          v69 = [v68 errorWithCode:1 reason:@"Failed to read from AVAsset" object:fromCopy underlyingError:destinationLongExposureURL];
         }
 
         else
@@ -262,11 +262,11 @@ LABEL_37:
           }
 
           v70 = MEMORY[0x1E69B3A48];
-          v59 = [v98 error];
-          v69 = [v70 errorWithCode:1 reason:@"Failed to write to AVAsset" object:v98 underlyingError:v59];
+          destinationLongExposureURL = [v98 error];
+          v69 = [v70 errorWithCode:1 reason:@"Failed to write to AVAsset" object:v98 underlyingError:destinationLongExposureURL];
         }
 
-        *a10 = v69;
+        *error = v69;
       }
 
       else
@@ -304,8 +304,8 @@ LABEL_37:
       v89 = dispatch_get_specific(*v84);
       v90 = MEMORY[0x1E696AF00];
       v91 = v89;
-      v92 = [v90 callStackSymbols];
-      v93 = [v92 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v90 callStackSymbols];
+      v93 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v89;
       *&buf[12] = 2114;
@@ -390,7 +390,7 @@ void __128__PIAutoLoopExportJob_writeVideoFrom_toWriter_stillImageTime_createCus
   }
 }
 
-- (id)renderer:(id *)a3
+- (id)renderer:(id *)renderer
 {
   v5 = +[PIAutoLoopExportJob metalRenderer];
   v6 = v5;
@@ -403,7 +403,7 @@ void __128__PIAutoLoopExportJob_writeVideoFrom_toWriter_stillImageTime_createCus
   {
     v10.receiver = self;
     v10.super_class = PIAutoLoopExportJob;
-    v7 = [(NUVideoExportJob *)&v10 renderer:a3];
+    v7 = [(NUVideoExportJob *)&v10 renderer:renderer];
   }
 
   v8 = v7;
@@ -411,10 +411,10 @@ void __128__PIAutoLoopExportJob_writeVideoFrom_toWriter_stillImageTime_createCus
   return v8;
 }
 
-- (PIAutoLoopExportJob)initWithVideoExportRequest:(id)a3
+- (PIAutoLoopExportJob)initWithVideoExportRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -453,8 +453,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -481,8 +481,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -500,11 +500,11 @@ LABEL_14:
   }
 }
 
-- (PIAutoLoopExportJob)initWithAutoLoopExportRequest:(id)a3
+- (PIAutoLoopExportJob)initWithAutoLoopExportRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = PIAutoLoopExportJob;
-  return [(NUVideoExportJob *)&v4 initWithVideoExportRequest:a3];
+  return [(NUVideoExportJob *)&v4 initWithVideoExportRequest:request];
 }
 
 + (id)metalRenderer
@@ -513,7 +513,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __36__PIAutoLoopExportJob_metalRenderer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (metalRenderer_onceToken != -1)
   {
     dispatch_once(&metalRenderer_onceToken, block);
@@ -543,8 +543,8 @@ void __36__PIAutoLoopExportJob_metalRenderer__block_invoke(uint64_t a1)
 
 + (BOOL)shouldUseMetalRenderer
 {
-  v2 = [MEMORY[0x1E69B3AB0] globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"PI_AUTOLOOP_EXPORT_USE_METAL" defaultValue:&__block_literal_global_19799];
+  globalSettings = [MEMORY[0x1E69B3AB0] globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"PI_AUTOLOOP_EXPORT_USE_METAL" defaultValue:&__block_literal_global_19799];
 
   return v3;
 }

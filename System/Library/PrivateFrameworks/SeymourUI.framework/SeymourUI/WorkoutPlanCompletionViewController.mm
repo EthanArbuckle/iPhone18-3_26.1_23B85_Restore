@@ -1,10 +1,10 @@
 @interface WorkoutPlanCompletionViewController
 - (CGSize)preferredContentSize;
-- (_TtC9SeymourUI35WorkoutPlanCompletionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI35WorkoutPlanCompletionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)doneButtonPressed;
 - (void)repeatButtonPressed;
-- (void)setPreferredContentSize:(CGSize)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setPreferredContentSize:(CGSize)size;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -13,7 +13,7 @@
 - (CGSize)preferredContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_20C138104();
   if (v5 == sub_20C138104())
   {
@@ -24,7 +24,7 @@
 
   else
   {
-    v12.receiver = v4;
+    v12.receiver = selfCopy;
     v12.super_class = ObjectType;
     [(WorkoutPlanCompletionViewController *)&v12 preferredContentSize];
     v9 = v8;
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   ObjectType = swift_getObjectType();
-  v8 = self;
+  selfCopy = self;
   v7 = sub_20C138104();
   if (v7 == sub_20C138104())
   {
@@ -52,7 +52,7 @@
 
   else
   {
-    v9.receiver = v8;
+    v9.receiver = selfCopy;
     v9.super_class = ObjectType;
     [(WorkoutPlanCompletionViewController *)&v9 setPreferredContentSize:width, height];
   }
@@ -60,29 +60,29 @@
 
 - (void)repeatButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C101558();
 }
 
 - (void)doneButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_20C1039D4();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WorkoutPlanCompletionViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WorkoutPlanCompletionViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WorkoutPlanCompletionViewController.viewDidAppear(_:)(appear);
 }
 
-- (_TtC9SeymourUI35WorkoutPlanCompletionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI35WorkoutPlanCompletionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

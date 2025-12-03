@@ -1,11 +1,11 @@
 @interface BCReadingStatisticsSync
-- (BOOL)isEqualExceptForDate:(id)a3 ignoringEmptySalt:(BOOL)a4;
+- (BOOL)isEqualExceptForDate:(id)date ignoringEmptySalt:(BOOL)salt;
 - (NSString)debugDescription;
 - (id)mutableCopy;
-- (void)_configureFromReadingStatistics:(id)a3 withMergers:(id)a4;
-- (void)_mergeInAssetID:(id)a3 assetVersion:(id)a4 serializedData:(id)a5;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
+- (void)_configureFromReadingStatistics:(id)statistics withMergers:(id)mergers;
+- (void)_mergeInAssetID:(id)d assetVersion:(id)version serializedData:(id)data;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
 @end
 
 @implementation BCReadingStatisticsSync
@@ -17,13 +17,13 @@
   return [(BCMutableReadingStatisticsSync *)v3 initWithCloudData:self];
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v5 = a4;
+  mergersCopy = mergers;
   v6 = BUProtocolCast();
   if (v6)
   {
-    [(BCReadingStatisticsSync *)self _configureFromReadingStatistics:v6 withMergers:v5];
+    [(BCReadingStatisticsSync *)self _configureFromReadingStatistics:v6 withMergers:mergersCopy];
   }
 
   else
@@ -36,55 +36,55 @@
   }
 }
 
-- (BOOL)isEqualExceptForDate:(id)a3 ignoringEmptySalt:(BOOL)a4
+- (BOOL)isEqualExceptForDate:(id)date ignoringEmptySalt:(BOOL)salt
 {
-  v4 = a4;
-  v6 = a3;
+  saltCopy = salt;
+  dateCopy = date;
   v7 = BUProtocolCast();
   v17.receiver = self;
   v17.super_class = BCReadingStatisticsSync;
-  LOBYTE(v4) = [(BCReadingStatisticsSync *)&v17 isEqualExceptForDate:v6 ignoringEmptySalt:v4];
+  LOBYTE(saltCopy) = [(BCReadingStatisticsSync *)&v17 isEqualExceptForDate:dateCopy ignoringEmptySalt:saltCopy];
 
-  v8 = [(BCReadingStatisticsSync *)self assetID];
-  v9 = [v7 assetID];
-  v10 = [v8 isEqualToString:v9];
+  assetID = [(BCReadingStatisticsSync *)self assetID];
+  assetID2 = [v7 assetID];
+  v10 = [assetID isEqualToString:assetID2];
 
-  v11 = [(BCReadingStatisticsSync *)self assetVersion];
-  v12 = [v7 assetVersion];
-  v13 = [v11 isEqualToString:v12];
+  assetVersion = [(BCReadingStatisticsSync *)self assetVersion];
+  assetVersion2 = [v7 assetVersion];
+  v13 = [assetVersion isEqualToString:assetVersion2];
 
-  v14 = [(BCReadingStatisticsSync *)self readingStatisticsBook];
-  v15 = [v7 readingStatisticsBook];
-  LOBYTE(v12) = [v14 isEqual:v15];
+  readingStatisticsBook = [(BCReadingStatisticsSync *)self readingStatisticsBook];
+  readingStatisticsBook2 = [v7 readingStatisticsBook];
+  LOBYTE(assetVersion2) = [readingStatisticsBook isEqual:readingStatisticsBook2];
 
-  return v4 & v10 & v13 & v12;
+  return saltCopy & v10 & v13 & assetVersion2;
 }
 
-- (void)_configureFromReadingStatistics:(id)a3 withMergers:(id)a4
+- (void)_configureFromReadingStatistics:(id)statistics withMergers:(id)mergers
 {
-  v6 = a3;
+  statisticsCopy = statistics;
   v11.receiver = self;
   v11.super_class = BCReadingStatisticsSync;
-  [(BCReadingStatisticsSync *)&v11 configureFromCloudData:v6 withMergers:a4];
-  v7 = [v6 assetID];
-  v8 = [v6 assetVersion];
-  v9 = [v6 readingStatisticsBook];
-  [(BCReadingStatisticsSync *)self _mergeInAssetID:v7 assetVersion:v8 serializedData:v9];
+  [(BCReadingStatisticsSync *)&v11 configureFromCloudData:statisticsCopy withMergers:mergers];
+  assetID = [statisticsCopy assetID];
+  assetVersion = [statisticsCopy assetVersion];
+  readingStatisticsBook = [statisticsCopy readingStatisticsBook];
+  [(BCReadingStatisticsSync *)self _mergeInAssetID:assetID assetVersion:assetVersion serializedData:readingStatisticsBook];
 
   v10 = BCCloudKitLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_1E8700(self, v6, v10);
+    sub_1E8700(self, statisticsCopy, v10);
   }
 }
 
-- (void)_mergeInAssetID:(id)a3 assetVersion:(id)a4 serializedData:(id)a5
+- (void)_mergeInAssetID:(id)d assetVersion:(id)version serializedData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  versionCopy = version;
+  dataCopy = data;
   v11 = objc_alloc_init(BCReadingStatisticsProtoBook);
-  v12 = [[PBDataReader alloc] initWithData:v10];
+  v12 = [[PBDataReader alloc] initWithData:dataCopy];
   if (!BCReadingStatisticsProtoBookReadFrom(v11, v12))
   {
     v50 = BCCloudKitLog();
@@ -96,8 +96,8 @@
     goto LABEL_60;
   }
 
-  v13 = [(BCReadingStatisticsSync *)self assetID];
-  v14 = [v13 isEqualToString:v8];
+  assetID = [(BCReadingStatisticsSync *)self assetID];
+  v14 = [assetID isEqualToString:dCopy];
 
   if ((v14 & 1) == 0)
   {
@@ -107,34 +107,34 @@
       sub_1E8874(self);
     }
 
-    [(BCReadingStatisticsSync *)self setAssetID:v8];
+    [(BCReadingStatisticsSync *)self setAssetID:dCopy];
   }
 
   v16 = objc_alloc_init(BCReadingStatisticsProtoBook);
-  [(BCReadingStatisticsProtoBook *)v16 setAssetID:v8];
+  [(BCReadingStatisticsProtoBook *)v16 setAssetID:dCopy];
   v17 = +[BCReadingStatisticsSyncManager sharedInstance];
-  v18 = [v17 _appVersion];
-  [(BCReadingStatisticsProtoBook *)v16 setAppVersion:v18];
+  _appVersion = [v17 _appVersion];
+  [(BCReadingStatisticsProtoBook *)v16 setAppVersion:_appVersion];
 
-  v19 = [(BCReadingStatisticsSync *)self readingStatisticsBook];
-  v20 = [v19 length];
+  readingStatisticsBook = [(BCReadingStatisticsSync *)self readingStatisticsBook];
+  v20 = [readingStatisticsBook length];
 
   if (!v20)
   {
 LABEL_59:
-    [(BCReadingStatisticsSync *)self setAssetVersion:v9];
+    [(BCReadingStatisticsSync *)self setAssetVersion:versionCopy];
     v75 = objc_alloc_init(PBDataWriter);
     [(BCReadingStatisticsProtoBook *)v16 writeTo:v75];
-    v76 = [v75 immutableData];
-    [(BCReadingStatisticsSync *)self setReadingStatisticsBook:v76];
+    immutableData = [v75 immutableData];
+    [(BCReadingStatisticsSync *)self setReadingStatisticsBook:immutableData];
 
     v50 = v16;
     goto LABEL_60;
   }
 
   v21 = [PBDataReader alloc];
-  v22 = [(BCReadingStatisticsSync *)self readingStatisticsBook];
-  v23 = [v21 initWithData:v22];
+  readingStatisticsBook2 = [(BCReadingStatisticsSync *)self readingStatisticsBook];
+  v23 = [v21 initWithData:readingStatisticsBook2];
 
   if ((BCReadingStatisticsProtoBookReadFrom(v16, v23) & 1) == 0)
   {
@@ -148,9 +148,9 @@ LABEL_59:
   }
 
   v79 = v12;
-  v80 = self;
-  v83 = v9;
-  v84 = v8;
+  selfCopy = self;
+  v83 = versionCopy;
+  v84 = dCopy;
 
   v78 = v16;
   v24 = v16;
@@ -161,8 +161,8 @@ LABEL_59:
   v98 = 0u;
   v99 = 0u;
   v86 = v24;
-  v26 = [(BCReadingStatisticsProtoBook *)v24 tocEntrys];
-  v27 = [v26 countByEnumeratingWithState:&v96 objects:v107 count:16];
+  tocEntrys = [(BCReadingStatisticsProtoBook *)v24 tocEntrys];
+  v27 = [tocEntrys countByEnumeratingWithState:&v96 objects:v107 count:16];
   if (v27)
   {
     v28 = v27;
@@ -173,29 +173,29 @@ LABEL_59:
       {
         if (*v97 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(tocEntrys);
         }
 
         v31 = *(*(&v96 + 1) + 8 * i);
-        v32 = [v31 href];
-        [v25 setObject:v31 forKeyedSubscript:v32];
+        href = [v31 href];
+        [v25 setObject:v31 forKeyedSubscript:href];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v96 objects:v107 count:16];
+      v28 = [tocEntrys countByEnumeratingWithState:&v96 objects:v107 count:16];
     }
 
     while (v28);
   }
 
   v81 = v11;
-  v82 = v10;
+  v82 = dataCopy;
 
   v94 = 0u;
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v33 = [(BCReadingStatisticsProtoBook *)v85 tocEntrys];
-  v34 = [v33 countByEnumeratingWithState:&v92 objects:v106 count:16];
+  tocEntrys2 = [(BCReadingStatisticsProtoBook *)v85 tocEntrys];
+  v34 = [tocEntrys2 countByEnumeratingWithState:&v92 objects:v106 count:16];
   if (!v34)
   {
     v36 = 0;
@@ -211,12 +211,12 @@ LABEL_59:
     {
       if (*v93 != v37)
       {
-        objc_enumerationMutation(v33);
+        objc_enumerationMutation(tocEntrys2);
       }
 
       v39 = *(*(&v92 + 1) + 8 * j);
-      v40 = [v39 href];
-      v41 = [v25 objectForKeyedSubscript:v40];
+      href2 = [v39 href];
+      v41 = [v25 objectForKeyedSubscript:href2];
       if (v41)
       {
         v42 = v41;
@@ -233,7 +233,7 @@ LABEL_59:
         {
           [v39 readProportion];
           *buf = 138412546;
-          v103 = v40;
+          v103 = href2;
           v104 = 2048;
           v105 = v47 * 100.0;
           _os_log_impl(&dword_0, v46, OS_LOG_TYPE_INFO, "Reading statistics updated: %@ now %.0lf%% read", buf, 0x16u);
@@ -255,7 +255,7 @@ LABEL_59:
         {
           [v39 readProportion];
           *buf = 138412546;
-          v103 = v40;
+          v103 = href2;
           v104 = 2048;
           v105 = v49 * 100.0;
           _os_log_impl(&dword_0, v48, OS_LOG_TYPE_INFO, "Reading statistics updated: %@ now %.0lf%% read", buf, 0x16u);
@@ -266,18 +266,18 @@ LABEL_59:
 LABEL_29:
     }
 
-    v35 = [v33 countByEnumeratingWithState:&v92 objects:v106 count:16];
+    v35 = [tocEntrys2 countByEnumeratingWithState:&v92 objects:v106 count:16];
   }
 
   while (v35);
 LABEL_38:
 
   v52 = +[(BCCFISet *)BCMutableCFISet];
-  v53 = [v86 readCFIs];
-  v54 = v53;
-  if (v53)
+  readCFIs = [v86 readCFIs];
+  v54 = readCFIs;
+  if (readCFIs)
   {
-    v55 = v53;
+    v55 = readCFIs;
   }
 
   else
@@ -287,11 +287,11 @@ LABEL_38:
 
   v56 = v55;
 
-  v57 = [(BCReadingStatisticsProtoBook *)v85 readCFIs];
-  v58 = v57;
-  if (v57)
+  readCFIs2 = [(BCReadingStatisticsProtoBook *)v85 readCFIs];
+  v58 = readCFIs2;
+  if (readCFIs2)
   {
-    v59 = v57;
+    v59 = readCFIs2;
   }
 
   else
@@ -343,33 +343,33 @@ LABEL_38:
     while (v63);
   }
 
-  v69 = [v52 allCFIStrings];
-  v70 = [v69 mutableCopy];
+  allCFIStrings = [v52 allCFIStrings];
+  v70 = [allCFIStrings mutableCopy];
   v50 = v86;
   [v86 setReadCFIs:v70];
 
   if (v36)
   {
     v71 = 1;
-    v9 = v83;
-    v8 = v84;
-    v10 = v82;
+    versionCopy = v83;
+    dCopy = v84;
+    dataCopy = v82;
     v72 = v77;
   }
 
   else
   {
-    v73 = [v86 readCFIs];
+    readCFIs3 = [v86 readCFIs];
     v72 = v77;
-    v74 = [v77 isEqual:v73] ^ 1;
+    v74 = [v77 isEqual:readCFIs3] ^ 1;
 
     v71 = v74;
-    v9 = v83;
-    v8 = v84;
-    v10 = v82;
+    versionCopy = v83;
+    dCopy = v84;
+    dataCopy = v82;
   }
 
-  self = v80;
+  self = selfCopy;
   v11 = v81;
   v16 = v78;
   v12 = v79;
@@ -381,23 +381,23 @@ LABEL_38:
 LABEL_60:
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v6 = a3;
+  recordCopy = record;
   v16.receiver = self;
   v16.super_class = BCReadingStatisticsSync;
-  [(BCReadingStatisticsSync *)&v16 resolveConflictsFromRecord:v6 withResolvers:a4];
-  if (v6)
+  [(BCReadingStatisticsSync *)&v16 resolveConflictsFromRecord:recordCopy withResolvers:resolvers];
+  if (recordCopy)
   {
-    v7 = [BCCloudData localIdentifierFromRecord:v6];
+    v7 = [BCCloudData localIdentifierFromRecord:recordCopy];
     objc_opt_class();
-    v8 = [v6 objectForKey:@"assetStatistics"];
+    v8 = [recordCopy objectForKey:@"assetStatistics"];
     v9 = BUDynamicCast();
-    v10 = [v9 fileURL];
+    fileURL = [v9 fileURL];
 
-    if (v10)
+    if (fileURL)
     {
-      v11 = [NSData dataWithContentsOfURL:v10];
+      v11 = [NSData dataWithContentsOfURL:fileURL];
     }
 
     else
@@ -407,23 +407,23 @@ LABEL_60:
 
     if (-[NSObject length](v7, "length") && [v11 length])
     {
-      v12 = [v6 objectForKeyedSubscript:@"assetVersion"];
+      v12 = [recordCopy objectForKeyedSubscript:@"assetVersion"];
       [(BCReadingStatisticsSync *)self _mergeInAssetID:v7 assetVersion:v12 serializedData:v11];
 
-      v13 = [(BCReadingStatisticsSync *)self hasChanges];
+      hasChanges = [(BCReadingStatisticsSync *)self hasChanges];
       v14 = BCReadingStatisticsLog();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
-      if (v13)
+      if (hasChanges)
       {
         if (v15)
         {
-          sub_1E8A78(self, v6);
+          sub_1E8A78(self, recordCopy);
         }
       }
 
       else if (v15)
       {
-        sub_1E89A4(self, v6);
+        sub_1E89A4(self, recordCopy);
       }
     }
 
@@ -449,10 +449,10 @@ LABEL_60:
 
 - (NSString)debugDescription
 {
-  v3 = [(BCReadingStatisticsSync *)self assetID];
-  v4 = [(BCReadingStatisticsSync *)self assetVersion];
-  v5 = [(BCReadingStatisticsSync *)self readingStatisticsBook];
-  v6 = [NSString stringWithFormat:@"assetID: %@, assetVersion: %@, statistics: %@", v3, v4, v5];
+  assetID = [(BCReadingStatisticsSync *)self assetID];
+  assetVersion = [(BCReadingStatisticsSync *)self assetVersion];
+  readingStatisticsBook = [(BCReadingStatisticsSync *)self readingStatisticsBook];
+  v6 = [NSString stringWithFormat:@"assetID: %@, assetVersion: %@, statistics: %@", assetID, assetVersion, readingStatisticsBook];
 
   return v6;
 }

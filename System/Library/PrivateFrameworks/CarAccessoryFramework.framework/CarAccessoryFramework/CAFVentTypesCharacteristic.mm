@@ -12,51 +12,51 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFVentTypesCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (BOOL)hasWindow
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return [CAFBitMaskUtilities bitmask:v2 hasOption:1];
+  return [CAFBitMaskUtilities bitmask:ventTypesValue hasOption:1];
 }
 
 - (BOOL)hasUpper
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return [CAFBitMaskUtilities bitmask:v2 hasOption:2];
+  return [CAFBitMaskUtilities bitmask:ventTypesValue hasOption:2];
 }
 
 - (BOOL)hasLower
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return [CAFBitMaskUtilities bitmask:v2 hasOption:4];
+  return [CAFBitMaskUtilities bitmask:ventTypesValue hasOption:4];
 }
 
 - (BOOL)hasNeck
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return [CAFBitMaskUtilities bitmask:v2 hasOption:8];
+  return [CAFBitMaskUtilities bitmask:ventTypesValue hasOption:8];
 }
 
 - (BOOL)hasMiddle
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return [CAFBitMaskUtilities bitmask:v2 hasOption:16];
+  return [CAFBitMaskUtilities bitmask:ventTypesValue hasOption:16];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFVentTypesCharacteristic *)self ventTypesValue];
+  ventTypesValue = [(CAFVentTypesCharacteristic *)self ventTypesValue];
 
-  return NSStringFromVentTypes(v2);
+  return NSStringFromVentTypes(ventTypesValue);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TodayCardParagraphOverlayView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
-- (_TtC22SubscribePageExtension29TodayCardParagraphOverlayView)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension29TodayCardParagraphOverlayView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation TodayCardParagraphOverlayView
 
-- (_TtC22SubscribePageExtension29TodayCardParagraphOverlayView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension29TodayCardParagraphOverlayView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension29TodayCardParagraphOverlayView_isExpanded) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension29TodayCardParagraphOverlayView_sizeCategory) = 7;
@@ -17,10 +17,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100046820(width);
   v7 = v6;
 
@@ -33,18 +33,18 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100046B10();
 }
 
 - (NSString)accessibilityLabel
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension29TodayCardParagraphOverlayView_label);
-  v3 = self;
-  v4 = [v2 accessibilityLabel];
-  if (v4)
+  selfCopy = self;
+  accessibilityLabel = [v2 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v5 = v4;
+    v5 = accessibilityLabel;
     sub_100753094();
 
     v6 = sub_100753064();
@@ -59,24 +59,24 @@
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (label)
   {
     sub_100753094();
-    v6 = self;
-    a3 = sub_100753064();
+    selfCopy = self;
+    label = sub_100753064();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TodayCardParagraphOverlayView *)&v8 setAccessibilityLabel:a3];
+  [(TodayCardParagraphOverlayView *)&v8 setAccessibilityLabel:label];
 }
 
 @end

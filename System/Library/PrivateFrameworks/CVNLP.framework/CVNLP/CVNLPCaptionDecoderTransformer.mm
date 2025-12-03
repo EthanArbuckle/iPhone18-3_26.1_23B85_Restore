@@ -1,32 +1,32 @@
 @interface CVNLPCaptionDecoderTransformer
-- (CVNLPCaptionDecoderTransformer)initWithOptions:(id)a3 runTimeParams:(id)a4;
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4;
-- (id)computeCaptionForImageWithInputsImpl:(id)a3 genderOption:(int)a4;
+- (CVNLPCaptionDecoderTransformer)initWithOptions:(id)options runTimeParams:(id)params;
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option;
+- (id)computeCaptionForImageWithInputsImpl:(id)impl genderOption:(int)option;
 - (id)performanceResults;
-- (void)_createBeamSearch:(id)a3 runTimeParams:(id)a4;
-- (void)_loadNetwork:(id)a3 options:(id)a4 runTimeParams:(id)a5;
-- (void)_loadVocabFile:(id)a3;
+- (void)_createBeamSearch:(id)search runTimeParams:(id)params;
+- (void)_loadNetwork:(id)network options:(id)options runTimeParams:(id)params;
+- (void)_loadVocabFile:(id)file;
 - (void)dealloc;
 @end
 
 @implementation CVNLPCaptionDecoderTransformer
 
-- (CVNLPCaptionDecoderTransformer)initWithOptions:(id)a3 runTimeParams:(id)a4
+- (CVNLPCaptionDecoderTransformer)initWithOptions:(id)options runTimeParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  paramsCopy = params;
   v18.receiver = self;
   v18.super_class = CVNLPCaptionDecoderTransformer;
-  v8 = [(CVNLPCaptionModelBase *)&v18 initWithOptions:v6 runTimeParams:v7];
+  v8 = [(CVNLPCaptionModelBase *)&v18 initWithOptions:optionsCopy runTimeParams:paramsCopy];
   v11 = v8;
   if (v8)
   {
     v8->_startID = 0;
     v8->_endID = 0;
-    v12 = objc_msgSend_objectForKeyedSubscript_(v6, v9, CVNLPCaptionModelPath, v10);
+    v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, CVNLPCaptionModelPath, v10);
     objc_msgSend__loadVocabFile_(v11, v13, v12, v14);
-    objc_msgSend__loadNetwork_options_runTimeParams_(v11, v15, v12, v6, v7);
-    objc_msgSend__createBeamSearch_runTimeParams_(v11, v16, v6, v7);
+    objc_msgSend__loadNetwork_options_runTimeParams_(v11, v15, v12, optionsCopy, paramsCopy);
+    objc_msgSend__createBeamSearch_runTimeParams_(v11, v16, optionsCopy, paramsCopy);
     if (v11->_vocabSize != v11->_outputVocabSize)
     {
       sub_1D9DAAF1C(3u, "Mismatching vocab file and output vocab sizes");
@@ -36,10 +36,10 @@
   return v11;
 }
 
-- (void)_loadVocabFile:(id)a3
+- (void)_loadVocabFile:(id)file
 {
-  v4 = a3;
-  v7 = objc_msgSend_URLByAppendingPathComponent_(v4, v5, @"vocab_reverse.json", v6);
+  fileCopy = file;
+  v7 = objc_msgSend_URLByAppendingPathComponent_(fileCopy, v5, @"vocab_reverse.json", v6);
   v8 = MEMORY[0x1E695DEF0];
   v12 = objc_msgSend_path(v7, v9, v10, v11);
   v15 = objc_msgSend_dataWithContentsOfFile_(v8, v13, v12, v14);
@@ -53,16 +53,16 @@
   self->_vocabSize = objc_msgSend_count(self->_vocab, v20, v21, v22) + 1;
 }
 
-- (void)_loadNetwork:(id)a3 options:(id)a4 runTimeParams:(id)a5
+- (void)_loadNetwork:(id)network options:(id)options runTimeParams:(id)params
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  networkCopy = network;
+  optionsCopy = options;
+  paramsCopy = params;
   v14 = objc_msgSend_array(MEMORY[0x1E695DF70], v11, v12, v13);
   for (i = 0; ; ++i)
   {
     v16 = [CVNLPCaptionDecoderBlock alloc];
-    v21 = objc_msgSend_initWithOptions_modelIndex_runTimeParams_(v16, v17, v9, i, v10);
+    v21 = objc_msgSend_initWithOptions_modelIndex_runTimeParams_(v16, v17, optionsCopy, i, paramsCopy);
     if (!v21)
     {
       break;
@@ -197,12 +197,12 @@ LABEL_26:
   self->_outputVocabSize = v82;
 }
 
-- (void)_createBeamSearch:(id)a3 runTimeParams:(id)a4
+- (void)_createBeamSearch:(id)search runTimeParams:(id)params
 {
-  v50 = a3;
-  v6 = a4;
+  searchCopy = search;
+  paramsCopy = params;
   v10 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v7, v8, v9);
-  v13 = objc_msgSend_objectForKeyedSubscript_(v50, v11, CVNLPBeamSearchSize, v12);
+  v13 = objc_msgSend_objectForKeyedSubscript_(searchCopy, v11, CVNLPBeamSearchSize, v12);
   v17 = v13;
   if (v13)
   {
@@ -219,7 +219,7 @@ LABEL_26:
   objc_msgSend_setObject_forKeyedSubscript_(v10, v20, v19, CVNLPBeamSearchSize);
 
   v21 = MEMORY[0x1E696AD98];
-  objc_msgSend_captionModelLengthNormalizationFactor(v6, v22, v23, v24);
+  objc_msgSend_captionModelLengthNormalizationFactor(paramsCopy, v22, v23, v24);
   v28 = objc_msgSend_numberWithDouble_(v21, v25, v26, v27);
   objc_msgSend_setObject_forKeyedSubscript_(v10, v29, v28, CVNLPBeamSearchLengthNormalizationFactor);
 
@@ -230,12 +230,12 @@ LABEL_26:
   objc_msgSend_setObject_forKeyedSubscript_(v10, v37, v36, CVNLPBeamSearchOutputVocabSize);
 
   objc_msgSend_setObject_forKeyedSubscript_(v10, v38, self->_vocab, CVNLPBeamSearchOutputVocabMap);
-  v42 = objc_msgSend_blackListRules(v6, v39, v40, v41);
+  v42 = objc_msgSend_blackListRules(paramsCopy, v39, v40, v41);
   objc_msgSend_setObject_forKeyedSubscript_(v10, v43, v42, CVNLPBeamSearchBlacklistRules);
 
   objc_msgSend_setObject_forKeyedSubscript_(v10, v44, MEMORY[0x1E695E118], CVNLPBeamSearchIncludeLanguageModel);
   self->_beamSearch = CVNLPBeamSearchCreate(v10, 0);
-  v48 = objc_msgSend_genderedTokens(v6, v45, v46, v47);
+  v48 = objc_msgSend_genderedTokens(paramsCopy, v45, v46, v47);
   objc_msgSend_setObject_forKeyedSubscript_(v10, v49, v48, CVNLPBeamSearchOutputVocabFilterList);
 
   self->_filterBeamSearch = CVNLPBeamSearchCreate(v10, 0);
@@ -260,9 +260,9 @@ LABEL_26:
   [(CVNLPCaptionDecoderTransformer *)&v5 dealloc];
 }
 
-- (id)computeCaptionForImageWithInputs:(id)a3 genderOption:(int)a4
+- (id)computeCaptionForImageWithInputs:(id)inputs genderOption:(int)option
 {
-  v6 = a3;
+  inputsCopy = inputs;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -276,9 +276,9 @@ LABEL_26:
   v15[3] = &unk_1E858E520;
   v17 = &v19;
   v15[4] = self;
-  v11 = v6;
+  v11 = inputsCopy;
   v16 = v11;
-  v18 = a4;
+  optionCopy = option;
   objc_msgSend_run_block_(v10, v12, @"Decode", v15);
 
   v13 = v20[5];
@@ -287,20 +287,20 @@ LABEL_26:
   return v13;
 }
 
-- (id)computeCaptionForImageWithInputsImpl:(id)a3 genderOption:(int)a4
+- (id)computeCaptionForImageWithInputsImpl:(id)impl genderOption:(int)option
 {
   v216 = *MEMORY[0x1E69E9840];
-  v210 = self;
-  v6 = a3;
+  selfCopy = self;
+  implCopy = impl;
   v9 = 9;
-  if (!a4)
+  if (!option)
   {
     v9 = 10;
   }
 
   v167 = *(&self->super.super.super.super.isa + OBJC_IVAR___CVNLPCaptionDecoderTransformer__startID[v9]);
-  v164 = v6;
-  v169 = objc_msgSend_objectAtIndexedSubscript_(v6, v7, 0, v8);
+  v164 = implCopy;
+  v169 = objc_msgSend_objectAtIndexedSubscript_(implCopy, v7, 0, v8);
   v13 = objc_msgSend_decoderBlocks(self, v10, v11, v12);
   v17 = objc_msgSend_firstObject(v13, v14, v15, v16);
   v21 = v17;
@@ -351,7 +351,7 @@ LABEL_15:
     v209 = 0u;
     v206 = 0u;
     v207 = 0u;
-    v29 = objc_msgSend_decoderBlocks(v210, v26, v27, v28);
+    v29 = objc_msgSend_decoderBlocks(selfCopy, v26, v27, v28);
     v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v29, v30, &v206, v215, 16);
     if (v34)
     {
@@ -366,7 +366,7 @@ LABEL_15:
           }
 
           v37 = *(*(&v206 + 1) + 8 * i);
-          v38 = v210;
+          v38 = selfCopy;
           if (v37)
           {
             objc_msgSend_attFeatsPlaceholderBlob(v37, v31, v32, v33);
@@ -398,14 +398,14 @@ LABEL_15:
   }
 
 LABEL_26:
-  v39 = objc_msgSend_decoderBlocks(v210, v26, v27, v28);
+  v39 = objc_msgSend_decoderBlocks(selfCopy, v26, v27, v28);
   v194 = objc_msgSend_firstObject(v39, v40, v41, v42);
 
-  v46 = objc_msgSend_decoderBlocks(v210, v43, v44, v45);
+  v46 = objc_msgSend_decoderBlocks(selfCopy, v43, v44, v45);
   v193 = objc_msgSend_lastObject(v46, v47, v48, v49);
 
   v165 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v50, v51, v52);
-  v56 = objc_msgSend_maxCaptionLen(v210, v53, v54, v55);
+  v56 = objc_msgSend_maxCaptionLen(selfCopy, v53, v54, v55);
   if (v56)
   {
     if (!(v56 >> 62))
@@ -419,7 +419,7 @@ LABEL_26:
   v163 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v57, v58, v59);
   objc_msgSend_setObject_forKeyedSubscript_(v165, v60, v163, CVNLPBeamSearchNextTokenMetaData);
   v61 = MEMORY[0x1E696AD98];
-  started = objc_msgSend_startID(v210, v62, v63, v64);
+  started = objc_msgSend_startID(selfCopy, v62, v63, v64);
   v68 = objc_msgSend_numberWithUnsignedInteger_(v61, v66, started, v67);
   objc_msgSend_setObject_forKeyedSubscript_(v165, v69, v68, CVNLPBeamSearchNextTokenID);
 
@@ -434,13 +434,13 @@ LABEL_26:
   v74 = 0;
   do
   {
-    if (v74 >= objc_msgSend_maxCaptionLen(v210, v71, v72, v73))
+    if (v74 >= objc_msgSend_maxCaptionLen(selfCopy, v71, v72, v73))
     {
       break;
     }
 
     v78 = objc_msgSend_array(MEMORY[0x1E695DF70], v75, v76, v77);
-    v82 = objc_msgSend_perfResults(v210, v79, v80, v81);
+    v82 = objc_msgSend_perfResults(selfCopy, v79, v80, v81);
     v181[0] = MEMORY[0x1E69E9820];
     v181[1] = 3321888768;
     v181[2] = sub_1D9DD2D08;
@@ -448,18 +448,18 @@ LABEL_26:
     v182 = v194;
     v187 = v74;
     v183 = v169;
-    v184 = v210;
+    v184 = selfCopy;
     v186 = __p;
-    v188 = &v210;
+    v188 = &selfCopy;
     v189 = v166;
-    v190 = &v210;
+    v190 = &selfCopy;
     v191 = &v193;
     v192 = &v194;
     v83 = v78;
     v185 = v83;
     objc_msgSend_run_block_(v82, v84, @"DecodeBlock", v181);
 
-    v88 = objc_msgSend_perfResults(v210, v85, v86, v87);
+    v88 = objc_msgSend_perfResults(selfCopy, v85, v86, v87);
     v177[0] = MEMORY[0x1E69E9820];
     v177[1] = 3221225472;
     v177[2] = sub_1D9DD3F50;
@@ -504,7 +504,7 @@ LABEL_26:
         {
           v117 = objc_msgSend_lastObject(v107, v114, v115, v116);
           v121 = objc_msgSend_unsignedIntegerValue(v117, v118, v119, v120);
-          LODWORD(v121) = v121 == objc_msgSend_endID(v210, v122, v123, v124);
+          LODWORD(v121) = v121 == objc_msgSend_endID(selfCopy, v122, v123, v124);
 
           if (v121)
           {
@@ -512,7 +512,7 @@ LABEL_26:
             {
               v126 = objc_msgSend_objectAtIndexedSubscript_(v107, v114, k, v116);
               v129 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v127, @"%@", v128, v126);
-              v133 = objc_msgSend_vocab(v210, v130, v131, v132);
+              v133 = objc_msgSend_vocab(selfCopy, v130, v131, v132);
               v136 = objc_msgSend_objectForKeyedSubscript_(v133, v134, v129, v135);
               objc_msgSend_addObject_(v104, v137, v136, v138);
             }
@@ -521,7 +521,7 @@ LABEL_26:
 
         objc_msgSend_floatValue(v110, v114, v115, v116);
         v140 = v139;
-        v144 = objc_msgSend_runTimeParams(v210, v141, v142, v143);
+        v144 = objc_msgSend_runTimeParams(selfCopy, v141, v142, v143);
         objc_msgSend_captionModelMinimumConfidence(v144, v145, v146, v147);
         v149 = v148;
 
@@ -558,8 +558,8 @@ LABEL_26:
   v5 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], a2, v2, v3);
   v33.receiver = self;
   v33.super_class = CVNLPCaptionDecoderTransformer;
-  v6 = [(CVNLPModelBase *)&v33 performanceResults];
-  objc_msgSend_addEntriesFromDictionary_(v5, v7, v6, v8);
+  performanceResults = [(CVNLPModelBase *)&v33 performanceResults];
+  objc_msgSend_addEntriesFromDictionary_(v5, v7, performanceResults, v8);
 
   v31 = 0u;
   v32 = 0u;

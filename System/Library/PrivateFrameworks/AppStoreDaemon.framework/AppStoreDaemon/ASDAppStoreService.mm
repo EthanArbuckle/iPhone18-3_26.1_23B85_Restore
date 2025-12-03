@@ -2,18 +2,18 @@
 + (id)defaultService;
 - (ASDAppStoreChangedObserver)observer;
 - (ASDAppStoreService)init;
-- (void)_refreshCache:(int)a3 sendActionResponse:;
-- (void)addBadgeIDs:(id)a3 replyHandler:(id)a4;
-- (void)allBadgeIDsWithReplyHandler:(id)a3;
-- (void)allBadgeMetricsWithReplyHandler:(id)a3;
-- (void)badgeCountWithReplyHandler:(id)a3;
+- (void)_refreshCache:(int)cache sendActionResponse:;
+- (void)addBadgeIDs:(id)ds replyHandler:(id)handler;
+- (void)allBadgeIDsWithReplyHandler:(id)handler;
+- (void)allBadgeMetricsWithReplyHandler:(id)handler;
+- (void)badgeCountWithReplyHandler:(id)handler;
 - (void)dealloc;
-- (void)launchAppStoreWithURL:(id)a3 withReplyHandler:(id)a4;
-- (void)reloadWidgetOnConnectivityToEndpoint:(id)a3 parameters:(id)a4 replyHandler:(id)a5;
-- (void)removeAllBadgeIDsWithReplyHandler:(id)a3;
-- (void)removeBadgeIDs:(id)a3 replyHandler:(id)a4;
-- (void)removeMetricsForBadgeIDs:(id)a3 replyHandler:(id)a4;
-- (void)setObserver:(id)a3;
+- (void)launchAppStoreWithURL:(id)l withReplyHandler:(id)handler;
+- (void)reloadWidgetOnConnectivityToEndpoint:(id)endpoint parameters:(id)parameters replyHandler:(id)handler;
+- (void)removeAllBadgeIDsWithReplyHandler:(id)handler;
+- (void)removeBadgeIDs:(id)ds replyHandler:(id)handler;
+- (void)removeMetricsForBadgeIDs:(id)ds replyHandler:(id)handler;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation ASDAppStoreService
@@ -80,7 +80,7 @@ void __26__ASDAppStoreService_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_refreshCache:(int)a3 sendActionResponse:
+- (void)_refreshCache:(int)cache sendActionResponse:
 {
   v18 = *MEMORY[0x1E69E9840];
   v6 = ASDLogHandleForCategory(13);
@@ -91,7 +91,7 @@ void __26__ASDAppStoreService_init__block_invoke(uint64_t a1)
     *&buf[12] = 1024;
     *&buf[14] = a2;
     *&buf[18] = 1024;
-    *&buf[20] = a3;
+    *&buf[20] = cache;
     v7 = *&buf[4];
     _os_log_impl(&dword_1B8220000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Refreshing caches with notify: %{BOOL}d sendActionResponse: %{BOOL}d", buf, 0x18u);
   }
@@ -102,12 +102,12 @@ void __26__ASDAppStoreService_init__block_invoke(uint64_t a1)
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v8 = a1[2];
+  v8 = self[2];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__ASDAppStoreService__refreshCache_sendActionResponse___block_invoke;
   block[3] = &unk_1E7CDB840;
-  block[4] = a1;
+  block[4] = self;
   block[5] = buf;
   dispatch_sync(v8, block);
   v10[0] = MEMORY[0x1E69E9820];
@@ -115,10 +115,10 @@ void __26__ASDAppStoreService_init__block_invoke(uint64_t a1)
   v10[2] = __55__ASDAppStoreService__refreshCache_sendActionResponse___block_invoke_2;
   v10[3] = &unk_1E7CDC608;
   v11 = a2;
-  v10[4] = a1;
+  v10[4] = self;
   v10[5] = buf;
-  v12 = a3;
-  [a1 allBadgeMetricsWithReplyHandler:v10];
+  cacheCopy = cache;
+  [self allBadgeMetricsWithReplyHandler:v10];
   _Block_object_dispose(buf, 8);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -162,7 +162,7 @@ void __26__ASDAppStoreService_init__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __36__ASDAppStoreService_defaultService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D4C8 != -1)
   {
     dispatch_once(&qword_1ED90D4C8, block);
@@ -212,34 +212,34 @@ uint64_t __30__ASDAppStoreService_observer__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__ASDAppStoreService_setObserver___block_invoke;
   v7[3] = &unk_1E7CDB868;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)addBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)addBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__ASDAppStoreService_addBadgeIDs_replyHandler___block_invoke;
   v11[3] = &unk_1E7CDC590;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = handlerCopy;
   [v8 getAppStoreServiceWithCompletionHandler:v11];
 }
 
@@ -321,17 +321,17 @@ void __47__ASDAppStoreService_addBadgeIDs_replyHandler___block_invoke_9(uint64_t
   dispatch_async(v6, block);
 }
 
-- (void)allBadgeMetricsWithReplyHandler:(id)a3
+- (void)allBadgeMetricsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ASDServiceBroker defaultBroker];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__ASDAppStoreService_allBadgeMetricsWithReplyHandler___block_invoke;
   v7[3] = &unk_1E7CDC4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 getAppStoreServiceWithCompletionHandler:v7];
 }
 
@@ -415,17 +415,17 @@ void __54__ASDAppStoreService_allBadgeMetricsWithReplyHandler___block_invoke_13(
   dispatch_async(v7, block);
 }
 
-- (void)allBadgeIDsWithReplyHandler:(id)a3
+- (void)allBadgeIDsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ASDServiceBroker defaultBroker];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__ASDAppStoreService_allBadgeIDsWithReplyHandler___block_invoke;
   v7[3] = &unk_1E7CDC4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 getAppStoreServiceWithCompletionHandler:v7];
 }
 
@@ -509,17 +509,17 @@ void __50__ASDAppStoreService_allBadgeIDsWithReplyHandler___block_invoke_16(uint
   dispatch_async(v7, block);
 }
 
-- (void)badgeCountWithReplyHandler:(id)a3
+- (void)badgeCountWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ASDServiceBroker defaultBroker];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__ASDAppStoreService_badgeCountWithReplyHandler___block_invoke;
   v7[3] = &unk_1E7CDC4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 getAppStoreServiceWithCompletionHandler:v7];
 }
 
@@ -585,17 +585,17 @@ void __49__ASDAppStoreService_badgeCountWithReplyHandler___block_invoke_2(uint64
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAllBadgeIDsWithReplyHandler:(id)a3
+- (void)removeAllBadgeIDsWithReplyHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ASDServiceBroker defaultBroker];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__ASDAppStoreService_removeAllBadgeIDsWithReplyHandler___block_invoke;
   v7[3] = &unk_1E7CDC4C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [v5 getAppStoreServiceWithCompletionHandler:v7];
 }
 
@@ -677,20 +677,20 @@ void __56__ASDAppStoreService_removeAllBadgeIDsWithReplyHandler___block_invoke_2
   dispatch_async(v6, block);
 }
 
-- (void)removeBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)removeBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__ASDAppStoreService_removeBadgeIDs_replyHandler___block_invoke;
   v11[3] = &unk_1E7CDC590;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = handlerCopy;
   [v8 getAppStoreServiceWithCompletionHandler:v11];
 }
 
@@ -772,20 +772,20 @@ void __50__ASDAppStoreService_removeBadgeIDs_replyHandler___block_invoke_23(uint
   dispatch_async(v6, block);
 }
 
-- (void)removeMetricsForBadgeIDs:(id)a3 replyHandler:(id)a4
+- (void)removeMetricsForBadgeIDs:(id)ds replyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__ASDAppStoreService_removeMetricsForBadgeIDs_replyHandler___block_invoke;
   v11[3] = &unk_1E7CDC590;
-  v12 = v6;
-  v13 = v7;
+  v12 = dsCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dsCopy;
+  v10 = handlerCopy;
   [v8 getAppStoreServiceWithCompletionHandler:v11];
 }
 
@@ -867,20 +867,20 @@ void __60__ASDAppStoreService_removeMetricsForBadgeIDs_replyHandler___block_invo
   dispatch_async(v6, block);
 }
 
-- (void)launchAppStoreWithURL:(id)a3 withReplyHandler:(id)a4
+- (void)launchAppStoreWithURL:(id)l withReplyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__ASDAppStoreService_launchAppStoreWithURL_withReplyHandler___block_invoke;
   v11[3] = &unk_1E7CDC590;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   [v8 getAppStoreServiceWithCompletionHandler:v11];
 }
 
@@ -995,24 +995,24 @@ void __61__ASDAppStoreService_launchAppStoreWithURL_withReplyHandler___block_inv
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reloadWidgetOnConnectivityToEndpoint:(id)a3 parameters:(id)a4 replyHandler:(id)a5
+- (void)reloadWidgetOnConnectivityToEndpoint:(id)endpoint parameters:(id)parameters replyHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  endpointCopy = endpoint;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v12 = +[ASDServiceBroker defaultBroker];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__ASDAppStoreService_reloadWidgetOnConnectivityToEndpoint_parameters_replyHandler___block_invoke;
   v16[3] = &unk_1E7CDC5B8;
-  v19 = v11;
+  v19 = handlerCopy;
   v20 = a2;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
+  v17 = endpointCopy;
+  v18 = parametersCopy;
+  v13 = parametersCopy;
+  v14 = endpointCopy;
+  v15 = handlerCopy;
   [v12 getAppStoreServiceWithCompletionHandler:v16];
 }
 

@@ -1,32 +1,32 @@
 @interface AKPiggybackController
 + (id)sharedController;
 + (void)tearDown;
-- (BOOL)_hasPrimaryiCloudAccountForPayload:(id)a3;
-- (BOOL)_processPendingCompletionsForPayload:(id)a3;
-- (BOOL)shouldSuppressPushMessage:(id)a3;
-- (id)_acceptingControllerForTransactionId:(id)a3;
-- (id)performCircleRequestWithContext:(id)a3 completion:(id)a4;
-- (id)serviceControllerForContext:(id)a3;
+- (BOOL)_hasPrimaryiCloudAccountForPayload:(id)payload;
+- (BOOL)_processPendingCompletionsForPayload:(id)payload;
+- (BOOL)shouldSuppressPushMessage:(id)message;
+- (id)_acceptingControllerForTransactionId:(id)id;
+- (id)performCircleRequestWithContext:(id)context completion:(id)completion;
+- (id)serviceControllerForContext:(id)context;
 - (void)_displaySwitchWiFiAlert;
-- (void)_processPiggybackPayload:(id)a3;
-- (void)_processUIIfNeededForError:(id)a3 circleStep:(unint64_t)a4;
-- (void)_removeAcceptingControllerForTransaction:(id)a3;
-- (void)processPushMessage:(id)a3;
-- (void)startRequestSessionWithController:(id)a3 completion:(id)a4;
+- (void)_processPiggybackPayload:(id)payload;
+- (void)_processUIIfNeededForError:(id)error circleStep:(unint64_t)step;
+- (void)_removeAcceptingControllerForTransaction:(id)transaction;
+- (void)processPushMessage:(id)message;
+- (void)startRequestSessionWithController:(id)controller completion:(id)completion;
 @end
 
 @implementation AKPiggybackController
 
 + (id)sharedController
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10018A638;
   v8 = &unk_100322AA0;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &unk_100374958;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -43,7 +43,7 @@
 
 + (void)tearDown
 {
-  v3[2] = a1;
+  v3[2] = self;
   v3[1] = a2;
   v3[0] = +[AKPiggybackController sharedController];
   [*(v3[0] + 1) removeAllObjects];
@@ -58,12 +58,12 @@
   objc_storeStrong(v3, 0);
 }
 
-- (BOOL)shouldSuppressPushMessage:(id)a3
+- (BOOL)shouldSuppressPushMessage:(id)message
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v22 = 0;
   if ([location[0] command] == 700)
   {
@@ -71,36 +71,36 @@
     v8 = objc_alloc_init(AKAnisetteProvisioningController);
     v20 = [v8 anisetteDataWithError:0];
     _objc_release(v8);
-    v9 = [v20 machineID];
+    machineID = [v20 machineID];
     v18 = 0;
     v16 = 0;
     v10 = 0;
-    if (v9)
+    if (machineID)
     {
-      v19 = [v20 machineID];
+      machineID2 = [v20 machineID];
       v18 = 1;
-      v17 = [location[0] serverMachineId];
+      serverMachineId = [location[0] serverMachineId];
       v16 = 1;
-      v10 = [v19 isEqualToString:?] == 0;
+      v10 = [machineID2 isEqualToString:?] == 0;
     }
 
-    v24->_requiresHSA2Repair = v10;
+    selfCopy->_requiresHSA2Repair = v10;
     if (v16)
     {
-      _objc_release(v17);
+      _objc_release(serverMachineId);
     }
 
     if (v18)
     {
-      _objc_release(v19);
+      _objc_release(machineID2);
     }
 
-    _objc_release(v9);
+    _objc_release(machineID);
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      if (v24->_requiresHSA2Repair)
+      if (selfCopy->_requiresHSA2Repair)
       {
         v3 = @"YES";
       }
@@ -115,14 +115,14 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v24->_requiresHSA2Repair || [v21 clientErrorCode])
+    if (selfCopy->_requiresHSA2Repair || [v21 clientErrorCode])
     {
       v22 = 1;
     }
 
     else if ([v21 isAcceptingPayload])
     {
-      v22 = ![(AKPiggybackController *)v24 _hasPrimaryiCloudAccountForPayload:v21];
+      v22 = ![(AKPiggybackController *)selfCopy _hasPrimaryiCloudAccountForPayload:v21];
       if (v22)
       {
         v13 = _AKLogSystem();
@@ -148,12 +148,12 @@
   return v5;
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 700)
   {
     v20 = [AKCircleRequestPayload payloadWithMessage:location[0]];
@@ -183,9 +183,9 @@
     objc_storeStrong(&v14, 0);
     v19 = v18;
     v12 = 0;
-    if (([v20 isRequestingPayload] & 1) != 0 || -[AKPiggybackController _hasPrimaryiCloudAccountForPayload:](v22, "_hasPrimaryiCloudAccountForPayload:", v20) && !v22->_requiresHSA2Repair)
+    if (([v20 isRequestingPayload] & 1) != 0 || -[AKPiggybackController _hasPrimaryiCloudAccountForPayload:](selfCopy, "_hasPrimaryiCloudAccountForPayload:", v20) && !selfCopy->_requiresHSA2Repair)
     {
-      [(AKPiggybackController *)v22 _processPiggybackPayload:v20];
+      [(AKPiggybackController *)selfCopy _processPiggybackPayload:v20];
       v12 = 1;
     }
 
@@ -228,12 +228,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_processPiggybackPayload:(id)a3
+- (void)_processPiggybackPayload:(id)payload
 {
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   if ([location[0] clientErrorCode] == -9000)
   {
     v54 = _AKLogSystem();
@@ -261,7 +261,7 @@
     }
 
     objc_storeStrong(&v50, 0);
-    if ([(AKPiggybackController *)v56 _processPendingCompletionsForPayload:location[0]])
+    if ([(AKPiggybackController *)selfCopy _processPendingCompletionsForPayload:location[0]])
     {
       v48 = _AKLogSystem();
       v47 = OS_LOG_TYPE_DEFAULT;
@@ -285,10 +285,10 @@
       }
 
       objc_storeStrong(&v46, 0);
-      v19 = v56;
-      v20 = [location[0] transactionId];
+      v19 = selfCopy;
+      transactionId = [location[0] transactionId];
       v44 = [(AKPiggybackController *)v19 _acceptingControllerForTransactionId:?];
-      _objc_release(v20);
+      _objc_release(transactionId);
       if (!v44)
       {
         v43 = _AKLogSystem();
@@ -353,7 +353,7 @@
       v27 = sub_10018B914;
       v28 = &unk_1003255A0;
       v31 = v39;
-      v29 = _objc_retain(v56);
+      v29 = _objc_retain(selfCopy);
       v30 = _objc_retain(location[0]);
       [v7 processPushPayload:v6 completion:&v24];
       objc_storeStrong(&v30, 0);
@@ -436,43 +436,43 @@
   objc_storeStrong(&v19, 0);
 }
 
-- (BOOL)_hasPrimaryiCloudAccountForPayload:(id)a3
+- (BOOL)_hasPrimaryiCloudAccountForPayload:(id)payload
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, payload);
   v5 = +[AKAccountManager sharedInstance];
-  v4 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v6 = [(AKAccountManager *)v5 hasPrimaryiCloudAccountForAltDSID:?];
-  _objc_release(v4);
+  _objc_release(altDSID);
   _objc_release(v5);
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (BOOL)_processPendingCompletionsForPayload:(id)a3
+- (BOOL)_processPendingCompletionsForPayload:(id)payload
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] transactionId];
-  _objc_release(v5);
-  if (v5)
+  objc_storeStrong(location, payload);
+  transactionId = [location[0] transactionId];
+  _objc_release(transactionId);
+  if (transactionId)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x20000000;
     v16 = 32;
     v17 = 0;
-    queue = v20->_piggybackingRequestQueue;
+    queue = selfCopy->_piggybackingRequestQueue;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_10018C678;
     v10 = &unk_100325608;
-    v11 = _objc_retain(v20);
+    v11 = _objc_retain(selfCopy);
     v12[0] = _objc_retain(location[0]);
     v12[1] = &v13;
     dispatch_sync(queue, &v6);
@@ -493,12 +493,12 @@
   return v21 & 1;
 }
 
-- (id)_acceptingControllerForTransactionId:(id)a3
+- (id)_acceptingControllerForTransactionId:(id)id
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v13 = 0;
   v14 = &v13;
   v15 = 838860800;
@@ -508,14 +508,14 @@
   v19 = 0;
   if (location[0])
   {
-    queue = v21->_piggybackingRequestQueue;
+    queue = selfCopy->_piggybackingRequestQueue;
     v6 = _NSConcreteStackBlock;
     v7 = -1073741824;
     v8 = 0;
     v9 = sub_10018CA0C;
     v10 = &unk_100323940;
     v12[1] = &v13;
-    v11 = _objc_retain(v21);
+    v11 = _objc_retain(selfCopy);
     v12[0] = _objc_retain(location[0]);
     dispatch_sync(queue, &v6);
     objc_storeStrong(v12, 0);
@@ -530,21 +530,21 @@
   return v4;
 }
 
-- (void)_removeAcceptingControllerForTransaction:(id)a3
+- (void)_removeAcceptingControllerForTransaction:(id)transaction
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, transaction);
   if (location[0])
   {
-    queue = v12->_piggybackingRequestQueue;
+    queue = selfCopy->_piggybackingRequestQueue;
     v4 = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_10018CC08;
     v8 = &unk_10031F078;
-    v9 = _objc_retain(v12);
+    v9 = _objc_retain(selfCopy);
     v10 = _objc_retain(location[0]);
     dispatch_sync(queue, &v4);
     objc_storeStrong(&v10, 0);
@@ -554,22 +554,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)startRequestSessionWithController:(id)a3 completion:(id)a4
+- (void)startRequestSessionWithController:(id)controller completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  objc_storeWeak(&v15->_requestingController, location[0]);
+  objc_storeStrong(&v13, completion);
+  objc_storeWeak(&selfCopy->_requestingController, location[0]);
   v5 = location[0];
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_10018CD90;
   v10 = &unk_100320A58;
-  v11 = _objc_retain(v15);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(v13);
   [v5 initiatePiggybackingWithCompletion:?];
   objc_storeStrong(&v12, 0);
@@ -578,12 +578,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)serviceControllerForContext:(id)a3
+- (id)serviceControllerForContext:(id)context
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v3 = [AKPiggybackingRequestProvider alloc];
   v8 = [(AKPiggybackingRequestProvider *)v3 initWithCircleContext:location[0]];
   v4 = [AKServiceControllerImpl alloc];
@@ -596,14 +596,14 @@
   return v6;
 }
 
-- (id)performCircleRequestWithContext:(id)a3 completion:(id)a4
+- (id)performCircleRequestWithContext:(id)context completion:(id)completion
 {
-  v130 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v128 = 0;
-  objc_storeStrong(&v128, a4);
+  objc_storeStrong(&v128, completion);
   v126 = _os_activity_create(&_mh_execute_header, "authkit/circle-request", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   v127 = v126;
   state.opaque[0] = 0;
@@ -613,10 +613,10 @@
   v123 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
   {
-    v42 = [location[0] payload];
-    sub_1000194D4(v137, v42);
+    payload = [location[0] payload];
+    sub_1000194D4(v137, payload);
     _os_log_impl(&_mh_execute_header, v124, v123, "Starting circle request with context: %@", v137, 0xCu);
-    _objc_release(v42);
+    _objc_release(payload);
   }
 
   objc_storeStrong(&v124, 0);
@@ -630,15 +630,15 @@
   v120 = &unk_1003223E8;
   v121 = _objc_retain(v128);
   v122 = objc_retainBlock(&v116);
-  v40 = [location[0] payload];
-  v39 = [v40 transactionId];
-  _objc_release(v39);
-  _objc_release(v40);
-  if (v39)
+  payload2 = [location[0] payload];
+  transactionId = [payload2 transactionId];
+  _objc_release(transactionId);
+  _objc_release(payload2);
+  if (transactionId)
   {
-    v36 = [location[0] pushToken];
-    _objc_release(v36);
-    if (v36)
+    pushToken = [location[0] pushToken];
+    _objc_release(pushToken);
+    if (pushToken)
     {
       goto LABEL_12;
     }
@@ -655,32 +655,32 @@
 
     objc_storeStrong(&oslog, 0);
     v33 = +[AKAppleIDPushHelperService sharedService];
-    v32 = [v33 publicAPSTokenString];
+    publicAPSTokenString = [v33 publicAPSTokenString];
     [location[0] setPushToken:?];
-    _objc_release(v32);
+    _objc_release(publicAPSTokenString);
     _objc_release(v33);
-    v31 = [location[0] pushToken];
-    _objc_release(v31);
-    if (v31)
+    pushToken2 = [location[0] pushToken];
+    _objc_release(pushToken2);
+    if (pushToken2)
     {
 LABEL_12:
-      v25 = [location[0] authContext];
-      v26 = [v25 piggybackingForTrustedDevice];
-      _objc_release(v25);
-      if (v26 == 1)
+      authContext = [location[0] authContext];
+      piggybackingForTrustedDevice = [authContext piggybackingForTrustedDevice];
+      _objc_release(authContext);
+      if (piggybackingForTrustedDevice == 1)
       {
-        v24 = [location[0] payload];
-        [v24 setPiggybackingContext:1];
-        _objc_release(v24);
+        payload3 = [location[0] payload];
+        [payload3 setPiggybackingContext:1];
+        _objc_release(payload3);
       }
 
-      v108 = [(AKPiggybackController *)v130 serviceControllerForContext:location[0]];
+      v108 = [(AKPiggybackController *)selfCopy serviceControllerForContext:location[0]];
       if ([location[0] waitForReply])
       {
         [location[0] waitForReplyTimeout];
         if (v4 <= 0.0)
         {
-          [(AKPiggybackController *)v130 _processingTimeOut];
+          [(AKPiggybackController *)selfCopy _processingTimeOut];
         }
 
         else
@@ -693,13 +693,13 @@ LABEL_12:
         v105 = objc_alloc_init(NSCondition);
         v104 = objc_opt_new();
         [v104 setCondition:v105];
-        queue = v130->_piggybackingRequestQueue;
+        queue = selfCopy->_piggybackingRequestQueue;
         v96 = _NSConcreteStackBlock;
         v97 = -1073741824;
         v98 = 0;
         v99 = sub_10018E7A8;
         v100 = &unk_10031F050;
-        v101 = _objc_retain(v130);
+        v101 = _objc_retain(selfCopy);
         v102 = _objc_retain(location[0]);
         v103 = _objc_retain(v104);
         dispatch_sync(queue, &v96);
@@ -721,11 +721,11 @@ LABEL_12:
         v93 = 0;
         val = objc_opt_new();
         objc_initWeak(&from, val);
-        v22 = [location[0] payload];
-        v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 circleStep]);
-        v85 = [(NSNumber *)v21 stringValue];
+        payload4 = [location[0] payload];
+        v21 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [payload4 circleStep]);
+        stringValue = [(NSNumber *)v21 stringValue];
         _objc_release(v21);
-        _objc_release(v22);
+        _objc_release(payload4);
         v84 = 0uLL;
         v20 = _AKSignpostLogSystem();
         *&v83 = _AKSignpostCreate();
@@ -736,10 +736,10 @@ LABEL_12:
         v80 = v83;
         if (v83 && v80 != -1 && os_signpost_enabled(v82))
         {
-          v19 = [location[0] payload];
-          sub_1000333DC(v135, v19);
+          payload5 = [location[0] payload];
+          sub_1000333DC(v135, payload5);
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v82, v81, v80, "PiggyCircleRequest", " Payload=%{public,signpost.telemetry:string1,name=Payload}@  enableTelemetry=YES ", v135, 0xCu);
-          _objc_release(v19);
+          _objc_release(payload5);
         }
 
         objc_storeStrong(&v82, 0);
@@ -748,24 +748,24 @@ LABEL_12:
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v83;
-          v17 = [location[0] payload];
-          sub_10003341C(v134, v18, v17);
+          payload6 = [location[0] payload];
+          sub_10003341C(v134, v18, payload6);
           _os_log_impl(&_mh_execute_header, v79, v78, "BEGIN [%lld]: PiggyCircleRequest  Payload=%{public,signpost.telemetry:string1,name=Payload}@  enableTelemetry=YES ", v134, 0x16u);
-          _objc_release(v17);
+          _objc_release(payload6);
         }
 
         objc_storeStrong(&v79, 0);
         v84 = v83;
         v16 = +[AKAccountManager sharedInstance];
-        v15 = [location[0] payload];
-        v14 = [v15 altDSID];
+        payload7 = [location[0] payload];
+        altDSID = [payload7 altDSID];
         v77 = [AKAccountManager authKitAccountWithAltDSID:v16 error:"authKitAccountWithAltDSID:error:"];
-        _objc_release(v14);
-        _objc_release(v15);
+        _objc_release(altDSID);
+        _objc_release(payload7);
         _objc_release(v16);
-        v13 = [location[0] authContext];
+        authContext2 = [location[0] authContext];
         [AKAnalyticsSender sendAnalyticsEvent:"sendAnalyticsEvent:context:account:error:" context:@"com.apple.authkit.piggybackingCircleRequestStart" account:? error:?];
-        _objc_release(v13);
+        _objc_release(authContext2);
         v12 = val;
         v62 = _NSConcreteStackBlock;
         v63 = -1073741824;
@@ -778,13 +778,13 @@ LABEL_12:
         v74[1] = v88;
         v69 = _objc_retain(v104);
         v70 = _objc_retain(v106);
-        v71 = _objc_retain(v130);
+        v71 = _objc_retain(selfCopy);
         v76 = v84;
-        v72 = _objc_retain(v85);
+        v72 = _objc_retain(stringValue);
         v73 = _objc_retain(v77);
         v74[0] = _objc_retain(v122);
         [v12 addExecutionBlock:&v62];
-        [(NSOperationQueue *)v130->_circleRequestProcessingQueue addOperation:val];
+        [(NSOperationQueue *)selfCopy->_circleRequestProcessingQueue addOperation:val];
         v61 = 0uLL;
         v11 = _AKSignpostLogSystem();
         *&v60 = _AKSignpostCreate();
@@ -795,7 +795,7 @@ LABEL_12:
         v57 = v60;
         if (v60 && v57 != -1 && os_signpost_enabled(v59))
         {
-          sub_1000333DC(v133, v85);
+          sub_1000333DC(v133, stringValue);
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v59, v58, v57, "PiggyExecuteRequest", " CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v133, 0xCu);
         }
 
@@ -804,7 +804,7 @@ LABEL_12:
         v55 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
         {
-          sub_10003341C(v132, v60, v85);
+          sub_10003341C(v132, v60, stringValue);
           _os_log_impl(&_mh_execute_header, v56, v55, "BEGIN [%lld]: PiggyExecuteRequest  CircleStep=%{public,signpost.telemetry:string1,name=CircleStep}@  enableTelemetry=YES ", v132, 0x16u);
         }
 
@@ -817,10 +817,10 @@ LABEL_12:
         v47 = sub_10018FEEC;
         v48 = &unk_100325678;
         v54 = v60;
-        v49 = _objc_retain(v85);
+        v49 = _objc_retain(stringValue);
         v50 = _objc_retain(location[0]);
         v53[1] = v88;
-        v51 = _objc_retain(v130);
+        v51 = _objc_retain(selfCopy);
         v52 = _objc_retain(v105);
         v53[0] = _objc_retain(v122);
         [v10 executeRequestWithCompletion:&v44];
@@ -841,7 +841,7 @@ LABEL_12:
         objc_destroyWeak(&v75);
         objc_storeStrong(&v67, 0);
         objc_storeStrong(&v77, 0);
-        objc_storeStrong(&v85, 0);
+        objc_storeStrong(&stringValue, 0);
         objc_destroyWeak(&from);
         objc_storeStrong(&val, 0);
         _Block_object_dispose(v88, 8);
@@ -908,14 +908,14 @@ LABEL_12:
   return v8;
 }
 
-- (void)_processUIIfNeededForError:(id)a3 circleStep:(unint64_t)a4
+- (void)_processUIIfNeededForError:(id)error circleStep:(unint64_t)step
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10[1] = a4;
-  if (a4 == 1)
+  objc_storeStrong(location, error);
+  v10[1] = step;
+  if (step == 1)
   {
     v10[0] = _AKLogSystem();
     if (os_log_type_enabled(v10[0], OS_LOG_TYPE_DEBUG))
@@ -926,16 +926,16 @@ LABEL_12:
 
     objc_storeStrong(v10, 0);
     v4 = objc_opt_class();
-    v7 = [location[0] userInfo];
-    v6 = [v7 objectForKeyedSubscript:AKCircleClientErrorCode];
+    userInfo = [location[0] userInfo];
+    v6 = [userInfo objectForKeyedSubscript:AKCircleClientErrorCode];
     v5 = sub_1001906F0(v4, v6);
-    v8 = [v5 integerValue];
+    integerValue = [v5 integerValue];
     _objc_release(v5);
     _objc_release(v6);
-    _objc_release(v7);
-    if (v8 == -27955)
+    _objc_release(userInfo);
+    if (integerValue == -27955)
     {
-      [(AKPiggybackController *)v12 _displaySwitchWiFiAlert];
+      [(AKPiggybackController *)selfCopy _displaySwitchWiFiAlert];
     }
   }
 

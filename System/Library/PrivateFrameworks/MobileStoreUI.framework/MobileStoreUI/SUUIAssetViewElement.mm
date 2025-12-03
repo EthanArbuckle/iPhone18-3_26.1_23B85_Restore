@@ -1,19 +1,19 @@
 @interface SUUIAssetViewElement
-- (SUUIAssetViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIAssetViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIAssetViewElement
 
-- (SUUIAssetViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIAssetViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v27.receiver = self;
   v27.super_class = SUUIAssetViewElement;
-  v9 = [(SUUIViewElement *)&v27 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v27 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"offset"];
+    v10 = [elementCopy getAttribute:@"offset"];
     if ([v10 length])
     {
       [v10 doubleValue];
@@ -25,7 +25,7 @@
     }
 
     *&v9->_initialPlaybackTime = v11;
-    v12 = [v8 getAttribute:@"duration"];
+    v12 = [elementCopy getAttribute:@"duration"];
     if ([v12 length])
     {
       [v12 doubleValue];
@@ -37,19 +37,19 @@
     }
 
     *&v9->_playbackDuration = v13;
-    v14 = [v8 getAttribute:@"data-content-id"];
+    v14 = [elementCopy getAttribute:@"data-content-id"];
     if ([v14 length])
     {
       v9->_itemIdentifier = [v14 longLongValue];
     }
 
-    v15 = [v8 getAttribute:*MEMORY[0x277D1AF48]];
+    v15 = [elementCopy getAttribute:*MEMORY[0x277D1AF48]];
     if ([v15 length])
     {
       objc_storeStrong(&v9->_secureKeyDeliveryType, v15);
     }
 
-    v16 = [v8 getAttribute:@"key-cert-url"];
+    v16 = [elementCopy getAttribute:@"key-cert-url"];
     if ([v16 length])
     {
       v17 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v16];
@@ -57,7 +57,7 @@
       v9->_keyCertificateURL = v17;
     }
 
-    v19 = [v8 getAttribute:@"key-server-url"];
+    v19 = [elementCopy getAttribute:@"key-server-url"];
     if ([v19 length])
     {
       v20 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v19];
@@ -65,9 +65,9 @@
       v9->_keyServerURL = v20;
     }
 
-    v22 = [v8 getAttribute:@"is-itunes-stream"];
+    v22 = [elementCopy getAttribute:@"is-itunes-stream"];
     v9->_ITunesStream = [v22 BOOLValue];
-    v23 = [v8 getAttribute:@"src"];
+    v23 = [elementCopy getAttribute:@"src"];
     if ([v23 length])
     {
       v24 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v23];
@@ -79,34 +79,34 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SUUIAssetViewElement;
-  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    [(SUUIAssetViewElement *)v4 initialPlaybackTime];
+    [(SUUIAssetViewElement *)elementCopy initialPlaybackTime];
     self->_initialPlaybackTime = v7;
-    self->_itemIdentifier = [(SUUIAssetViewElement *)v4 itemIdentifier];
-    [(SUUIAssetViewElement *)v4 playbackDuration];
+    self->_itemIdentifier = [(SUUIAssetViewElement *)elementCopy itemIdentifier];
+    [(SUUIAssetViewElement *)elementCopy playbackDuration];
     self->_playbackDuration = v8;
-    v9 = [(SUUIAssetViewElement *)v4 keyCertificateURL];
+    keyCertificateURL = [(SUUIAssetViewElement *)elementCopy keyCertificateURL];
     keyCertificateURL = self->_keyCertificateURL;
-    self->_keyCertificateURL = v9;
+    self->_keyCertificateURL = keyCertificateURL;
 
-    v11 = [(SUUIAssetViewElement *)v4 keyServerURL];
+    keyServerURL = [(SUUIAssetViewElement *)elementCopy keyServerURL];
     keyServerURL = self->_keyServerURL;
-    self->_keyServerURL = v11;
+    self->_keyServerURL = keyServerURL;
 
-    v13 = [(SUUIAssetViewElement *)v4 secureKeyDeliveryType];
+    secureKeyDeliveryType = [(SUUIAssetViewElement *)elementCopy secureKeyDeliveryType];
     secureKeyDeliveryType = self->_secureKeyDeliveryType;
-    self->_secureKeyDeliveryType = v13;
+    self->_secureKeyDeliveryType = secureKeyDeliveryType;
 
-    self->_ITunesStream = [(SUUIAssetViewElement *)v4 isITunesStream];
-    v15 = [(SUUIAssetViewElement *)v4 URL];
+    self->_ITunesStream = [(SUUIAssetViewElement *)elementCopy isITunesStream];
+    v15 = [(SUUIAssetViewElement *)elementCopy URL];
     url = self->_url;
     self->_url = v15;
   }

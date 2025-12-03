@@ -1,36 +1,36 @@
 @interface CarShareTripFooterView
-- (CarShareTripFooterView)initWithFrame:(CGRect)a3;
-- (void)setHandleText:(id)a3;
-- (void)setNameText:(id)a3;
+- (CarShareTripFooterView)initWithFrame:(CGRect)frame;
+- (void)setHandleText:(id)text;
+- (void)setNameText:(id)text;
 @end
 
 @implementation CarShareTripFooterView
 
-- (void)setHandleText:(id)a3
+- (void)setHandleText:(id)text
 {
-  if (!a3)
+  if (!text)
   {
-    a3 = &stru_1016631F0;
+    text = &stru_1016631F0;
   }
 
-  [(UILabel *)self->_handleLabel setText:a3];
+  [(UILabel *)self->_handleLabel setText:text];
 }
 
-- (void)setNameText:(id)a3
+- (void)setNameText:(id)text
 {
-  if (!a3)
+  if (!text)
   {
-    a3 = &stru_1016631F0;
+    text = &stru_1016631F0;
   }
 
-  [(UILabel *)self->_nameLabel setText:a3];
+  [(UILabel *)self->_nameLabel setText:text];
 }
 
-- (CarShareTripFooterView)initWithFrame:(CGRect)a3
+- (CarShareTripFooterView)initWithFrame:(CGRect)frame
 {
   v37.receiver = self;
   v37.super_class = CarShareTripFooterView;
-  v3 = [(CarShareTripFooterView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarShareTripFooterView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

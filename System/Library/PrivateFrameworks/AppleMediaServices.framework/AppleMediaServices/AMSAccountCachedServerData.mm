@@ -1,15 +1,15 @@
 @interface AMSAccountCachedServerData
 + (id)sharedInstance;
-- (AMSAccountCachedServerData)initWithWrappedInstance:(id)a3;
-- (id)BOOLForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5;
-- (id)accountFlagsForAccountID:(id)a3;
-- (id)cancelUpdatesForToken:(id)a3;
-- (id)intForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5;
-- (id)stringForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5;
-- (void)lazySync:(id)a3 completion:(id)a4;
-- (void)setAccountFlags:(id)a3 forAccountID:(id)a4 completion:(id)a5;
-- (void)setAutoPlay:(BOOL)a3 forAccountID:(id)a4;
-- (void)setPersonalization:(BOOL)a3 forAccountID:(id)a4;
+- (AMSAccountCachedServerData)initWithWrappedInstance:(id)instance;
+- (id)BOOLForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block;
+- (id)accountFlagsForAccountID:(id)d;
+- (id)cancelUpdatesForToken:(id)token;
+- (id)intForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block;
+- (id)stringForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block;
+- (void)lazySync:(id)sync completion:(id)completion;
+- (void)setAccountFlags:(id)flags forAccountID:(id)d completion:(id)completion;
+- (void)setAutoPlay:(BOOL)play forAccountID:(id)d;
+- (void)setPersonalization:(BOOL)personalization forAccountID:(id)d;
 @end
 
 @implementation AMSAccountCachedServerData
@@ -35,20 +35,20 @@ void __44__AMSAccountCachedServerData_sharedInstance__block_invoke()
   return v3;
 }
 
-- (AMSAccountCachedServerData)initWithWrappedInstance:(id)a3
+- (AMSAccountCachedServerData)initWithWrappedInstance:(id)instance
 {
-  v6 = a3;
-  if (!v6)
+  instanceCopy = instance;
+  if (!instanceCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"AMSAccountCachedServerData.m" lineNumber:43 description:{@"Unexpected nil reference: %s", "core"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AMSAccountCachedServerData.m" lineNumber:43 description:{@"Unexpected nil reference: %s", "core"}];
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"AMSAccountCachedServerData.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %s", "[core isKindOfClass:AMSAccountCachedServerDataCore.class]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"AMSAccountCachedServerData.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %s", "[core isKindOfClass:AMSAccountCachedServerDataCore.class]"}];
   }
 
   v12.receiver = self;
@@ -57,61 +57,61 @@ void __44__AMSAccountCachedServerData_sharedInstance__block_invoke()
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_core, a3);
+    objc_storeStrong(&v7->_core, instance);
   }
 
   return v8;
 }
 
-- (id)BOOLForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5
+- (id)BOOLForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(AMSAccountCachedServerData *)self core];
-  v11 = [v10 BOOLForKey:a3 accountID:v9 updateBlock:v8];
+  blockCopy = block;
+  dCopy = d;
+  core = [(AMSAccountCachedServerData *)self core];
+  v11 = [core BOOLForKey:key accountID:dCopy updateBlock:blockCopy];
 
   return v11;
 }
 
-- (id)intForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5
+- (id)intForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(AMSAccountCachedServerData *)self core];
-  v11 = [v10 intForKey:a3 accountID:v9 updateBlock:v8];
+  blockCopy = block;
+  dCopy = d;
+  core = [(AMSAccountCachedServerData *)self core];
+  v11 = [core intForKey:key accountID:dCopy updateBlock:blockCopy];
 
   return v11;
 }
 
-- (id)stringForKey:(unint64_t)a3 accountID:(id)a4 updateBlock:(id)a5
+- (id)stringForKey:(unint64_t)key accountID:(id)d updateBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(AMSAccountCachedServerData *)self core];
-  v11 = [v10 stringForKey:a3 accountID:v9 updateBlock:v8];
+  blockCopy = block;
+  dCopy = d;
+  core = [(AMSAccountCachedServerData *)self core];
+  v11 = [core stringForKey:key accountID:dCopy updateBlock:blockCopy];
 
   return v11;
 }
 
-- (id)cancelUpdatesForToken:(id)a3
+- (id)cancelUpdatesForToken:(id)token
 {
-  v4 = a3;
-  v5 = [(AMSAccountCachedServerData *)self core];
-  v6 = [v5 cancelUpdateBlockFor:v4];
+  tokenCopy = token;
+  core = [(AMSAccountCachedServerData *)self core];
+  v6 = [core cancelUpdateBlockFor:tokenCopy];
 
   return v6;
 }
 
-- (void)lazySync:(id)a3 completion:(id)a4
+- (void)lazySync:(id)sync completion:(id)completion
 {
-  v5 = a3;
-  v6 = [(AMSAccountCachedServerData *)self core];
+  syncCopy = sync;
+  core = [(AMSAccountCachedServerData *)self core];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AMSAccountCachedServerData_lazySync_completion___block_invoke;
   v7[3] = &unk_1E73B34B8;
   v7[4] = self;
-  [v6 lazySyncWithAccounts:v5 completionHandler:v7];
+  [core lazySyncWithAccounts:syncCopy completionHandler:v7];
 }
 
 void __50__AMSAccountCachedServerData_lazySync_completion___block_invoke(uint64_t a1, void *a2)
@@ -143,13 +143,13 @@ void __50__AMSAccountCachedServerData_lazySync_completion___block_invoke(uint64_
   }
 }
 
-- (id)accountFlagsForAccountID:(id)a3
+- (id)accountFlagsForAccountID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(AMSAccountCachedServerData *)self core];
-    v6 = [v5 accountFlagsForAccountID:v4];
+    dCopy = d;
+    core = [(AMSAccountCachedServerData *)self core];
+    v6 = [core accountFlagsForAccountID:dCopy];
   }
 
   else
@@ -160,37 +160,37 @@ void __50__AMSAccountCachedServerData_lazySync_completion___block_invoke(uint64_
   return v6;
 }
 
-- (void)setAutoPlay:(BOOL)a3 forAccountID:(id)a4
+- (void)setAutoPlay:(BOOL)play forAccountID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    v4 = a3;
-    v6 = a4;
-    v7 = [(AMSAccountCachedServerData *)self core];
-    [v7 setAutoPlayTo:v4 forAccountID:v6 completionHandler:&__block_literal_global_20];
+    playCopy = play;
+    dCopy = d;
+    core = [(AMSAccountCachedServerData *)self core];
+    [core setAutoPlayTo:playCopy forAccountID:dCopy completionHandler:&__block_literal_global_20];
   }
 }
 
-- (void)setPersonalization:(BOOL)a3 forAccountID:(id)a4
+- (void)setPersonalization:(BOOL)personalization forAccountID:(id)d
 {
-  if (a4)
+  if (d)
   {
-    v4 = a3;
-    v6 = a4;
-    v7 = [(AMSAccountCachedServerData *)self core];
-    [v7 setPersonalizationTo:v4 forAccountID:v6 completionHandler:&__block_literal_global_22];
+    personalizationCopy = personalization;
+    dCopy = d;
+    core = [(AMSAccountCachedServerData *)self core];
+    [core setPersonalizationTo:personalizationCopy forAccountID:dCopy completionHandler:&__block_literal_global_22];
   }
 }
 
-- (void)setAccountFlags:(id)a3 forAccountID:(id)a4 completion:(id)a5
+- (void)setAccountFlags:(id)flags forAccountID:(id)d completion:(id)completion
 {
-  if (a4)
+  if (d)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [(AMSAccountCachedServerData *)self core];
-    [v11 setAccountFlags:v10 forAccountID:v9 completionHandler:v8];
+    completionCopy = completion;
+    dCopy = d;
+    flagsCopy = flags;
+    core = [(AMSAccountCachedServerData *)self core];
+    [core setAccountFlags:flagsCopy forAccountID:dCopy completionHandler:completionCopy];
   }
 }
 

@@ -1,23 +1,23 @@
 @interface SCATCameraSwitchActionsController
-- (SCATCameraSwitchActionsController)initWithSwitch:(id)a3;
-- (id)_actionSpecifiersWithActions:(id)a3;
+- (SCATCameraSwitchActionsController)initWithSwitch:(id)switch;
+- (id)_actionSpecifiersWithActions:(id)actions;
 - (id)_rootSwitchesController;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SCATCameraSwitchActionsController
 
-- (SCATCameraSwitchActionsController)initWithSwitch:(id)a3
+- (SCATCameraSwitchActionsController)initWithSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   v7.receiver = self;
   v7.super_class = SCATCameraSwitchActionsController;
-  v5 = [(SCATSwitchActionsController *)&v7 initWithSwitch:v4];
+  v5 = [(SCATSwitchActionsController *)&v7 initWithSwitch:switchCopy];
   if (v5)
   {
-    -[SCATCameraSwitchActionsController setCameraSwitchType:](v5, "setCameraSwitchType:", [v4 cameraSwitch]);
+    -[SCATCameraSwitchActionsController setCameraSwitchType:](v5, "setCameraSwitchType:", [switchCopy cameraSwitch]);
   }
 
   return v5;
@@ -25,20 +25,20 @@
 
 - (id)_rootSwitchesController
 {
-  v3 = [(SCATCameraSwitchActionsController *)self navigationController];
-  v4 = [v3 viewControllers];
+  navigationController = [(SCATCameraSwitchActionsController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [v4 reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  reverseObjectEnumerator = [viewControllers reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v33;
-    v27 = v4;
+    v27 = viewControllers;
     v25 = *v33;
     while (2)
     {
@@ -48,24 +48,24 @@
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v10 = *(*(&v32 + 1) + 8 * v9);
-        v11 = [(SCATCameraSwitchActionsController *)self parentController];
-        v12 = [v10 isMemberOfClass:objc_opt_class()];
+        parentController3 = *(*(&v32 + 1) + 8 * v9);
+        parentController = [(SCATCameraSwitchActionsController *)self parentController];
+        v12 = [parentController3 isMemberOfClass:objc_opt_class()];
 
         if (v12)
         {
-          v24 = v10;
+          v24 = parentController3;
 LABEL_21:
 
-          v4 = v27;
+          viewControllers = v27;
           goto LABEL_22;
         }
 
-        v13 = [v10 childViewControllers];
-        v14 = [v13 count];
+        childViewControllers = [parentController3 childViewControllers];
+        v14 = [childViewControllers count];
 
         if (v14)
         {
@@ -73,8 +73,8 @@ LABEL_21:
           v31 = 0u;
           v28 = 0u;
           v29 = 0u;
-          v15 = [v10 childViewControllers];
-          v16 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          childViewControllers2 = [parentController3 childViewControllers];
+          v16 = [childViewControllers2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v16)
           {
             v17 = v16;
@@ -85,22 +85,22 @@ LABEL_21:
               {
                 if (*v29 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(childViewControllers2);
                 }
 
                 v20 = *(*(&v28 + 1) + 8 * i);
-                v21 = [(SCATCameraSwitchActionsController *)self parentController];
+                parentController2 = [(SCATCameraSwitchActionsController *)self parentController];
                 LOBYTE(v20) = [v20 isMemberOfClass:objc_opt_class()];
 
                 if (v20)
                 {
-                  v22 = v10;
+                  v22 = parentController3;
 
                   goto LABEL_21;
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v28 objects:v36 count:16];
+              v17 = [childViewControllers2 countByEnumeratingWithState:&v28 objects:v36 count:16];
               if (v17)
               {
                 continue;
@@ -118,8 +118,8 @@ LABEL_21:
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v37 count:16];
-      v4 = v27;
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v37 count:16];
+      viewControllers = v27;
       if (v7)
       {
         continue;
@@ -129,10 +129,10 @@ LABEL_21:
     }
   }
 
-  v10 = [(SCATCameraSwitchActionsController *)self parentController];
+  parentController3 = [(SCATCameraSwitchActionsController *)self parentController];
 LABEL_22:
 
-  return v10;
+  return parentController3;
 }
 
 - (id)specifiers
@@ -148,24 +148,24 @@ LABEL_22:
   {
     v6 = +[NSMutableArray array];
     v7 = [PSSpecifier groupSpecifierWithID:@"SCATCameraActionsTopGroup"];
-    v8 = [(SCATCameraSwitchActionsController *)self footerText];
+    footerText = [(SCATCameraSwitchActionsController *)self footerText];
 
-    if (v8)
+    if (footerText)
     {
-      v9 = [(SCATCameraSwitchActionsController *)self footerText];
+      footerText2 = [(SCATCameraSwitchActionsController *)self footerText];
       v10 = PSFooterTextGroupKey;
       v11 = v7;
-      v12 = v9;
+      v12 = footerText2;
     }
 
     else
     {
-      v13 = [(SCATSwitchActionsController *)self footerTextSpecifier];
+      footerTextSpecifier = [(SCATSwitchActionsController *)self footerTextSpecifier];
       v14 = PSFooterTextGroupKey;
-      v9 = [v13 propertyForKey:PSFooterTextGroupKey];
+      footerText2 = [footerTextSpecifier propertyForKey:PSFooterTextGroupKey];
 
       v11 = v7;
-      v12 = v9;
+      v12 = footerText2;
       v10 = v14;
     }
 
@@ -175,7 +175,7 @@ LABEL_22:
     [v6 addObject:v7];
     v33.receiver = self;
     v33.super_class = SCATCameraSwitchActionsController;
-    v15 = [(SCATSwitchActionsController *)&v33 specifiers];
+    specifiers = [(SCATSwitchActionsController *)&v33 specifiers];
     if ([(SCATCameraSwitchActionsController *)self cameraSwitchType]== &dword_8 + 1)
     {
       v16 = AXParameterizedLocalizedString();
@@ -195,8 +195,8 @@ LABEL_22:
       v20 = [NSNumber numberWithUnsignedInteger:[(SCATCameraSwitchActionsController *)self cameraSwitchType]];
       [v17 setProperty:v20 forKey:@"SCATCameraExpressionType"];
 
-      v21 = [(SCATSwitchActionsController *)self storedSwitch];
-      [v17 setProperty:v21 forKey:@"StoredCameraSwitch"];
+      storedSwitch = [(SCATSwitchActionsController *)self storedSwitch];
+      [v17 setProperty:storedSwitch forKey:@"StoredCameraSwitch"];
 
       v34 = v17;
       v18 = &v34;
@@ -213,7 +213,7 @@ LABEL_22:
     [v25 setProperty:&off_27B058 forKey:@"ActionKey"];
     [v25 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
     [v6 addObject:v25];
-    [v6 axSafelyAddObjectsFromArray:v15];
+    [v6 axSafelyAddObjectsFromArray:specifiers];
     v26 = AXParameterizedLocalizedString();
     v27 = [PSSpecifier groupSpecifierWithName:v26];
 
@@ -232,25 +232,25 @@ LABEL_22:
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SCATCameraSwitchActionsController;
-  [(SCATCameraSwitchActionsController *)&v4 viewWillAppear:a3];
+  [(SCATCameraSwitchActionsController *)&v4 viewWillAppear:appear];
   [(SCATCameraSwitchActionsController *)self reloadSpecifiers];
 }
 
-- (id)_actionSpecifiersWithActions:(id)a3
+- (id)_actionSpecifiersWithActions:(id)actions
 {
-  v4 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  actionsCopy = actions;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [actionsCopy count]);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __66__SCATCameraSwitchActionsController__actionSpecifiersWithActions___block_invoke;
   v9[3] = &unk_257CD0;
   v5 = v9[4] = self;
   v10 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [actionsCopy enumerateObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -276,21 +276,21 @@ void __66__SCATCameraSwitchActionsController__actionSpecifiersWithActions___bloc
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = SCATCameraSwitchActionsController;
-  v4 = [(SCATSwitchActionsController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
+  v4 = [(SCATSwitchActionsController *)&v11 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
   v6 = PSIDKey;
-  v7 = [v5 propertyForKey:PSIDKey];
+  v7 = [specifier propertyForKey:PSIDKey];
   if ([v7 isEqualToString:@"CameraSwitchActionDwellOptions"])
   {
   }
 
   else
   {
-    v8 = [v5 propertyForKey:v6];
+    v8 = [specifier propertyForKey:v6];
     v9 = [v8 isEqualToString:@"CameraSwitchActionSensitivity"];
 
     if (!v9)

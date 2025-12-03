@@ -1,10 +1,10 @@
 @interface UICellAccessoryOutlineDisclosure
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (UICellAccessoryOutlineDisclosure)init;
-- (UICellAccessoryOutlineDisclosure)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UICellAccessoryOutlineDisclosure)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICellAccessoryOutlineDisclosure
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UICellAccessoryOutlineDisclosure)initWithCoder:(id)a3
+- (UICellAccessoryOutlineDisclosure)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UICellAccessoryOutlineDisclosure;
-  v5 = [(UICellAccessory *)&v9 initWithCoder:v4];
+  v5 = [(UICellAccessory *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customImage"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customImage"];
     customImage = v5->__customImage;
     v5->__customImage = v6;
   }
@@ -40,21 +40,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UICellAccessoryOutlineDisclosure;
-  v4 = a3;
-  [(UICellAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->__customImage forKey:@"customImage"];
+  coderCopy = coder;
+  [(UICellAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->__customImage forKey:@"customImage"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = UICellAccessoryOutlineDisclosure;
-  v4 = [(UICellAccessory *)&v9 copyWithZone:a3];
+  v4 = [(UICellAccessory *)&v9 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -69,14 +69,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = UICellAccessoryOutlineDisclosure;
-  if ([(UICellAccessory *)&v14 isEqual:v4])
+  if ([(UICellAccessory *)&v14 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (self->_style == *(v5 + 7) && self->_actionHandler == *(v5 + 8))
     {
@@ -127,14 +127,14 @@
   return v7;
 }
 
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v7.receiver = self;
   v7.super_class = UICellAccessoryOutlineDisclosure;
-  if ([(UICellAccessory *)&v7 _canDirectlyUpdateExistingAccessoryViewFrom:v4])
+  if ([(UICellAccessory *)&v7 _canDirectlyUpdateExistingAccessoryViewFrom:fromCopy])
   {
-    v5 = self->_style == v4[7];
+    v5 = self->_style == fromCopy[7];
   }
 
   else

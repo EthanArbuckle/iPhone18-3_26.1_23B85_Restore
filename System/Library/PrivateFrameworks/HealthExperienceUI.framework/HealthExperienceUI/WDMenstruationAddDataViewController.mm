@@ -1,18 +1,18 @@
 @interface WDMenstruationAddDataViewController
-- (WDMenstruationAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7;
+- (WDMenstruationAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache;
 - (id)defaultMetadata;
-- (id)manualEntryItemsForSection:(int64_t)a3;
-- (id)manualEntrySpinner:(id)a3 titleForRow:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (id)manualEntryItemsForSection:(int64_t)section;
+- (id)manualEntrySpinner:(id)spinner titleForRow:(int64_t)row;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 @end
 
 @implementation WDMenstruationAddDataViewController
 
-- (WDMenstruationAddDataViewController)initWithDisplayType:(id)a3 healthStore:(id)a4 unitController:(id)a5 initialStartDate:(id)a6 dateCache:(id)a7
+- (WDMenstruationAddDataViewController)initWithDisplayType:(id)type healthStore:(id)store unitController:(id)controller initialStartDate:(id)date dateCache:(id)cache
 {
   v14.receiver = self;
   v14.super_class = WDMenstruationAddDataViewController;
-  v7 = [(WDCategoryAddDataViewController *)&v14 initWithDisplayType:a3 healthStore:a4 unitController:a5 initialStartDate:a6 dateCache:a7];
+  v7 = [(WDCategoryAddDataViewController *)&v14 initWithDisplayType:type healthStore:store unitController:controller initialStartDate:date dateCache:cache];
   if (v7)
   {
     v8 = [WDAddDataManualEntrySpinner alloc];
@@ -28,14 +28,14 @@
   return v7;
 }
 
-- (id)manualEntryItemsForSection:(int64_t)a3
+- (id)manualEntryItemsForSection:(int64_t)section
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(section)
   {
     case 2:
-      v3 = [(WDCategoryAddDataViewController *)self dateEntryItem];
-      v8 = v3;
+      dateEntryItem = [(WDCategoryAddDataViewController *)self dateEntryItem];
+      v8 = dateEntryItem;
       v4 = MEMORY[0x1E695DEC8];
       v5 = &v8;
       goto LABEL_7;
@@ -44,8 +44,8 @@
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&isStartOfCycleEntryItem count:1];
       goto LABEL_9;
     case 0:
-      v3 = [(WDCategoryAddDataViewController *)self categoryValueEntryItem];
-      v10[0] = v3;
+      dateEntryItem = [(WDCategoryAddDataViewController *)self categoryValueEntryItem];
+      v10[0] = dateEntryItem;
       v4 = MEMORY[0x1E695DEC8];
       v5 = v10;
 LABEL_7:
@@ -64,29 +64,29 @@ LABEL_9:
 {
   v10.receiver = self;
   v10.super_class = WDMenstruationAddDataViewController;
-  v3 = [(WDAddDataViewController *)&v10 defaultMetadata];
-  v4 = v3;
-  if (!v3)
+  defaultMetadata = [(WDAddDataViewController *)&v10 defaultMetadata];
+  v4 = defaultMetadata;
+  if (!defaultMetadata)
   {
-    v3 = MEMORY[0x1E695E0F8];
+    defaultMetadata = MEMORY[0x1E695E0F8];
   }
 
-  v5 = [v3 mutableCopy];
+  v5 = [defaultMetadata mutableCopy];
 
-  v6 = [(WDAddDataManualEntrySpinner *)self->_isStartOfCycleEntryItem generateValue];
-  v7 = [v6 integerValue];
+  generateValue = [(WDAddDataManualEntrySpinner *)self->_isStartOfCycleEntryItem generateValue];
+  integerValue = [generateValue integerValue];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v7 == 1];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:integerValue == 1];
   [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696BB28]];
 
   return v5;
 }
 
-- (id)manualEntrySpinner:(id)a3 titleForRow:(int64_t)a4
+- (id)manualEntrySpinner:(id)spinner titleForRow:(int64_t)row
 {
   v5 = HABundle();
   v6 = v5;
-  if (a4 == 1)
+  if (row == 1)
   {
     v7 = @"YES";
   }
@@ -101,13 +101,13 @@ LABEL_9:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v7.receiver = self;
     v7.super_class = WDMenstruationAddDataViewController;
-    v4 = [(WDMenstruationAddDataViewController *)&v7 tableView:a3 titleForHeaderInSection:?];
+    v4 = [(WDMenstruationAddDataViewController *)&v7 tableView:view titleForHeaderInSection:?];
   }
 
   else

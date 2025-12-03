@@ -1,15 +1,15 @@
 @interface ATXPlugInManager
-+ (void)setPlugInName:(id)a3 isEnabled:(BOOL)a4;
++ (void)setPlugInName:(id)name isEnabled:(BOOL)enabled;
 - (_TtC21AppPredictionInternal16ATXPlugInManager)init;
 @end
 
 @implementation ATXPlugInManager
 
-+ (void)setPlugInName:(id)a3 isEnabled:(BOOL)a4
++ (void)setPlugInName:(id)name isEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v5 = sub_226836408();
-  _s21AppPredictionInternal16ATXPlugInManagerC07setPlugE04name9isEnabledySS_SbtFZ_0(v5, v6, v4);
+  _s21AppPredictionInternal16ATXPlugInManagerC07setPlugE04name9isEnabledySS_SbtFZ_0(v5, v6, enabledCopy);
 }
 
 - (_TtC21AppPredictionInternal16ATXPlugInManager)init

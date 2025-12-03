@@ -1,41 +1,41 @@
 @interface MacRAPLookAroundImageCell
-- (MacRAPLookAroundImageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MacRAPLookAroundImageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
-- (void)setLookAroundImage:(id)a3;
+- (void)setLookAroundImage:(id)image;
 @end
 
 @implementation MacRAPLookAroundImageCell
 
 - (void)_setupConstraints
 {
-  v26 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  v24 = [v26 topAnchor];
-  v25 = [(MacRAPLookAroundImageCell *)self contentView];
-  v23 = [v25 topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  lookAroundImageView = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  topAnchor = [lookAroundImageView topAnchor];
+  contentView = [(MacRAPLookAroundImageCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[0] = v22;
-  v21 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  v19 = [v21 bottomAnchor];
-  v20 = [(MacRAPLookAroundImageCell *)self contentView];
-  v18 = [v20 bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  lookAroundImageView2 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  bottomAnchor = [lookAroundImageView2 bottomAnchor];
+  contentView2 = [(MacRAPLookAroundImageCell *)self contentView];
+  bottomAnchor2 = [contentView2 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[1] = v17;
-  v16 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  v14 = [v16 leadingAnchor];
-  v15 = [(MacRAPLookAroundImageCell *)self contentView];
-  v13 = [v15 leadingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  lookAroundImageView3 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  leadingAnchor = [lookAroundImageView3 leadingAnchor];
+  contentView3 = [(MacRAPLookAroundImageCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v3 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[2] = v3;
-  v4 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  v5 = [v4 trailingAnchor];
-  v6 = [(MacRAPLookAroundImageCell *)self contentView];
-  v7 = [v6 trailingAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  lookAroundImageView4 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  trailingAnchor = [lookAroundImageView4 trailingAnchor];
+  contentView4 = [(MacRAPLookAroundImageCell *)self contentView];
+  trailingAnchor2 = [contentView4 trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[3] = v8;
-  v9 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  v10 = [v9 heightAnchor];
-  v11 = [v10 constraintEqualToConstant:235.0];
+  lookAroundImageView5 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  heightAnchor = [lookAroundImageView5 heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:235.0];
   v27[4] = v11;
   v12 = [NSArray arrayWithObjects:v27 count:5];
   [NSLayoutConstraint activateConstraints:v12];
@@ -46,39 +46,39 @@
   v3 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(MacRAPLookAroundImageCell *)self setLookAroundImageView:v3];
 
-  v4 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lookAroundImageView = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  [lookAroundImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  [v5 setContentMode:2];
+  lookAroundImageView2 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  [lookAroundImageView2 setContentMode:2];
 
-  v6 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  [v6 setClipsToBounds:1];
+  lookAroundImageView3 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  [lookAroundImageView3 setClipsToBounds:1];
 
-  v8 = [(MacRAPLookAroundImageCell *)self contentView];
-  v7 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-  [v8 addSubview:v7];
+  contentView = [(MacRAPLookAroundImageCell *)self contentView];
+  lookAroundImageView4 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+  [contentView addSubview:lookAroundImageView4];
 }
 
-- (void)setLookAroundImage:(id)a3
+- (void)setLookAroundImage:(id)image
 {
-  v5 = a3;
-  if (self->_lookAroundImage != v5)
+  imageCopy = image;
+  if (self->_lookAroundImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_lookAroundImage, a3);
-    v6 = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
-    [v6 setImage:v7];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_lookAroundImage, image);
+    lookAroundImageView = [(MacRAPLookAroundImageCell *)self lookAroundImageView];
+    [lookAroundImageView setImage:v7];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (MacRAPLookAroundImageCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MacRAPLookAroundImageCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = MacRAPLookAroundImageCell;
-  v4 = [(MacRAPLookAroundImageCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MacRAPLookAroundImageCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

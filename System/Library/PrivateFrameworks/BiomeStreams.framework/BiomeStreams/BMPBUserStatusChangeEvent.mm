@@ -1,33 +1,33 @@
 @interface BMPBUserStatusChangeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addIdsHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIdsHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBUserStatusChangeEvent
 
-- (void)addIdsHandles:(id)a3
+- (void)addIdsHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   idsHandles = self->_idsHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!idsHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_idsHandles;
     self->_idsHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     idsHandles = self->_idsHandles;
   }
 
-  [(NSMutableArray *)idsHandles addObject:v4];
+  [(NSMutableArray *)idsHandles addObject:handlesCopy];
 }
 
 - (id)description
@@ -36,20 +36,20 @@
   v8.receiver = self;
   v8.super_class = BMPBUserStatusChangeEvent;
   v4 = [(BMPBUserStatusChangeEvent *)&v8 description];
-  v5 = [(BMPBUserStatusChangeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBUserStatusChangeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   idsHandle = self->_idsHandle;
   if (idsHandle)
   {
-    [v3 setObject:idsHandle forKey:@"idsHandle"];
+    [dictionary setObject:idsHandle forKey:@"idsHandle"];
   }
 
   statusChangeType = self->_statusChangeType;
@@ -67,10 +67,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idsHandle)
   {
     PBDataWriterWriteStringField();
@@ -116,44 +116,44 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_idsHandle)
   {
-    [v8 setIdsHandle:?];
+    [toCopy setIdsHandle:?];
   }
 
   if (self->_statusChangeType)
   {
-    [v8 setStatusChangeType:?];
+    [toCopy setStatusChangeType:?];
   }
 
   if ([(BMPBUserStatusChangeEvent *)self idsHandlesCount])
   {
-    [v8 clearIdsHandles];
-    v4 = [(BMPBUserStatusChangeEvent *)self idsHandlesCount];
-    if (v4)
+    [toCopy clearIdsHandles];
+    idsHandlesCount = [(BMPBUserStatusChangeEvent *)self idsHandlesCount];
+    if (idsHandlesCount)
     {
-      v5 = v4;
+      v5 = idsHandlesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(BMPBUserStatusChangeEvent *)self idsHandlesAtIndex:i];
-        [v8 addIdsHandles:v7];
+        [toCopy addIdsHandles:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_idsHandle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_idsHandle copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_statusChangeType copyWithZone:a3];
+  v8 = [(NSString *)self->_statusChangeType copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -177,7 +177,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{a3, v18}];
+        v15 = [*(*(&v18 + 1) + 8 * v14) copyWithZone:{zone, v18}];
         [v5 addIdsHandles:v15];
 
         ++v14;
@@ -194,13 +194,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((idsHandle = self->_idsHandle, !(idsHandle | v4[1])) || -[NSString isEqual:](idsHandle, "isEqual:")) && ((statusChangeType = self->_statusChangeType, !(statusChangeType | v4[3])) || -[NSString isEqual:](statusChangeType, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((idsHandle = self->_idsHandle, !(idsHandle | equalCopy[1])) || -[NSString isEqual:](idsHandle, "isEqual:")) && ((statusChangeType = self->_statusChangeType, !(statusChangeType | equalCopy[3])) || -[NSString isEqual:](statusChangeType, "isEqual:")))
   {
     idsHandles = self->_idsHandles;
-    if (idsHandles | v4[2])
+    if (idsHandles | equalCopy[2])
     {
       v8 = [(NSMutableArray *)idsHandles isEqual:?];
     }
@@ -226,16 +226,16 @@
   return v4 ^ [(NSMutableArray *)self->_idsHandles hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(BMPBUserStatusChangeEvent *)self setIdsHandle:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBUserStatusChangeEvent *)self setStatusChangeType:?];
   }
@@ -244,7 +244,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

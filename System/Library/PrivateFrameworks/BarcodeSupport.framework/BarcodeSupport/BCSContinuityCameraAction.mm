@@ -1,17 +1,17 @@
 @interface BCSContinuityCameraAction
-- (BCSContinuityCameraAction)initWithData:(id)a3 codePayload:(id)a4;
+- (BCSContinuityCameraAction)initWithData:(id)data codePayload:(id)payload;
 - (id)actionPickerItems;
 - (id)localizedDefaultActionDescription;
-- (void)performDefaultActionWithCompletionHandler:(id)a3;
-- (void)setConnecting:(BOOL)a3;
+- (void)performDefaultActionWithCompletionHandler:(id)handler;
+- (void)setConnecting:(BOOL)connecting;
 @end
 
 @implementation BCSContinuityCameraAction
 
-- (BCSContinuityCameraAction)initWithData:(id)a3 codePayload:(id)a4
+- (BCSContinuityCameraAction)initWithData:(id)data codePayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  payloadCopy = payload;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,31 +20,31 @@
 
   v11.receiver = self;
   v11.super_class = BCSContinuityCameraAction;
-  v8 = [(BCSAction *)&v11 initWithData:v6 codePayload:v7];
+  v8 = [(BCSAction *)&v11 initWithData:dataCopy codePayload:payloadCopy];
   if (!v8)
   {
     self = 0;
 LABEL_5:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_6;
   }
 
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_6:
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)setConnecting:(BOOL)a3
+- (void)setConnecting:(BOOL)connecting
 {
-  if (self->_connecting != a3)
+  if (self->_connecting != connecting)
   {
-    self->_connecting = a3;
-    v5 = [(BCSAction *)self delegate];
+    self->_connecting = connecting;
+    delegate = [(BCSAction *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 actionDidUpdateTitle:self];
+      [delegate actionDidUpdateTitle:self];
     }
   }
 }
@@ -70,8 +70,8 @@ LABEL_6:
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = [BCSContinuityCameraActionPickerItem alloc];
-  v4 = [(BCSAction *)self localizedActionDescription];
-  v5 = [(BCSActionPickerItem *)v3 initWithLabel:v4 action:self];
+  localizedActionDescription = [(BCSAction *)self localizedActionDescription];
+  v5 = [(BCSActionPickerItem *)v3 initWithLabel:localizedActionDescription action:self];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -80,25 +80,25 @@ LABEL_6:
   return v6;
 }
 
-- (void)performDefaultActionWithCompletionHandler:(id)a3
+- (void)performDefaultActionWithCompletionHandler:(id)handler
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   [(BCSContinuityCameraAction *)self setConnecting:1];
   v5 = MEMORY[0x277CCACE0];
-  v6 = [(BCSAction *)self data];
-  v7 = [v6 url];
+  data = [(BCSAction *)self data];
+  v7 = [data url];
   v8 = [v5 componentsWithURL:v7 resolvingAgainstBaseURL:0];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v10 = [v8 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    queryItems = [v8 queryItems];
+    v11 = [queryItems countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v11)
     {
       v12 = *v37;
@@ -108,36 +108,36 @@ LABEL_6:
         {
           if (*v37 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems);
           }
 
           v14 = *(*(&v36 + 1) + 8 * i);
-          v15 = [v14 value];
-          v16 = [v14 name];
-          [v9 setObject:v15 forKeyedSubscript:v16];
+          value = [v14 value];
+          name = [v14 name];
+          [dictionary setObject:value forKeyedSubscript:name];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v11 = [queryItems countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v11);
     }
 
     v35 = 0;
-    v17 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v9 options:0 error:&v35];
+    v17 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:0 error:&v35];
     v18 = v35;
     if (v18)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v19 = [v18 _bcs_privacyPreservingDescription];
+        _bcs_privacyPreservingDescription = [v18 _bcs_privacyPreservingDescription];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v19;
+        *(&buf + 4) = _bcs_privacyPreservingDescription;
         _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSContinuityCameraAction: Failed to serialize pairing info: %@", &buf, 0xCu);
       }
 
       v20 = BCSActionError(3);
-      v4[2](v4, v20);
+      handlerCopy[2](handlerCopy, v20);
     }
 
     else
@@ -161,9 +161,9 @@ LABEL_6:
       v22 = v21;
       _Block_object_dispose(&v40, 8);
       v20 = objc_alloc_init(v21);
-      v23 = [MEMORY[0x277CCAD78] UUID];
-      v24 = [v23 UUIDString];
-      [v20 setIdentifier:v24];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [v20 setIdentifier:uUIDString];
 
       v40 = 0;
       v41 = &v40;
@@ -214,7 +214,7 @@ LABEL_6:
       v32[1] = 3221225472;
       v32[2] = __71__BCSContinuityCameraAction_performDefaultActionWithCompletionHandler___block_invoke;
       v32[3] = &unk_278CFF5E8;
-      v33 = v4;
+      v33 = handlerCopy;
       objc_copyWeak(&v34, &buf);
       [(RPRemoteDisplaySession *)v30 activateWithCompletion:v32];
       objc_destroyWeak(&v34);
@@ -231,8 +231,8 @@ LABEL_6:
       _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSContinuityCameraAction: Failed to get URL components", &buf, 2u);
     }
 
-    v9 = BCSActionError(3);
-    v4[2](v4, v9);
+    dictionary = BCSActionError(3);
+    handlerCopy[2](handlerCopy, dictionary);
   }
 
   v31 = *MEMORY[0x277D85DE8];

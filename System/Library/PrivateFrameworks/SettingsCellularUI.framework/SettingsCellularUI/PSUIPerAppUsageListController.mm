@@ -1,7 +1,7 @@
 @interface PSUIPerAppUsageListController
 - (BOOL)specifiersContainsSpinner;
 - (PSUIPerAppUsageListController)init;
-- (PSUIPerAppUsageListController)initWithReloadDelay:(double)a3 schedulingGroup:(id)a4 simStatusCache:(id)a5 cellularPlanManagerCache:(id)a6 searchController:(id)a7;
+- (PSUIPerAppUsageListController)initWithReloadDelay:(double)delay schedulingGroup:(id)group simStatusCache:(id)cache cellularPlanManagerCache:(id)managerCache searchController:(id)controller;
 - (id)activeDataPlanLabel;
 - (id)appUsageGroupTitle;
 - (id)specifiers;
@@ -9,7 +9,7 @@
 - (void)createSatelliteSubgroupIfNeeded;
 - (void)dealloc;
 - (void)reloadAfterDelayIfNeeded;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 - (void)wirelessDataUsageCacheRefreshed;
 - (void)wirelessDataUsageChangedNotification;
@@ -26,9 +26,9 @@
   if (v2)
   {
     v2->_reloadDelay = 2.5;
-    v4 = [MEMORY[0x277D4D868] sharedInstance];
+    mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
     simStatusCache = v3->_simStatusCache;
-    v3->_simStatusCache = v4;
+    v3->_simStatusCache = mEMORY[0x277D4D868];
 
     v6 = +[PSUICellularPlanManagerCache sharedInstance];
     cellularPlanManagerCache = v3->_cellularPlanManagerCache;
@@ -40,8 +40,8 @@
 
     [(UISearchController *)v3->_searchController setSearchResultsUpdater:v3];
     [(UISearchController *)v3->_searchController setObscuresBackgroundDuringPresentation:0];
-    v10 = [(UISearchController *)v3->_searchController searchBar];
-    [v10 setKeyboardType:0];
+    searchBar = [(UISearchController *)v3->_searchController searchBar];
+    [searchBar setKeyboardType:0];
 
     [(PSUIPerAppUsageListController *)v3 commonInit];
   }
@@ -49,27 +49,27 @@
   return v3;
 }
 
-- (PSUIPerAppUsageListController)initWithReloadDelay:(double)a3 schedulingGroup:(id)a4 simStatusCache:(id)a5 cellularPlanManagerCache:(id)a6 searchController:(id)a7
+- (PSUIPerAppUsageListController)initWithReloadDelay:(double)delay schedulingGroup:(id)group simStatusCache:(id)cache cellularPlanManagerCache:(id)managerCache searchController:(id)controller
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  groupCopy = group;
+  cacheCopy = cache;
+  managerCacheCopy = managerCache;
+  controllerCopy = controller;
   v22.receiver = self;
   v22.super_class = PSUIPerAppUsageListController;
   v17 = [(PSUIPerAppUsageListController *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    v17->_reloadDelay = a3;
-    objc_storeStrong(&v17->_simStatusCache, a5);
-    objc_storeStrong(&v18->_cellularPlanManagerCache, a6);
-    objc_storeStrong(&v18->_schedulingGroup, a4);
+    v17->_reloadDelay = delay;
+    objc_storeStrong(&v17->_simStatusCache, cache);
+    objc_storeStrong(&v18->_cellularPlanManagerCache, managerCache);
+    objc_storeStrong(&v18->_schedulingGroup, group);
     schedulingGroup = v18->_schedulingGroup;
-    v20 = [(PSUIPerAppUsageListController *)v18 appUsageGroupTitle];
-    [(PSUICellularUsageSchedulingGroup *)schedulingGroup setGroupSpecifierTitle:v20];
+    appUsageGroupTitle = [(PSUIPerAppUsageListController *)v18 appUsageGroupTitle];
+    [(PSUICellularUsageSchedulingGroup *)schedulingGroup setGroupSpecifierTitle:appUsageGroupTitle];
 
-    objc_storeStrong(&v18->_searchController, a7);
+    objc_storeStrong(&v18->_searchController, controller);
     [(PSUIPerAppUsageListController *)v18 commonInit];
   }
 
@@ -88,15 +88,15 @@
   v6 = [v5 localizedStringForKey:@"CELLULAR_APP_USAGE_LIST_TITLE" value:&stru_287733598 table:@"Cellular"];
   [(PSUIPerAppUsageListController *)self setTitle:v6];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_wirelessDataUsageChangedNotification name:*MEMORY[0x277D4D8A8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_wirelessDataUsageChangedNotification name:*MEMORY[0x277D4D8A8] object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_wirelessDataUsageCacheRefreshed name:*MEMORY[0x277D4D8A0] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_wirelessDataUsageCacheRefreshed name:*MEMORY[0x277D4D8A0] object:0];
 
   searchController = self->_searchController;
-  v10 = [(PSUIPerAppUsageListController *)self navigationItem];
-  [v10 setSearchController:searchController];
+  navigationItem = [(PSUIPerAppUsageListController *)self navigationItem];
+  [navigationItem setSearchController:searchController];
 
   [(PSUIPerAppUsageListController *)self setDefinesPresentationContext:1];
 }
@@ -119,25 +119,25 @@
     [(PSUIPerAppUsageListController *)self createSatelliteSubgroupIfNeeded];
     if (+[SettingsCellularUtils satelliteDataPlanTier]<= 3)
     {
-      v6 = [(PSUIPerAppUsageListController *)self navigationItem];
-      [v6 setSearchController:0];
+      navigationItem = [(PSUIPerAppUsageListController *)self navigationItem];
+      [navigationItem setSearchController:0];
     }
   }
 
-  v7 = [(PSUIPerAppUsageListController *)self table];
+  table = [(PSUIPerAppUsageListController *)self table];
   v8 = objc_opt_class();
   v9 = +[(PSTableCell *)PSUICellularDataUsageSortOptionsHeaderTableViewCell];
-  [v7 registerClass:v8 forCellReuseIdentifier:v9];
+  [table registerClass:v8 forCellReuseIdentifier:v9];
 
   v10 = [PSUICellularUsageSchedulingGroup alloc];
-  v11 = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
-  v12 = [(PSUICellularUsageSchedulingGroup *)v10 initWithListController:self groupSpecifierTitle:v11 usageType:self->_usageType];
+  appUsageGroupTitle = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
+  v12 = [(PSUICellularUsageSchedulingGroup *)v10 initWithListController:self groupSpecifierTitle:appUsageGroupTitle usageType:self->_usageType];
   schedulingGroup = self->_schedulingGroup;
   self->_schedulingGroup = v12;
 
   v14 = self->_schedulingGroup;
-  v15 = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
-  [(PSUICellularUsageSchedulingGroup *)v14 setGroupSpecifierTitle:v15];
+  appUsageGroupTitle2 = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
+  [(PSUICellularUsageSchedulingGroup *)v14 setGroupSpecifierTitle:appUsageGroupTitle2];
 
   self->_delayedReloadInProgress = 0;
   if (self->_usageType)
@@ -151,12 +151,12 @@
   }
 
   v17 = v16;
-  v18 = [(PSUIPerAppUsageListController *)self getLogger];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPerAppUsageListController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v22 = v17;
-    _os_log_impl(&dword_2658DE000, v18, OS_LOG_TYPE_DEFAULT, "viewDidLoad, asking to calculate %@ usage.", buf, 0xCu);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "viewDidLoad, asking to calculate %@ usage.", buf, 0xCu);
   }
 
   [(PSUICellularUsageSchedulingGroup *)self->_schedulingGroup calculateUsageWithForcedRefresh:0];
@@ -165,8 +165,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUIPerAppUsageListController;
@@ -185,8 +185,8 @@
 
   else
   {
-    v6 = [(PSUICellularUsageSchedulingGroup *)self->_schedulingGroup specifiers];
-    [v3 addObjectsFromArray:v6];
+    specifiers = [(PSUICellularUsageSchedulingGroup *)self->_schedulingGroup specifiers];
+    [v3 addObjectsFromArray:specifiers];
 
     v20 = 0u;
     v21 = 0u;
@@ -243,11 +243,11 @@
 {
   if ([(PSUIPerAppUsageListController *)self specifiersContainsSpinner]&& !self->_delayedReloadInProgress)
   {
-    v3 = [(PSUIPerAppUsageListController *)self getLogger];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIPerAppUsageListController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "A spinner cell is showing, and no reload is in progress, attempt to reload in a few seconds.", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "A spinner cell is showing, and no reload is in progress, attempt to reload in a few seconds.", buf, 2u);
     }
 
     objc_initWeak(buf, self);
@@ -349,11 +349,11 @@ LABEL_11:
 
 - (id)appUsageGroupTitle
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 sf_isChinaRegionCellularDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (sf_isChinaRegionCellularDevice)
   {
     v7 = @"APP_WIRELESS_DATA_USAGE";
   }
@@ -365,20 +365,20 @@ LABEL_11:
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_287733598 table:@"Cellular"];
 
-  v9 = [(PSUIPerAppUsageListController *)self activeDataPlanLabel];
-  if ([v9 length])
+  activeDataPlanLabel = [(PSUIPerAppUsageListController *)self activeDataPlanLabel];
+  if ([activeDataPlanLabel length])
   {
     if ([(PSSimStatusCache *)self->_simStatusCache isDualSimCapable])
     {
-      v10 = [(PSUICellularPlanManagerCache *)self->_cellularPlanManagerCache planItems];
-      v11 = [v10 count];
+      planItems = [(PSUICellularPlanManagerCache *)self->_cellularPlanManagerCache planItems];
+      v11 = [planItems count];
 
       if (v11 >= 2)
       {
         v12 = MEMORY[0x277CCACA8];
         v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v14 = [v13 localizedStringForKey:@"APP_DATA_USAGE_FOR_%@" value:&stru_287733598 table:@"Cellular"];
-        v15 = [v12 stringWithFormat:v14, v9];
+        v15 = [v12 stringWithFormat:v14, activeDataPlanLabel];
 
         v8 = v15;
       }
@@ -403,32 +403,32 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PSUICellularPlanManagerCache *)self->_cellularPlanManagerCache planItems];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-  if (v3)
+  planItems = [(PSUICellularPlanManagerCache *)self->_cellularPlanManagerCache planItems];
+  label = [planItems countByEnumeratingWithState:&v10 objects:v14 count:16];
+  if (label)
   {
     v4 = *v11;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != label; i = i + 1)
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(planItems);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
         if ([v6 isActiveDataPlan])
         {
-          v7 = [v6 userLabel];
-          v3 = [v7 label];
+          userLabel = [v6 userLabel];
+          label = [userLabel label];
 
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
-      if (v3)
+      label = [planItems countByEnumeratingWithState:&v10 objects:v14 count:16];
+      if (label)
       {
         continue;
       }
@@ -441,21 +441,21 @@ LABEL_11:
 
   v8 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return label;
 }
 
 - (void)wirelessDataUsageChangedNotification
 {
-  v3 = [(PSUIPerAppUsageListController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPerAppUsageListController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Received data usage changed notification", v6, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Received data usage changed notification", v6, 2u);
   }
 
   schedulingGroup = self->_schedulingGroup;
-  v5 = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
-  [(PSUICellularUsageSchedulingGroup *)schedulingGroup setGroupSpecifierTitle:v5];
+  appUsageGroupTitle = [(PSUIPerAppUsageListController *)self appUsageGroupTitle];
+  [(PSUICellularUsageSchedulingGroup *)schedulingGroup setGroupSpecifierTitle:appUsageGroupTitle];
 
   [(PSUICellularUsageSchedulingGroup *)self->_schedulingGroup calculateUsageWithForcedRefresh:0];
   [(PSUIPerAppUsageListController *)self reloadSpecifiers];
@@ -463,23 +463,23 @@ LABEL_11:
 
 - (void)wirelessDataUsageCacheRefreshed
 {
-  v3 = [(PSUIPerAppUsageListController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPerAppUsageListController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Received data usage cache refreshed notification", v4, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Received data usage cache refreshed notification", v4, 2u);
   }
 
   [(PSUICellularUsageSchedulingGroup *)self->_schedulingGroup sortGroup];
   [(PSUIPerAppUsageListController *)self reloadSpecifiers];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v5 length])
+  if ([text length])
   {
     v6 = objc_opt_new();
     allSpecifiers = self->_allSpecifiers;
@@ -487,7 +487,7 @@ LABEL_11:
     v13 = 3221225472;
     v14 = __72__PSUIPerAppUsageListController_updateSearchResultsForSearchController___block_invoke;
     v15 = &unk_279BAA9A0;
-    v16 = v5;
+    v16 = text;
     v8 = v6;
     v17 = v8;
     [(NSArray *)allSpecifiers enumerateObjectsUsingBlock:&v12];

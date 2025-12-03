@@ -2,7 +2,7 @@
 + (id)sharedProvider;
 - (CRKPlatformInternetDateProvider)init;
 - (id)fetchExistingInternetDate;
-- (void)fetchInternetDateWithCompletion:(id)a3;
+- (void)fetchInternetDateWithCompletion:(id)completion;
 @end
 
 @implementation CRKPlatformInternetDateProvider
@@ -46,16 +46,16 @@ uint64_t __49__CRKPlatformInternetDateProvider_sharedProvider__block_invoke()
   return v2;
 }
 
-- (void)fetchInternetDateWithCompletion:(id)a3
+- (void)fetchInternetDateWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [(CRKPlatformInternetDateProvider *)a2 fetchInternetDateWithCompletion:?];
   }
 
-  v6 = [(CRKPlatformInternetDateProvider *)self fetchExistingInternetDate];
-  if (v6)
+  fetchExistingInternetDate = [(CRKPlatformInternetDateProvider *)self fetchExistingInternetDate];
+  if (fetchExistingInternetDate)
   {
     v7 = _CRKLogGeneral_20();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -64,41 +64,41 @@ uint64_t __49__CRKPlatformInternetDateProvider_sharedProvider__block_invoke()
       _os_log_impl(&dword_243550000, v7, OS_LOG_TYPE_DEFAULT, "Cached time found. No attempt to fetch the internet date and time will be made.", buf, 2u);
     }
 
-    v5[2](v5, v6, 0);
+    completionCopy[2](completionCopy, fetchExistingInternetDate, 0);
   }
 
   else
   {
-    v8 = [(CRKPlatformInternetDateProvider *)self completionQueue];
-    v9 = MEMORY[0x245D3AAD0](v5);
-    [v8 addObject:v9];
+    completionQueue = [(CRKPlatformInternetDateProvider *)self completionQueue];
+    v9 = MEMORY[0x245D3AAD0](completionCopy);
+    [completionQueue addObject:v9];
 
-    v10 = [(CRKPlatformInternetDateProvider *)self completionQueue];
-    v11 = [v10 count];
+    completionQueue2 = [(CRKPlatformInternetDateProvider *)self completionQueue];
+    v11 = [completionQueue2 count];
 
-    v12 = _CRKLogGeneral_20();
-    v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+    dateFetchingProvider = _CRKLogGeneral_20();
+    v13 = os_log_type_enabled(dateFetchingProvider, OS_LOG_TYPE_DEFAULT);
     if (v11 < 2)
     {
       if (v13)
       {
         *buf = 0;
-        _os_log_impl(&dword_243550000, v12, OS_LOG_TYPE_DEFAULT, "No cached time found. Attempting to fetch the internet date and time for the first time.", buf, 2u);
+        _os_log_impl(&dword_243550000, dateFetchingProvider, OS_LOG_TYPE_DEFAULT, "No cached time found. Attempting to fetch the internet date and time for the first time.", buf, 2u);
       }
 
-      v12 = [(CRKPlatformInternetDateProvider *)self dateFetchingProvider];
+      dateFetchingProvider = [(CRKPlatformInternetDateProvider *)self dateFetchingProvider];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __67__CRKPlatformInternetDateProvider_fetchInternetDateWithCompletion___block_invoke;
       v14[3] = &unk_278DC34A8;
       v14[4] = self;
-      [v12 fetchInternetDateWithCompletion:v14];
+      [dateFetchingProvider fetchInternetDateWithCompletion:v14];
     }
 
     else if (v13)
     {
       *buf = 0;
-      _os_log_impl(&dword_243550000, v12, OS_LOG_TYPE_DEFAULT, "No cached time found, but a fetch for the internet date and time is already in-flight. No attempt to fetch the internet date and time will be made again.", buf, 2u);
+      _os_log_impl(&dword_243550000, dateFetchingProvider, OS_LOG_TYPE_DEFAULT, "No cached time found, but a fetch for the internet date and time is already in-flight. No attempt to fetch the internet date and time will be made again.", buf, 2u);
     }
   }
 }
@@ -154,18 +154,18 @@ void __67__CRKPlatformInternetDateProvider_fetchInternetDateWithCompletion___blo
 
 - (id)fetchExistingInternetDate
 {
-  v3 = [(CRKPlatformInternetDateProvider *)self internetDateAndTime];
+  internetDateAndTime = [(CRKPlatformInternetDateProvider *)self internetDateAndTime];
   [(CRKPlatformInternetDateProvider *)self uptimeAtInternetDateAndTimeFetch];
   v5 = 0;
-  if (v3)
+  if (internetDateAndTime)
   {
     v6 = v4;
     if (v4 >= 0.0)
     {
-      [v3 timeIntervalSince1970];
+      [internetDateAndTime timeIntervalSince1970];
       v8 = v7;
-      v9 = [MEMORY[0x277CCAC38] processInfo];
-      [v9 systemUptime];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v11 = v10;
 
       v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v8 + v11 - v6];

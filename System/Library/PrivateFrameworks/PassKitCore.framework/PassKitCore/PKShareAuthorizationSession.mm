@@ -1,6 +1,6 @@
 @interface PKShareAuthorizationSession
 - (PKShareAuthorizationSession)init;
-- (void)authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4;
+- (void)authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -29,10 +29,10 @@
   self->_context = 0;
 }
 
-- (void)authorizeDeviceOwnerWithAuthHandler:(id)a3 completion:(id)a4
+- (void)authorizeDeviceOwnerWithAuthHandler:(id)handler completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  handlerCopy = handler;
+  completionCopy = completion;
   context = self->_context;
   if (!context)
   {
@@ -43,7 +43,7 @@
     context = self->_context;
   }
 
-  [PKShareAuthorizer _authorizeDeviceOwnerWithAuthHandler:v10 completion:v6 context:context invalidateContext:0];
+  [PKShareAuthorizer _authorizeDeviceOwnerWithAuthHandler:handlerCopy completion:completionCopy context:context invalidateContext:0];
 }
 
 @end

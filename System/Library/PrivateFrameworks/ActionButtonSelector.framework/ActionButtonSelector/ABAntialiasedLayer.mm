@@ -1,7 +1,7 @@
 @interface ABAntialiasedLayer
 - (ABAntialiasedLayer)init;
-- (ABAntialiasedLayer)initWithLayer:(id)a3;
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3;
+- (ABAntialiasedLayer)initWithLayer:(id)layer;
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing;
 @end
 
 @implementation ABAntialiasedLayer
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (ABAntialiasedLayer)initWithLayer:(id)a3
+- (ABAntialiasedLayer)initWithLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = ABAntialiasedLayer;
-  v3 = [(ABAntialiasedLayer *)&v6 initWithLayer:a3];
+  v3 = [(ABAntialiasedLayer *)&v6 initWithLayer:layer];
   v4 = v3;
   if (v3)
   {
@@ -34,7 +34,7 @@
   return v4;
 }
 
-- (void)setAllowsEdgeAntialiasing:(BOOL)a3
+- (void)setAllowsEdgeAntialiasing:(BOOL)antialiasing
 {
   v3.receiver = self;
   v3.super_class = ABAntialiasedLayer;

@@ -1,47 +1,47 @@
 @interface SafariPerSitePreferenceSettingsController
 - (BOOL)_shouldShowOtherWebsitesSection;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (id)_cancelBarButtonItem;
 - (id)_clearAllSettingsSpecifier;
-- (id)_defaultPreferenceValueForMultipleOptionSpecifier:(id)a3;
+- (id)_defaultPreferenceValueForMultipleOptionSpecifier:(id)specifier;
 - (id)_deleteBarButtonItem;
 - (id)_displayInformation;
-- (id)_editableSpecifiersForDomains:(id)a3;
+- (id)_editableSpecifiersForDomains:(id)domains;
 - (id)_fallbackPreferenceValue;
-- (id)_getDefaultPreferenceValueForSpecifier:(id)a3;
+- (id)_getDefaultPreferenceValueForSpecifier:(id)specifier;
 - (id)_otherWebsitesSpecifier;
-- (id)_preferenceSpecifierNamed:(id)a3 set:(SEL)a4 get:(SEL)a5;
-- (id)_preferenceValueForSpecifier:(id)a3;
+- (id)_preferenceSpecifierNamed:(id)named set:(SEL)set get:(SEL)get;
+- (id)_preferenceValueForSpecifier:(id)specifier;
 - (id)_preferenceValues;
-- (id)_specifiersForDomains:(id)a3;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_cancelPreferenceChangePendingConfirmation:(id)a3;
-- (void)_clearAllSettings:(id)a3;
-- (void)_clearSelectedDomains:(id)a3;
-- (void)_clearSettingsForDomains:(id)a3;
-- (void)_commitPreferenceChangePendingConfirmation:(id)a3;
-- (void)_didRetrieveValue:(id)a3 forSpecifier:(id)a4;
+- (id)_specifiersForDomains:(id)domains;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_cancelPreferenceChangePendingConfirmation:(id)confirmation;
+- (void)_clearAllSettings:(id)settings;
+- (void)_clearSelectedDomains:(id)domains;
+- (void)_clearSettingsForDomains:(id)domains;
+- (void)_commitPreferenceChangePendingConfirmation:(id)confirmation;
+- (void)_didRetrieveValue:(id)value forSpecifier:(id)specifier;
 - (void)_hideContentUnavailableView;
 - (void)_loadDomains;
-- (void)_setDefaultPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)_setPreferenceValue:(id)a3 forSpecifier:(id)a4;
-- (void)_setPreferenceValueWithoutPrompting:(id)a3 forSpecifier:(id)a4;
+- (void)_setDefaultPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)_setPreferenceValue:(id)value forSpecifier:(id)specifier;
+- (void)_setPreferenceValueWithoutPrompting:(id)prompting forSpecifier:(id)specifier;
 - (void)_setUpConstantSpecifiers;
 - (void)_setUpSpecifiersCachesIfNeeded;
 - (void)_showContentUnavailableView;
 - (void)_updateDeleteButtonEnabled;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation SafariPerSitePreferenceSettingsController
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
-  if ([(SafariPerSitePreferenceSettingsController *)self isEditing:a3])
+  if ([(SafariPerSitePreferenceSettingsController *)self isEditing:name])
   {
     v6 = [(NSArray *)self->_editableSpecifiers mutableCopy];
     [v6 addObjectsFromArray:self->_cachedClearAllSettingsSectionSpecifiers];
@@ -86,9 +86,9 @@
   v5.receiver = self;
   v5.super_class = SafariPerSitePreferenceSettingsController;
   [(SafariPerSitePreferenceSettingsController *)&v5 viewDidLoad];
-  v3 = [(SafariPerSitePreferenceSettingsController *)self editButtonItem];
-  v4 = [(SafariPerSitePreferenceSettingsController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  editButtonItem = [(SafariPerSitePreferenceSettingsController *)self editButtonItem];
+  navigationItem = [(SafariPerSitePreferenceSettingsController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:editButtonItem];
 
   [(SafariPerSitePreferenceSettingsController *)self _loadDomains];
 }
@@ -97,9 +97,9 @@
 {
   if (!self->_contentUnavailableView)
   {
-    v16 = [(SafariPerSitePreferenceSettingsController *)self view];
+    view = [(SafariPerSitePreferenceSettingsController *)self view];
     v3 = [_UIContentUnavailableView alloc];
-    [v16 bounds];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
@@ -110,9 +110,9 @@
     self->_contentUnavailableView = v13;
 
     [(_UIContentUnavailableView *)self->_contentUnavailableView setAutoresizingMask:18];
-    [v16 addSubview:self->_contentUnavailableView];
-    v15 = [(SafariPerSitePreferenceSettingsController *)self table];
-    [v15 setHidden:1];
+    [view addSubview:self->_contentUnavailableView];
+    table = [(SafariPerSitePreferenceSettingsController *)self table];
+    [table setHidden:1];
   }
 }
 
@@ -122,8 +122,8 @@
   contentUnavailableView = self->_contentUnavailableView;
   self->_contentUnavailableView = 0;
 
-  v4 = [(SafariPerSitePreferenceSettingsController *)self table];
-  [v4 setHidden:0];
+  table = [(SafariPerSitePreferenceSettingsController *)self table];
+  [table setHidden:0];
 }
 
 - (void)_loadDomains
@@ -133,14 +133,14 @@
   specifierToPreferenceValueCache = self->_specifierToPreferenceValueCache;
   self->_specifierToPreferenceValueCache = v3;
 
-  v5 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-  v6 = [(SafariPerSitePreferenceSettingsController *)self preference];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  preference = [(SafariPerSitePreferenceSettingsController *)self preference];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke;
   v7[3] = &unk_89EB8;
   objc_copyWeak(&v8, &location);
-  [v5 getAllDomainsConfiguredForPreference:v6 usingBlock:v7];
+  [preferenceManager getAllDomainsConfiguredForPreference:preference usingBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -188,15 +188,15 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
   }
 }
 
-- (id)_specifiersForDomains:(id)a3
+- (id)_specifiersForDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = domainsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -224,15 +224,15 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
   return v5;
 }
 
-- (id)_editableSpecifiersForDomains:(id)a3
+- (id)_editableSpecifiersForDomains:(id)domains
 {
-  v3 = a3;
+  domainsCopy = domains;
   v4 = +[NSMutableArray array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = domainsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -260,26 +260,26 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
   return v4;
 }
 
-- (id)_preferenceSpecifierNamed:(id)a3 set:(SEL)a4 get:(SEL)a5
+- (id)_preferenceSpecifierNamed:(id)named set:(SEL)set get:(SEL)get
 {
-  v8 = a3;
-  v9 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-  v10 = [v9 displayOption];
+  namedCopy = named;
+  _displayInformation = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+  displayOption = [_displayInformation displayOption];
 
-  if (v10)
+  if (displayOption)
   {
-    v24 = v8;
-    v11 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:a4 get:a5 detail:objc_opt_class() cell:2 edit:0];
+    v24 = namedCopy;
+    v11 = [PSSpecifier preferenceSpecifierNamed:namedCopy target:self set:set get:get detail:objc_opt_class() cell:2 edit:0];
     v12 = +[NSMutableArray array];
     v13 = +[NSMutableArray array];
-    v14 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v15 = [(SafariPerSitePreferenceSettingsController *)self preference];
+    preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    _preferenceValues = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
+    v17 = [_preferenceValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v17)
     {
       v18 = v17;
@@ -290,45 +290,45 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_preferenceValues);
           }
 
           v21 = *(*(&v25 + 1) + 8 * i);
           [v12 addObject:v21];
-          v22 = [v14 localizedStringForValue:v21 inPreference:v15];
+          v22 = [preferenceManager localizedStringForValue:v21 inPreference:preference];
           [v13 addObject:v22];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v18 = [_preferenceValues countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v18);
     }
 
     [v11 setValues:v12 titles:v13];
-    v8 = v24;
+    namedCopy = v24;
   }
 
   else
   {
-    v11 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:a4 get:a5 detail:0 cell:6 edit:0];
+    v11 = [PSSpecifier preferenceSpecifierNamed:namedCopy target:self set:set get:get detail:0 cell:6 edit:0];
   }
 
   return v11;
 }
 
-- (void)_setPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)_setPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariPerSitePreferenceSettingsController *)self preference];
-  v9 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-  v10 = [_SFPerSitePreferencesUtilities preferenceValueForPSSpecifierValue:v6 specifier:v7 preference:v8 preferenceManager:v9];
+  valueCopy = value;
+  specifierCopy = specifier;
+  preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  v10 = [_SFPerSitePreferencesUtilities preferenceValueForPSSpecifierValue:valueCopy specifier:specifierCopy preference:preference preferenceManager:preferenceManager];
 
   if (v10)
   {
-    v11 = [(SafariPerSitePreferenceSettingsController *)self _preferenceValueForSpecifier:v7];
-    v12 = [(SafariPerSitePreferenceSettingsController *)self confirmationPromptStringsForSpecifierChangeIfNeeded:v7 fromValue:v11 toValue:v10];
+    v11 = [(SafariPerSitePreferenceSettingsController *)self _preferenceValueForSpecifier:specifierCopy];
+    v12 = [(SafariPerSitePreferenceSettingsController *)self confirmationPromptStringsForSpecifierChangeIfNeeded:specifierCopy fromValue:v11 toValue:v10];
 
     if (v12)
     {
@@ -338,8 +338,8 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
       v16[2] = __78__SafariPerSitePreferenceSettingsController__setPreferenceValue_forSpecifier___block_invoke;
       v16[3] = &unk_89EE0;
       objc_copyWeak(&v19, &location);
-      v17 = v6;
-      v18 = v7;
+      v17 = valueCopy;
+      v18 = specifierCopy;
       v13 = objc_retainBlock(v16);
       preferenceChangePendingConfirmation = self->_preferenceChangePendingConfirmation;
       self->_preferenceChangePendingConfirmation = v13;
@@ -358,7 +358,7 @@ void __57__SafariPerSitePreferenceSettingsController__loadDomains__block_invoke_
 
     else
     {
-      [(SafariPerSitePreferenceSettingsController *)self _setPreferenceValueWithoutPrompting:v6 forSpecifier:v7];
+      [(SafariPerSitePreferenceSettingsController *)self _setPreferenceValueWithoutPrompting:valueCopy forSpecifier:specifierCopy];
     }
   }
 }
@@ -383,43 +383,43 @@ void __78__SafariPerSitePreferenceSettingsController__setPreferenceValue_forSpec
   }
 }
 
-- (void)_commitPreferenceChangePendingConfirmation:(id)a3
+- (void)_commitPreferenceChangePendingConfirmation:(id)confirmation
 {
   preferenceChangePendingConfirmation = self->_preferenceChangePendingConfirmation;
   if (preferenceChangePendingConfirmation)
   {
-    preferenceChangePendingConfirmation[2](preferenceChangePendingConfirmation, 1, a3);
+    preferenceChangePendingConfirmation[2](preferenceChangePendingConfirmation, 1, confirmation);
     v5 = self->_preferenceChangePendingConfirmation;
     self->_preferenceChangePendingConfirmation = 0;
   }
 }
 
-- (void)_cancelPreferenceChangePendingConfirmation:(id)a3
+- (void)_cancelPreferenceChangePendingConfirmation:(id)confirmation
 {
   preferenceChangePendingConfirmation = self->_preferenceChangePendingConfirmation;
   if (preferenceChangePendingConfirmation)
   {
-    preferenceChangePendingConfirmation[2](preferenceChangePendingConfirmation, 0, a3);
+    preferenceChangePendingConfirmation[2](preferenceChangePendingConfirmation, 0, confirmation);
     v5 = self->_preferenceChangePendingConfirmation;
     self->_preferenceChangePendingConfirmation = 0;
   }
 }
 
-- (void)_setPreferenceValueWithoutPrompting:(id)a3 forSpecifier:(id)a4
+- (void)_setPreferenceValueWithoutPrompting:(id)prompting forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 name];
-  [(NSMutableDictionary *)self->_specifierToPreferenceValueCache setObject:v6 forKeyedSubscript:v8];
+  promptingCopy = prompting;
+  specifierCopy = specifier;
+  name = [specifierCopy name];
+  [(NSMutableDictionary *)self->_specifierToPreferenceValueCache setObject:promptingCopy forKeyedSubscript:name];
   objc_initWeak(&location, self);
-  v9 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-  v10 = [(SafariPerSitePreferenceSettingsController *)self preference];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  preference = [(SafariPerSitePreferenceSettingsController *)self preference];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __94__SafariPerSitePreferenceSettingsController__setPreferenceValueWithoutPrompting_forSpecifier___block_invoke;
   v11[3] = &unk_89F08;
   objc_copyWeak(&v12, &location);
-  [v9 setValue:v6 ofPreference:v10 forDomain:v8 completionHandler:v11];
+  [preferenceManager setValue:promptingCopy ofPreference:preference forDomain:name completionHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -444,38 +444,38 @@ void __94__SafariPerSitePreferenceSettingsController__setPreferenceValueWithoutP
   }
 }
 
-- (id)_preferenceValueForSpecifier:(id)a3
+- (id)_preferenceValueForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [(NSMutableDictionary *)self->_specifierToPreferenceValueCache objectForKeyedSubscript:v5];
+  specifierCopy = specifier;
+  name = [specifierCopy name];
+  v6 = [(NSMutableDictionary *)self->_specifierToPreferenceValueCache objectForKeyedSubscript:name];
   if (v6)
   {
-    v7 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v8 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v9 = [_SFPerSitePreferencesUtilities specifierValueForSpecifier:v4 preferenceValue:v6 preference:v7 preferenceManager:v8];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    _fallbackPreferenceValue = [_SFPerSitePreferencesUtilities specifierValueForSpecifier:specifierCopy preferenceValue:v6 preference:preference preferenceManager:preferenceManager];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v10 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v11 = [(SafariPerSitePreferenceSettingsController *)self preference];
+    preferenceManager2 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    preference2 = [(SafariPerSitePreferenceSettingsController *)self preference];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = __74__SafariPerSitePreferenceSettingsController__preferenceValueForSpecifier___block_invoke;
     v13[3] = &unk_89F30;
     objc_copyWeak(&v15, &location);
-    v14 = v4;
-    [v10 getValueOfPreference:v11 forDomain:v5 withTimeout:0 usingBlock:v13];
+    v14 = specifierCopy;
+    [preferenceManager2 getValueOfPreference:preference2 forDomain:name withTimeout:0 usingBlock:v13];
 
-    v9 = [(SafariPerSitePreferenceSettingsController *)self _fallbackPreferenceValue];
+    _fallbackPreferenceValue = [(SafariPerSitePreferenceSettingsController *)self _fallbackPreferenceValue];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  return v9;
+  return _fallbackPreferenceValue;
 }
 
 void __74__SafariPerSitePreferenceSettingsController__preferenceValueForSpecifier___block_invoke(uint64_t a1, void *a2)
@@ -485,13 +485,13 @@ void __74__SafariPerSitePreferenceSettingsController__preferenceValueForSpecifie
   [WeakRetained _didRetrieveValue:v3 forSpecifier:*(a1 + 32)];
 }
 
-- (void)_setDefaultPreferenceValue:(id)a3 forSpecifier:(id)a4
+- (void)_setDefaultPreferenceValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariPerSitePreferenceSettingsController *)self preference];
-  v9 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-  v10 = [_SFPerSitePreferencesUtilities preferenceValueForPSSpecifierValue:v6 specifier:v7 preference:v8 preferenceManager:v9];
+  valueCopy = value;
+  specifierCopy = specifier;
+  preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  v10 = [_SFPerSitePreferencesUtilities preferenceValueForPSSpecifierValue:valueCopy specifier:specifierCopy preference:preference preferenceManager:preferenceManager];
   if (v10)
   {
     objc_initWeak(&location, self);
@@ -499,10 +499,10 @@ void __74__SafariPerSitePreferenceSettingsController__preferenceValueForSpecifie
     v11[1] = 3221225472;
     v11[2] = __85__SafariPerSitePreferenceSettingsController__setDefaultPreferenceValue_forSpecifier___block_invoke;
     v11[3] = &unk_89F58;
-    v12 = v8;
+    v12 = preference;
     objc_copyWeak(&v14, &location);
     v13 = v10;
-    [v9 setDefaultValue:v13 ofPreference:v12 completionHandler:v11];
+    [preferenceManager setDefaultValue:v13 ofPreference:v12 completionHandler:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -546,40 +546,40 @@ id __85__SafariPerSitePreferenceSettingsController__setDefaultPreferenceValue_fo
   return [v5 reloadSpecifiers];
 }
 
-- (id)_getDefaultPreferenceValueForSpecifier:(id)a3
+- (id)_getDefaultPreferenceValueForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   specifierToPreferenceValueCache = self->_specifierToPreferenceValueCache;
-  v6 = [v4 name];
-  v7 = [(NSMutableDictionary *)specifierToPreferenceValueCache objectForKeyedSubscript:v6];
+  name = [specifierCopy name];
+  v7 = [(NSMutableDictionary *)specifierToPreferenceValueCache objectForKeyedSubscript:name];
 
   if (v7)
   {
-    v8 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v9 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v10 = [_SFPerSitePreferencesUtilities specifierValueForSpecifier:v4 preferenceValue:v7 preference:v8 preferenceManager:v9];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    _fallbackPreferenceValue = [_SFPerSitePreferencesUtilities specifierValueForSpecifier:specifierCopy preferenceValue:v7 preference:preference preferenceManager:preferenceManager];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v11 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v12 = [(SafariPerSitePreferenceSettingsController *)self preference];
+    preferenceManager2 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    preference2 = [(SafariPerSitePreferenceSettingsController *)self preference];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = __84__SafariPerSitePreferenceSettingsController__getDefaultPreferenceValueForSpecifier___block_invoke;
     v14[3] = &unk_89F80;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
-    [v11 getDefaultPreferenceValueForPreference:v12 completionHandler:v14];
+    v15 = specifierCopy;
+    [preferenceManager2 getDefaultPreferenceValueForPreference:preference2 completionHandler:v14];
 
-    v10 = [(SafariPerSitePreferenceSettingsController *)self _fallbackPreferenceValue];
+    _fallbackPreferenceValue = [(SafariPerSitePreferenceSettingsController *)self _fallbackPreferenceValue];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
   }
 
-  return v10;
+  return _fallbackPreferenceValue;
 }
 
 void __84__SafariPerSitePreferenceSettingsController__getDefaultPreferenceValueForSpecifier___block_invoke(uint64_t a1, void *a2)
@@ -589,18 +589,18 @@ void __84__SafariPerSitePreferenceSettingsController__getDefaultPreferenceValueF
   [WeakRetained _didRetrieveValue:v3 forSpecifier:*(a1 + 32)];
 }
 
-- (void)_didRetrieveValue:(id)a3 forSpecifier:(id)a4
+- (void)_didRetrieveValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a3;
+  valueCopy = value;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __76__SafariPerSitePreferenceSettingsController__didRetrieveValue_forSpecifier___block_invoke;
   block[3] = &unk_89CB0;
-  v10 = a4;
-  v11 = self;
-  v12 = v6;
-  v7 = v6;
-  v8 = v10;
+  specifierCopy = specifier;
+  selfCopy = self;
+  v12 = valueCopy;
+  v7 = valueCopy;
+  v8 = specifierCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -672,17 +672,17 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)_clearSelectedDomains:(id)a3
+- (void)_clearSelectedDomains:(id)domains
 {
   v4 = +[NSMutableSet set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SafariPerSitePreferenceSettingsController *)self table];
-  v6 = [v5 indexPathsForSelectedRows];
+  table = [(SafariPerSitePreferenceSettingsController *)self table];
+  indexPathsForSelectedRows = [table indexPathsForSelectedRows];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [indexPathsForSelectedRows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -694,18 +694,18 @@ LABEL_14:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForSelectedRows);
         }
 
         v11 = [(SafariPerSitePreferenceSettingsController *)self specifierAtIndexPath:*(*(&v13 + 1) + 8 * v10)];
-        v12 = [v11 name];
-        [v4 addObject:v12];
+        name = [v11 name];
+        [v4 addObject:name];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [indexPathsForSelectedRows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -714,24 +714,24 @@ LABEL_14:
   [(SafariPerSitePreferenceSettingsController *)self _clearSettingsForDomains:v4];
 }
 
-- (void)_clearAllSettings:(id)a3
+- (void)_clearAllSettings:(id)settings
 {
   v4 = [(NSOrderedSet *)self->_configuredWebsites set];
   [(SafariPerSitePreferenceSettingsController *)self _clearSettingsForDomains:v4];
 }
 
-- (void)_clearSettingsForDomains:(id)a3
+- (void)_clearSettingsForDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   objc_initWeak(&location, self);
-  v5 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-  v6 = [(SafariPerSitePreferenceSettingsController *)self preference];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  preference = [(SafariPerSitePreferenceSettingsController *)self preference];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___block_invoke;
   v7[3] = &unk_89F08;
   objc_copyWeak(&v8, &location);
-  [v5 removePreferenceValuesForDomains:v4 fromPreference:v6 completionHandler:v7];
+  [preferenceManager removePreferenceValuesForDomains:domainsCopy fromPreference:preference completionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -770,9 +770,9 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
   cachedPreferenceValues = self->_cachedPreferenceValues;
   if (!cachedPreferenceValues)
   {
-    v4 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v5 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v6 = [v4 valuesForPreference:v5];
+    preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    v6 = [preferenceManager valuesForPreference:preference];
     v7 = self->_cachedPreferenceValues;
     self->_cachedPreferenceValues = v6;
 
@@ -787,12 +787,12 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
   cachedFallbackPreferenceValue = self->_cachedFallbackPreferenceValue;
   if (!cachedFallbackPreferenceValue)
   {
-    v4 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-    v5 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v6 = [v4 valuesForPreference:v5];
-    v7 = [v6 firstObject];
+    preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    v6 = [preferenceManager valuesForPreference:preference];
+    firstObject = [v6 firstObject];
     v8 = self->_cachedFallbackPreferenceValue;
-    self->_cachedFallbackPreferenceValue = v7;
+    self->_cachedFallbackPreferenceValue = firstObject;
 
     cachedFallbackPreferenceValue = self->_cachedFallbackPreferenceValue;
   }
@@ -805,8 +805,8 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
   cachedDisplayInformation = self->_cachedDisplayInformation;
   if (!cachedDisplayInformation)
   {
-    v4 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v5 = [_SFPerSitePreferenceDisplayInformation displayInformationForPerSitePreference:v4];
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    v5 = [_SFPerSitePreferenceDisplayInformation displayInformationForPerSitePreference:preference];
     v6 = self->_cachedDisplayInformation;
     self->_cachedDisplayInformation = v5;
 
@@ -816,15 +816,15 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
   return cachedDisplayInformation;
 }
 
-- (id)_defaultPreferenceValueForMultipleOptionSpecifier:(id)a3
+- (id)_defaultPreferenceValueForMultipleOptionSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   cachedOtherWebsitesMultipleChoiceSpecifiers = self->_cachedOtherWebsitesMultipleChoiceSpecifiers;
-  if (cachedOtherWebsitesMultipleChoiceSpecifiers && (v6 = [(NSArray *)cachedOtherWebsitesMultipleChoiceSpecifiers indexOfObject:v4], v6 != 0x7FFFFFFFFFFFFFFFLL))
+  if (cachedOtherWebsitesMultipleChoiceSpecifiers && (v6 = [(NSArray *)cachedOtherWebsitesMultipleChoiceSpecifiers indexOfObject:specifierCopy], v6 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = v6;
-    v9 = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
-    v7 = [v9 objectAtIndexedSubscript:v8];
+    _preferenceValues = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
+    v7 = [_preferenceValues objectAtIndexedSubscript:v8];
   }
 
   else
@@ -837,11 +837,11 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
 
 - (BOOL)_shouldShowOtherWebsitesSection
 {
-  v3 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+  preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SafariPerSitePreferenceSettingsController *)self preference];
-    v5 = [v3 preferenceDoesNotHaveForOtherWebsitesDefault:v4] ^ 1;
+    preference = [(SafariPerSitePreferenceSettingsController *)self preference];
+    v5 = [preferenceManager preferenceDoesNotHaveForOtherWebsitesDefault:preference] ^ 1;
   }
 
   else
@@ -860,23 +860,23 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
     [(SafariPerSitePreferenceSettingsController *)self _setUpConstantSpecifiers];
     if ([(SafariPerSitePreferenceSettingsController *)self _shouldShowOtherWebsitesSection])
     {
-      v4 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-      v5 = [v4 displayOption];
+      _displayInformation = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+      displayOption = [_displayInformation displayOption];
 
-      if (v5 == &dword_0 + 1)
+      if (displayOption == &dword_0 + 1)
       {
         if ([(NSOrderedSet *)self->_configuredWebsites count])
         {
-          v6 = SafariSettingsLocalizedString(@"Other Websites", @"Safari");
+          localizedAllWebsiteSettingsTitle = SafariSettingsLocalizedString(@"Other Websites", @"Safari");
         }
 
         else
         {
-          v16 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-          v6 = [v16 localizedAllWebsiteSettingsTitle];
+          _displayInformation2 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+          localizedAllWebsiteSettingsTitle = [_displayInformation2 localizedAllWebsiteSettingsTitle];
         }
 
-        v17 = [PSSpecifier groupSpecifierWithID:@"OTHER_WEBSITES_GROUP" name:v6];
+        v17 = [PSSpecifier groupSpecifierWithID:@"OTHER_WEBSITES_GROUP" name:localizedAllWebsiteSettingsTitle];
         cachedOtherWebsitesSpecifier = self->_cachedOtherWebsitesSpecifier;
         self->_cachedOtherWebsitesSpecifier = v17;
 
@@ -889,7 +889,7 @@ id __70__SafariPerSitePreferenceSettingsController__clearSettingsForDomains___bl
 
       else
       {
-        if (v5)
+        if (displayOption)
         {
 LABEL_15:
           self->_hadConfiguredWebsites = v3;
@@ -899,14 +899,14 @@ LABEL_15:
 
         if ([(NSOrderedSet *)self->_configuredWebsites count])
         {
-          v6 = 0;
+          localizedAllWebsiteSettingsTitle = 0;
           v7 = @"Other Websites";
         }
 
         else
         {
-          v8 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-          v6 = [v8 localizedSiteSpecificSettingsTitle];
+          _displayInformation3 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+          localizedAllWebsiteSettingsTitle = [_displayInformation3 localizedSiteSpecificSettingsTitle];
 
           v7 = @"All Websites";
         }
@@ -916,7 +916,7 @@ LABEL_15:
         v11 = self->_cachedOtherWebsitesSpecifier;
         self->_cachedOtherWebsitesSpecifier = v10;
 
-        cachedOtherWebsitesSectionSpecifiers = [PSSpecifier groupSpecifierWithID:@"OTHER_WEBSITES_GROUP" name:v6];
+        cachedOtherWebsitesSectionSpecifiers = [PSSpecifier groupSpecifierWithID:@"OTHER_WEBSITES_GROUP" name:localizedAllWebsiteSettingsTitle];
         v13 = self->_cachedOtherWebsitesSpecifier;
         v21[0] = cachedOtherWebsitesSectionSpecifiers;
         v21[1] = v13;
@@ -934,9 +934,9 @@ LABEL_15:
 {
   if (!self->_cachedWebsiteSectionHeaderSpecifier)
   {
-    v3 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-    v4 = [v3 localizedSiteSpecificSettingsTitle];
-    v5 = [PSSpecifier groupSpecifierWithID:@"CONFIGURED_WEBSITES" name:v4];
+    _displayInformation = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+    localizedSiteSpecificSettingsTitle = [_displayInformation localizedSiteSpecificSettingsTitle];
+    v5 = [PSSpecifier groupSpecifierWithID:@"CONFIGURED_WEBSITES" name:localizedSiteSpecificSettingsTitle];
     cachedWebsiteSectionHeaderSpecifier = self->_cachedWebsiteSectionHeaderSpecifier;
     self->_cachedWebsiteSectionHeaderSpecifier = v5;
 
@@ -949,8 +949,8 @@ LABEL_15:
     v10 = SafariSettingsLocalizedString(@"Clear All Settings", @"Safari");
     [(PSConfirmationSpecifier *)self->_cachedClearAllSettingsSpecifier setTitle:v10];
 
-    v11 = [v3 localizedClearAllSettingsPrompt];
-    [(PSConfirmationSpecifier *)self->_cachedClearAllSettingsSpecifier setPrompt:v11];
+    localizedClearAllSettingsPrompt = [_displayInformation localizedClearAllSettingsPrompt];
+    [(PSConfirmationSpecifier *)self->_cachedClearAllSettingsSpecifier setPrompt:localizedClearAllSettingsPrompt];
 
     v12 = SafariSettingsLocalizedString(@"Clear", @"Safari");
     [(PSConfirmationSpecifier *)self->_cachedClearAllSettingsSpecifier setOkButton:v12];
@@ -967,22 +967,22 @@ LABEL_15:
     cachedClearAllSettingsSectionSpecifiers = self->_cachedClearAllSettingsSectionSpecifiers;
     self->_cachedClearAllSettingsSectionSpecifiers = v16;
 
-    v18 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
-    v19 = [v18 displayOption];
+    _displayInformation2 = [(SafariPerSitePreferenceSettingsController *)self _displayInformation];
+    displayOption = [_displayInformation2 displayOption];
 
-    if (v19 == &dword_0 + 1)
+    if (displayOption == &dword_0 + 1)
     {
-      v33 = v3;
+      v33 = _displayInformation;
       v20 = +[NSMutableArray array];
-      v21 = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
-      v22 = [(SafariPerSitePreferenceSettingsController *)self preference];
+      preferenceManager = [(SafariPerSitePreferenceSettingsController *)self preferenceManager];
+      preference = [(SafariPerSitePreferenceSettingsController *)self preference];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v32 = self;
-      v23 = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
-      v24 = [v23 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      selfCopy = self;
+      _preferenceValues = [(SafariPerSitePreferenceSettingsController *)self _preferenceValues];
+      v24 = [_preferenceValues countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v24)
       {
         v25 = v24;
@@ -994,10 +994,10 @@ LABEL_15:
           {
             if (*v35 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(_preferenceValues);
             }
 
-            v28 = [v21 localizedStringForValue:*(*(&v34 + 1) + 8 * v27) inPreference:v22];
+            v28 = [preferenceManager localizedStringForValue:*(*(&v34 + 1) + 8 * v27) inPreference:preference];
             v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:0 set:0 get:0 detail:0 cell:3 edit:0];
             [v20 addObject:v29];
 
@@ -1005,17 +1005,17 @@ LABEL_15:
           }
 
           while (v25 != v27);
-          v25 = [v23 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v25 = [_preferenceValues countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v25);
       }
 
       v30 = [v20 copy];
-      cachedOtherWebsitesMultipleChoiceSpecifiers = v32->_cachedOtherWebsitesMultipleChoiceSpecifiers;
-      v32->_cachedOtherWebsitesMultipleChoiceSpecifiers = v30;
+      cachedOtherWebsitesMultipleChoiceSpecifiers = selfCopy->_cachedOtherWebsitesMultipleChoiceSpecifiers;
+      selfCopy->_cachedOtherWebsitesMultipleChoiceSpecifiers = v30;
 
-      v3 = v33;
+      _displayInformation = v33;
     }
   }
 }
@@ -1058,11 +1058,11 @@ LABEL_15:
 
 - (void)_updateDeleteButtonEnabled
 {
-  v6 = [(SafariPerSitePreferenceSettingsController *)self table];
-  v3 = [v6 indexPathsForSelectedRows];
-  v4 = [v3 count] != 0;
-  v5 = [(SafariPerSitePreferenceSettingsController *)self _deleteBarButtonItem];
-  [v5 setEnabled:v4];
+  table = [(SafariPerSitePreferenceSettingsController *)self table];
+  indexPathsForSelectedRows = [table indexPathsForSelectedRows];
+  v4 = [indexPathsForSelectedRows count] != 0;
+  _deleteBarButtonItem = [(SafariPerSitePreferenceSettingsController *)self _deleteBarButtonItem];
+  [_deleteBarButtonItem setEnabled:v4];
 }
 
 - (id)_cancelBarButtonItem
@@ -1080,13 +1080,13 @@ LABEL_15:
   return cachedCancelBarButtonItem;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = SafariPerSitePreferenceSettingsController;
-  v5 = [(SafariPerSitePreferenceSettingsController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [(SafariPerSitePreferenceSettingsController *)self _defaultPreferenceValueForMultipleOptionSpecifier:v6];
+  v5 = [(SafariPerSitePreferenceSettingsController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  v7 = [(SafariPerSitePreferenceSettingsController *)self _defaultPreferenceValueForMultipleOptionSpecifier:specifier];
 
   if (v7)
   {
@@ -1097,43 +1097,43 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = [(SafariPerSitePreferenceSettingsController *)self specifierAtIndexPath:a4];
-  v6 = [(SafariPerSitePreferenceSettingsController *)self _otherWebsitesSpecifier];
-  if (v5 == v6)
+  v5 = [(SafariPerSitePreferenceSettingsController *)self specifierAtIndexPath:path];
+  _otherWebsitesSpecifier = [(SafariPerSitePreferenceSettingsController *)self _otherWebsitesSpecifier];
+  if (v5 == _otherWebsitesSpecifier)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(SafariPerSitePreferenceSettingsController *)self _clearAllSettingsSpecifier];
-    v8 = v5 != v7;
+    _clearAllSettingsSpecifier = [(SafariPerSitePreferenceSettingsController *)self _clearAllSettingsSpecifier];
+    v8 = v5 != _clearAllSettingsSpecifier;
   }
 
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SafariPerSitePreferenceSettingsController *)self specifierAtIndexPath:v7];
-  if (![v6 isEditing] || (-[SafariPerSitePreferenceSettingsController _clearAllSettingsSpecifier](self, "_clearAllSettingsSpecifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8 == v9))
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(SafariPerSitePreferenceSettingsController *)self specifierAtIndexPath:pathCopy];
+  if (![viewCopy isEditing] || (-[SafariPerSitePreferenceSettingsController _clearAllSettingsSpecifier](self, "_clearAllSettingsSpecifier"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8 == v9))
   {
     v10 = [(SafariPerSitePreferenceSettingsController *)self _defaultPreferenceValueForMultipleOptionSpecifier:v8];
     if (v10)
     {
       [(SafariPerSitePreferenceSettingsController *)self _setDefaultPreferenceValue:v10 forSpecifier:self->_cachedOtherWebsitesSpecifier];
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = SafariPerSitePreferenceSettingsController;
-      [(SafariPerSitePreferenceSettingsController *)&v11 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(SafariPerSitePreferenceSettingsController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
   }
 
@@ -1143,9 +1143,9 @@ LABEL_15:
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  if ([a3 isEditing])
+  if ([view isEditing])
   {
 
     [(SafariPerSitePreferenceSettingsController *)self _updateDeleteButtonEnabled];

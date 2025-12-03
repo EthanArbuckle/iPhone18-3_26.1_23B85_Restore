@@ -1,10 +1,10 @@
 @interface ASActivitySharingPlugin
 - (ASActivitySharingPlugin)init;
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3;
-- (id)extensionForProfile:(id)a3;
+- (id)databaseEntitiesForProtectionClass:(int64_t)class;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3;
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4;
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class;
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator;
 @end
 
 @implementation ASActivitySharingPlugin
@@ -24,14 +24,14 @@
   return [(ASActivitySharingPlugin *)&v5 init];
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 supportsActivitySharing];
+  profileCopy = profile;
+  daemon = [profileCopy daemon];
+  behavior = [daemon behavior];
+  supportsActivitySharing = [behavior supportsActivitySharing];
 
-  if ((v6 & 1) == 0)
+  if ((supportsActivitySharing & 1) == 0)
   {
     ASLoggingInitialize();
     v11 = *MEMORY[0x29EDBE0D8];
@@ -43,11 +43,11 @@
     goto LABEL_10;
   }
 
-  v7 = [v3 profileType];
+  profileType = [profileCopy profileType];
   ASLoggingInitialize();
   v8 = *MEMORY[0x29EDBE0D8];
   v9 = *MEMORY[0x29EDBE0D8];
-  if (v7 != 1)
+  if (profileType != 1)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -65,7 +65,7 @@ LABEL_10:
     _os_log_impl(&dword_29E9F9000, v8, OS_LOG_TYPE_DEFAULT, "Health Daemon supports Activity Sharing, creating profile extension.", v13, 2u);
   }
 
-  v10 = [objc_alloc(MEMORY[0x29EDBE178]) initWithProfile:v3];
+  v10 = [objc_alloc(MEMORY[0x29EDBE178]) initWithProfile:profileCopy];
 LABEL_11:
 
   return v10;
@@ -97,9 +97,9 @@ LABEL_11:
   return v5;
 }
 
-- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)a3
+- (int64_t)currentSchemaVersionForProtectionClass:(int64_t)class
 {
-  if (a3 == 2)
+  if (class == 2)
   {
     return 5;
   }
@@ -110,10 +110,10 @@ LABEL_11:
   }
 }
 
-- (id)databaseEntitiesForProtectionClass:(int64_t)a3
+- (id)databaseEntitiesForProtectionClass:(int64_t)class
 {
   v6[2] = *MEMORY[0x29EDCA608];
-  if (a3 == 2)
+  if (class == 2)
   {
     v6[0] = objc_opt_class();
     v6[1] = objc_opt_class();
@@ -130,9 +130,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)registerMigrationStepsForProtectionClass:(int64_t)a3 migrator:(id)a4
+- (void)registerMigrationStepsForProtectionClass:(int64_t)class migrator:(id)migrator
 {
-  if (a3 == 2)
+  if (class == 2)
   {
     v13[5] = v7;
     v13[6] = v6;
@@ -144,22 +144,22 @@ LABEL_11:
     v13[2] = sub_29E9FA964;
     v13[3] = &unk_29F3771E8;
     v13[4] = self;
-    v10 = a4;
-    [v10 addMigrationForSchema:v9 toVersion:1 foreignKeyStatus:0 handler:v13];
+    migratorCopy = migrator;
+    [migratorCopy addMigrationForSchema:v9 toVersion:1 foreignKeyStatus:0 handler:v13];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = sub_29E9FAB64;
     v12[3] = &unk_29F3771E8;
     v12[4] = self;
-    [v10 addMigrationForSchema:v9 toVersion:2 foreignKeyStatus:0 handler:v12];
+    [migratorCopy addMigrationForSchema:v9 toVersion:2 foreignKeyStatus:0 handler:v12];
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
     v11[2] = sub_29E9FAD74;
     v11[3] = &unk_29F3771E8;
     v11[4] = self;
-    [v10 addMigrationForSchema:v9 toVersion:3 foreignKeyStatus:0 handler:v11];
-    [v10 addMigrationForSchema:v9 toVersion:4 foreignKeyStatus:0 handler:&unk_2A2520C80];
-    [v10 addMigrationForSchema:v9 toVersion:5 foreignKeyStatus:0 handler:&unk_2A2520CA0];
+    [migratorCopy addMigrationForSchema:v9 toVersion:3 foreignKeyStatus:0 handler:v11];
+    [migratorCopy addMigrationForSchema:v9 toVersion:4 foreignKeyStatus:0 handler:&unk_2A2520C80];
+    [migratorCopy addMigrationForSchema:v9 toVersion:5 foreignKeyStatus:0 handler:&unk_2A2520CA0];
   }
 }
 

@@ -2,25 +2,25 @@
 - (CXChannelServiceServer)init;
 - (CXChannelServiceServerDelegate)delegate;
 - (NSArray)clients;
-- (id)clientForIdentifier:(id)a3;
+- (id)clientForIdentifier:(id)identifier;
 - (void)activate;
-- (void)addAction:(id)a3 toUncommittedTransactionForServiceClient:(id)a4;
-- (void)addClient:(id)a3;
+- (void)addAction:(id)action toUncommittedTransactionForServiceClient:(id)client;
+- (void)addClient:(id)client;
 - (void)commitUncommittedTransactions;
 - (void)dealloc;
-- (void)failOutstandingActionsForChannelWithUUID:(id)a3;
+- (void)failOutstandingActionsForChannelWithUUID:(id)d;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)removeClient:(id)a3;
-- (void)serviceClient:(id)a3 actionCompleted:(id)a4;
-- (void)serviceClient:(id)a3 registeredWithConfiguration:(id)a4;
-- (void)serviceClient:(id)a3 reportedAudioFinishedForChannelWithUUID:(id)a4;
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 connectedAtDate:(id)a5;
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 disconnectedAtDate:(id)a5 disconnectedReason:(int64_t)a6;
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 startedConnectingAtDate:(id)a5;
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 updated:(id)a5;
-- (void)serviceClient:(id)a3 reportedIncomingTransmissionEndedForChannelWithUUID:(id)a4 reason:(int64_t)a5 completionHandler:(id)a6;
-- (void)serviceClient:(id)a3 requestedTransaction:(id)a4 completionHandler:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)removeClient:(id)client;
+- (void)serviceClient:(id)client actionCompleted:(id)completed;
+- (void)serviceClient:(id)client registeredWithConfiguration:(id)configuration;
+- (void)serviceClient:(id)client reportedAudioFinishedForChannelWithUUID:(id)d;
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d connectedAtDate:(id)date;
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason;
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d startedConnectingAtDate:(id)date;
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d updated:(id)updated;
+- (void)serviceClient:(id)client reportedIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler;
+- (void)serviceClient:(id)client requestedTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation CXChannelServiceServer
@@ -39,9 +39,9 @@
     v3->_identifierToClient = v4;
 
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.callkit.queue.%@.%p", objc_opt_class(), v3];
-    v7 = [v6 UTF8String];
+    uTF8String = [v6 UTF8String];
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v9 = dispatch_queue_create(v7, v8);
+    v9 = dispatch_queue_create(uTF8String, v8);
     queue = v3->_queue;
     v3->_queue = v9;
 
@@ -97,15 +97,15 @@ void __30__CXChannelServiceServer_init__block_invoke(uint64_t a1, void *a2)
 - (void)activate
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(CXChannelServiceServer *)self listener];
-  [v3 activate];
+  listener = [(CXChannelServiceServer *)self listener];
+  [listener activate];
 
   v4 = CXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(CXChannelServiceServer *)self listener];
+    listener2 = [(CXChannelServiceServer *)self listener];
     v7 = 138412290;
-    v8 = v5;
+    v8 = listener2;
     _os_log_impl(&dword_1B47F3000, v4, OS_LOG_TYPE_DEFAULT, "Activated listener %@", &v7, 0xCu);
   }
 
@@ -114,31 +114,31 @@ void __30__CXChannelServiceServer_init__block_invoke(uint64_t a1, void *a2)
 
 - (void)invalidate
 {
-  v2 = [(CXChannelServiceServer *)self listener];
-  [v2 invalidate];
+  listener = [(CXChannelServiceServer *)self listener];
+  [listener invalidate];
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_accessorLock);
-  [v7 setDelegate:self];
-  v4 = [(CXChannelServiceServer *)self identifierToClient];
-  v5 = [v7 identifier];
-  [v4 setObject:v7 forKeyedSubscript:v5];
+  [clientCopy setDelegate:self];
+  identifierToClient = [(CXChannelServiceServer *)self identifierToClient];
+  identifier = [clientCopy identifier];
+  [identifierToClient setObject:clientCopy forKeyedSubscript:identifier];
 
-  v6 = [(CXChannelServiceServer *)self delegate];
-  [v6 serviceServer:self didAddClient:v7];
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self didAddClient:clientCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)clientForIdentifier:(id)a3
+- (id)clientForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CXChannelServiceServer *)self identifierToClient];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierToClient = [(CXChannelServiceServer *)self identifierToClient];
+  v6 = [identifierToClient objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
@@ -148,53 +148,53 @@ void __30__CXChannelServiceServer_init__block_invoke(uint64_t a1, void *a2)
 - (NSArray)clients
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  v3 = [(CXChannelServiceServer *)self identifierToClient];
-  v4 = [v3 allValues];
+  identifierToClient = [(CXChannelServiceServer *)self identifierToClient];
+  allValues = [identifierToClient allValues];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 
-  return v4;
+  return allValues;
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v10 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_accessorLock);
-  v4 = [v10 identifier];
-  v5 = [(CXChannelServiceServer *)self identifierToClient];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 isEqual:v10];
+  identifier = [clientCopy identifier];
+  identifierToClient = [(CXChannelServiceServer *)self identifierToClient];
+  v6 = [identifierToClient objectForKeyedSubscript:identifier];
+  v7 = [v6 isEqual:clientCopy];
 
   if (v7)
   {
-    v8 = [(CXChannelServiceServer *)self identifierToClient];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    identifierToClient2 = [(CXChannelServiceServer *)self identifierToClient];
+    [identifierToClient2 setObject:0 forKeyedSubscript:identifier];
 
-    v9 = [(CXChannelServiceServer *)self delegate];
-    [v9 serviceServer:self didRemoveClient:v10];
+    delegate = [(CXChannelServiceServer *)self delegate];
+    [delegate serviceServer:self didRemoveClient:clientCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [[CXChannelServiceClient alloc] initWithConnection:v6];
-  v8 = [(CXChannelServiceServer *)self definition];
+  connectionCopy = connection;
+  v7 = [[CXChannelServiceClient alloc] initWithConnection:connectionCopy];
+  definition = [(CXChannelServiceServer *)self definition];
   v9 = MEMORY[0x1E698F470];
-  v10 = [v8 name];
-  v11 = [v9 interfaceWithIdentifier:v10];
+  name = [definition name];
+  v11 = [v9 interfaceWithIdentifier:name];
 
   v12 = MEMORY[0x1E698E710];
-  v13 = [v8 clientXPCInterface];
-  v14 = [v12 protocolForProtocol:v13];
+  clientXPCInterface = [definition clientXPCInterface];
+  v14 = [v12 protocolForProtocol:clientXPCInterface];
   [v11 setClient:v14];
 
   v15 = MEMORY[0x1E698E710];
-  v16 = [v8 serverXPCInterface];
-  v17 = [v15 protocolForProtocol:v16];
+  serverXPCInterface = [definition serverXPCInterface];
+  v17 = [v15 protocolForProtocol:serverXPCInterface];
   [v11 setServer:v17];
 
   v22[0] = MEMORY[0x1E69E9820];
@@ -204,18 +204,18 @@ void __30__CXChannelServiceServer_init__block_invoke(uint64_t a1, void *a2)
   v23 = v11;
   v18 = v7;
   v24 = v18;
-  v25 = self;
+  selfCopy = self;
   v19 = v11;
-  [v6 configureConnection:v22];
+  [connectionCopy configureConnection:v22];
   v20 = CXDefaultLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = connectionCopy;
     _os_log_impl(&dword_1B47F3000, v20, OS_LOG_TYPE_DEFAULT, "Activating connection %@", buf, 0xCu);
   }
 
-  [v6 activate];
+  [connectionCopy activate];
   if (v18)
   {
     [(CXChannelServiceServer *)self addClient:v18];
@@ -286,99 +286,99 @@ void __68__CXChannelServiceServer_listener_didReceiveConnection_withContext___bl
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)serviceClient:(id)a3 actionCompleted:(id)a4
+- (void)serviceClient:(id)client actionCompleted:(id)completed
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXChannelServiceServer *)self delegate];
-  [v8 serviceServer:self client:v7 actionCompleted:v6];
+  completedCopy = completed;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy actionCompleted:completedCopy];
 }
 
-- (void)serviceClient:(id)a3 registeredWithConfiguration:(id)a4
+- (void)serviceClient:(id)client registeredWithConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXChannelServiceServer *)self delegate];
-  [v8 serviceServer:self client:v7 registeredWithConfiguration:v6];
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy registeredWithConfiguration:configurationCopy];
 }
 
-- (void)serviceClient:(id)a3 reportedAudioFinishedForChannelWithUUID:(id)a4
+- (void)serviceClient:(id)client reportedAudioFinishedForChannelWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXChannelServiceServer *)self delegate];
-  [v8 serviceServer:self client:v7 reportedAudioFinishedForChannelWithUUID:v6];
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedAudioFinishedForChannelWithUUID:dCopy];
 }
 
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 connectedAtDate:(id)a5
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d connectedAtDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXChannelServiceServer *)self delegate];
-  [v11 serviceServer:self client:v10 reportedChannelWithUUID:v9 connectedAtDate:v8];
+  dateCopy = date;
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedChannelWithUUID:dCopy connectedAtDate:dateCopy];
 }
 
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 disconnectedAtDate:(id)a5 disconnectedReason:(int64_t)a6
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d disconnectedAtDate:(id)date disconnectedReason:(int64_t)reason
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CXChannelServiceServer *)self delegate];
-  [v13 serviceServer:self client:v12 reportedChannelWithUUID:v11 disconnectedAtDate:v10 disconnectedReason:a6];
+  dateCopy = date;
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedChannelWithUUID:dCopy disconnectedAtDate:dateCopy disconnectedReason:reason];
 }
 
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 startedConnectingAtDate:(id)a5
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d startedConnectingAtDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXChannelServiceServer *)self delegate];
-  [v11 serviceServer:self client:v10 reportedChannelWithUUID:v9 startedConnectingAtDate:v8];
+  dateCopy = date;
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedChannelWithUUID:dCopy startedConnectingAtDate:dateCopy];
 }
 
-- (void)serviceClient:(id)a3 reportedChannelWithUUID:(id)a4 updated:(id)a5
+- (void)serviceClient:(id)client reportedChannelWithUUID:(id)d updated:(id)updated
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXChannelServiceServer *)self delegate];
-  [v11 serviceServer:self client:v10 reportedChannelWithUUID:v9 updated:v8];
+  updatedCopy = updated;
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedChannelWithUUID:dCopy updated:updatedCopy];
 }
 
-- (void)serviceClient:(id)a3 reportedIncomingTransmissionEndedForChannelWithUUID:(id)a4 reason:(int64_t)a5 completionHandler:(id)a6
+- (void)serviceClient:(id)client reportedIncomingTransmissionEndedForChannelWithUUID:(id)d reason:(int64_t)reason completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CXChannelServiceServer *)self delegate];
-  [v13 serviceServer:self client:v12 reportedIncomingTransmissionEndedForChannelWithUUID:v11 reason:a5 completionHandler:v10];
+  handlerCopy = handler;
+  dCopy = d;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy reportedIncomingTransmissionEndedForChannelWithUUID:dCopy reason:reason completionHandler:handlerCopy];
 }
 
-- (void)serviceClient:(id)a3 requestedTransaction:(id)a4 completionHandler:(id)a5
+- (void)serviceClient:(id)client requestedTransaction:(id)transaction completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CXChannelServiceServer *)self delegate];
-  [v11 serviceServer:self client:v10 requestedTransaction:v9 completionHandler:v8];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  clientCopy = client;
+  delegate = [(CXChannelServiceServer *)self delegate];
+  [delegate serviceServer:self client:clientCopy requestedTransaction:transactionCopy completionHandler:handlerCopy];
 }
 
-- (void)addAction:(id)a3 toUncommittedTransactionForServiceClient:(id)a4
+- (void)addAction:(id)action toUncommittedTransactionForServiceClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CXChannelServiceServer *)self queue];
+  actionCopy = action;
+  clientCopy = client;
+  queue = [(CXChannelServiceServer *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__CXChannelServiceServer_addAction_toUncommittedTransactionForServiceClient___block_invoke;
   block[3] = &unk_1E7C06C80;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = actionCopy;
+  v13 = clientCopy;
+  selfCopy = self;
+  v9 = clientCopy;
+  v10 = actionCopy;
+  dispatch_async(queue, block);
 }
 
 void __77__CXChannelServiceServer_addAction_toUncommittedTransactionForServiceClient___block_invoke(uint64_t a1)
@@ -402,18 +402,18 @@ void __77__CXChannelServiceServer_addAction_toUncommittedTransactionForServiceCl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)failOutstandingActionsForChannelWithUUID:(id)a3
+- (void)failOutstandingActionsForChannelWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CXChannelServiceServer *)self queue];
+  dCopy = d;
+  queue = [(CXChannelServiceServer *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__CXChannelServiceServer_failOutstandingActionsForChannelWithUUID___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(queue, v7);
 }
 
 void __67__CXChannelServiceServer_failOutstandingActionsForChannelWithUUID___block_invoke(uint64_t a1)
@@ -424,13 +424,13 @@ void __67__CXChannelServiceServer_failOutstandingActionsForChannelWithUUID___blo
 
 - (void)commitUncommittedTransactions
 {
-  v3 = [(CXChannelServiceServer *)self queue];
+  queue = [(CXChannelServiceServer *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__CXChannelServiceServer_commitUncommittedTransactions__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __55__CXChannelServiceServer_commitUncommittedTransactions__block_invoke(uint64_t a1)

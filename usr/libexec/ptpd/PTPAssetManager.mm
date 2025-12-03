@@ -1,6 +1,6 @@
 @interface PTPAssetManager
 - (PTPAssetManager)init;
-- (void)closeSession:(id)a3;
+- (void)closeSession:(id)session;
 - (void)openSession;
 @end
 
@@ -47,7 +47,7 @@
       v9 = v5;
       v10 = v8;
       v11 = 136446466;
-      v12 = [(__CFString *)v5 UTF8String];
+      uTF8String = [(__CFString *)v5 UTF8String];
       v13 = 2114;
       v14 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &v11, 0x16u);
@@ -57,9 +57,9 @@
   }
 }
 
-- (void)closeSession:(id)a3
+- (void)closeSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(PTPAssetManager *)self am];
   if (v5 && (objc_opt_respondsToSelector() & 1) != 0 && [(PTPAssetManager *)self sessionOpened])
   {
@@ -72,16 +72,16 @@
       v6 = [v7 stringByAppendingString:@".."];
     }
 
-    v8 = [NSString stringWithFormat:@"(Close Session) 🔐 %@", v4];
+    sessionCopy = [NSString stringWithFormat:@"(Close Session) 🔐 %@", sessionCopy];
     v9 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v6;
       v11 = v9;
       *buf = 136446466;
-      v13 = [(__CFString *)v6 UTF8String];
+      uTF8String = [(__CFString *)v6 UTF8String];
       v14 = 2114;
-      v15 = v8;
+      v15 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
     }
 

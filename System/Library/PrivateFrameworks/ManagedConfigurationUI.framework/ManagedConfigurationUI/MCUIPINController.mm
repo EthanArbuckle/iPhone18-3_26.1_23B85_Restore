@@ -4,8 +4,8 @@
 - (MCUIPINController)init;
 - (id)pinInstructionsPrompt;
 - (void)_updateStyle;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)setDelegate:(id)delegate;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -24,18 +24,18 @@
     v5 = *(MEMORY[0x277CBF3A0] + 16);
     *(v2 + 1256) = *MEMORY[0x277CBF3A0];
     *(v2 + 1272) = v5;
-    v6 = [MEMORY[0x277D3FA48] appearance];
-    v7 = [MEMORY[0x277D75348] labelColor];
-    [v6 setTextColor:v7];
+    appearance = [MEMORY[0x277D3FA48] appearance];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [appearance setTextColor:labelColor];
 
     v8 = objc_alloc_init(MCUIPINPane);
     [(MCUIPINPane *)v8 setAutoresizingMask:18];
     [(PSEditingPane *)v8 setDelegate:v3];
-    v9 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v10 = [MEMORY[0x277CCABB0] numberWithInt:*(&v3->super.super.super.super.super.super.isa + v4)];
-    [v9 setProperty:v10 forKey:@"mode"];
+    [emptyGroupSpecifier setProperty:v10 forKey:@"mode"];
 
-    [(DevicePINController *)v3 setSpecifier:v9];
+    [(DevicePINController *)v3 setSpecifier:emptyGroupSpecifier];
     [(DevicePINController *)v3 setPane:v8];
   }
 
@@ -44,8 +44,8 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(MCUIPINController *)self view];
-  [v3 frame];
+  view = [(MCUIPINController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -57,7 +57,7 @@
   [(MCUIPINController *)self setSubviewLayoutFrame:v5, v7, v9, v11];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained didCancelEnteringPIN];
@@ -65,88 +65,88 @@
 
 - (void)_updateStyle
 {
-  v3 = [(MCUIPINController *)self style];
-  v4 = [(PSDetailController *)self pane];
-  [v4 setStyle:v3];
+  style = [(MCUIPINController *)self style];
+  pane = [(PSDetailController *)self pane];
+  [pane setStyle:style];
 
-  v5 = [(MCUIPINController *)self style];
-  if (v5 == 1)
+  style2 = [(MCUIPINController *)self style];
+  if (style2 == 1)
   {
-    v11 = [(MCUIPINController *)self navigationItem];
-    [v11 setHidesBackButton:0];
+    navigationItem = [(MCUIPINController *)self navigationItem];
+    [navigationItem setHidesBackButton:0];
 
     if ([(DevicePINController *)self simplePIN])
     {
-      v12 = [(MCUIPINController *)self navigationItem];
-      [v12 setRightBarButtonItem:0];
+      navigationItem2 = [(MCUIPINController *)self navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
 
     v13 = MEMORY[0x277D755B8];
-    v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v7 = [v13 MCUIImageWithColor:v14];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    v7 = [v13 MCUIImageWithColor:systemBackgroundColor];
 
-    v15 = [(MCUIPINController *)self navigationController];
-    v16 = [v15 navigationBar];
-    [v16 setBackgroundImage:v7 forBarMetrics:0];
+    navigationController = [(MCUIPINController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar setBackgroundImage:v7 forBarMetrics:0];
 
-    v17 = [(MCUIPINController *)self navigationController];
-    v18 = [v17 navigationBar];
+    navigationController2 = [(MCUIPINController *)self navigationController];
+    navigationBar2 = [navigationController2 navigationBar];
     v19 = objc_opt_new();
-    [v18 setShadowImage:v19];
+    [navigationBar2 setShadowImage:v19];
 
-    v20 = [(MCUIPINController *)self navigationController];
-    v21 = [v20 navigationBar];
-    [v21 setTranslucent:1];
+    navigationController3 = [(MCUIPINController *)self navigationController];
+    navigationBar3 = [navigationController3 navigationBar];
+    [navigationBar3 setTranslucent:1];
 
-    v22 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v23 = [(MCUIPINController *)self view];
-    [v23 setBackgroundColor:v22];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    view = [(MCUIPINController *)self view];
+    [view setBackgroundColor:systemBackgroundColor2];
 
-    v8 = [(MCUIPINController *)self navigationItem];
-    v9 = v8;
+    navigationItem3 = [(MCUIPINController *)self navigationItem];
+    v9 = navigationItem3;
     v10 = &stru_286946728;
   }
 
   else
   {
-    if (v5)
+    if (style2)
     {
       goto LABEL_8;
     }
 
-    v6 = [(MCUIPINController *)self navigationItem];
-    [v6 setHidesBackButton:1];
+    navigationItem4 = [(MCUIPINController *)self navigationItem];
+    [navigationItem4 setHidesBackButton:1];
 
     v7 = MCUILocalizedString(@"PIN_TITLE");
-    v8 = [(MCUIPINController *)self navigationItem];
-    v9 = v8;
+    navigationItem3 = [(MCUIPINController *)self navigationItem];
+    v9 = navigationItem3;
     v10 = v7;
   }
 
-  [v8 setTitle:v10];
+  [navigationItem3 setTitle:v10];
 
 LABEL_8:
-  v24 = [(MCUIPINController *)self navigationItem];
+  navigationItem5 = [(MCUIPINController *)self navigationItem];
   DMCSendNavUIUpdatedNotification();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_delegate, obj);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D401B8]];
+    [emptyGroupSpecifier setProperty:v7 forKey:*MEMORY[0x277D401B8]];
 
     v8 = [MEMORY[0x277CCABB0] numberWithInt:*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FBC0])];
-    [v6 setProperty:v8 forKey:@"mode"];
+    [emptyGroupSpecifier setProperty:v8 forKey:@"mode"];
 
-    [(DevicePINController *)self setSpecifier:v6];
+    [(DevicePINController *)self setSpecifier:emptyGroupSpecifier];
     v5 = obj;
   }
 }

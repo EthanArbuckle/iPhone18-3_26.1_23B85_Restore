@@ -1,33 +1,33 @@
 @interface PKMultiHyperlinkView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKMultiHyperlinkView)initWithFrame:(CGRect)a3;
-- (id)_rangesForTag:(id)a3 inText:(id)a4;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKMultiHyperlinkView)initWithFrame:(CGRect)frame;
+- (id)_rangesForTag:(id)tag inText:(id)text;
 - (void)_updateText;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setLinkTextColor:(id)a3;
-- (void)setSources:(id)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextFont:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setLinkTextColor:(id)color;
+- (void)setSources:(id)sources;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)setTextFont:(id)font;
 @end
 
 @implementation PKMultiHyperlinkView
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
-  v4 = [a3 footerHyperlinkColor];
-  [(PKMultiHyperlinkView *)self setLinkTextColor:v4];
+  footerHyperlinkColor = [appearance footerHyperlinkColor];
+  [(PKMultiHyperlinkView *)self setLinkTextColor:footerHyperlinkColor];
 }
 
-- (PKMultiHyperlinkView)initWithFrame:(CGRect)a3
+- (PKMultiHyperlinkView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PKMultiHyperlinkView;
-  v3 = [(PKMultiHyperlinkView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKMultiHyperlinkView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DD168] pkui_plainNonInteractiveTextViewWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -46,81 +46,81 @@
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   text = self->_text;
-  v9 = v5;
-  v7 = text;
-  if (v7 == v9)
+  v9 = textCopy;
+  textCopy2 = text;
+  if (textCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !textCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:textCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     [(PKMultiHyperlinkView *)self _updateText];
   }
 
 LABEL_9:
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(PKMultiHyperlinkView *)self _updateText];
   }
 }
 
-- (void)setSources:(id)a3
+- (void)setSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sources, a3);
+    objc_storeStrong(&self->_sources, sources);
     [(PKMultiHyperlinkView *)self _updateText];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     [(PKMultiHyperlinkView *)self _updateText];
   }
 }
 
-- (void)setLinkTextColor:(id)a3
+- (void)setLinkTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_linkTextColor, a3);
+    objc_storeStrong(&self->_linkTextColor, color);
     [(PKMultiHyperlinkView *)self _updateText];
   }
 }
 
-- (void)setTextFont:(id)a3
+- (void)setTextFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_textFont, a3);
+    objc_storeStrong(&self->_textFont, font);
     [(PKMultiHyperlinkView *)self _updateText];
   }
 }
@@ -134,23 +134,23 @@ LABEL_9:
   [(PKMultiHyperlinkView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKMultiHyperlinkView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKMultiHyperlinkView *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PKMultiHyperlinkView *)self _shouldReverseLayoutDirection:a3.origin.x];
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = [(PKMultiHyperlinkView *)self _shouldReverseLayoutDirection:bounds.origin.x];
   [(UITextView *)self->_textView sizeThatFits:width, 1.79769313e308];
   v11 = v10;
-  if (!a4)
+  if (!layout)
   {
     v12 = x + width - width;
     if (!v9)
@@ -168,22 +168,22 @@ LABEL_9:
   return result;
 }
 
-- (id)_rangesForTag:(id)a3 inText:(id)a4
+- (id)_rangesForTag:(id)tag inText:(id)text
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@]", v5];
-  v21 = v5;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[/%@]", v5];
-  v9 = [v6 rangeOfString:v7];
+  tagCopy = tag;
+  textCopy = text;
+  tagCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@]", tagCopy];
+  v21 = tagCopy;
+  tagCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[/%@]", tagCopy];
+  v9 = [textCopy rangeOfString:tagCopy];
   v11 = v10;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     do
     {
-      [v6 replaceCharactersInRange:v9 withString:{v11, &stru_1F3BD7330}];
-      v14 = [v6 rangeOfString:v8];
+      [textCopy replaceCharactersInRange:v9 withString:{v11, &stru_1F3BD7330}];
+      v14 = [textCopy rangeOfString:tagCopy2];
       v11 = 0;
       v15 = 0x7FFFFFFFFFFFFFFFLL;
       if (v14 != 0x7FFFFFFFFFFFFFFFLL && v14 > v9)
@@ -192,8 +192,8 @@ LABEL_9:
         v17 = [MEMORY[0x1E696B098] valueWithRange:{v9, v14 - v9}];
         [v12 addObject:v17];
 
-        [v6 replaceCharactersInRange:v14 withString:{v16, &stru_1F3BD7330}];
-        v15 = [v6 rangeOfString:v7];
+        [textCopy replaceCharactersInRange:v14 withString:{v16, &stru_1F3BD7330}];
+        v15 = [textCopy rangeOfString:tagCopy];
         v11 = v18;
       }
 
@@ -272,8 +272,8 @@ LABEL_9:
           objc_enumerationMutation(v17);
         }
 
-        v23 = [*(*(&v69 + 1) + 8 * i) rangeValue];
-        [v15 addAttribute:v21 value:v16 range:{v23, v24}];
+        rangeValue = [*(*(&v69 + 1) + 8 * i) rangeValue];
+        [v15 addAttribute:v21 value:v16 range:{rangeValue, v24}];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v69 objects:v77 count:16];
@@ -282,7 +282,7 @@ LABEL_9:
     while (v19);
   }
 
-  v58 = self;
+  selfCopy = self;
 
   v67 = 0u;
   v68 = 0u;
@@ -304,9 +304,9 @@ LABEL_9:
         }
 
         v30 = *(*(&v65 + 1) + 8 * j);
-        v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        v32 = [v30 rangeValue];
-        [v15 addAttribute:v12 value:v31 range:{v32, v33}];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        rangeValue2 = [v30 rangeValue];
+        [v15 addAttribute:v12 value:secondaryLabelColor range:{rangeValue2, v33}];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v65 objects:v76 count:16];
@@ -324,8 +324,8 @@ LABEL_9:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v34 = v58;
-  obj = v58->_sources;
+  v34 = selfCopy;
+  obj = selfCopy->_sources;
   v35 = [(NSArray *)obj countByEnumeratingWithState:&v61 objects:v75 count:16];
   if (v35)
   {
@@ -343,22 +343,22 @@ LABEL_9:
         }
 
         v41 = *(*(&v61 + 1) + 8 * k);
-        v42 = [v41 linkText];
-        v43 = [v41 linkRange];
+        linkText = [v41 linkText];
+        linkRange = [v41 linkRange];
         v45 = v44;
-        if ([v42 length])
+        if ([linkText length])
         {
-          v43 = [v60 rangeOfString:v42];
+          linkRange = [v60 rangeOfString:linkText];
           v45 = v46;
         }
 
-        if ([(PKMultiHyperlinkView *)v34 _isLinkRangeValid:v43, v45])
+        if ([(PKMultiHyperlinkView *)v34 _isLinkRangeValid:linkRange, v45])
         {
           v47 = [MEMORY[0x1E695DFF8] URLWithString:&stru_1F3BD7330];
-          [v15 addAttribute:v38 value:v47 range:{v43, v45}];
+          [v15 addAttribute:v38 value:v47 range:{linkRange, v45}];
 
-          v34 = v58;
-          [v15 addAttribute:v39 value:MEMORY[0x1E695E110] range:{v43, v45}];
+          v34 = selfCopy;
+          [v15 addAttribute:v39 value:MEMORY[0x1E695E110] range:{linkRange, v45}];
         }
       }
 
@@ -372,13 +372,13 @@ LABEL_9:
   textView = v34->_textView;
   v73 = v53;
   linkTextColor = v34->_linkTextColor;
-  v50 = linkTextColor;
+  linkColor = linkTextColor;
   if (!linkTextColor)
   {
-    v50 = [MEMORY[0x1E69DC888] linkColor];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
   }
 
-  v74 = v50;
+  v74 = linkColor;
   v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v74 forKeys:&v73 count:1];
   [(UITextView *)textView setLinkTextAttributes:v51];
 
@@ -386,16 +386,16 @@ LABEL_9:
   {
   }
 
-  [(UITextView *)v58->_textView setTextAlignment:v58->_textAlignment];
-  [(PKMultiHyperlinkView *)v58 setNeedsLayout];
+  [(UITextView *)selfCopy->_textView setTextAlignment:selfCopy->_textAlignment];
+  [(PKMultiHyperlinkView *)selfCopy setNeedsLayout];
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v30 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  viewCopy = view;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -416,27 +416,27 @@ LABEL_9:
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 linkText];
-        v15 = [v13 linkRange];
+        linkText = [v13 linkText];
+        linkRange = [v13 linkRange];
         v17 = v16;
-        if ([v14 length])
+        if ([linkText length])
         {
-          v18 = [v24 text];
-          v15 = [v18 rangeOfString:v14];
+          text = [viewCopy text];
+          linkRange = [text rangeOfString:linkText];
           v17 = v19;
         }
 
-        v31.location = v15;
+        v31.location = linkRange;
         v31.length = v17;
         v32.location = location;
         v32.length = length;
         if (NSIntersectionRange(v31, v32).length)
         {
-          v20 = [v13 action];
-          v21 = v20;
-          if (v20)
+          action = [v13 action];
+          v21 = action;
+          if (action)
           {
-            (*(v20 + 16))(v20);
+            (*(action + 16))(action);
           }
         }
       }

@@ -1,20 +1,20 @@
 @interface _CNRegExHandleStringClassificationStrategy
-- (unint64_t)classificationOfHandleString:(id)a3;
+- (unint64_t)classificationOfHandleString:(id)string;
 @end
 
 @implementation _CNRegExHandleStringClassificationStrategy
 
-- (unint64_t)classificationOfHandleString:(id)a3
+- (unint64_t)classificationOfHandleString:(id)string
 {
-  v3 = a3;
-  if ([objc_opt_class() doesStringLookLikePhoneNumber:v3])
+  stringCopy = string;
+  if ([objc_opt_class() doesStringLookLikePhoneNumber:stringCopy])
   {
     v4 = 2;
   }
 
   else
   {
-    v4 = [objc_opt_class() doesStringLookLikeEmailAddress:v3];
+    v4 = [objc_opt_class() doesStringLookLikeEmailAddress:stringCopy];
   }
 
   return v4;

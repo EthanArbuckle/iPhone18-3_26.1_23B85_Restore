@@ -1,49 +1,49 @@
 @interface GEOConfigDebugController
-- (BOOL)debugTableRow:(id)a3 matches:(id)a4;
+- (BOOL)debugTableRow:(id)row matches:(id)matches;
 - (NSDictionary)debugClasses;
 - (void)prepareContent;
 @end
 
 @implementation GEOConfigDebugController
 
-- (BOOL)debugTableRow:(id)a3 matches:(id)a4
+- (BOOL)debugTableRow:(id)row matches:(id)matches
 {
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  matchesCopy = matches;
   v19.receiver = self;
   v19.super_class = GEOConfigDebugController;
-  if ([(MapsDebugValuesViewController *)&v19 debugTableRow:v6 matches:v7])
+  if ([(MapsDebugValuesViewController *)&v19 debugTableRow:rowCopy matches:matchesCopy])
   {
-    LOBYTE(v8) = 1;
+    LOBYTE(configKeyInfos) = 1;
   }
 
   else
   {
     debugClasses = self->_debugClasses;
-    v10 = [v6 title];
-    v8 = [(NSDictionary *)debugClasses objectForKeyedSubscript:v10];
+    title = [rowCopy title];
+    configKeyInfos = [(NSDictionary *)debugClasses objectForKeyedSubscript:title];
 
-    if (v8)
+    if (configKeyInfos)
     {
       v15 = 0;
       v16 = &v15;
       v17 = 0x2020000000;
       v18 = 0;
-      v8 = [v8 configKeyInfos];
+      configKeyInfos = [configKeyInfos configKeyInfos];
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1009FEBC0;
       v12[3] = &unk_101631AE8;
-      v13 = v7;
+      v13 = matchesCopy;
       v14 = &v15;
-      [v8 enumerateObjectsUsingBlock:v12];
+      [configKeyInfos enumerateObjectsUsingBlock:v12];
 
-      LOBYTE(v8) = *(v16 + 24);
+      LOBYTE(configKeyInfos) = *(v16 + 24);
       _Block_object_dispose(&v15, 8);
     }
   }
 
-  return v8 & 1;
+  return configKeyInfos & 1;
 }
 
 - (NSDictionary)debugClasses
@@ -51,7 +51,7 @@
   debugClasses = self->_debugClasses;
   if (!debugClasses)
   {
-    v31 = self;
+    selfCopy = self;
     v41 = +[NSMutableDictionary dictionary];
     v50 = 0u;
     v51 = 0u;
@@ -114,8 +114,8 @@
 
                 if (v16)
                 {
-                  v17 = [v16 infoDictionary];
-                  v18 = [v17 objectForKeyedSubscript:@"GeoConfigDebugClasses"];
+                  infoDictionary = [v16 infoDictionary];
+                  v18 = [infoDictionary objectForKeyedSubscript:@"GeoConfigDebugClasses"];
 
                   objc_opt_class();
                   if ((objc_opt_isKindOfClass() & 1) != 0 && [v18 count])
@@ -146,10 +146,10 @@
                             v26 = v25;
                             if (v25 && [v25 conformsToProtocol:&OBJC_PROTOCOL___GEOConfigDebugBundle] && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
                             {
-                              v27 = [v26 GEOConfigNamespaceName];
-                              if (![(NSDictionary *)v41 objectForKeyedSubscript:v27])
+                              gEOConfigNamespaceName = [v26 GEOConfigNamespaceName];
+                              if (![(NSDictionary *)v41 objectForKeyedSubscript:gEOConfigNamespaceName])
                               {
-                                [(NSDictionary *)v41 setObject:v26 forKeyedSubscript:v27];
+                                [(NSDictionary *)v41 setObject:v26 forKeyedSubscript:gEOConfigNamespaceName];
                               }
                             }
 
@@ -213,10 +213,10 @@ LABEL_38:
       {
 LABEL_44:
 
-        v29 = v31->_debugClasses;
-        v31->_debugClasses = v41;
+        v29 = selfCopy->_debugClasses;
+        selfCopy->_debugClasses = v41;
 
-        debugClasses = v31->_debugClasses;
+        debugClasses = selfCopy->_debugClasses;
         break;
       }
     }
@@ -227,9 +227,9 @@ LABEL_44:
 
 - (void)prepareContent
 {
-  v3 = [(GEOConfigDebugController *)self debugClasses];
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:"compare:"];
+  debugClasses = [(GEOConfigDebugController *)self debugClasses];
+  allKeys = [debugClasses allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
@@ -238,7 +238,7 @@ LABEL_44:
   v9[3] = &unk_101632C98;
   v6 = v5;
   v10 = v6;
-  v7 = v3;
+  v7 = debugClasses;
   v11 = v7;
   objc_copyWeak(&v12, &location);
   v8 = [(MapsDebugValuesViewController *)self addSectionWithTitle:@"Namespaces" content:v9];

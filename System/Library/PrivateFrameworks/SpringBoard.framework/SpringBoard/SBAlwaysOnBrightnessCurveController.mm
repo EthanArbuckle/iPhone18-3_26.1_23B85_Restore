@@ -1,8 +1,8 @@
 @interface SBAlwaysOnBrightnessCurveController
 - (BOOL)isUsingAlwaysOnBrightnessCurve;
 - (SBAlwaysOnBrightnessCurveController)init;
-- (SBAlwaysOnBrightnessCurveController)initWithBrightnessSystemClient:(id)a3;
-- (void)setUseAlwaysOnBrightnessCurve:(BOOL)a3 withRampDuration:(double)a4;
+- (SBAlwaysOnBrightnessCurveController)initWithBrightnessSystemClient:(id)client;
+- (void)setUseAlwaysOnBrightnessCurve:(BOOL)curve withRampDuration:(double)duration;
 @end
 
 @implementation SBAlwaysOnBrightnessCurveController
@@ -15,9 +15,9 @@
   return v4;
 }
 
-- (SBAlwaysOnBrightnessCurveController)initWithBrightnessSystemClient:(id)a3
+- (SBAlwaysOnBrightnessCurveController)initWithBrightnessSystemClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = SBAlwaysOnBrightnessCurveController;
   v6 = [(SBAlwaysOnBrightnessCurveController *)&v9 init];
@@ -25,7 +25,7 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_brightnessSystemClient, a3);
+    objc_storeStrong(&v6->_brightnessSystemClient, client);
     v7->_lock_useAlwaysOnBrightnessCurve = 0;
     [(SBAlwaysOnBrightnessCurveController *)v7 setUseAlwaysOnBrightnessCurve:0 withRampDuration:0.25];
   }
@@ -41,18 +41,18 @@
   return lock_useAlwaysOnBrightnessCurve;
 }
 
-- (void)setUseAlwaysOnBrightnessCurve:(BOOL)a3 withRampDuration:(double)a4
+- (void)setUseAlwaysOnBrightnessCurve:(BOOL)curve withRampDuration:(double)duration
 {
-  v5 = a3;
+  curveCopy = curve;
   v17[2] = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_useAlwaysOnBrightnessCurve = v5;
+  self->_lock_useAlwaysOnBrightnessCurve = curveCopy;
   os_unfair_lock_unlock(&self->_lock);
   v16[0] = @"AOTState";
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:curveCopy];
   v16[1] = @"AOTTransitionTime";
   v17[0] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
@@ -60,9 +60,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11[0] = 67109634;
-    v11[1] = v5;
+    v11[1] = curveCopy;
     v12 = 2048;
-    v13 = a4;
+    durationCopy = duration;
     v14 = 2114;
     v15 = v9;
     _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_INFO, "setUseAlwaysOnBrightnessCurve:%{BOOL}u duration:%.2fs set to %{public}@", v11, 0x1Cu);

@@ -3,25 +3,25 @@
 - (CGPoint)selectionViewPosition;
 - (CGRect)selectionViewBounds;
 - (CGRect)selectionViewFrame;
-- (_UIFloatingTabBarSelectionContainerView)initWithFrame:(CGRect)a3;
+- (_UIFloatingTabBarSelectionContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateSelectionViewBounds;
-- (void)setSelectionViewBounds:(CGRect)a3;
-- (void)setSelectionViewPosition:(CGPoint)a3;
+- (void)setSelectionViewBounds:(CGRect)bounds;
+- (void)setSelectionViewPosition:(CGPoint)position;
 @end
 
 @implementation _UIFloatingTabBarSelectionContainerView
 
-- (_UIFloatingTabBarSelectionContainerView)initWithFrame:(CGRect)a3
+- (_UIFloatingTabBarSelectionContainerView)initWithFrame:(CGRect)frame
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = _UIFloatingTabBarSelectionContainerView;
-  v3 = [(UIView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UIView *)v3 traitCollection];
-    v6 = _UIFloatingTabBarGetPlatformMetrics([v5 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v3 traitCollection];
+    v6 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     v7 = objc_opt_new();
     if (_UIFlexiGlassEnabled())
@@ -42,11 +42,11 @@
 
     else
     {
-      v12 = [v7 layer];
-      [v12 setAllowsEdgeAntialiasing:1];
+      layer = [v7 layer];
+      [layer setAllowsEdgeAntialiasing:1];
 
-      v13 = [v7 layer];
-      [v13 setShadowPathIsBounds:1];
+      layer2 = [v7 layer];
+      [layer2 setShadowPathIsBounds:1];
 
       [v7 _setOverrideVibrancyTrait:0];
       [v7 setHidden:1];
@@ -73,14 +73,14 @@
   return v4;
 }
 
-- (void)setSelectionViewBounds:(CGRect)a3
+- (void)setSelectionViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_selectionViewBounds = &self->_selectionViewBounds;
-  if (!CGRectEqualToRect(a3, self->_selectionViewBounds))
+  if (!CGRectEqualToRect(bounds, self->_selectionViewBounds))
   {
     p_selectionViewBounds->origin.x = x;
     p_selectionViewBounds->origin.y = y;
@@ -93,8 +93,8 @@
 
 - (CGPoint)selectionViewPosition
 {
-  v2 = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
-  [v2 center];
+  selectionView = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
+  [selectionView center];
   v4 = v3;
   v6 = v5;
 
@@ -105,19 +105,19 @@
   return result;
 }
 
-- (void)setSelectionViewPosition:(CGPoint)a3
+- (void)setSelectionViewPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
-  [v6 center];
+  y = position.y;
+  x = position.x;
+  selectionView = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
+  [selectionView center];
   v8 = v7;
   v10 = v9;
 
   if (x != v8 || y != v10)
   {
-    v12 = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
-    [v12 setCenter:{x, y}];
+    selectionView2 = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
+    [selectionView2 setCenter:{x, y}];
 
     targetPosition = self->_targetPosition;
 
@@ -144,24 +144,24 @@
 
 - (void)_updateSelectionViewBounds
 {
-  v3 = [(_UIFloatingTabBarSelectionContainerView *)self liquidLensView];
-  v4 = [v3 lifted];
+  liquidLensView = [(_UIFloatingTabBarSelectionContainerView *)self liquidLensView];
+  lifted = [liquidLensView lifted];
 
-  v5 = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
+  selectionView = [(_UIFloatingTabBarSelectionContainerView *)self selectionView];
   x = self->_selectionViewBounds.origin.x;
   y = self->_selectionViewBounds.origin.y;
   width = self->_selectionViewBounds.size.width;
   height = self->_selectionViewBounds.size.height;
-  v10 = v5;
-  if (v4)
+  v10 = selectionView;
+  if (lifted)
   {
     *(&width - 2) = CGRectInset(*&x, -8.0, -8.0);
-    v5 = v10;
+    selectionView = v10;
     y = 0.0;
     x = 0.0;
   }
 
-  [v5 setBounds:{x, y, width, height}];
+  [selectionView setBounds:{x, y, width, height}];
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
     [v10 layoutIfNeeded];
@@ -170,8 +170,8 @@
 
 - (BOOL)_shouldScalePlatter
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 valueForNSIntegerTrait:objc_opt_class()] != 0;
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = [traitCollection valueForNSIntegerTrait:objc_opt_class()] != 0;
 
   return v3;
 }

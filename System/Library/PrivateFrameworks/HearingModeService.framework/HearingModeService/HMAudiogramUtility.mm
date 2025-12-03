@@ -1,6 +1,6 @@
 @interface HMAudiogramUtility
 + (id)frequencyBins;
-+ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)a3;
++ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)audiogram;
 + (id)requiredFrequencyBins;
 @end
 
@@ -36,26 +36,26 @@
   return v2;
 }
 
-+ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)a3
++ (id)frequencyToHearingDecibelLevelMapFromAudiogram:(id)audiogram
 {
-  v3 = a3;
-  if (v3)
+  audiogramCopy = audiogram;
+  if (audiogramCopy)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v5 = [v3 sensitivityPoints];
+    sensitivityPoints = [audiogramCopy sensitivityPoints];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__HMAudiogramUtility_frequencyToHearingDecibelLevelMapFromAudiogram___block_invoke;
     v9[3] = &unk_2796EEA40;
-    v10 = v3;
+    v10 = audiogramCopy;
     v12 = &v13;
     v6 = v4;
     v11 = v6;
-    [v5 enumerateObjectsUsingBlock:v9];
+    [sensitivityPoints enumerateObjectsUsingBlock:v9];
 
     if (v14[3])
     {

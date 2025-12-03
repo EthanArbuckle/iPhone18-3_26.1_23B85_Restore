@@ -1,19 +1,19 @@
 @interface CRLPasteboardObjectReadAssistantHelper
-+ (id)contentDescriptionFromPasteboard:(id)a3;
++ (id)contentDescriptionFromPasteboard:(id)pasteboard;
 @end
 
 @implementation CRLPasteboardObjectReadAssistantHelper
 
-+ (id)contentDescriptionFromPasteboard:(id)a3
++ (id)contentDescriptionFromPasteboard:(id)pasteboard
 {
-  v3 = a3;
-  if (![v3 containsNativePasteboardTypes] || (v20 = @"com.apple.freeform.CRLDescription", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v20, 1), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v3, "containsPasteboardTypes:", v4), v4, !v5))
+  pasteboardCopy = pasteboard;
+  if (![pasteboardCopy containsNativePasteboardTypes] || (v20 = @"com.apple.freeform.CRLDescription", +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v20, 1), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(pasteboardCopy, "containsPasteboardTypes:", v4), v4, !v5))
   {
     v10 = 0;
     goto LABEL_26;
   }
 
-  v6 = [v3 dataForPasteboardType:@"com.apple.freeform.CRLDescription"];
+  v6 = [pasteboardCopy dataForPasteboardType:@"com.apple.freeform.CRLDescription"];
   if (!v6)
   {
     v12 = +[CRLAssertionHandler _atomicIncrementAssertCount];

@@ -1,71 +1,71 @@
 @interface MKFCKScene
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (id)decodeActionAppleMediaAccessoryPower:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)decodeActionCharacteristic:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)decodeActionCommand:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)decodeActionMediaPlayback:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)decodeActionNaturalLight:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)decodeActionShortcut:(id)a3 localModel:(id)a4 context:(id)a5;
-- (id)encodeActionAppleMediaAccessoryPower:(id)a3 accessories:(id)a4 context:(id)a5;
-- (id)encodeActionCharacteristic:(id)a3 accessories:(id)a4 context:(id)a5;
-- (id)encodeActionCommand:(id)a3 accessories:(id)a4 context:(id)a5;
-- (id)encodeActionMediaPlayback:(id)a3 accessories:(id)a4 context:(id)a5;
-- (id)encodeActionNaturalLight:(id)a3 accessories:(id)a4 shouldRemoveAction:(BOOL *)a5 context:(id)a6;
-- (id)encodeActionShortcut:(id)a3 context:(id)a4;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (id)decodeActionAppleMediaAccessoryPower:(id)power localModel:(id)model context:(id)context;
+- (id)decodeActionCharacteristic:(id)characteristic localModel:(id)model context:(id)context;
+- (id)decodeActionCommand:(id)command localModel:(id)model context:(id)context;
+- (id)decodeActionMediaPlayback:(id)playback localModel:(id)model context:(id)context;
+- (id)decodeActionNaturalLight:(id)light localModel:(id)model context:(id)context;
+- (id)decodeActionShortcut:(id)shortcut localModel:(id)model context:(id)context;
+- (id)encodeActionAppleMediaAccessoryPower:(id)power accessories:(id)accessories context:(id)context;
+- (id)encodeActionCharacteristic:(id)characteristic accessories:(id)accessories context:(id)context;
+- (id)encodeActionCommand:(id)command accessories:(id)accessories context:(id)context;
+- (id)encodeActionMediaPlayback:(id)playback accessories:(id)accessories context:(id)context;
+- (id)encodeActionNaturalLight:(id)light accessories:(id)accessories shouldRemoveAction:(BOOL *)action context:(id)context;
+- (id)encodeActionShortcut:(id)shortcut context:(id)context;
 @end
 
 @implementation MKFCKScene
 
-- (id)encodeActionNaturalLight:(id)a3 accessories:(id)a4 shouldRemoveAction:(BOOL *)a5 context:(id)a6
+- (id)encodeActionNaturalLight:(id)light accessories:(id)accessories shouldRemoveAction:(BOOL *)action context:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 accessory];
-  v14 = v13;
-  if (v13)
+  lightCopy = light;
+  accessoriesCopy = accessories;
+  contextCopy = context;
+  accessory = [lightCopy accessory];
+  v14 = accessory;
+  if (accessory)
   {
-    v15 = [v13 modelID];
-    v16 = [(MKFCKHomeObject *)self _accessoryWithModelID:v15 context:v12];
+    modelID = [accessory modelID];
+    v16 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID context:contextCopy];
     if (v16)
     {
-      [v11 addObject:v16];
+      [accessoriesCopy addObject:v16];
       v40[0] = @"NL";
       v39[0] = @"At";
       v39[1] = @"Am";
-      v37 = [v10 modelID];
-      v40[1] = v37;
-      v40[2] = v15;
+      modelID2 = [lightCopy modelID];
+      v40[1] = modelID2;
+      v40[2] = modelID;
       v39[2] = @"Lm";
       v39[3] = @"Le";
-      v17 = [v10 naturalLightingEnabledField];
-      v18 = [v17 copy];
+      naturalLightingEnabledField = [lightCopy naturalLightingEnabledField];
+      v18 = [naturalLightingEnabledField copy];
       v40[3] = v18;
       v39[4] = @"Ll";
-      [v10 lightProfileUUID];
-      v19 = v10;
+      [lightCopy lightProfileUUID];
+      v19 = lightCopy;
       v20 = v14;
       v21 = v16;
-      v22 = v15;
-      v23 = v12;
-      v25 = v24 = v11;
+      v22 = modelID;
+      v23 = contextCopy;
+      v25 = v24 = accessoriesCopy;
       v40[4] = v25;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:5];
 
-      v11 = v24;
-      v12 = v23;
-      v15 = v22;
+      accessoriesCopy = v24;
+      contextCopy = v23;
+      modelID = v22;
       v16 = v21;
       v14 = v20;
-      v10 = v19;
+      lightCopy = v19;
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -74,9 +74,9 @@
         *buf = 138543874;
         v42 = v34;
         v43 = 2112;
-        v44 = v15;
+        v44 = modelID;
         v45 = 2112;
-        v46 = v10;
+        v46 = lightCopy;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode action, cannot find matching accessory with modelID %@: %@", buf, 0x20u);
 
         v31 = v38;
@@ -84,14 +84,14 @@
 
       objc_autoreleasePoolPop(v31);
       v26 = 0;
-      *a5 = 0;
+      *action = 0;
     }
   }
 
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -99,13 +99,13 @@
       *buf = 138543618;
       v42 = v30;
       v43 = 2112;
-      v44 = v10;
+      v44 = lightCopy;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode action, no accessory specified: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v27);
     v26 = 0;
-    *a5 = 1;
+    *action = 1;
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -113,13 +113,13 @@
   return v26;
 }
 
-- (id)decodeActionNaturalLight:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionNaturalLight:(id)light localModel:(id)model context:(id)context
 {
   v78 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v59 = a5;
-  v10 = [v8 objectForKeyedSubscript:@"Am"];
+  lightCopy = light;
+  modelCopy = model;
+  contextCopy = context;
+  v10 = [lightCopy objectForKeyedSubscript:@"Am"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -135,7 +135,7 @@
 
   if (v12)
   {
-    v13 = [v8 objectForKeyedSubscript:@"Lm"];
+    v13 = [lightCopy objectForKeyedSubscript:@"Lm"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -151,7 +151,7 @@
 
     if (v15)
     {
-      v16 = [v8 objectForKeyedSubscript:@"Ll"];
+      v16 = [lightCopy objectForKeyedSubscript:@"Ll"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -167,7 +167,7 @@
 
       if (v18)
       {
-        v19 = [v8 objectForKeyedSubscript:@"Le"];
+        v19 = [lightCopy objectForKeyedSubscript:@"Le"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -190,16 +190,16 @@
           v75 = __Block_byref_object_copy__33336;
           v76 = __Block_byref_object_dispose__33337;
           v77 = 0;
-          v22 = [v9 home];
-          v23 = [v22 accessories];
+          home = [modelCopy home];
+          accessories = [home accessories];
           v66[0] = MEMORY[0x277D85DD0];
           v66[1] = 3221225472;
           v66[2] = __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_context___block_invoke;
           v66[3] = &unk_278672270;
-          v68 = self;
+          selfCopy = self;
           v69 = buf;
           v67 = v15;
-          [v23 hmf_enumerateWithAutoreleasePoolUsingBlock:v66];
+          [accessories hmf_enumerateWithAutoreleasePoolUsingBlock:v66];
 
           if (*(*&buf[8] + 40))
           {
@@ -209,7 +209,7 @@
             v71 = __Block_byref_object_copy__33336;
             v72 = __Block_byref_object_dispose__33337;
             v73 = 0;
-            v24 = [v9 actions];
+            actions = [modelCopy actions];
             v60[0] = MEMORY[0x277D85DD0];
             v60[1] = 3221225472;
             v60[2] = __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_context___block_invoke_10;
@@ -217,11 +217,11 @@
             v25 = v12;
             v65 = v70;
             v61 = v25;
-            v62 = self;
-            v63 = v8;
-            v26 = v59;
+            selfCopy2 = self;
+            v63 = lightCopy;
+            v26 = contextCopy;
             v64 = v26;
-            [v24 hmf_enumerateWithAutoreleasePoolUsingBlock:v60];
+            [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v60];
 
             v27 = *(*&v70[8] + 40);
             if (!v27)
@@ -231,23 +231,23 @@
               *(*&v70[8] + 40) = v28;
 
               [*(*&v70[8] + 40) setModelID:v25];
-              v30 = [(MKFCKScene *)self writerTimestamp];
-              [*(*&v70[8] + 40) setWriterTimestamp:v30];
+              writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+              [*(*&v70[8] + 40) setWriterTimestamp:writerTimestamp];
 
-              [v9 addActions_Object:*(*&v70[8] + 40)];
+              [modelCopy addActions_Object:*(*&v70[8] + 40)];
               v27 = *(*&v70[8] + 40);
             }
 
-            v31 = [v27 lightProfileUUID];
-            v32 = [v18 isEqual:v31];
+            lightProfileUUID = [v27 lightProfileUUID];
+            v32 = [v18 isEqual:lightProfileUUID];
 
             if ((v32 & 1) == 0)
             {
               [*(*&v70[8] + 40) setLightProfileUUID:v18];
             }
 
-            v33 = [*(*&v70[8] + 40) naturalLightingEnabledField];
-            v34 = [v58 isEqual:v33];
+            naturalLightingEnabledField = [*(*&v70[8] + 40) naturalLightingEnabledField];
+            v34 = [v58 isEqual:naturalLightingEnabledField];
 
             if ((v34 & 1) == 0)
             {
@@ -262,7 +262,7 @@
           else
           {
             v52 = objc_autoreleasePoolPush();
-            v53 = self;
+            selfCopy3 = self;
             v54 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
             {
@@ -270,7 +270,7 @@
               *v70 = 138543618;
               *&v70[4] = v55;
               *&v70[12] = 2112;
-              *&v70[14] = v8;
+              *&v70[14] = lightCopy;
               _os_log_impl(&dword_229538000, v54, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory matching action: %@", v70, 0x16u);
             }
 
@@ -284,7 +284,7 @@
         else
         {
           v48 = objc_autoreleasePoolPush();
-          v49 = self;
+          selfCopy4 = self;
           v50 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
           {
@@ -292,7 +292,7 @@
             *buf = 138543618;
             *&buf[4] = v51;
             *&buf[12] = 2112;
-            *&buf[14] = v8;
+            *&buf[14] = lightCopy;
             _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode enable in action: %@", buf, 0x16u);
           }
 
@@ -304,7 +304,7 @@
       else
       {
         v44 = objc_autoreleasePoolPush();
-        v45 = self;
+        selfCopy5 = self;
         v46 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
@@ -312,7 +312,7 @@
           *buf = 138543618;
           *&buf[4] = v47;
           *&buf[12] = 2112;
-          *&buf[14] = v8;
+          *&buf[14] = lightCopy;
           _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode profileID in action: %@", buf, 0x16u);
         }
 
@@ -324,7 +324,7 @@
     else
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = self;
+      selfCopy6 = self;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -332,7 +332,7 @@
         *buf = 138543618;
         *&buf[4] = v43;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = lightCopy;
         _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory modelID in action: %@", buf, 0x16u);
       }
 
@@ -344,7 +344,7 @@
   else
   {
     v36 = objc_autoreleasePoolPush();
-    v37 = self;
+    selfCopy7 = self;
     v38 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
@@ -352,7 +352,7 @@
       *buf = 138543618;
       *&buf[4] = v39;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = lightCopy;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
     }
 
@@ -471,38 +471,38 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeActionCharacteristic:(id)a3 accessories:(id)a4 context:(id)a5
+- (id)encodeActionCharacteristic:(id)characteristic accessories:(id)accessories context:(id)context
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accessory];
-  v12 = [v11 modelID];
+  characteristicCopy = characteristic;
+  accessoriesCopy = accessories;
+  contextCopy = context;
+  accessory = [characteristicCopy accessory];
+  modelID = [accessory modelID];
 
-  v13 = [(MKFCKHomeObject *)self _accessoryWithModelID:v12 context:v10];
+  v13 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID context:contextCopy];
   if (v13)
   {
-    [v9 addObject:v13];
+    [accessoriesCopy addObject:v13];
     v35[0] = @"CW";
     v34[0] = @"At";
     v34[1] = @"Am";
-    v32 = [v8 modelID];
-    v35[1] = v32;
-    v35[2] = v12;
+    modelID2 = [characteristicCopy modelID];
+    v35[1] = modelID2;
+    v35[2] = modelID;
     v34[2] = @"Cm";
     v34[3] = @"Cs";
-    v31 = [v8 service];
-    v14 = [v31 instanceID];
-    v35[3] = v14;
+    service = [characteristicCopy service];
+    instanceID = [service instanceID];
+    v35[3] = instanceID;
     v34[4] = @"Cc";
-    v15 = [v8 characteristicID];
-    v35[4] = v15;
+    characteristicID = [characteristicCopy characteristicID];
+    v35[4] = characteristicID;
     v34[5] = @"Ct";
-    [v8 targetValue];
-    v16 = v33 = v9;
+    [characteristicCopy targetValue];
+    v16 = v33 = accessoriesCopy;
     v17 = [v16 copy];
-    v18 = v10;
+    v18 = contextCopy;
     v19 = v17;
     v20 = *MEMORY[0x277CBEEE8];
     if (v17)
@@ -511,22 +511,22 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
     }
 
     v21 = v13;
-    v22 = v12;
+    v22 = modelID;
     v23 = v20;
     v35[5] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:6];
 
-    v12 = v22;
+    modelID = v22;
     v13 = v21;
 
-    v10 = v18;
-    v9 = v33;
+    contextCopy = v18;
+    accessoriesCopy = v33;
   }
 
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -536,9 +536,9 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
       v38 = 2160;
       v39 = 1752392040;
       v40 = 2112;
-      v41 = v12;
+      v41 = modelID;
       v42 = 2112;
-      v43 = v8;
+      v43 = characteristicCopy;
       _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode action, cannot find matching accessory with modelID %{mask.hash}@: %@", buf, 0x2Au);
     }
 
@@ -551,13 +551,13 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
   return v24;
 }
 
-- (id)decodeActionCharacteristic:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionCharacteristic:(id)characteristic localModel:(id)model context:(id)context
 {
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"Am"];
+  characteristicCopy = characteristic;
+  modelCopy = model;
+  contextCopy = context;
+  v11 = [characteristicCopy objectForKeyedSubscript:@"Am"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -573,7 +573,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
 
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:@"Cm"];
+    v14 = [characteristicCopy objectForKeyedSubscript:@"Cm"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -590,7 +590,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
     if (!v16)
     {
       v50 = objc_autoreleasePoolPush();
-      v51 = self;
+      selfCopy = self;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
@@ -598,7 +598,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
         *buf = 138543618;
         *&buf[4] = v53;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = characteristicCopy;
         _os_log_impl(&dword_229538000, v52, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory modelID in action: %@", buf, 0x16u);
       }
 
@@ -607,7 +607,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
       goto LABEL_64;
     }
 
-    v17 = [v8 objectForKeyedSubscript:@"Cs"];
+    v17 = [characteristicCopy objectForKeyedSubscript:@"Cs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -624,7 +624,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
     if (!v19)
     {
       v54 = objc_autoreleasePoolPush();
-      v55 = self;
+      selfCopy2 = self;
       v56 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
@@ -632,7 +632,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
         *buf = 138543618;
         *&buf[4] = v57;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = characteristicCopy;
         _os_log_impl(&dword_229538000, v56, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode serviceID in action: %@", buf, 0x16u);
       }
 
@@ -641,7 +641,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
       goto LABEL_63;
     }
 
-    v20 = [v8 objectForKeyedSubscript:@"Cc"];
+    v20 = [characteristicCopy objectForKeyedSubscript:@"Cc"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -658,7 +658,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
     v79 = v22;
     if (v22)
     {
-      v23 = [v8 objectForKeyedSubscript:@"Ct"];
+      v23 = [characteristicCopy objectForKeyedSubscript:@"Ct"];
       v78 = v23;
       if (v23)
       {
@@ -668,8 +668,8 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
           v78 = 0;
         }
 
-        v24 = [v9 home];
-        v77 = [v24 accessoryWithModelID:v16 context:v10];
+        home = [modelCopy home];
+        v77 = [home accessoryWithModelID:v16 context:contextCopy];
 
         if (v77)
         {
@@ -691,7 +691,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
           if (v26)
           {
 
-            context = [v25 serviceWithID:v19 context:v10];
+            context = [v25 serviceWithID:v19 context:contextCopy];
             if (context)
             {
               *buf = 0;
@@ -700,7 +700,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
               v87 = __Block_byref_object_copy__57059;
               v88 = __Block_byref_object_dispose__57060;
               v89 = 0;
-              v29 = [v9 actions];
+              actions = [modelCopy actions];
               v80[0] = MEMORY[0x277D85DD0];
               v80[1] = 3221225472;
               v80[2] = __82__MKFCKScene_ActionCharacteristic__decodeActionCharacteristic_localModel_context___block_invoke;
@@ -708,11 +708,11 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
               v85 = buf;
               v74 = v13;
               v81 = v74;
-              v82 = self;
-              v83 = v8;
-              v30 = v10;
+              selfCopy3 = self;
+              v83 = characteristicCopy;
+              v30 = contextCopy;
               v84 = v30;
-              [v29 hmf_enumerateWithAutoreleasePoolUsingBlock:v80];
+              [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v80];
 
               v31 = *(*&buf[8] + 40);
               if (!v31)
@@ -722,14 +722,14 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
                 *(*&buf[8] + 40) = v32;
 
                 [*(*&buf[8] + 40) setModelID:v74];
-                v34 = [(MKFCKScene *)self writerTimestamp];
-                [*(*&buf[8] + 40) setWriterTimestamp:v34];
+                writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+                [*(*&buf[8] + 40) setWriterTimestamp:writerTimestamp];
 
-                [v9 addActions_Object:*(*&buf[8] + 40)];
+                [modelCopy addActions_Object:*(*&buf[8] + 40)];
                 v31 = *(*&buf[8] + 40);
               }
 
-              v35 = [v31 accessory];
+              accessory = [v31 accessory];
               v36 = HMFEqualObjects();
 
               if ((v36 & 1) == 0)
@@ -737,7 +737,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
                 [*(*&buf[8] + 40) setAccessory:v25];
               }
 
-              v37 = [*(*&buf[8] + 40) service];
+              service = [*(*&buf[8] + 40) service];
               v38 = HMFEqualObjects();
 
               if ((v38 & 1) == 0)
@@ -745,7 +745,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
                 [*(*&buf[8] + 40) setService:context];
               }
 
-              v39 = [*(*&buf[8] + 40) characteristicID];
+              characteristicID = [*(*&buf[8] + 40) characteristicID];
               v40 = HMFEqualObjects();
 
               if ((v40 & 1) == 0)
@@ -754,7 +754,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
                 [*(*&buf[8] + 40) setCharacteristicID:v41];
               }
 
-              v42 = [*(*&buf[8] + 40) targetValue];
+              targetValue = [*(*&buf[8] + 40) targetValue];
               v43 = HMFEqualObjects();
 
               if ((v43 & 1) == 0)
@@ -771,7 +771,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
             else
             {
               v68 = objc_autoreleasePoolPush();
-              v69 = self;
+              selfCopy4 = self;
               v70 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
               {
@@ -779,7 +779,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
                 *buf = 138543618;
                 *&buf[4] = v71;
                 *&buf[12] = 2112;
-                *&buf[14] = v8;
+                *&buf[14] = characteristicCopy;
                 _os_log_impl(&dword_229538000, v70, OS_LOG_TYPE_ERROR, "%{public}@Could not find service matching action: %@", buf, 0x16u);
               }
 
@@ -791,7 +791,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
           }
 
           contexta = objc_autoreleasePoolPush();
-          v66 = self;
+          selfCopy5 = self;
           v64 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
           {
@@ -801,7 +801,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
             *&buf[12] = 2112;
             *&buf[14] = v25;
             *&buf[22] = 2112;
-            v87 = v8;
+            v87 = characteristicCopy;
             _os_log_impl(&dword_229538000, v64, OS_LOG_TYPE_ERROR, "%{public}@Accessory %@ is not a HAP accessory in action: %@", buf, 0x20u);
           }
         }
@@ -809,7 +809,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
         else
         {
           contexta = objc_autoreleasePoolPush();
-          v63 = self;
+          selfCopy6 = self;
           v64 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
           {
@@ -817,7 +817,7 @@ void __78__MKFCKScene_ActionNaturalLight__decodeActionNaturalLight_localModel_co
             *buf = 138543618;
             *&buf[4] = v65;
             *&buf[12] = 2112;
-            *&buf[14] = v8;
+            *&buf[14] = characteristicCopy;
             _os_log_impl(&dword_229538000, v64, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory matching action: %@", buf, 0x16u);
           }
         }
@@ -830,7 +830,7 @@ LABEL_61:
       }
 
       v58 = objc_autoreleasePoolPush();
-      v59 = self;
+      selfCopy8 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
@@ -838,7 +838,7 @@ LABEL_61:
         *buf = 138543618;
         *&buf[4] = v62;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = characteristicCopy;
         _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode targetValue in action: %@", buf, 0x16u);
       }
     }
@@ -846,7 +846,7 @@ LABEL_61:
     else
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = self;
+      selfCopy8 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
@@ -854,7 +854,7 @@ LABEL_61:
         *buf = 138543618;
         *&buf[4] = v61;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = characteristicCopy;
         _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode characteristicID in action: %@", buf, 0x16u);
       }
     }
@@ -870,7 +870,7 @@ LABEL_64:
   }
 
   v46 = objc_autoreleasePoolPush();
-  v47 = self;
+  selfCopy9 = self;
   v48 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
   {
@@ -878,7 +878,7 @@ LABEL_64:
     *buf = 138543618;
     *&buf[4] = v49;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = characteristicCopy;
     _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
   }
 
@@ -946,81 +946,81 @@ void __82__MKFCKScene_ActionCharacteristic__decodeActionCharacteristic_localMode
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeActionCommand:(id)a3 accessories:(id)a4 context:(id)a5
+- (id)encodeActionCommand:(id)command accessories:(id)accessories context:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  accessoriesCopy = accessories;
+  contextCopy = context;
   v11 = +[HMDCoreData featuresDataSource];
-  v12 = [v11 isRVCEnabled];
+  isRVCEnabled = [v11 isRVCEnabled];
 
-  if (v12)
+  if (isRVCEnabled)
   {
-    v13 = [v8 matterPaths];
-    v14 = [v13 firstObject];
-    v15 = [v14 accessory];
-    v16 = [v15 modelID];
+    matterPaths = [commandCopy matterPaths];
+    firstObject = [matterPaths firstObject];
+    accessory = [firstObject accessory];
+    modelID = [accessory modelID];
 
-    v17 = [MEMORY[0x277CBEB18] array];
-    v18 = [v8 matterPaths];
+    array = [MEMORY[0x277CBEB18] array];
+    matterPaths2 = [commandCopy matterPaths];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___block_invoke;
     v45[3] = &unk_278677A50;
-    v19 = v17;
+    v19 = array;
     v46 = v19;
-    [v18 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
+    [matterPaths2 hmf_enumerateWithAutoreleasePoolUsingBlock:v45];
 
-    v20 = [(MKFCKHomeObject *)self _accessoryWithModelID:v16 context:v10];
+    v20 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID context:contextCopy];
     if (v20)
     {
-      [v9 addObject:v20];
+      [accessoriesCopy addObject:v20];
       v48[0] = @"C";
       v47[0] = @"At";
       v47[1] = @"Am";
-      v43 = [v8 modelID];
-      v48[1] = v43;
+      modelID2 = [commandCopy modelID];
+      v48[1] = modelID2;
       v47[2] = @"Cmp";
       v21 = [v19 copy];
       v48[2] = v21;
-      v48[3] = v16;
+      v48[3] = modelID;
       v47[3] = @"Cm";
       v47[4] = @"Cf";
-      v22 = [v8 commands];
-      [HMDMatterCommandActionUtilities commandsInStoreRepresentation:v22];
+      commands = [commandCopy commands];
+      [HMDMatterCommandActionUtilities commandsInStoreRepresentation:commands];
       v44 = v20;
-      v23 = v16;
-      v25 = v24 = v9;
+      v23 = modelID;
+      v25 = v24 = accessoriesCopy;
       v48[4] = v25;
       v47[5] = @"Ceeo";
-      v26 = [v8 enforceExecutionOrder];
-      v27 = v8;
+      enforceExecutionOrder = [commandCopy enforceExecutionOrder];
+      v27 = commandCopy;
       v28 = v19;
-      v29 = v10;
-      v30 = v26;
+      v29 = contextCopy;
+      v30 = enforceExecutionOrder;
       v31 = MEMORY[0x277CBEC28];
-      if (v26)
+      if (enforceExecutionOrder)
       {
-        v31 = v26;
+        v31 = enforceExecutionOrder;
       }
 
       v48[5] = v31;
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:6];
 
-      v10 = v29;
+      contextCopy = v29;
       v19 = v28;
-      v8 = v27;
+      commandCopy = v27;
 
-      v9 = v24;
-      v16 = v23;
+      accessoriesCopy = v24;
+      modelID = v23;
       v20 = v44;
     }
 
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = self;
+      selfCopy = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1030,9 +1030,9 @@ void __82__MKFCKScene_ActionCharacteristic__decodeActionCharacteristic_localMode
         v51 = 2160;
         v52 = 1752392040;
         v53 = 2112;
-        v54 = v16;
+        v54 = modelID;
         v55 = 2112;
-        v56 = v8;
+        v56 = commandCopy;
         _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode action, cannot find matching accessory with modelID %{mask.hash}@: %@", buf, 0x2Au);
       }
 
@@ -1044,7 +1044,7 @@ void __82__MKFCKScene_ActionCharacteristic__decodeActionCharacteristic_localMode
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy2 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -1070,18 +1070,18 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
   [v2 addObject:v3];
 }
 
-- (id)decodeActionCommand:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionCommand:(id)command localModel:(id)model context:(id)context
 {
   v109 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  modelCopy = model;
+  contextCopy = context;
   v11 = +[HMDCoreData featuresDataSource];
-  v12 = [v11 isRVCEnabled];
+  isRVCEnabled = [v11 isRVCEnabled];
 
-  if (v12)
+  if (isRVCEnabled)
   {
-    v13 = [v8 objectForKeyedSubscript:@"Am"];
+    v13 = [commandCopy objectForKeyedSubscript:@"Am"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1097,7 +1097,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
 
     if (v15)
     {
-      v16 = [v8 objectForKeyedSubscript:@"Cm"];
+      v16 = [commandCopy objectForKeyedSubscript:@"Cm"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -1113,7 +1113,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
 
       if (v18)
       {
-        v19 = [v8 objectForKeyedSubscript:@"Cmp"];
+        v19 = [commandCopy objectForKeyedSubscript:@"Cmp"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1128,13 +1128,13 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
         v21 = v20;
 
         v100 = 0;
-        v22 = [v8 hmf_BOOLForKey:@"Ceeo" isPresent:&v100];
+        v22 = [commandCopy hmf_BOOLForKey:@"Ceeo" isPresent:&v100];
         if (v100)
         {
           v23 = v22;
-          v87 = [v8 objectForKeyedSubscript:@"Cf"];
-          v24 = [v9 home];
-          v88 = [v24 accessoryWithModelID:v18 context:v10];
+          v87 = [commandCopy objectForKeyedSubscript:@"Cf"];
+          home = [modelCopy home];
+          v88 = [home accessoryWithModelID:v18 context:contextCopy];
 
           if (v88)
           {
@@ -1155,21 +1155,21 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
 
             if (isKindOfClass)
             {
-              v28 = [v25 matterPaths];
+              matterPaths = [v25 matterPaths];
               *buf = 0;
               *&buf[8] = buf;
               *&buf[16] = 0x3032000000;
               v106 = __Block_byref_object_copy__94783;
               v107 = __Block_byref_object_dispose__94784;
-              v108 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
               v95[0] = MEMORY[0x277D85DD0];
               v95[1] = 3221225472;
               v95[2] = __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___block_invoke;
               v95[3] = &unk_278686568;
-              v85 = v28;
+              v85 = matterPaths;
               v96 = v85;
-              v97 = self;
-              v29 = v8;
+              selfCopy = self;
+              v29 = commandCopy;
               v98 = v29;
               v99 = buf;
               [v21 hmf_enumerateWithAutoreleasePoolUsingBlock:v95];
@@ -1182,19 +1182,19 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
                 v102 = __Block_byref_object_copy__94783;
                 v103 = __Block_byref_object_dispose__94784;
                 v104 = 0;
-                v32 = [v9 actions];
+                actions = [modelCopy actions];
                 v89[0] = MEMORY[0x277D85DD0];
                 v89[1] = 3221225472;
                 v89[2] = __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___block_invoke_20;
                 v89[3] = &unk_2786874A0;
                 v94 = v101;
                 context = v15;
-                v90 = context;
-                v91 = self;
+                contextCopy2 = context;
+                selfCopy2 = self;
                 v92 = v29;
-                v33 = v10;
+                v33 = contextCopy;
                 v93 = v33;
-                [v32 hmf_enumerateWithAutoreleasePoolUsingBlock:v89];
+                [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v89];
 
                 v34 = *(*&v101[8] + 40);
                 if (!v34)
@@ -1204,14 +1204,14 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
                   *(*&v101[8] + 40) = v35;
 
                   [*(*&v101[8] + 40) setModelID:context];
-                  v37 = [(MKFCKScene *)self writerTimestamp];
-                  [*(*&v101[8] + 40) setWriterTimestamp:v37];
+                  writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+                  [*(*&v101[8] + 40) setWriterTimestamp:writerTimestamp];
 
-                  [v9 addActions_Object:*(*&v101[8] + 40)];
+                  [modelCopy addActions_Object:*(*&v101[8] + 40)];
                   v34 = *(*&v101[8] + 40);
                 }
 
-                v38 = [v34 matterPaths];
+                matterPaths2 = [v34 matterPaths];
                 v39 = *(*&buf[8] + 40);
                 v40 = HMFEqualObjects();
 
@@ -1223,23 +1223,23 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
                   [*(*&v101[8] + 40) setMatterPaths_:v43];
                 }
 
-                v44 = [*(*&v101[8] + 40) enforceExecutionOrder];
-                if (v44)
+                enforceExecutionOrder = [*(*&v101[8] + 40) enforceExecutionOrder];
+                if (enforceExecutionOrder)
                 {
-                  v45 = [*(*&v101[8] + 40) enforceExecutionOrder];
-                  v46 = [v45 BOOLValue];
+                  enforceExecutionOrder2 = [*(*&v101[8] + 40) enforceExecutionOrder];
+                  bOOLValue = [enforceExecutionOrder2 BOOLValue];
 
-                  if (v23 != v46)
+                  if (v23 != bOOLValue)
                   {
                     v47 = [MEMORY[0x277CCABB0] numberWithBool:v23];
                     [*(*&v101[8] + 40) setEnforceExecutionOrder:v47];
                   }
                 }
 
-                v48 = [*(*&v101[8] + 40) commands];
-                if (v48)
+                commands = [*(*&v101[8] + 40) commands];
+                if (commands)
                 {
-                  v49 = [*(*&v101[8] + 40) commands];
+                  commands2 = [*(*&v101[8] + 40) commands];
                   v50 = HMFEqualObjects();
 
                   if ((v50 & 1) == 0)
@@ -1258,7 +1258,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
               else
               {
                 contexta = objc_autoreleasePoolPush();
-                v78 = self;
+                selfCopy3 = self;
                 v79 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
                 {
@@ -1280,7 +1280,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
             else
             {
               v74 = objc_autoreleasePoolPush();
-              v75 = self;
+              selfCopy4 = self;
               v76 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
               {
@@ -1288,7 +1288,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
                 *buf = 138543618;
                 *&buf[4] = v77;
                 *&buf[12] = 2112;
-                *&buf[14] = v8;
+                *&buf[14] = commandCopy;
                 _os_log_impl(&dword_229538000, v76, OS_LOG_TYPE_ERROR, "%{public}@Accessory is an unexpected type: %@", buf, 0x16u);
               }
 
@@ -1300,7 +1300,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
           else
           {
             v70 = objc_autoreleasePoolPush();
-            v71 = self;
+            selfCopy5 = self;
             v72 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
             {
@@ -1308,7 +1308,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
               *buf = 138543618;
               *&buf[4] = v73;
               *&buf[12] = 2112;
-              *&buf[14] = v8;
+              *&buf[14] = commandCopy;
               _os_log_impl(&dword_229538000, v72, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory matching action: %@", buf, 0x16u);
             }
 
@@ -1320,7 +1320,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
         else
         {
           v66 = objc_autoreleasePoolPush();
-          v67 = self;
+          selfCopy6 = self;
           v68 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
           {
@@ -1328,7 +1328,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
             *buf = 138543618;
             *&buf[4] = v69;
             *&buf[12] = 2112;
-            *&buf[14] = v8;
+            *&buf[14] = commandCopy;
             _os_log_impl(&dword_229538000, v68, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode enforceExecutionOrder in action: %@", buf, 0x16u);
           }
 
@@ -1340,7 +1340,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
       else
       {
         v62 = objc_autoreleasePoolPush();
-        v63 = self;
+        selfCopy7 = self;
         v64 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
@@ -1348,7 +1348,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
           *buf = 138543618;
           *&buf[4] = v65;
           *&buf[12] = 2112;
-          *&buf[14] = v8;
+          *&buf[14] = commandCopy;
           _os_log_impl(&dword_229538000, v64, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory modelID in action: %@", buf, 0x16u);
         }
 
@@ -1360,7 +1360,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
     else
     {
       v58 = objc_autoreleasePoolPush();
-      v59 = self;
+      selfCopy8 = self;
       v60 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
       {
@@ -1368,7 +1368,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
         *buf = 138543618;
         *&buf[4] = v61;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = commandCopy;
         _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
       }
 
@@ -1380,7 +1380,7 @@ void __68__MKFCKScene_ActionComand__encodeActionCommand_accessories_context___bl
   else
   {
     v54 = objc_autoreleasePoolPush();
-    v55 = self;
+    selfCopy9 = self;
     v56 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
     {
@@ -1525,33 +1525,33 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeActionAppleMediaAccessoryPower:(id)a3 accessories:(id)a4 context:(id)a5
+- (id)encodeActionAppleMediaAccessoryPower:(id)power accessories:(id)accessories context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 accessory];
-  v12 = [v11 modelID];
+  powerCopy = power;
+  accessoriesCopy = accessories;
+  contextCopy = context;
+  accessory = [powerCopy accessory];
+  modelID = [accessory modelID];
 
-  v13 = [(MKFCKHomeObject *)self _accessoryWithModelID:v12 context:v10];
+  v13 = [(MKFCKHomeObject *)self _accessoryWithModelID:modelID context:contextCopy];
   if (v13)
   {
     v24[0] = @"AMAP";
-    v14 = [v8 modelID];
-    v24[1] = v14;
-    v24[2] = v12;
+    modelID2 = [powerCopy modelID];
+    v24[1] = modelID2;
+    v24[2] = modelID;
     v23[2] = @"AMAPATVU";
     v23[3] = @"AMAPASWS";
-    v15 = [v8 targetSleepWakeState];
-    v24[3] = v15;
+    targetSleepWakeState = [powerCopy targetSleepWakeState];
+    v24[3] = targetSleepWakeState;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -1561,9 +1561,9 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v12;
+      v30 = modelID;
       v31 = 2114;
-      v32 = v8;
+      v32 = powerCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to encode action, cannot find matching appleTV with modelID %{mask.hash}@: %{public}@", buf, 0x2Au);
     }
 
@@ -1576,13 +1576,13 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
   return v16;
 }
 
-- (id)decodeActionAppleMediaAccessoryPower:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionAppleMediaAccessoryPower:(id)power localModel:(id)model context:(id)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"Am"];
+  powerCopy = power;
+  modelCopy = model;
+  contextCopy = context;
+  v11 = [powerCopy objectForKeyedSubscript:@"Am"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1598,14 +1598,14 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
 
   if (v13)
   {
-    v14 = [v8 hmf_UUIDForKey:@"AMAPATVU"];
+    v14 = [powerCopy hmf_UUIDForKey:@"AMAPATVU"];
     if (v14)
     {
-      v15 = [v8 hmf_numberForKey:@"AMAPASWS"];
+      v15 = [powerCopy hmf_numberForKey:@"AMAPASWS"];
       if (v15)
       {
-        v16 = [v9 home];
-        v17 = [v16 accessoryWithModelID:v14 context:v10];
+        home = [modelCopy home];
+        v17 = [home accessoryWithModelID:v14 context:contextCopy];
 
         v18 = v17;
         objc_opt_class();
@@ -1631,7 +1631,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
           v59 = __Block_byref_object_copy__151561;
           *&v60 = __Block_byref_object_dispose__151562;
           *(&v60 + 1) = 0;
-          v21 = [v9 actions];
+          actions = [modelCopy actions];
           v52[0] = MEMORY[0x277D85DD0];
           v52[1] = 3221225472;
           v52[2] = __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localModel_context___block_invoke;
@@ -1639,11 +1639,11 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
           v22 = v13;
           v57 = buf;
           v53 = v22;
-          v54 = self;
-          v55 = v8;
-          v23 = v10;
+          selfCopy = self;
+          v55 = powerCopy;
+          v23 = contextCopy;
           v56 = v23;
-          [v21 hmf_enumerateWithAutoreleasePoolUsingBlock:v52];
+          [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v52];
 
           v24 = *(*&buf[8] + 40);
           if (!v24)
@@ -1653,14 +1653,14 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
             *(*&buf[8] + 40) = v25;
 
             [*(*&buf[8] + 40) setModelID:v22];
-            v27 = [(MKFCKScene *)self writerTimestamp];
-            [*(*&buf[8] + 40) setWriterTimestamp:v27];
+            writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+            [*(*&buf[8] + 40) setWriterTimestamp:writerTimestamp];
 
-            [v9 addActions_Object:*(*&buf[8] + 40)];
+            [modelCopy addActions_Object:*(*&buf[8] + 40)];
             v24 = *(*&buf[8] + 40);
           }
 
-          v28 = [v24 accessory];
+          accessory = [v24 accessory];
           v29 = HMFEqualObjects();
 
           if ((v29 & 1) == 0)
@@ -1668,7 +1668,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
             [*(*&buf[8] + 40) setAccessory:v51];
           }
 
-          v30 = [*(*&buf[8] + 40) targetSleepWakeState];
+          targetSleepWakeState = [*(*&buf[8] + 40) targetSleepWakeState];
           v31 = HMFEqualObjects();
 
           if ((v31 & 1) == 0)
@@ -1684,7 +1684,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
         else
         {
           context = objc_autoreleasePoolPush();
-          v45 = self;
+          selfCopy2 = self;
           v46 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
           {
@@ -1696,7 +1696,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
             *&buf[22] = 2112;
             v59 = v14;
             LOWORD(v60) = 2112;
-            *(&v60 + 2) = v8;
+            *(&v60 + 2) = powerCopy;
             _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_ERROR, "%{public}@Could not find accessory %{mask.hash}@ matching action %@", buf, 0x2Au);
           }
 
@@ -1708,7 +1708,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
       else
       {
         v41 = objc_autoreleasePoolPush();
-        v42 = self;
+        selfCopy3 = self;
         v43 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
         {
@@ -1716,7 +1716,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
           *buf = 138543618;
           *&buf[4] = v44;
           *&buf[12] = 2112;
-          *&buf[14] = v8;
+          *&buf[14] = powerCopy;
           _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode targetSleepWakeState in action: %@", buf, 0x16u);
         }
 
@@ -1728,7 +1728,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = self;
+      selfCopy4 = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -1736,7 +1736,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
         *buf = 138543618;
         *&buf[4] = v40;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = powerCopy;
         _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessoryUUID in action: %@", buf, 0x16u);
       }
 
@@ -1748,7 +1748,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
   else
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = self;
+    selfCopy5 = self;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -1756,7 +1756,7 @@ void __67__MKFCKScene_ActionComand__decodeActionCommand_localModel_context___blo
       *buf = 138543618;
       *&buf[4] = v36;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = powerCopy;
       _os_log_impl(&dword_229538000, v35, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
     }
 
@@ -1824,26 +1824,26 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeActionShortcut:(id)a3 context:(id)a4
+- (id)encodeActionShortcut:(id)shortcut context:(id)context
 {
   v13[3] = *MEMORY[0x277D85DE8];
   v13[0] = @"S";
   v12[0] = @"At";
   v12[1] = @"Am";
-  v4 = a3;
-  v5 = [v4 modelID];
-  v13[1] = v5;
+  shortcutCopy = shortcut;
+  modelID = [shortcutCopy modelID];
+  v13[1] = modelID;
   v12[2] = @"Sd";
-  v6 = [v4 data];
+  data = [shortcutCopy data];
 
-  v7 = [v6 copy];
-  v8 = v7;
+  v7 = [data copy];
+  data2 = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
   }
 
-  v13[2] = v8;
+  v13[2] = data2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (!v7)
   {
@@ -1854,13 +1854,13 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
   return v9;
 }
 
-- (id)decodeActionShortcut:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionShortcut:(id)shortcut localModel:(id)model context:(id)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"Am"];
+  shortcutCopy = shortcut;
+  modelCopy = model;
+  contextCopy = context;
+  v11 = [shortcutCopy objectForKeyedSubscript:@"Am"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1876,7 +1876,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
 
   if (v13)
   {
-    v14 = [v8 objectForKeyedSubscript:@"Sd"];
+    v14 = [shortcutCopy objectForKeyedSubscript:@"Sd"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1898,7 +1898,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
       v44 = __Block_byref_object_copy__211009;
       v45 = __Block_byref_object_dispose__211010;
       v46 = 0;
-      v17 = [v9 actions];
+      actions = [modelCopy actions];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __70__MKFCKScene_ActionShortcut__decodeActionShortcut_localModel_context___block_invoke;
@@ -1906,11 +1906,11 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
       v18 = v13;
       v42 = buf;
       v38 = v18;
-      v39 = self;
-      v40 = v8;
-      v19 = v10;
+      selfCopy = self;
+      v40 = shortcutCopy;
+      v19 = contextCopy;
       v41 = v19;
-      [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
+      [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v37];
 
       v20 = *(*&buf[8] + 40);
       if (!v20)
@@ -1920,15 +1920,15 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
         *(*&buf[8] + 40) = v21;
 
         [*(*&buf[8] + 40) setModelID:v18];
-        v23 = [(MKFCKScene *)self writerTimestamp];
-        [*(*&buf[8] + 40) setWriterTimestamp:v23];
+        writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+        [*(*&buf[8] + 40) setWriterTimestamp:writerTimestamp];
 
-        [v9 addActions_Object:*(*&buf[8] + 40)];
+        [modelCopy addActions_Object:*(*&buf[8] + 40)];
         v20 = *(*&buf[8] + 40);
       }
 
-      v24 = [v20 data];
-      v25 = [v16 isEqual:v24];
+      data = [v20 data];
+      v25 = [v16 isEqual:data];
 
       if ((v25 & 1) == 0)
       {
@@ -1943,7 +1943,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = self;
+      selfCopy2 = self;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -1951,7 +1951,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
         *buf = 138543618;
         *&buf[4] = v34;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = shortcutCopy;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode data in action: %@", buf, 0x16u);
       }
 
@@ -1963,7 +1963,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -1971,7 +1971,7 @@ void __85__MKFCKScene_ActionAppleTV__decodeActionAppleMediaAccessoryPower_localM
       *buf = 138543618;
       *&buf[4] = v30;
       *&buf[12] = 2112;
-      *&buf[14] = v8;
+      *&buf[14] = shortcutCopy;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
     }
 
@@ -2039,34 +2039,34 @@ void __70__MKFCKScene_ActionShortcut__decodeActionShortcut_localModel_context___
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encodeActionMediaPlayback:(id)a3 accessories:(id)a4 context:(id)a5
+- (id)encodeActionMediaPlayback:(id)playback accessories:(id)accessories context:(id)context
 {
   v61 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v41 = a4;
-  v9 = a5;
+  playbackCopy = playback;
+  accessoriesCopy = accessories;
+  contextCopy = context;
   v10 = MEMORY[0x277CBEB58];
-  v11 = [v8 accessories];
-  v12 = [v10 setWithCapacity:{objc_msgSend(v11, "count")}];
+  accessories = [playbackCopy accessories];
+  v12 = [v10 setWithCapacity:{objc_msgSend(accessories, "count")}];
 
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
   v54 = 1;
-  v13 = [v8 accessories];
+  accessories2 = [playbackCopy accessories];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories_context___block_invoke;
   v46[3] = &unk_2786874C8;
   v46[4] = self;
-  v40 = v9;
+  v40 = contextCopy;
   v47 = v40;
-  v14 = v8;
+  v14 = playbackCopy;
   v48 = v14;
   v50 = &v51;
   v15 = v12;
   v49 = v15;
-  [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v46];
+  [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v46];
 
   if ((v52[3] & 1) == 0)
   {
@@ -2074,20 +2074,20 @@ void __70__MKFCKScene_ActionShortcut__decodeActionShortcut_localModel_context___
     goto LABEL_16;
   }
 
-  v16 = [v14 encodedPlaybackArchive];
+  encodedPlaybackArchive = [v14 encodedPlaybackArchive];
 
-  if (v16)
+  if (encodedPlaybackArchive)
   {
     v17 = MEMORY[0x277CCAAB0];
-    v18 = [v14 encodedPlaybackArchive];
+    encodedPlaybackArchive2 = [v14 encodedPlaybackArchive];
     v45 = 0;
-    v19 = [v17 archivedDataWithRootObject:v18 requiringSecureCoding:1 error:&v45];
+    v19 = [v17 archivedDataWithRootObject:encodedPlaybackArchive2 requiringSecureCoding:1 error:&v45];
     v20 = v45;
 
     if (!v19)
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -2117,30 +2117,30 @@ void __70__MKFCKScene_ActionShortcut__decodeActionShortcut_localModel_context___
   v42[3] = &unk_2786874F0;
   v23 = v22;
   v43 = v23;
-  v44 = v41;
+  v44 = accessoriesCopy;
   [v15 hmf_enumerateWithAutoreleasePoolUsingBlock:v42];
   v24 = MEMORY[0x277CBEB38];
   v56[0] = @"MP";
   v55[0] = @"At";
   v55[1] = @"Am";
-  v25 = [v14 modelID];
-  v56[1] = v25;
+  modelID = [v14 modelID];
+  v56[1] = modelID;
   v55[2] = @"Mm";
-  v26 = [v23 allObjects];
-  v56[2] = v26;
+  allObjects = [v23 allObjects];
+  v56[2] = allObjects;
   v55[3] = @"Ms";
-  v27 = [v14 state];
-  v28 = [v27 copy];
+  state = [v14 state];
+  v28 = [state copy];
   v56[3] = v28;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
   v30 = [v24 dictionaryWithDictionary:v29];
 
-  v31 = [v14 volume];
+  volume = [v14 volume];
 
-  if (v31)
+  if (volume)
   {
-    v32 = [v14 volume];
-    v33 = [v32 copy];
+    volume2 = [v14 volume];
+    v33 = [volume2 copy];
     [v30 setObject:v33 forKeyedSubscript:@"Mv"];
   }
 
@@ -2211,13 +2211,13 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
   [*(a1 + 40) addObject:v5];
 }
 
-- (id)decodeActionMediaPlayback:(id)a3 localModel:(id)a4 context:(id)a5
+- (id)decodeActionMediaPlayback:(id)playback localModel:(id)model context:(id)context
 {
   v109 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v86 = a4;
-  v87 = a5;
-  v9 = [v8 objectForKeyedSubscript:@"Am"];
+  playbackCopy = playback;
+  modelCopy = model;
+  contextCopy = context;
+  v9 = [playbackCopy objectForKeyedSubscript:@"Am"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2233,7 +2233,7 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
 
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:@"Mm"];
+    v12 = [playbackCopy objectForKeyedSubscript:@"Mm"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2249,12 +2249,12 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
 
     if (v14)
     {
-      v15 = [v8 objectForKeyedSubscript:@"Ms"];
+      v15 = [playbackCopy objectForKeyedSubscript:@"Ms"];
       v16 = v15;
       if (!v15 || ((v17 = v15, objc_opt_class(), (v18 = objc_opt_isKindOfClass() & 1) == 0) ? (v19 = 0) : (v19 = v17), v20 = v19, v17, v18))
       {
 
-        v21 = [v8 objectForKeyedSubscript:@"Mv"];
+        v21 = [playbackCopy objectForKeyedSubscript:@"Mv"];
         v22 = v21;
         if (v21)
         {
@@ -2267,7 +2267,7 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
           if (!v24)
           {
             v47 = objc_autoreleasePoolPush();
-            v48 = self;
+            selfCopy = self;
             v49 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
             {
@@ -2275,7 +2275,7 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
               *buf = 138543618;
               *&buf[4] = v50;
               *&buf[12] = 2112;
-              *&buf[14] = v8;
+              *&buf[14] = playbackCopy;
               _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode volume in action: %@", buf, 0x16u);
             }
 
@@ -2286,16 +2286,16 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
           }
         }
 
-        v27 = [v8 objectForKeyedSubscript:@"Ma"];
+        v27 = [playbackCopy objectForKeyedSubscript:@"Ma"];
         v28 = v27;
         if (v27)
         {
-          v29 = v27;
+          contextCopy2 = v27;
           objc_opt_class();
           v30 = objc_opt_isKindOfClass() & 1;
           if (v30)
           {
-            v31 = v29;
+            v31 = contextCopy2;
           }
 
           else
@@ -2308,7 +2308,7 @@ void __81__MKFCKScene_ActionMediaPlayback__encodeActionMediaPlayback_accessories
           if (v30)
           {
             v104 = 0;
-            context = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v29 error:&v104];
+            context = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:contextCopy2 error:&v104];
             v33 = v104;
             if (context)
             {
@@ -2324,12 +2324,12 @@ LABEL_40:
               v94[2] = __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_context___block_invoke;
               v94[3] = &unk_278687478;
               v94[4] = self;
-              v52 = v8;
+              v52 = playbackCopy;
               v95 = v52;
               v99 = &v100;
-              v53 = v86;
+              v53 = modelCopy;
               v96 = v53;
-              v54 = v87;
+              v54 = contextCopy;
               v97 = v54;
               v81 = v51;
               v98 = v81;
@@ -2343,7 +2343,7 @@ LABEL_40:
                 v107 = __Block_byref_object_dispose__262723;
                 v108 = 0;
                 v80 = v53;
-                v55 = [v53 actions];
+                actions = [v53 actions];
                 v88[0] = MEMORY[0x277D85DD0];
                 v88[1] = 3221225472;
                 v88[2] = __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_context___block_invoke_17;
@@ -2351,11 +2351,11 @@ LABEL_40:
                 v93 = buf;
                 v56 = v11;
                 v89 = v56;
-                v90 = self;
+                selfCopy2 = self;
                 v91 = v52;
                 v57 = v54;
                 v92 = v57;
-                [v55 hmf_enumerateWithAutoreleasePoolUsingBlock:v88];
+                [actions hmf_enumerateWithAutoreleasePoolUsingBlock:v88];
 
                 v58 = *(*&buf[8] + 40);
                 if (!v58)
@@ -2365,14 +2365,14 @@ LABEL_40:
                   *(*&buf[8] + 40) = v59;
 
                   [*(*&buf[8] + 40) setModelID:v56];
-                  v61 = [(MKFCKScene *)self writerTimestamp];
-                  [*(*&buf[8] + 40) setWriterTimestamp:v61];
+                  writerTimestamp = [(MKFCKScene *)self writerTimestamp];
+                  [*(*&buf[8] + 40) setWriterTimestamp:writerTimestamp];
 
                   [v80 addActions_Object:*(*&buf[8] + 40)];
                   v58 = *(*&buf[8] + 40);
                 }
 
-                v62 = [v58 state];
+                state = [v58 state];
                 v63 = HMFEqualObjects();
 
                 if ((v63 & 1) == 0)
@@ -2380,7 +2380,7 @@ LABEL_40:
                   [*(*&buf[8] + 40) setState:v16];
                 }
 
-                v64 = [*(*&buf[8] + 40) volume];
+                volume = [*(*&buf[8] + 40) volume];
                 v65 = HMFEqualObjects();
 
                 if ((v65 & 1) == 0)
@@ -2388,7 +2388,7 @@ LABEL_40:
                   [*(*&buf[8] + 40) setVolume:v22];
                 }
 
-                v66 = [*(*&buf[8] + 40) encodedPlaybackArchive];
+                encodedPlaybackArchive = [*(*&buf[8] + 40) encodedPlaybackArchive];
                 v67 = HMFEqualObjects();
 
                 if ((v67 & 1) == 0)
@@ -2396,8 +2396,8 @@ LABEL_40:
                   [*(*&buf[8] + 40) setEncodedPlaybackArchive:context];
                 }
 
-                v68 = [*(*&buf[8] + 40) accessories];
-                v69 = [v68 isEqualToSet:v81];
+                accessories = [*(*&buf[8] + 40) accessories];
+                v69 = [accessories isEqualToSet:v81];
 
                 if ((v69 & 1) == 0)
                 {
@@ -2417,13 +2417,13 @@ LABEL_40:
               }
 
               _Block_object_dispose(&v100, 8);
-              v29 = context;
+              contextCopy2 = context;
               goto LABEL_61;
             }
 
             contextb = v33;
             v82 = objc_autoreleasePoolPush();
-            v75 = self;
+            selfCopy3 = self;
             v76 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v76, OS_LOG_TYPE_ERROR))
             {
@@ -2431,7 +2431,7 @@ LABEL_40:
               *buf = 138543874;
               *&buf[4] = v77;
               *&buf[12] = 2112;
-              *&buf[14] = v8;
+              *&buf[14] = playbackCopy;
               *&buf[22] = 2114;
               v106 = contextb;
               _os_log_impl(&dword_229538000, v76, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode playback archive in action: %@, %{public}@", buf, 0x20u);
@@ -2443,7 +2443,7 @@ LABEL_40:
           else
           {
             contexta = objc_autoreleasePoolPush();
-            v72 = self;
+            selfCopy4 = self;
             v73 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
             {
@@ -2451,7 +2451,7 @@ LABEL_40:
               *buf = 138543618;
               *&buf[4] = v74;
               *&buf[12] = 2112;
-              *&buf[14] = v8;
+              *&buf[14] = playbackCopy;
               _os_log_impl(&dword_229538000, v73, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode encodedArchive in action: %@", buf, 0x16u);
             }
 
@@ -2470,7 +2470,7 @@ LABEL_62:
       }
 
       v43 = objc_autoreleasePoolPush();
-      v44 = self;
+      selfCopy5 = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -2478,7 +2478,7 @@ LABEL_62:
         *buf = 138543618;
         *&buf[4] = v46;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = playbackCopy;
         _os_log_impl(&dword_229538000, v45, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode state in action: %@", buf, 0x16u);
       }
 
@@ -2488,7 +2488,7 @@ LABEL_62:
     else
     {
       v39 = objc_autoreleasePoolPush();
-      v40 = self;
+      selfCopy6 = self;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
@@ -2496,7 +2496,7 @@ LABEL_62:
         *buf = 138543618;
         *&buf[4] = v42;
         *&buf[12] = 2112;
-        *&buf[14] = v8;
+        *&buf[14] = playbackCopy;
         _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode accessory modelIDs in action: %@", buf, 0x16u);
       }
 
@@ -2510,7 +2510,7 @@ LABEL_63:
   }
 
   v34 = objc_autoreleasePoolPush();
-  v35 = self;
+  selfCopy7 = self;
   v36 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
@@ -2518,7 +2518,7 @@ LABEL_63:
     *buf = 138543618;
     *&buf[4] = v37;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = playbackCopy;
     _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@Failed to decode modelID in action: %@", buf, 0x16u);
   }
 
@@ -2660,44 +2660,44 @@ void __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v65 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  propertiesCopy = properties;
+  contextCopy = context;
   context = objc_autoreleasePoolPush();
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v11 = modelCopy;
+  v12 = propertiesCopy;
+  v13 = contextCopy;
   if (self && [(MKFCKModel *)self copyPropertiesFromLocalModel:v11 context:v13])
   {
     v14 = MEMORY[0x277CBEB58];
-    v15 = [v11 actions];
-    v16 = [v14 setWithCapacity:{objc_msgSend(v15, "count")}];
+    actions = [v11 actions];
+    v16 = [v14 setWithCapacity:{objc_msgSend(actions, "count")}];
 
     v17 = [MEMORY[0x277CBEB58] set];
-    v18 = [v13 hmd_currentChangeSet];
+    hmd_currentChangeSet = [v13 hmd_currentChangeSet];
     v19 = MEMORY[0x277CBEB38];
-    v20 = [(MKFCKScene *)self actions];
-    v21 = [v19 dictionaryWithCapacity:{objc_msgSend(v20, "count")}];
+    actions2 = [(MKFCKScene *)self actions];
+    v21 = [v19 dictionaryWithCapacity:{objc_msgSend(actions2, "count")}];
 
-    v22 = [(MKFCKScene *)self actions];
+    actions3 = [(MKFCKScene *)self actions];
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
     v58[2] = __62__MKFCKScene__exportFromLocalModel_updatedProperties_context___block_invoke;
     v58[3] = &unk_278689E38;
-    v45 = v18;
+    v45 = hmd_currentChangeSet;
     v59 = v45;
     v23 = v21;
     v60 = v23;
-    [v22 hmf_enumerateWithAutoreleasePoolUsingBlock:v58];
+    [actions3 hmf_enumerateWithAutoreleasePoolUsingBlock:v58];
 
     v54 = 0;
     v55 = &v54;
     v56 = 0x2020000000;
     v57 = 1;
-    v24 = [v11 actions];
+    actions4 = [v11 actions];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __62__MKFCKScene__exportFromLocalModel_updatedProperties_context___block_invoke_2;
@@ -2711,7 +2711,7 @@ void __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_
     v51 = v26;
     v46 = v16;
     v52 = v46;
-    [v24 hmf_enumerateWithAutoreleasePoolUsingBlock:v48];
+    [actions4 hmf_enumerateWithAutoreleasePoolUsingBlock:v48];
 
     if (v55[3])
     {
@@ -2721,20 +2721,20 @@ void __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_
       v62 = &unk_278689E88;
       v27 = v46;
       v63 = v27;
-      v64 = self;
+      selfCopy = self;
       [v26 enumerateKeysAndObjectsUsingBlock:buf];
       v28 = MEMORY[0x277CBEB98];
-      v29 = [(MKFCKScene *)self actions];
-      v30 = [v28 setWithArray:v29];
+      actions5 = [(MKFCKScene *)self actions];
+      v30 = [v28 setWithArray:actions5];
       LOBYTE(v28) = HMFEqualObjects();
 
       if ((v28 & 1) == 0)
       {
-        v31 = [v27 allObjects];
-        [(MKFCKScene *)self setActions:v31];
+        allObjects = [v27 allObjects];
+        [(MKFCKScene *)self setActions:allObjects];
       }
 
-      v32 = [(MKFCKScene *)self accessories];
+      accessories = [(MKFCKScene *)self accessories];
       v33 = HMFEqualObjects();
 
       if ((v33 & 1) == 0)
@@ -2744,7 +2744,7 @@ void __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_
       }
 
       v35 = [_MKFApplicationData appDataDictionaryForContainer:v11];
-      v36 = [(MKFCKScene *)self applicationData];
+      applicationData = [(MKFCKScene *)self applicationData];
       v37 = HMFEqualObjects();
 
       if ((v37 & 1) == 0)
@@ -2756,7 +2756,7 @@ void __80__MKFCKScene_ActionMediaPlayback__decodeActionMediaPlayback_localModel_
     else
     {
       v39 = objc_autoreleasePoolPush();
-      v40 = self;
+      selfCopy2 = self;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
@@ -2954,33 +2954,33 @@ void __62__MKFCKScene__exportFromLocalModel_updatedProperties_context___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:v7 context:v8];
+  modelCopy = model;
+  contextCopy = context;
+  v9 = [(MKFCKModel *)self copyPropertiesIntoLocalModel:modelCopy context:contextCopy];
   if (v9)
   {
     v10 = MEMORY[0x277CBEB58];
-    v11 = [(MKFCKScene *)self actions];
-    v12 = [v10 setWithCapacity:{objc_msgSend(v11, "count")}];
+    actions = [(MKFCKScene *)self actions];
+    v12 = [v10 setWithCapacity:{objc_msgSend(actions, "count")}];
 
-    v13 = [(MKFCKScene *)self actions];
+    actions2 = [(MKFCKScene *)self actions];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __61__MKFCKScene_importIntoLocalModel_updatedProperties_context___block_invoke;
     v28[3] = &unk_278689DE8;
     v28[4] = self;
-    v14 = v7;
+    v14 = modelCopy;
     v29 = v14;
-    v15 = v8;
+    v15 = contextCopy;
     v30 = v15;
     v16 = v12;
     v31 = v16;
-    [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v28];
+    [actions2 hmf_enumerateWithAutoreleasePoolUsingBlock:v28];
 
-    v17 = [v14 actions];
-    v18 = [v17 allObjects];
+    actions3 = [v14 actions];
+    allObjects = [actions3 allObjects];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __61__MKFCKScene_importIntoLocalModel_updatedProperties_context___block_invoke_24;
@@ -2988,7 +2988,7 @@ void __62__MKFCKScene__exportFromLocalModel_updatedProperties_context___block_in
     v26 = v16;
     v27 = v15;
     v19 = v16;
-    [v18 hmf_enumerateWithAutoreleasePoolUsingBlock:&v22];
+    [allObjects hmf_enumerateWithAutoreleasePoolUsingBlock:&v22];
 
     v20 = [(MKFCKScene *)self applicationData:v22];
     [_MKFApplicationData setAppDataDictionary:v20 forContainer:v14];

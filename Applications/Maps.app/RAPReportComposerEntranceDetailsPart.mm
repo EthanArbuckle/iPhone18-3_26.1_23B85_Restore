@@ -1,13 +1,13 @@
 @interface RAPReportComposerEntranceDetailsPart
-- (RAPReportComposerEntranceDetailsPart)initWithCorrectableString:(id)a3;
+- (RAPReportComposerEntranceDetailsPart)initWithCorrectableString:(id)string;
 @end
 
 @implementation RAPReportComposerEntranceDetailsPart
 
-- (RAPReportComposerEntranceDetailsPart)initWithCorrectableString:(id)a3
+- (RAPReportComposerEntranceDetailsPart)initWithCorrectableString:(id)string
 {
-  v4 = a3;
-  v5 = [[RAPReportComposerIncorrectNameSection alloc] initWithCorrectableString:v4 required:0];
+  stringCopy = string;
+  v5 = [[RAPReportComposerIncorrectNameSection alloc] initWithCorrectableString:stringCopy required:0];
 
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Details [Report a Problem value:Access Point]" table:{@"localized string not found", 0}];

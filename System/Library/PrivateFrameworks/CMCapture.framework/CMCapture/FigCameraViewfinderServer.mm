@@ -1,16 +1,16 @@
 @interface FigCameraViewfinderServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FigCameraViewfinderServer)init;
 - (id)osStatePropertyList;
-- (uint64_t)_remoteViewfinderForLocalViewfinder:(_DWORD *)a3 remotePID:;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4;
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4;
-- (void)cameraViewfinderSession:(id)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6;
-- (void)cameraViewfinderSession:(id)a3 previewStreamDidCloseWithStatus:(int)a4;
-- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)a3;
-- (void)cameraViewfinderSessionDidStartMovieRecording:(id)a3;
-- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)a3;
+- (uint64_t)_remoteViewfinderForLocalViewfinder:(_DWORD *)viewfinder remotePID:;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end;
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin;
+- (void)cameraViewfinderSession:(id)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp;
+- (void)cameraViewfinderSession:(id)session previewStreamDidCloseWithStatus:(int)status;
+- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)recording;
+- (void)cameraViewfinderSessionDidStartMovieRecording:(id)recording;
+- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)open;
 - (void)dealloc;
 @end
 
@@ -54,11 +54,11 @@
   [(FigCameraViewfinderServer *)&v4 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  if (a4)
+  if (connection)
   {
-    [a4 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -90,11 +90,11 @@
         v22 = 136315906;
         v23 = "[FigCameraViewfinderServer listener:shouldAcceptNewConnection:]";
         v24 = 2112;
-        v25 = a3;
+        connectionCopy2 = listener;
         v26 = 1024;
-        v27 = [a4 processIdentifier];
+        processIdentifier = [connection processIdentifier];
         v28 = 2112;
-        v29 = a4;
+        connectionCopy = connection;
         LODWORD(v18) = 38;
         v17 = &v22;
         _os_log_send_and_compose_impl();
@@ -103,7 +103,7 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    [a4 setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1F22C4508, v17, v18)}];
+    [connection setExportedInterface:{objc_msgSend(MEMORY[0x1E696B0D0], "interfaceWithProtocol:", &unk_1F22C4508, v17, v18)}];
     v11 = +[FigCameraViewfinderLocal cameraViewfinder];
     callbackQueue = self->_callbackQueue;
     v21[0] = MEMORY[0x1E69E9820];
@@ -111,26 +111,26 @@
     v21[2] = __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___block_invoke;
     v21[3] = &unk_1E798F898;
     v21[4] = self;
-    v21[5] = a4;
+    v21[5] = connection;
     fig_dispatch_async_autoreleasepool(callbackQueue, v21);
     [v11 setDelegate:self queue:self->_callbackQueue];
-    [a4 setExportedObject:v11];
-    [a4 setRemoteObjectInterface:{+[FigCameraViewfinderRemote remoteObjectCallbacksInterface](FigCameraViewfinderRemote, "remoteObjectCallbacksInterface")}];
+    [connection setExportedObject:v11];
+    [connection setRemoteObjectInterface:{+[FigCameraViewfinderRemote remoteObjectCallbacksInterface](FigCameraViewfinderRemote, "remoteObjectCallbacksInterface")}];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___block_invoke_2;
     v20[3] = &unk_1E798FD58;
-    v20[4] = a4;
+    v20[4] = connection;
     v20[5] = v11;
     v20[6] = self;
-    [a4 setInvalidationHandler:v20];
+    [connection setInvalidationHandler:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___block_invoke_2_70;
     v19[3] = &unk_1E798F870;
-    v19[4] = a4;
-    [a4 setInterruptionHandler:v19];
-    [a4 resume];
+    v19[4] = connection;
+    [connection setInterruptionHandler:v19];
+    [connection resume];
   }
 
   else
@@ -154,7 +154,7 @@
       v22 = 136315394;
       v23 = "[FigCameraViewfinderServer listener:shouldAcceptNewConnection:]";
       v24 = 2112;
-      v25 = a4;
+      connectionCopy2 = connection;
       _os_log_send_and_compose_impl();
     }
 
@@ -196,17 +196,17 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
   return fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionWillBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionWillBegin:(id)begin
 {
   memset(v15, 0, sizeof(v15));
-  if (a4)
+  if (begin)
   {
-    [a4 clientAuditToken];
+    [begin clientAuditToken];
   }
 
   v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v15 length:32];
   v14 = -1;
-  v8 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:a3 remotePID:&v14];
+  v8 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:viewfinder remotePID:&v14];
   if (dword_1ED844190)
   {
     v13 = 0;
@@ -216,19 +216,19 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [v8 viewfinderSessionWillBegin:a4 withIdentifier:objc_msgSend(a4 clientAuditTokenData:"identifier" usesPhotoOutput:v10 usesMovieFileOutput:{v11), v7, objc_msgSend(a4, "usesPhotoOutput"), objc_msgSend(a4, "usesMovieFileOutput")}];
+  [v8 viewfinderSessionWillBegin:begin withIdentifier:objc_msgSend(begin clientAuditTokenData:"identifier" usesPhotoOutput:v10 usesMovieFileOutput:{v11), v7, objc_msgSend(begin, "usesPhotoOutput"), objc_msgSend(begin, "usesMovieFileOutput")}];
 }
 
-- (uint64_t)_remoteViewfinderForLocalViewfinder:(_DWORD *)a3 remotePID:
+- (uint64_t)_remoteViewfinderForLocalViewfinder:(_DWORD *)viewfinder remotePID:
 {
   result = 0;
-  if (a1 && a2)
+  if (self && a2)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = *(a1 + 16);
+    v7 = *(self + 16);
     v8 = [v7 countByEnumeratingWithState:&v23 objects:v22 count:16];
     if (v8)
     {
@@ -246,9 +246,9 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
           v12 = *(*(&v23 + 1) + 8 * i);
           if ([objc_msgSend(v12 "exportedObject")])
           {
-            if (a3)
+            if (viewfinder)
             {
-              *a3 = [v12 processIdentifier];
+              *viewfinder = [v12 processIdentifier];
             }
 
             return [v12 remoteObjectProxy];
@@ -269,7 +269,7 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = *(a1 + 16);
+    v13 = *(self + 16);
     v14 = [v13 countByEnumeratingWithState:&v18 objects:v17 count:16];
     if (v14)
     {
@@ -300,17 +300,17 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
   return result;
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidBegin:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidBegin:(id)begin
 {
   memset(v15, 0, sizeof(v15));
-  if (a4)
+  if (begin)
   {
-    [a4 clientAuditToken];
+    [begin clientAuditToken];
   }
 
   v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v15 length:32];
   v14 = -1;
-  v8 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:a3 remotePID:&v14];
+  v8 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:viewfinder remotePID:&v14];
   if (dword_1ED844190)
   {
     v13 = 0;
@@ -320,13 +320,13 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  [v8 viewfinderSessionDidBegin:a4 withIdentifier:objc_msgSend(a4 clientAuditTokenData:"identifier" usesPhotoOutput:v10 usesMovieFileOutput:{v11), v7, objc_msgSend(a4, "usesPhotoOutput"), objc_msgSend(a4, "usesMovieFileOutput")}];
+  [v8 viewfinderSessionDidBegin:begin withIdentifier:objc_msgSend(begin clientAuditTokenData:"identifier" usesPhotoOutput:v10 usesMovieFileOutput:{v11), v7, objc_msgSend(begin, "usesPhotoOutput"), objc_msgSend(begin, "usesMovieFileOutput")}];
 }
 
-- (void)cameraViewfinder:(id)a3 viewfinderSessionDidEnd:(id)a4
+- (void)cameraViewfinder:(id)viewfinder viewfinderSessionDidEnd:(id)end
 {
   v10 = -1;
-  v4 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:a3 remotePID:&v10];
+  v4 = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:viewfinder remotePID:&v10];
   if (dword_1ED844190)
   {
     v9 = 0;
@@ -378,72 +378,72 @@ uint64_t __64__FigCameraViewfinderServer_listener_shouldAcceptNewConnection___bl
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
 }
 
-- (void)cameraViewfinderSession:(id)a3 didCapturePhotoWithStatus:(int)a4 thumbnailData:(id)a5 timestamp:(id *)a6
+- (void)cameraViewfinderSession:(id)session didCapturePhotoWithStatus:(int)status thumbnailData:(id)data timestamp:(id *)timestamp
 {
-  v8 = *&a4;
-  v11 = [a3 viewfinder];
+  v8 = *&status;
+  viewfinder = [session viewfinder];
   if (self)
   {
-    self = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:v11 remotePID:0];
+    self = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:viewfinder remotePID:0];
   }
 
-  v12 = [a3 identifier];
-  v13 = *&a6->var0;
-  var3 = a6->var3;
-  [(FigCameraViewfinderServer *)self viewfinderSession:v12 didCapturePhotoWithStatus:v8 thumbnailData:a5 timestamp:&v13];
+  identifier = [session identifier];
+  v13 = *&timestamp->var0;
+  var3 = timestamp->var3;
+  [(FigCameraViewfinderServer *)self viewfinderSession:identifier didCapturePhotoWithStatus:v8 thumbnailData:data timestamp:&v13];
 }
 
-- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)a3
+- (void)cameraViewfinderSessionPreviewStreamDidOpen:(id)open
 {
-  v5 = OUTLINED_FUNCTION_0_89(self, a2, a3);
+  v5 = OUTLINED_FUNCTION_0_89(self, a2, open);
   if (v4)
   {
     v4 = OUTLINED_FUNCTION_1_103(v5);
   }
 
-  v6 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  [v4 viewfinderSessionPreviewStreamDidOpen:v6];
+  [v4 viewfinderSessionPreviewStreamDidOpen:identifier];
 }
 
-- (void)cameraViewfinderSession:(id)a3 previewStreamDidCloseWithStatus:(int)a4
+- (void)cameraViewfinderSession:(id)session previewStreamDidCloseWithStatus:(int)status
 {
-  v4 = *&a4;
-  v7 = [a3 viewfinder];
+  v4 = *&status;
+  viewfinder = [session viewfinder];
   if (self)
   {
-    self = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:v7 remotePID:0];
+    self = [(FigCameraViewfinderServer *)self _remoteViewfinderForLocalViewfinder:viewfinder remotePID:0];
   }
 
-  v8 = [a3 identifier];
+  identifier = [session identifier];
 
-  [(FigCameraViewfinderServer *)self viewfinderSession:v8 previewStreamDidCloseWithStatus:v4];
+  [(FigCameraViewfinderServer *)self viewfinderSession:identifier previewStreamDidCloseWithStatus:v4];
 }
 
-- (void)cameraViewfinderSessionDidStartMovieRecording:(id)a3
+- (void)cameraViewfinderSessionDidStartMovieRecording:(id)recording
 {
-  v5 = OUTLINED_FUNCTION_0_89(self, a2, a3);
+  v5 = OUTLINED_FUNCTION_0_89(self, a2, recording);
   if (v4)
   {
     v4 = OUTLINED_FUNCTION_1_103(v5);
   }
 
-  v6 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  [v4 viewfinderSessionDidStartMovieRecording:v6];
+  [v4 viewfinderSessionDidStartMovieRecording:identifier];
 }
 
-- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)a3
+- (void)cameraViewfinderSessionDidFinishMovieRecording:(id)recording
 {
-  v5 = OUTLINED_FUNCTION_0_89(self, a2, a3);
+  v5 = OUTLINED_FUNCTION_0_89(self, a2, recording);
   if (v4)
   {
     v4 = OUTLINED_FUNCTION_1_103(v5);
   }
 
-  v6 = [v3 identifier];
+  identifier = [v3 identifier];
 
-  [v4 viewfinderSessionDidFinishMovieRecording:v6];
+  [v4 viewfinderSessionDidFinishMovieRecording:identifier];
 }
 
 @end

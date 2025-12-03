@@ -1,22 +1,22 @@
 @interface CSDConversationCallCoordinationManager
-- (CSDConversationCallCoordinationManager)initWithConversationManager:(id)a3 sharePlayAvailabilityManager:(id)a4 compositeContainerProvider:(id)a5 relaySupportEnabled:(BOOL)a6 serverBag:(id)a7 queue:(id)a8;
-- (void)activeActivitySessionContainersWithCompletionHandler:(id)a3;
-- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)a3 onContainerWithID:(NSUUID *)a4 completionHandler:(id)a5;
-- (void)handleCallChangedWithCall:(id)a3;
+- (CSDConversationCallCoordinationManager)initWithConversationManager:(id)manager sharePlayAvailabilityManager:(id)availabilityManager compositeContainerProvider:(id)provider relaySupportEnabled:(BOOL)enabled serverBag:(id)bag queue:(id)queue;
+- (void)activeActivitySessionContainersWithCompletionHandler:(id)handler;
+- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)activity onContainerWithID:(NSUUID *)d completionHandler:(id)handler;
+- (void)handleCallChangedWithCall:(id)call;
 @end
 
 @implementation CSDConversationCallCoordinationManager
 
-- (void)handleCallChangedWithCall:(id)a3
+- (void)handleCallChangedWithCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
 
-  ConversationCallCoordinationManager.handleCallChanged(call:)(v3);
+  ConversationCallCoordinationManager.handleCallChanged(call:)(callCopy);
 }
 
-- (void)activeActivitySessionContainersWithCompletionHandler:(id)a3
+- (void)activeActivitySessionContainersWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(v5 + 24) = self;
@@ -24,25 +24,25 @@
   sub_10044D610(&unk_100581508, v5);
 }
 
-- (CSDConversationCallCoordinationManager)initWithConversationManager:(id)a3 sharePlayAvailabilityManager:(id)a4 compositeContainerProvider:(id)a5 relaySupportEnabled:(BOOL)a6 serverBag:(id)a7 queue:(id)a8
+- (CSDConversationCallCoordinationManager)initWithConversationManager:(id)manager sharePlayAvailabilityManager:(id)availabilityManager compositeContainerProvider:(id)provider relaySupportEnabled:(BOOL)enabled serverBag:(id)bag queue:(id)queue
 {
   swift_unknownObjectRetain();
 
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return sub_100344E1C(a3, a4, a5, a6, a7, a8);
+  return sub_100344E1C(manager, availabilityManager, provider, enabled, bag, queue);
 }
 
-- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)a3 onContainerWithID:(NSUUID *)a4 completionHandler:(id)a5
+- (void)handleActivitySessionCreationRequestWithActivity:(TUConversationActivity *)activity onContainerWithID:(NSUUID *)d completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  v9[2] = a3;
-  v9[3] = a4;
+  v9[2] = activity;
+  v9[3] = d;
   v9[4] = v8;
   v9[5] = self;
-  v10 = a3;
-  v11 = a4;
+  activityCopy = activity;
+  dCopy = d;
 
   sub_10044D610(&unk_1005814F0, v9);
 }

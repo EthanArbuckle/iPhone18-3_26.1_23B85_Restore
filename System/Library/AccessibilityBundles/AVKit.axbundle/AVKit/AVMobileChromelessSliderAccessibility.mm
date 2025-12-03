@@ -1,32 +1,32 @@
 @interface AVMobileChromelessSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (id)accessibilityValue;
 - (void)_accessibilityAnnounceNewValue;
 @end
 
 @implementation AVMobileChromelessSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileChromelessSlider" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"continueTrackingWithTouch:withEvent:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"AVMobileChromelessControlsViewController" hasProperty:@"playerController" withType:"@"];
-  [v3 validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"accessibilityIncrement" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"accessibilityDecrement" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AVPlayerController" hasInstanceMethod:@"seekByTimeInterval:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileChromelessSlider" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"continueTrackingWithTouch:withEvent:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessControlsViewController" hasProperty:@"playerController" withType:"@"];
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" hasInstanceMethod:@"trailingTimeText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"accessibilityIncrement" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVMobileChromelessSlider" hasInstanceMethod:@"accessibilityDecrement" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AVPlayerController" hasInstanceMethod:@"seekByTimeInterval:" withFullSignature:{"v", "d", 0}];
 }
 
 - (id)accessibilityValue
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
 
-  v4 = [v3 safeStringForKey:@"trailingTimeText"];
+  v4 = [superview safeStringForKey:@"trailingTimeText"];
   if (v4)
   {
     v5 = MEMORY[0x29EDBA0F8];
@@ -45,15 +45,15 @@
 - (void)_accessibilityAnnounceNewValue
 {
   v2 = *MEMORY[0x29EDC7EA8];
-  v3 = [(AVMobileChromelessSliderAccessibility *)self _accessibilityAXAttributedValue];
-  UIAccessibilityPostNotification(v2, v3);
+  _accessibilityAXAttributedValue = [(AVMobileChromelessSliderAccessibility *)self _accessibilityAXAttributedValue];
+  UIAccessibilityPostNotification(v2, _accessibilityAXAttributedValue);
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = AVMobileChromelessSliderAccessibility;
-  v4 = [(AVMobileChromelessSliderAccessibility *)&v6 continueTrackingWithTouch:a3 withEvent:a4];
+  v4 = [(AVMobileChromelessSliderAccessibility *)&v6 continueTrackingWithTouch:touch withEvent:event];
   AXPerformSafeBlock();
   return v4;
 }

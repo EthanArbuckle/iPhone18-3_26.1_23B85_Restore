@@ -8,31 +8,31 @@
 - (PSSpecifier)visitedPlacesSpecifier;
 - (PSSpecifier)visitedPlacesSpinnerSpecifier;
 - (PUILocationServicesAuthorizationLevelController)init;
-- (id)_constructFooterForAuthorizationLevel:(unint64_t)a3;
+- (id)_constructFooterForAuthorizationLevel:(unint64_t)level;
 - (id)_constructFooterForVisitedPlaces;
-- (id)_preciseLocationStatus:(id)a3;
-- (id)_preferredRoutesStatus:(id)a3;
-- (id)_purposeStringForAuthorizationLevel:(unint64_t)a3;
-- (id)_usageTextForAuthorizationLevel:(unint64_t)a3;
-- (id)_visitedPlacesStatus:(id)a3;
+- (id)_preciseLocationStatus:(id)status;
+- (id)_preferredRoutesStatus:(id)status;
+- (id)_purposeStringForAuthorizationLevel:(unint64_t)level;
+- (id)_usageTextForAuthorizationLevel:(unint64_t)level;
+- (id)_visitedPlacesStatus:(id)status;
 - (id)createQualifierSpecifierGroups;
 - (id)specifiers;
 - (void)_constructFooterForVisitedPlaces;
-- (void)_setLocationAuthorizationLevelForSpecifier:(id)a3;
-- (void)_setPreciseLocationEnabled:(id)a3 specifier:(id)a4;
-- (void)_setPreferredRoutesEnabled:(id)a3 specifier:(id)a4;
-- (void)_setVisitedPlacesEnabled:(id)a3 specifier:(id)a4;
+- (void)_setLocationAuthorizationLevelForSpecifier:(id)specifier;
+- (void)_setPreciseLocationEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setPreferredRoutesEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setVisitedPlacesEnabled:(id)enabled specifier:(id)specifier;
 - (void)_synchronizeLocationDetails;
-- (void)addSignificantLocationsFooter:(id)a3 hyperlink:(id)a4 toSpecifier:(id)a5;
+- (void)addSignificantLocationsFooter:(id)footer hyperlink:(id)hyperlink toSpecifier:(id)specifier;
 - (void)createQualifierSpecifierGroups;
 - (void)dealloc;
 - (void)getQualifierState;
-- (void)profileSettingsChanged:(id)a3;
+- (void)profileSettingsChanged:(id)changed;
 - (void)reloadSpecifiers;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCoreRoutineSettings:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCoreRoutineSettings:(id)settings;
 @end
 
 @implementation PUILocationServicesAuthorizationLevelController
@@ -44,8 +44,8 @@
   v2 = [(PUILocationServicesListController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_profileSettingsChanged_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_profileSettingsChanged_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
   }
 
   return v2;
@@ -53,37 +53,37 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PUILocationServicesAuthorizationLevelController;
   [(PUILocationServicesListController *)&v4 dealloc];
 }
 
-- (void)profileSettingsChanged:(id)a3
+- (void)profileSettingsChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v11 = [v4 objectForKey:*MEMORY[0x277D26180]];
+  userInfo = [changed userInfo];
+  v11 = [userInfo objectForKey:*MEMORY[0x277D26180]];
 
-  LODWORD(v4) = [v11 intValue];
-  if (v4 != getpid())
+  LODWORD(userInfo) = [v11 intValue];
+  if (userInfo != getpid())
   {
-    v5 = [(PUILocationServicesAuthorizationLevelController *)self navigationController];
-    v6 = [v5 topViewController];
-    v7 = v6;
-    if (v6 == self)
+    navigationController = [(PUILocationServicesAuthorizationLevelController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    v7 = topViewController;
+    if (topViewController == self)
     {
-      v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) identifier];
-      v9 = isModificationAllowedForID(v8);
+      identifier = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) identifier];
+      v9 = isModificationAllowedForID(identifier);
 
       if (v9)
       {
         goto LABEL_7;
       }
 
-      v5 = [(PUILocationServicesAuthorizationLevelController *)self navigationController];
-      v10 = [v5 popViewControllerAnimated:1];
+      navigationController = [(PUILocationServicesAuthorizationLevelController *)self navigationController];
+      v10 = [navigationController popViewControllerAnimated:1];
     }
 
     else
@@ -94,16 +94,16 @@
 LABEL_7:
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = PUILocationServicesAuthorizationLevelController;
-  v4 = a3;
-  [(PUILocationServicesAuthorizationLevelController *)&v7 setSpecifier:v4];
-  v5 = [v4 identifier];
+  specifierCopy = specifier;
+  [(PUILocationServicesAuthorizationLevelController *)&v7 setSpecifier:specifierCopy];
+  identifier = [specifierCopy identifier];
 
   serviceKey = self->_serviceKey;
-  self->_serviceKey = v5;
+  self->_serviceKey = identifier;
 }
 
 - (void)_synchronizeLocationDetails
@@ -117,34 +117,34 @@ LABEL_7:
 
 - (void)reloadSpecifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  correctiveCompensationSpecifierGroup = v2->_correctiveCompensationSpecifierGroup;
-  v2->_correctiveCompensationSpecifierGroup = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  correctiveCompensationSpecifierGroup = selfCopy->_correctiveCompensationSpecifierGroup;
+  selfCopy->_correctiveCompensationSpecifierGroup = 0;
 
-  qualifierSpecifierGroups = v2->_qualifierSpecifierGroups;
-  v2->_qualifierSpecifierGroups = 0;
+  qualifierSpecifierGroups = selfCopy->_qualifierSpecifierGroups;
+  selfCopy->_qualifierSpecifierGroups = 0;
 
-  visitedPlacesSpecifierGroup = v2->_visitedPlacesSpecifierGroup;
-  v2->_visitedPlacesSpecifierGroup = 0;
+  visitedPlacesSpecifierGroup = selfCopy->_visitedPlacesSpecifierGroup;
+  selfCopy->_visitedPlacesSpecifierGroup = 0;
 
-  preferredRoutesSpecifierGroup = v2->_preferredRoutesSpecifierGroup;
-  v2->_preferredRoutesSpecifierGroup = 0;
+  preferredRoutesSpecifierGroup = selfCopy->_preferredRoutesSpecifierGroup;
+  selfCopy->_preferredRoutesSpecifierGroup = 0;
 
-  visitedPlacesSpecifier = v2->_visitedPlacesSpecifier;
-  v2->_visitedPlacesSpecifier = 0;
+  visitedPlacesSpecifier = selfCopy->_visitedPlacesSpecifier;
+  selfCopy->_visitedPlacesSpecifier = 0;
 
-  preferredRoutesSpecifier = v2->_preferredRoutesSpecifier;
-  v2->_preferredRoutesSpecifier = 0;
+  preferredRoutesSpecifier = selfCopy->_preferredRoutesSpecifier;
+  selfCopy->_preferredRoutesSpecifier = 0;
 
-  visitedPlacesSpinnerSpecifier = v2->_visitedPlacesSpinnerSpecifier;
-  v2->_visitedPlacesSpinnerSpecifier = 0;
+  visitedPlacesSpinnerSpecifier = selfCopy->_visitedPlacesSpinnerSpecifier;
+  selfCopy->_visitedPlacesSpinnerSpecifier = 0;
 
-  preferredRoutesSpinnerSpecifier = v2->_preferredRoutesSpinnerSpecifier;
-  v2->_preferredRoutesSpinnerSpecifier = 0;
+  preferredRoutesSpinnerSpecifier = selfCopy->_preferredRoutesSpinnerSpecifier;
+  selfCopy->_preferredRoutesSpinnerSpecifier = 0;
 
-  objc_sync_exit(v2);
-  v11.receiver = v2;
+  objc_sync_exit(selfCopy);
+  v11.receiver = selfCopy;
   v11.super_class = PUILocationServicesAuthorizationLevelController;
   [(PUILocationServicesAuthorizationLevelController *)&v11 reloadSpecifiers];
 }
@@ -152,24 +152,24 @@ LABEL_7:
 - (id)specifiers
 {
   v68 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = *MEMORY[0x277D3FC48];
-  v4 = *(&v2->super.super.super.super.super.super.isa + v3);
+  v4 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
   if (v4)
   {
     goto LABEL_58;
   }
 
   v62 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [(PUILocationServicesAuthorizationLevelController *)v2 _synchronizeLocationDetails];
-  if (v2->_serviceKey)
+  [(PUILocationServicesAuthorizationLevelController *)selfCopy _synchronizeLocationDetails];
+  if (selfCopy->_serviceKey)
   {
     CLLocationManagerClass = getCLLocationManagerClass();
-    v6 = [(NSDictionary *)v2->_details objectForKey:v2->_serviceKey];
+    v6 = [(NSDictionary *)selfCopy->_details objectForKey:selfCopy->_serviceKey];
     v7 = [CLLocationManagerClass allowableAuthorizationForLocationDictionary:v6];
 
-    v8 = [(NSDictionary *)v2->_details objectForKey:v2->_serviceKey];
+    v8 = [(NSDictionary *)selfCopy->_details objectForKey:selfCopy->_serviceKey];
     v9 = [v8 objectForKey:@"BundleId"];
     v10 = _PUILoggingFacility();
     v61 = v8;
@@ -198,7 +198,7 @@ LABEL_7:
     [v62 addObject:v13];
     v15 = MEMORY[0x277D3FAD8];
     v16 = PUI_LocalizedStringForLocationServicesPrivacy(@"NEVER_AUTHORIZATION");
-    v60 = [v15 preferenceSpecifierNamed:v16 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v60 = [v15 preferenceSpecifierNamed:v16 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v60 setIdentifier:@"LOCATION_SERVICES_AUTH_NEVER"];
     if ((v7 & 6) != 0)
@@ -217,9 +217,9 @@ LABEL_7:
     v19 = *MEMORY[0x277D3FD80];
     [v18 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FD80]];
     v57 = v18;
-    v20 = [(PUILocationServicesAuthorizationLevelController *)v2 specifier];
-    v21 = [v20 identifier];
-    LODWORD(v18) = PUIIsAppClip(v21);
+    specifier = [(PUILocationServicesAuthorizationLevelController *)selfCopy specifier];
+    identifier = [specifier identifier];
+    LODWORD(v18) = PUIIsAppClip(identifier);
 
     if (v18)
     {
@@ -231,21 +231,21 @@ LABEL_7:
       PUI_LocalizedStringForLocationServicesPrivacy(@"WHEN_IN_USE_AUTHORIZATION");
     }
     v58 = ;
-    v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v58 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v24 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v58 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
     [v24 setIdentifier:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE"];
     v25 = MEMORY[0x277D3FAD8];
     v26 = PUI_LocalizedStringForLocationServicesPrivacy(@"WHEN_IN_USE_APP_OR_WIDGET_AUTHORIZATION");
-    v27 = [v25 preferenceSpecifierNamed:v26 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v27 = [v25 preferenceSpecifierNamed:v26 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v27 setIdentifier:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE_APP_OR_WIDGET"];
     [v27 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v19];
     v28 = MEMORY[0x277D3FAD8];
     v29 = PUI_LocalizedStringForLocationServicesPrivacy(@"ALWAYS_AUTHORIZATION");
-    v30 = [v28 preferenceSpecifierNamed:v29 target:v2 set:0 get:0 detail:0 cell:3 edit:0];
+    v30 = [v28 preferenceSpecifierNamed:v29 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
     [v30 setIdentifier:@"LOCATION_SERVICES_AUTH_ALWAYS"];
     [v62 addObject:v60];
-    if (![(NSString *)v2->_serviceKey isEqualToString:@"/System/Library/PrivateFrameworks/AssistantServices.framework"]|| _os_feature_enabled_impl())
+    if (![(NSString *)selfCopy->_serviceKey isEqualToString:@"/System/Library/PrivateFrameworks/AssistantServices.framework"]|| _os_feature_enabled_impl())
     {
       [v62 addObject:v57];
     }
@@ -264,7 +264,7 @@ LABEL_7:
       [v62 addObject:v30];
     }
 
-    if (!v2->_details || !v8)
+    if (!selfCopy->_details || !v8)
     {
       goto LABEL_57;
     }
@@ -273,29 +273,29 @@ LABEL_7:
     if (v31 == 1)
     {
       v42 = [MEMORY[0x277CC1E60] bundleProxyForIdentifier:obj];
-      v43 = [v42 bundleURL];
-      v32 = [v43 path];
+      bundleURL = [v42 bundleURL];
+      path = [bundleURL path];
 
-      if (v32)
+      if (path)
       {
-        v44 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:v32];
-        authEntityBundle = v2->_authEntityBundle;
-        v2->_authEntityBundle = v44;
+        v44 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:path];
+        authEntityBundle = selfCopy->_authEntityBundle;
+        selfCopy->_authEntityBundle = v44;
       }
 
       if (obj)
       {
-        v46 = [(PUILocationServicesListController *)v2 localizedDisplayNameForBundleID:?];
-        displayName = v2->_displayName;
-        v2->_displayName = v46;
+        v46 = [(PUILocationServicesListController *)selfCopy localizedDisplayNameForBundleID:?];
+        displayName = selfCopy->_displayName;
+        selfCopy->_displayName = v46;
 
-        if ([(NSString *)v2->_displayName length])
+        if ([(NSString *)selfCopy->_displayName length])
         {
 LABEL_42:
 
 LABEL_43:
           v48 = [getCLLocationManagerClass() entityAuthorizationForLocationDictionary:v61];
-          v2->_authMask = v48;
+          selfCopy->_authMask = v48;
           if (v48 > 1)
           {
             if (v48 == 2)
@@ -339,26 +339,26 @@ LABEL_55:
             }
           }
 
-          v50 = [(PUILocationServicesAuthorizationLevelController *)v2 _constructFooterForAuthorizationLevel:v2->_authMask];
+          v50 = [(PUILocationServicesAuthorizationLevelController *)selfCopy _constructFooterForAuthorizationLevel:selfCopy->_authMask];
           [v13 setProperty:v50 forKey:*MEMORY[0x277D3FF88]];
 
 LABEL_57:
-          v51 = [(PUILocationServicesAuthorizationLevelController *)v2 createQualifierSpecifierGroups];
-          [(PUILocationServicesAuthorizationLevelController *)v2 setQualifierSpecifierGroups:v51];
+          createQualifierSpecifierGroups = [(PUILocationServicesAuthorizationLevelController *)selfCopy createQualifierSpecifierGroups];
+          [(PUILocationServicesAuthorizationLevelController *)selfCopy setQualifierSpecifierGroups:createQualifierSpecifierGroups];
 
-          v52 = [(PUILocationServicesAuthorizationLevelController *)v2 qualifierSpecifierGroups];
-          [v62 addObjectsFromArray:v52];
+          qualifierSpecifierGroups = [(PUILocationServicesAuthorizationLevelController *)selfCopy qualifierSpecifierGroups];
+          [v62 addObjectsFromArray:qualifierSpecifierGroups];
 
-          v53 = *(&v2->super.super.super.super.super.super.isa + v3);
-          *(&v2->super.super.super.super.super.super.isa + v3) = v62;
+          v53 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
+          *(&selfCopy->super.super.super.super.super.super.isa + v3) = v62;
 
-          v4 = *(&v2->super.super.super.super.super.super.isa + v3);
+          v4 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
 LABEL_58:
           v23 = v4;
           goto LABEL_59;
         }
 
-        objc_storeStrong(&v2->_displayName, obj);
+        objc_storeStrong(&selfCopy->_displayName, obj);
         v41 = _PUILoggingFacility();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
@@ -387,14 +387,14 @@ LABEL_58:
         goto LABEL_43;
       }
 
-      v32 = [v8 objectForKey:@"BundlePath"];
-      if (v32)
+      path = [v8 objectForKey:@"BundlePath"];
+      if (path)
       {
-        v33 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:v32];
-        v34 = v2->_authEntityBundle;
-        v2->_authEntityBundle = v33;
+        v33 = [objc_alloc(MEMORY[0x277CCA8D8]) initWithPath:path];
+        v34 = selfCopy->_authEntityBundle;
+        selfCopy->_authEntityBundle = v33;
 
-        v35 = v2->_authEntityBundle;
+        v35 = selfCopy->_authEntityBundle;
         if (!v35)
         {
           goto LABEL_42;
@@ -402,22 +402,22 @@ LABEL_58:
 
         v36 = [(NSBundle *)v35 objectForInfoDictionaryKey:*MEMORY[0x277CBEC40]];
         v37 = [v36 copy];
-        v38 = v2->_displayName;
-        v2->_displayName = v37;
+        v38 = selfCopy->_displayName;
+        selfCopy->_displayName = v37;
 
-        if ([(NSString *)v2->_displayName length])
+        if ([(NSString *)selfCopy->_displayName length])
         {
           goto LABEL_42;
         }
 
-        v39 = [v32 lastPathComponent];
-        v40 = v2->_displayName;
-        v2->_displayName = v39;
+        lastPathComponent = [path lastPathComponent];
+        v40 = selfCopy->_displayName;
+        selfCopy->_displayName = lastPathComponent;
 
         v41 = _PUILoggingFacility();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
-          [(PUILocationServicesAuthorizationLevelController *)v32 specifiers];
+          [(PUILocationServicesAuthorizationLevelController *)path specifiers];
         }
       }
 
@@ -442,9 +442,9 @@ LABEL_58:
     _os_log_impl(&dword_2657FE000, v22, OS_LOG_TYPE_DEFAULT, "%s: _serviceKey is nil", buf, 0xCu);
   }
 
-  v23 = *(&v2->super.super.super.super.super.super.isa + v3);
+  v23 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
 LABEL_59:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v54 = *MEMORY[0x277D85DE8];
 
@@ -545,7 +545,7 @@ LABEL_59:
       if (authMask == 1)
       {
 LABEL_11:
-        v4 = MEMORY[0x277CBEBF8];
+        correctiveCompensationSpecifierGroup = MEMORY[0x277CBEBF8];
         goto LABEL_15;
       }
 
@@ -560,7 +560,7 @@ LABEL_8:
     }
 
 LABEL_7:
-    v4 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationSpecifierGroup];
+    correctiveCompensationSpecifierGroup = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationSpecifierGroup];
     goto LABEL_15;
   }
 
@@ -574,19 +574,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v6 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationSpecifierGroup];
-  v4 = v6;
+  correctiveCompensationSpecifierGroup2 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationSpecifierGroup];
+  correctiveCompensationSpecifierGroup = correctiveCompensationSpecifierGroup2;
   if (![(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState])
   {
-    v7 = [(PUILocationServicesAuthorizationLevelController *)self preferredRoutesSpecifierGroup];
-    v8 = [(PUILocationServicesAuthorizationLevelController *)self visitedPlacesSpecifierGroup];
-    v9 = [v6 arrayByAddingObjectsFromArray:v7];
-    v4 = [v9 arrayByAddingObjectsFromArray:v8];
+    preferredRoutesSpecifierGroup = [(PUILocationServicesAuthorizationLevelController *)self preferredRoutesSpecifierGroup];
+    visitedPlacesSpecifierGroup = [(PUILocationServicesAuthorizationLevelController *)self visitedPlacesSpecifierGroup];
+    v9 = [correctiveCompensationSpecifierGroup2 arrayByAddingObjectsFromArray:preferredRoutesSpecifierGroup];
+    correctiveCompensationSpecifierGroup = [v9 arrayByAddingObjectsFromArray:visitedPlacesSpecifierGroup];
   }
 
 LABEL_15:
 
-  return v4;
+  return correctiveCompensationSpecifierGroup;
 }
 
 - (NSArray)correctiveCompensationSpecifierGroup
@@ -600,10 +600,10 @@ LABEL_15:
   else
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v6 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    v7 = [(PUILocationServicesAuthorizationLevelController *)self specifier];
-    v8 = [v7 identifier];
-    v9 = PUIIsAppClip(v8);
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    specifier = [(PUILocationServicesAuthorizationLevelController *)self specifier];
+    identifier = [specifier identifier];
+    v9 = PUIIsAppClip(identifier);
 
     if (v9)
     {
@@ -615,7 +615,7 @@ LABEL_15:
       PUI_LocalizedStringForLocationServicesPrivacy(@"PRECISE_LOCATION_FOOTER");
     }
     v10 = ;
-    [v6 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
+    [emptyGroupSpecifier setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
     v11 = MEMORY[0x277D3FAD8];
     v12 = PUI_LocalizedStringForLocationServicesPrivacy(@"PRECISE_LOCATION");
     v13 = [v11 preferenceSpecifierNamed:v12 target:self set:sel__setPreciseLocationEnabled_specifier_ get:sel__preciseLocationStatus_ detail:0 cell:6 edit:0];
@@ -624,7 +624,7 @@ LABEL_15:
     v14 = [(PUILocationServicesAuthorizationLevelController *)self _preciseLocationStatus:v13];
     [v13 setProperty:v14 forKey:*MEMORY[0x277D3FEF0]];
 
-    [v5 addObject:v6];
+    [v5 addObject:emptyGroupSpecifier];
     [v5 addObject:v13];
     v15 = [v5 copy];
     v16 = self->_correctiveCompensationSpecifierGroup;
@@ -646,10 +646,10 @@ LABEL_15:
     {
       if ([(PUILocationServicesAuthorizationLevelController *)self visitedPlacesState])
       {
-        v4 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState];
+        correctiveCompensationState = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState];
         v5 = _PUILoggingFacility();
         v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-        if (!v4)
+        if (!correctiveCompensationState)
         {
           if (v6)
           {
@@ -668,18 +668,18 @@ LABEL_15:
             v8 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"VISITED_PLACES_GROUP" name:v12];
           }
 
-          v13 = [(PUILocationServicesAuthorizationLevelController *)self _constructFooterForVisitedPlaces];
+          _constructFooterForVisitedPlaces = [(PUILocationServicesAuthorizationLevelController *)self _constructFooterForVisitedPlaces];
           v14 = PUI_LocalizedStringForLocationServicesPrivacy(@"ALLOW_MORE_LOCATION_ACCESS_FOOTER_LINK");
-          [v8 setProperty:v13 forKey:*MEMORY[0x277D3FF88]];
-          [(PUILocationServicesAuthorizationLevelController *)self addSignificantLocationsFooter:v13 hyperlink:v14 toSpecifier:v8];
+          [v8 setProperty:_constructFooterForVisitedPlaces forKey:*MEMORY[0x277D3FF88]];
+          [(PUILocationServicesAuthorizationLevelController *)self addSignificantLocationsFooter:_constructFooterForVisitedPlaces hyperlink:v14 toSpecifier:v8];
           v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
           [v15 addObject:v8];
           v16 = _PUILoggingFacility();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(PUILocationServicesListController *)self didLoadCoreRoutineSettings];
+            didLoadCoreRoutineSettings = [(PUILocationServicesListController *)self didLoadCoreRoutineSettings];
             v18 = @"NO";
-            if (v17)
+            if (didLoadCoreRoutineSettings)
             {
               v18 = @"YES";
             }
@@ -865,8 +865,8 @@ LABEL_13:
     v6 = [(PUILocationServicesAuthorizationLevelController *)self _visitedPlacesStatus:v5];
     [v5 setProperty:v6 forKey:*MEMORY[0x277D3FEF0]];
 
-    v7 = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
-    v8 = [v7 isEqualToString:@"On"];
+    currentCoreRoutineStatus = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
+    v8 = [currentCoreRoutineStatus isEqualToString:@"On"];
 
     v9 = [MEMORY[0x277CCABB0] numberWithBool:v8];
     [v5 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
@@ -893,8 +893,8 @@ LABEL_13:
     v7 = [(PUILocationServicesAuthorizationLevelController *)self _preferredRoutesStatus:v6];
     [v6 setProperty:v7 forKey:*MEMORY[0x277D3FEF0]];
 
-    v8 = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
-    v9 = [v8 isEqualToString:@"On"];
+    currentCoreRoutineStatus = [(PUILocationServicesListController *)self currentCoreRoutineStatus];
+    v9 = [currentCoreRoutineStatus isEqualToString:@"On"];
 
     v10 = [MEMORY[0x277CCABB0] numberWithBool:v9];
     [v6 setProperty:v10 forKey:*MEMORY[0x277D3FF38]];
@@ -940,16 +940,16 @@ LABEL_13:
   return preferredRoutesSpinnerSpecifier;
 }
 
-- (void)updateCoreRoutineSettings:(id)a3
+- (void)updateCoreRoutineSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   [(PUILocationServicesListController *)self setDidLoadCoreRoutineSettings:0];
   v10.receiver = self;
   v10.super_class = PUILocationServicesAuthorizationLevelController;
-  [(PUILocationServicesListController *)&v10 updateCoreRoutineSettings:v4];
+  [(PUILocationServicesListController *)&v10 updateCoreRoutineSettings:settingsCopy];
 
-  v5 = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
-  [(PUILocationServicesAuthorizationLevelController *)self updateQualifierSpecifierGroupsIfDeltaFrom:v5 animated:0];
+  qualifierSpecifierGroups = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
+  [(PUILocationServicesAuthorizationLevelController *)self updateQualifierSpecifierGroupsIfDeltaFrom:qualifierSpecifierGroups animated:0];
 
   v6 = _PUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -958,13 +958,13 @@ LABEL_13:
     _os_log_impl(&dword_2657FE000, v6, OS_LOG_TYPE_DEFAULT, "Fetching routine state…", buf, 2u);
   }
 
-  v7 = [(PUILocationServicesListController *)self routineManager];
+  routineManager = [(PUILocationServicesListController *)self routineManager];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__PUILocationServicesAuthorizationLevelController_updateCoreRoutineSettings___block_invoke;
   v8[3] = &unk_279BA1CF0;
   v8[4] = self;
-  [v7 fetchRoutineStateWithHandler:v8];
+  [routineManager fetchRoutineStateWithHandler:v8];
 }
 
 void __77__PUILocationServicesAuthorizationLevelController_updateCoreRoutineSettings___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1052,10 +1052,10 @@ void __77__PUILocationServicesAuthorizationLevelController_updateCoreRoutineSett
     {
       if ([(PUILocationServicesAuthorizationLevelController *)self preferredRoutesState])
       {
-        v4 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState];
+        correctiveCompensationState = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState];
         v5 = _PUILoggingFacility();
         v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-        if (!v4)
+        if (!correctiveCompensationState)
         {
           if (v6)
           {
@@ -1147,39 +1147,39 @@ LABEL_13:
   return v10;
 }
 
-- (void)addSignificantLocationsFooter:(id)a3 hyperlink:(id)a4 toSpecifier:(id)a5
+- (void)addSignificantLocationsFooter:(id)footer hyperlink:(id)hyperlink toSpecifier:(id)specifier
 {
-  v17 = a5;
-  v8 = a4;
-  v9 = a3;
+  specifierCopy = specifier;
+  hyperlinkCopy = hyperlink;
+  footerCopy = footer;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v17 setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF48]];
+  [specifierCopy setObject:v11 forKeyedSubscript:*MEMORY[0x277D3FF48]];
 
-  [v17 setObject:v9 forKeyedSubscript:*MEMORY[0x277D3FF70]];
-  v12 = [v9 rangeOfString:v8];
+  [specifierCopy setObject:footerCopy forKeyedSubscript:*MEMORY[0x277D3FF70]];
+  v12 = [footerCopy rangeOfString:hyperlinkCopy];
   v14 = v13;
 
   v19.location = v12;
   v19.length = v14;
   v15 = NSStringFromRange(v19);
-  [v17 setObject:v15 forKeyedSubscript:*MEMORY[0x277D3FF58]];
+  [specifierCopy setObject:v15 forKeyedSubscript:*MEMORY[0x277D3FF58]];
 
   v16 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-  [v17 setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF68]];
+  [specifierCopy setObject:v16 forKeyedSubscript:*MEMORY[0x277D3FF68]];
 
-  [v17 setObject:@"showCoreRoutineSettings:" forKeyedSubscript:*MEMORY[0x277D3FF50]];
+  [specifierCopy setObject:@"showCoreRoutineSettings:" forKeyedSubscript:*MEMORY[0x277D3FF50]];
 }
 
-- (void)_setPreciseLocationEnabled:(id)a3 specifier:(id)a4
+- (void)_setPreciseLocationEnabled:(id)enabled specifier:(id)specifier
 {
   details = self->_details;
-  v7 = a3;
-  v8 = [a4 identifier];
-  v11 = [(NSDictionary *)details objectForKey:v8];
+  enabledCopy = enabled;
+  identifier = [specifier identifier];
+  v11 = [(NSDictionary *)details objectForKey:identifier];
 
-  LODWORD(v8) = [v7 BOOLValue];
-  [(PUILocationServicesAuthorizationLevelController *)self setCorrectiveCompensationState:v8 ^ 1];
+  LODWORD(identifier) = [enabledCopy BOOLValue];
+  [(PUILocationServicesAuthorizationLevelController *)self setCorrectiveCompensationState:identifier ^ 1];
   if ([(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState])
   {
     v9 = 2;
@@ -1193,11 +1193,11 @@ LABEL_13:
   [getCLLocationManagerClass() setEntityAuthorization:self->_authMask withCorrectiveCompensationType:v9 forLocationDictionary:v11];
   [(PUILocationServicesAuthorizationLevelController *)self _setLocationAuthorizationLevelMaskForAssociatedFramework:self->_authMask withCorrectiveCompensation:v9];
   [(PUILocationServicesAuthorizationLevelController *)self _synchronizeLocationDetails];
-  v10 = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
-  [(PUILocationServicesAuthorizationLevelController *)self updateQualifierSpecifierGroupsIfDeltaFrom:v10 animated:1];
+  qualifierSpecifierGroups = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
+  [(PUILocationServicesAuthorizationLevelController *)self updateQualifierSpecifierGroupsIfDeltaFrom:qualifierSpecifierGroups animated:1];
 }
 
-- (id)_preciseLocationStatus:(id)a3
+- (id)_preciseLocationStatus:(id)status
 {
   v3 = [(PUILocationServicesAuthorizationLevelController *)self correctiveCompensationState]^ 1;
   v4 = MEMORY[0x277CCABB0];
@@ -1205,13 +1205,13 @@ LABEL_13:
   return [v4 numberWithBool:v3];
 }
 
-- (void)_setVisitedPlacesEnabled:(id)a3 specifier:(id)a4
+- (void)_setVisitedPlacesEnabled:(id)enabled specifier:(id)specifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  enabledCopy = enabled;
   if (_os_feature_enabled_impl())
   {
-    if ([v5 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v6 = 3;
     }
@@ -1231,25 +1231,25 @@ LABEL_13:
       }
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
   }
 
   else
   {
-    v8 = _PUILoggingFacility();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    defaultCenter = _PUILoggingFacility();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 136315138;
       v11 = "[PUILocationServicesAuthorizationLevelController _setVisitedPlacesEnabled:specifier:]";
-      _os_log_impl(&dword_2657FE000, v8, OS_LOG_TYPE_DEFAULT, "%s: skipping because the feature flag is turned off", &v10, 0xCu);
+      _os_log_impl(&dword_2657FE000, defaultCenter, OS_LOG_TYPE_DEFAULT, "%s: skipping because the feature flag is turned off", &v10, 0xCu);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_visitedPlacesStatus:(id)a3
+- (id)_visitedPlacesStatus:(id)status
 {
   v10 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
@@ -1275,13 +1275,13 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setPreferredRoutesEnabled:(id)a3 specifier:(id)a4
+- (void)_setPreferredRoutesEnabled:(id)enabled specifier:(id)specifier
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  enabledCopy = enabled;
   if (_os_feature_enabled_impl())
   {
-    if ([v5 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
       v6 = 3;
     }
@@ -1301,25 +1301,25 @@ LABEL_13:
       }
     }
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
   }
 
   else
   {
-    v8 = _PUILoggingFacility();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    defaultCenter = _PUILoggingFacility();
+    if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 136315138;
       v11 = "[PUILocationServicesAuthorizationLevelController _setPreferredRoutesEnabled:specifier:]";
-      _os_log_impl(&dword_2657FE000, v8, OS_LOG_TYPE_DEFAULT, "%s: skipping because the feature flag is turned off", &v10, 0xCu);
+      _os_log_impl(&dword_2657FE000, defaultCenter, OS_LOG_TYPE_DEFAULT, "%s: skipping because the feature flag is turned off", &v10, 0xCu);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_preferredRoutesStatus:(id)a3
+- (id)_preferredRoutesStatus:(id)status
 {
   v10 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
@@ -1345,9 +1345,9 @@ LABEL_13:
   return v4;
 }
 
-- (id)_constructFooterForAuthorizationLevel:(unint64_t)a3
+- (id)_constructFooterForAuthorizationLevel:(unint64_t)level
 {
-  v4 = [MEMORY[0x277CCACA8] string];
+  string = [MEMORY[0x277CCACA8] string];
   CLLocationManagerClass = getCLLocationManagerClass();
   v6 = [(NSDictionary *)self->_details objectForKey:self->_serviceKey];
   v7 = [CLLocationManagerClass allowableAuthorizationForLocationDictionary:v6];
@@ -1425,17 +1425,17 @@ LABEL_13:
   if (v15)
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v15];
-    v17 = [v4 stringByAppendingString:v16];
+    v17 = [string stringByAppendingString:v16];
 
-    v4 = v17;
+    string = v17;
   }
 
 LABEL_16:
 
-  return v4;
+  return string;
 }
 
-- (id)_purposeStringForAuthorizationLevel:(unint64_t)a3
+- (id)_purposeStringForAuthorizationLevel:(unint64_t)level
 {
   v3 = 1728;
   authEntityBundle = self->_authEntityBundle;
@@ -1444,18 +1444,18 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  v5 = self;
+  selfCopy = self;
   if (!self->_displayName)
   {
     goto LABEL_10;
   }
 
-  if ((~a3 & 6) == 0)
+  if ((~level & 6) == 0)
   {
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
-    v5 = 0x280027000;
+    selfCopy = 0x280027000;
     v3 = getkCLCommonLocationAlwaysAndWhenInUseUsageDescriptionKeySymbolLoc_ptr;
     v20 = getkCLCommonLocationAlwaysAndWhenInUseUsageDescriptionKeySymbolLoc_ptr;
     if (!getkCLCommonLocationAlwaysAndWhenInUseUsageDescriptionKeySymbolLoc_ptr)
@@ -1475,7 +1475,7 @@ LABEL_16:
     [PUILockdownModeController getEligibleDevicesWithCompletion:];
   }
 
-  if ((a3 & 2) != 0)
+  if ((level & 2) != 0)
   {
     v17 = 0;
     v18 = &v17;
@@ -1502,7 +1502,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ((a3 & 4) == 0)
+  if ((level & 4) == 0)
   {
 LABEL_10:
     authEntityBundle = 0;
@@ -1535,7 +1535,7 @@ LABEL_25:
   authEntityBundle = [authEntityBundle objectForInfoDictionaryKey:*v11];
   if (!authEntityBundle)
   {
-    v13 = *(&v5->super.super.super.super.super.super.isa + v3);
+    v13 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
     v14 = getkCLCommonLocationUsageDescriptionKey();
     authEntityBundle = [v13 objectForInfoDictionaryKey:v14];
   }
@@ -1557,18 +1557,18 @@ LABEL_15:
   return v8;
 }
 
-- (id)_usageTextForAuthorizationLevel:(unint64_t)a3
+- (id)_usageTextForAuthorizationLevel:(unint64_t)level
 {
-  if (a3)
+  if (level)
   {
-    if ((a3 & 2) != 0)
+    if ((level & 2) != 0)
     {
       v6 = @"WHEN_IN_USE_AUTHORIZATION_EXPLANATION";
     }
 
     else
     {
-      if ((a3 & 4) == 0)
+      if ((level & 4) == 0)
       {
         v4 = 0;
 
@@ -1589,15 +1589,15 @@ LABEL_15:
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = PUILocationServicesAuthorizationLevelController;
-  [(PUILocationServicesAuthorizationLevelController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  if (![v6 section])
+  [(PUILocationServicesAuthorizationLevelController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v7 = [(PUILocationServicesAuthorizationLevelController *)self indexForIndexPath:v6];
+    v7 = [(PUILocationServicesAuthorizationLevelController *)self indexForIndexPath:pathCopy];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = [(PUILocationServicesAuthorizationLevelController *)self specifierAtIndex:v7];
@@ -1611,18 +1611,18 @@ LABEL_15:
   }
 }
 
-- (void)_setLocationAuthorizationLevelForSpecifier:(id)a3
+- (void)_setLocationAuthorizationLevelForSpecifier:(id)specifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
-  v6 = [v5 copy];
+  specifierCopy = specifier;
+  qualifierSpecifierGroups = [(PUILocationServicesAuthorizationLevelController *)self qualifierSpecifierGroups];
+  v6 = [qualifierSpecifierGroups copy];
 
   v7 = [(NSDictionary *)self->_details objectForKey:self->_serviceKey];
   v8 = [v7 objectForKeyedSubscript:@"BundleId"];
   self->_authMask = 0;
-  v9 = [v4 identifier];
-  v10 = [v9 isEqualToString:@"LOCATION_SERVICES_AUTH_NOT_DETERMINED"];
+  identifier = [specifierCopy identifier];
+  v10 = [identifier isEqualToString:@"LOCATION_SERVICES_AUTH_NOT_DETERMINED"];
 
   if (v10)
   {
@@ -1632,8 +1632,8 @@ LABEL_15:
 
   else
   {
-    v13 = [v4 identifier];
-    v14 = [v13 isEqualToString:@"LOCATION_SERVICES_AUTH_NEVER"];
+    identifier2 = [specifierCopy identifier];
+    v14 = [identifier2 isEqualToString:@"LOCATION_SERVICES_AUTH_NEVER"];
 
     if (v14)
     {
@@ -1643,8 +1643,8 @@ LABEL_15:
       goto LABEL_10;
     }
 
-    v15 = [v4 identifier];
-    v16 = [v15 isEqualToString:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE"];
+    identifier3 = [specifierCopy identifier];
+    v16 = [identifier3 isEqualToString:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE"];
 
     if (v16)
     {
@@ -1654,8 +1654,8 @@ LABEL_15:
       goto LABEL_10;
     }
 
-    v17 = [v4 identifier];
-    v18 = [v17 isEqualToString:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE_APP_OR_WIDGET"];
+    identifier4 = [specifierCopy identifier];
+    v18 = [identifier4 isEqualToString:@"LOCATION_SERVICES_AUTH_WHEN_IN_USE_APP_OR_WIDGET"];
 
     if (v18)
     {
@@ -1665,8 +1665,8 @@ LABEL_15:
       goto LABEL_10;
     }
 
-    v28 = [v4 identifier];
-    v29 = [v28 isEqualToString:@"LOCATION_SERVICES_AUTH_ALWAYS"];
+    identifier5 = [specifierCopy identifier];
+    v29 = [identifier5 isEqualToString:@"LOCATION_SERVICES_AUTH_ALWAYS"];
 
     if (v29)
     {
@@ -1721,13 +1721,13 @@ LABEL_10:
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.Maps.LocationAuthorizationChangedNotification", 0, 0, 1u);
   }
 
-  v25 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v25 postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.PrivacySettingsUI.LocationServicesStateChanged" object:0];
 
   if (PUIIsAppClip(v8))
   {
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 postNotificationName:@"com.apple.PrivacySettingsUI.LocationAppClipsStateChanged" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"com.apple.PrivacySettingsUI.LocationAppClipsStateChanged" object:0];
   }
 
   [(PUILocationServicesAuthorizationLevelController *)self updateQualifierSpecifierGroupsIfDeltaFrom:v6 animated:1];
@@ -1754,7 +1754,7 @@ LABEL_10:
 - (void)createQualifierSpecifierGroups
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_0_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

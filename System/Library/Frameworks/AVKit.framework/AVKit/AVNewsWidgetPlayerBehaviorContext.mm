@@ -1,26 +1,26 @@
 @interface AVNewsWidgetPlayerBehaviorContext
 - (AVNewsWidgetPlayerBehavior)behavior;
-- (AVNewsWidgetPlayerBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVNewsWidgetPlayerBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVPlayerViewController)playerViewController;
-- (BOOL)contentTransitioningView:(id)a3 shouldBeginTransitionWithDirection:(int64_t)a4;
-- (BOOL)contentTransitioningViewShouldBeginDragging:(id)a3 locationInView:(CGPoint)a4;
+- (BOOL)contentTransitioningView:(id)view shouldBeginTransitionWithDirection:(int64_t)direction;
+- (BOOL)contentTransitioningViewShouldBeginDragging:(id)dragging locationInView:(CGPoint)view;
 - (BOOL)isContentTransitionInteractive;
 - (UIView)contentTransitioningOverlayView;
-- (id)contentTransitioningPlayerContentViewForTransition:(id)a3;
-- (id)makePlaybackContentContainerWithFrame:(CGRect)a3 activeContentView:(id)a4;
-- (int64_t)_transitionDirectionForContentTransitionType:(int64_t)a3;
+- (id)contentTransitioningPlayerContentViewForTransition:(id)transition;
+- (id)makePlaybackContentContainerWithFrame:(CGRect)frame activeContentView:(id)view;
+- (int64_t)_transitionDirectionForContentTransitionType:(int64_t)type;
 - (int64_t)activeContentTransitionType;
-- (int64_t)contentTransitionTypeForTransitionDirection:(int64_t)a3;
-- (void)contentTransitioningViewDidChangeTransitionStatus:(id)a3 oldState:(int64_t)a4 oldTransitionDirection:(int64_t)a5 oldProgress:(double)a6;
-- (void)didAddBehavior:(id)a3;
-- (void)setCustomContentTransitioningInfoPanel:(id)a3;
-- (void)setStartNextContentTransitionButtonEnabled:(BOOL)a3;
-- (void)setStartPreviousContentTransitionButtonEnabled:(BOOL)a3;
-- (void)setVideoGravityForTransitioningContent:(id)a3;
-- (void)startContentTransition:(int64_t)a3;
+- (int64_t)contentTransitionTypeForTransitionDirection:(int64_t)direction;
+- (void)contentTransitioningViewDidChangeTransitionStatus:(id)status oldState:(int64_t)state oldTransitionDirection:(int64_t)direction oldProgress:(double)progress;
+- (void)didAddBehavior:(id)behavior;
+- (void)setCustomContentTransitioningInfoPanel:(id)panel;
+- (void)setStartNextContentTransitionButtonEnabled:(BOOL)enabled;
+- (void)setStartPreviousContentTransitionButtonEnabled:(BOOL)enabled;
+- (void)setVideoGravityForTransitioningContent:(id)content;
+- (void)startContentTransition:(int64_t)transition;
 - (void)updateStartLeftRightContentTransitionButtonsEnabled;
 - (void)viewDidLoad;
-- (void)willRemoveBehavior:(id)a3;
+- (void)willRemoveBehavior:(id)behavior;
 @end
 
 @implementation AVNewsWidgetPlayerBehaviorContext
@@ -39,30 +39,30 @@
   return WeakRetained;
 }
 
-- (int64_t)contentTransitionTypeForTransitionDirection:(int64_t)a3
+- (int64_t)contentTransitionTypeForTransitionDirection:(int64_t)direction
 {
-  v4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v5 = [v4 view];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  view = [playerViewController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
   v7 = 1;
-  if (v6 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v7 = 2;
   }
 
   v8 = 1;
-  if (v6 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     v8 = 2;
   }
 
-  if (a3 != 2)
+  if (direction != 2)
   {
     v8 = 0;
   }
 
-  if (a3 == 3)
+  if (direction == 3)
   {
     return v7;
   }
@@ -73,98 +73,98 @@
   }
 }
 
-- (void)contentTransitioningViewDidChangeTransitionStatus:(id)a3 oldState:(int64_t)a4 oldTransitionDirection:(int64_t)a5 oldProgress:(double)a6
+- (void)contentTransitioningViewDidChangeTransitionStatus:(id)status oldState:(int64_t)state oldTransitionDirection:(int64_t)direction oldProgress:(double)progress
 {
-  v15 = a3;
-  v9 = [v15 transitionState];
-  [v15 transitionProgress];
+  statusCopy = status;
+  transitionState = [statusCopy transitionState];
+  [statusCopy transitionProgress];
   v11 = v10;
-  v12 = [v15 transitionState];
-  if (v12 <= 4)
+  transitionState2 = [statusCopy transitionState];
+  if (transitionState2 <= 4)
   {
-    if (v12 == 3)
+    if (transitionState2 == 3)
     {
-      if (v9 != a4)
+      if (transitionState != state)
       {
-        v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-        [v14 willBeginContentTransition];
+        behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+        [behavior willBeginContentTransition];
         goto LABEL_19;
       }
     }
 
     else
     {
-      if (v12 != 4)
+      if (transitionState2 != 4)
       {
         goto LABEL_20;
       }
 
-      if (v9 != a4)
+      if (transitionState != state)
       {
-        v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-        [v14 willCancelContentTransition];
+        behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+        [behavior willCancelContentTransition];
         goto LABEL_19;
       }
     }
 
 LABEL_16:
-    if (v11 == a6)
+    if (v11 == progress)
     {
       goto LABEL_20;
     }
 
-    v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-    [v15 transitionProgress];
-    [v14 didUpdateContentTransitionProgress:?];
+    behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+    [statusCopy transitionProgress];
+    [behavior didUpdateContentTransitionProgress:?];
     goto LABEL_19;
   }
 
-  if (v12 == 5)
+  if (transitionState2 == 5)
   {
-    if (v9 == a4)
+    if (transitionState == state)
     {
       goto LABEL_20;
     }
 
     [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitioningPlayer:0];
-    v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-    [v14 didCancelContentTransition];
+    behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+    [behavior didCancelContentTransition];
     goto LABEL_19;
   }
 
-  if (v12 == 6)
+  if (transitionState2 == 6)
   {
-    if (v9 != a4)
+    if (transitionState != state)
     {
-      v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-      [v14 willCompleteContentTransition];
+      behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+      [behavior willCompleteContentTransition];
       goto LABEL_19;
     }
 
     goto LABEL_16;
   }
 
-  if (v12 == 7 && v9 != a4)
+  if (transitionState2 == 7 && transitionState != state)
   {
-    v13 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    [v13 activeContentViewDidChange];
+    playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    [playerViewController activeContentViewDidChange];
 
     [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitioningPlayer:0];
-    v14 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-    [v14 didCompleteContentTransition];
+    behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+    [behavior didCompleteContentTransition];
 LABEL_19:
   }
 
 LABEL_20:
 }
 
-- (id)contentTransitioningPlayerContentViewForTransition:(id)a3
+- (id)contentTransitioningPlayerContentViewForTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v6 = [v5 incomingContentView];
+  transitionCopy = transition;
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  incomingContentView = [contentTransitionView incomingContentView];
 
-  if (v6)
+  if (incomingContentView)
   {
     v7 = _AVLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -174,9 +174,9 @@ LABEL_20:
     }
   }
 
-  v8 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
+  contentTransitioningPlayer = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
 
-  if (!v8)
+  if (!contentTransitioningPlayer)
   {
     v9 = _AVLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -186,34 +186,34 @@ LABEL_20:
     }
   }
 
-  v10 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
+  contentTransitioningPlayer2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
 
-  if (v10)
+  if (contentTransitioningPlayer2)
   {
     v11 = [__AVPlayerLayerView alloc];
-    v12 = [v4 activeContentView];
-    [v12 videoContentFrame];
+    activeContentView = [transitionCopy activeContentView];
+    [activeContentView videoContentFrame];
     v13 = [(__AVPlayerLayerView *)v11 initWithFrame:?];
 
-    v14 = [(__AVPlayerLayerView *)v13 playerLayer];
-    v15 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
-    [v14 setPlayer:v15];
+    playerLayer = [(__AVPlayerLayerView *)v13 playerLayer];
+    contentTransitioningPlayer3 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
+    [playerLayer setPlayer:contentTransitioningPlayer3];
 
-    v16 = [v4 activeContentView];
-    v17 = [v16 playerLayerView];
-    v18 = [v17 pixelBufferAttributes];
-    [(__AVPlayerLayerView *)v13 setPixelBufferAttributes:v18];
+    activeContentView2 = [transitionCopy activeContentView];
+    playerLayerView = [activeContentView2 playerLayerView];
+    pixelBufferAttributes = [playerLayerView pixelBufferAttributes];
+    [(__AVPlayerLayerView *)v13 setPixelBufferAttributes:pixelBufferAttributes];
 
-    v19 = [v4 activeContentView];
-    v20 = [v19 playerLayerView];
-    -[__AVPlayerLayerView setVideoGravity:](v13, "setVideoGravity:", [v20 videoGravity]);
+    activeContentView3 = [transitionCopy activeContentView];
+    playerLayerView2 = [activeContentView3 playerLayerView];
+    -[__AVPlayerLayerView setVideoGravity:](v13, "setVideoGravity:", [playerLayerView2 videoGravity]);
 
     v21 = [AVPlaybackContentContainerView alloc];
-    [v4 bounds];
+    [transitionCopy bounds];
     v22 = [(AVPlaybackContentContainerView *)v21 initWithFrame:v13 playerLayerView:0 contentOverlayView:?];
-    v23 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-    v24 = [v23 activeContentView];
-    [v24 videoContentFrame];
+    contentTransitionView2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+    activeContentView4 = [contentTransitionView2 activeContentView];
+    [activeContentView4 videoContentFrame];
     [(AVPlaybackContentContainerView *)v22 setVideoContentFrame:?];
   }
 
@@ -225,77 +225,77 @@ LABEL_20:
   return v22;
 }
 
-- (BOOL)contentTransitioningView:(id)a3 shouldBeginTransitionWithDirection:(int64_t)a4
+- (BOOL)contentTransitioningView:(id)view shouldBeginTransitionWithDirection:(int64_t)direction
 {
   [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitioningPlayer:0];
-  v6 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionTypeForTransitionDirection:a4];
+  v6 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionTypeForTransitionDirection:direction];
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
-  v9 = [v8 playerForContentTransitionType:v7];
+  behavior = [(AVNewsWidgetPlayerBehaviorContext *)self behavior];
+  v9 = [behavior playerForContentTransitionType:v7];
 
   [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitioningPlayer:v9];
-  v10 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
-  v11 = v10 != 0;
+  contentTransitioningPlayer = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitioningPlayer];
+  v11 = contentTransitioningPlayer != 0;
 
   return v11;
 }
 
-- (BOOL)contentTransitioningViewShouldBeginDragging:(id)a3 locationInView:(CGPoint)a4
+- (BOOL)contentTransitioningViewShouldBeginDragging:(id)dragging locationInView:(CGPoint)view
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  if ([v8 hasActiveTransition])
+  y = view.y;
+  x = view.x;
+  draggingCopy = dragging;
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  if ([playerViewController hasActiveTransition])
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v10 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v11 = [v10 player];
+    playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    player = [playerViewController2 player];
 
-    if (!v11)
+    if (!player)
     {
       LOBYTE(v9) = 0;
       goto LABEL_6;
     }
 
-    v12 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v13 = [v12 contentView];
-    [v13 convertPoint:v7 fromView:{x, y}];
+    playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView = [playerViewController3 contentView];
+    [contentView convertPoint:draggingCopy fromView:{x, y}];
     v15 = v14;
     v17 = v16;
 
-    v18 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v19 = [v18 contentView];
-    v8 = [v19 hitTest:0 withEvent:{v15, v17}];
+    playerViewController4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController4 contentView];
+    playerViewController = [contentView2 hitTest:0 withEvent:{v15, v17}];
 
-    v20 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v21 = [v20 contentView];
-    v9 = [v21 isViewDescendantOfPlaybackControlsSubview:v8] ^ 1;
+    playerViewController5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController5 contentView];
+    v9 = [contentView3 isViewDescendantOfPlaybackControlsSubview:playerViewController] ^ 1;
   }
 
 LABEL_6:
   return v9;
 }
 
-- (id)makePlaybackContentContainerWithFrame:(CGRect)a3 activeContentView:(id)a4
+- (id)makePlaybackContentContainerWithFrame:(CGRect)frame activeContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
 
-  if (v10)
+  if (contentTransitionView)
   {
     v11 = _AVLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -305,115 +305,115 @@ LABEL_6:
     }
   }
 
-  v12 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  [v12 removeFromSuperview];
+  contentTransitionView2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  [contentTransitionView2 removeFromSuperview];
 
-  v13 = [[AVPlaybackContentTransitioningView alloc] initWithFrame:v9 activeContentView:x, y, width, height];
-  [(AVPlaybackContentTransitioningView *)v13 setContentTransitioningDelegate:self];
-  [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitionView:v13];
-  v14 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v15 = [v14 _transitionController];
-  v16 = [v15 interactiveGestureTracker];
-  v17 = [(AVPlaybackContentTransitioningView *)v13 panGestureRecognizer];
-  [v16 setContentTransitioningViewGestureRecognizer:v17];
+  height = [[AVPlaybackContentTransitioningView alloc] initWithFrame:viewCopy activeContentView:x, y, width, height];
+  [(AVPlaybackContentTransitioningView *)height setContentTransitioningDelegate:self];
+  [(AVNewsWidgetPlayerBehaviorContext *)self setContentTransitionView:height];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  _transitionController = [playerViewController _transitionController];
+  interactiveGestureTracker = [_transitionController interactiveGestureTracker];
+  panGestureRecognizer = [(AVPlaybackContentTransitioningView *)height panGestureRecognizer];
+  [interactiveGestureTracker setContentTransitioningViewGestureRecognizer:panGestureRecognizer];
 
-  return v13;
+  return height;
 }
 
 - (void)viewDidLoad
 {
-  v3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v4 = [v3 playbackControlsController];
-  [v4 setShowsVideoGravityButton:0];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  playbackControlsController = [playerViewController playbackControlsController];
+  [playbackControlsController setShowsVideoGravityButton:0];
 
-  v5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v6 = [v5 playbackControlsController];
-  [v6 setPlaybackControlsIncludeStartContentTransitionButtons:1];
+  playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  playbackControlsController2 = [playerViewController2 playbackControlsController];
+  [playbackControlsController2 setPlaybackControlsIncludeStartContentTransitionButtons:1];
 
   [(AVNewsWidgetPlayerBehaviorContext *)self updateStartLeftRightContentTransitionButtonsEnabled];
-  v7 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v8 = [v7 _transitionController];
-  v9 = [v8 interactiveGestureTracker];
-  v10 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v11 = [v10 panGestureRecognizer];
-  [v9 setContentTransitioningViewGestureRecognizer:v11];
+  playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  _transitionController = [playerViewController3 _transitionController];
+  interactiveGestureTracker = [_transitionController interactiveGestureTracker];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  panGestureRecognizer = [contentTransitionView panGestureRecognizer];
+  [interactiveGestureTracker setContentTransitioningViewGestureRecognizer:panGestureRecognizer];
 
-  v12 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v13 = [v12 view];
-  v24 = [v13 window];
+  playerViewController4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  view = [playerViewController4 view];
+  window = [view window];
 
-  v14 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v15 = [v14 contentView];
-  [v15 setStyleSheetShouldUseCompactFullScreenItemSize:{objc_msgSend(v24, "avkit_isHostedInAnotherProcess")}];
+  playerViewController5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  contentView = [playerViewController5 contentView];
+  [contentView setStyleSheetShouldUseCompactFullScreenItemSize:{objc_msgSend(window, "avkit_isHostedInAnotherProcess")}];
 
-  v16 = [(AVNewsWidgetPlayerBehaviorContext *)self customContentTransitioningInfoPanel];
+  customContentTransitioningInfoPanel = [(AVNewsWidgetPlayerBehaviorContext *)self customContentTransitioningInfoPanel];
 
-  if (v16)
+  if (customContentTransitioningInfoPanel)
   {
-    v17 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v18 = [v17 contentView];
-    [v18 loadPlaybackControlsViewIfNeeded];
+    playerViewController6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController6 contentView];
+    [contentView2 loadPlaybackControlsViewIfNeeded];
 
-    v19 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v20 = [v19 contentView];
-    v21 = [v20 chromePlaybackControlsView];
-    v22 = [v21 transportControlsView];
-    v23 = [(AVNewsWidgetPlayerBehaviorContext *)self customContentTransitioningInfoPanel];
-    [v22 setCustomContentTransitioningInfoPanel:v23];
+    playerViewController7 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController7 contentView];
+    chromePlaybackControlsView = [contentView3 chromePlaybackControlsView];
+    transportControlsView = [chromePlaybackControlsView transportControlsView];
+    customContentTransitioningInfoPanel2 = [(AVNewsWidgetPlayerBehaviorContext *)self customContentTransitioningInfoPanel];
+    [transportControlsView setCustomContentTransitioningInfoPanel:customContentTransitioningInfoPanel2];
   }
 }
 
-- (void)willRemoveBehavior:(id)a3
+- (void)willRemoveBehavior:(id)behavior
 {
-  v4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v5 = [v4 isViewLoaded];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  isViewLoaded = [playerViewController isViewLoaded];
 
-  if (v5)
+  if (isViewLoaded)
   {
-    v6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v7 = [v6 playbackControlsController];
-    [v7 setPlaybackControlsIncludeStartContentTransitionButtons:0];
+    playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController = [playerViewController2 playbackControlsController];
+    [playbackControlsController setPlaybackControlsIncludeStartContentTransitionButtons:0];
 
-    v8 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v9 = [v8 contentView];
-    v10 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v11 = [v10 contentView];
-    v12 = [v11 playbackContentContainerView];
-    [v9 setPlaybackContentContainerView:v12];
+    playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView = [playerViewController3 contentView];
+    playerViewController4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController4 contentView];
+    playbackContentContainerView = [contentView2 playbackContentContainerView];
+    [contentView setPlaybackContentContainerView:playbackContentContainerView];
 
-    v13 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v14 = [v13 _transitionController];
-    v15 = [v14 interactiveGestureTracker];
-    [v15 setContentTransitioningViewGestureRecognizer:0];
+    playerViewController5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    _transitionController = [playerViewController5 _transitionController];
+    interactiveGestureTracker = [_transitionController interactiveGestureTracker];
+    [interactiveGestureTracker setContentTransitioningViewGestureRecognizer:0];
 
-    v16 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v17 = [v16 contentView];
-    [v17 setStyleSheetShouldUseCompactFullScreenItemSize:0];
+    playerViewController6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController6 contentView];
+    [contentView3 setStyleSheetShouldUseCompactFullScreenItemSize:0];
 
-    v19 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v18 = [v19 playbackControlsController];
-    [v18 setShowsVideoGravityButton:1];
+    playerViewController7 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController2 = [playerViewController7 playbackControlsController];
+    [playbackControlsController2 setShowsVideoGravityButton:1];
   }
 }
 
-- (void)didAddBehavior:(id)a3
+- (void)didAddBehavior:(id)behavior
 {
-  v4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v5 = [v4 isViewLoaded];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  isViewLoaded = [playerViewController isViewLoaded];
 
-  if (v5)
+  if (isViewLoaded)
   {
-    v6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v7 = [v6 playbackControlsController];
-    [v7 setShowsVideoGravityButton:0];
+    playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController = [playerViewController2 playbackControlsController];
+    [playbackControlsController setShowsVideoGravityButton:0];
   }
 
-  v30 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  if ([v30 isViewLoaded])
+  playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  if ([playerViewController3 isViewLoaded])
   {
-    v8 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v9 = [v8 contentView];
-    v10 = [v9 playbackContentContainerView];
+    playerViewController4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView = [playerViewController4 contentView];
+    playbackContentContainerView = [contentView playbackContentContainerView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -422,116 +422,116 @@ LABEL_6:
       return;
     }
 
-    v12 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v13 = [v12 contentView];
-    v14 = [v13 playbackContentContainerView];
-    v30 = [v14 activeContentView];
+    playerViewController5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController5 contentView];
+    playbackContentContainerView2 = [contentView2 playbackContentContainerView];
+    playerViewController3 = [playbackContentContainerView2 activeContentView];
 
-    v15 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v16 = [v15 contentView];
-    [v30 frame];
-    v17 = [(AVNewsWidgetPlayerBehaviorContext *)self makePlaybackContentContainerWithFrame:v30 activeContentView:?];
-    [v16 setPlaybackContentContainerView:v17];
+    playerViewController6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController6 contentView];
+    [playerViewController3 frame];
+    v17 = [(AVNewsWidgetPlayerBehaviorContext *)self makePlaybackContentContainerWithFrame:playerViewController3 activeContentView:?];
+    [contentView3 setPlaybackContentContainerView:v17];
 
-    v18 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v19 = [v18 playbackControlsController];
-    [v19 setPlaybackControlsIncludeStartContentTransitionButtons:1];
+    playerViewController7 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController2 = [playerViewController7 playbackControlsController];
+    [playbackControlsController2 setPlaybackControlsIncludeStartContentTransitionButtons:1];
 
     [(AVNewsWidgetPlayerBehaviorContext *)self updateStartLeftRightContentTransitionButtonsEnabled];
-    v20 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v21 = [v20 _transitionController];
-    v22 = [v21 interactiveGestureTracker];
-    v23 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-    v24 = [v23 panGestureRecognizer];
-    [v22 setContentTransitioningViewGestureRecognizer:v24];
+    playerViewController8 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    _transitionController = [playerViewController8 _transitionController];
+    interactiveGestureTracker = [_transitionController interactiveGestureTracker];
+    contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+    panGestureRecognizer = [contentTransitionView panGestureRecognizer];
+    [interactiveGestureTracker setContentTransitioningViewGestureRecognizer:panGestureRecognizer];
 
-    v25 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v26 = [v25 view];
-    v27 = [v26 window];
+    playerViewController9 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    view = [playerViewController9 view];
+    window = [view window];
 
-    v28 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v29 = [v28 contentView];
-    [v29 setStyleSheetShouldUseCompactFullScreenItemSize:{objc_msgSend(v27, "avkit_isHostedInAnotherProcess")}];
+    playerViewController10 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView4 = [playerViewController10 contentView];
+    [contentView4 setStyleSheetShouldUseCompactFullScreenItemSize:{objc_msgSend(window, "avkit_isHostedInAnotherProcess")}];
   }
 }
 
-- (void)setCustomContentTransitioningInfoPanel:(id)a3
+- (void)setCustomContentTransitioningInfoPanel:(id)panel
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  panelCopy = panel;
   v6 = _AVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315394;
     v16 = "[AVNewsWidgetPlayerBehaviorContext setCustomContentTransitioningInfoPanel:]";
     v17 = 2112;
-    v18 = v5;
+    v18 = panelCopy;
     _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %@", &v15, 0x16u);
   }
 
-  objc_storeStrong(&self->_customContentTransitioningInfoPanel, a3);
-  v7 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v8 = [v7 isViewLoaded];
+  objc_storeStrong(&self->_customContentTransitioningInfoPanel, panel);
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  isViewLoaded = [playerViewController isViewLoaded];
 
-  if (v8)
+  if (isViewLoaded)
   {
-    v9 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v10 = [v9 contentView];
-    [v10 loadPlaybackControlsViewIfNeeded];
+    playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView = [playerViewController2 contentView];
+    [contentView loadPlaybackControlsViewIfNeeded];
 
-    v11 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v12 = [v11 contentView];
-    v13 = [v12 chromePlaybackControlsView];
-    v14 = [v13 transportControlsView];
-    [v14 setCustomContentTransitioningInfoPanel:v5];
+    playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController3 contentView];
+    chromePlaybackControlsView = [contentView2 chromePlaybackControlsView];
+    transportControlsView = [chromePlaybackControlsView transportControlsView];
+    [transportControlsView setCustomContentTransitioningInfoPanel:panelCopy];
   }
 }
 
 - (void)updateStartLeftRightContentTransitionButtonsEnabled
 {
-  v3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v4 = [v3 view];
-  v5 = [v4 effectiveUserInterfaceLayoutDirection];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  view = [playerViewController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  v6 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v7 = [v6 playbackControlsController];
-  if (v5)
+  playerViewController2 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  playbackControlsController = [playerViewController2 playbackControlsController];
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    v8 = [(AVNewsWidgetPlayerBehaviorContext *)self isStartNextContentTransitionButtonEnabled];
+    isStartNextContentTransitionButtonEnabled = [(AVNewsWidgetPlayerBehaviorContext *)self isStartNextContentTransitionButtonEnabled];
   }
 
   else
   {
-    v8 = [(AVNewsWidgetPlayerBehaviorContext *)self isStartPreviousContentTransitionButtonEnabled];
+    isStartNextContentTransitionButtonEnabled = [(AVNewsWidgetPlayerBehaviorContext *)self isStartPreviousContentTransitionButtonEnabled];
   }
 
-  [v7 setStartLeftwardContentTransitionButtonEnabled:v8];
+  [playbackControlsController setStartLeftwardContentTransitionButtonEnabled:isStartNextContentTransitionButtonEnabled];
 
-  v9 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v10 = [v9 playbackControlsController];
-  if (v5)
+  playerViewController3 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  playbackControlsController2 = [playerViewController3 playbackControlsController];
+  if (effectiveUserInterfaceLayoutDirection)
   {
-    v11 = [(AVNewsWidgetPlayerBehaviorContext *)self isStartPreviousContentTransitionButtonEnabled];
+    isStartPreviousContentTransitionButtonEnabled = [(AVNewsWidgetPlayerBehaviorContext *)self isStartPreviousContentTransitionButtonEnabled];
   }
 
   else
   {
-    v11 = [(AVNewsWidgetPlayerBehaviorContext *)self isStartNextContentTransitionButtonEnabled];
+    isStartPreviousContentTransitionButtonEnabled = [(AVNewsWidgetPlayerBehaviorContext *)self isStartNextContentTransitionButtonEnabled];
   }
 
-  [v10 setStartRightwardContentTransitionButtonEnabled:v11];
+  [playbackControlsController2 setStartRightwardContentTransitionButtonEnabled:isStartPreviousContentTransitionButtonEnabled];
 
   if ([(AVNewsWidgetPlayerBehaviorContext *)self isStartNextContentTransitionButtonEnabled]|| [(AVNewsWidgetPlayerBehaviorContext *)self isStartPreviousContentTransitionButtonEnabled])
   {
     objc_initWeak(&location, self);
-    v12 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v13 = [v12 playbackControlsController];
+    playerViewController4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController3 = [playerViewController4 playbackControlsController];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransitionButtonsEnabled__block_invoke;
     v16[3] = &unk_1E7209618;
     objc_copyWeak(&v17, &location);
-    [v13 setContentTransitionAction:v16];
+    [playbackControlsController3 setContentTransitionAction:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -539,9 +539,9 @@ LABEL_6:
 
   else
   {
-    v15 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-    v14 = [v15 playbackControlsController];
-    [v14 setContentTransitionAction:0];
+    playerViewController5 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+    playbackControlsController4 = [playerViewController5 playbackControlsController];
+    [playbackControlsController4 setContentTransitionAction:0];
   }
 }
 
@@ -581,9 +581,9 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
   }
 }
 
-- (void)setStartPreviousContentTransitionButtonEnabled:(BOOL)a3
+- (void)setStartPreviousContentTransitionButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -593,7 +593,7 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
     v8 = "[AVNewsWidgetPlayerBehaviorContext setStartPreviousContentTransitionButtonEnabled:]";
     v10 = "startPreviousContentTransitionButtonEnabled";
     v9 = 2080;
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
@@ -603,13 +603,13 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
   }
 
-  self->_startPreviousContentTransitionButtonEnabled = v3;
+  self->_startPreviousContentTransitionButtonEnabled = enabledCopy;
   [(AVNewsWidgetPlayerBehaviorContext *)self updateStartLeftRightContentTransitionButtonsEnabled];
 }
 
-- (void)setStartNextContentTransitionButtonEnabled:(BOOL)a3
+- (void)setStartNextContentTransitionButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -619,7 +619,7 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
     v8 = "[AVNewsWidgetPlayerBehaviorContext setStartNextContentTransitionButtonEnabled:]";
     v10 = "startNextContentTransitionButtonEnabled";
     v9 = 2080;
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
@@ -629,67 +629,67 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
   }
 
-  self->_startNextContentTransitionButtonEnabled = v3;
+  self->_startNextContentTransitionButtonEnabled = enabledCopy;
   [(AVNewsWidgetPlayerBehaviorContext *)self updateStartLeftRightContentTransitionButtonsEnabled];
 }
 
 - (BOOL)isContentTransitionInteractive
 {
-  v2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v3 = [v2 isTransitionInteractive];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  isTransitionInteractive = [contentTransitionView isTransitionInteractive];
 
-  return v3;
+  return isTransitionInteractive;
 }
 
 - (int64_t)activeContentTransitionType
 {
-  v3 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v4 = [v3 transitionState];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  transitionState = [contentTransitionView transitionState];
 
-  if ((v4 - 3) > 4)
+  if ((transitionState - 3) > 4)
   {
     return 0;
   }
 
-  v5 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v6 = -[AVNewsWidgetPlayerBehaviorContext contentTransitionTypeForTransitionDirection:](self, "contentTransitionTypeForTransitionDirection:", [v5 transitionDirection]);
+  contentTransitionView2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  v6 = -[AVNewsWidgetPlayerBehaviorContext contentTransitionTypeForTransitionDirection:](self, "contentTransitionTypeForTransitionDirection:", [contentTransitionView2 transitionDirection]);
 
   return v6;
 }
 
 - (UIView)contentTransitioningOverlayView
 {
-  v2 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v3 = [v2 incomingContentView];
-  v4 = [v3 contentOverlayView];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  incomingContentView = [contentTransitionView incomingContentView];
+  contentOverlayView = [incomingContentView contentOverlayView];
 
-  return v4;
+  return contentOverlayView;
 }
 
-- (int64_t)_transitionDirectionForContentTransitionType:(int64_t)a3
+- (int64_t)_transitionDirectionForContentTransitionType:(int64_t)type
 {
-  v4 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v5 = [v4 view];
-  v6 = [v5 effectiveUserInterfaceLayoutDirection];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  view = [playerViewController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
   v7 = 2;
-  if (v6 != 1)
+  if (effectiveUserInterfaceLayoutDirection != 1)
   {
     v7 = 3;
   }
 
   v8 = 2;
-  if (v6 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v8 = 3;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return v7;
   }
@@ -700,40 +700,40 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
   }
 }
 
-- (void)startContentTransition:(int64_t)a3
+- (void)startContentTransition:(int64_t)transition
 {
-  v5 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  [v5 performTransition:{-[AVNewsWidgetPlayerBehaviorContext _transitionDirectionForContentTransitionType:](self, "_transitionDirectionForContentTransitionType:", a3)}];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  [contentTransitionView performTransition:{-[AVNewsWidgetPlayerBehaviorContext _transitionDirectionForContentTransitionType:](self, "_transitionDirectionForContentTransitionType:", transition)}];
 }
 
-- (void)setVideoGravityForTransitioningContent:(id)a3
+- (void)setVideoGravityForTransitioningContent:(id)content
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentCopy = content;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[AVNewsWidgetPlayerBehaviorContext setVideoGravityForTransitioningContent:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = contentCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v11, 0x16u);
   }
 
-  v6 = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
-  v7 = [v6 incomingContentView];
-  v8 = [v7 playerLayerView];
-  [v8 setVideoGravity:AVVideoGravityFromString(v4)];
+  contentTransitionView = [(AVNewsWidgetPlayerBehaviorContext *)self contentTransitionView];
+  incomingContentView = [contentTransitionView incomingContentView];
+  playerLayerView = [incomingContentView playerLayerView];
+  [playerLayerView setVideoGravity:AVVideoGravityFromString(contentCopy)];
 
-  v9 = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
-  v10 = [v9 contentView];
-  [v10 setNeedsLayout];
+  playerViewController = [(AVNewsWidgetPlayerBehaviorContext *)self playerViewController];
+  contentView = [playerViewController contentView];
+  [contentView setNeedsLayout];
 }
 
-- (AVNewsWidgetPlayerBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVNewsWidgetPlayerBehaviorContext)initWithAVKitOwner:(id)owner
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  ownerCopy = owner;
   v8.receiver = self;
   v8.super_class = AVNewsWidgetPlayerBehaviorContext;
   v5 = [(AVNewsWidgetPlayerBehaviorContext *)&v8 init];
@@ -751,7 +751,7 @@ void __88__AVNewsWidgetPlayerBehaviorContext_updateStartLeftRightContentTransiti
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
     }
 
-    objc_storeWeak(&v5->_playerViewController, v4);
+    objc_storeWeak(&v5->_playerViewController, ownerCopy);
     *&v5->_startNextContentTransitionButtonEnabled = 257;
   }
 

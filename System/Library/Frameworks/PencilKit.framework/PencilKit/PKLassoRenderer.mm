@@ -1,15 +1,15 @@
 @interface PKLassoRenderer
 - (CGPoint)editMenuLocation;
-- (PKLassoRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4;
-- (id)_expandBezierPathIfNecessary:(void *)a1;
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3;
+- (PKLassoRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate;
+- (id)_expandBezierPathIfNecessary:(void *)necessary;
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate;
 - (uint64_t)_setupAccessibilityObservers;
 - (uint64_t)_setupAnimatedLasso;
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6;
-- (void)_setupLassoLayerAppearanceWithBezierPath:(id *)a1;
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset;
+- (void)_setupLassoLayerAppearanceWithBezierPath:(id *)path;
 - (void)_setupSelectionAdornment;
-- (void)_updateLassoForAccessibility:(id)a3;
-- (void)addAnimationsToSelectionLayer:(void *)a3 whiteLayer:;
+- (void)_updateLassoForAccessibility:(id)accessibility;
+- (void)addAnimationsToSelectionLayer:(void *)layer whiteLayer:;
 - (void)dealloc;
 @end
 
@@ -17,48 +17,48 @@
 
 - (uint64_t)_setupAccessibilityObservers
 {
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 addObserver:a1 selector:sel__updateLassoForAccessibility_ name:*MEMORY[0x1E69DD8B8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateLassoForAccessibility_ name:*MEMORY[0x1E69DD8B8] object:0];
 
-  return [a1 _updateLassoForAccessibility:0];
+  return [self _updateLassoForAccessibility:0];
 }
 
-- (PKLassoRenderer)initWithStrokeSelection:(id)a3 renderingDelegate:(id)a4
+- (PKLassoRenderer)initWithStrokeSelection:(id)selection renderingDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  selectionCopy = selection;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKLassoRenderer;
   v9 = [(PKLassoRenderer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_strokeSelection, a3);
-    objc_storeWeak(&v10->_renderingDelegate, v8);
+    objc_storeStrong(&v9->_strokeSelection, selection);
+    objc_storeWeak(&v10->_renderingDelegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (id)initForLiveSelectionWithRenderingDelegate:(id)a3
+- (id)initForLiveSelectionWithRenderingDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PKLassoRenderer;
   v5 = [(PKLassoRenderer *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_renderingDelegate, v4);
+    objc_storeWeak(&v5->_renderingDelegate, delegateCopy);
     if (!v6->_lassoLayer)
     {
-      v7 = [MEMORY[0x1E69794A0] layer];
+      layer = [MEMORY[0x1E69794A0] layer];
       lassoLayer = v6->_lassoLayer;
-      v6->_lassoLayer = v7;
+      v6->_lassoLayer = layer;
 
-      v9 = [MEMORY[0x1E69794A0] layer];
+      layer2 = [MEMORY[0x1E69794A0] layer];
       whiteLassoLayer = v6->_whiteLassoLayer;
-      v6->_whiteLassoLayer = v9;
+      v6->_whiteLassoLayer = layer2;
 
       [(PKLassoRenderer *)&v6->super.isa _setupLassoLayerAppearanceWithBezierPath:?];
       [(CAShapeLayer *)v6->_lassoLayer addSublayer:v6->_whiteLassoLayer];
@@ -71,8 +71,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   if (self)
   {
@@ -89,7 +89,7 @@
   [(PKLassoRenderer *)&v6 dealloc];
 }
 
-- (void)_updateLassoForAccessibility:(id)a3
+- (void)_updateLassoForAccessibility:(id)accessibility
 {
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
@@ -135,26 +135,26 @@
     v1 = result;
     if (!*(result + 8))
     {
-      v2 = [MEMORY[0x1E69794A0] layer];
+      layer = [MEMORY[0x1E69794A0] layer];
       v3 = *(v1 + 8);
-      *(v1 + 8) = v2;
+      *(v1 + 8) = layer;
 
-      v4 = [MEMORY[0x1E69794A0] layer];
+      layer2 = [MEMORY[0x1E69794A0] layer];
       v5 = *(v1 + 16);
-      *(v1 + 16) = v4;
+      *(v1 + 16) = layer2;
 
-      v40 = [*(v1 + 48) strokes];
+      strokes = [*(v1 + 48) strokes];
       v6 = *(v1 + 8);
       v7 = *(v1 + 16);
-      v8 = [*(v1 + 48) lassoStroke];
-      v9 = v40;
+      lassoStroke = [*(v1 + 48) lassoStroke];
+      v9 = strokes;
       v10 = v6;
       v11 = v7;
-      v12 = v8;
+      v12 = lassoStroke;
       WeakRetained = objc_loadWeakRetained((v1 + 56));
       v14 = *(v1 + 48);
-      v15 = [v14 drawing];
-      [WeakRetained scaleForDrawing:v15];
+      drawing = [v14 drawing];
+      [WeakRetained scaleForDrawing:drawing];
       v17 = v16;
 
       v53 = 0;
@@ -220,8 +220,8 @@
       objc_setProperty_nonatomic_copy(v1, v31, v30, 64);
 
       v32 = objc_loadWeakRetained((v1 + 56));
-      v33 = [v32 selectionHullQueue];
-      dispatch_async(v33, *(v1 + 64));
+      selectionHullQueue = [v32 selectionHullQueue];
+      dispatch_async(selectionHullQueue, *(v1 + 64));
 
       [*(v1 + 48) bounds];
       memset(&v44, 0, sizeof(v44));
@@ -232,15 +232,15 @@
       v44 = v43;
       if (v12)
       {
-        v36 = [v12 _newPathRepresentation];
-        v37 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:v36];
+        _newPathRepresentation = [v12 _newPathRepresentation];
+        v37 = [MEMORY[0x1E69DC728] bezierPathWithCGPath:_newPathRepresentation];
         memset(&v43, 0, sizeof(v43));
         [v12 _transform];
         t2 = v44;
         CGAffineTransformConcat(&v43, &t1, &t2);
         t1 = v43;
         [v37 applyTransform:&t1];
-        CGPathRelease(v36);
+        CGPathRelease(_newPathRepresentation);
         v38 = [PKLassoRenderer _expandBezierPathIfNecessary:v37];
         v39 = *(v1 + 40);
         *(v1 + 40) = v38;
@@ -281,11 +281,11 @@
   return result;
 }
 
-- (void)addAnimationsToSelectionLayer:(void *)a3 whiteLayer:
+- (void)addAnimationsToSelectionLayer:(void *)layer whiteLayer:
 {
   v17 = a2;
-  v5 = a3;
-  if (a1)
+  layerCopy = layer;
+  if (self)
   {
     v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"lineDashPhase"];
     LODWORD(v7) = 14.0;
@@ -311,7 +311,7 @@
     [v11 setDuration:1.0];
     LODWORD(v16) = 2139095039;
     [v11 setRepeatCount:v16];
-    [v5 addAnimation:v11 forKey:@"linePhase"];
+    [layerCopy addAnimation:v11 forKey:@"linePhase"];
   }
 }
 
@@ -324,17 +324,17 @@
   return result;
 }
 
-- (void)_renderLiveSelectionPath:(CGPath *)a3 forStrokes:(id)a4 inDrawing:(id)a5 liveScrollOffset:(CGPoint)a6
+- (void)_renderLiveSelectionPath:(CGPath *)path forStrokes:(id)strokes inDrawing:(id)drawing liveScrollOffset:(CGPoint)offset
 {
   [(PKLassoRenderer *)self _setupAnimatedLasso];
   if (self)
   {
-    [(CAShapeLayer *)self->_lassoLayer setPath:a3];
-    [(CAShapeLayer *)self->_whiteLassoLayer setPath:a3];
+    [(CAShapeLayer *)self->_lassoLayer setPath:path];
+    [(CAShapeLayer *)self->_whiteLassoLayer setPath:path];
   }
 
   lassoLayer = self->_lassoLayer;
-  if (a3)
+  if (path)
   {
     whiteLassoLayer = self->_whiteLassoLayer;
 
@@ -350,26 +350,26 @@
   }
 }
 
-- (void)_setupLassoLayerAppearanceWithBezierPath:(id *)a1
+- (void)_setupLassoLayerAppearanceWithBezierPath:(id *)path
 {
   v27 = a2;
-  WeakRetained = objc_loadWeakRetained(a1 + 7);
-  v4 = [a1[6] drawing];
-  [WeakRetained scaleForDrawing:v4];
+  WeakRetained = objc_loadWeakRetained(path + 7);
+  drawing = [path[6] drawing];
+  [WeakRetained scaleForDrawing:drawing];
   v6 = v5;
 
-  v7 = a1[1];
-  v8 = a1[2];
+  v7 = path[1];
+  v8 = path[2];
   [v7 setContentsScale:v6];
   [v7 setPath:{objc_msgSend(v27, "CGPath")}];
   [v7 setLineWidth:2.0];
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
   [v7 setFillColor:{objc_msgSend(v9, "CGColor")}];
 
-  v10 = [MEMORY[0x1E69DC888] blackColor];
-  v11 = [v10 CGColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  cGColor = [blackColor CGColor];
 
-  [v7 setStrokeColor:v11];
+  [v7 setStrokeColor:cGColor];
   v12 = *MEMORY[0x1E6979E98];
   [v7 setLineJoin:*MEMORY[0x1E6979E98]];
   v13 = MEMORY[0x1E695DEC8];
@@ -382,8 +382,8 @@
   [v7 setLineCap:*MEMORY[0x1E6979E78]];
   LODWORD(v18) = 0.5;
   [v7 setOpacity:v18];
-  v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v19 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   [v8 setContentsScale:?];
 
   [v8 setPath:{objc_msgSend(v27, "CGPath")}];
@@ -391,8 +391,8 @@
   v20 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.0];
   [v8 setFillColor:{objc_msgSend(v20, "CGColor")}];
 
-  v21 = [MEMORY[0x1E69DC888] whiteColor];
-  [v8 setStrokeColor:{objc_msgSend(v21, "CGColor")}];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v8 setStrokeColor:{objc_msgSend(whiteColor, "CGColor")}];
 
   LODWORD(v22) = 1.0;
   [v8 setOpacity:v22];
@@ -558,10 +558,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (id)_expandBezierPathIfNecessary:(void *)a1
+- (id)_expandBezierPathIfNecessary:(void *)necessary
 {
-  v1 = a1;
-  BoundingBox = CGPathGetBoundingBox([v1 CGPath]);
+  necessaryCopy = necessary;
+  BoundingBox = CGPathGetBoundingBox([necessaryCopy CGPath]);
   x = BoundingBox.origin.x;
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
@@ -575,12 +575,12 @@ LABEL_18:
     v12.size.height = height;
     v8 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{MidX + -30.0, CGRectGetMidY(v12) + -30.0, 60.0}];
 
-    v1 = v8;
+    necessaryCopy = v8;
   }
 
-  v9 = v1;
+  v9 = necessaryCopy;
 
-  return v1;
+  return necessaryCopy;
 }
 
 void __100__PKLassoRenderer__setupAnimatedLassoForStrokes_lassoLayer_whiteLassoLayer_isSelection_lassoStroke___block_invoke_4(uint64_t a1)

@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (AXPhoenixDeviceLockMonitor)init;
 - (BOOL)_queryIsDeviceLocked;
-- (void)_notifyObserver:(id)a3 isDeviceLocked:(BOOL)a4 timestamp:(double)a5;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_notifyObserver:(id)observer isDeviceLocked:(BOOL)locked timestamp:(double)timestamp;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)deviceLockStateChanged:(double)a3;
+- (void)deviceLockStateChanged:(double)changed;
 @end
 
 @implementation AXPhoenixDeviceLockMonitor
@@ -52,13 +52,13 @@ uint64_t __44__AXPhoenixDeviceLockMonitor_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v10, v12);
+  objc_storeStrong(location, queue);
+  objc_initWeak(&v10, selfCopy);
   queue = location[0];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -102,10 +102,10 @@ void __56__AXPhoenixDeviceLockMonitor__startMonitoringWithQueue___block_invoke(i
 - (void)_stopMonitoring
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v4, @"com.apple.mobile.keybagd.lock_status", 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, @"com.apple.mobile.keybagd.lock_status", 0);
   oslog[0] = AXLogBackTap();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -117,19 +117,19 @@ void __56__AXPhoenixDeviceLockMonitor__startMonitoringWithQueue___block_invoke(i
   *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceLockStateChanged:(double)a3
+- (void)deviceLockStateChanged:(double)changed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  changedCopy = changed;
   [(AXPhoenixDeviceLockMonitor *)self setDeviceLocked:[(AXPhoenixDeviceLockMonitor *)self _queryIsDeviceLocked]];
-  objc_initWeak(&location, v16);
+  objc_initWeak(&location, selfCopy);
   v12 = AXLogBackTap();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    if ([(AXPhoenixDeviceLockMonitor *)v16 isDeviceLocked])
+    if ([(AXPhoenixDeviceLockMonitor *)selfCopy isDeviceLocked])
     {
       v3 = @"Locked";
     }
@@ -144,14 +144,14 @@ void __56__AXPhoenixDeviceLockMonitor__startMonitoringWithQueue___block_invoke(i
   }
 
   objc_storeStrong(&v12, 0);
-  v4 = v16;
+  v4 = selfCopy;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __53__AXPhoenixDeviceLockMonitor_deviceLockStateChanged___block_invoke;
   v9 = &unk_279A20AF0;
   objc_copyWeak(v10, &location);
-  v10[1] = *&v14;
+  v10[1] = *&changedCopy;
   [(AXPhoenixEventMonitor *)v4 enumerateObserversInQueue:&v5];
   objc_destroyWeak(v10);
   objc_destroyWeak(&location);
@@ -186,16 +186,16 @@ void __53__AXPhoenixDeviceLockMonitor_deviceLockStateChanged___block_invoke(uint
   return v3;
 }
 
-- (void)_notifyObserver:(id)a3 isDeviceLocked:(BOOL)a4 timestamp:(double)a5
+- (void)_notifyObserver:(id)observer isDeviceLocked:(BOOL)locked timestamp:(double)timestamp
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AXPhoenixEventMonitor *)v8 notifyObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(AXPhoenixEventMonitor *)selfCopy notifyObserver:location[0]];
   if (objc_opt_respondsToSelector())
   {
-    [location[0] phoenixDeviceLockMonitor:v8 didReceiveDeviceLockStateChanged:a4 timestamp:a5];
+    [location[0] phoenixDeviceLockMonitor:selfCopy didReceiveDeviceLockStateChanged:locked timestamp:timestamp];
   }
 
   objc_storeStrong(location, 0);

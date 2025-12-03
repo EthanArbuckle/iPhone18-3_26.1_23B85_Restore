@@ -1,27 +1,27 @@
 @interface NEIKEv2EncryptedKeyIDIdentifier
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 key:(id)a5;
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5;
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 key:(id)a5;
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decryptWithSession:(id)a3 returnError:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)d aad:(id)aad key:(id)key;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)d aad:(id)aad keyRef:(__SecKey *)ref;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)string aad:(id)aad key:(id)key;
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)string aad:(id)aad keyRef:(__SecKey *)ref;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decryptWithSession:(id)session returnError:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setAad:(uint64_t)a1;
-- (void)setKeyData:(uint64_t)a1;
+- (void)setAad:(uint64_t)aad;
+- (void)setKeyData:(uint64_t)data;
 @end
 
 @implementation NEIKEv2EncryptedKeyIDIdentifier
 
-- (id)decryptWithSession:(id)a3 returnError:(id *)a4
+- (id)decryptWithSession:(id)session returnError:(id *)error
 {
-  if (!a3 || (v10 = objc_getProperty(a3, a2, 352, 1)) == 0)
+  if (!session || (v10 = objc_getProperty(session, a2, 352, 1)) == 0)
   {
-    ErrorInternal = NEIKEv2CreateErrorInternal(@"Missing IKE SA", a2, a3, a4, v4, v5, v6, v7, v40);
+    ErrorInternal = NEIKEv2CreateErrorInternal(@"Missing IKE SA", a2, session, error, v4, v5, v6, v7, v40);
     v11 = 0;
     v25 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -30,15 +30,15 @@
   }
 
   v11 = v10;
-  v12 = self;
+  selfCopy = self;
   location = 0;
-  v13 = [(NEIKEv2Identifier *)v12 identifierData];
-  v14 = [v13 length];
+  identifierData = [(NEIKEv2Identifier *)selfCopy identifierData];
+  v14 = [identifierData length];
 
   if (v14 <= 0x20)
   {
-    v15 = [(NEIKEv2Identifier *)v12 identifierData];
-    v16 = [v15 length];
+    identifierData2 = [(NEIKEv2Identifier *)selfCopy identifierData];
+    v16 = [identifierData2 length];
     ErrorPeerInvalidSyntax = NEIKEv2CreateErrorPeerInvalidSyntax(@"Encrypted identifier length %u too short", v17, v18, v19, v20, v21, v22, v23, v16);
     location = ErrorPeerInvalidSyntax;
 
@@ -60,9 +60,9 @@
     goto LABEL_16;
   }
 
-  if (v12)
+  if (selfCopy)
   {
-    v28 = v12->_keyRef == 0;
+    v28 = selfCopy->_keyRef == 0;
   }
 
   else
@@ -71,8 +71,8 @@
   }
 
   v29 = [NEIKEv2CryptoKitHPKE alloc];
-  v30 = [(NEIKEv2Identifier *)v12 identifierData];
-  if (!v12)
+  identifierData3 = [(NEIKEv2Identifier *)selfCopy identifierData];
+  if (!selfCopy)
   {
     v31 = 0;
     keyRef = 0;
@@ -83,21 +83,21 @@
     }
 
 LABEL_14:
-    v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:v30 aad:v31 psk:v27 pskID:v26 keyRef:keyRef];
+    v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:identifierData3 aad:v31 psk:v27 pskID:v26 keyRef:keyRef];
     goto LABEL_15;
   }
 
-  v31 = v12->_aad;
+  v31 = selfCopy->_aad;
   if (!v28)
   {
-    keyRef = v12->_keyRef;
+    keyRef = selfCopy->_keyRef;
     goto LABEL_14;
   }
 
-  keyData = v12->_keyData;
+  keyData = selfCopy->_keyData;
 LABEL_12:
   v33 = keyData;
-  v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:v30 aad:v31 psk:v27 pskID:v26 keyData:v33];
+  v34 = [(NEIKEv2CryptoKitHPKE *)v29 initWithPayload:identifierData3 aad:v31 psk:v27 pskID:v26 keyData:v33];
 
 LABEL_15:
   obj = location;
@@ -122,11 +122,11 @@ LABEL_18:
     v37 = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_22:
     v38 = ErrorInternal;
-    *a4 = ErrorInternal;
+    *error = ErrorInternal;
   }
 
 LABEL_23:
@@ -134,14 +134,14 @@ LABEL_23:
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v24.receiver = self;
   v24.super_class = NEIKEv2EncryptedKeyIDIdentifier;
-  if ([(NEIKEv2Identifier *)&v24 isEqual:v4])
+  if ([(NEIKEv2Identifier *)&v24 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       aad = self->_aad;
@@ -297,11 +297,11 @@ LABEL_6:
   return [(NSData *)aad hash]^ v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2EncryptedKeyIDIdentifier;
-  v4 = [(NEIKEv2Identifier *)&v10 copyWithZone:a3];
+  v4 = [(NEIKEv2Identifier *)&v10 copyWithZone:zone];
   v6 = v4;
   if (self)
   {
@@ -338,19 +338,19 @@ LABEL_4:
   return v6;
 }
 
-- (void)setKeyData:(uint64_t)a1
+- (void)setKeyData:(uint64_t)data
 {
-  if (a1)
+  if (data)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((data + 24), a2);
   }
 }
 
-- (void)setAad:(uint64_t)a1
+- (void)setAad:(uint64_t)aad
 {
-  if (a1)
+  if (aad)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((aad + 32), a2);
   }
 }
 
@@ -366,21 +366,21 @@ LABEL_4:
   [(NEIKEv2EncryptedKeyIDIdentifier *)&v3 dealloc];
 }
 
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 key:(id)a5
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)string aad:(id)aad key:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  stringCopy = string;
+  aadCopy = aad;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (!keyCopy)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
 LABEL_8:
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_4;
     }
 
@@ -392,7 +392,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if ([v10 length] != 32)
+  if ([keyCopy length] != 32)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -406,33 +406,33 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:v8];
+  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:stringCopy];
   [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setKeyData:v11];
-  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:v9];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:aadCopy];
   self = v12;
-  v13 = self;
+  selfCopy = self;
 LABEL_4:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyIDString:(id)string aad:(id)aad keyRef:(__SecKey *)ref
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (a5)
+  aadCopy = aad;
+  if (ref)
   {
-    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:a3];
+    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyIDString:string];
     p_isa = &v10->super.super.super.isa;
     if (v10)
     {
-      objc_setProperty_nonatomic(v10, v11, a5, 16);
-      objc_storeStrong(p_isa + 4, a4);
+      objc_setProperty_nonatomic(v10, v11, ref, 16);
+      objc_storeStrong(p_isa + 4, aad);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -445,28 +445,28 @@ LABEL_4:
       _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, "%s called with null keyRef", &v17, 0xCu);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 key:(id)a5
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)d aad:(id)aad key:(id)key
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v10)
+  dCopy = d;
+  aadCopy = aad;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (!keyCopy)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
 LABEL_8:
 
-      v13 = 0;
+      selfCopy = 0;
       goto LABEL_4;
     }
 
@@ -478,7 +478,7 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if ([v10 length] != 32)
+  if ([keyCopy length] != 32)
   {
     v16 = ne_log_obj();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -492,33 +492,33 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:v8];
+  v12 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:dCopy];
   [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setKeyData:v11];
-  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:v9];
+  [(NEIKEv2EncryptedKeyIDIdentifier *)v12 setAad:aadCopy];
   self = v12;
-  v13 = self;
+  selfCopy = self;
 LABEL_4:
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)a3 aad:(id)a4 keyRef:(__SecKey *)a5
+- (NEIKEv2EncryptedKeyIDIdentifier)initWithKeyID:(id)d aad:(id)aad keyRef:(__SecKey *)ref
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (a5)
+  aadCopy = aad;
+  if (ref)
   {
-    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:a3];
+    v10 = [(NEIKEv2KeyIDIdentifier *)self initWithKeyID:d];
     p_isa = &v10->super.super.super.isa;
     if (v10)
     {
-      objc_setProperty_nonatomic(v10, v11, a5, 16);
-      objc_storeStrong(p_isa + 4, a4);
+      objc_setProperty_nonatomic(v10, v11, ref, 16);
+      objc_storeStrong(p_isa + 4, aad);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
@@ -531,11 +531,11 @@ LABEL_4:
       _os_log_fault_impl(&dword_1BA83C000, v16, OS_LOG_TYPE_FAULT, "%s called with null keyRef", &v17, 0xCu);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 @end

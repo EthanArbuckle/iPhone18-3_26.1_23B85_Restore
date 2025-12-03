@@ -1,29 +1,29 @@
 @interface UIUserNotificationAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)activationModeString;
 - (NSString)behaviorString;
 - (UIUserNotificationAction)init;
 - (UIUserNotificationAction)initWithCoder:(NSCoder *)coder;
-- (UIUserNotificationAction)initWithIdentifier:(id)a3 title:(id)a4 behavior:(unint64_t)a5 parameters:(id)a6 activationMode:(unint64_t)a7 isAuthenticationRequired:(BOOL)a8 isDestructive:(BOOL)a9;
+- (UIUserNotificationAction)initWithIdentifier:(id)identifier title:(id)title behavior:(unint64_t)behavior parameters:(id)parameters activationMode:(unint64_t)mode isAuthenticationRequired:(BOOL)required isDestructive:(BOOL)destructive;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)validatedAction;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIUserNotificationAction
 
-- (UIUserNotificationAction)initWithIdentifier:(id)a3 title:(id)a4 behavior:(unint64_t)a5 parameters:(id)a6 activationMode:(unint64_t)a7 isAuthenticationRequired:(BOOL)a8 isDestructive:(BOOL)a9
+- (UIUserNotificationAction)initWithIdentifier:(id)identifier title:(id)title behavior:(unint64_t)behavior parameters:(id)parameters activationMode:(unint64_t)mode isAuthenticationRequired:(BOOL)required isDestructive:(BOOL)destructive
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  identifierCopy = identifier;
+  titleCopy = title;
+  parametersCopy = parameters;
   v18 = [(UIUserNotificationAction *)self init];
   v19 = v18;
   if (v18)
   {
-    UIUserNotificationActionCommonSetup(v18, v15, v16, a5, v17, a7, a8, a9);
+    UIUserNotificationActionCommonSetup(v18, identifierCopy, titleCopy, behavior, parametersCopy, mode, required, destructive);
   }
 
   return v19;
@@ -59,20 +59,20 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"kIdentifierKey"];
-  [v5 encodeObject:self->_title forKey:@"kTitleKey"];
-  [v5 encodeInteger:self->_behavior forKey:@"kBehaviorKey"];
-  [v5 encodeObject:self->_parameters forKey:@"kParametersKey"];
-  [v5 encodeInteger:self->_activationMode forKey:@"kActivationModeKey"];
-  [v5 encodeBool:self->_authenticationRequired forKey:@"kIsAuthenticationRequiredKey"];
-  [v5 encodeBool:self->_destructive forKey:@"kIsDestructiveKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"kIdentifierKey"];
+  [coderCopy encodeObject:self->_title forKey:@"kTitleKey"];
+  [coderCopy encodeInteger:self->_behavior forKey:@"kBehaviorKey"];
+  [coderCopy encodeObject:self->_parameters forKey:@"kParametersKey"];
+  [coderCopy encodeInteger:self->_activationMode forKey:@"kActivationModeKey"];
+  [coderCopy encodeBool:self->_authenticationRequired forKey:@"kIsAuthenticationRequiredKey"];
+  [coderCopy encodeBool:self->_destructive forKey:@"kIsDestructiveKey"];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [UIMutableUserNotificationAction alloc];
   LOBYTE(v6) = self->_destructive;
@@ -87,20 +87,20 @@
   return v4 ^ behavior_low ^ [(NSDictionary *)self->_parameters hash]^ self->_activationMode ^ self->_authenticationRequired ^ self->_destructive;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = v4;
-    v7 = [v6 identifier];
-    LODWORD(identifier) = [(NSString *)identifier isEqualToString:v7];
+    v6 = equalCopy;
+    identifier = [v6 identifier];
+    LODWORD(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
     title = self->_title;
-    v9 = [v6 title];
-    v10 = identifier & [(NSString *)title isEqualToString:v9];
+    title = [v6 title];
+    v10 = identifier & [(NSString *)title isEqualToString:title];
 
     behavior = self->_behavior;
     if (behavior == [v6 behavior])
@@ -114,8 +114,8 @@
     }
 
     parameters = self->_parameters;
-    v14 = [v6 parameters];
-    v15 = v12 & [(NSDictionary *)parameters isEqualToDictionary:v14];
+    parameters = [v6 parameters];
+    v15 = v12 & [(NSDictionary *)parameters isEqualToDictionary:parameters];
 
     activationMode = self->_activationMode;
     if (activationMode != [v6 activationMode])
@@ -130,9 +130,9 @@
     }
 
     destructive = self->_destructive;
-    v19 = [v6 isDestructive];
+    isDestructive = [v6 isDestructive];
 
-    v20 = destructive == v19 && v15;
+    v20 = destructive == isDestructive && v15;
   }
 
   else
@@ -199,23 +199,23 @@ LABEL_6:
   v4 = objc_opt_class();
   identifier = self->_identifier;
   title = self->_title;
-  v7 = [(UIUserNotificationAction *)self behaviorString];
-  v8 = [(UIUserNotificationAction *)self activationModeString];
+  behaviorString = [(UIUserNotificationAction *)self behaviorString];
+  activationModeString = [(UIUserNotificationAction *)self activationModeString];
   v9 = NSStringFromBOOL();
   v10 = NSStringFromBOOL();
   v11 = [(NSDictionary *)self->_parameters description];
-  v12 = [v3 stringWithFormat:@"<%@: %p identifier: %@, title: %@, behavior: %@, activationMode: %@, isAuthenticationRequired:%@, isDestructive:%@, parameters: %@>", v4, self, identifier, title, v7, v8, v9, v10, v11];;
+  v12 = [v3 stringWithFormat:@"<%@: %p identifier: %@, title: %@, behavior: %@, activationMode: %@, isAuthenticationRequired:%@, isDestructive:%@, parameters: %@>", v4, self, identifier, title, behaviorString, activationModeString, v9, v10, v11];;
 
   return v12;
 }
 
 - (id)validatedAction
 {
-  v2 = self;
-  v3 = v2;
-  if (!v2->_activationMode && !v2->_authenticationRequired)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (!selfCopy->_activationMode && !selfCopy->_authenticationRequired)
   {
-    v4 = [(UIUserNotificationAction *)v2 copy];
+    v4 = [(UIUserNotificationAction *)selfCopy copy];
 
     *(v4 + 8) = 1;
     v3 = v4;

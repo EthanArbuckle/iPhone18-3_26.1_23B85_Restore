@@ -1,17 +1,17 @@
 @interface SKUIDeveloperInfoLineItemView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIDeveloperInfoLineItemView)initWithLabel:(id)a3 value:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIDeveloperInfoLineItemView)initWithLabel:(id)label value:(id)value;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUIDeveloperInfoLineItemView
 
-- (SKUIDeveloperInfoLineItemView)initWithLabel:(id)a3 value:(id)a4
+- (SKUIDeveloperInfoLineItemView)initWithLabel:(id)label value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  valueCopy = value;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDeveloperInfoLineItemView initWithLabel:value:];
@@ -36,7 +36,7 @@
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.4];
     [(UILabel *)v13 setTextColor:v14];
 
-    [(UILabel *)v8->_labelLabel setText:v6];
+    [(UILabel *)v8->_labelLabel setText:labelCopy];
     [(SKUIDeveloperInfoLineItemView *)v8 addSubview:v8->_labelLabel];
     v15 = objc_alloc_init(MEMORY[0x277D756B8]);
     valueLabel = v8->_valueLabel;
@@ -52,7 +52,7 @@
     v20 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.8];
     [(UILabel *)v19 setTextColor:v20];
 
-    [(UILabel *)v8->_valueLabel setText:v7];
+    [(UILabel *)v8->_valueLabel setText:valueCopy];
     [(SKUIDeveloperInfoLineItemView *)v8 addSubview:v8->_valueLabel];
     v21 = objc_alloc_init(MEMORY[0x277D75D18]);
     separatorView = v8->_separatorView;
@@ -108,30 +108,30 @@
     CGRectGetMaxY(v18);
   }
 
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
 
   separatorView = self->_separatorView;
 
   [(UIView *)separatorView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   labelLabel = self->_labelLabel;
-  v5 = a3;
-  [(UILabel *)labelLabel setBackgroundColor:v5];
-  [(UILabel *)self->_valueLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)labelLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_valueLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUIDeveloperInfoLineItemView;
-  [(SKUIDeveloperInfoLineItemView *)&v6 setBackgroundColor:v5];
+  [(SKUIDeveloperInfoLineItemView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = self->_contentInset.top + self->_contentInset.bottom;
-  v6 = a3.width - self->_contentInset.left - self->_contentInset.right;
+  v6 = fits.width - self->_contentInset.left - self->_contentInset.right;
   labelLabel = self->_labelLabel;
   if (labelLabel)
   {

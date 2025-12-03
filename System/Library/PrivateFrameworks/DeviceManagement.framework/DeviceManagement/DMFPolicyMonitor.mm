@@ -3,21 +3,21 @@
 + (id)policyMonitor;
 + (id)remoteInterface;
 - (DMFPolicyMonitor)init;
-- (DMFPolicyMonitor)initWithXPCConnection:(id)a3;
-- (id)allExpiredScreenTimeBudgetsWithError:(id *)a3;
-- (id)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4;
-- (id)requestPoliciesForTypes:(id)a3 withError:(id *)a4;
-- (void)_dispatchRequest:(id)a3;
-- (void)addRegistration:(id)a3 forPolicyMonitorIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)allExpiredScreenTimeBudgetsWithCompletionHandler:(id)a3;
+- (DMFPolicyMonitor)initWithXPCConnection:(id)connection;
+- (id)allExpiredScreenTimeBudgetsWithError:(id *)error;
+- (id)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error;
+- (id)requestPoliciesForTypes:(id)types withError:(id *)error;
+- (void)_dispatchRequest:(id)request;
+- (void)addRegistration:(id)registration forPolicyMonitorIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)allExpiredScreenTimeBudgetsWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)invalidatePolicyMonitor:(id)a3;
-- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestPoliciesForTypes:(id)a3 completionHandler:(id)a4;
-- (void)requestPoliciesForWebsiteURLs:(id)a3 completionHandler:(id)a4;
+- (void)invalidatePolicyMonitor:(id)monitor;
+- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestPoliciesForTypes:(id)types completionHandler:(id)handler;
+- (void)requestPoliciesForWebsiteURLs:(id)ls completionHandler:(id)handler;
 @end
 
 @implementation DMFPolicyMonitor
@@ -96,9 +96,9 @@ void __35__DMFPolicyMonitor_remoteInterface__block_invoke()
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (DMFPolicyMonitor)initWithXPCConnection:(id)a3
+- (DMFPolicyMonitor)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v28.receiver = self;
   v28.super_class = DMFPolicyMonitor;
   v6 = [(DMFPolicyMonitor *)&v28 init];
@@ -152,9 +152,9 @@ void __35__DMFPolicyMonitor_remoteInterface__block_invoke()
       }
     }
 
-    objc_storeStrong(&v6->_xpcConnection, a3);
-    v23 = [objc_opt_class() remoteInterface];
-    [(NSXPCConnection *)v6->_xpcConnection setRemoteObjectInterface:v23];
+    objc_storeStrong(&v6->_xpcConnection, connection);
+    remoteInterface = [objc_opt_class() remoteInterface];
+    [(NSXPCConnection *)v6->_xpcConnection setRemoteObjectInterface:remoteInterface];
 
     [(NSXPCConnection *)v6->_xpcConnection resume];
   }
@@ -264,22 +264,22 @@ void __43__DMFPolicyMonitor_allEffectivePolicyTypes__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRegistration:(id)a3 forPolicyMonitorIdentifier:(id)a4 completionHandler:(id)a5
+- (void)addRegistration:(id)registration forPolicyMonitorIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 identifier];
-  v12 = [(DMFPolicyMonitor *)self xpcConnection];
+  registrationCopy = registration;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  identifier = [registrationCopy identifier];
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __81__DMFPolicyMonitor_addRegistration_forPolicyMonitorIdentifier_completionHandler___block_invoke;
   v34[3] = &unk_1E8616AD0;
-  v13 = v11;
+  v13 = identifier;
   v35 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v36 = v14;
-  v15 = [v12 remoteObjectProxyWithErrorHandler:v34];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v34];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -287,11 +287,11 @@ void __43__DMFPolicyMonitor_allEffectivePolicyTypes__block_invoke()
   v28[3] = &unk_1E8616B20;
   v33 = v14;
   v29 = v13;
-  v30 = self;
-  v16 = v8;
+  selfCopy = self;
+  v16 = registrationCopy;
   v31 = v16;
-  v32 = v9;
-  v17 = v9;
+  v32 = identifierCopy;
+  v17 = identifierCopy;
   v18 = v14;
   v19 = v13;
   v20 = MEMORY[0x1E128DE70](v28);
@@ -425,43 +425,43 @@ void __81__DMFPolicyMonitor_addRegistration_forPolicyMonitorIdentifier_completio
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invalidatePolicyMonitor:(id)a3
+- (void)invalidatePolicyMonitor:(id)monitor
 {
-  v7 = a3;
-  v4 = [(DMFPolicyMonitor *)self notificationTokensByPolicyMonitorIdentifier];
-  objc_sync_enter(v4);
-  v5 = [v4 objectForKeyedSubscript:v7];
+  monitorCopy = monitor;
+  notificationTokensByPolicyMonitorIdentifier = [(DMFPolicyMonitor *)self notificationTokensByPolicyMonitorIdentifier];
+  objc_sync_enter(notificationTokensByPolicyMonitorIdentifier);
+  v5 = [notificationTokensByPolicyMonitorIdentifier objectForKeyedSubscript:monitorCopy];
   v6 = v5;
   if (v5)
   {
     notify_cancel([v5 intValue]);
-    [v4 removeObjectForKey:v7];
+    [notificationTokensByPolicyMonitorIdentifier removeObjectForKey:monitorCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(notificationTokensByPolicyMonitorIdentifier);
 }
 
-- (void)requestPoliciesForTypes:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForTypes:(id)types completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMFPolicyMonitor *)self xpcConnection];
+  typesCopy = types;
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __62__DMFPolicyMonitor_requestPoliciesForTypes_completionHandler___block_invoke;
   v26[3] = &unk_1E8616AD0;
-  v9 = v6;
+  v9 = typesCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v26];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v26];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __62__DMFPolicyMonitor_requestPoliciesForTypes_completionHandler___block_invoke_123;
   v22[3] = &unk_1E8616B70;
   v12 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = v10;
   v23 = v12;
   v13 = v10;
@@ -540,9 +540,9 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestPoliciesForTypes:(id)a3 withError:(id *)a4
+- (id)requestPoliciesForTypes:(id)types withError:(id *)error
 {
-  v6 = a3;
+  typesCopy = types;
   v34 = 0;
   v35[0] = &v34;
   v35[1] = 0x3032000000;
@@ -557,27 +557,27 @@ LABEL_10:
   v33 = 0;
   if (+[DMFPolicyMonitor hasFirstUnlocked])
   {
-    v7 = [(DMFPolicyMonitor *)self xpcConnection];
+    xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __54__DMFPolicyMonitor_requestPoliciesForTypes_withError___block_invoke;
     v25[3] = &unk_1E8616B98;
-    v8 = v6;
+    v8 = typesCopy;
     v26 = v8;
     v27 = &v34;
-    v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v25];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v25];
 
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __54__DMFPolicyMonitor_requestPoliciesForTypes_withError___block_invoke_128;
     v20 = &unk_1E8616BC0;
-    v21 = self;
+    selfCopy = self;
     v10 = v8;
     v22 = v10;
     v23 = &v34;
     v24 = &v28;
     v11 = MEMORY[0x1E128DE70](&v17);
-    [v9 requestPoliciesForTypes:v10 replyHandler:{v11, v17, v18, v19, v20, v21}];
+    [v9 requestPoliciesForTypes:v10 replyHandler:{v11, v17, v18, v19, v20, selfCopy}];
 
     v12 = v26;
   }
@@ -591,13 +591,13 @@ LABEL_10:
     v12 = DMFPolicyLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [DMFPolicyMonitor requestPoliciesForTypes:v6 withError:v35];
+      [DMFPolicyMonitor requestPoliciesForTypes:typesCopy withError:v35];
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v35[0] + 40);
+    *error = *(v35[0] + 40);
   }
 
   v15 = v29[5];
@@ -663,27 +663,27 @@ void __54__DMFPolicyMonitor_requestPoliciesForTypes_withError___block_invoke_128
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMFPolicyMonitor *)self xpcConnection];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __74__DMFPolicyMonitor_requestPoliciesForBundleIdentifiers_completionHandler___block_invoke;
   v26[3] = &unk_1E8616AD0;
-  v9 = v6;
+  v9 = identifiersCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v26];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v26];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __74__DMFPolicyMonitor_requestPoliciesForBundleIdentifiers_completionHandler___block_invoke_129;
   v22[3] = &unk_1E8616B70;
   v12 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = v10;
   v23 = v12;
   v13 = v10;
@@ -761,10 +761,10 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v31 = 0;
   v32[0] = &v31;
   v32[1] = 0x3032000000;
@@ -779,15 +779,15 @@ LABEL_10:
   v30 = 0;
   if (+[DMFPolicyMonitor hasFirstUnlocked])
   {
-    v7 = [(DMFPolicyMonitor *)self xpcConnection];
+    xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __66__DMFPolicyMonitor_requestPoliciesForBundleIdentifiers_withError___block_invoke;
     v22[3] = &unk_1E8616B98;
-    v8 = v6;
+    v8 = identifiersCopy;
     v23 = v8;
     v24 = &v31;
-    v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v22];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v22];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -812,14 +812,14 @@ LABEL_10:
     v12 = DMFPolicyLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v6 count];
+      [identifiersCopy count];
       [DMFPolicyMonitor requestPoliciesForBundleIdentifiers:v32 withError:?];
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v32[0] + 40);
+    *error = *(v32[0] + 40);
   }
 
   v15 = v26[5];
@@ -885,27 +885,27 @@ void __66__DMFPolicyMonitor_requestPoliciesForBundleIdentifiers_withError___bloc
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMFPolicyMonitor *)self xpcConnection];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __87__DMFPolicyMonitor_requestCommunicationPoliciesForBundleIdentifiers_completionHandler___block_invoke;
   v26[3] = &unk_1E8616AD0;
-  v9 = v6;
+  v9 = identifiersCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v26];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v26];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __87__DMFPolicyMonitor_requestCommunicationPoliciesForBundleIdentifiers_completionHandler___block_invoke_132;
   v22[3] = &unk_1E8616B70;
   v12 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = v10;
   v23 = v12;
   v13 = v10;
@@ -983,10 +983,10 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestCommunicationPoliciesForBundleIdentifiers:(id)a3 withError:(id *)a4
+- (id)requestCommunicationPoliciesForBundleIdentifiers:(id)identifiers withError:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v31 = 0;
   v32[0] = &v31;
   v32[1] = 0x3032000000;
@@ -1001,15 +1001,15 @@ LABEL_10:
   v30 = 0;
   if (+[DMFPolicyMonitor hasFirstUnlocked])
   {
-    v7 = [(DMFPolicyMonitor *)self xpcConnection];
+    xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __79__DMFPolicyMonitor_requestCommunicationPoliciesForBundleIdentifiers_withError___block_invoke;
     v22[3] = &unk_1E8616B98;
-    v8 = v6;
+    v8 = identifiersCopy;
     v23 = v8;
     v24 = &v31;
-    v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v22];
+    v9 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v22];
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -1034,14 +1034,14 @@ LABEL_10:
     v12 = DMFPolicyLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [v6 count];
+      [identifiersCopy count];
       [DMFPolicyMonitor requestCommunicationPoliciesForBundleIdentifiers:v32 withError:?];
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(v32[0] + 40);
+    *error = *(v32[0] + 40);
   }
 
   v15 = v26[5];
@@ -1107,27 +1107,27 @@ void __79__DMFPolicyMonitor_requestCommunicationPoliciesForBundleIdentifiers_wit
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestPoliciesForCategoryIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForCategoryIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMFPolicyMonitor *)self xpcConnection];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __76__DMFPolicyMonitor_requestPoliciesForCategoryIdentifiers_completionHandler___block_invoke;
   v26[3] = &unk_1E8616AD0;
-  v9 = v6;
+  v9 = identifiersCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v26];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v26];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __76__DMFPolicyMonitor_requestPoliciesForCategoryIdentifiers_completionHandler___block_invoke_135;
   v22[3] = &unk_1E8616B70;
   v12 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = v10;
   v23 = v12;
   v13 = v10;
@@ -1205,27 +1205,27 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestPoliciesForWebsiteURLs:(id)a3 completionHandler:(id)a4
+- (void)requestPoliciesForWebsiteURLs:(id)ls completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMFPolicyMonitor *)self xpcConnection];
+  lsCopy = ls;
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __68__DMFPolicyMonitor_requestPoliciesForWebsiteURLs_completionHandler___block_invoke;
   v26[3] = &unk_1E8616AD0;
-  v9 = v6;
+  v9 = lsCopy;
   v27 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v28 = v10;
-  v11 = [v8 remoteObjectProxyWithErrorHandler:v26];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v26];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __68__DMFPolicyMonitor_requestPoliciesForWebsiteURLs_completionHandler___block_invoke_137;
   v22[3] = &unk_1E8616B70;
   v12 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = v10;
   v23 = v12;
   v13 = v10;
@@ -1303,18 +1303,18 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dispatchRequest:(id)a3
+- (void)_dispatchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMFPolicyMonitor *)self firstUnlockQueue];
+  requestCopy = request;
+  firstUnlockQueue = [(DMFPolicyMonitor *)self firstUnlockQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__DMFPolicyMonitor__dispatchRequest___block_invoke;
   v7[3] = &unk_1E86162A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = requestCopy;
+  v6 = requestCopy;
+  dispatch_async(firstUnlockQueue, v7);
 }
 
 void __37__DMFPolicyMonitor__dispatchRequest___block_invoke(uint64_t a1)
@@ -1334,7 +1334,7 @@ void __37__DMFPolicyMonitor__dispatchRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (id)allExpiredScreenTimeBudgetsWithError:(id *)a3
+- (id)allExpiredScreenTimeBudgetsWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -1348,13 +1348,13 @@ void __37__DMFPolicyMonitor__dispatchRequest___block_invoke(uint64_t a1)
   v14 = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
-  v4 = [(DMFPolicyMonitor *)self xpcConnection];
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__DMFPolicyMonitor_allExpiredScreenTimeBudgetsWithError___block_invoke;
   v10[3] = &unk_1E8616870;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -1364,9 +1364,9 @@ void __37__DMFPolicyMonitor__dispatchRequest___block_invoke(uint64_t a1)
   v9[5] = &v11;
   v6 = MEMORY[0x1E128DE70](v9);
   [v5 allExpiredScreenTimeBudgetsShouldBeSynchronous:1 replyHandler:v6];
-  if (a3)
+  if (error)
   {
-    *a3 = v18[5];
+    *error = v18[5];
   }
 
   v7 = v12[5];
@@ -1430,17 +1430,17 @@ void __57__DMFPolicyMonitor_allExpiredScreenTimeBudgetsWithError___block_invoke_
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)allExpiredScreenTimeBudgetsWithCompletionHandler:(id)a3
+- (void)allExpiredScreenTimeBudgetsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMFPolicyMonitor *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(DMFPolicyMonitor *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __69__DMFPolicyMonitor_allExpiredScreenTimeBudgetsWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E86168E8;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;

@@ -1,40 +1,40 @@
 @interface GCDeviceSession
-+ (id)deviceProviderTypesForConfiguration:(id)a3;
-+ (id)serviceFor:(id)a3 client:(id)a4;
++ (id)deviceProviderTypesForConfiguration:(id)configuration;
++ (id)serviceFor:(id)for client:(id)client;
 + (void)initialize;
 - (GCDeviceSession)init;
-- (GCDeviceSession)initWithConfiguration:(id)a3 environment:(id)a4;
-- (id)_preflightConfiguration:(id)a1;
+- (GCDeviceSession)initWithConfiguration:(id)configuration environment:(id)environment;
+- (id)_preflightConfiguration:(id)configuration;
 - (id)_swift_EventHandler;
 - (id)controllersPrivate;
 - (id)devicesPrivate;
 - (id)keyboardsPrivate;
 - (id)micePrivate;
 - (id)racingWheelsPrivate;
-- (id)serviceFor:(id)a3 client:(id)a4;
+- (id)serviceFor:(id)for client:(id)client;
 - (id)spatialAccessoriesPrivate;
 - (id)stylusesPrivate;
-- (void)_observeChange:(void *)a3 inProvider:;
-- (void)_refreshDevicesAndNotify:(uint64_t)a1;
+- (void)_observeChange:(void *)change inProvider:;
+- (void)_refreshDevicesAndNotify:(uint64_t)notify;
 - (void)_updateEventDelivery;
-- (void)activateWithCompletionHandler:(id)a3;
+- (void)activateWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observerDeliveryPolicyDidChange:(id)a3;
-- (void)setDeviceProviderTypes:(id)a3;
-- (void)setEventHandler:(id)a3;
-- (void)setEventHandlerPrivate:(id)a3;
-- (void)setEventTargetQueue:(id)a3;
-- (void)setTargetQueue:(id)a3;
-- (void)set_swift_EventHandler:(void *)a1;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observerDeliveryPolicyDidChange:(id)change;
+- (void)setDeviceProviderTypes:(id)types;
+- (void)setEventHandler:(id)handler;
+- (void)setEventHandlerPrivate:(id)private;
+- (void)setEventTargetQueue:(id)queue;
+- (void)setTargetQueue:(id)queue;
+- (void)set_swift_EventHandler:(void *)handler;
 @end
 
 @implementation GCDeviceSession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && (currentProcessIsGameControllerDaemon() & 1) == 0)
+  if (objc_opt_class() == self && (currentProcessIsGameControllerDaemon() & 1) == 0)
   {
     GCLookupSetFallbackProvider();
 
@@ -42,11 +42,11 @@
   }
 }
 
-- (GCDeviceSession)initWithConfiguration:(id)a3 environment:(id)a4
+- (GCDeviceSession)initWithConfiguration:(id)configuration environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  configurationCopy = configuration;
+  environmentCopy = environment;
+  if (!configurationCopy)
   {
     [GCDeviceSession initWithConfiguration:a2 environment:self];
   }
@@ -54,7 +54,7 @@
   v63.receiver = self;
   v63.super_class = GCDeviceSession;
   v9 = [(GCDeviceSession *)&v63 init];
-  v10 = [(GCDeviceSession *)v9 _preflightConfiguration:v7];
+  v10 = [(GCDeviceSession *)v9 _preflightConfiguration:configurationCopy];
 
   if ((GCCurrentProcessGetFlags(2) & 2) != 0)
   {
@@ -153,8 +153,8 @@
   hidObserver = v9->_hidObserver;
   v9->_hidObserver = v59;
 
-  v61 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-  [(BKSHIDEventDeliveryPolicyObserver *)v9->_hidObserver setDeferringEnvironment:v61];
+  keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+  [(BKSHIDEventDeliveryPolicyObserver *)v9->_hidObserver setDeferringEnvironment:keyboardFocusEnvironment];
 
   atomic_store(1u, &v9->_state);
   return v9;
@@ -180,35 +180,35 @@ void __53__GCDeviceSession_initWithConfiguration_environment___block_invoke()
   [(GCDeviceSession *)&v2 dealloc];
 }
 
-- (void)setTargetQueue:(id)a3
+- (void)setTargetQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = atomic_load(&self->_state);
   if (v6 >= 2)
   {
     [GCDeviceSession setTargetQueue:];
   }
 
-  v7 = v5;
-  objc_setProperty_atomic(self, a2, v5, 40);
+  v7 = queueCopy;
+  objc_setProperty_atomic(self, a2, queueCopy, 40);
 }
 
-- (void)setEventTargetQueue:(id)a3
+- (void)setEventTargetQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = atomic_load(&self->_state);
   if (v6 >= 2)
   {
     [GCDeviceSession setEventTargetQueue:];
   }
 
-  v7 = v5;
-  objc_setProperty_atomic(self, a2, v5, 48);
+  v7 = queueCopy;
+  objc_setProperty_atomic(self, a2, queueCopy, 48);
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = _os_activity_create(&dword_1D2CD5000, "[GCDeviceSession] Activate", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -217,14 +217,14 @@ void __53__GCDeviceSession_initWithConfiguration_environment___block_invoke()
   atomic_compare_exchange_strong(&self->_state, &v7, 2u);
   if (v7 == 1)
   {
-    v8 = [(GCDeviceSession *)self targetQueue];
-    if (!v8)
+    targetQueue = [(GCDeviceSession *)self targetQueue];
+    if (!targetQueue)
     {
       v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"*** A 'targetQueue' must be specified prior to activating the session." userInfo:0];
       objc_exception_throw(v15);
     }
 
-    dispatch_set_target_queue(self->_sessionQueue, v8);
+    dispatch_set_target_queue(self->_sessionQueue, targetQueue);
     dispatch_activate(self->_sessionQueue);
 
     sessionQueue = self->_sessionQueue;
@@ -240,10 +240,10 @@ void __53__GCDeviceSession_initWithConfiguration_environment___block_invoke()
     v16[1] = 3221225472;
     v16[2] = __49__GCDeviceSession_activateWithCompletionHandler___block_invoke_3;
     v16[3] = &unk_1E8419210;
-    v17 = v5;
+    v17 = handlerCopy;
     v18 = a2;
     v16[4] = self;
-    v11 = v5;
+    v11 = handlerCopy;
     dispatch_async(v10, v16);
     v12 = v17;
   }
@@ -255,8 +255,8 @@ void __53__GCDeviceSession_initWithConfiguration_environment___block_invoke()
     v20[1] = 3221225472;
     v20[2] = __49__GCDeviceSession_activateWithCompletionHandler___block_invoke;
     v20[3] = &unk_1E8419198;
-    v21 = v5;
-    v14 = v5;
+    v21 = handlerCopy;
+    v14 = handlerCopy;
     dispatch_async(v13, v20);
     v12 = v21;
   }
@@ -583,13 +583,13 @@ void __49__GCDeviceSession_activateWithCompletionHandler___block_invoke_2_194(ui
   v8.opaque[0] = 0;
   v8.opaque[1] = 0;
   os_activity_scope_enter(v6, &v8);
-  *a1 = MEMORY[0x1E69E9820];
-  a1[1] = 3221225472;
-  a1[2] = __29__GCDeviceSession_invalidate__block_invoke;
-  a1[3] = &unk_1E84191C0;
-  a1[4] = a2;
-  a1[5] = a3;
-  v7 = _Block_copy(a1);
+  *self = MEMORY[0x1E69E9820];
+  self[1] = 3221225472;
+  self[2] = __29__GCDeviceSession_invalidate__block_invoke;
+  self[3] = &unk_1E84191C0;
+  self[4] = a2;
+  self[5] = a3;
+  v7 = _Block_copy(self);
   dispatch_async(*(a2 + 24), v7);
 
   os_activity_scope_leave(&v8);
@@ -734,10 +734,10 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_refreshDevicesAndNotify:(uint64_t)a1
+- (void)_refreshDevicesAndNotify:(uint64_t)notify
 {
   v92[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (notify)
   {
     v89[0] = @"allDevices";
     v89[1] = sel_allDevices;
@@ -767,13 +767,13 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
     v91[1] = sel_styluses;
     v92[0] = &__block_literal_global_265;
     v92[1] = 192;
-    dispatch_assert_queue_V2(*(a1 + 24));
+    dispatch_assert_queue_V2(*(notify + 24));
     v52 = [MEMORY[0x1E695DFA8] set];
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v2 = *(a1 + 104);
+    v2 = *(notify + 104);
     v3 = [v2 countByEnumeratingWithState:&v72 objects:v88 count:16];
     if (v3)
     {
@@ -787,8 +787,8 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
             objc_enumerationMutation(v2);
           }
 
-          v6 = [*(*(&v72 + 1) + 8 * i) devices];
-          [v52 unionSet:v6];
+          devices = [*(*(&v72 + 1) + 8 * i) devices];
+          [v52 unionSet:devices];
         }
 
         v3 = [v2 countByEnumeratingWithState:&v72 objects:v88 count:16];
@@ -797,7 +797,7 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
       while (v3);
     }
 
-    v7 = objc_getProperty(a1, sel_devices, 136, 1);
+    v7 = objc_getProperty(notify, sel_devices, 136, 1);
     v8 = [v52 copy];
     v50 = objc_opt_new();
     v70 = 0u;
@@ -888,18 +888,18 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
     v23 = v14;
     if ([v50 count] || objc_msgSend(v14, "count"))
     {
-      objc_storeStrong((a1 + 136), v8);
+      objc_storeStrong((notify + 136), v8);
       if (a2)
       {
-        [a1 willChangeValueForKey:@"allDevices"];
+        [notify willChangeValueForKey:@"allDevices"];
       }
 
       for (m = 0; m != 28; m += 4)
       {
-        [a1 willChangeValueForKey:v89[m]];
+        [notify willChangeValueForKey:v89[m]];
       }
 
-      objc_setProperty_atomic(a1, sel_devices, obj, 136);
+      objc_setProperty_atomic(notify, sel_devices, obj, 136);
       v25 = v90;
       v26 = 7;
       do
@@ -916,7 +916,7 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
         v31 = [obj filteredSetUsingPredicate:v30];
 
         v32 = [[GCDeviceCollection alloc] initWithUnderlyingCollection:v31];
-        objc_setProperty_atomic(a1, *(v25 - 2), v32, *v25);
+        objc_setProperty_atomic(notify, *(v25 - 2), v32, *v25);
 
         v25 += 4;
         --v26;
@@ -927,16 +927,16 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
       v23 = v14;
       do
       {
-        [a1 didChangeValueForKey:v89[v33]];
+        [notify didChangeValueForKey:v89[v33]];
         v33 += 4;
       }
 
       while (v33 != 28);
       if (a2)
       {
-        [a1 didChangeValueForKey:@"allDevices"];
-        v34 = objc_getProperty(a1, sel__refreshDevicesAndNotify_, 112, 1);
-        v35 = objc_getProperty(a1, sel__refreshDevicesAndNotify_, 120, 1);
+        [notify didChangeValueForKey:@"allDevices"];
+        v34 = objc_getProperty(notify, sel__refreshDevicesAndNotify_, 112, 1);
+        v35 = objc_getProperty(notify, sel__refreshDevicesAndNotify_, 120, 1);
         if (v34 | v35)
         {
           v60 = 0u;
@@ -960,12 +960,12 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
                 v40 = [[GCDeviceSessionEvent alloc] initWithType:101 device:*(*(&v58 + 1) + 8 * n)];
                 if (v35)
                 {
-                  (*(v35 + 16))(v35, a1, v40);
+                  (*(v35 + 16))(v35, notify, v40);
                 }
 
                 if (v34)
                 {
-                  (*(v34 + 16))(v34, a1, v40);
+                  (*(v34 + 16))(v34, notify, v40);
                 }
               }
 
@@ -996,12 +996,12 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
                 v45 = [[GCDeviceSessionEvent alloc] initWithType:100 device:*(*(&v54 + 1) + 8 * ii)];
                 if (v35)
                 {
-                  (*(v35 + 16))(v35, a1, v45);
+                  (*(v35 + 16))(v35, notify, v45);
                 }
 
                 if (v34)
                 {
-                  (*(v34 + 16))(v34, a1, v45);
+                  (*(v34 + 16))(v34, notify, v45);
                 }
               }
 
@@ -1024,15 +1024,15 @@ void __29__GCDeviceSession_invalidate__block_invoke_3(uint64_t a1)
   v47 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observerDeliveryPolicyDidChange:(id)a3
+- (void)observerDeliveryPolicyDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (gc_isInternalBuild())
   {
-    [(GCDeviceSession *)self observerDeliveryPolicyDidChange:v4];
+    [(GCDeviceSession *)self observerDeliveryPolicyDidChange:changeCopy];
   }
 
-  if (self->_hidObserverWasActive && ([v4 canReceiveEvents] & 1) == 0)
+  if (self->_hidObserverWasActive && ([changeCopy canReceiveEvents] & 1) == 0)
   {
     mach_absolute_time();
     v5 = IOHIDEventCreate();
@@ -1143,119 +1143,119 @@ uint64_t __44__GCDeviceSession__refreshDevicesAndNotify___block_invoke_7(uint64_
   return isKindOfClass & 1;
 }
 
-- (void)setEventHandler:(id)a3
+- (void)setEventHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = atomic_load(&self->_state);
   if (v6 >= 2)
   {
     [GCDeviceSession setEventHandler:];
   }
 
-  v8 = v5;
-  v7 = _Block_copy(v5);
+  v8 = handlerCopy;
+  v7 = _Block_copy(handlerCopy);
   objc_setProperty_atomic(self, a2, v7, 112);
 }
 
-- (void)setEventHandlerPrivate:(id)a3
+- (void)setEventHandlerPrivate:(id)private
 {
-  v5 = a3;
+  privateCopy = private;
   v6 = atomic_load(&self->_state);
   if (v6 >= 2)
   {
     [GCDeviceSession setEventHandler:];
   }
 
-  v8 = v5;
-  v7 = _Block_copy(v5);
+  v8 = privateCopy;
+  v7 = _Block_copy(privateCopy);
   objc_setProperty_atomic(self, a2, v7, 120);
 }
 
 - (id)devicesPrivate
 {
-  v2 = [(GCDeviceSession *)self allDevices];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  allDevices = [(GCDeviceSession *)self allDevices];
+  underlyingCollection = [(GCDeviceCollection *)allDevices underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)keyboardsPrivate
 {
-  v2 = [(GCDeviceSession *)self keyboards];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  keyboards = [(GCDeviceSession *)self keyboards];
+  underlyingCollection = [(GCDeviceCollection *)keyboards underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)micePrivate
 {
-  v2 = [(GCDeviceSession *)self mice];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  mice = [(GCDeviceSession *)self mice];
+  underlyingCollection = [(GCDeviceCollection *)mice underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)controllersPrivate
 {
-  v2 = [(GCDeviceSession *)self controllers];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  controllers = [(GCDeviceSession *)self controllers];
+  underlyingCollection = [(GCDeviceCollection *)controllers underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)racingWheelsPrivate
 {
-  v2 = [(GCDeviceSession *)self racingWheels];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  racingWheels = [(GCDeviceSession *)self racingWheels];
+  underlyingCollection = [(GCDeviceCollection *)racingWheels underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)spatialAccessoriesPrivate
 {
-  v2 = [(GCDeviceSession *)self spatialAccessories];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  spatialAccessories = [(GCDeviceSession *)self spatialAccessories];
+  underlyingCollection = [(GCDeviceCollection *)spatialAccessories underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
 - (id)stylusesPrivate
 {
-  v2 = [(GCDeviceSession *)self styluses];
-  v3 = [(GCDeviceCollection *)v2 underlyingCollection];
+  styluses = [(GCDeviceSession *)self styluses];
+  underlyingCollection = [(GCDeviceCollection *)styluses underlyingCollection];
 
-  return v3;
+  return underlyingCollection;
 }
 
-- (void)setDeviceProviderTypes:(id)a3
+- (void)setDeviceProviderTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = atomic_load(&self->_state);
   if (v5 >= 2)
   {
     [GCDeviceSession setDeviceProviderTypes:];
   }
 
-  v8 = v4;
-  v6 = [v4 copy];
+  v8 = typesCopy;
+  v6 = [typesCopy copy];
   deviceProviderTypes = self->_deviceProviderTypes;
   self->_deviceProviderTypes = v6;
 }
 
-+ (id)deviceProviderTypesForConfiguration:(id)a3
++ (id)deviceProviderTypesForConfiguration:(id)configuration
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v11[0] = objc_opt_class();
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  if ([v4 isNonUI])
+  if ([configurationCopy isNonUI])
   {
     v6 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v6 = [a1 _ui_deviceProviderTypesForConfiguration:v4];
+    v6 = [self _ui_deviceProviderTypesForConfiguration:configurationCopy];
   }
 
   v7 = objc_opt_new();
@@ -1268,10 +1268,10 @@ uint64_t __44__GCDeviceSession__refreshDevicesAndNotify___block_invoke_7(uint64_
   return v8;
 }
 
-+ (id)serviceFor:(id)a3 client:(id)a4
++ (id)serviceFor:(id)for client:(id)client
 {
-  v6 = a3;
-  v7 = [a1 ui_serviceFor:v6 client:a4];
+  forCopy = for;
+  v7 = [self ui_serviceFor:forCopy client:client];
   v8 = v7;
   if (v7)
   {
@@ -1281,7 +1281,7 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  if (&unk_1F4E99DD0 == v6)
+  if (&unk_1F4E99DD0 == forCopy)
   {
     v9 = +[GCAnalytics instance];
     goto LABEL_3;
@@ -1293,13 +1293,13 @@ LABEL_6:
   return v10;
 }
 
-- (id)serviceFor:(id)a3 client:(id)a4
+- (id)serviceFor:(id)for client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(GCDeviceSessionConfiguration *)self->_configuration isNonUI]|| ([(GCDeviceSession *)self ui_serviceFor:v6 client:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  forCopy = for;
+  clientCopy = client;
+  if ([(GCDeviceSessionConfiguration *)self->_configuration isNonUI]|| ([(GCDeviceSession *)self ui_serviceFor:forCopy client:clientCopy], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (&unk_1F4EB2E08 == v6 || &unk_1F4EB2EF8 == v6)
+    if (&unk_1F4EB2E08 == forCopy || &unk_1F4EB2EF8 == forCopy)
     {
       v8 = self->_hidEventSystemClient;
     }
@@ -1313,84 +1313,84 @@ LABEL_6:
   return v8;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
-  if ([v10 isEqualToString:@"devices"])
+  pathCopy = path;
+  changeCopy = change;
+  objectCopy = object;
+  if ([pathCopy isEqualToString:@"devices"])
   {
-    [(GCDeviceSession *)self _observeChange:v11 inProvider:v12];
+    [(GCDeviceSession *)self _observeChange:changeCopy inProvider:objectCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = GCDeviceSession;
-    [(GCDeviceSession *)&v13 observeValueForKeyPath:v10 ofObject:v12 change:v11 context:a6];
+    [(GCDeviceSession *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)_preflightConfiguration:(id)a1
+- (id)_preflightConfiguration:(id)configuration
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (configuration)
   {
-    a1 = v3;
+    configuration = v3;
   }
 
-  return a1;
+  return configuration;
 }
 
 - (void)_updateEventDelivery
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
-    v3 = *(a1 + 32);
+    v3 = *(self + 32);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __39__GCDeviceSession__updateEventDelivery__block_invoke;
     v5[3] = &unk_1E8418C50;
     v6 = v2;
-    v7 = a1;
+    selfCopy = self;
     v4 = v2;
     dispatch_async(v3, v5);
   }
 }
 
-- (void)_observeChange:(void *)a3 inProvider:
+- (void)_observeChange:(void *)change inProvider:
 {
   v17 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  changeCopy = change;
+  if (self)
   {
     v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A4F8]];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
-    if ((v8 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v9 = _gc_log_session();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v13 = 138412546;
-        v14 = v6;
+        v14 = changeCopy;
         v15 = 2112;
         v16 = v5;
         _os_log_debug_impl(&dword_1D2CD5000, v9, OS_LOG_TYPE_DEBUG, "%@ devices did change: %@", &v13, 0x16u);
       }
 
       v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696A4E8]];
-      v11 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-      if (v11 <= 1)
+      if (unsignedIntegerValue <= 1)
       {
         [v5 objectForKeyedSubscript:*MEMORY[0x1E696A500]];
       }
 
-      [(GCDeviceSession *)a1 _refreshDevicesAndNotify:?];
+      [(GCDeviceSession *)self _refreshDevicesAndNotify:?];
     }
   }
 
@@ -1399,20 +1399,20 @@ LABEL_6:
 
 - (id)_swift_EventHandler
 {
-  if (a1)
+  if (self)
   {
-    a1 = objc_getProperty(a1, sel__swift_EventHandler, 128, 1);
+    self = objc_getProperty(self, sel__swift_EventHandler, 128, 1);
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)set_swift_EventHandler:(void *)a1
+- (void)set_swift_EventHandler:(void *)handler
 {
-  if (a1)
+  if (handler)
   {
-    objc_setProperty_atomic(a1, sel_set_swift_EventHandler_, newValue, 128);
+    objc_setProperty_atomic(handler, sel_set_swift_EventHandler_, newValue, 128);
   }
 }
 

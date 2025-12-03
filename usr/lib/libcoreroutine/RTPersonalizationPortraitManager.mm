@@ -1,10 +1,10 @@
 @interface RTPersonalizationPortraitManager
 - (RTPersonalizationPortraitManager)init;
-- (void)_fetchRecentLocationDonationsSince:(id)a3 handler:(id)a4;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)feedbackUsedNamedEntities:(id)a3;
-- (void)fetchLocationNamesStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchRecentLocationDonationsSince:(id)a3 handler:(id)a4;
+- (void)_fetchRecentLocationDonationsSince:(id)since handler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)feedbackUsedNamedEntities:(id)entities;
+- (void)fetchLocationNamesStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchRecentLocationDonationsSince:(id)since handler:(id)handler;
 @end
 
 @implementation RTPersonalizationPortraitManager
@@ -16,27 +16,27 @@
   return [(RTNotifier *)&v3 init];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
-- (void)_fetchRecentLocationDonationsSince:(id)a3 handler:(id)a4
+- (void)_fetchRecentLocationDonationsSince:(id)since handler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  sinceCopy = since;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v5)
+    if (sinceCopy)
     {
       v7 = objc_opt_new();
       v8 = objc_opt_new();
-      v9 = [MEMORY[0x277CCA8D8] _coreroutineBundle];
-      v10 = [v9 bundleIdentifier];
+      _coreroutineBundle = [MEMORY[0x277CCA8D8] _coreroutineBundle];
+      bundleIdentifier = [_coreroutineBundle bundleIdentifier];
       v16 = v7;
       v17 = 0;
       v15[0] = MEMORY[0x277D85DD0];
@@ -44,10 +44,10 @@
       v15[2] = __79__RTPersonalizationPortraitManager__fetchRecentLocationDonationsSince_handler___block_invoke;
       v15[3] = &unk_2788CB428;
       v11 = v7;
-      [v8 iterRecentLocationDonationsSinceDate:v5 client:v10 error:&v17 block:v15];
+      [v8 iterRecentLocationDonationsSinceDate:sinceCopy client:bundleIdentifier error:&v17 block:v15];
       v12 = v17;
 
-      v6[2](v6, v11, v12);
+      handlerCopy[2](handlerCopy, v11, v12);
     }
 
     else
@@ -58,7 +58,7 @@
       v19[0] = @"requires a valid date.";
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v8 = [v13 errorWithDomain:v14 code:7 userInfo:v11];
-      v6[2](v6, 0, v8);
+      handlerCopy[2](handlerCopy, 0, v8);
     }
   }
 }
@@ -112,40 +112,40 @@ void __79__RTPersonalizationPortraitManager__fetchRecentLocationDonationsSince_h
   [*(a1 + 32) addObject:v20];
 }
 
-- (void)fetchRecentLocationDonationsSince:(id)a3 handler:(id)a4
+- (void)fetchRecentLocationDonationsSince:(id)since handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  sinceCopy = since;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__RTPersonalizationPortraitManager_fetchRecentLocationDonationsSince_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = sinceCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = sinceCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fetchLocationNamesStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchLocationNamesStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__RTPersonalizationPortraitManager_fetchLocationNamesStartDate_endDate_handler___block_invoke;
     block[3] = &unk_2788C4500;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
-    dispatch_async(v11, block);
+    v14 = dateCopy;
+    v15 = endDateCopy;
+    v16 = handlerCopy;
+    dispatch_async(queue, block);
 
     v12 = v14;
   }
@@ -278,18 +278,18 @@ id __80__RTPersonalizationPortraitManager_fetchLocationNamesStartDate_endDate_ha
   return v6;
 }
 
-- (void)feedbackUsedNamedEntities:(id)a3
+- (void)feedbackUsedNamedEntities:(id)entities
 {
-  v4 = a3;
-  if ([v4 count])
+  entitiesCopy = entities;
+  if ([entitiesCopy count])
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__RTPersonalizationPortraitManager_feedbackUsedNamedEntities___block_invoke;
     block[3] = &unk_2788C4EA0;
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = entitiesCopy;
+    dispatch_async(queue, block);
   }
 }
 

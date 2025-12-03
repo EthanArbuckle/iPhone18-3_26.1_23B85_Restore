@@ -1,10 +1,10 @@
 @interface CSCPUMonitorHelper
-+ (int)clearMonitorForPID:(int)a3;
++ (int)clearMonitorForPID:(int)d;
 @end
 
 @implementation CSCPUMonitorHelper
 
-+ (int)clearMonitorForPID:(int)a3
++ (int)clearMonitorForPID:(int)d
 {
   *__error() = 0;
   result = proc_disable_cpumon();
@@ -13,7 +13,7 @@
     v5 = +[CSLogger defaultCategory];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(CSCPUMonitorHelper *)a3 clearMonitorForPID:v5];
+      [(CSCPUMonitorHelper *)d clearMonitorForPID:v5];
     }
 
     return *__error();

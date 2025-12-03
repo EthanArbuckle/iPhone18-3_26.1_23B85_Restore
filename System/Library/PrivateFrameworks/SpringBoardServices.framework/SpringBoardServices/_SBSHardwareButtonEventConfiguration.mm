@@ -11,9 +11,9 @@
   v5 = NSStringFromSBSHardwareButtonEventPriority(self->_maximumPriority);
   [v3 appendString:v5 withName:@"eventPriority"];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

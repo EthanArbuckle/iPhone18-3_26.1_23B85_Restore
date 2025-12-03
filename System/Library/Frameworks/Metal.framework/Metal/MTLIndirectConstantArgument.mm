@@ -1,6 +1,6 @@
 @interface MTLIndirectConstantArgument
-- (BOOL)isEqual:(id)a3;
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(MTLBindingInternal *)&v2 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3 withPrintedTypes:(id)a4
+- (id)formattedDescription:(unint64_t)description withPrintedTypes:(id)types
 {
   v12[9] = *MEMORY[0x1E69E9840];
-  v6 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v6 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v7 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = MTLIndirectConstantArgument;
-  v8 = [(MTLBindingInternal *)&v11 formattedDescription:a3];
+  v8 = [(MTLBindingInternal *)&v11 formattedDescription:description];
   v12[0] = v6;
   v12[1] = @"Alignment =";
   v12[2] = [MEMORY[0x1E696AD98] numberWithUnsignedShort:self->_alignment];
@@ -35,22 +35,22 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_dataType != *(a3 + 84) || self->_alignment != *(a3 + 85) || self->_dataSize != *(a3 + 86) || self->_pixelFormat != *(a3 + 22) || self->_aluType != *(a3 + 23))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_dataType != *(equal + 84) || self->_alignment != *(equal + 85) || self->_dataSize != *(equal + 86) || self->_pixelFormat != *(equal + 22) || self->_aluType != *(equal + 23))
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = MTLIndirectConstantArgument;
-  return [(MTLBindingInternal *)&v6 isEqual:a3];
+  return [(MTLBindingInternal *)&v6 isEqual:equal];
 }
 
 @end

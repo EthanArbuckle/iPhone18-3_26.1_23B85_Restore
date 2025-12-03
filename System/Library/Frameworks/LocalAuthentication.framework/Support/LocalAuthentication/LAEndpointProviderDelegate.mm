@@ -1,5 +1,5 @@
 @interface LAEndpointProviderDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (LAEndpointProviderDelegate)init;
 @end
 
@@ -22,13 +22,13 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
-  v5 = [LAEndpointProviderServer handleConnection:v4];
+  connectionCopy = connection;
+  v5 = [LAEndpointProviderServer handleConnection:connectionCopy];
   if (v5)
   {
-    [v4 resume];
+    [connectionCopy resume];
   }
 
   return v5;

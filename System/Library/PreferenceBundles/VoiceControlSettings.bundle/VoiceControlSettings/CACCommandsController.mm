@@ -1,14 +1,14 @@
 @interface CACCommandsController
-- (BOOL)_commandItemBelongsToDifferentLocale:(id)a3;
+- (BOOL)_commandItemBelongsToDifferentLocale:(id)locale;
 - (CACCommandsController)init;
 - (CACSpokenCommandGroup)commandGroup;
-- (id)_detailStringForSpecifier:(id)a3;
+- (id)_detailStringForSpecifier:(id)specifier;
 - (id)_sortedCustomCommandsArrayByLanguage;
 - (id)specifiers;
 - (void)_commandSettingsDidChange;
 - (void)_refreshGroupCommands;
 - (void)dealloc;
-- (void)presentCustomAction:(id)a3;
+- (void)presentCustomAction:(id)action;
 @end
 
 @implementation CACCommandsController
@@ -46,53 +46,53 @@
   }
 
   v42 = +[NSMutableArray array];
-  v5 = [(CACCommandsController *)self commandGroup];
-  if (![v5 isCustom])
+  commandGroup = [(CACCommandsController *)self commandGroup];
+  if (![commandGroup isCustom])
   {
     goto LABEL_5;
   }
 
   v6 = +[CACPreferences sharedPreferences];
-  v7 = [v6 allCustomCommandProperties];
-  v8 = [v7 count];
+  allCustomCommandProperties = [v6 allCustomCommandProperties];
+  v8 = [allCustomCommandProperties count];
   v9 = +[CACCommandImportExportUtilities maximumNumberOfAllowedEntries];
 
   if (v8 < v9)
   {
     v10 = settingsLocString(@"CREATE_NEW_CUSTOM_COMMAND", @"CommandAndControlSettings");
-    v5 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:2 edit:0];
+    commandGroup = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:2 edit:0];
 
-    [v5 setControllerLoadAction:"presentCustomAction:"];
+    [commandGroup setControllerLoadAction:"presentCustomAction:"];
     v11 = +[CACPreferences sharedPreferences];
-    v12 = [v11 bestLocaleIdentifier];
-    v13 = [CACSpokenCommandItem newCommandItemWithLocale:v12 scope:@"com.apple.speech.SystemWideScope"];
-    [v5 setProperty:v13 forKey:@"CACCommandItem"];
+    bestLocaleIdentifier = [v11 bestLocaleIdentifier];
+    v13 = [CACSpokenCommandItem newCommandItemWithLocale:bestLocaleIdentifier scope:@"com.apple.speech.SystemWideScope"];
+    [commandGroup setProperty:v13 forKey:@"CACCommandItem"];
 
-    [v42 addObject:v5];
+    [v42 addObject:commandGroup];
     v14 = +[PSSpecifier emptyGroupSpecifier];
     [v42 addObject:v14];
 
 LABEL_5:
   }
 
-  v15 = [(CACCommandsController *)self commandGroup];
+  commandGroup2 = [(CACCommandsController *)self commandGroup];
   v38 = v3;
-  if ([v15 isCustom])
+  if ([commandGroup2 isCustom])
   {
-    v16 = [(CACCommandsController *)self _sortedCustomCommandsArrayByLanguage];
+    _sortedCustomCommandsArrayByLanguage = [(CACCommandsController *)self _sortedCustomCommandsArrayByLanguage];
   }
 
   else
   {
-    v17 = [(CACCommandsController *)self commandGroup];
-    v16 = [v17 commandsArray];
+    commandGroup3 = [(CACCommandsController *)self commandGroup];
+    _sortedCustomCommandsArrayByLanguage = [commandGroup3 commandsArray];
   }
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v16;
+  obj = _sortedCustomCommandsArrayByLanguage;
   v18 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v18)
   {
@@ -112,7 +112,7 @@ LABEL_5:
         v22 = *(*(&v43 + 1) + 8 * i);
         if ([v22 isGroup])
         {
-          v36 = [(CACCommandsController *)self commandGroup];
+          commandGroup4 = [(CACCommandsController *)self commandGroup];
           v37 = v22;
           _AXAssert();
         }
@@ -130,17 +130,17 @@ LABEL_5:
         v24 = [(CACCommandsController *)self _commandItemBelongsToDifferentLocale:v22];
         if (v24)
         {
-          v25 = [v22 untranslatedDisplayString];
+          untranslatedDisplayString = [v22 untranslatedDisplayString];
           v26 = -1;
         }
 
         else
         {
-          v25 = [v22 displayString];
+          untranslatedDisplayString = [v22 displayString];
           v26 = 2;
         }
 
-        v27 = [PSSpecifier preferenceSpecifierNamed:v25 target:self set:0 get:"_detailStringForSpecifier:" detail:v23 cell:v26 edit:0];
+        v27 = [PSSpecifier preferenceSpecifierNamed:untranslatedDisplayString target:self set:0 get:"_detailStringForSpecifier:" detail:v23 cell:v26 edit:0];
         if ([v22 isCustom])
         {
           [v27 setControllerLoadAction:"presentCustomAction:"];
@@ -151,10 +151,10 @@ LABEL_5:
         [v27 setProperty:v22 forKey:@"CACCommandItem"];
         [v42 addObject:v27];
         ++v20;
-        v29 = [(CACCommandsController *)self commandGroup];
-        v30 = [v29 isCustom];
+        commandGroup5 = [(CACCommandsController *)self commandGroup];
+        isCustom = [commandGroup5 isCustom];
 
-        if (v30)
+        if (isCustom)
         {
           v31 = [obj axSafeObjectAtIndex:v20];
           if (![(CACCommandsController *)self _commandItemBelongsToDifferentLocale:v22]&& [(CACCommandsController *)self _commandItemBelongsToDifferentLocale:v31])
@@ -181,11 +181,11 @@ LABEL_32:
   return v4;
 }
 
-- (void)presentCustomAction:(id)a3
+- (void)presentCustomAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v7 = objc_alloc_init(CACCustomCommandEditorViewController);
-  v5 = [v4 propertyForKey:@"CACCommandItem"];
+  v5 = [actionCopy propertyForKey:@"CACCommandItem"];
 
   [v7 setCommandItem:v5];
   [v7 setDelegate:self];
@@ -195,22 +195,22 @@ LABEL_32:
 
 - (CACSpokenCommandGroup)commandGroup
 {
-  v2 = [(CACCommandsController *)self specifier];
-  v3 = [v2 propertyForKey:@"CACCommandGroup"];
+  specifier = [(CACCommandsController *)self specifier];
+  v3 = [specifier propertyForKey:@"CACCommandGroup"];
 
   return v3;
 }
 
-- (BOOL)_commandItemBelongsToDifferentLocale:(id)a3
+- (BOOL)_commandItemBelongsToDifferentLocale:(id)locale
 {
-  v3 = a3;
-  v4 = [v3 untranslatedLocale];
-  if (v4 && [v3 isCustom])
+  localeCopy = locale;
+  untranslatedLocale = [localeCopy untranslatedLocale];
+  if (untranslatedLocale && [localeCopy isCustom])
   {
-    v5 = [v3 untranslatedLocale];
+    untranslatedLocale2 = [localeCopy untranslatedLocale];
     v6 = +[CACPreferences sharedPreferences];
-    v7 = [v6 bestLocaleIdentifier];
-    v8 = v5 != v7;
+    bestLocaleIdentifier = [v6 bestLocaleIdentifier];
+    v8 = untranslatedLocale2 != bestLocaleIdentifier;
   }
 
   else
@@ -221,22 +221,22 @@ LABEL_32:
   return v8;
 }
 
-- (id)_detailStringForSpecifier:(id)a3
+- (id)_detailStringForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:@"CACCommandItem"];
+  v4 = [specifier propertyForKey:@"CACCommandItem"];
   if ([v4 isCustom])
   {
     if ([(CACCommandsController *)self _commandItemBelongsToDifferentLocale:v4])
     {
       v5 = +[NSLocale currentLocale];
-      v6 = [v4 untranslatedLocale];
-      v7 = [v5 localizedStringForLocaleIdentifier:v6];
-      v8 = [v7 localizedCapitalizedString];
+      untranslatedLocale = [v4 untranslatedLocale];
+      v7 = [v5 localizedStringForLocaleIdentifier:untranslatedLocale];
+      localizedCapitalizedString = [v7 localizedCapitalizedString];
     }
 
     else
     {
-      v8 = 0;
+      localizedCapitalizedString = 0;
     }
   }
 
@@ -252,10 +252,10 @@ LABEL_32:
       v9 = @"OFF";
     }
 
-    v8 = settingsLocString(v9, @"CommandAndControlSettings");
+    localizedCapitalizedString = settingsLocString(v9, @"CommandAndControlSettings");
   }
 
-  return v8;
+  return localizedCapitalizedString;
 }
 
 - (void)_commandSettingsDidChange
@@ -267,25 +267,25 @@ LABEL_32:
     *&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] = 0;
 
     [(CACCommandsController *)self reloadSpecifiers];
-    v9 = [(CACCommandsController *)self commandGroup];
-    v4 = [v9 commandsArray];
-    if ([v4 count])
+    commandGroup = [(CACCommandsController *)self commandGroup];
+    commandsArray = [commandGroup commandsArray];
+    if ([commandsArray count])
     {
     }
 
     else
     {
-      v5 = [(CACCommandsController *)self navigationController];
-      v6 = [v5 viewControllers];
-      v7 = [v6 lastObject];
+      navigationController = [(CACCommandsController *)self navigationController];
+      viewControllers = [navigationController viewControllers];
+      lastObject = [viewControllers lastObject];
 
-      if (v7 != self)
+      if (lastObject != self)
       {
         return;
       }
 
-      v9 = [(CACCommandsController *)self navigationController];
-      v8 = [v9 popViewControllerAnimated:1];
+      commandGroup = [(CACCommandsController *)self navigationController];
+      v8 = [commandGroup popViewControllerAnimated:1];
     }
   }
 }
@@ -295,17 +295,17 @@ LABEL_32:
   v3 = objc_alloc_init(CACSpokenCommandPresentation);
   [(CACCommandsController *)self setCommandPresentation:v3];
 
-  v4 = [(CACCommandsController *)self commandPresentation];
-  [v4 setUsedByPreferences:1];
+  commandPresentation = [(CACCommandsController *)self commandPresentation];
+  [commandPresentation setUsedByPreferences:1];
 
-  v5 = [(CACCommandsController *)self commandPresentation];
-  v6 = [v5 nestedCommandGroupsAndItems];
+  commandPresentation2 = [(CACCommandsController *)self commandPresentation];
+  nestedCommandGroupsAndItems = [commandPresentation2 nestedCommandGroupsAndItems];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = nestedCommandGroupsAndItems;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -321,10 +321,10 @@ LABEL_32:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [(CACCommandsController *)self commandGroup];
-        v15 = [v14 identifier];
-        v16 = [v13 isEqualToString:v15];
+        identifier = [v12 identifier];
+        commandGroup = [(CACCommandsController *)self commandGroup];
+        identifier2 = [commandGroup identifier];
+        v16 = [identifier isEqualToString:identifier2];
 
         if (v16)
         {
@@ -346,16 +346,16 @@ LABEL_32:
   v12 = [[CACSpokenCommandGroup alloc] initWithIdentifier:@"Custom"];
   v17 = v12;
 LABEL_11:
-  v18 = [(CACCommandsController *)self specifier];
-  [v18 setProperty:v12 forKey:@"CACCommandGroup"];
+  specifier = [(CACCommandsController *)self specifier];
+  [specifier setProperty:v12 forKey:@"CACCommandGroup"];
 }
 
 - (id)_sortedCustomCommandsArrayByLanguage
 {
-  v2 = [(CACCommandsController *)self commandGroup];
-  v3 = [v2 commandsArray];
+  commandGroup = [(CACCommandsController *)self commandGroup];
+  commandsArray = [commandGroup commandsArray];
 
-  v4 = [v3 sortedArrayUsingComparator:&stru_29098];
+  v4 = [commandsArray sortedArrayUsingComparator:&stru_29098];
 
   return v4;
 }

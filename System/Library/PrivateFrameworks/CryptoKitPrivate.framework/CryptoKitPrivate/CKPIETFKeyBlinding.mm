@@ -1,18 +1,18 @@
 @interface CKPIETFKeyBlinding
-+ (BOOL)isValidWithSignature:(id)a3 for:(id)a4 with:(__SecKey *)a5 context:(id)a6;
-+ (__SecKey)secKeyFromCompressedRepresentation:(id)a3;
-+ (id)blindSign:(id)a3 blindedBy:(__SecKey *)a4 with:(__SecKey *)a5 context:(id)a6 error:(id *)a7;
-+ (id)compressedRepresentationFromSecKey:(__SecKey *)a3;
-+ (id)privateScalarFromSecKey:(__SecKey *)a3;
++ (BOOL)isValidWithSignature:(id)signature for:(id)for with:(__SecKey *)with context:(id)context;
++ (__SecKey)secKeyFromCompressedRepresentation:(id)representation;
++ (id)blindSign:(id)sign blindedBy:(__SecKey *)by with:(__SecKey *)with context:(id)context error:(id *)error;
++ (id)compressedRepresentationFromSecKey:(__SecKey *)key;
++ (id)privateScalarFromSecKey:(__SecKey *)key;
 - (_TtC16CryptoKitPrivate18CKPIETFKeyBlinding)init;
 @end
 
 @implementation CKPIETFKeyBlinding
 
-+ (id)privateScalarFromSecKey:(__SecKey *)a3
++ (id)privateScalarFromSecKey:(__SecKey *)key
 {
-  v3 = a3;
-  _s16CryptoKitPrivate18CKPIETFKeyBlindingC23privateScalarFromSecKeyy10Foundation4DataVSgSo0iJ3RefaFZ_0(v3);
+  keyCopy = key;
+  _s16CryptoKitPrivate18CKPIETFKeyBlindingC23privateScalarFromSecKeyy10Foundation4DataVSgSo0iJ3RefaFZ_0(keyCopy);
   v5 = v4;
   v7 = v6;
 
@@ -31,51 +31,51 @@
   return v8;
 }
 
-+ (BOOL)isValidWithSignature:(id)a3 for:(id)a4 with:(__SecKey *)a5 context:(id)a6
++ (BOOL)isValidWithSignature:(id)signature for:(id)for with:(__SecKey *)with context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  signatureCopy = signature;
+  forCopy = for;
+  withCopy = with;
+  contextCopy = context;
   v13 = sub_1C0D7832C();
   v15 = v14;
 
   v16 = sub_1C0D7832C();
   v18 = v17;
 
-  LOBYTE(v10) = _s16CryptoKitPrivate18CKPIETFKeyBlindingC7isValid9signature3for4with7contextSb10Foundation4DataV_AKSo9SecKeyRefaSo6NSDataCtFZ_0(v13, v15, v16, v18, v11);
+  LOBYTE(forCopy) = _s16CryptoKitPrivate18CKPIETFKeyBlindingC7isValid9signature3for4with7contextSb10Foundation4DataV_AKSo9SecKeyRefaSo6NSDataCtFZ_0(v13, v15, v16, v18, withCopy);
   sub_1C0CF448C(v16, v18);
   sub_1C0CF448C(v13, v15);
 
-  return v10 & 1;
+  return forCopy & 1;
 }
 
-+ (id)blindSign:(id)a3 blindedBy:(__SecKey *)a4 with:(__SecKey *)a5 context:(id)a6 error:(id *)a7
++ (id)blindSign:(id)sign blindedBy:(__SecKey *)by with:(__SecKey *)with context:(id)context error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  signCopy = sign;
+  byCopy = by;
+  withCopy = with;
+  contextCopy = context;
   v14 = sub_1C0D7832C();
   v16 = v15;
 
-  v17 = sub_1C0D16244(v14, v16, v11, v12, v13);
+  v17 = sub_1C0D16244(v14, v16, byCopy, withCopy, contextCopy);
   sub_1C0CF448C(v14, v16);
 
   return v17;
 }
 
-+ (id)compressedRepresentationFromSecKey:(__SecKey *)a3
++ (id)compressedRepresentationFromSecKey:(__SecKey *)key
 {
-  v3 = a3;
-  v4 = _s16CryptoKitPrivate18CKPIETFKeyBlindingC28compressedRepresentationFrom6secKeySo6NSDataCSgSo03SecJ3Refa_tFZ_0(v3);
+  keyCopy = key;
+  v4 = _s16CryptoKitPrivate18CKPIETFKeyBlindingC28compressedRepresentationFrom6secKeySo6NSDataCSgSo03SecJ3Refa_tFZ_0(keyCopy);
 
   return v4;
 }
 
-+ (__SecKey)secKeyFromCompressedRepresentation:(id)a3
++ (__SecKey)secKeyFromCompressedRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = _s16CryptoKitPrivate18CKPIETFKeyBlindingC10secKeyFrom24compressedRepresentationSo03SecG3RefaSgSo6NSDataC_tFZ_0();
 
   return v4;

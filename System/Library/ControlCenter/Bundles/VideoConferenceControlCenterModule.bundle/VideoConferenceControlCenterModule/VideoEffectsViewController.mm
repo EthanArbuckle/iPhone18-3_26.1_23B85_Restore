@@ -3,26 +3,26 @@
 - (BOOL)shouldLoadFromSensor;
 - (CCUIContentModuleContext)contentModuleContext;
 - (NSArray)requiredVisualStyleCategories;
-- (_TtC34VideoConferenceControlCenterModule26VideoEffectsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC34VideoConferenceControlCenterModule26VideoEffectsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)compactContinuousCornerRadius;
 - (double)preferredExpandedContentHeight;
-- (void)buttonDownWithSender:(id)a3;
-- (void)buttonTappedWithSender:(id)a3;
+- (void)buttonDownWithSender:(id)sender;
+- (void)buttonTappedWithSender:(id)sender;
 - (void)effectsDidUpdate;
-- (void)expandTappedWithSender:(id)a3;
+- (void)expandTappedWithSender:(id)sender;
 - (void)loadView;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentModuleContext:(id)a3;
-- (void)setRequiredVisualStyleCategories:(id)a3;
-- (void)setShouldLoadFromSensor:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)sliderChangedWithSender:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentModuleContext:(id)context;
+- (void)setRequiredVisualStyleCategories:(id)categories;
+- (void)setShouldLoadFromSensor:(BOOL)sensor;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)sliderChangedWithSender:(id)sender;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation VideoEffectsViewController
@@ -34,11 +34,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldLoadFromSensor:(BOOL)a3
+- (void)setShouldLoadFromSensor:(BOOL)sensor
 {
   v5 = OBJC_IVAR____TtC34VideoConferenceControlCenterModule26VideoEffectsViewController_shouldLoadFromSensor;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sensor;
 }
 
 - (CCUIContentModuleContext)contentModuleContext
@@ -48,14 +48,14 @@
   return *(self + v3);
 }
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
   v5 = OBJC_IVAR____TtC34VideoConferenceControlCenterModule26VideoEffectsViewController_contentModuleContext;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(self + v5) = context;
+  contextCopy = context;
+  selfCopy = self;
 
   sub_A2CC();
 }
@@ -63,7 +63,7 @@
 - (double)preferredExpandedContentHeight
 {
   v2 = *(&stru_248.offset + (swift_isaMask & *self));
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
@@ -76,13 +76,13 @@
   return *(self + v3);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
   v5 = OBJC_IVAR____TtC34VideoConferenceControlCenterModule26VideoEffectsViewController_compactContinuousCornerRadius;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = radius;
   v6 = *(&stru_B8.flags + (swift_isaMask & *self));
-  v7 = self;
+  selfCopy = self;
   v8 = v6();
   [v8 _setContinuousCornerRadius:*(self + v5) + -10.0];
 }
@@ -106,103 +106,103 @@
   return v4.super.isa;
 }
 
-- (void)setRequiredVisualStyleCategories:(id)a3
+- (void)setRequiredVisualStyleCategories:(id)categories
 {
-  v3 = a3;
-  if (a3)
+  categoriesCopy = categories;
+  if (categories)
   {
     sub_14548(0, &qword_2F838, NSNumber_ptr);
-    v3 = sub_1F044();
+    categoriesCopy = sub_1F044();
   }
 
   v5 = OBJC_IVAR____TtC34VideoConferenceControlCenterModule26VideoEffectsViewController_requiredVisualStyleCategories;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = categoriesCopy;
 }
 
 - (BOOL)shouldBeginTransitionToExpandedContentModule
 {
   v2 = *(&stru_108.reloff + (swift_isaMask & *self));
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return (v2 & 1) == 0;
 }
 
-- (void)buttonDownWithSender:(id)a3
+- (void)buttonDownWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_A76C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_A76C(senderCopy);
 }
 
-- (void)buttonTappedWithSender:(id)a3
+- (void)buttonTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_AB94(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_AB94(senderCopy);
 }
 
-- (void)sliderChangedWithSender:(id)a3
+- (void)sliderChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_B1D0(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_B1D0(senderCopy);
 }
 
-- (void)expandTappedWithSender:(id)a3
+- (void)expandTappedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_B428(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_B428(senderCopy);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_D62C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_DB84();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_EA0C(a3);
+  selfCopy = self;
+  sub_EA0C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_EE50(a3);
+  selfCopy = self;
+  sub_EE50(disappear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_F120(a3);
+  selfCopy = self;
+  sub_F120(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_F2D8(a3);
+  selfCopy = self;
+  sub_F2D8(disappear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_F490(a3);
+  selfCopy = self;
+  sub_F490(appearing);
 }
 
-- (_TtC34VideoConferenceControlCenterModule26VideoEffectsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC34VideoConferenceControlCenterModule26VideoEffectsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1F004();
     v7 = v6;
@@ -214,21 +214,21 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_F6C0(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_F6C0(v5, v7, bundle);
 }
 
 - (void)effectsDidUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_10150();
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v7 = a3;
-  v8 = self;
-  sub_103D8(a3, a4);
+  providerCopy = provider;
+  selfCopy = self;
+  sub_103D8(provider, category);
 }
 
 @end

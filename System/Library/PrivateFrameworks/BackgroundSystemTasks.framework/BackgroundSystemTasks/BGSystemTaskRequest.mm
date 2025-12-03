@@ -1,14 +1,14 @@
 @interface BGSystemTaskRequest
-+ (BGSystemTaskRequest)taskRequestWithDescriptor:(id)a3 withIdentifier:(id)a4;
-+ (id)descriptorWithTaskRequest:(id)a3;
++ (BGSystemTaskRequest)taskRequestWithDescriptor:(id)descriptor withIdentifier:(id)identifier;
++ (id)descriptorWithTaskRequest:(id)request;
 + (void)initialize;
-- (BGSystemTaskRequest)initWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BGSystemTaskRequest)initWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)requiresProtectionClass;
 - (unint64_t)hash;
-- (void)setInvolvedProcesses:(id)a3;
-- (void)setRelatedApplications:(id)a3;
+- (void)setInvolvedProcesses:(id)processes;
+- (void)setRelatedApplications:(id)applications;
 @end
 
 @implementation BGSystemTaskRequest
@@ -38,7 +38,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _log_0 = os_log_create("com.apple.BackgroundSystemTasks", "BGSTFramework");
 
@@ -46,24 +46,24 @@
   }
 }
 
-+ (BGSystemTaskRequest)taskRequestWithDescriptor:(id)a3 withIdentifier:(id)a4
++ (BGSystemTaskRequest)taskRequestWithDescriptor:(id)descriptor withIdentifier:(id)identifier
 {
   v122 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = MEMORY[0x1B27477C0](v5);
+  descriptorCopy = descriptor;
+  identifierCopy = identifier;
+  v7 = MEMORY[0x1B27477C0](descriptorCopy);
   v8 = MEMORY[0x1E69E9E80];
   if (v7 != MEMORY[0x1E69E9E80])
   {
     +[BGSystemTaskRequest taskRequestWithDescriptor:withIdentifier:];
   }
 
-  v9 = xpc_dictionary_get_dictionary(v5, "RepeatingTask");
+  v9 = xpc_dictionary_get_dictionary(descriptorCopy, "RepeatingTask");
   v10 = v9;
   if (!v9 || MEMORY[0x1B27477C0](v9) != v8)
   {
-    p_super = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:v6];
-    v12 = xpc_dictionary_get_dictionary(v5, "NonRepeatingTask");
+    p_super = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:identifierCopy];
+    v12 = xpc_dictionary_get_dictionary(descriptorCopy, "NonRepeatingTask");
 
     if (v12 && MEMORY[0x1B27477C0](v12) == v8)
     {
@@ -71,7 +71,7 @@
       v14 = [v13 objectForKey:@"FastPassTask"];
       if (v14)
       {
-        v15 = [[BGFastPassSystemTaskRequest alloc] initWithIdentifier:v6];
+        v15 = [[BGFastPassSystemTaskRequest alloc] initWithIdentifier:identifierCopy];
         v16 = [v14 objectForKey:@"ProcessingTaskIdentifiers"];
         if ([v16 count])
         {
@@ -109,7 +109,7 @@
             v28 = v27;
             [(BGNonRepeatingSystemTaskRequest *)p_super scheduleAfter];
             *buf = 138543874;
-            *&buf[4] = v6;
+            *&buf[4] = identifierCopy;
             *&buf[12] = 2048;
             *&buf[14] = v28;
             *&buf[22] = 2048;
@@ -140,7 +140,7 @@ LABEL_33:
     goto LABEL_130;
   }
 
-  v39 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:v6];
+  v39 = [[BGRepeatingSystemTaskRequest alloc] initWithIdentifier:identifierCopy];
   v40 = _CFXPCCreateCFObjectFromXPCObject();
   v41 = [v40 objectForKeyedSubscript:@"Interval"];
   -[BGRepeatingSystemTaskRequest setInterval:](v39, "setInterval:", [v41 intValue]);
@@ -161,7 +161,7 @@ LABEL_33:
   }
 
 LABEL_17:
-  v31 = xpc_dictionary_get_array(v5, "FeatureCodes");
+  v31 = xpc_dictionary_get_array(descriptorCopy, "FeatureCodes");
 
   v32 = MEMORY[0x1E69E9E50];
   if (v31 && MEMORY[0x1B27477C0](v31) == v32)
@@ -182,8 +182,8 @@ LABEL_17:
 
   if ([(BGNonRepeatingSystemTaskRequest *)v30 isMemberOfClass:objc_opt_class()])
   {
-    v34 = [(BGSystemTaskRequest *)v30 featureCodes];
-    v35 = v34 == 0;
+    featureCodes = [(BGSystemTaskRequest *)v30 featureCodes];
+    v35 = featureCodes == 0;
 
     if (v35)
     {
@@ -196,11 +196,11 @@ LABEL_17:
     }
   }
 
-  [(BGSystemTaskRequest *)v30 setPostInstall:xpc_dictionary_get_BOOL(v5, "PostInstall")];
+  [(BGSystemTaskRequest *)v30 setPostInstall:xpc_dictionary_get_BOOL(descriptorCopy, "PostInstall")];
   [(BGSystemTaskRequest *)v30 setPriority:1];
   [(BGSystemTaskRequest *)v30 setRequiresExternalPower:1];
   [(BGSystemTaskRequest *)v30 setRequiresExternalPowerIsSetByUser:0];
-  string = xpc_dictionary_get_string(v5, "Priority");
+  string = xpc_dictionary_get_string(descriptorCopy, "Priority");
   v37 = string;
   if (!string)
   {
@@ -236,12 +236,12 @@ LABEL_36:
     v38 = _log_0;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
     {
-      [BGSystemTaskRequest taskRequestWithDescriptor:v6 withIdentifier:v37];
+      [BGSystemTaskRequest taskRequestWithDescriptor:identifierCopy withIdentifier:v37];
     }
   }
 
 LABEL_44:
-  v44 = xpc_dictionary_get_value(v5, "RequiresExternalPower");
+  v44 = xpc_dictionary_get_value(descriptorCopy, "RequiresExternalPower");
 
   if (v44)
   {
@@ -249,9 +249,9 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setRequiresExternalPowerIsSetByUser:1];
   }
 
-  [(BGSystemTaskRequest *)v30 setRandomInitialDelay:xpc_dictionary_get_int64(v5, "RandomInitialDelay")];
-  [(BGSystemTaskRequest *)v30 setExpectedDuration:xpc_dictionary_get_int64(v5, "ExpectedDuration")];
-  v45 = xpc_dictionary_get_array(v5, "RelatedApplications");
+  [(BGSystemTaskRequest *)v30 setRandomInitialDelay:xpc_dictionary_get_int64(descriptorCopy, "RandomInitialDelay")];
+  [(BGSystemTaskRequest *)v30 setExpectedDuration:xpc_dictionary_get_int64(descriptorCopy, "ExpectedDuration")];
+  v45 = xpc_dictionary_get_array(descriptorCopy, "RelatedApplications");
 
   if (v45 && MEMORY[0x1B27477C0](v45) == v32)
   {
@@ -259,7 +259,7 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setRelatedApplications:v46];
   }
 
-  v47 = xpc_dictionary_get_array(v5, "InvolvedProcesses");
+  v47 = xpc_dictionary_get_array(descriptorCopy, "InvolvedProcesses");
 
   if (v47 && MEMORY[0x1B27477C0](v47) == v32)
   {
@@ -267,13 +267,13 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setInvolvedProcesses:v48];
   }
 
-  v10 = xpc_dictionary_get_value(v5, "RunOnAppForeground");
+  v10 = xpc_dictionary_get_value(descriptorCopy, "RunOnAppForeground");
 
   v49 = MEMORY[0x1E69E9E58];
   if (v10 && MEMORY[0x1B27477C0](v10) == v49 && xpc_BOOL_get_value(v10))
   {
-    v50 = [(BGSystemTaskRequest *)v30 relatedApplications];
-    v51 = [v50 count];
+    relatedApplications = [(BGSystemTaskRequest *)v30 relatedApplications];
+    v51 = [relatedApplications count];
 
     if (!v51)
     {
@@ -289,12 +289,12 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setRunOnAppForeground:1];
   }
 
-  v31 = xpc_dictionary_get_value(v5, "RequestsApplicationLaunch");
+  v31 = xpc_dictionary_get_value(descriptorCopy, "RequestsApplicationLaunch");
 
   if (v31 && MEMORY[0x1B27477C0](v31) == v49 && xpc_BOOL_get_value(v31))
   {
-    v52 = [(BGSystemTaskRequest *)v30 relatedApplications];
-    v53 = [v52 count];
+    relatedApplications2 = [(BGSystemTaskRequest *)v30 relatedApplications];
+    v53 = [relatedApplications2 count];
 
     if (!v53)
     {
@@ -310,12 +310,12 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setRequestsApplicationLaunch:1];
   }
 
-  v10 = xpc_dictionary_get_value(v5, "BeforeApplicationLaunch");
+  v10 = xpc_dictionary_get_value(descriptorCopy, "BeforeApplicationLaunch");
 
   if (v10 && MEMORY[0x1B27477C0](v10) == v49 && xpc_BOOL_get_value(v10))
   {
-    v54 = [(BGSystemTaskRequest *)v30 relatedApplications];
-    v55 = [v54 count];
+    relatedApplications3 = [(BGSystemTaskRequest *)v30 relatedApplications];
+    v55 = [relatedApplications3 count];
 
     if (!v55)
     {
@@ -331,12 +331,12 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setBeforeApplicationLaunch:1];
   }
 
-  v31 = xpc_dictionary_get_value(v5, "ApplicationRelationship");
+  v31 = xpc_dictionary_get_value(descriptorCopy, "ApplicationRelationship");
 
   if (v31)
   {
-    v56 = [(BGSystemTaskRequest *)v30 relatedApplications];
-    v57 = [v56 count];
+    relatedApplications4 = [(BGSystemTaskRequest *)v30 relatedApplications];
+    v57 = [relatedApplications4 count];
 
     if (!v57)
     {
@@ -349,24 +349,24 @@ LABEL_44:
       goto LABEL_180;
     }
 
-    [(BGSystemTaskRequest *)v30 setApplicationRelationship:xpc_dictionary_get_int64(v5, "ApplicationRelationship")];
+    [(BGSystemTaskRequest *)v30 setApplicationRelationship:xpc_dictionary_get_int64(descriptorCopy, "ApplicationRelationship")];
   }
 
-  v58 = xpc_dictionary_get_value(v5, "UserRequestedBackupTask");
+  v58 = xpc_dictionary_get_value(descriptorCopy, "UserRequestedBackupTask");
 
   if (v58)
   {
     [(BGSystemTaskRequest *)v30 setUserRequestedBackupTask:xpc_BOOL_get_value(v58)];
   }
 
-  v59 = xpc_dictionary_get_value(v5, "RequestsImmediateRuntime");
+  v59 = xpc_dictionary_get_value(descriptorCopy, "RequestsImmediateRuntime");
 
   if (v59)
   {
     [(BGSystemTaskRequest *)v30 setRequestsImmediateRuntime:xpc_BOOL_get_value(v59)];
   }
 
-  v60 = xpc_dictionary_get_dictionary(v5, "NetworkEndpoint");
+  v60 = xpc_dictionary_get_dictionary(descriptorCopy, "NetworkEndpoint");
 
   if (v60 && MEMORY[0x1B27477C0](v60) == v8)
   {
@@ -374,7 +374,7 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setNetworkEndpointPrimitive:v61];
   }
 
-  v62 = xpc_dictionary_get_dictionary(v5, "NetworkParameters");
+  v62 = xpc_dictionary_get_dictionary(descriptorCopy, "NetworkParameters");
 
   if (v62 && MEMORY[0x1B27477C0](v62) == v8)
   {
@@ -382,16 +382,16 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setNetworkParametersPrimitive:v63];
   }
 
-  [(BGSystemTaskRequest *)v30 setRequiresBuddyComplete:xpc_dictionary_get_BOOL(v5, "RequiresBuddyComplete")];
-  v64 = xpc_dictionary_get_string(v5, "GroupName");
+  [(BGSystemTaskRequest *)v30 setRequiresBuddyComplete:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresBuddyComplete")];
+  v64 = xpc_dictionary_get_string(descriptorCopy, "GroupName");
   if (v64)
   {
     v65 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v64];
     [(BGSystemTaskRequest *)v30 setGroupName:v65];
   }
 
-  v66 = [(BGSystemTaskRequest *)v30 groupName];
-  v67 = v66 == 0;
+  groupName = [(BGSystemTaskRequest *)v30 groupName];
+  v67 = groupName == 0;
 
   if (v67)
   {
@@ -400,11 +400,11 @@ LABEL_44:
 
   else
   {
-    v68 = xpc_dictionary_get_value(v5, "GroupConcurrencyLimit");
+    v68 = xpc_dictionary_get_value(descriptorCopy, "GroupConcurrencyLimit");
 
     if (v68)
     {
-      int64 = xpc_dictionary_get_int64(v5, "GroupConcurrencyLimit");
+      int64 = xpc_dictionary_get_int64(descriptorCopy, "GroupConcurrencyLimit");
     }
 
     else
@@ -415,20 +415,20 @@ LABEL_44:
     [(BGSystemTaskRequest *)v30 setGroupConcurrencyLimit:int64];
   }
 
-  v71 = xpc_dictionary_get_string(v5, "RateLimitConfigurationName");
+  v71 = xpc_dictionary_get_string(descriptorCopy, "RateLimitConfigurationName");
   if (v71)
   {
     v72 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v71];
     [(BGSystemTaskRequest *)v30 setRateLimitConfigurationName:v72];
   }
 
-  [(BGSystemTaskRequest *)v30 setRequiresSignificantUserInactivity:xpc_dictionary_get_BOOL(v5, "RequiresSignificantUserInactivity")];
-  [(BGSystemTaskRequest *)v30 setRequiresUserInactivity:xpc_dictionary_get_BOOL(v5, "RequiresUserInactivity")];
-  [(BGSystemTaskRequest *)v30 setAppRefresh:xpc_dictionary_get_BOOL(v5, "AppRefresh")];
-  [(BGSystemTaskRequest *)v30 setPowerNap:xpc_dictionary_get_BOOL(v5, "PowerNap")];
-  [(BGSystemTaskRequest *)v30 setPreventsDeviceSleep:xpc_dictionary_get_BOOL(v5, "PreventsDeviceSleep")];
-  [(BGSystemTaskRequest *)v30 setResourceIntensive:xpc_dictionary_get_BOOL(v5, "ResourceIntensive")];
-  v73 = xpc_dictionary_get_int64(v5, "Resources");
+  [(BGSystemTaskRequest *)v30 setRequiresSignificantUserInactivity:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresSignificantUserInactivity")];
+  [(BGSystemTaskRequest *)v30 setRequiresUserInactivity:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresUserInactivity")];
+  [(BGSystemTaskRequest *)v30 setAppRefresh:xpc_dictionary_get_BOOL(descriptorCopy, "AppRefresh")];
+  [(BGSystemTaskRequest *)v30 setPowerNap:xpc_dictionary_get_BOOL(descriptorCopy, "PowerNap")];
+  [(BGSystemTaskRequest *)v30 setPreventsDeviceSleep:xpc_dictionary_get_BOOL(descriptorCopy, "PreventsDeviceSleep")];
+  [(BGSystemTaskRequest *)v30 setResourceIntensive:xpc_dictionary_get_BOOL(descriptorCopy, "ResourceIntensive")];
+  v73 = xpc_dictionary_get_int64(descriptorCopy, "Resources");
   if (v73 <= 1)
   {
     v74 = 1;
@@ -440,14 +440,14 @@ LABEL_44:
   }
 
   [(BGSystemTaskRequest *)v30 setResources:v74];
-  [(BGSystemTaskRequest *)v30 setRequiresInexpensiveNetworkConnectivity:xpc_dictionary_get_BOOL(v5, "RequiresInexpensiveNetworkConnectivity")];
-  [(BGSystemTaskRequest *)v30 setRequiresUnconstrainedNetworkConnectivity:xpc_dictionary_get_BOOL(v5, "RequiresUnconstrainedNetworkConnectivity")];
-  v75 = xpc_dictionary_get_BOOL(v5, "RequiresNetworkConnectivity") || [(BGSystemTaskRequest *)v30 requiresInexpensiveNetworkConnectivity]|| [(BGSystemTaskRequest *)v30 requiresUnconstrainedNetworkConnectivity];
+  [(BGSystemTaskRequest *)v30 setRequiresInexpensiveNetworkConnectivity:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresInexpensiveNetworkConnectivity")];
+  [(BGSystemTaskRequest *)v30 setRequiresUnconstrainedNetworkConnectivity:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresUnconstrainedNetworkConnectivity")];
+  v75 = xpc_dictionary_get_BOOL(descriptorCopy, "RequiresNetworkConnectivity") || [(BGSystemTaskRequest *)v30 requiresInexpensiveNetworkConnectivity]|| [(BGSystemTaskRequest *)v30 requiresUnconstrainedNetworkConnectivity];
   [(BGSystemTaskRequest *)v30 setRequiresNetworkConnectivity:v75];
-  [(BGSystemTaskRequest *)v30 setNetworkDownloadSize:xpc_dictionary_get_int64(v5, "NetworkDownloadSize")];
-  [(BGSystemTaskRequest *)v30 setNetworkUploadSize:xpc_dictionary_get_int64(v5, "NetworkUploadSize")];
-  [(BGSystemTaskRequest *)v30 setMayRebootDevice:xpc_dictionary_get_BOOL(v5, "MayRebootDevice")];
-  v76 = xpc_dictionary_get_array(v5, "ProducedResultIdentifiers");
+  [(BGSystemTaskRequest *)v30 setNetworkDownloadSize:xpc_dictionary_get_int64(descriptorCopy, "NetworkDownloadSize")];
+  [(BGSystemTaskRequest *)v30 setNetworkUploadSize:xpc_dictionary_get_int64(descriptorCopy, "NetworkUploadSize")];
+  [(BGSystemTaskRequest *)v30 setMayRebootDevice:xpc_dictionary_get_BOOL(descriptorCopy, "MayRebootDevice")];
+  v76 = xpc_dictionary_get_array(descriptorCopy, "ProducedResultIdentifiers");
 
   if (v76 && MEMORY[0x1B27477C0](v76) == v32)
   {
@@ -459,7 +459,7 @@ LABEL_44:
     }
   }
 
-  v10 = xpc_dictionary_get_array(v5, "Dependencies");
+  v10 = xpc_dictionary_get_array(descriptorCopy, "Dependencies");
 
   if (v10 && MEMORY[0x1B27477C0](v10) == v32)
   {
@@ -473,7 +473,7 @@ LABEL_44:
     v113 = 3221225472;
     v114 = __64__BGSystemTaskRequest_taskRequestWithDescriptor_withIdentifier___block_invoke;
     v115 = &unk_1E7B244B0;
-    v116 = v6;
+    v116 = identifierCopy;
     v117 = buf;
     if (!xpc_array_apply(v10, &v112))
     {
@@ -489,11 +489,11 @@ LABEL_130:
     _Block_object_dispose(buf, 8);
   }
 
-  v79 = [(BGSystemTaskRequest *)v30 producedResultIdentifiers];
-  if (v79)
+  producedResultIdentifiers = [(BGSystemTaskRequest *)v30 producedResultIdentifiers];
+  if (producedResultIdentifiers)
   {
-    v80 = [(BGSystemTaskRequest *)v30 producedResultIdentifiers];
-    v81 = [v80 count] == 0;
+    producedResultIdentifiers2 = [(BGSystemTaskRequest *)v30 producedResultIdentifiers];
+    v81 = [producedResultIdentifiers2 count] == 0;
 
     if (v81)
     {
@@ -507,7 +507,7 @@ LABEL_130:
     }
   }
 
-  v31 = xpc_dictionary_get_dictionary(v5, "Context");
+  v31 = xpc_dictionary_get_dictionary(descriptorCopy, "Context");
 
   if (v31 && MEMORY[0x1B27477C0](v31) == v8)
   {
@@ -515,7 +515,7 @@ LABEL_130:
     [(BGSystemTaskRequest *)v30 setContext:v82];
   }
 
-  v83 = xpc_dictionary_get_string(v5, "RunOnMotionState");
+  v83 = xpc_dictionary_get_string(descriptorCopy, "RunOnMotionState");
   if (v83)
   {
     v84 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v83];
@@ -566,9 +566,9 @@ LABEL_140:
   }
 
 LABEL_141:
-  [(BGSystemTaskRequest *)v30 setPowerBudgeted:xpc_dictionary_get_BOOL(v5, "PowerBudgeted")];
-  [(BGSystemTaskRequest *)v30 setDataBudgeted:xpc_dictionary_get_BOOL(v5, "DataBudgeted")];
-  v91 = xpc_dictionary_get_string(v5, "DataBudgetName");
+  [(BGSystemTaskRequest *)v30 setPowerBudgeted:xpc_dictionary_get_BOOL(descriptorCopy, "PowerBudgeted")];
+  [(BGSystemTaskRequest *)v30 setDataBudgeted:xpc_dictionary_get_BOOL(descriptorCopy, "DataBudgeted")];
+  v91 = xpc_dictionary_get_string(descriptorCopy, "DataBudgetName");
   if (v91)
   {
     if (![(BGSystemTaskRequest *)v30 dataBudgeted])
@@ -586,9 +586,9 @@ LABEL_141:
     [(BGSystemTaskRequest *)v30 setDataBudgetName:v92];
   }
 
-  [(BGSystemTaskRequest *)v30 setShouldWakeDevice:xpc_dictionary_get_BOOL(v5, "ShouldWakeDevice")];
+  [(BGSystemTaskRequest *)v30 setShouldWakeDevice:xpc_dictionary_get_BOOL(descriptorCopy, "ShouldWakeDevice")];
   [(BGSystemTaskRequest *)v30 setRequiresProtectionClass:4];
-  v93 = xpc_dictionary_get_string(v5, "RequiresProtectionClass");
+  v93 = xpc_dictionary_get_string(descriptorCopy, "RequiresProtectionClass");
   if (v93)
   {
     v94 = *v93;
@@ -633,37 +633,37 @@ LABEL_159:
     }
   }
 
-  [(BGSystemTaskRequest *)v30 setOverrideRateLimiting:xpc_dictionary_get_BOOL(v5, "OverrideRateLimiting")];
-  [(BGSystemTaskRequest *)v30 setMagneticInterferenceSensitivity:xpc_dictionary_get_BOOL(v5, "MagneticInterferenceSensitivity")];
-  [(BGSystemTaskRequest *)v30 setMailFetch:xpc_dictionary_get_BOOL(v5, "MailFetch")];
-  [(BGSystemTaskRequest *)v30 setBypassPeakPower:xpc_dictionary_get_BOOL(v5, "BypassPeakPower")];
-  [(BGSystemTaskRequest *)v30 setBypassBatteryAging:xpc_dictionary_get_BOOL(v5, "BypassBatteryAging")];
-  [(BGSystemTaskRequest *)v30 setBacklogged:xpc_dictionary_get_BOOL(v5, "Backlogged")];
-  [(BGSystemTaskRequest *)v30 setRequiresMinimumBatteryLevel:xpc_dictionary_get_int64(v5, "RequiresMinimumBatteryLevel")];
-  [(BGSystemTaskRequest *)v30 setBlockRebootActivitiesForSU:xpc_dictionary_get_BOOL(v5, "BlockRebootActivitiesForSU")];
-  [(BGSystemTaskRequest *)v30 setUseStatisticalModelForTriggersRestart:xpc_dictionary_get_BOOL(v5, "UseStatisticalModelForTriggersRestart")];
+  [(BGSystemTaskRequest *)v30 setOverrideRateLimiting:xpc_dictionary_get_BOOL(descriptorCopy, "OverrideRateLimiting")];
+  [(BGSystemTaskRequest *)v30 setMagneticInterferenceSensitivity:xpc_dictionary_get_BOOL(descriptorCopy, "MagneticInterferenceSensitivity")];
+  [(BGSystemTaskRequest *)v30 setMailFetch:xpc_dictionary_get_BOOL(descriptorCopy, "MailFetch")];
+  [(BGSystemTaskRequest *)v30 setBypassPeakPower:xpc_dictionary_get_BOOL(descriptorCopy, "BypassPeakPower")];
+  [(BGSystemTaskRequest *)v30 setBypassBatteryAging:xpc_dictionary_get_BOOL(descriptorCopy, "BypassBatteryAging")];
+  [(BGSystemTaskRequest *)v30 setBacklogged:xpc_dictionary_get_BOOL(descriptorCopy, "Backlogged")];
+  [(BGSystemTaskRequest *)v30 setRequiresMinimumBatteryLevel:xpc_dictionary_get_int64(descriptorCopy, "RequiresMinimumBatteryLevel")];
+  [(BGSystemTaskRequest *)v30 setBlockRebootActivitiesForSU:xpc_dictionary_get_BOOL(descriptorCopy, "BlockRebootActivitiesForSU")];
+  [(BGSystemTaskRequest *)v30 setUseStatisticalModelForTriggersRestart:xpc_dictionary_get_BOOL(descriptorCopy, "UseStatisticalModelForTriggersRestart")];
   [(BGSystemTaskRequest *)v30 requiresMinimumBatteryLevel];
   if ([(BGSystemTaskRequest *)v30 requiresMinimumBatteryLevel]>= 0x65)
   {
     [(BGSystemTaskRequest *)v30 setRequiresMinimumBatteryLevel:0];
   }
 
-  [(BGSystemTaskRequest *)v30 setRequiresMinimumDataBudgetPercentage:xpc_dictionary_get_int64(v5, "RequiresMinimumDataBudgetPercentage")];
+  [(BGSystemTaskRequest *)v30 setRequiresMinimumDataBudgetPercentage:xpc_dictionary_get_int64(descriptorCopy, "RequiresMinimumDataBudgetPercentage")];
   [(BGSystemTaskRequest *)v30 requiresMinimumDataBudgetPercentage];
   if ([(BGSystemTaskRequest *)v30 requiresMinimumDataBudgetPercentage]>= 0x65)
   {
     [(BGSystemTaskRequest *)v30 setRequiresMinimumDataBudgetPercentage:0];
   }
 
-  v97 = xpc_dictionary_get_string(v5, "DiskVolume");
+  v97 = xpc_dictionary_get_string(descriptorCopy, "DiskVolume");
   if (!v97)
   {
     goto LABEL_168;
   }
 
   v98 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v97];
-  v99 = [MEMORY[0x1E696AC08] defaultManager];
-  v100 = [v99 fileExistsAtPath:v98 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v100 = [defaultManager fileExistsAtPath:v98 isDirectory:0];
 
   if (v100)
   {
@@ -672,7 +672,7 @@ LABEL_159:
       [(BGSystemTaskRequest *)v30 setDiskVolume:v98];
 
 LABEL_168:
-      v101 = xpc_dictionary_get_string(v5, "TargetDevice");
+      v101 = xpc_dictionary_get_string(descriptorCopy, "TargetDevice");
       v102 = v101;
       if (v101)
       {
@@ -699,11 +699,11 @@ LABEL_168:
         [(BGSystemTaskRequest *)v30 setTargetDevice:v103];
       }
 
-      v107 = xpc_dictionary_get_BOOL(v5, "CommunicatesWithPairedDevice");
+      v107 = xpc_dictionary_get_BOOL(descriptorCopy, "CommunicatesWithPairedDevice");
       [(BGSystemTaskRequest *)v30 setCommunicatesWithPairedDevice:v107];
-      v108 = [(BGSystemTaskRequest *)v30 targetDevice];
+      targetDevice = [(BGSystemTaskRequest *)v30 targetDevice];
       v109 = !v107;
-      if (v108)
+      if (targetDevice)
       {
         v109 = 1;
       }
@@ -713,14 +713,14 @@ LABEL_168:
         [(BGSystemTaskRequest *)v30 setTargetDevice:1];
       }
 
-      v110 = xpc_dictionary_get_string(v5, "RemoteDeviceIdentifier");
+      v110 = xpc_dictionary_get_string(descriptorCopy, "RemoteDeviceIdentifier");
       if (v110)
       {
         v111 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v110];
         [(BGSystemTaskRequest *)v30 setRemoteDevice:v111];
       }
 
-      [(BGSystemTaskRequest *)v30 setRequiresRemoteDeviceWake:xpc_dictionary_get_BOOL(v5, "RequiresRemoteDeviceWake")];
+      [(BGSystemTaskRequest *)v30 setRequiresRemoteDeviceWake:xpc_dictionary_get_BOOL(descriptorCopy, "RequiresRemoteDeviceWake")];
       v90 = v30;
       goto LABEL_181;
     }
@@ -828,14 +828,14 @@ LABEL_5:
   return v6;
 }
 
-+ (id)descriptorWithTaskRequest:(id)a3
++ (id)descriptorWithTaskRequest:(id)request
 {
   v153 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v3;
+    v5 = requestCopy;
     [v5 interval];
     if (v6 < 300.0)
     {
@@ -879,19 +879,19 @@ LABEL_5:
     goto LABEL_130;
   }
 
-  v16 = v3;
+  v16 = requestCopy;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([v16 isMemberOfClass:objc_opt_class()])
   {
     v17 = v16;
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v19 = [v17 processingTaskIdentifiers];
-    v20 = [v19 count];
+    processingTaskIdentifiers = [v17 processingTaskIdentifiers];
+    v20 = [processingTaskIdentifiers count];
 
     if (v20)
     {
-      v21 = [v17 processingTaskIdentifiers];
-      [v18 setObject:v21 forKeyedSubscript:@"ProcessingTaskIdentifiers"];
+      processingTaskIdentifiers2 = [v17 processingTaskIdentifiers];
+      [v18 setObject:processingTaskIdentifiers2 forKeyedSubscript:@"ProcessingTaskIdentifiers"];
     }
 
     v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "semanticVersion")}];
@@ -929,49 +929,49 @@ LABEL_17:
     [v4 setObject:v7 forKeyedSubscript:v15];
   }
 
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
-    v33 = [v3 featureCodes];
-    v34 = [v33 count];
+    featureCodes = [requestCopy featureCodes];
+    v34 = [featureCodes count];
 
     if (!v34)
     {
       v43 = _log_0;
       if (os_log_type_enabled(_log_0, OS_LOG_TYPE_ERROR))
       {
-        [(BGSystemTaskRequest *)v43 descriptorWithTaskRequest:v3];
+        [(BGSystemTaskRequest *)v43 descriptorWithTaskRequest:requestCopy];
       }
 
       goto LABEL_130;
     }
   }
 
-  v35 = [v3 featureCodes];
-  v36 = [v35 count];
+  featureCodes2 = [requestCopy featureCodes];
+  v36 = [featureCodes2 count];
 
   if (v36)
   {
-    v37 = [v3 featureCodes];
-    [v4 setObject:v37 forKeyedSubscript:@"FeatureCodes"];
+    featureCodes3 = [requestCopy featureCodes];
+    [v4 setObject:featureCodes3 forKeyedSubscript:@"FeatureCodes"];
   }
 
-  if ([v3 postInstall])
+  if ([requestCopy postInstall])
   {
-    v38 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "postInstall")}];
+    v38 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "postInstall")}];
     [v4 setObject:v38 forKeyedSubscript:@"PostInstall"];
   }
 
-  v39 = [v3 priority];
-  if (v39 > 1)
+  priority = [requestCopy priority];
+  if (priority > 1)
   {
-    if (v39 == 2)
+    if (priority == 2)
     {
       v40 = @"Utility";
     }
 
     else
     {
-      if (v39 != 3)
+      if (priority != 3)
       {
         goto LABEL_43;
       }
@@ -983,9 +983,9 @@ LABEL_17:
   }
 
   v40 = @"Maintenance";
-  if (!v39)
+  if (!priority)
   {
-    if ([v3 isMemberOfClass:objc_opt_class()])
+    if ([requestCopy isMemberOfClass:objc_opt_class()])
     {
       v40 = @"Utility";
     }
@@ -993,80 +993,80 @@ LABEL_17:
     goto LABEL_42;
   }
 
-  if (v39 == 1)
+  if (priority == 1)
   {
 LABEL_42:
     [v4 setObject:v40 forKeyedSubscript:@"Priority"];
   }
 
 LABEL_43:
-  if ([v3 requiresExternalPowerIsSetByUser])
+  if ([requestCopy requiresExternalPowerIsSetByUser])
   {
-    v44 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresExternalPower")}];
+    v44 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresExternalPower")}];
     [v4 setObject:v44 forKeyedSubscript:@"RequiresExternalPower"];
   }
 
-  [v3 randomInitialDelay];
+  [requestCopy randomInitialDelay];
   if (v45 != 0.0)
   {
     v46 = MEMORY[0x1E696AD98];
-    [v3 randomInitialDelay];
+    [requestCopy randomInitialDelay];
     v48 = [v46 numberWithLong:v47];
     [v4 setObject:v48 forKeyedSubscript:@"RandomInitialDelay"];
   }
 
-  [v3 expectedDuration];
+  [requestCopy expectedDuration];
   if (v49 != 0.0)
   {
     v50 = MEMORY[0x1E696AD98];
-    [v3 expectedDuration];
+    [requestCopy expectedDuration];
     v52 = [v50 numberWithLong:v51];
     [v4 setObject:v52 forKeyedSubscript:@"ExpectedDuration"];
   }
 
-  v53 = [v3 relatedApplications];
+  relatedApplications = [requestCopy relatedApplications];
 
-  if (v53)
+  if (relatedApplications)
   {
-    v54 = [v3 relatedApplications];
-    [v4 setObject:v54 forKeyedSubscript:@"RelatedApplications"];
+    relatedApplications2 = [requestCopy relatedApplications];
+    [v4 setObject:relatedApplications2 forKeyedSubscript:@"RelatedApplications"];
   }
 
-  v55 = [v3 involvedProcesses];
+  involvedProcesses = [requestCopy involvedProcesses];
 
-  if (v55)
+  if (involvedProcesses)
   {
-    v56 = [v3 involvedProcesses];
-    [v4 setObject:v56 forKeyedSubscript:@"InvolvedProcesses"];
+    involvedProcesses2 = [requestCopy involvedProcesses];
+    [v4 setObject:involvedProcesses2 forKeyedSubscript:@"InvolvedProcesses"];
   }
 
-  if ([v3 runOnAppForeground])
+  if ([requestCopy runOnAppForeground])
   {
-    v57 = [v3 relatedApplications];
+    relatedApplications3 = [requestCopy relatedApplications];
 
-    if (v57)
+    if (relatedApplications3)
     {
-      v58 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "runOnAppForeground")}];
+      v58 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "runOnAppForeground")}];
       [v4 setObject:v58 forKeyedSubscript:@"RunOnAppForeground"];
     }
   }
 
-  if ([v3 requestsApplicationLaunch])
+  if ([requestCopy requestsApplicationLaunch])
   {
-    v59 = [v3 relatedApplications];
+    relatedApplications4 = [requestCopy relatedApplications];
 
-    if (v59)
+    if (relatedApplications4)
     {
-      v60 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requestsApplicationLaunch")}];
+      v60 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requestsApplicationLaunch")}];
       [v4 setObject:v60 forKeyedSubscript:@"RequestsApplicationLaunch"];
     }
   }
 
-  v61 = [v3 relatedApplications];
+  relatedApplications5 = [requestCopy relatedApplications];
 
-  if (v61)
+  if (relatedApplications5)
   {
-    v62 = [v3 applicationRelationship] - 1;
+    v62 = [requestCopy applicationRelationship] - 1;
     if (v62 <= 3)
     {
       v63 = qword_1E7B244F0[v62];
@@ -1079,101 +1079,101 @@ LABEL_43:
     }
   }
 
-  if ([v3 beforeApplicationLaunch])
+  if ([requestCopy beforeApplicationLaunch])
   {
-    v66 = [v3 relatedApplications];
+    relatedApplications6 = [requestCopy relatedApplications];
 
-    if (v66)
+    if (relatedApplications6)
     {
-      v67 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "beforeApplicationLaunch")}];
+      v67 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "beforeApplicationLaunch")}];
       [v4 setObject:v67 forKeyedSubscript:@"BeforeApplicationLaunch"];
     }
   }
 
-  if ([v3 requestsImmediateRuntime])
+  if ([requestCopy requestsImmediateRuntime])
   {
-    v68 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requestsImmediateRuntime")}];
+    v68 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requestsImmediateRuntime")}];
     [v4 setObject:v68 forKeyedSubscript:@"RequestsImmediateRuntime"];
   }
 
-  if ([v3 userRequestedBackupTask])
+  if ([requestCopy userRequestedBackupTask])
   {
-    v69 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "userRequestedBackupTask")}];
+    v69 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "userRequestedBackupTask")}];
     [v4 setObject:v69 forKeyedSubscript:@"UserRequestedBackupTask"];
   }
 
-  if ([v3 requiresBuddyComplete])
+  if ([requestCopy requiresBuddyComplete])
   {
-    v70 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresBuddyComplete")}];
+    v70 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresBuddyComplete")}];
     [v4 setObject:v70 forKeyedSubscript:@"RequiresBuddyComplete"];
   }
 
-  v71 = [v3 groupName];
+  groupName = [requestCopy groupName];
 
-  if (v71)
+  if (groupName)
   {
-    v72 = [v3 groupName];
-    [v4 setObject:v72 forKeyedSubscript:@"GroupName"];
+    groupName2 = [requestCopy groupName];
+    [v4 setObject:groupName2 forKeyedSubscript:@"GroupName"];
   }
 
-  if ([v3 groupConcurrencyLimit])
+  if ([requestCopy groupConcurrencyLimit])
   {
-    v73 = [v3 groupName];
+    groupName3 = [requestCopy groupName];
 
-    if (v73)
+    if (groupName3)
     {
-      v74 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "groupConcurrencyLimit")}];
+      v74 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "groupConcurrencyLimit")}];
       [v4 setObject:v74 forKeyedSubscript:@"GroupConcurrencyLimit"];
     }
   }
 
-  v75 = [v3 rateLimitConfigurationName];
+  rateLimitConfigurationName = [requestCopy rateLimitConfigurationName];
 
-  if (v75)
+  if (rateLimitConfigurationName)
   {
-    v76 = [v3 rateLimitConfigurationName];
-    [v4 setObject:v76 forKeyedSubscript:@"RateLimitConfigurationName"];
+    rateLimitConfigurationName2 = [requestCopy rateLimitConfigurationName];
+    [v4 setObject:rateLimitConfigurationName2 forKeyedSubscript:@"RateLimitConfigurationName"];
   }
 
-  if ([v3 requiresSignificantUserInactivity])
+  if ([requestCopy requiresSignificantUserInactivity])
   {
-    v77 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresSignificantUserInactivity")}];
+    v77 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresSignificantUserInactivity")}];
     [v4 setObject:v77 forKeyedSubscript:@"RequiresSignificantUserInactivity"];
   }
 
-  if ([v3 requiresUserInactivity])
+  if ([requestCopy requiresUserInactivity])
   {
-    v78 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresUserInactivity")}];
+    v78 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresUserInactivity")}];
     [v4 setObject:v78 forKeyedSubscript:@"RequiresUserInactivity"];
   }
 
-  if ([v3 powerNap])
+  if ([requestCopy powerNap])
   {
-    v79 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "powerNap")}];
+    v79 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "powerNap")}];
     [v4 setObject:v79 forKeyedSubscript:@"PowerNap"];
   }
 
-  if ([v3 appRefresh])
+  if ([requestCopy appRefresh])
   {
-    v80 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "appRefresh")}];
+    v80 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "appRefresh")}];
     [v4 setObject:v80 forKeyedSubscript:@"AppRefresh"];
   }
 
-  if ([v3 preventsDeviceSleep])
+  if ([requestCopy preventsDeviceSleep])
   {
-    v81 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "preventsDeviceSleep")}];
+    v81 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "preventsDeviceSleep")}];
     [v4 setObject:v81 forKeyedSubscript:@"PreventsDeviceSleep"];
   }
 
-  if ([v3 resourceIntensive])
+  if ([requestCopy resourceIntensive])
   {
-    v82 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "resourceIntensive")}];
+    v82 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "resourceIntensive")}];
     [v4 setObject:v82 forKeyedSubscript:@"ResourceIntensive"];
   }
 
-  if ([v3 resources])
+  if ([requestCopy resources])
   {
-    v83 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "resources")}];
+    v83 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "resources")}];
     [v4 setObject:v83 forKeyedSubscript:@"Resources"];
   }
 
@@ -1182,73 +1182,73 @@ LABEL_43:
     [v4 setObject:&unk_1F29A4D00 forKeyedSubscript:@"Resources"];
   }
 
-  if ([v3 requiresInexpensiveNetworkConnectivity])
+  if ([requestCopy requiresInexpensiveNetworkConnectivity])
   {
-    v84 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresInexpensiveNetworkConnectivity")}];
+    v84 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresInexpensiveNetworkConnectivity")}];
     [v4 setObject:v84 forKeyedSubscript:@"RequiresInexpensiveNetworkConnectivity"];
   }
 
-  if ([v3 requiresUnconstrainedNetworkConnectivity])
+  if ([requestCopy requiresUnconstrainedNetworkConnectivity])
   {
-    v85 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresUnconstrainedNetworkConnectivity")}];
+    v85 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresUnconstrainedNetworkConnectivity")}];
     [v4 setObject:v85 forKeyedSubscript:@"RequiresUnconstrainedNetworkConnectivity"];
   }
 
-  if (([v3 requiresInexpensiveNetworkConnectivity] & 1) != 0 || (objc_msgSend(v3, "requiresUnconstrainedNetworkConnectivity") & 1) != 0 || objc_msgSend(v3, "requiresNetworkConnectivity"))
+  if (([requestCopy requiresInexpensiveNetworkConnectivity] & 1) != 0 || (objc_msgSend(requestCopy, "requiresUnconstrainedNetworkConnectivity") & 1) != 0 || objc_msgSend(requestCopy, "requiresNetworkConnectivity"))
   {
-    v86 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresNetworkConnectivity")}];
+    v86 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresNetworkConnectivity")}];
     [v4 setObject:v86 forKeyedSubscript:@"RequiresNetworkConnectivity"];
   }
 
-  if ([v3 networkDownloadSize])
+  if ([requestCopy networkDownloadSize])
   {
-    v87 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "networkDownloadSize")}];
+    v87 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "networkDownloadSize")}];
     [v4 setObject:v87 forKeyedSubscript:@"NetworkDownloadSize"];
   }
 
-  if ([v3 networkUploadSize])
+  if ([requestCopy networkUploadSize])
   {
-    v88 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "networkUploadSize")}];
+    v88 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "networkUploadSize")}];
     [v4 setObject:v88 forKeyedSubscript:@"NetworkUploadSize"];
   }
 
-  if ([v3 mayRebootDevice])
+  if ([requestCopy mayRebootDevice])
   {
-    v89 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "mayRebootDevice")}];
+    v89 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "mayRebootDevice")}];
     [v4 setObject:v89 forKeyedSubscript:@"MayRebootDevice"];
   }
 
-  v90 = [v3 producedResultIdentifiers];
-  if (v90)
+  producedResultIdentifiers = [requestCopy producedResultIdentifiers];
+  if (producedResultIdentifiers)
   {
-    v91 = v90;
-    v92 = [v3 producedResultIdentifiers];
-    v93 = [v92 count];
+    v91 = producedResultIdentifiers;
+    producedResultIdentifiers2 = [requestCopy producedResultIdentifiers];
+    v93 = [producedResultIdentifiers2 count];
 
     if (v93)
     {
-      v94 = [v3 producedResultIdentifiers];
-      v95 = [v94 allObjects];
-      [v4 setObject:v95 forKeyedSubscript:@"ProducedResultIdentifiers"];
+      producedResultIdentifiers3 = [requestCopy producedResultIdentifiers];
+      allObjects = [producedResultIdentifiers3 allObjects];
+      [v4 setObject:allObjects forKeyedSubscript:@"ProducedResultIdentifiers"];
     }
   }
 
-  v96 = [v3 dependencies];
-  if (v96)
+  dependencies = [requestCopy dependencies];
+  if (dependencies)
   {
-    v97 = v96;
-    v98 = [v3 dependencies];
-    v99 = [v98 count];
+    v97 = dependencies;
+    dependencies2 = [requestCopy dependencies];
+    v99 = [dependencies2 count];
 
     if (v99)
     {
-      v100 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v148 = 0u;
       v149 = 0u;
       v150 = 0u;
       v151 = 0u;
-      v101 = [v3 dependencies];
-      v102 = [v101 countByEnumeratingWithState:&v148 objects:v152 count:16];
+      dependencies3 = [requestCopy dependencies];
+      v102 = [dependencies3 countByEnumeratingWithState:&v148 objects:v152 count:16];
       if (v102)
       {
         v103 = v102;
@@ -1259,34 +1259,34 @@ LABEL_43:
           {
             if (*v149 != v104)
             {
-              objc_enumerationMutation(v101);
+              objc_enumerationMutation(dependencies3);
             }
 
-            v106 = [*(*(&v148 + 1) + 8 * i) asDictionary];
-            [v100 addObject:v106];
+            asDictionary = [*(*(&v148 + 1) + 8 * i) asDictionary];
+            [array addObject:asDictionary];
           }
 
-          v103 = [v101 countByEnumeratingWithState:&v148 objects:v152 count:16];
+          v103 = [dependencies3 countByEnumeratingWithState:&v148 objects:v152 count:16];
         }
 
         while (v103);
       }
 
-      [v4 setObject:v100 forKeyedSubscript:@"Dependencies"];
+      [v4 setObject:array forKeyedSubscript:@"Dependencies"];
     }
   }
 
-  v107 = [v3 context];
+  context = [requestCopy context];
 
-  if (v107)
+  if (context)
   {
-    v108 = [v3 context];
+    context2 = [requestCopy context];
     v109 = _CFXPCCreateXPCObjectFromCFObject();
 
     if (v109)
     {
-      v110 = [v3 context];
-      [v4 setObject:v110 forKeyedSubscript:@"Context"];
+      context3 = [requestCopy context];
+      [v4 setObject:context3 forKeyedSubscript:@"Context"];
 
       goto LABEL_123;
     }
@@ -1294,7 +1294,7 @@ LABEL_43:
     v112 = _log_0;
     if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
     {
-      [BGSystemTaskRequest descriptorWithTaskRequest:v3];
+      [BGSystemTaskRequest descriptorWithTaskRequest:requestCopy];
     }
 
 LABEL_130:
@@ -1304,19 +1304,19 @@ LABEL_130:
 
 LABEL_123:
   [v4 setObject:@"TargetDeviceLocal" forKeyedSubscript:@"TargetDevice"];
-  if ([v3 targetDevice] == 1)
+  if ([requestCopy targetDevice] == 1)
   {
     v111 = @"TargetDeviceDefaultPaired";
   }
 
-  else if ([v3 targetDevice] == 2)
+  else if ([requestCopy targetDevice] == 2)
   {
     v111 = @"TargetDeviceAllPaired";
   }
 
   else
   {
-    if ([v3 targetDevice] != 3)
+    if ([requestCopy targetDevice] != 3)
     {
       goto LABEL_134;
     }
@@ -1326,55 +1326,55 @@ LABEL_123:
 
   [v4 setObject:v111 forKeyedSubscript:@"TargetDevice"];
 LABEL_134:
-  if ([v3 communicatesWithPairedDevice])
+  if ([requestCopy communicatesWithPairedDevice])
   {
-    v114 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "communicatesWithPairedDevice")}];
+    v114 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "communicatesWithPairedDevice")}];
     [v4 setObject:v114 forKeyedSubscript:@"CommunicatesWithPairedDevice"];
   }
 
-  v115 = [v3 remoteDevice];
-  [v4 setObject:v115 forKeyedSubscript:@"RemoteDeviceIdentifier"];
+  remoteDevice = [requestCopy remoteDevice];
+  [v4 setObject:remoteDevice forKeyedSubscript:@"RemoteDeviceIdentifier"];
 
-  v116 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "requiresRemoteDeviceWake")}];
+  v116 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "requiresRemoteDeviceWake")}];
   [v4 setObject:v116 forKeyedSubscript:@"RequiresRemoteDeviceWake"];
 
-  if ([v3 runOnMotionState])
+  if ([requestCopy runOnMotionState])
   {
-    v117 = [v3 runOnMotionState] - 1;
+    v117 = [requestCopy runOnMotionState] - 1;
     if (v117 <= 6)
     {
       [v4 setObject:off_1E7B24550[v117] forKeyedSubscript:@"RunOnMotionState"];
     }
   }
 
-  if ([v3 powerBudgeted])
+  if ([requestCopy powerBudgeted])
   {
-    v118 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "powerBudgeted")}];
+    v118 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "powerBudgeted")}];
     [v4 setObject:v118 forKeyedSubscript:@"PowerBudgeted"];
   }
 
-  if ([v3 dataBudgeted])
+  if ([requestCopy dataBudgeted])
   {
-    v119 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "dataBudgeted")}];
+    v119 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "dataBudgeted")}];
     [v4 setObject:v119 forKeyedSubscript:@"DataBudgeted"];
 
-    v120 = [v3 dataBudgetName];
+    dataBudgetName = [requestCopy dataBudgetName];
 
-    if (v120)
+    if (dataBudgetName)
     {
-      v121 = [v3 dataBudgetName];
-      [v4 setObject:v121 forKeyedSubscript:@"DataBudgetName"];
+      dataBudgetName2 = [requestCopy dataBudgetName];
+      [v4 setObject:dataBudgetName2 forKeyedSubscript:@"DataBudgetName"];
     }
   }
 
-  if ([v3 shouldWakeDevice])
+  if ([requestCopy shouldWakeDevice])
   {
-    v122 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "shouldWakeDevice")}];
+    v122 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "shouldWakeDevice")}];
     [v4 setObject:v122 forKeyedSubscript:@"ShouldWakeDevice"];
   }
 
   [v4 setObject:@"C" forKeyedSubscript:@"RequiresProtectionClass"];
-  if ([v3 requiresProtectionClass] == 1)
+  if ([requestCopy requiresProtectionClass] == 1)
   {
     v123 = @"A";
 LABEL_154:
@@ -1382,120 +1382,120 @@ LABEL_154:
     goto LABEL_155;
   }
 
-  if ([v3 requiresProtectionClass] == 2)
+  if ([requestCopy requiresProtectionClass] == 2)
   {
     v123 = @"B";
     goto LABEL_154;
   }
 
-  if ([v3 requiresProtectionClass] == 5)
+  if ([requestCopy requiresProtectionClass] == 5)
   {
     v123 = @"D";
     goto LABEL_154;
   }
 
-  if ([v3 requiresProtectionClass] == 3)
+  if ([requestCopy requiresProtectionClass] == 3)
   {
     v123 = @"CX";
     goto LABEL_154;
   }
 
 LABEL_155:
-  v124 = [v3 networkEndpoint];
+  networkEndpoint = [requestCopy networkEndpoint];
 
-  if (v124)
+  if (networkEndpoint)
   {
-    v125 = [v3 networkEndpoint];
-    [v4 setObject:v125 forKeyedSubscript:@"NetworkEndpoint"];
+    networkEndpoint2 = [requestCopy networkEndpoint];
+    [v4 setObject:networkEndpoint2 forKeyedSubscript:@"NetworkEndpoint"];
   }
 
-  v126 = [v3 networkParameters];
+  networkParameters = [requestCopy networkParameters];
 
-  if (v126)
+  if (networkParameters)
   {
-    v127 = [v3 networkParameters];
-    [v4 setObject:v127 forKeyedSubscript:@"NetworkParameters"];
+    networkParameters2 = [requestCopy networkParameters];
+    [v4 setObject:networkParameters2 forKeyedSubscript:@"NetworkParameters"];
   }
 
-  if ([v3 overrideRateLimiting])
+  if ([requestCopy overrideRateLimiting])
   {
-    v128 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "overrideRateLimiting")}];
+    v128 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "overrideRateLimiting")}];
     [v4 setObject:v128 forKeyedSubscript:@"OverrideRateLimiting"];
   }
 
-  if ([v3 magneticInterferenceSensitivity])
+  if ([requestCopy magneticInterferenceSensitivity])
   {
-    v129 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "magneticInterferenceSensitivity")}];
+    v129 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "magneticInterferenceSensitivity")}];
     [v4 setObject:v129 forKeyedSubscript:@"MagneticInterferenceSensitivity"];
   }
 
-  if ([v3 mailFetch])
+  if ([requestCopy mailFetch])
   {
-    v130 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "mailFetch")}];
+    v130 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "mailFetch")}];
     [v4 setObject:v130 forKeyedSubscript:@"MailFetch"];
   }
 
-  if ([v3 bypassPeakPower])
+  if ([requestCopy bypassPeakPower])
   {
-    v131 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "bypassPeakPower")}];
+    v131 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "bypassPeakPower")}];
     [v4 setObject:v131 forKeyedSubscript:@"BypassPeakPower"];
   }
 
-  if ([v3 bypassBatteryAging])
+  if ([requestCopy bypassBatteryAging])
   {
-    v132 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "bypassBatteryAging")}];
+    v132 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "bypassBatteryAging")}];
     [v4 setObject:v132 forKeyedSubscript:@"BypassBatteryAging"];
   }
 
-  if ([v3 backlogged])
+  if ([requestCopy backlogged])
   {
-    v133 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "backlogged")}];
+    v133 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "backlogged")}];
     [v4 setObject:v133 forKeyedSubscript:@"Backlogged"];
   }
 
-  if ([v3 requiresMinimumBatteryLevel])
+  if ([requestCopy requiresMinimumBatteryLevel])
   {
-    v134 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "requiresMinimumBatteryLevel")}];
+    v134 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "requiresMinimumBatteryLevel")}];
     [v4 setObject:v134 forKeyedSubscript:@"RequiresMinimumBatteryLevel"];
   }
 
-  if ([v3 requiresMinimumDataBudgetPercentage])
+  if ([requestCopy requiresMinimumDataBudgetPercentage])
   {
-    v135 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "requiresMinimumDataBudgetPercentage")}];
+    v135 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(requestCopy, "requiresMinimumDataBudgetPercentage")}];
     [v4 setObject:v135 forKeyedSubscript:@"RequiresMinimumDataBudgetPercentage"];
   }
 
-  if ([v3 blockRebootActivitiesForSU])
+  if ([requestCopy blockRebootActivitiesForSU])
   {
-    v136 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "blockRebootActivitiesForSU")}];
+    v136 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(requestCopy, "blockRebootActivitiesForSU")}];
     [v4 setObject:v136 forKeyedSubscript:@"BlockRebootActivitiesForSU"];
   }
 
-  v137 = [v3 diskVolume];
+  diskVolume = [requestCopy diskVolume];
 
-  if (v137)
+  if (diskVolume)
   {
-    v138 = [v3 diskVolume];
-    [v4 setObject:v138 forKeyedSubscript:@"DiskVolume"];
+    diskVolume2 = [requestCopy diskVolume];
+    [v4 setObject:diskVolume2 forKeyedSubscript:@"DiskVolume"];
   }
 
   v139 = _CFXPCCreateXPCObjectFromCFObject();
   if (v139)
   {
-    v140 = [v3 networkEndpointPrimitive];
+    networkEndpointPrimitive = [requestCopy networkEndpointPrimitive];
 
-    if (v140)
+    if (networkEndpointPrimitive)
     {
-      v141 = [v3 networkEndpointPrimitive];
+      networkEndpointPrimitive2 = [requestCopy networkEndpointPrimitive];
       v142 = nw_endpoint_copy_dictionary();
       xpc_dictionary_set_value(v139, "NetworkEndpoint", v142);
     }
 
-    v143 = [v3 networkParametersPrimitive];
+    networkParametersPrimitive = [requestCopy networkParametersPrimitive];
 
-    if (v143)
+    if (networkParametersPrimitive)
     {
-      v144 = [v3 networkParametersPrimitive];
+      networkParametersPrimitive2 = [requestCopy networkParametersPrimitive];
       v145 = nw_parameters_copy_dictionary();
       xpc_dictionary_set_value(v139, "NetworkParameters", v145);
     }
@@ -1509,16 +1509,16 @@ LABEL_185:
   return v113;
 }
 
-- (BGSystemTaskRequest)initWithIdentifier:(id)a3
+- (BGSystemTaskRequest)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BGSystemTaskRequest;
   v6 = [(BGSystemTaskRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -1526,16 +1526,16 @@ LABEL_185:
 
 - (unint64_t)hash
 {
-  v2 = [(BGSystemTaskRequest *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(BGSystemTaskRequest *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -1545,7 +1545,7 @@ LABEL_185:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [BGSystemTaskRequest descriptorWithTaskRequest:self];
       if (v6)
       {
@@ -1576,31 +1576,31 @@ LABEL_185:
   return v8;
 }
 
-- (void)setRelatedApplications:(id)a3
+- (void)setRelatedApplications:(id)applications
 {
   v4 = MEMORY[0x1E695DFB8];
-  v8 = [a3 copy];
+  v8 = [applications copy];
   v5 = [v4 orderedSetWithArray:v8];
-  v6 = [v5 array];
+  array = [v5 array];
   relatedApplications = self->_relatedApplications;
-  self->_relatedApplications = v6;
+  self->_relatedApplications = array;
 }
 
-- (void)setInvolvedProcesses:(id)a3
+- (void)setInvolvedProcesses:(id)processes
 {
   v4 = MEMORY[0x1E695DFB8];
-  v8 = [a3 copy];
+  v8 = [processes copy];
   v5 = [v4 orderedSetWithArray:v8];
-  v6 = [v5 array];
+  array = [v5 array];
   involvedProcesses = self->_involvedProcesses;
-  self->_involvedProcesses = v6;
+  self->_involvedProcesses = array;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(BGSystemTaskRequest *)self identifier];
-  v7 = [v5 initWithIdentifier:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(BGSystemTaskRequest *)self identifier];
+  v7 = [v5 initWithIdentifier:identifier];
 
   [v7 setRequiresNetworkConnectivity:{-[BGSystemTaskRequest requiresNetworkConnectivity](self, "requiresNetworkConnectivity")}];
   [v7 setRequiresExternalPower:{-[BGSystemTaskRequest requiresExternalPower](self, "requiresExternalPower")}];
@@ -1624,28 +1624,28 @@ LABEL_185:
   [v7 setNetworkUploadSize:{-[BGSystemTaskRequest networkUploadSize](self, "networkUploadSize")}];
   [v7 setCommunicatesWithPairedDevice:{-[BGSystemTaskRequest communicatesWithPairedDevice](self, "communicatesWithPairedDevice")}];
   [v7 setShouldWakeDevice:{-[BGSystemTaskRequest shouldWakeDevice](self, "shouldWakeDevice")}];
-  v8 = [(BGSystemTaskRequest *)self groupName];
-  v9 = [v8 copyWithZone:a3];
+  groupName = [(BGSystemTaskRequest *)self groupName];
+  v9 = [groupName copyWithZone:zone];
   [v7 setGroupName:v9];
 
   [v7 setGroupConcurrencyLimit:{-[BGSystemTaskRequest groupConcurrencyLimit](self, "groupConcurrencyLimit")}];
-  v10 = [(BGSystemTaskRequest *)self rateLimitConfigurationName];
-  v11 = [v10 copyWithZone:a3];
+  rateLimitConfigurationName = [(BGSystemTaskRequest *)self rateLimitConfigurationName];
+  v11 = [rateLimitConfigurationName copyWithZone:zone];
   [v7 setRateLimitConfigurationName:v11];
 
   [(BGSystemTaskRequest *)self expectedDuration];
   [v7 setExpectedDuration:?];
   [v7 setPowerBudgeted:{-[BGSystemTaskRequest powerBudgeted](self, "powerBudgeted")}];
   [v7 setDataBudgeted:{-[BGSystemTaskRequest dataBudgeted](self, "dataBudgeted")}];
-  v12 = [(BGSystemTaskRequest *)self dataBudgetName];
-  [v7 setDataBudgetName:v12];
+  dataBudgetName = [(BGSystemTaskRequest *)self dataBudgetName];
+  [v7 setDataBudgetName:dataBudgetName];
 
-  v13 = [(BGSystemTaskRequest *)self relatedApplications];
-  v14 = [v13 copyWithZone:a3];
+  relatedApplications = [(BGSystemTaskRequest *)self relatedApplications];
+  v14 = [relatedApplications copyWithZone:zone];
   [v7 setRelatedApplications:v14];
 
-  v15 = [(BGSystemTaskRequest *)self involvedProcesses];
-  v16 = [v15 copyWithZone:a3];
+  involvedProcesses = [(BGSystemTaskRequest *)self involvedProcesses];
+  v16 = [involvedProcesses copyWithZone:zone];
   [v7 setInvolvedProcesses:v16];
 
   [v7 setRunOnAppForeground:{-[BGSystemTaskRequest runOnAppForeground](self, "runOnAppForeground")}];
@@ -1655,29 +1655,29 @@ LABEL_185:
   [v7 setRequestsImmediateRuntime:{-[BGSystemTaskRequest requestsImmediateRuntime](self, "requestsImmediateRuntime")}];
   [v7 setRequiresBuddyComplete:{-[BGSystemTaskRequest requiresBuddyComplete](self, "requiresBuddyComplete")}];
   [v7 setTargetDevice:{-[BGSystemTaskRequest targetDevice](self, "targetDevice")}];
-  v17 = [(BGSystemTaskRequest *)self remoteDevice];
-  [v7 setRemoteDevice:v17];
+  remoteDevice = [(BGSystemTaskRequest *)self remoteDevice];
+  [v7 setRemoteDevice:remoteDevice];
 
   [v7 setRequiresRemoteDeviceWake:{-[BGSystemTaskRequest requiresRemoteDeviceWake](self, "requiresRemoteDeviceWake")}];
-  v18 = [(BGSystemTaskRequest *)self networkEndpoint];
-  v19 = [v18 copyWithZone:a3];
+  networkEndpoint = [(BGSystemTaskRequest *)self networkEndpoint];
+  v19 = [networkEndpoint copyWithZone:zone];
   [v7 setNetworkEndpoint:v19];
 
-  v20 = [(BGSystemTaskRequest *)self networkParameters];
-  v21 = [v20 copyWithZone:a3];
+  networkParameters = [(BGSystemTaskRequest *)self networkParameters];
+  v21 = [networkParameters copyWithZone:zone];
   [v7 setNetworkParameters:v21];
 
   [v7 setRunOnMotionState:{objc_msgSend(v7, "runOnMotionState")}];
-  v22 = [(BGSystemTaskRequest *)self producedResultIdentifiers];
-  v23 = [v22 copyWithZone:a3];
+  producedResultIdentifiers = [(BGSystemTaskRequest *)self producedResultIdentifiers];
+  v23 = [producedResultIdentifiers copyWithZone:zone];
   [v7 setProducedResultIdentifiers:v23];
 
-  v24 = [(BGSystemTaskRequest *)self dependencies];
-  v25 = [v24 copyWithZone:a3];
+  dependencies = [(BGSystemTaskRequest *)self dependencies];
+  v25 = [dependencies copyWithZone:zone];
   [v7 setDependencies:v25];
 
-  v26 = [(BGSystemTaskRequest *)self context];
-  v27 = [v26 copyWithZone:a3];
+  context = [(BGSystemTaskRequest *)self context];
+  v27 = [context copyWithZone:zone];
   [v7 setContext:v27];
 
   [v7 setOverrideRateLimiting:{-[BGSystemTaskRequest overrideRateLimiting](self, "overrideRateLimiting")}];
@@ -1690,19 +1690,19 @@ LABEL_185:
   [v7 setRequiresMinimumDataBudgetPercentage:{-[BGSystemTaskRequest requiresMinimumDataBudgetPercentage](self, "requiresMinimumDataBudgetPercentage")}];
   [v7 setBlockRebootActivitiesForSU:{-[BGSystemTaskRequest blockRebootActivitiesForSU](self, "blockRebootActivitiesForSU")}];
   [v7 setUseStatisticalModelForTriggersRestart:{-[BGSystemTaskRequest useStatisticalModelForTriggersRestart](self, "useStatisticalModelForTriggersRestart")}];
-  v28 = [(BGSystemTaskRequest *)self featureCodes];
-  v29 = [v28 copyWithZone:a3];
+  featureCodes = [(BGSystemTaskRequest *)self featureCodes];
+  v29 = [featureCodes copyWithZone:zone];
   [v7 setFeatureCodes:v29];
 
-  v30 = [(BGSystemTaskRequest *)self diskVolume];
-  [v7 setDiskVolume:v30];
+  diskVolume = [(BGSystemTaskRequest *)self diskVolume];
+  [v7 setDiskVolume:diskVolume];
 
   [v7 setRequiresExternalPowerIsSetByUser:{-[BGSystemTaskRequest requiresExternalPowerIsSetByUser](self, "requiresExternalPowerIsSetByUser")}];
-  v31 = [(BGSystemTaskRequest *)self networkEndpointPrimitive];
-  [v7 setNetworkEndpointPrimitive:v31];
+  networkEndpointPrimitive = [(BGSystemTaskRequest *)self networkEndpointPrimitive];
+  [v7 setNetworkEndpointPrimitive:networkEndpointPrimitive];
 
-  v32 = [(BGSystemTaskRequest *)self networkParametersPrimitive];
-  [v7 setNetworkParametersPrimitive:v32];
+  networkParametersPrimitive = [(BGSystemTaskRequest *)self networkParametersPrimitive];
+  [v7 setNetworkParametersPrimitive:networkParametersPrimitive];
 
   return v7;
 }

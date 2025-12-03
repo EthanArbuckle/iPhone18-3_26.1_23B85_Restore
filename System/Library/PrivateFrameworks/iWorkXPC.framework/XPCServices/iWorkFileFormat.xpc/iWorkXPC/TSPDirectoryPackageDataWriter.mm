@@ -1,10 +1,10 @@
 @interface TSPDirectoryPackageDataWriter
-- (BOOL)flushPendingWritesReturningError:(id *)a3;
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6;
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3;
+- (BOOL)flushPendingWritesReturningError:(id *)error;
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error;
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path;
 - (TSPDirectoryPackageDataWriter)init;
-- (TSPDirectoryPackageDataWriter)initWithURL:(id)a3;
-- (id)targetDataURLForPath:(id)a3;
+- (TSPDirectoryPackageDataWriter)initWithURL:(id)l;
+- (id)targetDataURLForPath:(id)path;
 @end
 
 @implementation TSPDirectoryPackageDataWriter
@@ -43,15 +43,15 @@
   objc_exception_throw(v7);
 }
 
-- (TSPDirectoryPackageDataWriter)initWithURL:(id)a3
+- (TSPDirectoryPackageDataWriter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = TSPDirectoryPackageDataWriter;
   v5 = [(TSPDirectoryPackageDataWriter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
   }
@@ -59,31 +59,31 @@
   return v5;
 }
 
-- (id)targetDataURLForPath:(id)a3
+- (id)targetDataURLForPath:(id)path
 {
-  v3 = [(NSURL *)self->_URL URLByAppendingPathComponent:a3 isDirectory:0];
+  v3 = [(NSURL *)self->_URL URLByAppendingPathComponent:path isDirectory:0];
 
   return v3;
 }
 
-- (BOOL)writeData:(id)a3 toRelativePath:(id)a4 allowEncryption:(BOOL)a5 error:(id *)a6
+- (BOOL)writeData:(id)data toRelativePath:(id)path allowEncryption:(BOOL)encryption error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  dataCopy = data;
+  pathCopy = path;
+  if (pathCopy)
   {
-    if (v9)
+    if (dataCopy)
     {
-      v11 = [(TSPDirectoryPackageDataWriter *)self targetDataURLForPath:v10];
+      v11 = [(TSPDirectoryPackageDataWriter *)self targetDataURLForPath:pathCopy];
       v12 = +[NSFileManager defaultManager];
-      v13 = [v11 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [v11 URLByDeletingLastPathComponent];
       v26 = 0;
-      v14 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v26];
+      v14 = [v12 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v26];
       v15 = v26;
 
       if (v14)
       {
-        v16 = [v9 writeToURL:v11 options:0 error:a6];
+        v16 = [dataCopy writeToURL:v11 options:0 error:error];
       }
 
       else
@@ -98,26 +98,26 @@
         {
           v22 = objc_opt_class();
           v23 = NSStringFromClass(v22);
-          v24 = [v15 domain];
-          v25 = [v15 code];
+          domain = [v15 domain];
+          code = [v15 code];
           *buf = 138413314;
           v28 = v11;
           v29 = 2114;
           v30 = v23;
           v31 = 2114;
-          v32 = v24;
+          v32 = domain;
           v33 = 2048;
-          v34 = v25;
+          v34 = code;
           v35 = 2112;
           v36 = v15;
           _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Couldn't create directory at URL %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
         }
 
-        if (a6)
+        if (error)
         {
           v20 = v15;
           v16 = 0;
-          *a6 = v15;
+          *error = v15;
         }
 
         else
@@ -157,12 +157,12 @@
   return v16;
 }
 
-- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)a3
+- (CGDataConsumer)newCGDataConsumerAtRelativePath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(TSPDirectoryPackageDataWriter *)self targetDataURLForPath:v4];
+    v5 = [(TSPDirectoryPackageDataWriter *)self targetDataURLForPath:pathCopy];
     v6 = CGDataConsumerCreateWithURL(v5);
   }
 
@@ -190,7 +190,7 @@
   return v6;
 }
 
-- (BOOL)flushPendingWritesReturningError:(id *)a3
+- (BOOL)flushPendingWritesReturningError:(id *)error
 {
   v3 = +[TSUAssertionHandler _atomicIncrementAssertCount];
   if (TSUAssertCat_init_token != -1)

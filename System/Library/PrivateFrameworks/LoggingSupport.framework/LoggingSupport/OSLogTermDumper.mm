@@ -1,58 +1,58 @@
 @interface OSLogTermDumper
-- (OSLogTermDumper)initWithFd:(int)a3 colorMode:(unsigned __int8)a4;
-- (unsigned)vformat:(const char *)a3 args:(char *)a4;
+- (OSLogTermDumper)initWithFd:(int)fd colorMode:(unsigned __int8)mode;
+- (unsigned)vformat:(const char *)vformat args:(char *)args;
 - (void)_flushAttrs;
 - (void)_resetAttrsForNewline;
 - (void)beginEditing;
 - (void)close;
 - (void)dealloc;
 - (void)endEditing;
-- (void)flush:(BOOL)a3;
-- (void)hexdump:(const void *)a3 length:(unint64_t)a4;
-- (void)pad:(int)a3 count:(unint64_t)a4;
-- (void)putUUID:(unsigned __int8)a3[16];
-- (void)putc:(int)a3;
-- (void)puts:(const char *)a3;
-- (void)setBold:(BOOL)a3;
-- (void)setOblique:(BOOL)a3;
-- (void)setUnderline:(BOOL)a3;
+- (void)flush:(BOOL)flush;
+- (void)hexdump:(const void *)hexdump length:(unint64_t)length;
+- (void)pad:(int)pad count:(unint64_t)count;
+- (void)putUUID:(unsigned __int8)d[16];
+- (void)putc:(int)putc;
+- (void)puts:(const char *)puts;
+- (void)setBold:(BOOL)bold;
+- (void)setOblique:(BOOL)oblique;
+- (void)setUnderline:(BOOL)underline;
 - (void)startPager;
-- (void)write:(const void *)a3 size:(unint64_t)a4;
+- (void)write:(const void *)write size:(unint64_t)size;
 @end
 
 @implementation OSLogTermDumper
 
-- (void)putUUID:(unsigned __int8)a3[16]
+- (void)putUUID:(unsigned __int8)d[16]
 {
   v6 = *MEMORY[0x277D85DE8];
   memset(v5, 0, sizeof(v5));
-  uuid_unparse_upper(a3, v5);
+  uuid_unparse_upper(d, v5);
   [(OSLogTermDumper *)self write:v5 size:36];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)puts:(const char *)a3
+- (void)puts:(const char *)puts
 {
-  v5 = strlen(a3);
+  v5 = strlen(puts);
 
-  [(OSLogTermDumper *)self write:a3 size:v5];
+  [(OSLogTermDumper *)self write:puts size:v5];
 }
 
-- (void)pad:(int)a3 count:(unint64_t)a4
+- (void)pad:(int)pad count:(unint64_t)count
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v6 = v8 - ((a4 + 15) & 0xFFFFFFFFFFFFFFF0);
-  memset(v6, a3, a4);
-  [(OSLogTermDumper *)self write:v6 size:a4];
+  v6 = v8 - ((count + 15) & 0xFFFFFFFFFFFFFFF0);
+  memset(v6, pad, count);
+  [(OSLogTermDumper *)self write:v6 size:count];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hexdump:(const void *)a3 length:(unint64_t)a4
+- (void)hexdump:(const void *)hexdump length:(unint64_t)length
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (length)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != length; ++i)
     {
       v8 = i & 0xF;
       if ((i & 0xF) == 0)
@@ -67,9 +67,9 @@
         __str[73] = 32;
       }
 
-      v10 = *(a3 + i);
+      v10 = *(hexdump + i);
       v11 = &__str[3 * v8 + 10];
-      *v11 = a0123456789abcd[*(a3 + i) >> 4];
+      *v11 = a0123456789abcd[*(hexdump + i) >> 4];
       v11[1] = a0123456789abcd[v10 & 0xF];
       if (v10 < 0 || v10 != 32 && (*(MEMORY[0x277D85DE0] + 4 * v10 + 60) & 0x200) != 0)
       {
@@ -144,7 +144,7 @@
       }
     }
 
-    if ((a4 & 0xF) != 0 && (self->_ob.ob_flags & 2) == 0)
+    if ((length & 0xF) != 0 && (self->_ob.ob_flags & 2) == 0)
     {
       v19 = self->_ob.ob_len;
       if (self->_ob.ob_size - v19 - !self->_ob.ob_binary <= 0x49)
@@ -185,10 +185,10 @@
   }
 }
 
-- (unsigned)vformat:(const char *)a3 args:(char *)a4
+- (unsigned)vformat:(const char *)vformat args:(char *)args
 {
   v8 = 0;
-  v5 = vasprintf(&v8, a3, a4);
+  v5 = vasprintf(&v8, vformat, args);
   if (!v8)
   {
     return 0;
@@ -200,19 +200,19 @@
   return v6;
 }
 
-- (void)putc:(int)a3
+- (void)putc:(int)putc
 {
   if (self->_fancy && self->_last_attrs != self->_cur_attrs)
   {
     [(OSLogTermDumper *)self _flushAttrs];
   }
 
-  if (a3 == 10 && self->_fancy && self->_last_attrs)
+  if (putc == 10 && self->_fancy && self->_last_attrs)
   {
     [(OSLogTermDumper *)self _resetAttrsForNewline];
   }
 
-  __src = a3;
+  __src = putc;
   if ((self->_ob.ob_flags & 2) == 0)
   {
     ob_len = self->_ob.ob_len;
@@ -223,7 +223,7 @@
 
     else
     {
-      self->_ob.var0.ob_b[ob_len] = a3;
+      self->_ob.var0.ob_b[ob_len] = putc;
       v6 = self->_ob.ob_len + 1;
       self->_ob.ob_len = v6;
       if (!self->_ob.ob_binary)
@@ -240,27 +240,27 @@
   }
 }
 
-- (void)write:(const void *)a3 size:(unint64_t)a4
+- (void)write:(const void *)write size:(unint64_t)size
 {
-  v4 = a4;
-  v5 = a3;
+  sizeCopy = size;
+  writeCopy = write;
   if (self->_fancy)
   {
-    if (a4)
+    if (size)
     {
       do
       {
-        v9 = memchr(v5, 10, v4);
+        v9 = memchr(writeCopy, 10, sizeCopy);
         v10 = v9;
-        v11 = v9 - v5;
+        v11 = v9 - writeCopy;
         if (v9)
         {
-          v12 = v9 - v5;
+          v12 = v9 - writeCopy;
         }
 
         else
         {
-          v12 = v4;
+          v12 = sizeCopy;
         }
 
         if (self->_fancy && self->_last_attrs != self->_cur_attrs)
@@ -270,7 +270,7 @@
 
         if (self->_vis)
         {
-          os_trace_blob_add_unsafe_bytes(&self->_ob, v5, v12);
+          os_trace_blob_add_unsafe_bytes(&self->_ob, writeCopy, v12);
         }
 
         else if ((self->_ob.ob_flags & 2) == 0)
@@ -278,12 +278,12 @@
           ob_len = self->_ob.ob_len;
           if (v12 > self->_ob.ob_size - ob_len - !self->_ob.ob_binary)
           {
-            os_trace_blob_add_slow(&self->_ob, v5, v12);
+            os_trace_blob_add_slow(&self->_ob, writeCopy, v12);
           }
 
           else
           {
-            memcpy(&self->_ob.var0.ob_b[ob_len], v5, v12);
+            memcpy(&self->_ob.var0.ob_b[ob_len], writeCopy, v12);
             v14 = self->_ob.ob_len + v12;
             self->_ob.ob_len = v14;
             if (!self->_ob.ob_binary)
@@ -293,7 +293,7 @@
           }
         }
 
-        v15 = v4;
+        v15 = sizeCopy;
         if (v10)
         {
           if (self->_fancy && self->_last_attrs)
@@ -323,7 +323,7 @@
             }
           }
 
-          v5 = v10 + 1;
+          writeCopy = v10 + 1;
           v15 = v11 + 1;
         }
 
@@ -332,10 +332,10 @@
           [(OSLogTermDumper *)self flush:0];
         }
 
-        v4 -= v15;
+        sizeCopy -= v15;
       }
 
-      while (v4);
+      while (sizeCopy);
     }
   }
 
@@ -343,21 +343,21 @@
   {
     if (self->_vis)
     {
-      os_trace_blob_add_unsafe_bytes(&self->_ob, a3, a4);
+      os_trace_blob_add_unsafe_bytes(&self->_ob, write, size);
     }
 
     else if ((self->_ob.ob_flags & 2) == 0)
     {
       v7 = self->_ob.ob_len;
-      if (self->_ob.ob_size - v7 - !self->_ob.ob_binary < a4)
+      if (self->_ob.ob_size - v7 - !self->_ob.ob_binary < size)
       {
-        os_trace_blob_add_slow(&self->_ob, a3, a4);
+        os_trace_blob_add_slow(&self->_ob, write, size);
       }
 
       else
       {
-        memcpy(&self->_ob.var0.ob_b[v7], a3, a4);
-        v8 = self->_ob.ob_len + v4;
+        memcpy(&self->_ob.var0.ob_b[v7], write, size);
+        v8 = self->_ob.ob_len + sizeCopy;
         self->_ob.ob_len = v8;
         if (!self->_ob.ob_binary)
         {
@@ -374,9 +374,9 @@
   }
 }
 
-- (void)flush:(BOOL)a3
+- (void)flush:(BOOL)flush
 {
-  if (a3 && self->_fancy && self->_last_attrs != self->_cur_attrs)
+  if (flush && self->_fancy && self->_last_attrs != self->_cur_attrs)
   {
     [(OSLogTermDumper *)self _flushAttrs];
   }
@@ -943,9 +943,9 @@ LABEL_3:
   self->_ob.ob_binary = 0;
 }
 
-- (OSLogTermDumper)initWithFd:(int)a3 colorMode:(unsigned __int8)a4
+- (OSLogTermDumper)initWithFd:(int)fd colorMode:(unsigned __int8)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v15.receiver = self;
   v15.super_class = OSLogTermDumper;
   v6 = [(OSLogTermDumper *)&v15 init];
@@ -960,10 +960,10 @@ LABEL_3:
   v6->_ob.ob_flags = 0;
   v6->_ob.ob_binary = 0;
   v6->_ob.ob_maxsize = 0x100000;
-  v6->_fd = a3;
+  v6->_fd = fd;
   v6->_last_attrs = 4112;
   v6->_cur_attrs = 4112;
-  v6->_colorMode = v4;
+  v6->_colorMode = modeCopy;
   v8 = getenv("LOG_USE_ESCAPECNTRLCHARS");
   if (!v8 || *v8 != 48 || (v9 = v8[1]) != 0)
   {
@@ -972,11 +972,11 @@ LABEL_3:
 
   v7->_vis = v9;
   v10 = getenv("TERM");
-  switch(v4)
+  switch(modeCopy)
   {
     case 0:
       v11 = v10;
-      v12 = isatty(a3);
+      v12 = isatty(fd);
       if (!v11 || !v12 || !strcmp(v11, "dummy"))
       {
         return v7;
@@ -1003,9 +1003,9 @@ LABEL_15:
   return v7;
 }
 
-- (void)setUnderline:(BOOL)a3
+- (void)setUnderline:(BOOL)underline
 {
-  if (a3)
+  if (underline)
   {
     v3 = 128;
   }
@@ -1018,9 +1018,9 @@ LABEL_15:
   self->_cur_attrs = self->_cur_attrs & 0xFF7F | v3;
 }
 
-- (void)setOblique:(BOOL)a3
+- (void)setOblique:(BOOL)oblique
 {
-  if (a3)
+  if (oblique)
   {
     v3 = 64;
   }
@@ -1033,9 +1033,9 @@ LABEL_15:
   self->_cur_attrs = self->_cur_attrs & 0xFFBF | v3;
 }
 
-- (void)setBold:(BOOL)a3
+- (void)setBold:(BOOL)bold
 {
-  if (a3)
+  if (bold)
   {
     v3 = 32;
   }

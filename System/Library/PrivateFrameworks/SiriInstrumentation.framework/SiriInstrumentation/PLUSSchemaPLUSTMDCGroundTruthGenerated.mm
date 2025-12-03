@@ -1,26 +1,26 @@
 @interface PLUSSchemaPLUSTMDCGroundTruthGenerated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSTMDCGroundTruthGenerated
 
-- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PLUSSchemaPLUSTMDCGroundTruthGenerated;
   v5 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"originalPlusId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"originalPlusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)v5 setOriginalPlusId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"groundTruth"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"groundTruth"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)v5 setGroundTruth:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"originalRequestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"originalRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithJSON:(id)a3
+- (PLUSSchemaPLUSTMDCGroundTruthGenerated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_groundTruth)
   {
-    v4 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    groundTruth = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+    dictionaryRepresentation = [groundTruth dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"groundTruth"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"groundTruth"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"groundTruth"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"groundTruth"];
     }
   }
 
   if (self->_originalPlusId)
   {
-    v7 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+    dictionaryRepresentation2 = [originalPlusId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originalPlusId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originalPlusId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originalPlusId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originalPlusId"];
     }
   }
 
   if (self->_originalRequestId)
   {
-    v10 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    originalRequestId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+    dictionaryRepresentation3 = [originalRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"originalRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"originalRequestId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"originalRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"originalRequestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(SISchemaUUID *)self->_originalRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
-  v6 = [v4 originalPlusId];
-  if ((v5 != 0) == (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+  originalPlusId2 = [equalCopy originalPlusId];
+  if ((originalPlusId != 0) == (originalPlusId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
-  if (v7)
+  originalPlusId3 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+  if (originalPlusId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
-    v10 = [v4 originalPlusId];
-    v11 = [v9 isEqual:v10];
+    v8 = originalPlusId3;
+    originalPlusId4 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+    originalPlusId5 = [equalCopy originalPlusId];
+    v11 = [originalPlusId4 isEqual:originalPlusId5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
-  v6 = [v4 groundTruth];
-  if ((v5 != 0) == (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+  originalPlusId2 = [equalCopy groundTruth];
+  if ((originalPlusId != 0) == (originalPlusId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
-  if (v12)
+  groundTruth = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+  if (groundTruth)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
-    v15 = [v4 groundTruth];
-    v16 = [v14 isEqual:v15];
+    v13 = groundTruth;
+    groundTruth2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+    groundTruth3 = [equalCopy groundTruth];
+    v16 = [groundTruth2 isEqual:groundTruth3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
-  v6 = [v4 originalRequestId];
-  if ((v5 != 0) != (v6 == 0))
+  originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+  originalPlusId2 = [equalCopy originalRequestId];
+  if ((originalPlusId != 0) != (originalPlusId2 == 0))
   {
-    v17 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
-    if (!v17)
+    originalRequestId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+    if (!originalRequestId)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
-    v20 = [v4 originalRequestId];
-    v21 = [v19 isEqual:v20];
+    v18 = originalRequestId;
+    originalRequestId2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+    originalRequestId3 = [equalCopy originalRequestId];
+    v21 = [originalRequestId2 isEqual:originalRequestId3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+  toCopy = to;
+  originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
 
-  if (v4)
+  if (originalPlusId)
   {
-    v5 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+    originalPlusId2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+  groundTruth = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
 
-  if (v6)
+  if (groundTruth)
   {
-    v7 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+    groundTruth2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+  originalRequestId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (originalRequestId)
   {
-    v10 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+    originalRequestId2 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PLUSSchemaPLUSTMDCGroundTruthGenerated;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  originalPlusId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalPlusId];
+  v7 = [originalPlusId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self deleteOriginalPlusId];
   }
 
-  v9 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  groundTruth = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self groundTruth];
+  v10 = [groundTruth applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self deleteGroundTruth];
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  originalRequestId = [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self originalRequestId];
+  v13 = [originalRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PLUSSchemaPLUSTMDCGroundTruthGenerated *)self deleteOriginalRequestId];
   }

@@ -1,10 +1,10 @@
 @interface CreateWatchlistView
-- (_TtC8StocksUI19CreateWatchlistView)initWithCoder:(id)a3;
+- (_TtC8StocksUI19CreateWatchlistView)initWithCoder:(id)coder;
 @end
 
 @implementation CreateWatchlistView
 
-- (_TtC8StocksUI19CreateWatchlistView)initWithCoder:(id)a3
+- (_TtC8StocksUI19CreateWatchlistView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI19CreateWatchlistView_onTap;
   sub_22049D9F4();

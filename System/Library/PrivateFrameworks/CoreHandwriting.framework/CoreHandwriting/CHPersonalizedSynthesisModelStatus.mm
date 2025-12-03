@@ -1,20 +1,20 @@
 @interface CHPersonalizedSynthesisModelStatus
 + (id)modelStatus;
-- (CHPersonalizedSynthesisModelStatus)initWithCoder:(id)a3;
+- (CHPersonalizedSynthesisModelStatus)initWithCoder:(id)coder;
 - (id).cxx_construct;
 - (id)description;
-- (id)getVersionForVariant:(int64_t)a3;
-- (id)initFromStates:(id)a3 versions:(id)a4;
-- (int64_t)getStateForVariant:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)getVersionForVariant:(int64_t)variant;
+- (id)initFromStates:(id)states versions:(id)versions;
+- (int64_t)getStateForVariant:(int64_t)variant;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHPersonalizedSynthesisModelStatus
 
-- (id)initFromStates:(id)a3 versions:(id)a4
+- (id)initFromStates:(id)states versions:(id)versions
 {
-  v6 = a3;
-  v7 = a4;
+  statesCopy = states;
+  versionsCopy = versions;
   v17.receiver = self;
   v17.super_class = CHPersonalizedSynthesisModelStatus;
   v8 = [(CHPersonalizedSynthesisModelStatus *)&v17 init];
@@ -24,9 +24,9 @@
     v14[1] = 3221225472;
     v14[2] = sub_1836A4A10;
     v14[3] = &unk_1E6DDC298;
-    v15 = v7;
+    v15 = versionsCopy;
     v16 = v8;
-    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v6, v9, v14, v10, v11, v12);
+    objc_msgSend_enumerateKeysAndObjectsUsingBlock_(statesCopy, v9, v14, v10, v11, v12);
   }
 
   return v8;
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (int64_t)getStateForVariant:(int64_t)a3
+- (int64_t)getStateForVariant:(int64_t)variant
 {
   left = self->_modelStates.__tree_.__end_node_.__left_;
   p_end_node = &self->_modelStates.__tree_.__end_node_;
@@ -73,16 +73,16 @@
   v6 = p_end_node;
   do
   {
-    if (v4[4].__left_ >= a3)
+    if (v4[4].__left_ >= variant)
     {
       v6 = v4;
     }
 
-    v4 = v4[v4[4].__left_ < a3].__left_;
+    v4 = v4[v4[4].__left_ < variant].__left_;
   }
 
   while (v4);
-  if (v6 != p_end_node && v6[4].__left_ <= a3)
+  if (v6 != p_end_node && v6[4].__left_ <= variant)
   {
     return v6[5].__left_;
   }
@@ -93,7 +93,7 @@
   }
 }
 
-- (id)getVersionForVariant:(int64_t)a3
+- (id)getVersionForVariant:(int64_t)variant
 {
   left = self->_modelStates.__tree_.__end_node_.__left_;
   p_end_node = &self->_modelStates.__tree_.__end_node_;
@@ -103,16 +103,16 @@
     v7 = p_end_node;
     do
     {
-      if (v5[4].__left_ >= a3)
+      if (v5[4].__left_ >= variant)
       {
         v7 = v5;
       }
 
-      v5 = v5[v5[4].__left_ < a3].__left_;
+      v5 = v5[v5[4].__left_ < variant].__left_;
     }
 
     while (v5);
-    if (v7 == p_end_node || v7[4].__left_ > a3)
+    if (v7 == p_end_node || v7[4].__left_ > variant)
     {
       v8 = 0;
     }
@@ -131,9 +131,9 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v39 = a3;
+  coderCopy = coder;
   v8 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], v4, self->_modelStates.__tree_.__size_, v5, v6, v7);
   v17 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], v9, self->_modelStates.__tree_.__size_, v10, v11, v12);
   begin_node = self->_modelStates.__tree_.__begin_node_;
@@ -178,19 +178,19 @@
     while (v34 != p_end_node);
   }
 
-  objc_msgSend_encodeObject_forKey_(v39, v13, v8, @"modelStates", v15, v16);
-  objc_msgSend_encodeObject_forKey_(v39, v36, v17, @"modelVersions", v37, v38);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, v8, @"modelStates", v15, v16);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v36, v17, @"modelVersions", v37, v38);
 }
 
-- (CHPersonalizedSynthesisModelStatus)initWithCoder:(id)a3
+- (CHPersonalizedSynthesisModelStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v9 = objc_msgSend_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(v4, v7, v5, v6, @"modelStates", v8);
+  v9 = objc_msgSend_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(coderCopy, v7, v5, v6, @"modelStates", v8);
   v10 = objc_opt_class();
   v11 = objc_opt_class();
-  v14 = objc_msgSend_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(v4, v12, v10, v11, @"modelVersions", v13);
+  v14 = objc_msgSend_decodeDictionaryWithKeysOfClass_objectsOfClass_forKey_(coderCopy, v12, v10, v11, @"modelVersions", v13);
   v18 = objc_msgSend_initFromStates_versions_(self, v15, v9, v14, v16, v17);
 
   return v18;

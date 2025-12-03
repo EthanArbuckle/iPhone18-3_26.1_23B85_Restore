@@ -1,22 +1,22 @@
 @interface PageMemoryMeasurementController
-- (PageMemoryMeasurementController)initWithPluginPageContextController:(id)a3 pagesNeedingMemoryWarningSent:(id)a4;
-- (id)_memoryUsage:(BOOL)a3;
+- (PageMemoryMeasurementController)initWithPluginPageContextController:(id)controller pagesNeedingMemoryWarningSent:(id)sent;
+- (id)_memoryUsage:(BOOL)usage;
 - (void)_postPageLoadEnd;
-- (void)_waitForMemoryPressureHandlerTimerFired:(id)a3;
+- (void)_waitForMemoryPressureHandlerTimerFired:(id)fired;
 @end
 
 @implementation PageMemoryMeasurementController
 
-- (PageMemoryMeasurementController)initWithPluginPageContextController:(id)a3 pagesNeedingMemoryWarningSent:(id)a4
+- (PageMemoryMeasurementController)initWithPluginPageContextController:(id)controller pagesNeedingMemoryWarningSent:(id)sent
 {
-  v7 = a4;
+  sentCopy = sent;
   v12.receiver = self;
   v12.super_class = PageMemoryMeasurementController;
-  v8 = [(MeasurementControllerBase *)&v12 initWithPluginPageContextController:a3];
+  v8 = [(MeasurementControllerBase *)&v12 initWithPluginPageContextController:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_pagesNeedingMemoryWarningSent, a4);
+    objc_storeStrong(&v8->_pagesNeedingMemoryWarningSent, sent);
     v9->_currentPageIndex = -1;
     v10 = v9;
   }
@@ -24,16 +24,16 @@
   return v9;
 }
 
-- (id)_memoryUsage:(BOOL)a3
+- (id)_memoryUsage:(BOOL)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   task_info_outCnt = 93;
   if (task_info(*MEMORY[0x277D85F48], 0x16u, task_info_out, &task_info_outCnt))
   {
     objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v4, 0, v5);
   }
 
-  else if (v3)
+  else if (usageCopy)
   {
     objc_msgSend_numberWithUnsignedLongLong_(MEMORY[0x277CCABB0], v4, v12, v5);
   }
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)_waitForMemoryPressureHandlerTimerFired:(id)a3
+- (void)_waitForMemoryPressureHandlerTimerFired:(id)fired
 {
   v12 = objc_msgSend__memoryUsage_(self, a2, 0, v3);
   objc_msgSend_setValue_forKey_(self->super._loadData, v5, v12, @"PageMemoryAfterWarning");

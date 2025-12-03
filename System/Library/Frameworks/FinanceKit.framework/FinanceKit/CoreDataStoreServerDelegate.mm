@@ -1,10 +1,10 @@
 @interface CoreDataStoreServerDelegate
-- (id)identifierForConnection:(id)a3;
+- (id)identifierForConnection:(id)connection;
 @end
 
 @implementation CoreDataStoreServerDelegate
 
-- (id)identifierForConnection:(id)a3
+- (id)identifierForConnection:(id)connection
 {
   v3 = sub_1B7800838();
 

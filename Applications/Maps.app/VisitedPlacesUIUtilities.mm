@@ -6,7 +6,7 @@
 + (id)localizedByCityTitle;
 + (id)localizedVisitedPlacesSearchPlaceholder;
 + (uint64_t)openMapsSettingsURL;
-+ (void)setDefaultContaineeLayoutToFullIfNeeded:(id)a3;
++ (void)setDefaultContaineeLayoutToFullIfNeeded:(id)needed;
 - (_TtC4Maps24VisitedPlacesUIUtilities)init;
 @end
 
@@ -126,10 +126,10 @@
   return v4;
 }
 
-+ (void)setDefaultContaineeLayoutToFullIfNeeded:(id)a3
++ (void)setDefaultContaineeLayoutToFullIfNeeded:(id)needed
 {
-  v3 = a3;
-  sub_1003A7704(v3);
+  neededCopy = needed;
+  sub_1003A7704(neededCopy);
 }
 
 - (_TtC4Maps24VisitedPlacesUIUtilities)init
@@ -155,7 +155,7 @@
   }
 
   (*(v4 + 32))(v6, v2, v3);
-  v8 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   URL._bridgeToObjectiveC()(v9);
   v11 = v10;
   sub_1000D0D9C(_swiftEmptyArrayStorage);
@@ -163,7 +163,7 @@
   sub_1003A7F70();
   isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
-  [v8 _maps_openURL:v11 options:isa completionHandler:0];
+  [sharedApplication _maps_openURL:v11 options:isa completionHandler:0];
 
   return (*(v4 + 8))(v6, v3);
 }

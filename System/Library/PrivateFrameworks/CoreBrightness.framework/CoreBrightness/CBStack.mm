@@ -1,6 +1,6 @@
 @interface CBStack
 - (CBStack)init;
-- (CBStack)initWithLength:(unint64_t)a3;
+- (CBStack)initWithLength:(unint64_t)length;
 - (id)popObj;
 - (void)dealloc;
 @end
@@ -25,39 +25,39 @@
   return 0;
 }
 
-- (CBStack)initWithLength:(unint64_t)a3
+- (CBStack)initWithLength:(unint64_t)length
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  lengthCopy = length;
   v7.receiver = self;
   v7.super_class = CBStack;
-  v10 = [(CBStack *)&v7 init];
-  if (v10)
+  selfCopy = [(CBStack *)&v7 init];
+  if (selfCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.CBStack", "default");
-    v10->_logHandle = v3;
+    selfCopy->_logHandle = v3;
     v4 = objc_alloc(MEMORY[0x1E695DF70]);
-    v5 = [v4 initWithCapacity:v8];
-    v10->_stack = v5;
-    v10->_length = v8;
+    v5 = [v4 initWithCapacity:lengthCopy];
+    selfCopy->_stack = v5;
+    selfCopy->_length = lengthCopy;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->_stack).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_stack).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBStack;
   [(CBStack *)&v3 dealloc];
 }

@@ -12,7 +12,7 @@
   v7 = a4;
   if ([v6 isFaceTimeMultiwayURL])
   {
-    [a1 _sf_openFaceTimeMultiWayURL:v6 completionHandler:v7];
+    [self _sf_openFaceTimeMultiWayURL:v6 completionHandler:v7];
   }
 
   else
@@ -23,7 +23,7 @@
       if ([v8 showUIPrompt])
       {
         v9 = +[SFTelephonyURLHandler sharedInstance];
-        if (([v9 openURLForDialRequest:v8 withScene:a1 completionHandler:v7] & 1) == 0)
+        if (([v9 openURLForDialRequest:v8 withScene:self completionHandler:v7] & 1) == 0)
         {
           v10 = objc_alloc(getTPDialPromptAlertClass());
           v12[0] = MEMORY[0x1E69E9820];
@@ -32,7 +32,7 @@
           v12[3] = &unk_1E8490340;
           v15 = v7;
           v13 = v8;
-          v14 = a1;
+          selfCopy = self;
           v11 = [v10 initWithDialRequest:v13 dialAction:v12];
           [v11 show];
         }
@@ -40,7 +40,7 @@
 
       else
       {
-        [a1 openURL:v6 options:0 completionHandler:v7];
+        [self openURL:v6 options:0 completionHandler:v7];
       }
     }
 
@@ -67,7 +67,7 @@
     v12[3] = &unk_1E8490340;
     v15 = v6;
     v13 = v9;
-    v14 = a1;
+    selfCopy = self;
     v11 = [v10 initWithJoinRequest:v13 dialAction:v12];
     [v11 show];
   }
@@ -82,9 +82,9 @@
 {
   v2 = objc_alloc(MEMORY[0x1E69DC930]);
   v5 = [v2 initWithPreferredAnimationType:1 callbackQueue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_5];
-  v3 = [a1 _FBSScene];
+  _FBSScene = [self _FBSScene];
   v4 = [MEMORY[0x1E695DFD8] setWithObject:v5];
-  [v3 sendActions:v4];
+  [_FBSScene sendActions:v4];
 }
 
 @end

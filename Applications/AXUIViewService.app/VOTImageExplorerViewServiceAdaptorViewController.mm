@@ -11,8 +11,8 @@
 - (void)_populateCaptionAndMetadata;
 - (void)_reloadImageViewIfNeeded;
 - (void)_setupRemoteProxy;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
@@ -26,8 +26,8 @@
   v3 = objc_alloc_init(VOTImageExplorerViewController);
   [(VOTImageExplorerViewServiceAdaptorViewController *)self setImageExplorerViewController:v3];
 
-  v4 = [(VOTImageExplorerViewServiceAdaptorViewController *)self imageExplorerViewController];
-  [v4 setDelegate:self];
+  imageExplorerViewController = [(VOTImageExplorerViewServiceAdaptorViewController *)self imageExplorerViewController];
+  [imageExplorerViewController setDelegate:self];
 
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
   v6 = dispatch_queue_create("VOTImageExplorer-Vision", v5);
@@ -54,34 +54,34 @@
   return visionEngine;
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = VOTLogImageExplorer();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     sub_1000133E4();
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = VOTLogImageExplorer();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     sub_10001347C();
   }
 
-  v9 = [v6 userInfo];
-  v10 = [v9 objectForKeyedSubscript:AXVoiceOverImageExplorerVisionResultData];
+  userInfo = [contextCopy userInfo];
+  v10 = [userInfo objectForKeyedSubscript:AXVoiceOverImageExplorerVisionResultData];
 
   v11 = objc_opt_class();
   v12 = AXMSecureCodingClasses();
@@ -90,7 +90,7 @@
   v14 = v28;
   [(VOTImageExplorerViewServiceAdaptorViewController *)self setVisionResult:v13];
 
-  v15 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
   objc_opt_class();
   LOBYTE(v12) = objc_opt_isKindOfClass();
 
@@ -105,19 +105,19 @@
 
   else
   {
-    v16 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+    visionResult2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
 
-    if (v16)
+    if (visionResult2)
     {
-      v17 = [v6 userInfo];
-      v18 = [v17 objectForKeyedSubscript:AXVoiceOverImageExplorerElementInfoData];
+      userInfo2 = [contextCopy userInfo];
+      v18 = [userInfo2 objectForKeyedSubscript:AXVoiceOverImageExplorerElementInfoData];
 
       v27 = 0;
       v19 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v18 error:&v27];
       v20 = v27;
       [(VOTImageExplorerViewServiceAdaptorViewController *)self setElementInfo:v19];
 
-      v21 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+      elementInfo = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -132,18 +132,18 @@
 
       else
       {
-        v23 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+        elementInfo2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
 
-        if (v23)
+        if (elementInfo2)
         {
-          v24 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
-          v25 = [v24 hostAppName];
-          [(VOTImageExplorerViewServiceAdaptorViewController *)self setHostAppName:v25];
+          elementInfo3 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+          hostAppName = [elementInfo3 hostAppName];
+          [(VOTImageExplorerViewServiceAdaptorViewController *)self setHostAppName:hostAppName];
 
           [(VOTImageExplorerViewServiceAdaptorViewController *)self _populateCaptionAndMetadata];
-          if (v7)
+          if (completionCopy)
           {
-            v7[2](v7);
+            completionCopy[2](completionCopy);
           }
 
           goto LABEL_20;
@@ -172,12 +172,12 @@ LABEL_21:
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _remoteViewControllerProxy];
-  [v2 setDismissalAnimationStyle:2];
-  [v2 setOrientationChangedEventsEnabled:0];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setWallpaperTunnelActive:0];
-  [v2 setWallpaperStyle:4 withDuration:0.3];
+  _remoteViewControllerProxy = [(VOTImageExplorerViewServiceAdaptorViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:0];
+  [_remoteViewControllerProxy setWallpaperStyle:4 withDuration:0.3];
 }
 
 - (void)_dismiss
@@ -192,62 +192,62 @@ LABEL_21:
 
 - (BOOL)_isAssetLocallyAvailable
 {
-  v2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v3 = [v2 assetMetadataFeature];
-  v4 = [v3 assetMetadata];
-  v5 = [v4 assetLocallyAvailable];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  assetMetadataFeature = [visionResult assetMetadataFeature];
+  assetMetadata = [assetMetadataFeature assetMetadata];
+  assetLocallyAvailable = [assetMetadata assetLocallyAvailable];
 
-  return v5;
+  return assetLocallyAvailable;
 }
 
 - (id)_assetLocalIdentifier
 {
-  v2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v3 = [v2 assetMetadataFeature];
-  v4 = [v3 assetMetadata];
-  v5 = [v4 localIdentifier];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  assetMetadataFeature = [visionResult assetMetadataFeature];
+  assetMetadata = [assetMetadataFeature assetMetadata];
+  localIdentifier = [assetMetadata localIdentifier];
 
-  return v5;
+  return localIdentifier;
 }
 
 - (id)_screenGrabImage
 {
   v3 = [UIImage alloc];
-  v4 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v5 = [v4 image];
-  v6 = [v3 initWithCIImage:v5];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  image = [visionResult image];
+  v6 = [v3 initWithCIImage:image];
 
   return v6;
 }
 
 - (id)_imageURL
 {
-  v2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v3 = [v2 assetMetadataFeature];
-  v4 = [v3 assetMetadata];
-  v5 = [v4 url];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  assetMetadataFeature = [visionResult assetMetadataFeature];
+  assetMetadata = [assetMetadataFeature assetMetadata];
+  v5 = [assetMetadata url];
 
   return v5;
 }
 
 - (id)_photoLibraryURL
 {
-  v2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v3 = [v2 assetMetadataFeature];
-  v4 = [v3 assetMetadata];
-  v5 = [v4 photoLibraryURL];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  assetMetadataFeature = [visionResult assetMetadataFeature];
+  assetMetadata = [assetMetadataFeature assetMetadata];
+  photoLibraryURL = [assetMetadata photoLibraryURL];
 
-  return v5;
+  return photoLibraryURL;
 }
 
 - (id)_explorerImage
 {
-  v3 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _isAssetLocallyAvailable];
-  v4 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
-  v5 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _imageURL];
-  v6 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _screenGrabImage];
+  _isAssetLocallyAvailable = [(VOTImageExplorerViewServiceAdaptorViewController *)self _isAssetLocallyAvailable];
+  _assetLocalIdentifier = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
+  _imageURL = [(VOTImageExplorerViewServiceAdaptorViewController *)self _imageURL];
+  _screenGrabImage = [(VOTImageExplorerViewServiceAdaptorViewController *)self _screenGrabImage];
   v7 = 0;
-  if (v4 && v3)
+  if (_assetLocalIdentifier && _isAssetLocallyAvailable)
   {
     v8 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _photoAssetDataWithNetWorkAccess:0];
     v9 = VOTLogImageExplorer();
@@ -257,11 +257,11 @@ LABEL_21:
     }
 
     v10 = [UIImage alloc];
-    v11 = [v8 imageData];
-    v7 = [v10 initWithData:v11];
+    imageData = [v8 imageData];
+    v7 = [v10 initWithData:imageData];
   }
 
-  if (!v7 && v6)
+  if (!v7 && _screenGrabImage)
   {
     v12 = VOTLogImageExplorer();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -269,11 +269,11 @@ LABEL_21:
       sub_100013924();
     }
 
-    v7 = v6;
+    v7 = _screenGrabImage;
     goto LABEL_21;
   }
 
-  if (v7 || !v5)
+  if (v7 || !_imageURL)
   {
     goto LABEL_17;
   }
@@ -288,15 +288,15 @@ LABEL_21:
       v20 = 138412802;
       v21 = v19;
       v22 = 2112;
-      v23 = v5;
+      v23 = _imageURL;
       v24 = 2112;
-      v25 = v4;
+      v25 = _assetLocalIdentifier;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%@ - Using url : %@ localIdentifier : %@", &v20, 0x20u);
     }
 
     v14 = [UIImage alloc];
-    v15 = [v5 path];
-    v7 = [v14 initWithContentsOfFile:v15];
+    path = [_imageURL path];
+    v7 = [v14 initWithContentsOfFile:path];
 
 LABEL_17:
     if (v7)
@@ -319,8 +319,8 @@ LABEL_21:
 
 - (void)_reloadImageViewIfNeeded
 {
-  v3 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
-  if (![(VOTImageExplorerViewServiceAdaptorViewController *)self _isAssetLocallyAvailable]&& v3)
+  _assetLocalIdentifier = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
+  if (![(VOTImageExplorerViewServiceAdaptorViewController *)self _isAssetLocallyAvailable]&& _assetLocalIdentifier)
   {
     v18[0] = 0;
     v18[1] = v18;
@@ -336,19 +336,19 @@ LABEL_21:
     v17 = 0;
     v4 = dispatch_semaphore_create(0);
     objc_initWeak(&location, self);
-    v5 = [(VOTImageExplorerViewServiceAdaptorViewController *)self axVisionQueue];
+    axVisionQueue = [(VOTImageExplorerViewServiceAdaptorViewController *)self axVisionQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000703C;
     block[3] = &unk_100028908;
     objc_copyWeak(&v14, &location);
-    v9 = v3;
-    v10 = self;
+    v9 = _assetLocalIdentifier;
+    selfCopy = self;
     v12 = v18;
     v13 = v16;
     v11 = v4;
     v6 = v4;
-    dispatch_async(v5, block);
+    dispatch_async(axVisionQueue, block);
 
     dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
     v7[0] = _NSConcreteStackBlock;
@@ -371,78 +371,78 @@ LABEL_21:
 - (void)_populateCaptionAndMetadata
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
-  v5 = [v4 axLabel];
-  v6 = [v5 length];
+  elementInfo = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+  axLabel = [elementInfo axLabel];
+  v6 = [axLabel length];
 
   if (v6)
   {
-    v7 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _screenGrabImage];
-    if (v7)
+    _screenGrabImage = [(VOTImageExplorerViewServiceAdaptorViewController *)self _screenGrabImage];
+    if (_screenGrabImage)
     {
-      v8 = v7;
-      v9 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
+      v8 = _screenGrabImage;
+      _assetLocalIdentifier = [(VOTImageExplorerViewServiceAdaptorViewController *)self _assetLocalIdentifier];
 
-      if (!v9)
+      if (!_assetLocalIdentifier)
       {
-        v10 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
-        v11 = [v10 axLabel];
-        [v3 axSafelyAddObject:v11];
+        elementInfo2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+        axLabel2 = [elementInfo2 axLabel];
+        [v3 axSafelyAddObject:axLabel2];
       }
     }
   }
 
   v12 = sub_10000CCD4(@"VoiceOverImageExplorer.caption.title");
-  v13 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
-  v14 = [v13 customContent];
+  elementInfo3 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+  customContent = [elementInfo3 customContent];
   v68[0] = _NSConcreteStackBlock;
   v68[1] = 3221225472;
   v68[2] = sub_100007AFC;
   v68[3] = &unk_100028958;
   v62 = v12;
   v69 = v62;
-  v15 = [v14 ax_filteredArrayUsingBlock:v68];
+  v15 = [customContent ax_filteredArrayUsingBlock:v68];
 
   if ([v15 count])
   {
-    v16 = [v15 firstObject];
-    v17 = [v16 value];
-    [v3 axSafelyAddObject:v17];
+    firstObject = [v15 firstObject];
+    value = [firstObject value];
+    [v3 axSafelyAddObject:value];
   }
 
   if ([v3 count])
   {
     v18 = [[VOTImageExplorerDetailData alloc] initWithKey:v62 values:v3];
-    v19 = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
-    [v19 axSafelyAddObject:v18];
+    detailData = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
+    [detailData axSafelyAddObject:v18];
   }
 
-  v20 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v21 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _visionFeatureDescriptionOptions];
-  v22 = [v20 detectedCaptionFeatureDescriptionWithOptions:v21];
+  visionResult = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  _visionFeatureDescriptionOptions = [(VOTImageExplorerViewServiceAdaptorViewController *)self _visionFeatureDescriptionOptions];
+  v22 = [visionResult detectedCaptionFeatureDescriptionWithOptions:_visionFeatureDescriptionOptions];
 
   if ([v22 length])
   {
-    v23 = [v22 axCapitalizeFirstLetter];
+    axCapitalizeFirstLetter = [v22 axCapitalizeFirstLetter];
 
     v24 = [VOTImageExplorerDetailData alloc];
     v25 = sub_10000CCD4(@"VoiceOverImageExplorer.imgDesc");
-    v73 = v23;
+    v73 = axCapitalizeFirstLetter;
     v26 = [NSArray arrayWithObjects:&v73 count:1];
     v27 = [(VOTImageExplorerDetailData *)v24 initWithKey:v25 values:v26];
 
-    v28 = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
-    [v28 axSafelyAddObject:v27];
+    detailData2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
+    [detailData2 axSafelyAddObject:v27];
 
-    v22 = v23;
+    v22 = axCapitalizeFirstLetter;
   }
 
   v58 = v22;
   v59 = v15;
   v60 = v3;
-  v29 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
-  v30 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _visionFeatureDescriptionOptions];
-  v31 = [v29 detectedSceneClassificationFeatureDescriptionWithOptions:v30];
+  visionResult2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self visionResult];
+  _visionFeatureDescriptionOptions2 = [(VOTImageExplorerViewServiceAdaptorViewController *)self _visionFeatureDescriptionOptions];
+  v31 = [visionResult2 detectedSceneClassificationFeatureDescriptionWithOptions:_visionFeatureDescriptionOptions2];
 
   if ([v31 length])
   {
@@ -452,8 +452,8 @@ LABEL_21:
     v34 = [NSArray arrayWithObjects:&v72 count:1];
     v35 = [(VOTImageExplorerDetailData *)v32 initWithKey:v33 values:v34];
 
-    v36 = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
-    [v36 axSafelyAddObject:v35];
+    detailData3 = [(VOTImageExplorerViewServiceAdaptorViewController *)self detailData];
+    [detailData3 axSafelyAddObject:v35];
   }
 
   v57 = v31;
@@ -461,12 +461,12 @@ LABEL_21:
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v61 = self;
-  v37 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
-  v38 = [v37 customContent];
+  selfCopy = self;
+  elementInfo4 = [(VOTImageExplorerViewServiceAdaptorViewController *)self elementInfo];
+  customContent2 = [elementInfo4 customContent];
 
-  obj = v38;
-  v39 = [v38 countByEnumeratingWithState:&v64 objects:v71 count:16];
+  obj = customContent2;
+  v39 = [customContent2 countByEnumeratingWithState:&v64 objects:v71 count:16];
   if (v39)
   {
     v40 = v39;
@@ -481,24 +481,24 @@ LABEL_21:
         }
 
         v43 = *(*(&v64 + 1) + 8 * i);
-        v44 = [v43 label];
-        if (v44)
+        label = [v43 label];
+        if (label)
         {
-          v45 = v44;
-          v46 = [v43 value];
-          if (v46)
+          v45 = label;
+          value2 = [v43 value];
+          if (value2)
           {
-            v47 = v46;
-            v48 = [v43 label];
+            detailData4 = value2;
+            label2 = [v43 label];
             v49 = sub_10000CCD4(@"VoiceOverImageExplorer.faces.title");
-            if ([v48 isEqualToString:v49])
+            if ([label2 isEqualToString:v49])
             {
             }
 
             else
             {
-              v50 = [v43 label];
-              v51 = [v50 isEqualToString:v62];
+              label3 = [v43 label];
+              v51 = [label3 isEqualToString:v62];
 
               if (v51)
               {
@@ -506,14 +506,14 @@ LABEL_21:
               }
 
               v52 = [VOTImageExplorerDetailData alloc];
-              v53 = [v43 label];
-              v54 = [v43 value];
-              v70 = v54;
+              label4 = [v43 label];
+              value3 = [v43 value];
+              v70 = value3;
               v55 = [NSArray arrayWithObjects:&v70 count:1];
-              v45 = [(VOTImageExplorerDetailData *)v52 initWithKey:v53 values:v55];
+              v45 = [(VOTImageExplorerDetailData *)v52 initWithKey:label4 values:v55];
 
-              v47 = [(VOTImageExplorerViewServiceAdaptorViewController *)v61 detailData];
-              [v47 axSafelyAddObject:v45];
+              detailData4 = [(VOTImageExplorerViewServiceAdaptorViewController *)selfCopy detailData];
+              [detailData4 axSafelyAddObject:v45];
             }
           }
         }
@@ -528,20 +528,20 @@ LABEL_21:
   v56 = VOTLogImageExplorer();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
   {
-    sub_100013C5C(v61);
+    sub_100013C5C(selfCopy);
   }
 }
 
 - (id)_visionFeatureDescriptionOptions
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverDiscoveredSensitiveContentFeedback];
+  voiceOverDiscoveredSensitiveContentFeedback = [v2 voiceOverDiscoveredSensitiveContentFeedback];
 
   v8[0] = AXMFeatureDescriptionOptionLocale;
   v4 = [NSLocale localeWithLocaleIdentifier:@"en_US"];
   v9[0] = v4;
   v8[1] = AXMFeatureDescriptionOptionModifyForSensitiveContent;
-  v5 = [NSNumber numberWithInt:v3 == 0];
+  v5 = [NSNumber numberWithInt:voiceOverDiscoveredSensitiveContentFeedback == 0];
   v9[1] = v5;
   v6 = [NSDictionary dictionaryWithObjects:v9 forKeys:v8 count:2];
 

@@ -1,41 +1,41 @@
 @interface HRECharacteristicActionVarianceRule
-+ (id)anyVarianceRuleForCharacteristicType:(id)a3;
-- (BOOL)passesForAction:(id)a3;
-- (id)_initWithType:(id)a3;
++ (id)anyVarianceRuleForCharacteristicType:(id)type;
+- (BOOL)passesForAction:(id)action;
+- (id)_initWithType:(id)type;
 @end
 
 @implementation HRECharacteristicActionVarianceRule
 
-- (id)_initWithType:(id)a3
+- (id)_initWithType:(id)type
 {
-  v5 = a3;
-  v6 = [objc_opt_class() varianceKeyForCharacteristicType:v5];
+  typeCopy = type;
+  v6 = [objc_opt_class() varianceKeyForCharacteristicType:typeCopy];
   v9.receiver = self;
   v9.super_class = HRECharacteristicActionVarianceRule;
   v7 = [(HREActionVariance *)&v9 _initWithKey:v6];
 
   if (v7)
   {
-    objc_storeStrong(v7 + 2, a3);
+    objc_storeStrong(v7 + 2, type);
   }
 
   return v7;
 }
 
-+ (id)anyVarianceRuleForCharacteristicType:(id)a3
++ (id)anyVarianceRuleForCharacteristicType:(id)type
 {
-  v3 = [a1 varianceKeyForCharacteristicType:a3];
+  v3 = [self varianceKeyForCharacteristicType:type];
   v4 = [HREActionAnyVarianceRule anyVarianceRuleWithKey:v3];
 
   return v4;
 }
 
-- (BOOL)passesForAction:(id)a3
+- (BOOL)passesForAction:(id)action
 {
-  v4 = [a3 characteristic];
-  v5 = [v4 characteristicType];
-  v6 = [(HRECharacteristicActionVarianceRule *)self characteristicType];
-  v7 = [v5 isEqualToString:v6];
+  characteristic = [action characteristic];
+  characteristicType = [characteristic characteristicType];
+  characteristicType2 = [(HRECharacteristicActionVarianceRule *)self characteristicType];
+  v7 = [characteristicType isEqualToString:characteristicType2];
 
   return v7;
 }

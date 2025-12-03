@@ -1,38 +1,38 @@
 @interface SKAttribute
 + (SKAttribute)attributeWithName:(NSString *)name type:(SKAttributeType)type;
-- (BOOL)isEqualToAttribute:(id)a3;
-- (SKAttribute)initWithCoder:(id)a3;
+- (BOOL)isEqualToAttribute:(id)attribute;
+- (SKAttribute)initWithCoder:(id)coder;
 - (SKAttribute)initWithName:(NSString *)name type:(SKAttributeType)type;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKAttribute
 
-- (SKAttribute)initWithCoder:(id)a3
+- (SKAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
-  v7 = [v6 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_type"];
+  integerValue = [v6 integerValue];
 
-  v8 = [(SKAttribute *)self initWithName:v5 type:v7];
+  v8 = [(SKAttribute *)self initWithName:v5 type:integerValue];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_name forKey:@"_name"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_type];
-  [v5 encodeObject:v4 forKey:@"_type"];
+  [coderCopy encodeObject:v4 forKey:@"_type"];
 }
 
-- (BOOL)isEqualToAttribute:(id)a3
+- (BOOL)isEqualToAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  attributeCopy = attribute;
+  v5 = attributeCopy;
+  if (self == attributeCopy)
   {
     v9 = 1;
   }
@@ -40,8 +40,8 @@
   else
   {
     name = self->_name;
-    v7 = [(SKAttribute *)v4 name];
-    LOBYTE(name) = [(NSString *)name isEqualToString:v7];
+    name = [(SKAttribute *)attributeCopy name];
+    LOBYTE(name) = [(NSString *)name isEqualToString:name];
 
     if (name)
     {
@@ -61,7 +61,7 @@
 + (SKAttribute)attributeWithName:(NSString *)name type:(SKAttributeType)type
 {
   v6 = name;
-  v7 = [[a1 alloc] initWithName:v6 type:type];
+  v7 = [[self alloc] initWithName:v6 type:type];
 
   return v7;
 }
@@ -77,8 +77,8 @@
   {
     objc_storeStrong(&v8->_name, name);
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"a_%@", v9->_name];
-    v11 = [v10 UTF8String];
-    v12 = strlen(v11);
+    uTF8String = [v10 UTF8String];
+    v12 = strlen(uTF8String);
     if (v12 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -93,7 +93,7 @@
     HIBYTE(v16) = v12;
     if (v12)
     {
-      memmove(&__dst, v11, v12);
+      memmove(&__dst, uTF8String, v12);
     }
 
     *(&__dst + v13) = 0;

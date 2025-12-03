@@ -1,24 +1,24 @@
 @interface LabelListView
-+ (double)heightForWidth:(double)a3 strings:(id)a4 fonts:(id)a5;
-+ (double)heightForWidth:(double)a3 strings:(id)a4 fonts:(id)a5 spacings:(id)a6;
-+ (id)spacingForNumberOfStrings:(unint64_t)a3;
-- (LabelListView)initWithFrame:(CGRect)a3;
-- (void)addLabelWithText:(id)a3 attributedText:(id)a4 accessibilityText:(id)a5 font:(id)a6 color:(id)a7;
-- (void)layoutToFitSize:(CGSize)a3;
-- (void)layoutToFitSize:(CGSize)a3 spacings:(id)a4;
++ (double)heightForWidth:(double)width strings:(id)strings fonts:(id)fonts;
++ (double)heightForWidth:(double)width strings:(id)strings fonts:(id)fonts spacings:(id)spacings;
++ (id)spacingForNumberOfStrings:(unint64_t)strings;
+- (LabelListView)initWithFrame:(CGRect)frame;
+- (void)addLabelWithText:(id)text attributedText:(id)attributedText accessibilityText:(id)accessibilityText font:(id)font color:(id)color;
+- (void)layoutToFitSize:(CGSize)size;
+- (void)layoutToFitSize:(CGSize)size spacings:(id)spacings;
 - (void)removeAllLabels;
-- (void)setShadowColor:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setShadowColor:(id)color;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation LabelListView
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -52,26 +52,26 @@
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
-  if (self->_shadowColor != v5)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_shadowColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_shadowColor, color);
     [(NSMutableArray *)self->_labels makeObjectsPerformSelector:"setShadowColor:" withObject:self->_shadowColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   textColor = self->_textColor;
-  v7 = v5;
-  if (textColor != v5)
+  v7 = colorCopy;
+  if (textColor != colorCopy)
   {
-    objc_storeStrong(&self->_textColor, a3);
+    objc_storeStrong(&self->_textColor, color);
     textColor = self->_textColor;
   }
 
@@ -114,10 +114,10 @@
   [(NSMutableArray *)self->_labels removeAllObjects];
 }
 
-- (void)layoutToFitSize:(CGSize)a3 spacings:(id)a4
+- (void)layoutToFitSize:(CGSize)size spacings:(id)spacings
 {
-  width = a3.width;
-  v19 = a4;
+  width = size.width;
+  spacingsCopy = spacings;
   [(LabelListView *)self frame];
   v7 = v6;
   v9 = v8;
@@ -132,9 +132,9 @@
       v14 = [(NSMutableArray *)self->_labels objectAtIndexedSubscript:v12];
       [v14 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, width, 1.79769313e308}];
       v16 = v15;
-      if (v12 && v12 - 1 < [v19 count])
+      if (v12 && v12 - 1 < [spacingsCopy count])
       {
-        v17 = [v19 objectAtIndexedSubscript:v12 - 1];
+        v17 = [spacingsCopy objectAtIndexedSubscript:v12 - 1];
         [v17 floatValue];
         MaxY = MaxY + v18;
       }
@@ -160,33 +160,33 @@
   [(LabelListView *)self setFrame:v7, v9, width, MaxY];
 }
 
-- (void)layoutToFitSize:(CGSize)a3
+- (void)layoutToFitSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [objc_opt_class() spacingForNumberOfStrings:{-[NSMutableArray count](self->_labels, "count")}];
   [(LabelListView *)self layoutToFitSize:v6 spacings:width, height];
 }
 
-- (void)addLabelWithText:(id)a3 attributedText:(id)a4 accessibilityText:(id)a5 font:(id)a6 color:(id)a7
+- (void)addLabelWithText:(id)text attributedText:(id)attributedText accessibilityText:(id)accessibilityText font:(id)font color:(id)color
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!v18)
+  textCopy = text;
+  attributedTextCopy = attributedText;
+  accessibilityTextCopy = accessibilityText;
+  colorCopy = color;
+  if (!textCopy)
   {
     goto LABEL_10;
   }
 
-  v15 = [UILabel newStandardTextLabelWithFont:a6];
+  v15 = [UILabel newStandardTextLabelWithFont:font];
   [v15 setLineBreakMode:0];
   [v15 setTextAlignment:self->_textAlignment];
   [v15 setNumberOfLines:0];
-  if (!v12)
+  if (!attributedTextCopy)
   {
-    [v15 setText:v18];
-    if (!v13)
+    [v15 setText:textCopy];
+    if (!accessibilityTextCopy)
     {
       goto LABEL_5;
     }
@@ -194,16 +194,16 @@
     goto LABEL_4;
   }
 
-  [v15 setAttributedText:v12];
-  if (v13)
+  [v15 setAttributedText:attributedTextCopy];
+  if (accessibilityTextCopy)
   {
 LABEL_4:
-    [v15 setAccessibilityLabel:v13];
+    [v15 setAccessibilityLabel:accessibilityTextCopy];
   }
 
 LABEL_5:
-  textColor = v14;
-  if (!v14)
+  textColor = colorCopy;
+  if (!colorCopy)
   {
     textColor = self->_textColor;
   }
@@ -222,11 +222,11 @@ LABEL_5:
 LABEL_10:
 }
 
-- (LabelListView)initWithFrame:(CGRect)a3
+- (LabelListView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = LabelListView;
-  v3 = [(LabelListView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LabelListView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(NSMutableArray);
@@ -244,11 +244,11 @@ LABEL_10:
   return v3;
 }
 
-+ (id)spacingForNumberOfStrings:(unint64_t)a3
++ (id)spacingForNumberOfStrings:(unint64_t)strings
 {
-  if (a3)
+  if (strings)
   {
-    v4 = a3 - 1;
+    v4 = strings - 1;
   }
 
   else
@@ -257,7 +257,7 @@ LABEL_10:
   }
 
   v5 = [NSMutableArray arrayWithCapacity:v4];
-  if (a3 >= 2)
+  if (strings >= 2)
   {
     v6 = 0;
     do
@@ -282,12 +282,12 @@ LABEL_10:
   return v5;
 }
 
-+ (double)heightForWidth:(double)a3 strings:(id)a4 fonts:(id)a5 spacings:(id)a6
++ (double)heightForWidth:(double)width strings:(id)strings fonts:(id)fonts spacings:(id)spacings
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 count];
+  stringsCopy = strings;
+  fontsCopy = fonts;
+  spacingsCopy = spacings;
+  v12 = [stringsCopy count];
   if (v12)
   {
     v13 = v12;
@@ -295,17 +295,17 @@ LABEL_10:
     v15 = 0.0;
     do
     {
-      v16 = [v9 objectAtIndexedSubscript:v14];
+      v16 = [stringsCopy objectAtIndexedSubscript:v14];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v10 objectAtIndexedSubscript:v14];
-        [v16 _maps_sizeWithFont:v17 constrainedToSize:1 options:{a3, 3.40282347e38}];
+        v17 = [fontsCopy objectAtIndexedSubscript:v14];
+        [v16 _maps_sizeWithFont:v17 constrainedToSize:1 options:{width, 3.40282347e38}];
         v15 = v18 + v15;
 
-        if (v14 < [v11 count])
+        if (v14 < [spacingsCopy count])
         {
-          v19 = [v11 objectAtIndexedSubscript:v14];
+          v19 = [spacingsCopy objectAtIndexedSubscript:v14];
           [v19 floatValue];
           v15 = v15 + v20;
         }
@@ -325,12 +325,12 @@ LABEL_10:
   return v15;
 }
 
-+ (double)heightForWidth:(double)a3 strings:(id)a4 fonts:(id)a5
++ (double)heightForWidth:(double)width strings:(id)strings fonts:(id)fonts
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 spacingForNumberOfStrings:{objc_msgSend(v9, "count")}];
-  [a1 heightForWidth:v9 strings:v8 fonts:v10 spacings:a3];
+  fontsCopy = fonts;
+  stringsCopy = strings;
+  v10 = [self spacingForNumberOfStrings:{objc_msgSend(stringsCopy, "count")}];
+  [self heightForWidth:stringsCopy strings:fontsCopy fonts:v10 spacings:width];
   v12 = v11;
 
   return v12;

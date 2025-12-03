@@ -2,45 +2,45 @@
 - (BOOL)becomeFirstResponder;
 - (CGSize)dotFullSize;
 - (CGSize)promptSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PSPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PSPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields;
 - (PSPasscodeFieldDelegate)delegate;
 - (id)digitFont;
 - (int64_t)keyboardAppearance;
 - (int64_t)keyboardType;
-- (void)_delegateEnteredPasscode:(id)a3;
+- (void)_delegateEnteredPasscode:(id)passcode;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
-- (void)passcodeFieldTapped:(id)a3;
-- (void)setFieldSpacing:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setNumberOfEntryFields:(unint64_t)a3;
-- (void)setStringValue:(id)a3;
+- (void)passcodeFieldTapped:(id)tapped;
+- (void)setFieldSpacing:(id)spacing;
+- (void)setForegroundColor:(id)color;
+- (void)setNumberOfEntryFields:(unint64_t)fields;
+- (void)setStringValue:(id)value;
 @end
 
 @implementation PSPasscodeField
 
-- (PSPasscodeField)initWithNumberOfEntryFields:(unint64_t)a3
+- (PSPasscodeField)initWithNumberOfEntryFields:(unint64_t)fields
 {
   v17.receiver = self;
   v17.super_class = PSPasscodeField;
   v4 = [(PSPasscodeField *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:fields];
     dotOutlineViews = v4->_dotOutlineViews;
     v4->_dotOutlineViews = v5;
 
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:fields];
     dotFullViews = v4->_dotFullViews;
     v4->_dotFullViews = v7;
 
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:fields];
     dashViews = v4->_dashViews;
     v4->_dashViews = v9;
 
-    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:fields];
     digitViews = v4->_digitViews;
     v4->_digitViews = v11;
 
@@ -51,7 +51,7 @@
     v4->_enabled = 1;
     v4->_shouldBecomeFirstResponderOnTap = 1;
     v4->_securePasscodeEntry = 1;
-    [(PSPasscodeField *)v4 setNumberOfEntryFields:a3];
+    [(PSPasscodeField *)v4 setNumberOfEntryFields:fields];
     v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel_passcodeFieldTapped_];
     [(PSPasscodeField *)v4 addGestureRecognizer:v15];
   }
@@ -59,12 +59,12 @@
   return v4;
 }
 
-- (void)setNumberOfEntryFields:(unint64_t)a3
+- (void)setNumberOfEntryFields:(unint64_t)fields
 {
-  if (self->_numberOfEntryFields != a3)
+  if (self->_numberOfEntryFields != fields)
   {
-    v4 = a3;
-    self->_numberOfEntryFields = a3;
+    fieldsCopy = fields;
+    self->_numberOfEntryFields = fields;
     v6 = 416;
     [(NSMutableArray *)self->_dotFullViews removeAllObjects];
     v7 = 408;
@@ -74,49 +74,49 @@
     [(NSMutableArray *)self->_digitViews removeAllObjects];
     v29 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:28.0];
     v9 = +[PSListController appearance];
-    v28 = [v9 textColor];
+    textColor = [v9 textColor];
 
-    v10 = [(PSPasscodeField *)self dotFullImage];
-    v11 = [(PSPasscodeField *)self dotOutlineImage];
-    v12 = [(PSPasscodeField *)self dashImage];
-    if (v4)
+    dotFullImage = [(PSPasscodeField *)self dotFullImage];
+    dotOutlineImage = [(PSPasscodeField *)self dotOutlineImage];
+    dashImage = [(PSPasscodeField *)self dashImage];
+    if (fieldsCopy)
     {
       v13 = *MEMORY[0x1E695F058];
       v14 = *(MEMORY[0x1E695F058] + 8);
       v15 = *(MEMORY[0x1E695F058] + 16);
       v16 = *(MEMORY[0x1E695F058] + 24);
-      v26 = v10;
-      v27 = v11;
+      v26 = dotFullImage;
+      v27 = dotOutlineImage;
       do
       {
-        v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
+        v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:dotFullImage];
         [*(&self->super.super.super.isa + v6) addObject:v17];
         v18 = v6;
-        v19 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v11];
+        v19 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:dotOutlineImage];
         [*(&self->super.super.super.isa + v7) addObject:v19];
-        v20 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v12];
-        v21 = v12;
+        v20 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:dashImage];
+        v21 = dashImage;
         v22 = v7;
         v23 = v20;
         [*(&self->super.super.super.isa + v8) addObject:v20];
         v24 = v8;
         v25 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v13, v14, v15, v16}];
         [v25 setFont:v29];
-        [v25 setTextColor:v28];
+        [v25 setTextColor:textColor];
         [(NSMutableArray *)self->_digitViews addObject:v25];
 
         v8 = v24;
         v7 = v22;
-        v12 = v21;
+        dashImage = v21;
 
         v6 = v18;
-        v10 = v26;
-        v11 = v27;
+        dotFullImage = v26;
+        dotOutlineImage = v27;
 
-        --v4;
+        --fieldsCopy;
       }
 
-      while (v4);
+      while (fieldsCopy);
     }
 
     [(PSPasscodeField *)self sizeToFit];
@@ -126,9 +126,9 @@
 
 - (CGSize)dotFullSize
 {
-  v2 = [(NSMutableArray *)self->_dotFullViews firstObject];
-  v3 = [v2 image];
-  [v3 size];
+  firstObject = [(NSMutableArray *)self->_dotFullViews firstObject];
+  image = [firstObject image];
+  [image size];
   v5 = v4;
   v7 = v6;
 
@@ -151,9 +151,9 @@
     v2 = &OBJC_IVAR___PSPasscodeField__dashViews;
   }
 
-  v3 = [*(&self->super.super.super.isa + *v2) firstObject];
-  v4 = [v3 image];
-  [v4 size];
+  firstObject = [*(&self->super.super.super.isa + *v2) firstObject];
+  image = [firstObject image];
+  [image size];
   v6 = v5;
   v8 = v7;
 
@@ -166,27 +166,27 @@
 
 - (id)digitFont
 {
-  v2 = [(NSMutableArray *)self->_digitViews firstObject];
-  v3 = [v2 font];
+  firstObject = [(NSMutableArray *)self->_digitViews firstObject];
+  font = [firstObject font];
 
-  return v3;
+  return font;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  [(PSPasscodeField *)self dotFullSize:a3.width];
+  [(PSPasscodeField *)self dotFullSize:fits.width];
   v5 = v4;
   v7 = v6;
   [(PSPasscodeField *)self promptSize];
   v9 = v8;
   v11 = v10;
-  v12 = [(PSPasscodeField *)self digitFont];
-  v13 = v12;
-  if (v12)
+  digitFont = [(PSPasscodeField *)self digitFont];
+  v13 = digitFont;
+  if (digitFont)
   {
     v39 = *MEMORY[0x1E69DB648];
-    v40[0] = v12;
+    v40[0] = digitFont;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:&v39 count:1];
     [@"0" sizeWithAttributes:v14];
     v16 = v15;
@@ -283,13 +283,13 @@
   return result;
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_foregroundColor != v5)
+  colorCopy = color;
+  if (self->_foregroundColor != colorCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_foregroundColor, a3);
+    v14 = colorCopy;
+    objc_storeStrong(&self->_foregroundColor, color);
     v6 = GetImageTemplate(@"passcodeDot-full", self->_foregroundColor);
     v7 = GetImageTemplate(@"passcodeDot-outline", self->_foregroundColor);
     v8 = GetImageTemplate(@"passcodeDash", self->_foregroundColor);
@@ -316,11 +316,11 @@
       while (v9 < self->_numberOfEntryFields);
     }
 
-    v5 = v14;
+    colorCopy = v14;
   }
 }
 
-- (void)passcodeFieldTapped:(id)a3
+- (void)passcodeFieldTapped:(id)tapped
 {
   if ([(PSPasscodeField *)self shouldBecomeFirstResponderOnTap])
   {
@@ -329,16 +329,16 @@
   }
 }
 
-- (void)setFieldSpacing:(id)a3
+- (void)setFieldSpacing:(id)spacing
 {
-  v5 = a3;
-  if (self->_fieldSpacing != v5)
+  spacingCopy = spacing;
+  if (self->_fieldSpacing != spacingCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_fieldSpacing, a3);
+    v6 = spacingCopy;
+    objc_storeStrong(&self->_fieldSpacing, spacing);
     [(PSPasscodeField *)self sizeToFit];
     [(PSPasscodeField *)self setNeedsLayout];
-    v5 = v6;
+    spacingCopy = v6;
   }
 }
 
@@ -372,9 +372,9 @@
       [v13 setText:0];
 
       v14 = [v4 objectAtIndexedSubscript:v5];
-      v15 = [v14 superview];
+      superview = [v14 superview];
 
-      if (!v15)
+      if (!superview)
       {
         v10 = [v4 objectAtIndexedSubscript:v5];
         goto LABEL_13;
@@ -412,9 +412,9 @@ LABEL_15:
       [v17 setText:v16];
     }
 
-    v18 = [v10 superview];
+    superview2 = [v10 superview];
 
-    if (!v18)
+    if (!superview2)
     {
 LABEL_13:
       [(PSPasscodeField *)self addSubview:v10];
@@ -424,7 +424,7 @@ LABEL_13:
   }
 
 LABEL_16:
-  v19 = [(PSPasscodeField *)self digitFont];
+  digitFont = [(PSPasscodeField *)self digitFont];
   [(PSPasscodeField *)self dotFullSize];
   v49 = v21;
   v51 = v20;
@@ -432,7 +432,7 @@ LABEL_16:
   v47 = v23;
   v48 = v22;
   v52 = *MEMORY[0x1E69DB648];
-  v53[0] = v19;
+  v53[0] = digitFont;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   [@"0" sizeWithAttributes:v24];
   v45 = v26;
@@ -520,9 +520,9 @@ LABEL_16:
   }
 }
 
-- (void)_delegateEnteredPasscode:(id)a3
+- (void)_delegateEnteredPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   [(PSPasscodeField *)self forceDisplayIfNeeded];
   v5 = dispatch_time(0, 76000000);
   v7[0] = MEMORY[0x1E69E9820];
@@ -530,8 +530,8 @@ LABEL_16:
   v7[2] = __44__PSPasscodeField__delegateEnteredPasscode___block_invoke;
   v7[3] = &unk_1E71DC570;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passcodeCopy;
+  v6 = passcodeCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], v7);
 }
 
@@ -543,9 +543,9 @@ void __44__PSPasscodeField__delegateEnteredPasscode___block_invoke(uint64_t a1)
   [WeakRetained passcodeField:v2 enteredPasscode:v3];
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  [(NSMutableString *)self->_stringValue setString:a3];
+  [(NSMutableString *)self->_stringValue setString:value];
   [(PSPasscodeField *)self setNeedsLayout];
   if ([(NSMutableString *)self->_stringValue length]== self->_numberOfEntryFields)
   {
@@ -559,14 +559,14 @@ void __44__PSPasscodeField__delegateEnteredPasscode___block_invoke(uint64_t a1)
 {
   v5.receiver = self;
   v5.super_class = PSPasscodeField;
-  v2 = [(PSPasscodeField *)&v5 becomeFirstResponder];
-  if (v2)
+  becomeFirstResponder = [(PSPasscodeField *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
-    v3 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v3 setReturnKeyEnabled:0];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard setReturnKeyEnabled:0];
   }
 
-  return v2;
+  return becomeFirstResponder;
 }
 
 - (int64_t)keyboardType
@@ -585,9 +585,9 @@ void __44__PSPasscodeField__delegateEnteredPasscode___block_invoke(uint64_t a1)
 - (int64_t)keyboardAppearance
 {
   v3 = +[PSListController appearance];
-  v4 = [v3 usesDarkTheme];
+  usesDarkTheme = [v3 usesDarkTheme];
 
-  if (v4)
+  if (usesDarkTheme)
   {
     return 1;
   }
@@ -598,10 +598,10 @@ void __44__PSPasscodeField__delegateEnteredPasscode___block_invoke(uint64_t a1)
   }
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v9 = a3;
-  if (-[PSPasscodeField isEnabled](self, "isEnabled") && -[NSMutableString length](self->_stringValue, "length") != self->_numberOfEntryFields && ([v9 isEqualToString:@"\n"] & 1) == 0)
+  textCopy = text;
+  if (-[PSPasscodeField isEnabled](self, "isEnabled") && -[NSMutableString length](self->_stringValue, "length") != self->_numberOfEntryFields && ([textCopy isEqualToString:@"\n"] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v5 = objc_opt_respondsToSelector();
@@ -609,20 +609,20 @@ void __44__PSPasscodeField__delegateEnteredPasscode___block_invoke(uint64_t a1)
     if (v5)
     {
       v6 = objc_loadWeakRetained(&self->_delegate);
-      v7 = [v6 passcodeField:self shouldInsertText:v9];
+      v7 = [v6 passcodeField:self shouldInsertText:textCopy];
 
       v8 = v7;
     }
 
     else
     {
-      v8 = v9;
+      v8 = textCopy;
     }
 
-    v9 = v8;
+    textCopy = v8;
     if ([v8 length])
     {
-      [(NSMutableString *)self->_stringValue appendString:v9];
+      [(NSMutableString *)self->_stringValue appendString:textCopy];
       [(PSPasscodeField *)self setNeedsLayout];
       if ([(NSMutableString *)self->_stringValue length]== self->_numberOfEntryFields)
       {

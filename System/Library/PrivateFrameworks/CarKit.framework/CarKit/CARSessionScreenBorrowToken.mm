@@ -1,6 +1,6 @@
 @interface CARSessionScreenBorrowToken
 - (CARSession)session;
-- (CARSessionScreenBorrowToken)initWithSession:(id)a3 client:(id)a4 reason:(id)a5;
+- (CARSessionScreenBorrowToken)initWithSession:(id)session client:(id)client reason:(id)reason;
 - (void)dealloc;
 - (void)unborrowToken;
 @end
@@ -17,18 +17,18 @@
 
 - (void)unborrowToken
 {
-  v3 = [(CARSessionScreenBorrowToken *)self client];
-  v4 = [(CARSessionScreenBorrowToken *)self reason];
-  v5 = [(CARSessionScreenBorrowToken *)self session];
+  client = [(CARSessionScreenBorrowToken *)self client];
+  reason = [(CARSessionScreenBorrowToken *)self reason];
+  session = [(CARSessionScreenBorrowToken *)self session];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__CARSessionScreenBorrowToken_unborrowToken__block_invoke;
   v8[3] = &unk_1E82FD850;
-  v9 = v3;
-  v10 = v4;
-  v6 = v4;
-  v7 = v3;
-  [v5 _performExtendedEndpointAction:v8];
+  v9 = client;
+  v10 = reason;
+  v6 = reason;
+  v7 = client;
+  [session _performExtendedEndpointAction:v8];
 }
 
 - (CARSession)session
@@ -55,27 +55,27 @@ uint64_t __44__CARSessionScreenBorrowToken_unborrowToken__block_invoke(uint64_t 
   return result;
 }
 
-- (CARSessionScreenBorrowToken)initWithSession:(id)a3 client:(id)a4 reason:(id)a5
+- (CARSessionScreenBorrowToken)initWithSession:(id)session client:(id)client reason:(id)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  clientCopy = client;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = CARSessionScreenBorrowToken;
   v11 = [(CARSessionScreenBorrowToken *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_session, v8);
-    objc_storeStrong(&v12->_client, a4);
-    objc_storeStrong(&v12->_reason, a5);
+    objc_storeWeak(&v11->_session, sessionCopy);
+    objc_storeStrong(&v12->_client, client);
+    objc_storeStrong(&v12->_reason, reason);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __61__CARSessionScreenBorrowToken_initWithSession_client_reason___block_invoke;
     v14[3] = &unk_1E82FD850;
-    v15 = v9;
-    v16 = v10;
-    [v8 _performExtendedEndpointAction:v14];
+    v15 = clientCopy;
+    v16 = reasonCopy;
+    [sessionCopy _performExtendedEndpointAction:v14];
   }
 
   return v12;

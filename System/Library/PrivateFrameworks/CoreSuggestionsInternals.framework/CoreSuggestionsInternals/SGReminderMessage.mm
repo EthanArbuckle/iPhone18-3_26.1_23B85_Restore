@@ -1,45 +1,45 @@
 @interface SGReminderMessage
-+ (BOOL)enrichedTaggedCharacterRangesContainsProfanity:(id)a3;
-+ (BOOL)excludedContent:(id)a3;
-+ (BOOL)isConfirmationOptionalForContent:(id)a3;
-+ (BOOL)shouldAddTitlePrefixForContent:(id)a3;
-+ (BOOL)tokensMatchedInContent:(id)a3 content:(id)a4;
-+ (BOOL)validActionVerbIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4;
-+ (BOOL)validModelOutput:(id)a3 error:(id *)a4;
-+ (BOOL)validObjectCoreIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4;
++ (BOOL)enrichedTaggedCharacterRangesContainsProfanity:(id)profanity;
++ (BOOL)excludedContent:(id)content;
++ (BOOL)isConfirmationOptionalForContent:(id)content;
++ (BOOL)shouldAddTitlePrefixForContent:(id)content;
++ (BOOL)tokensMatchedInContent:(id)content content:(id)a4;
++ (BOOL)validActionVerbIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges;
++ (BOOL)validModelOutput:(id)output error:(id *)error;
++ (BOOL)validObjectCoreIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges;
 + (id)confirmationOptionalTokens;
-+ (id)detectedTitleInModelOutput:(id)a3 enrichedTaggedCharacterRanges:(id)a4 textContent:(id)a5 language:(id)a6;
++ (id)detectedTitleInModelOutput:(id)output enrichedTaggedCharacterRanges:(id)ranges textContent:(id)content language:(id)language;
 + (id)excludeList;
-+ (id)frenchPrependForEnrichedTaggedCharacterRanges:(id)a3 actionVerbIndexRange:(_NSRange)a4;
++ (id)frenchPrependForEnrichedTaggedCharacterRanges:(id)ranges actionVerbIndexRange:(_NSRange)range;
 + (id)posTaggerNouns;
-+ (id)regexFromJoinedArray:(id)a3 wordBoundary:(id)a4;
-+ (id)searchTokensForReminderTitle:(id)a3;
++ (id)regexFromJoinedArray:(id)array wordBoundary:(id)boundary;
++ (id)searchTokensForReminderTitle:(id)title;
 + (id)titlePrefixTokens;
-+ (id)titlePrependForActionVerbIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4 language:(id)a5 content:(id)a6;
++ (id)titlePrependForActionVerbIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges language:(id)language content:(id)content;
 + (id)triggerOptionalTokens;
 - (BOOL)hasTrigger;
 - (BOOL)isConfirmation;
 - (BOOL)isProposal;
 - (BOOL)isRejection;
 - (BOOL)isTriggerOptional;
-- (SGReminderMessage)initWithMessage:(id)a3 entity:(id)a4 enrichedTaggedCharacterRanges:(id)a5 modelOutput:(id)a6;
-- (SGReminderMessage)initWithMessage:(id)a3 plainTextDetectedData:(id)a4 enrichedTaggedCharacterRanges:(id)a5 modelOutput:(id)a6;
-- (id)_labelTokenIndexesForOutputName:(id)a3 label:(id)a4;
+- (SGReminderMessage)initWithMessage:(id)message entity:(id)entity enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output;
+- (SGReminderMessage)initWithMessage:(id)message plainTextDetectedData:(id)data enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output;
+- (id)_labelTokenIndexesForOutputName:(id)name label:(id)label;
 - (id)detectedDueDateComponents;
-- (id)detectedTitleForLanguage:(id)a3;
+- (id)detectedTitleForLanguage:(id)language;
 - (id)dueDateDataDetectorMatches;
 - (id)dueLocation;
 @end
 
 @implementation SGReminderMessage
 
-- (id)_labelTokenIndexesForOutputName:(id)a3 label:(id)a4
+- (id)_labelTokenIndexesForOutputName:(id)name label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
+  labelCopy = label;
+  nameCopy = name;
   v8 = objc_opt_class();
-  v9 = [(SGExtractionDocument *)self modelOutput];
-  v10 = [v8 labelTokenIndexesForOutputName:v7 label:v6 modelOutput:v9];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v10 = [v8 labelTokenIndexesForOutputName:nameCopy label:labelCopy modelOutput:modelOutput];
 
   return v10;
 }
@@ -51,8 +51,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SGExtractionDocument *)self modelOutput];
-  v3 = [v2 objectForKeyedSubscript:@"trigger"];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v3 = [modelOutput objectForKeyedSubscript:@"trigger"];
 
   v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
@@ -94,16 +94,16 @@ LABEL_11:
 
 - (id)dueLocation
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
 
-  if (!v3)
+  if (!modelOutput)
   {
     v21 = 0;
     goto LABEL_29;
   }
 
-  v4 = [(SGExtractionDocument *)self modelOutput];
-  v5 = [v4 objectForKeyedSubscript:@"trigger"];
+  modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+  v5 = [modelOutput2 objectForKeyedSubscript:@"trigger"];
 
   v6 = objc_opt_new();
   if (![v5 count])
@@ -174,13 +174,13 @@ LABEL_23:
   v11 = objc_autoreleasePoolPush();
   v12 = [objc_opt_class() firstRangeInIndexSet:v6];
   v14 = v13;
-  v15 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-  if (v15)
+  enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+  if (enrichedTaggedCharacterRanges)
   {
-    v16 = [objc_opt_class() textRangeForIndexRange:v12 inTaggedCharacterRanges:{v14, v15}];
+    v16 = [objc_opt_class() textRangeForIndexRange:v12 inTaggedCharacterRanges:{v14, enrichedTaggedCharacterRanges}];
     v18 = v17;
-    v19 = [(SGMessage *)self->_message textContent];
-    v20 = [v19 substringWithRange:{v16, v18}];
+    textContent = [(SGMessage *)self->_message textContent];
+    v20 = [textContent substringWithRange:{v16, v18}];
   }
 
   else
@@ -203,14 +203,14 @@ LABEL_29:
 - (id)detectedDueDateComponents
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [(SGReminderMessage *)self dueDateDataDetectorMatches];
+  dueDateDataDetectorMatches = [(SGReminderMessage *)self dueDateDataDetectorMatches];
   v3 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v2 first];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  first = [dueDateDataDetectorMatches first];
+  v5 = [first countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -221,13 +221,13 @@ LABEL_29:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(first);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = objc_opt_class();
-        v11 = [v2 second];
-        v12 = [v10 dateComponentsFromDataDetectorMatch:v9 inferDates:objc_msgSend(v11 approximateTime:"BOOLValue") ^ 1 partialDate:1 useEndForDurations:{1, 0}];
+        second = [dueDateDataDetectorMatches second];
+        v12 = [v10 dateComponentsFromDataDetectorMatch:v9 inferDates:objc_msgSend(second approximateTime:"BOOLValue") ^ 1 partialDate:1 useEndForDurations:{1, 0}];
 
         if (v12)
         {
@@ -235,7 +235,7 @@ LABEL_29:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [first countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -248,9 +248,9 @@ LABEL_29:
 
 - (id)dueDateDataDetectorMatches
 {
-  v3 = [(SGExtractionDocument *)self modelOutput];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
 
-  if (v3)
+  if (modelOutput)
   {
     v4 = [(SGReminderMessage *)self _labelTokenIndexesForOutputName:@"trigger" label:@"DUE_TIME_TRIGGER__DATETIME"];
     v5 = [(SGExtractionDocument *)self dataDetectorMatchesForTokenIndexes:v4 dataDetectorMatches:self->_plainTextDetectedData allowDatesInPast:1 allowTimeOffset:1];
@@ -265,14 +265,14 @@ LABEL_29:
   return v5;
 }
 
-- (id)detectedTitleForLanguage:(id)a3
+- (id)detectedTitleForLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v5 = objc_opt_class();
-  v6 = [(SGExtractionDocument *)self modelOutput];
-  v7 = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
-  v8 = [(SGMessage *)self->_message textContent];
-  v9 = [v5 detectedTitleInModelOutput:v6 enrichedTaggedCharacterRanges:v7 textContent:v8 language:v4];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  enrichedTaggedCharacterRanges = [(SGExtractionDocument *)self enrichedTaggedCharacterRanges];
+  textContent = [(SGMessage *)self->_message textContent];
+  v9 = [v5 detectedTitleInModelOutput:modelOutput enrichedTaggedCharacterRanges:enrichedTaggedCharacterRanges textContent:textContent language:languageCopy];
 
   if (v9 && ([objc_opt_class() excludedContent:v9] & 1) != 0)
   {
@@ -295,10 +295,10 @@ LABEL_29:
   }
 
   v4 = objc_opt_class();
-  v5 = [objc_opt_class() triggerOptionalTokens];
-  v6 = [(SGReminderMessage *)self message];
-  v7 = [v6 textContent];
-  LOBYTE(v4) = [v4 tokensMatchedInContent:v5 content:v7];
+  triggerOptionalTokens = [objc_opt_class() triggerOptionalTokens];
+  message = [(SGReminderMessage *)self message];
+  textContent = [message textContent];
+  LOBYTE(v4) = [v4 tokensMatchedInContent:triggerOptionalTokens content:textContent];
 
   return v4;
 }
@@ -311,23 +311,23 @@ LABEL_29:
     goto LABEL_17;
   }
 
-  v3 = [(SGExtractionDocument *)self modelOutput];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
 
-  if (!v3)
+  if (!modelOutput)
   {
     goto LABEL_17;
   }
 
-  v4 = [(SGExtractionDocument *)self modelOutput];
-  v5 = [v4 objectForKeyedSubscript:@"polarity"];
+  modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+  v5 = [modelOutput2 objectForKeyedSubscript:@"polarity"];
   v6 = [v5 count];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(SGExtractionDocument *)self modelOutput];
-  v8 = [v7 objectForKeyedSubscript:@"polarity"];
+  modelOutput3 = [(SGExtractionDocument *)self modelOutput];
+  v8 = [modelOutput3 objectForKeyedSubscript:@"polarity"];
 
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v9)
@@ -382,23 +382,23 @@ LABEL_18:
 - (BOOL)isRejection
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(SGMessage *)self->_message isSent];
-  if (v3)
+  isSent = [(SGMessage *)self->_message isSent];
+  if (isSent)
   {
-    v4 = [(SGExtractionDocument *)self modelOutput];
+    modelOutput = [(SGExtractionDocument *)self modelOutput];
 
-    if (v4)
+    if (modelOutput)
     {
-      v5 = [(SGExtractionDocument *)self modelOutput];
-      v6 = [v5 objectForKeyedSubscript:@"polarity"];
+      modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+      v6 = [modelOutput2 objectForKeyedSubscript:@"polarity"];
       v7 = [v6 count];
 
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = [(SGExtractionDocument *)self modelOutput];
-      v9 = [v8 objectForKeyedSubscript:@"polarity"];
+      modelOutput3 = [(SGExtractionDocument *)self modelOutput];
+      v9 = [modelOutput3 objectForKeyedSubscript:@"polarity"];
 
       v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
@@ -460,23 +460,23 @@ LABEL_18:
 
       if (v13 > 0.0)
       {
-        LOBYTE(v3) = v17;
+        LOBYTE(isSent) = v17;
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(isSent) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isSent) = 0;
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isSent;
 }
 
 - (BOOL)isConfirmation
@@ -488,16 +488,16 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v4 = [(SGExtractionDocument *)self modelOutput];
-  v5 = [v4 objectForKeyedSubscript:@"polarity"];
+  modelOutput = [(SGExtractionDocument *)self modelOutput];
+  v5 = [modelOutput objectForKeyedSubscript:@"polarity"];
   v24 = [v5 count];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(SGExtractionDocument *)self modelOutput];
-  v7 = [v6 objectForKeyedSubscript:@"polarity"];
+  modelOutput2 = [(SGExtractionDocument *)self modelOutput];
+  v7 = [modelOutput2 objectForKeyedSubscript:@"polarity"];
 
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
@@ -544,20 +544,20 @@ LABEL_20:
   }
 
   v16 = +[SGReminderExtractionModel sharedInstance];
-  v17 = [v16 reminderOverrides];
+  reminderOverrides = [v16 reminderOverrides];
 
-  if (!v17)
+  if (!reminderOverrides)
   {
     goto LABEL_24;
   }
 
-  v18 = [(SGMessage *)self->_message textContent];
+  textContent = [(SGMessage *)self->_message textContent];
   CFCharacterSetGetPredefined(kCFCharacterSetPunctuation);
   v19 = _PASRemoveCharacterSet();
-  v20 = [v19 localizedLowercaseString];
+  localizedLowercaseString = [v19 localizedLowercaseString];
 
-  v21 = [v17 objectForKeyedSubscript:@"confirmation"];
-  LOBYTE(v19) = [v21 containsObject:v20];
+  v21 = [reminderOverrides objectForKeyedSubscript:@"confirmation"];
+  LOBYTE(v19) = [v21 containsObject:localizedLowercaseString];
 
   if (v19)
   {
@@ -575,53 +575,53 @@ LABEL_26:
   return v15;
 }
 
-- (SGReminderMessage)initWithMessage:(id)a3 plainTextDetectedData:(id)a4 enrichedTaggedCharacterRanges:(id)a5 modelOutput:(id)a6
+- (SGReminderMessage)initWithMessage:(id)message plainTextDetectedData:(id)data enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output
 {
-  v11 = a3;
-  v12 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = SGReminderMessage;
-  v13 = [(SGExtractionDocument *)&v16 initWithEnrichedTaggedCharacterRanges:a5 modelOutput:a6];
+  v13 = [(SGExtractionDocument *)&v16 initWithEnrichedTaggedCharacterRanges:ranges modelOutput:output];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_message, a3);
-    objc_storeStrong(&v14->_plainTextDetectedData, a4);
+    objc_storeStrong(&v13->_message, message);
+    objc_storeStrong(&v14->_plainTextDetectedData, data);
   }
 
   return v14;
 }
 
-- (SGReminderMessage)initWithMessage:(id)a3 entity:(id)a4 enrichedTaggedCharacterRanges:(id)a5 modelOutput:(id)a6
+- (SGReminderMessage)initWithMessage:(id)message entity:(id)entity enrichedTaggedCharacterRanges:(id)ranges modelOutput:(id)output
 {
-  v11 = a3;
-  v12 = a4;
+  messageCopy = message;
+  entityCopy = entity;
   v18.receiver = self;
   v18.super_class = SGReminderMessage;
-  v13 = [(SGExtractionDocument *)&v18 initWithEnrichedTaggedCharacterRanges:a5 modelOutput:a6];
+  v13 = [(SGExtractionDocument *)&v18 initWithEnrichedTaggedCharacterRanges:ranges modelOutput:output];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_message, a3);
-    objc_storeStrong(&v14->_entity, a4);
-    v15 = [v11 plainTextDetectedData];
+    objc_storeStrong(&v13->_message, message);
+    objc_storeStrong(&v14->_entity, entity);
+    plainTextDetectedData = [messageCopy plainTextDetectedData];
     plainTextDetectedData = v14->_plainTextDetectedData;
-    v14->_plainTextDetectedData = v15;
+    v14->_plainTextDetectedData = plainTextDetectedData;
   }
 
   return v14;
 }
 
-+ (id)searchTokensForReminderTitle:(id)a3
++ (id)searchTokensForReminderTitle:(id)title
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titleCopy = title;
   v5 = +[SGPOSTagger sharedInstance];
-  v26 = v4;
-  v6 = [v5 tokenizeTextContent:v4 languageHint:0];
+  v26 = titleCopy;
+  v6 = [v5 tokenizeTextContent:titleCopy languageHint:0];
 
   v31 = objc_opt_new();
-  v7 = [a1 posTaggerNouns];
+  posTaggerNouns = [self posTaggerNouns];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -652,8 +652,8 @@ LABEL_26:
           v35 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v13 = [v12 tags];
-          v14 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
+          tags = [v12 tags];
+          v14 = [tags countByEnumeratingWithState:&v32 objects:v40 count:16];
           if (v14)
           {
             v15 = v14;
@@ -664,23 +664,23 @@ LABEL_26:
               {
                 if (*v33 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(tags);
                 }
 
                 v18 = *(*(&v32 + 1) + 8 * i);
                 v19 = objc_alloc(MEMORY[0x277CCACA8]);
-                v20 = [v12 annotationTypeUniqueIdentifier];
-                v21 = [v19 initWithFormat:@"%@_%@", v20, v18];
-                LODWORD(v18) = [v7 containsObject:v21];
+                annotationTypeUniqueIdentifier = [v12 annotationTypeUniqueIdentifier];
+                v21 = [v19 initWithFormat:@"%@_%@", annotationTypeUniqueIdentifier, v18];
+                LODWORD(v18) = [posTaggerNouns containsObject:v21];
 
                 if (v18)
                 {
-                  v22 = [v12 text];
-                  [v31 addObject:v22];
+                  text = [v12 text];
+                  [v31 addObject:text];
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v32 objects:v40 count:16];
+              v15 = [tags countByEnumeratingWithState:&v32 objects:v40 count:16];
             }
 
             while (v15);
@@ -701,22 +701,22 @@ LABEL_26:
     while (v9);
   }
 
-  v23 = [v31 allObjects];
+  allObjects = [v31 allObjects];
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v23;
+  return allObjects;
 }
 
-+ (BOOL)excludedContent:(id)a3
++ (BOOL)excludedContent:(id)content
 {
-  v4 = a3;
-  if ([v4 length])
+  contentCopy = content;
+  if ([contentCopy length])
   {
-    v5 = [a1 excludeList];
-    v6 = [a1 regexFromJoinedArray:v5 wordBoundary:0];
+    excludeList = [self excludeList];
+    v6 = [self regexFromJoinedArray:excludeList wordBoundary:0];
 
-    if (!v6 || (v8 = 1, [v6 rangeOfFirstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}] == 0x7FFFFFFFFFFFFFFFLL) && !v7)
+    if (!v6 || (v8 = 1, [v6 rangeOfFirstMatchInString:contentCopy options:0 range:{0, objc_msgSend(contentCopy, "length")}] == 0x7FFFFFFFFFFFFFFFLL) && !v7)
     {
       v8 = 0;
     }
@@ -730,14 +730,14 @@ LABEL_26:
   return v8;
 }
 
-+ (id)regexFromJoinedArray:(id)a3 wordBoundary:(id)a4
++ (id)regexFromJoinedArray:(id)array wordBoundary:(id)boundary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  arrayCopy = array;
+  boundaryCopy = boundary;
+  v7 = boundaryCopy;
+  if (boundaryCopy)
   {
-    v8 = v6;
+    v8 = boundaryCopy;
   }
 
   else
@@ -746,18 +746,18 @@ LABEL_26:
   }
 
   v9 = v8;
-  if ([v5 count])
+  if ([arrayCopy count])
   {
     context = objc_autoreleasePoolPush();
     v10 = objc_opt_new();
     objc_msgSend(v10, "appendString:", @"(?:");
-    if ([v5 count])
+    if ([arrayCopy count])
     {
       v11 = 0;
       do
       {
         v12 = objc_autoreleasePoolPush();
-        v13 = [v5 objectAtIndexedSubscript:v11];
+        v13 = [arrayCopy objectAtIndexedSubscript:v11];
         v14 = v13;
         if (v11)
         {
@@ -775,7 +775,7 @@ LABEL_26:
         ++v11;
       }
 
-      while ([v5 count] > v11);
+      while ([arrayCopy count] > v11);
     }
 
     [v10 appendString:@""]);
@@ -795,11 +795,11 @@ LABEL_26:
 + (id)titlePrefixTokens
 {
   v2 = +[SGReminderExtractionModel sharedInstance];
-  v3 = [v2 reminderOverrides];
+  reminderOverrides = [v2 reminderOverrides];
 
-  if (v3)
+  if (reminderOverrides)
   {
-    v4 = [v3 objectForKeyedSubscript:@"titlePrefix"];
+    v4 = [reminderOverrides objectForKeyedSubscript:@"titlePrefix"];
   }
 
   else
@@ -813,11 +813,11 @@ LABEL_26:
 + (id)excludeList
 {
   v2 = +[SGReminderExtractionModel sharedInstance];
-  v3 = [v2 reminderOverrides];
+  reminderOverrides = [v2 reminderOverrides];
 
-  if (v3)
+  if (reminderOverrides)
   {
-    v4 = [v3 objectForKeyedSubscript:@"excludeList"];
+    v4 = [reminderOverrides objectForKeyedSubscript:@"excludeList"];
   }
 
   else
@@ -831,11 +831,11 @@ LABEL_26:
 + (id)confirmationOptionalTokens
 {
   v2 = +[SGReminderExtractionModel sharedInstance];
-  v3 = [v2 reminderOverrides];
+  reminderOverrides = [v2 reminderOverrides];
 
-  if (v3)
+  if (reminderOverrides)
   {
-    v4 = [v3 objectForKeyedSubscript:@"confirmationOptional"];
+    v4 = [reminderOverrides objectForKeyedSubscript:@"confirmationOptional"];
   }
 
   else
@@ -849,11 +849,11 @@ LABEL_26:
 + (id)triggerOptionalTokens
 {
   v2 = +[SGReminderExtractionModel sharedInstance];
-  v3 = [v2 reminderOverrides];
+  reminderOverrides = [v2 reminderOverrides];
 
-  if (v3)
+  if (reminderOverrides)
   {
-    v4 = [v3 objectForKeyedSubscript:@"triggerOptional"];
+    v4 = [reminderOverrides objectForKeyedSubscript:@"triggerOptional"];
   }
 
   else
@@ -864,12 +864,12 @@ LABEL_26:
   return v4;
 }
 
-+ (BOOL)enrichedTaggedCharacterRangesContainsProfanity:(id)a3
++ (BOOL)enrichedTaggedCharacterRangesContainsProfanity:(id)profanity
 {
   v3 = sgMapAndFilter();
-  v4 = [MEMORY[0x277CBEAF8] currentLocale];
-  v5 = [v4 localeIdentifier];
-  v6 = [SGLexicon profanityInTokens:v3 forLocaleIdentifier:v5];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v6 = [SGLexicon profanityInTokens:v3 forLocaleIdentifier:localeIdentifier];
 
   return v6;
 }
@@ -925,17 +925,17 @@ id __68__SGReminderMessage_enrichedTaggedCharacterRangesContainsProfanity___bloc
   return v6;
 }
 
-+ (BOOL)validModelOutput:(id)a3 error:(id *)a4
++ (BOOL)validModelOutput:(id)output error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = a3;
+  obj = output;
   v43 = [obj countByEnumeratingWithState:&v59 objects:v67 count:16];
   v4 = 0;
-  v5 = 0;
+  hasTrigger = 0;
   if (v43)
   {
     v50 = 0;
@@ -954,9 +954,9 @@ id __68__SGReminderMessage_enrichedTaggedCharacterRangesContainsProfanity___bloc
         }
 
         v10 = *(*(&v59 + 1) + 8 * v9);
-        v11 = [v10 modelOutput];
+        modelOutput = [v10 modelOutput];
 
-        if (!v11)
+        if (!modelOutput)
         {
           v27 = obj;
           goto LABEL_47;
@@ -975,14 +975,14 @@ id __68__SGReminderMessage_enrichedTaggedCharacterRangesContainsProfanity___bloc
           v58 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v12 = [v10 modelOutput];
-          v13 = [v12 objectForKeyedSubscript:@"polarity"];
+          modelOutput2 = [v10 modelOutput];
+          v13 = [modelOutput2 objectForKeyedSubscript:@"polarity"];
 
           v14 = [v13 countByEnumeratingWithState:&v55 objects:v66 count:16];
           if (v14)
           {
             v15 = v14;
-            v16 = v5;
+            v16 = hasTrigger;
             v17 = *v56;
             while (2)
             {
@@ -1011,7 +1011,7 @@ id __68__SGReminderMessage_enrichedTaggedCharacterRangesContainsProfanity___bloc
 
             v7 = 0;
 LABEL_19:
-            LOBYTE(v5) = v16;
+            LOBYTE(hasTrigger) = v16;
           }
 
           else
@@ -1026,17 +1026,17 @@ LABEL_19:
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v19 = [v10 modelOutput];
-        v20 = [v19 objectForKeyedSubscript:@"title"];
+        modelOutput3 = [v10 modelOutput];
+        v20 = [modelOutput3 objectForKeyedSubscript:@"title"];
 
         v21 = [v20 countByEnumeratingWithState:&v51 objects:v65 count:16];
         if (v21)
         {
           v22 = v21;
           v44 = v7;
-          v45 = v5;
+          v45 = hasTrigger;
           v46 = v8;
-          LODWORD(v5) = 0;
+          LODWORD(hasTrigger) = 0;
           v23 = *v52;
           do
           {
@@ -1055,7 +1055,7 @@ LABEL_19:
 
               else if ([v25 isEqualToString:@"EXTRACTION__REMINDER_TITLE_ACTION_VERB"])
               {
-                LODWORD(v5) = v5 + 1;
+                LODWORD(hasTrigger) = hasTrigger + 1;
                 v50 = 1;
               }
 
@@ -1070,8 +1070,8 @@ LABEL_19:
 
           while (v22);
 
-          v26 = v5 < 2;
-          LOBYTE(v5) = v45;
+          v26 = hasTrigger < 2;
+          LOBYTE(hasTrigger) = v45;
           v8 = v26 & v46;
           v7 = v44;
         }
@@ -1080,14 +1080,14 @@ LABEL_19:
         {
         }
 
-        if (v5)
+        if (hasTrigger)
         {
-          v5 = 1;
+          hasTrigger = 1;
         }
 
         else
         {
-          v5 = [v48 hasTrigger];
+          hasTrigger = [v48 hasTrigger];
         }
 
         v9 = v47 + 1;
@@ -1112,8 +1112,8 @@ LABEL_19:
     LOBYTE(v8) = 1;
   }
 
-  v28 = v7 & v4 & v5 & v8 & v50 & v6;
-  if (a4 && ((v7 & v4 & v5 & v8 & v50) & v6 & 1) == 0)
+  v28 = v7 & v4 & hasTrigger & v8 & v50 & v6;
+  if (error && ((v7 & v4 & hasTrigger & v8 & v50) & v6 & 1) == 0)
   {
     v49 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277D02208];
@@ -1122,7 +1122,7 @@ LABEL_19:
     v64[0] = v27;
     v63[1] = @"hasTitle";
     v30 = [MEMORY[0x277CCABB0] numberWithBool:v4 & 1];
-    v31 = v5;
+    v31 = hasTrigger;
     v32 = v30;
     v64[1] = v30;
     v63[2] = @"hasTrigger";
@@ -1138,7 +1138,7 @@ LABEL_19:
     v36 = [MEMORY[0x277CCABB0] numberWithBool:v6 & 1];
     v64[5] = v36;
     v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v64 forKeys:v63 count:6];
-    *a4 = [v49 errorWithDomain:v29 code:9 userInfo:v37];
+    *error = [v49 errorWithDomain:v29 code:9 userInfo:v37];
 
 LABEL_47:
     v28 = 0;
@@ -1157,13 +1157,13 @@ LABEL_47:
   return v3;
 }
 
-+ (BOOL)validObjectCoreIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4
++ (BOOL)validObjectCoreIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a1 posTaggerNouns];
+  rangesCopy = ranges;
+  posTaggerNouns = [self posTaggerNouns];
   v9 = location + length;
   if (location >= location + length)
   {
@@ -1174,13 +1174,13 @@ LABEL_47:
   {
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:location];
+      v10 = [rangesCopy objectAtIndexedSubscript:location];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [v10 tags];
-      v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      tags = [v10 tags];
+      v12 = [tags countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v12)
       {
         v13 = *v18;
@@ -1190,17 +1190,17 @@ LABEL_47:
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(tags);
             }
 
-            if ([v8 containsObject:*(*(&v17 + 1) + 8 * i)])
+            if ([posTaggerNouns containsObject:*(*(&v17 + 1) + 8 * i)])
             {
               LOBYTE(v12) = 1;
               goto LABEL_12;
             }
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v12 = [tags countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v12)
           {
             continue;
@@ -1222,12 +1222,12 @@ LABEL_12:
   return v12;
 }
 
-+ (BOOL)validActionVerbIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4
++ (BOOL)validActionVerbIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v34 = *MEMORY[0x277D85DE8];
-  v25 = a4;
+  rangesCopy = ranges;
   v6 = objc_autoreleasePoolPush();
   v7 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{@"I_VB", @"I_VBP", @"I_VBN", @"I_VBG", @"I_Verb", 0}];
   objc_autoreleasePoolPop(v6);
@@ -1237,13 +1237,13 @@ LABEL_12:
     v23 = 0;
     while (1)
     {
-      v8 = [v25 objectAtIndexedSubscript:location];
+      v8 = [rangesCopy objectAtIndexedSubscript:location];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v9 = [v8 tags];
-      v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      tags = [v8 tags];
+      v10 = [tags countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (!v10)
       {
         break;
@@ -1262,7 +1262,7 @@ LABEL_12:
         {
           if (*v30 != v15)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(tags);
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
@@ -1282,7 +1282,7 @@ LABEL_12:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v11 = [tags countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v11);
@@ -1328,16 +1328,16 @@ LABEL_31:
   return v19;
 }
 
-+ (id)frenchPrependForEnrichedTaggedCharacterRanges:(id)a3 actionVerbIndexRange:(_NSRange)a4
++ (id)frenchPrependForEnrichedTaggedCharacterRanges:(id)ranges actionVerbIndexRange:(_NSRange)range
 {
-  location = a4.location;
-  v5 = a3;
-  v6 = v5;
+  location = range.location;
+  rangesCopy = ranges;
+  v6 = rangesCopy;
   if (location >= 2)
   {
-    v7 = [v5 objectAtIndexedSubscript:location - 1];
-    v8 = [v7 tags];
-    if (![v8 containsObject:@"I_PRP"])
+    v7 = [rangesCopy objectAtIndexedSubscript:location - 1];
+    tags = [v7 tags];
+    if (![tags containsObject:@"I_PRP"])
     {
       v16 = 0;
 LABEL_11:
@@ -1346,23 +1346,23 @@ LABEL_11:
     }
 
     v9 = [v6 objectAtIndexedSubscript:location - 2];
-    v10 = [v9 tags];
-    if ([v10 containsObject:@"I_PRP"])
+    tags2 = [v9 tags];
+    if ([tags2 containsObject:@"I_PRP"])
     {
       goto LABEL_6;
     }
 
     v11 = [v6 objectAtIndexedSubscript:location - 2];
-    v12 = [v11 tags];
-    if ([v12 containsObject:@"L_de"])
+    tags3 = [v11 tags];
+    if ([tags3 containsObject:@"L_de"])
     {
 
 LABEL_6:
 LABEL_7:
       v7 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"aeiouyhé"];
-      v8 = [v6 objectAtIndexedSubscript:location];
-      v13 = [v8 text];
-      v14 = [v7 characterIsMember:{objc_msgSend(v13, "characterAtIndex:", 0)}];
+      tags = [v6 objectAtIndexedSubscript:location];
+      text = [tags text];
+      v14 = [v7 characterIsMember:{objc_msgSend(text, "characterAtIndex:", 0)}];
       v15 = @"se ";
       if (v14)
       {
@@ -1375,8 +1375,8 @@ LABEL_7:
     }
 
     v17 = [v6 objectAtIndexedSubscript:location - 2];
-    v18 = [v17 text];
-    v20 = [v18 isEqualToString:@"à"];
+    text2 = [v17 text];
+    v20 = [text2 isEqualToString:@"à"];
 
     if (v20)
     {
@@ -1390,16 +1390,16 @@ LABEL_14:
   return v16;
 }
 
-+ (id)titlePrependForActionVerbIndexRange:(_NSRange)a3 enrichedTaggedCharacterRanges:(id)a4 language:(id)a5 content:(id)a6
++ (id)titlePrependForActionVerbIndexRange:(_NSRange)range enrichedTaggedCharacterRanges:(id)ranges language:(id)language content:(id)content
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12 && [v12 isEqualToString:@"fr"] && objc_msgSend(a1, "shouldAddTitlePrefixForContent:", v13))
+  length = range.length;
+  location = range.location;
+  rangesCopy = ranges;
+  languageCopy = language;
+  contentCopy = content;
+  if (languageCopy && [languageCopy isEqualToString:@"fr"] && objc_msgSend(self, "shouldAddTitlePrefixForContent:", contentCopy))
   {
-    v14 = [a1 frenchPrependForEnrichedTaggedCharacterRanges:v11 actionVerbIndexRange:{location, length}];
+    v14 = [self frenchPrependForEnrichedTaggedCharacterRanges:rangesCopy actionVerbIndexRange:{location, length}];
   }
 
   else
@@ -1410,23 +1410,23 @@ LABEL_14:
   return v14;
 }
 
-+ (id)detectedTitleInModelOutput:(id)a3 enrichedTaggedCharacterRanges:(id)a4 textContent:(id)a5 language:(id)a6
++ (id)detectedTitleInModelOutput:(id)output enrichedTaggedCharacterRanges:(id)ranges textContent:(id)content language:(id)language
 {
   v78 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  outputCopy = output;
+  rangesCopy = ranges;
+  contentCopy = content;
+  languageCopy = language;
   v14 = 0;
-  if (v10 && v11)
+  if (outputCopy && rangesCopy)
   {
-    if ([a1 enrichedTaggedCharacterRangesContainsProfanity:v11])
+    if ([self enrichedTaggedCharacterRangesContainsProfanity:rangesCopy])
     {
       v14 = 0;
       goto LABEL_48;
     }
 
-    v59 = [a1 labelTokenIndexesForOutputName:@"title" label:@"EXTRACTION__REMINDER_TITLE_ACTION_VERB" modelOutput:v10];
+    v59 = [self labelTokenIndexesForOutputName:@"title" label:@"EXTRACTION__REMINDER_TITLE_ACTION_VERB" modelOutput:outputCopy];
     if (![v59 count])
     {
       v14 = 0;
@@ -1435,7 +1435,7 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v58 = [a1 labelTokenIndexesForOutputName:@"title" label:@"EXTRACTION__REMINDER_TITLE_ACTION_OBJECT_CORE" modelOutput:v10];
+    v58 = [self labelTokenIndexesForOutputName:@"title" label:@"EXTRACTION__REMINDER_TITLE_ACTION_OBJECT_CORE" modelOutput:outputCopy];
     if (![v58 count])
     {
       v14 = 0;
@@ -1444,13 +1444,13 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v15 = [a1 firstRangeInIndexSet:v59];
+    v15 = [self firstRangeInIndexSet:v59];
     v17 = v16;
-    if ([a1 validActionVerbIndexRange:v15 enrichedTaggedCharacterRanges:{v16, v11}])
+    if ([self validActionVerbIndexRange:v15 enrichedTaggedCharacterRanges:{v16, rangesCopy}])
     {
-      v18 = [a1 firstRangeInIndexSet:v58];
+      v18 = [self firstRangeInIndexSet:v58];
       v56 = v19;
-      if ([a1 validObjectCoreIndexRange:v18 enrichedTaggedCharacterRanges:{v19, v11}])
+      if ([self validObjectCoreIndexRange:v18 enrichedTaggedCharacterRanges:{v19, rangesCopy}])
       {
         context = objc_autoreleasePoolPush();
         v55 = v18;
@@ -1462,7 +1462,7 @@ LABEL_46:
           v74 = 0u;
           v75 = 0u;
           v34 = objc_autoreleasePoolPush();
-          v35 = [v11 subarrayWithRange:{v15, v17}];
+          v35 = [rangesCopy subarrayWithRange:{v15, v17}];
           objc_autoreleasePoolPop(v34);
           v36 = [v35 countByEnumeratingWithState:&v72 objects:v77 count:16];
           if (v36)
@@ -1477,8 +1477,8 @@ LABEL_46:
                   objc_enumerationMutation(v35);
                 }
 
-                v39 = [*(*(&v72 + 1) + 8 * i) text];
-                [v33 addObject:v39];
+                text = [*(*(&v72 + 1) + 8 * i) text];
+                [v33 addObject:text];
               }
 
               v36 = [v35 countByEnumeratingWithState:&v72 objects:v77 count:16];
@@ -1492,7 +1492,7 @@ LABEL_46:
           v68 = 0u;
           v69 = 0u;
           v40 = objc_autoreleasePoolPush();
-          v41 = [v11 subarrayWithRange:{v55, v56}];
+          v41 = [rangesCopy subarrayWithRange:{v55, v56}];
           objc_autoreleasePoolPop(v40);
           v42 = [v41 countByEnumeratingWithState:&v68 objects:v76 count:16];
           if (v42)
@@ -1507,8 +1507,8 @@ LABEL_46:
                   objc_enumerationMutation(v41);
                 }
 
-                v45 = [*(*(&v68 + 1) + 8 * j) text];
-                [v33 addObject:v45];
+                text2 = [*(*(&v68 + 1) + 8 * j) text];
+                [v33 addObject:text2];
               }
 
               v42 = [v41 countByEnumeratingWithState:&v68 objects:v76 count:16];
@@ -1524,26 +1524,26 @@ LABEL_46:
 
         else
         {
-          v20 = [v11 objectAtIndexedSubscript:v15];
-          v21 = [v20 range];
+          v20 = [rangesCopy objectAtIndexedSubscript:v15];
+          range = [v20 range];
 
-          v22 = [v11 objectAtIndexedSubscript:v56 + v55 - 1];
-          v23 = [v22 range];
+          v22 = [rangesCopy objectAtIndexedSubscript:v56 + v55 - 1];
+          range2 = [v22 range];
           [v22 range];
           v57 = v24;
-          v25 = [a1 titlePrependForActionVerbIndexRange:v15 enrichedTaggedCharacterRanges:v17 language:v11 content:{v13, v12}];
-          v26 = v21;
-          v27 = v23 - v21;
+          v25 = [self titlePrependForActionVerbIndexRange:v15 enrichedTaggedCharacterRanges:v17 language:rangesCopy content:{languageCopy, contentCopy}];
+          v26 = range;
+          v27 = range2 - range;
           if (v25)
           {
             v28 = objc_alloc(MEMORY[0x277CCACA8]);
-            v29 = [v12 substringWithRange:{v26, v27 + v57}];
+            v29 = [contentCopy substringWithRange:{v26, v27 + v57}];
             v30 = [v28 initWithFormat:@"%@%@", v25, v29];
           }
 
           else
           {
-            v30 = [v12 substringWithRange:{v26, v27 + v57}];
+            v30 = [contentCopy substringWithRange:{v26, v27 + v57}];
           }
 
           objc_autoreleasePoolPop(context);
@@ -1660,10 +1660,10 @@ uint64_t __99__SGReminderMessage_detectedTitleInModelOutput_enrichedTaggedCharac
   return result;
 }
 
-+ (BOOL)tokensMatchedInContent:(id)a3 content:(id)a4
++ (BOOL)tokensMatchedInContent:(id)content content:(id)a4
 {
   v6 = a4;
-  v7 = [a1 regexFromJoinedArray:a3 wordBoundary:0];
+  v7 = [self regexFromJoinedArray:content wordBoundary:0];
   if (!v7 || (v9 = 1, [v7 rangeOfFirstMatchInString:v6 options:0 range:{0, objc_msgSend(v6, "length")}] == 0x7FFFFFFFFFFFFFFFLL) && !v8)
   {
     v9 = 0;
@@ -1672,22 +1672,22 @@ uint64_t __99__SGReminderMessage_detectedTitleInModelOutput_enrichedTaggedCharac
   return v9;
 }
 
-+ (BOOL)shouldAddTitlePrefixForContent:(id)a3
++ (BOOL)shouldAddTitlePrefixForContent:(id)content
 {
-  v4 = a3;
-  v5 = [a1 titlePrefixTokens];
-  LOBYTE(a1) = [a1 tokensMatchedInContent:v5 content:v4];
+  contentCopy = content;
+  titlePrefixTokens = [self titlePrefixTokens];
+  LOBYTE(self) = [self tokensMatchedInContent:titlePrefixTokens content:contentCopy];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)isConfirmationOptionalForContent:(id)a3
++ (BOOL)isConfirmationOptionalForContent:(id)content
 {
-  v4 = a3;
-  v5 = [a1 confirmationOptionalTokens];
-  LOBYTE(a1) = [a1 tokensMatchedInContent:v5 content:v4];
+  contentCopy = content;
+  confirmationOptionalTokens = [self confirmationOptionalTokens];
+  LOBYTE(self) = [self tokensMatchedInContent:confirmationOptionalTokens content:contentCopy];
 
-  return a1;
+  return self;
 }
 
 @end

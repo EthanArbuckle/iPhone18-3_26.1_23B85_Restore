@@ -1,16 +1,16 @@
 @interface _NSDNXPCServer
 - (NSString)serviceName;
-- (_NSDNXPCServer)initWithConfiguration:(distnoted_configuration *)a3;
+- (_NSDNXPCServer)initWithConfiguration:(distnoted_configuration *)configuration;
 - (id)__invalidate;
 - (id)allClients;
 - (id)createEndpoint;
 - (id)makeNewClient;
-- (void)addInvalidationHandler:(id)a3;
+- (void)addInvalidationHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setMakeNewClient:(id)a3;
-- (void)setServiceName:(id)a3;
-- (void)start:(id)a3;
+- (void)setMakeNewClient:(id)client;
+- (void)setServiceName:(id)name;
+- (void)start:(id)start;
 @end
 
 @implementation _NSDNXPCServer
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (_NSDNXPCServer)initWithConfiguration:(distnoted_configuration *)a3
+- (_NSDNXPCServer)initWithConfiguration:(distnoted_configuration *)configuration
 {
   v6.receiver = self;
   v6.super_class = _NSDNXPCServer;
@@ -47,7 +47,7 @@
   return v2;
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
   if (self->_started || self->_invalid)
   {
@@ -56,7 +56,7 @@
 
   else
   {
-    v4 = [a3 copy];
+    v4 = [name copy];
     serviceName = self->_serviceName;
     self->_serviceName = v4;
 
@@ -71,7 +71,7 @@
   return v2;
 }
 
-- (void)setMakeNewClient:(id)a3
+- (void)setMakeNewClient:(id)client
 {
   if (self->_started || self->_invalid)
   {
@@ -80,7 +80,7 @@
 
   else
   {
-    v4 = [a3 copy];
+    v4 = [client copy];
     makeNewClient = self->_makeNewClient;
     self->_makeNewClient = v4;
 
@@ -111,17 +111,17 @@
   {
     xpc_connection_cancel(self->_conn);
 LABEL_4:
-    v3 = 0;
+    __invalidate = 0;
     goto LABEL_5;
   }
 
-  v3 = [(_NSDNXPCServer *)self __invalidate];
+  __invalidate = [(_NSDNXPCServer *)self __invalidate];
 LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [__invalidate countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -132,32 +132,32 @@ LABEL_5:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(__invalidate);
         }
 
         (*(*(*(&v8 + 1) + 8 * i) + 16))();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [__invalidate countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addInvalidationHandler:(id)a3
+- (void)addInvalidationHandler:(id)handler
 {
-  v5 = [a3 copy];
+  v5 = [handler copy];
   invalidHandlers = self->_invalidHandlers;
   v7 = v5;
   [(NSMutableArray *)invalidHandlers addObject:?];
   if (!invalidHandlers)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   if (!self->_invalid)
   {
@@ -191,12 +191,12 @@ LABEL_5:
             v10 = 1;
           }
 
-          mach_service = xpc_connection_create_mach_service(v9, a3, v10);
+          mach_service = xpc_connection_create_mach_service(v9, start, v10);
         }
 
         else
         {
-          mach_service = xpc_connection_create(0, a3);
+          mach_service = xpc_connection_create(0, start);
           v9 = 0;
         }
 
@@ -206,7 +206,7 @@ LABEL_5:
         maxBufLen[2] = sub_100000C60;
         maxBufLen[3] = &unk_100008548;
         maxBufLen[4] = self;
-        maxBufLen[5] = a3;
+        maxBufLen[5] = start;
         xpc_connection_set_event_handler(mach_service, maxBufLen);
         xpc_connection_activate(self->_conn);
         if (serviceName)

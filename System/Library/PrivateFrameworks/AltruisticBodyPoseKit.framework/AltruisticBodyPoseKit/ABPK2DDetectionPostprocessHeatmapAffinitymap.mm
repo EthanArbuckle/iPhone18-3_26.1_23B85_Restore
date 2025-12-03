@@ -1,22 +1,22 @@
 @interface ABPK2DDetectionPostprocessHeatmapAffinitymap
-- (id)get2DDetectionResultforRotation:(int64_t)a3 croppedRect:(CGRect)a4;
-- (id)getRaw2DDetectionResultforRotation:(int64_t)a3 croppedRect:(CGRect)a4;
-- (int)extract2DSkeletonfromBuffers:(id)a3 withImagePreProcessingParams:(id)a4 atTimestamp:(double)a5 previousSkeleton3D:(id)a6;
-- (void)getRawTrackedHumanForLiftingSkeleton:(id)a3;
-- (void)getRawTrackedHumanSkeleton:(id)a3;
-- (void)getRawTrackedHumanSkeletonVector:(id)a3;
-- (void)getTrackedHumanForLiftingSkeleton:(id)a3;
-- (void)getTrackedHumanSkeleton:(id)a3;
+- (id)get2DDetectionResultforRotation:(int64_t)rotation croppedRect:(CGRect)rect;
+- (id)getRaw2DDetectionResultforRotation:(int64_t)rotation croppedRect:(CGRect)rect;
+- (int)extract2DSkeletonfromBuffers:(id)buffers withImagePreProcessingParams:(id)params atTimestamp:(double)timestamp previousSkeleton3D:(id)d;
+- (void)getRawTrackedHumanForLiftingSkeleton:(id)skeleton;
+- (void)getRawTrackedHumanSkeleton:(id)skeleton;
+- (void)getRawTrackedHumanSkeletonVector:(id)vector;
+- (void)getTrackedHumanForLiftingSkeleton:(id)skeleton;
+- (void)getTrackedHumanSkeleton:(id)skeleton;
 @end
 
 @implementation ABPK2DDetectionPostprocessHeatmapAffinitymap
 
-- (int)extract2DSkeletonfromBuffers:(id)a3 withImagePreProcessingParams:(id)a4 atTimestamp:(double)a5 previousSkeleton3D:(id)a6
+- (int)extract2DSkeletonfromBuffers:(id)buffers withImagePreProcessingParams:(id)params atTimestamp:(double)timestamp previousSkeleton3D:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtract2DSkeletonSignpostWithTimestamp:a5];
+  buffersCopy = buffers;
+  paramsCopy = params;
+  dCopy = d;
+  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtract2DSkeletonSignpostWithTimestamp:timestamp];
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -24,14 +24,14 @@
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " ABPK2DDetectionPostprocessHeatmapAffinitymap: Extracting 2D skeleton from buffers ", buf, 2u);
   }
 
-  objc_storeStrong(&self->_imagePreProcessingParams, a4);
-  v14 = [v10 rotationNeeded];
-  CVPixelBufferLockBaseAddress([v10 heatMapBuffer], 0);
-  CVPixelBufferLockBaseAddress([v10 affinityMapBuffer], 0);
-  BaseAddress = CVPixelBufferGetBaseAddress([v10 affinityMapBuffer]);
-  [v10 affinityMapShape];
+  objc_storeStrong(&self->_imagePreProcessingParams, params);
+  rotationNeeded = [buffersCopy rotationNeeded];
+  CVPixelBufferLockBaseAddress([buffersCopy heatMapBuffer], 0);
+  CVPixelBufferLockBaseAddress([buffersCopy affinityMapBuffer], 0);
+  BaseAddress = CVPixelBufferGetBaseAddress([buffersCopy affinityMapBuffer]);
+  [buffersCopy affinityMapShape];
   v51 = v16;
-  [v10 affinityMapShape];
+  [buffersCopy affinityMapShape];
   v18 = v17;
   *buf = self->_numberOfInputJoints + 1;
   v62 = v51;
@@ -39,18 +39,18 @@
   v60[0] = 36;
   v60[1] = v51;
   v60[2] = v17;
-  [v10 affinityMapStrides];
+  [buffersCopy affinityMapStrides];
   v59[0] = v19;
-  [v10 affinityMapStrides];
+  [buffersCopy affinityMapStrides];
   v59[1] = v20;
-  [v10 affinityMapStrides];
+  [buffersCopy affinityMapStrides];
   v59[2] = v21;
   v58 = 0;
-  IOSurface = CVPixelBufferGetIOSurface([v10 heatMapBuffer]);
-  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startMaxFilterSignpostWithTimestamp:a5];
+  IOSurface = CVPixelBufferGetIOSurface([buffersCopy heatMapBuffer]);
+  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startMaxFilterSignpostWithTimestamp:timestamp];
   v23 = [(ABPK2DDetectionPostprocessGPU *)self->_postprocessorGPU process:IOSurface counter:&v58 shape:v18, v51];
-  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endMaxFilterSignpostWithTimestamp:a5];
-  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtractHumanSignpostWithTimestamp:a5];
+  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endMaxFilterSignpostWithTimestamp:timestamp];
+  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtractHumanSignpostWithTimestamp:timestamp];
   v56 = 0uLL;
   v57 = 0;
   if (self->_numberOfInputJoints == 17)
@@ -70,11 +70,11 @@
   memset(v54, 0, sizeof(v54));
   v64 = v54;
   std::vector<abpk::Human>::__destroy_vector::operator()[abi:ne200100](&v64);
-  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtractHumanSignpostWithTimestamp:a5];
-  CVPixelBufferUnlockBaseAddress([v10 heatMapBuffer], 0);
-  CVPixelBufferUnlockBaseAddress([v10 affinityMapBuffer], 0);
-  CVPixelBufferRelease([v10 heatMapBuffer]);
-  CVPixelBufferRelease([v10 affinityMapBuffer]);
+  [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtractHumanSignpostWithTimestamp:timestamp];
+  CVPixelBufferUnlockBaseAddress([buffersCopy heatMapBuffer], 0);
+  CVPixelBufferUnlockBaseAddress([buffersCopy affinityMapBuffer], 0);
+  CVPixelBufferRelease([buffersCopy heatMapBuffer]);
+  CVPixelBufferRelease([buffersCopy affinityMapBuffer]);
   if (*(&v56 + 1) == v56)
   {
     if (self->_humansDetected)
@@ -89,7 +89,7 @@
       self->_humansDetected = 0;
     }
 
-    v44 = -6661;
+    timestamp = -6661;
   }
 
   else
@@ -113,10 +113,10 @@
       _os_log_impl(&dword_23EDDC000, v25, OS_LOG_TYPE_DEBUG, " \t Converting 2d points from ML space to image space ", v54, 2u);
     }
 
-    [v11 inputResolution];
+    [paramsCopy inputResolution];
     v48 = v26;
     v49 = v27;
-    [v11 outputResolution];
+    [paramsCopy outputResolution];
     v31 = *(&v56 + 1);
     v30 = v56;
     if (v56 != *(&v56 + 1))
@@ -138,7 +138,7 @@
             *&v39 = v32 * COERCE_FLOAT(*v35);
             v40 = v33 * v37;
             *(&v39 + 1) = v40;
-            [ABPKImagePreProcessingParams convert2DPoint:v11 toInputSpaceWithParams:v39];
+            [ABPKImagePreProcessingParams convert2DPoint:paramsCopy toInputSpaceWithParams:v39];
             *v35 = vcvt_f32_f64(vdivq_f64(vcvtq_f64_f32(v41), v50));
           }
 
@@ -151,7 +151,7 @@
       while (v30 != v31);
     }
 
-    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtrapolationSignpostWithTimestamp:a5];
+    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _startExtrapolationSignpostWithTimestamp:timestamp];
     v42 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
@@ -164,12 +164,12 @@
     v53 = v57;
     v57 = 0;
     v56 = 0uLL;
-    v44 = [(ABPK2DExtrapolationFiltering *)extrapolationFiltering performExtrapolationOnHumans:&v52 withImageResolution:v14 atTimestamp:v12 rotationNeeded:v48 previousSkeleton3D:v49, a5];
+    timestamp = [(ABPK2DExtrapolationFiltering *)extrapolationFiltering performExtrapolationOnHumans:&v52 withImageResolution:rotationNeeded atTimestamp:dCopy rotationNeeded:v48 previousSkeleton3D:v49, timestamp];
     *v54 = &v52;
     std::vector<abpk::Human>::__destroy_vector::operator()[abi:ne200100](v54);
-    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtrapolationSignpostWithTimestamp:a5];
-    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtract2DSkeletonSignpostWithTimestamp:a5];
-    if (v44)
+    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtrapolationSignpostWithTimestamp:timestamp];
+    [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self _endExtract2DSkeletonSignpostWithTimestamp:timestamp];
+    if (timestamp)
     {
       v45 = __ABPKLogSharedInstance();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -183,28 +183,28 @@
   *v54 = &v56;
   std::vector<abpk::Human>::__destroy_vector::operator()[abi:ne200100](v54);
 
-  return v44;
+  return timestamp;
 }
 
-- (void)getRawTrackedHumanSkeleton:(id)a3
+- (void)getRawTrackedHumanSkeleton:(id)skeleton
 {
-  v6 = a3;
-  v4 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
-  v5 = *v4;
+  skeletonCopy = skeleton;
+  rawTrackedHuman = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
+  v5 = *rawTrackedHuman;
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  [v6 setNormalizedKeypoints2d:v5 withImageRes:?];
-  [v6 setJointVisibility:v4[3]];
-  [v6 setJointConfidences:v4[6]];
-  [v6 setHasMissingJoints:v4[13] < ((v4[1] - *v4) >> 3)];
+  [skeletonCopy setNormalizedKeypoints2d:v5 withImageRes:?];
+  [skeletonCopy setJointVisibility:rawTrackedHuman[3]];
+  [skeletonCopy setJointConfidences:rawTrackedHuman[6]];
+  [skeletonCopy setHasMissingJoints:rawTrackedHuman[13] < ((rawTrackedHuman[1] - *rawTrackedHuman) >> 3)];
 }
 
-- (void)getRawTrackedHumanSkeletonVector:(id)a3
+- (void)getRawTrackedHumanSkeletonVector:(id)vector
 {
-  v9 = a3;
-  v4 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHumanVector];
-  v5 = *v4;
-  v6 = v4[1];
-  if (*v4 != v6)
+  vectorCopy = vector;
+  rawTrackedHumanVector = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHumanVector];
+  v5 = *rawTrackedHumanVector;
+  v6 = rawTrackedHumanVector[1];
+  if (*rawTrackedHumanVector != v6)
   {
     do
     {
@@ -215,7 +215,7 @@
       [(ABPK2dSkeleton *)v7 setJointVisibility:v5[3]];
       [(ABPK2dSkeleton *)v7 setJointConfidences:v5[6]];
       [(ABPK2dSkeleton *)v7 setHasMissingJoints:v5[13] < ((v5[1] - *v5) >> 3)];
-      [v9 addObject:v7];
+      [vectorCopy addObject:v7];
 
       v5 += 15;
     }
@@ -224,48 +224,48 @@
   }
 }
 
-- (void)getTrackedHumanSkeleton:(id)a3
+- (void)getTrackedHumanSkeleton:(id)skeleton
 {
-  v6 = a3;
-  v4 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHuman];
-  v5 = *v4;
+  skeletonCopy = skeleton;
+  trackedHuman = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHuman];
+  v5 = *trackedHuman;
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  [v6 setNormalizedKeypoints2d:v5 withImageRes:?];
-  [v6 setJointVisibility:v4[3]];
-  [v6 setJointConfidences:v4[6]];
-  [v6 setHasMissingJoints:v4[13] < ((v4[1] - *v4) >> 3)];
+  [skeletonCopy setNormalizedKeypoints2d:v5 withImageRes:?];
+  [skeletonCopy setJointVisibility:trackedHuman[3]];
+  [skeletonCopy setJointConfidences:trackedHuman[6]];
+  [skeletonCopy setHasMissingJoints:trackedHuman[13] < ((trackedHuman[1] - *trackedHuman) >> 3)];
 }
 
-- (void)getTrackedHumanForLiftingSkeleton:(id)a3
+- (void)getTrackedHumanForLiftingSkeleton:(id)skeleton
 {
-  v6 = a3;
-  v4 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHumanForLifting];
-  v5 = *v4;
+  skeletonCopy = skeleton;
+  trackedHumanForLifting = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHumanForLifting];
+  v5 = *trackedHumanForLifting;
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  [v6 setNormalizedKeypoints2d:v5 withImageRes:?];
-  [v6 setJointVisibility:v4[3]];
-  [v6 setJointConfidences:v4[6]];
-  [v6 setHasMissingJoints:v4[13] < ((v4[1] - *v4) >> 3)];
+  [skeletonCopy setNormalizedKeypoints2d:v5 withImageRes:?];
+  [skeletonCopy setJointVisibility:trackedHumanForLifting[3]];
+  [skeletonCopy setJointConfidences:trackedHumanForLifting[6]];
+  [skeletonCopy setHasMissingJoints:trackedHumanForLifting[13] < ((trackedHumanForLifting[1] - *trackedHumanForLifting) >> 3)];
 }
 
-- (void)getRawTrackedHumanForLiftingSkeleton:(id)a3
+- (void)getRawTrackedHumanForLiftingSkeleton:(id)skeleton
 {
-  v6 = a3;
-  v4 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
-  v5 = *v4;
+  skeletonCopy = skeleton;
+  rawTrackedHuman = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
+  v5 = *rawTrackedHuman;
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  [v6 setNormalizedKeypoints2d:v5 withImageRes:?];
-  [v6 setJointVisibility:v4[3]];
-  [v6 setJointConfidences:v4[6]];
+  [skeletonCopy setNormalizedKeypoints2d:v5 withImageRes:?];
+  [skeletonCopy setJointVisibility:rawTrackedHuman[3]];
+  [skeletonCopy setJointConfidences:rawTrackedHuman[6]];
 }
 
-- (id)get2DDetectionResultforRotation:(int64_t)a3 croppedRect:(CGRect)a4
+- (id)get2DDetectionResultforRotation:(int64_t)rotation croppedRect:(CGRect)rect
 {
-  v6 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHuman];
-  v7 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHumanForLifting];
-  if (v7[13] >= ((v7[1] - *v7) >> 3))
+  trackedHuman = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHuman];
+  trackedHumanForLifting = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self trackedHumanForLifting];
+  if (trackedHumanForLifting[13] >= ((trackedHumanForLifting[1] - *trackedHumanForLifting) >> 3))
   {
-    v8 = [[ABPK2D3DLiftingData alloc] initWithHumanForLifting:v7 imageSize:a3 rotation:1000.0 croppedRect:1000.0, 0.0, 0.0, 1.0, 1.0];
+    v8 = [[ABPK2D3DLiftingData alloc] initWithHumanForLifting:trackedHumanForLifting imageSize:rotation rotation:1000.0 croppedRect:1000.0, 0.0, 0.0, 1.0, 1.0];
   }
 
   else
@@ -274,29 +274,29 @@
   }
 
   v9 = [ABPK2DDetectionResult alloc];
-  v10 = *abpk::Human::jointVector(v6);
-  v11 = v6[3];
-  v14 = v6;
-  v12 = *v6;
+  v10 = *abpk::Human::jointVector(trackedHuman);
+  v11 = trackedHuman[3];
+  v14 = trackedHuman;
+  v12 = *trackedHuman;
   v13 = v14[1];
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  v15 = [ABPK2DDetectionResult initWithJoints:v9 trackingStates:"initWithJoints:trackingStates:numberOfJoints:imageResolution:rotation:croppedRect:liftingData:" numberOfJoints:v10 imageResolution:v11 rotation:(v13 - v12) >> 3 croppedRect:a3 liftingData:v8];
+  v15 = [ABPK2DDetectionResult initWithJoints:v9 trackingStates:"initWithJoints:trackingStates:numberOfJoints:imageResolution:rotation:croppedRect:liftingData:" numberOfJoints:v10 imageResolution:v11 rotation:(v13 - v12) >> 3 croppedRect:rotation liftingData:v8];
 
   return v15;
 }
 
-- (id)getRaw2DDetectionResultforRotation:(int64_t)a3 croppedRect:(CGRect)a4
+- (id)getRaw2DDetectionResultforRotation:(int64_t)rotation croppedRect:(CGRect)rect
 {
-  v6 = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
-  v7 = [[ABPK2D3DLiftingData alloc] initWithHumanForLifting:v6 imageSize:a3 rotation:1000.0 croppedRect:1000.0, 0.0, 0.0, 1.0, 1.0];
+  rawTrackedHuman = [(ABPK2DDetectionPostprocessHeatmapAffinitymap *)self rawTrackedHuman];
+  v7 = [[ABPK2D3DLiftingData alloc] initWithHumanForLifting:rawTrackedHuman imageSize:rotation rotation:1000.0 croppedRect:1000.0, 0.0, 0.0, 1.0, 1.0];
   v8 = [ABPK2DDetectionResult alloc];
-  v9 = *abpk::Human::jointVector(v6);
-  v10 = v6[3];
-  v13 = v6;
-  v11 = *v6;
+  v9 = *abpk::Human::jointVector(rawTrackedHuman);
+  v10 = rawTrackedHuman[3];
+  v13 = rawTrackedHuman;
+  v11 = *rawTrackedHuman;
   v12 = v13[1];
   [(ABPKImagePreProcessingParams *)self->_imagePreProcessingParams inputResolution];
-  v14 = [ABPK2DDetectionResult initWithJoints:v8 trackingStates:"initWithJoints:trackingStates:numberOfJoints:imageResolution:rotation:croppedRect:liftingData:" numberOfJoints:v9 imageResolution:v10 rotation:(v12 - v11) >> 3 croppedRect:a3 liftingData:v7];
+  v14 = [ABPK2DDetectionResult initWithJoints:v8 trackingStates:"initWithJoints:trackingStates:numberOfJoints:imageResolution:rotation:croppedRect:liftingData:" numberOfJoints:v9 imageResolution:v10 rotation:(v12 - v11) >> 3 croppedRect:rotation liftingData:v7];
 
   return v14;
 }

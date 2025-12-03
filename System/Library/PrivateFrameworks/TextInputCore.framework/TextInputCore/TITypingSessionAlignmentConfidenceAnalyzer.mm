@@ -1,22 +1,22 @@
 @interface TITypingSessionAlignmentConfidenceAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 - (TITypingSessionAlignmentConfidenceAnalyzer)init;
 - (id)_generateCountsOfWordsForAlignmentConfidences;
-- (id)_generateFeatureUsageMetricsForContext:(id)a3;
-- (id)_generateMetadataForTypingSessionFromContext:(id)a3;
-- (id)_generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:(id)a3;
-- (void)dispatchEventWithPayload:(id)a3;
+- (id)_generateFeatureUsageMetricsForContext:(id)context;
+- (id)_generateMetadataForTypingSessionFromContext:(id)context;
+- (id)_generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:(id)counts;
+- (void)dispatchEventWithPayload:(id)payload;
 - (void)registerEventSpec;
 @end
 
 @implementation TITypingSessionAlignmentConfidenceAnalyzer
 
-- (void)dispatchEventWithPayload:(id)a3
+- (void)dispatchEventWithPayload:(id)payload
 {
   v3 = MEMORY[0x277D6F318];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 dispatchEventWithName:@"alignmentConfidence" payload:v4 testingParameters:0 allowSparsePayload:1];
+  payloadCopy = payload;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance dispatchEventWithName:@"alignmentConfidence" payload:payloadCopy testingParameters:0 allowSparsePayload:1];
 }
 
 - (void)registerEventSpec
@@ -92,25 +92,25 @@
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:24];
   v23 = [v40 eventSpecWithName:@"alignmentConfidence" inputModeRequired:0 fieldSpecs:v22];
 
-  v24 = [MEMORY[0x277D6F318] sharedInstance];
-  [v24 registerEventSpec:v23];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:v23];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  sessionCopy = session;
+  alignedSessionCopy = alignedSession;
+  if (confidence)
   {
-    v31 = v10;
-    objc_storeStrong(&self->_session, a3);
-    objc_storeStrong(&self->_alignedSession, a4);
-    v11 = [(TITypingSessionAlignmentConfidenceAnalyzer *)self _generateCountsOfWordsForAlignmentConfidences];
-    [(NSMutableDictionary *)self->_payload addEntriesFromDictionary:v11];
+    v31 = alignedSessionCopy;
+    objc_storeStrong(&self->_session, session);
+    objc_storeStrong(&self->_alignedSession, alignedSession);
+    _generateCountsOfWordsForAlignmentConfidences = [(TITypingSessionAlignmentConfidenceAnalyzer *)self _generateCountsOfWordsForAlignmentConfidences];
+    [(NSMutableDictionary *)self->_payload addEntriesFromDictionary:_generateCountsOfWordsForAlignmentConfidences];
     payload = self->_payload;
-    v13 = [(TITypingSessionAlignmentConfidenceAnalyzer *)self _generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:v11];
+    v13 = [(TITypingSessionAlignmentConfidenceAnalyzer *)self _generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:_generateCountsOfWordsForAlignmentConfidences];
     [(NSMutableDictionary *)payload addEntriesFromDictionary:v13];
 
     [TIStandardTypingSessionConfidenceEvaluator calculateAlignedTypingSessionConfidence:self->_alignedSession];
@@ -120,16 +120,16 @@
     v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[TITypingSessionAligned success](self->_alignedSession, "success")}];
     [(NSMutableDictionary *)self->_payload setObject:v15 forKeyedSubscript:@"sessionAlignmentSuccess"];
 
-    v16 = [(TITypingSession *)self->_session userActionHistory];
-    v17 = [v16 lastObject];
-    v18 = [v17 keyboardState];
+    userActionHistory = [(TITypingSession *)self->_session userActionHistory];
+    lastObject = [userActionHistory lastObject];
+    keyboardState = [lastObject keyboardState];
 
     v19 = [TIKBAnalyticsMetricsContext alloc];
-    v20 = [(TITypingSession *)self->_session sessionParams];
-    v21 = [v20 activeInputModes];
-    v22 = [(TITypingSession *)self->_session sessionParams];
-    v23 = [v22 testingParameters];
-    v24 = [(TIKBAnalyticsMetricsContext *)v19 initWithKeyboardState:v18 activeInputModes:v21 testingParameters:v23];
+    sessionParams = [(TITypingSession *)self->_session sessionParams];
+    activeInputModes = [sessionParams activeInputModes];
+    sessionParams2 = [(TITypingSession *)self->_session sessionParams];
+    testingParameters = [sessionParams2 testingParameters];
+    v24 = [(TIKBAnalyticsMetricsContext *)v19 initWithKeyboardState:keyboardState activeInputModes:activeInputModes testingParameters:testingParameters];
 
     v25 = self->_payload;
     v26 = [(TITypingSessionAlignmentConfidenceAnalyzer *)self _generateMetadataForTypingSessionFromContext:v24];
@@ -142,35 +142,35 @@
     v29 = [(NSMutableDictionary *)self->_payload copy];
     [(TITypingSessionAlignmentConfidenceAnalyzer *)self dispatchEventWithPayload:v29];
 
-    v10 = v31;
+    alignedSessionCopy = v31;
   }
 
-  return a5 != 0;
+  return confidence != 0;
 }
 
-- (id)_generateFeatureUsageMetricsForContext:(id)a3
+- (id)_generateFeatureUsageMetricsForContext:(id)context
 {
   v16[6] = *MEMORY[0x277D85DE8];
   session = self->_session;
-  v4 = a3;
-  v5 = [(TITypingSession *)session featureUsageMetricsCache];
+  contextCopy = context;
+  featureUsageMetricsCache = [(TITypingSession *)session featureUsageMetricsCache];
   v15[0] = kFeatureKeyboardUsage;
-  v6 = [v5 featureUsageMetricFromName:? forContext:?];
+  v6 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
   v16[0] = v6;
   v15[1] = kFeatureContinuousPathUsage;
-  v7 = [v5 featureUsageMetricFromName:? forContext:?];
+  v7 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
   v16[1] = v7;
   v15[2] = kFeatureCandidateBarUsage;
-  v8 = [v5 featureUsageMetricFromName:? forContext:?];
+  v8 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
   v16[2] = v8;
   v15[3] = kFeatureAutocorrectionUsage;
-  v9 = [v5 featureUsageMetricFromName:? forContext:?];
+  v9 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
   v16[3] = v9;
   v15[4] = kFeatureMultilingualUsage;
-  v10 = [v5 featureUsageMetricFromName:? forContext:?];
+  v10 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
   v16[4] = v10;
   v15[5] = kFeatureStringTypingSpeed;
-  v11 = [v5 featureUsageMetricFromName:? forContext:?];
+  v11 = [featureUsageMetricsCache featureUsageMetricFromName:? forContext:?];
 
   v16[5] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:6];
@@ -180,32 +180,32 @@
   return v12;
 }
 
-- (id)_generateMetadataForTypingSessionFromContext:(id)a3
+- (id)_generateMetadataForTypingSessionFromContext:(id)context
 {
   v16[7] = *MEMORY[0x277D85DE8];
   v15[0] = kFeatureStringKeyboardLanguage;
-  v3 = a3;
-  v4 = [v3 inputLanguage];
-  v16[0] = v4;
+  contextCopy = context;
+  inputLanguage = [contextCopy inputLanguage];
+  v16[0] = inputLanguage;
   v15[1] = kFeatureStringKeyboardRegion;
-  v5 = [v3 inputRegion];
-  v16[1] = v5;
+  inputRegion = [contextCopy inputRegion];
+  v16[1] = inputRegion;
   v15[2] = kFeatureStringKeyboardVariant;
-  v6 = [v3 inputVariant];
-  v16[2] = v6;
+  inputVariant = [contextCopy inputVariant];
+  v16[2] = inputVariant;
   v15[3] = kFeatureStringKeyboardSecondaryLanguage;
-  v7 = [v3 secondaryLanguage];
-  v16[3] = v7;
+  secondaryLanguage = [contextCopy secondaryLanguage];
+  v16[3] = secondaryLanguage;
   v15[4] = kFeatureStringKeyboardSecondaryRegion;
-  v8 = [v3 secondaryRegion];
-  v16[4] = v8;
+  secondaryRegion = [contextCopy secondaryRegion];
+  v16[4] = secondaryRegion;
   v15[5] = kFeatureStringKeyboardLayout;
-  v9 = [v3 layoutName];
-  v16[5] = v9;
+  layoutName = [contextCopy layoutName];
+  v16[5] = layoutName;
   v15[6] = kFeatureStringKeyboardType;
-  v10 = [v3 keyboardType];
+  keyboardType = [contextCopy keyboardType];
 
-  v11 = [TIKBAnalyticsMetricsContext keyboardTypeEnumToString:v10];
+  v11 = [TIKBAnalyticsMetricsContext keyboardTypeEnumToString:keyboardType];
   v16[6] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:7];
 
@@ -214,14 +214,14 @@
   return v12;
 }
 
-- (id)_generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:(id)a3
+- (id)_generatePercentageOfTotalWordsForAlignmentConfidencesFromRawCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"totalAlignedWords"];
-  v6 = [v5 intValue];
+  v5 = [countsCopy objectForKeyedSubscript:@"totalAlignedWords"];
+  intValue = [v5 intValue];
 
-  if (v6 < 1)
+  if (intValue < 1)
   {
     [v4 setObject:&unk_28400BD18 forKeyedSubscript:@"fractionWordsAlignmentConfidenceHigh"];
     [v4 setObject:&unk_28400BD18 forKeyedSubscript:@"fractionWordsAlignmentConfidenceMid"];
@@ -232,26 +232,26 @@
   else
   {
     v7 = MEMORY[0x277D6F320];
-    v8 = [v3 objectForKeyedSubscript:@"countWordsAlignmentConfidenceHigh"];
-    v9 = [v3 objectForKeyedSubscript:@"totalAlignedWords"];
+    v8 = [countsCopy objectForKeyedSubscript:@"countWordsAlignmentConfidenceHigh"];
+    v9 = [countsCopy objectForKeyedSubscript:@"totalAlignedWords"];
     v10 = [v7 bucketPercentageWithNumerator:v8 andDenominator:v9];
     [v4 setObject:v10 forKeyedSubscript:@"fractionWordsAlignmentConfidenceHigh"];
 
     v11 = MEMORY[0x277D6F320];
-    v12 = [v3 objectForKeyedSubscript:@"countWordsAlignmentConfidenceMid"];
-    v13 = [v3 objectForKeyedSubscript:@"totalAlignedWords"];
+    v12 = [countsCopy objectForKeyedSubscript:@"countWordsAlignmentConfidenceMid"];
+    v13 = [countsCopy objectForKeyedSubscript:@"totalAlignedWords"];
     v14 = [v11 bucketPercentageWithNumerator:v12 andDenominator:v13];
     [v4 setObject:v14 forKeyedSubscript:@"fractionWordsAlignmentConfidenceMid"];
 
     v15 = MEMORY[0x277D6F320];
-    v16 = [v3 objectForKeyedSubscript:@"countWordsAlignmentConfidenceLow"];
-    v17 = [v3 objectForKeyedSubscript:@"totalAlignedWords"];
+    v16 = [countsCopy objectForKeyedSubscript:@"countWordsAlignmentConfidenceLow"];
+    v17 = [countsCopy objectForKeyedSubscript:@"totalAlignedWords"];
     v18 = [v15 bucketPercentageWithNumerator:v16 andDenominator:v17];
     [v4 setObject:v18 forKeyedSubscript:@"fractionWordsAlignmentConfidenceLow"];
 
     v19 = MEMORY[0x277D6F320];
-    v20 = [v3 objectForKeyedSubscript:@"countWordsAlignmentConfidenceNone"];
-    v21 = [v3 objectForKeyedSubscript:@"totalAlignedWords"];
+    v20 = [countsCopy objectForKeyedSubscript:@"countWordsAlignmentConfidenceNone"];
+    v21 = [countsCopy objectForKeyedSubscript:@"totalAlignedWords"];
     v22 = [v19 bucketPercentageWithNumerator:v20 andDenominator:v21];
     [v4 setObject:v22 forKeyedSubscript:@"fractionWordsAlignmentConfidenceNone"];
   }
@@ -267,9 +267,9 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
-  v4 = [(TITypingSessionAligned *)self->_alignedSession alignedEntries];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  alignedEntries = [(TITypingSessionAligned *)self->_alignedSession alignedEntries];
+  v5 = [alignedEntries countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -280,15 +280,15 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(alignedEntries);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * i) inSessionAlignmentConfidence];
+        inSessionAlignmentConfidence = [*(*(&v20 + 1) + 8 * i) inSessionAlignmentConfidence];
         v10 = MEMORY[0x277CCABB0];
         v11 = @"countWordsAlignmentConfidenceNone";
-        if ((v9 - 1) <= 2)
+        if ((inSessionAlignmentConfidence - 1) <= 2)
         {
-          v11 = off_2787301E0[v9 - 1];
+          v11 = off_2787301E0[inSessionAlignmentConfidence - 1];
         }
 
         v12 = [v3 objectForKeyedSubscript:v11];
@@ -296,15 +296,15 @@
         [v3 setObject:v13 forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [alignedEntries countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
   }
 
   v14 = MEMORY[0x277CCABB0];
-  v15 = [(TITypingSessionAligned *)v19->_alignedSession alignedEntries];
-  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+  alignedEntries2 = [(TITypingSessionAligned *)selfCopy->_alignedSession alignedEntries];
+  v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(alignedEntries2, "count")}];
   [v3 setObject:v16 forKeyedSubscript:@"totalAlignedWords"];
 
   v17 = *MEMORY[0x277D85DE8];

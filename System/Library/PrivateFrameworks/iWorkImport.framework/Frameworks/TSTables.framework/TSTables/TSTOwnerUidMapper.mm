@@ -21,19 +21,19 @@
 - (TSKUIDStruct)pencilAnnotationOwnerUID;
 - (TSKUIDStruct)sortRuleReferenceTrackerOwnerUID;
 - (TSKUIDStruct)tableUID;
-- (TSTOwnerUidMapper)initWithArchive:(const void *)a3;
-- (TSTOwnerUidMapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)a3;
+- (TSTOwnerUidMapper)initWithArchive:(const void *)archive;
+- (TSTOwnerUidMapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)d;
 - (TSTOwnerUidMapper)initWithIdentityMapping;
-- (TSTOwnerUidMapper)initWithTableUID:(const TSKUIDStruct *)a3 pasteBoardTableUID:(const TSKUIDStruct *)a4 hiddenStateOwnerForRowsUID:(const TSKUIDStruct *)a5 hiddenStateOwnerForColumnsUID:(const TSKUIDStruct *)a6 conditionalStyleOwnerUID:(const TSKUIDStruct *)a7 sortRuleReferenceTrackerOwnerUID:(const TSKUIDStruct *)a8 mergeOwnerUID:(const TSKUIDStruct *)a9 pencilAnnotationOwnerUID:(const TSKUIDStruct *)a10 categoryAggregatesOwnerUID:(const TSKUIDStruct *)a11 groupByUID:(const TSKUIDStruct *)a12;
+- (TSTOwnerUidMapper)initWithTableUID:(const TSKUIDStruct *)d pasteBoardTableUID:(const TSKUIDStruct *)iD hiddenStateOwnerForRowsUID:(const TSKUIDStruct *)uID hiddenStateOwnerForColumnsUID:(const TSKUIDStruct *)columnsUID conditionalStyleOwnerUID:(const TSKUIDStruct *)ownerUID sortRuleReferenceTrackerOwnerUID:(const TSKUIDStruct *)trackerOwnerUID mergeOwnerUID:(const TSKUIDStruct *)mergeOwnerUID pencilAnnotationOwnerUID:(const TSKUIDStruct *)self0 categoryAggregatesOwnerUID:(const TSKUIDStruct *)self1 groupByUID:(const TSKUIDStruct *)self2;
 - (const)ownerUIDMap;
 - (id).cxx_construct;
 - (id)description;
 - (id)fullDescription;
-- (id)initForPivotDataTableWithMapper:(id)a3;
+- (id)initForPivotDataTableWithMapper:(id)mapper;
 - (id)makeInverse;
 - (id)pivotDataTableMapper;
 - (void)p_recreateUIDs;
-- (void)saveToArchive:(void *)a3;
+- (void)saveToArchive:(void *)archive;
 - (void)setToIdentityMapping;
 - (void)setToUpgradeMapping;
 @end
@@ -370,7 +370,7 @@
   return v13;
 }
 
-- (TSTOwnerUidMapper)initWithTableUID:(const TSKUIDStruct *)a3 pasteBoardTableUID:(const TSKUIDStruct *)a4 hiddenStateOwnerForRowsUID:(const TSKUIDStruct *)a5 hiddenStateOwnerForColumnsUID:(const TSKUIDStruct *)a6 conditionalStyleOwnerUID:(const TSKUIDStruct *)a7 sortRuleReferenceTrackerOwnerUID:(const TSKUIDStruct *)a8 mergeOwnerUID:(const TSKUIDStruct *)a9 pencilAnnotationOwnerUID:(const TSKUIDStruct *)a10 categoryAggregatesOwnerUID:(const TSKUIDStruct *)a11 groupByUID:(const TSKUIDStruct *)a12
+- (TSTOwnerUidMapper)initWithTableUID:(const TSKUIDStruct *)d pasteBoardTableUID:(const TSKUIDStruct *)iD hiddenStateOwnerForRowsUID:(const TSKUIDStruct *)uID hiddenStateOwnerForColumnsUID:(const TSKUIDStruct *)columnsUID conditionalStyleOwnerUID:(const TSKUIDStruct *)ownerUID sortRuleReferenceTrackerOwnerUID:(const TSKUIDStruct *)trackerOwnerUID mergeOwnerUID:(const TSKUIDStruct *)mergeOwnerUID pencilAnnotationOwnerUID:(const TSKUIDStruct *)self0 categoryAggregatesOwnerUID:(const TSKUIDStruct *)self1 groupByUID:(const TSKUIDStruct *)self2
 {
   v26.receiver = self;
   v26.super_class = TSTOwnerUidMapper;
@@ -378,21 +378,21 @@
   v19 = v18;
   if (v18)
   {
-    *(v18 + 8) = *a3;
-    *(v18 + 296) = *a4;
+    *(v18 + 8) = *d;
+    *(v18 + 296) = *iD;
     if (!*(v18 + 1) && !*(v18 + 2))
     {
       *(v18 + 8) = *(v18 + 296);
     }
 
-    *(v18 + 40) = *a5;
-    *(v18 + 72) = *a6;
-    *(v18 + 104) = *a7;
-    *(v18 + 136) = *a8;
-    *(v18 + 168) = *a9;
-    *(v18 + 200) = *a10;
-    *(v18 + 232) = *a11;
-    *(v18 + 264) = *a12;
+    *(v18 + 40) = *uID;
+    *(v18 + 72) = *columnsUID;
+    *(v18 + 104) = *ownerUID;
+    *(v18 + 136) = *trackerOwnerUID;
+    *(v18 + 168) = *mergeOwnerUID;
+    *(v18 + 200) = *annotationOwnerUID;
+    *(v18 + 232) = *aggregatesOwnerUID;
+    *(v18 + 264) = *byUID;
     uuid_generate_random(&v25);
     *(v19 + 24) = v25;
     objc_msgSend_p_recreateUIDs(v19, v20, v21, v22, v23);
@@ -409,19 +409,19 @@
   return v7;
 }
 
-- (id)initForPivotDataTableWithMapper:(id)a3
+- (id)initForPivotDataTableWithMapper:(id)mapper
 {
-  v4 = a3;
+  mapperCopy = mapper;
   v57.receiver = self;
   v57.super_class = TSTOwnerUidMapper;
   v9 = [(TSTOwnerUidMapper *)&v57 init];
   if (v9)
   {
-    v53 = objc_msgSend_tableUID(v4, v5, v6, v7, v8);
+    v53 = objc_msgSend_tableUID(mapperCopy, v5, v6, v7, v8);
     v55 = v10;
     *(v9 + 1) = TSKUIDStruct::operator+();
     *(v9 + 2) = v11;
-    TableUID = objc_msgSend_nextTableUID(v4, v11, v12, v13, v14, v53, v55);
+    TableUID = objc_msgSend_nextTableUID(mapperCopy, v11, v12, v13, v14, v53, v55);
     v56 = v15;
     *(v9 + 3) = TSKUIDStruct::operator+();
     *(v9 + 4) = v16;
@@ -447,11 +447,11 @@
   return v9;
 }
 
-- (TSTOwnerUidMapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)a3
+- (TSTOwnerUidMapper)initWithFormulaOwnerUID:(const TSKUIDStruct *)d
 {
   v4[0] = 0;
   v4[1] = 0;
-  return objc_msgSend_initWithTableUID_pasteBoardTableUID_hiddenStateOwnerForRowsUID_hiddenStateOwnerForColumnsUID_conditionalStyleOwnerUID_sortRuleReferenceTrackerOwnerUID_mergeOwnerUID_pencilAnnotationOwnerUID_categoryAggregatesOwnerUID_groupByUID_(self, a2, a3, v4, v4, v4, v4, v4, v4, v4, v4, v4);
+  return objc_msgSend_initWithTableUID_pasteBoardTableUID_hiddenStateOwnerForRowsUID_hiddenStateOwnerForColumnsUID_conditionalStyleOwnerUID_sortRuleReferenceTrackerOwnerUID_mergeOwnerUID_pencilAnnotationOwnerUID_categoryAggregatesOwnerUID_groupByUID_(self, a2, d, v4, v4, v4, v4, v4, v4, v4, v4, v4);
 }
 
 - (TSTOwnerUidMapper)initWithIdentityMapping
@@ -759,7 +759,7 @@
   return p_uidMap;
 }
 
-- (TSTOwnerUidMapper)initWithArchive:(const void *)a3
+- (TSTOwnerUidMapper)initWithArchive:(const void *)archive
 {
   v25.receiver = self;
   v25.super_class = TSTOwnerUidMapper;
@@ -767,9 +767,9 @@
   if (v4)
   {
     v5 = MEMORY[0x277D809E0];
-    if (*(a3 + 3))
+    if (*(archive + 3))
     {
-      v6 = *(a3 + 3);
+      v6 = *(archive + 3);
     }
 
     else
@@ -779,9 +779,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v6);
     *(v4 + 8) = v26;
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v7 = *(a3 + 4);
+      v7 = *(archive + 4);
     }
 
     else
@@ -791,9 +791,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v7);
     *(v4 + 24) = v26;
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      v8 = *(a3 + 5);
+      v8 = *(archive + 5);
     }
 
     else
@@ -803,9 +803,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v8);
     *(v4 + 40) = v26;
-    if (*(a3 + 6))
+    if (*(archive + 6))
     {
-      v9 = *(a3 + 6);
+      v9 = *(archive + 6);
     }
 
     else
@@ -815,9 +815,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v9);
     *(v4 + 56) = v26;
-    if (*(a3 + 7))
+    if (*(archive + 7))
     {
-      v10 = *(a3 + 7);
+      v10 = *(archive + 7);
     }
 
     else
@@ -827,9 +827,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v10);
     *(v4 + 72) = v26;
-    if (*(a3 + 8))
+    if (*(archive + 8))
     {
-      v11 = *(a3 + 8);
+      v11 = *(archive + 8);
     }
 
     else
@@ -839,9 +839,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v11);
     *(v4 + 88) = v26;
-    if (*(a3 + 9))
+    if (*(archive + 9))
     {
-      v12 = *(a3 + 9);
+      v12 = *(archive + 9);
     }
 
     else
@@ -851,9 +851,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v12);
     *(v4 + 104) = v26;
-    if (*(a3 + 10))
+    if (*(archive + 10))
     {
-      v13 = *(a3 + 10);
+      v13 = *(archive + 10);
     }
 
     else
@@ -863,9 +863,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v13);
     *(v4 + 120) = v26;
-    if (*(a3 + 11))
+    if (*(archive + 11))
     {
-      v14 = *(a3 + 11);
+      v14 = *(archive + 11);
     }
 
     else
@@ -875,9 +875,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v14);
     *(v4 + 136) = v26;
-    if (*(a3 + 12))
+    if (*(archive + 12))
     {
-      v15 = *(a3 + 12);
+      v15 = *(archive + 12);
     }
 
     else
@@ -887,9 +887,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v15);
     *(v4 + 152) = v26;
-    if (*(a3 + 13))
+    if (*(archive + 13))
     {
-      v16 = *(a3 + 13);
+      v16 = *(archive + 13);
     }
 
     else
@@ -899,9 +899,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v16);
     *(v4 + 168) = v26;
-    if (*(a3 + 14))
+    if (*(archive + 14))
     {
-      v17 = *(a3 + 14);
+      v17 = *(archive + 14);
     }
 
     else
@@ -911,9 +911,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v17);
     *(v4 + 184) = v26;
-    if (*(a3 + 19))
+    if (*(archive + 19))
     {
-      v18 = *(a3 + 19);
+      v18 = *(archive + 19);
     }
 
     else
@@ -923,9 +923,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v18);
     *(v4 + 200) = v26;
-    if (*(a3 + 20))
+    if (*(archive + 20))
     {
-      v19 = *(a3 + 20);
+      v19 = *(archive + 20);
     }
 
     else
@@ -935,9 +935,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v19);
     *(v4 + 216) = v26;
-    if (*(a3 + 15))
+    if (*(archive + 15))
     {
-      v20 = *(a3 + 15);
+      v20 = *(archive + 15);
     }
 
     else
@@ -947,9 +947,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v20);
     *(v4 + 232) = v26;
-    if (*(a3 + 16))
+    if (*(archive + 16))
     {
-      v21 = *(a3 + 16);
+      v21 = *(archive + 16);
     }
 
     else
@@ -959,9 +959,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v21);
     *(v4 + 248) = v26;
-    if (*(a3 + 17))
+    if (*(archive + 17))
     {
-      v22 = *(a3 + 17);
+      v22 = *(archive + 17);
     }
 
     else
@@ -971,9 +971,9 @@
 
     TSP::UUIDData::UUIDData(&v26, v22);
     *(v4 + 264) = v26;
-    if (*(a3 + 18))
+    if (*(archive + 18))
     {
-      v23 = *(a3 + 18);
+      v23 = *(archive + 18);
     }
 
     else
@@ -988,282 +988,282 @@
   return v4;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  pbTableUID._lower = objc_msgSend_tableUID(self, a2, a3, v3, v4);
+  pbTableUID._lower = objc_msgSend_tableUID(self, a2, archive, v3, v4);
   pbTableUID._upper = v7;
   if (!(pbTableUID._lower | v7))
   {
     pbTableUID = self->_pbTableUID;
   }
 
-  *(a3 + 4) |= 1u;
-  v8 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v8 = *(archive + 3);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(archive + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = MEMORY[0x223DA0360](v9);
-    *(a3 + 3) = v8;
+    *(archive + 3) = v8;
   }
 
   TSKUIDStruct::saveToMessage(&pbTableUID, v8);
-  *(a3 + 4) |= 2u;
-  v10 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v10 = *(archive + 4);
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = MEMORY[0x223DA0360](v11);
-    *(a3 + 4) = v10;
+    *(archive + 4) = v10;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextTableUID, v10);
-  *(a3 + 4) |= 4u;
-  v12 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v12 = *(archive + 5);
   if (!v12)
   {
-    v13 = *(a3 + 1);
+    v13 = *(archive + 1);
     if (v13)
     {
       v13 = *(v13 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v12 = MEMORY[0x223DA0360](v13);
-    *(a3 + 5) = v12;
+    *(archive + 5) = v12;
   }
 
   TSP::UUIDData::saveToMessage(&self->_hiddenStateForRowsOwnerUID, v12);
-  *(a3 + 4) |= 8u;
-  v14 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v14 = *(archive + 6);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = MEMORY[0x223DA0360](v15);
-    *(a3 + 6) = v14;
+    *(archive + 6) = v14;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextHiddenStateForRowsOwnerUID, v14);
-  *(a3 + 4) |= 0x10u;
-  v16 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v16 = *(archive + 7);
   if (!v16)
   {
-    v17 = *(a3 + 1);
+    v17 = *(archive + 1);
     if (v17)
     {
       v17 = *(v17 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v16 = MEMORY[0x223DA0360](v17);
-    *(a3 + 7) = v16;
+    *(archive + 7) = v16;
   }
 
   TSP::UUIDData::saveToMessage(&self->_hiddenStateForColumnsOwnerUID, v16);
-  *(a3 + 4) |= 0x20u;
-  v18 = *(a3 + 8);
+  *(archive + 4) |= 0x20u;
+  v18 = *(archive + 8);
   if (!v18)
   {
-    v19 = *(a3 + 1);
+    v19 = *(archive + 1);
     if (v19)
     {
       v19 = *(v19 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v18 = MEMORY[0x223DA0360](v19);
-    *(a3 + 8) = v18;
+    *(archive + 8) = v18;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextHiddenStateForColumnsOwnerUID, v18);
-  *(a3 + 4) |= 0x40u;
-  v20 = *(a3 + 9);
+  *(archive + 4) |= 0x40u;
+  v20 = *(archive + 9);
   if (!v20)
   {
-    v21 = *(a3 + 1);
+    v21 = *(archive + 1);
     if (v21)
     {
       v21 = *(v21 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v20 = MEMORY[0x223DA0360](v21);
-    *(a3 + 9) = v20;
+    *(archive + 9) = v20;
   }
 
   TSP::UUIDData::saveToMessage(&self->_conditionalStyleOwnerUID, v20);
-  *(a3 + 4) |= 0x80u;
-  v22 = *(a3 + 10);
+  *(archive + 4) |= 0x80u;
+  v22 = *(archive + 10);
   if (!v22)
   {
-    v23 = *(a3 + 1);
+    v23 = *(archive + 1);
     if (v23)
     {
       v23 = *(v23 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v22 = MEMORY[0x223DA0360](v23);
-    *(a3 + 10) = v22;
+    *(archive + 10) = v22;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextConditionalStyleOwnerUID, v22);
-  *(a3 + 4) |= 0x100u;
-  v24 = *(a3 + 11);
+  *(archive + 4) |= 0x100u;
+  v24 = *(archive + 11);
   if (!v24)
   {
-    v25 = *(a3 + 1);
+    v25 = *(archive + 1);
     if (v25)
     {
       v25 = *(v25 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v24 = MEMORY[0x223DA0360](v25);
-    *(a3 + 11) = v24;
+    *(archive + 11) = v24;
   }
 
   TSP::UUIDData::saveToMessage(&self->_sortRuleReferenceTrackerOwnerUID, v24);
-  *(a3 + 4) |= 0x200u;
-  v26 = *(a3 + 12);
+  *(archive + 4) |= 0x200u;
+  v26 = *(archive + 12);
   if (!v26)
   {
-    v27 = *(a3 + 1);
+    v27 = *(archive + 1);
     if (v27)
     {
       v27 = *(v27 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v26 = MEMORY[0x223DA0360](v27);
-    *(a3 + 12) = v26;
+    *(archive + 12) = v26;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextSortRuleReferenceTrackerOwnerUID, v26);
-  *(a3 + 4) |= 0x400u;
-  v28 = *(a3 + 13);
+  *(archive + 4) |= 0x400u;
+  v28 = *(archive + 13);
   if (!v28)
   {
-    v29 = *(a3 + 1);
+    v29 = *(archive + 1);
     if (v29)
     {
       v29 = *(v29 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v28 = MEMORY[0x223DA0360](v29);
-    *(a3 + 13) = v28;
+    *(archive + 13) = v28;
   }
 
   TSP::UUIDData::saveToMessage(&self->_mergeOwnerUID, v28);
-  *(a3 + 4) |= 0x800u;
-  v30 = *(a3 + 14);
+  *(archive + 4) |= 0x800u;
+  v30 = *(archive + 14);
   if (!v30)
   {
-    v31 = *(a3 + 1);
+    v31 = *(archive + 1);
     if (v31)
     {
       v31 = *(v31 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v30 = MEMORY[0x223DA0360](v31);
-    *(a3 + 14) = v30;
+    *(archive + 14) = v30;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextMergeOwnerUID, v30);
-  *(a3 + 4) |= 0x10000u;
-  v32 = *(a3 + 19);
+  *(archive + 4) |= 0x10000u;
+  v32 = *(archive + 19);
   if (!v32)
   {
-    v33 = *(a3 + 1);
+    v33 = *(archive + 1);
     if (v33)
     {
       v33 = *(v33 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v32 = MEMORY[0x223DA0360](v33);
-    *(a3 + 19) = v32;
+    *(archive + 19) = v32;
   }
 
   TSP::UUIDData::saveToMessage(&self->_pencilAnnotationOwnerUID, v32);
-  *(a3 + 4) |= 0x20000u;
-  v34 = *(a3 + 20);
+  *(archive + 4) |= 0x20000u;
+  v34 = *(archive + 20);
   if (!v34)
   {
-    v35 = *(a3 + 1);
+    v35 = *(archive + 1);
     if (v35)
     {
       v35 = *(v35 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v34 = MEMORY[0x223DA0360](v35);
-    *(a3 + 20) = v34;
+    *(archive + 20) = v34;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextPencilAnnotationOwnerUID, v34);
-  *(a3 + 4) |= 0x1000u;
-  v36 = *(a3 + 15);
+  *(archive + 4) |= 0x1000u;
+  v36 = *(archive + 15);
   if (!v36)
   {
-    v37 = *(a3 + 1);
+    v37 = *(archive + 1);
     if (v37)
     {
       v37 = *(v37 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v36 = MEMORY[0x223DA0360](v37);
-    *(a3 + 15) = v36;
+    *(archive + 15) = v36;
   }
 
   TSP::UUIDData::saveToMessage(&self->_categoryAggregatesOwnerUID, v36);
-  *(a3 + 4) |= 0x2000u;
-  v38 = *(a3 + 16);
+  *(archive + 4) |= 0x2000u;
+  v38 = *(archive + 16);
   if (!v38)
   {
-    v39 = *(a3 + 1);
+    v39 = *(archive + 1);
     if (v39)
     {
       v39 = *(v39 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v38 = MEMORY[0x223DA0360](v39);
-    *(a3 + 16) = v38;
+    *(archive + 16) = v38;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextCategoryAggregatesOwnerUID, v38);
-  *(a3 + 4) |= 0x4000u;
-  v40 = *(a3 + 17);
+  *(archive + 4) |= 0x4000u;
+  v40 = *(archive + 17);
   if (!v40)
   {
-    v41 = *(a3 + 1);
+    v41 = *(archive + 1);
     if (v41)
     {
       v41 = *(v41 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v40 = MEMORY[0x223DA0360](v41);
-    *(a3 + 17) = v40;
+    *(archive + 17) = v40;
   }
 
   TSP::UUIDData::saveToMessage(&self->_groupByUID, v40);
-  *(a3 + 4) |= 0x8000u;
-  v42 = *(a3 + 18);
+  *(archive + 4) |= 0x8000u;
+  v42 = *(archive + 18);
   if (!v42)
   {
-    v43 = *(a3 + 1);
+    v43 = *(archive + 1);
     if (v43)
     {
       v43 = *(v43 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v42 = MEMORY[0x223DA0360](v43);
-    *(a3 + 18) = v42;
+    *(archive + 18) = v42;
   }
 
   TSP::UUIDData::saveToMessage(&self->_nextGroupByUID, v42);

@@ -1,20 +1,20 @@
 @interface CTXPCHandleUserEnteredOtpRequest
 + (id)allowedClassesForArguments;
-- (CTXPCHandleUserEnteredOtpRequest)initWithSourceIccid:(id)a3 otp:(id)a4;
+- (CTXPCHandleUserEnteredOtpRequest)initWithSourceIccid:(id)iccid otp:(id)otp;
 - (id)otp;
 - (id)sourceIccid;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCHandleUserEnteredOtpRequest
 
-- (CTXPCHandleUserEnteredOtpRequest)initWithSourceIccid:(id)a3 otp:(id)a4
+- (CTXPCHandleUserEnteredOtpRequest)initWithSourceIccid:(id)iccid otp:(id)otp
 {
-  v6 = a3;
-  v7 = a4;
+  iccidCopy = iccid;
+  otpCopy = otp;
   v8 = objc_opt_new();
-  [v8 setObject:v6 forKeyedSubscript:@"sourceIccid"];
-  [v8 setObject:v7 forKeyedSubscript:@"otp"];
+  [v8 setObject:iccidCopy forKeyedSubscript:@"sourceIccid"];
+  [v8 setObject:otpCopy forKeyedSubscript:@"otp"];
   v11.receiver = self;
   v11.super_class = CTXPCHandleUserEnteredOtpRequest;
   v9 = [(CTXPCMessage *)&v11 initWithNamedArguments:v8];
@@ -22,24 +22,24 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCHandleUserEnteredOtpRequest *)self sourceIccid];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  sourceIccid = [(CTXPCHandleUserEnteredOtpRequest *)self sourceIccid];
   v9 = [(CTXPCHandleUserEnteredOtpRequest *)self otp];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__CTXPCHandleUserEnteredOtpRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A43CC8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 handleUserEnteredOtp:v8 otp:v9 completion:v11];
+  [handlerCopy handleUserEnteredOtp:sourceIccid otp:v9 completion:v11];
 }
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCHandleUserEnteredOtpRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -49,8 +49,8 @@
 
 - (id)sourceIccid
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"sourceIccid"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"sourceIccid"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -58,8 +58,8 @@
 
 - (id)otp
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"otp"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"otp"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

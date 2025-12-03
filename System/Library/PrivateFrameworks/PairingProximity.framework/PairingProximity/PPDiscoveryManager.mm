@@ -4,12 +4,12 @@
 - (void)_beginDiscovery;
 - (void)_forceEndDiscovery;
 - (void)begin;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)end;
-- (void)foundAcceptableDeviceWithAdvertisingID:(id)a3 signalStrength:(id)a4;
-- (void)setSignalLimitOverride:(int64_t)a3;
-- (void)updateFromBTState:(int64_t)a3;
+- (void)foundAcceptableDeviceWithAdvertisingID:(id)d signalStrength:(id)strength;
+- (void)setSignalLimitOverride:(int64_t)override;
+- (void)updateFromBTState:(int64_t)state;
 @end
 
 @implementation PPDiscoveryManager
@@ -316,10 +316,10 @@ void __40__PPDiscoveryManager__forceEndDiscovery__block_invoke(uint64_t a1)
   }
 }
 
-- (void)updateFromBTState:(int64_t)a3
+- (void)updateFromBTState:(int64_t)state
 {
   v5 = [PPDiscoveryManager isBluetoothPoweredOn:?];
-  v6 = [PPDiscoveryManager isBluetoothConnected:a3];
+  v6 = [PPDiscoveryManager isBluetoothConnected:state];
   v7 = !v5 || !v6;
   if (!v7 && self->_bluetoothIsScanning)
   {
@@ -328,11 +328,11 @@ void __40__PPDiscoveryManager__forceEndDiscovery__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSignalLimitOverride:(int64_t)a3
+- (void)setSignalLimitOverride:(int64_t)override
 {
-  if ((a3 - 20) > 0xFFFFFFFFFFFFFF9BLL)
+  if ((override - 20) > 0xFFFFFFFFFFFFFF9BLL)
   {
-    self->_signalLimitOverride = a3;
+    self->_signalLimitOverride = override;
   }
 
   else
@@ -345,49 +345,49 @@ void __40__PPDiscoveryManager__forceEndDiscovery__block_invoke(uint64_t a1)
   }
 }
 
-- (void)foundAcceptableDeviceWithAdvertisingID:(id)a3 signalStrength:(id)a4
+- (void)foundAcceptableDeviceWithAdvertisingID:(id)d signalStrength:(id)strength
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 integerValue];
+  dCopy = d;
+  strengthCopy = strength;
+  integerValue = [strengthCopy integerValue];
   v9 = pbb_mobileasset_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2048;
-    v18 = v8;
+    v18 = integerValue;
     _os_log_impl(&dword_25DF4A000, v9, OS_LOG_TYPE_DEFAULT, "Found Acceptable Device: %@ with RSSI Value: %ld", buf, 0x16u);
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13[0] = @"PPDiscoveredDeviceAdvertisingName";
   v13[1] = @"PPDiscoveredDeviceRSSIValue";
-  v14[0] = v6;
-  v14[1] = v7;
+  v14[0] = dCopy;
+  v14[1] = strengthCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-  [v10 postNotificationName:@"PPDeviceWasDiscoveredNotification" object:self userInfo:v11];
+  [defaultCenter postNotificationName:@"PPDeviceWasDiscoveredNotification" object:self userInfo:v11];
 
   if (self->_discoveryDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(PPDiscoveryManagerDelegate *)self->_discoveryDelegate didDiscoverDeviceWithAdvertisingID:v6 signalStrength:v8];
+    [(PPDiscoveryManagerDelegate *)self->_discoveryDelegate didDiscoverDeviceWithAdvertisingID:dCopy signalStrength:integerValue];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   discoveryQueue = self->_discoveryQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__PPDiscoveryManager_centralManagerDidUpdateState___block_invoke;
   v7[3] = &unk_2799FD560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(discoveryQueue, v7);
 }
 
@@ -399,19 +399,19 @@ uint64_t __51__PPDiscoveryManager_centralManagerDidUpdateState___block_invoke(ui
   return [v1 updateFromBTState:v2];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v8 = a5;
-  v9 = a6;
+  dataCopy = data;
+  iCopy = i;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__PPDiscoveryManager_centralManager_didDiscoverPeripheral_advertisementData_RSSI___block_invoke;
   block[3] = &unk_2799FD588;
-  v13 = v8;
-  v14 = v9;
-  v15 = self;
-  v10 = v9;
-  v11 = v8;
+  v13 = dataCopy;
+  v14 = iCopy;
+  selfCopy = self;
+  v10 = iCopy;
+  v11 = dataCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

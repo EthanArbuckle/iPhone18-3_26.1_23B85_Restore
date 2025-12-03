@@ -1,47 +1,47 @@
 @interface _TVFocusableTextView
 + (double)cornerRadius;
 - (BOOL)canBecomeFocused;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGRect)_moreLabelExclusionPathFrame;
 - (CGRect)_moreLabelFrame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)padding;
-- (_TVFocusableTextView)initWithFrame:(CGRect)a3;
+- (_TVFocusableTextView)initWithFrame:(CGRect)frame;
 - (unint64_t)maximumNumberOfLines;
-- (void)_playButtonAction:(id)a3;
+- (void)_playButtonAction:(id)action;
 - (void)_recomputeTextSizeIfNeeded;
-- (void)_selectButtonAction:(id)a3;
+- (void)_selectButtonAction:(id)action;
 - (void)_updateBackgroundColors;
-- (void)_updateTextColorsForFocusState:(BOOL)a3;
+- (void)_updateTextColorsForFocusState:(BOOL)state;
 - (void)_updateTextColorsIfNeeded;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)setAlwaysShowBackground:(BOOL)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDescriptionText:(id)a3;
-- (void)setDescriptionTextAlignment:(int64_t)a3;
-- (void)setDescriptionTextColor:(id)a3;
-- (void)setDescriptionTextHighlightColor:(id)a3;
-- (void)setFocusSizeIncrease:(unint64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightBackgroundColor:(id)a3;
-- (void)setMaximumNumberOfLines:(unint64_t)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setTrackHorizontal:(BOOL)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)setAlwaysShowBackground:(BOOL)background;
+- (void)setBackgroundColor:(id)color;
+- (void)setDescriptionText:(id)text;
+- (void)setDescriptionTextAlignment:(int64_t)alignment;
+- (void)setDescriptionTextColor:(id)color;
+- (void)setDescriptionTextHighlightColor:(id)color;
+- (void)setFocusSizeIncrease:(unint64_t)increase;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightBackgroundColor:(id)color;
+- (void)setMaximumNumberOfLines:(unint64_t)lines;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setTrackHorizontal:(BOOL)horizontal;
 - (void)tintColorDidChange;
 @end
 
 @implementation _TVFocusableTextView
 
-- (_TVFocusableTextView)initWithFrame:(CGRect)a3
+- (_TVFocusableTextView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34.receiver = self;
   v34.super_class = _TVFocusableTextView;
   v7 = [(_TVFocusableTextView *)&v34 initWithFrame:?];
@@ -54,10 +54,10 @@
     v9 = *(MEMORY[0x277D768C8] + 16);
     *&v7->_padding.top = *MEMORY[0x277D768C8];
     *&v7->_padding.bottom = v9;
-    v10 = [MEMORY[0x277D75348] clearColor];
+    clearColor = [MEMORY[0x277D75348] clearColor];
     v33.receiver = v8;
     v33.super_class = _TVFocusableTextView;
-    [(_TVFocusableTextView *)&v33 setBackgroundColor:v10];
+    [(_TVFocusableTextView *)&v33 setBackgroundColor:clearColor];
 
     v11 = [objc_alloc(MEMORY[0x277D75F68]) initWithFrame:{x, y, width, height}];
     floatingView = v8->_floatingView;
@@ -83,8 +83,8 @@
     descriptionTextView = v8->_descriptionTextView;
     v8->_descriptionTextView = v16;
 
-    v18 = [(_UIFloatingContentView *)v8->_floatingView contentView];
-    [v18 addSubview:v8->_descriptionTextView];
+    contentView = [(_UIFloatingContentView *)v8->_floatingView contentView];
+    [contentView addSubview:v8->_descriptionTextView];
 
     v19 = objc_alloc(MEMORY[0x277D756B8]);
     v20 = [v19 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -98,8 +98,8 @@
 
     [(UILabel *)v8->_moreLabel _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
     v24 = v8->_moreLabel;
-    v25 = [(_TVFocusableTextView *)v8 moreLabelText];
-    [(UILabel *)v24 setText:v25];
+    moreLabelText = [(_TVFocusableTextView *)v8 moreLabelText];
+    [(UILabel *)v24 setText:moreLabelText];
 
     v26 = v8->_moreLabel;
     v27 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277CC4A88]];
@@ -107,8 +107,8 @@
 
     [(UILabel *)v8->_moreLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v8->_moreLabel sizeToFit];
-    v28 = [(_UIFloatingContentView *)v8->_floatingView contentView];
-    [v28 addSubview:v8->_moreLabel];
+    contentView2 = [(_UIFloatingContentView *)v8->_floatingView contentView];
+    [contentView2 addSubview:v8->_moreLabel];
 
     v29 = v8->_moreLabel;
     [(_TVFocusableTextView *)v8 _moreLabelFrame];
@@ -124,92 +124,92 @@
   return v8;
 }
 
-- (void)setDescriptionTextColor:(id)a3
+- (void)setDescriptionTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_descriptionTextColor != v5)
+  colorCopy = color;
+  if (self->_descriptionTextColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_descriptionTextColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_descriptionTextColor, color);
     [(_TVFocusableTextView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDescriptionTextHighlightColor:(id)a3
+- (void)setDescriptionTextHighlightColor:(id)color
 {
-  v5 = a3;
-  if (self->_descriptionTextHighlightColor != v5)
+  colorCopy = color;
+  if (self->_descriptionTextHighlightColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_descriptionTextHighlightColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_descriptionTextHighlightColor, color);
     [(_TVFocusableTextView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setDescriptionTextAlignment:(int64_t)a3
+- (void)setDescriptionTextAlignment:(int64_t)alignment
 {
-  if (self->_descriptionTextAlignment != a3)
+  if (self->_descriptionTextAlignment != alignment)
   {
-    self->_descriptionTextAlignment = a3;
+    self->_descriptionTextAlignment = alignment;
     [(_TVFocusableTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
     [(_TVFocusableTextView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setHighlightBackgroundColor:(id)a3
+- (void)setHighlightBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_highlightBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_highlightBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_highlightBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_highlightBackgroundColor, color);
     [(_TVFocusableTextView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setFocusSizeIncrease:(unint64_t)a3
+- (void)setFocusSizeIncrease:(unint64_t)increase
 {
-  if (self->_focusSizeIncrease != a3)
+  if (self->_focusSizeIncrease != increase)
   {
-    self->_focusSizeIncrease = a3;
-    [(_UIFloatingContentView *)self->_floatingView setFocusedSizeIncrease:a3];
+    self->_focusSizeIncrease = increase;
+    [(_UIFloatingContentView *)self->_floatingView setFocusedSizeIncrease:increase];
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_padding.top, v3), vceqq_f64(*&self->_padding.bottom, v4)))) & 1) == 0)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(UITextView *)self->_descriptionTextView setTextContainerInset:?];
 
     [(_TVFocusableTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setAlwaysShowBackground:(BOOL)a3
+- (void)setAlwaysShowBackground:(BOOL)background
 {
-  if (self->_alwaysShowBackground != a3)
+  if (self->_alwaysShowBackground != background)
   {
-    self->_alwaysShowBackground = a3;
+    self->_alwaysShowBackground = background;
     [(_TVFocusableTextView *)self setNeedsLayout];
   }
 }
@@ -260,8 +260,8 @@ LABEL_7:
     }
 
     [(UIVisualEffectView *)backgroundView setAlpha:v7];
-    v8 = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
-    [v8 addSubview:self->_backgroundView];
+    visualEffectContainerView = [(_UIFloatingContentView *)self->_floatingView visualEffectContainerView];
+    [visualEffectContainerView addSubview:self->_backgroundView];
   }
 }
 
@@ -272,9 +272,9 @@ LABEL_7:
   [(_TVFocusableTextView *)self _updateTextColorsForFocusState:v3];
 }
 
-- (void)_updateTextColorsForFocusState:(BOOL)a3
+- (void)_updateTextColorsForFocusState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v4 = 448;
   }
@@ -299,13 +299,13 @@ LABEL_7:
 
   else
   {
-    v7 = [(_TVFocusableTextView *)self descriptionText];
-    v8 = [v7 length];
+    descriptionText = [(_TVFocusableTextView *)self descriptionText];
+    v8 = [descriptionText length];
 
     if (v8)
     {
-      v9 = [(_TVFocusableTextView *)self descriptionText];
-      v10 = [v9 attributesAtIndex:0 effectiveRange:0];
+      descriptionText2 = [(_TVFocusableTextView *)self descriptionText];
+      v10 = [descriptionText2 attributesAtIndex:0 effectiveRange:0];
       v15 = [v10 mutableCopy];
 
       v11 = [v15 objectForKeyedSubscript:*MEMORY[0x277D740C0]];
@@ -358,8 +358,8 @@ LABEL_7:
     [(_UIFloatingContentView *)self->_floatingView setFrame:v8, -(moreHighlightPadding + -6.0), v9, v10];
     [(UIVisualEffectView *)self->_backgroundView setFrame:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v9, v10];
     [(UITextView *)self->_descriptionTextView setTextAlignment:self->_descriptionTextAlignment];
-    v11 = [(_UIFloatingContentView *)self->_floatingView contentView];
-    [v11 addSubview:self->_moreLabel];
+    contentView = [(_UIFloatingContentView *)self->_floatingView contentView];
+    [contentView addSubview:self->_moreLabel];
 
     moreLabel = self->_moreLabel;
     [(_TVFocusableTextView *)self _moreLabelFrame];
@@ -381,18 +381,18 @@ LABEL_7:
       v37.size.width = v23;
       v37.size.height = v25;
       v38 = CGRectIntegral(v37);
-      v13 = [v29 bezierPathWithRect:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
-      v30 = [(UITextView *)self->_descriptionTextView textContainer];
-      v34[0] = v13;
+      textContainer2 = [v29 bezierPathWithRect:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
+      textContainer = [(UITextView *)self->_descriptionTextView textContainer];
+      v34[0] = textContainer2;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
-      [v30 setExclusionPaths:v31];
+      [textContainer setExclusionPaths:v31];
     }
 
     else
     {
       [(UILabel *)self->_moreLabel setHidden:1];
-      v13 = [(UITextView *)self->_descriptionTextView textContainer];
-      [v13 setExclusionPaths:MEMORY[0x277CBEBF8]];
+      textContainer2 = [(UITextView *)self->_descriptionTextView textContainer];
+      [textContainer2 setExclusionPaths:MEMORY[0x277CBEBF8]];
     }
 
     [(UILabel *)self->_moreLabel setText:self->_moreLabelText];
@@ -403,10 +403,10 @@ LABEL_7:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = [a3 nextFocusedView];
-  v6 = [v5 isDescendantOfView:self];
+  nextFocusedView = [context nextFocusedView];
+  v6 = [nextFocusedView isDescendantOfView:self];
 
   [(_TVFocusableTextView *)self _updateTextColorsForFocusState:v6];
 }
@@ -418,8 +418,8 @@ LABEL_7:
     return 0;
   }
 
-  v3 = [(UITextView *)self->_descriptionTextView attributedText];
-  v4 = [v3 length];
+  attributedText = [(UITextView *)self->_descriptionTextView attributedText];
+  v4 = [attributedText length];
 
   if (!v4)
   {
@@ -434,23 +434,23 @@ LABEL_7:
   return [(_TVFocusableTextView *)self isTextTruncating];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(_TVFocusableTextView *)self maximumNumberOfLines];
-  v7 = [(UITextView *)self->_auxilliaryTextView textContainer];
-  [v7 setMaximumNumberOfLines:v6];
+  height = fits.height;
+  width = fits.width;
+  maximumNumberOfLines = [(_TVFocusableTextView *)self maximumNumberOfLines];
+  textContainer = [(UITextView *)self->_auxilliaryTextView textContainer];
+  [textContainer setMaximumNumberOfLines:maximumNumberOfLines];
 
   [(UITextView *)self->_auxilliaryTextView sizeThatFits:width, height];
   v9 = v8;
   v11 = v10;
-  if (v6)
+  if (maximumNumberOfLines)
   {
     if (self->_moreLabelOnNewLine)
     {
-      v12 = [(UITextView *)self->_auxilliaryTextView textContainer];
-      [v12 setMaximumNumberOfLines:0];
+      textContainer2 = [(UITextView *)self->_auxilliaryTextView textContainer];
+      [textContainer2 setMaximumNumberOfLines:0];
 
       [(UITextView *)self->_auxilliaryTextView sizeThatFits:width, height];
       if (v13 > v11)
@@ -488,12 +488,12 @@ LABEL_7:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_TVFocusableTextView *)self _setNeedsTextSizeComputation];
   v8.receiver = self;
   v8.super_class = _TVFocusableTextView;
@@ -511,13 +511,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [textCopy mutableCopy];
     v7 = *MEMORY[0x277D74118];
     v8 = [v5 length];
     v23[0] = MEMORY[0x277D85DD0];
@@ -558,10 +558,10 @@ LABEL_7:
   }
 }
 
-- (void)setMaximumNumberOfLines:(unint64_t)a3
+- (void)setMaximumNumberOfLines:(unint64_t)lines
 {
-  v5 = [(UITextView *)self->_descriptionTextView textContainer];
-  [v5 setMaximumNumberOfLines:a3];
+  textContainer = [(UITextView *)self->_descriptionTextView textContainer];
+  [textContainer setMaximumNumberOfLines:lines];
 
   [(_TVFocusableTextView *)self _setNeedsTextSizeComputation];
 
@@ -570,17 +570,17 @@ LABEL_7:
 
 - (unint64_t)maximumNumberOfLines
 {
-  v2 = [(UITextView *)self->_descriptionTextView textContainer];
-  v3 = [v2 maximumNumberOfLines];
+  textContainer = [(UITextView *)self->_descriptionTextView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v3;
+  return maximumNumberOfLines;
 }
 
-- (void)setTrackHorizontal:(BOOL)a3
+- (void)setTrackHorizontal:(BOOL)horizontal
 {
-  self->_trackHorizontal = a3;
+  self->_trackHorizontal = horizontal;
   floatingView = self->_floatingView;
-  if (a3)
+  if (horizontal)
   {
     v4 = 0.04;
     v5 = 4.0;
@@ -602,13 +602,13 @@ LABEL_7:
     self->_needsTextSizeComputation = 0;
     [(UITextView *)self->_descriptionTextView bounds];
     v5 = v4;
-    v6 = [(UITextView *)self->_auxilliaryTextView textContainer];
-    [v6 setMaximumNumberOfLines:{-[_TVFocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines")}];
+    textContainer = [(UITextView *)self->_auxilliaryTextView textContainer];
+    [textContainer setMaximumNumberOfLines:{-[_TVFocusableTextView maximumNumberOfLines](self, "maximumNumberOfLines")}];
 
     [(UITextView *)self->_auxilliaryTextView sizeThatFits:v5, 0.0];
     v8 = v7;
-    v9 = [(UITextView *)self->_auxilliaryTextView textContainer];
-    [v9 setMaximumNumberOfLines:0];
+    textContainer2 = [(UITextView *)self->_auxilliaryTextView textContainer];
+    [textContainer2 setMaximumNumberOfLines:0];
 
     [(UITextView *)self->_auxilliaryTextView sizeThatFits:v5, 0.0];
     [(_TVFocusableTextView *)self setTextTruncating:v10 > v8];
@@ -646,8 +646,8 @@ LABEL_7:
 
 - (CGRect)_moreLabelFrame
 {
-  v3 = [(UITextView *)self->_descriptionTextView text];
-  v4 = [v3 _isNaturallyRTL];
+  text = [(UITextView *)self->_descriptionTextView text];
+  _isNaturallyRTL = [text _isNaturallyRTL];
 
   [(_UIFloatingContentView *)self->_floatingView bounds];
   v6 = v5;
@@ -664,7 +664,7 @@ LABEL_7:
   v22 = v21;
   if (self->_moreLabelOnNewLine)
   {
-    if (v4)
+    if (_isNaturallyRTL)
     {
       v58.origin.x = v6;
       v58.origin.y = rect;
@@ -687,7 +687,7 @@ LABEL_7:
   else
   {
     moreHighlightPadding = 10.0;
-    if ((v4 & 1) == 0)
+    if ((_isNaturallyRTL & 1) == 0)
     {
       v60.origin.x = v13;
       v60.origin.y = v15;
@@ -707,7 +707,7 @@ LABEL_7:
     v62.size.height = v22;
     Width = CGRectGetWidth(v62);
     v20 = v20 + 10.0;
-    if (v4)
+    if (_isNaturallyRTL)
     {
       v27 = Width;
       v63.origin.y = 0.0;
@@ -718,28 +718,28 @@ LABEL_7:
     }
   }
 
-  v28 = [(UITextView *)self->_descriptionTextView attributedText];
+  attributedText = [(UITextView *)self->_descriptionTextView attributedText];
   v64.origin.x = v13;
   v64.origin.y = v15;
   v64.size.width = v17;
   v64.size.height = v56;
   MaxY = CGRectGetMaxY(v64);
-  if ([v28 length])
+  if ([attributedText length])
   {
     v57[0] = 0;
-    v57[1] = [v28 length];
-    v30 = [v28 attributesAtIndex:0 effectiveRange:v57];
+    v57[1] = [attributedText length];
+    v30 = [attributedText attributesAtIndex:0 effectiveRange:v57];
     v31 = [v30 objectForKeyedSubscript:*MEMORY[0x277D740A8]];
     [v31 descender];
     v33 = v32;
     [v31 leading];
     v34 = v20;
     v36 = v33 - v35 * 0.5;
-    v37 = [(UILabel *)self->_moreLabel font];
-    [v37 descender];
+    font = [(UILabel *)self->_moreLabel font];
+    [font descender];
     v39 = v38;
-    v40 = [(UILabel *)self->_moreLabel font];
-    [v40 leading];
+    font2 = [(UILabel *)self->_moreLabel font];
+    [font2 leading];
     v42 = v36 - (v39 - v41 * 0.5);
     v20 = v34;
     MaxY = MaxY + v42;
@@ -751,7 +751,7 @@ LABEL_7:
   v65.size.height = v22;
   Height = CGRectGetHeight(v65);
   moreLabelOnNewLine = self->_moreLabelOnNewLine;
-  if (v4)
+  if (_isNaturallyRTL)
   {
     if (self->_moreLabelOnNewLine)
     {
@@ -801,14 +801,14 @@ LABEL_7:
   return result;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 anyObject];
-  v9 = [v8 type];
+  beganCopy = began;
+  eventCopy = event;
+  anyObject = [beganCopy anyObject];
+  type = [anyObject type];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFDLL) == 4 && [(_TVFocusableTextView *)self isFocused])
+  if ((type & 0xFFFFFFFFFFFFFFFDLL) == 4 && [(_TVFocusableTextView *)self isFocused])
   {
     [(_UIFloatingContentView *)self->_floatingView setControlState:9 animated:1];
   }
@@ -817,7 +817,7 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = _TVFocusableTextView;
-    [(_TVFocusableTextView *)&v10 pressesBegan:v6 withEvent:v7];
+    [(_TVFocusableTextView *)&v10 pressesBegan:beganCopy withEvent:eventCopy];
   }
 }
 
@@ -839,27 +839,27 @@ LABEL_7:
   [(UILabel *)self->_moreLabel setTextColor:v3];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_TVFocusableTextView *)self playRecognizer];
+  beginCopy = begin;
+  playRecognizer = [(_TVFocusableTextView *)self playRecognizer];
 
-  if (v5 != v4)
+  if (playRecognizer != beginCopy)
   {
     return 1;
   }
 
-  v7 = [(_TVFocusableTextView *)self playHandler];
-  v6 = v7 != 0;
+  playHandler = [(_TVFocusableTextView *)self playHandler];
+  v6 = playHandler != 0;
 
   return v6;
 }
 
-- (void)floatingContentView:(id)a3 isTransitioningFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)floatingContentView:(id)view isTransitioningFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v5 = 1.0;
   v6 = 0.0;
-  if ((a5 & 8) != 0)
+  if ((toState & 8) != 0)
   {
     v6 = 1.0;
   }
@@ -870,24 +870,24 @@ LABEL_7:
     v5 = v6;
   }
 
-  [(UIVisualEffectView *)self->_backgroundView setAlpha:a3, a4, v5];
+  [(UIVisualEffectView *)self->_backgroundView setAlpha:view, state, v5];
 }
 
-- (void)_selectButtonAction:(id)a3
+- (void)_selectButtonAction:(id)action
 {
   selectionHandler = self->_selectionHandler;
   if (selectionHandler)
   {
-    selectionHandler[2](selectionHandler, a3);
+    selectionHandler[2](selectionHandler, action);
   }
 }
 
-- (void)_playButtonAction:(id)a3
+- (void)_playButtonAction:(id)action
 {
   playHandler = self->_playHandler;
   if (playHandler)
   {
-    playHandler[2](playHandler, a3);
+    playHandler[2](playHandler, action);
   }
 }
 

@@ -1,9 +1,9 @@
 @interface CTCarrierSpaceAuthenticationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCarrierSpaceAuthenticationContext)init;
-- (CTCarrierSpaceAuthenticationContext)initWithCoder:(id)a3;
+- (CTCarrierSpaceAuthenticationContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCarrierSpaceAuthenticationContext
@@ -45,37 +45,37 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTCarrierSpaceAuthenticationContext *)self clientID];
-  [v3 appendFormat:@" clientID=%@", v4];
+  clientID = [(CTCarrierSpaceAuthenticationContext *)self clientID];
+  [v3 appendFormat:@" clientID=%@", clientID];
 
-  v5 = [(CTCarrierSpaceAuthenticationContext *)self authURL];
-  [v3 appendFormat:@" authURL=%@", v5];
+  authURL = [(CTCarrierSpaceAuthenticationContext *)self authURL];
+  [v3 appendFormat:@" authURL=%@", authURL];
 
-  v6 = [(CTCarrierSpaceAuthenticationContext *)self tokenURL];
-  [v3 appendFormat:@" tokenURL=%@", v6];
+  tokenURL = [(CTCarrierSpaceAuthenticationContext *)self tokenURL];
+  [v3 appendFormat:@" tokenURL=%@", tokenURL];
 
-  v7 = [(CTCarrierSpaceAuthenticationContext *)self carrierName];
-  [v3 appendFormat:@" carrierName=%@", v7];
+  carrierName = [(CTCarrierSpaceAuthenticationContext *)self carrierName];
+  [v3 appendFormat:@" carrierName=%@", carrierName];
 
-  v8 = [(CTCarrierSpaceAuthenticationContext *)self iccid];
-  [v3 appendFormat:@" iccid=%@", v8];
+  iccid = [(CTCarrierSpaceAuthenticationContext *)self iccid];
+  [v3 appendFormat:@" iccid=%@", iccid];
 
-  v9 = [(CTCarrierSpaceAuthenticationContext *)self scope];
-  [v3 appendFormat:@" scope=%@", v9];
+  scope = [(CTCarrierSpaceAuthenticationContext *)self scope];
+  [v3 appendFormat:@" scope=%@", scope];
 
   [v3 appendFormat:@" supportsState=%d", -[CTCarrierSpaceAuthenticationContext supportsState](self, "supportsState")];
-  v10 = [(CTCarrierSpaceAuthenticationContext *)self sourceApplicationAccountIdentifier];
-  [v3 appendFormat:@" sourceApplicationAccountIdentifier=%@", v10];
+  sourceApplicationAccountIdentifier = [(CTCarrierSpaceAuthenticationContext *)self sourceApplicationAccountIdentifier];
+  [v3 appendFormat:@" sourceApplicationAccountIdentifier=%@", sourceApplicationAccountIdentifier];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
@@ -85,38 +85,38 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CTCarrierSpaceAuthenticationContext *)self clientID];
-      v6 = [(CTCarrierSpaceAuthenticationContext *)v4 clientID];
-      if ([v5 isEqualToString:v6])
+      clientID = [(CTCarrierSpaceAuthenticationContext *)self clientID];
+      clientID2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy clientID];
+      if ([clientID isEqualToString:clientID2])
       {
-        v7 = [(CTCarrierSpaceAuthenticationContext *)self authURL];
-        v8 = [(CTCarrierSpaceAuthenticationContext *)v4 authURL];
-        if ([v7 isEqualToString:v8])
+        authURL = [(CTCarrierSpaceAuthenticationContext *)self authURL];
+        authURL2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy authURL];
+        if ([authURL isEqualToString:authURL2])
         {
-          v9 = [(CTCarrierSpaceAuthenticationContext *)self tokenURL];
-          v10 = [(CTCarrierSpaceAuthenticationContext *)v4 tokenURL];
-          if ([v9 isEqualToString:v10])
+          tokenURL = [(CTCarrierSpaceAuthenticationContext *)self tokenURL];
+          tokenURL2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy tokenURL];
+          if ([tokenURL isEqualToString:tokenURL2])
           {
-            v11 = [(CTCarrierSpaceAuthenticationContext *)self carrierName];
-            v12 = [(CTCarrierSpaceAuthenticationContext *)v4 carrierName];
-            if ([v11 isEqualToString:v12])
+            carrierName = [(CTCarrierSpaceAuthenticationContext *)self carrierName];
+            carrierName2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy carrierName];
+            if ([carrierName isEqualToString:carrierName2])
             {
-              v24 = v11;
-              v13 = [(CTCarrierSpaceAuthenticationContext *)self iccid];
-              [(CTCarrierSpaceAuthenticationContext *)v4 iccid];
-              v23 = v25 = v13;
-              if ([v13 isEqualToString:?])
+              v24 = carrierName;
+              iccid = [(CTCarrierSpaceAuthenticationContext *)self iccid];
+              [(CTCarrierSpaceAuthenticationContext *)equalCopy iccid];
+              v23 = v25 = iccid;
+              if ([iccid isEqualToString:?])
               {
-                v14 = [(CTCarrierSpaceAuthenticationContext *)self scope];
-                v21 = [(CTCarrierSpaceAuthenticationContext *)v4 scope];
-                v22 = v14;
-                v15 = [v14 isEqualToString:?];
-                v11 = v24;
-                if (v15 && (v19 = [(CTCarrierSpaceAuthenticationContext *)self supportsState], v19 == [(CTCarrierSpaceAuthenticationContext *)v4 supportsState]))
+                scope = [(CTCarrierSpaceAuthenticationContext *)self scope];
+                scope2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy scope];
+                v22 = scope;
+                v15 = [scope isEqualToString:?];
+                carrierName = v24;
+                if (v15 && (v19 = [(CTCarrierSpaceAuthenticationContext *)self supportsState], v19 == [(CTCarrierSpaceAuthenticationContext *)equalCopy supportsState]))
                 {
-                  v20 = [(CTCarrierSpaceAuthenticationContext *)self sourceApplicationAccountIdentifier];
-                  v18 = [(CTCarrierSpaceAuthenticationContext *)v4 sourceApplicationAccountIdentifier];
-                  v16 = [v20 isEqualToString:v18];
+                  sourceApplicationAccountIdentifier = [(CTCarrierSpaceAuthenticationContext *)self sourceApplicationAccountIdentifier];
+                  sourceApplicationAccountIdentifier2 = [(CTCarrierSpaceAuthenticationContext *)equalCopy sourceApplicationAccountIdentifier];
+                  v16 = [sourceApplicationAccountIdentifier isEqualToString:sourceApplicationAccountIdentifier2];
                 }
 
                 else
@@ -128,7 +128,7 @@
               else
               {
                 v16 = 0;
-                v11 = v24;
+                carrierName = v24;
               }
             }
 
@@ -165,54 +165,54 @@
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clientID = self->_clientID;
-  v5 = a3;
-  [v5 encodeObject:clientID forKey:@"client_id"];
-  [v5 encodeObject:self->_authURL forKey:@"auth_url"];
-  [v5 encodeObject:self->_tokenURL forKey:@"token_url"];
-  [v5 encodeObject:self->_carrierName forKey:@"carrier_name"];
-  [v5 encodeObject:self->_iccid forKey:@"iccid"];
-  [v5 encodeObject:self->_scope forKey:@"scope"];
-  [v5 encodeBool:self->_supportsState forKey:@"supports_state"];
-  [v5 encodeObject:self->_sourceApplicationAccountIdentifier forKey:@"account_identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clientID forKey:@"client_id"];
+  [coderCopy encodeObject:self->_authURL forKey:@"auth_url"];
+  [coderCopy encodeObject:self->_tokenURL forKey:@"token_url"];
+  [coderCopy encodeObject:self->_carrierName forKey:@"carrier_name"];
+  [coderCopy encodeObject:self->_iccid forKey:@"iccid"];
+  [coderCopy encodeObject:self->_scope forKey:@"scope"];
+  [coderCopy encodeBool:self->_supportsState forKey:@"supports_state"];
+  [coderCopy encodeObject:self->_sourceApplicationAccountIdentifier forKey:@"account_identifier"];
 }
 
-- (CTCarrierSpaceAuthenticationContext)initWithCoder:(id)a3
+- (CTCarrierSpaceAuthenticationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CTCarrierSpaceAuthenticationContext;
   v5 = [(CTCarrierSpaceAuthenticationContext *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"client_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"client_id"];
     clientID = v5->_clientID;
     v5->_clientID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auth_url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auth_url"];
     authURL = v5->_authURL;
     v5->_authURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token_url"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token_url"];
     tokenURL = v5->_tokenURL;
     v5->_tokenURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrier_name"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrier_name"];
     carrierName = v5->_carrierName;
     v5->_carrierName = v12;
 
-    v5->_supportsState = [v4 decodeBoolForKey:@"supports_state"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
+    v5->_supportsState = [coderCopy decodeBoolForKey:@"supports_state"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
     iccid = v5->_iccid;
     v5->_iccid = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scope"];
     scope = v5->_scope;
     v5->_scope = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"account_identifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"account_identifier"];
     sourceApplicationAccountIdentifier = v5->_sourceApplicationAccountIdentifier;
     v5->_sourceApplicationAccountIdentifier = v18;
   }

@@ -1,6 +1,6 @@
 @interface CMSM_IDSServer
 - (CMSM_IDSServer)init;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation CMSM_IDSServer
@@ -18,10 +18,10 @@
   return v2;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  v9 = [a5 objectForKey:{kMXSession_IDSMessage_TypeKey, a4}];
+  v9 = [message objectForKey:{kMXSession_IDSMessage_TypeKey, account}];
   if (dword_1EB75DE40)
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -38,21 +38,21 @@
 
   if (FigCFEqual())
   {
-    v34 = [a7 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [context outgoingResponseIdentifier];
     v13 = CMSM_IDSConnection_CopyMXCoreSession();
     if (cmsm_IDSServer_ProcessRemoteInterruptionStartMessage_onceToken != -1)
     {
       [CMSM_IDSServer service:account:incomingMessage:fromID:context:];
     }
 
-    if (!a5)
+    if (!message)
     {
       v14 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
       os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    v18 = [a5 objectForKey:{kMXSession_IDSMessage_SessionWillPlayInfoKey, v30, v32}];
+    v18 = [message objectForKey:{kMXSession_IDSMessage_SessionWillPlayInfoKey, v30, v32}];
     if (!v18)
     {
       v19 = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
@@ -117,7 +117,7 @@
     }
 
     v26 = CMSessionBeginInterruption(v13);
-    CMSM_IDSClient_NotifyRemote_InterruptionDone(v26, v34);
+    CMSM_IDSClient_NotifyRemote_InterruptionDone(v26, outgoingResponseIdentifier);
     v27 = MXGetNotificationSenderQueue();
     v35 = MEMORY[0x1E69E9820];
     v36 = 3221225472;
@@ -129,7 +129,7 @@
 
   else if (FigCFEqual())
   {
-    Value = CFDictionaryGetValue(a5, kMXSession_IDSMessage_IdentifierKey);
+    Value = CFDictionaryGetValue(message, kMXSession_IDSMessage_IdentifierKey);
     MessagingQueue = CMSM_IDSConnection_GetMessagingQueue();
     v35 = MEMORY[0x1E69E9820];
     v36 = 3221225472;
@@ -147,13 +147,13 @@
 
   else if (FigCFEqual())
   {
-    v29 = CFDictionaryGetValue(a5, kMXSession_IDSMessage_BTDeviceIsConnectedKey) == *MEMORY[0x1E695E4D0];
+    v29 = CFDictionaryGetValue(message, kMXSession_IDSMessage_BTDeviceIsConnectedKey) == *MEMORY[0x1E695E4D0];
     CMSM_IDSConnection_UpdateSharedAudioRouteIsConnectedToRemote(v29);
   }
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessBTDeviceConnectionStatusChangedMessage(a5);
+    cmsm_IDSServer_ProcessBTDeviceConnectionStatusChangedMessage(message);
   }
 
   else if (FigCFEqual())
@@ -163,22 +163,22 @@
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessRemotePlayingInfoReplyMessage(a5);
+    cmsm_IDSServer_ProcessRemotePlayingInfoReplyMessage(message);
   }
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessLocalIsPlayingStartMessage(a5);
+    cmsm_IDSServer_ProcessLocalIsPlayingStartMessage(message);
   }
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessLocalIsPlayingDoneMessage(a5);
+    cmsm_IDSServer_ProcessLocalIsPlayingDoneMessage(message);
   }
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessLocalIsDoingEndInterruption(a5);
+    cmsm_IDSServer_ProcessLocalIsDoingEndInterruption(message);
   }
 
   else if (FigCFEqual())
@@ -189,7 +189,7 @@
 
   else if (FigCFEqual())
   {
-    cmsm_IDSServer_ProcessUpdateSharedAudioRouteMacAddress(a5);
+    cmsm_IDSServer_ProcessUpdateSharedAudioRouteMacAddress(message);
   }
 
   v28 = *MEMORY[0x1E69E9840];

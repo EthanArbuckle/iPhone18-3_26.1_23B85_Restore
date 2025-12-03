@@ -1,49 +1,49 @@
 @interface GKExtensionViewController
-- (GKExtensionViewController)initWithCoder:(id)a3;
+- (GKExtensionViewController)initWithCoder:(id)coder;
 - (id)hostObjectProxy;
-- (void)addDoneButtonToViewController:(id)a3;
-- (void)addVisualEffectViewForView:(id)a3;
+- (void)addDoneButtonToViewController:(id)controller;
+- (void)addVisualEffectViewForView:(id)view;
 - (void)configureContentViewController;
 - (void)constructContentViewController;
 - (void)extensionIsCanceling;
 - (void)extensionIsFinishing;
 - (void)hostObjectProxy;
 - (void)logOnceGameControllerUsedInGameLayer;
-- (void)messageFromClient:(id)a3;
-- (void)messageFromExtension:(id)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4;
-- (void)sendMessageToClient:(id)a3;
-- (void)setInitialState:(id)a3 withReply:(id)a4;
+- (void)messageFromClient:(id)client;
+- (void)messageFromExtension:(id)extension;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info;
+- (void)sendMessageToClient:(id)client;
+- (void)setInitialState:(id)state withReply:(id)reply;
 - (void)setToDarkBackground;
 - (void)setToLightBackground;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)setupVisualEffects;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKExtensionViewController
 
-- (GKExtensionViewController)initWithCoder:(id)a3
+- (GKExtensionViewController)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = GKExtensionViewController;
-  v3 = [(GKExtensionViewController *)&v8 initWithCoder:a3];
+  v3 = [(GKExtensionViewController *)&v8 initWithCoder:coder];
   if (v3)
   {
     GKUISetRemote();
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(GKExtensionViewController *)v3 setModalPresentationStyle:16];
-      v6 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v6 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKExtensionViewController *)v3 setPreferredContentSize:?];
 
       *MEMORY[0x277D0C8F0] = 0;
@@ -68,11 +68,11 @@
   v6.receiver = self;
   v6.super_class = GKExtensionViewController;
   [(GKExtensionViewController *)&v6 viewDidLoad];
-  v3 = [(GKExtensionViewController *)self navigationBar];
-  [v3 setBarStyle:0];
+  navigationBar = [(GKExtensionViewController *)self navigationBar];
+  [navigationBar setBarStyle:0];
 
-  v4 = [(GKExtensionViewController *)self navigationBar];
-  [v4 setTranslucent:1];
+  navigationBar2 = [(GKExtensionViewController *)self navigationBar];
+  [navigationBar2 setTranslucent:1];
 
   [(GKExtensionViewController *)self setOverrideUserInterfaceStyle:2];
   if ([(GKExtensionViewController *)self _useBackdropViewForWindowBackground])
@@ -86,75 +86,75 @@
 
 - (void)setupVisualEffects
 {
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  v4 = [(GKExtensionViewController *)self effectView];
-  [v4 setBackgroundEffects:v3];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  effectView = [(GKExtensionViewController *)self effectView];
+  [effectView setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
-  v5 = [(GKExtensionViewController *)self effectView];
-  [v5 _setGroupName:@"gameLayerGroup"];
+  effectView2 = [(GKExtensionViewController *)self effectView];
+  [effectView2 _setGroupName:@"gameLayerGroup"];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(GKExtensionViewController *)self daemonProxy];
-  [v5 setDataUpdateDelegate:self];
+  appearCopy = appear;
+  daemonProxy = [(GKExtensionViewController *)self daemonProxy];
+  [daemonProxy setDataUpdateDelegate:self];
 
   v27.receiver = self;
   v27.super_class = GKExtensionViewController;
-  [(GKExtensionViewController *)&v27 viewWillAppear:v3];
+  [(GKExtensionViewController *)&v27 viewWillAppear:appearCopy];
   if ([(GKExtensionViewController *)self _useBackdropViewForWindowBackground])
   {
     [(GKExtensionViewController *)self setupVisualEffects];
-    v6 = [(GKExtensionViewController *)self view];
-    [v6 bounds];
+    view = [(GKExtensionViewController *)self view];
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(GKExtensionViewController *)self effectView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    effectView = [(GKExtensionViewController *)self effectView];
+    [effectView setFrame:{v8, v10, v12, v14}];
 
-    v16 = [(GKExtensionViewController *)self effectView];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    effectView2 = [(GKExtensionViewController *)self effectView];
+    [effectView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(GKExtensionViewController *)self parentViewController];
-    v18 = [v17 view];
-    v19 = [v18 window];
-    v20 = [v19 rootViewController];
-    v21 = [v20 view];
-    v22 = v21;
-    if (v21)
+    parentViewController = [(GKExtensionViewController *)self parentViewController];
+    view2 = [parentViewController view];
+    window = [view2 window];
+    rootViewController = [window rootViewController];
+    view3 = [rootViewController view];
+    v22 = view3;
+    if (view3)
     {
-      v23 = v21;
+      window2 = view3;
     }
 
     else
     {
-      v24 = [(GKExtensionViewController *)self parentViewController];
-      v25 = [v24 view];
-      v23 = [v25 window];
+      parentViewController2 = [(GKExtensionViewController *)self parentViewController];
+      view4 = [parentViewController2 view];
+      window2 = [view4 window];
     }
 
-    [(GKExtensionViewController *)self addVisualEffectViewForView:v23];
+    [(GKExtensionViewController *)self addVisualEffectViewForView:window2];
   }
 
   if ([(GKExtensionViewController *)self hasInitialData])
   {
-    v26 = [(GKExtensionViewController *)self contentViewController];
+    contentViewController = [(GKExtensionViewController *)self contentViewController];
 
-    if (!v26)
+    if (!contentViewController)
     {
       [(GKExtensionViewController *)self constructContentViewController];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = GKExtensionViewController;
-  [(GKExtensionViewController *)&v11 viewDidAppear:a3];
+  [(GKExtensionViewController *)&v11 viewDidAppear:appear];
   v4 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -183,54 +183,54 @@
   }
 }
 
-- (void)addVisualEffectViewForView:(id)a3
+- (void)addVisualEffectViewForView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 viewWithTag:678];
+  viewCopy = view;
+  v5 = [viewCopy viewWithTag:678];
   [v5 removeFromSuperview];
 
   v8 = objc_alloc_init(MEMORY[0x277D75D68]);
-  v6 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-  [v8 setBackgroundEffects:v6];
+  _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+  [v8 setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
-  v7 = [(GKExtensionViewController *)self effectView];
-  [v7 _setGroupName:@"gameLayerGroup"];
+  effectView = [(GKExtensionViewController *)self effectView];
+  [effectView _setGroupName:@"gameLayerGroup"];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v8 setTag:678];
-  [v4 insertSubview:v8 atIndex:0];
-  [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForView:v8 containedWithinParentView:v4];
+  [viewCopy insertSubview:v8 atIndex:0];
+  [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForView:v8 containedWithinParentView:viewCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = GKExtensionViewController;
-  [(GKExtensionViewController *)&v7 viewDidDisappear:a3];
+  [(GKExtensionViewController *)&v7 viewDidDisappear:disappear];
   [(GKExtensionViewController *)self setViewControllers:MEMORY[0x277CBEBF8] animated:0];
   [(GKExtensionViewController *)self setContentViewController:0];
-  v4 = [(GKExtensionViewController *)self daemonProxy];
-  v5 = [v4 dataUpdateDelegate];
+  daemonProxy = [(GKExtensionViewController *)self daemonProxy];
+  dataUpdateDelegate = [daemonProxy dataUpdateDelegate];
 
-  if (v5 == self)
+  if (dataUpdateDelegate == self)
   {
-    v6 = [(GKExtensionViewController *)self daemonProxy];
-    [v6 setDataUpdateDelegate:0];
+    daemonProxy2 = [(GKExtensionViewController *)self daemonProxy];
+    [daemonProxy2 setDataUpdateDelegate:0];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = GKExtensionViewController;
-  v6 = a4;
-  [(GKExtensionViewController *)&v8 willTransitionToTraitCollection:a3 withTransitionCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(GKExtensionViewController *)&v8 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinatorCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__GKExtensionViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v7[3] = &unk_27966A690;
   v7[4] = self;
-  [v6 animateAlongsideTransition:v7 completion:&__block_literal_global_52];
+  [coordinatorCopy animateAlongsideTransition:v7 completion:&__block_literal_global_52];
 }
 
 void __87__GKExtensionViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -247,45 +247,45 @@ void __87__GKExtensionViewController_willTransitionToTraitCollection_withTransit
   [v4 setConstant:Height];
 }
 
-- (void)setInitialState:(id)a3 withReply:(id)a4
+- (void)setInitialState:(id)state withReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"StatusBarHeightKey"];
+  replyCopy = reply;
+  stateCopy = state;
+  v8 = [stateCopy objectForKeyedSubscript:@"StatusBarHeightKey"];
   [v8 floatValue];
   [(GKExtensionViewController *)self setStatusBarHeight:v9];
 
-  v10 = [v7 objectForKeyedSubscript:@"HostPIDKey"];
+  v10 = [stateCopy objectForKeyedSubscript:@"HostPIDKey"];
   -[GKExtensionViewController setHostPID:](self, "setHostPID:", [v10 integerValue]);
 
-  v11 = [v7 objectForKeyedSubscript:@"currentGame"];
+  v11 = [stateCopy objectForKeyedSubscript:@"currentGame"];
   v12 = MEMORY[0x277D0C048];
-  v13 = [v11 internal];
-  [v12 setCurrentGameFromInternal:v13 serverEnvironment:{objc_msgSend(v11, "environment")}];
+  internal = [v11 internal];
+  [v12 setCurrentGameFromInternal:internal serverEnvironment:{objc_msgSend(v11, "environment")}];
 
-  v14 = [MEMORY[0x277D0C138] localPlayer];
-  v15 = [v7 objectForKeyedSubscript:@"localPlayer"];
-  [v14 updateFromLocalPlayer:v15];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  v15 = [stateCopy objectForKeyedSubscript:@"localPlayer"];
+  [localPlayer updateFromLocalPlayer:v15];
 
-  v16 = [v7 objectForKeyedSubscript:@"RTLKey"];
-  v17 = [v16 BOOLValue];
-  *MEMORY[0x277D0C8E8] = v17;
+  v16 = [stateCopy objectForKeyedSubscript:@"RTLKey"];
+  bOOLValue = [v16 BOOLValue];
+  *MEMORY[0x277D0C8E8] = bOOLValue;
 
-  v18 = [v7 objectForKeyedSubscript:@"HostUserInterfaceIdiom"];
+  v18 = [stateCopy objectForKeyedSubscript:@"HostUserInterfaceIdiom"];
 
   -[GKExtensionViewController setHostUserInterfaceIdiom:](self, "setHostUserInterfaceIdiom:", [v18 integerValue]);
   [(GKExtensionViewController *)self hostUserInterfaceIdiom];
   GKSetHostUserInterfaceIdiom();
-  v19 = [(GKExtensionViewController *)self daemonProxy];
-  [v19 setHostPID:{-[GKExtensionViewController hostPID](self, "hostPID")}];
+  daemonProxy = [(GKExtensionViewController *)self daemonProxy];
+  [daemonProxy setHostPID:{-[GKExtensionViewController hostPID](self, "hostPID")}];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __55__GKExtensionViewController_setInitialState_withReply___block_invoke;
   v21[3] = &unk_27966A958;
   v21[4] = self;
-  v22 = v6;
-  v20 = v6;
+  v22 = replyCopy;
+  v20 = replyCopy;
   dispatch_async(MEMORY[0x277D85CD0], v21);
 }
 
@@ -315,19 +315,19 @@ uint64_t __55__GKExtensionViewController_setInitialState_withReply___block_invok
 
 - (void)constructContentViewController
 {
-  v3 = [MEMORY[0x277D0C048] currentGame];
-  v4 = [v3 gameDescriptor];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  gameDescriptor = [currentGame gameDescriptor];
 
-  v5 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-  v6 = [v5 utilityServicePrivate];
+  proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+  utilityServicePrivate = [proxyForLocalPlayer utilityServicePrivate];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__GKExtensionViewController_constructContentViewController__block_invoke;
   v8[3] = &unk_279669D38;
-  v9 = v4;
-  v7 = v4;
-  [v6 willLaunchGameCenterUIForGameDescriptor:v7 completionHandler:v8];
+  v9 = gameDescriptor;
+  v7 = gameDescriptor;
+  [utilityServicePrivate willLaunchGameCenterUIForGameDescriptor:v7 completionHandler:v8];
   [(GKExtensionViewController *)self configureContentViewController];
 }
 
@@ -367,18 +367,18 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
 - (void)configureContentViewController
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKExtensionViewController *)self contentViewController];
+  contentViewController = [(GKExtensionViewController *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       [(GKExtensionViewController *)self setModalPresentationStyle:16];
-      v6 = [MEMORY[0x277D0C8C8] sharedTheme];
-      [v6 formSheetSize];
+      mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+      [mEMORY[0x277D0C8C8] formSheetSize];
       [(GKExtensionViewController *)self setPreferredContentSize:?];
     }
 
@@ -387,63 +387,63 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
       [(GKExtensionViewController *)self setModalPresentationStyle:17];
     }
 
-    v7 = [(GKExtensionViewController *)self view];
-    [v7 setClipsToBounds:0];
-    v8 = [MEMORY[0x277D0C868] sharedPalette];
-    v9 = [v8 systemInteractionColor];
-    [v7 setTintColor:v9];
+    view = [(GKExtensionViewController *)self view];
+    [view setClipsToBounds:0];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    systemInteractionColor = [mEMORY[0x277D0C868] systemInteractionColor];
+    [view setTintColor:systemInteractionColor];
 
     if ([(GKExtensionViewController *)self alwaysShowDoneButton])
     {
-      v10 = [(GKExtensionViewController *)self contentViewController];
-      [(GKExtensionViewController *)self addDoneButtonToViewController:v10];
+      contentViewController2 = [(GKExtensionViewController *)self contentViewController];
+      [(GKExtensionViewController *)self addDoneButtonToViewController:contentViewController2];
     }
 
-    v11 = [(GKExtensionViewController *)self contentViewController];
-    v13[0] = v11;
+    contentViewController3 = [(GKExtensionViewController *)self contentViewController];
+    v13[0] = contentViewController3;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [(GKExtensionViewController *)self setViewControllers:v12 animated:0];
   }
 }
 
-- (void)addDoneButtonToViewController:(id)a3
+- (void)addDoneButtonToViewController:(id)controller
 {
-  v9 = a3;
-  if (([v9 _gkExtensionWantsCustomRightBarButtonItemInViewService] & 1) == 0)
+  controllerCopy = controller;
+  if (([controllerCopy _gkExtensionWantsCustomRightBarButtonItemInViewService] & 1) == 0)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
     v5 = GKGameCenterUIFrameworkBundle();
     v6 = GKGetLocalizedStringFromTableInBundle();
     v7 = [v4 initWithTitle:v6 style:2 target:self action:sel_donePressed_];
-    v8 = [v9 navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem = [controllerCopy navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
   }
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if ([(GKExtensionViewController *)self alwaysShowDoneButton])
   {
-    [(GKExtensionViewController *)self addDoneButtonToViewController:v6];
+    [(GKExtensionViewController *)self addDoneButtonToViewController:controllerCopy];
   }
 
   v7.receiver = self;
   v7.super_class = GKExtensionViewController;
-  [(GKExtensionViewController *)&v7 pushViewController:v6 animated:v4];
+  [(GKExtensionViewController *)&v7 pushViewController:controllerCopy animated:animatedCopy];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllersCopy = controllers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -455,7 +455,7 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -468,7 +468,7 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [controllersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -476,30 +476,30 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
 
   v12.receiver = self;
   v12.super_class = GKExtensionViewController;
-  [(GKExtensionViewController *)&v12 setViewControllers:v6 animated:v4];
+  [(GKExtensionViewController *)&v12 setViewControllers:controllersCopy animated:animatedCopy];
 }
 
-- (void)refreshContentsForDataType:(unsigned int)a3 userInfo:(id)a4
+- (void)refreshContentsForDataType:(unsigned int)type userInfo:(id)info
 {
-  v4 = *&a3;
-  v7 = a4;
+  v4 = *&type;
+  infoCopy = info;
   if ([(GKExtensionViewController *)self _gkShouldRefreshContentsForDataType:v4 userInfo:?])
   {
-    [(GKExtensionViewController *)self _gkRefreshContentsForDataType:v4 userInfo:v7];
+    [(GKExtensionViewController *)self _gkRefreshContentsForDataType:v4 userInfo:infoCopy];
   }
 
   if (v4 == 16)
   {
-    v6 = [MEMORY[0x277D0C138] local];
-    [v6 clearInMemoryCachedAvatars];
+    local = [MEMORY[0x277D0C138] local];
+    [local clearInMemoryCachedAvatars];
   }
 }
 
 - (id)hostObjectProxy
 {
-  v4 = [(GKExtensionViewController *)self extensionContext];
-  v5 = [v4 _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
+  extensionContext = [(GKExtensionViewController *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
 
   if (!v6)
   {
@@ -524,18 +524,18 @@ void __44__GKExtensionViewController_hostObjectProxy__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)sendMessageToClient:(id)a3
+- (void)sendMessageToClient:(id)client
 {
-  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
-  v4 = [(GKExtensionViewController *)self hostObjectProxy];
-  [v4 messageFromExtension:v5];
+  v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:client requiringSecureCoding:1 error:0];
+  hostObjectProxy = [(GKExtensionViewController *)self hostObjectProxy];
+  [hostObjectProxy messageFromExtension:v5];
 }
 
-- (void)messageFromExtension:(id)a3
+- (void)messageFromExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [(GKExtensionViewController *)self hostObjectProxy];
-  [v5 messageFromExtension:v4];
+  extensionCopy = extension;
+  hostObjectProxy = [(GKExtensionViewController *)self hostObjectProxy];
+  [hostObjectProxy messageFromExtension:extensionCopy];
 }
 
 - (void)extensionIsCanceling
@@ -556,13 +556,13 @@ void __44__GKExtensionViewController_hostObjectProxy__block_invoke(uint64_t a1, 
   [(GKExtensionViewController *)self sendMessageToClient:v3];
 }
 
-- (void)messageFromClient:(id)a3
+- (void)messageFromClient:(id)client
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  clientCopy = client;
   v6 = GKExtensionProtocolSecureCodedClasses();
   v12 = 0;
-  v7 = [v4 unarchivedObjectOfClasses:v6 fromData:v5 error:&v12];
+  v7 = [v4 unarchivedObjectOfClasses:v6 fromData:clientCopy error:&v12];
 
   v8 = v12;
   if (v8)
@@ -579,9 +579,9 @@ void __44__GKExtensionViewController_hostObjectProxy__block_invoke(uint64_t a1, 
   }
 
   v10 = [v7 objectForKeyedSubscript:@"MessageCommandKey"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  switch(v11)
+  switch(integerValue)
   {
     case 47:
       [(GKExtensionViewController *)self clientWillTerminate];
@@ -643,8 +643,8 @@ void __59__GKExtensionViewController_constructContentViewController__block_invok
 
 - (void)hostObjectProxy
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"GKExtensionViewController.m" lineNumber:368 description:@"GKExtensionContext remote object proxy is nil!"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"GKExtensionViewController.m" lineNumber:368 description:@"GKExtensionContext remote object proxy is nil!"];
 }
 
 void __44__GKExtensionViewController_hostObjectProxy__block_invoke_cold_1(void *a1, void *a2)

@@ -1,5 +1,5 @@
 @interface PLUtilityAsset
-+ (id)utilityAssetFromManagedAsset:(id)a3 usingPool:(id)a4;
++ (id)utilityAssetFromManagedAsset:(id)asset usingPool:(id)pool;
 - (PLUtilityAsset)init;
 - (void)_prepareForRecycle;
 @end
@@ -62,15 +62,15 @@
   [(NSMutableSet *)self->_sceneClassifications removeAllObjects];
 }
 
-+ (id)utilityAssetFromManagedAsset:(id)a3 usingPool:(id)a4
++ (id)utilityAssetFromManagedAsset:(id)asset usingPool:(id)pool
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  assetCopy = asset;
+  poolCopy = pool;
+  v9 = poolCopy;
+  if (assetCopy)
   {
-    if (v8)
+    if (poolCopy)
     {
       goto LABEL_3;
     }
@@ -78,42 +78,42 @@
 
   else
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PLUtilityAsset.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLUtilityAsset.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
 
     if (v9)
     {
 LABEL_3:
-      v10 = [v9 _dequeueRecylableAsset];
-      if (v10)
+      _dequeueRecylableAsset = [v9 _dequeueRecylableAsset];
+      if (_dequeueRecylableAsset)
       {
         goto LABEL_5;
       }
     }
   }
 
-  v10 = objc_alloc_init(PLUtilityAsset);
+  _dequeueRecylableAsset = objc_alloc_init(PLUtilityAsset);
 LABEL_5:
-  v11 = [v7 mediaAnalysisAttributes];
-  v12 = [v11 characterRecognitionAttributes];
-  v13 = [v12 machineReadableCodeData];
-  [(PLUtilityAsset *)v10 setHasQRCodeData:v13 != 0];
+  mediaAnalysisAttributes = [assetCopy mediaAnalysisAttributes];
+  characterRecognitionAttributes = [mediaAnalysisAttributes characterRecognitionAttributes];
+  machineReadableCodeData = [characterRecognitionAttributes machineReadableCodeData];
+  [(PLUtilityAsset *)_dequeueRecylableAsset setHasQRCodeData:machineReadableCodeData != 0];
 
-  v14 = [v7 extendedAttributes];
-  v15 = [v14 generativeAIType];
-  -[PLUtilityAsset setIsAIImageFromGenerativePlayground:](v10, "setIsAIImageFromGenerativePlayground:", [v15 intValue] == 1);
+  extendedAttributes = [assetCopy extendedAttributes];
+  generativeAIType = [extendedAttributes generativeAIType];
+  -[PLUtilityAsset setIsAIImageFromGenerativePlayground:](_dequeueRecylableAsset, "setIsAIImageFromGenerativePlayground:", [generativeAIType intValue] == 1);
 
-  v16 = [v7 additionalAttributes];
-  -[PLUtilityAsset setSceneAnalysisVersion:](v10, "setSceneAnalysisVersion:", [v16 sceneAnalysisVersion]);
+  additionalAttributes = [assetCopy additionalAttributes];
+  -[PLUtilityAsset setSceneAnalysisVersion:](_dequeueRecylableAsset, "setSceneAnalysisVersion:", [additionalAttributes sceneAnalysisVersion]);
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = [v7 additionalAttributes];
-  v18 = [v17 sceneClassifications];
+  additionalAttributes2 = [assetCopy additionalAttributes];
+  sceneClassifications = [additionalAttributes2 sceneClassifications];
 
-  v19 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v19 = [sceneClassifications countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v19)
   {
     v20 = v19;
@@ -124,7 +124,7 @@ LABEL_5:
       {
         if (*v29 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(sceneClassifications);
         }
 
         v23 = *(*(&v28 + 1) + 8 * i);
@@ -138,17 +138,17 @@ LABEL_5:
         [(PLUtilityAssetClassification *)v24 setConfidence:?];
         -[PLUtilityAssetClassification setPackedBoundingBox:](v24, "setPackedBoundingBox:", [v23 packedBoundingBoxRect]);
         -[PLUtilityAssetClassification setClassificationType:](v24, "setClassificationType:", [v23 classificationType]);
-        v25 = [(PLUtilityAsset *)v10 sceneClassifications];
-        [v25 addObject:v24];
+        sceneClassifications2 = [(PLUtilityAsset *)_dequeueRecylableAsset sceneClassifications];
+        [sceneClassifications2 addObject:v24];
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v20 = [sceneClassifications countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v20);
   }
 
-  return v10;
+  return _dequeueRecylableAsset;
 }
 
 @end

@@ -1,52 +1,52 @@
 @interface ExternalStreamManager
-- (BOOL)_setPauseExternalInputStreamGroupID:(id)a3 streamID:(id)a4 isPaused:(BOOL)a5 fromPlatformCallback:(BOOL)a6 error:(id *)a7;
-- (BOOL)_setPauseExternalInputStreamWithoutNotifyingClient:(id)a3 isPaused:(BOOL)a4 fromPlatformCallback:(BOOL)a5 error:(id *)a6;
-- (BOOL)addExternalInputStreamGroupID:(id)a3 streamID:(id)a4 attributedTo:(id)a5 definition:(id)a6 isPaused:(BOOL)a7 canRecord:(BOOL)a8 fader:(shared_ptr<caulk:(id)a10 :(id *)a11 synchronized<Phase::Controller::ExternalStreamFader>>)a9 pauseStateDidUpdateCallback:error:;
-- (BOOL)setPauseExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 isPaused:(BOOL)a5 error:(id *)a6;
-- (BOOL)streamIsPaused:(id)a3 error:(id *)a4;
-- (ExternalStreamManager)initWithTaskManager:(void *)a3 engineMode:(int64_t)a4 engineFormat:(id)a5 maximumFramesToRender:(unsigned int)a6 enableAudioIssueDetector:(BOOL)a7;
+- (BOOL)_setPauseExternalInputStreamGroupID:(id)d streamID:(id)iD isPaused:(BOOL)paused fromPlatformCallback:(BOOL)callback error:(id *)error;
+- (BOOL)_setPauseExternalInputStreamWithoutNotifyingClient:(id)client isPaused:(BOOL)paused fromPlatformCallback:(BOOL)callback error:(id *)error;
+- (BOOL)addExternalInputStreamGroupID:(id)d streamID:(id)iD attributedTo:(id)to definition:(id)definition isPaused:(BOOL)paused canRecord:(BOOL)record fader:(shared_ptr<caulk:(id)self0 :(id *)self1 synchronized<Phase::Controller::ExternalStreamFader>>)a9 pauseStateDidUpdateCallback:error:;
+- (BOOL)setPauseExternalOutputStreamGroupID:(id)d streamID:(id)iD isPaused:(BOOL)paused error:(id *)error;
+- (BOOL)streamIsPaused:(id)paused error:(id *)error;
+- (ExternalStreamManager)initWithTaskManager:(void *)manager engineMode:(int64_t)mode engineFormat:(id)format maximumFramesToRender:(unsigned int)render enableAudioIssueDetector:(BOOL)detector;
 - (id).cxx_construct;
-- (id)formatForStream:(id)a3 error:(id *)a4;
-- (int64_t)typeForStream:(id)a3 error:(id *)a4;
-- (shared_ptr<Phase::Controller::StreamRenderer>)createRendererForStream:(id)a3 outputChannelLayout:(unsigned int)a4 normalize:(BOOL)a5 targetLKFS:(double)a6 error:(id *)a7;
-- (unint64_t)_fadeInputStreamsInSessionToken:(unsigned int)a3 isMuted:(BOOL)a4 fadeTimeInSeconds:(float)a5 synchronous:(BOOL)a6;
-- (unint64_t)addControllerPauseStateDidUpdateCallback:(id)a3;
-- (unint64_t)setExternalInputStreamSessionMute:(unsigned int)a3 isMuted:(BOOL)a4 fadeTimeInSeconds:(float)a5;
-- (unsigned)sessionIdForStream:(id)a3 error:(id *)a4;
-- (void)_setSessionInputStreamState:(id)a3 muted:(BOOL)a4 fromPlatformCallback:(BOOL)a5;
-- (void)_updateRecordingAbility:(id)a3 streamID:(id)a4 canRecord:(BOOL)a5;
-- (void)abandonControlOfExternalStreamGroupID:(id)a3 withCallback:(id)a4;
-- (void)addExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 attributedTo:(id)a5 definition:(id)a6 startsPaused:(BOOL)a7 renderBlock:(id)a8 withCallback:(id)a9;
-- (void)claimControlOfExternalStreamGroupID:(id)a3 attributedTo:(id)a4 stateChangeBlock:(id)a5 withCallback:(id)a6;
-- (void)gatherDebugInformation:(id)a3;
-- (void)onRouteChanged:(RouteChangeInfo)a3;
+- (id)formatForStream:(id)stream error:(id *)error;
+- (int64_t)typeForStream:(id)stream error:(id *)error;
+- (shared_ptr<Phase::Controller::StreamRenderer>)createRendererForStream:(id)stream outputChannelLayout:(unsigned int)layout normalize:(BOOL)normalize targetLKFS:(double)s error:(id *)error;
+- (unint64_t)_fadeInputStreamsInSessionToken:(unsigned int)token isMuted:(BOOL)muted fadeTimeInSeconds:(float)seconds synchronous:(BOOL)synchronous;
+- (unint64_t)addControllerPauseStateDidUpdateCallback:(id)callback;
+- (unint64_t)setExternalInputStreamSessionMute:(unsigned int)mute isMuted:(BOOL)muted fadeTimeInSeconds:(float)seconds;
+- (unsigned)sessionIdForStream:(id)stream error:(id *)error;
+- (void)_setSessionInputStreamState:(id)state muted:(BOOL)muted fromPlatformCallback:(BOOL)callback;
+- (void)_updateRecordingAbility:(id)ability streamID:(id)d canRecord:(BOOL)record;
+- (void)abandonControlOfExternalStreamGroupID:(id)d withCallback:(id)callback;
+- (void)addExternalOutputStreamGroupID:(id)d streamID:(id)iD attributedTo:(id)to definition:(id)definition startsPaused:(BOOL)paused renderBlock:(id)block withCallback:(id)callback;
+- (void)claimControlOfExternalStreamGroupID:(id)d attributedTo:(id)to stateChangeBlock:(id)block withCallback:(id)callback;
+- (void)gatherDebugInformation:(id)information;
+- (void)onRouteChanged:(RouteChangeInfo)changed;
 - (void)onSessionVolume:;
-- (void)onSessionVolume:(id)a3;
-- (void)onSessionVolume:(uint64_t)a1;
-- (void)onSessionVolume:(uint64_t)a1 volume:;
-- (void)onSessionVolume:(unsigned int)a3 volume:(float)a4;
+- (void)onSessionVolume:(id)volume;
+- (void)onSessionVolume:(uint64_t)volume;
+- (void)onSessionVolume:(uint64_t)volume volume:;
+- (void)onSessionVolume:(unsigned int)volume volume:(float)a4;
 - (void)onSessionVolume:volume:;
-- (void)removeAllResourcesAttributedToClientID:(id)a3;
-- (void)removeControllerPauseStateDidUpdateCallback:(unint64_t)a3;
-- (void)removeExternalInputStreamGroupID:(id)a3 streamID:(id)a4;
-- (void)removeExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 withCallback:(id)a5;
-- (void)setExternalInputStreamSession:(unsigned int)a3 isActive:(BOOL)a4;
-- (void)setExternalInputStreamSessionMute:(uint64_t)a1 isMuted:fadeTimeInSeconds:;
+- (void)removeAllResourcesAttributedToClientID:(id)d;
+- (void)removeControllerPauseStateDidUpdateCallback:(unint64_t)callback;
+- (void)removeExternalInputStreamGroupID:(id)d streamID:(id)iD;
+- (void)removeExternalOutputStreamGroupID:(id)d streamID:(id)iD withCallback:(id)callback;
+- (void)setExternalInputStreamSession:(unsigned int)session isActive:(BOOL)active;
+- (void)setExternalInputStreamSessionMute:(uint64_t)mute isMuted:fadeTimeInSeconds:;
 - (void)setExternalInputStreamSessionMute:isMuted:fadeTimeInSeconds:;
-- (void)setMuteExternalInputStreamGroupID:(id)a3 streamID:(id)a4 isMuted:(BOOL)a5;
-- (void)setVolumeEQPreset:(shared_ptr<Phase:(int64_t)a4 :Controller::StreamRenderer>)a3 bandwidthType:;
+- (void)setMuteExternalInputStreamGroupID:(id)d streamID:(id)iD isMuted:(BOOL)muted;
+- (void)setVolumeEQPreset:(shared_ptr<Phase:(int64_t)preset :Controller::StreamRenderer>)a3 bandwidthType:;
 - (void)update;
-- (void)updateController:(id)a3 pauseState:(BOOL)a4;
-- (void)updateExternalInputStreamRecordingAbility:(id *)a1 streamID:canRecord:;
-- (void)updateExternalInputStreamRecordingAbility:(id)a3 streamID:(id)a4 canRecord:(BOOL)a5;
+- (void)updateController:(id)controller pauseState:(BOOL)state;
+- (void)updateExternalInputStreamRecordingAbility:(id *)ability streamID:canRecord:;
+- (void)updateExternalInputStreamRecordingAbility:(id)ability streamID:(id)d canRecord:(BOOL)record;
 - (void)updateExternalInputStreamRecordingAbility:streamID:canRecord:;
 @end
 
 @implementation ExternalStreamManager
 
-- (ExternalStreamManager)initWithTaskManager:(void *)a3 engineMode:(int64_t)a4 engineFormat:(id)a5 maximumFramesToRender:(unsigned int)a6 enableAudioIssueDetector:(BOOL)a7
+- (ExternalStreamManager)initWithTaskManager:(void *)manager engineMode:(int64_t)mode engineFormat:(id)format maximumFramesToRender:(unsigned int)render enableAudioIssueDetector:(BOOL)detector
 {
-  v12 = a5;
+  formatCopy = format;
   v21.receiver = self;
   v21.super_class = ExternalStreamManager;
   v13 = [(ExternalStreamManager *)&v21 init];
@@ -56,11 +56,11 @@
     v15 = *(v13 + 1);
     *(v13 + 1) = v14;
 
-    *(v13 + 2) = Phase::Controller::TaskManager::GetService<Phase::Controller::VoiceManager>(a3, 8);
-    *(v13 + 3) = Phase::Controller::TaskManager::GetService<Phase::Controller::SessionManager>(a3, 20);
-    objc_storeStrong(v13 + 4, a5);
-    *(v13 + 10) = a6;
-    *(v13 + 44) = a7;
+    *(v13 + 2) = Phase::Controller::TaskManager::GetService<Phase::Controller::VoiceManager>(manager, 8);
+    *(v13 + 3) = Phase::Controller::TaskManager::GetService<Phase::Controller::SessionManager>(manager, 20);
+    objc_storeStrong(v13 + 4, format);
+    *(v13 + 10) = render;
+    *(v13 + 44) = detector;
     v16 = [VolumeEQPresetManager alloc];
     v17 = Phase::GetPreferredTuningDirectory(v16);
     v18 = [(VolumeEQPresetManager *)v16 init:v17];
@@ -71,11 +71,11 @@
   return v13;
 }
 
-- (void)removeAllResourcesAttributedToClientID:(id)a3
+- (void)removeAllResourcesAttributedToClientID:(id)d
 {
   v51 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v33 = self;
+  dCopy = d;
+  selfCopy = self;
   v4 = [*(self + 1) copy];
   v46 = 0u;
   v47 = 0u;
@@ -98,23 +98,23 @@
 
         v5 = *(*(&v44 + 1) + 8 * i);
         v32 = [v29 objectForKey:v5];
-        v6 = [v32 controllingClientID];
-        v7 = [v6 isEqual:v35];
+        controllingClientID = [v32 controllingClientID];
+        v7 = [controllingClientID isEqual:dCopy];
 
         if (v7)
         {
-          [(ExternalStreamManager *)v33 abandonControlOfExternalStreamGroupID:v5 withCallback:&__block_literal_global_1];
+          [(ExternalStreamManager *)selfCopy abandonControlOfExternalStreamGroupID:v5 withCallback:&__block_literal_global_1];
         }
 
-        v8 = [v32 outputStreams];
-        v34 = [v8 copy];
+        outputStreams = [v32 outputStreams];
+        v34 = [outputStreams copy];
 
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v9 = [v34 allKeys];
-        v10 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        allKeys = [v34 allKeys];
+        v10 = [allKeys countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (v10)
         {
           v11 = *v41;
@@ -124,35 +124,35 @@
             {
               if (*v41 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(allKeys);
               }
 
               v13 = *(*(&v40 + 1) + 8 * j);
               v14 = [v34 objectForKey:v13];
-              v15 = [v14 attributedClientID];
-              v16 = [v15 isEqual:v35];
+              attributedClientID = [v14 attributedClientID];
+              v16 = [attributedClientID isEqual:dCopy];
 
               if (v16)
               {
-                [(ExternalStreamManager *)v33 removeExternalOutputStreamGroupID:v5 streamID:v13 withCallback:&__block_literal_global_129];
+                [(ExternalStreamManager *)selfCopy removeExternalOutputStreamGroupID:v5 streamID:v13 withCallback:&__block_literal_global_129];
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
+            v10 = [allKeys countByEnumeratingWithState:&v40 objects:v49 count:16];
           }
 
           while (v10);
         }
 
-        v17 = [v32 inputStreams];
-        v18 = [v17 copy];
+        inputStreams = [v32 inputStreams];
+        v18 = [inputStreams copy];
 
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v19 = [v18 allKeys];
-        v20 = [v19 countByEnumeratingWithState:&v36 objects:v48 count:16];
+        allKeys2 = [v18 allKeys];
+        v20 = [allKeys2 countByEnumeratingWithState:&v36 objects:v48 count:16];
         if (v20)
         {
           v21 = *v37;
@@ -162,21 +162,21 @@
             {
               if (*v37 != v21)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(allKeys2);
               }
 
               v23 = *(*(&v36 + 1) + 8 * k);
               v24 = [v18 objectForKey:v23];
-              v25 = [v24 attributedClientID];
-              v26 = [v25 isEqual:v35];
+              attributedClientID2 = [v24 attributedClientID];
+              v26 = [attributedClientID2 isEqual:dCopy];
 
               if (v26)
               {
-                [(ExternalStreamManager *)v33 removeExternalInputStreamGroupID:v5 streamID:v23];
+                [(ExternalStreamManager *)selfCopy removeExternalInputStreamGroupID:v5 streamID:v23];
               }
             }
 
-            v20 = [v19 countByEnumeratingWithState:&v36 objects:v48 count:16];
+            v20 = [allKeys2 countByEnumeratingWithState:&v36 objects:v48 count:16];
           }
 
           while (v20);
@@ -190,16 +190,16 @@
   }
 }
 
-- (void)addExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 attributedTo:(id)a5 definition:(id)a6 startsPaused:(BOOL)a7 renderBlock:(id)a8 withCallback:(id)a9
+- (void)addExternalOutputStreamGroupID:(id)d streamID:(id)iD attributedTo:(id)to definition:(id)definition startsPaused:(BOOL)paused renderBlock:(id)block withCallback:(id)callback
 {
-  v10 = a7;
+  pausedCopy = paused;
   v47[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  toCopy = to;
+  definitionCopy = definition;
+  blockCopy = block;
+  callbackCopy = callback;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -212,22 +212,22 @@
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v21 = [*(self + 1) objectForKey:v15];
+  v21 = [*(self + 1) objectForKey:dCopy];
   if (!v21)
   {
     v21 = objc_alloc_init(ManagedStreamGroup);
-    [*(self + 1) setObject:v21 forKey:v15];
+    [*(self + 1) setObject:v21 forKey:dCopy];
   }
 
-  v22 = [(ManagedStreamGroup *)v21 outputStreams];
-  v23 = [v22 objectForKey:v16];
+  outputStreams = [(ManagedStreamGroup *)v21 outputStreams];
+  v23 = [outputStreams objectForKey:iDCopy];
 
   if (v23)
   {
     v24 = *MEMORY[0x277CCA450];
     v46 = *MEMORY[0x277CCA450];
-    v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ already has output stream %@", v15, v16];
-    v47[0] = v25;
+    iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ already has output stream %@", dCopy, iDCopy];
+    v47[0] = iDCopy;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:&v46 count:1];
 
     v28 = **(Phase::Logger::GetInstance(v27) + 448);
@@ -248,9 +248,9 @@
 
   else
   {
-    v31 = [(ManagedStreamGroup *)v21 outputStreams];
-    v32 = [[ManagedOutputStream alloc] initWithPaused:v10 attributedTo:v17 definition:v18 renderBlock:v19];
-    [v31 setObject:v32 forKey:v16];
+    outputStreams2 = [(ManagedStreamGroup *)v21 outputStreams];
+    v32 = [[ManagedOutputStream alloc] initWithPaused:pausedCopy attributedTo:toCopy definition:definitionCopy renderBlock:blockCopy];
+    [outputStreams2 setObject:v32 forKey:iDCopy];
 
     v34 = **(Phase::Logger::GetInstance(v33) + 928);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -260,38 +260,38 @@
       v40 = 1024;
       v41 = 364;
       v42 = 2112;
-      v43 = v16;
+      v43 = iDCopy;
       v44 = 2112;
-      v45 = v15;
+      v45 = dCopy;
       _os_log_impl(&dword_23A302000, v34, OS_LOG_TYPE_DEFAULT, "%25s:%-5d added external output stream %@ to group %@", buf, 0x26u);
     }
 
     v30 = 0;
   }
 
-  v20[2](v20, v30);
+  callbackCopy[2](callbackCopy, v30);
   if (!v30)
   {
-    v35 = [(ManagedStreamGroup *)v21 stateChangeBlock];
-    v36 = v35 == 0;
+    stateChangeBlock = [(ManagedStreamGroup *)v21 stateChangeBlock];
+    v36 = stateChangeBlock == 0;
 
     if (!v36)
     {
-      v37 = [(ManagedStreamGroup *)v21 stateChangeBlock];
-      (v37)[2](v37, v15, v16, 0);
+      stateChangeBlock2 = [(ManagedStreamGroup *)v21 stateChangeBlock];
+      (stateChangeBlock2)[2](stateChangeBlock2, dCopy, iDCopy, 0);
     }
   }
 }
 
-- (BOOL)addExternalInputStreamGroupID:(id)a3 streamID:(id)a4 attributedTo:(id)a5 definition:(id)a6 isPaused:(BOOL)a7 canRecord:(BOOL)a8 fader:(shared_ptr<caulk:(id)a10 :(id *)a11 synchronized<Phase::Controller::ExternalStreamFader>>)a9 pauseStateDidUpdateCallback:error:
+- (BOOL)addExternalInputStreamGroupID:(id)d streamID:(id)iD attributedTo:(id)to definition:(id)definition isPaused:(BOOL)paused canRecord:(BOOL)record fader:(shared_ptr<caulk:(id)self0 :(id *)self1 synchronized<Phase::Controller::ExternalStreamFader>>)a9 pauseStateDidUpdateCallback:error:
 {
-  v11 = a8;
-  v12 = a7;
+  recordCopy = record;
+  pausedCopy = paused;
   v57[1] = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v39 = a5;
-  v41 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  toCopy = to;
+  definitionCopy = definition;
   v40 = a9.__cntrl_;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
@@ -305,15 +305,15 @@
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v19 = [*(self + 1) objectForKey:v17];
+  v19 = [*(self + 1) objectForKey:dCopy];
   if (!v19)
   {
     v19 = objc_alloc_init(ManagedStreamGroup);
     [*(self + 1) setObject:? forKey:?];
   }
 
-  v20 = [(ManagedStreamGroup *)v19 inputStreams];
-  v21 = [v20 objectForKey:v18];
+  inputStreams = [(ManagedStreamGroup *)v19 inputStreams];
+  v21 = [inputStreams objectForKey:iDCopy];
   v22 = v21 == 0;
 
   if (!v21)
@@ -327,23 +327,23 @@
       atomic_fetch_add_explicit(&v31->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v25 = [(ManagedInputStream *)v30 initWithPaused:v12 attributedTo:v39 definition:v41 canRecord:v11 fader:&v42 pauseStateDidUpdateCallback:v40];
+    v25 = [(ManagedInputStream *)v30 initWithPaused:pausedCopy attributedTo:toCopy definition:definitionCopy canRecord:recordCopy fader:&v42 pauseStateDidUpdateCallback:v40];
     if (v43)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v43);
     }
 
-    SessionInputMuteState = Phase::Controller::SessionManager::GetSessionInputMuteState(*(self + 3), [v41 audioSessionToken], 0);
+    SessionInputMuteState = Phase::Controller::SessionManager::GetSessionInputMuteState(*(self + 3), [definitionCopy audioSessionToken], 0);
     v33 = SessionInputMuteState;
     if ((SessionInputMuteState & 0x100) != 0)
     {
       [(ManagedInputStream *)v25 setIsMuted:SessionInputMuteState & 1];
     }
 
-    v34 = [(ManagedStreamGroup *)v19 inputStreams];
-    [v34 setObject:v25 forKey:v18];
+    inputStreams2 = [(ManagedStreamGroup *)v19 inputStreams];
+    [inputStreams2 setObject:v25 forKey:iDCopy];
 
-    v35 = [(ExternalStreamManager *)self _setPauseExternalInputStreamWithoutNotifyingClient:v25 isPaused:v12 fromPlatformCallback:0 error:a10];
+    v35 = [(ExternalStreamManager *)self _setPauseExternalInputStreamWithoutNotifyingClient:v25 isPaused:pausedCopy fromPlatformCallback:0 error:fader];
     if (v35)
     {
       v36 = **(Phase::Logger::GetInstance(v35) + 928);
@@ -361,21 +361,21 @@
         v46 = 1024;
         v48 = 2112;
         v50 = 2112;
-        v49 = v18;
+        v49 = iDCopy;
         if ((v33 & 0x100) == 0)
         {
           v37 = "UNKNOWN";
         }
 
-        v51 = v17;
+        v51 = dCopy;
         v52 = 1024;
-        v53 = v12;
+        v53 = pausedCopy;
         v54 = 2080;
         v55 = v37;
         _os_log_impl(&dword_23A302000, v36, OS_LOG_TYPE_DEFAULT, "%25s:%-5d added external input stream %@ to group %@ with initial pause state %d initial input mute state %s", buf, 0x36u);
       }
 
-      if (!a10)
+      if (!fader)
       {
         v22 = 1;
         goto LABEL_28;
@@ -385,7 +385,7 @@
       goto LABEL_25;
     }
 
-    [(ExternalStreamManager *)self removeExternalInputStreamGroupID:v17 streamID:v18];
+    [(ExternalStreamManager *)self removeExternalInputStreamGroupID:dCopy streamID:iDCopy];
 LABEL_27:
     v22 = 0;
     goto LABEL_28;
@@ -393,8 +393,8 @@ LABEL_27:
 
   v23 = *MEMORY[0x277CCA450];
   v56 = *MEMORY[0x277CCA450];
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ already has input stream %@", v17, v18];
-  v57[0] = v24;
+  iDCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ already has input stream %@", dCopy, iDCopy];
+  v57[0] = iDCopy;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&v56 count:1];
 
   v27 = **(Phase::Logger::GetInstance(v26) + 448);
@@ -410,24 +410,24 @@ LABEL_27:
     _os_log_impl(&dword_23A302000, v27, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (!a10)
+  if (!fader)
   {
     goto LABEL_27;
   }
 
   v29 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346925413 userInfo:v25];
 LABEL_25:
-  *a10 = v29;
+  *fader = v29;
 LABEL_28:
 
   return v22;
 }
 
-- (void)removeExternalInputStreamGroupID:(id)a3 streamID:(id)a4
+- (void)removeExternalInputStreamGroupID:(id)d streamID:(id)iD
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -440,17 +440,17 @@ LABEL_28:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v8 = [*(self + 1) objectForKey:v6];
+  v8 = [*(self + 1) objectForKey:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 inputStreams];
-    v11 = [v10 objectForKey:v7];
+    inputStreams = [v8 inputStreams];
+    v11 = [inputStreams objectForKey:iDCopy];
 
     if (v11)
     {
-      v13 = [v9 inputStreams];
-      [v13 removeObjectForKey:v7];
+      inputStreams2 = [v9 inputStreams];
+      [inputStreams2 removeObjectForKey:iDCopy];
 
       v15 = **(Phase::Logger::GetInstance(v14) + 928);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -460,57 +460,57 @@ LABEL_28:
         v35 = 1024;
         v36 = 476;
         v37 = 2112;
-        v38 = v7;
+        v38 = iDCopy;
         v39 = 2112;
-        v40 = v6;
+        v40 = dCopy;
         _os_log_impl(&dword_23A302000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed external input stream %@ from group %@.", &v33, 0x26u);
       }
 
       v16 = *(self + 3);
-      v17 = [v11 definition];
-      LOBYTE(v16) = Phase::Controller::SessionManager::SetSessionPlayState(v16, [v17 audioSessionToken], v11, 1u, 0, 0, 0);
+      definition = [v11 definition];
+      LOBYTE(v16) = Phase::Controller::SessionManager::SetSessionPlayState(v16, [definition audioSessionToken], v11, 1u, 0, 0, 0);
 
       if ((v16 & 1) == 0)
       {
         v19 = **(Phase::Logger::GetInstance(v18) + 928);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v11 definition];
-          v21 = [v20 audioSessionToken];
+          definition2 = [v11 definition];
+          audioSessionToken = [definition2 audioSessionToken];
           v33 = 136315650;
           v34 = "ExternalStreamManager.mm";
           v35 = 1024;
           v36 = 487;
           v37 = 1024;
-          LODWORD(v38) = v21;
+          LODWORD(v38) = audioSessionToken;
           _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Failed to stop audio session 0x%x while removing input stream (potentially invalid)", &v33, 0x18u);
         }
       }
 
-      v22 = [v9 outputStreams];
-      if ([v22 count])
+      outputStreams = [v9 outputStreams];
+      if ([outputStreams count])
       {
 
 LABEL_23:
         goto LABEL_24;
       }
 
-      v29 = [v9 inputStreams];
-      if ([v29 count])
+      inputStreams3 = [v9 inputStreams];
+      if ([inputStreams3 count])
       {
 
         goto LABEL_23;
       }
 
-      v30 = [v9 controllingClientID];
-      v31 = v30 == 0;
+      controllingClientID = [v9 controllingClientID];
+      v31 = controllingClientID == 0;
 
       if (!v31)
       {
         goto LABEL_23;
       }
 
-      v32 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:v6]) + 928);
+      v32 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:dCopy]) + 928);
       if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_23;
@@ -521,7 +521,7 @@ LABEL_23:
       v35 = 1024;
       v36 = 494;
       v37 = 2112;
-      v38 = v6;
+      v38 = dCopy;
       v25 = "%25s:%-5d Removed external stream group %@";
       v26 = v32;
       v27 = OS_LOG_TYPE_DEFAULT;
@@ -541,9 +541,9 @@ LABEL_23:
       v35 = 1024;
       v36 = 471;
       v37 = 2112;
-      v38 = v7;
+      v38 = iDCopy;
       v39 = 2112;
-      v40 = v6;
+      v40 = dCopy;
       v25 = "%25s:%-5d Could not find stream %@ to remove in group %@.";
       v26 = v24;
       v27 = OS_LOG_TYPE_ERROR;
@@ -562,19 +562,19 @@ LABEL_23:
     v35 = 1024;
     v36 = 464;
     v37 = 2112;
-    v38 = v6;
+    v38 = dCopy;
     _os_log_impl(&dword_23A302000, v23, OS_LOG_TYPE_ERROR, "%25s:%-5d Could not find stream group %@ to remove.", &v33, 0x1Cu);
   }
 
 LABEL_24:
 }
 
-- (void)setMuteExternalInputStreamGroupID:(id)a3 streamID:(id)a4 isMuted:(BOOL)a5
+- (void)setMuteExternalInputStreamGroupID:(id)d streamID:(id)iD isMuted:(BOOL)muted
 {
-  v5 = a5;
+  mutedCopy = muted;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -587,7 +587,7 @@ LABEL_24:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v10 = [*(self + 1) objectForKey:v8];
+  v10 = [*(self + 1) objectForKey:dCopy];
   v11 = v10;
   if (!v10)
   {
@@ -599,15 +599,15 @@ LABEL_24:
       v25 = 1024;
       v26 = 517;
       v27 = 2112;
-      v28 = v8;
+      v28 = dCopy;
       _os_log_impl(&dword_23A302000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d Could not find stream group %@ to mute.", &v23, 0x1Cu);
     }
 
     goto LABEL_16;
   }
 
-  v12 = [v10 inputStreams];
-  v13 = [v12 objectForKey:v9];
+  inputStreams = [v10 inputStreams];
+  v13 = [inputStreams objectForKey:iDCopy];
 
   if (!v13)
   {
@@ -619,7 +619,7 @@ LABEL_24:
       v25 = 1024;
       v26 = 524;
       v27 = 2112;
-      v28 = v9;
+      v28 = iDCopy;
       _os_log_impl(&dword_23A302000, v22, OS_LOG_TYPE_ERROR, "%25s:%-5d Could not find stream %@ to mute.", &v23, 0x1Cu);
     }
 
@@ -631,7 +631,7 @@ LABEL_16:
   v15 = **(Phase::Logger::GetInstance(v14) + 928);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (mutedCopy)
     {
       v16 = "True";
     }
@@ -641,7 +641,7 @@ LABEL_16:
       v16 = "False";
     }
 
-    v17 = [v13 definition];
+    definition = [v13 definition];
     v23 = 136316162;
     v24 = "ExternalStreamManager.mm";
     v25 = 1024;
@@ -649,28 +649,28 @@ LABEL_16:
     v27 = 2080;
     v28 = v16;
     v29 = 2112;
-    v30 = v9;
+    v30 = iDCopy;
     v31 = 1024;
-    v32 = [v17 audioSessionToken];
+    audioSessionToken = [definition audioSessionToken];
     _os_log_impl(&dword_23A302000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Setting Mute %s state on external input stream %@ for session 0x%x", &v23, 0x2Cu);
   }
 
-  v18 = [v13 definition];
-  v19 = [v18 audioSessionToken];
+  definition2 = [v13 definition];
+  audioSessionToken2 = [definition2 audioSessionToken];
 
   v20 = v13;
-  [v20 setIsMuted:v5];
+  [v20 setIsMuted:mutedCopy];
 
-  Phase::Controller::SessionManager::SetSessionInputMuteState(*(self + 3), v19, v20, v5, 0);
+  Phase::Controller::SessionManager::SetSessionInputMuteState(*(self + 3), audioSessionToken2, v20, mutedCopy, 0);
 LABEL_17:
 }
 
-- (void)_setSessionInputStreamState:(id)a3 muted:(BOOL)a4 fromPlatformCallback:(BOOL)a5
+- (void)_setSessionInputStreamState:(id)state muted:(BOOL)muted fromPlatformCallback:(BOOL)callback
 {
-  v5 = a5;
-  v6 = a4;
-  v13 = a3;
-  if ([v13 isStreamPaused])
+  callbackCopy = callback;
+  mutedCopy = muted;
+  stateCopy = state;
+  if ([stateCopy isStreamPaused])
   {
     v8 = 2;
   }
@@ -680,7 +680,7 @@ LABEL_17:
     v8 = 1;
   }
 
-  if ([v13 canRecord])
+  if ([stateCopy canRecord])
   {
     v9 = 1;
   }
@@ -690,7 +690,7 @@ LABEL_17:
     v9 = 9;
   }
 
-  if (v6)
+  if (mutedCopy)
   {
     v10 = 4;
   }
@@ -701,14 +701,14 @@ LABEL_17:
   }
 
   v11 = *(self + 3);
-  v12 = [v13 definition];
-  Phase::Controller::SessionManager::SetSessionPlayState(v11, [v12 audioSessionToken], v13, v9 | v10, v8, v5, 0);
+  definition = [stateCopy definition];
+  Phase::Controller::SessionManager::SetSessionPlayState(v11, [definition audioSessionToken], stateCopy, v9 | v10, v8, callbackCopy, 0);
 }
 
-- (unint64_t)_fadeInputStreamsInSessionToken:(unsigned int)a3 isMuted:(BOOL)a4 fadeTimeInSeconds:(float)a5 synchronous:(BOOL)a6
+- (unint64_t)_fadeInputStreamsInSessionToken:(unsigned int)token isMuted:(BOOL)muted fadeTimeInSeconds:(float)seconds synchronous:(BOOL)synchronous
 {
-  v37 = a6;
-  v7 = a4;
+  synchronousCopy = synchronous;
+  mutedCopy = muted;
   v63[4] = *MEMORY[0x277D85DE8];
   v44 = 0u;
   v45 = 0u;
@@ -721,14 +721,14 @@ LABEL_17:
     v39 = 0;
     v32 = *v45;
     v10 = "Unmuting";
-    if (v7)
+    if (mutedCopy)
     {
       v10 = "Muting";
     }
 
     v35 = v10;
-    v11 = a5;
-    if (v7)
+    secondsCopy = seconds;
+    if (mutedCopy)
     {
       v12 = 0.0;
     }
@@ -738,9 +738,9 @@ LABEL_17:
       v12 = 1.0;
     }
 
-    if (a5 < 0.0)
+    if (seconds < 0.0)
     {
-      a5 = 0.0;
+      seconds = 0.0;
     }
 
     do
@@ -758,10 +758,10 @@ LABEL_17:
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v14 = [v13 inputStreams];
-        v38 = [v14 allKeys];
+        inputStreams = [v13 inputStreams];
+        allKeys = [inputStreams allKeys];
 
-        v15 = [v38 countByEnumeratingWithState:&v40 objects:v61 count:16];
+        v15 = [allKeys countByEnumeratingWithState:&v40 objects:v61 count:16];
         if (v15)
         {
           v16 = *v41;
@@ -771,21 +771,21 @@ LABEL_17:
             {
               if (*v41 != v16)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(allKeys);
               }
 
               v18 = *(*(&v40 + 1) + 8 * j);
-              v19 = [v13 inputStreams];
-              v20 = [v19 objectForKey:v18];
+              inputStreams2 = [v13 inputStreams];
+              v20 = [inputStreams2 objectForKey:v18];
 
               if (v20)
               {
-                v21 = [v20 definition];
-                v22 = [v21 audioSessionToken] == a3;
+                definition = [v20 definition];
+                v22 = [definition audioSessionToken] == token;
 
                 if (v22)
                 {
-                  v23 = [v20 isMuted];
+                  isMuted = [v20 isMuted];
                   [v20 fader];
                   v24 = *lock;
                   os_unfair_lock_lock(*lock);
@@ -807,9 +807,9 @@ LABEL_17:
                     v55 = 2112;
                     v56 = v18;
                     v57 = 1024;
-                    v58 = a3;
+                    tokenCopy = token;
                     v59 = 2048;
-                    v60 = v11;
+                    v60 = secondsCopy;
                     _os_log_impl(&dword_23A302000, v26, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s input %@ for session 0x%x over %f seconds.", lock, 0x36u);
                   }
 
@@ -817,7 +817,7 @@ LABEL_17:
                   v63[0] = &unk_284D31660;
                   v63[1] = Phase::CurveFunction::Linear<float>;
                   v63[3] = v63;
-                  if (a5 == 0.0)
+                  if (seconds == 0.0)
                   {
                     *(v24 + 40) = v12;
                     v27 = v12;
@@ -830,7 +830,7 @@ LABEL_17:
 
                   v48[0] = 0.0;
                   v48[1] = v27;
-                  *lock = a5;
+                  *lock = seconds;
                   *&lock[4] = v12;
                   std::__function::__value_func<float ()(float)>::__value_func[abi:ne200100](&lock[8], v63);
                   Phase::Envelope<float>::Envelope(&v49, v48, lock);
@@ -847,7 +847,7 @@ LABEL_17:
                   [v20 setIsFading:1];
                   v28 = *(v24 + 52);
                   os_unfair_lock_unlock(v24);
-                  if (v37)
+                  if (synchronousCopy)
                   {
                     if (v28 == 0.0)
                     {
@@ -856,7 +856,7 @@ LABEL_17:
 
                     else
                     {
-                      v29 = v23;
+                      v29 = isMuted;
                     }
 
                     [(ExternalStreamManager *)self _setSessionInputStreamState:v20 muted:v29 fromPlatformCallback:1];
@@ -867,7 +867,7 @@ LABEL_17:
               }
             }
 
-            v15 = [v38 countByEnumeratingWithState:&v40 objects:v61 count:16];
+            v15 = [allKeys countByEnumeratingWithState:&v40 objects:v61 count:16];
           }
 
           while (v15);
@@ -888,7 +888,7 @@ LABEL_17:
   return v39;
 }
 
-- (unint64_t)setExternalInputStreamSessionMute:(unsigned int)a3 isMuted:(BOOL)a4 fadeTimeInSeconds:(float)a5
+- (unint64_t)setExternalInputStreamSessionMute:(unsigned int)mute isMuted:(BOOL)muted fadeTimeInSeconds:(float)seconds
 {
   v28 = *MEMORY[0x277D85DE8];
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
@@ -957,9 +957,9 @@ LABEL_17:
 
   *v11 = &unk_284D33BF0;
   *(v11 + 8) = self;
-  *(v11 + 16) = a3;
-  *(v11 + 20) = a4;
-  *(v11 + 24) = a5;
+  *(v11 + 16) = mute;
+  *(v11 + 20) = muted;
+  *(v11 + 24) = seconds;
   Phase::LockFreeQueueSPSC::CommitBytes(v10, 32);
   atomic_store(0, (v10 + 40));
 
@@ -967,9 +967,9 @@ LABEL_17:
   return 0;
 }
 
-- (void)setExternalInputStreamSession:(unsigned int)a3 isActive:(BOOL)a4
+- (void)setExternalInputStreamSession:(unsigned int)session isActive:(BOOL)active
 {
-  v32 = a4;
+  activeCopy = active;
   v54 = *MEMORY[0x277D85DE8];
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
@@ -1009,11 +1009,11 @@ LABEL_17:
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v8 = [v7 inputStreams];
+        inputStreams = [v7 inputStreams];
         v29 = v6;
-        v33 = [v8 allKeys];
+        allKeys = [inputStreams allKeys];
 
-        v9 = [v33 countByEnumeratingWithState:&v36 objects:v52 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v36 objects:v52 count:16];
         if (v9)
         {
           v10 = *v37;
@@ -1023,21 +1023,21 @@ LABEL_17:
             {
               if (*v37 != v10)
               {
-                objc_enumerationMutation(v33);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v36 + 1) + 8 * i);
-              v13 = [v7 inputStreams];
-              v14 = [v13 objectForKey:v12];
+              inputStreams2 = [v7 inputStreams];
+              v14 = [inputStreams2 objectForKey:v12];
 
               if (v14)
               {
-                v15 = [v14 definition];
-                v16 = [v15 audioSessionToken] == a3;
+                definition = [v14 definition];
+                v16 = [definition audioSessionToken] == session;
 
                 if (v16)
                 {
-                  if (v32)
+                  if (activeCopy)
                   {
                     if (([v14 shouldResumeWithSession] & 1) == 0)
                     {
@@ -1070,14 +1070,14 @@ LABEL_17:
 
                   else
                   {
-                    v21 = [v14 isStreamPaused];
+                    isStreamPaused = [v14 isStreamPaused];
                     v34 = 0;
                     v22 = [(ExternalStreamManager *)self _setPauseExternalInputStreamGroupID:v30 streamID:v12 isPaused:1 fromPlatformCallback:1 error:&v34];
                     v23 = v34;
                     v19 = v23;
                     if (v22)
                     {
-                      v24 = v21 ^ 1u;
+                      v24 = isStreamPaused ^ 1u;
                     }
 
                     else
@@ -1107,7 +1107,7 @@ LABEL_17:
 LABEL_28:
             }
 
-            v9 = [v33 countByEnumeratingWithState:&v36 objects:v52 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v36 objects:v52 count:16];
           }
 
           while (v9);
@@ -1124,18 +1124,18 @@ LABEL_28:
   }
 }
 
-- (void)_updateRecordingAbility:(id)a3 streamID:(id)a4 canRecord:(BOOL)a5
+- (void)_updateRecordingAbility:(id)ability streamID:(id)d canRecord:(BOOL)record
 {
-  v5 = a5;
+  recordCopy = record;
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [*(self + 1) objectForKey:v8];
+  abilityCopy = ability;
+  dCopy = d;
+  v10 = [*(self + 1) objectForKey:abilityCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 inputStreams];
-    v13 = [v12 objectForKey:v9];
+    inputStreams = [v10 inputStreams];
+    v13 = [inputStreams objectForKey:dCopy];
 
     if (v13)
     {
@@ -1147,7 +1147,7 @@ LABEL_28:
         v26 = 1024;
         v27 = 725;
         *buf = 136315906;
-        if (v5)
+        if (recordCopy)
         {
           v16 = "Can Record";
         }
@@ -1155,11 +1155,11 @@ LABEL_28:
         v28 = 2080;
         v29 = v16;
         v30 = 2112;
-        v31 = v9;
+        v31 = dCopy;
         _os_log_impl(&dword_23A302000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Setting %s state on external input stream %@", buf, 0x26u);
       }
 
-      [v13 setCanRecord:v5];
+      [v13 setCanRecord:recordCopy];
       v23 = 0;
       v17 = -[ExternalStreamManager _setPauseExternalInputStreamWithoutNotifyingClient:isPaused:fromPlatformCallback:error:](self, "_setPauseExternalInputStreamWithoutNotifyingClient:isPaused:fromPlatformCallback:error:", v13, [v13 isStreamPaused], 0, &v23);
       v18 = v23;
@@ -1174,7 +1174,7 @@ LABEL_28:
           v26 = 1024;
           v27 = 748;
           v28 = 2112;
-          v29 = v9;
+          v29 = dCopy;
           v30 = 2112;
           v31 = v19;
           _os_log_impl(&dword_23A302000, v20, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to update record state on input stream %@: %@", buf, 0x26u);
@@ -1192,7 +1192,7 @@ LABEL_28:
         v26 = 1024;
         v27 = 720;
         v28 = 2112;
-        v29 = v9;
+        v29 = dCopy;
         _os_log_impl(&dword_23A302000, v22, OS_LOG_TYPE_ERROR, "%25s:%-5d Could not find stream %@ to pause.", buf, 0x1Cu);
       }
     }
@@ -1208,17 +1208,17 @@ LABEL_28:
       v26 = 1024;
       v27 = 713;
       v28 = 2112;
-      v29 = v8;
+      v29 = abilityCopy;
       _os_log_impl(&dword_23A302000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d Could not find stream group %@ to pause.", buf, 0x1Cu);
     }
   }
 }
 
-- (void)updateExternalInputStreamRecordingAbility:(id)a3 streamID:(id)a4 canRecord:(BOOL)a5
+- (void)updateExternalInputStreamRecordingAbility:(id)ability streamID:(id)d canRecord:(BOOL)record
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  abilityCopy = ability;
+  dCopy = d;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -1244,8 +1244,8 @@ LABEL_28:
   }
 
   v10 = objc_initWeak(&location, self);
-  v11 = v8;
-  v12 = v9;
+  v11 = abilityCopy;
+  v12 = dCopy;
   v13 = **(self + 7);
   v21 = 0;
   v20 = 1;
@@ -1289,7 +1289,7 @@ LABEL_28:
   *(v14 + 8) = self;
   *(v14 + 16) = v11;
   *(v14 + 24) = v12;
-  *(v14 + 32) = a5;
+  *(v14 + 32) = record;
   Phase::LockFreeQueueSPSC::CommitBytes(v13, 40);
   atomic_store(0, (v13 + 40));
 
@@ -1334,10 +1334,10 @@ LABEL_28:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v4 = [v3 inputStreams];
-        v5 = [v4 allKeys];
+        inputStreams = [v3 inputStreams];
+        allKeys = [inputStreams allKeys];
 
-        v6 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v6)
         {
           v7 = *v22;
@@ -1348,12 +1348,12 @@ LABEL_28:
             {
               if (*v22 != v7)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(allKeys);
               }
 
               v9 = *(*(&v21 + 1) + 8 * v8);
-              v10 = [v3 inputStreams];
-              v11 = [v10 objectForKey:v9];
+              inputStreams2 = [v3 inputStreams];
+              v11 = [inputStreams2 objectForKey:v9];
 
               if (v11 && [v11 isFading])
               {
@@ -1400,7 +1400,7 @@ LABEL_28:
             }
 
             while (v6 != v8);
-            v14 = [v5 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v14 = [allKeys countByEnumeratingWithState:&v21 objects:v29 count:16];
             v6 = v14;
           }
 
@@ -1417,14 +1417,14 @@ LABEL_28:
   Phase::Commandable<128,Phase::LockFreeQueueMPSC>::ExecuteCommands(self + 48);
 }
 
-- (BOOL)_setPauseExternalInputStreamWithoutNotifyingClient:(id)a3 isPaused:(BOOL)a4 fromPlatformCallback:(BOOL)a5 error:(id *)a6
+- (BOOL)_setPauseExternalInputStreamWithoutNotifyingClient:(id)client isPaused:(BOOL)paused fromPlatformCallback:(BOOL)callback error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  callbackCopy = callback;
+  pausedCopy = paused;
   v36[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (v8)
+  clientCopy = client;
+  v11 = clientCopy;
+  if (pausedCopy)
   {
     v12 = 2;
   }
@@ -1434,9 +1434,9 @@ LABEL_28:
     v12 = 1;
   }
 
-  v13 = [v10 canRecord];
-  v14 = [v11 isMuted];
-  if (v13)
+  canRecord = [clientCopy canRecord];
+  isMuted = [v11 isMuted];
+  if (canRecord)
   {
     v15 = 1;
   }
@@ -1446,7 +1446,7 @@ LABEL_28:
     v15 = 9;
   }
 
-  if (v14)
+  if (isMuted)
   {
     v16 = 4;
   }
@@ -1457,17 +1457,17 @@ LABEL_28:
   }
 
   v17 = *(self + 3);
-  v18 = [v11 definition];
-  v19 = Phase::Controller::SessionManager::SetSessionPlayState(v17, [v18 audioSessionToken], v11, v16 | v15, v12, v7, 0);
+  definition = [v11 definition];
+  v19 = Phase::Controller::SessionManager::SetSessionPlayState(v17, [definition audioSessionToken], v11, v16 | v15, v12, callbackCopy, 0);
 
   if (v19)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
 
-    [v11 setStreamPaused:v8];
+    [v11 setStreamPaused:pausedCopy];
     [v11 setShouldResumeWithSession:0];
   }
 
@@ -1476,8 +1476,8 @@ LABEL_28:
     v20 = *MEMORY[0x277CCA450];
     v35 = *MEMORY[0x277CCA450];
     v21 = MEMORY[0x277CCACA8];
-    v22 = [v11 definition];
-    v23 = [v21 stringWithFormat:@"failed to set session 0x%x state", objc_msgSend(v22, "audioSessionToken")];
+    definition2 = [v11 definition];
+    v23 = [v21 stringWithFormat:@"failed to set session 0x%x state", objc_msgSend(definition2, "audioSessionToken")];
     v36[0] = v23;
     v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
 
@@ -1494,9 +1494,9 @@ LABEL_28:
       _os_log_impl(&dword_23A302000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924646 userInfo:v24];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924646 userInfo:v24];
     }
 
     [v11 setStreamPaused:1];
@@ -1506,13 +1506,13 @@ LABEL_28:
   return v19;
 }
 
-- (BOOL)_setPauseExternalInputStreamGroupID:(id)a3 streamID:(id)a4 isPaused:(BOOL)a5 fromPlatformCallback:(BOOL)a6 error:(id *)a7
+- (BOOL)_setPauseExternalInputStreamGroupID:(id)d streamID:(id)iD isPaused:(BOOL)paused fromPlatformCallback:(BOOL)callback error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
+  callbackCopy = callback;
+  pausedCopy = paused;
   v52[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -1525,19 +1525,19 @@ LABEL_28:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v14 = [*(self + 1) objectForKey:v12];
+  v14 = [*(self + 1) objectForKey:dCopy];
   v15 = v14;
   if (!v14)
   {
     v24 = *MEMORY[0x277CCA450];
     v51 = *MEMORY[0x277CCA450];
     v25 = "resume";
-    if (v9)
+    if (pausedCopy)
     {
       v25 = "pause";
     }
 
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream group %@ to %s", v12, v25];
+    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream group %@ to %s", dCopy, v25];
     v52[0] = v26;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
 
@@ -1554,10 +1554,10 @@ LABEL_28:
       _os_log_impl(&dword_23A302000, v28, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a7)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v17];
-      *a7 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_25;
     }
 
@@ -1566,20 +1566,20 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v16 = [v14 inputStreams];
-  v17 = [v16 objectForKey:v13];
+  inputStreams = [v14 inputStreams];
+  v17 = [inputStreams objectForKey:iDCopy];
 
   if (!v17)
   {
     v30 = *MEMORY[0x277CCA450];
     v49 = *MEMORY[0x277CCA450];
     v31 = "resume";
-    if (v9)
+    if (pausedCopy)
     {
       v31 = "pause";
     }
 
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream %@ to %s", v13, v31];
+    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream %@ to %s", iDCopy, v31];
     v50 = v32;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v50 forKeys:&v49 count:1];
 
@@ -1596,9 +1596,9 @@ LABEL_24:
       _os_log_impl(&dword_23A302000, v35, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a7)
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v33];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v33];
     }
 
     v17 = 0;
@@ -1608,8 +1608,8 @@ LABEL_24:
   v19 = **(Phase::Logger::GetInstance(v18) + 928);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = v13;
-    if (v9)
+    v38 = iDCopy;
+    if (pausedCopy)
     {
       v20 = "Pausing";
     }
@@ -1619,7 +1619,7 @@ LABEL_24:
       v20 = "Resuming";
     }
 
-    v21 = [v17 definition];
+    definition = [v17 definition];
     *buf = 136316162;
     v40 = "ExternalStreamManager.mm";
     v41 = 1024;
@@ -1627,28 +1627,28 @@ LABEL_24:
     v43 = 2080;
     v44 = v20;
     v45 = 2112;
-    v13 = v38;
+    iDCopy = v38;
     v46 = v38;
     v47 = 1024;
-    v48 = [v21 audioSessionToken];
+    audioSessionToken = [definition audioSessionToken];
     _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_DEFAULT, "%25s:%-5d %s external input stream %@ in session 0x%x", buf, 0x2Cu);
   }
 
-  v22 = [(ExternalStreamManager *)self _setPauseExternalInputStreamWithoutNotifyingClient:v17 isPaused:v9 fromPlatformCallback:v8 error:a7];
-  v23 = [v17 pauseStateDidUpdateCallback];
-  v23[2](v23, [v17 isStreamPaused]);
+  v22 = [(ExternalStreamManager *)self _setPauseExternalInputStreamWithoutNotifyingClient:v17 isPaused:pausedCopy fromPlatformCallback:callbackCopy error:error];
+  pauseStateDidUpdateCallback = [v17 pauseStateDidUpdateCallback];
+  pauseStateDidUpdateCallback[2](pauseStateDidUpdateCallback, [v17 isStreamPaused]);
 
 LABEL_25:
   return v22;
 }
 
-- (void)claimControlOfExternalStreamGroupID:(id)a3 attributedTo:(id)a4 stateChangeBlock:(id)a5 withCallback:(id)a6
+- (void)claimControlOfExternalStreamGroupID:(id)d attributedTo:(id)to stateChangeBlock:(id)block withCallback:(id)callback
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v28 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  toCopy = to;
+  blockCopy = block;
+  callbackCopy = callback;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -1661,21 +1661,21 @@ LABEL_25:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v13 = [*(self + 1) objectForKey:v10];
+  v13 = [*(self + 1) objectForKey:dCopy];
   if (!v13)
   {
     v13 = objc_alloc_init(ManagedStreamGroup);
     [*(self + 1) setObject:? forKey:?];
   }
 
-  v14 = [(ManagedStreamGroup *)v13 controllingClientID];
+  controllingClientID = [(ManagedStreamGroup *)v13 controllingClientID];
 
-  if (v14)
+  if (controllingClientID)
   {
     v15 = *MEMORY[0x277CCA450];
     v40 = *MEMORY[0x277CCA450];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ is already controlled", v10];
-    v41[0] = v16;
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group %@ is already controlled", dCopy];
+    v41[0] = dCopy;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
 
     v19 = **(Phase::Logger::GetInstance(v18) + 928);
@@ -1696,8 +1696,8 @@ LABEL_25:
 
   else
   {
-    [(ManagedStreamGroup *)v13 setStateChangeBlock:v11];
-    v22 = **(Phase::Logger::GetInstance([(ManagedStreamGroup *)v13 setControllingClientID:v28]) + 928);
+    [(ManagedStreamGroup *)v13 setStateChangeBlock:blockCopy];
+    v22 = **(Phase::Logger::GetInstance([(ManagedStreamGroup *)v13 setControllingClientID:toCopy]) + 928);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
@@ -1705,24 +1705,24 @@ LABEL_25:
       v36 = 1024;
       v37 = 961;
       v38 = 2112;
-      v39 = v10;
+      v39 = dCopy;
       _os_log_impl(&dword_23A302000, v22, OS_LOG_TYPE_DEFAULT, "%25s:%-5d claimed control of external stream group %@", buf, 0x1Cu);
     }
 
     v21 = 0;
   }
 
-  v12[2](v12, v21);
+  callbackCopy[2](callbackCopy, v21);
   if (!v21)
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = [(ManagedStreamGroup *)v13 outputStreams];
-    v24 = [v23 allKeys];
+    outputStreams = [(ManagedStreamGroup *)v13 outputStreams];
+    allKeys = [outputStreams allKeys];
 
-    v25 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v25 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v25)
     {
       v26 = *v30;
@@ -1733,14 +1733,14 @@ LABEL_25:
         {
           if (*v30 != v26)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(allKeys);
           }
 
-          (*(v11 + 2))(v11, v10, *(*(&v29 + 1) + 8 * v27++), 0);
+          (*(blockCopy + 2))(blockCopy, dCopy, *(*(&v29 + 1) + 8 * v27++), 0);
         }
 
         while (v25 != v27);
-        v25 = [v24 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v25 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v25);
@@ -1748,11 +1748,11 @@ LABEL_25:
   }
 }
 
-- (void)abandonControlOfExternalStreamGroupID:(id)a3 withCallback:(id)a4
+- (void)abandonControlOfExternalStreamGroupID:(id)d withCallback:(id)callback
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callbackCopy = callback;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -1765,13 +1765,13 @@ LABEL_25:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v8 = [*(self + 1) objectForKey:v6];
+  v8 = [*(self + 1) objectForKey:dCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 controllingClientID];
+    controllingClientID = [v8 controllingClientID];
 
-    if (v10)
+    if (controllingClientID)
     {
       [v9 setControllingClientID:0];
       v11 = **(Phase::Logger::GetInstance([v9 setStateChangeBlock:0]) + 928);
@@ -1782,23 +1782,23 @@ LABEL_25:
         v33 = 1024;
         v34 = 1001;
         v35 = 2112;
-        v36 = v6;
+        v36 = dCopy;
         _os_log_impl(&dword_23A302000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Abandoned control of external stream group %@", buf, 0x1Cu);
       }
 
-      v12 = [v9 outputStreams];
-      if ([v12 count])
+      outputStreams = [v9 outputStreams];
+      if ([outputStreams count])
       {
       }
 
       else
       {
-        v26 = [v9 inputStreams];
-        v27 = [v26 count] == 0;
+        inputStreams = [v9 inputStreams];
+        v27 = [inputStreams count] == 0;
 
         if (v27)
         {
-          v28 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:v6]) + 928);
+          v28 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:dCopy]) + 928);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 136315650;
@@ -1806,7 +1806,7 @@ LABEL_25:
             v33 = 1024;
             v34 = 1007;
             v35 = 2112;
-            v36 = v6;
+            v36 = dCopy;
             _os_log_impl(&dword_23A302000, v28, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed external stream group %@", buf, 0x1Cu);
           }
         }
@@ -1819,8 +1819,8 @@ LABEL_25:
     {
       v20 = *MEMORY[0x277CCA450];
       v29 = *MEMORY[0x277CCA450];
-      v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream %@ is not currently under control", v6];
-      v30 = v21;
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream %@ is not currently under control", dCopy];
+      v30 = dCopy;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
       v24 = **(Phase::Logger::GetInstance(v23) + 928);
@@ -1844,8 +1844,8 @@ LABEL_25:
   {
     v13 = *MEMORY[0x277CCA450];
     v37 = *MEMORY[0x277CCA450];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group not found for UUID %@", v6];
-    v38[0] = v14;
+    dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream group not found for UUID %@", dCopy];
+    v38[0] = dCopy2;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
 
     v17 = **(Phase::Logger::GetInstance(v16) + 928);
@@ -1864,15 +1864,15 @@ LABEL_25:
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v15];
   }
 
-  v7[2](v7, v19);
+  callbackCopy[2](callbackCopy, v19);
 }
 
-- (void)removeExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 withCallback:(id)a5
+- (void)removeExternalOutputStreamGroupID:(id)d streamID:(id)iD withCallback:(id)callback
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  callbackCopy = callback;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -1885,14 +1885,14 @@ LABEL_25:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v11 = [*(self + 1) objectForKey:v8];
+  v11 = [*(self + 1) objectForKey:dCopy];
   v12 = v11;
   if (!v11)
   {
     v19 = *MEMORY[0x277CCA450];
     v47 = *MEMORY[0x277CCA450];
-    v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"can't remove stream %@ for unknown group %@", v9, v8];
-    v48[0] = v20;
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"can't remove stream %@ for unknown group %@", iDCopy, dCopy];
+    v48[0] = dCopy;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
 
     v23 = **(Phase::Logger::GetInstance(v22) + 928);
@@ -1911,15 +1911,15 @@ LABEL_25:
     goto LABEL_11;
   }
 
-  v13 = [v11 outputStreams];
-  v14 = [v13 objectForKey:v9];
+  outputStreams = [v11 outputStreams];
+  v14 = [outputStreams objectForKey:iDCopy];
 
   if (!v14)
   {
     v26 = *MEMORY[0x277CCA450];
     v45 = *MEMORY[0x277CCA450];
-    v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"can't remove unknown stream %@ in group %@", v9, v8];
-    v46 = v27;
+    dCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"can't remove unknown stream %@ in group %@", iDCopy, dCopy];
+    v46 = dCopy2;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
 
     v23 = **(Phase::Logger::GetInstance(v28) + 928);
@@ -1942,8 +1942,8 @@ LABEL_11:
     goto LABEL_21;
   }
 
-  v15 = [v12 outputStreams];
-  [v15 removeObjectForKey:v9];
+  outputStreams2 = [v12 outputStreams];
+  [outputStreams2 removeObjectForKey:iDCopy];
 
   v17 = **(Phase::Logger::GetInstance(v16) + 928);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1953,32 +1953,32 @@ LABEL_11:
     v39 = 1024;
     v40 = 1040;
     v41 = 2112;
-    v42 = v9;
+    v42 = iDCopy;
     v43 = 2112;
-    v44 = v8;
+    v44 = dCopy;
     _os_log_impl(&dword_23A302000, v17, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed external output stream %@ from group %@", buf, 0x26u);
   }
 
-  v18 = [v12 outputStreams];
-  if ([v18 count])
+  outputStreams3 = [v12 outputStreams];
+  if ([outputStreams3 count])
   {
   }
 
   else
   {
-    v30 = [v12 inputStreams];
-    if ([v30 count])
+    inputStreams = [v12 inputStreams];
+    if ([inputStreams count])
     {
     }
 
     else
     {
-      v31 = [v12 controllingClientID];
-      v32 = v31 == 0;
+      controllingClientID = [v12 controllingClientID];
+      v32 = controllingClientID == 0;
 
       if (v32)
       {
-        v33 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:v8]) + 928);
+        v33 = **(Phase::Logger::GetInstance([*(self + 1) removeObjectForKey:dCopy]) + 928);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 136315650;
@@ -1986,7 +1986,7 @@ LABEL_11:
           v39 = 1024;
           v40 = 1046;
           v41 = 2112;
-          v42 = v8;
+          v42 = dCopy;
           _os_log_impl(&dword_23A302000, v33, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removed external stream group %@", buf, 0x1Cu);
         }
       }
@@ -1995,26 +1995,26 @@ LABEL_11:
 
   v25 = 0;
 LABEL_21:
-  v10[2](v10, v25);
+  callbackCopy[2](callbackCopy, v25);
   if (!v25)
   {
-    v34 = [v12 stateChangeBlock];
-    v35 = v34 == 0;
+    stateChangeBlock = [v12 stateChangeBlock];
+    v35 = stateChangeBlock == 0;
 
     if (!v35)
     {
-      v36 = [v12 stateChangeBlock];
-      (v36)[2](v36, v8, v9, 1);
+      stateChangeBlock2 = [v12 stateChangeBlock];
+      (stateChangeBlock2)[2](stateChangeBlock2, dCopy, iDCopy, 1);
     }
   }
 }
 
-- (BOOL)setPauseExternalOutputStreamGroupID:(id)a3 streamID:(id)a4 isPaused:(BOOL)a5 error:(id *)a6
+- (BOOL)setPauseExternalOutputStreamGroupID:(id)d streamID:(id)iD isPaused:(BOOL)paused error:(id *)error
 {
-  v7 = a5;
+  pausedCopy = paused;
   v41[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2027,19 +2027,19 @@ LABEL_21:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  v12 = [*(self + 1) objectForKey:v10];
+  v12 = [*(self + 1) objectForKey:dCopy];
   v13 = v12;
   if (!v12)
   {
     v20 = *MEMORY[0x277CCA450];
     v40 = *MEMORY[0x277CCA450];
     v21 = "resume";
-    if (v7)
+    if (pausedCopy)
     {
       v21 = "pause";
     }
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream group %@ to %s", v10, v21];
+    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find stream group %@ to %s", dCopy, v21];
     v41[0] = v22;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
 
@@ -2056,10 +2056,10 @@ LABEL_21:
       _os_log_impl(&dword_23A302000, v24, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v15];
-      *a6 = v26 = 0;
+      *error = v26 = 0;
       goto LABEL_27;
     }
 
@@ -2068,19 +2068,19 @@ LABEL_22:
     goto LABEL_27;
   }
 
-  v14 = [v12 outputStreams];
-  v15 = [v14 objectForKey:v11];
+  outputStreams = [v12 outputStreams];
+  v15 = [outputStreams objectForKey:iDCopy];
 
   if (!v15)
   {
     v27 = *MEMORY[0x277CCA450];
     v28 = "resume";
-    if (v7)
+    if (pausedCopy)
     {
       v28 = "pause";
     }
 
-    v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find output stream %@ to %s", v11, v28, v27];
+    v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not find output stream %@ to %s", iDCopy, v28, v27];
     v36 = v29;
     v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
@@ -2097,26 +2097,26 @@ LABEL_22:
       _os_log_impl(&dword_23A302000, v32, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v30];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v30];
     }
 
     v15 = 0;
     goto LABEL_22;
   }
 
-  [v15 setStreamPaused:v7];
+  [v15 setStreamPaused:pausedCopy];
   *buf = 0;
   *&buf[8] = 0;
-  [v11 getUUIDBytes:buf];
+  [iDCopy getUUIDBytes:buf];
   v17 = *buf;
   v16 = *&buf[8];
   HasExternalStream = Phase::Controller::VoiceManager::HasExternalStream(*(self + 2), *buf);
   if (HIDWORD(HasExternalStream) || !HasExternalStream)
   {
     v19 = **(self + 2);
-    if (v7)
+    if (pausedCopy)
     {
       Phase::Controller::VoiceManager::Implementation::PauseExternalStream(v19, v17, v16);
     }
@@ -2127,9 +2127,9 @@ LABEL_22:
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v26 = 1;
@@ -2138,11 +2138,11 @@ LABEL_27:
   return v26;
 }
 
-- (BOOL)streamIsPaused:(id)a3 error:(id *)a4
+- (BOOL)streamIsPaused:(id)paused error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v23 = a4;
+  pausedCopy = paused;
+  errorCopy = error;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2155,17 +2155,17 @@ LABEL_27:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [*(self + 1) allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  allKeys = [*(self + 1) allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v8)
   {
     v9 = *v25;
@@ -2175,31 +2175,31 @@ LABEL_7:
     {
       if (*v25 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = [*(self + 1) objectForKey:*(*(&v24 + 1) + 8 * v10)];
-      v12 = [v11 outputStreams];
-      v13 = [v12 objectForKey:v6];
+      outputStreams = [v11 outputStreams];
+      v13 = [outputStreams objectForKey:pausedCopy];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 inputStreams];
-      v15 = [v14 objectForKey:v6];
+      inputStreams = [v11 inputStreams];
+      v15 = [inputStreams objectForKey:pausedCopy];
 
       if (v15)
       {
-        v21 = [v15 isStreamPaused];
+        isStreamPaused = [v15 isStreamPaused];
         v13 = v15;
         goto LABEL_20;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v36 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v24 objects:v36 count:16];
         if (v8)
         {
           goto LABEL_7;
@@ -2209,7 +2209,7 @@ LABEL_7:
       }
     }
 
-    v21 = [v13 isStreamPaused];
+    isStreamPaused = [v13 isStreamPaused];
 LABEL_20:
 
     goto LABEL_21;
@@ -2219,14 +2219,14 @@ LABEL_14:
 
   v16 = *MEMORY[0x277CCA450];
   v34 = *MEMORY[0x277CCA450];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", v6];
-  v35 = v17;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
+  pausedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", pausedCopy];
+  v35 = pausedCopy;
+  allKeys = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
 
   v19 = **(Phase::Logger::GetInstance(v18) + 928);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v7 objectForKeyedSubscript:v16];
+    v20 = [allKeys objectForKeyedSubscript:v16];
     *buf = 136315650;
     v29 = "ExternalStreamManager.mm";
     v30 = 1024;
@@ -2236,27 +2236,27 @@ LABEL_14:
     _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (v23)
+  if (errorCopy)
   {
-    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v7];
-    *v23 = v21 = 0;
+    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:allKeys];
+    *errorCopy = isStreamPaused = 0;
   }
 
   else
   {
-    v21 = 0;
+    isStreamPaused = 0;
   }
 
 LABEL_21:
 
-  return v21;
+  return isStreamPaused;
 }
 
-- (id)formatForStream:(id)a3 error:(id *)a4
+- (id)formatForStream:(id)stream error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
+  streamCopy = stream;
+  errorCopy = error;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2269,17 +2269,17 @@ LABEL_21:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [*(self + 1) allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  allKeys = [*(self + 1) allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -2289,32 +2289,32 @@ LABEL_7:
     {
       if (*v26 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = [*(self + 1) objectForKey:*(*(&v25 + 1) + 8 * v10)];
-      v12 = [v11 outputStreams];
-      v13 = [v12 objectForKey:v6];
+      outputStreams = [v11 outputStreams];
+      v13 = [outputStreams objectForKey:streamCopy];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 inputStreams];
-      v15 = [v14 objectForKey:v6];
+      inputStreams = [v11 inputStreams];
+      v15 = [inputStreams objectForKey:streamCopy];
 
       if (v15)
       {
-        v22 = [v15 definition];
-        v21 = [v22 format];
+        definition = [v15 definition];
+        format = [definition format];
         v13 = v15;
         goto LABEL_20;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
         if (v8)
         {
           goto LABEL_7;
@@ -2324,8 +2324,8 @@ LABEL_7:
       }
     }
 
-    v22 = [v13 definition];
-    v21 = [v22 format];
+    definition = [v13 definition];
+    format = [definition format];
 LABEL_20:
 
     goto LABEL_21;
@@ -2335,14 +2335,14 @@ LABEL_14:
 
   v16 = *MEMORY[0x277CCA450];
   v35 = *MEMORY[0x277CCA450];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", v6];
-  v36 = v17;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+  streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", streamCopy];
+  v36 = streamCopy;
+  allKeys = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
   v19 = **(Phase::Logger::GetInstance(v18) + 928);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v7 objectForKeyedSubscript:v16];
+    v20 = [allKeys objectForKeyedSubscript:v16];
     *buf = 136315650;
     v30 = "ExternalStreamManager.mm";
     v31 = 1024;
@@ -2352,27 +2352,27 @@ LABEL_14:
     _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (v24)
+  if (errorCopy)
   {
-    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v7];
-    *v24 = v21 = 0;
+    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:allKeys];
+    *errorCopy = format = 0;
   }
 
   else
   {
-    v21 = 0;
+    format = 0;
   }
 
 LABEL_21:
 
-  return v21;
+  return format;
 }
 
-- (int64_t)typeForStream:(id)a3 error:(id *)a4
+- (int64_t)typeForStream:(id)stream error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
+  streamCopy = stream;
+  errorCopy = error;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2385,17 +2385,17 @@ LABEL_21:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [*(self + 1) allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  allKeys = [*(self + 1) allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -2405,32 +2405,32 @@ LABEL_7:
     {
       if (*v26 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = [*(self + 1) objectForKey:*(*(&v25 + 1) + 8 * v10)];
-      v12 = [v11 outputStreams];
-      v13 = [v12 objectForKey:v6];
+      outputStreams = [v11 outputStreams];
+      v13 = [outputStreams objectForKey:streamCopy];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 inputStreams];
-      v15 = [v14 objectForKey:v6];
+      inputStreams = [v11 inputStreams];
+      v15 = [inputStreams objectForKey:streamCopy];
 
       if (v15)
       {
-        v22 = [v15 definition];
-        v21 = [v22 streamType];
+        definition = [v15 definition];
+        streamType = [definition streamType];
         v13 = v15;
         goto LABEL_20;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
         if (v8)
         {
           goto LABEL_7;
@@ -2440,8 +2440,8 @@ LABEL_7:
       }
     }
 
-    v22 = [v13 definition];
-    v21 = [v22 streamType];
+    definition = [v13 definition];
+    streamType = [definition streamType];
 LABEL_20:
 
     goto LABEL_21;
@@ -2451,14 +2451,14 @@ LABEL_14:
 
   v16 = *MEMORY[0x277CCA450];
   v35 = *MEMORY[0x277CCA450];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", v6];
-  v36 = v17;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+  streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", streamCopy];
+  v36 = streamCopy;
+  allKeys = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
   v19 = **(Phase::Logger::GetInstance(v18) + 928);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v7 objectForKeyedSubscript:v16];
+    v20 = [allKeys objectForKeyedSubscript:v16];
     *buf = 136315650;
     v30 = "ExternalStreamManager.mm";
     v31 = 1024;
@@ -2468,27 +2468,27 @@ LABEL_14:
     _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (v24)
+  if (errorCopy)
   {
-    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v7];
-    *v24 = v21 = 0;
+    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:allKeys];
+    *errorCopy = streamType = 0;
   }
 
   else
   {
-    v21 = 0;
+    streamType = 0;
   }
 
 LABEL_21:
 
-  return v21;
+  return streamType;
 }
 
-- (unsigned)sessionIdForStream:(id)a3 error:(id *)a4
+- (unsigned)sessionIdForStream:(id)stream error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v24 = a4;
+  streamCopy = stream;
+  errorCopy = error;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2501,17 +2501,17 @@ LABEL_21:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [*(self + 1) allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  allKeys = [*(self + 1) allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -2521,32 +2521,32 @@ LABEL_7:
     {
       if (*v26 != v9)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v11 = [*(self + 1) objectForKey:*(*(&v25 + 1) + 8 * v10)];
-      v12 = [v11 outputStreams];
-      v13 = [v12 objectForKey:v6];
+      outputStreams = [v11 outputStreams];
+      v13 = [outputStreams objectForKey:streamCopy];
 
       if (v13)
       {
         break;
       }
 
-      v14 = [v11 inputStreams];
-      v15 = [v14 objectForKey:v6];
+      inputStreams = [v11 inputStreams];
+      v15 = [inputStreams objectForKey:streamCopy];
 
       if (v15)
       {
-        v22 = [v15 definition];
-        v21 = [v22 audioSessionToken];
+        definition = [v15 definition];
+        audioSessionToken = [definition audioSessionToken];
         v13 = v15;
         goto LABEL_20;
       }
 
       if (v8 == ++v10)
       {
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v37 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v25 objects:v37 count:16];
         if (v8)
         {
           goto LABEL_7;
@@ -2556,8 +2556,8 @@ LABEL_7:
       }
     }
 
-    v22 = [v13 definition];
-    v21 = [v22 audioSessionToken];
+    definition = [v13 definition];
+    audioSessionToken = [definition audioSessionToken];
 LABEL_20:
 
     goto LABEL_21;
@@ -2567,14 +2567,14 @@ LABEL_14:
 
   v16 = *MEMORY[0x277CCA450];
   v35 = *MEMORY[0x277CCA450];
-  v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", v6];
-  v36 = v17;
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+  streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", streamCopy];
+  v36 = streamCopy;
+  allKeys = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
   v19 = **(Phase::Logger::GetInstance(v18) + 928);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v20 = [v7 objectForKeyedSubscript:v16];
+    v20 = [allKeys objectForKeyedSubscript:v16];
     *buf = 136315650;
     v30 = "ExternalStreamManager.mm";
     v31 = 1024;
@@ -2584,27 +2584,27 @@ LABEL_14:
     _os_log_impl(&dword_23A302000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (v24)
+  if (errorCopy)
   {
-    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v7];
-    *v24 = v21 = 0;
+    [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:allKeys];
+    *errorCopy = audioSessionToken = 0;
   }
 
   else
   {
-    v21 = 0;
+    audioSessionToken = 0;
   }
 
 LABEL_21:
 
-  return v21;
+  return audioSessionToken;
 }
 
-- (shared_ptr<Phase::Controller::StreamRenderer>)createRendererForStream:(id)a3 outputChannelLayout:(unsigned int)a4 normalize:(BOOL)a5 targetLKFS:(double)a6 error:(id *)a7
+- (shared_ptr<Phase::Controller::StreamRenderer>)createRendererForStream:(id)stream outputChannelLayout:(unsigned int)layout normalize:(BOOL)normalize targetLKFS:(double)s error:(id *)error
 {
   v33 = v7;
   v48 = *MEMORY[0x277D85DE8];
-  v34 = a3;
+  streamCopy = stream;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -2617,17 +2617,17 @@ LABEL_21:
     __cxa_guard_release(&qword_27DF97AF8);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [*(self + 1) allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  allKeys = [*(self + 1) allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v11)
   {
     v12 = *v36;
@@ -2637,24 +2637,24 @@ LABEL_21:
       {
         if (*v36 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v35 + 1) + 8 * i);
         v15 = [*(self + 1) objectForKey:v14];
-        v16 = [v15 outputStreams];
-        v17 = [v16 objectForKey:v34];
+        outputStreams = [v15 outputStreams];
+        v17 = [outputStreams objectForKey:streamCopy];
 
         if (v17)
         {
           v14;
 
-          v32 = [objc_alloc(MEMORY[0x277CB8368]) initWithLayoutTag:a4];
+          v32 = [objc_alloc(MEMORY[0x277CB8368]) initWithLayoutTag:layout];
           v24 = objc_alloc(MEMORY[0x277CB83A8]);
           [*(self + 4) sampleRate];
           Phase::Logger::GetInstance([v24 initStandardFormatWithSampleRate:v32 channelLayout:?]);
-          v25 = [v17 definition];
-          v26 = [v25 streamType] == 1;
+          definition = [v17 definition];
+          v26 = [definition streamType] == 1;
 
           if (v26)
           {
@@ -2684,7 +2684,7 @@ LABEL_21:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v35 objects:v47 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v35 objects:v47 count:16];
     }
 
     while (v11);
@@ -2692,8 +2692,8 @@ LABEL_21:
 
   v18 = *MEMORY[0x277CCA450];
   v45 = *MEMORY[0x277CCA450];
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", v34];
-  v46 = v19;
+  streamCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"stream not found for UUID %@", streamCopy];
+  v46 = streamCopy;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
 
   v22 = **(Phase::Logger::GetInstance(v21) + 928);
@@ -2709,9 +2709,9 @@ LABEL_21:
     _os_log_impl(&dword_23A302000, v22, OS_LOG_TYPE_ERROR, "%25s:%-5d %@", buf, 0x1Cu);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v20];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.coreaudio.phase" code:1346924147 userInfo:v20];
   }
 
   *v33 = 0;
@@ -2722,12 +2722,12 @@ LABEL_21:
   return result;
 }
 
-- (unint64_t)addControllerPauseStateDidUpdateCallback:(id)a3
+- (unint64_t)addControllerPauseStateDidUpdateCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = *(self + 17) + 1;
   *(self + 17) = v5;
-  v6 = _Block_copy(v4);
+  v6 = _Block_copy(callbackCopy);
   v7 = *(self + 104);
   if (!*&v7)
   {
@@ -2802,7 +2802,7 @@ LABEL_17:
   return v5;
 }
 
-- (void)removeControllerPauseStateDidUpdateCallback:(unint64_t)a3
+- (void)removeControllerPauseStateDidUpdateCallback:(unint64_t)callback
 {
   v5 = *(self + 13);
   if (v5)
@@ -2812,22 +2812,22 @@ LABEL_17:
     v7.i16[0] = vaddlv_u8(v7);
     if (v7.u32[0] > 1uLL)
     {
-      v8 = a3;
-      if (v5 <= a3)
+      callbackCopy = callback;
+      if (v5 <= callback)
       {
-        v8 = a3 % v5;
+        callbackCopy = callback % v5;
       }
     }
 
     else
     {
-      v8 = (v5 - 1) & a3;
+      callbackCopy = (v5 - 1) & callback;
     }
 
     v23 = v3;
     v24 = v4;
     v9 = *v6;
-    v10 = *(*v6 + 8 * v8);
+    v10 = *(*v6 + 8 * callbackCopy);
     if (v10)
     {
       v11 = *v10;
@@ -2837,24 +2837,24 @@ LABEL_17:
         do
         {
           v13 = v11[1];
-          if (v13 == a3)
+          if (v13 == callback)
           {
-            if (v11[2] == a3)
+            if (v11[2] == callback)
             {
               if (v7.u32[0] > 1uLL)
               {
-                if (v5 <= a3)
+                if (v5 <= callback)
                 {
-                  a3 %= v5;
+                  callback %= v5;
                 }
               }
 
               else
               {
-                a3 &= v12;
+                callback &= v12;
               }
 
-              v14 = *(v9 + 8 * a3);
+              v14 = *(v9 + 8 * callback);
               do
               {
                 v15 = v14;
@@ -2881,7 +2881,7 @@ LABEL_17:
                 v16 &= v12;
               }
 
-              if (v16 != a3)
+              if (v16 != callback)
               {
 LABEL_36:
                 if (!*v11)
@@ -2903,10 +2903,10 @@ LABEL_36:
                   v17 &= v12;
                 }
 
-                if (v17 != a3)
+                if (v17 != callback)
                 {
 LABEL_37:
-                  *(v9 + 8 * a3) = 0;
+                  *(v9 + 8 * callback) = 0;
                 }
               }
 
@@ -2927,7 +2927,7 @@ LABEL_37:
                   v19 &= v12;
                 }
 
-                if (v19 != a3)
+                if (v19 != callback)
                 {
                   *(*v6 + 8 * v19) = v15;
                   v18 = *v11;
@@ -2961,7 +2961,7 @@ LABEL_37:
               v13 &= v12;
             }
 
-            if (v13 != v8)
+            if (v13 != callbackCopy)
             {
               return;
             }
@@ -2976,11 +2976,11 @@ LABEL_37:
   }
 }
 
-- (void)updateController:(id)a3 pauseState:(BOOL)a4
+- (void)updateController:(id)controller pauseState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  controllerCopy = controller;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -3013,16 +3013,16 @@ LABEL_37:
 
         v9 = *(*(&v17 + 1) + 8 * i);
         v10 = [*(self + 1) objectForKey:v9];
-        v11 = [v10 outputStreams];
-        v12 = [v11 objectForKey:v6];
+        outputStreams = [v10 outputStreams];
+        v12 = [outputStreams objectForKey:controllerCopy];
 
         if (v12)
         {
-          [v12 setControllerPaused:v4];
+          [v12 setControllerPaused:stateCopy];
           for (j = *(self + 14); j; j = *j)
           {
             v14 = _Block_copy(j[3]);
-            v14[2](v14, v9, v6, v4);
+            v14[2](v14, v9, controllerCopy, stateCopy);
           }
         }
       }
@@ -3034,10 +3034,10 @@ LABEL_37:
   }
 }
 
-- (void)gatherDebugInformation:(id)a3
+- (void)gatherDebugInformation:(id)information
 {
   v54 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  informationCopy = information;
   if ((atomic_load_explicit(&_MergedGlobals_14, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&_MergedGlobals_14))
   {
     _os_feature_enabled_impl();
@@ -3074,16 +3074,16 @@ LABEL_37:
         v38 = objc_alloc_init(PHASEExternalStreamGroupDebugInfo);
         v34 = v3;
         v4 = [*(self + 1) objectForKey:v3];
-        v5 = [v4 controllingClientID];
-        [(PHASEExternalStreamGroupDebugInfo *)v38 setControlled:v5 != 0];
+        controllingClientID = [v4 controllingClientID];
+        [(PHASEExternalStreamGroupDebugInfo *)v38 setControlled:controllingClientID != 0];
 
         v6 = objc_opt_new();
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v36 = [v4 outputStreams];
-        v7 = [v36 countByEnumeratingWithState:&v43 objects:v52 count:16];
+        outputStreams = [v4 outputStreams];
+        v7 = [outputStreams countByEnumeratingWithState:&v43 objects:v52 count:16];
         if (v7)
         {
           v8 = *v44;
@@ -3094,29 +3094,29 @@ LABEL_37:
             {
               if (*v44 != v8)
               {
-                objc_enumerationMutation(v36);
+                objc_enumerationMutation(outputStreams);
               }
 
               v10 = *(*(&v43 + 1) + 8 * v9);
               v11 = objc_alloc_init(PHASEExternalStreamDebugInfo);
-              v12 = [v4 outputStreams];
-              v13 = [v12 objectForKey:v10];
+              outputStreams2 = [v4 outputStreams];
+              v13 = [outputStreams2 objectForKey:v10];
 
               -[PHASEExternalStreamDebugInfo setStreamPaused:](v11, "setStreamPaused:", [v13 isStreamPaused]);
               [(PHASEExternalStreamDebugInfo *)v11 setInput:0];
-              v14 = [v13 definition];
-              v15 = [v14 format];
-              [(PHASEExternalStreamDebugInfo *)v11 setClientFormat:v15];
+              definition = [v13 definition];
+              format = [definition format];
+              [(PHASEExternalStreamDebugInfo *)v11 setClientFormat:format];
 
               -[PHASEExternalStreamGroupDebugInfo setControllerPaused:](v38, "setControllerPaused:", [v13 isControllerPaused]);
-              v16 = [v10 UUIDString];
-              [v6 setObject:v11 forKey:v16];
+              uUIDString = [v10 UUIDString];
+              [v6 setObject:v11 forKey:uUIDString];
 
               ++v9;
             }
 
             while (v7 != v9);
-            v7 = [v36 countByEnumeratingWithState:&v43 objects:v52 count:16];
+            v7 = [outputStreams countByEnumeratingWithState:&v43 objects:v52 count:16];
           }
 
           while (v7);
@@ -3126,8 +3126,8 @@ LABEL_37:
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v37 = [v4 inputStreams];
-        v17 = [v37 countByEnumeratingWithState:&v39 objects:v51 count:16];
+        inputStreams = [v4 inputStreams];
+        v17 = [inputStreams countByEnumeratingWithState:&v39 objects:v51 count:16];
         if (v17)
         {
           v18 = *v40;
@@ -3138,36 +3138,36 @@ LABEL_37:
             {
               if (*v40 != v18)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(inputStreams);
               }
 
               v20 = *(*(&v39 + 1) + 8 * v19);
               v21 = objc_alloc_init(PHASEExternalStreamDebugInfo);
-              v22 = [v4 inputStreams];
-              v23 = [v22 objectForKey:v20];
+              inputStreams2 = [v4 inputStreams];
+              v23 = [inputStreams2 objectForKey:v20];
 
               -[PHASEExternalStreamDebugInfo setStreamPaused:](v21, "setStreamPaused:", [v23 isStreamPaused]);
               [(PHASEExternalStreamDebugInfo *)v21 setInput:1];
-              v24 = [v23 definition];
-              v25 = [v24 format];
-              [(PHASEExternalStreamDebugInfo *)v21 setClientFormat:v25];
+              definition2 = [v23 definition];
+              format2 = [definition2 format];
+              [(PHASEExternalStreamDebugInfo *)v21 setClientFormat:format2];
 
-              v26 = [v20 UUIDString];
-              [v6 setObject:v21 forKey:v26];
+              uUIDString2 = [v20 UUIDString];
+              [v6 setObject:v21 forKey:uUIDString2];
 
               ++v19;
             }
 
             while (v17 != v19);
-            v17 = [v37 countByEnumeratingWithState:&v39 objects:v51 count:16];
+            v17 = [inputStreams countByEnumeratingWithState:&v39 objects:v51 count:16];
           }
 
           while (v17);
         }
 
         [(PHASEExternalStreamGroupDebugInfo *)v38 setStreams:v6];
-        v27 = [v34 UUIDString];
-        [v31 setObject:v38 forKey:v27];
+        uUIDString3 = [v34 UUIDString];
+        [v31 setObject:v38 forKey:uUIDString3];
 
         ++v35;
       }
@@ -3179,14 +3179,14 @@ LABEL_37:
     while (v32);
   }
 
-  v28[2](v28, v31, 0);
+  informationCopy[2](informationCopy, v31, 0);
 }
 
-- (void)onSessionVolume:(unsigned int)a3 volume:(float)a4
+- (void)onSessionVolume:(unsigned int)volume volume:(float)a4
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  v7 = **(v6 + 7);
+  selfCopy = self;
+  v7 = **(selfCopy + 7);
   v14 = 0;
   v13 = 1;
   v8 = Phase::LockFreeQueueMPSC::GetWriteBuffer(v7, 24, &v14, &v13);
@@ -3226,20 +3226,20 @@ LABEL_37:
   }
 
   *v8 = &unk_284D33C78;
-  *(v8 + 8) = v6;
-  *(v8 + 16) = a3;
+  *(v8 + 8) = selfCopy;
+  *(v8 + 16) = volume;
   *(v8 + 20) = a4;
   Phase::LockFreeQueueSPSC::CommitBytes(v7, 24);
   atomic_store(0, (v7 + 40));
 }
 
-- (void)onSessionVolume:(id)a3
+- (void)onSessionVolume:(id)volume
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  v6 = _Block_copy(v4);
-  v7 = **(v5 + 7);
+  volumeCopy = volume;
+  selfCopy = self;
+  v6 = _Block_copy(volumeCopy);
+  v7 = **(selfCopy + 7);
   v14 = 0;
   v13 = 1;
   v8 = Phase::LockFreeQueueMPSC::GetWriteBuffer(v7, 24, &v14, &v13);
@@ -3279,21 +3279,21 @@ LABEL_37:
   }
 
   *v8 = &unk_284D33CA0;
-  v8[1] = v5;
+  v8[1] = selfCopy;
   v8[2] = v6;
   Phase::LockFreeQueueSPSC::CommitBytes(v7, 24);
   atomic_store(0, (v7 + 40));
 }
 
-- (void)onRouteChanged:(RouteChangeInfo)a3
+- (void)onRouteChanged:(RouteChangeInfo)changed
 {
   v43 = *MEMORY[0x277D85DE8];
-  [*(self + 18) setCurrentRoute:{*&a3.var0, a3.var2}];
+  [*(self + 18) setCurrentRoute:{*&changed.var0, changed.var2}];
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = [*(self + 1) allKeys];
   v25 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v25)
@@ -3308,15 +3308,15 @@ LABEL_37:
           objc_enumerationMutation(obj);
         }
 
-        v4 = [*(v27 + 1) objectForKey:*(*(&v37 + 1) + 8 * i)];
+        v4 = [*(selfCopy + 1) objectForKey:*(*(&v37 + 1) + 8 * i)];
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v5 = [v4 outputStreams];
-        v28 = [v5 allKeys];
+        outputStreams = [v4 outputStreams];
+        allKeys = [outputStreams allKeys];
 
-        v6 = [v28 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v6)
         {
           v7 = *v34;
@@ -3326,15 +3326,15 @@ LABEL_37:
             {
               if (*v34 != v7)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(allKeys);
               }
 
               v9 = *(*(&v33 + 1) + 8 * j);
-              v10 = [v4 outputStreams];
-              v11 = [v10 objectForKey:v9];
+              outputStreams2 = [v4 outputStreams];
+              v11 = [outputStreams2 objectForKey:v9];
 
-              v12 = [v11 definition];
-              v13 = [v12 streamType] == 1;
+              definition = [v11 definition];
+              v13 = [definition streamType] == 1;
 
               if (v13)
               {
@@ -3361,29 +3361,29 @@ LABEL_37:
 
                     if (v15)
                     {
-                      v16 = [v11 definition];
-                      v17 = [v16 properties];
-                      v18 = v17 == 0;
+                      definition2 = [v11 definition];
+                      properties = [definition2 properties];
+                      v18 = properties == 0;
 
                       if (v18)
                       {
-                        v22 = 2;
+                        integerValue = 2;
                       }
 
                       else
                       {
-                        v19 = [v11 definition];
-                        v20 = [v19 properties];
-                        v21 = [v20 objectForKeyedSubscript:@"VoiceBandwidth"];
+                        definition3 = [v11 definition];
+                        properties2 = [definition3 properties];
+                        v21 = [properties2 objectForKeyedSubscript:@"VoiceBandwidth"];
 
                         if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
                         {
-                          v22 = [v21 integerValue];
+                          integerValue = [v21 integerValue];
                         }
 
                         else
                         {
-                          v22 = 2;
+                          integerValue = 2;
                         }
                       }
 
@@ -3394,7 +3394,7 @@ LABEL_37:
                         atomic_fetch_add_explicit(&v14->__shared_owners_, 1uLL, memory_order_relaxed);
                       }
 
-                      [(ExternalStreamManager *)v27 setVolumeEQPreset:&v29 bandwidthType:v22];
+                      [(ExternalStreamManager *)selfCopy setVolumeEQPreset:&v29 bandwidthType:integerValue];
                       if (v30)
                       {
                         std::__shared_weak_count::__release_shared[abi:ne200100](v30);
@@ -3410,7 +3410,7 @@ LABEL_37:
               }
             }
 
-            v6 = [v28 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v6 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v6);
@@ -3424,7 +3424,7 @@ LABEL_37:
   }
 }
 
-- (void)setVolumeEQPreset:(shared_ptr<Phase:(int64_t)a4 :Controller::StreamRenderer>)a3 bandwidthType:
+- (void)setVolumeEQPreset:(shared_ptr<Phase:(int64_t)preset :Controller::StreamRenderer>)a3 bandwidthType:
 {
   var0 = a3.var0;
   v29 = *MEMORY[0x277D85DE8];
@@ -3534,7 +3534,7 @@ LABEL_21:
   Phase::Commandable<128,Phase::LockFreeQueueMPSC>::Commandable(v2);
 }
 
-- (void)setExternalInputStreamSessionMute:(uint64_t)a1 isMuted:fadeTimeInSeconds:
+- (void)setExternalInputStreamSessionMute:(uint64_t)mute isMuted:fadeTimeInSeconds:
 {
 
   JUMPOUT(0x23EE864A0);
@@ -3542,15 +3542,15 @@ LABEL_21:
 
 - (void)setExternalInputStreamSessionMute:isMuted:fadeTimeInSeconds:
 {
-  v3 = *(a1 + 8);
+  v3 = *(self + 8);
   if (v3)
   {
-    LODWORD(v2) = *(a1 + 24);
-    [v3 _fadeInputStreamsInSessionToken:*(a1 + 16) isMuted:*(a1 + 20) fadeTimeInSeconds:0 synchronous:v2];
+    LODWORD(v2) = *(self + 24);
+    [v3 _fadeInputStreamsInSessionToken:*(self + 16) isMuted:*(self + 20) fadeTimeInSeconds:0 synchronous:v2];
   }
 }
 
-- (void)updateExternalInputStreamRecordingAbility:(id *)a1 streamID:canRecord:
+- (void)updateExternalInputStreamRecordingAbility:(id *)ability streamID:canRecord:
 {
 
   JUMPOUT(0x23EE864A0);
@@ -3558,14 +3558,14 @@ LABEL_21:
 
 - (void)updateExternalInputStreamRecordingAbility:streamID:canRecord:
 {
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   if (v2)
   {
-    [v2 _updateRecordingAbility:*(a1 + 16) streamID:*(a1 + 24) canRecord:*(a1 + 32)];
+    [v2 _updateRecordingAbility:*(self + 16) streamID:*(self + 24) canRecord:*(self + 32)];
   }
 }
 
-- (void)onSessionVolume:(uint64_t)a1 volume:
+- (void)onSessionVolume:(uint64_t)volume volume:
 {
 
   JUMPOUT(0x23EE864A0);
@@ -3578,7 +3578,7 @@ LABEL_21:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = [*(*(a1 + 8) + 8) allKeys];
+  obj = [*(*(self + 8) + 8) allKeys];
   v2 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v2)
   {
@@ -3595,15 +3595,15 @@ LABEL_21:
           objc_enumerationMutation(obj);
         }
 
-        v5 = [*(*(a1 + 8) + 8) objectForKey:*(*(&v28 + 1) + 8 * v4)];
+        v5 = [*(*(self + 8) + 8) objectForKey:*(*(&v28 + 1) + 8 * v4)];
         v26 = 0u;
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v6 = [v5 outputStreams];
-        v7 = [v6 allKeys];
+        outputStreams = [v5 outputStreams];
+        allKeys = [outputStreams allKeys];
 
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
           v9 = *v25;
@@ -3613,15 +3613,15 @@ LABEL_21:
             {
               if (*v25 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v11 = *(*(&v24 + 1) + 8 * i);
-              v12 = [v5 outputStreams];
-              v13 = [v12 objectForKey:v11];
+              outputStreams2 = [v5 outputStreams];
+              v13 = [outputStreams2 objectForKey:v11];
 
-              v14 = [v13 definition];
-              v15 = [v14 audioSessionToken] == *(a1 + 16);
+              definition = [v13 definition];
+              v15 = [definition audioSessionToken] == *(self + 16);
 
               if (v15)
               {
@@ -3647,7 +3647,7 @@ LABEL_21:
                       v18 = *(v17 + 88);
                       if (v18)
                       {
-                        AudioUnitSetParameter([v18 audioUnit], 0x76657176u, 0, 0, *(a1 + 20), 0);
+                        AudioUnitSetParameter([v18 audioUnit], 0x76657176u, 0, 0, *(self + 20), 0);
                       }
                     }
 
@@ -3662,7 +3662,7 @@ LABEL_21:
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v8 = [allKeys countByEnumeratingWithState:&v24 objects:v32 count:16];
             if (v8)
             {
               continue;
@@ -3686,7 +3686,7 @@ LABEL_21:
 LABEL_28:
 }
 
-- (void)onSessionVolume:(uint64_t)a1
+- (void)onSessionVolume:(uint64_t)volume
 {
 
   JUMPOUT(0x23EE864A0);
@@ -3699,7 +3699,7 @@ LABEL_28:
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [*(*(a1 + 8) + 8) allKeys];
+  obj = [*(*(self + 8) + 8) allKeys];
   v2 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v2)
   {
@@ -3715,15 +3715,15 @@ LABEL_28:
           objc_enumerationMutation(obj);
         }
 
-        v5 = [*(*(a1 + 8) + 8) objectForKey:*(*(&v30 + 1) + 8 * i)];
+        v5 = [*(*(self + 8) + 8) objectForKey:*(*(&v30 + 1) + 8 * i)];
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v6 = [v5 outputStreams];
-        v7 = [v6 allKeys];
+        outputStreams = [v5 outputStreams];
+        allKeys = [outputStreams allKeys];
 
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v8)
         {
           v9 = *v27;
@@ -3733,23 +3733,23 @@ LABEL_28:
             {
               if (*v27 != v9)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v11 = *(*(&v26 + 1) + 8 * j);
-              v12 = [v5 outputStreams];
-              v13 = [v12 objectForKey:v11];
+              outputStreams2 = [v5 outputStreams];
+              v13 = [outputStreams2 objectForKey:v11];
 
-              v14 = [v13 definition];
-              v15 = [v14 streamType] == 1;
+              definition = [v13 definition];
+              v15 = [definition streamType] == 1;
 
               if (v15)
               {
                 if (v3 < 0.0)
                 {
-                  v16 = *(a1 + 16);
-                  v17 = [v13 definition];
-                  v3 = (*(v16 + 16))(v16, [v17 audioSessionToken]);
+                  v16 = *(self + 16);
+                  definition2 = [v13 definition];
+                  v3 = (*(v16 + 16))(v16, [definition2 audioSessionToken]);
                 }
 
                 if (v13)
@@ -3790,7 +3790,7 @@ LABEL_28:
               }
             }
 
-            v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v8 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v8);

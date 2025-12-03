@@ -12,8 +12,8 @@
   v2 = [(ICQUsageMediaImageView *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] blackColor];
-    [(ICQUsageMediaImageView *)v2 setBackgroundColor:v3];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(ICQUsageMediaImageView *)v2 setBackgroundColor:blackColor];
 
     [(ICQUsageMediaImageView *)v2 setContentMode:1];
   }

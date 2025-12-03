@@ -1,18 +1,18 @@
 @interface SHLCloudContainerTransformer
-- (SHLCloudContainerTransformer)initWithScope:(int64_t)a3;
+- (SHLCloudContainerTransformer)initWithScope:(int64_t)scope;
 - (id)cloudBackedContainer;
 @end
 
 @implementation SHLCloudContainerTransformer
 
-- (SHLCloudContainerTransformer)initWithScope:(int64_t)a3
+- (SHLCloudContainerTransformer)initWithScope:(int64_t)scope
 {
   v5.receiver = self;
   v5.super_class = SHLCloudContainerTransformer;
   result = [(SHLCloudContainerTransformer *)&v5 init];
   if (result)
   {
-    result->_scope = a3;
+    result->_scope = scope;
   }
 
   return result;

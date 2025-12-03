@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterPresetStruct
 - (MTRThermostatClusterPresetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -36,26 +36,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterPresetStruct);
-  v5 = [(MTRThermostatClusterPresetStruct *)self presetHandle];
-  [(MTRThermostatClusterPresetStruct *)v4 setPresetHandle:v5];
+  presetHandle = [(MTRThermostatClusterPresetStruct *)self presetHandle];
+  [(MTRThermostatClusterPresetStruct *)v4 setPresetHandle:presetHandle];
 
-  v6 = [(MTRThermostatClusterPresetStruct *)self presetScenario];
-  [(MTRThermostatClusterPresetStruct *)v4 setPresetScenario:v6];
+  presetScenario = [(MTRThermostatClusterPresetStruct *)self presetScenario];
+  [(MTRThermostatClusterPresetStruct *)v4 setPresetScenario:presetScenario];
 
-  v7 = [(MTRThermostatClusterPresetStruct *)self name];
-  [(MTRThermostatClusterPresetStruct *)v4 setName:v7];
+  name = [(MTRThermostatClusterPresetStruct *)self name];
+  [(MTRThermostatClusterPresetStruct *)v4 setName:name];
 
-  v8 = [(MTRThermostatClusterPresetStruct *)self coolingSetpoint];
-  [(MTRThermostatClusterPresetStruct *)v4 setCoolingSetpoint:v8];
+  coolingSetpoint = [(MTRThermostatClusterPresetStruct *)self coolingSetpoint];
+  [(MTRThermostatClusterPresetStruct *)v4 setCoolingSetpoint:coolingSetpoint];
 
-  v9 = [(MTRThermostatClusterPresetStruct *)self heatingSetpoint];
-  [(MTRThermostatClusterPresetStruct *)v4 setHeatingSetpoint:v9];
+  heatingSetpoint = [(MTRThermostatClusterPresetStruct *)self heatingSetpoint];
+  [(MTRThermostatClusterPresetStruct *)v4 setHeatingSetpoint:heatingSetpoint];
 
-  v10 = [(MTRThermostatClusterPresetStruct *)self builtIn];
-  [(MTRThermostatClusterPresetStruct *)v4 setBuiltIn:v10];
+  builtIn = [(MTRThermostatClusterPresetStruct *)self builtIn];
+  [(MTRThermostatClusterPresetStruct *)v4 setBuiltIn:builtIn];
 
   return v4;
 }

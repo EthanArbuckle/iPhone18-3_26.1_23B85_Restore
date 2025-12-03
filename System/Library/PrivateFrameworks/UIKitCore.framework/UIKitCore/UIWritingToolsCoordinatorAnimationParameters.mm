@@ -1,18 +1,18 @@
 @interface UIWritingToolsCoordinatorAnimationParameters
-- (UIWritingToolsCoordinatorAnimationParameters)initWithDelay:(double)a3 duration:(double)a4;
+- (UIWritingToolsCoordinatorAnimationParameters)initWithDelay:(double)delay duration:(double)duration;
 @end
 
 @implementation UIWritingToolsCoordinatorAnimationParameters
 
-- (UIWritingToolsCoordinatorAnimationParameters)initWithDelay:(double)a3 duration:(double)a4
+- (UIWritingToolsCoordinatorAnimationParameters)initWithDelay:(double)delay duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = UIWritingToolsCoordinatorAnimationParameters;
   result = [(UIWritingToolsCoordinatorAnimationParameters *)&v7 init];
   if (result)
   {
-    result->_delay = a3;
-    result->_duration = a4;
+    result->_delay = delay;
+    result->_duration = duration;
   }
 
   return result;

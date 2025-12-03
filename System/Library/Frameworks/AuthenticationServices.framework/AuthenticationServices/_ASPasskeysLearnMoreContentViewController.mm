@@ -25,17 +25,17 @@
   v5.super_class = _ASPasskeysLearnMoreContentViewController;
   [(OBBaseWelcomeController *)&v5 viewDidLoad];
   [(_ASPasskeysLearnMoreContentViewController *)self _setUpContentBodyText];
-  v3 = [(_ASPasskeysLearnMoreContentViewController *)self headerView];
-  v4 = [(_ASPasskeysLearnMoreContentViewController *)self _passkeySymbolHeaderImage];
-  [v3 setIcon:v4 accessibilityLabel:0];
+  headerView = [(_ASPasskeysLearnMoreContentViewController *)self headerView];
+  _passkeySymbolHeaderImage = [(_ASPasskeysLearnMoreContentViewController *)self _passkeySymbolHeaderImage];
+  [headerView setIcon:_passkeySymbolHeaderImage accessibilityLabel:0];
 }
 
 - (id)_passkeySymbolHeaderImage
 {
   v2 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
   v3 = MEMORY[0x1E69DCAD8];
-  v4 = [MEMORY[0x1E69DC888] tintColor];
-  v5 = [v3 configurationWithHierarchicalColor:v4];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  v5 = [v3 configurationWithHierarchicalColor:tintColor];
 
   v6 = [v5 configurationByApplyingConfiguration:v2];
   v7 = MEMORY[0x1E69DCAB8];
@@ -48,10 +48,10 @@
 - (void)_setUpContentBodyText
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v3 = [(_ASPasskeysLearnMoreContentViewController *)self contentView];
+  contentView = [(_ASPasskeysLearnMoreContentViewController *)self contentView];
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v5 = [(_ASPasskeysLearnMoreContentViewController *)self _contentBodyAttributedString];
-  [v4 setAttributedText:v5];
+  _contentBodyAttributedString = [(_ASPasskeysLearnMoreContentViewController *)self _contentBodyAttributedString];
+  [v4 setAttributedText:_contentBodyAttributedString];
 
   v6 = MEMORY[0x1E69DB878];
   v7 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:*MEMORY[0x1E69DDCF8]];
@@ -61,23 +61,23 @@
   [v4 setAdjustsFontForContentSizeCategory:1];
   [v4 setNumberOfLines:0];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:v4];
+  [contentView addSubview:v4];
   v18 = MEMORY[0x1E696ACD8];
-  v23 = [v4 topAnchor];
-  v22 = [v3 topAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v24[0] = v21;
-  v20 = [v4 bottomAnchor];
-  v19 = [v3 bottomAnchor];
-  v9 = [v20 constraintEqualToAnchor:v19];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v24[1] = v9;
-  v10 = [v4 leadingAnchor];
-  v11 = [v3 leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v24[2] = v12;
-  v13 = [v4 trailingAnchor];
-  v14 = [v3 trailingAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v24[3] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   [v18 activateConstraints:v16];
@@ -93,8 +93,8 @@
   v4 = [v2 imageWithConfiguration:v3];
   v5 = [v4 imageWithRenderingMode:2];
 
-  v6 = [MEMORY[0x1E69DC888] tintColor];
-  v7 = [v5 imageWithTintColor:v6 renderingMode:2];
+  tintColor = [MEMORY[0x1E69DC888] tintColor];
+  v7 = [v5 imageWithTintColor:tintColor renderingMode:2];
 
   v8 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v7];
   v9 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v8];

@@ -1,25 +1,25 @@
 @interface MTATimerButtonsController
-- (MTATimerButtonsController)initWithTarget:(id)a3;
+- (MTATimerButtonsController)initWithTarget:(id)target;
 - (TimerControlsTarget)target;
-- (void)_cancelButtonTapped:(id)a3;
-- (void)_startStopButtonTapped:(id)a3;
-- (void)setButtonSize:(unint64_t)a3;
-- (void)setShouldEnableStartButton:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
+- (void)_cancelButtonTapped:(id)tapped;
+- (void)_startStopButtonTapped:(id)tapped;
+- (void)setButtonSize:(unint64_t)size;
+- (void)setShouldEnableStartButton:(BOOL)button;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation MTATimerButtonsController
 
-- (MTATimerButtonsController)initWithTarget:(id)a3
+- (MTATimerButtonsController)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v22.receiver = self;
   v22.super_class = MTATimerButtonsController;
   v5 = [(MTATimerButtonsController *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_target, v4);
+    objc_storeWeak(&v5->_target, targetCopy);
     v6->_shouldEnableStartButton = 1;
     v7 = objc_alloc_init(MTACircleButton);
     startStopButton = v6->_startStopButton;
@@ -30,8 +30,8 @@
 
     [(MTACircleButton *)v6->_startStopButton addTarget:v6 action:"_startStopButtonTapped:" forControlEvents:64];
     v10 = +[UIShape circleShape];
-    v11 = [(MTACircleButton *)v6->_startStopButton hoverStyle];
-    [v11 setShape:v10];
+    hoverStyle = [(MTACircleButton *)v6->_startStopButton hoverStyle];
+    [hoverStyle setShape:v10];
 
     v12 = objc_alloc_init(MTACircleButton);
     cancelButton = v6->_cancelButton;
@@ -42,8 +42,8 @@
 
     [(MTACircleButton *)v6->_cancelButton addTarget:v6 action:"_cancelButtonTapped:" forControlEvents:64];
     v15 = +[UIShape circleShape];
-    v16 = [(MTACircleButton *)v6->_cancelButton hoverStyle];
-    [v16 setShape:v15];
+    hoverStyle2 = [(MTACircleButton *)v6->_cancelButton hoverStyle];
+    [hoverStyle2 setShape:v15];
 
     v17 = v6->_cancelButton;
     v18 = +[UIColor mtui_buttonBackgroundColor];
@@ -57,34 +57,34 @@
   return v6;
 }
 
-- (void)setButtonSize:(unint64_t)a3
+- (void)setButtonSize:(unint64_t)size
 {
-  self->_buttonSize = a3;
+  self->_buttonSize = size;
   [(MTACircleButton *)self->_startStopButton setButtonCircleSize:?];
-  [(MTACircleButton *)self->_cancelButton setButtonCircleSize:a3];
+  [(MTACircleButton *)self->_cancelButton setButtonCircleSize:size];
   state = self->_state;
 
   [(MTATimerButtonsController *)self setState:state];
 }
 
-- (void)setShouldEnableStartButton:(BOOL)a3
+- (void)setShouldEnableStartButton:(BOOL)button
 {
-  if (self->_shouldEnableStartButton != a3)
+  if (self->_shouldEnableStartButton != button)
   {
-    self->_shouldEnableStartButton = a3;
+    self->_shouldEnableStartButton = button;
     [(MTATimerButtonsController *)self setState:self->_state];
   }
 }
 
-- (void)_startStopButtonTapped:(id)a3
+- (void)_startStopButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     state = self->_state;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2050;
     v12 = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ start/stop button tapped with state: %{public}lu", &v9, 0x16u);
@@ -96,7 +96,7 @@
     if ((v7 - 2) < 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_target);
-      [WeakRetained pauseResumeTimer:v4];
+      [WeakRetained pauseResumeTimer:tappedCopy];
 LABEL_9:
 
       goto LABEL_12;
@@ -120,22 +120,22 @@ LABEL_11:
   if (v7 == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_target);
-    [WeakRetained startTimer:v4];
+    [WeakRetained startTimer:tappedCopy];
     goto LABEL_9;
   }
 
 LABEL_12:
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     state = self->_state;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2050;
     v12 = state;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ cancel button tapped with state: %{public}lu", &v9, 0x16u);
@@ -152,15 +152,15 @@ LABEL_12:
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_target);
-      [WeakRetained cancelTimer:v4];
+      [WeakRetained cancelTimer:tappedCopy];
     }
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  self->_state = a3;
-  if (a3 == 3)
+  self->_state = state;
+  if (state == 3)
   {
     startStopButton = self->_startStopButton;
     v20 = +[NSBundle mainBundle];
@@ -180,7 +180,7 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v10 = self->_startStopButton;
     v11 = +[NSBundle mainBundle];
@@ -223,7 +223,7 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     goto LABEL_21;
   }

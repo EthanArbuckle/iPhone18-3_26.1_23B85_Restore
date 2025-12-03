@@ -1,90 +1,90 @@
 @interface TUISmartGridSwooshLayoutManager
-+ (UIEdgeInsets)_additionalSafeAreaInsetsForLayout:(id)a3 configuration:(id)a4;
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4;
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4;
++ (UIEdgeInsets)_additionalSafeAreaInsetsForLayout:(id)layout configuration:(id)configuration;
++ (void)configureContentLayout:(id)layout configuration:(id)configuration;
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration;
 - (CGSize)contentLayoutSize;
 - (CGSize)layoutSize;
-- (TUISmartGridSwooshLayoutManager)initWithContent:(id)a3;
-- (UIEdgeInsets)additionalSafeAreaInsetsForLayout:(id)a3;
+- (TUISmartGridSwooshLayoutManager)initWithContent:(id)content;
+- (UIEdgeInsets)additionalSafeAreaInsetsForLayout:(id)layout;
 - (UIEdgeInsets)scrollContentIntrinsicInsets;
 - (UIEdgeInsets)scrollGradientFraction;
 - (UIEdgeInsets)scrollGradientInsets;
-- (double)widthForColumnSpan:(unint64_t)a3;
+- (double)widthForColumnSpan:(unint64_t)span;
 - (id).cxx_construct;
 - (unint64_t)ruleLayoutAxis;
-- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7;
-- (void)appendAnchorsToSet:(id)a3 forLayout:(id)a4 inRoot:(id)a5;
-- (void)appendHoverRegions:(id)a3 transform:(CGAffineTransform *)a4;
-- (void)appendNonScrollableAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7;
-- (void)layoutContent:(id)a3;
-- (void)positionContainerLayout:(id)a3;
+- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models;
+- (void)appendAnchorsToSet:(id)set forLayout:(id)layout inRoot:(id)root;
+- (void)appendHoverRegions:(id)regions transform:(CGAffineTransform *)transform;
+- (void)appendNonScrollableAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models;
+- (void)layoutContent:(id)content;
+- (void)positionContainerLayout:(id)layout;
 @end
 
 @implementation TUISmartGridSwooshLayoutManager
 
-- (TUISmartGridSwooshLayoutManager)initWithContent:(id)a3
+- (TUISmartGridSwooshLayoutManager)initWithContent:(id)content
 {
-  v5 = a3;
+  contentCopy = content;
   v9.receiver = self;
   v9.super_class = TUISmartGridSwooshLayoutManager;
   v6 = [(TUISmartGridSwooshLayoutManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_content, a3);
+    objc_storeStrong(&v6->_content, content);
   }
 
   return v7;
 }
 
-+ (void)configureScrollLayout:(id)a3 configuration:(id)a4
++ (void)configureScrollLayout:(id)layout configuration:(id)configuration
 {
-  v15 = a3;
-  v6 = a4;
-  [a1 _additionalSafeAreaInsetsForLayout:v15 configuration:v6];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [self _additionalSafeAreaInsetsForLayout:layoutCopy configuration:configurationCopy];
   v8 = v7;
   v10 = v9;
-  [v15 setComputedOrigin:{-v7, 0.0}];
-  [v6 width];
+  [layoutCopy setComputedOrigin:{-v7, 0.0}];
+  [configurationCopy width];
   v12 = v8 + v10 + v11;
-  if ([v6 paginated])
+  if ([configurationCopy paginated])
   {
-    [v6 contentInsets];
+    [configurationCopy contentInsets];
     v12 = v12 - (v13 + v14);
   }
 
-  [v15 setContainingWidth:v12];
+  [layoutCopy setContainingWidth:v12];
 }
 
-+ (void)configureContentLayout:(id)a3 configuration:(id)a4
++ (void)configureContentLayout:(id)layout configuration:(id)configuration
 {
-  v10 = a3;
-  v5 = a4;
-  [v5 width];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
   v7 = v6;
-  if ([v5 paginated])
+  if ([configurationCopy paginated])
   {
-    [v5 contentInsets];
+    [configurationCopy contentInsets];
     v7 = v7 - (v8 + v9);
   }
 
-  [v10 setContainingWidth:v7];
+  [layoutCopy setContainingWidth:v7];
 }
 
-+ (UIEdgeInsets)_additionalSafeAreaInsetsForLayout:(id)a3 configuration:(id)a4
++ (UIEdgeInsets)_additionalSafeAreaInsetsForLayout:(id)layout configuration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 width];
+  layoutCopy = layout;
+  configurationCopy = configuration;
+  [configurationCopy width];
   v8 = v7;
-  v9 = [v5 controller];
-  v10 = [v9 instantiateContext];
-  v11 = [v10 environment];
+  controller = [layoutCopy controller];
+  instantiateContext = [controller instantiateContext];
+  environment = [instantiateContext environment];
 
-  [v11 viewSafeAreaInsets];
+  [environment viewSafeAreaInsets];
   left = v12;
   right = v14;
-  if (TUISwooshUseUnboundedScroll() && ([v6 paginated] & 1) == 0 && (objc_msgSend(v11, "viewSizeWithinSafeArea"), v8 == v16))
+  if (TUISwooshUseUnboundedScroll() && ([configurationCopy paginated] & 1) == 0 && (objc_msgSend(environment, "viewSizeWithinSafeArea"), v8 == v16))
   {
     bottom = 0.0;
     top = 0.0;
@@ -109,10 +109,10 @@
   return result;
 }
 
-- (void)positionContainerLayout:(id)a3
+- (void)positionContainerLayout:(id)layout
 {
-  v8 = a3;
-  [objc_opt_class() _additionalSafeAreaInsetsForLayout:v8 configuration:self->_configuration];
+  layoutCopy = layout;
+  [objc_opt_class() _additionalSafeAreaInsetsForLayout:layoutCopy configuration:self->_configuration];
   v5 = v4;
   if ([(TUISmartGridLayoutConfiguration *)self->_configuration paginated])
   {
@@ -125,13 +125,13 @@
     v7 = -v5;
   }
 
-  [v8 setComputedOrigin:{v7, 0.0}];
+  [layoutCopy setComputedOrigin:{v7, 0.0}];
 }
 
 - (unint64_t)ruleLayoutAxis
 {
-  v2 = [(TUISmartGridLayoutConfiguration *)self->_configuration rows];
-  if (v2 == 0x7FFFFFFFFFFFFFFFLL || v2 == &dword_0 + 1)
+  rows = [(TUISmartGridLayoutConfiguration *)self->_configuration rows];
+  if (rows == 0x7FFFFFFFFFFFFFFFLL || rows == &dword_0 + 1)
   {
     return 2;
   }
@@ -142,10 +142,10 @@
   }
 }
 
-- (UIEdgeInsets)additionalSafeAreaInsetsForLayout:(id)a3
+- (UIEdgeInsets)additionalSafeAreaInsetsForLayout:(id)layout
 {
-  v4 = a3;
-  [objc_opt_class() _additionalSafeAreaInsetsForLayout:v4 configuration:self->_configuration];
+  layoutCopy = layout;
+  [objc_opt_class() _additionalSafeAreaInsetsForLayout:layoutCopy configuration:self->_configuration];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -169,8 +169,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUISmartGridLayoutConfiguration *)self->_configuration paginated];
-  if (v11)
+  paginated = [(TUISmartGridLayoutConfiguration *)self->_configuration paginated];
+  if (paginated)
   {
     v12 = 0.0;
   }
@@ -180,7 +180,7 @@
     v12 = v10;
   }
 
-  if (v11)
+  if (paginated)
   {
     v13 = 0.0;
   }
@@ -219,10 +219,10 @@
   return result;
 }
 
-- (void)layoutContent:(id)a3
+- (void)layoutContent:(id)content
 {
-  v260 = a3;
-  v261 = [v260 computedLayoutDirection];
+  contentCopy = content;
+  computedLayoutDirection = [contentCopy computedLayoutDirection];
   [(TUISmartGridLayoutConfiguration *)self->_configuration contentInsets];
   v5 = v4;
   v7 = v6;
@@ -230,23 +230,23 @@
   v11 = v10;
   [(TUISmartGridLayoutConfiguration *)self->_configuration width];
   v13 = v12;
-  v14 = [(TUISmartGridLayoutConfiguration *)self->_configuration rows];
+  rows = [(TUISmartGridLayoutConfiguration *)self->_configuration rows];
   if ([(TUISmartGridLayoutConfiguration *)self->_configuration maxPages]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = 0;
+    maxPages = 0;
   }
 
   else
   {
-    v15 = [(TUISmartGridLayoutConfiguration *)self->_configuration maxPages];
+    maxPages = [(TUISmartGridLayoutConfiguration *)self->_configuration maxPages];
   }
 
   self->_computedColumns = [TUISmartGridBox columnsWithConfiguration:self->_configuration];
-  v16 = [v260 children];
-  v18 = v14 == &dword_0 + 1 || v14 == 0x7FFFFFFFFFFFFFFFLL;
-  sub_63EE4(&v318, v16, self->_content, v18);
+  children = [contentCopy children];
+  v18 = rows == &dword_0 + 1 || rows == 0x7FFFFFFFFFFFFFFFLL;
+  sub_63EE4(&v318, children, self->_content, v18);
 
-  v266 = v14;
+  v266 = rows;
   if ([(TUISmartGridLayoutConfiguration *)self->_configuration balanceSections])
   {
     v19 = v319;
@@ -258,16 +258,16 @@
       do
       {
         v23 = v20[6];
-        v24 = [v23 columns];
+        columns = [v23 columns];
 
-        if (v24 == 0x7FFFFFFFFFFFFFFFLL)
+        if (columns == 0x7FFFFFFFFFFFFFFFLL)
         {
           v25 = 0;
         }
 
         else
         {
-          v25 = v24;
+          v25 = columns;
         }
 
         v21 += v25;
@@ -294,16 +294,16 @@
     }
   }
 
-  v27 = [(TUISmartGridLayoutConfiguration *)self->_configuration columnSpacing];
-  self->_computedColumnSpacing = TUILengthValueWithDefault(v27, v28, 0.0);
+  columnSpacing = [(TUISmartGridLayoutConfiguration *)self->_configuration columnSpacing];
+  self->_computedColumnSpacing = TUILengthValueWithDefault(columnSpacing, v28, 0.0);
   [TUISmartGridBox columnWidthWithConfiguration:self->_configuration columns:self->_computedColumns spacing:?];
   self->_computedColumnWidth = v29;
-  v30 = [(TUISmartGridLayoutConfiguration *)self->_configuration rowSpacing];
-  self->_computedRowSpacing = TUILengthValueWithDefault(v30, v31, 0.0);
-  v263 = self;
+  rowSpacing = [(TUISmartGridLayoutConfiguration *)self->_configuration rowSpacing];
+  self->_computedRowSpacing = TUILengthValueWithDefault(rowSpacing, v31, 0.0);
+  selfCopy = self;
   v258 = v7;
   v259 = v13;
-  if (v14 != 0x7FFFFFFFFFFFFFFFLL && v14 != &dword_0 + 1)
+  if (rows != 0x7FFFFFFFFFFFFFFFLL && rows != &dword_0 + 1)
   {
     v47 = 0;
     if (v319 != v318)
@@ -328,10 +328,10 @@
     v285 = 0x2E8BA2E8BA2E8BA3 * (v319 - v318);
     v286 = 0;
     v290 = &v318;
-    v49 = [(TUISmartGridLayoutConfiguration *)self->_configuration verticalPlacement];
-    if ((v49 - 2) < 4)
+    verticalPlacement = [(TUISmartGridLayoutConfiguration *)self->_configuration verticalPlacement];
+    if ((verticalPlacement - 2) < 4)
     {
-      v50 = v49 - 1;
+      v50 = verticalPlacement - 1;
     }
 
     else
@@ -345,11 +345,11 @@
     if (v318 != v319)
     {
       v52 = 0;
-      v53 = v263->_computedColumns * v15;
+      v53 = selfCopy->_computedColumns * maxPages;
       while (1)
       {
-        sub_D4950(__p, v14);
-        columnsPerSection = v263->_columnsPerSection;
+        sub_D4950(__p, rows);
+        columnsPerSection = selfCopy->_columnsPerSection;
         if (columnsPerSection)
         {
           if (!v53)
@@ -406,9 +406,9 @@ LABEL_77:
         while (v57 != v58)
         {
           v59 = *(v57 + 32);
-          v60 = [v59 rowSpan];
+          rowSpan = [v59 rowSpan];
           v61 = *(v57 + 32);
-          sub_D3D7C(__p, v60, [v61 columnSpan], &v273);
+          sub_D3D7C(__p, rowSpan, [v61 columnSpan], &v273);
 
           *(v57 + 8) = v273;
           *v57 = *(&v273 + 1) + v52;
@@ -526,7 +526,7 @@ LABEL_109:
           }
         }
 
-        if ([(TUISmartGridLayoutConfiguration *)v263->_configuration columnMultiple]&& [(TUISmartGridLayoutConfiguration *)v263->_configuration truncate]&& v63 > [(TUISmartGridLayoutConfiguration *)v263->_configuration columnMultiple])
+        if ([(TUISmartGridLayoutConfiguration *)selfCopy->_configuration columnMultiple]&& [(TUISmartGridLayoutConfiguration *)selfCopy->_configuration truncate]&& v63 > [(TUISmartGridLayoutConfiguration *)selfCopy->_configuration columnMultiple])
         {
           v75 = *(&v296 + 1);
           if (v297.i64[0])
@@ -536,8 +536,8 @@ LABEL_109:
 
           if (v63 < v75)
           {
-            v76 = [(TUISmartGridLayoutConfiguration *)v263->_configuration columnMultiple];
-            v77 = v63 / v76 * v76;
+            columnMultiple = [(TUISmartGridLayoutConfiguration *)selfCopy->_configuration columnMultiple];
+            v77 = v63 / columnMultiple * columnMultiple;
             v296 = 0uLL;
             if (v77 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -550,9 +550,9 @@ LABEL_109:
             while (v78 != v79)
             {
               v80 = *(v78 + 32);
-              v81 = [v80 rowSpan];
+              rowSpan2 = [v80 rowSpan];
               v82 = *(v78 + 32);
-              sub_D3D7C(__p, v81, [v82 columnSpan], &v273);
+              sub_D3D7C(__p, rowSpan2, [v82 columnSpan], &v273);
 
               *(v78 + 8) = v273;
               *v78 = *(&v273 + 1) + v52;
@@ -583,7 +583,7 @@ LABEL_109:
 
         v52 += v84;
         v51 += 11;
-        v14 = v266;
+        rows = v266;
         if (v51 == v265)
         {
           goto LABEL_175;
@@ -596,12 +596,12 @@ LABEL_175:
     sub_D3F1C(&v318);
     v321 = v52;
     v122 = v322;
-    self = v263;
-    computedColumnWidth = v263->_computedColumnWidth;
-    computedColumnSpacing = v263->_computedColumnSpacing;
-    computedRowSpacing = v263->_computedRowSpacing;
-    v126 = [v260 controller];
-    [v126 contentsScale];
+    self = selfCopy;
+    computedColumnWidth = selfCopy->_computedColumnWidth;
+    computedColumnSpacing = selfCopy->_computedColumnSpacing;
+    computedRowSpacing = selfCopy->_computedRowSpacing;
+    controller = [contentCopy controller];
+    [controller contentsScale];
     v303 = v13;
     v304 = v52;
     v305 = v122;
@@ -612,7 +612,7 @@ LABEL_175:
     v310 = computedColumnWidth;
     v311 = computedColumnSpacing;
     v314 = computedRowSpacing;
-    v315 = v261;
+    v315 = computedLayoutDirection;
     v316 = v127;
     v317 = 0;
     if (v52 < 2 || computedColumnSpacing == 0.0)
@@ -634,9 +634,9 @@ LABEL_175:
 
     v313 = computedColumnSpacing;
 
-    if ([(TUISmartGridLayoutConfiguration *)v263->_configuration paginated])
+    if ([(TUISmartGridLayoutConfiguration *)selfCopy->_configuration paginated])
     {
-      v129 = v263->_computedColumns;
+      v129 = selfCopy->_computedColumns;
       v317 = v129;
       if (!v129)
       {
@@ -671,7 +671,7 @@ LABEL_175:
       *__p = CGSizeZero;
       v295 = 0u;
       v296 = 0u;
-      sub_61DD8(&v263->_cellDividers, __p);
+      sub_61DD8(&selfCopy->_cellDividers, __p);
       *&v273 = &v295.i64[1];
       sub_63928(&v273);
     }
@@ -774,7 +774,7 @@ LABEL_175:
       __p[1] = v150;
       v295 = v152;
       v296 = 0uLL;
-      sub_61DD8(&v263->_cellDividers, __p);
+      sub_61DD8(&selfCopy->_cellDividers, __p);
       *&v273 = &v295.i64[1];
       sub_63928(&v273);
     }
@@ -806,7 +806,7 @@ LABEL_226:
       sub_61F88(__p, &v303, &v318, 0);
       v164 = v163;
       v165 = v162 + v163;
-      sub_D3F90(&v283, &v303, &v263->_cellDividers, 0.0, v162 + v163);
+      sub_D3F90(&v283, &v303, &selfCopy->_cellDividers, 0.0, v162 + v163);
       v167 = v166;
       v169 = v168;
       v271 = &v318;
@@ -834,8 +834,8 @@ LABEL_226:
       sub_95A1C(&v271);
       sub_D4170(&v271, &v318, &v303, &v318, 0.0, v164, v169);
       v174 = [v271 copy];
-      nonScrollableAdornmentLayouts = v263->_nonScrollableAdornmentLayouts;
-      v263->_nonScrollableAdornmentLayouts = v174;
+      nonScrollableAdornmentLayouts = selfCopy->_nonScrollableAdornmentLayouts;
+      selfCopy->_nonScrollableAdornmentLayouts = v174;
 
       if (v280)
       {
@@ -880,9 +880,9 @@ LABEL_216:
       else
       {
         v158 = *(v155 + 32);
-        v159 = [v158 role];
+        role = [v158 role];
 
-        if (v159 != &dword_4)
+        if (role != &dword_4)
         {
           goto LABEL_222;
         }
@@ -903,15 +903,15 @@ LABEL_222:
   if (v318 != v319)
   {
     v34 = 0;
-    v35 = self->_computedColumns * v15;
+    v35 = self->_computedColumns * maxPages;
     v267 = v319;
     v264 = v35;
     while (1)
     {
       v32[7] = v34;
       v32[8] = 0;
-      v36 = self->_columnsPerSection;
-      if (v36)
+      columns2 = self->_columnsPerSection;
+      if (columns2)
       {
         if (!v35)
         {
@@ -922,7 +922,7 @@ LABEL_222:
       else
       {
         v37 = v32[6];
-        v36 = [v37 columns];
+        columns2 = [v37 columns];
 
         if (!v35)
         {
@@ -932,20 +932,20 @@ LABEL_222:
 
       if (v35 > v34)
       {
-        if (v36 >= v35 - v34)
+        if (columns2 >= v35 - v34)
         {
-          v36 = (v35 - v34);
+          columns2 = (v35 - v34);
         }
 
 LABEL_36:
-        if (v36 == 0x7FFFFFFFFFFFFFFFLL)
+        if (columns2 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v38 = -1;
         }
 
         else
         {
-          v38 = v36 - 1;
+          v38 = columns2 - 1;
         }
 
         goto LABEL_39;
@@ -972,11 +972,11 @@ LABEL_39:
         do
         {
           v42 = *(v40 + 32);
-          v43 = [v42 columnSpan];
+          columnSpan = [v42 columnSpan];
           v44 = v38 >= v41;
           if (v38 >= v41)
           {
-            v45 = v43;
+            v45 = columnSpan;
           }
 
           else
@@ -996,7 +996,7 @@ LABEL_39:
 
           if (v38 >= v41)
           {
-            v41 += v43;
+            v41 += columnSpan;
           }
 
           *v40 = v46 + v34;
@@ -1013,7 +1013,7 @@ LABEL_39:
       v32[10] = 1;
       v34 += v41;
       v32 += 11;
-      self = v263;
+      self = selfCopy;
       v35 = v264;
       if (v32 == v267)
       {
@@ -1057,9 +1057,9 @@ LABEL_130:
       else
       {
         v89 = *(v86 + 32);
-        v90 = [v89 role];
+        role2 = [v89 role];
 
-        if (v90 != &dword_4)
+        if (role2 != &dword_4)
         {
           goto LABEL_136;
         }
@@ -1078,8 +1078,8 @@ LABEL_136:
   v93 = self->_computedColumnWidth;
   v92 = self->_computedColumnSpacing;
   v94 = self->_computedRowSpacing;
-  v95 = [v260 controller];
-  [v95 contentsScale];
+  controller2 = [contentCopy controller];
+  [controller2 contentsScale];
   v303 = v13;
   v304 = v34;
   v305 = v85;
@@ -1090,7 +1090,7 @@ LABEL_136:
   v310 = v93;
   v311 = v92;
   v314 = v94;
-  v315 = v261;
+  v315 = computedLayoutDirection;
   v316 = v96;
   v317 = 0;
   if (v34 < 2 || v92 == 0.0)
@@ -1269,8 +1269,8 @@ LABEL_231:
   v180 = self->_computedColumnWidth;
   v179 = self->_computedColumnSpacing;
   v181 = self->_computedRowSpacing;
-  v182 = [v260 controller];
-  [v182 contentsScale];
+  controller3 = [contentCopy controller];
+  [controller3 contentsScale];
   v184 = *&v183;
   __p[0] = v259;
   __p[1] = v177;
@@ -1282,7 +1282,7 @@ LABEL_231:
   *&v297.i64[1] = v180;
   *&v298 = v179;
   *(&v299 + 1) = v181;
-  v300[0] = v261;
+  v300[0] = computedLayoutDirection;
   v300[1] = v183;
   v301 = 0;
   if (v177 < 2 || v179 == 0.0)
@@ -1427,8 +1427,8 @@ LABEL_231:
         if (!CGRectIsNull(*(&size - 1)))
         {
           v210 = *(v203 + 32);
-          end = v263->_cellBounds.__end_;
-          cap = v263->_cellBounds.__cap_;
+          end = selfCopy->_cellBounds.__end_;
+          cap = selfCopy->_cellBounds.__cap_;
           if (end >= cap)
           {
             v215 = 0xCCCCCCCCCCCCCCCDLL * ((end - p_cellBounds->__begin_) >> 3);
@@ -1469,8 +1469,8 @@ LABEL_231:
             *(v219 + 24) = v268;
             v274.i64[0] = 40 * v215 + 40;
             sub_68F2C(p_cellBounds, &v273);
-            v214 = v263;
-            v213 = v263->_cellBounds.__end_;
+            v214 = selfCopy;
+            v213 = selfCopy->_cellBounds.__end_;
             sub_6904C(&v273);
           }
 
@@ -1480,7 +1480,7 @@ LABEL_231:
             *(end + 8) = v208;
             v213 = end + 40;
             *(end + 24) = v268;
-            v214 = v263;
+            v214 = selfCopy;
           }
 
           v214->_cellBounds.__end_ = v213;
@@ -1491,14 +1491,14 @@ LABEL_231:
     }
   }
 
-  begin = v263->_scrollAnchors.__begin_;
-  p_begin = &v263->_scrollAnchors.__begin_;
-  if (begin != v263->_scrollAnchors.__end_)
+  begin = selfCopy->_scrollAnchors.__begin_;
+  p_begin = &selfCopy->_scrollAnchors.__begin_;
+  if (begin != selfCopy->_scrollAnchors.__end_)
   {
-    v263->_scrollAnchors.__end_ = begin;
+    selfCopy->_scrollAnchors.__end_ = begin;
   }
 
-  if ([(TUISmartGridLayoutConfiguration *)v263->_configuration paginated])
+  if ([(TUISmartGridLayoutConfiguration *)selfCopy->_configuration paginated])
   {
     if (v254)
     {
@@ -1549,7 +1549,7 @@ LABEL_231:
             v233 = v231 - v185 + v232 - v185;
           }
 
-          if (v261 == &dword_0 + 2)
+          if (computedLayoutDirection == &dword_0 + 2)
           {
             if (v186 == 0.0)
             {
@@ -1609,7 +1609,7 @@ LABEL_231:
     v243 = v319;
     if (v318 != v319)
     {
-      if (v261 == &dword_0 + 2)
+      if (computedLayoutDirection == &dword_0 + 2)
       {
         v244 = v11;
       }
@@ -1654,20 +1654,20 @@ LABEL_231:
   }
 
   v250 = v299;
-  *&v263->_columnSystem._specifiedColumnSpacing = v298;
-  *&v263->_columnSystem._computedColumnSpacing = v250;
-  *&v263->_columnSystem._layoutDirection = *v300;
+  *&selfCopy->_columnSystem._specifiedColumnSpacing = v298;
+  *&selfCopy->_columnSystem._computedColumnSpacing = v250;
+  *&selfCopy->_columnSystem._layoutDirection = *v300;
   v251 = v295;
-  *&v263->_columnSystem._containerWidth = *__p;
-  *&v263->_columnSystem._rows = v251;
+  *&selfCopy->_columnSystem._containerWidth = *__p;
+  *&selfCopy->_columnSystem._rows = v251;
   v252 = v297;
-  *&v263->_columnSystem._insets.left = v296;
-  v263->_columnSystem._columnsPerPage = v301;
-  *&v263->_columnSystem._insets.right = v252;
-  v263->_contentLayoutSize.width = v257;
-  v263->_contentLayoutSize.height = v256;
-  *&v263->_layoutSize.width = v259;
-  v263->_layoutSize.height = v256;
+  *&selfCopy->_columnSystem._insets.left = v296;
+  selfCopy->_columnSystem._columnsPerPage = v301;
+  *&selfCopy->_columnSystem._insets.right = v252;
+  selfCopy->_contentLayoutSize.width = v257;
+  selfCopy->_contentLayoutSize.height = v256;
+  *&selfCopy->_layoutSize.width = v259;
+  selfCopy->_layoutSize.height = v256;
   if (v327)
   {
     v328 = v327;
@@ -1692,11 +1692,11 @@ LABEL_231:
   sub_63C64(__p);
 }
 
-- (double)widthForColumnSpan:(unint64_t)a3
+- (double)widthForColumnSpan:(unint64_t)span
 {
-  if (a3)
+  if (span)
   {
-    return -(self->_computedColumnSpacing - (self->_computedColumnWidth + self->_computedColumnSpacing) * a3);
+    return -(self->_computedColumnSpacing - (self->_computedColumnWidth + self->_computedColumnSpacing) * span);
   }
 
   else
@@ -1705,18 +1705,18 @@ LABEL_231:
   }
 }
 
-- (void)appendAnchorsToSet:(id)a3 forLayout:(id)a4 inRoot:(id)a5
+- (void)appendAnchorsToSet:(id)set forLayout:(id)layout inRoot:(id)root
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 axis] == &dword_0 + 1)
+  setCopy = set;
+  layoutCopy = layout;
+  rootCopy = root;
+  if ([setCopy axis] == &dword_0 + 1)
   {
     height = self->_contentLayoutSize.height;
     v15 = 0u;
-    if (v9)
+    if (layoutCopy)
     {
-      [v9 computedTransformInAncestorLayout:v10];
+      [layoutCopy computedTransformInAncestorLayout:rootCopy];
     }
 
     begin = self->_scrollAnchors.__begin_;
@@ -1726,7 +1726,7 @@ LABEL_231:
       v14 = height * 0.5;
       do
       {
-        [v8 appendScrollAnchor:{v14 * 0.0 + *&v15 * *begin++ + 0.0, v15}];
+        [setCopy appendScrollAnchor:{v14 * 0.0 + *&v15 * *begin++ + 0.0, v15}];
       }
 
       while (begin != end);
@@ -1734,35 +1734,35 @@ LABEL_231:
   }
 }
 
-- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7
+- (void)appendAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = *&a4->c;
-  v21 = *&a4->a;
+  contextCopy = context;
+  boxCopy = box;
+  modelsCopy = models;
+  v15 = *&transform->c;
+  v21 = *&transform->a;
   v22 = v15;
-  v23 = *&a4->tx;
-  sub_6320C(&self->_cellDividers, a3, &v21, v12, v14);
-  if (a3 >= 4 && [v12 debugVisualLayout])
+  v23 = *&transform->tx;
+  sub_6320C(&self->_cellDividers, kind, &v21, contextCopy, modelsCopy);
+  if (kind >= 4 && [contextCopy debugVisualLayout])
   {
     width = self->_contentLayoutSize.width;
     height = self->_contentLayoutSize.height;
-    v18 = [v13 identifier];
-    v19 = *&a4->c;
-    v21 = *&a4->a;
+    identifier = [boxCopy identifier];
+    v19 = *&transform->c;
+    v21 = *&transform->a;
     v22 = v19;
-    v23 = *&a4->tx;
-    v20 = [TUISmartGridDebugRenderModel renderModelWithSize:&self->_columnSystem columnSystem:v18 identifier:&v21 transform:width, height];
+    v23 = *&transform->tx;
+    height = [TUISmartGridDebugRenderModel renderModelWithSize:&self->_columnSystem columnSystem:identifier identifier:&v21 transform:width, height];
 
-    [v14 addObject:v20];
+    [modelsCopy addObject:height];
   }
 }
 
-- (void)appendNonScrollableAdornmentRenderModelsCompatibleWithKind:(unint64_t)a3 transform:(CGAffineTransform *)a4 context:(id)a5 box:(id)a6 toModels:(id)a7
+- (void)appendNonScrollableAdornmentRenderModelsCompatibleWithKind:(unint64_t)kind transform:(CGAffineTransform *)transform context:(id)context box:(id)box toModels:(id)models
 {
-  v11 = a5;
-  v12 = a7;
+  contextCopy = context;
+  modelsCopy = models;
   width = self->_layoutSize.width;
   height = self->_layoutSize.height;
   v32 = 0u;
@@ -1792,13 +1792,13 @@ LABEL_231:
         [v21 computedTransformedSize];
         memset(&v31, 0, sizeof(v31));
         CGAffineTransformMakeTranslation(&t1, v23 + v26 * 0.5 + v18 * 0.5, v25 + v27 * 0.5 + v19 * 0.5);
-        v28 = *&a4->c;
-        *&v29.a = *&a4->a;
+        v28 = *&transform->c;
+        *&v29.a = *&transform->a;
         *&v29.c = v28;
-        *&v29.tx = *&a4->tx;
+        *&v29.tx = *&transform->tx;
         CGAffineTransformConcat(&v31, &t1, &v29);
         t1 = v31;
-        [v21 appendRenderModelIgnoreHiddenCompatibleWithKind:a3 context:v11 transform:&t1 toModels:v12];
+        [v21 appendRenderModelIgnoreHiddenCompatibleWithKind:kind context:contextCopy transform:&t1 toModels:modelsCopy];
       }
 
       v16 = [(NSArray *)v15 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -1808,9 +1808,9 @@ LABEL_231:
   }
 }
 
-- (void)appendHoverRegions:(id)a3 transform:(CGAffineTransform *)a4
+- (void)appendHoverRegions:(id)regions transform:(CGAffineTransform *)transform
 {
-  v6 = a3;
+  regionsCopy = regions;
   begin = self->_cellBounds.__begin_;
   for (i = self->_cellBounds.__end_; begin != i; begin += 5)
   {
@@ -1820,10 +1820,10 @@ LABEL_231:
     v12 = begin[3];
     v13 = begin[4];
     v14 = v9;
-    v15 = *&a4->c;
-    *&v27.a = *&a4->a;
+    v15 = *&transform->c;
+    *&v27.a = *&transform->a;
     *&v27.c = v15;
-    *&v27.tx = *&a4->tx;
+    *&v27.tx = *&transform->tx;
     v16 = v10;
     *&v15 = v11;
     v17 = v12;
@@ -1834,11 +1834,11 @@ LABEL_231:
     width = v28.size.width;
     height = v28.size.height;
     v23 = [TUIHoverIdentifier alloc];
-    v24 = [v14 identifier];
-    v25 = [(TUIHoverIdentifier *)v23 initWithName:@"cell" identifier:v24];
+    identifier = [v14 identifier];
+    v25 = [(TUIHoverIdentifier *)v23 initWithName:@"cell" identifier:identifier];
 
-    v26 = [[TUIHoverRegion alloc] initWithBounds:x, y, width, height];
-    [v6 setObject:v26 forKeyedSubscript:v25];
+    height = [[TUIHoverRegion alloc] initWithBounds:x, y, width, height];
+    [regionsCopy setObject:height forKeyedSubscript:v25];
   }
 }
 

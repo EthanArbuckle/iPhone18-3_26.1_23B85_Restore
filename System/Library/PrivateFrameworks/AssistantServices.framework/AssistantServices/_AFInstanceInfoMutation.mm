@@ -1,5 +1,5 @@
 @interface _AFInstanceInfoMutation
-- (_AFInstanceInfoMutation)initWithBase:(id)a3;
+- (_AFInstanceInfoMutation)initWithBase:(id)base;
 - (id)getApplicationUUID;
 - (id)getInstanceUUID;
 - (int64_t)getApplicationType;
@@ -11,15 +11,15 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_instanceUUID;
+    instanceUUID = self->_instanceUUID;
   }
 
   else
   {
-    v2 = [(AFInstanceInfo *)self->_base instanceUUID];
+    instanceUUID = [(AFInstanceInfo *)self->_base instanceUUID];
   }
 
-  return v2;
+  return instanceUUID;
 }
 
 - (int64_t)getApplicationType
@@ -39,27 +39,27 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_applicationUUID;
+    applicationUUID = self->_applicationUUID;
   }
 
   else
   {
-    v2 = [(AFInstanceInfo *)self->_base applicationUUID];
+    applicationUUID = [(AFInstanceInfo *)self->_base applicationUUID];
   }
 
-  return v2;
+  return applicationUUID;
 }
 
-- (_AFInstanceInfoMutation)initWithBase:(id)a3
+- (_AFInstanceInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFInstanceInfoMutation;
   v6 = [(_AFInstanceInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

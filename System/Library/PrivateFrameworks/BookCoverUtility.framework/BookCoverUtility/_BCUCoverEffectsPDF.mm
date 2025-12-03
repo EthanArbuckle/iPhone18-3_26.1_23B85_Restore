@@ -1,37 +1,37 @@
 @interface _BCUCoverEffectsPDF
-- (UIEdgeInsets)_roundedInsetsWithSize:(CGSize)a3;
-- (UIEdgeInsets)insetsForSize:(CGSize)a3 contentsScale:(double)a4 options:(id)a5;
-- (_BCUCoverEffectsPDF)initWithIdentifier:(id)a3 renderer:(id)a4 image:(BOOL)a5 shadow:(BOOL)a6 night:(BOOL)a7;
-- (id)_layerWithImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5 minificationFilter:(id)a6;
-- (id)newOperationWithImage:(CGImage *)a3 size:(CGSize)a4 contentsScale:(double)a5 priority:(float)a6 options:(id)a7 waitForCPUSynchronization:(BOOL)a8 logKey:(id)a9 completion:(id)a10;
+- (UIEdgeInsets)_roundedInsetsWithSize:(CGSize)size;
+- (UIEdgeInsets)insetsForSize:(CGSize)size contentsScale:(double)scale options:(id)options;
+- (_BCUCoverEffectsPDF)initWithIdentifier:(id)identifier renderer:(id)renderer image:(BOOL)image shadow:(BOOL)shadow night:(BOOL)night;
+- (id)_layerWithImage:(CGImage *)image size:(CGSize)size scale:(double)scale minificationFilter:(id)filter;
+- (id)newOperationWithImage:(CGImage *)image size:(CGSize)size contentsScale:(double)scale priority:(float)priority options:(id)options waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key completion:(id)self0;
 @end
 
 @implementation _BCUCoverEffectsPDF
 
-- (_BCUCoverEffectsPDF)initWithIdentifier:(id)a3 renderer:(id)a4 image:(BOOL)a5 shadow:(BOOL)a6 night:(BOOL)a7
+- (_BCUCoverEffectsPDF)initWithIdentifier:(id)identifier renderer:(id)renderer image:(BOOL)image shadow:(BOOL)shadow night:(BOOL)night
 {
-  v13 = a3;
-  v14 = a4;
+  identifierCopy = identifier;
+  rendererCopy = renderer;
   v18.receiver = self;
   v18.super_class = _BCUCoverEffectsPDF;
   v15 = [(_BCUCoverEffectsPDF *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_identifier, a3);
-    objc_storeStrong(&v16->_renderer, a4);
-    v16->_image = a5;
-    v16->_shadow = a6;
-    v16->_night = a7;
+    objc_storeStrong(&v15->_identifier, identifier);
+    objc_storeStrong(&v16->_renderer, renderer);
+    v16->_image = image;
+    v16->_shadow = shadow;
+    v16->_night = night;
   }
 
   return v16;
 }
 
-- (UIEdgeInsets)_roundedInsetsWithSize:(CGSize)a3
+- (UIEdgeInsets)_roundedInsetsWithSize:(CGSize)size
 {
-  v3 = 618.0 / a3.width;
-  v4 = a3.width <= 0.0;
+  v3 = 618.0 / size.width;
+  v4 = size.width <= 0.0;
   v5 = 1.0;
   if (!v4)
   {
@@ -50,11 +50,11 @@
   return result;
 }
 
-- (id)_layerWithImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5 minificationFilter:(id)a6
+- (id)_layerWithImage:(CGImage *)image size:(CGSize)size scale:(double)scale minificationFilter:(id)filter
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  filterCopy = filter;
   objc_msgSend__roundedInsetsWithSize_(self, v12, v13, width, height);
   shadow = self->_shadow;
   v18 = width + v15 + v17;
@@ -100,7 +100,7 @@
   }
 
   v25 = objc_opt_new();
-  objc_msgSend_setRasterizationScale_(v25, v26, v27, a5);
+  objc_msgSend_setRasterizationScale_(v25, v26, v27, scale);
   objc_msgSend_setFrame_(v25, v28, v29, 0.0, 0.0, v22, v21);
   if (self->_shadow)
   {
@@ -174,13 +174,13 @@
   if (self->_image)
   {
     v61 = objc_opt_new();
-    objc_msgSend_setContents_(v61, v62, a3);
+    objc_msgSend_setContents_(v61, v62, image);
     objc_msgSend_setCornerRadius_(v61, v63, v64, 2.0);
     objc_msgSend_setMasksToBounds_(v61, v65, 1);
     objc_msgSend_setFrame_(v61, v66, v67, v24, v23, width, height);
-    if (v11)
+    if (filterCopy)
     {
-      objc_msgSend_setMinificationFilter_(v61, v68, v11);
+      objc_msgSend_setMinificationFilter_(v61, v68, filterCopy);
     }
 
     objc_msgSend_addSublayer_(v25, v68, v61);
@@ -198,11 +198,11 @@
   return v25;
 }
 
-- (UIEdgeInsets)insetsForSize:(CGSize)a3 contentsScale:(double)a4 options:(id)a5
+- (UIEdgeInsets)insetsForSize:(CGSize)size contentsScale:(double)scale options:(id)options
 {
   if (self->_shadow)
   {
-    objc_msgSend__roundedInsetsWithSize_(self, a2, a5, a3.width, a3.height, a4);
+    objc_msgSend__roundedInsetsWithSize_(self, a2, options, size.width, size.height, scale);
   }
 
   else
@@ -220,31 +220,31 @@
   return result;
 }
 
-- (id)newOperationWithImage:(CGImage *)a3 size:(CGSize)a4 contentsScale:(double)a5 priority:(float)a6 options:(id)a7 waitForCPUSynchronization:(BOOL)a8 logKey:(id)a9 completion:(id)a10
+- (id)newOperationWithImage:(CGImage *)image size:(CGSize)size contentsScale:(double)scale priority:(float)priority options:(id)options waitForCPUSynchronization:(BOOL)synchronization logKey:(id)key completion:(id)self0
 {
-  v12 = a8;
-  height = a4.height;
-  width = a4.width;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
-  v22 = v21;
-  if (a3)
+  synchronizationCopy = synchronization;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
+  keyCopy = key;
+  completionCopy = completion;
+  v22 = completionCopy;
+  if (image)
   {
-    v23 = sub_241C80F64(a3, width, height, a5);
+    v23 = sub_241C80F64(image, width, height, scale);
     v25 = v24;
-    v27 = objc_msgSend_objectForKeyedSubscript_(v19, v26, @"BCUCoverEffectsFilterOptionMinificationFilter");
-    CGImageRetain(a3);
+    v27 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v26, @"BCUCoverEffectsFilterOptionMinificationFilter");
+    CGImageRetain(image);
     renderer = self->_renderer;
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = sub_241C819EC;
     v39[3] = &unk_278D14140;
     v40 = v27;
-    v41 = a3;
+    imageCopy = image;
     v42 = v23;
     v43 = v25;
-    v44 = a5;
+    scaleCopy = scale;
     v39[4] = self;
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
@@ -254,15 +254,15 @@
     v36 = v23;
     v37 = v25;
     v35 = v22;
-    v38 = a3;
+    imageCopy2 = image;
     v29 = v27;
-    *&v30 = a6;
-    v32 = objc_msgSend_newOperationWithPriority_waitForCPUSynchronization_logKey_renderLayer_completion_(renderer, v31, v12, v20, v39, v34, v30);
+    *&v30 = priority;
+    v32 = objc_msgSend_newOperationWithPriority_waitForCPUSynchronization_logKey_renderLayer_completion_(renderer, v31, synchronizationCopy, keyCopy, v39, v34, v30);
   }
 
   else
   {
-    (*(v21 + 2))(v21, 0, 0, 0, 0.0, 0.0, 0.0, 0.0);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0.0, 0.0, 0.0, 0.0);
     v32 = 0;
   }
 

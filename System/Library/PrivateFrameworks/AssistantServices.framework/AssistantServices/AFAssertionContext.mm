@@ -1,15 +1,15 @@
 @interface AFAssertionContext
-+ (id)newWithBuilder:(id)a3;
-- (AFAssertionContext)initWithBuilder:(id)a3;
-- (AFAssertionContext)initWithCoder:(id)a3;
-- (AFAssertionContext)initWithDictionaryRepresentation:(id)a3;
-- (AFAssertionContext)initWithTimestamp:(unint64_t)a3 reason:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 userInfo:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFAssertionContext)initWithBuilder:(id)builder;
+- (AFAssertionContext)initWithCoder:(id)coder;
+- (AFAssertionContext)initWithDictionaryRepresentation:(id)representation;
+- (AFAssertionContext)initWithTimestamp:(unint64_t)timestamp reason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration userInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFAssertionContext
@@ -46,13 +46,13 @@
   return v9;
 }
 
-- (AFAssertionContext)initWithDictionaryRepresentation:(id)a3
+- (AFAssertionContext)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"timestamp"];
+    v6 = [representationCopy objectForKey:@"timestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       v7 = 0;
     }
 
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
     v10 = [v5 objectForKey:@"reason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -116,42 +116,42 @@
       v19 = 0;
     }
 
-    self = [(AFAssertionContext *)self initWithTimestamp:v9 reason:v11 effectiveDate:v13 expirationDuration:v19 userInfo:v17];
-    v8 = self;
+    self = [(AFAssertionContext *)self initWithTimestamp:unsignedLongLongValue reason:v11 effectiveDate:v13 expirationDuration:v19 userInfo:v17];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v7 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedLongLong:timestamp];
-  [v7 encodeObject:v5 forKey:@"AFAssertionContext::timestamp"];
+  [coderCopy encodeObject:v5 forKey:@"AFAssertionContext::timestamp"];
 
-  [v7 encodeObject:self->_reason forKey:@"AFAssertionContext::reason"];
-  [v7 encodeObject:self->_effectiveDate forKey:@"AFAssertionContext::effectiveDate"];
+  [coderCopy encodeObject:self->_reason forKey:@"AFAssertionContext::reason"];
+  [coderCopy encodeObject:self->_effectiveDate forKey:@"AFAssertionContext::effectiveDate"];
   v6 = [NSNumber numberWithDouble:self->_expirationDuration];
-  [v7 encodeObject:v6 forKey:@"AFAssertionContext::expirationDuration"];
+  [coderCopy encodeObject:v6 forKey:@"AFAssertionContext::expirationDuration"];
 
-  [v7 encodeObject:self->_userInfo forKey:@"AFAssertionContext::userInfo"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"AFAssertionContext::userInfo"];
 }
 
-- (AFAssertionContext)initWithCoder:(id)a3
+- (AFAssertionContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::timestamp"];
-  v25 = [v4 unsignedLongLongValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::timestamp"];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::reason"];
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::effectiveDate"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::expirationDuration"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::reason"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::effectiveDate"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFAssertionContext::expirationDuration"];
   [v5 doubleValue];
   v7 = v6;
 
@@ -167,16 +167,16 @@
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [NSSet setWithObjects:v22, v21, v8, v9, v10, v11, v12, v13, v14, v15, v16, objc_opt_class(), 0];
-  v18 = [v3 decodeObjectOfClasses:v17 forKey:@"AFAssertionContext::userInfo"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"AFAssertionContext::userInfo"];
 
-  v19 = [(AFAssertionContext *)self initWithTimestamp:v25 reason:v24 effectiveDate:v23 expirationDuration:v18 userInfo:v7];
+  v19 = [(AFAssertionContext *)self initWithTimestamp:unsignedLongLongValue reason:v24 effectiveDate:v23 expirationDuration:v18 userInfo:v7];
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -186,21 +186,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timestamp = self->_timestamp;
       if (timestamp == [(AFAssertionContext *)v5 timestamp]&& (expirationDuration = self->_expirationDuration, [(AFAssertionContext *)v5 expirationDuration], expirationDuration == v8))
       {
-        v11 = [(AFAssertionContext *)v5 reason];
+        reason = [(AFAssertionContext *)v5 reason];
         reason = self->_reason;
-        if (reason == v11 || [(NSString *)reason isEqual:v11])
+        if (reason == reason || [(NSString *)reason isEqual:reason])
         {
-          v13 = [(AFAssertionContext *)v5 effectiveDate];
+          effectiveDate = [(AFAssertionContext *)v5 effectiveDate];
           effectiveDate = self->_effectiveDate;
-          if (effectiveDate == v13 || [(NSDate *)effectiveDate isEqual:v13])
+          if (effectiveDate == effectiveDate || [(NSDate *)effectiveDate isEqual:effectiveDate])
           {
-            v15 = [(AFAssertionContext *)v5 userInfo];
+            userInfo = [(AFAssertionContext *)v5 userInfo];
             userInfo = self->_userInfo;
-            v9 = userInfo == v15 || [(NSDictionary *)userInfo isEqual:v15];
+            v9 = userInfo == userInfo || [(NSDictionary *)userInfo isEqual:userInfo];
           }
 
           else
@@ -243,7 +243,7 @@
   return v6 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -254,53 +254,53 @@
   return v6;
 }
 
-- (AFAssertionContext)initWithTimestamp:(unint64_t)a3 reason:(id)a4 effectiveDate:(id)a5 expirationDuration:(double)a6 userInfo:(id)a7
+- (AFAssertionContext)initWithTimestamp:(unint64_t)timestamp reason:(id)reason effectiveDate:(id)date expirationDuration:(double)duration userInfo:(id)info
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10022B048;
   v17[3] = &unk_100517280;
-  v18 = a4;
-  v19 = a5;
-  v22 = a6;
-  v20 = a7;
-  v21 = a3;
-  v12 = v20;
-  v13 = v19;
-  v14 = v18;
+  reasonCopy = reason;
+  dateCopy = date;
+  durationCopy = duration;
+  infoCopy = info;
+  timestampCopy = timestamp;
+  v12 = infoCopy;
+  v13 = dateCopy;
+  v14 = reasonCopy;
   v15 = [(AFAssertionContext *)self initWithBuilder:v17];
 
   return v15;
 }
 
-- (AFAssertionContext)initWithBuilder:(id)a3
+- (AFAssertionContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v19.receiver = self;
   v19.super_class = AFAssertionContext;
   v5 = [(AFAssertionContext *)&v19 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFAssertionContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFAssertionContextMutation *)v7 isDirty])
     {
       v6->_timestamp = [(_AFAssertionContextMutation *)v7 getTimestamp];
-      v8 = [(_AFAssertionContextMutation *)v7 getReason];
-      v9 = [v8 copy];
+      getReason = [(_AFAssertionContextMutation *)v7 getReason];
+      v9 = [getReason copy];
       reason = v6->_reason;
       v6->_reason = v9;
 
-      v11 = [(_AFAssertionContextMutation *)v7 getEffectiveDate];
-      v12 = [v11 copy];
+      getEffectiveDate = [(_AFAssertionContextMutation *)v7 getEffectiveDate];
+      v12 = [getEffectiveDate copy];
       effectiveDate = v6->_effectiveDate;
       v6->_effectiveDate = v12;
 
       [(_AFAssertionContextMutation *)v7 getExpirationDuration];
       v6->_expirationDuration = v14;
-      v15 = [(_AFAssertionContextMutation *)v7 getUserInfo];
-      v16 = [v15 copy];
+      getUserInfo = [(_AFAssertionContextMutation *)v7 getUserInfo];
+      v16 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v16;
     }
@@ -309,39 +309,39 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFAssertionContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFAssertionContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFAssertionContext);
       v6->_timestamp = [(_AFAssertionContextMutation *)v5 getTimestamp];
-      v7 = [(_AFAssertionContextMutation *)v5 getReason];
-      v8 = [v7 copy];
+      getReason = [(_AFAssertionContextMutation *)v5 getReason];
+      v8 = [getReason copy];
       reason = v6->_reason;
       v6->_reason = v8;
 
-      v10 = [(_AFAssertionContextMutation *)v5 getEffectiveDate];
-      v11 = [v10 copy];
+      getEffectiveDate = [(_AFAssertionContextMutation *)v5 getEffectiveDate];
+      v11 = [getEffectiveDate copy];
       effectiveDate = v6->_effectiveDate;
       v6->_effectiveDate = v11;
 
       [(_AFAssertionContextMutation *)v5 getExpirationDuration];
       v6->_expirationDuration = v13;
-      v14 = [(_AFAssertionContextMutation *)v5 getUserInfo];
-      v15 = [v14 copy];
+      getUserInfo = [(_AFAssertionContextMutation *)v5 getUserInfo];
+      v15 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v15;
     }

@@ -1,7 +1,7 @@
 @interface __PSAccessoriesListController
-- (id)specifierForDevice:(id)a3;
+- (id)specifierForDevice:(id)device;
 - (id)specifiers;
-- (void)handleSessionEvent:(id)a3;
+- (void)handleSessionEvent:(id)event;
 - (void)refreshDADevices;
 - (void)viewDidLoad;
 @end
@@ -36,29 +36,29 @@
   }
 }
 
-- (id)specifierForDevice:(id)a3
+- (id)specifierForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:NSClassFromString(&cfstr_Asaccessoryinf.isa) cell:2 edit:0];
+  deviceCopy = device;
+  name = [deviceCopy name];
+  v6 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:NSClassFromString(&cfstr_Asaccessoryinf.isa) cell:2 edit:0];
 
-  v7 = [v4 identifier];
-  [v6 setIdentifier:v7];
+  identifier = [deviceCopy identifier];
+  [v6 setIdentifier:identifier];
 
-  v8 = [v4 bluetoothOTAName];
-  if (v8)
+  bluetoothOTAName = [deviceCopy bluetoothOTAName];
+  if (bluetoothOTAName)
   {
-    [v6 setObject:v8 forKeyedSubscript:@"cellSubtitleText"];
+    [v6 setObject:bluetoothOTAName forKeyedSubscript:@"cellSubtitleText"];
   }
 
   else
   {
-    v9 = [v4 SSID];
-    [v6 setObject:v9 forKeyedSubscript:@"cellSubtitleText"];
+    sSID = [deviceCopy SSID];
+    [v6 setObject:sSID forKeyedSubscript:@"cellSubtitleText"];
   }
 
   [v6 setObject:objc_opt_class() forKeyedSubscript:@"cellClass"];
-  [v6 setProperty:v4 forKey:@"device"];
+  [v6 setProperty:deviceCopy forKey:@"device"];
   [v6 setProperty:self->_appSession forKey:@"session"];
 
   return v6;
@@ -73,10 +73,10 @@
     v4 = [PSSpecifier groupSpecifierWithID:@"ACCESSORIES_GROUP"];
     v5 = MEMORY[0x1E696AEC0];
     v6 = PS_LocalizedStringForAccessories(@"ACCESSORY_DEVICES_FOOTER");
-    v7 = [MEMORY[0x1E69DC938] currentDevice];
-    v8 = [v7 sf_isiPhone];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    sf_isiPhone = [currentDevice sf_isiPhone];
     v9 = @"iPad";
-    if (v8)
+    if (sf_isiPhone)
     {
       v9 = @"iPhone";
     }
@@ -95,10 +95,10 @@
   return specifiers;
 }
 
-- (void)handleSessionEvent:(id)a3
+- (void)handleSessionEvent:(id)event
 {
-  v4 = [a3 eventType];
-  if (v4 <= 0x2A && ((1 << v4) & 0x60000000400) != 0)
+  eventType = [event eventType];
+  if (eventType <= 0x2A && ((1 << eventType) & 0x60000000400) != 0)
   {
 
     [(__PSAccessoriesListController *)self refreshDADevices];

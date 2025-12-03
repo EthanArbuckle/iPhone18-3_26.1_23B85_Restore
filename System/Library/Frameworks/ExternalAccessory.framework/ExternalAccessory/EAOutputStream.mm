@@ -1,8 +1,8 @@
 @interface EAOutputStream
 - (BOOL)hasSpaceAvailable;
-- (EAOutputStream)initWithAccessory:(id)a3 forSession:(id)a4 socket:(int)a5;
-- (EAOutputStream)initWithAccessoryWithoutSocket:(id)a3 forSession:(id)a4;
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4;
+- (EAOutputStream)initWithAccessory:(id)accessory forSession:(id)session socket:(int)socket;
+- (EAOutputStream)initWithAccessoryWithoutSocket:(id)socket forSession:(id)session;
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)_performAtEndOfStreamValidation;
 - (void)_scheduleCallback;
@@ -12,14 +12,14 @@
 - (void)endStream;
 - (void)open;
 - (void)openCompleted;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation EAOutputStream
 
-- (EAOutputStream)initWithAccessory:(id)a3 forSession:(id)a4 socket:(int)a5
+- (EAOutputStream)initWithAccessory:(id)accessory forSession:(id)session socket:(int)socket
 {
   v14.receiver = self;
   v14.super_class = EAOutputStream;
@@ -29,14 +29,14 @@
   {
     v8->_streamStatus = 0;
     v8->_delegate = v8;
-    v8->_accessory = a3;
-    v9->_session = a4;
-    v9->_sock = a5;
+    v8->_accessory = accessory;
+    v9->_session = session;
+    v9->_sock = socket;
     v9->_useSocket = 1;
     v13.version = 0;
     memset(&v13.retain, 0, 24);
     v13.info = v9;
-    v10 = CFSocketCreateWithNative(0, a5, 8uLL, __outputSocketCallback, &v13);
+    v10 = CFSocketCreateWithNative(0, socket, 8uLL, __outputSocketCallback, &v13);
     v9->_cfSocket = v10;
     SocketFlags = CFSocketGetSocketFlags(v10);
     CFSocketSetSocketFlags(v9->_cfSocket, SocketFlags & 0xFFFFFFFFFFFFFF7FLL);
@@ -48,7 +48,7 @@
   return v9;
 }
 
-- (EAOutputStream)initWithAccessoryWithoutSocket:(id)a3 forSession:(id)a4
+- (EAOutputStream)initWithAccessoryWithoutSocket:(id)socket forSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = EAOutputStream;
@@ -58,8 +58,8 @@
   {
     v6->_streamStatus = 0;
     v6->_delegate = v6;
-    v6->_accessory = a3;
-    v7->_session = a4;
+    v6->_accessory = socket;
+    v7->_session = session;
     v7->_sock = -1;
     v7->_useSocket = 0;
     v7->_cfSocket = 0;
@@ -181,29 +181,29 @@
   [(NSRecursiveLock *)runloopLock unlock];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    v3 = a3;
+    selfCopy = delegate;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  self->_delegate = v3;
+  self->_delegate = selfCopy;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
   [(NSRecursiveLock *)self->_runloopLock lock];
   if (!self->_runLoop)
   {
-    v8 = [a3 getCFRunLoop];
-    self->_runLoop = v8;
-    CFRetain(v8);
+    getCFRunLoop = [loop getCFRunLoop];
+    self->_runLoop = getCFRunLoop;
+    CFRetain(getCFRunLoop);
   }
 
   if (!self->_runLoopSource)
@@ -222,7 +222,7 @@
       runLoopSource = self->_runLoopSource;
     }
 
-    CFRunLoopAddSource(self->_runLoop, runLoopSource, a4);
+    CFRunLoopAddSource(self->_runLoop, runLoopSource, mode);
     CFRelease(self->_runLoopSource);
   }
 
@@ -230,19 +230,19 @@
   {
     v10 = CFSocketCreateRunLoopSource(0, self->_cfSocket, 0);
     self->_socketRunLoopSource = v10;
-    CFRunLoopAddSource(self->_runLoop, v10, a4);
+    CFRunLoopAddSource(self->_runLoop, v10, mode);
     CFRelease(self->_socketRunLoopSource);
   }
 
   [(NSRecursiveLock *)self->_runloopLock unlock];
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
   [(NSRecursiveLock *)self->_runloopLock lock];
   if (self->_runLoopSource)
   {
-    CFRunLoopRemoveSource([a3 getCFRunLoop], self->_runLoopSource, a4);
+    CFRunLoopRemoveSource([loop getCFRunLoop], self->_runLoopSource, mode);
     self->_runLoopSource = 0;
   }
 
@@ -274,7 +274,7 @@
   return streamStatus;
 }
 
-- (int64_t)write:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)write:(const char *)write maxLength:(unint64_t)length
 {
   [(NSRecursiveLock *)self->_statusLock lock];
   if ([(EAOutputStream *)self hasSpaceAvailable])
@@ -283,11 +283,11 @@
     self->_hasSpaceAvailableEventSent = 0;
     if (self->_useSocket)
     {
-      v7 = send(self->_sock, a3, a4, 0);
-      if (v7 == -1)
+      lengthCopy = send(self->_sock, write, length, 0);
+      if (lengthCopy == -1)
       {
         v8 = __error();
-        NSLog(&cfstr_Externalaccess_83.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAOutputStream.m", "[EAOutputStream write:maxLength:]", 306, a4, 0xFFFFFFFFLL, *v8);
+        NSLog(&cfstr_Externalaccess_83.isa, "/Library/Caches/com.apple.xbs/Sources/ExternalAccessory/EAOutputStream.m", "[EAOutputStream write:maxLength:]", 306, length, 0xFFFFFFFFLL, *v8);
         if (*__error() == 32)
         {
           if (+[EAAccessoryManager isLoggingEnabled])
@@ -295,12 +295,12 @@
             NSLog(&cfstr_Externalaccess_84.isa);
           }
 
-          v7 = a4;
+          lengthCopy = length;
         }
 
         else
         {
-          v7 = -1;
+          lengthCopy = -1;
         }
       }
 
@@ -310,16 +310,16 @@
     else
     {
       self->_hasSpaceAvailable = 0;
-      v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:a3 length:a4];
+      v10 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:write length:length];
       [+[EAAccessoryManager sharedAccessoryManager](EAAccessoryManager sendOutgoingEAData:"sendOutgoingEAData:forSessionUUID:" forSessionUUID:v10, [(EASession *)self->_session EASessionUUID]];
-      v7 = [v10 length];
+      lengthCopy = [v10 length];
 
       self->_hasSpaceAvailable = 1;
       [(EAOutputStream *)self _scheduleCallback];
     }
 
     +[EAAccessoryManager isLoggingEnabled];
-    v9 = v7;
+    v9 = lengthCopy;
   }
 
   else

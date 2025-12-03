@@ -1,14 +1,14 @@
 @interface CLKSimpleGaugeProvider
 + (CLKSimpleGaugeProvider)gaugeProviderWithStyle:(CLKGaugeProviderStyle)style gaugeColor:(UIColor *)color fillFraction:(float)fillFraction;
 + (CLKSimpleGaugeProvider)gaugeProviderWithStyle:(CLKGaugeProviderStyle)style gaugeColors:(NSArray *)gaugeColors gaugeColorLocations:(NSArray *)gaugeColorLocations fillFraction:(float)fillFraction;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)validate;
-- (CLKSimpleGaugeProvider)initWithCoder:(id)a3;
-- (CLKSimpleGaugeProvider)initWithJSONObjectRepresentation:(id)a3;
+- (CLKSimpleGaugeProvider)initWithCoder:(id)coder;
+- (CLKSimpleGaugeProvider)initWithJSONObjectRepresentation:(id)representation;
 - (id)JSONObjectRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)validate;
 @end
 
@@ -18,15 +18,15 @@
 {
   v9 = gaugeColorLocations;
   v10 = gaugeColors;
-  v11 = [(CLKGaugeProvider *)[CLKSimpleGaugeProvider alloc] _init];
-  [v11 setStyle:style];
-  [v11 setGaugeColors:v10];
+  _init = [(CLKGaugeProvider *)[CLKSimpleGaugeProvider alloc] _init];
+  [_init setStyle:style];
+  [_init setGaugeColors:v10];
 
-  [v11 setGaugeColorLocations:v9];
+  [_init setGaugeColorLocations:v9];
   *&v12 = fillFraction;
-  [v11 setFillFraction:v12];
+  [_init setFillFraction:v12];
 
-  return v11;
+  return _init;
 }
 
 + (CLKSimpleGaugeProvider)gaugeProviderWithStyle:(CLKGaugeProviderStyle)style gaugeColor:(UIColor *)color fillFraction:(float)fillFraction
@@ -38,45 +38,45 @@
   v10 = [v8 arrayWithObjects:&v14 count:1];
 
   *&v11 = fillFraction;
-  v12 = [a1 gaugeProviderWithStyle:style gaugeColors:v10 gaugeColorLocations:0 fillFraction:{v11, v14, v15}];
+  v12 = [self gaugeProviderWithStyle:style gaugeColors:v10 gaugeColorLocations:0 fillFraction:{v11, v14, v15}];
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLKSimpleGaugeProvider;
-  v4 = a3;
-  [(CLKGaugeProvider *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CLKGaugeProvider *)&v6 encodeWithCoder:coderCopy];
   *&v5 = self->_fillFraction;
-  [v4 encodeFloat:@"_FillFractionKey" forKey:{v5, v6.receiver, v6.super_class}];
+  [coderCopy encodeFloat:@"_FillFractionKey" forKey:{v5, v6.receiver, v6.super_class}];
 }
 
-- (CLKSimpleGaugeProvider)initWithCoder:(id)a3
+- (CLKSimpleGaugeProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CLKSimpleGaugeProvider;
-  v5 = [(CLKGaugeProvider *)&v8 initWithCoder:v4];
+  v5 = [(CLKGaugeProvider *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"_FillFractionKey"];
+    [coderCopy decodeFloatForKey:@"_FillFractionKey"];
     v5->_fillFraction = v6;
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = CLKSimpleGaugeProvider;
-  if ([(CLKGaugeProvider *)&v9 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(CLKGaugeProvider *)&v9 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     fillFraction = self->_fillFraction;
-    [v4 fillFraction];
+    [equalCopy fillFraction];
     v7 = fillFraction == v6;
   }
 
@@ -100,11 +100,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = CLKSimpleGaugeProvider;
-  result = [(CLKGaugeProvider *)&v5 copyWithZone:a3];
+  result = [(CLKGaugeProvider *)&v5 copyWithZone:zone];
   if (result != self)
   {
     *(result + 12) = LODWORD(self->_fillFraction);
@@ -113,15 +113,15 @@
   return result;
 }
 
-- (CLKSimpleGaugeProvider)initWithJSONObjectRepresentation:(id)a3
+- (CLKSimpleGaugeProvider)initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = CLKSimpleGaugeProvider;
-  v5 = [(CLKGaugeProvider *)&v9 initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKGaugeProvider *)&v9 initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"gaugeFillFraction"];
+    v6 = [representationCopy objectForKeyedSubscript:@"gaugeFillFraction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,8 +142,8 @@
 {
   v8.receiver = self;
   v8.super_class = CLKSimpleGaugeProvider;
-  v3 = [(CLKGaugeProvider *)&v8 JSONObjectRepresentation];
-  v4 = [v3 mutableCopy];
+  jSONObjectRepresentation = [(CLKGaugeProvider *)&v8 JSONObjectRepresentation];
+  v4 = [jSONObjectRepresentation mutableCopy];
 
   *&v5 = self->_fillFraction;
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:v5];
@@ -156,13 +156,13 @@
 {
   v8.receiver = self;
   v8.super_class = CLKSimpleGaugeProvider;
-  v3 = [(CLKGaugeProvider *)&v8 validate];
-  if (v3)
+  validate = [(CLKGaugeProvider *)&v8 validate];
+  if (validate)
   {
     fillFraction = self->_fillFraction;
     if (fillFraction == -1.0 || (fillFraction >= 0.0 ? (v5 = fillFraction <= 1.0) : (v5 = 0), v5))
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(validate) = 1;
     }
 
     else
@@ -173,11 +173,11 @@
         [(CLKSimpleGaugeProvider *)self validate];
       }
 
-      LOBYTE(v3) = 0;
+      LOBYTE(validate) = 0;
     }
   }
 
-  return v3;
+  return validate;
 }
 
 - (void)validate

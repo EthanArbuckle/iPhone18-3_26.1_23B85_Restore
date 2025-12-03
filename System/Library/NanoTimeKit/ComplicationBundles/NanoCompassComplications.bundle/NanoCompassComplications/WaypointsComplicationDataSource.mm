@@ -1,14 +1,14 @@
 @interface WaypointsComplicationDataSource
-+ (id)_descriptorUserInfoForWaypoint:(id)a3;
++ (id)_descriptorUserInfoForWaypoint:(id)waypoint;
 + (id)complicationDescriptors;
-- (WaypointsComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_getWaypointFromDescriptor:(id)a3;
-- (id)_getWaypointUUIDFromDescriptor:(id)a3;
-- (id)_guidesWaypointWithUUID:(id)a3;
+- (WaypointsComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_getWaypointFromDescriptor:(id)descriptor;
+- (id)_getWaypointUUIDFromDescriptor:(id)descriptor;
+- (id)_guidesWaypointWithUUID:(id)d;
 - (id)alwaysOnTemplate;
 - (id)sampleTemplate;
 - (void)dealloc;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
 @end
 
 @implementation WaypointsComplicationDataSource
@@ -87,12 +87,12 @@
   return v12;
 }
 
-- (WaypointsComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (WaypointsComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v37 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = WaypointsComplicationDataSource;
-  v5 = [(SmartWaypointComplicationDataSource *)&v30 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(SmartWaypointComplicationDataSource *)&v30 initWithComplication:complication family:family forDevice:device];
   v9 = v5;
   if (v5)
   {
@@ -130,10 +130,10 @@
   [(SmartWaypointComplicationDataSource *)&v2 dealloc];
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  handlerCopy = handler;
   v10 = objc_msgSend_waypoint(self, v7, v8, v9);
 
   if (v10)
@@ -166,7 +166,7 @@
     _os_log_impl(&dword_23BD26000, v30, OS_LOG_TYPE_DEFAULT, "%s: launch url is %@, launching to waypoint %@", buf, 0x20u);
   }
 
-  v6[2](v6, v29);
+  handlerCopy[2](handlerCopy, v29);
 }
 
 - (id)sampleTemplate
@@ -223,23 +223,23 @@
   return v51;
 }
 
-+ (id)_descriptorUserInfoForWaypoint:(id)a3
++ (id)_descriptorUserInfoForWaypoint:(id)waypoint
 {
   v113[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  waypointCopy = waypoint;
   v109 = 0.0;
   v110 = 0.0;
   v107 = 0.0;
   v108 = 0.0;
-  v7 = objc_msgSend_labelColor(v3, v4, v5, v6);
+  v7 = objc_msgSend_labelColor(waypointCopy, v4, v5, v6);
   objc_msgSend_getRed_green_blue_alpha_(v7, v8, &v110, &v109, &v108, &v107);
 
   v9 = MEMORY[0x277CCABB0];
-  v13 = objc_msgSend_timestampOfCreation(v3, v10, v11, v12);
+  v13 = objc_msgSend_timestampOfCreation(waypointCopy, v10, v11, v12);
   objc_msgSend_timeIntervalSinceReferenceDate(v13, v14, v15, v16);
   v106 = objc_msgSend_numberWithDouble_(v9, v17, v18, v19);
 
-  v23 = objc_msgSend_label(v3, v20, v21, v22);
+  v23 = objc_msgSend_label(waypointCopy, v20, v21, v22);
   v24 = v23;
   if (v23)
   {
@@ -253,7 +253,7 @@
 
   v26 = v25;
 
-  v30 = objc_msgSend_symbol(v3, v27, v28, v29);
+  v30 = objc_msgSend_symbol(waypointCopy, v27, v28, v29);
   v34 = v30;
   if (v30)
   {
@@ -267,7 +267,7 @@
   }
 
   v112[0] = @"waypointUuid";
-  v105 = objc_msgSend_uuid(v3, v40, v41, v42);
+  v105 = objc_msgSend_uuid(waypointCopy, v40, v41, v42);
   v104 = objc_msgSend_UUIDString(v105, v43, v44, v45);
   v113[0] = v104;
   v113[1] = v26;
@@ -294,20 +294,20 @@
   v112[3] = @"waypointLatitude";
   v100 = v26;
   v64 = MEMORY[0x277CCABB0];
-  v68 = objc_msgSend_location(v3, v65, v66, v67);
+  v68 = objc_msgSend_location(waypointCopy, v65, v66, v67);
   objc_msgSend_coordinate(v68, v69, v70, v71);
   v75 = objc_msgSend_numberWithDouble_(v64, v72, v73, v74);
   v113[3] = v75;
   v112[4] = @"waypointLongitude";
   v76 = MEMORY[0x277CCABB0];
-  v80 = objc_msgSend_location(v3, v77, v78, v79);
+  v80 = objc_msgSend_location(waypointCopy, v77, v78, v79);
   objc_msgSend_coordinate(v80, v81, v82, v83);
   v88 = objc_msgSend_numberWithDouble_(v76, v84, v85, v86, v87);
   v113[4] = v88;
   v113[5] = v35;
   v112[5] = @"waypointSymbol";
   v112[6] = @"waypointEnabled";
-  isEnabled = objc_msgSend_isEnabled(v3, v89, v90, v91);
+  isEnabled = objc_msgSend_isEnabled(waypointCopy, v89, v90, v91);
   v95 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v93, isEnabled, v94);
   v112[7] = @"dateOfCreation";
   v113[6] = v95;
@@ -317,11 +317,11 @@
   return v97;
 }
 
-- (id)_getWaypointUUIDFromDescriptor:(id)a3
+- (id)_getWaypointUUIDFromDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3 && (objc_msgSend_userInfo(v3, v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (descriptorCopy && (objc_msgSend_userInfo(descriptorCopy, v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v12 = objc_msgSend_userInfo(v7, v9, v10, v11);
     v15 = objc_msgSend_objectForKey_(v12, v13, @"waypointUuid", v14);
@@ -352,11 +352,11 @@
   return v19;
 }
 
-- (id)_getWaypointFromDescriptor:(id)a3
+- (id)_getWaypointFromDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3 && (objc_msgSend_userInfo(v3, v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  descriptorCopy = descriptor;
+  v7 = descriptorCopy;
+  if (descriptorCopy && (objc_msgSend_userInfo(descriptorCopy, v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v12 = objc_msgSend_userInfo(v7, v9, v10, v11);
     v15 = objc_msgSend_objectForKey_(v12, v13, @"waypointUuid", v14);
@@ -432,10 +432,10 @@
   return v125;
 }
 
-- (id)_guidesWaypointWithUUID:(id)a3
+- (id)_guidesWaypointWithUUID:(id)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v8 = objc_msgSend_sharedManager(NCGuidesManager, v5, v6, v7);
   v12 = objc_msgSend_allEnabledWaypoints(v8, v9, v10, v11);
 
@@ -443,7 +443,7 @@
   v34[1] = 3221225472;
   v34[2] = sub_23BD51BEC;
   v34[3] = &unk_278B949B0;
-  v13 = v4;
+  v13 = dCopy;
   v35 = v13;
   v16 = objc_msgSend_indexOfObjectPassingTest_(v12, v14, v34, v15);
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -453,7 +453,7 @@
     {
       v23 = objc_msgSend_UUIDString(v13, v20, v21, v22);
       *buf = 134218498;
-      v37 = self;
+      selfCopy = self;
       v38 = 2080;
       v39 = "[WaypointsComplicationDataSource _guidesWaypointWithUUID:]";
       v40 = 2112;
@@ -473,7 +473,7 @@
       v28 = objc_msgSend_label(v24, v25, v26, v27);
       v32 = objc_msgSend_UUIDString(v13, v29, v30, v31);
       *buf = 136315650;
-      v37 = "[WaypointsComplicationDataSource _guidesWaypointWithUUID:]";
+      selfCopy = "[WaypointsComplicationDataSource _guidesWaypointWithUUID:]";
       v38 = 2112;
       v39 = v28;
       v40 = 2112;

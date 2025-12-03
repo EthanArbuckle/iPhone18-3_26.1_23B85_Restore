@@ -1,7 +1,7 @@
 @interface HDCyclingDataCollectionForwarder
 - (HDCyclingDataCollectionForwarder)init;
 - (id)_newBikeSensor;
-- (void)insertSamples:(id)a3 device:(id)a4 source:(id)a5;
+- (void)insertSamples:(id)samples device:(id)device source:(id)source;
 @end
 
 @implementation HDCyclingDataCollectionForwarder
@@ -14,9 +14,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(HDCyclingDataCollectionForwarder *)v2 _newBikeSensor];
+    _newBikeSensor = [(HDCyclingDataCollectionForwarder *)v2 _newBikeSensor];
     cmBikeSensor = v3->_cmBikeSensor;
-    v3->_cmBikeSensor = v4;
+    v3->_cmBikeSensor = _newBikeSensor;
   }
 
   return v3;
@@ -34,17 +34,17 @@
   return objc_alloc_init(v2);
 }
 
-- (void)insertSamples:(id)a3 device:(id)a4 source:(id)a5
+- (void)insertSamples:(id)samples device:(id)device source:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  samplesCopy = samples;
+  deviceCopy = device;
+  sourceCopy = source;
+  v11 = sourceCopy;
   if (self->_cmBikeSensor)
   {
-    v12 = [v10 bundleIdentifier];
-    v13 = v12;
-    if (v12 == *MEMORY[0x277CCE288])
+    bundleIdentifier = [sourceCopy bundleIdentifier];
+    v13 = bundleIdentifier;
+    if (bundleIdentifier == *MEMORY[0x277CCE288])
     {
     }
 
@@ -56,9 +56,9 @@
         goto LABEL_9;
       }
 
-      v14 = [v11 _isLocalDevice];
+      _isLocalDevice = [v11 _isLocalDevice];
 
-      if ((v14 & 1) == 0)
+      if ((_isLocalDevice & 1) == 0)
       {
         goto LABEL_9;
       }
@@ -69,8 +69,8 @@
     v15[2] = __64__HDCyclingDataCollectionForwarder_insertSamples_device_source___block_invoke;
     v15[3] = &unk_278627708;
     v15[4] = self;
-    v16 = v9;
-    [v8 enumerateObjectsUsingBlock:v15];
+    v16 = deviceCopy;
+    [samplesCopy enumerateObjectsUsingBlock:v15];
   }
 
 LABEL_9:

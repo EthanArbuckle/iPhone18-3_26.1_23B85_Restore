@@ -1,41 +1,41 @@
 @interface CADEventCreatedFromSuggestionPredicate
 + (id)predicateForAllSuggestedEvents;
-- (BOOL)isEqual:(id)a3;
-- (CADEventCreatedFromSuggestionPredicate)initWithCoder:(id)a3;
-- (CADEventCreatedFromSuggestionPredicate)initWithOpaqueKey:(id)a3 extractionGroupIdentifier:(id)a4;
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CADEventCreatedFromSuggestionPredicate)initWithCoder:(id)coder;
+- (CADEventCreatedFromSuggestionPredicate)initWithOpaqueKey:(id)key extractionGroupIdentifier:(id)identifier;
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database;
 - (id)defaultPropertiesToLoad;
 - (id)predicateFormat;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADEventCreatedFromSuggestionPredicate
 
 + (id)predicateForAllSuggestedEvents
 {
-  v2 = [[a1 alloc] initWithOpaqueKey:0 extractionGroupIdentifier:0];
+  v2 = [[self alloc] initWithOpaqueKey:0 extractionGroupIdentifier:0];
 
   return v2;
 }
 
 - (id)predicateFormat
 {
-  v3 = [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey];
+  opaqueKey = [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey];
 
-  if (v3)
+  if (opaqueKey)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"CADEventCreatedFromSuggestionPredicate opaqueKey:%@", self->_opaqueKey];
   }
 
   else
   {
-    v5 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+    extractionGroupIdentifier = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
 
-    if (v5)
+    if (extractionGroupIdentifier)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
-      v4 = [v6 stringWithFormat:@"CADEventCreatedFromSuggestionPredicate extractionGroupIdentifier:%@", v7];
+      extractionGroupIdentifier2 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+      v4 = [v6 stringWithFormat:@"CADEventCreatedFromSuggestionPredicate extractionGroupIdentifier:%@", extractionGroupIdentifier2];
     }
 
     else
@@ -62,20 +62,20 @@
   return v5;
 }
 
-- (CADEventCreatedFromSuggestionPredicate)initWithOpaqueKey:(id)a3 extractionGroupIdentifier:(id)a4
+- (CADEventCreatedFromSuggestionPredicate)initWithOpaqueKey:(id)key extractionGroupIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CADEventCreatedFromSuggestionPredicate;
   v8 = [(CADEventCreatedFromSuggestionPredicate *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [keyCopy copy];
     opaqueKey = v8->_opaqueKey;
     v8->_opaqueKey = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     extractionGroupIdentifier = v8->_extractionGroupIdentifier;
     v8->_extractionGroupIdentifier = v11;
   }
@@ -83,19 +83,19 @@
   return v8;
 }
 
-- (CADEventCreatedFromSuggestionPredicate)initWithCoder:(id)a3
+- (CADEventCreatedFromSuggestionPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CADEventCreatedFromSuggestionPredicate;
-  v5 = [(EKPredicate *)&v11 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"opaqueKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"opaqueKey"];
     opaqueKey = v5->_opaqueKey;
     v5->_opaqueKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractionGroupIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractionGroupIdentifier"];
     extractionGroupIdentifier = v5->_extractionGroupIdentifier;
     v5->_extractionGroupIdentifier = v8;
   }
@@ -103,39 +103,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CADEventCreatedFromSuggestionPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(EKPredicate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"opaqueKey"];
+  [coderCopy encodeObject:v5 forKey:@"opaqueKey"];
 
-  v6 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
-  [v4 encodeObject:v6 forKey:@"extractionGroupIdentifier"];
+  extractionGroupIdentifier = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+  [coderCopy encodeObject:extractionGroupIdentifier forKey:@"extractionGroupIdentifier"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     opaqueKey = self->_opaqueKey;
-    v8 = [(CADEventCreatedFromSuggestionPredicate *)v6 opaqueKey];
+    opaqueKey = [(CADEventCreatedFromSuggestionPredicate *)v6 opaqueKey];
     LODWORD(opaqueKey) = CalEqualStrings();
 
     if (opaqueKey)
     {
-      v9 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
-      v10 = [(CADEventCreatedFromSuggestionPredicate *)v6 extractionGroupIdentifier];
+      extractionGroupIdentifier = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+      extractionGroupIdentifier2 = [(CADEventCreatedFromSuggestionPredicate *)v6 extractionGroupIdentifier];
       v11 = CalEqualStrings();
     }
 
@@ -153,12 +153,12 @@
   return v11;
 }
 
-- (id)copyMatchingItemsWithDatabase:(CalDatabase *)a3
+- (id)copyMatchingItemsWithDatabase:(CalDatabase *)database
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey];
+  opaqueKey = [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey];
 
-  if (v4)
+  if (opaqueKey)
   {
     [(CADEventCreatedFromSuggestionPredicate *)self opaqueKey];
 LABEL_3:
@@ -166,14 +166,14 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v6 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+  extractionGroupIdentifier = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
 
-  if (!v6)
+  if (!extractionGroupIdentifier)
   {
     goto LABEL_3;
   }
 
-  v7 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
+  extractionGroupIdentifier2 = [(CADEventCreatedFromSuggestionPredicate *)self extractionGroupIdentifier];
   v5 = CalDatabaseCopyOfAllEventsCreatedFromSuggestionsWithExtractionGroupIdentifierInStore();
 
 LABEL_6:

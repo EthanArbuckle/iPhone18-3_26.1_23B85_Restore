@@ -1,30 +1,30 @@
 @interface MusicNowPlayingControlsViewController
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (MusicNowPlayingControlsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (MusicNowPlayingControlsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIControl)contextButton;
 - (UIControl)favoriteButton;
 - (void)dealloc;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
 - (void)loadView;
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setDismissButton:(id)a3;
-- (void)setLeftButton:(id)a3;
-- (void)setPlayPauseStopButton:(id)a3;
-- (void)setReactionButton:(id)a3;
-- (void)setRightButton:(id)a3;
-- (void)setRouteLabel:(id)a3;
-- (void)setTtrSmartTransitionButton:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setDismissButton:(id)button;
+- (void)setLeftButton:(id)button;
+- (void)setPlayPauseStopButton:(id)button;
+- (void)setReactionButton:(id)button;
+- (void)setRightButton:(id)button;
+- (void)setRouteLabel:(id)label;
+- (void)setTtrSmartTransitionButton:(id)button;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updatePlayingItemAudioTraitButton;
-- (void)videoOutput:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)videoOutput:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)videoOutput:(id)output willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)videoOutput:(id)output willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MusicNowPlayingControlsViewController
@@ -32,16 +32,16 @@
 - (void)dealloc
 {
   v2 = qword_10117F2A0;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
-    v6 = v3;
+    v6 = selfCopy;
     swift_once();
-    v3 = v6;
+    selfCopy = v6;
   }
 
   v4 = *(*off_101183280 + 104);
-  v5 = v3;
+  v5 = selfCopy;
 
   v4(v5);
 
@@ -52,75 +52,75 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10019D69C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10019D7CC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1001A53F4(a3);
+  selfCopy = self;
+  sub_1001A53F4(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1001A5514(a3);
+  selfCopy = self;
+  sub_1001A5514(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001A5728(a3);
+  selfCopy = self;
+  sub_1001A5728(disappear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001A5838(a3);
+  selfCopy = self;
+  sub_1001A5838(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A5AD4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001A5F60(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1001A5F60(change);
 }
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A63DC();
 }
 
-- (void)setDismissButton:(id)a3
+- (void)setDismissButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_dismissButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_dismissButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_dismissButton) = button;
+  buttonCopy = button;
 }
 
 - (void)updatePlayingItemAudioTraitButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A9244();
 }
 
 - (UIControl)contextButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001AA510();
 
   return v3;
@@ -128,91 +128,91 @@
 
 - (UIControl)favoriteButton
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001AB0B4();
 
   return v3;
 }
 
-- (void)setReactionButton:(id)a3
+- (void)setReactionButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_reactionButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_reactionButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_reactionButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setTtrSmartTransitionButton:(id)a3
+- (void)setTtrSmartTransitionButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_ttrSmartTransitionButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_ttrSmartTransitionButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_ttrSmartTransitionButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setLeftButton:(id)a3
+- (void)setLeftButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_leftButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_leftButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_leftButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setPlayPauseStopButton:(id)a3
+- (void)setPlayPauseStopButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_playPauseStopButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_playPauseStopButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_playPauseStopButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setRightButton:(id)a3
+- (void)setRightButton:(id)button
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_rightButton);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_rightButton) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_rightButton) = button;
+  buttonCopy = button;
 }
 
-- (void)setRouteLabel:(id)a3
+- (void)setRouteLabel:(id)label
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_routeLabel);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_routeLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicNowPlayingControlsViewController_routeLabel) = label;
+  labelCopy = label;
 }
 
-- (void)setControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1001BB2A0(a3, a4);
+  selfCopy = self;
+  sub_1001BB2A0(hidden, animated);
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1001BDB84(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1001BDB84(beginCopy);
 
   return self & 1;
 }
 
-- (MusicNowPlayingControlsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MusicNowPlayingControlsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)videoOutput:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)videoOutput:(id)output willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1001CB3C4(a3, a4);
+  selfCopy = self;
+  sub_1001CB3C4(output, coordinator);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)videoOutput:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)videoOutput:(id)output willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   v7 = swift_allocObject();
   *(v7 + 16) = self;
-  *(v7 + 24) = a3;
+  *(v7 + 24) = output;
   v10[4] = sub_1001D17AC;
   v10[5] = v7;
   v10[0] = _NSConcreteStackBlock;
@@ -221,20 +221,20 @@
   v10[3] = &unk_10109E8B8;
   v8 = _Block_copy(v10);
   swift_unknownObjectRetain_n();
-  v9 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
-  [a4 animateAlongsideTransition:0 completion:v8];
+  [coordinator animateAlongsideTransition:0 completion:v8];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
   _Block_release(v8);
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
-  v4 = a3;
-  v5 = self;
+  reachabilityCopy = reachability;
+  selfCopy = self;
   sub_1001D1494();
 }
 

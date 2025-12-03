@@ -13,9 +13,9 @@
   v4 = MEMORY[0x277D10728];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x277CCD260] emptyCountrySet];
-  v8 = [v5 daemon];
-  v9 = [v6 initWithFeatureIdentifier:v3 defaultCountrySet:v7 healthDaemon:v8];
+  emptyCountrySet = [MEMORY[0x277CCD260] emptyCountrySet];
+  daemon = [v5 daemon];
+  v9 = [v6 initWithFeatureIdentifier:v3 defaultCountrySet:emptyCountrySet healthDaemon:daemon];
 
   v10 = objc_alloc(MEMORY[0x277D107D8]);
   v11 = HDMCLocalFeatureAttributes();
@@ -23,10 +23,10 @@
 
   [v12 synchronizeLocalProperties];
   v13 = objc_alloc(MEMORY[0x277D106D8]);
-  v14 = [MEMORY[0x277CCD420] noRequirements];
-  v15 = [MEMORY[0x277D10828] uncheckedAvailability];
+  noRequirements = [MEMORY[0x277CCD420] noRequirements];
+  uncheckedAvailability = [MEMORY[0x277D10828] uncheckedAvailability];
   v16 = objc_alloc_init(MEMORY[0x277D106E8]);
-  v17 = [v13 initWithProfile:v5 featureIdentifier:v3 availabilityRequirements:v14 currentOnboardingVersion:1 pairedDeviceCapability:0 pairedFeatureAttributesProvider:v12 regionAvailabilityProvider:v15 disableAndExpiryProvider:v16 loggingCategory:*MEMORY[0x277CCC2E8]];
+  v17 = [v13 initWithProfile:v5 featureIdentifier:v3 availabilityRequirements:noRequirements currentOnboardingVersion:1 pairedDeviceCapability:0 pairedFeatureAttributesProvider:v12 regionAvailabilityProvider:uncheckedAvailability disableAndExpiryProvider:v16 loggingCategory:*MEMORY[0x277CCC2E8]];
 
   return v17;
 }
@@ -36,11 +36,11 @@
   v65[2] = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = *MEMORY[0x277CCC0A0];
-  v5 = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesHeartRateInput];
+  localAvailabilityForMenstrualCyclesHeartRateInput = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesHeartRateInput];
   v6 = objc_alloc(MEMORY[0x277D10728]);
-  v7 = [v3 daemon];
-  v53 = v5;
-  v8 = [v6 initWithFeatureIdentifier:v4 defaultCountrySet:v5 healthDaemon:v7];
+  daemon = [v3 daemon];
+  v53 = localAvailabilityForMenstrualCyclesHeartRateInput;
+  v8 = [v6 initWithFeatureIdentifier:v4 defaultCountrySet:localAvailabilityForMenstrualCyclesHeartRateInput healthDaemon:daemon];
 
   v9 = objc_alloc(MEMORY[0x277D107D8]);
   v10 = HDMCHeartRateInputLocalFeatureAttributes();
@@ -50,8 +50,8 @@
   v50 = v11;
   [v11 synchronizeLocalProperties];
   v12 = objc_alloc(MEMORY[0x277D107C0]);
-  v13 = [v3 daemon];
-  v51 = [v12 initWithDaemon:v13 featureIdentifier:v4];
+  daemon2 = [v3 daemon];
+  v51 = [v12 initWithDaemon:daemon2 featureIdentifier:v4];
 
   v64[0] = *MEMORY[0x277CCBE70];
   v14 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v4];
@@ -68,9 +68,9 @@
   v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:2];
 
   v19 = v3;
-  v20 = [v3 daemon];
-  v21 = [v20 behavior];
-  LODWORD(v15) = [v21 isAppleWatch];
+  daemon3 = [v3 daemon];
+  behavior = [daemon3 behavior];
+  LODWORD(v15) = [behavior isAppleWatch];
 
   v22 = MEMORY[0x277CCC2E8];
   if (v15)
@@ -99,8 +99,8 @@
   else
   {
     v30 = objc_alloc(MEMORY[0x277D10728]);
-    v31 = [v3 daemon];
-    v43 = [v30 initWithFeatureIdentifier:v4 defaultCountrySet:v53 healthDaemon:v31];
+    daemon4 = [v3 daemon];
+    v43 = [v30 initWithFeatureIdentifier:v4 defaultCountrySet:v53 healthDaemon:daemon4];
 
     v57[0] = *MEMORY[0x277CCBE00];
     v48 = [MEMORY[0x277CCD428] defaultOnboardingEligibilityRequirementsForFeatureIdentifier:v4];
@@ -154,12 +154,12 @@
   v3 = a3;
   v4 = *MEMORY[0x277CCC0A8];
   v5 = HKLocalDeviceHardwareSupportsWristTemperatureMeasurements();
-  v6 = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesWristTemperatureInput];
+  localAvailabilityForMenstrualCyclesWristTemperatureInput = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesWristTemperatureInput];
   v7 = objc_alloc(MEMORY[0x277D10728]);
   v68 = v3;
-  v8 = [v3 daemon];
-  v67 = v6;
-  v9 = [v7 initWithFeatureIdentifier:v4 defaultCountrySet:v6 healthDaemon:v8];
+  daemon = [v3 daemon];
+  v67 = localAvailabilityForMenstrualCyclesWristTemperatureInput;
+  v9 = [v7 initWithFeatureIdentifier:v4 defaultCountrySet:localAvailabilityForMenstrualCyclesWristTemperatureInput healthDaemon:daemon];
 
   v10 = objc_alloc(MEMORY[0x277D107D8]);
   v11 = HDMCWristTemperatureInputLocalFeatureAttributes();
@@ -169,8 +169,8 @@
   v64 = v12;
   [v12 synchronizeLocalProperties];
   v13 = objc_alloc(MEMORY[0x277D107C0]);
-  v14 = [v3 daemon];
-  v65 = [v13 initWithDaemon:v14 featureIdentifier:v4];
+  daemon2 = [v3 daemon];
+  v65 = [v13 initWithDaemon:daemon2 featureIdentifier:v4];
 
   v82[0] = *MEMORY[0x277CCBE70];
   v61 = [MEMORY[0x277CCD428] onboardingRecordIsPresentForFeatureWithIdentifier:v4];
@@ -204,9 +204,9 @@
   v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:v82 count:4];
 
   v24 = v68;
-  v25 = [v68 daemon];
-  v26 = [v25 behavior];
-  LODWORD(v23) = [v26 isAppleWatch];
+  daemon3 = [v68 daemon];
+  behavior = [daemon3 behavior];
+  LODWORD(v23) = [behavior isAppleWatch];
 
   v27 = MEMORY[0x277CCC2E8];
   if (v23)
@@ -236,8 +236,8 @@
   {
     v50 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"CBC78224-8F5E-4D43-8666-69ADBE2A6277"];
     v35 = objc_alloc(MEMORY[0x277D10728]);
-    v36 = [v68 daemon];
-    v51 = [v35 initWithFeatureIdentifier:v4 defaultCountrySet:v67 healthDaemon:v36];
+    daemon4 = [v68 daemon];
+    v51 = [v35 initWithFeatureIdentifier:v4 defaultCountrySet:v67 healthDaemon:daemon4];
 
     v73[0] = *MEMORY[0x277CCBE00];
     v52 = [MEMORY[0x277CCD428] defaultOnboardingEligibilityRequirementsForFeatureIdentifier:v4];
@@ -298,11 +298,11 @@
 {
   v40[4] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [v3 daemon];
-  v5 = [v4 behavior];
-  v6 = [v5 isAppleWatch];
+  daemon = [v3 daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v6)
+  if (isAppleWatch)
   {
     v7 = 0;
   }
@@ -344,14 +344,14 @@
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:4];
     v30 = [v29 initWithRequirementsByContext:v16];
 
-    v17 = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesDeviationDetection];
+    localAvailabilityForMenstrualCyclesDeviationDetection = [MEMORY[0x277CCD260] localAvailabilityForMenstrualCyclesDeviationDetection];
     v18 = objc_alloc(MEMORY[0x277D10728]);
-    v19 = [v3 daemon];
-    v20 = [v18 initWithFeatureIdentifier:v8 defaultCountrySet:v17 healthDaemon:v19];
+    daemon2 = [v3 daemon];
+    v20 = [v18 initWithFeatureIdentifier:v8 defaultCountrySet:localAvailabilityForMenstrualCyclesDeviationDetection healthDaemon:daemon2];
 
     v21 = objc_alloc(MEMORY[0x277D107C0]);
-    v22 = [v3 daemon];
-    v23 = [v21 initWithDaemon:v22 featureIdentifier:v8];
+    daemon3 = [v3 daemon];
+    v23 = [v21 initWithDaemon:daemon3 featureIdentifier:v8];
 
     v24 = objc_alloc(MEMORY[0x277D106D8]);
     v7 = [v24 initWithProfile:v3 featureIdentifier:v8 availabilityRequirements:v30 currentOnboardingVersion:1 pairedDeviceCapability:0 regionAvailabilityProvider:v20 disableAndExpiryProvider:v23 loggingCategory:*MEMORY[0x277CCC2E8]];

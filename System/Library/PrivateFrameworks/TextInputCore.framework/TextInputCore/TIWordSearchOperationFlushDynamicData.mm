@@ -1,5 +1,5 @@
 @interface TIWordSearchOperationFlushDynamicData
-- (TIWordSearchOperationFlushDynamicData)initWithWordSearch:(id)a3;
+- (TIWordSearchOperationFlushDynamicData)initWithWordSearch:(id)search;
 - (void)perform;
 @end
 
@@ -7,27 +7,27 @@
 
 - (void)perform
 {
-  v2 = [(TIWordSearchOperationFlushDynamicData *)self mecabraWrapper];
-  v3 = [v2 mecabraRef];
+  mecabraWrapper = [(TIWordSearchOperationFlushDynamicData *)self mecabraWrapper];
+  mecabraRef = [mecabraWrapper mecabraRef];
 
-  if (v3)
+  if (mecabraRef)
   {
 
     MecabraFlushDynamicData();
   }
 }
 
-- (TIWordSearchOperationFlushDynamicData)initWithWordSearch:(id)a3
+- (TIWordSearchOperationFlushDynamicData)initWithWordSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   v9.receiver = self;
   v9.super_class = TIWordSearchOperationFlushDynamicData;
   v5 = [(TIWordSearchOperationFlushDynamicData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mecabraWrapper];
+    mecabraWrapper = [searchCopy mecabraWrapper];
     mecabraWrapper = v5->_mecabraWrapper;
-    v5->_mecabraWrapper = v6;
+    v5->_mecabraWrapper = mecabraWrapper;
   }
 
   return v5;

@@ -1,33 +1,33 @@
 @interface RAPDirectionsCategoryQuestion
 + (id)localizedHeaderText;
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3;
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category;
 - (BOOL)shouldShowBetterRouteAvailable;
-- (RAPDirectionsCategoryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 directions:(id)a5;
+- (RAPDirectionsCategoryQuestion)initWithReport:(id)report parentQuestion:(id)question directions:(id)directions;
 - (RAPMenuItem)betterRouteAvailableMenuItem;
-- (id)followUpQuestionForCategory:(int64_t)a3;
+- (id)followUpQuestionForCategory:(int64_t)category;
 - (id)mainMenuQuestionCategories;
 - (void)resetBadRouteSuggestionsQuestion;
 @end
 
 @implementation RAPDirectionsCategoryQuestion
 
-- (id)followUpQuestionForCategory:(int64_t)a3
+- (id)followUpQuestionForCategory:(int64_t)category
 {
   v4 = 0;
-  if (a3 <= 2)
+  if (category <= 2)
   {
-    if (a3 == 1)
+    if (category == 1)
     {
       v18 = [RAPProblemNotListedQuestion alloc];
-      v6 = [(RAPQuestion *)self report];
-      v17 = +[NSBundle mainBundle];
-      v19 = [v17 localizedStringForKey:@"Other [Report an Issue subcategory]" value:@"localized string not found" table:0];
-      v4 = [(RAPProblemNotListedQuestion *)v18 initWithReport:v6 parentQuestion:self localizedTitle:v19];
+      report = [(RAPQuestion *)self report];
+      report2 = +[NSBundle mainBundle];
+      v19 = [report2 localizedStringForKey:@"Other [Report an Issue subcategory]" value:@"localized string not found" table:0];
+      v4 = [(RAPProblemNotListedQuestion *)v18 initWithReport:report parentQuestion:self localizedTitle:v19];
 
       goto LABEL_17;
     }
 
-    if (a3 != 2)
+    if (category != 2)
     {
       goto LABEL_19;
     }
@@ -37,26 +37,26 @@
 
   else
   {
-    if (a3 != 3)
+    if (category != 3)
     {
-      if (a3 != 4)
+      if (category != 4)
       {
-        if (a3 != 6)
+        if (category != 6)
         {
           goto LABEL_19;
         }
 
         v5 = [RAPDirectionInstructionsIncorrectQuestion alloc];
-        v6 = [(RAPQuestion *)self report];
-        v7 = [(RAPDirectionInstructionsIncorrectQuestion *)v5 initWithReport:v6 parentQuestion:self direction:self->_selectedValue];
+        report = [(RAPQuestion *)self report];
+        v7 = [(RAPDirectionInstructionsIncorrectQuestion *)v5 initWithReport:report parentQuestion:self direction:self->_selectedValue];
         goto LABEL_11;
       }
 
-      v10 = [(RAPQuestion *)self parentQuestion];
+      parentQuestion = [(RAPQuestion *)self parentQuestion];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v10;
+        v11 = parentQuestion;
       }
 
       else
@@ -66,13 +66,13 @@
 
       v12 = v11;
 
-      v6 = [v12 routeFromRecording];
+      report = [v12 routeFromRecording];
 
-      [v6 pointAt:{objc_msgSend(v6, "pointCount") - 1}];
+      [report pointAt:{objc_msgSend(report, "pointCount") - 1}];
       v15 = CLLocationCoordinate2DMake(v13, v14);
       v16 = [RAPArrivalEntryPointIncorrectQuestion alloc];
-      v17 = [(RAPQuestion *)self report];
-      v4 = [(RAPArrivalEntryPointIncorrectQuestion *)v16 initWithReport:v17 parentQuestion:self arrivalPoint:v15.latitude, v15.longitude];
+      report2 = [(RAPQuestion *)self report];
+      v4 = [(RAPArrivalEntryPointIncorrectQuestion *)v16 initWithReport:report2 parentQuestion:self arrivalPoint:v15.latitude, v15.longitude];
 LABEL_17:
 
       goto LABEL_18;
@@ -82,8 +82,8 @@ LABEL_17:
   }
 
   v9 = [v8 alloc];
-  v6 = [(RAPQuestion *)self report];
-  v7 = [v9 initWithReport:v6 parentQuestion:self];
+  report = [(RAPQuestion *)self report];
+  v7 = [v9 initWithReport:report parentQuestion:self];
 LABEL_11:
   v4 = v7;
 LABEL_18:
@@ -110,14 +110,14 @@ LABEL_19:
 
 - (BOOL)shouldShowBetterRouteAvailable
 {
-  v2 = self;
-  v3 = [(RAPQuestion *)self _context];
-  LOBYTE(v2) = [RAPBadRouteSuggestionsQuestion _canDisplayForContext:v3 selection:v2->_selectedValue];
+  selfCopy = self;
+  _context = [(RAPQuestion *)self _context];
+  LOBYTE(selfCopy) = [RAPBadRouteSuggestionsQuestion _canDisplayForContext:_context selection:selfCopy->_selectedValue];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)a3
+- (BOOL)canDisplayMenuItemForQuestionCategory:(int64_t)category
 {
   selectedValue = self->_selectedValue;
   if (!selectedValue)
@@ -125,13 +125,13 @@ LABEL_19:
     return selectedValue;
   }
 
-  if (a3 == 4)
+  if (category == 4)
   {
     LOBYTE(selectedValue) = [(RAPUserDirectionRequest *)selectedValue requestedTransportType]!= 1;
     return selectedValue;
   }
 
-  if (a3 == 3)
+  if (category == 3)
   {
     LODWORD(selectedValue) = _MKRAPIsAvailable();
     if (!selectedValue)
@@ -187,14 +187,14 @@ LABEL_19:
         v14 = [v12 objectForKeyedSubscript:v13];
 
         v15 = +[GEOCountryConfiguration sharedConfiguration];
-        v16 = [v15 countryCode];
-        v17 = [v14 objectForKey:v16];
+        countryCode = [v15 countryCode];
+        v17 = [v14 objectForKey:countryCode];
 
         if (v17)
         {
-          v18 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
 
-          if (v18)
+          if (bOOLValue)
           {
             goto LABEL_20;
           }
@@ -216,12 +216,12 @@ LABEL_19:
     return selectedValue;
   }
 
-  if (a3 != 2)
+  if (category != 2)
   {
 LABEL_20:
-    v20 = [(RAPDirectionsCategoryQuestion *)self mainMenuQuestionCategories];
-    v21 = [NSNumber numberWithInteger:a3];
-    v22 = [v20 containsObject:v21];
+    mainMenuQuestionCategories = [(RAPDirectionsCategoryQuestion *)self mainMenuQuestionCategories];
+    v21 = [NSNumber numberWithInteger:category];
+    v22 = [mainMenuQuestionCategories containsObject:v21];
 
     LOBYTE(selectedValue) = v22;
     return selectedValue;
@@ -249,18 +249,18 @@ LABEL_20:
   self->_betterRouteAvailableMenuItem = 0;
 }
 
-- (RAPDirectionsCategoryQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 directions:(id)a5
+- (RAPDirectionsCategoryQuestion)initWithReport:(id)report parentQuestion:(id)question directions:(id)directions
 {
-  v8 = a4;
-  v9 = a5;
+  questionCopy = question;
+  directionsCopy = directions;
   v13.receiver = self;
   v13.super_class = RAPDirectionsCategoryQuestion;
-  v10 = [(RAPQuestion *)&v13 initWithReport:a3 parentQuestion:v8];
+  v10 = [(RAPQuestion *)&v13 initWithReport:report parentQuestion:questionCopy];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_selectedValue, a5);
-    [v8 addObserver:v11 changeHandler:&stru_101631A98];
+    objc_storeStrong(&v10->_selectedValue, directions);
+    [questionCopy addObserver:v11 changeHandler:&stru_101631A98];
   }
 
   return v11;

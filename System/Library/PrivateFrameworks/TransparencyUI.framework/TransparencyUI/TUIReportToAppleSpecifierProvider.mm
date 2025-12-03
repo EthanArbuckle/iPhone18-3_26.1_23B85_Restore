@@ -1,37 +1,37 @@
 @interface TUIReportToAppleSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
-- (TUIReportToAppleSpecifierProvider)initWithAccountManager:(id)a3;
-- (TUIReportToAppleSpecifierProvider)initWithContext:(id)a3 reportManager:(id)a4;
+- (TUIReportToAppleSpecifierProvider)initWithAccountManager:(id)manager;
+- (TUIReportToAppleSpecifierProvider)initWithContext:(id)context reportManager:(id)manager;
 - (id)_groupSpecifier;
 - (id)_reportDetailsSpecifier;
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8;
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target;
 - (void)_learnMoreTapped;
 - (void)reloadSpecifiers;
 @end
 
 @implementation TUIReportToAppleSpecifierProvider
 
-- (TUIReportToAppleSpecifierProvider)initWithContext:(id)a3 reportManager:(id)a4
+- (TUIReportToAppleSpecifierProvider)initWithContext:(id)context reportManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = TUIReportToAppleSpecifierProvider;
   v9 = [(TUIReportToAppleSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_reportManager, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_reportManager, manager);
   }
 
   return v10;
 }
 
-- (TUIReportToAppleSpecifierProvider)initWithAccountManager:(id)a3
+- (TUIReportToAppleSpecifierProvider)initWithAccountManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (TRANSPARENCYUI_DEFAULT_LOG_BLOCK_19 != -1)
   {
     [TUIReportToAppleSpecifierProvider initWithAccountManager:];
@@ -57,14 +57,14 @@ uint64_t __60__TUIReportToAppleSpecifierProvider_initWithAccountManager___block_
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [(TUIReportToAppleSpecifierProvider *)self _groupSpecifier];
-    [v4 addObject:v5];
+    array = [MEMORY[0x277CBEB18] array];
+    _groupSpecifier = [(TUIReportToAppleSpecifierProvider *)self _groupSpecifier];
+    [array addObject:_groupSpecifier];
 
-    v6 = [(TUIReportToAppleSpecifierProvider *)self _reportDetailsSpecifier];
-    [v4 addObject:v6];
+    _reportDetailsSpecifier = [(TUIReportToAppleSpecifierProvider *)self _reportDetailsSpecifier];
+    [array addObject:_reportDetailsSpecifier];
 
-    v7 = [v4 copy];
+    v7 = [array copy];
     v8 = self->_specifiers;
     self->_specifiers = v7;
 
@@ -222,8 +222,8 @@ uint64_t __53__TUIReportToAppleSpecifierProvider__learnMoreTapped__block_invoke_
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D76F30]];
   [v3 setProperty:v4 forKey:*MEMORY[0x277D40140]];
 
-  v5 = [(TUIReportManager *)self->_reportManager reportData];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D735C0]];
+  reportData = [(TUIReportManager *)self->_reportManager reportData];
+  v6 = [reportData objectForKeyedSubscript:*MEMORY[0x277D735C0]];
 
   [v3 setProperty:v6 forKey:*MEMORY[0x277D40160]];
   [v3 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FF38]];
@@ -231,23 +231,23 @@ uint64_t __53__TUIReportToAppleSpecifierProvider__learnMoreTapped__block_invoke_
   return v3;
 }
 
-- (id)createGroupSpecifierWithIdentifier:(id)a3 title:(id)a4 footerText:(id)a5 linkText:(id)a6 actionMethodName:(id)a7 target:(id)a8
+- (id)createGroupSpecifierWithIdentifier:(id)identifier title:(id)title footerText:(id)text linkText:(id)linkText actionMethodName:(id)name target:(id)target
 {
   v13 = MEMORY[0x277D3FAD8];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = [v13 groupSpecifierWithID:a3 name:a4];
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v17, v16];
+  targetCopy = target;
+  nameCopy = name;
+  linkTextCopy = linkText;
+  textCopy = text;
+  v18 = [v13 groupSpecifierWithID:identifier name:title];
+  linkTextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", textCopy, linkTextCopy];
 
-  [v18 setProperty:v19 forKey:*MEMORY[0x277D3FF88]];
+  [v18 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF88]];
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
   [v18 setProperty:v21 forKey:*MEMORY[0x277D3FF48]];
 
-  [v18 setProperty:v19 forKey:*MEMORY[0x277D3FF70]];
-  v22 = [v19 rangeOfString:v16];
+  [v18 setProperty:linkTextCopy forKey:*MEMORY[0x277D3FF70]];
+  v22 = [linkTextCopy rangeOfString:linkTextCopy];
   v24 = v23;
 
   v29.location = v22;
@@ -255,10 +255,10 @@ uint64_t __53__TUIReportToAppleSpecifierProvider__learnMoreTapped__block_invoke_
   v25 = NSStringFromRange(v29);
   [v18 setProperty:v25 forKey:*MEMORY[0x277D3FF58]];
 
-  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:v14];
+  v26 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:targetCopy];
 
   [v18 setProperty:v26 forKey:*MEMORY[0x277D3FF68]];
-  [v18 setProperty:v15 forKey:*MEMORY[0x277D3FF50]];
+  [v18 setProperty:nameCopy forKey:*MEMORY[0x277D3FF50]];
 
   return v18;
 }

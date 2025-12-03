@@ -1,10 +1,10 @@
 @interface GPGameMonitorEnvoy
-+ (BOOL)applicationIsIdentifiedGame:(id)a3 info:(id)a4 entitlements:(id)a5;
++ (BOOL)applicationIsIdentifiedGame:(id)game info:(id)info entitlements:(id)entitlements;
 + (id)gameCategories;
 + (id)gameModeBundleIdentifierAllowList;
 + (id)sharedInstance;
 - (GPGameMonitorEnvoy)init;
-- (void)gameDidLaunch:(id)a3;
+- (void)gameDidLaunch:(id)launch;
 @end
 
 @implementation GPGameMonitorEnvoy
@@ -98,24 +98,24 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
   gameModeBundleIdentifierAllowList__gameModeBundleIdentifierAllowList = &unk_28619F188;
 }
 
-+ (BOOL)applicationIsIdentifiedGame:(id)a3 info:(id)a4 entitlements:(id)a5
++ (BOOL)applicationIsIdentifiedGame:(id)game info:(id)info entitlements:(id)entitlements
 {
   v61 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 genreID];
-  v10 = [v9 unsignedIntValue];
+  gameCopy = game;
+  entitlementsCopy = entitlements;
+  genreID = [gameCopy genreID];
+  unsignedIntValue = [genreID unsignedIntValue];
 
   v11 = 1;
-  if (v10 != 6014 && (v10 - 7001) >= 0x11)
+  if (unsignedIntValue != 6014 && (unsignedIntValue - 7001) >= 0x11)
   {
-    v12 = [v7 correspondingApplicationRecord];
+    correspondingApplicationRecord = [gameCopy correspondingApplicationRecord];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v13 = [a1 gameModeBundleIdentifierAllowList];
-    v14 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    gameModeBundleIdentifierAllowList = [self gameModeBundleIdentifierAllowList];
+    v14 = [gameModeBundleIdentifierAllowList countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (v14)
     {
       v15 = v14;
@@ -126,12 +126,12 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
         {
           if (*v55 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(gameModeBundleIdentifierAllowList);
           }
 
           v18 = *(*(&v54 + 1) + 8 * i);
-          v19 = [v12 bundleIdentifier];
-          LOBYTE(v18) = [v19 isEqual:v18];
+          bundleIdentifier = [correspondingApplicationRecord bundleIdentifier];
+          LOBYTE(v18) = [bundleIdentifier isEqual:v18];
 
           if (v18)
           {
@@ -140,7 +140,7 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v54 objects:v60 count:16];
+        v15 = [gameModeBundleIdentifierAllowList countByEnumeratingWithState:&v54 objects:v60 count:16];
         if (v15)
         {
           continue;
@@ -150,10 +150,10 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
       }
     }
 
-    if (!v10)
+    if (!unsignedIntValue)
     {
       v53 = 0;
-      v27 = [v12 categoryTypesWithError:&v53];
+      v27 = [correspondingApplicationRecord categoryTypesWithError:&v53];
       v44 = v53;
       v49 = 0u;
       v50 = 0u;
@@ -183,8 +183,8 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v33 = [*(v30 + 1400) gameCategories];
-            v34 = [v33 countByEnumeratingWithState:&v45 objects:v58 count:16];
+            gameCategories = [*(v30 + 1400) gameCategories];
+            v34 = [gameCategories countByEnumeratingWithState:&v45 objects:v58 count:16];
             if (v34)
             {
               v35 = v34;
@@ -195,12 +195,12 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
                 {
                   if (*v46 != v36)
                   {
-                    objc_enumerationMutation(v33);
+                    objc_enumerationMutation(gameCategories);
                   }
 
                   v38 = *(*(&v45 + 1) + 8 * j);
-                  v39 = [v32 identifier];
-                  LOBYTE(v38) = [v39 isEqual:v38];
+                  identifier = [v32 identifier];
+                  LOBYTE(v38) = [identifier isEqual:v38];
 
                   if (v38)
                   {
@@ -209,7 +209,7 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
                   }
                 }
 
-                v35 = [v33 countByEnumeratingWithState:&v45 objects:v58 count:16];
+                v35 = [gameCategories countByEnumeratingWithState:&v45 objects:v58 count:16];
                 if (v35)
                 {
                   continue;
@@ -233,7 +233,7 @@ void __55__GPGameMonitorEnvoy_gameModeBundleIdentifierAllowList__block_invoke()
       }
     }
 
-    if ([v8 BOOLForKey:@"com.apple.developer.sustained-execution"] & 1) != 0 || (objc_msgSend(v8, "BOOLForKey:", @"com.apple.developer.kernel.increased-memory-limit") & 1) != 0 || (objc_msgSend(v8, "BOOLForKey:", @"com.apple.developer.kernel.increased-debugging-memory-limit") & 1) != 0 || (objc_msgSend(v7, "requiredDeviceCapabilities"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "containsObject:", @"iphone-performance-gaming-tier"), v20, (v21) || (objc_msgSend(v12, "supportsGameMode"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
+    if ([entitlementsCopy BOOLForKey:@"com.apple.developer.sustained-execution"] & 1) != 0 || (objc_msgSend(entitlementsCopy, "BOOLForKey:", @"com.apple.developer.kernel.increased-memory-limit") & 1) != 0 || (objc_msgSend(entitlementsCopy, "BOOLForKey:", @"com.apple.developer.kernel.increased-debugging-memory-limit") & 1) != 0 || (objc_msgSend(gameCopy, "requiredDeviceCapabilities"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "containsObject:", @"iphone-performance-gaming-tier"), v20, (v21) || (objc_msgSend(correspondingApplicationRecord, "supportsGameMode"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
     {
 LABEL_19:
       v11 = 1;
@@ -241,8 +241,8 @@ LABEL_19:
 
     else
     {
-      v23 = [v12 infoDictionary];
-      v24 = [v23 objectForKey:@"GCSupportsControllerUserInteraction" ofClass:objc_opt_class()];
+      infoDictionary = [correspondingApplicationRecord infoDictionary];
+      v24 = [infoDictionary objectForKey:@"GCSupportsControllerUserInteraction" ofClass:objc_opt_class()];
 
       v11 = v24 != 0;
     }
@@ -259,14 +259,14 @@ LABEL_19:
   return [(GPGameMonitorEnvoy *)&v3 init];
 }
 
-- (void)gameDidLaunch:(id)a3
+- (void)gameDidLaunch:(id)launch
 {
-  v3 = a3;
+  launchCopy = launch;
   if (+[GPGameMonitorEnvoy deviceSupportsGamePolicy])
   {
     if (gp_isInternalBuild())
     {
-      [GPGameMonitorEnvoy gameDidLaunch:v3];
+      [GPGameMonitorEnvoy gameDidLaunch:launchCopy];
     }
 
     notify_post([@"com.apple.gamepolicy.daemon.launch" UTF8String]);

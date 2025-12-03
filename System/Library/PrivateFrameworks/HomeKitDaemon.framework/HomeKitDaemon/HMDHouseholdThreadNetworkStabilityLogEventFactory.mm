@@ -1,47 +1,47 @@
 @interface HMDHouseholdThreadNetworkStabilityLogEventFactory
-- (HMDHouseholdThreadNetworkStabilityLogEventFactory)initWithThreadNetworkObserver:(id)a3;
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4;
-- (id)logEventsFromDictionary:(id)a3;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)serializeLogEvents:(id)a3;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
+- (HMDHouseholdThreadNetworkStabilityLogEventFactory)initWithThreadNetworkObserver:(id)observer;
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d;
+- (id)logEventsFromDictionary:(id)dictionary;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)serializeLogEvents:(id)events;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
 @end
 
 @implementation HMDHouseholdThreadNetworkStabilityLogEventFactory
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
-  [v5 deleteCountersAfterDate:v4];
+  dateCopy = date;
+  threadNetworkObserver = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
+  [threadNetworkObserver deleteCountersAfterDate:dateCopy];
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
-  [v5 deleteCountersBeforeDate:v4];
+  dateCopy = date;
+  threadNetworkObserver = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
+  [threadNetworkObserver deleteCountersBeforeDate:dateCopy];
 }
 
-- (id)coalescedLogEventsFromLogEvents:(id)a3 homeUUID:(id)a4
+- (id)coalescedLogEventsFromLogEvents:(id)events homeUUID:(id)d
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  dCopy = d;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v5;
-  v54 = [v5 countByEnumeratingWithState:&v62 objects:v67 count:16];
+  obj = eventsCopy;
+  v54 = [eventsCopy countByEnumeratingWithState:&v62 objects:v67 count:16];
   if (v54)
   {
-    v44 = v6;
-    v51 = 0;
-    v52 = 0;
-    v49 = 0;
-    v50 = 0;
+    v44 = dCopy;
+    numThirdPartyBRs = 0;
+    numAppleBRs = 0;
+    maxSimuIPPrefixesDetected = 0;
+    numThreadNetworks = 0;
     v58 = 0;
     v59 = 0;
     v7 = 0;
@@ -54,9 +54,9 @@
     v56 = 0;
     v57 = 0;
     v55 = 0;
-    v46 = 0;
+    txDelayAvg = 0;
     v47 = 0;
-    v48 = 0;
+    numAdvertisedBRs = 0;
     v12 = 0;
     v53 = *v63;
     do
@@ -84,60 +84,60 @@
 
         if (v16)
         {
-          v17 = [v16 threadNetworkStatusReport];
-          if (v48 <= [v17 numAdvertisedBRs])
+          threadNetworkStatusReport = [v16 threadNetworkStatusReport];
+          if (numAdvertisedBRs <= [threadNetworkStatusReport numAdvertisedBRs])
           {
-            v18 = [v16 threadNetworkStatusReport];
-            v48 = [v18 numAdvertisedBRs];
+            threadNetworkStatusReport2 = [v16 threadNetworkStatusReport];
+            numAdvertisedBRs = [threadNetworkStatusReport2 numAdvertisedBRs];
           }
 
-          v19 = [v16 threadNetworkStatusReport];
-          if (v52 <= [v19 numAppleBRs])
+          threadNetworkStatusReport3 = [v16 threadNetworkStatusReport];
+          if (numAppleBRs <= [threadNetworkStatusReport3 numAppleBRs])
           {
-            v20 = [v16 threadNetworkStatusReport];
-            v52 = [v20 numAppleBRs];
+            threadNetworkStatusReport4 = [v16 threadNetworkStatusReport];
+            numAppleBRs = [threadNetworkStatusReport4 numAppleBRs];
           }
 
-          v21 = [v16 threadNetworkStatusReport];
-          if (v51 <= [v21 numThirdPartyBRs])
+          threadNetworkStatusReport5 = [v16 threadNetworkStatusReport];
+          if (numThirdPartyBRs <= [threadNetworkStatusReport5 numThirdPartyBRs])
           {
-            v22 = [v16 threadNetworkStatusReport];
-            v51 = [v22 numThirdPartyBRs];
+            threadNetworkStatusReport6 = [v16 threadNetworkStatusReport];
+            numThirdPartyBRs = [threadNetworkStatusReport6 numThirdPartyBRs];
           }
 
-          v23 = [v16 threadNetworkStatusReport];
-          if (v50 <= [v23 numThreadNetworks])
+          threadNetworkStatusReport7 = [v16 threadNetworkStatusReport];
+          if (numThreadNetworks <= [threadNetworkStatusReport7 numThreadNetworks])
           {
-            v24 = [v16 threadNetworkStatusReport];
-            v50 = [v24 numThreadNetworks];
+            threadNetworkStatusReport8 = [v16 threadNetworkStatusReport];
+            numThreadNetworks = [threadNetworkStatusReport8 numThreadNetworks];
           }
 
-          v25 = [v16 threadNetworkStatusReport];
-          if (v49 <= [v25 maxSimuIPPrefixesDetected])
+          threadNetworkStatusReport9 = [v16 threadNetworkStatusReport];
+          if (maxSimuIPPrefixesDetected <= [threadNetworkStatusReport9 maxSimuIPPrefixesDetected])
           {
-            v26 = [v16 threadNetworkStatusReport];
-            v49 = [v26 maxSimuIPPrefixesDetected];
+            threadNetworkStatusReport10 = [v16 threadNetworkStatusReport];
+            maxSimuIPPrefixesDetected = [threadNetworkStatusReport10 maxSimuIPPrefixesDetected];
           }
 
           ++v12;
 
-          v27 = [v16 threadNetworkStatusReport];
-          v8 += [v27 txDelayAvg];
+          threadNetworkStatusReport11 = [v16 threadNetworkStatusReport];
+          v8 += [threadNetworkStatusReport11 txDelayAvg];
 
-          v28 = [v16 threadNetworkStatusReport];
-          v58 += [v28 txTotal];
+          threadNetworkStatusReport12 = [v16 threadNetworkStatusReport];
+          v58 += [threadNetworkStatusReport12 txTotal];
 
-          v29 = [v16 threadNetworkStatusReport];
-          v7 += [v29 txSuccess];
+          threadNetworkStatusReport13 = [v16 threadNetworkStatusReport];
+          v7 += [threadNetworkStatusReport13 txSuccess];
 
-          v30 = [v16 threadNetworkStatusReport];
-          v9 += [v30 rxTotal];
+          threadNetworkStatusReport14 = [v16 threadNetworkStatusReport];
+          v9 += [threadNetworkStatusReport14 rxTotal];
 
-          v31 = [v16 threadNetworkStatusReport];
-          v10 += [v31 rxSuccess];
+          threadNetworkStatusReport15 = [v16 threadNetworkStatusReport];
+          v10 += [threadNetworkStatusReport15 rxSuccess];
 
-          v32 = [v16 threadNetworkStatusReport];
-          v11 += [v32 reportDuration];
+          threadNetworkStatusReport16 = [v16 threadNetworkStatusReport];
+          v11 += [threadNetworkStatusReport16 reportDuration];
 
           v61 += [v16 threadNetworkUptime];
           v60 += [v16 threadNetworkDowntime];
@@ -145,16 +145,16 @@
           v57 += [v16 numReadErrors];
           v56 += [v16 numWriteErrors];
           v55 += [v16 numSessionErrors];
-          v33 = [v16 threadNetworkStatusReport];
-          v34 = [v33 reportDuration];
+          threadNetworkStatusReport17 = [v16 threadNetworkStatusReport];
+          reportDuration = [threadNetworkStatusReport17 reportDuration];
 
-          if (v34)
+          if (reportDuration)
           {
-            v35 = [v16 threadNetworkStatusReport];
-            if (v46 <= [v35 txDelayAvg])
+            threadNetworkStatusReport18 = [v16 threadNetworkStatusReport];
+            if (txDelayAvg <= [threadNetworkStatusReport18 txDelayAvg])
             {
-              v36 = [v16 threadNetworkStatusReport];
-              v46 = [v36 txDelayAvg];
+              threadNetworkStatusReport19 = [v16 threadNetworkStatusReport];
+              txDelayAvg = [threadNetworkStatusReport19 txDelayAvg];
             }
 
             ++v47;
@@ -175,12 +175,12 @@
 
       else
       {
-        v37 = v46;
+        v37 = txDelayAvg;
       }
 
       v38 = [HMDHouseholdThreadNetworkStabilityLogEvent alloc];
-      v39 = [[HMDThreadNetworkStatusReport alloc] initWithNumAdvertisedBRs:v48 numAppleBRs:v52 numThirdPartyBRs:v51 numThreadNetworks:v50 maxSimuIPPrefixesDetected:v49 txTotal:v58 txSuccess:v7 txDelayAvg:v37 rxTotal:v9 rxSuccess:v10 reportDuration:v11];
-      v6 = v44;
+      v39 = [[HMDThreadNetworkStatusReport alloc] initWithNumAdvertisedBRs:numAdvertisedBRs numAppleBRs:numAppleBRs numThirdPartyBRs:numThirdPartyBRs numThreadNetworks:numThreadNetworks maxSimuIPPrefixesDetected:maxSimuIPPrefixesDetected txTotal:v58 txSuccess:v7 txDelayAvg:v37 rxTotal:v9 rxSuccess:v10 reportDuration:v11];
+      dCopy = v44;
       v40 = [(HMDHouseholdThreadNetworkStabilityLogEvent *)v38 initWithHomeUUID:v44 numStabilityReporters:v12 threadNetworkStatusReport:v39 threadNetworkUptime:v61 threadNetworkDowntime:v60 numReadWrites:v59 numReadErrors:v57 numWriteErrors:v56 numSessionErrors:v55];
       v66 = v40;
       v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:1];
@@ -189,7 +189,7 @@
     else
     {
       v41 = MEMORY[0x277CBEBF8];
-      v6 = v44;
+      dCopy = v44;
     }
   }
 
@@ -203,10 +203,10 @@
   return v41;
 }
 
-- (id)logEventsFromDictionary:(id)a3
+- (id)logEventsFromDictionary:(id)dictionary
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKeyedSubscript:@"threadNetworkStabilityLogEvent"];
+  v3 = [dictionary objectForKeyedSubscript:@"threadNetworkStabilityLogEvent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -237,10 +237,10 @@
   return v8;
 }
 
-- (id)serializeLogEvents:(id)a3
+- (id)serializeLogEvents:(id)events
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectAtIndexedSubscript:0];
+  v3 = [events objectAtIndexedSubscript:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -257,8 +257,8 @@
   if (v5)
   {
     v10 = @"threadNetworkStabilityLogEvent";
-    v6 = [v5 serializedLogEvent];
-    v11[0] = v6;
+    serializedLogEvent = [v5 serializedLogEvent];
+    v11[0] = serializedLogEvent;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   }
 
@@ -272,13 +272,13 @@
   return v7;
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
-  v9 = [v8 logEventForHomeWithUUID:v7 associatedWithDate:v6 isDailySummary:1];
+  dateCopy = date;
+  dCopy = d;
+  threadNetworkObserver = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)self threadNetworkObserver];
+  v9 = [threadNetworkObserver logEventForHomeWithUUID:dCopy associatedWithDate:dateCopy isDailySummary:1];
 
   if (v9)
   {
@@ -296,16 +296,16 @@
   return v10;
 }
 
-- (HMDHouseholdThreadNetworkStabilityLogEventFactory)initWithThreadNetworkObserver:(id)a3
+- (HMDHouseholdThreadNetworkStabilityLogEventFactory)initWithThreadNetworkObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v9.receiver = self;
   v9.super_class = HMDHouseholdThreadNetworkStabilityLogEventFactory;
   v6 = [(HMDHouseholdThreadNetworkStabilityLogEventFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_threadNetworkObserver, a3);
+    objc_storeStrong(&v6->_threadNetworkObserver, observer);
   }
 
   return v7;

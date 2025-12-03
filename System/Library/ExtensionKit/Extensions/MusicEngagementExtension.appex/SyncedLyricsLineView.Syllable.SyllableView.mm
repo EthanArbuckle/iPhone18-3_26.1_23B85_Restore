@@ -1,15 +1,15 @@
 @interface SyncedLyricsLineView.Syllable.SyllableView
-- (_TtCCC7LyricsX20SyncedLyricsLineView8Syllable12SyllableView)initWithCoder:(id)a3;
+- (_TtCCC7LyricsX20SyncedLyricsLineView8Syllable12SyllableView)initWithCoder:(id)coder;
 @end
 
 @implementation SyncedLyricsLineView.Syllable.SyllableView
 
-- (_TtCCC7LyricsX20SyncedLyricsLineView8Syllable12SyllableView)initWithCoder:(id)a3
+- (_TtCCC7LyricsX20SyncedLyricsLineView8Syllable12SyllableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SyncedLyricsLineView.Syllable.SyllableView();
-  v4 = a3;
-  v5 = [(_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(_TtCE14MusicUtilitiesaSo8CTRunRef14PartialRunView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,19 +1,19 @@
 @interface MKJunction
-- (BOOL)_willSnapToNinetyDegreesForManeuverTypes:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_willSnapToNinetyDegreesForManeuverTypes:(id)types;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)willSnapToSharpRight;
-- (MKJunction)initWithCoder:(id)a3;
-- (MKJunction)initWithJunction:(id)a3;
-- (MKJunction)initWithType:(int)a3 maneuver:(int)a4 drivingSide:(int)a5 elements:(GEOJunctionElement *)a6 count:(unint64_t)a7;
+- (MKJunction)initWithCoder:(id)coder;
+- (MKJunction)initWithJunction:(id)junction;
+- (MKJunction)initWithType:(int)type maneuver:(int)maneuver drivingSide:(int)side elements:(GEOJunctionElement *)elements count:(unint64_t)count;
 - (id)description;
-- (id)roundaboutArrowWithSize:(CGSize)a3 metrics:(id *)a4 outerRadius:(double)a5 endAngle:(double)a6 pivot:(CGPoint *)a7;
+- (id)roundaboutArrowWithSize:(CGSize)size metrics:(id *)metrics outerRadius:(double)radius endAngle:(double)angle pivot:(CGPoint *)pivot;
 - (unint64_t)hash;
-- (void)_addJunctionStemCapToPath:(id)a3 fromStartPoint:(CGPoint)a4 topEndPoint:(CGPoint)a5 cornerRadius:(double)a6;
+- (void)_addJunctionStemCapToPath:(id)path fromStartPoint:(CGPoint)point topEndPoint:(CGPoint)endPoint cornerRadius:(double)radius;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getArrowPath:(id *)a3 arrowStrokePath:(id *)a4 intersectionBackgroundPath:(id *)a5 strokePath:(id *)a6 withSize:(CGSize)a7 metrics:(id *)a8 drivingSide:(int)a9 visualCenter:(CGPoint *)a10;
-- (void)getArrowPath:(id *)a3 arrowStrokePath:(id *)a4 pivot:(CGPoint *)a5 withSize:(CGSize)a6 metrics:(id *)a7 visualCenter:(CGPoint *)a8;
-- (void)getRoundaboutArrowPath:(id *)a3 intersectionBackgroundPath:(id *)a4 strokePath:(id *)a5 withSize:(CGSize)a6 metrics:(id *)a7 drivingSide:(int)a8 visualCenter:(CGPoint *)a9;
+- (void)encodeWithCoder:(id)coder;
+- (void)getArrowPath:(id *)path arrowStrokePath:(id *)strokePath intersectionBackgroundPath:(id *)backgroundPath strokePath:(id *)a6 withSize:(CGSize)size metrics:(id *)metrics drivingSide:(int)side visualCenter:(CGPoint *)self0;
+- (void)getArrowPath:(id *)path arrowStrokePath:(id *)strokePath pivot:(CGPoint *)pivot withSize:(CGSize)size metrics:(id *)metrics visualCenter:(CGPoint *)center;
+- (void)getRoundaboutArrowPath:(id *)path intersectionBackgroundPath:(id *)backgroundPath strokePath:(id *)strokePath withSize:(CGSize)size metrics:(id *)metrics drivingSide:(int)side visualCenter:(CGPoint *)center;
 @end
 
 @implementation MKJunction
@@ -26,69 +26,69 @@
   [(MKJunction *)&v3 dealloc];
 }
 
-- (MKJunction)initWithCoder:(id)a3
+- (MKJunction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"kJunctionElementsCountEncodingKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"kJunctionElementsCountEncodingKey"];
   if (v5 < 0)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v6 = v5;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kJunctionElementsEncodingKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kJunctionElementsEncodingKey"];
     if ([v7 length] >= 16 * v6)
     {
-      v9 = [v4 decodeIntegerForKey:@"kJunctionManeuverEncodingKey"];
-      v10 = [v4 decodeIntegerForKey:@"kJuctionTypeEncodingKey"];
-      v11 = [v4 decodeIntegerForKey:@"kJunctionDrivingSideEncodingKey"];
+      v9 = [coderCopy decodeIntegerForKey:@"kJunctionManeuverEncodingKey"];
+      v10 = [coderCopy decodeIntegerForKey:@"kJuctionTypeEncodingKey"];
+      v11 = [coderCopy decodeIntegerForKey:@"kJunctionDrivingSideEncodingKey"];
       v12 = malloc_type_calloc(0x10uLL, v6, 0x6227269EuLL);
       memcpy(v12, [v7 bytes], 16 * v6);
       self = [(MKJunction *)self initWithType:v10 maneuver:v9 drivingSide:v11 elements:v12 count:v6];
       free(v12);
-      v8 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v6 = a3;
-  [v6 encodeInteger:type forKey:@"kJuctionTypeEncodingKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"kJuctionTypeEncodingKey"];
   v5 = [MEMORY[0x1E695DEF0] dataWithBytes:self->_elements length:16 * self->_count];
-  [v6 encodeObject:v5 forKey:@"kJunctionElementsEncodingKey"];
+  [coderCopy encodeObject:v5 forKey:@"kJunctionElementsEncodingKey"];
 
-  [v6 encodeInt:LODWORD(self->_count) forKey:@"kJunctionElementsCountEncodingKey"];
-  [v6 encodeInteger:self->_maneuver forKey:@"kJunctionManeuverEncodingKey"];
-  [v6 encodeInteger:self->_drivingSide forKey:@"kJunctionDrivingSideEncodingKey"];
+  [coderCopy encodeInt:LODWORD(self->_count) forKey:@"kJunctionElementsCountEncodingKey"];
+  [coderCopy encodeInteger:self->_maneuver forKey:@"kJunctionManeuverEncodingKey"];
+  [coderCopy encodeInteger:self->_drivingSide forKey:@"kJunctionDrivingSideEncodingKey"];
 }
 
-- (void)getRoundaboutArrowPath:(id *)a3 intersectionBackgroundPath:(id *)a4 strokePath:(id *)a5 withSize:(CGSize)a6 metrics:(id *)a7 drivingSide:(int)a8 visualCenter:(CGPoint *)a9
+- (void)getRoundaboutArrowPath:(id *)path intersectionBackgroundPath:(id *)backgroundPath strokePath:(id *)strokePath withSize:(CGSize)size metrics:(id *)metrics drivingSide:(int)side visualCenter:(CGPoint *)center
 {
-  height = a6.height;
+  height = size.height;
   v15 = 0;
   v162 = *MEMORY[0x1E69E9840];
-  var2 = a7->var2;
-  var19 = a7->var19;
-  width = a6.width;
-  if (a6.width >= height)
+  var2 = metrics->var2;
+  var19 = metrics->var19;
+  width = size.width;
+  if (size.width >= height)
   {
     v17 = height;
   }
 
   else
   {
-    v17 = a6.width;
+    v17 = size.width;
   }
 
   v160 = 0;
@@ -109,7 +109,7 @@
   v131 = v139 - var2;
   v20 = fmod(v18, 6.28318531);
   v21 = v20;
-  if (a8 == 1)
+  if (side == 1)
   {
     v22 = v20 + 6.28318531;
     if (v21 >= 0.0)
@@ -126,14 +126,14 @@
     v21 = v23 - v22;
   }
 
-  v128 = a3;
-  memcpy(__dst, a7, sizeof(__dst));
+  pathCopy = path;
+  memcpy(__dst, metrics, sizeof(__dst));
   v127 = [(MKJunction *)self roundaboutArrowWithSize:__dst metrics:&v160 outerRadius:width endAngle:height pivot:v139, v21];
-  v24 = [MEMORY[0x1E69DC728] bezierPath];
-  [v24 addArcWithCenter:1 radius:v160 startAngle:v139 endAngle:0.0 clockwise:6.28318531];
-  [v24 addArcWithCenter:0 radius:v160 startAngle:v131 endAngle:6.28318531 clockwise:0.0];
-  [v24 closePath];
-  var6 = a7->var6;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath addArcWithCenter:1 radius:v160 startAngle:v139 endAngle:0.0 clockwise:6.28318531];
+  [bezierPath addArcWithCenter:0 radius:v160 startAngle:v131 endAngle:6.28318531 clockwise:0.0];
+  [bezierPath closePath];
+  var6 = metrics->var6;
   if (v160.x - v139 >= v160.y - v139)
   {
     v26 = v160.y - v139;
@@ -155,12 +155,12 @@
   }
 
   v28 = height - (v160.y - v139);
-  v29 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
   v137 = *(MEMORY[0x1E695EFF8] + 8);
   v138 = *MEMORY[0x1E695EFF8];
-  v133 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0;
-  v31 = a8;
+  sideCopy2 = side;
   do
   {
     v32 = self->_snapped[v30];
@@ -168,7 +168,7 @@
     {
       v33 = MEMORY[0x1E696AD98];
       v34 = fmod(v30 * 0.785398163 + -1.57079633, 6.28318531);
-      if (a8 == 1)
+      if (side == 1)
       {
         if (v34 < 0.0)
         {
@@ -187,7 +187,7 @@
       }
 
       v35 = [v33 numberWithDouble:v34];
-      [v133 addObject:v35];
+      [array addObject:v35];
     }
 
     ++v30;
@@ -210,26 +210,26 @@
   }
 
   v136 = v36;
-  if (a7->var42 || ![v133 count])
+  if (metrics->var42 || ![array count])
   {
-    [v29 moveToPoint:{v139 + v160.x, v160.y}];
-    [v29 addArcWithCenter:1 radius:v160 startAngle:v139 endAngle:0.0 clockwise:6.28318531];
+    [bezierPath2 moveToPoint:{v139 + v160.x, v160.y}];
+    [bezierPath2 addArcWithCenter:1 radius:v160 startAngle:v139 endAngle:0.0 clockwise:6.28318531];
   }
 
   else
   {
-    [v133 sortUsingSelector:sel_compare_];
+    [array sortUsingSelector:sel_compare_];
     v157 = 0u;
     v158 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v37 = v133;
+    v37 = array;
     v38 = [v37 countByEnumeratingWithState:&v155 objects:v161 count:16];
     if (v38)
     {
       v39 = v38;
-      v125 = a5;
-      v126 = a9;
+      strokePathCopy = strokePath;
+      centerCopy = center;
       v40 = 0;
       v41 = *v156;
       v42 = v138;
@@ -485,22 +485,22 @@ LABEL_92:
             v103 = v94;
           }
 
-          [v24 moveToPoint:{v103, v102}];
-          [v24 addLineToPoint:{v90, v100}];
+          [bezierPath moveToPoint:{v103, v102}];
+          [bezierPath addLineToPoint:{v90, v100}];
           if (v140 > 2.22044605e-16)
           {
-            [(MKJunction *)self _addJunctionStemCapToPath:v24 fromStartPoint:v90 topEndPoint:v100 cornerRadius:v42, v43, v136];
+            [(MKJunction *)self _addJunctionStemCapToPath:bezierPath fromStartPoint:v90 topEndPoint:v100 cornerRadius:v42, v43, v136];
           }
 
-          [v24 addLineToPoint:{v42, v43}];
-          [v24 addLineToPoint:{v45, v44}];
-          [v24 addLineToPoint:{v103, v102}];
-          [v24 closePath];
+          [bezierPath addLineToPoint:{v42, v43}];
+          [bezierPath addLineToPoint:{v45, v44}];
+          [bezierPath addLineToPoint:{v103, v102}];
+          [bezierPath closePath];
           if (v40)
           {
-            [v29 moveToPoint:{v144, v146}];
+            [bezierPath2 moveToPoint:{v144, v146}];
             v150 = v43;
-            [v29 addLineToPoint:{v148, v149}];
+            [bezierPath2 addLineToPoint:{v148, v149}];
             v145 = v100;
             v147 = v42;
             v104 = v160.y;
@@ -515,8 +515,8 @@ LABEL_92:
             v42 = v147;
             v113 = v108;
             v43 = v150;
-            [v29 addArcWithCenter:1 radius:v105 startAngle:v112 endAngle:v139 clockwise:{v113, v111}];
-            [v29 addLineToPoint:{v90, v145}];
+            [bezierPath2 addArcWithCenter:1 radius:v105 startAngle:v112 endAngle:v139 clockwise:{v113, v111}];
+            [bezierPath2 addLineToPoint:{v90, v145}];
           }
 
           else
@@ -541,8 +541,8 @@ LABEL_92:
         if (!v114)
         {
 
-          [v29 moveToPoint:{v42, v43}];
-          [v29 addLineToPoint:{v45, v44}];
+          [bezierPath2 moveToPoint:{v42, v43}];
+          [bezierPath2 addLineToPoint:{v45, v44}];
           v115 = v160.y;
           v116 = v160.x;
           v117 = v44 - v160.y;
@@ -550,11 +550,11 @@ LABEL_92:
           v119 = atan2f(v117, v118);
           v120 = v134 - v115;
           v121 = v135 - v116;
-          [v29 addArcWithCenter:1 radius:v116 startAngle:v115 endAngle:v139 clockwise:{v119, atan2f(v120, v121)}];
-          [v29 addLineToPoint:{v138, v137}];
-          a5 = v125;
-          a9 = v126;
-          v31 = a8;
+          [bezierPath2 addArcWithCenter:1 radius:v116 startAngle:v115 endAngle:v139 clockwise:{v119, atan2f(v120, v121)}];
+          [bezierPath2 addLineToPoint:{v138, v137}];
+          strokePath = strokePathCopy;
+          center = centerCopy;
+          sideCopy2 = side;
           goto LABEL_110;
         }
       }
@@ -562,75 +562,75 @@ LABEL_92:
   }
 
 LABEL_110:
-  [v29 moveToPoint:{v131 + v160.x, v160.y}];
-  [v29 addArcWithCenter:1 radius:v160 startAngle:v131 endAngle:0.0 clockwise:6.28318531];
-  if (v31 == 1)
+  [bezierPath2 moveToPoint:{v131 + v160.x, v160.y}];
+  [bezierPath2 addArcWithCenter:1 radius:v160 startAngle:v131 endAngle:0.0 clockwise:6.28318531];
+  if (sideCopy2 == 1)
   {
     memset(__dst, 0, 48);
     CGAffineTransformMakeScale(&v154, -1.0, 1.0);
     CGAffineTransformTranslate(__dst, &v154, -width, 0.0);
     v154 = *__dst;
-    [v24 applyTransform:&v154];
+    [bezierPath applyTransform:&v154];
     v154 = *__dst;
-    [v29 applyTransform:&v154];
+    [bezierPath2 applyTransform:&v154];
     v154 = *__dst;
     [v127 applyTransform:&v154];
   }
 
-  if (v128)
+  if (pathCopy)
   {
     v122 = v127;
-    *v128 = v127;
+    *pathCopy = v127;
   }
 
-  if (a4)
+  if (backgroundPath)
   {
-    v123 = v24;
-    *a4 = v24;
+    v123 = bezierPath;
+    *backgroundPath = bezierPath;
   }
 
-  if (a5)
+  if (strokePath)
   {
-    v124 = v29;
-    *a5 = v29;
+    v124 = bezierPath2;
+    *strokePath = bezierPath2;
   }
 
-  if (a9)
+  if (center)
   {
-    *a9 = v160;
+    *center = v160;
   }
 }
 
-- (id)roundaboutArrowWithSize:(CGSize)a3 metrics:(id *)a4 outerRadius:(double)a5 endAngle:(double)a6 pivot:(CGPoint *)a7
+- (id)roundaboutArrowWithSize:(CGSize)size metrics:(id *)metrics outerRadius:(double)radius endAngle:(double)angle pivot:(CGPoint *)pivot
 {
-  var2 = a4->var2;
-  v11 = a6 > 0.0;
-  if (a6 <= -3.14159265)
+  var2 = metrics->var2;
+  v11 = angle > 0.0;
+  if (angle <= -3.14159265)
   {
     v11 = 1;
   }
 
-  v12 = a6 < 3.14159265 && v11;
-  v143 = floor((a3.height - a5) * 0.5) - a4->var21;
-  v13 = a3.width * 0.5;
-  v14 = a3.height * 0.5;
-  if (a7)
+  v12 = angle < 3.14159265 && v11;
+  v143 = floor((size.height - radius) * 0.5) - metrics->var21;
+  v13 = size.width * 0.5;
+  v14 = size.height * 0.5;
+  if (pivot)
   {
-    a7->x = v13;
-    a7->y = v14;
+    pivot->x = v13;
+    pivot->y = v14;
   }
 
-  v150 = (a3.width - var2) * 0.5;
-  v151 = a3.height - a4->var20;
+  v150 = (size.width - var2) * 0.5;
+  v151 = size.height - metrics->var20;
   v152 = var2 + v150;
-  v15 = [MEMORY[0x1E69DC728] bezierPath];
-  [v15 moveToPoint:{var2 + v150, v151}];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  [bezierPath moveToPoint:{var2 + v150, v151}];
   v133 = v14 + v13 * -0.0;
   v16 = v133 + (var2 + v150) * 0.0;
   v17 = sqrt((v13 - v152) * (v13 - v152) + (v14 - v16) * (v14 - v16));
-  v135 = a5 * a5;
-  v146 = a5;
-  v18 = sqrt(a5 * a5 - v17 * v17);
+  v135 = radius * radius;
+  radiusCopy = radius;
+  v18 = sqrt(radius * radius - v17 * v17);
   v19 = atan(INFINITY);
   v20 = __sincos_stret(v19);
   v21 = sqrt((var2 + v150 + v18 * v20.__cosval - v152) * (var2 + v150 + v18 * v20.__cosval - v152) + (v16 + v18 * v20.__sinval - v151) * (v16 + v18 * v20.__sinval - v151));
@@ -657,11 +657,11 @@ LABEL_110:
   }
 
   v141 = v24;
-  [v15 addLineToPoint:?];
-  v25 = __sincos_stret(a6);
-  v26 = v13 + v25.__cosval * a5;
-  v27 = v14 + v25.__sinval * a5;
-  v28 = __sincos_stret(a6 + -1.57079633);
+  [bezierPath addLineToPoint:?];
+  v25 = __sincos_stret(angle);
+  v26 = v13 + v25.__cosval * radius;
+  v27 = v14 + v25.__sinval * radius;
+  v28 = __sincos_stret(angle + -1.57079633);
   v29 = v28.__cosval * var2 * 0.5;
   v30 = v26 + v29;
   v128 = var2;
@@ -744,15 +744,15 @@ LABEL_110:
   v52 = v141 - v13;
   v130 = atan2f(v51, v52);
   v132 = v45;
-  [v15 addArcWithCenter:0 radius:v13 startAngle:v36 endAngle:v146 clockwise:?];
+  [bezierPath addArcWithCenter:0 radius:v13 startAngle:v36 endAngle:radiusCopy clockwise:?];
   v53 = v143 * 0.600000024;
   v142 = v145 + v143 * 0.600000024 * v25.__sinval;
   v144 = v148 + v143 * 0.600000024 * v25.__cosval;
-  [v15 addLineToPoint:?];
+  [bezierPath addLineToPoint:?];
   v139 = v50 + v53 * v25.__sinval;
   v140 = v33 + v53 * v25.__cosval;
-  [v15 addLineToPoint:?];
-  [v15 addLineToPoint:{v33, v50}];
+  [bezierPath addLineToPoint:?];
+  [bezierPath addLineToPoint:{v33, v50}];
   if (v33 == v13)
   {
     v55 = v33;
@@ -784,7 +784,7 @@ LABEL_110:
     v57 = v128;
   }
 
-  v58 = v146 - v57;
+  v58 = radiusCopy - v57;
   v59 = fabs(v56);
   v60 = v59 == INFINITY;
   if (v59 == INFINITY)
@@ -983,8 +983,8 @@ LABEL_83:
   *&v99.f64[0] = vdup_lane_s32(*&v99.f64[0], 1);
   v101.i64[0] = SLODWORD(v99.f64[0]);
   v101.i64[1] = SHIDWORD(v99.f64[0]);
-  [v15 addCurveToPoint:vbslq_s8(v101 controlPoint1:vzip2q_s64(v92 controlPoint2:{v93), vzip2q_s64(v94, v95)), v74, v73, v74, v73}];
-  [v15 addArcWithCenter:1 radius:v13 startAngle:v46 endAngle:v129 clockwise:{v132, v130}];
+  [bezierPath addCurveToPoint:vbslq_s8(v101 controlPoint1:vzip2q_s64(v92 controlPoint2:{v93), vzip2q_s64(v94, v95)), v74, v73, v74, v73}];
+  [bezierPath addArcWithCenter:1 radius:v13 startAngle:v46 endAngle:v129 clockwise:{v132, v130}];
   if (v149)
   {
     v102 = v136;
@@ -1091,17 +1091,17 @@ LABEL_109:
     v116 = v111 - v113 * v115.__cosval;
   }
 
-  [v15 addCurveToPoint:v103 controlPoint1:v102 controlPoint2:{v116, v117, v116, v117, v124}];
-  [v15 addLineToPoint:{v150, v151}];
+  [bezierPath addCurveToPoint:v103 controlPoint1:v102 controlPoint2:{v116, v117, v116, v117, v124}];
+  [bezierPath addLineToPoint:{v150, v151}];
   v118 = (v152 - v150) * 0.5;
   v119 = 0.0;
-  if (a4->var43)
+  if (metrics->var43)
   {
     v119 = sqrt((v152 - v150) * (v152 - v150) + v118 * v118) * 0.5;
   }
 
-  [v15 addQuadCurveToPoint:v152 controlPoint:{v151, v150 + v118, v151 + v119}];
-  [v15 closePath];
+  [bezierPath addQuadCurveToPoint:v152 controlPoint:{v151, v150 + v118, v151 + v119}];
+  [bezierPath closePath];
   memset(&v154, 0, sizeof(v154));
   CGAffineTransformMakeTranslation(&v154, v140, v139);
   v120 = v142 - v139;
@@ -1110,15 +1110,15 @@ LABEL_109:
   v153 = v154;
   CGAffineTransformRotate(__dst, &v153, v122);
   v154 = *__dst;
-  memcpy(__dst, a4, sizeof(__dst));
-  MKArrowAppendArrowheadToPathAndReturnMetricsWithStemAdjustment(v15, __dst, 0, &v154, 0.0);
+  memcpy(__dst, metrics, sizeof(__dst));
+  MKArrowAppendArrowheadToPathAndReturnMetricsWithStemAdjustment(bezierPath, __dst, 0, &v154, 0.0);
 
-  return v15;
+  return bezierPath;
 }
 
-- (void)getArrowPath:(id *)a3 arrowStrokePath:(id *)a4 pivot:(CGPoint *)a5 withSize:(CGSize)a6 metrics:(id *)a7 visualCenter:(CGPoint *)a8
+- (void)getArrowPath:(id *)path arrowStrokePath:(id *)strokePath pivot:(CGPoint *)pivot withSize:(CGSize)size metrics:(id *)metrics visualCenter:(CGPoint *)center
 {
-  height = a6.height;
+  height = size.height;
   v11 = 0;
   v12 = -1;
   do
@@ -1133,25 +1133,25 @@ LABEL_109:
   }
 
   while (v11 != 8);
-  v14 = a6.width * 0.5;
+  v14 = size.width * 0.5;
   v15 = 0.0;
   if (v12 <= 7)
   {
     if (((1 << v12) & 0x28) != 0)
     {
-      var22 = a7->var22;
-      var23 = a7->var23;
+      var22 = metrics->var22;
+      var23 = metrics->var23;
       goto LABEL_19;
     }
 
     if (((1 << v12) & 0x44) != 0)
     {
-      v18 = fmax(a7->var13 - a7->var2, 0.0);
-      var15 = a7->var15;
-      var16 = a7->var16;
+      v18 = fmax(metrics->var13 - metrics->var2, 0.0);
+      var15 = metrics->var15;
+      var16 = metrics->var16;
       var22 = var15 - v18;
       var23 = var16 - v18;
-      v21 = a6.width - (var16 - v18);
+      v21 = size.width - (var16 - v18);
       if (v12 == 2)
       {
         v14 = var16 - v18;
@@ -1168,10 +1168,10 @@ LABEL_109:
 
     if (((1 << v12) & 0x82) != 0)
     {
-      var22 = a7->var26;
-      var23 = a7->var27;
+      var22 = metrics->var26;
+      var23 = metrics->var27;
 LABEL_19:
-      v22 = a6.height - var22 + 2.0;
+      v22 = size.height - var22 + 2.0;
 LABEL_20:
       v53 = v22;
       goto LABEL_21;
@@ -1187,26 +1187,26 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  var17 = a7->var17;
+  var17 = metrics->var17;
   if (var17 == 0.0)
   {
-    var22 = a6.height * 0.400000006;
-    var23 = a6.height - a6.height * 0.400000006;
+    var22 = size.height * 0.400000006;
+    var23 = size.height - size.height * 0.400000006;
     v52 = v14;
     v53 = var23;
     goto LABEL_22;
   }
 
-  var23 = a7->var5.height;
-  var22 = a6.height - var17 - var23;
-  v53 = a6.height - var22;
-  v15 = (a6.height - var22 - var23) * 0.5;
+  var23 = metrics->var5.height;
+  var22 = size.height - var17 - var23;
+  v53 = size.height - var22;
+  v15 = (size.height - var22 - var23) * 0.5;
 LABEL_21:
   v52 = v14;
 LABEL_22:
-  v24 = [MEMORY[0x1E69DC728] bezierPath];
-  v25 = [MEMORY[0x1E69DC728] bezierPath];
-  var2 = a7->var2;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
+  var2 = metrics->var2;
   memset(&v58, 0, sizeof(v58));
   CGAffineTransformMakeTranslation(&v58, v14 - var2 * 0.5, height - v15);
   v27 = 0;
@@ -1218,7 +1218,7 @@ LABEL_22:
 
   tx = -var2;
   v55 = var22 + var2 * -0.5;
-  v29 = v28 - a7->var5.height;
+  v29 = v28 - metrics->var5.height;
   v30 = 1;
   do
   {
@@ -1226,16 +1226,16 @@ LABEL_22:
     v57 = v58;
     if (v30)
     {
-      v32 = v24;
+      v32 = bezierPath;
     }
 
     else
     {
-      v32 = v25;
+      v32 = bezierPath2;
     }
 
     v33 = v32;
-    memcpy(__dst, a7, sizeof(__dst));
+    memcpy(__dst, metrics, sizeof(__dst));
     MKArrowAppendInitialSegmentToPathInvertingCorners(v33, __dst, &v57, 0, v55);
     if (v12 <= 7)
     {
@@ -1250,7 +1250,7 @@ LABEL_22:
         v38 = v57.tx;
         ty = v57.ty;
         v40 = anglesToExit[v12];
-        memcpy(__dst, a7, sizeof(__dst));
+        memcpy(__dst, metrics, sizeof(__dst));
         MKArrowAppendCurveToPathWithOptions(v33, v27, __dst, &v57, &v56.a, v40);
         if ((v31 & 1) != 0 && v12 != 3 && v12 != 5)
         {
@@ -1275,17 +1275,17 @@ LABEL_22:
           v57 = *__dst;
         }
 
-        memcpy(__dst, a7, sizeof(__dst));
+        memcpy(__dst, metrics, sizeof(__dst));
         MKArrowAppendRightAngleCurveToPath(v33, __dst, &v57);
       }
     }
 
 LABEL_38:
-    memcpy(__dst, a7, sizeof(__dst));
+    memcpy(__dst, metrics, sizeof(__dst));
     MKArrowAppendSegmentToPath(v33, __dst, &v57, v29);
-    if (a8 != 0 && (v31 & 1) != 0)
+    if (center != 0 && (v31 & 1) != 0)
     {
-      BoundingBox = CGPathGetBoundingBox([v24 CGPath]);
+      BoundingBox = CGPathGetBoundingBox([bezierPath CGPath]);
       x = BoundingBox.origin.x;
       y = BoundingBox.origin.y;
       width = BoundingBox.size.width;
@@ -1296,11 +1296,11 @@ LABEL_38:
       v61.size.width = width;
       v61.size.height = v44;
       MidY = CGRectGetMidY(v61);
-      a8->x = MidX;
-      a8->y = MidY;
+      center->x = MidX;
+      center->y = MidY;
     }
 
-    memcpy(__dst, a7, sizeof(__dst));
+    memcpy(__dst, metrics, sizeof(__dst));
     MKArrowAppendArrowheadToPathAndReturnMetricsWithStemAdjustment(v33, __dst, 0, &v57, 0.0);
 
     v30 = 0;
@@ -1308,81 +1308,81 @@ LABEL_38:
   }
 
   while ((v31 & 1) != 0);
-  if (a5)
+  if (pivot)
   {
-    a5->x = v52;
-    a5->y = v53;
+    pivot->x = v52;
+    pivot->y = v53;
   }
 
-  if (a3)
+  if (path)
   {
-    v47 = v24;
-    *a3 = v24;
+    v47 = bezierPath;
+    *path = bezierPath;
   }
 
-  if (a4)
+  if (strokePath)
   {
-    v48 = v25;
-    *a4 = v25;
+    v48 = bezierPath2;
+    *strokePath = bezierPath2;
   }
 }
 
-- (void)_addJunctionStemCapToPath:(id)a3 fromStartPoint:(CGPoint)a4 topEndPoint:(CGPoint)a5 cornerRadius:(double)a6
+- (void)_addJunctionStemCapToPath:(id)path fromStartPoint:(CGPoint)point topEndPoint:(CGPoint)endPoint cornerRadius:(double)radius
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = (a4.x + a5.x) * 0.5;
-  v11 = (a4.y + a5.y) * 0.5;
-  v12 = a4.y - v11;
-  v13 = a4.x - v10;
+  y = endPoint.y;
+  x = endPoint.x;
+  v10 = (point.x + endPoint.x) * 0.5;
+  v11 = (point.y + endPoint.y) * 0.5;
+  v12 = point.y - v11;
+  v13 = point.x - v10;
   v14 = atan2f(v12, v13);
   v15 = y - v11;
   v16 = x - v10;
   v17 = atan2f(v15, v16);
 
-  [a3 addArcWithCenter:1 radius:v10 startAngle:v11 endAngle:a6 clockwise:{v14, v17}];
+  [path addArcWithCenter:1 radius:v10 startAngle:v11 endAngle:radius clockwise:{v14, v17}];
 }
 
-- (void)getArrowPath:(id *)a3 arrowStrokePath:(id *)a4 intersectionBackgroundPath:(id *)a5 strokePath:(id *)a6 withSize:(CGSize)a7 metrics:(id *)a8 drivingSide:(int)a9 visualCenter:(CGPoint *)a10
+- (void)getArrowPath:(id *)path arrowStrokePath:(id *)strokePath intersectionBackgroundPath:(id *)backgroundPath strokePath:(id *)a6 withSize:(CGSize)size metrics:(id *)metrics drivingSide:(int)side visualCenter:(CGPoint *)self0
 {
-  height = a7.height;
-  width = a7.width;
+  height = size.height;
+  width = size.width;
   if (self->_type == 1)
   {
-    v17 = *&a9;
-    memcpy(__dst, a8, sizeof(__dst));
-    [(MKJunction *)self getRoundaboutArrowPath:a3 intersectionBackgroundPath:a5 strokePath:a6 withSize:__dst metrics:v17 drivingSide:a10 visualCenter:width, height];
+    v17 = *&side;
+    memcpy(__dst, metrics, sizeof(__dst));
+    [(MKJunction *)self getRoundaboutArrowPath:path intersectionBackgroundPath:backgroundPath strokePath:a6 withSize:__dst metrics:v17 drivingSide:center visualCenter:width, height];
     return;
   }
 
-  if (!a5)
+  if (!backgroundPath)
   {
-    v19 = 0;
+    bezierPath = 0;
     if (a6)
     {
       goto LABEL_5;
     }
 
 LABEL_7:
-    v20 = 0;
+    bezierPath2 = 0;
     goto LABEL_8;
   }
 
-  v19 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   if (!a6)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
-  v20 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
 LABEL_8:
-  var3 = a8->var3;
+  var3 = metrics->var3;
   v111 = 0.0;
   v112 = 0.0;
-  memcpy(__dst, a8, sizeof(__dst));
-  [(MKJunction *)self getArrowPath:a3 arrowStrokePath:a4 pivot:&v111 withSize:__dst metrics:a10 visualCenter:width, height];
-  var6 = a8->var6;
+  memcpy(__dst, metrics, sizeof(__dst));
+  [(MKJunction *)self getArrowPath:path arrowStrokePath:strokePath pivot:&v111 withSize:__dst metrics:center visualCenter:width, height];
+  var6 = metrics->var6;
   v22 = var3 * 0.5;
   v23 = v111;
   v24 = v112;
@@ -1395,7 +1395,7 @@ LABEL_8:
     v30 = self->_snapped[i];
     if (v30 && v30->var2 == 2)
     {
-      v28 = *(&a8->var40 + (i & 1));
+      v28 = *(&metrics->var40 + (i & 1));
     }
   }
 
@@ -1432,33 +1432,33 @@ LABEL_8:
   v37 = v103 - v36;
   if ([v27 count] == 1)
   {
-    v38 = [v27 lastObject];
-    [v38 leftBasePoint];
+    lastObject = [v27 lastObject];
+    [lastObject leftBasePoint];
     v40 = v39;
     v42 = v41;
-    [v38 rightBasePoint];
+    [lastObject rightBasePoint];
     v107 = v43;
     v45 = v44;
-    [v38 leftEdgePointAtDistanceFromBase:v37];
+    [lastObject leftEdgePointAtDistanceFromBase:v37];
     v47 = v46;
     v49 = v48;
-    [v38 rightEdgePointAtDistanceFromBase:v37];
+    [lastObject rightEdgePointAtDistanceFromBase:v37];
     v51 = v50;
     v53 = v52;
-    [v19 moveToPoint:{v40, v42}];
-    [v19 addLineToPoint:{v47, v49}];
+    [bezierPath moveToPoint:{v40, v42}];
+    [bezierPath addLineToPoint:{v47, v49}];
     if (fabs(v36) > 2.22044605e-16)
     {
-      [(MKJunction *)self _addJunctionStemCapToPath:v19 fromStartPoint:v47 topEndPoint:v49 cornerRadius:v51, v53, v36];
+      [(MKJunction *)self _addJunctionStemCapToPath:bezierPath fromStartPoint:v47 topEndPoint:v49 cornerRadius:v51, v53, v36];
     }
 
-    [v19 addLineToPoint:{v51, v53}];
-    [v19 addLineToPoint:{v107, v45}];
-    [v19 closePath];
-    [v20 moveToPoint:{v40, v42}];
-    [v20 addLineToPoint:{v47, v49}];
-    [v20 moveToPoint:{v107, v45}];
-    v54 = v20;
+    [bezierPath addLineToPoint:{v51, v53}];
+    [bezierPath addLineToPoint:{v107, v45}];
+    [bezierPath closePath];
+    [bezierPath2 moveToPoint:{v40, v42}];
+    [bezierPath2 addLineToPoint:{v47, v49}];
+    [bezierPath2 moveToPoint:{v107, v45}];
+    v54 = bezierPath2;
     v55 = v51;
     v56 = v53;
     goto LABEL_72;
@@ -1471,9 +1471,9 @@ LABEL_8:
     if (![v27 count])
     {
 LABEL_71:
-      v38 = [v27 objectAtIndex:0];
-      [v38 leftEdgePointAtDistanceFromBase:v106];
-      v54 = v19;
+      lastObject = [v27 objectAtIndex:0];
+      [lastObject leftEdgePointAtDistanceFromBase:v106];
+      v54 = bezierPath;
 LABEL_72:
       [v54 addLineToPoint:{v55, v56}];
 
@@ -1613,50 +1613,50 @@ LABEL_53:
       v97 = v83 - 1;
       if (v83 == 1)
       {
-        [v19 moveToPoint:{v85, v87}];
+        [bezierPath moveToPoint:{v85, v87}];
       }
 
       else
       {
-        [v19 addLineToPoint:{v85, v87}];
+        [bezierPath addLineToPoint:{v85, v87}];
       }
 
       if (v104 > 2.22044605e-16)
       {
-        [(MKJunction *)self _addJunctionStemCapToPath:v19 fromStartPoint:v85 topEndPoint:v87 cornerRadius:v89, v91, v102];
+        [(MKJunction *)self _addJunctionStemCapToPath:bezierPath fromStartPoint:v85 topEndPoint:v87 cornerRadius:v89, v91, v102];
       }
 
-      [v19 addLineToPoint:{v89, v91}];
+      [bezierPath addLineToPoint:{v89, v91}];
       if (v97 == [v27 count] - 1)
       {
         [v58 rightBasePoint];
-        [v19 addLineToPoint:?];
+        [bezierPath addLineToPoint:?];
         v98 = [v27 objectAtIndexedSubscript:0];
         [v98 leftBasePoint];
-        [v19 addLineToPoint:?];
+        [bezierPath addLineToPoint:?];
       }
 
       else
       {
-        [v19 addLineToPoint:{v82, v81}];
+        [bezierPath addLineToPoint:{v82, v81}];
       }
 
-      [v20 moveToPoint:{v89, v91}];
+      [bezierPath2 moveToPoint:{v89, v91}];
       if (v97 == [v27 count] - 1)
       {
         [v58 rightBasePoint];
-        [v20 addLineToPoint:?];
+        [bezierPath2 addLineToPoint:?];
         v99 = [v27 objectAtIndexedSubscript:0];
         [v99 leftBasePoint];
-        [v20 moveToPoint:?];
+        [bezierPath2 moveToPoint:?];
       }
 
       else
       {
-        [v20 addLineToPoint:{v82, v81}];
+        [bezierPath2 addLineToPoint:{v82, v81}];
       }
 
-      [v20 addLineToPoint:{v94, v95}];
+      [bezierPath2 addLineToPoint:{v94, v95}];
 
       v57 = v97 + 1;
       if (v97 + 1 >= [v27 count])
@@ -1672,29 +1672,29 @@ LABEL_73:
   v108 = *__dst;
   v109 = *&__dst[16];
   v110 = *&__dst[32];
-  [v19 applyTransform:&v108];
+  [bezierPath applyTransform:&v108];
   v108 = *__dst;
   v109 = *&__dst[16];
   v110 = *&__dst[32];
-  [v20 applyTransform:&v108];
-  if (a5)
+  [bezierPath2 applyTransform:&v108];
+  if (backgroundPath)
   {
-    v100 = v19;
-    *a5 = v19;
+    v100 = bezierPath;
+    *backgroundPath = bezierPath;
   }
 
   if (a6)
   {
-    v101 = v20;
-    *a6 = v20;
+    v101 = bezierPath2;
+    *a6 = bezierPath2;
   }
 }
 
-- (BOOL)_willSnapToNinetyDegreesForManeuverTypes:(id)a3
+- (BOOL)_willSnapToNinetyDegreesForManeuverTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_maneuver];
-  v6 = [v4 containsObject:v5];
+  v6 = [typesCopy containsObject:v5];
 
   if (v6)
   {
@@ -2013,16 +2013,16 @@ LABEL_73:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = 0;
   if (objc_opt_isKindOfClass())
   {
     for (i = 0; i != 8; ++i)
     {
-      v7 = v4[i + 5];
+      v7 = equalCopy[i + 5];
       v8 = self->_snapped[i];
       if (v7)
       {
@@ -2054,7 +2054,7 @@ LABEL_73:
   return v5;
 }
 
-- (MKJunction)initWithType:(int)a3 maneuver:(int)a4 drivingSide:(int)a5 elements:(GEOJunctionElement *)a6 count:(unint64_t)a7
+- (MKJunction)initWithType:(int)type maneuver:(int)maneuver drivingSide:(int)side elements:(GEOJunctionElement *)elements count:(unint64_t)count
 {
   v44 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
@@ -2069,48 +2069,48 @@ LABEL_37:
   }
 
   v14 = 0;
-  if (((a4 - 4) > 0x3E || ((1 << (a4 - 4)) & 0x7000000086400081) == 0) && a4 != 88)
+  if (((maneuver - 4) > 0x3E || ((1 << (maneuver - 4)) & 0x7000000086400081) == 0) && maneuver != 88)
   {
     v14 = 0;
-    v15 = a7 < 3 && (a4 & 0xFFFFFFFE) == 20;
-    if (!v15 && a7)
+    v15 = count < 3 && (maneuver & 0xFFFFFFFE) == 20;
+    if (!v15 && count)
     {
       v16 = 8;
-      v17 = a7;
-      while (*(&a6->var0 + v16) != 2)
+      countCopy = count;
+      while (*(&elements->var0 + v16) != 2)
       {
         v14 = 0;
         v16 += 16;
-        if (!--v17)
+        if (!--countCopy)
         {
           goto LABEL_38;
         }
       }
 
-      v12->_type = a3;
-      v12->_maneuver = a4;
-      v12->_drivingSide = a5;
-      if (a4 <= 0x3F)
+      v12->_type = type;
+      v12->_maneuver = maneuver;
+      v12->_drivingSide = side;
+      if (maneuver <= 0x3F)
       {
-        if (((1 << a4) & 0x5000000008100002) != 0)
+        if (((1 << maneuver) & 0x5000000008100002) != 0)
         {
           v18 = 1;
           goto LABEL_19;
         }
 
-        if (((1 << a4) & 0xA000000010200004) != 0)
+        if (((1 << maneuver) & 0xA000000010200004) != 0)
         {
           v18 = 2;
 LABEL_19:
-          v19 = malloc_type_calloc(0x10uLL, a7, 0xA3C9B415uLL);
+          v19 = malloc_type_calloc(0x10uLL, count, 0xA3C9B415uLL);
           v13->_elements = v19;
-          memcpy(v19, a6, 16 * a7);
-          v13->_count = a7;
+          memcpy(v19, elements, 16 * count);
+          v13->_count = count;
           snapped = v13->_snapped;
-          MKSnappedRouteFillWithElements(v13->_elements, a7, v13->_snapped, v18);
-          if ((a4 - 41) < 0x13)
+          MKSnappedRouteFillWithElements(v13->_elements, count, v13->_snapped, v18);
+          if ((maneuver - 41) < 0x13)
           {
-            v21 = (a4 - 40);
+            v21 = (maneuver - 40);
             if (v21 > 6)
             {
               goto LABEL_32;
@@ -2130,8 +2130,8 @@ LABEL_19:
             v42[1] = xmmword_1A30F6EF0;
             v42[2] = xmmword_1A30F7300;
             v43 = 5;
-            v23 = a5 == 0;
-            v24 = a5 ? 6 : 0;
+            v23 = side == 0;
+            v24 = side ? 6 : 0;
             v25 = 7;
             if (v23)
             {
@@ -2190,16 +2190,16 @@ LABEL_38:
   return v14;
 }
 
-- (MKJunction)initWithJunction:(id)a3
+- (MKJunction)initWithJunction:(id)junction
 {
-  v4 = a3;
-  v5 = [v4 junctionType];
-  v6 = [v4 maneuverType];
-  v7 = [v4 drivingSide];
-  v8 = [v4 elements];
-  v9 = [v4 numElements];
+  junctionCopy = junction;
+  junctionType = [junctionCopy junctionType];
+  maneuverType = [junctionCopy maneuverType];
+  drivingSide = [junctionCopy drivingSide];
+  elements = [junctionCopy elements];
+  numElements = [junctionCopy numElements];
 
-  return [(MKJunction *)self initWithType:v5 maneuver:v6 drivingSide:v7 elements:v8 count:v9];
+  return [(MKJunction *)self initWithType:junctionType maneuver:maneuverType drivingSide:drivingSide elements:elements count:numElements];
 }
 
 @end

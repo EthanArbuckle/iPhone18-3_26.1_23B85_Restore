@@ -1,25 +1,25 @@
 @interface MRGroupSessionXPCConnection
-- (MRGroupSessionXPCConnection)initWithClientObject:(id)a3 invalidationHandler:(id)a4;
+- (MRGroupSessionXPCConnection)initWithClientObject:(id)object invalidationHandler:(id)handler;
 - (id)server;
 - (void)dealloc;
 - (void)initializeConnection;
-- (void)sendMessage:(id)a3;
+- (void)sendMessage:(id)message;
 @end
 
 @implementation MRGroupSessionXPCConnection
 
-- (MRGroupSessionXPCConnection)initWithClientObject:(id)a3 invalidationHandler:(id)a4
+- (MRGroupSessionXPCConnection)initWithClientObject:(id)object invalidationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = MRGroupSessionXPCConnection;
   v9 = [(MRGroupSessionXPCConnection *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientObject, a3);
-    v11 = MEMORY[0x1A58E3570](v8);
+    objc_storeStrong(&v9->_clientObject, object);
+    v11 = MEMORY[0x1A58E3570](handlerCopy);
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v11;
 
@@ -56,7 +56,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1A2860000, a2, OS_LOG_TYPE_ERROR, "[MRGroupSessionXPCConnection] <%p> Received nil XPC endpoint. Failing.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -105,13 +105,13 @@ void __51__MRGroupSessionXPCConnection_initializeConnection__block_invoke_58(uin
 
 - (id)server
 {
-  v3 = [(MRGroupSessionXPCConnection *)self connection];
+  connection = [(MRGroupSessionXPCConnection *)self connection];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__MRGroupSessionXPCConnection_server__block_invoke;
   v6[3] = &unk_1E769AFC0;
   v6[4] = self;
-  v4 = [v3 remoteObjectProxyWithErrorHandler:v6];
+  v4 = [connection remoteObjectProxyWithErrorHandler:v6];
 
   return v4;
 }
@@ -134,18 +134,18 @@ void __37__MRGroupSessionXPCConnection_server__block_invoke(uint64_t a1, void *a
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MRGroupSessionXPCConnection *)self queue];
+  messageCopy = message;
+  queue = [(MRGroupSessionXPCConnection *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__MRGroupSessionXPCConnection_sendMessage___block_invoke;
   v7[3] = &unk_1E769AB28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __43__MRGroupSessionXPCConnection_sendMessage___block_invoke(uint64_t a1)

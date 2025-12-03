@@ -1,31 +1,31 @@
 @interface DAEASOAuthFlowController
-+ (id)upgradeAuthorizationEndpoint:(id)a3;
-- (BOOL)shouldHideWebViewForLoadWithRequest:(id)a3;
-- (DAEASOAuthFlowController)initWithOAuthType:(unint64_t)a3 authURI:(id)a4 username:(id)a5 accountId:(id)a6 claims:(id)a7 isOnPrem:(BOOL)a8;
-- (id)_urlRequestForOAuthTokenFromAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5;
-- (id)authURLForUsername:(id)a3 originalAuthURL:(id)a4;
-- (id)onPremAuthURLForUsername:(id)a3 originalAuthURL:(id)a4 resource:(id)a5;
-- (id)requestForAuthURL:(id)a3;
-- (void)_assignConnectionPropertiesToSessionConfiguration:(id)a3;
-- (void)_exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensAndUsernameWithCompletion:(id)a6;
-- (void)_exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensWithCompletion:(id)a6;
-- (void)exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensAndUsernameWithCompletion:(id)a6;
-- (void)retrieveJWKSDataFromURI:(id)a3 withCompletion:(id)a4;
-- (void)retrieveOpenIDMetadataFromURI:(id)a3 withCompletion:(id)a4;
-- (void)setAuthFlowCompletion:(id)a3;
++ (id)upgradeAuthorizationEndpoint:(id)endpoint;
+- (BOOL)shouldHideWebViewForLoadWithRequest:(id)request;
+- (DAEASOAuthFlowController)initWithOAuthType:(unint64_t)type authURI:(id)i username:(id)username accountId:(id)id claims:(id)claims isOnPrem:(BOOL)prem;
+- (id)_urlRequestForOAuthTokenFromAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims;
+- (id)authURLForUsername:(id)username originalAuthURL:(id)l;
+- (id)onPremAuthURLForUsername:(id)username originalAuthURL:(id)l resource:(id)resource;
+- (id)requestForAuthURL:(id)l;
+- (void)_assignConnectionPropertiesToSessionConfiguration:(id)configuration;
+- (void)_exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensAndUsernameWithCompletion:(id)completion;
+- (void)_exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensWithCompletion:(id)completion;
+- (void)exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensAndUsernameWithCompletion:(id)completion;
+- (void)retrieveJWKSDataFromURI:(id)i withCompletion:(id)completion;
+- (void)retrieveOpenIDMetadataFromURI:(id)i withCompletion:(id)completion;
+- (void)setAuthFlowCompletion:(id)completion;
 @end
 
 @implementation DAEASOAuthFlowController
 
-- (DAEASOAuthFlowController)initWithOAuthType:(unint64_t)a3 authURI:(id)a4 username:(id)a5 accountId:(id)a6 claims:(id)a7 isOnPrem:(BOOL)a8
+- (DAEASOAuthFlowController)initWithOAuthType:(unint64_t)type authURI:(id)i username:(id)username accountId:(id)id claims:(id)claims isOnPrem:(BOOL)prem
 {
-  v14 = a4;
-  v30 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v14)
+  iCopy = i;
+  usernameCopy = username;
+  idCopy = id;
+  claimsCopy = claims;
+  if (iCopy)
   {
-    v17 = v14;
+    v17 = iCopy;
   }
 
   else
@@ -33,7 +33,7 @@
     v17 = @"https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize/";
   }
 
-  if (!a8)
+  if (!prem)
   {
     v18 = [DAEASOAuthFlowController upgradeAuthorizationEndpoint:v17];
 
@@ -46,10 +46,10 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_accountId, a6);
-    v20->_oauthType = a3;
+    objc_storeStrong(&v19->_accountId, id);
+    v20->_oauthType = type;
     objc_storeStrong(&v20->_oauthURI, v17);
-    objc_storeStrong(&v20->_username, a5);
+    objc_storeStrong(&v20->_username, username);
     tokenRequestURI = v20->_tokenRequestURI;
     v20->_tokenRequestURI = @"https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
 
@@ -58,96 +58,96 @@
     v20->_clientID = v22;
 
     v24 = objc_alloc_init(MEMORY[0x277CCAD78]);
-    v25 = [v24 UUIDString];
+    uUIDString = [v24 UUIDString];
     state = v20->_state;
-    v20->_state = v25;
+    v20->_state = uUIDString;
 
     v27 = [[DAEASOAuthPKCEChallenge alloc] initWithCodeChallengeMethod:1];
     challenge = v20->_challenge;
     v20->_challenge = v27;
 
-    objc_storeStrong(&v20->_claimsChallenge, a7);
-    v20->_isOnPrem = a8;
+    objc_storeStrong(&v20->_claimsChallenge, claims);
+    v20->_isOnPrem = prem;
   }
 
   return v20;
 }
 
-- (void)setAuthFlowCompletion:(id)a3
+- (void)setAuthFlowCompletion:(id)completion
 {
-  v4 = MEMORY[0x24C1BC830](a3, a2);
+  v4 = MEMORY[0x24C1BC830](completion, a2);
   completion = self->_completion;
   self->_completion = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)authURLForUsername:(id)a3 originalAuthURL:(id)a4
+- (id)authURLForUsername:(id)username originalAuthURL:(id)l
 {
-  v19 = a4;
-  v18 = a3;
-  v6 = [(DAEASOAuthFlowController *)self oauthType];
-  v7 = [(DAEASOAuthFlowController *)self easEndPoint];
-  v8 = [DAEASOAuthClient defaultScopeForOAuthType:v6 withResourceIdentifier:v7 forToken:0 isOnPrem:[(DAEASOAuthFlowController *)self isOnPrem]];
+  lCopy = l;
+  usernameCopy = username;
+  oauthType = [(DAEASOAuthFlowController *)self oauthType];
+  easEndPoint = [(DAEASOAuthFlowController *)self easEndPoint];
+  v8 = [DAEASOAuthClient defaultScopeForOAuthType:oauthType withResourceIdentifier:easEndPoint forToken:0 isOnPrem:[(DAEASOAuthFlowController *)self isOnPrem]];
 
-  v9 = [(DAEASOAuthFlowController *)self clientID];
-  v10 = [(DAEASOAuthFlowController *)self redirectURI];
-  v11 = v10;
-  if (!v10)
+  clientID = [(DAEASOAuthFlowController *)self clientID];
+  redirectURI = [(DAEASOAuthFlowController *)self redirectURI];
+  v11 = redirectURI;
+  if (!redirectURI)
   {
     v11 = +[DAEASOAuthClient clientRedirect];
   }
 
-  v12 = [(DAEASOAuthFlowController *)self state];
-  v13 = [(DAEASOAuthFlowController *)self challenge];
-  v14 = [v13 codeChallenge];
-  v15 = [(DAEASOAuthFlowController *)self challenge];
-  v16 = +[DAEASOAuthRequest urlForOAuthURI:clientID:redirectURI:scope:username:state:codeChallenge:codeChallengeMethod:](DAEASOAuthRequest, "urlForOAuthURI:clientID:redirectURI:scope:username:state:codeChallenge:codeChallengeMethod:", v19, v9, v11, v8, v18, v12, v14, [v15 codeChallengeMethod]);
+  state = [(DAEASOAuthFlowController *)self state];
+  challenge = [(DAEASOAuthFlowController *)self challenge];
+  codeChallenge = [challenge codeChallenge];
+  challenge2 = [(DAEASOAuthFlowController *)self challenge];
+  v16 = +[DAEASOAuthRequest urlForOAuthURI:clientID:redirectURI:scope:username:state:codeChallenge:codeChallengeMethod:](DAEASOAuthRequest, "urlForOAuthURI:clientID:redirectURI:scope:username:state:codeChallenge:codeChallengeMethod:", lCopy, clientID, v11, v8, usernameCopy, state, codeChallenge, [challenge2 codeChallengeMethod]);
 
-  if (!v10)
+  if (!redirectURI)
   {
   }
 
   return v16;
 }
 
-- (id)onPremAuthURLForUsername:(id)a3 originalAuthURL:(id)a4 resource:(id)a5
+- (id)onPremAuthURLForUsername:(id)username originalAuthURL:(id)l resource:(id)resource
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DAEASOAuthFlowController *)self clientID];
-  v12 = [(DAEASOAuthFlowController *)self redirectURI];
-  v13 = v12;
-  if (!v12)
+  resourceCopy = resource;
+  lCopy = l;
+  usernameCopy = username;
+  clientID = [(DAEASOAuthFlowController *)self clientID];
+  redirectURI = [(DAEASOAuthFlowController *)self redirectURI];
+  v13 = redirectURI;
+  if (!redirectURI)
   {
     v13 = +[DAEASOAuthClient clientRedirect];
   }
 
-  v14 = [(DAEASOAuthFlowController *)self state];
-  v15 = [(DAEASOAuthFlowController *)self claimsChallenge];
-  v16 = [DAEASOAuthRequest urlForOnPremOAuthURI:v9 clientID:v11 redirectURI:v13 username:v10 state:v14 resource:v8 claims:v15];
+  state = [(DAEASOAuthFlowController *)self state];
+  claimsChallenge = [(DAEASOAuthFlowController *)self claimsChallenge];
+  v16 = [DAEASOAuthRequest urlForOnPremOAuthURI:lCopy clientID:clientID redirectURI:v13 username:usernameCopy state:state resource:resourceCopy claims:claimsChallenge];
 
-  if (!v12)
+  if (!redirectURI)
   {
   }
 
   return v16;
 }
 
-- (id)requestForAuthURL:(id)a3
+- (id)requestForAuthURL:(id)l
 {
-  v3 = [DAEASOAuthRequest requestForURL:a3];
+  v3 = [DAEASOAuthRequest requestForURL:l];
   v4 = [v3 mutableCopy];
 
   return v4;
 }
 
-- (BOOL)shouldHideWebViewForLoadWithRequest:(id)a3
+- (BOOL)shouldHideWebViewForLoadWithRequest:(id)request
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 URL];
+  requestCopy = request;
+  v5 = [requestCopy URL];
   v6 = [DAEASOAuthRequest urlPageWillContainAuthorizationCode:v5];
 
   if (v6)
@@ -161,10 +161,10 @@
       _os_log_impl(&dword_247E05000, v7, v9, "DAEASOAuthFlowController shouldHideWebViewForLoadWithRequest: waiting for authentication code from page reload URL", buf, 2u);
     }
 
-    v10 = [DAEASOAuthRequest authCodeFromRequest:v4];
-    v11 = [DAEASOAuthRequest stateFromRequest:v4];
-    v12 = [DAEASOAuthRequest errorDomainFromRequest:v4];
-    v13 = [DAEASOAuthRequest errorDescriptionFromRequest:v4];
+    v10 = [DAEASOAuthRequest authCodeFromRequest:requestCopy];
+    v11 = [DAEASOAuthRequest stateFromRequest:requestCopy];
+    v12 = [DAEASOAuthRequest errorDomainFromRequest:requestCopy];
+    v13 = [DAEASOAuthRequest errorDescriptionFromRequest:requestCopy];
     if (v12 | v13)
     {
       v14 = DALoggingwithCategory();
@@ -195,16 +195,16 @@
           _os_log_impl(&dword_247E05000, v20, v9, "Exchange Hotmail OAuth: Found an Auth Code String", buf, 2u);
         }
 
-        v21 = [(DAEASOAuthFlowController *)self challenge];
-        v22 = [v21 codeVerifier];
-        v23 = [(DAEASOAuthFlowController *)self claimsChallenge];
+        challenge = [(DAEASOAuthFlowController *)self challenge];
+        codeVerifier = [challenge codeVerifier];
+        claimsChallenge = [(DAEASOAuthFlowController *)self claimsChallenge];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __64__DAEASOAuthFlowController_shouldHideWebViewForLoadWithRequest___block_invoke;
         v30[3] = &unk_278EE0568;
         v31 = v10;
-        v32 = self;
-        [(DAEASOAuthFlowController *)self exchangeAuthCode:v31 codeVerifier:v22 claims:v23 forTokensAndUsernameWithCompletion:v30];
+        selfCopy = self;
+        [(DAEASOAuthFlowController *)self exchangeAuthCode:v31 codeVerifier:codeVerifier claims:claimsChallenge forTokensAndUsernameWithCompletion:v30];
       }
 
       else
@@ -213,13 +213,13 @@
         v25 = *(v8 + 3);
         if (os_log_type_enabled(v24, v25))
         {
-          v26 = [(DAEASOAuthFlowController *)self state];
+          state = [(DAEASOAuthFlowController *)self state];
           *buf = 138412802;
           v34 = v10;
           v35 = 2112;
           v36 = v29;
           v37 = 2112;
-          v38 = v26;
+          v38 = state;
           _os_log_impl(&dword_247E05000, v24, v25, "Exchange Hotmail OAuth:Failed with authCode %@, state %@ self.state %@", buf, 0x20u);
         }
 
@@ -327,16 +327,16 @@ void __64__DAEASOAuthFlowController_shouldHideWebViewForLoadWithRequest___block_
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_urlRequestForOAuthTokenFromAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5
+- (id)_urlRequestForOAuthTokenFromAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DAEASOAuthFlowController *)self redirectURI];
-  v12 = v11;
-  if (v11)
+  claimsCopy = claims;
+  verifierCopy = verifier;
+  codeCopy = code;
+  redirectURI = [(DAEASOAuthFlowController *)self redirectURI];
+  v12 = redirectURI;
+  if (redirectURI)
   {
-    v13 = v11;
+    v13 = redirectURI;
   }
 
   else
@@ -346,56 +346,56 @@ void __64__DAEASOAuthFlowController_shouldHideWebViewForLoadWithRequest___block_
 
   v14 = v13;
 
-  v15 = [(DAEASOAuthFlowController *)self oauthType];
-  v16 = [(DAEASOAuthFlowController *)self easEndPoint];
-  v17 = [DAEASOAuthClient defaultScopeForOAuthType:v15 withResourceIdentifier:v16 isOnPrem:[(DAEASOAuthFlowController *)self isOnPrem]];
+  oauthType = [(DAEASOAuthFlowController *)self oauthType];
+  easEndPoint = [(DAEASOAuthFlowController *)self easEndPoint];
+  v17 = [DAEASOAuthClient defaultScopeForOAuthType:oauthType withResourceIdentifier:easEndPoint isOnPrem:[(DAEASOAuthFlowController *)self isOnPrem]];
 
-  v18 = [(DAEASOAuthFlowController *)self tokenRequestURI];
-  v19 = [(DAEASOAuthFlowController *)self clientID];
-  v20 = [DAEASOAuthTokenRequest urlRequestForTokenRequestURI:v18 clientID:v19 redirectURI:v14 authCode:v10 scope:v17 codeVerifier:v9 claims:v8];
+  tokenRequestURI = [(DAEASOAuthFlowController *)self tokenRequestURI];
+  clientID = [(DAEASOAuthFlowController *)self clientID];
+  v20 = [DAEASOAuthTokenRequest urlRequestForTokenRequestURI:tokenRequestURI clientID:clientID redirectURI:v14 authCode:codeCopy scope:v17 codeVerifier:verifierCopy claims:claimsCopy];
 
   return v20;
 }
 
-- (void)exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensAndUsernameWithCompletion:(id)a6
+- (void)exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensAndUsernameWithCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(DAEASOAuthFlowController *)self oauthURI];
+  codeCopy = code;
+  verifierCopy = verifier;
+  claimsCopy = claims;
+  completionCopy = completion;
+  oauthURI = [(DAEASOAuthFlowController *)self oauthURI];
 
-  if (v14)
+  if (oauthURI)
   {
     if ([(DAEASOAuthFlowController *)self isOnPrem])
     {
       v15 = MEMORY[0x277CBEBC0];
-      v16 = [(DAEASOAuthFlowController *)self oauthURI];
-      v17 = [v15 URLWithString:v16];
+      oauthURI2 = [(DAEASOAuthFlowController *)self oauthURI];
+      v17 = [v15 URLWithString:oauthURI2];
 
-      v18 = [v17 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [v17 URLByDeletingLastPathComponent];
 
-      v19 = [v18 URLByAppendingPathComponent:@"token"];
+      v19 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"token"];
 
-      v20 = [v19 absoluteString];
-      [(DAEASOAuthFlowController *)self setTokenRequestURI:v20];
+      absoluteString = [v19 absoluteString];
+      [(DAEASOAuthFlowController *)self setTokenRequestURI:absoluteString];
 
-      [(DAEASOAuthFlowController *)self _exchangeAuthCode:v10 codeVerifier:v11 claims:v12 forTokensAndUsernameWithCompletion:v13];
+      [(DAEASOAuthFlowController *)self _exchangeAuthCode:codeCopy codeVerifier:verifierCopy claims:claimsCopy forTokensAndUsernameWithCompletion:completionCopy];
     }
 
     else
     {
-      v25 = [(DAEASOAuthFlowController *)self oauthURI];
+      oauthURI3 = [(DAEASOAuthFlowController *)self oauthURI];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __100__DAEASOAuthFlowController_exchangeAuthCode_codeVerifier_claims_forTokensAndUsernameWithCompletion___block_invoke;
       v26[3] = &unk_278EE05B8;
       v26[4] = self;
-      v30 = v13;
-      v27 = v10;
-      v28 = v11;
-      v29 = v12;
-      [(DAEASOAuthFlowController *)self retrieveOpenIDMetadataFromURI:v25 withCompletion:v26];
+      v30 = completionCopy;
+      v27 = codeCopy;
+      v28 = verifierCopy;
+      v29 = claimsCopy;
+      [(DAEASOAuthFlowController *)self retrieveOpenIDMetadataFromURI:oauthURI3 withCompletion:v26];
     }
   }
 
@@ -411,7 +411,7 @@ void __64__DAEASOAuthFlowController_shouldHideWebViewForLoadWithRequest___block_
 
     v23 = objc_alloc(MEMORY[0x277CCA9B8]);
     v24 = [v23 initWithDomain:*MEMORY[0x277D038E0] code:93 userInfo:0];
-    (*(v13 + 2))(v13, 0, 0, 0, 0, v24);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, v24);
   }
 }
 
@@ -487,19 +487,19 @@ uint64_t __100__DAEASOAuthFlowController_exchangeAuthCode_codeVerifier_claims_fo
   }
 }
 
-- (void)retrieveOpenIDMetadataFromURI:(id)a3 withCompletion:(id)a4
+- (void)retrieveOpenIDMetadataFromURI:(id)i withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__DAEASOAuthFlowController_retrieveOpenIDMetadataFromURI_withCompletion___block_invoke;
   block[3] = &unk_278EE0608;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = iCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = iCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -587,19 +587,19 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveJWKSDataFromURI:(id)a3 withCompletion:(id)a4
+- (void)retrieveJWKSDataFromURI:(id)i withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__DAEASOAuthFlowController_retrieveJWKSDataFromURI_withCompletion___block_invoke;
   block[3] = &unk_278EE0608;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = iCopy;
+  selfCopy = self;
+  v13 = completionCopy;
+  v8 = completionCopy;
+  v9 = iCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -655,17 +655,17 @@ void __67__DAEASOAuthFlowController_retrieveJWKSDataFromURI_withCompletion___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensAndUsernameWithCompletion:(id)a6
+- (void)_exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensAndUsernameWithCompletion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__DAEASOAuthFlowController__exchangeAuthCode_codeVerifier_claims_forTokensAndUsernameWithCompletion___block_invoke;
   v12[3] = &unk_278EE0630;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(DAEASOAuthFlowController *)self _exchangeAuthCode:a3 codeVerifier:a4 claims:a5 forTokensWithCompletion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(DAEASOAuthFlowController *)self _exchangeAuthCode:code codeVerifier:verifier claims:claims forTokensWithCompletion:v12];
 }
 
 void __101__DAEASOAuthFlowController__exchangeAuthCode_codeVerifier_claims_forTokensAndUsernameWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -695,26 +695,26 @@ void __101__DAEASOAuthFlowController__exchangeAuthCode_codeVerifier_claims_forTo
   }
 }
 
-- (void)_exchangeAuthCode:(id)a3 codeVerifier:(id)a4 claims:(id)a5 forTokensWithCompletion:(id)a6
+- (void)_exchangeAuthCode:(id)code codeVerifier:(id)verifier claims:(id)claims forTokensWithCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  verifierCopy = verifier;
+  claimsCopy = claims;
+  completionCopy = completion;
   v14 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__DAEASOAuthFlowController__exchangeAuthCode_codeVerifier_claims_forTokensWithCompletion___block_invoke;
   block[3] = &unk_278EE0680;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = codeCopy;
+  v21 = verifierCopy;
+  v22 = claimsCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = claimsCopy;
+  v17 = verifierCopy;
+  v18 = codeCopy;
   dispatch_async(v14, block);
 }
 
@@ -853,44 +853,44 @@ LABEL_17:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_assignConnectionPropertiesToSessionConfiguration:(id)a3
+- (void)_assignConnectionPropertiesToSessionConfiguration:(id)configuration
 {
   accountId = self->_accountId;
-  v4 = a3;
-  [v4 set_sourceApplicationSecondaryIdentifier:accountId];
-  [v4 set_sourceApplicationBundleIdentifier:*MEMORY[0x277D07A08]];
+  configurationCopy = configuration;
+  [configurationCopy set_sourceApplicationSecondaryIdentifier:accountId];
+  [configurationCopy set_sourceApplicationBundleIdentifier:*MEMORY[0x277D07A08]];
 }
 
-+ (id)upgradeAuthorizationEndpoint:(id)a3
++ (id)upgradeAuthorizationEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+  endpointCopy = endpoint;
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:endpointCopy];
   v5 = v4;
   if (v4 && ([v4 host], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, objc_msgSend(v5, "path"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [v5 lastPathComponent];
-    v10 = [v5 URLByDeletingLastPathComponent];
+    lastPathComponent = [v5 lastPathComponent];
+    uRLByDeletingLastPathComponent = [v5 URLByDeletingLastPathComponent];
 
-    v11 = [v10 lastPathComponent];
-    v12 = [v11 caseInsensitiveCompare:@"v2.0"];
+    lastPathComponent2 = [uRLByDeletingLastPathComponent lastPathComponent];
+    v12 = [lastPathComponent2 caseInsensitiveCompare:@"v2.0"];
 
     if (v12)
     {
-      v13 = [v10 URLByAppendingPathComponent:@"v2.0"];
+      v13 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"v2.0"];
 
-      v10 = [v13 URLByAppendingPathComponent:v9];
+      uRLByDeletingLastPathComponent = [v13 URLByAppendingPathComponent:lastPathComponent];
 
-      v14 = [v10 absoluteString];
+      absoluteString = [uRLByDeletingLastPathComponent absoluteString];
     }
 
     else
     {
-      v14 = v3;
+      absoluteString = endpointCopy;
     }
 
-    v15 = v14;
+    v15 = absoluteString;
 
-    v5 = v10;
+    v5 = uRLByDeletingLastPathComponent;
   }
 
   else

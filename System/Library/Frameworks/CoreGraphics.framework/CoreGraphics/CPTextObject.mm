@@ -3,17 +3,17 @@
 - (float)maxFontSize;
 - (void)calculateMetrics;
 - (void)clearCachedInfo;
-- (void)translateObjectYBy:(double)a3;
+- (void)translateObjectYBy:(double)by;
 @end
 
 @implementation CPTextObject
 
-- (void)translateObjectYBy:(double)a3
+- (void)translateObjectYBy:(double)by
 {
   v5.receiver = self;
   v5.super_class = CPTextObject;
   [(CPChunk *)&v5 translateObjectYBy:?];
-  self->anchor.y = self->anchor.y + a3;
+  self->anchor.y = self->anchor.y + by;
 }
 
 - (void)clearCachedInfo

@@ -1,33 +1,33 @@
 @interface FLNetworkStatePrompter
-- (FLNetworkStatePrompter)initWithPresenter:(id)a3;
-- (id)_cancelActionWithCompletionHandler:(id)a3;
-- (id)_disableAirplaneActionWithCompletionHandler:(id)a3;
-- (void)_mainQueue_promptToDisableAirplaneModeWithCompletionHandler:(id)a3;
+- (FLNetworkStatePrompter)initWithPresenter:(id)presenter;
+- (id)_cancelActionWithCompletionHandler:(id)handler;
+- (id)_disableAirplaneActionWithCompletionHandler:(id)handler;
+- (void)_mainQueue_promptToDisableAirplaneModeWithCompletionHandler:(id)handler;
 - (void)_mainQueue_verificationFailedAlert;
 - (void)dealloc;
-- (void)preflightNetworkStateWithCompletionHandler:(id)a3;
+- (void)preflightNetworkStateWithCompletionHandler:(id)handler;
 @end
 
 @implementation FLNetworkStatePrompter
 
-- (FLNetworkStatePrompter)initWithPresenter:(id)a3
+- (FLNetworkStatePrompter)initWithPresenter:(id)presenter
 {
-  v5 = a3;
+  presenterCopy = presenter;
   v9.receiver = self;
   v9.super_class = FLNetworkStatePrompter;
   v6 = [(FLNetworkStatePrompter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presenter, a3);
+    objc_storeStrong(&v6->_presenter, presenter);
   }
 
   return v7;
 }
 
-- (void)preflightNetworkStateWithCompletionHandler:(id)a3
+- (void)preflightNetworkStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,8 +41,8 @@
   v8[2] = __69__FLNetworkStatePrompter_preflightNetworkStateWithCompletionHandler___block_invoke;
   v8[3] = &unk_278E35B70;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(v6, v8);
 }
 
@@ -118,10 +118,10 @@ uint64_t __69__FLNetworkStatePrompter_preflightNetworkStateWithCompletionHandler
   }
 }
 
-- (void)_mainQueue_promptToDisableAirplaneModeWithCompletionHandler:(id)a3
+- (void)_mainQueue_promptToDisableAirplaneModeWithCompletionHandler:(id)handler
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -130,9 +130,9 @@ uint64_t __69__FLNetworkStatePrompter_preflightNetworkStateWithCompletionHandler
     _os_log_impl(&dword_245383000, v5, OS_LOG_TYPE_DEFAULT, "Prompting to disable airplane mode...", buf, 2u);
   }
 
-  v6 = [(FLNetworkStatePrompter *)self _disableAirplaneActionWithCompletionHandler:v4];
+  v6 = [(FLNetworkStatePrompter *)self _disableAirplaneActionWithCompletionHandler:handlerCopy];
   v15[0] = v6;
-  v7 = [(FLNetworkStatePrompter *)self _cancelActionWithCompletionHandler:v4];
+  v7 = [(FLNetworkStatePrompter *)self _cancelActionWithCompletionHandler:handlerCopy];
 
   v15[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
@@ -151,16 +151,16 @@ uint64_t __69__FLNetworkStatePrompter_preflightNetworkStateWithCompletionHandler
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_disableAirplaneActionWithCompletionHandler:(id)a3
+- (id)_disableAirplaneActionWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = FLLoc();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__FLNetworkStatePrompter__disableAirplaneActionWithCompletionHandler___block_invoke;
   v8[3] = &unk_278E35BE8;
-  v9 = v3;
-  v5 = v3;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [FLAlertControllerAction actionWithTitle:v4 style:0 handler:v8];
 
   return v6;
@@ -224,16 +224,16 @@ void __70__FLNetworkStatePrompter__disableAirplaneActionWithCompletionHandler___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cancelActionWithCompletionHandler:(id)a3
+- (id)_cancelActionWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = FLLoc();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__FLNetworkStatePrompter__cancelActionWithCompletionHandler___block_invoke;
   v8[3] = &unk_278E35BE8;
-  v9 = v3;
-  v5 = v3;
+  v9 = handlerCopy;
+  v5 = handlerCopy;
   v6 = [FLAlertControllerAction actionWithTitle:v4 style:1 handler:v8];
 
   return v6;
@@ -283,7 +283,7 @@ void __61__FLNetworkStatePrompter__cancelActionWithCompletionHandler___block_inv
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_245383000, v3, OS_LOG_TYPE_DEFAULT, "<%@> : checking out...", buf, 0xCu);
   }
 

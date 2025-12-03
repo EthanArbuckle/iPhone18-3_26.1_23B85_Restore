@@ -5,24 +5,24 @@
 - (BOOL)isControlDown;
 - (BOOL)isOptionDown;
 - (BOOL)isShiftDown;
-- (id)_keyChordForUnicodeCharacter:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_keyChordForUnicodeCharacter:(id)character;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)modifierMask;
 @end
 
 @implementation AXSSKeyboardEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   [v4 setKeyCode:{-[AXSSKeyboardEvent keyCode](self, "keyCode")}];
-  v5 = [(AXSSKeyboardEvent *)self unicodeCharacter];
-  [v4 setUnicodeCharacter:v5];
+  unicodeCharacter = [(AXSSKeyboardEvent *)self unicodeCharacter];
+  [v4 setUnicodeCharacter:unicodeCharacter];
 
-  v6 = [(AXSSKeyboardEvent *)self backupUnicodeCharacter];
-  [v4 setBackupUnicodeCharacter:v6];
+  backupUnicodeCharacter = [(AXSSKeyboardEvent *)self backupUnicodeCharacter];
+  [v4 setBackupUnicodeCharacter:backupUnicodeCharacter];
 
   [v4 setIsDownEvent:{-[AXSSKeyboardEvent isDownEvent](self, "isDownEvent")}];
   [v4 setIsRepeatEvent:{-[AXSSKeyboardEvent isRepeatEvent](self, "isRepeatEvent")}];
@@ -80,79 +80,79 @@
 
 - (int64_t)modifierMask
 {
-  v3 = [(AXSSKeyboardEvent *)self isCommandDown];
+  isCommandDown = [(AXSSKeyboardEvent *)self isCommandDown];
   if ([(AXSSKeyboardEvent *)self isOptionDown])
   {
-    v3 |= 2uLL;
+    isCommandDown |= 2uLL;
   }
 
   if ([(AXSSKeyboardEvent *)self isControlDown])
   {
-    v3 |= 4uLL;
+    isCommandDown |= 4uLL;
   }
 
   if ([(AXSSKeyboardEvent *)self isShiftDown])
   {
-    v3 |= 8uLL;
+    isCommandDown |= 8uLL;
   }
 
   if ([(AXSSKeyboardEvent *)self isFnDown])
   {
-    v3 |= 0x10uLL;
+    isCommandDown |= 0x10uLL;
   }
 
   if ([(AXSSKeyboardEvent *)self isCapsLockDown])
   {
-    return v3 | 0x20;
+    return isCommandDown | 0x20;
   }
 
   else
   {
-    return v3;
+    return isCommandDown;
   }
 }
 
-- (id)_keyChordForUnicodeCharacter:(id)a3
+- (id)_keyChordForUnicodeCharacter:(id)character
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 array];
+  characterCopy = character;
+  array = [v4 array];
   if ([(AXSSKeyboardEvent *)self isCommandDown])
   {
-    [v6 addObject:@"⌘"];
+    [array addObject:@"⌘"];
   }
 
   if ([(AXSSKeyboardEvent *)self isControlDown])
   {
-    [v6 addObject:@"⌃"];
+    [array addObject:@"⌃"];
   }
 
   if ([(AXSSKeyboardEvent *)self isOptionDown])
   {
-    [v6 addObject:@"⌥"];
+    [array addObject:@"⌥"];
   }
 
   if ([(AXSSKeyboardEvent *)self isShiftDown])
   {
-    [v6 addObject:@"⇧"];
+    [array addObject:@"⇧"];
   }
 
   if ([(AXSSKeyboardEvent *)self isFnDown])
   {
-    [v6 addObject:@"Fn"];
+    [array addObject:@"Fn"];
   }
 
   if ([(AXSSKeyboardEvent *)self isCapsLockDown])
   {
-    [v6 addObject:@"⇪"];
+    [array addObject:@"⇪"];
   }
 
-  v7 = [AXSSKeyChord keyFromKeyCode:[(AXSSKeyboardEvent *)self keyCode] unicodeCharacter:v5];
+  v7 = [AXSSKeyChord keyFromKeyCode:[(AXSSKeyboardEvent *)self keyCode] unicodeCharacter:characterCopy];
 
   if (v7)
   {
-    [v6 addObject:v7];
-    v8 = [AXSSKeyChord keyChordWithKeys:v6];
+    [array addObject:v7];
+    v8 = [AXSSKeyChord keyChordWithKeys:array];
   }
 
   else
@@ -165,16 +165,16 @@
 
 - (AXSSKeyChord)keyChord
 {
-  v3 = [(AXSSKeyboardEvent *)self unicodeCharacter];
-  v4 = [(AXSSKeyboardEvent *)self _keyChordForUnicodeCharacter:v3];
+  unicodeCharacter = [(AXSSKeyboardEvent *)self unicodeCharacter];
+  v4 = [(AXSSKeyboardEvent *)self _keyChordForUnicodeCharacter:unicodeCharacter];
 
   return v4;
 }
 
 - (AXSSKeyChord)backupKeyChord
 {
-  v3 = [(AXSSKeyboardEvent *)self backupUnicodeCharacter];
-  v4 = [(AXSSKeyboardEvent *)self _keyChordForUnicodeCharacter:v3];
+  backupUnicodeCharacter = [(AXSSKeyboardEvent *)self backupUnicodeCharacter];
+  v4 = [(AXSSKeyboardEvent *)self _keyChordForUnicodeCharacter:backupUnicodeCharacter];
 
   return v4;
 }
@@ -185,24 +185,24 @@
   v24.receiver = self;
   v24.super_class = AXSSKeyboardEvent;
   v22 = [(AXSSKeyboardEvent *)&v24 description];
-  v21 = [(AXSSKeyboardEvent *)self keyCode];
-  v20 = [(AXSSKeyboardEvent *)self isDownEvent];
-  v19 = [(AXSSKeyboardEvent *)self isRepeatEvent];
-  v18 = [(AXSSKeyboardEvent *)self isModifierChangedEvent];
-  v17 = [(AXSSKeyboardEvent *)self isCommandDown];
-  v16 = [(AXSSKeyboardEvent *)self isLeftCommandDown];
-  v15 = [(AXSSKeyboardEvent *)self isRightCommandDown];
-  v3 = [(AXSSKeyboardEvent *)self isOptionDown];
-  v4 = [(AXSSKeyboardEvent *)self isLeftOptionDown];
-  v5 = [(AXSSKeyboardEvent *)self isRightOptionDown];
-  v6 = [(AXSSKeyboardEvent *)self isControlDown];
-  v7 = [(AXSSKeyboardEvent *)self isShiftDown];
-  v8 = [(AXSSKeyboardEvent *)self isLeftShiftDown];
-  v9 = [(AXSSKeyboardEvent *)self isRightShiftDown];
-  v10 = [(AXSSKeyboardEvent *)self isFnDown];
-  v11 = [(AXSSKeyboardEvent *)self isCapsLockDown];
-  v12 = [(AXSSKeyboardEvent *)self unicodeCharacter];
-  v13 = [v23 stringWithFormat:@"<%@: keyCode=%lu isDownEvent=%d isRepeatEvent=%d isModifierChangedEvent=%d isCommandDown=%d isLeftCommandDown=%d isRightCommandDown=%d isOptionDown=%d isLeftOptionDown=%d isRightOptionDown=%d isControlDown=%d isShiftDown=%d isLeftShiftDown=%d isRightShiftDown=%d isFnDown=%d isCapsLockDown=%d unicodeCharacter=%@", v22, v21, v20, v19, v18, v17, v16, v15, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  keyCode = [(AXSSKeyboardEvent *)self keyCode];
+  isDownEvent = [(AXSSKeyboardEvent *)self isDownEvent];
+  isRepeatEvent = [(AXSSKeyboardEvent *)self isRepeatEvent];
+  isModifierChangedEvent = [(AXSSKeyboardEvent *)self isModifierChangedEvent];
+  isCommandDown = [(AXSSKeyboardEvent *)self isCommandDown];
+  isLeftCommandDown = [(AXSSKeyboardEvent *)self isLeftCommandDown];
+  isRightCommandDown = [(AXSSKeyboardEvent *)self isRightCommandDown];
+  isOptionDown = [(AXSSKeyboardEvent *)self isOptionDown];
+  isLeftOptionDown = [(AXSSKeyboardEvent *)self isLeftOptionDown];
+  isRightOptionDown = [(AXSSKeyboardEvent *)self isRightOptionDown];
+  isControlDown = [(AXSSKeyboardEvent *)self isControlDown];
+  isShiftDown = [(AXSSKeyboardEvent *)self isShiftDown];
+  isLeftShiftDown = [(AXSSKeyboardEvent *)self isLeftShiftDown];
+  isRightShiftDown = [(AXSSKeyboardEvent *)self isRightShiftDown];
+  isFnDown = [(AXSSKeyboardEvent *)self isFnDown];
+  isCapsLockDown = [(AXSSKeyboardEvent *)self isCapsLockDown];
+  unicodeCharacter = [(AXSSKeyboardEvent *)self unicodeCharacter];
+  v13 = [v23 stringWithFormat:@"<%@: keyCode=%lu isDownEvent=%d isRepeatEvent=%d isModifierChangedEvent=%d isCommandDown=%d isLeftCommandDown=%d isRightCommandDown=%d isOptionDown=%d isLeftOptionDown=%d isRightOptionDown=%d isControlDown=%d isShiftDown=%d isLeftShiftDown=%d isRightShiftDown=%d isFnDown=%d isCapsLockDown=%d unicodeCharacter=%@", v22, keyCode, isDownEvent, isRepeatEvent, isModifierChangedEvent, isCommandDown, isLeftCommandDown, isRightCommandDown, isOptionDown, isLeftOptionDown, isRightOptionDown, isControlDown, isShiftDown, isLeftShiftDown, isRightShiftDown, isFnDown, isCapsLockDown, unicodeCharacter];
 
   return v13;
 }

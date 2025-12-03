@@ -1,32 +1,32 @@
 @interface SUStorePageDataProvider
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
+- (BOOL)parseData:(id)data returningError:(id *)error;
 - (BOOL)shouldProcessTouchIDDialogs;
-- (void)_loadPersonalizedStoreOffersForPage:(id)a3;
+- (void)_loadPersonalizedStoreOffersForPage:(id)page;
 @end
 
 @implementation SUStorePageDataProvider
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [(ISDataProvider *)self contentType];
-  if ([v7 isEqualToString:@"text/html"])
+  dataCopy = data;
+  contentType = [(ISDataProvider *)self contentType];
+  if ([contentType isEqualToString:@"text/html"])
   {
-    [(ISDataProvider *)self setOutput:v6];
+    [(ISDataProvider *)self setOutput:dataCopy];
     LOBYTE(v8) = 1;
     [(SUStorePageDataProvider *)self setOutputType:1];
     goto LABEL_7;
   }
 
-  if (![v7 hasPrefix:@"image"])
+  if (![contentType hasPrefix:@"image"])
   {
-    if ([v7 rangeOfString:@"itml" options:1] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([contentType rangeOfString:@"itml" options:1] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(ISDataProvider *)self setOutput:v6];
+      [(ISDataProvider *)self setOutput:dataCopy];
       [(SUStorePageDataProvider *)self setOutputType:5];
       v10 = 0;
       LOBYTE(v8) = 1;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -34,8 +34,8 @@
       goto LABEL_8;
     }
 
-    v13 = [(SUStorePageDataProvider *)self propertyListDataProvider];
-    v14 = [v13 copy];
+    propertyListDataProvider = [(SUStorePageDataProvider *)self propertyListDataProvider];
+    v14 = [propertyListDataProvider copy];
 
     if (!v14)
     {
@@ -44,36 +44,36 @@
 
     [v14 configureFromProvider:self];
     [v14 setShouldPostFooterSectionChanged:0];
-    v31 = [v14 shouldProcessAuthenticationDialogs];
-    v34 = [(SUStorePageDataProvider *)self shouldProcessTouchIDDialogs];
-    v32 = [v14 shouldProcessDialogs];
-    v15 = [(SUStorePageDataProvider *)self clientInterface];
-    if (v15)
+    shouldProcessAuthenticationDialogs = [v14 shouldProcessAuthenticationDialogs];
+    shouldProcessTouchIDDialogs = [(SUStorePageDataProvider *)self shouldProcessTouchIDDialogs];
+    shouldProcessDialogs = [v14 shouldProcessDialogs];
+    clientInterface = [(SUStorePageDataProvider *)self clientInterface];
+    if (clientInterface)
     {
       [v14 setShouldProcessAuthenticationDialogs:0];
       [v14 setShouldProcessDialogs:0];
     }
 
     v42 = 0;
-    v8 = [v14 parseData:v6 returningError:&v42];
+    v8 = [v14 parseData:dataCopy returningError:&v42];
     v10 = v42;
-    v16 = [v14 output];
+    output = [v14 output];
     if (!v8)
     {
 LABEL_27:
-      if (!v15)
+      if (!clientInterface)
       {
         goto LABEL_48;
       }
 
-      v20 = [v16 objectForKey:*MEMORY[0x1E69E4828]];
+      v20 = [output objectForKey:*MEMORY[0x1E69E4828]];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_47:
 
 LABEL_48:
-        if (!a4)
+        if (!error)
         {
           goto LABEL_9;
         }
@@ -85,10 +85,10 @@ LABEL_48:
       v21 = [objc_alloc(MEMORY[0x1E69E4750]) initWithDialogDictionary:v20];
       if ([v21 kind] == 1)
       {
-        if (v34)
+        if (shouldProcessTouchIDDialogs)
         {
-          v22 = [v16 objectForKey:*MEMORY[0x1E69E4840]];
-          v35 = [v16 objectForKey:*MEMORY[0x1E69E4838]];
+          v22 = [output objectForKey:*MEMORY[0x1E69E4840]];
+          v35 = [output objectForKey:*MEMORY[0x1E69E4838]];
           objc_opt_class();
           v33 = v22;
           if (objc_opt_isKindOfClass())
@@ -114,7 +114,7 @@ LABEL_48:
           else
           {
             v10 = v28;
-            if (!v28 && ((v31 ^ 1) & 1) == 0)
+            if (!v28 && ((shouldProcessAuthenticationDialogs ^ 1) & 1) == 0)
             {
               v40 = 0;
               LOBYTE(v8) = [(ISDataProvider *)self runAuthorizationDialog:v21 error:&v40];
@@ -129,12 +129,12 @@ LABEL_48:
           goto LABEL_45;
         }
 
-        if (v31)
+        if (shouldProcessAuthenticationDialogs)
         {
           v39 = v10;
-          v26 = self;
+          selfCopy = self;
           v24 = v21;
-          LOBYTE(v8) = [(ISDataProvider *)v26 runAuthorizationDialog:v21 error:&v39];
+          LOBYTE(v8) = [(ISDataProvider *)selfCopy runAuthorizationDialog:v21 error:&v39];
           v27 = v39;
           v25 = v10;
           v10 = v27;
@@ -142,13 +142,13 @@ LABEL_48:
         }
       }
 
-      else if (v32)
+      else if (shouldProcessDialogs)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __52__SUStorePageDataProvider_parseData_returningError___block_invoke;
         block[3] = &unk_1E81644A8;
-        v37 = v15;
+        v37 = clientInterface;
         v24 = v21;
         v38 = v21;
         dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -168,19 +168,19 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    if ([SUStructuredPage pageTypeForStorePageDictionary:v16]== 6)
+    if ([SUStructuredPage pageTypeForStorePageDictionary:output]== 6)
     {
-      [(ISDataProvider *)self setOutput:v16];
-      v17 = self;
+      [(ISDataProvider *)self setOutput:output];
+      selfCopy3 = self;
       v18 = 3;
     }
 
     else
     {
-      if ([v7 caseInsensitiveCompare:@"application/json"])
+      if ([contentType caseInsensitiveCompare:@"application/json"])
       {
         v19 = objc_alloc_init(SUStructuredPage);
-        if ([(SUStructuredPage *)v19 loadFromDictionary:v16])
+        if ([(SUStructuredPage *)v19 loadFromDictionary:output])
         {
           [(SUStorePageDataProvider *)self _loadPersonalizedStoreOffersForPage:v19];
         }
@@ -191,18 +191,18 @@ LABEL_46:
         goto LABEL_26;
       }
 
-      [(ISDataProvider *)self setOutput:v16];
-      v17 = self;
+      [(ISDataProvider *)self setOutput:output];
+      selfCopy3 = self;
       v18 = 4;
     }
 
-    [(SUStorePageDataProvider *)v17 setOutputType:v18];
+    [(SUStorePageDataProvider *)selfCopy3 setOutputType:v18];
 LABEL_26:
     [(ISDataProvider *)self migrateOutputFromSubProvider:v14];
     goto LABEL_27;
   }
 
-  v9 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:v6];
+  v9 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithData:dataCopy];
   LOBYTE(v8) = v9 != 0;
   if (v9)
   {
@@ -212,11 +212,11 @@ LABEL_26:
 
 LABEL_7:
   v10 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_8:
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_9:
@@ -226,34 +226,34 @@ LABEL_9:
 
 - (BOOL)shouldProcessTouchIDDialogs
 {
-  v2 = [(ISDataProvider *)self biometricAuthenticationContext];
-  v3 = v2 != 0;
+  biometricAuthenticationContext = [(ISDataProvider *)self biometricAuthenticationContext];
+  v3 = biometricAuthenticationContext != 0;
 
   return v3;
 }
 
-- (void)_loadPersonalizedStoreOffersForPage:(id)a3
+- (void)_loadPersonalizedStoreOffersForPage:(id)page
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ISDataProvider *)self authenticatedAccountDSID];
-  if (v5)
+  pageCopy = page;
+  authenticatedAccountDSID = [(ISDataProvider *)self authenticatedAccountDSID];
+  if (authenticatedAccountDSID)
   {
-    v6 = v5;
+    requiredUniqueIdentifier = authenticatedAccountDSID;
   }
 
   else
   {
-    v7 = [(ISDataProvider *)self authenticationContext];
-    v6 = [v7 requiredUniqueIdentifier];
+    authenticationContext = [(ISDataProvider *)self authenticationContext];
+    requiredUniqueIdentifier = [authenticationContext requiredUniqueIdentifier];
 
-    if (!v6)
+    if (!requiredUniqueIdentifier)
     {
-      v8 = [MEMORY[0x1E69D4890] defaultStore];
-      v9 = [v8 activeAccount];
-      v6 = [v9 uniqueIdentifier];
+      defaultStore = [MEMORY[0x1E69D4890] defaultStore];
+      activeAccount = [defaultStore activeAccount];
+      requiredUniqueIdentifier = [activeAccount uniqueIdentifier];
 
-      if (!v6)
+      if (!requiredUniqueIdentifier)
       {
         goto LABEL_32;
       }
@@ -261,30 +261,30 @@ LABEL_9:
   }
 
   v42 = objc_alloc_init(MEMORY[0x1E69E47A8]);
-  [v42 setAccountIdentifier:v6];
+  [v42 setAccountIdentifier:requiredUniqueIdentifier];
   v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [v4 itemList];
-  v11 = [v10 copyItems];
+  itemList = [pageCopy itemList];
+  copyItems = [itemList copyItems];
 
-  v12 = [v4 item];
-  v37 = v12;
-  v38 = v6;
-  if (v12)
+  item = [pageCopy item];
+  v37 = item;
+  v38 = requiredUniqueIdentifier;
+  if (item)
   {
-    v13 = v12;
-    if (!v11)
+    v13 = item;
+    if (!copyItems)
     {
-      v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
+      copyItems = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    [v11 addObject:v13];
+    [copyItems addObject:v13];
   }
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v11;
+  obj = copyItems;
   v14 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v14)
   {
@@ -300,12 +300,12 @@ LABEL_9:
         }
 
         v18 = *(*(&v47 + 1) + 8 * i);
-        v19 = [v18 defaultStoreOffer];
-        if (v19)
+        defaultStoreOffer = [v18 defaultStoreOffer];
+        if (defaultStoreOffer)
         {
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lld", objc_msgSend(v18, "itemIdentifier")];
-          v21 = [v18 itemTypeString];
-          [v42 addItemIdentifier:v20 forItemType:v21];
+          itemTypeString = [v18 itemTypeString];
+          [v42 addItemIdentifier:v20 forItemType:itemTypeString];
 
           [v41 setObject:v18 forKey:v20];
         }
@@ -319,11 +319,11 @@ LABEL_9:
 
   v22 = [objc_alloc(MEMORY[0x1E69E47A0]) initWithPersonalizeOffersRequest:v42];
   [v22 main];
-  v23 = [v22 response];
-  if (v23)
+  response = [v22 response];
+  if (response)
   {
     v35 = v22;
-    v36 = v4;
+    v36 = pageCopy;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
@@ -344,22 +344,22 @@ LABEL_9:
           }
 
           v28 = *(*(&v43 + 1) + 8 * j);
-          v29 = [v23 actionParametersForItemIdentifier:v28];
+          v29 = [response actionParametersForItemIdentifier:v28];
           if (v29)
           {
             v30 = [v24 objectForKey:v28];
-            v31 = [v30 defaultStoreOffer];
-            [v31 setBuyParameters:v29];
-            v32 = [v30 itemTypeString];
-            v33 = [v23 priceDisplayForItemType:v32];
+            defaultStoreOffer2 = [v30 defaultStoreOffer];
+            [defaultStoreOffer2 setBuyParameters:v29];
+            itemTypeString2 = [v30 itemTypeString];
+            v33 = [response priceDisplayForItemType:itemTypeString2];
             if (v33)
             {
-              [v31 setPriceDisplay:v33];
+              [defaultStoreOffer2 setPriceDisplay:v33];
             }
 
-            v34 = [v23 actionDisplayNameForItemType:v32];
-            [v31 setActionDisplayName:v34];
-            [v31 setOneTapOffer:v34 == 0];
+            v34 = [response actionDisplayNameForItemType:itemTypeString2];
+            [defaultStoreOffer2 setActionDisplayName:v34];
+            [defaultStoreOffer2 setOneTapOffer:v34 == 0];
           }
         }
 
@@ -370,7 +370,7 @@ LABEL_9:
     }
 
     v22 = v35;
-    v4 = v36;
+    pageCopy = v36;
   }
 
 LABEL_32:

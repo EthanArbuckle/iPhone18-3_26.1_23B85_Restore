@@ -1,27 +1,27 @@
 @interface MapsThemeTableViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (UIEdgeInsets)_accessibilityVisibleContentInset;
 - (id)_axSearchResultsViewController;
 @end
 
 @implementation MapsThemeTableViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CardView"];
-  [v3 validateClass:@"SearchViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CardView"];
+  [validationsCopy validateClass:@"SearchViewController"];
 }
 
 - (id)_axSearchResultsViewController
 {
   v2 = [(MapsThemeTableViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Cardview.isa)];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
   NSClassFromString(&cfstr_Searchviewcont_0.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = _accessibilityViewController;
   }
 
   else
@@ -41,10 +41,10 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MapsThemeTableViewAccessibility *)self _axSearchResultsViewController];
+  _axSearchResultsViewController = [(MapsThemeTableViewAccessibility *)self _axSearchResultsViewController];
 
   v12 = 0.0;
-  if (!v11)
+  if (!_axSearchResultsViewController)
   {
     v12 = v4;
   }

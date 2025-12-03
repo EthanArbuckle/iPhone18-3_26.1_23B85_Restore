@@ -8,13 +8,13 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 allHeaderFields];
+  allHeaderFields = [self allHeaderFields];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [allHeaderFields allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -24,18 +24,18 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         if (![v10 caseInsensitiveCompare:v4])
         {
-          v7 = [v5 valueForKey:v10];
+          v7 = [allHeaderFields valueForKey:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;

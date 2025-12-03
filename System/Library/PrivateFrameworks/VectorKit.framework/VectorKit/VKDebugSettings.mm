@@ -8,68 +8,68 @@
 - (float)animationTimeMultiplier;
 - (float)transitionTimeMultiplier;
 - (id).cxx_construct;
-- (id)nameForPerformanceGroup:(unsigned int)a3;
-- (void)addTileToPaint:(GEOTileSetRegion *)a3;
-- (void)hidePerformanceGroup:(unsigned int)a3;
+- (id)nameForPerformanceGroup:(unsigned int)group;
+- (void)addTileToPaint:(GEOTileSetRegion *)paint;
+- (void)hidePerformanceGroup:(unsigned int)group;
 - (void)init;
-- (void)setAltitudeDisableC3mTextureLoading:(BOOL)a3;
-- (void)setArDebugElevationOffset:(float)a3;
-- (void)setArDebugMiniMap:(BOOL)a3;
-- (void)setArDebugMiniMapMapRectSize:(float)a3;
-- (void)setArDebugMiniMapScreenRectSize:(float)a3;
-- (void)setArDebugMiniMapScreenRectXOffset:(float)a3;
-- (void)setArDebugMiniMapScreenRectYOffset:(float)a3;
-- (void)setArDebugSceneFeatureDistance:(float)a3;
-- (void)setArDebugSceneFeatureHeading:(float)a3;
-- (void)setArDebugSceneFeatureText:(id)a3;
-- (void)setArDebugSceneFeatureType:(unsigned __int8)a3;
-- (void)setArDebugScenePoiType:(unsigned int)a3;
-- (void)setArEnableEnvironmentMap:(BOOL)a3;
-- (void)setArEnableRouteLineDebugMeshes:(BOOL)a3;
-- (void)setArLabelingStateOverlay:(BOOL)a3;
-- (void)setArRenderAtNativeRate:(BOOL)a3;
-- (void)setCompressedBuildingsDisabled:(BOOL)a3;
-- (void)setConstantlyChangeTileGroup:(BOOL)a3;
-- (void)setConstantlyChangeTileGroupInterval:(double)a3;
-- (void)setDaVinciASTCTextureSideLoadEnabled:(BOOL)a3;
-- (void)setDaVinciCameraController:(BOOL)a3;
-- (void)setDaVinciColorBuildings:(BOOL)a3;
-- (void)setDaVinciEntityDebugHighlighting:(BOOL)a3;
-- (void)setDaVinciResourceOverrideEnabled:(BOOL)a3;
-- (void)setDisableBackgroundLabelLayout:(BOOL)a3;
-- (void)setDisableBuildingFootprints:(BOOL)a3;
-- (void)setDisableIconTextureAtlas:(BOOL)a3;
-- (void)setDrawPerformanceHUD:(BOOL)a3;
-- (void)setEnableDOF:(BOOL)a3;
-- (void)setEnableInjectedAssets:(BOOL)a3;
-- (void)setEnableMuninMiniMapCollectionPoints:(BOOL)a3;
-- (void)setEnableMuninMiniMapComposedEdgeRoadColoring:(BOOL)a3;
-- (void)setEnableMuninMiniMapRoadWidths:(BOOL)a3;
-- (void)setEnableMuninMiniMapRoadZData:(BOOL)a3;
-- (void)setEnableMuninRoadNetworkMiniMap:(BOOL)a3;
-- (void)setEnableNavRoadSignOrientationDebugging:(BOOL)a3;
-- (void)setEnableTrafficFeatureLabelDebugging:(BOOL)a3;
-- (void)setEnableWindshieldOverrideButton:(BOOL)a3;
-- (void)setExpandedPerformanceHUD:(BOOL)a3;
-- (void)setHideDirectionalArrows:(BOOL)a3;
-- (void)setHighlightRouteLineSnappingRegion:(BOOL)a3;
-- (void)setHighlightRouteLineSnappingStatus:(BOOL)a3;
-- (void)setLabelHideLineFeatures:(BOOL)a3;
-- (void)setLabelHidePhysicalFeatures:(BOOL)a3;
-- (void)setLabelHidePointFeatures:(BOOL)a3;
-- (void)setLabelRingAnimationEnabled:(BOOL)a3;
-- (void)setLabelShowPlaceholderIcons:(BOOL)a3;
-- (void)setLabelStyleOverridesDisabled:(BOOL)a3;
-- (void)setLogicConsole:(unint64_t)a3 enabled:(BOOL)a4;
-- (void)setMapDisplayStyleOverride:(unint64_t)a3;
-- (void)setMuninTapState:(id *)a3;
-- (void)setNavDisplayRate:(unint64_t)a3;
-- (void)setPaintOverlayFoundationAssociation:(BOOL)a3;
-- (void)setSelectedMapTilesToPaint:(GEOTileSetRegion *)a3;
-- (void)setShadowMapResolution:(int64_t)a3;
-- (void)setShowNavLabelOverlay:(BOOL)a3;
-- (void)setUseMetalRenderer:(BOOL)a3;
-- (void)showPerformanceGroup:(unsigned int)a3;
+- (void)setAltitudeDisableC3mTextureLoading:(BOOL)loading;
+- (void)setArDebugElevationOffset:(float)offset;
+- (void)setArDebugMiniMap:(BOOL)map;
+- (void)setArDebugMiniMapMapRectSize:(float)size;
+- (void)setArDebugMiniMapScreenRectSize:(float)size;
+- (void)setArDebugMiniMapScreenRectXOffset:(float)offset;
+- (void)setArDebugMiniMapScreenRectYOffset:(float)offset;
+- (void)setArDebugSceneFeatureDistance:(float)distance;
+- (void)setArDebugSceneFeatureHeading:(float)heading;
+- (void)setArDebugSceneFeatureText:(id)text;
+- (void)setArDebugSceneFeatureType:(unsigned __int8)type;
+- (void)setArDebugScenePoiType:(unsigned int)type;
+- (void)setArEnableEnvironmentMap:(BOOL)map;
+- (void)setArEnableRouteLineDebugMeshes:(BOOL)meshes;
+- (void)setArLabelingStateOverlay:(BOOL)overlay;
+- (void)setArRenderAtNativeRate:(BOOL)rate;
+- (void)setCompressedBuildingsDisabled:(BOOL)disabled;
+- (void)setConstantlyChangeTileGroup:(BOOL)group;
+- (void)setConstantlyChangeTileGroupInterval:(double)interval;
+- (void)setDaVinciASTCTextureSideLoadEnabled:(BOOL)enabled;
+- (void)setDaVinciCameraController:(BOOL)controller;
+- (void)setDaVinciColorBuildings:(BOOL)buildings;
+- (void)setDaVinciEntityDebugHighlighting:(BOOL)highlighting;
+- (void)setDaVinciResourceOverrideEnabled:(BOOL)enabled;
+- (void)setDisableBackgroundLabelLayout:(BOOL)layout;
+- (void)setDisableBuildingFootprints:(BOOL)footprints;
+- (void)setDisableIconTextureAtlas:(BOOL)atlas;
+- (void)setDrawPerformanceHUD:(BOOL)d;
+- (void)setEnableDOF:(BOOL)f;
+- (void)setEnableInjectedAssets:(BOOL)assets;
+- (void)setEnableMuninMiniMapCollectionPoints:(BOOL)points;
+- (void)setEnableMuninMiniMapComposedEdgeRoadColoring:(BOOL)coloring;
+- (void)setEnableMuninMiniMapRoadWidths:(BOOL)widths;
+- (void)setEnableMuninMiniMapRoadZData:(BOOL)data;
+- (void)setEnableMuninRoadNetworkMiniMap:(BOOL)map;
+- (void)setEnableNavRoadSignOrientationDebugging:(BOOL)debugging;
+- (void)setEnableTrafficFeatureLabelDebugging:(BOOL)debugging;
+- (void)setEnableWindshieldOverrideButton:(BOOL)button;
+- (void)setExpandedPerformanceHUD:(BOOL)d;
+- (void)setHideDirectionalArrows:(BOOL)arrows;
+- (void)setHighlightRouteLineSnappingRegion:(BOOL)region;
+- (void)setHighlightRouteLineSnappingStatus:(BOOL)status;
+- (void)setLabelHideLineFeatures:(BOOL)features;
+- (void)setLabelHidePhysicalFeatures:(BOOL)features;
+- (void)setLabelHidePointFeatures:(BOOL)features;
+- (void)setLabelRingAnimationEnabled:(BOOL)enabled;
+- (void)setLabelShowPlaceholderIcons:(BOOL)icons;
+- (void)setLabelStyleOverridesDisabled:(BOOL)disabled;
+- (void)setLogicConsole:(unint64_t)console enabled:(BOOL)enabled;
+- (void)setMapDisplayStyleOverride:(unint64_t)override;
+- (void)setMuninTapState:(id *)state;
+- (void)setNavDisplayRate:(unint64_t)rate;
+- (void)setPaintOverlayFoundationAssociation:(BOOL)association;
+- (void)setSelectedMapTilesToPaint:(GEOTileSetRegion *)paint;
+- (void)setShadowMapResolution:(int64_t)resolution;
+- (void)setShowNavLabelOverlay:(BOOL)overlay;
+- (void)setUseMetalRenderer:(BOOL)renderer;
+- (void)showPerformanceGroup:(unsigned int)group;
 @end
 
 @implementation VKDebugSettings
@@ -111,50 +111,50 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   v2 = [(VKDebugSettings *)&v41 init];
   objc_initWeak(&location, v2);
   v2[106] = -1;
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[117] = [v3 BOOLForKey:@"VKLabelHidePointFeatures"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[117] = [standardUserDefaults BOOLForKey:@"VKLabelHidePointFeatures"];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[116] = [v4 BOOLForKey:@"VKLabelHideLineFeatures"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[116] = [standardUserDefaults2 BOOLForKey:@"VKLabelHideLineFeatures"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[118] = [v5 BOOLForKey:@"VKLabelHidePhysicalFeatures"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[118] = [standardUserDefaults3 BOOLForKey:@"VKLabelHidePhysicalFeatures"];
 
   v2[80] = 1;
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[81] = [v6 BOOLForKey:@"VKDisableBackgroundLabelLayout"];
+  standardUserDefaults4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[81] = [standardUserDefaults4 BOOLForKey:@"VKDisableBackgroundLabelLayout"];
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[108] = [v7 BOOLForKey:@"HideDirectionalArrowsKey"];
+  standardUserDefaults5 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[108] = [standardUserDefaults5 BOOLForKey:@"HideDirectionalArrowsKey"];
 
   *(v2 + 129) = 257;
   *(v2 + 66) = 257;
   v2[134] = 0;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[135] = [v8 BOOLForKey:@"AltitudeDisableC3mTextureLoadingKey"];
+  standardUserDefaults6 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[135] = [standardUserDefaults6 BOOLForKey:@"AltitudeDisableC3mTextureLoadingKey"];
 
   v2[136] = 0;
   v2[196] = 0;
   v2[127] = 1;
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[91] = [v9 BOOLForKey:@"HighlightRouteLineSnappingStatusKey"];
+  standardUserDefaults7 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[91] = [standardUserDefaults7 BOOLForKey:@"HighlightRouteLineSnappingStatusKey"];
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1373] = [v10 BOOLForKey:@"VKUseStaticTrafficFeed"];
+  standardUserDefaults8 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1373] = [standardUserDefaults8 BOOLForKey:@"VKUseStaticTrafficFeed"];
 
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[99] = [v11 BOOLForKey:@"VKDisableIconTextureAtlas"];
+  standardUserDefaults9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[99] = [standardUserDefaults9 BOOLForKey:@"VKDisableIconTextureAtlas"];
 
   *(v2 + 60) = 257;
   v2[122] = 1;
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1374] = [v12 BOOLForKey:@"VKDisableStyleAnimations"];
+  standardUserDefaults10 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1374] = [standardUserDefaults10 BOOLForKey:@"VKDisableStyleAnimations"];
 
   *(v2 + 103) = 0;
   v2[209] = 0;
   v2[211] = 1;
-  v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[86] = [v13 BOOLForKey:@"VKDisableLabelStyleOverrides"];
+  standardUserDefaults11 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[86] = [standardUserDefaults11 BOOLForKey:@"VKDisableLabelStyleOverrides"];
 
   *(v2 + 36) = 1061997773;
   if (MapsFeature_IsEnabled_ShelbyvilleTerrain())
@@ -174,25 +174,25 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   v2[215] = 0;
   *(v2 + 27) = 0x4014000000000000;
   v2[224] = 0;
-  v15 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[225] = [v15 BOOLForKey:@"NavLabelOverlayKey"];
+  standardUserDefaults12 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[225] = [standardUserDefaults12 BOOLForKey:@"NavLabelOverlayKey"];
 
-  v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[142] = [v16 BOOLForKey:@"VKPreferOpenGLRendererKey"] ^ 1;
+  standardUserDefaults13 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[142] = [standardUserDefaults13 BOOLForKey:@"VKPreferOpenGLRendererKey"] ^ 1;
 
-  v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[227] = [v17 BOOLForKey:@"VKEnableTrafficFeatureLabelDebuggingKey"];
+  standardUserDefaults14 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[227] = [standardUserDefaults14 BOOLForKey:@"VKEnableTrafficFeatureLabelDebuggingKey"];
 
   *(v2 + 114) = 0;
   *(v2 + 1377) = 0;
   v2[256] = 0;
   *(v2 + 260) = 0x425C0000BFC00000;
   *(v2 + 17) = xmmword_1B33B09D0;
-  v18 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[288] = [v18 BOOLForKey:@"VKARRenderAtNativeRateKey"];
+  standardUserDefaults15 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[288] = [standardUserDefaults15 BOOLForKey:@"VKARRenderAtNativeRateKey"];
 
-  v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *(v2 + 37) = [v19 integerForKey:@"VKNavDisplayRate"];
+  standardUserDefaults16 = [MEMORY[0x1E695E000] standardUserDefaults];
+  *(v2 + 37) = [standardUserDefaults16 integerForKey:@"VKNavDisplayRate"];
 
   v2[252] = 1;
   *(v2 + 62) = 15;
@@ -204,21 +204,21 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   v2[526] = 0;
   *(v2 + 306) = 0;
   v2[310] = 0;
-  v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[67] = [v20 BOOLForKey:@"VKDisableBuildingFootprints"];
+  standardUserDefaults17 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[67] = [standardUserDefaults17 BOOLForKey:@"VKDisableBuildingFootprints"];
 
   v2[316] = 0;
   v21 = +[VKPlatform sharedPlatform];
-  v22 = [v21 isPad];
+  isPad = [v21 isPad];
 
   v23 = -0.1;
-  if (v22)
+  if (isPad)
   {
     v23 = -0.08;
   }
 
   v24 = 0.08;
-  if (v22)
+  if (isPad)
   {
     v24 = 0.04;
   }
@@ -228,20 +228,20 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   *(v2 + 324) = 0x3F40000041C80000;
   *(v2 + 42) = 0x3F8000003F000000;
   v2[344] = 0;
-  v25 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[345] = [v25 BOOLForKey:@"EnableMuninRoadNetworkMiniMapKey"];
+  standardUserDefaults18 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[345] = [standardUserDefaults18 BOOLForKey:@"EnableMuninRoadNetworkMiniMapKey"];
 
-  v26 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1379] = [v26 BOOLForKey:@"EnableMuninMiniMapRoadWidthsKey"];
+  standardUserDefaults19 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1379] = [standardUserDefaults19 BOOLForKey:@"EnableMuninMiniMapRoadWidthsKey"];
 
-  v27 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1380] = [v27 BOOLForKey:@"EnableMuninMiniMapComposedEdgeRoadColoringKey"];
+  standardUserDefaults20 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1380] = [standardUserDefaults20 BOOLForKey:@"EnableMuninMiniMapComposedEdgeRoadColoringKey"];
 
-  v28 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1381] = [v28 BOOLForKey:@"EnableMuninMiniMapCollectionPointsKey"];
+  standardUserDefaults21 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1381] = [standardUserDefaults21 BOOLForKey:@"EnableMuninMiniMapCollectionPointsKey"];
 
-  v29 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1382] = [v29 BOOLForKey:@"EnableMuninMiniMapRoadZDataKey"];
+  standardUserDefaults22 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1382] = [standardUserDefaults22 BOOLForKey:@"EnableMuninMiniMapRoadZDataKey"];
 
   *(v2 + 87) = 1144750080;
   *(v2 + 22) = xmmword_1B33B09D0;
@@ -297,14 +297,14 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   v2[897] = 1;
   v2[901] = 1;
   v2[1388] = 0;
-  v33 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[898] = [v33 BOOLForKey:@"VKDaVinciResourceOverrideEnabledKey"];
+  standardUserDefaults23 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[898] = [standardUserDefaults23 BOOLForKey:@"VKDaVinciResourceOverrideEnabledKey"];
 
-  v34 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[899] = [v34 BOOLForKey:@"VKDaVinciASTCTextureSideLoadEnabledKey"];
+  standardUserDefaults24 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[899] = [standardUserDefaults24 BOOLForKey:@"VKDaVinciASTCTextureSideLoadEnabledKey"];
 
-  v35 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[1150] = [v35 BOOLForKey:@"VKEnableInjectedAssets"];
+  standardUserDefaults25 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[1150] = [standardUserDefaults25 BOOLForKey:@"VKEnableInjectedAssets"];
 
   v2[900] = 0;
   *(v2 + 230) = 1056964608;
@@ -313,8 +313,8 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   *(v2 + 466) = 257;
   v2[936] = 1;
   *(v2 + 235) = 1095761920;
-  v36 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *(v2 + 119) = [v36 integerForKey:@"VKDaVinciShadowMapOverwrite"];
+  standardUserDefaults26 = [MEMORY[0x1E695E000] standardUserDefaults];
+  *(v2 + 119) = [standardUserDefaults26 integerForKey:@"VKDaVinciShadowMapOverwrite"];
 
   *(v2 + 240) = 1052938076;
   *(v2 + 1389) = 0;
@@ -323,8 +323,8 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   *(v2 + 968) = xmmword_1B33B1DF0;
   v2[493] = 1;
   *(v2 + 246) = 0;
-  v37 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v2[564] = [v37 BOOLForKey:@"EnableNavRoadSignOrientationDebuggingKey"];
+  standardUserDefaults27 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v2[564] = [standardUserDefaults27 BOOLForKey:@"EnableNavRoadSignOrientationDebuggingKey"];
 
   v2[525] = 1;
   *(v2 + 48) = xmmword_1B33B1E00;
@@ -388,148 +388,148 @@ void __33__VKDebugSettings_sharedSettings__block_invoke()
   return result;
 }
 
-- (void)setSelectedMapTilesToPaint:(GEOTileSetRegion *)a3
+- (void)setSelectedMapTilesToPaint:(GEOTileSetRegion *)paint
 {
-  v3 = *&a3->_maxX;
-  *&self->_selectedMapTilesToPaint._minY = *&a3->_minY;
+  v3 = *&paint->_maxX;
+  *&self->_selectedMapTilesToPaint._minY = *&paint->_minY;
   *&self->_selectedMapTilesToPaint._maxX = v3;
 }
 
-- (void)setEnableDOF:(BOOL)a3
+- (void)setEnableDOF:(BOOL)f
 {
-  if (self->_enableDOF != a3)
+  if (self->_enableDOF != f)
   {
-    self->_enableDOF = a3;
+    self->_enableDOF = f;
   }
 }
 
-- (void)setLogicConsole:(unint64_t)a3 enabled:(BOOL)a4
+- (void)setLogicConsole:(unint64_t)console enabled:(BOOL)enabled
 {
   p_enabledLogicConsoles = &self->_enabledLogicConsoles;
-  if (a4)
+  if (enabled)
   {
-    std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(p_enabledLogicConsoles, a3);
+    std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__emplace_unique_key_args<unsigned long long,unsigned long long const&>(p_enabledLogicConsoles, console);
   }
 
   else
   {
 
-    std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__erase_unique<unsigned long long>(p_enabledLogicConsoles, a3);
+    std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::__erase_unique<unsigned long long>(p_enabledLogicConsoles, console);
   }
 }
 
-- (void)setEnableWindshieldOverrideButton:(BOOL)a3
+- (void)setEnableWindshieldOverrideButton:(BOOL)button
 {
-  v3 = a3;
-  self->_enableWindshieldOverrideButton = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKEnableWindshieldOverrideButton"];
+  buttonCopy = button;
+  self->_enableWindshieldOverrideButton = button;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:buttonCopy forKey:@"VKEnableWindshieldOverrideButton"];
 }
 
-- (void)setMapDisplayStyleOverride:(unint64_t)a3
+- (void)setMapDisplayStyleOverride:(unint64_t)override
 {
-  self->_mapDisplayStyleOverride = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"VKMapDisplayStyleOverride"];
+  self->_mapDisplayStyleOverride = override;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:override forKey:@"VKMapDisplayStyleOverride"];
 }
 
-- (void)setDaVinciColorBuildings:(BOOL)a3
+- (void)setDaVinciColorBuildings:(BOOL)buildings
 {
-  if (self->_daVinciColorBuildings != a3)
+  if (self->_daVinciColorBuildings != buildings)
   {
-    self->_daVinciColorBuildings = a3;
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"VKShouldFlushTileCachesNotification" object:0];
+    self->_daVinciColorBuildings = buildings;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VKShouldFlushTileCachesNotification" object:0];
   }
 }
 
-- (void)setDaVinciCameraController:(BOOL)a3
+- (void)setDaVinciCameraController:(BOOL)controller
 {
-  self->_daVinciCameraController = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v5 setBool:self->_daVinciCameraController forKey:@"VKDaVinciGlobeCameraController_2"];
+  self->_daVinciCameraController = controller;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_daVinciCameraController forKey:@"VKDaVinciGlobeCameraController_2"];
 
-  self->_daVinciBiasLatitudeGlobeTileSelection = !a3;
-  self->_daVinciGlobeScalingCorrection = a3;
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"VKShouldFlushTileCachesNotification" object:0];
+  self->_daVinciBiasLatitudeGlobeTileSelection = !controller;
+  self->_daVinciGlobeScalingCorrection = controller;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"VKShouldFlushTileCachesNotification" object:0];
 }
 
-- (void)setNavDisplayRate:(unint64_t)a3
+- (void)setNavDisplayRate:(unint64_t)rate
 {
-  self->_navDisplayRate = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"VKNavDisplayRate"];
+  self->_navDisplayRate = rate;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:rate forKey:@"VKNavDisplayRate"];
 }
 
-- (void)setArRenderAtNativeRate:(BOOL)a3
+- (void)setArRenderAtNativeRate:(BOOL)rate
 {
-  self->_arRenderAtNativeRate = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:self->_arRenderAtNativeRate forKey:@"VKARRenderAtNativeRateKey"];
+  self->_arRenderAtNativeRate = rate;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_arRenderAtNativeRate forKey:@"VKARRenderAtNativeRateKey"];
 }
 
-- (void)setConstantlyChangeTileGroupInterval:(double)a3
+- (void)setConstantlyChangeTileGroupInterval:(double)interval
 {
-  self->_constantlyChangeTileGroupInterval = a3;
-  v4 = [MEMORY[0x1E69A2478] modernManager];
-  [v4 setConstantlyChangeTileGroupInterval:self->_constantlyChangeTileGroupInterval];
+  self->_constantlyChangeTileGroupInterval = interval;
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager setConstantlyChangeTileGroupInterval:self->_constantlyChangeTileGroupInterval];
 }
 
-- (void)setConstantlyChangeTileGroup:(BOOL)a3
+- (void)setConstantlyChangeTileGroup:(BOOL)group
 {
-  self->_constantlyChangeTileGroup = a3;
+  self->_constantlyChangeTileGroup = group;
   [(VKDebugSettings *)self constantlyChangeTileGroupInterval];
   [(VKDebugSettings *)self setConstantlyChangeTileGroupInterval:?];
-  v4 = [MEMORY[0x1E69A2478] modernManager];
-  [v4 setConstantlyChangeTileGroup:self->_constantlyChangeTileGroup];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager setConstantlyChangeTileGroup:self->_constantlyChangeTileGroup];
 }
 
-- (void)setUseMetalRenderer:(BOOL)a3
+- (void)setUseMetalRenderer:(BOOL)renderer
 {
-  self->_useMetalRenderer = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:!self->_useMetalRenderer forKey:@"VKPreferOpenGLRendererKey"];
+  self->_useMetalRenderer = renderer;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:!self->_useMetalRenderer forKey:@"VKPreferOpenGLRendererKey"];
 }
 
-- (void)setAltitudeDisableC3mTextureLoading:(BOOL)a3
+- (void)setAltitudeDisableC3mTextureLoading:(BOOL)loading
 {
-  self->_altitudeDisableC3mTextureLoading = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:self->_altitudeDisableC3mTextureLoading forKey:@"AltitudeDisableC3mTextureLoadingKey"];
+  self->_altitudeDisableC3mTextureLoading = loading;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_altitudeDisableC3mTextureLoading forKey:@"AltitudeDisableC3mTextureLoadingKey"];
 }
 
-- (void)addTileToPaint:(GEOTileSetRegion *)a3
+- (void)addTileToPaint:(GEOTileSetRegion *)paint
 {
-  v3 = *&a3->_maxX;
-  *&self->_selectedMapTilesToPaint._minY = *&a3->_minY;
+  v3 = *&paint->_maxX;
+  *&self->_selectedMapTilesToPaint._minY = *&paint->_minY;
   *&self->_selectedMapTilesToPaint._maxX = v3;
 }
 
-- (void)hidePerformanceGroup:(unsigned int)a3
+- (void)hidePerformanceGroup:(unsigned int)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = ggl::Performance::Counters::instance(self);
   v5 = *(v4 + 12);
   v6 = ggl::Performance::Counters::instance(v4);
 
-  ggl::Performance::Counters::setGroupMask(v6, v5 & ~(1 << v3));
+  ggl::Performance::Counters::setGroupMask(v6, v5 & ~(1 << groupCopy));
 }
 
-- (void)showPerformanceGroup:(unsigned int)a3
+- (void)showPerformanceGroup:(unsigned int)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = ggl::Performance::Counters::instance(self);
   v5 = *(v4 + 12);
   v6 = ggl::Performance::Counters::instance(v4);
 
-  ggl::Performance::Counters::setGroupMask(v6, v5 | (1 << v3));
+  ggl::Performance::Counters::setGroupMask(v6, v5 | (1 << groupCopy));
 }
 
-- (id)nameForPerformanceGroup:(unsigned int)a3
+- (id)nameForPerformanceGroup:(unsigned int)group
 {
   v4 = ggl::Performance::Counters::instance(self);
-  GroupName = ggl::Performance::Counters::getGroupName(*(v4 + 24), a3);
+  GroupName = ggl::Performance::Counters::getGroupName(*(v4 + 24), group);
   if (*(GroupName + 23) < 0)
   {
     std::string::__init_copy_ctor_external(&__p, *GroupName, *(GroupName + 8));
@@ -575,324 +575,324 @@ LABEL_14:
   return v8;
 }
 
-- (void)setDisableBuildingFootprints:(BOOL)a3
+- (void)setDisableBuildingFootprints:(BOOL)footprints
 {
-  self->_disableBuildingFootprints = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:self->_disableBuildingFootprints forKey:@"VKDisableBuildingFootprints"];
+  self->_disableBuildingFootprints = footprints;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_disableBuildingFootprints forKey:@"VKDisableBuildingFootprints"];
 }
 
-- (void)setEnableInjectedAssets:(BOOL)a3
+- (void)setEnableInjectedAssets:(BOOL)assets
 {
-  v3 = a3;
-  self->_enableInjectedAssets = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKEnableInjectedAssets"];
+  assetsCopy = assets;
+  self->_enableInjectedAssets = assets;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:assetsCopy forKey:@"VKEnableInjectedAssets"];
 }
 
-- (void)setDaVinciASTCTextureSideLoadEnabled:(BOOL)a3
+- (void)setDaVinciASTCTextureSideLoadEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_daVinciASTCTextureSideLoadEnabled = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDaVinciASTCTextureSideLoadEnabledKey"];
+  enabledCopy = enabled;
+  self->_daVinciASTCTextureSideLoadEnabled = enabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:enabledCopy forKey:@"VKDaVinciASTCTextureSideLoadEnabledKey"];
 }
 
-- (void)setDaVinciResourceOverrideEnabled:(BOOL)a3
+- (void)setDaVinciResourceOverrideEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_daVinciResourceOverrideEnabled = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDaVinciResourceOverrideEnabledKey"];
+  enabledCopy = enabled;
+  self->_daVinciResourceOverrideEnabled = enabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:enabledCopy forKey:@"VKDaVinciResourceOverrideEnabledKey"];
 }
 
-- (void)setShadowMapResolution:(int64_t)a3
+- (void)setShadowMapResolution:(int64_t)resolution
 {
-  self->_shadowMapResolution = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"VKDaVinciShadowMapOverwrite"];
+  self->_shadowMapResolution = resolution;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:resolution forKey:@"VKDaVinciShadowMapOverwrite"];
 }
 
-- (void)setCompressedBuildingsDisabled:(BOOL)a3
+- (void)setCompressedBuildingsDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_compressedBuildingsDisabled = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDisableCompressedBuildings"];
+  disabledCopy = disabled;
+  self->_compressedBuildingsDisabled = disabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:disabledCopy forKey:@"VKDisableCompressedBuildings"];
 }
 
-- (void)setEnableMuninRoadNetworkMiniMap:(BOOL)a3
+- (void)setEnableMuninRoadNetworkMiniMap:(BOOL)map
 {
-  v3 = a3;
-  self->_enableMuninRoadNetworkMiniMap = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"EnableMuninRoadNetworkMiniMapKey"];
+  mapCopy = map;
+  self->_enableMuninRoadNetworkMiniMap = map;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:mapCopy forKey:@"EnableMuninRoadNetworkMiniMapKey"];
 }
 
-- (void)setEnableMuninMiniMapComposedEdgeRoadColoring:(BOOL)a3
+- (void)setEnableMuninMiniMapComposedEdgeRoadColoring:(BOOL)coloring
 {
-  v3 = a3;
-  self->_enableMuninMiniMapComposedEdgeRoadColoring = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"EnableMuninMiniMapComposedEdgeRoadColoringKey"];
+  coloringCopy = coloring;
+  self->_enableMuninMiniMapComposedEdgeRoadColoring = coloring;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:coloringCopy forKey:@"EnableMuninMiniMapComposedEdgeRoadColoringKey"];
 }
 
-- (void)setEnableMuninMiniMapRoadZData:(BOOL)a3
+- (void)setEnableMuninMiniMapRoadZData:(BOOL)data
 {
-  v3 = a3;
-  self->_enableMuninMiniMapRoadZData = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"EnableMuninMiniMapRoadZDataKey"];
+  dataCopy = data;
+  self->_enableMuninMiniMapRoadZData = data;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:dataCopy forKey:@"EnableMuninMiniMapRoadZDataKey"];
 }
 
-- (void)setEnableMuninMiniMapCollectionPoints:(BOOL)a3
+- (void)setEnableMuninMiniMapCollectionPoints:(BOOL)points
 {
-  v3 = a3;
-  self->_enableMuninMiniMapCollectionPoints = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"EnableMuninMiniMapCollectionPointsKey"];
+  pointsCopy = points;
+  self->_enableMuninMiniMapCollectionPoints = points;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:pointsCopy forKey:@"EnableMuninMiniMapCollectionPointsKey"];
 }
 
-- (void)setEnableMuninMiniMapRoadWidths:(BOOL)a3
+- (void)setEnableMuninMiniMapRoadWidths:(BOOL)widths
 {
-  v3 = a3;
-  self->_enableMuninMiniMapRoadWidths = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"EnableMuninMiniMapRoadWidthsKey"];
+  widthsCopy = widths;
+  self->_enableMuninMiniMapRoadWidths = widths;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:widthsCopy forKey:@"EnableMuninMiniMapRoadWidthsKey"];
 }
 
-- (void)setHighlightRouteLineSnappingRegion:(BOOL)a3
+- (void)setHighlightRouteLineSnappingRegion:(BOOL)region
 {
-  v3 = a3;
-  self->_highlightRouteLineSnappingRegion = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"HighlightRouteLineSnappingRegionKey"];
+  regionCopy = region;
+  self->_highlightRouteLineSnappingRegion = region;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:regionCopy forKey:@"HighlightRouteLineSnappingRegionKey"];
 }
 
-- (void)setHighlightRouteLineSnappingStatus:(BOOL)a3
+- (void)setHighlightRouteLineSnappingStatus:(BOOL)status
 {
-  v3 = a3;
-  self->_highlightRouteLineSnappingStatus = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"HighlightRouteLineSnappingStatusKey"];
+  statusCopy = status;
+  self->_highlightRouteLineSnappingStatus = status;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:statusCopy forKey:@"HighlightRouteLineSnappingStatusKey"];
 }
 
-- (void)setEnableTrafficFeatureLabelDebugging:(BOOL)a3
+- (void)setEnableTrafficFeatureLabelDebugging:(BOOL)debugging
 {
-  v3 = a3;
-  self->_enableTrafficFeatureLabelDebugging = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKEnableTrafficFeatureLabelDebuggingKey"];
+  debuggingCopy = debugging;
+  self->_enableTrafficFeatureLabelDebugging = debugging;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:debuggingCopy forKey:@"VKEnableTrafficFeatureLabelDebuggingKey"];
 }
 
-- (void)setLabelShowPlaceholderIcons:(BOOL)a3
+- (void)setLabelShowPlaceholderIcons:(BOOL)icons
 {
-  v3 = a3;
-  self->_labelShowPlaceholderIcons = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKLabelShowPlaceholderIcons"];
+  iconsCopy = icons;
+  self->_labelShowPlaceholderIcons = icons;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:iconsCopy forKey:@"VKLabelShowPlaceholderIcons"];
 }
 
-- (void)setLabelRingAnimationEnabled:(BOOL)a3
+- (void)setLabelRingAnimationEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_labelRingAnimationEnabled = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKLabelRingAnimationEnabled"];
+  enabledCopy = enabled;
+  self->_labelRingAnimationEnabled = enabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:enabledCopy forKey:@"VKLabelRingAnimationEnabled"];
 }
 
-- (void)setLabelHidePhysicalFeatures:(BOOL)a3
+- (void)setLabelHidePhysicalFeatures:(BOOL)features
 {
-  v3 = a3;
-  self->_labelHidePhysicalFeatures = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKLabelHidePhysicalFeatures"];
+  featuresCopy = features;
+  self->_labelHidePhysicalFeatures = features;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:featuresCopy forKey:@"VKLabelHidePhysicalFeatures"];
 }
 
-- (void)setLabelHideLineFeatures:(BOOL)a3
+- (void)setLabelHideLineFeatures:(BOOL)features
 {
-  v3 = a3;
-  self->_labelHideLineFeatures = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKLabelHideLineFeatures"];
+  featuresCopy = features;
+  self->_labelHideLineFeatures = features;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:featuresCopy forKey:@"VKLabelHideLineFeatures"];
 }
 
-- (void)setLabelHidePointFeatures:(BOOL)a3
+- (void)setLabelHidePointFeatures:(BOOL)features
 {
-  v3 = a3;
-  self->_labelHidePointFeatures = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKLabelHidePointFeatures"];
+  featuresCopy = features;
+  self->_labelHidePointFeatures = features;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:featuresCopy forKey:@"VKLabelHidePointFeatures"];
 }
 
-- (void)setDisableIconTextureAtlas:(BOOL)a3
+- (void)setDisableIconTextureAtlas:(BOOL)atlas
 {
-  v3 = a3;
-  self->_disableIconTextureAtlas = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDisableIconTextureAtlas"];
+  atlasCopy = atlas;
+  self->_disableIconTextureAtlas = atlas;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:atlasCopy forKey:@"VKDisableIconTextureAtlas"];
 }
 
-- (void)setLabelStyleOverridesDisabled:(BOOL)a3
+- (void)setLabelStyleOverridesDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  self->_labelStyleOverridesDisabled = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDisableLabelStyleOverrides"];
+  disabledCopy = disabled;
+  self->_labelStyleOverridesDisabled = disabled;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:disabledCopy forKey:@"VKDisableLabelStyleOverrides"];
 }
 
-- (void)setDisableBackgroundLabelLayout:(BOOL)a3
+- (void)setDisableBackgroundLabelLayout:(BOOL)layout
 {
-  v3 = a3;
-  self->_disableBackgroundLabelLayout = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDisableBackgroundLabelLayout"];
+  layoutCopy = layout;
+  self->_disableBackgroundLabelLayout = layout;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:layoutCopy forKey:@"VKDisableBackgroundLabelLayout"];
 }
 
-- (void)setHideDirectionalArrows:(BOOL)a3
+- (void)setHideDirectionalArrows:(BOOL)arrows
 {
-  v3 = a3;
-  self->_hideDirectionalArrows = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"HideDirectionalArrowsKey"];
+  arrowsCopy = arrows;
+  self->_hideDirectionalArrows = arrows;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:arrowsCopy forKey:@"HideDirectionalArrowsKey"];
 }
 
-- (void)setArDebugElevationOffset:(float)a3
+- (void)setArDebugElevationOffset:(float)offset
 {
-  self->_arCameraElevationOffset = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugElevationOffset" forKey:v4];
+  self->_arCameraElevationOffset = offset;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = offset;
+  [standardUserDefaults setFloat:@"VKARDebugElevationOffset" forKey:v4];
 }
 
-- (void)setArEnableRouteLineDebugMeshes:(BOOL)a3
+- (void)setArEnableRouteLineDebugMeshes:(BOOL)meshes
 {
-  v3 = a3;
-  self->_arEnableRouteLineDebugMeshes = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKAREnableRouteLineDebugMeshes"];
+  meshesCopy = meshes;
+  self->_arEnableRouteLineDebugMeshes = meshes;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:meshesCopy forKey:@"VKAREnableRouteLineDebugMeshes"];
 }
 
-- (void)setArLabelingStateOverlay:(BOOL)a3
+- (void)setArLabelingStateOverlay:(BOOL)overlay
 {
-  v3 = a3;
-  self->_arLabelingStateOverlay = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKARLabelingStateOverlay"];
+  overlayCopy = overlay;
+  self->_arLabelingStateOverlay = overlay;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:overlayCopy forKey:@"VKARLabelingStateOverlay"];
 }
 
-- (void)setArDebugSceneFeatureDistance:(float)a3
+- (void)setArDebugSceneFeatureDistance:(float)distance
 {
-  self->_arDebugSceneFeatureDistance = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugSceneFeatureDistance" forKey:v4];
+  self->_arDebugSceneFeatureDistance = distance;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = distance;
+  [standardUserDefaults setFloat:@"VKARDebugSceneFeatureDistance" forKey:v4];
 }
 
-- (void)setArDebugSceneFeatureHeading:(float)a3
+- (void)setArDebugSceneFeatureHeading:(float)heading
 {
-  self->_arDebugSceneFeatureHeading = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugSceneFeatureHeading" forKey:v4];
+  self->_arDebugSceneFeatureHeading = heading;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = heading;
+  [standardUserDefaults setFloat:@"VKARDebugSceneFeatureHeading" forKey:v4];
 }
 
-- (void)setArDebugSceneFeatureType:(unsigned __int8)a3
+- (void)setArDebugSceneFeatureType:(unsigned __int8)type
 {
-  v3 = a3;
-  self->_arDebugSceneFeatureType = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:v3 forKey:@"VKARDebugSceneFeatureType"];
+  typeCopy = type;
+  self->_arDebugSceneFeatureType = type;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:typeCopy forKey:@"VKARDebugSceneFeatureType"];
 }
 
-- (void)setArDebugSceneFeatureText:(id)a3
+- (void)setArDebugSceneFeatureText:(id)text
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  textCopy = text;
+  v4 = [textCopy copy];
   arDebugSceneFeatureText = self->_arDebugSceneFeatureText;
   self->_arDebugSceneFeatureText = v4;
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v6 setObject:v7 forKey:@"VKARDebugSceneFeatureText"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setObject:textCopy forKey:@"VKARDebugSceneFeatureText"];
 }
 
-- (void)setArDebugScenePoiType:(unsigned int)a3
+- (void)setArDebugScenePoiType:(unsigned int)type
 {
-  self->_arDebugScenePoiType = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"VKARDebugScenePoiType"];
+  self->_arDebugScenePoiType = type;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:type forKey:@"VKARDebugScenePoiType"];
 }
 
-- (void)setArDebugMiniMapScreenRectYOffset:(float)a3
+- (void)setArDebugMiniMapScreenRectYOffset:(float)offset
 {
-  self->_arDebugMiniMapScreenRectYOffset = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugMapScreenRectYOffset" forKey:v4];
+  self->_arDebugMiniMapScreenRectYOffset = offset;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = offset;
+  [standardUserDefaults setFloat:@"VKARDebugMapScreenRectYOffset" forKey:v4];
 }
 
-- (void)setArDebugMiniMapScreenRectXOffset:(float)a3
+- (void)setArDebugMiniMapScreenRectXOffset:(float)offset
 {
-  self->_arDebugMiniMapScreenRectXOffset = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugMapScreenRectXOffset" forKey:v4];
+  self->_arDebugMiniMapScreenRectXOffset = offset;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = offset;
+  [standardUserDefaults setFloat:@"VKARDebugMapScreenRectXOffset" forKey:v4];
 }
 
-- (void)setArDebugMiniMapScreenRectSize:(float)a3
+- (void)setArDebugMiniMapScreenRectSize:(float)size
 {
-  self->_arDebugMiniMapScreenRectSize = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugMapScreenRectSize" forKey:v4];
+  self->_arDebugMiniMapScreenRectSize = size;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = size;
+  [standardUserDefaults setFloat:@"VKARDebugMapScreenRectSize" forKey:v4];
 }
 
-- (void)setArDebugMiniMapMapRectSize:(float)a3
+- (void)setArDebugMiniMapMapRectSize:(float)size
 {
-  self->_arDebugMiniMapMapRectSize = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  *&v4 = a3;
-  [v5 setFloat:@"VKARDebugMiniMapMapRectSize" forKey:v4];
+  self->_arDebugMiniMapMapRectSize = size;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  *&v4 = size;
+  [standardUserDefaults setFloat:@"VKARDebugMiniMapMapRectSize" forKey:v4];
 }
 
-- (void)setArEnableEnvironmentMap:(BOOL)a3
+- (void)setArEnableEnvironmentMap:(BOOL)map
 {
-  v3 = a3;
-  self->_arEnableEnvironmentMap = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKAREnableAREnvironment"];
+  mapCopy = map;
+  self->_arEnableEnvironmentMap = map;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:mapCopy forKey:@"VKAREnableAREnvironment"];
 }
 
-- (void)setArDebugMiniMap:(BOOL)a3
+- (void)setArDebugMiniMap:(BOOL)map
 {
-  v3 = a3;
-  self->_arDebugMiniMap = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKARDebugMiniMap"];
+  mapCopy = map;
+  self->_arDebugMiniMap = map;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:mapCopy forKey:@"VKARDebugMiniMap"];
 }
 
-- (void)setDaVinciEntityDebugHighlighting:(BOOL)a3
+- (void)setDaVinciEntityDebugHighlighting:(BOOL)highlighting
 {
-  v3 = a3;
-  self->_daVinciEntityDebugHighlighting = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKDaVinciEntityDebugHighlight"];
+  highlightingCopy = highlighting;
+  self->_daVinciEntityDebugHighlighting = highlighting;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:highlightingCopy forKey:@"VKDaVinciEntityDebugHighlight"];
 }
 
-- (void)setPaintOverlayFoundationAssociation:(BOOL)a3
+- (void)setPaintOverlayFoundationAssociation:(BOOL)association
 {
-  v3 = a3;
-  self->_paintOverlayFoundationAssociation = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"VKPaintOverlayFoundationAssociation"];
+  associationCopy = association;
+  self->_paintOverlayFoundationAssociation = association;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:associationCopy forKey:@"VKPaintOverlayFoundationAssociation"];
 }
 
-- (void)setExpandedPerformanceHUD:(BOOL)a3
+- (void)setExpandedPerformanceHUD:(BOOL)d
 {
-  v3 = a3;
-  self->_expandedPerformanceHUD = a3;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  if (v3)
+  dCopy = d;
+  self->_expandedPerformanceHUD = d;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  if (dCopy)
   {
     v5 = @"VKExtendedPeformanceHUD";
   }
@@ -902,16 +902,16 @@ LABEL_14:
     v5 = @"VKDMinimalPeformanceHUD";
   }
 
-  v6 = v4;
-  [v4 postNotificationName:v5 object:0];
+  v6 = defaultCenter;
+  [defaultCenter postNotificationName:v5 object:0];
 }
 
-- (void)setDrawPerformanceHUD:(BOOL)a3
+- (void)setDrawPerformanceHUD:(BOOL)d
 {
-  v3 = a3;
-  self->_drawPerformanceHUD = a3;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  if (v3)
+  dCopy = d;
+  self->_drawPerformanceHUD = d;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  if (dCopy)
   {
     v5 = @"VKEnablePeformanceHUD";
   }
@@ -921,28 +921,28 @@ LABEL_14:
     v5 = @"VKDisablePeformanceHUD";
   }
 
-  v6 = v4;
-  [v4 postNotificationName:v5 object:0];
+  v6 = defaultCenter;
+  [defaultCenter postNotificationName:v5 object:0];
 }
 
-- (void)setEnableNavRoadSignOrientationDebugging:(BOOL)a3
+- (void)setEnableNavRoadSignOrientationDebugging:(BOOL)debugging
 {
-  self->_enableNavRoadSignOrientationDebugging = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:self->_enableNavRoadSignOrientationDebugging forKey:@"EnableNavRoadSignOrientationDebuggingKey"];
+  self->_enableNavRoadSignOrientationDebugging = debugging;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_enableNavRoadSignOrientationDebugging forKey:@"EnableNavRoadSignOrientationDebuggingKey"];
 }
 
-- (void)setShowNavLabelOverlay:(BOOL)a3
+- (void)setShowNavLabelOverlay:(BOOL)overlay
 {
-  self->_showNavLabelOverlay = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:self->_showNavLabelOverlay forKey:@"NavLabelOverlayKey"];
+  self->_showNavLabelOverlay = overlay;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:self->_showNavLabelOverlay forKey:@"NavLabelOverlayKey"];
 }
 
-- (void)setMuninTapState:(id *)a3
+- (void)setMuninTapState:(id *)state
 {
-  v3 = *&a3->var3;
-  *&self->_muninTapState.x = *&a3->var0;
+  v3 = *&state->var3;
+  *&self->_muninTapState.x = *&state->var0;
   *&self->_muninTapState.longitude = v3;
 }
 
@@ -956,7 +956,7 @@ LABEL_14:
 
 - (void)init
 {
-  objc_destroyWeak((a1 + 8));
+  objc_destroyWeak((self + 8));
 
   JUMPOUT(0x1B8C62190);
 }

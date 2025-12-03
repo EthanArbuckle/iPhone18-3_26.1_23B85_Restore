@@ -1,16 +1,16 @@
 @interface CWFAssetCreatorFromRoot
-- (CWFAssetCreatorFromRoot)initWithPaths:(id)a3;
+- (CWFAssetCreatorFromRoot)initWithPaths:(id)paths;
 - (id)availableForUseAttributes;
-- (id)loadTopLevelInfoPlistFromPaths:(id)a3;
+- (id)loadTopLevelInfoPlistFromPaths:(id)paths;
 - (id)newerVersionAttributes;
 @end
 
 @implementation CWFAssetCreatorFromRoot
 
-- (CWFAssetCreatorFromRoot)initWithPaths:(id)a3
+- (CWFAssetCreatorFromRoot)initWithPaths:(id)paths
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v34.receiver = self;
   v34.super_class = CWFAssetCreatorFromRoot;
   v5 = [(CWFAssetCreatorFromRoot *)&v34 init];
@@ -38,46 +38,46 @@
   [(CWFAssetCreatorFromRoot *)v5 setFormatter:v6];
 
   v7 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
-  v8 = [(CWFAssetCreatorFromRoot *)v5 formatter];
-  [v8 setLocale:v7];
+  formatter = [(CWFAssetCreatorFromRoot *)v5 formatter];
+  [formatter setLocale:v7];
 
   v9 = [MEMORY[0x1E695DFE8] timeZoneWithAbbreviation:@"UTC"];
-  v10 = [(CWFAssetCreatorFromRoot *)v5 formatter];
-  [v10 setTimeZone:v9];
+  formatter2 = [(CWFAssetCreatorFromRoot *)v5 formatter];
+  [formatter2 setTimeZone:v9];
 
-  v11 = [(CWFAssetCreatorFromRoot *)v5 formatter];
-  [v11 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+  formatter3 = [(CWFAssetCreatorFromRoot *)v5 formatter];
+  [formatter3 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
 
   [(CWFAssetCreatorFromRoot *)v5 setAvailableForUse:0];
-  v12 = [(CWFAssetCreatorFromRoot *)v5 loadTopLevelInfoPlistFromPaths:v4];
+  v12 = [(CWFAssetCreatorFromRoot *)v5 loadTopLevelInfoPlistFromPaths:pathsCopy];
   [(CWFAssetCreatorFromRoot *)v5 setInfoPlist:v12];
 
-  v13 = [(CWFAssetCreatorFromRoot *)v5 infoPlist];
-  v14 = [v13 objectForKey:@"CFBundleName"];
+  infoPlist = [(CWFAssetCreatorFromRoot *)v5 infoPlist];
+  v14 = [infoPlist objectForKey:@"CFBundleName"];
   [(CWFAssetCreatorFromRoot *)v5 setAssetSpecifier:v14];
 
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [(CWFAssetCreatorFromRoot *)v5 infoPlist];
-  v17 = [v16 objectForKey:@"CFBundleVersion"];
+  infoPlist2 = [(CWFAssetCreatorFromRoot *)v5 infoPlist];
+  v17 = [infoPlist2 objectForKey:@"CFBundleVersion"];
   v18 = [v15 stringWithFormat:@"%@.01.0001, 0", v17];
   [(CWFAssetCreatorFromRoot *)v5 setAssetVersion:v18];
 
   v19 = objc_opt_new();
   [(CWFAssetCreatorFromRoot *)v5 setRootCatalogInfo:v19];
 
-  v20 = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
-  v21 = [MEMORY[0x1E695DF00] date];
-  [v20 setValue:v21 forKey:@"lastTimeChecked"];
+  rootCatalogInfo = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
+  date = [MEMORY[0x1E695DF00] date];
+  [rootCatalogInfo setValue:date forKey:@"lastTimeChecked"];
 
-  v22 = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
-  v23 = [(CWFAssetCreatorFromRoot *)v5 creationDate];
-  [v22 setValue:v23 forKey:@"postedDate"];
+  rootCatalogInfo2 = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
+  creationDate = [(CWFAssetCreatorFromRoot *)v5 creationDate];
+  [rootCatalogInfo2 setValue:creationDate forKey:@"postedDate"];
 
-  v24 = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
-  v25 = [(CWFAssetCreatorFromRoot *)v5 formatter];
-  v26 = [(CWFAssetCreatorFromRoot *)v5 creationDate];
-  v27 = [v25 stringFromDate:v26];
-  [v24 setValue:v27 forKey:@"RootAssetID"];
+  rootCatalogInfo3 = [(CWFAssetCreatorFromRoot *)v5 rootCatalogInfo];
+  formatter4 = [(CWFAssetCreatorFromRoot *)v5 formatter];
+  creationDate2 = [(CWFAssetCreatorFromRoot *)v5 creationDate];
+  v27 = [formatter4 stringFromDate:creationDate2];
+  [rootCatalogInfo3 setValue:v27 forKey:@"RootAssetID"];
 
   v28 = CWFGetOTAOSLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -101,16 +101,16 @@ LABEL_5:
   return v5;
 }
 
-- (id)loadTopLevelInfoPlistFromPaths:(id)a3
+- (id)loadTopLevelInfoPlistFromPaths:(id)paths
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v7)
   {
@@ -126,8 +126,8 @@ LABEL_5:
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
-        v12 = [v11 lastPathComponent];
-        v13 = [v12 isEqualToString:@"Info.plist"];
+        lastPathComponent = [v11 lastPathComponent];
+        v13 = [lastPathComponent isEqualToString:@"Info.plist"];
 
         if (v13)
         {
@@ -143,22 +143,22 @@ LABEL_5:
 
   [v5 sortUsingComparator:&unk_1F5B89C10];
   v14 = MEMORY[0x1E695DF20];
-  v15 = [v5 firstObject];
-  v16 = [v14 dictionaryWithContentsOfFile:v15];
+  firstObject = [v5 firstObject];
+  v16 = [v14 dictionaryWithContentsOfFile:firstObject];
 
-  v17 = [v5 firstObject];
+  firstObject2 = [v5 firstObject];
 
-  if (v17)
+  if (firstObject2)
   {
     v18 = MEMORY[0x1E695DFF8];
-    v19 = [v5 firstObject];
-    v20 = [v19 stringByDeletingLastPathComponent];
-    v21 = [v18 fileURLWithPath:v20];
+    firstObject3 = [v5 firstObject];
+    stringByDeletingLastPathComponent = [firstObject3 stringByDeletingLastPathComponent];
+    v21 = [v18 fileURLWithPath:stringByDeletingLastPathComponent];
     [(CWFAssetCreatorFromRoot *)self setLocalContentURL:v21];
 
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    v23 = [v5 firstObject];
-    v24 = [v22 attributesOfItemAtPath:v23 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    firstObject4 = [v5 firstObject];
+    v24 = [defaultManager attributesOfItemAtPath:firstObject4 error:0];
 
     v25 = [v24 objectForKeyedSubscript:*MEMORY[0x1E696A308]];
     [(CWFAssetCreatorFromRoot *)self setCreationDate:v25];
@@ -192,16 +192,16 @@ LABEL_5:
 
 - (id)availableForUseAttributes
 {
-  v2 = [(CWFAssetCreatorFromRoot *)self infoPlist];
-  v3 = [v2 objectForKeyedSubscript:@"MobileAssetProperties"];
+  infoPlist = [(CWFAssetCreatorFromRoot *)self infoPlist];
+  v3 = [infoPlist objectForKeyedSubscript:@"MobileAssetProperties"];
 
   return v3;
 }
 
 - (id)newerVersionAttributes
 {
-  v2 = [(CWFAssetCreatorFromRoot *)self infoPlist];
-  v3 = [v2 objectForKeyedSubscript:@"MobileAssetProperties"];
+  infoPlist = [(CWFAssetCreatorFromRoot *)self infoPlist];
+  v3 = [infoPlist objectForKeyedSubscript:@"MobileAssetProperties"];
 
   return v3;
 }

@@ -1,13 +1,13 @@
 @interface _NSTextAttributeStorage
-- (BOOL)_attributesInTextRange:(id)a3 areEqualToAttributes:(id)a4;
-- (BOOL)_setAttributes:(id)a3 forTextRange:(id)a4 checkForChange:(BOOL)a5;
-- (BOOL)setAttribute:(id)a3 value:(id)a4 forTextRange:(id)a5;
-- (void)enumerateAttributesFromLocation:(id)a3 reverse:(BOOL)a4 usingBlock:(id)a5;
+- (BOOL)_attributesInTextRange:(id)range areEqualToAttributes:(id)attributes;
+- (BOOL)_setAttributes:(id)attributes forTextRange:(id)range checkForChange:(BOOL)change;
+- (BOOL)setAttribute:(id)attribute value:(id)value forTextRange:(id)range;
+- (void)enumerateAttributesFromLocation:(id)location reverse:(BOOL)reverse usingBlock:(id)block;
 @end
 
 @implementation _NSTextAttributeStorage
 
-- (BOOL)setAttribute:(id)a3 value:(id)a4 forTextRange:(id)a5
+- (BOOL)setAttribute:(id)attribute value:(id)value forTextRange:(id)range
 {
   v42[1] = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -26,26 +26,26 @@
   v26 = 0x3052000000;
   v27 = __Block_byref_object_copy_;
   v28 = __Block_byref_object_dispose_;
-  v29 = [a5 location];
-  v9 = [a5 location];
+  location = [range location];
+  location2 = [range location];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __59___NSTextAttributeStorage_setAttribute_value_forTextRange___block_invoke_2;
   v23[3] = &unk_1E7265590;
   v23[8] = &v24;
-  v23[4] = a5;
-  v23[5] = a4;
-  v23[6] = a3;
+  v23[4] = range;
+  v23[5] = value;
+  v23[6] = attribute;
   v23[7] = v30;
-  [(_NSTextRunStorage *)self enumerateObjectsFromLocation:v9 options:0 usingBlock:v23];
-  v10 = [v25[5] compare:{objc_msgSend(a5, "endLocation")}];
-  if (a4 && v10 == -1)
+  [(_NSTextRunStorage *)self enumerateObjectsFromLocation:location2 options:0 usingBlock:v23];
+  v10 = [v25[5] compare:{objc_msgSend(range, "endLocation")}];
+  if (value && v10 == -1)
   {
     v11 = [NSTextRange alloc];
-    v12 = -[NSTextRange initWithLocation:endLocation:](v11, "initWithLocation:endLocation:", v25[5], [a5 endLocation]);
-    v41 = a3;
-    v42[0] = a4;
-    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
+    v12 = -[NSTextRange initWithLocation:endLocation:](v11, "initWithLocation:endLocation:", v25[5], [range endLocation]);
+    attributeCopy = attribute;
+    v42[0] = value;
+    v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&attributeCopy count:1];
     v31(v30, v12, v13);
   }
 
@@ -87,36 +87,36 @@
   return v14 != 0;
 }
 
-- (BOOL)_attributesInTextRange:(id)a3 areEqualToAttributes:(id)a4
+- (BOOL)_attributesInTextRange:(id)range areEqualToAttributes:(id)attributes
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
-  v9 = a4 == 0;
-  -[_NSTextAttributeStorage enumerateAttributesFromLocation:reverse:usingBlock:](self, "enumerateAttributesFromLocation:reverse:usingBlock:", [a3 location], 0);
+  v9 = attributes == 0;
+  -[_NSTextAttributeStorage enumerateAttributesFromLocation:reverse:usingBlock:](self, "enumerateAttributesFromLocation:reverse:usingBlock:", [range location], 0);
   v4 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
   return v4;
 }
 
-- (BOOL)_setAttributes:(id)a3 forTextRange:(id)a4 checkForChange:(BOOL)a5
+- (BOOL)_setAttributes:(id)attributes forTextRange:(id)range checkForChange:(BOOL)change
 {
-  v5 = a5;
-  if ([a3 count])
+  changeCopy = change;
+  if ([attributes count])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = a3;
+      attributesCopy = attributes;
     }
 
     else
     {
-      v9 = [NSAttributeDictionary newWithDictionary:a3];
+      attributesCopy = [NSAttributeDictionary newWithDictionary:attributes];
     }
 
-    v10 = v9;
-    if (!v5)
+    v10 = attributesCopy;
+    if (!changeCopy)
     {
       goto LABEL_10;
     }
@@ -125,16 +125,16 @@
   else
   {
     v10 = 0;
-    if (!v5)
+    if (!changeCopy)
     {
       goto LABEL_10;
     }
   }
 
-  if (![(_NSTextAttributeStorage *)self _attributesInTextRange:a4 areEqualToAttributes:v10])
+  if (![(_NSTextAttributeStorage *)self _attributesInTextRange:range areEqualToAttributes:v10])
   {
 LABEL_10:
-    [(_NSTextRunStorage *)self setObject:v10 forRange:a4];
+    [(_NSTextRunStorage *)self setObject:v10 forRange:range];
     v11 = 1;
     goto LABEL_11;
   }
@@ -145,14 +145,14 @@ LABEL_11:
   return v11;
 }
 
-- (void)enumerateAttributesFromLocation:(id)a3 reverse:(BOOL)a4 usingBlock:(id)a5
+- (void)enumerateAttributesFromLocation:(id)location reverse:(BOOL)reverse usingBlock:(id)block
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __78___NSTextAttributeStorage_enumerateAttributesFromLocation_reverse_usingBlock___block_invoke;
   v5[3] = &unk_1E7265608;
-  v5[4] = a5;
-  [(_NSTextRunStorage *)self enumerateObjectsFromLocation:a3 options:a4 usingBlock:v5];
+  v5[4] = block;
+  [(_NSTextRunStorage *)self enumerateObjectsFromLocation:location options:reverse usingBlock:v5];
 }
 
 @end

@@ -1,72 +1,72 @@
 @interface RTPeopleDiscoveryProvider
-+ (double)_convertObservationIntervalToDouble:(unint64_t)a3;
-+ (id)computeAdvMetrics:(int64_t)a3 identities:(id)a4 numOfResolvedAdvs:(int64_t)a5;
++ (double)_convertObservationIntervalToDouble:(unint64_t)double;
++ (id)computeAdvMetrics:(int64_t)metrics identities:(id)identities numOfResolvedAdvs:(int64_t)advs;
 + (id)getStoreURL;
-+ (int)_scanLevelFromServiceLevel:(unint64_t)a3 observationInterval:(unint64_t)a4;
++ (int)_scanLevelFromServiceLevel:(unint64_t)level observationInterval:(unint64_t)interval;
 - (BOOL)isPeopleDensityEventsEnabled;
 - (BOOL)isProximityEventsEnabled;
-- (RTPeopleDiscoveryProvider)initWithDefaultManager:(id)a3 proximityEventStore:(id)a4 peopleDensityStore:(id)a5 advertisementManager:(id)a6 dataProtectionManager:(id)a7 timerManager:(id)a8;
+- (RTPeopleDiscoveryProvider)initWithDefaultManager:(id)manager proximityEventStore:(id)store peopleDensityStore:(id)densityStore advertisementManager:(id)advertisementManager dataProtectionManager:(id)protectionManager timerManager:(id)timerManager;
 - (id)_fetchAllIdentities;
 - (id)_logClientConfigurations;
 - (id)loadShortTermRecord;
-- (void)_addClientConfiguration:(id)a3 withIdentifier:(id)a4;
-- (void)_addPeopleDensityBundle:(id)a3 handler:(id)a4;
-- (void)_addProximityEvent:(id)a3 handler:(id)a4;
+- (void)_addClientConfiguration:(id)configuration withIdentifier:(id)identifier;
+- (void)_addPeopleDensityBundle:(id)bundle handler:(id)handler;
+- (void)_addProximityEvent:(id)event handler:(id)handler;
 - (void)_aggregateAndApplyConfiguration;
 - (void)_armNewInteractionsTimer;
-- (void)_clearPeopleDensityBundles:(id)a3;
-- (void)_clearProximityEvents:(id)a3;
+- (void)_clearPeopleDensityBundles:(id)bundles;
+- (void)_clearProximityEvents:(id)events;
 - (void)_computeDailyContactScores;
-- (void)_didCloseProximityEvent:(id)a3;
+- (void)_didCloseProximityEvent:(id)event;
 - (void)_fetchAndReconcileAdvertisements;
-- (void)_fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4;
-- (void)_fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)_fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4;
-- (void)_fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
+- (void)_fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler;
+- (void)_fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)_fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler;
+- (void)_fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
 - (void)_loadAndMergeShortTermRecord;
 - (void)_monitorEvents;
-- (void)_onDataProtectionNotification:(id)a3;
-- (void)_onPeopleDensityStoreNotification:(id)a3;
-- (void)_onProximityStoreNotification:(id)a3;
+- (void)_onDataProtectionNotification:(id)notification;
+- (void)_onPeopleDensityStoreNotification:(id)notification;
+- (void)_onProximityStoreNotification:(id)notification;
 - (void)_purgeEvents;
-- (void)_removeClientConfiguration:(id)a3;
+- (void)_removeClientConfiguration:(id)configuration;
 - (void)_setup;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)addClient:(id)a3 withIdentifier:(id)a4 withConfiguration:(id)a5;
-- (void)addPeopleDensityBundle:(id)a3 handler:(id)a4;
-- (void)addProximityEvent:(id)a3 handler:(id)a4;
-- (void)clearPeopleDensityBundles:(id)a3;
-- (void)clearProximityEvents:(id)a3;
-- (void)computeContactScores:(id)a3;
-- (void)didCloseProximityEvent:(id)a3;
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchMostRecentPeopleDensity:(id)a3;
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4;
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5;
-- (void)injectAdv:(id)a3 handler:(id)a4;
-- (void)injectPeopleDensityStats:(unint64_t)a3 duration:(double)a4 date:(id)a5 advertisements:(id)a6 handler:(id)a7;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)addClient:(id)client withIdentifier:(id)identifier withConfiguration:(id)configuration;
+- (void)addPeopleDensityBundle:(id)bundle handler:(id)handler;
+- (void)addProximityEvent:(id)event handler:(id)handler;
+- (void)clearPeopleDensityBundles:(id)bundles;
+- (void)clearProximityEvents:(id)events;
+- (void)computeContactScores:(id)scores;
+- (void)didCloseProximityEvent:(id)event;
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchMostRecentPeopleDensity:(id)density;
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler;
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler;
+- (void)injectAdv:(id)adv handler:(id)handler;
+- (void)injectPeopleDensityStats:(unint64_t)stats duration:(double)duration date:(id)date advertisements:(id)advertisements handler:(id)handler;
 - (void)onBufferedDevicesReceivedNotification;
 - (void)onCoreLocationProviderCameUpNotification;
-- (void)onDataProtectionNotification:(id)a3;
-- (void)onPeopleDensityStoreNotification:(id)a3;
-- (void)onProximityStoreNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)removeClient:(id)a3;
+- (void)onDataProtectionNotification:(id)notification;
+- (void)onPeopleDensityStoreNotification:(id)notification;
+- (void)onProximityStoreNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)removeClient:(id)client;
 - (void)saveShortTermRecord;
 @end
 
 @implementation RTPeopleDiscoveryProvider
 
-- (RTPeopleDiscoveryProvider)initWithDefaultManager:(id)a3 proximityEventStore:(id)a4 peopleDensityStore:(id)a5 advertisementManager:(id)a6 dataProtectionManager:(id)a7 timerManager:(id)a8
+- (RTPeopleDiscoveryProvider)initWithDefaultManager:(id)manager proximityEventStore:(id)store peopleDensityStore:(id)densityStore advertisementManager:(id)advertisementManager dataProtectionManager:(id)protectionManager timerManager:(id)timerManager
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v14)
+  managerCopy = manager;
+  storeCopy = store;
+  densityStoreCopy = densityStore;
+  advertisementManagerCopy = advertisementManager;
+  protectionManagerCopy = protectionManager;
+  timerManagerCopy = timerManager;
+  if (!managerCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (!v15)
+  if (!storeCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -94,7 +94,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v16)
+  if (!densityStoreCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -107,7 +107,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v17)
+  if (!advertisementManagerCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -120,7 +120,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!v18)
+  if (!protectionManagerCopy)
   {
     v41 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -132,7 +132,7 @@ LABEL_21:
 
 LABEL_22:
 
-    v43 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
@@ -142,41 +142,41 @@ LABEL_22:
   v21 = v20;
   if (v20)
   {
-    [(RTPeopleDiscoveryProvider *)v20 setDefaultsManager:v14];
-    [(RTPeopleDiscoveryProvider *)v21 setProximityEventStore:v15];
-    [(RTPeopleDiscoveryProvider *)v21 setPeopleDensityStore:v16];
-    [(RTPeopleDiscoveryProvider *)v21 setAdvertisementManager:v17];
+    [(RTPeopleDiscoveryProvider *)v20 setDefaultsManager:managerCopy];
+    [(RTPeopleDiscoveryProvider *)v21 setProximityEventStore:storeCopy];
+    [(RTPeopleDiscoveryProvider *)v21 setPeopleDensityStore:densityStoreCopy];
+    [(RTPeopleDiscoveryProvider *)v21 setAdvertisementManager:advertisementManagerCopy];
     [(RTPeopleDiscoveryProvider *)v21 setProximityStoreAvailable:0];
     [(RTPeopleDiscoveryProvider *)v21 setPeopleDensityStoreAvailable:0];
     [(RTPeopleDiscoveryProvider *)v21 setContactScoreDataAvailable:0];
     [(RTPeopleDiscoveryProvider *)v21 setHasLoadedPersistedRecords:0];
     v21->_broughtUp = 0;
-    [(RTPeopleDiscoveryProvider *)v21 setTimerManager:v19];
-    [(RTPeopleDiscoveryProvider *)v21 setDataProtectionManager:v18];
+    [(RTPeopleDiscoveryProvider *)v21 setTimerManager:timerManagerCopy];
+    [(RTPeopleDiscoveryProvider *)v21 setDataProtectionManager:protectionManagerCopy];
     v22 = [RTPeopleDiscoveryContactRecord alloc];
-    v23 = [(RTNotifier *)v21 queue];
-    v24 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
-    v25 = [(RTPeopleDiscoveryContactRecord *)v22 initWithQueue:v23 defaultsManager:v24];
+    queue = [(RTNotifier *)v21 queue];
+    defaultsManager = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
+    v25 = [(RTPeopleDiscoveryContactRecord *)v22 initWithQueue:queue defaultsManager:defaultsManager];
     [(RTPeopleDiscoveryProvider *)v21 setContactRecord:v25];
 
-    v26 = [(RTPeopleDiscoveryProvider *)v21 contactRecord];
-    [v26 addObserver:v21];
+    contactRecord = [(RTPeopleDiscoveryProvider *)v21 contactRecord];
+    [contactRecord addObserver:v21];
 
     v51 = [RTPeopleDensityRecord alloc];
-    v52 = [(RTNotifier *)v21 queue];
-    v27 = [(RTPeopleDiscoveryProvider *)v21 peopleDensityStore];
-    v28 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
-    v29 = [(RTPeopleDensityRecord *)v51 initWithQueue:v52 peopleDensityStore:v27 defaultsManager:v28];
+    queue2 = [(RTNotifier *)v21 queue];
+    peopleDensityStore = [(RTPeopleDiscoveryProvider *)v21 peopleDensityStore];
+    defaultsManager2 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
+    v29 = [(RTPeopleDensityRecord *)v51 initWithQueue:queue2 peopleDensityStore:peopleDensityStore defaultsManager:defaultsManager2];
     [(RTPeopleDiscoveryProvider *)v21 setPeopleDensityRecord:v29];
 
     v30 = [RTPeopleDiscoveryPersistenceStore alloc];
-    v31 = [(RTPeopleDiscoveryProvider *)v21 contactRecord];
-    v32 = [(RTPeopleDiscoveryProvider *)v21 peopleDensityRecord];
-    v33 = [(RTPeopleDiscoveryPersistenceStore *)v30 initWithContactRecord:v31 densityRecord:v32];
+    contactRecord2 = [(RTPeopleDiscoveryProvider *)v21 contactRecord];
+    peopleDensityRecord = [(RTPeopleDiscoveryProvider *)v21 peopleDensityRecord];
+    v33 = [(RTPeopleDiscoveryPersistenceStore *)v30 initWithContactRecord:contactRecord2 densityRecord:peopleDensityRecord];
     [(RTPeopleDiscoveryProvider *)v21 setShortTermStore:v33];
 
-    v34 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
-    v35 = [v34 objectForKey:@"RTDefaultsPeopleDiscoveryProviderExpirationInterval"];
+    defaultsManager3 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
+    v35 = [defaultsManager3 objectForKey:@"RTDefaultsPeopleDiscoveryProviderExpirationInterval"];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -187,37 +187,37 @@ LABEL_22:
     }
 
     [(RTPeopleDiscoveryProvider *)v21 setExpirationInterval:v37];
-    v38 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
-    v39 = [v38 objectForKey:@"RTDefaultsPeopleDiscoveryProviderMinimumIdentities"];
+    defaultsManager4 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
+    v39 = [defaultsManager4 objectForKey:@"RTDefaultsPeopleDiscoveryProviderMinimumIdentities"];
 
     objc_opt_class();
     v53 = v35;
     if (objc_opt_isKindOfClass())
     {
-      v40 = [v39 integerValue];
+      integerValue = [v39 integerValue];
     }
 
     else
     {
-      v40 = 10;
+      integerValue = 10;
     }
 
-    [(RTPeopleDiscoveryProvider *)v21 setMinimumIdentities:v40];
-    v45 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
-    v46 = [v45 objectForKey:@"RTDefaultsPeopleDiscoveryProviderBackupTimerInterval"];
+    [(RTPeopleDiscoveryProvider *)v21 setMinimumIdentities:integerValue];
+    defaultsManager5 = [(RTPeopleDiscoveryProvider *)v21 defaultsManager];
+    v46 = [defaultsManager5 objectForKey:@"RTDefaultsPeopleDiscoveryProviderBackupTimerInterval"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v47 = [v46 integerValue];
+      integerValue2 = [v46 integerValue];
     }
 
     else
     {
-      v47 = 1500.0;
+      integerValue2 = 1500.0;
     }
 
-    [(RTPeopleDiscoveryProvider *)v21 setBackupTimerInterval:v47];
+    [(RTPeopleDiscoveryProvider *)v21 setBackupTimerInterval:integerValue2];
     v48 = objc_opt_new();
     [(RTPeopleDiscoveryProvider *)v21 setClientConfigurations:v48];
 
@@ -229,10 +229,10 @@ LABEL_22:
   }
 
   self = v21;
-  v43 = self;
+  selfCopy = self;
 LABEL_23:
 
-  return v43;
+  return selfCopy;
 }
 
 - (void)_setup
@@ -260,9 +260,9 @@ LABEL_13:
   }
 
   v5 = +[RTPlatform currentPlatform];
-  v6 = [v5 iPhoneDevice];
+  iPhoneDevice = [v5 iPhoneDevice];
 
-  if ((v6 & 1) == 0)
+  if ((iPhoneDevice & 1) == 0)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -280,47 +280,47 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v7 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+  proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
   v8 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  [v7 addObserver:self selector:sel_onProximityStoreNotification_ name:v8];
+  [proximityEventStore addObserver:self selector:sel_onProximityStoreNotification_ name:v8];
 
-  v9 = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
+  peopleDensityStore = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
   v10 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  [v9 addObserver:self selector:sel_onPeopleDensityStoreNotification_ name:v10];
+  [peopleDensityStore addObserver:self selector:sel_onPeopleDensityStoreNotification_ name:v10];
 
-  v11 = [(RTPeopleDiscoveryProvider *)self dataProtectionManager];
+  dataProtectionManager = [(RTPeopleDiscoveryProvider *)self dataProtectionManager];
   v12 = +[(RTNotification *)RTDataProtectionManagerNotificationEncryptedDataAvailability];
-  [v11 addObserver:self selector:sel_onDataProtectionNotification_ name:v12];
+  [dataProtectionManager addObserver:self selector:sel_onDataProtectionNotification_ name:v12];
 
   objc_initWeak(location, self);
-  v13 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
+  notificationHelper = [(RTPeopleDiscoveryProvider *)self notificationHelper];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __35__RTPeopleDiscoveryProvider__setup__block_invoke;
   v30[3] = &unk_2788C5908;
   objc_copyWeak(&v31, location);
-  [v13 addObserverForNotificationName:@"com.apple.locationd.gathering.bufferedDevicesReceived" handler:v30];
+  [notificationHelper addObserverForNotificationName:@"com.apple.locationd.gathering.bufferedDevicesReceived" handler:v30];
 
-  v14 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
+  notificationHelper2 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __35__RTPeopleDiscoveryProvider__setup__block_invoke_3;
   v28[3] = &unk_2788C5908;
   objc_copyWeak(&v29, location);
-  [v14 addObserverForNotificationName:@"com.apple.locationd.gathering.came_up" handler:v28];
+  [notificationHelper2 addObserverForNotificationName:@"com.apple.locationd.gathering.came_up" handler:v28];
 
   if (![(RTPeopleDiscoveryProvider *)self hasLoadedPersistedRecords])
   {
     [(RTPeopleDiscoveryProvider *)self _loadAndMergeShortTermRecord];
   }
 
-  v15 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__RTPeopleDiscoveryProvider__setup__block_invoke_5;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v15, block);
+  dispatch_async(queue, block);
 
   self->_broughtUp = 1;
   v16 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -390,10 +390,10 @@ id __35__RTPeopleDiscoveryProvider__setup__block_invoke_95(uint64_t a1)
   return v2;
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_broughtUp)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -406,39 +406,39 @@ id __35__RTPeopleDiscoveryProvider__setup__block_invoke_95(uint64_t a1)
       }
     }
 
-    v6 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
-    [v6 removeObserverForNotificationName:@"com.apple.locationd.gathering.bufferedDevicesReceived"];
+    notificationHelper = [(RTPeopleDiscoveryProvider *)self notificationHelper];
+    [notificationHelper removeObserverForNotificationName:@"com.apple.locationd.gathering.bufferedDevicesReceived"];
 
-    v7 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
-    [v7 removeObserverForNotificationName:@"com.apple.locationd.gathering.came_up"];
+    notificationHelper2 = [(RTPeopleDiscoveryProvider *)self notificationHelper];
+    [notificationHelper2 removeObserverForNotificationName:@"com.apple.locationd.gathering.came_up"];
 
-    v8 = [(RTPeopleDiscoveryProvider *)self dataProtectionManager];
-    [v8 removeObserver:self];
+    dataProtectionManager = [(RTPeopleDiscoveryProvider *)self dataProtectionManager];
+    [dataProtectionManager removeObserver:self];
 
-    v9 = [(RTPeopleDiscoveryProvider *)self backupTimer];
+    backupTimer = [(RTPeopleDiscoveryProvider *)self backupTimer];
 
-    if (v9)
+    if (backupTimer)
     {
-      v10 = [(RTPeopleDiscoveryProvider *)self backupTimer];
-      [v10 invalidate];
+      backupTimer2 = [(RTPeopleDiscoveryProvider *)self backupTimer];
+      [backupTimer2 invalidate];
 
       [(RTPeopleDiscoveryProvider *)self setBackupTimer:0];
     }
 
-    v11 = [(RTPeopleDiscoveryProvider *)self scoringTimer];
+    scoringTimer = [(RTPeopleDiscoveryProvider *)self scoringTimer];
 
-    if (v11)
+    if (scoringTimer)
     {
-      v12 = [(RTPeopleDiscoveryProvider *)self scoringTimer];
-      [v12 invalidate];
+      scoringTimer2 = [(RTPeopleDiscoveryProvider *)self scoringTimer];
+      [scoringTimer2 invalidate];
 
       [(RTPeopleDiscoveryProvider *)self setScoringTimer:0];
     }
 
     self->_broughtUp = 0;
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -451,7 +451,7 @@ id __35__RTPeopleDiscoveryProvider__setup__block_invoke_95(uint64_t a1)
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v16 = [v13 errorWithDomain:v14 code:2 userInfo:v15];
 
-    (v4)[2](v4, v16);
+    (handlerCopy)[2](handlerCopy, v16);
   }
 }
 
@@ -504,13 +504,13 @@ id __35__RTPeopleDiscoveryProvider__setup__block_invoke_95(uint64_t a1)
 
   objc_initWeak(&location, self);
   timerManager = self->_timerManager;
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __53__RTPeopleDiscoveryProvider__armNewInteractionsTimer__block_invoke;
   v18 = &unk_2788C5908;
   objc_copyWeak(&v19, &location);
-  v7 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPeopleDiscoveryProviderBackupTimer" queue:v6 handler:&v15];
+  v7 = [(RTTimerManager *)timerManager timerWithIdentifier:@"RTPeopleDiscoveryProviderBackupTimer" queue:queue handler:&v15];
   v8 = self->_backupTimer;
   self->_backupTimer = v7;
 
@@ -555,17 +555,17 @@ void __53__RTPeopleDiscoveryProvider__armNewInteractionsTimer__block_invoke(uint
 
 - (void)_computeDailyContactScores
 {
-  v3 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-  [v3 updateDailyContactScores];
+  contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+  [contactRecord updateDailyContactScores];
 
   [(RTPeopleDiscoveryProvider *)self saveShortTermRecord];
 }
 
 - (void)_monitorEvents
 {
-  v3 = [(RTPeopleDiscoveryProvider *)self contactRecord];
+  contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
   v4 = [MEMORY[0x277CBEAA8] now];
-  [v3 checkAndCloseProximityEventsIfNeeded:v4];
+  [contactRecord checkAndCloseProximityEventsIfNeeded:v4];
 
   if (-[RTPeopleDiscoveryProvider hasLoadedPersistedRecords](self, "hasLoadedPersistedRecords") || ([MEMORY[0x277CCAA00] defaultManager], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(objc_opt_class(), "getStoreURL"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "path"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v5, "fileExistsAtPath:", v7), v7, v6, v5, (v8 & 1) == 0))
   {
@@ -577,28 +577,28 @@ void __53__RTPeopleDiscoveryProvider__armNewInteractionsTimer__block_invoke(uint
 - (void)_purgeEvents
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(RTPeopleDiscoveryProvider *)self expirationInterval];
-  v5 = [v3 dateByAddingTimeInterval:-v4];
+  v5 = [date dateByAddingTimeInterval:-v4];
 
   v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     [(RTPeopleDiscoveryProvider *)self expirationInterval];
     v8 = v7;
-    v9 = [v5 getFormattedDateString];
+    getFormattedDateString = [v5 getFormattedDateString];
     v12 = 134218242;
     v13 = v8;
     v14 = 2112;
-    v15 = v9;
+    v15 = getFormattedDateString;
     _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEFAULT, "_purgeEvents purging with expirationInterval: %f before date: %@", &v12, 0x16u);
   }
 
-  v10 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
-  [v10 purgeProximityEventsPredating:v5 handler:&__block_literal_global_108];
+  proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+  [proximityEventStore purgeProximityEventsPredating:v5 handler:&__block_literal_global_108];
 
-  v11 = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
-  [v11 purgePeopleDensityPredating:v5 handler:&__block_literal_global_111_0];
+  peopleDensityStore = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
+  [peopleDensityStore purgePeopleDensityPredating:v5 handler:&__block_literal_global_111_0];
 }
 
 void __41__RTPeopleDiscoveryProvider__purgeEvents__block_invoke(uint64_t a1, void *a2)
@@ -637,20 +637,20 @@ void __41__RTPeopleDiscoveryProvider__purgeEvents__block_invoke_109(uint64_t a1,
 
 - (void)_loadAndMergeShortTermRecord
 {
-  v3 = [(RTPeopleDiscoveryProvider *)self loadShortTermRecord];
-  if (v3)
+  loadShortTermRecord = [(RTPeopleDiscoveryProvider *)self loadShortTermRecord];
+  if (loadShortTermRecord)
   {
-    v8 = v3;
-    v4 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-    v5 = [v8 contactRecord];
-    [v4 mergeWithAnotherContactRecord:v5];
+    v8 = loadShortTermRecord;
+    contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+    contactRecord2 = [v8 contactRecord];
+    [contactRecord mergeWithAnotherContactRecord:contactRecord2];
 
-    v6 = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
-    v7 = [v8 densityRecord];
-    [v6 mergeWithAnotherDensityRecord:v7];
+    peopleDensityRecord = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
+    densityRecord = [v8 densityRecord];
+    [peopleDensityRecord mergeWithAnotherDensityRecord:densityRecord];
 
     [(RTPeopleDiscoveryProvider *)self setHasLoadedPersistedRecords:1];
-    v3 = v8;
+    loadShortTermRecord = v8;
   }
 }
 
@@ -681,13 +681,13 @@ void __41__RTPeopleDiscoveryProvider__purgeEvents__block_invoke_109(uint64_t a1,
     _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_DEFAULT, "onCoreLocationProviderCameUpNotification", buf, 2u);
   }
 
-  v4 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotification__block_invoke(uint64_t a1)
@@ -698,31 +698,31 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
   return [v2 _aggregateAndApplyConfiguration];
 }
 
-- (void)onProximityStoreNotification:(id)a3
+- (void)onProximityStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RTPeopleDiscoveryProvider_onProximityStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onProximityStoreNotification:(id)a3
+- (void)_onProximityStoreNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    -[RTPeopleDiscoveryProvider setProximityStoreAvailable:](self, "setProximityStoreAvailable:", [v4 availability] == 2);
+    -[RTPeopleDiscoveryProvider setProximityStoreAvailable:](self, "setProximityStoreAvailable:", [notificationCopy availability] == 2);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -730,9 +730,9 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(RTPeopleDiscoveryProvider *)self proximityStoreAvailable];
+      proximityStoreAvailable = [(RTPeopleDiscoveryProvider *)self proximityStoreAvailable];
       v10 = @"NO";
-      if (v9)
+      if (proximityStoreAvailable)
       {
         v10 = @"YES";
       }
@@ -744,31 +744,31 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
   }
 }
 
-- (void)onPeopleDensityStoreNotification:(id)a3
+- (void)onPeopleDensityStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__RTPeopleDiscoveryProvider_onPeopleDensityStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onPeopleDensityStoreNotification:(id)a3
+- (void)_onPeopleDensityStoreNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    -[RTPeopleDiscoveryProvider setPeopleDensityStoreAvailable:](self, "setPeopleDensityStoreAvailable:", [v4 availability] == 2);
+    -[RTPeopleDiscoveryProvider setPeopleDensityStoreAvailable:](self, "setPeopleDensityStoreAvailable:", [notificationCopy availability] == 2);
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -776,9 +776,9 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(RTPeopleDiscoveryProvider *)self peopleDensityStoreAvailable];
+      peopleDensityStoreAvailable = [(RTPeopleDiscoveryProvider *)self peopleDensityStoreAvailable];
       v10 = @"NO";
-      if (v9)
+      if (peopleDensityStoreAvailable)
       {
         v10 = @"YES";
       }
@@ -790,34 +790,34 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
   }
 }
 
-- (void)onDataProtectionNotification:(id)a3
+- (void)onDataProtectionNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RTPeopleDiscoveryProvider_onDataProtectionNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onDataProtectionNotification:(id)a3
+- (void)_onDataProtectionNotification:(id)notification
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 availability];
+    availability = [notificationCopy availability];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [RTDataProtectionManager encryptedDataAvailabilityToString:v5];
+        v7 = [RTDataProtectionManager encryptedDataAvailabilityToString:availability];
         v10 = 136315394;
         v11 = "[RTPeopleDiscoveryProvider _onDataProtectionNotification:]";
         v12 = 2112;
@@ -826,7 +826,7 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
       }
     }
 
-    if (v5 == 2)
+    if (availability == 2)
     {
       if (![(RTPeopleDiscoveryProvider *)self hasLoadedPersistedRecords])
       {
@@ -842,11 +842,11 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name = [notificationCopy name];
       v10 = 136315394;
       v11 = "[RTPeopleDiscoveryProvider _onDataProtectionNotification:]";
       v12 = 2112;
-      v13 = v9;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "%s, unknown notification name, %@", &v10, 0x16u);
     }
   }
@@ -886,7 +886,7 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
   v88 = &v87;
   v89 = 0x2020000000;
   v90 = 0;
-  v4 = [(RTPeopleDiscoveryProvider *)self advertisementManager];
+  advertisementManager = [(RTPeopleDiscoveryProvider *)self advertisementManager];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __61__RTPeopleDiscoveryProvider__fetchAndReconcileAdvertisements__block_invoke;
@@ -897,7 +897,7 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
   v86 = &v95;
   v5 = v3;
   v82 = v5;
-  [v4 fetchAdvertisementsDetailedWithHandler:v81];
+  [advertisementManager fetchAdvertisementsDetailedWithHandler:v81];
 
   dsema = v5;
   v6 = [MEMORY[0x277CBEAA8] now];
@@ -909,11 +909,11 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
     v10 = v9;
     v11 = objc_opt_new();
     v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-    v13 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v14 = [v13 filteredArrayUsingPredicate:v12];
-    v15 = [v14 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v14 = [callStackSymbols filteredArrayUsingPredicate:v12];
+    firstObject = [v14 firstObject];
 
-    [v11 submitToCoreAnalytics:v15 type:1 duration:v10];
+    [v11 submitToCoreAnalytics:firstObject type:1 duration:v10];
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
@@ -991,10 +991,10 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
           [v28 unixTime];
           v30 = [v29 dateWithTimeIntervalSince1970:?];
           v31 = [RTPeopleDiscoveryAdvertisement alloc];
-          v32 = [v28 address];
-          v33 = [v28 rssi];
-          v34 = [v28 contactId];
-          v35 = [(RTPeopleDiscoveryAdvertisement *)v31 initWithAddress:v32 rssi:v33 scanDate:v30 contactID:v34];
+          address = [v28 address];
+          rssi = [v28 rssi];
+          contactId = [v28 contactId];
+          v35 = [(RTPeopleDiscoveryAdvertisement *)v31 initWithAddress:address rssi:rssi scanDate:v30 contactID:contactId];
 
           [v65 addObject:v35];
           if ([v22 compare:v30]== 1)
@@ -1019,7 +1019,7 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
         v38 = [*(v102 + 5) count];
         v39 = v92[3];
         v40 = *(v88 + 3);
-        v41 = [v22 getFormattedDateString];
+        getFormattedDateString = [v22 getFormattedDateString];
         *buf = 134218754;
         *&buf[4] = v38;
         v109 = 2048;
@@ -1027,16 +1027,16 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
         v111 = 2048;
         v112 = v40;
         v113 = 2112;
-        v114 = v41;
+        v114 = getFormattedDateString;
         _os_log_impl(&dword_2304B3000, v37, OS_LOG_TYPE_INFO, "#RTPeopleDiscoveryProvider receive advertisements, incomingAdvs count %lu, countSinceLastFetch %lu, scanDuration %f, earliestAdvertisementDate, %@", buf, 0x2Au);
       }
     }
 
-    v42 = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
-    [v42 updateRecordOnFetchComplete:v92[3] scanDuration:v22 referenceDate:v65 advertisements:v88[3]];
+    peopleDensityRecord = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
+    [peopleDensityRecord updateRecordOnFetchComplete:v92[3] scanDuration:v22 referenceDate:v65 advertisements:v88[3]];
 
-    v43 = [(RTPeopleDiscoveryProvider *)self _fetchAllIdentities];
-    v44 = [v43 count];
+    _fetchAllIdentities = [(RTPeopleDiscoveryProvider *)self _fetchAllIdentities];
+    v44 = [_fetchAllIdentities count];
     if (v44 >= [(RTPeopleDiscoveryProvider *)self minimumIdentities])
     {
       v75 = 0u;
@@ -1059,12 +1059,12 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
             }
 
             v50 = *(*(&v73 + 1) + 8 * j);
-            v51 = [v50 contactID];
+            contactID = [v50 contactID];
 
-            if (v51)
+            if (contactID)
             {
-              v52 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-              [v52 updateContactRecordOnAdvertisementReceived:v50];
+              contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+              [contactRecord updateContactRecordOnAdvertisementReceived:v50];
 
               ++v45;
             }
@@ -1088,7 +1088,7 @@ uint64_t __69__RTPeopleDiscoveryProvider_onCoreLocationProviderCameUpNotificatio
     aBlock[3] = &unk_2788CE550;
     aBlock[4] = self;
     v71 = v101;
-    v53 = v43;
+    v53 = _fetchAllIdentities;
     v70 = v53;
     v72 = v45;
     v54 = _Block_copy(aBlock);
@@ -1187,11 +1187,11 @@ id __61__RTPeopleDiscoveryProvider__fetchAndReconcileAdvertisements__block_invok
     v10 = v9;
     v11 = objc_opt_new();
     v12 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-    v13 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v14 = [v13 filteredArrayUsingPredicate:v12];
-    v15 = [v14 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v14 = [callStackSymbols filteredArrayUsingPredicate:v12];
+    firstObject = [v14 firstObject];
 
-    [v11 submitToCoreAnalytics:v15 type:1 duration:v10];
+    [v11 submitToCoreAnalytics:firstObject type:1 duration:v10];
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
@@ -1288,46 +1288,46 @@ void __48__RTPeopleDiscoveryProvider__fetchAllIdentities__block_invoke(uint64_t 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)didCloseProximityEvent:(id)a3
+- (void)didCloseProximityEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  eventCopy = event;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__RTPeopleDiscoveryProvider_didCloseProximityEvent___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_didCloseProximityEvent:(id)a3
+- (void)_didCloseProximityEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  eventCopy = event;
+  if (eventCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        v9 = [v5 description];
+        v9 = [eventCopy description];
         *buf = 138412290;
         v14 = v9;
         _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, "storing proximity event to database: %@", buf, 0xCu);
       }
     }
 
-    v7 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+    proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__RTPeopleDiscoveryProvider__didCloseProximityEvent___block_invoke;
     v10[3] = &unk_2788C4D10;
     v12 = a2;
-    v11 = v5;
-    [v7 storeProximityEvent:v11 handler:v10];
+    v11 = eventCopy;
+    [proximityEventStore storeProximityEvent:v11 handler:v10];
 
     v8 = v11;
   }
@@ -1368,7 +1368,7 @@ void __53__RTPeopleDiscoveryProvider__didCloseProximityEvent___block_invoke(uint
 - (void)saveShortTermRecord
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() getStoreURL];
+  getStoreURL = [objc_opt_class() getStoreURL];
   v4 = objc_autoreleasePoolPush();
   shortTermStore = self->_shortTermStore;
   v13 = 0;
@@ -1377,7 +1377,7 @@ void __53__RTPeopleDiscoveryProvider__didCloseProximityEvent___block_invoke(uint
   if (!v7)
   {
     v12 = 0;
-    [v6 writeToURL:v3 options:805306369 error:&v12];
+    [v6 writeToURL:getStoreURL options:805306369 error:&v12];
     v8 = v12;
     if (v8)
     {
@@ -1387,9 +1387,9 @@ void __53__RTPeopleDiscoveryProvider__didCloseProximityEvent___block_invoke(uint
         goto LABEL_6;
       }
 
-      v10 = [v8 description];
+      path = [v8 description];
       *buf = 138412290;
-      v15 = v10;
+      v15 = path;
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "#RTPeopleDiscoveryProvider error writing short-term store, error, %@", buf, 0xCu);
     }
 
@@ -1407,10 +1407,10 @@ void __53__RTPeopleDiscoveryProvider__didCloseProximityEvent___block_invoke(uint
         goto LABEL_6;
       }
 
-      v10 = [v3 path];
+      path = [getStoreURL path];
       v11 = [v6 length];
       *buf = 138740227;
-      v15 = v10;
+      v15 = path;
       v16 = 2048;
       v17 = v11;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "#RTPeopleDiscoveryProvider successfully save short-term store to location, %{sensitive}@, bytes, %lu", buf, 0x16u);
@@ -1437,25 +1437,25 @@ LABEL_7:
 - (id)loadShortTermRecord
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() getStoreURL];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v2 path];
-  v5 = [v3 fileExistsAtPath:v4];
+  getStoreURL = [objc_opt_class() getStoreURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [getStoreURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
     v18 = 0;
-    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v2 options:2 error:&v18];
+    v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:getStoreURL options:2 error:&v18];
     v7 = v18;
     if (v7)
     {
       v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v2 absoluteString];
+        absoluteString = [getStoreURL absoluteString];
         v14 = [v7 description];
         *buf = 138412546;
-        v20 = v13;
+        v20 = absoluteString;
         v21 = 2112;
         v22 = v14;
         _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "#RTPeopleDiscoveryProvider fails to load short-term store, url, %@, error, %@", buf, 0x16u);
@@ -1474,10 +1474,10 @@ LABEL_7:
         v11 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v2 absoluteString];
+          absoluteString2 = [getStoreURL absoluteString];
           v16 = [v8 description];
           *buf = 138412546;
-          v20 = v15;
+          v20 = absoluteString2;
           v21 = 2112;
           v22 = v16;
           _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "#RTPeopleDiscoveryProvider fails to unarchive short-term store, url, %@, error, %@", buf, 0x16u);
@@ -1511,32 +1511,32 @@ LABEL_7:
 + (id)getStoreURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
-  v4 = [v2 fileURLWithPath:v3 isDirectory:1];
+  routineCacheDirectoryPath = [MEMORY[0x277CCAA00] routineCacheDirectoryPath];
+  v4 = [v2 fileURLWithPath:routineCacheDirectoryPath isDirectory:1];
 
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"peopleDiscovery_records.bin" relativeToURL:v4];
 
   return v5;
 }
 
-- (void)addClient:(id)a3 withIdentifier:(id)a4 withConfiguration:(id)a5
+- (void)addClient:(id)client withIdentifier:(id)identifier withConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  clientCopy = client;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__RTPeopleDiscoveryProvider_addClient_withIdentifier_withConfiguration___block_invoke;
   v15[3] = &unk_2788CBEA8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = configurationCopy;
+  v17 = identifierCopy;
+  v18 = clientCopy;
+  v12 = clientCopy;
+  v13 = identifierCopy;
+  v14 = configurationCopy;
+  dispatch_async(queue, v15);
 }
 
 void __72__RTPeopleDiscoveryProvider_addClient_withIdentifier_withConfiguration___block_invoke(uint64_t a1)
@@ -1597,18 +1597,18 @@ void __72__RTPeopleDiscoveryProvider_addClient_withIdentifier_withConfiguration_
   }
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  clientCopy = client;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__RTPeopleDiscoveryProvider_removeClient___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __42__RTPeopleDiscoveryProvider_removeClient___block_invoke(uint64_t a1)
@@ -1619,60 +1619,60 @@ uint64_t __42__RTPeopleDiscoveryProvider_removeClient___block_invoke(uint64_t a1
   return [v2 _aggregateAndApplyConfiguration];
 }
 
-- (void)_addClientConfiguration:(id)a3 withIdentifier:(id)a4
+- (void)_addClientConfiguration:(id)configuration withIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v6;
+      v10 = configurationCopy;
       v11 = 2112;
-      v12 = v7;
+      v12 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "#RTPeopleDiscoveryProvider _addClientConfiguration configuration %@ identifier %@", &v9, 0x16u);
     }
   }
 
-  if (v6 && v7)
+  if (configurationCopy && identifierCopy)
   {
-    [(NSMutableDictionary *)self->_clientConfigurations setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_clientConfigurations setObject:configurationCopy forKey:identifierCopy];
   }
 }
 
-- (void)_removeClientConfiguration:(id)a3
+- (void)_removeClientConfiguration:(id)configuration
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "#RTPeopleDiscoveryProvider _removeClientConfiguration identifier %@", &v6, 0xCu);
     }
   }
 
-  if (v4)
+  if (configurationCopy)
   {
-    [(NSMutableDictionary *)self->_clientConfigurations removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_clientConfigurations removeObjectForKey:configurationCopy];
   }
 }
 
-+ (double)_convertObservationIntervalToDouble:(unint64_t)a3
++ (double)_convertObservationIntervalToDouble:(unint64_t)double
 {
   result = 300.0;
-  if (a3 != 2)
+  if (double != 2)
   {
     result = 0.0;
   }
 
-  if (a3 == 1)
+  if (double == 1)
   {
     return 900.0;
   }
@@ -1680,16 +1680,16 @@ uint64_t __42__RTPeopleDiscoveryProvider_removeClient___block_invoke(uint64_t a1
   return result;
 }
 
-+ (int)_scanLevelFromServiceLevel:(unint64_t)a3 observationInterval:(unint64_t)a4
++ (int)_scanLevelFromServiceLevel:(unint64_t)level observationInterval:(unint64_t)interval
 {
-  if (a3 != 2)
+  if (level != 2)
   {
     return -1;
   }
 
-  if (a4 != 2)
+  if (interval != 2)
   {
-    if (a4 == 1)
+    if (interval == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1745,20 +1745,20 @@ LABEL_12:
       v3 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
       {
-        v4 = [(RTPeopleDiscoveryProvider *)self _logClientConfigurations];
+        _logClientConfigurations = [(RTPeopleDiscoveryProvider *)self _logClientConfigurations];
         *buf = 138412290;
-        v21 = v4;
+        v21 = _logClientConfigurations;
         _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
     }
 
     v5 = objc_alloc(MEMORY[0x277D011D0]);
-    v6 = [(NSMutableDictionary *)self->_clientConfigurations allValues];
-    v7 = [v5 initWithAggregation:v6];
+    allValues = [(NSMutableDictionary *)self->_clientConfigurations allValues];
+    v7 = [v5 initWithAggregation:allValues];
 
     [MEMORY[0x277D011D0] secondsForStorageDuration:{objc_msgSend(v7, "storageDuration")}];
     [(RTPeopleDiscoveryProvider *)self setExpirationInterval:?];
-    v8 = [v7 shouldAdvertise];
+    shouldAdvertise = [v7 shouldAdvertise];
     v9 = [objc_opt_class() _scanLevelFromServiceLevel:objc_msgSend(v7 observationInterval:{"serviceLevel"), objc_msgSend(v7, "observationInterval")}];
   }
 
@@ -1766,15 +1766,15 @@ LABEL_12:
   {
     v7 = [objc_alloc(MEMORY[0x277D011D0]) initWithAdvertisingCapability:0 serviceLevel:1 observationInterval:1 storageDuration:1 densityCallbackConfiguration:0];
     [(RTPeopleDiscoveryProvider *)self setExpirationInterval:0.0];
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__RTPeopleDiscoveryProvider__aggregateAndApplyConfiguration__block_invoke;
     block[3] = &unk_2788C4EA0;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
 
-    v8 = 0;
+    shouldAdvertise = 0;
     v9 = 0;
   }
 
@@ -1805,16 +1805,16 @@ LABEL_12:
 
   else
   {
-    v14 = [(RTNotifier *)self queue];
+    queue2 = [(RTNotifier *)self queue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __60__RTPeopleDiscoveryProvider__aggregateAndApplyConfiguration__block_invoke_141;
     v15[3] = &unk_2788C5020;
     v15[4] = self;
     v16 = v7;
-    v17 = v8;
+    v17 = shouldAdvertise;
     v18 = v9;
-    dispatch_async(v14, v15);
+    dispatch_async(queue2, v15);
   }
 }
 
@@ -1884,24 +1884,24 @@ void __60__RTPeopleDiscoveryProvider__aggregateAndApplyConfiguration__block_invo
   }
 }
 
-- (void)fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endDate_completionHandler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
 uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endDate_completionHandler___block_invoke(uint64_t a1)
@@ -1912,25 +1912,25 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
   return [v2 _monitorEvents];
 }
 
-- (void)_fetchProximityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)_fetchProximityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 compare:v9] == 1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if ([dateCopy compare:endDateCopy] == 1)
   {
     v11 = MEMORY[0x277CCA9B8];
     v71 = *MEMORY[0x277CCA450];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v8 getFormattedDateString];
-    v14 = [v9 getFormattedDateString];
-    v15 = [v12 stringWithFormat:@"startDate, %@, endDate, %@", v13, v14];
+    getFormattedDateString = [dateCopy getFormattedDateString];
+    getFormattedDateString2 = [endDateCopy getFormattedDateString];
+    v15 = [v12 stringWithFormat:@"startDate, %@, endDate, %@", getFormattedDateString, getFormattedDateString2];
     v72 = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
     v17 = [v11 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v16];
 
-    v10[2](v10, MEMORY[0x277CBEBF8], v17);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v17);
   }
 
   else
@@ -1938,12 +1938,12 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v8 getFormattedDateString];
-      v20 = [v9 getFormattedDateString];
+      getFormattedDateString3 = [dateCopy getFormattedDateString];
+      getFormattedDateString4 = [endDateCopy getFormattedDateString];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = getFormattedDateString3;
       *&buf[12] = 2112;
-      *&buf[14] = v20;
+      *&buf[14] = getFormattedDateString4;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider fetching proximity history by date, start %@, end %@", buf, 0x16u);
     }
 
@@ -1964,7 +1964,7 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
       v62 = __Block_byref_object_dispose__111;
       v63 = 0;
       v22 = dispatch_semaphore_create(0);
-      v23 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+      proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __91__RTPeopleDiscoveryProvider__fetchProximityHistoryFromStartDate_endDate_completionHandler___block_invoke;
@@ -1973,7 +1973,7 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
       v57 = &v58;
       v24 = v22;
       v55 = v24;
-      [v23 fetchProximityEventsFromDate:v8 endDate:v9 handler:v54];
+      [proximityEventStore fetchProximityEventsFromDate:dateCopy endDate:endDateCopy handler:v54];
 
       v25 = v24;
       v53 = [MEMORY[0x277CBEAA8] now];
@@ -1985,11 +1985,11 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
         v28 = v27;
         v50 = objc_opt_new();
         v51 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-        v29 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v30 = [v29 filteredArrayUsingPredicate:v51];
-        v31 = [v30 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v30 = [callStackSymbols filteredArrayUsingPredicate:v51];
+        firstObject = [v30 firstObject];
 
-        [v50 submitToCoreAnalytics:v31 type:1 duration:v28];
+        [v50 submitToCoreAnalytics:firstObject type:1 duration:v28];
         v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
         {
@@ -2054,9 +2054,9 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
       [v21 addObject:v39];
     }
 
-    v43 = [(RTPeopleDiscoveryProvider *)self contactRecord];
+    contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
     v44 = [MEMORY[0x277CBEAA8] now];
-    v45 = [v43 generateRealtimeProximityEventFromDate:v8 endDate:v9 referenceDate:v44];
+    v45 = [contactRecord generateRealtimeProximityEventFromDate:dateCopy endDate:endDateCopy referenceDate:v44];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -2075,12 +2075,12 @@ uint64_t __90__RTPeopleDiscoveryProvider_fetchProximityHistoryFromStartDate_endD
     {
       v47 = _RTSafeArray();
       v48 = _RTMultiErrorCreate();
-      (v10)[2](v10, v17, v48);
+      (handlerCopy)[2](handlerCopy, v17, v48);
     }
 
     else
     {
-      (v10)[2](v10, v17, 0);
+      (handlerCopy)[2](handlerCopy, v17, 0);
     }
   }
 }
@@ -2102,21 +2102,21 @@ void __91__RTPeopleDiscoveryProvider__fetchProximityHistoryFromStartDate_endDate
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dsCopy = ds;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_completionHandler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_completionHandler___block_invoke(uint64_t a1)
@@ -2127,11 +2127,11 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
   return [v2 _monitorEvents];
 }
 
-- (void)_fetchProximityHistoryFromEventIDs:(id)a3 completionHandler:(id)a4
+- (void)_fetchProximityHistoryFromEventIDs:(id)ds completionHandler:(id)handler
 {
   v59[1] = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v5 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v6 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2156,7 +2156,7 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
     v57 = __Block_byref_object_dispose__111;
     v58 = 0;
     v9 = dispatch_semaphore_create(0);
-    v10 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+    proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __82__RTPeopleDiscoveryProvider__fetchProximityHistoryFromEventIDs_completionHandler___block_invoke;
@@ -2165,7 +2165,7 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
     v44 = &v54;
     v11 = v9;
     v42 = v11;
-    [v10 fetchProximityEventsFromEventIDs:v40 handler:v41];
+    [proximityEventStore fetchProximityEventsFromEventIDs:dsCopy handler:v41];
 
     v12 = v11;
     v13 = [MEMORY[0x277CBEAA8] now];
@@ -2177,11 +2177,11 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
       v16 = v15;
       v17 = objc_opt_new();
       v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-      v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v20 = [v19 filteredArrayUsingPredicate:v18];
-      v21 = [v20 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+      firstObject = [v20 firstObject];
 
-      [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+      [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
       {
@@ -2246,10 +2246,10 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
   }
 
   v32 = [*(v46 + 5) count];
-  if (v32 != [v40 count])
+  if (v32 != [dsCopy count])
   {
-    v33 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-    v34 = [v33 queryRealTimeEventsByEventIDs:v40];
+    contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+    v34 = [contactRecord queryRealTimeEventsByEventIDs:dsCopy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2278,7 +2278,7 @@ uint64_t __81__RTPeopleDiscoveryProvider_fetchProximityHistoryFromEventIDs_compl
     v37 = 0;
   }
 
-  v5[2](v5, v7, v37);
+  handlerCopy[2](handlerCopy, v7, v37);
   if (v36)
   {
   }
@@ -2303,18 +2303,18 @@ void __82__RTPeopleDiscoveryProvider__fetchProximityHistoryFromEventIDs_completi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchMostRecentPeopleDensity:(id)a3
+- (void)fetchMostRecentPeopleDensity:(id)density
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  densityCopy = density;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke;
   v7[3] = &unk_2788C4D38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = densityCopy;
+  v6 = densityCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke(uint64_t a1)
@@ -2325,45 +2325,45 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __94__RTPeopleDiscoveryProvider_fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler___block_invoke;
   v15[3] = &unk_2788C5530;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchPeopleDensityHistoryFromStartDate:(id)a3 endDate:(id)a4 completionHandler:(id)a5
+- (void)_fetchPeopleDensityHistoryFromStartDate:(id)date endDate:(id)endDate completionHandler:(id)handler
 {
   v67[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 compare:v9] == 1)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if ([dateCopy compare:endDateCopy] == 1)
   {
     v11 = MEMORY[0x277CCA9B8];
     v65 = *MEMORY[0x277CCA450];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v8 getFormattedDateString];
-    v14 = [v9 getFormattedDateString];
-    v15 = [v12 stringWithFormat:@"startDate, %@, endDate, %@", v13, v14];
+    getFormattedDateString = [dateCopy getFormattedDateString];
+    getFormattedDateString2 = [endDateCopy getFormattedDateString];
+    v15 = [v12 stringWithFormat:@"startDate, %@, endDate, %@", getFormattedDateString, getFormattedDateString2];
     v66 = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v66 forKeys:&v65 count:1];
     v17 = [v11 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v16];
 
-    v10[2](v10, MEMORY[0x277CBEBF8], v17);
+    handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v17);
   }
 
   else
@@ -2371,12 +2371,12 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v8 getFormattedDateString];
-      v20 = [v9 getFormattedDateString];
+      getFormattedDateString3 = [dateCopy getFormattedDateString];
+      getFormattedDateString4 = [endDateCopy getFormattedDateString];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = getFormattedDateString3;
       *&buf[12] = 2112;
-      *&buf[14] = v20;
+      *&buf[14] = getFormattedDateString4;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider fetching people density history by date, start %@, end %@", buf, 0x16u);
     }
 
@@ -2396,7 +2396,7 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
       v56 = __Block_byref_object_dispose__111;
       v57 = 0;
       v21 = dispatch_semaphore_create(0);
-      v22 = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
+      peopleDensityStore = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
       v48[0] = MEMORY[0x277D85DD0];
       v48[1] = 3221225472;
       v48[2] = __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_endDate_completionHandler___block_invoke;
@@ -2405,7 +2405,7 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
       v51 = &v52;
       v23 = v21;
       v49 = v23;
-      [v22 fetchPeopleDensityFromDate:v8 endDate:v9 handler:v48];
+      [peopleDensityStore fetchPeopleDensityFromDate:dateCopy endDate:endDateCopy handler:v48];
 
       v24 = v23;
       v47 = [MEMORY[0x277CBEAA8] now];
@@ -2417,11 +2417,11 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
         v27 = v26;
         v45 = objc_opt_new();
         v28 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-        v29 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v30 = [v29 filteredArrayUsingPredicate:v28];
-        v31 = [v30 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v30 = [callStackSymbols filteredArrayUsingPredicate:v28];
+        firstObject = [v30 firstObject];
 
-        [v45 submitToCoreAnalytics:v31 type:1 duration:v27];
+        [v45 submitToCoreAnalytics:firstObject type:1 duration:v27];
         v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
         {
@@ -2449,12 +2449,12 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
       v40 = v35;
       if (v53[5])
       {
-        (v10[2])(v10, MEMORY[0x277CBEBF8]);
+        (handlerCopy[2])(handlerCopy, MEMORY[0x277CBEBF8]);
       }
 
       if (v40)
       {
-        v10[2](v10, MEMORY[0x277CBEBF8], v40);
+        handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v40);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -2470,15 +2470,15 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
       }
 
       [v17 addObjectsFromArray:*(*&buf[8] + 40)];
-      v43 = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
-      v44 = [v43 fetchOngoingPeopleDensityBundle:v8 endDate:v9];
+      peopleDensityRecord = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
+      v44 = [peopleDensityRecord fetchOngoingPeopleDensityBundle:dateCopy endDate:endDateCopy];
 
       if (v44)
       {
         [v17 addObject:v44];
       }
 
-      (v10)[2](v10, v17, 0);
+      (handlerCopy)[2](handlerCopy, v17, 0);
 
       _Block_object_dispose(&v52, 8);
       _Block_object_dispose(buf, 8);
@@ -2492,7 +2492,7 @@ void __58__RTPeopleDiscoveryProvider_fetchMostRecentPeopleDensity___block_invoke
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
       v39 = [v37 errorWithDomain:*MEMORY[0x277D01448] code:5 userInfo:v38];
 
-      v10[2](v10, MEMORY[0x277CBEBF8], v39);
+      handlerCopy[2](handlerCopy, MEMORY[0x277CBEBF8], v39);
     }
   }
 }
@@ -2514,28 +2514,28 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4
+- (void)fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dsCopy = ds;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__RTPeopleDiscoveryProvider_fetchContactScoresFromContactIDs_completionHandler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchContactScoresFromContactIDs:(id)a3 completionHandler:(id)a4
+- (void)_fetchContactScoresFromContactIDs:(id)ds completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2545,10 +2545,10 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
 
   if ([(RTPeopleDiscoveryProvider *)self contactScoreDataAvailable])
   {
-    if (v6 && [v6 count])
+    if (dsCopy && [dsCopy count])
     {
-      v9 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-      v10 = [v9 queryContactScoresWithContactIDs:v6];
+      contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+      v10 = [contactRecord queryContactScoresWithContactIDs:dsCopy];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -2562,7 +2562,7 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
         }
       }
 
-      v7[2](v7, v10, 0);
+      handlerCopy[2](handlerCopy, v10, 0);
     }
 
     else
@@ -2573,7 +2573,7 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
       v24[0] = @"contactIDs requires at least one element to fetch";
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
       v18 = [v16 errorWithDomain:v17 code:7 userInfo:v10];
-      (v7)[2](v7, MEMORY[0x277CBEBF8], v18);
+      (handlerCopy)[2](handlerCopy, MEMORY[0x277CBEBF8], v18);
     }
   }
 
@@ -2586,7 +2586,7 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     v10 = [v13 errorWithDomain:v14 code:5 userInfo:v15];
 
-    (v7)[2](v7, MEMORY[0x277CBEBF8], v10);
+    (handlerCopy)[2](handlerCopy, MEMORY[0x277CBEBF8], v10);
   }
 }
 
@@ -2629,48 +2629,48 @@ void __95__RTPeopleDiscoveryProvider__fetchPeopleDensityHistoryFromStartDate_end
   return v3;
 }
 
-- (void)addProximityEvent:(id)a3 handler:(id)a4
+- (void)addProximityEvent:(id)event handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [eventCopy description];
     *buf = 138412290;
     v17 = v9;
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider adding proximity event, %@", buf, 0xCu);
   }
 
-  v10 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RTPeopleDiscoveryProvider_addProximityEvent_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v14 = eventCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = eventCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_addProximityEvent:(id)a3 handler:(id)a4
+- (void)_addProximityEvent:(id)event handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (eventCopy)
   {
-    v9 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+    proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__RTPeopleDiscoveryProvider__addProximityEvent_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
-    [v9 storeProximityEvent:v12 handler:v11];
+    v12 = eventCopy;
+    v13 = handlerCopy;
+    [proximityEventStore storeProximityEvent:v12 handler:v11];
 
     v10 = v12;
   }
@@ -2717,31 +2717,31 @@ void __56__RTPeopleDiscoveryProvider__addProximityEvent_handler___block_invoke(u
   v5();
 }
 
-- (void)injectAdv:(id)a3 handler:(id)a4
+- (void)injectAdv:(id)adv handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  advCopy = adv;
+  handlerCopy = handler;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [advCopy description];
     *buf = 138412290;
     v17 = v9;
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider inject advertisement, %@", buf, 0xCu);
   }
 
-  v10 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTPeopleDiscoveryProvider_injectAdv_handler___block_invoke;
   block[3] = &unk_2788C67D8;
-  v14 = v6;
-  v15 = v7;
+  v14 = advCopy;
+  v15 = handlerCopy;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  dispatch_async(v10, block);
+  v11 = advCopy;
+  v12 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __47__RTPeopleDiscoveryProvider_injectAdv_handler___block_invoke(uint64_t a1)
@@ -2777,24 +2777,24 @@ void __47__RTPeopleDiscoveryProvider_injectAdv_handler___block_invoke(uint64_t a
   }
 }
 
-- (void)clearProximityEvents:(id)a3
+- (void)clearProximityEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  eventsCopy = events;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__RTPeopleDiscoveryProvider_clearProximityEvents___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventsCopy;
+  v6 = eventsCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearProximityEvents:(id)a3
+- (void)_clearProximityEvents:(id)events
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventsCopy = events;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2803,19 +2803,19 @@ void __47__RTPeopleDiscoveryProvider_injectAdv_handler___block_invoke(uint64_t a
   }
 
   v6 = objc_opt_new();
-  v7 = [(RTPeopleDiscoveryProvider *)self contactRecord];
-  [v7 cleanUpOngoingContactRecordsAndScores];
+  contactRecord = [(RTPeopleDiscoveryProvider *)self contactRecord];
+  [contactRecord cleanUpOngoingContactRecordsAndScores];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v39 = +[RTPeopleDiscoveryProvider getStoreURL];
-  v9 = [v39 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  path = [v39 path];
+  v10 = [v8 fileExistsAtPath:path];
 
   if (v10)
   {
-    v11 = [objc_opt_class() getStoreURL];
+    getStoreURL = [objc_opt_class() getStoreURL];
     v43 = 0;
-    [v8 removeItemAtURL:v11 error:&v43];
+    [v8 removeItemAtURL:getStoreURL error:&v43];
     v12 = v43;
 
     if (v12)
@@ -2857,7 +2857,7 @@ LABEL_12:
     v49 = __Block_byref_object_dispose__111;
     v50 = 0;
     v14 = dispatch_semaphore_create(0);
-    v15 = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
+    proximityEventStore = [(RTPeopleDiscoveryProvider *)self proximityEventStore];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __51__RTPeopleDiscoveryProvider__clearProximityEvents___block_invoke;
@@ -2865,7 +2865,7 @@ LABEL_12:
     p_buf = &buf;
     v16 = v14;
     v41 = v16;
-    [v15 clearWithHandler:v40];
+    [proximityEventStore clearWithHandler:v40];
 
     v17 = v16;
     v18 = [MEMORY[0x277CBEAA8] now];
@@ -2877,11 +2877,11 @@ LABEL_12:
       v21 = v20;
       v22 = objc_opt_new();
       v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-      v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v25 = [v24 filteredArrayUsingPredicate:v23];
-      v26 = [v25 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+      firstObject = [v25 firstObject];
 
-      [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+      [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
       v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
@@ -2935,12 +2935,12 @@ LABEL_12:
   {
     v36 = _RTSafeArray();
     v37 = _RTMultiErrorCreate();
-    v4[2](v4, v37);
+    eventsCopy[2](eventsCopy, v37);
   }
 
   else
   {
-    v4[2](v4, 0);
+    eventsCopy[2](eventsCopy, 0);
   }
 }
 
@@ -2951,48 +2951,48 @@ void __51__RTPeopleDiscoveryProvider__clearProximityEvents___block_invoke(uint64
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)addPeopleDensityBundle:(id)a3 handler:(id)a4
+- (void)addPeopleDensityBundle:(id)bundle handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  handlerCopy = handler;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [bundleCopy description];
     *buf = 138412290;
     v17 = v9;
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider adding people density bundle, %@", buf, 0xCu);
   }
 
-  v10 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__RTPeopleDiscoveryProvider_addPeopleDensityBundle_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v10, block);
+  v14 = bundleCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = bundleCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_addPeopleDensityBundle:(id)a3 handler:(id)a4
+- (void)_addPeopleDensityBundle:(id)bundle handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  bundleCopy = bundle;
+  handlerCopy = handler;
+  if (bundleCopy)
   {
-    v9 = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
+    peopleDensityStore = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__RTPeopleDiscoveryProvider__addPeopleDensityBundle_handler___block_invoke;
     v11[3] = &unk_2788C56C0;
     v14 = a2;
-    v12 = v7;
-    v13 = v8;
-    [v9 storePeopleDensity:v12 handler:v11];
+    v12 = bundleCopy;
+    v13 = handlerCopy;
+    [peopleDensityStore storePeopleDensity:v12 handler:v11];
 
     v10 = v12;
   }
@@ -3039,40 +3039,40 @@ void __61__RTPeopleDiscoveryProvider__addPeopleDensityBundle_handler___block_inv
   v5();
 }
 
-- (void)injectPeopleDensityStats:(unint64_t)a3 duration:(double)a4 date:(id)a5 advertisements:(id)a6 handler:(id)a7
+- (void)injectPeopleDensityStats:(unint64_t)stats duration:(double)duration date:(id)date advertisements:(id)advertisements handler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  advertisementsCopy = advertisements;
+  handlerCopy = handler;
   v15 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v12 getFormattedDateString];
+    getFormattedDateString = [dateCopy getFormattedDateString];
     *buf = 134218498;
-    v28 = a3;
+    statsCopy = stats;
     v29 = 2048;
-    v30 = a4;
+    durationCopy = duration;
     v31 = 2112;
-    v32 = v16;
+    v32 = getFormattedDateString;
     _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_DEFAULT, "#RTPeopleDiscoveryProvider inject people density stats, numOfAdvs %lu, duration %f, date %@", buf, 0x20u);
   }
 
-  v17 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __91__RTPeopleDiscoveryProvider_injectPeopleDensityStats_duration_date_advertisements_handler___block_invoke;
   v21[3] = &unk_2788C54B8;
-  v24 = v14;
-  v25 = a3;
-  v26 = a4;
+  v24 = handlerCopy;
+  statsCopy2 = stats;
+  durationCopy2 = duration;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v17, v21);
+  v22 = dateCopy;
+  v23 = advertisementsCopy;
+  v18 = handlerCopy;
+  v19 = advertisementsCopy;
+  v20 = dateCopy;
+  dispatch_async(queue, v21);
 }
 
 uint64_t __91__RTPeopleDiscoveryProvider_injectPeopleDensityStats_duration_date_advertisements_handler___block_invoke(uint64_t a1)
@@ -3086,24 +3086,24 @@ uint64_t __91__RTPeopleDiscoveryProvider_injectPeopleDensityStats_duration_date_
   return v3();
 }
 
-- (void)clearPeopleDensityBundles:(id)a3
+- (void)clearPeopleDensityBundles:(id)bundles
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  bundlesCopy = bundles;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTPeopleDiscoveryProvider_clearPeopleDensityBundles___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = bundlesCopy;
+  v6 = bundlesCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_clearPeopleDensityBundles:(id)a3
+- (void)_clearPeopleDensityBundles:(id)bundles
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bundlesCopy = bundles;
   v5 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3112,19 +3112,19 @@ uint64_t __91__RTPeopleDiscoveryProvider_injectPeopleDensityStats_duration_date_
   }
 
   v6 = objc_opt_new();
-  v7 = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
-  [v7 cleanUpOngoingPeopleDensityBundle];
+  peopleDensityRecord = [(RTPeopleDiscoveryProvider *)self peopleDensityRecord];
+  [peopleDensityRecord cleanUpOngoingPeopleDensityBundle];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAA00]);
   v39 = +[RTPeopleDiscoveryProvider getStoreURL];
-  v9 = [v39 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  path = [v39 path];
+  v10 = [v8 fileExistsAtPath:path];
 
   if (v10)
   {
-    v11 = [objc_opt_class() getStoreURL];
+    getStoreURL = [objc_opt_class() getStoreURL];
     v43 = 0;
-    [v8 removeItemAtURL:v11 error:&v43];
+    [v8 removeItemAtURL:getStoreURL error:&v43];
     v12 = v43;
 
     if (v12)
@@ -3166,7 +3166,7 @@ LABEL_12:
     v49 = __Block_byref_object_dispose__111;
     v50 = 0;
     v14 = dispatch_semaphore_create(0);
-    v15 = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
+    peopleDensityStore = [(RTPeopleDiscoveryProvider *)self peopleDensityStore];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke;
@@ -3174,7 +3174,7 @@ LABEL_12:
     p_buf = &buf;
     v16 = v14;
     v41 = v16;
-    [v15 clearWithHandler:v40];
+    [peopleDensityStore clearWithHandler:v40];
 
     v17 = v16;
     v18 = [MEMORY[0x277CBEAA8] now];
@@ -3186,11 +3186,11 @@ LABEL_12:
       v21 = v20;
       v22 = objc_opt_new();
       v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_423];
-      v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v25 = [v24 filteredArrayUsingPredicate:v23];
-      v26 = [v25 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+      firstObject = [v25 firstObject];
 
-      [v22 submitToCoreAnalytics:v26 type:1 duration:v21];
+      [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
       v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
       {
@@ -3226,7 +3226,7 @@ LABEL_12:
       [v6 addObject:v35];
     }
 
-    v4[2](v4, 0);
+    bundlesCopy[2](bundlesCopy, 0);
 
     _Block_object_dispose(&buf, 8);
   }
@@ -3246,12 +3246,12 @@ LABEL_12:
   {
     v36 = _RTSafeArray();
     v37 = _RTMultiErrorCreate();
-    (v4)[2](v4, v37);
+    (bundlesCopy)[2](bundlesCopy, v37);
   }
 
   else
   {
-    v4[2](v4, 0);
+    bundlesCopy[2](bundlesCopy, 0);
   }
 }
 
@@ -3262,10 +3262,10 @@ void __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)computeContactScores:(id)a3
+- (void)computeContactScores:(id)scores
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scoresCopy = scores;
   v4 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -3280,19 +3280,19 @@ void __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke(u
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v8 = [v5 errorWithDomain:v6 code:13 userInfo:v7];
 
-  v3[2](v3, v8);
+  scoresCopy[2](scoresCopy, v8);
 }
 
-+ (id)computeAdvMetrics:(int64_t)a3 identities:(id)a4 numOfResolvedAdvs:(int64_t)a5
++ (id)computeAdvMetrics:(int64_t)metrics identities:(id)identities numOfResolvedAdvs:(int64_t)advs
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  identitiesCopy = identities;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = v6;
+  v8 = identitiesCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
@@ -3311,8 +3311,8 @@ void __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke(u
           objc_enumerationMutation(v8);
         }
 
-        v17 = [*(*(&v27 + 1) + 8 * i) type];
-        switch(v17)
+        type = [*(*(&v27 + 1) + 8 * i) type];
+        switch(type)
         {
           case 8:
             ++v12;
@@ -3343,33 +3343,33 @@ void __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke(u
     v14 = 0;
   }
 
-  v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v7 setObject:v18 forKeyedSubscript:@"numOfAdvs"];
+  v18 = [MEMORY[0x277CCABB0] numberWithInteger:metrics];
+  [dictionary setObject:v18 forKeyedSubscript:@"numOfAdvs"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  [v7 setObject:v19 forKeyedSubscript:@"numOfIdentities"];
+  [dictionary setObject:v19 forKeyedSubscript:@"numOfIdentities"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-  [v7 setObject:v20 forKeyedSubscript:@"numOfResolvedAdvs"];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:advs];
+  [dictionary setObject:v20 forKeyedSubscript:@"numOfResolvedAdvs"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithInteger:v14];
-  [v7 setObject:v21 forKeyedSubscript:@"numOfFamilyDevices"];
+  [dictionary setObject:v21 forKeyedSubscript:@"numOfFamilyDevices"];
 
   v22 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-  [v7 setObject:v22 forKeyedSubscript:@"numOfFriendDevices"];
+  [dictionary setObject:v22 forKeyedSubscript:@"numOfFriendDevices"];
 
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-  [v7 setObject:v23 forKeyedSubscript:@"numOfPairedDevices"];
+  [dictionary setObject:v23 forKeyedSubscript:@"numOfPairedDevices"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-  [v7 setObject:v24 forKeyedSubscript:@"numOfUnknownDevices"];
+  [dictionary setObject:v24 forKeyedSubscript:@"numOfUnknownDevices"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3377,16 +3377,16 @@ void __56__RTPeopleDiscoveryProvider__clearPeopleDensityBundles___block_invoke(u
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "RTPurgable performPurgeOfType called", buf, 2u);
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__RTPeopleDiscoveryProvider_performPurgeOfType_referenceDate_completion___block_invoke;
   block[3] = &unk_2788C6300;
-  v12 = v7;
-  v13 = a3;
+  v12 = completionCopy;
+  typeCopy = type;
   block[4] = self;
-  v10 = v7;
-  dispatch_async(v9, block);
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __73__RTPeopleDiscoveryProvider_performPurgeOfType_referenceDate_completion___block_invoke(uint64_t a1)

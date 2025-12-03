@@ -1,18 +1,18 @@
 @interface NSKnownKeysMappingStrategy1
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (CFMutableArrayRef)_makeBranchTableForKeys:(const void *)a1 count:(unint64_t)a2;
-- (NSKnownKeysMappingStrategy1)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CFMutableArrayRef)_makeBranchTableForKeys:(const void *)keys count:(unint64_t)count;
+- (NSKnownKeysMappingStrategy1)initWithCoder:(id)coder;
 - (id)allKeys;
 - (id)description;
-- (id)initForKeys:(id *)a3 count:(unint64_t)a4;
-- (id)initForKeys:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (id)initForKeys:(id *)keys count:(unint64_t)count;
+- (id)initForKeys:(id)keys;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
 - (unint64_t)length;
-- (void)_coreCreationForKeys:(unint64_t)a3 count:;
+- (void)_coreCreationForKeys:(unint64_t)keys count:;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSKnownKeysMappingStrategy1
@@ -152,28 +152,28 @@
   }
 }
 
-- (CFMutableArrayRef)_makeBranchTableForKeys:(const void *)a1 count:(unint64_t)a2
+- (CFMutableArrayRef)_makeBranchTableForKeys:(const void *)keys count:(unint64_t)count
 {
   v32 = *MEMORY[0x1E69E9840];
   memset(&valueCallBacks, 0, sizeof(valueCallBacks));
   valueCallBacks.release = *(MEMORY[0x1E695E9E8] + 16);
-  if (a2)
+  if (count)
   {
-    v2 = a2;
-    if (a2 >= 0x201)
+    countCopy = count;
+    if (count >= 0x201)
     {
-      v4 = 1;
+      countCopy2 = 1;
     }
 
     else
     {
-      v4 = a2;
+      countCopy2 = count;
     }
 
-    v5 = (8 * v4 + 15) & 0xFFFFFFFFFFFFFFF0;
+    v5 = (8 * countCopy2 + 15) & 0xFFFFFFFFFFFFFFF0;
     v6 = (&v28 - v5);
-    v7 = 8 * a2;
-    if (v2 > 0x200)
+    v7 = 8 * count;
+    if (countCopy > 0x200)
     {
       v6 = NSAllocateScannedUncollectable();
     }
@@ -185,7 +185,7 @@
 
     v11 = 0;
     v12 = xmmword_18592E480;
-    v13 = vdupq_n_s64(v2 - 1);
+    v13 = vdupq_n_s64(countCopy - 1);
     v14 = vdupq_n_s64(2uLL);
     do
     {
@@ -204,10 +204,10 @@
       v12 = vaddq_s64(v12, v14);
     }
 
-    while (((v2 + 1) & 0xFFFFFFFFFFFFFFFELL) != v11);
+    while (((countCopy + 1) & 0xFFFFFFFFFFFFFFFELL) != v11);
     v16 = *MEMORY[0x1E695E480];
-    v17 = CFDictionaryCreate(*MEMORY[0x1E695E480], a1, v6, v2, 0, 0);
-    if (v2 >= 0x201)
+    v17 = CFDictionaryCreate(*MEMORY[0x1E695E480], keys, v6, countCopy, 0, 0);
+    if (countCopy >= 0x201)
     {
       NSZoneFree(0, v6);
     }
@@ -215,8 +215,8 @@
     v18 = CFDictionaryCreateMutable(v16, 0, 0, &valueCallBacks);
     do
     {
-      v19 = *a1;
-      v20 = strlen(*a1);
+      v19 = *keys;
+      v20 = strlen(*keys);
       Value = CFDictionaryGetValue(v18, v20);
       if (!Value)
       {
@@ -225,11 +225,11 @@
       }
 
       CFArrayAppendValue(Value, v19);
-      ++a1;
-      --v2;
+      ++keys;
+      --countCopy;
     }
 
-    while (v2);
+    while (countCopy);
     Count = CFDictionaryGetCount(v18);
     v23 = Count;
     if (Count <= 1)
@@ -290,28 +290,28 @@
   return result;
 }
 
-- (void)_coreCreationForKeys:(unint64_t)a3 count:
+- (void)_coreCreationForKeys:(unint64_t)keys count:
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_18;
   }
 
-  if (a3 > 0x8000)
+  if (keys > 0x8000)
   {
     v25 = MEMORY[0x1E695DF30];
     v26 = *MEMORY[0x1E695D940];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ supports a maximum of 32, 768 elements.  parameter was %lu", objc_opt_class(), a3];
+    keys = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ supports a maximum of 32, 768 elements.  parameter was %lu", objc_opt_class(), keys];
     v23 = v25;
     v24 = v26;
 LABEL_20:
-    objc_exception_throw([v23 exceptionWithName:v24 reason:v22 userInfo:0]);
+    objc_exception_throw([v23 exceptionWithName:v24 reason:keys userInfo:0]);
   }
 
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v8 = (v27 - v7);
-  if (a3 >= 0x201)
+  if (keys >= 0x201)
   {
     v8 = NSAllocateScannedUncollectable();
   }
@@ -319,7 +319,7 @@ LABEL_20:
   else
   {
     bzero(v27 - v7, 8 * v6);
-    if (!a3)
+    if (!keys)
     {
       v9 = 1;
       goto LABEL_11;
@@ -331,25 +331,25 @@ LABEL_20:
   {
     v11 = *(a2 + 8 * v10);
     v12 = v11;
-    v13 = [v11 UTF8String];
-    if (!v13)
+    uTF8String = [v11 UTF8String];
+    if (!uTF8String)
     {
       v20 = MEMORY[0x1E695DF30];
       v21 = *MEMORY[0x1E695D940];
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ cannot be encoded as UTF-8", v11];
+      keys = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ cannot be encoded as UTF-8", v11];
       v23 = v20;
       v24 = v21;
       goto LABEL_20;
     }
 
-    v8[v10++] = v13;
+    v8[v10++] = uTF8String;
   }
 
-  while (a3 != v10);
+  while (keys != v10);
   v9 = 0;
 LABEL_11:
-  a1[4] = 0;
-  v14 = [NSKnownKeysMappingStrategy1 _makeBranchTableForKeys:v8 count:a3];
+  self[4] = 0;
+  v14 = [NSKnownKeysMappingStrategy1 _makeBranchTableForKeys:v8 count:keys];
   Count = CFArrayGetCount(v14);
   v16 = _PF_Private_Malloc_Zone;
   if (!_PF_Private_Malloc_Zone)
@@ -358,27 +358,27 @@ LABEL_11:
   }
 
   v17 = malloc_type_zone_calloc(v16, Count + 1, 8uLL, 0x80040B8603338uLL);
-  a1[2] = v17;
+  self[2] = v17;
   v28.location = 0;
   v28.length = Count;
   CFArrayGetValues(v14, v28, v17);
   CFRelease(v14);
-  *(a1[2] + 8 * Count) = 0;
-  a1[3] = a3;
-  a1[5] = PF_ALLOCATE_OBJECT_ARRAY(a3);
+  *(self[2] + 8 * Count) = 0;
+  self[3] = keys;
+  self[5] = PF_ALLOCATE_OBJECT_ARRAY(keys);
   if ((v9 & 1) == 0)
   {
     v18 = 0;
     do
     {
-      *(a1[5] + 8 * v18) = *(a2 + 8 * v18);
+      *(self[5] + 8 * v18) = *(a2 + 8 * v18);
       ++v18;
     }
 
-    while (a3 != v18);
+    while (keys != v18);
   }
 
-  if (a3 >= 0x201)
+  if (keys >= 0x201)
   {
     NSZoneFree(0, v8);
   }
@@ -387,7 +387,7 @@ LABEL_18:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initForKeys:(id *)a3 count:(unint64_t)a4
+- (id)initForKeys:(id *)keys count:(unint64_t)count
 {
   v9.receiver = self;
   v9.super_class = NSKnownKeysMappingStrategy1;
@@ -395,16 +395,16 @@ LABEL_18:
   v7 = v6;
   if (v6)
   {
-    [(NSKnownKeysMappingStrategy1 *)v6 _coreCreationForKeys:a3 count:a4];
+    [(NSKnownKeysMappingStrategy1 *)v6 _coreCreationForKeys:keys count:count];
   }
 
   return v7;
 }
 
-- (id)initForKeys:(id)a3
+- (id)initForKeys:(id)keys
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 count];
+  v5 = [keys count];
   v6 = MEMORY[0x1EEE9AC00](v5);
   v9 = v13 - v8;
   if (v6 > 0x200)
@@ -417,7 +417,7 @@ LABEL_18:
     bzero(v13 - v8, 8 * v7);
   }
 
-  [a3 getObjects:v9 range:{0, v5}];
+  [keys getObjects:v9 range:{0, v5}];
   v10 = [(NSKnownKeysMappingStrategy1 *)self initForKeys:v9 count:v5];
   if (v5 >= 0x201)
   {
@@ -437,14 +437,14 @@ LABEL_18:
   return [v2 arrayWithObjects:keys count:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v9) = 1;
   }
 
-  else if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[NSKnownKeysMappingStrategy1 length](self, "length"), v5 == [a3 length]))
+  else if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = -[NSKnownKeysMappingStrategy1 length](self, "length"), v5 == [equal length]))
   {
     length = self->_length;
     if (length)
@@ -453,7 +453,7 @@ LABEL_18:
       while (1)
       {
         v8 = self->_keys[v7];
-        if (v8 != *(*(a3 + 5) + 8 * v7))
+        if (v8 != *(*(equal + 5) + 8 * v7))
         {
           v9 = [v8 isEqual:?];
           if (!v9)
@@ -495,22 +495,22 @@ LABEL_10:
   return v3;
 }
 
-- (NSKnownKeysMappingStrategy1)initWithCoder:(id)a3
+- (NSKnownKeysMappingStrategy1)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
   self->_length = 0xFFFFFFFFLL;
-  v5 = [a3 decodeInt64ForKey:@"length"];
+  v5 = [coder decodeInt64ForKey:@"length"];
   objc_getClass("NSKeyedUnarchiver");
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = 0;
   if (isKindOfClass)
   {
-    v8 = a3;
+    coderCopy = coder;
   }
 
   else
   {
-    v8 = 0;
+    coderCopy = 0;
   }
 
   if (isKindOfClass)
@@ -518,49 +518,49 @@ LABEL_10:
     v9 = objc_alloc_init(MEMORY[0x1E69E58C0]);
     if (!v9)
     {
-      [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434F40)}];
+      [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434F40)}];
 
 LABEL_31:
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_32;
     }
 
     v7 = v9;
-    [a3 replaceObject:self withObject:v9];
+    [coder replaceObject:self withObject:v9];
   }
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
-  v12 = [a3 decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"keys"}];
+  v12 = [coder decodeObjectOfClasses:objc_msgSend(v10 forKey:{"setWithObjects:", v11, objc_opt_class(), 0), @"keys"}];
   v13 = v12;
   if (v12)
   {
     if (([v12 isNSArray] & 1) == 0)
     {
-      [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434F68)}];
+      [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434F68)}];
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_32;
     }
   }
 
   else
   {
-    if ([a3 error])
+    if ([coder error])
     {
-      [a3 failWithError:{objc_msgSend(a3, "error")}];
+      [coder failWithError:{objc_msgSend(coder, "error")}];
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_32;
     }
 
     v13 = 0;
   }
 
-  v14 = self;
+  selfCopy = self;
   if (v7)
   {
-    [v8 replaceObject:v7 withObject:self];
+    [coderCopy replaceObject:v7 withObject:self];
   }
 
   v15 = [v13 count];
@@ -585,7 +585,7 @@ LABEL_31:
 
         if (([*(*(&v25 + 1) + 8 * v19) isNSString] & 1) == 0)
         {
-          [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF434F90)}];
+          [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF434F90)}];
 
           goto LABEL_31;
         }
@@ -607,7 +607,7 @@ LABEL_31:
 
   if (v5 > 0x8000 || v5 != v15)
   {
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434FB8)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4864, &unk_1EF434FB8)}];
 
     goto LABEL_31;
   }
@@ -625,7 +625,7 @@ LABEL_31:
   }
 
   [v13 getObjects:v22 range:{0, v5}];
-  [(NSKnownKeysMappingStrategy1 *)v14 _coreCreationForKeys:v22 count:v5];
+  [(NSKnownKeysMappingStrategy1 *)selfCopy _coreCreationForKeys:v22 count:v5];
   if (v5 >= 0x201)
   {
     NSZoneFree(0, v22);
@@ -633,41 +633,41 @@ LABEL_31:
 
 LABEL_32:
   v23 = *MEMORY[0x1E69E9840];
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt32:1 forKey:@"version"];
-  [a3 encodeInt64:self->_length forKey:@"length"];
+  [coder encodeInt32:1 forKey:@"version"];
+  [coder encodeInt64:self->_length forKey:@"length"];
   v5 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:self->_keys count:self->_length];
-  [a3 encodeObject:v5 forKey:@"keys"];
+  [coder encodeObject:v5 forKey:@"keys"];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var2 = &self->_length;
+    state->var2 = &self->_length;
   }
 
-  a3->var1 = a4;
+  state->var1 = objects;
   v9 = [(NSKnownKeysMappingStrategy1 *)self length];
   result = 0;
-  var0 = a3->var0;
-  if (a5 && var0 < v9)
+  var0 = state->var0;
+  if (count && var0 < v9)
   {
     result = 0;
     do
     {
-      a4[result] = *(&self->_keys[var0] + result);
+      objects[result] = *(&self->_keys[var0] + result);
     }
 
-    while (++result + var0 < v9 && result < a5);
+    while (++result + var0 < v9 && result < count);
     var0 += result;
   }
 
-  a3->var0 = var0;
+  state->var0 = var0;
   return result;
 }
 

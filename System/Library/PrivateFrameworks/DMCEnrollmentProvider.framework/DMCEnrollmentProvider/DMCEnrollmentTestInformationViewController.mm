@@ -1,5 +1,5 @@
 @interface DMCEnrollmentTestInformationViewController
-- (DMCEnrollmentTestInformationViewController)initWithDelegate:(id)a3 title:(id)a4 subtitle:(id)a5 description:(id)a6;
+- (DMCEnrollmentTestInformationViewController)initWithDelegate:(id)delegate title:(id)title subtitle:(id)subtitle description:(id)description;
 - (DMCEnrollmentTestInformationViewControllerDelegate)delegate;
 - (void)loadView;
 - (void)updateContinueButtonStatus;
@@ -7,19 +7,19 @@
 
 @implementation DMCEnrollmentTestInformationViewController
 
-- (DMCEnrollmentTestInformationViewController)initWithDelegate:(id)a3 title:(id)a4 subtitle:(id)a5 description:(id)a6
+- (DMCEnrollmentTestInformationViewController)initWithDelegate:(id)delegate title:(id)title subtitle:(id)subtitle description:(id)description
 {
-  v10 = a3;
-  v11 = a6;
+  delegateCopy = delegate;
+  descriptionCopy = description;
   v17.receiver = self;
   v17.super_class = DMCEnrollmentTestInformationViewController;
-  v12 = [(DMCEnrollmentTemplateTableViewController *)&v17 initWithIconName:@"gear" title:a4 subTitle:a5];
+  v12 = [(DMCEnrollmentTemplateTableViewController *)&v17 initWithIconName:@"gear" title:title subTitle:subtitle];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v10);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
     v14 = objc_opt_new();
-    v15 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:v11 bold:0];
+    v15 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:descriptionCopy bold:0];
     [v14 addObject:v15];
 
     [(DMCEnrollmentTemplateTableViewController *)v13 addCellData:v14 animated:0];
@@ -82,9 +82,9 @@ void __54__DMCEnrollmentTestInformationViewController_loadView__block_invoke_2(u
 
 - (void)updateContinueButtonStatus
 {
-  v3 = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
-  v4 = [(DMCEnrollmentTestInformationViewController *)self confirmationView];
-  [v4 setInProgress:v3];
+  inProgress = [(DMCEnrollmentTemplateTableViewController *)self inProgress];
+  confirmationView = [(DMCEnrollmentTestInformationViewController *)self confirmationView];
+  [confirmationView setInProgress:inProgress];
 }
 
 - (DMCEnrollmentTestInformationViewControllerDelegate)delegate

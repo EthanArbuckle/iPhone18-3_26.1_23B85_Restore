@@ -1,17 +1,17 @@
 @interface NSSQLFetchCountIntermediate
-- (id)generateSQLStringInContext:(id)a3;
+- (id)generateSQLStringInContext:(id)context;
 @end
 
 @implementation NSSQLFetchCountIntermediate
 
-- (id)generateSQLStringInContext:(id)a3
+- (id)generateSQLStringInContext:(id)context
 {
-  if ([a3 objectForKey:@"NSUnderlyingException"])
+  if ([context objectForKey:@"NSUnderlyingException"])
   {
     return 0;
   }
 
-  if (([objc_msgSend(a3 objectForKey:{@"storeRequest", "fetchLimit"}] - 10001) > 0xFFFFFFFFFFFFD8EFLL)
+  if (([objc_msgSend(context objectForKey:{@"storeRequest", "fetchLimit"}] - 10001) > 0xFFFFFFFFFFFFD8EFLL)
   {
     v15 = objc_alloc_init(NSSQLColumn);
     [(NSSQLColumn *)v15 _setColumnName:?];
@@ -22,21 +22,21 @@
 
     v21.receiver = self;
     v21.super_class = NSSQLFetchCountIntermediate;
-    v16 = [(NSSQLFetchIntermediate *)&v21 selectIntermediate];
-    if (v16)
+    selectIntermediate = [(NSSQLFetchIntermediate *)&v21 selectIntermediate];
+    if (selectIntermediate)
     {
-      v16[48] = 1;
+      selectIntermediate[48] = 1;
     }
 
     v20.receiver = self;
     v20.super_class = NSSQLFetchCountIntermediate;
-    v17 = [(NSSQLFetchIntermediate *)&v20 selectIntermediate];
-    -[NSSQLSelectIntermediate setFetchColumns:](v17, [MEMORY[0x1E695DEC8] arrayWithObject:v15]);
+    selectIntermediate2 = [(NSSQLFetchIntermediate *)&v20 selectIntermediate];
+    -[NSSQLSelectIntermediate setFetchColumns:](selectIntermediate2, [MEMORY[0x1E695DEC8] arrayWithObject:v15]);
 
     v19.receiver = self;
     v19.super_class = NSSQLFetchCountIntermediate;
-    v18 = [(NSSQLFetchIntermediate *)&v19 generateSQLStringInContext:a3];
-    if (![a3 objectForKey:@"NSUnderlyingException"])
+    v18 = [(NSSQLFetchIntermediate *)&v19 generateSQLStringInContext:context];
+    if (![context objectForKey:@"NSUnderlyingException"])
     {
       v5 = objc_msgSend(objc_alloc(MEMORY[0x1E696AD60]), "initWithString:", @"SELECT COUNT(*) FROM (");
       [v5 appendString:v18];
@@ -56,24 +56,24 @@
     *&v7->super._flags |= 1u;
   }
 
-  v8 = [(NSSQLFetchIntermediate *)self selectIntermediate];
-  -[NSSQLSelectIntermediate setFetchColumns:](v8, [MEMORY[0x1E695DEC8] arrayWithObject:v7]);
+  selectIntermediate3 = [(NSSQLFetchIntermediate *)self selectIntermediate];
+  -[NSSQLSelectIntermediate setFetchColumns:](selectIntermediate3, [MEMORY[0x1E695DEC8] arrayWithObject:v7]);
 
-  v9 = [(NSSQLFetchIntermediate *)self selectIntermediate];
-  if (v9)
+  selectIntermediate4 = [(NSSQLFetchIntermediate *)self selectIntermediate];
+  if (selectIntermediate4)
   {
-    v9[48] = 1;
+    selectIntermediate4[48] = 1;
   }
 
-  v10 = [(NSSQLFetchIntermediate *)self selectIntermediate];
-  if (v10)
+  selectIntermediate5 = [(NSSQLFetchIntermediate *)self selectIntermediate];
+  if (selectIntermediate5)
   {
-    v10[64] = 1;
+    selectIntermediate5[64] = 1;
   }
 
   v22.receiver = self;
   v22.super_class = NSSQLFetchCountIntermediate;
-  v5 = [(NSSQLFetchIntermediate *)&v22 generateSQLStringInContext:a3];
+  v5 = [(NSSQLFetchIntermediate *)&v22 generateSQLStringInContext:context];
   v11 = [v5 componentsSeparatedByString:@" "];
   if ([v11 count] >= 6 && objc_msgSend(objc_msgSend(v11, "objectAtIndex:", 0), "isEqualToString:", @"SELECT") && objc_msgSend(objc_msgSend(v11, "objectAtIndex:", 1), "isEqualToString:", @"COUNT("))
   {

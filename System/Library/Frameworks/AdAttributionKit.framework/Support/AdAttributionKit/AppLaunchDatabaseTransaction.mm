@@ -1,6 +1,6 @@
 @interface AppLaunchDatabaseTransaction
 - (_TtC20AttributionKitDaemon28AppLaunchDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon28AppLaunchDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon28AppLaunchDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation AppLaunchDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(AppLaunchDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon28AppLaunchDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon28AppLaunchDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(AppLaunchDatabaseSession *)&v5 initWithConnection:a3];
+  return [(AppLaunchDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

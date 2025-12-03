@@ -1,7 +1,7 @@
 @interface STSResultDetailViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)isFullscreen;
-- (CGRect)contentFrameForBounds:(CGRect)a3 traitCollection:(id)a4;
+- (CGRect)contentFrameForBounds:(CGRect)bounds traitCollection:(id)collection;
 - (CGSize)contentSize;
 - (CGSize)providerIconSize;
 - (NSString)providerName;
@@ -9,20 +9,20 @@
 - (STSResultDetailViewControllerDelegate)delegate;
 - (UIImage)providerIcon;
 - (UIImage)thumbnail;
-- (void)detailViewDidTapProvider:(id)a3;
-- (void)detailViewDidTapReportConcern:(id)a3;
-- (void)detailViewDidTapSend:(id)a3;
+- (void)detailViewDidTapProvider:(id)provider;
+- (void)detailViewDidTapReportConcern:(id)concern;
+- (void)detailViewDidTapSend:(id)send;
 - (void)loadView;
-- (void)setContentSize:(CGSize)a3;
-- (void)setIsFullscreen:(BOOL)a3;
-- (void)setProviderIcon:(id)a3;
-- (void)setProviderIconSize:(CGSize)a3;
-- (void)setProviderName:(id)a3;
-- (void)setSearchResult:(id)a3;
-- (void)setUseBackgroundBlur:(BOOL)a3;
-- (void)updateCustomContentWithView:(id)a3;
-- (void)updateWithThumbnail:(id)a3 orThumbnailInfo:(id)a4;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)setContentSize:(CGSize)size;
+- (void)setIsFullscreen:(BOOL)fullscreen;
+- (void)setProviderIcon:(id)icon;
+- (void)setProviderIconSize:(CGSize)size;
+- (void)setProviderName:(id)name;
+- (void)setSearchResult:(id)result;
+- (void)setUseBackgroundBlur:(BOOL)blur;
+- (void)updateCustomContentWithView:(id)view;
+- (void)updateWithThumbnail:(id)thumbnail orThumbnailInfo:(id)info;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation STSResultDetailViewController
@@ -39,65 +39,65 @@
   [(STSResultDetailViewController *)self setView:v5];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   if ([(STSResultDetailViewController *)self modalPresentationStyle]== 6)
   {
-    v8 = [(STSResultDetailViewController *)self view];
-    [v8 setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), width, height}];
+    view = [(STSResultDetailViewController *)self view];
+    [view setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), width, height}];
   }
 
-  [v7 animateAlongsideTransition:0 completion:0];
+  [coordinatorCopy animateAlongsideTransition:0 completion:0];
   v9.receiver = self;
   v9.super_class = STSResultDetailViewController;
-  [(STSResultDetailViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(STSResultDetailViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (void)setUseBackgroundBlur:(BOOL)a3
+- (void)setUseBackgroundBlur:(BOOL)blur
 {
-  v3 = a3;
-  v4 = [(STSResultDetailViewController *)self view];
-  [v4 setUseBackgroundBlur:v3];
+  blurCopy = blur;
+  view = [(STSResultDetailViewController *)self view];
+  [view setUseBackgroundBlur:blurCopy];
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   p_contentSize = &self->_contentSize;
-  if (self->_contentSize.width != a3.width || self->_contentSize.height != a3.height)
+  if (self->_contentSize.width != size.width || self->_contentSize.height != size.height)
   {
-    p_contentSize->width = a3.width;
-    self->_contentSize.height = a3.height;
+    p_contentSize->width = size.width;
+    self->_contentSize.height = size.height;
     if ([(STSResultDetailViewController *)self isViewLoaded])
     {
-      v6 = [(STSResultDetailViewController *)self view];
-      [v6 setContentSize:{p_contentSize->width, p_contentSize->height}];
+      view = [(STSResultDetailViewController *)self view];
+      [view setContentSize:{p_contentSize->width, p_contentSize->height}];
     }
   }
 }
 
 - (UIImage)thumbnail
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  v3 = [v2 thumbnail];
+  view = [(STSResultDetailViewController *)self view];
+  thumbnail = [view thumbnail];
 
-  return v3;
+  return thumbnail;
 }
 
 - (STSAnimatedImageInfo)thumbnailInfo
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  v3 = [v2 thumbnailInfo];
+  view = [(STSResultDetailViewController *)self view];
+  thumbnailInfo = [view thumbnailInfo];
 
-  return v3;
+  return thumbnailInfo;
 }
 
 - (CGSize)providerIconSize
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  [v2 providerIconSize];
+  view = [(STSResultDetailViewController *)self view];
+  [view providerIconSize];
   v4 = v3;
   v6 = v5;
 
@@ -108,114 +108,114 @@
   return result;
 }
 
-- (void)setProviderIconSize:(CGSize)a3
+- (void)setProviderIconSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(STSResultDetailViewController *)self view];
-  [v5 setProviderIconSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  view = [(STSResultDetailViewController *)self view];
+  [view setProviderIconSize:{width, height}];
 }
 
 - (UIImage)providerIcon
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  v3 = [v2 providerIcon];
+  view = [(STSResultDetailViewController *)self view];
+  providerIcon = [view providerIcon];
 
-  return v3;
+  return providerIcon;
 }
 
-- (void)setProviderIcon:(id)a3
+- (void)setProviderIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(STSResultDetailViewController *)self view];
-  [v5 setProviderIcon:v4];
+  iconCopy = icon;
+  view = [(STSResultDetailViewController *)self view];
+  [view setProviderIcon:iconCopy];
 }
 
 - (NSString)providerName
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  v3 = [v2 providerName];
+  view = [(STSResultDetailViewController *)self view];
+  providerName = [view providerName];
 
-  return v3;
+  return providerName;
 }
 
-- (void)setProviderName:(id)a3
+- (void)setProviderName:(id)name
 {
-  v4 = a3;
-  v5 = [(STSResultDetailViewController *)self view];
-  [v5 setProviderName:v4];
+  nameCopy = name;
+  view = [(STSResultDetailViewController *)self view];
+  [view setProviderName:nameCopy];
 }
 
 - (BOOL)isFullscreen
 {
-  v2 = [(STSResultDetailViewController *)self view];
-  v3 = [v2 isFullscreen];
+  view = [(STSResultDetailViewController *)self view];
+  isFullscreen = [view isFullscreen];
 
-  return v3;
+  return isFullscreen;
 }
 
-- (void)setIsFullscreen:(BOOL)a3
+- (void)setIsFullscreen:(BOOL)fullscreen
 {
-  v3 = a3;
-  v4 = [(STSResultDetailViewController *)self view];
-  [v4 setIsFullscreen:v3];
+  fullscreenCopy = fullscreen;
+  view = [(STSResultDetailViewController *)self view];
+  [view setIsFullscreen:fullscreenCopy];
 }
 
-- (void)setSearchResult:(id)a3
+- (void)setSearchResult:(id)result
 {
-  v5 = a3;
-  if (self->_searchResult != v5)
+  resultCopy = result;
+  if (self->_searchResult != resultCopy)
   {
-    v15 = v5;
-    objc_storeStrong(&self->_searchResult, a3);
-    v6 = [(SFSearchResult *)self->_searchResult sts_userReportRequest];
-    if (v6 && (v7 = v6, v8 = [(STSResultDetailViewController *)self numberOfReportedResults], v7, v8 <= 0x1E))
+    v15 = resultCopy;
+    objc_storeStrong(&self->_searchResult, result);
+    sts_userReportRequest = [(SFSearchResult *)self->_searchResult sts_userReportRequest];
+    if (sts_userReportRequest && (v7 = sts_userReportRequest, v8 = [(STSResultDetailViewController *)self numberOfReportedResults], v7, v8 <= 0x1E))
     {
-      v9 = [(STSResultDetailViewController *)self view];
-      [v9 setShowReportConcern:1];
+      view = [(STSResultDetailViewController *)self view];
+      [view setShowReportConcern:1];
 
-      v10 = [(STSResultDetailViewController *)self view];
-      v11 = [v10 reportConcernButton];
-      v12 = [(STSResultDetailViewController *)self searchResult];
-      v13 = [v12 sts_userReportRequest];
-      v14 = [v13 affordanceText];
-      [v11 setTitle:v14 forState:0];
+      view2 = [(STSResultDetailViewController *)self view];
+      reportConcernButton = [view2 reportConcernButton];
+      searchResult = [(STSResultDetailViewController *)self searchResult];
+      sts_userReportRequest2 = [searchResult sts_userReportRequest];
+      affordanceText = [sts_userReportRequest2 affordanceText];
+      [reportConcernButton setTitle:affordanceText forState:0];
     }
 
     else
     {
-      v10 = [(STSResultDetailViewController *)self view];
-      [v10 setShowReportConcern:0];
+      view2 = [(STSResultDetailViewController *)self view];
+      [view2 setShowReportConcern:0];
     }
 
-    v5 = v15;
+    resultCopy = v15;
   }
 }
 
-- (void)updateWithThumbnail:(id)a3 orThumbnailInfo:(id)a4
+- (void)updateWithThumbnail:(id)thumbnail orThumbnailInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STSResultDetailViewController *)self view];
-  [v8 updateWithThumbnail:v7 orThumbnailInfo:v6];
+  infoCopy = info;
+  thumbnailCopy = thumbnail;
+  view = [(STSResultDetailViewController *)self view];
+  [view updateWithThumbnail:thumbnailCopy orThumbnailInfo:infoCopy];
 }
 
-- (void)updateCustomContentWithView:(id)a3
+- (void)updateCustomContentWithView:(id)view
 {
-  v4 = a3;
-  v5 = [(STSResultDetailViewController *)self view];
-  [v5 setCustomContentView:v4];
+  viewCopy = view;
+  view = [(STSResultDetailViewController *)self view];
+  [view setCustomContentView:viewCopy];
 }
 
-- (CGRect)contentFrameForBounds:(CGRect)a3 traitCollection:(id)a4
+- (CGRect)contentFrameForBounds:(CGRect)bounds traitCollection:(id)collection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(STSResultDetailViewController *)self view];
-  [v10 contentFrameForBounds:v9 traitCollection:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  collectionCopy = collection;
+  view = [(STSResultDetailViewController *)self view];
+  [view contentFrameForBounds:collectionCopy traitCollection:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -232,48 +232,48 @@
   return result;
 }
 
-- (void)detailViewDidTapProvider:(id)a3
+- (void)detailViewDidTapProvider:(id)provider
 {
-  v4 = [(STSResultDetailViewController *)self delegate];
-  [v4 detailViewControllerDidSelectProviderLink:self];
+  delegate = [(STSResultDetailViewController *)self delegate];
+  [delegate detailViewControllerDidSelectProviderLink:self];
 
   [(STSResultDetailViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)detailViewDidTapSend:(id)a3
+- (void)detailViewDidTapSend:(id)send
 {
-  v4 = [(STSResultDetailViewController *)self delegate];
-  [v4 detailViewControllerDidInsert:self];
+  delegate = [(STSResultDetailViewController *)self delegate];
+  [delegate detailViewControllerDidInsert:self];
 
   [(STSResultDetailViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)detailViewDidTapReportConcern:(id)a3
+- (void)detailViewDidTapReportConcern:(id)concern
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = [(STSResultDetailViewController *)self searchResult];
-  v5 = [v4 sts_userReportRequest];
+  searchResult = [(STSResultDetailViewController *)self searchResult];
+  sts_userReportRequest = [searchResult sts_userReportRequest];
 
   v6 = MEMORY[0x277D75110];
-  v7 = [v5 title];
-  v8 = [v6 alertControllerWithTitle:v7 message:0 preferredStyle:0];
+  title = [sts_userReportRequest title];
+  v8 = [v6 alertControllerWithTitle:title message:0 preferredStyle:0];
 
   v9 = MEMORY[0x277D750F8];
-  v10 = [v5 dismissText];
+  dismissText = [sts_userReportRequest dismissText];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __63__STSResultDetailViewController_detailViewDidTapReportConcern___block_invoke;
   v27[3] = &unk_279B8AC28;
-  v11 = self;
+  selfCopy = self;
   v27[4] = self;
-  v12 = [v9 actionWithTitle:v10 style:1 handler:v27];
+  v12 = [v9 actionWithTitle:dismissText style:1 handler:v27];
   [v8 addAction:v12];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = [v5 userReportOptions];
+  obj = [sts_userReportRequest userReportOptions];
   v13 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v13)
   {
@@ -289,14 +289,14 @@
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 name];
+        name = [v17 name];
         v22[0] = MEMORY[0x277D85DD0];
         v22[1] = 3221225472;
         v22[2] = __63__STSResultDetailViewController_detailViewDidTapReportConcern___block_invoke_3;
         v22[3] = &unk_279B8AC70;
-        v22[4] = v11;
+        v22[4] = selfCopy;
         v22[5] = v17;
-        v19 = [MEMORY[0x277D750F8] actionWithTitle:v18 style:0 handler:v22];
+        v19 = [MEMORY[0x277D750F8] actionWithTitle:name style:0 handler:v22];
         [v8 addAction:v19];
       }
 
@@ -310,8 +310,8 @@
   v21[1] = 3221225472;
   v21[2] = __63__STSResultDetailViewController_detailViewDidTapReportConcern___block_invoke_6;
   v21[3] = &unk_279B8A988;
-  v21[4] = v11;
-  [(STSResultDetailViewController *)v11 presentViewController:v8 animated:1 completion:v21];
+  v21[4] = selfCopy;
+  [(STSResultDetailViewController *)selfCopy presentViewController:v8 animated:1 completion:v21];
 }
 
 void __63__STSResultDetailViewController_detailViewDidTapReportConcern___block_invoke(uint64_t a1)
@@ -375,14 +375,14 @@ void __63__STSResultDetailViewController_detailViewDidTapReportConcern___block_i
   [v1 setShowReportConcern:0];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   if (self->_allowCustomContentViewInteraction)
   {
-    v5 = [a4 view];
-    v6 = [(STSResultDetailViewController *)self view];
-    v7 = [v6 customContentView];
-    v8 = [v5 isEqual:v7] ^ 1;
+    view = [touch view];
+    view2 = [(STSResultDetailViewController *)self view];
+    customContentView = [view2 customContentView];
+    v8 = [view isEqual:customContentView] ^ 1;
   }
 
   else

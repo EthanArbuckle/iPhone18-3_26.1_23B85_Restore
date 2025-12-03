@@ -1,38 +1,38 @@
 @interface HMSoftwareUpdateProgress
-+ (id)progressFromEvent:(id)a3;
-- (HMSoftwareUpdateProgress)initWithPercentageComplete:(float)a3 estimatedTimeRemaining:(double)a4;
-- (HMSoftwareUpdateProgress)initWithProtoPayload:(id)a3;
++ (id)progressFromEvent:(id)event;
+- (HMSoftwareUpdateProgress)initWithPercentageComplete:(float)complete estimatedTimeRemaining:(double)remaining;
+- (HMSoftwareUpdateProgress)initWithProtoPayload:(id)payload;
 - (id)protoPayload;
 @end
 
 @implementation HMSoftwareUpdateProgress
 
-- (HMSoftwareUpdateProgress)initWithProtoPayload:(id)a3
+- (HMSoftwareUpdateProgress)initWithProtoPayload:(id)payload
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 hasPercentageComplete] && (objc_msgSend(v4, "hasEstimatedTimeRemaining") & 1) != 0)
+  payloadCopy = payload;
+  if ([payloadCopy hasPercentageComplete] && (objc_msgSend(payloadCopy, "hasEstimatedTimeRemaining") & 1) != 0)
   {
-    [v4 percentageComplete];
+    [payloadCopy percentageComplete];
     v6 = v5;
-    [v4 estimatedTimeRemaining];
+    [payloadCopy estimatedTimeRemaining];
     v8 = v7;
     LODWORD(v7) = v6;
-    v9 = [(HMSoftwareUpdateProgress *)self initWithPercentageComplete:v7 estimatedTimeRemaining:v8];
-    v10 = v9;
+    selfCopy = [(HMSoftwareUpdateProgress *)self initWithPercentageComplete:v7 estimatedTimeRemaining:v8];
+    v10 = selfCopy;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      [v4 percentageComplete];
+      [payloadCopy percentageComplete];
       v15 = v14;
-      [v4 estimatedTimeRemaining];
+      [payloadCopy estimatedTimeRemaining];
       v19 = 138543874;
       v20 = v13;
       v21 = 2048;
@@ -61,27 +61,27 @@
   return v3;
 }
 
-- (HMSoftwareUpdateProgress)initWithPercentageComplete:(float)a3 estimatedTimeRemaining:(double)a4
+- (HMSoftwareUpdateProgress)initWithPercentageComplete:(float)complete estimatedTimeRemaining:(double)remaining
 {
   v7.receiver = self;
   v7.super_class = HMSoftwareUpdateProgress;
   result = [(HMSoftwareUpdateProgress *)&v7 init];
   if (result)
   {
-    result->_percentageComplete = a3;
-    result->_estimatedTimeRemaining = a4;
+    result->_percentageComplete = complete;
+    result->_estimatedTimeRemaining = remaining;
   }
 
   return result;
 }
 
-+ (id)progressFromEvent:(id)a3
++ (id)progressFromEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = [HMSoftwareUpdateEventProtoSoftwareUpdateProgress alloc];
-  v6 = [v4 encodedData];
-  v7 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)v5 initWithData:v6];
+  encodedData = [eventCopy encodedData];
+  v7 = [(HMSoftwareUpdateEventProtoSoftwareUpdateProgress *)v5 initWithData:encodedData];
 
   if (v7)
   {
@@ -91,7 +91,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -99,7 +99,7 @@
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v4;
+      v18 = eventCopy;
       _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_ERROR, "%{public}@Failed to create HMSoftwareUpdateEventProtoSoftwareUpdateProgress from event: %@", &v15, 0x16u);
     }
 

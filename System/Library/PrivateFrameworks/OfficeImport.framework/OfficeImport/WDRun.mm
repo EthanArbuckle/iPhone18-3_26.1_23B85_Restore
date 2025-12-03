@@ -1,6 +1,6 @@
 @interface WDRun
 - (WDParagraph)paragraph;
-- (WDRun)initWithParagraph:(id)a3;
+- (WDRun)initWithParagraph:(id)paragraph;
 - (id)description;
 @end
 
@@ -13,16 +13,16 @@
   return WeakRetained;
 }
 
-- (WDRun)initWithParagraph:(id)a3
+- (WDRun)initWithParagraph:(id)paragraph
 {
-  v4 = a3;
+  paragraphCopy = paragraph;
   v8.receiver = self;
   v8.super_class = WDRun;
   v5 = [(WDRun *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mParagraph, v4);
+    objc_storeWeak(&v5->mParagraph, paragraphCopy);
   }
 
   return v6;

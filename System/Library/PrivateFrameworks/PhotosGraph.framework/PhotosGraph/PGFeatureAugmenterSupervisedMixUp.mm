@@ -1,23 +1,23 @@
 @interface PGFeatureAugmenterSupervisedMixUp
-- (id)labeledFloatVectorsWithLabeledFloatVectors:(id)a3 error:(id *)a4;
+- (id)labeledFloatVectorsWithLabeledFloatVectors:(id)vectors error:(id *)error;
 @end
 
 @implementation PGFeatureAugmenterSupervisedMixUp
 
-- (id)labeledFloatVectorsWithLabeledFloatVectors:(id)a3 error:(id *)a4
+- (id)labeledFloatVectorsWithLabeledFloatVectors:(id)vectors error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  if ([v33 count])
+  vectorsCopy = vectors;
+  if ([vectorsCopy count])
   {
-    v30 = self;
-    v31 = a4;
-    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v33, "count")}];
+    selfCopy = self;
+    errorCopy = error;
+    v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(vectorsCopy, "count")}];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v6 = v33;
+    v6 = vectorsCopy;
     v7 = [v6 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v7)
     {
@@ -33,12 +33,12 @@
 
           v10 = *(*(&v39 + 1) + 8 * i);
           v11 = objc_alloc(MEMORY[0x277D22C68]);
-          v12 = [v10 floatVector];
-          v13 = [v12 data];
-          v14 = [v11 initWithData:v13];
+          floatVector = [v10 floatVector];
+          data = [floatVector data];
+          v14 = [v11 initWithData:data];
 
-          v15 = [v10 label];
-          [v14 appendVector:v15];
+          label = [v10 label];
+          [v14 appendVector:label];
 
           [v34 addObject:v14];
         }
@@ -49,10 +49,10 @@
       while (v7);
     }
 
-    v32 = [(PGFeatureAugmenterMixUp *)self floatVectorsWithFloatVectors:v34 error:v31];
+    v32 = [(PGFeatureAugmenterMixUp *)self floatVectorsWithFloatVectors:v34 error:errorCopy];
     v16 = [v6 objectAtIndexedSubscript:0];
-    v17 = [v16 floatVector];
-    v18 = [v17 count];
+    floatVector2 = [v16 floatVector];
+    v18 = [floatVector2 count];
 
     v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v32, "count")}];
     v37 = 0u;
@@ -74,7 +74,7 @@
           }
 
           v24 = *(*(&v35 + 1) + 8 * j);
-          v25 = [v24 sliceFromStart:0 toEnd:{v18, v30}];
+          v25 = [v24 sliceFromStart:0 toEnd:{v18, selfCopy}];
           v26 = [v24 sliceFromStart:v18 toEnd:{objc_msgSend(v24, "count")}];
           v27 = [[PGLabeledFloatVector alloc] initWithFloatVector:v25 label:v26];
           [v19 addObject:v27];

@@ -1,7 +1,7 @@
 @interface SPUISPhotoFromFilesResultBuilder
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
 + (id)bundleId;
-- (SPUISPhotoFromFilesResultBuilder)initWithResult:(id)a3;
+- (SPUISPhotoFromFilesResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildPreviewCommand;
 - (id)buildThumbnail;
@@ -24,15 +24,15 @@
   return v2;
 }
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   if ((SSSpotlightUIPlusEnabled() & 1) == 0)
   {
-    v4 = [v3 contentType];
-    if (v4)
+    contentType = [resultCopy contentType];
+    if (contentType)
     {
-      v5 = [v3 contentType];
+      contentType2 = [resultCopy contentType];
       isImageOrVideoContentType();
     }
   }
@@ -40,20 +40,20 @@
   return 0;
 }
 
-- (SPUISPhotoFromFilesResultBuilder)initWithResult:(id)a3
+- (SPUISPhotoFromFilesResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = SPUISPhotoFromFilesResultBuilder;
-  v5 = [(SPUISPhotosResultBuilder *)&v10 initWithResult:v4];
+  v5 = [(SPUISPhotosResultBuilder *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2688] withType:objc_opt_class()];
     [(SPUISResultBuilder *)v5 setFilePath:v6];
 
-    v7 = [(SPUISResultBuilder *)v5 filePath];
+    filePath = [(SPUISResultBuilder *)v5 filePath];
 
-    if (!v7)
+    if (!filePath)
     {
       v8 = SPUISGeneralLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -68,66 +68,66 @@
 
 - (id)buildThumbnail
 {
-  v3 = [(SPUISResultBuilder *)self filePath];
+  filePath = [(SPUISResultBuilder *)self filePath];
 
-  if (v3)
+  if (filePath)
   {
-    v4 = objc_opt_new();
+    buildThumbnail = objc_opt_new();
     v5 = MEMORY[0x277CBEBC0];
-    v6 = [(SPUISResultBuilder *)self filePath];
-    v7 = [v5 fileURLWithPath:v6 isDirectory:0];
-    [v4 setFilePath:v7];
+    filePath2 = [(SPUISResultBuilder *)self filePath];
+    v7 = [v5 fileURLWithPath:filePath2 isDirectory:0];
+    [buildThumbnail setFilePath:v7];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SPUISPhotoFromFilesResultBuilder;
-    v4 = [(SPUISPhotosResultBuilder *)&v9 buildThumbnail];
+    buildThumbnail = [(SPUISPhotosResultBuilder *)&v9 buildThumbnail];
   }
 
-  return v4;
+  return buildThumbnail;
 }
 
 - (id)buildPreviewCommand
 {
-  v3 = [(SPUISResultBuilder *)self filePath];
+  filePath = [(SPUISResultBuilder *)self filePath];
 
-  if (v3)
+  if (filePath)
   {
-    v4 = objc_opt_new();
+    buildPreviewCommand = objc_opt_new();
     v5 = MEMORY[0x277D4C550];
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(SPUISResultBuilder *)self filePath];
-    v8 = [v6 fileURLWithPath:v7 isDirectory:0];
+    filePath2 = [(SPUISResultBuilder *)self filePath];
+    v8 = [v6 fileURLWithPath:filePath2 isDirectory:0];
     v9 = [v5 punchoutWithURL:v8];
-    [v4 setPhotoFilePunchout:v9];
+    [buildPreviewCommand setPhotoFilePunchout:v9];
 
-    v10 = [(SPUISPhotosResultBuilder *)self scenes];
-    [v4 setMatchedScenes:v10];
+    scenes = [(SPUISPhotosResultBuilder *)self scenes];
+    [buildPreviewCommand setMatchedScenes:scenes];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = SPUISPhotoFromFilesResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v12 buildPreviewCommand];
+    buildPreviewCommand = [(SPUISResultBuilder *)&v12 buildPreviewCommand];
   }
 
-  return v4;
+  return buildPreviewCommand;
 }
 
 - (id)buildCommand
 {
-  v3 = [(SPUISResultBuilder *)self result];
-  v4 = [v3 url];
+  result = [(SPUISResultBuilder *)self result];
+  v4 = [result url];
 
   v5 = objc_opt_new();
   v6 = [MEMORY[0x277D4C550] punchoutWithURL:v4];
   [v5 setPhotoFilePunchout:v6];
 
-  v7 = [(SPUISPhotosResultBuilder *)self scenes];
-  [v5 setMatchedScenes:v7];
+  scenes = [(SPUISPhotosResultBuilder *)self scenes];
+  [v5 setMatchedScenes:scenes];
 
   return v5;
 }

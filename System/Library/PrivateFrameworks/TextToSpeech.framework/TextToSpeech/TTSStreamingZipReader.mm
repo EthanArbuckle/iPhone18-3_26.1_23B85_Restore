@@ -1,30 +1,30 @@
 @interface TTSStreamingZipReader
-- (BOOL)enumerateFiles:(id)a3;
-- (TTSStreamingZipReader)initWithPath:(id)a3 andPassword:(id)a4;
+- (BOOL)enumerateFiles:(id)files;
+- (TTSStreamingZipReader)initWithPath:(id)path andPassword:(id)password;
 @end
 
 @implementation TTSStreamingZipReader
 
-- (TTSStreamingZipReader)initWithPath:(id)a3 andPassword:(id)a4
+- (TTSStreamingZipReader)initWithPath:(id)path andPassword:(id)password
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  passwordCopy = password;
   v12.receiver = self;
   v12.super_class = TTSStreamingZipReader;
   v9 = [(TTSStreamingZipReader *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_zipPath, a3);
-    objc_storeStrong(&v10->_password, a4);
+    objc_storeStrong(&v9->_zipPath, path);
+    objc_storeStrong(&v10->_password, password);
   }
 
   return v10;
 }
 
-- (BOOL)enumerateFiles:(id)a3
+- (BOOL)enumerateFiles:(id)files
 {
-  v4 = a3;
+  filesCopy = files;
   v5 = archive_read_new();
   if (archive_read_support_format_zip())
   {
@@ -96,7 +96,7 @@ LABEL_17:
       break;
     }
 
-    v4[2](v4, v41, v42);
+    filesCopy[2](filesCopy, v41, v42);
 
     if (archive_read_next_header())
     {

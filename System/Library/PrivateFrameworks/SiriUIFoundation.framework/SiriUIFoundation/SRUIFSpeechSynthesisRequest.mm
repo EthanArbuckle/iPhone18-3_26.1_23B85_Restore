@@ -1,75 +1,75 @@
 @interface SRUIFSpeechSynthesisRequest
-- (SRUIFSpeechSynthesisRequest)initWithAudioData:(id)a3 identifier:(id)a4 sessionId:(id)a5 provisionally:(BOOL)a6 eligibleAfterDuration:(double)a7 canUseServerTTS:(BOOL)a8 completion:(id)a9;
-- (SRUIFSpeechSynthesisRequest)initWithText:(id)a3 audioData:(id)a4 identifier:(id)a5 sessionId:(id)a6 language:(id)a7 gender:(id)a8 voiceName:(id)a9 provisional:(BOOL)a10 eligibleAfterDuration:(double)a11 delayed:(BOOL)a12 preparationIdentifier:(id)a13 completion:(id)a14 analyticsContext:(id)a15 speakableContextInfo:(id)a16 canUseServerTTS:(BOOL)a17;
-- (SRUIFSpeechSynthesisRequest)initWithText:(id)a3 identifier:(id)a4 sessionId:(id)a5 language:(id)a6 gender:(id)a7 voiceName:(id)a8 canUseServerTTS:(BOOL)a9 completion:(id)a10;
+- (SRUIFSpeechSynthesisRequest)initWithAudioData:(id)data identifier:(id)identifier sessionId:(id)id provisionally:(BOOL)provisionally eligibleAfterDuration:(double)duration canUseServerTTS:(BOOL)s completion:(id)completion;
+- (SRUIFSpeechSynthesisRequest)initWithText:(id)text audioData:(id)data identifier:(id)identifier sessionId:(id)id language:(id)language gender:(id)gender voiceName:(id)name provisional:(BOOL)self0 eligibleAfterDuration:(double)self1 delayed:(BOOL)self2 preparationIdentifier:(id)self3 completion:(id)self4 analyticsContext:(id)self5 speakableContextInfo:(id)self6 canUseServerTTS:(BOOL)self7;
+- (SRUIFSpeechSynthesisRequest)initWithText:(id)text identifier:(id)identifier sessionId:(id)id language:(id)language gender:(id)gender voiceName:(id)name canUseServerTTS:(BOOL)s completion:(id)self0;
 @end
 
 @implementation SRUIFSpeechSynthesisRequest
 
-- (SRUIFSpeechSynthesisRequest)initWithText:(id)a3 audioData:(id)a4 identifier:(id)a5 sessionId:(id)a6 language:(id)a7 gender:(id)a8 voiceName:(id)a9 provisional:(BOOL)a10 eligibleAfterDuration:(double)a11 delayed:(BOOL)a12 preparationIdentifier:(id)a13 completion:(id)a14 analyticsContext:(id)a15 speakableContextInfo:(id)a16 canUseServerTTS:(BOOL)a17
+- (SRUIFSpeechSynthesisRequest)initWithText:(id)text audioData:(id)data identifier:(id)identifier sessionId:(id)id language:(id)language gender:(id)gender voiceName:(id)name provisional:(BOOL)self0 eligibleAfterDuration:(double)self1 delayed:(BOOL)self2 preparationIdentifier:(id)self3 completion:(id)self4 analyticsContext:(id)self5 speakableContextInfo:(id)self6 canUseServerTTS:(BOOL)self7
 {
-  v58 = a3;
-  v57 = a4;
-  v56 = a5;
-  v23 = a6;
-  v24 = a7;
-  v25 = a8;
-  v26 = a9;
-  v55 = a13;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
+  textCopy = text;
+  dataCopy = data;
+  identifierCopy = identifier;
+  idCopy = id;
+  languageCopy = language;
+  genderCopy = gender;
+  nameCopy = name;
+  preparationIdentifierCopy = preparationIdentifier;
+  completionCopy = completion;
+  contextCopy = context;
+  infoCopy = info;
   v59.receiver = self;
   v59.super_class = SRUIFSpeechSynthesisRequest;
   v30 = [(SRUIFSpeechSynthesisRequest *)&v59 init];
   if (v30)
   {
-    v31 = [v58 copy];
+    v31 = [textCopy copy];
     text = v30->_text;
     v30->_text = v31;
 
-    v33 = [v56 copy];
+    v33 = [identifierCopy copy];
     identifier = v30->_identifier;
     v30->_identifier = v33;
 
-    v35 = [v23 copy];
+    v35 = [idCopy copy];
     sessionId = v30->_sessionId;
     v30->_sessionId = v35;
 
-    v30->_provisional = a10;
-    v30->_delayed = a12;
-    v30->_canUseServerTTS = a17;
-    v37 = _Block_copy(v27);
+    v30->_provisional = provisional;
+    v30->_delayed = delayed;
+    v30->_canUseServerTTS = s;
+    v37 = _Block_copy(completionCopy);
     completion = v30->_completion;
     v30->_completion = v37;
 
-    v39 = [v28 copy];
+    v39 = [contextCopy copy];
     analyticsContext = v30->_analyticsContext;
     v30->_analyticsContext = v39;
 
-    v41 = [v29 copy];
+    v41 = [infoCopy copy];
     speakableContextInfo = v30->_speakableContextInfo;
     v30->_speakableContextInfo = v41;
 
-    v43 = [v24 copy];
+    v43 = [languageCopy copy];
     language = v30->_language;
     v30->_language = v43;
 
-    v45 = [v25 copy];
+    v45 = [genderCopy copy];
     gender = v30->_gender;
     v30->_gender = v45;
 
-    v47 = [v26 copy];
+    v47 = [nameCopy copy];
     voiceName = v30->_voiceName;
     v30->_voiceName = v47;
 
-    v49 = [v57 copy];
+    v49 = [dataCopy copy];
     audioData = v30->_audioData;
     v30->_audioData = v49;
 
-    v30->_eligibleAfterDuration = a11 != 0.0;
-    objc_storeStrong(&v30->_preparationIdentifier, a13);
-    v51 = _Block_copy(v27);
+    v30->_eligibleAfterDuration = duration != 0.0;
+    objc_storeStrong(&v30->_preparationIdentifier, preparationIdentifier);
+    v51 = _Block_copy(completionCopy);
     v52 = v30->_completion;
     v30->_completion = v51;
   }
@@ -77,18 +77,18 @@
   return v30;
 }
 
-- (SRUIFSpeechSynthesisRequest)initWithText:(id)a3 identifier:(id)a4 sessionId:(id)a5 language:(id)a6 gender:(id)a7 voiceName:(id)a8 canUseServerTTS:(BOOL)a9 completion:(id)a10
+- (SRUIFSpeechSynthesisRequest)initWithText:(id)text identifier:(id)identifier sessionId:(id)id language:(id)language gender:(id)gender voiceName:(id)name canUseServerTTS:(BOOL)s completion:(id)self0
 {
-  LOBYTE(v12) = a9;
+  LOBYTE(v12) = s;
   LOWORD(v11) = 0;
-  return [(SRUIFSpeechSynthesisRequest *)self initWithText:a3 audioData:0 identifier:a4 sessionId:a5 language:a6 gender:a7 voiceName:0.0 provisional:a8 eligibleAfterDuration:v11 delayed:0 preparationIdentifier:a10 completion:0 analyticsContext:0 speakableContextInfo:v12 canUseServerTTS:?];
+  return [(SRUIFSpeechSynthesisRequest *)self initWithText:text audioData:0 identifier:identifier sessionId:id language:language gender:gender voiceName:0.0 provisional:name eligibleAfterDuration:v11 delayed:0 preparationIdentifier:completion completion:0 analyticsContext:0 speakableContextInfo:v12 canUseServerTTS:?];
 }
 
-- (SRUIFSpeechSynthesisRequest)initWithAudioData:(id)a3 identifier:(id)a4 sessionId:(id)a5 provisionally:(BOOL)a6 eligibleAfterDuration:(double)a7 canUseServerTTS:(BOOL)a8 completion:(id)a9
+- (SRUIFSpeechSynthesisRequest)initWithAudioData:(id)data identifier:(id)identifier sessionId:(id)id provisionally:(BOOL)provisionally eligibleAfterDuration:(double)duration canUseServerTTS:(BOOL)s completion:(id)completion
 {
-  LOBYTE(v11) = a8;
-  LOWORD(v10) = a6;
-  return [(SRUIFSpeechSynthesisRequest *)self initWithText:0 audioData:a3 identifier:a4 sessionId:a5 language:0 gender:0 voiceName:a7 provisional:0 eligibleAfterDuration:v10 delayed:0 preparationIdentifier:a9 completion:0 analyticsContext:0 speakableContextInfo:v11 canUseServerTTS:?];
+  LOBYTE(v11) = s;
+  LOWORD(v10) = provisionally;
+  return [(SRUIFSpeechSynthesisRequest *)self initWithText:0 audioData:data identifier:identifier sessionId:id language:0 gender:0 voiceName:duration provisional:0 eligibleAfterDuration:v10 delayed:0 preparationIdentifier:completion completion:0 analyticsContext:0 speakableContextInfo:v11 canUseServerTTS:?];
 }
 
 @end

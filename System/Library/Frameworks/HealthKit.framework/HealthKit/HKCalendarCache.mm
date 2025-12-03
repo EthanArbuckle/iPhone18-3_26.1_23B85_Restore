@@ -2,7 +2,7 @@
 + (id)earliestTimeZoneCalendar;
 + (id)latestTimeZoneCalendar;
 - (HKCalendarCache)init;
-- (id)calendarForTimeZone:(id)a3;
+- (id)calendarForTimeZone:(id)zone;
 - (id)currentCalendar;
 @end
 
@@ -23,35 +23,35 @@
   return v2;
 }
 
-- (id)calendarForTimeZone:(id)a3
+- (id)calendarForTimeZone:(id)zone
 {
-  v5 = a3;
-  if (!v5)
+  zoneCopy = zone;
+  if (!zoneCopy)
   {
     [(HKCalendarCache *)a2 calendarForTimeZone:?];
   }
 
   calendarsByTimeZoneName = self->_calendarsByTimeZoneName;
-  v7 = [v5 name];
-  v8 = [(NSMutableDictionary *)calendarsByTimeZoneName objectForKeyedSubscript:v7];
+  name = [zoneCopy name];
+  hk_gregorianCalendar = [(NSMutableDictionary *)calendarsByTimeZoneName objectForKeyedSubscript:name];
 
-  if (!v8)
+  if (!hk_gregorianCalendar)
   {
     _HKInitializeLogging();
     v9 = HKLogDefault;
     if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEBUG))
     {
-      [(HKCalendarCache *)v9 calendarForTimeZone:v5];
+      [(HKCalendarCache *)v9 calendarForTimeZone:zoneCopy];
     }
 
-    v8 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    [v8 setTimeZone:v5];
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    [hk_gregorianCalendar setTimeZone:zoneCopy];
     v10 = self->_calendarsByTimeZoneName;
-    v11 = [v5 name];
-    [(NSMutableDictionary *)v10 setObject:v8 forKeyedSubscript:v11];
+    name2 = [zoneCopy name];
+    [(NSMutableDictionary *)v10 setObject:hk_gregorianCalendar forKeyedSubscript:name2];
   }
 
-  return v8;
+  return hk_gregorianCalendar;
 }
 
 - (id)currentCalendar
@@ -64,9 +64,9 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [v5 timeZone];
-    v3 = [(HKCalendarCache *)self calendarForTimeZone:v6];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    timeZone = [currentCalendar timeZone];
+    v3 = [(HKCalendarCache *)self calendarForTimeZone:timeZone];
   }
 
   return v3;

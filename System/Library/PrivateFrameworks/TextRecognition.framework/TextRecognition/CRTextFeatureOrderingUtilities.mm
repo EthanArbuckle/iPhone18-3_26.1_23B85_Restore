@@ -1,13 +1,13 @@
 @interface CRTextFeatureOrderingUtilities
-+ (id)textFeatureOrderWithRevision:(unint64_t)a3 angleThresholdForRotatedCrops:(double)a4 optimizeGroupsForStability:(BOOL)a5;
++ (id)textFeatureOrderWithRevision:(unint64_t)revision angleThresholdForRotatedCrops:(double)crops optimizeGroupsForStability:(BOOL)stability;
 @end
 
 @implementation CRTextFeatureOrderingUtilities
 
-+ (id)textFeatureOrderWithRevision:(unint64_t)a3 angleThresholdForRotatedCrops:(double)a4 optimizeGroupsForStability:(BOOL)a5
++ (id)textFeatureOrderWithRevision:(unint64_t)revision angleThresholdForRotatedCrops:(double)crops optimizeGroupsForStability:(BOOL)stability
 {
-  v5 = a5;
-  if (a3 <= 2)
+  stabilityCopy = stability;
+  if (revision <= 2)
   {
     v7 = CROSLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -17,9 +17,9 @@
     }
   }
 
-  v8 = [[CRTextFeatureOrderV2 alloc] initWithAngleThresholdForRotatedCrops:a4];
+  v8 = [[CRTextFeatureOrderV2 alloc] initWithAngleThresholdForRotatedCrops:crops];
   v9 = v8;
-  if (v5)
+  if (stabilityCopy)
   {
     [(CRTextFeatureOrderV2 *)v8 setTextFeatureOrderMode:1];
   }

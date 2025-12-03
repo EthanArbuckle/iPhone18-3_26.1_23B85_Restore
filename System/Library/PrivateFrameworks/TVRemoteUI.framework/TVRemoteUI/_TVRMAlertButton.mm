@@ -1,10 +1,10 @@
 @interface _TVRMAlertButton
 - (void)layoutSubviews;
-- (void)setShowingBackgroundEffect:(BOOL)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setShowingBackgroundEffect:(BOOL)effect;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _TVRMAlertButton
@@ -26,50 +26,50 @@
   [(UIView *)self->_plusDView setHidden:!self->_showingBackgroundEffect];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _TVRMAlertButton;
-  [(_TVRMAlertButton *)&v5 touchesBegan:a3 withEvent:a4];
+  [(_TVRMAlertButton *)&v5 touchesBegan:began withEvent:event];
   [(_TVRMAlertButton *)self setShowingBackgroundEffect:1];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = _TVRMAlertButton;
-  v6 = a4;
-  v7 = a3;
-  [(_TVRMAlertButton *)&v10 touchesMoved:v7 withEvent:v6];
-  v8 = [v7 anyObject];
+  eventCopy = event;
+  movedCopy = moved;
+  [(_TVRMAlertButton *)&v10 touchesMoved:movedCopy withEvent:eventCopy];
+  anyObject = [movedCopy anyObject];
 
-  [v8 locationInView:self];
-  v9 = [(_TVRMAlertButton *)self pointInside:v6 withEvent:?];
+  [anyObject locationInView:self];
+  v9 = [(_TVRMAlertButton *)self pointInside:eventCopy withEvent:?];
 
   [(_TVRMAlertButton *)self setShowingBackgroundEffect:v9];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _TVRMAlertButton;
-  [(_TVRMAlertButton *)&v5 touchesEnded:a3 withEvent:a4];
+  [(_TVRMAlertButton *)&v5 touchesEnded:ended withEvent:event];
   [(_TVRMAlertButton *)self setShowingBackgroundEffect:0];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _TVRMAlertButton;
-  [(_TVRMAlertButton *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(_TVRMAlertButton *)&v5 touchesCancelled:cancelled withEvent:event];
   [(_TVRMAlertButton *)self setShowingBackgroundEffect:0];
 }
 
-- (void)setShowingBackgroundEffect:(BOOL)a3
+- (void)setShowingBackgroundEffect:(BOOL)effect
 {
-  if (self->_showingBackgroundEffect != a3)
+  if (self->_showingBackgroundEffect != effect)
   {
-    self->_showingBackgroundEffect = a3;
+    self->_showingBackgroundEffect = effect;
     [(_TVRMAlertButton *)self setNeedsLayout];
   }
 }

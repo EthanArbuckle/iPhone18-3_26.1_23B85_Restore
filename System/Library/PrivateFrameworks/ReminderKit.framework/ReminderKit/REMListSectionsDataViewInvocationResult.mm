@@ -1,94 +1,94 @@
 @interface REMListSectionsDataViewInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMListSectionsDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 listSectionStorages:(id)a5;
-- (REMListSectionsDataViewInvocationResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMListSectionsDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages listSectionStorages:(id)sectionStorages;
+- (REMListSectionsDataViewInvocationResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListSectionsDataViewInvocationResult
 
-- (REMListSectionsDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 listSectionStorages:(id)a5
+- (REMListSectionsDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages listSectionStorages:(id)sectionStorages
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storagesCopy = storages;
+  listStoragesCopy = listStorages;
+  sectionStoragesCopy = sectionStorages;
   v15.receiver = self;
   v15.super_class = REMListSectionsDataViewInvocationResult;
   v12 = [(REMStoreInvocationValueStorage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStorages, a3);
-    objc_storeStrong(&v13->_listStorages, a4);
-    objc_storeStrong(&v13->_listSectionStorages, a5);
+    objc_storeStrong(&v12->_accountStorages, storages);
+    objc_storeStrong(&v13->_listStorages, listStorages);
+    objc_storeStrong(&v13->_listSectionStorages, sectionStorages);
   }
 
   return v13;
 }
 
-- (REMListSectionsDataViewInvocationResult)initWithCoder:(id)a3
+- (REMListSectionsDataViewInvocationResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"accountStorages"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"accountStorages"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"listStorages"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"listStorages"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"listSectionStorages"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"listSectionStorages"];
 
-  v17 = 0;
+  selfCopy = 0;
   if (v8 && v12 && v16)
   {
     self = [(REMListSectionsDataViewInvocationResult *)self initWithAccountStorages:v8 listStorages:v12 listSectionStorages:v16];
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
-  [v4 encodeObject:v5 forKey:@"accountStorages"];
+  coderCopy = coder;
+  accountStorages = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
+  [coderCopy encodeObject:accountStorages forKey:@"accountStorages"];
 
-  v6 = [(REMListSectionsDataViewInvocationResult *)self listStorages];
-  [v4 encodeObject:v6 forKey:@"listStorages"];
+  listStorages = [(REMListSectionsDataViewInvocationResult *)self listStorages];
+  [coderCopy encodeObject:listStorages forKey:@"listStorages"];
 
-  v7 = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
-  [v4 encodeObject:v7 forKey:@"listSectionStorages"];
+  listSectionStorages = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
+  [coderCopy encodeObject:listSectionStorages forKey:@"listSectionStorages"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
-  v6 = [v4 accountStorages];
-  v7 = v6;
-  if (v5 == v6)
+  accountStorages = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
+  accountStorages2 = [equalCopy accountStorages];
+  v7 = accountStorages2;
+  if (accountStorages == accountStorages2)
   {
   }
 
   else
   {
-    v8 = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
-    v9 = [v4 accountStorages];
-    v10 = [v8 isEqual:v9];
+    accountStorages3 = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
+    accountStorages4 = [equalCopy accountStorages];
+    v10 = [accountStorages3 isEqual:accountStorages4];
 
     if (!v10)
     {
@@ -96,18 +96,18 @@
     }
   }
 
-  v11 = [(REMListSectionsDataViewInvocationResult *)self listStorages];
-  v12 = [v4 listStorages];
-  v13 = v12;
-  if (v11 == v12)
+  listStorages = [(REMListSectionsDataViewInvocationResult *)self listStorages];
+  listStorages2 = [equalCopy listStorages];
+  v13 = listStorages2;
+  if (listStorages == listStorages2)
   {
   }
 
   else
   {
-    v14 = [(REMListSectionsDataViewInvocationResult *)self listStorages];
-    v15 = [v4 listStorages];
-    v16 = [v14 isEqual:v15];
+    listStorages3 = [(REMListSectionsDataViewInvocationResult *)self listStorages];
+    listStorages4 = [equalCopy listStorages];
+    v16 = [listStorages3 isEqual:listStorages4];
 
     if (!v16)
     {
@@ -117,18 +117,18 @@ LABEL_8:
     }
   }
 
-  v18 = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
-  v19 = [v4 listSectionStorages];
-  if (v18 == v19)
+  listSectionStorages = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
+  listSectionStorages2 = [equalCopy listSectionStorages];
+  if (listSectionStorages == listSectionStorages2)
   {
     v17 = 1;
   }
 
   else
   {
-    v20 = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
-    v21 = [v4 listSectionStorages];
-    v17 = [v20 isEqual:v21];
+    listSectionStorages3 = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
+    listSectionStorages4 = [equalCopy listSectionStorages];
+    v17 = [listSectionStorages3 isEqual:listSectionStorages4];
   }
 
 LABEL_14:
@@ -137,12 +137,12 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
-  v4 = [v3 hash];
-  v5 = [(REMListSectionsDataViewInvocationResult *)self listStorages];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
-  v8 = [v7 hash];
+  accountStorages = [(REMListSectionsDataViewInvocationResult *)self accountStorages];
+  v4 = [accountStorages hash];
+  listStorages = [(REMListSectionsDataViewInvocationResult *)self listStorages];
+  v6 = [listStorages hash] ^ v4;
+  listSectionStorages = [(REMListSectionsDataViewInvocationResult *)self listSectionStorages];
+  v8 = [listSectionStorages hash];
 
   return v6 ^ v8;
 }

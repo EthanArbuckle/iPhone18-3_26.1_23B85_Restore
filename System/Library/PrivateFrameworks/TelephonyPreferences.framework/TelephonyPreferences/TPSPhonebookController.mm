@@ -3,10 +3,10 @@
 - (NSString)localizedSubscriptionTelephoneNumber;
 - (NSString)subscriptionISOCountryCode;
 - (TPSPhonebookController)init;
-- (TPSPhonebookController)initWithSubscriptionContext:(id)a3;
+- (TPSPhonebookController)initWithSubscriptionContext:(id)context;
 - (TPSPhonebookControllerDelegate)delegate;
-- (void)phonebookController:(id)a3 didChangePhoneNumberInfo:(id)a4;
-- (void)updateSubscriptionTelephoneNumber:(id)a3 completion:(id)a4;
+- (void)phonebookController:(id)controller didChangePhoneNumberInfo:(id)info;
+- (void)updateSubscriptionTelephoneNumber:(id)number completion:(id)completion;
 @end
 
 @implementation TPSPhonebookController
@@ -18,17 +18,17 @@
   return 0;
 }
 
-- (TPSPhonebookController)initWithSubscriptionContext:(id)a3
+- (TPSPhonebookController)initWithSubscriptionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TPSPhonebookController;
   v6 = [(TPSPhonebookController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subscriptionContext, a3);
-    v8 = [[TPSPhonebookTelephonyController alloc] initWithSubscriptionContext:v5];
+    objc_storeStrong(&v6->_subscriptionContext, context);
+    v8 = [[TPSPhonebookTelephonyController alloc] initWithSubscriptionContext:contextCopy];
     telephonyClient = v7->_telephonyClient;
     v7->_telephonyClient = v8;
 
@@ -40,11 +40,11 @@
 
 - (BOOL)isSubscriptionEditable
 {
-  v2 = [(TPSPhonebookController *)self telephonyClient];
-  v3 = [v2 phoneNumberInfo];
-  v4 = [v3 isEditable];
+  telephonyClient = [(TPSPhonebookController *)self telephonyClient];
+  phoneNumberInfo = [telephonyClient phoneNumberInfo];
+  isEditable = [phoneNumberInfo isEditable];
 
-  return v4;
+  return isEditable;
 }
 
 - (NSString)subscriptionISOCountryCode
@@ -52,10 +52,10 @@
   subscriptionISOCountryCode = self->_subscriptionISOCountryCode;
   if (!subscriptionISOCountryCode)
   {
-    v4 = [(TPSPhonebookController *)self subscriptionContext];
-    v5 = [v4 tps_isoCountryCode];
+    subscriptionContext = [(TPSPhonebookController *)self subscriptionContext];
+    tps_isoCountryCode = [subscriptionContext tps_isoCountryCode];
     v6 = self->_subscriptionISOCountryCode;
-    self->_subscriptionISOCountryCode = v5;
+    self->_subscriptionISOCountryCode = tps_isoCountryCode;
 
     subscriptionISOCountryCode = self->_subscriptionISOCountryCode;
   }
@@ -65,14 +65,14 @@
 
 - (NSString)localizedSubscriptionTelephoneNumber
 {
-  v3 = [(TPSPhonebookController *)self telephonyClient];
-  v4 = [v3 phoneNumberInfo];
-  v5 = [v4 displayPhoneNumber];
+  telephonyClient = [(TPSPhonebookController *)self telephonyClient];
+  phoneNumberInfo = [telephonyClient phoneNumberInfo];
+  displayPhoneNumber = [phoneNumberInfo displayPhoneNumber];
 
-  if (v5)
+  if (displayPhoneNumber)
   {
-    v6 = [(TPSPhonebookController *)self subscriptionISOCountryCode];
-    v7 = TPSLocalizedPhoneNumberString(v5, v6);
+    subscriptionISOCountryCode = [(TPSPhonebookController *)self subscriptionISOCountryCode];
+    v7 = TPSLocalizedPhoneNumberString(displayPhoneNumber, subscriptionISOCountryCode);
   }
 
   else
@@ -83,19 +83,19 @@
   return v7;
 }
 
-- (void)updateSubscriptionTelephoneNumber:(id)a3 completion:(id)a4
+- (void)updateSubscriptionTelephoneNumber:(id)number completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TPSPhonebookController *)self subscriptionISOCountryCode];
-  v9 = TPSNormalizedPhoneNumberString(v7, v8);
+  completionCopy = completion;
+  numberCopy = number;
+  subscriptionISOCountryCode = [(TPSPhonebookController *)self subscriptionISOCountryCode];
+  v9 = TPSNormalizedPhoneNumberString(numberCopy, subscriptionISOCountryCode);
 
-  v10 = [(TPSPhonebookController *)self telephonyClient];
-  v11 = [v10 phoneNumberInfo];
+  telephonyClient = [(TPSPhonebookController *)self telephonyClient];
+  phoneNumberInfo = [telephonyClient phoneNumberInfo];
 
-  v12 = [v11 number];
+  number = [phoneNumberInfo number];
   v13 = v9;
-  v14 = v12;
+  v14 = number;
   if (v13 | v14)
   {
     v15 = v14;
@@ -113,13 +113,13 @@
     {
     }
 
-    v17 = [(TPSPhonebookController *)self telephonyClient];
+    telephonyClient2 = [(TPSPhonebookController *)self telephonyClient];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __71__TPSPhonebookController_updateSubscriptionTelephoneNumber_completion___block_invoke;
     v18[3] = &unk_2782E3F30;
-    v19 = v6;
-    [v17 updatePhoneNumberInfo:v11 label:@"My Number" number:v13 completion:v18];
+    v19 = completionCopy;
+    [telephonyClient2 updatePhoneNumberInfo:phoneNumberInfo label:@"My Number" number:v13 completion:v18];
   }
 
 LABEL_7:
@@ -139,20 +139,20 @@ void __71__TPSPhonebookController_updateSubscriptionTelephoneNumber_completion__
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)phonebookController:(id)a3 didChangePhoneNumberInfo:(id)a4
+- (void)phonebookController:(id)controller didChangePhoneNumberInfo:(id)info
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = TPSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = infoCopy;
     _os_log_impl(&dword_21B8E9000, v6, OS_LOG_TYPE_DEFAULT, "Phone number info changed to %@.", &v9, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:TPSPhonebookControllerSubscriptionDidChangeNotification object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:TPSPhonebookControllerSubscriptionDidChangeNotification object:self];
 
   v8 = *MEMORY[0x277D85DE8];
 }

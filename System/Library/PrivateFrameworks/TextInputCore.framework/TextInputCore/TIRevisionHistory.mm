@@ -1,55 +1,55 @@
 @interface TIRevisionHistory
-+ (id)documentStateTrimmedToSentenceForState:(id)a3;
-- (BOOL)isSelectionContainedByToken:(_TIRevisionHistoryTokenIterator)a3;
-- (BOOL)isWordToken:(_TIRevisionHistoryTokenIterator)a3;
-- (BOOL)matchesContextAfterSelection:(id)a3;
-- (BOOL)matchesContextBeforeSelection:(id)a3;
-- (BOOL)matchesDocumentState:(id)a3;
-- (BOOL)matchesSelectedText:(id)a3;
-- (BOOL)originalIterator:(_TIRevisionHistoryTokenIterator)a3 matchesRevisedDocumentRange:(_NSRange)a4 andTokenID:(TITokenID)a5;
-- (BOOL)shouldValidateOriginalIterator:(_TIRevisionHistoryTokenIterator)a3 withRevisedDocumentRange:(_NSRange)a4 forRevision:(id)a5;
-- (BOOL)validateTokenizationForRevisedDocumentRange:(_NSRange)a3 andTokenID:(TITokenID)a4 forRevision:(id)a5;
++ (id)documentStateTrimmedToSentenceForState:(id)state;
+- (BOOL)isSelectionContainedByToken:(_TIRevisionHistoryTokenIterator)token;
+- (BOOL)isWordToken:(_TIRevisionHistoryTokenIterator)token;
+- (BOOL)matchesContextAfterSelection:(id)selection;
+- (BOOL)matchesContextBeforeSelection:(id)selection;
+- (BOOL)matchesDocumentState:(id)state;
+- (BOOL)matchesSelectedText:(id)text;
+- (BOOL)originalIterator:(_TIRevisionHistoryTokenIterator)iterator matchesRevisedDocumentRange:(_NSRange)range andTokenID:(TITokenID)d;
+- (BOOL)shouldValidateOriginalIterator:(_TIRevisionHistoryTokenIterator)iterator withRevisedDocumentRange:(_NSRange)range forRevision:(id)revision;
+- (BOOL)validateTokenizationForRevisedDocumentRange:(_NSRange)range andTokenID:(TITokenID)d forRevision:(id)revision;
 - (TIRevisionHistory)init;
-- (TIRevisionHistory)initWithLocale:(id)a3;
-- (_NSRange)deletionRangeToObtainDocumentState:(id)a3;
-- (_NSRange)documentRangeOfTokenAtIterator:(_TIRevisionHistoryTokenIterator)a3;
-- (_NSRange)inputRangeForReplacement:(id)a3;
+- (TIRevisionHistory)initWithLocale:(id)locale;
+- (_NSRange)deletionRangeToObtainDocumentState:(id)state;
+- (_NSRange)documentRangeOfTokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator;
+- (_NSRange)inputRangeForReplacement:(id)replacement;
 - (_NSRange)selectedRange;
-- (_NSRange)selectedTokenRangeWithIterator:(_TIRevisionHistoryTokenIterator)a3;
+- (_NSRange)selectedTokenRangeWithIterator:(_TIRevisionHistoryTokenIterator)iterator;
 - (_TIRevisionHistoryTokenIterator)currentTokenIterator;
 - (_TIRevisionHistoryTokenIterator)iteratorUpperBoundForSelectionStart;
-- (_TIRevisionHistoryTokenIterator)nextTokenIterator:(_TIRevisionHistoryTokenIterator)a3;
+- (_TIRevisionHistoryTokenIterator)nextTokenIterator:(_TIRevisionHistoryTokenIterator)iterator;
 - (_TIRevisionHistoryTokenIterator)popSelectedTextFromTokenizer;
-- (_TIRevisionHistoryTokenIterator)previousTokenIterator:(_TIRevisionHistoryTokenIterator)a3;
-- (_TIRevisionHistoryTokenIterator)resetTokenAtIterator:(_TIRevisionHistoryTokenIterator)a3 withRange:(_NSRange)a4 fromDocumentLocation:(unint64_t)a5;
-- (id)contextForTokenAtIndex:(unint64_t)a3;
+- (_TIRevisionHistoryTokenIterator)previousTokenIterator:(_TIRevisionHistoryTokenIterator)iterator;
+- (_TIRevisionHistoryTokenIterator)resetTokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator withRange:(_NSRange)range fromDocumentLocation:(unint64_t)location;
+- (id)contextForTokenAtIndex:(unint64_t)index;
 - (id)currentUserTyping;
 - (id)currentWord;
 - (id)documentState;
-- (id)nonEmptyTokensInRange:(_NSRange)a3;
-- (id)tokenAtIterator:(_TIRevisionHistoryTokenIterator)a3;
+- (id)nonEmptyTokensInRange:(_NSRange)range;
+- (id)tokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator;
 - (id)wordTokenContainingSelection;
-- (unint64_t)tokenizeDocumentTextInRange:(_NSRange)a3 withTokenHandler:(id)a4;
+- (unint64_t)tokenizeDocumentTextInRange:(_NSRange)range withTokenHandler:(id)handler;
 - (void)acceptCurrentSentence;
-- (void)acceptText:(id)a3 isAutocorrection:(BOOL)a4 isAutoshifted:(BOOL)a5;
-- (void)acceptTokensInRange:(_NSRange)a3;
-- (void)addRevisedTokenString:(id)a3 withTokenID:(TITokenID)a4 inDocumentRange:(_NSRange)a5 toRevision:(id)a6;
-- (void)adjustTokenOffsetAfterDeletedTokenRange:(_NSRange)a3 withDeletedCharacterCount:(unint64_t)a4;
+- (void)acceptText:(id)text isAutocorrection:(BOOL)autocorrection isAutoshifted:(BOOL)autoshifted;
+- (void)acceptTokensInRange:(_NSRange)range;
+- (void)addRevisedTokenString:(id)string withTokenID:(TITokenID)d inDocumentRange:(_NSRange)range toRevision:(id)revision;
+- (void)adjustTokenOffsetAfterDeletedTokenRange:(_NSRange)range withDeletedCharacterCount:(unint64_t)count;
 - (void)annotateTokensCreatedFromDocumentState;
-- (void)collectPFLTelemetryForTokenAtIndex:(unint64_t)a3;
+- (void)collectPFLTelemetryForTokenAtIndex:(unint64_t)index;
 - (void)dealloc;
 - (void)deleteBackward;
-- (void)enumerateSentenceStemUsingBlock:(id)a3;
-- (void)enumerateSentenceStemUsingIteratorBlock:(id)a3;
-- (void)handleRevisedTokenString:(id)a3 withTokenID:(TITokenID)a4 forRevision:(id)a5;
-- (void)insertText:(id)a3;
-- (void)mergeTokenizationsForRevision:(id)a3;
-- (void)migrateUserTypingFromDeletedTokens:(id)a3 toInsertedTokens:(id)a4 withUsageLearningMask:(unsigned int)a5 usageTrackingMask:(unsigned int)a6;
-- (void)pushSelectedTextToTokenizerForRevision:(id)a3;
-- (void)rejectToken:(id)a3 contextTokens:(id)a4 negativeLearningHint:(int)a5 withRevisedToken:(id)a6;
-- (void)replaceSelectionWithText:(id)a3 latinInputString:(id)a4 negativeLearningHint:(int)a5 selectedTokenReplacementHandler:(id)a6;
-- (void)resetToDocumentState:(id)a3;
-- (void)syncToDocumentState:(id)a3;
+- (void)enumerateSentenceStemUsingBlock:(id)block;
+- (void)enumerateSentenceStemUsingIteratorBlock:(id)block;
+- (void)handleRevisedTokenString:(id)string withTokenID:(TITokenID)d forRevision:(id)revision;
+- (void)insertText:(id)text;
+- (void)mergeTokenizationsForRevision:(id)revision;
+- (void)migrateUserTypingFromDeletedTokens:(id)tokens toInsertedTokens:(id)insertedTokens withUsageLearningMask:(unsigned int)mask usageTrackingMask:(unsigned int)trackingMask;
+- (void)pushSelectedTextToTokenizerForRevision:(id)revision;
+- (void)rejectToken:(id)token contextTokens:(id)tokens negativeLearningHint:(int)hint withRevisedToken:(id)revisedToken;
+- (void)replaceSelectionWithText:(id)text latinInputString:(id)string negativeLearningHint:(int)hint selectedTokenReplacementHandler:(id)handler;
+- (void)resetToDocumentState:(id)state;
+- (void)syncToDocumentState:(id)state;
 @end
 
 @implementation TIRevisionHistory
@@ -69,16 +69,16 @@
   {
     v5 = i;
     v6 = v4;
-    v7 = [(TIRevisionHistory *)self tokenization];
-    if (v5 >= [v7 count])
+    tokenization = [(TIRevisionHistory *)self tokenization];
+    if (v5 >= [tokenization count])
     {
       break;
     }
 
     v8 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:v5, v6];
-    v9 = [(TIRevisionHistory *)self selectedRange];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
 
-    if (v8 > v9)
+    if (v8 > selectedRange)
     {
       goto LABEL_6;
     }
@@ -104,13 +104,13 @@ LABEL_6:
 - (void)acceptCurrentSentence
 {
   [(TIRevisionHistory *)self setIsDeletingBackwards:0];
-  v3 = [(TIRevisionHistory *)self currentTokenIterator];
+  currentTokenIterator = [(TIRevisionHistory *)self currentTokenIterator];
   v5 = v4;
-  v6 = [(TIRevisionHistory *)self tokenization];
-  if (v3 >= [v6 count])
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  if (currentTokenIterator >= [tokenization count])
   {
     v10 = 0;
-    v8 = v3;
+    v8 = currentTokenIterator;
 LABEL_7:
 
     v13 = v10;
@@ -119,13 +119,13 @@ LABEL_7:
   else
   {
     v7 = 0;
-    v8 = v3;
+    v8 = currentTokenIterator;
     while (1)
     {
       v13 = v7;
-      v9 = [v7 tokenID];
+      tokenID = [v7 tokenID];
 
-      if (HIDWORD(v9) == 2)
+      if (HIDWORD(tokenID) == 2)
       {
         break;
       }
@@ -134,8 +134,8 @@ LABEL_7:
 
       v8 = [(TIRevisionHistory *)self nextTokenIterator:v8, v5];
       v5 = v11;
-      v6 = [(TIRevisionHistory *)self tokenization];
-      v12 = [v6 count];
+      tokenization = [(TIRevisionHistory *)self tokenization];
+      v12 = [tokenization count];
       v7 = v10;
       if (v8 >= v12)
       {
@@ -144,7 +144,7 @@ LABEL_7:
     }
   }
 
-  [(TIRevisionHistory *)self acceptTokensInRange:v3, v8 - v3];
+  [(TIRevisionHistory *)self acceptTokensInRange:currentTokenIterator, v8 - currentTokenIterator];
 }
 
 - (void)annotateTokensCreatedFromDocumentState
@@ -173,23 +173,23 @@ LABEL_7:
         [v6 setAccepted:1];
         if (!([v6 tokenID] >> 32))
         {
-          v7 = [v6 tokenInputString];
-          v8 = [v7 length];
+          tokenInputString = [v6 tokenInputString];
+          v8 = [tokenInputString length];
 
           if (v8)
           {
-            v9 = [(TIRevisionHistory *)self delegate];
-            v10 = [v6 tokenInputString];
-            [v6 setTokenID:{objc_msgSend(v9, "findTokenIDForWord:contextTokens:tokenLookupMode:", v10, v3, 37)}];
+            delegate = [(TIRevisionHistory *)self delegate];
+            tokenInputString2 = [v6 tokenInputString];
+            [v6 setTokenID:{objc_msgSend(delegate, "findTokenIDForWord:contextTokens:tokenLookupMode:", tokenInputString2, v3, 37)}];
           }
         }
 
-        v11 = [v6 tokenInputString];
-        if ([v11 length])
+        tokenInputString3 = [v6 tokenInputString];
+        if ([tokenInputString3 length])
         {
-          v12 = [(TIRevisionHistory *)self autocorrectionHistory];
-          v13 = [v6 tokenInputString];
-          v14 = [v12 objectForKey:v13];
+          autocorrectionHistory = [(TIRevisionHistory *)self autocorrectionHistory];
+          tokenInputString4 = [v6 tokenInputString];
+          v14 = [autocorrectionHistory objectForKey:tokenInputString4];
         }
 
         else
@@ -197,17 +197,17 @@ LABEL_7:
           v14 = 0;
         }
 
-        v15 = [v14 candidate];
-        v16 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v17 = [v15 stringByTrimmingCharactersInSet:v16];
+        candidate = [v14 candidate];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v17 = [candidate stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-        v18 = [v6 tokenInputString];
-        LODWORD(v16) = [v17 hasPrefix:v18];
+        tokenInputString5 = [v6 tokenInputString];
+        LODWORD(whitespaceAndNewlineCharacterSet) = [v17 hasPrefix:tokenInputString5];
 
-        if (v16)
+        if (whitespaceAndNewlineCharacterSet)
         {
-          v19 = [v14 input];
-          [v6 setUserTyping:v19];
+          input = [v14 input];
+          [v6 setUserTyping:input];
 
           [v6 setUsageTrackingMask:{objc_msgSend(v14, "usageTrackingMask")}];
           if ([v14 isContinuousPathConversion])
@@ -226,33 +226,33 @@ LABEL_7:
         if ([v14 isAutocorrection])
         {
           [v6 setUsageLearningMask:1];
-          v21 = [(TIRevisionHistory *)self recentAutocorrections];
-          v22 = [v6 tokenInputString];
-          [v21 objectForKeyedSubscript:v22];
+          recentAutocorrections = [(TIRevisionHistory *)self recentAutocorrections];
+          tokenInputString6 = [v6 tokenInputString];
+          [recentAutocorrections objectForKeyedSubscript:tokenInputString6];
           v23 = v14;
           v24 = i;
           v25 = v17;
-          v26 = self;
+          selfCopy = self;
           v27 = v3;
           v29 = v28 = v4;
-          v34 = [v29 isAutocorrection];
+          isAutocorrection = [v29 isAutocorrection];
 
           v4 = v28;
           v3 = v27;
-          self = v26;
+          self = selfCopy;
           v17 = v25;
           i = v24;
           v14 = v23;
 
-          if (v34)
+          if (isAutocorrection)
           {
             [v6 setUsageLearningMask:{objc_msgSend(v6, "usageLearningMask") | 4}];
           }
         }
 
-        v30 = [v6 tokenID];
-        v31 = [v6 tokenInputString];
-        [(TIContextTokens *)v3 appendToken:v30 string:v31];
+        tokenID = [v6 tokenID];
+        tokenInputString7 = [v6 tokenInputString];
+        [(TIContextTokens *)v3 appendToken:tokenID string:tokenInputString7];
       }
 
       v35 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -266,10 +266,10 @@ LABEL_7:
 
 - (id)currentWord
 {
-  v2 = [(TIRevisionHistory *)self wordTokenContainingSelection];
-  v3 = [v2 tokenInputString];
+  wordTokenContainingSelection = [(TIRevisionHistory *)self wordTokenContainingSelection];
+  tokenInputString = [wordTokenContainingSelection tokenInputString];
 
-  return v3;
+  return tokenInputString;
 }
 
 - (id)wordTokenContainingSelection
@@ -311,15 +311,15 @@ void __49__TIRevisionHistory_wordTokenContainingSelection__block_invoke(uint64_t
 
 - (id)currentUserTyping
 {
-  v2 = [(TIRevisionHistory *)self wordTokenContainingSelection];
-  v3 = [v2 userTyping];
+  wordTokenContainingSelection = [(TIRevisionHistory *)self wordTokenContainingSelection];
+  userTyping = [wordTokenContainingSelection userTyping];
 
-  return v3;
+  return userTyping;
 }
 
-- (void)enumerateSentenceStemUsingBlock:(id)a3
+- (void)enumerateSentenceStemUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
@@ -328,10 +328,10 @@ void __49__TIRevisionHistory_wordTokenContainingSelection__block_invoke(uint64_t
   v6[1] = 3221225472;
   v6[2] = __53__TIRevisionHistory_enumerateSentenceStemUsingBlock___block_invoke;
   v6[3] = &unk_278730E10;
-  v7 = v4;
+  v7 = blockCopy;
   v8 = v9;
   v6[4] = self;
-  v5 = v4;
+  v5 = blockCopy;
   [(TIRevisionHistory *)self enumerateSentenceStemUsingIteratorBlock:v6];
 
   _Block_object_dispose(v9, 8);
@@ -361,30 +361,30 @@ void __53__TIRevisionHistory_enumerateSentenceStemUsingBlock___block_invoke(uint
   (*(v15 + 16))(v15, v16, v10, v11, v10, v14, [v17 tokenID], a4);
 }
 
-- (void)syncToDocumentState:(id)a3
+- (void)syncToDocumentState:(id)state
 {
-  v8 = a3;
+  stateCopy = state;
   if (![(TIRevisionHistory *)self matchesDocumentState:?])
   {
-    if (!-[TIRevisionHistory isDeletingBackwards](self, "isDeletingBackwards") || (v4 = -[TIRevisionHistory deletionRangeToObtainDocumentState:](self, "deletionRangeToObtainDocumentState:", v8), v4 == 0x7FFFFFFFFFFFFFFFLL) || !v5 || (-[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", v4, v5), -[TIRevisionHistory replaceSelectionWithText:latinInputString:negativeLearningHint:selectedTokenReplacementHandler:](self, "replaceSelectionWithText:latinInputString:negativeLearningHint:selectedTokenReplacementHandler:", &stru_283FDFAF8, 0, 2, 0), -[TIRevisionHistory selectedRange](self, "selectedRange") == 0) && ([v8 contextBeforeInput], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+    if (!-[TIRevisionHistory isDeletingBackwards](self, "isDeletingBackwards") || (v4 = -[TIRevisionHistory deletionRangeToObtainDocumentState:](self, "deletionRangeToObtainDocumentState:", stateCopy), v4 == 0x7FFFFFFFFFFFFFFFLL) || !v5 || (-[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", v4, v5), -[TIRevisionHistory replaceSelectionWithText:latinInputString:negativeLearningHint:selectedTokenReplacementHandler:](self, "replaceSelectionWithText:latinInputString:negativeLearningHint:selectedTokenReplacementHandler:", &stru_283FDFAF8, 0, 2, 0), -[TIRevisionHistory selectedRange](self, "selectedRange") == 0) && ([stateCopy contextBeforeInput], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
     {
       [(TIRevisionHistory *)self setIsDeletingBackwards:0];
       [(TIRevisionHistory *)self acceptCurrentSentence];
-      [(TIRevisionHistory *)self resetToDocumentState:v8];
+      [(TIRevisionHistory *)self resetToDocumentState:stateCopy];
     }
   }
 }
 
-- (BOOL)matchesDocumentState:(id)a3
+- (BOOL)matchesDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 contextBeforeInput];
-  v6 = [(TIRevisionHistory *)self matchesContextBeforeSelection:v5];
+  stateCopy = state;
+  contextBeforeInput = [stateCopy contextBeforeInput];
+  v6 = [(TIRevisionHistory *)self matchesContextBeforeSelection:contextBeforeInput];
 
-  if (v6 && ([v4 selectedText], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[TIRevisionHistory matchesSelectedText:](self, "matchesSelectedText:", v7), v7, v8))
+  if (v6 && ([stateCopy selectedText], v7 = objc_claimAutoreleasedReturnValue(), v8 = -[TIRevisionHistory matchesSelectedText:](self, "matchesSelectedText:", v7), v7, v8))
   {
-    v9 = [v4 contextAfterInput];
-    v10 = [(TIRevisionHistory *)self matchesContextAfterSelection:v9];
+    contextAfterInput = [stateCopy contextAfterInput];
+    v10 = [(TIRevisionHistory *)self matchesContextAfterSelection:contextAfterInput];
   }
 
   else
@@ -395,17 +395,17 @@ void __53__TIRevisionHistory_enumerateSentenceStemUsingBlock___block_invoke(uint
   return v10;
 }
 
-- (BOOL)matchesContextAfterSelection:(id)a3
+- (BOOL)matchesContextAfterSelection:(id)selection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  selectionCopy = selection;
+  v5 = selectionCopy;
+  if (selectionCopy)
   {
-    v6 = [v4 length];
-    v7 = [(TIRevisionHistory *)self documentText];
-    v8 = [v7 length];
-    v9 = [(TIRevisionHistory *)self selectedRange];
-    v11 = v8 - (v10 + v9);
+    v6 = [selectionCopy length];
+    documentText = [(TIRevisionHistory *)self documentText];
+    v8 = [documentText length];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
+    v11 = v8 - (v10 + selectedRange);
 
     if (v6 != v11)
     {
@@ -413,17 +413,17 @@ void __53__TIRevisionHistory_enumerateSentenceStemUsingBlock___block_invoke(uint
       goto LABEL_10;
     }
 
-    v12 = [(TIRevisionHistory *)self documentText];
-    v13 = [(TIRevisionHistory *)self selectedRange];
-    v15 = [v12 compare:v5 options:2 range:{v13 + v14, objc_msgSend(v5, "length")}] == 0;
+    documentText2 = [(TIRevisionHistory *)self documentText];
+    selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+    v15 = [documentText2 compare:v5 options:2 range:{selectedRange2 + v14, objc_msgSend(v5, "length")}] == 0;
   }
 
   else
   {
-    v16 = [(TIRevisionHistory *)self selectedRange];
-    v18 = v16 + v17;
-    v12 = [(TIRevisionHistory *)self documentText];
-    v15 = v18 == [v12 length];
+    selectedRange3 = [(TIRevisionHistory *)self selectedRange];
+    v18 = selectedRange3 + v17;
+    documentText2 = [(TIRevisionHistory *)self documentText];
+    v15 = v18 == [documentText2 length];
   }
 
   v19 = v15;
@@ -432,19 +432,19 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)matchesSelectedText:(id)a3
+- (BOOL)matchesSelectedText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
-    v6 = [v4 length];
+    v6 = [textCopy length];
     [(TIRevisionHistory *)self selectedRange];
     if (v6 == v7)
     {
-      v8 = [(TIRevisionHistory *)self documentText];
-      v9 = [(TIRevisionHistory *)self selectedRange];
-      v11 = [v8 compare:v5 options:2 range:{v9, v10}] == 0;
+      documentText = [(TIRevisionHistory *)self documentText];
+      selectedRange = [(TIRevisionHistory *)self selectedRange];
+      v11 = [documentText compare:v5 options:2 range:{selectedRange, v10}] == 0;
     }
 
     else
@@ -462,17 +462,17 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)matchesContextBeforeSelection:(id)a3
+- (BOOL)matchesContextBeforeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  selectionCopy = selection;
+  v5 = selectionCopy;
+  if (selectionCopy)
   {
-    v6 = [v4 length];
+    v6 = [selectionCopy length];
     if (v6 == [(TIRevisionHistory *)self selectedRange])
     {
-      v7 = [(TIRevisionHistory *)self documentText];
-      v8 = [v7 compare:v5 options:2 range:{0, -[TIRevisionHistory selectedRange](self, "selectedRange")}] == 0;
+      documentText = [(TIRevisionHistory *)self documentText];
+      v8 = [documentText compare:v5 options:2 range:{0, -[TIRevisionHistory selectedRange](self, "selectedRange")}] == 0;
     }
 
     else
@@ -489,17 +489,17 @@ LABEL_10:
   return v8;
 }
 
-- (void)acceptText:(id)a3 isAutocorrection:(BOOL)a4 isAutoshifted:(BOOL)a5
+- (void)acceptText:(id)text isAutocorrection:(BOOL)autocorrection isAutoshifted:(BOOL)autoshifted
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  autoshiftedCopy = autoshifted;
+  autocorrectionCopy = autocorrection;
+  textCopy = text;
   [(TIRevisionHistory *)self setIsDeletingBackwards:0];
-  v9 = [(TIRevisionHistory *)self inputRangeForReplacement:v8];
+  v9 = [(TIRevisionHistory *)self inputRangeForReplacement:textCopy];
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(TIRevisionHistory *)self setSelectedRange:v9, v10];
-    if (v5)
+    if (autoshiftedCopy)
     {
       v11 = 2;
     }
@@ -509,8 +509,8 @@ LABEL_10:
       v11 = 0;
     }
 
-    v12 = v11 | [v8 isAutocorrection];
-    if (v6)
+    v12 = v11 | [textCopy isAutocorrection];
+    if (autocorrectionCopy)
     {
       v13 = v12 | 4;
     }
@@ -520,10 +520,10 @@ LABEL_10:
       v13 = v12;
     }
 
-    v14 = [v8 candidate];
-    if (v14)
+    candidate = [textCopy candidate];
+    if (candidate)
     {
-      v15 = v14;
+      v15 = candidate;
     }
 
     else
@@ -531,15 +531,15 @@ LABEL_10:
       v15 = &stru_283FDFAF8;
     }
 
-    v16 = [v8 latinCandidate];
+    latinCandidate = [textCopy latinCandidate];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_invoke;
     v17[3] = &unk_278730DE8;
     v17[4] = self;
     v19 = v13;
-    v18 = v8;
-    [(TIRevisionHistory *)self replaceSelectionWithText:v15 latinInputString:v16 negativeLearningHint:0 selectedTokenReplacementHandler:v17];
+    v18 = textCopy;
+    [(TIRevisionHistory *)self replaceSelectionWithText:v15 latinInputString:latinCandidate negativeLearningHint:0 selectedTokenReplacementHandler:v17];
   }
 }
 
@@ -553,42 +553,42 @@ void __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_i
   [v5 migrateUserTypingFromDeletedTokens:v8 toInsertedTokens:v7 withUsageLearningMask:v4 usageTrackingMask:{objc_msgSend(v6, "usageTrackingMask")}];
 }
 
-- (_NSRange)inputRangeForReplacement:(id)a3
+- (_NSRange)inputRangeForReplacement:(id)replacement
 {
-  v4 = a3;
+  replacementCopy = replacement;
   [(TIRevisionHistory *)self selectedRange];
   if (v5)
   {
-    v6 = [(TIRevisionHistory *)self documentText];
-    v7 = [v4 input];
-    v8 = [(TIRevisionHistory *)self selectedRange];
-    v10 = [v6 compare:v7 options:2 range:{v8, v9}];
+    documentText = [(TIRevisionHistory *)self documentText];
+    input = [replacementCopy input];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
+    v10 = [documentText compare:input options:2 range:{selectedRange, v9}];
 
     if (v10)
     {
       v11 = 0;
-      v12 = 0x7FFFFFFFFFFFFFFFLL;
+      selectedRange2 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v12 = [(TIRevisionHistory *)self selectedRange];
+      selectedRange2 = [(TIRevisionHistory *)self selectedRange];
       v11 = v15;
     }
   }
 
   else
   {
-    v13 = [v4 input];
-    v14 = [v13 length];
+    input2 = [replacementCopy input];
+    v14 = [input2 length];
 
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    selectedRange2 = 0x7FFFFFFFFFFFFFFFLL;
     if (v14 <= [(TIRevisionHistory *)self selectedRange])
     {
       v16 = [(TIRevisionHistory *)self selectedRange]- v14;
-      v17 = [(TIRevisionHistory *)self documentText];
-      v18 = [v4 input];
-      v19 = [v17 compare:v18 options:2 range:{v16, v14}];
+      documentText2 = [(TIRevisionHistory *)self documentText];
+      input3 = [replacementCopy input];
+      v19 = [documentText2 compare:input3 options:2 range:{v16, v14}];
 
       if (v19)
       {
@@ -602,7 +602,7 @@ void __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_i
 
       if (!v19)
       {
-        v12 = v16;
+        selectedRange2 = v16;
       }
     }
 
@@ -612,7 +612,7 @@ void __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_i
     }
   }
 
-  v20 = v12;
+  v20 = selectedRange2;
   v21 = v11;
   result.length = v21;
   result.location = v20;
@@ -625,17 +625,17 @@ void __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_i
   [(TIRevisionHistory *)self selectedRange];
   if (!v3 && [(TIRevisionHistory *)self selectedRange])
   {
-    v4 = [(TIRevisionHistory *)self documentText];
-    v5 = [v4 _rangeOfBackwardDeletionClusterAtIndex:{-[TIRevisionHistory selectedRange](self, "selectedRange") - 1}];
+    documentText = [(TIRevisionHistory *)self documentText];
+    v5 = [documentText _rangeOfBackwardDeletionClusterAtIndex:{-[TIRevisionHistory selectedRange](self, "selectedRange") - 1}];
     [(TIRevisionHistory *)self setSelectedRange:v5, v6];
   }
 
   [(TIRevisionHistory *)self replaceSelectionWithText:&stru_283FDFAF8 latinInputString:0 negativeLearningHint:2 selectedTokenReplacementHandler:0];
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   [(TIRevisionHistory *)self setIsDeletingBackwards:0];
   if (HIBYTE(adaptation_autocorrection_rejection_v2_override_for_trial) == 1)
   {
@@ -657,25 +657,25 @@ void __63__TIRevisionHistory_acceptText_isAutocorrection_isAutoshifted___block_i
     v5 = 0;
   }
 
-  [(TIRevisionHistory *)self replaceSelectionWithText:v6 latinInputString:0 negativeLearningHint:v5 selectedTokenReplacementHandler:0];
+  [(TIRevisionHistory *)self replaceSelectionWithText:textCopy latinInputString:0 negativeLearningHint:v5 selectedTokenReplacementHandler:0];
 }
 
-- (_NSRange)deletionRangeToObtainDocumentState:(id)a3
+- (_NSRange)deletionRangeToObtainDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TIRevisionHistory *)self documentState];
-  v6 = [TIRevisionHistory documentStateTrimmedToSentenceForState:v5];
+  stateCopy = state;
+  documentState = [(TIRevisionHistory *)self documentState];
+  v6 = [TIRevisionHistory documentStateTrimmedToSentenceForState:documentState];
 
-  v7 = [TIRevisionHistory documentStateTrimmedToSentenceForState:v4];
+  v7 = [TIRevisionHistory documentStateTrimmedToSentenceForState:stateCopy];
 
-  v8 = [v6 selectedText];
-  if ([v8 length])
+  selectedText = [v6 selectedText];
+  if ([selectedText length])
   {
     goto LABEL_10;
   }
 
-  v9 = [v7 selectedText];
-  if ([v9 length])
+  selectedText2 = [v7 selectedText];
+  if ([selectedText2 length])
   {
 LABEL_9:
 
@@ -683,27 +683,27 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v6 contextBeforeInput];
-  v11 = [v10 length];
-  v12 = [v7 contextBeforeInput];
-  if (v11 <= [v12 length])
+  contextBeforeInput = [v6 contextBeforeInput];
+  v11 = [contextBeforeInput length];
+  contextBeforeInput2 = [v7 contextBeforeInput];
+  if (v11 <= [contextBeforeInput2 length])
   {
 
     goto LABEL_9;
   }
 
-  v13 = [v6 contextAfterInput];
-  v52 = v10;
-  v54 = [v13 length];
+  contextAfterInput = [v6 contextAfterInput];
+  v52 = contextBeforeInput;
+  v54 = [contextAfterInput length];
   if (v54 || ([v7 contextAfterInput], v47 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v47, "length")))
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v6 contextAfterInput];
-    v16 = [v7 contextAfterInput];
+    contextAfterInput2 = [v6 contextAfterInput];
+    contextAfterInput3 = [v7 contextAfterInput];
     v17 = v14;
-    v18 = v15;
-    v49 = v16;
-    if (![v17 _string:v15 matchesString:?])
+    v18 = contextAfterInput2;
+    v49 = contextAfterInput3;
+    if (![v17 _string:contextAfterInput2 matchesString:?])
     {
       v31 = 0;
       v32 = v47;
@@ -712,7 +712,7 @@ LABEL_36:
       goto LABEL_39;
     }
 
-    v45 = v15;
+    v45 = contextAfterInput2;
     v19 = 1;
   }
 
@@ -721,25 +721,25 @@ LABEL_36:
     v19 = 0;
   }
 
-  v34 = [v7 contextBeforeInput];
-  if ([v34 length])
+  contextBeforeInput3 = [v7 contextBeforeInput];
+  if ([contextBeforeInput3 length])
   {
-    v44 = v13;
+    v44 = contextAfterInput;
     [v6 contextBeforeInput];
     v35 = v43 = v19;
-    v36 = [v7 contextBeforeInput];
-    v31 = [v35 hasPrefix:v36];
+    contextBeforeInput4 = [v7 contextBeforeInput];
+    v31 = [v35 hasPrefix:contextBeforeInput4];
 
     if (v43)
     {
-      v13 = v44;
+      contextAfterInput = v44;
 LABEL_35:
       v18 = v45;
       v32 = v47;
       goto LABEL_36;
     }
 
-    v13 = v44;
+    contextAfterInput = v44;
   }
 
   else
@@ -760,70 +760,70 @@ LABEL_39:
 
   if (v31)
   {
-    v37 = [v6 contextBeforeInput];
-    v38 = [v37 length];
-    v39 = [v7 contextBeforeInput];
-    v27 = v38 - [v39 length];
+    contextBeforeInput5 = [v6 contextBeforeInput];
+    v38 = [contextBeforeInput5 length];
+    contextBeforeInput6 = [v7 contextBeforeInput];
+    v27 = v38 - [contextBeforeInput6 length];
 
     v28 = [(TIRevisionHistory *)self selectedRange]- v27;
     goto LABEL_24;
   }
 
 LABEL_11:
-  v20 = [v7 contextBeforeInput];
-  if ([v20 length])
+  contextBeforeInput7 = [v7 contextBeforeInput];
+  if ([contextBeforeInput7 length])
   {
-    v21 = [v6 contextBeforeInput];
-    if ([v21 length] >= 0xC)
+    contextBeforeInput8 = [v6 contextBeforeInput];
+    if ([contextBeforeInput8 length] >= 0xC)
     {
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v22 = [v6 contextBeforeInput];
-    if (![v22 length])
+    contextBeforeInput9 = [v6 contextBeforeInput];
+    if (![contextBeforeInput9 length])
     {
 LABEL_20:
 
       goto LABEL_21;
     }
 
-    v23 = [v7 contextBeforeInput];
-    v24 = [v6 contextBeforeInput];
-    if ([v23 isEqualToString:v24])
+    contextBeforeInput10 = [v7 contextBeforeInput];
+    contextBeforeInput11 = [v6 contextBeforeInput];
+    if ([contextBeforeInput10 isEqualToString:contextBeforeInput11])
     {
 LABEL_19:
 
       goto LABEL_20;
     }
 
-    v25 = [v6 selectedText];
-    if ([v25 length])
+    selectedText3 = [v6 selectedText];
+    if ([selectedText3 length])
     {
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v26 = [v7 selectedText];
-    if ([v26 length])
+    selectedText4 = [v7 selectedText];
+    if ([selectedText4 length])
     {
 
       goto LABEL_18;
     }
 
-    v53 = [v6 contextAfterInput];
-    v48 = [v53 length];
+    contextAfterInput4 = [v6 contextAfterInput];
+    v48 = [contextAfterInput4 length];
     if (v48 || ([v7 contextAfterInput], v44 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v44, "length")))
     {
       v50 = MEMORY[0x277CCACA8];
-      v55 = [v6 contextAfterInput];
+      contextAfterInput5 = [v6 contextAfterInput];
       [v7 contextAfterInput];
-      v33 = v46 = v26;
-      v51 = [v50 _string:v55 matchesString:v33];
+      v33 = v46 = selectedText4;
+      v51 = [v50 _string:contextAfterInput5 matchesString:v33];
 
-      v26 = v46;
+      selectedText4 = v46;
       if (v48)
       {
         goto LABEL_45;
@@ -838,12 +838,12 @@ LABEL_18:
 LABEL_45:
     if (v51)
     {
-      v40 = [(TIRevisionHistory *)self selectedRange];
-      v41 = [v6 contextBeforeInput];
-      v28 = v40 - [v41 length];
+      selectedRange = [(TIRevisionHistory *)self selectedRange];
+      contextBeforeInput12 = [v6 contextBeforeInput];
+      v28 = selectedRange - [contextBeforeInput12 length];
 
-      v42 = [v6 contextBeforeInput];
-      v27 = [v42 length];
+      contextBeforeInput13 = [v6 contextBeforeInput];
+      v27 = [contextBeforeInput13 length];
 
       goto LABEL_24;
     }
@@ -867,15 +867,15 @@ LABEL_24:
 
 - (id)documentState
 {
-  v3 = [(TIRevisionHistory *)self documentText];
-  v4 = [v3 substringToIndex:{-[TIRevisionHistory selectedRange](self, "selectedRange")}];
+  documentText = [(TIRevisionHistory *)self documentText];
+  v4 = [documentText substringToIndex:{-[TIRevisionHistory selectedRange](self, "selectedRange")}];
 
   [(TIRevisionHistory *)self selectedRange];
   if (v5)
   {
-    v6 = [(TIRevisionHistory *)self documentText];
-    v7 = [(TIRevisionHistory *)self selectedRange];
-    v9 = [v6 substringWithRange:{v7, v8}];
+    documentText2 = [(TIRevisionHistory *)self documentText];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
+    v9 = [documentText2 substringWithRange:{selectedRange, v8}];
   }
 
   else
@@ -883,19 +883,19 @@ LABEL_24:
     v9 = 0;
   }
 
-  v10 = [(TIRevisionHistory *)self documentText];
-  v11 = [(TIRevisionHistory *)self selectedRange];
-  v13 = [v10 substringFromIndex:v11 + v12];
+  documentText3 = [(TIRevisionHistory *)self documentText];
+  selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+  v13 = [documentText3 substringFromIndex:selectedRange2 + v12];
 
   v14 = [objc_alloc(MEMORY[0x277D6F350]) initWithContextBefore:v4 markedText:0 selectedText:v9 contextAfter:v13 selectedRangeInMarkedText:{0x7FFFFFFFFFFFFFFFLL, 0}];
 
   return v14;
 }
 
-- (BOOL)isWordToken:(_TIRevisionHistoryTokenIterator)a3
+- (BOOL)isWordToken:(_TIRevisionHistoryTokenIterator)token
 {
-  tokenIndex = a3.tokenIndex;
-  v4 = [(TIRevisionHistory *)self tokenization:a3.tokenIndex];
+  tokenIndex = token.tokenIndex;
+  v4 = [(TIRevisionHistory *)self tokenization:token.tokenIndex];
   v5 = [v4 objectAtIndex:tokenIndex];
 
   if ([v5 tokenID] >> 32)
@@ -911,27 +911,27 @@ LABEL_24:
   return v6;
 }
 
-- (BOOL)isSelectionContainedByToken:(_TIRevisionHistoryTokenIterator)a3
+- (BOOL)isSelectionContainedByToken:(_TIRevisionHistoryTokenIterator)token
 {
-  v4 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:a3.tokenIndex, a3.documentLocation];
+  v4 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:token.tokenIndex, token.documentLocation];
   v6 = v5;
   if (v4 > [(TIRevisionHistory *)self selectedRange])
   {
     return 0;
   }
 
-  v8 = [(TIRevisionHistory *)self selectedRange];
-  return v8 + v9 <= v4 + v6;
+  selectedRange = [(TIRevisionHistory *)self selectedRange];
+  return selectedRange + v9 <= v4 + v6;
 }
 
-- (void)enumerateSentenceStemUsingIteratorBlock:(id)a3
+- (void)enumerateSentenceStemUsingIteratorBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12 = 0;
-  v5 = [(TIRevisionHistory *)self iteratorUpperBoundForSelectionStart];
-  if (v5)
+  iteratorUpperBoundForSelectionStart = [(TIRevisionHistory *)self iteratorUpperBoundForSelectionStart];
+  if (iteratorUpperBoundForSelectionStart)
   {
-    v7 = v5;
+    v7 = iteratorUpperBoundForSelectionStart;
     v8 = v6;
     v9 = 0;
     do
@@ -939,7 +939,7 @@ LABEL_24:
       v7 = [(TIRevisionHistory *)self previousTokenIterator:v7, v8];
       v8 = v10;
       v11 = [(TIRevisionHistory *)self tokenAtIterator:v7, v10];
-      v4[2](v4, v7, v8, &v12);
+      blockCopy[2](blockCopy, v7, v8, &v12);
       if ([v11 tokenID] >> 32 == 1)
       {
         v12 |= ++v9 > 2;
@@ -950,109 +950,109 @@ LABEL_24:
   }
 }
 
-- (void)resetToDocumentState:(id)a3
+- (void)resetToDocumentState:(id)state
 {
-  v27 = a3;
+  stateCopy = state;
   [(TIRevisionHistory *)self setDocumentText:&stru_283FDFAF8];
   [(TIRevisionHistory *)self setSelectedRange:0, 0];
-  v4 = [(TIRevisionHistory *)self tokenization];
-  [v4 removeAllObjects];
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  [tokenization removeAllObjects];
 
   [(TIRevisionHistory *)self tokenizer];
   LMStreamTokenizerReset();
   [(TIRevisionHistory *)self setCurrentTokenIterator:0, 0];
   [(TIRevisionHistory *)self setLastRejectedToken:0];
   v5 = [[TITokenizationRevision alloc] initWithTokenIterator:0, 0];
-  v6 = [v27 contextBeforeInput];
+  contextBeforeInput = [stateCopy contextBeforeInput];
 
-  if (v6)
+  if (contextBeforeInput)
   {
-    v7 = [(TIRevisionHistory *)self documentText];
-    v8 = [v27 contextBeforeInput];
-    v9 = [v7 stringByAppendingString:v8];
+    documentText = [(TIRevisionHistory *)self documentText];
+    contextBeforeInput2 = [stateCopy contextBeforeInput];
+    v9 = [documentText stringByAppendingString:contextBeforeInput2];
     [(TIRevisionHistory *)self setDocumentText:v9];
 
-    v10 = [v27 contextBeforeInput];
-    -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", 0, [v10 length]);
+    contextBeforeInput3 = [stateCopy contextBeforeInput];
+    -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", 0, [contextBeforeInput3 length]);
 
     [(TIRevisionHistory *)self pushSelectedTextToTokenizerForRevision:v5];
   }
 
-  v11 = [v27 selectedText];
+  selectedText = [stateCopy selectedText];
 
-  if (v11)
+  if (selectedText)
   {
-    v12 = [(TIRevisionHistory *)self documentText];
-    v13 = [v27 selectedText];
-    v14 = [v12 stringByAppendingString:v13];
+    documentText2 = [(TIRevisionHistory *)self documentText];
+    selectedText2 = [stateCopy selectedText];
+    v14 = [documentText2 stringByAppendingString:selectedText2];
     [(TIRevisionHistory *)self setDocumentText:v14];
 
-    v15 = [(TIRevisionHistory *)self selectedRange];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
     v17 = v16;
-    v18 = [v27 selectedText];
-    -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", v15 + v17, [v18 length]);
+    selectedText3 = [stateCopy selectedText];
+    -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", selectedRange + v17, [selectedText3 length]);
 
     [(TIRevisionHistory *)self pushSelectedTextToTokenizerForRevision:v5];
   }
 
   else
   {
-    v19 = [(TIRevisionHistory *)self selectedRange];
-    [(TIRevisionHistory *)self setSelectedRange:v19 + v20, 0];
+    selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+    [(TIRevisionHistory *)self setSelectedRange:selectedRange2 + v20, 0];
   }
 
-  v21 = [v27 contextAfterInput];
+  contextAfterInput = [stateCopy contextAfterInput];
 
-  if (v21)
+  if (contextAfterInput)
   {
-    v22 = [(TIRevisionHistory *)self documentText];
-    v23 = [v27 contextAfterInput];
-    v24 = [v22 stringByAppendingString:v23];
+    documentText3 = [(TIRevisionHistory *)self documentText];
+    contextAfterInput2 = [stateCopy contextAfterInput];
+    v24 = [documentText3 stringByAppendingString:contextAfterInput2];
     [(TIRevisionHistory *)self setDocumentText:v24];
   }
 
   [(TIRevisionHistory *)self mergeTokenizationsForRevision:v5];
-  v25 = [(TIRevisionHistory *)self tokenization];
-  v26 = [(TITokenizationRevision *)v5 branchTokens];
-  [v25 setArray:v26];
+  tokenization2 = [(TIRevisionHistory *)self tokenization];
+  branchTokens = [(TITokenizationRevision *)v5 branchTokens];
+  [tokenization2 setArray:branchTokens];
 
   [(TIRevisionHistory *)self annotateTokensCreatedFromDocumentState];
 }
 
-- (void)replaceSelectionWithText:(id)a3 latinInputString:(id)a4 negativeLearningHint:(int)a5 selectedTokenReplacementHandler:(id)a6
+- (void)replaceSelectionWithText:(id)text latinInputString:(id)string negativeLearningHint:(int)hint selectedTokenReplacementHandler:(id)handler
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(TIRevisionHistory *)self popSelectedTextFromTokenizer];
+  textCopy = text;
+  stringCopy = string;
+  handlerCopy = handler;
+  popSelectedTextFromTokenizer = [(TIRevisionHistory *)self popSelectedTextFromTokenizer];
   v14 = v13;
-  v15 = [[TITokenizationRevision alloc] initWithTokenIterator:v12, v13];
+  v15 = [[TITokenizationRevision alloc] initWithTokenIterator:popSelectedTextFromTokenizer, v13];
   v44 = v14;
-  v16 = [(TIRevisionHistory *)self selectedTokenRangeWithIterator:v12, v14];
+  v16 = [(TIRevisionHistory *)self selectedTokenRangeWithIterator:popSelectedTextFromTokenizer, v14];
   [(TITokenizationRevision *)v15 setOriginalSelectedTokenRange:v16, v17];
   [(TIRevisionHistory *)self selectedRange];
   v19 = v18;
-  v20 = [(TIRevisionHistory *)self documentText];
-  v21 = [(TIRevisionHistory *)self selectedRange];
-  v23 = [v20 stringByReplacingCharactersInRange:v21 withString:{v22, v9}];
+  documentText = [(TIRevisionHistory *)self documentText];
+  selectedRange = [(TIRevisionHistory *)self selectedRange];
+  v23 = [documentText stringByReplacingCharactersInRange:selectedRange withString:{v22, textCopy}];
   [(TIRevisionHistory *)self setDocumentText:v23];
 
-  v48 = v9;
-  -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", -[TIRevisionHistory selectedRange](self, "selectedRange"), [v9 length]);
-  v24 = [(TITokenizationRevision *)v15 originalSelectedTokenRange];
-  [(TIRevisionHistory *)self adjustTokenOffsetAfterDeletedTokenRange:v24 withDeletedCharacterCount:v25, v19];
+  v48 = textCopy;
+  -[TIRevisionHistory setSelectedRange:](self, "setSelectedRange:", -[TIRevisionHistory selectedRange](self, "selectedRange"), [textCopy length]);
+  originalSelectedTokenRange = [(TITokenizationRevision *)v15 originalSelectedTokenRange];
+  [(TIRevisionHistory *)self adjustTokenOffsetAfterDeletedTokenRange:originalSelectedTokenRange withDeletedCharacterCount:v25, v19];
   [(TIRevisionHistory *)self pushSelectedTextToTokenizerForRevision:v15];
   [(TIRevisionHistory *)self mergeTokenizationsForRevision:v15];
-  v26 = [(TITokenizationRevision *)v15 branchedTokenIndex];
-  v27 = [(TITokenizationRevision *)v15 mergedTokenIndex];
-  v28 = v27 - [(TITokenizationRevision *)v15 branchedTokenIndex];
-  [(TIRevisionHistory *)self rejectTokensInRange:v26 negativeLearningHint:v28 newRevision:a5, v15];
-  v47 = v11;
-  if (v11)
+  branchedTokenIndex = [(TITokenizationRevision *)v15 branchedTokenIndex];
+  mergedTokenIndex = [(TITokenizationRevision *)v15 mergedTokenIndex];
+  v28 = mergedTokenIndex - [(TITokenizationRevision *)v15 branchedTokenIndex];
+  [(TIRevisionHistory *)self rejectTokensInRange:branchedTokenIndex negativeLearningHint:v28 newRevision:hint, v15];
+  v47 = handlerCopy;
+  if (handlerCopy)
   {
-    v29 = [(TITokenizationRevision *)v15 originalSelectedTokenRange];
-    v45 = [(TIRevisionHistory *)self nonEmptyTokensInRange:v29, v30];
+    originalSelectedTokenRange2 = [(TITokenizationRevision *)v15 originalSelectedTokenRange];
+    v45 = [(TIRevisionHistory *)self nonEmptyTokensInRange:originalSelectedTokenRange2, v30];
   }
 
   else
@@ -1064,8 +1064,8 @@ LABEL_24:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v31 = [(TITokenizationRevision *)v15 branchTokens];
-  v32 = [v31 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  branchTokens = [(TITokenizationRevision *)v15 branchTokens];
+  v32 = [branchTokens countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v32)
   {
     v33 = v32;
@@ -1076,60 +1076,60 @@ LABEL_24:
       {
         if (*v50 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(branchTokens);
         }
 
-        [*(*(&v49 + 1) + 8 * i) setTokenLatinInputString:v10];
+        [*(*(&v49 + 1) + 8 * i) setTokenLatinInputString:stringCopy];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v33 = [branchTokens countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v33);
   }
 
-  v36 = [(TIRevisionHistory *)self tokenization];
-  v37 = [(TITokenizationRevision *)v15 branchTokens];
-  [v36 replaceObjectsInRange:v26 withObjectsFromArray:{v28, v37}];
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  branchTokens2 = [(TITokenizationRevision *)v15 branchTokens];
+  [tokenization replaceObjectsInRange:branchedTokenIndex withObjectsFromArray:{v28, branchTokens2}];
 
   if (v47)
   {
-    v38 = [(TIRevisionHistory *)self selectedTokenRangeWithIterator:v12, v44];
+    v38 = [(TIRevisionHistory *)self selectedTokenRangeWithIterator:popSelectedTextFromTokenizer, v44];
     v40 = [(TIRevisionHistory *)self nonEmptyTokensInRange:v38, v39];
     (v47)[2](v47, v45, v40);
   }
 
-  [(TIRevisionHistory *)self acceptTokensInRange:v12, [(TIRevisionHistory *)self currentTokenIterator]- v12];
-  v41 = [(TIRevisionHistory *)self selectedRange];
-  [(TIRevisionHistory *)self setSelectedRange:v41 + v42, 0];
+  [(TIRevisionHistory *)self acceptTokensInRange:popSelectedTextFromTokenizer, [(TIRevisionHistory *)self currentTokenIterator]- popSelectedTextFromTokenizer];
+  selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+  [(TIRevisionHistory *)self setSelectedRange:selectedRange2 + v42, 0];
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeTokenizationsForRevision:(id)a3
+- (void)mergeTokenizationsForRevision:(id)revision
 {
-  v4 = a3;
-  v5 = [(TIRevisionHistory *)self documentText];
-  v6 = [v5 copy];
+  revisionCopy = revision;
+  documentText = [(TIRevisionHistory *)self documentText];
+  v6 = [documentText copy];
 
   v7 = [v6 stringByAppendingString:@"\n"];
   [(TIRevisionHistory *)self setDocumentText:v7];
 
-  v8 = [(TIRevisionHistory *)self selectedRange];
+  selectedRange = [(TIRevisionHistory *)self selectedRange];
   v10 = v9;
-  v11 = [(TIRevisionHistory *)self documentText];
-  v12 = [v11 length];
-  v13 = [(TIRevisionHistory *)self selectedRange];
-  v15 = v12 - (v14 + v13);
+  documentText2 = [(TIRevisionHistory *)self documentText];
+  v12 = [documentText2 length];
+  selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+  v15 = v12 - (v14 + selectedRange2);
 
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __51__TIRevisionHistory_mergeTokenizationsForRevision___block_invoke;
   v21 = &unk_278730D50;
-  v22 = self;
-  v16 = v4;
+  selfCopy = self;
+  v16 = revisionCopy;
   v23 = v16;
-  [(TIRevisionHistory *)self tokenizeDocumentTextInRange:v8 + v10 withTokenHandler:v15, &v18];
+  [(TIRevisionHistory *)self tokenizeDocumentTextInRange:selectedRange + v10 withTokenHandler:v15, &v18];
   if ([v16 branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v16 setBranchedTokenIndex:{objc_msgSend(v16, "originalIterator")}];
@@ -1137,8 +1137,8 @@ LABEL_24:
 
   if ([v16 mergedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [(TIRevisionHistory *)self tokenization];
-    [v16 setMergedTokenIndex:{objc_msgSend(v17, "count")}];
+    tokenization = [(TIRevisionHistory *)self tokenization];
+    [v16 setMergedTokenIndex:{objc_msgSend(tokenization, "count")}];
   }
 
   [(TIRevisionHistory *)self setDocumentText:v6];
@@ -1146,43 +1146,43 @@ LABEL_24:
   LMStreamTokenizerPopBytes();
 }
 
-- (void)pushSelectedTextToTokenizerForRevision:(id)a3
+- (void)pushSelectedTextToTokenizerForRevision:(id)revision
 {
-  v4 = a3;
-  v5 = [(TIRevisionHistory *)self selectedRange];
+  revisionCopy = revision;
+  selectedRange = [(TIRevisionHistory *)self selectedRange];
   v7 = v6;
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __60__TIRevisionHistory_pushSelectedTextToTokenizerForRevision___block_invoke;
   v16 = &unk_278730D50;
-  v17 = self;
-  v8 = v4;
+  selfCopy = self;
+  v8 = revisionCopy;
   v18 = v8;
-  [(TIRevisionHistory *)self tokenizeDocumentTextInRange:v5 withTokenHandler:v7, &v13];
+  [(TIRevisionHistory *)self tokenizeDocumentTextInRange:selectedRange withTokenHandler:v7, &v13];
   if ([v8 branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v8 originalIterator];
+    originalIterator = [v8 originalIterator];
   }
 
   else
   {
-    v9 = [v8 branchedTokenIndex];
+    originalIterator = [v8 branchedTokenIndex];
   }
 
-  v10 = v9;
-  v11 = [v8 branchTokens];
-  v12 = [v11 count];
+  v10 = originalIterator;
+  branchTokens = [v8 branchTokens];
+  v12 = [branchTokens count];
 
   -[TIRevisionHistory setCurrentTokenIterator:](self, "setCurrentTokenIterator:", v12 + v10, [v8 revisedDocumentLocation]);
 }
 
-- (void)handleRevisedTokenString:(id)a3 withTokenID:(TITokenID)a4 forRevision:(id)a5
+- (void)handleRevisedTokenString:(id)string withTokenID:(TITokenID)d forRevision:(id)revision
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TIRevisionHistory *)self documentText];
-  v11 = [v10 _rangeOfString:v8 fromLocation:{objc_msgSend(v9, "revisedDocumentLocation")}];
+  stringCopy = string;
+  revisionCopy = revision;
+  documentText = [(TIRevisionHistory *)self documentText];
+  v11 = [documentText _rangeOfString:stringCopy fromLocation:{objc_msgSend(revisionCopy, "revisedDocumentLocation")}];
   v13 = v12;
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1196,51 +1196,51 @@ LABEL_24:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v21 = MEMORY[0x277CCACA8];
-      v16 = [v9 revisedDocumentLocation];
-      v17 = [(TIRevisionHistory *)self documentText];
-      v18 = [(TIRevisionHistory *)self selectedRange];
+      revisedDocumentLocation = [revisionCopy revisedDocumentLocation];
+      documentText2 = [(TIRevisionHistory *)self documentText];
+      selectedRange = [(TIRevisionHistory *)self selectedRange];
       [(TIRevisionHistory *)self selectedRange];
-      v20 = [v21 stringWithFormat:@"%s ERROR: Unexpected token %@ for location %lu in %@, with selected range (%lu, %lu)", "-[TIRevisionHistory handleRevisedTokenString:withTokenID:forRevision:]", v8, v16, v17, v18, v19];
+      v20 = [v21 stringWithFormat:@"%s ERROR: Unexpected token %@ for location %lu in %@, with selected range (%lu, %lu)", "-[TIRevisionHistory handleRevisedTokenString:withTokenID:forRevision:]", stringCopy, revisedDocumentLocation, documentText2, selectedRange, v19];
       *buf = 138412290;
       v23 = v20;
       _os_log_debug_impl(&dword_22CA55000, v14, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
-  if (![(TIRevisionHistory *)self validateTokenizationForRevisedDocumentRange:v11 andTokenID:v13 forRevision:a4, v9])
+  if (![(TIRevisionHistory *)self validateTokenizationForRevisedDocumentRange:v11 andTokenID:v13 forRevision:d, revisionCopy])
   {
-    [(TIRevisionHistory *)self addRevisedTokenString:v8 withTokenID:a4 inDocumentRange:v11 toRevision:v13, v9];
+    [(TIRevisionHistory *)self addRevisedTokenString:stringCopy withTokenID:d inDocumentRange:v11 toRevision:v13, revisionCopy];
   }
 
-  [v9 setRevisedDocumentLocation:v11 + v13];
+  [revisionCopy setRevisedDocumentLocation:v11 + v13];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addRevisedTokenString:(id)a3 withTokenID:(TITokenID)a4 inDocumentRange:(_NSRange)a5 toRevision:(id)a6
+- (void)addRevisedTokenString:(id)string withTokenID:(TITokenID)d inDocumentRange:(_NSRange)range toRevision:(id)revision
 {
-  location = a5.location;
-  v9 = a6;
-  v10 = a3;
+  location = range.location;
+  revisionCopy = revision;
+  stringCopy = string;
   v12 = objc_alloc_init(TIRevisionHistoryToken);
-  [(TIRevisionHistoryToken *)v12 setTokenInputString:v10];
-  [(TIRevisionHistoryToken *)v12 setTokenID:a4];
-  -[TIRevisionHistoryToken setOffset:](v12, "setOffset:", location - [v9 revisedDocumentLocation]);
-  [(TIRevisionHistoryToken *)v12 setUserTyping:v10];
+  [(TIRevisionHistoryToken *)v12 setTokenInputString:stringCopy];
+  [(TIRevisionHistoryToken *)v12 setTokenID:d];
+  -[TIRevisionHistoryToken setOffset:](v12, "setOffset:", location - [revisionCopy revisedDocumentLocation]);
+  [(TIRevisionHistoryToken *)v12 setUserTyping:stringCopy];
 
-  v11 = [v9 branchTokens];
+  branchTokens = [revisionCopy branchTokens];
 
-  [v11 addObject:v12];
+  [branchTokens addObject:v12];
 }
 
-- (BOOL)validateTokenizationForRevisedDocumentRange:(_NSRange)a3 andTokenID:(TITokenID)a4 forRevision:(id)a5
+- (BOOL)validateTokenizationForRevisedDocumentRange:(_NSRange)range andTokenID:(TITokenID)d forRevision:(id)revision
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a5;
-  v10 = [v9 originalIterator];
+  length = range.length;
+  location = range.location;
+  revisionCopy = revision;
+  originalIterator = [revisionCopy originalIterator];
   v12 = v11;
-  if (![(TIRevisionHistory *)self shouldValidateOriginalIterator:v10 withRevisedDocumentRange:v11 forRevision:location, length, v9])
+  if (![(TIRevisionHistory *)self shouldValidateOriginalIterator:originalIterator withRevisedDocumentRange:v11 forRevision:location, length, revisionCopy])
   {
 LABEL_18:
     v19 = 0;
@@ -1249,30 +1249,30 @@ LABEL_18:
 
   while (1)
   {
-    v13 = [v9 originalSelectedTokenRange];
-    v15 = v10 < v13 || v10 - v13 >= v14;
+    originalSelectedTokenRange = [revisionCopy originalSelectedTokenRange];
+    v15 = originalIterator < originalSelectedTokenRange || originalIterator - originalSelectedTokenRange >= v14;
     v16 = !v15;
-    if (v15 && [(TIRevisionHistory *)self originalIterator:v10 matchesRevisedDocumentRange:v12 andTokenID:location, length, a4])
+    if (v15 && [(TIRevisionHistory *)self originalIterator:originalIterator matchesRevisedDocumentRange:v12 andTokenID:location, length, d])
     {
       break;
     }
 
-    [v9 setMergedTokenIndex:0x7FFFFFFFFFFFFFFFLL];
-    if ([v9 branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
+    [revisionCopy setMergedTokenIndex:0x7FFFFFFFFFFFFFFFLL];
+    if ([revisionCopy branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v9 setBranchedTokenIndex:v10];
+      [revisionCopy setBranchedTokenIndex:originalIterator];
     }
 
     if (v16)
     {
-      ++v10;
+      ++originalIterator;
 LABEL_16:
-      [v9 setOriginalIterator:{v10, v12}];
+      [revisionCopy setOriginalIterator:{originalIterator, v12}];
       goto LABEL_17;
     }
 
-    v17 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:v10, v12];
-    v10 = [(TIRevisionHistory *)self nextTokenIterator:v10, v12];
+    v17 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:originalIterator, v12];
+    originalIterator = [(TIRevisionHistory *)self nextTokenIterator:originalIterator, v12];
     v12 = v18;
     if (v17 < location + length)
     {
@@ -1280,66 +1280,66 @@ LABEL_16:
     }
 
 LABEL_17:
-    if (![(TIRevisionHistory *)self shouldValidateOriginalIterator:v10 withRevisedDocumentRange:v12 forRevision:location, length, v9])
+    if (![(TIRevisionHistory *)self shouldValidateOriginalIterator:originalIterator withRevisedDocumentRange:v12 forRevision:location, length, revisionCopy])
     {
       goto LABEL_18;
     }
   }
 
-  v21 = -[TIRevisionHistory resetTokenAtIterator:withRange:fromDocumentLocation:](self, "resetTokenAtIterator:withRange:fromDocumentLocation:", v10, v12, location, length, [v9 revisedDocumentLocation]);
+  v21 = -[TIRevisionHistory resetTokenAtIterator:withRange:fromDocumentLocation:](self, "resetTokenAtIterator:withRange:fromDocumentLocation:", originalIterator, v12, location, length, [revisionCopy revisedDocumentLocation]);
   v23 = v22;
-  if ([v9 mergedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([revisionCopy mergedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = [v9 originalSelectedTokenRange];
-    if (v21 >= v24 + v25)
+    originalSelectedTokenRange2 = [revisionCopy originalSelectedTokenRange];
+    if (v21 >= originalSelectedTokenRange2 + v25)
     {
       if (length)
       {
-        [v9 setMergedTokenIndex:v21];
-        if ([v9 branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
+        [revisionCopy setMergedTokenIndex:v21];
+        if ([revisionCopy branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v9 setBranchedTokenIndex:{objc_msgSend(v9, "mergedTokenIndex")}];
+          [revisionCopy setBranchedTokenIndex:{objc_msgSend(revisionCopy, "mergedTokenIndex")}];
         }
       }
     }
   }
 
   v26 = [(TIRevisionHistory *)self nextTokenIterator:v21, v23];
-  [v9 setOriginalIterator:{v26, v27}];
+  [revisionCopy setOriginalIterator:{v26, v27}];
   v19 = 1;
 LABEL_19:
 
   return v19;
 }
 
-- (_TIRevisionHistoryTokenIterator)resetTokenAtIterator:(_TIRevisionHistoryTokenIterator)a3 withRange:(_NSRange)a4 fromDocumentLocation:(unint64_t)a5
+- (_TIRevisionHistoryTokenIterator)resetTokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator withRange:(_NSRange)range fromDocumentLocation:(unint64_t)location
 {
-  location = a4.location;
-  tokenIndex = a3.tokenIndex;
-  v8 = [(TIRevisionHistory *)self tokenAtIterator:a3.tokenIndex, a3.documentLocation, a4.location, a4.length];
-  [v8 setOffset:location - a5];
+  location = range.location;
+  tokenIndex = iterator.tokenIndex;
+  v8 = [(TIRevisionHistory *)self tokenAtIterator:iterator.tokenIndex, iterator.documentLocation, range.location, range.length];
+  [v8 setOffset:location - location];
 
   v9 = tokenIndex;
-  v10 = a5;
-  result.documentLocation = v10;
+  locationCopy = location;
+  result.documentLocation = locationCopy;
   result.tokenIndex = v9;
   return result;
 }
 
-- (BOOL)shouldValidateOriginalIterator:(_TIRevisionHistoryTokenIterator)a3 withRevisedDocumentRange:(_NSRange)a4 forRevision:(id)a5
+- (BOOL)shouldValidateOriginalIterator:(_TIRevisionHistoryTokenIterator)iterator withRevisedDocumentRange:(_NSRange)range forRevision:(id)revision
 {
-  location = a4.location;
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v9 = a5;
-  v10 = [v9 originalSelectedTokenRange];
-  if (tokenIndex >= v10 && tokenIndex - v10 < v11)
+  location = range.location;
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  revisionCopy = revision;
+  originalSelectedTokenRange = [revisionCopy originalSelectedTokenRange];
+  if (tokenIndex >= originalSelectedTokenRange && tokenIndex - originalSelectedTokenRange < v11)
   {
     v13 = 1;
     goto LABEL_12;
   }
 
-  if ([v9 branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([revisionCopy branchedTokenIndex] == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (documentLocation > location)
     {
@@ -1348,15 +1348,15 @@ LABEL_19:
     }
 
 LABEL_11:
-    v16 = [(TIRevisionHistory *)self tokenization];
-    v13 = tokenIndex < [v16 count];
+    tokenization = [(TIRevisionHistory *)self tokenization];
+    v13 = tokenIndex < [tokenization count];
 
     goto LABEL_12;
   }
 
-  v14 = [(TIRevisionHistory *)self selectedRange];
+  selectedRange = [(TIRevisionHistory *)self selectedRange];
   v13 = 0;
-  if (location >= v14 + v15 && documentLocation <= location)
+  if (location >= selectedRange + v15 && documentLocation <= location)
   {
     goto LABEL_11;
   }
@@ -1366,27 +1366,27 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)originalIterator:(_TIRevisionHistoryTokenIterator)a3 matchesRevisedDocumentRange:(_NSRange)a4 andTokenID:(TITokenID)a5
+- (BOOL)originalIterator:(_TIRevisionHistoryTokenIterator)iterator matchesRevisedDocumentRange:(_NSRange)range andTokenID:(TITokenID)d
 {
-  length = a4.length;
-  location = a4.location;
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v11 = [(TIRevisionHistory *)self tokenization];
-  v12 = [v11 count];
+  length = range.length;
+  location = range.location;
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v12 = [tokenization count];
 
   if (tokenIndex >= v12)
   {
     return 0;
   }
 
-  v13 = [(TIRevisionHistory *)self tokenization];
-  v14 = [v13 objectAtIndex:tokenIndex];
+  tokenization2 = [(TIRevisionHistory *)self tokenization];
+  v14 = [tokenization2 objectAtIndex:tokenIndex];
 
-  if ((!HIDWORD(*&a5) || [v14 tokenID] == a5) && objc_msgSend(v14, "offset") + documentLocation == location)
+  if ((!HIDWORD(*&d) || [v14 tokenID] == d) && objc_msgSend(v14, "offset") + documentLocation == location)
   {
-    v15 = [v14 tokenInputString];
-    v16 = [v15 length] == length;
+    tokenInputString = [v14 tokenInputString];
+    v16 = [tokenInputString length] == length;
   }
 
   else
@@ -1397,56 +1397,56 @@ LABEL_12:
   return v16;
 }
 
-- (void)adjustTokenOffsetAfterDeletedTokenRange:(_NSRange)a3 withDeletedCharacterCount:(unint64_t)a4
+- (void)adjustTokenOffsetAfterDeletedTokenRange:(_NSRange)range withDeletedCharacterCount:(unint64_t)count
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a3.location + a3.length;
-  v9 = [(TIRevisionHistory *)self tokenization];
-  v10 = [v9 count];
+  length = range.length;
+  location = range.location;
+  v8 = range.location + range.length;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v10 = [tokenization count];
 
   if (v8 < v10)
   {
     for (i = 0; length; --length)
     {
-      v12 = [(TIRevisionHistory *)self tokenization];
-      v13 = [v12 objectAtIndex:location];
+      tokenization2 = [(TIRevisionHistory *)self tokenization];
+      v13 = [tokenization2 objectAtIndex:location];
 
-      v14 = [v13 offset];
-      v15 = [v13 tokenInputString];
-      i += v14 + [v15 length];
+      offset = [v13 offset];
+      tokenInputString = [v13 tokenInputString];
+      i += offset + [tokenInputString length];
 
       ++location;
     }
 
-    v16 = [(TIRevisionHistory *)self tokenization];
-    v19 = [v16 objectAtIndex:v8];
+    tokenization3 = [(TIRevisionHistory *)self tokenization];
+    v19 = [tokenization3 objectAtIndex:v8];
 
-    v17 = [v19 offset];
+    offset2 = [v19 offset];
     [(TIRevisionHistory *)self selectedRange];
-    [v19 setOffset:i - a4 + v17 + v18];
+    [v19 setOffset:i - count + offset2 + v18];
   }
 }
 
-- (unint64_t)tokenizeDocumentTextInRange:(_NSRange)a3 withTokenHandler:(id)a4
+- (unint64_t)tokenizeDocumentTextInRange:(_NSRange)range withTokenHandler:(id)handler
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
+  length = range.length;
+  location = range.location;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(TIRevisionHistory *)self documentText];
+  documentText = [(TIRevisionHistory *)self documentText];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__TIRevisionHistory_tokenizeDocumentTextInRange_withTokenHandler___block_invoke;
   v12[3] = &unk_278730D28;
   v12[4] = self;
-  v13 = v7;
+  v13 = handlerCopy;
   v14 = &v15;
-  v9 = v7;
-  [v8 enumerateSubstringsInRange:location options:length usingBlock:{514, v12}];
+  v9 = handlerCopy;
+  [documentText enumerateSubstringsInRange:location options:length usingBlock:{514, v12}];
 
   v10 = v16[3];
   _Block_object_dispose(&v15, 8);
@@ -1508,16 +1508,16 @@ void __66__TIRevisionHistory_tokenizeDocumentTextInRange_withTokenHandler___bloc
   v13 = 0;
   v14 = &v13;
   v15 = 0x3010000000;
-  v17 = 0;
+  currentTokenIterator = 0;
   v18 = 0;
   v16 = "";
-  v17 = [(TIRevisionHistory *)self currentTokenIterator];
+  currentTokenIterator = [(TIRevisionHistory *)self currentTokenIterator];
   v18 = v3;
   if ([(TIRevisionHistory *)self selectedRange])
   {
-    v4 = [(TIRevisionHistory *)self documentText];
-    v5 = [(TIRevisionHistory *)self selectedRange];
-    v7 = [v4 _UTF8SizeOfRange:{v5, v6}];
+    documentText = [(TIRevisionHistory *)self documentText];
+    selectedRange = [(TIRevisionHistory *)self selectedRange];
+    v7 = [documentText _UTF8SizeOfRange:{selectedRange, v6}];
 
     if (v7)
     {
@@ -1570,17 +1570,17 @@ uint64_t __49__TIRevisionHistory_popSelectedTextFromTokenizer__block_invoke(uint
   return result;
 }
 
-- (id)nonEmptyTokensInRange:(_NSRange)a3
+- (id)nonEmptyTokensInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  for (i = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3.length]; length; --length)
+  length = range.length;
+  location = range.location;
+  for (i = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:range.length]; length; --length)
   {
-    v7 = [(TIRevisionHistory *)self tokenization];
-    v8 = [v7 objectAtIndex:location];
+    tokenization = [(TIRevisionHistory *)self tokenization];
+    v8 = [tokenization objectAtIndex:location];
 
-    v9 = [v8 tokenInputString];
-    v10 = [v9 length];
+    tokenInputString = [v8 tokenInputString];
+    v10 = [tokenInputString length];
 
     if (v10)
     {
@@ -1593,12 +1593,12 @@ uint64_t __49__TIRevisionHistory_popSelectedTextFromTokenizer__block_invoke(uint
   return i;
 }
 
-- (_NSRange)selectedTokenRangeWithIterator:(_TIRevisionHistoryTokenIterator)a3
+- (_NSRange)selectedTokenRangeWithIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v6 = [(TIRevisionHistory *)self tokenization];
-  if (tokenIndex >= [v6 count])
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  if (tokenIndex >= [tokenization count])
   {
     v7 = 0;
     v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1613,20 +1613,20 @@ LABEL_13:
     v8 = 0x7FFFFFFFFFFFFFFFLL;
     while (1)
     {
-      v9 = [(TIRevisionHistory *)self selectedRange];
-      v11 = v9 + v10;
+      selectedRange = [(TIRevisionHistory *)self selectedRange];
+      v11 = selectedRange + v10;
 
       if (documentLocation >= v11)
       {
         break;
       }
 
-      v12 = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:tokenIndex, documentLocation];
-      v14 = v12;
-      if (v8 != 0x7FFFFFFFFFFFFFFFLL || (v15 = 0x7FFFFFFFFFFFFFFFLL, v12 + v13 > [(TIRevisionHistory *)self selectedRange]) && (v8 = tokenIndex, tokenIndex != 0x7FFFFFFFFFFFFFFFLL))
+      documentLocation = [(TIRevisionHistory *)self documentRangeOfTokenAtIterator:tokenIndex, documentLocation];
+      v14 = documentLocation;
+      if (v8 != 0x7FFFFFFFFFFFFFFFLL || (v15 = 0x7FFFFFFFFFFFFFFFLL, documentLocation + v13 > [(TIRevisionHistory *)self selectedRange]) && (v8 = tokenIndex, tokenIndex != 0x7FFFFFFFFFFFFFFFLL))
       {
-        v16 = [(TIRevisionHistory *)self selectedRange];
-        if (v14 < v16 + v17)
+        selectedRange2 = [(TIRevisionHistory *)self selectedRange];
+        if (v14 < selectedRange2 + v17)
         {
           ++v7;
         }
@@ -1636,9 +1636,9 @@ LABEL_13:
 
       tokenIndex = [(TIRevisionHistory *)self nextTokenIterator:tokenIndex, documentLocation];
       documentLocation = v18;
-      v6 = [(TIRevisionHistory *)self tokenization];
+      tokenization = [(TIRevisionHistory *)self tokenization];
       v8 = v15;
-      if (tokenIndex >= [v6 count])
+      if (tokenIndex >= [tokenization count])
       {
         goto LABEL_13;
       }
@@ -1661,142 +1661,142 @@ LABEL_13:
   return result;
 }
 
-- (_TIRevisionHistoryTokenIterator)previousTokenIterator:(_TIRevisionHistoryTokenIterator)a3
+- (_TIRevisionHistoryTokenIterator)previousTokenIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v5 = [(TIRevisionHistory *)self tokenization];
-  v6 = [v5 objectAtIndex:--tokenIndex];
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v6 = [tokenization objectAtIndex:--tokenIndex];
 
-  v7 = [v6 offset];
-  v8 = [v6 tokenInputString];
-  v9 = [v8 length];
+  offset = [v6 offset];
+  tokenInputString = [v6 tokenInputString];
+  v9 = [tokenInputString length];
 
-  v10 = documentLocation - v7 - v9;
+  v10 = documentLocation - offset - v9;
   v11 = tokenIndex;
   result.documentLocation = v10;
   result.tokenIndex = v11;
   return result;
 }
 
-- (_TIRevisionHistoryTokenIterator)nextTokenIterator:(_TIRevisionHistoryTokenIterator)a3
+- (_TIRevisionHistoryTokenIterator)nextTokenIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v5 = [(TIRevisionHistory *)self tokenization];
-  v6 = [v5 objectAtIndex:tokenIndex];
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v6 = [tokenization objectAtIndex:tokenIndex];
 
-  v7 = [v6 offset];
-  v8 = [v6 tokenInputString];
-  v9 = [v8 length];
+  offset = [v6 offset];
+  tokenInputString = [v6 tokenInputString];
+  v9 = [tokenInputString length];
 
   v10 = tokenIndex + 1;
-  v11 = v7 + documentLocation + v9;
+  v11 = offset + documentLocation + v9;
   result.documentLocation = v11;
   result.tokenIndex = v10;
   return result;
 }
 
-- (_NSRange)documentRangeOfTokenAtIterator:(_TIRevisionHistoryTokenIterator)a3
+- (_NSRange)documentRangeOfTokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
-  v5 = [(TIRevisionHistory *)self tokenization];
-  v6 = [v5 objectAtIndex:tokenIndex];
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v6 = [tokenization objectAtIndex:tokenIndex];
 
-  v7 = [v6 offset];
-  v8 = [v6 tokenInputString];
-  v9 = [v8 length];
+  offset = [v6 offset];
+  tokenInputString = [v6 tokenInputString];
+  v9 = [tokenInputString length];
 
-  v10 = v7 + documentLocation;
+  v10 = offset + documentLocation;
   v11 = v9;
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (id)tokenAtIterator:(_TIRevisionHistoryTokenIterator)a3
+- (id)tokenAtIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  tokenIndex = a3.tokenIndex;
-  v4 = [(TIRevisionHistory *)self tokenization:a3.tokenIndex];
+  tokenIndex = iterator.tokenIndex;
+  v4 = [(TIRevisionHistory *)self tokenization:iterator.tokenIndex];
   v5 = [v4 objectAtIndex:tokenIndex];
 
   return v5;
 }
 
-- (void)collectPFLTelemetryForTokenAtIndex:(unint64_t)a3
+- (void)collectPFLTelemetryForTokenAtIndex:(unint64_t)index
 {
-  v5 = [(TIRevisionHistory *)self tokenization];
-  v15 = [v5 objectAtIndex:a3];
+  tokenization = [(TIRevisionHistory *)self tokenization];
+  v15 = [tokenization objectAtIndex:index];
 
-  v6 = [v15 tokenID];
+  tokenID = [v15 tokenID];
   v7 = v15;
-  if (HIDWORD(v6) == 2)
+  if (HIDWORD(tokenID) == 2)
   {
-    v6 = [v15 isAccepted];
+    tokenID = [v15 isAccepted];
     v7 = v15;
-    if ((v6 & 1) == 0)
+    if ((tokenID & 1) == 0)
     {
-      v8 = [(TIRevisionHistory *)self tokenization];
-      v9 = [v8 count];
+      tokenization2 = [(TIRevisionHistory *)self tokenization];
+      v9 = [tokenization2 count];
 
       v10 = 0;
       do
       {
-        if (a3 >= v9)
+        if (index >= v9)
         {
           break;
         }
 
         ++v10;
-        v11 = [(TIRevisionHistory *)self tokenization];
-        v12 = [v11 objectAtIndex:a3];
+        tokenization3 = [(TIRevisionHistory *)self tokenization];
+        v12 = [tokenization3 objectAtIndex:index];
 
-        v13 = [v12 tokenID];
-        --a3;
+        tokenID2 = [v12 tokenID];
+        --index;
       }
 
-      while (HIDWORD(v13) != 1);
+      while (HIDWORD(tokenID2) != 1);
       v7 = v15;
       if (v10 >= 5)
       {
-        v14 = [(TIRevisionHistory *)self delegate];
-        [v14 incrementUsageTrackingKeyForAppWithIsSentence:1];
+        delegate = [(TIRevisionHistory *)self delegate];
+        [delegate incrementUsageTrackingKeyForAppWithIsSentence:1];
 
         v7 = v15;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](tokenID, v7);
 }
 
-- (void)migrateUserTypingFromDeletedTokens:(id)a3 toInsertedTokens:(id)a4 withUsageLearningMask:(unsigned int)a5 usageTrackingMask:(unsigned int)a6
+- (void)migrateUserTypingFromDeletedTokens:(id)tokens toInsertedTokens:(id)insertedTokens withUsageLearningMask:(unsigned int)mask usageTrackingMask:(unsigned int)trackingMask
 {
-  v31 = a5;
-  v32 = a3;
-  v7 = a4;
-  if ([v7 count])
+  maskCopy = mask;
+  tokensCopy = tokens;
+  insertedTokensCopy = insertedTokens;
+  if ([insertedTokensCopy count])
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v7 objectAtIndex:v8];
-      if (v8 >= [v32 count])
+      v9 = [insertedTokensCopy objectAtIndex:v8];
+      if (v8 >= [tokensCopy count])
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = [v32 objectAtIndex:v8];
+        v10 = [tokensCopy objectAtIndex:v8];
       }
 
-      v11 = [v10 userTyping];
-      v12 = v11;
-      if (v11)
+      userTyping = [v10 userTyping];
+      v12 = userTyping;
+      if (userTyping)
       {
-        v13 = v11;
+        v13 = userTyping;
       }
 
       else
@@ -1806,14 +1806,14 @@ LABEL_13:
 
       [v9 setUserTyping:v13];
 
-      v14 = [v7 lastObject];
-      if (v9 != v14)
+      lastObject = [insertedTokensCopy lastObject];
+      if (v9 != lastObject)
       {
         goto LABEL_18;
       }
 
-      v15 = [v7 count];
-      v16 = [v32 count];
+      v15 = [insertedTokensCopy count];
+      v16 = [tokensCopy count];
 
       if (v15 < v16)
       {
@@ -1823,44 +1823,44 @@ LABEL_13:
 LABEL_19:
       [v9 setUsageLearningMask:{objc_msgSend(v10, "usageLearningMask")}];
       [v9 setUsageTrackingMask:{objc_msgSend(v10, "usageTrackingMask")}];
-      v24 = [v9 tokenInputString];
-      v25 = [v9 userTyping];
-      v26 = [v24 isEqualToString:v25];
+      tokenInputString = [v9 tokenInputString];
+      userTyping2 = [v9 userTyping];
+      v26 = [tokenInputString isEqualToString:userTyping2];
 
       if ((v26 & 1) == 0)
       {
-        [v9 setUsageLearningMask:{objc_msgSend(v9, "usageLearningMask") | v31 & 5}];
+        [v9 setUsageLearningMask:{objc_msgSend(v9, "usageLearningMask") | maskCopy & 5}];
       }
 
       if (!v8)
       {
-        if ((v31 & 2) != 0)
+        if ((maskCopy & 2) != 0)
         {
           [v9 setUsageLearningMask:{objc_msgSend(v9, "usageLearningMask") | 2}];
         }
 
-        v27 = [v9 tokenInputString];
-        v28 = [v10 tokenInputString];
-        v29 = [v27 isEqualToString:v28];
+        tokenInputString2 = [v9 tokenInputString];
+        tokenInputString3 = [v10 tokenInputString];
+        v29 = [tokenInputString2 isEqualToString:tokenInputString3];
 
         if ((v29 & 1) == 0)
         {
-          [v9 setUsageTrackingMask:a6];
+          [v9 setUsageTrackingMask:trackingMask];
         }
       }
 
-      if (++v8 >= [v7 count])
+      if (++v8 >= [insertedTokensCopy count])
       {
         goto LABEL_27;
       }
     }
 
     v17 = objc_alloc(MEMORY[0x277CCAB68]);
-    v18 = [v10 userTyping];
-    v19 = v18;
-    if (v18)
+    userTyping3 = [v10 userTyping];
+    v19 = userTyping3;
+    if (userTyping3)
     {
-      v20 = v18;
+      v20 = userTyping3;
     }
 
     else
@@ -1868,16 +1868,16 @@ LABEL_19:
       v20 = &stru_283FDFAF8;
     }
 
-    v14 = [v17 initWithString:v20];
+    lastObject = [v17 initWithString:v20];
 
-    for (i = v8 + 1; i < [v32 count]; ++i)
+    for (i = v8 + 1; i < [tokensCopy count]; ++i)
     {
-      v22 = [v32 objectAtIndex:i];
-      v23 = [v22 userTyping];
-      [v14 appendFormat:@" %@", v23];
+      v22 = [tokensCopy objectAtIndex:i];
+      userTyping4 = [v22 userTyping];
+      [lastObject appendFormat:@" %@", userTyping4];
     }
 
-    [v9 setUserTyping:v14];
+    [v9 setUserTyping:lastObject];
 LABEL_18:
 
     goto LABEL_19;
@@ -1886,20 +1886,20 @@ LABEL_18:
 LABEL_27:
 }
 
-- (void)acceptTokensInRange:(_NSRange)a3
+- (void)acceptTokensInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     v6 = [(TIRevisionHistory *)self contextForTokenAtIndex:?];
     v41 = *MEMORY[0x277D6FBE0];
     v42 = *MEMORY[0x277D6FBD8];
     v45 = v6;
     while (1)
     {
-      v7 = [(TIRevisionHistory *)self tokenization];
-      v8 = [v7 objectAtIndex:location];
+      tokenization = [(TIRevisionHistory *)self tokenization];
+      v8 = [tokenization objectAtIndex:location];
 
       if ([v8 tokenID] >> 32)
       {
@@ -1908,16 +1908,16 @@ LABEL_27:
 
       else
       {
-        v9 = [v8 tokenInputString];
-        v10 = [v9 length];
+        tokenInputString = [v8 tokenInputString];
+        v10 = [tokenInputString length];
 
         if (v10)
         {
           v50 = 0;
-          v11 = [(TIRevisionHistory *)self delegate];
-          v12 = [v8 tokenInputString];
+          delegate = [(TIRevisionHistory *)self delegate];
+          tokenInputString2 = [v8 tokenInputString];
           v49 = 0;
-          v13 = [v11 findTokenIDForWord:v12 contextTokens:v6 tokenLookupMode:22 surfaceFormPtr:&v49 hasCaseInsensitiveStaticVariant:&v50];
+          v13 = [delegate findTokenIDForWord:tokenInputString2 contextTokens:v6 tokenLookupMode:22 surfaceFormPtr:&v49 hasCaseInsensitiveStaticVariant:&v50];
           v14 = v49;
 
           v15 = v50;
@@ -1929,22 +1929,22 @@ LABEL_27:
           else
           {
             v47 = v15;
-            v29 = [(TIRevisionHistory *)self delegate];
-            v30 = [v8 tokenInputString];
+            delegate2 = [(TIRevisionHistory *)self delegate];
+            tokenInputString3 = [v8 tokenInputString];
             v48 = v14;
-            v31 = [v29 addWord:v30 contextTokens:v6 surfaceFormPtr:&v48];
+            v31 = [delegate2 addWord:tokenInputString3 contextTokens:v6 surfaceFormPtr:&v48];
             v32 = v48;
 
             [v8 setTokenID:v31];
-            v33 = [(TIRevisionHistory *)self lastRejectedToken];
-            if (v33)
+            lastRejectedToken = [(TIRevisionHistory *)self lastRejectedToken];
+            if (lastRejectedToken)
             {
-              v34 = v33;
+              v34 = lastRejectedToken;
               v44 = v32;
-              v35 = [(TIRevisionHistory *)self lastRejectedToken];
-              v36 = [v35 tokenInputString];
-              v37 = [v8 tokenInputString];
-              v38 = [v36 isEqualToString:v37];
+              lastRejectedToken2 = [(TIRevisionHistory *)self lastRejectedToken];
+              tokenInputString4 = [lastRejectedToken2 tokenInputString];
+              tokenInputString5 = [v8 tokenInputString];
+              v38 = [tokenInputString4 isEqualToString:tokenInputString5];
               v39 = v50;
 
               if ((v38 & 1) == 0)
@@ -1952,8 +1952,8 @@ LABEL_27:
                 v15 = v47;
                 if ((v39 & 1) == 0)
                 {
-                  v40 = [(TIRevisionHistory *)self delegate];
-                  [v40 incrementUsageTrackingKey:v41];
+                  delegate3 = [(TIRevisionHistory *)self delegate];
+                  [delegate3 incrementUsageTrackingKey:v41];
                 }
 
                 v14 = v44;
@@ -1979,20 +1979,20 @@ LABEL_8:
 
           else
           {
-            v18 = [v8 tokenInputString];
-            [v8 setTokenDictionaryString:v18];
+            tokenInputString6 = [v8 tokenInputString];
+            [v8 setTokenDictionaryString:tokenInputString6];
           }
 
-          v19 = [(TIRevisionHistory *)self lastRejectedToken];
-          if (v19)
+          lastRejectedToken3 = [(TIRevisionHistory *)self lastRejectedToken];
+          if (lastRejectedToken3)
           {
-            v20 = v19;
-            v21 = [(TIRevisionHistory *)self lastRejectedToken];
-            v22 = [v21 tokenInputString];
+            v20 = lastRejectedToken3;
+            lastRejectedToken4 = [(TIRevisionHistory *)self lastRejectedToken];
+            tokenInputString7 = [lastRejectedToken4 tokenInputString];
             [v8 tokenInputString];
             v23 = v14;
             v25 = v24 = v15;
-            v46 = [v22 isEqualToString:v25];
+            v46 = [tokenInputString7 isEqualToString:v25];
             v43 = v50;
 
             v15 = v24;
@@ -2000,8 +2000,8 @@ LABEL_8:
 
             if ((v46 & 1) == 0 && (v43 & 1) == 0)
             {
-              v26 = [(TIRevisionHistory *)self delegate];
-              [v26 incrementUsageTrackingKey:v42];
+              delegate4 = [(TIRevisionHistory *)self delegate];
+              [delegate4 incrementUsageTrackingKey:v42];
             }
           }
 
@@ -2013,9 +2013,9 @@ LABEL_8:
 
       [(TIRevisionHistory *)self collectPFLTelemetryForTokenAtIndex:location];
       [(TIRevisionHistory *)self acceptToken:v8 contextTokens:v6 saveToDifferentialPrivacy:v10];
-      v27 = [v8 tokenID];
-      v28 = [v8 tokenInputString];
-      [v6 appendToken:v27 string:v28];
+      tokenID = [v8 tokenID];
+      tokenInputString8 = [v8 tokenInputString];
+      [v6 appendToken:tokenID string:tokenInputString8];
 
       ++location;
       if (!--length)
@@ -2027,17 +2027,17 @@ LABEL_8:
   }
 }
 
-- (id)contextForTokenAtIndex:(unint64_t)a3
+- (id)contextForTokenAtIndex:(unint64_t)index
 {
   v5 = objc_alloc_init(TIContextTokens);
-  if (a3)
+  if (index)
   {
     v6 = 0;
-    v7 = a3 - 1;
+    v7 = index - 1;
     while (1)
     {
-      v8 = [(TIRevisionHistory *)self tokenization];
-      v9 = [v8 objectAtIndex:v7];
+      tokenization = [(TIRevisionHistory *)self tokenization];
+      v9 = [tokenization objectAtIndex:v7];
 
       if ([v9 tokenID] >> 32 == 1 && ++v6 >= 3)
       {
@@ -2057,111 +2057,111 @@ LABEL_6:
     v7 = 0;
   }
 
-  if (v7 < a3)
+  if (v7 < index)
   {
     do
     {
-      v10 = [(TIRevisionHistory *)self tokenization];
-      v11 = [v10 objectAtIndex:v7];
+      tokenization2 = [(TIRevisionHistory *)self tokenization];
+      v11 = [tokenization2 objectAtIndex:v7];
 
-      v12 = [v11 tokenID];
-      v13 = [v11 tokenInputString];
-      [(TIContextTokens *)v5 appendToken:v12 string:v13];
+      tokenID = [v11 tokenID];
+      tokenInputString = [v11 tokenInputString];
+      [(TIContextTokens *)v5 appendToken:tokenID string:tokenInputString];
 
       ++v7;
     }
 
-    while (a3 != v7);
+    while (index != v7);
   }
 
-  v14 = [(TIRevisionHistory *)self delegate];
-  [v14 fillReversedConversationHistoryInContext:v5];
+  delegate = [(TIRevisionHistory *)self delegate];
+  [delegate fillReversedConversationHistoryInContext:v5];
 
   return v5;
 }
 
-- (void)rejectToken:(id)a3 contextTokens:(id)a4 negativeLearningHint:(int)a5 withRevisedToken:(id)a6
+- (void)rejectToken:(id)token contextTokens:(id)tokens negativeLearningHint:(int)hint withRevisedToken:(id)revisedToken
 {
-  v27 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v27 isAccepted])
+  tokenCopy = token;
+  tokensCopy = tokens;
+  revisedTokenCopy = revisedToken;
+  if ([tokenCopy isAccepted])
   {
-    v12 = [v27 tokenInputString];
-    v13 = [v11 tokenInputString];
-    if (![v12 isEqualToString:v13])
+    tokenInputString = [tokenCopy tokenInputString];
+    tokenInputString2 = [revisedTokenCopy tokenInputString];
+    if (![tokenInputString isEqualToString:tokenInputString2])
     {
-      v14 = [v27 tokenInputString];
-      if ([v14 length])
+      tokenInputString3 = [tokenCopy tokenInputString];
+      if ([tokenInputString3 length])
       {
-        v15 = [v27 tokenInputString];
-        v16 = [v15 _containsSymbolsAndPunctuationOnly];
+        tokenInputString4 = [tokenCopy tokenInputString];
+        _containsSymbolsAndPunctuationOnly = [tokenInputString4 _containsSymbolsAndPunctuationOnly];
 
-        if (v16)
+        if (_containsSymbolsAndPunctuationOnly)
         {
 LABEL_13:
-          v21 = [(TIRevisionHistory *)self delegate];
-          if ([v21 isStringBasedModel])
+          delegate = [(TIRevisionHistory *)self delegate];
+          if ([delegate isStringBasedModel])
           {
-            [v27 tokenInputString];
+            [tokenCopy tokenInputString];
           }
 
           else
           {
-            [v27 tokenDictionaryString];
+            [tokenCopy tokenDictionaryString];
           }
-          v19 = ;
+          delegate5 = ;
 
-          v22 = [v27 tokenLatinInputString];
-          if (v22)
+          tokenLatinInputString = [tokenCopy tokenLatinInputString];
+          if (tokenLatinInputString)
           {
-            v20 = [v27 tokenLatinInputString];
+            tokenLatinInputString2 = [tokenCopy tokenLatinInputString];
           }
 
           else
           {
-            v20 = &stru_283FDFAF8;
+            tokenLatinInputString2 = &stru_283FDFAF8;
           }
 
-          v23 = [(TIRevisionHistory *)self delegate];
-          [v23 decrementLanguageModelCount:v19 latinInputString:v20 tokenID:objc_msgSend(v27 contextTokens:{"tokenID"), v10}];
+          delegate2 = [(TIRevisionHistory *)self delegate];
+          [delegate2 decrementLanguageModelCount:delegate5 latinInputString:tokenLatinInputString2 tokenID:objc_msgSend(tokenCopy contextTokens:{"tokenID"), tokensCopy}];
 
-          if (a5 && ([v27 tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
+          if (hint && ([tokenCopy tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
           {
-            v24 = [(TIRevisionHistory *)self delegate];
-            v25 = [v27 tokenInputString];
-            [v24 softLearningRegisterDeleted:v25];
+            delegate3 = [(TIRevisionHistory *)self delegate];
+            tokenInputString5 = [tokenCopy tokenInputString];
+            [delegate3 softLearningRegisterDeleted:tokenInputString5];
           }
 
-          [v27 setAccepted:0];
-          if ([v27 tokenID] >> 32 == 1)
+          [tokenCopy setAccepted:0];
+          if ([tokenCopy tokenID] >> 32 == 1)
           {
             [(TIRevisionHistory *)self setShouldReportRevisionToDP:0];
           }
 
           else
           {
-            v26 = [(TIRevisionHistory *)self lastRejectedToken];
+            lastRejectedToken = [(TIRevisionHistory *)self lastRejectedToken];
 
-            if (v26)
+            if (lastRejectedToken)
             {
               [(TIRevisionHistory *)self setShouldReportRevisionToDP:0];
             }
 
-            if (([v27 tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
+            if (([tokenCopy tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
             {
-              [(TIRevisionHistory *)self setLastRejectedToken:v27];
+              [(TIRevisionHistory *)self setLastRejectedToken:tokenCopy];
             }
           }
 
           goto LABEL_28;
         }
 
-        v17 = [(TIRevisionHistory *)self delegate];
-        [v17 incrementUsageTrackingKey:*MEMORY[0x277D6FBE8]];
+        delegate4 = [(TIRevisionHistory *)self delegate];
+        [delegate4 incrementUsageTrackingKey:*MEMORY[0x277D6FBE8]];
 
-        v12 = [(TIRevisionHistory *)self delegate];
-        [v12 incrementUsageTrackingKeyForAutocorrectionStatistic:*MEMORY[0x277D6FAD0] autocorrectionTypes:{objc_msgSend(v27, "usageTrackingMask")}];
+        tokenInputString = [(TIRevisionHistory *)self delegate];
+        [tokenInputString incrementUsageTrackingKeyForAutocorrectionStatistic:*MEMORY[0x277D6FAD0] autocorrectionTypes:{objc_msgSend(tokenCopy, "usageTrackingMask")}];
 LABEL_12:
 
         goto LABEL_13;
@@ -2171,19 +2171,19 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v18 = [v27 usageLearningMask];
-  if (a5 && (v18 & 4) != 0 && ([v27 tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
+  usageLearningMask = [tokenCopy usageLearningMask];
+  if (hint && (usageLearningMask & 4) != 0 && ([tokenCopy tokenID] - 0x1F400000000) < 0xFFFFFE0D00000000)
   {
-    v19 = [(TIRevisionHistory *)self delegate];
-    v20 = [v27 tokenInputString];
-    [v19 softLearningRegisterDeleted:v20];
+    delegate5 = [(TIRevisionHistory *)self delegate];
+    tokenLatinInputString2 = [tokenCopy tokenInputString];
+    [delegate5 softLearningRegisterDeleted:tokenLatinInputString2];
 LABEL_28:
   }
 }
 
-- (TIRevisionHistory)initWithLocale:(id)a3
+- (TIRevisionHistory)initWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v12.receiver = self;
   v12.super_class = TIRevisionHistory;
   v5 = [(TIRevisionHistory *)&v12 init];
@@ -2212,8 +2212,8 @@ LABEL_28:
 
 - (TIRevisionHistory)init
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [(TIRevisionHistory *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [(TIRevisionHistory *)self initWithLocale:currentLocale];
 
   return v4;
 }
@@ -2230,14 +2230,14 @@ LABEL_28:
   [(TIRevisionHistory *)&v3 dealloc];
 }
 
-+ (id)documentStateTrimmedToSentenceForState:(id)a3
++ (id)documentStateTrimmedToSentenceForState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 contextBeforeInput];
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  contextBeforeInput = [stateCopy contextBeforeInput];
+  v5 = contextBeforeInput;
+  if (contextBeforeInput)
   {
-    v6 = v4;
+    v6 = contextBeforeInput;
   }
 
   else
@@ -2245,11 +2245,11 @@ LABEL_28:
     v6 = &stru_283FDFAF8;
   }
 
-  v7 = [v3 selectedText];
-  v8 = v7;
-  if (v7)
+  selectedText = [stateCopy selectedText];
+  v8 = selectedText;
+  if (selectedText)
   {
-    v9 = v7;
+    v9 = selectedText;
   }
 
   else
@@ -2258,11 +2258,11 @@ LABEL_28:
   }
 
   v10 = [(__CFString *)v6 stringByAppendingString:v9];
-  v11 = [v3 contextAfterInput];
-  v12 = v11;
-  if (v11)
+  contextAfterInput = [stateCopy contextAfterInput];
+  v12 = contextAfterInput;
+  if (contextAfterInput)
   {
-    v13 = v11;
+    v13 = contextAfterInput;
   }
 
   else
@@ -2272,10 +2272,10 @@ LABEL_28:
 
   v14 = [v10 stringByAppendingString:v13];
 
-  v15 = [v3 contextBeforeInput];
-  v16 = [v15 length];
-  v17 = [v3 selectedText];
-  v18 = [v17 length];
+  contextBeforeInput2 = [stateCopy contextBeforeInput];
+  v16 = [contextBeforeInput2 length];
+  selectedText2 = [stateCopy selectedText];
+  v18 = [selectedText2 length];
 
   v38 = 0;
   v39 = &v38;
@@ -2303,9 +2303,9 @@ LABEL_28:
   [v20 enumerateSubstringsInRange:0 options:v19 usingBlock:{4, v26}];
   v21 = MEMORY[0x277D6F350];
   v22 = v39[5];
-  v23 = [v3 selectedText];
+  selectedText3 = [stateCopy selectedText];
 
-  v24 = [v21 documentStateWithContextBefore:v22 selectedText:v23 contextAfter:v33[5]];
+  v24 = [v21 documentStateWithContextBefore:v22 selectedText:selectedText3 contextAfter:v33[5]];
 
   _Block_object_dispose(&v32, 8);
   _Block_object_dispose(&v38, 8);

@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneUtilFstFST_NodeQueue
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4;
+- (BOOL)lessThanWithId:(id)id withId:(id)withId;
 @end
 
 @implementation OrgApacheLuceneUtilFstFST_NodeQueue
 
-- (BOOL)lessThanWithId:(id)a3 withId:(id)a4
+- (BOOL)lessThanWithId:(id)id withId:(id)withId
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 compareToWithId:a4] >> 31;
+  return [id compareToWithId:withId] >> 31;
 }
 
 @end

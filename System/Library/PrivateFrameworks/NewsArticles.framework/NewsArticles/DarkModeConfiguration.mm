@@ -17,7 +17,7 @@
 
 - (BOOL)isAutoDarkModeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7CFA4F4();
 
   return v3 & 1;
@@ -27,7 +27,7 @@
 {
   swift_getObjectType();
   v3 = qword_1EE0CB4D0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -44,7 +44,7 @@
 {
   swift_getObjectType();
   v3 = qword_1EE0CB4D0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -59,7 +59,7 @@
 
 - (NSDictionary)colors
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7CFA7F4();
 
   if (v3)

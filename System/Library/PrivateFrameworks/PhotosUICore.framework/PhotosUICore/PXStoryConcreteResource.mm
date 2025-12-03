@@ -1,6 +1,6 @@
 @interface PXStoryConcreteResource
-- (BOOL)isEqual:(id)a3;
-- (PXStoryConcreteResource)initWithIdentifier:(id)a3 kind:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryConcreteResource)initWithIdentifier:(id)identifier kind:(int64_t)kind;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXStoryConcreteResource *)self px_storyResourceIdentifier];
-  v3 = [v2 hash];
+  px_storyResourceIdentifier = [(PXStoryConcreteResource *)self px_storyResourceIdentifier];
+  v3 = [px_storyResourceIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -27,11 +27,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryConcreteResource *)self px_storyResourceIdentifier];
-      v7 = [(PXStoryConcreteResource *)v5 px_storyResourceIdentifier];
+      v5 = equalCopy;
+      px_storyResourceIdentifier = [(PXStoryConcreteResource *)self px_storyResourceIdentifier];
+      px_storyResourceIdentifier2 = [(PXStoryConcreteResource *)v5 px_storyResourceIdentifier];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [px_storyResourceIdentifier isEqualToString:px_storyResourceIdentifier2];
     }
 
     else
@@ -43,17 +43,17 @@
   return v8;
 }
 
-- (PXStoryConcreteResource)initWithIdentifier:(id)a3 kind:(int64_t)a4
+- (PXStoryConcreteResource)initWithIdentifier:(id)identifier kind:(int64_t)kind
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PXStoryConcreteResource;
   v7 = [(PXStoryConcreteResource *)&v13 init];
   if (v7)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      v8 = v6;
+      v8 = identifierCopy;
       identifier = v7->_identifier;
       v7->_identifier = v8;
     }
@@ -61,12 +61,12 @@
     else
     {
       identifier = [MEMORY[0x1E696AFB0] UUID];
-      v10 = [identifier UUIDString];
+      uUIDString = [identifier UUIDString];
       v11 = v7->_identifier;
-      v7->_identifier = v10;
+      v7->_identifier = uUIDString;
     }
 
-    v7->_kind = a4;
+    v7->_kind = kind;
   }
 
   return v7;

@@ -1,35 +1,35 @@
 @interface SUICVoiceSelectionVoiceCollection
-- (SUICVoiceSelectionVoiceCollection)initWithLanguageCode:(id)a3 dialectLanguageCodes:(id)a4 currentVoice:(id)a5 alternativeVoices:(id)a6;
+- (SUICVoiceSelectionVoiceCollection)initWithLanguageCode:(id)code dialectLanguageCodes:(id)codes currentVoice:(id)voice alternativeVoices:(id)voices;
 - (id)randomVoice;
 - (void)randomVoice;
 @end
 
 @implementation SUICVoiceSelectionVoiceCollection
 
-- (SUICVoiceSelectionVoiceCollection)initWithLanguageCode:(id)a3 dialectLanguageCodes:(id)a4 currentVoice:(id)a5 alternativeVoices:(id)a6
+- (SUICVoiceSelectionVoiceCollection)initWithLanguageCode:(id)code dialectLanguageCodes:(id)codes currentVoice:(id)voice alternativeVoices:(id)voices
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  codeCopy = code;
+  codesCopy = codes;
+  voiceCopy = voice;
+  voicesCopy = voices;
   v24.receiver = self;
   v24.super_class = SUICVoiceSelectionVoiceCollection;
   v14 = [(SUICVoiceSelectionVoiceCollection *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [codeCopy copy];
     languageCode = v14->_languageCode;
     v14->_languageCode = v15;
 
-    v17 = [v11 copy];
+    v17 = [codesCopy copy];
     dialectLanguageCodes = v14->_dialectLanguageCodes;
     v14->_dialectLanguageCodes = v17;
 
-    v19 = [v12 copy];
+    v19 = [voiceCopy copy];
     currentVoice = v14->_currentVoice;
     v14->_currentVoice = v19;
 
-    v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v13 copyItems:1];
+    v21 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:voicesCopy copyItems:1];
     alternativeVoices = v14->_alternativeVoices;
     v14->_alternativeVoices = v21;
   }
@@ -40,8 +40,8 @@
 - (id)randomVoice
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(NSSet *)self->_alternativeVoices allObjects];
-  v5 = [v3 arrayWithArray:v4];
+  allObjects = [(NSSet *)self->_alternativeVoices allObjects];
+  v5 = [v3 arrayWithArray:allObjects];
 
   if (self->_currentVoice)
   {
@@ -73,7 +73,7 @@
   v2 = 136315394;
   v3 = "[SUICVoiceSelectionVoiceCollection randomVoice]";
   v4 = 2112;
-  v5 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C432B000, a2, OS_LOG_TYPE_ERROR, "%s Zero voices in this collection %@", &v2, 0x16u);
 }
 

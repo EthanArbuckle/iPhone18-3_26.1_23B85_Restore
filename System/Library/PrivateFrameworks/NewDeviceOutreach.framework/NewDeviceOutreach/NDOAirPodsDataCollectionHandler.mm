@@ -1,8 +1,8 @@
 @interface NDOAirPodsDataCollectionHandler
 - (NDOAirPodsDataCollectionHandler)init;
-- (void)handleBluetoothNotificationWithCompletion:(id)a3;
-- (void)processBluetoothNotificationWithCompletion:(id)a3;
-- (void)reportAirPodsDataWithCompletion:(id)a3;
+- (void)handleBluetoothNotificationWithCompletion:(id)completion;
+- (void)processBluetoothNotificationWithCompletion:(id)completion;
+- (void)reportAirPodsDataWithCompletion:(id)completion;
 @end
 
 @implementation NDOAirPodsDataCollectionHandler
@@ -26,29 +26,29 @@
   return v2;
 }
 
-- (void)reportAirPodsDataWithCompletion:(id)a3
+- (void)reportAirPodsDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NDOLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100072564(v5, v6, v7, v8, v9, v10, v11, v12);
   }
 
-  v13 = [(NDOAirPodsDataCollectionHandler *)self bluetoothDeviceManager];
+  bluetoothDeviceManager = [(NDOAirPodsDataCollectionHandler *)self bluetoothDeviceManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000058C8;
   v15[3] = &unk_10009A5A8;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v13 getBluetoothAudioDevicesWithCompletionHandler:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [bluetoothDeviceManager getBluetoothAudioDevicesWithCompletionHandler:v15];
 }
 
-- (void)processBluetoothNotificationWithCompletion:(id)a3
+- (void)processBluetoothNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_threadLock);
   if ([(NDOAirPodsDataCollectionHandler *)self isExecuting])
   {
@@ -60,7 +60,7 @@
     }
 
     os_unfair_lock_unlock(&self->_threadLock);
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -74,7 +74,7 @@
     v6[3] = &unk_10009A5D0;
     v6[4] = self;
     objc_copyWeak(&v8, buf);
-    v7 = v4;
+    v7 = completionCopy;
     [(NDOAirPodsDataCollectionHandler *)self reportAirPodsDataWithCompletion:v6];
 
     objc_destroyWeak(&v8);
@@ -82,17 +82,17 @@
   }
 }
 
-- (void)handleBluetoothNotificationWithCompletion:(id)a3
+- (void)handleBluetoothNotificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006080;
   v7[3] = &unk_10009A5F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, v7);
 }
 

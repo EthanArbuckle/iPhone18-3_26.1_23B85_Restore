@@ -1,12 +1,12 @@
 @interface _UINotificationFeedbackGeneratorConfiguration
 + (id)privateConfiguration;
-+ (id)privateConfigurationForTypes:(id)a3;
++ (id)privateConfigurationForTypes:(id)types;
 - (BOOL)defaultEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)feedbacks;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)feedbackKeyPaths;
-- (void)setFeedbacks:(id)a3;
+- (void)setFeedbacks:(id)feedbacks;
 @end
 
 @implementation _UINotificationFeedbackGeneratorConfiguration
@@ -43,9 +43,9 @@
 {
   v6.receiver = self;
   v6.super_class = _UINotificationFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v6 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v6 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_feedbacks);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [feedbackKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
@@ -60,34 +60,34 @@
 
 + (id)privateConfiguration
 {
-  v2 = [a1 defaultConfiguration];
-  [v2 set_stats_key:@"private"];
-  [v2 setIncludePrivateEvents:1];
-  [v2 setRequiredSupportLevel:0];
+  defaultConfiguration = [self defaultConfiguration];
+  [defaultConfiguration set_stats_key:@"private"];
+  [defaultConfiguration setIncludePrivateEvents:1];
+  [defaultConfiguration setRequiredSupportLevel:0];
 
-  return v2;
+  return defaultConfiguration;
 }
 
-+ (id)privateConfigurationForTypes:(id)a3
++ (id)privateConfigurationForTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __78___UINotificationFeedbackGeneratorConfiguration_privateConfigurationForTypes___block_invoke;
   v8[3] = &unk_1E71070C8;
-  v9 = v4;
-  v5 = v4;
-  v6 = [a1 _configurationWithKey:@"private" requiredSupportLevel:0 preparationBlock:v8];
+  v9 = typesCopy;
+  v5 = typesCopy;
+  v6 = [self _configurationWithKey:@"private" requiredSupportLevel:0 preparationBlock:v8];
   [v6 setIncludePrivateEvents:1];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = _UINotificationFeedbackGeneratorConfiguration;
-  v4 = [(_UIFeedbackGeneratorConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(_UIFeedbackGeneratorConfiguration *)&v8 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_feedbacks copy];
   v6 = v4[12];
   v4[12] = v5;
@@ -96,14 +96,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = _UINotificationFeedbackGeneratorConfiguration;
-  if ([(_UIFeedbackGeneratorConfiguration *)&v13 isEqual:v4])
+  if ([(_UIFeedbackGeneratorConfiguration *)&v13 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[12];
     v7 = self->_feedbacks;
     v8 = v6;
@@ -145,12 +145,12 @@
   return v11;
 }
 
-- (void)setFeedbacks:(id)a3
+- (void)setFeedbacks:(id)feedbacks
 {
-  v4 = a3;
+  feedbacksCopy = feedbacks;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   feedbacks = self->_feedbacks;
-  self->_feedbacks = v4;
+  self->_feedbacks = feedbacksCopy;
 }
 
 @end

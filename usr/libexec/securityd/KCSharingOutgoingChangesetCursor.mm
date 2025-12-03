@@ -1,47 +1,47 @@
 @interface KCSharingOutgoingChangesetCursor
-- (BOOL)isEqual:(id)a3;
-- (KCSharingOutgoingChangesetCursor)initWithCoder:(id)a3;
-- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)a3 desiredZoneIDs:(id)a4;
-- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)a3 keyset:(id)a4 fetchBehavior:(int64_t)a5;
-- (id)copyWithDesiredZoneIDs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (KCSharingOutgoingChangesetCursor)initWithCoder:(id)coder;
+- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)scope desiredZoneIDs:(id)ds;
+- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)scope keyset:(id)keyset fetchBehavior:(int64_t)behavior;
+- (id)copyWithDesiredZoneIDs:(id)ds;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCSharingOutgoingChangesetCursor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithInteger:[(KCSharingOutgoingChangesetCursor *)self databaseScope]];
-  [v4 encodeObject:v5 forKey:@"dbScope"];
+  [coderCopy encodeObject:v5 forKey:@"dbScope"];
 
-  v6 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-  [v4 encodeObject:v6 forKey:@"keyset"];
+  keyset = [(KCSharingOutgoingChangesetCursor *)self keyset];
+  [coderCopy encodeObject:keyset forKey:@"keyset"];
 
   v7 = [NSNumber numberWithInteger:[(KCSharingOutgoingChangesetCursor *)self fetchBehavior]];
-  [v4 encodeObject:v7 forKey:@"fetchBehavior"];
+  [coderCopy encodeObject:v7 forKey:@"fetchBehavior"];
 }
 
-- (KCSharingOutgoingChangesetCursor)initWithCoder:(id)a3
+- (KCSharingOutgoingChangesetCursor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dbScope"];
-  v6 = [v5 intValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dbScope"];
+  intValue = [v5 intValue];
 
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v7, v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"keyset"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"keyset"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fetchBehavior"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fetchBehavior"];
 
-  v12 = [v11 intValue];
-  if (v10 && v6 - 4 >= 0xFFFFFFFD && v12 - 3 > 0xFFFFFFFD)
+  intValue2 = [v11 intValue];
+  if (v10 && intValue - 4 >= 0xFFFFFFFD && intValue2 - 3 > 0xFFFFFFFD)
   {
-    self = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:v6 keyset:v10 fetchBehavior:v12];
-    v13 = self;
+    self = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:intValue keyset:v10 fetchBehavior:intValue2];
+    selfCopy = self;
   }
 
   else
@@ -53,10 +53,10 @@
       _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Cursor failed to decode properly", buf, 2u);
     }
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)description
@@ -66,19 +66,19 @@
   v3 = [(KCSharingOutgoingChangesetCursor *)&v8 description];
   [(KCSharingOutgoingChangesetCursor *)self databaseScope];
   v4 = CKDatabaseScopeString();
-  v5 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-  v6 = [NSString stringWithFormat:@"(%@, scope: %@, keyset: %@, fetchBehavior: %ld)", v3, v4, v5, [(KCSharingOutgoingChangesetCursor *)self fetchBehavior]];
+  keyset = [(KCSharingOutgoingChangesetCursor *)self keyset];
+  v6 = [NSString stringWithFormat:@"(%@, scope: %@, keyset: %@, fetchBehavior: %ld)", v3, v4, keyset, [(KCSharingOutgoingChangesetCursor *)self fetchBehavior]];
 
   return v6;
 }
 
-- (id)copyWithDesiredZoneIDs:(id)a3
+- (id)copyWithDesiredZoneIDs:(id)ds
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (dsCopy)
   {
-    v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
+    v6 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [dsCopy count]);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -100,8 +100,8 @@
           }
 
           v12 = *(*(&v23 + 1) + 8 * i);
-          v13 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-          v14 = [v13 objectForKeyedSubscript:v12];
+          keyset = [(KCSharingOutgoingChangesetCursor *)self keyset];
+          v14 = [keyset objectForKeyedSubscript:v12];
           v15 = v14;
           if (v14)
           {
@@ -129,34 +129,34 @@
   else
   {
     v18 = objc_alloc(objc_opt_class());
-    v19 = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
-    v20 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-    v17 = [v18 initWithDatabaseScope:v19 keyset:v20 fetchBehavior:1];
+    databaseScope = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
+    keyset2 = [(KCSharingOutgoingChangesetCursor *)self keyset];
+    v17 = [v18 initWithDatabaseScope:databaseScope keyset:keyset2 fetchBehavior:1];
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
 
-  else if ([(KCSharingOutgoingChangesetCursor *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(KCSharingOutgoingChangesetCursor *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
-    if (v6 == [(KCSharingOutgoingChangesetCursor *)v5 databaseScope])
+    v5 = equalCopy;
+    databaseScope = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
+    if (databaseScope == [(KCSharingOutgoingChangesetCursor *)v5 databaseScope])
     {
-      v7 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-      v8 = [(KCSharingOutgoingChangesetCursor *)v5 keyset];
-      if ([v7 isEqualToDictionary:v8])
+      keyset = [(KCSharingOutgoingChangesetCursor *)self keyset];
+      keyset2 = [(KCSharingOutgoingChangesetCursor *)v5 keyset];
+      if ([keyset isEqualToDictionary:keyset2])
       {
-        v9 = [(KCSharingOutgoingChangesetCursor *)self fetchBehavior];
-        v10 = v9 == [(KCSharingOutgoingChangesetCursor *)v5 fetchBehavior];
+        fetchBehavior = [(KCSharingOutgoingChangesetCursor *)self fetchBehavior];
+        v10 = fetchBehavior == [(KCSharingOutgoingChangesetCursor *)v5 fetchBehavior];
       }
 
       else
@@ -181,44 +181,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
-  v4 = [(KCSharingOutgoingChangesetCursor *)self keyset];
-  v5 = [v4 hash] + 32 * v3 - v3;
+  databaseScope = [(KCSharingOutgoingChangesetCursor *)self databaseScope];
+  keyset = [(KCSharingOutgoingChangesetCursor *)self keyset];
+  v5 = [keyset hash] + 32 * databaseScope - databaseScope;
 
   return [(KCSharingOutgoingChangesetCursor *)self fetchBehavior]- v5 + 32 * v5;
 }
 
-- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)a3 keyset:(id)a4 fetchBehavior:(int64_t)a5
+- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)scope keyset:(id)keyset fetchBehavior:(int64_t)behavior
 {
-  v8 = a4;
+  keysetCopy = keyset;
   v14.receiver = self;
   v14.super_class = KCSharingOutgoingChangesetCursor;
   v9 = [(KCSharingOutgoingChangesetCursor *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_databaseScope = a3;
-    v11 = [v8 copy];
+    v9->_databaseScope = scope;
+    v11 = [keysetCopy copy];
     keyset = v10->_keyset;
     v10->_keyset = v11;
 
-    v10->_fetchBehavior = a5;
+    v10->_fetchBehavior = behavior;
   }
 
   return v10;
 }
 
-- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)a3 desiredZoneIDs:(id)a4
+- (KCSharingOutgoingChangesetCursor)initWithDatabaseScope:(int64_t)scope desiredZoneIDs:(id)ds
 {
-  v6 = a4;
-  if (v6)
+  dsCopy = ds;
+  if (dsCopy)
   {
     v7 = +[NSMutableDictionary dictionary];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v6;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -242,12 +242,12 @@
       while (v10);
     }
 
-    v13 = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:a3 keyset:v7 fetchBehavior:2];
+    v13 = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:scope keyset:v7 fetchBehavior:2];
   }
 
   else
   {
-    v13 = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:a3 keyset:&__NSDictionary0__struct fetchBehavior:1];
+    v13 = [(KCSharingOutgoingChangesetCursor *)self initWithDatabaseScope:scope keyset:&__NSDictionary0__struct fetchBehavior:1];
   }
 
   return v13;

@@ -9,82 +9,82 @@
 
 - (BOOL)vcp_hasFace
 {
-  [a1 size];
+  [self size];
   if (v2 != 0.0)
   {
     return 1;
   }
 
-  [a1 centerX];
+  [self centerX];
   if (v3 != 0.0)
   {
     return 1;
   }
 
-  [a1 centerY];
+  [self centerY];
   return v5 != 0.0;
 }
 
 - (double)vcp_normalizedFaceBounds
 {
-  [a1 size];
+  [self size];
   v3 = v2;
-  v4 = [a1 sourceWidth];
-  v5 = [a1 sourceHeight];
-  if (v4 <= v5)
+  sourceWidth = [self sourceWidth];
+  sourceHeight = [self sourceHeight];
+  if (sourceWidth <= sourceHeight)
   {
-    v6 = v5;
+    v6 = sourceHeight;
   }
 
   else
   {
-    v6 = v4;
+    v6 = sourceWidth;
   }
 
-  v7 = v3 * v6 / [a1 sourceWidth];
-  [a1 sourceHeight];
-  [a1 centerX];
+  v7 = v3 * v6 / [self sourceWidth];
+  [self sourceHeight];
+  [self centerX];
   v9 = fmax(v8 - v7 * 0.5, 0.0);
-  [a1 centerY];
-  [a1 centerX];
-  [a1 centerY];
+  [self centerY];
+  [self centerX];
+  [self centerY];
   return v9;
 }
 
 - (BOOL)vcp_hasBody
 {
-  [a1 bodyWidth];
+  [self bodyWidth];
   if (v2 != 0.0)
   {
     return 1;
   }
 
-  [a1 bodyHeight];
+  [self bodyHeight];
   if (v3 != 0.0)
   {
     return 1;
   }
 
-  [a1 bodyCenterX];
+  [self bodyCenterX];
   if (v4 != 0.0)
   {
     return 1;
   }
 
-  [a1 bodyCenterY];
+  [self bodyCenterY];
   return v6 != 0.0;
 }
 
 - (double)vcp_normalizedBodyBounds
 {
-  [a1 bodyCenterX];
+  [self bodyCenterX];
   v3 = v2;
-  [a1 bodyWidth];
+  [self bodyWidth];
   v5 = v3 - v4 * 0.5;
-  [a1 bodyCenterY];
-  [a1 bodyHeight];
-  [a1 bodyWidth];
-  [a1 bodyHeight];
+  [self bodyCenterY];
+  [self bodyHeight];
+  [self bodyWidth];
+  [self bodyHeight];
   return v5;
 }
 

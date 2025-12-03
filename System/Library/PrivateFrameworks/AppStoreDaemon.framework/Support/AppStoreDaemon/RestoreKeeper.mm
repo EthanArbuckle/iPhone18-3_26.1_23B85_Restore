@@ -1,12 +1,12 @@
 @interface RestoreKeeper
 + (BOOL)activeRestoreSupportEnabled;
 + (_TtC9appstored13RestoreKeeper)shared;
-- (BOOL)hasRestoringCoordinatorForBundleID:(id)a3 logKey:(id)a4;
+- (BOOL)hasRestoringCoordinatorForBundleID:(id)d logKey:(id)key;
 - (_TtC9appstored13RestoreKeeper)init;
-- (id)restoringCoordinatorForBundleID:(id)a3 logKey:(id)a4;
-- (void)displayDeleteActiveRestoreDialogWithBundleID:(id)a3 logKey:(id)a4 completion:(id)a5;
-- (void)handleActiveRestoreWithCoordinator:(IXRestoringAppInstallCoordinator *)a3 userInitiated:(BOOL)a4 logKey:(_TtC9appstored6LogKey *)a5 completionHandler:(id)a6;
-- (void)installForBundleID:(NSString *)a3 completionHandler:(id)a4;
+- (id)restoringCoordinatorForBundleID:(id)d logKey:(id)key;
+- (void)displayDeleteActiveRestoreDialogWithBundleID:(id)d logKey:(id)key completion:(id)completion;
+- (void)handleActiveRestoreWithCoordinator:(IXRestoringAppInstallCoordinator *)coordinator userInitiated:(BOOL)initiated logKey:(_TtC9appstored6LogKey *)key completionHandler:(id)handler;
+- (void)installForBundleID:(NSString *)d completionHandler:(id)handler;
 @end
 
 @implementation RestoreKeeper
@@ -45,29 +45,29 @@
   return v7 & 1;
 }
 
-- (void)displayDeleteActiveRestoreDialogWithBundleID:(id)a3 logKey:(id)a4 completion:(id)a5
+- (void)displayDeleteActiveRestoreDialogWithBundleID:(id)d logKey:(id)key completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   _Block_copy(v7);
-  v11 = a4;
-  v12 = self;
-  sub_1000F5D7C(v8, v10, v11, v12, v7);
+  keyCopy = key;
+  selfCopy = self;
+  sub_1000F5D7C(v8, v10, keyCopy, selfCopy, v7);
   _Block_release(v7);
   _Block_release(v7);
 }
 
-- (void)handleActiveRestoreWithCoordinator:(IXRestoringAppInstallCoordinator *)a3 userInitiated:(BOOL)a4 logKey:(_TtC9appstored6LogKey *)a5 completionHandler:(id)a6
+- (void)handleActiveRestoreWithCoordinator:(IXRestoringAppInstallCoordinator *)coordinator userInitiated:(BOOL)initiated logKey:(_TtC9appstored6LogKey *)key completionHandler:(id)handler
 {
   v11 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 16) = a3;
-  *(v15 + 24) = a4;
-  *(v15 + 32) = a5;
+  *(v15 + 16) = coordinator;
+  *(v15 + 24) = initiated;
+  *(v15 + 32) = key;
   *(v15 + 40) = v14;
   *(v15 + 48) = self;
   v16 = type metadata accessor for TaskPriority();
@@ -82,31 +82,31 @@
   v18[3] = 0;
   v18[4] = &unk_1004365C0;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a5;
-  v21 = self;
+  coordinatorCopy = coordinator;
+  keyCopy = key;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v13, &unk_1004365C8, v18);
 }
 
-- (BOOL)hasRestoringCoordinatorForBundleID:(id)a3 logKey:(id)a4
+- (BOOL)hasRestoringCoordinatorForBundleID:(id)d logKey:(id)key
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  LOBYTE(v6) = sub_1000F8438(v6, v8, v9);
+  keyCopy = key;
+  selfCopy = self;
+  LOBYTE(v6) = sub_1000F8438(v6, v8, keyCopy);
 
   return v6 & 1;
 }
 
-- (void)installForBundleID:(NSString *)a3 completionHandler:(id)a4
+- (void)installForBundleID:(NSString *)d completionHandler:(id)handler
 {
   v7 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = d;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -121,18 +121,18 @@
   v14[3] = 0;
   v14[4] = &unk_1004365A0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dCopy = d;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v9, &unk_1004365A8, v14);
 }
 
-- (id)restoringCoordinatorForBundleID:(id)a3 logKey:(id)a4
+- (id)restoringCoordinatorForBundleID:(id)d logKey:(id)key
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
-  v11 = sub_1000F8038(v6, v8, v9);
+  keyCopy = key;
+  selfCopy = self;
+  v11 = sub_1000F8038(v6, v8, keyCopy);
 
   return v11;
 }

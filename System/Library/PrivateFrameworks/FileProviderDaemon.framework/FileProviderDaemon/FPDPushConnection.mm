@@ -1,23 +1,23 @@
 @interface FPDPushConnection
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FPDPushConnection)init;
-- (FPDPushConnection)initWithExtensionManager:(id)a3;
-- (id)_debugTopicsForApplicationIdentifier:(id)a3;
-- (id)_pushConnectionWithEnvironmentName:(id)a3;
-- (id)clientConnectionsForApplicationBundleIdentifier:(id)a3;
-- (id)topicsForApplicationBundleIdentifier:(id)a3;
-- (void)addClientConnection:(id)a3 forApplicationBundleIdentifier:(id)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (FPDPushConnection)initWithExtensionManager:(id)manager;
+- (id)_debugTopicsForApplicationIdentifier:(id)identifier;
+- (id)_pushConnectionWithEnvironmentName:(id)name;
+- (id)clientConnectionsForApplicationBundleIdentifier:(id)identifier;
+- (id)topicsForApplicationBundleIdentifier:(id)identifier;
+- (void)addClientConnection:(id)connection forApplicationBundleIdentifier:(id)identifier;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)fileProviderRegister;
 - (void)fileProviderUnregister;
-- (void)performWithConnection:(id)a3 block:(id)a4;
-- (void)removeClientConnection:(id)a3 forApplicationBundleIdentifier:(id)a4;
-- (void)setMessageDelegate:(id)a3 forApplicationBundleIdentifier:(id)a4;
+- (void)performWithConnection:(id)connection block:(id)block;
+- (void)removeClientConnection:(id)connection forApplicationBundleIdentifier:(id)identifier;
+- (void)setMessageDelegate:(id)delegate forApplicationBundleIdentifier:(id)identifier;
 - (void)start;
-- (void)updateTopicsForApplicationBundleIdentifier:(id)a3 providerIdentifier:(id)a4 requestToken:(BOOL)a5 environment:(id)a6;
-- (void)updateTopicsForBundleIdentifier:(id)a3;
-- (void)updateTopicsForProvider:(id)a3;
+- (void)updateTopicsForApplicationBundleIdentifier:(id)identifier providerIdentifier:(id)providerIdentifier requestToken:(BOOL)token environment:(id)environment;
+- (void)updateTopicsForBundleIdentifier:(id)identifier;
+- (void)updateTopicsForProvider:(id)provider;
 @end
 
 @implementation FPDPushConnection
@@ -37,16 +37,16 @@
   __assert_rtn("-[FPDPushConnection init]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDPushConnection.m", 78, [v2 UTF8String]);
 }
 
-- (FPDPushConnection)initWithExtensionManager:(id)a3
+- (FPDPushConnection)initWithExtensionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v26.receiver = self;
   v26.super_class = FPDPushConnection;
   v5 = [(FPDPushConnection *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_manager, v4);
+    objc_storeWeak(&v5->_manager, managerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("push worker queue", v7);
     pushQueue = v6->_pushQueue;
@@ -85,14 +85,14 @@
   return v6;
 }
 
-- (id)_pushConnectionWithEnvironmentName:(id)a3
+- (id)_pushConnectionWithEnvironmentName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_pushQueue);
-  v5 = [(NSMutableDictionary *)self->_pushConnectionsByEnvironment objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_pushConnectionsByEnvironment objectForKey:nameCopy];
   if (!v5)
   {
-    if ([v4 isEqualToString:*MEMORY[0x1E698CF20]])
+    if ([nameCopy isEqualToString:*MEMORY[0x1E698CF20]])
     {
       v6 = @"com.apple.fileprovider.extension.push";
     }
@@ -102,9 +102,9 @@
       v6 = @"com.apple.fileprovider.extension.push.development";
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E698CF30]) initWithEnvironmentName:v4 namedDelegatePort:v6 queue:self->_pushQueue];
+    v5 = [objc_alloc(MEMORY[0x1E698CF30]) initWithEnvironmentName:nameCopy namedDelegatePort:v6 queue:self->_pushQueue];
     [v5 setDelegate:self];
-    [(NSMutableDictionary *)self->_pushConnectionsByEnvironment setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_pushConnectionsByEnvironment setObject:v5 forKey:nameCopy];
   }
 
   return v5;
@@ -134,19 +134,19 @@
   dispatch_sync(pushQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (listener_shouldAcceptNewConnection__once != -1)
   {
     [FPDPushConnection listener:shouldAcceptNewConnection:];
   }
 
-  [v7 setExportedInterface:listener_shouldAcceptNewConnection__serverInterface];
-  [v7 setRemoteObjectInterface:listener_shouldAcceptNewConnection__clientInterface];
-  [v7 setExportedObject:self];
-  [v7 resume];
+  [connectionCopy setExportedInterface:listener_shouldAcceptNewConnection__serverInterface];
+  [connectionCopy setRemoteObjectInterface:listener_shouldAcceptNewConnection__clientInterface];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -167,12 +167,12 @@ void __56__FPDPushConnection_listener_shouldAcceptNewConnection___block_invoke()
   listener_shouldAcceptNewConnection__clientInterface = v2;
 }
 
-- (void)performWithConnection:(id)a3 block:(id)a4
+- (void)performWithConnection:(id)connection block:(id)block
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  connectionCopy = connection;
+  blockCopy = block;
+  if (!blockCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ %s was called with nil completion block!", "-[FPDPushConnection performWithConnection:block:]"];
     v28 = fp_current_or_default_log();
@@ -185,13 +185,13 @@ void __56__FPDPushConnection_listener_shouldAcceptNewConnection___block_invoke()
     __assert_rtn("-[FPDPushConnection performWithConnection:block:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDPushConnection.m", 149, [v27 UTF8String]);
   }
 
-  v8 = v7;
-  v9 = [v6 remoteObjectProxy];
-  v10 = [v6 fp_bundleIdentifier];
-  if (v10)
+  v8 = blockCopy;
+  remoteObjectProxy = [connectionCopy remoteObjectProxy];
+  fp_bundleIdentifier = [connectionCopy fp_bundleIdentifier];
+  if (fp_bundleIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_manager);
-    v12 = [WeakRetained providerWithIdentifier:v10 reason:0];
+    v12 = [WeakRetained providerWithIdentifier:fp_bundleIdentifier reason:0];
 
     if (v12)
     {
@@ -205,20 +205,20 @@ void __56__FPDPushConnection_listener_shouldAcceptNewConnection___block_invoke()
     }
 
     v14 = objc_loadWeakRetained(&self->_manager);
-    v12 = [v14 defaultProviderWithTopLevelBundleIdentifier:v10];
+    v12 = [v14 defaultProviderWithTopLevelBundleIdentifier:fp_bundleIdentifier];
 
     if (v12)
     {
 LABEL_7:
-      v15 = [v12 descriptor];
-      v16 = [v15 bundleIdentifierForPushes];
+      descriptor = [v12 descriptor];
+      bundleIdentifierForPushes = [descriptor bundleIdentifierForPushes];
 
       v38 = 0;
       v39 = &v38;
       v40 = 0x3032000000;
       v41 = __Block_byref_object_copy__17;
       v42 = __Block_byref_object_dispose__17;
-      v17 = [v6 valueForEntitlement:@"aps-environment"];
+      v17 = [connectionCopy valueForEntitlement:@"aps-environment"];
       v18 = v17;
       if (v17)
       {
@@ -227,26 +227,26 @@ LABEL_7:
 
       else
       {
-        v19 = [v6 valueForEntitlement:@"com.apple.developer.aps-environment"];
+        v19 = [connectionCopy valueForEntitlement:@"com.apple.developer.aps-environment"];
       }
 
       v43 = v19;
 
       if ([v39[5] isEqualToString:@"serverPreferred"])
       {
-        v21 = [MEMORY[0x1E695B888] containerWithIdentifier:@"com.apple.CloudDocs"];
+        identifier = [MEMORY[0x1E695B888] containerWithIdentifier:@"com.apple.CloudDocs"];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __49__FPDPushConnection_performWithConnection_block___block_invoke;
         v30[3] = &unk_1E83C1628;
         v37 = &v38;
-        v31 = v6;
-        v32 = v10;
+        v31 = connectionCopy;
+        v32 = fp_bundleIdentifier;
         v36 = v8;
-        v33 = v9;
-        v34 = v16;
+        v33 = remoteObjectProxy;
+        v34 = bundleIdentifierForPushes;
         v35 = v12;
-        [v21 serverPreferredPushEnvironmentWithCompletionHandler:v30];
+        [identifier serverPreferredPushEnvironmentWithCompletionHandler:v30];
       }
 
       else
@@ -257,9 +257,9 @@ LABEL_7:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             v24 = v39[5];
-            [v6 processIdentifier];
+            [connectionCopy processIdentifier];
             v25 = FPExecutableNameForProcessIdentifier();
-            v26 = [v6 processIdentifier];
+            processIdentifier = [connectionCopy processIdentifier];
             *buf = 138413314;
             v45 = v24;
             v46 = 2112;
@@ -267,18 +267,18 @@ LABEL_7:
             v48 = 2112;
             v49 = v25;
             v50 = 1024;
-            v51 = v26;
+            v51 = processIdentifier;
             v52 = 2112;
-            v53 = v10;
+            v53 = fp_bundleIdentifier;
             _os_log_error_impl(&dword_1CEFC7000, v22, OS_LOG_TYPE_ERROR, "[ERROR] invalid push environment %@ specified in %@ from %@[%d] (requested for %@)", buf, 0x30u);
           }
 
-          (v8)[2](v8, v9, 0, 0, 0);
+          (v8)[2](v8, remoteObjectProxy, 0, 0, 0);
           goto LABEL_21;
         }
 
-        v21 = [v12 identifier];
-        (v8)[2](v8, v9, v16, v21, v39[5]);
+        identifier = [v12 identifier];
+        (v8)[2](v8, remoteObjectProxy, bundleIdentifierForPushes, identifier, v39[5]);
       }
 
 LABEL_21:
@@ -303,7 +303,7 @@ LABEL_21:
     }
   }
 
-  (v8)[2](v8, v9, 0, 0, 0);
+  (v8)[2](v8, remoteObjectProxy, 0, 0, 0);
 LABEL_22:
 
   v23 = *MEMORY[0x1E69E9840];
@@ -360,42 +360,42 @@ void __49__FPDPushConnection_performWithConnection_block___block_invoke(uint64_t
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addClientConnection:(id)a3 forApplicationBundleIdentifier:(id)a4
+- (void)addClientConnection:(id)connection forApplicationBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_pushQueue);
-  v7 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:identifierCopy];
   if (!v7)
   {
     v7 = objc_opt_new();
-    [(NSMutableDictionary *)self->_clientConnections setObject:v7 forKey:v6];
+    [(NSMutableDictionary *)self->_clientConnections setObject:v7 forKey:identifierCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:connectionCopy];
 }
 
-- (void)removeClientConnection:(id)a3 forApplicationBundleIdentifier:(id)a4
+- (void)removeClientConnection:(id)connection forApplicationBundleIdentifier:(id)identifier
 {
-  v9 = a4;
+  identifierCopy = identifier;
   pushQueue = self->_pushQueue;
-  v7 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(pushQueue);
-  v8 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:v9];
-  [v8 removeObject:v7];
+  v8 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:identifierCopy];
+  [v8 removeObject:connectionCopy];
 
   if (![v8 count])
   {
-    [(NSMutableDictionary *)self->_clientConnections removeObjectForKey:v9];
+    [(NSMutableDictionary *)self->_clientConnections removeObjectForKey:identifierCopy];
   }
 }
 
-- (id)clientConnectionsForApplicationBundleIdentifier:(id)a3
+- (id)clientConnectionsForApplicationBundleIdentifier:(id)identifier
 {
   pushQueue = self->_pushQueue;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(pushQueue);
-  v6 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_clientConnections objectForKeyedSubscript:identifierCopy];
 
   v7 = [v6 copy];
 
@@ -405,7 +405,7 @@ void __49__FPDPushConnection_performWithConnection_block___block_invoke(uint64_t
 - (void)fileProviderRegister
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, a1, a3, "[DEBUG] %s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, self, a3, "[DEBUG] %s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -460,7 +460,7 @@ uint64_t __41__FPDPushConnection_fileProviderRegister__block_invoke_2(uint64_t a
 - (void)fileProviderUnregister
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, a1, a3, "[DEBUG] %s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_1_2(&dword_1CEFC7000, self, a3, "[DEBUG] %s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -569,30 +569,30 @@ void __43__FPDPushConnection_fileProviderUnregister__block_invoke_2(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)topicsForApplicationBundleIdentifier:(id)a3
+- (id)topicsForApplicationBundleIdentifier:(id)identifier
 {
   pushQueue = self->_pushQueue;
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(pushQueue);
-  v6 = [(NSMutableDictionary *)self->_topicsForBundleIdentifier objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_topicsForBundleIdentifier objectForKey:identifierCopy];
 
   return v6;
 }
 
-- (id)_debugTopicsForApplicationIdentifier:(id)a3
+- (id)_debugTopicsForApplicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  identifierCopy = identifier;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   pushQueue = self->_pushQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke;
   block[3] = &unk_1E83BDE60;
   block[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = identifierCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = identifierCopy;
   dispatch_sync(pushQueue, block);
   v9 = v14;
   v10 = v7;
@@ -644,24 +644,24 @@ void __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke
   [v11 setValue:v12 forKey:v13];
 }
 
-- (void)updateTopicsForBundleIdentifier:(id)a3
+- (void)updateTopicsForBundleIdentifier:(id)identifier
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_pushQueue);
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, @"pushkit.fileprovider"];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, @"pushkit.fileprovider"];
   v31[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
 
-  if ([v4 isEqualToString:@"com.apple.FileProvider.TestingHarness"])
+  if ([identifierCopy isEqualToString:@"com.apple.FileProvider.TestingHarness"])
   {
-    v7 = [(NSMutableDictionary *)self->_messageDelegates objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_messageDelegates objectForKey:identifierCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 customPushTopics];
+      customPushTopics = [v7 customPushTopics];
 
-      v6 = v9;
+      v6 = customPushTopics;
     }
   }
 
@@ -669,7 +669,7 @@ void __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(NSMutableDictionary *)self->_topicsForBundleIdentifier objectForKeyedSubscript:v4];
+  v10 = [(NSMutableDictionary *)self->_topicsForBundleIdentifier objectForKeyedSubscript:identifierCopy];
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v11)
   {
@@ -715,7 +715,7 @@ void __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke
           objc_enumerationMutation(v15);
         }
 
-        [(NSMutableDictionary *)self->_bundleIdentifierForTopic setObject:v4 forKey:*(*(&v21 + 1) + 8 * v19++)];
+        [(NSMutableDictionary *)self->_bundleIdentifierForTopic setObject:identifierCopy forKey:*(*(&v21 + 1) + 8 * v19++)];
       }
 
       while (v17 != v19);
@@ -725,35 +725,35 @@ void __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke
     while (v17);
   }
 
-  [(NSMutableDictionary *)self->_topicsForBundleIdentifier setObject:v15 forKey:v4];
+  [(NSMutableDictionary *)self->_topicsForBundleIdentifier setObject:v15 forKey:identifierCopy];
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setMessageDelegate:(id)a3 forApplicationBundleIdentifier:(id)a4
+- (void)setMessageDelegate:(id)delegate forApplicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   pushQueue = self->_pushQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__FPDPushConnection_setMessageDelegate_forApplicationBundleIdentifier___block_invoke;
   block[3] = &unk_1E83BDE60;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = delegateCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = delegateCopy;
   dispatch_async(pushQueue, block);
 }
 
-- (void)updateTopicsForApplicationBundleIdentifier:(id)a3 providerIdentifier:(id)a4 requestToken:(BOOL)a5 environment:(id)a6
+- (void)updateTopicsForApplicationBundleIdentifier:(id)identifier providerIdentifier:(id)providerIdentifier requestToken:(BOOL)token environment:(id)environment
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  providerIdentifierCopy = providerIdentifier;
   pushQueue = self->_pushQueue;
-  v13 = a6;
+  environmentCopy = environment;
   dispatch_assert_queue_V2(pushQueue);
-  v14 = [(FPDPushConnection *)self _pushConnectionWithEnvironmentName:v13];
+  v14 = [(FPDPushConnection *)self _pushConnectionWithEnvironmentName:environmentCopy];
 
   v15 = self->_pushQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -761,13 +761,13 @@ void __58__FPDPushConnection__debugTopicsForApplicationIdentifier___block_invoke
   block[2] = __108__FPDPushConnection_updateTopicsForApplicationBundleIdentifier_providerIdentifier_requestToken_environment___block_invoke;
   block[3] = &unk_1E83C16C8;
   block[4] = self;
-  v20 = v10;
-  v23 = a5;
+  v20 = identifierCopy;
+  tokenCopy = token;
   v21 = v14;
-  v22 = v11;
-  v16 = v11;
+  v22 = providerIdentifierCopy;
+  v16 = providerIdentifierCopy;
   v17 = v14;
-  v18 = v10;
+  v18 = identifierCopy;
   dispatch_async(v15, block);
 }
 
@@ -886,18 +886,18 @@ void __108__FPDPushConnection_updateTopicsForApplicationBundleIdentifier_provide
   v36 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  topicCopy = topic;
   dispatch_assert_queue_V2(self->_pushQueue);
-  v10 = [(NSMutableDictionary *)self->_bundleIdentifierForTopic objectForKey:v9];
+  v10 = [(NSMutableDictionary *)self->_bundleIdentifierForTopic objectForKey:topicCopy];
   v11 = [(FPDPushConnection *)self clientConnectionsForApplicationBundleIdentifier:v10];
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [FPDPushConnection connection:v9 didReceiveToken:v11 forTopic:v12 identifier:?];
+    [FPDPushConnection connection:topicCopy didReceiveToken:v11 forTopic:v12 identifier:?];
   }
 
   v22 = 0u;
@@ -920,8 +920,8 @@ void __108__FPDPushConnection_updateTopicsForApplicationBundleIdentifier_provide
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * v17) remoteObjectProxy];
-        [v18 fileProviderRegistrationSucceededWithDeviceToken:v8];
+        remoteObjectProxy = [*(*(&v20 + 1) + 8 * v17) remoteObjectProxy];
+        [remoteObjectProxy fileProviderRegistrationSucceededWithDeviceToken:tokenCopy];
 
         ++v17;
       }
@@ -936,31 +936,31 @@ void __108__FPDPushConnection_updateTopicsForApplicationBundleIdentifier_provide
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_pushQueue);
   v8 = fp_current_or_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [FPDPushConnection connection:v7 didReceiveIncomingMessage:v8];
+    [FPDPushConnection connection:messageCopy didReceiveIncomingMessage:v8];
   }
 
-  v9 = [v7 topic];
-  v10 = [(NSMutableDictionary *)self->_bundleIdentifierForTopic objectForKey:v9];
-  if (v10)
+  topic = [messageCopy topic];
+  clouddocsExtensionIdentifier = [(NSMutableDictionary *)self->_bundleIdentifierForTopic objectForKey:topic];
+  if (clouddocsExtensionIdentifier)
   {
     goto LABEL_8;
   }
 
-  if ([v9 fp_isCloudDocsPushTopic])
+  if ([topic fp_isCloudDocsPushTopic])
   {
     WeakRetained = objc_loadWeakRetained(&self->_manager);
-    v10 = [WeakRetained clouddocsExtensionIdentifier];
+    clouddocsExtensionIdentifier = [WeakRetained clouddocsExtensionIdentifier];
 
 LABEL_8:
-    v12 = [(NSMutableDictionary *)self->_messageDelegates objectForKey:v10];
+    v12 = [(NSMutableDictionary *)self->_messageDelegates objectForKey:clouddocsExtensionIdentifier];
     v13 = v12;
     if (v12)
     {
@@ -970,11 +970,11 @@ LABEL_8:
       v17[2] = __58__FPDPushConnection_connection_didReceiveIncomingMessage___block_invoke;
       v17[3] = &unk_1E83BE0E0;
       v18 = v12;
-      v19 = v7;
-      v20 = self;
-      v21 = v10;
-      v22 = v9;
-      v23 = v6;
+      v19 = messageCopy;
+      selfCopy = self;
+      v21 = clouddocsExtensionIdentifier;
+      v22 = topic;
+      v23 = connectionCopy;
       dispatch_async(payloadDeliveryQueue, v17);
 
       v15 = v18;
@@ -992,9 +992,9 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if ([v9 fp_isTestPushTopic])
+  if ([topic fp_isTestPushTopic])
   {
-    v10 = @"com.apple.FileProvider.TestingHarness";
+    clouddocsExtensionIdentifier = @"com.apple.FileProvider.TestingHarness";
     goto LABEL_8;
   }
 
@@ -1004,7 +1004,7 @@ LABEL_8:
     [FPDPushConnection connection:didReceiveIncomingMessage:];
   }
 
-  [v6 invalidateTokenForTopic:v9 identifier:&stru_1F4C2FFD0];
+  [connectionCopy invalidateTokenForTopic:topic identifier:&stru_1F4C2FFD0];
 LABEL_13:
 }
 
@@ -1146,9 +1146,9 @@ void __58__FPDPushConnection_connection_didReceiveIncomingMessage___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateTopicsForProvider:(id)a3
+- (void)updateTopicsForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = fp_current_or_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1161,8 +1161,8 @@ void __58__FPDPushConnection_connection_didReceiveIncomingMessage___block_invoke
   v15[2] = __45__FPDPushConnection_updateTopicsForProvider___block_invoke;
   v15[3] = &unk_1E83BE158;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = providerCopy;
+  v14 = providerCopy;
   dispatch_async(pushQueue, v15);
 }
 

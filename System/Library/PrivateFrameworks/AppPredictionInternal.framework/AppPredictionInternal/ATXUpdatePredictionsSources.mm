@@ -1,9 +1,9 @@
 @interface ATXUpdatePredictionsSources
 - (ATXUpdatePredictionsSources)init;
-- (ATXUpdatePredictionsSources)initWithUpdateSources:(id)a3 rateLimiter:(id)a4;
-- (void)forceUpdatePredictionsImmediatelyWithReason:(unint64_t)a3;
-- (void)tryUpdatePredictionsDefaultIntervalWithReason:(unint64_t)a3;
-- (void)tryUpdatePredictionsImmediatelyWithReason:(unint64_t)a3;
+- (ATXUpdatePredictionsSources)initWithUpdateSources:(id)sources rateLimiter:(id)limiter;
+- (void)forceUpdatePredictionsImmediatelyWithReason:(unint64_t)reason;
+- (void)tryUpdatePredictionsDefaultIntervalWithReason:(unint64_t)reason;
+- (void)tryUpdatePredictionsImmediatelyWithReason:(unint64_t)reason;
 @end
 
 @implementation ATXUpdatePredictionsSources
@@ -28,26 +28,26 @@
   return v9;
 }
 
-- (ATXUpdatePredictionsSources)initWithUpdateSources:(id)a3 rateLimiter:(id)a4
+- (ATXUpdatePredictionsSources)initWithUpdateSources:(id)sources rateLimiter:(id)limiter
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sourcesCopy = sources;
+  limiterCopy = limiter;
   v22.receiver = self;
   v22.super_class = ATXUpdatePredictionsSources;
   v9 = [(ATXUpdatePredictionsSources *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_updateSources, a3);
-    objc_storeStrong(&v10->_rateLimiter, a4);
+    objc_storeStrong(&v9->_updateSources, sources);
+    objc_storeStrong(&v10->_rateLimiter, limiter);
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v7;
+  v11 = sourcesCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v12)
   {
@@ -77,19 +77,19 @@
   return v10;
 }
 
-- (void)tryUpdatePredictionsDefaultIntervalWithReason:(unint64_t)a3
+- (void)tryUpdatePredictionsDefaultIntervalWithReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(ATXTimeBucketedRateLimiter *)self->_rateLimiter tryToIncrementCountAndReturnSuccess];
+  tryToIncrementCountAndReturnSuccess = [(ATXTimeBucketedRateLimiter *)self->_rateLimiter tryToIncrementCountAndReturnSuccess];
   v6 = __atxlog_handle_default();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (tryToIncrementCountAndReturnSuccess)
   {
     if (v7)
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+      v10 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
       v15 = 138412802;
       v16 = v9;
       v17 = 2080;
@@ -99,7 +99,7 @@
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "%@ - %s: prediction update with reason: %@ successful", &v15, 0x20u);
     }
 
-    [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsDefaultIntervalWithReason:a3];
+    [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsDefaultIntervalWithReason:reason];
   }
 
   else
@@ -108,7 +108,7 @@
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+      v13 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
       v15 = 138412802;
       v16 = v12;
       v17 = 2080;
@@ -122,19 +122,19 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tryUpdatePredictionsImmediatelyWithReason:(unint64_t)a3
+- (void)tryUpdatePredictionsImmediatelyWithReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(ATXTimeBucketedRateLimiter *)self->_rateLimiter tryToIncrementCountAndReturnSuccess];
+  tryToIncrementCountAndReturnSuccess = [(ATXTimeBucketedRateLimiter *)self->_rateLimiter tryToIncrementCountAndReturnSuccess];
   v6 = __atxlog_handle_default();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (v5)
+  if (tryToIncrementCountAndReturnSuccess)
   {
     if (v7)
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+      v10 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
       v15 = 138412802;
       v16 = v9;
       v17 = 2080;
@@ -144,7 +144,7 @@
       _os_log_impl(&dword_2263AA000, v6, OS_LOG_TYPE_INFO, "%@ - %s: prediction update with reason: %@ successful", &v15, 0x20u);
     }
 
-    [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsImmediatelyWithReason:a3];
+    [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsImmediatelyWithReason:reason];
   }
 
   else
@@ -153,7 +153,7 @@
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+      v13 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
       v15 = 138412802;
       v16 = v12;
       v17 = 2080;
@@ -167,7 +167,7 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceUpdatePredictionsImmediatelyWithReason:(unint64_t)a3
+- (void)forceUpdatePredictionsImmediatelyWithReason:(unint64_t)reason
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_default();
@@ -175,7 +175,7 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:a3];
+    v8 = [ATXUpdatePredictionsReasons stringForUpdatePredictionsReason:reason];
     v10 = 138412802;
     v11 = v7;
     v12 = 2080;
@@ -185,7 +185,7 @@
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_INFO, "%@ - %s: forced prediction update with reason: %@", &v10, 0x20u);
   }
 
-  [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsImmediatelyWithReason:a3];
+  [(ATXUpdatePredictionsSources *)self forwardUpdatePredictionsImmediatelyWithReason:reason];
   [(ATXTimeBucketedRateLimiter *)self->_rateLimiter tryToIncrementCountAndReturnSuccess];
   v9 = *MEMORY[0x277D85DE8];
 }

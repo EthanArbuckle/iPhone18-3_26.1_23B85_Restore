@@ -1,15 +1,15 @@
 @interface PSUICarrierSpacePlansController
-- (PSUICarrierSpacePlansController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)detailForPlanOption:(id)a3;
+- (PSUICarrierSpacePlansController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)detailForPlanOption:(id)option;
 - (id)specifiers;
-- (id)stringFromGroupCategory:(int64_t)a3;
+- (id)stringFromGroupCategory:(int64_t)category;
 - (void)carrierSpaceChanged;
 - (void)dismissPlanDetail;
-- (void)moreDetailsButtonTapped:(id)a3;
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4;
+- (void)moreDetailsButtonTapped:(id)tapped;
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController;
 - (void)simStatusChanged;
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PSUICarrierSpacePlansController
@@ -17,20 +17,20 @@
 - (void)simStatusChanged
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpacePlansController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpacePlansController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[PSUICarrierSpacePlansController simStatusChanged]";
     v11 = 2112;
     v12 = 0x287737BB8;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v9, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification %@", &v9, 0x16u);
   }
 
-  v4 = [MEMORY[0x277D4D868] sharedInstance];
-  v5 = [v4 isSIMMissing];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  isSIMMissing = [mEMORY[0x277D4D868] isSIMMissing];
 
-  if (v5)
+  if (isSIMMissing)
   {
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD10]));
     v7 = [WeakRetained popViewControllerAnimated:1];
@@ -42,27 +42,27 @@
 - (void)carrierSpaceChanged
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUICarrierSpacePlansController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUICarrierSpacePlansController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[PSUICarrierSpacePlansController carrierSpaceChanged]";
     v7 = 2112;
     v8 = 0x287737B98;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification: %@", &v5, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification: %@", &v5, 0x16u);
   }
 
   [(PSUICarrierSpacePlansController *)self reloadSpecifiers];
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (PSUICarrierSpacePlansController)initWithNibName:(id)a3 bundle:(id)a4
+- (PSUICarrierSpacePlansController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v18.receiver = self;
   v18.super_class = PSUICarrierSpacePlansController;
-  v8 = [(PSUICarrierSpacePlansController *)&v18 initWithNibName:v6 bundle:v7];
+  v8 = [(PSUICarrierSpacePlansController *)&v18 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = dispatch_queue_create("com.apple.preferences.carrier_space_plans_queue", 0);
@@ -92,11 +92,11 @@
     v8->_carrierSpaceClient = v13;
 
     [(CTCarrierSpaceClient *)v8->_carrierSpaceClient setDelegate:v8];
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v8 selector:sel_simStatusChanged name:0x287737BB8 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_simStatusChanged name:0x287737BB8 object:0];
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v8 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_carrierSpaceChanged name:0x287737B98 object:0];
   }
 
   return v8;
@@ -119,11 +119,11 @@
     v59 = 0u;
     v60 = 0u;
     v45 = v61 = 0u;
-    v7 = [v45 plansInfo];
-    v8 = [v7 planGroupsList];
+    plansInfo = [v45 plansInfo];
+    planGroupsList = [plansInfo planGroupsList];
 
-    obj = v8;
-    v49 = [v8 countByEnumeratingWithState:&v58 objects:v65 count:16];
+    obj = planGroupsList;
+    v49 = [planGroupsList countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v49)
     {
       v48 = *v59;
@@ -150,8 +150,8 @@
           v57 = 0u;
           v54 = 0u;
           v55 = 0u;
-          v51 = [v10 groupOptionsList];
-          v14 = [v51 countByEnumeratingWithState:&v54 objects:v64 count:16];
+          groupOptionsList = [v10 groupOptionsList];
+          v14 = [groupOptionsList countByEnumeratingWithState:&v54 objects:v64 count:16];
           if (v14)
           {
             v15 = v14;
@@ -163,13 +163,13 @@
                 v18 = v6;
                 if (*v55 != v16)
                 {
-                  objc_enumerationMutation(v51);
+                  objc_enumerationMutation(groupOptionsList);
                 }
 
                 v19 = *(*(&v54 + 1) + 8 * i);
                 v20 = MEMORY[0x277D3FAD8];
-                v21 = [v19 planLabel];
-                v22 = [v20 preferenceSpecifierNamed:v21 target:self set:0 get:0 detail:0 cell:4 edit:0];
+                planLabel = [v19 planLabel];
+                v22 = [v20 preferenceSpecifierNamed:planLabel target:self set:0 get:0 detail:0 cell:4 edit:0];
 
                 [v22 setProperty:objc_opt_class() forKey:v53];
                 v23 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v19, "planPurchasable")}];
@@ -178,17 +178,17 @@
                 v24 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v19, "planStatus") == 1}];
                 [v22 setProperty:v24 forKey:0x2877360F8];
 
-                v25 = [v19 planLabel];
-                [v22 setProperty:v25 forKey:0x287736118];
+                planLabel2 = [v19 planLabel];
+                [v22 setProperty:planLabel2 forKey:0x287736118];
 
                 v26 = [(PSUICarrierSpacePlansController *)self detailForPlanOption:v19];
                 [v22 setProperty:v26 forKey:0x287736138];
 
-                v27 = [v19 planId];
-                [v22 setIdentifier:v27];
+                planId = [v19 planId];
+                [v22 setIdentifier:planId];
 
-                v28 = [v19 planDetailsURL];
-                v29 = [v28 length];
+                planDetailsURL = [v19 planDetailsURL];
+                v29 = [planDetailsURL length];
 
                 if (v29)
                 {
@@ -203,16 +203,16 @@
                 [v22 setProperty:v19 forKey:@"PSUICarrierSpacePlanKey"];
                 v6 = v18;
                 [v18 addObject:v22];
-                v30 = [(PSUICarrierSpacePlansController *)self getLogger];
-                if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+                getLogger = [(PSUICarrierSpacePlansController *)self getLogger];
+                if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
                   v63 = v19;
-                  _os_log_impl(&dword_2658DE000, v30, OS_LOG_TYPE_DEFAULT, "Creating specifier for plan: %@", buf, 0xCu);
+                  _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Creating specifier for plan: %@", buf, 0xCu);
                 }
               }
 
-              v15 = [v51 countByEnumeratingWithState:&v54 objects:v64 count:16];
+              v15 = [groupOptionsList countByEnumeratingWithState:&v54 objects:v64 count:16];
             }
 
             while (v15);
@@ -228,22 +228,22 @@
       while (v49);
     }
 
-    v31 = [v45 plansInfo];
-    v32 = [v31 morePlansURL];
-    v33 = [v32 length];
+    plansInfo2 = [v45 plansInfo];
+    morePlansURL = [plansInfo2 morePlansURL];
+    v33 = [morePlansURL length];
 
     if (v33)
     {
       v34 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-      v35 = [v34 activeDataCarrierName];
+      activeDataCarrierName = [v34 activeDataCarrierName];
 
       v36 = MEMORY[0x277CCACA8];
       v37 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v38 = [v37 localizedStringForKey:@"MORE_PLANS_FROM_CARRRIER%@" value:&stru_287733598 table:@"CarrierSpacePlans"];
-      v39 = [v36 stringWithFormat:v38, v35];
+      v39 = [v36 stringWithFormat:v38, activeDataCarrierName];
 
-      v40 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-      [v6 addObject:v40];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      [v6 addObject:emptyGroupSpecifier];
       v41 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v39 target:self set:0 get:0 detail:0 cell:13 edit:0];
       [v41 setButtonAction:sel_moreDetailsButtonTapped_];
       [v6 addObject:v41];
@@ -261,41 +261,41 @@
   return v3;
 }
 
-- (void)moreDetailsButtonTapped:(id)a3
+- (void)moreDetailsButtonTapped:(id)tapped
 {
   v4 = +[PSUICarrierSpaceManager sharedManager];
-  v5 = [v4 plansInfo];
-  v6 = [v5 morePlansURL];
-  v7 = [v6 length];
+  plansInfo = [v4 plansInfo];
+  morePlansURL = [plansInfo morePlansURL];
+  v7 = [morePlansURL length];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v9 = MEMORY[0x277CBEBC0];
-    v10 = [v4 plansInfo];
-    v11 = [v10 morePlansURL];
-    v12 = [v9 URLWithString:v11];
-    [v8 openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
+    plansInfo2 = [v4 plansInfo];
+    morePlansURL2 = [plansInfo2 morePlansURL];
+    v12 = [v9 URLWithString:morePlansURL2];
+    [mEMORY[0x277D75128] openURL:v12 options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 
   else
   {
-    v8 = [(PSUICarrierSpacePlansController *)self getLogger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277D75128] = [(PSUICarrierSpacePlansController *)self getLogger];
+    if (os_log_type_enabled(mEMORY[0x277D75128], OS_LOG_TYPE_ERROR))
     {
       *v13 = 0;
-      _os_log_error_impl(&dword_2658DE000, v8, OS_LOG_TYPE_ERROR, "More plans button tapped, but no plans url present.", v13, 2u);
+      _os_log_error_impl(&dword_2658DE000, mEMORY[0x277D75128], OS_LOG_TYPE_ERROR, "More plans button tapped, but no plans url present.", v13, 2u);
     }
   }
 }
 
-- (id)detailForPlanOption:(id)a3
+- (id)detailForPlanOption:(id)option
 {
-  v3 = a3;
-  v4 = [v3 planValue];
-  if ([v3 planStatus] == 1)
+  optionCopy = option;
+  planValue = [optionCopy planValue];
+  if ([optionCopy planStatus] == 1)
   {
-    if (v4 && [(__CFString *)v4 length])
+    if (planValue && [(__CFString *)planValue length])
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -303,7 +303,7 @@
       v8 = @"PLAN%@_CURRENT_SUBSCRIPTION";
 LABEL_9:
       v9 = [v6 localizedStringForKey:v8 value:&stru_287733598 table:@"CarrierSpacePlans"];
-      [v5 stringWithFormat:v9, v4];
+      [v5 stringWithFormat:v9, planValue];
       v14 = LABEL_17:;
 
       goto LABEL_18;
@@ -316,9 +316,9 @@ LABEL_9:
     goto LABEL_16;
   }
 
-  if ([v3 planStatus] == 2)
+  if ([optionCopy planStatus] == 2)
   {
-    if (v4 && [(__CFString *)v4 length])
+    if (planValue && [(__CFString *)planValue length])
     {
       v5 = MEMORY[0x277CCACA8];
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -338,9 +338,9 @@ LABEL_16:
   }
 
   v13 = &stru_287733598;
-  if (v4 && [(__CFString *)v4 length])
+  if (planValue && [(__CFString *)planValue length])
   {
-    v13 = v4;
+    v13 = planValue;
   }
 
   v14 = v13;
@@ -349,30 +349,30 @@ LABEL_18:
   return v14;
 }
 
-- (id)stringFromGroupCategory:(int64_t)a3
+- (id)stringFromGroupCategory:(int64_t)category
 {
-  switch(a3)
+  switch(category)
   {
     case 3:
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v4 = v9;
+      activeDataCarrierName = v9;
       v10 = @"INTERNATIONAL_ROAMING_PLANS";
       goto LABEL_7;
     case 2:
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v4 = v9;
+      activeDataCarrierName = v9;
       v10 = @"ROAMING_PLANS";
 LABEL_7:
       v8 = [v9 localizedStringForKey:v10 value:&stru_287733598 table:@"CarrierSpacePlans"];
       goto LABEL_8;
     case 1:
       v3 = +[PSUICoreTelephonyCarrierBundleCache sharedInstance];
-      v4 = [v3 activeDataCarrierName];
+      activeDataCarrierName = [v3 activeDataCarrierName];
 
       v5 = MEMORY[0x277CCACA8];
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:@"DOMESTIC_PLANS_FROM_%@CARRIER" value:&stru_287733598 table:@"CarrierSpacePlans"];
-      v8 = [v5 stringWithFormat:v7, v4];
+      v8 = [v5 stringWithFormat:v7, activeDataCarrierName];
 
 LABEL_8:
       goto LABEL_10;
@@ -384,21 +384,21 @@ LABEL_10:
   return v8;
 }
 
-- (void)tableView:(id)a3 accessoryButtonTappedForRowWithIndexPath:(id)a4
+- (void)tableView:(id)view accessoryButtonTappedForRowWithIndexPath:(id)path
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSUICarrierSpacePlansController *)self specifierAtIndex:[(PSUICarrierSpacePlansController *)self indexForIndexPath:v7]];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PSUICarrierSpacePlansController *)self specifierAtIndex:[(PSUICarrierSpacePlansController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"PSUICarrierSpacePlanKey"];
-  v10 = [v9 planDetailsURL];
-  v11 = [v10 length];
+  planDetailsURL = [v9 planDetailsURL];
+  v11 = [planDetailsURL length];
 
   if (v11)
   {
     v12 = MEMORY[0x277CBEBC0];
-    v13 = [v9 planDetailsURL];
-    v14 = [v12 URLWithString:v13];
+    planDetailsURL2 = [v9 planDetailsURL];
+    v14 = [v12 URLWithString:planDetailsURL2];
 
     v28 = 0;
     v29 = &v28;
@@ -428,13 +428,13 @@ LABEL_10:
     v20 = +[PSUICarrierSpaceManager getNSURLSessionConfiguration];
     [(RemoteUIController *)v19 setSessionConfiguration:v20];
 
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    LODWORD(v19) = [v21 sf_isInternalInstall];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    LODWORD(v19) = [currentDevice sf_isInternalInstall];
 
     if (v19)
     {
-      v22 = [(RemoteUIController *)self->_remoteUIController loader];
-      [v22 setAllowNonSecureHTTP:1];
+      loader = [(RemoteUIController *)self->_remoteUIController loader];
+      [loader setAllowNonSecureHTTP:1];
     }
 
     v23 = self->_remoteUIController;
@@ -444,18 +444,18 @@ LABEL_10:
     v26[3] = &unk_279BAA348;
     v26[4] = self;
     v27 = v14;
-    v24 = v14;
-    [(RemoteUIController *)v23 loadURL:v24 postBody:0 completion:v26];
+    getLogger = v14;
+    [(RemoteUIController *)v23 loadURL:getLogger postBody:0 completion:v26];
   }
 
   else
   {
-    v24 = [(PSUICarrierSpacePlansController *)self getLogger];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUICarrierSpacePlansController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v9;
-      _os_log_impl(&dword_2658DE000, v24, OS_LOG_TYPE_DEFAULT, "No plan detail url for plan: %@", &buf, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "No plan detail url for plan: %@", &buf, 0xCu);
     }
   }
 
@@ -486,20 +486,20 @@ void __86__PSUICarrierSpacePlansController_tableView_accessoryButtonTappedForRow
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = PSUICarrierSpacePlansController;
-  v6 = a4;
-  [(PSUICarrierSpacePlansController *)&v13 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(PSUICarrierSpacePlansController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  [(PSUICarrierSpacePlansController *)&v13 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(PSUICarrierSpacePlansController *)self indexForIndexPath:pathCopy];
 
   v8 = [(PSUICarrierSpacePlansController *)self specifierAtIndex:v7];
   v9 = [v8 propertyForKey:@"PSUICarrierSpacePlanKey"];
   if ([v9 planPurchasable])
   {
-    v10 = [v8 identifier];
-    [(PSUICarrierSpacePlansController *)self highlightSpecifierWithID:v10];
+    identifier = [v8 identifier];
+    [(PSUICarrierSpacePlansController *)self highlightSpecifierWithID:identifier];
 
     carrierSpaceClient = self->_carrierSpaceClient;
     v12[0] = MEMORY[0x277D85DD0];
@@ -552,19 +552,19 @@ LABEL_6:
 
 - (void)dismissPlanDetail
 {
-  v2 = [(PSUICarrierSpacePlansController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PSUICarrierSpacePlansController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)remoteUIController:(id)a3 willPresentModalNavigationController:(id)a4
+- (void)remoteUIController:(id)controller willPresentModalNavigationController:(id)navigationController
 {
   v5 = MEMORY[0x277D751E0];
-  v6 = a4;
+  navigationControllerCopy = navigationController;
   v9 = [[v5 alloc] initWithBarButtonSystemItem:0 target:self action:sel_dismissPlanDetail];
-  v7 = [v6 topViewController];
+  topViewController = [navigationControllerCopy topViewController];
 
-  v8 = [v7 navigationItem];
-  [v8 setRightBarButtonItem:v9 animated:0];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem setRightBarButtonItem:v9 animated:0];
 }
 
 @end

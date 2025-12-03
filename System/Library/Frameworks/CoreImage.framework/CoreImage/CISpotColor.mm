@@ -137,7 +137,7 @@
   v12 = (1.0 / (1.0 - v11));
   [(NSNumber *)self->inputContrast3 floatValue];
   v14 = [CIVector vectorWithX:v10 Y:v12 Z:(1.0 / (1.0 - v13)) W:0.0];
-  v15 = [(CISpotColor *)self _CISpotColor];
+  _CISpotColor = [(CISpotColor *)self _CISpotColor];
   [(CIImage *)self->inputImage extent];
   inputCenterColor1 = self->inputCenterColor1;
   inputReplacementColor1 = self->inputReplacementColor1;
@@ -154,7 +154,7 @@
   v27[6] = inputReplacementColor3;
   v27[7] = v8;
   v27[8] = v14;
-  return [v15 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 9), v22, v23, v24, v25}];
+  return [_CISpotColor applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v27, 9), v22, v23, v24, v25}];
 }
 
 @end

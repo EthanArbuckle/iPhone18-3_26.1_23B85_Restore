@@ -1,25 +1,25 @@
 @interface _UIWTCProofreadingDecorationInfo
-+ (id)highlightInfoWithIdentifier:(id)a3 ranges:(id)a4 decorationPaths:(id)a5 containers:(id)a6;
-+ (id)underlineInfoWithIdentifier:(id)a3 ranges:(id)a4 decorationPaths:(id)a5 containers:(id)a6;
-- (_UIWTCProofreadingDecorationInfo)initWithType:(int64_t)a3 identifier:(id)a4 ranges:(id)a5 decorationPaths:(id)a6 containers:(id)a7;
++ (id)highlightInfoWithIdentifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers;
++ (id)underlineInfoWithIdentifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers;
+- (_UIWTCProofreadingDecorationInfo)initWithType:(int64_t)type identifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers;
 - (id)description;
-- (void)addPaths:(id)a3 withContainer:(id)a4 forRange:(id)a5;
+- (void)addPaths:(id)paths withContainer:(id)container forRange:(id)range;
 @end
 
 @implementation _UIWTCProofreadingDecorationInfo
 
-- (_UIWTCProofreadingDecorationInfo)initWithType:(int64_t)a3 identifier:(id)a4 ranges:(id)a5 decorationPaths:(id)a6 containers:(id)a7
+- (_UIWTCProofreadingDecorationInfo)initWithType:(int64_t)type identifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers
 {
   v42 = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a5;
-  v35 = a6;
-  v16 = a7;
-  v17 = [v15 count];
-  if (v17 != [v16 count])
+  identifierCopy = identifier;
+  rangesCopy = ranges;
+  pathsCopy = paths;
+  containersCopy = containers;
+  v17 = [rangesCopy count];
+  if (v17 != [containersCopy count])
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"_UIWTCProofreadingDecorationInfo.m" lineNumber:16 description:@"range<->container count mismatch"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWTCProofreadingDecorationInfo.m" lineNumber:16 description:@"range<->container count mismatch"];
   }
 
   v40.receiver = self;
@@ -28,21 +28,21 @@
   v19 = v18;
   if (v18)
   {
-    v34 = v14;
-    objc_storeStrong(&v18->_identifier, a4);
-    objc_storeStrong(&v19->_ranges, a5);
-    objc_storeStrong(&v19->_paths, a6);
-    v20 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    v34 = identifierCopy;
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_ranges, ranges);
+    objc_storeStrong(&v19->_paths, paths);
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     containers = v19->_containers;
-    v19->_containers = v20;
+    v19->_containers = strongToWeakObjectsMapTable;
 
-    v19->_type = a3;
+    v19->_type = type;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v33 = v15;
-    v22 = v15;
+    v33 = rangesCopy;
+    v22 = rangesCopy;
     v23 = [v22 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v23)
     {
@@ -61,7 +61,7 @@
 
           v28 = *(*(&v36 + 1) + 8 * v27);
           v29 = v19->_containers;
-          v30 = [v16 objectAtIndexedSubscript:v25];
+          v30 = [containersCopy objectAtIndexedSubscript:v25];
           [(NSMapTable *)v29 setObject:v30 forKey:v28];
 
           ++v25;
@@ -75,31 +75,31 @@
       while (v24);
     }
 
-    v15 = v33;
-    v14 = v34;
+    rangesCopy = v33;
+    identifierCopy = v34;
   }
 
   return v19;
 }
 
-+ (id)underlineInfoWithIdentifier:(id)a3 ranges:(id)a4 decorationPaths:(id)a5 containers:(id)a6
++ (id)underlineInfoWithIdentifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithType:0 identifier:v13 ranges:v12 decorationPaths:v11 containers:v10];
+  containersCopy = containers;
+  pathsCopy = paths;
+  rangesCopy = ranges;
+  identifierCopy = identifier;
+  v14 = [[self alloc] initWithType:0 identifier:identifierCopy ranges:rangesCopy decorationPaths:pathsCopy containers:containersCopy];
 
   return v14;
 }
 
-+ (id)highlightInfoWithIdentifier:(id)a3 ranges:(id)a4 decorationPaths:(id)a5 containers:(id)a6
++ (id)highlightInfoWithIdentifier:(id)identifier ranges:(id)ranges decorationPaths:(id)paths containers:(id)containers
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithType:1 identifier:v13 ranges:v12 decorationPaths:v11 containers:v10];
+  containersCopy = containers;
+  pathsCopy = paths;
+  rangesCopy = ranges;
+  identifierCopy = identifier;
+  v14 = [[self alloc] initWithType:1 identifier:identifierCopy ranges:rangesCopy decorationPaths:pathsCopy containers:containersCopy];
 
   return v14;
 }
@@ -121,28 +121,28 @@
 
   v10 = *&self->_identifier;
   paths = self->_paths;
-  v6 = [(NSMapTable *)self->_containers objectEnumerator];
-  v7 = [v6 allObjects];
-  v8 = [v3 stringByAppendingFormat:@" %@ ID=%@ ranges=%p paths=%p containers=%@", v4, v10, paths, v7];
+  objectEnumerator = [(NSMapTable *)self->_containers objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v8 = [v3 stringByAppendingFormat:@" %@ ID=%@ ranges=%p paths=%p containers=%@", v4, v10, paths, allObjects];
 
   return v8;
 }
 
-- (void)addPaths:(id)a3 withContainer:(id)a4 forRange:(id)a5
+- (void)addPaths:(id)paths withContainer:(id)container forRange:(id)range
 {
-  v17 = a3;
-  v8 = a5;
+  pathsCopy = paths;
+  rangeCopy = range;
   ranges = self->_ranges;
-  v10 = a4;
+  containerCopy = container;
   v11 = [(NSArray *)ranges mutableCopy];
   v12 = [(NSDictionary *)self->_paths mutableCopy];
-  if (![(NSArray *)self->_ranges containsObject:v8])
+  if (![(NSArray *)self->_ranges containsObject:rangeCopy])
   {
-    [v11 addObject:v8];
+    [v11 addObject:rangeCopy];
   }
 
-  [v12 setObject:v17 forKeyedSubscript:v8];
-  [(NSMapTable *)self->_containers setObject:v10 forKey:v8];
+  [v12 setObject:pathsCopy forKeyedSubscript:rangeCopy];
+  [(NSMapTable *)self->_containers setObject:containerCopy forKey:rangeCopy];
 
   v13 = [v11 copy];
   v14 = self->_ranges;

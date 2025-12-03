@@ -1,28 +1,28 @@
 @interface USPSchemaUSPLoggingReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USPSchemaUSPLoggingReported)initWithDictionary:(id)a3;
-- (USPSchemaUSPLoggingReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USPSchemaUSPLoggingReported)initWithDictionary:(id)dictionary;
+- (USPSchemaUSPLoggingReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addMetrics:(id)a3;
-- (void)addSessionInfoItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMetrics:(id)metrics;
+- (void)addSessionInfoItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USPSchemaUSPLoggingReported
 
-- (USPSchemaUSPLoggingReported)initWithDictionary:(id)a3
+- (USPSchemaUSPLoggingReported)initWithDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = USPSchemaUSPLoggingReported;
   v5 = [(USPSchemaUSPLoggingReported *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"metrics"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"sessionInfoItems"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"sessionInfoItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (USPSchemaUSPLoggingReported)initWithJSON:(id)a3
+- (USPSchemaUSPLoggingReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USPSchemaUSPLoggingReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USPSchemaUSPLoggingReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USPSchemaUSPLoggingReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,10 +154,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_metrics count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -177,16 +177,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -196,12 +196,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"metrics"];
+    [dictionary setObject:array forKeyedSubscript:@"metrics"];
   }
 
   if ([(NSArray *)self->_sessionInfoItems count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -221,16 +221,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -240,36 +240,36 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"sessionInfoItems"];
+    [dictionary setObject:array2 forKeyedSubscript:@"sessionInfoItems"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(USPSchemaUSPLoggingReported *)self metrics];
-  v6 = [v4 metrics];
-  if ((v5 != 0) == (v6 == 0))
+  metrics = [(USPSchemaUSPLoggingReported *)self metrics];
+  metrics2 = [equalCopy metrics];
+  if ((metrics != 0) == (metrics2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(USPSchemaUSPLoggingReported *)self metrics];
-  if (v7)
+  metrics3 = [(USPSchemaUSPLoggingReported *)self metrics];
+  if (metrics3)
   {
-    v8 = v7;
-    v9 = [(USPSchemaUSPLoggingReported *)self metrics];
-    v10 = [v4 metrics];
-    v11 = [v9 isEqual:v10];
+    v8 = metrics3;
+    metrics4 = [(USPSchemaUSPLoggingReported *)self metrics];
+    metrics5 = [equalCopy metrics];
+    v11 = [metrics4 isEqual:metrics5];
 
     if (!v11)
     {
@@ -281,12 +281,12 @@
   {
   }
 
-  v5 = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
-  v6 = [v4 sessionInfoItems];
-  if ((v5 != 0) != (v6 == 0))
+  metrics = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
+  metrics2 = [equalCopy sessionInfoItems];
+  if ((metrics != 0) != (metrics2 == 0))
   {
-    v12 = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
-    if (!v12)
+    sessionInfoItems = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
+    if (!sessionInfoItems)
     {
 
 LABEL_15:
@@ -294,10 +294,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
-    v15 = [v4 sessionInfoItems];
-    v16 = [v14 isEqual:v15];
+    v13 = sessionInfoItems;
+    sessionInfoItems2 = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
+    sessionInfoItems3 = [equalCopy sessionInfoItems];
+    v16 = [sessionInfoItems2 isEqual:sessionInfoItems3];
 
     if (v16)
     {
@@ -317,10 +317,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -384,54 +384,54 @@ LABEL_13:
   }
 }
 
-- (void)addSessionInfoItems:(id)a3
+- (void)addSessionInfoItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   sessionInfoItems = self->_sessionInfoItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!sessionInfoItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sessionInfoItems;
-    self->_sessionInfoItems = v6;
+    self->_sessionInfoItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     sessionInfoItems = self->_sessionInfoItems;
   }
 
-  [(NSArray *)sessionInfoItems addObject:v4];
+  [(NSArray *)sessionInfoItems addObject:itemsCopy];
 }
 
-- (void)addMetrics:(id)a3
+- (void)addMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   metrics = self->_metrics;
-  v8 = v4;
+  v8 = metricsCopy;
   if (!metrics)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_metrics;
-    self->_metrics = v6;
+    self->_metrics = array;
 
-    v4 = v8;
+    metricsCopy = v8;
     metrics = self->_metrics;
   }
 
-  [(NSArray *)metrics addObject:v4];
+  [(NSArray *)metrics addObject:metricsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = USPSchemaUSPLoggingReported;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(USPSchemaUSPLoggingReported *)self metrics:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(USPSchemaUSPLoggingReported *)self setMetrics:v7];
 
-  v8 = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  sessionInfoItems = [(USPSchemaUSPLoggingReported *)self sessionInfoItems];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:sessionInfoItems underConditions:policyCopy];
 
   [(USPSchemaUSPLoggingReported *)self setSessionInfoItems:v9];
 

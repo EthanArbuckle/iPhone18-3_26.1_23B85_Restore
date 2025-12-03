@@ -1,85 +1,85 @@
 @interface TIWordSearchChinesePhonetic
 + (id)pinyinCharacterSetWithTones;
-- (id)candidatesCacheKeyForOperation:(id)a3;
-- (id)uncachedCandidatesForOperation:(id)a3;
+- (id)candidatesCacheKeyForOperation:(id)operation;
+- (id)uncachedCandidatesForOperation:(id)operation;
 - (int)mecabraInputMethodType;
 - (unsigned)nameReadingPairGenerationMode;
-- (void)clearCacheForInputString:(id)a3 keyboardInput:(id)a4 unambiguousSyllableCount:(unint64_t)a5 selectedDisambiguationCandidateIndex:(unint64_t)a6;
+- (void)clearCacheForInputString:(id)string keyboardInput:(id)input unambiguousSyllableCount:(unint64_t)count selectedDisambiguationCandidateIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setCustomDialectLanguageModel:(id)a3;
+- (void)setCustomDialectLanguageModel:(id)model;
 - (void)updateFuzzyPinyinSettings;
 - (void)updateMecabraState;
-- (void)updateShuangpinTypeWithReanalysisMode:(BOOL)a3;
+- (void)updateShuangpinTypeWithReanalysisMode:(BOOL)mode;
 @end
 
 @implementation TIWordSearchChinesePhonetic
 
-- (id)uncachedCandidatesForOperation:(id)a3
+- (id)uncachedCandidatesForOperation:(id)operation
 {
   v150 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   v5 = objc_alloc_init(MEMORY[0x277D6FF00]);
-  v6 = v4;
-  v7 = [v6 inputString];
-  v8 = [v6 segmentBreakIndex];
-  v9 = [v6 target];
-  v124 = [v6 geometryModelData];
+  v6 = operationCopy;
+  inputString = [v6 inputString];
+  segmentBreakIndex = [v6 segmentBreakIndex];
+  target = [v6 target];
+  geometryModelData = [v6 geometryModelData];
   v132 = v6;
-  v122 = [v6 unambiguousSyllableCount];
+  unambiguousSyllableCount = [v6 unambiguousSyllableCount];
   context = objc_autoreleasePoolPush();
-  v10 = [objc_opt_class() pinyinCharacterSetWithTones];
-  v11 = [v7 rangeOfCharacterFromSet:v10];
+  pinyinCharacterSetWithTones = [objc_opt_class() pinyinCharacterSetWithTones];
+  v11 = [inputString rangeOfCharacterFromSet:pinyinCharacterSetWithTones];
 
   obj = arc4random();
   v128 = v11;
-  if ([v7 length] || (objc_msgSend(v132, "keyboardInput"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if ([inputString length] || (objc_msgSend(v132, "keyboardInput"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    if (segmentBreakIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v7 substringFromIndex:v8];
-      v14 = [v7 substringToIndex:v8];
+      v13 = [inputString substringFromIndex:segmentBreakIndex];
+      v14 = [inputString substringToIndex:segmentBreakIndex];
 
-      v7 = v14;
+      inputString = v14;
     }
 
     v125 = v13;
-    v15 = self;
-    v16 = [(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:v7];
-    v17 = v9;
+    selfCopy2 = self;
+    v16 = [(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:inputString];
+    v17 = target;
     if (v16)
     {
       v18 = 0;
       v19 = 0;
 LABEL_13:
 
-      v21 = v7;
+      v21 = inputString;
       v22 = 0;
       v23 = 1;
       v127 = v21;
 LABEL_14:
-      v9 = v17;
+      target = v17;
 LABEL_15:
-      self = v15;
+      self = selfCopy2;
       goto LABEL_16;
     }
 
-    v19 = [TIKeyboardInputManagerChinese GB18030CandidateFromString:v7];
+    v19 = [TIKeyboardInputManagerChinese GB18030CandidateFromString:inputString];
     if ([v19 length])
     {
       v20 = 0;
       v18 = v19;
 LABEL_12:
-      [v5 addSyntheticMecabraCandidateWithSurface:v18 input:v7];
+      [v5 addSyntheticMecabraCandidateWithSurface:v18 input:inputString];
       v18 = v20;
       goto LABEL_13;
     }
 
-    v18 = [TIKeyboardInputManagerChinese unicodeCandidateFromString:v7];
+    v18 = [TIKeyboardInputManagerChinese unicodeCandidateFromString:inputString];
     if ([v18 length])
     {
       v20 = v18;
@@ -91,13 +91,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v40 = -[TIWordSearchChinesePhonetic mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:](v15, "mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:", 0, v122 != 0, [v132 reanalysisMode], objc_msgSend(v132, "hardwareKeyboardMode"), objc_msgSend(v132, "predictionEnabled"));
-    v41 = [v132 logger];
-    [v41 markTime:2];
+    v40 = -[TIWordSearchChinesePhonetic mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:](selfCopy2, "mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:", 0, unambiguousSyllableCount != 0, [v132 reanalysisMode], objc_msgSend(v132, "hardwareKeyboardMode"), objc_msgSend(v132, "predictionEnabled"));
+    logger = [v132 logger];
+    [logger markTime:2];
 
-    v42 = [v132 keyboardInput];
+    keyboardInput = [v132 keyboardInput];
 
-    if (v42)
+    if (keyboardInput)
     {
       kdebug_trace();
       v43 = kac_get_log();
@@ -112,25 +112,25 @@ LABEL_12:
         }
       }
 
-      v46 = [v132 keyboardInput];
-      v47 = [v46 asSearchString];
+      keyboardInput2 = [v132 keyboardInput];
+      asSearchString = [keyboardInput2 asSearchString];
 
-      v48 = [(TIWordSearch *)v15 mecabraEnvironment];
-      v49 = [v132 keyboardInput];
-      v50 = [v48 analyzeInput:v49 options:v40];
+      mecabraEnvironment = [(TIWordSearch *)selfCopy2 mecabraEnvironment];
+      keyboardInput3 = [v132 keyboardInput];
+      v50 = [mecabraEnvironment analyzeInput:keyboardInput3 options:v40];
 
-      v51 = v47;
+      v51 = asSearchString;
     }
 
     else
     {
-      v113 = [(TIWordSearch *)v15 mecabraEnvironment];
-      [v113 setGeometryModel:v17 modelData:v124];
+      mecabraEnvironment2 = [(TIWordSearch *)selfCopy2 mecabraEnvironment];
+      [mecabraEnvironment2 setGeometryModel:v17 modelData:geometryModelData];
 
-      v114 = [(TIWordSearch *)v15 mecabraEnvironment];
-      v50 = [v114 analyzeString:v7 options:v40];
+      mecabraEnvironment3 = [(TIWordSearch *)selfCopy2 mecabraEnvironment];
+      v50 = [mecabraEnvironment3 analyzeString:inputString options:v40];
 
-      v51 = v7;
+      v51 = inputString;
     }
 
     v21 = v51;
@@ -148,7 +148,7 @@ LABEL_12:
 
   else
   {
-    v35 = v7;
+    v35 = inputString;
     v21 = v35;
     v36 = 0;
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -161,8 +161,8 @@ LABEL_12:
       goto LABEL_16;
     }
 
-    v15 = self;
-    v17 = v9;
+    selfCopy2 = self;
+    v17 = target;
   }
 
   v125 = v36;
@@ -175,7 +175,7 @@ LABEL_12:
     {
       while (1)
       {
-        [(TIWordSearch *)v15 mecabra];
+        [(TIWordSearch *)selfCopy2 mecabra];
         NextCandidate = MecabraGetNextCandidate();
         if (!NextCandidate)
         {
@@ -202,7 +202,7 @@ LABEL_12:
         goto LABEL_62;
       }
 
-      if (-[TIWordSearchChinesePhonetic tenKeyPinyinEnabled](v15, "tenKeyPinyinEnabled") && [v21 length])
+      if (-[TIWordSearchChinesePhonetic tenKeyPinyinEnabled](selfCopy2, "tenKeyPinyinEnabled") && [v21 length])
       {
         v56 = [MEMORY[0x277D6F448] convertedInputFromMecabraCandidate:v54];
 
@@ -239,8 +239,8 @@ LABEL_62:
         if (!v22)
         {
 LABEL_70:
-          v62 = [v55 candidate];
-          v22 = [v62 compare:v127] == 0;
+          candidate = [v55 candidate];
+          v22 = [candidate compare:v127] == 0;
 
           goto LABEL_71;
         }
@@ -268,12 +268,12 @@ LABEL_71:
 
   v127 = v21;
 LABEL_45:
-  v37 = [v5 proactiveTriggers];
-  v38 = [v37 count];
+  proactiveTriggers = [v5 proactiveTriggers];
+  v38 = [proactiveTriggers count];
 
   if (v38)
   {
-    v9 = v17;
+    target = v17;
     if (!TICanLogMessageAtLevel())
     {
       v23 = 0;
@@ -282,14 +282,14 @@ LABEL_45:
     }
 
     v39 = TIOSLogFacility();
-    self = v15;
+    self = selfCopy2;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
     {
       v115 = MEMORY[0x277CCACA8];
-      v116 = [v5 proactiveTriggers];
-      v117 = [v115 stringWithFormat:@"%s ProactiveQuickType:TI: Mecabra found conversion proactive triggers: %@", "-[TIWordSearchChinesePhonetic uncachedCandidatesForOperation:]", v116];
+      proactiveTriggers2 = [v5 proactiveTriggers];
+      v116 = [v115 stringWithFormat:@"%s ProactiveQuickType:TI: Mecabra found conversion proactive triggers: %@", "-[TIWordSearchChinesePhonetic uncachedCandidatesForOperation:]", proactiveTriggers2];
       *buf = 138412290;
-      v149 = v117;
+      v149 = v116;
       _os_log_debug_impl(&dword_26D460000, v39, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
@@ -301,14 +301,14 @@ LABEL_45:
   {
     v23 = 0;
     v16 = 0;
-    v9 = v17;
-    self = v15;
+    target = v17;
+    self = selfCopy2;
   }
 
 LABEL_16:
-  v24 = [v132 keyboardInput];
+  keyboardInput4 = [v132 keyboardInput];
 
-  if (v24)
+  if (keyboardInput4)
   {
     kdebug_trace();
     v25 = kac_get_log();
@@ -325,11 +325,11 @@ LABEL_16:
   }
 
   v28 = v132;
-  v29 = [v132 logger];
-  [v29 markTime:3];
+  logger2 = [v132 logger];
+  [logger2 markTime:3];
 
-  v126 = [v5 candidates];
-  v30 = [v126 count];
+  candidates = [v5 candidates];
+  v30 = [candidates count];
   if (-[TIWordSearchChinesePhonetic tenKeyPinyinEnabled](self, "tenKeyPinyinEnabled") && !v30 && [v21 length])
   {
     v31 = +[TIKeyboardInputManagerChinesePhonetic stringFallBackForTenKeyInput:range:](TIKeyboardInputManagerChinesePhonetic, "stringFallBackForTenKeyInput:range:", v21, 0, [v21 length]);
@@ -364,7 +364,7 @@ LABEL_16:
           while (1)
           {
             v34 = v33;
-            v33 = [v126 objectAtIndex:v32];
+            v33 = [candidates objectAtIndex:v32];
 
             if (![v33 isEmojiCandidate])
             {
@@ -393,10 +393,10 @@ LABEL_16:
     v63 = v128 != 0x7FFFFFFFFFFFFFFFLL || v16;
     if ((v63 & 1) == 0)
     {
-      v64 = [v127 _stringByConvertingFromHalfWidthToFullWidth];
-      if (([v21 isEqualToString:v64] & 1) == 0)
+      _stringByConvertingFromHalfWidthToFullWidth = [v127 _stringByConvertingFromHalfWidthToFullWidth];
+      if (([v21 isEqualToString:_stringByConvertingFromHalfWidthToFullWidth] & 1) == 0)
       {
-        [v5 addSyntheticMecabraCandidateWithSurface:v64 input:v127 isExtension:1];
+        [v5 addSyntheticMecabraCandidateWithSurface:_stringByConvertingFromHalfWidthToFullWidth input:v127 isExtension:1];
       }
     }
   }
@@ -406,11 +406,11 @@ LABEL_16:
     if (([v28 regenerateDisambiguationCandidates] & 1) != 0 || (objc_msgSend(v28, "disambiguationCandidates"), v65 = objc_claimAutoreleasedReturnValue(), v66 = objc_msgSend(v65, "count"), v65, !v66))
     {
       v121 = v21;
-      if (v122)
+      if (unambiguousSyllableCount)
       {
-        v118 = v9;
+        v118 = target;
         v119 = v5;
-        v120 = self;
+        selfCopy3 = self;
         [(TIWordSearch *)self mecabra];
         SyllableSequences = MecabraCreateSyllableSequences();
         v129 = [MEMORY[0x277CBEB58] set];
@@ -439,8 +439,8 @@ LABEL_16:
               {
                 v75 = [v73 objectAtIndexedSubscript:{objc_msgSend(v28, "unambiguousSyllableCount")}];
                 v76 = [v75 componentsSeparatedByString:@" "];
-                v77 = [v76 firstObject];
-                v78 = [v77 isEqualToString:@""]);
+                firstObject = [v76 firstObject];
+                v78 = [firstObject isEqualToString:@""]);
 
                 if (v78)
                 {
@@ -449,17 +449,17 @@ LABEL_16:
                   v76 = v79;
                 }
 
-                v80 = [v76 firstObject];
-                if ([v80 hasPrefix:{@"(", "hasSuffix:", @")"}])
+                firstObject2 = [v76 firstObject];
+                if ([firstObject2 hasPrefix:{@"(", "hasSuffix:", @")"}])
                 {
-                  v81 = [v80 substringWithRange:{1, objc_msgSend(v80, "length") - 2}];
+                  v81 = [firstObject2 substringWithRange:{1, objc_msgSend(firstObject2, "length") - 2}];
 
-                  v80 = v81;
+                  firstObject2 = v81;
                 }
 
-                if (v80 && ([v80 isEqualToString:@"Mixed"] & 1) == 0)
+                if (firstObject2 && ([firstObject2 isEqualToString:@"Mixed"] & 1) == 0)
                 {
-                  [v129 addObject:v80];
+                  [v129 addObject:firstObject2];
                 }
 
                 v28 = v132;
@@ -472,8 +472,8 @@ LABEL_16:
           while (v70);
         }
 
-        v82 = [v129 allObjects];
-        v83 = [v82 sortedArrayUsingComparator:&__block_literal_global_67];
+        allObjects = [v129 allObjects];
+        v83 = [allObjects sortedArrayUsingComparator:&__block_literal_global_67];
 
         v84 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v83, "count")}];
         v133 = 0u;
@@ -482,7 +482,7 @@ LABEL_16:
         v136 = 0u;
         v85 = v83;
         v86 = [v85 countByEnumeratingWithState:&v133 objects:v145 count:16];
-        v9 = v118;
+        target = v118;
         v21 = v121;
         if (v86)
         {
@@ -515,25 +515,25 @@ LABEL_16:
 
         else
         {
-          v101 = [v132 disambiguationCandidates];
+          disambiguationCandidates = [v132 disambiguationCandidates];
           v5 = v119;
-          [v119 setDisambiguationCandidates:v101];
+          [v119 setDisambiguationCandidates:disambiguationCandidates];
 
           [v119 setSelectedDisambiguationCandidateIndex:{objc_msgSend(v132, "selectedDisambiguationCandidateIndex")}];
         }
 
-        self = v120;
+        self = selfCopy3;
 
         v28 = v132;
       }
 
       else
       {
-        v91 = self;
+        selfCopy4 = self;
         v92 = v5;
-        v93 = [MEMORY[0x277CBEB18] array];
-        v94 = v91;
-        [(TIWordSearch *)v91 mecabra];
+        array = [MEMORY[0x277CBEB18] array];
+        v94 = selfCopy4;
+        [(TIWordSearch *)selfCopy4 mecabra];
         v141 = 0u;
         v142 = 0u;
         v143 = 0u;
@@ -554,7 +554,7 @@ LABEL_16:
               }
 
               v100 = [MEMORY[0x277D6F468] candidateWithPinyinSyllable:*(*(&v141 + 1) + 8 * k)];
-              [v93 addObject:v100];
+              [array addObject:v100];
             }
 
             v97 = [v95 countByEnumeratingWithState:&v141 objects:v147 count:16];
@@ -564,7 +564,7 @@ LABEL_16:
         }
 
         v5 = v92;
-        [v92 setDisambiguationCandidates:v93];
+        [v92 setDisambiguationCandidates:array];
 
         v28 = v132;
         self = v94;
@@ -574,8 +574,8 @@ LABEL_16:
 
     else
     {
-      v67 = [v28 disambiguationCandidates];
-      [v5 setDisambiguationCandidates:v67];
+      disambiguationCandidates2 = [v28 disambiguationCandidates];
+      [v5 setDisambiguationCandidates:disambiguationCandidates2];
 
       [v5 setSelectedDisambiguationCandidateIndex:{objc_msgSend(v28, "selectedDisambiguationCandidateIndex")}];
     }
@@ -583,12 +583,12 @@ LABEL_16:
 
   if ([v125 length])
   {
-    v102 = -[TIWordSearchChinesePhonetic mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:](self, "mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:", 0, v122 != 0, [v28 reanalysisMode], objc_msgSend(v28, "hardwareKeyboardMode"), 0);
-    v103 = [v28 logger];
-    [v103 markTime:2];
+    v102 = -[TIWordSearchChinesePhonetic mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:](self, "mecabraAnalysisOptionsWithAutocorrectionEnabled:firstSyllableLocked:reanalysisMode:hardwareKeyboardMode:predictionEnabled:", 0, unambiguousSyllableCount != 0, [v28 reanalysisMode], objc_msgSend(v28, "hardwareKeyboardMode"), 0);
+    logger3 = [v28 logger];
+    [logger3 markTime:2];
 
-    v104 = [(TIWordSearch *)self mecabraEnvironment];
-    LODWORD(v102) = [v104 analyzeString:v125 options:v102];
+    mecabraEnvironment4 = [(TIWordSearch *)self mecabraEnvironment];
+    LODWORD(v102) = [mecabraEnvironment4 analyzeString:v125 options:v102];
 
     if (v102)
     {
@@ -607,9 +607,9 @@ LABEL_16:
           v107 = [objc_alloc(MEMORY[0x277D6F448]) initWithMecabraCandidate:v106];
           [v28 setCandidateAfterSegmentBreak:v107];
           [v5 setCandidateAfterSegmentBreak:v107];
-          v108 = [v5 candidateRefsDictionary];
-          v109 = [v107 mecabraCandidatePointerValue];
-          [v108 setObject:v106 forKey:v109];
+          candidateRefsDictionary = [v5 candidateRefsDictionary];
+          mecabraCandidatePointerValue = [v107 mecabraCandidatePointerValue];
+          [candidateRefsDictionary setObject:v106 forKey:mecabraCandidatePointerValue];
 
           v28 = v132;
           break;
@@ -617,8 +617,8 @@ LABEL_16:
       }
     }
 
-    v110 = [v28 logger];
-    [v110 markTime:3];
+    logger4 = [v28 logger];
+    [logger4 markTime:3];
   }
 
   objc_autoreleasePoolPop(context);
@@ -655,38 +655,38 @@ uint64_t __62__TIWordSearchChinesePhonetic_uncachedCandidatesForOperation___bloc
   return v7;
 }
 
-- (id)candidatesCacheKeyForOperation:(id)a3
+- (id)candidatesCacheKeyForOperation:(id)operation
 {
-  v3 = a3;
-  v4 = [v3 selectedDisambiguationCandidateIndex] == 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [v3 inputString];
-  v6 = [v3 keyboardInput];
-  v7 = [v3 unambiguousSyllableCount];
-  v8 = [v3 reanalysisMode];
-  v9 = [v3 predictionEnabled];
-  v10 = [v3 segmentBreakIndex];
+  operationCopy = operation;
+  v4 = [operationCopy selectedDisambiguationCandidateIndex] == 0x7FFFFFFFFFFFFFFFLL;
+  inputString = [operationCopy inputString];
+  keyboardInput = [operationCopy keyboardInput];
+  unambiguousSyllableCount = [operationCopy unambiguousSyllableCount];
+  reanalysisMode = [operationCopy reanalysisMode];
+  predictionEnabled = [operationCopy predictionEnabled];
+  segmentBreakIndex = [operationCopy segmentBreakIndex];
 
-  v11 = GetCacheKey(v5, v6, v4, v7, v8, v9, v10);
+  v11 = GetCacheKey(inputString, keyboardInput, v4, unambiguousSyllableCount, reanalysisMode, predictionEnabled, segmentBreakIndex);
 
   return v11;
 }
 
-- (void)clearCacheForInputString:(id)a3 keyboardInput:(id)a4 unambiguousSyllableCount:(unint64_t)a5 selectedDisambiguationCandidateIndex:(unint64_t)a6
+- (void)clearCacheForInputString:(id)string keyboardInput:(id)input unambiguousSyllableCount:(unint64_t)count selectedDisambiguationCandidateIndex:(unint64_t)index
 {
-  v9 = a6 == 0x7FFFFFFFFFFFFFFFLL;
-  v10 = a4;
-  v11 = a3;
-  v13 = [(TIWordSearch *)self candidatesCache];
-  v12 = GetCacheKey(v11, v10, v9, a5, 0, 0, 0x7FFFFFFFFFFFFFFFLL);
+  v9 = index == 0x7FFFFFFFFFFFFFFFLL;
+  inputCopy = input;
+  stringCopy = string;
+  candidatesCache = [(TIWordSearch *)self candidatesCache];
+  v12 = GetCacheKey(stringCopy, inputCopy, v9, count, 0, 0, 0x7FFFFFFFFFFFFFFFLL);
 
-  [v13 removeObjectForKey:v12];
+  [candidatesCache removeObjectForKey:v12];
 }
 
 - (unsigned)nameReadingPairGenerationMode
 {
-  v2 = [(TIWordSearch *)self inputMode];
-  v3 = [v2 variant];
-  v4 = [v3 isEqualToString:@"Zhuyin"];
+  inputMode = [(TIWordSearch *)self inputMode];
+  variant = [inputMode variant];
+  v4 = [variant isEqualToString:@"Zhuyin"];
 
   if (v4)
   {
@@ -709,25 +709,25 @@ uint64_t __62__TIWordSearchChinesePhonetic_uncachedCandidatesForOperation___bloc
 
 - (int)mecabraInputMethodType
 {
-  v2 = [(TIWordSearch *)self inputMode];
-  v3 = [v2 normalizedIdentifier];
+  inputMode = [(TIWordSearch *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
 
-  if ([v3 isEqualToString:@"zh_Hans-Pinyin"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"zh_Hans-Shuangpin") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"zh_Hans"))
+  if ([normalizedIdentifier isEqualToString:@"zh_Hans-Pinyin"] & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hans-Shuangpin") & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hans"))
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"zh_Hant-Pinyin"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"zh_Hant-Shuangpin") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"zh_Hant"))
+  else if ([normalizedIdentifier isEqualToString:@"zh_Hant-Pinyin"] & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hant-Shuangpin") & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hant"))
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"zh_Hant-Zhuyin"])
+  else if ([normalizedIdentifier isEqualToString:@"zh_Hant-Zhuyin"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"yue_Hant-Phonetic"])
+  else if ([normalizedIdentifier isEqualToString:@"yue_Hant-Phonetic"])
   {
     v4 = 13;
   }
@@ -740,52 +740,52 @@ uint64_t __62__TIWordSearchChinesePhonetic_uncachedCandidatesForOperation___bloc
   return v4;
 }
 
-- (void)updateShuangpinTypeWithReanalysisMode:(BOOL)a3
+- (void)updateShuangpinTypeWithReanalysisMode:(BOOL)mode
 {
-  v5 = [(TIWordSearch *)self inputMode];
-  v10 = [v5 normalizedIdentifier];
+  inputMode = [(TIWordSearch *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
 
-  if (([v10 isEqualToString:@"zh_Hans-Shuangpin"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"zh_Hant-Shuangpin"))
+  if (([normalizedIdentifier isEqualToString:@"zh_Hans-Shuangpin"] & 1) != 0 || objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hant-Shuangpin"))
   {
-    if (a3)
+    if (mode)
     {
-      v6 = 0;
+      integerValue = 0;
     }
 
     else
     {
-      v7 = [MEMORY[0x277D6F470] sharedPreferencesController];
-      v8 = [v7 valueForPreferenceKey:*MEMORY[0x277D6FA70]];
+      mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+      v8 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6FA70]];
 
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v6 = [v8 integerValue];
+        integerValue = [v8 integerValue];
       }
 
       else
       {
-        v6 = 0;
+        integerValue = 0;
       }
     }
 
-    if (v6 != [(TIWordSearchChinesePhonetic *)self shuangpinType])
+    if (integerValue != [(TIWordSearchChinesePhonetic *)self shuangpinType])
     {
-      [(TIWordSearchChinesePhonetic *)self setShuangpinType:v6];
-      v9 = [(TIWordSearch *)self mecabraEnvironment];
-      [v9 setShuangpinType:v6];
+      [(TIWordSearchChinesePhonetic *)self setShuangpinType:integerValue];
+      mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+      [mecabraEnvironment setShuangpinType:integerValue];
     }
   }
 }
 
-- (void)setCustomDialectLanguageModel:(id)a3
+- (void)setCustomDialectLanguageModel:(id)model
 {
-  v7 = a3;
-  if (-[TIWordSearch mecabra](self, "mecabra") && [v7 hasSuffix:@"Chinese.lm"])
+  modelCopy = model;
+  if (-[TIWordSearch mecabra](self, "mecabra") && [modelCopy hasSuffix:@"Chinese.lm"])
   {
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = [MEMORY[0x277CBEA60] arrayWithObject:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    v5 = [MEMORY[0x277CBEA60] arrayWithObject:modelCopy];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v5, *MEMORY[0x277D82A38], 0}];
-    [v4 addObject:v6];
+    [array addObject:v6];
     [(TIWordSearch *)self mecabra];
     MecabraSetAssetDataItemsForType();
   }
@@ -793,20 +793,20 @@ uint64_t __62__TIWordSearchChinesePhonetic_uncachedCandidatesForOperation___bloc
 
 - (void)updateFuzzyPinyinSettings
 {
-  v3 = [(TIWordSearch *)self inputMode];
-  v20 = [v3 normalizedIdentifier];
+  inputMode = [(TIWordSearch *)self inputMode];
+  normalizedIdentifier = [inputMode normalizedIdentifier];
 
-  if (([v20 isEqualToString:@"zh_Hans-Pinyin"] & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", @"zh_Hans-Shuangpin") & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", @"zh_Hant-Pinyin") & 1) != 0 || objc_msgSend(v20, "isEqualToString:", @"zh_Hant-Shuangpin"))
+  if (([normalizedIdentifier isEqualToString:@"zh_Hans-Pinyin"] & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hans-Shuangpin") & 1) != 0 || (objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hant-Pinyin") & 1) != 0 || objc_msgSend(normalizedIdentifier, "isEqualToString:", @"zh_Hant-Shuangpin"))
   {
-    v4 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    v5 = [v4 valueForKey:100];
+    mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+    v5 = [mEMORY[0x277D6F470] valueForKey:100];
 
-    v6 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinEnabled];
-    if (v5 && (v7 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    fuzzyPinyinEnabled = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinEnabled];
+    if (v5 && (v7 = fuzzyPinyinEnabled, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       if (v7 == [v5 BOOLValue])
       {
-        v9 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+        fuzzyPinyinPairs = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
         if (v7)
         {
           goto LABEL_21;
@@ -815,36 +815,36 @@ uint64_t __62__TIWordSearchChinesePhonetic_uncachedCandidatesForOperation___bloc
 
       else
       {
-        v8 = [v5 BOOLValue];
-        v9 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
-        if (v8)
+        bOOLValue = [v5 BOOLValue];
+        fuzzyPinyinPairs = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+        if (bOOLValue)
         {
 LABEL_21:
-          v14 = [MEMORY[0x277D6F470] sharedPreferencesController];
-          v15 = [v14 valueForKey:102];
+          mEMORY[0x277D6F470]2 = [MEMORY[0x277D6F470] sharedPreferencesController];
+          v15 = [mEMORY[0x277D6F470]2 valueForKey:102];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
-            v17 = [v15 isEqualToArray:v16];
+            fuzzyPinyinPairs2 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+            v17 = [v15 isEqualToArray:fuzzyPinyinPairs2];
 
             if (v17)
             {
               goto LABEL_26;
             }
 
-            v18 = [v15 copy];
+            defaultFuzzyPinyinPairs = [v15 copy];
           }
 
           else
           {
-            v18 = [MEMORY[0x277D6F338] defaultFuzzyPinyinPairs];
+            defaultFuzzyPinyinPairs = [MEMORY[0x277D6F338] defaultFuzzyPinyinPairs];
           }
 
-          v19 = v18;
+          v19 = defaultFuzzyPinyinPairs;
 
-          v9 = v19;
+          fuzzyPinyinPairs = v19;
 LABEL_26:
 
           v10 = 1;
@@ -861,7 +861,7 @@ LABEL_26:
 
     else
     {
-      v9 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+      fuzzyPinyinPairs = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
     }
 
     v10 = 0;
@@ -872,10 +872,10 @@ LABEL_26:
     }
 
 LABEL_12:
-    v12 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+    fuzzyPinyinPairs3 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
 
     v11 = v10;
-    if (v12 == v9)
+    if (fuzzyPinyinPairs3 == fuzzyPinyinPairs)
     {
 LABEL_16:
 
@@ -883,12 +883,12 @@ LABEL_16:
     }
 
 LABEL_13:
-    [(TIWordSearchChinesePhonetic *)self setFuzzyPinyinPairs:v9];
+    [(TIWordSearchChinesePhonetic *)self setFuzzyPinyinPairs:fuzzyPinyinPairs];
     [(TIWordSearchChinesePhonetic *)self setFuzzyPinyinEnabled:v11];
     [(TIWordSearch *)self mecabra];
     if ([(TIWordSearchChinesePhonetic *)self fuzzyPinyinEnabled])
     {
-      v13 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
+      fuzzyPinyinPairs4 = [(TIWordSearchChinesePhonetic *)self fuzzyPinyinPairs];
       MecabraSetFuzzyPinyinPairs();
     }
 

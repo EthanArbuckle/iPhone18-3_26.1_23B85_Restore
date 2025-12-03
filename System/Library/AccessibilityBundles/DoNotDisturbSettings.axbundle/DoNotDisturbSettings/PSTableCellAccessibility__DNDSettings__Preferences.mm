@@ -8,16 +8,16 @@
 {
   v7.receiver = self;
   v7.super_class = PSTableCellAccessibility__DNDSettings__Preferences;
-  v3 = [(PSTableCellAccessibility__DNDSettings__Preferences *)&v7 accessibilityTraits];
-  v4 = [(PSTableCellAccessibility__DNDSettings__Preferences *)self accessibilityIdentifier];
-  v5 = [v4 hasSuffix:@"DateRangePaneCell"];
+  accessibilityTraits = [(PSTableCellAccessibility__DNDSettings__Preferences *)&v7 accessibilityTraits];
+  accessibilityIdentifier = [(PSTableCellAccessibility__DNDSettings__Preferences *)self accessibilityIdentifier];
+  v5 = [accessibilityIdentifier hasSuffix:@"DateRangePaneCell"];
 
   if (v5)
   {
-    return v3 & ~*MEMORY[0x29EDC7FA8] | *MEMORY[0x29EDC7F70];
+    return accessibilityTraits & ~*MEMORY[0x29EDC7FA8] | *MEMORY[0x29EDC7F70];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

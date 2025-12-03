@@ -1,29 +1,29 @@
 @interface SUUIPlayButtonControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)_showPlayIndicator:(BOOL)a3;
+- (void)_showPlayIndicator:(BOOL)indicator;
 - (void)beginIndeterminateAnimation;
 - (void)endIndeterminateAnimation;
 @end
 
 @implementation SUUIPlayButtonControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"beginIndeterminateAnimation" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"endIndeterminateAnimation" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"_showPlayIndicator:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"beginIndeterminateAnimation" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SUUIPlayButtonControl" hasInstanceMethod:@"endIndeterminateAnimation" withFullSignature:{"v", 0}];
 }
 
-- (void)_showPlayIndicator:(BOOL)a3
+- (void)_showPlayIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   v7.receiver = self;
   v7.super_class = SUUIPlayButtonControlAccessibility;
   [(SUUIPlayButtonControlAccessibility *)&v7 _showPlayIndicator:?];
-  if (v3)
+  if (indicatorCopy)
   {
     v5 = @"play.button";
   }

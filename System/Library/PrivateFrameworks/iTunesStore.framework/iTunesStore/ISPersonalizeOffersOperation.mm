@@ -1,24 +1,24 @@
 @interface ISPersonalizeOffersOperation
-- (BOOL)_runWithURLDictionary:(id)a3 error:(id *)a4;
-- (ISPersonalizeOffersOperation)initWithPersonalizeOffersRequest:(id)a3;
+- (BOOL)_runWithURLDictionary:(id)dictionary error:(id *)error;
+- (ISPersonalizeOffersOperation)initWithPersonalizeOffersRequest:(id)request;
 - (ISPersonalizeOffersRequest)personalizeOffersReqeust;
 - (SSPersonalizeOffersResponse)response;
-- (id)_copyResponseForURL:(id)a3 requestString:(id)a4 error:(id *)a5;
-- (void)_addDictionaryToResponse:(id)a3;
+- (id)_copyResponseForURL:(id)l requestString:(id)string error:(id *)error;
+- (void)_addDictionaryToResponse:(id)response;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation ISPersonalizeOffersOperation
 
-- (ISPersonalizeOffersOperation)initWithPersonalizeOffersRequest:(id)a3
+- (ISPersonalizeOffersOperation)initWithPersonalizeOffersRequest:(id)request
 {
   v6.receiver = self;
   v6.super_class = ISPersonalizeOffersOperation;
   v4 = [(ISOperation *)&v6 init];
   if (v4)
   {
-    v4->_request = [a3 copy];
+    v4->_request = [request copy];
   }
 
   return v4;
@@ -63,24 +63,24 @@
         goto LABEL_37;
       }
 
-      v17 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v17)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v17 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
-      if ([v17 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v19 = v18 | 2;
+        v19 = shouldLog | 2;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v19 &= 2u;
       }
@@ -103,24 +103,24 @@ LABEL_36:
 
     else
     {
-      v13 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v13)
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38]2)
       {
-        v13 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
-      if ([v13 shouldLogToDisk])
+      shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+      if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog2 | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v15 &= 2u;
       }
@@ -152,24 +152,24 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v6)
+  mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]3)
   {
-    v6 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
-  if ([v6 shouldLogToDisk])
+  shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+  if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog3 | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog3;
   }
 
-  if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v8 &= 2u;
   }
@@ -200,7 +200,7 @@ LABEL_37:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addDictionaryToResponse:(id)a3
+- (void)_addDictionaryToResponse:(id)response
 {
   v33 = *MEMORY[0x277D85DE8];
   [(ISOperation *)self lock];
@@ -209,7 +209,7 @@ LABEL_37:
     self->_response = objc_alloc_init(MEMORY[0x277D69BF0]);
   }
 
-  v5 = [a3 objectForKey:@"owns-data"];
+  v5 = [response objectForKey:@"owns-data"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -255,7 +255,7 @@ LABEL_37:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = [a3 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v12 = [response countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
@@ -266,11 +266,11 @@ LABEL_37:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(response);
         }
 
         v16 = *(*(&v23 + 1) + 8 * j);
-        v17 = [a3 objectForKey:v16];
+        v17 = [response objectForKey:v16];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -301,7 +301,7 @@ LABEL_37:
         }
       }
 
-      v13 = [a3 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v13 = [response countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v13);
@@ -311,7 +311,7 @@ LABEL_37:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_copyResponseForURL:(id)a3 requestString:(id)a4 error:(id *)a5
+- (id)_copyResponseForURL:(id)l requestString:(id)string error:(id *)error
 {
   v15 = 0;
   v9 = objc_alloc_init(ISStoreURLOperation);
@@ -320,34 +320,34 @@ LABEL_37:
   v11 = [objc_alloc(MEMORY[0x277D69A58]) initWithAccountIdentifier:{-[ISPersonalizeOffersRequest accountIdentifier](self->_request, "accountIdentifier")}];
   [(ISURLOperation *)v9 setAuthenticationContext:v11];
 
-  v12 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:a3];
-  [v12 setHTTPBody:{objc_msgSend(a4, "dataUsingEncoding:", 4)}];
+  v12 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:l];
+  [v12 setHTTPBody:{objc_msgSend(string, "dataUsingEncoding:", 4)}];
   [v12 setHTTPMethod:@"POST"];
   [(ISURLOperation *)v9 setRequestProperties:v12];
 
   [(ISOperation *)self runSubOperation:v9 returningError:&v15];
-  v13 = [(ISDataProvider *)v10 output];
+  output = [(ISDataProvider *)v10 output];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v15;
+    *error = v15;
   }
 
-  return v13;
+  return output;
 }
 
-- (BOOL)_runWithURLDictionary:(id)a3 error:(id *)a4
+- (BOOL)_runWithURLDictionary:(id)dictionary error:(id *)error
 {
   v91 = *MEMORY[0x277D85DE8];
   v69 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v72 = self;
-  v5 = [(ISPersonalizeOffersRequest *)self->_request allItemTypes];
+  selfCopy = self;
+  allItemTypes = [(ISPersonalizeOffersRequest *)self->_request allItemTypes];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v5;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v81 objects:v90 count:16];
+  obj = allItemTypes;
+  v6 = [(NSArray *)allItemTypes countByEnumeratingWithState:&v81 objects:v90 count:16];
   v7 = 0x277CCA000uLL;
   if (v6)
   {
@@ -363,7 +363,7 @@ LABEL_37:
         }
 
         v11 = *(*(&v81 + 1) + 8 * i);
-        v12 = [a3 objectForKey:{v11, v63, v66}];
+        v12 = [dictionary objectForKey:{v11, v63, v66}];
         v13 = *(v7 + 3240);
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 length])
@@ -375,7 +375,7 @@ LABEL_37:
             [v69 setObject:v14 forKey:v12];
           }
 
-          v15 = [(ISPersonalizeOffersRequest *)v72->_request itemIdentifiersForItemType:v11];
+          v15 = [(ISPersonalizeOffersRequest *)selfCopy->_request itemIdentifiersForItemType:v11];
           v77 = 0u;
           v78 = 0u;
           v79 = 0u;
@@ -414,24 +414,24 @@ LABEL_37:
 
         else
         {
-          v21 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-          if (!v21)
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+          if (!mEMORY[0x277D69B38])
           {
-            v21 = [MEMORY[0x277D69B38] sharedConfig];
+            mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
           }
 
-          v22 = [v21 shouldLog];
-          if ([v21 shouldLogToDisk])
+          shouldLog = [mEMORY[0x277D69B38] shouldLog];
+          if ([mEMORY[0x277D69B38] shouldLogToDisk])
           {
-            v23 = v22 | 2;
+            v23 = shouldLog | 2;
           }
 
           else
           {
-            v23 = v22;
+            v23 = shouldLog;
           }
 
-          if (os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
           {
             v24 = v23;
           }
@@ -469,24 +469,24 @@ LABEL_37:
     while (v8);
   }
 
-  v29 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v29)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v29 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v30 = [v29 shouldLog];
-  if ([v29 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v31 = v30 | 2;
+    v31 = shouldLog2 | 2;
   }
 
   else
   {
-    v31 = v30;
+    v31 = shouldLog2;
   }
 
-  if (os_log_type_enabled([v29 OSLogObject], OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled([mEMORY[0x277D69B38]2 OSLogObject], OS_LOG_TYPE_INFO))
   {
     v32 = v31;
   }
@@ -497,7 +497,7 @@ LABEL_37:
   }
 
   v33 = v69;
-  v34 = v72;
+  v34 = selfCopy;
   if (v32)
   {
     v35 = objc_opt_class();
@@ -567,24 +567,24 @@ LABEL_37:
 
         else
         {
-          v49 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-          if (!v49)
+          mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+          if (!mEMORY[0x277D69B38]3)
           {
-            v49 = [MEMORY[0x277D69B38] sharedConfig];
+            mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
           }
 
-          v50 = [v49 shouldLog];
-          if ([v49 shouldLogToDisk])
+          shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+          if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
           {
-            v51 = v50 | 2;
+            v51 = shouldLog3 | 2;
           }
 
           else
           {
-            v51 = v50;
+            v51 = shouldLog3;
           }
 
-          if (os_log_type_enabled([v49 OSLogObject], OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled([mEMORY[0x277D69B38]3 OSLogObject], OS_LOG_TYPE_DEFAULT))
           {
             v52 = v51;
           }
@@ -616,7 +616,7 @@ LABEL_37:
 
           ++v42;
           v33 = v69;
-          v34 = v72;
+          v34 = selfCopy;
         }
       }
 
@@ -634,7 +634,7 @@ LABEL_37:
       v58 = 1;
     }
 
-    v60 = a4;
+    errorCopy2 = error;
     v59 = v71;
   }
 
@@ -642,12 +642,12 @@ LABEL_37:
   {
     v59 = 0;
     v58 = 1;
-    v60 = a4;
+    errorCopy2 = error;
   }
 
-  if (v60)
+  if (errorCopy2)
   {
-    *v60 = v59;
+    *errorCopy2 = v59;
   }
 
   v61 = *MEMORY[0x277D85DE8];

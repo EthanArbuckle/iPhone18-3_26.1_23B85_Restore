@@ -1,15 +1,15 @@
 @interface NTKFaceBundleManager
 + (id)sharedManager;
-- (BOOL)loadKeyDescriptor:(id)a3;
+- (BOOL)loadKeyDescriptor:(id)descriptor;
 - (id)_generateLookupsIfNecessary;
 - (id)_init;
-- (id)faceBundleForBundleIdentifier:(id)a3 onDevice:(id)a4 forMigration:(BOOL)a5;
-- (id)faceBundleForFaceStyle:(int64_t)a3 onDevice:(id)a4;
+- (id)faceBundleForBundleIdentifier:(id)identifier onDevice:(id)device forMigration:(BOOL)migration;
+- (id)faceBundleForFaceStyle:(int64_t)style onDevice:(id)device;
 - (void)_resetCaches;
-- (void)argonUpdated:(id)a3;
+- (void)argonUpdated:(id)updated;
 - (void)dealloc;
-- (void)enumerateArgonKeyDescriptorsWithBlock:(id)a3;
-- (void)enumerateFaceBundlesOnDevice:(id)a3 includingLegacy:(BOOL)a4 withBlock:(id)a5;
+- (void)enumerateArgonKeyDescriptorsWithBlock:(id)block;
+- (void)enumerateFaceBundlesOnDevice:(id)device includingLegacy:(BOOL)legacy withBlock:(id)block;
 @end
 
 @implementation NTKFaceBundleManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __37__NTKFaceBundleManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_1 != -1)
   {
     dispatch_once(&sharedManager_onceToken_1, block);
@@ -47,13 +47,13 @@ void __37__NTKFaceBundleManager_sharedManager__block_invoke(uint64_t a1)
   if (v2)
   {
     v2->_lookupLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     progressiveStyleLookup = v3->_progressiveStyleLookup;
-    v3->_progressiveStyleLookup = v4;
+    v3->_progressiveStyleLookup = dictionary;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     progressiveBundleIDLookup = v3->_progressiveBundleIDLookup;
-    v3->_progressiveBundleIDLookup = v6;
+    v3->_progressiveBundleIDLookup = dictionary2;
 
     v8 = +[NTKBundleLoader rootDirectory];
     v9 = [MEMORY[0x277CBEB58] set];
@@ -143,8 +143,8 @@ void __37__NTKFaceBundleManager_sharedManager__block_invoke(uint64_t a1)
       v34 = 0x277CCA9A0;
     }
 
-    v35 = [*v34 defaultCenter];
-    [v35 addObserver:v3 selector:sel_argonUpdated_ name:@"NTKArgonManagerDidUpdateNotificationName" object:0];
+    defaultCenter = [*v34 defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_argonUpdated_ name:@"NTKArgonManagerDidUpdateNotificationName" object:0];
   }
 
   return v3;
@@ -176,8 +176,8 @@ void __29__NTKFaceBundleManager__init__block_invoke_5(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKFaceBundleManager;
@@ -200,7 +200,7 @@ void __29__NTKFaceBundleManager__init__block_invoke_5(uint64_t a1)
   os_unfair_lock_unlock(&self->_lookupLock);
 }
 
-- (void)argonUpdated:(id)a3
+- (void)argonUpdated:(id)updated
 {
   v4 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -237,15 +237,15 @@ void __37__NTKFaceBundleManager_argonUpdated___block_invoke(uint64_t a1)
       _os_log_impl(&dword_22D9C5000, v4, OS_LOG_TYPE_DEFAULT, "Generating face bundle lookups for bundle manager…", buf, 2u);
     }
 
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(NTKFaceBundleManager *)self loader];
+    array = [MEMORY[0x277CBEB18] array];
+    loader = [(NTKFaceBundleManager *)self loader];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke;
     v12[3] = &unk_27877E890;
-    v13 = v5;
-    v7 = v5;
-    [v6 enumerateFaceBundleClassesIgnoringCache:1 withBlock:v12];
+    v13 = array;
+    v7 = array;
+    [loader enumerateFaceBundleClassesIgnoringCache:1 withBlock:v12];
 
     v8 = [v7 copy];
     v9 = self->_cachedLookup;
@@ -269,11 +269,11 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
   objc_sync_exit(v3);
 }
 
-- (void)enumerateFaceBundlesOnDevice:(id)a3 includingLegacy:(BOOL)a4 withBlock:(id)a5
+- (void)enumerateFaceBundlesOnDevice:(id)device includingLegacy:(BOOL)legacy withBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  blockCopy = block;
   [(NTKFaceBundleManager *)self _generateLookupsIfNecessary];
   v18 = 0u;
   v19 = 0u;
@@ -296,11 +296,11 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
 
         v15 = *(*(&v18 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        if (a4 || ([v15 legacyFaceStyle], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
+        if (legacy || ([v15 legacyFaceStyle], v17 = objc_claimAutoreleasedReturnValue(), v17, !v17))
         {
           if (([objc_msgSend(v15 "faceClass")] & 1) == 0)
           {
-            v9[2](v9, v15);
+            blockCopy[2](blockCopy, v15);
           }
         }
 
@@ -316,40 +316,40 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
   }
 }
 
-- (id)faceBundleForBundleIdentifier:(id)a3 onDevice:(id)a4 forMigration:(BOOL)a5
+- (id)faceBundleForBundleIdentifier:(id)identifier onDevice:(id)device forMigration:(BOOL)migration
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lookupLock);
-  v10 = [(NSMutableDictionary *)self->_progressiveBundleIDLookup objectForKey:v8];
+  v10 = [(NSMutableDictionary *)self->_progressiveBundleIDLookup objectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_lookupLock);
   if (!v10)
   {
-    v11 = [(NTKFaceBundleManager *)self loader];
-    v10 = [v11 loadFaceBundleWithIdentifier:v8];
+    loader = [(NTKFaceBundleManager *)self loader];
+    v10 = [loader loadFaceBundleWithIdentifier:identifierCopy];
 
     if (v10)
     {
       os_unfair_lock_lock(&self->_lookupLock);
-      [(NSMutableDictionary *)self->_progressiveBundleIDLookup setObject:v10 forKey:v8];
+      [(NSMutableDictionary *)self->_progressiveBundleIDLookup setObject:v10 forKey:identifierCopy];
       os_unfair_lock_unlock(&self->_lookupLock);
       v12 = v10;
     }
   }
 
-  v13 = [v10 faceClass];
-  v14 = [v10 legacyFaceStyle];
+  faceClass = [v10 faceClass];
+  legacyFaceStyle = [v10 legacyFaceStyle];
 
-  if (v14)
+  if (legacyFaceStyle)
   {
     v15 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [NTKFaceBundleManager faceBundleForBundleIdentifier:v13 onDevice:v15 forMigration:?];
+      [NTKFaceBundleManager faceBundleForBundleIdentifier:faceClass onDevice:v15 forMigration:?];
     }
   }
 
-  if (a5 || ![(objc_class *)v13 isRestrictedForDevice:v9]|| CLKIsFaceSnapshotService())
+  if (migration || ![(objc_class *)faceClass isRestrictedForDevice:deviceCopy]|| CLKIsFaceSnapshotService())
   {
     v16 = v10;
   }
@@ -362,25 +362,25 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
   return v16;
 }
 
-- (id)faceBundleForFaceStyle:(int64_t)a3 onDevice:(id)a4
+- (id)faceBundleForFaceStyle:(int64_t)style onDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_lookupLock);
   progressiveStyleLookup = self->_progressiveStyleLookup;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v9 = [(NSMutableDictionary *)progressiveStyleLookup objectForKey:v8];
 
   os_unfair_lock_unlock(&self->_lookupLock);
   if (!v9)
   {
-    v10 = [(NTKFaceBundleManager *)self loader];
-    v9 = [v10 loadLegacyFaceBundleForStyle:a3];
+    loader = [(NTKFaceBundleManager *)self loader];
+    v9 = [loader loadLegacyFaceBundleForStyle:style];
 
     if (v9)
     {
       os_unfair_lock_lock(&self->_lookupLock);
       v11 = self->_progressiveStyleLookup;
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:style];
       [(NSMutableDictionary *)v11 setObject:v9 forKey:v12];
 
       os_unfair_lock_unlock(&self->_lookupLock);
@@ -403,19 +403,19 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
   return v15;
 }
 
-- (void)enumerateArgonKeyDescriptorsWithBlock:(id)a3
+- (void)enumerateArgonKeyDescriptorsWithBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     loader = self->_loader;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __62__NTKFaceBundleManager_enumerateArgonKeyDescriptorsWithBlock___block_invoke;
     v28[3] = &unk_27877E890;
-    v7 = v5;
+    v7 = dictionary;
     v29 = v7;
     [(NTKFaceBundleLoader *)loader enumerateFaceBundleClassesIgnoringCache:0 withBlock:v28];
     v8 = v7;
@@ -439,7 +439,7 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v12 unsignedIntegerValue];
+          unsignedIntegerValue = [v12 unsignedIntegerValue];
           v14 = [v9 objectForKey:v12];
           objc_sync_enter(v14);
           v20 = 0u;
@@ -460,7 +460,7 @@ void __51__NTKFaceBundleManager__generateLookupsIfNecessary__block_invoke(uint64
                   objc_enumerationMutation(v15);
                 }
 
-                v4[2](v4, v13, *(*(&v20 + 1) + 8 * j));
+                blockCopy[2](blockCopy, unsignedIntegerValue, *(*(&v20 + 1) + 8 * j));
               }
 
               v16 = [v15 countByEnumeratingWithState:&v20 objects:v30 count:16];
@@ -554,16 +554,16 @@ void __62__NTKFaceBundleManager_enumerateArgonKeyDescriptorsWithBlock___block_in
   objc_sync_exit(v8);
 }
 
-- (BOOL)loadKeyDescriptor:(id)a3
+- (BOOL)loadKeyDescriptor:(id)descriptor
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (descriptor)
   {
     v11 = 0;
-    v4 = a3;
-    v5 = NTKAskFaceSupportServerToAddKeyDescriptor(v4, 3, &v11);
+    descriptorCopy = descriptor;
+    v5 = NTKAskFaceSupportServerToAddKeyDescriptor(descriptorCopy, 3, &v11);
     v6 = v11;
-    v7 = [v4 fileName];
+    fileName = [descriptorCopy fileName];
 
     v8 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
     v9 = v8;
@@ -572,7 +572,7 @@ void __62__NTKFaceBundleManager_enumerateArgonKeyDescriptorsWithBlock___block_in
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v13 = v7;
+        v13 = fileName;
         _os_log_impl(&dword_22D9C5000, v9, OS_LOG_TYPE_DEFAULT, "Key descriptor %{public}@ was ingested!", buf, 0xCu);
       }
 
@@ -583,7 +583,7 @@ void __62__NTKFaceBundleManager_enumerateArgonKeyDescriptorsWithBlock___block_in
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(NTKFaceBundleManager *)v7 loadKeyDescriptor:v6, v9];
+        [(NTKFaceBundleManager *)fileName loadKeyDescriptor:v6, v9];
       }
     }
   }

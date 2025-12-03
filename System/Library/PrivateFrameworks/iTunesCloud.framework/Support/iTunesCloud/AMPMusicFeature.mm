@@ -1,31 +1,31 @@
 @interface AMPMusicFeature
-- (BOOL)isEqual:(id)a3;
-- (float)valueAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)valueAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AMPMusicFeature
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v8 = fromCopy;
+  if (fromCopy[4])
   {
     [(AMPMusicFeature *)self setKey:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = [v4 valuesCount];
-  if (v5)
+  valuesCount = [fromCopy valuesCount];
+  if (valuesCount)
   {
-    v6 = v5;
+    v6 = valuesCount;
     for (i = 0; i != v6; ++i)
     {
       [v8 valueAtIndex:i];
@@ -34,10 +34,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[4])) || -[NSString isEqual:](key, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[4])) || -[NSString isEqual:](key, "isEqual:")))
   {
     IsEqual = PBRepeatedFloatIsEqual();
   }
@@ -50,10 +50,10 @@
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -61,38 +61,38 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (self->_key)
   {
-    [v7 setKey:?];
+    [toCopy setKey:?];
   }
 
   if ([(AMPMusicFeature *)self valuesCount])
   {
-    [v7 clearValues];
-    v4 = [(AMPMusicFeature *)self valuesCount];
-    if (v4)
+    [toCopy clearValues];
+    valuesCount = [(AMPMusicFeature *)self valuesCount];
+    if (valuesCount)
     {
-      v5 = v4;
+      v5 = valuesCount;
       for (i = 0; i != v5; ++i)
       {
         [(AMPMusicFeature *)self valueAtIndex:i];
-        [v7 addValue:?];
+        [toCopy addValue:?];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   p_values = &self->_values;
@@ -103,7 +103,7 @@
     {
       v7 = p_values->list[v6];
       PBDataWriterWriteFloatField();
-      v4 = v8;
+      toCopy = v8;
       ++v6;
     }
 
@@ -132,24 +132,24 @@
   v7.receiver = self;
   v7.super_class = AMPMusicFeature;
   v3 = [(AMPMusicFeature *)&v7 description];
-  v4 = [(AMPMusicFeature *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AMPMusicFeature *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (float)valueAtIndex:(unint64_t)a3
+- (float)valueAtIndex:(unint64_t)index
 {
   p_values = &self->_values;
   count = self->_values.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_values->list[a3];
+  return p_values->list[index];
 }
 
 - (void)dealloc

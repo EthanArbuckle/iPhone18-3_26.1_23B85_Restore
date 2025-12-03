@@ -1,8 +1,8 @@
 @interface CLHarvesterService
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CLHarvesterService)init;
 - (id).cxx_construct;
 - (id)jsonObject;
@@ -12,18 +12,18 @@
 - (void)constructPolicies;
 - (void)constructSubHarvesters;
 - (void)endService;
-- (void)fetchStateWithReply:(id)a3;
-- (void)submitSample:(id)a3;
+- (void)fetchStateWithReply:(id)reply;
+- (void)submitSample:(id)sample;
 @end
 
 @implementation CLHarvesterService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -315,14 +315,14 @@
 - (id)jsonObject
 {
   v5[0] = @"endpointSelector";
-  v3 = [(CLHEndpointSelector *)self->_endpointSelector jsonObject];
+  jsonObject = [(CLHEndpointSelector *)self->_endpointSelector jsonObject];
   v5[1] = @"locationClassifier";
-  v6[0] = v3;
+  v6[0] = jsonObject;
   v6[1] = [(CLHLocationClassifier *)self->_classifier jsonObject];
   return [NSDictionary dictionaryWithObjects:v6 forKeys:v5 count:2];
 }
 
-- (void)submitSample:(id)a3
+- (void)submitSample:(id)sample
 {
   if (qword_1025D47D0 != -1)
   {
@@ -384,7 +384,7 @@
         atomic_fetch_add_explicit(&v12->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      sub_1004025E0(v11, a3);
+      sub_1004025E0(v11, sample);
       if (v12)
       {
         sub_100008080(v12);
@@ -431,7 +431,7 @@
   }
 }
 
-- (void)fetchStateWithReply:(id)a3
+- (void)fetchStateWithReply:(id)reply
 {
   if (qword_1025D47D0 != -1)
   {
@@ -455,11 +455,11 @@
     v7[1] = [(CLHLocationClassifier *)self->_classifier jsonObject];
     v6[2] = @"requestStore";
     v7[2] = [(CLHRequestStore *)self->_requestStore jsonObject];
-    (*(a3 + 2))(a3, [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:3]);
+    (*(reply + 2))(reply, [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:3]);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   if (qword_1025D47D0 != -1)
   {
@@ -478,8 +478,8 @@
     sub_1018993C0();
   }
 
-  v7 = sub_1004C9FF8(a4, @"com.apple.locationd.harvest.introspection");
-  v8 = v7 | sub_1004C9FF8(a4, @"com.apple.locationd.harvest.contribute");
+  v7 = sub_1004C9FF8(connection, @"com.apple.locationd.harvest.introspection");
+  v8 = v7 | sub_1004C9FF8(connection, @"com.apple.locationd.harvest.contribute");
   if (v8 == 1)
   {
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLHarvesterServerInterface];
@@ -488,10 +488,10 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     [(NSXPCInterface *)v9 setClasses:[NSSet forSelector:"setWithObjects:" argumentIndex:v10 ofReply:v11 setWithObjects:v12, objc_opt_class(), 0], "fetchStateWithReply:", 0, 1];
-    [a4 setExportedInterface:v9];
-    [a4 setExportedObject:self];
-    [a4 _setQueue:{objc_msgSend(objc_msgSend(-[CLHarvesterService universe](self, "universe"), "silo"), "queue")}];
-    [a4 resume];
+    [connection setExportedInterface:v9];
+    [connection setExportedObject:self];
+    [connection _setQueue:{objc_msgSend(objc_msgSend(-[CLHarvesterService universe](self, "universe"), "silo"), "queue")}];
+    [connection resume];
   }
 
   return v8;

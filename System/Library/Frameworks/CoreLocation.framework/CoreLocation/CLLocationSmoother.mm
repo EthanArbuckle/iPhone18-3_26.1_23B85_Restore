@@ -1,30 +1,30 @@
 @interface CLLocationSmoother
 - (CLLocationManagerDelegateInternal)delegate;
 - (_CLLocationSmootherProxy)locationManagerSmootherProxy;
-- (void)configureWithWorkoutActivityType:(unint64_t)a3 shouldReconstructEntireRoute:(BOOL)a4 timeIntervalsThatNeedPopulating:(id)a5;
+- (void)configureWithWorkoutActivityType:(unint64_t)type shouldReconstructEntireRoute:(BOOL)route timeIntervalsThatNeedPopulating:(id)populating;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)smoothLocations:(id)a3;
-- (void)smoothLocations:(id)a3 batchType:(unint64_t)a4 handler:(id)a5;
+- (void)setDelegate:(id)delegate;
+- (void)smoothLocations:(id)locations;
+- (void)smoothLocations:(id)locations batchType:(unint64_t)type handler:(id)handler;
 @end
 
 @implementation CLLocationSmoother
 
-- (void)configureWithWorkoutActivityType:(unint64_t)a3 shouldReconstructEntireRoute:(BOOL)a4 timeIntervalsThatNeedPopulating:(id)a5
+- (void)configureWithWorkoutActivityType:(unint64_t)type shouldReconstructEntireRoute:(BOOL)route timeIntervalsThatNeedPopulating:(id)populating
 {
-  v5 = a5;
-  v6 = self;
+  populatingCopy = populating;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
-  self->fWorkoutActivityType = a3;
-  self->fShouldReconstructEntireRoute = a4;
-  if (a5 && [a5 count])
+  self->fWorkoutActivityType = type;
+  self->fShouldReconstructEntireRoute = route;
+  if (populating && [populating count])
   {
-    v51 = v6;
+    v51 = selfCopy;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v52 objects:v66 count:16];
+    v7 = [populatingCopy countByEnumeratingWithState:&v52 objects:v66 count:16];
     if (v7)
     {
       v8 = v7;
@@ -37,7 +37,7 @@
         {
           if (*v53 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(populatingCopy);
           }
 
           v12 = *(*(&v52 + 1) + 8 * v11);
@@ -104,7 +104,7 @@
         }
 
         while (v8 != v11);
-        v8 = [v5 countByEnumeratingWithState:&v52 objects:v66 count:16];
+        v8 = [populatingCopy countByEnumeratingWithState:&v52 objects:v66 count:16];
       }
 
       while (v8);
@@ -118,7 +118,7 @@
 
     v31 = v30 - 3;
     v32 = qword_1EAFE47A0;
-    v6 = v51;
+    selfCopy = v51;
     if (os_log_type_enabled(qword_1EAFE47A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240448;
@@ -183,11 +183,11 @@
         }
       }
 
-      v5 = 0;
+      populatingCopy = 0;
     }
   }
 
-  v6->fTimeIntervalsThatNeedPopulating = v5;
+  selfCopy->fTimeIntervalsThatNeedPopulating = populatingCopy;
   if (qword_1EAFE4798 != -1)
   {
     dispatch_once(&qword_1EAFE4798, &unk_1F0E6B880);
@@ -196,9 +196,9 @@
   v38 = qword_1EAFE47A0;
   if (os_log_type_enabled(qword_1EAFE47A0, OS_LOG_TYPE_DEFAULT))
   {
-    fShouldReconstructEntireRoute = v6->fShouldReconstructEntireRoute;
-    fTimeIntervalsThatNeedPopulating = v6->fTimeIntervalsThatNeedPopulating;
-    fWorkoutActivityType = v6->fWorkoutActivityType;
+    fShouldReconstructEntireRoute = selfCopy->fShouldReconstructEntireRoute;
+    fTimeIntervalsThatNeedPopulating = selfCopy->fTimeIntervalsThatNeedPopulating;
+    fWorkoutActivityType = selfCopy->fWorkoutActivityType;
     if (fTimeIntervalsThatNeedPopulating)
     {
       fTimeIntervalsThatNeedPopulating = [(NSArray *)fTimeIntervalsThatNeedPopulating count];
@@ -222,9 +222,9 @@
       dispatch_once(&qword_1EAFE4798, &unk_1F0E6B880);
     }
 
-    v43 = v6->fShouldReconstructEntireRoute;
-    v44 = v6->fTimeIntervalsThatNeedPopulating;
-    v45 = v6->fWorkoutActivityType;
+    v43 = selfCopy->fShouldReconstructEntireRoute;
+    v44 = selfCopy->fTimeIntervalsThatNeedPopulating;
+    v45 = selfCopy->fWorkoutActivityType;
     if (v44)
     {
       v44 = [(NSArray *)v44 count];
@@ -244,8 +244,8 @@
     }
   }
 
-  v47 = [(NSXPCConnection *)[(_CLLocationSmootherProxy *)[(CLLocationSmoother *)v6 locationManagerSmootherProxy] connection] remoteObjectProxy];
-  v48 = v6->fWorkoutActivityType;
+  remoteObjectProxy = [(NSXPCConnection *)[(_CLLocationSmootherProxy *)[(CLLocationSmoother *)selfCopy locationManagerSmootherProxy] connection] remoteObjectProxy];
+  v48 = selfCopy->fWorkoutActivityType;
   if (v48 > 59)
   {
     if (v48 > 69)
@@ -314,7 +314,7 @@ LABEL_86:
   }
 
 LABEL_87:
-  [v47 configureWithWorkoutActivity:v49 shouldReconstructEntireRoute:v6->fShouldReconstructEntireRoute timeIntervalsThatNeedPopulating:v6->fTimeIntervalsThatNeedPopulating];
+  [remoteObjectProxy configureWithWorkoutActivity:v49 shouldReconstructEntireRoute:selfCopy->fShouldReconstructEntireRoute timeIntervalsThatNeedPopulating:selfCopy->fTimeIntervalsThatNeedPopulating];
   v50 = *MEMORY[0x1E69E9840];
 }
 
@@ -341,7 +341,7 @@ LABEL_87:
   return result;
 }
 
-- (void)smoothLocations:(id)a3
+- (void)smoothLocations:(id)locations
 {
   v5 = [(CLLocationSmoother *)self locationManagerSmootherProxy][8];
   v6[0] = MEMORY[0x1E69E9820];
@@ -349,17 +349,17 @@ LABEL_87:
   v6[2] = sub_19B8DABE4;
   v6[3] = &unk_1E753CF38;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = locations;
   dispatch_async(v5, v6);
 }
 
-- (void)smoothLocations:(id)a3 batchType:(unint64_t)a4 handler:(id)a5
+- (void)smoothLocations:(id)locations batchType:(unint64_t)type handler:(id)handler
 {
   if (sub_19B93C23C())
   {
-    v7 = [(NSXPCConnection *)[(_CLLocationSmootherProxy *)[(CLLocationSmoother *)self locationManagerSmootherProxy] connection] remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)[(_CLLocationSmootherProxy *)[(CLLocationSmoother *)self locationManagerSmootherProxy] connection] remoteObjectProxy];
 
-    MEMORY[0x1EEE66B58](v7, sel_smoothLocations_batchType_handler_);
+    MEMORY[0x1EEE66B58](remoteObjectProxy, sel_smoothLocations_batchType_handler_);
   }
 
   else
@@ -369,12 +369,12 @@ LABEL_87:
     block[1] = 3221225472;
     block[2] = sub_19B8DAD48;
     block[3] = &unk_1E753CCE0;
-    block[4] = a5;
+    block[4] = handler;
     dispatch_async(global_queue, block);
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = [(CLLocationSmoother *)self locationManagerSmootherProxy][8];
   v6[0] = MEMORY[0x1E69E9820];
@@ -382,15 +382,15 @@ LABEL_87:
   v6[2] = sub_19B8DAE9C;
   v6[3] = &unk_1E753CF38;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = delegate;
   dispatch_async(v5, v6);
 }
 
 - (CLLocationManagerDelegateInternal)delegate
 {
-  v2 = [(CLLocationSmoother *)self locationManagerSmootherProxy];
+  locationManagerSmootherProxy = [(CLLocationSmoother *)self locationManagerSmootherProxy];
 
-  return [(_CLLocationSmootherProxy *)v2 delegate];
+  return [(_CLLocationSmootherProxy *)locationManagerSmootherProxy delegate];
 }
 
 @end

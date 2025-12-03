@@ -1,41 +1,41 @@
 @interface EKPreviewSection
-+ (id)sectionWithDate:(id)a3;
-- (EKPreviewSection)initWithDate:(id)a3;
-- (void)addEvent:(id)a3;
++ (id)sectionWithDate:(id)date;
+- (EKPreviewSection)initWithDate:(id)date;
+- (void)addEvent:(id)event;
 @end
 
 @implementation EKPreviewSection
 
-+ (id)sectionWithDate:(id)a3
++ (id)sectionWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDate:v4];
+  dateCopy = date;
+  v5 = [[self alloc] initWithDate:dateCopy];
 
   return v5;
 }
 
-- (EKPreviewSection)initWithDate:(id)a3
+- (EKPreviewSection)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = EKPreviewSection;
   v6 = [(EKPreviewSection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_date, a3);
+    objc_storeStrong(&v6->_date, date);
   }
 
   return v7;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
   events = self->_events;
   if (events)
   {
-    v5 = a3;
-    v12 = [(NSArray *)events arrayByAddingObject:v5];
+    eventCopy = event;
+    v12 = [(NSArray *)events arrayByAddingObject:eventCopy];
 
     v6 = [(NSArray *)v12 copy];
     v7 = self->_events;
@@ -47,8 +47,8 @@
   else
   {
     v9 = MEMORY[0x1E695DEC8];
-    v10 = a3;
-    v11 = [[v9 alloc] initWithObjects:{v10, 0}];
+    eventCopy2 = event;
+    v11 = [[v9 alloc] initWithObjects:{eventCopy2, 0}];
 
     v8 = self->_events;
     self->_events = v11;

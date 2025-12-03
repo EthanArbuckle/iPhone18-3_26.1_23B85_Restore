@@ -1,19 +1,19 @@
 @interface VNCreateNeuralHashprintRequest
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
++ (BOOL)warmUpSession:(id)session error:(id *)error;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
 @end
 
 @implementation VNCreateNeuralHashprintRequest
 
-+ (BOOL)warmUpSession:(id)a3 error:(id *)a4
++ (BOOL)warmUpSession:(id)session error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  sessionCopy = session;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___VNCreateNeuralHashprintRequest;
-  if (objc_msgSendSuper2(&v10, sel_warmUpSession_error_, v6, a4))
+  if (objc_msgSendSuper2(&v10, sel_warmUpSession_error_, sessionCopy, error))
   {
     v7 = objc_alloc_init(VNCreateNeuralHashprintRequest);
-    v8 = [(VNRequest *)v7 warmUpSession:v6 error:a4];
+    v8 = [(VNRequest *)v7 warmUpSession:sessionCopy error:error];
   }
 
   else
@@ -24,19 +24,19 @@
   return v8;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 1)
+  contextCopy = context;
+  v9 = contextCopy;
+  if (revision == 1)
   {
-    v10 = [v8 imageBufferAndReturnError:a5];
-    if (v10 && [(VNRequest *)self validateImageBuffer:v10 ofNonZeroWidth:0 andHeight:0 error:a5])
+    v10 = [contextCopy imageBufferAndReturnError:error];
+    if (v10 && [(VNRequest *)self validateImageBuffer:v10 ofNonZeroWidth:0 andHeight:0 error:error])
     {
-      v11 = [v9 session];
+      session = [v9 session];
       v19 = 0;
-      v12 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:1 loadedInSession:v11 error:a5];
+      v12 = [(VNRequest *)self applicableDetectorAndOptions:&v19 forRevision:1 loadedInSession:session error:error];
       v13 = v19;
       if (v12)
       {
@@ -44,9 +44,9 @@
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
         [v13 setObject:v14 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-        v15 = [v9 qosClass];
+        qosClass = [v9 qosClass];
         [(VNImageBasedRequest *)self regionOfInterest];
-        v16 = [v12 processUsingQualityOfServiceClass:v15 options:v13 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+        v16 = [v12 processUsingQualityOfServiceClass:qosClass options:v13 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
         v17 = v16 != 0;
         if (v16)
         {
@@ -66,10 +66,10 @@
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a5 = v17 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v17 = 0;
   }
 
   else

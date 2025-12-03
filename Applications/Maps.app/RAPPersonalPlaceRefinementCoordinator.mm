@@ -1,11 +1,11 @@
 @interface RAPPersonalPlaceRefinementCoordinator
 - (CLLocationCoordinate2D)originalCoordinate;
-- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)a3 delegate:(id)a4 report:(id)a5 question:(id)a6;
-- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)a3 delegate:(id)a4 shortcut:(id)a5;
-- (id)_navigationControllerWithRootViewController:(id)a3;
+- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)controller delegate:(id)delegate report:(id)report question:(id)question;
+- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)controller delegate:(id)delegate shortcut:(id)shortcut;
+- (id)_navigationControllerWithRootViewController:(id)controller;
 - (id)_refinementAlertController;
 - (void)_cancelLocationRefinement;
-- (void)_commonInitWithPresentingViewController:(id)a3 delegate:(id)a4 presentationStyle:(int64_t)a5 shortcut:(id)a6;
+- (void)_commonInitWithPresentingViewController:(id)controller delegate:(id)delegate presentationStyle:(int64_t)style shortcut:(id)shortcut;
 - (void)_createRAPContext;
 - (void)_doneLocationRefinement;
 - (void)_presentLocationRefinement;
@@ -15,11 +15,11 @@
 
 - (CLLocationCoordinate2D)originalCoordinate
 {
-  v3 = [(MapsSuggestionsShortcut *)self->_shortcut geoMapItem];
-  [v3 coordinate];
+  geoMapItem = [(MapsSuggestionsShortcut *)self->_shortcut geoMapItem];
+  [geoMapItem coordinate];
   v5 = v4;
-  v6 = [(MapsSuggestionsShortcut *)self->_shortcut geoMapItem];
-  [v6 coordinate];
+  geoMapItem2 = [(MapsSuggestionsShortcut *)self->_shortcut geoMapItem];
+  [geoMapItem2 coordinate];
   v8 = CLLocationCoordinate2DMake(v5, v7);
 
   latitude = v8.latitude;
@@ -29,10 +29,10 @@
   return result;
 }
 
-- (id)_navigationControllerWithRootViewController:(id)a3
+- (id)_navigationControllerWithRootViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [[UINavigationController alloc] initWithRootViewController:v3];
+  controllerCopy = controller;
+  v4 = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
 
   [v4 setModalPresentationStyle:2];
   [v4 setModalInPresentation:1];
@@ -56,33 +56,33 @@
   if (self->_presentationStyle == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-    v6 = [WeakRetained traitCollection];
-    v7 = [v6 userInterfaceIdiom];
+    traitCollection = [WeakRetained traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v7 == 5)
+    if (userInterfaceIdiom == 5)
     {
       objc_initWeak(&location, self);
-      v8 = [(EditLocationViewController *)self->_editLocationViewController navigationController];
+      navigationController = [(EditLocationViewController *)self->_editLocationViewController navigationController];
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
       v11[2] = sub_100D9EFEC;
       v11[3] = &unk_101661B98;
       objc_copyWeak(&v12, &location);
-      [v8 dismissViewControllerAnimated:1 completion:v11];
+      [navigationController dismissViewControllerAnimated:1 completion:v11];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);
       return;
     }
 
-    v10 = [(EditLocationViewController *)self->_editLocationViewController navigationController];
-    [v10 dismissViewControllerAnimated:1 completion:0];
+    navigationController2 = [(EditLocationViewController *)self->_editLocationViewController navigationController];
+    [navigationController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v10 = [(EditLocationViewController *)self->_editLocationViewController navigationController];
-    v9 = [v10 popViewControllerAnimated:1];
+    navigationController2 = [(EditLocationViewController *)self->_editLocationViewController navigationController];
+    v9 = [navigationController2 popViewControllerAnimated:1];
   }
 }
 
@@ -91,12 +91,12 @@
   if (self->_presentationStyle == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-    v4 = [WeakRetained traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [WeakRetained traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     objc_initWeak(&location, self);
     editLocationViewController = self->_editLocationViewController;
-    if (v5 == 5)
+    if (userInterfaceIdiom == 5)
     {
       v7 = v10;
       v10[0] = _NSConcreteStackBlock;
@@ -166,36 +166,36 @@
     v15 = v19;
   }
 
-  v20 = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
-  [v20 setTitle:v15];
+  navigationItem = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
+  [navigationItem setTitle:v15];
 
   v21 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneLocationRefinement"];
-  v22 = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
-  [v22 setRightBarButtonItem:v21];
+  navigationItem2 = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
+  [navigationItem2 setRightBarButtonItem:v21];
 
   if (self->_presentationStyle != 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-    v29 = [WeakRetained navigationController];
-    [v29 pushViewController:self->_editLocationViewController animated:1];
+    navigationController = [WeakRetained navigationController];
+    [navigationController pushViewController:self->_editLocationViewController animated:1];
 LABEL_11:
 
     goto LABEL_12;
   }
 
   v23 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelLocationRefinement"];
-  v24 = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
-  [v24 setLeftBarButtonItem:v23];
+  navigationItem3 = [(EditLocationViewController *)self->_editLocationViewController navigationItem];
+  [navigationItem3 setLeftBarButtonItem:v23];
 
   WeakRetained = [(RAPPersonalPlaceRefinementCoordinator *)self _navigationControllerWithRootViewController:self->_editLocationViewController];
   v26 = objc_loadWeakRetained(&self->_parentViewController);
-  v27 = [v26 traitCollection];
-  v28 = [v27 userInterfaceIdiom];
+  traitCollection = [v26 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v28 != 5)
+  if (userInterfaceIdiom != 5)
   {
-    v29 = objc_loadWeakRetained(&self->_parentViewController);
-    [v29 _maps_topMostPresentViewController:WeakRetained animated:1 completion:0];
+    navigationController = objc_loadWeakRetained(&self->_parentViewController);
+    [navigationController _maps_topMostPresentViewController:WeakRetained animated:1 completion:0];
     goto LABEL_11;
   }
 
@@ -215,16 +215,16 @@ LABEL_12:
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"Continue Refining location [Personal Place]" value:@"localized string not found" table:0];
 
-  v5 = [(MapsSuggestionsShortcut *)self->_shortcut type];
+  type = [(MapsSuggestionsShortcut *)self->_shortcut type];
   v6 = 0;
   v7 = &stru_1016631F0;
-  if (v5 <= 2)
+  if (type <= 2)
   {
-    if (v5 >= 2)
+    if (type >= 2)
     {
       v8 = &stru_1016631F0;
       v9 = &stru_1016631F0;
-      if (v5 != 2)
+      if (type != 2)
       {
         goto LABEL_12;
       }
@@ -241,12 +241,12 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  if (v5 == 6)
+  if (type == 6)
   {
     goto LABEL_9;
   }
 
-  if (v5 == 5)
+  if (type == 5)
   {
     v10 = @"Change School Address [Personal Place]";
     v11 = @"Change School Address Description [Personal Place]";
@@ -257,7 +257,7 @@ LABEL_9:
   {
     v8 = &stru_1016631F0;
     v9 = &stru_1016631F0;
-    if (v5 != 3)
+    if (type != 3)
     {
       goto LABEL_12;
     }
@@ -355,13 +355,13 @@ LABEL_17:
   v14 = +[UIApplication sharedMapsDelegate];
   v3 = [RAPAppStateCreator alloc];
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  v5 = [WeakRetained _maps_mapsSceneDelegate];
-  v6 = [(RAPAppStateCreator *)v3 initWithSceneDelegate:v5];
+  _maps_mapsSceneDelegate = [WeakRetained _maps_mapsSceneDelegate];
+  v6 = [(RAPAppStateCreator *)v3 initWithSceneDelegate:_maps_mapsSceneDelegate];
 
-  v7 = [(RAPAppStateCreator *)v6 createReportAProblemAppState];
+  createReportAProblemAppState = [(RAPAppStateCreator *)v6 createReportAProblemAppState];
   v8 = [RAPReport alloc];
-  v9 = [v14 submissionManager];
-  v10 = [(RAPReport *)v8 initWithContext:v7 submitter:v9];
+  submissionManager = [v14 submissionManager];
+  v10 = [(RAPReport *)v8 initWithContext:createReportAProblemAppState submitter:submissionManager];
   report = self->_report;
   self->_report = v10;
 
@@ -373,54 +373,54 @@ LABEL_17:
   [(RAPPersonalPlaceCorrectionsQuestion *)self->_question addUserPathItem:1];
 }
 
-- (void)_commonInitWithPresentingViewController:(id)a3 delegate:(id)a4 presentationStyle:(int64_t)a5 shortcut:(id)a6
+- (void)_commonInitWithPresentingViewController:(id)controller delegate:(id)delegate presentationStyle:(int64_t)style shortcut:(id)shortcut
 {
-  v10 = a4;
-  self->_presentationStyle = a5;
-  objc_storeStrong(&self->_shortcut, a6);
-  v11 = a6;
-  v12 = a3;
-  objc_storeWeak(&self->_parentViewController, v12);
+  delegateCopy = delegate;
+  self->_presentationStyle = style;
+  objc_storeStrong(&self->_shortcut, shortcut);
+  shortcutCopy = shortcut;
+  controllerCopy = controller;
+  objc_storeWeak(&self->_parentViewController, controllerCopy);
 
   delegate = self->_delegate;
-  self->_delegate = v10;
+  self->_delegate = delegateCopy;
 
   self->_hasDisplayedRefinementAlert = 0;
 }
 
-- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)a3 delegate:(id)a4 report:(id)a5 question:(id)a6
+- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)controller delegate:(id)delegate report:(id)report question:(id)question
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  reportCopy = report;
+  questionCopy = question;
   v17.receiver = self;
   v17.super_class = RAPPersonalPlaceRefinementCoordinator;
   v14 = [(RAPPersonalPlaceRefinementCoordinator *)&v17 init];
   if (v14)
   {
-    v15 = [v13 shortcut];
-    [(RAPPersonalPlaceRefinementCoordinator *)v14 _commonInitWithPresentingViewController:v10 delegate:v11 presentationStyle:0 shortcut:v15];
+    shortcut = [questionCopy shortcut];
+    [(RAPPersonalPlaceRefinementCoordinator *)v14 _commonInitWithPresentingViewController:controllerCopy delegate:delegateCopy presentationStyle:0 shortcut:shortcut];
 
-    objc_storeStrong(&v14->_question, a6);
-    objc_storeStrong(&v14->_report, a5);
+    objc_storeStrong(&v14->_question, question);
+    objc_storeStrong(&v14->_report, report);
   }
 
   return v14;
 }
 
-- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)a3 delegate:(id)a4 shortcut:(id)a5
+- (RAPPersonalPlaceRefinementCoordinator)initWithPresentingViewController:(id)controller delegate:(id)delegate shortcut:(id)shortcut
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  delegateCopy = delegate;
+  shortcutCopy = shortcut;
   v14.receiver = self;
   v14.super_class = RAPPersonalPlaceRefinementCoordinator;
   v11 = [(RAPPersonalPlaceRefinementCoordinator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(RAPPersonalPlaceRefinementCoordinator *)v11 _commonInitWithPresentingViewController:v8 delegate:v9 presentationStyle:1 shortcut:v10];
+    [(RAPPersonalPlaceRefinementCoordinator *)v11 _commonInitWithPresentingViewController:controllerCopy delegate:delegateCopy presentationStyle:1 shortcut:shortcutCopy];
     [(RAPPersonalPlaceRefinementCoordinator *)v12 _createRAPContext];
   }
 

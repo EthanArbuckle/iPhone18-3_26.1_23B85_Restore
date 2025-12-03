@@ -1,23 +1,23 @@
 @interface UITableViewAccessibility__MessageUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
 - (id)_accessibilityObscuredScreenAllowedViews;
 @end
 
 @implementation UITableViewAccessibility__MessageUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UIPopoverView"];
-  [v3 validateClass:@"MFMailComposeView" hasInstanceVariable:@"_activeRecipientView" withType:"MFMailComposeRecipientTextView"];
-  [v3 validateClass:@"MFAutocompleteResultsTableViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UIPopoverView"];
+  [validationsCopy validateClass:@"MFMailComposeView" hasInstanceVariable:@"_activeRecipientView" withType:"MFMailComposeRecipientTextView"];
+  [validationsCopy validateClass:@"MFAutocompleteResultsTableViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityViewIsModal
 {
-  v3 = [(UITableViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"MessageRecipientSearchTable"];
+  accessibilityIdentifier = [(UITableViewAccessibility__MessageUI__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"MessageRecipientSearchTable"];
 
   if (v4)
   {
@@ -37,7 +37,7 @@
   {
     v11.receiver = self;
     v11.super_class = UITableViewAccessibility__MessageUI__UIKit;
-    v9 = [(UITableViewAccessibility__MessageUI__UIKit *)&v11 _accessibilityObscuredScreenAllowedViews];
+    _accessibilityObscuredScreenAllowedViews = [(UITableViewAccessibility__MessageUI__UIKit *)&v11 _accessibilityObscuredScreenAllowedViews];
   }
 
   else
@@ -45,10 +45,10 @@
     v6 = [(UITableViewAccessibility__MessageUI__UIKit *)self safeValueForKey:@"delegate"];
     v7 = [v6 safeValueForKey:@"delegate"];
     v8 = [v7 safeValueForKey:@"_activeRecipientView"];
-    v9 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v8}];
+    _accessibilityObscuredScreenAllowedViews = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v8}];
   }
 
-  return v9;
+  return _accessibilityObscuredScreenAllowedViews;
 }
 
 @end

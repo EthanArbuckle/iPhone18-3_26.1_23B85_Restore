@@ -1,15 +1,15 @@
 @interface RTTripClusterRoadTransitionsMO
-+ (id)managedObjectWithTripClusterRoadTransitions:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithTripClusterRoadTransitions:(id)transitions inManagedObjectContext:(id)context;
 @end
 
 @implementation RTTripClusterRoadTransitionsMO
 
-+ (id)managedObjectWithTripClusterRoadTransitions:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithTripClusterRoadTransitions:(id)transitions inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  transitionsCopy = transitions;
+  contextCopy = context;
+  v7 = contextCopy;
+  if (!transitionsCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -25,38 +25,38 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    v8 = [[RTTripClusterRoadTransitionsMO alloc] initWithContext:v6];
-    v9 = [v5 clusterID];
-    [(RTTripClusterRoadTransitionsMO *)v8 setClusterID:v9];
+    v8 = [[RTTripClusterRoadTransitionsMO alloc] initWithContext:contextCopy];
+    clusterID = [transitionsCopy clusterID];
+    [(RTTripClusterRoadTransitionsMO *)v8 setClusterID:clusterID];
 
-    -[RTTripClusterRoadTransitionsMO setClRoadIDFrom:](v8, "setClRoadIDFrom:", [v5 clRoadIDFrom]);
-    -[RTTripClusterRoadTransitionsMO setClRoadIDTo:](v8, "setClRoadIDTo:", [v5 clRoadIDTo]);
-    -[RTTripClusterRoadTransitionsMO setCount:](v8, "setCount:", [v5 count]);
-    [v5 fromStartLatitude];
+    -[RTTripClusterRoadTransitionsMO setClRoadIDFrom:](v8, "setClRoadIDFrom:", [transitionsCopy clRoadIDFrom]);
+    -[RTTripClusterRoadTransitionsMO setClRoadIDTo:](v8, "setClRoadIDTo:", [transitionsCopy clRoadIDTo]);
+    -[RTTripClusterRoadTransitionsMO setCount:](v8, "setCount:", [transitionsCopy count]);
+    [transitionsCopy fromStartLatitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setFromStartLatitude:?];
-    [v5 fromStartLongitude];
+    [transitionsCopy fromStartLongitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setFromStartLongitude:?];
-    [v5 toStartLatitude];
+    [transitionsCopy toStartLatitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setToStartLatitude:?];
-    [v5 toStartLongitude];
+    [transitionsCopy toStartLongitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setToStartLongitude:?];
-    [v5 fromEndLatitude];
+    [transitionsCopy fromEndLatitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setFromEndLatitude:?];
-    [v5 fromEndLongitude];
+    [transitionsCopy fromEndLongitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setFromEndLongitude:?];
-    [v5 toEndLatitude];
+    [transitionsCopy toEndLatitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setToEndLatitude:?];
-    [v5 toEndLongitude];
+    [transitionsCopy toEndLongitude];
     [(RTTripClusterRoadTransitionsMO *)v8 setToEndLongitude:?];
-    v10 = [v5 startDate];
-    [(RTTripClusterRoadTransitionsMO *)v8 setStartDate:v10];
+    startDate = [transitionsCopy startDate];
+    [(RTTripClusterRoadTransitionsMO *)v8 setStartDate:startDate];
 
-    -[RTTripClusterRoadTransitionsMO setStartRoadCount:](v8, "setStartRoadCount:", [v5 startRoadCount]);
-    -[RTTripClusterRoadTransitionsMO setEndRoadCount:](v8, "setEndRoadCount:", [v5 endRoadCount]);
-    -[RTTripClusterRoadTransitionsMO setRoadSequenceNumber:](v8, "setRoadSequenceNumber:", [v5 roadSequenceNumber]);
-    [v5 familiarityMetric];
+    -[RTTripClusterRoadTransitionsMO setStartRoadCount:](v8, "setStartRoadCount:", [transitionsCopy startRoadCount]);
+    -[RTTripClusterRoadTransitionsMO setEndRoadCount:](v8, "setEndRoadCount:", [transitionsCopy endRoadCount]);
+    -[RTTripClusterRoadTransitionsMO setRoadSequenceNumber:](v8, "setRoadSequenceNumber:", [transitionsCopy roadSequenceNumber]);
+    [transitionsCopy familiarityMetric];
     [(RTTripClusterRoadTransitionsMO *)v8 setFamiliarityMetric:?];
     goto LABEL_8;
   }

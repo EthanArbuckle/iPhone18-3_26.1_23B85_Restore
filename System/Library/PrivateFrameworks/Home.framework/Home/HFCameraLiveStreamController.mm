@@ -1,7 +1,7 @@
 @interface HFCameraLiveStreamController
 - (BOOL)isStreamingEnabled;
 - (HFCameraLiveStreamController)init;
-- (HFCameraLiveStreamController)initWithHome:(id)a3 cameraProfile:(id)a4;
+- (HFCameraLiveStreamController)initWithHome:(id)home cameraProfile:(id)profile;
 - (HFCameraLiveStreamControllerDelegate)delegate;
 - (HMCameraSource)liveCameraSource;
 - (NSError)streamError;
@@ -11,15 +11,15 @@
 - (unint64_t)_derivedAudioStreamSetting;
 - (unint64_t)streamState;
 - (void)_updateAudioManagerState;
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3;
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4;
-- (void)cameraStreamControlDidUpdateManagerState:(id)a3;
-- (void)cameraStreamControlDidUpdateStreamState:(id)a3;
-- (void)cameraUserSettingsDidUpdate:(id)a3;
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot;
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error;
+- (void)cameraStreamControlDidUpdateManagerState:(id)state;
+- (void)cameraStreamControlDidUpdateStreamState:(id)state;
+- (void)cameraUserSettingsDidUpdate:(id)update;
 - (void)dealloc;
-- (void)setMicrophoneEnabled:(BOOL)a3;
-- (void)setStreamAudioEnabled:(BOOL)a3;
-- (void)setStreamAudioVolume:(float)a3;
+- (void)setMicrophoneEnabled:(BOOL)enabled;
+- (void)setStreamAudioEnabled:(BOOL)enabled;
+- (void)setStreamAudioVolume:(float)volume;
 - (void)startStreaming;
 - (void)stopStreaming;
 @end
@@ -28,25 +28,25 @@
 
 - (HFCameraLiveStreamController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_cameraProfile_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCameraLiveStreamController.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFCameraLiveStreamController init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraLiveStreamController.m" lineNumber:37 description:{@"%s is unavailable; use %@ instead", "-[HFCameraLiveStreamController init]", v5}];
 
   return 0;
 }
 
-- (HFCameraLiveStreamController)initWithHome:(id)a3 cameraProfile:(id)a4
+- (HFCameraLiveStreamController)initWithHome:(id)home cameraProfile:(id)profile
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  profileCopy = profile;
   v13.receiver = self;
   v13.super_class = HFCameraLiveStreamController;
   v9 = [(HFCameraLiveStreamController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_cameraProfile, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_cameraProfile, profile);
     v11 = +[HFHomeKitDispatcher sharedDispatcher];
     [v11 addCameraObserver:v10];
 
@@ -65,13 +65,13 @@
     v3 = HFLogForCategory(0x1CuLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v5 = [v4 accessory];
-      v6 = [v5 name];
+      cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+      accessory = [cameraProfile accessory];
+      name = [accessory name];
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
-      v12 = v6;
+      v12 = name;
       _os_log_impl(&dword_20D9BF000, v3, OS_LOG_TYPE_DEFAULT, "%@ dealloc for name:%@. Stop streaming requested.", buf, 0x16u);
     }
 
@@ -86,73 +86,73 @@
 
 - (unint64_t)streamState
 {
-  v2 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v2 streamControl];
-  v4 = [v3 streamState];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
+  streamState = [streamControl streamState];
 
-  return v4;
+  return streamState;
 }
 
 - (HMCameraSource)liveCameraSource
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCameraLiveStreamController *)self streamState];
+  streamState = [(HFCameraLiveStreamController *)self streamState];
   v4 = HFLogForCategory(0x18uLL);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3 == 2)
+  if (streamState == 2)
   {
     if (v5)
     {
-      v6 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v7 = [v6 uniqueIdentifier];
-      v8 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v9 = [v8 accessory];
-      v10 = [v9 name];
+      cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+      uniqueIdentifier = [cameraProfile uniqueIdentifier];
+      cameraProfile2 = [(HFCameraLiveStreamController *)self cameraProfile];
+      accessory = [cameraProfile2 accessory];
+      name = [accessory name];
       v19 = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v7;
+      v22 = uniqueIdentifier;
       v23 = 2112;
-      v24 = v10;
+      v24 = name;
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "%@ Displaying stream control for profile:%@/%@", &v19, 0x20u);
     }
 
-    v11 = [(HFCameraLiveStreamController *)self activeStream];
+    activeStream = [(HFCameraLiveStreamController *)self activeStream];
   }
 
   else
   {
     if (v5)
     {
-      v12 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v13 = [v12 uniqueIdentifier];
-      v14 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v15 = [v14 accessory];
-      v16 = [v15 name];
+      cameraProfile3 = [(HFCameraLiveStreamController *)self cameraProfile];
+      uniqueIdentifier2 = [cameraProfile3 uniqueIdentifier];
+      cameraProfile4 = [(HFCameraLiveStreamController *)self cameraProfile];
+      accessory2 = [cameraProfile4 accessory];
+      name2 = [accessory2 name];
       v19 = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = v13;
+      v22 = uniqueIdentifier2;
       v23 = 2112;
-      v24 = v16;
+      v24 = name2;
       _os_log_impl(&dword_20D9BF000, v4, OS_LOG_TYPE_DEFAULT, "%@ Displaying liveCameraSource snapshot for profile:%@/%@", &v19, 0x20u);
     }
 
-    v11 = [(HFCameraLiveStreamController *)self mostRecentSnapshot];
+    activeStream = [(HFCameraLiveStreamController *)self mostRecentSnapshot];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return activeStream;
 }
 
 - (NSError)streamError
 {
-  v2 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v2 hf_cameraManager];
-  v4 = [v3 cachedStreamError];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  hf_cameraManager = [cameraProfile hf_cameraManager];
+  cachedStreamError = [hf_cameraManager cachedStreamError];
 
-  return v4;
+  return cachedStreamError;
 }
 
 - (void)startStreaming
@@ -166,9 +166,9 @@
   else
   {
     self->_inferredStreamState = 1;
-    v4 = [(HFCameraLiveStreamController *)self cameraProfile];
-    v3 = [v4 hf_cameraManager];
-    [v3 beginContinuousStreamingWithRequester:self];
+    cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+    hf_cameraManager = [cameraProfile hf_cameraManager];
+    [hf_cameraManager beginContinuousStreamingWithRequester:self];
   }
 }
 
@@ -180,34 +180,34 @@
   }
 
   [(HFCameraLiveStreamController *)self setStartStreamingAfterStop:0];
-  v4 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v4 hf_cameraManager];
-  [v3 endContinuousStreamingWithRequester:self];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  hf_cameraManager = [cameraProfile hf_cameraManager];
+  [hf_cameraManager endContinuousStreamingWithRequester:self];
 }
 
 - (BOOL)isStreamingEnabled
 {
-  v2 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v2 hf_cameraManager];
-  v4 = [v3 isContinuousStreamingEnabled];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  hf_cameraManager = [cameraProfile hf_cameraManager];
+  isContinuousStreamingEnabled = [hf_cameraManager isContinuousStreamingEnabled];
 
-  return v4;
+  return isContinuousStreamingEnabled;
 }
 
-- (void)setStreamAudioEnabled:(BOOL)a3
+- (void)setStreamAudioEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_streamAudioEnabled != a3)
+  if (self->_streamAudioEnabled != enabled)
   {
-    v3 = a3;
-    self->_streamAudioEnabled = a3;
+    enabledCopy = enabled;
+    self->_streamAudioEnabled = enabled;
     v5 = HFLogForCategory(0x1CuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
-      v10 = v3;
+      v10 = enabledCopy;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@ Updating stream audio state to %d", &v7, 0x12u);
     }
 
@@ -217,20 +217,20 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMicrophoneEnabled:(BOOL)a3
+- (void)setMicrophoneEnabled:(BOOL)enabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_microphoneEnabled != a3)
+  if (self->_microphoneEnabled != enabled)
   {
-    v3 = a3;
-    self->_microphoneEnabled = a3;
+    enabledCopy = enabled;
+    self->_microphoneEnabled = enabled;
     v5 = HFLogForCategory(0x1CuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
-      v10 = v3;
+      v10 = enabledCopy;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@ Updating microphone state to %d", &v7, 0x12u);
     }
 
@@ -240,19 +240,19 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStreamAudioVolume:(float)a3
+- (void)setStreamAudioVolume:(float)volume
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (self->_streamAudioVolume != a3)
+  if (self->_streamAudioVolume != volume)
   {
-    self->_streamAudioVolume = a3;
+    self->_streamAudioVolume = volume;
     v5 = HFLogForCategory(0x1CuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = self;
+      selfCopy = self;
       v9 = 2048;
-      v10 = a3;
+      volumeCopy = volume;
       _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "%@ Updating stream audio volume to %f", &v7, 0x16u);
     }
 
@@ -264,39 +264,39 @@
 
 - (id)activeStream
 {
-  v2 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v2 streamControl];
-  v4 = [v3 cameraStream];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  streamControl = [cameraProfile streamControl];
+  cameraStream = [streamControl cameraStream];
 
-  return v4;
+  return cameraStream;
 }
 
 - (id)mostRecentSnapshot
 {
-  v2 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v3 = [v2 snapshotControl];
-  v4 = [v3 mostRecentSnapshot];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  snapshotControl = [cameraProfile snapshotControl];
+  mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
 
-  return v4;
+  return mostRecentSnapshot;
 }
 
 - (void)_updateAudioManagerState
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(HFCameraLiveStreamController *)self activeStream];
+  activeStream = [(HFCameraLiveStreamController *)self activeStream];
 
-  if (v3)
+  if (activeStream)
   {
-    v4 = [(HFCameraLiveStreamController *)self audioManager];
+    audioManager = [(HFCameraLiveStreamController *)self audioManager];
 
-    if (!v4)
+    if (!audioManager)
     {
       v5 = [HFCameraAudioManager alloc];
-      v6 = [(HFCameraLiveStreamController *)self cameraProfile];
-      v7 = [(HFCameraLiveStreamController *)self activeStream];
-      v8 = [(HFCameraLiveStreamController *)self home];
-      v9 = [v8 hf_characteristicValueManager];
-      v10 = [(HFCameraAudioManager *)v5 initWithCameraProfile:v6 cameraStream:v7 valueManager:v9];
+      cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+      activeStream2 = [(HFCameraLiveStreamController *)self activeStream];
+      home = [(HFCameraLiveStreamController *)self home];
+      hf_characteristicValueManager = [home hf_characteristicValueManager];
+      v10 = [(HFCameraAudioManager *)v5 initWithCameraProfile:cameraProfile cameraStream:activeStream2 valueManager:hf_characteristicValueManager];
       [(HFCameraLiveStreamController *)self setAudioManager:v10];
     }
   }
@@ -311,40 +311,40 @@
   {
     [(HFCameraLiveStreamController *)self audioManager];
     v12 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    v13 = [(HFCameraLiveStreamController *)self isStreamAudioEnabled];
-    v14 = [(HFCameraLiveStreamController *)self isMicrophoneEnabled];
+    isStreamAudioEnabled = [(HFCameraLiveStreamController *)self isStreamAudioEnabled];
+    isMicrophoneEnabled = [(HFCameraLiveStreamController *)self isMicrophoneEnabled];
     [(HFCameraLiveStreamController *)self streamAudioVolume];
     v33 = 138413314;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2112;
     v36 = v12;
     v37 = 1024;
-    v38 = v13;
+    v38 = isStreamAudioEnabled;
     v39 = 1024;
-    v40 = v14;
+    v40 = isMicrophoneEnabled;
     v41 = 2048;
     v42 = v15;
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "%@ Updating audio manager state with manager: %@, stream audio enabled: %d, microphone enabled: %d, stream audio volume: %f", &v33, 0x2Cu);
   }
 
-  v16 = [(HFCameraLiveStreamController *)self audioManager];
+  audioManager2 = [(HFCameraLiveStreamController *)self audioManager];
 
-  if (v16)
+  if (audioManager2)
   {
-    v17 = [(HFCameraLiveStreamController *)self _derivedAudioStreamSetting];
-    v18 = [(HFCameraLiveStreamController *)self audioManager];
-    v19 = [v18 audioStreamSetting];
+    _derivedAudioStreamSetting = [(HFCameraLiveStreamController *)self _derivedAudioStreamSetting];
+    audioManager3 = [(HFCameraLiveStreamController *)self audioManager];
+    audioStreamSetting = [audioManager3 audioStreamSetting];
 
-    if (v17 != v19)
+    if (_derivedAudioStreamSetting != audioStreamSetting)
     {
-      v20 = [(HFCameraLiveStreamController *)self audioManager];
-      v21 = [v20 updateAudioStreamSetting:{-[HFCameraLiveStreamController _derivedAudioStreamSetting](self, "_derivedAudioStreamSetting")}];
+      audioManager4 = [(HFCameraLiveStreamController *)self audioManager];
+      v21 = [audioManager4 updateAudioStreamSetting:{-[HFCameraLiveStreamController _derivedAudioStreamSetting](self, "_derivedAudioStreamSetting")}];
     }
 
     [(HFCameraLiveStreamController *)self streamAudioVolume];
     v23 = v22;
-    v24 = [(HFCameraLiveStreamController *)self audioManager];
-    [v24 incomingAudioVolume];
+    audioManager5 = [(HFCameraLiveStreamController *)self audioManager];
+    [audioManager5 incomingAudioVolume];
     v26 = v25;
 
     if (v23 != v26)
@@ -356,21 +356,21 @@
         {
           [(HFCameraLiveStreamController *)self streamAudioVolume];
           v33 = 138412546;
-          v34 = self;
+          selfCopy2 = self;
           v35 = 2048;
           v36 = v28;
           _os_log_impl(&dword_20D9BF000, v27, OS_LOG_TYPE_DEFAULT, "%@ Performing volume update to %.02f on Mac", &v33, 0x16u);
         }
 
-        v29 = [(HFCameraLiveStreamController *)self audioManager];
+        audioManager6 = [(HFCameraLiveStreamController *)self audioManager];
         [(HFCameraLiveStreamController *)self streamAudioVolume];
-        v30 = [v29 setIncomingAudioVolume:?];
+        v30 = [audioManager6 setIncomingAudioVolume:?];
       }
 
       else
       {
-        v29 = [(HFCameraLiveStreamController *)self audioManager];
-        [v29 incomingAudioVolume];
+        audioManager6 = [(HFCameraLiveStreamController *)self audioManager];
+        [audioManager6 incomingAudioVolume];
         self->_streamAudioVolume = v31;
       }
     }
@@ -394,35 +394,35 @@
   return 1;
 }
 
-- (void)cameraStreamControlDidUpdateStreamState:(id)a3
+- (void)cameraStreamControlDidUpdateStreamState:(id)state
 {
   [(HFCameraLiveStreamController *)self _updateAudioManagerState];
-  v4 = [(HFCameraLiveStreamController *)self delegate];
-  [v4 streamControllerStateDidUpdate:self];
+  delegate = [(HFCameraLiveStreamController *)self delegate];
+  [delegate streamControllerStateDidUpdate:self];
 }
 
-- (void)cameraStreamControlDidUpdateManagerState:(id)a3
+- (void)cameraStreamControlDidUpdateManagerState:(id)state
 {
-  v4 = [(HFCameraLiveStreamController *)self delegate];
-  [v4 streamControllerStateDidUpdate:self];
+  delegate = [(HFCameraLiveStreamController *)self delegate];
+  [delegate streamControllerStateDidUpdate:self];
 }
 
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(HFCameraLiveStreamController *)self liveCameraSource];
-  v6 = [v4 mostRecentSnapshot];
+  snapshotCopy = snapshot;
+  liveCameraSource = [(HFCameraLiveStreamController *)self liveCameraSource];
+  mostRecentSnapshot = [snapshotCopy mostRecentSnapshot];
 
-  if (v5 == v6)
+  if (liveCameraSource == mostRecentSnapshot)
   {
-    v7 = [(HFCameraLiveStreamController *)self delegate];
-    [v7 streamControllerStateDidUpdate:self];
+    delegate = [(HFCameraLiveStreamController *)self delegate];
+    [delegate streamControllerStateDidUpdate:self];
   }
 }
 
-- (void)cameraStreamControl:(id)a3 didStopStreamWithError:(id)a4
+- (void)cameraStreamControl:(id)control didStopStreamWithError:(id)error
 {
-  [(HFCameraLiveStreamController *)self setInferredStreamState:4, a4];
+  [(HFCameraLiveStreamController *)self setInferredStreamState:4, error];
   if ([(HFCameraLiveStreamController *)self startStreamingAfterStop])
   {
     [(HFCameraLiveStreamController *)self setStartStreamingAfterStop:0];
@@ -434,38 +434,38 @@
 - (NSString)debugDescription
 {
   v18 = MEMORY[0x277CCACA8];
-  v21 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v17 = [v21 uniqueIdentifier];
-  v20 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v19 = [v20 accessory];
-  v16 = [v19 name];
-  v15 = [(HFCameraLiveStreamController *)self isStreamingEnabled];
+  cameraProfile = [(HFCameraLiveStreamController *)self cameraProfile];
+  uniqueIdentifier = [cameraProfile uniqueIdentifier];
+  cameraProfile2 = [(HFCameraLiveStreamController *)self cameraProfile];
+  accessory = [cameraProfile2 accessory];
+  name = [accessory name];
+  isStreamingEnabled = [(HFCameraLiveStreamController *)self isStreamingEnabled];
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFCameraLiveStreamController streamState](self, "streamState")}];
-  v13 = [(HFCameraLiveStreamController *)self streamError];
-  v14 = [(HFCameraLiveStreamController *)self isMicrophoneEnabled];
-  v4 = [(HFCameraLiveStreamController *)self isStreamAudioEnabled];
-  v5 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v6 = [v5 streamControl];
-  v7 = [v6 cameraStream];
-  v8 = [(HFCameraLiveStreamController *)self cameraProfile];
-  v9 = [v8 snapshotControl];
-  v10 = [v9 mostRecentSnapshot];
-  v11 = [v18 stringWithFormat:@"\n%@ - profile:%@/%@ StreamingEnabled:%d Stream State:%@ Stream Error:%@ Microphone Enabled:%d Stream Audio Enabled:%d CameraStream:%@ Snapshot:%@", self, v17, v16, v15, v3, v13, v14, v4, v7, v10];
+  streamError = [(HFCameraLiveStreamController *)self streamError];
+  isMicrophoneEnabled = [(HFCameraLiveStreamController *)self isMicrophoneEnabled];
+  isStreamAudioEnabled = [(HFCameraLiveStreamController *)self isStreamAudioEnabled];
+  cameraProfile3 = [(HFCameraLiveStreamController *)self cameraProfile];
+  streamControl = [cameraProfile3 streamControl];
+  cameraStream = [streamControl cameraStream];
+  cameraProfile4 = [(HFCameraLiveStreamController *)self cameraProfile];
+  snapshotControl = [cameraProfile4 snapshotControl];
+  mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
+  v11 = [v18 stringWithFormat:@"\n%@ - profile:%@/%@ StreamingEnabled:%d Stream State:%@ Stream Error:%@ Microphone Enabled:%d Stream Audio Enabled:%d CameraStream:%@ Snapshot:%@", self, uniqueIdentifier, name, isStreamingEnabled, v3, streamError, isMicrophoneEnabled, isStreamAudioEnabled, cameraStream, mostRecentSnapshot];
 
   return v11;
 }
 
-- (void)cameraUserSettingsDidUpdate:(id)a3
+- (void)cameraUserSettingsDidUpdate:(id)update
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = HFLogForCategory(0x1AuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = updateCopy;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_INFO, "%@ settings updated:%@", &v7, 0x16u);
   }
 

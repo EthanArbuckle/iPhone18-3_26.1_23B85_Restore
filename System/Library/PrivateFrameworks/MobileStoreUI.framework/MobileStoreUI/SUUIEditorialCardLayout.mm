@@ -1,14 +1,14 @@
 @interface SUUIEditorialCardLayout
 - (CGSize)primaryLockupSize;
-- (SUUIEditorialCardLayout)initWithCard:(id)a3 width:(double)a4 context:(id)a5;
+- (SUUIEditorialCardLayout)initWithCard:(id)card width:(double)width context:(id)context;
 @end
 
 @implementation SUUIEditorialCardLayout
 
-- (SUUIEditorialCardLayout)initWithCard:(id)a3 width:(double)a4 context:(id)a5
+- (SUUIEditorialCardLayout)initWithCard:(id)card width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  cardCopy = card;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = SUUIEditorialCardLayout;
   v10 = [(SUUIEditorialCardLayout *)&v26 init];
@@ -26,12 +26,12 @@
     v21[1] = 3221225472;
     v21[2] = __54__SUUIEditorialCardLayout_initWithCard_width_context___block_invoke;
     v21[3] = &unk_2798F6D30;
-    v13 = v9;
+    v13 = contextCopy;
     v22 = v13;
     v24 = v25;
     v14 = v10;
     v23 = v14;
-    [v8 enumerateChildrenUsingBlock:v21];
+    [cardCopy enumerateChildrenUsingBlock:v21];
     v15 = [(NSMutableArray *)v10->_allLockups count];
     primaryLockup = v14->_primaryLockup;
     if (primaryLockup)
@@ -39,13 +39,13 @@
       [SUUIVerticalLockupView preferredSizeForViewElement:primaryLockup context:v13];
       v14->_primaryLockupSize.width = v17;
       v14->_primaryLockupSize.height = v18;
-      a4 = a4 - (v17 + 15.0);
+      width = width - (v17 + 15.0);
       --v15;
     }
 
     if (v15 >= 1)
     {
-      v19 = (a4 + (v15 - 1) * -15.0) / v15;
+      v19 = (width + (v15 - 1) * -15.0) / v15;
       v14->_secondaryLockupWidth = floorf(v19);
     }
 

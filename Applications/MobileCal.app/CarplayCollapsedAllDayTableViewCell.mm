@@ -1,12 +1,12 @@
 @interface CarplayCollapsedAllDayTableViewCell
 + (id)reuseIdentifier;
-- (CarplayCollapsedAllDayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarplayCollapsedAllDayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_cellTitle;
 - (id)normalPlatterBackgroundColor;
 - (id)normalPrimaryTextColor;
 - (void)_setupConstraints;
-- (void)configureWithAllDayCount:(int64_t)a3 birthdayCount:(int64_t)a4;
-- (void)crossfadeToCell:(id)a3;
+- (void)configureWithAllDayCount:(int64_t)count birthdayCount:(int64_t)birthdayCount;
+- (void)crossfadeToCell:(id)cell;
 - (void)forceUpdateOfAllElements;
 - (void)layoutSubviews;
 @end
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000DE064;
   block[3] = &unk_10020F5F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100251B90 != -1)
   {
     dispatch_once(&qword_100251B90, block);
@@ -30,11 +30,11 @@
   return v2;
 }
 
-- (CarplayCollapsedAllDayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarplayCollapsedAllDayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v23.receiver = self;
   v23.super_class = CarplayCollapsedAllDayTableViewCell;
-  v4 = [(CarplayCollapsedAllDayTableViewCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarplayCollapsedAllDayTableViewCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor clearColor];
@@ -49,8 +49,8 @@
 
     [(UIView *)v4->_occurrenceCellSuperview setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_occurrenceCellSuperview setHidden:1];
-    v9 = [(CarplayCollapsedAllDayTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_occurrenceCellSuperview];
+    contentView = [(CarplayCollapsedAllDayTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_occurrenceCellSuperview];
 
     v10 = objc_opt_new();
     allDaySuperview = v4->_allDaySuperview;
@@ -60,30 +60,30 @@
     [(UIView *)v4->_allDaySuperview setBackgroundColor:v12];
 
     [(UIView *)v4->_allDaySuperview setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(CarplayCollapsedAllDayTableViewCell *)v4 contentView];
-    [v13 addSubview:v4->_allDaySuperview];
+    contentView2 = [(CarplayCollapsedAllDayTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_allDaySuperview];
 
     v14 = [[CollapsedCellBackgroundView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     coloredBackgroundView = v4->_coloredBackgroundView;
     v4->_coloredBackgroundView = &v14->super;
 
     [(UIView *)v4->_coloredBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(CarplayCollapsedAllDayTableViewCell *)v4 normalPlatterBackgroundColor];
-    [(UIView *)v4->_coloredBackgroundView setBackgroundColor:v16];
+    normalPlatterBackgroundColor = [(CarplayCollapsedAllDayTableViewCell *)v4 normalPlatterBackgroundColor];
+    [(UIView *)v4->_coloredBackgroundView setBackgroundColor:normalPlatterBackgroundColor];
 
-    v17 = [(UIView *)v4->_coloredBackgroundView layer];
-    [v17 setMasksToBounds:1];
+    layer = [(UIView *)v4->_coloredBackgroundView layer];
+    [layer setMasksToBounds:1];
 
     [(UIView *)v4->_allDaySuperview addSubview:v4->_coloredBackgroundView];
     v18 = objc_opt_new();
     primaryLabel = v4->_primaryLabel;
     v4->_primaryLabel = v18;
 
-    v20 = [(CarplayCollapsedAllDayTableViewCell *)v4 primaryTextLabelFont];
-    [(UILabel *)v4->_primaryLabel setFont:v20];
+    primaryTextLabelFont = [(CarplayCollapsedAllDayTableViewCell *)v4 primaryTextLabelFont];
+    [(UILabel *)v4->_primaryLabel setFont:primaryTextLabelFont];
 
-    v21 = [(CarplayCollapsedAllDayTableViewCell *)v4 normalPrimaryTextColor];
-    [(UILabel *)v4->_primaryLabel setTextColor:v21];
+    normalPrimaryTextColor = [(CarplayCollapsedAllDayTableViewCell *)v4 normalPrimaryTextColor];
+    [(UILabel *)v4->_primaryLabel setTextColor:normalPrimaryTextColor];
 
     [(UILabel *)v4->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_primaryLabel setNumberOfLines:1];
@@ -99,13 +99,13 @@
   v15.receiver = self;
   v15.super_class = CarplayCollapsedAllDayTableViewCell;
   [(CarplayCollapsedAllDayTableViewCell *)&v15 layoutSubviews];
-  v3 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
-  v4 = [v3 mask];
+  layer = [(CarplayCollapsedAllDayTableViewCell *)self layer];
+  mask = [layer mask];
 
-  if (!v4)
+  if (!mask)
   {
-    v5 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
-    [v5 bounds];
+    layer2 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
+    [layer2 bounds];
     v17.origin.x = v6;
     v17.origin.y = v7;
     v17.size.width = v8;
@@ -122,110 +122,110 @@
       v12 = [UIColor colorWithWhite:1.0 alpha:1.0];
       [v11 setBackgroundColor:{objc_msgSend(v12, "CGColor")}];
 
-      v13 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
-      [v13 bounds];
+      layer3 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
+      [layer3 bounds];
       [v11 setFrame:?];
 
-      v14 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
-      [v14 setMask:v11];
+      layer4 = [(CarplayCollapsedAllDayTableViewCell *)self layer];
+      [layer4 setMask:v11];
     }
   }
 }
 
-- (void)configureWithAllDayCount:(int64_t)a3 birthdayCount:(int64_t)a4
+- (void)configureWithAllDayCount:(int64_t)count birthdayCount:(int64_t)birthdayCount
 {
   [(CarplayCollapsedAllDayTableViewCell *)self setSelectionStyle:0];
-  self->_allDayCount = a3;
-  self->_birthdayCount = a4;
-  v7 = [(CarplayCollapsedAllDayTableViewCell *)self _cellTitle];
-  [(UILabel *)self->_primaryLabel setText:v7];
+  self->_allDayCount = count;
+  self->_birthdayCount = birthdayCount;
+  _cellTitle = [(CarplayCollapsedAllDayTableViewCell *)self _cellTitle];
+  [(UILabel *)self->_primaryLabel setText:_cellTitle];
 
   [(CarplayCollapsedAllDayTableViewCell *)self forceUpdateOfAllElements];
 }
 
 - (void)forceUpdateOfAllElements
 {
-  v3 = [(CarplayCollapsedAllDayTableViewCell *)self normalPlatterBackgroundColor];
-  [(UIView *)self->_coloredBackgroundView setBackgroundColor:v3];
+  normalPlatterBackgroundColor = [(CarplayCollapsedAllDayTableViewCell *)self normalPlatterBackgroundColor];
+  [(UIView *)self->_coloredBackgroundView setBackgroundColor:normalPlatterBackgroundColor];
 
-  v4 = [(CarplayCollapsedAllDayTableViewCell *)self normalPrimaryTextColor];
-  [(UILabel *)self->_primaryLabel setTextColor:v4];
+  normalPrimaryTextColor = [(CarplayCollapsedAllDayTableViewCell *)self normalPrimaryTextColor];
+  [(UILabel *)self->_primaryLabel setTextColor:normalPrimaryTextColor];
 }
 
 - (void)_setupConstraints
 {
-  v59 = [(UIView *)self->_allDaySuperview leadingAnchor];
-  v60 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v58 = [v60 leadingAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  leadingAnchor = [(UIView *)self->_allDaySuperview leadingAnchor];
+  contentView = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v61[0] = v57;
-  v55 = [(UIView *)self->_allDaySuperview trailingAnchor];
-  v56 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v54 = [v56 trailingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  trailingAnchor = [(UIView *)self->_allDaySuperview trailingAnchor];
+  contentView2 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v61[1] = v53;
-  v51 = [(UIView *)self->_allDaySuperview topAnchor];
-  v52 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v50 = [v52 topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  topAnchor = [(UIView *)self->_allDaySuperview topAnchor];
+  contentView3 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v61[2] = v49;
-  v47 = [(UIView *)self->_allDaySuperview bottomAnchor];
-  v48 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v46 = [v48 bottomAnchor];
+  bottomAnchor = [(UIView *)self->_allDaySuperview bottomAnchor];
+  contentView4 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
   [(CarplayCollapsedAllDayTableViewCell *)self carplayBackgroundViewVerticalInset];
-  v45 = [v47 constraintEqualToAnchor:v46 constant:-v3];
+  v45 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v3];
   v61[3] = v45;
-  v43 = [(UIView *)self->_occurrenceCellSuperview leadingAnchor];
-  v44 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v42 = [v44 leadingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  leadingAnchor3 = [(UIView *)self->_occurrenceCellSuperview leadingAnchor];
+  contentView5 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v61[4] = v41;
-  v39 = [(UIView *)self->_occurrenceCellSuperview trailingAnchor];
-  v40 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v38 = [v40 trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  trailingAnchor3 = [(UIView *)self->_occurrenceCellSuperview trailingAnchor];
+  contentView6 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v61[5] = v37;
-  v35 = [(UIView *)self->_occurrenceCellSuperview topAnchor];
-  v36 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v34 = [v36 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor3 = [(UIView *)self->_occurrenceCellSuperview topAnchor];
+  contentView7 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  topAnchor4 = [contentView7 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v61[6] = v33;
-  v31 = [(UIView *)self->_occurrenceCellSuperview bottomAnchor];
-  v32 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
-  v30 = [v32 bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  bottomAnchor3 = [(UIView *)self->_occurrenceCellSuperview bottomAnchor];
+  contentView8 = [(CarplayCollapsedAllDayTableViewCell *)self contentView];
+  bottomAnchor4 = [contentView8 bottomAnchor];
+  v29 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v61[7] = v29;
-  v28 = [(UIView *)self->_coloredBackgroundView topAnchor];
-  v27 = [(UIView *)self->_allDaySuperview topAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  topAnchor5 = [(UIView *)self->_coloredBackgroundView topAnchor];
+  topAnchor6 = [(UIView *)self->_allDaySuperview topAnchor];
+  v26 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v61[8] = v26;
-  v25 = [(UIView *)self->_coloredBackgroundView bottomAnchor];
-  v24 = [(UIView *)self->_allDaySuperview bottomAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  bottomAnchor5 = [(UIView *)self->_coloredBackgroundView bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_allDaySuperview bottomAnchor];
+  v23 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v61[9] = v23;
-  v22 = [(UIView *)self->_coloredBackgroundView trailingAnchor];
-  v21 = [(UIView *)self->_allDaySuperview trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  trailingAnchor5 = [(UIView *)self->_coloredBackgroundView trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_allDaySuperview trailingAnchor];
+  v20 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v61[10] = v20;
-  v19 = [(UIView *)self->_coloredBackgroundView leadingAnchor];
-  v18 = [(UIView *)self->_allDaySuperview leadingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor5 = [(UIView *)self->_coloredBackgroundView leadingAnchor];
+  leadingAnchor6 = [(UIView *)self->_allDaySuperview leadingAnchor];
+  v17 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v61[11] = v17;
-  v16 = [(UILabel *)self->_primaryLabel topAnchor];
-  v15 = [(UIView *)self->_coloredBackgroundView topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15 constant:8.0];
+  topAnchor7 = [(UILabel *)self->_primaryLabel topAnchor];
+  topAnchor8 = [(UIView *)self->_coloredBackgroundView topAnchor];
+  v14 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:8.0];
   v61[12] = v14;
-  v4 = [(UILabel *)self->_primaryLabel bottomAnchor];
-  v5 = [(UIView *)self->_coloredBackgroundView bottomAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:-8.0];
+  bottomAnchor7 = [(UILabel *)self->_primaryLabel bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_coloredBackgroundView bottomAnchor];
+  v6 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-8.0];
   v61[13] = v6;
-  v7 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v8 = [(UIView *)self->_coloredBackgroundView trailingAnchor];
-  v9 = [v7 constraintLessThanOrEqualToAnchor:v8 constant:-8.0];
+  trailingAnchor7 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  trailingAnchor8 = [(UIView *)self->_coloredBackgroundView trailingAnchor];
+  v9 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8 constant:-8.0];
   v61[14] = v9;
-  v10 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v11 = [(UIView *)self->_coloredBackgroundView leadingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:16.5];
+  leadingAnchor7 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor8 = [(UIView *)self->_coloredBackgroundView leadingAnchor];
+  v12 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.5];
   v61[15] = v12;
   v13 = [NSArray arrayWithObjects:v61 count:16];
   [NSLayoutConstraint activateConstraints:v13];
@@ -330,36 +330,36 @@ LABEL_14:
   return v7;
 }
 
-- (void)crossfadeToCell:(id)a3
+- (void)crossfadeToCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 contentView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cellCopy = cell;
+  contentView = [cellCopy contentView];
+  [contentView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   occurrenceCellSuperview = self->_occurrenceCellSuperview;
-  v7 = [v4 contentView];
-  [(UIView *)occurrenceCellSuperview addSubview:v7];
+  contentView2 = [cellCopy contentView];
+  [(UIView *)occurrenceCellSuperview addSubview:contentView2];
 
-  v24 = [v4 contentView];
-  v23 = [v24 leadingAnchor];
-  v22 = [(UIView *)self->_occurrenceCellSuperview leadingAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22];
+  contentView3 = [cellCopy contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_occurrenceCellSuperview leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v25[0] = v21;
-  v20 = [v4 contentView];
-  v19 = [v20 trailingAnchor];
-  v18 = [(UIView *)self->_occurrenceCellSuperview trailingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  contentView4 = [cellCopy contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_occurrenceCellSuperview trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v25[1] = v17;
-  v16 = [v4 contentView];
-  v8 = [v16 topAnchor];
-  v9 = [(UIView *)self->_occurrenceCellSuperview topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  contentView5 = [cellCopy contentView];
+  topAnchor = [contentView5 topAnchor];
+  topAnchor2 = [(UIView *)self->_occurrenceCellSuperview topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v25[2] = v10;
-  v11 = [v4 contentView];
+  contentView6 = [cellCopy contentView];
 
-  v12 = [v11 bottomAnchor];
-  v13 = [(UIView *)self->_occurrenceCellSuperview bottomAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  bottomAnchor = [contentView6 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_occurrenceCellSuperview bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v25[3] = v14;
   v15 = [NSArray arrayWithObjects:v25 count:4];
   [NSLayoutConstraint activateConstraints:v15];

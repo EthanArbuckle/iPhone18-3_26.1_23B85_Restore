@@ -1,29 +1,29 @@
 @interface CBWHBRouter
-- (BOOL)insertIntoDeviceTableWithKey:(id)a3 value:(id)a4;
-- (BOOL)insertIntoWHBHostTableWithKey:(id)a3 value:(id)a4;
+- (BOOL)insertIntoDeviceTableWithKey:(id)key value:(id)value;
+- (BOOL)insertIntoWHBHostTableWithKey:(id)key value:(id)value;
 - (CBWHBRouter)init;
-- (CBWHBRouter)initWithOptions:(unint64_t)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (id)getCBDeviceForStableId:(id)a3 onHost:(id)a4;
-- (id)optimalWHBHostForStableIdentifier:(id)a3 result:(int *)a4;
-- (id)rankWHBHosts:(id)a3;
-- (unint64_t)calculateMetricforDevice:(id)a3 onHost:(id)a4;
-- (unint64_t)coexUsageOfWHBHost:(id)a3;
+- (CBWHBRouter)initWithOptions:(unint64_t)options;
+- (id)descriptionWithLevel:(int)level;
+- (id)getCBDeviceForStableId:(id)id onHost:(id)host;
+- (id)optimalWHBHostForStableIdentifier:(id)identifier result:(int *)result;
+- (id)rankWHBHosts:(id)hosts;
+- (unint64_t)calculateMetricforDevice:(id)device onHost:(id)host;
+- (unint64_t)coexUsageOfWHBHost:(id)host;
 - (void)activate;
-- (void)coexChangeNotification:(id)a3;
-- (void)deviceConnectionInterruptedOn:(id)a3;
-- (void)deviceFound:(id)a3;
-- (void)deviceLost:(id)a3;
-- (void)hostConnectionInterruptedOn:(id)a3;
+- (void)coexChangeNotification:(id)notification;
+- (void)deviceConnectionInterruptedOn:(id)on;
+- (void)deviceFound:(id)found;
+- (void)deviceLost:(id)lost;
+- (void)hostConnectionInterruptedOn:(id)on;
 - (void)invalidate;
-- (void)receivedUpdateEvent:(id)a3 hostID:(id)a4;
-- (void)removeDeviceFromDeviceTable:(id)a3 value:(id)a4;
-- (void)removeFromDeviceTableWithKey:(id)a3 value:(id)a4;
-- (void)removefromRemoteHostMapWithKey:(id)a3;
-- (void)removefromRemoteHostMapWithKey:(id)a3 value:(id)a4;
+- (void)receivedUpdateEvent:(id)event hostID:(id)d;
+- (void)removeDeviceFromDeviceTable:(id)table value:(id)value;
+- (void)removeFromDeviceTableWithKey:(id)key value:(id)value;
+- (void)removefromRemoteHostMapWithKey:(id)key;
+- (void)removefromRemoteHostMapWithKey:(id)key value:(id)value;
 - (void)subscribeToCoexStateUpdates;
 - (void)unSubscribeFromCoexStateUpdates;
-- (void)updateCoexUpdate:(id)a3 whbHost:(id)a4;
+- (void)updateCoexUpdate:(id)update whbHost:(id)host;
 @end
 
 @implementation CBWHBRouter
@@ -56,7 +56,7 @@
   return v2;
 }
 
-- (CBWHBRouter)initWithOptions:(unint64_t)a3
+- (CBWHBRouter)initWithOptions:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = CBWHBRouter;
@@ -71,7 +71,7 @@
     whbHostTable = v4->_whbHostTable;
     v4->_whbHostTable = v7;
 
-    v4->_options = a3 | 1;
+    v4->_options = options | 1;
     objc_storeStrong(&v4->_dispatchQueue, &_dispatch_main_q);
     v4->_isActivated = 0;
   }
@@ -104,9 +104,9 @@
   }
 }
 
-- (unint64_t)coexUsageOfWHBHost:(id)a3
+- (unint64_t)coexUsageOfWHBHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   if ((self->_options & 2) == 0)
   {
     v5 = 1;
@@ -119,7 +119,7 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v6 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:hostCopy];
   if (v6)
   {
     v7 = v6;
@@ -146,19 +146,19 @@ LABEL_21:
       v9 = v10;
     }
 
-    v11 = [v7 coexUsage];
-    v12 = [v11 numLEConnection];
+    coexUsage = [v7 coexUsage];
+    numLEConnection = [coexUsage numLEConnection];
 
-    if (v12 >= v9)
+    if (numLEConnection >= v9)
     {
       v5 = 0;
     }
 
     else
     {
-      v13 = [v7 estimatedConnections];
-      v14 = [v7 coexUsage];
-      v5 = &v13[[v14 numLEConnection]] < 3;
+      estimatedConnections = [v7 estimatedConnections];
+      coexUsage2 = [v7 coexUsage];
+      v5 = &estimatedConnections[[coexUsage2 numLEConnection]] < 3;
     }
 
     goto LABEL_21;
@@ -175,23 +175,23 @@ LABEL_25:
   return v5;
 }
 
-- (id)rankWHBHosts:(id)a3
+- (id)rankWHBHosts:(id)hosts
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:v4];
+  hostsCopy = hosts;
+  v5 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:hostsCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 hostMap];
-    v8 = [v7 allKeys];
+    hostMap = [v5 hostMap];
+    allKeys = [hostMap allKeys];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10010A5BC;
     v25[3] = &unk_100AE07F0;
     v25[4] = self;
-    v20 = v4;
-    v26 = v4;
-    v9 = [v8 sortedArrayUsingComparator:v25];
+    v20 = hostsCopy;
+    v26 = hostsCopy;
+    v9 = [allKeys sortedArrayUsingComparator:v25];
 
     v10 = [v9 mutableCopy];
     v21 = 0u;
@@ -250,7 +250,7 @@ LABEL_25:
       sub_100805A8C(v10);
     }
 
-    v4 = v20;
+    hostsCopy = v20;
   }
 
   else
@@ -278,55 +278,55 @@ LABEL_25:
   [v3 removeObserver:self name:@"com.apple.bluetooth.leconnection" object:0];
 }
 
-- (void)coexChangeNotification:(id)a3
+- (void)coexChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10010A7A4;
   v7[3] = &unk_100ADF590;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (BOOL)insertIntoDeviceTableWithKey:(id)a3 value:(id)a4
+- (BOOL)insertIntoDeviceTableWithKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 stableIdentifier];
-  if (v8)
+  keyCopy = key;
+  valueCopy = value;
+  stableIdentifier = [keyCopy stableIdentifier];
+  if (stableIdentifier)
   {
-    v9 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:v8];
+    v9 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:stableIdentifier];
     if (v9)
     {
       v10 = v9;
-      v11 = [(CBDeviceEntry *)v9 hostMap];
-      v12 = [v11 objectForKeyedSubscript:v7];
+      hostMap = [(CBDeviceEntry *)v9 hostMap];
+      v12 = [hostMap objectForKeyedSubscript:valueCopy];
       v13 = v12;
       if (v12)
       {
         [v12 floatValue];
-        *&v15 = (v14 + [v6 bleRSSI]) * 0.5;
+        *&v15 = (v14 + [keyCopy bleRSSI]) * 0.5;
         v16 = [NSNumber numberWithFloat:v15];
-        [v11 setObject:v16 forKeyedSubscript:v7];
+        [hostMap setObject:v16 forKeyedSubscript:valueCopy];
 
         if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
         {
-          sub_100805B88(v6, v11, v7);
+          sub_100805B88(keyCopy, hostMap, valueCopy);
         }
       }
 
       else
       {
-        v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 bleRSSI]);
-        [v11 setObject:v19 forKeyedSubscript:v7];
+        v19 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [keyCopy bleRSSI]);
+        [hostMap setObject:v19 forKeyedSubscript:valueCopy];
 
         if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
         {
-          sub_100805C10(v6);
+          sub_100805C10(keyCopy);
         }
       }
     }
@@ -334,11 +334,11 @@ LABEL_25:
     else
     {
       v10 = objc_alloc_init(CBDeviceEntry);
-      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 bleRSSI]);
-      v18 = [(CBDeviceEntry *)v10 hostMap];
-      [v18 setObject:v17 forKeyedSubscript:v7];
+      v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [keyCopy bleRSSI]);
+      hostMap2 = [(CBDeviceEntry *)v10 hostMap];
+      [hostMap2 setObject:v17 forKeyedSubscript:valueCopy];
 
-      [(NSMutableDictionary *)self->_deviceTable setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_deviceTable setObject:v10 forKeyedSubscript:stableIdentifier];
       if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
       {
         sub_100805C54();
@@ -346,19 +346,19 @@ LABEL_25:
     }
   }
 
-  return v8 != 0;
+  return stableIdentifier != 0;
 }
 
-- (void)removeDeviceFromDeviceTable:(id)a3 value:(id)a4
+- (void)removeDeviceFromDeviceTable:(id)table value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:v10];
+  tableCopy = table;
+  valueCopy = value;
+  v7 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:tableCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 hostMap];
-    [v9 removeObjectForKey:v6];
+    hostMap = [v7 hostMap];
+    [hostMap removeObjectForKey:valueCopy];
   }
 
   if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
@@ -367,30 +367,30 @@ LABEL_25:
   }
 }
 
-- (void)removeFromDeviceTableWithKey:(id)a3 value:(id)a4
+- (void)removeFromDeviceTableWithKey:(id)key value:(id)value
 {
-  v7 = a4;
-  v6 = [a3 stableIdentifier];
-  if (v6)
+  valueCopy = value;
+  stableIdentifier = [key stableIdentifier];
+  if (stableIdentifier)
   {
-    [(CBWHBRouter *)self removeDeviceFromDeviceTable:v6 value:v7];
+    [(CBWHBRouter *)self removeDeviceFromDeviceTable:stableIdentifier value:valueCopy];
   }
 }
 
-- (unint64_t)calculateMetricforDevice:(id)a3 onHost:(id)a4
+- (unint64_t)calculateMetricforDevice:(id)device onHost:(id)host
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  deviceCopy = device;
+  hostCopy = host;
+  v8 = hostCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (deviceCopy && hostCopy)
   {
-    v10 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:deviceCopy];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 hostMap];
-      v13 = [v12 objectForKeyedSubscript:v8];
+      hostMap = [v10 hostMap];
+      v13 = [hostMap objectForKeyedSubscript:v8];
       v14 = v13;
       if (v13)
       {
@@ -451,19 +451,19 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)insertIntoWHBHostTableWithKey:(id)a3 value:(id)a4
+- (BOOL)insertIntoWHBHostTableWithKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 stableIdentifier];
-  if (v8)
+  keyCopy = key;
+  valueCopy = value;
+  stableIdentifier = [valueCopy stableIdentifier];
+  if (stableIdentifier)
   {
-    v9 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:keyCopy];
     if (v9)
     {
       v10 = v9;
-      v11 = [(CBWHBHostEntry *)v9 deviceList];
-      [v11 setObject:v7 forKeyedSubscript:v8];
+      deviceList = [(CBWHBHostEntry *)v9 deviceList];
+      [deviceList setObject:valueCopy forKeyedSubscript:stableIdentifier];
 
       if (dword_100B50AE8 > 30 || dword_100B50AE8 == -1 && !_LogCategory_Initialize())
       {
@@ -474,10 +474,10 @@ LABEL_25:
     else
     {
       v10 = objc_alloc_init(CBWHBHostEntry);
-      v12 = [(CBWHBHostEntry *)v10 deviceList];
-      [v12 setObject:v7 forKeyedSubscript:v8];
+      deviceList2 = [(CBWHBHostEntry *)v10 deviceList];
+      [deviceList2 setObject:valueCopy forKeyedSubscript:stableIdentifier];
 
-      [(NSMutableDictionary *)self->_whbHostTable setObject:v10 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_whbHostTable setObject:v10 forKeyedSubscript:keyCopy];
       if (dword_100B50AE8 > 30 || dword_100B50AE8 == -1 && !_LogCategory_Initialize())
       {
         goto LABEL_16;
@@ -497,22 +497,22 @@ LABEL_16:
 
 LABEL_17:
 
-  return v8 != 0;
+  return stableIdentifier != 0;
 }
 
-- (void)removefromRemoteHostMapWithKey:(id)a3 value:(id)a4
+- (void)removefromRemoteHostMapWithKey:(id)key value:(id)value
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v6 stableIdentifier];
-  if (v7)
+  keyCopy = key;
+  valueCopy = value;
+  stableIdentifier = [valueCopy stableIdentifier];
+  if (stableIdentifier)
   {
-    v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v11];
+    v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:keyCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 deviceList];
-      [v10 removeObjectForKey:v7];
+      deviceList = [v8 deviceList];
+      [deviceList removeObjectForKey:stableIdentifier];
     }
 
     if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
@@ -527,10 +527,10 @@ LABEL_17:
   }
 }
 
-- (void)removefromRemoteHostMapWithKey:(id)a3
+- (void)removefromRemoteHostMapWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:keyCopy];
   if (v5)
   {
     if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
@@ -538,56 +538,56 @@ LABEL_17:
       sub_100805CF0();
     }
 
-    v6 = [v5 deviceList];
+    deviceList = [v5 deviceList];
     v7 = _NSConcreteStackBlock;
     v8 = 3221225472;
     v9 = sub_10010B2E4;
     v10 = &unk_100AE0818;
-    v11 = self;
-    v12 = v4;
-    [v6 enumerateKeysAndObjectsUsingBlock:&v7];
+    selfCopy = self;
+    v12 = keyCopy;
+    [deviceList enumerateKeysAndObjectsUsingBlock:&v7];
   }
 
-  [(NSMutableDictionary *)self->_whbHostTable removeObjectForKey:v4, v7, v8, v9, v10, v11];
+  [(NSMutableDictionary *)self->_whbHostTable removeObjectForKey:keyCopy, v7, v8, v9, v10, selfCopy];
   if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
   {
     sub_100805D30();
   }
 }
 
-- (void)deviceFound:(id)a3
+- (void)deviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   if (self->_isActivated)
   {
-    if (v4)
+    if (foundCopy)
     {
-      v10 = v4;
-      if ([v4 bleRSSI])
+      v10 = foundCopy;
+      if ([foundCopy bleRSSI])
       {
-        v5 = [v10 stableIdentifier];
-        if (v5)
+        stableIdentifier = [v10 stableIdentifier];
+        if (stableIdentifier)
         {
-          v6 = [v10 remoteHostID];
-          if (v6)
+          remoteHostID = [v10 remoteHostID];
+          if (remoteHostID)
           {
-            v7 = [v10 remoteHostID];
+            remoteHostID2 = [v10 remoteHostID];
           }
 
           else
           {
-            v7 = @"CBLocalHostID";
+            remoteHostID2 = @"CBLocalHostID";
           }
 
           if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
           {
-            v8 = v5;
-            v9 = v7;
+            v8 = stableIdentifier;
+            v9 = remoteHostID2;
             LogPrintF_safe();
           }
 
-          [(CBWHBRouter *)self insertIntoDeviceTableWithKey:v10 value:v7, v8, v9];
-          [(CBWHBRouter *)self insertIntoWHBHostTableWithKey:v7 value:v10];
+          [(CBWHBRouter *)self insertIntoDeviceTableWithKey:v10 value:remoteHostID2, v8, v9];
+          [(CBWHBRouter *)self insertIntoWHBHostTableWithKey:remoteHostID2 value:v10];
         }
       }
 
@@ -606,37 +606,37 @@ LABEL_17:
   _objc_release_x2();
 }
 
-- (void)deviceLost:(id)a3
+- (void)deviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   if (self->_isActivated)
   {
-    if (v4)
+    if (lostCopy)
     {
-      v10 = v4;
-      v5 = [v4 stableIdentifier];
-      if (v5)
+      v10 = lostCopy;
+      stableIdentifier = [lostCopy stableIdentifier];
+      if (stableIdentifier)
       {
-        v6 = [v10 remoteHostID];
-        if (v6)
+        remoteHostID = [v10 remoteHostID];
+        if (remoteHostID)
         {
-          v7 = [v10 remoteHostID];
+          remoteHostID2 = [v10 remoteHostID];
         }
 
         else
         {
-          v7 = @"CBLocalHostID";
+          remoteHostID2 = @"CBLocalHostID";
         }
 
         if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
         {
-          v8 = v5;
-          v9 = v7;
+          v8 = stableIdentifier;
+          v9 = remoteHostID2;
           LogPrintF_safe();
         }
 
-        [(CBWHBRouter *)self removeFromDeviceTableWithKey:v10 value:v7, v8, v9];
-        [(CBWHBRouter *)self removefromRemoteHostMapWithKey:v7 value:v10];
+        [(CBWHBRouter *)self removeFromDeviceTableWithKey:v10 value:remoteHostID2, v8, v9];
+        [(CBWHBRouter *)self removefromRemoteHostMapWithKey:remoteHostID2 value:v10];
       }
     }
   }
@@ -649,17 +649,17 @@ LABEL_17:
   _objc_release_x2();
 }
 
-- (void)hostConnectionInterruptedOn:(id)a3
+- (void)hostConnectionInterruptedOn:(id)on
 {
-  v4 = a3;
-  v5 = v4;
+  onCopy = on;
+  v5 = onCopy;
   if (self->_isActivated)
   {
     v6 = @"CBLocalHostID";
-    v10 = v4;
-    if (v4)
+    v10 = onCopy;
+    if (onCopy)
     {
-      v6 = v4;
+      v6 = onCopy;
     }
 
     v7 = v6;
@@ -677,7 +677,7 @@ LABEL_17:
 
   if (dword_100B50AE8 <= 90)
   {
-    v10 = v4;
+    v10 = onCopy;
     if (dword_100B50AE8 != -1 || (v9 = _LogCategory_Initialize(), v5 = v10, v9))
     {
       sub_100805DC4();
@@ -687,12 +687,12 @@ LABEL_8:
   }
 }
 
-- (void)deviceConnectionInterruptedOn:(id)a3
+- (void)deviceConnectionInterruptedOn:(id)on
 {
-  v4 = a3;
+  onCopy = on;
   if (self->_isActivated)
   {
-    v6 = v4;
+    v6 = onCopy;
     if (dword_100B50AE8 <= 30 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
     {
       sub_100805E3C();
@@ -711,17 +711,17 @@ LABEL_8:
   _objc_release_x2();
 }
 
-- (id)optimalWHBHostForStableIdentifier:(id)a3 result:(int *)a4
+- (id)optimalWHBHostForStableIdentifier:(id)identifier result:(int *)result
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (self->_isActivated)
   {
-    if (a4)
+    if (result)
     {
-      *a4 = 0;
+      *result = 0;
     }
 
-    v7 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_deviceTable objectForKeyedSubscript:identifierCopy];
     if (!v7)
     {
       if (dword_100B50AE8 <= 90 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
@@ -730,23 +730,23 @@ LABEL_8:
       }
 
       v16 = 0;
-      if (a4)
+      if (result)
       {
-        *a4 = 1701;
+        *result = 1701;
       }
 
       goto LABEL_30;
     }
 
-    v8 = [(CBWHBRouter *)self rankWHBHosts:v6];
+    v8 = [(CBWHBRouter *)self rankWHBHosts:identifierCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 firstObject];
-      if (v10)
+      firstObject = [v8 firstObject];
+      if (firstObject)
       {
-        v11 = v10;
-        v12 = [(CBWHBRouter *)self getCBDeviceForStableId:v6 onHost:v10];
+        v11 = firstObject;
+        v12 = [(CBWHBRouter *)self getCBDeviceForStableId:identifierCopy onHost:firstObject];
         v13 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v11];
         [v13 setEstimatedConnections:{objc_msgSend(v13, "estimatedConnections") + 1}];
         [v13 setEstimatedConnectionsLastUpdatedTicks:mach_absolute_time()];
@@ -770,9 +770,9 @@ LABEL_8:
         goto LABEL_25;
       }
 
-      if (a4)
+      if (result)
       {
-        *a4 = 345;
+        *result = 345;
       }
     }
 
@@ -812,11 +812,11 @@ LABEL_31:
   return v16;
 }
 
-- (id)getCBDeviceForStableId:(id)a3 onHost:(id)a4
+- (id)getCBDeviceForStableId:(id)id onHost:(id)host
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v7];
+  idCopy = id;
+  hostCopy = host;
+  v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:hostCopy];
   v9 = v8;
   v17 = 0;
   v18 = &v17;
@@ -826,15 +826,15 @@ LABEL_31:
   v22 = 0;
   if (v8)
   {
-    v10 = [v8 deviceList];
+    deviceList = [v8 deviceList];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10010BD30;
     v13[3] = &unk_100AE0840;
-    v14 = v6;
-    v15 = v7;
+    v14 = idCopy;
+    v15 = hostCopy;
     v16 = &v17;
-    [v10 enumerateKeysAndObjectsUsingBlock:v13];
+    [deviceList enumerateKeysAndObjectsUsingBlock:v13];
   }
 
   else if (dword_100B50AE8 <= 90 && (dword_100B50AE8 != -1 || _LogCategory_Initialize()))
@@ -848,9 +848,9 @@ LABEL_31:
   return v11;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if (a3 > 0x14u)
+  if (level > 0x14u)
   {
     v12 = 0;
     v6 = [objc_opt_class() description];
@@ -904,49 +904,49 @@ LABEL_7:
   return v8;
 }
 
-- (void)updateCoexUpdate:(id)a3 whbHost:(id)a4
+- (void)updateCoexUpdate:(id)update whbHost:(id)host
 {
-  v12 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"NUMBER_OF_LE_CONNECTIONS"];
-  v7 = [v6 unsignedLongValue];
-  v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:v12];
+  hostCopy = host;
+  v6 = [update objectForKeyedSubscript:@"NUMBER_OF_LE_CONNECTIONS"];
+  unsignedLongValue = [v6 unsignedLongValue];
+  v8 = [(NSMutableDictionary *)self->_whbHostTable objectForKeyedSubscript:hostCopy];
   if (v8)
   {
     v9 = v8;
     [(CBWHBHostEntry *)v8 setEstimatedConnections:0];
     [(CBWHBHostEntry *)v9 setEstimatedConnectionsLastUpdatedTicks:0];
-    v10 = [(CBWHBHostEntry *)v9 coexUsage];
-    [v10 setNumLEConnection:v7];
+    coexUsage = [(CBWHBHostEntry *)v9 coexUsage];
+    [coexUsage setNumLEConnection:unsignedLongValue];
   }
 
   else
   {
     v9 = objc_alloc_init(CBWHBHostEntry);
-    v11 = [(CBWHBHostEntry *)v9 coexUsage];
-    [v11 setNumLEConnection:v7];
+    coexUsage2 = [(CBWHBHostEntry *)v9 coexUsage];
+    [coexUsage2 setNumLEConnection:unsignedLongValue];
 
-    [(NSMutableDictionary *)self->_whbHostTable setObject:v9 forKeyedSubscript:v12];
+    [(NSMutableDictionary *)self->_whbHostTable setObject:v9 forKeyedSubscript:hostCopy];
   }
 }
 
-- (void)receivedUpdateEvent:(id)a3 hostID:(id)a4
+- (void)receivedUpdateEvent:(id)event hostID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  dCopy = d;
   if (self->_isActivated)
   {
-    v8 = [v6 objectForKeyedSubscript:@"NUMBER_OF_LE_CONNECTIONS"];
+    v8 = [eventCopy objectForKeyedSubscript:@"NUMBER_OF_LE_CONNECTIONS"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 unsignedLongValue];
-      [(CBWHBRouter *)self updateCoexUpdate:v6 whbHost:v7];
+      unsignedLongValue = [v8 unsignedLongValue];
+      [(CBWHBRouter *)self updateCoexUpdate:eventCopy whbHost:dCopy];
       v14[0] = @"CBWHBMetricsKeyEventType";
       v14[1] = @"CBWHBMetricsKeySubEventType";
       v15[0] = @"CoexUpdateEvent";
       v15[1] = @"ReceivedCoexUpdate";
       v14[2] = @"CBWHBMetricsKeyNumLEConnections";
-      v11 = [NSNumber numberWithUnsignedLongLong:v10];
+      v11 = [NSNumber numberWithUnsignedLongLong:unsignedLongValue];
       v15[2] = v11;
       v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 

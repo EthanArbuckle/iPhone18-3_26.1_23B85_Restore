@@ -14,12 +14,12 @@
 
 - (uint64_t)_ISStoreIndex_hashTable
 {
-  [a1 length];
-  v2 = [a1 bytes];
-  v3 = [a1 _ISStoreIndex_hashTableHeader];
-  if (v2)
+  [self length];
+  bytes = [self bytes];
+  _ISStoreIndex_hashTableHeader = [self _ISStoreIndex_hashTableHeader];
+  if (bytes)
   {
-    v4 = v3 == 0;
+    v4 = _ISStoreIndex_hashTableHeader == 0;
   }
 
   else
@@ -34,32 +34,32 @@
 
   else
   {
-    return v2 + 20;
+    return bytes + 20;
   }
 }
 
 - (uint64_t)_ISStoreIndex_hashTableHeader
 {
-  if ([a1 length] < 0x15)
+  if ([self length] < 0x15)
   {
     return 0;
   }
 
-  v2 = a1;
+  selfCopy = self;
 
-  return [v2 bytes];
+  return [selfCopy bytes];
 }
 
 - (uint64_t)_ISStoreIndex_nodesOffset
 {
-  v2 = [a1 bytes];
-  result = [a1 _ISStoreIndex_hashTableHeader];
+  bytes = [self bytes];
+  result = [self _ISStoreIndex_hashTableHeader];
   if (result)
   {
     v4 = *(result + 12);
     if (v4)
     {
-      v5 = v2 == 0;
+      v5 = bytes == 0;
     }
 
     else
@@ -84,7 +84,7 @@
 
 - (uint64_t)_ISStoreIndex_isValid
 {
-  result = [a1 _ISStoreIndex_hashTableHeader];
+  result = [self _ISStoreIndex_hashTableHeader];
   if (result)
   {
     return *(result + 4) == 1 && *result == 11;
@@ -100,10 +100,10 @@
     return 0;
   }
 
-  v5 = [a1 length];
-  v6 = [a1 bytes];
-  v7 = [a1 _ISStoreIndex_nodesOffset] + a3;
-  v8 = (v7 + v6);
+  v5 = [self length];
+  bytes = [self bytes];
+  v7 = [self _ISStoreIndex_nodesOffset] + a3;
+  v8 = (v7 + bytes);
   if (v7 + HIDWORD(a3) >= v5 || v8 == 0)
   {
     return 0;
@@ -125,18 +125,18 @@
 
 - (uint64_t)_ISStoreIndex_nodeRefForKey:()ISStoreIndex_HashTable
 {
-  v5 = [a1 _ISStoreIndex_hashTable];
-  result = [a1 _ISStoreIndex_hashTableHeader];
+  _ISStoreIndex_hashTable = [self _ISStoreIndex_hashTable];
+  result = [self _ISStoreIndex_hashTableHeader];
   if (result)
   {
     v7 = result;
     result = 0;
-    if (v5)
+    if (_ISStoreIndex_hashTable)
     {
       v8 = *(v7 + 12);
       if (v8)
       {
-        return *(v5 + 8 * (a3 % v8));
+        return *(_ISStoreIndex_hashTable + 8 * (a3 % v8));
       }
     }
   }
@@ -158,12 +158,12 @@
     goto LABEL_17;
   }
 
-  if ([a1 bytes] > a3)
+  if ([self bytes] > a3)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [NSData(ISStoreIndex_HashTable) _ISStoreIndex_checkNodeBounds:a1];
+      [NSData(ISStoreIndex_HashTable) _ISStoreIndex_checkNodeBounds:self];
     }
 
 LABEL_17:
@@ -172,8 +172,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v6 = [a1 bytes];
-  if ([a1 length] + v6 <= a3)
+  bytes = [self bytes];
+  if ([self length] + bytes <= a3)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -184,8 +184,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v7 = [a1 bytes];
-  if (a3 + 36 >= [a1 length] + v7)
+  bytes2 = [self bytes];
+  if (a3 + 36 >= [self length] + bytes2)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -197,19 +197,19 @@ LABEL_17:
   }
 
   v8 = *(a3 + 4) + a3;
-  v9 = [a1 bytes];
-  if (v8 >= [a1 length] + v9)
+  bytes3 = [self bytes];
+  if (v8 >= [self length] + bytes3)
   {
     v5 = _ISDefaultLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      v12 = [a1 bytes];
-      v13 = [a1 length];
+      bytes4 = [self bytes];
+      v13 = [self length];
       v14 = *(a3 + 4);
       v15 = 134218496;
       v16 = a3;
       v17 = 2048;
-      v18 = v12 + v13;
+      v18 = bytes4 + v13;
       v19 = 1024;
       v20 = v14;
       _os_log_fault_impl(&dword_1A77B8000, v5, OS_LOG_TYPE_FAULT, "Node exceeds expected bounds, %p vs %p node expected size=%d", &v15, 0x1Cu);
@@ -227,20 +227,20 @@ LABEL_18:
 - (void)_ISStoreIndex_enumerateValuesWithBock:()ISStoreIndex_HashTable
 {
   v4 = a3;
-  v5 = [a1 _ISStoreIndex_hashTableHeader];
-  v6 = [a1 bytes];
-  v7 = [a1 _ISStoreIndex_nodesOffset];
-  if (v5)
+  _ISStoreIndex_hashTableHeader = [self _ISStoreIndex_hashTableHeader];
+  bytes = [self bytes];
+  _ISStoreIndex_nodesOffset = [self _ISStoreIndex_nodesOffset];
+  if (_ISStoreIndex_hashTableHeader)
   {
-    v8 = *(v5 + 8);
+    v8 = *(_ISStoreIndex_hashTableHeader + 8);
     v12 = 0;
     if ((v8 & 0x80000000) == 0)
     {
-      v9 = v7 + v6;
+      v9 = _ISStoreIndex_nodesOffset + bytes;
       while (1)
       {
         v10 = objc_autoreleasePoolPush();
-        if (([a1 _ISStoreIndex_checkNodeBounds:v9] & 1) == 0)
+        if (([self _ISStoreIndex_checkNodeBounds:v9] & 1) == 0)
         {
           break;
         }
@@ -276,13 +276,13 @@ LABEL_13:
   v6 = a4;
   v16 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _ISStoreIndex_nodeRefForKey:*(a3 + 8) ^ *a3];
-  v9 = [a1 _ISStoreIndex_nodeForRef:v8];
+  v8 = [self _ISStoreIndex_nodeRefForKey:*(a3 + 8) ^ *a3];
+  v9 = [self _ISStoreIndex_nodeForRef:v8];
   if (v9)
   {
     v10 = v9;
     v11 = HIDWORD(v8);
-    while ([a1 _ISStoreIndex_checkNodeBounds:v10])
+    while ([self _ISStoreIndex_checkNodeBounds:v10])
     {
       if (*(v10 + 32) == 1 && !uuid_compare((v10 + 8), a3))
       {
@@ -311,7 +311,7 @@ LABEL_13:
         }
 
         v11 = *(v10 + 28);
-        v10 = [a1 _ISStoreIndex_nodeForRef:v12 | (v11 << 32)];
+        v10 = [self _ISStoreIndex_nodeForRef:v12 | (v11 << 32)];
         LODWORD(v8) = v12;
       }
 

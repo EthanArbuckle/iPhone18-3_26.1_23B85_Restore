@@ -4,7 +4,7 @@
 - (NSArray)plistSpecifiers;
 - (id)_primarySpecifiers;
 - (id)_secondarySpecifiers;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
 - (id)accountSpecifiers;
 - (id)localizedAccountSetupTitleString;
 - (id)localizedConfirmSaveUnvalidatedAccountMessageString;
@@ -12,28 +12,28 @@
 - (id)newDefaultAccount;
 - (void)_insertSecondarySpecifiers;
 - (void)_reloadHostDependentSepcifiers;
-- (void)_setHostKeyboardForLoneSpecifierOnTraits:(id)a3;
-- (void)_setHostKeyboardToDefaultOnTraits:(id)a3;
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5;
-- (void)cancelButtonTapped:(id)a3;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
+- (void)_setHostKeyboardForLoneSpecifierOnTraits:(id)traits;
+- (void)_setHostKeyboardToDefaultOnTraits:(id)traits;
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error;
+- (void)cancelButtonTapped:(id)tapped;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
 @end
 
 @implementation SubCalSettingsAccountsUIController
 
-- (void)_setHostKeyboardForLoneSpecifierOnTraits:(id)a3
+- (void)_setHostKeyboardForLoneSpecifierOnTraits:(id)traits
 {
-  v3 = a3;
-  [v3 setReturnKeyType:4];
-  [v3 setEnablesReturnKeyAutomatically:1];
+  traitsCopy = traits;
+  [traitsCopy setReturnKeyType:4];
+  [traitsCopy setEnablesReturnKeyAutomatically:1];
 }
 
-- (void)_setHostKeyboardToDefaultOnTraits:(id)a3
+- (void)_setHostKeyboardToDefaultOnTraits:(id)traits
 {
-  v3 = a3;
-  [v3 setReturnKeyType:0];
-  [v3 setEnablesReturnKeyAutomatically:0];
+  traitsCopy = traits;
+  [traitsCopy setReturnKeyType:0];
+  [traitsCopy setEnablesReturnKeyAutomatically:0];
 }
 
 - (NSArray)plistSpecifiers
@@ -53,19 +53,19 @@
 
 - (id)_primarySpecifiers
 {
-  v2 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
-  v3 = [v2 subarrayWithRange:{2, 2}];
+  plistSpecifiers = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
+  v3 = [plistSpecifiers subarrayWithRange:{2, 2}];
 
   return v3;
 }
 
 - (id)_secondarySpecifiers
 {
-  v3 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
-  v4 = [v3 count] - 4;
+  plistSpecifiers = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
+  v4 = [plistSpecifiers count] - 4;
 
-  v5 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
-  v6 = [v5 subarrayWithRange:{4, v4}];
+  plistSpecifiers2 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
+  v6 = [plistSpecifiers2 subarrayWithRange:{4, v4}];
 
   return v6;
 }
@@ -73,48 +73,48 @@
 - (void)_insertSecondarySpecifiers
 {
   v3 = [(SubCalSettingsAccountsUIController *)self specifierForID:@"HOST"];
-  v17 = [v3 properties];
+  properties = [v3 properties];
 
-  v4 = [v17 objectForKeyedSubscript:PSTableCellKey];
-  v5 = [v4 textField];
+  v4 = [properties objectForKeyedSubscript:PSTableCellKey];
+  textField = [v4 textField];
 
-  [(SubCalSettingsAccountsUIController *)self _setHostKeyboardToDefaultOnTraits:v5];
-  v6 = [(SubCalSettingsAccountsUIController *)self account];
-  v7 = [v6 accountDescription];
-  v8 = [v7 length];
+  [(SubCalSettingsAccountsUIController *)self _setHostKeyboardToDefaultOnTraits:textField];
+  account = [(SubCalSettingsAccountsUIController *)self account];
+  accountDescription = [account accountDescription];
+  v8 = [accountDescription length];
 
   if (!v8)
   {
-    v9 = [(SubCalSettingsAccountsUIController *)self account];
-    v10 = [v9 host];
+    account2 = [(SubCalSettingsAccountsUIController *)self account];
+    host = [account2 host];
 
     v11 = DAAccountDescriptionFromHostname();
-    v12 = [(SubCalSettingsAccountsUIController *)self accountStore];
-    v13 = [v12 hasAccountWithDescription:v11];
+    accountStore = [(SubCalSettingsAccountsUIController *)self accountStore];
+    v13 = [accountStore hasAccountWithDescription:v11];
 
     if (v13)
     {
-      v14 = v10;
+      v14 = host;
 
       v11 = v14;
     }
 
-    v15 = [(SubCalSettingsAccountsUIController *)self account];
-    [v15 setAccountDescription:v11];
+    account3 = [(SubCalSettingsAccountsUIController *)self account];
+    [account3 setAccountDescription:v11];
   }
 
-  v16 = [(SubCalSettingsAccountsUIController *)self _secondarySpecifiers];
-  [(SubCalSettingsAccountsUIController *)self insertContiguousSpecifiers:v16 afterSpecifierID:@"HOST" animated:1];
+  _secondarySpecifiers = [(SubCalSettingsAccountsUIController *)self _secondarySpecifiers];
+  [(SubCalSettingsAccountsUIController *)self insertContiguousSpecifiers:_secondarySpecifiers afterSpecifierID:@"HOST" animated:1];
 }
 
 - (id)newDefaultAccount
 {
-  v2 = [(SubCalSettingsAccountsUIController *)self accountStore];
-  v3 = [v2 accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSubscribedCalendar];
+  accountStore = [(SubCalSettingsAccountsUIController *)self accountStore];
+  v3 = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSubscribedCalendar];
 
   v4 = [[ACAccount alloc] initWithAccountType:v3];
-  v5 = [v3 supportedDataclasses];
-  v6 = [v5 mutableCopy];
+  supportedDataclasses = [v3 supportedDataclasses];
+  v6 = [supportedDataclasses mutableCopy];
 
   [v4 setProvisionedDataclasses:v6];
   v7 = [DAAccount daAccountSubclassWithBackingAccountInfo:v4];
@@ -125,30 +125,30 @@
 
 - (id)accountSpecifiers
 {
-  v3 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
+  plistSpecifiers = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
   if (([(SubCalSettingsAccountsUIController *)self isSettingUpNewAccount]& 1) != 0)
   {
-    v4 = [NSBundle bundleForClass:objc_opt_class()];
-    [v4 localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_82D0 table:@"SubCalAccountSetup"];
+    account = [NSBundle bundleForClass:objc_opt_class()];
+    [account localizedStringForKey:@"NEW_ACCOUNT_SETTINGS" value:&stru_82D0 table:@"SubCalAccountSetup"];
   }
 
   else
   {
-    v4 = [(SubCalSettingsAccountsUIController *)self account];
-    [v4 accountDescription];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    [account accountDescription];
   }
   v5 = ;
   [(SubCalSettingsAccountsUIController *)self setTitle:v5];
 
   if ([(SubCalSettingsAccountsUIController *)self isSettingUpNewAccount]&& ([(SubCalSettingsAccountsUIController *)self attemptedValidation]& 1) == 0)
   {
-    v36 = [(SubCalSettingsAccountsUIController *)self _primarySpecifiers];
+    _primarySpecifiers = [(SubCalSettingsAccountsUIController *)self _primarySpecifiers];
   }
 
   else
   {
-    v6 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
-    v7 = [v6 mutableCopy];
+    plistSpecifiers2 = [(SubCalSettingsAccountsUIController *)self plistSpecifiers];
+    v7 = [plistSpecifiers2 mutableCopy];
 
     v8 = [NSBundle bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"SUBCAL_INFO" value:&stru_82D0 table:@"SubCalAccountSetup"];
@@ -162,9 +162,9 @@
 
     else
     {
-      v12 = [(SubCalSettingsAccountsUIController *)self account];
-      v13 = [v12 accountDescription];
-      [(SubCalSettingsAccountsUIController *)self setTitle:v13];
+      account2 = [(SubCalSettingsAccountsUIController *)self account];
+      accountDescription = [account2 accountDescription];
+      [(SubCalSettingsAccountsUIController *)self setTitle:accountDescription];
 
       v14 = +[DADiagnosticsPSController linkSpecifier];
       if (v14)
@@ -178,16 +178,16 @@
       if ([(SubCalSettingsAccountsUIController *)self accountIsManaged])
       {
         v43 = v14;
-        v16 = [(SubCalSettingsAccountsUIController *)self account];
-        v17 = [v16 backingAccountInfo];
-        v18 = [v17 mcBackingProfile];
+        account3 = [(SubCalSettingsAccountsUIController *)self account];
+        backingAccountInfo = [account3 backingAccountInfo];
+        mcBackingProfile = [backingAccountInfo mcBackingProfile];
 
-        if (v18)
+        if (mcBackingProfile)
         {
           v19 = [NSBundle bundleForClass:objc_opt_class()];
           v20 = [v19 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_82D0 table:@"SubCalAccountSetup"];
-          v21 = [v18 friendlyName];
-          v22 = [NSString stringWithFormat:v20, v21];
+          friendlyName = [mcBackingProfile friendlyName];
+          v22 = [NSString stringWithFormat:v20, friendlyName];
 
           v23 = [(SubCalSettingsAccountsUIController *)self lastGroupSpecifierInSpecifiers:v7];
           if (!v23)
@@ -205,7 +205,7 @@
           [v23 setProperty:v22 forKey:PSFooterTextGroupKey];
         }
 
-        v42 = v18;
+        v42 = mcBackingProfile;
         v26 = [NSSet setWithObjects:@"HOST", @"USERNAME", @"PASSWORD", @"DESCRIPTION", @"USE_SSL", 0];
         v45 = 0u;
         v46 = 0u;
@@ -229,8 +229,8 @@
               }
 
               v33 = *(*(&v45 + 1) + 8 * i);
-              v34 = [v33 identifier];
-              v35 = [v26 containsObject:v34];
+              identifier = [v33 identifier];
+              v35 = [v26 containsObject:identifier];
 
               if (v35)
               {
@@ -263,65 +263,65 @@
       v11 = v7;
     }
 
-    v36 = v11;
+    _primarySpecifiers = v11;
   }
 
-  return v36;
+  return _primarySpecifiers;
 }
 
 - (BOOL)validateAccount
 {
-  v3 = [*&self->DASettingsAccountsUIController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
-  [v3 resignFirstResponder];
+  firstResponder = [*&self->DASettingsAccountsUIController_opaque[OBJC_IVAR___PSListController__table] firstResponder];
+  [firstResponder resignFirstResponder];
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"VERIFYING" value:&stru_82D0 table:@"Localizable"];
   [(SubCalSettingsAccountsUIController *)self startValidationWithPrompt:v5];
 
-  v6 = [(SubCalSettingsAccountsUIController *)self account];
-  if (([v6 useSSL] & 1) == 0)
+  account = [(SubCalSettingsAccountsUIController *)self account];
+  if (([account useSSL] & 1) == 0)
   {
     if ([(SubCalSettingsAccountsUIController *)self _showingSecondarySpecifiers])
     {
-      [v6 setAllowInsecureConnection:1];
+      [account setAllowInsecureConnection:1];
     }
 
     else
     {
-      [v6 setUseSSL:1];
+      [account setUseSSL:1];
     }
   }
 
-  v7 = [(SubCalSettingsAccountsUIController *)self accountStore];
-  [v6 checkValidityOnAccountStore:v7 withConsumer:self inQueue:&_dispatch_main_q];
+  accountStore = [(SubCalSettingsAccountsUIController *)self accountStore];
+  [account checkValidityOnAccountStore:accountStore withConsumer:self inQueue:&_dispatch_main_q];
 
   return 1;
 }
 
-- (void)account:(id)a3 isValid:(BOOL)a4 validationError:(id)a5
+- (void)account:(id)account isValid:(BOOL)valid validationError:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v41 = v6;
-  if (!v6)
+  validCopy = valid;
+  accountCopy = account;
+  errorCopy = error;
+  v41 = validCopy;
+  if (!validCopy)
   {
     v10 = DALoggingwithCategory();
     v11 = _CPLog_to_os_log_type[3];
     if (os_log_type_enabled(v10, v11))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v9;
+      *(&buf + 4) = errorCopy;
       _os_log_impl(&dword_0, v10, v11, "validation failed with error %@", &buf, 0xCu);
     }
 
     [(SubCalSettingsAccountsUIController *)self setValidatedSuccessfully:0];
-    if ([v9 isSubCalAuthError])
+    if ([errorCopy isSubCalAuthError])
     {
-      v12 = [v8 username];
-      if ([v12 length])
+      username = [accountCopy username];
+      if ([username length])
       {
-        v13 = [v8 passwordWithExpected:0];
+        v13 = [accountCopy passwordWithExpected:0];
         v14 = [v13 length] == 0;
 
         if (v14)
@@ -346,8 +346,8 @@
 
       if (![(SubCalSettingsAccountsUIController *)self _showingSecondarySpecifiers])
       {
-        v29 = [(SubCalSettingsAccountsUIController *)self account];
-        [v29 setUseSSL:1];
+        account = [(SubCalSettingsAccountsUIController *)self account];
+        [account setUseSSL:1];
 
         [(SubCalSettingsAccountsUIController *)self _insertSecondarySpecifiers];
       }
@@ -355,10 +355,10 @@
 
     else
     {
-      v17 = [(SubCalSettingsAccountsUIController *)self account];
-      v18 = [v17 useSSL];
+      account2 = [(SubCalSettingsAccountsUIController *)self account];
+      useSSL = [account2 useSSL];
 
-      if (v18)
+      if (useSSL)
       {
         [(SubCalSettingsAccountsUIController *)self showSSLFailureView];
         v19 = 0;
@@ -394,20 +394,20 @@
 
     if ([(SubCalSettingsAccountsUIController *)self accountNeedsAdd])
     {
-      v20 = [(SubCalSettingsAccountsUIController *)self account];
-      [v20 setEnabled:1 forDADataclass:4];
+      account3 = [(SubCalSettingsAccountsUIController *)self account];
+      [account3 setEnabled:1 forDADataclass:4];
 
-      v21 = [(SubCalSettingsAccountsUIController *)self account];
-      [v21 saveTmpICSData];
+      account4 = [(SubCalSettingsAccountsUIController *)self account];
+      [account4 saveTmpICSData];
 
       v22 = dispatch_semaphore_create(0);
       *&buf = 0;
       *(&buf + 1) = &buf;
       v48 = 0x2020000000;
       v49 = 1;
-      v23 = [(SubCalSettingsAccountsUIController *)self accountStore];
-      v24 = [(SubCalSettingsAccountsUIController *)self account];
-      v25 = [v24 backingAccountInfo];
+      accountStore = [(SubCalSettingsAccountsUIController *)self accountStore];
+      account5 = [(SubCalSettingsAccountsUIController *)self account];
+      backingAccountInfo = [account5 backingAccountInfo];
       v43[0] = _NSConcreteStackBlock;
       v43[1] = 3221225472;
       v43[2] = sub_224C;
@@ -415,7 +415,7 @@
       p_buf = &buf;
       v26 = v22;
       v44 = v26;
-      [v23 canSaveAccount:v25 withCompletionHandler:v43];
+      [accountStore canSaveAccount:backingAccountInfo withCompletionHandler:v43];
 
       dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
       v16 = *(*(&buf + 1) + 24);
@@ -462,15 +462,15 @@ LABEL_30:
   [(SubCalSettingsAccountsUIController *)self stopValidationWithPrompt:v36 showButtons:1];
 
   v37 = [(SubCalSettingsAccountsUIController *)self specifierForID:@"HOST"];
-  v38 = [v37 properties];
+  properties = [v37 properties];
 
-  v39 = [v38 objectForKeyedSubscript:PSTableCellKey];
-  v40 = [v39 textField];
-  [v40 setEnabled:1];
+  v39 = [properties objectForKeyedSubscript:PSTableCellKey];
+  textField = [v39 textField];
+  [textField setEnabled:1];
 
   v42.receiver = self;
   v42.super_class = SubCalSettingsAccountsUIController;
-  [(SubCalSettingsAccountsUIController *)&v42 account:v8 isValid:v16 & v41 validationError:v9];
+  [(SubCalSettingsAccountsUIController *)&v42 account:accountCopy isValid:v16 & v41 validationError:errorCopy];
 }
 
 - (BOOL)haveEnoughValues
@@ -491,7 +491,7 @@ LABEL_3:
         v8 = [*&self->DASettingsAccountsUIController_opaque[v3] objectAtIndexedSubscript:v6];
         if (v6 == [(SubCalSettingsAccountsUIController *)self indexOfCurrentlyEditingCell])
         {
-          v9 = [(SubCalSettingsAccountsUIController *)self currentlyEditingCell];
+          currentlyEditingCell = [(SubCalSettingsAccountsUIController *)self currentlyEditingCell];
           v10 = v7[47];
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -500,15 +500,15 @@ LABEL_3:
           }
 
           v11 = qword_C938;
-          v12 = [v8 identifier];
-          if (![v11 containsObject:v12])
+          identifier = [v8 identifier];
+          if (![v11 containsObject:identifier])
           {
             v18 = 1;
             goto LABEL_13;
           }
 
-          v13 = [v9 textField];
-          [v13 text];
+          textField = [currentlyEditingCell textField];
+          [textField text];
           v14 = v3;
           v16 = v15 = v7;
           v17 = [v16 length];
@@ -520,17 +520,17 @@ LABEL_3:
 
         else
         {
-          v9 = [v8 identifier];
-          if (![v9 isEqualToString:@"HOST"])
+          currentlyEditingCell = [v8 identifier];
+          if (![currentlyEditingCell isEqualToString:@"HOST"])
           {
 LABEL_11:
             v18 = 1;
             goto LABEL_14;
           }
 
-          v12 = [(SubCalSettingsAccountsUIController *)self account];
-          v13 = [v12 host];
-          v17 = [v13 length];
+          identifier = [(SubCalSettingsAccountsUIController *)self account];
+          textField = [identifier host];
+          v17 = [textField length];
         }
 
         v18 = v17 != 0;
@@ -561,10 +561,10 @@ LABEL_14:
 - (void)_reloadHostDependentSepcifiers
 {
   [(SubCalSettingsAccountsUIController *)self reloadSpecifierID:@"HOST" animated:1];
-  v3 = [(SubCalSettingsAccountsUIController *)self account];
-  v4 = [v3 username];
+  account = [(SubCalSettingsAccountsUIController *)self account];
+  username = [account username];
 
-  if (!v4)
+  if (!username)
   {
 LABEL_4:
 
@@ -582,27 +582,27 @@ LABEL_4:
   [(SubCalSettingsAccountsUIController *)self _insertSecondarySpecifiers];
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [(SubCalSettingsAccountsUIController *)self accountPropertyWithSpecifier:v7];
-  v10 = [v6 isEqualToString:v9];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v9 = [(SubCalSettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
+  v10 = [propertyCopy isEqualToString:v9];
 
-  if ([v8 isEqualToString:@"HOST"])
+  if ([identifier isEqualToString:@"HOST"])
   {
     v11 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v12 = [v6 stringByTrimmingCharactersInSet:v11];
+    account3 = [propertyCopy stringByTrimmingCharactersInSet:v11];
 
-    v13 = [(SubCalSettingsAccountsUIController *)self account];
-    [v13 setHost:v12];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    [account setHost:account3];
 
-    if (v12)
+    if (account3)
     {
-      v14 = [(SubCalSettingsAccountsUIController *)self account];
-      v15 = [v14 host];
-      v16 = [v12 isEqualToString:v15];
+      account2 = [(SubCalSettingsAccountsUIController *)self account];
+      host = [account2 host];
+      v16 = [account3 isEqualToString:host];
 
       if ((v16 & 1) == 0)
       {
@@ -616,98 +616,98 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!(v10 & 1 | (([v8 isEqualToString:@"DESCRIPTION"] & 1) == 0)))
+  if (!(v10 & 1 | (([identifier isEqualToString:@"DESCRIPTION"] & 1) == 0)))
   {
-    if (![v6 length])
+    if (![propertyCopy length])
     {
       v17 = [NSBundle bundleForClass:objc_opt_class()];
       v18 = [v17 localizedStringForKey:@"DESCRIPTION_PLACEHOLDER" value:&stru_82D0 table:@"SubCalAccountSetup"];
 
-      v6 = v18;
+      propertyCopy = v18;
     }
 
-    v12 = [(SubCalSettingsAccountsUIController *)self account];
-    [v12 setAccountDescription:v6];
+    account3 = [(SubCalSettingsAccountsUIController *)self account];
+    [account3 setAccountDescription:propertyCopy];
     goto LABEL_11;
   }
 
   v19.receiver = self;
   v19.super_class = SubCalSettingsAccountsUIController;
-  [(SubCalSettingsAccountsUIController *)&v19 setAccountProperty:v6 withSpecifier:v7];
+  [(SubCalSettingsAccountsUIController *)&v19 setAccountProperty:propertyCopy withSpecifier:specifierCopy];
 LABEL_12:
   [(SubCalSettingsAccountsUIController *)self setNeedsSave:1];
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [v7 identifier];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  bOOLValue = [propertyCopy BOOLValue];
+  identifier = [specifierCopy identifier];
   [(SubCalSettingsAccountsUIController *)self setNeedsSave:1];
-  if ([v9 isEqualToString:@"REMOVE_ALARMS"])
+  if ([identifier isEqualToString:@"REMOVE_ALARMS"])
   {
-    v10 = [(SubCalSettingsAccountsUIController *)self account];
-    [v10 setShouldRemoveAlarms:v8];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    [account setShouldRemoveAlarms:bOOLValue];
   }
 
   else
   {
-    if (![v9 isEqualToString:@"ENABLED"])
+    if (![identifier isEqualToString:@"ENABLED"])
     {
       v11.receiver = self;
       v11.super_class = SubCalSettingsAccountsUIController;
-      [(SubCalSettingsAccountsUIController *)&v11 setAccountBooleanProperty:v6 withSpecifier:v7];
+      [(SubCalSettingsAccountsUIController *)&v11 setAccountBooleanProperty:propertyCopy withSpecifier:specifierCopy];
       goto LABEL_7;
     }
 
-    v10 = [(SubCalSettingsAccountsUIController *)self account];
-    [v10 setEnabled:v8 forDADataclass:4];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    [account setEnabled:bOOLValue forDADataclass:4];
   }
 
 LABEL_7:
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"REMOVE_ALARMS"])
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if ([identifier isEqualToString:@"REMOVE_ALARMS"])
   {
-    v6 = [(SubCalSettingsAccountsUIController *)self account];
-    v7 = [v6 shouldRemoveAlarms];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    shouldRemoveAlarms = [account shouldRemoveAlarms];
 LABEL_5:
-    v8 = v7;
+    v8 = shouldRemoveAlarms;
 
     v9 = [NSNumber numberWithBool:v8];
     goto LABEL_7;
   }
 
-  if ([v5 isEqualToString:@"ENABLED"])
+  if ([identifier isEqualToString:@"ENABLED"])
   {
-    v6 = [(SubCalSettingsAccountsUIController *)self account];
-    v7 = [v6 enabledForDADataclass:4];
+    account = [(SubCalSettingsAccountsUIController *)self account];
+    shouldRemoveAlarms = [account enabledForDADataclass:4];
     goto LABEL_5;
   }
 
   v12.receiver = self;
   v12.super_class = SubCalSettingsAccountsUIController;
-  v9 = [(SubCalSettingsAccountsUIController *)&v12 accountBooleanPropertyWithSpecifier:v4];
+  v9 = [(SubCalSettingsAccountsUIController *)&v12 accountBooleanPropertyWithSpecifier:specifierCopy];
 LABEL_7:
   v10 = v9;
 
   return v10;
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SubCalSettingsAccountsUIController *)self account];
-  [v5 clearTmpICSData];
+  tappedCopy = tapped;
+  account = [(SubCalSettingsAccountsUIController *)self account];
+  [account clearTmpICSData];
 
   v6.receiver = self;
   v6.super_class = SubCalSettingsAccountsUIController;
-  [(SubCalSettingsAccountsUIController *)&v6 cancelButtonTapped:v4];
+  [(SubCalSettingsAccountsUIController *)&v6 cancelButtonTapped:tappedCopy];
 }
 
 - (id)localizedValidationFailureTitleString

@@ -1,145 +1,145 @@
 @interface MTMediaActivity
-+ (unint64_t)startOverallPositionForItem:(id)a3;
++ (unint64_t)startOverallPositionForItem:(id)item;
 - (BOOL)isStopped;
-- (MTMediaActivity)initWithType:(int64_t)a3 playlistItem:(id)a4 pafKit:(id)a5;
+- (MTMediaActivity)initWithType:(int64_t)type playlistItem:(id)item pafKit:(id)kit;
 - (MTPAFKit)pafKit;
 - (id)eventDataForTransitioningEvents;
 - (id)startEventHandler;
 - (id)stopEventHandler;
-- (unint64_t)positionFromOverallPosition:(unint64_t)a3;
-- (void)startedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6;
-- (void)stoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6;
+- (unint64_t)positionFromOverallPosition:(unint64_t)position;
+- (void)startedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
+- (void)stoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data;
 @end
 
 @implementation MTMediaActivity
 
-- (MTMediaActivity)initWithType:(int64_t)a3 playlistItem:(id)a4 pafKit:(id)a5
+- (MTMediaActivity)initWithType:(int64_t)type playlistItem:(id)item pafKit:(id)kit
 {
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  kitCopy = kit;
   v13.receiver = self;
   v13.super_class = MTMediaActivity;
   v10 = [(MTMediaActivity *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(MTMediaActivity *)v10 setPafKit:v9];
-    [(MTMediaActivity *)v11 setType:a3];
-    [(MTMediaActivity *)v11 setPlaylistItem:v8];
+    [(MTMediaActivity *)v10 setPafKit:kitCopy];
+    [(MTMediaActivity *)v11 setType:type];
+    [(MTMediaActivity *)v11 setPlaylistItem:itemCopy];
   }
 
   return v11;
 }
 
-- (unint64_t)positionFromOverallPosition:(unint64_t)a3
+- (unint64_t)positionFromOverallPosition:(unint64_t)position
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [(MTMediaActivity *)self playlistItem];
-  v6 = [MTMediaActivity startOverallPositionForItem:v5];
+  playlistItem = [(MTMediaActivity *)self playlistItem];
+  v6 = [MTMediaActivity startOverallPositionForItem:playlistItem];
 
-  v7 = a3 - v6;
-  if (a3 < v6)
+  v7 = position - v6;
+  if (position < v6)
   {
     v8 = MTMetricsKitOSLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v15 = 134218240;
-      v16 = a3;
+      positionCopy = position;
       v17 = 2048;
       v18 = v6;
       _os_log_impl(&dword_258F4B000, v8, OS_LOG_TYPE_ERROR, "MetricsKit: Media Activity is recorded with incorrect overallPosition: %ld playlist item startOverallPosition: %ld", &v15, 0x16u);
     }
   }
 
-  v9 = [(MTMediaActivity *)self playlistItem];
+  playlistItem2 = [(MTMediaActivity *)self playlistItem];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(MTMediaActivity *)self playlistItem];
-    v12 = [v11 startPosition];
+    playlistItem3 = [(MTMediaActivity *)self playlistItem];
+    startPosition = [playlistItem3 startPosition];
   }
 
   else
   {
-    v12 = 0;
+    startPosition = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7 + v12;
+  return v7 + startPosition;
 }
 
-- (void)startedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)startedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(MTMediaActivity *)self startEventHandler];
-  v14 = [v13 metricsDataForStartActionWithPosition:-[MTMediaActivity positionFromOverallPosition:](self overallPosition:"positionFromOverallPosition:" type:a3) reason:a3 eventData:{v12, v11, v10}];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  startEventHandler = [(MTMediaActivity *)self startEventHandler];
+  v14 = [startEventHandler metricsDataForStartActionWithPosition:-[MTMediaActivity positionFromOverallPosition:](self overallPosition:"positionFromOverallPosition:" type:position) reason:position eventData:{typeCopy, reasonCopy, dataCopy}];
 
   [(MTMediaActivity *)self setStartMetricsData:v14];
   if ([(MTMediaActivity *)self type]!= 1)
   {
-    v16 = [(MTMediaActivity *)self startMetricsData];
-    v15 = [v16 recordEvent];
+    startMetricsData = [(MTMediaActivity *)self startMetricsData];
+    recordEvent = [startMetricsData recordEvent];
   }
 }
 
-- (void)stoppedAtOverallPosition:(unint64_t)a3 type:(id)a4 reason:(id)a5 eventData:(id)a6
+- (void)stoppedAtOverallPosition:(unint64_t)position type:(id)type reason:(id)reason eventData:(id)data
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(MTMediaActivity *)self stopEventHandler];
-  v14 = [(MTMediaActivity *)self positionFromOverallPosition:a3];
-  v15 = [(MTMediaActivity *)self startMetricsData];
-  v16 = [v13 metricsDataForStopActionWithPosition:v14 overallPosition:a3 type:v12 reason:v11 startMetricsData:v15 eventData:v10];
+  dataCopy = data;
+  reasonCopy = reason;
+  typeCopy = type;
+  stopEventHandler = [(MTMediaActivity *)self stopEventHandler];
+  v14 = [(MTMediaActivity *)self positionFromOverallPosition:position];
+  startMetricsData = [(MTMediaActivity *)self startMetricsData];
+  v16 = [stopEventHandler metricsDataForStopActionWithPosition:v14 overallPosition:position type:typeCopy reason:reasonCopy startMetricsData:startMetricsData eventData:dataCopy];
 
   [(MTMediaActivity *)self setStopMetricsData:v16];
-  v18 = [(MTMediaActivity *)self stopMetricsData];
-  v17 = [v18 recordEvent];
+  stopMetricsData = [(MTMediaActivity *)self stopMetricsData];
+  recordEvent = [stopMetricsData recordEvent];
 }
 
 - (BOOL)isStopped
 {
-  v2 = [(MTMediaActivity *)self stopMetricsData];
-  v3 = v2 != 0;
+  stopMetricsData = [(MTMediaActivity *)self stopMetricsData];
+  v3 = stopMetricsData != 0;
 
   return v3;
 }
 
 - (id)eventDataForTransitioningEvents
 {
-  v2 = [(MTMediaActivity *)self startMetricsData];
-  v3 = [v2 userAndClientIDFields];
+  startMetricsData = [(MTMediaActivity *)self startMetricsData];
+  userAndClientIDFields = [startMetricsData userAndClientIDFields];
 
-  return v3;
+  return userAndClientIDFields;
 }
 
 - (id)startEventHandler
 {
-  v3 = [(MTMediaActivity *)self type];
-  if (v3 == 1)
+  type = [(MTMediaActivity *)self type];
+  if (type == 1)
   {
-    v4 = [(MTMediaActivity *)self pafKit];
-    v5 = [v4 eventHandlers];
-    v6 = [v5 seekStart];
+    pafKit = [(MTMediaActivity *)self pafKit];
+    eventHandlers = [pafKit eventHandlers];
+    seekStart = [eventHandlers seekStart];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!type)
   {
-    v4 = [(MTMediaActivity *)self pafKit];
-    v5 = [v4 eventHandlers];
-    v6 = [v5 playStart];
+    pafKit = [(MTMediaActivity *)self pafKit];
+    eventHandlers = [pafKit eventHandlers];
+    seekStart = [eventHandlers playStart];
 LABEL_5:
-    v7 = v6;
+    v7 = seekStart;
 
     goto LABEL_7;
   }
 
-  v8 = [(MTMediaActivity *)self type];
-  v15 = MTConfigurationError(109, @"No start event handler found for media activity type: %d", v9, v10, v11, v12, v13, v14, v8);
+  type2 = [(MTMediaActivity *)self type];
+  v15 = MTConfigurationError(109, @"No start event handler found for media activity type: %d", v9, v10, v11, v12, v13, v14, type2);
   v7 = 0;
 LABEL_7:
 
@@ -148,40 +148,40 @@ LABEL_7:
 
 - (id)stopEventHandler
 {
-  v3 = [(MTMediaActivity *)self type];
-  if (v3 == 1)
+  type = [(MTMediaActivity *)self type];
+  if (type == 1)
   {
-    v4 = [(MTMediaActivity *)self pafKit];
-    v5 = [v4 eventHandlers];
-    v6 = [v5 seekStop];
+    pafKit = [(MTMediaActivity *)self pafKit];
+    eventHandlers = [pafKit eventHandlers];
+    seekStop = [eventHandlers seekStop];
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!type)
   {
-    v4 = [(MTMediaActivity *)self pafKit];
-    v5 = [v4 eventHandlers];
-    v6 = [v5 playStop];
+    pafKit = [(MTMediaActivity *)self pafKit];
+    eventHandlers = [pafKit eventHandlers];
+    seekStop = [eventHandlers playStop];
 LABEL_5:
-    v7 = v6;
+    v7 = seekStop;
 
     goto LABEL_7;
   }
 
-  v8 = [(MTMediaActivity *)self type];
-  v15 = MTConfigurationError(109, @"No stop event handler found for media activity type: %d", v9, v10, v11, v12, v13, v14, v8);
+  type2 = [(MTMediaActivity *)self type];
+  v15 = MTConfigurationError(109, @"No stop event handler found for media activity type: %d", v9, v10, v11, v12, v13, v14, type2);
   v7 = 0;
 LABEL_7:
 
   return v7;
 }
 
-+ (unint64_t)startOverallPositionForItem:(id)a3
++ (unint64_t)startOverallPositionForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 startOverallPosition];
+    startOverallPosition = [itemCopy startOverallPosition];
   }
 
   else
@@ -192,10 +192,10 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v4 = [v3 overallPosition];
+    startOverallPosition = [itemCopy overallPosition];
   }
 
-  v5 = v4;
+  v5 = startOverallPosition;
 LABEL_7:
 
   return v5;

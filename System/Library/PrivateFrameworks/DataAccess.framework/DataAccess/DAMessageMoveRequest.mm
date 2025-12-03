@@ -1,29 +1,29 @@
 @interface DAMessageMoveRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initMoveRequestWithMessage:(id)a3 fromFolder:(id)a4 toFolder:(id)a5;
+- (id)initMoveRequestWithMessage:(id)message fromFolder:(id)folder toFolder:(id)toFolder;
 - (unint64_t)hash;
 @end
 
 @implementation DAMessageMoveRequest
 
-- (id)initMoveRequestWithMessage:(id)a3 fromFolder:(id)a4 toFolder:(id)a5
+- (id)initMoveRequestWithMessage:(id)message fromFolder:(id)folder toFolder:(id)toFolder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  folderCopy = folder;
+  toFolderCopy = toFolder;
   v16.receiver = self;
   v16.super_class = DAMessageMoveRequest;
   v11 = [(DAMessageMoveRequest *)&v16 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [messageCopy copy];
     [(DAMessageMoveRequest *)v11 setMessage:v12];
 
-    v13 = [v9 copy];
+    v13 = [folderCopy copy];
     [(DAMessageMoveRequest *)v11 setFromFolder:v13];
 
-    v14 = [v10 copy];
+    v14 = [toFolderCopy copy];
     [(DAMessageMoveRequest *)v11 setToFolder:v14];
   }
 
@@ -33,61 +33,61 @@
 - (unint64_t)hash
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(DAMessageMoveRequest *)self message];
-  v5 = [(DAMessageMoveRequest *)self fromFolder];
-  v6 = [(DAMessageMoveRequest *)self toFolder];
-  v7 = [v3 initWithFormat:@"%@\n%@\n%@", v4, v5, v6];
+  message = [(DAMessageMoveRequest *)self message];
+  fromFolder = [(DAMessageMoveRequest *)self fromFolder];
+  toFolder = [(DAMessageMoveRequest *)self toFolder];
+  v7 = [v3 initWithFormat:@"%@\n%@\n%@", message, fromFolder, toFolder];
 
   v8 = [v7 hash];
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(DAMessageMoveRequest *)self message];
-    v9 = [v7 message];
-    if (v8 != v9)
+    v7 = equalCopy;
+    message = [(DAMessageMoveRequest *)self message];
+    message2 = [v7 message];
+    if (message != message2)
     {
-      v3 = [(DAMessageMoveRequest *)self message];
-      v4 = [v7 message];
-      if (![v3 isEqual:v4])
+      message3 = [(DAMessageMoveRequest *)self message];
+      message4 = [v7 message];
+      if (![message3 isEqual:message4])
       {
         v10 = 0;
         goto LABEL_17;
       }
     }
 
-    v11 = [(DAMessageMoveRequest *)self fromFolder];
-    v12 = [v7 fromFolder];
-    v13 = v12;
-    if (v11 == v12)
+    fromFolder = [(DAMessageMoveRequest *)self fromFolder];
+    fromFolder2 = [v7 fromFolder];
+    v13 = fromFolder2;
+    if (fromFolder == fromFolder2)
     {
-      v28 = v12;
+      v28 = fromFolder2;
     }
 
     else
     {
-      v14 = [(DAMessageMoveRequest *)self fromFolder];
-      v27 = [v7 fromFolder];
-      if (![v14 isEqual:?])
+      fromFolder3 = [(DAMessageMoveRequest *)self fromFolder];
+      fromFolder4 = [v7 fromFolder];
+      if (![fromFolder3 isEqual:?])
       {
         v10 = 0;
         goto LABEL_15;
       }
 
-      v26 = v14;
+      v26 = fromFolder3;
       v28 = v13;
     }
 
-    v15 = [(DAMessageMoveRequest *)self toFolder];
-    v16 = [v7 toFolder];
-    v17 = v16;
-    if (v15 == v16)
+    toFolder = [(DAMessageMoveRequest *)self toFolder];
+    toFolder2 = [v7 toFolder];
+    v17 = toFolder2;
+    if (toFolder == toFolder2)
     {
 
       v10 = 1;
@@ -96,29 +96,29 @@
     else
     {
       [(DAMessageMoveRequest *)self toFolder];
-      v18 = v25 = v3;
+      v18 = v25 = message3;
       [v7 toFolder];
-      v24 = v11;
-      v19 = v4;
-      v20 = v9;
-      v22 = v21 = v8;
+      v24 = fromFolder;
+      v19 = message4;
+      v20 = message2;
+      v22 = v21 = message;
       v10 = [v18 isEqual:v22];
 
-      v8 = v21;
-      v9 = v20;
-      v4 = v19;
-      v11 = v24;
+      message = v21;
+      message2 = v20;
+      message4 = v19;
+      fromFolder = v24;
 
-      v3 = v25;
+      message3 = v25;
     }
 
     v13 = v28;
-    v14 = v26;
-    if (v11 == v28)
+    fromFolder3 = v26;
+    if (fromFolder == v28)
     {
 LABEL_16:
 
-      if (v8 == v9)
+      if (message == message2)
       {
 LABEL_18:
 
@@ -147,10 +147,10 @@ LABEL_19:
   v10.receiver = self;
   v10.super_class = DAMessageMoveRequest;
   v4 = [(DAMessageMoveRequest *)&v10 description];
-  v5 = [(DAMessageMoveRequest *)self message];
-  v6 = [(DAMessageMoveRequest *)self fromFolder];
-  v7 = [(DAMessageMoveRequest *)self toFolder];
-  v8 = [v3 stringWithFormat:@"%@ message %@, fromFolder %@, toFolder %@", v4, v5, v6, v7];
+  message = [(DAMessageMoveRequest *)self message];
+  fromFolder = [(DAMessageMoveRequest *)self fromFolder];
+  toFolder = [(DAMessageMoveRequest *)self toFolder];
+  v8 = [v3 stringWithFormat:@"%@ message %@, fromFolder %@, toFolder %@", v4, message, fromFolder, toFolder];
 
   return v8;
 }

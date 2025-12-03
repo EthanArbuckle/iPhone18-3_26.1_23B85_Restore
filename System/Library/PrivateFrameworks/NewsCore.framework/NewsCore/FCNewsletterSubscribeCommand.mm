@@ -1,57 +1,57 @@
 @interface FCNewsletterSubscribeCommand
-- (FCNewsletterSubscribeCommand)initWithCoder:(id)a3;
-- (FCNewsletterSubscribeCommand)initWithNewsletter:(id)a3 includeArray:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
+- (FCNewsletterSubscribeCommand)initWithCoder:(id)coder;
+- (FCNewsletterSubscribeCommand)initWithNewsletter:(id)newsletter includeArray:(id)array;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
 @end
 
 @implementation FCNewsletterSubscribeCommand
 
-- (FCNewsletterSubscribeCommand)initWithNewsletter:(id)a3 includeArray:(id)a4
+- (FCNewsletterSubscribeCommand)initWithNewsletter:(id)newsletter includeArray:(id)array
 {
-  v7 = a3;
-  v8 = a4;
+  newsletterCopy = newsletter;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = FCNewsletterSubscribeCommand;
   v9 = [(FCNewsletterSubscribeCommand *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_newsletter, a3);
-    objc_storeStrong(&v10->_includeArray, a4);
+    objc_storeStrong(&v9->_newsletter, newsletter);
+    objc_storeStrong(&v10->_includeArray, array);
   }
 
   return v10;
 }
 
-- (FCNewsletterSubscribeCommand)initWithCoder:(id)a3
+- (FCNewsletterSubscribeCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kNewsletterKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kNewsletterKey"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kIncludeKey"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kIncludeKey"];
 
   v10 = [(FCNewsletterSubscribeCommand *)self initWithNewsletter:v5 includeArray:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCNewsletterSubscribeCommand *)self newsletter];
-  [v4 encodeObject:v5 forKey:@"kNewsletterKey"];
+  coderCopy = coder;
+  newsletter = [(FCNewsletterSubscribeCommand *)self newsletter];
+  [coderCopy encodeObject:newsletter forKey:@"kNewsletterKey"];
 
-  v6 = [(FCNewsletterSubscribeCommand *)self includeArray];
-  [v4 encodeObject:v6 forKey:@"kIncludeKey"];
+  includeArray = [(FCNewsletterSubscribeCommand *)self includeArray];
+  [coderCopy encodeObject:includeArray forKey:@"kIncludeKey"];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 newsletterEndpointConnection];
+  contextCopy = context;
+  delegateCopy = delegate;
+  newsletterEndpointConnection = [contextCopy newsletterEndpointConnection];
   newsletter = self->_newsletter;
   includeArray = self->_includeArray;
   v12 = dispatch_get_global_queue(-2, 0);
@@ -59,12 +59,12 @@
   v15[1] = 3221225472;
   v15[2] = __77__FCNewsletterSubscribeCommand_executeWithContext_delegate_qualityOfService___block_invoke;
   v15[3] = &unk_1E7C415A0;
-  v16 = v8;
-  v17 = self;
-  v18 = v7;
-  v13 = v7;
-  v14 = v8;
-  [v9 newsletterSubscribeTo:newsletter includeArray:includeArray callbackQueue:v12 completion:v15];
+  v16 = delegateCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  v13 = contextCopy;
+  v14 = delegateCopy;
+  [newsletterEndpointConnection newsletterSubscribeTo:newsletter includeArray:includeArray callbackQueue:v12 completion:v15];
 }
 
 void __77__FCNewsletterSubscribeCommand_executeWithContext_delegate_qualityOfService___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)

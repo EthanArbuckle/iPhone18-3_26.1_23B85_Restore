@@ -1,7 +1,7 @@
 @interface CCSetMetrics
-+ (double)_populationStandardDeviation:(shared_ptr<std:(double)a4 :vector<unsigned short>>)a3 mean:;
-+ (id)_computeMetricsForSet:(id)a3 error:(id *)a4;
-+ (void)computeAndReportMetricsForAllSets:(id)a3 shouldDefer:(id)a4;
++ (double)_populationStandardDeviation:(shared_ptr<std:(double)deviation :vector<unsigned short>>)a3 mean:;
++ (id)_computeMetricsForSet:(id)set error:(id *)error;
++ (void)computeAndReportMetricsForAllSets:(id)sets shouldDefer:(id)defer;
 - (CCSetMetrics)init;
 @end
 
@@ -13,17 +13,17 @@
   objc_exception_throw(v2);
 }
 
-+ (void)computeAndReportMetricsForAllSets:(id)a3 shouldDefer:(id)a4
++ (void)computeAndReportMetricsForAllSets:(id)sets shouldDefer:(id)defer
 {
   v47 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v29 = a4;
+  setsCopy = sets;
+  deferCopy = defer;
   if ([CCSetMetrics shouldReportAnalyticsEventWithName:@"com.apple.CascadeSets.SetDistribution"])
   {
     v5 = __biome_log_for_category();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v26, "count")}];
+      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(setsCopy, "count")}];
       *buf = 138412290;
       v43 = v6;
       _os_log_impl(&dword_1B6DB2000, v5, OS_LOG_TYPE_DEFAULT, "Preparing to enumerate and compute metrics for %@ set(s)", buf, 0xCu);
@@ -34,7 +34,7 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v7 = v26;
+    v7 = setsCopy;
     v8 = [v7 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v8)
     {
@@ -52,7 +52,7 @@ LABEL_6:
 
         v11 = *(*(&v37 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        if (v29 && v29[2]())
+        if (deferCopy && deferCopy[2]())
         {
           v13 = __biome_log_for_category();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -173,9 +173,9 @@ LABEL_25:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_computeMetricsForSet:(id)a3 error:(id *)a4
++ (id)_computeMetricsForSet:(id)set error:(id *)error
 {
-  v5 = a3;
+  setCopy = set;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -186,13 +186,13 @@ LABEL_25:
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v6 = [v5 changePublisherWithUseCase:*MEMORY[0x1E698E940]];
+  v6 = [setCopy changePublisherWithUseCase:*MEMORY[0x1E698E940]];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__8;
   v16 = __Block_byref_object_dispose__8;
-  v17 = -[CCSetDistribution initWithSet:sharedItemCount:localInstanceCount:]([CCSetDistribution alloc], "initWithSet:sharedItemCount:localInstanceCount:", v5, [v6 sharedItemCount], objc_msgSend(v6, "localItemInstanceCount"));
+  v17 = -[CCSetDistribution initWithSet:sharedItemCount:localInstanceCount:]([CCSetDistribution alloc], "initWithSet:sharedItemCount:localInstanceCount:", setCopy, [v6 sharedItemCount], objc_msgSend(v6, "localItemInstanceCount"));
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__CCSetMetrics__computeMetricsForSet_error___block_invoke;
@@ -207,13 +207,13 @@ LABEL_25:
   v7 = [v6 drivableSinkWithBookmark:0 completion:v11 shouldContinue:v10];
   if (v19[3])
   {
-    v8 = [v13[5] compute];
+    compute = [v13[5] compute];
   }
 
   else
   {
-    CCSetError(a4, v23[5]);
-    v8 = 0;
+    CCSetError(error, v23[5]);
+    compute = 0;
   }
 
   _Block_object_dispose(&v12, 8);
@@ -221,7 +221,7 @@ LABEL_25:
   _Block_object_dispose(&v18, 8);
   _Block_object_dispose(&v22, 8);
 
-  return v8;
+  return compute;
 }
 
 void __44__CCSetMetrics__computeMetricsForSet_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -242,7 +242,7 @@ void __44__CCSetMetrics__computeMetricsForSet_error___block_invoke(uint64_t a1, 
   }
 }
 
-+ (double)_populationStandardDeviation:(shared_ptr<std:(double)a4 :vector<unsigned short>>)a3 mean:
++ (double)_populationStandardDeviation:(shared_ptr<std:(double)deviation :vector<unsigned short>>)a3 mean:
 {
   v5 = **a3.__ptr_;
   v4 = *(*a3.__ptr_ + 8);
@@ -256,7 +256,7 @@ void __44__CCSetMetrics__computeMetricsForSet_error___block_invoke(uint64_t a1, 
   do
   {
     v8 = *v5++;
-    v7 = v7 + (v8 - a4) * (v8 - a4);
+    v7 = v7 + (v8 - deviation) * (v8 - deviation);
   }
 
   while (v5 != v4);

@@ -1,6 +1,6 @@
 @interface FKAddressBook
 + (id)sharedInstance;
-+ (void)performBlock:(id)a3;
++ (void)performBlock:(id)block;
 - (FKAddressBook)init;
 - (void)dealloc;
 @end
@@ -91,21 +91,21 @@ void __21__FKAddressBook_init__block_invoke(uint64_t a1)
   [(FKAddressBook *)&v4 dealloc];
 }
 
-+ (void)performBlock:(id)a3
++ (void)performBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v4 = [objc_opt_class() sharedInstance];
-    v5 = [v4 operationQueue];
+    sharedInstance = [objc_opt_class() sharedInstance];
+    operationQueue = [sharedInstance operationQueue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __30__FKAddressBook_performBlock___block_invoke;
     v7[3] = &unk_27916A610;
-    v8 = v4;
-    v9 = v3;
-    v6 = v4;
-    dispatch_sync(v5, v7);
+    v8 = sharedInstance;
+    v9 = blockCopy;
+    v6 = sharedInstance;
+    dispatch_sync(operationQueue, v7);
   }
 }
 

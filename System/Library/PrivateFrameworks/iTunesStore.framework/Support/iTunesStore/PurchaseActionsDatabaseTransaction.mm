@@ -1,17 +1,17 @@
 @interface PurchaseActionsDatabaseTransaction
-- (PurchaseActionsDatabaseTransaction)initWithDatabase:(id)a3;
+- (PurchaseActionsDatabaseTransaction)initWithDatabase:(id)database;
 @end
 
 @implementation PurchaseActionsDatabaseTransaction
 
-- (PurchaseActionsDatabaseTransaction)initWithDatabase:(id)a3
+- (PurchaseActionsDatabaseTransaction)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v6 = [(PurchaseActionsDatabaseTransaction *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
+    objc_storeStrong(&v6->_database, database);
   }
 
   return v7;

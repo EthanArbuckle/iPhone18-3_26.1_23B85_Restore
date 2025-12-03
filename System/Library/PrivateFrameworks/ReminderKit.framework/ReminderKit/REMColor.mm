@@ -1,8 +1,8 @@
 @interface REMColor
-+ (REMColor)colorWithDictionaryData:(id)a3 error:(id *)a4;
-+ (REMColor)colorWithHexString:(id)a3;
-+ (REMColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (REMColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
++ (REMColor)colorWithDictionaryData:(id)data error:(id *)error;
++ (REMColor)colorWithHexString:(id)string;
++ (REMColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (REMColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha targetRGBSpace:(unint64_t)space;
 + (id)blackColor;
 + (id)blueColor;
 + (id)brownColor;
@@ -17,19 +17,19 @@
 + (id)redColor;
 + (id)whiteColor;
 + (id)yellowColor;
-- (BOOL)isEqual:(id)a3;
-- (REMColor)initWithCKSymbolicColorName:(id)a3 hexString:(id)a4;
-- (REMColor)initWithCoder:(id)a3;
-- (REMColor)initWithDASymbolicColorName:(id)a3 daHexString:(id)a4 ckSymbolicColorName:(id)a5;
-- (REMColor)initWithHexString:(id)a3;
-- (REMColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7;
-- (REMColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7 daSymbolicColorName:(id)a8 daHexString:(id)a9 ckSymbolicColorName:(id)a10;
-- (id)archivedDictionaryDataWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMColor)initWithCKSymbolicColorName:(id)name hexString:(id)string;
+- (REMColor)initWithCoder:(id)coder;
+- (REMColor)initWithDASymbolicColorName:(id)name daHexString:(id)string ckSymbolicColorName:(id)colorName;
+- (REMColor)initWithHexString:(id)string;
+- (REMColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space;
+- (REMColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space daSymbolicColorName:(id)name daHexString:(id)string ckSymbolicColorName:(id)self0;
+- (id)archivedDictionaryDataWithError:(id *)error;
 - (id)description;
 - (id)hexString;
 - (id)hexStringWithAlpha;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMColor
@@ -58,127 +58,127 @@
   return [v3 stringWithFormat:@"#%02X%02X%02X%02X", v5, v7, v9, (v10 * 255.0 + 0.5)];
 }
 
-+ (REMColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (REMColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (REMColor)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
++ (REMColor)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  v7 = [[a1 alloc] initWithRed:a7 green:a3 blue:a4 alpha:a5 colorSpace:a6];
+  v7 = [[self alloc] initWithRed:space green:red blue:green alpha:blue colorSpace:alpha];
 
   return v7;
 }
 
-+ (REMColor)colorWithHexString:(id)a3
++ (REMColor)colorWithHexString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHexString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithHexString:stringCopy];
 
   return v5;
 }
 
 + (id)clearColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:0.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:0.0];
 
   return v2;
 }
 
 + (id)blackColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)whiteColor
 {
-  v2 = [[a1 alloc] initWithWhite:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)grayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)lightGrayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.667 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.667 alpha:1.0];
 
   return v2;
 }
 
 + (id)redColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)greenColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)blueColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)cyanColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)yellowColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)magentaColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)orangeColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)purpleColor
 {
-  v2 = [[a1 alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)brownColor
 {
-  v2 = [[a1 alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
 
   return v2;
 }
 
-- (REMColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7
+- (REMColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space
 {
   v18.receiver = self;
   v18.super_class = REMColor;
@@ -186,15 +186,15 @@
   v13 = v12;
   if (v12)
   {
-    v12->_blue = a5;
-    v12->_red = a3;
-    v12->_green = a4;
-    v12->_alpha = a6;
-    v12->_colorRGBSpace = a7;
+    v12->_blue = blue;
+    v12->_red = red;
+    v12->_green = green;
+    v12->_alpha = alpha;
+    v12->_colorRGBSpace = space;
     objc_storeStrong(&v12->_daSymbolicColorName, *MEMORY[0x1E69E4048]);
-    v14 = [(REMColor *)v13 hexString];
+    hexString = [(REMColor *)v13 hexString];
     daHexString = v13->_daHexString;
-    v13->_daHexString = v14;
+    v13->_daHexString = hexString;
 
     ckSymbolicColorName = v13->_ckSymbolicColorName;
     v13->_ckSymbolicColorName = @"custom";
@@ -203,57 +203,57 @@
   return v13;
 }
 
-- (REMColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7 daSymbolicColorName:(id)a8 daHexString:(id)a9 ckSymbolicColorName:(id)a10
+- (REMColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space daSymbolicColorName:(id)name daHexString:(id)string ckSymbolicColorName:(id)self0
 {
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  nameCopy = name;
+  stringCopy = string;
+  colorNameCopy = colorName;
   v25.receiver = self;
   v25.super_class = REMColor;
   v22 = [(REMColor *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    v22->_blue = a5;
-    v22->_red = a3;
-    v22->_green = a4;
-    v22->_alpha = a6;
-    v22->_colorRGBSpace = a7;
-    objc_storeStrong(&v22->_daSymbolicColorName, a8);
-    objc_storeStrong(&v23->_daHexString, a9);
-    objc_storeStrong(&v23->_ckSymbolicColorName, a10);
+    v22->_blue = blue;
+    v22->_red = red;
+    v22->_green = green;
+    v22->_alpha = alpha;
+    v22->_colorRGBSpace = space;
+    objc_storeStrong(&v22->_daSymbolicColorName, name);
+    objc_storeStrong(&v23->_daHexString, string);
+    objc_storeStrong(&v23->_ckSymbolicColorName, colorName);
   }
 
   return v23;
 }
 
-- (REMColor)initWithHexString:(id)a3
+- (REMColor)initWithHexString:(id)string
 {
-  v4 = [a3 lowercaseString];
-  if (![v4 hasPrefix:@"#"])
+  lowercaseString = [string lowercaseString];
+  if (![lowercaseString hasPrefix:@"#"])
   {
-    if ([v4 isEqualToString:@"white"])
+    if ([lowercaseString isEqualToString:@"white"])
     {
       v10 = +[REMColor whiteColor];
     }
 
     else
     {
-      if (![v4 isEqualToString:@"black"])
+      if (![lowercaseString isEqualToString:@"black"])
       {
-        if ([v4 isEqualToString:@"red"])
+        if ([lowercaseString isEqualToString:@"red"])
         {
           v10 = +[REMColor redColor];
           goto LABEL_30;
         }
 
-        if ([v4 isEqualToString:@"green"])
+        if ([lowercaseString isEqualToString:@"green"])
         {
           v10 = +[REMColor greenColor];
           goto LABEL_30;
         }
 
-        if ([v4 isEqualToString:@"blue"])
+        if ([lowercaseString isEqualToString:@"blue"])
         {
           v10 = +[REMColor blueColor];
           goto LABEL_30;
@@ -270,7 +270,7 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  v5 = [v4 substringFromIndex:1];
+  v5 = [lowercaseString substringFromIndex:1];
 
   v37 = 0;
   v38 = 0;
@@ -282,28 +282,28 @@ LABEL_30:
     v8 = [MEMORY[0x1E696AE88] scannerWithString:v7];
     v9 = [v8 scanHexInt:&v37];
 
-    v4 = [v5 substringToIndex:6];
+    lowercaseString = [v5 substringToIndex:6];
   }
 
   else
   {
     LODWORD(v37) = 255;
     v9 = 1;
-    v4 = v5;
+    lowercaseString = v5;
   }
 
-  if ([v4 length] != 6)
+  if ([lowercaseString length] != 6)
   {
-    if ([v4 length] != 3)
+    if ([lowercaseString length] != 3)
     {
       goto LABEL_25;
     }
 
-    v11 = [v4 substringToIndex:1];
-    v27 = [v4 substringFromIndex:1];
+    v11 = [lowercaseString substringToIndex:1];
+    v27 = [lowercaseString substringFromIndex:1];
     v13 = [v27 substringToIndex:1];
 
-    v28 = [v4 substringFromIndex:2];
+    v28 = [lowercaseString substringFromIndex:2];
     v15 = [v28 substringToIndex:1];
 
     if (v9)
@@ -339,11 +339,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v11 = [v4 substringToIndex:2];
-  v12 = [v4 substringFromIndex:2];
+  v11 = [lowercaseString substringToIndex:2];
+  v12 = [lowercaseString substringFromIndex:2];
   v13 = [v12 substringToIndex:2];
 
-  v14 = [v4 substringFromIndex:4];
+  v14 = [lowercaseString substringFromIndex:4];
   v15 = [v14 substringToIndex:2];
 
   if (!v9)
@@ -390,21 +390,21 @@ LABEL_31:
   return v35;
 }
 
-- (REMColor)initWithDASymbolicColorName:(id)a3 daHexString:(id)a4 ckSymbolicColorName:(id)a5
+- (REMColor)initWithDASymbolicColorName:(id)name daHexString:(id)string ckSymbolicColorName:(id)colorName
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 uppercaseString];
+  nameCopy = name;
+  colorNameCopy = colorName;
+  uppercaseString = [string uppercaseString];
   v11 = *MEMORY[0x1E69E4048];
-  if (!v8)
+  if (!nameCopy)
   {
-    v8 = v11;
+    nameCopy = v11;
   }
 
-  v12 = v8;
+  v12 = nameCopy;
   if ([v11 isEqualToString:v12])
   {
-    v13 = v10;
+    v13 = uppercaseString;
     v14 = v13;
   }
 
@@ -413,9 +413,9 @@ LABEL_31:
     v15 = EKSymbolicColorToRGBMapping();
     v16 = [v15 objectForKeyedSubscript:v12];
     v14 = v16;
-    if (v10)
+    if (uppercaseString)
     {
-      v17 = v10;
+      v17 = uppercaseString;
     }
 
     else
@@ -426,19 +426,19 @@ LABEL_31:
     v13 = v17;
   }
 
-  v18 = 0;
+  selfCopy = 0;
   if (v14 && v13)
   {
-    if (!v9)
+    if (!colorNameCopy)
     {
       if (REMSymbolicColorIsSupportedByCK(v12))
       {
-        v9 = v12;
+        colorNameCopy = v12;
       }
 
       else
       {
-        v9 = @"custom";
+        colorNameCopy = @"custom";
       }
     }
 
@@ -447,26 +447,26 @@ LABEL_31:
     p_isa = &v20->super.isa;
     if (v20)
     {
-      objc_storeStrong(&v20->_daSymbolicColorName, v8);
+      objc_storeStrong(&v20->_daSymbolicColorName, nameCopy);
       objc_storeStrong(p_isa + 7, v13);
-      objc_storeStrong(p_isa + 8, v9);
+      objc_storeStrong(p_isa + 8, colorNameCopy);
     }
 
     self = p_isa;
 
-    v18 = self;
+    selfCopy = self;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (REMColor)initWithCKSymbolicColorName:(id)a3 hexString:(id)a4
+- (REMColor)initWithCKSymbolicColorName:(id)name hexString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  nameCopy = name;
+  stringCopy = string;
+  if (nameCopy)
   {
-    v8 = v6;
+    v8 = nameCopy;
   }
 
   else
@@ -478,10 +478,10 @@ LABEL_31:
   if (([(__CFString *)v9 isEqualToString:@"custom"]& 1) != 0)
   {
     v10 = *MEMORY[0x1E69E4048];
-    v11 = v7;
+    v11 = stringCopy;
 LABEL_14:
     self = [(REMColor *)self initWithDASymbolicColorName:v10 daHexString:v11 ckSymbolicColorName:v9];
-    v16 = self;
+    selfCopy = self;
     goto LABEL_15;
   }
 
@@ -493,15 +493,15 @@ LABEL_14:
     if (REMSymbolicColorIsSupportedByDA(v9))
     {
       v10 = v9;
-      v15 = v7;
+      v15 = stringCopy;
     }
 
     else
     {
       v10 = *MEMORY[0x1E69E4048];
-      if (v7)
+      if (stringCopy)
       {
-        v15 = v7;
+        v15 = stringCopy;
       }
 
       else
@@ -517,34 +517,34 @@ LABEL_14:
 
   v11 = 0;
   v10 = 0;
-  v16 = 0;
+  selfCopy = 0;
 LABEL_15:
 
-  return v16;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMColor *)self hexStringWithAlpha];
-      v8 = [(REMColor *)v6 hexStringWithAlpha];
-      v9 = v8;
-      if (v7 == v8)
+      hexStringWithAlpha = [(REMColor *)self hexStringWithAlpha];
+      hexStringWithAlpha2 = [(REMColor *)v6 hexStringWithAlpha];
+      v9 = hexStringWithAlpha2;
+      if (hexStringWithAlpha == hexStringWithAlpha2)
       {
       }
 
       else
       {
-        v10 = [(REMColor *)self hexStringWithAlpha];
-        v11 = [(REMColor *)v6 hexStringWithAlpha];
-        v12 = [v10 isEqual:v11];
+        hexStringWithAlpha3 = [(REMColor *)self hexStringWithAlpha];
+        hexStringWithAlpha4 = [(REMColor *)v6 hexStringWithAlpha];
+        v12 = [hexStringWithAlpha3 isEqual:hexStringWithAlpha4];
 
         if (!v12)
         {
@@ -552,18 +552,18 @@ LABEL_15:
         }
       }
 
-      v14 = [(REMColor *)self daSymbolicColorName];
-      v15 = [(REMColor *)v6 daSymbolicColorName];
-      v16 = v15;
-      if (v14 == v15)
+      daSymbolicColorName = [(REMColor *)self daSymbolicColorName];
+      daSymbolicColorName2 = [(REMColor *)v6 daSymbolicColorName];
+      v16 = daSymbolicColorName2;
+      if (daSymbolicColorName == daSymbolicColorName2)
       {
       }
 
       else
       {
-        v17 = [(REMColor *)self daSymbolicColorName];
-        v18 = [(REMColor *)v6 daSymbolicColorName];
-        v19 = [v17 isEqual:v18];
+        daSymbolicColorName3 = [(REMColor *)self daSymbolicColorName];
+        daSymbolicColorName4 = [(REMColor *)v6 daSymbolicColorName];
+        v19 = [daSymbolicColorName3 isEqual:daSymbolicColorName4];
 
         if (!v19)
         {
@@ -571,18 +571,18 @@ LABEL_15:
         }
       }
 
-      v20 = [(REMColor *)self daHexString];
-      v21 = [(REMColor *)v6 daHexString];
-      v22 = v21;
-      if (v20 == v21)
+      daHexString = [(REMColor *)self daHexString];
+      daHexString2 = [(REMColor *)v6 daHexString];
+      v22 = daHexString2;
+      if (daHexString == daHexString2)
       {
       }
 
       else
       {
-        v23 = [(REMColor *)self daHexString];
-        v24 = [(REMColor *)v6 daHexString];
-        v25 = [v23 isEqual:v24];
+        daHexString3 = [(REMColor *)self daHexString];
+        daHexString4 = [(REMColor *)v6 daHexString];
+        v25 = [daHexString3 isEqual:daHexString4];
 
         if (!v25)
         {
@@ -590,18 +590,18 @@ LABEL_15:
         }
       }
 
-      v26 = [(REMColor *)self ckSymbolicColorName];
-      v27 = [(REMColor *)v6 ckSymbolicColorName];
-      v28 = v27;
-      if (v26 == v27)
+      ckSymbolicColorName = [(REMColor *)self ckSymbolicColorName];
+      ckSymbolicColorName2 = [(REMColor *)v6 ckSymbolicColorName];
+      v28 = ckSymbolicColorName2;
+      if (ckSymbolicColorName == ckSymbolicColorName2)
       {
       }
 
       else
       {
-        v29 = [(REMColor *)self ckSymbolicColorName];
-        v30 = [(REMColor *)v6 ckSymbolicColorName];
-        v31 = [v29 isEqual:v30];
+        ckSymbolicColorName3 = [(REMColor *)self ckSymbolicColorName];
+        ckSymbolicColorName4 = [(REMColor *)v6 ckSymbolicColorName];
+        v31 = [ckSymbolicColorName3 isEqual:ckSymbolicColorName4];
 
         if (!v31)
         {
@@ -609,8 +609,8 @@ LABEL_15:
         }
       }
 
-      v33 = [(REMColor *)self colorRGBSpace];
-      v13 = v33 == [(REMColor *)v6 colorRGBSpace];
+      colorRGBSpace = [(REMColor *)self colorRGBSpace];
+      v13 = colorRGBSpace == [(REMColor *)v6 colorRGBSpace];
       goto LABEL_19;
     }
 
@@ -629,45 +629,45 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(REMColor *)self hexStringWithAlpha];
-  v4 = [v3 hash];
-  v5 = [(REMColor *)self daSymbolicColorName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMColor *)self daHexString];
-  v8 = [v7 hash];
+  hexStringWithAlpha = [(REMColor *)self hexStringWithAlpha];
+  v4 = [hexStringWithAlpha hash];
+  daSymbolicColorName = [(REMColor *)self daSymbolicColorName];
+  v6 = [daSymbolicColorName hash] ^ v4;
+  daHexString = [(REMColor *)self daHexString];
+  v8 = [daHexString hash];
   v9 = v8 ^ [(REMColor *)self colorRGBSpace];
 
   return v6 ^ v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(REMColor *)self red];
-  [v4 encodeDouble:@"red" forKey:?];
+  [coderCopy encodeDouble:@"red" forKey:?];
   [(REMColor *)self green];
-  [v4 encodeDouble:@"green" forKey:?];
+  [coderCopy encodeDouble:@"green" forKey:?];
   [(REMColor *)self blue];
-  [v4 encodeDouble:@"blue" forKey:?];
+  [coderCopy encodeDouble:@"blue" forKey:?];
   [(REMColor *)self alpha];
-  [v4 encodeDouble:@"alpha" forKey:?];
-  [v4 encodeInt:-[REMColor colorRGBSpace](self forKey:{"colorRGBSpace"), @"colorRGBSpace"}];
-  v5 = [(REMColor *)self daSymbolicColorName];
-  [v4 encodeObject:v5 forKey:@"daSymbolicColorName"];
+  [coderCopy encodeDouble:@"alpha" forKey:?];
+  [coderCopy encodeInt:-[REMColor colorRGBSpace](self forKey:{"colorRGBSpace"), @"colorRGBSpace"}];
+  daSymbolicColorName = [(REMColor *)self daSymbolicColorName];
+  [coderCopy encodeObject:daSymbolicColorName forKey:@"daSymbolicColorName"];
 
-  v6 = [(REMColor *)self daHexString];
-  [v4 encodeObject:v6 forKey:@"daHexString"];
+  daHexString = [(REMColor *)self daHexString];
+  [coderCopy encodeObject:daHexString forKey:@"daHexString"];
 
-  v7 = [(REMColor *)self ckSymbolicColorName];
-  [v4 encodeObject:v7 forKey:@"ckSymbolicColorName"];
+  ckSymbolicColorName = [(REMColor *)self ckSymbolicColorName];
+  [coderCopy encodeObject:ckSymbolicColorName forKey:@"ckSymbolicColorName"];
 }
 
-- (REMColor)initWithCoder:(id)a3
+- (REMColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daSymbolicColorName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daHexString"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ckSymbolicColorName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daSymbolicColorName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daHexString"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ckSymbolicColorName"];
   v8 = v7;
   if (v5)
   {
@@ -681,15 +681,15 @@ LABEL_20:
 
   if (v9 && v7 == 0)
   {
-    [v4 decodeDoubleForKey:@"red"];
+    [coderCopy decodeDoubleForKey:@"red"];
     v13 = v12;
-    [v4 decodeDoubleForKey:@"green"];
+    [coderCopy decodeDoubleForKey:@"green"];
     v15 = v14;
-    [v4 decodeDoubleForKey:@"blue"];
+    [coderCopy decodeDoubleForKey:@"blue"];
     v17 = v16;
-    [v4 decodeDoubleForKey:@"alpha"];
+    [coderCopy decodeDoubleForKey:@"alpha"];
     v19 = v18;
-    v20 = [v4 decodeIntForKey:@"colorRGBSpace"];
+    v20 = [coderCopy decodeIntForKey:@"colorRGBSpace"];
     v21 = v20;
     if (v20 >= 3)
     {
@@ -728,12 +728,12 @@ LABEL_20:
   return [v3 stringWithFormat:@"REMColor:rgba(%lf, %lf, %lf, %lf)", v5, v7, v9, v10];
 }
 
-+ (REMColor)colorWithDictionaryData:(id)a3 error:(id *)a4
++ (REMColor)colorWithDictionaryData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x1E696ACD0];
-  v6 = a3;
+  dataCopy = data;
   v14 = 0;
-  v7 = [[v5 alloc] initForReadingFromData:v6 error:&v14];
+  v7 = [[v5 alloc] initForReadingFromData:dataCopy error:&v14];
 
   v8 = v14;
   v9 = [[REMColor alloc] initWithCoder:v7];
@@ -755,22 +755,22 @@ LABEL_20:
       [REMColor colorWithDictionaryData:v8 error:v11];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return v9;
 }
 
-- (id)archivedDictionaryDataWithError:(id *)a3
+- (id)archivedDictionaryDataWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(REMColor *)self encodeWithCoder:v4];
-  v5 = [v4 encodedData];
-  if (!v5)
+  encodedData = [v4 encodedData];
+  if (!encodedData)
   {
     v6 = +[REMLog utility];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -779,7 +779,7 @@ LABEL_20:
     }
   }
 
-  return v5;
+  return encodedData;
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

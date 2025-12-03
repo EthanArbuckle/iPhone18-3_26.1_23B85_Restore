@@ -1,16 +1,16 @@
 @interface PKSearchSuggestionCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PKSearchSuggestionCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSearchSuggestionCollectionViewCell" hasInstanceVariable:@"_labelSuggestion" withType:"UILabel"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKSearchSuggestionCollectionViewCell" hasInstanceVariable:@"_imageViewIcon" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSearchSuggestionCollectionViewCell" hasInstanceVariable:@"_labelSuggestion" withType:"UILabel"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKSearchSuggestionCollectionViewCell" hasInstanceVariable:@"_imageViewIcon" withType:"UIImageView"];
 }
 
 - (id)accessibilityLabel
@@ -19,12 +19,12 @@
   v3 = [(PKSearchSuggestionCollectionViewCellAccessibility *)self safeValueForKey:@"_imageViewIcon"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 image];
-  v6 = [v5 imageAsset];
-  v7 = [v6 safeStringForKey:@"assetName"];
+  image = [v4 image];
+  imageAsset = [image imageAsset];
+  v7 = [imageAsset safeStringForKey:@"assetName"];
 
   v8 = [(PKSearchSuggestionCollectionViewCellAccessibility *)self safeValueForKey:@"_labelSuggestion"];
-  v9 = [v8 accessibilityLabel];
+  accessibilityLabel = [v8 accessibilityLabel];
   v10 = [v7 isEqualToString:@"mappin.and.ellipse"];
   if (v10)
   {

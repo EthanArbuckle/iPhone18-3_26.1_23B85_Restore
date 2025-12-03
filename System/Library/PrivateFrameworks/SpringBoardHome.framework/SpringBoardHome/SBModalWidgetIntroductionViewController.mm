@@ -9,53 +9,53 @@
 - (CGRect)onboardingFallingWidgetBounds;
 - (CGRect)onboardingStaticWidgetBounds;
 - (void)addContinueButton;
-- (void)appendDismissCompletion:(id)a3;
+- (void)appendDismissCompletion:(id)completion;
 - (void)cleanUpForViewControllerDismissal;
 - (void)dismissPreviewAndButton;
 - (void)displayPreviewAndButton;
 - (void)loadPreviewSnapshot;
 - (void)loadView;
-- (void)setAppliedSublayerTransform:(CATransform3D *)a3;
-- (void)setHomeScreenPreview:(id)a3;
-- (void)setHomeScreenPreviewSublayerTransform:(CATransform3D *)a3;
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformBottom:(CATransform3D *)a3;
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformMiddle:(CATransform3D *)a3;
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformTop:(CATransform3D *)a3;
-- (void)setupSublayerDismissPreviewTransformForView:(id)a3 withTransform:(CATransform3D *)a4;
-- (void)setupSublayerDisplayPreviewTransformForView:(id)a3 withTransform:(CATransform3D *)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAppliedSublayerTransform:(CATransform3D *)transform;
+- (void)setHomeScreenPreview:(id)preview;
+- (void)setHomeScreenPreviewSublayerTransform:(CATransform3D *)transform;
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformBottom:(CATransform3D *)bottom;
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformMiddle:(CATransform3D *)middle;
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformTop:(CATransform3D *)top;
+- (void)setupSublayerDismissPreviewTransformForView:(id)view withTransform:(CATransform3D *)transform;
+- (void)setupSublayerDisplayPreviewTransformForView:(id)view withTransform:(CATransform3D *)transform;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SBModalWidgetIntroductionViewController
 
-- (void)appendDismissCompletion:(id)a3
+- (void)appendDismissCompletion:(id)completion
 {
-  v4 = a3;
-  v10 = v4;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (!self->_dismissCompletions)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     dismissCompletions = self->_dismissCompletions;
-    self->_dismissCompletions = v5;
+    self->_dismissCompletions = array;
 
-    v4 = v10;
+    completionCopy = v10;
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v7 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
+    dismissCompletions = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
     v8 = [v10 copy];
     v9 = _Block_copy(v8);
-    [v7 addObject:v9];
+    [dismissCompletions addObject:v9];
 
-    v4 = v10;
+    completionCopy = v10;
   }
 }
 
-- (void)setHomeScreenPreview:(id)a3
+- (void)setHomeScreenPreview:(id)preview
 {
-  objc_storeStrong(&self->_homescreenPreview, a3);
+  objc_storeStrong(&self->_homescreenPreview, preview);
 
   [(SBModalWidgetIntroductionViewController *)self loadPreviewSnapshot];
 }
@@ -76,42 +76,42 @@
     v7 = [v6 localizedStringForKey:@"MODAL_WIDGET_DISCOVERABILITY_CONTINUE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     [(UIButton *)v5 setTitle:v7 forState:0];
 
-    v8 = [(UIButton *)self->_continueButton titleLabel];
+    titleLabel = [(UIButton *)self->_continueButton titleLabel];
     v9 = [MEMORY[0x1E69DB878] systemFontOfSize:18.0 weight:*MEMORY[0x1E69DB980]];
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
 
-    v10 = [(UIButton *)self->_continueButton titleLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
+    titleLabel2 = [(UIButton *)self->_continueButton titleLabel];
+    [titleLabel2 setAdjustsFontSizeToFitWidth:1];
 
     v11 = self->_continueButton;
-    v12 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [(UIButton *)v11 setTitleColor:v12 forState:0];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [(UIButton *)v11 setTitleColor:systemBlueColor forState:0];
 
     [(UIButton *)self->_continueButton setAccessibilityIdentifier:@"SBWidgetIntroductionButton-Continue"];
-    v13 = [(SBModalWidgetIntroductionViewController *)self view];
-    [v13 addSubview:self->_continueButton];
+    view = [(SBModalWidgetIntroductionViewController *)self view];
+    [view addSubview:self->_continueButton];
 
     [(UIButton *)self->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v14 = [(UIButton *)self->_continueButton topAnchor];
-    v15 = [(SBModalWidgetIntroductionViewController *)self view];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16 constant:0.0];
+    topAnchor = [(UIButton *)self->_continueButton topAnchor];
+    view2 = [(SBModalWidgetIntroductionViewController *)self view];
+    bottomAnchor = [view2 bottomAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:0.0];
     continueButtonTopAnchorConstraint = self->_continueButtonTopAnchorConstraint;
     self->_continueButtonTopAnchorConstraint = v17;
 
     v31 = MEMORY[0x1E696ACD8];
-    v32 = [(UIButton *)self->_continueButton centerXAnchor];
-    v19 = [(SBModalWidgetIntroductionViewController *)self view];
-    v20 = [v19 centerXAnchor];
-    v21 = [v32 constraintEqualToAnchor:v20];
+    centerXAnchor = [(UIButton *)self->_continueButton centerXAnchor];
+    view3 = [(SBModalWidgetIntroductionViewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v22 = self->_continueButtonTopAnchorConstraint;
     v33[0] = v21;
     v33[1] = v22;
-    v23 = [(UIButton *)self->_continueButton widthAnchor];
-    v24 = [v23 constraintEqualToConstant:300.0];
+    widthAnchor = [(UIButton *)self->_continueButton widthAnchor];
+    v24 = [widthAnchor constraintEqualToConstant:300.0];
     v33[2] = v24;
-    v25 = [(UIButton *)self->_continueButton heightAnchor];
-    v26 = [v25 constraintEqualToConstant:54.0];
+    heightAnchor = [(UIButton *)self->_continueButton heightAnchor];
+    v26 = [heightAnchor constraintEqualToConstant:54.0];
     v33[3] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
     [v31 activateConstraints:v27];
@@ -135,28 +135,28 @@
     self->_homescreenPreviewContainer = v3;
 
     v5 = self->_homescreenPreviewContainer;
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v5 setBackgroundColor:clearColor];
 
     [(UIView *)self->_homescreenPreviewContainer _setContinuousCornerRadius:40.0];
     [(UIView *)self->_homescreenPreviewContainer setClipsToBounds:1];
-    v7 = [(SBModalWidgetIntroductionViewController *)self view];
-    [v7 addSubview:self->_homescreenPreviewContainer];
+    view = [(SBModalWidgetIntroductionViewController *)self view];
+    [view addSubview:self->_homescreenPreviewContainer];
 
     [(UIView *)self->_homescreenPreviewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     v8 = self->_homescreenPreviewContainer;
-    v9 = [(SBModalWidgetIntroductionViewController *)self view];
-    v10 = SBHPinViewWithinView(v8, v9);
+    view2 = [(SBModalWidgetIntroductionViewController *)self view];
+    v10 = SBHPinViewWithinView(v8, view2);
   }
 
-  v11 = [(SBModalWidgetIntroductionViewController *)self homescreenPreview];
+  homescreenPreview = [(SBModalWidgetIntroductionViewController *)self homescreenPreview];
 
-  if (v11 && !self->_homescreenPreviewSnapshot)
+  if (homescreenPreview && !self->_homescreenPreviewSnapshot)
   {
     v12 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v13 = [(SBModalWidgetIntroductionViewController *)self homescreenPreview];
-    v14 = [v13 snapshot];
-    v15 = [v12 initWithImage:v14];
+    homescreenPreview2 = [(SBModalWidgetIntroductionViewController *)self homescreenPreview];
+    snapshot = [homescreenPreview2 snapshot];
+    v15 = [v12 initWithImage:snapshot];
     homescreenPreviewSnapshot = self->_homescreenPreviewSnapshot;
     self->_homescreenPreviewSnapshot = v15;
 
@@ -174,45 +174,45 @@
     self->_onboardingWidgetPreviewsContainer = v18;
 
     v20 = self->_onboardingWidgetPreviewsContainer;
-    v21 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v20 setBackgroundColor:v21];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v20 setBackgroundColor:clearColor2];
 
     [(UIView *)self->_onboardingWidgetPreviewsContainer _setContinuousCornerRadius:40.0];
     [(UIView *)self->_homescreenPreviewContainer addSubview:self->_onboardingWidgetPreviewsContainer];
     [(UIView *)self->_onboardingWidgetPreviewsContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = SBHPinViewWithinView(self->_onboardingWidgetPreviewsContainer, self->_homescreenPreviewContainer);
-    v23 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreviews];
-    v24 = [v23 firstObject];
+    onboardingStaticWidgetPreviews = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreviews];
+    firstObject = [onboardingStaticWidgetPreviews firstObject];
     onboardingStaticWidgetPreview = self->_onboardingStaticWidgetPreview;
-    self->_onboardingStaticWidgetPreview = v24;
+    self->_onboardingStaticWidgetPreview = firstObject;
 
     [(UIView *)self->_onboardingWidgetPreviewsContainer addSubview:self->_onboardingStaticWidgetPreview];
-    v26 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
-    v27 = [v26 count];
+    onboardingFallingWidgetPreviews = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
+    v27 = [onboardingFallingWidgetPreviews count];
 
     if (v27)
     {
       if (v27 == 1)
       {
-        v31 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
-        v32 = v31;
+        onboardingFallingWidgetPreviews2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
+        v32 = onboardingFallingWidgetPreviews2;
         v33 = 0;
         goto LABEL_12;
       }
 
       if (v27 == 2)
       {
-        v28 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
-        v29 = [v28 objectAtIndexedSubscript:0];
+        onboardingFallingWidgetPreviews3 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
+        v29 = [onboardingFallingWidgetPreviews3 objectAtIndexedSubscript:0];
         onboardingFallingWidgetPreviewMiddle = self->_onboardingFallingWidgetPreviewMiddle;
         self->_onboardingFallingWidgetPreviewMiddle = v29;
 
         [(UIView *)self->_onboardingWidgetPreviewsContainer insertSubview:self->_onboardingFallingWidgetPreviewMiddle atIndex:0];
-        v31 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
-        v32 = v31;
+        onboardingFallingWidgetPreviews2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
+        v32 = onboardingFallingWidgetPreviews2;
         v33 = 1;
 LABEL_12:
-        v34 = [v31 objectAtIndexedSubscript:v33];
+        v34 = [onboardingFallingWidgetPreviews2 objectAtIndexedSubscript:v33];
         onboardingFallingWidgetPreviewBottom = self->_onboardingFallingWidgetPreviewBottom;
         self->_onboardingFallingWidgetPreviewBottom = v34;
 
@@ -223,8 +223,8 @@ LABEL_12:
       v36 = 0;
       while (1)
       {
-        v37 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
-        v38 = [v37 objectAtIndexedSubscript:v36];
+        onboardingFallingWidgetPreviews4 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviews];
+        v38 = [onboardingFallingWidgetPreviews4 objectAtIndexedSubscript:v36];
 
         if (v36 > 2)
         {
@@ -244,26 +244,26 @@ LABEL_12:
   }
 
 LABEL_18:
-  v40 = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
+  backgroundDescriptionView = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
 
-  if (v40)
+  if (backgroundDescriptionView)
   {
-    v41 = [(SBModalWidgetIntroductionViewController *)self view];
-    v42 = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
-    [v41 sendSubviewToBack:v42];
+    view3 = [(SBModalWidgetIntroductionViewController *)self view];
+    backgroundDescriptionView2 = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
+    [view3 sendSubviewToBack:backgroundDescriptionView2];
   }
 
-  v43 = [(SBModalWidgetIntroductionViewController *)self continueButton];
+  continueButton = [(SBModalWidgetIntroductionViewController *)self continueButton];
 
-  if (v43)
+  if (continueButton)
   {
-    v44 = [(SBModalWidgetIntroductionViewController *)self view];
-    v45 = [(SBModalWidgetIntroductionViewController *)self continueButton];
-    [v44 bringSubviewToFront:v45];
+    view4 = [(SBModalWidgetIntroductionViewController *)self view];
+    continueButton2 = [(SBModalWidgetIntroductionViewController *)self continueButton];
+    [view4 bringSubviewToFront:continueButton2];
   }
 
-  v46 = [(SBModalWidgetIntroductionViewController *)self view];
-  [v46 layoutIfNeeded];
+  view5 = [(SBModalWidgetIntroductionViewController *)self view];
+  [view5 layoutIfNeeded];
 }
 
 - (void)loadView
@@ -272,14 +272,14 @@ LABEL_18:
   v8.super_class = SBModalWidgetIntroductionViewController;
   [(SBModalWidgetIntroductionViewController *)&v8 loadView];
   v3 = [SBModalWidgetIntroductionBackgroundDescriptionView alloc];
-  v4 = [(SBModalWidgetIntroductionViewController *)self view];
-  [v4 bounds];
+  view = [(SBModalWidgetIntroductionViewController *)self view];
+  [view bounds];
   v5 = [(SBModalWidgetIntroductionBackgroundDescriptionView *)v3 initWithFrame:self withOwner:?];
   backgroundDescriptionView = self->_backgroundDescriptionView;
   self->_backgroundDescriptionView = v5;
 
-  v7 = [(SBModalWidgetIntroductionViewController *)self view];
-  [v7 addSubview:self->_backgroundDescriptionView];
+  view2 = [(SBModalWidgetIntroductionViewController *)self view];
+  [view2 addSubview:self->_backgroundDescriptionView];
 
   [(SBModalWidgetIntroductionViewController *)self loadPreviewSnapshot];
   [(SBModalWidgetIntroductionViewController *)self addContinueButton];
@@ -306,120 +306,120 @@ LABEL_18:
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
+  onboardingStaticWidgetPreview = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
 
-  if (v23)
+  if (onboardingStaticWidgetPreview)
   {
-    v24 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
-    [v24 setBounds:{v6, v8, v10, v12}];
+    onboardingStaticWidgetPreview2 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
+    [onboardingStaticWidgetPreview2 setBounds:{v6, v8, v10, v12}];
 
-    v25 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
-    [v25 setCenter:{v36, v35}];
+    onboardingStaticWidgetPreview3 = [(SBModalWidgetIntroductionViewController *)self onboardingStaticWidgetPreview];
+    [onboardingStaticWidgetPreview3 setCenter:{v36, v35}];
   }
 
-  v26 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+  onboardingFallingWidgetPreviewTop = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
 
-  if (v26)
+  if (onboardingFallingWidgetPreviewTop)
   {
-    v27 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
-    [v27 setBounds:{v16, v18, v20, v22}];
+    onboardingFallingWidgetPreviewTop2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+    [onboardingFallingWidgetPreviewTop2 setBounds:{v16, v18, v20, v22}];
 
-    v28 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
-    [v28 setCenter:{v38, v37}];
+    onboardingFallingWidgetPreviewTop3 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+    [onboardingFallingWidgetPreviewTop3 setCenter:{v38, v37}];
   }
 
-  v29 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+  onboardingFallingWidgetPreviewMiddle = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
 
-  if (v29)
+  if (onboardingFallingWidgetPreviewMiddle)
   {
-    v30 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
-    [v30 setBounds:{v16, v18, v20, v22}];
+    onboardingFallingWidgetPreviewMiddle2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+    [onboardingFallingWidgetPreviewMiddle2 setBounds:{v16, v18, v20, v22}];
 
-    v31 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
-    [v31 setCenter:{v38, v37}];
+    onboardingFallingWidgetPreviewMiddle3 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+    [onboardingFallingWidgetPreviewMiddle3 setCenter:{v38, v37}];
   }
 
-  v32 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
+  onboardingFallingWidgetPreviewBottom = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
 
-  if (v32)
+  if (onboardingFallingWidgetPreviewBottom)
   {
-    v33 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
-    [v33 setBounds:{v16, v18, v20, v22}];
+    onboardingFallingWidgetPreviewBottom2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
+    [onboardingFallingWidgetPreviewBottom2 setBounds:{v16, v18, v20, v22}];
 
-    v34 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
-    [v34 setCenter:{v38, v37}];
+    onboardingFallingWidgetPreviewBottom3 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewBottom];
+    [onboardingFallingWidgetPreviewBottom3 setCenter:{v38, v37}];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBModalWidgetIntroductionViewController;
-  [(SBModalWidgetIntroductionViewController *)&v4 viewDidDisappear:a3];
+  [(SBModalWidgetIntroductionViewController *)&v4 viewDidDisappear:disappear];
   [(SBModalWidgetIntroductionViewController *)self cleanUpForViewControllerDismissal];
 }
 
-- (void)setupSublayerDisplayPreviewTransformForView:(id)a3 withTransform:(CATransform3D *)a4
+- (void)setupSublayerDisplayPreviewTransformForView:(id)view withTransform:(CATransform3D *)transform
 {
   v5 = MEMORY[0x1E6979318];
-  v6 = a3;
+  viewCopy = view;
   v7 = [v5 animationWithKeyPath:@"sublayerTransform"];
   v8 = MEMORY[0x1E696B098];
   CATransform3DMakeTranslation(&v21, 0.0, 0.0, 0.0);
   v9 = [v8 valueWithCATransform3D:&v21];
   [v7 setFromValue:v9];
 
-  v10 = *&a4->m33;
-  *&v21.m31 = *&a4->m31;
+  v10 = *&transform->m33;
+  *&v21.m31 = *&transform->m31;
   *&v21.m33 = v10;
-  v11 = *&a4->m43;
-  *&v21.m41 = *&a4->m41;
+  v11 = *&transform->m43;
+  *&v21.m41 = *&transform->m41;
   *&v21.m43 = v11;
-  v12 = *&a4->m13;
-  *&v21.m11 = *&a4->m11;
+  v12 = *&transform->m13;
+  *&v21.m11 = *&transform->m11;
   *&v21.m13 = v12;
-  v13 = *&a4->m23;
-  *&v21.m21 = *&a4->m21;
+  v13 = *&transform->m23;
+  *&v21.m21 = *&transform->m21;
   *&v21.m23 = v13;
   v14 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v21];
   [v7 setToValue:v14];
 
-  v15 = [v6 layer];
-  v16 = *&a4->m33;
-  *&v21.m31 = *&a4->m31;
+  layer = [viewCopy layer];
+  v16 = *&transform->m33;
+  *&v21.m31 = *&transform->m31;
   *&v21.m33 = v16;
-  v17 = *&a4->m43;
-  *&v21.m41 = *&a4->m41;
+  v17 = *&transform->m43;
+  *&v21.m41 = *&transform->m41;
   *&v21.m43 = v17;
-  v18 = *&a4->m13;
-  *&v21.m11 = *&a4->m11;
+  v18 = *&transform->m13;
+  *&v21.m11 = *&transform->m11;
   *&v21.m13 = v18;
-  v19 = *&a4->m23;
-  *&v21.m21 = *&a4->m21;
+  v19 = *&transform->m23;
+  *&v21.m21 = *&transform->m21;
   *&v21.m23 = v19;
-  [v15 setSublayerTransform:&v21];
+  [layer setSublayerTransform:&v21];
 
-  v20 = [v6 layer];
+  layer2 = [viewCopy layer];
 
-  [v20 addAnimation:v7 forKey:@"sublayerTransform"];
+  [layer2 addAnimation:v7 forKey:@"sublayerTransform"];
 }
 
-- (void)setupSublayerDismissPreviewTransformForView:(id)a3 withTransform:(CATransform3D *)a4
+- (void)setupSublayerDismissPreviewTransformForView:(id)view withTransform:(CATransform3D *)transform
 {
   v5 = MEMORY[0x1E6979318];
-  v6 = a3;
+  viewCopy = view;
   v7 = [v5 animationWithKeyPath:@"sublayerTransform"];
-  v8 = *&a4->m33;
-  v28 = *&a4->m31;
+  v8 = *&transform->m33;
+  v28 = *&transform->m31;
   v29 = v8;
-  v9 = *&a4->m43;
-  v30 = *&a4->m41;
+  v9 = *&transform->m43;
+  v30 = *&transform->m41;
   v31 = v9;
-  v10 = *&a4->m13;
-  v24 = *&a4->m11;
+  v10 = *&transform->m13;
+  v24 = *&transform->m11;
   v25 = v10;
-  v11 = *&a4->m23;
-  v26 = *&a4->m21;
+  v11 = *&transform->m23;
+  v26 = *&transform->m21;
   v27 = v11;
   v12 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v24];
   [v7 setFromValue:v12];
@@ -443,7 +443,7 @@ LABEL_18:
   v13 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v24];
   [v7 setToValue:v13];
 
-  v14 = [v6 layer];
+  layer = [viewCopy layer];
   v28 = v23;
   v29 = v22;
   v30 = v21;
@@ -452,22 +452,22 @@ LABEL_18:
   v25 = v18;
   v26 = v17;
   v27 = v16;
-  [v14 setSublayerTransform:&v24];
+  [layer setSublayerTransform:&v24];
 
-  v15 = [v6 layer];
+  layer2 = [viewCopy layer];
 
-  [v15 addAnimation:v7 forKey:@"sublayerTransform"];
+  [layer2 addAnimation:v7 forKey:@"sublayerTransform"];
 }
 
 - (void)cleanUpForViewControllerDismissal
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
-  if (v3)
+  dismissCompletions = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
+  if (dismissCompletions)
   {
-    v4 = v3;
-    v5 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
-    v6 = [v5 count];
+    v4 = dismissCompletions;
+    dismissCompletions2 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
+    v6 = [dismissCompletions2 count];
 
     if (v6)
     {
@@ -475,8 +475,8 @@ LABEL_18:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v7 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      dismissCompletions3 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
+      v8 = [dismissCompletions3 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         v9 = v8;
@@ -488,14 +488,14 @@ LABEL_18:
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(dismissCompletions3);
             }
 
             (*(*(*(&v13 + 1) + 8 * v11++) + 16))();
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v9 = [dismissCompletions3 countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v9);
@@ -503,21 +503,21 @@ LABEL_18:
     }
   }
 
-  v12 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
-  [v12 removeAllObjects];
+  dismissCompletions4 = [(SBModalWidgetIntroductionViewController *)self dismissCompletions];
+  [dismissCompletions4 removeAllObjects];
 
   [(SBModalWidgetIntroductionViewController *)self setDismissCompletions:0];
 }
 
 - (void)displayPreviewAndButton
 {
-  v3 = [(SBModalWidgetIntroductionViewController *)self view];
-  v4 = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
-  [v3 sendSubviewToBack:v4];
+  view = [(SBModalWidgetIntroductionViewController *)self view];
+  backgroundDescriptionView = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
+  [view sendSubviewToBack:backgroundDescriptionView];
 
-  v5 = [(SBModalWidgetIntroductionViewController *)self view];
-  v6 = [(SBModalWidgetIntroductionViewController *)self continueButton];
-  [v5 bringSubviewToFront:v6];
+  view2 = [(SBModalWidgetIntroductionViewController *)self view];
+  continueButton = [(SBModalWidgetIntroductionViewController *)self continueButton];
+  [view2 bringSubviewToFront:continueButton];
 
   v39 = *(MEMORY[0x1E69792E8] + 48);
   v41 = *(MEMORY[0x1E69792E8] + 32);
@@ -568,9 +568,9 @@ LABEL_18:
   v11 = v55;
   *&self->_homeScreenPreviewSublayerTransform.m41 = v54;
   *&self->_homeScreenPreviewSublayerTransform.m43 = v11;
-  v12 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+  onboardingFallingWidgetPreviewTop = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
 
-  if (v12)
+  if (onboardingFallingWidgetPreviewTop)
   {
     *&v52.m21 = v41;
     *&v52.m23 = v39;
@@ -662,26 +662,26 @@ LABEL_18:
   v43[3] = &unk_1E8088C90;
   v43[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:1 delay:v43 options:0 animations:1.0 completion:0.0];
-  v24 = [(SBModalWidgetIntroductionViewController *)self homescreenPreviewContainer];
+  homescreenPreviewContainer = [(SBModalWidgetIntroductionViewController *)self homescreenPreviewContainer];
   [(SBModalWidgetIntroductionViewController *)self homeScreenPreviewSublayerTransform];
-  [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:v24 withTransform:&v53];
+  [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:homescreenPreviewContainer withTransform:&v53];
 
-  v25 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+  onboardingFallingWidgetPreviewTop2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
 
-  if (v25)
+  if (onboardingFallingWidgetPreviewTop2)
   {
-    v26 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+    onboardingFallingWidgetPreviewTop3 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
     [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewSublayerTransformTop];
-    [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:v26 withTransform:&v53];
+    [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:onboardingFallingWidgetPreviewTop3 withTransform:&v53];
   }
 
-  v27 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+  onboardingFallingWidgetPreviewMiddle = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
 
-  if (v27)
+  if (onboardingFallingWidgetPreviewMiddle)
   {
-    v28 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+    onboardingFallingWidgetPreviewMiddle2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
     [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewSublayerTransformMiddle];
-    [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:v28 withTransform:&v53];
+    [(SBModalWidgetIntroductionViewController *)self setupSublayerDisplayPreviewTransformForView:onboardingFallingWidgetPreviewMiddle2 withTransform:&v53];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -698,13 +698,13 @@ void __66__SBModalWidgetIntroductionViewController_displayPreviewAndButton__bloc
 
 - (void)dismissPreviewAndButton
 {
-  v3 = [(SBModalWidgetIntroductionViewController *)self view];
-  v4 = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
-  [v3 sendSubviewToBack:v4];
+  view = [(SBModalWidgetIntroductionViewController *)self view];
+  backgroundDescriptionView = [(SBModalWidgetIntroductionViewController *)self backgroundDescriptionView];
+  [view sendSubviewToBack:backgroundDescriptionView];
 
-  v5 = [(SBModalWidgetIntroductionViewController *)self view];
-  v6 = [(SBModalWidgetIntroductionViewController *)self continueButton];
-  [v5 bringSubviewToFront:v6];
+  view2 = [(SBModalWidgetIntroductionViewController *)self view];
+  continueButton = [(SBModalWidgetIntroductionViewController *)self continueButton];
+  [view2 bringSubviewToFront:continueButton];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:1.0];
@@ -724,27 +724,27 @@ void __66__SBModalWidgetIntroductionViewController_displayPreviewAndButton__bloc
   v15[3] = &unk_1E8088C90;
   v15[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:1 delay:v15 options:0 animations:1.0 completion:0.0];
-  v9 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+  onboardingFallingWidgetPreviewMiddle = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
 
-  if (v9)
+  if (onboardingFallingWidgetPreviewMiddle)
   {
-    v10 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
+    onboardingFallingWidgetPreviewMiddle2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewMiddle];
     [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewSublayerTransformMiddle];
-    [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:v10 withTransform:v14];
+    [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:onboardingFallingWidgetPreviewMiddle2 withTransform:v14];
   }
 
-  v11 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+  onboardingFallingWidgetPreviewTop = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
 
-  if (v11)
+  if (onboardingFallingWidgetPreviewTop)
   {
-    v12 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
+    onboardingFallingWidgetPreviewTop2 = [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewTop];
     [(SBModalWidgetIntroductionViewController *)self onboardingFallingWidgetPreviewSublayerTransformTop];
-    [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:v12 withTransform:v14];
+    [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:onboardingFallingWidgetPreviewTop2 withTransform:v14];
   }
 
-  v13 = [(SBModalWidgetIntroductionViewController *)self homescreenPreviewContainer];
+  homescreenPreviewContainer = [(SBModalWidgetIntroductionViewController *)self homescreenPreviewContainer];
   [(SBModalWidgetIntroductionViewController *)self homeScreenPreviewSublayerTransform];
-  [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:v13 withTransform:v14];
+  [(SBModalWidgetIntroductionViewController *)self setupSublayerDismissPreviewTransformForView:homescreenPreviewContainer withTransform:v14];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -829,19 +829,19 @@ void __66__SBModalWidgetIntroductionViewController_dismissPreviewAndButton__bloc
   return self;
 }
 
-- (void)setHomeScreenPreviewSublayerTransform:(CATransform3D *)a3
+- (void)setHomeScreenPreviewSublayerTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m23;
-  v5 = *&a3->m11;
-  v4 = *&a3->m13;
-  *&self->_homeScreenPreviewSublayerTransform.m21 = *&a3->m21;
+  v3 = *&transform->m23;
+  v5 = *&transform->m11;
+  v4 = *&transform->m13;
+  *&self->_homeScreenPreviewSublayerTransform.m21 = *&transform->m21;
   *&self->_homeScreenPreviewSublayerTransform.m23 = v3;
   *&self->_homeScreenPreviewSublayerTransform.m11 = v5;
   *&self->_homeScreenPreviewSublayerTransform.m13 = v4;
-  v6 = *&a3->m43;
-  v8 = *&a3->m31;
-  v7 = *&a3->m33;
-  *&self->_homeScreenPreviewSublayerTransform.m41 = *&a3->m41;
+  v6 = *&transform->m43;
+  v8 = *&transform->m31;
+  v7 = *&transform->m33;
+  *&self->_homeScreenPreviewSublayerTransform.m41 = *&transform->m41;
   *&self->_homeScreenPreviewSublayerTransform.m43 = v6;
   *&self->_homeScreenPreviewSublayerTransform.m31 = v8;
   *&self->_homeScreenPreviewSublayerTransform.m33 = v7;
@@ -864,19 +864,19 @@ void __66__SBModalWidgetIntroductionViewController_dismissPreviewAndButton__bloc
   return self;
 }
 
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformTop:(CATransform3D *)a3
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformTop:(CATransform3D *)top
 {
-  v3 = *&a3->m23;
-  v5 = *&a3->m11;
-  v4 = *&a3->m13;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m21 = *&a3->m21;
+  v3 = *&top->m23;
+  v5 = *&top->m11;
+  v4 = *&top->m13;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m21 = *&top->m21;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m23 = v3;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m11 = v5;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m13 = v4;
-  v6 = *&a3->m43;
-  v8 = *&a3->m31;
-  v7 = *&a3->m33;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m41 = *&a3->m41;
+  v6 = *&top->m43;
+  v8 = *&top->m31;
+  v7 = *&top->m33;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m41 = *&top->m41;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m43 = v6;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m31 = v8;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformTop.m33 = v7;
@@ -899,19 +899,19 @@ void __66__SBModalWidgetIntroductionViewController_dismissPreviewAndButton__bloc
   return self;
 }
 
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformMiddle:(CATransform3D *)a3
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformMiddle:(CATransform3D *)middle
 {
-  v3 = *&a3->m23;
-  v5 = *&a3->m11;
-  v4 = *&a3->m13;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m21 = *&a3->m21;
+  v3 = *&middle->m23;
+  v5 = *&middle->m11;
+  v4 = *&middle->m13;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m21 = *&middle->m21;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m23 = v3;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m11 = v5;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m13 = v4;
-  v6 = *&a3->m43;
-  v8 = *&a3->m31;
-  v7 = *&a3->m33;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m41 = *&a3->m41;
+  v6 = *&middle->m43;
+  v8 = *&middle->m31;
+  v7 = *&middle->m33;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m41 = *&middle->m41;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m43 = v6;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m31 = v8;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformMiddle.m33 = v7;
@@ -934,19 +934,19 @@ void __66__SBModalWidgetIntroductionViewController_dismissPreviewAndButton__bloc
   return self;
 }
 
-- (void)setOnboardingFallingWidgetPreviewSublayerTransformBottom:(CATransform3D *)a3
+- (void)setOnboardingFallingWidgetPreviewSublayerTransformBottom:(CATransform3D *)bottom
 {
-  v3 = *&a3->m23;
-  v5 = *&a3->m11;
-  v4 = *&a3->m13;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m21 = *&a3->m21;
+  v3 = *&bottom->m23;
+  v5 = *&bottom->m11;
+  v4 = *&bottom->m13;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m21 = *&bottom->m21;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m23 = v3;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m11 = v5;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m13 = v4;
-  v6 = *&a3->m43;
-  v8 = *&a3->m31;
-  v7 = *&a3->m33;
-  *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m41 = *&a3->m41;
+  v6 = *&bottom->m43;
+  v8 = *&bottom->m31;
+  v7 = *&bottom->m33;
+  *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m41 = *&bottom->m41;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m43 = v6;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m31 = v8;
   *&self->_onboardingFallingWidgetPreviewSublayerTransformBottom.m33 = v7;
@@ -969,19 +969,19 @@ void __66__SBModalWidgetIntroductionViewController_dismissPreviewAndButton__bloc
   return self;
 }
 
-- (void)setAppliedSublayerTransform:(CATransform3D *)a3
+- (void)setAppliedSublayerTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m23;
-  v5 = *&a3->m11;
-  v4 = *&a3->m13;
-  *&self->_appliedSublayerTransform.m21 = *&a3->m21;
+  v3 = *&transform->m23;
+  v5 = *&transform->m11;
+  v4 = *&transform->m13;
+  *&self->_appliedSublayerTransform.m21 = *&transform->m21;
   *&self->_appliedSublayerTransform.m23 = v3;
   *&self->_appliedSublayerTransform.m11 = v5;
   *&self->_appliedSublayerTransform.m13 = v4;
-  v6 = *&a3->m43;
-  v8 = *&a3->m31;
-  v7 = *&a3->m33;
-  *&self->_appliedSublayerTransform.m41 = *&a3->m41;
+  v6 = *&transform->m43;
+  v8 = *&transform->m31;
+  v7 = *&transform->m33;
+  *&self->_appliedSublayerTransform.m41 = *&transform->m41;
   *&self->_appliedSublayerTransform.m43 = v6;
   *&self->_appliedSublayerTransform.m31 = v8;
   *&self->_appliedSublayerTransform.m33 = v7;

@@ -6,11 +6,11 @@
 - (LACUIContainerViewControllerDelegate)delegate;
 - (UIViewController)currentViewController;
 - (id)navigationItem;
-- (int64_t)_effectiveTransitionStyle:(int64_t)a3;
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3;
+- (int64_t)_effectiveTransitionStyle:(int64_t)style;
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller;
 - (void)_setupScrollView;
-- (void)presentViewController:(id)a3 transitionStyle:(int64_t)a4;
-- (void)setBackgroundColor:(id)a3;
+- (void)presentViewController:(id)controller transitionStyle:(int64_t)style;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation LACUIContainerViewController
@@ -31,116 +31,116 @@
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(LACUIContainerViewController *)self currentViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  currentViewController = [(LACUIContainerViewController *)self currentViewController];
+  canBecomeFirstResponder = [currentViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(LACUIContainerViewController *)self currentViewController];
-  v3 = [v2 becomeFirstResponder];
+  currentViewController = [(LACUIContainerViewController *)self currentViewController];
+  becomeFirstResponder = [currentViewController becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(LACUIContainerViewController *)self currentViewController];
-  v3 = [v2 resignFirstResponder];
+  currentViewController = [(LACUIContainerViewController *)self currentViewController];
+  resignFirstResponder = [currentViewController resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
 - (id)navigationItem
 {
-  v3 = [(LACUIContainerViewController *)self parentViewController];
-  v4 = [v3 navigationItem];
-  v5 = v4;
-  if (v4)
+  parentViewController = [(LACUIContainerViewController *)self parentViewController];
+  navigationItem = [parentViewController navigationItem];
+  v5 = navigationItem;
+  if (navigationItem)
   {
-    v6 = v4;
+    navigationItem2 = navigationItem;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = LACUIContainerViewController;
-    v6 = [(LACUIContainerViewController *)&v9 navigationItem];
+    navigationItem2 = [(LACUIContainerViewController *)&v9 navigationItem];
   }
 
-  v7 = v6;
+  v7 = navigationItem2;
 
   return v7;
 }
 
-- (void)_preferredContentSizeDidChangeForChildViewController:(id)a3
+- (void)_preferredContentSizeDidChangeForChildViewController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = LACUIContainerViewController;
-  v4 = a3;
-  [(LACUIContainerViewController *)&v9 _preferredContentSizeDidChangeForChildViewController:v4];
-  [v4 preferredContentSize];
+  controllerCopy = controller;
+  [(LACUIContainerViewController *)&v9 _preferredContentSizeDidChangeForChildViewController:controllerCopy];
+  [controllerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(LACUIContainerViewController *)self setPreferredContentSize:v6, v8];
 }
 
-- (void)presentViewController:(id)a3 transitionStyle:(int64_t)a4
+- (void)presentViewController:(id)controller transitionStyle:(int64_t)style
 {
   v72[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    [(LACUIContainerViewController *)self addChildViewController:v6];
-    [v6 view];
-    v7 = v61 = a4;
+    [(LACUIContainerViewController *)self addChildViewController:controllerCopy];
+    [controllerCopy view];
+    v7 = v61 = style;
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(LACUIContainerViewController *)self containerView];
-    v9 = [v6 view];
-    [v8 addSubview:v9];
+    containerView = [(LACUIContainerViewController *)self containerView];
+    view = [controllerCopy view];
+    [containerView addSubview:view];
 
     v48 = MEMORY[0x277CCAAD0];
-    v60 = [v6 view];
-    v57 = [v60 topAnchor];
-    v58 = [(LACUIContainerViewController *)self containerView];
-    v56 = [v58 topAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    view2 = [controllerCopy view];
+    topAnchor = [view2 topAnchor];
+    containerView2 = [(LACUIContainerViewController *)self containerView];
+    topAnchor2 = [containerView2 topAnchor];
+    v55 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v72[0] = v55;
-    v54 = [v6 view];
-    v52 = [v54 bottomAnchor];
-    v53 = [(LACUIContainerViewController *)self containerView];
-    v51 = [v53 bottomAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    view3 = [controllerCopy view];
+    bottomAnchor = [view3 bottomAnchor];
+    containerView3 = [(LACUIContainerViewController *)self containerView];
+    bottomAnchor2 = [containerView3 bottomAnchor];
+    v50 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v72[1] = v50;
-    v49 = [v6 view];
-    v46 = [v49 widthAnchor];
-    v47 = [(LACUIContainerViewController *)self view];
-    v45 = [v47 widthAnchor];
-    v44 = [v46 constraintEqualToAnchor:v45];
+    view4 = [controllerCopy view];
+    widthAnchor = [view4 widthAnchor];
+    view5 = [(LACUIContainerViewController *)self view];
+    widthAnchor2 = [view5 widthAnchor];
+    v44 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v72[2] = v44;
-    v43 = [v6 view];
-    v42 = [v43 heightAnchor];
+    view6 = [controllerCopy view];
+    heightAnchor = [view6 heightAnchor];
     [(LACUIContainerViewController *)self view];
-    v62 = v6;
+    v62 = controllerCopy;
     v11 = v10 = self;
-    v12 = [v11 heightAnchor];
-    v13 = [v42 constraintEqualToAnchor:v12];
+    heightAnchor2 = [v11 heightAnchor];
+    v13 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v72[3] = v13;
-    v14 = [v62 view];
-    v15 = [v14 leadingAnchor];
-    v16 = [(LACUIContainerViewController *)self containerView];
-    v17 = [v16 leadingAnchor];
-    v18 = [v15 constraintEqualToAnchor:v17];
+    view7 = [v62 view];
+    leadingAnchor = [view7 leadingAnchor];
+    containerView4 = [(LACUIContainerViewController *)self containerView];
+    leadingAnchor2 = [containerView4 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v72[4] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:5];
     [v48 activateConstraints:v19];
 
     v20 = v10;
-    v6 = v62;
+    controllerCopy = v62;
 
     [v62 didMoveToParentViewController:v20];
     v21 = [(LACUIContainerViewController *)v20 _effectiveTransitionStyle:v61];
@@ -168,13 +168,13 @@
       *&v59.a = v22;
       *&v59.c = v23;
       *&v59.tx = v24;
-      v31 = [(LACUIContainerViewController *)v20 view];
-      [v31 bounds];
+      view8 = [(LACUIContainerViewController *)v20 view];
+      [view8 bounds];
       v69 = v59;
       CGAffineTransformTranslate(&v71, &v69, -v32, 0.0);
 
-      v28 = [(LACUIContainerViewController *)v20 view];
-      [v28 bounds];
+      view9 = [(LACUIContainerViewController *)v20 view];
+      [view9 bounds];
       v30 = v33;
     }
 
@@ -183,18 +183,18 @@
       if (v21 != 1)
       {
 LABEL_10:
-        v34 = [(LACUIContainerViewController *)v20 currentViewController];
+        currentViewController = [(LACUIContainerViewController *)v20 currentViewController];
         v35 = v62;
-        v36 = [v35 view];
+        view10 = [v35 view];
         v69 = v71;
-        [v36 setTransform:&v69];
+        [view10 setTransform:&v69];
 
         v37 = MEMORY[0x277D75D18];
         v65[0] = MEMORY[0x277D85DD0];
         v65[1] = 3221225472;
         v65[2] = __70__LACUIContainerViewController_presentViewController_transitionStyle___block_invoke;
         v65[3] = &unk_27981E9F8;
-        v38 = v34;
+        v38 = currentViewController;
         v68 = v70;
         v66 = v38;
         v67 = v35;
@@ -214,13 +214,13 @@ LABEL_10:
       *&v59.a = v22;
       *&v59.c = v23;
       *&v59.tx = v24;
-      v26 = [(LACUIContainerViewController *)v20 view];
-      [v26 bounds];
+      view11 = [(LACUIContainerViewController *)v20 view];
+      [view11 bounds];
       v69 = v59;
       CGAffineTransformTranslate(&v71, &v69, v27, 0.0);
 
-      v28 = [(LACUIContainerViewController *)v20 view];
-      [v28 bounds];
+      view9 = [(LACUIContainerViewController *)v20 view];
+      [view9 bounds];
       v30 = -v29;
     }
 
@@ -263,11 +263,11 @@ uint64_t __70__LACUIContainerViewController_presentViewController_transitionStyl
   return [v3 removeFromParentViewController];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(LACUIContainerViewController *)self containerView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  containerView = [(LACUIContainerViewController *)self containerView];
+  [containerView setBackgroundColor:colorCopy];
 }
 
 - (void)_setupScrollView
@@ -276,52 +276,52 @@ uint64_t __70__LACUIContainerViewController_presentViewController_transitionStyl
   v3 = objc_alloc_init(MEMORY[0x277D759D8]);
   [(LACUIContainerViewController *)self setContainerView:v3];
 
-  v4 = [(LACUIContainerViewController *)self containerView];
-  [v4 setSemanticContentAttribute:3];
+  containerView = [(LACUIContainerViewController *)self containerView];
+  [containerView setSemanticContentAttribute:3];
 
-  v5 = [(LACUIContainerViewController *)self containerView];
-  [v5 setScrollEnabled:0];
+  containerView2 = [(LACUIContainerViewController *)self containerView];
+  [containerView2 setScrollEnabled:0];
 
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v8 = [(LACUIContainerViewController *)self containerView];
-    [v8 setContentInsetAdjustmentBehavior:2];
+    containerView3 = [(LACUIContainerViewController *)self containerView];
+    [containerView3 setContentInsetAdjustmentBehavior:2];
   }
 
-  v9 = [(LACUIContainerViewController *)self containerView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView4 = [(LACUIContainerViewController *)self containerView];
+  [containerView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(LACUIContainerViewController *)self view];
-  v11 = [(LACUIContainerViewController *)self containerView];
-  [v10 addSubview:v11];
+  view = [(LACUIContainerViewController *)self view];
+  containerView5 = [(LACUIContainerViewController *)self containerView];
+  [view addSubview:containerView5];
 
   v25 = MEMORY[0x277CCAAD0];
-  v34 = [(LACUIContainerViewController *)self containerView];
-  v32 = [v34 topAnchor];
-  v33 = [(LACUIContainerViewController *)self view];
-  v31 = [v33 topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  containerView6 = [(LACUIContainerViewController *)self containerView];
+  topAnchor = [containerView6 topAnchor];
+  view2 = [(LACUIContainerViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v35[0] = v30;
-  v29 = [(LACUIContainerViewController *)self containerView];
-  v27 = [v29 leadingAnchor];
-  v28 = [(LACUIContainerViewController *)self view];
-  v26 = [v28 leadingAnchor];
-  v24 = [v27 constraintEqualToAnchor:v26];
+  containerView7 = [(LACUIContainerViewController *)self containerView];
+  leadingAnchor = [containerView7 leadingAnchor];
+  view3 = [(LACUIContainerViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v35[1] = v24;
-  v23 = [(LACUIContainerViewController *)self containerView];
-  v12 = [v23 trailingAnchor];
-  v13 = [(LACUIContainerViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  containerView8 = [(LACUIContainerViewController *)self containerView];
+  trailingAnchor = [containerView8 trailingAnchor];
+  view4 = [(LACUIContainerViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v35[2] = v15;
-  v16 = [(LACUIContainerViewController *)self containerView];
-  v17 = [v16 bottomAnchor];
-  v18 = [(LACUIContainerViewController *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  containerView9 = [(LACUIContainerViewController *)self containerView];
+  bottomAnchor = [containerView9 bottomAnchor];
+  view5 = [(LACUIContainerViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v35[3] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:4];
   [v25 activateConstraints:v21];
@@ -329,19 +329,19 @@ uint64_t __70__LACUIContainerViewController_presentViewController_transitionStyl
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_effectiveTransitionStyle:(int64_t)a3
+- (int64_t)_effectiveTransitionStyle:(int64_t)style
 {
   v4 = [MEMORY[0x277D75D18] userInterfaceLayoutDirectionForSemanticContentAttribute:0];
   v5 = 2;
-  v6 = 1;
-  if (a3 != 2)
+  styleCopy = 1;
+  if (style != 2)
   {
-    v6 = a3;
+    styleCopy = style;
   }
 
-  if (a3 != 1)
+  if (style != 1)
   {
-    v5 = v6;
+    v5 = styleCopy;
   }
 
   if (v4)
@@ -351,7 +351,7 @@ uint64_t __70__LACUIContainerViewController_presentViewController_transitionStyl
 
   else
   {
-    return a3;
+    return style;
   }
 }
 

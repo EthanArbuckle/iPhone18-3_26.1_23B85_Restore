@@ -1,12 +1,12 @@
 @interface HKSignedClinicalDataSource
-+ (id)sourceWithQRCodeValue:(id)a3 passcode:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)sourceWithQRCodeValue:(id)value passcode:(id)passcode error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataSource)init;
-- (HKSignedClinicalDataSource)initWithCoder:(id)a3;
-- (HKSignedClinicalDataSource)initWithFile:(id)a3 type:(int64_t)a4;
-- (HKSignedClinicalDataSource)initWithQRRepresentation:(id)a3 passcode:(id)a4;
+- (HKSignedClinicalDataSource)initWithCoder:(id)coder;
+- (HKSignedClinicalDataSource)initWithFile:(id)file type:(int64_t)type;
+- (HKSignedClinicalDataSource)initWithQRRepresentation:(id)representation passcode:(id)passcode;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataSource
@@ -21,39 +21,39 @@
   return 0;
 }
 
-- (HKSignedClinicalDataSource)initWithFile:(id)a3 type:(int64_t)a4
+- (HKSignedClinicalDataSource)initWithFile:(id)file type:(int64_t)type
 {
-  v6 = a3;
+  fileCopy = file;
   v11.receiver = self;
   v11.super_class = HKSignedClinicalDataSource;
   v7 = [(HKSignedClinicalDataSource *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [fileCopy copy];
     file = v7->_file;
     v7->_file = v8;
 
-    v7->_type = a4;
+    v7->_type = type;
   }
 
   return v7;
 }
 
-- (HKSignedClinicalDataSource)initWithQRRepresentation:(id)a3 passcode:(id)a4
+- (HKSignedClinicalDataSource)initWithQRRepresentation:(id)representation passcode:(id)passcode
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  passcodeCopy = passcode;
   v14.receiver = self;
   v14.super_class = HKSignedClinicalDataSource;
   v8 = [(HKSignedClinicalDataSource *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [representationCopy copy];
     QRRepresentation = v8->_QRRepresentation;
     v8->_QRRepresentation = v9;
 
-    v8->_type = [v6 sourceType];
-    v11 = [v7 copy];
+    v8->_type = [representationCopy sourceType];
+    v11 = [passcodeCopy copy];
     passcode = v8->_passcode;
     v8->_passcode = v11;
   }
@@ -61,32 +61,32 @@
   return v8;
 }
 
-+ (id)sourceWithQRCodeValue:(id)a3 passcode:(id)a4 error:(id *)a5
++ (id)sourceWithQRCodeValue:(id)value passcode:(id)passcode error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+  valueCopy = value;
+  passcodeCopy = passcode;
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:valueCopy];
   if ([v9 hk_isRewrittenHealthCardQRCodeURL])
   {
-    v10 = [v9 fragment];
+    fragment = [v9 fragment];
 
-    if (v10)
+    if (fragment)
     {
       v11 = MEMORY[0x277CCACA8];
-      v12 = [v9 fragment];
-      [v11 stringWithFormat:@"%@%@", @"shc:/", v12];
+      fragment2 = [v9 fragment];
+      [v11 stringWithFormat:@"%@%@", @"shc:/", fragment2];
     }
 
     else
     {
-      v13 = [v9 path];
-      v12 = [v13 substringFromIndex:{objc_msgSend(*MEMORY[0x277CCCD98], "length") + 2}];
+      path = [v9 path];
+      fragment2 = [path substringFromIndex:{objc_msgSend(*MEMORY[0x277CCCD98], "length") + 2}];
 
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"shc:/", v12];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"shc:/", fragment2];
     }
     v14 = ;
 
-    v7 = v14;
+    valueCopy = v14;
   }
 
   if (![v9 hk_isRewrittenEUDigitalCOVIDCertificateQRCodeURL])
@@ -94,54 +94,54 @@
     goto LABEL_9;
   }
 
-  v15 = [v9 fragment];
+  fragment3 = [v9 fragment];
 
-  if (!v15)
+  if (!fragment3)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"invalid EU-DCC payload"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"invalid EU-DCC payload"];
 LABEL_14:
 
     goto LABEL_15;
   }
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [v9 fragment];
-  v18 = [v16 stringWithFormat:@"%@%@", @"HC1:", v17];
+  fragment4 = [v9 fragment];
+  v18 = [v16 stringWithFormat:@"%@%@", @"HC1:", fragment4];
 
-  v7 = [v18 stringByRemovingPercentEncoding];
+  valueCopy = [v18 stringByRemovingPercentEncoding];
 
-  if (v7)
+  if (valueCopy)
   {
 LABEL_9:
-    v19 = [HKSignedClinicalDataQRSegment segmentFromQRCodeValue:v7 error:a5];
+    v19 = [HKSignedClinicalDataQRSegment segmentFromQRCodeValue:valueCopy error:error];
     if (v19)
     {
       v20 = [HKSignedClinicalDataQRRepresentation representationWithQRSegment:v19];
-      v15 = [[HKSignedClinicalDataSource alloc] initWithQRRepresentation:v20 passcode:v8];
+      fragment3 = [[HKSignedClinicalDataSource alloc] initWithQRRepresentation:v20 passcode:passcodeCopy];
     }
 
     else
     {
-      v15 = 0;
+      fragment3 = 0;
     }
 
     goto LABEL_14;
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 format:@"could not reverse encoding of EU-DCC payload"];
-  v15 = 0;
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"could not reverse encoding of EU-DCC payload"];
+  fragment3 = 0;
 LABEL_15:
 
-  return v15;
+  return fragment3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -152,20 +152,20 @@ LABEL_32:
     }
 
     file = self->_file;
-    v9 = [(HKSignedClinicalDataSource *)v7 file];
-    if (file != v9)
+    file = [(HKSignedClinicalDataSource *)v7 file];
+    if (file != file)
     {
-      v10 = [(HKSignedClinicalDataSource *)v7 file];
-      if (!v10)
+      file2 = [(HKSignedClinicalDataSource *)v7 file];
+      if (!file2)
       {
         v13 = 0;
         goto LABEL_31;
       }
 
-      v3 = v10;
+      v3 = file2;
       v11 = self->_file;
-      v12 = [(HKSignedClinicalDataSource *)v7 file];
-      if (![(HKSignedClinicalDataFile *)v11 isEqual:v12])
+      file3 = [(HKSignedClinicalDataSource *)v7 file];
+      if (![(HKSignedClinicalDataFile *)v11 isEqual:file3])
       {
         v13 = 0;
 LABEL_30:
@@ -173,32 +173,32 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v37 = v12;
+      v37 = file3;
     }
 
     QRRepresentation = self->_QRRepresentation;
-    v15 = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
-    if (QRRepresentation != v15)
+    qRRepresentation = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
+    if (QRRepresentation != qRRepresentation)
     {
-      v16 = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
-      if (!v16)
+      qRRepresentation2 = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
+      if (!qRRepresentation2)
       {
         goto LABEL_27;
       }
 
-      v17 = v16;
+      v17 = qRRepresentation2;
       v18 = self->_QRRepresentation;
-      v19 = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
+      qRRepresentation3 = [(HKSignedClinicalDataSource *)v7 QRRepresentation];
       v20 = v18;
-      v21 = v19;
-      if (![(HKSignedClinicalDataQRRepresentation *)v20 isEqual:v19])
+      v21 = qRRepresentation3;
+      if (![(HKSignedClinicalDataQRRepresentation *)v20 isEqual:qRRepresentation3])
       {
         v13 = 0;
 LABEL_23:
 
 LABEL_24:
 LABEL_28:
-        v32 = file == v9;
+        v32 = file == file;
         goto LABEL_29;
       }
 
@@ -207,15 +207,15 @@ LABEL_28:
     }
 
     passcode = self->_passcode;
-    v23 = [(HKSignedClinicalDataSource *)v7 passcode];
-    if (passcode == v23)
+    passcode = [(HKSignedClinicalDataSource *)v7 passcode];
+    if (passcode == passcode)
     {
       type = self->_type;
       v13 = type == [(HKSignedClinicalDataSource *)v7 type];
 
       v21 = v35;
       v17 = v36;
-      if (QRRepresentation == v15)
+      if (QRRepresentation == qRRepresentation)
       {
         goto LABEL_24;
       }
@@ -223,27 +223,27 @@ LABEL_28:
       goto LABEL_23;
     }
 
-    v24 = [(HKSignedClinicalDataSource *)v7 passcode];
-    if (v24)
+    passcode2 = [(HKSignedClinicalDataSource *)v7 passcode];
+    if (passcode2)
     {
-      v25 = v24;
+      v25 = passcode2;
       v34 = v3;
       v26 = self->_passcode;
-      v27 = [(HKSignedClinicalDataSource *)v7 passcode];
+      passcode3 = [(HKSignedClinicalDataSource *)v7 passcode];
       v28 = v26;
-      v29 = v27;
+      v29 = passcode3;
       if ([(NSString *)v28 isEqual:?])
       {
         v30 = self->_type;
         v13 = v30 == [(HKSignedClinicalDataSource *)v7 type];
 
-        if (QRRepresentation == v15)
+        if (QRRepresentation == qRRepresentation)
         {
 
-          v32 = file == v9;
+          v32 = file == file;
           v3 = v34;
 LABEL_29:
-          v12 = v37;
+          file3 = v37;
           if (!v32)
           {
             goto LABEL_30;
@@ -261,7 +261,7 @@ LABEL_31:
       }
 
       v3 = v34;
-      if (QRRepresentation == v15)
+      if (QRRepresentation == qRRepresentation)
       {
 LABEL_35:
         v13 = 0;
@@ -272,7 +272,7 @@ LABEL_35:
     else
     {
 
-      if (QRRepresentation == v15)
+      if (QRRepresentation == qRRepresentation)
       {
         goto LABEL_35;
       }
@@ -296,44 +296,44 @@ LABEL_33:
   return v4 ^ [(NSString *)self->_passcode hash]^ self->_type;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   file = self->_file;
-  v5 = a3;
-  [v5 encodeObject:file forKey:@"file"];
-  [v5 encodeObject:self->_QRRepresentation forKey:@"QRRepresentation"];
-  [v5 encodeObject:self->_passcode forKey:@"passcode"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:file forKey:@"file"];
+  [coderCopy encodeObject:self->_QRRepresentation forKey:@"QRRepresentation"];
+  [coderCopy encodeObject:self->_passcode forKey:@"passcode"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (HKSignedClinicalDataSource)initWithCoder:(id)a3
+- (HKSignedClinicalDataSource)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"file"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"file"];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"type"])
+    if ([coderCopy containsValueForKey:@"type"])
     {
-      self = -[HKSignedClinicalDataSource initWithFile:type:](self, "initWithFile:type:", v5, [v4 decodeIntegerForKey:@"type"]);
-      v6 = self;
+      self = -[HKSignedClinicalDataSource initWithFile:type:](self, "initWithFile:type:", v5, [coderCopy decodeIntegerForKey:@"type"]);
+      selfCopy2 = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v6 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"QRRepresentation"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"QRRepresentation"];
     if (v7)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passcode"];
       self = [(HKSignedClinicalDataSource *)self initWithQRRepresentation:v7 passcode:v8];
 
-      v6 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -345,12 +345,12 @@ LABEL_33:
         [HKSignedClinicalDataSource initWithCoder:v9];
       }
 
-      [v4 hrs_failWithCocoaInvalidValueError];
-      v6 = 0;
+      [coderCopy hrs_failWithCocoaInvalidValueError];
+      selfCopy2 = 0;
     }
   }
 
-  return v6;
+  return selfCopy2;
 }
 
 @end

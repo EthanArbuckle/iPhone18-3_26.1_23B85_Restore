@@ -1,69 +1,69 @@
 @interface WFLocationContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (CLPlacemark)placemark;
 - (id)richListTitle;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)getMKMapSnapshotImageForSize:(CGSize)a3 scale:(double)a4 completionHandler:(id)a5;
-- (void)getMKMapSnapshotImageForSize:(CGSize)a3 scale:(double)a4 named:(id)a5 withCompletionHandler:(id)a6;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
+- (void)getMKMapSnapshotImageForSize:(CGSize)size scale:(double)scale completionHandler:(id)handler;
+- (void)getMKMapSnapshotImageForSize:(CGSize)size scale:(double)scale named:(id)named withCompletionHandler:(id)handler;
 @end
 
 @implementation WFLocationContentItem
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = thumbnailCopy;
+  if (thumbnailCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __66__WFLocationContentItem_ChooseFromList__getListThumbnail_forSize___block_invoke;
     v10[3] = &unk_278347A98;
-    v11 = v7;
+    v11 = thumbnailCopy;
     [(WFLocationContentItem *)self getMKMapSnapshotImageForSize:v10 scale:width completionHandler:height, 1.0];
   }
 
   return 1;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(WFContentItem *)self objectForClass:objc_opt_class()];
-  v6 = [v5 localizedLabel];
-  v7 = [v6 length];
+  localizedLabel = [v5 localizedLabel];
+  v7 = [localizedLabel length];
   v8 = v7;
-  if (v4 && v7)
+  if (textCopy && v7)
   {
-    v4[2](v4, v6);
+    textCopy[2](textCopy, localizedLabel);
   }
 
   return v8 != 0;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (subtitleCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__WFLocationContentItem_ChooseFromList__getListSubtitle___block_invoke;
     v7[3] = &unk_278349CA8;
-    v8 = v4;
+    v8 = subtitleCopy;
     [(WFContentItem *)self getObjectRepresentation:v7 forClass:objc_opt_class()];
   }
 
@@ -76,19 +76,19 @@ void __57__WFLocationContentItem_ChooseFromList__getListSubtitle___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v21 = a5;
+  typeCopy = type;
   v7 = *MEMORY[0x277CE1E10];
-  v8 = a3;
-  if ([v21 conformsToUTType:v7])
+  representationCopy = representation;
+  if ([typeCopy conformsToUTType:v7])
   {
-    v9 = [MEMORY[0x277D79F18] currentDevice];
-    [v9 screenScale];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    [currentDevice screenScale];
     v11 = v10;
 
-    v12 = [MEMORY[0x277D79F18] currentDevice];
-    [v12 screenBounds];
+    currentDevice2 = [MEMORY[0x277D79F18] currentDevice];
+    [currentDevice2 screenBounds];
     v14 = v13;
 
     if (v14 > 500.0)
@@ -97,9 +97,9 @@ void __57__WFLocationContentItem_ChooseFromList__getListSubtitle___block_invoke(
     }
 
     v15 = +[WFApplicationContext sharedContext];
-    v16 = [v15 currentUserInterfaceType];
+    currentUserInterfaceType = [v15 currentUserInterfaceType];
 
-    if ([v16 isEqualToString:@"Watch"])
+    if ([currentUserInterfaceType isEqualToString:@"Watch"])
     {
       v11 = 2.0;
       v14 = 250.0;
@@ -107,29 +107,29 @@ void __57__WFLocationContentItem_ChooseFromList__getListSubtitle___block_invoke(
 
     v17 = MEMORY[0x277CCACA8];
     v18 = WFLocalizedString(@"Map of %@");
-    v19 = [(WFContentItem *)self name];
-    v20 = [v17 stringWithFormat:v18, v19];
+    name = [(WFContentItem *)self name];
+    v20 = [v17 stringWithFormat:v18, name];
 
-    [(WFLocationContentItem *)self getMKMapSnapshotImageForSize:v20 scale:v8 named:v14 withCompletionHandler:v14, v11];
-    v8 = v20;
+    [(WFLocationContentItem *)self getMKMapSnapshotImageForSize:v20 scale:representationCopy named:v14 withCompletionHandler:v14, v11];
+    representationCopy = v20;
   }
 
   else
   {
-    v16 = [objc_opt_class() badCoercionErrorForType:v21];
-    (*(v8 + 2))(v8, 0, v16);
+    currentUserInterfaceType = [objc_opt_class() badCoercionErrorForType:typeCopy];
+    (*(representationCopy + 2))(representationCopy, 0, currentUserInterfaceType);
   }
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
-    v13 = [(WFContentItem *)self internalRepresentationType];
-    if ([v13 conformsToClass:objc_opt_class()])
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+    if ([internalRepresentationType conformsToClass:objc_opt_class()])
     {
       v14 = [(WFContentItem *)self objectForClass:objc_opt_class()];
       v15 = [WFStreetAddress streetAddressWithPlacemark:v14 label:0];
@@ -139,7 +139,7 @@ void __57__WFLocationContentItem_ChooseFromList__getListSubtitle___block_invoke(
         v17 = [WFObjectRepresentation object:v15];
         v58[0] = v17;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
-        v8[2](v8, v18, 0);
+        representationsCopy[2](representationsCopy, v18, 0);
 
 LABEL_31:
         goto LABEL_32;
@@ -150,14 +150,14 @@ LABEL_31:
     v55[1] = 3221225472;
     v55[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke;
     v55[3] = &unk_278349C10;
-    v56 = v8;
+    v56 = representationsCopy;
     [(WFContentItem *)self getObjectRepresentation:v55 forClass:getCLLocationClass_24982()];
 
 LABEL_32:
     goto LABEL_33;
   }
 
-  v10 = NSStringFromClass(a5);
+  v10 = NSStringFromClass(class);
   v11 = [@"CLLocation" isEqualToString:v10];
 
   if (v11)
@@ -166,32 +166,32 @@ LABEL_32:
     v53[1] = 3221225472;
     v53[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_3;
     v53[3] = &unk_278349C60;
-    v54 = v8;
+    v54 = representationsCopy;
     [(WFContentItem *)self getObjectRepresentation:v53 forClass:getCLPlacemarkClass()];
     v12 = v54;
     goto LABEL_4;
   }
 
-  v19 = NSStringFromClass(a5);
+  v19 = NSStringFromClass(class);
   v20 = [@"CLPlacemark" isEqualToString:v19];
 
   if (v20)
   {
-    v13 = [(WFContentItem *)self internalRepresentationType];
-    if ([v13 conformsToClass:{objc_msgSend(MEMORY[0x277D23928], "wf_placeDescriptorObjectClass")}])
+    internalRepresentationType = [(WFContentItem *)self internalRepresentationType];
+    if ([internalRepresentationType conformsToClass:{objc_msgSend(MEMORY[0x277D23928], "wf_placeDescriptorObjectClass")}])
     {
       v14 = -[WFContentItem objectForClass:](self, "objectForClass:", [MEMORY[0x277D23928] wf_placeDescriptorObjectClass]);
-      v21 = [v14 properties];
-      v22 = [v21 if_firstObjectPassingTest:&__block_literal_global_269];
-      v23 = [v22 value];
-      v24 = [v23 value];
+      properties = [v14 properties];
+      v22 = [properties if_firstObjectPassingTest:&__block_literal_global_269];
+      value = [v22 value];
+      v23Value = [value value];
 
-      if (v24)
+      if (v23Value)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = v24;
+          v25 = v23Value;
         }
 
         else
@@ -211,21 +211,21 @@ LABEL_32:
 
       v57 = v30;
       v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-      v8[2](v8, v34, 0);
+      representationsCopy[2](representationsCopy, v34, 0);
     }
 
-    else if ([v13 conformsToClass:objc_opt_class()])
+    else if ([internalRepresentationType conformsToClass:objc_opt_class()])
     {
       v14 = [(WFContentItem *)self objectForClass:objc_opt_class()];
       getCLGeocoderClass();
       v28 = objc_opt_new();
-      v29 = [v14 addressString];
+      addressString = [v14 addressString];
       v51[0] = MEMORY[0x277D85DD0];
       v51[1] = 3221225472;
       v51[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_5;
       v51[3] = &unk_27834A430;
-      v52 = v8;
-      [v28 geocodeAddressString:v29 completionHandler:v51];
+      v52 = representationsCopy;
+      [v28 geocodeAddressString:addressString completionHandler:v51];
 
       v30 = v52;
     }
@@ -238,7 +238,7 @@ LABEL_32:
       v48[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_6;
       v48[3] = &unk_278349BE8;
       v49 = v31;
-      v50 = v8;
+      v50 = representationsCopy;
       v14 = v31;
       [(WFContentItem *)self getObjectRepresentation:v48 forClass:objc_opt_class()];
 
@@ -248,31 +248,31 @@ LABEL_32:
     goto LABEL_30;
   }
 
-  if ([MEMORY[0x277D23928] wf_placeDescriptorObjectClass] == a5)
+  if ([MEMORY[0x277D23928] wf_placeDescriptorObjectClass] == class)
   {
     v46[0] = MEMORY[0x277D85DD0];
     v46[1] = 3221225472;
     v46[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_7;
     v46[3] = &unk_278349C60;
-    v47 = v8;
+    v47 = representationsCopy;
     [(WFContentItem *)self getObjectRepresentation:v46 forClass:getCLPlacemarkClass()];
     v12 = v47;
     goto LABEL_4;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v44[0] = MEMORY[0x277D85DD0];
     v44[1] = 3221225472;
     v44[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_8;
     v44[3] = &unk_278349CA8;
-    v45 = v8;
+    v45 = representationsCopy;
     [(WFContentItem *)self getObjectRepresentation:v44 forClass:objc_opt_class()];
     v12 = v45;
     goto LABEL_4;
   }
 
-  v26 = NSStringFromClass(a5);
+  v26 = NSStringFromClass(class);
   v27 = [@"MKMapItem" isEqualToString:v26];
 
   if (v27)
@@ -281,15 +281,15 @@ LABEL_32:
     v42[1] = 3221225472;
     v42[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_9;
     v42[3] = &unk_278349CA8;
-    v43 = v8;
+    v43 = representationsCopy;
     [(WFContentItem *)self getObjectRepresentation:v42 forClass:objc_opt_class()];
     v12 = v43;
     goto LABEL_4;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
-    v13 = [(WFContentItem *)self objectForClass:getCLPlacemarkClass()];
+    internalRepresentationType = [(WFContentItem *)self objectForClass:getCLPlacemarkClass()];
     v14 = [(WFContentItem *)self objectForClass:getCLLocationClass_24982()];
     v35 = [(WFContentItem *)self objectForClass:objc_opt_class()];
     v39[0] = MEMORY[0x277D85DD0];
@@ -297,18 +297,18 @@ LABEL_32:
     v39[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_11;
     v39[3] = &unk_278349CF8;
     v40 = v35;
-    v41 = v8;
+    v41 = representationsCopy;
     v30 = v35;
-    [DCMapsLink createMapsLinkWithPlacemark:v13 location:v14 streetAddress:v30 shiftingLocationIfNecessary:1 completionHandler:v39];
+    [DCMapsLink createMapsLinkWithPlacemark:internalRepresentationType location:v14 streetAddress:v30 shiftingLocationIfNecessary:1 completionHandler:v39];
 
 LABEL_30:
     goto LABEL_31;
   }
 
-  if (objc_opt_class() != a5)
+  if (objc_opt_class() != class)
   {
-    v32 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (v8)[2](v8, 0, v32);
+    v32 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (representationsCopy)[2](representationsCopy, 0, v32);
 
     goto LABEL_33;
   }
@@ -317,8 +317,8 @@ LABEL_30:
   v36[1] = 3221225472;
   v36[2] = __72__WFLocationContentItem_generateObjectRepresentations_options_forClass___block_invoke_12;
   v36[3] = &unk_278349BE8;
-  v38 = v8;
-  v37 = v9;
+  v38 = representationsCopy;
+  v37 = optionsCopy;
   [(WFContentItem *)self getObjectRepresentation:v36 forClass:objc_opt_class()];
 
   v12 = v38;
@@ -721,20 +721,20 @@ void __72__WFLocationContentItem_generateObjectRepresentations_options_forClass_
   }
 }
 
-- (void)getMKMapSnapshotImageForSize:(CGSize)a3 scale:(double)a4 completionHandler:(id)a5
+- (void)getMKMapSnapshotImageForSize:(CGSize)size scale:(double)scale completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__WFLocationContentItem_getMKMapSnapshotImageForSize_scale_completionHandler___block_invoke;
   v11[3] = &unk_278349BA0;
   v13 = width;
   v14 = height;
-  v15 = a4;
-  v12 = v9;
-  v10 = v9;
+  scaleCopy = scale;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(WFContentItem *)self getObjectRepresentation:v11 forClass:getCLLocationClass_24982()];
 }
 
@@ -878,21 +878,21 @@ void __78__WFLocationContentItem_getMKMapSnapshotImageForSize_scale_completionHa
   }
 }
 
-- (void)getMKMapSnapshotImageForSize:(CGSize)a3 scale:(double)a4 named:(id)a5 withCompletionHandler:(id)a6
+- (void)getMKMapSnapshotImageForSize:(CGSize)size scale:(double)scale named:(id)named withCompletionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a5;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  namedCopy = named;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __88__WFLocationContentItem_getMKMapSnapshotImageForSize_scale_named_withCompletionHandler___block_invoke;
   v15[3] = &unk_278349B50;
-  v16 = v11;
-  v17 = v12;
-  v13 = v11;
-  v14 = v12;
-  [(WFLocationContentItem *)self getMKMapSnapshotImageForSize:v15 scale:width completionHandler:height, a4];
+  v16 = namedCopy;
+  v17 = handlerCopy;
+  v13 = namedCopy;
+  v14 = handlerCopy;
+  [(WFLocationContentItem *)self getMKMapSnapshotImageForSize:v15 scale:width completionHandler:height, scale];
 }
 
 void __88__WFLocationContentItem_getMKMapSnapshotImageForSize_scale_named_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -924,61 +924,61 @@ void __88__WFLocationContentItem_getMKMapSnapshotImageForSize_scale_named_withCo
 
 - (id)richListTitle
 {
-  v3 = [(WFLocationContentItem *)self placemark];
-  if (v3)
+  placemark = [(WFLocationContentItem *)self placemark];
+  if (placemark)
   {
-    v4 = [WFStreetAddress streetAddressWithPlacemark:v3 label:0];
-    v5 = [v4 addressString];
-    if (!v5)
+    internalRepresentation = [WFStreetAddress streetAddressWithPlacemark:placemark label:0];
+    addressString = [internalRepresentation addressString];
+    if (!addressString)
     {
       v10.receiver = self;
       v10.super_class = WFLocationContentItem;
-      v8 = [(WFContentItem *)&v10 richListTitle];
-      v7 = 0;
+      richListTitle = [(WFContentItem *)&v10 richListTitle];
+      wfName = 0;
       goto LABEL_9;
     }
 
-    v6 = v5;
-    v7 = v6;
+    richListTitle2 = addressString;
+    wfName = richListTitle2;
   }
 
   else
   {
-    v4 = [(WFContentItem *)self internalRepresentation];
-    v7 = [v4 wfName];
-    if ([v7 length])
+    internalRepresentation = [(WFContentItem *)self internalRepresentation];
+    wfName = [internalRepresentation wfName];
+    if ([wfName length])
     {
       v11.receiver = self;
       v11.super_class = WFLocationContentItem;
-      v6 = [(WFContentItem *)&v11 richListTitle];
+      richListTitle2 = [(WFContentItem *)&v11 richListTitle];
     }
 
     else
     {
-      v6 = [(WFContentItem *)self name];
+      richListTitle2 = [(WFContentItem *)self name];
     }
   }
 
-  v8 = v6;
+  richListTitle = richListTitle2;
 LABEL_9:
 
-  return v8;
+  return richListTitle;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Locations", @"Locations");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Location (singular)", @"Location");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

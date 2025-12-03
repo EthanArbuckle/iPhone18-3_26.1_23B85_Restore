@@ -1,17 +1,17 @@
 @interface NUTiledProviderCache
-- (NUTiledProviderCache)initWithImage:(id)a3;
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9;
+- (NUTiledProviderCache)initWithImage:(id)image;
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info;
 @end
 
 @implementation NUTiledProviderCache
 
-- (void)provideImageData:(void *)a3 bytesPerRow:(unint64_t)a4 origin:(unint64_t)a5 :(unint64_t)a6 size:(unint64_t)a7 :(unint64_t)a8 userInfo:(id)a9
+- (void)provideImageData:(void *)data bytesPerRow:(unint64_t)row origin:(unint64_t)origin :(unint64_t)a6 size:(unint64_t)size :(unint64_t)a8 userInfo:(id)info
 {
-  v16 = [(NUProcessorCache *)self pixelFormat];
-  v17 = [v16 CIFormat];
+  pixelFormat = [(NUProcessorCache *)self pixelFormat];
+  cIFormat = [pixelFormat CIFormat];
 
-  v18 = [(NUProcessorCache *)self inputImage];
-  [v18 extent];
+  inputImage = [(NUProcessorCache *)self inputImage];
+  [inputImage extent];
   v52.origin.x = v19;
   v52.origin.y = v20;
   v52.size.width = v21;
@@ -20,9 +20,9 @@
   v30 = v57;
   v31 = v56;
 
-  *&v23.x = a5;
+  *&v23.x = origin;
   *&v23.y = a6;
-  *&v24.width = a7;
+  *&v24.width = size;
   *&v24.height = a8;
   v52.origin = v23;
   v52.size = v24;
@@ -48,20 +48,20 @@
   v36 = v30;
   block[4] = self;
   v33 = v54;
-  v37 = a3;
-  v38 = a7;
+  dataCopy = data;
+  sizeCopy = size;
   v39 = a8;
-  v40 = a4;
-  v51 = v17;
-  v41 = origin;
-  v42 = size;
-  v43 = a5;
+  rowCopy = row;
+  v51 = cIFormat;
+  originCopy = origin;
+  sizeCopy2 = size;
+  originCopy2 = origin;
   v44 = a6;
-  v45 = a7;
+  sizeCopy3 = size;
   v46 = a8;
-  v47 = a5;
+  originCopy3 = origin;
   v48 = a6;
-  v49 = a7;
+  sizeCopy4 = size;
   v50 = a8;
   v34 = &v52;
   v27 = v54;
@@ -160,12 +160,12 @@ void __76__NUTiledProviderCache_provideImageData_bytesPerRow_origin::size::userI
   [*(*(a1 + 32) + 72) endAccessRegion:*(a1 + 40)];
 }
 
-- (NUTiledProviderCache)initWithImage:(id)a3
+- (NUTiledProviderCache)initWithImage:(id)image
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = NUTiledProviderCache;
-  v3 = [(NUProcessorCache *)&v11 initWithImage:a3];
+  v3 = [(NUProcessorCache *)&v11 initWithImage:image];
   v3->_tileSize = vdupq_n_s64(0x400uLL);
   v4 = +[NUColorSpace workingColorSpace];
   colorSpace = v3->_colorSpace;

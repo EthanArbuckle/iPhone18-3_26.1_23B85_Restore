@@ -1,51 +1,51 @@
 @interface PXPlacesMapPipeline
-- (PXPlacesMapPipeline)initWithLayout:(id)a3 updatePlan:(id)a4 renderer:(id)a5 selectionHandler:(id)a6;
+- (PXPlacesMapPipeline)initWithLayout:(id)layout updatePlan:(id)plan renderer:(id)renderer selectionHandler:(id)handler;
 - (id)executeRemoval;
-- (id)executeWithUpdatedViewPort:(id)a3 andDataSourceChange:(id)a4;
+- (id)executeWithUpdatedViewPort:(id)port andDataSourceChange:(id)change;
 @end
 
 @implementation PXPlacesMapPipeline
 
 - (id)executeRemoval
 {
-  v3 = [(PXPlacesMapPipeline *)self updatePlan];
-  v4 = [v3 removalPlanResult];
+  updatePlan = [(PXPlacesMapPipeline *)self updatePlan];
+  removalPlanResult = [updatePlan removalPlanResult];
 
-  v5 = [(PXPlacesMapPipeline *)self updatePlan];
-  [v5 reset];
+  updatePlan2 = [(PXPlacesMapPipeline *)self updatePlan];
+  [updatePlan2 reset];
 
-  return v4;
+  return removalPlanResult;
 }
 
-- (id)executeWithUpdatedViewPort:(id)a3 andDataSourceChange:(id)a4
+- (id)executeWithUpdatedViewPort:(id)port andDataSourceChange:(id)change
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXPlacesMapPipeline *)self layout];
-  v9 = [v8 layoutForViewPort:v7 andDataSourceChange:v6];
+  changeCopy = change;
+  portCopy = port;
+  layout = [(PXPlacesMapPipeline *)self layout];
+  v9 = [layout layoutForViewPort:portCopy andDataSourceChange:changeCopy];
 
-  v10 = [(PXPlacesMapPipeline *)self updatePlan];
-  v11 = [v10 resultForNewLayoutResult:v9];
+  updatePlan = [(PXPlacesMapPipeline *)self updatePlan];
+  v11 = [updatePlan resultForNewLayoutResult:v9];
 
   return v11;
 }
 
-- (PXPlacesMapPipeline)initWithLayout:(id)a3 updatePlan:(id)a4 renderer:(id)a5 selectionHandler:(id)a6
+- (PXPlacesMapPipeline)initWithLayout:(id)layout updatePlan:(id)plan renderer:(id)renderer selectionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  layoutCopy = layout;
+  planCopy = plan;
+  rendererCopy = renderer;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = PXPlacesMapPipeline;
   v15 = [(PXPlacesMapPipeline *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_layout, a3);
-    objc_storeStrong(&v16->_updatePlan, a4);
-    objc_storeStrong(&v16->_renderer, a5);
-    objc_storeStrong(&v16->_selectionHandler, a6);
+    objc_storeStrong(&v15->_layout, layout);
+    objc_storeStrong(&v16->_updatePlan, plan);
+    objc_storeStrong(&v16->_renderer, renderer);
+    objc_storeStrong(&v16->_selectionHandler, handler);
     [(PXPlacesMapLayout *)v16->_layout setPipelineComponentProvider:v16];
     [(PXPlacesMapUpdatePlan *)v16->_updatePlan setPipelineComponentProvider:v16];
     [(PXPlacesMapAnnotationRenderer *)v16->_renderer setPipelineComponentProvider:v16];

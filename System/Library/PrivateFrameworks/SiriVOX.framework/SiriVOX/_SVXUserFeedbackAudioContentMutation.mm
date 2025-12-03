@@ -1,5 +1,5 @@
 @interface _SVXUserFeedbackAudioContentMutation
-- (_SVXUserFeedbackAudioContentMutation)initWithBaseModel:(id)a3;
+- (_SVXUserFeedbackAudioContentMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -24,15 +24,15 @@ LABEL_5:
 
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v6 = self->_itemURL;
+    itemURL = self->_itemURL;
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackAudioContent *)baseModel itemURL];
+    itemURL = [(SVXUserFeedbackAudioContent *)baseModel itemURL];
   }
 
-  v7 = v6;
+  v7 = itemURL;
   mutationFlags = self->_mutationFlags;
   if ((mutationFlags & 4) == 0)
   {
@@ -80,16 +80,16 @@ LABEL_17:
   return v5;
 }
 
-- (_SVXUserFeedbackAudioContentMutation)initWithBaseModel:(id)a3
+- (_SVXUserFeedbackAudioContentMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXUserFeedbackAudioContentMutation;
   v6 = [(_SVXUserFeedbackAudioContentMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

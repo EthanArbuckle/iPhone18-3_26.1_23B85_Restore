@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneSearchTopDocs
-- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDocArray:(id)a4;
-- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDocArray:(id)a4 withFloat:(float)a5;
+- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)int withOrgApacheLuceneSearchScoreDocArray:(id)array;
+- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)int withOrgApacheLuceneSearchScoreDocArray:(id)array withFloat:(float)float;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopDocs
 
-- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDocArray:(id)a4
+- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)int withOrgApacheLuceneSearchScoreDocArray:(id)array
 {
-  self->totalHits_ = a3;
-  JreStrongAssign(&self->scoreDocs_, a4);
+  self->totalHits_ = int;
+  JreStrongAssign(&self->scoreDocs_, array);
   self->maxScore_ = NAN;
   return self;
 }
 
-- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)a3 withOrgApacheLuceneSearchScoreDocArray:(id)a4 withFloat:(float)a5
+- (OrgApacheLuceneSearchTopDocs)initWithInt:(int)int withOrgApacheLuceneSearchScoreDocArray:(id)array withFloat:(float)float
 {
-  self->totalHits_ = a3;
-  JreStrongAssign(&self->scoreDocs_, a4);
-  self->maxScore_ = a5;
+  self->totalHits_ = int;
+  JreStrongAssign(&self->scoreDocs_, array);
+  self->maxScore_ = float;
   return self;
 }
 

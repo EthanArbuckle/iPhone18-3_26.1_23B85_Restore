@@ -38,8 +38,8 @@
 
     if (DeviceHasANE())
     {
-      v8 = [MEMORY[0x1E6984608] defaultANEDevice];
-      [v0 setProcessingDevice:v8];
+      defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+      [v0 setProcessingDevice:defaultANEDevice];
     }
 
     v9 = v0;

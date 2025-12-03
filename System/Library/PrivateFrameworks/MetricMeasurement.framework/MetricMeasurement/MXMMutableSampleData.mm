@@ -1,26 +1,26 @@
 @interface MXMMutableSampleData
-- (id)appendDoubleValue:(double)a3 tag:(id)a4 timestamp:(unint64_t)a5;
-- (id)appendFloatValue:(float)a3 tag:(id)a4 timestamp:(unint64_t)a5;
-- (id)appendIntegerValue:(int64_t)a3 tag:(id)a4 timestamp:(unint64_t)a5;
-- (id)appendSample:(id)a3;
-- (id)appendUnsignedIntegerValue:(unint64_t)a3 tag:(id)a4 timestamp:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendAttributes:(id)a3;
-- (void)appendData:(id)a3;
-- (void)appendSet:(id)a3;
+- (id)appendDoubleValue:(double)value tag:(id)tag timestamp:(unint64_t)timestamp;
+- (id)appendFloatValue:(float)value tag:(id)tag timestamp:(unint64_t)timestamp;
+- (id)appendIntegerValue:(int64_t)value tag:(id)tag timestamp:(unint64_t)timestamp;
+- (id)appendSample:(id)sample;
+- (id)appendUnsignedIntegerValue:(unint64_t)value tag:(id)tag timestamp:(unint64_t)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendAttributes:(id)attributes;
+- (void)appendData:(id)data;
+- (void)appendSet:(id)set;
 @end
 
 @implementation MXMMutableSampleData
 
-- (void)appendAttributes:(id)a3
+- (void)appendAttributes:(id)attributes
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [attributesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -32,14 +32,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attributesCopy);
         }
 
         [(MXMSampleData *)self _appendAttribute:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [attributesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -48,75 +48,75 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
   v3.receiver = self;
   v3.super_class = MXMMutableSampleData;
-  [(MXMSampleData *)&v3 _appendData:a3];
+  [(MXMSampleData *)&v3 _appendData:data];
 }
 
-- (void)appendSet:(id)a3
+- (void)appendSet:(id)set
 {
   v3.receiver = self;
   v3.super_class = MXMMutableSampleData;
-  [(MXMSampleData *)&v3 _appendSet:a3];
+  [(MXMSampleData *)&v3 _appendSet:set];
 }
 
-- (id)appendSample:(id)a3
+- (id)appendSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 tag];
-  v6 = [v4 attributes];
-  v7 = [(MXMSampleData *)self sampleSetWithTag:v5 attributes:v6];
+  sampleCopy = sample;
+  v5 = [sampleCopy tag];
+  attributes = [sampleCopy attributes];
+  v7 = [(MXMSampleData *)self sampleSetWithTag:v5 attributes:attributes];
 
   if (!v7)
   {
     v8 = [MXMMutableSampleSet alloc];
-    v6 = [v4 tag];
-    v9 = [v4 unit];
-    v10 = [v4 attributes];
-    v11 = [(MXMSampleSet *)v8 initWithTag:v6 unit:v9 attributes:v10];
+    attributes = [sampleCopy tag];
+    unit = [sampleCopy unit];
+    attributes2 = [sampleCopy attributes];
+    v11 = [(MXMSampleSet *)v8 initWithTag:attributes unit:unit attributes:attributes2];
     [(MXMSampleData *)self _appendSet:v11];
   }
 
-  v12 = [v4 valueType];
-  if (v12 <= 1)
+  valueType = [sampleCopy valueType];
+  if (valueType <= 1)
   {
-    if (v12)
+    if (valueType)
     {
-      if (v12 != 1)
+      if (valueType != 1)
       {
         goto LABEL_11;
       }
 
-      v13 = [v4 integerValue];
-      v14 = [v4 tag];
-      v15 = -[MXMMutableSampleData appendIntegerValue:tag:timestamp:](self, "appendIntegerValue:tag:timestamp:", v13, v14, [v4 timestamp]);
+      integerValue = [sampleCopy integerValue];
+      v14 = [sampleCopy tag];
+      v15 = -[MXMMutableSampleData appendIntegerValue:tag:timestamp:](self, "appendIntegerValue:tag:timestamp:", integerValue, v14, [sampleCopy timestamp]);
     }
 
     else
     {
-      [v4 floatValue];
+      [sampleCopy floatValue];
       v18 = v17;
-      v14 = [v4 tag];
-      v15 = -[MXMMutableSampleData appendDoubleValue:tag:timestamp:](self, "appendDoubleValue:tag:timestamp:", v14, [v4 timestamp], v18);
+      v14 = [sampleCopy tag];
+      v15 = -[MXMMutableSampleData appendDoubleValue:tag:timestamp:](self, "appendDoubleValue:tag:timestamp:", v14, [sampleCopy timestamp], v18);
     }
 
     goto LABEL_10;
   }
 
-  if (v12 == 2)
+  if (valueType == 2)
   {
-    v16 = [v4 unsignedValue];
-    v14 = [v4 tag];
-    v15 = -[MXMMutableSampleData appendUnsignedIntegerValue:tag:timestamp:](self, "appendUnsignedIntegerValue:tag:timestamp:", v16, v14, [v4 timestamp]);
+    unsignedValue = [sampleCopy unsignedValue];
+    v14 = [sampleCopy tag];
+    v15 = -[MXMMutableSampleData appendUnsignedIntegerValue:tag:timestamp:](self, "appendUnsignedIntegerValue:tag:timestamp:", unsignedValue, v14, [sampleCopy timestamp]);
 LABEL_10:
-    v6 = v15;
+    attributes = v15;
 
     goto LABEL_11;
   }
 
-  if (v12 == 3)
+  if (valueType == 3)
   {
     v20 = objc_opt_new();
     objc_exception_throw(v20);
@@ -124,75 +124,75 @@ LABEL_10:
 
 LABEL_11:
 
-  return v6;
+  return attributes;
 }
 
-- (id)appendFloatValue:(float)a3 tag:(id)a4 timestamp:(unint64_t)a5
+- (id)appendFloatValue:(float)value tag:(id)tag timestamp:(unint64_t)timestamp
 {
-  v7 = [(MXMSampleData *)self sampleSetsWithTag:a4];
-  v8 = [v7 firstObject];
+  v7 = [(MXMSampleData *)self sampleSetsWithTag:tag];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     [MXMMutableSampleData appendFloatValue:tag:timestamp:];
   }
 
-  *&v9 = a3;
-  [v8 appendFloatValue:a5 timestamp:v9];
+  *&v9 = value;
+  [firstObject appendFloatValue:timestamp timestamp:v9];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)appendDoubleValue:(double)a3 tag:(id)a4 timestamp:(unint64_t)a5
+- (id)appendDoubleValue:(double)value tag:(id)tag timestamp:(unint64_t)timestamp
 {
-  v7 = [(MXMSampleData *)self sampleSetsWithTag:a4];
-  v8 = [v7 firstObject];
+  v7 = [(MXMSampleData *)self sampleSetsWithTag:tag];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     [MXMMutableSampleData appendDoubleValue:tag:timestamp:];
   }
 
-  [v8 appendDoubleValue:a5 timestamp:a3];
+  [firstObject appendDoubleValue:timestamp timestamp:value];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)appendIntegerValue:(int64_t)a3 tag:(id)a4 timestamp:(unint64_t)a5
+- (id)appendIntegerValue:(int64_t)value tag:(id)tag timestamp:(unint64_t)timestamp
 {
-  v7 = [(MXMSampleData *)self sampleSetsWithTag:a4];
-  v8 = [v7 firstObject];
+  v7 = [(MXMSampleData *)self sampleSetsWithTag:tag];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     [MXMMutableSampleData appendIntegerValue:tag:timestamp:];
   }
 
-  [v8 appendIntegerValue:a3 timestamp:a5];
+  [firstObject appendIntegerValue:value timestamp:timestamp];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)appendUnsignedIntegerValue:(unint64_t)a3 tag:(id)a4 timestamp:(unint64_t)a5
+- (id)appendUnsignedIntegerValue:(unint64_t)value tag:(id)tag timestamp:(unint64_t)timestamp
 {
-  v7 = [(MXMSampleData *)self sampleSetsWithTag:a4];
-  v8 = [v7 firstObject];
+  v7 = [(MXMSampleData *)self sampleSetsWithTag:tag];
+  firstObject = [v7 firstObject];
 
-  if (!v8)
+  if (!firstObject)
   {
     [MXMMutableSampleData appendUnsignedIntegerValue:tag:timestamp:];
   }
 
-  [v8 appendUnsignedIntegerValue:a3 timestamp:a5];
+  [firstObject appendUnsignedIntegerValue:value timestamp:timestamp];
 
-  return v8;
+  return firstObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = MXMMutableSampleData;
-  return [(MXMSampleData *)&v4 mutableCopyWithZone:a3];
+  return [(MXMSampleData *)&v4 mutableCopyWithZone:zone];
 }
 
 - (void)appendFloatValue:tag:timestamp:.cold.1()

@@ -1,37 +1,37 @@
 @interface BDSCloudSyncDiagnosticCloudDataInfo
-- (BDSCloudSyncDiagnosticCloudDataInfo)initWithCoder:(id)a3;
-- (BDSCloudSyncDiagnosticCloudDataInfo)initWithIdentifier:(id)a3 saltedHashedID:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BDSCloudSyncDiagnosticCloudDataInfo)initWithCoder:(id)coder;
+- (BDSCloudSyncDiagnosticCloudDataInfo)initWithIdentifier:(id)identifier saltedHashedID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)stateForLog;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSCloudSyncDiagnosticCloudDataInfo
 
-- (BDSCloudSyncDiagnosticCloudDataInfo)initWithIdentifier:(id)a3 saltedHashedID:(id)a4
+- (BDSCloudSyncDiagnosticCloudDataInfo)initWithIdentifier:(id)identifier saltedHashedID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BDSCloudSyncDiagnosticCloudDataInfo;
   v9 = [(BDSCloudSyncDiagnosticCloudDataInfo *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_saltedHashedID, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_saltedHashedID, d);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self != a3)
+  if (self != equal)
   {
-    v4 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v5 = BUDynamicCast();
 
@@ -41,18 +41,18 @@
       goto LABEL_13;
     }
 
-    v7 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-    v8 = [v5 identifier];
-    v9 = v8;
-    if (v7 == v8)
+    identifier = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+    identifier2 = [v5 identifier];
+    v9 = identifier2;
+    if (identifier == identifier2)
     {
     }
 
     else
     {
-      v10 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-      v11 = [v5 identifier];
-      v12 = [v10 isEqual:v11];
+      identifier3 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+      identifier4 = [v5 identifier];
+      v12 = [identifier3 isEqual:identifier4];
 
       if (!v12)
       {
@@ -63,18 +63,18 @@ LABEL_13:
       }
     }
 
-    v13 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-    v14 = [v5 saltedHashedID];
-    if (v13 == v14)
+    saltedHashedID = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+    saltedHashedID2 = [v5 saltedHashedID];
+    if (saltedHashedID == saltedHashedID2)
     {
       v6 = 1;
     }
 
     else
     {
-      v15 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-      v16 = [v5 saltedHashedID];
-      v6 = [v15 isEqual:v16];
+      saltedHashedID3 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+      saltedHashedID4 = [v5 saltedHashedID];
+      v6 = [saltedHashedID3 isEqual:saltedHashedID4];
     }
 
     goto LABEL_13;
@@ -83,17 +83,17 @@ LABEL_13:
   return 1;
 }
 
-- (BDSCloudSyncDiagnosticCloudDataInfo)initWithCoder:(id)a3
+- (BDSCloudSyncDiagnosticCloudDataInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saltedHashedID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saltedHashedID"];
     saltedHashedID = v5->_saltedHashedID;
     v5->_saltedHashedID = v8;
   }
@@ -101,27 +101,27 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-  [v4 encodeObject:v6 forKey:@"saltedHashedID"];
+  saltedHashedID = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+  [coderCopy encodeObject:saltedHashedID forKey:@"saltedHashedID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSCloudSyncDiagnosticCloudDataInfo);
   if (v4)
   {
-    v5 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-    v6 = [v5 copy];
+    identifier = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+    v6 = [identifier copy];
     [(BDSCloudSyncDiagnosticCloudDataInfo *)v4 setIdentifier:v6];
 
-    v7 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-    v8 = [v7 copy];
+    saltedHashedID = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+    v8 = [saltedHashedID copy];
     [(BDSCloudSyncDiagnosticCloudDataInfo *)v4 setSaltedHashedID:v8];
   }
 
@@ -132,9 +132,9 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-  v6 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-  v7 = [v3 stringWithFormat:@"<%@: identifier:%@, saltedHashedID:%@>", v4, v5, v6];
+  identifier = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+  saltedHashedID = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+  v7 = [v3 stringWithFormat:@"<%@: identifier:%@, saltedHashedID:%@>", v4, identifier, saltedHashedID];
 
   return v7;
 }
@@ -142,11 +142,11 @@ LABEL_13:
 - (NSDictionary)stateForLog
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
-  [v3 setObject:v4 forKeyedSubscript:@"identifier"];
+  identifier = [(BDSCloudSyncDiagnosticCloudDataInfo *)self identifier];
+  [v3 setObject:identifier forKeyedSubscript:@"identifier"];
 
-  v5 = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
-  [v3 setObject:v5 forKeyedSubscript:@"saltedHashedID"];
+  saltedHashedID = [(BDSCloudSyncDiagnosticCloudDataInfo *)self saltedHashedID];
+  [v3 setObject:saltedHashedID forKeyedSubscript:@"saltedHashedID"];
 
   return v3;
 }

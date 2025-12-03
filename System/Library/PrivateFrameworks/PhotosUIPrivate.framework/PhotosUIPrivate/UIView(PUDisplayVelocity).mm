@@ -23,8 +23,8 @@
 
   else
   {
-    v65 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v65 handleFailureInMethod:a2 object:a1 file:@"PUDisplayVelocity.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUDisplayVelocity.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"view != nil"}];
 
     if (v30)
     {
@@ -32,8 +32,8 @@
     }
   }
 
-  v66 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v66 handleFailureInMethod:a2 object:a1 file:@"PUDisplayVelocity.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"springAnimation != NULL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUDisplayVelocity.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"springAnimation != NULL"}];
 
 LABEL_3:
   [v29 center];
@@ -326,7 +326,7 @@ LABEL_3:
   v36[1] = v31;
   v36[2] = a12[2];
   v32 = v30;
-  [a1 _pu_animateView:v32 toCenter:v36 bounds:v37 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a19, a20, a21}];
+  [self _pu_animateView:v32 toCenter:v36 bounds:v37 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a19, a20, a21}];
 }
 
 + (void)pu_animateView:()PUDisplayVelocity toCenter:bounds:transform:usingDefaultDampedSpringWithDelay:initialVelocity:options:completion:
@@ -344,7 +344,7 @@ LABEL_3:
   v32[1] = v29;
   v32[2] = a11[2];
   v30 = v28;
-  [a1 _pu_animateView:v30 toCenter:v32 bounds:v33 transform:a13 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a16, a17, a18}];
+  [self _pu_animateView:v30 toCenter:v32 bounds:v33 transform:a13 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a16, a17, a18}];
 }
 
 + (void)pu_animateView:()PUDisplayVelocity toCenter:bounds:transform:withDuration:delay:usingSpringWithDamping:initialVelocity:options:completion:
@@ -364,7 +364,7 @@ LABEL_3:
   v35[1] = v30;
   v35[2] = a12[2];
   v31 = v29;
-  [a1 _pu_animateView:v31 toCenter:v35 bounds:v36 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a18, a19, a20}];
+  [self _pu_animateView:v31 toCenter:v35 bounds:v36 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a18, a19, a20}];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MIOWriterBufferStreamInput
 - (BOOL)areAllInputsReady;
-- (BOOL)setupInputsWithWriter:(id)a3 error:(id *)a4;
+- (BOOL)setupInputsWithWriter:(id)writer error:(id *)error;
 - (BOOL)writeNextItemFromFifo;
 - (MIOWriterBufferStreamInput)init;
 - (id)allWriterInputs;
@@ -40,23 +40,23 @@
 
 - (BOOL)areAllInputsReady
 {
-  v3 = [(MIOWriterBufferStreamInput *)self sampleInput];
-  v4 = [v3 isReadyForMoreMediaData];
+  sampleInput = [(MIOWriterBufferStreamInput *)self sampleInput];
+  isReadyForMoreMediaData = [sampleInput isReadyForMoreMediaData];
 
   if (self->_timeCodeInput)
   {
-    if (!v4)
+    if (!isReadyForMoreMediaData)
     {
       return 0;
     }
 
-    v5 = [(MIOWriterBufferStreamInput *)self timeCodeInput];
-    v4 = [v5 isReadyForMoreMediaData];
+    timeCodeInput = [(MIOWriterBufferStreamInput *)self timeCodeInput];
+    isReadyForMoreMediaData = [timeCodeInput isReadyForMoreMediaData];
   }
 
   if (self->_metadataInput)
   {
-    v6 = v4 == 0;
+    v6 = isReadyForMoreMediaData == 0;
   }
 
   else
@@ -66,21 +66,21 @@
 
   if (v6)
   {
-    return (self->_metadataInput == 0) & v4;
+    return (self->_metadataInput == 0) & isReadyForMoreMediaData;
   }
 
-  v7 = [(MIOWriterBufferStreamInput *)self metadataInput];
-  v8 = [v7 isReadyForMoreMediaData];
+  metadataInput = [(MIOWriterBufferStreamInput *)self metadataInput];
+  isReadyForMoreMediaData2 = [metadataInput isReadyForMoreMediaData];
 
-  return v8;
+  return isReadyForMoreMediaData2;
 }
 
 - (id)commonTrackMetadataItems
 {
   v3 = objc_opt_new();
   v4 = MEMORY[0x277CE6520];
-  v5 = [(MIOWriterStreamInput *)self streamId];
-  v6 = [v4 trackMetadataItemWithStreamId:v5];
+  streamId = [(MIOWriterStreamInput *)self streamId];
+  v6 = [v4 trackMetadataItemWithStreamId:streamId];
 
   if (v6)
   {
@@ -88,8 +88,8 @@
   }
 
   v7 = MEMORY[0x277CE6520];
-  v8 = [(MIOWriterStreamInput *)self streamId];
-  v9 = [v7 qtTrackMetadataItemsForStreamId:v8];
+  streamId2 = [(MIOWriterStreamInput *)self streamId];
+  v9 = [v7 qtTrackMetadataItemsForStreamId:streamId2];
   [v3 addObjectsFromArray:v9];
 
   v10 = [MEMORY[0x277CE6520] trackMetadataItemWithSerializationMode:1];
@@ -100,49 +100,49 @@
   }
 
   v11 = MEMORY[0x277CE6520];
-  v12 = [(MIOWriterStreamInput *)self customMetadata];
-  v13 = [v11 customTrackMetadataItems:v12];
+  customMetadata = [(MIOWriterStreamInput *)self customMetadata];
+  v13 = [v11 customTrackMetadataItems:customMetadata];
 
   if ([v13 count])
   {
     [v3 addObjectsFromArray:v13];
   }
 
-  v14 = [(MIOWriterStreamInput *)self customMetadataItems];
-  v15 = [v14 count];
+  customMetadataItems = [(MIOWriterStreamInput *)self customMetadataItems];
+  v15 = [customMetadataItems count];
 
   if (v15)
   {
-    v16 = [(MIOWriterStreamInput *)self customMetadataItems];
-    [v3 addObjectsFromArray:v16];
+    customMetadataItems2 = [(MIOWriterStreamInput *)self customMetadataItems];
+    [v3 addObjectsFromArray:customMetadataItems2];
   }
 
   return v3;
 }
 
-- (BOOL)setupInputsWithWriter:(id)a3 error:(id *)a4
+- (BOOL)setupInputsWithWriter:(id)writer error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIOWriterBufferStreamInput *)self sampleInputOutputSettings];
-  v8 = [(MIOWriterBufferStreamInput *)self avMediaType];
-  v9 = [(MIOWriterBufferStreamInput *)self formatDescription];
-  v10 = [v6 avWriter];
-  v11 = [v10 canApplyOutputSettings:v7 forMediaType:v8];
+  writerCopy = writer;
+  sampleInputOutputSettings = [(MIOWriterBufferStreamInput *)self sampleInputOutputSettings];
+  avMediaType = [(MIOWriterBufferStreamInput *)self avMediaType];
+  formatDescription = [(MIOWriterBufferStreamInput *)self formatDescription];
+  avWriter = [writerCopy avWriter];
+  v11 = [avWriter canApplyOutputSettings:sampleInputOutputSettings forMediaType:avMediaType];
 
   if (v11)
   {
-    v53 = a4;
-    v12 = [objc_alloc(MEMORY[0x277CE6468]) initWithMediaType:v8 outputSettings:v7 sourceFormatHint:v9];
+    errorCopy = error;
+    v12 = [objc_alloc(MEMORY[0x277CE6468]) initWithMediaType:avMediaType outputSettings:sampleInputOutputSettings sourceFormatHint:formatDescription];
     sampleInput = self->_sampleInput;
     self->_sampleInput = v12;
 
-    -[AVAssetWriterInput setExpectsMediaDataInRealTime:](self->_sampleInput, "setExpectsMediaDataInRealTime:", [v6 realTime]);
+    -[AVAssetWriterInput setExpectsMediaDataInRealTime:](self->_sampleInput, "setExpectsMediaDataInRealTime:", [writerCopy realTime]);
     if ([(MIOWriterBufferStreamInput *)self applyWriterTimeScaleToSampleInput])
     {
       if ([(MIOWriterStreamInput *)self mediaTimeScale]< 1)
       {
-        v18 = [(MIOWriterStreamInput *)self writer];
-        -[AVAssetWriterInput setMediaTimeScale:](self->_sampleInput, "setMediaTimeScale:", [v18 baseMediaTimeScale]);
+        writer = [(MIOWriterStreamInput *)self writer];
+        -[AVAssetWriterInput setMediaTimeScale:](self->_sampleInput, "setMediaTimeScale:", [writer baseMediaTimeScale]);
       }
 
       else
@@ -151,62 +151,62 @@
       }
     }
 
-    v19 = [(MIOWriterBufferStreamInput *)self commonTrackMetadataItems];
-    v20 = [v19 mutableCopy];
+    commonTrackMetadataItems = [(MIOWriterBufferStreamInput *)self commonTrackMetadataItems];
+    v20 = [commonTrackMetadataItems mutableCopy];
 
-    v21 = [(MIOWriterBufferStreamInput *)self inputSpecificTrackMetadataItems];
-    if ([v21 count])
+    inputSpecificTrackMetadataItems = [(MIOWriterBufferStreamInput *)self inputSpecificTrackMetadataItems];
+    if ([inputSpecificTrackMetadataItems count])
     {
-      [v20 addObjectsFromArray:v21];
+      [v20 addObjectsFromArray:inputSpecificTrackMetadataItems];
     }
 
-    if (![v6 disguiseMode])
+    if (![writerCopy disguiseMode])
     {
       [(AVAssetWriterInput *)self->_sampleInput setMetadata:v20];
     }
 
     [(MIOWriterBufferStreamInput *)self customizeSampleInput:self->_sampleInput];
-    v22 = [(MIOWriterBufferStreamInput *)self taggedPixelBufferAttributes];
-    if (v22)
+    taggedPixelBufferAttributes = [(MIOWriterBufferStreamInput *)self taggedPixelBufferAttributes];
+    if (taggedPixelBufferAttributes)
     {
-      v23 = [objc_alloc(MEMORY[0x277CE6480]) initWithAssetWriterInput:self->_sampleInput sourcePixelBufferAttributes:v22];
+      v23 = [objc_alloc(MEMORY[0x277CE6480]) initWithAssetWriterInput:self->_sampleInput sourcePixelBufferAttributes:taggedPixelBufferAttributes];
       taggedPixelBufferGroupAdaptor = self->_taggedPixelBufferGroupAdaptor;
       self->_taggedPixelBufferGroupAdaptor = v23;
     }
 
-    v25 = [v6 avWriter];
-    v26 = [v25 canAddInput:self->_sampleInput];
+    avWriter2 = [writerCopy avWriter];
+    v26 = [avWriter2 canAddInput:self->_sampleInput];
 
     if (v26)
     {
-      v27 = [v6 avWriter];
-      [v27 addInput:self->_sampleInput];
+      avWriter3 = [writerCopy avWriter];
+      [avWriter3 addInput:self->_sampleInput];
 
-      if (self->_doNotRecordAttachments || [v6 disguiseMode])
+      if (self->_doNotRecordAttachments || [writerCopy disguiseMode])
       {
         goto LABEL_16;
       }
 
-      v33 = [MEMORY[0x277CE6520] createMIOMetadataAttachmentsFormatDescription];
-      if (v33)
+      createMIOMetadataAttachmentsFormatDescription = [MEMORY[0x277CE6520] createMIOMetadataAttachmentsFormatDescription];
+      if (createMIOMetadataAttachmentsFormatDescription)
       {
-        v34 = v33;
+        v34 = createMIOMetadataAttachmentsFormatDescription;
         v35 = objc_alloc(MEMORY[0x277CE6468]);
         v36 = [v35 initWithMediaType:*MEMORY[0x277CE5E70] outputSettings:0 sourceFormatHint:v34];
         metadataInput = self->_metadataInput;
         self->_metadataInput = v36;
 
         CFRelease(v34);
-        v38 = [(MIOWriterStreamInput *)self streamId];
-        pendingAttachments = [MOVStreamIOUtility qtTrackNameForAssociatedAttachmentsTrack:v38];
+        streamId = [(MIOWriterStreamInput *)self streamId];
+        pendingAttachments = [MOVStreamIOUtility qtTrackNameForAssociatedAttachmentsTrack:streamId];
 
         v51 = [MEMORY[0x277CE6520] qtTrackMetadataItemsForStreamId:pendingAttachments];
         [(AVAssetWriterInput *)self->_metadataInput setMetadata:?];
-        -[AVAssetWriterInput setExpectsMediaDataInRealTime:](self->_metadataInput, "setExpectsMediaDataInRealTime:", [v6 realTime]);
+        -[AVAssetWriterInput setExpectsMediaDataInRealTime:](self->_metadataInput, "setExpectsMediaDataInRealTime:", [writerCopy realTime]);
         if ([(MIOWriterStreamInput *)self mediaTimeScale]< 1)
         {
-          v40 = [(MIOWriterStreamInput *)self writer];
-          -[AVAssetWriterInput setMediaTimeScale:](self->_metadataInput, "setMediaTimeScale:", [v40 baseMediaTimeScale]);
+          writer2 = [(MIOWriterStreamInput *)self writer];
+          -[AVAssetWriterInput setMediaTimeScale:](self->_metadataInput, "setMediaTimeScale:", [writer2 baseMediaTimeScale]);
         }
 
         else
@@ -223,13 +223,13 @@
           metadataAdaptor = self->_metadataAdaptor;
           self->_metadataAdaptor = v42;
 
-          v44 = [v6 avWriter];
-          v45 = [v44 canAddInput:self->_metadataInput];
+          avWriter4 = [writerCopy avWriter];
+          v45 = [avWriter4 canAddInput:self->_metadataInput];
 
           if (v45)
           {
-            v46 = [v6 avWriter];
-            [v46 addInput:self->_metadataInput];
+            avWriter5 = [writerCopy avWriter];
+            [avWriter5 addInput:self->_metadataInput];
 
 LABEL_16:
             if (![(MIOWriterStreamInput *)self strictlyEnforceBufferCapacity])
@@ -259,37 +259,37 @@ LABEL_23:
         }
 
         v48 = MEMORY[0x277CCACA8];
-        v49 = [(MIOWriterStreamInput *)self streamId];
-        v50 = [v48 stringWithFormat:v52, v49];
+        streamId2 = [(MIOWriterStreamInput *)self streamId];
+        v50 = [v48 stringWithFormat:v52, streamId2];
 
-        [MEMORY[0x277CCA9B8] populateStreamError:v53 message:v50 code:v47];
+        [MEMORY[0x277CCA9B8] populateStreamError:errorCopy message:v50 code:v47];
 LABEL_20:
         v17 = 0;
         goto LABEL_21;
       }
 
       v39 = MEMORY[0x277CCACA8];
-      v31 = [(MIOWriterStreamInput *)self streamId];
-      [v39 stringWithFormat:@"Cannot create metadata format description for stream '%@'.", v31];
+      streamId3 = [(MIOWriterStreamInput *)self streamId];
+      [v39 stringWithFormat:@"Cannot create metadata format description for stream '%@'.", streamId3];
     }
 
     else
     {
       v30 = MEMORY[0x277CCACA8];
-      v31 = [(MIOWriterStreamInput *)self streamId];
-      [v30 stringWithFormat:@"Cannot add sample input for stream '%@'.", v31];
+      streamId3 = [(MIOWriterStreamInput *)self streamId];
+      [v30 stringWithFormat:@"Cannot add sample input for stream '%@'.", streamId3];
     }
     pendingAttachments = ;
 
-    [MEMORY[0x277CCA9B8] populateStreamError:a4 message:pendingAttachments code:11];
+    [MEMORY[0x277CCA9B8] populateStreamError:error message:pendingAttachments code:11];
     goto LABEL_20;
   }
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [(MIOWriterStreamInput *)self streamId];
-  v16 = [v14 stringWithFormat:@"Unable to use output settings (%@) for stream '%@'.", v7, v15];
+  streamId4 = [(MIOWriterStreamInput *)self streamId];
+  v16 = [v14 stringWithFormat:@"Unable to use output settings (%@) for stream '%@'.", sampleInputOutputSettings, streamId4];
 
-  [MEMORY[0x277CCA9B8] populateStreamError:a4 message:v16 code:11];
+  [MEMORY[0x277CCA9B8] populateStreamError:error message:v16 code:11];
   v17 = 0;
 LABEL_24:
 
@@ -298,19 +298,19 @@ LABEL_24:
 
 - (BOOL)writeNextItemFromFifo
 {
-  v3 = [(MIOWriterStreamInput *)self writer];
+  writer = [(MIOWriterStreamInput *)self writer];
 
-  if (v3)
+  if (writer)
   {
-    v4 = [(MIOWriterStreamInput *)self writer];
-    v5 = [v4 canWrite];
+    writer2 = [(MIOWriterStreamInput *)self writer];
+    canWrite = [writer2 canWrite];
 
-    if (v5)
+    if (canWrite)
     {
-      v6 = [(MIOWriterStreamInput *)self fifoBuffer];
-      v7 = [v6 usage];
+      fifoBuffer = [(MIOWriterStreamInput *)self fifoBuffer];
+      usage = [fifoBuffer usage];
 
-      if (v7)
+      if (usage)
       {
         v8 = objc_autoreleasePoolPush();
         if (![(MIOWriterBufferStreamInput *)self areAllInputsReady])
@@ -321,10 +321,10 @@ LABEL_48:
           return v17;
         }
 
-        v9 = [(MIOWriterStreamInput *)self fifoBuffer];
-        v10 = [v9 dequeue];
+        fifoBuffer2 = [(MIOWriterStreamInput *)self fifoBuffer];
+        dequeue = [fifoBuffer2 dequeue];
 
-        if (!v10 || (-[MIOWriterStreamInput resolveSample](self, "resolveSample"), -[MIOWriterStreamInput writer](self, "writer"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 startSession], v11, !v12))
+        if (!dequeue || (-[MIOWriterStreamInput resolveSample](self, "resolveSample"), -[MIOWriterStreamInput writer](self, "writer"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 startSession], v11, !v12))
         {
           v17 = 0;
 LABEL_47:
@@ -332,59 +332,59 @@ LABEL_47:
           goto LABEL_48;
         }
 
-        v13 = [(MIOWriterStreamInput *)self assignedWritingThread];
-        if (v13)
+        assignedWritingThread = [(MIOWriterStreamInput *)self assignedWritingThread];
+        if (assignedWritingThread)
         {
-          v14 = [(MIOWriterStreamInput *)self assignedWritingThread];
-          v15 = [v14 perfLogHandle];
+          assignedWritingThread2 = [(MIOWriterStreamInput *)self assignedWritingThread];
+          perfLogHandle = [assignedWritingThread2 perfLogHandle];
         }
 
         else
         {
-          v15 = [(MIOWriterStreamInput *)self perfLogHandle];
+          perfLogHandle = [(MIOWriterStreamInput *)self perfLogHandle];
         }
 
         taggedPixelBufferGroupAdaptor = self->_taggedPixelBufferGroupAdaptor;
-        v23 = v15;
+        v23 = perfLogHandle;
         if (taggedPixelBufferGroupAdaptor)
         {
-          v24 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+          avfAppendSignPostID = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_257883000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v24, "mio.append.stereo.sample.buffer", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_257883000, v23, OS_SIGNPOST_INTERVAL_BEGIN, avfAppendSignPostID, "mio.append.stereo.sample.buffer", "", buf, 2u);
           }
 
           v25 = self->_taggedPixelBufferGroupAdaptor;
-          v26 = [v10 taggedBufferGroup];
-          [v10 taggedBufferPts];
-          v27 = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)v25 appendTaggedPixelBufferGroup:v26 withPresentationTime:buf];
+          taggedBufferGroup = [dequeue taggedBufferGroup];
+          [dequeue taggedBufferPts];
+          v27 = [(AVAssetWriterInputTaggedPixelBufferGroupAdaptor *)v25 appendTaggedPixelBufferGroup:taggedBufferGroup withPresentationTime:buf];
           v28 = v23;
-          v29 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
+          avfAppendSignPostID2 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
           {
             *buf = 0;
             v30 = "mio.append.stereo.sample.buffer";
 LABEL_32:
-            _os_signpost_emit_with_name_impl(&dword_257883000, v28, OS_SIGNPOST_INTERVAL_END, v29, v30, "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_257883000, v28, OS_SIGNPOST_INTERVAL_END, avfAppendSignPostID2, v30, "", buf, 2u);
           }
         }
 
         else
         {
-          v31 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v31 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+          avfAppendSignPostID3 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID3 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_257883000, v23, OS_SIGNPOST_INTERVAL_BEGIN, v31, "mio.append.sample.buffer", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_257883000, v23, OS_SIGNPOST_INTERVAL_BEGIN, avfAppendSignPostID3, "mio.append.sample.buffer", "", buf, 2u);
           }
 
-          v32 = [(MIOWriterBufferStreamInput *)self sampleInput];
-          v27 = [v32 appendSampleBuffer:{objc_msgSend(v10, "sampleBuffer")}];
+          sampleInput = [(MIOWriterBufferStreamInput *)self sampleInput];
+          v27 = [sampleInput appendSampleBuffer:{objc_msgSend(dequeue, "sampleBuffer")}];
 
           v28 = v23;
-          v29 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v29 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
+          avfAppendSignPostID2 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
           {
             *buf = 0;
             v30 = "mio.append.sample.buffer";
@@ -394,31 +394,31 @@ LABEL_32:
 
         if (v27)
         {
-          v33 = [(MIOWriterBufferStreamInput *)self metadataInput];
+          metadataInput = [(MIOWriterBufferStreamInput *)self metadataInput];
 
-          if (!v33)
+          if (!metadataInput)
           {
             goto LABEL_42;
           }
 
           v34 = v23;
-          v35 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v35 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
+          avfAppendSignPostID4 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_257883000, v34, OS_SIGNPOST_INTERVAL_BEGIN, v35, "mio.append.sample.buffer.attachments", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_257883000, v34, OS_SIGNPOST_INTERVAL_BEGIN, avfAppendSignPostID4, "mio.append.sample.buffer.attachments", "", buf, 2u);
           }
 
-          v36 = [(MIOWriterBufferStreamInput *)self metadataAdaptor];
-          v37 = [v10 metadata];
-          v38 = [v36 appendTimedMetadataGroup:v37];
+          metadataAdaptor = [(MIOWriterBufferStreamInput *)self metadataAdaptor];
+          metadata = [dequeue metadata];
+          v38 = [metadataAdaptor appendTimedMetadataGroup:metadata];
 
           v39 = v34;
-          v40 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
-          if (v40 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
+          avfAppendSignPostID5 = [(MIOWriterStreamInput *)self avfAppendSignPostID];
+          if (avfAppendSignPostID5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v39))
           {
             *buf = 0;
-            _os_signpost_emit_with_name_impl(&dword_257883000, v39, OS_SIGNPOST_INTERVAL_END, v40, "mio.append.sample.buffer.attachments", "", buf, 2u);
+            _os_signpost_emit_with_name_impl(&dword_257883000, v39, OS_SIGNPOST_INTERVAL_END, avfAppendSignPostID5, "mio.append.sample.buffer.attachments", "", buf, 2u);
           }
 
           if (v38)
@@ -431,29 +431,29 @@ LABEL_46:
           }
 
           v49 = MEMORY[0x277CCACA8];
-          v50 = [(MIOWriterStreamInput *)self writer];
-          v51 = [v50 avWriter];
-          v52 = [v51 error];
-          v53 = [(MIOWriterStreamInput *)self streamId];
-          v54 = [v49 stringWithFormat:@"Error occurred during appendTimedMetadataGroup %@ for stream '%@'.", v52, v53];
+          writer3 = [(MIOWriterStreamInput *)self writer];
+          avWriter = [writer3 avWriter];
+          error = [avWriter error];
+          streamId = [(MIOWriterStreamInput *)self streamId];
+          v54 = [v49 stringWithFormat:@"Error occurred during appendTimedMetadataGroup %@ for stream '%@'.", error, streamId];
 
           v55 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v54 code:21];
-          v56 = [(MIOWriterStreamInput *)self writer];
-          [v56 reportError:v55];
+          writer4 = [(MIOWriterStreamInput *)self writer];
+          [writer4 reportError:v55];
         }
 
         else
         {
           v41 = MEMORY[0x277CCACA8];
-          v42 = [(MIOWriterStreamInput *)self writer];
-          v43 = [v42 avWriter];
-          v44 = [v43 error];
-          v45 = [(MIOWriterStreamInput *)self streamId];
-          v46 = [v41 stringWithFormat:@"Error occurred during AVWriter append %@ for stream '%@'.", v44, v45];
+          writer5 = [(MIOWriterStreamInput *)self writer];
+          avWriter2 = [writer5 avWriter];
+          error2 = [avWriter2 error];
+          streamId2 = [(MIOWriterStreamInput *)self streamId];
+          v46 = [v41 stringWithFormat:@"Error occurred during AVWriter append %@ for stream '%@'.", error2, streamId2];
 
           v47 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v46 code:21];
-          v48 = [(MIOWriterStreamInput *)self writer];
-          [v48 reportError:v47];
+          writer6 = [(MIOWriterStreamInput *)self writer];
+          [writer6 reportError:v47];
         }
 
         v17 = 0;
@@ -470,12 +470,12 @@ LABEL_46:
         _os_log_impl(&dword_257883000, v18, OS_LOG_TYPE_INFO, "writeNextItemFromFifo dropped sample because writer does not allow writing anymore.", buf, 2u);
       }
 
-      v19 = [(MIOWriterStreamInput *)self fifoBuffer];
-      v20 = [v19 dequeue];
+      fifoBuffer3 = [(MIOWriterStreamInput *)self fifoBuffer];
+      dequeue2 = [fifoBuffer3 dequeue];
 
       [(MIOWriterStreamInput *)self resolveSample];
-      v21 = [(MIOWriterStreamInput *)self writer];
-      [v21 reportWarning:@"Frame was dropped because writer or AV input state does not allow writing."];
+      writer7 = [(MIOWriterStreamInput *)self writer];
+      [writer7 reportWarning:@"Frame was dropped because writer or AV input state does not allow writing."];
     }
 
     return 0;

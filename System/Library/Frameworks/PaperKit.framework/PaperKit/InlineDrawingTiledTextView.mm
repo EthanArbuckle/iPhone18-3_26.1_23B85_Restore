@@ -1,25 +1,25 @@
 @interface InlineDrawingTiledTextView
-- (BOOL)selectionInteraction:(id)a3 canPerformAction:(SEL)a4 withSender:(id)a5 inAttachment:(id)a6;
-- (_TtC8PaperKit26InlineDrawingTiledTextView)initWithCoder:(id)a3;
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6;
+- (BOOL)selectionInteraction:(id)interaction canPerformAction:(SEL)action withSender:(id)sender inAttachment:(id)attachment;
+- (_TtC8PaperKit26InlineDrawingTiledTextView)initWithCoder:(id)coder;
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only;
 - (void)didMoveToWindow;
-- (void)selectionInteractionDidPaste:(id)a3 atPoint:(CGPoint)a4 inAttachment:(id)a5;
+- (void)selectionInteractionDidPaste:(id)paste atPoint:(CGPoint)point inAttachment:(id)attachment;
 @end
 
 @implementation InlineDrawingTiledTextView
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   InlineDrawingTiledTextView.didMoveToWindow()();
 }
 
-- (BOOL)selectionInteraction:(id)a3 canPerformAction:(SEL)a4 withSender:(id)a5 inAttachment:(id)a6
+- (BOOL)selectionInteraction:(id)interaction canPerformAction:(SEL)action withSender:(id)sender inAttachment:(id)attachment
 {
-  v8 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v9 = a6;
-  v10 = self;
+  attachmentCopy = attachment;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   specialized InlineDrawingTiledTextView.inlineDrawingCanvasElementControllerCurrentAttachment(_:)();
@@ -28,9 +28,9 @@
     v12 = v11;
     v13 = specialized InlineDrawingTextAttachmentView.selectionInteraction(_:canPerformAction:withSender:inAttachment:)();
 
-    v8 = v9;
-    v9 = v10;
-    v10 = v12;
+    interactionCopy = attachmentCopy;
+    attachmentCopy = selfCopy;
+    selfCopy = v12;
   }
 
   else
@@ -42,13 +42,13 @@
   return v13;
 }
 
-- (void)selectionInteractionDidPaste:(id)a3 atPoint:(CGPoint)a4 inAttachment:(id)a5
+- (void)selectionInteractionDidPaste:(id)paste atPoint:(CGPoint)point inAttachment:(id)attachment
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
-  v13 = self;
+  y = point.y;
+  x = point.x;
+  pasteCopy = paste;
+  attachmentCopy = attachment;
+  selfCopy = self;
   specialized InlineDrawingTiledTextView.inlineDrawingCanvasElementControllerCurrentAttachment(_:)();
   if (v11)
   {
@@ -57,30 +57,30 @@
   }
 }
 
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only
 {
-  v6 = a6;
-  v8 = a4;
+  onlyCopy = only;
+  blendingCopy = blending;
   v11 = OBJC_IVAR____TtC8PaperKit26InlineDrawingTiledTextView_inlineDrawingCanvasElementController;
   v12 = objc_allocWithZone(type metadata accessor for InlineDrawingCanvasElementController());
-  v13 = a3;
+  viewCopy = view;
   *(&self->super.super.super.super.super.isa + v11) = [v12 init];
   v16.receiver = self;
   v16.super_class = type metadata accessor for InlineDrawingTiledTextView();
-  v14 = [(PKTiledView *)&v16 initInScrollView:v13 sixChannelBlending:v8 defaultDrawingClass:a5 readOnly:v6];
+  v14 = [(PKTiledView *)&v16 initInScrollView:viewCopy sixChannelBlending:blendingCopy defaultDrawingClass:class readOnly:onlyCopy];
 
   return v14;
 }
 
-- (_TtC8PaperKit26InlineDrawingTiledTextView)initWithCoder:(id)a3
+- (_TtC8PaperKit26InlineDrawingTiledTextView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC8PaperKit26InlineDrawingTiledTextView_inlineDrawingCanvasElementController;
   v6 = objc_allocWithZone(type metadata accessor for InlineDrawingCanvasElementController());
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.super.isa + v5) = [v6 init];
   v10.receiver = self;
   v10.super_class = type metadata accessor for InlineDrawingTiledTextView();
-  v8 = [(InlineDrawingTiledTextView *)&v10 initWithCoder:v7];
+  v8 = [(InlineDrawingTiledTextView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

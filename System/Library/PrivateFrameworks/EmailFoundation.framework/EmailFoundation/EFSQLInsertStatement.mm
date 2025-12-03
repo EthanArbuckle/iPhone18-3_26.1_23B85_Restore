@@ -1,27 +1,27 @@
 @interface EFSQLInsertStatement
 - (BOOL)isEmpty;
-- (EFSQLInsertStatement)initWithTable:(id)a3 conflictResolution:(unint64_t)a4;
+- (EFSQLInsertStatement)initWithTable:(id)table conflictResolution:(unint64_t)resolution;
 - (NSString)queryString;
 - (id)addValue;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)_renderQueryStringForNamedBindings:(void *)a3 into:;
-- (void)_renderValuesForNamedBindings:(void *)a3 intoString:;
-- (void)enumerateBindingIndicesAndValuesUsingBlock:(id)a3;
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)_renderQueryStringForNamedBindings:(void *)bindings into:;
+- (void)_renderValuesForNamedBindings:(void *)bindings intoString:;
+- (void)enumerateBindingIndicesAndValuesUsingBlock:(id)block;
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation EFSQLInsertStatement
 
-- (EFSQLInsertStatement)initWithTable:(id)a3 conflictResolution:(unint64_t)a4
+- (EFSQLInsertStatement)initWithTable:(id)table conflictResolution:(unint64_t)resolution
 {
-  v6 = a3;
+  tableCopy = table;
   v17.receiver = self;
   v17.super_class = EFSQLInsertStatement;
   v7 = [(EFSQLInsertStatement *)&v17 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tableCopy copy];
     table = v7->_table;
     v7->_table = v8;
 
@@ -37,7 +37,7 @@
     v15 = [(_EFSQLInsertStatementValue *)[_EFSQLInsertStatementFirstValue alloc] initWithRequiredColumns:?];
     [(NSMutableArray *)v14 addObject:v15];
 
-    v7->_conflictResolution = a4;
+    v7->_conflictResolution = resolution;
   }
 
   return v7;
@@ -87,17 +87,17 @@
   return v3;
 }
 
-- (void)_renderQueryStringForNamedBindings:(void *)a3 into:
+- (void)_renderQueryStringForNamedBindings:(void *)bindings into:
 {
-  v5 = a3;
-  if (a1)
+  bindingsCopy = bindings;
+  if (self)
   {
-    v6 = *(a1 + 24);
-    v7 = [v6 lastObject];
-    v8 = v7;
-    if (v7)
+    v6 = *(self + 24);
+    lastObject = [v6 lastObject];
+    v8 = lastObject;
+    if (lastObject)
     {
-      v9 = *(v7 + 16);
+      v9 = *(lastObject + 16);
     }
 
     else
@@ -107,12 +107,12 @@
 
     v10 = v9;
     v11 = [v10 count];
-    v12 = *(a1 + 24);
-    v13 = [v12 lastObject];
-    v14 = v13;
-    if (v13)
+    v12 = *(self + 24);
+    lastObject2 = [v12 lastObject];
+    v14 = lastObject2;
+    if (lastObject2)
     {
-      v15 = *(v13 + 24);
+      v15 = *(lastObject2 + 24);
     }
 
     else
@@ -124,33 +124,33 @@
 
     if (!(v11 + v16))
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:sel__renderQueryStringForNamedBindings_into_ object:a1 file:@"EFSQLInsertStatement.m" lineNumber:157 description:@"Last value contains no data"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__renderQueryStringForNamedBindings_into_ object:self file:@"EFSQLInsertStatement.m" lineNumber:157 description:@"Last value contains no data"];
     }
 
-    [v5 appendString:@"INSERT"];
-    v17 = *(a1 + 16);
+    [bindingsCopy appendString:@"INSERT"];
+    v17 = *(self + 16);
     if (v17)
     {
-      [v5 appendString:@" OR "];
+      [bindingsCopy appendString:@" OR "];
       v18 = EFSQLStringForConflictResolution(v17);
-      [v5 appendString:v18];
+      [bindingsCopy appendString:v18];
     }
 
-    [v5 appendString:@" INTO "];
-    [v5 appendString:*(a1 + 8)];
-    objc_msgSend(v5, "appendString:", @" (");
-    v19 = *(a1 + 32);
+    [bindingsCopy appendString:@" INTO "];
+    [bindingsCopy appendString:*(self + 8)];
+    objc_msgSend(bindingsCopy, "appendString:", @" (");
+    v19 = *(self + 32);
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __64__EFSQLInsertStatement__renderQueryStringForNamedBindings_into___block_invoke;
     v22[3] = &unk_1E8249D08;
-    v20 = v5;
+    v20 = bindingsCopy;
     v23 = v20;
     [v19 enumerateObjectsUsingBlock:v22];
 
     [v20 appendString:@" VALUES "]);
-    [(EFSQLInsertStatement *)a1 _renderValuesForNamedBindings:a2 intoString:v20];
+    [(EFSQLInsertStatement *)self _renderValuesForNamedBindings:a2 intoString:v20];
   }
 }
 
@@ -165,18 +165,18 @@ void __64__EFSQLInsertStatement__renderQueryStringForNamedBindings_into___block_
   [*(a1 + 32) appendString:v5];
 }
 
-- (void)_renderValuesForNamedBindings:(void *)a3 intoString:
+- (void)_renderValuesForNamedBindings:(void *)bindings intoString:
 {
-  v5 = a3;
-  if (a1)
+  bindingsCopy = bindings;
+  if (self)
   {
-    v6 = *(a1 + 32);
-    v7 = *(a1 + 24);
+    v6 = *(self + 32);
+    v7 = *(self + 24);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __65__EFSQLInsertStatement__renderValuesForNamedBindings_intoString___block_invoke;
     v9[3] = &unk_1E8249D58;
-    v10 = v5;
+    v10 = bindingsCopy;
     v11 = v6;
     v12 = a2;
     v8 = v6;
@@ -247,9 +247,9 @@ void __65__EFSQLInsertStatement__renderValuesForNamedBindings_intoString___block
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v5 = a3;
+  subscriptCopy = subscript;
   if (self)
   {
     values = self->_values;
@@ -272,8 +272,8 @@ LABEL_5:
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:133 description:@"Direct statement access only works with a single value"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:133 description:@"Direct statement access only works with a single value"];
 
     if (self)
     {
@@ -283,16 +283,16 @@ LABEL_5:
 
   v7 = 0;
 LABEL_6:
-  v8 = [(NSMutableArray *)v7 firstObject];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  firstObject = [(NSMutableArray *)v7 firstObject];
+  v9 = [firstObject objectForKeyedSubscript:subscriptCopy];
 
   return v9;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v12 = a3;
-  v7 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   if (self)
   {
     values = self->_values;
@@ -315,8 +315,8 @@ LABEL_5:
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:138 description:@"Direct statement access only works with a single value"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLInsertStatement.m" lineNumber:138 description:@"Direct statement access only works with a single value"];
 
     if (self)
     {
@@ -326,14 +326,14 @@ LABEL_5:
 
   v9 = 0;
 LABEL_6:
-  v10 = [(NSMutableArray *)v9 firstObject];
-  [v10 setObject:v12 forKeyedSubscript:v7];
+  firstObject = [(NSMutableArray *)v9 firstObject];
+  [firstObject setObject:objectCopy forKeyedSubscript:subscriptCopy];
 }
 
-- (void)enumerateBindingIndicesAndValuesUsingBlock:(id)a3
+- (void)enumerateBindingIndicesAndValuesUsingBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v32 = 0;
   v28 = 0u;
   v29 = 0u;
@@ -357,7 +357,7 @@ LABEL_6:
     v7 = 0;
     v8 = *v29;
     v19 = *v29;
-    v20 = self;
+    selfCopy = self;
     do
     {
       v23 = 0;
@@ -397,10 +397,10 @@ LABEL_6:
                 objc_enumerationMutation(v11);
               }
 
-              v15 = [v9 objectForKeyedSubscript:{*(*(&v24 + 1) + 8 * i), v19, v20}];
+              v15 = [v9 objectForKeyedSubscript:{*(*(&v24 + 1) + 8 * i), v19, selfCopy}];
               if (objc_opt_respondsToSelector())
               {
-                v4[2](v4, v7, v15, &v32);
+                blockCopy[2](blockCopy, v7, v15, &v32);
                 v16 = v32;
 
                 if (v16)
@@ -429,7 +429,7 @@ LABEL_6:
         }
 
         v6 = v22;
-        self = v20;
+        self = selfCopy;
         ++v23;
         v8 = v19;
       }
@@ -447,9 +447,9 @@ LABEL_27:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self)
   {
     values = self->_values;
@@ -466,8 +466,8 @@ LABEL_27:
   v8[2] = __65__EFSQLInsertStatement_enumerateBindingNamesAndValuesUsingBlock___block_invoke;
   v8[3] = &unk_1E8249D80;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(NSMutableArray *)v6 enumerateObjectsUsingBlock:v8];
 }
 
@@ -541,7 +541,7 @@ LABEL_17:
 
 - (id)addValue
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_values;
@@ -549,9 +549,9 @@ LABEL_17:
 
   if ([(EFSQLInsertStatement *)self count]!= 1)
   {
-    if (v2)
+    if (selfCopy)
     {
-      values = v2->_values;
+      values = selfCopy->_values;
     }
 
     else
@@ -559,14 +559,14 @@ LABEL_17:
       values = 0;
     }
 
-    v7 = [(NSMutableArray *)values lastObject];
-    v5 = v7;
-    if (v7)
+    lastObject = [(NSMutableArray *)values lastObject];
+    v5 = lastObject;
+    if (lastObject)
     {
-      v7 = v7[2];
+      lastObject = lastObject[2];
     }
 
-    if (![v7 count])
+    if (![lastObject count])
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"No columns were defined for the previous value"];
       v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
@@ -576,9 +576,9 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if (v2)
+  if (selfCopy)
   {
-    v3 = v2->_values;
+    v3 = selfCopy->_values;
   }
 
   else
@@ -586,21 +586,21 @@ LABEL_17:
     v3 = 0;
   }
 
-  v4 = [(NSMutableArray *)v3 firstObject];
-  v5 = v4;
-  if (v4)
+  firstObject = [(NSMutableArray *)v3 firstObject];
+  v5 = firstObject;
+  if (firstObject)
   {
-    v4 = v4[2];
+    firstObject = firstObject[2];
   }
 
-  if ([v4 count])
+  if ([firstObject count])
   {
 LABEL_15:
 
     v8 = [_EFSQLInsertStatementFollowUpValue alloc];
-    if (v2)
+    if (selfCopy)
     {
-      requiredColumns = v2->_requiredColumns;
+      requiredColumns = selfCopy->_requiredColumns;
     }
 
     else
@@ -609,9 +609,9 @@ LABEL_15:
     }
 
     v5 = [(_EFSQLInsertStatementValue *)v8 initWithRequiredColumns:?];
-    if (v2)
+    if (selfCopy)
     {
-      v10 = v2->_values;
+      v10 = selfCopy->_values;
     }
 
     else

@@ -1,19 +1,19 @@
 @interface MPSNNMultiaryGradientState
-- (MPSNNMultiaryGradientState)initWithSourceCount:(unint64_t)a3;
+- (MPSNNMultiaryGradientState)initWithSourceCount:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation MPSNNMultiaryGradientState
 
-- (MPSNNMultiaryGradientState)initWithSourceCount:(unint64_t)a3
+- (MPSNNMultiaryGradientState)initWithSourceCount:(unint64_t)count
 {
   v6.receiver = self;
   v6.super_class = MPSNNMultiaryGradientState;
   v4 = [(MPSState *)&v6 initWithResource:0];
   if (v4)
   {
-    v4->_srcCount = a3;
-    is_mul_ok(a3, 0x60uLL);
+    v4->_srcCount = count;
+    is_mul_ok(count, 0x60uLL);
     operator new[]();
   }
 

@@ -9,11 +9,11 @@
 - (id)ef_uniquedObject:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 member:v4];
+  v5 = [self member:v4];
   if (!v5)
   {
     v5 = [v4 copyWithZone:0];
-    [a1 addObject:v5];
+    [self addObject:v5];
   }
 
   return v5;
@@ -41,7 +41,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 removeObject:{*(*(&v9 + 1) + 8 * v7++), v9}];
+        [self removeObject:{*(*(&v9 + 1) + 8 * v7++), v9}];
       }
 
       while (v5 != v7);
@@ -59,7 +59,7 @@
   v4 = a3;
   if (v4)
   {
-    [a1 addObject:v4];
+    [self addObject:v4];
   }
 }
 

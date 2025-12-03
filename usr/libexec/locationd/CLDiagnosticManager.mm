@@ -1,14 +1,14 @@
 @interface CLDiagnosticManager
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CLDiagnosticManager)init;
 - (NSURL)mobileCrashReporterPath;
-- (id)pathForDate:(id)a3 withBasePath:(id)a4;
+- (id)pathForDate:(id)date withBasePath:(id)path;
 - (void)beginService;
-- (void)copyRegisteredFilesWithHandler:(id)a3;
+- (void)copyRegisteredFilesWithHandler:(id)handler;
 - (void)endService;
-- (void)registerFileForCollection:(id)a3;
-- (void)unregisterFileForCollection:(id)a3;
+- (void)registerFileForCollection:(id)collection;
+- (void)unregisterFileForCollection:(id)collection;
 @end
 
 @implementation CLDiagnosticManager
@@ -76,7 +76,7 @@
   self->_registeredFiles = 0;
 }
 
-- (void)registerFileForCollection:(id)a3
+- (void)registerFileForCollection:(id)collection
 {
   if (qword_1025D47A0 != -1)
   {
@@ -87,23 +87,23 @@
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a3;
+    collectionCopy = collection;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Add file to #diagnosticManager: %{public}@", &v7, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
     sub_10194C098();
-    if (a3)
+    if (collection)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a3)
+  else if (collection)
   {
 LABEL_7:
-    [(NSMutableSet *)[(CLDiagnosticManager *)self registeredFiles] addObject:a3];
+    [(NSMutableSet *)[(CLDiagnosticManager *)self registeredFiles] addObject:collection];
     return;
   }
 
@@ -125,7 +125,7 @@ LABEL_7:
   }
 }
 
-- (void)unregisterFileForCollection:(id)a3
+- (void)unregisterFileForCollection:(id)collection
 {
   if (qword_1025D47A0 != -1)
   {
@@ -136,23 +136,23 @@ LABEL_7:
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a3;
+    collectionCopy = collection;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "Remove file to #diagnosticManager: %{public}@", &v7, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
     sub_10194C28C();
-    if (a3)
+    if (collection)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a3)
+  else if (collection)
   {
 LABEL_7:
-    [(NSMutableSet *)[(CLDiagnosticManager *)self registeredFiles] removeObject:a3];
+    [(NSMutableSet *)[(CLDiagnosticManager *)self registeredFiles] removeObject:collection];
     return;
   }
 
@@ -174,7 +174,7 @@ LABEL_7:
   }
 }
 
-- (void)copyRegisteredFilesWithHandler:(id)a3
+- (void)copyRegisteredFilesWithHandler:(id)handler
 {
   v5 = [(CLDiagnosticManager *)self pathForDate:+[NSDate withBasePath:"date"], [(CLDiagnosticManager *)self mobileCrashReporterPath]];
   if (qword_1025D47A0 != -1)
@@ -207,7 +207,7 @@ LABEL_7:
   if (v7)
   {
     v8 = v7;
-    v16 = a3;
+    handlerCopy = handler;
     v9 = *v20;
     do
     {
@@ -278,7 +278,7 @@ LABEL_7:
 
     while (v8);
     v15 = v23;
-    a3 = v16;
+    handler = handlerCopy;
   }
 
   else
@@ -286,10 +286,10 @@ LABEL_7:
     v15 = 0;
   }
 
-  (*(a3 + 2))(a3, v17, v15);
+  (*(handler + 2))(handler, v17, v15);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   if (qword_1025D47A0 != -1)
   {
@@ -306,16 +306,16 @@ LABEL_7:
   if (sub_10000A100(121, 2))
   {
     sub_10194C658();
-    if (a4)
+    if (connection)
     {
       goto LABEL_7;
     }
   }
 
-  else if (a4)
+  else if (connection)
   {
 LABEL_7:
-    v7 = [a4 valueForEntitlement:@"com.apple.locationd.diagnostic"];
+    v7 = [connection valueForEntitlement:@"com.apple.locationd.diagnostic"];
     if (v7)
     {
       v8 = v7;
@@ -327,18 +327,18 @@ LABEL_7:
         v18[2] = sub_10082BB58;
         v18[3] = &unk_102447418;
         v18[4] = self;
-        [a4 setInterruptionHandler:v18];
+        [connection setInterruptionHandler:v18];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10082BC08;
         v17[3] = &unk_102447418;
         v17[4] = self;
-        [a4 setInvalidationHandler:v17];
-        [a4 _setQueue:{objc_msgSend(objc_msgSend(-[CLDiagnosticManager universe](self, "universe"), "silo"), "queue")}];
-        [a4 setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___CLDiagnosticManagerXPCServerInterface)}];
-        [a4 setExportedObject:self];
-        [(CLDiagnosticManager *)self setConnection:a4];
-        [a4 resume];
+        [connection setInvalidationHandler:v17];
+        [connection _setQueue:{objc_msgSend(objc_msgSend(-[CLDiagnosticManager universe](self, "universe"), "silo"), "queue")}];
+        [connection setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___CLDiagnosticManagerXPCServerInterface)}];
+        [connection setExportedObject:self];
+        [(CLDiagnosticManager *)self setConnection:connection];
+        [connection resume];
         if (qword_1025D47A0 != -1)
         {
           sub_10194C180();
@@ -348,7 +348,7 @@ LABEL_7:
         if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          *v20 = a4;
+          *v20 = connection;
           _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "#diagnosticManager Resuming XPC Connection: %@", buf, 0xCu);
         }
 
@@ -370,7 +370,7 @@ LABEL_7:
     v11 = qword_1025D4798;
     if (os_log_type_enabled(qword_1025D4798, OS_LOG_TYPE_FAULT))
     {
-      v12 = [a4 processIdentifier];
+      processIdentifier = [connection processIdentifier];
       *buf = 68289538;
       *v20 = 0;
       *&v20[4] = 2082;
@@ -378,7 +378,7 @@ LABEL_7:
       v21 = 2082;
       v22 = "com.apple.locationd.diagnostic";
       v23 = 1026;
-      v24 = v12;
+      v24 = processIdentifier;
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:#diagnosticManager missing entitlement, entitlement:%{public, location:escape_only}s, pid:%{public}d}", buf, 0x22u);
       if (qword_1025D4790 != -1)
       {
@@ -390,7 +390,7 @@ LABEL_7:
     v10 = os_signpost_enabled(qword_1025D4798);
     if (v10)
     {
-      v14 = [a4 processIdentifier];
+      processIdentifier2 = [connection processIdentifier];
       *buf = 68289538;
       *v20 = 0;
       *&v20[4] = 2082;
@@ -398,7 +398,7 @@ LABEL_7:
       v21 = 2082;
       v22 = "com.apple.locationd.diagnostic";
       v23 = 1026;
-      v24 = v14;
+      v24 = processIdentifier2;
       _os_signpost_emit_with_name_impl(dword_100000000, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#diagnosticManager missing entitlement", "{msg%{public}.0s:#diagnosticManager missing entitlement, entitlement:%{public, location:escape_only}s, pid:%{public}d}", buf, 0x22u);
 LABEL_24:
       LOBYTE(v10) = 0;
@@ -430,7 +430,7 @@ LABEL_24:
   return v10;
 }
 
-- (BOOL)fileManager:(id)a3 shouldCopyItemAtURL:(id)a4 toURL:(id)a5
+- (BOOL)fileManager:(id)manager shouldCopyItemAtURL:(id)l toURL:(id)rL
 {
   if (qword_1025D47A0 != -1)
   {
@@ -441,15 +441,15 @@ LABEL_24:
   if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_INFO))
   {
     LODWORD(__p.__r_.__value_.__l.__data_) = 138412546;
-    *(__p.__r_.__value_.__r.__words + 4) = a4;
+    *(__p.__r_.__value_.__r.__words + 4) = l;
     WORD2(__p.__r_.__value_.__r.__words[1]) = 2112;
-    *(&__p.__r_.__value_.__r.__words[1] + 6) = a5;
+    *(&__p.__r_.__value_.__r.__words[1] + 6) = rL;
     _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_INFO, "#diagnosticManager fileManager asking if should copy from %@ to %@", &__p, 0x16u);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_10194CAE0(a4);
+    sub_10194CAE0(l);
   }
 
   sub_100565518(0, &__p);
@@ -469,7 +469,7 @@ LABEL_24:
     operator delete(__p.__r_.__value_.__l.__data_);
   }
 
-  v10 = [objc_msgSend(a4 "absoluteString")];
+  v10 = [objc_msgSend(l "absoluteString")];
   if ((v10 & 1) == 0)
   {
     if (qword_1025D47A0 != -1)
@@ -481,7 +481,7 @@ LABEL_24:
     if (os_log_type_enabled(off_1025D47A8, OS_LOG_TYPE_FAULT))
     {
       LODWORD(__p.__r_.__value_.__l.__data_) = 138412290;
-      *(__p.__r_.__value_.__r.__words + 4) = a4;
+      *(__p.__r_.__value_.__r.__words + 4) = l;
       _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_FAULT, "Trying to move a file that is not in our cache directory: %@", &__p, 0xCu);
     }
 
@@ -504,16 +504,16 @@ LABEL_24:
   return qword_10265A530;
 }
 
-- (id)pathForDate:(id)a3 withBasePath:(id)a4
+- (id)pathForDate:(id)date withBasePath:(id)path
 {
   if (qword_10265A548 != -1)
   {
     sub_10194CD00();
   }
 
-  v6 = [qword_10265A540 stringFromDate:a3];
+  v6 = [qword_10265A540 stringFromDate:date];
 
-  return [a4 URLByAppendingPathComponent:v6];
+  return [path URLByAppendingPathComponent:v6];
 }
 
 @end

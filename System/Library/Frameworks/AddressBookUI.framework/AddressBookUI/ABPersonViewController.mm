@@ -1,12 +1,12 @@
 @interface ABPersonViewController
-+ (ABPersonViewController)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4;
++ (ABPersonViewController)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder;
 - (ABAddressBookRef)addressBook;
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
 - (CGSize)preferredContentSize;
 - (CNContactStore)contactStore;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
 - (void)dealloc;
-- (void)encodeRestorableStateWithCoder:(id)a3;
+- (void)encodeRestorableStateWithCoder:(id)coder;
 - (void)loadView;
 - (void)reloadContactViewController;
 - (void)setAddressBook:(ABAddressBookRef)addressBook;
@@ -89,9 +89,9 @@ LABEL_6:
 - (CNContactStore)contactStore
 {
   v2 = MEMORY[0x277CBDAB8];
-  v3 = [(ABPersonViewController *)self addressBook];
+  addressBook = [(ABPersonViewController *)self addressBook];
 
-  return [v2 contactStoreForPublicAddressBook:v3];
+  return [v2 contactStoreForPublicAddressBook:addressBook];
 }
 
 - (void)setDisplayedPerson:(ABRecordRef)displayedPerson
@@ -130,42 +130,42 @@ LABEL_6:
   }
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = ABPersonViewController;
   [(ABPersonViewController *)&v10 encodeRestorableStateWithCoder:?];
-  v5 = [(ABPersonViewController *)self displayedPerson];
-  if (v5)
+  displayedPerson = [(ABPersonViewController *)self displayedPerson];
+  if (displayedPerson)
   {
-    v6 = v5;
-    v7 = ABRecordCopyValue(v5, *MEMORY[0x277CB98C0]);
+    v6 = displayedPerson;
+    v7 = ABRecordCopyValue(displayedPerson, *MEMORY[0x277CB98C0]);
     v8 = ABRecordCopyValue(v6, *MEMORY[0x277CB98D8]);
     v9 = MEMORY[0x2383B6570](v6);
     if (v7)
     {
-      [a3 encodeObject:v7 forKey:@"FirstName"];
+      [coder encodeObject:v7 forKey:@"FirstName"];
       CFRelease(v7);
     }
 
     if (v8)
     {
-      [a3 encodeObject:v8 forKey:@"LastName"];
+      [coder encodeObject:v8 forKey:@"LastName"];
       CFRelease(v8);
     }
 
-    [a3 encodeInteger:v9 forKey:@"Identifier"];
+    [coder encodeInteger:v9 forKey:@"Identifier"];
   }
 
-  [a3 encodeBool:-[ABPersonViewController shouldShowLinkedPeople](self forKey:{"shouldShowLinkedPeople"), @"kABDisplayedPersonShowLinkedPeople"}];
+  [coder encodeBool:-[ABPersonViewController shouldShowLinkedPeople](self forKey:{"shouldShowLinkedPeople"), @"kABDisplayedPersonShowLinkedPeople"}];
 }
 
-+ (ABPersonViewController)viewControllerWithRestorationIdentifierPath:(id)a3 coder:(id)a4
++ (ABPersonViewController)viewControllerWithRestorationIdentifierPath:(id)path coder:(id)coder
 {
   v5 = ABAddressBookCreateWithOptionsAndPolicy();
-  v6 = [a4 decodeObjectOfClass:objc_opt_class() forKey:@"FirstName"];
-  v7 = [a4 decodeObjectOfClass:objc_opt_class() forKey:@"LastName"];
-  v8 = [a4 decodeIntegerForKey:@"Identifier"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"FirstName"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"LastName"];
+  v8 = [coder decodeIntegerForKey:@"Identifier"];
   if (v8 == -1)
   {
     goto LABEL_17;
@@ -210,7 +210,7 @@ LABEL_12:
   {
     v13 = [[ABPersonViewController alloc] initWithAddressBook:v5];
     [(ABPersonViewController *)v13 setDisplayedPerson:v10];
-    -[ABPersonViewController setShouldShowLinkedPeople:](v13, "setShouldShowLinkedPeople:", [a4 decodeBoolForKey:@"kABDisplayedPersonShowLinkedPeople"]);
+    -[ABPersonViewController setShouldShowLinkedPeople:](v13, "setShouldShowLinkedPeople:", [coder decodeBoolForKey:@"kABDisplayedPersonShowLinkedPeople"]);
     if (!v5)
     {
       return v13;
@@ -250,7 +250,7 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)contactViewController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)contactViewController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
   [(ABPersonViewController *)self personViewDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -258,18 +258,18 @@ LABEL_18:
     return 1;
   }
 
-  v8 = [(ABPersonViewController *)self addressBook];
-  v6 = -[CNContactStore publicABPersonFromContact:publicAddressBook:](-[ABPersonViewController contactStore](self, "contactStore"), "publicABPersonFromContact:publicAddressBook:", [a4 contact], &v8);
+  addressBook = [(ABPersonViewController *)self addressBook];
+  v6 = -[CNContactStore publicABPersonFromContact:publicAddressBook:](-[ABPersonViewController contactStore](self, "contactStore"), "publicABPersonFromContact:publicAddressBook:", [property contact], &addressBook);
   return [-[ABPersonViewController personViewDelegate](self "personViewDelegate")];
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
   if ([(ABPersonViewController *)self displayedPerson])
   {
-    v6 = [(ABPersonViewController *)self displayedPerson];
+    displayedPerson = [(ABPersonViewController *)self displayedPerson];
 
-    [a4 overwritePublicABPerson:v6];
+    [contact overwritePublicABPerson:displayedPerson];
   }
 }
 
@@ -311,16 +311,16 @@ LABEL_18:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 iOSLegacyIdentifier];
-        if (v15 == [(ABPersonViewController *)self highlightedMultiValueIdentifier])
+        iOSLegacyIdentifier = [v14 iOSLegacyIdentifier];
+        if (iOSLegacyIdentifier == [(ABPersonViewController *)self highlightedMultiValueIdentifier])
         {
-          v16 = [v14 identifier];
+          identifier = [v14 identifier];
           goto LABEL_18;
         }
       }
 
       v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
-      v16 = 0;
+      identifier = 0;
       if (v11)
       {
         continue;
@@ -332,7 +332,7 @@ LABEL_18:
 
   else
   {
-    v16 = 0;
+    identifier = 0;
   }
 
 LABEL_18:
@@ -351,13 +351,13 @@ LABEL_18:
   [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] setShouldShowLinkedContacts:[(ABPersonViewController *)self shouldShowLinkedPeople]];
   [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] setDisplayedPropertyKeys:v17];
   [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] setDelegate:self];
-  [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] highlightPropertyWithKey:v4 identifier:v16 important:[(ABPersonViewController *)self highlightedImportant]];
+  [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] highlightPropertyWithKey:v4 identifier:identifier important:[(ABPersonViewController *)self highlightedImportant]];
   [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] setContactStore:[(ABPersonViewController *)self contactStore]];
   [(ABPersonViewController *)self addChildViewController:[(ABPersonViewController *)self cnContactViewController]];
-  v18 = [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] view];
+  view = [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] view];
   [-[ABPersonViewController view](self "view")];
-  [v18 setFrame:?];
-  [v18 setAutoresizingMask:18];
+  [view setFrame:?];
+  [view setAutoresizingMask:18];
   [-[ABPersonViewController view](self "view")];
   [(CNContactViewController *)[(ABPersonViewController *)self cnContactViewController] didMoveToParentViewController:self];
   v19 = *MEMORY[0x277D85DE8];

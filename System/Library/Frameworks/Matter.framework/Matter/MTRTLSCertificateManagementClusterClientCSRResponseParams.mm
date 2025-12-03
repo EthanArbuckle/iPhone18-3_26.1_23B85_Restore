@@ -1,9 +1,9 @@
 @interface MTRTLSCertificateManagementClusterClientCSRResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRTLSCertificateManagementClusterClientCSRResponseParams)init;
-- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,29 +20,29 @@
     ccdid = v2->_ccdid;
     v2->_ccdid = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     csr = v3->_csr;
-    v3->_csr = v5;
+    v3->_csr = data;
 
-    v7 = [MEMORY[0x277CBEA90] data];
+    data2 = [MEMORY[0x277CBEA90] data];
     nonceSignature = v3->_nonceSignature;
-    v3->_nonceSignature = v7;
+    v3->_nonceSignature = data2;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSCertificateManagementClusterClientCSRResponseParams);
-  v5 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self ccdid];
-  [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 setCcdid:v5];
+  ccdid = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self ccdid];
+  [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 setCcdid:ccdid];
 
   v6 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self csr];
   [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 setCsr:v6];
 
-  v7 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self nonceSignature];
-  [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 setNonceSignature:v7];
+  nonceSignature = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self nonceSignature];
+  [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 setNonceSignature:nonceSignature];
 
   return v4;
 }
@@ -60,9 +60,9 @@
   return v9;
 }
 
-- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTRTLSCertificateManagementClusterClientCSRResponseParams;
   v7 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)&v17 init];
@@ -72,7 +72,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:2049 commandID:8 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:2049 commandID:8 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -95,7 +95,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -106,7 +106,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRTLSCertificateManagementClusterClientCSRResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRTLSCertificateManagementClusterClientCSRResponseParams;
@@ -114,7 +114,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -130,15 +130,15 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
   [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self setCcdid:v5];
 
-  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
+  v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
   [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self setCsr:v6];
 
-  v7 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 3) length:*(a3 + 4)];
+  v7 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 3) length:*(struct + 4)];
   [(MTRTLSCertificateManagementClusterClientCSRResponseParams *)self setNonceSignature:v7];
 
   v8 = 0;

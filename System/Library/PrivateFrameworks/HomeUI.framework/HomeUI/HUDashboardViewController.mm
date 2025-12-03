@@ -1,115 +1,115 @@
 @interface HUDashboardViewController
 + (void)prefetchState;
-- (BOOL)_canSkipStatusDetailsForItem:(id)a3;
-- (BOOL)_hasDetailViewControllerForItem:(id)a3;
-- (BOOL)_hasTapActionForItem:(id)a3;
+- (BOOL)_canSkipStatusDetailsForItem:(id)item;
+- (BOOL)_hasDetailViewControllerForItem:(id)item;
+- (BOOL)_hasTapActionForItem:(id)item;
 - (BOOL)_isShowingRestrictedGuestBlockedBackdropView;
 - (BOOL)_isShowingRoarUpgradeView;
 - (BOOL)_shouldHideTabBar;
 - (BOOL)_shouldSetupFilterBarForPocketableFilterPresentationStyle;
-- (BOOL)_shouldShowAccessoryControlsForHomeKitObject:(id)a3 fromStatusItem:(id)a4;
-- (BOOL)_statusItemRepresentsOnlyResidentIPads:(id)a3;
+- (BOOL)_shouldShowAccessoryControlsForHomeKitObject:(id)object fromStatusItem:(id)item;
+- (BOOL)_statusItemRepresentsOnlyResidentIPads:(id)pads;
 - (BOOL)allowsCondensedAccessoryTiles;
 - (BOOL)automaticallyUpdatesViewControllerTitle;
-- (BOOL)canReorderItemAtIndexPath:(id)a3;
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4;
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4;
-- (BOOL)presentationCoordinator:(id)a3 shouldAllowTapticFeedbackForItem:(id)a4;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginLongPressPresentationWithContext:(id)a4;
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4;
-- (BOOL)shouldHideNavigationBarButton:(id)a3;
+- (BOOL)canReorderItemAtIndexPath:(id)path;
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session;
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item;
+- (BOOL)presentationCoordinator:(id)coordinator shouldAllowTapticFeedbackForItem:(id)item;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginLongPressPresentationWithContext:(id)context;
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context;
+- (BOOL)shouldHideNavigationBarButton:(id)button;
 - (BOOL)shouldIncludeRoomsInHomeMenu;
-- (BOOL)shouldShowAccessoryControlForHomeKitObject:(id)a3;
+- (BOOL)shouldShowAccessoryControlForHomeKitObject:(id)object;
 - (BOOL)shouldShowAnnounceButton;
-- (BOOL)shouldShowHeaderForSection:(id)a3;
+- (BOOL)shouldShowHeaderForSection:(id)section;
 - (BOOL)supportsEditing;
 - (CGSize)previousCollectionViewSize;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HUCameraController)ppt_cameraController;
 - (HUDashboardContext)context;
 - (HUDashboardViewController)init;
-- (HUDashboardViewController)initWithContext:(id)a3 asOverlay:(BOOL)a4 delegate:(id)a5;
+- (HUDashboardViewController)initWithContext:(id)context asOverlay:(BOOL)overlay delegate:(id)delegate;
 - (HUDashboardViewControllerDelegate)delegate;
 - (NSString)editActionTitle;
 - (NSString)editActionTitleLocalizationKey;
 - (UIViewController)tipPopoverController;
 - (id)_allNavigationBarButtons;
 - (id)_dashboardNavigator;
-- (id)_dismissPresentedViewControllersAnimated:(BOOL)a3;
+- (id)_dismissPresentedViewControllersAnimated:(BOOL)animated;
 - (id)_filterBarController;
-- (id)_itemForHomeKitObject:(id)a3;
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4;
-- (id)_presentAccessoryControlsForHomeKitObject:(id)a3 fromStatusItem:(id)a4 animated:(BOOL)a5;
-- (id)_presentAccessorySettingsForHomeKitObject:(id)a3 fromStatusItem:(id)a4 animated:(BOOL)a5;
-- (id)_presentQuickControlsForHomeKitItem:(id)a3 animated:(BOOL)a4;
-- (id)_presentRoomEditorForRoom:(id)a3;
-- (id)_quickControlDetailViewControllerForItem:(id)a3;
-- (id)_titleForSectionIdentifier:(id)a3;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (id)_itemForHomeKitObject:(id)object;
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area;
+- (id)_presentAccessoryControlsForHomeKitObject:(id)object fromStatusItem:(id)item animated:(BOOL)animated;
+- (id)_presentAccessorySettingsForHomeKitObject:(id)object fromStatusItem:(id)item animated:(BOOL)animated;
+- (id)_presentQuickControlsForHomeKitItem:(id)item animated:(BOOL)animated;
+- (id)_presentRoomEditorForRoom:(id)room;
+- (id)_quickControlDetailViewControllerForItem:(id)item;
+- (id)_titleForSectionIdentifier:(id)identifier;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)buildItemModuleControllerForModule:(id)module;
 - (id)childViewControllersToPreload;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)compositionalLayoutConfigurationForTraitCollection:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)compositionalLayoutConfigurationForTraitCollection:(id)collection;
 - (id)contextTypeDescriptionForAnalytics;
-- (id)createDashboardTipModuleControllerWithModule:(id)a3;
-- (id)createEnergyDashboardModuleControllerWith:(id)a3;
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4;
-- (id)displayedItemsInSection:(id)a3;
+- (id)createDashboardTipModuleControllerWithModule:(id)module;
+- (id)createEnergyDashboardModuleControllerWith:(id)with;
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item;
+- (id)displayedItemsInSection:(id)section;
 - (id)editActionDelegate;
-- (id)homeForNavigationBarButton:(id)a3;
-- (id)homeKitObjectWithID:(id)a3;
+- (id)homeForNavigationBarButton:(id)button;
+- (id)homeKitObjectWithID:(id)d;
 - (id)hu_performanceTestReadyFuture;
 - (id)hu_preloadContent;
-- (id)interactionControllerForPresentation:(id)a3;
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5;
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)matchingItemForHomeKitObject:(id)a3;
-- (id)navigationBarButtonIdentifierOrderForEdge:(unint64_t)a3;
-- (id)presentCameraProfile:(id)a3 forCameraClip:(id)a4 animated:(BOOL)a5;
-- (id)presentCameraProfile:(id)a3 startDate:(id)a4 endDate:(id)a5 animated:(BOOL)a6;
-- (id)presentDetailsForItem:(id)a3 animated:(BOOL)a4 secondaryDestination:(unint64_t)a5;
-- (id)presentFeedbackFlowForCameraClip:(id)a3 fromProfile:(id)a4;
-- (id)presentHomeKitObject:(id)a3 destination:(unint64_t)a4 animated:(BOOL)a5;
-- (id)presentItem:(id)a3 animated:(BOOL)a4;
-- (id)presentItemWithUUID:(id)a3 destination:(unint64_t)a4 secondaryDestination:(unint64_t)a5 animated:(BOOL)a6;
-- (id)presentROARUpgradeView:(id)a3;
-- (id)presentRoomSettingsForRoom:(id)a3;
-- (id)presentStatusDetailsForStatusItemClass:(Class)a3 animated:(BOOL)a4;
-- (id)presentationCoordinator:(id)a3 contextForPresentationAtPoint:(CGPoint)a4;
-- (id)quickControlPresentationContextForItem:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)reorderableItemListForSection:(int64_t)a3;
-- (id)roomForNavigationBarButton:(id)a3;
-- (id)statusItemsForNavigationBarButton:(id)a3 inHome:(id)a4;
-- (id)tappableAreaForPoint:(CGPoint)a3 inItem:(id)a4 atIndexPath:(id)a5;
-- (id)transform:(id)a3;
-- (unint64_t)navigationBarEdgeForButton:(id)a3;
-- (void)_addFilterBarToBottomPaletteForNavigationItem:(id)a3;
+- (id)interactionControllerForPresentation:(id)presentation;
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options;
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (id)matchingItemForHomeKitObject:(id)object;
+- (id)navigationBarButtonIdentifierOrderForEdge:(unint64_t)edge;
+- (id)presentCameraProfile:(id)profile forCameraClip:(id)clip animated:(BOOL)animated;
+- (id)presentCameraProfile:(id)profile startDate:(id)date endDate:(id)endDate animated:(BOOL)animated;
+- (id)presentDetailsForItem:(id)item animated:(BOOL)animated secondaryDestination:(unint64_t)destination;
+- (id)presentFeedbackFlowForCameraClip:(id)clip fromProfile:(id)profile;
+- (id)presentHomeKitObject:(id)object destination:(unint64_t)destination animated:(BOOL)animated;
+- (id)presentItem:(id)item animated:(BOOL)animated;
+- (id)presentItemWithUUID:(id)d destination:(unint64_t)destination secondaryDestination:(unint64_t)secondaryDestination animated:(BOOL)animated;
+- (id)presentROARUpgradeView:(id)view;
+- (id)presentRoomSettingsForRoom:(id)room;
+- (id)presentStatusDetailsForStatusItemClass:(Class)class animated:(BOOL)animated;
+- (id)presentationCoordinator:(id)coordinator contextForPresentationAtPoint:(CGPoint)point;
+- (id)quickControlPresentationContextForItem:(id)item atIndexPath:(id)path point:(CGPoint)point;
+- (id)reorderableItemListForSection:(int64_t)section;
+- (id)roomForNavigationBarButton:(id)button;
+- (id)statusItemsForNavigationBarButton:(id)button inHome:(id)home;
+- (id)tappableAreaForPoint:(CGPoint)point inItem:(id)item atIndexPath:(id)path;
+- (id)transform:(id)transform;
+- (unint64_t)navigationBarEdgeForButton:(id)button;
+- (void)_addFilterBarToBottomPaletteForNavigationItem:(id)item;
 - (void)_addFilterBarToDashboardView;
-- (void)_adjustTopPocketInsetsForBottomPaletteWithHeight:(double)a3;
+- (void)_adjustTopPocketInsetsForBottomPaletteWithHeight:(double)height;
 - (void)_clearEnergyIndicator;
-- (void)_handleBackgroundTap:(id)a3;
-- (void)_prepareBottomPaletteForTransitionToContext:(id)a3 toViewController:(id)a4;
-- (void)_presentDetailsViewControllerForSectionWithIdentifier:(id)a3 animated:(BOOL)a4;
+- (void)_handleBackgroundTap:(id)tap;
+- (void)_prepareBottomPaletteForTransitionToContext:(id)context toViewController:(id)controller;
+- (void)_presentDetailsViewControllerForSectionWithIdentifier:(id)identifier animated:(BOOL)animated;
 - (void)_registerObservers;
 - (void)_registerSectionDecorationViews;
 - (void)_requestLocationAuth;
-- (void)_sendContextMenuMetricsWithContext:(id)a3 title:(id)a4;
+- (void)_sendContextMenuMetricsWithContext:(id)context title:(id)title;
 - (void)_sendFilterBarViewToBackIfNeeded;
-- (void)_setNavigationButtons:(id)a3 forEdge:(unint64_t)a4;
+- (void)_setNavigationButtons:(id)buttons forEdge:(unint64_t)edge;
 - (void)_setUpFilterBar;
 - (void)_setUpNavigationBar;
 - (void)_setupBackgroundView;
 - (void)_setupFilterBarForPocketableFilterPresentationStyle;
 - (void)_setupTabBarAppearance;
 - (void)_showNoHomeAccessViewsIfNeeded;
-- (void)_toggleSizeForCell:(id)a3 withItem:(id)a4;
+- (void)_toggleSizeForCell:(id)cell withItem:(id)item;
 - (void)_updateAllHeaderViews;
 - (void)_updateAnnounceNotificationSettingsIfNeeded;
 - (void)_updateBarButtons;
@@ -119,87 +119,87 @@
 - (void)_updateFilterBarFrameIfNeeded;
 - (void)_updateFilterBarViewIfNeeded;
 - (void)_updateFilterBarVisibility;
-- (void)_updateHeaderView:(id)a3 atIndexPath:(id)a4;
+- (void)_updateHeaderView:(id)view atIndexPath:(id)path;
 - (void)_updateHomeEnergyIndicatorVisibility;
 - (void)_updateHomeEnergyTipVisibility;
 - (void)_updatePaletteHeight;
 - (void)_updateTabBarVisibility;
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5;
-- (void)accessoryTileSizeButtonTappedFor:(id)a3 withItem:(id)a4;
-- (void)applicationWentIntoBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)changeHomeEnergyTipShouldDisplayTo:(BOOL)a3;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureCell:(id)a3 forItem:(id)a4;
-- (void)configureWithAccessoryControlViewController:(id)a3;
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler;
+- (void)accessoryTileSizeButtonTappedFor:(id)for withItem:(id)item;
+- (void)applicationWentIntoBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)changeHomeEnergyTipShouldDisplayTo:(BOOL)to;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureCell:(id)cell forItem:(id)item;
+- (void)configureWithAccessoryControlViewController:(id)controller;
 - (void)createRestrictedGuestBlockedBackdropViewIfNeeded;
-- (void)dashboardItemManager:(id)a3 didUpdateContext:(id)a4;
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3;
-- (void)didSelectHomeHubMigrationBanner:(id)a3;
-- (void)didSelectUnreachableResidentsBanner:(id)a3;
-- (void)didSelectWelcomeBanner:(id)a3;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
+- (void)dashboardItemManager:(id)manager didUpdateContext:(id)context;
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d;
+- (void)didSelectHomeHubMigrationBanner:(id)banner;
+- (void)didSelectUnreachableResidentsBanner:(id)banner;
+- (void)didSelectWelcomeBanner:(id)banner;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
 - (void)disableRefresh;
 - (void)dismissTip;
-- (void)editRoomViewControllerDidFinish:(id)a3 withNewRoom:(id)a4;
+- (void)editRoomViewControllerDidFinish:(id)finish withNewRoom:(id)room;
 - (void)enableRefresh;
 - (void)energyFeatureDidHide;
 - (void)handleTraitChanges;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4;
-- (void)home:(id)a3 didUpdateLocation:(id)a4;
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4;
-- (void)home:(id)a3 didUpdateWallpaperForRoom:(id)a4;
-- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)a3;
-- (void)homeDidUpdateWallpaper:(id)a3;
-- (void)homeEnergyNavigationBarIndicatorTapped:(id)a3;
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5;
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)itemManagerDidUpdate:(id)a3;
-- (void)loadThermostatControllerForItem:(HFItem *)a3 completion:(id)a4;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveRoom:(id)room;
+- (void)home:(id)home didUpdateLocation:(id)location;
+- (void)home:(id)home didUpdateNameForRoom:(id)room;
+- (void)home:(id)home didUpdateWallpaperForRoom:(id)room;
+- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)enabled;
+- (void)homeDidUpdateWallpaper:(id)wallpaper;
+- (void)homeEnergyNavigationBarIndicatorTapped:(id)tapped;
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home;
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)itemManagerDidUpdate:(id)update;
+- (void)loadThermostatControllerForItem:(HFItem *)item completion:(id)completion;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
 - (void)presentTip;
-- (void)presentationCoordinator:(id)a3 didRecognizeTapForItem:(id)a4 tappedArea:(id)a5;
-- (void)presentationCoordinator:(id)a3 touchDidBeginForItem:(id)a4 tappedArea:(id)a5;
-- (void)presentationCoordinator:(id)a3 touchDidEndForItem:(id)a4 tappedArea:(id)a5;
+- (void)presentationCoordinator:(id)coordinator didRecognizeTapForItem:(id)item tappedArea:(id)area;
+- (void)presentationCoordinator:(id)coordinator touchDidBeginForItem:(id)item tappedArea:(id)area;
+- (void)presentationCoordinator:(id)coordinator touchDidEndForItem:(id)item tappedArea:(id)area;
 - (void)refreshTileHelper;
-- (void)reloadLayoutAnimated:(BOOL)a3 fastUpdate:(BOOL)a4;
-- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setItemShowingSizeToggleButton:(id)a3 animated:(BOOL)a4;
-- (void)setReorderableItemList:(id)a3 forSection:(int64_t)a4;
-- (void)setViewIsFullyVisible:(BOOL)a3;
+- (void)reloadLayoutAnimated:(BOOL)animated fastUpdate:(BOOL)update;
+- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)key;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setItemShowingSizeToggleButton:(id)button animated:(BOOL)animated;
+- (void)setReorderableItemList:(id)list forSection:(int64_t)section;
+- (void)setViewIsFullyVisible:(BOOL)visible;
 - (void)setupTipsObserver;
 - (void)tearDownTipsObserver;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation HUDashboardViewController
 
-- (void)loadThermostatControllerForItem:(HFItem *)a3 completion:(id)a4
+- (void)loadThermostatControllerForItem:(HFItem *)item completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = item;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_20D567C58();
@@ -214,61 +214,61 @@
   v14[3] = 0;
   v14[4] = &unk_20D5C5200;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  itemCopy = item;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v9, &unk_20D5BCD00, v14);
 }
 
-- (id)createDashboardTipModuleControllerWithModule:(id)a3
+- (id)createDashboardTipModuleControllerWithModule:(id)module
 {
   v4 = objc_allocWithZone(type metadata accessor for DashboardTipModuleController());
-  v5 = a3;
-  v6 = [v4 initWithModule_];
-  v7 = [v6 asGeneric];
+  moduleCopy = module;
+  initWithModule_ = [v4 initWithModule_];
+  asGeneric = [initWithModule_ asGeneric];
 
-  return v7;
+  return asGeneric;
 }
 
 - (void)energyFeatureDidHide
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF61BC0();
 }
 
-- (id)createEnergyDashboardModuleControllerWith:(id)a3
+- (id)createEnergyDashboardModuleControllerWith:(id)with
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUDashboardViewController *)v5 layoutManager];
+  withCopy = with;
+  selfCopy = self;
+  layoutManager = [(HUDashboardViewController *)selfCopy layoutManager];
   v7 = type metadata accessor for EnergyDashboardItemModuleController();
   v8 = objc_allocWithZone(v7);
   swift_unknownObjectWeakInit();
   v8[OBJC_IVAR___HUEnergyDashboardItemModuleController_hasSentHomeEnergyAnalytics] = 0;
-  *&v8[OBJC_IVAR___HUEnergyDashboardItemModuleController_layoutManager] = v6;
+  *&v8[OBJC_IVAR___HUEnergyDashboardItemModuleController_layoutManager] = layoutManager;
   swift_unknownObjectWeakAssign();
   v12.receiver = v8;
   v12.super_class = v7;
-  v9 = [(HUDashboardViewController *)&v12 initWithModule:v4];
-  v10 = [(HUDashboardViewController *)v9 asGeneric];
+  v9 = [(HUDashboardViewController *)&v12 initWithModule:withCopy];
+  asGeneric = [(HUDashboardViewController *)v9 asGeneric];
 
-  return v10;
+  return asGeneric;
 }
 
 - (void)setupTipsObserver
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.setupTipsObserver()();
 }
 
 - (void)tearDownTipsObserver
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.tearDownTipsObserver()();
 }
 
-- (void)changeHomeEnergyTipShouldDisplayTo:(BOOL)a3
+- (void)changeHomeEnergyTipShouldDisplayTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   if (qword_2811208D0 != -1)
   {
     swift_once();
@@ -279,7 +279,7 @@
   swift_beginAccess();
   sub_20D5665C8();
   swift_endAccess();
-  if (v5 != v3)
+  if (v5 != toCopy)
   {
     swift_beginAccess();
     sub_20D5665D8();
@@ -289,47 +289,47 @@
 
 - (void)presentTip
 {
-  v2 = self;
+  selfCopy = self;
   sub_20CF63720();
 }
 
 - (void)dismissTip
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.dismissTip()();
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v4 = a3;
-  v9 = self;
-  v5 = [(HUDashboardViewController *)v9 tipPopoverController];
-  if (v5)
+  popoverCopy = popover;
+  selfCopy = self;
+  tipPopoverController = [(HUDashboardViewController *)selfCopy tipPopoverController];
+  if (tipPopoverController)
   {
 
-    v6 = [(HUDashboardViewController *)v9 tipPopoverController];
-    if (v6)
+    tipPopoverController2 = [(HUDashboardViewController *)selfCopy tipPopoverController];
+    if (tipPopoverController2)
     {
-      v7 = v6;
+      v7 = tipPopoverController2;
       sub_20CECF940(0, &qword_28111FB10);
       v8 = sub_20D5683F8();
 
       if (v8)
       {
-        [(HUDashboardViewController *)v9 setTipPopoverController:0];
+        [(HUDashboardViewController *)selfCopy setTipPopoverController:0];
       }
     }
   }
 }
 
-- (id)homeKitObjectWithID:(id)a3
+- (id)homeKitObjectWithID:(id)d
 {
   v4 = sub_20D563818();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D5637E8();
-  v8 = self;
+  selfCopy = self;
   v9 = HUDashboardViewController.homeKitObject(with:)();
 
   (*(v5 + 8))(v7, v4);
@@ -337,9 +337,9 @@
   return v9;
 }
 
-- (BOOL)shouldShowAccessoryControlForHomeKitObject:(id)a3
+- (BOOL)shouldShowAccessoryControlForHomeKitObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
@@ -353,15 +353,15 @@
   return v3;
 }
 
-- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)a3 tileItem:(HFItem *)a4 completionHandler:(id)a5
+- (void)accessoryControlViewControllerFor:(HFAccessoryRepresentableItem *)for tileItem:(HFItem *)item completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = for;
+  v13[3] = item;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_20D567C58();
@@ -376,72 +376,72 @@
   v16[3] = 0;
   v16[4] = &unk_20D5C5200;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  forCopy = for;
+  itemCopy = item;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v11, &unk_20D5BCD00, v16);
 }
 
-- (void)configureWithAccessoryControlViewController:(id)a3
+- (void)configureWithAccessoryControlViewController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = HUDashboardViewController;
-  v4 = a3;
-  v5 = self;
-  [(HUControllableItemCollectionViewController *)&v10 configureWithAccessoryControlViewController:v4];
+  controllerCopy = controller;
+  selfCopy = self;
+  [(HUControllableItemCollectionViewController *)&v10 configureWithAccessoryControlViewController:controllerCopy];
   swift_getObjectType();
   v6 = swift_conformsToProtocol2();
-  if (v6 && v4)
+  if (v6 && controllerCopy)
   {
     v7 = v6;
     ObjectType = swift_getObjectType();
     v9 = *(v7 + 120);
-    v4 = v4;
+    controllerCopy = controllerCopy;
     v9(0, ObjectType, v7);
   }
 }
 
 - (void)disableRefresh
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.disableRefresh()();
 }
 
 - (void)enableRefresh
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.enableRefresh()();
 }
 
 - (void)refreshTileHelper
 {
-  v2 = self;
+  selfCopy = self;
   HUDashboardViewController.refreshTileHelper()();
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  selfCopy = self;
   v12 = sub_20D02B63C();
 
   return v12;
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v3 = self;
-  v4 = [(HUDashboardViewController *)v3 accessoryControlAnimator];
-  *(&v4->super.isa + OBJC_IVAR___HUAccessoryControlAnimator_currentTransitionType) = 1;
+  selfCopy = self;
+  accessoryControlAnimator = [(HUDashboardViewController *)selfCopy accessoryControlAnimator];
+  *(&accessoryControlAnimator->super.isa + OBJC_IVAR___HUAccessoryControlAnimator_currentTransitionType) = 1;
 
-  v5 = [(HUDashboardViewController *)v3 accessoryControlAnimator];
+  accessoryControlAnimator2 = [(HUDashboardViewController *)selfCopy accessoryControlAnimator];
 
-  return v5;
+  return accessoryControlAnimator2;
 }
 
-- (id)interactionControllerForPresentation:(id)a3
+- (id)interactionControllerForPresentation:(id)presentation
 {
   v3 = [objc_allocWithZone(MEMORY[0x277D75828]) init];
   [v3 setWantsInteractiveStart_];
@@ -449,33 +449,33 @@
   return v3;
 }
 
-- (id)compositionalLayoutConfigurationForTraitCollection:(id)a3
+- (id)compositionalLayoutConfigurationForTraitCollection:(id)collection
 {
-  v3 = self;
+  selfCopy = self;
 
-  v4 = [objc_opt_self() defaultConfiguration];
-  [v4 setContentInsetsReference_];
-  [v4 setInterSectionSpacing_];
+  defaultConfiguration = [objc_opt_self() defaultConfiguration];
+  [defaultConfiguration setContentInsetsReference_];
+  [defaultConfiguration setInterSectionSpacing_];
 
-  return v4;
+  return defaultConfiguration;
 }
 
-- (id)layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = HUDashboardViewController.layoutSection(forSection:layoutEnvironment:)(a3, a4);
+  selfCopy = self;
+  v8 = HUDashboardViewController.layoutSection(forSection:layoutEnvironment:)(section, environment);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)displayedItemsInSection:(id)a3
+- (id)displayedItemsInSection:(id)section
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(HUItemCollectionViewController *)v5 itemManager];
-  v7 = [(HFItemManager *)v6 displayedItemsInSectionWithIdentifier:v4];
+  sectionCopy = section;
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
+  v7 = [(HFItemManager *)itemManager displayedItemsInSectionWithIdentifier:sectionCopy];
 
   if (!v7)
   {
@@ -487,11 +487,11 @@
   return v7;
 }
 
-- (BOOL)shouldShowHeaderForSection:(id)a3
+- (BOOL)shouldShowHeaderForSection:(id)section
 {
   v4 = sub_20D567838();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = HUDashboardViewController.shouldShowHeader(forSection:)(v8);
@@ -499,38 +499,38 @@
   return v4 & 1;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v3 = a3;
-  [v3 setSectionLeadingMargin_];
-  [v3 setSectionTrailingMargin_];
+  transformCopy = transform;
+  [transformCopy setSectionLeadingMargin_];
+  [transformCopy setSectionTrailingMargin_];
 
-  return v3;
+  return transformCopy;
 }
 
 - (BOOL)allowsCondensedAccessoryTiles
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HUDashboardViewController.allowsCondensedAccessoryTiles()();
 
   return v3;
 }
 
-- (BOOL)canReorderItemAtIndexPath:(id)a3
+- (BOOL)canReorderItemAtIndexPath:(id)path
 {
   v4 = sub_20D5638C8();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20D563878();
-  v8 = self;
+  selfCopy = self;
   v9 = HUDashboardViewController.canReorderItem(at:)();
 
   (*(v5 + 8))(v7, v4);
   return v9 & 1;
 }
 
-- (id)collectionView:(id)a3 itemsForAddingToDragSession:(id)a4 atIndexPath:(id)a5 point:(CGPoint)a6
+- (id)collectionView:(id)view itemsForAddingToDragSession:(id)session atIndexPath:(id)path point:(CGPoint)point
 {
   v6 = sub_20D5638C8();
   v7 = *(v6 - 8);
@@ -544,48 +544,48 @@
   return v10;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v6 = self;
-  [(HUDashboardViewController *)v6 setItemShowingSizeToggleButton:0 animated:1];
-  v4 = [(HUItemCollectionViewController *)v6 itemManager];
+  selfCopy = self;
+  [(HUDashboardViewController *)selfCopy setItemShowingSizeToggleButton:0 animated:1];
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   v5 = sub_20D5677F8();
-  [(HFItemManager *)v4 disableExternalUpdatesWithReason:v5];
+  [(HFItemManager *)itemManager disableExternalUpdatesWithReason:v5];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
-  v6 = self;
-  v4 = [(HUItemCollectionViewController *)v6 itemManager];
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
   v5 = sub_20D5677F8();
-  [(HFItemManager *)v4 endDisableExternalUpdatesWithReason:v5];
+  [(HFItemManager *)itemManager endDisableExternalUpdatesWithReason:v5];
 }
 
-- (BOOL)collectionView:(id)a3 canHandleDropSession:(id)a4
+- (BOOL)collectionView:(id)view canHandleDropSession:(id)session
 {
   swift_unknownObjectRetain();
-  if ([a4 localDragSession])
+  if ([session localDragSession])
   {
     swift_unknownObjectRelease();
-    v5 = 1;
+    canLoadObjectsOfClass_ = 1;
   }
 
   else
   {
     sub_20CECF940(0, &unk_28111FB50);
-    v5 = [a4 canLoadObjectsOfClass_];
+    canLoadObjectsOfClass_ = [session canLoadObjectsOfClass_];
   }
 
   swift_unknownObjectRelease();
-  return v5;
+  return canLoadObjectsOfClass_;
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81D5C0);
   MEMORY[0x28223BE20](v9 - 8);
   v11 = &v18 - v10;
-  if (a5)
+  if (path)
   {
     sub_20D563878();
     v12 = sub_20D5638C8();
@@ -598,10 +598,10 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = HUDashboardViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(v14, a4, v11);
+  selfCopy = self;
+  v16 = HUDashboardViewController.collectionView(_:dropSessionDidUpdate:withDestinationIndexPath:)(viewCopy, update, v11);
 
   swift_unknownObjectRelease();
   sub_20CEF928C(v11, &qword_27C81D5C0);
@@ -609,9 +609,9 @@
   return v16;
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v26 = self;
+  selfCopy = self;
   v7 = sub_20D5638C8();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7);
@@ -625,9 +625,9 @@
   sub_20D563878();
   sub_20D563878();
   sub_20D563878();
-  v20 = a3;
-  v21 = v26;
-  HUDashboardViewController.collectionView(_:targetIndexPathForMoveOfItemFromOriginalIndexPath:atCurrentIndexPath:toProposedIndexPath:)(v20, v10, v19);
+  viewCopy = view;
+  v21 = selfCopy;
+  HUDashboardViewController.collectionView(_:targetIndexPathForMoveOfItemFromOriginalIndexPath:atCurrentIndexPath:toProposedIndexPath:)(viewCopy, v10, v19);
 
   v22 = *(v8 + 8);
   v22(v10, v7);
@@ -639,38 +639,38 @@
   return v23;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  HUDashboardViewController.collectionView(_:performDropWith:)(v6, a4);
+  selfCopy = self;
+  HUDashboardViewController.collectionView(_:performDropWith:)(viewCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
   swift_unknownObjectRetain();
-  v10 = self;
-  v6 = [(HUDashboardViewController *)v10 layoutManager];
-  v7 = v6 + OBJC_IVAR___HUDashboardLayoutManager_hoveringGridPosition;
-  v8 = *(&v6->super.super.isa + OBJC_IVAR___HUDashboardLayoutManager_hoveringGridPosition);
+  selfCopy = self;
+  layoutManager = [(HUDashboardViewController *)selfCopy layoutManager];
+  v7 = layoutManager + OBJC_IVAR___HUDashboardLayoutManager_hoveringGridPosition;
+  v8 = *(&layoutManager->super.super.isa + OBJC_IVAR___HUDashboardLayoutManager_hoveringGridPosition);
   *(v7 + 1) = 0;
   *(v7 + 2) = 0;
   *v7 = 0;
 
-  v9 = [(HUDashboardViewController *)v10 layoutManager];
-  *(&v9->super.super.isa + OBJC_IVAR___HUDashboardLayoutManager_adaptiveTileDragInteractionLayouts) = 0;
+  layoutManager2 = [(HUDashboardViewController *)selfCopy layoutManager];
+  *(&layoutManager2->super.super.isa + OBJC_IVAR___HUDashboardLayoutManager_adaptiveTileDragInteractionLayouts) = 0;
 
-  sub_20D0EA1AC(a4);
+  sub_20D0EA1AC(end);
   swift_unknownObjectRelease();
 }
 
 - (id)contextTypeDescriptionForAnalytics
 {
-  v2 = self;
-  v3 = [(HUDashboardViewController *)v2 context];
+  selfCopy = self;
+  context = [(HUDashboardViewController *)selfCopy context];
   sub_20CFE86BC();
   v5 = v4;
 
@@ -691,11 +691,11 @@
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D2C900];
-  v4 = [(HUDashboardViewController *)self hu_preloadContent];
-  v11[0] = v4;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 firstFullUpdateFuture];
-  v11[1] = v6;
+  hu_preloadContent = [(HUDashboardViewController *)self hu_preloadContent];
+  v11[0] = hu_preloadContent;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  firstFullUpdateFuture = [itemManager firstFullUpdateFuture];
+  v11[1] = firstFullUpdateFuture;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   v8 = [v3 combineAllFutures:v7];
   v9 = [v8 flatMap:&__block_literal_global_127];
@@ -705,9 +705,9 @@
 
 + (void)prefetchState
 {
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v2 = [v4 homeFuture];
-  v3 = [v2 addSuccessBlock:&__block_literal_global_241];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeFuture = [mEMORY[0x277D146E8] homeFuture];
+  v3 = [homeFuture addSuccessBlock:&__block_literal_global_241];
 }
 
 void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, void *a2)
@@ -717,12 +717,12 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
   [v3 prefetchStateForHome:v2];
 }
 
-- (HUDashboardViewController)initWithContext:(id)a3 asOverlay:(BOOL)a4 delegate:(id)a5
+- (HUDashboardViewController)initWithContext:(id)context asOverlay:(BOOL)overlay delegate:(id)delegate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [[HUDashboardItemManager alloc] initWithContext:v8 delegate:0];
+  contextCopy = context;
+  delegateCopy = delegate;
+  v10 = [[HUDashboardItemManager alloc] initWithContext:contextCopy delegate:0];
   v27.receiver = self;
   v27.super_class = HUDashboardViewController;
   v11 = [(HUControllableItemCollectionViewController *)&v27 initUsingCompositionalLayoutWithItemManager:v10];
@@ -732,8 +732,8 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
     layoutManager = v11->_layoutManager;
     v11->_layoutManager = v12;
 
-    v11->_isOverlay = a4;
-    objc_storeWeak(&v11->_delegate, v9);
+    v11->_isOverlay = overlay;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v11->_viewIsFullyVisible = 0;
     v14 = HFLogForCategory();
     v15 = HFLogForCategory();
@@ -761,7 +761,7 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
     if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
     {
       v23 = +[HUSideBarSelectionManager sharedManager];
-      [v23 setCurrentContext:v8];
+      [v23 setCurrentContext:contextCopy];
     }
 
     v24 = objc_alloc_init(HUAccessoryControlAnimator);
@@ -776,9 +776,9 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
 
 - (HUDashboardViewController)init
 {
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v4 = [v3 home];
-  v5 = [HUDashboardContext homeDashboardForHome:v4];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  home = [mEMORY[0x277D146E8] home];
+  v5 = [HUDashboardContext homeDashboardForHome:home];
 
   v6 = [(HUDashboardViewController *)self initWithContext:v5 delegate:0];
   return v6;
@@ -796,17 +796,17 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "[HUDashboardViewController:viewDidLoad]", v25, 2u);
   }
 
-  v4 = [(HUDashboardViewController *)self collectionView];
+  collectionView = [(HUDashboardViewController *)self collectionView];
   v5 = objc_opt_class();
   v6 = *MEMORY[0x277D767D8];
   v7 = +[HUGridSectionHeaderView reuseIdentifier];
-  [v4 registerClass:v5 forSupplementaryViewOfKind:v6 withReuseIdentifier:v7];
+  [collectionView registerClass:v5 forSupplementaryViewOfKind:v6 withReuseIdentifier:v7];
 
-  v8 = [(HUDashboardViewController *)self collectionView];
-  [v8 setPreservesSuperviewLayoutMargins:1];
+  collectionView2 = [(HUDashboardViewController *)self collectionView];
+  [collectionView2 setPreservesSuperviewLayoutMargins:1];
 
-  v9 = [(HUDashboardViewController *)self navigationItem];
-  [v9 setLargeTitleDisplayMode:1];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:1];
 
   [(HUDashboardViewController *)self _setUpNavigationBar];
   if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
@@ -816,70 +816,70 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
 
   [(HUDashboardViewController *)self _setupBackgroundView];
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
-  v10 = [(HUDashboardViewController *)self collectionView];
-  [v10 contentInset];
+  collectionView3 = [(HUDashboardViewController *)self collectionView];
+  [collectionView3 contentInset];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(HUDashboardViewController *)self collectionView];
-  [v19 setContentInset:{v12 + 10.0, v14, v16 + 150.0, v18}];
+  collectionView4 = [(HUDashboardViewController *)self collectionView];
+  [collectionView4 setContentInset:{v12 + 10.0, v14, v16 + 150.0, v18}];
 
-  v20 = [(HUDashboardViewController *)self collectionView];
-  [v20 setIndicatorStyle:1];
+  collectionView5 = [(HUDashboardViewController *)self collectionView];
+  [collectionView5 setIndicatorStyle:1];
 
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v21 addObserver:self selector:sel_migrationUpdatedTileSize_ name:*MEMORY[0x277D13D28] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_migrationUpdatedTileSize_ name:*MEMORY[0x277D13D28] object:0];
 
-  v22 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v22 addObserver:self selector:sel_bannerSizeUpdated_ name:@"HUBannerSizeHasUpdatedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_bannerSizeUpdated_ name:@"HUBannerSizeHasUpdatedNotification" object:0];
 
-  v23 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v23 addObserver:self selector:sel_applicationWentIntoBackground_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_applicationWentIntoBackground_ name:*MEMORY[0x277D76660] object:0];
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v14 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v11 viewDidAppear:a3];
+  [(HUControllableItemCollectionViewController *)&v11 viewDidAppear:appear];
   [(HUDashboardViewController *)self setViewIsFullyVisible:1];
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 accessoryTypeGroup];
-  v6 = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
+  context = [(HUDashboardViewController *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
+  energyAccessoryTypeGroup = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
 
-  if (v5 == v6)
+  if (accessoryTypeGroup == energyAccessoryTypeGroup)
   {
-    v7 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+    energyCategoryViewStartTime = [(HUDashboardViewController *)self energyCategoryViewStartTime];
 
-    if (v7)
+    if (energyCategoryViewStartTime)
     {
       v8 = HFLogForCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+        energyCategoryViewStartTime2 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
         *buf = 138412290;
-        v13 = v10;
+        v13 = energyCategoryViewStartTime2;
         _os_log_error_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_ERROR, "Expected energyCategoryViewStartTime to be nil when displaying the view but found value: %@", buf, 0xCu);
       }
     }
 
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:date];
   }
 
   [(HUDashboardViewController *)self _updateFilterBarViewIfNeeded];
   [(HUDashboardViewController *)self _sendFilterBarViewToBackIfNeeded];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v22[2] = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -890,7 +890,7 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
 
   v21.receiver = self;
   v21.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v21 viewWillAppear:v3];
+  [(HUControllableItemCollectionViewController *)&v21 viewWillAppear:appearCopy];
   [(HUDashboardViewController *)self _requestLocationAuth];
   [(HUDashboardViewController *)self _setUpFilterBar];
   [(HUDashboardViewController *)self _updateFilterBarVisibility];
@@ -898,10 +898,10 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
   [(HUDashboardViewController *)self _updateBarTintColors];
   [(HUDashboardViewController *)self setupTipsObserver];
   [(HUDashboardViewController *)self _updateAnnounceNotificationSettingsIfNeeded];
-  v6 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v7 = [(HUDashboardViewController *)self collectionView];
-  v8 = [v7 visibleCells];
-  [v6 enableCameraSnapshotsForCells:v8];
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  [cameraItemModuleController enableCameraSnapshotsForCells:visibleCells];
 
   objc_initWeak(&buf, self);
   v9 = objc_opt_self();
@@ -916,23 +916,23 @@ void __42__HUDashboardViewController_prefetchState__block_invoke(uint64_t a1, vo
   objc_copyWeak(&v19, &buf);
   v12 = [(HUDashboardViewController *)self registerForTraitChanges:v11 withHandler:v18];
 
-  v13 = [(HUDashboardViewController *)self context];
-  v14 = [v13 home];
-  LODWORD(v10) = [v14 hf_shouldBlockCurrentRestrictedGuestFromHome];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  LODWORD(v10) = [home hf_shouldBlockCurrentRestrictedGuestFromHome];
 
   if (v10)
   {
     [(HUDashboardViewController *)self createRestrictedGuestBlockedBackdropViewIfNeeded];
-    v15 = [(HUDashboardViewController *)self view];
-    v16 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    v17 = [(HUDashboardViewController *)self wallpaperView];
-    [v15 insertSubview:v16 above:v17];
+    view = [(HUDashboardViewController *)self view];
+    restrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+    [view insertSubview:restrictedGuestBlockedBackdropView above:wallpaperView];
   }
 
   else
   {
-    v15 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v15 removeFromSuperview];
+    view = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [view removeFromSuperview];
   }
 
   [(HUDashboardViewController *)self _showNoHomeAccessViewsIfNeeded];
@@ -977,29 +977,29 @@ void __44__HUDashboardViewController_viewWillAppear___block_invoke(uint64_t a1, 
 LABEL_7:
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10.receiver = self;
   v10.super_class = HUDashboardViewController;
-  [(HUDashboardViewController *)&v10 viewIsAppearing:a3];
+  [(HUDashboardViewController *)&v10 viewIsAppearing:appearing];
   v11[0] = objc_opt_class();
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v5 = [(HUDashboardViewController *)self registerForTraitChanges:v4 withAction:sel_handleTraitChanges];
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 filterPresentationStyle];
+  context = [(HUDashboardViewController *)self context];
+  filterPresentationStyle = [context filterPresentationStyle];
 
-  if (v7 == 1)
+  if (filterPresentationStyle == 1)
   {
-    v8 = [(HUDashboardViewController *)self navigationItem];
-    v9 = [v8 _bottomPalette];
-    [v9 setMinimumHeight:0.0];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    _bottomPalette = [navigationItem _bottomPalette];
+    [_bottomPalette setMinimumHeight:0.0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v24 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1010,25 +1010,25 @@ LABEL_7:
 
   v21.receiver = self;
   v21.super_class = HUDashboardViewController;
-  [(HUItemCollectionViewController *)&v21 viewWillDisappear:v3];
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 accessoryTypeGroup];
-  v8 = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
-  v9 = v8;
-  if (v7 != v8)
+  [(HUItemCollectionViewController *)&v21 viewWillDisappear:disappearCopy];
+  context = [(HUDashboardViewController *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
+  energyAccessoryTypeGroup = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
+  v9 = energyAccessoryTypeGroup;
+  if (accessoryTypeGroup != energyAccessoryTypeGroup)
   {
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v13 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+  energyCategoryViewStartTime = [(HUDashboardViewController *)self energyCategoryViewStartTime];
 
-  if (v13)
+  if (energyCategoryViewStartTime)
   {
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
-    [v14 timeIntervalSinceDate:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    energyCategoryViewStartTime2 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+    [date timeIntervalSinceDate:energyCategoryViewStartTime2];
     v17 = v16;
 
     v18 = HFLogForCategory();
@@ -1042,24 +1042,24 @@ LABEL_5:
     [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:0];
     if (v17 > 1.0)
     {
-      v6 = [MEMORY[0x277D146E8] sharedDispatcher];
-      v7 = [v6 allHomesFuture];
+      context = [MEMORY[0x277D146E8] sharedDispatcher];
+      accessoryTypeGroup = [context allHomesFuture];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __47__HUDashboardViewController_viewWillDisappear___block_invoke;
       v20[3] = &__block_descriptor_40_e29_v24__0__NSArray_8__NSError_16l;
       *&v20[4] = v17;
-      v19 = [v7 addCompletionBlock:v20];
+      v19 = [accessoryTypeGroup addCompletionBlock:v20];
       goto LABEL_5;
     }
   }
 
 LABEL_6:
   [(HUDashboardViewController *)self setViewIsFullyVisible:0];
-  v10 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v11 = [(HUDashboardViewController *)self collectionView];
-  v12 = [v11 visibleCells];
-  [v10 disableCameraSnapshotsForCells:v12];
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  [cameraItemModuleController disableCameraSnapshotsForCells:visibleCells];
 }
 
 void __47__HUDashboardViewController_viewWillDisappear___block_invoke(uint64_t a1, void *a2)
@@ -1109,11 +1109,11 @@ LABEL_11:
   [HUEnergyAnalytics saveViewDurationEvent:47 withDuration:v9 withUserHasAccessories:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(HUControllableItemCollectionViewController *)&v4 viewDidDisappear:disappear];
   [(HUDashboardViewController *)self tearDownTipsObserver];
 }
 
@@ -1122,44 +1122,44 @@ LABEL_11:
   v14.receiver = self;
   v14.super_class = HUDashboardViewController;
   [(HUDashboardViewController *)&v14 viewLayoutMarginsDidChange];
-  v3 = [(HUDashboardViewController *)self view];
-  [v3 layoutMargins];
+  view = [(HUDashboardViewController *)self view];
+  [view layoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(HUDashboardViewController *)self _filterBarController];
-  v13 = [v12 collectionView];
-  [v13 setLayoutMargins:{v5, v7, v9, v11}];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+  collectionView = [_filterBarController collectionView];
+  [collectionView setLayoutMargins:{v5, v7, v9, v11}];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v17.receiver = self;
   v17.super_class = HUDashboardViewController;
-  [(HUDashboardViewController *)&v17 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+  [(HUDashboardViewController *)&v17 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  restrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
 
-  if (v8)
+  if (restrictedGuestBlockedBackdropView)
   {
-    v9 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v9 removeFromSuperview];
+    restrictedGuestBlockedBackdropView2 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [restrictedGuestBlockedBackdropView2 removeFromSuperview];
 
     [(HUDashboardViewController *)self setRestrictedGuestBlockedBackdropView:0];
-    v10 = [(HUDashboardViewController *)self context];
-    v11 = [v10 home];
-    v12 = [v11 hf_shouldBlockCurrentRestrictedGuestFromHome];
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    hf_shouldBlockCurrentRestrictedGuestFromHome = [home hf_shouldBlockCurrentRestrictedGuestFromHome];
 
-    if (v12)
+    if (hf_shouldBlockCurrentRestrictedGuestFromHome)
     {
       [(HUDashboardViewController *)self createRestrictedGuestBlockedBackdropViewIfNeeded];
-      v13 = [(HUDashboardViewController *)self view];
-      v14 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-      v15 = [(HUDashboardViewController *)self wallpaperView];
-      [v13 insertSubview:v14 above:v15];
+      view = [(HUDashboardViewController *)self view];
+      restrictedGuestBlockedBackdropView3 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+      wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+      [view insertSubview:restrictedGuestBlockedBackdropView3 above:wallpaperView];
     }
   }
 
@@ -1168,7 +1168,7 @@ LABEL_11:
   v16[2] = __80__HUDashboardViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v16[3] = &unk_277DB79B8;
   v16[4] = self;
-  [v7 animateAlongsideTransition:v16 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v16 completion:0];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1176,8 +1176,8 @@ LABEL_11:
   v10.receiver = self;
   v10.super_class = HUDashboardViewController;
   [(HUItemCollectionViewController *)&v10 viewDidLayoutSubviews];
-  v3 = [(HUDashboardViewController *)self collectionView];
-  [v3 frame];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  [collectionView frame];
   v5 = v4;
   v7 = v6;
 
@@ -1189,7 +1189,7 @@ LABEL_11:
   [(HUDashboardViewController *)self setPreviousCollectionViewSize:v5, v7];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1200,11 +1200,11 @@ LABEL_11:
 
   if ([(HUDashboardViewController *)self viewIsFullyVisible])
   {
-    v5 = [(HUDashboardViewController *)self energyAccessoryView];
-    [v5 updateEnergyIndicatorViewSizeThatFits];
+    energyAccessoryView = [(HUDashboardViewController *)self energyAccessoryView];
+    [energyAccessoryView updateEnergyIndicatorViewSizeThatFits];
 
-    v6 = [(HUDashboardViewController *)self energyAccessoryView];
-    [v6 sizeToFit];
+    energyAccessoryView2 = [(HUDashboardViewController *)self energyAccessoryView];
+    [energyAccessoryView2 sizeToFit];
   }
 
   [(HUDashboardViewController *)self _showNoHomeAccessViewsIfNeeded];
@@ -1212,29 +1212,29 @@ LABEL_11:
 
 - (HUDashboardContext)context
 {
-  v2 = [(HUItemCollectionViewController *)self itemManager];
-  v3 = [v2 context];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  context = [itemManager context];
 
-  return v3;
+  return context;
 }
 
-- (void)setItemShowingSizeToggleButton:(id)a3 animated:(BOOL)a4
+- (void)setItemShowingSizeToggleButton:(id)button animated:(BOOL)animated
 {
-  v7 = a3;
+  buttonCopy = button;
   if (([MEMORY[0x277D14CE8] isAMac] & 1) == 0)
   {
-    v8 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
-    v9 = v7;
+    itemShowingSizeToggleButton = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+    v9 = buttonCopy;
     v10 = v9;
-    if (v8 == v9)
+    if (itemShowingSizeToggleButton == v9)
     {
     }
 
     else
     {
-      if (v8)
+      if (itemShowingSizeToggleButton)
       {
-        v11 = [v8 isEqual:v9];
+        v11 = [itemShowingSizeToggleButton isEqual:v9];
 
         if (v11)
         {
@@ -1246,19 +1246,19 @@ LABEL_11:
       {
       }
 
-      v8 = [MEMORY[0x277CBEB18] array];
-      v12 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
-      [v8 na_safeAddObject:v12];
+      itemShowingSizeToggleButton = [MEMORY[0x277CBEB18] array];
+      itemShowingSizeToggleButton2 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+      [itemShowingSizeToggleButton na_safeAddObject:itemShowingSizeToggleButton2];
 
-      [v8 na_safeAddObject:v10];
-      objc_storeStrong(&self->_itemShowingSizeToggleButton, a3);
+      [itemShowingSizeToggleButton na_safeAddObject:v10];
+      objc_storeStrong(&self->_itemShowingSizeToggleButton, button);
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __69__HUDashboardViewController_setItemShowingSizeToggleButton_animated___block_invoke;
       v13[3] = &unk_277DC29C8;
       v13[4] = self;
-      v14 = a4;
-      [v8 na_each:v13];
+      animatedCopy = animated;
+      [itemShowingSizeToggleButton na_each:v13];
     }
   }
 
@@ -1306,10 +1306,10 @@ void __69__HUDashboardViewController_setItemShowingSizeToggleButton_animated___b
   [v13 setZPosition:v12];
 }
 
-- (void)reloadLayoutAnimated:(BOOL)a3 fastUpdate:(BOOL)a4
+- (void)reloadLayoutAnimated:(BOOL)animated fastUpdate:(BOOL)update
 {
-  v4 = a4;
-  v5 = a3;
+  updateCopy = update;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__HUDashboardViewController_reloadLayoutAnimated_fastUpdate___block_invoke;
@@ -1317,7 +1317,7 @@ void __69__HUDashboardViewController_setItemShowingSizeToggleButton_animated___b
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
   v8 = v7;
-  if (v5)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0.3];
   }
@@ -1327,20 +1327,20 @@ void __69__HUDashboardViewController_setItemShowingSizeToggleButton_animated___b
     (*(v7 + 2))(v7);
   }
 
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  v10 = [v9 allDisplayedItems];
-  v11 = [v10 allObjects];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  allDisplayedItems = [itemManager allDisplayedItems];
+  allObjects = [allDisplayedItems allObjects];
 
-  v12 = [(HUItemCollectionViewController *)self itemManager];
-  v13 = v12;
-  if (v4)
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v13 = itemManager2;
+  if (updateCopy)
   {
-    [v12 reconfigureUIRepresentationForItems:v11 withAnimation:v5];
+    [itemManager2 reconfigureUIRepresentationForItems:allObjects withAnimation:animatedCopy];
   }
 
   else
   {
-    [v12 reloadUIRepresentationForItems:v11 withAnimation:v5];
+    [itemManager2 reloadUIRepresentationForItems:allObjects withAnimation:animatedCopy];
   }
 }
 
@@ -1356,19 +1356,19 @@ void __61__HUDashboardViewController_reloadLayoutAnimated_fastUpdate___block_inv
 
 - (HUCameraController)ppt_cameraController
 {
-  v2 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v3 = [v2 cameraController];
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  cameraController = [cameraItemModuleController cameraController];
 
-  return v3;
+  return cameraController;
 }
 
 - (void)_showNoHomeAccessViewsIfNeeded
 {
   objc_opt_class();
-  v3 = [(HUDashboardViewController *)self navigationController];
+  navigationController = [(HUDashboardViewController *)self navigationController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = navigationController;
   }
 
   else
@@ -1378,11 +1378,11 @@ void __61__HUDashboardViewController_reloadLayoutAnimated_fastUpdate___block_inv
 
   v15 = v4;
 
-  v5 = [(HUDashboardViewController *)self context];
-  if ([v5 canShowNoHomeAccessView])
+  context = [(HUDashboardViewController *)self context];
+  if ([context canShowNoHomeAccessView])
   {
-    v6 = [v15 viewControllers];
-    v7 = [v6 count];
+    viewControllers = [v15 viewControllers];
+    v7 = [viewControllers count];
 
     if (v7 == 1)
     {
@@ -1396,16 +1396,16 @@ void __61__HUDashboardViewController_reloadLayoutAnimated_fastUpdate___block_inv
   {
   }
 
-  v8 = [(HUDashboardViewController *)self context];
-  v9 = [v8 home];
-  v10 = [v9 hf_shouldBlockCurrentUserFromHome];
+  context2 = [(HUDashboardViewController *)self context];
+  home = [context2 home];
+  hf_shouldBlockCurrentUserFromHome = [home hf_shouldBlockCurrentUserFromHome];
 
-  if (v10)
+  if (hf_shouldBlockCurrentUserFromHome)
   {
-    v11 = [(HUDashboardViewController *)self _dashboardNavigator];
-    v12 = [(HUDashboardViewController *)self context];
-    v13 = [v12 home];
-    v14 = [v11 showHome:v13];
+    _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+    context3 = [(HUDashboardViewController *)self context];
+    home2 = [context3 home];
+    v14 = [_dashboardNavigator showHome:home2];
   }
 
 LABEL_10:
@@ -1414,133 +1414,133 @@ LABEL_10:
 - (void)_updateBlockoutView
 {
   v78[4] = *MEMORY[0x277D85DE8];
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 home];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
 
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 home];
-  v8 = [v7 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade];
+  context2 = [(HUDashboardViewController *)self context];
+  home2 = [context2 home];
+  hf_shouldBlockCurrentUserFromHomeForRoarUpgrade = [home2 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade];
 
-  if (v8)
+  if (hf_shouldBlockCurrentUserFromHomeForRoarUpgrade)
   {
-    v9 = [v5 hf_blockCurrentUserFromHomeReason];
-    v10 = [(HUDashboardViewController *)self roarUpgradeView];
+    hf_blockCurrentUserFromHomeReason = [home hf_blockCurrentUserFromHomeReason];
+    roarUpgradeView = [(HUDashboardViewController *)self roarUpgradeView];
 
-    if (!v10)
+    if (!roarUpgradeView)
     {
-      v11 = [[HUROARUpgradeView alloc] initWithUpgradeViewReason:v9 home:v5];
+      v11 = [[HUROARUpgradeView alloc] initWithUpgradeViewReason:hf_blockCurrentUserFromHomeReason home:home];
       [(HUDashboardViewController *)self setRoarUpgradeView:v11];
 
-      v12 = [(HUDashboardViewController *)self roarUpgradeView];
-      [v12 setDelegate:self];
+      roarUpgradeView2 = [(HUDashboardViewController *)self roarUpgradeView];
+      [roarUpgradeView2 setDelegate:self];
 
-      v13 = [(HUDashboardViewController *)self roarUpgradeView];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+      roarUpgradeView3 = [(HUDashboardViewController *)self roarUpgradeView];
+      [roarUpgradeView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v77 = [(HUDashboardViewController *)self roarUpgradeView];
-      v75 = [v77 leadingAnchor];
-      v76 = [(HUDashboardViewController *)self view];
-      v74 = [v76 layoutMarginsGuide];
-      v73 = [v74 leadingAnchor];
-      v72 = [v75 constraintEqualToAnchor:v73];
+      roarUpgradeView4 = [(HUDashboardViewController *)self roarUpgradeView];
+      leadingAnchor = [roarUpgradeView4 leadingAnchor];
+      view = [(HUDashboardViewController *)self view];
+      layoutMarginsGuide = [view layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v78[0] = v72;
-      v71 = [(HUDashboardViewController *)self roarUpgradeView];
-      v69 = [v71 trailingAnchor];
-      v70 = [(HUDashboardViewController *)self view];
-      v68 = [v70 layoutMarginsGuide];
-      v67 = [v68 trailingAnchor];
-      v66 = [v69 constraintEqualToAnchor:v67];
+      roarUpgradeView5 = [(HUDashboardViewController *)self roarUpgradeView];
+      trailingAnchor = [roarUpgradeView5 trailingAnchor];
+      view2 = [(HUDashboardViewController *)self view];
+      layoutMarginsGuide2 = [view2 layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v66 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v78[1] = v66;
-      v65 = [(HUDashboardViewController *)self roarUpgradeView];
-      v62 = [v65 topAnchor];
-      v63 = [(HUDashboardViewController *)self view];
-      v61 = [v63 layoutMarginsGuide];
-      v14 = [v61 topAnchor];
-      v15 = [v62 constraintEqualToAnchor:v14];
+      roarUpgradeView6 = [(HUDashboardViewController *)self roarUpgradeView];
+      topAnchor = [roarUpgradeView6 topAnchor];
+      view3 = [(HUDashboardViewController *)self view];
+      layoutMarginsGuide3 = [view3 layoutMarginsGuide];
+      topAnchor2 = [layoutMarginsGuide3 topAnchor];
+      v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v78[2] = v15;
-      v16 = [(HUDashboardViewController *)self roarUpgradeView];
-      v17 = [v16 bottomAnchor];
+      roarUpgradeView7 = [(HUDashboardViewController *)self roarUpgradeView];
+      bottomAnchor = [roarUpgradeView7 bottomAnchor];
       [(HUDashboardViewController *)self view];
-      v19 = v18 = v5;
-      v20 = [v19 layoutMarginsGuide];
-      v21 = [v20 bottomAnchor];
-      v22 = [v17 constraintEqualToAnchor:v21];
+      v19 = v18 = home;
+      layoutMarginsGuide4 = [v19 layoutMarginsGuide];
+      bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+      v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v78[3] = v22;
       v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:4];
 
-      v5 = v18;
+      home = v18;
       [(HUDashboardViewController *)self setUpgradeViewConstraints:v64];
     }
 
-    v23 = [(HUDashboardViewController *)self roarBackdropView];
+    roarBackdropView = [(HUDashboardViewController *)self roarBackdropView];
 
-    if (!v23)
+    if (!roarBackdropView)
     {
       v24 = objc_alloc(MEMORY[0x277D75D68]);
       v25 = [MEMORY[0x277D75210] effectWithStyle:18];
       v26 = [v24 initWithEffect:v25];
       [(HUDashboardViewController *)self setRoarBackdropView:v26];
 
-      v27 = [(HUDashboardViewController *)self view];
-      [v27 bounds];
+      view4 = [(HUDashboardViewController *)self view];
+      [view4 bounds];
       v29 = v28;
       v31 = v30;
       v33 = v32;
       v35 = v34;
-      v36 = [(HUDashboardViewController *)self roarBackdropView];
-      [v36 setFrame:{v29, v31, v33, v35}];
+      roarBackdropView2 = [(HUDashboardViewController *)self roarBackdropView];
+      [roarBackdropView2 setFrame:{v29, v31, v33, v35}];
 
-      v37 = [(HUDashboardViewController *)self roarBackdropView];
-      [v37 setTranslatesAutoresizingMaskIntoConstraints:1];
+      roarBackdropView3 = [(HUDashboardViewController *)self roarBackdropView];
+      [roarBackdropView3 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-      v38 = [(HUDashboardViewController *)self roarBackdropView];
-      [v38 setAutoresizingMask:18];
+      roarBackdropView4 = [(HUDashboardViewController *)self roarBackdropView];
+      [roarBackdropView4 setAutoresizingMask:18];
     }
 
-    v39 = [(HUDashboardViewController *)self view];
-    v40 = [(HUDashboardViewController *)self roarBackdropView];
-    v41 = [(HUDashboardViewController *)self wallpaperView];
-    [v39 insertSubview:v40 above:v41];
+    view5 = [(HUDashboardViewController *)self view];
+    roarBackdropView5 = [(HUDashboardViewController *)self roarBackdropView];
+    wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+    [view5 insertSubview:roarBackdropView5 above:wallpaperView];
 
-    v42 = [(HUDashboardViewController *)self view];
-    v43 = [(HUDashboardViewController *)self roarUpgradeView];
-    [v42 addSubview:v43];
+    view6 = [(HUDashboardViewController *)self view];
+    roarUpgradeView8 = [(HUDashboardViewController *)self roarUpgradeView];
+    [view6 addSubview:roarUpgradeView8];
 
     v44 = MEMORY[0x277CCAAD0];
-    v45 = [(HUDashboardViewController *)self upgradeViewConstraints];
-    [v44 activateConstraints:v45];
+    upgradeViewConstraints = [(HUDashboardViewController *)self upgradeViewConstraints];
+    [v44 activateConstraints:upgradeViewConstraints];
 
-    v46 = [(HUDashboardViewController *)self roarUpgradeView];
-    [v46 updateScrollViewContentSize];
+    roarUpgradeView9 = [(HUDashboardViewController *)self roarUpgradeView];
+    [roarUpgradeView9 updateScrollViewContentSize];
     goto LABEL_7;
   }
 
   if ([(HUDashboardViewController *)self _isShowingRoarUpgradeView])
   {
     v47 = MEMORY[0x277CCAAD0];
-    v48 = [(HUDashboardViewController *)self upgradeViewConstraints];
-    [v47 deactivateConstraints:v48];
+    upgradeViewConstraints2 = [(HUDashboardViewController *)self upgradeViewConstraints];
+    [v47 deactivateConstraints:upgradeViewConstraints2];
 
-    v49 = [(HUDashboardViewController *)self roarUpgradeView];
-    [v49 removeFromSuperview];
+    roarUpgradeView10 = [(HUDashboardViewController *)self roarUpgradeView];
+    [roarUpgradeView10 removeFromSuperview];
 
-    v50 = [(HUDashboardViewController *)self roarBackdropView];
-    [v50 removeFromSuperview];
+    roarBackdropView6 = [(HUDashboardViewController *)self roarBackdropView];
+    [roarBackdropView6 removeFromSuperview];
 
-    v51 = [(HUItemCollectionViewController *)self itemManager];
-    v52 = [v51 itemProviders];
-    v53 = [v52 hmf_isEmpty];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    itemProviders = [itemManager itemProviders];
+    hmf_isEmpty = [itemProviders hmf_isEmpty];
 
-    if ((v53 & 1) == 0)
+    if ((hmf_isEmpty & 1) == 0)
     {
-      v46 = [(HUItemCollectionViewController *)self itemManager];
+      roarUpgradeView9 = [(HUItemCollectionViewController *)self itemManager];
       v54 = MEMORY[0x277D14788];
       v55 = MEMORY[0x277CBEB98];
-      v56 = [(HUItemCollectionViewController *)self itemManager];
-      v57 = [v56 itemProviders];
-      v58 = [v55 setWithArray:v57];
+      itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+      itemProviders2 = [itemManager2 itemProviders];
+      v58 = [v55 setWithArray:itemProviders2];
       v59 = [v54 requestToReloadItemProviders:v58 senderSelector:a2];
-      v60 = [v46 performItemUpdateRequest:v59];
+      v60 = [roarUpgradeView9 performItemUpdateRequest:v59];
 
 LABEL_7:
     }
@@ -1549,15 +1549,15 @@ LABEL_7:
 
 - (BOOL)_isShowingRoarUpgradeView
 {
-  v3 = [(HUDashboardViewController *)self view];
-  v4 = [v3 subviews];
-  v5 = [(HUDashboardViewController *)self roarUpgradeView];
-  if ([v4 na_safeContainsObject:v5])
+  view = [(HUDashboardViewController *)self view];
+  subviews = [view subviews];
+  roarUpgradeView = [(HUDashboardViewController *)self roarUpgradeView];
+  if ([subviews na_safeContainsObject:roarUpgradeView])
   {
-    v6 = [(HUDashboardViewController *)self view];
-    v7 = [v6 subviews];
-    v8 = [(HUDashboardViewController *)self roarBackdropView];
-    v9 = [v7 na_safeContainsObject:v8];
+    view2 = [(HUDashboardViewController *)self view];
+    subviews2 = [view2 subviews];
+    roarBackdropView = [(HUDashboardViewController *)self roarBackdropView];
+    v9 = [subviews2 na_safeContainsObject:roarBackdropView];
   }
 
   else
@@ -1570,31 +1570,31 @@ LABEL_7:
 
 - (BOOL)_isShowingRestrictedGuestBlockedBackdropView
 {
-  v3 = [(HUDashboardViewController *)self view];
-  v4 = [v3 subviews];
-  v5 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-  v6 = [v4 na_safeContainsObject:v5];
+  view = [(HUDashboardViewController *)self view];
+  subviews = [view subviews];
+  restrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+  v6 = [subviews na_safeContainsObject:restrictedGuestBlockedBackdropView];
 
   return v6;
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = HUDashboardViewController;
-  [(HUItemCollectionViewController *)&v4 itemManagerDidUpdate:a3];
+  [(HUItemCollectionViewController *)&v4 itemManagerDidUpdate:update];
   [(HUDashboardViewController *)self _updateBarButtons];
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
 }
 
-- (id)itemManager:(id)a3 futureToUpdateItems:(id)a4 itemUpdateOptions:(id)a5
+- (id)itemManager:(id)manager futureToUpdateItems:(id)items itemUpdateOptions:(id)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HUDashboardViewController *)self context];
-  if (![v12 shouldDelayItemUpdatesForViewVisibility] || -[HUDashboardViewController viewIsFullyVisible](self, "viewIsFullyVisible"))
+  managerCopy = manager;
+  itemsCopy = items;
+  optionsCopy = options;
+  context = [(HUDashboardViewController *)self context];
+  if (![context shouldDelayItemUpdatesForViewVisibility] || -[HUDashboardViewController viewIsFullyVisible](self, "viewIsFullyVisible"))
   {
 
 LABEL_4:
@@ -1602,7 +1602,7 @@ LABEL_4:
     {
       v21.receiver = self;
       v21.super_class = HUDashboardViewController;
-      v13 = [(HUItemCollectionViewController *)&v21 itemManager:v9 futureToUpdateItems:v10 itemUpdateOptions:v11];
+      v13 = [(HUItemCollectionViewController *)&v21 itemManager:managerCopy futureToUpdateItems:itemsCopy itemUpdateOptions:optionsCopy];
     }
 
     else
@@ -1610,14 +1610,14 @@ LABEL_4:
       v13 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC38]];
     }
 
-    v14 = v13;
+    viewFullyVisibleFuture = v13;
     goto LABEL_8;
   }
 
-  v16 = [v11 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v17 = [v16 BOOLValue];
+  v16 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
     goto LABEL_4;
   }
@@ -1635,22 +1635,22 @@ LABEL_4:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v10;
+      v25 = itemsCopy;
       _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Not visible - delayed items: %@", buf, 0xCu);
     }
   }
 
-  v14 = [(HUDashboardViewController *)self viewFullyVisibleFuture];
+  viewFullyVisibleFuture = [(HUDashboardViewController *)self viewFullyVisibleFuture];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __79__HUDashboardViewController_itemManager_futureToUpdateItems_itemUpdateOptions___block_invoke;
   v22[3] = &unk_277DB7530;
-  v23 = v10;
-  v20 = [v14 addCompletionBlock:v22];
+  v23 = itemsCopy;
+  v20 = [viewFullyVisibleFuture addCompletionBlock:v22];
 
 LABEL_8:
 
-  return v14;
+  return viewFullyVisibleFuture;
 }
 
 void __79__HUDashboardViewController_itemManager_futureToUpdateItems_itemUpdateOptions___block_invoke(uint64_t a1)
@@ -1676,29 +1676,29 @@ void __79__HUDashboardViewController_itemManager_futureToUpdateItems_itemUpdateO
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HUDashboardViewController;
-  v8 = a4;
-  [(HUControllableItemCollectionViewController *)&v11 collectionView:a3 willDisplayCell:v8 forItemAtIndexPath:a5];
+  cellCopy = cell;
+  [(HUControllableItemCollectionViewController *)&v11 collectionView:view willDisplayCell:cellCopy forItemAtIndexPath:path];
   v9 = [(HUDashboardViewController *)self cameraItemModuleController:v11.receiver];
-  v12[0] = v8;
+  v12[0] = cellCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
   [v9 enableCameraSnapshotsForCells:v10];
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = HUDashboardViewController;
-  v8 = a4;
-  [(HUControllableItemCollectionViewController *)&v11 collectionView:a3 didEndDisplayingCell:v8 forItemAtIndexPath:a5];
+  cellCopy = cell;
+  [(HUControllableItemCollectionViewController *)&v11 collectionView:view didEndDisplayingCell:cellCopy forItemAtIndexPath:path];
   v9 = [(HUDashboardViewController *)self cameraItemModuleController:v11.receiver];
-  v12[0] = v8;
+  v12[0] = cellCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
 
   [v9 disableCameraSnapshotsForCells:v10];
@@ -1706,11 +1706,11 @@ void __79__HUDashboardViewController_itemManager_futureToUpdateItems_itemUpdateO
 
 - (BOOL)automaticallyUpdatesViewControllerTitle
 {
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v4 = [v3 context];
-  v5 = [v4 overrideDashboardTitle];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  context = [itemManager context];
+  overrideDashboardTitle = [context overrideDashboardTitle];
 
-  if (v5)
+  if (overrideDashboardTitle)
   {
     return 0;
   }
@@ -1720,52 +1720,52 @@ void __79__HUDashboardViewController_itemManager_futureToUpdateItems_itemUpdateO
   return [(HUItemCollectionViewController *)&v7 automaticallyUpdatesViewControllerTitle];
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
   v11.receiver = self;
   v11.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v11 diffableDataItemManager:a3 didUpdateItems:a4 addItems:a5 removeItems:a6];
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 context];
-  v9 = [v8 overrideDashboardTitle];
+  [(HUControllableItemCollectionViewController *)&v11 diffableDataItemManager:manager didUpdateItems:items addItems:addItems removeItems:removeItems];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  context = [itemManager context];
+  overrideDashboardTitle = [context overrideDashboardTitle];
 
-  if (v9)
+  if (overrideDashboardTitle)
   {
-    v10 = [(HUDashboardViewController *)self navigationItem];
-    [v10 setTitle:v9];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    [navigationItem setTitle:overrideDashboardTitle];
   }
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v7, "section")}];
+  itemCopy = item;
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedSectionIdentifierForSectionIndex:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [(HUItemCollectionViewController *)self itemManager];
-  v11 = [v7 section];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  section = [pathCopy section];
 
-  v12 = [v10 displayedSectionIdentifierForSectionIndex:v11];
+  v12 = [itemManager2 displayedSectionIdentifierForSectionIndex:section];
 
-  if ([v12 isEqualToString:@"NowPlayingSection"] && (objc_msgSend(MEMORY[0x277D14CE8], "isAMac") & 1) == 0 && _os_feature_enabled_impl() || objc_msgSend(v12, "isEqualToString:", @"favoritesSection") || objc_msgSend(v6, "conformsToProtocol:", &unk_28251AC90))
+  if ([v12 isEqualToString:@"NowPlayingSection"] && (objc_msgSend(MEMORY[0x277D14CE8], "isAMac") & 1) == 0 && _os_feature_enabled_impl() || objc_msgSend(v12, "isEqualToString:", @"favoritesSection") || objc_msgSend(itemCopy, "conformsToProtocol:", &unk_28251AC90))
   {
     v13 = objc_opt_class();
     goto LABEL_7;
   }
 
-  v15 = [v6 latestResults];
+  latestResults = [itemCopy latestResults];
   v16 = *MEMORY[0x277D13D48];
-  v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277D13D48]];
+  v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13D48]];
 
   if (!v17)
   {
 LABEL_15:
     objc_opt_class();
-    v19 = [(HUItemCollectionViewController *)self itemManager];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
     if (objc_opt_isKindOfClass())
     {
-      v20 = v19;
+      v20 = itemManager3;
     }
 
     else
@@ -1776,7 +1776,7 @@ LABEL_15:
     v21 = v20;
 
     objc_opt_class();
-    v22 = v6;
+    v22 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v23 = v22;
@@ -1794,14 +1794,14 @@ LABEL_15:
       goto LABEL_27;
     }
 
-    v25 = [v21 alwaysAllowedScheduleItem];
-    if (([v22 isEqual:v25] & 1) == 0)
+    alwaysAllowedScheduleItem = [v21 alwaysAllowedScheduleItem];
+    if (([v22 isEqual:alwaysAllowedScheduleItem] & 1) == 0)
     {
-      v26 = [v21 pinCodeAccessItem];
-      if (![v22 isEqual:v26])
+      pinCodeAccessItem = [v21 pinCodeAccessItem];
+      if (![v22 isEqual:pinCodeAccessItem])
       {
-        v27 = [v21 homeKeyItem];
-        [v22 isEqual:v27];
+        homeKeyItem = [v21 homeKeyItem];
+        [v22 isEqual:homeKeyItem];
 
         goto LABEL_27;
       }
@@ -1813,8 +1813,8 @@ LABEL_27:
     goto LABEL_7;
   }
 
-  v18 = [v6 latestResults];
-  v13 = [v18 objectForKeyedSubscript:v16];
+  latestResults2 = [itemCopy latestResults];
+  v13 = [latestResults2 objectForKeyedSubscript:v16];
 
   if (!object_isClass(v13) || !v13 || ([v13 isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
@@ -1827,18 +1827,18 @@ LABEL_7:
   return v13;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v7, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v9 = [itemManager displayedSectionIdentifierForSectionIndex:{objc_msgSend(pathCopy, "section")}];
 
   if ([v9 isEqualToString:@"filterBarSection"])
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = [v6 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
     [v12 setUserInteractionEnabled:0];
   }
@@ -1847,24 +1847,24 @@ LABEL_7:
   {
     v14.receiver = self;
     v14.super_class = HUDashboardViewController;
-    v12 = [(HUItemCollectionViewController *)&v14 collectionView:v6 cellForItemAtIndexPath:v7];
+    v12 = [(HUItemCollectionViewController *)&v14 collectionView:viewCopy cellForItemAtIndexPath:pathCopy];
   }
 
   return v12;
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v104.receiver = self;
   v104.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v104 configureCell:v6 forItem:v7];
+  [(HUControllableItemCollectionViewController *)&v104 configureCell:cellCopy forItem:itemCopy];
   objc_opt_class();
-  v8 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = itemManager;
   }
 
   else
@@ -1875,7 +1875,7 @@ LABEL_7:
   v10 = v9;
 
   objc_opt_class();
-  v11 = v6;
+  v11 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -1888,9 +1888,9 @@ LABEL_7:
 
   v13 = v12;
 
-  v14 = [v7 latestResults];
+  latestResults = [itemCopy latestResults];
   v15 = *MEMORY[0x277D14000];
-  v16 = [v14 objectForKeyedSubscript:*MEMORY[0x277D14000]];
+  v16 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14000]];
 
   if (!v16 || !v13)
   {
@@ -1917,10 +1917,10 @@ LABEL_7:
       goto LABEL_16;
     }
 
-    v21 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
     v23 = v22 = v10;
-    [v21 handleFailureInFunction:v23 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v23 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v17, objc_opt_class()}];
 
     v10 = v22;
   }
@@ -1928,13 +1928,13 @@ LABEL_7:
   v20 = 0;
 LABEL_16:
 
-  v24 = [v20 viewController];
+  viewController = [v20 viewController];
 
-  if (!v24)
+  if (!viewController)
   {
     objc_opt_class();
-    v25 = [v7 latestResults];
-    v26 = [v25 objectForKeyedSubscript:v15];
+    latestResults2 = [itemCopy latestResults];
+    v26 = [latestResults2 objectForKeyedSubscript:v15];
     if (objc_opt_isKindOfClass())
     {
       v27 = v26;
@@ -1948,8 +1948,8 @@ LABEL_16:
     v28 = v27;
 
     v29 = [objc_alloc(MEMORY[0x277D268B8]) initWithRouteUID:v28];
-    v30 = [v29 view];
-    [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [v29 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [v29 setLayout:3];
     [v29 setSupportsHorizontalLayout:1];
@@ -1978,18 +1978,18 @@ LABEL_22:
 
   if (v34)
   {
-    v35 = [(HUDashboardViewController *)self blurGroupingEffectView];
+    blurGroupingEffectView = [(HUDashboardViewController *)self blurGroupingEffectView];
 
-    if (!v35)
+    if (!blurGroupingEffectView)
     {
       NSLog(&cfstr_BlurGroupingSh.isa);
     }
 
-    v36 = [(HUDashboardViewController *)self blurGroupingEffectView];
-    [v34 setBackgroundEffectGrouper:v36];
+    blurGroupingEffectView2 = [(HUDashboardViewController *)self blurGroupingEffectView];
+    [v34 setBackgroundEffectGrouper:blurGroupingEffectView2];
   }
 
-  if ([v7 conformsToProtocol:&unk_28251AC90])
+  if ([itemCopy conformsToProtocol:&unk_28251AC90])
   {
     v101 = v10;
     v102 = v34;
@@ -2008,45 +2008,45 @@ LABEL_22:
     v39 = v38;
 
     [v39 setDelegate:self];
-    [v39 setToggleable:{-[HUControllableItemCollectionViewController itemSupportsToggleInteraction:](self, "itemSupportsToggleInteraction:", v7)}];
-    v40 = [(HUDashboardViewController *)self layoutManager];
-    v41 = [v40 gridSizeForItem:v7];
+    [v39 setToggleable:{-[HUControllableItemCollectionViewController itemSupportsToggleInteraction:](self, "itemSupportsToggleInteraction:", itemCopy)}];
+    layoutManager = [(HUDashboardViewController *)self layoutManager];
+    v41 = [layoutManager gridSizeForItem:itemCopy];
     [v39 setGridSize:{v41, v42}];
 
-    v43 = [(HUItemCollectionViewController *)self itemManager];
-    v44 = [(HUItemCollectionViewController *)self itemManager];
-    v45 = [v44 indexPathForItem:v7];
-    v46 = [v43 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v45, "section")}];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    v45 = [itemManager3 indexPathForItem:itemCopy];
+    alwaysAllowedScheduleItem = [itemManager2 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v45, "section")}];
 
-    if ([v46 isEqualToString:@"favoritesSection"])
+    if ([alwaysAllowedScheduleItem isEqualToString:@"favoritesSection"])
     {
       [v39 setShowPrefixLabel:1];
-      v47 = [(HUDashboardViewController *)self layoutManager];
-      v48 = [v47 favoritesSectionGridSize];
-      [v39 setGridSize:{v48, v49}];
+      layoutManager2 = [(HUDashboardViewController *)self layoutManager];
+      favoritesSectionGridSize = [layoutManager2 favoritesSectionGridSize];
+      [v39 setGridSize:{favoritesSectionGridSize, v49}];
     }
 
     v103 = v39;
-    v50 = [(HUDashboardViewController *)self layoutManager];
-    v51 = [v50 gridSizeForItem:v7];
+    layoutManager3 = [(HUDashboardViewController *)self layoutManager];
+    v51 = [layoutManager3 gridSizeForItem:itemCopy];
     v53 = v52;
 
-    if ([v46 isEqualToString:@"AllAccessoriesSection"])
+    if ([alwaysAllowedScheduleItem isEqualToString:@"AllAccessoriesSection"])
     {
-      v54 = [(HUDashboardViewController *)self context];
-      [v54 home];
-      v55 = v7;
+      context = [(HUDashboardViewController *)self context];
+      [context home];
+      v55 = itemCopy;
       v56 = v32;
-      v57 = v46;
+      v57 = alwaysAllowedScheduleItem;
       v59 = v58 = v13;
-      v60 = [v59 hf_currentUserIsRestrictedGuest];
+      hf_currentUserIsRestrictedGuest = [v59 hf_currentUserIsRestrictedGuest];
 
       v13 = v58;
-      v46 = v57;
+      alwaysAllowedScheduleItem = v57;
       v32 = v56;
-      v7 = v55;
+      itemCopy = v55;
 
-      if (v60)
+      if (hf_currentUserIsRestrictedGuest)
       {
         if (v51 >= 2 && v53 >= 2)
         {
@@ -2063,9 +2063,9 @@ LABEL_22:
       goto LABEL_54;
     }
 
-    v61 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+    itemShowingSizeToggleButton = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
 
-    if (v61 == v7)
+    if (itemShowingSizeToggleButton == itemCopy)
     {
       v62 = 1.0;
     }
@@ -2076,15 +2076,15 @@ LABEL_22:
     }
 
     v63 = v103;
-    [v103 setShowsSizeChangeButton:v61 == v7 animated:0];
-    v64 = [v103 layer];
-    [v64 setZPosition:v62];
+    [v103 setShowsSizeChangeButton:itemShowingSizeToggleButton == itemCopy animated:0];
+    layer = [v103 layer];
+    [layer setZPosition:v62];
     v10 = v101;
     goto LABEL_45;
   }
 
   objc_opt_class();
-  v63 = v7;
+  v63 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v65 = v63;
@@ -2099,23 +2099,23 @@ LABEL_22:
 
   if (!v66)
   {
-    v46 = [v10 alwaysAllowedScheduleItem];
-    if ([v63 isEqual:v46])
+    alwaysAllowedScheduleItem = [v10 alwaysAllowedScheduleItem];
+    if ([v63 isEqual:alwaysAllowedScheduleItem])
     {
       v63 = 0;
       goto LABEL_54;
     }
 
-    v64 = [v10 pinCodeAccessItem];
-    if ([v63 isEqual:v64])
+    layer = [v10 pinCodeAccessItem];
+    if ([v63 isEqual:layer])
     {
       v63 = 0;
       goto LABEL_46;
     }
 
     v67 = v13;
-    v68 = [v10 homeKeyItem];
-    v69 = [v63 isEqual:v68];
+    homeKeyItem = [v10 homeKeyItem];
+    v69 = [v63 isEqual:homeKeyItem];
 
     if (v69)
     {
@@ -2125,92 +2125,92 @@ LABEL_22:
     }
 
     v102 = v34;
-    v70 = [v10 contactOwnerItem];
-    v71 = [v63 isEqual:v70];
+    contactOwnerItem = [v10 contactOwnerItem];
+    v71 = [v63 isEqual:contactOwnerItem];
 
     if (v71)
     {
-      v46 = [MEMORY[0x277D756E0] cellConfiguration];
-      v72 = [v63 latestResults];
-      v73 = [v72 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-      [v46 setText:v73];
+      alwaysAllowedScheduleItem = [MEMORY[0x277D756E0] cellConfiguration];
+      latestResults3 = [v63 latestResults];
+      v73 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      [alwaysAllowedScheduleItem setText:v73];
 
-      v74 = [MEMORY[0x277D75348] systemBlackColor];
-      v75 = [v46 textProperties];
-      [v75 setColor:v74];
+      systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+      textProperties = [alwaysAllowedScheduleItem textProperties];
+      [textProperties setColor:systemBlackColor];
 
-      v76 = [v46 textProperties];
-      [v76 setAlignment:1];
+      textProperties2 = [alwaysAllowedScheduleItem textProperties];
+      [textProperties2 setAlignment:1];
 
-      v64 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769C0] addingSymbolicTraits:2 options:0];
-      v77 = [MEMORY[0x277D74300] fontWithDescriptor:v64 size:0.0];
-      v78 = [v46 textProperties];
-      [v78 setFont:v77];
+      layer = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769C0] addingSymbolicTraits:2 options:0];
+      v77 = [MEMORY[0x277D74300] fontWithDescriptor:layer size:0.0];
+      textProperties3 = [alwaysAllowedScheduleItem textProperties];
+      [textProperties3 setFont:v77];
 
-      [v32 setContentConfiguration:v46];
-      v79 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
-      [v79 setCornerRadius:24.0];
-      v80 = [MEMORY[0x277D75348] systemWhiteColor];
-      [v79 setBackgroundColor:v80];
+      [v32 setContentConfiguration:alwaysAllowedScheduleItem];
+      listGroupedCellConfiguration = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
+      [listGroupedCellConfiguration setCornerRadius:24.0];
+      systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+      [listGroupedCellConfiguration setBackgroundColor:systemWhiteColor];
 
-      [v32 setBackgroundConfiguration:v79];
+      [v32 setBackgroundConfiguration:listGroupedCellConfiguration];
     }
 
     else
     {
-      v81 = [v10 accessoryNoAccessItem];
-      v82 = [v63 isEqual:v81];
+      accessoryNoAccessItem = [v10 accessoryNoAccessItem];
+      v82 = [v63 isEqual:accessoryNoAccessItem];
 
-      v46 = [MEMORY[0x277D756E0] cellConfiguration];
-      v83 = [v63 latestResults];
-      v84 = [v83 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-      [v46 setText:v84];
+      alwaysAllowedScheduleItem = [MEMORY[0x277D756E0] cellConfiguration];
+      latestResults4 = [v63 latestResults];
+      v84 = [latestResults4 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+      [alwaysAllowedScheduleItem setText:v84];
 
       if (v82)
       {
-        v85 = [MEMORY[0x277D75348] systemWhiteColor];
-        v86 = [v46 textProperties];
-        [v86 setColor:v85];
+        systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+        textProperties4 = [alwaysAllowedScheduleItem textProperties];
+        [textProperties4 setColor:systemWhiteColor2];
 
-        v87 = [v46 textProperties];
-        [v87 setAlignment:1];
+        textProperties5 = [alwaysAllowedScheduleItem textProperties];
+        [textProperties5 setAlignment:1];
 
         v88 = *MEMORY[0x277D769C0];
-        v64 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769C0] addingSymbolicTraits:2 options:0];
-        v89 = [MEMORY[0x277D74300] fontWithDescriptor:v64 size:0.0];
-        v90 = [v46 textProperties];
-        [v90 setFont:v89];
+        layer = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769C0] addingSymbolicTraits:2 options:0];
+        v89 = [MEMORY[0x277D74300] fontWithDescriptor:layer size:0.0];
+        textProperties6 = [alwaysAllowedScheduleItem textProperties];
+        [textProperties6 setFont:v89];
 
-        v91 = [v63 latestResults];
-        v92 = [v91 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
-        [v46 setSecondaryText:v92];
+        latestResults5 = [v63 latestResults];
+        v92 = [latestResults5 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+        [alwaysAllowedScheduleItem setSecondaryText:v92];
 
-        v93 = [MEMORY[0x277D75348] systemWhiteColor];
-        v94 = [v46 secondaryTextProperties];
-        [v94 setColor:v93];
+        systemWhiteColor3 = [MEMORY[0x277D75348] systemWhiteColor];
+        secondaryTextProperties = [alwaysAllowedScheduleItem secondaryTextProperties];
+        [secondaryTextProperties setColor:systemWhiteColor3];
 
-        v95 = [v46 secondaryTextProperties];
-        [v95 setAlignment:1];
+        secondaryTextProperties2 = [alwaysAllowedScheduleItem secondaryTextProperties];
+        [secondaryTextProperties2 setAlignment:1];
 
         v96 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:v88];
         v97 = [MEMORY[0x277D74300] fontWithDescriptor:v96 size:0.0];
-        v98 = [v46 secondaryTextProperties];
-        [v98 setFont:v97];
+        secondaryTextProperties3 = [alwaysAllowedScheduleItem secondaryTextProperties];
+        [secondaryTextProperties3 setFont:v97];
 
-        [v32 setContentConfiguration:v46];
-        v99 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
-        [v99 setCornerRadius:24.0];
+        [v32 setContentConfiguration:alwaysAllowedScheduleItem];
+        listGroupedCellConfiguration2 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
+        [listGroupedCellConfiguration2 setCornerRadius:24.0];
         v100 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:0.3];
-        [v99 setBackgroundColor:v100];
+        [listGroupedCellConfiguration2 setBackgroundColor:v100];
 
-        [v32 setBackgroundConfiguration:v99];
+        [v32 setBackgroundConfiguration:listGroupedCellConfiguration2];
       }
 
       else
       {
-        [v32 setContentConfiguration:v46];
-        v64 = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
-        [v32 setBackgroundConfiguration:v64];
+        [v32 setContentConfiguration:alwaysAllowedScheduleItem];
+        layer = [MEMORY[0x277D751C0] listGroupedCellConfiguration];
+        [v32 setBackgroundConfiguration:layer];
       }
     }
 
@@ -2226,38 +2226,38 @@ LABEL_54:
 LABEL_55:
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HUItemCollectionViewController *)self itemManager];
-  v12 = [v11 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v10, "section")}];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v12 = [itemManager displayedSectionIdentifierForSectionIndex:{objc_msgSend(pathCopy, "section")}];
 
-  if (([v9 isEqualToString:*MEMORY[0x277D767D8]] & 1) == 0)
+  if (([kindCopy isEqualToString:*MEMORY[0x277D767D8]] & 1) == 0)
   {
-    NSLog(&cfstr_AskedForAViewF.isa, v9);
+    NSLog(&cfstr_AskedForAViewF.isa, kindCopy);
   }
 
-  v13 = [(HUItemCollectionViewController *)self itemManager];
-  v14 = [v13 titleForSection:{objc_msgSend(v10, "section")}];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v14 = [itemManager2 titleForSection:{objc_msgSend(pathCopy, "section")}];
 
   if (!v14)
   {
-    NSLog(&cfstr_AskedForHeader.isa, v10);
+    NSLog(&cfstr_AskedForHeader.isa, pathCopy);
   }
 
   v15 = +[HUGridSectionHeaderView reuseIdentifier];
-  v27 = v8;
-  v16 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v15 forIndexPath:v10];
+  v27 = viewCopy;
+  v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v15 forIndexPath:pathCopy];
 
   [v16 setOverrideUserInterfaceStyle:2];
   v17 = +[HUCollectionLayoutManager defaultProminentInsetGroupedHeader];
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v18 = [MEMORY[0x277D75348] whiteColor];
-    v19 = [v17 textProperties];
-    [v19 setColor:v18];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    textProperties = [v17 textProperties];
+    [textProperties setColor:whiteColor];
   }
 
   [v17 setText:v14];
@@ -2269,9 +2269,9 @@ LABEL_55:
   v24 = [v20 stringWithFormat:@"%@.SectionHeader-%@", v22, v23];
   [v16 setAccessibilityIdentifier:v24];
 
-  [(HUDashboardViewController *)self _updateHeaderView:v16 atIndexPath:v10];
-  v25 = [(HUDashboardViewController *)self context];
-  LODWORD(v24) = [v25 canPresentDetailsViewControllerForSectionWithIdentifier:v12];
+  [(HUDashboardViewController *)self _updateHeaderView:v16 atIndexPath:pathCopy];
+  context = [(HUDashboardViewController *)self context];
+  LODWORD(v24) = [context canPresentDetailsViewControllerForSectionWithIdentifier:v12];
 
   if (v24)
   {
@@ -2357,71 +2357,71 @@ void __90__HUDashboardViewController_collectionView_viewForSupplementaryElementO
   }
 }
 
-- (id)reorderableItemListForSection:(int64_t)a3
+- (id)reorderableItemListForSection:(int64_t)section
 {
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 displayedSectionIdentifierForSectionIndex:a3];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 home];
-  v9 = HURoomForDashboardSectionIdentifier(v6, v8);
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v9 = HURoomForDashboardSectionIdentifier(v6, home);
 
   v10 = HUAccessoryTypeGroupForDashboardSectionIdentifier(v6);
-  v11 = [(HUItemCollectionViewController *)self itemManager];
-  v12 = [v11 itemModuleForSectionIdentifier:v6];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v12 = [itemManager2 itemModuleForSectionIdentifier:v6];
 
   if (v12)
   {
-    v13 = [v12 reorderableHomeKitItemList];
+    reorderableHomeKitItemList = [v12 reorderableHomeKitItemList];
     goto LABEL_10;
   }
 
   if (v9)
   {
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    v15 = [v14 reorderableServiceListForRoom:v9];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    reorderableFavoritesList = [itemManager3 reorderableServiceListForRoom:v9];
 LABEL_9:
-    v13 = v15;
+    reorderableHomeKitItemList = reorderableFavoritesList;
 
     goto LABEL_10;
   }
 
   if (v10)
   {
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    v15 = [v14 reorderableServiceListForType:v10];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    reorderableFavoritesList = [itemManager3 reorderableServiceListForType:v10];
     goto LABEL_9;
   }
 
   if ([v6 isEqualToString:@"favoritesSection"])
   {
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    v15 = [v14 reorderableFavoritesList];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    reorderableFavoritesList = [itemManager3 reorderableFavoritesList];
     goto LABEL_9;
   }
 
-  v13 = 0;
+  reorderableHomeKitItemList = 0;
 LABEL_10:
 
-  return v13;
+  return reorderableHomeKitItemList;
 }
 
-- (void)setReorderableItemList:(id)a3 forSection:(int64_t)a4
+- (void)setReorderableItemList:(id)list forSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 displayedSectionIdentifierForSectionIndex:a4];
+  listCopy = list;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v8 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
-  v9 = [(HUDashboardViewController *)self context];
-  v10 = [v9 home];
-  v11 = HURoomForDashboardSectionIdentifier(v8, v10);
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v11 = HURoomForDashboardSectionIdentifier(v8, home);
 
   v12 = HUAccessoryTypeGroupForDashboardSectionIdentifier(v8);
-  v13 = [(HUItemCollectionViewController *)self itemManager];
-  v14 = [v13 itemModuleForSectionIdentifier:v8];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  v14 = [itemManager2 itemModuleForSectionIdentifier:v8];
 
   objc_opt_class();
-  v18 = v6;
+  v18 = listCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v18;
@@ -2442,14 +2442,14 @@ LABEL_10:
 
   if (v11)
   {
-    v17 = [(HUItemCollectionViewController *)self itemManager];
-    [v17 setReorderableServiceList:v16 forRoom:v11];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    [itemManager3 setReorderableServiceList:v16 forRoom:v11];
   }
 
   else if (v12)
   {
-    v17 = [(HUItemCollectionViewController *)self itemManager];
-    [v17 setReorderableServiceList:v16 forType:v12];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    [itemManager3 setReorderableServiceList:v16 forType:v12];
   }
 
   else
@@ -2459,28 +2459,28 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v17 = [(HUItemCollectionViewController *)self itemManager];
-    [v17 setReorderableFavoritesList:v16];
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    [itemManager3 setReorderableFavoritesList:v16];
   }
 
 LABEL_13:
 }
 
-- (void)didReorderItemWithSortedItemsBySectionID:(id)a3
+- (void)didReorderItemWithSortedItemsBySectionID:(id)d
 {
   v6.receiver = self;
   v6.super_class = HUDashboardViewController;
-  [(HUControllableItemCollectionViewController *)&v6 didReorderItemWithSortedItemsBySectionID:a3];
-  v4 = [(HUDashboardViewController *)self collectionView];
-  v5 = [v4 collectionViewLayout];
-  [v5 invalidateLayout];
+  [(HUControllableItemCollectionViewController *)&v6 didReorderItemWithSortedItemsBySectionID:d];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (BOOL)_hasTapActionForItem:(id)a3
+- (BOOL)_hasTapActionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (-[HUDashboardViewController bannerItemModuleController](self, "bannerItemModuleController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasTapActionForItem:v4], v5, (v6))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (-[HUDashboardViewController bannerItemModuleController](self, "bannerItemModuleController"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasTapActionForItem:itemCopy], v5, (v6))
   {
     v7 = 1;
   }
@@ -2489,24 +2489,24 @@ LABEL_13:
   {
     v9.receiver = self;
     v9.super_class = HUDashboardViewController;
-    v7 = [(HUControllableItemCollectionViewController *)&v9 _hasTapActionForItem:v4];
+    v7 = [(HUControllableItemCollectionViewController *)&v9 _hasTapActionForItem:itemCopy];
   }
 
   return v7;
 }
 
-- (id)_performTapActionForItem:(id)a3 tappedArea:(id)a4
+- (id)_performTapActionForItem:(id)item tappedArea:(id)area
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  areaCopy = area;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v8 = [(HUDashboardViewController *)self bannerItemModuleController];
-      v9 = [v8 hasTapActionForItem:v6];
+      bannerItemModuleController = [(HUDashboardViewController *)self bannerItemModuleController];
+      v9 = [bannerItemModuleController hasTapActionForItem:itemCopy];
 
       if (!v9)
       {
@@ -2515,11 +2515,11 @@ LABEL_13:
     }
   }
 
-  v10 = [(HUItemCollectionViewController *)self moduleControllerForItem:v6];
+  v10 = [(HUItemCollectionViewController *)self moduleControllerForItem:itemCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 didSelectItem:v6];
+    [v10 didSelectItem:itemCopy];
   }
 
   objc_opt_class();
@@ -2529,54 +2529,54 @@ LABEL_13:
 LABEL_8:
     v14.receiver = self;
     v14.super_class = HUDashboardViewController;
-    v12 = [(HUControllableItemCollectionViewController *)&v14 _performTapActionForItem:v6 tappedArea:v7];
+    futureWithNoResult = [(HUControllableItemCollectionViewController *)&v14 _performTapActionForItem:itemCopy tappedArea:areaCopy];
     goto LABEL_10;
   }
 
-  v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
 LABEL_10:
 
-  return v12;
+  return futureWithNoResult;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (!a3)
+  animatedCopy = animated;
+  editingCopy = editing;
+  if (!editing)
   {
-    v7 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+    itemShowingSizeToggleButton = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
 
-    if (v7)
+    if (itemShowingSizeToggleButton)
     {
       [(HUDashboardViewController *)self setItemShowingSizeToggleButton:0];
     }
   }
 
-  if ([(HUDashboardViewController *)self isEditing]!= v5)
+  if ([(HUDashboardViewController *)self isEditing]!= editingCopy)
   {
     v8.receiver = self;
     v8.super_class = HUDashboardViewController;
-    [(HUControllableItemCollectionViewController *)&v8 setEditing:v5 animated:v4];
+    [(HUControllableItemCollectionViewController *)&v8 setEditing:editingCopy animated:animatedCopy];
     [(HUDashboardViewController *)self _updateAllHeaderViews];
     [(HUDashboardViewController *)self _updateBarButtons];
-    [(HUDashboardViewController *)self reloadLayoutAnimated:v4 fastUpdate:1];
+    [(HUDashboardViewController *)self reloadLayoutAnimated:animatedCopy fastUpdate:1];
   }
 }
 
-- (void)setViewIsFullyVisible:(BOOL)a3
+- (void)setViewIsFullyVisible:(BOOL)visible
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (self->_viewIsFullyVisible != a3)
+  if (self->_viewIsFullyVisible != visible)
   {
-    self->_viewIsFullyVisible = a3;
-    if (a3)
+    self->_viewIsFullyVisible = visible;
+    if (visible)
     {
-      v4 = [(HUDashboardViewController *)self viewFirstTimeFullyVisibleFuture];
-      v5 = [v4 isFinished];
+      viewFirstTimeFullyVisibleFuture = [(HUDashboardViewController *)self viewFirstTimeFullyVisibleFuture];
+      isFinished = [viewFirstTimeFullyVisibleFuture isFinished];
 
-      if ((v5 & 1) == 0)
+      if ((isFinished & 1) == 0)
       {
         v6 = HFLogForCategory();
         v7 = HFLogForCategory();
@@ -2592,17 +2592,17 @@ LABEL_10:
         }
       }
 
-      v11 = [(HUDashboardViewController *)self viewFirstTimeFullyVisibleFuture];
-      [v11 finishWithNoResult];
+      viewFirstTimeFullyVisibleFuture2 = [(HUDashboardViewController *)self viewFirstTimeFullyVisibleFuture];
+      [viewFirstTimeFullyVisibleFuture2 finishWithNoResult];
 
-      v12 = [(HUDashboardViewController *)self viewFullyVisibleFuture];
-      [v12 finishWithNoResult];
+      viewFullyVisibleFuture = [(HUDashboardViewController *)self viewFullyVisibleFuture];
+      [viewFullyVisibleFuture finishWithNoResult];
     }
 
     else
     {
-      v13 = [(HUDashboardViewController *)self viewFullyVisibleFuture];
-      [v13 cancel];
+      viewFullyVisibleFuture2 = [(HUDashboardViewController *)self viewFullyVisibleFuture];
+      [viewFullyVisibleFuture2 cancel];
 
       v14 = objc_alloc_init(MEMORY[0x277D2C900]);
       [(HUDashboardViewController *)self setViewFullyVisibleFuture:?];
@@ -2610,15 +2610,15 @@ LABEL_10:
   }
 }
 
-- (id)tappableAreaForPoint:(CGPoint)a3 inItem:(id)a4 atIndexPath:(id)a5
+- (id)tappableAreaForPoint:(CGPoint)point inItem:(id)item atIndexPath:(id)path
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
-  v11 = [(HUDashboardViewController *)self collectionView];
-  v12 = [v11 cellForItemAtIndexPath:v10];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  v12 = [collectionView cellForItemAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -2634,39 +2634,39 @@ LABEL_10:
   {
     v16.receiver = self;
     v16.super_class = HUDashboardViewController;
-    v14 = [(HUControllableItemCollectionViewController *)&v16 tappableAreaForPoint:v9 inItem:v10 atIndexPath:x, y];
+    v14 = [(HUControllableItemCollectionViewController *)&v16 tappableAreaForPoint:itemCopy inItem:pathCopy atIndexPath:x, y];
   }
 
   return v14;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 statusItemModule];
-  v7 = [v4 isEqual:v6];
+  moduleCopy = module;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  statusItemModule = [itemManager statusItemModule];
+  v7 = [moduleCopy isEqual:statusItemModule];
 
   if (v7)
   {
     v8 = HUStatusItemModuleController;
 LABEL_3:
-    v9 = [[v8 alloc] initWithModule:v4];
+    bannerItemModuleController = [[v8 alloc] initWithModule:moduleCopy];
 LABEL_6:
-    v14 = v9;
+    v14 = bannerItemModuleController;
     goto LABEL_7;
   }
 
-  v10 = [(HUItemCollectionViewController *)self itemManager];
-  v11 = [v10 bannerItemModule];
-  v12 = [v4 isEqual:v11];
+  itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+  bannerItemModule = [itemManager2 bannerItemModule];
+  v12 = [moduleCopy isEqual:bannerItemModule];
 
   if (v12)
   {
-    v13 = [[HUBannerItemModuleController alloc] initWithModule:v4 host:self delegate:self];
+    v13 = [[HUBannerItemModuleController alloc] initWithModule:moduleCopy host:self delegate:self];
     [(HUDashboardViewController *)self setBannerItemModuleController:v13];
 
-    v9 = [(HUDashboardViewController *)self bannerItemModuleController];
+    bannerItemModuleController = [(HUDashboardViewController *)self bannerItemModuleController];
     goto LABEL_6;
   }
 
@@ -2680,22 +2680,22 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [(HUDashboardViewController *)self context];
-    if (v16)
+    context = [(HUDashboardViewController *)self context];
+    if (context)
     {
-      v17 = [(HUDashboardViewController *)self context];
-      v18 = [v17 cameraPresentationStyle];
+      context2 = [(HUDashboardViewController *)self context];
+      cameraPresentationStyle = [context2 cameraPresentationStyle];
     }
 
     else
     {
-      v18 = 1;
+      cameraPresentationStyle = 1;
     }
 
-    v19 = [[HUDashboardCameraItemModuleController alloc] initWithModule:v4 cameraPresentationStyle:v18];
+    v19 = [[HUDashboardCameraItemModuleController alloc] initWithModule:moduleCopy cameraPresentationStyle:cameraPresentationStyle];
     [(HUDashboardViewController *)self setCameraItemModuleController:v19];
 
-    v9 = [(HUDashboardViewController *)self cameraItemModuleController];
+    bannerItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
     goto LABEL_6;
   }
 
@@ -2709,14 +2709,14 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(HUDashboardViewController *)self createDashboardTipModuleControllerWithModule:v4];
+    bannerItemModuleController = [(HUDashboardViewController *)self createDashboardTipModuleControllerWithModule:moduleCopy];
     goto LABEL_6;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(HUDashboardViewController *)self createEnergyDashboardModuleControllerWith:v4];
+    bannerItemModuleController = [(HUDashboardViewController *)self createEnergyDashboardModuleControllerWith:moduleCopy];
     goto LABEL_6;
   }
 
@@ -2726,47 +2726,47 @@ LABEL_7:
   return v14;
 }
 
-- (void)didSelectWelcomeBanner:(id)a3
+- (void)didSelectWelcomeBanner:(id)banner
 {
-  v4 = [(HUDashboardViewController *)self _dashboardNavigator];
-  v3 = [v4 showDiscoverTab];
+  _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+  showDiscoverTab = [_dashboardNavigator showDiscoverTab];
 }
 
-- (void)didSelectUnreachableResidentsBanner:(id)a3
+- (void)didSelectUnreachableResidentsBanner:(id)banner
 {
-  v7 = [(HUDashboardViewController *)self _dashboardNavigator];
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 home];
-  v6 = [v7 showBridgeSettingsForHome:v5];
+  _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v6 = [_dashboardNavigator showBridgeSettingsForHome:home];
 }
 
-- (void)didSelectHomeHubMigrationBanner:(id)a3
+- (void)didSelectHomeHubMigrationBanner:(id)banner
 {
-  v5 = a3;
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 home];
+  bannerCopy = banner;
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
 
   v8 = objc_alloc(MEMORY[0x277D14C98]);
-  v9 = [v7 currentUser];
-  v10 = [v8 initWithHome:v7 user:v9 nameStyle:0];
+  currentUser = [home currentUser];
+  v10 = [v8 initWithHome:home user:currentUser nameStyle:0];
 
   v11 = [v10 setDismissedHomeHubMigrationBanner:1];
-  v12 = [v5 module];
-  v13 = [v12 bannerItemProvider];
-  v14 = [v13 homeHubMigrationBannerItem];
+  module = [bannerCopy module];
+  bannerItemProvider = [module bannerItemProvider];
+  homeHubMigrationBannerItem = [bannerItemProvider homeHubMigrationBannerItem];
 
-  v15 = [v14 devices];
-  v16 = [v7 hf_homeHubMigrationBannerTapActionFromViewController:self devices:v15];
+  devices = [homeHubMigrationBannerItem devices];
+  v16 = [home hf_homeHubMigrationBannerTapActionFromViewController:self devices:devices];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __61__HUDashboardViewController_didSelectHomeHubMigrationBanner___block_invoke;
   v20[3] = &unk_277DBA120;
-  v22 = v5;
+  v22 = bannerCopy;
   v23 = a2;
-  v21 = v14;
-  v17 = v5;
-  v18 = v14;
+  v21 = homeHubMigrationBannerItem;
+  v17 = bannerCopy;
+  v18 = homeHubMigrationBannerItem;
   v19 = [v16 flatMap:v20];
 }
 
@@ -2785,26 +2785,26 @@ id __61__HUDashboardViewController_didSelectHomeHubMigrationBanner___block_invok
   return v8;
 }
 
-- (id)quickControlPresentationContextForItem:(id)a3 atIndexPath:(id)a4 point:(CGPoint)a5
+- (id)quickControlPresentationContextForItem:(id)item atIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
+  y = point.y;
+  x = point.x;
   v17.receiver = self;
   v17.super_class = HUDashboardViewController;
-  v9 = a3;
-  v10 = [(HUControllableItemCollectionViewController *)&v17 quickControlPresentationContextForItem:v9 atIndexPath:a4 point:x, y];
+  itemCopy = item;
+  v10 = [(HUControllableItemCollectionViewController *)&v17 quickControlPresentationContextForItem:itemCopy atIndexPath:path point:x, y];
   v11 = [(HUDashboardViewController *)self context:v17.receiver];
-  v12 = [v11 room];
-  if (v12)
+  room = [v11 room];
+  if (room)
   {
-    [v10 setParentViewHomeKitObject:v12];
+    [v10 setParentViewHomeKitObject:room];
   }
 
   else
   {
-    v13 = [(HUDashboardViewController *)self context];
-    v14 = [v13 home];
-    [v10 setParentViewHomeKitObject:v14];
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    [v10 setParentViewHomeKitObject:home];
   }
 
   objc_opt_class();
@@ -2818,19 +2818,19 @@ id __61__HUDashboardViewController_didSelectHomeHubMigrationBanner___block_invok
   return v10;
 }
 
-- (id)presentationCoordinator:(id)a3 contextForPresentationAtPoint:(CGPoint)a4
+- (id)presentationCoordinator:(id)coordinator contextForPresentationAtPoint:(CGPoint)point
 {
   v11.receiver = self;
   v11.super_class = HUDashboardViewController;
-  v5 = [(HUControllableItemCollectionViewController *)&v11 presentationCoordinator:a3 contextForPresentationAtPoint:a4.x, a4.y];
-  v6 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [v6 actionSetItemModule];
-  v8 = [v7 predictedActionSetItems];
+  v5 = [(HUControllableItemCollectionViewController *)&v11 presentationCoordinator:coordinator contextForPresentationAtPoint:point.x, point.y];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  actionSetItemModule = [itemManager actionSetItemModule];
+  predictedActionSetItems = [actionSetItemModule predictedActionSetItems];
 
-  v9 = [v5 item];
-  LODWORD(v7) = [v8 containsObject:v9];
+  item = [v5 item];
+  LODWORD(actionSetItemModule) = [predictedActionSetItems containsObject:item];
 
-  if (v7)
+  if (actionSetItemModule)
   {
     [v5 setIsItemDisplayedByPrediction:1];
   }
@@ -2838,21 +2838,21 @@ id __61__HUDashboardViewController_didSelectHomeHubMigrationBanner___block_invok
   return v5;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginPresentationWithContext:(id)context
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   v64.receiver = self;
   v64.super_class = HUDashboardViewController;
-  if ([(HUControllableItemCollectionViewController *)&v64 presentationCoordinator:v6 shouldBeginPresentationWithContext:v7])
+  if ([(HUControllableItemCollectionViewController *)&v64 presentationCoordinator:coordinatorCopy shouldBeginPresentationWithContext:contextCopy])
   {
-    v8 = [v7 item];
-    v9 = [(HUItemCollectionViewController *)self itemManager];
-    v10 = [v9 indexPathForItem:v8];
+    item = [contextCopy item];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v10 = [itemManager indexPathForItem:item];
 
-    v11 = [(HUItemCollectionViewController *)self itemManager];
-    v12 = [v11 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v10, "section")}];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    v12 = [itemManager2 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v10, "section")}];
 
     if ([v12 isEqualToString:@"energySection"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"tipsSection"))
     {
@@ -2863,13 +2863,13 @@ LABEL_51:
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HUDashboardViewController bannerItemModuleController](self, "bannerItemModuleController"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 hasTapActionForItem:v8], v14, (v15 & 1) == 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (-[HUDashboardViewController bannerItemModuleController](self, "bannerItemModuleController"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 hasTapActionForItem:item], v14, (v15 & 1) == 0))
     {
       objc_opt_class();
-      v18 = [v8 sourceItem];
+      sourceItem = [item sourceItem];
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
+        v19 = sourceItem;
       }
 
       else
@@ -2879,21 +2879,21 @@ LABEL_51:
 
       v58 = v19;
 
-      [v7 setItem:v58];
+      [contextCopy setItem:v58];
       v20 = MEMORY[0x277D143D8];
-      v16 = [(HUItemCollectionViewController *)self itemManager];
-      v21 = [v16 bannerItemModule];
-      v22 = [v21 hiddenBanners];
-      [v20 sendBannerInteractionforItem:v8 tappedBannerItemOverrideClassName:0 hiddenBannerEvents:v22];
+      itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+      bannerItemModule = [itemManager3 bannerItemModule];
+      hiddenBanners = [bannerItemModule hiddenBanners];
+      [v20 sendBannerInteractionforItem:item tappedBannerItemOverrideClassName:0 hiddenBannerEvents:hiddenBanners];
     }
 
     else
     {
       objc_opt_class();
-      v16 = v8;
+      itemManager3 = item;
       if (objc_opt_isKindOfClass())
       {
-        v17 = v16;
+        v17 = itemManager3;
       }
 
       else
@@ -2906,33 +2906,33 @@ LABEL_51:
 
     if (v58 && [(HUDashboardViewController *)self _canSkipStatusDetailsForItem:v58])
     {
-      v23 = [v58 latestResults];
-      v55 = [v23 objectForKeyedSubscript:*MEMORY[0x277D14078]];
+      latestResults = [v58 latestResults];
+      v55 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14078]];
 
       if ([v55 count] == 1)
       {
-        v24 = [v55 anyObject];
+        anyObject = [v55 anyObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v24 hf_serviceGroup];
-          v26 = v25;
-          if (v25)
+          hf_serviceGroup = [anyObject hf_serviceGroup];
+          v26 = hf_serviceGroup;
+          if (hf_serviceGroup)
           {
-            v27 = v25;
+            v27 = hf_serviceGroup;
           }
 
           else
           {
-            v27 = v24;
+            v27 = anyObject;
           }
 
           v28 = v27;
 
-          v24 = v28;
+          anyObject = v28;
         }
 
-        v29 = [(HUDashboardViewController *)self _shouldShowAccessoryControlsForHomeKitObject:v24 fromStatusItem:v58, v55];
+        v29 = [(HUDashboardViewController *)self _shouldShowAccessoryControlsForHomeKitObject:anyObject fromStatusItem:v58, v55];
         v30 = HFLogForCategory();
         v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
         if (v29)
@@ -2944,11 +2944,11 @@ LABEL_51:
             *&buf[12] = 2112;
             *&buf[14] = v58;
             *&buf[22] = 2112;
-            v72 = v24;
+            v72 = anyObject;
             _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "%@ Skipping status details for item: %@ and instead presenting accessory controls for HomeKit object: %@", buf, 0x20u);
           }
 
-          v32 = [(HUDashboardViewController *)self _presentAccessoryControlsForHomeKitObject:v24 fromStatusItem:v58 animated:1];
+          v32 = [(HUDashboardViewController *)self _presentAccessoryControlsForHomeKitObject:anyObject fromStatusItem:v58 animated:1];
         }
 
         else
@@ -2960,11 +2960,11 @@ LABEL_51:
             *&buf[12] = 2112;
             *&buf[14] = v58;
             *&buf[22] = 2112;
-            v72 = v24;
+            v72 = anyObject;
             _os_log_impl(&dword_20CEB6000, v30, OS_LOG_TYPE_DEFAULT, "%@ Skipping status details for item: %@ and instead presenting accessory settings for HomeKit object: %@", buf, 0x20u);
           }
 
-          v37 = [(HUDashboardViewController *)self _presentAccessorySettingsForHomeKitObject:v24 fromStatusItem:v58 animated:1];
+          v37 = [(HUDashboardViewController *)self _presentAccessorySettingsForHomeKitObject:anyObject fromStatusItem:v58 animated:1];
         }
 
 LABEL_49:
@@ -2996,7 +2996,7 @@ LABEL_50:
           {
             v35 = *(*&buf[8] + 40);
             *v65 = 138412802;
-            v66 = self;
+            selfCopy2 = self;
             v67 = 2112;
             v68 = v58;
             v69 = 2112;
@@ -3014,7 +3014,7 @@ LABEL_50:
           {
             v52 = *(*&buf[8] + 40);
             *v65 = 138412802;
-            v66 = self;
+            selfCopy2 = self;
             v67 = 2112;
             v68 = v58;
             v69 = 2112;
@@ -3033,11 +3033,11 @@ LABEL_50:
       _Block_object_dispose(buf, 8);
     }
 
-    if ([MEMORY[0x277D14670] isHomeControlService] && (objc_msgSend(v7, "didAuthenticate") & 1) == 0)
+    if ([MEMORY[0x277D14670] isHomeControlService] && (objc_msgSend(contextCopy, "didAuthenticate") & 1) == 0)
     {
-      v39 = [(HUItemCollectionViewController *)self itemManager];
-      v40 = [v7 item];
-      v41 = [v39 childItemsForItem:v40 ofClass:objc_opt_class()];
+      itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+      item2 = [contextCopy item];
+      v41 = [itemManager4 childItemsForItem:item2 ofClass:objc_opt_class()];
       v62[0] = MEMORY[0x277D85DD0];
       v62[1] = 3221225472;
       v62[2] = __88__HUDashboardViewController_presentationCoordinator_shouldBeginPresentationWithContext___block_invoke_317;
@@ -3048,19 +3048,19 @@ LABEL_50:
       v42 = v57;
       if (v57)
       {
-        v43 = [v7 copy];
-        v44 = [v7 controlItems];
-        [v43 setControlItems:v44];
+        v43 = [contextCopy copy];
+        controlItems = [contextCopy controlItems];
+        [v43 setControlItems:controlItems];
 
-        v45 = [(HUControllableItemCollectionViewController *)self lockAuthorizationDelegate];
-        v46 = [v45 authorizeIfLockedForViewController:self];
+        lockAuthorizationDelegate = [(HUControllableItemCollectionViewController *)self lockAuthorizationDelegate];
+        v46 = [lockAuthorizationDelegate authorizeIfLockedForViewController:self];
 
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
         v59[2] = __88__HUDashboardViewController_presentationCoordinator_shouldBeginPresentationWithContext___block_invoke_2;
         v59[3] = &unk_277DB7E68;
         v60 = v43;
-        v61 = v6;
+        v61 = coordinatorCopy;
         v47 = v43;
         v48 = [v46 addSuccessBlock:v59];
 
@@ -3075,8 +3075,8 @@ LABEL_50:
       v38 = 1;
     }
 
-    v49 = [v8 latestResults];
-    v50 = [v49 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    latestResults2 = [item latestResults];
+    v50 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
 
     v13 = (v50 == 0) & v38;
     goto LABEL_50;
@@ -3132,9 +3132,9 @@ LABEL_8:
 LABEL_10:
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginLongPressPresentationWithContext:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginLongPressPresentationWithContext:(id)context
 {
-  v4 = [a4 item];
+  item = [context item];
   v5 = objc_opt_respondsToSelector();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3151,13 +3151,13 @@ LABEL_10:
   return v6 & 1;
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)a4 view:(id)a5
+- (BOOL)presentationCoordinator:(id)coordinator shouldBeginInteractivePresentationWithTouchLocation:(CGPoint)location view:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   objc_opt_class();
-  v9 = v8;
+  v9 = viewCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -3177,18 +3177,18 @@ LABEL_10:
 
   else
   {
-    v13 = [(HUDashboardViewController *)self collectionView];
-    v14 = [v13 indexPathForItemAtPoint:{x, y}];
+    collectionView = [(HUDashboardViewController *)self collectionView];
+    v14 = [collectionView indexPathForItemAtPoint:{x, y}];
 
     if (v14)
     {
-      v15 = [(HUItemCollectionViewController *)self itemManager];
-      v16 = [v15 displayedItemAtIndexPath:v14];
+      itemManager = [(HUItemCollectionViewController *)self itemManager];
+      v16 = [itemManager displayedItemAtIndexPath:v14];
 
       if (v16)
       {
-        v17 = [(HUItemCollectionViewController *)self itemManager];
-        v18 = [v17 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v14, "section")}];
+        itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+        v18 = [itemManager2 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v14, "section")}];
 
         v12 = 0;
         if (([v18 isEqualToString:@"tipsSection"] & 1) == 0 && (objc_msgSend(v18, "isEqualToString:", @"filterBarSection") & 1) == 0)
@@ -3215,16 +3215,16 @@ LABEL_10:
   return v12;
 }
 
-- (void)presentationCoordinator:(id)a3 touchDidBeginForItem:(id)a4 tappedArea:(id)a5
+- (void)presentationCoordinator:(id)coordinator touchDidBeginForItem:(id)item tappedArea:(id)area
 {
-  if (@"HUTileCellTappableAreaStateToggleButton" == a5)
+  if (@"HUTileCellTappableAreaStateToggleButton" == area)
   {
-    v7 = a4;
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v14 = [v8 indexPathForItem:v7];
+    itemCopy = item;
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v14 = [itemManager indexPathForItem:itemCopy];
 
-    v9 = [(HUDashboardViewController *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v14];
+    collectionView = [(HUDashboardViewController *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v14];
 
     objc_opt_class();
     v11 = v10;
@@ -3244,16 +3244,16 @@ LABEL_10:
   }
 }
 
-- (void)presentationCoordinator:(id)a3 touchDidEndForItem:(id)a4 tappedArea:(id)a5
+- (void)presentationCoordinator:(id)coordinator touchDidEndForItem:(id)item tappedArea:(id)area
 {
-  if (@"HUTileCellTappableAreaStateToggleButton" == a5)
+  if (@"HUTileCellTappableAreaStateToggleButton" == area)
   {
-    v7 = a4;
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v14 = [v8 indexPathForItem:v7];
+    itemCopy = item;
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    v14 = [itemManager indexPathForItem:itemCopy];
 
-    v9 = [(HUDashboardViewController *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v14];
+    collectionView = [(HUDashboardViewController *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v14];
 
     objc_opt_class();
     v11 = v10;
@@ -3273,14 +3273,14 @@ LABEL_10:
   }
 }
 
-- (BOOL)presentationCoordinator:(id)a3 shouldAllowTapticFeedbackForItem:(id)a4
+- (BOOL)presentationCoordinator:(id)coordinator shouldAllowTapticFeedbackForItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   objc_opt_class();
-  v6 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = itemManager;
   }
 
   else
@@ -3291,7 +3291,7 @@ LABEL_10:
   v8 = v7;
 
   objc_opt_class();
-  v9 = v5;
+  v9 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -3311,16 +3311,16 @@ LABEL_10:
 
   else
   {
-    v13 = [v8 alwaysAllowedScheduleItem];
-    if ([v9 isEqual:v13])
+    alwaysAllowedScheduleItem = [v8 alwaysAllowedScheduleItem];
+    if ([v9 isEqual:alwaysAllowedScheduleItem])
     {
       v12 = 0;
     }
 
     else
     {
-      v14 = [v8 accessoryNoAccessItem];
-      v15 = [v9 isEqual:v14];
+      accessoryNoAccessItem = [v8 accessoryNoAccessItem];
+      v15 = [v9 isEqual:accessoryNoAccessItem];
 
       v12 = v15 ^ 1;
     }
@@ -3329,18 +3329,18 @@ LABEL_10:
   return v12;
 }
 
-- (void)presentationCoordinator:(id)a3 didRecognizeTapForItem:(id)a4 tappedArea:(id)a5
+- (void)presentationCoordinator:(id)coordinator didRecognizeTapForItem:(id)item tappedArea:(id)area
 {
   v107 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 latestResults];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13FD8]];
+  coordinatorCopy = coordinator;
+  itemCopy = item;
+  areaCopy = area;
+  latestResults = [itemCopy latestResults];
+  v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FD8]];
 
   if (!v13)
   {
-    v18 = [v9 pressedTile];
+    pressedTile = [coordinatorCopy pressedTile];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3350,10 +3350,10 @@ LABEL_10:
     }
 
     objc_opt_class();
-    v20 = [(HUItemCollectionViewController *)self itemManager];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = itemManager;
     }
 
     else
@@ -3364,7 +3364,7 @@ LABEL_10:
     v89 = v21;
 
     objc_opt_class();
-    v22 = v10;
+    v22 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v23 = v22;
@@ -3379,32 +3379,32 @@ LABEL_10:
 
     if (!v24)
     {
-      v25 = [v89 alwaysAllowedScheduleItem];
-      if ([v22 isEqual:v25])
+      alwaysAllowedScheduleItem = [v89 alwaysAllowedScheduleItem];
+      if ([v22 isEqual:alwaysAllowedScheduleItem])
       {
       }
 
       else
       {
-        v27 = [v89 accessoryNoAccessItem];
-        v28 = [v22 isEqual:v27];
+        accessoryNoAccessItem = [v89 accessoryNoAccessItem];
+        v28 = [v22 isEqual:accessoryNoAccessItem];
 
         if (v22 && !v28)
         {
-          v29 = [v89 contactOwnerItem];
-          v30 = [v22 isEqual:v29];
+          contactOwnerItem = [v89 contactOwnerItem];
+          v30 = [v22 isEqual:contactOwnerItem];
 
           if (v30)
           {
-            v31 = [(HUDashboardViewController *)self context];
-            v32 = [v31 home];
-            v33 = [v32 owner];
-            v34 = [v33 userID];
+            context = [(HUDashboardViewController *)self context];
+            home = [context home];
+            owner = [home owner];
+            userID = [owner userID];
 
-            if (v34)
+            if (userID)
             {
               v35 = MEMORY[0x277CBEBC0];
-              v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"sms://%@", v34];
+              v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"sms://%@", userID];
               v37 = [v35 URLWithString:v36];
 
               v38 = HFLogForCategory();
@@ -3412,7 +3412,7 @@ LABEL_10:
               {
                 v39 = NSStringFromSelector(a2);
                 *buf = 138412802;
-                v98 = self;
+                selfCopy2 = self;
                 v99 = 2112;
                 v100 = v39;
                 v101 = 2112;
@@ -3420,8 +3420,8 @@ LABEL_10:
                 _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEFAULT, "%@:%@, User requests to contact owner. Opening URL { %@ }", buf, 0x20u);
               }
 
-              v40 = [MEMORY[0x277D148E8] sharedInstance];
-              v41 = [v40 openSensitiveURL:v37];
+              mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+              v41 = [mEMORY[0x277D148E8] openSensitiveURL:v37];
             }
 
             else
@@ -3430,21 +3430,21 @@ LABEL_10:
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
               {
                 v59 = NSStringFromSelector(a2);
-                v87 = [(HUDashboardViewController *)self context];
-                v84 = [v87 home];
-                v81 = [v84 owner];
-                v60 = [(HUDashboardViewController *)self context];
-                v61 = [v60 home];
+                context2 = [(HUDashboardViewController *)self context];
+                home2 = [context2 home];
+                owner2 = [home2 owner];
+                context3 = [(HUDashboardViewController *)self context];
+                home3 = [context3 home];
                 *buf = 138413314;
-                v98 = self;
+                selfCopy2 = self;
                 v99 = 2112;
                 v100 = v59;
                 v101 = 2112;
-                v102 = v81;
+                v102 = owner2;
                 v103 = 2112;
                 v104 = 0;
                 v105 = 2112;
-                v106 = v61;
+                v106 = home3;
                 _os_log_impl(&dword_20CEB6000, v37, OS_LOG_TYPE_DEFAULT, "%@:%@, Unable to open URL to contact owner {%@} with email {%@} in home {%@}", buf, 0x34u);
               }
             }
@@ -3452,18 +3452,18 @@ LABEL_10:
 
           else
           {
-            v42 = [v89 pinCodeAccessItem];
-            v43 = [v22 isEqual:v42];
+            pinCodeAccessItem = [v89 pinCodeAccessItem];
+            v43 = [v22 isEqual:pinCodeAccessItem];
 
             if (v43)
             {
-              v44 = [(HUDashboardViewController *)self context];
-              v45 = [v44 home];
+              context4 = [(HUDashboardViewController *)self context];
+              home4 = [context4 home];
 
-              v46 = [v45 currentUser];
-              v83 = [v89 pinCodeManager];
-              v47 = [v89 pinCodeManager];
-              v86 = [v47 userPinCodes];
+              currentUser = [home4 currentUser];
+              pinCodeManager = [v89 pinCodeManager];
+              pinCodeManager2 = [v89 pinCodeManager];
+              userPinCodes = [pinCodeManager2 userPinCodes];
 
               objc_initWeak(buf, self);
               v91[0] = MEMORY[0x277D85DD0];
@@ -3471,15 +3471,15 @@ LABEL_10:
               v91[2] = __87__HUDashboardViewController_presentationCoordinator_didRecognizeTapForItem_tappedArea___block_invoke;
               v91[3] = &unk_277DBE0C8;
               objc_copyWeak(v96, buf);
-              v48 = v46;
+              v48 = currentUser;
               v92 = v48;
               v96[1] = a2;
-              v49 = v45;
+              v49 = home4;
               v93 = v49;
               v94 = v89;
-              v50 = v83;
+              v50 = pinCodeManager;
               v95 = v50;
-              v51 = [v86 addSuccessBlock:v91];
+              v51 = [userPinCodes addSuccessBlock:v91];
 
               objc_destroyWeak(v96);
               objc_destroyWeak(buf);
@@ -3487,25 +3487,25 @@ LABEL_10:
 
             else
             {
-              v52 = [v89 homeKeyItem];
-              v53 = [v22 isEqual:v52];
+              homeKeyItem = [v89 homeKeyItem];
+              v53 = [v22 isEqual:homeKeyItem];
 
               if (v53)
               {
                 v54 = MEMORY[0x277D14D08];
-                v55 = [(HUDashboardViewController *)self context];
-                v56 = [v55 home];
-                v57 = [v54 handleAddOrShowHomeKeyButtonTapForHome:v56];
+                context5 = [(HUDashboardViewController *)self context];
+                home5 = [context5 home];
+                v57 = [v54 handleAddOrShowHomeKeyButtonTapForHome:home5];
                 v58 = [v57 addCompletionBlock:&__block_literal_global_345_0];
               }
 
               else
               {
-                v62 = [(HUItemCollectionViewController *)self itemManager];
-                v88 = [v62 indexPathForItem:v22];
+                itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+                v88 = [itemManager2 indexPathForItem:v22];
 
-                v63 = [(HUItemCollectionViewController *)self itemManager];
-                v85 = [v63 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v88, "section")}];
+                itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+                v85 = [itemManager3 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v88, "section")}];
 
                 v64 = &unk_28251AC90;
                 v65 = v22;
@@ -3521,16 +3521,16 @@ LABEL_10:
 
                 v82 = v66;
 
-                v67 = [(HUDashboardViewController *)self layoutManager];
-                v68 = [(HUDashboardViewController *)self context];
-                v69 = [v67 isAdaptiveTileStyleInSectionIdentifier:v85 context:v68];
+                layoutManager = [(HUDashboardViewController *)self layoutManager];
+                context6 = [(HUDashboardViewController *)self context];
+                v69 = [layoutManager isAdaptiveTileStyleInSectionIdentifier:v85 context:context6];
 
                 if ([(HUDashboardViewController *)self isEditing]&& v82 && v69)
                 {
-                  v70 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+                  itemShowingSizeToggleButton = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
 
                   v71 = v82;
-                  if (v70 == v82)
+                  if (itemShowingSizeToggleButton == v82)
                   {
                     v72 = 0;
                   }
@@ -3549,22 +3549,22 @@ LABEL_10:
                   if (objc_opt_respondsToSelector())
                   {
                     v80 = v65;
-                    v73 = [v80 activityLogCoordinator];
-                    v74 = [(HUItemCollectionViewController *)self itemManager];
-                    v75 = [v74 home];
-                    v76 = [HUActivityLogViewControllerFactory createActivityLogViewControllerWith:v75 activityLogCoordinator:v73];
+                    activityLogCoordinator = [v80 activityLogCoordinator];
+                    itemManager4 = [(HUItemCollectionViewController *)self itemManager];
+                    home6 = [itemManager4 home];
+                    v76 = [HUActivityLogViewControllerFactory createActivityLogViewControllerWith:home6 activityLogCoordinator:activityLogCoordinator];
 
                     v77 = objc_alloc(MEMORY[0x277D757A0]);
                     v78 = [v77 initWithRootViewController:v76];
-                    v79 = [(HUDashboardViewController *)self navigationController];
-                    [v79 presentViewController:v78 animated:1 completion:0];
+                    navigationController = [(HUDashboardViewController *)self navigationController];
+                    [navigationController presentViewController:v78 animated:1 completion:0];
                   }
 
                   else
                   {
                     v90.receiver = self;
                     v90.super_class = HUDashboardViewController;
-                    [(HUControllableItemCollectionViewController *)&v90 presentationCoordinator:v9 didRecognizeTapForItem:v65 tappedArea:v11];
+                    [(HUControllableItemCollectionViewController *)&v90 presentationCoordinator:coordinatorCopy didRecognizeTapForItem:v65 tappedArea:areaCopy];
                   }
 
                   v71 = v82;
@@ -3582,7 +3582,7 @@ LABEL_10:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315650;
-      v98 = "[HUDashboardViewController presentationCoordinator:didRecognizeTapForItem:tappedArea:]";
+      selfCopy2 = "[HUDashboardViewController presentationCoordinator:didRecognizeTapForItem:tappedArea:]";
       v99 = 2112;
       v100 = v24;
       v101 = 2112;
@@ -3595,9 +3595,9 @@ LABEL_16:
   }
 
   v14 = MEMORY[0x277D143C0];
-  v15 = [(HUItemCollectionViewController *)self itemManager];
-  v16 = [v15 home];
-  v17 = [v14 addAndSetupNewAccessoriesForHome:v16 room:0];
+  itemManager5 = [(HUItemCollectionViewController *)self itemManager];
+  home7 = [itemManager5 home];
+  v17 = [v14 addAndSetupNewAccessoriesForHome:home7 room:0];
 
 LABEL_17:
 }
@@ -3748,34 +3748,34 @@ void __87__HUDashboardViewController_presentationCoordinator_didRecognizeTapForI
   }
 }
 
-- (BOOL)hasDetailsActionForPresentationCoordinator:(id)a3 item:(id)a4
+- (BOOL)hasDetailsActionForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v5 = a4;
-  v6 = ([MEMORY[0x277D14670] isHomeControlService] & 1) == 0 && -[HUDashboardViewController _hasDetailViewControllerForItem:](self, "_hasDetailViewControllerForItem:", v5);
+  itemCopy = item;
+  v6 = ([MEMORY[0x277D14670] isHomeControlService] & 1) == 0 && -[HUDashboardViewController _hasDetailViewControllerForItem:](self, "_hasDetailViewControllerForItem:", itemCopy);
 
   return v6;
 }
 
-- (id)detailsViewControllerForPresentationCoordinator:(id)a3 item:(id)a4
+- (id)detailsViewControllerForPresentationCoordinator:(id)coordinator item:(id)item
 {
-  v5 = a4;
-  v6 = [(HUDashboardViewController *)self _quickControlDetailViewControllerForItem:v5];
+  itemCopy = item;
+  v6 = [(HUDashboardViewController *)self _quickControlDetailViewControllerForItem:itemCopy];
   if (!v6)
   {
-    NSLog(&cfstr_NoDetailsViewC.isa, v5);
+    NSLog(&cfstr_NoDetailsViewC.isa, itemCopy);
   }
 
   return v6;
 }
 
-- (BOOL)_hasDetailViewControllerForItem:(id)a3
+- (BOOL)_hasDetailViewControllerForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [v4 conformsToProtocol:&unk_28251B0C8];
+  v6 = [itemCopy conformsToProtocol:&unk_28251B0C8];
   objc_opt_class();
-  v7 = v4;
+  v7 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -3788,22 +3788,22 @@ void __87__HUDashboardViewController_presentationCoordinator_didRecognizeTapForI
 
   v9 = v8;
 
-  v10 = [v9 sourceItem];
-  v11 = [v10 conformsToProtocol:&unk_28251B0C8];
+  sourceItem = [v9 sourceItem];
+  v11 = [sourceItem conformsToProtocol:&unk_28251B0C8];
 
   v12 = isKindOfClass | v6 | [(HUDashboardViewController *)self matterItemSupportsAccessoryDetails:v7]| v11;
   return v12 & 1;
 }
 
-- (id)_quickControlDetailViewControllerForItem:(id)a3
+- (id)_quickControlDetailViewControllerForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     NSLog(&cfstr_AttemptedToPre.isa);
     objc_opt_class();
-    v5 = v4;
+    v5 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
@@ -3816,9 +3816,9 @@ void __87__HUDashboardViewController_presentationCoordinator_didRecognizeTapForI
 
     v7 = v6;
 
-    v8 = [v7 actionSet];
+    actionSet = [v7 actionSet];
 
-    if (!v8)
+    if (!actionSet)
     {
       NSLog(&cfstr_ActionsetMustN.isa);
       v14 = 0;
@@ -3833,10 +3833,10 @@ LABEL_29:
     }
 
     v9 = objc_alloc(MEMORY[0x277D14398]);
-    v10 = [v7 actionSet];
-    v11 = [(HUItemCollectionViewController *)self itemManager];
-    v12 = [v11 home];
-    v13 = [v9 initWithExistingObject:v10 inHome:v12];
+    actionSet2 = [v7 actionSet];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    home = [itemManager home];
+    v13 = [v9 initWithExistingObject:actionSet2 inHome:home];
 
     v14 = [[HUSceneActionEditorViewController alloc] initWithActionSetBuilder:v13 mode:0];
 LABEL_27:
@@ -3844,9 +3844,9 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if ([v4 conformsToProtocol:&unk_28251B0C8])
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
-    v15 = v4;
+    v15 = itemCopy;
     if ([v15 conformsToProtocol:&unk_28251B0C8])
     {
       v16 = v15;
@@ -3875,14 +3875,14 @@ LABEL_27:
 
     if (v13)
     {
-      v19 = [v13 accessory];
-      v20 = [v19 hf_isSingleServiceLikeAccessory];
+      accessory = [v13 accessory];
+      hf_isSingleServiceLikeAccessory = [accessory hf_isSingleServiceLikeAccessory];
 
-      if (v20)
+      if (hf_isSingleServiceLikeAccessory)
       {
-        v21 = [v13 accessory];
-        v22 = [v21 hf_primaryService];
-        v23 = [v13 serviceItemForService:v22];
+        accessory2 = [v13 accessory];
+        hf_primaryService = [accessory2 hf_primaryService];
+        v23 = [v13 serviceItemForService:hf_primaryService];
 
         v7 = v23;
       }
@@ -3903,7 +3903,7 @@ LABEL_27:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v26 = v4;
+    v26 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v27 = v26;
@@ -3916,10 +3916,10 @@ LABEL_27:
 
     v7 = v27;
 
-    v28 = [v7 sourceItem];
-    if ([v28 conformsToProtocol:&unk_28251B0C8])
+    sourceItem = [v7 sourceItem];
+    if ([sourceItem conformsToProtocol:&unk_28251B0C8])
     {
-      v29 = v28;
+      v29 = sourceItem;
     }
 
     else
@@ -3945,7 +3945,7 @@ LABEL_26:
   }
 
 LABEL_30:
-  NSLog(&cfstr_NoDetailsViewC.isa, v4);
+  NSLog(&cfstr_NoDetailsViewC.isa, itemCopy);
   v14 = 0;
 LABEL_31:
 
@@ -3966,89 +3966,89 @@ void __70__HUDashboardViewController__quickControlDetailViewControllerForItem___
 
 - (void)_updateTabBarVisibility
 {
-  v3 = [(HUDashboardViewController *)self _shouldHideTabBar];
-  v5 = [(HUDashboardViewController *)self tabBarController];
-  v4 = [v5 tabBar];
-  [v4 setHidden:v3];
+  _shouldHideTabBar = [(HUDashboardViewController *)self _shouldHideTabBar];
+  tabBarController = [(HUDashboardViewController *)self tabBarController];
+  tabBar = [tabBarController tabBar];
+  [tabBar setHidden:_shouldHideTabBar];
 }
 
 - (BOOL)_shouldHideTabBar
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 home];
-  v5 = [v4 hf_shouldBlockCurrentUserFromHome];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  hf_shouldBlockCurrentUserFromHome = [home hf_shouldBlockCurrentUserFromHome];
 
-  if (v5)
+  if (hf_shouldBlockCurrentUserFromHome)
   {
     return 1;
   }
 
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 home];
-  v9 = [v8 hf_currentUserIsRestrictedGuest];
+  context2 = [(HUDashboardViewController *)self context];
+  home2 = [context2 home];
+  hf_currentUserIsRestrictedGuest = [home2 hf_currentUserIsRestrictedGuest];
 
-  return v9;
+  return hf_currentUserIsRestrictedGuest;
 }
 
-- (void)dashboardItemManager:(id)a3 didUpdateContext:(id)a4
+- (void)dashboardItemManager:(id)manager didUpdateContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   [(HUDashboardViewController *)self setFilterBarNeedsUpdate];
   [(HUDashboardViewController *)self _updateBarButtons];
   [(HUDashboardViewController *)self _updateTabBarVisibility];
   [(HUDashboardViewController *)self _updateFilterBarVisibility];
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
-  v6 = [(HUDashboardViewController *)self wallpaperView];
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 room];
-  if (v8)
+  wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
+  if (room)
   {
-    v9 = [v6 refreshWallpaperForHomeKitObject:v8 withAnimation:1];
+    v9 = [wallpaperView refreshWallpaperForHomeKitObject:room withAnimation:1];
   }
 
   else
   {
-    v10 = [(HUDashboardViewController *)self context];
-    v11 = [v10 home];
-    v12 = [v6 refreshWallpaperForHomeKitObject:v11 withAnimation:1];
+    context2 = [(HUDashboardViewController *)self context];
+    home = [context2 home];
+    v12 = [wallpaperView refreshWallpaperForHomeKitObject:home withAnimation:1];
   }
 
   [(HUDashboardViewController *)self _showNoHomeAccessViewsIfNeeded];
-  v13 = [(HUDashboardViewController *)self navigationHomeButton];
-  v14 = [HUNavigationMenuFactory homeMenuForButton:v13];
-  v15 = [(HUDashboardViewController *)self navigationHomeButton];
-  [v15 setMenu:v14];
+  navigationHomeButton = [(HUDashboardViewController *)self navigationHomeButton];
+  v14 = [HUNavigationMenuFactory homeMenuForButton:navigationHomeButton];
+  navigationHomeButton2 = [(HUDashboardViewController *)self navigationHomeButton];
+  [navigationHomeButton2 setMenu:v14];
 
-  v16 = [v5 home];
+  home2 = [contextCopy home];
 
-  v17 = [v16 hf_shouldBlockCurrentRestrictedGuestFromHome];
-  v18 = [(HUDashboardViewController *)self _isShowingRestrictedGuestBlockedBackdropView];
-  if (v17)
+  hf_shouldBlockCurrentRestrictedGuestFromHome = [home2 hf_shouldBlockCurrentRestrictedGuestFromHome];
+  _isShowingRestrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self _isShowingRestrictedGuestBlockedBackdropView];
+  if (hf_shouldBlockCurrentRestrictedGuestFromHome)
   {
-    if (!v18)
+    if (!_isShowingRestrictedGuestBlockedBackdropView)
     {
       [(HUDashboardViewController *)self createRestrictedGuestBlockedBackdropViewIfNeeded];
-      v19 = [(HUDashboardViewController *)self view];
-      v20 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-      v21 = [(HUDashboardViewController *)self wallpaperView];
-      [v19 insertSubview:v20 above:v21];
+      view = [(HUDashboardViewController *)self view];
+      restrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+      wallpaperView2 = [(HUDashboardViewController *)self wallpaperView];
+      [view insertSubview:restrictedGuestBlockedBackdropView above:wallpaperView2];
 
 LABEL_9:
     }
   }
 
-  else if (v18)
+  else if (_isShowingRestrictedGuestBlockedBackdropView)
   {
-    v19 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v19 removeFromSuperview];
+    view = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [view removeFromSuperview];
     goto LABEL_9;
   }
 
   if (!_os_feature_enabled_impl() || (_os_feature_enabled_impl() & 1) == 0)
   {
-    v23 = [(HUDashboardViewController *)self context];
+    context3 = [(HUDashboardViewController *)self context];
     v22 = +[HUSideBarSelectionManager sharedManager];
-    [v22 setCurrentContext:v23];
+    [v22 setCurrentContext:context3];
   }
 }
 
@@ -4056,11 +4056,11 @@ LABEL_9:
 {
   v8.receiver = self;
   v8.super_class = HUDashboardViewController;
-  v3 = [(HUItemCollectionViewController *)&v8 childViewControllersToPreload];
-  v4 = [v3 mutableCopy];
+  childViewControllersToPreload = [(HUItemCollectionViewController *)&v8 childViewControllersToPreload];
+  v4 = [childViewControllersToPreload mutableCopy];
 
-  v5 = [(HUDashboardViewController *)self _filterBarController];
-  [v4 na_safeAddObject:v5];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+  [v4 na_safeAddObject:_filterBarController];
   v6 = [v4 copy];
 
   return v6;
@@ -4071,46 +4071,46 @@ LABEL_9:
   v26[2] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = HUDashboardViewController;
-  v3 = [(HUItemCollectionViewController *)&v25 hu_preloadContent];
-  v4 = [(HUDashboardViewController *)self context];
-  if ([v4 backgroundStyle] == 2)
+  hu_preloadContent = [(HUItemCollectionViewController *)&v25 hu_preloadContent];
+  context = [(HUDashboardViewController *)self context];
+  if ([context backgroundStyle] == 2)
   {
-    v5 = [(HUDashboardViewController *)self wallpaperView];
-    v6 = v5 == 0;
+    wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+    v6 = wallpaperView == 0;
 
     if (v6)
     {
       goto LABEL_8;
     }
 
-    v7 = [(HUDashboardViewController *)self wallpaperView];
-    v8 = [(HUDashboardViewController *)self context];
-    v9 = [v8 room];
-    if (v9)
+    wallpaperView2 = [(HUDashboardViewController *)self wallpaperView];
+    context2 = [(HUDashboardViewController *)self context];
+    room = [context2 room];
+    if (room)
     {
-      v4 = [v7 refreshWallpaperForHomeKitObject:v9 withAnimation:0];
+      context = [wallpaperView2 refreshWallpaperForHomeKitObject:room withAnimation:0];
     }
 
     else
     {
-      v10 = [(HUDashboardViewController *)self context];
-      v11 = [v10 home];
-      v4 = [v7 refreshWallpaperForHomeKitObject:v11 withAnimation:0];
+      context3 = [(HUDashboardViewController *)self context];
+      home = [context3 home];
+      context = [wallpaperView2 refreshWallpaperForHomeKitObject:home withAnimation:0];
     }
 
     v12 = MEMORY[0x277D2C900];
-    v26[0] = v3;
-    v26[1] = v4;
+    v26[0] = hu_preloadContent;
+    v26[1] = context;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-    v14 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v15 = [v12 combineAllFutures:v13 scheduler:v14];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v15 = [v12 combineAllFutures:v13 scheduler:mainThreadScheduler];
 
-    v3 = v15;
+    hu_preloadContent = v15;
   }
 
 LABEL_8:
   objc_initWeak(&location, self);
-  v16 = [v3 recover:&__block_literal_global_401];
+  v16 = [hu_preloadContent recover:&__block_literal_global_401];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __46__HUDashboardViewController_hu_preloadContent__block_invoke_2;
@@ -4168,26 +4168,26 @@ void __46__HUDashboardViewController_hu_preloadContent__block_invoke_4()
   [v1 finishedTest:v2 waitForCommit:1 extraResults:0];
 }
 
-- (void)accessoryTileSizeButtonTappedFor:(id)a3 withItem:(id)a4
+- (void)accessoryTileSizeButtonTappedFor:(id)for withItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  itemCopy = item;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138413058;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
     v16 = "[HUDashboardViewController accessoryTileSizeButtonTappedFor:withItem:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = forCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = itemCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@:%s User tapped tile size button for cell %@ with item %@", &v13, 0x2Au);
   }
 
-  v9 = v7;
+  v9 = itemCopy;
   v10 = &unk_28251AC90;
   if ([v9 conformsToProtocol:v10])
   {
@@ -4203,24 +4203,24 @@ void __46__HUDashboardViewController_hu_preloadContent__block_invoke_4()
 
   if (v12)
   {
-    [(HUDashboardViewController *)self _toggleSizeForCell:v6 withItem:v12];
+    [(HUDashboardViewController *)self _toggleSizeForCell:forCopy withItem:v12];
   }
 }
 
-- (id)presentROARUpgradeView:(id)a3
+- (id)presentROARUpgradeView:(id)view
 {
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 home];
-  v6 = [HUHomeFeatureOnboardingUtilities home:v5 onboardHomeHub2FromPresentingViewController:self devices:0 usageOptions:0];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v6 = [HUHomeFeatureOnboardingUtilities home:home onboardHomeHub2FromPresentingViewController:self devices:0 usageOptions:0];
 
   return v6;
 }
 
-- (id)_titleForSectionIdentifier:(id)a3
+- (id)_titleForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 sectionIndexForDisplayedSectionIdentifier:v4];
+  identifierCopy = identifier;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager sectionIndexForDisplayedSectionIdentifier:identifierCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -4229,23 +4229,23 @@ void __46__HUDashboardViewController_hu_preloadContent__block_invoke_4()
 
   else
   {
-    v8 = [(HUItemCollectionViewController *)self itemManager];
-    v7 = [v8 titleForSection:v6];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    v7 = [itemManager2 titleForSection:v6];
   }
 
   return v7;
 }
 
-- (void)_presentDetailsViewControllerForSectionWithIdentifier:(id)a3 animated:(BOOL)a4
+- (void)_presentDetailsViewControllerForSectionWithIdentifier:(id)identifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v27 = a3;
+  animatedCopy = animated;
+  identifierCopy = identifier;
   objc_opt_class();
-  v7 = [(HUDashboardViewController *)self navigationController];
-  v8 = [v7 parentViewController];
+  navigationController = [(HUDashboardViewController *)self navigationController];
+  parentViewController = [navigationController parentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = parentViewController;
   }
 
   else
@@ -4255,50 +4255,50 @@ void __46__HUDashboardViewController_hu_preloadContent__block_invoke_4()
 
   v10 = v9;
 
-  v11 = [v10 view];
+  view = [v10 view];
 
-  v12 = [v11 subviews];
-  v13 = [v12 na_firstObjectPassingTest:&__block_literal_global_409];
+  subviews = [view subviews];
+  v13 = [subviews na_firstObjectPassingTest:&__block_literal_global_409];
 
   [v13 setDisableWallpaperUpdate:1];
-  if ([v27 isEqualToString:@"camerasSection"])
+  if ([identifierCopy isEqualToString:@"camerasSection"])
   {
-    v14 = [(HUDashboardViewController *)self _titleForSectionIdentifier:v27];
-    v15 = [(HUDashboardViewController *)self _dashboardNavigator];
-    v16 = [(HUDashboardViewController *)self context];
-    v17 = [v16 home];
-    v18 = [v15 showCamerasSectionWithTitle:v14 forHome:v17 animated:v4];
+    v14 = [(HUDashboardViewController *)self _titleForSectionIdentifier:identifierCopy];
+    _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    v18 = [_dashboardNavigator showCamerasSectionWithTitle:v14 forHome:home animated:animatedCopy];
   }
 
   else
   {
-    if (![v27 isEqualToString:@"SpeakersAndTVsSection"])
+    if (![identifierCopy isEqualToString:@"SpeakersAndTVsSection"])
     {
-      v20 = [(HUDashboardViewController *)self context];
-      v21 = [v20 home];
-      v14 = HURoomForDashboardSectionIdentifier(v27, v21);
+      context2 = [(HUDashboardViewController *)self context];
+      home2 = [context2 home];
+      v14 = HURoomForDashboardSectionIdentifier(identifierCopy, home2);
 
       if (v14)
       {
-        v15 = [(HUDashboardViewController *)self _dashboardNavigator];
-        v22 = [v15 showRoom:v14 animated:v4];
+        _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+        v22 = [_dashboardNavigator showRoom:v14 animated:animatedCopy];
       }
 
       else
       {
-        if ([v27 isEqualToString:@"scenesSection"])
+        if ([identifierCopy isEqualToString:@"scenesSection"])
         {
-          v15 = [(HUDashboardViewController *)self _titleForSectionIdentifier:v27];
-          v23 = [(HUDashboardViewController *)self _dashboardNavigator];
-          v24 = [(HUDashboardViewController *)self context];
-          v25 = [v24 home];
-          v26 = [v23 showScenesSectionWithDashboardTitle:v15 forHome:v25 animated:v4];
+          _dashboardNavigator = [(HUDashboardViewController *)self _titleForSectionIdentifier:identifierCopy];
+          _dashboardNavigator2 = [(HUDashboardViewController *)self _dashboardNavigator];
+          context3 = [(HUDashboardViewController *)self context];
+          home3 = [context3 home];
+          v26 = [_dashboardNavigator2 showScenesSectionWithDashboardTitle:_dashboardNavigator forHome:home3 animated:animatedCopy];
         }
 
         else
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:a2 object:self file:@"HUDashboardViewController.m" lineNumber:1784 description:{@"%@ Unhandled presentation for section with identifier: %@", self, v27}];
+          _dashboardNavigator = [MEMORY[0x277CCA890] currentHandler];
+          [_dashboardNavigator handleFailureInMethod:a2 object:self file:@"HUDashboardViewController.m" lineNumber:1784 description:{@"%@ Unhandled presentation for section with identifier: %@", self, identifierCopy}];
         }
 
         v14 = 0;
@@ -4307,11 +4307,11 @@ void __46__HUDashboardViewController_hu_preloadContent__block_invoke_4()
       goto LABEL_9;
     }
 
-    v14 = [(HUDashboardViewController *)self _titleForSectionIdentifier:v27];
-    v15 = [(HUDashboardViewController *)self _dashboardNavigator];
-    v16 = [(HUDashboardViewController *)self context];
-    v17 = [v16 home];
-    v19 = [v15 showSpeakersAndTVsSectionWithTitle:v14 forHome:v17 animated:v4];
+    v14 = [(HUDashboardViewController *)self _titleForSectionIdentifier:identifierCopy];
+    _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    v19 = [_dashboardNavigator showSpeakersAndTVsSectionWithTitle:v14 forHome:home animated:animatedCopy];
   }
 
 LABEL_9:
@@ -4326,12 +4326,12 @@ uint64_t __92__HUDashboardViewController__presentDetailsViewControllerForSection
   return isKindOfClass & 1;
 }
 
-- (id)_itemForHomeKitObject:(id)a3
+- (id)_itemForHomeKitObject:(id)object
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 matchingItemForHomeKitObject:v4];
+  objectCopy = object;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager matchingItemForHomeKitObject:objectCopy];
   v7 = v6;
   if (v6)
   {
@@ -4340,8 +4340,8 @@ uint64_t __92__HUDashboardViewController__presentDetailsViewControllerForSection
 
   else
   {
-    v9 = [(HUItemCollectionViewController *)self itemManager];
-    v8 = [v9 buildItemForHomeKitObject:v4];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    v8 = [itemManager2 buildItemForHomeKitObject:objectCopy];
   }
 
   v10 = v8;
@@ -4374,9 +4374,9 @@ uint64_t __92__HUDashboardViewController__presentDetailsViewControllerForSection
 
   if (v17)
   {
-    v18 = [(HUDashboardViewController *)self context];
-    v19 = [v18 home];
-    v20 = [v19 hf_characteristicValueManager];
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    hf_characteristicValueManager = [home hf_characteristicValueManager];
 
     v21 = v17;
     v22 = &unk_28251B0C8;
@@ -4394,25 +4394,25 @@ uint64_t __92__HUDashboardViewController__presentDetailsViewControllerForSection
 
     if (v24)
     {
-      v25 = [v24 valueSource];
+      valueSource = [v24 valueSource];
 
-      if (v25)
+      if (valueSource)
       {
-        v26 = [v24 valueSource];
+        valueSource2 = [v24 valueSource];
 
-        v20 = v26;
+        hf_characteristicValueManager = valueSource2;
       }
     }
 
     v27 = [MEMORY[0x277D14B50] policyWithDecision:0];
-    [v20 beginTransactionWithReason:@"HUDashboardViewControllerTransactionReasonDisableReads" readPolicy:v27 logger:0];
+    [hf_characteristicValueManager beginTransactionWithReason:@"HUDashboardViewControllerTransactionReasonDisableReads" readPolicy:v27 logger:0];
 
     v36 = *MEMORY[0x277D13BB0];
     v37 = MEMORY[0x277CBEC38];
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v29 = [v21 updateWithOptions:v28];
 
-    [v20 commitTransactionWithReason:@"HUDashboardViewControllerTransactionReasonDisableReads"];
+    [hf_characteristicValueManager commitTransactionWithReason:@"HUDashboardViewControllerTransactionReasonDisableReads"];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __51__HUDashboardViewController__itemForHomeKitObject___block_invoke;
@@ -4427,33 +4427,33 @@ uint64_t __92__HUDashboardViewController__presentDetailsViewControllerForSection
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v39 = self;
+      selfCopy = self;
       v40 = 2112;
-      v41 = v4;
+      v41 = objectCopy;
       _os_log_error_impl(&dword_20CEB6000, v31, OS_LOG_TYPE_ERROR, "%@ Failed to find item for HomeKit object: %@", buf, 0x16u);
     }
 
     v32 = MEMORY[0x277D2C900];
-    v20 = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
-    v30 = [v32 futureWithError:v20];
+    hf_characteristicValueManager = [MEMORY[0x277CCA9B8] hf_errorWithCode:30];
+    v30 = [v32 futureWithError:hf_characteristicValueManager];
   }
 
   return v30;
 }
 
-- (id)_presentAccessorySettingsForHomeKitObject:(id)a3 fromStatusItem:(id)a4 animated:(BOOL)a5
+- (id)_presentAccessorySettingsForHomeKitObject:(id)object fromStatusItem:(id)item animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v10 = [(HUDashboardViewController *)self _itemForHomeKitObject:v8];
+  v10 = [(HUDashboardViewController *)self _itemForHomeKitObject:objectCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__HUDashboardViewController__presentAccessorySettingsForHomeKitObject_fromStatusItem_animated___block_invoke;
   v14[3] = &unk_277DC2A38;
   objc_copyWeak(&v16, &location);
-  v17 = a5;
-  v11 = v9;
+  animatedCopy = animated;
+  v11 = itemCopy;
   v15 = v11;
   v12 = [v10 flatMap:v14];
 
@@ -4506,16 +4506,16 @@ id __95__HUDashboardViewController__presentAccessorySettingsForHomeKitObject_fro
   return v6;
 }
 
-- (id)_presentAccessoryControlsForHomeKitObject:(id)a3 fromStatusItem:(id)a4 animated:(BOOL)a5
+- (id)_presentAccessoryControlsForHomeKitObject:(id)object fromStatusItem:(id)item animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-  v11 = [v10 presentationContext];
-  v12 = [v11 item];
-  if ([v12 conformsToProtocol:&unk_2824C0788])
+  objectCopy = object;
+  itemCopy = item;
+  quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+  presentationContext = [quickControlPresentationCoordinator presentationContext];
+  item = [presentationContext item];
+  if ([item conformsToProtocol:&unk_2824C0788])
   {
-    v13 = v12;
+    v13 = item;
   }
 
   else
@@ -4525,25 +4525,25 @@ id __95__HUDashboardViewController__presentAccessorySettingsForHomeKitObject_fro
 
   v14 = v13;
 
-  if (v14 && ([v14 homeKitObject], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "uniqueIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "uniqueIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, v16, v15, v18))
+  if (v14 && ([v14 homeKitObject], v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "uniqueIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(objectCopy, "uniqueIdentifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v16, "isEqual:", v17), v17, v16, v15, v18))
   {
     v19 = MEMORY[0x277D2C900];
-    v20 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v21 = [v20 cardViewController];
-    v22 = [v19 futureWithResult:v21];
+    quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    cardViewController = [quickControlPresentationCoordinator2 cardViewController];
+    v22 = [v19 futureWithResult:cardViewController];
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v23 = [(HUDashboardViewController *)self _itemForHomeKitObject:v8];
+    v23 = [(HUDashboardViewController *)self _itemForHomeKitObject:objectCopy];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __95__HUDashboardViewController__presentAccessoryControlsForHomeKitObject_fromStatusItem_animated___block_invoke;
     v25[3] = &unk_277DC2A38;
     objc_copyWeak(&v27, &location);
-    v28 = a5;
-    v26 = v9;
+    animatedCopy = animated;
+    v26 = itemCopy;
     v22 = [v23 flatMap:v25];
 
     objc_destroyWeak(&v27);
@@ -4627,18 +4627,18 @@ id __95__HUDashboardViewController__presentAccessoryControlsForHomeKitObject_fro
   return v17;
 }
 
-- (id)_dismissPresentedViewControllersAnimated:(BOOL)a3
+- (id)_dismissPresentedViewControllersAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   objc_initWeak(&location, self);
-  v5 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-  v6 = [v5 dismissQuickControlAnimated:v3];
+  quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+  v6 = [quickControlPresentationCoordinator dismissQuickControlAnimated:animatedCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__HUDashboardViewController__dismissPresentedViewControllersAnimated___block_invoke;
   v9[3] = &unk_277DC2A88;
   objc_copyWeak(&v10, &location);
-  v11 = v3;
+  v11 = animatedCopy;
   v7 = [v6 flatMap:v9];
   objc_destroyWeak(&v10);
 
@@ -4655,10 +4655,10 @@ id __70__HUDashboardViewController__dismissPresentedViewControllersAnimated___bl
   return v3;
 }
 
-- (BOOL)_shouldShowAccessoryControlsForHomeKitObject:(id)a3 fromStatusItem:(id)a4
+- (BOOL)_shouldShowAccessoryControlsForHomeKitObject:(id)object fromStatusItem:(id)item
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  itemCopy = item;
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
@@ -4669,10 +4669,10 @@ id __70__HUDashboardViewController__dismissPresentedViewControllersAnimated___bl
   return v6 ^ 1;
 }
 
-- (BOOL)_canSkipStatusDetailsForItem:(id)a3
+- (BOOL)_canSkipStatusDetailsForItem:(id)item
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -4683,19 +4683,19 @@ id __70__HUDashboardViewController__dismissPresentedViewControllersAnimated___bl
 
   else
   {
-    v6 = ![(HUDashboardViewController *)self _statusItemRepresentsOnlyResidentIPads:v4];
+    v6 = ![(HUDashboardViewController *)self _statusItemRepresentsOnlyResidentIPads:itemCopy];
   }
 
   return v6;
 }
 
-- (BOOL)_statusItemRepresentsOnlyResidentIPads:(id)a3
+- (BOOL)_statusItemRepresentsOnlyResidentIPads:(id)pads
 {
-  v3 = [a3 latestResults];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277D14078]];
+  latestResults = [pads latestResults];
+  v4 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D14078]];
 
-  LOBYTE(v3) = [v4 na_all:&__block_literal_global_429];
-  return v3;
+  LOBYTE(latestResults) = [v4 na_all:&__block_literal_global_429];
+  return latestResults;
 }
 
 BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___block_invoke(uint64_t a1, void *a2)
@@ -4731,38 +4731,38 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
 
 - (void)createRestrictedGuestBlockedBackdropViewIfNeeded
 {
-  v3 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+  restrictedGuestBlockedBackdropView = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
 
-  if (!v3)
+  if (!restrictedGuestBlockedBackdropView)
   {
     v4 = objc_alloc(MEMORY[0x277D75D68]);
     v5 = [MEMORY[0x277D75210] effectWithStyle:18];
     v6 = [v4 initWithEffect:v5];
     [(HUDashboardViewController *)self setRestrictedGuestBlockedBackdropView:v6];
 
-    v7 = [(HUDashboardViewController *)self view];
-    [v7 bounds];
+    view = [(HUDashboardViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    restrictedGuestBlockedBackdropView2 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [restrictedGuestBlockedBackdropView2 setFrame:{v9, v11, v13, v15}];
 
-    v17 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v17 setTranslatesAutoresizingMaskIntoConstraints:1];
+    restrictedGuestBlockedBackdropView3 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [restrictedGuestBlockedBackdropView3 setTranslatesAutoresizingMaskIntoConstraints:1];
 
-    v18 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
-    [v18 setAutoresizingMask:18];
+    restrictedGuestBlockedBackdropView4 = [(HUDashboardViewController *)self restrictedGuestBlockedBackdropView];
+    [restrictedGuestBlockedBackdropView4 setAutoresizingMask:18];
   }
 }
 
 - (void)_setupBackgroundView
 {
   v79[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  v4 = [(HUDashboardViewController *)self collectionView];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  [collectionView setBackgroundColor:clearColor];
 
   v5 = [HUBlurGroupingEffectView alloc];
   v6 = *MEMORY[0x277CBF3A0];
@@ -4772,38 +4772,38 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
   v10 = [(HUBlurGroupingEffectView *)v5 initWithFrame:*MEMORY[0x277CBF3A0], v7, v8, v9];
   [(HUDashboardViewController *)self setBlurGroupingEffectView:v10];
 
-  v11 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  blurGroupingEffectView = [(HUDashboardViewController *)self blurGroupingEffectView];
+  [blurGroupingEffectView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(HUDashboardViewController *)self view];
-  v13 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  v14 = [(HUDashboardViewController *)self collectionView];
-  [v12 insertSubview:v13 below:v14];
+  view = [(HUDashboardViewController *)self view];
+  blurGroupingEffectView2 = [(HUDashboardViewController *)self blurGroupingEffectView];
+  collectionView2 = [(HUDashboardViewController *)self collectionView];
+  [view insertSubview:blurGroupingEffectView2 below:collectionView2];
 
   v54 = MEMORY[0x277CCAAD0];
-  v72 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  v68 = [v72 topAnchor];
-  v70 = [(HUDashboardViewController *)self view];
-  v66 = [v70 topAnchor];
-  v64 = [v68 constraintEqualToAnchor:v66];
+  blurGroupingEffectView3 = [(HUDashboardViewController *)self blurGroupingEffectView];
+  topAnchor = [blurGroupingEffectView3 topAnchor];
+  view2 = [(HUDashboardViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v79[0] = v64;
-  v62 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  v58 = [v62 bottomAnchor];
-  v60 = [(HUDashboardViewController *)self view];
-  v56 = [v60 bottomAnchor];
-  v52 = [v58 constraintEqualToAnchor:v56];
+  blurGroupingEffectView4 = [(HUDashboardViewController *)self blurGroupingEffectView];
+  bottomAnchor = [blurGroupingEffectView4 bottomAnchor];
+  view3 = [(HUDashboardViewController *)self view];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v52 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v79[1] = v52;
-  v50 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  v49 = [v50 leadingAnchor];
-  v15 = [(HUDashboardViewController *)self view];
-  v16 = [v15 leadingAnchor];
-  v17 = [v49 constraintEqualToAnchor:v16];
+  blurGroupingEffectView5 = [(HUDashboardViewController *)self blurGroupingEffectView];
+  leadingAnchor = [blurGroupingEffectView5 leadingAnchor];
+  view4 = [(HUDashboardViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v79[2] = v17;
-  v18 = [(HUDashboardViewController *)self blurGroupingEffectView];
-  v19 = [v18 trailingAnchor];
-  v20 = [(HUDashboardViewController *)self view];
-  v21 = [v20 trailingAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  blurGroupingEffectView6 = [(HUDashboardViewController *)self blurGroupingEffectView];
+  trailingAnchor = [blurGroupingEffectView6 trailingAnchor];
+  view5 = [(HUDashboardViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v79[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:4];
   [v54 activateConstraints:v23];
@@ -4812,27 +4812,27 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
   {
     v26 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__handleBackgroundTap_];
     v27 = objc_opt_new();
-    v28 = [MEMORY[0x277D75348] clearColor];
-    [v27 setBackgroundColor:v28];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v27 setBackgroundColor:clearColor2];
 
     [v27 addGestureRecognizer:v26];
-    v29 = [(HUDashboardViewController *)self collectionView];
-    [v29 setBackgroundView:v27];
+    collectionView3 = [(HUDashboardViewController *)self collectionView];
+    [collectionView3 setBackgroundView:v27];
   }
 
-  v30 = [(HUDashboardViewController *)self context];
-  v31 = [v30 backgroundStyle];
+  context = [(HUDashboardViewController *)self context];
+  backgroundStyle = [context backgroundStyle];
 
-  if (v31 == 1)
+  if (backgroundStyle == 1)
   {
-    v48 = [MEMORY[0x277D75348] systemBlackColor];
-    v38 = [(HUDashboardViewController *)self view];
-    [v38 setBackgroundColor:v48];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    view6 = [(HUDashboardViewController *)self view];
+    [view6 setBackgroundColor:systemBlackColor];
   }
 
   else
   {
-    if (v31 != 2)
+    if (backgroundStyle != 2)
     {
       return;
     }
@@ -4840,11 +4840,11 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
     v32 = HFLogForCategory();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [(HUDashboardViewController *)self wallpaperView];
+      wallpaperView = [(HUDashboardViewController *)self wallpaperView];
       *buf = 138412546;
-      v76 = v33;
+      v76 = wallpaperView;
       v77 = 2112;
-      v78 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v32, OS_LOG_TYPE_DEFAULT, "adding wallpaperView: %@ to dashboard: %@", buf, 0x16u);
     }
 
@@ -4853,50 +4853,50 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
     self->_wallpaperView = v34;
 
     [(HUWallpaperView *)self->_wallpaperView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v36 = [(HUDashboardViewController *)self view];
-    v37 = [(HUDashboardViewController *)self wallpaperView];
-    [v36 insertSubview:v37 atIndex:0];
+    view7 = [(HUDashboardViewController *)self view];
+    wallpaperView2 = [(HUDashboardViewController *)self wallpaperView];
+    [view7 insertSubview:wallpaperView2 atIndex:0];
 
     v57 = MEMORY[0x277CCAAD0];
-    v61 = [(HUDashboardViewController *)self wallpaperView];
-    v38 = [v61 topAnchor];
-    v73 = [(HUDashboardViewController *)self view];
-    v71 = [v73 topAnchor];
-    v69 = [v38 constraintEqualToAnchor:v71];
+    wallpaperView3 = [(HUDashboardViewController *)self wallpaperView];
+    view6 = [wallpaperView3 topAnchor];
+    view8 = [(HUDashboardViewController *)self view];
+    topAnchor3 = [view8 topAnchor];
+    v69 = [view6 constraintEqualToAnchor:topAnchor3];
     v74[0] = v69;
-    v67 = [(HUDashboardViewController *)self wallpaperView];
-    v63 = [v67 bottomAnchor];
-    v65 = [(HUDashboardViewController *)self view];
-    v59 = [v65 bottomAnchor];
-    v55 = [v63 constraintEqualToAnchor:v59];
+    wallpaperView4 = [(HUDashboardViewController *)self wallpaperView];
+    bottomAnchor3 = [wallpaperView4 bottomAnchor];
+    view9 = [(HUDashboardViewController *)self view];
+    bottomAnchor4 = [view9 bottomAnchor];
+    v55 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v74[1] = v55;
-    v53 = [(HUDashboardViewController *)self wallpaperView];
-    v51 = [v53 leadingAnchor];
-    v39 = [(HUDashboardViewController *)self view];
-    v40 = [v39 leadingAnchor];
-    v41 = [v51 constraintEqualToAnchor:v40];
+    wallpaperView5 = [(HUDashboardViewController *)self wallpaperView];
+    leadingAnchor3 = [wallpaperView5 leadingAnchor];
+    view10 = [(HUDashboardViewController *)self view];
+    leadingAnchor4 = [view10 leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v74[2] = v41;
-    v42 = [(HUDashboardViewController *)self wallpaperView];
-    v43 = [v42 trailingAnchor];
-    v44 = [(HUDashboardViewController *)self view];
-    v45 = [v44 trailingAnchor];
-    v46 = [v43 constraintEqualToAnchor:v45];
+    wallpaperView6 = [(HUDashboardViewController *)self wallpaperView];
+    trailingAnchor3 = [wallpaperView6 trailingAnchor];
+    view11 = [(HUDashboardViewController *)self view];
+    trailingAnchor4 = [view11 trailingAnchor];
+    v46 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v74[3] = v46;
     v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:4];
     [v57 activateConstraints:v47];
 
-    v48 = v61;
+    systemBlackColor = wallpaperView3;
   }
 }
 
 - (void)_updateBarTintColors
 {
   objc_opt_class();
-  v3 = [(HUDashboardViewController *)self navigationController];
-  v4 = [v3 navigationBar];
+  navigationController = [(HUDashboardViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = navigationBar;
   }
 
   else
@@ -4906,21 +4906,21 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
 
   v6 = v5;
 
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 overrideNavigationBarTintColor];
-  [v6 setOverrideTintColor:v8];
+  context = [(HUDashboardViewController *)self context];
+  overrideNavigationBarTintColor = [context overrideNavigationBarTintColor];
+  [v6 setOverrideTintColor:overrideNavigationBarTintColor];
 
   [(HUDashboardViewController *)self _setupTabBarAppearance];
 }
 
 - (void)_setupTabBarAppearance
 {
-  v3 = [(HUDashboardViewController *)self tabBarItem];
-  v4 = [v3 standardAppearance];
-  v5 = v4;
-  if (v4)
+  tabBarItem = [(HUDashboardViewController *)self tabBarItem];
+  standardAppearance = [tabBarItem standardAppearance];
+  v5 = standardAppearance;
+  if (standardAppearance)
   {
-    v6 = v4;
+    v6 = standardAppearance;
   }
 
   else
@@ -4931,36 +4931,36 @@ BOOL __68__HUDashboardViewController__statusItemRepresentsOnlyResidentIPads___bl
   v13 = v6;
 
   [v13 _setOverrideUserInterfaceStyle:2];
-  v7 = [(HUDashboardViewController *)self tabBarItem];
-  [v7 setStandardAppearance:v13];
+  tabBarItem2 = [(HUDashboardViewController *)self tabBarItem];
+  [tabBarItem2 setStandardAppearance:v13];
 
-  v8 = [(HUDashboardViewController *)self tabBarItem];
-  [v8 setScrollEdgeAppearance:v13];
+  tabBarItem3 = [(HUDashboardViewController *)self tabBarItem];
+  [tabBarItem3 setScrollEdgeAppearance:v13];
 
-  v9 = [(HUDashboardViewController *)self navigationController];
-  v10 = [v9 tabBarItem];
-  [v10 setStandardAppearance:v13];
+  navigationController = [(HUDashboardViewController *)self navigationController];
+  tabBarItem4 = [navigationController tabBarItem];
+  [tabBarItem4 setStandardAppearance:v13];
 
-  v11 = [(HUDashboardViewController *)self navigationController];
-  v12 = [v11 tabBarItem];
-  [v12 setScrollEdgeAppearance:v13];
+  navigationController2 = [(HUDashboardViewController *)self navigationController];
+  tabBarItem5 = [navigationController2 tabBarItem];
+  [tabBarItem5 setScrollEdgeAppearance:v13];
 }
 
-- (void)_handleBackgroundTap:(id)a3
+- (void)_handleBackgroundTap:(id)tap
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@ User tapped background", &v8, 0xCu);
   }
 
   if ([MEMORY[0x277D14670] isHomeControlService])
   {
-    v5 = [(HUDashboardViewController *)self parentViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    parentViewController = [(HUDashboardViewController *)self parentViewController];
+    [parentViewController dismissViewControllerAnimated:1 completion:0];
 LABEL_7:
 
     return;
@@ -4968,27 +4968,27 @@ LABEL_7:
 
   if ([(HUDashboardViewController *)self isOverlay])
   {
-    v5 = [(HUDashboardViewController *)self navigationController];
-    v6 = [v5 popToRootViewControllerAnimated:1];
+    parentViewController = [(HUDashboardViewController *)self navigationController];
+    v6 = [parentViewController popToRootViewControllerAnimated:1];
     goto LABEL_7;
   }
 
-  v7 = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
+  itemShowingSizeToggleButton = [(HUDashboardViewController *)self itemShowingSizeToggleButton];
 
-  if (v7)
+  if (itemShowingSizeToggleButton)
   {
     [(HUDashboardViewController *)self setItemShowingSizeToggleButton:0 animated:1];
   }
 }
 
-- (void)_toggleSizeForCell:(id)a3 withItem:(id)a4
+- (void)_toggleSizeForCell:(id)cell withItem:(id)item
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 accessoryRepresentableObject];
-  v9 = [(HUDashboardViewController *)self layoutManager];
-  v10 = [v9 gridSizeForItem:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  accessoryRepresentableObject = [itemCopy accessoryRepresentableObject];
+  layoutManager = [(HUDashboardViewController *)self layoutManager];
+  v10 = [layoutManager gridSizeForItem:itemCopy];
   v12 = v11;
 
   v13 = v12 <= 1 || v10 <= 1;
@@ -4998,18 +4998,18 @@ LABEL_7:
     v14 = MEMORY[0x277D14238];
   }
 
-  v15 = [v8 hf_setTileSize:*v14];
+  v15 = [accessoryRepresentableObject hf_setTileSize:*v14];
   v16 = MEMORY[0x277D75D18];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __57__HUDashboardViewController__toggleSizeForCell_withItem___block_invoke;
   v23 = &unk_277DB7558;
-  v24 = v6;
-  v25 = self;
-  v17 = v6;
+  v24 = cellCopy;
+  selfCopy = self;
+  v17 = cellCopy;
   [v16 animateWithDuration:&v20 animations:0.3];
   v18 = [(HUItemCollectionViewController *)self itemManager:v20];
-  v26[0] = v7;
+  v26[0] = itemCopy;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   [v18 reconfigureUIRepresentationForItems:v19 withAnimation:1];
 }
@@ -5027,16 +5027,16 @@ void __57__HUDashboardViewController__toggleSizeForCell_withItem___block_invoke(
 
 - (void)_requestLocationAuth
 {
-  v2 = [MEMORY[0x277D0F800] sharedAuthorization];
-  [v2 requestAuthorization:2 completionHandler:0];
+  mEMORY[0x277D0F800] = [MEMORY[0x277D0F800] sharedAuthorization];
+  [mEMORY[0x277D0F800] requestAuthorization:2 completionHandler:0];
 }
 
 - (void)_updateAllHeaderViews
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(HUDashboardViewController *)self collectionView];
+  collectionView = [(HUDashboardViewController *)self collectionView];
   v4 = *MEMORY[0x277D767D8];
-  v5 = [v3 indexPathsForVisibleSupplementaryElementsOfKind:*MEMORY[0x277D767D8]];
+  v5 = [collectionView indexPathsForVisibleSupplementaryElementsOfKind:*MEMORY[0x277D767D8]];
 
   v19 = 0u;
   v20 = 0u;
@@ -5059,8 +5059,8 @@ void __57__HUDashboardViewController__toggleSizeForCell_withItem___block_invoke(
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [(HUDashboardViewController *)self collectionView];
-        v12 = [v11 supplementaryViewForElementKind:v4 atIndexPath:v10];
+        collectionView2 = [(HUDashboardViewController *)self collectionView];
+        v12 = [collectionView2 supplementaryViewForElementKind:v4 atIndexPath:v10];
 
         objc_opt_class();
         v13 = v12;
@@ -5092,24 +5092,24 @@ void __57__HUDashboardViewController__toggleSizeForCell_withItem___block_invoke(
   }
 }
 
-- (void)_updateHeaderView:(id)a3 atIndexPath:(id)a4
+- (void)_updateHeaderView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v6 section];
+  pathCopy = path;
+  viewCopy = view;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  section = [pathCopy section];
 
-  v10 = [v8 displayedSectionIdentifierForSectionIndex:v9];
+  v10 = [itemManager displayedSectionIdentifierForSectionIndex:section];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __59__HUDashboardViewController__updateHeaderView_atIndexPath___block_invoke;
   v16 = &unk_277DBB548;
-  v17 = self;
+  selfCopy = self;
   v18 = v10;
   v11 = v10;
   v12 = __59__HUDashboardViewController__updateHeaderView_atIndexPath___block_invoke(&v13);
-  [v7 setShowsDisclosureIndicator:{v12, v13, v14, v15, v16, v17}];
+  [viewCopy setShowsDisclosureIndicator:{v12, v13, v14, v15, v16, selfCopy}];
 }
 
 uint64_t __59__HUDashboardViewController__updateHeaderView_atIndexPath___block_invoke(uint64_t a1)
@@ -5128,22 +5128,22 @@ uint64_t __59__HUDashboardViewController__updateHeaderView_atIndexPath___block_i
   return v3;
 }
 
-- (void)applicationWentIntoBackground:(id)a3
+- (void)applicationWentIntoBackground:(id)background
 {
   v20 = *MEMORY[0x277D85DE8];
-  v16 = [(HUDashboardViewController *)self context];
-  v4 = [v16 accessoryTypeGroup];
-  v5 = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
-  v6 = v5;
-  if (v4 == v5)
+  context = [(HUDashboardViewController *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
+  energyAccessoryTypeGroup = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
+  v6 = energyAccessoryTypeGroup;
+  if (accessoryTypeGroup == energyAccessoryTypeGroup)
   {
-    v7 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+    energyCategoryViewStartTime = [(HUDashboardViewController *)self energyCategoryViewStartTime];
 
-    if (v7)
+    if (energyCategoryViewStartTime)
     {
-      v8 = [MEMORY[0x277CBEAA8] date];
-      v9 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
-      [v8 timeIntervalSinceDate:v9];
+      date = [MEMORY[0x277CBEAA8] date];
+      energyCategoryViewStartTime2 = [(HUDashboardViewController *)self energyCategoryViewStartTime];
+      [date timeIntervalSinceDate:energyCategoryViewStartTime2];
       v11 = v10;
 
       v12 = HFLogForCategory();
@@ -5157,14 +5157,14 @@ uint64_t __59__HUDashboardViewController__updateHeaderView_atIndexPath___block_i
       [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:0];
       if (v11 > 1.0)
       {
-        v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v14 = [v13 allHomesFuture];
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        allHomesFuture = [mEMORY[0x277D146E8] allHomesFuture];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __59__HUDashboardViewController_applicationWentIntoBackground___block_invoke;
         v17[3] = &__block_descriptor_40_e29_v24__0__NSArray_8__NSError_16l;
         *&v17[4] = v11;
-        v15 = [v14 addCompletionBlock:v17];
+        v15 = [allHomesFuture addCompletionBlock:v17];
       }
     }
   }
@@ -5221,34 +5221,34 @@ LABEL_11:
   [HUEnergyAnalytics saveViewDurationEvent:47 withDuration:v9 withUserHasAccessories:v4];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 accessoryTypeGroup];
-  v6 = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
+  context = [(HUDashboardViewController *)self context];
+  accessoryTypeGroup = [context accessoryTypeGroup];
+  energyAccessoryTypeGroup = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
 
-  if (v5 == v6)
+  if (accessoryTypeGroup == energyAccessoryTypeGroup)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(HUDashboardViewController *)self setEnergyCategoryViewStartTime:date];
   }
 
-  v8 = [(HUDashboardViewController *)self context];
-  v9 = [v8 home];
+  context2 = [(HUDashboardViewController *)self context];
+  home = [context2 home];
 
-  if (v9)
+  if (home)
   {
     v10 = [HUHomeEnergyManagerHelper alloc];
-    v11 = [(HUDashboardViewController *)self context];
-    v12 = [v11 home];
-    v13 = [(HUHomeEnergyManagerHelper *)v10 initWithHome:v12];
+    context3 = [(HUDashboardViewController *)self context];
+    home2 = [context3 home];
+    v13 = [(HUHomeEnergyManagerHelper *)v10 initWithHome:home2];
 
     v14 = HFLogForCategory();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2080;
       v19 = "[HUDashboardViewController applicationWillEnterForeground:]";
       _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@ %s Updating Home Location", buf, 0x16u);
@@ -5268,7 +5268,7 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2080;
       v19 = "[HUDashboardViewController applicationWillEnterForeground:]";
       _os_log_error_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_ERROR, "%@ %s home is nil.", buf, 0x16u);
@@ -5294,10 +5294,10 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
 - (void)_registerSectionDecorationViews
 {
   objc_opt_class();
-  v3 = [(HUDashboardViewController *)self collectionViewLayout];
+  collectionViewLayout = [(HUDashboardViewController *)self collectionViewLayout];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = collectionViewLayout;
   }
 
   else
@@ -5309,8 +5309,8 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
 
   if (v6)
   {
-    v5 = [(HUDashboardViewController *)self layoutManager];
-    [v5 registerSectionDecorationViewsWithLayout:v6];
+    layoutManager = [(HUDashboardViewController *)self layoutManager];
+    [layoutManager registerSectionDecorationViewsWithLayout:v6];
   }
 }
 
@@ -5344,11 +5344,11 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
   return result;
 }
 
-- (id)matchingItemForHomeKitObject:(id)a3
+- (id)matchingItemForHomeKitObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HUItemCollectionViewController *)self itemManager];
-  v6 = [v5 matchingItemForHomeKitObject:v4];
+  objectCopy = object;
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v6 = [itemManager matchingItemForHomeKitObject:objectCopy];
 
   if (!v6)
   {
@@ -5356,7 +5356,7 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      v7 = v4;
+      v7 = objectCopy;
       if (objc_opt_isKindOfClass())
       {
         v8 = v7;
@@ -5369,7 +5369,7 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
 
       v9 = v8;
 
-      v10 = [v9 hf_primaryService];
+      hf_primaryService = [v9 hf_primaryService];
     }
 
     else
@@ -5378,14 +5378,14 @@ void __60__HUDashboardViewController_applicationWillEnterForeground___block_invo
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_13:
-        v15 = [(HUItemCollectionViewController *)self itemManager];
-        v6 = [v15 buildItemForHomeKitObject:v4];
+        itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+        v6 = [itemManager2 buildItemForHomeKitObject:objectCopy];
 
         goto LABEL_14;
       }
 
       objc_opt_class();
-      v11 = v4;
+      v11 = objectCopy;
       if (objc_opt_isKindOfClass())
       {
         v12 = v11;
@@ -5398,12 +5398,12 @@ LABEL_13:
 
       v9 = v12;
 
-      v10 = [v9 accessory];
+      hf_primaryService = [v9 accessory];
     }
 
-    v13 = v10;
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    v6 = [v14 matchingItemForHomeKitObject:v13];
+    v13 = hf_primaryService;
+    itemManager3 = [(HUItemCollectionViewController *)self itemManager];
+    v6 = [itemManager3 matchingItemForHomeKitObject:v13];
 
     if (v6)
     {
@@ -5418,10 +5418,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)presentHomeKitObject:(id)a3 destination:(unint64_t)a4 animated:(BOOL)a5
+- (id)presentHomeKitObject:(id)object destination:(unint64_t)destination animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = [(HUDashboardViewController *)self matchingItemForHomeKitObject:a3];
+  animatedCopy = animated;
+  v8 = [(HUDashboardViewController *)self matchingItemForHomeKitObject:object];
   v9 = v8;
   if (!v8)
   {
@@ -5431,7 +5431,7 @@ LABEL_14:
   if ([v8 conformsToProtocol:&unk_28251B0C8])
   {
     v10 = v9;
-    v11 = v10;
+    sourceItem = v10;
   }
 
   else
@@ -5439,7 +5439,7 @@ LABEL_14:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v16 = 0;
+      hu_preloadContent = 0;
       goto LABEL_14;
     }
 
@@ -5457,14 +5457,14 @@ LABEL_14:
 
     v14 = v13;
 
-    v11 = [v14 sourceItem];
+    sourceItem = [v14 sourceItem];
 
-    v10 = v11;
+    v10 = sourceItem;
   }
 
   if ([v10 conformsToProtocol:&unk_28251B0C8])
   {
-    v15 = v11;
+    v15 = sourceItem;
   }
 
   else
@@ -5472,17 +5472,17 @@ LABEL_14:
     v15 = 0;
   }
 
-  v16 = v15;
+  hu_preloadContent = v15;
 
 LABEL_14:
-  if (a4 > 1)
+  if (destination > 1)
   {
-    if (a4 == 2)
+    if (destination == 2)
     {
       goto LABEL_24;
     }
 
-    if (a4 != 3)
+    if (destination != 3)
     {
       goto LABEL_17;
     }
@@ -5490,27 +5490,27 @@ LABEL_14:
 
   else
   {
-    if (!a4)
+    if (!destination)
     {
       goto LABEL_24;
     }
 
-    if (a4 != 1)
+    if (destination != 1)
     {
 LABEL_17:
 
 LABEL_18:
-      v16 = [(HUDashboardViewController *)self hu_preloadContent];
-      v17 = [v16 flatMap:&__block_literal_global_753];
+      hu_preloadContent = [(HUDashboardViewController *)self hu_preloadContent];
+      v17 = [hu_preloadContent flatMap:&__block_literal_global_753];
 LABEL_23:
       v18 = v17;
       goto LABEL_29;
     }
   }
 
-  if (v16)
+  if (hu_preloadContent)
   {
-    v17 = [(HUDashboardViewController *)self presentDetailsForItem:v16 animated:1 secondaryDestination:a4];
+    v17 = [(HUDashboardViewController *)self presentDetailsForItem:hu_preloadContent animated:1 secondaryDestination:destination];
     goto LABEL_23;
   }
 
@@ -5518,7 +5518,7 @@ LABEL_24:
   v19 = [(HUItemCollectionViewController *)self moduleControllerForItem:v9];
   if (v19 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v20 = [v19 presentItem:v9 destination:a4 animated:v5];
+    v20 = [v19 presentItem:v9 destination:destination animated:animatedCopy];
   }
 
   else
@@ -5542,19 +5542,19 @@ id __96__HUDashboardViewController_HomeKitObjectPresenting__presentHomeKitObject
   return v2;
 }
 
-- (id)presentItemWithUUID:(id)a3 destination:(unint64_t)a4 secondaryDestination:(unint64_t)a5 animated:(BOOL)a6
+- (id)presentItemWithUUID:(id)d destination:(unint64_t)destination secondaryDestination:(unint64_t)secondaryDestination animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  dCopy = d;
   v11 = 1;
-  if (a4 <= 6)
+  if (destination <= 6)
   {
-    if (a4 == 4)
+    if (destination == 4)
     {
       goto LABEL_9;
     }
 
-    if (a4 == 6)
+    if (destination == 6)
     {
       v11 = 3;
       goto LABEL_9;
@@ -5563,25 +5563,25 @@ id __96__HUDashboardViewController_HomeKitObjectPresenting__presentHomeKitObject
 
   else
   {
-    if (a4 == 29 || a4 == 21)
+    if (destination == 29 || destination == 21)
     {
       goto LABEL_9;
     }
 
-    if (a4 == 7)
+    if (destination == 7)
     {
       v11 = 2;
 LABEL_9:
-      v12 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:v6];
+      v12 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:animatedCopy];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __116__HUDashboardViewController_HomeKitObjectPresenting__presentItemWithUUID_destination_secondaryDestination_animated___block_invoke;
       v17[3] = &unk_277DC2B18;
       v17[4] = self;
-      v21 = (a5 & 0xFFFFFFFFFFFFFFFDLL) == 1;
-      v18 = v10;
-      v19 = a5;
-      v22 = v6;
+      v21 = (secondaryDestination & 0xFFFFFFFFFFFFFFFDLL) == 1;
+      v18 = dCopy;
+      secondaryDestinationCopy = secondaryDestination;
+      v22 = animatedCopy;
       v20 = v11;
       v13 = [v12 flatMap:v17];
 
@@ -5775,93 +5775,93 @@ void __116__HUDashboardViewController_HomeKitObjectPresenting__presentItemWithUU
   [*(a1 + 40) finishWithResult:*(a1 + 32)];
 }
 
-- (id)presentCameraProfile:(id)a3 startDate:(id)a4 endDate:(id)a5 animated:(BOOL)a6
+- (id)presentCameraProfile:(id)profile startDate:(id)date endDate:(id)endDate animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v14 = [v13 presentCameraPlayerViewControllerForHomeKitObject:v12 startDate:v11 endDate:v10 animated:v6];
+  animatedCopy = animated;
+  endDateCopy = endDate;
+  dateCopy = date;
+  profileCopy = profile;
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  v14 = [cameraItemModuleController presentCameraPlayerViewControllerForHomeKitObject:profileCopy startDate:dateCopy endDate:endDateCopy animated:animatedCopy];
 
   return v14;
 }
 
-- (id)presentCameraProfile:(id)a3 forCameraClip:(id)a4 animated:(BOOL)a5
+- (id)presentCameraProfile:(id)profile forCameraClip:(id)clip animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v11 = [v10 presentCameraPlayerViewControllerForHomeKitObject:v9 cameraClip:v8 animated:v5];
+  animatedCopy = animated;
+  clipCopy = clip;
+  profileCopy = profile;
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  v11 = [cameraItemModuleController presentCameraPlayerViewControllerForHomeKitObject:profileCopy cameraClip:clipCopy animated:animatedCopy];
 
   return v11;
 }
 
-- (id)presentFeedbackFlowForCameraClip:(id)a3 fromProfile:(id)a4
+- (id)presentFeedbackFlowForCameraClip:(id)clip fromProfile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v9 = [v8 presentFeedbackFlowForCameraClip:v7 fromProfile:v6];
+  profileCopy = profile;
+  clipCopy = clip;
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  v9 = [cameraItemModuleController presentFeedbackFlowForCameraClip:clipCopy fromProfile:profileCopy];
 
   return v9;
 }
 
-- (id)presentStatusDetailsForStatusItemClass:(Class)a3 animated:(BOOL)a4
+- (id)presentStatusDetailsForStatusItemClass:(Class)class animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v29 = *MEMORY[0x277D85DE8];
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    v7 = NSStringFromClass(a3);
+    v7 = NSStringFromClass(class);
     NSLog(&cfstr_InvalidStatusI.isa, v7);
   }
 
-  v8 = [(HUItemCollectionViewController *)self itemManager];
-  v9 = [v8 allItems];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  allItems = [itemManager allItems];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __102__HUDashboardViewController_HomeKitObjectPresenting__presentStatusDetailsForStatusItemClass_animated___block_invoke;
   v24[3] = &__block_descriptor_40_e16_B16__0__HFItem_8lu32l8;
-  v24[4] = a3;
-  v10 = [v9 na_firstObjectPassingTest:v24];
+  v24[4] = class;
+  v10 = [allItems na_firstObjectPassingTest:v24];
 
   if (v10)
   {
     v11 = objc_opt_new();
     [v11 setItem:v10];
-    v12 = [(HUItemCollectionViewController *)self itemManager];
-    v13 = [v12 home];
-    [v11 setHome:v13];
+    itemManager2 = [(HUItemCollectionViewController *)self itemManager];
+    home = [itemManager2 home];
+    [v11 setHome:home];
 
     [v11 setPrefersSystemTransitions:1];
-    v14 = [(HUDashboardViewController *)self navigationController];
-    v15 = v14;
-    if (v14)
+    navigationController = [(HUDashboardViewController *)self navigationController];
+    v15 = navigationController;
+    if (navigationController)
     {
-      v16 = v14;
+      selfCopy = navigationController;
     }
 
     else
     {
-      v16 = self;
+      selfCopy = self;
     }
 
-    [v11 setSourceViewController:v16];
+    [v11 setSourceViewController:selfCopy];
 
     v17 = HFLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
       v28 = v10;
       _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "%@ Presenting status details for status item: %@", buf, 0x16u);
     }
 
-    v18 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v19 = [v18 presentQuickControlWithContext:v11 animated:v4];
+    quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    v19 = [quickControlPresentationCoordinator presentQuickControlWithContext:v11 animated:animatedCopy];
   }
 
   else
@@ -5869,9 +5869,9 @@ void __116__HUDashboardViewController_HomeKitObjectPresenting__presentItemWithUU
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v23 = NSStringFromClass(a3);
+      v23 = NSStringFromClass(class);
       *buf = 138412546;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2112;
       v28 = v23;
       _os_log_error_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_ERROR, "%@ Failed to find status item of class: %@", buf, 0x16u);
@@ -5885,19 +5885,19 @@ void __116__HUDashboardViewController_HomeKitObjectPresenting__presentItemWithUU
   return v19;
 }
 
-- (id)presentItem:(id)a3 animated:(BOOL)a4
+- (id)presentItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:v6])
+  animatedCopy = animated;
+  itemCopy = item;
+  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:itemCopy])
   {
-    v7 = [(HUControllableItemCollectionViewController *)self presentAccessoryControlsForItem:v6];
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+    v7 = [(HUControllableItemCollectionViewController *)self presentAccessoryControlsForItem:itemCopy];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v9 = v6;
+    v9 = itemCopy;
     if ([v9 conformsToProtocol:&unk_2824C0788])
     {
       v10 = v9;
@@ -5925,36 +5925,36 @@ void __116__HUDashboardViewController_HomeKitObjectPresenting__presentItemWithUU
 
     if (v14)
     {
-      [(HUDashboardViewController *)self _presentQuickControlsForHomeKitItem:v14 animated:v4];
+      [(HUDashboardViewController *)self _presentQuickControlsForHomeKitItem:v14 animated:animatedCopy];
     }
 
     else
     {
       [MEMORY[0x277D2C900] futureWithNoResult];
     }
-    v8 = ;
+    futureWithNoResult = ;
   }
 
-  return v8;
+  return futureWithNoResult;
 }
 
-- (id)presentDetailsForItem:(id)a3 animated:(BOOL)a4 secondaryDestination:(unint64_t)a5
+- (id)presentDetailsForItem:(id)item animated:(BOOL)animated secondaryDestination:(unint64_t)destination
 {
-  v8 = a3;
-  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:v8])
+  itemCopy = item;
+  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:itemCopy])
   {
-    v9 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:v8 secondaryDestination:a5];
+    v9 = [(HUControllableItemCollectionViewController *)self presentAccessorySettingsForItem:itemCopy secondaryDestination:destination];
   }
 
   else
   {
-    v10 = [(HUDashboardViewController *)self _presentQuickControlsForHomeKitItem:v8 animated:0];
+    v10 = [(HUDashboardViewController *)self _presentQuickControlsForHomeKitItem:itemCopy animated:0];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __106__HUDashboardViewController_HomeKitObjectPresenting__presentDetailsForItem_animated_secondaryDestination___block_invoke;
     v12[3] = &__block_descriptor_33_e42___NAFuture_16__0__UINavigationController_8l;
-    v13 = a4;
+    animatedCopy = animated;
     v9 = [v10 flatMap:v12];
   }
 
@@ -5999,39 +5999,39 @@ void __106__HUDashboardViewController_HomeKitObjectPresenting__presentDetailsFor
   [v3 finishWithResult:v6];
 }
 
-- (id)_presentQuickControlsForHomeKitItem:(id)a3 animated:(BOOL)a4
+- (id)_presentQuickControlsForHomeKitItem:(id)item animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  itemCopy = item;
   objc_initWeak(location, self);
-  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:v6])
+  if ([(HUControllableItemCollectionViewController *)self shouldShowAccessoryControlForItem:itemCopy])
   {
-    v7 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:v4];
+    v7 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:animatedCopy];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __99__HUDashboardViewController_HomeKitObjectPresenting___presentQuickControlsForHomeKitItem_animated___block_invoke;
     v39[3] = &unk_277DBD700;
     objc_copyWeak(&v41, location);
-    v40 = v6;
+    v40 = itemCopy;
     v8 = [v7 flatMap:v39];
 
     objc_destroyWeak(&v41);
     goto LABEL_19;
   }
 
-  v9 = [(HUItemCollectionViewController *)self itemManager];
-  v7 = [v9 indexPathForItem:v6];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v7 = [itemManager indexPathForItem:itemCopy];
 
   if (v7)
   {
-    v10 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-    v11 = [v10 presentationContext];
-    v12 = [v11 item];
+    quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+    presentationContext = [quickControlPresentationCoordinator presentationContext];
+    item = [presentationContext item];
 
-    if (v12)
+    if (item)
     {
       v13 = &unk_2824C0788;
-      v14 = v12;
+      v14 = item;
       v15 = [v14 conformsToProtocol:v13];
       if (v15)
       {
@@ -6046,7 +6046,7 @@ void __106__HUDashboardViewController_HomeKitObjectPresenting__presentDetailsFor
       v17 = v15 ^ 1;
       v18 = v16;
 
-      if (v6)
+      if (itemCopy)
       {
         v19 = v17;
       }
@@ -6058,18 +6058,18 @@ void __106__HUDashboardViewController_HomeKitObjectPresenting__presentDetailsFor
 
       if ((v19 & 1) == 0)
       {
-        v30 = [v18 homeKitObject];
-        v20 = [v30 uniqueIdentifier];
-        v21 = [v6 homeKitObject];
-        v22 = [v21 uniqueIdentifier];
-        v23 = [v20 isEqual:v22];
+        homeKitObject = [v18 homeKitObject];
+        uniqueIdentifier = [homeKitObject uniqueIdentifier];
+        homeKitObject2 = [itemCopy homeKitObject];
+        uniqueIdentifier2 = [homeKitObject2 uniqueIdentifier];
+        v23 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         if (v23)
         {
           v24 = MEMORY[0x277D2C900];
-          v25 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-          v26 = [v25 cardViewController];
-          v8 = [v24 futureWithResult:v26];
+          quickControlPresentationCoordinator2 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+          cardViewController = [quickControlPresentationCoordinator2 cardViewController];
+          v8 = [v24 futureWithResult:cardViewController];
 
 LABEL_17:
           goto LABEL_18;
@@ -6077,33 +6077,33 @@ LABEL_17:
       }
     }
 
-    v18 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:v4];
+    v18 = [(HUDashboardViewController *)self _dismissPresentedViewControllersAnimated:animatedCopy];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __99__HUDashboardViewController_HomeKitObjectPresenting___presentQuickControlsForHomeKitItem_animated___block_invoke_3;
     v31[3] = &unk_277DC2A60;
     objc_copyWeak(&v34, location);
     v32 = v7;
-    v33 = v6;
-    v35 = v4;
+    v33 = itemCopy;
+    v35 = animatedCopy;
     v8 = [v18 flatMap:v31];
 
     objc_destroyWeak(&v34);
     goto LABEL_17;
   }
 
-  v27 = [v6 homeKitObject];
-  v8 = [(HUDashboardViewController *)self _presentAccessoryControlsForHomeKitObject:v27 fromStatusItem:0 animated:1];
+  homeKitObject3 = [itemCopy homeKitObject];
+  v8 = [(HUDashboardViewController *)self _presentAccessoryControlsForHomeKitObject:homeKitObject3 fromStatusItem:0 animated:1];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __99__HUDashboardViewController_HomeKitObjectPresenting___presentQuickControlsForHomeKitItem_animated___block_invoke_2;
   v36[3] = &unk_277DB7E90;
   v37 = 0;
-  v38 = v6;
+  v38 = itemCopy;
   v28 = [v8 addFailureBlock:v36];
 
-  v12 = v37;
+  item = v37;
 LABEL_18:
 
 LABEL_19:
@@ -6205,31 +6205,31 @@ void __99__HUDashboardViewController_HomeKitObjectPresenting___presentQuickContr
 
 - (void)_registerObservers
 {
-  v3 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v3 addHomeObserver:self];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8] addHomeObserver:self];
 
-  v4 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v4 addHomeManagerObserver:self];
+  mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8]2 addHomeManagerObserver:self];
 
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v5 addAccessoryObserver:self];
+  mEMORY[0x277D146E8]3 = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8]3 addAccessoryObserver:self];
 
-  v6 = [MEMORY[0x277D146E8] sharedDispatcher];
-  [v6 addUserObserver:self];
+  mEMORY[0x277D146E8]4 = [MEMORY[0x277D146E8] sharedDispatcher];
+  [mEMORY[0x277D146E8]4 addUserObserver:self];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 home];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
 
-  if (v5)
+  if (home)
   {
     v6 = [HUHomeEnergyManagerHelper alloc];
-    v7 = [(HUDashboardViewController *)self context];
-    v8 = [v7 home];
-    v10 = [(HUHomeEnergyManagerHelper *)v6 initWithHome:v8];
+    context2 = [(HUDashboardViewController *)self context];
+    home2 = [context2 home];
+    v10 = [(HUHomeEnergyManagerHelper *)v6 initWithHome:home2];
 
     [(HUHomeEnergyManagerHelper *)v10 updateHomeEnergyAvailableFeaturesWithCompletionHandler:&__block_literal_global_834];
   }
@@ -6240,7 +6240,7 @@ void __99__HUDashboardViewController_HomeKitObjectPresenting___presentQuickContr
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v12 = self;
+      selfCopy = self;
       v13 = 2080;
       v14 = "[HUDashboardViewController(Observer) homeManagerDidUpdateHomes:]";
       _os_log_error_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_ERROR, "%@ %s home is nil.", buf, 0x16u);
@@ -6256,20 +6256,20 @@ void __65__HUDashboardViewController_Observer__homeManagerDidUpdateHomes___block
   [v5 handleError:v4];
 }
 
-- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)a3
+- (void)homeDidUpdateHomeEnergyManagerEnabled:(id)enabled
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [enabledCopy name];
     v7 = 138412802;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[HUDashboardViewController(Observer) homeDidUpdateHomeEnergyManagerEnabled:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = name;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%@ %s) HUDashboardViewController ~~> Dispatching home: %@ onto main.", &v7, 0x20u);
   }
 
@@ -6277,44 +6277,44 @@ void __65__HUDashboardViewController_Observer__homeManagerDidUpdateHomes___block
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  [(HUDashboardViewController *)self _updateBarButtons:a3];
+  [(HUDashboardViewController *)self _updateBarButtons:home];
 
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  [(HUDashboardViewController *)self _updateBarButtons:a3];
+  [(HUDashboardViewController *)self _updateBarButtons:home];
 
   [(HUDashboardViewController *)self _updateHomeEnergyIndicatorVisibility];
 }
 
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4
+- (void)home:(id)home didUpdateNameForRoom:(id)room
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  roomCopy = room;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138413058;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[HUDashboardViewController(Observer) home:didUpdateNameForRoom:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = homeCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = roomCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@ %s home %@ room %@", &v12, 0x2Au);
   }
 
   objc_opt_class();
-  v9 = [(HUItemCollectionViewController *)self itemManager];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = itemManager;
   }
 
   else
@@ -6324,29 +6324,29 @@ void __65__HUDashboardViewController_Observer__homeManagerDidUpdateHomes___block
 
   v11 = v10;
 
-  [v11 updateItemSectionHeaderTitleForRoom:v7];
+  [v11 updateItemSectionHeaderTitleForRoom:roomCopy];
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4
+- (void)home:(id)home didRemoveRoom:(id)room
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 room];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v6 uniqueIdentifier];
+  homeCopy = home;
+  roomCopy = room;
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  uniqueIdentifier2 = [roomCopy uniqueIdentifier];
 
-  if ([v9 hmf_isEqualToUUID:v10])
+  if ([uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2])
   {
-    v11 = [(HUDashboardViewController *)self viewIsFullyVisible];
+    viewIsFullyVisible = [(HUDashboardViewController *)self viewIsFullyVisible];
 
-    if (!v11)
+    if (!viewIsFullyVisible)
     {
       goto LABEL_6;
     }
 
-    v7 = [(HUDashboardViewController *)self _dashboardNavigator];
-    v12 = [v7 showHome:v13];
+    context = [(HUDashboardViewController *)self _dashboardNavigator];
+    v12 = [context showHome:homeCopy];
   }
 
   else
@@ -6356,86 +6356,86 @@ void __65__HUDashboardViewController_Observer__homeManagerDidUpdateHomes___block
 LABEL_6:
 }
 
-- (void)homeDidUpdateWallpaper:(id)a3
+- (void)homeDidUpdateWallpaper:(id)wallpaper
 {
-  v10 = a3;
-  v4 = [(HUDashboardViewController *)self context];
-  v5 = [v4 room];
-  if (v5)
+  wallpaperCopy = wallpaper;
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
+  if (room)
   {
   }
 
   else
   {
-    v6 = [(HUDashboardViewController *)self context];
-    v7 = [v6 home];
-    v8 = [v7 isEqual:v10];
+    context2 = [(HUDashboardViewController *)self context];
+    home = [context2 home];
+    v8 = [home isEqual:wallpaperCopy];
 
     if (!v8)
     {
       goto LABEL_6;
     }
 
-    v4 = [(HUDashboardViewController *)self wallpaperView];
-    v9 = [v4 refreshWallpaperForHomeKitObject:v10 withAnimation:1];
+    context = [(HUDashboardViewController *)self wallpaperView];
+    v9 = [context refreshWallpaperForHomeKitObject:wallpaperCopy withAnimation:1];
   }
 
 LABEL_6:
 }
 
-- (void)home:(id)a3 didUpdateWallpaperForRoom:(id)a4
+- (void)home:(id)home didUpdateWallpaperForRoom:(id)room
 {
-  v10 = a4;
-  v5 = [(HUDashboardViewController *)self context];
-  v6 = [v5 room];
-  v7 = [v6 isEqual:v10];
+  roomCopy = room;
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
+  v7 = [room isEqual:roomCopy];
 
   if (v7)
   {
-    v8 = [(HUDashboardViewController *)self wallpaperView];
-    v9 = [v8 refreshWallpaperForHomeKitObject:v10 withAnimation:1];
+    wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+    v9 = [wallpaperView refreshWallpaperForHomeKitObject:roomCopy withAnimation:1];
   }
 }
 
-- (void)home:(id)a3 didUpdateLocation:(id)a4
+- (void)home:(id)home didUpdateLocation:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HUDashboardViewController *)self wallpaperView];
-  v7 = [(HUDashboardViewController *)self context];
-  v8 = [v7 room];
-  if (v8)
+  homeCopy = home;
+  wallpaperView = [(HUDashboardViewController *)self wallpaperView];
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
+  if (room)
   {
-    v9 = [v6 refreshWallpaperForHomeKitObject:v8 withAnimation:1];
+    v9 = [wallpaperView refreshWallpaperForHomeKitObject:room withAnimation:1];
   }
 
   else
   {
-    v10 = [(HUDashboardViewController *)self context];
-    v11 = [v10 home];
-    v12 = [v6 refreshWallpaperForHomeKitObject:v11 withAnimation:1];
+    context2 = [(HUDashboardViewController *)self context];
+    home = [context2 home];
+    v12 = [wallpaperView refreshWallpaperForHomeKitObject:home withAnimation:1];
   }
 
-  v13 = [(HUDashboardViewController *)self context];
-  v14 = [v13 home];
-  if (v14)
+  context3 = [(HUDashboardViewController *)self context];
+  home2 = [context3 home];
+  if (home2)
   {
-    v15 = v14;
-    v16 = [(HUDashboardViewController *)self context];
-    v17 = [v16 home];
+    v15 = home2;
+    context4 = [(HUDashboardViewController *)self context];
+    home3 = [context4 home];
 
-    if (v17 == v5)
+    if (home3 == homeCopy)
     {
       v18 = [HUHomeEnergyManagerHelper alloc];
-      v19 = [(HUDashboardViewController *)self context];
-      v20 = [v19 home];
-      v21 = [(HUHomeEnergyManagerHelper *)v18 initWithHome:v20];
+      context5 = [(HUDashboardViewController *)self context];
+      home4 = [context5 home];
+      v21 = [(HUHomeEnergyManagerHelper *)v18 initWithHome:home4];
 
       v22 = HFLogForCategory();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2080;
         v27 = "[HUDashboardViewController(Observer) home:didUpdateLocation:]";
         _os_log_impl(&dword_20CEB6000, v22, OS_LOG_TYPE_DEFAULT, "%@ %s Updating Home Location", buf, 0x16u);
@@ -6459,7 +6459,7 @@ LABEL_6:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2080;
     v27 = "[HUDashboardViewController(Observer) home:didUpdateLocation:]";
     _os_log_error_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_ERROR, "%@ %s home is nil.", buf, 0x16u);
@@ -6483,45 +6483,45 @@ void __62__HUDashboardViewController_Observer__home_didUpdateLocation___block_in
   }
 }
 
-- (void)homeKitDispatcher:(id)a3 manager:(id)a4 didChangeHome:(id)a5
+- (void)homeKitDispatcher:(id)dispatcher manager:(id)manager didChangeHome:(id)home
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a5;
+  homeCopy = home;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
+    uuid = [homeCopy uuid];
     v15 = 138543362;
-    v16 = v8;
+    v16 = uuid;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "homeKitDispatcher:manager:didChangeHome: home = %{public}@", &v15, 0xCu);
   }
 
-  v9 = [MEMORY[0x277D14820] sharedManager];
-  [v9 warmup];
+  mEMORY[0x277D14820] = [MEMORY[0x277D14820] sharedManager];
+  [mEMORY[0x277D14820] warmup];
 
-  v10 = [(HUDashboardViewController *)self cameraItemModuleController];
-  v11 = [v10 cameraController];
+  cameraItemModuleController = [(HUDashboardViewController *)self cameraItemModuleController];
+  cameraController = [cameraItemModuleController cameraController];
 
-  if (v11)
+  if (cameraController)
   {
-    v12 = [v11 playerViewController];
-    v13 = [v12 presentingViewController];
-    v14 = [v13 hu_dismissViewControllerAnimated:0];
+    playerViewController = [cameraController playerViewController];
+    presentingViewController = [playerViewController presentingViewController];
+    v14 = [presentingViewController hu_dismissViewControllerAnimated:0];
   }
 }
 
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  managerCopy = manager;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = managerCopy;
     v10 = 1024;
-    v11 = v4;
+    v11 = stateCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "<HHUDashboardViewController-homeManager:didUpdateHH2State> homeManager = %@ | didUpdateHH2State = %{BOOL}d", &v8, 0x12u);
   }
 
@@ -6529,22 +6529,22 @@ void __62__HUDashboardViewController_Observer__home_didUpdateLocation___block_in
   [(HUDashboardViewController *)self _updateBarButtons];
 }
 
-- (id)presentRoomSettingsForRoom:(id)a3
+- (id)presentRoomSettingsForRoom:(id)room
 {
-  v4 = a3;
-  if (v4)
+  roomCopy = room;
+  if (roomCopy)
   {
-    v5 = v4;
+    room = roomCopy;
 LABEL_4:
-    v7 = [(HUDashboardViewController *)self _presentRoomEditorForRoom:v5];
+    futureWithNoResult = [(HUDashboardViewController *)self _presentRoomEditorForRoom:room];
 
     goto LABEL_5;
   }
 
-  v6 = [(HUDashboardViewController *)self context];
-  v5 = [v6 room];
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
 
-  if (v5)
+  if (room)
   {
     goto LABEL_4;
   }
@@ -6556,20 +6556,20 @@ LABEL_4:
     _os_log_error_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_ERROR, "HUDashboardViewController: room not provided for settings presentation", v10, 2u);
   }
 
-  v7 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 LABEL_5:
 
-  return v7;
+  return futureWithNoResult;
 }
 
-- (id)_presentRoomEditorForRoom:(id)a3
+- (id)_presentRoomEditorForRoom:(id)room
 {
   v4 = MEMORY[0x277D149D8];
-  v5 = a3;
+  roomCopy = room;
   v6 = [v4 alloc];
-  v7 = [(HUItemCollectionViewController *)self itemManager];
-  v8 = [v7 home];
-  v9 = [v6 initWithExistingObject:v5 inHome:v8];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager home];
+  v9 = [v6 initWithExistingObject:roomCopy inHome:home];
 
   v10 = [[HUEditRoomViewController alloc] initWithRoomBuilder:v9 presentationDelegate:self addRoomDelegate:0];
   v11 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
@@ -6579,23 +6579,23 @@ LABEL_5:
   return v12;
 }
 
-- (void)editRoomViewControllerDidFinish:(id)a3 withNewRoom:(id)a4
+- (void)editRoomViewControllerDidFinish:(id)finish withNewRoom:(id)room
 {
-  v8 = a4;
-  if (v8)
+  roomCopy = room;
+  if (roomCopy)
   {
-    v5 = [(HUDashboardViewController *)self _dashboardNavigator];
-    v6 = [v5 showRoom:v8];
+    _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+    v6 = [_dashboardNavigator showRoom:roomCopy];
   }
 
-  v7 = [(HUDashboardViewController *)self _dashboardNavigator];
-  [v7 dismissViewController];
+  _dashboardNavigator2 = [(HUDashboardViewController *)self _dashboardNavigator];
+  [_dashboardNavigator2 dismissViewController];
 }
 
 - (void)_setUpNavigationBar
 {
-  v3 = [(HUDashboardViewController *)self navigationItem];
-  [v3 setLeftItemsSupplementBackButton:1];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  [navigationItem setLeftItemsSupplementBackButton:1];
 
   v4 = [HUNavigationBarButton addButtonWithOwner:self];
   [(HUDashboardViewController *)self setNavigationAddButton:v4];
@@ -6614,9 +6614,9 @@ LABEL_5:
 
 - (void)_clearEnergyIndicator
 {
-  v3 = [(HUDashboardViewController *)self energyIndicatorViewController];
+  energyIndicatorViewController = [(HUDashboardViewController *)self energyIndicatorViewController];
 
-  if (v3)
+  if (energyIndicatorViewController)
   {
     v4 = HFLogForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -6626,8 +6626,8 @@ LABEL_5:
     }
 
     [(HUDashboardViewController *)self setEnergyIndicatorViewController:0];
-    v5 = [(HUDashboardViewController *)self navigationItem];
-    [v5 _setLargeTitleAccessoryView:0 alignToBaseline:0];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    [navigationItem _setLargeTitleAccessoryView:0 alignToBaseline:0];
 
     [(HUDashboardViewController *)self _updateHomeEnergyTipVisibility];
   }
@@ -6636,45 +6636,45 @@ LABEL_5:
 - (void)_updateHomeEnergyIndicatorVisibility
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 home];
-  v5 = [v4 hf_isHomeEnergyHomeEmpty];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  hf_isHomeEnergyHomeEmpty = [home hf_isHomeEnergyHomeEmpty];
 
-  if (v5)
+  if (hf_isHomeEnergyHomeEmpty)
   {
     goto LABEL_7;
   }
 
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 home];
-  v8 = [v7 hf_isGridForecastVisible];
+  context2 = [(HUDashboardViewController *)self context];
+  home2 = [context2 home];
+  hf_isGridForecastVisible = [home2 hf_isGridForecastVisible];
 
-  v9 = [(HUDashboardViewController *)self energyIndicatorViewController];
+  energyIndicatorViewController = [(HUDashboardViewController *)self energyIndicatorViewController];
 
-  if (!v9)
+  if (!energyIndicatorViewController)
   {
-    v12 = [(HUDashboardViewController *)self context];
-    v13 = [v12 home];
-    v14 = [v13 hf_isGridForecastSupported];
+    context3 = [(HUDashboardViewController *)self context];
+    home3 = [context3 home];
+    hf_isGridForecastSupported = [home3 hf_isGridForecastSupported];
 
-    v15 = [(HUDashboardViewController *)self context];
-    v16 = [v15 allowsEnergyIndicator];
+    context4 = [(HUDashboardViewController *)self context];
+    allowsEnergyIndicator = [context4 allowsEnergyIndicator];
 
-    v17 = v14 & v16;
+    v17 = hf_isGridForecastSupported & allowsEnergyIndicator;
     v18 = HFLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109888;
-      v36 = v17 & v8;
+      v36 = v17 & hf_isGridForecastVisible;
       v37 = 1024;
-      v38 = v16 & 1;
+      v38 = allowsEnergyIndicator & 1;
       v39 = 1024;
-      v40 = v8;
+      v40 = hf_isGridForecastVisible;
       v41 = 1024;
       v42 = v17;
       _os_log_impl(&dword_20CEB6000, v18, OS_LOG_TYPE_DEFAULT, "[HUDashboardViewController:_updateHomeEnergyIndicatorVisibility] Indicator visibility: %{BOOL}d (contextAllows = %{BOOL}d, showGridForecast = %{BOOL}d, home can show indicator %{BOOL}d)", buf, 0x1Au);
 
-      if ((v17 & v8) != 1)
+      if ((v17 & hf_isGridForecastVisible) != 1)
       {
         return;
       }
@@ -6683,46 +6683,46 @@ LABEL_5:
     else
     {
 
-      if ((v17 & v8 & 1) == 0)
+      if ((v17 & hf_isGridForecastVisible & 1) == 0)
       {
         return;
       }
     }
 
-    v19 = [(HUDashboardViewController *)self context];
-    v20 = [v19 home];
-    v21 = [HUEnergyIndicatorAccessoryViewWrapper createEnergyIndicatorViewWithHome:v20];
+    context5 = [(HUDashboardViewController *)self context];
+    home4 = [context5 home];
+    v21 = [HUEnergyIndicatorAccessoryViewWrapper createEnergyIndicatorViewWithHome:home4];
     [(HUDashboardViewController *)self setEnergyIndicatorViewController:v21];
 
-    v22 = [(HUDashboardViewController *)self energyIndicatorViewController];
-    v23 = [v22 view];
-    [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+    energyIndicatorViewController2 = [(HUDashboardViewController *)self energyIndicatorViewController];
+    view = [energyIndicatorViewController2 view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v24 = [HUEnergyIndicatorAccessoryView alloc];
-    v25 = [(HUDashboardViewController *)self energyIndicatorViewController];
-    v26 = [v25 view];
-    v27 = [(HUEnergyIndicatorAccessoryView *)v24 initWithEnergyIndicator:v26];
+    energyIndicatorViewController3 = [(HUDashboardViewController *)self energyIndicatorViewController];
+    view2 = [energyIndicatorViewController3 view];
+    v27 = [(HUEnergyIndicatorAccessoryView *)v24 initWithEnergyIndicator:view2];
     [(HUDashboardViewController *)self setEnergyAccessoryView:v27];
 
     v28 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_homeEnergyNavigationBarIndicatorTapped_];
-    v29 = [(HUDashboardViewController *)self energyAccessoryView];
-    [v29 addGestureRecognizer:v28];
+    energyAccessoryView = [(HUDashboardViewController *)self energyAccessoryView];
+    [energyAccessoryView addGestureRecognizer:v28];
 
-    v30 = [(HUDashboardViewController *)self energyAccessoryView];
-    [v30 setUserInteractionEnabled:1];
+    energyAccessoryView2 = [(HUDashboardViewController *)self energyAccessoryView];
+    [energyAccessoryView2 setUserInteractionEnabled:1];
 
-    v31 = [(HUDashboardViewController *)self navigationItem];
-    v32 = [(HUDashboardViewController *)self energyAccessoryView];
-    [v31 _setLargeTitleAccessoryView:v32 alignToBaseline:0];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    energyAccessoryView3 = [(HUDashboardViewController *)self energyAccessoryView];
+    [navigationItem _setLargeTitleAccessoryView:energyAccessoryView3 alignToBaseline:0];
 
-    v33 = [(HUDashboardViewController *)self navigationItem];
-    [v33 _setSupportsTwoLineLargeTitles:1];
+    navigationItem2 = [(HUDashboardViewController *)self navigationItem];
+    [navigationItem2 _setSupportsTwoLineLargeTitles:1];
 
     [(HUDashboardViewController *)self _updateHomeEnergyTipVisibility];
     return;
   }
 
-  if ((v8 & 1) == 0)
+  if ((hf_isGridForecastVisible & 1) == 0)
   {
 LABEL_7:
 
@@ -6731,50 +6731,50 @@ LABEL_7:
 
   else
   {
-    v34 = [(HUDashboardViewController *)self energyIndicatorViewController];
-    v10 = [(HUDashboardViewController *)self context];
-    v11 = [v10 home];
-    [HUEnergyIndicatorAccessoryViewWrapper updateWithViewController:v34 with:v11];
+    energyIndicatorViewController4 = [(HUDashboardViewController *)self energyIndicatorViewController];
+    context6 = [(HUDashboardViewController *)self context];
+    home5 = [context6 home];
+    [HUEnergyIndicatorAccessoryViewWrapper updateWithViewController:energyIndicatorViewController4 with:home5];
   }
 }
 
 - (void)_updateHomeEnergyTipVisibility
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 home];
-  if ([v4 hf_isGridForecastEnabled])
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  if ([home hf_isGridForecastEnabled])
   {
-    v5 = [(HUDashboardViewController *)self context];
-    v6 = [v5 allowsEnergyIndicator];
+    context2 = [(HUDashboardViewController *)self context];
+    allowsEnergyIndicator = [context2 allowsEnergyIndicator];
   }
 
   else
   {
-    v6 = 0;
+    allowsEnergyIndicator = 0;
   }
 
-  [(HUDashboardViewController *)self changeHomeEnergyTipShouldDisplayTo:v6];
+  [(HUDashboardViewController *)self changeHomeEnergyTipShouldDisplayTo:allowsEnergyIndicator];
 }
 
-- (void)homeEnergyNavigationBarIndicatorTapped:(id)a3
+- (void)homeEnergyNavigationBarIndicatorTapped:(id)tapped
 {
   [HUEnergyAnalytics saveTapEvent:55 withInteractionType:1];
-  v8 = [(HUDashboardViewController *)self _dashboardNavigator];
-  v4 = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
-  v5 = [(HUDashboardViewController *)self context];
-  v6 = [v5 home];
-  v7 = [v8 showAccessoryTypeGroup:v4 forHome:v6 animated:1];
+  _dashboardNavigator = [(HUDashboardViewController *)self _dashboardNavigator];
+  energyAccessoryTypeGroup = [MEMORY[0x277D14378] energyAccessoryTypeGroup];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v7 = [_dashboardNavigator showAccessoryTypeGroup:energyAccessoryTypeGroup forHome:home animated:1];
 }
 
 - (void)_updateBarButtons
 {
-  v3 = [(HUDashboardViewController *)self _allNavigationBarButtons];
+  _allNavigationBarButtons = [(HUDashboardViewController *)self _allNavigationBarButtons];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__HUDashboardViewController_NavigationBar___updateBarButtons__block_invoke;
   v8[3] = &unk_277DC2BC8;
   v8[4] = self;
-  v4 = [v3 na_filter:v8];
+  v4 = [_allNavigationBarButtons na_filter:v8];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -6837,84 +6837,84 @@ uint64_t __61__HUDashboardViewController_NavigationBar___updateBarButtons__block
 - (id)_allNavigationBarButtons
 {
   v3 = objc_opt_new();
-  v4 = [(HUDashboardViewController *)self navigationAddButton];
-  [v3 na_safeAddObject:v4];
+  navigationAddButton = [(HUDashboardViewController *)self navigationAddButton];
+  [v3 na_safeAddObject:navigationAddButton];
 
-  v5 = [(HUDashboardViewController *)self navigationHomeButton];
-  [v3 na_safeAddObject:v5];
+  navigationHomeButton = [(HUDashboardViewController *)self navigationHomeButton];
+  [v3 na_safeAddObject:navigationHomeButton];
 
-  v6 = [(HUDashboardViewController *)self navigationEditDoneButton];
-  [v3 na_safeAddObject:v6];
+  navigationEditDoneButton = [(HUDashboardViewController *)self navigationEditDoneButton];
+  [v3 na_safeAddObject:navigationEditDoneButton];
 
-  v7 = [(HUDashboardViewController *)self navigationAnnounceButton];
-  [v3 na_safeAddObject:v7];
+  navigationAnnounceButton = [(HUDashboardViewController *)self navigationAnnounceButton];
+  [v3 na_safeAddObject:navigationAnnounceButton];
 
   return v3;
 }
 
-- (BOOL)shouldHideNavigationBarButton:(id)a3
+- (BOOL)shouldHideNavigationBarButton:(id)button
 {
-  v4 = a3;
-  if (!v4 || ([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || (-[HUDashboardViewController isEditing](self, "isEditing") & 1) != 0 && (objc_msgSend(v4, "buttonIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"Done"), v7, !v8))
+  buttonCopy = button;
+  if (!buttonCopy || ([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || (-[HUDashboardViewController isEditing](self, "isEditing") & 1) != 0 && (objc_msgSend(buttonCopy, "buttonIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"Done"), v7, !v8))
   {
     v5 = 1;
   }
 
   else
   {
-    v9 = [v4 buttonIdentifier];
-    v10 = [v9 isEqualToString:@"Done"];
+    buttonIdentifier = [buttonCopy buttonIdentifier];
+    v10 = [buttonIdentifier isEqualToString:@"Done"];
 
     if (v10)
     {
-      v11 = [(HUDashboardViewController *)self isEditing];
+      isEditing = [(HUDashboardViewController *)self isEditing];
 LABEL_11:
-      v5 = v11 ^ 1;
+      v5 = isEditing ^ 1;
       goto LABEL_4;
     }
 
-    v12 = [v4 buttonIdentifier];
-    v13 = [v12 isEqualToString:@"Announce"];
+    buttonIdentifier2 = [buttonCopy buttonIdentifier];
+    v13 = [buttonIdentifier2 isEqualToString:@"Announce"];
 
     if (v13)
     {
-      v11 = [(HUDashboardViewController *)self shouldShowAnnounceButton];
+      isEditing = [(HUDashboardViewController *)self shouldShowAnnounceButton];
       goto LABEL_11;
     }
 
-    v14 = [v4 buttonIdentifier];
-    v15 = [v14 isEqualToString:@"Add"];
+    buttonIdentifier3 = [buttonCopy buttonIdentifier];
+    v15 = [buttonIdentifier3 isEqualToString:@"Add"];
 
     if (v15)
     {
-      v16 = [(HUDashboardViewController *)self context];
-      v17 = [v16 allowsAdding] ^ 1;
+      context = [(HUDashboardViewController *)self context];
+      v17 = [context allowsAdding] ^ 1;
 
-      v18 = [(HUDashboardViewController *)self context];
-      v19 = [v18 home];
-      v20 = [v19 hf_currentUserRoarUpdateRequiredForUnsupportedLegacyHomeHubVersion];
+      context2 = [(HUDashboardViewController *)self context];
+      home = [context2 home];
+      hf_currentUserRoarUpdateRequiredForUnsupportedLegacyHomeHubVersion = [home hf_currentUserRoarUpdateRequiredForUnsupportedLegacyHomeHubVersion];
 
-      v5 = v17 | v20;
+      v5 = v17 | hf_currentUserRoarUpdateRequiredForUnsupportedLegacyHomeHubVersion;
     }
 
     else
     {
-      v21 = [v4 buttonIdentifier];
-      v22 = [v21 isEqualToString:@"HomesAndRooms"];
+      buttonIdentifier4 = [buttonCopy buttonIdentifier];
+      v22 = [buttonIdentifier4 isEqualToString:@"HomesAndRooms"];
 
       if (v22)
       {
-        v23 = [(HUDashboardViewController *)self context];
-        if ([v23 allowsHomeNavigation])
+        context3 = [(HUDashboardViewController *)self context];
+        if ([context3 allowsHomeNavigation])
         {
-          v24 = [(HUDashboardViewController *)self context];
-          v25 = [v24 home];
-          if ([v25 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade])
+          context4 = [(HUDashboardViewController *)self context];
+          home2 = [context4 home];
+          if ([home2 hf_shouldBlockCurrentUserFromHomeForRoarUpgrade])
           {
-            v26 = [MEMORY[0x277D146E8] sharedDispatcher];
-            v27 = [v26 homeManager];
-            v28 = [v27 homes];
-            v5 = [v28 count] == 1;
+            mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+            homeManager = [mEMORY[0x277D146E8] homeManager];
+            homes = [homeManager homes];
+            v5 = [homes count] == 1;
           }
 
           else
@@ -6943,8 +6943,8 @@ LABEL_4:
 
 - (BOOL)shouldShowAnnounceButton
 {
-  v3 = [(HUDashboardViewController *)self context];
-  if (![v3 allowsAnnounce])
+  context = [(HUDashboardViewController *)self context];
+  if (![context allowsAnnounce])
   {
     v5 = 0;
 LABEL_12:
@@ -6952,8 +6952,8 @@ LABEL_12:
     return v5;
   }
 
-  v4 = [(HUItemCollectionViewController *)self itemManager];
-  if ([v4 isEmptyDashboard])
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  if ([itemManager isEmptyDashboard])
   {
     v5 = 0;
 LABEL_11:
@@ -6961,58 +6961,58 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 home];
-  v8 = [v7 hf_shouldBlockCurrentUserFromHome];
+  context2 = [(HUDashboardViewController *)self context];
+  home = [context2 home];
+  hf_shouldBlockCurrentUserFromHome = [home hf_shouldBlockCurrentUserFromHome];
 
-  if ((v8 & 1) == 0)
+  if ((hf_shouldBlockCurrentUserFromHome & 1) == 0)
   {
-    v9 = [(HUDashboardViewController *)self context];
-    v10 = [v9 room];
+    context3 = [(HUDashboardViewController *)self context];
+    room = [context3 room];
 
-    v11 = [(HUDashboardViewController *)self context];
-    v3 = v11;
-    if (v10)
+    context4 = [(HUDashboardViewController *)self context];
+    context = context4;
+    if (room)
     {
-      v4 = [v11 room];
-      v12 = [v4 hf_shouldShowAnnounceButtonForThisRoom];
+      itemManager = [context4 room];
+      hf_shouldShowAnnounceButtonForThisRoom = [itemManager hf_shouldShowAnnounceButtonForThisRoom];
     }
 
     else
     {
-      v4 = [v11 home];
-      v12 = [v4 hf_shouldShowAnnounceButtonForThisHome];
+      itemManager = [context4 home];
+      hf_shouldShowAnnounceButtonForThisRoom = [itemManager hf_shouldShowAnnounceButtonForThisHome];
     }
 
-    v5 = v12;
+    v5 = hf_shouldShowAnnounceButtonForThisRoom;
     goto LABEL_11;
   }
 
   return 0;
 }
 
-- (unint64_t)navigationBarEdgeForButton:(id)a3
+- (unint64_t)navigationBarEdgeForButton:(id)button
 {
-  v4 = a3;
-  if ([(HUDashboardViewController *)self shouldHideNavigationBarButton:v4])
+  buttonCopy = button;
+  if ([(HUDashboardViewController *)self shouldHideNavigationBarButton:buttonCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 buttonIdentifier];
-    v7 = [v6 isEqualToString:@"Add"];
+    buttonIdentifier = [buttonCopy buttonIdentifier];
+    v7 = [buttonIdentifier isEqualToString:@"Add"];
 
-    if (v7 & 1) != 0 || ([v4 buttonIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"HomesAndRooms"), v8, (v9) || (objc_msgSend(v4, "buttonIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"Announce"), v10, (v11))
+    if (v7 & 1) != 0 || ([buttonCopy buttonIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", @"HomesAndRooms"), v8, (v9) || (objc_msgSend(buttonCopy, "buttonIdentifier"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"Announce"), v10, (v11))
     {
       v5 = 8;
     }
 
     else
     {
-      v13 = [v4 buttonIdentifier];
-      v14 = [v13 isEqualToString:@"Done"];
+      buttonIdentifier2 = [buttonCopy buttonIdentifier];
+      v14 = [buttonIdentifier2 isEqualToString:@"Done"];
 
       if (v14)
       {
@@ -7029,9 +7029,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)navigationBarButtonIdentifierOrderForEdge:(unint64_t)a3
+- (id)navigationBarButtonIdentifierOrderForEdge:(unint64_t)edge
 {
-  if (a3 == 8)
+  if (edge == 8)
   {
     if (_MergedGlobals_7 == -1)
     {
@@ -7084,10 +7084,10 @@ void __86__HUDashboardViewController_NavigationBar__navigationBarButtonIdentifie
 
 - (id)_dashboardNavigator
 {
-  v2 = [(HUDashboardViewController *)self navigationController];
-  if ([v2 conformsToProtocol:&unk_282556F78])
+  navigationController = [(HUDashboardViewController *)self navigationController];
+  if ([navigationController conformsToProtocol:&unk_282556F78])
   {
-    v3 = v2;
+    v3 = navigationController;
   }
 
   else
@@ -7097,40 +7097,40 @@ void __86__HUDashboardViewController_NavigationBar__navigationBarButtonIdentifie
 
   v4 = v3;
 
-  v5 = [v4 dashboardNavigator];
+  dashboardNavigator = [v4 dashboardNavigator];
 
-  return v5;
+  return dashboardNavigator;
 }
 
-- (void)_setNavigationButtons:(id)a3 forEdge:(unint64_t)a4
+- (void)_setNavigationButtons:(id)buttons forEdge:(unint64_t)edge
 {
-  v8 = a3;
-  if (a4 == 8)
+  buttonsCopy = buttons;
+  if (edge == 8)
   {
-    v7 = [(HUDashboardViewController *)self navigationItem];
-    [v7 setRightBarButtonItems:v8];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItems:buttonsCopy];
   }
 
-  else if (a4 == 2)
+  else if (edge == 2)
   {
-    v7 = [(HUDashboardViewController *)self navigationItem];
-    [v7 setLeftBarButtonItems:v8];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItems:buttonsCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HUDashboardViewController.m" lineNumber:2908 description:@"-setNavigationButtons only supports UIRectEdgeLeft or UIRectEdgeRight"];
+    navigationItem = [MEMORY[0x277CCA890] currentHandler];
+    [navigationItem handleFailureInMethod:a2 object:self file:@"HUDashboardViewController.m" lineNumber:2908 description:@"-setNavigationButtons only supports UIRectEdgeLeft or UIRectEdgeRight"];
   }
 }
 
 - (id)_filterBarController
 {
   objc_opt_class();
-  v3 = [(HUDashboardViewController *)self navigationController];
+  navigationController = [(HUDashboardViewController *)self navigationController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = navigationController;
   }
 
   else
@@ -7140,37 +7140,37 @@ void __86__HUDashboardViewController_NavigationBar__navigationBarButtonIdentifie
 
   v5 = v4;
 
-  v6 = [v5 filterBarController];
+  filterBarController = [v5 filterBarController];
 
-  return v6;
+  return filterBarController;
 }
 
 - (void)_updateFilterBarVisibility
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 filterPresentationStyle];
+  context = [(HUDashboardViewController *)self context];
+  filterPresentationStyle = [context filterPresentationStyle];
 
-  v5 = [(HUDashboardViewController *)self navigationItem];
-  v6 = [v5 _bottomPalette];
-  [v6 setHidden:v4 == 0];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  [_bottomPalette setHidden:filterPresentationStyle == 0];
 
   [(HUDashboardViewController *)self _updatePaletteHeight];
-  v7 = [(HUDashboardViewController *)self _filterBarController];
-  v8 = [v7 view];
-  v9 = [v8 superview];
-  v10 = [(HUDashboardViewController *)self collectionView];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+  view = [_filterBarController view];
+  superview = [view superview];
+  collectionView = [(HUDashboardViewController *)self collectionView];
 
-  if (v9 == v10)
+  if (superview == collectionView)
   {
-    v11 = [(HUDashboardViewController *)self _filterBarController];
-    v12 = [v11 view];
-    [v12 setHidden:v4 == 0];
+    _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+    view2 = [_filterBarController2 view];
+    [view2 setHidden:filterPresentationStyle == 0];
 
-    if (v4)
+    if (filterPresentationStyle)
     {
-      v13 = [(HUDashboardViewController *)self navigationItem];
-      v14 = [v13 _bottomPalette];
-      [v14 preferredHeight];
+      navigationItem2 = [(HUDashboardViewController *)self navigationItem];
+      _bottomPalette2 = [navigationItem2 _bottomPalette];
+      [_bottomPalette2 preferredHeight];
       v16 = v15;
     }
 
@@ -7187,10 +7187,10 @@ void __86__HUDashboardViewController_NavigationBar__navigationBarButtonIdentifie
 {
   if ([(HUDashboardViewController *)self _shouldSetupFilterBar])
   {
-    v3 = [(HUDashboardViewController *)self context];
-    v4 = [v3 filterPresentationStyle];
+    context = [(HUDashboardViewController *)self context];
+    filterPresentationStyle = [context filterPresentationStyle];
 
-    if (v4 == 3)
+    if (filterPresentationStyle == 3)
     {
 
       [(HUDashboardViewController *)self _setupFilterBarForPocketableFilterPresentationStyle];
@@ -7198,17 +7198,17 @@ void __86__HUDashboardViewController_NavigationBar__navigationBarButtonIdentifie
 
     else
     {
-      v5 = [(HUDashboardViewController *)self _filterBarController];
+      _filterBarController = [(HUDashboardViewController *)self _filterBarController];
       objc_initWeak(&location, self);
-      v6 = [v5 hu_preloadContent];
+      hu_preloadContent = [_filterBarController hu_preloadContent];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __59__HUDashboardViewController_NavigationBar___setUpFilterBar__block_invoke;
       v9[3] = &unk_277DBC1A0;
       objc_copyWeak(&v11, &location);
-      v7 = v5;
+      v7 = _filterBarController;
       v10 = v7;
-      v8 = [v6 addCompletionBlock:v9];
+      v8 = [hu_preloadContent addCompletionBlock:v9];
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(&location);
@@ -7235,11 +7235,11 @@ void __59__HUDashboardViewController_NavigationBar___setUpFilterBar__block_invok
 
 - (void)_updatePaletteHeight
 {
-  v3 = [(HUDashboardViewController *)self context];
-  if ([v3 filterPresentationStyle])
+  context = [(HUDashboardViewController *)self context];
+  if ([context filterPresentationStyle])
   {
-    v4 = [(HUDashboardViewController *)self _filterBarController];
-    [v4 intrinsicHeight];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    [_filterBarController intrinsicHeight];
     v6 = v5;
   }
 
@@ -7248,26 +7248,26 @@ void __59__HUDashboardViewController_NavigationBar___setUpFilterBar__block_invok
     v6 = 0.0;
   }
 
-  v7 = [(HUDashboardViewController *)self navigationItem];
-  v8 = [v7 _bottomPalette];
-  [v8 preferredHeight];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  [_bottomPalette preferredHeight];
   v10 = v9;
 
   if (v10 != v6)
   {
-    v11 = [(HUDashboardViewController *)self navigationItem];
-    v12 = [v11 _bottomPalette];
-    [v12 setPreferredHeight:v6];
+    navigationItem2 = [(HUDashboardViewController *)self navigationItem];
+    _bottomPalette2 = [navigationItem2 _bottomPalette];
+    [_bottomPalette2 setPreferredHeight:v6];
 
     if ([MEMORY[0x277D14CE8] isInternalInstall])
     {
       if (HFPreferencesBoolForKey())
       {
-        v23 = [(HUDashboardViewController *)self context];
-        if ([v23 filterPresentationStyle] == 3)
+        context2 = [(HUDashboardViewController *)self context];
+        if ([context2 filterPresentationStyle] == 3)
         {
-          v13 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
-          [v13 frame];
+          palettePlaceholderView = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
+          [palettePlaceholderView frame];
           v15 = v14;
 
           if (v15 == v6)
@@ -7275,47 +7275,47 @@ void __59__HUDashboardViewController_NavigationBar___setUpFilterBar__block_invok
             return;
           }
 
-          v16 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
-          [v16 frame];
+          palettePlaceholderView2 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
+          [palettePlaceholderView2 frame];
           v18 = v17;
           v20 = v19;
           v22 = v21;
 
-          v23 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
-          [v23 setFrame:{v18, v20, v22, v6}];
+          context2 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
+          [context2 setFrame:{v18, v20, v22, v6}];
         }
       }
     }
   }
 }
 
-- (id)homeForNavigationBarButton:(id)a3
+- (id)homeForNavigationBarButton:(id)button
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 home];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
 
-  return v4;
+  return home;
 }
 
-- (id)roomForNavigationBarButton:(id)a3
+- (id)roomForNavigationBarButton:(id)button
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 room];
+  context = [(HUDashboardViewController *)self context];
+  room = [context room];
 
-  return v4;
+  return room;
 }
 
 - (BOOL)shouldIncludeRoomsInHomeMenu
 {
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v3 = [(HUDashboardViewController *)self context];
-    v4 = [v3 home];
-    if (([v4 hf_shouldBlockCurrentUserFromHome] & 1) == 0)
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    if (([home hf_shouldBlockCurrentUserFromHome] & 1) == 0)
     {
-      v5 = [(HUDashboardViewController *)self view];
-      v6 = [v5 traitCollection];
-      v7 = [v6 horizontalSizeClass] == 1;
+      view = [(HUDashboardViewController *)self view];
+      traitCollection = [view traitCollection];
+      isCollapsed = [traitCollection horizontalSizeClass] == 1;
 LABEL_10:
 
       goto LABEL_11;
@@ -7324,60 +7324,60 @@ LABEL_10:
 
   else
   {
-    v3 = [(HUDashboardViewController *)self context];
-    v4 = [v3 home];
-    if (([v4 hf_shouldBlockCurrentUserFromHome] & 1) == 0)
+    context = [(HUDashboardViewController *)self context];
+    home = [context home];
+    if (([home hf_shouldBlockCurrentUserFromHome] & 1) == 0)
     {
-      v5 = [(HUDashboardViewController *)self navigationController];
-      v6 = [v5 splitViewController];
-      if (v6)
+      view = [(HUDashboardViewController *)self navigationController];
+      traitCollection = [view splitViewController];
+      if (traitCollection)
       {
-        v8 = [(HUDashboardViewController *)self navigationController];
-        v9 = [v8 splitViewController];
-        v7 = [v9 isCollapsed];
+        navigationController = [(HUDashboardViewController *)self navigationController];
+        splitViewController = [navigationController splitViewController];
+        isCollapsed = [splitViewController isCollapsed];
       }
 
       else
       {
-        v7 = 1;
+        isCollapsed = 1;
       }
 
       goto LABEL_10;
     }
   }
 
-  v7 = 0;
+  isCollapsed = 0;
 LABEL_11:
 
-  return v7;
+  return isCollapsed;
 }
 
-- (id)statusItemsForNavigationBarButton:(id)a3 inHome:(id)a4
+- (id)statusItemsForNavigationBarButton:(id)button inHome:(id)home
 {
-  v5 = a4;
-  v6 = [(HUDashboardViewController *)self context];
-  v7 = [v6 home];
-  v8 = [v5 isEqual:v7];
+  homeCopy = home;
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  v8 = [homeCopy isEqual:home];
 
   if (v8)
   {
-    v9 = [(HUDashboardViewController *)self context];
-    v10 = [v9 home];
-    v11 = [v10 hf_shouldBlockCurrentUserFromHome];
+    context2 = [(HUDashboardViewController *)self context];
+    home2 = [context2 home];
+    hf_shouldBlockCurrentUserFromHome = [home2 hf_shouldBlockCurrentUserFromHome];
 
-    if (v11)
+    if (hf_shouldBlockCurrentUserFromHome)
     {
       v12 = MEMORY[0x277CBEBF8];
       goto LABEL_7;
     }
 
-    v6 = [(HUItemCollectionViewController *)self itemManager];
-    v7 = [v6 homeMenuStatusItems];
-    v13 = [v7 allObjects];
-    v14 = [(HUItemCollectionViewController *)self itemManager];
-    v15 = [v14 statusItemModule];
-    v16 = [v15 _itemComparator];
-    v12 = [v13 sortedArrayUsingComparator:v16];
+    context = [(HUItemCollectionViewController *)self itemManager];
+    home = [context homeMenuStatusItems];
+    allObjects = [home allObjects];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    statusItemModule = [itemManager statusItemModule];
+    _itemComparator = [statusItemModule _itemComparator];
+    v12 = [allObjects sortedArrayUsingComparator:_itemComparator];
   }
 
   else
@@ -7393,10 +7393,10 @@ LABEL_7:
 - (id)editActionDelegate
 {
   objc_opt_class();
-  v3 = [(HUDashboardViewController *)self navigationController];
+  navigationController = [(HUDashboardViewController *)self navigationController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = navigationController;
   }
 
   else
@@ -7411,67 +7411,67 @@ LABEL_7:
 
 - (BOOL)supportsEditing
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 allowsEditing];
+  context = [(HUDashboardViewController *)self context];
+  allowsEditing = [context allowsEditing];
 
-  if (!v4)
+  if (!allowsEditing)
   {
     return 0;
   }
 
-  v5 = [(HUDashboardViewController *)self context];
-  v6 = [v5 home];
-  v7 = [v6 hf_shouldBlockCurrentUserFromHome];
+  context2 = [(HUDashboardViewController *)self context];
+  home = [context2 home];
+  hf_shouldBlockCurrentUserFromHome = [home hf_shouldBlockCurrentUserFromHome];
 
-  if (v7)
+  if (hf_shouldBlockCurrentUserFromHome)
   {
     return 0;
   }
 
-  v8 = [(HUDashboardViewController *)self context];
-  v9 = [v8 home];
-  v10 = [v9 hf_currentUserIsAdministrator];
+  context3 = [(HUDashboardViewController *)self context];
+  home2 = [context3 home];
+  hf_currentUserIsAdministrator = [home2 hf_currentUserIsAdministrator];
 
-  if (!v10)
+  if (!hf_currentUserIsAdministrator)
   {
     return 0;
   }
 
-  v11 = [(HUItemCollectionViewController *)self itemManager];
-  v12 = [v11 isEmptyDashboard];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  isEmptyDashboard = [itemManager isEmptyDashboard];
 
-  return v12 ^ 1;
+  return isEmptyDashboard ^ 1;
 }
 
 - (NSString)editActionTitle
 {
-  v2 = [(HUDashboardViewController *)self context];
-  v3 = [v2 menuEditActionTitle];
+  context = [(HUDashboardViewController *)self context];
+  menuEditActionTitle = [context menuEditActionTitle];
 
-  return v3;
+  return menuEditActionTitle;
 }
 
 - (NSString)editActionTitleLocalizationKey
 {
-  v2 = [(HUDashboardViewController *)self context];
-  v3 = [v2 menuEditActionTitleLocalizationKey];
+  context = [(HUDashboardViewController *)self context];
+  menuEditActionTitleLocalizationKey = [context menuEditActionTitleLocalizationKey];
 
-  return v3;
+  return menuEditActionTitleLocalizationKey;
 }
 
-- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)a3
+- (void)sendContextMenuMetricsWithTitleLocalizationKey:(id)key
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v11 = [v4 dictionary];
-  [v11 na_safeSetObject:self forKey:*MEMORY[0x277D13588]];
-  v6 = [(HUDashboardViewController *)self contextTypeDescriptionForAnalytics];
-  if ([v6 length])
+  keyCopy = key;
+  dictionary = [v4 dictionary];
+  [dictionary na_safeSetObject:self forKey:*MEMORY[0x277D13588]];
+  contextTypeDescriptionForAnalytics = [(HUDashboardViewController *)self contextTypeDescriptionForAnalytics];
+  if ([contextTypeDescriptionForAnalytics length])
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v7 stringWithFormat:@"%@-%@", v9, v6];
+    v10 = [v7 stringWithFormat:@"%@-%@", v9, contextTypeDescriptionForAnalytics];
   }
 
   else
@@ -7479,22 +7479,22 @@ LABEL_7:
     v10 = 0;
   }
 
-  [v11 na_safeSetObject:v10 forKey:*MEMORY[0x277D13590]];
-  [v11 na_safeSetObject:v5 forKey:*MEMORY[0x277D134F0]];
+  [dictionary na_safeSetObject:v10 forKey:*MEMORY[0x277D13590]];
+  [dictionary na_safeSetObject:keyCopy forKey:*MEMORY[0x277D134F0]];
 
-  [MEMORY[0x277D143D8] sendEvent:36 withData:v11];
+  [MEMORY[0x277D143D8] sendEvent:36 withData:dictionary];
 }
 
 - (void)_updateAnnounceNotificationSettingsIfNeeded
 {
-  v3 = [MEMORY[0x277D147A8] sharedDispatcher];
-  v4 = [v3 getAuthorizationStatusAsync];
+  mEMORY[0x277D147A8] = [MEMORY[0x277D147A8] sharedDispatcher];
+  getAuthorizationStatusAsync = [mEMORY[0x277D147A8] getAuthorizationStatusAsync];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettingsIfNeeded__block_invoke;
   v6[3] = &unk_277DBE7E0;
   v6[4] = self;
-  v5 = [v4 addCompletionBlock:v6];
+  v5 = [getAuthorizationStatusAsync addCompletionBlock:v6];
 }
 
 void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettingsIfNeeded__block_invoke(uint64_t a1, void *a2)
@@ -7562,11 +7562,11 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
   if (-[HUDashboardViewController isEditing](self, "isEditing") & 1) != 0 || ([MEMORY[0x277D14670] isHomeControlService])
   {
     v10 = 0;
@@ -7574,16 +7574,16 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   }
 
   v55 = a2;
-  v11 = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
-  v12 = [(HUDashboardViewController *)self presentationCoordinator:v11 contextForPresentationAtPoint:x, y];
+  quickControlPresentationCoordinator = [(HUControllableItemCollectionViewController *)self quickControlPresentationCoordinator];
+  v12 = [(HUDashboardViewController *)self presentationCoordinator:quickControlPresentationCoordinator contextForPresentationAtPoint:x, y];
 
   v59 = v12;
-  v13 = [v12 item];
+  item = [v12 item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v57 = [(HUDashboardViewController *)self _hasDetailViewControllerForItem:v13];
+  v57 = [(HUDashboardViewController *)self _hasDetailViewControllerForItem:item];
   objc_opt_class();
-  v15 = v13;
+  v15 = item;
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -7596,12 +7596,12 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
 
   v17 = v16;
 
-  v18 = [v17 actionSetItemStyle];
-  v66 = v18 == 2;
+  actionSetItemStyle = [v17 actionSetItemStyle];
+  v66 = actionSetItemStyle == 2;
 
-  v19 = [(HUDashboardViewController *)self context];
-  v20 = [v19 home];
-  v21 = [v20 hf_currentUserIsAdministrator];
+  context = [(HUDashboardViewController *)self context];
+  home = [context home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
   v22 = v15;
   v23 = &unk_2824C0788;
@@ -7617,11 +7617,11 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
 
   v25 = v24;
 
-  v26 = [v25 homeKitObject];
+  homeKitObject = [v25 homeKitObject];
   v27 = &unk_28259DF78;
-  if ([v26 conformsToProtocol:v27])
+  if ([homeKitObject conformsToProtocol:v27])
   {
-    v28 = v26;
+    v28 = homeKitObject;
   }
 
   else
@@ -7632,11 +7632,11 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   v29 = v28;
 
   v58 = v25;
-  v30 = [v25 homeKitObject];
+  homeKitObject2 = [v25 homeKitObject];
   v31 = &unk_28259DE80;
-  if ([v30 conformsToProtocol:v31])
+  if ([homeKitObject2 conformsToProtocol:v31])
   {
-    v32 = v30;
+    v32 = homeKitObject2;
   }
 
   else
@@ -7647,22 +7647,22 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   v33 = v32;
 
   v34 = 0;
-  if (v21)
+  if (hf_currentUserIsAdministrator)
   {
     v67 = 0;
     if (v29)
     {
-      v35 = [v29 hf_effectiveShowInHomeDashboard];
-      v36 = [v29 hf_effectiveShowInHomeDashboard];
-      v34 = (v18 != 2) & ~v35;
-      if (v18 == 2)
+      hf_effectiveShowInHomeDashboard = [v29 hf_effectiveShowInHomeDashboard];
+      hf_effectiveShowInHomeDashboard2 = [v29 hf_effectiveShowInHomeDashboard];
+      v34 = (actionSetItemStyle != 2) & ~hf_effectiveShowInHomeDashboard;
+      if (actionSetItemStyle == 2)
       {
         v37 = 0;
       }
 
       else
       {
-        v37 = v36;
+        v37 = hf_effectiveShowInHomeDashboard2;
       }
 
       v67 = v37;
@@ -7677,7 +7677,7 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   v63 = v34;
   if (v33)
   {
-    v38 = v21;
+    v38 = hf_currentUserIsAdministrator;
   }
 
   else
@@ -7689,7 +7689,7 @@ void __82__HUDashboardViewController_Announce___updateAnnounceNotificationSettin
   {
     v61 = 0;
 LABEL_33:
-    v60 = 0;
+    hf_isVisibleInHomeStatus = 0;
     goto LABEL_34;
   }
 
@@ -7708,23 +7708,23 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v60 = [v33 hf_isVisibleInHomeStatus];
+  hf_isVisibleInHomeStatus = [v33 hf_isVisibleInHomeStatus];
 LABEL_34:
   v62 = isKindOfClass & 1;
   v64 = v33;
   v65 = v29;
-  v56 = v21;
-  if (v21)
+  v56 = hf_currentUserIsAdministrator;
+  if (hf_currentUserIsAdministrator)
   {
-    v39 = [(HUDashboardViewController *)self context];
-    if ([v39 allowsEditing])
+    context2 = [(HUDashboardViewController *)self context];
+    if ([context2 allowsEditing])
     {
-      LOBYTE(v21) = [(HUDashboardViewController *)self canReorderItemAtIndexPath:v9];
+      LOBYTE(hf_currentUserIsAdministrator) = [(HUDashboardViewController *)self canReorderItemAtIndexPath:pathCopy];
     }
 
     else
     {
-      LOBYTE(v21) = 0;
+      LOBYTE(hf_currentUserIsAdministrator) = 0;
     }
 
     v40 = v57;
@@ -7736,8 +7736,8 @@ LABEL_34:
     v66 = 0;
   }
 
-  v41 = [(HUItemCollectionViewController *)self itemManager];
-  v42 = [v41 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v9, "section")}];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  v42 = [itemManager displayedSectionIdentifierForSectionIndex:{objc_msgSend(pathCopy, "section")}];
 
   v43 = v22;
   v44 = &unk_28251AC90;
@@ -7753,9 +7753,9 @@ LABEL_34:
 
   v46 = v45;
 
-  v47 = [(HUDashboardViewController *)self layoutManager];
-  v48 = [(HUDashboardViewController *)self context];
-  v49 = [v47 isAdaptiveTileStyleInSectionIdentifier:v42 context:v48];
+  layoutManager = [(HUDashboardViewController *)self layoutManager];
+  context3 = [(HUDashboardViewController *)self context];
+  v49 = [layoutManager isAdaptiveTileStyleInSectionIdentifier:v42 context:context3];
 
   v50 = [MEMORY[0x277D14CE8] isAMac] & v56;
   if (!v46)
@@ -7764,8 +7764,8 @@ LABEL_34:
   }
 
   v51 = v50 & v49;
-  v52 = v21;
-  if (((v62 | v40 | v63) & 1) != 0 || (v67 & 1) != 0 || (v61 & 1) != 0 || (v60 & 1) != 0 || (v21 & 1) != 0 || v66 || (v10 = 0, v51))
+  v52 = hf_currentUserIsAdministrator;
+  if (((v62 | v40 | v63) & 1) != 0 || (v67 & 1) != 0 || (v61 & 1) != 0 || (hf_isVisibleInHomeStatus & 1) != 0 || (hf_currentUserIsAdministrator & 1) != 0 || v66 || (v10 = 0, v51))
   {
     v53 = MEMORY[0x277D753B0];
     v68[0] = MEMORY[0x277D85DD0];
@@ -7781,11 +7781,11 @@ LABEL_34:
     v78 = v67;
     v79 = v61;
     v71 = v64;
-    v80 = v60;
+    v80 = hf_isVisibleInHomeStatus;
     v81 = v62;
     v72 = v43;
     v82 = v40;
-    v73 = v9;
+    v73 = pathCopy;
     v83 = v66;
     v84 = v51;
     v74 = v46;
@@ -8286,115 +8286,115 @@ uint64_t __106__HUDashboardViewController_ContextMenu__collectionView_contextMen
   return [v3 _sendContextMenuMetricsWithContext:v2 title:v4];
 }
 
-- (void)_sendContextMenuMetricsWithContext:(id)a3 title:(id)a4
+- (void)_sendContextMenuMetricsWithContext:(id)context title:(id)title
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v17 = [v6 dictionary];
-  v9 = [v8 item];
-  [v17 na_safeSetObject:v9 forKey:*MEMORY[0x277D13538]];
+  titleCopy = title;
+  contextCopy = context;
+  dictionary = [v6 dictionary];
+  item = [contextCopy item];
+  [dictionary na_safeSetObject:item forKey:*MEMORY[0x277D13538]];
 
-  v10 = [v8 sourceViewController];
+  sourceViewController = [contextCopy sourceViewController];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 topViewController];
-    v12 = v11;
-    if (v11)
+    topViewController = [sourceViewController topViewController];
+    v12 = topViewController;
+    if (topViewController)
     {
-      v13 = v11;
+      v13 = topViewController;
     }
 
     else
     {
-      v13 = v10;
+      v13 = sourceViewController;
     }
 
     v14 = v13;
 
-    v10 = v14;
+    sourceViewController = v14;
   }
 
-  [v17 na_safeSetObject:v10 forKey:*MEMORY[0x277D13588]];
-  [v17 na_safeSetObject:v7 forKey:*MEMORY[0x277D134F0]];
+  [dictionary na_safeSetObject:sourceViewController forKey:*MEMORY[0x277D13588]];
+  [dictionary na_safeSetObject:titleCopy forKey:*MEMORY[0x277D134F0]];
 
-  v15 = [(HUDashboardViewController *)self context];
-  v16 = [v15 typeDescriptionForAnalytics];
-  [v17 na_safeSetObject:v16 forKey:*MEMORY[0x277D134F8]];
+  context = [(HUDashboardViewController *)self context];
+  typeDescriptionForAnalytics = [context typeDescriptionForAnalytics];
+  [dictionary na_safeSetObject:typeDescriptionForAnalytics forKey:*MEMORY[0x277D134F8]];
 
-  [MEMORY[0x277D143D8] sendEvent:36 withData:v17];
+  [MEMORY[0x277D143D8] sendEvent:36 withData:dictionary];
 }
 
 - (BOOL)_shouldSetupFilterBarForPocketableFilterPresentationStyle
 {
-  v3 = [(HUDashboardViewController *)self navigationItem];
-  v4 = [v3 _bottomPalette];
-  if (v4)
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  if (_bottomPalette)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(HUDashboardViewController *)self navigationController];
-    v7 = [v6 viewControllers];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [v8 navigationItem];
-    v10 = [v9 _bottomPalette];
-    v5 = v10 != 0;
+    navigationController = [(HUDashboardViewController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v8 = [viewControllers objectAtIndexedSubscript:0];
+    navigationItem2 = [v8 navigationItem];
+    _bottomPalette2 = [navigationItem2 _bottomPalette];
+    v5 = _bottomPalette2 != 0;
   }
 
-  v11 = [(HUDashboardViewController *)self context];
-  v12 = [v11 filterPresentationStyle];
+  context = [(HUDashboardViewController *)self context];
+  filterPresentationStyle = [context filterPresentationStyle];
 
-  if (v12 == 3)
+  if (filterPresentationStyle == 3)
   {
-    v13 = [(HUDashboardViewController *)self navigationItem];
-    v14 = [v13 _bottomPalette];
+    navigationItem3 = [(HUDashboardViewController *)self navigationItem];
+    _bottomPalette3 = [navigationItem3 _bottomPalette];
 
-    v15 = [v14 contentView];
-    v16 = [(HUDashboardViewController *)self _filterBarController];
-    v17 = [v16 view];
+    contentView = [_bottomPalette3 contentView];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    view = [_filterBarController view];
 
-    v18 = [(HUDashboardViewController *)self _filterBarController];
-    v19 = [v18 view];
-    v20 = [v19 superview];
-    v21 = [(HUDashboardViewController *)self collectionView];
+    _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+    view2 = [_filterBarController2 view];
+    superview = [view2 superview];
+    collectionView = [(HUDashboardViewController *)self collectionView];
 
-    v23 = !v5 || v15 != v17 && v20 != v21;
+    v23 = !v5 || contentView != view && superview != collectionView;
   }
 
   else
   {
-    v24 = [(HUDashboardViewController *)self context];
-    v25 = [v24 filterPresentationStyle];
+    context2 = [(HUDashboardViewController *)self context];
+    filterPresentationStyle2 = [context2 filterPresentationStyle];
 
-    if (v25 == 2)
+    if (filterPresentationStyle2 == 2)
     {
-      v26 = [(HUDashboardViewController *)self navigationItem];
-      v27 = [v26 _bottomPalette];
-      v28 = v27;
-      if (v27)
+      navigationItem4 = [(HUDashboardViewController *)self navigationItem];
+      _bottomPalette4 = [navigationItem4 _bottomPalette];
+      v28 = _bottomPalette4;
+      if (_bottomPalette4)
       {
-        v29 = v27;
+        _bottomPalette5 = _bottomPalette4;
       }
 
       else
       {
-        v30 = [(HUDashboardViewController *)self navigationController];
-        v31 = [v30 viewControllers];
-        v32 = [v31 objectAtIndexedSubscript:0];
-        v33 = [v32 navigationItem];
-        v29 = [v33 _bottomPalette];
+        navigationController2 = [(HUDashboardViewController *)self navigationController];
+        viewControllers2 = [navigationController2 viewControllers];
+        v32 = [viewControllers2 objectAtIndexedSubscript:0];
+        navigationItem5 = [v32 navigationItem];
+        _bottomPalette5 = [navigationItem5 _bottomPalette];
       }
 
-      v34 = [v29 contentView];
-      v35 = [(HUDashboardViewController *)self _filterBarController];
-      v36 = [v35 view];
+      contentView2 = [_bottomPalette5 contentView];
+      _filterBarController3 = [(HUDashboardViewController *)self _filterBarController];
+      view3 = [_filterBarController3 view];
 
-      v23 = v34 != v36 || !v5;
+      v23 = contentView2 != view3 || !v5;
     }
 
     else
@@ -8408,15 +8408,15 @@ uint64_t __106__HUDashboardViewController_ContextMenu__collectionView_contextMen
 
 - (void)_setupFilterBarForPocketableFilterPresentationStyle
 {
-  v3 = [(HUDashboardViewController *)self _filterBarController];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
   objc_initWeak(&location, self);
-  v4 = [v3 hu_preloadContent];
+  hu_preloadContent = [_filterBarController hu_preloadContent];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPocketableFilterPresentationStyle__block_invoke;
   v6[3] = &unk_277DBC2C8;
   objc_copyWeak(&v7, &location);
-  v5 = [v4 addCompletionBlock:v6];
+  v5 = [hu_preloadContent addCompletionBlock:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -8440,20 +8440,20 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
 - (void)_updateFilterBarFrameIfNeeded
 {
   [(HUDashboardViewController *)self setFilterBarNeedsUpdate:0];
-  v9 = [(HUDashboardViewController *)self context];
-  if ([v9 filterPresentationStyle] == 3)
+  context = [(HUDashboardViewController *)self context];
+  if ([context filterPresentationStyle] == 3)
   {
-    v3 = [(HUDashboardViewController *)self _filterBarController];
-    v4 = [v3 view];
-    v5 = [v4 superview];
-    v6 = [(HUDashboardViewController *)self collectionView];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    view = [_filterBarController view];
+    superview = [view superview];
+    collectionView = [(HUDashboardViewController *)self collectionView];
 
-    if (v5 == v6)
+    if (superview == collectionView)
     {
-      v7 = [(HUDashboardViewController *)self navigationController];
-      v8 = [v7 topViewController];
+      navigationController = [(HUDashboardViewController *)self navigationController];
+      topViewController = [navigationController topViewController];
 
-      if (v8 == self)
+      if (topViewController == self)
       {
 
         [(HUDashboardViewController *)self _updateFilterBarFrame];
@@ -8469,21 +8469,21 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
 - (void)_updateFilterBarFrame
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = [(HUDashboardViewController *)self navigationItem];
-  v4 = [v3 _bottomPalette];
-  [v4 frame];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  [_bottomPalette frame];
   v6 = v5;
 
-  v7 = [(HUDashboardViewController *)self _filterBarController];
-  [v7 intrinsicHeight];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+  [_filterBarController intrinsicHeight];
   v9 = v8;
   v10 = -10.0 - v6;
-  v11 = [v7 view];
-  [v11 frame];
+  view = [_filterBarController view];
+  [view frame];
   if (CGFloatNearlyEqualToFloatWithTolerance())
   {
-    v12 = [v7 view];
-    [v12 frame];
+    view2 = [_filterBarController view];
+    [view2 frame];
     v13 = CGFloatNearlyEqualToFloatWithTolerance();
 
     if (v13)
@@ -8496,26 +8496,26 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
   {
   }
 
-  v14 = [(HUDashboardViewController *)self view];
-  [v14 frame];
+  view3 = [(HUDashboardViewController *)self view];
+  [view3 frame];
   v16 = v15;
 
   v17 = HFLogForCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v7 view];
-    [v18 frame];
+    view4 = [_filterBarController view];
+    [view4 frame];
     v20 = v19;
-    v21 = [v7 view];
-    [v21 frame];
+    view5 = [_filterBarController view];
+    [view5 frame];
     v23 = v22;
-    v24 = [v7 view];
-    [v24 frame];
+    view6 = [_filterBarController view];
+    [view6 frame];
     v26 = v25;
-    v27 = [v7 view];
-    [v27 frame];
+    view7 = [_filterBarController view];
+    [view7 frame];
     v52 = 134220032;
-    v53 = self;
+    selfCopy2 = self;
     v54 = 2048;
     v55 = v20;
     v56 = 2048;
@@ -8535,20 +8535,20 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
     _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_INFO, "[%p] Updating pocketable filter bar frame (%.2f, %.2f, %.2f, %.2f) to (%.2f, %.2f, %.2f, %.2f)", &v52, 0x5Cu);
   }
 
-  v29 = [v7 view];
-  [v29 frame];
+  view8 = [_filterBarController view];
+  [view8 frame];
   v31 = v30;
 
-  v32 = [v7 view];
-  [v32 frame];
+  view9 = [_filterBarController view];
+  [view9 frame];
   v34 = v33;
 
-  v35 = [v7 view];
-  [v35 frame];
+  view10 = [_filterBarController view];
+  [view10 frame];
   v37 = v36;
 
-  v38 = [v7 view];
-  [v38 setFrame:{0.0, v10, v16, v9}];
+  view11 = [_filterBarController view];
+  [view11 setFrame:{0.0, v10, v16, v9}];
 
   if (v9 != v31)
   {
@@ -8563,10 +8563,10 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
       v40 = HFLogForCategory();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
-        v41 = [(HUDashboardViewController *)self collectionView];
-        [v41 contentOffset];
+        collectionView = [(HUDashboardViewController *)self collectionView];
+        [collectionView contentOffset];
         v52 = 134218496;
-        v53 = self;
+        selfCopy2 = self;
         v54 = 2048;
         v55 = v42;
         v56 = 2048;
@@ -8574,21 +8574,21 @@ void __102__HUDashboardViewController_FilterBarPaletteHack___setupFilterBarForPo
         _os_log_impl(&dword_20CEB6000, v40, OS_LOG_TYPE_INFO, "[%p] Adjusting content offset after updating filter bar frame: %.2f by %.2f", &v52, 0x20u);
       }
 
-      v43 = [(HUDashboardViewController *)self collectionView];
-      [v43 contentOffset];
+      collectionView2 = [(HUDashboardViewController *)self collectionView];
+      [collectionView2 contentOffset];
       v45 = v44;
       v47 = v46;
 
-      v48 = [(HUDashboardViewController *)self collectionView];
-      [v48 setContentOffset:{v45, v39 + v47}];
+      collectionView3 = [(HUDashboardViewController *)self collectionView];
+      [collectionView3 setContentOffset:{v45, v39 + v47}];
     }
   }
 
-  v49 = [(HUDashboardViewController *)self _filterBarController];
-  v50 = [v49 view];
-  v51 = [v50 isHidden];
+  _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+  view12 = [_filterBarController2 view];
+  isHidden = [view12 isHidden];
 
-  if (v51)
+  if (isHidden)
   {
     [(HUDashboardViewController *)self _updateFilterBarVisibility];
   }
@@ -8598,34 +8598,34 @@ LABEL_17:
 
 - (void)_updateFilterBarViewIfNeeded
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 filterPresentationStyle];
+  context = [(HUDashboardViewController *)self context];
+  filterPresentationStyle = [context filterPresentationStyle];
 
-  if (v4 == 3)
+  if (filterPresentationStyle == 3)
   {
-    v5 = [(HUDashboardViewController *)self navigationItem];
-    v6 = [v5 _bottomPalette];
-    v7 = [v6 contentView];
-    v8 = [(HUDashboardViewController *)self _filterBarController];
-    v9 = [v8 view];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    _bottomPalette = [navigationItem _bottomPalette];
+    contentView = [_bottomPalette contentView];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    view = [_filterBarController view];
 
-    if (v7 == v9)
+    if (contentView == view)
     {
-      v28 = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
-      v29 = [(HUDashboardViewController *)self navigationItem];
-      [v29 _setBottomPalette:v28];
+      palettePlaceholderView = [(HUDashboardViewController(FilterBarPaletteHack) *)self palettePlaceholderView];
+      navigationItem2 = [(HUDashboardViewController *)self navigationItem];
+      [navigationItem2 _setBottomPalette:palettePlaceholderView];
 
       [(HUDashboardViewController *)self _addFilterBarToDashboardView];
     }
 
     else
     {
-      v10 = [(HUDashboardViewController *)self _filterBarController];
-      v11 = [v10 view];
-      v12 = [v11 superview];
-      v13 = [(HUDashboardViewController *)self collectionView];
+      _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+      view2 = [_filterBarController2 view];
+      superview = [view2 superview];
+      collectionView = [(HUDashboardViewController *)self collectionView];
 
-      if (v12 == v13)
+      if (superview == collectionView)
       {
 
         [(HUDashboardViewController *)self _updateFilterBarFrameIfNeeded];
@@ -8647,52 +8647,52 @@ LABEL_17:
 
   else
   {
-    v15 = [(HUDashboardViewController *)self context];
-    v16 = [v15 filterPresentationStyle];
+    context2 = [(HUDashboardViewController *)self context];
+    filterPresentationStyle2 = [context2 filterPresentationStyle];
 
-    if (v16 == 2)
+    if (filterPresentationStyle2 == 2)
     {
-      v17 = [(HUDashboardViewController *)self navigationItem];
-      v18 = [v17 _bottomPalette];
-      v19 = [v18 contentView];
-      v20 = [(HUDashboardViewController *)self _filterBarController];
-      v21 = [v20 view];
+      navigationItem3 = [(HUDashboardViewController *)self navigationItem];
+      _bottomPalette2 = [navigationItem3 _bottomPalette];
+      contentView2 = [_bottomPalette2 contentView];
+      _filterBarController3 = [(HUDashboardViewController *)self _filterBarController];
+      view3 = [_filterBarController3 view];
 
-      if (v19 != v21)
+      if (contentView2 != view3)
       {
-        v22 = [(HUDashboardViewController *)self navigationController];
-        v23 = [v22 viewControllers];
-        v24 = [v23 count];
+        navigationController = [(HUDashboardViewController *)self navigationController];
+        viewControllers = [navigationController viewControllers];
+        v24 = [viewControllers count];
 
         if (v24 < 2)
         {
-          v30 = [(HUDashboardViewController *)self navigationItem];
+          navigationItem4 = [(HUDashboardViewController *)self navigationItem];
         }
 
         else
         {
-          v25 = [(HUDashboardViewController *)self navigationController];
-          v26 = [v25 viewControllers];
-          v27 = [v26 objectAtIndexedSubscript:0];
-          v30 = [v27 navigationItem];
+          navigationController2 = [(HUDashboardViewController *)self navigationController];
+          viewControllers2 = [navigationController2 viewControllers];
+          v27 = [viewControllers2 objectAtIndexedSubscript:0];
+          navigationItem4 = [v27 navigationItem];
         }
 
-        [(HUDashboardViewController *)self _addFilterBarToBottomPaletteForNavigationItem:v30];
+        [(HUDashboardViewController *)self _addFilterBarToBottomPaletteForNavigationItem:navigationItem4];
       }
     }
   }
 }
 
-- (void)_adjustTopPocketInsetsForBottomPaletteWithHeight:(double)a3
+- (void)_adjustTopPocketInsetsForBottomPaletteWithHeight:(double)height
 {
-  v5 = [(HUDashboardViewController *)self navigationItem];
-  v6 = [v5 _bottomPalette];
-  [v6 setHidden:1];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  [_bottomPalette setHidden:1];
 
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v7 = [(HUDashboardViewController *)self collectionView];
-    [v7 _setPocketInsets:{-a3, 0.0, 0.0, 0.0}];
+    collectionView = [(HUDashboardViewController *)self collectionView];
+    [collectionView _setPocketInsets:{-height, 0.0, 0.0, 0.0}];
   }
 }
 
@@ -8703,29 +8703,29 @@ LABEL_17:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v16 = 134217984;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_INFO, "[%p] Adding filter bar to dashboard view", &v16, 0xCu);
   }
 
   [(HUDashboardViewController *)self _updateFilterBarFrame];
   if (self)
   {
-    v4 = [(HUDashboardViewController *)self _filterBarController];
-    v5 = [v4 view];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    view = [_filterBarController view];
 
-    v6 = [v5 effectiveUserInterfaceLayoutDirection];
-    v7 = [v5 layer];
-    v8 = [v7 flipsHorizontalAxis];
+    effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
+    layer = [view layer];
+    flipsHorizontalAxis = [layer flipsHorizontalAxis];
 
-    if (v6)
+    if (effectiveUserInterfaceLayoutDirection)
     {
-      if ((v8 & 1) == 0)
+      if ((flipsHorizontalAxis & 1) == 0)
       {
         v9 = HFLogForCategory();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v16 = 134217984;
-          v17 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_INFO, "[%p] Manually applying flipsHorizontalAxis=YES to filter bar", &v16, 0xCu);
         }
 
@@ -8733,42 +8733,42 @@ LABEL_17:
       }
     }
 
-    else if (v8)
+    else if (flipsHorizontalAxis)
     {
 LABEL_10:
-      v10 = [v5 layer];
-      [v10 setFlipsHorizontalAxis:v6 != 0];
+      layer2 = [view layer];
+      [layer2 setFlipsHorizontalAxis:effectiveUserInterfaceLayoutDirection != 0];
     }
   }
 
-  v11 = [(HUDashboardViewController *)self collectionView];
-  v12 = [(HUDashboardViewController *)self _filterBarController];
-  v13 = [v12 view];
-  [v11 insertSubview:v13 atIndex:0];
+  collectionView = [(HUDashboardViewController *)self collectionView];
+  _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+  view2 = [_filterBarController2 view];
+  [collectionView insertSubview:view2 atIndex:0];
 
   [(HUDashboardViewController *)self _updatePaletteHeight];
-  v14 = [(HUDashboardViewController *)self navigationItem];
-  v15 = [v14 _bottomPalette];
-  [v15 preferredHeight];
+  navigationItem = [(HUDashboardViewController *)self navigationItem];
+  _bottomPalette = [navigationItem _bottomPalette];
+  [_bottomPalette preferredHeight];
   [(HUDashboardViewController *)self _adjustTopPocketInsetsForBottomPaletteWithHeight:?];
 }
 
-- (void)_addFilterBarToBottomPaletteForNavigationItem:(id)a3
+- (void)_addFilterBarToBottomPaletteForNavigationItem:(id)item
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v16 = 134217984;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_INFO, "[%p] Adding filter bar to palette", &v16, 0xCu);
   }
 
   v6 = objc_alloc(MEMORY[0x277D76118]);
-  v7 = [(HUDashboardViewController *)self _filterBarController];
-  v8 = [v7 view];
-  v9 = [v6 initWithContentView:v8];
+  _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+  view = [_filterBarController view];
+  v9 = [v6 initWithContentView:view];
 
   [v9 _setLayoutPriority:2];
   [v9 setUserInteractionEnabled:1];
@@ -8779,36 +8779,36 @@ LABEL_10:
     [v9 setBackgroundColor:v10];
   }
 
-  [v4 _setBottomPalette:v9];
+  [itemCopy _setBottomPalette:v9];
   if (self)
   {
-    v11 = [(HUDashboardViewController *)self _filterBarController];
-    v12 = [v11 view];
+    _filterBarController2 = [(HUDashboardViewController *)self _filterBarController];
+    view2 = [_filterBarController2 view];
 
-    v13 = [v12 layer];
-    v14 = [v13 flipsHorizontalAxis];
+    layer = [view2 layer];
+    flipsHorizontalAxis = [layer flipsHorizontalAxis];
 
-    if (v14)
+    if (flipsHorizontalAxis)
     {
-      v15 = [v12 layer];
-      [v15 setFlipsHorizontalAxis:0];
+      layer2 = [view2 layer];
+      [layer2 setFlipsHorizontalAxis:0];
     }
   }
 }
 
-- (void)_prepareBottomPaletteForTransitionToContext:(id)a3 toViewController:(id)a4
+- (void)_prepareBottomPaletteForTransitionToContext:(id)context toViewController:(id)controller
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 filterPresentationStyle];
-  if (self == v7 || v8 != 2)
+  contextCopy = context;
+  controllerCopy = controller;
+  filterPresentationStyle = [contextCopy filterPresentationStyle];
+  if (self == controllerCopy || filterPresentationStyle != 2)
   {
-    v10 = [v6 filterPresentationStyle];
-    if (self == v7 && v10 == 3)
+    filterPresentationStyle2 = [contextCopy filterPresentationStyle];
+    if (self == controllerCopy && filterPresentationStyle2 == 3)
     {
-      v11 = [(HUDashboardViewController *)v7 collectionView];
-      [v11 contentOffset];
+      collectionView = [(HUDashboardViewController *)controllerCopy collectionView];
+      [collectionView contentOffset];
       v13 = v12;
 
       if (v13 > 0.0)
@@ -8820,17 +8820,17 @@ LABEL_10:
 
   else
   {
-    v9 = [(HUDashboardViewController *)self context];
-    if ([v9 filterPresentationStyle] == 3)
+    context = [(HUDashboardViewController *)self context];
+    if ([context filterPresentationStyle] == 3)
     {
     }
 
     else
     {
-      v14 = [(HUDashboardViewController *)self context];
-      v15 = [v14 filterPresentationStyle];
+      context2 = [(HUDashboardViewController *)self context];
+      filterPresentationStyle3 = [context2 filterPresentationStyle];
 
-      if (v15)
+      if (filterPresentationStyle3)
       {
         goto LABEL_13;
       }
@@ -8840,12 +8840,12 @@ LABEL_10:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v18 = 134217984;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_INFO, "[%p] Preparing to move filter bar to palette", &v18, 0xCu);
     }
 
-    v17 = [(HUDashboardViewController *)self navigationItem];
-    [(HUDashboardViewController *)self _addFilterBarToBottomPaletteForNavigationItem:v17];
+    navigationItem = [(HUDashboardViewController *)self navigationItem];
+    [(HUDashboardViewController *)self _addFilterBarToBottomPaletteForNavigationItem:navigationItem];
   }
 
 LABEL_13:
@@ -8853,15 +8853,15 @@ LABEL_13:
 
 - (void)_sendFilterBarViewToBackIfNeeded
 {
-  v3 = [(HUDashboardViewController *)self context];
-  v4 = [v3 filterPresentationStyle];
+  context = [(HUDashboardViewController *)self context];
+  filterPresentationStyle = [context filterPresentationStyle];
 
-  if (v4 == 3)
+  if (filterPresentationStyle == 3)
   {
-    v7 = [(HUDashboardViewController *)self collectionView];
-    v5 = [(HUDashboardViewController *)self _filterBarController];
-    v6 = [v5 view];
-    [v7 sendSubviewToBack:v6];
+    collectionView = [(HUDashboardViewController *)self collectionView];
+    _filterBarController = [(HUDashboardViewController *)self _filterBarController];
+    view = [_filterBarController view];
+    [collectionView sendSubviewToBack:view];
   }
 }
 

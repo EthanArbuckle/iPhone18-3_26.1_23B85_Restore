@@ -1,12 +1,12 @@
 @interface IDSOffGridEncryptionProperties
 - (IDSOffGridEncryptionProperties)init;
-- (IDSOffGridEncryptionProperties)initWithCoder:(id)a3;
-- (IDSOffGridEncryptionProperties)initWithDictionary:(id)a3;
+- (IDSOffGridEncryptionProperties)initWithCoder:(id)coder;
+- (IDSOffGridEncryptionProperties)initWithDictionary:(id)dictionary;
 - (NSData)authTag;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridEncryptionProperties
@@ -18,31 +18,31 @@
   return [(IDSOffGridEncryptionProperties *)&v3 init];
 }
 
-- (IDSOffGridEncryptionProperties)initWithDictionary:(id)a3
+- (IDSOffGridEncryptionProperties)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = IDSOffGridEncryptionProperties;
   v5 = [(IDSOffGridEncryptionProperties *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rc"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rc"];
     ratchetCounter = v5->_ratchetCounter;
     v5->_ratchetCounter = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"e-id"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"e-id"];
     encryptionKeyID = v5->_encryptionKeyID;
     v5->_encryptionKeyID = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"at"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"at"];
     authTag = v5->_authTag;
     v5->_authTag = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"segment-number"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"segment-number"];
     segmentNumber = v5->_segmentNumber;
     v5->_segmentNumber = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"segment-count"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"segment-count"];
     totalSegments = v5->_totalSegments;
     v5->_totalSegments = v14;
   }
@@ -89,29 +89,29 @@
   return v10;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(IDSOffGridEncryptionProperties *)self segmentNumber];
-  v6 = [v4 segmentNumber];
+  compareCopy = compare;
+  segmentNumber = [(IDSOffGridEncryptionProperties *)self segmentNumber];
+  segmentNumber2 = [compareCopy segmentNumber];
 
-  v7 = [v5 compare:v6];
+  v7 = [segmentNumber compare:segmentNumber2];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IDSOffGridEncryptionProperties *)self dictionaryRepresentation];
-  v6 = [v4 initWithDictionary:v5];
+  dictionaryRepresentation = [(IDSOffGridEncryptionProperties *)self dictionaryRepresentation];
+  v6 = [v4 initWithDictionary:dictionaryRepresentation];
 
   return v6;
 }
 
 - (NSData)authTag
 {
-  v3 = [(NSNumber *)self->_segmentNumber integerValue];
-  if (v3 == [(NSNumber *)self->_totalSegments integerValue])
+  integerValue = [(NSNumber *)self->_segmentNumber integerValue];
+  if (integerValue == [(NSNumber *)self->_totalSegments integerValue])
   {
     v4 = self->_authTag;
   }
@@ -124,14 +124,14 @@
   return v4;
 }
 
-- (IDSOffGridEncryptionProperties)initWithCoder:(id)a3
+- (IDSOffGridEncryptionProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rc"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"e-id"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"at"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"segment-number"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"segment-count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rc"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e-id"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"at"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"segment-number"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"segment-count"];
 
   v10 = objc_alloc_init(IDSOffGridEncryptionProperties);
   [(IDSOffGridEncryptionProperties *)v10 setRatchetCounter:v5];
@@ -143,15 +143,15 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ratchetCounter = self->_ratchetCounter;
-  v5 = a3;
-  [v5 encodeObject:ratchetCounter forKey:@"rc"];
-  [v5 encodeObject:self->_encryptionKeyID forKey:@"e-id"];
-  [v5 encodeObject:self->_authTag forKey:@"at"];
-  [v5 encodeObject:self->_segmentNumber forKey:@"segment-number"];
-  [v5 encodeObject:self->_totalSegments forKey:@"segment-count"];
+  coderCopy = coder;
+  [coderCopy encodeObject:ratchetCounter forKey:@"rc"];
+  [coderCopy encodeObject:self->_encryptionKeyID forKey:@"e-id"];
+  [coderCopy encodeObject:self->_authTag forKey:@"at"];
+  [coderCopy encodeObject:self->_segmentNumber forKey:@"segment-number"];
+  [coderCopy encodeObject:self->_totalSegments forKey:@"segment-count"];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface MOTrendsAnalyzerOptions
-- (MOTrendsAnalyzerOptions)initWithKeyword:(id)a3 category:(unint64_t)a4 trainDateInterval:(id)a5 testDateInterval:(id)a6 aggregationDuration:(unint64_t)a7 aggregationMethod:(unint64_t)a8 valueFunction:(id)a9;
-- (MOTrendsAnalyzerOptions)initWithKeyword:(id)a3 category:(unint64_t)a4 trainDateInterval:(id)a5 testDateInterval:(id)a6 aggregationDuration:(unint64_t)a7 aggregationMethod:(unint64_t)a8 valueType:(unint64_t)a9;
+- (MOTrendsAnalyzerOptions)initWithKeyword:(id)keyword category:(unint64_t)category trainDateInterval:(id)interval testDateInterval:(id)dateInterval aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueFunction:(id)function;
+- (MOTrendsAnalyzerOptions)initWithKeyword:(id)keyword category:(unint64_t)category trainDateInterval:(id)interval testDateInterval:(id)dateInterval aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueType:(unint64_t)type;
 - (id)description;
 @end
 
 @implementation MOTrendsAnalyzerOptions
 
-- (MOTrendsAnalyzerOptions)initWithKeyword:(id)a3 category:(unint64_t)a4 trainDateInterval:(id)a5 testDateInterval:(id)a6 aggregationDuration:(unint64_t)a7 aggregationMethod:(unint64_t)a8 valueType:(unint64_t)a9
+- (MOTrendsAnalyzerOptions)initWithKeyword:(id)keyword category:(unint64_t)category trainDateInterval:(id)interval testDateInterval:(id)dateInterval aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueType:(unint64_t)type
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  if (a9 == 2)
+  keywordCopy = keyword;
+  intervalCopy = interval;
+  dateIntervalCopy = dateInterval;
+  if (type == 2)
   {
     v21 = &__block_literal_global_106;
   }
 
-  else if (a9 == 1)
+  else if (type == 1)
   {
     v21 = &__block_literal_global_25;
   }
 
-  else if (a9)
+  else if (type)
   {
     v21 = 0;
   }
@@ -41,11 +41,11 @@
     v21 = &__block_literal_global_108;
   }
 
-  v22 = [(MOTrendsAnalyzerOptions *)self initWithKeyword:v15 category:a4 trainDateInterval:v16 testDateInterval:v17 aggregationDuration:a7 aggregationMethod:a8 valueFunction:v21];
+  v22 = [(MOTrendsAnalyzerOptions *)self initWithKeyword:keywordCopy category:category trainDateInterval:intervalCopy testDateInterval:dateIntervalCopy aggregationDuration:duration aggregationMethod:method valueFunction:v21];
   v23 = v22;
   if (v22)
   {
-    v22->_valueFunctionType = a9;
+    v22->_valueFunctionType = type;
   }
 
   return v23;
@@ -81,15 +81,15 @@ double __135__MOTrendsAnalyzerOptions_initWithKeyword_category_trainDateInterval
   return v6;
 }
 
-- (MOTrendsAnalyzerOptions)initWithKeyword:(id)a3 category:(unint64_t)a4 trainDateInterval:(id)a5 testDateInterval:(id)a6 aggregationDuration:(unint64_t)a7 aggregationMethod:(unint64_t)a8 valueFunction:(id)a9
+- (MOTrendsAnalyzerOptions)initWithKeyword:(id)keyword category:(unint64_t)category trainDateInterval:(id)interval testDateInterval:(id)dateInterval aggregationDuration:(unint64_t)duration aggregationMethod:(unint64_t)method valueFunction:(id)function
 {
-  v33 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a9;
-  if (v13)
+  keywordCopy = keyword;
+  intervalCopy = interval;
+  dateIntervalCopy = dateInterval;
+  functionCopy = function;
+  if (intervalCopy)
   {
-    if (v14)
+    if (dateIntervalCopy)
     {
       goto LABEL_3;
     }
@@ -107,10 +107,10 @@ double __135__MOTrendsAnalyzerOptions_initWithKeyword_category_trainDateInterval
     v18 = [NSString stringWithUTF8String:"[MOTrendsAnalyzerOptions initWithKeyword:category:trainDateInterval:testDateInterval:aggregationDuration:aggregationMethod:valueFunction:]"];
     [v17 handleFailureInFunction:v18 file:@"MOTrendsAnalyzerOptions.m" lineNumber:71 description:{@"Invalid parameter not satisfying: trainDateInterval (in %s:%d)", "-[MOTrendsAnalyzerOptions initWithKeyword:category:trainDateInterval:testDateInterval:aggregationDuration:aggregationMethod:valueFunction:]", 71}];
 
-    if (v14)
+    if (dateIntervalCopy)
     {
 LABEL_3:
-      if (v15)
+      if (functionCopy)
       {
         goto LABEL_14;
       }
@@ -129,7 +129,7 @@ LABEL_3:
   v21 = [NSString stringWithUTF8String:"[MOTrendsAnalyzerOptions initWithKeyword:category:trainDateInterval:testDateInterval:aggregationDuration:aggregationMethod:valueFunction:]"];
   [v20 handleFailureInFunction:v21 file:@"MOTrendsAnalyzerOptions.m" lineNumber:72 description:{@"Invalid parameter not satisfying: testDateInterval (in %s:%d)", "-[MOTrendsAnalyzerOptions initWithKeyword:category:trainDateInterval:testDateInterval:aggregationDuration:aggregationMethod:valueFunction:]", 72}];
 
-  if (!v15)
+  if (!functionCopy)
   {
 LABEL_11:
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
@@ -150,14 +150,14 @@ LABEL_14:
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_keyword, a3);
-    v26->_category = a4;
-    objc_storeStrong(&v26->_trainDateInterval, a5);
-    objc_storeStrong(&v26->_testDateInterval, a6);
-    v26->_aggregationDuration = a7;
-    v26->_aggregationMethod = a8;
+    objc_storeStrong(&v25->_keyword, keyword);
+    v26->_category = category;
+    objc_storeStrong(&v26->_trainDateInterval, interval);
+    objc_storeStrong(&v26->_testDateInterval, dateInterval);
+    v26->_aggregationDuration = duration;
+    v26->_aggregationMethod = method;
     v26->_valueFunctionType = 0;
-    v27 = objc_retainBlock(v15);
+    v27 = objc_retainBlock(functionCopy);
     valueFunction = v26->_valueFunction;
     v26->_valueFunction = v27;
   }
@@ -169,15 +169,15 @@ LABEL_14:
 {
   category = self->_category;
   keyword = self->_keyword;
-  v4 = [(NSDateInterval *)self->_trainDateInterval startDate];
-  v5 = [v4 stringFromDate];
-  v6 = [(NSDateInterval *)self->_trainDateInterval endDate];
-  v7 = [v6 stringFromDate];
-  v8 = [(NSDateInterval *)self->_testDateInterval startDate];
-  v9 = [v8 stringFromDate];
-  v10 = [(NSDateInterval *)self->_testDateInterval endDate];
-  v11 = [v10 stringFromDate];
-  v12 = [NSString stringWithFormat:@"keyword, %@, category, %lu@, train.startDate, %@, train.endDate, %@, test.startDate, %@, test.endDate, %@, aggregationDuration, %lu, aggregationMethod, %lu, valueFunctionType, %lu", keyword, category, v5, v7, v9, v11, self->_aggregationDuration, self->_aggregationMethod, self->_valueFunctionType];
+  startDate = [(NSDateInterval *)self->_trainDateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_trainDateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  startDate2 = [(NSDateInterval *)self->_testDateInterval startDate];
+  stringFromDate3 = [startDate2 stringFromDate];
+  endDate2 = [(NSDateInterval *)self->_testDateInterval endDate];
+  stringFromDate4 = [endDate2 stringFromDate];
+  v12 = [NSString stringWithFormat:@"keyword, %@, category, %lu@, train.startDate, %@, train.endDate, %@, test.startDate, %@, test.endDate, %@, aggregationDuration, %lu, aggregationMethod, %lu, valueFunctionType, %lu", keyword, category, stringFromDate, stringFromDate2, stringFromDate3, stringFromDate4, self->_aggregationDuration, self->_aggregationMethod, self->_valueFunctionType];
 
   return v12;
 }

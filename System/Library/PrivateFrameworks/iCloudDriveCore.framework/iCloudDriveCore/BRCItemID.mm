@@ -1,45 +1,45 @@
 @interface BRCItemID
-+ (id)appLibraryRowIDFromRootOrDocumentsSQLiteValue:(sqlite3_value *)a3;
++ (id)appLibraryRowIDFromRootOrDocumentsSQLiteValue:(sqlite3_value *)value;
 + (id)defaultDesktopItemID;
 + (id)defaultDocumentsItemID;
-+ (id)documentsItemIDWithAppLibraryRowID:(id)a3;
-+ (id)newFromSqliteStatement:(sqlite3_stmt *)a3 atIndex:(int)a4;
-+ (id)newFromSqliteValue:(sqlite3_value *)a3;
-+ (id)parseMangledItemIDString:(id)a3 mangledID:(id *)a4 etag:(id *)a5 session:(id)a6;
-+ (id)shareAliasRecordIDFromTargetItemID:(id)a3 zone:(id)a4 hasDerivedShareAlias:(BOOL)a5;
-+ (id)structureRecordPrefixForItemType:(char)a3 targetZoneShared:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemID:(id)a3;
++ (id)documentsItemIDWithAppLibraryRowID:(id)d;
++ (id)newFromSqliteStatement:(sqlite3_stmt *)statement atIndex:(int)index;
++ (id)newFromSqliteValue:(sqlite3_value *)value;
++ (id)parseMangledItemIDString:(id)string mangledID:(id *)d etag:(id *)etag session:(id)session;
++ (id)shareAliasRecordIDFromTargetItemID:(id)d zone:(id)zone hasDerivedShareAlias:(BOOL)alias;
++ (id)structureRecordPrefixForItemType:(char)type targetZoneShared:(BOOL)shared;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemID:(id)d;
 - (BRCALRowID)appLibraryRowID;
 - (BRCItemID)init;
-- (BRCItemID)initWithCoder:(id)a3;
-- (BRCItemID)initWithItemID:(id)a3;
-- (BRCItemID)initWithRootObject:(RootItemObject *)a3;
-- (BRCItemID)initWithString:(id)a3 libraryRowID:(id)a4 sharedZoneRowID:(id)a5;
-- (BRCItemID)initWithUUID:(const char *)a3;
-- (BRCItemID)initWithUUIDString:(id)a3;
+- (BRCItemID)initWithCoder:(id)coder;
+- (BRCItemID)initWithItemID:(id)d;
+- (BRCItemID)initWithRootObject:(RootItemObject *)object;
+- (BRCItemID)initWithString:(id)string libraryRowID:(id)d sharedZoneRowID:(id)iD;
+- (BRCItemID)initWithUUID:(const char *)d;
+- (BRCItemID)initWithUUIDString:(id)string;
 - (BRCZoneRowID)sharedZoneRowID;
 - (NSString)itemIDString;
 - (const)UTF8String;
-- (id)_directoryRecordNameWithSession:(id)a3;
-- (id)_initAsLibraryRootWithAppLibraryRowID:(id)a3;
-- (id)_initAsZoneRootWithZoneRowID:(id)a3;
-- (id)contentsRecordIDInZoneID:(id)a3;
-- (id)derivedAliasItemIDWithOwnerName:(id)a3;
-- (id)directoryReferenceInZone:(id)a3 action:(unint64_t)a4;
-- (id)directoryStructureRecordIDInZone:(id)a3;
-- (id)documentStructureRecordIDInZoneID:(id)a3;
-- (id)initAsDocumentsWithAppLibraryRowID:(id)a3;
+- (id)_directoryRecordNameWithSession:(id)session;
+- (id)_initAsLibraryRootWithAppLibraryRowID:(id)d;
+- (id)_initAsZoneRootWithZoneRowID:(id)d;
+- (id)contentsRecordIDInZoneID:(id)d;
+- (id)derivedAliasItemIDWithOwnerName:(id)name;
+- (id)directoryReferenceInZone:(id)zone action:(unint64_t)action;
+- (id)directoryStructureRecordIDInZone:(id)zone;
+- (id)documentStructureRecordIDInZoneID:(id)d;
+- (id)initAsDocumentsWithAppLibraryRowID:(id)d;
 - (id)itemUUIDString;
-- (id)pcsChainDocumentStructureReferenceInZoneID:(id)a3;
-- (id)sideCarRecordIDWithZone:(id)a3;
-- (id)sideCarRecordNameWithZone:(id)a3;
-- (id)zoneUniqueItemIDStringWithSession:(id)a3;
+- (id)pcsChainDocumentStructureReferenceInZoneID:(id)d;
+- (id)sideCarRecordIDWithZone:(id)zone;
+- (id)sideCarRecordNameWithZone:(id)zone;
+- (id)zoneUniqueItemIDStringWithSession:(id)session;
 - (unint64_t)hash;
 - (void)appLibraryRowID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sharedZoneRowID;
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4;
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index;
 @end
 
 @implementation BRCItemID
@@ -170,66 +170,66 @@ LABEL_18:
   return v7;
 }
 
-- (id)contentsRecordIDInZoneID:(id)a3
+- (id)contentsRecordIDInZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRCItemID *)self itemIDString];
-  v6 = [@"documentContent/" stringByAppendingString:v5];
+  dCopy = d;
+  itemIDString = [(BRCItemID *)self itemIDString];
+  v6 = [@"documentContent/" stringByAppendingString:itemIDString];
 
-  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:v4];
+  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:dCopy];
 
   return v7;
 }
 
-- (id)directoryStructureRecordIDInZone:(id)a3
+- (id)directoryStructureRecordIDInZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 session];
-  v6 = [(BRCItemID *)self _directoryRecordNameWithSession:v5];
+  zoneCopy = zone;
+  session = [zoneCopy session];
+  v6 = [(BRCItemID *)self _directoryRecordNameWithSession:session];
 
   v7 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v8 = [v4 zoneID];
+  zoneID = [zoneCopy zoneID];
 
-  v9 = [v7 initWithRecordName:v6 zoneID:v8];
+  v9 = [v7 initWithRecordName:v6 zoneID:zoneID];
 
   return v9;
 }
 
-- (id)documentStructureRecordIDInZoneID:(id)a3
+- (id)documentStructureRecordIDInZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRCItemID *)self itemIDString];
-  v6 = [@"documentStructure/" stringByAppendingString:v5];
+  dCopy = d;
+  itemIDString = [(BRCItemID *)self itemIDString];
+  v6 = [@"documentStructure/" stringByAppendingString:itemIDString];
 
-  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:v4];
+  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:dCopy];
 
   return v7;
 }
 
-- (id)pcsChainDocumentStructureReferenceInZoneID:(id)a3
+- (id)pcsChainDocumentStructureReferenceInZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [(BRCItemID *)self itemIDString];
-  v6 = [@"documentStructure/" stringByAppendingString:v5];
+  dCopy = d;
+  itemIDString = [(BRCItemID *)self itemIDString];
+  v6 = [@"documentStructure/" stringByAppendingString:itemIDString];
 
-  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:v4];
+  v7 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v6 zoneID:dCopy];
   v8 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v7 action:0];
 
   return v8;
 }
 
-+ (id)structureRecordPrefixForItemType:(char)a3 targetZoneShared:(BOOL)a4
++ (id)structureRecordPrefixForItemType:(char)type targetZoneShared:(BOOL)shared
 {
-  if (a3 > 4)
+  if (type > 4)
   {
-    if (a3 > 7)
+    if (type > 7)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         return @"documentStructure/";
       }
 
-      if (a3 != 9 && a3 != 10)
+      if (type != 9 && type != 10)
       {
 LABEL_22:
         v5 = brc_bread_crumbs();
@@ -245,7 +245,7 @@ LABEL_22:
       return @"directory/";
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       return @"symlink/";
     }
@@ -258,16 +258,16 @@ LABEL_22:
 
   else
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3 == -1)
+      if (type == -1)
       {
         return 0;
       }
 
-      if (a3)
+      if (type)
       {
-        if (a3 != 1)
+        if (type != 1)
         {
           goto LABEL_22;
         }
@@ -278,17 +278,17 @@ LABEL_22:
       return @"directory/";
     }
 
-    if (a3 == 2)
+    if (type == 2)
     {
       return @"documentStructure/";
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       return @"directory/";
     }
 
-    if (a4)
+    if (shared)
     {
       return @"shareAlias/";
     }
@@ -300,71 +300,71 @@ LABEL_22:
   }
 }
 
-+ (id)shareAliasRecordIDFromTargetItemID:(id)a3 zone:(id)a4 hasDerivedShareAlias:(BOOL)a5
++ (id)shareAliasRecordIDFromTargetItemID:(id)d zone:(id)zone hasDerivedShareAlias:(BOOL)alias
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 itemID];
-  v10 = [v8 session];
-  v11 = [v7 zoneRowID];
-  v12 = [v10 serverZoneByRowID:v11];
+  dCopy = d;
+  zoneCopy = zone;
+  itemID = [dCopy itemID];
+  session = [zoneCopy session];
+  zoneRowID = [dCopy zoneRowID];
+  v12 = [session serverZoneByRowID:zoneRowID];
 
-  if (!a5)
+  if (!alias)
   {
-    v13 = [v7 itemID];
-    v14 = [v12 ownerName];
-    v15 = [v13 derivedAliasItemIDWithOwnerName:v14];
+    itemID2 = [dCopy itemID];
+    ownerName = [v12 ownerName];
+    v15 = [itemID2 derivedAliasItemIDWithOwnerName:ownerName];
 
-    v9 = v15;
+    itemID = v15;
   }
 
-  v16 = [v9 structureRecordIDForItemType:3 zone:v8 aliasTargetZoneIsShared:{objc_msgSend(v12, "isSharedZone")}];
+  v16 = [itemID structureRecordIDForItemType:3 zone:zoneCopy aliasTargetZoneIsShared:{objc_msgSend(v12, "isSharedZone")}];
 
   return v16;
 }
 
-- (id)sideCarRecordNameWithZone:(id)a3
+- (id)sideCarRecordNameWithZone:(id)zone
 {
-  v4 = [a3 ownerName];
-  v5 = [v4 substringFromIndex:1];
+  ownerName = [zone ownerName];
+  v5 = [ownerName substringFromIndex:1];
   v6 = [v5 substringToIndex:8];
 
-  v7 = [(BRCItemID *)self itemIDString];
-  v8 = [@"ppm_" stringByAppendingFormat:@"%@/%@", v6, v7];
+  itemIDString = [(BRCItemID *)self itemIDString];
+  v8 = [@"ppm_" stringByAppendingFormat:@"%@/%@", v6, itemIDString];
 
   return v8;
 }
 
-- (id)sideCarRecordIDWithZone:(id)a3
+- (id)sideCarRecordIDWithZone:(id)zone
 {
   v4 = MEMORY[0x277CBC5F8];
-  v5 = a3;
-  v6 = [v4 brc_sideCarZoneID];
-  v7 = [(BRCItemID *)self sideCarRecordNameWithZone:v5];
+  zoneCopy = zone;
+  brc_sideCarZoneID = [v4 brc_sideCarZoneID];
+  v7 = [(BRCItemID *)self sideCarRecordNameWithZone:zoneCopy];
 
-  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v7 zoneID:v6];
+  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v7 zoneID:brc_sideCarZoneID];
 
   return v8;
 }
 
-- (id)_directoryRecordNameWithSession:(id)a3
+- (id)_directoryRecordNameWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (![(BRCItemID *)self isDocumentsFolder]&& (![(BRCItemID *)self isNonDesktopRoot]|| [(BRCItemID *)self isSharedZoneRoot]))
   {
     goto LABEL_7;
   }
 
-  v5 = [(BRCItemID *)self appLibraryRowID];
-  v6 = [v4 appLibraryByRowID:v5];
+  appLibraryRowID = [(BRCItemID *)self appLibraryRowID];
+  itemIDString = [sessionCopy appLibraryByRowID:appLibraryRowID];
 
-  if (![v6 wasMovedToCloudDocs] || (objc_msgSend(v6, "isCloudDocsAppLibrary") & 1) != 0)
+  if (![itemIDString wasMovedToCloudDocs] || (objc_msgSend(itemIDString, "isCloudDocsAppLibrary") & 1) != 0)
   {
 LABEL_4:
 
 LABEL_7:
-    v6 = [(BRCItemID *)self itemIDString];
-    v7 = [@"directory/" stringByAppendingString:v6];
+    itemIDString = [(BRCItemID *)self itemIDString];
+    v7 = [@"directory/" stringByAppendingString:itemIDString];
     goto LABEL_8;
   }
 
@@ -383,25 +383,25 @@ LABEL_7:
     v9 = @"directory/appData_";
   }
 
-  v10 = [v6 appLibraryID];
-  v7 = [(__CFString *)v9 stringByAppendingString:v10];
+  appLibraryID = [itemIDString appLibraryID];
+  v7 = [(__CFString *)v9 stringByAppendingString:appLibraryID];
 
 LABEL_8:
 
   return v7;
 }
 
-- (id)directoryReferenceInZone:(id)a3 action:(unint64_t)a4
+- (id)directoryReferenceInZone:(id)zone action:(unint64_t)action
 {
-  v6 = a3;
-  v7 = [v6 session];
-  v8 = [(BRCItemID *)self _directoryRecordNameWithSession:v7];
+  zoneCopy = zone;
+  session = [zoneCopy session];
+  v8 = [(BRCItemID *)self _directoryRecordNameWithSession:session];
 
   v9 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v10 = [v6 zoneID];
+  zoneID = [zoneCopy zoneID];
 
-  v11 = [v9 initWithRecordName:v8 zoneID:v10];
-  v12 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v11 action:a4];
+  v11 = [v9 initWithRecordName:v8 zoneID:zoneID];
+  v12 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v11 action:action];
 
   return v12;
 }
@@ -438,14 +438,14 @@ LABEL_8:
   return v2;
 }
 
-- (id)zoneUniqueItemIDStringWithSession:(id)a3
+- (id)zoneUniqueItemIDStringWithSession:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  sessionCopy = session;
+  v5 = sessionCopy;
   if (self->_appLibraryRowID)
   {
-    v6 = [v4 appLibraryByRowID:?];
+    v6 = [sessionCopy appLibraryByRowID:?];
   }
 
   else
@@ -456,12 +456,12 @@ LABEL_8:
   if (self->_zoneRowID)
   {
     v7 = [v5 serverZoneByRowID:?];
-    v8 = [v7 clientZone];
+    clientZone = [v7 clientZone];
   }
 
   else
   {
-    v8 = 0;
+    clientZone = 0;
   }
 
   memset(v21, 0, 37);
@@ -486,11 +486,11 @@ LABEL_8:
       [BRCItemID zoneUniqueItemIDStringWithSession:];
     }
 
-    v14 = [v6 appLibraryID];
-    v11 = v14;
+    appLibraryID = [v6 appLibraryID];
+    mangledID = appLibraryID;
     v15 = BRCItemIDZoneRoot;
 LABEL_20:
-    v13 = [v14 stringByAppendingPathComponent:v15];
+    v13 = [appLibraryID stringByAppendingPathComponent:v15];
 LABEL_21:
 
     goto LABEL_30;
@@ -499,8 +499,8 @@ LABEL_21:
   switch(kind)
   {
     case 2u:
-      v14 = [v6 appLibraryID];
-      v11 = v14;
+      appLibraryID = [v6 appLibraryID];
+      mangledID = appLibraryID;
       v15 = BRCItemIDDocuments;
       goto LABEL_20;
     case 3u:
@@ -513,14 +513,14 @@ LABEL_21:
 
       goto LABEL_29;
     case 5u:
-      if (!v8)
+      if (!clientZone)
       {
         [BRCItemID zoneUniqueItemIDStringWithSession:];
       }
 
-      v11 = [v8 mangledID];
-      v12 = [v11 mangledIDString];
-      v13 = [v12 stringByAppendingPathComponent:BRCItemIDZoneRoot];
+      mangledID = [clientZone mangledID];
+      mangledIDString = [mangledID mangledIDString];
+      v13 = [mangledIDString stringByAppendingPathComponent:BRCItemIDZoneRoot];
 
       goto LABEL_21;
   }
@@ -544,16 +544,16 @@ LABEL_30:
 
 - (const)UTF8String
 {
-  v2 = [(BRCItemID *)self itemIDString];
-  v3 = [v2 UTF8String];
+  itemIDString = [(BRCItemID *)self itemIDString];
+  uTF8String = [itemIDString UTF8String];
 
-  return v3;
+  return uTF8String;
 }
 
-+ (id)documentsItemIDWithAppLibraryRowID:(id)a3
++ (id)documentsItemIDWithAppLibraryRowID:(id)d
 {
-  v3 = a3;
-  if (!v3 || (v4 = v3, ![v3 unsignedLongLongValue]))
+  dCopy = d;
+  if (!dCopy || (v4 = dCopy, ![dCopy unsignedLongLongValue]))
   {
     abc_report_panic_with_signature();
     [MEMORY[0x277CCACA8] stringWithFormat:@"invalid library rowid"];
@@ -566,11 +566,11 @@ LABEL_30:
     }
 
     brc_append_system_info_to_message();
-    v9 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("+[BRCItemID documentsItemIDWithAppLibraryRowID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/items/BRCItemID.m", 273, v9);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("+[BRCItemID documentsItemIDWithAppLibraryRowID:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/items/BRCItemID.m", 273, uTF8String);
   }
 
-  v11 = [v4 intValue];
+  intValue = [v4 intValue];
   v10 = 2;
   v5 = [[BRCItemID alloc] initWithRootObject:&v10];
 
@@ -593,17 +593,17 @@ LABEL_30:
   return v3;
 }
 
-- (BOOL)isEqualToItemID:(id)a3
+- (BOOL)isEqualToItemID:(id)d
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  dCopy = d;
+  v6 = dCopy;
+  if (self == dCopy)
   {
     v3 = 1;
     goto LABEL_13;
   }
 
-  if (!v5 || (kind = self->_kind, kind != v5->_kind))
+  if (!dCopy || (kind = self->_kind, kind != dCopy->_kind))
   {
 LABEL_12:
     v3 = 0;
@@ -623,7 +623,7 @@ LABEL_23:
 
     if (!self->_kind)
     {
-      v3 = *self->_uuid == *v5->_uuid && *&self->_uuid[8] == *&v5->_uuid[8];
+      v3 = *self->_uuid == *dCopy->_uuid && *&self->_uuid[8] == *&dCopy->_uuid[8];
     }
 
     goto LABEL_13;
@@ -653,11 +653,11 @@ LABEL_13:
   return v3 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCItemID *)self isEqualToItemID:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BRCItemID *)self isEqualToItemID:equalCopy];
 
   return v5;
 }
@@ -677,18 +677,18 @@ LABEL_13:
   return v3;
 }
 
-- (BRCItemID)initWithString:(id)a3 libraryRowID:(id)a4 sharedZoneRowID:(id)a5
+- (BRCItemID)initWithString:(id)string libraryRowID:(id)d sharedZoneRowID:(id)iD
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:BRCItemIDZoneRoot])
+  stringCopy = string;
+  dCopy = d;
+  iDCopy = iD;
+  if ([stringCopy isEqualToString:BRCItemIDZoneRoot])
   {
-    if (v9 | v10)
+    if (dCopy | iDCopy)
     {
-      if (v9)
+      if (dCopy)
       {
-        v11 = [(BRCItemID *)self _initAsLibraryRootWithAppLibraryRowID:v9];
+        v11 = [(BRCItemID *)self _initAsLibraryRootWithAppLibraryRowID:dCopy];
         goto LABEL_12;
       }
     }
@@ -698,23 +698,23 @@ LABEL_13:
       [BRCItemID initWithString:libraryRowID:sharedZoneRowID:];
     }
 
-    v11 = [(BRCItemID *)self _initAsZoneRootWithZoneRowID:v10];
+    v11 = [(BRCItemID *)self _initAsZoneRootWithZoneRowID:iDCopy];
     goto LABEL_12;
   }
 
-  if ([v8 isEqualToString:BRCItemIDDocuments])
+  if ([stringCopy isEqualToString:BRCItemIDDocuments])
   {
-    if (!v9)
+    if (!dCopy)
     {
       [BRCItemID initWithString:libraryRowID:sharedZoneRowID:];
     }
 
-    v11 = [(BRCItemID *)self initAsDocumentsWithAppLibraryRowID:v9];
+    v11 = [(BRCItemID *)self initAsDocumentsWithAppLibraryRowID:dCopy];
   }
 
   else
   {
-    v11 = [(BRCItemID *)self initWithUUIDString:v8];
+    v11 = [(BRCItemID *)self initWithUUIDString:stringCopy];
   }
 
 LABEL_12:
@@ -723,16 +723,16 @@ LABEL_12:
   return v12;
 }
 
-- (BRCItemID)initWithUUIDString:(id)a3
+- (BRCItemID)initWithUUIDString:(id)string
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v10[0] = 0;
   v10[1] = 0;
   if (_br_parseUUIDString())
   {
     self = [(BRCItemID *)self initWithUUID:v10];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -741,24 +741,24 @@ LABEL_12:
     v7 = brc_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [BRCItemID initWithUUIDString:v4];
+      [BRCItemID initWithUUIDString:stringCopy];
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
-- (id)_initAsLibraryRootWithAppLibraryRowID:(id)a3
+- (id)_initAsLibraryRootWithAppLibraryRowID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRCItemID;
   v6 = [(BRCItemID *)&v12 init];
   v7 = v6;
-  if (!v6 || (v6->_kind = 1, objc_storeStrong(&v6->_appLibraryRowID, a3), v5) && [v5 unsignedLongLongValue])
+  if (!v6 || (v6->_kind = 1, objc_storeStrong(&v6->_appLibraryRowID, d), dCopy) && [dCopy unsignedLongLongValue])
   {
     v8 = v7;
   }
@@ -778,14 +778,14 @@ LABEL_12:
   return v8;
 }
 
-- (id)_initAsZoneRootWithZoneRowID:(id)a3
+- (id)_initAsZoneRootWithZoneRowID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRCItemID;
   v6 = [(BRCItemID *)&v12 init];
   v7 = v6;
-  if (!v6 || (v6->_kind = 5, objc_storeStrong(&v6->_zoneRowID, a3), v5) && [v5 unsignedLongLongValue])
+  if (!v6 || (v6->_kind = 5, objc_storeStrong(&v6->_zoneRowID, d), dCopy) && [dCopy unsignedLongLongValue])
   {
     v8 = v7;
   }
@@ -805,14 +805,14 @@ LABEL_12:
   return v8;
 }
 
-- (id)initAsDocumentsWithAppLibraryRowID:(id)a3
+- (id)initAsDocumentsWithAppLibraryRowID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BRCItemID;
   v6 = [(BRCItemID *)&v12 init];
   v7 = v6;
-  if (!v6 || (v6->_kind = 2, objc_storeStrong(&v6->_appLibraryRowID, a3), v5) && [v5 unsignedLongLongValue])
+  if (!v6 || (v6->_kind = 2, objc_storeStrong(&v6->_appLibraryRowID, d), dCopy) && [dCopy unsignedLongLongValue])
   {
     v8 = v7;
   }
@@ -832,7 +832,7 @@ LABEL_12:
   return v8;
 }
 
-- (BRCItemID)initWithUUID:(const char *)a3
+- (BRCItemID)initWithUUID:(const char *)d
 {
   v5.receiver = self;
   v5.super_class = BRCItemID;
@@ -840,13 +840,13 @@ LABEL_12:
   if (result)
   {
     result->_kind = 0;
-    *result->_uuid = *a3;
+    *result->_uuid = *d;
   }
 
   return result;
 }
 
-- (BRCItemID)initWithRootObject:(RootItemObject *)a3
+- (BRCItemID)initWithRootObject:(RootItemObject *)object
 {
   v14.receiver = self;
   v14.super_class = BRCItemID;
@@ -854,9 +854,9 @@ LABEL_12:
   v5 = v4;
   if (v4)
   {
-    var0 = a3->var0;
+    var0 = object->var0;
     v4->_kind = var0;
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&a3->var0 + 1)];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*(&object->var0 + 1)];
     v8 = 8;
     if (var0 == 5)
     {
@@ -866,7 +866,7 @@ LABEL_12:
     v9 = *(&v5->super.isa + v8);
     *(&v5->super.isa + v8) = v7;
 
-    v10 = a3->var0;
+    v10 = object->var0;
     if (v10 > 5 || ((1 << v10) & 0x26) == 0)
     {
       v11 = brc_bread_crumbs();
@@ -881,10 +881,10 @@ LABEL_12:
   return v5;
 }
 
-+ (id)newFromSqliteValue:(sqlite3_value *)a3
++ (id)newFromSqliteValue:(sqlite3_value *)value
 {
   *&v26[13] = *MEMORY[0x277D85DE8];
-  v4 = sqlite3_value_type(a3);
+  v4 = sqlite3_value_type(value);
   if (v4 == 5)
   {
 LABEL_17:
@@ -895,8 +895,8 @@ LABEL_17:
   v5 = v4;
   if (v4 != 4)
   {
-    v11 = sqlite3_value_text(a3);
-    v12 = sqlite3_value_bytes(a3);
+    v11 = sqlite3_value_text(value);
+    v12 = sqlite3_value_bytes(value);
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -914,8 +914,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v6 = sqlite3_value_blob(a3);
-  v7 = sqlite3_value_bytes(a3);
+  v6 = sqlite3_value_blob(value);
+  v7 = sqlite3_value_bytes(value);
   if (v7 == 16)
   {
     v8 = [BRCItemID alloc];
@@ -948,10 +948,10 @@ LABEL_17:
   return [(BRCItemID *)v16 initWithRootObject:v6];
 }
 
-+ (id)newFromSqliteStatement:(sqlite3_stmt *)a3 atIndex:(int)a4
++ (id)newFromSqliteStatement:(sqlite3_stmt *)statement atIndex:(int)index
 {
   *&v28[13] = *MEMORY[0x277D85DE8];
-  v6 = sqlite3_column_type(a3, a4);
+  v6 = sqlite3_column_type(statement, index);
   if (v6 == 5)
   {
 LABEL_17:
@@ -962,8 +962,8 @@ LABEL_17:
   v7 = v6;
   if (v6 != 4)
   {
-    v13 = sqlite3_column_text(a3, a4);
-    v14 = sqlite3_column_bytes(a3, a4);
+    v13 = sqlite3_column_text(statement, index);
+    v14 = sqlite3_column_bytes(statement, index);
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -981,8 +981,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = sqlite3_column_blob(a3, a4);
-  v9 = sqlite3_column_bytes(a3, a4);
+  v8 = sqlite3_column_blob(statement, index);
+  v9 = sqlite3_column_bytes(statement, index);
   if (v9 == 16)
   {
     v10 = [BRCItemID alloc];
@@ -1015,9 +1015,9 @@ LABEL_17:
   return [(BRCItemID *)v18 initWithRootObject:v8];
 }
 
-+ (id)appLibraryRowIDFromRootOrDocumentsSQLiteValue:(sqlite3_value *)a3
++ (id)appLibraryRowIDFromRootOrDocumentsSQLiteValue:(sqlite3_value *)value
 {
-  if (sqlite3_value_type(a3) != 4 || sqlite3_value_bytes(a3) != 5 || !*(sqlite3_value_blob(a3) + 1) || ([MEMORY[0x277CCABB0] numberWithUnsignedInt:?], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (sqlite3_value_type(value) != 4 || sqlite3_value_bytes(value) != 5 || !*(sqlite3_value_blob(value) + 1) || ([MEMORY[0x277CCABB0] numberWithUnsignedInt:?], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     +[BRCItemID appLibraryRowIDFromRootOrDocumentsSQLiteValue:];
     v4 = 0;
@@ -1026,38 +1026,38 @@ LABEL_17:
   return v4;
 }
 
-- (BRCItemID)initWithItemID:(id)a3
+- (BRCItemID)initWithItemID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = BRCItemID;
   v5 = [(BRCItemID *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_kind = v4[24];
-    objc_storeStrong(&v5->_appLibraryRowID, *(v4 + 1));
-    *v6->_uuid = *(v4 + 25);
+    v5->_kind = dCopy[24];
+    objc_storeStrong(&v5->_appLibraryRowID, *(dCopy + 1));
+    *v6->_uuid = *(dCopy + 25);
   }
 
   return v6;
 }
 
-- (BRCItemID)initWithCoder:(id)a3
+- (BRCItemID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12 = 0;
-  v5 = [v4 decodeBytesForKey:@"bytes" returnedLength:&v12];
+  v5 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&v12];
   if (v12 == 16)
   {
     v6 = [(BRCItemID *)self initWithUUID:v5];
 LABEL_5:
     self = v6;
-    v8 = self;
+    selfCopy = self;
     goto LABEL_9;
   }
 
-  v7 = [v4 decodeBytesForKey:@"root_object" returnedLength:&v12];
+  v7 = [coderCopy decodeBytesForKey:@"root_object" returnedLength:&v12];
   if (v12 == 5)
   {
     v6 = [(BRCItemID *)self initWithRootObject:v7];
@@ -1071,16 +1071,16 @@ LABEL_5:
     [BRCItemID initWithCoder:];
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   memset(v13, 0, 5);
   kind = self->_kind;
   if (kind > 2)
@@ -1125,7 +1125,7 @@ LABEL_11:
     *(v13 + 1) = [zoneRowID intValue];
     v10 = @"root_object";
     uuid = v13;
-    v4 = v5;
+    coderCopy = v5;
     v12 = 5;
     goto LABEL_12;
   }
@@ -1139,11 +1139,11 @@ LABEL_11:
   uuid = self->_uuid;
   v12 = 16;
 LABEL_12:
-  [v4 encodeBytes:uuid length:v12 forKey:v10];
+  [coderCopy encodeBytes:uuid length:v12 forKey:v10];
 LABEL_16:
 }
 
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index
 {
   memset(v9, 0, 5);
   kind = self->_kind;
@@ -1183,7 +1183,7 @@ LABEL_16:
 
 LABEL_18:
 
-    sqlite3_bind_null(a3, a4);
+    sqlite3_bind_null(bind, index);
     return;
   }
 
@@ -1211,28 +1211,28 @@ LABEL_18:
       }
 
 LABEL_21:
-      sqlite3_bind_blob(a3, a4, v9, 5, 0xFFFFFFFFFFFFFFFFLL);
+      sqlite3_bind_blob(bind, index, v9, 5, 0xFFFFFFFFFFFFFFFFLL);
       return;
     }
 
     goto LABEL_16;
   }
 
-  sqlite3_bind_blob(a3, a4, self->_uuid, 16, 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_blob(bind, index, self->_uuid, 16, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (id)derivedAliasItemIDWithOwnerName:(id)a3
+- (id)derivedAliasItemIDWithOwnerName:(id)name
 {
   v17 = *MEMORY[0x277D85DE8];
   *v15 = 0u;
-  v5 = self;
-  v6 = a3;
+  selfCopy = self;
+  nameCopy = name;
   v7 = [(BRCItemID *)self UTF8String:0];
-  v8 = [v6 UTF8String];
+  uTF8String = [nameCopy UTF8String];
 
   CC_MD5_Init(&v14);
-  v9 = strlen(v8);
-  CC_MD5_Update(&v14, v8, v9);
+  v9 = strlen(uTF8String);
+  CC_MD5_Update(&v14, uTF8String, v9);
   v10 = strlen(v7);
   CC_MD5_Update(&v14, v7, v10);
   CC_MD5_Final(md, &v14);
@@ -1250,15 +1250,15 @@ LABEL_21:
   return v11;
 }
 
-+ (id)parseMangledItemIDString:(id)a3 mangledID:(id *)a4 etag:(id *)a5 session:(id)a6
++ (id)parseMangledItemIDString:(id)string mangledID:(id *)d etag:(id *)etag session:(id)session
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 componentsSeparatedByString:@"_"];
-  v12 = [v10 serverDB];
+  stringCopy = string;
+  sessionCopy = session;
+  v11 = [stringCopy componentsSeparatedByString:@"_"];
+  serverDB = [sessionCopy serverDB];
 
-  v13 = [v12 serialQueue];
-  dispatch_assert_queue_not_V2(v13);
+  serialQueue = [serverDB serialQueue];
+  dispatch_assert_queue_not_V2(serialQueue);
 
   if ([v11 count] == 3)
   {
@@ -1267,14 +1267,14 @@ LABEL_21:
     v16 = [v11 objectAtIndexedSubscript:2];
     v17 = [[BRCItemID alloc] initWithUUIDString:v15];
     v18 = [objc_alloc(MEMORY[0x277CFAE60]) initWithMangledString:v14];
-    if (a4)
+    if (d)
     {
-      objc_storeStrong(a4, v18);
+      objc_storeStrong(d, v18);
     }
 
-    if (a5)
+    if (etag)
     {
-      objc_storeStrong(a5, v16);
+      objc_storeStrong(etag, v16);
     }
 
 LABEL_14:
@@ -1291,7 +1291,7 @@ LABEL_15:
 
     v15 = [v11 objectAtIndexedSubscript:2];
     v16 = [v11 objectAtIndexedSubscript:3];
-    v24 = v9;
+    v24 = stringCopy;
     if ([v14 hasSuffix:@":"])
     {
       v20 = [v14 substringToIndex:[v14 length]- 1];
@@ -1302,17 +1302,17 @@ LABEL_15:
     v21 = [v14 stringByReplacingOccurrencesOfString:@"~" withString:@"."];
     v22 = [objc_alloc(MEMORY[0x277CFAE60]) initWithZoneName:v21 ownerName:v18];
     v17 = [[BRCItemID alloc] initWithUUIDString:v15];
-    if (a4)
+    if (d)
     {
-      objc_storeStrong(a4, v22);
+      objc_storeStrong(d, v22);
     }
 
-    if (a5)
+    if (etag)
     {
-      objc_storeStrong(a5, v16);
+      objc_storeStrong(etag, v16);
     }
 
-    v9 = v24;
+    stringCopy = v24;
     goto LABEL_14;
   }
 
@@ -1322,7 +1322,7 @@ LABEL_15:
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      [BRCItemID parseMangledItemIDString:v9 mangledID:? etag:? session:?];
+      [BRCItemID parseMangledItemIDString:stringCopy mangledID:? etag:? session:?];
     }
 
     v17 = 0;

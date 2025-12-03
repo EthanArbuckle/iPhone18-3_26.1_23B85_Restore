@@ -9,23 +9,23 @@
 {
   v5.receiver = self;
   v5.super_class = UIMessageConversationEntry;
-  v3 = [(UIConversationEntry *)&v5 inputContextEntryRepresentation];
-  [v3 setIsFromMe:{-[UIMessageConversationEntry wasSentBySelf](self, "wasSentBySelf")}];
-  [v3 setEntryType:{-[UIMessageConversationEntry inputContextEntryType](self, "inputContextEntryType")}];
+  inputContextEntryRepresentation = [(UIConversationEntry *)&v5 inputContextEntryRepresentation];
+  [inputContextEntryRepresentation setIsFromMe:{-[UIMessageConversationEntry wasSentBySelf](self, "wasSentBySelf")}];
+  [inputContextEntryRepresentation setEntryType:{-[UIMessageConversationEntry inputContextEntryType](self, "inputContextEntryType")}];
 
-  return v3;
+  return inputContextEntryRepresentation;
 }
 
 - (int64_t)inputContextEntryType
 {
-  v2 = [(UIMessageConversationEntry *)self dataKind];
+  dataKind = [(UIMessageConversationEntry *)self dataKind];
   v3 = 1;
-  if (v2 != 1)
+  if (dataKind != 1)
   {
     v3 = 2;
   }
 
-  if (v2)
+  if (dataKind)
   {
     return v3;
   }

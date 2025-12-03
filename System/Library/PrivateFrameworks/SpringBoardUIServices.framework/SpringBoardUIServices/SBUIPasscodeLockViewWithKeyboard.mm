@@ -1,53 +1,53 @@
 @interface SBUIPasscodeLockViewWithKeyboard
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (CGRect)_keyboardFrameForInterfaceOrientation:(int64_t)a3;
-- (SBUIPasscodeLockViewWithKeyboard)initWithLightStyle:(BOOL)a3;
+- (CGRect)_keyboardFrameForInterfaceOrientation:(int64_t)orientation;
+- (SBUIPasscodeLockViewWithKeyboard)initWithLightStyle:(BOOL)style;
 - (double)_keyboardToEntryFieldOffset;
 - (double)_largeTextEmergencyButtonMaxWidth;
-- (double)_statusFieldHeightWithWidth:(double)a3;
+- (double)_statusFieldHeightWithWidth:(double)width;
 - (double)_statusTitleWidth;
 - (id)_newStatusField;
 - (id)_newStatusSubtitleView;
 - (id)_viewForKeyboardTracking;
 - (void)_acceptOrCancelReturnKeyPress;
-- (void)_hardwareReturnKeyPressed:(id)a3;
-- (void)_keyboardDidHideNotification:(id)a3;
-- (void)_keyboardWillChangeFrameNotification:(id)a3;
-- (void)_keyboardWillShowNotification:(id)a3;
-- (void)_layoutForMinimizationState:(BOOL)a3;
+- (void)_hardwareReturnKeyPressed:(id)pressed;
+- (void)_keyboardDidHideNotification:(id)notification;
+- (void)_keyboardWillChangeFrameNotification:(id)notification;
+- (void)_keyboardWillShowNotification:(id)notification;
+- (void)_layoutForMinimizationState:(BOOL)state;
 - (void)_layoutStatusView;
 - (void)_luminanceBoostDidChange;
 - (void)_notifyDelegatePasscodeCancelled;
 - (void)_notifyDelegatePasscodeEntered;
 - (void)_notifyDelegateThatEmergencyCallButtonWasPressed;
-- (void)_setKeyboardTracksLockView:(BOOL)a3;
+- (void)_setKeyboardTracksLockView:(BOOL)view;
 - (void)_toggleForEmergencyCall;
 - (void)_toggleForStatusField;
 - (void)_updateFont;
-- (void)_updateKeyboardHeightOffsetForKeyboardNotification:(id)a3;
-- (void)becomeActiveWithAnimationSettings:(id)a3;
-- (void)beginTransitionToState:(int64_t)a3;
+- (void)_updateKeyboardHeightOffsetForKeyboardNotification:(id)notification;
+- (void)becomeActiveWithAnimationSettings:(id)settings;
+- (void)beginTransitionToState:(int64_t)state;
 - (void)dealloc;
-- (void)didEndTransitionToState:(int64_t)a3;
+- (void)didEndTransitionToState:(int64_t)state;
 - (void)layoutSubviews;
-- (void)passcodeEntryFieldDidCancelEntry:(id)a3;
-- (void)passcodeEntryFieldTextDidChange:(id)a3;
-- (void)resignActiveWithAnimationSettings:(id)a3;
-- (void)setShowsEmergencyCallButton:(BOOL)a3;
-- (void)setShowsStatusField:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateForTransitionToPasscodeView:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateStatusText:(id)a3 subtitle:(id)a4 animated:(BOOL)a5;
+- (void)passcodeEntryFieldDidCancelEntry:(id)entry;
+- (void)passcodeEntryFieldTextDidChange:(id)change;
+- (void)resignActiveWithAnimationSettings:(id)settings;
+- (void)setShowsEmergencyCallButton:(BOOL)button;
+- (void)setShowsStatusField:(BOOL)field;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateForTransitionToPasscodeView:(BOOL)view animated:(BOOL)animated;
+- (void)updateStatusText:(id)text subtitle:(id)subtitle animated:(BOOL)animated;
 @end
 
 @implementation SBUIPasscodeLockViewWithKeyboard
 
-- (SBUIPasscodeLockViewWithKeyboard)initWithLightStyle:(BOOL)a3
+- (SBUIPasscodeLockViewWithKeyboard)initWithLightStyle:(BOOL)style
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  styleCopy = style;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -62,9 +62,9 @@
     return v15;
   }
 
-  v14->_usesLightStyle = v3;
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 bounds];
+  v14->_usesLightStyle = styleCopy;
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -75,39 +75,39 @@
   statusFieldBackground = v15->_statusFieldBackground;
   v15->_statusFieldBackground = v25;
 
-  v27 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
-  [v27 addSubview:v15->_statusFieldBackground];
+  passcodeAuthenticationView = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
+  [passcodeAuthenticationView addSubview:v15->_statusFieldBackground];
 
-  v28 = [(SBUIPasscodeLockViewWithKeyboard *)v15 _newStatusField];
-  [(SBUIPasscodeLockViewWithKeyboard *)v15 setStatusField:v28];
-  v29 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
-  [v29 addSubview:v28];
+  _newStatusField = [(SBUIPasscodeLockViewWithKeyboard *)v15 _newStatusField];
+  [(SBUIPasscodeLockViewWithKeyboard *)v15 setStatusField:_newStatusField];
+  passcodeAuthenticationView2 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
+  [passcodeAuthenticationView2 addSubview:_newStatusField];
 
-  v30 = [(SBUIPasscodeLockViewBase *)v15 _statusSubtitleText];
-  v31 = [v30 length];
+  _statusSubtitleText = [(SBUIPasscodeLockViewBase *)v15 _statusSubtitleText];
+  passcodeAuthenticationView3 = [_statusSubtitleText length];
 
-  if (v31)
+  if (passcodeAuthenticationView3)
   {
-    v32 = [(SBUIPasscodeLockViewWithKeyboard *)v15 _newStatusSubtitleView];
-    [(SBUIPasscodeLockViewWithKeyboard *)v15 setStatusSubtitleView:v32];
-    v31 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
-    [v31 addSubview:v32];
+    _newStatusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)v15 _newStatusSubtitleView];
+    [(SBUIPasscodeLockViewWithKeyboard *)v15 setStatusSubtitleView:_newStatusSubtitleView];
+    passcodeAuthenticationView3 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
+    [passcodeAuthenticationView3 addSubview:_newStatusSubtitleView];
   }
 
-  v33 = [[SBUIAlphanumericPasscodeEntryField alloc] initWithDefaultSizeAndLightStyle:v3];
+  v33 = [[SBUIAlphanumericPasscodeEntryField alloc] initWithDefaultSizeAndLightStyle:styleCopy];
   alphaEntryField = v15->_alphaEntryField;
   v15->_alphaEntryField = v33;
 
   [(SBUIPasscodeEntryField *)v15->_alphaEntryField setDelegate:v15];
   [(SBUIPasscodeLockViewBase *)v15 _setEntryField:v15->_alphaEntryField];
-  v35 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
-  [v35 addSubview:v15->_alphaEntryField];
+  passcodeAuthenticationView4 = [(SBUIPasscodeLockViewBase *)v15 passcodeAuthenticationView];
+  [passcodeAuthenticationView4 addSubview:v15->_alphaEntryField];
 
   v36 = v15->_alphaEntryField;
   v37 = MEMORY[0x1E69DB878];
   v38 = __sb__runningInSpringBoard();
   v39 = v38;
-  v40 = 0x1E69DC000;
+  currentDevice = 0x1E69DC000;
   if (v38)
   {
     v41 = SBFEffectiveDeviceClass() == 2;
@@ -115,8 +115,8 @@
 
   else
   {
-    v31 = [MEMORY[0x1E69DC938] currentDevice];
-    v41 = [v31 userInterfaceIdiom] == 1;
+    passcodeAuthenticationView3 = [MEMORY[0x1E69DC938] currentDevice];
+    v41 = [passcodeAuthenticationView3 userInterfaceIdiom] == 1;
   }
 
   if (v41)
@@ -143,8 +143,8 @@ LABEL_18:
 
   else
   {
-    v40 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v40 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v44 = 1;
       goto LABEL_18;
@@ -175,20 +175,20 @@ LABEL_19:
   keyboardAnimator = v15->_keyboardAnimator;
   v15->_keyboardAnimator = v47;
 
-  v49 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v49 addObserver:v15 selector:sel__hardwareReturnKeyPressed_ name:@"SBUIHardwareKeyboardReturnKeyPressedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v15 selector:sel__hardwareReturnKeyPressed_ name:@"SBUIHardwareKeyboardReturnKeyPressedNotification" object:0];
 
-  v50 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v50 addObserver:v15 selector:sel__keyboardDidHideNotification_ name:*MEMORY[0x1E69DDF70] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:v15 selector:sel__keyboardDidHideNotification_ name:*MEMORY[0x1E69DDF70] object:0];
 
-  v51 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v51 addObserver:v15 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:v15 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x1E69DE080] object:0];
 
-  v52 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v52 addObserver:v15 selector:sel__keyboardWillChangeFrameNotification_ name:*MEMORY[0x1E69DE068] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:v15 selector:sel__keyboardWillChangeFrameNotification_ name:*MEMORY[0x1E69DE068] object:0];
 
-  v53 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v53 addObserver:v15 selector:sel__keyboardDidRequestDismissalNotification_ name:@"UIKeyboardPrivateDidRequestDismissalNotification" object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:v15 selector:sel__keyboardDidRequestDismissalNotification_ name:@"UIKeyboardPrivateDidRequestDismissalNotification" object:0];
 
   [(SBUIPasscodeLockViewWithKeyboard *)v15 _toggleForEmergencyCall];
   if (v15->_usesLightStyle)
@@ -208,8 +208,8 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewWithKeyboard;
@@ -223,48 +223,48 @@ LABEL_19:
   [(SBUIPasscodeLockViewBase *)&v4 _luminanceBoostDidChange];
   if (!self->_usesLightStyle)
   {
-    v3 = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
     [(SBUIPasscodeLockViewBase *)self _luminosityBoost];
-    [v3 _setPasscodeOutlineAlpha:?];
+    [activeKeyboard _setPasscodeOutlineAlpha:?];
   }
 }
 
-- (void)setShowsEmergencyCallButton:(BOOL)a3
+- (void)setShowsEmergencyCallButton:(BOOL)button
 {
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v4 setShowsEmergencyCallButton:a3];
+  [(SBUIPasscodeLockViewBase *)&v4 setShowsEmergencyCallButton:button];
   [(SBUIPasscodeLockViewWithKeyboard *)self _toggleForEmergencyCall];
 }
 
-- (void)setShowsStatusField:(BOOL)a3
+- (void)setShowsStatusField:(BOOL)field
 {
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v4 setShowsStatusField:a3];
+  [(SBUIPasscodeLockViewBase *)&v4 setShowsStatusField:field];
   [(SBUIPasscodeLockViewWithKeyboard *)self _toggleForStatusField];
 }
 
-- (void)beginTransitionToState:(int64_t)a3
+- (void)beginTransitionToState:(int64_t)state
 {
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v4 beginTransitionToState:a3];
+  [(SBUIPasscodeLockViewBase *)&v4 beginTransitionToState:state];
   [(SBUIPasscodeLockViewWithKeyboard *)self _setKeyboardTracksLockView:1];
 }
 
-- (void)didEndTransitionToState:(int64_t)a3
+- (void)didEndTransitionToState:(int64_t)state
 {
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v4 didEndTransitionToState:a3];
+  [(SBUIPasscodeLockViewBase *)&v4 didEndTransitionToState:state];
   [(SBUIPasscodeLockViewWithKeyboard *)self _setKeyboardTracksLockView:0];
 }
 
-- (void)updateForTransitionToPasscodeView:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForTransitionToPasscodeView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   v7 = MEMORY[0x1E698E608];
   v8 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
   v9 = [v7 settingsWithDuration:v8 timingFunction:0.15];
@@ -272,26 +272,26 @@ LABEL_19:
   [(SBPasscodeKeyboardAnimator *)self->_keyboardAnimator setAnimationSettings:v9];
   v10.receiver = self;
   v10.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v10 updateForTransitionToPasscodeView:v5 animated:v4];
+  [(SBUIPasscodeLockViewBase *)&v10 updateForTransitionToPasscodeView:viewCopy animated:animatedCopy];
 }
 
 - (id)_viewForKeyboardTracking
 {
-  v2 = [MEMORY[0x1E69DCD68] sharedInstance];
-  v3 = [v2 _currentInputView];
-  v4 = [v3 superview];
+  mEMORY[0x1E69DCD68] = [MEMORY[0x1E69DCD68] sharedInstance];
+  _currentInputView = [mEMORY[0x1E69DCD68] _currentInputView];
+  superview = [_currentInputView superview];
 
-  return v4;
+  return superview;
 }
 
-- (void)_setKeyboardTracksLockView:(BOOL)a3
+- (void)_setKeyboardTracksLockView:(BOOL)view
 {
-  v3 = a3;
+  viewCopy = view;
   v44[4] = *MEMORY[0x1E69E9840];
-  self->_keyboardTracksLockView = a3;
-  v5 = [(SBUIPasscodeLockViewWithKeyboard *)self _viewForKeyboardTracking];
-  v6 = v5;
-  if (v3)
+  self->_keyboardTracksLockView = view;
+  _viewForKeyboardTracking = [(SBUIPasscodeLockViewWithKeyboard *)self _viewForKeyboardTracking];
+  v6 = _viewForKeyboardTracking;
+  if (viewCopy)
   {
     if (!self->_keyboardTrackingView)
     {
@@ -300,8 +300,8 @@ LABEL_19:
       keyboardTrackingView = self->_keyboardTrackingView;
       self->_keyboardTrackingView = v8;
 
-      v10 = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
-      [v10 addSubview:self->_keyboardTrackingView];
+      passcodeAuthenticationView = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
+      [passcodeAuthenticationView addSubview:self->_keyboardTrackingView];
     }
 
     v11 = MEMORY[0x1E69DD250];
@@ -311,18 +311,18 @@ LABEL_19:
     v41[3] = &unk_1E789DD98;
     v12 = v6;
     v42 = v12;
-    v43 = self;
+    selfCopy = self;
     [v11 performWithoutAnimation:v41];
-    v13 = [(UIView *)v12 layer];
-    [v13 removeAnimationForKey:@"KeyboardTracking_MatchMoveAnimation"];
+    layer = [(UIView *)v12 layer];
+    [layer removeAnimationForKey:@"KeyboardTracking_MatchMoveAnimation"];
 
-    v14 = [MEMORY[0x1E69793B8] animation];
-    v15 = [(UIView *)self->_keyboardTrackingView layer];
-    [v14 setSourceLayer:v15];
+    animation = [MEMORY[0x1E69793B8] animation];
+    layer2 = [(UIView *)self->_keyboardTrackingView layer];
+    [animation setSourceLayer:layer2];
 
-    [v14 setDuration:INFINITY];
-    v16 = [(UIView *)self->_keyboardTrackingView layer];
-    [v16 bounds];
+    [animation setDuration:INFINITY];
+    layer3 = [(UIView *)self->_keyboardTrackingView layer];
+    [layer3 bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
@@ -377,20 +377,20 @@ LABEL_19:
     v36 = [v34 valueWithCGPoint:{v35, CGRectGetMaxY(v52)}];
     v44[3] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:4];
-    [v14 setSourcePoints:v37];
+    [animation setSourcePoints:v37];
 
-    [v14 setFillMode:*MEMORY[0x1E69797E0]];
-    [v14 setRemovedOnCompletion:0];
-    v38 = [(UIView *)v12 layer];
-    [v38 addAnimation:v14 forKey:@"KeyboardTracking_MatchMoveAnimation"];
+    [animation setFillMode:*MEMORY[0x1E69797E0]];
+    [animation setRemovedOnCompletion:0];
+    layer4 = [(UIView *)v12 layer];
+    [layer4 addAnimation:animation forKey:@"KeyboardTracking_MatchMoveAnimation"];
 
     v39 = v42;
   }
 
   else
   {
-    v40 = [v5 layer];
-    [v40 removeAnimationForKey:@"KeyboardTracking_MatchMoveAnimation"];
+    layer5 = [_viewForKeyboardTracking layer];
+    [layer5 removeAnimationForKey:@"KeyboardTracking_MatchMoveAnimation"];
 
     [(UIView *)self->_keyboardTrackingView removeFromSuperview];
     v39 = self->_keyboardTrackingView;
@@ -420,7 +420,7 @@ uint64_t __63__SBUIPasscodeLockViewWithKeyboard__setKeyboardTracksLockView___blo
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   self->_isResigningResponderStatus = 0;
   v6 = 0;
   v7 = &v6;
@@ -436,12 +436,12 @@ uint64_t __63__SBUIPasscodeLockViewWithKeyboard__setKeyboardTracksLockView___blo
   v4[1] = 3221225472;
   v4[2] = __56__SBUIPasscodeLockViewWithKeyboard_becomeFirstResponder__block_invoke_2;
   v4[3] = &unk_1E789ED20;
-  v4[4] = v2;
+  v4[4] = selfCopy;
   v4[5] = &v6;
   [MEMORY[0x1E69DD250] animateWithDuration:32 delay:v4 options:0 animations:0.0 completion:0.0];
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __56__SBUIPasscodeLockViewWithKeyboard_becomeFirstResponder__block_invoke(uint64_t a1)
@@ -473,11 +473,11 @@ id __56__SBUIPasscodeLockViewWithKeyboard_becomeFirstResponder__block_invoke_3(u
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   self->_isResigningResponderStatus = 1;
-  v3 = [(SBUIPasscodeLockViewWithKeyboard *)self _viewForKeyboardTracking];
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  _viewForKeyboardTracking = [(SBUIPasscodeLockViewWithKeyboard *)self _viewForKeyboardTracking];
+  layer = [_viewForKeyboardTracking layer];
+  [layer removeAllAnimations];
 
   v7 = 0;
   v8 = &v7;
@@ -487,12 +487,12 @@ id __56__SBUIPasscodeLockViewWithKeyboard_becomeFirstResponder__block_invoke_3(u
   v6[1] = 3221225472;
   v6[2] = __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke;
   v6[3] = &unk_1E789ED20;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
   [MEMORY[0x1E69DD250] animateWithDuration:32 delay:v6 options:0 animations:0.0 completion:0.0];
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke(uint64_t a1)
@@ -516,21 +516,21 @@ id __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke_2(u
   return result;
 }
 
-- (void)becomeActiveWithAnimationSettings:(id)a3
+- (void)becomeActiveWithAnimationSettings:(id)settings
 {
-  [(SBPasscodeKeyboardAnimator *)self->_keyboardAnimator setAnimationSettings:a3];
+  [(SBPasscodeKeyboardAnimator *)self->_keyboardAnimator setAnimationSettings:settings];
 
   [(SBUIPasscodeLockViewWithKeyboard *)self becomeFirstResponder];
 }
 
-- (void)resignActiveWithAnimationSettings:(id)a3
+- (void)resignActiveWithAnimationSettings:(id)settings
 {
-  [(SBPasscodeKeyboardAnimator *)self->_keyboardAnimator setAnimationSettings:a3];
+  [(SBPasscodeKeyboardAnimator *)self->_keyboardAnimator setAnimationSettings:settings];
 
   [(SBUIPasscodeLockViewWithKeyboard *)self resignFirstResponder];
 }
 
-- (void)_hardwareReturnKeyPressed:(id)a3
+- (void)_hardwareReturnKeyPressed:(id)pressed
 {
   if (([(SBUIPasscodeLockViewWithKeyboard *)self isFirstResponder]& 1) != 0 || [(SBUIPasscodeEntryField *)self->_alphaEntryField isFirstResponder])
   {
@@ -541,32 +541,32 @@ id __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke_2(u
 
 - (void)_notifyDelegatePasscodeEntered
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockViewPasscodeEntered:self];
+    [delegate passcodeLockViewPasscodeEntered:self];
   }
 }
 
 - (void)_notifyDelegateThatEmergencyCallButtonWasPressed
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockViewEmergencyCallButtonPressed:self];
+    [delegate passcodeLockViewEmergencyCallButtonPressed:self];
   }
 }
 
 - (void)_notifyDelegatePasscodeCancelled
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self delegate];
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 passcodeLockViewCancelButtonPressed:self];
+    [delegate passcodeLockViewCancelButtonPressed:self];
   }
 }
 
-- (void)passcodeEntryFieldDidCancelEntry:(id)a3
+- (void)passcodeEntryFieldDidCancelEntry:(id)entry
 {
   if ([(SBUIPasscodeLockViewBase *)self showsCancelButton])
   {
@@ -575,12 +575,12 @@ id __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke_2(u
   }
 }
 
-- (void)passcodeEntryFieldTextDidChange:(id)a3
+- (void)passcodeEntryFieldTextDidChange:(id)change
 {
-  v4 = [(SBUIPasscodeLockViewBase *)self delegate];
-  if (v4)
+  delegate = [(SBUIPasscodeLockViewBase *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 passcodeLockViewPasscodeDidChange:self];
@@ -593,15 +593,15 @@ id __56__SBUIPasscodeLockViewWithKeyboard_resignFirstResponder__block_invoke_2(u
 - (id)_newStatusField
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v5 = 0x1E69DC000uLL;
+  currentDevice7 = 0x1E69DC000uLL;
   if (__sb__runningInSpringBoard())
   {
     if ((!SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1) && SBFEffectiveHomeButtonType() == 2)
     {
 LABEL_9:
       v8 = MEMORY[0x1E69DB878];
-      v9 = __sb__runningInSpringBoard();
-      if (v9)
+      currentDevice2 = __sb__runningInSpringBoard();
+      if (currentDevice2)
       {
         if (SBFEffectiveDeviceClass() == 2)
         {
@@ -614,8 +614,8 @@ LABEL_9:
 
       else
       {
-        v39 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v39 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
           v10 = 0;
           v12 = 27.0;
@@ -624,7 +624,7 @@ LABEL_9:
         }
       }
 
-      v11 = v9 ^ 1;
+      v11 = currentDevice2 ^ 1;
       v16 = __sb__runningInSpringBoard();
       if (v16)
       {
@@ -638,8 +638,8 @@ LABEL_9:
 
       else
       {
-        v9 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v9 userInterfaceIdiom])
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom])
         {
           v12 = 18.0;
           v10 = 1;
@@ -676,8 +676,8 @@ LABEL_68:
 
   else
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v6 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
     }
 
@@ -706,8 +706,8 @@ LABEL_68:
 
   else
   {
-    v39 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v39 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v15 = 27.0;
       v40 = 0x100000000;
@@ -716,8 +716,8 @@ LABEL_68:
   }
 
   HIDWORD(v40) = v14 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -729,8 +729,8 @@ LABEL_68:
 
   else
   {
-    v38 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v38 userInterfaceIdiom])
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom])
     {
       v15 = 18.0;
       LODWORD(v40) = 1;
@@ -738,7 +738,7 @@ LABEL_68:
     }
   }
 
-  LODWORD(v40) = v2 ^ 1;
+  LODWORD(v40) = mainScreen ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v15 = 22.0;
@@ -750,27 +750,27 @@ LABEL_68:
   }
 
 LABEL_32:
-  v17 = __sb__runningInSpringBoard();
-  if (v17)
+  currentDevice6 = __sb__runningInSpringBoard();
+  if (currentDevice6)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
-      v9 = 0;
+      currentDevice2 = 0;
       goto LABEL_40;
     }
   }
 
   else
   {
-    v37 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v37 userInterfaceIdiom])
+    currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom])
     {
-      v9 = 1;
+      currentDevice2 = 1;
       goto LABEL_40;
     }
   }
 
-  v9 = v17 ^ 1;
+  currentDevice2 = currentDevice6 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v18 = 0;
@@ -794,8 +794,8 @@ LABEL_40:
 
   else
   {
-    v17 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v17 userInterfaceIdiom])
+    currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom])
     {
       v19 = 0;
       v18 = 1;
@@ -804,27 +804,27 @@ LABEL_40:
   }
 
   v18 = v22 ^ 1;
-  v5 = __sb__runningInSpringBoard();
-  if (v5)
+  currentDevice7 = __sb__runningInSpringBoard();
+  if (currentDevice7)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
-  v36 = v2;
-  v19 = v5 ^ 1;
+  v36 = mainScreen;
+  v19 = currentDevice7 ^ 1;
   BSSizeRoundForScale();
   if (v23 >= *(MEMORY[0x1E69D4380] + 40))
   {
     goto LABEL_53;
   }
 
-  v5 = 0x1E69DC000uLL;
+  currentDevice7 = 0x1E69DC000uLL;
 LABEL_51:
   v24 = __sb__runningInSpringBoard();
   if (v24)
@@ -840,8 +840,8 @@ LABEL_53:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom] == 1)
+    currentDevice7 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice7 userInterfaceIdiom] == 1)
     {
       v21 = MEMORY[0x1E69DDC30];
       v20 = 1;
@@ -867,7 +867,7 @@ LABEL_57:
   {
   }
 
-  if (v9)
+  if (currentDevice2)
   {
   }
 
@@ -883,12 +883,12 @@ LABEL_57:
 LABEL_69:
   [v4 setNumberOfLines:0];
   [v4 setLineBreakMode:0];
-  v26 = [(SBUIPasscodeLockViewBase *)self _statusText];
-  [v4 setText:v26];
+  _statusText = [(SBUIPasscodeLockViewBase *)self _statusText];
+  [v4 setText:_statusText];
 
   [v4 setClipsToBounds:1];
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
   if (self->_usesLightStyle)
   {
@@ -899,8 +899,8 @@ LABEL_69:
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
-  v28 = ;
-  [v4 setTextColor:v28];
+  currentDevice8 = ;
+  [v4 setTextColor:currentDevice8];
 
   [v4 setTextAlignment:1];
   [v4 setAdjustsFontSizeToFitWidth:1];
@@ -908,8 +908,8 @@ LABEL_69:
   v30 = v29;
   if (!v29)
   {
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v28 userInterfaceIdiom] == 1)
+    currentDevice8 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom] == 1)
     {
       [v4 setMinimumScaleFactor:0.444444444];
       goto LABEL_86;
@@ -929,8 +929,8 @@ LABEL_77:
 
     else
     {
-      v9 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v9 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom])
       {
         [v4 setMinimumScaleFactor:0.666666667];
 LABEL_84:
@@ -968,15 +968,15 @@ LABEL_86:
 - (id)_newStatusSubtitleView
 {
   v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  v6 = 0x1E69DC000uLL;
+  currentDevice7 = 0x1E69DC000uLL;
   if (__sb__runningInSpringBoard())
   {
     if ((!SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1) && SBFEffectiveHomeButtonType() == 2)
     {
 LABEL_9:
       v8 = MEMORY[0x1E69DB878];
-      v9 = __sb__runningInSpringBoard();
-      if (v9)
+      currentDevice2 = __sb__runningInSpringBoard();
+      if (currentDevice2)
       {
         if (SBFEffectiveDeviceClass() == 2)
         {
@@ -989,8 +989,8 @@ LABEL_9:
 
       else
       {
-        v39 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v39 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
           v10 = 0;
           v12 = 22.0;
@@ -999,9 +999,9 @@ LABEL_9:
         }
       }
 
-      v11 = v9 ^ 1;
-      v3 = __sb__runningInSpringBoard();
-      if (v3)
+      v11 = currentDevice2 ^ 1;
+      currentDevice9 = __sb__runningInSpringBoard();
+      if (currentDevice9)
       {
         if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
         {
@@ -1013,8 +1013,8 @@ LABEL_9:
 
       else
       {
-        v9 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v9 userInterfaceIdiom])
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice2 userInterfaceIdiom])
         {
           v12 = 14.0;
           v10 = 1;
@@ -1022,7 +1022,7 @@ LABEL_9:
         }
       }
 
-      v10 = v3 ^ 1;
+      v10 = currentDevice9 ^ 1;
       v35 = SBFEffectiveHomeButtonType();
       v12 = 14.0;
       if (v35 == 2)
@@ -1051,8 +1051,8 @@ LABEL_68:
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
     }
 
@@ -1069,7 +1069,7 @@ LABEL_68:
 
   v13 = MEMORY[0x1E69DB878];
   v14 = __sb__runningInSpringBoard();
-  v41 = self;
+  selfCopy = self;
   if (v14)
   {
     if (SBFEffectiveDeviceClass() == 2)
@@ -1082,8 +1082,8 @@ LABEL_68:
 
   else
   {
-    v39 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v39 userInterfaceIdiom] == 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] == 1)
     {
       v15 = 22.0;
       v40 = 0x100000000;
@@ -1105,8 +1105,8 @@ LABEL_68:
 
   else
   {
-    v38 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v38 userInterfaceIdiom])
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom])
     {
       v15 = 14.0;
       LODWORD(v40) = 1;
@@ -1126,8 +1126,8 @@ LABEL_68:
   }
 
 LABEL_32:
-  v17 = __sb__runningInSpringBoard();
-  if (v17)
+  currentDevice6 = __sb__runningInSpringBoard();
+  if (currentDevice6)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -1138,18 +1138,18 @@ LABEL_32:
 
   else
   {
-    v37 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v37 userInterfaceIdiom])
+    currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom])
     {
       v18 = 1;
       goto LABEL_40;
     }
   }
 
-  v18 = v17 ^ 1;
+  v18 = currentDevice6 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
-    v3 = 0x1E69DC000uLL;
+    currentDevice9 = 0x1E69DC000uLL;
     v19 = 0;
     v20 = 0;
     v21 = 0;
@@ -1171,8 +1171,8 @@ LABEL_40:
 
   else
   {
-    v17 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v17 userInterfaceIdiom])
+    currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom])
     {
       v20 = 0;
       v19 = 1;
@@ -1180,33 +1180,33 @@ LABEL_40:
     }
   }
 
-  v3 = 0x1E69DC000uLL;
+  currentDevice9 = 0x1E69DC000uLL;
   v19 = v23 ^ 1;
-  v6 = __sb__runningInSpringBoard();
-  if (v6)
+  currentDevice7 = __sb__runningInSpringBoard();
+  if (currentDevice7)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    currentDevice3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [currentDevice3 _referenceBounds];
   }
 
-  v20 = v6 ^ 1;
+  v20 = currentDevice7 ^ 1;
   BSSizeRoundForScale();
   if (v24 >= *(MEMORY[0x1E69D4380] + 40))
   {
     goto LABEL_53;
   }
 
-  v6 = 0x1E69DC000uLL;
+  currentDevice7 = 0x1E69DC000uLL;
 LABEL_51:
   v25 = __sb__runningInSpringBoard();
   if (v25)
   {
-    v3 = 0x1E69DC000uLL;
+    currentDevice9 = 0x1E69DC000uLL;
     if (SBFEffectiveDeviceClass() == 2)
     {
 LABEL_53:
@@ -1218,9 +1218,9 @@ LABEL_53:
 
   else
   {
-    v3 = 0x1E69DC000uLL;
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v6 userInterfaceIdiom] == 1)
+    currentDevice9 = 0x1E69DC000uLL;
+    currentDevice7 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice7 userInterfaceIdiom] == 1)
     {
       v22 = MEMORY[0x1E69DDC30];
       v21 = 1;
@@ -1250,7 +1250,7 @@ LABEL_57:
   {
   }
 
-  self = v41;
+  self = selfCopy;
   if (v40)
   {
   }
@@ -1264,8 +1264,8 @@ LABEL_69:
   [v5 setNumberOfLines:0];
   [v5 setLineBreakMode:0];
   [v5 setClipsToBounds:1];
-  v27 = [MEMORY[0x1E69DC888] clearColor];
-  [v5 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v5 setBackgroundColor:clearColor];
 
   if (self->_usesLightStyle)
   {
@@ -1276,8 +1276,8 @@ LABEL_69:
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
-  v28 = ;
-  [v5 setTextColor:v28];
+  currentDevice8 = ;
+  [v5 setTextColor:currentDevice8];
 
   [v5 setTextAlignment:1];
   [v5 setAdjustsFontSizeToFitWidth:1];
@@ -1285,8 +1285,8 @@ LABEL_69:
   v30 = v29;
   if (!v29)
   {
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v28 userInterfaceIdiom] == 1)
+    currentDevice8 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice8 userInterfaceIdiom] == 1)
     {
       [v5 setMinimumScaleFactor:0.545454545];
       goto LABEL_86;
@@ -1306,8 +1306,8 @@ LABEL_77:
 
     else
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v3 userInterfaceIdiom])
+      currentDevice9 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice9 userInterfaceIdiom])
       {
         [v5 setMinimumScaleFactor:0.857142857];
 LABEL_84:
@@ -1340,16 +1340,16 @@ LABEL_86:
 
   [v5 setMinimumScaleFactor:0.545454545];
 LABEL_87:
-  v33 = [(SBUIPasscodeLockViewBase *)self _statusSubtitleText];
-  [v5 setText:v33];
+  _statusSubtitleText = [(SBUIPasscodeLockViewBase *)self _statusSubtitleText];
+  [v5 setText:_statusSubtitleText];
 
   return v5;
 }
 
 - (void)_acceptOrCancelReturnKeyPress
 {
-  v3 = [(SBUIPasscodeEntryField *)self->_alphaEntryField stringValue];
-  v4 = [v3 length];
+  stringValue = [(SBUIPasscodeEntryField *)self->_alphaEntryField stringValue];
+  v4 = [stringValue length];
 
   if (v4)
   {
@@ -1368,13 +1368,13 @@ LABEL_87:
 {
   if ([(SBUIPasscodeLockViewBase *)self showsEmergencyCallButton])
   {
-    v3 = [(UIView *)self->_statusFieldBackground backgroundColor];
+    backgroundColor = [(UIView *)self->_statusFieldBackground backgroundColor];
     [(UIView *)self->_statusFieldBackground alpha];
     if (self->_emergencyCallButton)
     {
 LABEL_63:
-      v35 = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
-      [v35 addSubview:self->_emergencyCallButton];
+      passcodeAuthenticationView = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
+      [passcodeAuthenticationView addSubview:self->_emergencyCallButton];
 
       goto LABEL_64;
     }
@@ -1382,7 +1382,7 @@ LABEL_63:
     v5 = v4;
     v6 = MEMORY[0x1E69DB878];
     v7 = __sb__runningInSpringBoard();
-    v8 = 0x1E69DC000uLL;
+    currentDevice4 = 0x1E69DC000uLL;
     if (v7)
     {
       if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
@@ -1395,8 +1395,8 @@ LABEL_63:
 
     else
     {
-      v39 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v39 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v9 = 12.0;
         v40 = 1;
@@ -1416,8 +1416,8 @@ LABEL_63:
     }
 
 LABEL_14:
-    v11 = __sb__runningInSpringBoard();
-    if (v11)
+    mainScreen = __sb__runningInSpringBoard();
+    if (mainScreen)
     {
       if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
       {
@@ -1428,15 +1428,15 @@ LABEL_14:
 
     else
     {
-      v38 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v38 userInterfaceIdiom])
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom])
       {
         v12 = 1;
         goto LABEL_22;
       }
     }
 
-    v12 = v11 ^ 1;
+    v12 = mainScreen ^ 1;
     if (SBFEffectiveHomeButtonType() == 2)
     {
       v13 = 0;
@@ -1460,8 +1460,8 @@ LABEL_22:
 
     else
     {
-      v36 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v36 userInterfaceIdiom])
+      currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice3 userInterfaceIdiom])
       {
         v13 = 0;
         v15 = 1;
@@ -1470,27 +1470,27 @@ LABEL_22:
     }
 
     v15 = v17 ^ 1;
-    v8 = __sb__runningInSpringBoard();
-    if (v8)
+    currentDevice4 = __sb__runningInSpringBoard();
+    if (currentDevice4)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v11 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    v37 = v11;
-    v13 = v8 ^ 1;
+    v37 = mainScreen;
+    v13 = currentDevice4 ^ 1;
     BSSizeRoundForScale();
     if (v18 >= *(MEMORY[0x1E69D4380] + 40))
     {
       goto LABEL_35;
     }
 
-    v8 = 0x1E69DC000uLL;
+    currentDevice4 = 0x1E69DC000uLL;
 LABEL_33:
     v19 = __sb__runningInSpringBoard();
     if (v19)
@@ -1506,8 +1506,8 @@ LABEL_35:
 
     else
     {
-      v8 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v8 userInterfaceIdiom] == 1)
+      currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice4 userInterfaceIdiom] == 1)
       {
         v16 = MEMORY[0x1E69DDC28];
         v14 = 1;
@@ -1562,8 +1562,8 @@ LABEL_39:
 
     else
     {
-      v24 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v24 userInterfaceIdiom])
+      currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice5 userInterfaceIdiom])
       {
       }
 
@@ -1578,8 +1578,8 @@ LABEL_60:
           v27 = [v26 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
           [(UIControl *)v27 setTitle:v23 forState:0];
           [(UIControl *)v27 setTitleColor:v21 forState:0];
-          v28 = [(UIControl *)v27 titleLabel];
-          [v28 setFont:v20];
+          titleLabel = [(UIControl *)v27 titleLabel];
+          [titleLabel setFont:v20];
 
           emergencyCallButton = self->_emergencyCallButton;
           self->_emergencyCallButton = v27;
@@ -1596,8 +1596,8 @@ LABEL_62:
     v30 = [SBUIRingViewLabelButton alloc];
     v31 = [(SBUIRingViewLabelButton *)v30 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
     emergencyCallButton = [(UIControl *)v31 backgroundRing];
-    [emergencyCallButton setColorInsideRing:v3];
-    [emergencyCallButton setColorOutsideRing:v3];
+    [emergencyCallButton setColorInsideRing:backgroundColor];
+    [emergencyCallButton setColorOutsideRing:backgroundColor];
     [emergencyCallButton setAlphaInsideRing:v5];
     [emergencyCallButton setAlphaOutsideRing:v5];
     [emergencyCallButton setCornerRadius:4.0];
@@ -1605,13 +1605,13 @@ LABEL_62:
     self->_emergencyCallButton = v31;
     v33 = v31;
 
-    v34 = [(UIControl *)v33 label];
+    label = [(UIControl *)v33 label];
 
-    [v34 setFont:v20];
-    [v34 setTextColor:v21];
-    [v34 setText:v23];
-    [v34 setAdjustsFontSizeToFitWidth:1];
-    [v34 setMinimumScaleFactor:0.5];
+    [label setFont:v20];
+    [label setTextColor:v21];
+    [label setText:v23];
+    [label setAdjustsFontSizeToFitWidth:1];
+    [label setMinimumScaleFactor:0.5];
 
     goto LABEL_62;
   }
@@ -1623,7 +1623,7 @@ LABEL_62:
   }
 
   [(UIControl *)v10 removeFromSuperview];
-  v3 = self->_emergencyCallButton;
+  backgroundColor = self->_emergencyCallButton;
   self->_emergencyCallButton = 0;
 LABEL_64:
 
@@ -1634,17 +1634,17 @@ LABEL_65:
 
 - (void)_toggleForStatusField
 {
-  v3 = [(SBUIPasscodeLockViewBase *)self showsStatusField];
-  v4 = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
-  [v4 setHidden:!v3];
+  showsStatusField = [(SBUIPasscodeLockViewBase *)self showsStatusField];
+  statusField = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
+  [statusField setHidden:!showsStatusField];
 
-  v5 = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
-  [v5 setHidden:!v3];
+  statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
+  [statusSubtitleView setHidden:!showsStatusField];
 }
 
-- (void)_layoutForMinimizationState:(BOOL)a3
+- (void)_layoutForMinimizationState:(BOOL)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(SBUIPasscodeLockViewWithKeyboard *)self bounds];
   v7 = v6;
   v9 = v8;
@@ -1662,7 +1662,7 @@ LABEL_65:
   Width = CGRectGetWidth(v60);
   [(SBUIPasscodeEntryField *)self->_alphaEntryField sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v20 = v19;
-  if (!v4)
+  if (!stateCopy)
   {
     if (__sb__runningInSpringBoard())
     {
@@ -1677,8 +1677,8 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    v23 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v23 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
     }
 
@@ -1706,11 +1706,11 @@ LABEL_12:
 LABEL_13:
   v26 = v22;
 LABEL_14:
-  v57 = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
-  v27 = [v57 text];
-  v28 = [v27 length];
+  statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
+  text = [statusSubtitleView text];
+  currentDevice2 = [text length];
 
-  if (!v28)
+  if (!currentDevice2)
   {
     goto LABEL_37;
   }
@@ -1721,10 +1721,10 @@ LABEL_14:
   v62.origin.x = v7;
   v62.size.height = v13;
   v62.origin.y = v9;
-  [v57 sizeThatFits:{v30, CGRectGetHeight(v62)}];
+  [statusSubtitleView sizeThatFits:{v30, CGRectGetHeight(v62)}];
   v32 = v31;
-  v33 = [v57 font];
-  [v33 lineHeight];
+  font = [statusSubtitleView font];
+  [font lineHeight];
   v35 = (v32 / v34);
 
   v36 = __sb__runningInSpringBoard();
@@ -1740,8 +1740,8 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v28 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v28 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom] == 1 && SBFEffectiveHomeButtonType() == 2)
   {
 LABEL_21:
     v39 = __sb__runningInSpringBoard();
@@ -1753,8 +1753,8 @@ LABEL_21:
 
     else
     {
-      v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1786,8 +1786,8 @@ LABEL_34:
 LABEL_35:
   if (v35 > v38)
   {
-    v44 = [v57 font];
-    [v44 lineHeight];
+    font2 = [statusSubtitleView font];
+    [font2 lineHeight];
     v26 = v26 + (v35 - v38) * v45;
   }
 
@@ -1810,8 +1810,8 @@ LABEL_37:
 
   else
   {
-    v28 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v28 userInterfaceIdiom])
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom])
     {
 LABEL_49:
 
@@ -1828,8 +1828,8 @@ LABEL_49:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1843,8 +1843,8 @@ LABEL_49:
   }
 
 LABEL_50:
-  v50 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v50);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {
@@ -1853,8 +1853,8 @@ LABEL_50:
 
   if (!__sb__runningInSpringBoard())
   {
-    v52 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v52 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
     }
 
@@ -1869,7 +1869,7 @@ LABEL_50:
     }
 
 LABEL_61:
-    v54 = [(UIControl *)self->_emergencyCallButton label];
+    label = [(UIControl *)self->_emergencyCallButton label];
     goto LABEL_62;
   }
 
@@ -1879,9 +1879,9 @@ LABEL_61:
   }
 
 LABEL_60:
-  v54 = [(UIControl *)self->_emergencyCallButton titleLabel];
+  label = [(UIControl *)self->_emergencyCallButton titleLabel];
 LABEL_62:
-  v55 = v54;
+  v55 = label;
   [(SBUIPasscodeLockViewWithKeyboard *)self _largeTextEmergencyButtonMaxWidth];
   [v55 sizeThatFits:?];
 
@@ -1893,15 +1893,15 @@ LABEL_64:
   [(SBUIPasscodeLockViewWithKeyboard *)self bringSubviewToFront:self->_statusField];
 }
 
-- (CGRect)_keyboardFrameForInterfaceOrientation:(int64_t)a3
+- (CGRect)_keyboardFrameForInterfaceOrientation:(int64_t)orientation
 {
   [MEMORY[0x1E69DCBB8] keyboardSizeForInterfaceOrientation:?];
   v5 = v4;
   v7 = v6;
-  [MEMORY[0x1E69DCBE0] deviceSpecificPaddingForInterfaceOrientation:a3 inputMode:0];
+  [MEMORY[0x1E69DCBE0] deviceSpecificPaddingForInterfaceOrientation:orientation inputMode:0];
   v9 = v7 + v8;
-  v10 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v10 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v12 = v11;
 
   v13 = v12 - v9;
@@ -1917,9 +1917,9 @@ LABEL_64:
 
 - (double)_keyboardToEntryFieldOffset
 {
-  v4 = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
-  v5 = __sb__runningInSpringBoard();
-  if (v5)
+  _isBoundsPortraitOriented = [(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented];
+  currentDevice2 = __sb__runningInSpringBoard();
+  if (currentDevice2)
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
@@ -1929,8 +1929,8 @@ LABEL_64:
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
 
       goto LABEL_15;
@@ -1946,8 +1946,8 @@ LABEL_64:
 
   else
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -1957,13 +1957,13 @@ LABEL_64:
   {
   }
 
-  if ((v5 & 1) == 0)
+  if ((currentDevice2 & 1) == 0)
   {
   }
 
   if (v9 >= v10)
   {
-    v11 = !v4;
+    v11 = !_isBoundsPortraitOriented;
     result = 242.0;
     v13 = 430.0;
     goto LABEL_25;
@@ -1980,10 +1980,10 @@ LABEL_15:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v16 = [v5 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-    if (v16 != 1)
+    if (userInterfaceIdiom != 1)
     {
 LABEL_17:
       v14 = __sb__runningInSpringBoard();
@@ -2009,7 +2009,7 @@ LABEL_17:
         {
 LABEL_33:
           result = 4.0;
-          if (v4)
+          if (_isBoundsPortraitOriented)
           {
             return result;
           }
@@ -2020,15 +2020,15 @@ LABEL_33:
 
       else
       {
-        v5 = [MEMORY[0x1E69DC938] currentDevice];
-        if (![v5 userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        if (![currentDevice2 userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
         {
 LABEL_30:
 
 LABEL_34:
           v17 = MEMORY[0x1E69D3FE8];
 
-          [v17 pinAlphanumericEntryFieldBottomYDistanceFromKeyboard:{v4, result}];
+          [v17 pinAlphanumericEntryFieldBottomYDistanceFromKeyboard:{_isBoundsPortraitOriented, result}];
           return result;
         }
       }
@@ -2037,7 +2037,7 @@ LABEL_34:
     }
   }
 
-  v11 = !v4;
+  v11 = !_isBoundsPortraitOriented;
   result = 135.0;
   v13 = 322.0;
 LABEL_25:
@@ -2049,10 +2049,10 @@ LABEL_25:
   return result;
 }
 
-- (double)_statusFieldHeightWithWidth:(double)a3
+- (double)_statusFieldHeightWithWidth:(double)width
 {
-  v4 = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
-  [v4 sizeThatFits:{a3, 0.0}];
+  statusField = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
+  [statusField sizeThatFits:{width, 0.0}];
   v6 = v5;
 
   return v6;
@@ -2060,8 +2060,8 @@ LABEL_25:
 
 - (double)_statusTitleWidth
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3 + -40.0;
 
   return v4;
@@ -2069,90 +2069,90 @@ LABEL_25:
 
 - (double)_largeTextEmergencyButtonMaxWidth
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3 + -40.0;
 
   return v4;
 }
 
-- (void)updateStatusText:(id)a3 subtitle:(id)a4 animated:(BOOL)a5
+- (void)updateStatusText:(id)text subtitle:(id)subtitle animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  textCopy = text;
+  subtitleCopy = subtitle;
   v31.receiver = self;
   v31.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewBase *)&v31 updateStatusText:v8 subtitle:v9 animated:v5];
-  v10 = [MEMORY[0x1E69DC938] currentDevice];
-  v11 = [v10 userInterfaceIdiom];
+  [(SBUIPasscodeLockViewBase *)&v31 updateStatusText:textCopy subtitle:subtitleCopy animated:animatedCopy];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v11 & 0xFFFFFFFFFFFFFFFBLL) != 1 && ![(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented])
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && ![(SBUIPasscodeLockViewBase *)self _isBoundsPortraitOriented])
   {
     goto LABEL_16;
   }
 
-  v12 = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
-  v13 = [v12 text];
-  v14 = [v8 isEqualToString:v13];
+  statusField = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
+  text = [statusField text];
+  v14 = [textCopy isEqualToString:text];
 
   if (v14)
   {
 
-    v12 = 0;
-    v15 = 0;
+    statusField = 0;
+    _newStatusField = 0;
   }
 
   else
   {
-    v15 = [(SBUIPasscodeLockViewWithKeyboard *)self _newStatusField];
-    [v15 setText:v8];
-    [(SBUIPasscodeLockViewWithKeyboard *)self setStatusField:v15];
+    _newStatusField = [(SBUIPasscodeLockViewWithKeyboard *)self _newStatusField];
+    [_newStatusField setText:textCopy];
+    [(SBUIPasscodeLockViewWithKeyboard *)self setStatusField:_newStatusField];
   }
 
-  v16 = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
-  if (v9)
+  statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
+  if (subtitleCopy)
   {
-    [(SBUIPasscodeLockViewBase *)self _setStatusSubtitleText:v9];
-    v17 = [(SBUIPasscodeLockViewWithKeyboard *)self _newStatusSubtitleView];
-    [(SBUIPasscodeLockViewWithKeyboard *)self setStatusSubtitleView:v17];
-    v18 = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
-    [v18 insertSubview:v17 aboveSubview:self->_statusFieldBackground];
+    [(SBUIPasscodeLockViewBase *)self _setStatusSubtitleText:subtitleCopy];
+    _newStatusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self _newStatusSubtitleView];
+    [(SBUIPasscodeLockViewWithKeyboard *)self setStatusSubtitleView:_newStatusSubtitleView];
+    passcodeAuthenticationView = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
+    [passcodeAuthenticationView insertSubview:_newStatusSubtitleView aboveSubview:self->_statusFieldBackground];
 
-    if (!v12)
+    if (!statusField)
     {
       goto LABEL_12;
     }
 
 LABEL_10:
-    if (v15)
+    if (_newStatusField)
     {
-      v19 = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
-      [v19 insertSubview:v15 aboveSubview:v12];
+      passcodeAuthenticationView2 = [(SBUIPasscodeLockViewBase *)self passcodeAuthenticationView];
+      [passcodeAuthenticationView2 insertSubview:_newStatusField aboveSubview:statusField];
     }
 
     goto LABEL_12;
   }
 
   [(SBUIPasscodeLockViewWithKeyboard *)self setStatusSubtitleView:0];
-  v17 = 0;
-  if (v12)
+  _newStatusSubtitleView = 0;
+  if (statusField)
   {
     goto LABEL_10;
   }
 
 LABEL_12:
   [(SBUIPasscodeLockViewWithKeyboard *)self setNeedsLayout];
-  if (v5)
+  if (animatedCopy)
   {
-    [v15 setAlpha:0.0];
+    [_newStatusField setAlpha:0.0];
     v20 = MEMORY[0x1E69DD250];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animated___block_invoke;
     v28[3] = &unk_1E789DD98;
-    v29 = v12;
-    v30 = v16;
+    v29 = statusField;
+    v30 = statusSubtitleView;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animated___block_invoke_2;
@@ -2165,15 +2165,15 @@ LABEL_12:
     v22[1] = 3221225472;
     v22[2] = __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animated___block_invoke_3;
     v22[3] = &unk_1E789DD98;
-    v23 = v15;
-    v24 = v17;
+    v23 = _newStatusField;
+    v24 = _newStatusSubtitleView;
     [v21 animateWithDuration:0 delay:v22 options:0 animations:0.4 completion:0.17];
   }
 
   else
   {
-    [v12 removeFromSuperview];
-    [v16 removeFromSuperview];
+    [statusField removeFromSuperview];
+    [statusSubtitleView removeFromSuperview];
   }
 
 LABEL_16:
@@ -2216,14 +2216,14 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
   v16 = v15;
   v18 = v17;
   rect_8 = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
-  v19 = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
-  v20 = [v19 text];
-  v21 = [v20 length];
+  statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
+  text = [statusSubtitleView text];
+  currentDevice2 = [text length];
 
   v48 = v11;
   v46 = v5;
   v47 = v9;
-  if (v21)
+  if (currentDevice2)
   {
     [(SBUIPasscodeLockViewWithKeyboard *)self _statusTitleWidth];
     v23 = v22;
@@ -2231,7 +2231,7 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
     v52.origin.y = v7;
     v52.size.width = v9;
     v52.size.height = v11;
-    [v19 sizeThatFits:{v23, CGRectGetHeight(v52)}];
+    [statusSubtitleView sizeThatFits:{v23, CGRectGetHeight(v52)}];
     v25 = v24;
     v26 = v7;
     UIRectCenteredXInRectScale();
@@ -2242,7 +2242,7 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
     v53.origin.y = v14;
     v53.size.width = v16;
     v53.size.height = v18;
-    [v19 setFrame:{v28, CGRectGetMinY(v53) - v25 + -14.0, v30, v32, 0}];
+    [statusSubtitleView setFrame:{v28, CGRectGetMinY(v53) - v25 + -14.0, v30, v32, 0}];
     v33 = v25 + 14.0;
   }
 
@@ -2258,7 +2258,7 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
   v36 = v35;
   v37 = __sb__runningInSpringBoard();
   v38 = v37;
-  if (v21)
+  if (currentDevice2)
   {
     v39 = v46;
     if (v37)
@@ -2276,8 +2276,8 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
 
     else
     {
-      v41 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v41 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v40 = 3;
       }
@@ -2303,9 +2303,9 @@ uint64_t __71__SBUIPasscodeLockViewWithKeyboard_updateStatusText_subtitle_animat
 
   else
   {
-    v21 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
     v39 = v46;
-    if ([v21 userInterfaceIdiom])
+    if ([currentDevice2 userInterfaceIdiom])
     {
       v40 = 13;
 LABEL_28:
@@ -2323,8 +2323,8 @@ LABEL_28:
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -2374,8 +2374,8 @@ LABEL_29:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v5 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
     }
 
@@ -2390,7 +2390,7 @@ LABEL_29:
     }
   }
 
-  v7 = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
+  statusField = [(SBUIPasscodeLockViewWithKeyboard *)self statusField];
   v8 = MEMORY[0x1E69DB878];
   v9 = __sb__runningInSpringBoard();
   if (v9)
@@ -2406,8 +2406,8 @@ LABEL_29:
 
   else
   {
-    v65 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v65 userInterfaceIdiom] == 1)
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       v10 = 0;
       v11 = 27.0;
@@ -2417,8 +2417,8 @@ LABEL_29:
   }
 
   v67 = v9 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2430,8 +2430,8 @@ LABEL_29:
 
   else
   {
-    v66 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v66 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
       v11 = 18.0;
       v10 = 1;
@@ -2439,7 +2439,7 @@ LABEL_29:
     }
   }
 
-  v10 = v2 ^ 1;
+  v10 = mainScreen ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v11 = 22.0;
@@ -2451,8 +2451,8 @@ LABEL_29:
   }
 
 LABEL_23:
-  v12 = __sb__runningInSpringBoard();
-  if (v12)
+  currentDevice5 = __sb__runningInSpringBoard();
+  if (currentDevice5)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2463,15 +2463,15 @@ LABEL_23:
 
   else
   {
-    v64 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v64 userInterfaceIdiom])
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom])
     {
       v13 = 1;
       goto LABEL_31;
     }
   }
 
-  v13 = v12 ^ 1;
+  v13 = currentDevice5 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v14 = 0;
@@ -2495,8 +2495,8 @@ LABEL_31:
 
   else
   {
-    v12 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v12 userInterfaceIdiom])
+    currentDevice5 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice5 userInterfaceIdiom])
     {
       v14 = 0;
       v15 = 1;
@@ -2505,19 +2505,19 @@ LABEL_31:
   }
 
   v15 = v18 ^ 1;
-  v4 = __sb__runningInSpringBoard();
-  if (v4)
+  currentDevice6 = __sb__runningInSpringBoard();
+  if (currentDevice6)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
-  v14 = v4 ^ 1;
+  v14 = currentDevice6 ^ 1;
   BSSizeRoundForScale();
   if (v19 >= *(MEMORY[0x1E69D4380] + 40))
   {
@@ -2539,8 +2539,8 @@ LABEL_43:
 
   else
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v4 userInterfaceIdiom] == 1)
+    currentDevice6 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice6 userInterfaceIdiom] == 1)
     {
       v17 = MEMORY[0x1E69DDC30];
       v16 = 1;
@@ -2552,7 +2552,7 @@ LABEL_43:
   v17 = MEMORY[0x1E69DDC38];
 LABEL_47:
   v21 = [v8 systemFontOfSize:{SBUIScaledFontSizeWithMaxSizeCategory(*v17, v11)}];
-  [v7 setFont:v21];
+  [statusField setFont:v21];
 
   if (v16)
   {
@@ -2562,7 +2562,7 @@ LABEL_47:
   {
   }
 
-  v22 = 0x1E69DC000uLL;
+  currentDevice8 = 0x1E69DC000uLL;
   if (v15)
   {
   }
@@ -2579,7 +2579,7 @@ LABEL_47:
   {
   }
 
-  v23 = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
+  statusSubtitleView = [(SBUIPasscodeLockViewWithKeyboard *)self statusSubtitleView];
   v24 = MEMORY[0x1E69DB878];
   v25 = __sb__runningInSpringBoard();
   if (v25)
@@ -2595,8 +2595,8 @@ LABEL_47:
 
   else
   {
-    v65 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v65 userInterfaceIdiom] == 1)
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       v26 = 0;
       v27 = 22.0;
@@ -2606,8 +2606,8 @@ LABEL_47:
   }
 
   v68 = v25 ^ 1;
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2619,8 +2619,8 @@ LABEL_47:
 
   else
   {
-    v66 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v66 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
       v27 = 14.0;
       v26 = 1;
@@ -2628,7 +2628,7 @@ LABEL_47:
     }
   }
 
-  v26 = v2 ^ 1;
+  v26 = mainScreen ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v27 = 15.0;
@@ -2640,8 +2640,8 @@ LABEL_47:
   }
 
 LABEL_73:
-  v3 = __sb__runningInSpringBoard();
-  if (v3)
+  currentDevice7 = __sb__runningInSpringBoard();
+  if (currentDevice7)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2652,15 +2652,15 @@ LABEL_73:
 
   else
   {
-    v64 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v64 userInterfaceIdiom])
+    currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom])
     {
       v28 = 1;
       goto LABEL_81;
     }
   }
 
-  v28 = v3 ^ 1;
+  v28 = currentDevice7 ^ 1;
   if (SBFEffectiveHomeButtonType() != 2)
   {
 LABEL_81:
@@ -2677,8 +2677,8 @@ LABEL_81:
 
     else
     {
-      v3 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v3 userInterfaceIdiom])
+      currentDevice7 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice7 userInterfaceIdiom])
       {
         v30 = 0;
         v29 = 1;
@@ -2687,19 +2687,19 @@ LABEL_81:
     }
 
     v29 = v33 ^ 1;
-    v22 = __sb__runningInSpringBoard();
-    if (v22)
+    currentDevice8 = __sb__runningInSpringBoard();
+    if (currentDevice8)
     {
       __sb__mainScreenReferenceBounds();
     }
 
     else
     {
-      v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v2 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
-    v30 = v22 ^ 1;
+    v30 = currentDevice8 ^ 1;
     BSSizeRoundForScale();
     if (v34 >= *(MEMORY[0x1E69D4380] + 40))
     {
@@ -2721,8 +2721,8 @@ LABEL_93:
 
     else
     {
-      v22 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v22 userInterfaceIdiom] == 1)
+      currentDevice8 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice8 userInterfaceIdiom] == 1)
       {
         v32 = MEMORY[0x1E69DDC30];
         v31 = 1;
@@ -2741,7 +2741,7 @@ LABEL_93:
   v32 = MEMORY[0x1E69DDC58];
 LABEL_97:
   v36 = [v24 systemFontOfSize:{SBUIScaledFontSizeWithMaxSizeCategory(*v32, v27)}];
-  [v23 setFont:v36];
+  [statusSubtitleView setFont:v36];
 
   if (v31)
   {
@@ -2778,8 +2778,8 @@ LABEL_110:
 
   else
   {
-    v37 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v37 userInterfaceIdiom])
+    currentDevice9 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice9 userInterfaceIdiom])
     {
     }
 
@@ -2790,18 +2790,18 @@ LABEL_110:
       if (v38 == 2)
       {
 LABEL_118:
-        v39 = [(UIControl *)self->_emergencyCallButton titleLabel];
+        titleLabel = [(UIControl *)self->_emergencyCallButton titleLabel];
         goto LABEL_120;
       }
     }
   }
 
-  v39 = [(UIControl *)self->_emergencyCallButton label];
+  titleLabel = [(UIControl *)self->_emergencyCallButton label];
 LABEL_120:
-  v69 = v39;
+  v69 = titleLabel;
   v40 = MEMORY[0x1E69DB878];
-  v41 = __sb__runningInSpringBoard();
-  if (v41)
+  currentDevice10 = __sb__runningInSpringBoard();
+  if (currentDevice10)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2813,8 +2813,8 @@ LABEL_120:
 
   else
   {
-    v66 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v66 userInterfaceIdiom])
+    currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
       v43 = 12.0;
       v42 = 1;
@@ -2822,7 +2822,7 @@ LABEL_120:
     }
   }
 
-  v42 = v41 ^ 1;
+  v42 = currentDevice10 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v43 = 16.0;
@@ -2834,8 +2834,8 @@ LABEL_120:
   }
 
 LABEL_129:
-  v44 = __sb__runningInSpringBoard();
-  if (v44)
+  currentDevice11 = __sb__runningInSpringBoard();
+  if (currentDevice11)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2846,15 +2846,15 @@ LABEL_129:
 
   else
   {
-    v41 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v41 userInterfaceIdiom])
+    currentDevice10 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice10 userInterfaceIdiom])
     {
       v45 = 1;
       goto LABEL_137;
     }
   }
 
-  v45 = v44 ^ 1;
+  v45 = currentDevice11 ^ 1;
   if (SBFEffectiveHomeButtonType() == 2)
   {
     v46 = 0;
@@ -2865,8 +2865,8 @@ LABEL_129:
   }
 
 LABEL_137:
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
@@ -2878,8 +2878,8 @@ LABEL_137:
 
   else
   {
-    v44 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v44 userInterfaceIdiom])
+    currentDevice11 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice11 userInterfaceIdiom])
     {
       v47 = 0;
       v46 = 1;
@@ -2887,20 +2887,20 @@ LABEL_137:
     }
   }
 
-  v46 = v2 ^ 1;
-  v3 = __sb__runningInSpringBoard();
-  if (v3)
+  v46 = mainScreen ^ 1;
+  currentDevice7 = __sb__runningInSpringBoard();
+  if (currentDevice7)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
-  v47 = v3 ^ 1;
+  v47 = currentDevice7 ^ 1;
   BSSizeRoundForScale();
   if (v50 >= *(MEMORY[0x1E69D4380] + 40))
   {
@@ -2922,8 +2922,8 @@ LABEL_149:
 
   else
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v3 userInterfaceIdiom] == 1)
+    currentDevice7 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice7 userInterfaceIdiom] == 1)
     {
       v49 = MEMORY[0x1E69DDC28];
       v48 = 1;
@@ -2934,8 +2934,8 @@ LABEL_149:
   v48 = v51 ^ 1;
   v49 = MEMORY[0x1E69DDC30];
 LABEL_153:
-  v52 = [v40 systemFontOfSize:{SBUIScaledFontSizeWithMaxSizeCategory(*v49, v43)}];
-  [v69 setFont:v52];
+  currentDevice12 = [v40 systemFontOfSize:{SBUIScaledFontSizeWithMaxSizeCategory(*v49, v43)}];
+  [v69 setFont:currentDevice12];
 
   if (v48)
   {
@@ -2976,7 +2976,7 @@ LABEL_161:
   }
 
 LABEL_162:
-  v53 = 0x1E69DC000;
+  currentDevice13 = 0x1E69DC000;
   if (v42)
   {
   }
@@ -2992,8 +2992,8 @@ LABEL_162:
 
   else
   {
-    v52 = [MEMORY[0x1E69DC938] currentDevice];
-    v58 = [v52 userInterfaceIdiom] == 1;
+    currentDevice12 = [MEMORY[0x1E69DC938] currentDevice];
+    v58 = [currentDevice12 userInterfaceIdiom] == 1;
   }
 
   if (v58)
@@ -3018,8 +3018,8 @@ LABEL_162:
 
   else
   {
-    v53 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v53 userInterfaceIdiom])
+    currentDevice13 = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice13 userInterfaceIdiom])
     {
       v61 = 1;
       goto LABEL_178;
@@ -3048,18 +3048,18 @@ LABEL_179:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SBUIPasscodeLockViewWithKeyboard;
-  [(SBUIPasscodeLockViewWithKeyboard *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(SBUIPasscodeLockViewWithKeyboard *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(SBUIPasscodeLockViewWithKeyboard *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(SBUIPasscodeLockViewWithKeyboard *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -3069,10 +3069,10 @@ LABEL_179:
   }
 }
 
-- (void)_updateKeyboardHeightOffsetForKeyboardNotification:(id)a3
+- (void)_updateKeyboardHeightOffsetForKeyboardNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
 
@@ -3082,24 +3082,24 @@ LABEL_179:
   }
 }
 
-- (void)_keyboardWillChangeFrameNotification:(id)a3
+- (void)_keyboardWillChangeFrameNotification:(id)notification
 {
-  [(SBUIPasscodeLockViewWithKeyboard *)self _updateKeyboardHeightOffsetForKeyboardNotification:a3];
+  [(SBUIPasscodeLockViewWithKeyboard *)self _updateKeyboardHeightOffsetForKeyboardNotification:notification];
 
   [(SBUIPasscodeLockViewWithKeyboard *)self setNeedsLayout];
 }
 
-- (void)_keyboardWillShowNotification:(id)a3
+- (void)_keyboardWillShowNotification:(id)notification
 {
   self->_keyboardVisible = 1;
-  v4 = a3;
+  notificationCopy = notification;
   [(SBUIPasscodeLockViewWithKeyboard *)self _setKeyboardTracksLockView:1];
-  [(SBUIPasscodeLockViewWithKeyboard *)self _updateKeyboardHeightOffsetForKeyboardNotification:v4];
+  [(SBUIPasscodeLockViewWithKeyboard *)self _updateKeyboardHeightOffsetForKeyboardNotification:notificationCopy];
 
   [(SBUIPasscodeLockViewWithKeyboard *)self setNeedsLayout];
 }
 
-- (void)_keyboardDidHideNotification:(id)a3
+- (void)_keyboardDidHideNotification:(id)notification
 {
   [(SBUIPasscodeLockViewWithKeyboard *)self _setKeyboardTracksLockView:0];
   if (!self->_isResigningResponderStatus)

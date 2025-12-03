@@ -1,19 +1,19 @@
 @interface IDSMessageSendEnforcementMetric
-- (BOOL)isEqual:(id)a3;
-- (IDSMessageSendEnforcementMetric)initWithCoder:(id)a3;
-- (IDSMessageSendEnforcementMetric)initWithState:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (IDSMessageSendEnforcementMetric)initWithCoder:(id)coder;
+- (IDSMessageSendEnforcementMetric)initWithState:(int64_t)state;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSMessageSendEnforcementMetric
 
-- (IDSMessageSendEnforcementMetric)initWithState:(int64_t)a3
+- (IDSMessageSendEnforcementMetric)initWithState:(int64_t)state
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = state;
+  if (state)
   {
     v7.receiver = self;
     v7.super_class = IDSMessageSendEnforcementMetric;
@@ -21,38 +21,38 @@
     v5 = v4;
     if (v4)
     {
-      [(IDSMessageSendEnforcementMetric *)v4 setState:v3];
+      [(IDSMessageSendEnforcementMetric *)v4 setState:selfCopy];
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSMessageSendEnforcementMetric state](self, "state")}];
-  [v3 setObject:v4 forKeyedSubscript:@"IDSMessageSendEnforcementMetricStateKey"];
+  [dictionary setObject:v4 forKeyedSubscript:@"IDSMessageSendEnforcementMetricStateKey"];
 
   if ([(IDSMessageSendEnforcementMetric *)self code])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSMessageSendEnforcementMetric code](self, "code")}];
-    [v3 setObject:v5 forKeyedSubscript:@"IDSMessageSendEnforcementMetricCodeKey"];
+    [dictionary setObject:v5 forKeyedSubscript:@"IDSMessageSendEnforcementMetricCodeKey"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (v5 = -[IDSMessageSendEnforcementMetric state](self, "state"), v5 == [v4 state]))
+  equalCopy = equal;
+  if (equalCopy && (v5 = -[IDSMessageSendEnforcementMetric state](self, "state"), v5 == [equalCopy state]))
   {
-    v6 = [(IDSMessageSendEnforcementMetric *)self code];
-    v7 = v6 == [v4 code];
+    code = [(IDSMessageSendEnforcementMetric *)self code];
+    v7 = code == [equalCopy code];
   }
 
   else
@@ -63,15 +63,15 @@
   return v7;
 }
 
-- (IDSMessageSendEnforcementMetric)initWithCoder:(id)a3
+- (IDSMessageSendEnforcementMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = IDSMessageSendEnforcementMetric;
   v5 = [(IDSMessageSendEnforcementMetric *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"IDSMessageSendEnforcementMetricStateKey"];
+    v6 = [coderCopy decodeIntegerForKey:@"IDSMessageSendEnforcementMetricStateKey"];
     v5->_state = v6;
     if (!v6)
     {
@@ -79,7 +79,7 @@
       goto LABEL_6;
     }
 
-    v5->_code = [v4 decodeIntegerForKey:@"IDSMessageSendEnforcementMetricCodeKey"];
+    v5->_code = [coderCopy decodeIntegerForKey:@"IDSMessageSendEnforcementMetricCodeKey"];
   }
 
   v7 = v5;
@@ -88,15 +88,15 @@ LABEL_6:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"IDSMessageSendEnforcementMetricStateKey"];
-  [v5 encodeInteger:self->_code forKey:@"IDSMessageSendEnforcementMetricCodeKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"IDSMessageSendEnforcementMetricStateKey"];
+  [coderCopy encodeInteger:self->_code forKey:@"IDSMessageSendEnforcementMetricCodeKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[IDSMessageSendEnforcementMetric allocWithZone:?], "initWithState:", [(IDSMessageSendEnforcementMetric *)self state]];
   [(IDSMessageSendEnforcementMetric *)v4 setCode:[(IDSMessageSendEnforcementMetric *)self code]];

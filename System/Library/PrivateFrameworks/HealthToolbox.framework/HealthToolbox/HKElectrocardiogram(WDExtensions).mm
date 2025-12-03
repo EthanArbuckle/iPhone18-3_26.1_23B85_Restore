@@ -14,7 +14,7 @@
   [v5 appendString:v8];
 
   [v5 appendString:{@", "}];
-  v9 = [a1 _localizedClassificationWithActiveAlgorithmVersion:a3];
+  v9 = [self _localizedClassificationWithActiveAlgorithmVersion:a3];
   v10 = v9;
   if (v9)
   {
@@ -35,8 +35,8 @@
   [v5 appendString:v14];
 
   [v5 appendString:{@", "}];
-  v15 = [a1 _localizedSymptoms];
-  v16 = [v15 componentsJoinedByString:{@", "}];
+  _localizedSymptoms = [self _localizedSymptoms];
+  v16 = [_localizedSymptoms componentsJoinedByString:{@", "}];
   [v5 appendString:v16];
 
   [v5 appendString:@"\n"];
@@ -46,12 +46,12 @@
   [v5 appendString:v19];
 
   [v5 appendString:{@", "}];
-  v20 = [a1 sourceRevision];
-  v21 = [v20 version];
-  v22 = v21;
-  if (v21)
+  sourceRevision = [self sourceRevision];
+  version = [sourceRevision version];
+  v22 = version;
+  if (version)
   {
-    v23 = v21;
+    v23 = version;
   }
 
   else
@@ -62,10 +62,10 @@
   [v5 appendString:v23];
 
   [v5 appendString:@"\n"];
-  v24 = [a1 device];
-  v25 = [v24 hardwareVersion];
+  device = [self device];
+  hardwareVersion = [device hardwareVersion];
 
-  if (v25)
+  if (hardwareVersion)
   {
     v26 = WDBundle();
     v27 = [v26 localizedStringForKey:@"ECG_CSV_DEVICE_VERSION_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Cinnamon"];
@@ -74,9 +74,9 @@
 
     [v5 appendString:{@", "}];
     v29 = MEMORY[0x277CCACA8];
-    v30 = [a1 device];
-    v31 = [v30 hardwareVersion];
-    v32 = [v29 stringWithFormat:@"%@", v31];
+    device2 = [self device];
+    hardwareVersion2 = [device2 hardwareVersion];
+    v32 = [v29 stringWithFormat:@"%@", hardwareVersion2];
     [v5 appendString:v32];
 
     [v5 appendString:@"\n"];
@@ -84,8 +84,8 @@
 
   v33 = objc_alloc_init(MEMORY[0x277CCAB18]);
   [v33 setUnitStyle:3];
-  v34 = [a1 samplingFrequency];
-  v35 = [v34 _foundationMeasurement];
+  samplingFrequency = [self samplingFrequency];
+  _foundationMeasurement = [samplingFrequency _foundationMeasurement];
 
   v36 = WDBundle();
   v37 = [v36 localizedStringForKey:@"ECG_CSV_FREQUENCY_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Cinnamon"];
@@ -93,9 +93,9 @@
   [v5 appendString:v38];
 
   [v5 appendString:{@", "}];
-  if (v35)
+  if (_foundationMeasurement)
   {
-    v39 = [v33 stringFromMeasurement:v35];
+    v39 = [v33 stringFromMeasurement:_foundationMeasurement];
     [v5 appendString:v39];
   }
 
@@ -116,8 +116,8 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = a1;
-  obj = [a1 leadNames];
+  selfCopy = self;
+  obj = [self leadNames];
   v4 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
@@ -134,14 +134,14 @@
 
         v7 = *(*(&v29 + 1) + 8 * i);
         [v2 appendString:@"\n"];
-        v8 = [v7 integerValue];
+        integerValue = [v7 integerValue];
         v9 = WDBundle();
         v10 = [v9 localizedStringForKey:@"ECG_CSV_LEAD_NAME_TITLE" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Cinnamon"];
         v11 = HKConditionallyRedactedHeartRhythmString();
         [v2 appendString:v11];
 
         [v2 appendString:{@", "}];
-        if (v8 == 1)
+        if (integerValue == 1)
         {
           v12 = WDBundle();
           v13 = [v12 localizedStringForKey:@"ECG_LEAD_NAME_I" value:&stru_28641D9B8 table:@"WellnessDashboard-Localizable-Cinnamon"];
@@ -170,7 +170,7 @@
         v26[3] = &unk_2796E6B40;
         v27 = v2;
         v28 = v25;
-        [v24 _enumerateDataForLead:v8 block:v26];
+        [selfCopy _enumerateDataForLead:integerValue block:v26];
       }
 
       v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];

@@ -1,29 +1,29 @@
 @interface IXOwnedDataPromise
-- (BOOL)consumeSandboxExtensionWithError:(id *)a3;
-- (BOOL)setTargetLastPathComponent:(id)a3 error:(id *)a4;
-- (IXOwnedDataPromise)initWithCoder:(id)a3;
-- (IXOwnedDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5;
-- (IXOwnedDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5 location:(id)a6;
-- (IXOwnedDataPromise)initWithSeed:(id)a3;
+- (BOOL)consumeSandboxExtensionWithError:(id *)error;
+- (BOOL)setTargetLastPathComponent:(id)component error:(id *)error;
+- (IXOwnedDataPromise)initWithCoder:(id)coder;
+- (IXOwnedDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed;
+- (IXOwnedDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed location:(id)location;
+- (IXOwnedDataPromise)initWithSeed:(id)seed;
 - (MILocationProtocol)location;
 - (NSURL)stagedPath;
 - (NSURL)stagingBaseDir;
 - (id)description;
-- (id)targetLastPathComponentWithError:(id *)a3;
-- (void)_clientDelegate_didCancelWithError:(id)a3 client:(unint64_t)a4;
+- (id)targetLastPathComponentWithError:(id *)error;
+- (void)_clientDelegate_didCancelWithError:(id)error client:(unint64_t)client;
 - (void)_clientDelegate_didComplete;
 - (void)dealloc;
 - (void)releaseSandboxExtension;
-- (void)setStagedPath:(id)a3;
+- (void)setStagedPath:(id)path;
 @end
 
 @implementation IXOwnedDataPromise
 
-- (IXOwnedDataPromise)initWithSeed:(id)a3
+- (IXOwnedDataPromise)initWithSeed:(id)seed
 {
   v6.receiver = self;
   v6.super_class = IXOwnedDataPromise;
-  v3 = [(IXDataPromise *)&v6 initWithSeed:a3];
+  v3 = [(IXDataPromise *)&v6 initWithSeed:seed];
   v4 = v3;
   if (v3)
   {
@@ -33,11 +33,11 @@
   return v4;
 }
 
-- (IXOwnedDataPromise)initWithCoder:(id)a3
+- (IXOwnedDataPromise)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IXOwnedDataPromise;
-  v3 = [(IXDataPromise *)&v6 initWithCoder:a3];
+  v3 = [(IXDataPromise *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -47,35 +47,35 @@
   return v4;
 }
 
-- (IXOwnedDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5
+- (IXOwnedDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed
 {
   v10.receiver = self;
   v10.super_class = IXOwnedDataPromise;
-  v5 = [(IXDataPromise *)&v10 initWithName:a3 client:a4 diskSpaceNeeded:a5];
+  v5 = [(IXDataPromise *)&v10 initWithName:name client:client diskSpaceNeeded:needed];
   v6 = v5;
   if (v5)
   {
     [(IXOwnedDataPromise *)v5 _internalInit];
     v7 = objc_opt_new();
-    v8 = [(IXDataPromise *)v6 seed];
-    [v8 setLocation:v7];
+    seed = [(IXDataPromise *)v6 seed];
+    [seed setLocation:v7];
   }
 
   return v6;
 }
 
-- (IXOwnedDataPromise)initWithName:(id)a3 client:(unint64_t)a4 diskSpaceNeeded:(unint64_t)a5 location:(id)a6
+- (IXOwnedDataPromise)initWithName:(id)name client:(unint64_t)client diskSpaceNeeded:(unint64_t)needed location:(id)location
 {
-  v10 = a6;
+  locationCopy = location;
   v15.receiver = self;
   v15.super_class = IXOwnedDataPromise;
-  v11 = [(IXDataPromise *)&v15 initWithName:a3 client:a4 diskSpaceNeeded:a5];
+  v11 = [(IXDataPromise *)&v15 initWithName:name client:client diskSpaceNeeded:needed];
   v12 = v11;
   if (v11)
   {
     [(IXOwnedDataPromise *)v11 _internalInit];
-    v13 = [(IXDataPromise *)v12 seed];
-    [v13 setLocation:v10];
+    seed = [(IXDataPromise *)v12 seed];
+    [seed setLocation:locationCopy];
   }
 
   return v12;
@@ -182,14 +182,14 @@ void __32__IXOwnedDataPromise_stagedPath__block_invoke_7(uint64_t a1, void *a2, 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setStagedPath:(id)a3
+- (void)setStagedPath:(id)path
 {
-  objc_storeStrong(&self->_stagedPath, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_stagedPath, path);
+  pathCopy = path;
   v8 = +[IXServerConnection sharedConnection];
   v6 = [v8 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_4];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
-  [v6 _remote_IXSOwnedDataPromise:v7 setStagedPath:v5];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  [v6 _remote_IXSOwnedDataPromise:uniqueIdentifier setStagedPath:pathCopy];
 }
 
 void __36__IXOwnedDataPromise_setStagedPath___block_invoke(uint64_t a1, void *a2)
@@ -211,26 +211,26 @@ void __36__IXOwnedDataPromise_setStagedPath___block_invoke(uint64_t a1, void *a2
 
 - (NSURL)stagingBaseDir
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 stagingBaseDir];
+  seed = [(IXDataPromise *)self seed];
+  stagingBaseDir = [seed stagingBaseDir];
 
-  return v3;
+  return stagingBaseDir;
 }
 
 - (MILocationProtocol)location
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 location];
+  seed = [(IXDataPromise *)self seed];
+  location = [seed location];
 
-  return v3;
+  return location;
 }
 
-- (BOOL)consumeSandboxExtensionWithError:(id *)a3
+- (BOOL)consumeSandboxExtensionWithError:(id *)error
 {
-  v5 = [(IXDataPromise *)self seed];
-  v6 = [v5 sandboxExtensionToken];
+  seed = [(IXDataPromise *)self seed];
+  sandboxExtensionToken = [seed sandboxExtensionToken];
 
-  if (!v6)
+  if (!sandboxExtensionToken)
   {
     v10 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -240,7 +240,7 @@ void __36__IXOwnedDataPromise_setStagedPath___block_invoke(uint64_t a1, void *a2
 
     _CreateError("[IXOwnedDataPromise consumeSandboxExtensionWithError:]", 152, @"IXErrorDomain", 4uLL, 0, 0, @"Attempting to consume a sandbox extension but don't have a sandbox extension token issued", v18, v31);
     v19 = LABEL_11:;
-    if (a3)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -264,13 +264,13 @@ LABEL_18:
       [IXOwnedDataPromise consumeSandboxExtensionWithError:];
     }
 
-    _CreateError("[IXOwnedDataPromise consumeSandboxExtensionWithError:]", 158, @"IXErrorDomain", 4uLL, 0, 0, @"Attempting to consume a sandbox extension while already holding one for %@", v9, v6);
+    _CreateError("[IXOwnedDataPromise consumeSandboxExtensionWithError:]", 158, @"IXErrorDomain", 4uLL, 0, 0, @"Attempting to consume a sandbox extension while already holding one for %@", v9, sandboxExtensionToken);
     goto LABEL_11;
   }
 
   v22 = +[IXFileManager defaultManager];
   v32 = 0;
-  v23 = [v22 consumeSandboxExtension:v6 error:&v32];
+  v23 = [v22 consumeSandboxExtension:sandboxExtensionToken error:&v32];
   v19 = v32;
 
   if ((v23 & 0x8000000000000000) == 0)
@@ -286,13 +286,13 @@ LABEL_18:
     [(IXOwnedDataPromise *)self consumeSandboxExtensionWithError:v19, v24];
   }
 
-  v25 = [(IXDataPromise *)self seed];
-  v26 = [v25 stagingBaseDir];
-  v27 = [v26 path];
-  v29 = _CreateError("[IXOwnedDataPromise consumeSandboxExtensionWithError:]", 166, @"IXErrorDomain", 1uLL, v19, 0, @"Failed to get access to installcoordinationd's staging directory at %@", v28, v27);
+  seed2 = [(IXDataPromise *)self seed];
+  stagingBaseDir = [seed2 stagingBaseDir];
+  path = [stagingBaseDir path];
+  v29 = _CreateError("[IXOwnedDataPromise consumeSandboxExtensionWithError:]", 166, @"IXErrorDomain", 1uLL, v19, 0, @"Failed to get access to installcoordinationd's staging directory at %@", v28, path);
 
   v19 = v29;
-  if (!a3)
+  if (!error)
   {
     goto LABEL_18;
   }
@@ -300,15 +300,15 @@ LABEL_18:
 LABEL_12:
   v20 = v19;
   v21 = 0;
-  *a3 = v19;
+  *error = v19;
 LABEL_19:
 
   return v21;
 }
 
-- (BOOL)setTargetLastPathComponent:(id)a3 error:(id *)a4
+- (BOOL)setTargetLastPathComponent:(id)component error:(id *)error
 {
-  v6 = a3;
+  componentCopy = component;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -320,11 +320,11 @@ LABEL_19:
   v21[1] = 3221225472;
   v21[2] = __55__IXOwnedDataPromise_setTargetLastPathComponent_error___block_invoke;
   v21[3] = &unk_1E85C58D0;
-  v8 = v6;
+  v8 = componentCopy;
   v22 = v8;
   v23 = &v24;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
-  v10 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __55__IXOwnedDataPromise_setTargetLastPathComponent_error___block_invoke_19;
@@ -332,10 +332,10 @@ LABEL_19:
   v11 = v8;
   v19 = v11;
   v20 = &v24;
-  [v9 _remote_IXSOwnedDataPromise:v10 setTargetLastPathComponent:v11 withCompletion:&v15];
+  [v9 _remote_IXSOwnedDataPromise:uniqueIdentifier setTargetLastPathComponent:v11 withCompletion:&v15];
 
   v12 = v25[5];
-  if (!a4)
+  if (!error)
   {
     if (v12)
     {
@@ -352,7 +352,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *a4 = v12;
+  *error = v12;
 LABEL_6:
   v13 = v25[5] == 0;
 
@@ -390,14 +390,14 @@ void __55__IXOwnedDataPromise_setTargetLastPathComponent_error___block_invoke_19
   }
 }
 
-- (id)targetLastPathComponentWithError:(id *)a3
+- (id)targetLastPathComponentWithError:(id *)error
 {
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__9;
   v24 = __Block_byref_object_dispose__9;
-  v25 = [(IXOwnedDataPromise *)self targetLastPathComponent];
+  targetLastPathComponent = [(IXOwnedDataPromise *)self targetLastPathComponent];
   v5 = v21[5];
   if (!v5)
   {
@@ -414,21 +414,21 @@ void __55__IXOwnedDataPromise_setTargetLastPathComponent_error___block_invoke_19
     v13[3] = &unk_1E85C5560;
     v13[4] = &v14;
     v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v13];
-    v8 = [(IXDataPromise *)self uniqueIdentifier];
+    uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__IXOwnedDataPromise_targetLastPathComponentWithError___block_invoke_20;
     v12[3] = &unk_1E85C6528;
     v12[4] = &v14;
     v12[5] = &v20;
-    [v7 _remote_IXSOwnedDataPromise:v8 getTargetLastPathComponent:v12];
+    [v7 _remote_IXSOwnedDataPromise:uniqueIdentifier getTargetLastPathComponent:v12];
 
     v9 = v21[5];
-    if (a3)
+    if (error)
     {
       if (!v9)
       {
-        *a3 = v15[5];
+        *error = v15[5];
 LABEL_7:
         _Block_object_dispose(&v14, 8);
 
@@ -497,12 +497,12 @@ void __55__IXOwnedDataPromise_targetLastPathComponentWithError___block_invoke_20
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(IXDataPromise *)self name];
-  v7 = [(IXDataPromise *)self seed];
-  v8 = [v7 uniqueIdentifier];
+  name = [(IXDataPromise *)self name];
+  seed = [(IXDataPromise *)self seed];
+  uniqueIdentifier = [seed uniqueIdentifier];
   v9 = IXStringForClientID([(IXDataPromise *)self creatorIdentifier]);
-  v10 = [(IXOwnedDataPromise *)self location];
-  v11 = [v3 stringWithFormat:@"<%@<%p> name:%@ uuid:%@ creator:%@ location:%@>", v5, self, v6, v8, v9, v10];
+  location = [(IXOwnedDataPromise *)self location];
+  v11 = [v3 stringWithFormat:@"<%@<%p> name:%@ uuid:%@ creator:%@ location:%@>", v5, self, name, uniqueIdentifier, v9, location];
 
   return v11;
 }
@@ -531,13 +531,13 @@ void __55__IXOwnedDataPromise_targetLastPathComponentWithError___block_invoke_20
   [(IXDataPromise *)&v3 _clientDelegate_didComplete];
 }
 
-- (void)_clientDelegate_didCancelWithError:(id)a3 client:(unint64_t)a4
+- (void)_clientDelegate_didCancelWithError:(id)error client:(unint64_t)client
 {
-  v6 = a3;
+  errorCopy = error;
   [(IXOwnedDataPromise *)self releaseSandboxExtension];
   v7.receiver = self;
   v7.super_class = IXOwnedDataPromise;
-  [(IXDataPromise *)&v7 _clientDelegate_didCancelWithError:v6 client:a4];
+  [(IXDataPromise *)&v7 _clientDelegate_didCancelWithError:errorCopy client:client];
 }
 
 - (void)consumeSandboxExtensionWithError:(NSObject *)a3 .cold.1(void *a1, uint64_t a2, NSObject *a3)

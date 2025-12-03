@@ -1,25 +1,25 @@
 @interface ConnectOptions
-+ (id)alertOptionsWithConnectionAlerts:(BOOL)a3 disconnectionAlerts:(BOOL)a4 notificationAlerts:(BOOL)a5 delay:(int64_t)a6 bridgeTransport:(BOOL)a7;
-- (ConnectOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)alertOptionsWithConnectionAlerts:(BOOL)alerts disconnectionAlerts:(BOOL)disconnectionAlerts notificationAlerts:(BOOL)notificationAlerts delay:(int64_t)delay bridgeTransport:(BOOL)transport;
+- (ConnectOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ConnectOptions
 
-+ (id)alertOptionsWithConnectionAlerts:(BOOL)a3 disconnectionAlerts:(BOOL)a4 notificationAlerts:(BOOL)a5 delay:(int64_t)a6 bridgeTransport:(BOOL)a7
++ (id)alertOptionsWithConnectionAlerts:(BOOL)alerts disconnectionAlerts:(BOOL)disconnectionAlerts notificationAlerts:(BOOL)notificationAlerts delay:(int64_t)delay bridgeTransport:(BOOL)transport
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  transportCopy = transport;
+  notificationAlertsCopy = notificationAlerts;
+  disconnectionAlertsCopy = disconnectionAlerts;
+  alertsCopy = alerts;
   v12 = objc_alloc_init(ConnectOptions);
-  [(ConnectOptions *)v12 setConnectionAlerts:v11];
-  [(ConnectOptions *)v12 setDisconnectionAlerts:v10];
-  [(ConnectOptions *)v12 setNotificationAlerts:v9];
-  [(ConnectOptions *)v12 setDelay:a6];
-  [(ConnectOptions *)v12 setEnableTransportBridging:v7];
+  [(ConnectOptions *)v12 setConnectionAlerts:alertsCopy];
+  [(ConnectOptions *)v12 setDisconnectionAlerts:disconnectionAlertsCopy];
+  [(ConnectOptions *)v12 setNotificationAlerts:notificationAlertsCopy];
+  [(ConnectOptions *)v12 setDelay:delay];
+  [(ConnectOptions *)v12 setEnableTransportBridging:transportCopy];
   [(ConnectOptions *)v12 setDisableLeGATT:0];
   [(ConnectOptions *)v12 setCtkdChosenTransport:0];
   v13 = +[NSData data];
@@ -35,13 +35,13 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ConnectOptions allocWithZone:?]];
   [(ConnectOptions *)v4 setPHYOptions:[(ConnectOptions *)self PHYOptions]];
   [(ConnectOptions *)v4 setAncsRequired:[(ConnectOptions *)self ancsRequired]];
-  v5 = [(ConnectOptions *)self clientBundleID];
-  [(ConnectOptions *)v4 setClientBundleID:v5];
+  clientBundleID = [(ConnectOptions *)self clientBundleID];
+  [(ConnectOptions *)v4 setClientBundleID:clientBundleID];
 
   [(ConnectOptions *)v4 setConnectionAlerts:[(ConnectOptions *)self connectionAlerts]];
   [(ConnectOptions *)v4 setDisconnectionAlerts:[(ConnectOptions *)self disconnectionAlerts]];
@@ -53,8 +53,8 @@
   [(ConnectOptions *)v4 setHideFromBTSettings:[(ConnectOptions *)self hideFromBTSettings]];
   [(ConnectOptions *)v4 setInitPHYs:[(ConnectOptions *)self initPHYs]];
   [(ConnectOptions *)v4 setEnableControllerBTClockUpdates:[(ConnectOptions *)self enableControllerBTClockUpdates]];
-  v6 = [(ConnectOptions *)self clientProcessID];
-  [(ConnectOptions *)v4 setClientProcessID:v6];
+  clientProcessID = [(ConnectOptions *)self clientProcessID];
+  [(ConnectOptions *)v4 setClientProcessID:clientProcessID];
 
   [(ConnectOptions *)v4 setConnectionUseCase:[(ConnectOptions *)self connectionUseCase]];
   [(ConnectOptions *)v4 setMaxAllowedConnectionDelay:[(ConnectOptions *)self maxAllowedConnectionDelay]];
@@ -63,15 +63,15 @@
   [(ConnectOptions *)v4 setEnableScanCore:[(ConnectOptions *)self enableScanCore]];
   [(ConnectOptions *)v4 setIsLatencyCritical:[(ConnectOptions *)self isLatencyCritical]];
   [(ConnectOptions *)v4 setCtkdChosenTransport:[(ConnectOptions *)self ctkdChosenTransport]];
-  v7 = [(ConnectOptions *)self temporaryLTK];
-  [(ConnectOptions *)v4 setTemporaryLTK:v7];
+  temporaryLTK = [(ConnectOptions *)self temporaryLTK];
+  [(ConnectOptions *)v4 setTemporaryLTK:temporaryLTK];
 
-  v8 = [(ConnectOptions *)self connectingClients];
-  [(ConnectOptions *)v4 setConnectingClients:v8];
+  connectingClients = [(ConnectOptions *)self connectingClients];
+  [(ConnectOptions *)v4 setConnectingClients:connectingClients];
 
   [(ConnectOptions *)v4 setOpportunistic:[(ConnectOptions *)self opportunistic]];
-  v9 = [(ConnectOptions *)self useCaseList];
-  [(ConnectOptions *)v4 setUseCaseList:v9];
+  useCaseList = [(ConnectOptions *)self useCaseList];
+  [(ConnectOptions *)v4 setUseCaseList:useCaseList];
 
   [(ConnectOptions *)v4 setRequiresLowLatency:[(ConnectOptions *)self requiresLowLatency]];
   [(ConnectOptions *)v4 setTxPowerConnectInd:[(ConnectOptions *)self txPowerConnectInd]];
@@ -80,29 +80,29 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_connectionAlerts forKey:@"connectionAlerts"];
-  [v4 encodeBool:self->_disconnectionAlerts forKey:@"disconnectionAlerts"];
-  [v4 encodeBool:self->_notificationAlerts forKey:@"notificationAlerts"];
-  [v4 encodeInteger:self->_delay forKey:@"delay"];
-  [v4 encodeBool:self->_enableTransportBridging forKey:@"enableTransportBridging"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_connectionAlerts forKey:@"connectionAlerts"];
+  [coderCopy encodeBool:self->_disconnectionAlerts forKey:@"disconnectionAlerts"];
+  [coderCopy encodeBool:self->_notificationAlerts forKey:@"notificationAlerts"];
+  [coderCopy encodeInteger:self->_delay forKey:@"delay"];
+  [coderCopy encodeBool:self->_enableTransportBridging forKey:@"enableTransportBridging"];
 }
 
-- (ConnectOptions)initWithCoder:(id)a3
+- (ConnectOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ConnectOptions;
   v5 = [(ConnectOptions *)&v7 init];
   if (v5)
   {
-    v5->_connectionAlerts = [v4 decodeBoolForKey:@"connectionAlerts"];
-    v5->_disconnectionAlerts = [v4 decodeBoolForKey:@"disconnectionAlerts"];
-    v5->_notificationAlerts = [v4 decodeBoolForKey:@"notificationAlerts"];
-    v5->_delay = [v4 decodeIntegerForKey:@"delay"];
-    v5->_enableTransportBridging = [v4 decodeBoolForKey:@"enableTransportBridging"];
+    v5->_connectionAlerts = [coderCopy decodeBoolForKey:@"connectionAlerts"];
+    v5->_disconnectionAlerts = [coderCopy decodeBoolForKey:@"disconnectionAlerts"];
+    v5->_notificationAlerts = [coderCopy decodeBoolForKey:@"notificationAlerts"];
+    v5->_delay = [coderCopy decodeIntegerForKey:@"delay"];
+    v5->_enableTransportBridging = [coderCopy decodeBoolForKey:@"enableTransportBridging"];
   }
 
   return v5;

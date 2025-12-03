@@ -1,22 +1,22 @@
 @interface CKVettingAddressSelectionController
 - (CKVettingAddressSelectionController)init;
-- (CKVettingAddressSelectionController)initWithParameters:(id)a3;
-- (CKVettingAddressSelectionController)initWithParticipants:(id)a3 sharedItem:(id)a4 shareURL:(id)a5;
-- (id)_buttonWithText:(id)a3 maxWidth:(double)a4;
-- (id)_labelWithText:(id)a3 maxWidth:(double)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_initiateVettingForParticipantID:(id)a3 address:(id)a4 andThen:(id)a5;
+- (CKVettingAddressSelectionController)initWithParameters:(id)parameters;
+- (CKVettingAddressSelectionController)initWithParticipants:(id)participants sharedItem:(id)item shareURL:(id)l;
+- (id)_buttonWithText:(id)text maxWidth:(double)width;
+- (id)_labelWithText:(id)text maxWidth:(double)width;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_initiateVettingForParticipantID:(id)d address:(id)address andThen:(id)then;
 - (void)_setupBarButtons;
-- (void)_setupSectionFooter:(id)a3;
-- (void)_setupSectionHeader:(id)a3;
-- (void)_showInitiateFailureAlert:(id)a3 shareTitle:(id)a4 cell:(id)a5;
-- (void)fetchShareMetadata:(id)a3 andThen:(id)a4;
+- (void)_setupSectionFooter:(id)footer;
+- (void)_setupSectionHeader:(id)header;
+- (void)_showInitiateFailureAlert:(id)alert shareTitle:(id)title cell:(id)cell;
+- (void)fetchShareMetadata:(id)metadata andThen:(id)then;
 - (void)handleCancel;
-- (void)handleSelectedCell:(id)a3;
+- (void)handleSelectedCell:(id)cell;
 - (void)handleSendEmail;
-- (void)setParameters:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setParameters:(id)parameters;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation CKVettingAddressSelectionController
@@ -30,141 +30,141 @@
   if (v2)
   {
     [(CKVettingAddressSelectionController *)v2 setSelectedRowPath:0];
-    v4 = [(CKVettingAddressSelectionController *)v3 tableView];
-    [v4 setSectionHeaderHeight:0.0];
+    tableView = [(CKVettingAddressSelectionController *)v3 tableView];
+    [tableView setSectionHeaderHeight:0.0];
 
-    v5 = [(CKVettingAddressSelectionController *)v3 tableView];
-    [v5 setSectionFooterHeight:0.0];
+    tableView2 = [(CKVettingAddressSelectionController *)v3 tableView];
+    [tableView2 setSectionFooterHeight:0.0];
   }
 
   return v3;
 }
 
-- (CKVettingAddressSelectionController)initWithParticipants:(id)a3 sharedItem:(id)a4 shareURL:(id)a5
+- (CKVettingAddressSelectionController)initWithParticipants:(id)participants sharedItem:(id)item shareURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participantsCopy = participants;
+  itemCopy = item;
+  lCopy = l;
   v11 = [(CKVettingAddressSelectionController *)self init];
   v12 = v11;
   if (v11)
   {
-    [(CKVettingAddressSelectionController *)v11 setTripples:v8];
-    [(CKVettingAddressSelectionController *)v12 setSharedItem:v9];
-    [(CKVettingAddressSelectionController *)v12 setShareURL:v10];
+    [(CKVettingAddressSelectionController *)v11 setTripples:participantsCopy];
+    [(CKVettingAddressSelectionController *)v12 setSharedItem:itemCopy];
+    [(CKVettingAddressSelectionController *)v12 setShareURL:lCopy];
   }
 
   return v12;
 }
 
-- (CKVettingAddressSelectionController)initWithParameters:(id)a3
+- (CKVettingAddressSelectionController)initWithParameters:(id)parameters
 {
-  v4 = a3;
-  if ([v4 count] == &dword_0 + 3)
+  parametersCopy = parameters;
+  if ([parametersCopy count] == &dword_0 + 3)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
-    v7 = [v4 objectAtIndexedSubscript:2];
+    v5 = [parametersCopy objectAtIndexedSubscript:0];
+    v6 = [parametersCopy objectAtIndexedSubscript:1];
+    v7 = [parametersCopy objectAtIndexedSubscript:2];
     self = [(CKVettingAddressSelectionController *)self initWithParticipants:v5 sharedItem:v6 shareURL:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  v9 = a3;
-  if ([v9 count] != &dword_0 + 3)
+  parametersCopy = parameters;
+  if ([parametersCopy count] != &dword_0 + 3)
   {
     v8 = +[NSAssertionHandler currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CKVettingAddressSelectionController.m" lineNumber:138 description:{@"Expected an array of 3 items, actual array: %@", v9}];
+    [v8 handleFailureInMethod:a2 object:self file:@"CKVettingAddressSelectionController.m" lineNumber:138 description:{@"Expected an array of 3 items, actual array: %@", parametersCopy}];
   }
 
-  v5 = [v9 objectAtIndexedSubscript:0];
+  v5 = [parametersCopy objectAtIndexedSubscript:0];
   [(CKVettingAddressSelectionController *)self setTripples:v5];
 
-  v6 = [v9 objectAtIndexedSubscript:1];
+  v6 = [parametersCopy objectAtIndexedSubscript:1];
   [(CKVettingAddressSelectionController *)self setSharedItem:v6];
 
-  v7 = [v9 objectAtIndexedSubscript:2];
+  v7 = [parametersCopy objectAtIndexedSubscript:2];
   [(CKVettingAddressSelectionController *)self setShareURL:v7];
 }
 
 - (void)handleCancel
 {
-  v2 = [(CKVettingAddressSelectionController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(CKVettingAddressSelectionController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)handleSendEmail
 {
-  v3 = [(CKVettingAddressSelectionController *)self selectedRowPath];
+  selectedRowPath = [(CKVettingAddressSelectionController *)self selectedRowPath];
 
-  if (v3)
+  if (selectedRowPath)
   {
-    v4 = [(CKVettingAddressSelectionController *)self tableView];
-    v5 = [(CKVettingAddressSelectionController *)self selectedRowPath];
-    v6 = [v4 cellForRowAtIndexPath:v5];
+    tableView = [(CKVettingAddressSelectionController *)self tableView];
+    selectedRowPath2 = [(CKVettingAddressSelectionController *)self selectedRowPath];
+    v6 = [tableView cellForRowAtIndexPath:selectedRowPath2];
 
     [(CKVettingAddressSelectionController *)self handleSelectedCell:v6];
   }
 }
 
-- (void)handleSelectedCell:(id)a3
+- (void)handleSelectedCell:(id)cell
 {
-  v4 = a3;
-  [v4 startSpinner];
+  cellCopy = cell;
+  [cellCopy startSpinner];
   objc_initWeak(&location, self);
-  v5 = [(CKVettingAddressSelectionController *)self shareURL];
+  shareURL = [(CKVettingAddressSelectionController *)self shareURL];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_9A34;
   v7[3] = &unk_14880;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = cellCopy;
   v8 = v6;
-  [(CKVettingAddressSelectionController *)self fetchShareMetadata:v5 andThen:v7];
+  [(CKVettingAddressSelectionController *)self fetchShareMetadata:shareURL andThen:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_showInitiateFailureAlert:(id)a3 shareTitle:(id)a4 cell:(id)a5
+- (void)_showInitiateFailureAlert:(id)alert shareTitle:(id)title cell:(id)cell
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 email];
-  v11 = [v10 length] != 0;
+  cellCopy = cell;
+  titleCopy = title;
+  alertCopy = alert;
+  email = [cellCopy email];
+  v11 = [email length] != 0;
 
-  v12 = [v7 address];
+  address = [cellCopy address];
 
-  v13 = [CKVettingAlerts alertContentForInitiateVettingError:v9 shareTitle:v8 isEmail:v11 address:v12];
+  v13 = [CKVettingAlerts alertContentForInitiateVettingError:alertCopy shareTitle:titleCopy isEmail:v11 address:address];
 
   [CKVettingAlerts showFailureAlert:v13 isSourceICS:0];
 }
 
-- (void)fetchShareMetadata:(id)a3 andThen:(id)a4
+- (void)fetchShareMetadata:(id)metadata andThen:(id)then
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  thenCopy = then;
   v8 = [CKFetchShareMetadataOperation alloc];
-  v22 = v6;
+  v22 = metadataCopy;
   v9 = [NSArray arrayWithObjects:&v22 count:1];
   v10 = [v8 initWithShareURLs:v9];
 
-  v11 = [v10 configuration];
-  [v11 setDiscretionaryNetworkBehavior:0];
+  configuration = [v10 configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  v12 = [v10 configuration];
-  [v12 setAutomaticallyRetryNetworkFailures:0];
+  configuration2 = [v10 configuration];
+  [configuration2 setAutomaticallyRetryNetworkFailures:0];
 
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;
@@ -177,25 +177,25 @@
   v17[1] = 3221225472;
   v17[2] = sub_A2B4;
   v17[3] = &unk_148D0;
-  v13 = v7;
+  v13 = thenCopy;
   v18 = v13;
   [v10 setFetchShareMetadataCompletionBlock:v17];
   v14 = [[CKContainerID alloc] initWithContainerIdentifier:@"com.apple.cloudkit" environment:1];
   v15 = [[CKContainer alloc] initWithContainerID:v14];
   [(CKVettingAddressSelectionController *)self setClouddContainer:v15];
 
-  v16 = [(CKVettingAddressSelectionController *)self clouddContainer];
-  [v16 addOperation:v10];
+  clouddContainer = [(CKVettingAddressSelectionController *)self clouddContainer];
+  [clouddContainer addOperation:v10];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (void)_initiateVettingForParticipantID:(id)a3 address:(id)a4 andThen:(id)a5
+- (void)_initiateVettingForParticipantID:(id)d address:(id)address andThen:(id)then
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  addressCopy = address;
+  thenCopy = then;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x3032000000;
@@ -203,14 +203,14 @@
   v26[4] = sub_A550;
   v27 = 0;
   v11 = [CKInitiateParticipantVettingOperation alloc];
-  v12 = [(CKVettingAddressSelectionController *)self shareMetadata];
-  v13 = [v11 initWithShareMetadata:v12 participantID:v8 address:v9];
+  shareMetadata = [(CKVettingAddressSelectionController *)self shareMetadata];
+  v13 = [v11 initWithShareMetadata:shareMetadata participantID:dCopy address:addressCopy];
 
-  v14 = [v13 configuration];
-  [v14 setDiscretionaryNetworkBehavior:0];
+  configuration = [v13 configuration];
+  [configuration setDiscretionaryNetworkBehavior:0];
 
-  v15 = [v13 configuration];
-  [v15 setAutomaticallyRetryNetworkFailures:0];
+  configuration2 = [v13 configuration];
+  [configuration2 setAutomaticallyRetryNetworkFailures:0];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
@@ -223,88 +223,88 @@
   v22[2] = sub_A568;
   v22[3] = &unk_14920;
   v24 = v26;
-  v16 = v10;
+  v16 = thenCopy;
   v23 = v16;
   [v13 setParticipantVettingInitiationCompletionBlock:v22];
   v17 = [CKContainer alloc];
-  v18 = [(CKVettingAddressSelectionController *)self shareMetadata];
-  v19 = [v18 containerID];
-  v20 = [v17 initWithContainerID:v19];
+  shareMetadata2 = [(CKVettingAddressSelectionController *)self shareMetadata];
+  containerID = [shareMetadata2 containerID];
+  v20 = [v17 initWithContainerID:containerID];
   [(CKVettingAddressSelectionController *)self setMetadataIndicatedContainer:v20];
 
-  v21 = [(CKVettingAddressSelectionController *)self metadataIndicatedContainer];
-  [v21 addOperation:v13];
+  metadataIndicatedContainer = [(CKVettingAddressSelectionController *)self metadataIndicatedContainer];
+  [metadataIndicatedContainer addOperation:v13];
 
   _Block_object_dispose(v26, 8);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v19 = a4;
-  v5 = [(CKVettingAddressSelectionController *)self selectedRowPath];
-  v6 = [v5 isEqual:v19];
+  pathCopy = path;
+  selectedRowPath = [(CKVettingAddressSelectionController *)self selectedRowPath];
+  v6 = [selectedRowPath isEqual:pathCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CKVettingAddressSelectionController *)self selectedRowPath];
+    selectedRowPath2 = [(CKVettingAddressSelectionController *)self selectedRowPath];
 
-    if (!v7)
+    if (!selectedRowPath2)
     {
       v8 = +[UIDevice currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      userInterfaceIdiom = [v8 userInterfaceIdiom];
 
-      if (v9)
+      if (userInterfaceIdiom)
       {
-        v10 = [(CKVettingAddressSelectionController *)self sendEmailBarButton];
-        v11 = [(CKVettingAddressSelectionController *)self navigationController];
-        v12 = [v11 topViewController];
-        v13 = [v12 navigationItem];
-        [v13 setRightBarButtonItem:v10];
+        sendEmailBarButton = [(CKVettingAddressSelectionController *)self sendEmailBarButton];
+        navigationController = [(CKVettingAddressSelectionController *)self navigationController];
+        topViewController = [navigationController topViewController];
+        navigationItem = [topViewController navigationItem];
+        [navigationItem setRightBarButtonItem:sendEmailBarButton];
       }
 
       else
       {
-        v10 = [(CKVettingAddressSelectionController *)self sendEmailButton];
-        [v10 setEnabled:1];
+        sendEmailBarButton = [(CKVettingAddressSelectionController *)self sendEmailButton];
+        [sendEmailBarButton setEnabled:1];
       }
     }
 
-    v14 = [(CKVettingAddressSelectionController *)self tableView];
-    v15 = [(CKVettingAddressSelectionController *)self selectedRowPath];
-    v16 = [v14 cellForRowAtIndexPath:v15];
+    tableView = [(CKVettingAddressSelectionController *)self tableView];
+    selectedRowPath3 = [(CKVettingAddressSelectionController *)self selectedRowPath];
+    v16 = [tableView cellForRowAtIndexPath:selectedRowPath3];
 
     [v16 deselect];
-    v17 = [(CKVettingAddressSelectionController *)self tableView];
-    v18 = [v17 cellForRowAtIndexPath:v19];
+    tableView2 = [(CKVettingAddressSelectionController *)self tableView];
+    v18 = [tableView2 cellForRowAtIndexPath:pathCopy];
 
     [v18 select];
-    [(CKVettingAddressSelectionController *)self setSelectedRowPath:v19];
+    [(CKVettingAddressSelectionController *)self setSelectedRowPath:pathCopy];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(CKVettingAddressSelectionController *)self tripples:a3];
+  v4 = [(CKVettingAddressSelectionController *)self tripples:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CKVettingAddressSelectionController *)self tripples];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  tripples = [(CKVettingAddressSelectionController *)self tripples];
+  v7 = [tripples objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v8 = [v7 objectAtIndexedSubscript:0];
 
-  v9 = [(CKVettingAddressSelectionController *)self tripples];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  tripples2 = [(CKVettingAddressSelectionController *)self tripples];
+  v10 = [tripples2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v11 = [v10 objectAtIndexedSubscript:1];
 
-  v12 = [(CKVettingAddressSelectionController *)self tripples];
-  v13 = [v5 row];
+  tripples3 = [(CKVettingAddressSelectionController *)self tripples];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndexedSubscript:v13];
+  v14 = [tripples3 objectAtIndexedSubscript:v13];
   v15 = [v14 objectAtIndexedSubscript:2];
 
   v16 = [[CKVettingAddressSelectionTableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
@@ -312,9 +312,9 @@
   [(CKVettingAddressSelectionTableViewCell *)v16 setParticipantID:v8];
   [(CKVettingAddressSelectionTableViewCell *)v16 setEmail:v11];
   [(CKVettingAddressSelectionTableViewCell *)v16 setNumber:v15];
-  v17 = [(CKVettingAddressSelectionTableViewCell *)v16 address];
-  v18 = [(CKVettingAddressSelectionTableViewCell *)v16 textLabel];
-  [v18 setText:v17];
+  address = [(CKVettingAddressSelectionTableViewCell *)v16 address];
+  textLabel = [(CKVettingAddressSelectionTableViewCell *)v16 textLabel];
+  [textLabel setText:address];
 
   return v16;
 }
@@ -322,42 +322,42 @@
 - (void)_setupBarButtons
 {
   v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"handleCancel"];
-  v3 = [(CKVettingAddressSelectionController *)self navigationController];
-  v4 = [v3 topViewController];
-  v5 = [v4 navigationItem];
-  [v5 setLeftBarButtonItem:v15];
+  navigationController = [(CKVettingAddressSelectionController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  navigationItem = [topViewController navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
     v8 = [UIBarButtonItem alloc];
     v9 = sub_16B8(@"CLOUDKIT_VETTING_FOOTER_SEND_EMAIL", &stru_14980);
-    v10 = [v8 initWithTitle:v9 style:2 target:self action:"handleSendEmail"];
+    navigationController2 = [v8 initWithTitle:v9 style:2 target:self action:"handleSendEmail"];
 
-    [(CKVettingAddressSelectionController *)self setSendEmailBarButton:v10];
+    [(CKVettingAddressSelectionController *)self setSendEmailBarButton:navigationController2];
   }
 
   else
   {
-    v10 = [(CKVettingAddressSelectionController *)self navigationController];
-    v11 = [v10 topViewController];
-    v12 = [v11 navigationItem];
-    [v12 setRightBarButtonItem:0];
+    navigationController2 = [(CKVettingAddressSelectionController *)self navigationController];
+    topViewController2 = [navigationController2 topViewController];
+    navigationItem2 = [topViewController2 navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 
   v13 = sub_16B8(@"CLOUDKIT_VETTING_TITLE", &stru_14980);
-  v14 = [(CKVettingAddressSelectionController *)self navigationItem];
-  [v14 setTitle:v13];
+  navigationItem3 = [(CKVettingAddressSelectionController *)self navigationItem];
+  [navigationItem3 setTitle:v13];
 }
 
-- (id)_labelWithText:(id)a3 maxWidth:(double)a4
+- (id)_labelWithText:(id)text maxWidth:(double)width
 {
-  v5 = a3;
-  v6 = [[UILabel alloc] initWithFrame:{0.0, 0.0, a4, 0.0}];
+  textCopy = text;
+  v6 = [[UILabel alloc] initWithFrame:{0.0, 0.0, width, 0.0}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setText:v5];
+  [v6 setText:textCopy];
 
   [v6 setNumberOfLines:0];
   [v6 setTextAlignment:1];
@@ -365,25 +365,25 @@
   return v6;
 }
 
-- (id)_buttonWithText:(id)a3 maxWidth:(double)a4
+- (id)_buttonWithText:(id)text maxWidth:(double)width
 {
-  v5 = a3;
+  textCopy = text;
   v6 = [UIButton buttonWithType:1];
-  [v6 setFrame:{0.0, 0.0, a4, 0.0}];
+  [v6 setFrame:{0.0, 0.0, width, 0.0}];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setTitle:v5 forState:0];
+  [v6 setTitle:textCopy forState:0];
 
   return v6;
 }
 
-- (void)_setupSectionHeader:(id)a3
+- (void)_setupSectionHeader:(id)header
 {
-  v4 = [@"CLOUDKIT_VETTING_HEADER_" stringByAppendingString:a3];
-  v24 = [(CKVettingAddressSelectionController *)self sharedItem];
+  v4 = [@"CLOUDKIT_VETTING_HEADER_" stringByAppendingString:header];
+  sharedItem = [(CKVettingAddressSelectionController *)self sharedItem];
   v5 = sub_16B8(v4, @"%@");
 
-  v6 = [(CKVettingAddressSelectionController *)self tableView];
-  [v6 frame];
+  tableView = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView frame];
   v8 = [(CKVettingAddressSelectionController *)self _labelWithText:v5 maxWidth:v7 + -16.0];
 
   v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
@@ -402,8 +402,8 @@
   v15 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
 
   v16 = [UIView alloc];
-  v17 = [(CKVettingAddressSelectionController *)self tableView];
-  [v17 frame];
+  tableView2 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView2 frame];
   v18 = [v16 initWithFrame:{0.0, 0.0}];
 
   [v18 addSubview:v8];
@@ -418,18 +418,18 @@
   [v18 addConstraints:v22];
 
   [v18 setNeedsLayout];
-  v23 = [(CKVettingAddressSelectionController *)self tableView];
-  [v23 setTableHeaderView:v18];
+  tableView3 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView3 setTableHeaderView:v18];
 }
 
-- (void)_setupSectionFooter:(id)a3
+- (void)_setupSectionFooter:(id)footer
 {
-  v4 = a3;
-  v5 = [(CKVettingAddressSelectionController *)self tableView];
-  [v5 frame];
+  footerCopy = footer;
+  tableView = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView frame];
   v7 = v6 + -16.0;
 
-  v8 = [@"CLOUDKIT_VETTING_FOOTER_TEXT_" stringByAppendingString:v4];
+  v8 = [@"CLOUDKIT_VETTING_FOOTER_TEXT_" stringByAppendingString:footerCopy];
 
   v9 = sub_16B8(v8, &stru_14980);
   v10 = [(CKVettingAddressSelectionController *)self _labelWithText:v9 maxWidth:v7];
@@ -448,8 +448,8 @@
   [(CKVettingAddressSelectionController *)self setSendEmailButton:v14];
   v15 = +[UIDevice currentDevice];
   v16 = [v15 userInterfaceIdiom] == &dword_0 + 1;
-  v17 = [(CKVettingAddressSelectionController *)self sendEmailButton];
-  [v17 setHidden:v16];
+  sendEmailButton = [(CKVettingAddressSelectionController *)self sendEmailButton];
+  [sendEmailButton setHidden:v16];
 
   v48 = v10;
   [v10 frame];
@@ -471,24 +471,24 @@
   v50[3] = &off_16380;
   v47 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:4];
 
-  v29 = [(CKVettingAddressSelectionController *)self tableView];
-  [v29 frame];
+  tableView2 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView2 frame];
   v30 = +[UIApplication sharedApplication];
   [v30 statusBarFrame];
-  v31 = [(CKVettingAddressSelectionController *)self navigationController];
-  v32 = [v31 navigationBar];
-  [v32 frame];
-  v33 = [(CKVettingAddressSelectionController *)self tableView];
-  v34 = [v33 tableHeaderView];
-  [v34 frame];
-  v35 = [(CKVettingAddressSelectionController *)self tripples];
-  [v35 count];
-  v36 = [(CKVettingAddressSelectionController *)self tableView];
-  [v36 contentInset];
+  navigationController = [(CKVettingAddressSelectionController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
+  tableView3 = [(CKVettingAddressSelectionController *)self tableView];
+  tableHeaderView = [tableView3 tableHeaderView];
+  [tableHeaderView frame];
+  tripples = [(CKVettingAddressSelectionController *)self tripples];
+  [tripples count];
+  tableView4 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView4 contentInset];
 
   v37 = [UIView alloc];
-  v38 = [(CKVettingAddressSelectionController *)self tableView];
-  [v38 frame];
+  tableView5 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView5 frame];
   v39 = [v37 initWithFrame:{0.0, 0.0}];
 
   [v39 addSubview:v48];
@@ -510,8 +510,8 @@
   [v39 addConstraints:v45];
 
   [v39 setNeedsLayout];
-  v46 = [(CKVettingAddressSelectionController *)self tableView];
-  [v46 setTableFooterView:v39];
+  tableView6 = [(CKVettingAddressSelectionController *)self tableView];
+  [tableView6 setTableFooterView:v39];
 }
 
 @end

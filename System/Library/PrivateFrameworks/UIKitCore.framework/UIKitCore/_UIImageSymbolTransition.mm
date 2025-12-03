@@ -1,10 +1,10 @@
 @interface _UIImageSymbolTransition
 + (id)transition;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIImageSymbolTransition)init;
-- (_UIImageSymbolTransition)initWithCoder:(id)a3;
+- (_UIImageSymbolTransition)initWithCoder:(id)coder;
 - (id)_nsSymbolContentTransitionRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_performCompletionHandler;
 @end
 
@@ -26,8 +26,8 @@
 
 - (id)_nsSymbolContentTransitionRepresentation
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIImageSymbolEffect.m" lineNumber:792 description:@"Should never be called in abstract superclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageSymbolEffect.m" lineNumber:792 description:@"Should never be called in abstract superclass"];
 
   return 0;
 }
@@ -41,20 +41,20 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(_UIImageSymbolTransition *)self completionHandler];
-    v7 = [(_UIImageSymbolTransition *)v5 completionHandler];
-    v8 = v6 == v7;
+    completionHandler = [(_UIImageSymbolTransition *)self completionHandler];
+    completionHandler2 = [(_UIImageSymbolTransition *)v5 completionHandler];
+    v8 = completionHandler == completionHandler2;
   }
 
   else
@@ -65,21 +65,21 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() transition];
+  transition = [objc_opt_class() transition];
   v5 = _Block_copy(self->_completionHandler);
-  v6 = v4[1];
-  v4[1] = v5;
+  v6 = transition[1];
+  transition[1] = v5;
 
-  return v4;
+  return transition;
 }
 
-- (_UIImageSymbolTransition)initWithCoder:(id)a3
+- (_UIImageSymbolTransition)initWithCoder:(id)coder
 {
-  v4 = [objc_opt_class() effect];
+  effect = [objc_opt_class() effect];
 
-  return v4;
+  return effect;
 }
 
 @end

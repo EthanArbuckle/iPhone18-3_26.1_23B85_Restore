@@ -1,14 +1,14 @@
 @interface SSVURLConnectionConsumer
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SSVURLConnectionConsumer
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SSURLConnectionResponse alloc] initWithURLResponse:v6 bodyData:v7];
+  responseCopy = response;
+  dataCopy = data;
+  v8 = [[SSURLConnectionResponse alloc] initWithURLResponse:responseCopy bodyData:dataCopy];
 
   return v8;
 }

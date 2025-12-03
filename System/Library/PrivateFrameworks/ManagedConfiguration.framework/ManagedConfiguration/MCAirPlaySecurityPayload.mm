@@ -1,6 +1,6 @@
 @interface MCAirPlaySecurityPayload
 + (id)typeStrings;
-- (MCAirPlaySecurityPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAirPlaySecurityPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (id)stubDictionary;
 - (id)subtitle1Description;
 - (id)subtitle2Description;
@@ -19,20 +19,20 @@
   return v2;
 }
 
-- (MCAirPlaySecurityPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAirPlaySecurityPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v45[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = MCAirPlaySecurityPayload;
-  v9 = [(MCPayload *)&v38 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v38 initWithDictionary:dictionaryCopy profile:profile outError:error];
   if (!v9)
   {
     goto LABEL_19;
   }
 
   v37 = 0;
-  v10 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"AccessType" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v37];
+  v10 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"AccessType" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v37];
   v11 = v37;
   if (v11)
   {
@@ -42,10 +42,10 @@ LABEL_8:
 LABEL_9:
     v16 = [(MCPayload *)v9 malformedPayloadErrorWithError:v12];
     v10 = v16;
-    if (a5)
+    if (error)
     {
       v17 = v16;
-      *a5 = v10;
+      *error = v10;
     }
 
     v18 = _MCLogObjects;
@@ -54,11 +54,11 @@ LABEL_9:
       v19 = v18;
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [v10 MCVerboseDescription];
+      mCVerboseDescription = [v10 MCVerboseDescription];
       *buf = 138543618;
       v40 = v20;
       v41 = 2114;
-      v42 = v22;
+      v42 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v19, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -83,15 +83,15 @@ LABEL_5:
   [(MCAirPlaySecurityPayload *)v9 setAccessType:v10];
 
   v35 = 0;
-  v10 = [MCProfile removeRequiredObjectInDictionary:v8 key:@"SecurityType" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v35];
+  v10 = [MCProfile removeRequiredObjectInDictionary:dictionaryCopy key:@"SecurityType" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" missingDataCode:2002 missingDataErrorString:@"ERROR_PAYLOAD_REQUIRED_FIELD_MISSING_P_FIELD" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v35];
   v15 = v35;
   if (v15)
   {
     goto LABEL_7;
   }
 
-  v28 = [(MCAirPlaySecurityPayload *)v9 accessType];
-  v29 = [v28 isEqualToString:@"ANY"];
+  accessType = [(MCAirPlaySecurityPayload *)v9 accessType];
+  v29 = [accessType isEqualToString:@"ANY"];
 
   if (v29)
   {
@@ -120,7 +120,7 @@ LABEL_5:
   [(MCAirPlaySecurityPayload *)v9 setSecurityType:v10];
 
   v33 = 0;
-  v10 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:v8 key:@"Password" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v33];
+  v10 = [MCProfile removeOptionalNonZeroLengthStringInDictionary:dictionaryCopy key:@"Password" errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v33];
   v15 = v33;
   if (v15)
   {
@@ -129,8 +129,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v31 = [(MCAirPlaySecurityPayload *)v9 securityType];
-  if (![v31 isEqual:@"PASSWORD"])
+  securityType = [(MCAirPlaySecurityPayload *)v9 securityType];
+  if (![securityType isEqual:@"PASSWORD"])
   {
 
     goto LABEL_30;
@@ -156,17 +156,17 @@ LABEL_14:
   }
 
 LABEL_15:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v23 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      v25 = [(MCPayload *)v9 friendlyName];
+      friendlyName = [(MCPayload *)v9 friendlyName];
       *buf = 138543618;
-      v40 = v25;
+      v40 = friendlyName;
       v41 = 2114;
-      v42 = v8;
+      v42 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -180,12 +180,12 @@ LABEL_19:
 {
   v9.receiver = self;
   v9.super_class = MCAirPlaySecurityPayload;
-  v3 = [(MCPayload *)&v9 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v9 stubDictionary];
+  v4 = stubDictionary;
   accessType = self->_accessType;
   if (accessType)
   {
-    [v3 setObject:accessType forKey:@"AccessType"];
+    [stubDictionary setObject:accessType forKey:@"AccessType"];
   }
 
   securityType = self->_securityType;
@@ -212,8 +212,8 @@ LABEL_19:
 
   else if ([(NSString *)self->_accessType isEqualToString:@"WIFI_ONLY"])
   {
-    v4 = [@"AIRPLAY_SECURITY_ACCESS_WIFI" MCAppendGreenteaSuffix];
-    v3 = MCLocalizedString(v4);
+    mCAppendGreenteaSuffix = [@"AIRPLAY_SECURITY_ACCESS_WIFI" MCAppendGreenteaSuffix];
+    v3 = MCLocalizedString(mCAppendGreenteaSuffix);
   }
 
   else
@@ -263,8 +263,8 @@ LABEL_10:
   v3 = MEMORY[0x1E696AD60];
   v8.receiver = self;
   v8.super_class = MCAirPlaySecurityPayload;
-  v4 = [(MCPayload *)&v8 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v8 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   securityType = self->_securityType;
   [v5 appendFormat:@"AirPlay Security: %@ (%@)\n", securityType, self->_accessType];

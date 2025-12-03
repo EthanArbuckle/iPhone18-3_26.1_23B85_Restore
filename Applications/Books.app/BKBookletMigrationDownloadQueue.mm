@@ -1,28 +1,28 @@
 @interface BKBookletMigrationDownloadQueue
-- (BKBookletMigrationDownloadQueue)initWithStore:(id)a3;
+- (BKBookletMigrationDownloadQueue)initWithStore:(id)store;
 - (BKBookletMigrationDownloadQueueObserver)observer;
 - (BOOL)_hasPendingItems;
 - (void)_notifyDidBecomeEmpty;
-- (void)_processNextBatchWithCompletion:(id)a3;
-- (void)_setMigrationState:(int64_t)a3 forStoreIDStrings:(id)a4 logPrefix:(id)a5;
-- (void)_triggerDownloads:(id)a3;
-- (void)enqueueDownloads:(id)a3;
+- (void)_processNextBatchWithCompletion:(id)completion;
+- (void)_setMigrationState:(int64_t)state forStoreIDStrings:(id)strings logPrefix:(id)prefix;
+- (void)_triggerDownloads:(id)downloads;
+- (void)enqueueDownloads:(id)downloads;
 - (void)reloadFromStore;
-- (void)setObserver:(id)a3;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation BKBookletMigrationDownloadQueue
 
-- (BKBookletMigrationDownloadQueue)initWithStore:(id)a3
+- (BKBookletMigrationDownloadQueue)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v25.receiver = self;
   v25.super_class = BKBookletMigrationDownloadQueue;
   v6 = [(BKBookletMigrationDownloadQueue *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(NSMutableArray);
     pendingItems = v7->_pendingItems;
     v7->_pendingItems = v8;
@@ -57,16 +57,16 @@
   return v7;
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10010B26C;
   v5[3] = &unk_100A03440;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_accessLock);
+  selfCopy = self;
+  observerCopy = observer;
+  v4 = observerCopy;
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   sub_10010B26C(v5);
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -83,7 +83,7 @@
   v6[1] = 3221225472;
   v7 = sub_10010B3A4;
   v8 = &unk_100A036C0;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_accessLock);
@@ -96,21 +96,21 @@
   return v4;
 }
 
-- (void)enqueueDownloads:(id)a3
+- (void)enqueueDownloads:(id)downloads
 {
-  v19 = self;
-  v3 = a3;
+  selfCopy = self;
+  downloadsCopy = downloads;
   v4 = BKBookletMigrationLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v3;
+    *(&buf + 4) = downloadsCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "enqueueDownloads: storeIDs: %@", &buf, 0xCu);
   }
 
-  if (v3)
+  if (downloadsCopy)
   {
-    v5 = v3;
+    v5 = downloadsCopy;
   }
 
   else
@@ -129,7 +129,7 @@
   v37 = sub_1000273F0;
   v38 = sub_100027630;
   v39 = &__NSArray0__struct;
-  v8 = [(BKBookletMigrationDownloadQueue *)v19 store];
+  store = [(BKBookletMigrationDownloadQueue *)selfCopy store];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10010B794;
@@ -137,7 +137,7 @@
   v9 = v7;
   v26 = v9;
   p_buf = &buf;
-  [v8 migrationItemsWithStoreIDStrings:v9 completion:v25];
+  [store migrationItemsWithStoreIDStrings:v9 completion:v25];
 
   v23 = 0u;
   v24 = 0u;
@@ -158,7 +158,7 @@
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 storeIDString];
+        storeIDString = [v14 storeIDString];
         v16 = BKBookletMigrationLog();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -166,13 +166,13 @@
           *v28 = 141558530;
           v29 = 1752392040;
           v30 = 2112;
-          v31 = v15;
+          v31 = storeIDString;
           v32 = 2114;
           v33 = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "enqueueDownloads: Skipping existing item - storeID: %{mask.hash}@, state: %{public}@", v28, 0x20u);
         }
 
-        [v9 removeObject:v15];
+        [v9 removeObject:storeIDString];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v21 objects:v34 count:16];
@@ -183,7 +183,7 @@
 
   if ([v9 count])
   {
-    [(BKBookletMigrationDownloadQueue *)v19 _setMigrationState:100 forStoreIDStrings:v9 logPrefix:@"enqueueDownloads"];
+    [(BKBookletMigrationDownloadQueue *)selfCopy _setMigrationState:100 forStoreIDStrings:v9 logPrefix:@"enqueueDownloads"];
   }
 
   else
@@ -214,14 +214,14 @@
   v23 = sub_1000273F0;
   v24 = sub_100027630;
   v25 = &__NSArray0__struct;
-  v4 = [(BKBookletMigrationDownloadQueue *)self store];
+  store = [(BKBookletMigrationDownloadQueue *)self store];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10010BAB0;
   v19[3] = &unk_100A079A0;
   v19[4] = buf;
   v19[5] = 100;
-  [v4 migrationItemsWithState:100 completion:v19];
+  [store migrationItemsWithState:100 completion:v19];
 
   v15 = 0;
   v16 = &v15;
@@ -231,7 +231,7 @@
   v9[1] = 3221225472;
   v10 = sub_10010BB70;
   v11 = &unk_100A04B88;
-  v12 = self;
+  selfCopy = self;
   v13 = buf;
   v14 = &v15;
   v5 = v9;
@@ -241,8 +241,8 @@
 
   if (*(v16 + 24) == 1)
   {
-    v6 = [(BKBookletMigrationDownloadQueue *)self coalescingProcessNextBatch];
-    [v6 signalWithCompletion:&stru_100A079C0];
+    coalescingProcessNextBatch = [(BKBookletMigrationDownloadQueue *)self coalescingProcessNextBatch];
+    [coalescingProcessNextBatch signalWithCompletion:&stru_100A079C0];
   }
 
   else
@@ -263,7 +263,7 @@
 
 - (BOOL)_hasPendingItems
 {
-  v2 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -272,21 +272,21 @@
   v5[1] = 3221225472;
   v6 = sub_10010BCF0;
   v7 = &unk_100A036C0;
-  v8 = self;
+  selfCopy2 = self;
   v9 = &v10;
   v3 = v5;
-  os_unfair_lock_lock(&v2->_accessLock);
+  os_unfair_lock_lock(&selfCopy->_accessLock);
   v6(v3);
-  os_unfair_lock_unlock(&v2->_accessLock);
+  os_unfair_lock_unlock(&selfCopy->_accessLock);
 
-  LOBYTE(v2) = *(v11 + 24);
+  LOBYTE(selfCopy) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)_processNextBatchWithCompletion:(id)a3
+- (void)_processNextBatchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -297,7 +297,7 @@
   v10[1] = 3221225472;
   v11 = sub_10010BF04;
   v12 = &unk_100A037D8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
   v5 = v10;
   os_unfair_lock_lock(&self->_accessLock);
@@ -321,7 +321,7 @@
     [(BKBookletMigrationDownloadQueue *)self _notifyDidBecomeEmpty];
   }
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(completionCopy);
   v8 = v7;
   if (v7)
   {
@@ -331,22 +331,22 @@
   _Block_object_dispose(&v15, 8);
 }
 
-- (void)_triggerDownloads:(id)a3
+- (void)_triggerDownloads:(id)downloads
 {
-  v4 = a3;
+  downloadsCopy = downloads;
   v5 = BKBookletMigrationLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = downloadsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_triggerDownloads: %@", buf, 0xCu);
   }
 
   v6 = dispatch_group_create();
-  v7 = [NSSet setWithArray:v4];
+  v7 = [NSSet setWithArray:downloadsCopy];
   v8 = [v7 mutableCopy];
 
-  if ([v4 count])
+  if ([downloadsCopy count])
   {
     dispatch_group_enter(v6);
     v9 = +[BKLibraryManager defaultManager];
@@ -358,7 +358,7 @@
     v19 = v8;
     v20 = v9;
     v10 = v9;
-    [v10 fetchLibraryAssetsFromStoreIDs:v4 handler:v17];
+    [v10 fetchLibraryAssetsFromStoreIDs:downloadsCopy handler:v17];
   }
 
   objc_initWeak(buf, self);
@@ -368,7 +368,7 @@
   v13[2] = sub_10010C834;
   v13[3] = &unk_100A06858;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v12 = v8;
   objc_copyWeak(&v16, buf);
   dispatch_group_notify(v6, workQueue, v13);
@@ -379,17 +379,17 @@
 
 - (void)_notifyDidBecomeEmpty
 {
-  v2 = [(BKBookletMigrationDownloadQueue *)self observer];
-  [v2 bookletMigrationDownloadQueueDidBecomeEmpty];
+  observer = [(BKBookletMigrationDownloadQueue *)self observer];
+  [observer bookletMigrationDownloadQueueDidBecomeEmpty];
 }
 
-- (void)_setMigrationState:(int64_t)a3 forStoreIDStrings:(id)a4 logPrefix:(id)a5
+- (void)_setMigrationState:(int64_t)state forStoreIDStrings:(id)strings logPrefix:(id)prefix
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(BKBookletMigrationDownloadQueue *)self store];
+  stringsCopy = strings;
+  prefixCopy = prefix;
+  store = [(BKBookletMigrationDownloadQueue *)self store];
   v17 = 0;
-  v11 = [v10 setMigrationState:a3 forStoreIDStrings:v8 error:&v17];
+  v11 = [store setMigrationState:state forStoreIDStrings:stringsCopy error:&v17];
   v12 = v17;
 
   v13 = BKBookletMigrationLog();
@@ -401,13 +401,13 @@
       goto LABEL_6;
     }
 
-    v16 = [NSNumber numberWithInteger:a3];
+    v16 = [NSNumber numberWithInteger:state];
     *buf = 138544130;
-    v19 = v9;
+    v19 = prefixCopy;
     v20 = 2114;
     v21 = v16;
     v22 = 2112;
-    v23 = v8;
+    v23 = stringsCopy;
     v24 = 2112;
     v25 = v12;
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: Error setting migrationState to %{public}@, storeIDs: %@, error: %@", buf, 0x2Au);
@@ -416,16 +416,16 @@
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v8 count];
-    v16 = [NSNumber numberWithInteger:a3];
+    v15 = [stringsCopy count];
+    v16 = [NSNumber numberWithInteger:state];
     *buf = 138544130;
-    v19 = v9;
+    v19 = prefixCopy;
     v20 = 2048;
     v21 = v15;
     v22 = 2114;
     v23 = v16;
     v24 = 2112;
-    v25 = v8;
+    v25 = stringsCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Updated migrationState of %lu items to %{public}@, storeIDs: %@", buf, 0x2Au);
 LABEL_4:
   }

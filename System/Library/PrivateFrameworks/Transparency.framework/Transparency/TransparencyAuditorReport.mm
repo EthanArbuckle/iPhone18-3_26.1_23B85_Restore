@@ -1,15 +1,15 @@
 @interface TransparencyAuditorReport
 - (NSString)auditorName;
-- (TransparencyAuditorReport)initWithAuditorId:(int64_t)a3;
-- (void)getReportForUUID:(id)a3 completionBlock:(id)a4;
-- (void)getReportsForUUIDs:(id)a3 completionBlock:(id)a4;
-- (void)makeReport:(id)a3 additionalData:(id)a4 completionBlock:(id)a5;
-- (void)makeReports:(id)a3 additionalData:(id)a4 completionBlock:(id)a5;
+- (TransparencyAuditorReport)initWithAuditorId:(int64_t)id;
+- (void)getReportForUUID:(id)d completionBlock:(id)block;
+- (void)getReportsForUUIDs:(id)ds completionBlock:(id)block;
+- (void)makeReport:(id)report additionalData:(id)data completionBlock:(id)block;
+- (void)makeReports:(id)reports additionalData:(id)data completionBlock:(id)block;
 @end
 
 @implementation TransparencyAuditorReport
 
-- (TransparencyAuditorReport)initWithAuditorId:(int64_t)a3
+- (TransparencyAuditorReport)initWithAuditorId:(int64_t)id
 {
   v7.receiver = self;
   v7.super_class = TransparencyAuditorReport;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    [(TransparencyAuditorReport *)v4 setAuditorId:a3];
+    [(TransparencyAuditorReport *)v4 setAuditorId:id];
   }
 
   return v5;
@@ -36,23 +36,23 @@
   }
 }
 
-- (void)getReportForUUID:(id)a3 completionBlock:(id)a4
+- (void)getReportForUUID:(id)d completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __62__TransparencyAuditorReport_getReportForUUID_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = dCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__TransparencyAuditorReport_getReportForUUID_completionBlock___block_invoke_2_107;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = dCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -170,23 +170,23 @@ uint64_t __62__TransparencyAuditorReport_getReportForUUID_completionBlock___bloc
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getReportsForUUIDs:(id)a3 completionBlock:(id)a4
+- (void)getReportsForUUIDs:(id)ds completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__TransparencyAuditorReport_getReportsForUUIDs_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = dsCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__TransparencyAuditorReport_getReportsForUUIDs_completionBlock___block_invoke_116;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = dsCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -279,27 +279,27 @@ uint64_t __64__TransparencyAuditorReport_getReportsForUUIDs_completionBlock___bl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)makeReport:(id)a3 additionalData:(id)a4 completionBlock:(id)a5
+- (void)makeReport:(id)report additionalData:(id)data completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportCopy = report;
+  dataCopy = data;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__TransparencyAuditorReport_makeReport_additionalData_completionBlock___block_invoke;
   v16[3] = &unk_1E8702268;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = reportCopy;
+  v18 = dataCopy;
+  v19 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__TransparencyAuditorReport_makeReport_additionalData_completionBlock___block_invoke_125;
   v14[3] = &unk_1E87013C8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = dataCopy;
+  v13 = reportCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v16 errorHandler:v14];
 }
 
@@ -396,27 +396,27 @@ uint64_t __71__TransparencyAuditorReport_makeReport_additionalData_completionBlo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)makeReports:(id)a3 additionalData:(id)a4 completionBlock:(id)a5
+- (void)makeReports:(id)reports additionalData:(id)data completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reportsCopy = reports;
+  dataCopy = data;
+  blockCopy = block;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __72__TransparencyAuditorReport_makeReports_additionalData_completionBlock___block_invoke;
   v16[3] = &unk_1E8702268;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = reportsCopy;
+  v18 = dataCopy;
+  v19 = blockCopy;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__TransparencyAuditorReport_makeReports_additionalData_completionBlock___block_invoke_134;
   v14[3] = &unk_1E87013C8;
   v15 = v19;
   v11 = v19;
-  v12 = v9;
-  v13 = v8;
+  v12 = dataCopy;
+  v13 = reportsCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v16 errorHandler:v14];
 }
 

@@ -1,20 +1,20 @@
 @interface SKUIBadgeViewElement
 - (CGSize)size;
 - (NSAttributedString)attributedString;
-- (SKUIBadgeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SKUIBadgeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (UIImage)fallbackImage;
 - (id)accessibilityText;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 - (int64_t)badgeType;
 @end
 
 @implementation SKUIBadgeViewElement
 
-- (SKUIBadgeViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUIBadgeViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIBadgeViewElement initWithDOMElement:parent:elementFactory:];
@@ -22,21 +22,21 @@
 
   v27.receiver = self;
   v27.super_class = SKUIBadgeViewElement;
-  v11 = [(SKUIViewElement *)&v27 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v27 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"src"];
+    v12 = [elementCopy getAttribute:@"src"];
     if ([v12 length])
     {
       v13 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v12];
-      v14 = [v13 scheme];
-      v15 = [v14 isEqualToString:@"resource"];
+      scheme = [v13 scheme];
+      v15 = [scheme isEqualToString:@"resource"];
 
       if (v15)
       {
-        v16 = [v13 host];
+        host = [v13 host];
         resourceName = v11->_resourceName;
-        v11->_resourceName = v16;
+        v11->_resourceName = host;
       }
 
       else
@@ -49,10 +49,10 @@
 
     if (!v11->_resourceName && !v11->_url)
     {
-      v19 = [v8 getAttribute:@"content"];
+      v19 = [elementCopy getAttribute:@"content"];
       if (![v19 length])
       {
-        v20 = [v8 getAttribute:@"text"];
+        v20 = [elementCopy getAttribute:@"text"];
 
         v19 = v20;
       }
@@ -63,8 +63,8 @@
       }
     }
 
-    v21 = [v8 getAttribute:@"height"];
-    v22 = [v8 getAttribute:@"width"];
+    v21 = [elementCopy getAttribute:@"height"];
+    v22 = [elementCopy getAttribute:@"width"];
     if ([v21 length] && objc_msgSend(v22, "length"))
     {
       [v22 floatValue];
@@ -82,27 +82,27 @@
 {
   if (self->_text)
   {
-    v3 = [(SKUIBadgeViewElement *)self style];
-    v4 = SKUIViewElementFontWithStyle(v3);
+    style = [(SKUIBadgeViewElement *)self style];
+    v4 = SKUIViewElementFontWithStyle(style);
     if (!v4)
     {
       v4 = [MEMORY[0x277D74300] systemFontOfSize:10.0];
     }
 
-    v5 = [v3 ikColor];
-    v6 = [v5 color];
+    ikColor = [style ikColor];
+    color = [ikColor color];
 
-    if (!v6)
+    if (!color)
     {
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      color = [MEMORY[0x277D75348] whiteColor];
     }
 
-    v7 = [MEMORY[0x277D74248] defaultParagraphStyle];
-    v8 = [v7 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+    v8 = [defaultParagraphStyle mutableCopy];
 
     [v8 setLineBreakMode:4];
     v9 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v10 = [v9 initWithObjectsAndKeys:{v4, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D74118], v6, *MEMORY[0x277D740C0], 0}];
+    v10 = [v9 initWithObjectsAndKeys:{v4, *MEMORY[0x277D740A8], v8, *MEMORY[0x277D74118], color, *MEMORY[0x277D740C0], 0}];
     v11 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:self->_text attributes:v10];
   }
 
@@ -116,8 +116,8 @@
 
 - (int64_t)badgeType
 {
-  v3 = [(SKUIBadgeViewElement *)self fallbackImage];
-  if (!v3 && !self->_resourceName)
+  fallbackImage = [(SKUIBadgeViewElement *)self fallbackImage];
+  if (!fallbackImage && !self->_resourceName)
   {
     return self->_url == 0;
   }
@@ -129,37 +129,37 @@
 {
   v6.receiver = self;
   v6.super_class = SKUIBadgeViewElement;
-  v3 = [(SKUIBadgeViewElement *)&v6 accessibilityText];
-  if (![v3 length])
+  accessibilityText = [(SKUIBadgeViewElement *)&v6 accessibilityText];
+  if (![accessibilityText length])
   {
     v4 = self->_text;
 
-    v3 = v4;
+    accessibilityText = v4;
   }
 
-  return v3;
+  return accessibilityText;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v18.receiver = self;
   v18.super_class = SKUIBadgeViewElement;
-  v5 = [(SKUIViewElement *)&v18 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v18 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self)
+  if (elementCopy != self)
   {
-    if (!v4)
+    if (!elementCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_6:
-    if (v4->_hasValidFallbackImage)
+    if (elementCopy->_hasValidFallbackImage)
     {
-      v8 = [(SKUIBadgeViewElement *)v4 fallbackImage];
+      fallbackImage = [(SKUIBadgeViewElement *)elementCopy fallbackImage];
       fallbackImage = self->_fallbackImage;
-      self->_fallbackImage = v8;
+      self->_fallbackImage = fallbackImage;
 
       self->_hasValidFallbackImage = 1;
     }
@@ -171,23 +171,23 @@ LABEL_6:
       self->_fallbackImage = 0;
     }
 
-    v11 = [(SKUIBadgeViewElement *)v4 resourceName];
+    resourceName = [(SKUIBadgeViewElement *)elementCopy resourceName];
     resourceName = self->_resourceName;
-    self->_resourceName = v11;
+    self->_resourceName = resourceName;
 
-    [(SKUIBadgeViewElement *)v4 size];
+    [(SKUIBadgeViewElement *)elementCopy size];
     self->_size.width = v13;
     self->_size.height = v14;
-    objc_storeStrong(&self->_text, v4->_text);
-    v15 = [(SKUIBadgeViewElement *)v4 URL];
+    objc_storeStrong(&self->_text, elementCopy->_text);
+    v15 = [(SKUIBadgeViewElement *)elementCopy URL];
     url = self->_url;
     self->_url = v15;
 
     goto LABEL_10;
   }
 
-  v7 = [v5 updateType];
-  if (v4 && v7)
+  updateType = [v5 updateType];
+  if (elementCopy && updateType)
   {
     goto LABEL_6;
   }
@@ -202,19 +202,19 @@ LABEL_10:
   if (!self->_hasValidFallbackImage)
   {
     self->_hasValidFallbackImage = 1;
-    v3 = [(SKUIBadgeViewElement *)self style];
-    v4 = [v3 badgeTreatment];
-    v5 = [v4 isEqualToString:@"rect"];
+    style = [(SKUIBadgeViewElement *)self style];
+    badgeTreatment = [style badgeTreatment];
+    v5 = [badgeTreatment isEqualToString:@"rect"];
 
     if (v5)
     {
       v6 = self->_text;
-      v7 = [v3 ikColor];
-      v8 = [v7 color];
+      ikColor = [style ikColor];
+      color = [ikColor color];
 
-      if (v8)
+      if (color)
       {
-        v9 = SKUIBadgeImageFromText(v6, v8, 1);
+        v9 = SKUIBadgeImageFromText(v6, color, 1);
         fallbackImage = self->_fallbackImage;
         self->_fallbackImage = v9;
       }

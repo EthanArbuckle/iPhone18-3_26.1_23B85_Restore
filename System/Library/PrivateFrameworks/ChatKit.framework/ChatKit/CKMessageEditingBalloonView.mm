@@ -1,30 +1,30 @@
 @interface CKMessageEditingBalloonView
 - (BOOL)hasBalloonShape;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (CGRect)customTextViewLayoutBounds;
-- (CKMessageEditingBalloonView)initWithFrame:(CGRect)a3;
+- (CKMessageEditingBalloonView)initWithFrame:(CGRect)frame;
 - (CKMessageEditingBalloonViewDelegate)editingBalloonViewDelegate;
 - (NSString)description;
-- (id)textEffectsEditMenuForTextInRange:(_NSRange)a3;
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)applyTextEffect:(int64_t)a3 toTextRange:(_NSRange)a4;
-- (void)applyTextStyle:(unint64_t)a3 toTextRange:(_NSRange)a4;
-- (void)compositionTranslator:(id)a3 didFailTranslationForVersion:(int64_t)a4;
-- (void)compositionTranslator:(id)a3 didUpdateTranslation:(id)a4 sourceLanguage:(id)a5 destinationLanguage:(id)a6 version:(int64_t)a7;
+- (id)textEffectsEditMenuForTextInRange:(_NSRange)range;
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)applyTextEffect:(int64_t)effect toTextRange:(_NSRange)range;
+- (void)applyTextStyle:(unint64_t)style toTextRange:(_NSRange)range;
+- (void)compositionTranslator:(id)translator didFailTranslationForVersion:(int64_t)version;
+- (void)compositionTranslator:(id)translator didUpdateTranslation:(id)translation sourceLanguage:(id)language destinationLanguage:(id)destinationLanguage version:(int64_t)version;
 - (void)layoutSubviews;
-- (void)messageEntryTextView:(id)a3 applyStyleChangeOfType:(unint64_t)a4 add:(BOOL)a5 forRange:(_NSRange)a6;
-- (void)messageEntryTextView:(id)a3 didSetAnimationName:(id)a4 forRange:(_NSRange)a5;
-- (void)messageEntryTextView:(id)a3 didUpdateForRange:(_NSRange)a4 conversionHandler:(id)a5;
-- (void)messageEntryTextView:(id)a3 replaceRange:(_NSRange)a4 withAttributedText:(id)a5;
-- (void)messageEntryTextViewDidChangePencilMode:(id)a3;
-- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)a3;
-- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)a3;
+- (void)messageEntryTextView:(id)view applyStyleChangeOfType:(unint64_t)type add:(BOOL)add forRange:(_NSRange)range;
+- (void)messageEntryTextView:(id)view didSetAnimationName:(id)name forRange:(_NSRange)range;
+- (void)messageEntryTextView:(id)view didUpdateForRange:(_NSRange)range conversionHandler:(id)handler;
+- (void)messageEntryTextView:(id)view replaceRange:(_NSRange)range withAttributedText:(id)text;
+- (void)messageEntryTextViewDidChangePencilMode:(id)mode;
+- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)type;
+- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)style;
 - (void)prepareForReuse;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewWritingToolsDidEnd:(id)a3;
-- (void)textViewWritingToolsWillBegin:(id)a3;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewWritingToolsDidEnd:(id)end;
+- (void)textViewWritingToolsWillBegin:(id)begin;
 @end
 
 @implementation CKMessageEditingBalloonView
@@ -34,30 +34,30 @@
   v3 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = CKMessageEditingBalloonView;
-  v4 = [(CKTextBalloonView *)&v9 textView];
+  textView = [(CKTextBalloonView *)&v9 textView];
   v8.receiver = self;
   v8.super_class = CKMessageEditingBalloonView;
   v5 = [(CKTextBalloonView *)&v8 description];
-  v6 = [v3 stringWithFormat:@"[CKMessageEditingBalloonView textView:%@ %@]", v4, v5];
+  v6 = [v3 stringWithFormat:@"[CKMessageEditingBalloonView textView:%@ %@]", textView, v5];
 
   return v6;
 }
 
-- (CKMessageEditingBalloonView)initWithFrame:(CGRect)a3
+- (CKMessageEditingBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CKMessageEntryTextView *)[CKMessageEditingBalloonTextView alloc] initUsingTextLayoutManagerWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v8 = [(CKMessageEntryTextView *)[CKMessageEditingBalloonTextView alloc] initUsingTextLayoutManagerWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [CKMessageEntryContentView configureMessageBodyEntryTextView:v8 shouldUseNonEmojiKeyboard:0 shouldUseNonHandwritingKeyboard:0];
   v26.receiver = self;
   v26.super_class = CKMessageEditingBalloonView;
-  v9 = [(CKTextBalloonView *)&v26 initWithFrame:v8 textView:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(CKTextBalloonView *)&v26 initWithFrame:v8 textView:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    objc_storeStrong(&v9->_messageEditingBalloonTextView, v8);
+    objc_storeStrong(&height->_messageEditingBalloonTextView, v8);
     [(CKTextBalloonView *)v10 targetTextContainerInsets];
     [v8 setTextContainerInset:?];
     [v8 setEditable:1];
@@ -65,39 +65,39 @@
     [v8 setUserInteractionEnabled:1];
     [v8 setAlwaysBounceVertical:0];
     [v8 setSupportsBigEmojiTextStyles:1];
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v12 = [v11 isExpressiveTextEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-    if (v12)
+    if (isExpressiveTextEnabled)
     {
       [v8 setAllowsTextAnimations:1];
       [(CKMessageEntryTextView *)v10->_messageEditingBalloonTextView setTextFormattingDelegate:v10];
-      v13 = [v8 textLayoutManager];
-      [v13 setRequiresCTLineRef:1];
+      textLayoutManager = [v8 textLayoutManager];
+      [textLayoutManager setRequiresCTLineRef:1];
     }
 
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v15 = [v14 isAutomaticOutgoingTranslationEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isAutomaticOutgoingTranslationEnabled = [mEMORY[0x1E69A8070]2 isAutomaticOutgoingTranslationEnabled];
 
-    if (v15)
+    if (isAutomaticOutgoingTranslationEnabled)
     {
       v16 = objc_opt_new();
       [v16 setDelegate:v10];
       [(CKMessageEditingBalloonView *)v10 setTranslator:v16];
-      v17 = [(CKMessageEntryTextView *)[CKMessageEditingBalloonTextView alloc] initUsingTextLayoutManagerWithFrame:x, y, width, height];
+      height2 = [(CKMessageEntryTextView *)[CKMessageEditingBalloonTextView alloc] initUsingTextLayoutManagerWithFrame:x, y, width, height];
       messageEditingBalloonTranslationView = v10->_messageEditingBalloonTranslationView;
-      v10->_messageEditingBalloonTranslationView = v17;
-      v19 = v17;
+      v10->_messageEditingBalloonTranslationView = height2;
+      v19 = height2;
 
       [(CKMessageEditingBalloonTextView *)v19 setEditable:0];
       v20 = +[CKUIBehavior sharedBehaviors];
-      v21 = [v20 theme];
-      v22 = [v21 secondaryLabelColor];
-      [(CKMessageEditingBalloonTextView *)v19 setTextColor:v22];
+      theme = [v20 theme];
+      secondaryLabelColor = [theme secondaryLabelColor];
+      [(CKMessageEditingBalloonTextView *)v19 setTextColor:secondaryLabelColor];
 
       v23 = +[CKUIBehavior sharedBehaviors];
-      v24 = [v23 balloonTranslationSecondaryTextFont];
-      [(CKMessageEntryTextView *)v19 setFont:v24];
+      balloonTranslationSecondaryTextFont = [v23 balloonTranslationSecondaryTextFont];
+      [(CKMessageEntryTextView *)v19 setFont:balloonTranslationSecondaryTextFont];
 
       [(CKTextBalloonView *)v10 setTranslationSecondaryTextView:v19];
       [(CKMessageEditingBalloonView *)v10 addSubview:v19];
@@ -109,10 +109,10 @@
 
 - (BOOL)hasBalloonShape
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  return v3 ^ 1;
+  return isEntryViewRefreshEnabled ^ 1;
 }
 
 - (void)layoutSubviews
@@ -161,24 +161,24 @@
   v20 = ceil(v10 * v18) / v18;
   v21 = floor(v8 * v18) / v18;
   v22 = ceil(v12 * v18) / v18;
-  v23 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v24 = [v23 isAutomaticOutgoingTranslationEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAutomaticOutgoingTranslationEnabled = [mEMORY[0x1E69A8070] isAutomaticOutgoingTranslationEnabled];
 
-  if (v24 && [(CKTextBalloonView *)self shouldShowTranslationSecondaryText])
+  if (isAutomaticOutgoingTranslationEnabled && [(CKTextBalloonView *)self shouldShowTranslationSecondaryText])
   {
-    v25 = [(CKTextBalloonView *)self translationSecondaryTextView];
+    translationSecondaryTextView = [(CKTextBalloonView *)self translationSecondaryTextView];
     [(CKTextBalloonView *)self translationSecondaryTextSize];
-    [v25 setFrame:{v19, v21, v20, v26}];
+    [translationSecondaryTextView setFrame:{v19, v21, v20, v26}];
     [(CKTextBalloonView *)self translationSecondaryTextSize];
     v21 = v21 + v27;
   }
 
-  v28 = [(CKTextBalloonView *)self textView];
-  [v28 setFrame:{v19, v21, v20, v22}];
-  v29 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v30 = [v29 isEntryViewRefreshEnabled];
+  textView = [(CKTextBalloonView *)self textView];
+  [textView setFrame:{v19, v21, v20, v22}];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (v30)
+  if (isEntryViewRefreshEnabled)
   {
     v31 = +[CKUIBehavior sharedBehaviors];
     [v31 textBalloonMinHeight];
@@ -192,8 +192,8 @@
     }
 
     v35 = Height * 0.5;
-    v36 = [(CKMessageEditingBalloonView *)self layer];
-    [v36 setCornerRadius:v35];
+    layer = [(CKMessageEditingBalloonView *)self layer];
+    [layer setCornerRadius:v35];
   }
 }
 
@@ -205,30 +205,30 @@
   [(CKTextBalloonView *)self setContainsExcessiveLineHeightCharacters:0];
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
   if (!self->_typingAttributes)
   {
-    v4 = [a3 typingAttributes];
-    [(CKMessageEditingBalloonView *)self setTypingAttributes:v4];
+    typingAttributes = [editing typingAttributes];
+    [(CKMessageEditingBalloonView *)self setTypingAttributes:typingAttributes];
   }
 
   return 1;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v16 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CKTextBalloonView *)self textView];
-  v10 = v9;
-  if (v9 == v7)
+  rangeCopy = range;
+  viewCopy = view;
+  textCopy = text;
+  textView = [(CKTextBalloonView *)self textView];
+  v10 = textView;
+  if (textView == viewCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) != 0 && ![v7 shouldUpdateMentionsInRange:&v16 replacementText:v8])
+    if ((isKindOfClass & 1) != 0 && ![viewCopy shouldUpdateMentionsInRange:&rangeCopy replacementText:textCopy])
     {
       v14 = 0;
       goto LABEL_6;
@@ -239,32 +239,32 @@
   {
   }
 
-  v12 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView:v16.location];
-  v13 = [v12 effectsPickerAssistant];
-  [v13 adjustTypingAttributesIfNeededForReplacement:v8 inRange:{v16.location, v16.length}];
+  v12 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView:rangeCopy.location];
+  effectsPickerAssistant = [v12 effectsPickerAssistant];
+  [effectsPickerAssistant adjustTypingAttributesIfNeededForReplacement:textCopy inRange:{rangeCopy.location, rangeCopy.length}];
 
   v14 = 1;
 LABEL_6:
-  [v7 typingAttributes];
+  [viewCopy typingAttributes];
 
   return v14;
 }
 
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = [a5 mutableCopy];
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  if (![v9 isExpressiveTextEnabled])
+  length = range.length;
+  location = range.location;
+  v8 = [actions mutableCopy];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  if (![mEMORY[0x1E69A8070] isExpressiveTextEnabled])
   {
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isSendingExpressiveTextEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSendingExpressiveTextEnabled = [mEMORY[0x1E69A8070]2 isSendingExpressiveTextEnabled];
 
-  if (!v11)
+  if (!isSendingExpressiveTextEnabled)
   {
     goto LABEL_13;
   }
@@ -282,8 +282,8 @@ LABEL_6:
 
   if (CKIsRunningInMacCatalyst())
   {
-    v9 = [(CKMessageEditingBalloonView *)self textEffectsEditMenuForTextInRange:location, length];
-    if (!v9)
+    mEMORY[0x1E69A8070] = [(CKMessageEditingBalloonView *)self textEffectsEditMenuForTextInRange:location, length];
+    if (!mEMORY[0x1E69A8070])
     {
       goto LABEL_12;
     }
@@ -291,17 +291,17 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v14 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  v9 = [v14 showTextEffectsPickerEditMenuAction];
+  messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  mEMORY[0x1E69A8070] = [messageEditingBalloonTextView showTextEffectsPickerEditMenuAction];
 
-  if (v9)
+  if (mEMORY[0x1E69A8070])
   {
     v15 = CKFrameworkBundle();
     v16 = [v15 localizedStringForKey:@"TEXT_EFFECTS" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v9 setTitle:v16];
+    [mEMORY[0x1E69A8070] setTitle:v16];
 
 LABEL_11:
-    [v8 insertObject:v9 atIndex:v13];
+    [v8 insertObject:mEMORY[0x1E69A8070] atIndex:v13];
   }
 
 LABEL_12:
@@ -314,179 +314,179 @@ LABEL_13:
   return v19;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  [a3 updateFontIfNeededAndGetWasUsingBigEmojiStyle:0];
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isAutomaticOutgoingTranslationEnabled];
+  [change updateFontIfNeededAndGetWasUsingBigEmojiStyle:0];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAutomaticOutgoingTranslationEnabled = [mEMORY[0x1E69A8070] isAutomaticOutgoingTranslationEnabled];
 
-  if (v5)
+  if (isAutomaticOutgoingTranslationEnabled)
   {
-    v6 = [(CKMessageEditingBalloonView *)self translationLanguage];
+    translationLanguage = [(CKMessageEditingBalloonView *)self translationLanguage];
 
-    if (v6)
+    if (translationLanguage)
     {
       [(CKMessageEditingBalloonView *)self setTranslationVersion:[(CKMessageEditingBalloonView *)self translationVersion]+ 1];
-      v7 = [(CKMessageEditingBalloonView *)self translator];
-      v8 = [(CKTextBalloonView *)self textView];
-      v9 = [v8 attributedText];
-      v10 = [(CKMessageEditingBalloonView *)self translationLanguage];
-      v11 = [(CKMessageEditingBalloonView *)self translationToLanguage];
-      [v7 translate:v9 into:v10 from:v11 version:{-[CKMessageEditingBalloonView translationVersion](self, "translationVersion")}];
+      translator = [(CKMessageEditingBalloonView *)self translator];
+      textView = [(CKTextBalloonView *)self textView];
+      attributedText = [textView attributedText];
+      translationLanguage2 = [(CKMessageEditingBalloonView *)self translationLanguage];
+      translationToLanguage = [(CKMessageEditingBalloonView *)self translationToLanguage];
+      [translator translate:attributedText into:translationLanguage2 from:translationToLanguage version:{-[CKMessageEditingBalloonView translationVersion](self, "translationVersion")}];
     }
   }
 
-  v12 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v12 messageEditingBalloonViewContentDidChange:self];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v5 = a3;
+  selectionCopy = selection;
   if (![(CKMessageEditingBalloonView *)self isBeingTornDown])
   {
-    v4 = [(CKTextBalloonView *)self textView];
+    textView = [(CKTextBalloonView *)self textView];
 
-    if (v4 == v5 && !+[CKMentionsUtilities supportsSupplementalLexiconMentions])
+    if (textView == selectionCopy && !+[CKMentionsUtilities supportsSupplementalLexiconMentions])
     {
-      [v5 checkForMentions];
+      [selectionCopy checkForMentions];
     }
   }
 }
 
-- (void)textViewWritingToolsWillBegin:(id)a3
+- (void)textViewWritingToolsWillBegin:(id)begin
 {
-  v4 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v4 messageEditingBalloonViewWritingToolsWillBegin:self];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewWritingToolsWillBegin:self];
 }
 
-- (void)textViewWritingToolsDidEnd:(id)a3
+- (void)textViewWritingToolsDidEnd:(id)end
 {
-  v4 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v4 messageEditingBalloonViewWritingToolsDidEnd:self];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewWritingToolsDidEnd:self];
 }
 
-- (void)messageEntryTextView:(id)a3 didUpdateForRange:(_NSRange)a4 conversionHandler:(id)a5
+- (void)messageEntryTextView:(id)view didUpdateForRange:(_NSRange)range conversionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  handlerCopy = handler;
   if (length)
   {
-    v13 = v9;
-    v10 = [a3 textStorage];
-    [v10 beginEditing];
-    v11 = [v10 ck_attributedStringByConverting:v13 range:{location, length}];
-    [v10 endEditing];
-    v12 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-    [v12 messageEditingBalloonViewContentDidChange:self];
+    v13 = handlerCopy;
+    textStorage = [view textStorage];
+    [textStorage beginEditing];
+    v11 = [textStorage ck_attributedStringByConverting:v13 range:{location, length}];
+    [textStorage endEditing];
+    editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+    [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 
-    v9 = v13;
+    handlerCopy = v13;
   }
 }
 
-- (void)messageEntryTextView:(id)a3 didSetAnimationName:(id)a4 forRange:(_NSRange)a5
+- (void)messageEntryTextView:(id)view didSetAnimationName:(id)name forRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
-    length = a5.length;
-    location = a5.location;
-    v9 = a4;
-    v12 = [a3 textStorage];
-    [v12 beginEditing];
-    [v12 ck_toggleTextEffectNamed:v9 range:location getAdded:{length, 0}];
+    length = range.length;
+    location = range.location;
+    nameCopy = name;
+    textStorage = [view textStorage];
+    [textStorage beginEditing];
+    [textStorage ck_toggleTextEffectNamed:nameCopy range:location getAdded:{length, 0}];
 
-    [v12 endEditing];
-    v10 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-    [v10 messageEditingBalloonViewContentDidChange:self];
+    [textStorage endEditing];
+    editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+    [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 
-    v11 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-    [v11 messageEditingBalloonView:self didChangeTextAnimationInRange:{location, length}];
+    editingBalloonViewDelegate2 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+    [editingBalloonViewDelegate2 messageEditingBalloonView:self didChangeTextAnimationInRange:{location, length}];
   }
 }
 
-- (void)messageEntryTextView:(id)a3 applyStyleChangeOfType:(unint64_t)a4 add:(BOOL)a5 forRange:(_NSRange)a6
+- (void)messageEntryTextView:(id)view applyStyleChangeOfType:(unint64_t)type add:(BOOL)add forRange:(_NSRange)range
 {
-  if (a6.length)
+  if (range.length)
   {
-    location = a6.location;
-    if (a6.location != 0x7FFFFFFFFFFFFFFFLL)
+    location = range.location;
+    if (range.location != 0x7FFFFFFFFFFFFFFFLL)
     {
-      length = a6.length;
-      v8 = a5;
-      v12 = [a3 textStorage];
-      [v12 beginEditing];
-      if (v8)
+      length = range.length;
+      addCopy = add;
+      textStorage = [view textStorage];
+      [textStorage beginEditing];
+      if (addCopy)
       {
-        [v12 ck_addTextStyle:a4 options:3 range:{location, length}];
+        [textStorage ck_addTextStyle:type options:3 range:{location, length}];
       }
 
       else
       {
-        [v12 ck_removeTextStyle:a4 options:3 range:{location, length}];
+        [textStorage ck_removeTextStyle:type options:3 range:{location, length}];
       }
 
-      [v12 endEditing];
-      v11 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-      [v11 messageEditingBalloonViewContentDidChange:self];
+      [textStorage endEditing];
+      editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+      [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
     }
   }
 }
 
-- (void)messageEntryTextView:(id)a3 replaceRange:(_NSRange)a4 withAttributedText:(id)a5
+- (void)messageEntryTextView:(id)view replaceRange:(_NSRange)range withAttributedText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v15 = [a5 mutableCopy];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  v15 = [text mutableCopy];
   [v15 ck_replaceTextAnimationsWithIMTextEffects];
   [v15 ck_replaceBIUSWithIMTextStyles];
   v10 = *MEMORY[0x1E69DB648];
   [v15 removeAttribute:*MEMORY[0x1E69DB648] range:{0, objc_msgSend(v15, "length")}];
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 balloonTextFont];
-  [v15 addAttribute:v10 value:v12 range:{0, objc_msgSend(v15, "length")}];
+  balloonTextFont = [v11 balloonTextFont];
+  [v15 addAttribute:v10 value:balloonTextFont range:{0, objc_msgSend(v15, "length")}];
 
   [v15 ck_addDisplayableAttributeForIMTextEffectAttribute];
   [v15 ck_addDisplayableAttributesForIMTextStyleAttributes];
-  v13 = [v9 textStorage];
+  textStorage = [viewCopy textStorage];
 
-  [v13 beginEditing];
-  [v13 replaceCharactersInRange:location withAttributedString:{length, v15}];
-  [v13 endEditing];
-  v14 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v14 messageEditingBalloonViewContentDidChange:self];
+  [textStorage beginEditing];
+  [textStorage replaceCharactersInRange:location withAttributedString:{length, v15}];
+  [textStorage endEditing];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 }
 
-- (void)messageEntryTextViewDidChangePencilMode:(id)a3
+- (void)messageEntryTextViewDidChangePencilMode:(id)mode
 {
-  v4 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v4 messageEditingBalloonViewDidChangePencilMode:self];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewDidChangePencilMode:self];
 }
 
-- (id)textEffectsEditMenuForTextInRange:(_NSRange)a3
+- (id)textEffectsEditMenuForTextInRange:(_NSRange)range
 {
-  length = a3.length;
-  v4 = a3.location;
+  length = range.length;
+  v4 = range.location;
   v31[2] = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v7 = [v6 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (v7)
+  if (isExpressiveTextEnabled)
   {
     objc_initWeak(&location, self);
-    v8 = [(CKTextBalloonView *)self textView];
-    v9 = [v8 ck_activeTextStylesInRange:{v4, length}];
+    textView = [(CKTextBalloonView *)self textView];
+    v9 = [textView ck_activeTextStylesInRange:{v4, length}];
 
-    v10 = [(CKTextBalloonView *)self textView];
-    v11 = [v10 ck_activeTextEffectTypeInRange:{v4, length}];
+    textView2 = [(CKTextBalloonView *)self textView];
+    v11 = [textView2 ck_activeTextEffectTypeInRange:{v4, length}];
 
-    v12 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-    v13 = [v12 selectedText];
+    messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+    selectedText = [messageEditingBalloonTextView selectedText];
 
-    if (v13)
+    if (selectedText)
     {
-      v14 = v13;
+      v14 = selectedText;
     }
 
     else
@@ -553,19 +553,19 @@ void __65__CKMessageEditingBalloonView_textEffectsEditMenuForTextInRange___block
   [WeakRetained applyTextEffect:a2 toTextRange:{*(a1 + 40), *(a1 + 48)}];
 }
 
-- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)a3
+- (void)modifySelectedTextByTogglingTextStyle:(unint64_t)style
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  v6 = [v5 selectedRange];
+  messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  selectedRange = [messageEditingBalloonTextView selectedRange];
   v8 = v7;
 
-  v9 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  v10 = [v9 text];
+  messageEditingBalloonTextView2 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  text = [messageEditingBalloonTextView2 text];
 
-  if (v6 + v8 <= [v10 length])
+  if (selectedRange + v8 <= [text length])
   {
-    [(CKMessageEditingBalloonView *)self applyTextStyle:a3 toTextRange:v6, v8];
+    [(CKMessageEditingBalloonView *)self applyTextStyle:style toTextRange:selectedRange, v8];
   }
 
   else
@@ -574,7 +574,7 @@ void __65__CKMessageEditingBalloonView_textEffectsEditMenuForTextInRange___block
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = IMTextStyleAttributeNameFromStyle();
-      v21.location = v6;
+      v21.location = selectedRange;
       v21.length = v8;
       v13 = NSStringFromRange(v21);
       v14 = 138412802;
@@ -582,38 +582,38 @@ void __65__CKMessageEditingBalloonView_textEffectsEditMenuForTextInRange___block
       v16 = 2112;
       v17 = v13;
       v18 = 2048;
-      v19 = [v10 length];
+      v19 = [text length];
       _os_log_error_impl(&dword_19020E000, v11, OS_LOG_TYPE_ERROR, "Invalid range when toggling text style {%@} for range {%@} with textLength {%lu}.", &v14, 0x20u);
     }
   }
 }
 
-- (void)applyTextStyle:(unint64_t)a3 toTextRange:(_NSRange)a4
+- (void)applyTextStyle:(unint64_t)style toTextRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  length = range.length;
+  location = range.location;
+  messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 balloonTextFont];
+  balloonTextFont = [v8 balloonTextFont];
 
-  [v11 ck_applyWithTextStyle:a3 toRange:location baseFont:{length, v9}];
-  v10 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v10 messageEditingBalloonViewContentDidChange:self];
+  [messageEditingBalloonTextView ck_applyWithTextStyle:style toRange:location baseFont:{length, balloonTextFont}];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 }
 
-- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)a3
+- (void)modifySelectedTextByTogglingTextEffectType:(int64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  v6 = [v5 selectedRange];
+  messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  selectedRange = [messageEditingBalloonTextView selectedRange];
   v8 = v7;
 
-  v9 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  v10 = [v9 text];
+  messageEditingBalloonTextView2 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  text = [messageEditingBalloonTextView2 text];
 
-  if (v6 + v8 <= [v10 length])
+  if (selectedRange + v8 <= [text length])
   {
-    [(CKMessageEditingBalloonView *)self applyTextEffect:a3 toTextRange:v6, v8];
+    [(CKMessageEditingBalloonView *)self applyTextEffect:type toTextRange:selectedRange, v8];
   }
 
   else
@@ -622,7 +622,7 @@ void __65__CKMessageEditingBalloonView_textEffectsEditMenuForTextInRange___block
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = IMTextEffectNameFromType();
-      v21.location = v6;
+      v21.location = selectedRange;
       v21.length = v8;
       v13 = NSStringFromRange(v21);
       v14 = 138412802;
@@ -630,74 +630,74 @@ void __65__CKMessageEditingBalloonView_textEffectsEditMenuForTextInRange___block
       v16 = 2112;
       v17 = v13;
       v18 = 2048;
-      v19 = [v10 length];
+      v19 = [text length];
       _os_log_error_impl(&dword_19020E000, v11, OS_LOG_TYPE_ERROR, "Invalid range when toggling text style {%@} for range {%@} with textLength {%lu}.", &v14, 0x20u);
     }
   }
 }
 
-- (void)applyTextEffect:(int64_t)a3 toTextRange:(_NSRange)a4
+- (void)applyTextEffect:(int64_t)effect toTextRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
-  [v9 ck_toggleTextEffect:a3 inRange:location getAdded:length undo:{0, &__block_literal_global_72}];
-  v8 = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
-  [v8 messageEditingBalloonViewContentDidChange:self];
+  length = range.length;
+  location = range.location;
+  messageEditingBalloonTextView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTextView];
+  [messageEditingBalloonTextView ck_toggleTextEffect:effect inRange:location getAdded:length undo:{0, &__block_literal_global_72}];
+  editingBalloonViewDelegate = [(CKMessageEditingBalloonView *)self editingBalloonViewDelegate];
+  [editingBalloonViewDelegate messageEditingBalloonViewContentDidChange:self];
 }
 
-- (void)compositionTranslator:(id)a3 didUpdateTranslation:(id)a4 sourceLanguage:(id)a5 destinationLanguage:(id)a6 version:(int64_t)a7
+- (void)compositionTranslator:(id)translator didUpdateTranslation:(id)translation sourceLanguage:(id)language destinationLanguage:(id)destinationLanguage version:(int64_t)version
 {
-  v25 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([(CKMessageEditingBalloonView *)self translationVersion]== a7)
+  translationCopy = translation;
+  languageCopy = language;
+  destinationLanguageCopy = destinationLanguage;
+  if ([(CKMessageEditingBalloonView *)self translationVersion]== version)
   {
-    v13 = [v11 localeIdentifier];
-    [(CKMessageEditingBalloonView *)self setSourceLanguageID:v13];
+    localeIdentifier = [languageCopy localeIdentifier];
+    [(CKMessageEditingBalloonView *)self setSourceLanguageID:localeIdentifier];
 
-    v14 = [v12 localeIdentifier];
-    [(CKMessageEditingBalloonView *)self setDestinationLanguageID:v14];
+    localeIdentifier2 = [destinationLanguageCopy localeIdentifier];
+    [(CKMessageEditingBalloonView *)self setDestinationLanguageID:localeIdentifier2];
 
-    v15 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
-    [v15 setAttributedText:v25];
+    messageEditingBalloonTranslationView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
+    [messageEditingBalloonTranslationView setAttributedText:translationCopy];
 
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 theme];
-    v18 = [v17 secondaryLabelColor];
-    v19 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
-    [v19 setTextColor:v18];
+    theme = [v16 theme];
+    secondaryLabelColor = [theme secondaryLabelColor];
+    messageEditingBalloonTranslationView2 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
+    [messageEditingBalloonTranslationView2 setTextColor:secondaryLabelColor];
 
     v20 = +[CKUIBehavior sharedBehaviors];
-    v21 = [v20 balloonTranslationSecondaryTextFont];
-    v22 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
-    [v22 setFont:v21];
+    balloonTranslationSecondaryTextFont = [v20 balloonTranslationSecondaryTextFont];
+    messageEditingBalloonTranslationView3 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
+    [messageEditingBalloonTranslationView3 setFont:balloonTranslationSecondaryTextFont];
 
-    v23 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
+    pendingTranslationBlock = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
 
-    if (v23)
+    if (pendingTranslationBlock)
     {
-      v24 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
-      v24[2]();
+      pendingTranslationBlock2 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
+      pendingTranslationBlock2[2]();
 
       [(CKMessageEditingBalloonView *)self setPendingTranslationBlock:0];
     }
   }
 }
 
-- (void)compositionTranslator:(id)a3 didFailTranslationForVersion:(int64_t)a4
+- (void)compositionTranslator:(id)translator didFailTranslationForVersion:(int64_t)version
 {
-  if ([(CKMessageEditingBalloonView *)self translationVersion]== a4)
+  if ([(CKMessageEditingBalloonView *)self translationVersion]== version)
   {
-    v5 = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
-    [v5 setAttributedText:0];
+    messageEditingBalloonTranslationView = [(CKMessageEditingBalloonView *)self messageEditingBalloonTranslationView];
+    [messageEditingBalloonTranslationView setAttributedText:0];
 
-    v6 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
+    pendingTranslationBlock = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
 
-    if (v6)
+    if (pendingTranslationBlock)
     {
-      v7 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
-      v7[2]();
+      pendingTranslationBlock2 = [(CKMessageEditingBalloonView *)self pendingTranslationBlock];
+      pendingTranslationBlock2[2]();
 
       [(CKMessageEditingBalloonView *)self setPendingTranslationBlock:0];
     }

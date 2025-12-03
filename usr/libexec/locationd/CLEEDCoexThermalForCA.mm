@@ -1,10 +1,10 @@
 @interface CLEEDCoexThermalForCA
-- (CLEEDCoexThermalForCA)initWithCoexMetricDict:(id)a3;
+- (CLEEDCoexThermalForCA)initWithCoexMetricDict:(id)dict;
 @end
 
 @implementation CLEEDCoexThermalForCA
 
-- (CLEEDCoexThermalForCA)initWithCoexMetricDict:(id)a3
+- (CLEEDCoexThermalForCA)initWithCoexMetricDict:(id)dict
 {
   v14.receiver = self;
   v14.super_class = CLEEDCoexThermalForCA;
@@ -12,24 +12,24 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (dict)
     {
-      [objc_msgSend(a3 valueForKey:{@"thermalNominalDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalNominalDuration", "doubleValue"}];
       v5->_thermalNominalDuration = v6;
-      [objc_msgSend(a3 valueForKey:{@"thermalLightDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalLightDuration", "doubleValue"}];
       v5->_thermalLightDuration = v7;
-      [objc_msgSend(a3 valueForKey:{@"thermalModerateDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalModerateDuration", "doubleValue"}];
       v5->_thermalModerateDuration = v8;
-      [objc_msgSend(a3 valueForKey:{@"thermalHeavyDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalHeavyDuration", "doubleValue"}];
       v5->_thermalHeavyDuration = v9;
-      [objc_msgSend(a3 valueForKey:{@"thermalTrappingDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalTrappingDuration", "doubleValue"}];
       v5->_thermalTrappingDuration = v10;
-      [objc_msgSend(a3 valueForKey:{@"thermalSleepingDuration", "doubleValue"}];
+      [objc_msgSend(dict valueForKey:{@"thermalSleepingDuration", "doubleValue"}];
       v5->_thermalSleepingDuration = v11;
-      v5->_thermalLevelAtStartOfCall = [objc_msgSend(a3 valueForKey:{@"thermalLevelAtStartOfCall", "intValue"}];
-      v5->_maxThermalLevelInCall = [objc_msgSend(a3 valueForKey:{@"maxThermalLevelInCall", "intValue"}];
-      v5->_thermalLevelAtEndOfCall = [objc_msgSend(a3 valueForKey:{@"thermalLevelAtEndOfCall", "intValue"}];
-      [objc_msgSend(a3 valueForKey:{@"currentThermalLevelStartTime", "doubleValue"}];
+      v5->_thermalLevelAtStartOfCall = [objc_msgSend(dict valueForKey:{@"thermalLevelAtStartOfCall", "intValue"}];
+      v5->_maxThermalLevelInCall = [objc_msgSend(dict valueForKey:{@"maxThermalLevelInCall", "intValue"}];
+      v5->_thermalLevelAtEndOfCall = [objc_msgSend(dict valueForKey:{@"thermalLevelAtEndOfCall", "intValue"}];
+      [objc_msgSend(dict valueForKey:{@"currentThermalLevelStartTime", "doubleValue"}];
       v5->_currentThermalLevelStartTime = v12;
     }
 

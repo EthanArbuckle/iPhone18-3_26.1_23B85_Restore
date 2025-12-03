@@ -1,8 +1,8 @@
 @interface SLAssistantCommit
 - (void)_cleanupHandler;
-- (void)_finishWithCompletion:(id)a3 result:(id)a4;
+- (void)_finishWithCompletion:(id)completion result:(id)result;
 - (void)dealloc;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation SLAssistantCommit
@@ -34,18 +34,18 @@
   [(SLAssistantCommit *)&v3 dealloc];
 }
 
-- (void)_finishWithCompletion:(id)a3 result:(id)a4
+- (void)_finishWithCompletion:(id)completion result:(id)result
 {
   [(SLAssistantCommit *)self _cleanupHandler];
-  v6 = *(a3 + 2);
+  v6 = *(completion + 2);
 
-  v6(a3, a4);
+  v6(completion, result);
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  [(SLAssistantCommit *)self _cleanupHandler:a3];
-  v6 = [(SLAssistantCommit *)self identifier];
+  [(SLAssistantCommit *)self _cleanupHandler:completion];
+  identifier = [(SLAssistantCommit *)self identifier];
   handlerObject = self->_handlerObject;
   if (handlerObject)
   {
@@ -54,18 +54,18 @@
     v11[2] = sub_1194;
     v11[3] = &unk_8198;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = completion;
     [(SLAssistantServiceHandler *)handlerObject performPostRequestWithObject:self completion:v11];
   }
 
   else
   {
-    v10 = v6;
+    v10 = identifier;
     _SLLog();
     v8 = [+[SACommandFailed commandFailedWithReason:](SACommandFailed dictionary:@"Received object of unknown type."];
-    v9 = *(a3 + 2);
+    v9 = *(completion + 2);
 
-    v9(a3, v8);
+    v9(completion, v8);
   }
 }
 

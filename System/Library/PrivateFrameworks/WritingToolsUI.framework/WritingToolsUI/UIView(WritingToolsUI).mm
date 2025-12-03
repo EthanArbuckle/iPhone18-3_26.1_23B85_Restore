@@ -6,8 +6,8 @@
 
 - (BOOL)_WTIsDarkMode
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceStyle] == 2;
+  traitCollection = [self traitCollection];
+  v2 = [traitCollection userInterfaceStyle] == 2;
 
   return v2;
 }

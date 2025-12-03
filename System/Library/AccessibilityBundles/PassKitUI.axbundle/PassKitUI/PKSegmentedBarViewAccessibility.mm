@@ -1,16 +1,16 @@
 @interface PKSegmentedBarViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (id)accessibilityValueLabels;
 @end
 
 @implementation PKSegmentedBarViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKRewardsSummaryChartBarConfiguration"];
-  [v3 validateClass:@"PKSegmentedBarView" hasInstanceVariable:@"_configuration" withType:"<PKSegmentedBarConfiguration>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKRewardsSummaryChartBarConfiguration"];
+  [validationsCopy validateClass:@"PKSegmentedBarView" hasInstanceVariable:@"_configuration" withType:"<PKSegmentedBarConfiguration>"];
 }
 
 - (id)accessibilityValueLabels
@@ -54,8 +54,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(PKSegmentedBarViewAccessibility *)self accessibilityValueLabels];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  accessibilityValueLabels = [(PKSegmentedBarViewAccessibility *)self accessibilityValueLabels];
+  v6 = [accessibilityValueLabels countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -70,7 +70,7 @@
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(accessibilityValueLabels);
         }
 
         v12 = *(*(&v23 + 1) + 8 * v11);
@@ -105,7 +105,7 @@
       }
 
       while (v7 != v11);
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [accessibilityValueLabels countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);

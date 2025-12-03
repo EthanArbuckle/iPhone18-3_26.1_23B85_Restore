@@ -5,23 +5,23 @@
 - (HMDDevice)companion;
 - (id)attributeDescriptions;
 - (void)__initializeConnectedDevices;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation HMDCompanionManager
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCompanionManager *)self service];
+  serviceCopy = service;
+  changedCopy = changed;
+  service = [(HMDCompanionManager *)self service];
 
-  if (v8 == v6)
+  if (service == serviceCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -29,28 +29,28 @@
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v7;
+      v17 = changedCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Connected devices changed: %@", &v14, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    __HMDCompanionManagerUpdateWithConnectedDevices(v10, v7);
+    __HMDCompanionManagerUpdateWithConnectedDevices(selfCopy, changedCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCompanionManager *)self service];
+  serviceCopy = service;
+  changedCopy = changed;
+  service = [(HMDCompanionManager *)self service];
 
-  if (v8 == v6)
+  if (service == serviceCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -58,17 +58,17 @@
       *buf = 138543618;
       v27 = v12;
       v28 = 2112;
-      v29 = v7;
+      v29 = changedCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Devices changed: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(changedCopy, "count")}];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v14 = v7;
+    v14 = changedCopy;
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v15)
     {
@@ -96,7 +96,7 @@
       while (v16);
     }
 
-    __HMDCompanionManagerUpdateWithConnectedDevices(v10, v13);
+    __HMDCompanionManagerUpdateWithConnectedDevices(selfCopy, v13);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -114,15 +114,15 @@
 - (void)__initializeConnectedDevices
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCompanionManager *)self service];
-  v4 = [v3 devices];
+  service = [(HMDCompanionManager *)self service];
+  devices = [service devices];
 
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(devices, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = devices;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -158,8 +158,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDCompanionManager *)self companion];
-  v5 = [v3 initWithName:@"Companion" value:v4];
+  companion = [(HMDCompanionManager *)self companion];
+  v5 = [v3 initWithName:@"Companion" value:companion];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -176,9 +176,9 @@
   if (v2)
   {
     v3 = HMDispatchQueueNameString();
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
@@ -218,16 +218,16 @@ uint64_t __34__HMDCompanionManager_logCategory__block_invoke()
 
 + (id)sharedManager
 {
-  v3 = [MEMORY[0x277D0F8E8] productInfo];
-  v4 = [v3 productPlatform];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  productPlatform = [productInfo productPlatform];
 
-  if (v4 == 3)
+  if (productPlatform == 3)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __36__HMDCompanionManager_sharedManager__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedManager_onceToken_68636 != -1)
     {
       dispatch_once(&sharedManager_onceToken_68636, block);

@@ -1,11 +1,11 @@
 @interface DebugFormatLayoutDimensionViewController
-- (_TtC8NewsFeed40DebugFormatLayoutDimensionViewController)initWithCoder:(id)a3;
+- (_TtC8NewsFeed40DebugFormatLayoutDimensionViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
 @end
 
 @implementation DebugFormatLayoutDimensionViewController
 
-- (_TtC8NewsFeed40DebugFormatLayoutDimensionViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed40DebugFormatLayoutDimensionViewController)initWithCoder:(id)coder
 {
   result = sub_1D726402C();
   __break(1u);
@@ -14,7 +14,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6DF906C();
 }
 

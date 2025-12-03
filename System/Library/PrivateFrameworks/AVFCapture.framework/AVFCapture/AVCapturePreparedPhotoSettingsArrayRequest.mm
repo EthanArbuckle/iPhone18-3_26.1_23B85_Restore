@@ -1,6 +1,6 @@
 @interface AVCapturePreparedPhotoSettingsArrayRequest
-+ (id)preparedPhotoSettingsArrayRequestWithArray:(id)a3 completionHandler:(id)a4;
-- (id)_initWithArray:(id)a3 completionHandler:(id)a4;
++ (id)preparedPhotoSettingsArrayRequestWithArray:(id)array completionHandler:(id)handler;
+- (id)_initWithArray:(id)array completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -13,14 +13,14 @@
   [(AVCapturePreparedPhotoSettingsArrayRequest *)&v3 dealloc];
 }
 
-+ (id)preparedPhotoSettingsArrayRequestWithArray:(id)a3 completionHandler:(id)a4
++ (id)preparedPhotoSettingsArrayRequestWithArray:(id)array completionHandler:(id)handler
 {
-  v4 = [objc_alloc(objc_opt_class()) _initWithArray:a3 completionHandler:a4];
+  v4 = [objc_alloc(objc_opt_class()) _initWithArray:array completionHandler:handler];
 
   return v4;
 }
 
-- (id)_initWithArray:(id)a3 completionHandler:(id)a4
+- (id)_initWithArray:(id)array completionHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = AVCapturePreparedPhotoSettingsArrayRequest;
@@ -28,8 +28,8 @@
   if (v6)
   {
     v6->_requestID = +[AVCapturePhotoSettings uniqueID];
-    v6->_photoSettingsArray = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a3 copyItems:1];
-    v6->_completionHandler = [a4 copy];
+    v6->_photoSettingsArray = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array copyItems:1];
+    v6->_completionHandler = [handler copy];
   }
 
   return v6;

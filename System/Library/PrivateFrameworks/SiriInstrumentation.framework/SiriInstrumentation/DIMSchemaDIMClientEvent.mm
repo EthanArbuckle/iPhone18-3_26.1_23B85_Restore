@@ -1,8 +1,8 @@
 @interface DIMSchemaDIMClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMClientEvent)initWithDictionary:(id)a3;
-- (DIMSchemaDIMClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMClientEvent)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMClientEvent)initWithJSON:(id)n;
 - (DIMSchemaDIMDeviceFixedContext)deviceFixedContext;
 - (DIMSchemaDIMEphemeralIdentifiers)ephemeralIdentifiers;
 - (DIMSchemaDIMEphemeralToAggregationIdentifierMap)ephemeralToAggregationIdentifierMap;
@@ -12,7 +12,7 @@
 - (DIMSchemaDIMSiriAccountInformation)siriAccountInformation;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -24,27 +24,27 @@
 - (void)deleteLocaleNotRecognized;
 - (void)deleteOnDeviceDigest;
 - (void)deleteSiriAccountInformation;
-- (void)setDeviceFixedContext:(id)a3;
-- (void)setEphemeralIdentifiers:(id)a3;
-- (void)setEphemeralToAggregationIdentifierMap:(id)a3;
-- (void)setExperimentContext:(id)a3;
-- (void)setLocaleNotRecognized:(id)a3;
-- (void)setOnDeviceDigest:(id)a3;
-- (void)setSiriAccountInformation:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDeviceFixedContext:(id)context;
+- (void)setEphemeralIdentifiers:(id)identifiers;
+- (void)setEphemeralToAggregationIdentifierMap:(id)map;
+- (void)setExperimentContext:(id)context;
+- (void)setLocaleNotRecognized:(id)recognized;
+- (void)setOnDeviceDigest:(id)digest;
+- (void)setSiriAccountInformation:(id)information;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMClientEvent
 
-- (DIMSchemaDIMClientEvent)initWithDictionary:(id)a3
+- (DIMSchemaDIMClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = DIMSchemaDIMClientEvent;
   v5 = [(DIMSchemaDIMClientEvent *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"deviceFixedContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceFixedContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setDeviceFixedContext:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriAccountInformation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriAccountInformation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setSiriAccountInformation:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"localeNotRecognized"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"localeNotRecognized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setLocaleNotRecognized:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"onDeviceDigest"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"onDeviceDigest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setOnDeviceDigest:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"ephemeralIdentifiers"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"ephemeralIdentifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setEphemeralIdentifiers:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       [(DIMSchemaDIMClientEvent *)v5 setEphemeralToAggregationIdentifierMap:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"experimentContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"experimentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,30 +106,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMClientEvent)initWithJSON:(id)a3
+- (DIMSchemaDIMClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -142,122 +142,122 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_deviceFixedContext)
   {
-    v4 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    deviceFixedContext = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+    dictionaryRepresentation = [deviceFixedContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"deviceFixedContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceFixedContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"deviceFixedContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"deviceFixedContext"];
     }
   }
 
   if (self->_ephemeralIdentifiers)
   {
-    v7 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    ephemeralIdentifiers = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+    dictionaryRepresentation2 = [ephemeralIdentifiers dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"ephemeralIdentifiers"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"ephemeralIdentifiers"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"ephemeralIdentifiers"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"ephemeralIdentifiers"];
     }
   }
 
   if (self->_ephemeralToAggregationIdentifierMap)
   {
-    v10 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    ephemeralToAggregationIdentifierMap = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+    dictionaryRepresentation3 = [ephemeralToAggregationIdentifierMap dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"ephemeralToAggregationIdentifierMap"];
     }
   }
 
   if (self->_experimentContext)
   {
-    v13 = [(DIMSchemaDIMClientEvent *)self experimentContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    experimentContext = [(DIMSchemaDIMClientEvent *)self experimentContext];
+    dictionaryRepresentation4 = [experimentContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"experimentContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"experimentContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"experimentContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"experimentContext"];
     }
   }
 
   if (self->_localeNotRecognized)
   {
-    v16 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    localeNotRecognized = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+    dictionaryRepresentation5 = [localeNotRecognized dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"localeNotRecognized"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"localeNotRecognized"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"localeNotRecognized"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"localeNotRecognized"];
     }
   }
 
   if (self->_onDeviceDigest)
   {
-    v19 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    onDeviceDigest = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+    dictionaryRepresentation6 = [onDeviceDigest dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"onDeviceDigest"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"onDeviceDigest"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"onDeviceDigest"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"onDeviceDigest"];
     }
   }
 
   if (self->_siriAccountInformation)
   {
-    v22 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    siriAccountInformation = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+    dictionaryRepresentation7 = [siriAccountInformation dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"siriAccountInformation"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"siriAccountInformation"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"siriAccountInformation"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"siriAccountInformation"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -271,34 +271,34 @@
   return v6 ^ v8 ^ [(DIMSchemaDIMExperimentContext *)self->_experimentContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_38;
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
-  v7 = [v4 deviceFixedContext];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+  deviceFixedContext2 = [equalCopy deviceFixedContext];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v8 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
-  if (v8)
+  deviceFixedContext3 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+  if (deviceFixedContext3)
   {
-    v9 = v8;
-    v10 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
-    v11 = [v4 deviceFixedContext];
-    v12 = [v10 isEqual:v11];
+    v9 = deviceFixedContext3;
+    deviceFixedContext4 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+    deviceFixedContext5 = [equalCopy deviceFixedContext];
+    v12 = [deviceFixedContext4 isEqual:deviceFixedContext5];
 
     if (!v12)
     {
@@ -310,20 +310,20 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
-  v7 = [v4 siriAccountInformation];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+  deviceFixedContext2 = [equalCopy siriAccountInformation];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v13 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
-  if (v13)
+  siriAccountInformation = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+  if (siriAccountInformation)
   {
-    v14 = v13;
-    v15 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
-    v16 = [v4 siriAccountInformation];
-    v17 = [v15 isEqual:v16];
+    v14 = siriAccountInformation;
+    siriAccountInformation2 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+    siriAccountInformation3 = [equalCopy siriAccountInformation];
+    v17 = [siriAccountInformation2 isEqual:siriAccountInformation3];
 
     if (!v17)
     {
@@ -335,20 +335,20 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
-  v7 = [v4 localeNotRecognized];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+  deviceFixedContext2 = [equalCopy localeNotRecognized];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v18 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
-  if (v18)
+  localeNotRecognized = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+  if (localeNotRecognized)
   {
-    v19 = v18;
-    v20 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
-    v21 = [v4 localeNotRecognized];
-    v22 = [v20 isEqual:v21];
+    v19 = localeNotRecognized;
+    localeNotRecognized2 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+    localeNotRecognized3 = [equalCopy localeNotRecognized];
+    v22 = [localeNotRecognized2 isEqual:localeNotRecognized3];
 
     if (!v22)
     {
@@ -360,20 +360,20 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
-  v7 = [v4 onDeviceDigest];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+  deviceFixedContext2 = [equalCopy onDeviceDigest];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v23 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
-  if (v23)
+  onDeviceDigest = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+  if (onDeviceDigest)
   {
-    v24 = v23;
-    v25 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
-    v26 = [v4 onDeviceDigest];
-    v27 = [v25 isEqual:v26];
+    v24 = onDeviceDigest;
+    onDeviceDigest2 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+    onDeviceDigest3 = [equalCopy onDeviceDigest];
+    v27 = [onDeviceDigest2 isEqual:onDeviceDigest3];
 
     if (!v27)
     {
@@ -385,20 +385,20 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
-  v7 = [v4 ephemeralIdentifiers];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+  deviceFixedContext2 = [equalCopy ephemeralIdentifiers];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v28 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
-  if (v28)
+  ephemeralIdentifiers = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+  if (ephemeralIdentifiers)
   {
-    v29 = v28;
-    v30 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
-    v31 = [v4 ephemeralIdentifiers];
-    v32 = [v30 isEqual:v31];
+    v29 = ephemeralIdentifiers;
+    ephemeralIdentifiers2 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+    ephemeralIdentifiers3 = [equalCopy ephemeralIdentifiers];
+    v32 = [ephemeralIdentifiers2 isEqual:ephemeralIdentifiers3];
 
     if (!v32)
     {
@@ -410,20 +410,20 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
-  v7 = [v4 ephemeralToAggregationIdentifierMap];
-  if ((v6 != 0) == (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+  deviceFixedContext2 = [equalCopy ephemeralToAggregationIdentifierMap];
+  if ((deviceFixedContext != 0) == (deviceFixedContext2 == 0))
   {
     goto LABEL_37;
   }
 
-  v33 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
-  if (v33)
+  ephemeralToAggregationIdentifierMap = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+  if (ephemeralToAggregationIdentifierMap)
   {
-    v34 = v33;
-    v35 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
-    v36 = [v4 ephemeralToAggregationIdentifierMap];
-    v37 = [v35 isEqual:v36];
+    v34 = ephemeralToAggregationIdentifierMap;
+    ephemeralToAggregationIdentifierMap2 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+    ephemeralToAggregationIdentifierMap3 = [equalCopy ephemeralToAggregationIdentifierMap];
+    v37 = [ephemeralToAggregationIdentifierMap2 isEqual:ephemeralToAggregationIdentifierMap3];
 
     if (!v37)
     {
@@ -435,12 +435,12 @@
   {
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self experimentContext];
-  v7 = [v4 experimentContext];
-  if ((v6 != 0) != (v7 == 0))
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self experimentContext];
+  deviceFixedContext2 = [equalCopy experimentContext];
+  if ((deviceFixedContext != 0) != (deviceFixedContext2 == 0))
   {
-    v38 = [(DIMSchemaDIMClientEvent *)self experimentContext];
-    if (!v38)
+    experimentContext = [(DIMSchemaDIMClientEvent *)self experimentContext];
+    if (!experimentContext)
     {
 
 LABEL_41:
@@ -448,10 +448,10 @@ LABEL_41:
       goto LABEL_39;
     }
 
-    v39 = v38;
-    v40 = [(DIMSchemaDIMClientEvent *)self experimentContext];
-    v41 = [v4 experimentContext];
-    v42 = [v40 isEqual:v41];
+    v39 = experimentContext;
+    experimentContext2 = [(DIMSchemaDIMClientEvent *)self experimentContext];
+    experimentContext3 = [equalCopy experimentContext];
+    v42 = [experimentContext2 isEqual:experimentContext3];
 
     if (v42)
     {
@@ -471,66 +471,66 @@ LABEL_39:
   return v43;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
-  v4 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+  toCopy = to;
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
 
-  if (v4)
+  if (deviceFixedContext)
   {
-    v5 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+    deviceFixedContext2 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+  siriAccountInformation = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
 
-  if (v6)
+  if (siriAccountInformation)
   {
-    v7 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+    siriAccountInformation2 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+  localeNotRecognized = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
 
-  if (v8)
+  if (localeNotRecognized)
   {
-    v9 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+    localeNotRecognized2 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+  onDeviceDigest = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
 
-  if (v10)
+  if (onDeviceDigest)
   {
-    v11 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+    onDeviceDigest2 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+  ephemeralIdentifiers = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
 
-  if (v12)
+  if (ephemeralIdentifiers)
   {
-    v13 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+    ephemeralIdentifiers2 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+  ephemeralToAggregationIdentifierMap = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
 
-  if (v14)
+  if (ephemeralToAggregationIdentifierMap)
   {
-    v15 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+    ephemeralToAggregationIdentifierMap2 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(DIMSchemaDIMClientEvent *)self experimentContext];
+  experimentContext = [(DIMSchemaDIMClientEvent *)self experimentContext];
 
-  v17 = v19;
-  if (v16)
+  v17 = toCopy;
+  if (experimentContext)
   {
-    v18 = [(DIMSchemaDIMClientEvent *)self experimentContext];
+    experimentContext2 = [(DIMSchemaDIMClientEvent *)self experimentContext];
     PBDataWriterWriteSubmessage();
 
-    v17 = v19;
+    v17 = toCopy;
   }
 }
 
@@ -559,9 +559,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setExperimentContext:(id)a3
+- (void)setExperimentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -581,14 +581,14 @@ LABEL_39:
   self->_ephemeralToAggregationIdentifierMap = 0;
 
   v11 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   experimentContext = self->_experimentContext;
-  self->_experimentContext = v4;
+  self->_experimentContext = contextCopy;
 }
 
 - (void)deleteEphemeralToAggregationIdentifierMap
@@ -616,9 +616,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setEphemeralToAggregationIdentifierMap:(id)a3
+- (void)setEphemeralToAggregationIdentifierMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -638,14 +638,14 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 106;
-  if (!v4)
+  if (!mapCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   ephemeralToAggregationIdentifierMap = self->_ephemeralToAggregationIdentifierMap;
-  self->_ephemeralToAggregationIdentifierMap = v4;
+  self->_ephemeralToAggregationIdentifierMap = mapCopy;
 }
 
 - (void)deleteEphemeralIdentifiers
@@ -673,9 +673,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setEphemeralIdentifiers:(id)a3
+- (void)setEphemeralIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -695,14 +695,14 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 105;
-  if (!v4)
+  if (!identifiersCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   ephemeralIdentifiers = self->_ephemeralIdentifiers;
-  self->_ephemeralIdentifiers = v4;
+  self->_ephemeralIdentifiers = identifiersCopy;
 }
 
 - (void)deleteOnDeviceDigest
@@ -730,9 +730,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setOnDeviceDigest:(id)a3
+- (void)setOnDeviceDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -752,14 +752,14 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 104;
-  if (!v4)
+  if (!digestCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   onDeviceDigest = self->_onDeviceDigest;
-  self->_onDeviceDigest = v4;
+  self->_onDeviceDigest = digestCopy;
 }
 
 - (void)deleteLocaleNotRecognized
@@ -787,9 +787,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setLocaleNotRecognized:(id)a3
+- (void)setLocaleNotRecognized:(id)recognized
 {
-  v4 = a3;
+  recognizedCopy = recognized;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -809,14 +809,14 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 103;
-  if (!v4)
+  if (!recognizedCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   localeNotRecognized = self->_localeNotRecognized;
-  self->_localeNotRecognized = v4;
+  self->_localeNotRecognized = recognizedCopy;
 }
 
 - (void)deleteSiriAccountInformation
@@ -844,9 +844,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setSiriAccountInformation:(id)a3
+- (void)setSiriAccountInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   deviceFixedContext = self->_deviceFixedContext;
   self->_deviceFixedContext = 0;
 
@@ -866,14 +866,14 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 102;
-  if (!v4)
+  if (!informationCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   siriAccountInformation = self->_siriAccountInformation;
-  self->_siriAccountInformation = v4;
+  self->_siriAccountInformation = informationCopy;
 }
 
 - (void)deleteDeviceFixedContext
@@ -901,9 +901,9 @@ LABEL_39:
   return v3;
 }
 
-- (void)setDeviceFixedContext:(id)a3
+- (void)setDeviceFixedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   siriAccountInformation = self->_siriAccountInformation;
   self->_siriAccountInformation = 0;
 
@@ -923,95 +923,95 @@ LABEL_39:
   self->_experimentContext = 0;
 
   v11 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v11 = 0;
   }
 
   self->_whichEvent_Type = v11;
   deviceFixedContext = self->_deviceFixedContext;
-  self->_deviceFixedContext = v4;
+  self->_deviceFixedContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(DIMSchemaDIMClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 6)
+  whichEvent_Type = [(DIMSchemaDIMClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 6)
   {
     return @"com.apple.aiml.siri.dim.DIMClientEvent";
   }
 
   else
   {
-    return off_1E78D37A8[v2 - 101];
+    return off_1E78D37A8[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v28.receiver = self;
   v28.super_class = DIMSchemaDIMClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:v4];
-  v6 = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v28 applySensitiveConditionsPolicy:policyCopy];
+  deviceFixedContext = [(DIMSchemaDIMClientEvent *)self deviceFixedContext];
+  v7 = [deviceFixedContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DIMSchemaDIMClientEvent *)self deleteDeviceFixedContext];
   }
 
-  v9 = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  siriAccountInformation = [(DIMSchemaDIMClientEvent *)self siriAccountInformation];
+  v10 = [siriAccountInformation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DIMSchemaDIMClientEvent *)self deleteSiriAccountInformation];
   }
 
-  v12 = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  localeNotRecognized = [(DIMSchemaDIMClientEvent *)self localeNotRecognized];
+  v13 = [localeNotRecognized applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DIMSchemaDIMClientEvent *)self deleteLocaleNotRecognized];
   }
 
-  v15 = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  onDeviceDigest = [(DIMSchemaDIMClientEvent *)self onDeviceDigest];
+  v16 = [onDeviceDigest applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DIMSchemaDIMClientEvent *)self deleteOnDeviceDigest];
   }
 
-  v18 = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  ephemeralIdentifiers = [(DIMSchemaDIMClientEvent *)self ephemeralIdentifiers];
+  v19 = [ephemeralIdentifiers applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(DIMSchemaDIMClientEvent *)self deleteEphemeralIdentifiers];
   }
 
-  v21 = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  ephemeralToAggregationIdentifierMap = [(DIMSchemaDIMClientEvent *)self ephemeralToAggregationIdentifierMap];
+  v22 = [ephemeralToAggregationIdentifierMap applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(DIMSchemaDIMClientEvent *)self deleteEphemeralToAggregationIdentifierMap];
   }
 
-  v24 = [(DIMSchemaDIMClientEvent *)self experimentContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  experimentContext = [(DIMSchemaDIMClientEvent *)self experimentContext];
+  v25 = [experimentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(DIMSchemaDIMClientEvent *)self deleteExperimentContext];
   }
@@ -1029,30 +1029,30 @@ LABEL_39:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(DIMSchemaDIMClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 6)
+  whichEvent_Type = [(DIMSchemaDIMClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 6)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E94A8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E94A8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 6)
+  if (tag - 101 > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E94E0[a3 - 101];
+    return off_1E78E94E0[tag - 101];
   }
 }
 

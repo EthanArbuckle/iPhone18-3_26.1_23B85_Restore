@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneUtilPackedPackedInts_NullReader
-- (OrgApacheLuceneUtilPackedPackedInts_NullReader)initWithInt:(int)a3;
+- (OrgApacheLuceneUtilPackedPackedInts_NullReader)initWithInt:(int)int;
 - (int64_t)ramBytesUsed;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPackedInts_NullReader
 
-- (OrgApacheLuceneUtilPackedPackedInts_NullReader)initWithInt:(int)a3
+- (OrgApacheLuceneUtilPackedPackedInts_NullReader)initWithInt:(int)int
 {
   OrgApacheLuceneIndexNumericDocValues_init(self, a2);
-  self->valueCount_ = a3;
+  self->valueCount_ = int;
   return self;
 }
 

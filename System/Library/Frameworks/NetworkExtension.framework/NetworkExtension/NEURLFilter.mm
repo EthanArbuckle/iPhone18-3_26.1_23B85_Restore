@@ -1,24 +1,24 @@
 @interface NEURLFilter
-+ (void)verdictForURL:(id)a3 completionHandler:(id)a4;
++ (void)verdictForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation NEURLFilter
 
-+ (void)verdictForURL:(id)a3 completionHandler:(id)a4
++ (void)verdictForURL:(id)l completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [a3 absoluteString];
-  v7 = v6;
-  if (v6 && [v6 length])
+  handlerCopy = handler;
+  absoluteString = [l absoluteString];
+  v7 = absoluteString;
+  if (absoluteString && [absoluteString length])
   {
     [v7 UTF8String];
-    v8 = v5;
+    v8 = handlerCopy;
     ne_url_filter_check();
   }
 
   else
   {
-    (*(v5 + 2))(v5, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 }
 

@@ -1,7 +1,7 @@
 @interface ClinicalAuthorizationYouShouldKnowViewController
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (void)cancelButtonPressed:(id)a3;
-- (void)nextButtonPressed:(id)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)nextButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -19,13 +19,13 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for ClinicalAuthorizationYouShouldKnowViewController();
-  v3 = self;
+  selfCopy = self;
   [(OBBaseWelcomeController *)&v4 viewDidLoad];
   sub_1C3C7AE08();
   sub_1C3C7BB5C();
 }
 
-- (void)nextButtonPressed:(id)a3
+- (void)nextButtonPressed:(id)pressed
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -35,9 +35,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (pressed)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
@@ -46,14 +46,14 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1C3C7BE24(*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8HealthUI48ClinicalAuthorizationYouShouldKnowViewController_viewControllerToPush), 1);
   sub_1C3C7C9A4(v7, &qword_1EC0810F0, MEMORY[0x1E69E7CA0] + 8, MEMORY[0x1E69E6720], sub_1C396C43C);
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -63,9 +63,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (pressed)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
@@ -74,7 +74,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1C3C7AC1C();
@@ -82,7 +82,7 @@
   sub_1C3C7C9A4(v7, &qword_1EC0810F0, MEMORY[0x1E69E7CA0] + 8, MEMORY[0x1E69E6720], sub_1C396C43C);
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v7 = sub_1C3D1E064();
   v8 = *(v7 - 8);
@@ -97,7 +97,7 @@
   }
 
   sub_1C3D1E034();
-  v11 = sub_1C3C7C7C4(v10, a6);
+  v11 = sub_1C3C7C7C4(v10, interaction);
   (*(v8 + 8))(v10, v7);
 
   return v11 & 1;

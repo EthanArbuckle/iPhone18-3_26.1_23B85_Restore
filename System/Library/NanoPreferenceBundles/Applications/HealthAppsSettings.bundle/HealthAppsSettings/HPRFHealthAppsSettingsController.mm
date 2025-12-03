@@ -8,11 +8,11 @@
 - (id)notificationApplicationSpecifiers;
 - (void)_loadFitnessJrValue;
 - (void)_loadIsActivitySetup;
-- (void)_setFitnessJrToValue:(id)a3;
+- (void)_setFitnessJrToValue:(id)value;
 - (void)_triggerNanoSync;
 - (void)dealloc;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
-- (void)showFitnessJrPrompt:(id)a3;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
+- (void)showFitnessJrPrompt:(id)prompt;
 - (void)viewDidLoad;
 @end
 
@@ -26,15 +26,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(HPRFHealthAppsSettingsController *)v2 localizedPaneTitle];
-    [(HPRFHealthAppsSettingsController *)v3 setTitle:v4];
+    localizedPaneTitle = [(HPRFHealthAppsSettingsController *)v2 localizedPaneTitle];
+    [(HPRFHealthAppsSettingsController *)v3 setTitle:localizedPaneTitle];
 
     v5 = +[NRPairedDeviceRegistry sharedInstance];
     v6 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v7 = [v5 getAllDevicesWithArchivedAltAccountDevicesMatching:v6];
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     device = v3->_device;
-    v3->_device = v8;
+    v3->_device = firstObject;
 
     v10 = v3->_device;
     v11 = FIUIHealthStoreForDevice();
@@ -92,8 +92,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   if ([(HPRFHealthAppsSettingsController *)self _shouldShowFitnessJrSpecifier])
   {
-    v4 = [(HPRFHealthAppsSettingsController *)self _fitnessJrSpecifiers];
-    [v3 addObjectsFromArray:v4];
+    _fitnessJrSpecifiers = [(HPRFHealthAppsSettingsController *)self _fitnessJrSpecifiers];
+    [v3 addObjectsFromArray:_fitnessJrSpecifiers];
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -138,9 +138,9 @@
 
   if ([(HPRFHealthAppsSettingsController *)self alertingMode])
   {
-    v11 = [(HPRFHealthAppsSettingsController *)self _groupSpecifiers];
-    v12 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v11 count]);
-    [v5 insertObjects:v11 atIndexes:v12];
+    _groupSpecifiers = [(HPRFHealthAppsSettingsController *)self _groupSpecifiers];
+    v12 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [_groupSpecifiers count]);
+    [v5 insertObjects:_groupSpecifiers atIndexes:v12];
   }
 
   return v5;
@@ -150,22 +150,22 @@
 {
   if ([(HPRFHealthAppsSettingsController *)self alertingMode])
   {
-    v3 = 0;
+    _groupSpecifiers = 0;
   }
 
   else
   {
-    v3 = [(HPRFHealthAppsSettingsController *)self _groupSpecifiers];
+    _groupSpecifiers = [(HPRFHealthAppsSettingsController *)self _groupSpecifiers];
   }
 
-  return v3;
+  return _groupSpecifiers;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 propertyForKey:PSKeyNameKey];
+  valueCopy = value;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:PSKeyNameKey];
   if (v8)
   {
     if (qword_C7C0 != -1)
@@ -174,12 +174,12 @@
     }
 
     v9 = [qword_C7C8 containsObject:v8];
-    if (v6)
+    if (valueCopy)
     {
       if (v9)
       {
-        v10 = [v7 propertyForKey:PSValueKey];
-        v11 = [v6 isEqual:v10];
+        v10 = [specifierCopy propertyForKey:PSValueKey];
+        v11 = [valueCopy isEqual:v10];
 
         if ((v11 & 1) == 0)
         {
@@ -191,7 +191,7 @@
 
   v12.receiver = self;
   v12.super_class = HPRFHealthAppsSettingsController;
-  [(HPRFHealthAppsSettingsController *)&v12 setPreferenceValue:v6 specifier:v7];
+  [(HPRFHealthAppsSettingsController *)&v12 setPreferenceValue:valueCopy specifier:specifierCopy];
 }
 
 - (id)_fitnessJrSpecifiers
@@ -243,7 +243,7 @@
     v13[3] = &unk_8420;
     v9 = v3;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     v10 = [v7 initWithSampleType:v4 predicate:0 limit:1 sortDescriptors:v8 resultsHandler:v13];
 
     [(HKHealthStore *)self->_healthStore executeQuery:v10];
@@ -291,10 +291,10 @@
   }
 }
 
-- (void)showFitnessJrPrompt:(id)a3
+- (void)showFitnessJrPrompt:(id)prompt
 {
-  v4 = a3;
-  v5 = [v4 isEqualToNumber:&off_8C58];
+  promptCopy = prompt;
+  v5 = [promptCopy isEqualToNumber:&off_8C58];
   if (v5)
   {
     v6 = @"TOGGLE_FITNESS_JR_ENABLE_CONFIRM_BUTTON_TEXT";
@@ -328,8 +328,8 @@
   v21[2] = sub_35DC;
   v21[3] = &unk_8498;
   v21[4] = self;
-  v22 = v4;
-  v19 = v4;
+  v22 = promptCopy;
+  v19 = promptCopy;
   v13 = [UIAlertAction actionWithTitle:v12 style:0 handler:v21];
 
   v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -343,10 +343,10 @@
   [(HPRFHealthAppsSettingsController *)self presentViewController:v18 animated:1 completion:0];
 }
 
-- (void)_setFitnessJrToValue:(id)a3
+- (void)_setFitnessJrToValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 isEqualToNumber:&off_8C70];
+  valueCopy = value;
+  v5 = [valueCopy isEqualToNumber:&off_8C70];
   v6 = +[NSCalendar currentCalendar];
   v7 = +[NSDate date];
   v8 = [v6 hk_startOfDateByAddingDays:1 toDate:v7];
@@ -360,16 +360,16 @@
   [v11 weight];
   if (v5)
     v31 = {;
-    v12 = [v11 leanBodyMass];
-    v13 = [v11 height];
+    leanBodyMass = [v11 leanBodyMass];
+    height = [v11 height];
     [v11 dateOfBirth];
-    v14 = v4;
+    v14 = valueCopy;
     v16 = v15 = v10;
     [v11 wheelchairUse];
     FIUICalculateBMR();
 
     v10 = v15;
-    v4 = v14;
+    valueCopy = v14;
 
     formattingManager = self->_formattingManager;
     v18 = FIUIActivityLevelsForBMR();
@@ -381,11 +381,11 @@
     v21 = [HKUnit gramUnitWithMetricPrefix:9];
     [v20 doubleValueForUnit:v21];
 
-    v22 = [v11 height];
+    height2 = [v11 height];
     v23 = [HKUnit meterUnitWithMetricPrefix:7];
-    [v22 doubleValueForUnit:v23];
+    [height2 doubleValueForUnit:v23];
 
-    v24 = [v11 dateOfBirth];
+    dateOfBirth = [v11 dateOfBirth];
     FIAgeInYearsForDateOfBirth();
 
     [v11 wheelchairUse];
@@ -404,11 +404,11 @@
   v35 = v8;
   v36 = v19;
   v32[4] = self;
-  v33 = v4;
+  v33 = valueCopy;
   v34 = v18;
   v28 = v8;
   v29 = v18;
-  v30 = v4;
+  v30 = valueCopy;
   [(HKHealthStore *)healthStore saveObject:v26 withCompletion:v32];
 }
 
@@ -486,7 +486,7 @@
     {
       if (v13)
       {
-        v15 = [v13 date];
+        date = [v13 date];
         v16 = FIAgeInYearsForDateOfBirth();
         v17 = kActivityMoveModeMoveTimeMaximumAge;
         v7 = v16 <= kActivityMoveModeMoveTimeMaximumAge;

@@ -1,11 +1,11 @@
 @interface WFWorkflowStatusPresenter
 - (BOOL)alertIsActive;
 - (BOOL)alertIsLaunching;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (WFDialogAlertPresenterDelegate)delegate;
 - (WFWorkflowStatusPresenter)init;
 - (WFWorkflowStatusPresenterDelegate)statusPresenterDelegate;
-- (void)activateAlertInMainSceneOfApplicationWithBundleIdentifier:(id)a3;
+- (void)activateAlertInMainSceneOfApplicationWithBundleIdentifier:(id)identifier;
 - (void)deactivateAlert;
 @end
 
@@ -25,32 +25,32 @@
   return WeakRetained;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWorkflowStatusPresenter *)self queue];
-  dispatch_assert_queue_not_V2(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  queue = [(WFWorkflowStatusPresenter *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v9 = [(WFWorkflowStatusPresenter *)self queue];
+  queue2 = [(WFWorkflowStatusPresenter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__WFWorkflowStatusPresenter_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_278900198;
-  v13 = v7;
+  v13 = connectionCopy;
   v14 = &v15;
   block[4] = self;
-  v10 = v7;
-  dispatch_sync(v9, block);
+  v10 = connectionCopy;
+  dispatch_sync(queue2, block);
 
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(connectionCopy) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return connectionCopy;
 }
 
 void __64__WFWorkflowStatusPresenter_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -203,13 +203,13 @@ uint64_t __64__WFWorkflowStatusPresenter_listener_shouldAcceptNewConnection___bl
     _os_log_impl(&dword_23103C000, v3, OS_LOG_TYPE_DEFAULT, "%s Deactivating alert", buf, 0xCu);
   }
 
-  v4 = [(WFWorkflowStatusPresenter *)self queue];
+  queue = [(WFWorkflowStatusPresenter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__WFWorkflowStatusPresenter_deactivateAlert__block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -225,15 +225,15 @@ uint64_t __44__WFWorkflowStatusPresenter_deactivateAlert__block_invoke(uint64_t 
   return [v3 setLaunching:0];
 }
 
-- (void)activateAlertInMainSceneOfApplicationWithBundleIdentifier:(id)a3
+- (void)activateAlertInMainSceneOfApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = [(WFWorkflowStatusPresenter *)self queue];
+  queue = [(WFWorkflowStatusPresenter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__WFWorkflowStatusPresenter_activateAlertInMainSceneOfApplicationWithBundleIdentifier___block_invoke;
   block[3] = &unk_278900148;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __87__WFWorkflowStatusPresenter_activateAlertInMainSceneOfApplicationWithBundleIdentifier___block_invoke(uint64_t a1)
@@ -317,26 +317,26 @@ uint64_t __87__WFWorkflowStatusPresenter_activateAlertInMainSceneOfApplicationWi
 
 - (BOOL)alertIsActive
 {
-  v2 = self;
-  v3 = [(WFWorkflowStatusPresenter *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  queue = [(WFWorkflowStatusPresenter *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(WFWorkflowStatusPresenter *)v2 queue];
+  queue2 = [(WFWorkflowStatusPresenter *)selfCopy queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__WFWorkflowStatusPresenter_alertIsActive__block_invoke;
   v6[3] = &unk_2789000D0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __42__WFWorkflowStatusPresenter_alertIsActive__block_invoke(uint64_t a1)
@@ -347,26 +347,26 @@ void __42__WFWorkflowStatusPresenter_alertIsActive__block_invoke(uint64_t a1)
 
 - (BOOL)alertIsLaunching
 {
-  v2 = self;
-  v3 = [(WFWorkflowStatusPresenter *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  selfCopy = self;
+  queue = [(WFWorkflowStatusPresenter *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(WFWorkflowStatusPresenter *)v2 queue];
+  queue2 = [(WFWorkflowStatusPresenter *)selfCopy queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__WFWorkflowStatusPresenter_alertIsLaunching__block_invoke;
   v6[3] = &unk_2789000D0;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v6[5] = &v7;
-  dispatch_sync(v4, v6);
+  dispatch_sync(queue2, v6);
 
-  LOBYTE(v2) = *(v8 + 24);
+  LOBYTE(selfCopy) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __45__WFWorkflowStatusPresenter_alertIsLaunching__block_invoke(uint64_t a1)
@@ -383,12 +383,12 @@ uint64_t __45__WFWorkflowStatusPresenter_alertIsLaunching__block_invoke(uint64_t
   v2 = [(WFWorkflowStatusPresenter *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAE98] anonymousListener];
-    [(NSXPCListener *)v3 setDelegate:v2];
-    [(NSXPCListener *)v3 resume];
+    anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
+    [(NSXPCListener *)anonymousListener setDelegate:v2];
+    [(NSXPCListener *)anonymousListener resume];
     listener = v2->_listener;
-    v2->_listener = v3;
-    v5 = v3;
+    v2->_listener = anonymousListener;
+    v5 = anonymousListener;
 
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_USER_INITIATED, 0);

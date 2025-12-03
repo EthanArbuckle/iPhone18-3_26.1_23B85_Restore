@@ -1,10 +1,10 @@
 @interface PregnancyModeTimelineCell
-- (_TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell)initWithCoder:(id)a3;
+- (_TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell)initWithCoder:(id)coder;
 @end
 
 @implementation PregnancyModeTimelineCell
 
-- (_TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell_updateCurrentDayOperation) = 0;
   v3 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin25PregnancyModeTimelineCell_item;

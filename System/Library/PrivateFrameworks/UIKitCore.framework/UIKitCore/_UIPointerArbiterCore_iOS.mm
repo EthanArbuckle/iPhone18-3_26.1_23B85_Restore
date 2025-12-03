@@ -1,29 +1,29 @@
 @interface _UIPointerArbiterCore_iOS
 - (_UIPointerArbiterCore_iOS)init;
 - (_UIPointerLensView)lensView;
-- (id)_coordinateSpaceSourceViewForRegion:(id)a3 withStyle:(id)a4;
-- (id)_hoverRegionWithStyle:(id)a3 forRegion:(id)a4;
-- (id)_pointerShapeForStyle:(id)a3 region:(id)a4;
-- (id)_psPointerShapeFromUIPointerShape:(id)a3 atScale:(double)a4;
+- (id)_coordinateSpaceSourceViewForRegion:(id)region withStyle:(id)style;
+- (id)_hoverRegionWithStyle:(id)style forRegion:(id)region;
+- (id)_pointerShapeForStyle:(id)style region:(id)region;
+- (id)_psPointerShapeFromUIPointerShape:(id)shape atScale:(double)scale;
 - (id)obtainPointerUpdatePauseAssertion;
 - (int64_t)pointerState;
-- (void)_clearMatchMoveSourceForRegion:(id)a3 immediately:(BOOL)a4;
-- (void)_getPointerRegion:(id *)a3 andStyle:(id *)a4 atLocation:(CGPoint)a5 inWindow:(id)a6;
+- (void)_clearMatchMoveSourceForRegion:(id)region immediately:(BOOL)immediately;
+- (void)_getPointerRegion:(id *)region andStyle:(id *)style atLocation:(CGPoint)location inWindow:(id)window;
 - (void)_notifyPointerStateDidChange;
 - (void)_performNextTransaction;
-- (void)_performTransactionUsingBlock:(id)a3;
-- (void)_prepareContentMatchMoveSourceForPointerRegion:(id)a3 completion:(id)a4;
-- (void)_preparePointerPortalSourceCollectionWithCompletion:(id)a3;
-- (void)_setActiveHoverRegion:(id)a3 style:(id)a4 forPointerRegion:(id)a5 transactionID:(unint64_t)a6 completion:(id)a7;
-- (void)applyStyle:(id)a3 forRegion:(id)a4 effectSourceHandler:(id)a5 completion:(id)a6;
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4;
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4;
-- (void)beginScrollingWithRegion:(id)a3;
-- (void)endScrollingWithRegion:(id)a3;
-- (void)exitRegion:(id)a3 removeStyle:(BOOL)a4 completion:(id)a5;
-- (void)pointerClientController:(id)a3 didInvalidatePortalSourceCollections:(id)a4 matchMoveSources:(id)a5;
-- (void)pointerClientControllerClientInteractionStateDidChange:(id)a3;
-- (void)pointerClientControllerWillDecelerate:(id)a3 targetPointerPosition:(CGPoint *)a4 velocity:(CGPoint)a5 inContextID:(unsigned int)a6 cursorRegionLookupRadius:(double)a7 cursorRegionLookupResolution:(double)a8 lookupConeAngle:(double)a9;
+- (void)_performTransactionUsingBlock:(id)block;
+- (void)_prepareContentMatchMoveSourceForPointerRegion:(id)region completion:(id)completion;
+- (void)_preparePointerPortalSourceCollectionWithCompletion:(id)completion;
+- (void)_setActiveHoverRegion:(id)region style:(id)style forPointerRegion:(id)pointerRegion transactionID:(unint64_t)d completion:(id)completion;
+- (void)applyStyle:(id)style forRegion:(id)region effectSourceHandler:(id)handler completion:(id)completion;
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type;
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level;
+- (void)beginScrollingWithRegion:(id)region;
+- (void)endScrollingWithRegion:(id)region;
+- (void)exitRegion:(id)region removeStyle:(BOOL)style completion:(id)completion;
+- (void)pointerClientController:(id)controller didInvalidatePortalSourceCollections:(id)collections matchMoveSources:(id)sources;
+- (void)pointerClientControllerClientInteractionStateDidChange:(id)change;
+- (void)pointerClientControllerWillDecelerate:(id)decelerate targetPointerPosition:(CGPoint *)position velocity:(CGPoint)velocity inContextID:(unsigned int)d cursorRegionLookupRadius:(double)radius cursorRegionLookupResolution:(double)resolution lookupConeAngle:(double)angle;
 @end
 
 @implementation _UIPointerArbiterCore_iOS
@@ -48,15 +48,15 @@
 
 - (int64_t)pointerState
 {
-  v3 = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
-  v4 = [v3 clientInteractionState];
+  pointerClientController = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
+  clientInteractionState = [pointerClientController clientInteractionState];
   v5 = 1;
-  if (v4 == 2)
+  if (clientInteractionState == 2)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (clientInteractionState)
   {
     v6 = v5;
   }
@@ -68,9 +68,9 @@
 
   if (v6 == 1)
   {
-    v7 = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
+    scrollingRegion = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
 
-    if (v7)
+    if (scrollingRegion)
     {
       v6 = 3;
     }
@@ -92,16 +92,16 @@
   }
 }
 
-- (void)applyStyle:(id)a3 forRegion:(id)a4 effectSourceHandler:(id)a5 completion:(id)a6
+- (void)applyStyle:(id)style forRegion:(id)region effectSourceHandler:(id)handler completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  styleCopy = style;
+  regionCopy = region;
+  handlerCopy = handler;
+  completionCopy = completion;
   if ([(_UIPointerArbiterCore_iOS *)self pointerState]== 1)
   {
-    v14 = [(_UIPointerArbiterCore_iOS *)self _hoverRegionWithStyle:v10 forRegion:v11];
+    v14 = [(_UIPointerArbiterCore_iOS *)self _hoverRegionWithStyle:styleCopy forRegion:regionCopy];
     v15 = ([(_UIPointerArbiterCore_iOS *)self transactionRevisionID]+ 1);
     [(_UIPointerArbiterCore_iOS *)self setTransactionRevisionID:v15];
     objc_initWeak(location, self);
@@ -112,11 +112,11 @@
     objc_copyWeak(v25, location);
     v16 = v14;
     v20 = v16;
-    v21 = v11;
-    v23 = v12;
-    v22 = v10;
+    v21 = regionCopy;
+    v23 = handlerCopy;
+    v22 = styleCopy;
     v25[1] = v15;
-    v24 = v13;
+    v24 = completionCopy;
     [(_UIPointerArbiterCore_iOS *)self _performTransactionUsingBlock:v19];
 
     objc_destroyWeak(v25);
@@ -130,23 +130,23 @@
     {
       v18 = v17;
       *location = 138412546;
-      *&location[4] = v11;
+      *&location[4] = regionCopy;
       v27 = 2048;
-      v28 = [(_UIPointerArbiterCore_iOS *)self pointerState];
+      pointerState = [(_UIPointerArbiterCore_iOS *)self pointerState];
       _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_DEFAULT, "Ignoring applyStyle:forRegion: %@ because pointer state is not enabled (%ld)", location, 0x16u);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)exitRegion:(id)a3 removeStyle:(BOOL)a4 completion:(id)a5
+- (void)exitRegion:(id)region removeStyle:(BOOL)style completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  regionCopy = region;
+  completionCopy = completion;
   v10 = ([(_UIPointerArbiterCore_iOS *)self transactionRevisionID]+ 1);
   [(_UIPointerArbiterCore_iOS *)self setTransactionRevisionID:v10];
   objc_initWeak(&location, self);
@@ -155,11 +155,11 @@
   v13[2] = __63___UIPointerArbiterCore_iOS_exitRegion_removeStyle_completion___block_invoke;
   v13[3] = &unk_1E710A038;
   objc_copyWeak(v16, &location);
-  v17 = a4;
-  v11 = v8;
+  styleCopy = style;
+  v11 = regionCopy;
   v14 = v11;
   v16[1] = v10;
-  v12 = v9;
+  v12 = completionCopy;
   v15 = v12;
   [(_UIPointerArbiterCore_iOS *)self _performTransactionUsingBlock:v13];
 
@@ -167,30 +167,30 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_setActiveHoverRegion:(id)a3 style:(id)a4 forPointerRegion:(id)a5 transactionID:(unint64_t)a6 completion:(id)a7
+- (void)_setActiveHoverRegion:(id)region style:(id)style forPointerRegion:(id)pointerRegion transactionID:(unint64_t)d completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v12)
+  regionCopy = region;
+  styleCopy = style;
+  pointerRegionCopy = pointerRegion;
+  completionCopy = completion;
+  if (regionCopy)
   {
-    [(_UIPointerArbiterCore_iOS *)self setActivePointerStyle:v13];
-    [(_UIPointerArbiterCore_iOS *)self setActivePointerRegion:v14];
-    [(_UIPointerArbiterCore_iOS *)self setLastSentHoverRegion:v12];
+    [(_UIPointerArbiterCore_iOS *)self setActivePointerStyle:styleCopy];
+    [(_UIPointerArbiterCore_iOS *)self setActivePointerRegion:pointerRegionCopy];
+    [(_UIPointerArbiterCore_iOS *)self setLastSentHoverRegion:regionCopy];
 LABEL_4:
     objc_initWeak(&location, self);
-    v16 = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
+    pointerClientController = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __99___UIPointerArbiterCore_iOS__setActiveHoverRegion_style_forPointerRegion_transactionID_completion___block_invoke;
     v17[3] = &unk_1E710A060;
-    v18 = v12;
+    v18 = regionCopy;
     objc_copyWeak(v21, &location);
-    v21[1] = a6;
-    v19 = v14;
-    v20 = v15;
-    [v16 setActiveHoverRegion:v18 transitionCompletion:v17];
+    v21[1] = d;
+    v19 = pointerRegionCopy;
+    v20 = completionCopy;
+    [pointerClientController setActiveHoverRegion:v18 transitionCompletion:v17];
 
     objc_destroyWeak(v21);
     objc_destroyWeak(&location);
@@ -205,29 +205,29 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  [(_UIPointerArbiterCore_iOS *)self _clearMatchMoveSourceForRegion:v14 immediately:0];
-  if (v15)
+  [(_UIPointerArbiterCore_iOS *)self _clearMatchMoveSourceForRegion:pointerRegionCopy immediately:0];
+  if (completionCopy)
   {
-    v15[2](v15);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_5:
 }
 
-- (void)_clearMatchMoveSourceForRegion:(id)a3 immediately:(BOOL)a4
+- (void)_clearMatchMoveSourceForRegion:(id)region immediately:(BOOL)immediately
 {
-  v4 = a4;
-  v6 = a3;
+  immediatelyCopy = immediately;
+  regionCopy = region;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72___UIPointerArbiterCore_iOS__clearMatchMoveSourceForRegion_immediately___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v6;
-  v7 = v6;
+  v12 = regionCopy;
+  v7 = regionCopy;
   v8 = _Block_copy(v11);
   v9 = v8;
-  if (v4)
+  if (immediatelyCopy)
   {
     (*(v8 + 2))(v8);
   }
@@ -268,46 +268,46 @@ LABEL_5:
 
 - (void)_notifyPointerStateDidChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v2 = +[_UIPointerArbiter sharedArbiter];
-  [v3 postNotificationName:0x1EFB7E670 object:v2];
+  [defaultCenter postNotificationName:0x1EFB7E670 object:v2];
 }
 
-- (void)beginScrollingWithRegion:(id)a3
+- (void)beginScrollingWithRegion:(id)region
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  regionCopy = region;
   if ([(_UIPointerArbiterCore_iOS *)self pointerState])
   {
     v5 = *(__UILogGetCategoryCachedImpl("UIPointerArbiter", &qword_1ED49E0D8) + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = regionCopy;
       _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "beginScrollingWithRegion: %@", &v14, 0xCu);
     }
 
-    v6 = [(_UIPointerArbiterCore_iOS *)self lastSentHoverRegion];
+    lastSentHoverRegion = [(_UIPointerArbiterCore_iOS *)self lastSentHoverRegion];
 
-    if (!v6)
+    if (!lastSentHoverRegion)
     {
       v12 = 0;
 LABEL_16:
-      [(_UIPointerArbiterCore_iOS *)self applyStyle:v12 forRegion:v4 effectSourceHandler:0 completion:0];
-      [(_UIPointerArbiterCore_iOS *)self setScrollingRegion:v4];
+      [(_UIPointerArbiterCore_iOS *)self applyStyle:v12 forRegion:regionCopy effectSourceHandler:0 completion:0];
+      [(_UIPointerArbiterCore_iOS *)self setScrollingRegion:regionCopy];
       [(_UIPointerArbiterCore_iOS *)self _notifyPointerStateDidChange];
 
       goto LABEL_17;
     }
 
-    v7 = [(_UIPointerArbiterCore_iOS *)self activePointerStyle];
-    v8 = v7;
-    if (v7)
+    activePointerStyle = [(_UIPointerArbiterCore_iOS *)self activePointerStyle];
+    v8 = activePointerStyle;
+    if (activePointerStyle)
     {
-      if ([v7 type] == 2)
+      if ([activePointerStyle type] == 2)
       {
-        v9 = [v8 pointerShape];
-        [v9 beamLength];
+        pointerShape = [v8 pointerShape];
+        [pointerShape beamLength];
         v11 = v10;
 
         if (v11 > 0.0)
@@ -335,42 +335,42 @@ LABEL_15:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = regionCopy;
     _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "Ignoring beginScrollingWithRegion: %@ because pointer state is disabled", &v14, 0xCu);
   }
 
 LABEL_17:
 }
 
-- (void)endScrollingWithRegion:(id)a3
+- (void)endScrollingWithRegion:(id)region
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
-  if (v5 && (v6 = v5, [(_UIPointerArbiterCore_iOS *)self scrollingRegion], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == v4))
+  regionCopy = region;
+  scrollingRegion = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
+  if (scrollingRegion && (v6 = scrollingRegion, [(_UIPointerArbiterCore_iOS *)self scrollingRegion], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == regionCopy))
   {
     v11 = *(__UILogGetCategoryCachedImpl("UIPointerArbiter", &qword_1ED49E0E8) + 8);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = regionCopy;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "endScrollingWithRegion: %@", buf, 0xCu);
     }
 
     [(_UIPointerArbiterCore_iOS *)self setScrollingRegion:0];
     [(_UIPointerArbiterCore_iOS *)self _notifyPointerStateDidChange];
     v12 = UIApp;
-    v13 = [v4 referenceView];
-    v14 = [v13 _window];
-    [v12 _resendHoverEventForWindow:v14];
+    referenceView = [regionCopy referenceView];
+    _window = [referenceView _window];
+    [v12 _resendHoverEventForWindow:_window];
 
     v15 = dispatch_time(0, 50000000);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __52___UIPointerArbiterCore_iOS_endScrollingWithRegion___block_invoke;
     v16[3] = &unk_1E70F35B8;
-    v17 = v4;
-    v18 = self;
+    v17 = regionCopy;
+    selfCopy = self;
     dispatch_after(v15, MEMORY[0x1E69E96A0], v16);
   }
 
@@ -380,11 +380,11 @@ LABEL_17:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
+      scrollingRegion2 = [(_UIPointerArbiterCore_iOS *)self scrollingRegion];
       *buf = 138412546;
-      v20 = v4;
+      v20 = regionCopy;
       v21 = 2112;
-      v22 = v10;
+      v22 = scrollingRegion2;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "Ignoring endScrollingWithRegion: %@ because scrollingRegion does not match: %@", buf, 0x16u);
     }
   }
@@ -405,7 +405,7 @@ LABEL_17:
   return [(_UIAssertionController *)pauseAssertionController vendAssertionOfType:0 initialState:1];
 }
 
-- (void)pointerClientController:(id)a3 didInvalidatePortalSourceCollections:(id)a4 matchMoveSources:(id)a5
+- (void)pointerClientController:(id)controller didInvalidatePortalSourceCollections:(id)collections matchMoveSources:(id)sources
 {
   v6 = *(__UILogGetCategoryCachedImpl("UIPointerArbiter", &pointerClientController_didInvalidatePortalSourceCollections_matchMoveSources____s_category) + 8);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -416,35 +416,35 @@ LABEL_17:
 
   [(_UIPointerArbiterCore_iOS *)self setPointerRegionToMatchMoveSourceMap:0];
   [(_UIPointerArbiterCore_iOS *)self setPointerPortalSourceCollection:0];
-  v7 = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
-  [v7 removeFromSuperview];
+  pointerPortalView = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
+  [pointerPortalView removeFromSuperview];
 
   [(_UIPointerArbiterCore_iOS *)self setPointerPortalView:0];
-  v8 = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
-  [v8 removeFromSuperview];
+  overlayEffectPortalView = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
+  [overlayEffectPortalView removeFromSuperview];
 
   [(_UIPointerArbiterCore_iOS *)self setOverlayEffectPortalView:0];
-  v9 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
-  [v9 removeFromSuperview];
+  samplingBackdropView = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
+  [samplingBackdropView removeFromSuperview];
 
-  v10 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
-  [v10 setPaused:1];
+  samplingBackdropView2 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
+  [samplingBackdropView2 setPaused:1];
 
   [(_UIPointerArbiterCore_iOS *)self setSamplingBackdropView:0];
   [(_UIPointerArbiterCore_iOS *)self setLastSentHoverRegion:0];
 }
 
-- (void)pointerClientControllerWillDecelerate:(id)a3 targetPointerPosition:(CGPoint *)a4 velocity:(CGPoint)a5 inContextID:(unsigned int)a6 cursorRegionLookupRadius:(double)a7 cursorRegionLookupResolution:(double)a8 lookupConeAngle:(double)a9
+- (void)pointerClientControllerWillDecelerate:(id)decelerate targetPointerPosition:(CGPoint *)position velocity:(CGPoint)velocity inContextID:(unsigned int)d cursorRegionLookupRadius:(double)radius cursorRegionLookupResolution:(double)resolution lookupConeAngle:(double)angle
 {
-  v12 = *&a6;
-  y = a5.y;
-  x = a5.x;
-  v17 = a3;
-  if (a4)
+  v12 = *&d;
+  y = velocity.y;
+  x = velocity.x;
+  decelerateCopy = decelerate;
+  if (position)
   {
     v18 = [UIWindow _windowWithContextId:v12];
-    v19 = [v18 layer];
-    [v19 convertPoint:0 fromLayer:{a4->x, a4->y}];
+    layer = [v18 layer];
+    [layer convertPoint:0 fromLayer:{position->x, position->y}];
     v21 = v20;
     v23 = v22;
 
@@ -570,31 +570,31 @@ LABEL_41:
       }
 
       v73 = v28;
-      v30 = __sincos_stret(a9 * 0.5);
+      v30 = __sincos_stret(angle * 0.5);
       v31 = 0;
-      if (v27 <= a7)
+      if (v27 <= radius)
       {
-        v32 = v27;
+        radiusCopy = v27;
       }
 
       else
       {
-        v32 = a7;
+        radiusCopy = radius;
       }
 
-      v77 = (v30.__cosval * a7 + v32) / (v30.__sinval * a7);
-      v78 = v32;
-      v33 = vcvtpd_s64_f64(a7 / a8);
+      v77 = (v30.__cosval * radius + radiusCopy) / (v30.__sinval * radius);
+      v78 = radiusCopy;
+      v33 = vcvtpd_s64_f64(radius / resolution);
       v26 = v21;
       v74 = v21;
-      v71 = a8;
+      resolutionCopy = resolution;
       while (v31 != v33)
       {
         v75 = v26;
         v76 = v23;
         v24 = 0;
-        v34 = ++v31 * a8;
-        v35 = round(v34 * 6.28318531 / a8);
+        v34 = ++v31 * resolution;
+        v35 = round(v34 * 6.28318531 / resolution);
         v79 = (v34 * 6.28318531 / v35 / (v34 * 6.28318531) + v34 * 6.28318531 / v35 / (v34 * 6.28318531)) * 3.14159265;
         v36 = 0.0;
         v37 = v73;
@@ -669,7 +669,7 @@ LABEL_41:
         while (v36 < 3.14159265);
         v21 = v74;
         v26 = v75;
-        a8 = v71;
+        resolution = resolutionCopy;
         v23 = v76;
         if (v24)
         {
@@ -681,45 +681,45 @@ LABEL_41:
       v65 = v72;
     }
 
-    v66 = [v18 layer];
-    [v66 convertPoint:0 toLayer:{v21, v65}];
+    layer2 = [v18 layer];
+    [layer2 convertPoint:0 toLayer:{v21, v65}];
     v68 = v67;
     v70 = v69;
 
-    a4->x = v68;
-    a4->y = v70;
+    position->x = v68;
+    position->y = v70;
   }
 }
 
-- (void)pointerClientControllerClientInteractionStateDidChange:(id)a3
+- (void)pointerClientControllerClientInteractionStateDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changeCopy = change;
   v4 = *(__UILogGetCategoryCachedImpl("UIPointerArbiter", &pointerClientControllerClientInteractionStateDidChange____s_category) + 8);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
     v8 = 134217984;
-    v9 = [v3 clientInteractionState];
+    clientInteractionState = [changeCopy clientInteractionState];
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "pointerClientControllerClientInteractionStateDidChange: %ld", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = +[_UIPointerArbiter sharedArbiter];
-  [v6 postNotificationName:0x1EFB7E670 object:v7];
+  [defaultCenter postNotificationName:0x1EFB7E670 object:v7];
 }
 
 - (void)_performNextTransaction
 {
   if (![(_UIPointerArbiterCore_iOS *)self hasRunningTransaction])
   {
-    v3 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
-    v4 = [v3 firstObject];
+    pendingTransactionBlocks = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
+    firstObject = [pendingTransactionBlocks firstObject];
 
-    if (v4)
+    if (firstObject)
     {
-      v5 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
-      [v5 removeObjectAtIndex:0];
+      pendingTransactionBlocks2 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
+      [pendingTransactionBlocks2 removeObjectAtIndex:0];
 
       [(_UIPointerArbiterCore_iOS *)self setHasRunningTransaction:1];
       objc_initWeak(&location, self);
@@ -728,28 +728,28 @@ LABEL_41:
       v6[2] = __52___UIPointerArbiterCore_iOS__performNextTransaction__block_invoke;
       v6[3] = &unk_1E70F5A28;
       objc_copyWeak(&v7, &location);
-      (v4)[2](v4, v6);
+      (firstObject)[2](firstObject, v6);
       objc_destroyWeak(&v7);
       objc_destroyWeak(&location);
     }
   }
 }
 
-- (void)_performTransactionUsingBlock:(id)a3
+- (void)_performTransactionUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
+  blockCopy = block;
+  pendingTransactionBlocks = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
 
-  if (!v5)
+  if (!pendingTransactionBlocks)
   {
     v6 = objc_opt_new();
     [(_UIPointerArbiterCore_iOS *)self setPendingTransactionBlocks:v6];
   }
 
-  v7 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
-  v8 = _Block_copy(v4);
+  pendingTransactionBlocks2 = [(_UIPointerArbiterCore_iOS *)self pendingTransactionBlocks];
+  v8 = _Block_copy(blockCopy);
 
-  [v7 addObject:v8];
+  [pendingTransactionBlocks2 addObject:v8];
   if (![(_UIPointerArbiterCore_iOS *)self hasRunningTransaction])
   {
 
@@ -757,12 +757,12 @@ LABEL_41:
   }
 }
 
-- (void)_prepareContentMatchMoveSourceForPointerRegion:(id)a3 completion:(id)a4
+- (void)_prepareContentMatchMoveSourceForPointerRegion:(id)region completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIPointerArbiterCore_iOS *)self pointerRegionToMatchMoveSourceMap];
-  v9 = [v8 objectForKey:v6];
+  regionCopy = region;
+  completionCopy = completion;
+  pointerRegionToMatchMoveSourceMap = [(_UIPointerArbiterCore_iOS *)self pointerRegionToMatchMoveSourceMap];
+  v9 = [pointerRegionToMatchMoveSourceMap objectForKey:regionCopy];
 
   if (v9)
   {
@@ -775,139 +775,139 @@ LABEL_41:
     v11 = v9;
     v15 = v11;
     v12 = [(_UIPointerContentEffectAnimationBuilder *)v10 initWithCreationHandler:v14];
-    v7[2](v7, v11, v12);
+    completionCopy[2](completionCopy, v11, v12);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v13 = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
+    pointerClientController = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __87___UIPointerArbiterCore_iOS__prepareContentMatchMoveSourceForPointerRegion_completion___block_invoke_2;
     v17[3] = &unk_1E710A0D0;
     objc_copyWeak(&v21, &location);
-    v18 = v6;
-    v19 = v7;
+    v18 = regionCopy;
+    v19 = completionCopy;
     v20 = &__block_literal_global_263;
-    [v13 createContentMatchMoveSourcesWithCount:1 completion:v17];
+    [pointerClientController createContentMatchMoveSourcesWithCount:1 completion:v17];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_preparePointerPortalSourceCollectionWithCompletion:(id)a3
+- (void)_preparePointerPortalSourceCollectionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(_UIPointerArbiterCore_iOS *)self pointerPortalSourceCollection];
-  if (!v5)
+  completionCopy = completion;
+  pointerPortalSourceCollection = [(_UIPointerArbiterCore_iOS *)self pointerPortalSourceCollection];
+  if (!pointerPortalSourceCollection)
   {
     goto LABEL_8;
   }
 
-  v6 = v5;
-  v7 = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
-  if (!v7)
+  v6 = pointerPortalSourceCollection;
+  pointerPortalView = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
+  if (!pointerPortalView)
   {
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
-  if (!v9)
+  v8 = pointerPortalView;
+  overlayEffectPortalView = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
+  if (!overlayEffectPortalView)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = v9;
-  v11 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
+  v10 = overlayEffectPortalView;
+  samplingBackdropView = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
 
-  if (!v11)
+  if (!samplingBackdropView)
   {
 LABEL_8:
-    v17 = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
+    pointerClientController = [(_UIPointerArbiterCore_iOS *)self pointerClientController];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __81___UIPointerArbiterCore_iOS__preparePointerPortalSourceCollectionWithCompletion___block_invoke;
     v18[3] = &unk_1E710A0F8;
     v18[4] = self;
-    v19 = v4;
-    [v17 createPointerPortalSourceCollectionWithCompletion:v18];
+    v19 = completionCopy;
+    [pointerClientController createPointerPortalSourceCollectionWithCompletion:v18];
 
     goto LABEL_9;
   }
 
-  v12 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
-  [v12 setPaused:0];
+  samplingBackdropView2 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
+  [samplingBackdropView2 setPaused:0];
 
-  v13 = [(_UIPointerArbiterCore_iOS *)self pointerPortalSourceCollection];
-  v14 = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
-  v15 = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
-  v16 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
-  (*(v4 + 2))(v4, v13, v14, v15, v16);
+  pointerPortalSourceCollection2 = [(_UIPointerArbiterCore_iOS *)self pointerPortalSourceCollection];
+  pointerPortalView2 = [(_UIPointerArbiterCore_iOS *)self pointerPortalView];
+  overlayEffectPortalView2 = [(_UIPointerArbiterCore_iOS *)self overlayEffectPortalView];
+  samplingBackdropView3 = [(_UIPointerArbiterCore_iOS *)self samplingBackdropView];
+  (*(completionCopy + 2))(completionCopy, pointerPortalSourceCollection2, pointerPortalView2, overlayEffectPortalView2, samplingBackdropView3);
 
 LABEL_9:
 }
 
-- (id)_coordinateSpaceSourceViewForRegion:(id)a3 withStyle:(id)a4
+- (id)_coordinateSpaceSourceViewForRegion:(id)region withStyle:(id)style
 {
-  v5 = a4;
-  v6 = [a3 referenceView];
-  if (v5 && [v5 type] == 1)
+  styleCopy = style;
+  referenceView = [region referenceView];
+  if (styleCopy && [styleCopy type] == 1)
   {
-    v7 = [v5 targetedPreview];
-    v8 = [v7 _sourceViewIsInViewHierarchy];
+    targetedPreview = [styleCopy targetedPreview];
+    _sourceViewIsInViewHierarchy = [targetedPreview _sourceViewIsInViewHierarchy];
 
-    v9 = [v5 targetedPreview];
-    v10 = v9;
-    if (v8)
+    targetedPreview2 = [styleCopy targetedPreview];
+    v10 = targetedPreview2;
+    if (_sourceViewIsInViewHierarchy)
     {
-      v11 = [v9 view];
+      view = [targetedPreview2 view];
     }
 
     else
     {
-      v12 = [v9 target];
-      v11 = [v12 container];
+      target = [targetedPreview2 target];
+      view = [target container];
 
-      v6 = v12;
+      referenceView = target;
     }
 
-    v6 = v11;
+    referenceView = view;
   }
 
-  return v6;
+  return referenceView;
 }
 
-- (id)_hoverRegionWithStyle:(id)a3 forRegion:(id)a4
+- (id)_hoverRegionWithStyle:(id)style forRegion:(id)region
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  styleCopy = style;
+  regionCopy = region;
+  v7 = regionCopy;
   v8 = 0;
-  if (!v5 || !v6)
+  if (!styleCopy || !regionCopy)
   {
     goto LABEL_32;
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E69C4EA8]);
   [v7 rect];
-  [v5 _contentSlipMappedToRegionSize:{v10, v11}];
+  [styleCopy _contentSlipMappedToRegionSize:{v10, v11}];
   v13 = v12;
   v15 = v14;
   [v7 rect];
-  [v5 _pointerSlipMappedToRegionSize:{v16, v17}];
+  [styleCopy _pointerSlipMappedToRegionSize:{v16, v17}];
   v19 = v18;
   v21 = v20;
-  [v5 contentScale];
+  [styleCopy contentScale];
   [v9 setContentHoverInverseScale:1.0 / v22];
   v23 = [MEMORY[0x1E696B098] valueWithCGPoint:{v13, v15}];
   [v9 setContentSlipValue:v23];
 
-  [v9 setPointerRecenteringAxes:{objc_msgSend(v5, "constrainedAxes")}];
+  [v9 setPointerRecenteringAxes:{objc_msgSend(styleCopy, "constrainedAxes")}];
   if (objc_opt_respondsToSelector())
   {
     [v9 setPointerLatchingAxes:{objc_msgSend(v7, "latchingAxes")}];
@@ -916,14 +916,14 @@ LABEL_9:
   v24 = [MEMORY[0x1E696B098] valueWithCGPoint:{v19, v21}];
   [v9 setPointerSlipValue:v24];
 
-  [v9 setShouldPointerSuppressMirroring:{objc_msgSend(v5, "_suppressesMirroring")}];
-  v25 = [v5 pointerShape];
-  v26 = [v25 isEmpty];
+  [v9 setShouldPointerSuppressMirroring:{objc_msgSend(styleCopy, "_suppressesMirroring")}];
+  pointerShape = [styleCopy pointerShape];
+  isEmpty = [pointerShape isEmpty];
 
   v108 = v9;
-  if (v26 || (v58 = [v5 type]) == 0)
+  if (isEmpty || (v58 = [styleCopy type]) == 0)
   {
-    v27 = [MEMORY[0x1E69C4EC0] systemShape];
+    systemShape = [MEMORY[0x1E69C4EC0] systemShape];
 LABEL_7:
     [MEMORY[0x1E695DF70] array];
     goto LABEL_8;
@@ -931,43 +931,43 @@ LABEL_7:
 
   if (v58 == 2)
   {
-    v27 = [(_UIPointerArbiterCore_iOS *)self _pointerShapeForStyle:v5 region:v7];
+    systemShape = [(_UIPointerArbiterCore_iOS *)self _pointerShapeForStyle:styleCopy region:v7];
     goto LABEL_7;
   }
 
   if (v58 == 1)
   {
-    v59 = [v5 targetedPreview];
-    v60 = [v59 target];
-    v61 = [v60 container];
+    targetedPreview = [styleCopy targetedPreview];
+    target = [targetedPreview target];
+    container = [target container];
 
-    [v5 contentScale];
+    [styleCopy contentScale];
     v63 = v62;
-    v64 = [v5 pointerShape];
-    v65 = [v64 path];
+    pointerShape2 = [styleCopy pointerShape];
+    path = [pointerShape2 path];
 
-    if ([v5 options])
+    if ([styleCopy options])
     {
-      v77 = [(_UIPointerArbiterCore_iOS *)self _pointerShapeForStyle:v5 region:v7];
+      v77 = [(_UIPointerArbiterCore_iOS *)self _pointerShapeForStyle:styleCopy region:v7];
     }
 
     else
     {
-      if (v65)
+      if (path)
       {
-        v66 = [v65 copy];
-        [v65 bounds];
+        v66 = [path copy];
+        [path bounds];
         v69 = v68 + v67 * 0.5;
         v72 = v71 + v70 * 0.5;
         CGAffineTransformMakeTranslation(&v110, -v69, -v72);
         [v66 applyTransform:&v110];
-        if (([v5 options] & 0x40) != 0)
+        if (([styleCopy options] & 0x40) != 0)
         {
           CGAffineTransformMakeScale(&v110, v63, v63);
           [v66 applyTransform:&v110];
         }
 
-        v73 = _UIPointerShapeOffsetFromModelPosition(v61, v7, v69, v72);
+        v73 = _UIPointerShapeOffsetFromModelPosition(container, v7, v69, v72);
         CGAffineTransformMakeTranslation(&v110, v73, v74);
         [v66 applyTransform:&v110];
         v75 = [MEMORY[0x1E69C4EC0] customShapeWithPath:objc_msgSend(v66 usesEvenOddFillRule:{"CGPath"), objc_msgSend(v66, "usesEvenOddFillRule")}];
@@ -975,16 +975,16 @@ LABEL_7:
         goto LABEL_39;
       }
 
-      v78 = [v5 pointerShape];
-      [v78 rect];
+      pointerShape3 = [styleCopy pointerShape];
+      [pointerShape3 rect];
       x = v79;
       y = v81;
       width = v83;
       height = v85;
 
-      v87 = _UIPointerShapeOffsetFromModelPosition(v61, v7, x + width * 0.5, y + height * 0.5);
+      v87 = _UIPointerShapeOffsetFromModelPosition(container, v7, x + width * 0.5, y + height * 0.5);
       v89 = v88;
-      if (([v5 options] & 0x40) != 0)
+      if (([styleCopy options] & 0x40) != 0)
       {
         CGAffineTransformMakeScale(&v110, v63, v63);
         v112.origin.x = x;
@@ -998,24 +998,24 @@ LABEL_7:
         height = v113.size.height;
       }
 
-      [v61 _currentScreenScale];
+      [container _currentScreenScale];
       UIRectCenteredAboutPointScale(x, y, width, height, v87, v89, v90);
       v92 = v91;
       v94 = v93;
       v96 = v95;
       v98 = v97;
-      v99 = [v5 pointerShape];
-      v100 = [v99 isCircle];
+      pointerShape4 = [styleCopy pointerShape];
+      isCircle = [pointerShape4 isCircle];
 
       v101 = MEMORY[0x1E69C4EC0];
-      if (!v100)
+      if (!isCircle)
       {
-        v102 = [v5 pointerShape];
-        [v102 effectiveCornerRadius];
+        pointerShape5 = [styleCopy pointerShape];
+        [pointerShape5 effectiveCornerRadius];
         v104 = v103;
-        v105 = [v5 pointerShape];
-        v106 = [v105 cornerCurve];
-        v75 = [v101 roundedRectWithBounds:v106 cornerRadius:v92 cornerCurve:{v94, v96, v98, v104}];
+        pointerShape6 = [styleCopy pointerShape];
+        cornerCurve = [pointerShape6 cornerCurve];
+        v75 = [v101 roundedRectWithBounds:cornerCurve cornerRadius:v92 cornerCurve:{v94, v96, v98, v104}];
 
         goto LABEL_39;
       }
@@ -1032,8 +1032,8 @@ LABEL_39:
 
   [MEMORY[0x1E695DF70] array];
   v28 = LABEL_8:;
-  v29 = [v5 accessories];
-  v30 = [v29 count];
+  accessories = [styleCopy accessories];
+  v30 = [accessories count];
 
   if (v30)
   {
@@ -1050,29 +1050,29 @@ LABEL_39:
 
     do
     {
-      v33 = [v5 accessories];
-      v34 = [v33 objectAtIndexedSubscript:v31];
+      accessories2 = [styleCopy accessories];
+      v34 = [accessories2 objectAtIndexedSubscript:v31];
 
-      v35 = [v5 targetedPreview];
-      v36 = [v35 target];
-      v37 = [v36 container];
-      v38 = v37;
-      if (v37)
+      targetedPreview2 = [styleCopy targetedPreview];
+      target2 = [targetedPreview2 target];
+      container2 = [target2 container];
+      v38 = container2;
+      if (container2)
       {
-        v39 = v37;
+        referenceView = container2;
       }
 
       else
       {
-        v39 = [v7 referenceView];
+        referenceView = [v7 referenceView];
       }
 
-      v40 = v39;
+      v40 = referenceView;
 
       v41 = objc_opt_new();
-      v42 = [v34 shape];
+      shape = [v34 shape];
       [v40 _currentScreenScale];
-      v43 = [(_UIPointerArbiterCore_iOS *)self _psPointerShapeFromUIPointerShape:v42 atScale:?];
+      v43 = [(_UIPointerArbiterCore_iOS *)self _psPointerShapeFromUIPointerShape:shape atScale:?];
       [v41 setShape:v43];
 
       [v34 position];
@@ -1094,10 +1094,10 @@ LABEL_39:
     [v108 setAccessories:v28];
   }
 
-  v45 = [(_UIPointerArbiterCore_iOS *)self _coordinateSpaceSourceViewForRegion:v7 withStyle:v5];
-  v46 = [v45 layer];
-  v47 = [v46 context];
-  [v108 setCoordinateSpaceSourceContextID:{objc_msgSend(v47, "contextId")}];
+  v45 = [(_UIPointerArbiterCore_iOS *)self _coordinateSpaceSourceViewForRegion:v7 withStyle:styleCopy];
+  layer = [v45 layer];
+  context = [layer context];
+  [v108 setCoordinateSpaceSourceContextID:{objc_msgSend(context, "contextId")}];
 
   [v108 setCoordinateSpaceSourceLayerRenderID:CALayerGetRenderId()];
   [v7 rect];
@@ -1105,15 +1105,15 @@ LABEL_39:
   v51 = v50;
   v53 = v52;
   v55 = v54;
-  v56 = [v7 referenceView];
-  [v45 convertRect:v56 fromView:{v49, v51, v53, v55}];
+  referenceView2 = [v7 referenceView];
+  [v45 convertRect:referenceView2 fromView:{v49, v51, v53, v55}];
   [v108 setContentBounds:?];
 
   [v108 setPointerShape:v107];
-  [v108 setShouldPointerUnderlayContent:{objc_msgSend(v5, "pointerUnderlapsContent")}];
-  if ([v5 pointerUnderlapsContent])
+  [v108 setShouldPointerUnderlayContent:{objc_msgSend(styleCopy, "pointerUnderlapsContent")}];
+  if ([styleCopy pointerUnderlapsContent])
   {
-    if (([v5 options] & 2) != 0)
+    if (([styleCopy options] & 2) != 0)
     {
       v57 = 2;
     }
@@ -1130,7 +1130,7 @@ LABEL_39:
   }
 
   [v108 setOverlayEffectStyle:v57];
-  [v5 _pointerIntensityForMaterialLuminance:{-[_UIPointerArbiterCore_iOS lastMaterialLuminance](self, "lastMaterialLuminance")}];
+  [styleCopy _pointerIntensityForMaterialLuminance:{-[_UIPointerArbiterCore_iOS lastMaterialLuminance](self, "lastMaterialLuminance")}];
   [v108 setPointerVisualIntensity:?];
   [v108 setPreferredPointerMaterialLuminance:{-[_UIPointerArbiterCore_iOS lastMaterialLuminance](self, "lastMaterialLuminance")}];
 
@@ -1139,57 +1139,57 @@ LABEL_32:
   return v8;
 }
 
-- (id)_pointerShapeForStyle:(id)a3 region:(id)a4
+- (id)_pointerShapeForStyle:(id)style region:(id)region
 {
-  v5 = a3;
-  v6 = [v5 pointerShape];
-  if ([v6 isElastic])
+  styleCopy = style;
+  pointerShape = [styleCopy pointerShape];
+  if ([pointerShape isElastic])
   {
     v7 = MEMORY[0x1E69C4EC0];
-    [v6 pinnedPoint];
-    v8 = [v7 elasticRoundedRectPinnedAtPoint:?];
+    [pointerShape pinnedPoint];
+    systemShape = [v7 elasticRoundedRectPinnedAtPoint:?];
   }
 
   else
   {
-    if (([v6 isEmpty] & 1) == 0 && (objc_msgSend(v5, "options") & 0x800) == 0)
+    if (([pointerShape isEmpty] & 1) == 0 && (objc_msgSend(styleCopy, "options") & 0x800) == 0)
     {
-      v9 = [v5 targetedPreview];
-      v10 = [v9 target];
-      v11 = [v10 container];
-      [v11 _currentScreenScale];
-      v12 = [(_UIPointerArbiterCore_iOS *)self _psPointerShapeFromUIPointerShape:v6 atScale:?];
+      targetedPreview = [styleCopy targetedPreview];
+      target = [targetedPreview target];
+      container = [target container];
+      [container _currentScreenScale];
+      v12 = [(_UIPointerArbiterCore_iOS *)self _psPointerShapeFromUIPointerShape:pointerShape atScale:?];
 
       goto LABEL_8;
     }
 
-    v8 = [MEMORY[0x1E69C4EC0] systemShape];
+    systemShape = [MEMORY[0x1E69C4EC0] systemShape];
   }
 
-  v12 = v8;
+  v12 = systemShape;
 LABEL_8:
 
   return v12;
 }
 
-- (id)_psPointerShapeFromUIPointerShape:(id)a3 atScale:(double)a4
+- (id)_psPointerShapeFromUIPointerShape:(id)shape atScale:(double)scale
 {
-  v5 = a3;
-  v6 = [v5 path];
-  v7 = v6;
-  if (v6)
+  shapeCopy = shape;
+  path = [shapeCopy path];
+  v7 = path;
+  if (path)
   {
-    v8 = [MEMORY[0x1E69C4EC0] customShapeWithPath:objc_msgSend(v6 usesEvenOddFillRule:{"CGPath"), objc_msgSend(v6, "usesEvenOddFillRule")}];
+    v8 = [MEMORY[0x1E69C4EC0] customShapeWithPath:objc_msgSend(path usesEvenOddFillRule:{"CGPath"), objc_msgSend(path, "usesEvenOddFillRule")}];
   }
 
   else
   {
-    [v5 rect];
+    [shapeCopy rect];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    UIRectCenteredAboutPointScale(v9, v11, v13, v15, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a4);
+    UIRectCenteredAboutPointScale(v9, v11, v13, v15, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), scale);
     rect = v17;
     v19 = v18;
     v21 = v20;
@@ -1214,25 +1214,25 @@ LABEL_8:
     width = v40.size.width;
     height = v40.size.height;
     v30 = MEMORY[0x1E69C4EC0];
-    [v5 effectiveCornerRadius];
+    [shapeCopy effectiveCornerRadius];
     v32 = v31;
-    v33 = [v5 cornerCurve];
-    v8 = [v30 roundedRectWithBounds:v33 cornerRadius:x cornerCurve:{y, width, height, v32}];
+    cornerCurve = [shapeCopy cornerCurve];
+    v8 = [v30 roundedRectWithBounds:cornerCurve cornerRadius:x cornerCurve:{y, width, height, v32}];
   }
 
   return v8;
 }
 
-- (void)_getPointerRegion:(id *)a3 andStyle:(id *)a4 atLocation:(CGPoint)a5 inWindow:(id)a6
+- (void)_getPointerRegion:(id *)region andStyle:(id *)style atLocation:(CGPoint)location inWindow:(id)window
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  [v9 convertPoint:0 toWindow:{x, y}];
+  windowCopy = window;
+  [windowCopy convertPoint:0 toWindow:{x, y}];
   v11 = v10;
   v13 = v12;
-  v14 = v9;
+  v14 = windowCopy;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __76___UIPointerArbiterCore_iOS__getPointerRegion_andStyle_atLocation_inWindow___block_invoke;
@@ -1246,23 +1246,23 @@ LABEL_8:
     goto LABEL_24;
   }
 
-  v17 = v15;
-  while ((_IsKindOfUIView(v17) & 1) == 0)
+  _parentGestureRecognizerContainer = v15;
+  while ((_IsKindOfUIView(_parentGestureRecognizerContainer) & 1) == 0)
   {
 LABEL_15:
-    v17 = [v17 _parentGestureRecognizerContainer];
-    if (!v17)
+    _parentGestureRecognizerContainer = [_parentGestureRecognizerContainer _parentGestureRecognizerContainer];
+    if (!_parentGestureRecognizerContainer)
     {
       goto LABEL_24;
     }
   }
 
-  v18 = [v17 interactions];
+  interactions = [_parentGestureRecognizerContainer interactions];
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v19 = v18;
+  v19 = interactions;
   v20 = [v19 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (!v20)
   {
@@ -1307,8 +1307,8 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v25 = [v24 view];
-  [v25 convertPoint:0 fromView:{v11, v13}];
+  view = [v24 view];
+  [view convertPoint:0 fromView:{v11, v13}];
   v27 = v26;
   v29 = v28;
 
@@ -1317,39 +1317,39 @@ LABEL_6:
   if (v31)
   {
     v32 = [v24 _pointerStyleForRegion:v31];
-    if (a3)
+    if (region)
     {
       v33 = v31;
-      *a3 = v31;
+      *region = v31;
     }
 
-    if (a4)
+    if (style)
     {
       v34 = v32;
-      *a4 = v32;
+      *style = v32;
     }
   }
 
 LABEL_24:
 }
 
-- (void)backgroundLumaView:(id)a3 didTransitionToLevel:(unint64_t)a4
+- (void)backgroundLumaView:(id)view didTransitionToLevel:(unint64_t)level
 {
-  v6 = a3;
-  if (a4 == 2)
+  viewCopy = view;
+  if (level == 2)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = a4 == 1;
+    v7 = level == 1;
   }
 
   [(_UIPointerArbiterCore_iOS *)self setLastMaterialLuminance:v7];
-  v8 = [(_UIPointerArbiterCore_iOS *)self lastSentHoverRegion];
+  lastSentHoverRegion = [(_UIPointerArbiterCore_iOS *)self lastSentHoverRegion];
 
-  if (v8)
+  if (lastSentHoverRegion)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -1363,17 +1363,17 @@ LABEL_24:
   }
 }
 
-- (void)assertionActivationStateChangedToState:(BOOL)a3 forType:(unint64_t)a4
+- (void)assertionActivationStateChangedToState:(BOOL)state forType:(unint64_t)type
 {
-  if (!a4)
+  if (!type)
   {
-    if (a3 && !self->_updatesPausedViaAssertion)
+    if (state && !self->_updatesPausedViaAssertion)
     {
-      v7 = [(_UIPointerArbiterCore_iOS *)self activePointerRegion];
-      [(_UIPointerArbiterCore_iOS *)self exitRegion:v7 removeStyle:1 completion:0];
+      activePointerRegion = [(_UIPointerArbiterCore_iOS *)self activePointerRegion];
+      [(_UIPointerArbiterCore_iOS *)self exitRegion:activePointerRegion removeStyle:1 completion:0];
     }
 
-    self->_updatesPausedViaAssertion = a3;
+    self->_updatesPausedViaAssertion = state;
 
     [(_UIPointerArbiterCore_iOS *)self _notifyPointerStateDidChange];
   }

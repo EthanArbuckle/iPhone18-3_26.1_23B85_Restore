@@ -1,8 +1,8 @@
 @interface TCSCallLog
 - (TCSCallLog)init;
-- (id)callWithUniqueProxyIdentifier:(id)a3;
+- (id)callWithUniqueProxyIdentifier:(id)identifier;
 - (void)_trimCache;
-- (void)addCall:(id)a3;
+- (void)addCall:(id)call;
 @end
 
 @implementation TCSCallLog
@@ -16,32 +16,32 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     calls = v3->_calls;
-    v3->_calls = v4;
+    v3->_calls = dictionary;
 
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     identifiers = v3->_identifiers;
-    v3->_identifiers = v6;
+    v3->_identifiers = orderedSet;
   }
 
   return v3;
 }
 
-- (void)addCall:(id)a3
+- (void)addCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
 
-  if (v5)
+  if (uniqueProxyIdentifier)
   {
-    if ([v4 status] == 6)
+    if ([callCopy status] == 6)
     {
-      v6 = [v4 uniqueProxyIdentifier];
-      v7 = [v6 copy];
+      uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+      v7 = [uniqueProxyIdentifier2 copy];
 
       os_unfair_lock_lock(&self->_lock);
-      [(NSMutableDictionary *)self->_calls setObject:v4 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_calls setObject:callCopy forKeyedSubscript:v7];
       [(NSMutableOrderedSet *)self->_identifiers insertObject:v7 atIndex:0];
       os_unfair_lock_unlock(&self->_lock);
       [(TCSCallLog *)self _trimCache];
@@ -67,11 +67,11 @@
   }
 }
 
-- (id)callWithUniqueProxyIdentifier:(id)a3
+- (id)callWithUniqueProxyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_calls objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_calls objectForKeyedSubscript:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -98,9 +98,9 @@
   v11 = v3;
   v8 = v3;
   [(NSMutableDictionary *)calls enumerateKeysAndObjectsUsingBlock:v10];
-  v9 = [v8 allObjects];
-  [(NSMutableDictionary *)self->_calls removeObjectsForKeys:v9];
-  [(NSMutableOrderedSet *)self->_identifiers removeObjectsInArray:v9];
+  allObjects = [v8 allObjects];
+  [(NSMutableDictionary *)self->_calls removeObjectsForKeys:allObjects];
+  [(NSMutableOrderedSet *)self->_identifiers removeObjectsInArray:allObjects];
   os_unfair_lock_unlock(&self->_lock);
 }
 

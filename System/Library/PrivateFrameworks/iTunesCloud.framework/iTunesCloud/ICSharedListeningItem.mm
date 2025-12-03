@@ -1,17 +1,17 @@
 @interface ICSharedListeningItem
-+ (ICSharedListeningItem)itemWithMediaIdentifier:(id)a3;
-- (ICSharedListeningItem)initWithProtobuf:(id)a3 identity:(id)a4;
-- (id)_playParamsForPlaybackItemProto:(id)a3;
++ (ICSharedListeningItem)itemWithMediaIdentifier:(id)identifier;
+- (ICSharedListeningItem)initWithProtobuf:(id)protobuf identity:(id)identity;
+- (id)_playParamsForPlaybackItemProto:(id)proto;
 @end
 
 @implementation ICSharedListeningItem
 
-- (id)_playParamsForPlaybackItemProto:(id)a3
+- (id)_playParamsForPlaybackItemProto:(id)proto
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = v4[5]) != 0 && (v7 = v6[2], v6, v7))
+  protoCopy = proto;
+  v5 = protoCopy;
+  if (protoCopy && (v6 = protoCopy[5]) != 0 && (v7 = v6[2], v6, v7))
   {
     v8 = v5[5];
     v9 = v8;
@@ -50,7 +50,7 @@
 
         v20 = v19;
         *buf = 134218498;
-        v24 = self;
+        selfCopy = self;
         v25 = 2114;
         v26 = v20;
         v27 = 2114;
@@ -75,23 +75,23 @@
   return v15;
 }
 
-- (ICSharedListeningItem)initWithProtobuf:(id)a3 identity:(id)a4
+- (ICSharedListeningItem)initWithProtobuf:(id)protobuf identity:(id)identity
 {
-  v6 = a3;
-  v7 = a4;
+  protobufCopy = protobuf;
+  identityCopy = identity;
   v24.receiver = self;
   v24.super_class = ICSharedListeningItem;
   v8 = [(ICSharedListeningItem *)&v24 init];
   if (v8)
   {
-    if (v6)
+    if (protobufCopy)
     {
-      v9 = v6[3];
+      v9 = protobufCopy[3];
       v10 = [v9 copy];
       identifier = v8->_identifier;
       v8->_identifier = v10;
 
-      v12 = v6[4];
+      v12 = protobufCopy[4];
     }
 
     else
@@ -108,13 +108,13 @@
     mediaIdentifier = v8->_mediaIdentifier;
     v8->_mediaIdentifier = v14;
 
-    v16 = v6 && (v6[7] & 2) != 0 && *(v6 + 12) == 2;
+    v16 = protobufCopy && (protobufCopy[7] & 2) != 0 && *(protobufCopy + 12) == 2;
     v8->_isAutoPlayItem = v16;
-    v17 = [v7 copy];
+    v17 = [identityCopy copy];
     contributorIdentity = v8->_contributorIdentity;
     v8->_contributorIdentity = v17;
 
-    v19 = [(ICSharedListeningItem *)v8 _playParamsForPlaybackItemProto:v6];
+    v19 = [(ICSharedListeningItem *)v8 _playParamsForPlaybackItemProto:protobufCopy];
     playParams = v8->_playParams;
     v8->_playParams = v19;
   }
@@ -122,15 +122,15 @@
   return v8;
 }
 
-+ (ICSharedListeningItem)itemWithMediaIdentifier:(id)a3
++ (ICSharedListeningItem)itemWithMediaIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = MSVNanoIDCreateTaggedPointer();
   v6 = v4[2];
   v4[2] = v5;
 
-  v7 = [v3 copy];
+  v7 = [identifierCopy copy];
   v8 = v4[3];
   v4[3] = v7;
 

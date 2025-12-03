@@ -1,6 +1,6 @@
 @interface AnimatedIconLayer
 - (_TtC12HomeUICommon17AnimatedIconLayer)init;
-- (_TtC12HomeUICommon17AnimatedIconLayer)initWithLayer:(id)a3;
+- (_TtC12HomeUICommon17AnimatedIconLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_254586504();
 }
 
@@ -25,7 +25,7 @@
   return [(AnimatedIconLayer *)&v5 init];
 }
 
-- (_TtC12HomeUICommon17AnimatedIconLayer)initWithLayer:(id)a3
+- (_TtC12HomeUICommon17AnimatedIconLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_25459A9B0();

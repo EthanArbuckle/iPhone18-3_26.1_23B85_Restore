@@ -1,48 +1,48 @@
 @interface TSTTableDataImportWarningSet
-+ (id)objectWithImportWarningSet:(id)a3 refCount:(unsigned int)a4;
++ (id)objectWithImportWarningSet:(id)set refCount:(unsigned int)count;
 - (id)description;
-- (id)initObjectWithImportWarningSet:(id)a3 refCount:(unsigned int)a4;
+- (id)initObjectWithImportWarningSet:(id)set refCount:(unsigned int)count;
 - (unint64_t)estimateByteSize;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion;
 @end
 
 @implementation TSTTableDataImportWarningSet
 
-+ (id)objectWithImportWarningSet:(id)a3 refCount:(unsigned int)a4
++ (id)objectWithImportWarningSet:(id)set refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  inited = objc_msgSend_initObjectWithImportWarningSet_refCount_(v7, v8, v6, v4, v9);
+  v4 = *&count;
+  setCopy = set;
+  v7 = [self alloc];
+  inited = objc_msgSend_initObjectWithImportWarningSet_refCount_(v7, v8, setCopy, v4, v9);
 
   return inited;
 }
 
-- (id)initObjectWithImportWarningSet:(id)a3 refCount:(unsigned int)a4
+- (id)initObjectWithImportWarningSet:(id)set refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&count;
+  setCopy = set;
   v11.receiver = self;
   v11.super_class = TSTTableDataImportWarningSet;
   v8 = [(TSTTableDataObject *)&v11 initWithRefCount:v4];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->super._payload, a3);
+    objc_storeStrong(&v8->super._payload, set);
   }
 
   return v9;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion
 {
-  v16 = a5;
-  objc_msgSend_sharedLoadFromArchive_(self, v7, a3, v8, v9);
+  completionCopy = completion;
+  objc_msgSend_sharedLoadFromArchive_(self, v7, archive, v8, v9);
   v10 = [TSTImportWarningSet alloc];
-  if (*(a3 + 10))
+  if (*(archive + 10))
   {
-    v14 = objc_msgSend_initFromArchive_(v10, v11, *(a3 + 10), v12, v13);
+    v14 = objc_msgSend_initFromArchive_(v10, v11, *(archive + 10), v12, v13);
   }
 
   else
@@ -53,28 +53,28 @@
   payload = self->super._payload;
   self->super._payload = v14;
 
-  v16[2](v16, self);
+  completionCopy[2](completionCopy, self);
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v17.receiver = self;
   v17.super_class = TSTTableDataImportWarningSet;
-  [(TSTTableDataObject *)&v17 encodeToArchive:a3 archiver:v6];
+  [(TSTTableDataObject *)&v17 encodeToArchive:archive archiver:archiverCopy];
   v14 = objc_msgSend_importWarningSet(self, v7, v8, v9, v10);
-  *(a3 + 4) |= 0x80u;
-  v15 = *(a3 + 10);
+  *(archive + 4) |= 0x80u;
+  v15 = *(archive + 10);
   if (!v15)
   {
-    v16 = *(a3 + 1);
+    v16 = *(archive + 1);
     if (v16)
     {
       v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v15 = google::protobuf::Arena::CreateMaybeMessage<TST::ImportWarningSetArchive>(v16);
-    *(a3 + 10) = v15;
+    *(archive + 10) = v15;
   }
 
   objc_msgSend_saveToArchive_(v14, v11, v15, v12, v13);

@@ -1,19 +1,19 @@
 @interface PKAuthenticatorEvaluationRequest
-- (PKAuthenticatorEvaluationRequest)initWithPolicy:(int64_t)a3;
+- (PKAuthenticatorEvaluationRequest)initWithPolicy:(int64_t)policy;
 - (void)dealloc;
-- (void)setAccessControlRef:(__SecAccessControl *)a3;
+- (void)setAccessControlRef:(__SecAccessControl *)ref;
 @end
 
 @implementation PKAuthenticatorEvaluationRequest
 
-- (PKAuthenticatorEvaluationRequest)initWithPolicy:(int64_t)a3
+- (PKAuthenticatorEvaluationRequest)initWithPolicy:(int64_t)policy
 {
   v5.receiver = self;
   v5.super_class = PKAuthenticatorEvaluationRequest;
   result = [(PKAuthenticatorEvaluationRequest *)&v5 init];
   if (result)
   {
-    result->_policy = a3;
+    result->_policy = policy;
     result->_maxBiometryFailures = *MEMORY[0x277D38590];
   }
 
@@ -33,10 +33,10 @@
   [(PKAuthenticatorEvaluationRequest *)&v4 dealloc];
 }
 
-- (void)setAccessControlRef:(__SecAccessControl *)a3
+- (void)setAccessControlRef:(__SecAccessControl *)ref
 {
   accessControlRef = self->_accessControlRef;
-  if (accessControlRef != a3)
+  if (accessControlRef != ref)
   {
     if (accessControlRef)
     {
@@ -44,9 +44,9 @@
       self->_accessControlRef = 0;
     }
 
-    if (a3)
+    if (ref)
     {
-      self->_accessControlRef = CFRetain(a3);
+      self->_accessControlRef = CFRetain(ref);
     }
   }
 }

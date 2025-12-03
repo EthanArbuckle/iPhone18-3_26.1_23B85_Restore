@@ -1,27 +1,27 @@
 @interface PIPortraitVideoProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)applyWithInputImage:(id)a3 disparityImage:(id)a4 inputPixelBuffer:(id)a5 disparityPixelBuffer:(id)a6 globalMetadata:(id)a7 timedMetadata:(id)a8 aperture:(id)a9 focusedDisparity:(id)a10 quality:(id)a11 debugMode:(id)a12 isHDR:(BOOL)a13 error:(id *)a14;
-+ (int)formatForInputAtIndex:(int)a3;
-+ (void)_configureRGBColorTexture:(id)a3 format:(int)a4 isHDR:(BOOL)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)applyWithInputImage:(id)image disparityImage:(id)disparityImage inputPixelBuffer:(id)buffer disparityPixelBuffer:(id)pixelBuffer globalMetadata:(id)metadata timedMetadata:(id)timedMetadata aperture:(id)aperture focusedDisparity:(id)self0 quality:(id)self1 debugMode:(id)self2 isHDR:(BOOL)self3 error:(id *)self4;
++ (int)formatForInputAtIndex:(int)index;
++ (void)_configureRGBColorTexture:(id)texture format:(int)format isHDR:(BOOL)r;
 @end
 
 @implementation PIPortraitVideoProcessor
 
-+ (id)applyWithInputImage:(id)a3 disparityImage:(id)a4 inputPixelBuffer:(id)a5 disparityPixelBuffer:(id)a6 globalMetadata:(id)a7 timedMetadata:(id)a8 aperture:(id)a9 focusedDisparity:(id)a10 quality:(id)a11 debugMode:(id)a12 isHDR:(BOOL)a13 error:(id *)a14
++ (id)applyWithInputImage:(id)image disparityImage:(id)disparityImage inputPixelBuffer:(id)buffer disparityPixelBuffer:(id)pixelBuffer globalMetadata:(id)metadata timedMetadata:(id)timedMetadata aperture:(id)aperture focusedDisparity:(id)self0 quality:(id)self1 debugMode:(id)self2 isHDR:(BOOL)self3 error:(id *)self4
 {
   v103 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v96 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v95 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  if (!a14)
+  imageCopy = image;
+  disparityImageCopy = disparityImage;
+  bufferCopy = buffer;
+  pixelBufferCopy = pixelBuffer;
+  metadataCopy = metadata;
+  timedMetadataCopy = timedMetadata;
+  apertureCopy = aperture;
+  disparityCopy = disparity;
+  qualityCopy = quality;
+  modeCopy = mode;
+  if (!error)
   {
     v58 = NUAssertLogger_2746();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@
       _os_log_error_impl(&dword_1C7694000, v58, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v60 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v62 = NUAssertLogger_2746();
     v63 = os_log_type_enabled(v62, OS_LOG_TYPE_ERROR);
@@ -40,11 +40,11 @@
     {
       if (v63)
       {
-        v76 = dispatch_get_specific(*v60);
+        v76 = dispatch_get_specific(*callStackSymbols);
         v77 = MEMORY[0x1E696AF00];
         v78 = v76;
-        v60 = [v77 callStackSymbols];
-        v79 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v77 callStackSymbols];
+        v79 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v100 = v76;
         v101 = 2114;
@@ -55,10 +55,10 @@
 
     else if (v63)
     {
-      v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v60 = [v64 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v100 = v60;
+      v100 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -66,7 +66,7 @@
     goto LABEL_33;
   }
 
-  if (!(v19 | v20))
+  if (!(imageCopy | bufferCopy))
   {
     v65 = NUAssertLogger_2746();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -77,7 +77,7 @@
       _os_log_error_impl(&dword_1C7694000, v65, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v60 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v67 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v62 = NUAssertLogger_2746();
     v68 = os_log_type_enabled(v62, OS_LOG_TYPE_ERROR);
@@ -85,10 +85,10 @@
     {
       if (v68)
       {
-        v69 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v60 = [v69 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v100 = v60;
+        v100 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -101,11 +101,11 @@ LABEL_35:
 LABEL_33:
     if (v68)
     {
-      v80 = dispatch_get_specific(*v60);
+      v80 = dispatch_get_specific(*callStackSymbols);
       v81 = MEMORY[0x1E696AF00];
       v82 = v80;
-      v60 = [v81 callStackSymbols];
-      v83 = [v60 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v81 callStackSymbols];
+      v83 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v100 = v80;
       v101 = 2114;
@@ -116,8 +116,8 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  v27 = v19;
-  if (!(v96 | v21))
+  v27 = imageCopy;
+  if (!(disparityImageCopy | pixelBufferCopy))
   {
     v70 = NUAssertLogger_2746();
     if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
@@ -128,7 +128,7 @@ LABEL_33:
       _os_log_error_impl(&dword_1C7694000, v70, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v60 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v72 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v62 = NUAssertLogger_2746();
     v73 = os_log_type_enabled(v62, OS_LOG_TYPE_ERROR);
@@ -136,8 +136,8 @@ LABEL_33:
     {
       if (v73)
       {
-        v74 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v75 = [v74 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v75 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v100 = v75;
         _os_log_error_impl(&dword_1C7694000, v62, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -149,11 +149,11 @@ LABEL_33:
 LABEL_36:
     if (v73)
     {
-      v84 = dispatch_get_specific(*v60);
+      v84 = dispatch_get_specific(*callStackSymbols);
       v85 = MEMORY[0x1E696AF00];
       v86 = v84;
-      v87 = [v85 callStackSymbols];
-      v88 = [v87 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v85 callStackSymbols];
+      v88 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v100 = v84;
       v101 = 2114;
@@ -166,46 +166,46 @@ LABEL_38:
     _NUAssertFailHandler();
   }
 
-  v91 = v26;
-  v92 = v25;
-  v90 = v19;
-  if (v19)
+  v91 = modeCopy;
+  v92 = qualityCopy;
+  v90 = imageCopy;
+  if (imageCopy)
   {
-    [v19 extent];
+    [imageCopy extent];
     v29 = v28;
     v31 = v30;
     Width = v32;
     Height = v34;
-    v36 = v20;
-    if (v96)
+    v36 = bufferCopy;
+    if (disparityImageCopy)
     {
-      v37 = v24;
-      v38 = v23;
-      [v96 extent];
+      v37 = disparityCopy;
+      v38 = apertureCopy;
+      [disparityImageCopy extent];
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
       v98[0] = v27;
-      v98[1] = v96;
+      v98[1] = disparityImageCopy;
       v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v98 count:2];
 LABEL_9:
-      v51 = v21;
+      v51 = pixelBufferCopy;
       goto LABEL_12;
     }
   }
 
   else
   {
-    Width = CVPixelBufferGetWidth([v20 CVPixelBuffer]);
-    Height = CVPixelBufferGetHeight([v20 CVPixelBuffer]);
+    Width = CVPixelBufferGetWidth([bufferCopy CVPixelBuffer]);
+    Height = CVPixelBufferGetHeight([bufferCopy CVPixelBuffer]);
     v29 = 0.0;
-    v36 = v20;
-    if (v96)
+    v36 = bufferCopy;
+    if (disparityImageCopy)
     {
-      v37 = v24;
-      v38 = v23;
-      [v96 extent];
+      v37 = disparityCopy;
+      v38 = apertureCopy;
+      [disparityImageCopy extent];
       v40 = v47;
       v42 = v48;
       v44 = v49;
@@ -218,11 +218,11 @@ LABEL_9:
     v31 = 0.0;
   }
 
-  v37 = v24;
-  v38 = v23;
-  v44 = CVPixelBufferGetWidth([v21 CVPixelBuffer]);
-  v51 = v21;
-  v46 = CVPixelBufferGetHeight([v21 CVPixelBuffer]);
+  v37 = disparityCopy;
+  v38 = apertureCopy;
+  v44 = CVPixelBufferGetWidth([pixelBufferCopy CVPixelBuffer]);
+  v51 = pixelBufferCopy;
+  v46 = CVPixelBufferGetHeight([pixelBufferCopy CVPixelBuffer]);
   v40 = 0.0;
   v93 = MEMORY[0x1E695E0F0];
   v42 = 0.0;
@@ -235,26 +235,26 @@ LABEL_12:
 
   v54 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v54 setObject:v89 forKeyedSubscript:@"imageExtents"];
-  [v54 setObject:v22 forKeyedSubscript:@"globalMetadata"];
-  [v54 setObject:v95 forKeyedSubscript:@"timedMetadata"];
+  [v54 setObject:metadataCopy forKeyedSubscript:@"globalMetadata"];
+  [v54 setObject:timedMetadataCopy forKeyedSubscript:@"timedMetadata"];
   [v54 setObject:v38 forKeyedSubscript:@"aperture"];
   [v54 setObject:v37 forKeyedSubscript:@"focusDistance"];
   [v54 setObject:v92 forKeyedSubscript:@"quality"];
   [v54 setObject:v91 forKeyedSubscript:@"debug"];
-  v55 = [MEMORY[0x1E696AD98] numberWithBool:a13];
+  v55 = [MEMORY[0x1E696AD98] numberWithBool:r];
   [v54 setObject:v55 forKeyedSubscript:@"isHDR"];
 
   [v54 setObject:v36 forKeyedSubscript:@"colorPixelBuffer"];
   [v54 setObject:v51 forKeyedSubscript:@"disparityPixelBuffer"];
-  v56 = [a1 applyWithExtent:v93 inputs:v54 arguments:a14 error:{v29, v31, Width, Height}];
+  v56 = [self applyWithExtent:v93 inputs:v54 arguments:error error:{v29, v31, Width, Height}];
 
   return v56;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v6 = [a4 objectForKeyedSubscript:{@"imageExtents", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
-  v7 = [v6 objectAtIndexedSubscript:a3];
+  v6 = [arguments objectForKeyedSubscript:{@"imageExtents", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+  v7 = [v6 objectAtIndexedSubscript:input];
   [v7 CGRectValue];
   v9 = v8;
   v11 = v10;
@@ -272,16 +272,16 @@ LABEL_12:
   return result;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!index)
   {
     v3 = MEMORY[0x1E695F920];
     return *v3;
   }
 
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = MEMORY[0x1E695F930];
     return *v3;
@@ -307,8 +307,8 @@ LABEL_12:
       v13 = dispatch_get_specific(*v7);
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       v24 = 138543618;
       v25 = v13;
       v26 = 2114;
@@ -319,8 +319,8 @@ LABEL_12:
 
   else if (v10)
   {
-    v11 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v12 = [v11 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v12 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     v24 = 138543362;
     v25 = v12;
     _os_log_error_impl(&dword_1C7694000, v9, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v24, 0xCu);
@@ -330,13 +330,13 @@ LABEL_12:
   return [(PIPortraitVideoProcessor *)v18 processWithInputs:v19 arguments:v20 output:v21 error:v22, v23];
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v154 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v145 = a4;
-  v9 = a5;
-  if ([v8 count] != 2 && objc_msgSend(v8, "count"))
+  inputsCopy = inputs;
+  argumentsCopy = arguments;
+  outputCopy = output;
+  if ([inputsCopy count] != 2 && objc_msgSend(inputsCopy, "count"))
   {
     v66 = NUAssertLogger_2746();
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
@@ -358,8 +358,8 @@ LABEL_12:
         v106 = dispatch_get_specific(*v68);
         v107 = MEMORY[0x1E696AF00];
         v108 = v106;
-        v109 = [v107 callStackSymbols];
-        v110 = [v109 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v107 callStackSymbols];
+        v110 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v106;
         *&v151[12] = 2114;
@@ -378,11 +378,11 @@ LABEL_12:
     goto LABEL_68;
   }
 
-  v144 = v8;
-  v10 = [v9 metalCommandBuffer];
-  v11 = [v10 device];
+  v144 = inputsCopy;
+  metalCommandBuffer = [outputCopy metalCommandBuffer];
+  device = [metalCommandBuffer device];
 
-  if (!v11)
+  if (!device)
   {
     v55 = NUAssertLogger_2746();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
@@ -404,8 +404,8 @@ LABEL_12:
         v71 = dispatch_get_specific(*v57);
         v72 = MEMORY[0x1E696AF00];
         v73 = v71;
-        v74 = [v72 callStackSymbols];
-        v75 = [v74 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [v72 callStackSymbols];
+        v75 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v71;
         *&v151[12] = 2114;
@@ -424,9 +424,9 @@ LABEL_12:
     goto LABEL_68;
   }
 
-  v12 = [v9 metalTexture];
+  metalTexture = [outputCopy metalTexture];
 
-  if (!v12)
+  if (!metalTexture)
   {
     v61 = NUAssertLogger_2746();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
@@ -448,8 +448,8 @@ LABEL_12:
         v76 = dispatch_get_specific(*v63);
         v77 = MEMORY[0x1E696AF00];
         v78 = v76;
-        v79 = [v77 callStackSymbols];
-        v80 = [v79 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v77 callStackSymbols];
+        v80 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v76;
         *&v151[12] = 2114;
@@ -468,42 +468,42 @@ LABEL_12:
     goto LABEL_68;
   }
 
-  v138 = [v145 objectForKeyedSubscript:@"aperture"];
-  v13 = [v145 objectForKeyedSubscript:@"focusDistance"];
-  v136 = [v145 objectForKeyedSubscript:@"quality"];
-  v135 = [v145 objectForKeyedSubscript:@"debug"];
-  v142 = [v145 objectForKeyedSubscript:@"isHDR"];
-  v140 = [v145 objectForKeyedSubscript:@"globalMetadata"];
-  v137 = [v145 objectForKeyedSubscript:@"timedMetadata"];
-  v14 = [v9 metalCommandBuffer];
-  v141 = [v14 device];
+  v138 = [argumentsCopy objectForKeyedSubscript:@"aperture"];
+  v13 = [argumentsCopy objectForKeyedSubscript:@"focusDistance"];
+  v136 = [argumentsCopy objectForKeyedSubscript:@"quality"];
+  v135 = [argumentsCopy objectForKeyedSubscript:@"debug"];
+  v142 = [argumentsCopy objectForKeyedSubscript:@"isHDR"];
+  v140 = [argumentsCopy objectForKeyedSubscript:@"globalMetadata"];
+  v137 = [argumentsCopy objectForKeyedSubscript:@"timedMetadata"];
+  metalCommandBuffer2 = [outputCopy metalCommandBuffer];
+  device2 = [metalCommandBuffer2 device];
 
-  if ([v8 count] == 2)
+  if ([inputsCopy count] == 2)
   {
-    v15 = [v8 objectAtIndexedSubscript:0];
-    v16 = [v15 metalTexture];
+    v15 = [inputsCopy objectAtIndexedSubscript:0];
+    metalTexture2 = [v15 metalTexture];
 
-    if (v16)
+    if (metalTexture2)
     {
-      v17 = [v8 objectAtIndexedSubscript:0];
-      v18 = [v17 metalTexture];
+      v17 = [inputsCopy objectAtIndexedSubscript:0];
+      metalTexture3 = [v17 metalTexture];
 
-      v143 = [MEMORY[0x1E69C4FC0] createRGBA:v18];
-      v19 = [v8 objectAtIndexedSubscript:0];
-      [a1 _configureRGBColorTexture:v143 format:objc_msgSend(v19 isHDR:{"format"), objc_msgSend(v142, "BOOLValue")}];
+      v143 = [MEMORY[0x1E69C4FC0] createRGBA:metalTexture3];
+      v19 = [inputsCopy objectAtIndexedSubscript:0];
+      [self _configureRGBColorTexture:v143 format:objc_msgSend(v19 isHDR:{"format"), objc_msgSend(v142, "BOOLValue")}];
 
-      v20 = [v8 objectAtIndexedSubscript:0];
+      v20 = [inputsCopy objectAtIndexedSubscript:0];
       [v20 region];
       v21 = NUPixelSizeFromCGSize();
       v23 = v22;
 
       v24 = [v144 objectAtIndexedSubscript:1];
-      v25 = [v24 metalTexture];
+      metalTexture4 = [v24 metalTexture];
 
-      if (v25)
+      if (metalTexture4)
       {
         v26 = [v144 objectAtIndexedSubscript:1];
-        v134 = [v26 metalTexture];
+        metalTexture5 = [v26 metalTexture];
 
         v27 = [v144 objectAtIndexedSubscript:1];
         [v27 region];
@@ -533,8 +533,8 @@ LABEL_12:
           v121 = dispatch_get_specific(*v93);
           v122 = MEMORY[0x1E696AF00];
           v123 = v121;
-          v124 = [v122 callStackSymbols];
-          v125 = [v124 componentsJoinedByString:@"\n"];
+          callStackSymbols4 = [v122 callStackSymbols];
+          v125 = [callStackSymbols4 componentsJoinedByString:@"\n"];
           *v151 = 138543618;
           *&v151[4] = v121;
           *&v151[12] = 2114;
@@ -576,8 +576,8 @@ LABEL_85:
         v116 = dispatch_get_specific(*v88);
         v117 = MEMORY[0x1E696AF00];
         v118 = v116;
-        v119 = [v117 callStackSymbols];
-        v120 = [v119 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v117 callStackSymbols];
+        v120 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v116;
         *&v151[12] = 2114;
@@ -594,8 +594,8 @@ LABEL_85:
     }
 
 LABEL_68:
-    v96 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v97 = [v96 componentsJoinedByString:@"\n"];
+    callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v97 = [callStackSymbols6 componentsJoinedByString:@"\n"];
     *v151 = 138543362;
     *&v151[4] = v97;
     _os_log_error_impl(&dword_1C7694000, v59, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v151, 0xCu);
@@ -603,9 +603,9 @@ LABEL_68:
     goto LABEL_85;
   }
 
-  v31 = [v145 objectForKeyedSubscript:@"colorPixelBuffer"];
-  v32 = [v31 CVPixelBuffer];
-  if (!v32)
+  v31 = [argumentsCopy objectForKeyedSubscript:@"colorPixelBuffer"];
+  cVPixelBuffer = [v31 CVPixelBuffer];
+  if (!cVPixelBuffer)
   {
     v81 = NUAssertLogger_2746();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
@@ -627,8 +627,8 @@ LABEL_68:
         v111 = dispatch_get_specific(*v83);
         v112 = MEMORY[0x1E696AF00];
         v113 = v111;
-        v114 = [v112 callStackSymbols];
-        v115 = [v114 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v112 callStackSymbols];
+        v115 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v111;
         *&v151[12] = 2114;
@@ -649,11 +649,11 @@ LABEL_68:
 
   *buf = 0;
   v150 = 0;
-  [MEMORY[0x1E69C4F98] pixelBufferToLumaChroma:v141 pixelBuffer:v32 outLuma:buf outChroma:&v150 read:1 write:1];
+  [MEMORY[0x1E69C4F98] pixelBufferToLumaChroma:device2 pixelBuffer:cVPixelBuffer outLuma:buf outChroma:&v150 read:1 write:1];
   v143 = [MEMORY[0x1E69C4FC0] createYUV420:*buf chroma:v150];
-  v33 = [v142 BOOLValue];
-  v34 = v33;
-  if (v33)
+  bOOLValue = [v142 BOOLValue];
+  v34 = bOOLValue;
+  if (bOOLValue)
   {
     v35 = 10;
   }
@@ -664,7 +664,7 @@ LABEL_68:
   }
 
   v36 = MEMORY[0x1E6965F48];
-  if (!v33)
+  if (!bOOLValue)
   {
     v36 = MEMORY[0x1E6965F50];
   }
@@ -688,9 +688,9 @@ LABEL_68:
   [v143 setYCbCrFullRange:0];
   v21 = [v31 size];
   v23 = v39;
-  v40 = [v145 objectForKeyedSubscript:@"disparityPixelBuffer"];
-  v41 = [v40 CVPixelBuffer];
-  if (!v41)
+  v40 = [argumentsCopy objectForKeyedSubscript:@"disparityPixelBuffer"];
+  cVPixelBuffer2 = [v40 CVPixelBuffer];
+  if (!cVPixelBuffer2)
   {
     v98 = NUAssertLogger_2746();
     if (os_log_type_enabled(v98, OS_LOG_TYPE_ERROR))
@@ -712,8 +712,8 @@ LABEL_68:
         v126 = dispatch_get_specific(*v100);
         v127 = MEMORY[0x1E696AF00];
         v128 = v126;
-        v129 = [v127 callStackSymbols];
-        v130 = [v129 componentsJoinedByString:@"\n"];
+        callStackSymbols8 = [v127 callStackSymbols];
+        v130 = [callStackSymbols8 componentsJoinedByString:@"\n"];
         *v151 = 138543618;
         *&v151[4] = v126;
         *&v151[12] = 2114;
@@ -724,8 +724,8 @@ LABEL_68:
 
     else if (v103)
     {
-      v104 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v105 = [v104 componentsJoinedByString:@"\n"];
+      callStackSymbols9 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v105 = [callStackSymbols9 componentsJoinedByString:@"\n"];
       *v151 = 138543362;
       *&v151[4] = v105;
       _os_log_error_impl(&dword_1C7694000, v102, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v151, 0xCu);
@@ -736,19 +736,19 @@ LABEL_89:
     __break(1u);
   }
 
-  v134 = [MEMORY[0x1E69C4F98] getMTLTextureFromPixelBuffer:v41 device:v141];
+  metalTexture5 = [MEMORY[0x1E69C4F98] getMTLTextureFromPixelBuffer:cVPixelBuffer2 device:device2];
   v28 = [v40 size];
   v30 = v42;
 
 LABEL_21:
   v43 = MEMORY[0x1E69C4FC0];
-  v44 = [v9 metalTexture];
-  v139 = [v43 createRGBA:v44];
+  metalTexture6 = [outputCopy metalTexture];
+  v139 = [v43 createRGBA:metalTexture6];
 
-  [a1 _configureRGBColorTexture:v139 format:objc_msgSend(v9 isHDR:{"format"), objc_msgSend(v142, "BOOLValue")}];
+  [self _configureRGBColorTexture:v139 format:objc_msgSend(outputCopy isHDR:{"format"), objc_msgSend(v142, "BOOLValue")}];
   v45 = objc_alloc_init(MEMORY[0x1E69C4FB0]);
   [v45 setSourceColor:v143];
-  [v45 setSourceDisparity:v134];
+  [v45 setSourceDisparity:metalTexture5];
   [v45 setDestinationColor:v139];
   [v140 applyToRenderRequest:v45];
   [v137 applyToRenderRequest:v45];
@@ -769,8 +769,8 @@ LABEL_21:
   *&v151[8] = v151;
   *&v151[16] = 0x2020000000;
   v152 = 0;
-  v46 = [v136 intValue];
-  v47 = [v135 integerValue];
+  intValue = [v136 intValue];
+  integerValue = [v135 integerValue];
   v146[0] = MEMORY[0x1E69E9820];
   v146[1] = 3221225472;
   v146[2] = __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___block_invoke;
@@ -778,9 +778,9 @@ LABEL_21:
   v48 = v45;
   v147 = v48;
   v149 = v151;
-  v49 = v9;
+  v49 = outputCopy;
   v148 = v49;
-  [PIPortraitVideoRenderer renderOnDevice:v141 colorSize:v21 disparitySize:v23 quality:v28 debugMode:v30 globalRenderingMetadata:v46 usingBlock:v47, v140, v146];
+  [PIPortraitVideoRenderer renderOnDevice:device2 colorSize:v21 disparitySize:v23 quality:v28 debugMode:v30 globalRenderingMetadata:intValue usingBlock:integerValue, v140, v146];
   v50 = *(*&v151[8] + 24);
   v51 = v133;
   if (v50)
@@ -799,10 +799,10 @@ LABEL_21:
       _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "CPV rendering failure, returned status %d", buf, 8u);
     }
 
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:*(*&v151[8] + 24) userInfo:0];
-      *a6 = v51 = v133;
+      *error = v51 = v133;
     }
   }
 
@@ -849,12 +849,12 @@ void __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___b
   }
 }
 
-+ (void)_configureRGBColorTexture:(id)a3 format:(int)a4 isHDR:(BOOL)a5
++ (void)_configureRGBColorTexture:(id)texture format:(int)format isHDR:(BOOL)r
 {
-  v5 = a5;
+  rCopy = r;
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (*MEMORY[0x1E695F890] != a4 && *MEMORY[0x1E695F920] != a4)
+  textureCopy = texture;
+  if (*MEMORY[0x1E695F890] != format && *MEMORY[0x1E695F920] != format)
   {
     v12 = NUAssertLogger_2746();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -876,8 +876,8 @@ void __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___b
         v21 = dispatch_get_specific(*v15);
         v22 = MEMORY[0x1E696AF00];
         v23 = v21;
-        v24 = [v22 callStackSymbols];
-        v25 = [v24 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v22 callStackSymbols];
+        v25 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v28 = v21;
         v29 = 2114;
@@ -888,8 +888,8 @@ void __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___b
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v20;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -899,18 +899,18 @@ void __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___b
   }
 
   v9 = MEMORY[0x1E69C4FD0];
-  if (!v5)
+  if (!rCopy)
   {
     v9 = MEMORY[0x1E6965F60];
   }
 
   v10 = MEMORY[0x1E6965F48];
-  if (!v5)
+  if (!rCopy)
   {
     v10 = MEMORY[0x1E6965F50];
   }
 
-  if (*MEMORY[0x1E695F890] == a4)
+  if (*MEMORY[0x1E695F890] == format)
   {
     v11 = v10;
   }
@@ -920,8 +920,8 @@ void __69__PIPortraitVideoProcessor_processWithInputs_arguments_output_error___b
     v11 = v9;
   }
 
-  v26 = v7;
-  [v7 setTransferFunction:*v11];
+  v26 = textureCopy;
+  [textureCopy setTransferFunction:*v11];
 }
 
 @end

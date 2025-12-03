@@ -2,12 +2,12 @@
 + (id)sharedMonitor;
 - (ICQUsageStorageMonitor)init;
 - (NSArray)footerItems;
-- (void)_setAvailable:(float)a3;
+- (void)_setAvailable:(float)available;
 - (void)clearUsageDataCache;
 - (void)deregisterUsageStorageClient;
 - (void)fetchSystemSizeStrings;
 - (void)flushViews;
-- (void)populateUsageDataWithProgressBlock:(id)a3;
+- (void)populateUsageDataWithProgressBlock:(id)block;
 - (void)registerUsageStorageClient;
 @end
 
@@ -77,15 +77,15 @@ void __39__ICQUsageStorageMonitor_sharedMonitor__block_invoke()
   }
 }
 
-- (void)populateUsageDataWithProgressBlock:(id)a3
+- (void)populateUsageDataWithProgressBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(ICQUsageStorageMonitor *)self clearUsageDataCache];
   v4 = objc_alloc_init(ICQUsageStorageCache);
   cache = self->_cache;
   self->_cache = v4;
 
-  [(ICQUsageStorageCache *)self->_cache populateUsageDataWithProgressBlock:v6];
+  [(ICQUsageStorageCache *)self->_cache populateUsageDataWithProgressBlock:blockCopy];
 }
 
 - (void)clearUsageDataCache
@@ -113,11 +113,11 @@ void __39__ICQUsageStorageMonitor_sharedMonitor__block_invoke()
   [(ICQUsageStorageMonitor *)self setUsedSize:v13];
 }
 
-- (void)_setAvailable:(float)a3
+- (void)_setAvailable:(float)available
 {
-  if (self->_availableSize != a3)
+  if (self->_availableSize != available)
   {
-    self->_availableSize = a3;
+    self->_availableSize = available;
     if (self->_footerLabel)
     {
       v4 = MEMORY[0x277CCACA8];
@@ -147,8 +147,8 @@ void __39__ICQUsageStorageMonitor_sharedMonitor__block_invoke()
     v8 = PSToolbarLabelsTextColor();
     [(UILabel *)self->_footerLabel setTextColor:v8];
 
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)self->_footerLabel setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)self->_footerLabel setBackgroundColor:clearColor];
 
     [(UILabel *)self->_footerLabel setTextAlignment:1];
     [(UILabel *)self->_footerLabel setLineBreakMode:5];

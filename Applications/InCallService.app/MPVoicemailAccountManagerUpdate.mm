@@ -10,7 +10,7 @@
 + (MPVoicemailAccountManagerUpdate)transcribingStatus;
 + (MPVoicemailAccountManagerUpdate)voicemails;
 + (NSArray)allCases;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 @end
 
@@ -95,11 +95,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -108,7 +108,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1001BEED8(v8);
@@ -119,7 +119,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001BFD68();
 
   v3 = String._bridgeToObjectiveC()();

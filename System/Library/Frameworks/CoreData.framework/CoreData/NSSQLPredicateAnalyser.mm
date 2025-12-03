@@ -1,8 +1,8 @@
 @interface NSSQLPredicateAnalyser
 - (NSSQLPredicateAnalyser)init;
 - (void)dealloc;
-- (void)visitPredicate:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicate:(id)predicate;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation NSSQLPredicateAnalyser
@@ -37,27 +37,27 @@
   [(NSSQLPredicateAnalyser *)&v3 dealloc];
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 comparisonPredicateModifier] == 1)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [predicate comparisonPredicateModifier] == 1)
   {
     allModifierPredicates = self->_allModifierPredicates;
 
-    [(NSMutableArray *)allModifierPredicates addObject:a3];
+    [(NSMutableArray *)allModifierPredicates addObject:predicate];
   }
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v5 = [a3 expressionType];
-  if (v5 != 3)
+  expressionType = [expression expressionType];
+  if (expressionType != 3)
   {
-    if (v5 != 4)
+    if (expressionType != 4)
     {
-      if ((v5 - 5) >= 3)
+      if ((expressionType - 5) >= 3)
       {
-        if (v5 != 13)
+        if (expressionType != 13)
         {
           return;
         }
@@ -73,7 +73,7 @@
       goto LABEL_10;
     }
 
-    if (sel_valueForKey_ != [a3 selector] && sel_valueForKeyPath_ != objc_msgSend(a3, "selector"))
+    if (sel_valueForKey_ != [expression selector] && sel_valueForKeyPath_ != objc_msgSend(expression, "selector"))
     {
       return;
     }
@@ -83,7 +83,7 @@
 LABEL_10:
   v7 = *(&self->super.isa + v6);
 
-  [v7 addObject:a3];
+  [v7 addObject:expression];
 }
 
 @end

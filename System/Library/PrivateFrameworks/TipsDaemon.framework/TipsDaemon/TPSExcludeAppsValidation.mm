@@ -1,38 +1,38 @@
 @interface TPSExcludeAppsValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSExcludeAppsValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self arrayValue];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  completionCopy = completion;
+  arrayValue = [(TPSTargetingValidation *)self arrayValue];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(arrayValue, "count")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__TPSExcludeAppsValidation_validateWithCompletion___block_invoke;
   v15[3] = &unk_2789B0078;
   v7 = v6;
   v16 = v7;
-  [v5 enumerateObjectsUsingBlock:v15];
+  [arrayValue enumerateObjectsUsingBlock:v15];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__TPSExcludeAppsValidation_validateWithCompletion___block_invoke_5;
   aBlock[3] = &unk_2789B0AD0;
   aBlock[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v14 = v8;
   v9 = _Block_copy(aBlock);
   if ([v7 count])
   {
-    v10 = [(TPSTargetingValidation *)self name];
+    name = [(TPSTargetingValidation *)self name];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __51__TPSExcludeAppsValidation_validateWithCompletion___block_invoke_8;
     v11[3] = &unk_2789AFFD8;
     v12 = v9;
-    [TPSTargetingValidator validateConditions:v7 joinType:1 context:v10 cache:0 completionQueue:0 completionHandler:v11];
+    [TPSTargetingValidator validateConditions:v7 joinType:1 context:name cache:0 completionQueue:0 completionHandler:v11];
   }
 
   else

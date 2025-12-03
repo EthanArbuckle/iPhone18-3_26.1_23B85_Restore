@@ -1,18 +1,18 @@
 @interface MTMediaTask
-- (MTMediaTask)initWithType:(int64_t)a3;
-- (void)perform:(id)a3;
+- (MTMediaTask)initWithType:(int64_t)type;
+- (void)perform:(id)perform;
 @end
 
 @implementation MTMediaTask
 
-- (MTMediaTask)initWithType:(int64_t)a3
+- (MTMediaTask)initWithType:(int64_t)type
 {
   v13.receiver = self;
   v13.super_class = MTMediaTask;
   v4 = [(MTMediaTask *)&v13 init];
   if (v4)
   {
-    if (a3)
+    if (type)
     {
       v5 = 301;
     }
@@ -23,14 +23,14 @@
     }
 
     v6 = objc_alloc(MEMORY[0x277CEE570]);
-    v7 = [MEMORY[0x277D3DB60] mediaApiClientIdentifier];
-    v8 = [MEMORY[0x277D3DB60] mediaApiClientVersion];
-    v9 = [MEMORY[0x277D3DAC8] sharedInstance];
-    v10 = [v6 initWithType:v5 clientIdentifier:v7 clientVersion:v8 bag:v9];
+    mediaApiClientIdentifier = [MEMORY[0x277D3DB60] mediaApiClientIdentifier];
+    mediaApiClientVersion = [MEMORY[0x277D3DB60] mediaApiClientVersion];
+    mEMORY[0x277D3DAC8] = [MEMORY[0x277D3DAC8] sharedInstance];
+    v10 = [v6 initWithType:v5 clientIdentifier:mediaApiClientIdentifier clientVersion:mediaApiClientVersion bag:mEMORY[0x277D3DAC8]];
     mediaTask = v4->_mediaTask;
     v4->_mediaTask = v10;
 
-    if (a3)
+    if (type)
     {
       [(AMSMediaTask *)v4->_mediaTask setIncludedResultKeys:&unk_2870B6B78];
     }
@@ -39,17 +39,17 @@
   return v4;
 }
 
-- (void)perform:(id)a3
+- (void)perform:(id)perform
 {
-  v4 = a3;
-  v5 = [(AMSMediaTask *)self->_mediaTask perform];
+  performCopy = perform;
+  perform = [(AMSMediaTask *)self->_mediaTask perform];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __23__MTMediaTask_perform___block_invoke;
   v7[3] = &unk_279A44CF0;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = performCopy;
+  v6 = performCopy;
+  [perform addFinishBlock:v7];
 }
 
 void __23__MTMediaTask_perform___block_invoke(uint64_t a1, void *a2, void *a3)

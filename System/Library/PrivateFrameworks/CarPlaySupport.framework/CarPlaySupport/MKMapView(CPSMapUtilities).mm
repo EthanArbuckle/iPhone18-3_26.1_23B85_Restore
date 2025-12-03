@@ -6,7 +6,7 @@
 
 - (void)_CPS_setCamera:()CPSMapUtilities animated:completionBlock:
 {
-  v23 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -19,7 +19,7 @@
     LODWORD(v5) = 2.0;
     LODWORD(v6) = 1133903872;
     LODWORD(v7) = 1137180672;
-    [v23 setCamera:location[0] duration:&__block_literal_global_9 springMass:0.91 springStiffness:v5 springDamping:v6 springVelocity:v7 completionHandler:0.0];
+    [selfCopy setCamera:location[0] duration:&__block_literal_global_9 springMass:0.91 springStiffness:v5 springDamping:v6 springVelocity:v7 completionHandler:0.0];
     when = dispatch_time(0, (0.91 * 1000000000.0));
     v9 = MEMORY[0x277D85CD0];
     v8 = MEMORY[0x277D85CD0];
@@ -37,7 +37,7 @@
 
   else
   {
-    [v23 setCamera:location[0] animated:0];
+    [selfCopy setCamera:location[0] animated:0];
     if (v20)
     {
       (*(v20 + 2))();

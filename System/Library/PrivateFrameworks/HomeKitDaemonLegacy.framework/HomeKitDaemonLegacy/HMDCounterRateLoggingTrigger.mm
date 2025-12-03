@@ -1,67 +1,67 @@
 @interface HMDCounterRateLoggingTrigger
-- (HMDCounterRateLoggingTrigger)initWithThreshold:(int64_t)a3 windowSize:(int64_t)a4 counterName:(id)a5 uploadImmediately:(BOOL)a6 ewsLogger:(id)a7 timeSourceBlock:(id)a8;
+- (HMDCounterRateLoggingTrigger)initWithThreshold:(int64_t)threshold windowSize:(int64_t)size counterName:(id)name uploadImmediately:(BOOL)immediately ewsLogger:(id)logger timeSourceBlock:(id)block;
 - (void)dealloc;
-- (void)logRateTrigger:(id)a3 triggerValue:(unint64_t)a4;
-- (void)updatedCounter:(id)a3 fromOldValue:(int64_t)a4 toNewValue:(int64_t)a5;
+- (void)logRateTrigger:(id)trigger triggerValue:(unint64_t)value;
+- (void)updatedCounter:(id)counter fromOldValue:(int64_t)value toNewValue:(int64_t)newValue;
 @end
 
 @implementation HMDCounterRateLoggingTrigger
 
-- (void)logRateTrigger:(id)a3 triggerValue:(unint64_t)a4
+- (void)logRateTrigger:(id)trigger triggerValue:(unint64_t)value
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  triggerCopy = trigger;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDCounterRateLoggingTrigger *)v8 counterName];
+    counterName = [(HMDCounterRateLoggingTrigger *)selfCopy counterName];
     *buf = 138544386;
     v22 = v10;
     v23 = 2114;
-    v24 = v6;
+    v24 = triggerCopy;
     v25 = 2114;
-    v26 = v11;
+    v26 = counterName;
     v27 = 2048;
-    v28 = a4;
+    valueCopy = value;
     v29 = 2048;
-    v30 = [(HMDCounterRateLoggingTrigger *)v8 windowSize];
+    windowSize = [(HMDCounterRateLoggingTrigger *)selfCopy windowSize];
     _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, "%{public}@EWS rate trigger: trigger=%{public}@, counter=%{public}@, value=%lu, windowSize=%lu", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v12 = [(HMDCounterRateLoggingTrigger *)v8 ewsLogger];
-  v13 = [(HMDCounterRateLoggingTrigger *)v8 uploadImmediately];
-  v14 = [(HMDCounterRateLoggingTrigger *)v8 counterName];
-  v20[0] = v14;
+  ewsLogger = [(HMDCounterRateLoggingTrigger *)selfCopy ewsLogger];
+  uploadImmediately = [(HMDCounterRateLoggingTrigger *)selfCopy uploadImmediately];
+  counterName2 = [(HMDCounterRateLoggingTrigger *)selfCopy counterName];
+  v20[0] = counterName2;
   v19[1] = @"value";
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   v20[1] = v15;
   v19[2] = @"windowSize";
-  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDCounterRateLoggingTrigger windowSize](v8, "windowSize")}];
+  v16 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDCounterRateLoggingTrigger windowSize](selfCopy, "windowSize")}];
   v20[2] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
-  [v12 submitEventWithName:v6 serviceName:@"Counter Trigger" uploadImmediately:v13 payload:v17];
+  [ewsLogger submitEventWithName:triggerCopy serviceName:@"Counter Trigger" uploadImmediately:uploadImmediately payload:v17];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatedCounter:(id)a3 fromOldValue:(int64_t)a4 toNewValue:(int64_t)a5
+- (void)updatedCounter:(id)counter fromOldValue:(int64_t)value toNewValue:(int64_t)newValue
 {
-  v8 = [(HMDCounterRateLoggingTrigger *)self windowCount];
-  v9 = [(HMDCounterRateLoggingTrigger *)self timeSourceBlock];
-  v10 = v9[2]();
+  windowCount = [(HMDCounterRateLoggingTrigger *)self windowCount];
+  timeSourceBlock = [(HMDCounterRateLoggingTrigger *)self timeSourceBlock];
+  v10 = timeSourceBlock[2]();
   v11 = v10 / [(HMDCounterRateLoggingTrigger *)self intervalSize];
 
   if (v11 - [(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]< 0xA)
   {
-    for (; [(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]< v11; v13[[(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]% 0xA] = 0)
+    for (; [(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]< v11; intervalCounts[[(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]% 0xA] = 0)
     {
       [(HMDCounterRateLoggingTrigger *)self setLastUpdatedInterval:[(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]+ 1];
       [(HMDCounterRateLoggingTrigger *)self setWindowCount:[(HMDCounterRateLoggingTrigger *)self windowCount]- [(HMDCounterRateLoggingTrigger *)self intervalCounts][8 * ([(HMDCounterRateLoggingTrigger *)self lastUpdatedInterval]% 0xA)]];
-      v13 = [(HMDCounterRateLoggingTrigger *)self intervalCounts];
+      intervalCounts = [(HMDCounterRateLoggingTrigger *)self intervalCounts];
     }
   }
 
@@ -76,29 +76,29 @@
     [(HMDCounterRateLoggingTrigger *)self setWindowCount:0];
   }
 
-  if (a5)
+  if (newValue)
   {
-    v14 = a5 - a4;
-    v15 = [(HMDCounterRateLoggingTrigger *)self intervalCounts];
-    v15[v11 % 0xA] += v14;
+    v14 = newValue - value;
+    intervalCounts2 = [(HMDCounterRateLoggingTrigger *)self intervalCounts];
+    intervalCounts2[v11 % 0xA] += v14;
     [(HMDCounterRateLoggingTrigger *)self setWindowCount:[(HMDCounterRateLoggingTrigger *)self windowCount]+ v14];
-    v16 = [(HMDCounterRateLoggingTrigger *)self windowCount];
-    if (v16 > [(HMDCounterRateLoggingTrigger *)self maxWindowCount])
+    windowCount2 = [(HMDCounterRateLoggingTrigger *)self windowCount];
+    if (windowCount2 > [(HMDCounterRateLoggingTrigger *)self maxWindowCount])
     {
       [(HMDCounterRateLoggingTrigger *)self setMaxWindowCount:[(HMDCounterRateLoggingTrigger *)self windowCount]];
     }
   }
 
-  v17 = [(HMDCounterRateLoggingTrigger *)self windowCount];
-  if (v17 >= [(HMDCounterRateLoggingTrigger *)self windowThreshold]&& v8 < [(HMDCounterRateLoggingTrigger *)self windowThreshold])
+  windowCount3 = [(HMDCounterRateLoggingTrigger *)self windowCount];
+  if (windowCount3 >= [(HMDCounterRateLoggingTrigger *)self windowThreshold]&& windowCount < [(HMDCounterRateLoggingTrigger *)self windowThreshold])
   {
     [(HMDCounterRateLoggingTrigger *)self logRateTrigger:@"Rate threshold met" triggerValue:[(HMDCounterRateLoggingTrigger *)self windowCount]];
   }
 
-  v18 = [(HMDCounterRateLoggingTrigger *)self windowCount];
-  if (v18 >= [(HMDCounterRateLoggingTrigger *)self windowThreshold])
+  windowCount4 = [(HMDCounterRateLoggingTrigger *)self windowCount];
+  if (windowCount4 >= [(HMDCounterRateLoggingTrigger *)self windowThreshold])
   {
-    if (a5)
+    if (newValue)
     {
       return;
     }
@@ -106,15 +106,15 @@
 
   else
   {
-    v19 = [(HMDCounterRateLoggingTrigger *)self windowThreshold];
-    if (a5 && v8 < v19)
+    windowThreshold = [(HMDCounterRateLoggingTrigger *)self windowThreshold];
+    if (newValue && windowCount < windowThreshold)
     {
       return;
     }
   }
 
-  v20 = [(HMDCounterRateLoggingTrigger *)self maxWindowCount];
-  if (v20 >= [(HMDCounterRateLoggingTrigger *)self windowThreshold])
+  maxWindowCount = [(HMDCounterRateLoggingTrigger *)self maxWindowCount];
+  if (maxWindowCount >= [(HMDCounterRateLoggingTrigger *)self windowThreshold])
   {
     [(HMDCounterRateLoggingTrigger *)self logRateTrigger:@"Max rate above threshold" triggerValue:[(HMDCounterRateLoggingTrigger *)self maxWindowCount]];
 
@@ -130,25 +130,25 @@
   [(HMDCounterRateLoggingTrigger *)&v3 dealloc];
 }
 
-- (HMDCounterRateLoggingTrigger)initWithThreshold:(int64_t)a3 windowSize:(int64_t)a4 counterName:(id)a5 uploadImmediately:(BOOL)a6 ewsLogger:(id)a7 timeSourceBlock:(id)a8
+- (HMDCounterRateLoggingTrigger)initWithThreshold:(int64_t)threshold windowSize:(int64_t)size counterName:(id)name uploadImmediately:(BOOL)immediately ewsLogger:(id)logger timeSourceBlock:(id)block
 {
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  nameCopy = name;
+  loggerCopy = logger;
+  blockCopy = block;
   v23.receiver = self;
   v23.super_class = HMDCounterRateLoggingTrigger;
   v18 = [(HMDCounterRateLoggingTrigger *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    v18->_windowSize = a4;
-    v18->_windowThreshold = a3;
-    v18->_intervalSize = a4 / 10;
+    v18->_windowSize = size;
+    v18->_windowThreshold = threshold;
+    v18->_intervalSize = size / 10;
     v18->_intervalCounts = malloc_type_malloc(0x50uLL, 0x100004000313F17uLL);
-    objc_storeStrong(&v19->_counterName, a5);
-    v19->_uploadImmediately = a6;
-    objc_storeStrong(&v19->_ewsLogger, a7);
-    v20 = _Block_copy(v17);
+    objc_storeStrong(&v19->_counterName, name);
+    v19->_uploadImmediately = immediately;
+    objc_storeStrong(&v19->_ewsLogger, logger);
+    v20 = _Block_copy(blockCopy);
     timeSourceBlock = v19->_timeSourceBlock;
     v19->_timeSourceBlock = v20;
   }

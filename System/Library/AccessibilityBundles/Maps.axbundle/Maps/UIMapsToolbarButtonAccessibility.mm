@@ -6,20 +6,20 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIMapsToolbarButtonAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"settingsButton"])
+  accessibilityIdentification = [(UIMapsToolbarButtonAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"settingsButton"])
   {
-    v4 = AXMapsLocString(@"SETTINGS_BUTTON");
+    accessibilityLabel = AXMapsLocString(@"SETTINGS_BUTTON");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIMapsToolbarButtonAccessibility;
-    v4 = [(UIMapsToolbarButtonAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(UIMapsToolbarButtonAccessibility *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }

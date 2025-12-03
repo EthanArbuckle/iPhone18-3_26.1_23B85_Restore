@@ -1,30 +1,30 @@
 @interface MONotificationScheduleOptionsSelectionView
-+ (id)notificationScheduleOptionImageForType:(unint64_t)a3;
-+ (id)notificationScheduleOptionLabelForType:(unint64_t)a3;
-+ (id)notificationScheduleOptionsSelectionViewOfType:(unint64_t)a3;
++ (id)notificationScheduleOptionImageForType:(unint64_t)type;
++ (id)notificationScheduleOptionLabelForType:(unint64_t)type;
++ (id)notificationScheduleOptionsSelectionViewOfType:(unint64_t)type;
 + (id)notificationSettingsBundle;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MONotificationScheduleOptionsSelectionView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MONotificationScheduleOptionsSelectionView)initWithFrame:(CGRect)frame;
 - (MONotificationScheduleSelectionViewDelegate)delegate;
-- (id)_newSelectionLabelIsEncapsulated:(BOOL)a3;
-- (id)_selectionImageViewTintColorSelected:(BOOL)a3;
+- (id)_newSelectionLabelIsEncapsulated:(BOOL)encapsulated;
+- (id)_selectionImageViewTintColorSelected:(BOOL)selected;
 - (void)_configureSelectionImageViewIfNecessary;
 - (void)_configureSelectionLabelIfNecessary;
-- (void)_handleLocationViewPress:(id)a3;
+- (void)_handleLocationViewPress:(id)press;
 - (void)_layoutSelectionImageView;
 - (void)_layoutSelectionLabel;
-- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)a3;
+- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)selected;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MONotificationScheduleOptionsSelectionView
 
-+ (id)notificationScheduleOptionsSelectionViewOfType:(unint64_t)a3
++ (id)notificationScheduleOptionsSelectionViewOfType:(unint64_t)type
 {
   v4 = [[MONotificationScheduleOptionsSelectionView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  [(MONotificationScheduleOptionsSelectionView *)v4 setSelectionType:a3];
+  [(MONotificationScheduleOptionsSelectionView *)v4 setSelectionType:type];
 
   return v4;
 }
@@ -36,44 +36,44 @@
   return [NSBundle bundleForClass:v2];
 }
 
-+ (id)notificationScheduleOptionLabelForType:(unint64_t)a3
++ (id)notificationScheduleOptionLabelForType:(unint64_t)type
 {
   v4 = +[MONotificationScheduleOptionsSelectionView notificationSettingsBundle];
   v5 = v4;
-  if (a3 > 2)
+  if (type > 2)
   {
     v6 = @"<unknown>";
   }
 
   else
   {
-    v6 = [v4 localizedStringForKey:off_C420[a3] value:&stru_C5D8 table:0];
+    v6 = [v4 localizedStringForKey:off_C420[type] value:&stru_C5D8 table:0];
   }
 
   return v6;
 }
 
-+ (id)notificationScheduleOptionImageForType:(unint64_t)a3
++ (id)notificationScheduleOptionImageForType:(unint64_t)type
 {
   v4 = +[MONotificationScheduleOptionsSelectionView notificationSettingsBundle];
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [UIImage imageNamed:off_C438[a3] inBundle:v4];
+    v5 = [UIImage imageNamed:off_C438[type] inBundle:v4];
   }
 
   return v5;
 }
 
-- (MONotificationScheduleOptionsSelectionView)initWithFrame:(CGRect)a3
+- (MONotificationScheduleOptionsSelectionView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MONotificationScheduleOptionsSelectionView;
-  v3 = [(MONotificationScheduleOptionsSelectionView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MONotificationScheduleOptionsSelectionView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILongPressGestureRecognizer alloc] initWithTarget:v3 action:"_handleLocationViewPress:"];
@@ -84,17 +84,17 @@
     [(UILongPressGestureRecognizer *)v3->_longPressGestureRecognizer setMinimumPressDuration:0.0];
     [(UILongPressGestureRecognizer *)v3->_longPressGestureRecognizer setCancelPastAllowableMovement:1];
     [(MONotificationScheduleOptionsSelectionView *)v3 addGestureRecognizer:v3->_longPressGestureRecognizer];
-    v6 = [(MONotificationScheduleOptionsSelectionView *)v3 layer];
-    [v6 setAllowsGroupOpacity:1];
+    layer = [(MONotificationScheduleOptionsSelectionView *)v3 layer];
+    [layer setAllowsGroupOpacity:1];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(MONotificationScheduleOptionsSelectionView *)self _configureSelectionImageViewIfNecessary];
   [(MONotificationScheduleOptionsSelectionView *)self _configureSelectionLabelIfNecessary];
   selectionImageView = self->_selectionImageView;
@@ -154,9 +154,9 @@
   }
 }
 
-- (id)_selectionImageViewTintColorSelected:(BOOL)a3
+- (id)_selectionImageViewTintColorSelected:(BOOL)selected
 {
-  if (a3)
+  if (selected)
   {
     +[UIColor systemBlueColor];
   }
@@ -196,15 +196,15 @@
   _objc_release_x1();
 }
 
-- (id)_newSelectionLabelIsEncapsulated:(BOOL)a3
+- (id)_newSelectionLabelIsEncapsulated:(BOOL)encapsulated
 {
-  v3 = a3;
+  encapsulatedCopy = encapsulated;
   v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   v6 = [objc_opt_class() notificationScheduleOptionLabelForType:{-[MONotificationScheduleOptionsSelectionView selectionType](self, "selectionType")}];
   [v5 setText:v6];
 
   v7 = &UIFontTextStyleCallout;
-  if (!v3)
+  if (!encapsulatedCopy)
   {
     v7 = &UIFontTextStyleFootnote;
   }
@@ -216,7 +216,7 @@
   [v5 setAdjustsFontSizeToFitWidth:1];
   [v5 setTextAlignment:1];
   [(MONotificationScheduleOptionsSelectionView *)self addSubview:v5];
-  if (v3)
+  if (encapsulatedCopy)
   {
     v9 = +[UIColor systemBlueColor];
     v10 = objc_alloc_init(NSTextEncapsulation);
@@ -299,11 +299,11 @@
   [(UILabel *)v21 setFrame:?];
 }
 
-- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)a3
+- (void)_swapSelectionLabelsOnToggledSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   [(MONotificationScheduleOptionsSelectionView *)self _configureSelectionLabelIfNecessary];
-  if (!v3)
+  if (!selectedCopy)
   {
     p_encapsulatedSelectionLabel = &self->_encapsulatedSelectionLabel;
     encapsulatedSelectionLabel = self->_encapsulatedSelectionLabel;
@@ -360,9 +360,9 @@ id __84__MONotificationScheduleOptionsSelectionView__swapSelectionLabelsOnToggle
   return [v2 setAlpha:0.0];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
 
     [(MONotificationScheduleOptionsSelectionView *)self setAlpha:0.5];
@@ -381,18 +381,18 @@ id __84__MONotificationScheduleOptionsSelectionView__swapSelectionLabelsOnToggle
   }
 }
 
-- (void)_handleLocationViewPress:(id)a3
+- (void)_handleLocationViewPress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 4) >= 2)
+  state = [press state];
+  if ((state - 4) >= 2)
   {
-    if (v4 == &dword_0 + 1)
+    if (state == &dword_0 + 1)
     {
       v6 = 1;
       goto LABEL_8;
     }
 
-    if (v4 != &dword_0 + 3)
+    if (state != &dword_0 + 3)
     {
       return;
     }
@@ -400,8 +400,8 @@ id __84__MONotificationScheduleOptionsSelectionView__swapSelectionLabelsOnToggle
     if (![(MONotificationScheduleOptionsSelectionView *)self isSelected])
     {
       [(MONotificationScheduleOptionsSelectionView *)self setSelected:1];
-      v5 = [(MONotificationScheduleOptionsSelectionView *)self delegate];
-      [v5 notificationScheduleSelectionViewDidGetSelected:self];
+      delegate = [(MONotificationScheduleOptionsSelectionView *)self delegate];
+      [delegate notificationScheduleSelectionViewDidGetSelected:self];
     }
   }
 
@@ -411,11 +411,11 @@ LABEL_8:
   [(MONotificationScheduleOptionsSelectionView *)self setHighlighted:v6];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_longPressGestureRecognizer == a3)
+  if (self->_longPressGestureRecognizer == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

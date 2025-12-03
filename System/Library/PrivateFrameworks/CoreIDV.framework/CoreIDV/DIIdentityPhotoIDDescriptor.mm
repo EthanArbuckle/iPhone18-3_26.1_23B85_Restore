@@ -2,11 +2,11 @@
 - (DIIdentityPhotoIDDescriptor)init;
 - (NSArray)elements;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)elementsToIntentToStore;
-- (id)intentToStoreForElement:(id)a3;
-- (void)addElements:(id)a3 withIntentToStore:(id)a4;
-- (void)setElementsToIntentToStore:(id)a3;
+- (id)intentToStoreForElement:(id)element;
+- (void)addElements:(id)elements withIntentToStore:(id)store;
+- (void)setElementsToIntentToStore:(id)store;
 @end
 
 @implementation DIIdentityPhotoIDDescriptor
@@ -31,23 +31,23 @@
 - (NSArray)elements
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_elementsToIntentToStore allKeys];
+  allKeys = [(NSMutableDictionary *)self->_elementsToIntentToStore allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)addElements:(id)a3 withIntentToStore:(id)a4
+- (void)addElements:(id)elements withIntentToStore:(id)store
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  elementsCopy = elements;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = v6;
+  v8 = elementsCopy;
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
@@ -63,7 +63,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [(NSMutableDictionary *)self->_elementsToIntentToStore setObject:v7 forKeyedSubscript:*(*(&v14 + 1) + 8 * v12++), v14];
+        [(NSMutableDictionary *)self->_elementsToIntentToStore setObject:storeCopy forKeyedSubscript:*(*(&v14 + 1) + 8 * v12++), v14];
       }
 
       while (v10 != v12);
@@ -77,11 +77,11 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)intentToStoreForElement:(id)a3
+- (id)intentToStoreForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_elementsToIntentToStore objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_elementsToIntentToStore objectForKeyedSubscript:elementCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -97,13 +97,13 @@
   return v3;
 }
 
-- (void)setElementsToIntentToStore:(id)a3
+- (void)setElementsToIntentToStore:(id)store
 {
-  v6 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_elementsToIntentToStore != v6)
+  if (self->_elementsToIntentToStore != storeCopy)
   {
-    v4 = [(NSMutableDictionary *)v6 copyWithZone:0];
+    v4 = [(NSMutableDictionary *)storeCopy copyWithZone:0];
     elementsToIntentToStore = self->_elementsToIntentToStore;
     self->_elementsToIntentToStore = v4;
   }
@@ -122,9 +122,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   os_unfair_lock_lock(&self->_lock);
   elementsToIntentToStore = self->_elementsToIntentToStore;
   v8[0] = MEMORY[0x277D85DD0];

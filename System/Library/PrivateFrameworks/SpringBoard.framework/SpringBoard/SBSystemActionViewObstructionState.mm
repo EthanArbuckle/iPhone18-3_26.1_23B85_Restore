@@ -1,25 +1,25 @@
 @interface SBSystemActionViewObstructionState
 + (id)emptyState;
-+ (id)stateWithError:(uint64_t)a1;
-+ (id)stateWithEvent:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
-- (SBSystemActionViewObstructionState)initWithEvent:(id)a3 error:(id)a4;
++ (id)stateWithError:(uint64_t)error;
++ (id)stateWithEvent:(uint64_t)event;
+- (BOOL)isEqual:(id)equal;
+- (SBSystemActionViewObstructionState)initWithEvent:(id)event error:(id)error;
 @end
 
 @implementation SBSystemActionViewObstructionState
 
-- (SBSystemActionViewObstructionState)initWithEvent:(id)a3 error:(id)a4
+- (SBSystemActionViewObstructionState)initWithEvent:(id)event error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  eventCopy = event;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = SBSystemActionViewObstructionState;
   v9 = [(SBSystemActionViewObstructionState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_event, a3);
-    objc_storeStrong(&v10->_error, a4);
+    objc_storeStrong(&v9->_event, event);
+    objc_storeStrong(&v10->_error, error);
   }
 
   return v10;
@@ -32,7 +32,7 @@
   return v0;
 }
 
-+ (id)stateWithEvent:(uint64_t)a1
++ (id)stateWithEvent:(uint64_t)event
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -46,7 +46,7 @@
   return v4;
 }
 
-+ (id)stateWithError:(uint64_t)a1
++ (id)stateWithError:(uint64_t)error
 {
   v2 = a2;
   v3 = objc_opt_self();
@@ -60,16 +60,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (BSEqualObjects())

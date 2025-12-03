@@ -1,23 +1,23 @@
 @interface WFTrustCertificateViewController
-- (WFTrustCertificateViewController)initWithCertificateProviderContext:(id)a3;
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4;
+- (WFTrustCertificateViewController)initWithCertificateProviderContext:(id)context;
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code;
 @end
 
 @implementation WFTrustCertificateViewController
 
-- (WFTrustCertificateViewController)initWithCertificateProviderContext:(id)a3
+- (WFTrustCertificateViewController)initWithCertificateProviderContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = WFTrustCertificateViewController;
-  v6 = -[TrustCertificateViewController initWithTrust:action:delegate:](&v9, sel_initWithTrust_action_delegate_, [v5 certificateTrust], 2, self);
+  v6 = -[TrustCertificateViewController initWithTrust:action:delegate:](&v9, sel_initWithTrust_action_delegate_, [contextCopy certificateTrust], 2, self);
   v7 = v6;
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!contextCopy)
   {
     [WFTrustCertificateViewController initWithCertificateProviderContext:];
 LABEL_6:
@@ -26,14 +26,14 @@ LABEL_6:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_credentialsContext, a3);
+  objc_storeStrong(&v6->_credentialsContext, context);
   v7->_wantsModalPresentation = 1;
 LABEL_4:
 
   return v7;
 }
 
-- (void)trustCertificateViewController:(id)a3 finishedWithReturnCode:(int)a4
+- (void)trustCertificateViewController:(id)controller finishedWithReturnCode:(int)code
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = WFLogForCategory(0);
@@ -43,20 +43,20 @@ LABEL_4:
     v11 = 136315394;
     v12 = "[WFTrustCertificateViewController trustCertificateViewController:finishedWithReturnCode:]";
     v13 = 1024;
-    v14 = a4;
+    codeCopy = code;
     _os_log_impl(&dword_273FB9000, v6, v7, "%s- returnCode %d", &v11, 0x12u);
   }
 
-  v8 = [(WFTrustCertificateViewController *)self credentialsContext];
-  v9 = v8;
-  if (a4 == 1)
+  credentialsContext = [(WFTrustCertificateViewController *)self credentialsContext];
+  v9 = credentialsContext;
+  if (code == 1)
   {
-    [v8 accept];
+    [credentialsContext accept];
   }
 
   else
   {
-    [v8 cancel];
+    [credentialsContext cancel];
   }
 
   v10 = *MEMORY[0x277D85DE8];

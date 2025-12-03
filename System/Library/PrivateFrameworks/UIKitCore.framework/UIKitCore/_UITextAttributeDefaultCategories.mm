@@ -1,15 +1,15 @@
 @interface _UITextAttributeDefaultCategories
 - (NSString)description;
-- (_UITextAttributeDefaultCategories)initWithUserInterfaceIdiom:(int64_t)a3;
-- (id)_genericDefaults:(int64_t)a3;
-- (id)_labelDefaults:(int64_t)a3;
-- (id)_textFieldDefaults:(int64_t)a3;
-- (id)_textViewDefaults:(int64_t)a3;
+- (_UITextAttributeDefaultCategories)initWithUserInterfaceIdiom:(int64_t)idiom;
+- (id)_genericDefaults:(int64_t)defaults;
+- (id)_labelDefaults:(int64_t)defaults;
+- (id)_textFieldDefaults:(int64_t)defaults;
+- (id)_textViewDefaults:(int64_t)defaults;
 @end
 
 @implementation _UITextAttributeDefaultCategories
 
-- (_UITextAttributeDefaultCategories)initWithUserInterfaceIdiom:(int64_t)a3
+- (_UITextAttributeDefaultCategories)initWithUserInterfaceIdiom:(int64_t)idiom
 {
   if (qword_1ED49CC50 != -1)
   {
@@ -17,7 +17,7 @@
   }
 
   v5 = _MergedGlobals_1029;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   if (v7)
@@ -32,25 +32,25 @@
     v8 = [(_UITextAttributeDefaultCategories *)&v20 init];
     if (v8)
     {
-      [_UITextAttributeDefaults _getFontSizesForUserInterfaceIdiom:a3 labelFontSize:&v8->_labelFontSize buttonFontSize:&v8->_buttonFontSize systemFontSize:&v8->_systemFontSize smallSystemFontSize:&v8->_smallSystemFontSize];
-      v9 = [(_UITextAttributeDefaultCategories *)v8 _genericDefaults:a3];
+      [_UITextAttributeDefaults _getFontSizesForUserInterfaceIdiom:idiom labelFontSize:&v8->_labelFontSize buttonFontSize:&v8->_buttonFontSize systemFontSize:&v8->_systemFontSize smallSystemFontSize:&v8->_smallSystemFontSize];
+      v9 = [(_UITextAttributeDefaultCategories *)v8 _genericDefaults:idiom];
       generic = v8->_generic;
       v8->_generic = v9;
 
-      v11 = [(_UITextAttributeDefaultCategories *)v8 _labelDefaults:a3];
+      v11 = [(_UITextAttributeDefaultCategories *)v8 _labelDefaults:idiom];
       label = v8->_label;
       v8->_label = v11;
 
-      v13 = [(_UITextAttributeDefaultCategories *)v8 _textFieldDefaults:a3];
+      v13 = [(_UITextAttributeDefaultCategories *)v8 _textFieldDefaults:idiom];
       textField = v8->_textField;
       v8->_textField = v13;
 
-      v15 = [(_UITextAttributeDefaultCategories *)v8 _textViewDefaults:a3];
+      v15 = [(_UITextAttributeDefaultCategories *)v8 _textViewDefaults:idiom];
       textView = v8->_textView;
       v8->_textView = v15;
 
       v17 = _MergedGlobals_1029;
-      v18 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v18 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
       [v17 setObject:v8 forKeyedSubscript:v18];
     }
   }
@@ -58,10 +58,10 @@
   return v8;
 }
 
-- (id)_genericDefaults:(int64_t)a3
+- (id)_genericDefaults:(int64_t)defaults
 {
-  v5 = [[_UITextAttributeDefaults alloc] _init];
-  if (a3 == 8 || a3 == 2)
+  _init = [[_UITextAttributeDefaults alloc] _init];
+  if (defaults == 8 || defaults == 2)
   {
     v6 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
   }
@@ -72,10 +72,10 @@
   }
 
   v7 = v6;
-  [v5 _setFont:v6];
+  [_init _setFont:v6];
 
   v8 = +[UIColor labelColor];
-  [v5 _setTextColor:v8];
+  [_init _setTextColor:v8];
 
   v9 = objc_opt_new();
   [v9 setLineBreakMode:4];
@@ -93,15 +93,15 @@
   [v9 setAlignment:v10];
   v11 = [v9 copy];
 
-  [v5 _setParagraphStyle:v11];
+  [_init _setParagraphStyle:v11];
 
-  return v5;
+  return _init;
 }
 
-- (id)_labelDefaults:(int64_t)a3
+- (id)_labelDefaults:(int64_t)defaults
 {
   v5 = [[_UITextAttributeDefaults alloc] _initWithFallback:self->_generic];
-  if (a3 == 8 || a3 == 2)
+  if (defaults == 8 || defaults == 2)
   {
     v6 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
   }
@@ -123,7 +123,7 @@
   return v5;
 }
 
-- (id)_textFieldDefaults:(int64_t)a3
+- (id)_textFieldDefaults:(int64_t)defaults
 {
   v3 = [[_UITextAttributeDefaults alloc] _initWithFallback:self->_label];
   [v3 _setShadow:0];
@@ -131,7 +131,7 @@
   return v3;
 }
 
-- (id)_textViewDefaults:(int64_t)a3
+- (id)_textViewDefaults:(int64_t)defaults
 {
   v3 = [[_UITextAttributeDefaults alloc] _initWithFallback:self->_generic];
   v4 = [off_1E70ECC18 fontWithName:@"Helvetica" size:12.0];

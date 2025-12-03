@@ -1,11 +1,11 @@
 @interface FCAVAssetPrewarmer
 - (FCAVAssetPrewarmer)init;
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5;
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion;
 - (uint64_t)_didChangeInterestedAssets;
 - (void)_reprocessInterestedAssets;
 - (void)_revisitSuspendedState;
-- (void)addInterestInAsset:(id)a3;
-- (void)removeInterestInAsset:(id)a3;
+- (void)addInterestInAsset:(id)asset;
+- (void)removeInterestInAsset:(id)asset;
 @end
 
 @implementation FCAVAssetPrewarmer
@@ -34,8 +34,8 @@
     interestTokensByAsset = v2->_interestTokensByAsset;
     v2->_interestTokensByAsset = v9;
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v2 selector:sel__revisitSuspendedState name:*MEMORY[0x1E696A7D8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__revisitSuspendedState name:*MEMORY[0x1E696A7D8] object:0];
 
     [(FCAVAssetPrewarmer *)v2 _revisitSuspendedState];
   }
@@ -68,10 +68,10 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addInterestInAsset:(id)a3
+- (void)addInterestInAsset:(id)asset
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
   {
@@ -83,23 +83,23 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
     interestedAssets = 0;
   }
 
-  v6 = [(NSCountedSet *)interestedAssets countForObject:v4];
+  v6 = [(NSCountedSet *)interestedAssets countForObject:assetCopy];
   if (self)
   {
-    [(NSCountedSet *)self->_interestedAssets addObject:v4];
+    [(NSCountedSet *)self->_interestedAssets addObject:assetCopy];
     interestModificationDates = self->_interestModificationDates;
   }
 
   else
   {
-    [0 addObject:v4];
+    [0 addObject:assetCopy];
     interestModificationDates = 0;
   }
 
   v8 = MEMORY[0x1E695DF00];
   v9 = interestModificationDates;
-  v10 = [v8 date];
-  [(NSMutableDictionary *)v9 setObject:v10 forKey:v4];
+  date = [v8 date];
+  [(NSMutableDictionary *)v9 setObject:date forKey:assetCopy];
 
   if (!v6)
   {
@@ -107,9 +107,9 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v4 identifier];
+      identifier = [assetCopy identifier];
       v15 = 138543362;
-      v16 = v13;
+      v16 = identifier;
       _os_log_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_DEFAULT, "added prewarm interest in AV asset %{public}@", &v15, 0xCu);
     }
 
@@ -138,10 +138,10 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)removeInterestInAsset:(id)a3
+- (void)removeInterestInAsset:(id)asset
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   [MEMORY[0x1E696AF00] isMainThread];
   if (self)
   {
@@ -153,23 +153,23 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
     interestedAssets = 0;
   }
 
-  v6 = [(NSCountedSet *)interestedAssets countForObject:v4];
+  v6 = [(NSCountedSet *)interestedAssets countForObject:assetCopy];
   if (self)
   {
-    [(NSCountedSet *)self->_interestedAssets removeObject:v4];
+    [(NSCountedSet *)self->_interestedAssets removeObject:assetCopy];
     interestModificationDates = self->_interestModificationDates;
   }
 
   else
   {
-    [0 removeObject:v4];
+    [0 removeObject:assetCopy];
     interestModificationDates = 0;
   }
 
   v8 = MEMORY[0x1E695DF00];
   v9 = interestModificationDates;
-  v10 = [v8 date];
-  [(NSMutableDictionary *)v9 setObject:v10 forKey:v4];
+  date = [v8 date];
+  [(NSMutableDictionary *)v9 setObject:date forKey:assetCopy];
 
   if (v6 == 1)
   {
@@ -177,9 +177,9 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
     if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v4 identifier];
+      identifier = [assetCopy identifier];
       v15 = 138543362;
-      v16 = v13;
+      v16 = identifier;
       _os_log_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_DEFAULT, "removed prewarm interest in AV asset %{public}@", &v15, 0xCu);
     }
 
@@ -189,20 +189,20 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)keyedOperationQueue:(id)a3 performAsyncOperationForKey:(id)a4 completion:(id)a5
+- (id)keyedOperationQueue:(id)queue performAsyncOperationForKey:(id)key completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  completionCopy = completion;
   [MEMORY[0x1E696AF00] isMainThread];
   v9 = [[FCOnce alloc] initWithOptions:1];
   v10 = FCAVAssetLog;
   if (os_log_type_enabled(FCAVAssetLog, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v7 identifier];
+    identifier = [keyCopy identifier];
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v12;
+    *(&buf + 4) = identifier;
     _os_log_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_DEFAULT, "will prewarm AV asset %{public}@", &buf, 0xCu);
   }
 
@@ -210,13 +210,13 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
   v35[1] = 3221225472;
   v36 = __81__FCAVAssetPrewarmer_keyedOperationQueue_performAsyncOperationForKey_completion___block_invoke;
   v37 = &unk_1E7C401B0;
-  v38 = v7;
-  v39 = self;
+  v38 = keyCopy;
+  selfCopy = self;
   v13 = v9;
   v40 = v13;
-  v14 = v8;
+  v14 = completionCopy;
   v41 = v14;
-  v15 = v7;
+  v15 = keyCopy;
   v16 = v35;
   if (self)
   {
@@ -230,8 +230,8 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
       WeakRetained = 0;
     }
 
-    v18 = [v15 identifier];
-    v19 = [WeakRetained interestTokenForAssetIdentifier:v18];
+    identifier2 = [v15 identifier];
+    v19 = [WeakRetained interestTokenForAssetIdentifier:identifier2];
 
     if (v15)
     {
@@ -243,8 +243,8 @@ void __44__FCAVAssetPrewarmer__revisitSuspendedState__block_invoke(uint64_t a1)
       v20 = 0;
     }
 
-    v21 = [v15 identifier];
-    v22 = [v20 containsAssetWithIdentifier:v21];
+    identifier3 = [v15 identifier];
+    v22 = [v20 containsAssetWithIdentifier:identifier3];
 
     if (v22)
     {
@@ -559,8 +559,8 @@ void __54__FCAVAssetPrewarmer__prewarmAsset_completionHandler___block_invoke_2(u
 
   v7 = MEMORY[0x1E695DFB8];
   v8 = interestedAssets;
-  v9 = [(NSCountedSet *)v8 allObjects];
-  v10 = [v7 orderedSetWithArray:v9];
+  allObjects = [(NSCountedSet *)v8 allObjects];
+  v10 = [v7 orderedSetWithArray:allObjects];
   if (self)
   {
     [(FCKeyedOperationQueue *)self->_prefetchQueue setKeyQueue:v10];

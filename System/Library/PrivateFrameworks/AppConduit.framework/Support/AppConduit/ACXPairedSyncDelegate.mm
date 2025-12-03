@@ -1,12 +1,12 @@
 @interface ACXPairedSyncDelegate
 + (id)sharedSyncDelegate;
 - (ACXPairedSyncDelegate)init;
-- (BOOL)syncingIsRestrictedForPairingID:(id)a3;
-- (void)_startSystemAppInstallerWithSyncSession:(id)a3 forConnection:(id)a4;
-- (void)_syncDidCompleteForPairingIdentifier:(id)a3 withDescription:(id)a4;
-- (void)installCompleteForSyncSession:(id)a3;
-- (void)reportSystemAppInstallFailureForBundleID:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
+- (BOOL)syncingIsRestrictedForPairingID:(id)d;
+- (void)_startSystemAppInstallerWithSyncSession:(id)session forConnection:(id)connection;
+- (void)_syncDidCompleteForPairingIdentifier:(id)identifier withDescription:(id)description;
+- (void)installCompleteForSyncSession:(id)session;
+- (void)reportSystemAppInstallFailureForBundleID:(id)d;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
 @end
 
 @implementation ACXPairedSyncDelegate
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004DEC;
   block[3] = &unk_10008CBE8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A4748 != -1)
   {
     dispatch_once(&qword_1000A4748, block);
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (void)_startSystemAppInstallerWithSyncSession:(id)a3 forConnection:(id)a4
+- (void)_startSystemAppInstallerWithSyncSession:(id)session forConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ACXPairedSyncAppInstaller alloc] initWithSyncSession:v7 forConnection:v6 delegate:self];
+  connectionCopy = connection;
+  sessionCopy = session;
+  v8 = [[ACXPairedSyncAppInstaller alloc] initWithSyncSession:sessionCopy forConnection:connectionCopy delegate:self];
 
   appInstaller = self->_appInstaller;
   self->_appInstaller = v8;
@@ -62,16 +62,16 @@
   [(ACXPairedSyncAppInstaller *)v10 start];
 }
 
-- (BOOL)syncingIsRestrictedForPairingID:(id)a3
+- (BOOL)syncingIsRestrictedForPairingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(ACXPairedSyncDelegate *)self stateObserver];
-  if (!v6)
+  stateObserver = [(ACXPairedSyncDelegate *)self stateObserver];
+  if (!stateObserver)
   {
     __assert_rtn("[ACXPairedSyncDelegate syncingIsRestrictedForPairingID:]", "ACXPairedSyncDelegate.m", 66, "self.stateObserver");
   }
@@ -80,14 +80,14 @@
   v14[1] = 3221225472;
   v14[2] = sub_100005114;
   v14[3] = &unk_10008CC10;
-  v7 = v4;
+  v7 = dCopy;
   v15 = v7;
   v17 = &v18;
   v8 = v5;
   v16 = v8;
   v9 = objc_retainBlock(v14);
-  v10 = [(ACXPairedSyncDelegate *)self stateObserver];
-  [v10 requestInitialSyncStateForPairingIdentifier:v7 completion:v9];
+  stateObserver2 = [(ACXPairedSyncDelegate *)self stateObserver];
+  [stateObserver2 requestInitialSyncStateForPairingIdentifier:v7 completion:v9];
 
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   if (v19[3])
@@ -97,8 +97,8 @@
 
   else
   {
-    v12 = [(ACXPairedSyncDelegate *)self stateObserver];
-    [v12 requestSyncStateForPairingIdentifier:v7 completion:v9];
+    stateObserver3 = [(ACXPairedSyncDelegate *)self stateObserver];
+    [stateObserver3 requestSyncStateForPairingIdentifier:v7 completion:v9];
 
     dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
     v11 = *(v19 + 24);
@@ -108,50 +108,50 @@
   return v11 & 1;
 }
 
-- (void)_syncDidCompleteForPairingIdentifier:(id)a3 withDescription:(id)a4
+- (void)_syncDidCompleteForPairingIdentifier:(id)identifier withDescription:(id)description
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v7 = dispatch_get_global_queue(21, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000052B8;
   v10[3] = &unk_10008CC38;
-  v11 = v6;
-  v12 = v5;
-  v8 = v5;
-  v9 = v6;
+  v11 = descriptionCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = descriptionCopy;
   sub_100005828(v7, v10);
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = v6;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
+  v7 = sessionCopy;
   if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
   {
-    [v6 syncSessionType];
+    [sessionCopy syncSessionType];
     v15 = NSStringfromPSYSyncSessionType();
     MOLogWrite();
   }
 
   v8 = +[ACXDeviceManager sharedManager];
-  v9 = [v7 pairedDevice];
-  v10 = [v8 deviceForNRDevice:v9];
+  pairedDevice = [v7 pairedDevice];
+  v10 = [v8 deviceForNRDevice:pairedDevice];
 
   v11 = +[ACXCompanionSyncConnectionManager sharedConnectionManager];
   v12 = [v11 connectionForDevice:v10];
 
-  v13 = [v7 syncSessionType];
-  if (v13 && v13 != 2)
+  syncSessionType = [v7 syncSessionType];
+  if (syncSessionType && syncSessionType != 2)
   {
     if (!qword_1000A4878 || *(qword_1000A4878 + 44) >= 5)
     {
-      v14 = [v7 syncSessionType];
+      syncSessionType2 = [v7 syncSessionType];
       [v7 syncSessionType];
       NSStringfromPSYSyncSessionType();
-      v17 = v16 = v14;
+      v17 = v16 = syncSessionType2;
       MOLogWrite();
     }
 
@@ -164,20 +164,20 @@
   }
 }
 
-- (void)reportSystemAppInstallFailureForBundleID:(id)a3
+- (void)reportSystemAppInstallFailureForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACXPairedSyncDelegate *)self appInstaller];
-  [v5 reportAppInstallFailureForBundleID:v4];
+  dCopy = d;
+  appInstaller = [(ACXPairedSyncDelegate *)self appInstaller];
+  [appInstaller reportAppInstallFailureForBundleID:dCopy];
 }
 
-- (void)installCompleteForSyncSession:(id)a3
+- (void)installCompleteForSyncSession:(id)session
 {
   appInstaller = self->_appInstaller;
   self->_appInstaller = 0;
-  v4 = a3;
+  sessionCopy = session;
 
-  [v4 syncDidComplete];
+  [sessionCopy syncDidComplete];
 }
 
 @end

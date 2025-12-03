@@ -1,22 +1,22 @@
 @interface GQZInflateInputStream
-- (GQZInflateInputStream)initWithInput:(id)a3;
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4;
+- (GQZInflateInputStream)initWithInput:(id)input;
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size;
 - (void)dealloc;
 @end
 
 @implementation GQZInflateInputStream
 
-- (GQZInflateInputStream)initWithInput:(id)a3
+- (GQZInflateInputStream)initWithInput:(id)input
 {
   v4 = [(GQZInflateInputStream *)self init];
   if (v4)
   {
-    v5 = a3;
-    v4->mInput = v5;
+    inputCopy = input;
+    v4->mInput = inputCopy;
     v4->mStream.zfree = 0;
     v4->mStream.opaque = 0;
     v4->mStream.zalloc = 0;
-    [(GQZEntryInputStream *)v5 readToOwnBuffer:&v4->mStream size:&v4->mStream.avail_in];
+    [(GQZEntryInputStream *)inputCopy readToOwnBuffer:&v4->mStream size:&v4->mStream.avail_in];
     v6 = inflateInit2_(&v4->mStream, -15, "1.2.12", 112);
     if (v6)
     {
@@ -36,12 +36,12 @@
   [(GQZInflateInputStream *)&v3 dealloc];
 }
 
-- (unint64_t)readToBuffer:(char *)a3 size:(unint64_t)a4
+- (unint64_t)readToBuffer:(char *)buffer size:(unint64_t)size
 {
-  self->mStream.avail_out = a4;
-  self->mStream.next_out = a3;
-  next_out = a3;
-  if (a4)
+  self->mStream.avail_out = size;
+  self->mStream.next_out = buffer;
+  next_out = buffer;
+  if (size)
   {
     while (1)
     {
@@ -67,7 +67,7 @@ LABEL_9:
     next_out = self->mStream.next_out;
   }
 
-  return next_out - a3;
+  return next_out - buffer;
 }
 
 @end

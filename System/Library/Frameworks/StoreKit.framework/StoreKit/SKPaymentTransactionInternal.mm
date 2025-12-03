@@ -11,10 +11,10 @@
   v2 = [(SKPaymentTransactionInternal *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v2->_uuid;
-    v2->_uuid = v4;
+    v2->_uuid = uUIDString;
 
     downloads = v2->_downloads;
     v2->_downloads = MEMORY[0x1E695E0F0];

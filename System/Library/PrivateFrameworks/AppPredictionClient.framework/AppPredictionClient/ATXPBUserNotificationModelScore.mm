@@ -1,30 +1,30 @@
 @interface ATXPBUserNotificationModelScore
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)setHasScoreTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasScore:(BOOL)score;
+- (void)setHasScoreTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotificationModelScore
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotificationModelScore *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [v6 objectForKeyedSubscript:@"modelId"];
       [(ATXPBUserNotificationModelScore *)v5 setModelId:v7];
 
@@ -81,9 +81,9 @@
   return v12;
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasScoreTimestamp:(BOOL)a3
+- (void)setHasScoreTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -117,20 +117,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotificationModelScore;
   v4 = [(ATXPBUserNotificationModelScore *)&v8 description];
-  v5 = [(ATXPBUserNotificationModelScore *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotificationModelScore *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   modelId = self->_modelId;
   if (modelId)
   {
-    [v3 setObject:modelId forKey:@"modelId"];
+    [dictionary setObject:modelId forKey:@"modelId"];
   }
 
   has = self->_has;
@@ -183,21 +183,21 @@ LABEL_7:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_modelId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -217,43 +217,43 @@ LABEL_5:
   }
 
   PBDataWriterWriteDoubleField();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_7:
   if (self->_scoreUUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scoreInfo)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_modelId)
   {
-    [v4 setModelId:?];
-    v4 = v6;
+    [toCopy setModelId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_modelVersion;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = self->_modelVersion;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -272,33 +272,33 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = *&self->_score;
-  *(v4 + 56) |= 2u;
+  *(toCopy + 2) = *&self->_score;
+  *(toCopy + 56) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 3) = *&self->_scoreTimestamp;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = *&self->_scoreTimestamp;
+    *(toCopy + 56) |= 4u;
   }
 
 LABEL_7:
   if (self->_scoreUUID)
   {
     [v6 setScoreUUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scoreInfo)
   {
     [v6 setScoreInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_modelId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_modelId copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -338,27 +338,27 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_scoreUUID copyWithZone:a3];
+  v9 = [(NSString *)self->_scoreUUID copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
-  v11 = [(NSData *)self->_scoreInfo copyWithZone:a3];
+  v11 = [(NSData *)self->_scoreInfo copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   modelId = self->_modelId;
-  if (modelId | *(v4 + 4))
+  if (modelId | *(equalCopy + 4))
   {
     if (![(NSString *)modelId isEqual:?])
     {
@@ -368,13 +368,13 @@ LABEL_5:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_modelVersion != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_modelVersion != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_23:
     v8 = 0;
@@ -383,38 +383,38 @@ LABEL_23:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_score != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_score != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_scoreTimestamp != *(v4 + 3))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_scoreTimestamp != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_23;
   }
 
   scoreUUID = self->_scoreUUID;
-  if (scoreUUID | *(v4 + 6) && ![(NSString *)scoreUUID isEqual:?])
+  if (scoreUUID | *(equalCopy + 6) && ![(NSString *)scoreUUID isEqual:?])
   {
     goto LABEL_23;
   }
 
   scoreInfo = self->_scoreInfo;
-  if (scoreInfo | *(v4 + 5))
+  if (scoreInfo | *(equalCopy + 5))
   {
     v8 = [(NSData *)scoreInfo isEqual:?];
   }
@@ -516,22 +516,22 @@ LABEL_9:
   return v15 ^ [(NSData *)self->_scoreInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(ATXPBUserNotificationModelScore *)self setModelId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if (v5)
   {
-    self->_modelVersion = *(v4 + 1);
+    self->_modelVersion = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
     if ((v5 & 2) == 0)
     {
 LABEL_5:
@@ -544,31 +544,31 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 56) & 2) == 0)
+  else if ((*(fromCopy + 56) & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_score = *(v4 + 2);
+  self->_score = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
 LABEL_6:
-    self->_scoreTimestamp = *(v4 + 3);
+    self->_scoreTimestamp = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
 LABEL_7:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ATXPBUserNotificationModelScore *)self setScoreUUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(ATXPBUserNotificationModelScore *)self setScoreInfo:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

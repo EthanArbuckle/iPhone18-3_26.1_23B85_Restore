@@ -1,24 +1,24 @@
 @interface CCToolKitToolTypeInstanceDeferred
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTypeInstance)identifier;
-- (CCToolKitToolTypeInstanceDeferred)initWithIdentifier:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypeInstanceDeferred)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCToolKitToolTypeInstanceDeferred)initWithIdentifier:(id)identifier error:(id *)error;
+- (CCToolKitToolTypeInstanceDeferred)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypeInstanceDeferred
 
-- (CCToolKitToolTypeInstanceDeferred)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypeInstanceDeferred)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v16[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"identifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     if (v9)
     {
       v10 = v9;
@@ -40,7 +40,7 @@
       v11 = 0;
     }
 
-    v14 = [[CCToolKitToolTypeInstanceDeferred alloc] initWithIdentifier:v11 error:a4];
+    v14 = [[CCToolKitToolTypeInstanceDeferred alloc] initWithIdentifier:v11 error:error];
     v10 = v11;
 LABEL_10:
 
@@ -59,9 +59,9 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_identifier)
   {
-    v4 = [(CCToolKitToolTypeInstanceDeferred *)self identifier];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"identifier"];
+    identifier = [(CCToolKitToolTypeInstanceDeferred *)self identifier];
+    jsonDictionary = [identifier jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"identifier"];
   }
 
   v6 = [v3 copy];
@@ -69,15 +69,15 @@ LABEL_11:
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
   if (self->_identifier)
   {
     v6 = MEMORY[0x1E69939F0];
-    v7 = a3;
+    blockCopy = block;
     v8 = [v6 alloc];
     v9 = [v8 initWithFieldType:*MEMORY[0x1E69939A8] subMessageValue:self->_identifier];
-    (*(a3 + 2))(v7, v9);
+    (*(block + 2))(blockCopy, v9);
   }
 }
 
@@ -88,10 +88,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -233,11 +233,11 @@ LABEL_34:
   return v33;
 }
 
-- (CCToolKitToolTypeInstanceDeferred)initWithIdentifier:(id)a3 error:(id *)a4
+- (CCToolKitToolTypeInstanceDeferred)initWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  if (v6)
+  if (identifierCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -245,11 +245,11 @@ LABEL_34:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
-    v10 = [v6 data];
+    data = [identifierCopy data];
     CCPBDataWriterWriteDataField();
   }
 
@@ -258,13 +258,13 @@ LABEL_34:
     v9 = 0;
   }
 
-  v11 = [v7 immutableData];
-  self = [(CCItemMessage *)self initWithData:v11 error:a4];
+  immutableData = [v7 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v12 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v12;
+  return selfCopy;
 }
 
 @end

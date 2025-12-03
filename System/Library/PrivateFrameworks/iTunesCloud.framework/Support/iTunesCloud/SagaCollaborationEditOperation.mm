@@ -1,7 +1,7 @@
 @interface SagaCollaborationEditOperation
-- (SagaCollaborationEditOperation)initWithCoder:(id)a3;
-- (SagaCollaborationEditOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 collaborationPersistentID:(int64_t)a5 properties:(id)a6 trackEdits:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCollaborationEditOperation)initWithCoder:(id)coder;
+- (SagaCollaborationEditOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity collaborationPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits;
+- (void)encodeWithCoder:(id)coder;
 - (void)start;
 @end
 
@@ -16,7 +16,7 @@
     v5 = *(&self->_collaborationPersistentID + 2);
     v6 = *(&self->_properties + 2);
     *buf = 138544130;
-    v27 = self;
+    selfCopy = self;
     v28 = 2048;
     v29 = v4;
     v30 = 2114;
@@ -34,27 +34,27 @@
 
   v9 = [[MSVXPCTransaction alloc] initWithName:v8];
   [v9 beginTransaction];
-  v10 = [(CloudLibraryOperation *)self connection];
-  v11 = [(CloudLibraryOperation *)self musicLibrary];
-  v12 = [v11 sagaOnDiskDatabaseRevision];
+  connection = [(CloudLibraryOperation *)self connection];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  sagaOnDiskDatabaseRevision = [musicLibrary sagaOnDiskDatabaseRevision];
 
-  if (v12 <= 1)
+  if (sagaOnDiskDatabaseRevision <= 1)
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = v12;
+    v13 = sagaOnDiskDatabaseRevision;
   }
 
   v14 = [ML3Container alloc];
   v15 = *(&self->super._finished + 1);
-  v16 = [(CloudLibraryOperation *)self musicLibrary];
-  v17 = [v14 initWithPersistentID:v15 inLibrary:v16];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  v17 = [v14 initWithPersistentID:v15 inLibrary:musicLibrary2];
 
   v18 = [v17 valueForProperty:ML3ContainerPropertyStoreCloudID];
-  v19 = -[ICCollaborationEditRequest initWithDatabaseID:playlistSagaID:cloudLibraryRevision:properties:trackEdits:]([ICCollaborationEditRequest alloc], "initWithDatabaseID:playlistSagaID:cloudLibraryRevision:properties:trackEdits:", [v10 databaseID], objc_msgSend(v18, "unsignedLongLongValue"), v13, *(&self->_collaborationPersistentID + 2), *(&self->_properties + 2));
+  v19 = -[ICCollaborationEditRequest initWithDatabaseID:playlistSagaID:cloudLibraryRevision:properties:trackEdits:]([ICCollaborationEditRequest alloc], "initWithDatabaseID:playlistSagaID:cloudLibraryRevision:properties:trackEdits:", [connection databaseID], objc_msgSend(v18, "unsignedLongLongValue"), v13, *(&self->_collaborationPersistentID + 2), *(&self->_properties + 2));
   [(ICDRequest *)v19 setVerificationInteractionLevel:2];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -65,40 +65,40 @@
   v24 = v9;
   v20 = v9;
   v21 = v18;
-  [v10 sendRequest:v19 withResponseHandler:v22];
+  [connection sendRequest:v19 withResponseHandler:v22];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCollaborationEditOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationEditOperationPersistentIDKey", v5.receiver, v5.super_class}];
-  [v4 encodeObject:*(&self->_collaborationPersistentID + 2) forKey:@"SagaCollaborationEditOperationPropertiesKey"];
-  [v4 encodeObject:*(&self->_properties + 2) forKey:@"SagaCollaborationEditOperationTrackEditsKey"];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:*(&self->super._finished + 1) forKey:{@"SagaCollaborationEditOperationPersistentIDKey", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:*(&self->_collaborationPersistentID + 2) forKey:@"SagaCollaborationEditOperationPropertiesKey"];
+  [coderCopy encodeObject:*(&self->_properties + 2) forKey:@"SagaCollaborationEditOperationTrackEditsKey"];
 }
 
-- (SagaCollaborationEditOperation)initWithCoder:(id)a3
+- (SagaCollaborationEditOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SagaCollaborationEditOperation;
-  v5 = [(CloudLibraryOperation *)&v17 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    *(v5 + 90) = [v4 decodeInt64ForKey:@"SagaCollaborationEditOperationPersistentIDKey"];
+    *(v5 + 90) = [coderCopy decodeInt64ForKey:@"SagaCollaborationEditOperationPersistentIDKey"];
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v6, v7, v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"SagaCollaborationEditOperationPropertiesKey"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"SagaCollaborationEditOperationPropertiesKey"];
     v11 = *(v5 + 98);
     *(v5 + 98) = v10;
 
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"SagaCollaborationEditOperationTrackEditsKey"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"SagaCollaborationEditOperationTrackEditsKey"];
     v15 = *(v5 + 106);
     *(v5 + 106) = v14;
   }
@@ -106,19 +106,19 @@
   return v5;
 }
 
-- (SagaCollaborationEditOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 collaborationPersistentID:(int64_t)a5 properties:(id)a6 trackEdits:(id)a7
+- (SagaCollaborationEditOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity collaborationPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits
 {
-  v13 = a6;
-  v14 = a7;
+  propertiesCopy = properties;
+  editsCopy = edits;
   v18.receiver = self;
   v18.super_class = SagaCollaborationEditOperation;
-  v15 = [(CloudLibraryOperation *)&v18 initWithConfiguration:a3 clientIdentity:a4];
+  v15 = [(CloudLibraryOperation *)&v18 initWithConfiguration:configuration clientIdentity:identity];
   v16 = v15;
   if (v15)
   {
-    *(v15 + 90) = a5;
-    objc_storeStrong((v15 + 98), a6);
-    objc_storeStrong((v16 + 106), a7);
+    *(v15 + 90) = d;
+    objc_storeStrong((v15 + 98), properties);
+    objc_storeStrong((v16 + 106), edits);
   }
 
   return v16;

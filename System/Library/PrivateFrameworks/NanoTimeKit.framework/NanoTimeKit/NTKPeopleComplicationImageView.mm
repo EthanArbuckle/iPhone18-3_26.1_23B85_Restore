@@ -1,29 +1,29 @@
 @interface NTKPeopleComplicationImageView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (NTKPeopleComplicationImageView)initWithFrame:(CGRect)a3;
+- (NTKPeopleComplicationImageView)initWithFrame:(CGRect)frame;
 - (int64_t)_profileImageFilterStyle;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setImageProvider:(id)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)setColor:(id)color;
+- (void)setImageProvider:(id)provider;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 @end
 
 @implementation NTKPeopleComplicationImageView
 
-- (NTKPeopleComplicationImageView)initWithFrame:(CGRect)a3
+- (NTKPeopleComplicationImageView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = NTKPeopleComplicationImageView;
-  v3 = [(NTKPeopleComplicationImageView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKPeopleComplicationImageView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
     nameLabel = v3->_nameLabel;
     v3->_nameLabel = v4;
 
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v3->_nameLabel setTextColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v3->_nameLabel setTextColor:whiteColor];
 
     [(UILabel *)v3->_nameLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v3->_nameLabel setTextAlignment:1];
@@ -40,10 +40,10 @@
     v3->_ringView = v9;
 
     [(UIView *)v3->_ringView setClipsToBounds:1];
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    v12 = [v11 CGColor];
-    v13 = [(UIView *)v3->_ringView layer];
-    [v13 setBorderColor:v12];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    cGColor = [whiteColor2 CGColor];
+    layer = [(UIView *)v3->_ringView layer];
+    [layer setBorderColor:cGColor];
 
     v3->_usingPersonSymbol = 0;
     [(NTKPeopleComplicationImageView *)v3 addSubview:v3->_ringView];
@@ -75,18 +75,18 @@
   v12 = (v3 - v11) * 0.5;
   v13 = (v4 - v11) * 0.5;
   [(UIImageView *)self->_profileImageView setFrame:v12, v13, v11, v11];
-  v14 = [(UIImageView *)self->_profileImageView layer];
-  [v14 setCornerRadius:v11 * 0.5];
+  layer = [(UIImageView *)self->_profileImageView layer];
+  [layer setCornerRadius:v11 * 0.5];
 
   [(UIView *)self->_ringView setFrame:v12, v13, v11, v11];
-  v15 = [(UIView *)self->_ringView layer];
-  [v15 setCornerRadius:v11 * 0.5];
+  layer2 = [(UIView *)self->_ringView layer];
+  [layer2 setCornerRadius:v11 * 0.5];
 
-  v16 = [(UIView *)self->_ringView layer];
-  [v16 borderWidth];
+  layer3 = [(UIView *)self->_ringView layer];
+  [layer3 borderWidth];
   v18 = v17 * 0.5;
-  v19 = [(UIView *)self->_ringView layer];
-  [v19 borderWidth];
+  layer4 = [(UIView *)self->_ringView layer];
+  [layer4 borderWidth];
   v21 = v20 * 0.5;
   v31.origin.x = v6;
   v31.origin.y = v8;
@@ -110,41 +110,41 @@
   [(UILabel *)self->_nameLabel setFrame:(v9 - v26) * 0.5, (v10 - v27) * 0.5];
 }
 
-- (void)setImageProvider:(id)a3
+- (void)setImageProvider:(id)provider
 {
-  v31 = a3;
-  objc_storeStrong(&self->_imageProvider, a3);
+  providerCopy = provider;
+  objc_storeStrong(&self->_imageProvider, provider);
   v5 = self->_imageProvider;
-  v6 = [(CLKImageProvider *)v5 nameAbbreviation];
-  v7 = [v6 uppercaseString];
-  [(UILabel *)self->_nameLabel setText:v7];
+  nameAbbreviation = [(CLKImageProvider *)v5 nameAbbreviation];
+  uppercaseString = [nameAbbreviation uppercaseString];
+  [(UILabel *)self->_nameLabel setText:uppercaseString];
 
-  v8 = [(CLKImageProvider *)v5 profileImage];
-  if (v8)
+  profileImage = [(CLKImageProvider *)v5 profileImage];
+  if (profileImage)
   {
 
 LABEL_4:
-    v11 = [(CLKImageProvider *)v5 profileImage];
-    [(UIImageView *)self->_profileImageView setImage:v11];
+    profileImage2 = [(CLKImageProvider *)v5 profileImage];
+    [(UIImageView *)self->_profileImageView setImage:profileImage2];
 
-    v12 = [(CLKImageProvider *)v5 profileImage];
-    [(UILabel *)self->_nameLabel setHidden:v12 != 0];
+    profileImage3 = [(CLKImageProvider *)v5 profileImage];
+    [(UILabel *)self->_nameLabel setHidden:profileImage3 != 0];
 
-    v13 = [(CLKImageProvider *)v5 profileImage];
-    [(UIImageView *)self->_profileImageView setHidden:v13 == 0];
+    profileImage4 = [(CLKImageProvider *)v5 profileImage];
+    [(UIImageView *)self->_profileImageView setHidden:profileImage4 == 0];
 
     v14 = MEMORY[0x277CBBB08];
     [(CLKImageProvider *)v5 fontSize];
     v15 = [v14 systemFontOfSize:*MEMORY[0x277CBB6C0] weight:? design:?];
-    v16 = [v15 CLKFontWithAlternativePunctuation];
-    [(UILabel *)self->_nameLabel setFont:v16];
+    cLKFontWithAlternativePunctuation = [v15 CLKFontWithAlternativePunctuation];
+    [(UILabel *)self->_nameLabel setFont:cLKFontWithAlternativePunctuation];
 
     v17 = 0;
     goto LABEL_5;
   }
 
-  v9 = [(UILabel *)self->_nameLabel text];
-  v10 = [v9 length];
+  text = [(UILabel *)self->_nameLabel text];
+  v10 = [text length];
 
   if (v10)
   {
@@ -163,8 +163,8 @@ LABEL_4:
   v17 = 1;
   [(CLKSymbolImageProvider *)v23 finalizeWithPointSize:0 weight:5 maxSDKSize:1 maxDeviceSize:v25 maskToCircle:v27];
   v28 = self->_personSymbolImageProvider;
-  v29 = [MEMORY[0x277D75348] whiteColor];
-  v30 = [(CLKSymbolImageProvider *)v28 createSymbolImageForType:2 color:v29];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v30 = [(CLKSymbolImageProvider *)v28 createSymbolImageForType:2 color:whiteColor];
   [(UIImageView *)self->_profileImageView setImage:v30];
 
   [(UIImageView *)self->_profileImageView setHidden:0];
@@ -173,36 +173,36 @@ LABEL_5:
   self->_usingPersonSymbol = v17;
   [(CLKImageProvider *)v5 borderWidth];
   v19 = v18;
-  v20 = [(UIView *)self->_ringView layer];
-  [v20 setBorderWidth:v19];
+  layer = [(UIView *)self->_ringView layer];
+  [layer setBorderWidth:v19];
 
   [(NTKPeopleComplicationImageView *)self setNeedsLayout];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
   [(UILabel *)self->_nameLabel setTextColor:self->_color];
-  v6 = [(UIColor *)self->_color CGColor];
-  v7 = [(UIView *)self->_ringView layer];
+  cGColor = [(UIColor *)self->_color CGColor];
+  layer = [(UIView *)self->_ringView layer];
 
-  [v7 setBorderColor:v6];
+  [layer setBorderColor:cGColor];
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v6 = [v5 objectForKey:@"NTKPeopleComplicationImageProviderMetadataKey"];
+  metadata = [provider metadata];
+  v6 = [metadata objectForKey:@"NTKPeopleComplicationImageProviderMetadataKey"];
 
   [(NTKPeopleComplicationImageView *)self setImageProvider:v6];
 }
 
 - (int64_t)_profileImageFilterStyle
 {
-  v2 = [(NTKPeopleComplicationImageView *)self filterProvider];
-  v3 = [v2 device];
-  v4 = NTKShowGossamerUI(v3);
+  filterProvider = [(NTKPeopleComplicationImageView *)self filterProvider];
+  device = [filterProvider device];
+  v4 = NTKShowGossamerUI(device);
 
   if (v4)
   {
@@ -215,43 +215,43 @@ LABEL_5:
   }
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v5 = [(NTKPeopleComplicationImageView *)self filterProvider];
-  v6 = [v5 colorForView:self accented:1];
+  filterProvider = [(NTKPeopleComplicationImageView *)self filterProvider];
+  v6 = [filterProvider colorForView:self accented:1];
   color = self->_color;
   self->_color = v6;
 
-  self->_monochromeTintAmount = a3;
-  v8 = [(NTKPeopleComplicationImageView *)self filterProvider];
-  v17 = [v8 filtersForView:self style:3 fraction:a3];
+  self->_monochromeTintAmount = fraction;
+  filterProvider2 = [(NTKPeopleComplicationImageView *)self filterProvider];
+  v17 = [filterProvider2 filtersForView:self style:3 fraction:fraction];
 
   if (v17)
   {
     if (self->_usingPersonSymbol)
     {
-      v9 = [(UIImageView *)self->_profileImageView layer];
-      [v9 setFilters:v17];
+      layer = [(UIImageView *)self->_profileImageView layer];
+      [layer setFilters:v17];
     }
 
     else
     {
-      v10 = [(NTKPeopleComplicationImageView *)self filterProvider];
-      v9 = [v10 filtersForView:self style:-[NTKPeopleComplicationImageView _profileImageFilterStyle](self fraction:{"_profileImageFilterStyle"), a3}];
+      filterProvider3 = [(NTKPeopleComplicationImageView *)self filterProvider];
+      layer = [filterProvider3 filtersForView:self style:-[NTKPeopleComplicationImageView _profileImageFilterStyle](self fraction:{"_profileImageFilterStyle"), fraction}];
 
-      v11 = [(UIImageView *)self->_profileImageView layer];
-      [v11 setFilters:v9];
+      layer2 = [(UIImageView *)self->_profileImageView layer];
+      [layer2 setFilters:layer];
     }
 
-    v12 = [(UILabel *)self->_nameLabel layer];
-    [v12 setFilters:v17];
+    layer3 = [(UILabel *)self->_nameLabel layer];
+    [layer3 setFilters:v17];
   }
 
-  v13 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   v14 = NTKInterpolateBetweenColors();
-  v15 = [v14 CGColor];
-  v16 = [(UIView *)self->_ringView layer];
-  [v16 setBorderColor:v15];
+  cGColor = [v14 CGColor];
+  layer4 = [(UIView *)self->_ringView layer];
+  [layer4 setBorderColor:cGColor];
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

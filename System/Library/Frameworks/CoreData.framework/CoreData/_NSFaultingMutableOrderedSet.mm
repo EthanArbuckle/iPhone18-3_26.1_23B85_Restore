@@ -1,60 +1,60 @@
 @interface _NSFaultingMutableOrderedSet
-- (BOOL)_isIdenticalFault:(id)a3;
-- (BOOL)_reorderObjectsToLocationsByOrderKey:(id)a3 error:(id *)a4;
-- (BOOL)containsObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOrderedSet:(id)a3;
+- (BOOL)_isIdenticalFault:(id)fault;
+- (BOOL)_reorderObjectsToLocationsByOrderKey:(id)key error:(id *)error;
+- (BOOL)containsObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOrderedSet:(id)set;
 - (_BYTE)willChange;
-- (_NSFaultingMutableOrderedSet)initWithOrderedSet:(id)a3;
-- (_NSFaultingMutableOrderedSet)initWithSource:(id)a3 destinations:(id)a4 forRelationship:(id)a5 inContext:(id)a6;
-- (_NSFaultingMutableOrderedSet)initWithSource:(id)a3 forRelationship:(id)a4 asFault:(BOOL)a5;
+- (_NSFaultingMutableOrderedSet)initWithOrderedSet:(id)set;
+- (_NSFaultingMutableOrderedSet)initWithSource:(id)source destinations:(id)destinations forRelationship:(id)relationship inContext:(id)context;
+- (_NSFaultingMutableOrderedSet)initWithSource:(id)source forRelationship:(id)relationship asFault:(BOOL)fault;
 - (id)_newOrderKeys;
 - (id)_orderedObjectsAndKeys;
 - (id)_updateOrderKeysFromOrderOfObjectIDs:(id *)result;
 - (id)allObjects;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionWithLocale:(id)a3;
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)descriptionWithLocale:(id)locale;
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)objectAtIndex:(unint64_t)index;
 - (id)objectEnumerator;
-- (id)valueForKey:(id)a3;
-- (id)valueForKeyPath:(id)a3;
-- (uint64_t)_orderKeyForObject:(uint64_t)a1;
+- (id)valueForKey:(id)key;
+- (id)valueForKeyPath:(id)path;
+- (uint64_t)_orderKeyForObject:(uint64_t)object;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (unint64_t)indexOfObject:(id)a3;
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (void)_populateOrderKeysUsingSnapshot:(void *)a3 orderKeys:(void *)a4 newIndexes:(void *)a5 reorderedIndexes:;
-- (void)_setProcessingIdempotentKVO:(BOOL)a3;
-- (void)addObject:(id)a3;
-- (void)addObjects:(const void *)a3 count:(unint64_t)a4;
-- (void)addObjectsFromArray:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (unint64_t)indexOfObject:(id)object;
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test;
+- (void)_populateOrderKeysUsingSnapshot:(void *)snapshot orderKeys:(void *)keys newIndexes:(void *)indexes reorderedIndexes:;
+- (void)_setProcessingIdempotentKVO:(BOOL)o;
+- (void)addObject:(id)object;
+- (void)addObjects:(const void *)objects count:(unint64_t)count;
+- (void)addObjectsFromArray:(id)array;
 - (void)dealloc;
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)getObjects:(id *)a3;
-- (void)getObjects:(id *)a3 range:(_NSRange)a4;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertObjects:(const void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)insertObjects:(id)a3 atIndexes:(id)a4;
-- (void)minusOrderedSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)getObjects:(id *)objects;
+- (void)getObjects:(id *)objects range:(_NSRange)range;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)insertObjects:(const void *)objects count:(unint64_t)count atIndex:(unint64_t)index;
+- (void)insertObjects:(id)objects atIndexes:(id)indexes;
+- (void)minusOrderedSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectsInArray:(id)a3;
-- (void)removeObjectsInRange:(_NSRange)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)sortRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectsInArray:(id)array;
+- (void)removeObjectsInRange:(_NSRange)range;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)sortRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator;
 - (void)turnIntoFault;
-- (void)unionOrderedSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)unionOrderedSet:(id)set;
+- (void)unionSet:(id)set;
 - (void)willRead;
-- (void)willReadWithContents:(id)a3;
+- (void)willReadWithContents:(id)contents;
 @end
 
 @implementation _NSFaultingMutableOrderedSet
@@ -117,7 +117,7 @@
   _PFDeallocateObject(self);
 }
 
-- (_NSFaultingMutableOrderedSet)initWithOrderedSet:(id)a3
+- (_NSFaultingMutableOrderedSet)initWithOrderedSet:(id)set
 {
   v7.receiver = self;
   v7.super_class = _NSFaultingMutableOrderedSet;
@@ -126,26 +126,26 @@
   if (v4)
   {
     v4->_source = 0;
-    v4->_realSet = a3;
+    v4->_realSet = set;
     *&v5->_flags &= 0xFFE0u;
   }
 
   return v5;
 }
 
-- (_NSFaultingMutableOrderedSet)initWithSource:(id)a3 forRelationship:(id)a4 asFault:(BOOL)a5
+- (_NSFaultingMutableOrderedSet)initWithSource:(id)source forRelationship:(id)relationship asFault:(BOOL)fault
 {
-  v5 = a5;
+  faultCopy = fault;
   v14.receiver = self;
   v14.super_class = _NSFaultingMutableOrderedSet;
   v8 = [(_NSFaultingMutableOrderedSet *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    v8->_source = a3;
-    if ([a4 _isRelationship])
+    v8->_source = source;
+    if ([relationship _isRelationship])
     {
-      v10 = *&v9->_flags & 0xFFFFFFFD | (2 * (([a4 deleteRule] - 1) < 2));
+      v10 = *&v9->_flags & 0xFFFFFFFD | (2 * (([relationship deleteRule] - 1) < 2));
     }
 
     else
@@ -155,8 +155,8 @@
 
     v9->_flags = v10;
     v9->_flags = (v10 & 0xFFFF001F);
-    v11 = *&v9->_flags & 0xFFE3 | ([a4 _entitysReferenceID] << 16);
-    if (v5)
+    v11 = *&v9->_flags & 0xFFE3 | ([relationship _entitysReferenceID] << 16);
+    if (faultCopy)
     {
       v12 = 0;
       v9->_flags = (v11 | 1);
@@ -175,17 +175,17 @@
   return v9;
 }
 
-- (_NSFaultingMutableOrderedSet)initWithSource:(id)a3 destinations:(id)a4 forRelationship:(id)a5 inContext:(id)a6
+- (_NSFaultingMutableOrderedSet)initWithSource:(id)source destinations:(id)destinations forRelationship:(id)relationship inContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = [(_NSFaultingMutableOrderedSet *)self initWithSource:a3 forRelationship:a5 asFault:0, a6];
-  if (v7)
+  context = [(_NSFaultingMutableOrderedSet *)self initWithSource:source forRelationship:relationship asFault:0, context];
+  if (context)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [destinations countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -197,14 +197,14 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(destinations);
           }
 
-          CFSetAddValue(v7->_realSet, *(*(&v14 + 1) + 8 * v11++));
+          CFSetAddValue(context->_realSet, *(*(&v14 + 1) + 8 * v11++));
         }
 
         while (v9 != v11);
-        v9 = [a4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [destinations countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -212,7 +212,7 @@
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v7;
+  return context;
 }
 
 - (id)description
@@ -220,16 +220,16 @@
   v3 = objc_autoreleasePoolPush();
   flags = self->_flags;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(NSPropertyDescription *)[(_NSFaultingMutableOrderedSet *)self relationship] name];
+  name = [(NSPropertyDescription *)[(_NSFaultingMutableOrderedSet *)self relationship] name];
   source = self->_source;
   if (*&flags)
   {
-    v8 = [v5 stringWithFormat:@"Relationship '%@' fault on managed object (%p) %@", v6, self->_source, source, v12];
+    v8 = [v5 stringWithFormat:@"Relationship '%@' fault on managed object (%p) %@", name, self->_source, source, v12];
   }
 
   else
   {
-    v8 = [v5 stringWithFormat:@"Relationship '%@' on managed object (%p) %@ with objects %@", v6, source, source, objc_msgSend(self->_realSet, "description")];
+    v8 = [v5 stringWithFormat:@"Relationship '%@' on managed object (%p) %@ with objects %@", name, source, source, objc_msgSend(self->_realSet, "description")];
   }
 
   v9 = v8;
@@ -239,21 +239,21 @@
   return v9;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v5 = objc_autoreleasePoolPush();
   flags = self->_flags;
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(NSPropertyDescription *)[(_NSFaultingMutableOrderedSet *)self relationship] name];
+  name = [(NSPropertyDescription *)[(_NSFaultingMutableOrderedSet *)self relationship] name];
   source = self->_source;
   if (*&flags)
   {
-    v10 = [v7 stringWithFormat:@"Relationship '%@' fault on managed object (%p) %@", v8, self->_source, source, v14];
+    v10 = [v7 stringWithFormat:@"Relationship '%@' fault on managed object (%p) %@", name, self->_source, source, v14];
   }
 
   else
   {
-    v10 = [v7 stringWithFormat:@"Relationship '%@' on managed object (%p) %@ with objects %@", v8, source, source, objc_msgSend(self->_realSet, "descriptionWithLocale:", a3)];
+    v10 = [v7 stringWithFormat:@"Relationship '%@' on managed object (%p) %@ with objects %@", name, source, source, objc_msgSend(self->_realSet, "descriptionWithLocale:", locale)];
   }
 
   v11 = v10;
@@ -263,17 +263,17 @@
   return v11;
 }
 
-- (void)willReadWithContents:(id)a3
+- (void)willReadWithContents:(id)contents
 {
   v29 = *MEMORY[0x1E69E9840];
   if (*&self->_flags)
   {
     realSet = self->_realSet;
-    v6 = [(NSManagedObject *)self->_source managedObjectContext];
-    v7 = [(NSManagedObject *)self->_source entity];
-    if (a3)
+    managedObjectContext = [(NSManagedObject *)self->_source managedObjectContext];
+    entity = [(NSManagedObject *)self->_source entity];
+    if (contents)
     {
-      v8 = [a3 count];
+      v8 = [contents count];
       v9 = MEMORY[0x1EEE9AC00](v8);
       v12 = &v28 - v11;
       if (v9 > 0x200)
@@ -286,7 +286,7 @@
         bzero(&v28 - v11, 8 * v10);
       }
 
-      [a3 getObjects:v12 range:{0, v8}];
+      [contents getObjects:v12 range:{0, v8}];
       self->_realSet = [objc_alloc(MEMORY[0x1E695DFA0]) initWithObjects:v12 count:v8];
       if (v8 >= 0x201)
       {
@@ -301,7 +301,7 @@
 
     else
     {
-      isa = v7->_properties[*(&self->_flags + 1) + 3].super.super.isa;
+      isa = entity->_properties[*(&self->_flags + 1) + 3].super.super.isa;
       source = self->_source;
       if (source)
       {
@@ -313,7 +313,7 @@
         v15 = 0;
       }
 
-      v16 = [(NSFaultHandler *)v15 retainedFulfillAggregateFaultForObject:isa andRelationship:v6 withContext:?];
+      v16 = [(NSFaultHandler *)v15 retainedFulfillAggregateFaultForObject:isa andRelationship:managedObjectContext withContext:?];
       v17 = [v16 count];
       if (v17)
       {
@@ -334,7 +334,7 @@
         [v16 getObjects:{v21, v28, v29}];
         for (i = 0; i != v18; ++i)
         {
-          *&v21[8 * i] = [NSManagedObjectContext _retainedObjectWithID:v6 optionalHandler:*&v21[8 * i] withInlineStorage:0];
+          *&v21[8 * i] = [NSManagedObjectContext _retainedObjectWithID:managedObjectContext optionalHandler:*&v21[8 * i] withInlineStorage:0];
         }
 
         v23 = 0;
@@ -398,9 +398,9 @@ LABEL_30:
   return result;
 }
 
-- (void)_setProcessingIdempotentKVO:(BOOL)a3
+- (void)_setProcessingIdempotentKVO:(BOOL)o
 {
-  if (a3)
+  if (o)
   {
     v3 = 4;
   }
@@ -597,9 +597,9 @@ LABEL_30:
   return result;
 }
 
-- (void)_populateOrderKeysUsingSnapshot:(void *)a3 orderKeys:(void *)a4 newIndexes:(void *)a5 reorderedIndexes:
+- (void)_populateOrderKeysUsingSnapshot:(void *)snapshot orderKeys:(void *)keys newIndexes:(void *)indexes reorderedIndexes:
 {
-  v92 = a3;
+  snapshotCopy = snapshot;
   v96 = *MEMORY[0x1E69E9840];
   if (!result)
   {
@@ -609,10 +609,10 @@ LABEL_30:
   v8 = result;
   result = [*(result + 2) count];
   v9 = result;
-  if (a5)
+  if (indexes)
   {
-    v10 = *a4;
-    v11 = *a5;
+    v10 = *keys;
+    v11 = *indexes;
     if (v8[4])
     {
       v12 = 1;
@@ -625,7 +625,7 @@ LABEL_30:
 
     if (v12)
     {
-      result = memset(*a5, 1, result);
+      result = memset(*indexes, 1, result);
       if (v9)
       {
         v13 = v8[4];
@@ -675,7 +675,7 @@ LABEL_30:
   result = malloc_type_zone_calloc(v17, v9, 4uLL, 0x100004052888210uLL);
   v8[4] = result;
   v88 = a2;
-  if (!a2 || !v92 || !v16 || (v19 = v16, result = [v92 count], v16 != result))
+  if (!a2 || !snapshotCopy || !v16 || (v19 = v16, result = [snapshotCopy count], v16 != result))
   {
     if ((v9 + 1) < 0x400000)
     {
@@ -703,7 +703,7 @@ LABEL_30:
 
     while (v9 != v24);
 LABEL_31:
-    if (a5)
+    if (indexes)
     {
       result = memset(v11, 1, v9);
       if (v9)
@@ -767,7 +767,7 @@ LABEL_31:
       bzero(v33, 8 * v19);
     }
 
-    [v92 getObjects:v33 range:{0, v19}];
+    [snapshotCopy getObjects:v33 range:{0, v19}];
     v29 = CFDictionaryCreate(*MEMORY[0x1E695E480], v31, v33, v19, &keyCallBacks, &valueCallBacks);
     if (v19 >= 0x201)
     {
@@ -779,7 +779,7 @@ LABEL_31:
   }
 
   v90 = v29;
-  v91 = a5;
+  indexesCopy = indexes;
   if (v9)
   {
     v35 = 0;
@@ -792,10 +792,10 @@ LABEL_31:
       v40 = *&v39[8 * v35];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v42 = *&v39[8 * v35];
+      objectID = *&v39[8 * v35];
       if ((isKindOfClass & 1) == 0)
       {
-        v42 = [*&v39[8 * v35] objectID];
+        objectID = [*&v39[8 * v35] objectID];
       }
 
       v43 = v8[6];
@@ -804,9 +804,9 @@ LABEL_31:
         goto LABEL_52;
       }
 
-      v44 = [v43 objectForKey:v42];
+      v44 = [v43 objectForKey:objectID];
       v45 = v44;
-      if (v91 && v44)
+      if (indexesCopy && v44)
       {
         v89[v35] = 1;
         goto LABEL_58;
@@ -817,31 +817,31 @@ LABEL_31:
 LABEL_52:
         if (v90)
         {
-          Value = CFDictionaryGetValue(v90, v42);
+          Value = CFDictionaryGetValue(v90, objectID);
         }
 
         else
         {
-          v47 = [v88 indexOfObject:v42];
+          v47 = [v88 indexOfObject:objectID];
           if (v47 == 0x7FFFFFFFFFFFFFFFLL)
           {
             v45 = 0;
             goto LABEL_58;
           }
 
-          Value = [v92 objectAtIndex:v47];
+          Value = [snapshotCopy objectAtIndex:v47];
         }
 
         v45 = Value;
       }
 
 LABEL_58:
-      v48 = [v45 unsignedIntValue];
-      if (v45 && v48)
+      unsignedIntValue = [v45 unsignedIntValue];
+      if (v45 && unsignedIntValue)
       {
         if (v37)
         {
-          v49 = v37 < v48;
+          v49 = v37 < unsignedIntValue;
         }
 
         else
@@ -852,11 +852,11 @@ LABEL_58:
         v50 = v49;
         if (v38)
         {
-          v37 = v48;
+          v37 = unsignedIntValue;
         }
 
         v38 &= v50;
-        *(v8[4] + 4 * v35) = v48;
+        *(v8[4] + 4 * v35) = unsignedIntValue;
       }
 
       else
@@ -970,7 +970,7 @@ LABEL_93:
     NSZoneFree(0, v39);
   }
 
-  result = v91;
+  result = indexesCopy;
   if (!v9)
   {
 LABEL_128:
@@ -1201,54 +1201,54 @@ LABEL_161:
   return result;
 }
 
-- (uint64_t)_orderKeyForObject:(uint64_t)a1
+- (uint64_t)_orderKeyForObject:(uint64_t)object
 {
   while (1)
   {
-    if (!a1)
+    if (!object)
     {
       return 0;
     }
 
-    v4 = [*(a1 + 16) indexOfObject:a2];
+    v4 = [*(object + 16) indexOfObject:a2];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
       break;
     }
 
-    a1 = *(a1 + 40);
-    if (!a1)
+    object = *(object + 40);
+    if (!object)
     {
       return 0;
     }
   }
 
-  if (!*(a1 + 32))
+  if (!*(object + 32))
   {
     return 0;
   }
 
   v5 = v4;
-  if (v4 >= [*(a1 + 16) count])
+  if (v4 >= [*(object + 16) count])
   {
-    [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Index of object > number of objects" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", a1, @"_NSFaultingMutableOrderedSet", "raise"}];
+    [objc_msgSend(MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Index of object > number of objects" userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", object, @"_NSFaultingMutableOrderedSet", "raise"}];
   }
 
-  return *(*(a1 + 32) + 4 * v5);
+  return *(*(object + 32) + 4 * v5);
 }
 
 - (id)_newOrderKeys
 {
-  v1 = a1;
+  selfCopy = self;
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_28;
   }
 
-  v2 = [a1[2] count];
+  v2 = [self[2] count];
   v3 = v2;
-  v4 = v1[4];
+  v4 = selfCopy[4];
   if (v4)
   {
     v5 = v2 == 0;
@@ -1305,7 +1305,7 @@ LABEL_30:
     _NSCoreDataLog_console(1, "nil order keys and %d objects in real set", v3);
     objc_autoreleasePoolPop(v7);
 LABEL_27:
-    v1 = NSArray_EmptyArray;
+    selfCopy = NSArray_EmptyArray;
     goto LABEL_28;
   }
 
@@ -1324,12 +1324,12 @@ LABEL_27:
   v13 = 0;
   do
   {
-    *&v12[8 * v13] = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(v1[4] + v13)];
+    *&v12[8 * v13] = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:*(selfCopy[4] + v13)];
     ++v13;
   }
 
   while (v3 != v13);
-  v1 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v12 count:v3];
+  selfCopy = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v12 count:v3];
   v14 = 0;
   do
   {
@@ -1343,7 +1343,7 @@ LABEL_27:
 
 LABEL_28:
   v15 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 - (void)turnIntoFault
@@ -1375,7 +1375,7 @@ LABEL_28:
   *&self->_flags |= 1u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (_PF_Threading_Debugging_level)
   {
@@ -1389,8 +1389,8 @@ LABEL_28:
     if (realSet)
     {
       v10 = PF_ALLOCATE_OBJECT_ARRAY(2);
-      *v10 = [*realSet mutableCopyWithZone:a3];
-      v10[1] = [realSet[1] mutableCopyWithZone:a3];
+      *v10 = [*realSet mutableCopyWithZone:zone];
+      v10[1] = [realSet[1] mutableCopyWithZone:zone];
       v6->_realSet = v10;
     }
 
@@ -1425,7 +1425,7 @@ LABEL_28:
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   v4 = objc_alloc(MEMORY[0x1E695DFA0]);
@@ -1434,26 +1434,26 @@ LABEL_28:
   return [v4 initWithOrderedSet:realSet];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet objectAtIndex:a3];
+  return [realSet objectAtIndex:index];
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet indexOfObject:a3];
+  return [realSet indexOfObject:object];
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
-  if (self->_orderKeys && [self->_realSet indexOfObject:a3] == 0x7FFFFFFFFFFFFFFFLL)
+  if (self->_orderKeys && [self->_realSet indexOfObject:object] == 0x7FFFFFFFFFFFFFFFLL)
   {
     PF_FREE_OBJECT_ARRAY(self->_orderKeys);
     self->_orderKeys = 0;
@@ -1469,63 +1469,63 @@ LABEL_28:
 
   realSet = self->_realSet;
 
-  [realSet insertObject:a3 atIndex:a4];
+  [realSet insertObject:object atIndex:index];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [realSet countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (void)enumerateObjectsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateObjectsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  [realSet enumerateObjectsWithOptions:a3 usingBlock:a4];
+  [realSet enumerateObjectsWithOptions:options usingBlock:block];
 }
 
-- (void)enumerateObjectsAtIndexes:(id)a3 options:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateObjectsAtIndexes:(id)indexes options:(unint64_t)options usingBlock:(id)block
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  [realSet enumerateObjectsAtIndexes:a3 options:a4 usingBlock:a5];
+  [realSet enumerateObjectsAtIndexes:indexes options:options usingBlock:block];
 }
 
-- (unint64_t)indexOfObjectWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (unint64_t)indexOfObjectWithOptions:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet indexOfObjectWithOptions:a3 passingTest:a4];
+  return [realSet indexOfObjectWithOptions:options passingTest:test];
 }
 
-- (unint64_t)indexOfObjectAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (unint64_t)indexOfObjectAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet indexOfObjectAtIndexes:a3 options:a4 passingTest:a5];
+  return [realSet indexOfObjectAtIndexes:indexes options:options passingTest:test];
 }
 
-- (id)indexesOfObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (id)indexesOfObjectsWithOptions:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet indexesOfObjectsWithOptions:a3 passingTest:a4];
+  return [realSet indexesOfObjectsWithOptions:options passingTest:test];
 }
 
-- (id)indexesOfObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (id)indexesOfObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet indexesOfObjectsAtIndexes:a3 options:a4 passingTest:a5];
+  return [realSet indexesOfObjectsAtIndexes:indexes options:options passingTest:test];
 }
 
 - (id)objectEnumerator
@@ -1536,26 +1536,26 @@ LABEL_28:
   return [realSet objectEnumerator];
 }
 
-- (void)getObjects:(id *)a3 range:(_NSRange)a4
+- (void)getObjects:(id *)objects range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  [realSet getObjects:a3 range:{location, length}];
+  [realSet getObjects:objects range:{location, length}];
 }
 
-- (void)getObjects:(id *)a3
+- (void)getObjects:(id *)objects
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
   v6 = [realSet count];
 
-  [realSet getObjects:a3 range:{0, v6}];
+  [realSet getObjects:objects range:{0, v6}];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -1575,16 +1575,16 @@ LABEL_28:
 
   realSet = self->_realSet;
 
-  [realSet removeObjectAtIndex:a3];
+  [realSet removeObjectAtIndex:index];
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   if (self->_orderKeys)
   {
-    v7 = [self->_realSet indexOfObject:a4];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL || v7 != a3)
+    v7 = [self->_realSet indexOfObject:object];
+    if (v7 == 0x7FFFFFFFFFFFFFFFLL || v7 != index)
     {
       PF_FREE_OBJECT_ARRAY(self->_orderKeys);
       self->_orderKeys = 0;
@@ -1601,10 +1601,10 @@ LABEL_28:
 
   realSet = self->_realSet;
 
-  [realSet replaceObjectAtIndex:a3 withObject:a4];
+  [realSet replaceObjectAtIndex:index withObject:object];
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   if ((*&self->_flags & 8) != 0)
@@ -1617,26 +1617,26 @@ LABEL_28:
 
   realSet = self->_realSet;
 
-  [realSet setValue:a3 forKey:a4];
+  [realSet setValue:value forKey:key];
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet valueForKey:a3];
+  return [realSet valueForKey:key];
 }
 
-- (id)valueForKeyPath:(id)a3
+- (id)valueForKeyPath:(id)path
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet valueForKeyPath:a3];
+  return [realSet valueForKeyPath:path];
 }
 
-- (BOOL)isEqualToOrderedSet:(id)a3
+- (BOOL)isEqualToOrderedSet:(id)set
 {
   v25 = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
@@ -1644,7 +1644,7 @@ LABEL_28:
     _PFAssertSafeMultiThreadedAccess_impl([(NSManagedObject *)self->_source managedObjectContext], a2);
   }
 
-  if (a3 == self || (*&self->_flags & 1) != 0 && [a3 isFault] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (source = self->_source, source == objc_msgSend(a3, "source")) && (v6 = -[_NSFaultingMutableOrderedSet relationship](self, "relationship"), v6 == objc_msgSend(a3, "relationship")))
+  if (set == self || (*&self->_flags & 1) != 0 && [set isFault] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (source = self->_source, source == objc_msgSend(set, "source")) && (v6 = -[_NSFaultingMutableOrderedSet relationship](self, "relationship"), v6 == objc_msgSend(set, "relationship")))
   {
     v11 = 1;
   }
@@ -1652,7 +1652,7 @@ LABEL_28:
   else
   {
     v7 = [(_NSFaultingMutableOrderedSet *)self count];
-    if (v7 == [a3 count])
+    if (v7 == [set count])
     {
       if (v7 <= 1)
       {
@@ -1690,7 +1690,7 @@ LABEL_28:
       v23 = 0u;
       v21 = 0u;
       v20 = 0u;
-      v12 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [set countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1705,7 +1705,7 @@ LABEL_28:
           {
             if (*v21 != v15)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(set);
             }
 
             if (*&v17[8 * v16] != *(*(&v20 + 1) + 8 * v16))
@@ -1718,7 +1718,7 @@ LABEL_28:
           }
 
           while (v13 != v16);
-          v13 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v13 = [set countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v13)
           {
             continue;
@@ -1746,45 +1746,45 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(isNSOrderedSet) = 1;
   }
 
   else
   {
-    v5 = [a3 isNSOrderedSet];
-    if (v5)
+    isNSOrderedSet = [equal isNSOrderedSet];
+    if (isNSOrderedSet)
     {
 
-      LOBYTE(v5) = [(_NSFaultingMutableOrderedSet *)self isEqualToOrderedSet:a3];
+      LOBYTE(isNSOrderedSet) = [(_NSFaultingMutableOrderedSet *)self isEqualToOrderedSet:equal];
     }
   }
 
-  return v5;
+  return isNSOrderedSet;
 }
 
-- (BOOL)_isIdenticalFault:(id)a3
+- (BOOL)_isIdenticalFault:(id)fault
 {
-  if (a3 == self)
+  if (fault == self)
   {
     return 1;
   }
 
   if (*&self->_flags)
   {
-    if ([a3 isFault])
+    if ([fault isFault])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         source = self->_source;
-        if (source == [a3 source])
+        if (source == [fault source])
         {
-          v6 = [(_NSFaultingMutableOrderedSet *)self relationship];
-          if (v6 == [a3 relationship])
+          relationship = [(_NSFaultingMutableOrderedSet *)self relationship];
+          if (relationship == [fault relationship])
           {
             return 1;
           }
@@ -1796,18 +1796,18 @@ LABEL_31:
   return 0;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   [(_NSFaultingMutableOrderedSet *)self willRead];
   realSet = self->_realSet;
 
-  return [realSet containsObject:a3];
+  return [realSet containsObject:object];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
-  if (self->_orderKeys && [self->_realSet indexOfObject:a3] == 0x7FFFFFFFFFFFFFFFLL)
+  if (self->_orderKeys && [self->_realSet indexOfObject:object] == 0x7FFFFFFFFFFFFFFFLL)
   {
     PF_FREE_OBJECT_ARRAY(self->_orderKeys);
     self->_orderKeys = 0;
@@ -1824,10 +1824,10 @@ LABEL_31:
   realSet = self->_realSet;
   v7 = [realSet count];
 
-  [realSet insertObject:a3 atIndex:v7];
+  [realSet insertObject:object atIndex:v7];
 }
 
-- (void)addObjects:(const void *)a3 count:(unint64_t)a4
+- (void)addObjects:(const void *)objects count:(unint64_t)count
 {
   v48 = *MEMORY[0x1E69E9840];
   [(_NSFaultingMutableOrderedSet *)self willChange];
@@ -1838,7 +1838,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if (a4 > 2)
+  if (count > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -1880,7 +1880,7 @@ LABEL_31:
     v16 = 0u;
     v17 = 0u;
     v13 = _PFStackAllocatorCreate(&v16, 1024);
-    v14 = CFArrayCreate(v13, a3, a4, 0);
+    v14 = CFArrayCreate(v13, objects, count, 0);
     self->_realSet = [_PFRoutines newOrderedSetFromCollection:v14 byAddingItems:?];
     if (*(&v17 + 1))
     {
@@ -1911,11 +1911,11 @@ LABEL_31:
     v9 = self->_realSet;
     v10 = *MEMORY[0x1E69E9840];
 
-    [v9 addObjects:a3 count:a4];
+    [v9 addObjects:objects count:count];
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -1925,7 +1925,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if ([a3 count] > 2)
+  if ([array count] > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -1936,7 +1936,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byAddingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:array byAddingItems:?];
   }
 
   else
@@ -1951,11 +1951,11 @@ LABEL_31:
 
     v7 = self->_realSet;
 
-    [v7 addObjectsFromArray:a3];
+    [v7 addObjectsFromArray:array];
   }
 }
 
-- (void)insertObjects:(const void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)insertObjects:(const void *)objects count:(unint64_t)count atIndex:(unint64_t)index
 {
   v52 = *MEMORY[0x1E69E9840];
   [(_NSFaultingMutableOrderedSet *)self willChange];
@@ -1967,14 +1967,14 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if (v9 <= a5)
+  if (v9 <= index)
   {
     v14 = *MEMORY[0x1E69E9840];
 
-    [(_NSFaultingMutableOrderedSet *)self addObjects:a3 count:a4];
+    [(_NSFaultingMutableOrderedSet *)self addObjects:objects count:count];
   }
 
-  else if (a4 > 2)
+  else if (count > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -2016,8 +2016,8 @@ LABEL_31:
     v20 = 0u;
     v21 = 0u;
     v17 = _PFStackAllocatorCreate(&v20, 1024);
-    v18 = CFArrayCreate(v17, a3, a4, 0);
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:v18 byInsertingItems:a5 atIndex:?];
+    v18 = CFArrayCreate(v17, objects, count, 0);
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:v18 byInsertingItems:index atIndex:?];
     if (*(&v21 + 1))
     {
       if (v18)
@@ -2047,11 +2047,11 @@ LABEL_31:
     v12 = self->_realSet;
     v13 = *MEMORY[0x1E69E9840];
 
-    [v12 insertObjects:a3 count:a4 atIndex:a5];
+    [v12 insertObjects:objects count:count atIndex:index];
   }
 }
 
-- (void)insertObjects:(id)a3 atIndexes:(id)a4
+- (void)insertObjects:(id)objects atIndexes:(id)indexes
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2061,11 +2061,11 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  v8 = [a4 firstIndex];
-  if (v8 >= [self->_realSet count])
+  firstIndex = [indexes firstIndex];
+  if (firstIndex >= [self->_realSet count])
   {
 
-    [(_NSFaultingMutableOrderedSet *)self addObjectsFromArray:a3];
+    [(_NSFaultingMutableOrderedSet *)self addObjectsFromArray:objects];
   }
 
   else
@@ -2080,14 +2080,14 @@ LABEL_31:
 
     realSet = self->_realSet;
 
-    [realSet insertObjects:a3 atIndexes:a4];
+    [realSet insertObjects:objects atIndexes:indexes];
   }
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3
+- (void)removeObjectsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v24[1] = *MEMORY[0x1E69E9840];
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2216,10 +2216,10 @@ LABEL_31:
   self->_realSet = objc_alloc_init(MEMORY[0x1E695DFA0]);
 }
 
-- (void)removeObjectsInArray:(id)a3
+- (void)removeObjectsInArray:(id)array
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
-  v5 = [a3 count];
+  v5 = [array count];
   orderKeys = self->_orderKeys;
   if (orderKeys)
   {
@@ -2238,7 +2238,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byRemovingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:array byRemovingItems:?];
   }
 
   else
@@ -2253,11 +2253,11 @@ LABEL_31:
 
     v8 = self->_realSet;
 
-    [v8 removeObjectsInArray:a3];
+    [v8 removeObjectsInArray:array];
   }
 }
 
-- (void)minusOrderedSet:(id)a3
+- (void)minusOrderedSet:(id)set
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2267,7 +2267,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if ([a3 count] > 2)
+  if ([set count] > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -2278,7 +2278,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byRemovingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:set byRemovingItems:?];
   }
 
   else
@@ -2293,11 +2293,11 @@ LABEL_31:
 
     v7 = self->_realSet;
 
-    [v7 minusOrderedSet:a3];
+    [v7 minusOrderedSet:set];
   }
 }
 
-- (void)unionOrderedSet:(id)a3
+- (void)unionOrderedSet:(id)set
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2307,7 +2307,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if ([a3 count] > 2)
+  if ([set count] > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -2318,7 +2318,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byAddingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:set byAddingItems:?];
   }
 
   else
@@ -2333,11 +2333,11 @@ LABEL_31:
 
     v7 = self->_realSet;
 
-    [v7 unionOrderedSet:a3];
+    [v7 unionOrderedSet:set];
   }
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2347,7 +2347,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if ([a3 count] > 2)
+  if ([set count] > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -2358,7 +2358,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byRemovingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:set byRemovingItems:?];
   }
 
   else
@@ -2373,11 +2373,11 @@ LABEL_31:
 
     v7 = self->_realSet;
 
-    [v7 minusSet:a3];
+    [v7 minusSet:set];
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   [(_NSFaultingMutableOrderedSet *)self willChange];
   orderKeys = self->_orderKeys;
@@ -2387,7 +2387,7 @@ LABEL_31:
     self->_orderKeys = 0;
   }
 
-  if ([a3 count] > 2)
+  if ([set count] > 2)
   {
     realSet = self->_realSet;
     flags = self->_flags;
@@ -2398,7 +2398,7 @@ LABEL_31:
       realSet = self->_realSet;
     }
 
-    self->_realSet = [_PFRoutines newOrderedSetFromCollection:a3 byAddingItems:?];
+    self->_realSet = [_PFRoutines newOrderedSetFromCollection:set byAddingItems:?];
   }
 
   else
@@ -2413,14 +2413,14 @@ LABEL_31:
 
     v7 = self->_realSet;
 
-    [v7 unionSet:a3];
+    [v7 unionSet:set];
   }
 }
 
-- (void)sortRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5
+- (void)sortRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v36 = *MEMORY[0x1E69E9840];
   if (_PF_Threading_Debugging_level)
   {
@@ -2462,7 +2462,7 @@ LABEL_5:
   {
     v18 = v17;
     v32 = &v30;
-    v33 = a4;
+    optionsCopy = options;
     v19 = MEMORY[0x1EEE9AC00](v17);
     v21 = &v30 - v20;
     if (v19 > 0x200)
@@ -2484,7 +2484,7 @@ LABEL_5:
     else
     {
       v30 = location;
-      v31 = a5;
+      comparatorCopy = comparator;
       v22 = 0;
       v23 = 8 * location;
       v24 = v18;
@@ -2504,10 +2504,10 @@ LABEL_5:
 
         if (!v27)
         {
-          v28 = [v25 objectID];
-          if (([v28 isTemporaryID] & 1) == 0)
+          objectID = [v25 objectID];
+          if (([objectID isTemporaryID] & 1) == 0)
           {
-            *&v21[8 * v22++] = v28;
+            *&v21[8 * v22++] = objectID;
           }
         }
 
@@ -2522,7 +2522,7 @@ LABEL_5:
       }
 
       location = v30;
-      a5 = v31;
+      comparator = comparatorCopy;
     }
 
     if (v18 >= 0x201)
@@ -2546,7 +2546,7 @@ LABEL_5:
       v13 = 0;
     }
 
-    a4 = v33;
+    options = optionsCopy;
 
     v10 = v34;
     if (!v13)
@@ -2575,7 +2575,7 @@ LABEL_7:
 
   v35.receiver = self;
   v35.super_class = _NSFaultingMutableOrderedSet;
-  [(_NSFaultingMutableOrderedSet *)&v35 sortRange:location options:length usingComparator:a4, a5];
+  [(_NSFaultingMutableOrderedSet *)&v35 sortRange:location options:length usingComparator:options, comparator];
   v15 = *MEMORY[0x1E69E9840];
 }
 
@@ -2634,14 +2634,14 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)_reorderObjectsToLocationsByOrderKey:(id)a3 error:(id *)a4
+- (BOOL)_reorderObjectsToLocationsByOrderKey:(id)key error:(id *)error
 {
   v49[1] = *MEMORY[0x1E69E9840];
 
   self->_forcedKeys = 0;
-  if ([a3 count])
+  if ([key count])
   {
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v18 = *MEMORY[0x1E696A250];
@@ -2651,7 +2651,7 @@ LABEL_7:
 LABEL_14:
       v24 = [v20 errorWithDomain:v21 code:134060 userInfo:v19];
       LOBYTE(v9) = 0;
-      *a4 = v24;
+      *error = v24;
       goto LABEL_36;
     }
 
@@ -2671,7 +2671,7 @@ LABEL_15:
     v8 = 0;
   }
 
-  v9 = [(NSFaultHandler *)v8 retainedOrderedFaultInformationForAggregateFaultForObject:[(_NSFaultingMutableOrderedSet *)self relationship] andRelationship:[(NSManagedObject *)self->_source managedObjectContext] withContext:a4 error:?];
+  v9 = [(NSFaultHandler *)v8 retainedOrderedFaultInformationForAggregateFaultForObject:[(_NSFaultingMutableOrderedSet *)self relationship] andRelationship:[(NSManagedObject *)self->_source managedObjectContext] withContext:error error:?];
   if (!v9)
   {
     goto LABEL_36;
@@ -2681,7 +2681,7 @@ LABEL_15:
   if ([v9 count] != 2)
   {
 
-    if (a4)
+    if (error)
     {
       v22 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A250];
@@ -2716,9 +2716,9 @@ LABEL_15:
       [(_NSFaultingMutableOrderedSet *)self turnIntoFault];
     }
 
-    v25 = [(NSManagedObject *)self->_source managedObjectContext];
+    managedObjectContext = [(NSManagedObject *)self->_source managedObjectContext];
     v44[1] = v44;
-    MEMORY[0x1EEE9AC00](v25);
+    MEMORY[0x1EEE9AC00](managedObjectContext);
     v27 = v44 - v26;
     if (v14 > 0x200)
     {
@@ -2733,7 +2733,7 @@ LABEL_15:
     [v11 getObjects:v27 range:{0, v14}];
     for (i = 0; i != v14; ++i)
     {
-      *&v27[8 * i] = [NSManagedObjectContext _retainedObjectWithID:v25 optionalHandler:*&v27[8 * i] withInlineStorage:0];
+      *&v27[8 * i] = [NSManagedObjectContext _retainedObjectWithID:managedObjectContext optionalHandler:*&v27[8 * i] withInlineStorage:0];
     }
 
     v29 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:v27 count:v14];
@@ -2754,7 +2754,7 @@ LABEL_15:
 
     v31 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v14];
     *(&self->super.super.super.isa + v47) = v31;
-    v32 = [a3 count];
+    v32 = [key count];
     v33 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithArray:v11 copyItems:0];
     v46 = [(NSManagedObject *)self->_source mutableOrderedSetValueForKey:[(NSPropertyDescription *)[(_NSFaultingMutableOrderedSet *)self relationship] name]];
     if (v32)
@@ -2762,9 +2762,9 @@ LABEL_15:
       v34 = 0;
       do
       {
-        v35 = [a3 objectAtIndex:v34];
+        v35 = [key objectAtIndex:v34];
         v36 = v34 + 1;
-        v37 = [a3 objectAtIndex:v34 + 1];
+        v37 = [key objectAtIndex:v34 + 1];
         v38 = [v33 indexOfObject:v35];
         if (v38 != 0x7FFFFFFFFFFFFFFFLL)
         {

@@ -1,21 +1,21 @@
 @interface SUUICategory
-- (BOOL)containsURL:(id)a3;
-- (SUUICategory)initWithCategoryDictionary:(id)a3;
-- (id)subcategoryContainingURL:(id)a3;
+- (BOOL)containsURL:(id)l;
+- (SUUICategory)initWithCategoryDictionary:(id)dictionary;
+- (id)subcategoryContainingURL:(id)l;
 @end
 
 @implementation SUUICategory
 
-- (SUUICategory)initWithCategoryDictionary:(id)a3
+- (SUUICategory)initWithCategoryDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = SUUICategory;
   v5 = [(SUUICategory *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -24,7 +24,7 @@
       v5->_name = v7;
     }
 
-    v9 = [v4 objectForKey:@"url"];
+    v9 = [dictionaryCopy objectForKey:@"url"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -34,7 +34,7 @@
       v5->_url = v10;
     }
 
-    v12 = [v4 objectForKey:@"parentCategoryLabel"];
+    v12 = [dictionaryCopy objectForKey:@"parentCategoryLabel"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -44,13 +44,13 @@
       v5->_parentLabel = v13;
     }
 
-    v15 = [v4 objectForKey:@"artwork"];
+    v15 = [dictionaryCopy objectForKey:@"artwork"];
 
     v16 = [SUUIArtworkProvidingFactory artworkProviderForStoreResponse:v15];
     artworkProvider = v5->_artworkProvider;
     v5->_artworkProvider = v16;
 
-    v18 = [v4 objectForKey:@"genreId"];
+    v18 = [dictionaryCopy objectForKey:@"genreId"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -58,7 +58,7 @@
     }
 
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v20 = [v4 objectForKey:@"children"];
+    v20 = [dictionaryCopy objectForKey:@"children"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -117,12 +117,12 @@
   return v5;
 }
 
-- (BOOL)containsURL:(id)a3
+- (BOOL)containsURL:(id)l
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = [(SUUICategory *)self URL];
-  v6 = [v4 isEqual:v5];
+  v6 = [lCopy isEqual:v5];
 
   if (v6)
   {
@@ -135,8 +135,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v8 = [(SUUICategory *)self children];
-    v7 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    children = [(SUUICategory *)self children];
+    v7 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v9 = *v13;
@@ -146,17 +146,17 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(children);
           }
 
-          if ([*(*(&v12 + 1) + 8 * i) containsURL:v4])
+          if ([*(*(&v12 + 1) + 8 * i) containsURL:lCopy])
           {
             LOBYTE(v7) = 1;
             goto LABEL_13;
           }
         }
 
-        v7 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [children countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v7)
         {
           continue;
@@ -172,16 +172,16 @@ LABEL_13:
   return v7;
 }
 
-- (id)subcategoryContainingURL:(id)a3
+- (id)subcategoryContainingURL:(id)l
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SUUICategory *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [(SUUICategory *)self children];
+  v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -191,18 +191,18 @@ LABEL_13:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 containsURL:v4])
+        if ([v9 containsURL:lCopy])
         {
           v6 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;

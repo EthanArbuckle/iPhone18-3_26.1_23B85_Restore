@@ -1,15 +1,15 @@
 @interface CAMSemanticStyleSettingsView
 - (CAMSemanticStyleSettingsView)init;
 - (CAMSemanticStyleSettingsViewDelegate)delegate;
-- (id)_previewImageNameForSemanticStylePreset:(int64_t)a3;
-- (void)_handleUseStyleButtonReleased:(id)a3;
-- (void)_layoutSemanticStyleMaskedBadgesForContentFrame:(CGRect)a3;
+- (id)_previewImageNameForSemanticStylePreset:(int64_t)preset;
+- (void)_handleUseStyleButtonReleased:(id)released;
+- (void)_layoutSemanticStyleMaskedBadgesForContentFrame:(CGRect)frame;
 - (void)_updateUIForShowsTitle;
-- (void)_updateUIForStyle:(id)a3;
+- (void)_updateUIForStyle:(id)style;
 - (void)layoutSubviews;
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3;
-- (void)semanticStylePickerDidScroll:(id)a3;
-- (void)setShowsTitle:(BOOL)a3;
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style;
+- (void)semanticStylePickerDidScroll:(id)scroll;
+- (void)setShowsTitle:(BOOL)title;
 @end
 
 @implementation CAMSemanticStyleSettingsView
@@ -22,8 +22,8 @@
   v2 = [(CAMSemanticStyleSettingsView *)&v141 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CAMSemanticStyleSettingsView *)v2 setBackgroundColor:v3];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CAMSemanticStyleSettingsView *)v2 setBackgroundColor:systemBackgroundColor];
 
     v4 = objc_alloc_init(MEMORY[0x1E69DCEF8]);
     scrollView = v2->__scrollView;
@@ -109,23 +109,23 @@
           [(UIScrollView *)v2->__scrollView addSubview:v21];
           v27 = objc_alloc_init(CAMSemanticStyleMaskedBadge);
           [(CAMSemanticStyleMaskedBadge *)v27 setSemanticStyle:v20];
-          v28 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
-          [v28 setDelegate:v2];
+          badgeView = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
+          [badgeView setDelegate:v2];
 
           v29 = +[CAMCaptureCapabilities capabilities];
-          v30 = [v29 sfCameraFontSupported];
-          v31 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
-          v32 = v30;
+          sfCameraFontSupported = [v29 sfCameraFontSupported];
+          badgeView2 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
+          v32 = sfCameraFontSupported;
           v2 = p_isa;
-          [v31 setFontStyle:v32];
+          [badgeView2 setFontStyle:v32];
 
           v33 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.7];
-          v34 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
-          [v34 _setFillColor:v33];
+          badgeView3 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
+          [badgeView3 _setFillColor:v33];
 
           v35 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.7];
-          v36 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
-          [v36 _setContentColor:v35];
+          badgeView4 = [(CAMSemanticStyleMaskedBadge *)v27 badgeView];
+          [badgeView4 _setContentColor:v35];
 
           [(NSArray *)v128 addObject:v27];
           [p_isa[53] addSubview:v27];
@@ -163,8 +163,8 @@
     [(CAMSemanticStylePicker *)v2->__semanticStylePicker setSelectedStyleIndex:AppIntegerValue];
     [(CAMSemanticStylePicker *)v2->__semanticStylePicker setExpanded:1];
     [(CAMSemanticStylePicker *)v2->__semanticStylePicker setMaterial:4];
-    v43 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CAMSemanticStylePicker *)v2->__semanticStylePicker setMaterialColor:v43];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CAMSemanticStylePicker *)v2->__semanticStylePicker setMaterialColor:systemBackgroundColor2];
 
     [(UIScrollView *)v2->__scrollView addSubview:v2->__semanticStylePicker];
     v44 = objc_alloc_init(CAMSemanticStyleDetailView);
@@ -173,21 +173,21 @@
 
     [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIScrollView *)v2->__scrollView addSubview:v2->__semanticStyleDetailView];
-    v46 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v46 setContentInsets:{16.0, 16.0, 16.0, 16.0}];
-    v47 = [MEMORY[0x1E69DC888] systemBlueColor];
-    [v46 setBaseBackgroundColor:v47];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setContentInsets:{16.0, 16.0, 16.0, 16.0}];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    [filledButtonConfiguration setBaseBackgroundColor:systemBlueColor];
 
-    v127 = v46;
-    [v46 setCornerStyle:3];
+    v127 = filledButtonConfiguration;
+    [filledButtonConfiguration setCornerStyle:3];
     v135[0] = MEMORY[0x1E69E9820];
     v135[1] = 3221225472;
     v135[2] = __36__CAMSemanticStyleSettingsView_init__block_invoke;
     v135[3] = &unk_1E76FBBD0;
     v136 = v115;
     obja = v115;
-    [v46 setTitleTextAttributesTransformer:v135];
-    v48 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v46 primaryAction:0];
+    [filledButtonConfiguration setTitleTextAttributesTransformer:v135];
+    v48 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
     selectButton = v2->__selectButton;
     v2->__selectButton = v48;
 
@@ -197,90 +197,90 @@
     [(CAMSemanticStylePicker *)v2->__semanticStylePicker spacerWidth];
     v51 = v50 + 10.0;
     v91 = MEMORY[0x1E696ACD8];
-    v116 = [(UIScrollView *)v2->__scrollView leadingAnchor];
-    v114 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v113 = [v116 constraintEqualToAnchor:v114];
+    leadingAnchor = [(UIScrollView *)v2->__scrollView leadingAnchor];
+    leadingAnchor2 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v113 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v142[0] = v113;
-    v112 = [(UIScrollView *)v2->__scrollView trailingAnchor];
-    v111 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v110 = [v112 constraintEqualToAnchor:v111];
+    trailingAnchor = [(UIScrollView *)v2->__scrollView trailingAnchor];
+    trailingAnchor2 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v110 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v142[1] = v110;
-    v109 = [(UIScrollView *)v2->__scrollView topAnchor];
-    v108 = [(CAMSemanticStyleSettingsView *)v2 topAnchor];
-    v107 = [v109 constraintEqualToAnchor:v108];
+    topAnchor = [(UIScrollView *)v2->__scrollView topAnchor];
+    topAnchor2 = [(CAMSemanticStyleSettingsView *)v2 topAnchor];
+    v107 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v142[2] = v107;
-    v106 = [(UIScrollView *)v2->__scrollView bottomAnchor];
-    v105 = [(CAMSemanticStyleSettingsView *)v2 bottomAnchor];
-    v104 = [v106 constraintEqualToAnchor:v105];
+    bottomAnchor = [(UIScrollView *)v2->__scrollView bottomAnchor];
+    bottomAnchor2 = [(CAMSemanticStyleSettingsView *)v2 bottomAnchor];
+    v104 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v142[3] = v104;
-    v103 = [(UIScrollView *)v2->__scrollView contentLayoutGuide];
-    v101 = [v103 heightAnchor];
-    v102 = [(CAMSemanticStyleSettingsView *)v2 safeAreaLayoutGuide];
-    v100 = [v102 heightAnchor];
-    v99 = [v101 constraintGreaterThanOrEqualToAnchor:v100];
+    contentLayoutGuide = [(UIScrollView *)v2->__scrollView contentLayoutGuide];
+    heightAnchor = [contentLayoutGuide heightAnchor];
+    safeAreaLayoutGuide = [(CAMSemanticStyleSettingsView *)v2 safeAreaLayoutGuide];
+    heightAnchor2 = [safeAreaLayoutGuide heightAnchor];
+    v99 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     v142[4] = v99;
-    v98 = [(UILabel *)v2->__titleLabel leadingAnchor];
-    v97 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v96 = [v98 constraintEqualToAnchor:v97 constant:v51];
+    leadingAnchor3 = [(UILabel *)v2->__titleLabel leadingAnchor];
+    leadingAnchor4 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v96 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v51];
     v142[5] = v96;
-    v95 = [(UILabel *)v2->__titleLabel trailingAnchor];
-    v94 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v93 = [v95 constraintEqualToAnchor:v94 constant:-v51];
+    trailingAnchor3 = [(UILabel *)v2->__titleLabel trailingAnchor];
+    trailingAnchor4 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v93 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v51];
     v142[6] = v93;
-    v117 = [(UILabel *)v2->__titleLabel topAnchor];
-    v92 = [(UIScrollView *)v2->__scrollView topAnchor];
-    v90 = [v117 constraintEqualToAnchor:v92 constant:v51];
+    topAnchor3 = [(UILabel *)v2->__titleLabel topAnchor];
+    topAnchor4 = [(UIScrollView *)v2->__scrollView topAnchor];
+    v90 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:v51];
     v142[7] = v90;
-    v89 = [(UILabel *)v2->__descriptionLabel leadingAnchor];
-    v88 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v87 = [v89 constraintEqualToAnchor:v88 constant:v51];
+    leadingAnchor5 = [(UILabel *)v2->__descriptionLabel leadingAnchor];
+    leadingAnchor6 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v87 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:v51];
     v142[8] = v87;
-    v86 = [(UILabel *)v2->__descriptionLabel trailingAnchor];
-    v85 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v84 = [v86 constraintEqualToAnchor:v85 constant:-v51];
+    trailingAnchor5 = [(UILabel *)v2->__descriptionLabel trailingAnchor];
+    trailingAnchor6 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v84 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v51];
     v142[9] = v84;
-    v83 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker leadingAnchor];
-    v82 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v81 = [v83 constraintEqualToAnchor:v82];
+    leadingAnchor7 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker leadingAnchor];
+    leadingAnchor8 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v81 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v142[10] = v81;
-    v80 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker trailingAnchor];
-    v79 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v78 = [v80 constraintEqualToAnchor:v79];
+    trailingAnchor7 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker trailingAnchor];
+    trailingAnchor8 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v78 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v142[11] = v78;
     v77 = [MEMORY[0x1E696ACD8] constraintWithItem:v2->__semanticStylePicker attribute:7 relatedBy:0 toItem:v2->__semanticStylePicker attribute:8 multiplier:1.33333333 constant:0.0];
     v142[12] = v77;
-    v76 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker topAnchor];
-    v118 = [(UILabel *)v2->__descriptionLabel bottomAnchor];
-    v75 = [v76 constraintEqualToAnchor:v118 constant:32.0];
+    topAnchor5 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker topAnchor];
+    bottomAnchor3 = [(UILabel *)v2->__descriptionLabel bottomAnchor];
+    v75 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:32.0];
     v142[13] = v75;
-    v74 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView leadingAnchor];
-    v73 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73 constant:v51];
+    leadingAnchor9 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView leadingAnchor];
+    leadingAnchor10 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v72 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:v51];
     v142[14] = v72;
-    v71 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView trailingAnchor];
-    v70 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70 constant:-v51];
+    trailingAnchor9 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView trailingAnchor];
+    trailingAnchor10 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v69 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:-v51];
     v142[15] = v69;
-    v68 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView topAnchor];
-    v67 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker bottomAnchor];
+    topAnchor6 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView topAnchor];
+    bottomAnchor4 = [(CAMSemanticStylePicker *)v2->__semanticStylePicker bottomAnchor];
     [(CAMSemanticStylePicker *)v2->__semanticStylePicker spacerWidth];
-    v66 = [v68 constraintEqualToAnchor:v67 constant:?];
+    v66 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:?];
     v142[16] = v66;
-    v65 = [(UIButton *)v2->__selectButton leadingAnchor];
-    v64 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64 constant:v51 + v51];
+    leadingAnchor11 = [(UIButton *)v2->__selectButton leadingAnchor];
+    leadingAnchor12 = [(CAMSemanticStyleSettingsView *)v2 leadingAnchor];
+    v63 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12 constant:v51 + v51];
     v142[17] = v63;
-    v52 = [(UIButton *)v2->__selectButton trailingAnchor];
-    v53 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:v51 * -2.0];
+    trailingAnchor11 = [(UIButton *)v2->__selectButton trailingAnchor];
+    trailingAnchor12 = [(CAMSemanticStyleSettingsView *)v2 trailingAnchor];
+    v54 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:v51 * -2.0];
     v142[18] = v54;
-    v55 = [(UIButton *)v2->__selectButton topAnchor];
-    v56 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView bottomAnchor];
-    v57 = [v55 constraintGreaterThanOrEqualToAnchor:v56 constant:v51];
+    topAnchor7 = [(UIButton *)v2->__selectButton topAnchor];
+    bottomAnchor5 = [(CAMSemanticStyleDetailView *)v2->__semanticStyleDetailView bottomAnchor];
+    v57 = [topAnchor7 constraintGreaterThanOrEqualToAnchor:bottomAnchor5 constant:v51];
     v142[19] = v57;
-    v58 = [(UIButton *)v2->__selectButton bottomAnchor];
-    v59 = [(UIScrollView *)v2->__scrollView bottomAnchor];
-    v60 = [v58 constraintEqualToAnchor:v59 constant:-v51];
+    bottomAnchor6 = [(UIButton *)v2->__selectButton bottomAnchor];
+    bottomAnchor7 = [(UIScrollView *)v2->__scrollView bottomAnchor];
+    v60 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-v51];
     v142[20] = v60;
     v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v142 count:21];
     [v91 activateConstraints:v61];
@@ -301,74 +301,74 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setShowsTitle:(BOOL)a3
+- (void)setShowsTitle:(BOOL)title
 {
-  if (self->_showsTitle != a3)
+  if (self->_showsTitle != title)
   {
-    self->_showsTitle = a3;
+    self->_showsTitle = title;
     [(CAMSemanticStyleSettingsView *)self _updateUIForShowsTitle];
   }
 }
 
 - (void)_updateUIForShowsTitle
 {
-  v3 = [(CAMSemanticStyleSettingsView *)self _descriptionLabelTopConstraint];
+  _descriptionLabelTopConstraint = [(CAMSemanticStyleSettingsView *)self _descriptionLabelTopConstraint];
 
-  if (v3)
+  if (_descriptionLabelTopConstraint)
   {
-    v4 = [(CAMSemanticStyleSettingsView *)self _descriptionLabelTopConstraint];
-    [v4 setActive:0];
+    _descriptionLabelTopConstraint2 = [(CAMSemanticStyleSettingsView *)self _descriptionLabelTopConstraint];
+    [_descriptionLabelTopConstraint2 setActive:0];
   }
 
-  v5 = [(CAMSemanticStyleSettingsView *)self showsTitle];
-  v11 = [(CAMSemanticStyleSettingsView *)self _titleLabel];
-  v6 = [(CAMSemanticStyleSettingsView *)self _descriptionLabel];
-  if (v5)
+  showsTitle = [(CAMSemanticStyleSettingsView *)self showsTitle];
+  _titleLabel = [(CAMSemanticStyleSettingsView *)self _titleLabel];
+  _descriptionLabel = [(CAMSemanticStyleSettingsView *)self _descriptionLabel];
+  if (showsTitle)
   {
-    v7 = [v11 bottomAnchor];
+    bottomAnchor = [_titleLabel bottomAnchor];
   }
 
   else
   {
-    v8 = [(CAMSemanticStyleSettingsView *)self _scrollView];
-    v7 = [v8 topAnchor];
+    _scrollView = [(CAMSemanticStyleSettingsView *)self _scrollView];
+    bottomAnchor = [_scrollView topAnchor];
   }
 
-  v9 = [v6 topAnchor];
-  v10 = [v9 constraintEqualToAnchor:v7 constant:16.0];
+  topAnchor = [_descriptionLabel topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
 
   [v10 setActive:1];
   [(CAMSemanticStyleSettingsView *)self _setDescriptionLabelTopConstraint:v10];
-  [v11 setHidden:!v5];
+  [_titleLabel setHidden:!showsTitle];
 }
 
-- (id)_previewImageNameForSemanticStylePreset:(int64_t)a3
+- (id)_previewImageNameForSemanticStylePreset:(int64_t)preset
 {
-  if ((a3 - 1) > 3)
+  if ((preset - 1) > 3)
   {
     return @"CAMSemanticStylePreviewStandard";
   }
 
   else
   {
-    return off_1E76FBBF0[a3 - 1];
+    return off_1E76FBBF0[preset - 1];
   }
 }
 
-- (void)_updateUIForStyle:(id)a3
+- (void)_updateUIForStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CAMSemanticStyleSettingsView *)self _semanticStyleDetailView];
-  [v5 setSemanticStyle:v4];
+  styleCopy = style;
+  _semanticStyleDetailView = [(CAMSemanticStyleSettingsView *)self _semanticStyleDetailView];
+  [_semanticStyleDetailView setSemanticStyle:styleCopy];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_SETTINGS_USE_STYLE_FORMAT", 0);
-  v8 = [v4 displayName];
+  displayName = [styleCopy displayName];
 
-  v10 = [v6 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v8];
+  v10 = [v6 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, displayName];
 
-  v9 = [(CAMSemanticStyleSettingsView *)self _selectButton];
-  [v9 setTitle:v10 forState:0];
+  _selectButton = [(CAMSemanticStyleSettingsView *)self _selectButton];
+  [_selectButton setTitle:v10 forState:0];
 }
 
 - (void)layoutSubviews
@@ -376,14 +376,14 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
   v14.receiver = self;
   v14.super_class = CAMSemanticStyleSettingsView;
   [(CAMSemanticStyleSettingsView *)&v14 layoutSubviews];
-  v3 = [(CAMSemanticStyleSettingsView *)self _scrollView];
-  [v3 layoutIfNeeded];
+  _scrollView = [(CAMSemanticStyleSettingsView *)self _scrollView];
+  [_scrollView layoutIfNeeded];
 
-  v4 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  [v4 layoutIfNeeded];
+  _semanticStylePicker = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  [_semanticStylePicker layoutIfNeeded];
 
-  v5 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  [v5 frame];
+  _semanticStylePicker2 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  [_semanticStylePicker2 frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -392,22 +392,22 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
   [(CAMSemanticStyleSettingsView *)self _layoutSemanticStyleMaskedBadgesForContentFrame:v7, v9, v11, v13];
 }
 
-- (void)_layoutSemanticStyleMaskedBadgesForContentFrame:(CGRect)a3
+- (void)_layoutSemanticStyleMaskedBadgesForContentFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  r1 = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v4 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  [v4 bounds];
+  width = frame.size.width;
+  r1 = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _semanticStylePicker = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  [_semanticStylePicker bounds];
   CGRectGetMaxY(v73);
-  v5 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  v6 = [v5 pageControl];
-  [v6 frame];
+  _semanticStylePicker2 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  pageControl = [_semanticStylePicker2 pageControl];
+  [pageControl frame];
   CGRectGetMinY(v74);
 
-  v7 = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
-  v8 = [v7 count];
+  _semanticStyles = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
+  v8 = [_semanticStyles count];
 
   if (v8)
   {
@@ -420,33 +420,33 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
     v52 = *(MEMORY[0x1E695F058] + 16);
     while (1)
     {
-      v67 = [(CAMSemanticStyleSettingsView *)self _semanticStyleBadges];
-      if (v9 >= [v67 count])
+      _semanticStyleBadges = [(CAMSemanticStyleSettingsView *)self _semanticStyleBadges];
+      if (v9 >= [_semanticStyleBadges count])
       {
         break;
       }
 
-      v10 = [(CAMSemanticStyleSettingsView *)self _semanticStyleImageViews];
-      v11 = [v10 count];
+      _semanticStyleImageViews = [(CAMSemanticStyleSettingsView *)self _semanticStyleImageViews];
+      v11 = [_semanticStyleImageViews count];
 
       if (v9 < v11)
       {
-        v12 = [(CAMSemanticStyleSettingsView *)self _semanticStyleBadges];
-        v13 = [v12 objectAtIndexedSubscript:v9];
+        _semanticStyleBadges2 = [(CAMSemanticStyleSettingsView *)self _semanticStyleBadges];
+        v13 = [_semanticStyleBadges2 objectAtIndexedSubscript:v9];
 
-        v14 = [(CAMSemanticStyleSettingsView *)self _semanticStyleImageViews];
-        v15 = [v14 objectAtIndexedSubscript:v9];
+        _semanticStyleImageViews2 = [(CAMSemanticStyleSettingsView *)self _semanticStyleImageViews];
+        v15 = [_semanticStyleImageViews2 objectAtIndexedSubscript:v9];
 
-        v16 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-        [v16 presentatationStyleRectAtIndex:v9];
+        _semanticStylePicker3 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+        [_semanticStylePicker3 presentatationStyleRectAtIndex:v9];
         v18 = v17;
         v20 = v19;
         v22 = v21;
         v24 = v23;
 
-        v25 = [(CAMSemanticStyleSettingsView *)self _scrollView];
-        v26 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-        [v25 convertRect:v26 fromView:{v18, v20, v22, v24}];
+        _scrollView = [(CAMSemanticStyleSettingsView *)self _scrollView];
+        _semanticStylePicker4 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+        [_scrollView convertRect:_semanticStylePicker4 fromView:{v18, v20, v22, v24}];
         v63 = v28;
         v65 = v27;
         v30 = v29;
@@ -522,13 +522,13 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
 
         [v13 setFrame:{v58, v62, v59, v66}];
         [v13 setBadgeLeftInset:v68 - v58];
-        v48 = [v15 superview];
-        [v48 setFrame:{v45, v42, v47, v39}];
+        superview = [v15 superview];
+        [superview setFrame:{v45, v42, v47, v39}];
 
         [v15 setFrame:{x - v45, 0.0, width, r1}];
         ++v9;
-        v49 = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
-        v50 = [v49 count];
+        _semanticStyles2 = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
+        v50 = [_semanticStyles2 count];
 
         if (v9 < v50)
         {
@@ -541,24 +541,24 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_handleUseStyleButtonReleased:(id)a3
+- (void)_handleUseStyleButtonReleased:(id)released
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  CFPreferencesSetAppValue(@"CAMUserPreferenceSelectedSemanticStyleIndex", [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "selectedStyleIndex")}], @"com.apple.camera");
+  _semanticStylePicker = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  CFPreferencesSetAppValue(@"CAMUserPreferenceSelectedSemanticStyleIndex", [v4 numberWithUnsignedInteger:{objc_msgSend(_semanticStylePicker, "selectedStyleIndex")}], @"com.apple.camera");
 
   CFPreferencesAppSynchronize(@"com.apple.camera");
-  v6 = [(CAMSemanticStyleSettingsView *)self delegate];
-  [v6 settingsViewDidDismiss:self];
+  delegate = [(CAMSemanticStyleSettingsView *)self delegate];
+  [delegate settingsViewDidDismiss:self];
 }
 
-- (void)semanticStylePickerDidChangeSelectedStyle:(id)a3
+- (void)semanticStylePickerDidChangeSelectedStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
-  v6 = [v4 selectedStyleIndex];
+  styleCopy = style;
+  _semanticStyles = [(CAMSemanticStyleSettingsView *)self _semanticStyles];
+  selectedStyleIndex = [styleCopy selectedStyleIndex];
 
-  v8 = [v5 objectAtIndex:v6];
+  v8 = [_semanticStyles objectAtIndex:selectedStyleIndex];
 
   v7 = v8;
   if (v8)
@@ -568,10 +568,10 @@ id __36__CAMSemanticStyleSettingsView_init__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)semanticStylePickerDidScroll:(id)a3
+- (void)semanticStylePickerDidScroll:(id)scroll
 {
-  v4 = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
-  [v4 frame];
+  _semanticStylePicker = [(CAMSemanticStyleSettingsView *)self _semanticStylePicker];
+  [_semanticStylePicker frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;

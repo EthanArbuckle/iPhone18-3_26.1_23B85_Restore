@@ -1,37 +1,37 @@
 @interface MTTimerDate
-- (BOOL)isEqual:(id)a3;
-- (MTTimerDate)initWithCoder:(id)a3;
-- (MTTimerDate)initWithDate:(id)a3;
-- (MTTimerDate)initWithDate:(id)a3 currentDateProvider:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MTTimerDate)initWithCoder:(id)coder;
+- (MTTimerDate)initWithDate:(id)date;
+- (MTTimerDate)initWithDate:(id)date currentDateProvider:(id)provider;
 - (double)remainingTime;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTTimerDate
 
-- (MTTimerDate)initWithDate:(id)a3
+- (MTTimerDate)initWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = MTCurrentDateProvider();
-  v6 = [(MTTimerDate *)self initWithDate:v4 currentDateProvider:v5];
+  v6 = [(MTTimerDate *)self initWithDate:dateCopy currentDateProvider:v5];
 
   return v6;
 }
 
-- (MTTimerDate)initWithDate:(id)a3 currentDateProvider:(id)a4
+- (MTTimerDate)initWithDate:(id)date currentDateProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = MTTimerDate;
   v8 = [(MTTimerDate *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
 
-    v11 = [v7 copy];
+    v11 = [providerCopy copy];
     currentDateProvider = v8->_currentDateProvider;
     v8->_currentDateProvider = v11;
   }
@@ -42,26 +42,26 @@
 - (double)remainingTime
 {
   v3 = (*(self->_currentDateProvider + 2))();
-  v4 = [(MTTimerDate *)self date];
-  v5 = [v4 mtIsAfterDate:v3];
+  date = [(MTTimerDate *)self date];
+  v5 = [date mtIsAfterDate:v3];
 
   v6 = 0.0;
   if (v5)
   {
-    v7 = [(MTTimerDate *)self date];
-    [v7 timeIntervalSinceDate:v3];
+    date2 = [(MTTimerDate *)self date];
+    [date2 timeIntervalSinceDate:v3];
     v6 = v8;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F297C498])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F297C498])
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -83,13 +83,13 @@
   return v7;
 }
 
-- (MTTimerDate)initWithCoder:(id)a3
+- (MTTimerDate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MTTimerDate *)self initWithDate:0];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerTimeDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MTTimerTimeDate"];
     date = v5->_date;
     v5->_date = v6;
 
@@ -102,11 +102,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MTTimerDate *)self date];
-  [v4 encodeObject:v5 forKey:@"MTTimerTimeDate"];
+  coderCopy = coder;
+  date = [(MTTimerDate *)self date];
+  [coderCopy encodeObject:date forKey:@"MTTimerTimeDate"];
 }
 
 @end

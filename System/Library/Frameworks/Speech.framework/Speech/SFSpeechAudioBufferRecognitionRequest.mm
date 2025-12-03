@@ -1,12 +1,12 @@
 @interface SFSpeechAudioBufferRecognitionRequest
 - (AVAudioFormat)nativeAudioFormat;
-- (id)_initWithNarrowband:(BOOL)a3;
-- (id)_startedConnectionWithLanguageCode:(id)a3 delegate:(id)a4 taskHint:(int64_t)a5 requestIdentifier:(id)a6;
-- (id)_startedLocalConnectionWithLanguageCode:(id)a3 delegate:(id)a4 taskHint:(int64_t)a5 requestIdentifier:(id)a6 taskIdentifier:(id)a7;
-- (void)_appendAudioPCMBuffer:(id *)a1;
+- (id)_initWithNarrowband:(BOOL)narrowband;
+- (id)_startedConnectionWithLanguageCode:(id)code delegate:(id)delegate taskHint:(int64_t)hint requestIdentifier:(id)identifier;
+- (id)_startedLocalConnectionWithLanguageCode:(id)code delegate:(id)delegate taskHint:(int64_t)hint requestIdentifier:(id)identifier taskIdentifier:(id)taskIdentifier;
+- (void)_appendAudioPCMBuffer:(id *)buffer;
 - (void)_drainAndClearAudioConverter;
 - (void)_endAudio;
-- (void)_handleAudioBuffersWithDelegate:(uint64_t)a1;
+- (void)_handleAudioBuffersWithDelegate:(uint64_t)delegate;
 - (void)appendAudioPCMBuffer:(AVAudioPCMBuffer *)audioPCMBuffer;
 - (void)appendAudioSampleBuffer:(CMSampleBufferRef)sampleBuffer;
 - (void)endAudio;
@@ -44,26 +44,26 @@ void __49__SFSpeechAudioBufferRecognitionRequest_endAudio__block_invoke(uint64_t
 
 - (void)_endAudio
 {
-  if (a1)
+  if (self)
   {
-    [(SFSpeechAudioBufferRecognitionRequest *)a1 _drainAndClearAudioConverter];
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
+    [(SFSpeechAudioBufferRecognitionRequest *)self _drainAndClearAudioConverter];
+    WeakRetained = objc_loadWeakRetained((self + 104));
     [WeakRetained stopSpeech];
   }
 }
 
 - (void)_drainAndClearAudioConverter
 {
-  if (*(a1 + 128))
+  if (*(self + 128))
   {
     while (1)
     {
       v2 = objc_alloc(MEMORY[0x1E6958440]);
-      v3 = [a1 nativeAudioFormat];
-      v4 = [v2 initWithPCMFormat:v3 frameCapacity:8000];
+      nativeAudioFormat = [self nativeAudioFormat];
+      v4 = [v2 initWithPCMFormat:nativeAudioFormat frameCapacity:8000];
 
       [v4 setFrameLength:8000];
-      v5 = *(a1 + 128);
+      v5 = *(self + 128);
       v12 = 0;
       v6 = [v5 convertToBuffer:v4 error:&v12 withInputFromBlock:&__block_literal_global_2481];
       v7 = v12;
@@ -79,7 +79,7 @@ void __49__SFSpeechAudioBufferRecognitionRequest_endAudio__block_invoke(uint64_t
         break;
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 104));
+      WeakRetained = objc_loadWeakRetained((self + 104));
       v10 = [MEMORY[0x1E695DEF0] dataWithBytes:*objc_msgSend(v4 length:{"int16ChannelData"), 2 * objc_msgSend(v4, "frameLength")}];
       [WeakRetained addRecordedSpeechSampleData:v10];
 
@@ -89,8 +89,8 @@ void __49__SFSpeechAudioBufferRecognitionRequest_endAudio__block_invoke(uint64_t
       }
     }
 
-    v11 = *(a1 + 128);
-    *(a1 + 128) = 0;
+    v11 = *(self + 128);
+    *(self + 128) = 0;
   }
 }
 
@@ -160,50 +160,50 @@ void __62__SFSpeechAudioBufferRecognitionRequest_appendAudioPCMBuffer___block_in
   }
 }
 
-- (void)_appendAudioPCMBuffer:(id *)a1
+- (void)_appendAudioPCMBuffer:(id *)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
     v29 = v3;
-    v4 = [a1 nativeAudioFormat];
-    v5 = [v29 format];
-    v6 = [v4 isEqual:v5];
+    nativeAudioFormat = [buffer nativeAudioFormat];
+    format = [v29 format];
+    v6 = [nativeAudioFormat isEqual:format];
 
     if (v6)
     {
-      [(SFSpeechAudioBufferRecognitionRequest *)a1 _drainAndClearAudioConverter];
-      v7 = [v29 int16ChannelData];
-      if (!v7)
+      [(SFSpeechAudioBufferRecognitionRequest *)buffer _drainAndClearAudioConverter];
+      int16ChannelData = [v29 int16ChannelData];
+      if (!int16ChannelData)
       {
-        v27 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v27 handleFailureInMethod:sel__appendAudioPCMBuffer_ object:a1 file:@"SFSpeechRecognitionRequest.m" lineNumber:527 description:@"Invalid audio format"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel__appendAudioPCMBuffer_ object:buffer file:@"SFSpeechRecognitionRequest.m" lineNumber:527 description:@"Invalid audio format"];
       }
 
-      WeakRetained = objc_loadWeakRetained(a1 + 13);
-      v9 = [MEMORY[0x1E695DEF0] dataWithBytes:*v7 length:{2 * objc_msgSend(v29, "frameLength")}];
+      WeakRetained = objc_loadWeakRetained(buffer + 13);
+      v9 = [MEMORY[0x1E695DEF0] dataWithBytes:*int16ChannelData length:{2 * objc_msgSend(v29, "frameLength")}];
       [WeakRetained addRecordedSpeechSampleData:v9];
     }
 
     else
     {
       v10 = v29;
-      v11 = [v10 format];
-      v12 = [a1 nativeAudioFormat];
-      v13 = [a1[16] inputFormat];
-      v14 = [v13 isEqual:v11];
+      format2 = [v10 format];
+      nativeAudioFormat2 = [buffer nativeAudioFormat];
+      inputFormat = [buffer[16] inputFormat];
+      v14 = [inputFormat isEqual:format2];
 
       if ((v14 & 1) == 0)
       {
-        [(SFSpeechAudioBufferRecognitionRequest *)a1 _drainAndClearAudioConverter];
-        v15 = [objc_alloc(MEMORY[0x1E69583F0]) initFromFormat:v11 toFormat:v12];
-        v16 = a1[16];
-        a1[16] = v15;
+        [(SFSpeechAudioBufferRecognitionRequest *)buffer _drainAndClearAudioConverter];
+        v15 = [objc_alloc(MEMORY[0x1E69583F0]) initFromFormat:format2 toFormat:nativeAudioFormat2];
+        v16 = buffer[16];
+        buffer[16] = v15;
 
-        [a1[16] setSampleRateConverterQuality:127];
+        [buffer[16] setSampleRateConverterQuality:127];
       }
 
-      v28 = v12;
+      v28 = nativeAudioFormat2;
       v34[0] = 0;
       v34[1] = v34;
       v34[2] = 0x2020000000;
@@ -211,11 +211,11 @@ void __62__SFSpeechAudioBufferRecognitionRequest_appendAudioPCMBuffer___block_in
       while (1)
       {
         v17 = objc_alloc(MEMORY[0x1E6958440]);
-        v18 = [a1 nativeAudioFormat];
-        v19 = [v17 initWithPCMFormat:v18 frameCapacity:8000];
+        nativeAudioFormat3 = [buffer nativeAudioFormat];
+        v19 = [v17 initWithPCMFormat:nativeAudioFormat3 frameCapacity:8000];
 
         [v19 setFrameLength:8000];
-        v20 = a1[16];
+        v20 = buffer[16];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __66__SFSpeechAudioBufferRecognitionRequest__convertAndFeedPCMBuffer___block_invoke;
@@ -238,7 +238,7 @@ void __62__SFSpeechAudioBufferRecognitionRequest_appendAudioPCMBuffer___block_in
           break;
         }
 
-        v25 = objc_loadWeakRetained(a1 + 13);
+        v25 = objc_loadWeakRetained(buffer + 13);
         v26 = [MEMORY[0x1E695DEF0] dataWithBytes:*objc_msgSend(v19 length:{"int16ChannelData"), 2 * objc_msgSend(v19, "frameLength")}];
         [v25 addRecordedSpeechSampleData:v26];
 
@@ -275,43 +275,43 @@ id __66__SFSpeechAudioBufferRecognitionRequest__convertAndFeedPCMBuffer___block_
   return v5;
 }
 
-- (id)_startedLocalConnectionWithLanguageCode:(id)a3 delegate:(id)a4 taskHint:(int64_t)a5 requestIdentifier:(id)a6 taskIdentifier:(id)a7
+- (id)_startedLocalConnectionWithLanguageCode:(id)code delegate:(id)delegate taskHint:(int64_t)hint requestIdentifier:(id)identifier taskIdentifier:(id)taskIdentifier
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  taskIdentifierCopy = taskIdentifier;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  codeCopy = code;
   WeakRetained = objc_loadWeakRetained(&self->_bufferDelegate);
 
   if (WeakRetained)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SFSpeechRecognitionRequest.m" lineNumber:506 description:{@"%@ cannot be re-used", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSpeechRecognitionRequest.m" lineNumber:506 description:{@"%@ cannot be re-used", objc_opt_class()}];
   }
 
-  v18 = [[SFLocalSpeechRecognitionClient alloc] initWithDelegate:v15];
-  v19 = [(SFSpeechRecognitionRequest *)self _requestParametersWithTaskHint:a5 requestIdentifier:v14 taskIdentifier:v13 narrowband:self->_narrowband language:v16];
+  v18 = [[SFLocalSpeechRecognitionClient alloc] initWithDelegate:delegateCopy];
+  v19 = [(SFSpeechRecognitionRequest *)self _requestParametersWithTaskHint:hint requestIdentifier:identifierCopy taskIdentifier:taskIdentifierCopy narrowband:self->_narrowband language:codeCopy];
 
   v20 = [SFSpeechRecognitionRequest _sandboxExtensionsWithError:?];
   [(SFLocalSpeechRecognitionClient *)v18 initializeWithSandboxExtensions:v20];
   [(SFLocalSpeechRecognitionClient *)v18 startRecordedAudioDictationWithParameters:v19];
-  [(SFSpeechAudioBufferRecognitionRequest *)self _handleAudioBuffersWithDelegate:v15];
+  [(SFSpeechAudioBufferRecognitionRequest *)self _handleAudioBuffersWithDelegate:delegateCopy];
 
   return v18;
 }
 
-- (void)_handleAudioBuffersWithDelegate:(uint64_t)a1
+- (void)_handleAudioBuffersWithDelegate:(uint64_t)delegate
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (delegate)
   {
-    v5 = *(a1 + 120);
+    v5 = *(delegate + 120);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate___block_invoke;
     v6[3] = &unk_1E797CB08;
-    v6[4] = a1;
+    v6[4] = delegate;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -375,38 +375,38 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_startedConnectionWithLanguageCode:(id)a3 delegate:(id)a4 taskHint:(int64_t)a5 requestIdentifier:(id)a6
+- (id)_startedConnectionWithLanguageCode:(id)code delegate:(id)delegate taskHint:(int64_t)hint requestIdentifier:(id)identifier
 {
   v31[5] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  codeCopy = code;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_bufferDelegate);
 
   if (WeakRetained)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"SFSpeechRecognitionRequest.m" lineNumber:474 description:{@"%@ cannot be re-used", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SFSpeechRecognitionRequest.m" lineNumber:474 description:{@"%@ cannot be re-used", objc_opt_class()}];
   }
 
   v15 = objc_alloc_init(MEMORY[0x1E698D118]);
-  [v15 setDelegate:v12];
-  v16 = [(SFSpeechRecognitionRequest *)self _dictationOptionsWithTaskHint:a5 requestIdentifier:v13];
+  [v15 setDelegate:delegateCopy];
+  v16 = [(SFSpeechRecognitionRequest *)self _dictationOptionsWithTaskHint:hint requestIdentifier:identifierCopy];
 
   [v16 setFieldLabel:@"SFSpeechPreecordedRequest"];
-  if (![(__CFString *)v11 caseInsensitiveCompare:@"hi-IN-translit"])
+  if (![(__CFString *)codeCopy caseInsensitiveCompare:@"hi-IN-translit"])
   {
     v17 = @"hi-IN";
 
     [v16 setKeyboardIdentifier:@"Translit"];
-    v11 = @"hi-IN";
+    codeCopy = @"hi-IN";
   }
 
   if (+[SFUtilities isSpeechXPCEnabled])
   {
-    if (v11)
+    if (codeCopy)
     {
-      v18 = v11;
+      v18 = codeCopy;
     }
 
     else
@@ -417,7 +417,7 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
     v31[0] = v18;
     v30[0] = @"language";
     v30[1] = @"task";
-    v19 = [SFUtilities taskNameFromTaskHint:a5];
+    v19 = [SFUtilities taskNameFromTaskHint:hint];
     v20 = v19;
     if (v19)
     {
@@ -434,11 +434,11 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
     v22 = [MEMORY[0x1E696AD98] numberWithBool:self->_narrowband];
     v31[2] = v22;
     v30[3] = @"appname";
-    v23 = [v16 applicationName];
-    v24 = v23;
-    if (v23)
+    applicationName = [v16 applicationName];
+    v24 = applicationName;
+    if (applicationName)
     {
-      v25 = v23;
+      v25 = applicationName;
     }
 
     else
@@ -455,8 +455,8 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
     [(SFSpeechRecognitionRequest *)self _setAFDictationRequestParams:v26];
   }
 
-  [v15 startRecordedAudioDictationWithOptions:v16 forLanguage:v11];
-  [(SFSpeechAudioBufferRecognitionRequest *)self _handleAudioBuffersWithDelegate:v12];
+  [v15 startRecordedAudioDictationWithOptions:v16 forLanguage:codeCopy];
+  [(SFSpeechAudioBufferRecognitionRequest *)self _handleAudioBuffersWithDelegate:delegateCopy];
 
   v27 = *MEMORY[0x1E69E9840];
 
@@ -478,7 +478,7 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
   return v2;
 }
 
-- (id)_initWithNarrowband:(BOOL)a3
+- (id)_initWithNarrowband:(BOOL)narrowband
 {
   v8.receiver = self;
   v8.super_class = SFSpeechAudioBufferRecognitionRequest;
@@ -489,7 +489,7 @@ void __73__SFSpeechAudioBufferRecognitionRequest__handleAudioBuffersWithDelegate
     queue = v4->_queue;
     v4->_queue = v5;
 
-    v4->_narrowband = a3;
+    v4->_narrowband = narrowband;
   }
 
   return v4;

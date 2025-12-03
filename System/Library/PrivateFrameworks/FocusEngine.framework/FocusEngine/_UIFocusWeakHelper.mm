@@ -1,20 +1,20 @@
 @interface _UIFocusWeakHelper
-- (_UIFocusWeakHelper)initWithDeallocationBlock:(id)a3;
+- (_UIFocusWeakHelper)initWithDeallocationBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation _UIFocusWeakHelper
 
-- (_UIFocusWeakHelper)initWithDeallocationBlock:(id)a3
+- (_UIFocusWeakHelper)initWithDeallocationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v8.receiver = self;
   v8.super_class = _UIFocusWeakHelper;
   v5 = [(_UIFocusWeakHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIFocusWeakHelper *)v5 setDeallocationBlock:v4];
+    [(_UIFocusWeakHelper *)v5 setDeallocationBlock:blockCopy];
   }
 
   return v6;

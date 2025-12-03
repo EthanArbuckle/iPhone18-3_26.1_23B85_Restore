@@ -1,6 +1,6 @@
 @interface JavaLangStackTraceElement
-- (BOOL)isEqual:(id)a3;
-- (JavaLangStackTraceElement)initWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withInt:(int)a6;
+- (BOOL)isEqual:(id)equal;
+- (JavaLangStackTraceElement)initWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withInt:(int)int;
 - (NSString)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -11,21 +11,21 @@
 
 - (void)initializeFromAddress
 {
-  if (*(a1 + 40) && !*(a1 + 16))
+  if (*(self + 40) && !*(self + 16))
   {
-    v23 = *(a1 + 40);
+    v23 = *(self + 40);
     v2 = backtrace_symbols(&v23, 1);
     v3 = strstr(*v2, "0x");
     v4 = strchr(v3, 32);
     v5 = strndup(v3, v4 - v3);
-    *(a1 + 48) = [[NSString alloc] initWithCString:v5 encoding:4];
+    *(self + 48) = [[NSString alloc] initWithCString:v5 encoding:4];
     free(v5);
     v6 = v4 + 1;
     v7 = strstr(v4 + 1, " + ");
     if (v7)
     {
       v8 = v7;
-      *(a1 + 56) = [[NSString alloc] initWithCString:v7 + 3 encoding:4];
+      *(self + 56) = [[NSString alloc] initWithCString:v7 + 3 encoding:4];
       *v8 = 0;
     }
 
@@ -67,7 +67,7 @@
         --v15;
       }
 
-      *(a1 + 8) = [v17 getName];
+      *(self + 8) = [v17 getName];
       v6 = i + 1;
 LABEL_28:
       v20 = v6;
@@ -83,7 +83,7 @@ LABEL_28:
         v19 = [IOSClass classForIosName:[NSString stringWithCString:v18 encoding:4]];
         if (v19)
         {
-          *(a1 + 8) = [v19 getName];
+          *(self + 8) = [v19 getName];
         }
       }
 
@@ -96,18 +96,18 @@ LABEL_28:
       v21 = 58;
     }
 
-    *(a1 + 16) = sub_1001D4E78(v20, v21);
+    *(self + 16) = sub_1001D4E78(v20, v21);
 LABEL_30:
     free(v2);
   }
 }
 
-- (JavaLangStackTraceElement)initWithNSString:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withInt:(int)a6
+- (JavaLangStackTraceElement)initWithNSString:(id)string withNSString:(id)sString withNSString:(id)nSString withInt:(int)int
 {
-  JreStrongAssign(&self->declaringClass_, a3);
-  JreStrongAssign(&self->methodName_, a4);
-  JreStrongAssign(&self->fileName_, a5);
-  self->lineNumber_ = a6;
+  JreStrongAssign(&self->declaringClass_, string);
+  JreStrongAssign(&self->methodName_, sString);
+  JreStrongAssign(&self->fileName_, nSString);
+  self->lineNumber_ = int;
   return self;
 }
 
@@ -162,9 +162,9 @@ LABEL_30:
   return [(JavaLangStringBuilder *)v3 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -177,7 +177,7 @@ LABEL_30:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_15;
   }
@@ -187,7 +187,7 @@ LABEL_30:
     JreThrowClassCastException();
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(equal + 1);
   if (!v5)
   {
 LABEL_15:
@@ -197,13 +197,13 @@ LABEL_15:
   v6 = [v5 isEqual:self->declaringClass_];
   if (v6)
   {
-    if (*(a3 + 8) == self->lineNumber_)
+    if (*(equal + 8) == self->lineNumber_)
     {
-      v6 = JavaUtilObjects_equalsWithId_withId_(self->methodName_, *(a3 + 2));
+      v6 = JavaUtilObjects_equalsWithId_withId_(self->methodName_, *(equal + 2));
       if (v6)
       {
         fileName = self->fileName_;
-        v8 = *(a3 + 3);
+        v8 = *(equal + 3);
 
         LOBYTE(v6) = JavaUtilObjects_equalsWithId_withId_(fileName, v8);
       }

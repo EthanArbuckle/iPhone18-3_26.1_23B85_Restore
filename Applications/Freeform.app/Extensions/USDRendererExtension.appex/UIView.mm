@@ -1,28 +1,28 @@
 @interface UIView
-- (void)crl_activateEqualConstraintsForView:(id)a3;
+- (void)crl_activateEqualConstraintsForView:(id)view;
 @end
 
 @implementation UIView
 
-- (void)crl_activateEqualConstraintsForView:(id)a3
+- (void)crl_activateEqualConstraintsForView:(id)view
 {
-  v4 = a3;
-  v17 = [v4 leadingAnchor];
-  v16 = [(UIView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  viewCopy = view;
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v5 = [v4 trailingAnchor];
-  v6 = [(UIView *)self trailingAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(UIView *)self trailingAnchor];
+  v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v7;
-  v8 = [v4 topAnchor];
-  v9 = [(UIView *)self topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v10;
-  v11 = [v4 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v12 = [(UIView *)self bottomAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v13;
   v14 = [NSArray arrayWithObjects:v18 count:4];
   [NSLayoutConstraint activateConstraints:v14];

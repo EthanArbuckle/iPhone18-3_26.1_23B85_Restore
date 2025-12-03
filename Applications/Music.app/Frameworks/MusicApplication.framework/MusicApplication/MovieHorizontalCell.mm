@@ -2,14 +2,14 @@
 + (UIEdgeInsets)visualContentInsets;
 - (NSDate)releaseDate;
 - (NSString)title;
-- (_TtC16MusicApplication19MovieHorizontalCell)initWithCoder:(id)a3;
-- (void)setReleaseDate:(id)a3;
-- (void)setTitle:(id)a3;
+- (_TtC16MusicApplication19MovieHorizontalCell)initWithCoder:(id)coder;
+- (void)setReleaseDate:(id)date;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MovieHorizontalCell
 
-- (_TtC16MusicApplication19MovieHorizontalCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication19MovieHorizontalCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC16MusicApplication19MovieHorizontalCell_title);
   *v4 = 0;
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v6 = (self + OBJC_IVAR____TtC16MusicApplication19MovieHorizontalCell_title);
@@ -46,8 +46,8 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication19MovieHorizontalCell_title + 8);
   *v6 = v5;
   v6[1] = v9;
-  v10 = a3;
-  v11 = self;
+  titleCopy = title;
+  selfCopy = self;
   sub_2DD6C(v7, v8);
 }
 
@@ -73,14 +73,14 @@
   return v10;
 }
 
-- (void)setReleaseDate:(id)a3
+- (void)setReleaseDate:(id)date
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_E01230);
   v6 = __chkstk_darwin(v5 - 8);
   v8 = &v15[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v6);
   v10 = &v15[-v9];
-  if (a3)
+  if (date)
   {
     sub_AB33F0();
     v11 = sub_AB3430();
@@ -97,7 +97,7 @@
   swift_beginAccess();
   sub_2EC64(self + v13, v8);
   swift_beginAccess();
-  v14 = self;
+  selfCopy = self;
   sub_2F0A8(v10, self + v13);
   swift_endAccess();
   sub_2E13C(v8);

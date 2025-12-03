@@ -5,7 +5,7 @@
 - (CGSize)size;
 - (id)_newImageData;
 - (id)imageData;
-- (void)generatePreviewWithCompletion:(id)a3;
+- (void)generatePreviewWithCompletion:(id)completion;
 - (void)startDeferredSetup;
 @end
 
@@ -21,8 +21,8 @@
 - (id)_newImageData
 {
   v3 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v4 = [(CKAttachmentItem *)self fileURL];
-  v5 = [v3 initWithContentsOfURL:v4 options:1 error:0];
+  fileURL = [(CKAttachmentItem *)self fileURL];
+  v5 = [v3 initWithContentsOfURL:fileURL options:1 error:0];
 
   if (v5)
   {
@@ -39,9 +39,9 @@
 
 - (id)imageData
 {
-  v2 = [(CKImageAttachmentItem *)self _newImageData];
+  _newImageData = [(CKImageAttachmentItem *)self _newImageData];
 
-  return v2;
+  return _newImageData;
 }
 
 - (CGSize)size
@@ -84,13 +84,13 @@
   if (v4 == *MEMORY[0x1E695F060] && v3 == *(MEMORY[0x1E695F060] + 8) && ![(CKImageAttachmentItem *)self backgroundEnqueued])
   {
     [(CKImageAttachmentItem *)self setBackgroundEnqueued:1];
-    v6 = [objc_opt_class() previewSizingQueue];
+    previewSizingQueue = [objc_opt_class() previewSizingQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43__CKImageAttachmentItem_startDeferredSetup__block_invoke;
     v7[3] = &unk_1E72EBA18;
     v7[4] = self;
-    [v6 addBlock:v7 withQueuePriority:1];
+    [previewSizingQueue addBlock:v7 withQueuePriority:1];
   }
 }
 
@@ -104,23 +104,23 @@ uint64_t __43__CKImageAttachmentItem_startDeferredSetup__block_invoke(uint64_t a
 
 - (CGSize)_calculateImageSize
 {
-  v3 = [(CKAttachmentItem *)self cachedPreview];
-  v4 = v3;
-  if (v3)
+  cachedPreview = [(CKAttachmentItem *)self cachedPreview];
+  v4 = cachedPreview;
+  if (cachedPreview)
   {
-    [v3 size];
+    [cachedPreview size];
     v6 = v5;
     v8 = v7;
-    v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v11 = v6 * v10;
     v12 = v8 * v10;
   }
 
   else
   {
-    v9 = [(CKImageAttachmentItem *)self _newImageData];
-    [v9 pxSize];
+    mainScreen = [(CKImageAttachmentItem *)self _newImageData];
+    [mainScreen pxSize];
     v11 = v13;
     v12 = v14;
   }
@@ -138,11 +138,11 @@ uint64_t __43__CKImageAttachmentItem_startDeferredSetup__block_invoke(uint64_t a
   return result;
 }
 
-- (void)generatePreviewWithCompletion:(id)a3
+- (void)generatePreviewWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_opt_class() previewCache];
+  completionCopy = completion;
+  previewCache = [objc_opt_class() previewCache];
   v6 = CKAttachmentPreviewCacheKey(self);
   v7 = +[CKUIBehavior sharedBehaviors];
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -153,7 +153,7 @@ uint64_t __43__CKImageAttachmentItem_startDeferredSetup__block_invoke(uint64_t a
   v14 = v13;
   v16 = v15;
 
-  if (([v5 isGeneratingPreviewForKey:v6] & 1) == 0)
+  if (([previewCache isGeneratingPreviewForKey:v6] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -177,10 +177,10 @@ uint64_t __43__CKImageAttachmentItem_startDeferredSetup__block_invoke(uint64_t a
     v18[1] = 3221225472;
     v18[2] = __55__CKImageAttachmentItem_generatePreviewWithCompletion___block_invoke_41;
     v18[3] = &unk_1E72EDE00;
-    v19 = v5;
+    v19 = previewCache;
     v20 = v6;
-    v21 = self;
-    v22 = v4;
+    selfCopy = self;
+    v22 = completionCopy;
     [v19 enqueueGenerationBlock:v23 completion:v18 withPriority:1 forKey:v20];
   }
 }

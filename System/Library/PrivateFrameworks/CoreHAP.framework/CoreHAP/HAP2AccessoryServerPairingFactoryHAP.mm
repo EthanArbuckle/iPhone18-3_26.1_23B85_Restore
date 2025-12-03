@@ -1,19 +1,19 @@
 @interface HAP2AccessoryServerPairingFactoryHAP
-- (id)createPairingDriverWithAccessoryInfo:(id)a3 transport:(id)a4 secureTransportFactory:(id)a5 encoding:(id)a6 operationQueue:(id)a7;
+- (id)createPairingDriverWithAccessoryInfo:(id)info transport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding operationQueue:(id)queue;
 @end
 
 @implementation HAP2AccessoryServerPairingFactoryHAP
 
-- (id)createPairingDriverWithAccessoryInfo:(id)a3 transport:(id)a4 secureTransportFactory:(id)a5 encoding:(id)a6 operationQueue:(id)a7
+- (id)createPairingDriverWithAccessoryInfo:(id)info transport:(id)transport secureTransportFactory:(id)factory encoding:(id)encoding operationQueue:(id)queue
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  encodingCopy = encoding;
+  factoryCopy = factory;
+  transportCopy = transport;
+  infoCopy = info;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = infoCopy;
   }
 
   else
@@ -21,7 +21,7 @@
     v14 = 0;
   }
 
-  v15 = -[HAP2AccessoryServerPairingDriver initWithTransport:secureTransportFactory:encoding:featureFlags:]([HAP2AccessoryServerPairingDriver alloc], "initWithTransport:secureTransportFactory:encoding:featureFlags:", v12, v11, v10, [v14 featureFlags]);
+  v15 = -[HAP2AccessoryServerPairingDriver initWithTransport:secureTransportFactory:encoding:featureFlags:]([HAP2AccessoryServerPairingDriver alloc], "initWithTransport:secureTransportFactory:encoding:featureFlags:", transportCopy, factoryCopy, encodingCopy, [v14 featureFlags]);
 
   return v15;
 }

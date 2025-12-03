@@ -1,10 +1,10 @@
 @interface HKDateIntervalTree
-- (BOOL)hasOverlapWithInterval:(id)a3;
-- (BOOL)hasOverlapWithStartTime:(double)a3 endTime:(double)a4;
+- (BOOL)hasOverlapWithInterval:(id)interval;
+- (BOOL)hasOverlapWithStartTime:(double)time endTime:(double)endTime;
 - (HKDateIntervalTree)init;
 - (id)mergedIntervals;
 - (uint64_t)mergedIntervals;
-- (void)insertInterval:(id)a3;
+- (void)insertInterval:(id)interval;
 - (void)mergedIntervals;
 @end
 
@@ -22,46 +22,46 @@
   return 0;
 }
 
-- (void)insertInterval:(id)a3
+- (void)insertInterval:(id)interval
 {
-  v9 = a3;
-  v4 = [v9 startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v6 = v5;
-  v7 = [v9 endDate];
-  [v7 timeIntervalSinceReferenceDate];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   [(HKDateIntervalTree *)self insertIntervalWithStartTime:v6 endTime:v8];
 }
 
-- (BOOL)hasOverlapWithInterval:(id)a3
+- (BOOL)hasOverlapWithInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [v4 endDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDate = [intervalCopy endDate];
+  [endDate timeIntervalSinceReferenceDate];
   LOBYTE(self) = [(HKDateIntervalTree *)self hasOverlapWithStartTime:v7 endTime:v9];
 
   return self;
 }
 
-- (BOOL)hasOverlapWithStartTime:(double)a3 endTime:(double)a4
+- (BOOL)hasOverlapWithStartTime:(double)time endTime:(double)endTime
 {
   ptr = self->_tree.__ptr_;
-  if (a4 >= a3)
+  if (endTime >= time)
   {
-    v5 = a3;
+    endTimeCopy = time;
   }
 
   else
   {
-    v5 = a4;
+    endTimeCopy = endTime;
   }
 
-  if (a3 < a4)
+  if (time < endTime)
   {
-    a3 = a4;
+    time = endTime;
   }
 
   v6 = *ptr;
@@ -73,13 +73,13 @@
   while (1)
   {
     v7 = v6;
-    if (v5 <= *(v6 + 8) && a3 >= *v6)
+    if (endTimeCopy <= *(v6 + 8) && time >= *v6)
     {
       break;
     }
 
     v6 = *(v6 + 24);
-    if (!v6 || *(v6 + 16) <= v5)
+    if (!v6 || *(v6 + 16) <= endTimeCopy)
     {
       v6 = *(v7 + 32);
       if (!v6)
@@ -112,7 +112,7 @@
 - (uint64_t)mergedIntervals
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -123,7 +123,7 @@
 
 - (void)mergedIntervals
 {
-  v2 = **(a1 + 8);
+  v2 = **(self + 8);
   v3 = [MEMORY[0x1E696AB80] hk_dateIntervalWithStart:**a2 end:(*a2)[1]];
   [v2 addObject:?];
 }

@@ -1,13 +1,13 @@
 @interface IDSRemoteURLConnectionDaemon
 + (id)sharedInstance;
 - (IDSRemoteURLConnectionDaemon)init;
-- (id)urlLoaderForUniqueID:(id)a3;
-- (void)_pidSuspended:(int)a3;
+- (id)urlLoaderForUniqueID:(id)d;
+- (void)_pidSuspended:(int)suspended;
 - (void)_terminate;
-- (void)addURLLoader:(id)a3;
+- (void)addURLLoader:(id)loader;
 - (void)dealloc;
-- (void)removeURLLoaderForUniqueID:(id)a3;
-- (void)removeURLLoadersForUniqueIDs:(id)a3;
+- (void)removeURLLoaderForUniqueID:(id)d;
+- (void)removeURLLoadersForUniqueIDs:(id)ds;
 - (void)shutdown;
 @end
 
@@ -28,9 +28,9 @@
 - (IDSRemoteURLConnectionDaemon)init
 {
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 systemIsShuttingDown];
+  systemIsShuttingDown = [v3 systemIsShuttingDown];
 
-  if (v4)
+  if (systemIsShuttingDown)
   {
     v5 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -47,7 +47,7 @@
       _IDSLogTransport();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -130,10 +130,10 @@
     }
 
     self = v8;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -173,20 +173,20 @@
   [(IDSRemoteURLConnectionDaemon *)self _terminate];
 }
 
-- (void)addURLLoader:(id)a3
+- (void)addURLLoader:(id)loader
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  loaderCopy = loader;
+  v5 = loaderCopy;
+  if (loaderCopy)
   {
-    v6 = [(NSMutableDictionary *)v4 uniqueID];
-    if ([v6 length])
+    uniqueID = [(NSMutableDictionary *)loaderCopy uniqueID];
+    if ([uniqueID length])
     {
-      v7 = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap objectForKey:v6];
+      v7 = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap objectForKey:uniqueID];
 
       if (!v7)
       {
-        [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap setObject:v5 forKey:v6];
+        [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap setObject:v5 forKey:uniqueID];
         v8 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
         {
@@ -223,36 +223,36 @@
   }
 }
 
-- (void)removeURLLoaderForUniqueID:(id)a3
+- (void)removeURLLoaderForUniqueID:(id)d
 {
-  v5 = a3;
-  if ([v5 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v4 = [NSSet setWithObject:v5];
+    v4 = [NSSet setWithObject:dCopy];
     [(IDSRemoteURLConnectionDaemon *)self removeURLLoadersForUniqueIDs:v4];
   }
 }
 
-- (void)removeURLLoadersForUniqueIDs:(id)a3
+- (void)removeURLLoadersForUniqueIDs:(id)ds
 {
-  v4 = a3;
-  if ([(NSMutableDictionary *)v4 count])
+  dsCopy = ds;
+  if ([(NSMutableDictionary *)dsCopy count])
   {
     uniqueIDToURLLoaderMap = self->_uniqueIDToURLLoaderMap;
-    v6 = [(NSMutableDictionary *)v4 allObjects];
-    [(NSMutableDictionary *)uniqueIDToURLLoaderMap removeObjectsForKeys:v6];
+    allObjects = [(NSMutableDictionary *)dsCopy allObjects];
+    [(NSMutableDictionary *)uniqueIDToURLLoaderMap removeObjectsForKeys:allObjects];
 
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dsCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Removing Loaders for uniqueIDs %@", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v13 = v4;
+      v13 = dsCopy;
       _IDSLogV();
     }
 
@@ -271,8 +271,8 @@
       _IDSLogV();
     }
 
-    v10 = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap allKeys];
-    v11 = [v10 count] == 0;
+    allKeys = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap allKeys];
+    v11 = [allKeys count] == 0;
 
     if (v11)
     {
@@ -284,12 +284,12 @@
   }
 }
 
-- (id)urlLoaderForUniqueID:(id)a3
+- (id)urlLoaderForUniqueID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_uniqueIDToURLLoaderMap objectForKey:dCopy];
   }
 
   else
@@ -300,13 +300,13 @@
   return v5;
 }
 
-- (void)_pidSuspended:(int)a3
+- (void)_pidSuspended:(int)suspended
 {
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v6 = a3;
+    suspendedCopy = suspended;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PID: %d was suspended", buf, 8u);
   }
 

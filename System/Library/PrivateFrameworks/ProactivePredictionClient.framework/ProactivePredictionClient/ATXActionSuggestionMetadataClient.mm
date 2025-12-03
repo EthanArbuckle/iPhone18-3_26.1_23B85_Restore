@@ -1,8 +1,8 @@
 @interface ATXActionSuggestionMetadataClient
 + (ATXActionSuggestionMetadataClient)shared;
 - (ATXActionSuggestionMetadataClient)init;
-- (id)fetchFormattedTitleForEncodedTool:(id)a3 summary:(id)a4 error:(id *)a5;
-- (id)fetchFormattedTitlesForActions:(id)a3 error:(id *)a4;
+- (id)fetchFormattedTitleForEncodedTool:(id)tool summary:(id)summary error:(id *)error;
+- (id)fetchFormattedTitlesForActions:(id)actions error:(id *)error;
 @end
 
 @implementation ATXActionSuggestionMetadataClient
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (id)fetchFormattedTitlesForActions:(id)a3 error:(id *)a4
+- (id)fetchFormattedTitlesForActions:(id)actions error:(id *)error
 {
   v5 = sub_260DF5AB4();
-  v6 = self;
+  selfCopy = self;
   sub_260DDDE88(v5);
 
   sub_260DDE814(0, &qword_27FE4FD88, 0x277D4C598);
@@ -31,11 +31,11 @@
   return v7;
 }
 
-- (id)fetchFormattedTitleForEncodedTool:(id)a3 summary:(id)a4 error:(id *)a5
+- (id)fetchFormattedTitleForEncodedTool:(id)tool summary:(id)summary error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  toolCopy = tool;
+  summaryCopy = summary;
+  selfCopy = self;
   v10 = sub_260DF53B4();
   v12 = v11;
 

@@ -1,11 +1,11 @@
 @interface StickerPickerSceneViewControllerDelegateProxy
 - (_TtC10StickerKitP33_FA83C3E8A3D22FA88BB215AEFD764D8A45StickerPickerSceneViewControllerDelegateProxy)init;
-- (void)stickerPickerSceneDidRequestDismissal:(id)a3;
+- (void)stickerPickerSceneDidRequestDismissal:(id)dismissal;
 @end
 
 @implementation StickerPickerSceneViewControllerDelegateProxy
 
-- (void)stickerPickerSceneDidRequestDismissal:(id)a3
+- (void)stickerPickerSceneDidRequestDismissal:(id)dismissal
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)

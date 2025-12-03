@@ -1,20 +1,20 @@
 @interface COSPairingDataSource
-- (id)deviceUserAppleID:(id)a3;
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4;
-- (void)confirmUnpairingForSpecifier:(id)a3;
-- (void)confirmUnpairingMissingForSpecifier:(id)a3;
+- (id)deviceUserAppleID:(id)d;
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer;
+- (void)confirmUnpairingForSpecifier:(id)specifier;
+- (void)confirmUnpairingMissingForSpecifier:(id)specifier;
 - (void)jumpToFindMyApp;
 - (void)loadSpecifiers;
-- (void)setDeviceUser:(id)a3;
-- (void)setEnableUnpairButtons:(BOOL)a3;
+- (void)setDeviceUser:(id)user;
+- (void)setEnableUnpairButtons:(BOOL)buttons;
 - (void)tinkeriForgot;
 @end
 
 @implementation COSPairingDataSource
 
-- (void)setDeviceUser:(id)a3
+- (void)setDeviceUser:(id)user
 {
-  objc_storeStrong(&self->_deviceUser, a3);
+  objc_storeStrong(&self->_deviceUser, user);
   if (self->_deviceUser)
   {
 
@@ -22,45 +22,45 @@
   }
 }
 
-- (void)setEnableUnpairButtons:(BOOL)a3
+- (void)setEnableUnpairButtons:(BOOL)buttons
 {
-  v3 = a3;
-  self->_enableUnpairButtons = a3;
-  v5 = [(COSPairingDataSource *)self specifiers];
-  v11 = [v5 specifierForID:@"unpair"];
+  buttonsCopy = buttons;
+  self->_enableUnpairButtons = buttons;
+  specifiers = [(COSPairingDataSource *)self specifiers];
+  v11 = [specifiers specifierForID:@"unpair"];
 
-  v6 = [(COSPairingDataSource *)self specifiers];
-  v7 = [v6 specifierForID:@"unpair-missing"];
+  specifiers2 = [(COSPairingDataSource *)self specifiers];
+  v7 = [specifiers2 specifierForID:@"unpair-missing"];
 
-  v8 = [NSNumber numberWithBool:v3];
+  v8 = [NSNumber numberWithBool:buttonsCopy];
   v9 = PSEnabledKey;
   [v11 setProperty:v8 forKey:PSEnabledKey];
 
-  v10 = [NSNumber numberWithBool:v3];
+  v10 = [NSNumber numberWithBool:buttonsCopy];
   [v7 setProperty:v10 forKey:v9];
 
   [(COSPairingDataSource *)self reloadSpecifiers];
 }
 
-- (id)deviceUserAppleID:(id)a3
+- (id)deviceUserAppleID:(id)d
 {
-  v3 = [(COSPairingDataSource *)self deviceUser];
-  v4 = [v3 appleID];
+  deviceUser = [(COSPairingDataSource *)self deviceUser];
+  appleID = [deviceUser appleID];
 
-  return v4;
+  return appleID;
 }
 
-- (id)specifiersForSpecifier:(id)a3 observer:(id)a4
+- (id)specifiersForSpecifier:(id)specifier observer:(id)observer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 propertyForKey:@"COSAssociatedDevice"];
+  observerCopy = observer;
+  specifierCopy = specifier;
+  v8 = [specifierCopy propertyForKey:@"COSAssociatedDevice"];
   [(COSAboutDataSource *)self setDevice:v8];
 
   [(COSAboutDataSource *)self checkDeviceHasCellularCapability];
   v11.receiver = self;
   v11.super_class = COSPairingDataSource;
-  v9 = [(COSAboutDataSource *)&v11 specifiersForSpecifier:v7 observer:v6];
+  v9 = [(COSAboutDataSource *)&v11 specifiersForSpecifier:specifierCopy observer:observerCopy];
 
   return v9;
 }
@@ -70,14 +70,14 @@
   v87.receiver = self;
   v87.super_class = COSPairingDataSource;
   [(COSAboutDataSource *)&v87 loadSpecifiers];
-  v3 = [(COSPairingDataSource *)self specifiers];
+  specifiers = [(COSPairingDataSource *)self specifiers];
   v4 = BPSRemoteUISetupStyle_ptr;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"GIZMO_HEADER" value:&stru_10026E598 table:@"Pairing"];
   v7 = [PSSpecifier groupSpecifierWithID:@"PairingGroup" name:v6];
 
   v82 = v7;
-  [v3 insertObject:v7 atIndex:0];
+  [specifiers insertObject:v7 atIndex:0];
   v8 = sub_100009AB4();
   v9 = [v8 count];
 
@@ -126,7 +126,7 @@
     if (v21)
     {
       v83 = v22;
-      v24 = v3;
+      v24 = specifiers;
       v25 = [NSBundle bundleWithPath:@"/System/Library/NanoPreferenceBundles/General/SchoolTimePhoneSettings.bundle"];
       if (([v25 isLoaded] & 1) == 0)
       {
@@ -139,10 +139,10 @@
 
       v4 = BPSRemoteUISetupStyle_ptr;
       [v28 setIdentifier:@"SCHOOLTIME"];
-      v29 = [(COSAboutDataSource *)self device];
-      [v28 setProperty:v29 forKey:@"COSAssociatedDevice"];
+      device = [(COSAboutDataSource *)self device];
+      [v28 setProperty:device forKey:@"COSAssociatedDevice"];
 
-      v3 = v24;
+      specifiers = v24;
       v23 = v83;
       [v24 addObject:v83];
       v86 = v28;
@@ -165,7 +165,7 @@
 
   if (+[COSFindMyController isDeviceLocatorEnabled])
   {
-    v30 = [(COSAboutDataSource *)self device];
+    device2 = [(COSAboutDataSource *)self device];
     HasCapabilityForString = BPSDeviceHasCapabilityForString();
 
     if (HasCapabilityForString)
@@ -174,7 +174,7 @@
       v32 = [PSSpecifier groupSpecifierWithID:@"FIND_MY_WATCH_GROUP_ID"];
       v33 = +[NSBundle mainBundle];
       [v33 localizedStringForKey:@"FIND_MY_WATCH_GROUP_FOOTER" value:&stru_10026E598 table:@"Pairing"];
-      v35 = v34 = v3;
+      v35 = v34 = specifiers;
       [v32 setProperty:v35 forKey:PSFooterTextGroupKey];
 
       [v34 addObject:v32];
@@ -186,7 +186,7 @@
 LABEL_18:
       [v34 addObject:v38];
 
-      v3 = v34;
+      specifiers = v34;
       v4 = BPSRemoteUISetupStyle_ptr;
       v23 = v84;
       goto LABEL_22;
@@ -194,17 +194,17 @@ LABEL_18:
 
     if (self->_allowsMarkAsMissing)
     {
-      v39 = [(COSAboutDataSource *)self device];
+      device3 = [(COSAboutDataSource *)self device];
       v40 = BPSDeviceHasCapabilityForString();
 
       if (v40)
       {
         v84 = v23;
         v32 = [PSSpecifier groupSpecifierWithID:@"UNPAIR_MISSING_GROUP_ID"];
-        [v3 addObject:v32];
+        [specifiers addObject:v32];
         v41 = +[NSBundle mainBundle];
         [v41 localizedStringForKey:@"UNPAIR_MISSING" value:&stru_10026E598 table:@"Pairing"];
-        v42 = v34 = v3;
+        v42 = v34 = specifiers;
         v38 = [PSSpecifier preferenceSpecifierNamed:v42 target:self set:0 get:0 detail:0 cell:1 edit:0];
 
         [v38 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -229,10 +229,10 @@ LABEL_22:
   if (self->_tinkerDevice)
   {
     v85 = v23;
-    v45 = [(COSPairingDataSource *)self deviceUser];
+    deviceUser = [(COSPairingDataSource *)self deviceUser];
 
     v46 = v4[378];
-    if (v45)
+    if (deviceUser)
     {
       v47 = +[NSBundle mainBundle];
       v48 = [v47 localizedStringForKey:@"TINKER_IFORGOT_HEADER" value:&stru_10026E598 table:@"Localizable-tinker"];
@@ -244,11 +244,11 @@ LABEL_22:
       v51 = v44;
       v53 = v52 = v4;
       [v53 firstName];
-      v55 = v54 = v3;
-      v56 = [v55 capitalizedString];
-      v57 = [NSString stringWithFormat:v50, v56];
+      v55 = v54 = specifiers;
+      capitalizedString = [v55 capitalizedString];
+      v57 = [NSString stringWithFormat:v50, capitalizedString];
 
-      v3 = v54;
+      specifiers = v54;
       v58 = v80;
 
       v4 = v52;
@@ -256,14 +256,14 @@ LABEL_22:
       v59 = v57;
 
       [v80 setProperty:v57 forKey:PSFooterTextGroupKey];
-      [v3 addObject:v80];
+      [specifiers addObject:v80];
       v60 = v4[378];
-      v61 = [(COSPairingDataSource *)self deviceUser];
-      v62 = [v61 fullName];
-      v63 = [v60 preferenceSpecifierNamed:v62 target:self set:0 get:"deviceUserAppleID:" detail:0 cell:4 edit:0];
+      deviceUser2 = [(COSPairingDataSource *)self deviceUser];
+      fullName = [deviceUser2 fullName];
+      v63 = [v60 preferenceSpecifierNamed:fullName target:self set:0 get:"deviceUserAppleID:" detail:0 cell:4 edit:0];
 
       [v63 setProperty:objc_opt_class() forKey:PSCellClassKey];
-      [v3 addObject:v63];
+      [specifiers addObject:v63];
       v64 = v4[378];
       v65 = +[NSBundle mainBundle];
       v66 = [v65 localizedStringForKey:@"TINKER_IFORGOT_DEVICE" value:&stru_10026E598 table:@"Localizable-tinker"];
@@ -271,13 +271,13 @@ LABEL_22:
 
       [v67 setButtonAction:"tinkeriForgot"];
       [v67 setIdentifier:@"tinker-iforgot"];
-      [v3 addObject:v67];
+      [specifiers addObject:v67];
     }
 
     else
     {
       v58 = [v4[378] groupSpecifierWithID:@"TinkeriForgotGroup"];
-      [v3 addObject:v58];
+      [specifiers addObject:v58];
       v68 = v4[378];
       v69 = +[NSBundle mainBundle];
       v70 = [v69 localizedStringForKey:@"TINKER_IFORGOT_DEVICE_NO_MEMBER_FOUND" value:&stru_10026E598 table:@"Localizable-tinker"];
@@ -285,7 +285,7 @@ LABEL_22:
 
       [v59 setButtonAction:"tinkeriForgot"];
       [v59 setIdentifier:@"tinker-iforgot"];
-      [v3 addObject:v59];
+      [specifiers addObject:v59];
     }
 
     v23 = v85;
@@ -304,7 +304,7 @@ LABEL_22:
   else
   {
     v71 = [v4[378] groupSpecifierWithID:@"UnpairGroup"];
-    [v3 addObject:v71];
+    [specifiers addObject:v71];
     v72 = v4[378];
     v73 = self->super.PSSpecifierDataSource_opaque[v44];
     v74 = +[NSBundle mainBundle];
@@ -329,7 +329,7 @@ LABEL_22:
     [v78 setProperty:v79 forKey:PSEnabledKey];
 
     [v78 setIdentifier:@"unpair"];
-    [v3 addObject:v78];
+    [specifiers addObject:v78];
   }
 }
 
@@ -345,18 +345,18 @@ LABEL_22:
   [v2 tinkeriForgot];
 }
 
-- (void)confirmUnpairingMissingForSpecifier:(id)a3
+- (void)confirmUnpairingMissingForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = sub_1001865B4(self);
-  [v5 confirmUnpairingMissingForSpecifier:v4];
+  [v5 confirmUnpairingMissingForSpecifier:specifierCopy];
 }
 
-- (void)confirmUnpairingForSpecifier:(id)a3
+- (void)confirmUnpairingForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = sub_1001865B4(self);
-  [v5 confirmUnpairingForSpecifier:v4];
+  [v5 confirmUnpairingForSpecifier:specifierCopy];
 }
 
 @end

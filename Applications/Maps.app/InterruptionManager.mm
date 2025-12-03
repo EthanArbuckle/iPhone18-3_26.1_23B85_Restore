@@ -2,12 +2,12 @@
 + (id)localizedLocationAuthorizationMessage;
 + (id)localizedLocationAuthorizationTitle;
 - (UIViewController)chromeViewController;
-- (id)presentNavSafetyAlertWithUserInfo:(id)a3 completion:(id)a4;
-- (id)presentUnhandledInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5;
-- (void)_locationAuthorizationDismissed:(id)a3;
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5;
+- (id)presentNavSafetyAlertWithUserInfo:(id)info completion:(id)completion;
+- (id)presentUnhandledInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler;
+- (void)_locationAuthorizationDismissed:(id)dismissed;
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type;
 - (void)reportCurrentLocationFailure;
-- (void)setChromeViewController:(id)a3;
+- (void)setChromeViewController:(id)controller;
 @end
 
 @implementation InterruptionManager
@@ -39,7 +39,7 @@
   return WeakRetained;
 }
 
-- (void)_locationAuthorizationDismissed:(id)a3
+- (void)_locationAuthorizationDismissed:(id)dismissed
 {
   if (self->_isShowingLocationServicesAuthorizationPrompt)
   {
@@ -70,29 +70,29 @@
   }
 }
 
-- (void)displayAlertWithTitle:(id)a3 message:(id)a4 postAlertSearchType:(unsigned int)a5
+- (void)displayAlertWithTitle:(id)title message:(id)message postAlertSearchType:(unsigned int)type
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  messageCopy = message;
   if (!self->_displayingError)
   {
-    self->_postAlertSearchType = a5;
+    self->_postAlertSearchType = type;
     self->_displayingError = 1;
     v10 = +[NSMutableDictionary dictionary];
     v11 = v10;
-    if (v8)
+    if (titleCopy)
     {
-      [v10 setObject:v8 forKeyedSubscript:@"kMapsInterruptionTitle"];
+      [v10 setObject:titleCopy forKeyedSubscript:@"kMapsInterruptionTitle"];
     }
 
-    if (v9)
+    if (messageCopy)
     {
-      [v11 setObject:v9 forKeyedSubscript:@"kMapsInterruptionMessage"];
+      [v11 setObject:messageCopy forKeyedSubscript:@"kMapsInterruptionMessage"];
     }
 
     v12 = +[UIApplication sharedMapsDelegate];
     v13 = v12;
-    if (a5 == 1)
+    if (type == 1)
     {
       v14 = 2;
     }
@@ -111,24 +111,24 @@
   }
 }
 
-- (id)presentUnhandledInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5
+- (id)presentUnhandledInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler
 {
-  v110 = a4;
-  v109 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   v8 = 0;
-  if (a3 <= 5)
+  if (kind <= 5)
   {
-    if ((a3 - 2) >= 2)
+    if ((kind - 2) >= 2)
     {
-      if (a3 == 1)
+      if (kind == 1)
       {
         v161[0] = _NSConcreteStackBlock;
         v161[1] = 3221225472;
         v161[2] = sub_1006080FC;
         v161[3] = &unk_101661760;
-        v44 = v109;
+        v44 = handlerCopy;
         v162 = v44;
-        [(InterruptionManager *)self presentNavSafetyAlertWithUserInfo:v110 completion:v161];
+        [(InterruptionManager *)self presentNavSafetyAlertWithUserInfo:infoCopy completion:v161];
         v158[0] = _NSConcreteStackBlock;
         v158[1] = 3221225472;
         v158[2] = sub_100608110;
@@ -140,7 +140,7 @@
         goto LABEL_25;
       }
 
-      if (a3 != 5)
+      if (kind != 5)
       {
         goto LABEL_25;
       }
@@ -148,9 +148,9 @@
       if (!self->_isShowingLocationServicesAuthorizationPrompt)
       {
         v12 = +[MKLocationManager sharedLocationManager];
-        v13 = [v12 isLocationServicesAuthorizationNeeded];
+        isLocationServicesAuthorizationNeeded = [v12 isLocationServicesAuthorizationNeeded];
 
-        if (v13)
+        if (isLocationServicesAuthorizationNeeded)
         {
           v14 = +[NSNotificationCenter defaultCenter];
           [v14 addObserver:self selector:"_locationAuthorizationDismissed:" name:@"LocationAuthorizationDismissedNotification" object:0];
@@ -170,7 +170,7 @@
           v142[1] = 3221225472;
           v142[2] = sub_100608404;
           v142[3] = &unk_1016603A8;
-          v143 = v109;
+          v143 = handlerCopy;
           v17 = v16;
           v144 = v17;
           v18 = [v142 copy];
@@ -191,19 +191,19 @@
 
   else
   {
-    if (a3 > 0x17)
+    if (kind > 0x17)
     {
 LABEL_28:
-      if (a3 != 6)
+      if (kind != 6)
       {
         goto LABEL_25;
       }
 
       if (![(InterruptionManager *)self isShowingLocationServicesAlert])
       {
-        v67 = [v110 objectForKeyedSubscript:@"kMapsInterruptionError"];
-        v68 = [v110 objectForKeyedSubscript:@"kMapsInterruptionTitle"];
-        v69 = [v110 objectForKeyedSubscript:@"kMapsInterruptionMessage"];
+        v67 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionError"];
+        v68 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionTitle"];
+        v69 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionMessage"];
         v70 = [UIAlertController alertControllerWithTitle:v68 message:v69 preferredStyle:1];
         locationServicesAlertView = self->_locationServicesAlertView;
         self->_locationServicesAlertView = v70;
@@ -221,7 +221,7 @@ LABEL_28:
         v136[3] = &unk_101623D60;
         v106 = v67;
         v137 = v106;
-        v73 = v109;
+        v73 = handlerCopy;
         v138 = v73;
         v74 = v72;
         v139 = v74;
@@ -277,9 +277,9 @@ LABEL_30:
       goto LABEL_25;
     }
 
-    if (((1 << a3) & 0x831000) == 0)
+    if (((1 << kind) & 0x831000) == 0)
     {
-      if (a3 == 7)
+      if (kind == 7)
       {
         v46 = +[NSBundle mainBundle];
         v47 = [v46 localizedStringForKey:@"Route in Progress" value:@"localized string not found" table:0];
@@ -293,7 +293,7 @@ LABEL_30:
         v127[1] = 3221225472;
         v127[2] = sub_100608634;
         v127[3] = &unk_101660728;
-        v53 = v109;
+        v53 = handlerCopy;
         v128 = v53;
         v54 = [UIAlertAction actionWithTitle:v52 style:1 handler:v127];
         [v50 addAction:v54];
@@ -329,9 +329,9 @@ LABEL_30:
         goto LABEL_25;
       }
 
-      if (a3 == 22)
+      if (kind == 22)
       {
-        v107 = [v110 objectForKeyedSubscript:@"kMapsInterruptionRouteNameKey"];
+        v107 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionRouteNameKey"];
         v9 = +[NSBundle mainBundle];
         v105 = [v9 localizedStringForKey:@"[RouteCreation] Conversion failure title" value:@"localized string not found" table:0];
 
@@ -339,27 +339,27 @@ LABEL_30:
         if (v107)
         {
           v11 = [v10 localizedStringForKey:@"[RouteCreation] Conversion failure named message" value:@"localized string not found" table:0];
-          v104 = [NSString stringWithFormat:v11, v107];
+          v107 = [NSString stringWithFormat:v11, v107];
         }
 
         else
         {
-          v104 = [v10 localizedStringForKey:@"[RouteCreation] Conversion failure no name message" value:@"localized string not found" table:0];
+          v107 = [v10 localizedStringForKey:@"[RouteCreation] Conversion failure no name message" value:@"localized string not found" table:0];
         }
 
-        v93 = [UIAlertController alertControllerWithTitle:v105 message:v104 preferredStyle:1];
+        v93 = [UIAlertController alertControllerWithTitle:v105 message:v107 preferredStyle:1];
         v94 = +[NSBundle mainBundle];
         v95 = [v94 localizedStringForKey:@"Cancel" value:@"localized string not found" table:0];
         v118[0] = _NSConcreteStackBlock;
         v118[1] = 3221225472;
         v118[2] = sub_100608738;
         v118[3] = &unk_101660728;
-        v96 = v109;
+        v96 = handlerCopy;
         v119 = v96;
         v97 = [UIAlertAction actionWithTitle:v95 style:1 handler:v118];
         [v93 addAction:v97];
 
-        v98 = [v110 objectForKeyedSubscript:@"kMapsInterruptionRouteStorageIDKey"];
+        v98 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionRouteStorageIDKey"];
         if (v98)
         {
           v99 = +[NSBundle mainBundle];
@@ -397,11 +397,11 @@ LABEL_30:
     }
   }
 
-  v21 = [v110 objectForKeyedSubscript:@"kMapsInterruptionTitle"];
-  v22 = [v110 objectForKeyedSubscript:@"kMapsInterruptionMessage"];
+  v21 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionTitle"];
+  v22 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionMessage"];
   v23 = [UIAlertController alertControllerWithTitle:v21 message:v22 preferredStyle:1];
 
-  v24 = [v110 objectForKeyedSubscript:@"kMapsInterruptionActions"];
+  v24 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionActions"];
   if (![v24 count])
   {
     v25 = +[NSBundle mainBundle];
@@ -414,10 +414,10 @@ LABEL_30:
   }
 
   v29 = +[UIDevice currentDevice];
-  v30 = [v29 userInterfaceIdiom];
+  userInterfaceIdiom = [v29 userInterfaceIdiom];
 
-  v31 = v30 != 5;
-  if (a3 == 17)
+  v31 = userInterfaceIdiom != 5;
+  if (kind == 17)
   {
     v31 = 0;
   }
@@ -427,15 +427,15 @@ LABEL_30:
   v153[2] = sub_100608160;
   v153[3] = &unk_101623D38;
   v156 = v31;
-  v32 = v109;
+  v32 = handlerCopy;
   v155 = v32;
   v33 = v23;
   v154 = v33;
-  v157 = v30 == 5;
+  v157 = userInterfaceIdiom == 5;
   [v24 enumerateObjectsUsingBlock:v153];
-  if (a3 == 17)
+  if (kind == 17)
   {
-    v34 = v30 == 5;
+    v34 = userInterfaceIdiom == 5;
     v35 = +[NSBundle mainBundle];
     v36 = [v35 localizedStringForKey:@"AddressCorrection_Permission_LearnMore" value:@"localized string not found" table:0];
     v150[0] = _NSConcreteStackBlock;
@@ -456,7 +456,7 @@ LABEL_30:
   v148 = v38;
   v149 = v32;
   v8 = [v147 copy];
-  if (((1 << a3) & 0x7EEFFC) != 0)
+  if (((1 << kind) & 0x7EEFFC) != 0)
   {
     v39 = sub_100608364();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
@@ -465,7 +465,7 @@ LABEL_30:
       *location = 134349570;
       *&location[4] = self;
       v164 = 2048;
-      v165 = a3;
+      kindCopy2 = kind;
       v166 = 2112;
       v167 = v40;
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_INFO, "[%{public}p] Presenting interruption alert of kind (%ld) on chrome VC: (%@)", location, 0x20u);
@@ -484,7 +484,7 @@ LABEL_30:
       *location = 134349570;
       *&location[4] = self;
       v164 = 2048;
-      v165 = a3;
+      kindCopy2 = kind;
       v166 = 2112;
       v167 = v62;
       _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_INFO, "[%{public}p] Presenting internal interruption alert of kind (%ld) on chrome VC: (%@)", location, 0x20u);
@@ -492,10 +492,10 @@ LABEL_30:
 
     v41 = +[MapsInternalAlertPresentationController sharedInstance];
     v63 = objc_loadWeakRetained(&self->_chromeViewController);
-    v64 = [v63 view];
-    v65 = [v64 window];
-    v66 = [v65 windowScene];
-    [v41 presentAlertController:v38 fromWindowScene:v66];
+    view = [v63 view];
+    window = [view window];
+    windowScene = [window windowScene];
+    [v41 presentAlertController:v38 fromWindowScene:windowScene];
   }
 
 LABEL_25:
@@ -504,11 +504,11 @@ LABEL_25:
   return v42;
 }
 
-- (id)presentNavSafetyAlertWithUserInfo:(id)a3 completion:(id)a4
+- (id)presentNavSafetyAlertWithUserInfo:(id)info completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"kMapsInterruptionTitle"];
+  completionCopy = completion;
+  infoCopy = info;
+  v8 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionTitle"];
   v9 = v8;
   if (v8)
   {
@@ -521,7 +521,7 @@ LABEL_25:
     v10 = [v11 localizedStringForKey:@"Maps Safety Warning Title" value:@"localized string not found" table:0];
   }
 
-  v12 = [v7 objectForKeyedSubscript:@"kMapsInterruptionMessage"];
+  v12 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionMessage"];
 
   if (v12)
   {
@@ -542,8 +542,8 @@ LABEL_25:
   v22[1] = 3221225472;
   v22[2] = sub_100608AEC;
   v22[3] = &unk_101660728;
-  v23 = v6;
-  v18 = v6;
+  v23 = completionCopy;
+  v18 = completionCopy;
   v19 = [UIAlertAction actionWithTitle:v16 style:0 handler:v22];
   [v17 addAction:v19];
 
@@ -553,20 +553,20 @@ LABEL_25:
   return v17;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_100608364();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Setting new chrome VC: %@", &v6, 0x16u);
   }
 
-  objc_storeWeak(&self->_chromeViewController, v4);
+  objc_storeWeak(&self->_chromeViewController, controllerCopy);
 }
 
 @end

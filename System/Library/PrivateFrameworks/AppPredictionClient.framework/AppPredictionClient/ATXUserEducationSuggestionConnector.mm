@@ -1,25 +1,25 @@
 @interface ATXUserEducationSuggestionConnector
-- (ATXUserEducationSuggestionConnector)initWithOurInterfaceFactory:(void *)a3 theirInterfaceFactory:(void *)a4 ourServiceName:(id)a5 theirServiceName:(id)a6 requestHandler:(id)a7;
+- (ATXUserEducationSuggestionConnector)initWithOurInterfaceFactory:(void *)factory theirInterfaceFactory:(void *)interfaceFactory ourServiceName:(id)name theirServiceName:(id)serviceName requestHandler:(id)handler;
 @end
 
 @implementation ATXUserEducationSuggestionConnector
 
-- (ATXUserEducationSuggestionConnector)initWithOurInterfaceFactory:(void *)a3 theirInterfaceFactory:(void *)a4 ourServiceName:(id)a5 theirServiceName:(id)a6 requestHandler:(id)a7
+- (ATXUserEducationSuggestionConnector)initWithOurInterfaceFactory:(void *)factory theirInterfaceFactory:(void *)interfaceFactory ourServiceName:(id)name theirServiceName:(id)serviceName requestHandler:(id)handler
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  nameCopy = name;
+  serviceNameCopy = serviceName;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = ATXUserEducationSuggestionConnector;
   v15 = [(ATXUserEducationSuggestionConnector *)&v23 init];
   if (v15)
   {
-    v16 = [[ATXUserEducationSuggestionConnectorListenerDelegate alloc] initWithServiceName:v12 interfaceFactory:a3 requestHandler:v14];
-    [MEMORY[0x1E69C5DA8] registerForService:v12 delegate:v16];
+    v16 = [[ATXUserEducationSuggestionConnectorListenerDelegate alloc] initWithServiceName:nameCopy interfaceFactory:factory requestHandler:handlerCopy];
+    [MEMORY[0x1E69C5DA8] registerForService:nameCopy delegate:v16];
     v17 = objc_alloc(MEMORY[0x1E69C5DA0]);
-    v18 = (a4)();
+    v18 = (interfaceFactory)();
     v19 = __atxlog_handle_context_user_education_suggestions();
-    v20 = [v17 initWithServiceName:v13 allowlistedServerInterface:v18 allowlistedClientInterface:0 serverInitiatedRequestHandler:0 interruptionHandler:&__block_literal_global_47 invalidationHandler:&__block_literal_global_14_0 logHandle:v19];
+    v20 = [v17 initWithServiceName:serviceNameCopy allowlistedServerInterface:v18 allowlistedClientInterface:0 serverInitiatedRequestHandler:0 interruptionHandler:&__block_literal_global_47 invalidationHandler:&__block_literal_global_14_0 logHandle:v19];
     xpcClientHelper = v15->_xpcClientHelper;
     v15->_xpcClientHelper = v20;
   }

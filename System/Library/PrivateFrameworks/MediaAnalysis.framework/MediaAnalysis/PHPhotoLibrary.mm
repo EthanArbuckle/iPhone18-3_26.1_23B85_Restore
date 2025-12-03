@@ -1,12 +1,12 @@
 @interface PHPhotoLibrary
-- (BOOL)mad_isBackupRestoreEligibleForTask:(unint64_t)a3;
+- (BOOL)mad_isBackupRestoreEligibleForTask:(unint64_t)task;
 - (BOOL)mad_rebuildCoreDataStore;
-- (BOOL)vcp_openAndWaitWithUpgrade:(BOOL)a3 error:(id *)a4;
-- (id)mad_backupFilepathForTask:(unint64_t)a3;
-- (id)mad_intermediateEncryptedBackupFilepathForTask:(unint64_t)a3;
-- (id)mad_intermediateEncryptedRestoreFilepathForTask:(unint64_t)a3;
-- (id)mad_intermediateUnencryptedBackupFilepathForTask:(unint64_t)a3;
-- (id)mad_intermediateUnencryptedRestoreFilepathForTask:(unint64_t)a3;
+- (BOOL)vcp_openAndWaitWithUpgrade:(BOOL)upgrade error:(id *)error;
+- (id)mad_backupFilepathForTask:(unint64_t)task;
+- (id)mad_intermediateEncryptedBackupFilepathForTask:(unint64_t)task;
+- (id)mad_intermediateEncryptedRestoreFilepathForTask:(unint64_t)task;
+- (id)mad_intermediateUnencryptedBackupFilepathForTask:(unint64_t)task;
+- (id)mad_intermediateUnencryptedRestoreFilepathForTask:(unint64_t)task;
 - (id)vcp_mediaAnalysisBackupDirectory;
 - (id)vcp_mediaAnalysisCoreDataBackupFilepath;
 - (id)vcp_mediaAnalysisIntermediateBackupDirectory;
@@ -14,24 +14,24 @@
 - (int)_resetChangeTokenAndProcessingStatusForFaceProcessing;
 - (int)_resetCurrentFaceProgress;
 - (int)_resetEmbeddingClusteringProgress;
-- (int)_signalPhotosResetAvailabilityWithError:(id *)a3;
-- (int)_updateAnalysisInfoWithCurrentVersion:(int)a3 timestamp:(int64_t)a4 taskID:(unint64_t)a5 fetchRequest:(id)a6 changeRequest:(id)a7;
-- (int)clearCheckpointTimestampForTask:(unint64_t)a3 changeRequest:(id)a4;
-- (int)mad_bumpFaceProcessingVersionIfNeededWithError:(id *)a3;
-- (int)mad_migrateVectorDatabaseIfNeededWithError:(id *)a3;
-- (int)mad_updateAnalysisMetricsOnVersionUpdateWithError:(id *)a3;
-- (int)vcp_bumpFaceProcessingToVersion:(int)a3 withError:(id *)a4;
+- (int)_signalPhotosResetAvailabilityWithError:(id *)error;
+- (int)_updateAnalysisInfoWithCurrentVersion:(int)version timestamp:(int64_t)timestamp taskID:(unint64_t)d fetchRequest:(id)request changeRequest:(id)changeRequest;
+- (int)clearCheckpointTimestampForTask:(unint64_t)task changeRequest:(id)request;
+- (int)mad_bumpFaceProcessingVersionIfNeededWithError:(id *)error;
+- (int)mad_migrateVectorDatabaseIfNeededWithError:(id *)error;
+- (int)mad_updateAnalysisMetricsOnVersionUpdateWithError:(id *)error;
+- (int)vcp_bumpFaceProcessingToVersion:(int)version withError:(id *)error;
 @end
 
 @implementation PHPhotoLibrary
 
 - (id)vcp_mediaAnalysisBackupDirectory
 {
-  v2 = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
-  v3 = v2;
-  if (v2)
+  vcp_mediaAnalysisDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
+  v3 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v4 = [v2 stringByAppendingPathComponent:@".backup"];
+    v4 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@".backup"];
   }
 
   else
@@ -44,11 +44,11 @@
 
 - (id)vcp_mediaAnalysisCoreDataBackupFilepath
 {
-  v2 = [(PHPhotoLibrary *)self vcp_mediaAnalysisBackupDirectory];
-  v3 = v2;
-  if (v2)
+  vcp_mediaAnalysisBackupDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisBackupDirectory];
+  v3 = vcp_mediaAnalysisBackupDirectory;
+  if (vcp_mediaAnalysisBackupDirectory)
   {
-    v4 = [v2 stringByAppendingPathComponent:@"mediaanalysis_cd.aea"];
+    v4 = [vcp_mediaAnalysisBackupDirectory stringByAppendingPathComponent:@"mediaanalysis_cd.aea"];
   }
 
   else
@@ -69,11 +69,11 @@
   return v4;
 }
 
-- (id)mad_backupFilepathForTask:(unint64_t)a3
+- (id)mad_backupFilepathForTask:(unint64_t)task
 {
-  v4 = [(PHPhotoLibrary *)self vcp_mediaAnalysisBackupDirectory];
-  v5 = v4;
-  if (!v4)
+  vcp_mediaAnalysisBackupDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisBackupDirectory];
+  v5 = vcp_mediaAnalysisBackupDirectory;
+  if (!vcp_mediaAnalysisBackupDirectory)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -88,15 +88,15 @@
     goto LABEL_15;
   }
 
-  if (a3 > 2)
+  if (task > 2)
   {
-    if (a3 == 3)
+    if (task == 3)
     {
       v6 = @"faceanalysis.aea";
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (task == 10)
     {
       v6 = @"ocranalysis.aea";
       goto LABEL_18;
@@ -105,13 +105,13 @@
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (task == 1)
   {
     v6 = @"mediaanalysis.aea";
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 3)
@@ -133,7 +133,7 @@ LABEL_15:
 
   v6 = @"sceneanalysis.aea";
 LABEL_18:
-  v10 = [v4 stringByAppendingPathComponent:v6];
+  v10 = [vcp_mediaAnalysisBackupDirectory stringByAppendingPathComponent:v6];
 LABEL_19:
 
   return v10;
@@ -141,11 +141,11 @@ LABEL_19:
 
 - (id)vcp_mediaAnalysisIntermediateBackupDirectory
 {
-  v2 = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
-  v3 = v2;
-  if (v2)
+  vcp_mediaAnalysisDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
+  v3 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v4 = [v2 stringByAppendingPathComponent:@".intermediate_backup"];
+    v4 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@".intermediate_backup"];
   }
 
   else
@@ -156,11 +156,11 @@ LABEL_19:
   return v4;
 }
 
-- (id)mad_intermediateUnencryptedBackupFilepathForTask:(unint64_t)a3
+- (id)mad_intermediateUnencryptedBackupFilepathForTask:(unint64_t)task
 {
-  v4 = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateBackupDirectory];
-  v5 = v4;
-  if (!v4)
+  vcp_mediaAnalysisIntermediateBackupDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateBackupDirectory];
+  v5 = vcp_mediaAnalysisIntermediateBackupDirectory;
+  if (!vcp_mediaAnalysisIntermediateBackupDirectory)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -175,15 +175,15 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (a3 > 2)
+  if (task > 2)
   {
-    if (a3 == 3)
+    if (task == 3)
     {
       v6 = @"faceanalysis_unencrypted.backup";
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (task == 10)
     {
       v6 = @"ocranalysis_unencrypted.backup";
       goto LABEL_18;
@@ -192,13 +192,13 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (task == 1)
   {
     v6 = @"mediaanalysis_unencrypted.backup";
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 3)
@@ -220,17 +220,17 @@ LABEL_15:
 
   v6 = @"sceneanalysis_unencrypted.backup";
 LABEL_18:
-  v10 = [v4 stringByAppendingPathComponent:v6];
+  v10 = [vcp_mediaAnalysisIntermediateBackupDirectory stringByAppendingPathComponent:v6];
 LABEL_19:
 
   return v10;
 }
 
-- (id)mad_intermediateEncryptedBackupFilepathForTask:(unint64_t)a3
+- (id)mad_intermediateEncryptedBackupFilepathForTask:(unint64_t)task
 {
-  v4 = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateBackupDirectory];
-  v5 = v4;
-  if (!v4)
+  vcp_mediaAnalysisIntermediateBackupDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateBackupDirectory];
+  v5 = vcp_mediaAnalysisIntermediateBackupDirectory;
+  if (!vcp_mediaAnalysisIntermediateBackupDirectory)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -245,15 +245,15 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (a3 > 2)
+  if (task > 2)
   {
-    if (a3 == 3)
+    if (task == 3)
     {
       v6 = @"faceanalysis.aea";
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (task == 10)
     {
       v6 = @"ocranalysis.aea";
       goto LABEL_18;
@@ -262,13 +262,13 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (task == 1)
   {
     v6 = @"mediaanalysis.aea";
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 3)
@@ -290,7 +290,7 @@ LABEL_15:
 
   v6 = @"sceneanalysis.aea";
 LABEL_18:
-  v10 = [v4 stringByAppendingPathComponent:v6];
+  v10 = [vcp_mediaAnalysisIntermediateBackupDirectory stringByAppendingPathComponent:v6];
 LABEL_19:
 
   return v10;
@@ -298,11 +298,11 @@ LABEL_19:
 
 - (id)vcp_mediaAnalysisIntermediateRestoreDirectory
 {
-  v2 = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
-  v3 = v2;
-  if (v2)
+  vcp_mediaAnalysisDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisDirectory];
+  v3 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v4 = [v2 stringByAppendingPathComponent:@".intermediate_restore"];
+    v4 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@".intermediate_restore"];
   }
 
   else
@@ -313,11 +313,11 @@ LABEL_19:
   return v4;
 }
 
-- (id)mad_intermediateEncryptedRestoreFilepathForTask:(unint64_t)a3
+- (id)mad_intermediateEncryptedRestoreFilepathForTask:(unint64_t)task
 {
-  v4 = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateRestoreDirectory];
-  v5 = v4;
-  if (!v4)
+  vcp_mediaAnalysisIntermediateRestoreDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateRestoreDirectory];
+  v5 = vcp_mediaAnalysisIntermediateRestoreDirectory;
+  if (!vcp_mediaAnalysisIntermediateRestoreDirectory)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -332,15 +332,15 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (a3 > 2)
+  if (task > 2)
   {
-    if (a3 == 3)
+    if (task == 3)
     {
       v6 = @"faceanalysis.aea";
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (task == 10)
     {
       v6 = @"ocranalysis.aea";
       goto LABEL_18;
@@ -349,13 +349,13 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (task == 1)
   {
     v6 = @"mediaanalysis.aea";
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 3)
@@ -377,17 +377,17 @@ LABEL_15:
 
   v6 = @"sceneanalysis.aea";
 LABEL_18:
-  v10 = [v4 stringByAppendingPathComponent:v6];
+  v10 = [vcp_mediaAnalysisIntermediateRestoreDirectory stringByAppendingPathComponent:v6];
 LABEL_19:
 
   return v10;
 }
 
-- (id)mad_intermediateUnencryptedRestoreFilepathForTask:(unint64_t)a3
+- (id)mad_intermediateUnencryptedRestoreFilepathForTask:(unint64_t)task
 {
-  v4 = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateRestoreDirectory];
-  v5 = v4;
-  if (!v4)
+  vcp_mediaAnalysisIntermediateRestoreDirectory = [(PHPhotoLibrary *)self vcp_mediaAnalysisIntermediateRestoreDirectory];
+  v5 = vcp_mediaAnalysisIntermediateRestoreDirectory;
+  if (!vcp_mediaAnalysisIntermediateRestoreDirectory)
   {
     if (MediaAnalysisLogLevel() >= 4)
     {
@@ -402,15 +402,15 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (a3 > 2)
+  if (task > 2)
   {
-    if (a3 == 3)
+    if (task == 3)
     {
       v6 = @"faceanalysis_unencrypted.backup";
       goto LABEL_18;
     }
 
-    if (a3 == 10)
+    if (task == 10)
     {
       v6 = @"ocranalysis_unencrypted.backup";
       goto LABEL_18;
@@ -419,13 +419,13 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (task == 1)
   {
     v6 = @"mediaanalysis_unencrypted.backup";
     goto LABEL_18;
   }
 
-  if (a3 != 2)
+  if (task != 2)
   {
 LABEL_12:
     if (MediaAnalysisLogLevel() >= 3)
@@ -447,21 +447,21 @@ LABEL_15:
 
   v6 = @"sceneanalysis_unencrypted.backup";
 LABEL_18:
-  v10 = [v4 stringByAppendingPathComponent:v6];
+  v10 = [vcp_mediaAnalysisIntermediateRestoreDirectory stringByAppendingPathComponent:v6];
 LABEL_19:
 
   return v10;
 }
 
-- (BOOL)mad_isBackupRestoreEligibleForTask:(unint64_t)a3
+- (BOOL)mad_isBackupRestoreEligibleForTask:(unint64_t)task
 {
-  v3 = a3;
-  if (a3 - 1 < 2)
+  taskCopy = task;
+  if (task - 1 < 2)
   {
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (task == 3)
   {
     if (_os_feature_enabled_impl())
     {
@@ -494,7 +494,7 @@ LABEL_11:
 
     if (([(PHPhotoLibrary *)self isSystemPhotoLibrary]& 1) != 0)
     {
-      if ((v3 & 3) != 2 || ([(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]& 1) != 0)
+      if ((taskCopy & 3) != 2 || ([(PHPhotoLibrary *)self isCloudPhotoLibraryEnabled]& 1) != 0)
       {
         LOBYTE(v6) = 1;
         return v6;
@@ -537,7 +537,7 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (a3 == 10)
+  if (task == 10)
   {
     goto LABEL_11;
   }
@@ -554,7 +554,7 @@ LABEL_21:
   if (v6)
   {
     v12[0] = 67109120;
-    v12[1] = v3;
+    v12[1] = taskCopy;
     v7 = "TaskID %d is not eligible for backup/restore";
     v8 = v5;
     v9 = 8;
@@ -583,9 +583,9 @@ LABEL_20:
         return 0;
       }
 
-      v4 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v23 = v4;
+      v23 = vcp_description;
       v5 = "[FaceModelBump][%@][MACD] Database migration incomplete, skipping ChangeToken and ProcessingStatus reset";
 LABEL_27:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, v5, buf, 0xCu);
@@ -607,9 +607,9 @@ LABEL_27:
       return 0;
     }
 
-    v4 = [(PHPhotoLibrary *)self vcp_description];
+    vcp_description = [(PHPhotoLibrary *)self vcp_description];
     *buf = 138412290;
-    v23 = v4;
+    v23 = vcp_description;
     v5 = "[FaceModelBump][%@] Media analysis database does not exist, skipping ChangeToken and ProcessingStatus reset";
     goto LABEL_27;
   }
@@ -619,9 +619,9 @@ LABEL_27:
     v6 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
-      v7 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description2 = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v23 = v7;
+      v23 = vcp_description2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[FaceModelBump][%@] Flushing ChangeToken and ProcessingStatus ... ", buf, 0xCu);
     }
   }
@@ -641,20 +641,20 @@ LABEL_27:
     {
 
       v11 = 0;
-      v12 = 0;
+      code = 0;
     }
 
     else
     {
-      v12 = [v9 code];
+      code = [v9 code];
       if (MediaAnalysisLogLevel() >= 3)
       {
         v17 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v17))
         {
-          v18 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description3 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412290;
-          v23 = v18;
+          v23 = vcp_description3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "[FaceModelBump][%@] Failed to flush", buf, 0xCu);
         }
       }
@@ -667,14 +667,14 @@ LABEL_27:
   {
     v11 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:self];
     v13 = [v11 removeAllProcessingStatusForTaskID:3];
-    v12 = v13;
+    code = v13;
     if (v13 != -108 && v13 != -36 && v13 != -23)
     {
       v16 = [v11 removeAllChangeTokensForTaskID:3];
-      v12 = v16;
+      code = v16;
       if (v16 != -108 && v16 != -36 && v16 != -23)
       {
-        v12 = 0;
+        code = 0;
       }
     }
 
@@ -683,25 +683,25 @@ LABEL_27:
       [v11 commit];
     }
 
-    if (v12)
+    if (code)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
         v14 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v14))
         {
-          v15 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description4 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412546;
-          v23 = v15;
+          v23 = vcp_description4;
           v24 = 1024;
-          v25 = v12;
+          v25 = code;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[FaceModelBump][%@] Failed to flush (%d)", buf, 0x12u);
         }
       }
     }
   }
 
-  return v12;
+  return code;
 }
 
 - (int)_resetCurrentFaceProgress
@@ -721,9 +721,9 @@ LABEL_27:
         return 0;
       }
 
-      v4 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v39 = v4;
+      v39 = vcp_description;
       v5 = "[FaceModelBump][%@][MACD] Database migration incomplete, skipping ChangeToken and ProcessingStatus reset";
 LABEL_21:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, v5, buf, 0xCu);
@@ -745,9 +745,9 @@ LABEL_21:
       return 0;
     }
 
-    v4 = [(PHPhotoLibrary *)self vcp_description];
+    vcp_description = [(PHPhotoLibrary *)self vcp_description];
     *buf = 138412290;
-    v39 = v4;
+    v39 = vcp_description;
     v5 = "[FaceModelBump][%@] Media analysis database does not exist, skipping ChangeToken and ProcessingStatus reset";
     goto LABEL_21;
   }
@@ -757,15 +757,15 @@ LABEL_21:
     v6 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
-      v7 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description2 = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v39 = v7;
+      v39 = vcp_description2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[FaceModelBump][%@] Reset cached face analysis progress ...", buf, 0xCu);
     }
   }
 
   v8 = [MADProgressManager cacheCurrentFaceProgressForPhotoLibrary:self];
-  v9 = v8;
+  code = v8;
   v10 = 0;
   switch(v8)
   {
@@ -778,7 +778,7 @@ LABEL_21:
   }
 
   v14 = [MADProgressManager cacheProcessedAssetCountAfterPromoter:0 photoLibrary:self];
-  v9 = v14;
+  code = v14;
   v10 = 0;
   if (v14 == -108 || v14 == -36 || v14 == -23)
   {
@@ -792,9 +792,9 @@ LABEL_21:
       v15 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v15))
       {
-        v16 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description3 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412546;
-        v39 = v16;
+        v39 = vcp_description3;
         v40 = 1024;
         v41 = 3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "[FaceModelBump][%@][MACD] Removing all person change tokens for taskID %d", buf, 0x12u);
@@ -812,9 +812,9 @@ LABEL_21:
         v20 = VCPLogToOSLogType[5];
         if (os_log_type_enabled(&_os_log_default, v20))
         {
-          v21 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description4 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412290;
-          v39 = v21;
+          v39 = vcp_description4;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v20, "[FaceModelBump][%@][MACD] Resetting person process timestamps ...", buf, 0xCu);
         }
       }
@@ -825,12 +825,12 @@ LABEL_21:
 
       if (v22)
       {
-        v9 = 0;
+        code = 0;
       }
 
       else
       {
-        v9 = [v23 code];
+        code = [v23 code];
         if (MediaAnalysisLogLevel() >= 3)
         {
           v35 = VCPLogToOSLogType[3];
@@ -848,15 +848,15 @@ LABEL_21:
 
     else
     {
-      v9 = [v18 code];
+      code = [v18 code];
       if (MediaAnalysisLogLevel() >= 3)
       {
         v33 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v33))
         {
-          v34 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description5 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412802;
-          v39 = v34;
+          v39 = vcp_description5;
           v40 = 1024;
           v41 = 3;
           v42 = 2112;
@@ -877,15 +877,15 @@ LABEL_21:
       v24 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v24))
       {
-        v25 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description6 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412290;
-        v39 = v25;
+        v39 = vcp_description6;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[FaceModelBump][%@] Resetting person process change tokens ...", buf, 0xCu);
       }
     }
 
     v26 = [v10 removeAllChangeTokensForTaskID:3];
-    v9 = v26;
+    code = v26;
     if (v26 != -108 && v26 != -36 && v26 != -23)
     {
       if (MediaAnalysisLogLevel() >= 5)
@@ -893,30 +893,30 @@ LABEL_21:
         v27 = VCPLogToOSLogType[5];
         if (os_log_type_enabled(&_os_log_default, v27))
         {
-          v28 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description7 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412290;
-          v39 = v28;
+          v39 = vcp_description7;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v27, "[FaceModelBump][%@] Resetting person process timestamps ...", buf, 0xCu);
         }
       }
 
       v29 = [v10 removeKey:@"ContactIngestionTimestamp"];
-      v9 = v29;
+      code = v29;
       if (v29 != -108 && v29 != -36 && v29 != -23)
       {
         v30 = [v10 removeKey:@"HomePersonIngestionTimestamp"];
-        v9 = v30;
+        code = v30;
         if (v30 != -108 && v30 != -36 && v30 != -23)
         {
           v31 = [v10 removeKey:@"VUDeepSyncTimestamp"];
-          v9 = v31;
+          code = v31;
           if (v31 != -108 && v31 != -36 && v31 != -23)
           {
             v32 = [v10 removeKey:VCPKeyValueFaceAnalysisLastFullModeClusterTimestamp];
-            v9 = v32;
+            code = v32;
             if (v32 != -108 && v32 != -36 && v32 != -23)
             {
-              v9 = 0;
+              code = 0;
             }
           }
         }
@@ -929,7 +929,7 @@ LABEL_21:
     }
   }
 
-  if (v9)
+  if (code)
   {
 LABEL_75:
     if (MediaAnalysisLogLevel() >= 3)
@@ -937,44 +937,44 @@ LABEL_75:
       v11 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v11))
       {
-        v12 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description8 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412546;
-        v39 = v12;
+        v39 = vcp_description8;
         v40 = 1024;
-        v41 = v9;
+        v41 = code;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[FaceModelBump][%@] Failed to reset (%d)", buf, 0x12u);
       }
     }
   }
 
-  return v9;
+  return code;
 }
 
-- (int)vcp_bumpFaceProcessingToVersion:(int)a3 withError:(id *)a4
+- (int)vcp_bumpFaceProcessingToVersion:(int)version withError:(id *)error
 {
-  v4 = *&a3;
-  v6 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:self, a4];
-  v7 = [v6 currentProcessingVersion];
+  v4 = *&version;
+  error = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:self, error];
+  currentProcessingVersion = [error currentProcessingVersion];
   if (MediaAnalysisLogLevel() >= 5)
   {
     v8 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v8))
     {
-      v9 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description = [(PHPhotoLibrary *)self vcp_description];
       v15 = 138412802;
-      v16 = v9;
+      v16 = vcp_description;
       v17 = 1024;
-      v18 = v7;
+      v18 = currentProcessingVersion;
       v19 = 1024;
       v20 = v4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[FaceModelBump][%@] Migrating version from: %d to %d", &v15, 0x18u);
     }
   }
 
-  v10 = [(PHPhotoLibrary *)self _resetChangeTokenAndProcessingStatusForFaceProcessing];
-  if (v10 || (v10 = [v6 migrateFaceProcessingToVersion:v4]) != 0 || (v10 = -[PHPhotoLibrary _resetCurrentFaceProgress](self, "_resetCurrentFaceProgress")) != 0)
+  _resetChangeTokenAndProcessingStatusForFaceProcessing = [(PHPhotoLibrary *)self _resetChangeTokenAndProcessingStatusForFaceProcessing];
+  if (_resetChangeTokenAndProcessingStatusForFaceProcessing || (_resetChangeTokenAndProcessingStatusForFaceProcessing = [error migrateFaceProcessingToVersion:v4]) != 0 || (_resetChangeTokenAndProcessingStatusForFaceProcessing = -[PHPhotoLibrary _resetCurrentFaceProgress](self, "_resetCurrentFaceProgress")) != 0)
   {
-    v11 = v10;
+    v11 = _resetChangeTokenAndProcessingStatusForFaceProcessing;
   }
 
   else
@@ -984,9 +984,9 @@ LABEL_75:
       v13 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v13))
       {
-        v14 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description2 = [(PHPhotoLibrary *)self vcp_description];
         v15 = 138412290;
-        v16 = v14;
+        v16 = vcp_description2;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "[FaceModelBump][%@] Migration finished", &v15, 0xCu);
       }
     }
@@ -997,25 +997,25 @@ LABEL_75:
   return v11;
 }
 
-- (int)mad_bumpFaceProcessingVersionIfNeededWithError:(id *)a3
+- (int)mad_bumpFaceProcessingVersionIfNeededWithError:(id *)error
 {
   v5 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:self];
-  v6 = [v5 currentProcessingVersion];
-  v7 = [v5 defaultProcessingVersion];
-  if (v7 == v6)
+  currentProcessingVersion = [v5 currentProcessingVersion];
+  defaultProcessingVersion = [v5 defaultProcessingVersion];
+  if (defaultProcessingVersion == currentProcessingVersion)
   {
     if (MediaAnalysisLogLevel() >= 5)
     {
       v8 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v8))
       {
-        v9 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description = [(PHPhotoLibrary *)self vcp_description];
         v12 = 138412802;
-        v13 = v9;
+        v13 = vcp_description;
         v14 = 1024;
-        v15 = v6;
+        v15 = currentProcessingVersion;
         v16 = 1024;
-        v17 = v6;
+        v17 = currentProcessingVersion;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v8, "[FaceModelBump][%@] Version %d meets requirement %d", &v12, 0x18u);
       }
     }
@@ -1025,7 +1025,7 @@ LABEL_75:
 
   else
   {
-    v10 = [(PHPhotoLibrary *)self vcp_bumpFaceProcessingToVersion:v7 withError:a3];
+    v10 = [(PHPhotoLibrary *)self vcp_bumpFaceProcessingToVersion:defaultProcessingVersion withError:error];
   }
 
   return v10;
@@ -1048,9 +1048,9 @@ LABEL_75:
         return 0;
       }
 
-      v4 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v36 = v4;
+      v36 = vcp_description;
       v5 = "[FaceModelBump][%@][MACD] Database migration incomplete, skipping ChangeToken and ProcessingStatus reset";
 LABEL_31:
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, v5, buf, 0xCu);
@@ -1072,9 +1072,9 @@ LABEL_31:
       return 0;
     }
 
-    v4 = [(PHPhotoLibrary *)self vcp_description];
+    vcp_description = [(PHPhotoLibrary *)self vcp_description];
     *buf = 138412290;
-    v36 = v4;
+    v36 = vcp_description;
     v5 = "[FaceModelBump][%@] Media analysis database does not exist, skipping ChangeToken and ProcessingStatus reset";
     goto LABEL_31;
   }
@@ -1085,9 +1085,9 @@ LABEL_31:
     v7 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v7))
     {
-      v8 = [(PHPhotoLibrary *)self vcp_description];
+      vcp_description2 = [(PHPhotoLibrary *)self vcp_description];
       *buf = 138412290;
-      v36 = v8;
+      v36 = vcp_description2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "[VSKDBMigration][%@] Reset embedding clustering progress ... ", buf, 0xCu);
     }
   }
@@ -1100,15 +1100,15 @@ LABEL_31:
     v11 = v10;
     if ((v9 & 1) == 0)
     {
-      v14 = [v10 code];
+      code = [v10 code];
       if (MediaAnalysisLogLevel() >= 3)
       {
         v24 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v24))
         {
-          v25 = [(PHPhotoLibrary *)self vcp_description];
+          vcp_description3 = [(PHPhotoLibrary *)self vcp_description];
           *buf = 138412290;
-          v36 = v25;
+          v36 = vcp_description3;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[VSKDBMigration][%@] Failed to reset embedding clustering progress", buf, 0xCu);
         }
       }
@@ -1125,7 +1125,7 @@ LABEL_31:
   {
     v12 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:self];
     v13 = [v12 removeKey:VCPKeyValueMediaAnalysisImagePriority1LastFullModeClusterTimestamp];
-    v14 = v13;
+    code = v13;
     v15 = 0;
     if (v13 == -108)
     {
@@ -1164,7 +1164,7 @@ LABEL_31:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_END, v18, "VUWGallery_resetForType_Scene", "", buf, 2u);
       }
 
-      v14 = 0;
+      code = 0;
       goto LABEL_45;
     }
 
@@ -1173,9 +1173,9 @@ LABEL_31:
       v28 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v28))
       {
-        v29 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description4 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412802;
-        v36 = v29;
+        v36 = vcp_description4;
         v37 = 1024;
         v38 = 0;
         v39 = 2112;
@@ -1192,9 +1192,9 @@ LABEL_31:
       v26 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v26))
       {
-        v27 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description5 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412290;
-        v36 = v27;
+        v36 = vcp_description5;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v26, "[VSKDBMigration][%@] Failed to obtain VUWGallery", buf, 0xCu);
       }
     }
@@ -1202,7 +1202,7 @@ LABEL_31:
     v15 = 0;
   }
 
-  v14 = -18;
+  code = -18;
 LABEL_45:
   if (v12 && +[VCPDatabaseWriter isLegacyPersistEnabled])
   {
@@ -1210,27 +1210,27 @@ LABEL_45:
   }
 
 LABEL_48:
-  if (v14)
+  if (code)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
       v30 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v30))
       {
-        v31 = [(PHPhotoLibrary *)self vcp_description];
+        vcp_description6 = [(PHPhotoLibrary *)self vcp_description];
         *buf = 138412546;
-        v36 = v31;
+        v36 = vcp_description6;
         v37 = 1024;
-        v38 = v14;
+        v38 = code;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v30, "[VSKDBMigration][%@] Failed to reset (%d)", buf, 0x12u);
       }
     }
   }
 
-  return v14;
+  return code;
 }
 
-- (int)_signalPhotosResetAvailabilityWithError:(id *)a3
+- (int)_signalPhotosResetAvailabilityWithError:(id *)error
 {
   v5 = [PLFeatureAvailabilitySignalledChanges alloc];
   v6 = [v5 initWithSourceIdentifier:MediaAnalysisDaemonDomain];
@@ -1248,11 +1248,11 @@ LABEL_48:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PhotoLibraryClient_SignalAvailabilityWithChanges", "", buf, 2u);
   }
 
-  v11 = [(PHPhotoLibrary *)self photoLibrary];
-  v12 = [v11 assetsdClient];
-  v13 = [v12 libraryInternalClient];
+  photoLibrary = [(PHPhotoLibrary *)self photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
   v29 = 0;
-  v14 = [v13 signalAvailabilityWithChanges:v6 error:&v29];
+  v14 = [libraryInternalClient signalAvailabilityWithChanges:v6 error:&v29];
   v15 = v29;
 
   v16 = VCPSignPostLog();
@@ -1271,15 +1271,15 @@ LABEL_48:
       v19 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v19))
       {
-        v20 = [v6 resetLastFullVUIndexClusterDate];
-        v21 = [v6 countOfAssetsIndexedInVUClustering];
-        v22 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
+        resetLastFullVUIndexClusterDate = [v6 resetLastFullVUIndexClusterDate];
+        countOfAssetsIndexedInVUClustering = [v6 countOfAssetsIndexedInVUClustering];
+        fractionOfCuratedAssetsIndexedInVUClustering = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
         *buf = 67109634;
-        v31 = v20;
+        v31 = resetLastFullVUIndexClusterDate;
         v32 = 2112;
-        v33 = v21;
+        v33 = countOfAssetsIndexedInVUClustering;
         v34 = 2112;
-        v35 = v22;
+        v35 = fractionOfCuratedAssetsIndexedInVUClustering;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v19, "[VSKDBMigration] Signalled Photos availability state change (resetLastFullVUIndexClusterDate=%d, countOfAssetsIndexedInVUClustering=%@, fractionOfCuratedAssetsIndexedInVUClustering=%@)", buf, 0x1Cu);
       }
     }
@@ -1294,24 +1294,24 @@ LABEL_48:
       v24 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v24))
       {
-        v25 = [v6 resetLastFullVUIndexClusterDate];
-        v26 = [v6 countOfAssetsIndexedInVUClustering];
-        v27 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
+        resetLastFullVUIndexClusterDate2 = [v6 resetLastFullVUIndexClusterDate];
+        countOfAssetsIndexedInVUClustering2 = [v6 countOfAssetsIndexedInVUClustering];
+        fractionOfCuratedAssetsIndexedInVUClustering2 = [v6 fractionOfCuratedAssetsIndexedInVUClustering];
         *buf = 67109890;
-        v31 = v25;
+        v31 = resetLastFullVUIndexClusterDate2;
         v32 = 2112;
-        v33 = v26;
+        v33 = countOfAssetsIndexedInVUClustering2;
         v34 = 2112;
-        v35 = v27;
+        v35 = fractionOfCuratedAssetsIndexedInVUClustering2;
         v36 = 2112;
         v37 = v15;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[VSKDBMigration] Failed to signal Photos availability state change (resetLastFullVUIndexClusterDate=%d, countOfAssetsIndexedInVUClustering=%@, fractionOfCuratedAssetsIndexedInVUClustering=%@): %@", buf, 0x26u);
       }
     }
 
-    if (a3)
+    if (error)
     {
-      *a3 = [v15 copy];
+      *error = [v15 copy];
     }
 
     v23 = -18;
@@ -1320,26 +1320,26 @@ LABEL_48:
   return v23;
 }
 
-- (int)mad_migrateVectorDatabaseIfNeededWithError:(id *)a3
+- (int)mad_migrateVectorDatabaseIfNeededWithError:(id *)error
 {
   v5 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:self];
   if ([v5 hasMigration])
   {
-    v6 = [(PHPhotoLibrary *)self _resetEmbeddingClusteringProgress];
-    if (!v6)
+    _resetEmbeddingClusteringProgress = [(PHPhotoLibrary *)self _resetEmbeddingClusteringProgress];
+    if (!_resetEmbeddingClusteringProgress)
     {
-      v6 = [(PHPhotoLibrary *)self _signalPhotosResetAvailabilityWithError:a3];
+      _resetEmbeddingClusteringProgress = [(PHPhotoLibrary *)self _signalPhotosResetAvailabilityWithError:error];
     }
   }
 
   else
   {
-    v6 = 0;
+    _resetEmbeddingClusteringProgress = 0;
   }
 
   MediaAnalysisDaemonReleaseSharedDataStores(self);
 
-  return v6;
+  return _resetEmbeddingClusteringProgress;
 }
 
 - (BOOL)mad_rebuildCoreDataStore
@@ -1349,9 +1349,9 @@ LABEL_48:
     v3 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [(PHPhotoLibrary *)self photoLibraryURL];
+      photoLibraryURL = [(PHPhotoLibrary *)self photoLibraryURL];
       v14 = 138412290;
-      v15 = v4;
+      v15 = photoLibraryURL;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[MACDRebuild] Rebuilding database for photo library %@", &v14, 0xCu);
     }
   }
@@ -1372,7 +1372,7 @@ LABEL_48:
     v10 = [v5 setDatabaseVersion:+[MADPhotosDataStoreClient latestDataStoreVersion](MADPhotosDataStoreClient photoLibrary:{"latestDataStoreVersion"), self}];
     if (!v10)
     {
-      v8 = [(PHPhotoLibrary *)self mad_clearCoreDataErrorIndicatorFile];
+      mad_clearCoreDataErrorIndicatorFile = [(PHPhotoLibrary *)self mad_clearCoreDataErrorIndicatorFile];
       goto LABEL_8;
     }
 
@@ -1382,9 +1382,9 @@ LABEL_48:
       v12 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v12))
       {
-        v13 = [(PHPhotoLibrary *)self photoLibraryURL];
+        photoLibraryURL2 = [(PHPhotoLibrary *)self photoLibraryURL];
         v14 = 138412546;
-        v15 = v13;
+        v15 = photoLibraryURL2;
         v16 = 1024;
         v17 = v11;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v12, "[MACDRebuild] Failed to set database version for photo library %@ (%d)", &v14, 0x12u);
@@ -1392,16 +1392,16 @@ LABEL_48:
     }
   }
 
-  v8 = 0;
+  mad_clearCoreDataErrorIndicatorFile = 0;
 LABEL_8:
 
-  return v8;
+  return mad_clearCoreDataErrorIndicatorFile;
 }
 
-- (int)_updateAnalysisInfoWithCurrentVersion:(int)a3 timestamp:(int64_t)a4 taskID:(unint64_t)a5 fetchRequest:(id)a6 changeRequest:(id)a7
+- (int)_updateAnalysisInfoWithCurrentVersion:(int)version timestamp:(int64_t)timestamp taskID:(unint64_t)d fetchRequest:(id)request changeRequest:(id)changeRequest
 {
-  v9 = a6;
-  v10 = a7;
+  requestCopy = request;
+  changeRequestCopy = changeRequest;
   v11 = VCPVersionKeyForTask();
   v12 = VCPStartTimestampKeyForTask();
   v48 = VCPPercentCompleteTimestampKeyForTask();
@@ -1420,8 +1420,8 @@ LABEL_8:
     v20 = v19 || v14 == 0;
     if (!v20 && v15 != 0)
     {
-      v22 = [v9 dataStoreValueForKey:v11];
-      if (v22 == a3)
+      v22 = [requestCopy dataStoreValueForKey:v11];
+      if (v22 == version)
       {
         v23 = 0;
         goto LABEL_40;
@@ -1435,26 +1435,26 @@ LABEL_8:
         if (os_log_type_enabled(&_os_log_default, type))
         {
           *buf = 134218240;
-          v50 = v26;
+          dCopy = v26;
           v51 = 1024;
-          v52 = a3;
+          versionCopy2 = version;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Analysis version changed from %lld to %d", buf, 0x12u);
         }
       }
 
-      [v10 setDataStoreValue:a3 forKey:v11];
-      [v10 setDataStoreValue:a4 forKey:v12];
-      [v10 removeDataStoreKey:v48];
-      [v10 removeDataStoreKey:v47];
-      [v10 removeDataStoreKey:v46];
-      [v10 removeDataStoreKey:v13];
-      [v10 removeDataStoreKey:v14];
-      [v10 removeDataStoreKey:v15];
-      [v10 removeDataStoreKey:v16];
-      [v10 removeDataStoreKey:v45];
-      if (a5 == 3)
+      [changeRequestCopy setDataStoreValue:version forKey:v11];
+      [changeRequestCopy setDataStoreValue:timestamp forKey:v12];
+      [changeRequestCopy removeDataStoreKey:v48];
+      [changeRequestCopy removeDataStoreKey:v47];
+      [changeRequestCopy removeDataStoreKey:v46];
+      [changeRequestCopy removeDataStoreKey:v13];
+      [changeRequestCopy removeDataStoreKey:v14];
+      [changeRequestCopy removeDataStoreKey:v15];
+      [changeRequestCopy removeDataStoreKey:v16];
+      [changeRequestCopy removeDataStoreKey:v45];
+      if (d == 3)
       {
-        *typea = v9;
+        *typea = requestCopy;
         v38 = &VCPKeyValuePersonalizationCheckpointReportedTimestamp;
         v27 = &VCPKeyValuePrioritizedFaceCheckpointWithFailureReportedTimestamp;
         v28 = &VCPKeyValuePrioritizedFaceAnalysisCompleteWithFailureTimestamp;
@@ -1464,13 +1464,13 @@ LABEL_8:
 
       else
       {
-        if (a5 != 1)
+        if (d != 1)
         {
           goto LABEL_34;
         }
 
-        *typea = v9;
-        [v10 removeDataStoreKey:VCPKeyValueMediaAnalysisImagePriority1MCEnableTimestamp];
+        *typea = requestCopy;
+        [changeRequestCopy removeDataStoreKey:VCPKeyValueMediaAnalysisImagePriority1MCEnableTimestamp];
         v38 = &VCPKeyValueMediaAnalysisImageCheckpointWithFailureReportedTimestamp;
         v27 = &VCPKeyValueMediaAnalysisImageCheckpointReportedTimestamp;
         v28 = &VCPKeyValueMediaAnalysisImagePriority1CheckpointWithFailureReportedTimestamp;
@@ -1478,12 +1478,12 @@ LABEL_8:
         v30 = &VCPKeyValueMediaAnalysisImagePriority1CompleteTimestamp;
       }
 
-      [v10 removeDataStoreKey:*v30];
-      [v10 removeDataStoreKey:*v29];
-      [v10 removeDataStoreKey:*v28];
-      [v10 removeDataStoreKey:*v27];
-      [v10 removeDataStoreKey:*v38];
-      v9 = *typea;
+      [changeRequestCopy removeDataStoreKey:*v30];
+      [changeRequestCopy removeDataStoreKey:*v29];
+      [changeRequestCopy removeDataStoreKey:*v28];
+      [changeRequestCopy removeDataStoreKey:*v27];
+      [changeRequestCopy removeDataStoreKey:*v38];
+      requestCopy = *typea;
 LABEL_34:
       if (MediaAnalysisLogLevel() >= 7)
       {
@@ -1491,32 +1491,32 @@ LABEL_34:
         if (os_log_type_enabled(&_os_log_default, v31))
         {
           *buf = 138412802;
-          v50 = v11;
+          dCopy = v11;
           v51 = 1024;
-          v52 = a3;
+          versionCopy2 = version;
           v53 = 2048;
-          v54 = a4;
+          timestampCopy = timestamp;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v31, "Updated %@ with %d (timestamp: %lld)", buf, 0x1Cu);
         }
       }
 
       v44 = v12;
-      [v10 removeAllProcessingStatusImmediatelyForTaskID:a5];
-      if (a5 == 1)
+      [changeRequestCopy removeAllProcessingStatusImmediatelyForTaskID:d];
+      if (d == 1)
       {
-        [v10 removeAllProcessingStatusImmediatelyForTaskID:255];
+        [changeRequestCopy removeAllProcessingStatusImmediatelyForTaskID:255];
       }
 
-      [MADProgressManager resetProcessingCheckpointForTask:a5];
-      v32 = [v9 dataStoreValueForKey:MajorOSVersionNumberKey];
-      v33 = [v9 dataStoreValueForKey:MinorOSVersionNumberKey];
+      [MADProgressManager resetProcessingCheckpointForTask:d];
+      v32 = [requestCopy dataStoreValueForKey:MajorOSVersionNumberKey];
+      v33 = [requestCopy dataStoreValueForKey:MinorOSVersionNumberKey];
       VCPOSMajorOfLastVersionUpdateKeyForTask();
-      v35 = v34 = v9;
-      [v10 setDataStoreValue:v32 forKey:v35];
+      v35 = v34 = requestCopy;
+      [changeRequestCopy setDataStoreValue:v32 forKey:v35];
 
-      v9 = v34;
+      requestCopy = v34;
       v36 = VCPOSMinorOfLastVersionUpdateKeyForTask();
-      [v10 setDataStoreValue:v33 forKey:v36];
+      [changeRequestCopy setDataStoreValue:v33 forKey:v36];
 
       v23 = 0;
       v12 = v44;
@@ -1537,7 +1537,7 @@ LABEL_34:
     if (os_log_type_enabled(&_os_log_default, v25))
     {
       *buf = 134217984;
-      v50 = a5;
+      dCopy = d;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v25, "No corresponding keys found for taskID %lu", buf, 0xCu);
     }
 
@@ -1550,9 +1550,9 @@ LABEL_40:
   return v23;
 }
 
-- (int)clearCheckpointTimestampForTask:(unint64_t)a3 changeRequest:(id)a4
+- (int)clearCheckpointTimestampForTask:(unint64_t)task changeRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v6 = VCPBGSTCheckpointTimestampKeyForTask();
   if (!v6 && MediaAnalysisLogLevel() >= 3)
   {
@@ -1560,12 +1560,12 @@ LABEL_40:
     if (os_log_type_enabled(&_os_log_default, v7))
     {
       v11 = 134217984;
-      v12 = a3;
+      taskCopy2 = task;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v7, "No corresponding checkpoint key found for taskID %lu", &v11, 0xCu);
     }
   }
 
-  [v5 removeDataStoreKey:v6];
+  [requestCopy removeDataStoreKey:v6];
   v8 = VCPBGSTCheckpointTimestampKeyForTask();
   if (!v8 && MediaAnalysisLogLevel() >= 3)
   {
@@ -1573,23 +1573,23 @@ LABEL_40:
     if (os_log_type_enabled(&_os_log_default, v9))
     {
       v11 = 134217984;
-      v12 = a3;
+      taskCopy2 = task;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "No corresponding checkpoint_with_failure key found for taskID %lu", &v11, 0xCu);
     }
   }
 
-  [v5 removeDataStoreKey:v8];
-  if (a3 == 3)
+  [requestCopy removeDataStoreKey:v8];
+  if (task == 3)
   {
-    [v5 removeDataStoreKey:VCPKeyValuePrioritizedFaceCheckpointReportedTimestamp];
-    [v5 removeDataStoreKey:VCPKeyValuePrioritizedFaceCheckpointWithFailureReportedTimestamp];
-    [v5 removeDataStoreKey:VCPKeyValuePersonalizationCheckpointReportedTimestamp];
+    [requestCopy removeDataStoreKey:VCPKeyValuePrioritizedFaceCheckpointReportedTimestamp];
+    [requestCopy removeDataStoreKey:VCPKeyValuePrioritizedFaceCheckpointWithFailureReportedTimestamp];
+    [requestCopy removeDataStoreKey:VCPKeyValuePersonalizationCheckpointReportedTimestamp];
   }
 
   return 0;
 }
 
-- (int)mad_updateAnalysisMetricsOnVersionUpdateWithError:(id *)a3
+- (int)mad_updateAnalysisMetricsOnVersionUpdateWithError:(id *)error
 {
   if (MediaAnalysisLogLevel() >= 6)
   {
@@ -1613,38 +1613,38 @@ LABEL_40:
   v9 = v21 = v8;
   v18 = v9;
   v19 = &off_100296620;
-  v20 = self;
-  if (([(PHPhotoLibrary *)self mad_performAnalysisDataStoreChanges:v17 error:a3]& 1) != 0)
+  selfCopy = self;
+  if (([(PHPhotoLibrary *)self mad_performAnalysisDataStoreChanges:v17 error:error]& 1) != 0)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001A367C;
     v12[3] = &unk_100288560;
     v13 = &off_100296620;
-    v14 = self;
+    selfCopy2 = self;
     v16 = v8;
     v15 = v9;
-    [(PHPhotoLibrary *)self mad_performAnalysisDataStoreChanges:v12 error:a3];
+    [(PHPhotoLibrary *)self mad_performAnalysisDataStoreChanges:v12 error:error];
 
-    v10 = 0;
+    code = 0;
   }
 
   else
   {
-    v10 = [*a3 code];
+    code = [*error code];
   }
 
-  return v10;
+  return code;
 }
 
-- (BOOL)vcp_openAndWaitWithUpgrade:(BOOL)a3 error:(id *)a4
+- (BOOL)vcp_openAndWaitWithUpgrade:(BOOL)upgrade error:(id *)error
 {
-  v6 = [(PHPhotoLibrary *)self openAndWaitWithUpgrade:a3 error:?];
+  v6 = [(PHPhotoLibrary *)self openAndWaitWithUpgrade:upgrade error:?];
   if (v6)
   {
     if (![(PHPhotoLibrary *)self mad_checkCoreDataErrorIndicatorFileExistence]|| (v6 = [(PHPhotoLibrary *)self mad_rebuildCoreDataStore]) != 0)
     {
-      LOBYTE(v6) = ![(PHPhotoLibrary *)self mad_bumpFaceProcessingVersionIfNeededWithError:a4]&& ![(PHPhotoLibrary *)self mad_migrateVectorDatabaseIfNeededWithError:a4]&& [(PHPhotoLibrary *)self mad_updateAnalysisMetricsOnVersionUpdateWithError:a4]== 0;
+      LOBYTE(v6) = ![(PHPhotoLibrary *)self mad_bumpFaceProcessingVersionIfNeededWithError:error]&& ![(PHPhotoLibrary *)self mad_migrateVectorDatabaseIfNeededWithError:error]&& [(PHPhotoLibrary *)self mad_updateAnalysisMetricsOnVersionUpdateWithError:error]== 0;
     }
   }
 

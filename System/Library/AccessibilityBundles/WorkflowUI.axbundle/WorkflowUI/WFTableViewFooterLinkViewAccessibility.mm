@@ -8,18 +8,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(WFTableViewFooterLinkViewAccessibility *)self _axFooterViewTextView];
-  v3 = [v2 accessibilityValue];
+  _axFooterViewTextView = [(WFTableViewFooterLinkViewAccessibility *)self _axFooterViewTextView];
+  accessibilityValue = [_axFooterViewTextView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)_accessibilityInternalTextLinks
 {
-  v2 = [(WFTableViewFooterLinkViewAccessibility *)self _axFooterViewTextView];
-  v3 = [v2 _accessibilityInternalTextLinks];
+  _axFooterViewTextView = [(WFTableViewFooterLinkViewAccessibility *)self _axFooterViewTextView];
+  _accessibilityInternalTextLinks = [_axFooterViewTextView _accessibilityInternalTextLinks];
 
-  return v3;
+  return _accessibilityInternalTextLinks;
 }
 
 - (id)_axFooterViewTextView

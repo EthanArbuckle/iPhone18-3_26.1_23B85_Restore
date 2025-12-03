@@ -2,8 +2,8 @@
 - (AKCommandMessage)init;
 - (id)description;
 - (unint64_t)command;
-- (void)setArgument:(id)a3;
-- (void)setCommand:(unint64_t)a3;
+- (void)setArgument:(id)argument;
+- (void)setCommand:(unint64_t)command;
 @end
 
 @implementation AKCommandMessage
@@ -29,37 +29,37 @@
 - (unint64_t)command
 {
   v3 = [(NSMutableDictionary *)self->super._properties objectForKeyedSubscript:@"akcmd"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   _objc_release(v3);
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setCommand:(unint64_t)a3
+- (void)setCommand:(unint64_t)command
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:command];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
   _objc_release(v3);
 }
 
-- (void)setArgument:(id)a3
+- (void)setArgument:(id)argument
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSMutableDictionary *)v4->super._properties setObject:location[0] forKeyedSubscript:@"akarg"];
+  objc_storeStrong(location, argument);
+  [(NSMutableDictionary *)selfCopy->super._properties setObject:location[0] forKeyedSubscript:@"akarg"];
   objc_storeStrong(location, 0);
 }
 
 - (id)description
 {
-  v6 = [(_AKMessage *)self identifier];
+  identifier = [(_AKMessage *)self identifier];
   v5 = [NSNumber numberWithUnsignedInteger:[(AKCommandMessage *)self command]];
-  v4 = [(AKCommandMessage *)self argument];
-  v7 = [NSString stringWithFormat:@"\nAKCommandMessage <%p> {\nInternal ID: %@, \nCommand: %@, \nArgument: %@ }", self, v6, v5, v4];
-  _objc_release(v4);
+  argument = [(AKCommandMessage *)self argument];
+  v7 = [NSString stringWithFormat:@"\nAKCommandMessage <%p> {\nInternal ID: %@, \nCommand: %@, \nArgument: %@ }", self, identifier, v5, argument];
+  _objc_release(argument);
   _objc_release(v5);
-  _objc_release(v6);
+  _objc_release(identifier);
 
   return v7;
 }

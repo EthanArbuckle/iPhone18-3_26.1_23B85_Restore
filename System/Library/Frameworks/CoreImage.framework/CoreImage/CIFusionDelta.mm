@@ -78,7 +78,7 @@
     v23 = ((1.0 / (*&v22 - v21)) * v21) + 1.0;
     v24 = [CIVector vectorWithX:v9 Y:v13 Z:v5];
     v25 = [CIVector vectorWithX:v19 Y:v23 Z:v15];
-    v26 = [(CIFusionDelta *)self kernel];
+    kernel = [(CIFusionDelta *)self kernel];
     [(CIImage *)self->inputImage extent];
     v28 = v27;
     v30 = v29;
@@ -94,7 +94,7 @@
     v37[1] = @"kCIImageAlphaOne";
     v38[0] = [MEMORY[0x1E696AD98] numberWithInt:2053];
     v38[1] = MEMORY[0x1E695E118];
-    return [v26 applyWithExtent:v36 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v38, v37, 2), v28, v30, v32, v34}];
+    return [kernel applyWithExtent:v36 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", v38, v37, 2), v28, v30, v32, v34}];
   }
 }
 

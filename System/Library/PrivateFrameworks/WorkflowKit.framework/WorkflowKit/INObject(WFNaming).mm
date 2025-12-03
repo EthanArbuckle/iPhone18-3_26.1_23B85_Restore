@@ -6,7 +6,7 @@
 
 - (id)wfName
 {
-  v1 = [a1 displayString];
+  displayString = [self displayString];
   v2 = WFAbbreviatedNameFromText();
 
   return v2;

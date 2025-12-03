@@ -1,23 +1,23 @@
 @interface PKPaymentServiceProviderItemsSectionController
-- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)a3 serviceProviderProductWithItems:(id)a4 currency:(id)a5 delegate:(id)a6;
-- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)a3 showOtherProviders:(BOOL)a4 delegate:(id)a5;
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
+- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)identifier serviceProviderProductWithItems:(id)items currency:(id)currency delegate:(id)delegate;
+- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)identifier showOtherProviders:(BOOL)providers delegate:(id)delegate;
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
 - (void)deselectAllItems;
-- (void)didSelectItem:(id)a3;
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3;
+- (void)didSelectItem:(id)item;
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated;
 @end
 
 @implementation PKPaymentServiceProviderItemsSectionController
 
-- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)a3 showOtherProviders:(BOOL)a4 delegate:(id)a5
+- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)identifier showOtherProviders:(BOOL)providers delegate:(id)delegate
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (v6)
+  providersCopy = providers;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  if (providersCopy)
   {
     v10 = objc_alloc_init(PKPaymentSetupListItem);
     otherProvidersItem = self->_otherProvidersItem;
@@ -29,19 +29,19 @@
     [(PKPaymentSetupListItem *)v12 setTitle:v13];
   }
 
-  v14 = [(PKPaymentServiceProviderItemsSectionController *)self initWithIdentifier:v8 serviceProviderProductWithItems:0 currency:0 delegate:v9];
+  v14 = [(PKPaymentServiceProviderItemsSectionController *)self initWithIdentifier:identifierCopy serviceProviderProductWithItems:0 currency:0 delegate:delegateCopy];
 
   return v14;
 }
 
-- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)a3 serviceProviderProductWithItems:(id)a4 currency:(id)a5 delegate:(id)a6
+- (PKPaymentServiceProviderItemsSectionController)initWithIdentifier:(id)identifier serviceProviderProductWithItems:(id)items currency:(id)currency delegate:(id)delegate
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v22[0] = v10;
+  identifierCopy = identifier;
+  itemsCopy = items;
+  currencyCopy = currency;
+  delegateCopy = delegate;
+  v22[0] = identifierCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v21.receiver = self;
   v21.super_class = PKPaymentServiceProviderItemsSectionController;
@@ -49,13 +49,13 @@
 
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v13);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __119__PKPaymentServiceProviderItemsSectionController_initWithIdentifier_serviceProviderProductWithItems_currency_delegate___block_invoke;
     v19[3] = &unk_1E8023500;
-    v20 = v12;
-    v16 = [v11 pk_arrayByApplyingBlock:v19];
+    v20 = currencyCopy;
+    v16 = [itemsCopy pk_arrayByApplyingBlock:v19];
     listItems = v15->_listItems;
     v15->_listItems = v16;
   }
@@ -98,13 +98,13 @@ PKServiceProviderListItem *__119__PKPaymentServiceProviderItemsSectionController
   return v5;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DC5D0];
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 isEqualToString:@"OtherProvidersItem"];
+  v8 = [identifierCopy isEqualToString:@"OtherProvidersItem"];
 
   if (v8)
   {
@@ -121,10 +121,10 @@ PKServiceProviderListItem *__119__PKPaymentServiceProviderItemsSectionController
   return v7;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -149,9 +149,9 @@ PKServiceProviderListItem *__119__PKPaymentServiceProviderItemsSectionController
           }
 
           v10 = *(*(&v16 + 1) + 8 * v9);
-          if (v10 == v4 || [*(*(&v16 + 1) + 8 * v9) selected])
+          if (v10 == itemCopy || [*(*(&v16 + 1) + 8 * v9) selected])
           {
-            [v10 setSelected:v10 == v4];
+            [v10 setSelected:v10 == itemCopy];
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
             [WeakRetained reloadItem:v10 animated:1];
           }
@@ -167,8 +167,8 @@ PKServiceProviderListItem *__119__PKPaymentServiceProviderItemsSectionController
     }
 
     v12 = objc_loadWeakRetained(&self->_delegate);
-    v13 = [v4 itemPair];
-    [v12 didSelectServiceProviderItem:v13];
+    itemPair = [itemCopy itemPair];
+    [v12 didSelectServiceProviderItem:itemPair];
 
     v14 = objc_loadWeakRetained(&self->_delegate);
     [v14 deselectCells];
@@ -229,9 +229,9 @@ LABEL_15:
   [v10 deselectCells];
 }
 
-- (void)hideLoadingIndicatorsAnimated:(BOOL)a3
+- (void)hideLoadingIndicatorsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PKPaymentSetupListItem *)self->_otherProvidersItem loadingIndicatorVisible])
   {
     [(PKPaymentSetupListItem *)self->_otherProvidersItem setLoadingIndicatorVisible:0];
@@ -239,72 +239,72 @@ LABEL_15:
     [WeakRetained deselectCells];
 
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 reloadItem:self->_otherProvidersItem animated:v3];
+    [v6 reloadItem:self->_otherProvidersItem animated:animatedCopy];
   }
 }
 
-- (id)decoratePaymentSetListCell:(id)a3 forItem:(id)a4 style:(unint64_t)a5
+- (id)decoratePaymentSetListCell:(id)cell forItem:(id)item style:(unint64_t)style
 {
-  v7 = a3;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = PKPaymentServiceProviderItemsSectionController;
-  v8 = a4;
-  v9 = [(PKPaymentSetupListSectionController *)&v14 decoratePaymentSetListCell:v7 forItem:v8 style:1];
-  v10 = [v8 identifier];
+  itemCopy = item;
+  v9 = [(PKPaymentSetupListSectionController *)&v14 decoratePaymentSetListCell:cellCopy forItem:itemCopy style:1];
+  identifier = [itemCopy identifier];
 
-  LODWORD(v8) = [v10 isEqualToString:@"OtherProviders"];
-  if (v8)
+  LODWORD(itemCopy) = [identifier isEqualToString:@"OtherProviders"];
+  if (itemCopy)
   {
-    v11 = [v9 textProperties];
-    v12 = [MEMORY[0x1E69DC888] linkColor];
-    [v11 setColor:v12];
+    textProperties = [v9 textProperties];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    [textProperties setColor:linkColor];
   }
 
-  [v7 setContentConfiguration:v9];
+  [cellCopy setContentConfiguration:v9];
 
   return v9;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  LODWORD(self) = [v7 isEqualToString:@"OtherProvidersItem"];
+  environmentCopy = environment;
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  LODWORD(self) = [identifierCopy isEqualToString:@"OtherProvidersItem"];
 
   if (self)
   {
-    [v8 setFooterMode:1];
+    [defaultListLayout setFooterMode:1];
   }
 
-  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v8 layoutEnvironment:v6];
+  v9 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
   [v9 contentInsets];
   [v9 setContentInsets:16.0];
 
   return v9;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69DCC28];
-  v6 = a3;
-  v7 = [v5 footerConfiguration];
-  [v7 setAxesPreservingSuperviewLayoutMargins:0];
+  registrationCopy = registration;
+  footerConfiguration = [v5 footerConfiguration];
+  [footerConfiguration setAxesPreservingSuperviewLayoutMargins:0];
   v14[0] = *MEMORY[0x1E69DB648];
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC60]);
   v15[0] = v8;
   v14[1] = *MEMORY[0x1E69DB650];
-  v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v15[1] = v9;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v15[1] = secondaryLabelColor;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   v11 = objc_alloc(MEMORY[0x1E696AAB0]);
   v12 = PKLocalizedPaymentString(&cfstr_OtherProviders_2.isa);
   v13 = [v11 initWithString:v12 attributes:v10];
-  [v7 setAttributedText:v13];
+  [footerConfiguration setAttributedText:v13];
 
-  [v6 setContentConfiguration:v7];
+  [registrationCopy setContentConfiguration:footerConfiguration];
 }
 
 @end

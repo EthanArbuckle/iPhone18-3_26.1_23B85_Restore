@@ -1,5 +1,5 @@
 @interface FullScreenMultiPinMapCollectionViewCell
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (NSArray)preferredFocusEnvironments;
 - (void)handleMapTap;
 - (void)prepareForReuse;
@@ -10,7 +10,7 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_100887908();
 }
 
@@ -22,7 +22,7 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 16);
-    v7 = self;
+    selfCopy = self;
     v6(0, 0, ObjectType, v4);
     swift_unknownObjectRelease();
   }
@@ -55,11 +55,11 @@
   return v6.super.isa;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100888028(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_100888028(contextCopy);
 
   return self & 1;
 }

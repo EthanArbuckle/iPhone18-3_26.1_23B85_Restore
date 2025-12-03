@@ -1,24 +1,24 @@
 @interface INStorageAppsRequest
 - (INStorageAppsRequest)init;
-- (INStorageAppsRequest)initWithAccount:(id)a3 withBackupDeviceUDID:(id)a4;
+- (INStorageAppsRequest)initWithAccount:(id)account withBackupDeviceUDID:(id)d;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation INStorageAppsRequest
 
-- (INStorageAppsRequest)initWithAccount:(id)a3 withBackupDeviceUDID:(id)a4
+- (INStorageAppsRequest)initWithAccount:(id)account withBackupDeviceUDID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = INStorageAppsRequest;
   v9 = [(INStorageAppsRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_backupDeviceUDID, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_backupDeviceUDID, d);
   }
 
   return v10;
@@ -26,15 +26,15 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
 
-  if (v3)
+  if (aa_personID)
   {
     v4 = [(ACAccount *)self->_account propertiesForDataclass:@"com.apple.Dataclass.Quota"];
     v5 = [v4 objectForKey:@"settingsStorageAppListURL"];
-    v6 = [(ACAccount *)self->_account aa_personID];
+    aa_personID2 = [(ACAccount *)self->_account aa_personID];
     v7 = +[AADeviceInfo udid];
-    v8 = [INHelperFunctions urlStringFromFormat:v5 dsid:v6 udid:v7];
+    v8 = [INHelperFunctions urlStringFromFormat:v5 dsid:aa_personID2 udid:v7];
   }
 
   else
@@ -62,8 +62,8 @@
 {
   v7.receiver = self;
   v7.super_class = INStorageAppsRequest;
-  v3 = [(INStorageAppsRequest *)&v7 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(INStorageAppsRequest *)&v7 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 ind_addQuotaHeadersForAccount:self->_account];
   [v4 addValue:self->_backupDeviceUDID forHTTPHeaderField:@"X-Client-Backup-UUID"];

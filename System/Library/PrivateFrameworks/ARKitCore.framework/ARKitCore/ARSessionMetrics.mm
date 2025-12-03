@@ -1,24 +1,24 @@
 @interface ARSessionMetrics
-+ (id)getRenderEngineString:(id)a3;
-+ (void)recordAltitudeLookupAttemptWithDuration:(double)a3 andResult:(id)a4;
-+ (void)recordHitTest:(unint64_t)a3;
-+ (void)recordReplayMetrics:(id)a3;
-+ (void)setRenderType:(unint64_t)a3;
++ (id)getRenderEngineString:(id)string;
++ (void)recordAltitudeLookupAttemptWithDuration:(double)duration andResult:(id)result;
++ (void)recordHitTest:(unint64_t)test;
++ (void)recordReplayMetrics:(id)metrics;
++ (void)setRenderType:(unint64_t)type;
 - (ARSessionMetrics)init;
-- (ARSessionMetrics)initWithReporter:(id)a3;
-- (void)_processFrameProperties:(id)a3;
-- (void)_recordBadFramePercentageFinal:(BOOL)a3;
+- (ARSessionMetrics)initWithReporter:(id)reporter;
+- (void)_processFrameProperties:(id)properties;
+- (void)_recordBadFramePercentageFinal:(BOOL)final;
 - (void)_recordSessionEnd;
-- (void)recordCoachingOverlayUsage:(int)a3;
+- (void)recordCoachingOverlayUsage:(int)usage;
 - (void)recordHiResFrameCapture;
-- (void)recordRaycast:(id)a3 tracked:(BOOL)a4;
-- (void)recordSaveMap:(int64_t)a3 numberOfFeaturePoints:(unint64_t)a4;
+- (void)recordRaycast:(id)raycast tracked:(BOOL)tracked;
+- (void)recordSaveMap:(int64_t)map numberOfFeaturePoints:(unint64_t)points;
 - (void)recordTrueNorthUnavailable;
-- (void)reportSessionFailure:(id)a3;
-- (void)sessionDidUpdateFrame:(id)a3;
-- (void)sessionStarted:(id)a3 withConfiguration:(id)a4;
+- (void)reportSessionFailure:(id)failure;
+- (void)sessionDidUpdateFrame:(id)frame;
+- (void)sessionStarted:(id)started withConfiguration:(id)configuration;
 - (void)sessionStopped;
-- (void)sessionUpdateThermalState:(int64_t)a3;
+- (void)sessionUpdateThermalState:(int64_t)state;
 @end
 
 @implementation ARSessionMetrics
@@ -31,16 +31,16 @@
   return v4;
 }
 
-- (ARSessionMetrics)initWithReporter:(id)a3
+- (ARSessionMetrics)initWithReporter:(id)reporter
 {
-  v5 = a3;
+  reporterCopy = reporter;
   v10.receiver = self;
   v10.super_class = ARSessionMetrics;
   v6 = [(ARSessionMetrics *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reporter, a3);
+    objc_storeStrong(&v6->_reporter, reporter);
     v7->_sessionWasThrottled = 0;
     s_isSessionStopped = 1;
     v8 = s_replayStats;
@@ -54,30 +54,30 @@
   return v7;
 }
 
-+ (void)setRenderType:(unint64_t)a3
++ (void)setRenderType:(unint64_t)type
 {
   v3 = s_reportedRendererString;
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_1E817E6D0[a3 - 1];
+    v4 = off_1E817E6D0[type - 1];
   }
 
   s_reportedRendererString = v4;
 }
 
-+ (void)recordHitTest:(unint64_t)a3
++ (void)recordHitTest:(unint64_t)test
 {
   v4 = reportingQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__ARSessionMetrics_recordHitTest___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = test;
   dispatch_async(v4, block);
 }
 
@@ -105,30 +105,30 @@ void __34__ARSessionMetrics_recordHitTest___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)recordReplayMetrics:(id)a3
++ (void)recordReplayMetrics:(id)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = reportingQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__ARSessionMetrics_recordReplayMetrics___block_invoke;
   block[3] = &unk_1E817BFE8;
-  v7 = v3;
-  v5 = v3;
+  v7 = metricsCopy;
+  v5 = metricsCopy;
   dispatch_async(v4, block);
 }
 
-+ (void)recordAltitudeLookupAttemptWithDuration:(double)a3 andResult:(id)a4
++ (void)recordAltitudeLookupAttemptWithDuration:(double)duration andResult:(id)result
 {
-  v5 = a4;
+  resultCopy = result;
   v6 = reportingQueue();
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__ARSessionMetrics_recordAltitudeLookupAttemptWithDuration_andResult___block_invoke;
   v8[3] = &unk_1E817BDD8;
-  v10 = a3;
-  v9 = v5;
-  v7 = v5;
+  durationCopy = duration;
+  v9 = resultCopy;
+  v7 = resultCopy;
   dispatch_async(v6, v8);
 }
 
@@ -186,15 +186,15 @@ void __46__ARSessionMetrics_recordTrueNorthUnavailable__block_invoke(uint64_t a1
   }
 }
 
-+ (id)getRenderEngineString:(id)a3
++ (id)getRenderEngineString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   isKindOfClass = NSClassFromString(&cfstr_Fapplearkitses.isa);
   v5 = NSClassFromString(&cfstr_Unityarsession.isa);
   v6 = NSVersionOfRunTimeLibrary("RealityKit");
   if (isKindOfClass)
   {
-    v7 = [v3 delegate];
+    delegate = [stringCopy delegate];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
@@ -206,7 +206,7 @@ void __46__ARSessionMetrics_recordTrueNorthUnavailable__block_invoke(uint64_t a1
 
   if (v5)
   {
-    isKindOfClass = [v3 delegate];
+    isKindOfClass = [stringCopy delegate];
     if (objc_opt_isKindOfClass())
     {
 
@@ -242,20 +242,20 @@ LABEL_14:
   return v8;
 }
 
-- (void)sessionStarted:(id)a3 withConfiguration:(id)a4
+- (void)sessionStarted:(id)started withConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  startedCopy = started;
+  configurationCopy = configuration;
   v8 = reportingQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__ARSessionMetrics_sessionStarted_withConfiguration___block_invoke;
   block[3] = &unk_1E817E538;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = configurationCopy;
+  v13 = startedCopy;
+  v9 = startedCopy;
+  v10 = configurationCopy;
   dispatch_async(v8, block);
 }
 
@@ -414,25 +414,25 @@ id __53__ARSessionMetrics_sessionStarted_withConfiguration___block_invoke_3(uint
   return v5;
 }
 
-- (void)sessionDidUpdateFrame:(id)a3
+- (void)sessionDidUpdateFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [[ARSessionMetricsFrameProperties alloc] initWithFrame:v4];
+  frameCopy = frame;
+  v5 = [[ARSessionMetricsFrameProperties alloc] initWithFrame:frameCopy];
 
   [(ARSessionMetrics *)self _processFrameProperties:v5];
 }
 
-- (void)_processFrameProperties:(id)a3
+- (void)_processFrameProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = reportingQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ARSessionMetrics__processFrameProperties___block_invoke;
   v7[3] = &unk_1E817BEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = propertiesCopy;
+  v6 = propertiesCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1063,9 +1063,9 @@ id __44__ARSessionMetrics__processFrameProperties___block_invoke_449(uint64_t a1
   return v5;
 }
 
-- (void)sessionUpdateThermalState:(int64_t)a3
+- (void)sessionUpdateThermalState:(int64_t)state
 {
-  if (a3 >= 2 && !self->_sessionWasThrottled)
+  if (state >= 2 && !self->_sessionWasThrottled)
   {
     startDate = self->_startDate;
     if (startDate)
@@ -1085,7 +1085,7 @@ id __44__ARSessionMetrics__processFrameProperties___block_invoke_449(uint64_t a1
   }
 }
 
-- (void)recordSaveMap:(int64_t)a3 numberOfFeaturePoints:(unint64_t)a4
+- (void)recordSaveMap:(int64_t)map numberOfFeaturePoints:(unint64_t)points
 {
   v7 = reportingQueue();
   block[0] = MEMORY[0x1E69E9820];
@@ -1093,8 +1093,8 @@ id __44__ARSessionMetrics__processFrameProperties___block_invoke_449(uint64_t a1
   block[2] = __56__ARSessionMetrics_recordSaveMap_numberOfFeaturePoints___block_invoke;
   block[3] = &unk_1E817C010;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = map;
+  block[6] = points;
   dispatch_async(v7, block);
 }
 
@@ -1126,18 +1126,18 @@ id __56__ARSessionMetrics_recordSaveMap_numberOfFeaturePoints___block_invoke_2(u
   return v5;
 }
 
-- (void)recordRaycast:(id)a3 tracked:(BOOL)a4
+- (void)recordRaycast:(id)raycast tracked:(BOOL)tracked
 {
-  v6 = a3;
+  raycastCopy = raycast;
   v7 = reportingQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__ARSessionMetrics_recordRaycast_tracked___block_invoke;
   block[3] = &unk_1E817CD90;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = raycastCopy;
+  trackedCopy = tracked;
+  v8 = raycastCopy;
   dispatch_async(v7, block);
 }
 
@@ -1185,7 +1185,7 @@ id __42__ARSessionMetrics_recordRaycast_tracked___block_invoke_2(uint64_t a1)
   dispatch_async(v3, block);
 }
 
-- (void)recordCoachingOverlayUsage:(int)a3
+- (void)recordCoachingOverlayUsage:(int)usage
 {
   v5 = reportingQueue();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1193,7 +1193,7 @@ id __42__ARSessionMetrics_recordRaycast_tracked___block_invoke_2(uint64_t a1)
   v6[2] = __47__ARSessionMetrics_recordCoachingOverlayUsage___block_invoke;
   v6[3] = &unk_1E817E5A8;
   v6[4] = self;
-  v7 = a3;
+  usageCopy = usage;
   dispatch_async(v5, v6);
 }
 
@@ -1204,17 +1204,17 @@ uint64_t __47__ARSessionMetrics_recordCoachingOverlayUsage___block_invoke(uint64
   return result;
 }
 
-- (void)reportSessionFailure:(id)a3
+- (void)reportSessionFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v5 = reportingQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__ARSessionMetrics_reportSessionFailure___block_invoke;
   v7[3] = &unk_1E817BEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = failureCopy;
+  v6 = failureCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1321,7 +1321,7 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
 
 - (void)_recordSessionEnd
 {
-  v2 = self;
+  selfCopy = self;
   v149 = *MEMORY[0x1E69E9840];
   [(NSDate *)self->_startDate timeIntervalSinceNow];
   v4 = -v3;
@@ -1333,25 +1333,25 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
     *buf = 138543874;
     v144 = v7;
     v145 = 2048;
-    v146 = v2;
+    v146 = selfCopy;
     v147 = 2048;
     v148 = v4;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: ARSession duration seconds: %f", buf, 0x20u);
   }
 
-  startDate = v2->_startDate;
-  v2->_startDate = 0;
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = 0;
 
   v9 = &off_1C25C8000;
-  if ([(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()]&& ![(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()])
+  if ([(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()]&& ![(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()])
   {
-    v23 = [(ARConfiguration *)v2->_currentConfiguration getAsKindOfConfiguration:objc_opt_class()];
+    v23 = [(ARConfiguration *)selfCopy->_currentConfiguration getAsKindOfConfiguration:objc_opt_class()];
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    [(ARSessionMetrics *)v2 _recordBadFramePercentageFinal:1];
-    if (v2->_hasInitialWorldMap && v2->_relocalizingToInitialWorldMap)
+    [(ARSessionMetrics *)selfCopy _recordBadFramePercentageFinal:1];
+    if (selfCopy->_hasInitialWorldMap && selfCopy->_relocalizingToInitialWorldMap)
     {
-      reporter = v2->_reporter;
+      reporter = selfCopy->_reporter;
       v139[0] = MEMORY[0x1E69E9820];
       v139[1] = 3221225472;
       v139[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke;
@@ -1362,9 +1362,9 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
 
     v28 = 0;
     v26.i64[0] = 0;
-    if (v2->_positionInitialized)
+    if (selfCopy->_positionInitialized)
     {
-      v29 = vsubq_f32(*v2->_maxPos, *v2->_minPos);
+      v29 = vsubq_f32(*selfCopy->_maxPos, *selfCopy->_minPos);
       v26 = vextq_s8(v29, v29, 8uLL);
       *v26.i8 = vmul_f32(*v29.i8, *v26.i8);
       v28 = v29.i32[1];
@@ -1377,7 +1377,7 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
       v138 = 0u;
       v135 = 0u;
       v136 = 0u;
-      v30 = v2->_lastUpdatedFrameAnchors;
+      v30 = selfCopy->_lastUpdatedFrameAnchors;
       v31 = [(NSArray *)v30 countByEnumeratingWithState:&v135 objects:v142 count:16];
       if (v31)
       {
@@ -1418,7 +1418,7 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
     v134 = 0u;
     v131 = 0u;
     v132 = 0u;
-    v64 = v2->_lastUpdatedFrameAnchors;
+    v64 = selfCopy->_lastUpdatedFrameAnchors;
     v65 = [(NSArray *)v64 countByEnumeratingWithState:&v131 objects:v141 count:16];
     if (v65)
     {
@@ -1449,13 +1449,13 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
       v67 = 0;
     }
 
-    v70 = v2->_reporter;
+    v70 = selfCopy->_reporter;
     v124[0] = MEMORY[0x1E69E9820];
     v9 = &off_1C25C8000;
     v124[1] = 3221225472;
     v124[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_2;
     v124[3] = &unk_1E817E618;
-    v124[4] = v2;
+    v124[4] = selfCopy;
     v125 = v23;
     v129 = v98;
     v130 = v28;
@@ -1468,14 +1468,14 @@ uint64_t __34__ARSessionMetrics_sessionStopped__block_invoke(uint64_t a1)
     goto LABEL_69;
   }
 
-  v10 = [(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()];
-  currentConfiguration = v2->_currentConfiguration;
+  v10 = [(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()];
+  currentConfiguration = selfCopy->_currentConfiguration;
   if (v10)
   {
     v12 = [(ARConfiguration *)currentConfiguration getAsKindOfConfiguration:objc_opt_class()];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = v2->_reporter;
+    v15 = selfCopy->_reporter;
     v122[0] = MEMORY[0x1E69E9820];
     v122[1] = 3221225472;
     v122[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_3;
@@ -1490,13 +1490,13 @@ LABEL_25:
   }
 
   v18 = [(ARConfiguration *)currentConfiguration isKindOfConfiguration:objc_opt_class()];
-  v19 = v2->_currentConfiguration;
+  v19 = selfCopy->_currentConfiguration;
   if (v18)
   {
     v20 = [(ARConfiguration *)v19 getAsKindOfConfiguration:objc_opt_class()];
     v21 = objc_opt_class();
     v14 = NSStringFromClass(v21);
-    v22 = v2->_reporter;
+    v22 = selfCopy->_reporter;
     v120[0] = MEMORY[0x1E69E9820];
     v120[1] = 3221225472;
     v120[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_4;
@@ -1509,13 +1509,13 @@ LABEL_25:
   }
 
   v36 = [(ARConfiguration *)v19 isKindOfConfiguration:objc_opt_class()];
-  v37 = v2->_currentConfiguration;
+  v37 = selfCopy->_currentConfiguration;
   if (v36)
   {
     v38 = [(ARConfiguration *)v37 getAsKindOfConfiguration:objc_opt_class()];
     v39 = objc_opt_class();
     v14 = NSStringFromClass(v39);
-    v40 = v2->_reporter;
+    v40 = selfCopy->_reporter;
     v118[0] = MEMORY[0x1E69E9820];
     v118[1] = 3221225472;
     v118[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_5;
@@ -1532,23 +1532,23 @@ LABEL_25:
     v41 = objc_opt_class();
     v42 = NSStringFromClass(v41);
     v14 = v42;
-    if (!v2->_frameCount)
+    if (!selfCopy->_frameCount)
     {
       goto LABEL_70;
     }
 
     v99 = v42;
-    v100 = v2->_lastUpdatedFrameLocation;
+    v100 = selfCopy->_lastUpdatedFrameLocation;
     v114 = 0u;
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
-    v43 = v2->_lastUpdatedFrameAnchors;
+    v43 = selfCopy->_lastUpdatedFrameAnchors;
     v44 = [(NSArray *)v43 countByEnumeratingWithState:&v114 objects:v140 count:16];
     if (v44)
     {
       v45 = v44;
-      v97 = v2;
+      v97 = selfCopy;
       v46 = 0;
       v47 = 0;
       v48 = *v115;
@@ -1643,7 +1643,7 @@ LABEL_25:
         v63 = v51;
       }
 
-      v2 = v97;
+      selfCopy = v97;
       v9 = &off_1C25C8000;
     }
 
@@ -1657,7 +1657,7 @@ LABEL_25:
       v63 = 0.0;
     }
 
-    geoTrackingTrueNorthUnavailable = v2->_geoTrackingTrueNorthUnavailable;
+    geoTrackingTrueNorthUnavailable = selfCopy->_geoTrackingTrueNorthUnavailable;
     v84 = _ARLogSession_1();
     v85 = os_log_type_enabled(v84, OS_LOG_TYPE_INFO);
     if (geoTrackingTrueNorthUnavailable)
@@ -1669,7 +1669,7 @@ LABEL_25:
         *buf = 138543618;
         v144 = v87;
         v145 = 2048;
-        v146 = v2;
+        v146 = selfCopy;
         v88 = "%{public}@ <%p>: True North was not available during the session";
 LABEL_89:
         _os_log_impl(&dword_1C241C000, v84, OS_LOG_TYPE_INFO, v88, buf, 0x16u);
@@ -1683,22 +1683,22 @@ LABEL_89:
       *buf = 138543618;
       v144 = v87;
       v145 = 2048;
-      v146 = v2;
+      v146 = selfCopy;
       v88 = "%{public}@ <%p>: True North was available during the session";
       goto LABEL_89;
     }
 
-    v90 = *&v2->_geoTrackingLowAccuracyFrameCount;
-    geoTrackingHighAccuracyFrameCount = v2->_geoTrackingHighAccuracyFrameCount;
+    v90 = *&selfCopy->_geoTrackingLowAccuracyFrameCount;
+    geoTrackingHighAccuracyFrameCount = selfCopy->_geoTrackingHighAccuracyFrameCount;
     v92 = vaddvq_s64(v90) + geoTrackingHighAccuracyFrameCount;
     v93 = 0.0;
     v94 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_f64(vdivq_f64(vcvtq_f64_u64(v90), vdupq_lane_s64(COERCE__INT64(v92), 0)), vdupq_n_s64(0x4059000000000000uLL))));
-    v95 = v2->_reporter;
+    v95 = selfCopy->_reporter;
     v110[0] = MEMORY[0x1E69E9820];
     v110[1] = *(v9 + 110);
     v110[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_465;
     v110[3] = &unk_1E817E640;
-    v110[4] = v2;
+    v110[4] = selfCopy;
     *&v110[5] = v4;
     if (v92)
     {
@@ -1725,7 +1725,7 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  if ([(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()]|| [(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()]|| [(ARConfiguration *)v2->_currentConfiguration isKindOfConfiguration:objc_opt_class()])
+  if ([(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()]|| [(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()]|| [(ARConfiguration *)selfCopy->_currentConfiguration isKindOfConfiguration:objc_opt_class()])
   {
     v82 = objc_opt_class();
     v14 = NSStringFromClass(v82);
@@ -1737,45 +1737,45 @@ LABEL_69:
   }
 
 LABEL_70:
-  v72 = v2->_reporter;
+  v72 = selfCopy->_reporter;
   v107[0] = MEMORY[0x1E69E9820];
   v73 = *(v9 + 110);
   v107[1] = v73;
   v107[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_2_469;
   v107[3] = &unk_1E817E5D0;
-  v107[4] = v2;
+  v107[4] = selfCopy;
   v74 = v14;
   v108 = v74;
   v109 = v4;
   [(ARSessionMetricsReporting *)v72 sendEvent:@"com.apple.arkit.session" dictionary:v107];
-  v75 = [(ARConfiguration *)v2->_currentConfiguration videoFormat];
-  v76 = v75;
-  if (v75)
+  videoFormat = [(ARConfiguration *)selfCopy->_currentConfiguration videoFormat];
+  v76 = videoFormat;
+  if (videoFormat)
   {
-    v77 = v2->_reporter;
+    v77 = selfCopy->_reporter;
     v103[0] = MEMORY[0x1E69E9820];
     v103[1] = v73;
     v103[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_3_470;
     v103[3] = &unk_1E817E668;
-    v104 = v75;
+    v104 = videoFormat;
     v105 = v74;
-    v106 = v2;
+    v106 = selfCopy;
     [(ARSessionMetricsReporting *)v77 sendEvent:@"com.apple.arkit.videoformat" dictionary:v103];
   }
 
   if (s_replayStats)
   {
-    [(ARSessionMetricsReporting *)v2->_reporter sendEvent:@"com.apple.arkit.ARReplay" dictionary:&__block_literal_global_111];
+    [(ARSessionMetricsReporting *)selfCopy->_reporter sendEvent:@"com.apple.arkit.ARReplay" dictionary:&__block_literal_global_111];
   }
 
-  if (v2->_coachingOverlayActivationCount)
+  if (selfCopy->_coachingOverlayActivationCount)
   {
-    v78 = v2->_reporter;
+    v78 = selfCopy->_reporter;
     v102[0] = MEMORY[0x1E69E9820];
     v102[1] = v73;
     v102[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_5_476;
     v102[3] = &unk_1E817E510;
-    v102[4] = v2;
+    v102[4] = selfCopy;
     [(ARSessionMetricsReporting *)v78 sendEvent:@"com.apple.arkit.ARCoachingOverlay" dictionary:v102];
   }
 
@@ -1786,19 +1786,19 @@ LABEL_70:
     v101[1] = v73;
     v101[2] = __37__ARSessionMetrics__recordSessionEnd__block_invoke_6;
     v101[3] = &unk_1E817E6B0;
-    v101[4] = v2;
+    v101[4] = selfCopy;
     *&v101[5] = v4;
     [v79 enumerateKeysAndObjectsUsingBlock:v101];
   }
 
-  v80 = v2->_currentConfiguration;
-  v2->_currentConfiguration = 0;
+  v80 = selfCopy->_currentConfiguration;
+  selfCopy->_currentConfiguration = 0;
 
-  v2->_sessionWasThrottled = 0;
+  selfCopy->_sessionWasThrottled = 0;
   v81 = s_replayStats;
   s_replayStats = 0;
 
-  v2->_coachingOverlayActivationCount = 0;
+  selfCopy->_coachingOverlayActivationCount = 0;
 }
 
 id __37__ARSessionMetrics__recordSessionEnd__block_invoke(uint64_t a1)
@@ -2320,7 +2320,7 @@ id __37__ARSessionMetrics__recordSessionEnd__block_invoke_7(uint64_t a1)
   return v9;
 }
 
-- (void)_recordBadFramePercentageFinal:(BOOL)a3
+- (void)_recordBadFramePercentageFinal:(BOOL)final
 {
   if (self->_frameCount >= 0xA)
   {
@@ -2352,7 +2352,7 @@ LABEL_9:
       goto LABEL_8;
     }
 
-    if (a3)
+    if (final)
     {
       v7 = 32;
       goto LABEL_9;

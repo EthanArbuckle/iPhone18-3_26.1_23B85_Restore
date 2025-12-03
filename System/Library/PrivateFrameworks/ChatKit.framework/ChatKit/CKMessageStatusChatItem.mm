@@ -1,14 +1,14 @@
 @interface CKMessageStatusChatItem
 + (CKTranscriptLegibilityButton)sizingButton;
 + (id)todayDateFormatter;
-+ (void)appendChevronToStatusText:(id)a3 withButtonTextColor:(id)a4 textAttributes:(id)a5;
-- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)a3 toTraitCollection:(id)a4;
++ (void)appendChevronToStatusText:(id)text withButtonTextColor:(id)color textAttributes:(id)attributes;
+- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection;
 - (BOOL)wantsDrawerLayout;
 - (CGSize)buttonSize;
 - (CGSize)labelSize;
-- (CGSize)loadButtonSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CGSize)loadLabelSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadButtonSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CGSize)loadLabelSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CGSize)size;
 - (Class)cellClass;
 - (NSAttributedString)transcriptButtonText;
@@ -17,10 +17,10 @@
 - (UIEdgeInsets)transcriptTextAlignmentInsets;
 - (char)statusAlignment;
 - (char)transcriptOrientation;
-- (id)_styledStatusTextWithStatusText:(id)a3 orientation:(char)a4 dateSubText:(id)a5 buttonSubText:(id)a6 errorSubText:(id)a7 overrideTextColor:(id)a8 overrideButtonColor:(id)a9 shouldReplaceWarningIcon:(BOOL)a10 shouldDisplayChevronWithTranscriptBackground:(BOOL)a11;
+- (id)_styledStatusTextWithStatusText:(id)text orientation:(char)orientation dateSubText:(id)subText buttonSubText:(id)buttonSubText errorSubText:(id)errorSubText overrideTextColor:(id)color overrideButtonColor:(id)buttonColor shouldReplaceWarningIcon:(BOOL)self0 shouldDisplayChevronWithTranscriptBackground:(BOOL)self1;
 - (id)createReplayText;
-- (id)effectsControlStatusTextForEffectStyleID:(id)a3;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)effectsControlStatusTextForEffectStyleID:(id)d;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptButtonText;
 - (id)loadTranscriptText;
 - (id)time;
@@ -123,9 +123,9 @@
   }
 
   v3 = +[CKUIBehavior sharedBehaviors];
-  v2 = [v3 timestampsPushBalloons];
+  timestampsPushBalloons = [v3 timestampsPushBalloons];
 
-  return v2;
+  return timestampsPushBalloons;
 }
 
 - (CGSize)size
@@ -133,18 +133,18 @@
   v13.receiver = self;
   v13.super_class = CKMessageStatusChatItem;
   [(CKChatItem *)&v13 size];
-  v3 = self;
-  [(CKMessageStatusChatItem *)v3 buttonSize];
+  selfCopy = self;
+  [(CKMessageStatusChatItem *)selfCopy buttonSize];
   v5 = v4;
-  [(CKMessageStatusChatItem *)v3 labelSize];
+  [(CKMessageStatusChatItem *)selfCopy labelSize];
   if (v5 < v6)
   {
     v5 = v6;
   }
 
-  [(CKMessageStatusChatItem *)v3 buttonSize];
+  [(CKMessageStatusChatItem *)selfCopy buttonSize];
   v8 = v7;
-  [(CKMessageStatusChatItem *)v3 labelSize];
+  [(CKMessageStatusChatItem *)selfCopy labelSize];
   v10 = v9;
 
   v11 = v8 + v10;
@@ -156,13 +156,13 @@
 
 - (id)loadTranscriptText
 {
-  v3 = [(CKMessageStatusChatItem *)self transcriptOrientation];
-  v4 = [(CKMessageStatusChatItem *)self statusType];
-  v5 = 0;
+  transcriptOrientation = [(CKMessageStatusChatItem *)self transcriptOrientation];
+  statusType = [(CKMessageStatusChatItem *)self statusType];
+  statusFailureTextColor = 0;
   v6 = 0;
   v7 = 0;
   v8 = 0;
-  switch(v4)
+  switch(statusType)
   {
     case 0:
       if (![(CKMessageStatusChatItem *)self expireStatusType])
@@ -174,17 +174,17 @@
       }
 
       v6 = 0;
-      v5 = 0;
+      statusFailureTextColor = 0;
       v7 = 0;
       v8 = 0;
       goto LABEL_70;
     case 1:
-      v33 = [(CKChatItem *)self IMChatItem];
-      v34 = [v33 isStewie];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      isStewie = [iMChatItem isStewie];
 
       v28 = CKFrameworkBundle();
       v29 = v28;
-      if (v34)
+      if (isStewie)
       {
         v30 = @"MESSAGE_STATUS_SENT_VIA_STEWIE";
         v35 = @"ChatKit-SYDROB_FEATURES";
@@ -208,9 +208,9 @@
       v30 = @"MESSAGE_STATUS_NOTIFIED_RECIPIENT";
       goto LABEL_42;
     case 4:
-      v19 = [(CKMessageStatusChatItem *)self time];
+      time = [(CKMessageStatusChatItem *)self time];
       v20 = [(CKMessageStatusChatItem *)self now];
-      if (!v19)
+      if (!time)
       {
         v48 = CKFrameworkBundle();
         v49 = v48;
@@ -218,15 +218,15 @@
         goto LABEL_40;
       }
 
-      v21 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-      v22 = [v21 __ck_unitOfDisambiguityFromDate:v19 toDate:v20];
+      __ck_currentCalendar = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+      v22 = [__ck_currentCalendar __ck_unitOfDisambiguityFromDate:time toDate:v20];
 
       switch(v22)
       {
         case 4:
 LABEL_14:
           v23 = +[CKMessageStatusChatItem thePastDateFormatter];
-          v7 = [v23 stringFromDate:v19];
+          v7 = [v23 stringFromDate:time];
           v24 = MEMORY[0x1E696AEC0];
           v25 = CKFrameworkBundle();
           v26 = v25;
@@ -235,7 +235,7 @@ LABEL_14:
         case 16:
           v23 = +[CKMessageStatusChatItem thisWeekRelativeDateFormatter];
           v87 = 0;
-          v7 = [v23 stringFromDate:v19 isRelative:&v87];
+          v7 = [v23 stringFromDate:time isRelative:&v87];
           v55 = v87;
           v24 = MEMORY[0x1E696AEC0];
           v25 = CKFrameworkBundle();
@@ -248,26 +248,26 @@ LABEL_14:
       }
 
       v23 = +[CKMessageStatusChatItem todayDateFormatter];
-      v7 = [v23 stringFromDate:v19];
+      v7 = [v23 stringFromDate:time];
       v24 = MEMORY[0x1E696AEC0];
       v25 = CKFrameworkBundle();
       v26 = v25;
       v27 = @"MESSAGE_STATUS_READ_TIME";
       goto LABEL_55;
     case 5:
-      v19 = [(CKMessageStatusChatItem *)self time];
+      time = [(CKMessageStatusChatItem *)self time];
       v20 = [(CKMessageStatusChatItem *)self now];
-      if (v19)
+      if (time)
       {
-        v31 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-        v32 = [v31 __ck_unitOfDisambiguityFromDate:v19 toDate:v20];
+        __ck_currentCalendar2 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+        v32 = [__ck_currentCalendar2 __ck_unitOfDisambiguityFromDate:time toDate:v20];
 
         switch(v32)
         {
           case 4:
 LABEL_20:
             v23 = +[CKMessageStatusChatItem thePastDateFormatter];
-            v7 = [v23 stringFromDate:v19];
+            v7 = [v23 stringFromDate:time];
             v24 = MEMORY[0x1E696AEC0];
             v25 = CKFrameworkBundle();
             v26 = v25;
@@ -276,7 +276,7 @@ LABEL_20:
           case 16:
             v23 = +[CKMessageStatusChatItem thisWeekRelativeDateFormatter];
             v86 = 0;
-            v7 = [v23 stringFromDate:v19 isRelative:&v86];
+            v7 = [v23 stringFromDate:time isRelative:&v86];
             v55 = v86;
             v24 = MEMORY[0x1E696AEC0];
             v25 = CKFrameworkBundle();
@@ -299,7 +299,7 @@ LABEL_50:
             goto LABEL_20;
           default:
             v23 = +[CKMessageStatusChatItem todayDateFormatter];
-            v7 = [v23 stringFromDate:v19];
+            v7 = [v23 stringFromDate:time];
             v24 = MEMORY[0x1E696AEC0];
             v25 = CKFrameworkBundle();
             v26 = v25;
@@ -311,10 +311,10 @@ LABEL_55:
         v58 = [v25 localizedStringForKey:v27 value:&stru_1F04268F8 table:@"ChatKit"];
         v59 = [v24 stringWithFormat:v58, v7];
 
-        v60 = [MEMORY[0x1E69DC668] sharedApplication];
-        v61 = [v60 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-        if (v61 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v62 = @"\u200F";
         }
@@ -342,14 +342,14 @@ LABEL_68:
 
       goto LABEL_69;
     case 6:
-      v36 = [(CKMessageStatusChatItem *)self time];
-      v19 = v36;
-      if (v36)
+      time2 = [(CKMessageStatusChatItem *)self time];
+      time = time2;
+      if (time2)
       {
-        v20 = v36;
+        v20 = time2;
         v37 = [(CKMessageStatusChatItem *)self now];
-        v38 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-        v39 = [v38 __ck_unitOfDisambiguityFromDate:v20 toDate:v37];
+        __ck_currentCalendar3 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+        v39 = [__ck_currentCalendar3 __ck_unitOfDisambiguityFromDate:v20 toDate:v37];
 
         v84 = v37;
         if (v39 != 4)
@@ -392,10 +392,10 @@ LABEL_68:
           v68 = [v65 localizedStringForKey:v67 value:&stru_1F04268F8 table:@"ChatKit"];
           v69 = [v64 stringWithFormat:v68, v7];
 
-          v70 = [MEMORY[0x1E69DC668] sharedApplication];
-          v71 = [v70 userInterfaceLayoutDirection];
+          mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+          userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-          if (v71 == 1)
+          if (userInterfaceLayoutDirection2 == 1)
           {
             v72 = @"\u200F";
           }
@@ -418,10 +418,10 @@ LABEL_30:
         v43 = [v42 localizedStringForKey:@"MESSAGE_STATUS_SAVED_DATE" value:&stru_1F04268F8 table:@"ChatKit"];
         v44 = [v41 stringWithFormat:v43, v7];
 
-        v45 = [MEMORY[0x1E69DC668] sharedApplication];
-        v46 = [v45 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection3 = [mEMORY[0x1E69DC668]3 userInterfaceLayoutDirection];
 
-        if (v46 == 1)
+        if (userInterfaceLayoutDirection3 == 1)
         {
           v47 = @"\u200F";
         }
@@ -460,13 +460,13 @@ LABEL_74:
       v75 = MEMORY[0x1E696AEC0];
       v76 = CKFrameworkBundle();
       v77 = [v76 localizedStringForKey:@"MESSAGE_STATUS_SAVED_GROUP_MULTIPLE" value:&stru_1F04268F8 table:@"ChatKit"];
-      v78 = [v53 __ck_localizedString];
-      v79 = [v75 stringWithFormat:v77, v78];
+      __ck_localizedString = [v53 __ck_localizedString];
+      v79 = [v75 stringWithFormat:v77, __ck_localizedString];
 
-      v80 = [MEMORY[0x1E69DC668] sharedApplication];
-      v81 = [v80 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]4 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection4 = [mEMORY[0x1E69DC668]4 userInterfaceLayoutDirection];
 
-      if (v81 == 1)
+      if (userInterfaceLayoutDirection4 == 1)
       {
         v82 = @"\u200F";
       }
@@ -483,10 +483,10 @@ LABEL_79:
 LABEL_69:
 
       v6 = 0;
-      v5 = 0;
+      statusFailureTextColor = 0;
 LABEL_70:
       LOBYTE(v83) = v6;
-      v73 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v8 orientation:v3 dateSubText:v7 buttonSubText:0 errorSubText:0 overrideTextColor:v5 shouldReplaceWarningIcon:v83];
+      v73 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v8 orientation:transcriptOrientation dateSubText:v7 buttonSubText:0 errorSubText:0 overrideTextColor:statusFailureTextColor shouldReplaceWarningIcon:v83];
 
       return v73;
     case 7:
@@ -510,15 +510,15 @@ LABEL_70:
 
       if (CKShowInternalErrors())
       {
-        v15 = [(CKChatItem *)self IMChatItem];
-        v16 = [v15 errorText];
+        iMChatItem2 = [(CKChatItem *)self IMChatItem];
+        errorText = [iMChatItem2 errorText];
 
-        v8 = v16;
+        v8 = errorText;
       }
 
       v17 = +[CKUIBehavior sharedBehaviors];
-      v18 = [v17 theme];
-      v5 = [v18 statusFailureTextColor];
+      theme = [v17 theme];
+      statusFailureTextColor = [theme statusFailureTextColor];
 
       v6 = 0;
       goto LABEL_44;
@@ -537,7 +537,7 @@ LABEL_43:
       v8 = [v28 localizedStringForKey:v30 value:&stru_1F04268F8 table:v35];
 
       v6 = 0;
-      v5 = 0;
+      statusFailureTextColor = 0;
 LABEL_44:
       v7 = 0;
       goto LABEL_70;
@@ -547,15 +547,15 @@ LABEL_44:
 
       if (CKShowInternalErrors())
       {
-        v10 = [(CKChatItem *)self IMChatItem];
-        v11 = [v10 errorText];
+        iMChatItem3 = [(CKChatItem *)self IMChatItem];
+        errorText2 = [iMChatItem3 errorText];
 
-        v8 = v11;
+        v8 = errorText2;
       }
 
       v12 = +[CKUIBehavior sharedBehaviors];
-      v13 = [v12 theme];
-      v5 = [v13 statusTextColor];
+      theme2 = [v12 theme];
+      statusFailureTextColor = [theme2 statusTextColor];
 
       v7 = 0;
       v6 = 1;
@@ -565,18 +565,18 @@ LABEL_44:
   }
 }
 
-- (id)_styledStatusTextWithStatusText:(id)a3 orientation:(char)a4 dateSubText:(id)a5 buttonSubText:(id)a6 errorSubText:(id)a7 overrideTextColor:(id)a8 overrideButtonColor:(id)a9 shouldReplaceWarningIcon:(BOOL)a10 shouldDisplayChevronWithTranscriptBackground:(BOOL)a11
+- (id)_styledStatusTextWithStatusText:(id)text orientation:(char)orientation dateSubText:(id)subText buttonSubText:(id)buttonSubText errorSubText:(id)errorSubText overrideTextColor:(id)color overrideButtonColor:(id)buttonColor shouldReplaceWarningIcon:(BOOL)self0 shouldDisplayChevronWithTranscriptBackground:(BOOL)self1
 {
-  v15 = a4;
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v71 = a7;
-  v19 = a8;
-  v20 = a9;
+  orientationCopy = orientation;
+  textCopy = text;
+  subTextCopy = subText;
+  buttonSubTextCopy = buttonSubText;
+  errorSubTextCopy = errorSubText;
+  colorCopy = color;
+  buttonColorCopy = buttonColor;
   v21 = +[CKUIBehavior sharedBehaviors];
   v22 = v21;
-  if (v15)
+  if (orientationCopy)
   {
     [v21 rightStatusTranscriptTextAttributes];
   }
@@ -587,39 +587,39 @@ LABEL_44:
   }
   v23 = ;
 
-  v67 = v19;
-  if (v19)
+  v67 = colorCopy;
+  if (colorCopy)
   {
     v24 = [v23 mutableCopy];
-    [v24 setObject:v19 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+    [v24 setObject:colorCopy forKeyedSubscript:*MEMORY[0x1E69DB650]];
     v25 = [v24 copy];
 
     v23 = v25;
   }
 
-  v69 = v16;
-  v70 = v18;
-  if (v16)
+  v69 = textCopy;
+  v70 = buttonSubTextCopy;
+  if (textCopy)
   {
-    v26 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v16 attributes:v23];
-    v16 = v26;
+    v26 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:textCopy attributes:v23];
+    textCopy = v26;
     v27 = v26 != 0;
-    if (v17 && v26)
+    if (subTextCopy && v26)
     {
-      v28 = [v26 string];
-      v29 = [v28 rangeOfString:v17];
+      string = [v26 string];
+      v29 = [string rangeOfString:subTextCopy];
       v31 = v30;
 
       if (v29 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v32 = *MEMORY[0x1E69DB648];
         v33 = +[CKUIBehavior sharedBehaviors];
-        v34 = [v33 transcriptMessageStatusDateFont];
-        [v16 addAttribute:v32 value:v34 range:{v29, v31}];
+        transcriptMessageStatusDateFont = [v33 transcriptMessageStatusDateFont];
+        [textCopy addAttribute:v32 value:transcriptMessageStatusDateFont range:{v29, v31}];
       }
 
       v27 = 1;
-      v18 = v70;
+      buttonSubTextCopy = v70;
     }
   }
 
@@ -628,20 +628,20 @@ LABEL_44:
     v27 = 0;
   }
 
-  v68 = v17;
-  if (v20)
+  v68 = subTextCopy;
+  if (buttonColorCopy)
   {
-    v35 = v20;
+    transcriptMessageStatusButtonTextColor = buttonColorCopy;
   }
 
   else
   {
     v36 = +[CKUIBehavior sharedBehaviors];
-    v37 = [v36 theme];
-    v35 = [v37 transcriptMessageStatusButtonTextColor];
+    theme = [v36 theme];
+    transcriptMessageStatusButtonTextColor = [theme transcriptMessageStatusButtonTextColor];
   }
 
-  if (v18)
+  if (buttonSubTextCopy)
   {
     v38 = !v27;
   }
@@ -653,8 +653,8 @@ LABEL_44:
 
   if ((v38 & 1) == 0)
   {
-    v39 = [v16 string];
-    v40 = [v39 rangeOfString:v18];
+    string2 = [textCopy string];
+    v40 = [string2 rangeOfString:buttonSubTextCopy];
     v42 = v41;
 
     if (v40 != 0x7FFFFFFFFFFFFFFFLL)
@@ -672,12 +672,12 @@ LABEL_44:
       }
       v44 = ;
 
-      [v16 addAttribute:*MEMORY[0x1E69DB648] value:v44 range:{v40, v42}];
-      [v16 addAttribute:*MEMORY[0x1E69DB650] value:v35 range:{v40, v42}];
+      [textCopy addAttribute:*MEMORY[0x1E69DB648] value:v44 range:{v40, v42}];
+      [textCopy addAttribute:*MEMORY[0x1E69DB650] value:transcriptMessageStatusButtonTextColor range:{v40, v42}];
     }
   }
 
-  if (v71)
+  if (errorSubTextCopy)
   {
     v45 = !v27;
   }
@@ -689,46 +689,46 @@ LABEL_44:
 
   if ((v45 & 1) == 0)
   {
-    v46 = [v16 string];
-    v47 = [v46 rangeOfString:v71];
+    string3 = [textCopy string];
+    v47 = [string3 rangeOfString:errorSubTextCopy];
     v49 = v48;
 
     if (v47 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v50 = +[CKUIBehavior sharedBehaviors];
-      v51 = [v50 theme];
-      v52 = [v51 statusFailureTextColor];
+      theme2 = [v50 theme];
+      statusFailureTextColor = [theme2 statusFailureTextColor];
 
-      [v16 addAttribute:*MEMORY[0x1E69DB650] value:v52 range:{v47, v49}];
+      [textCopy addAttribute:*MEMORY[0x1E69DB650] value:statusFailureTextColor range:{v47, v49}];
     }
   }
 
-  if (v27 && a10)
+  if (v27 && icon)
   {
-    v53 = [v16 string];
-    v54 = [v53 rangeOfString:@"(!)"];
+    string4 = [textCopy string];
+    v54 = [string4 rangeOfString:@"(!)"];
     v56 = v55;
 
     if (v54 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v16 replaceCharactersInRange:v54 withString:{v56, &stru_1F04268F8}];
+      [textCopy replaceCharactersInRange:v54 withString:{v56, &stru_1F04268F8}];
       v57 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
       v58 = +[CKUIBehavior sharedBehaviors];
-      v59 = [v58 messageStatusWarningIconRed];
+      messageStatusWarningIconRed = [v58 messageStatusWarningIconRed];
 
-      [v57 setImage:v59];
+      [v57 setImage:messageStatusWarningIconRed];
       v60 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v57];
       v61 = [v60 mutableCopy];
 
       [v61 addAttributes:v23 range:{0, objc_msgSend(v61, "length")}];
-      [v16 insertAttributedString:v61 atIndex:v54];
+      [textCopy insertAttributedString:v61 atIndex:v54];
     }
   }
 
-  if (a11)
+  if (background)
   {
-    v62 = [(CKChatItem *)self transcriptTraitCollection];
-    if ([v62 isTranscriptBackgroundActive])
+    transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+    if ([transcriptTraitCollection isTranscriptBackgroundActive])
     {
     }
 
@@ -742,45 +742,45 @@ LABEL_44:
       }
     }
 
-    [CKMessageStatusChatItem appendChevronToStatusText:v16 withButtonTextColor:v35 textAttributes:v23];
+    [CKMessageStatusChatItem appendChevronToStatusText:textCopy withButtonTextColor:transcriptMessageStatusButtonTextColor textAttributes:v23];
   }
 
 LABEL_39:
-  v64 = [v16 copy];
+  v64 = [textCopy copy];
 
   return v64;
 }
 
-+ (void)appendChevronToStatusText:(id)a3 withButtonTextColor:(id)a4 textAttributes:(id)a5
++ (void)appendChevronToStatusText:(id)text withButtonTextColor:(id)color textAttributes:(id)attributes
 {
   v7 = MEMORY[0x1E696AAB0];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v16 = [[v7 alloc] initWithString:@" " attributes:v8];
-  [v10 appendAttributedString:v16];
+  attributesCopy = attributes;
+  colorCopy = color;
+  textCopy = text;
+  v16 = [[v7 alloc] initWithString:@" " attributes:attributesCopy];
+  [textCopy appendAttributedString:v16];
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 messageStatusChevronWithButtonColor:v9];
+  v12 = [v11 messageStatusChevronWithButtonColor:colorCopy];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   [v13 setImage:v12];
   v14 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v13];
   v15 = [v14 mutableCopy];
-  [v15 addAttributes:v8 range:{0, objc_msgSend(v15, "length")}];
+  [v15 addAttributes:attributesCopy range:{0, objc_msgSend(v15, "length")}];
 
-  [v10 appendAttributedString:v15];
+  [textCopy appendAttributedString:v15];
 }
 
-- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)a3 toTraitCollection:(id)a4
+- (BOOL)shouldUnloadTranscriptTextForChangeFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 isTranscriptBackgroundActive];
-  if (v8 == [v7 isTranscriptBackgroundActive])
+  collectionCopy = collection;
+  traitCollectionCopy = traitCollection;
+  isTranscriptBackgroundActive = [collectionCopy isTranscriptBackgroundActive];
+  if (isTranscriptBackgroundActive == [traitCollectionCopy isTranscriptBackgroundActive])
   {
     v11.receiver = self;
     v11.super_class = CKMessageStatusChatItem;
-    v9 = [(CKChatItem *)&v11 shouldUnloadTranscriptTextForChangeFromTraitCollection:v6 toTraitCollection:v7];
+    v9 = [(CKChatItem *)&v11 shouldUnloadTranscriptTextForChangeFromTraitCollection:collectionCopy toTraitCollection:traitCollectionCopy];
   }
 
   else
@@ -791,19 +791,19 @@ LABEL_39:
   return v9;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(CKChatItem *)self transcriptText];
-  if ([v8 length])
+  height = fits.height;
+  width = fits.width;
+  transcriptText = [(CKChatItem *)self transcriptText];
+  if ([transcriptText length])
   {
-    [(CKMessageStatusChatItem *)self loadLabelSizeThatFits:a4 textAlignmentInsets:width, height];
+    [(CKMessageStatusChatItem *)self loadLabelSizeThatFits:insets textAlignmentInsets:width, height];
   }
 
   else
   {
-    [(CKMessageStatusChatItem *)self loadButtonSizeThatFits:a4 textAlignmentInsets:width, height];
+    [(CKMessageStatusChatItem *)self loadButtonSizeThatFits:insets textAlignmentInsets:width, height];
   }
 
   v11 = v9;
@@ -821,8 +821,8 @@ LABEL_39:
   transcriptButtonText = self->_transcriptButtonText;
   if (!transcriptButtonText)
   {
-    v4 = [(CKMessageStatusChatItem *)self loadTranscriptButtonText];
-    v5 = [v4 copy];
+    loadTranscriptButtonText = [(CKMessageStatusChatItem *)self loadTranscriptButtonText];
+    v5 = [loadTranscriptButtonText copy];
     v6 = self->_transcriptButtonText;
     self->_transcriptButtonText = v5;
 
@@ -929,10 +929,10 @@ LABEL_39:
     return *v4;
   }
 
-  v5 = [(CKMessageStatusChatItem *)self statusType];
-  if (v5 < 0x29)
+  statusType = [(CKMessageStatusChatItem *)self statusType];
+  if (statusType < 0x29)
   {
-    v4 = (&unk_190DCED90 + 8 * v5);
+    v4 = (&unk_190DCED90 + 8 * statusType);
     return *v4;
   }
 
@@ -960,32 +960,32 @@ LABEL_39:
 
 - (int64_t)statusType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 messageStatusType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  messageStatusType = [iMChatItem messageStatusType];
 
-  return v3;
+  return messageStatusType;
 }
 
 - (int64_t)expireStatusType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 expireStatusType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  expireStatusType = [iMChatItem expireStatusType];
 
-  return v3;
+  return expireStatusType;
 }
 
 - (id)time
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 time];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  time = [iMChatItem time];
 
-  return v3;
+  return time;
 }
 
 - (unint64_t)count
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 count];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  v3 = [iMChatItem count];
 
   return v3;
 }
@@ -993,15 +993,15 @@ LABEL_39:
 + (id)todayDateFormatter
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 timestampDateFormatter];
+  timestampDateFormatter = [v2 timestampDateFormatter];
 
-  return v3;
+  return timestampDateFormatter;
 }
 
-- (id)effectsControlStatusTextForEffectStyleID:(id)a3
+- (id)effectsControlStatusTextForEffectStyleID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKConfettiEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_CONFETTI";
 LABEL_27:
@@ -1011,73 +1011,73 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKLasersEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKLasersEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_LASERS";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKFireworksEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKFireworksEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_FIREWORKS";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKShootingStarEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKShootingStarEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_SHOOTING_STAR";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKHappyBirthdayEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_BALLOONS";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKSparklesEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKSparklesEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_CELEBRATION";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKHeartEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKHeartEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_LOVE";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKEchoEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKEchoEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_ECHO";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"])
+  if ([dCopy isEqualToString:@"com.apple.messages.effect.CKSpotlightEffect"])
   {
     v4 = @"FSM_CONTROL_BUTTON_TITLE_SPOTLIGHT";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.impact"])
   {
     v4 = @"EFFECT_CONTROL_BUTTON_TITLE_IMPACT";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.loud"])
   {
     v4 = @"EFFECT_CONTROL_BUTTON_TITLE_LOUD";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.gentle"])
   {
     v4 = @"EFFECT_CONTROL_BUTTON_TITLE_GENTLE";
     goto LABEL_27;
   }
 
-  if ([v3 isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
+  if ([dCopy isEqualToString:@"com.apple.MobileSMS.expressivesend.focus"])
   {
     v4 = @"EFFECT_CONTROL_BUTTON_TITLE_FOCUS";
     goto LABEL_27;
@@ -1100,10 +1100,10 @@ LABEL_28:
         goto LABEL_56;
       }
 
-      v3 = [(CKMessageStatusChatItem *)self transcriptOrientation];
+      transcriptOrientation = [(CKMessageStatusChatItem *)self transcriptOrientation];
       v4 = +[CKUIBehavior sharedBehaviors];
       v5 = v4;
-      if (v3)
+      if (transcriptOrientation)
       {
         [v4 rightTranscriptButtonTextAttributes];
       }
@@ -1112,46 +1112,46 @@ LABEL_28:
       {
         [v4 leftTranscriptButtonTextAttributes];
       }
-      v33 = ;
+      iMChatItem = ;
 
       v148 = objc_alloc(MEMORY[0x1E696AD98]);
       IMMessageItemExpireStateExpiringDuration();
-      v34 = [v148 initWithUnsignedInteger:v149 / 0x3C];
+      0x3C = [v148 initWithUnsignedInteger:v149 / 0x3C];
       v35 = MEMORY[0x1E696AEC0];
       v36 = CKFrameworkBundle();
       v37 = v36;
       v38 = @"MESSAGE_STATUS_EXPIRING";
       goto LABEL_88;
     case 1:
-      v33 = +[CKUIBehavior sharedBehaviors];
-      v39 = [v33 statusSaveButtonTranscriptText];
+      iMChatItem = +[CKUIBehavior sharedBehaviors];
+      statusSaveButtonTranscriptText = [iMChatItem statusSaveButtonTranscriptText];
       goto LABEL_147;
     case 2:
       v226[0] = *MEMORY[0x1E69DB648];
       v28 = +[CKUIBehavior sharedBehaviors];
-      v29 = [v28 transcriptBoldFont];
-      v227[0] = v29;
+      transcriptBoldFont = [v28 transcriptBoldFont];
+      v227[0] = transcriptBoldFont;
       v226[1] = *MEMORY[0x1E69DB650];
       v30 = +[CKUIBehavior sharedBehaviors];
-      v31 = [v30 theme];
-      v32 = [v31 appTintColor];
-      v227[1] = v32;
-      v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v227 forKeys:v226 count:2];
+      theme = [v30 theme];
+      appTintColor = [theme appTintColor];
+      v227[1] = appTintColor;
+      iMChatItem = [MEMORY[0x1E695DF20] dictionaryWithObjects:v227 forKeys:v226 count:2];
 
-      v34 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{-[CKMessageStatusChatItem count](self, "count")}];
+      0x3C = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{-[CKMessageStatusChatItem count](self, "count")}];
       v35 = MEMORY[0x1E696AEC0];
       v36 = CKFrameworkBundle();
       v37 = v36;
       v38 = @"PLAY_ALL_BUTTON_TITLE";
 LABEL_88:
       v150 = [v36 localizedStringForKey:v38 value:&stru_1F04268F8 table:@"ChatKit"];
-      v151 = [v34 __ck_localizedString];
-      v152 = [v35 stringWithFormat:v150, v151];
+      __ck_localizedString = [0x3C __ck_localizedString];
+      v151 = [v35 stringWithFormat:v150, __ck_localizedString];
 
-      v153 = [MEMORY[0x1E69DC668] sharedApplication];
-      v154 = [v153 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-      if (v154 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v155 = @"\u200F";
       }
@@ -1161,25 +1161,25 @@ LABEL_88:
         v155 = @"\u200E";
       }
 
-      v58 = [(__CFString *)v155 stringByAppendingString:v152];
+      __ck_localizedAppNameForTranscriptAttribution = [(__CFString *)v155 stringByAppendingString:v151];
 
-      v39 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v58 attributes:v33];
+      statusSaveButtonTranscriptText = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:__ck_localizedAppNameForTranscriptAttribution attributes:iMChatItem];
       goto LABEL_145;
     case 3:
-      v33 = [(CKChatItem *)self IMChatItem];
-      v67 = [v33 attributionType];
-      v68 = [(CKMessageStatusChatItem *)self transcriptOrientation];
-      v69 = [v33 showsLearnMoreLink];
-      v34 = [v33 attributionInfo];
-      v58 = [v34 __ck_localizedAppNameForTranscriptAttribution];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      attributionType = [iMChatItem attributionType];
+      transcriptOrientation2 = [(CKMessageStatusChatItem *)self transcriptOrientation];
+      showsLearnMoreLink = [iMChatItem showsLearnMoreLink];
+      0x3C = [iMChatItem attributionInfo];
+      __ck_localizedAppNameForTranscriptAttribution = [0x3C __ck_localizedAppNameForTranscriptAttribution];
       v70 = 0;
-      v71 = 0;
+      transcriptPollsAddChoiceStampButtonColor2 = 0;
       v72 = &stru_1F04268F8;
-      if (v67 <= 5)
+      if (attributionType <= 5)
       {
-        if (v67 <= 2)
+        if (attributionType <= 2)
         {
-          if (v67 == 1)
+          if (attributionType == 1)
           {
             v144 = MEMORY[0x1E696AEC0];
             v145 = CKFrameworkBundle();
@@ -1189,7 +1189,7 @@ LABEL_88:
 
           else
           {
-            if (v67 != 2)
+            if (attributionType != 2)
             {
               goto LABEL_143;
             }
@@ -1201,7 +1201,7 @@ LABEL_88:
           }
         }
 
-        else if (v67 == 3)
+        else if (attributionType == 3)
         {
           v144 = MEMORY[0x1E696AEC0];
           v145 = CKFrameworkBundle();
@@ -1211,7 +1211,7 @@ LABEL_88:
 
         else
         {
-          if (v67 != 4)
+          if (attributionType != 4)
           {
             v129 = CKFrameworkBundle();
             v130 = v129;
@@ -1229,12 +1229,12 @@ LABEL_127:
         }
 
         v189 = [v145 localizedStringForKey:v147 value:&stru_1F04268F8 table:@"ChatKit"];
-        v190 = [v144 stringWithFormat:v189, v58];
+        v190 = [v144 stringWithFormat:v189, __ck_localizedAppNameForTranscriptAttribution];
 
-        v191 = [MEMORY[0x1E69DC668] sharedApplication];
-        v192 = [v191 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-        if (v192 == 1)
+        if (userInterfaceLayoutDirection2 == 1)
         {
           v193 = @"\u200F";
         }
@@ -1246,42 +1246,42 @@ LABEL_127:
 
         v72 = [(__CFString *)v193 stringByAppendingString:v190];
 
-        v71 = v58;
+        transcriptPollsAddChoiceStampButtonColor2 = __ck_localizedAppNameForTranscriptAttribution;
         goto LABEL_142;
       }
 
-      if (v67 > 8)
+      if (attributionType > 8)
       {
-        if (v67 == 9)
+        if (attributionType == 9)
         {
-          v195 = [MEMORY[0x1E69A7FC8] sharedManager];
-          v71 = [v195 sensitiveStickerLinkText:0];
+          mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+          transcriptPollsAddChoiceStampButtonColor2 = [mEMORY[0x1E69A7FC8] sensitiveStickerLinkText:0];
 
-          v74 = [MEMORY[0x1E69A7FC8] sharedManager];
-          v75 = v74;
+          mEMORY[0x1E69A7FC8]2 = [MEMORY[0x1E69A7FC8] sharedManager];
+          v75 = mEMORY[0x1E69A7FC8]2;
           v76 = 0;
           goto LABEL_141;
         }
 
-        if (v67 != 10)
+        if (attributionType != 10)
         {
-          if (v67 != 11)
+          if (attributionType != 11)
           {
             goto LABEL_143;
           }
 
           v136 = CKFrameworkBundle();
-          v71 = [v136 localizedStringForKey:@"ATTRIBUTION_TEXT_SENSITIVE_STICKER_REVEALED_LINK_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
+          transcriptPollsAddChoiceStampButtonColor2 = [v136 localizedStringForKey:@"ATTRIBUTION_TEXT_SENSITIVE_STICKER_REVEALED_LINK_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
 
           v137 = MEMORY[0x1E696AEC0];
           v138 = CKFrameworkBundle();
           v139 = [v138 localizedStringForKey:@"%@" value:&stru_1F04268F8 table:@"ChatKit"];
-          v140 = [v137 stringWithFormat:v139, v71];
+          v140 = [v137 stringWithFormat:v139, transcriptPollsAddChoiceStampButtonColor2];
 
-          v141 = [MEMORY[0x1E69DC668] sharedApplication];
-          v142 = [v141 userInterfaceLayoutDirection];
+          mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+          userInterfaceLayoutDirection3 = [mEMORY[0x1E69DC668]3 userInterfaceLayoutDirection];
 
-          if (v142 == 1)
+          if (userInterfaceLayoutDirection3 == 1)
           {
             v143 = @"\u200F";
           }
@@ -1299,12 +1299,12 @@ LABEL_127:
         v182 = MEMORY[0x1E696AEC0];
         v183 = CKFrameworkBundle();
         v184 = [v183 localizedStringForKey:@"ATTRIBUTION_TEXT_SENT_WITH_CRITICAL_MESSAGING_API_FORMAT" value:&stru_1F04268F8 table:@"ChatKit"];
-        v185 = [v182 stringWithFormat:v184, v58];
+        v185 = [v182 stringWithFormat:v184, __ck_localizedAppNameForTranscriptAttribution];
 
-        v186 = [MEMORY[0x1E69DC668] sharedApplication];
-        v187 = [v186 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]4 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection4 = [mEMORY[0x1E69DC668]4 userInterfaceLayoutDirection];
 
-        if (v187 == 1)
+        if (userInterfaceLayoutDirection4 == 1)
         {
           v188 = @"\u200F";
         }
@@ -1317,24 +1317,24 @@ LABEL_127:
         v72 = [(__CFString *)v188 stringByAppendingString:v185];
 
 LABEL_139:
-        v71 = 0;
+        transcriptPollsAddChoiceStampButtonColor2 = 0;
 LABEL_142:
         v70 = 0;
         goto LABEL_143;
       }
 
-      if (v67 != 6)
+      if (attributionType != 6)
       {
-        if (v67 != 7)
+        if (attributionType != 7)
         {
-          v73 = [MEMORY[0x1E69A7FC8] sharedManager];
-          v71 = [v73 sensitiveStickerLinkText:1];
+          mEMORY[0x1E69A7FC8]3 = [MEMORY[0x1E69A7FC8] sharedManager];
+          transcriptPollsAddChoiceStampButtonColor2 = [mEMORY[0x1E69A7FC8]3 sensitiveStickerLinkText:1];
 
-          v74 = [MEMORY[0x1E69A7FC8] sharedManager];
-          v75 = v74;
+          mEMORY[0x1E69A7FC8]2 = [MEMORY[0x1E69A7FC8] sharedManager];
+          v75 = mEMORY[0x1E69A7FC8]2;
           v76 = 1;
 LABEL_141:
-          v72 = [v74 sensitiveStickerAttributionText:v76];
+          v72 = [mEMORY[0x1E69A7FC8]2 sensitiveStickerAttributionText:v76];
 
           goto LABEL_142;
         }
@@ -1348,28 +1348,28 @@ LABEL_141:
       v194 = CKFrameworkBundle();
       v72 = [v194 localizedStringForKey:@"ATTRIBUTION_TEXT_SENT_WITH_SIRI" value:&stru_1F04268F8 table:@"ChatKit"];
 
-      if (!v69 || CKIsRunningInMacCatalyst())
+      if (!showsLearnMoreLink || CKIsRunningInMacCatalyst())
       {
         goto LABEL_139;
       }
 
       v72 = v72;
       v70 = 1;
-      v71 = v72;
+      transcriptPollsAddChoiceStampButtonColor2 = v72;
 LABEL_143:
       BYTE1(v207) = v70;
       LOBYTE(v207) = 0;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v72 orientation:v68 dateSubText:0 buttonSubText:v71 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
-      v39 = LABEL_144:;
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v72 orientation:transcriptOrientation2 dateSubText:0 buttonSubText:transcriptPollsAddChoiceStampButtonColor2 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
+      statusSaveButtonTranscriptText = LABEL_144:;
 
       goto LABEL_145;
     case 4:
-      v33 = [(CKChatItem *)self IMChatItem];
-      v34 = [v33 dataSource];
-      v39 = [v34 statusAttributedString];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      0x3C = [iMChatItem dataSource];
+      statusSaveButtonTranscriptText = [0x3C statusAttributedString];
       goto LABEL_146;
     case 5:
-      v39 = [(CKMessageStatusChatItem *)self createReplayText];
+      statusSaveButtonTranscriptText = [(CKMessageStatusChatItem *)self createReplayText];
       goto LABEL_148;
     case 8:
       v16 = CKFrameworkBundle();
@@ -1386,19 +1386,19 @@ LABEL_143:
       v81 = v80;
       v82 = @"MESSAGE_STATUS_DELIVERED_QUIETLY";
 LABEL_58:
-      v33 = [v80 localizedStringForKey:v82 value:&stru_1F04268F8 table:@"ChatKit"];
+      iMChatItem = [v80 localizedStringForKey:v82 value:&stru_1F04268F8 table:@"ChatKit"];
 
       v116 = CKFrameworkBundle();
       v117 = [v116 localizedStringForKey:@"MESSAGE_STATUS_NOT_EDITED" value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v118 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v33, v117];
+      v117 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", iMChatItem, v117];
       LOWORD(v210) = 257;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v118 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:0 errorSubText:v117 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v210 shouldDisplayChevronWithTranscriptBackground:?];
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v117 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:0 errorSubText:v117 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v210 shouldDisplayChevronWithTranscriptBackground:?];
       goto LABEL_63;
     case 11:
-      v93 = [(CKMessageStatusChatItem *)self time];
+      time = [(CKMessageStatusChatItem *)self time];
       v94 = [(CKMessageStatusChatItem *)self now];
-      if (!v93)
+      if (!time)
       {
         v135 = CKFrameworkBundle();
         v133 = [v135 localizedStringForKey:@"MESSAGE_STATUS_READ" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -1407,8 +1407,8 @@ LABEL_58:
         goto LABEL_122;
       }
 
-      v95 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-      v96 = [v95 __ck_unitOfDisambiguityFromDate:v93 toDate:v94];
+      __ck_currentCalendar = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+      v96 = [__ck_currentCalendar __ck_unitOfDisambiguityFromDate:time toDate:v94];
 
       switch(v96)
       {
@@ -1417,7 +1417,7 @@ LABEL_58:
         case 16:
           v97 = +[CKMessageStatusChatItem thisWeekRelativeDateFormatter];
           v216 = 0;
-          v11 = [v97 stringFromDate:v93 isRelative:&v216];
+          v11 = [v97 stringFromDate:time isRelative:&v216];
           v168 = v216;
           v98 = MEMORY[0x1E696AEC0];
           v99 = CKFrameworkBundle();
@@ -1436,7 +1436,7 @@ LABEL_58:
         case 8:
 LABEL_50:
           v97 = +[CKMessageStatusChatItem thePastDateFormatter];
-          v11 = [v97 stringFromDate:v93];
+          v11 = [v97 stringFromDate:time];
           v98 = MEMORY[0x1E696AEC0];
           v99 = CKFrameworkBundle();
           v100 = v99;
@@ -1444,7 +1444,7 @@ LABEL_50:
           break;
         default:
           v97 = +[CKMessageStatusChatItem todayDateFormatter];
-          v11 = [v97 stringFromDate:v93];
+          v11 = [v97 stringFromDate:time];
           v98 = MEMORY[0x1E696AEC0];
           v99 = CKFrameworkBundle();
           v100 = v99;
@@ -1455,10 +1455,10 @@ LABEL_50:
       v176 = [v99 localizedStringForKey:v101 value:&stru_1F04268F8 table:@"ChatKit"];
       v177 = [v98 stringWithFormat:v176, v11];
 
-      v178 = [MEMORY[0x1E69DC668] sharedApplication];
-      v179 = [v178 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]5 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection5 = [mEMORY[0x1E69DC668]5 userInterfaceLayoutDirection];
 
-      if (v179 == 1)
+      if (userInterfaceLayoutDirection5 == 1)
       {
         v180 = @"\u200F";
       }
@@ -1474,9 +1474,9 @@ LABEL_122:
       v181 = CKFrameworkBundle();
       v174 = [v181 localizedStringForKey:@"MESSAGE_STATUS_NOT_EDITED" value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v175 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v133, v174];
+      v174 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v133, v174];
       LOWORD(v213) = 257;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v175 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:v11 buttonSubText:0 errorSubText:v174 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v213 shouldDisplayChevronWithTranscriptBackground:?];
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v174 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:v11 buttonSubText:0 errorSubText:v174 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v213 shouldDisplayChevronWithTranscriptBackground:?];
       goto LABEL_123;
     case 12:
       v25 = CKFrameworkBundle();
@@ -1484,15 +1484,15 @@ LABEL_122:
       v27 = @"MESSAGE_STATUS_EDITED";
       goto LABEL_45;
     case 13:
-      v63 = [MEMORY[0x1E69A8168] sharedInstance];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
       v64 = *MEMORY[0x1E69A7678];
       v224 = *MEMORY[0x1E69A7680];
       v225 = &unk_1F04E78D8;
       v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v225 forKeys:&v224 count:1];
-      [v63 trackEvent:v64 withDictionary:v65];
+      [mEMORY[0x1E69A8168] trackEvent:v64 withDictionary:v65];
 
       v66 = CKFrameworkBundle();
-      v33 = [v66 localizedStringForKey:@"MESSAGE_STATUS_DELIVERED" value:&stru_1F04268F8 table:@"ChatKit"];
+      iMChatItem = [v66 localizedStringForKey:@"MESSAGE_STATUS_DELIVERED" value:&stru_1F04268F8 table:@"ChatKit"];
 
       v45 = CKFrameworkBundle();
       v46 = v45;
@@ -1508,16 +1508,16 @@ LABEL_122:
       v20 = v19;
       v21 = @"MESSAGE_STATUS_DELIVERED_QUIETLY";
 LABEL_19:
-      v33 = [v19 localizedStringForKey:v21 value:&stru_1F04268F8 table:@"ChatKit"];
+      iMChatItem = [v19 localizedStringForKey:v21 value:&stru_1F04268F8 table:@"ChatKit"];
 
       v45 = CKFrameworkBundle();
       v46 = v45;
       v47 = @"MESSAGE_STATUS_EDITED";
       goto LABEL_62;
     case 16:
-      v83 = [(CKMessageStatusChatItem *)self time];
+      time2 = [(CKMessageStatusChatItem *)self time];
       v84 = [(CKMessageStatusChatItem *)self now];
-      if (!v83)
+      if (!time2)
       {
         v134 = CKFrameworkBundle();
         v133 = [v134 localizedStringForKey:@"MESSAGE_STATUS_READ" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -1526,8 +1526,8 @@ LABEL_19:
         goto LABEL_115;
       }
 
-      v85 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-      v86 = [v85 __ck_unitOfDisambiguityFromDate:v83 toDate:v84];
+      __ck_currentCalendar2 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+      v86 = [__ck_currentCalendar2 __ck_unitOfDisambiguityFromDate:time2 toDate:v84];
 
       switch(v86)
       {
@@ -1536,7 +1536,7 @@ LABEL_19:
         case 16:
           v87 = +[CKMessageStatusChatItem thisWeekRelativeDateFormatter];
           v216 = 0;
-          v11 = [v87 stringFromDate:v83 isRelative:&v216];
+          v11 = [v87 stringFromDate:time2 isRelative:&v216];
           v167 = v216;
           v88 = MEMORY[0x1E696AEC0];
           v89 = CKFrameworkBundle();
@@ -1555,7 +1555,7 @@ LABEL_19:
         case 8:
 LABEL_43:
           v87 = +[CKMessageStatusChatItem thePastDateFormatter];
-          v11 = [v87 stringFromDate:v83];
+          v11 = [v87 stringFromDate:time2];
           v88 = MEMORY[0x1E696AEC0];
           v89 = CKFrameworkBundle();
           v90 = v89;
@@ -1563,7 +1563,7 @@ LABEL_43:
           break;
         default:
           v87 = +[CKMessageStatusChatItem todayDateFormatter];
-          v11 = [v87 stringFromDate:v83];
+          v11 = [v87 stringFromDate:time2];
           v88 = MEMORY[0x1E696AEC0];
           v89 = CKFrameworkBundle();
           v90 = v89;
@@ -1574,10 +1574,10 @@ LABEL_43:
       v169 = [v89 localizedStringForKey:v91 value:&stru_1F04268F8 table:@"ChatKit"];
       v170 = [v88 stringWithFormat:v169, v11];
 
-      v171 = [MEMORY[0x1E69DC668] sharedApplication];
-      v172 = [v171 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]6 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection6 = [mEMORY[0x1E69DC668]6 userInterfaceLayoutDirection];
 
-      if (v172 == 1)
+      if (userInterfaceLayoutDirection6 == 1)
       {
         v173 = @"\u200F";
       }
@@ -1614,7 +1614,7 @@ LABEL_45:
       v120 = v119;
       v121 = @"MESSAGE_STATUS_DELIVERED_QUIETLY";
 LABEL_61:
-      v33 = [v119 localizedStringForKey:v121 value:&stru_1F04268F8 table:@"ChatKit"];
+      iMChatItem = [v119 localizedStringForKey:v121 value:&stru_1F04268F8 table:@"ChatKit"];
 
       v45 = CKFrameworkBundle();
       v46 = v45;
@@ -1622,16 +1622,16 @@ LABEL_61:
 LABEL_62:
       v117 = [v45 localizedStringForKey:v47 value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v118 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v33, v117];
+      v117 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", iMChatItem, v117];
       LOWORD(v211) = 256;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v118 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:v117 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v211 shouldDisplayChevronWithTranscriptBackground:?];
-      v39 = LABEL_63:;
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v117 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:v117 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v211 shouldDisplayChevronWithTranscriptBackground:?];
+      statusSaveButtonTranscriptText = LABEL_63:;
 
       goto LABEL_147;
     case 20:
-      v6 = [(CKMessageStatusChatItem *)self time];
+      time3 = [(CKMessageStatusChatItem *)self time];
       v7 = [(CKMessageStatusChatItem *)self now];
-      if (!v6)
+      if (!time3)
       {
         v132 = CKFrameworkBundle();
         v133 = [v132 localizedStringForKey:@"MESSAGE_STATUS_READ" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -1640,8 +1640,8 @@ LABEL_62:
         goto LABEL_103;
       }
 
-      v8 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
-      v9 = [v8 __ck_unitOfDisambiguityFromDate:v6 toDate:v7];
+      __ck_currentCalendar3 = [MEMORY[0x1E695DEE8] __ck_currentCalendar];
+      v9 = [__ck_currentCalendar3 __ck_unitOfDisambiguityFromDate:time3 toDate:v7];
 
       switch(v9)
       {
@@ -1650,7 +1650,7 @@ LABEL_62:
         case 16:
           v10 = +[CKMessageStatusChatItem thisWeekRelativeDateFormatter];
           v216 = 0;
-          v11 = [v10 stringFromDate:v6 isRelative:&v216];
+          v11 = [v10 stringFromDate:time3 isRelative:&v216];
           v158 = v216;
           v12 = MEMORY[0x1E696AEC0];
           v13 = CKFrameworkBundle();
@@ -1669,7 +1669,7 @@ LABEL_62:
         case 8:
 LABEL_9:
           v10 = +[CKMessageStatusChatItem thePastDateFormatter];
-          v11 = [v10 stringFromDate:v6];
+          v11 = [v10 stringFromDate:time3];
           v12 = MEMORY[0x1E696AEC0];
           v13 = CKFrameworkBundle();
           v14 = v13;
@@ -1677,7 +1677,7 @@ LABEL_9:
           break;
         default:
           v10 = +[CKMessageStatusChatItem todayDateFormatter];
-          v11 = [v10 stringFromDate:v6];
+          v11 = [v10 stringFromDate:time3];
           v12 = MEMORY[0x1E696AEC0];
           v13 = CKFrameworkBundle();
           v14 = v13;
@@ -1688,10 +1688,10 @@ LABEL_9:
       v159 = [v13 localizedStringForKey:v15 value:&stru_1F04268F8 table:@"ChatKit"];
       v160 = [v12 stringWithFormat:v159, v11];
 
-      v161 = [MEMORY[0x1E69DC668] sharedApplication];
-      v162 = [v161 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]7 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection7 = [mEMORY[0x1E69DC668]7 userInterfaceLayoutDirection];
 
-      if (v162 == 1)
+      if (userInterfaceLayoutDirection7 == 1)
       {
         v163 = @"\u200F";
       }
@@ -1710,31 +1710,31 @@ LABEL_103:
 LABEL_116:
       v174 = [v164 localizedStringForKey:v166 value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v175 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v133, v174];
+      v174 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v133, v174];
       LOWORD(v212) = 256;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v175 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:v11 buttonSubText:v174 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v212 shouldDisplayChevronWithTranscriptBackground:?];
-      v39 = LABEL_123:;
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v174 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:v11 buttonSubText:v174 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v212 shouldDisplayChevronWithTranscriptBackground:?];
+      statusSaveButtonTranscriptText = LABEL_123:;
 
       goto LABEL_148;
     case 21:
-      v48 = [MEMORY[0x1E69A8168] sharedInstance];
+      mEMORY[0x1E69A8168]2 = [MEMORY[0x1E69A8168] sharedInstance];
       v49 = *MEMORY[0x1E69A7690];
       v222 = *MEMORY[0x1E69A77B0];
       v223 = &unk_1F04E78D8;
       v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v223 forKeys:&v222 count:1];
-      [v48 trackEvent:v49 withDictionary:v50];
+      [mEMORY[0x1E69A8168]2 trackEvent:v49 withDictionary:v50];
 
-      v33 = [(CKChatItem *)self IMChatItem];
-      v34 = [v33 recipientDisplayName];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      0x3C = [iMChatItem recipientDisplayName];
       v51 = MEMORY[0x1E696AEC0];
       v52 = CKFrameworkBundle();
       v53 = [v52 localizedStringForKey:@"MESSAGE_STATUS_CONFIRM_SEND_VIA_SATELLITE_SUB_STATUS" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
-      v54 = [v51 localizedStringWithFormat:v53, v34];
+      v54 = [v51 localizedStringWithFormat:v53, 0x3C];
 
-      v55 = [MEMORY[0x1E69DC668] sharedApplication];
-      v56 = [v55 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]8 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection8 = [mEMORY[0x1E69DC668]8 userInterfaceLayoutDirection];
 
-      if (v56 == 1)
+      if (userInterfaceLayoutDirection8 == 1)
       {
         v57 = @"\u200F";
       }
@@ -1744,14 +1744,14 @@ LABEL_116:
         v57 = @"\u200E";
       }
 
-      v58 = [(__CFString *)v57 stringByAppendingString:v54];
+      __ck_localizedAppNameForTranscriptAttribution = [(__CFString *)v57 stringByAppendingString:v54];
 
       v59 = CKFrameworkBundle();
-      v60 = [v59 localizedStringForKey:@"MESSAGE_STATUS_CONFIRM_SEND_VIA_SATELLITE" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
+      swyAppName = [v59 localizedStringForKey:@"MESSAGE_STATUS_CONFIRM_SEND_VIA_SATELLITE" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
 
-      v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ \n %@", v58, v60];
+      v61 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ \n %@", __ck_localizedAppNameForTranscriptAttribution, swyAppName];
       LOWORD(v208) = 256;
-      v62 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v61 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:v60 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v208 shouldDisplayChevronWithTranscriptBackground:?];
+      v62 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v61 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:swyAppName errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v208 shouldDisplayChevronWithTranscriptBackground:?];
       goto LABEL_24;
     case 22:
       v122 = MEMORY[0x1E696AEC0];
@@ -1759,10 +1759,10 @@ LABEL_116:
       v124 = [v123 localizedStringForKey:@"MESSAGE_STATUS_CONFIRM_SENT_VIA_SATELLITE" value:&stru_1F04268F8 table:@"ChatKit-CarrierPigeon"];
       v125 = [v122 localizedStringWithFormat:v124];
 
-      v126 = [MEMORY[0x1E69DC668] sharedApplication];
-      v127 = [v126 userInterfaceLayoutDirection];
+      mEMORY[0x1E69DC668]9 = [MEMORY[0x1E69DC668] sharedApplication];
+      userInterfaceLayoutDirection9 = [mEMORY[0x1E69DC668]9 userInterfaceLayoutDirection];
 
-      if (v127 == 1)
+      if (userInterfaceLayoutDirection9 == 1)
       {
         v128 = @"\u200F";
       }
@@ -1776,7 +1776,7 @@ LABEL_116:
 
       LOWORD(v207) = 0;
       [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v92 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:0 errorSubText:0 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
-      v39 = LABEL_68:;
+      statusSaveButtonTranscriptText = LABEL_68:;
 
       goto LABEL_148;
     case 23:
@@ -1786,21 +1786,21 @@ LABEL_116:
 LABEL_37:
       v79 = [v16 localizedStringForKey:v18 value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v33 = v79;
+      iMChatItem = v79;
       LOWORD(v207) = 257;
-      v39 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v33 orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:0 errorSubText:v33 overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
+      statusSaveButtonTranscriptText = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:iMChatItem orientation:[(CKMessageStatusChatItem *)self transcriptOrientation] dateSubText:0 buttonSubText:0 errorSubText:iMChatItem overrideTextColor:0 overrideButtonColor:0 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
 
       goto LABEL_147;
     case 24:
-      v40 = [(CKMessageStatusChatItem *)self transcriptOrientation];
-      v33 = CKFrameworkBundle();
-      v34 = [v33 localizedStringForKey:@"POLLS_ADD_CHOICE" value:&stru_1F04268F8 table:@"ChatKit"];
+      transcriptOrientation3 = [(CKMessageStatusChatItem *)self transcriptOrientation];
+      iMChatItem = CKFrameworkBundle();
+      0x3C = [iMChatItem localizedStringForKey:@"POLLS_ADD_CHOICE" value:&stru_1F04268F8 table:@"ChatKit"];
       v41 = CKFrameworkBundle();
       v42 = [v41 localizedStringForKey:@"POLLS_ADD_CHOICE" value:&stru_1F04268F8 table:@"ChatKit"];
       v43 = +[CKUIBehavior sharedBehaviors];
-      v44 = [v43 transcriptPollsAddChoiceStampButtonColor];
+      transcriptPollsAddChoiceStampButtonColor = [v43 transcriptPollsAddChoiceStampButtonColor];
       LOWORD(v207) = 256;
-      v39 = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v34 orientation:v40 dateSubText:0 buttonSubText:v42 errorSubText:0 overrideTextColor:0 overrideButtonColor:v44 shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
+      statusSaveButtonTranscriptText = [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:0x3C orientation:transcriptOrientation3 dateSubText:0 buttonSubText:v42 errorSubText:0 overrideTextColor:0 overrideButtonColor:transcriptPollsAddChoiceStampButtonColor shouldReplaceWarningIcon:v207 shouldDisplayChevronWithTranscriptBackground:?];
 
       goto LABEL_146;
     case 25:
@@ -1818,84 +1818,84 @@ LABEL_37:
       v23 = v22;
       v24 = @"MESSAGE_STATUS_READ";
 LABEL_35:
-      v33 = [v22 localizedStringForKey:v24 value:&stru_1F04268F8 table:@"ChatKit"];
+      iMChatItem = [v22 localizedStringForKey:v24 value:&stru_1F04268F8 table:@"ChatKit"];
 
       v77 = CKFrameworkBundle();
-      v34 = [v77 localizedStringForKey:@"POLLS_ADD_CHOICE" value:&stru_1F04268F8 table:@"ChatKit"];
+      0x3C = [v77 localizedStringForKey:@"POLLS_ADD_CHOICE" value:&stru_1F04268F8 table:@"ChatKit"];
 
-      v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", v34, v33];
-      v78 = [(CKMessageStatusChatItem *)self transcriptOrientation];
+      __ck_localizedAppNameForTranscriptAttribution = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ • %@", 0x3C, iMChatItem];
+      transcriptOrientation4 = [(CKMessageStatusChatItem *)self transcriptOrientation];
       v72 = +[CKUIBehavior sharedBehaviors];
-      v71 = [(__CFString *)v72 transcriptPollsAddChoiceStampButtonColor];
+      transcriptPollsAddChoiceStampButtonColor2 = [(__CFString *)v72 transcriptPollsAddChoiceStampButtonColor];
       LOWORD(v209) = 256;
-      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:v58 orientation:v78 dateSubText:0 buttonSubText:v34 errorSubText:0 overrideTextColor:0 overrideButtonColor:v71 shouldReplaceWarningIcon:v209 shouldDisplayChevronWithTranscriptBackground:?];
+      [(CKMessageStatusChatItem *)self _styledStatusTextWithStatusText:__ck_localizedAppNameForTranscriptAttribution orientation:transcriptOrientation4 dateSubText:0 buttonSubText:0x3C errorSubText:0 overrideTextColor:0 overrideButtonColor:transcriptPollsAddChoiceStampButtonColor2 shouldReplaceWarningIcon:v209 shouldDisplayChevronWithTranscriptBackground:?];
       goto LABEL_144;
     default:
       if ([(CKMessageStatusChatItem *)self statusType]!= 21)
       {
 LABEL_56:
-        v39 = 0;
+        statusSaveButtonTranscriptText = 0;
         goto LABEL_148;
       }
 
-      v215 = [(CKChatItem *)self IMChatItem];
-      v102 = [v215 syndicationStatus];
+      iMChatItem2 = [(CKChatItem *)self IMChatItem];
+      syndicationStatus = [iMChatItem2 syndicationStatus];
       v219 = *MEMORY[0x1E69DB648];
       v103 = v219;
       v104 = +[CKUIBehavior sharedBehaviors];
-      v105 = [v104 transcriptBoldFont];
-      v221[0] = v105;
+      transcriptBoldFont2 = [v104 transcriptBoldFont];
+      v221[0] = transcriptBoldFont2;
       v220 = *MEMORY[0x1E69DB650];
       v106 = v220;
       v107 = +[CKUIBehavior sharedBehaviors];
-      v108 = [v107 theme];
-      v109 = [v108 messageStatusLinkTextColor];
-      v221[1] = v109;
+      theme2 = [v107 theme];
+      messageStatusLinkTextColor = [theme2 messageStatusLinkTextColor];
+      v221[1] = messageStatusLinkTextColor;
       v214 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v221 forKeys:&v219 count:2];
 
       v217[0] = v103;
       v110 = +[CKUIBehavior sharedBehaviors];
-      v111 = [v110 transcriptMessageStatusFont];
+      transcriptMessageStatusFont = [v110 transcriptMessageStatusFont];
       v217[1] = v106;
-      v218[0] = v111;
+      v218[0] = transcriptMessageStatusFont;
       v112 = +[CKUIBehavior sharedBehaviors];
-      v113 = [v112 theme];
-      v114 = [v113 messageStatusChatItemAttributionButtonColor];
-      v218[1] = v114;
-      v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v218 forKeys:v217 count:2];
+      theme3 = [v112 theme];
+      messageStatusChatItemAttributionButtonColor = [theme3 messageStatusChatItemAttributionButtonColor];
+      v218[1] = messageStatusChatItemAttributionButtonColor;
+      __ck_localizedAppNameForTranscriptAttribution = [MEMORY[0x1E695DF20] dictionaryWithObjects:v218 forKeys:v217 count:2];
 
-      if (v102)
+      if (syndicationStatus)
       {
-        if (v102 != 1)
+        if (syndicationStatus != 1)
         {
-          v39 = 0;
-          v34 = v214;
-          v33 = v215;
+          statusSaveButtonTranscriptText = 0;
+          0x3C = v214;
+          iMChatItem = iMChatItem2;
           goto LABEL_145;
         }
 
-        v33 = v215;
-        v34 = v214;
-        if ([v215 wasDetectedAsSWYSpam])
+        iMChatItem = iMChatItem2;
+        0x3C = v214;
+        if ([iMChatItem2 wasDetectedAsSWYSpam])
         {
           v115 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v60 = CKFrameworkBundle();
-          v61 = [v60 localizedStringForKey:@"MARKED_AS_NOT_DONATED" value:&stru_1F04268F8 table:@"ChatKit"];
+          swyAppName = CKFrameworkBundle();
+          v61 = [swyAppName localizedStringForKey:@"MARKED_AS_NOT_DONATED" value:&stru_1F04268F8 table:@"ChatKit"];
           v62 = [v115 initWithString:v61 attributes:v214];
 LABEL_24:
-          v39 = v62;
+          statusSaveButtonTranscriptText = v62;
 
           goto LABEL_25;
         }
 
-        v60 = [v215 swyAppName];
-        if ([v60 length])
+        swyAppName = [iMChatItem2 swyAppName];
+        if ([swyAppName length])
         {
-          v197 = [v215 isSpamOrUnknown];
+          isSpamOrUnknown = [iMChatItem2 isSpamOrUnknown];
 
-          if (v197)
+          if (isSpamOrUnknown)
           {
-            v39 = 0;
+            statusSaveButtonTranscriptText = 0;
             goto LABEL_145;
           }
 
@@ -1903,13 +1903,13 @@ LABEL_24:
           v199 = MEMORY[0x1E696AEC0];
           v200 = CKFrameworkBundle();
           v201 = [v200 localizedStringForKey:@"MARKED_AS_NOT_DONATED_PUBLICSWY" value:&stru_1F04268F8 table:@"ChatKit"];
-          v202 = [v215 swyAppName];
-          v203 = [v199 stringWithFormat:v201, v202];
+          swyAppName2 = [iMChatItem2 swyAppName];
+          v202 = [v199 stringWithFormat:v201, swyAppName2];
 
-          v204 = [MEMORY[0x1E69DC668] sharedApplication];
-          v205 = [v204 userInterfaceLayoutDirection];
+          mEMORY[0x1E69DC668]10 = [MEMORY[0x1E69DC668] sharedApplication];
+          userInterfaceLayoutDirection10 = [mEMORY[0x1E69DC668]10 userInterfaceLayoutDirection];
 
-          if (v205 == 1)
+          if (userInterfaceLayoutDirection10 == 1)
           {
             v206 = @"\u200F";
           }
@@ -1919,14 +1919,14 @@ LABEL_24:
             v206 = @"\u200E";
           }
 
-          v60 = [(__CFString *)v206 stringByAppendingString:v203];
+          swyAppName = [(__CFString *)v206 stringByAppendingString:v202];
 
-          v39 = [v198 initWithString:v60 attributes:v58];
+          statusSaveButtonTranscriptText = [v198 initWithString:swyAppName attributes:__ck_localizedAppNameForTranscriptAttribution];
         }
 
         else
         {
-          v39 = 0;
+          statusSaveButtonTranscriptText = 0;
         }
 
 LABEL_25:
@@ -1934,20 +1934,20 @@ LABEL_25:
         goto LABEL_145;
       }
 
-      v33 = v215;
-      if ([v215 wasDetectedAsSWYSpam])
+      iMChatItem = iMChatItem2;
+      if ([iMChatItem2 wasDetectedAsSWYSpam])
       {
         v156 = objc_alloc(MEMORY[0x1E696AAB0]);
-        v60 = CKFrameworkBundle();
-        v157 = [v60 localizedStringForKey:@"MARKED_AS_DONATED" value:&stru_1F04268F8 table:@"ChatKit"];
-        v39 = [v156 initWithString:v157 attributes:v58];
+        swyAppName = CKFrameworkBundle();
+        v157 = [swyAppName localizedStringForKey:@"MARKED_AS_DONATED" value:&stru_1F04268F8 table:@"ChatKit"];
+        statusSaveButtonTranscriptText = [v156 initWithString:v157 attributes:__ck_localizedAppNameForTranscriptAttribution];
 
-        v34 = v214;
+        0x3C = v214;
         goto LABEL_25;
       }
 
-      v39 = 0;
-      v34 = v214;
+      statusSaveButtonTranscriptText = 0;
+      0x3C = v214;
 LABEL_145:
 
 LABEL_146:
@@ -1955,19 +1955,19 @@ LABEL_147:
 
 LABEL_148:
 
-      return v39;
+      return statusSaveButtonTranscriptText;
   }
 }
 
-- (CGSize)loadLabelSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadLabelSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -1979,13 +1979,13 @@ LABEL_148:
 
   v17 = MEMORY[0x1E695F060];
   v18 = *MEMORY[0x1E695F060];
-  v19 = [(CKChatItem *)self transcriptText];
-  if ([v19 length])
+  transcriptText = [(CKChatItem *)self transcriptText];
+  if ([transcriptText length])
   {
     v20 = width - (v12 + v16);
     v21 = height - (v10 + v14);
-    v22 = [(CKMessageStatusChatItem *)self transcriptButtonText];
-    v23 = [v22 length];
+    transcriptButtonText = [(CKMessageStatusChatItem *)self transcriptButtonText];
+    v23 = [transcriptButtonText length];
 
     if (v23)
     {
@@ -1996,13 +1996,13 @@ LABEL_148:
       v18 = v25 + v27 + v28;
     }
 
-    v29 = [(CKChatItem *)self transcriptText];
-    [v29 boundingRectWithSize:3 options:0 context:{v20 - v18, v21}];
+    transcriptText2 = [(CKChatItem *)self transcriptText];
+    [transcriptText2 boundingRectWithSize:3 options:0 context:{v20 - v18, v21}];
     v18 = v30;
     v32 = v31;
 
-    v33 = [(CKChatItem *)self transcriptTraitCollection];
-    [v33 displayScale];
+    transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+    [transcriptTraitCollection displayScale];
     if (v34 == 0.0)
     {
       if (CKMainScreenScale_once_13 != -1)
@@ -2032,15 +2032,15 @@ LABEL_148:
   return result;
 }
 
-- (CGSize)loadButtonSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadButtonSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = fits.height;
+  width = fits.width;
+  if (insets)
   {
     v7 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v7;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v7;
   }
 
   v8 = +[CKUIBehavior sharedBehaviors];
@@ -2050,18 +2050,18 @@ LABEL_148:
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CKMessageStatusChatItem *)self transcriptButtonText];
-  if (v17)
+  transcriptButtonText = [(CKMessageStatusChatItem *)self transcriptButtonText];
+  if (transcriptButtonText)
   {
     v18 = +[CKMessageStatusChatItem sizingButton];
-    [v18 setAttributedTitle:v17 forState:0];
+    [v18 setAttributedTitle:transcriptButtonText forState:0];
     v19 = objc_alloc_init(MEMORY[0x1E69DD2E8]);
     [v19 addSubview:v18];
     [v18 sizeThatFits:{width - (v12 + v16), height - (v10 + v14)}];
     v21 = v20;
     v23 = v22;
-    v24 = [(CKChatItem *)self transcriptTraitCollection];
-    [v24 displayScale];
+    transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+    [transcriptTraitCollection displayScale];
     if (v25 == 0.0)
     {
       if (CKMainScreenScale_once_13 != -1)
@@ -2117,20 +2117,20 @@ LABEL_148:
 
   v30[0] = *MEMORY[0x1E69DB648];
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 transcriptBoldFont];
-  v31[0] = v8;
+  transcriptBoldFont = [v7 transcriptBoldFont];
+  v31[0] = transcriptBoldFont;
   v30[1] = *MEMORY[0x1E69DB650];
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 theme];
-  v11 = [v10 transcriptReplayTextColor];
-  v31[1] = v11;
+  theme = [v9 theme];
+  transcriptReplayTextColor = [theme transcriptReplayTextColor];
+  v31[1] = transcriptReplayTextColor;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2];
 
   v13 = MEMORY[0x1E69DCAD8];
   v14 = +[CKUIBehavior sharedBehaviors];
-  v15 = [v14 theme];
-  v16 = [v15 transcriptReplayTextColor];
-  v29 = v16;
+  theme2 = [v14 theme];
+  transcriptReplayTextColor2 = [theme2 transcriptReplayTextColor];
+  v29 = transcriptReplayTextColor2;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
   v18 = [v13 configurationWithPaletteColors:v17];
 
@@ -2150,31 +2150,31 @@ LABEL_148:
   return v27;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = [v12 objectAtIndex:a4 - 1];
+    v14 = [itemsCopy objectAtIndex:index - 1];
   }
 
-  v15 = [v14 layoutType];
-  if (v15 > 0x13)
+  layoutType = [v14 layoutType];
+  if (layoutType > 0x13)
   {
     goto LABEL_18;
   }
 
-  if (((1 << v15) & 0xDE002) == 0)
+  if (((1 << layoutType) & 0xDE002) == 0)
   {
-    if (((1 << v15) & 0x60) != 0)
+    if (((1 << layoutType) & 0x60) != 0)
     {
       v21 = +[CKUIBehavior sharedBehaviors];
       [v21 smallTranscriptSpace];
@@ -2183,7 +2183,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v15 == 8)
+    if (layoutType == 8)
     {
       v21 = +[CKUIBehavior sharedBehaviors];
       [v21 largeTranscriptSpace];
@@ -2219,10 +2219,10 @@ LABEL_18:
 
   if ([v14 hasTail])
   {
-    v19 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v20 = [v19 isRoundTailedBalloonShapeEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isRoundTailedBalloonShapeEnabled = [mEMORY[0x1E69A8070] isRoundTailedBalloonShapeEnabled];
 
-    if ((v20 & 1) == 0)
+    if ((isRoundTailedBalloonShapeEnabled & 1) == 0)
     {
       v21 = +[CKUIBehavior sharedBehaviors];
       [v21 balloonMaskTailSizeForTailShape:1];

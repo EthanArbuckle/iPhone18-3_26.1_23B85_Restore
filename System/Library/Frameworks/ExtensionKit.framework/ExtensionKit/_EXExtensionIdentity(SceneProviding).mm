@@ -9,31 +9,31 @@
 - (_EXViewControllerSceneConfiguration)configurationWithParameters:()SceneProviding
 {
   v4 = a3;
-  v5 = [v4 sceneIdentifier];
-  if (!v5)
+  sceneIdentifier = [v4 sceneIdentifier];
+  if (!sceneIdentifier)
   {
-    v5 = *MEMORY[0x1E6966D28];
+    sceneIdentifier = *MEMORY[0x1E6966D28];
   }
 
   v6 = [(_EXSceneConfiguration *)[_EXViewControllerSceneConfiguration alloc] initWithParameters:v4];
 
-  v7 = [a1 attributes];
-  v8 = [v7 _EX_dictionaryForKey:@"EXSceneManifest"];
-  v9 = [v8 _EX_dictionaryForKey:v5];
+  attributes = [self attributes];
+  v8 = [attributes _EX_dictionaryForKey:@"EXSceneManifest"];
+  v9 = [v8 _EX_dictionaryForKey:sceneIdentifier];
 
   if (v9)
   {
     v10 = [v9 _EX_stringForKey:@"EXStoryboardName"];
     [(_EXViewControllerSceneConfiguration *)v6 setStoryboardName:v10];
 
-    v11 = [(_EXViewControllerSceneConfiguration *)v6 storyboardName];
+    storyboardName = [(_EXViewControllerSceneConfiguration *)v6 storyboardName];
 
-    if (!v11)
+    if (!storyboardName)
     {
       v12 = _EXDefaultLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [(_EXExtensionIdentity(SceneProviding) *)v5 configurationWithParameters:v12, v13, v14, v15, v16, v17, v18];
+        [(_EXExtensionIdentity(SceneProviding) *)sceneIdentifier configurationWithParameters:v12, v13, v14, v15, v16, v17, v18];
       }
     }
 
@@ -48,7 +48,7 @@
       v20 = _EXDefaultLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        [(_EXExtensionIdentity(SceneProviding) *)v5 configurationWithParameters:v20, v21, v22, v23, v24, v25, v26];
+        [(_EXExtensionIdentity(SceneProviding) *)sceneIdentifier configurationWithParameters:v20, v21, v22, v23, v24, v25, v26];
       }
     }
 
@@ -63,7 +63,7 @@
       v28 = _EXDefaultLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
-        [(_EXExtensionIdentity(SceneProviding) *)v5 configurationWithParameters:v28, v29, v30, v31, v32, v33, v34];
+        [(_EXExtensionIdentity(SceneProviding) *)sceneIdentifier configurationWithParameters:v28, v29, v30, v31, v32, v33, v34];
       }
     }
   }
@@ -79,8 +79,8 @@
     v4 = *MEMORY[0x1E6966D28];
   }
 
-  v5 = [a1 sdkDictionary];
-  v6 = [v5 _EX_dictionaryForKey:@"EXSceneManifest"];
+  sdkDictionary = [self sdkDictionary];
+  v6 = [sdkDictionary _EX_dictionaryForKey:@"EXSceneManifest"];
   v7 = [v6 _EX_dictionaryForKey:v4];
 
   if (!v7 || ([v7 _EX_stringForKeys:&unk_1F4DF7E78], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
@@ -112,11 +112,11 @@ LABEL_8:
 
 - (id)scenes
 {
-  v1 = [a1 sdkDictionary];
-  v2 = [v1 _EX_dictionaryForKey:@"EXSceneManifest"];
-  v3 = [v2 allKeys];
+  sdkDictionary = [self sdkDictionary];
+  v2 = [sdkDictionary _EX_dictionaryForKey:@"EXSceneManifest"];
+  allKeys = [v2 allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (void)configurationWithParameters:()SceneProviding .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

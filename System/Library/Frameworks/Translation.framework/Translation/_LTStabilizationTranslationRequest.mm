@@ -1,9 +1,9 @@
 @interface _LTStabilizationTranslationRequest
 + (id)_synchronizationQueue;
-- (_LTStabilizationTranslationRequest)initWithLocalePair:(id)a3 completion:(id)a4;
+- (_LTStabilizationTranslationRequest)initWithLocalePair:(id)pair completion:(id)completion;
 - (id)requestContext;
-- (void)_startTranslationWithService:(id)a3 done:(id)a4;
-- (void)_translationFailedWithError:(id)a3;
+- (void)_startTranslationWithService:(id)service done:(id)done;
+- (void)_translationFailedWithError:(id)error;
 @end
 
 @implementation _LTStabilizationTranslationRequest
@@ -20,20 +20,20 @@
   return v3;
 }
 
-- (_LTStabilizationTranslationRequest)initWithLocalePair:(id)a3 completion:(id)a4
+- (_LTStabilizationTranslationRequest)initWithLocalePair:(id)pair completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = _LTStabilizationTranslationRequest;
-  v7 = [(_LTTranslationRequest *)&v14 initWithLocalePair:a3];
+  v7 = [(_LTTranslationRequest *)&v14 initWithLocalePair:pair];
   if (v7)
   {
-    v8 = [objc_opt_class() _synchronizationQueue];
+    _synchronizationQueue = [objc_opt_class() _synchronizationQueue];
     queue = v7->_queue;
-    v7->_queue = v8;
+    v7->_queue = _synchronizationQueue;
 
     [(_LTTranslationRequest *)v7 setForcedOfflineTranslation:1];
-    v10 = [v6 copy];
+    v10 = [completionCopy copy];
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v10;
 
@@ -43,10 +43,10 @@
   return v7;
 }
 
-- (void)_startTranslationWithService:(id)a3 done:(id)a4
+- (void)_startTranslationWithService:(id)service done:(id)done
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  doneCopy = done;
   v8 = _LTOSLogTranslationEngine();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -55,28 +55,28 @@
   }
 
   objc_initWeak(buf, self);
-  v9 = [(_LTStabilizationTranslationRequest *)self input];
-  v10 = [(_LTStabilizationTranslationRequest *)self requestContext];
+  input = [(_LTStabilizationTranslationRequest *)self input];
+  requestContext = [(_LTStabilizationTranslationRequest *)self requestContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72___LTStabilizationTranslationRequest__startTranslationWithService_done___block_invoke;
   v12[3] = &unk_278B6D660;
   objc_copyWeak(&v14, buf);
-  v11 = v7;
+  v11 = doneCopy;
   v13 = v11;
-  [v6 translateStreamingInput:v9 withContext:v10 completion:v12];
+  [serviceCopy translateStreamingInput:input withContext:requestContext completion:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(buf);
 }
 
-- (void)_translationFailedWithError:(id)a3
+- (void)_translationFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _LTOSLogSpeech();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(_LTStabilizationTranslationRequest *)v4 _translationFailedWithError:v5];
+    [(_LTStabilizationTranslationRequest *)errorCopy _translationFailedWithError:v5];
   }
 
   objc_initWeak(&location, self);
@@ -86,8 +86,8 @@
   block[2] = __66___LTStabilizationTranslationRequest__translationFailedWithError___block_invoke;
   block[3] = &unk_278B6CD08;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
@@ -98,10 +98,10 @@
 {
   v4.receiver = self;
   v4.super_class = _LTStabilizationTranslationRequest;
-  v2 = [(_LTTranslationRequest *)&v4 requestContext];
-  [v2 setEnableOfflineStreamStabilizer:1];
+  requestContext = [(_LTTranslationRequest *)&v4 requestContext];
+  [requestContext setEnableOfflineStreamStabilizer:1];
 
-  return v2;
+  return requestContext;
 }
 
 - (void)_translationFailedWithError:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -1,27 +1,27 @@
 @interface LCServiceConfigurationResponse
-- (BOOL)isEqual:(id)a3;
-- (LCServiceConfigurationResponse)initWithDictionary:(id)a3;
-- (LCServiceConfigurationResponse)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LCServiceConfigurationResponse)initWithDictionary:(id)dictionary;
+- (LCServiceConfigurationResponse)initWithJSON:(id)n;
 - (LCServiceLoggingConfiguration)configuration;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (void)deleteConfiguration;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LCServiceConfigurationResponse
 
-- (LCServiceConfigurationResponse)initWithDictionary:(id)a3
+- (LCServiceConfigurationResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = LCServiceConfigurationResponse;
   v5 = [(LCServiceConfigurationResponse *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"configuration"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"configuration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,30 +35,30 @@
   return v5;
 }
 
-- (LCServiceConfigurationResponse)initWithJSON:(id)a3
+- (LCServiceConfigurationResponse)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LCServiceConfigurationResponse *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LCServiceConfigurationResponse *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LCServiceConfigurationResponse *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -71,43 +71,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_configuration)
   {
-    v4 = [(LCServiceConfigurationResponse *)self configuration];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    configuration = [(LCServiceConfigurationResponse *)self configuration];
+    dictionaryRepresentation = [configuration dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"configuration"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"configuration"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"configuration"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"configuration"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichResponse = self->_whichResponse;
-    if (whichResponse == [v4 whichResponse])
+    if (whichResponse == [equalCopy whichResponse])
     {
-      v6 = [(LCServiceConfigurationResponse *)self configuration];
-      v7 = [v4 configuration];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      configuration = [(LCServiceConfigurationResponse *)self configuration];
+      configuration2 = [equalCopy configuration];
+      v8 = configuration2;
+      if ((configuration != 0) != (configuration2 == 0))
       {
-        v9 = [(LCServiceConfigurationResponse *)self configuration];
-        if (!v9)
+        configuration3 = [(LCServiceConfigurationResponse *)self configuration];
+        if (!configuration3)
         {
 
 LABEL_11:
@@ -115,10 +115,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(LCServiceConfigurationResponse *)self configuration];
-        v12 = [v4 configuration];
-        v13 = [v11 isEqual:v12];
+        v10 = configuration3;
+        configuration4 = [(LCServiceConfigurationResponse *)self configuration];
+        configuration5 = [equalCopy configuration];
+        v13 = [configuration4 isEqual:configuration5];
 
         if (v13)
         {
@@ -138,14 +138,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(LCServiceConfigurationResponse *)self configuration];
+  toCopy = to;
+  configuration = [(LCServiceConfigurationResponse *)self configuration];
 
-  if (v4)
+  if (configuration)
   {
-    v5 = [(LCServiceConfigurationResponse *)self configuration];
+    configuration2 = [(LCServiceConfigurationResponse *)self configuration];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -175,17 +175,17 @@ LABEL_9:
   return v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = LCServiceConfigurationResponse;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(LCServiceConfigurationResponse *)self configuration:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(LCServiceConfigurationResponse *)self deleteConfiguration];
   }

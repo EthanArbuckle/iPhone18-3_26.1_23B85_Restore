@@ -1,43 +1,43 @@
 @interface ANCAlertSource
-- (ANCAlertSource)initWithDelegate:(id)a3 queue:(id)a4;
+- (ANCAlertSource)initWithDelegate:(id)delegate queue:(id)queue;
 - (ANCAlertSourceDelegate)delegate;
-- (BOOL)isAlertSilent:(id)a3;
-- (BOOL)isSpecialSectionID:(id)a3;
-- (id)displayNameForAppIdentifier:(id)a3;
+- (BOOL)isAlertSilent:(id)silent;
+- (BOOL)isSpecialSectionID:(id)d;
+- (id)displayNameForAppIdentifier:(id)identifier;
 - (id)lazyContactStore;
-- (unint64_t)genreIDForGenre:(id)a3;
-- (unsigned)categoryIDForAppIdentifier:(id)a3;
-- (unsigned)categoryIDForGenreID:(unint64_t)a3;
-- (void)callHistoryChanged:(BOOL)a3;
+- (unint64_t)genreIDForGenre:(id)genre;
+- (unsigned)categoryIDForAppIdentifier:(id)identifier;
+- (unsigned)categoryIDForGenreID:(unint64_t)d;
+- (void)callHistoryChanged:(BOOL)changed;
 - (void)callHistoryChangedNotification;
-- (void)callIdentificationChanged:(id)a3;
+- (void)callIdentificationChanged:(id)changed;
 - (void)callStatusChanged;
-- (void)combineCurrentArray:(id)a3 withNewArray:(id)a4 maxCount:(unint64_t)a5 objectRemoved:(id)a6 objectAdded:(id)a7;
+- (void)combineCurrentArray:(id)array withNewArray:(id)newArray maxCount:(unint64_t)count objectRemoved:(id)removed objectAdded:(id)added;
 - (void)invalidate;
-- (void)modifyAlert:(id)a3;
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 modifyBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4;
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5;
-- (void)removeAlert:(id)a3;
-- (void)voicemailsChanged:(BOOL)a3;
+- (void)modifyAlert:(id)alert;
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer modifyBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds;
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed;
+- (void)removeAlert:(id)alert;
+- (void)voicemailsChanged:(BOOL)changed;
 - (void)voicemailsChangedNotification;
 @end
 
 @implementation ANCAlertSource
 
-- (ANCAlertSource)initWithDelegate:(id)a3 queue:(id)a4
+- (ANCAlertSource)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v64.receiver = self;
   v64.super_class = ANCAlertSource;
   v8 = [(ANCAlertSource *)&v64 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_queue, queue);
     v10 = objc_alloc_init(NSMutableDictionary);
     alerts = v9->_alerts;
     v9->_alerts = v10;
@@ -163,43 +163,43 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(ANCAlertSource *)self queue];
+  queue = [(ANCAlertSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E6BC;
   block[3] = &unk_1000BD398;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(queue, block);
 
-  v5 = [(ANCAlertSource *)self queue];
+  queue2 = [(ANCAlertSource *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005E700;
   v6[3] = &unk_1000BD398;
   v6[4] = self;
-  dispatch_sync(v5, v6);
+  dispatch_sync(queue2, v6);
 }
 
-- (id)displayNameForAppIdentifier:(id)a3
+- (id)displayNameForAppIdentifier:(id)identifier
 {
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:a3];
-  v4 = [v3 localizedName];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:identifier];
+  localizedName = [v3 localizedName];
 
-  return v4;
+  return localizedName;
 }
 
-- (BOOL)isAlertSilent:(id)a3
+- (BOOL)isAlertSilent:(id)silent
 {
-  v4 = a3;
+  silentCopy = silent;
   v5 = objc_alloc_init(DNDMutableClientEventDetails);
-  v6 = [v4 appIdentifier];
-  [v5 setBundleIdentifier:v6];
+  appIdentifier = [silentCopy appIdentifier];
+  [v5 setBundleIdentifier:appIdentifier];
 
-  v7 = [v4 updateDNDEventDetails:v5];
+  v7 = [silentCopy updateDNDEventDetails:v5];
 
-  v8 = [(ANCAlertSource *)self behaviorResolutionService];
+  behaviorResolutionService = [(ANCAlertSource *)self behaviorResolutionService];
   v22 = 0;
-  v9 = [v8 resolveBehaviorForEventDetails:v7 error:&v22];
+  v9 = [behaviorResolutionService resolveBehaviorForEventDetails:v7 error:&v22];
   v10 = v22;
 
   if (v9)
@@ -214,20 +214,20 @@
 
   if (v11)
   {
-    v14 = [v9 interruptionSuppression];
-    v13 = v14 != 0;
+    interruptionSuppression = [v9 interruptionSuppression];
+    v13 = interruptionSuppression != 0;
     v15 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v4 appIdentifier];
+      appIdentifier2 = [silentCopy appIdentifier];
       [v9 interruptionSuppression];
       v18 = DNDStringFromInterruptionSuppression();
       v19 = v18;
       v20 = "N";
       *buf = 138412802;
-      v24 = v17;
-      if (v14)
+      v24 = appIdentifier2;
+      if (interruptionSuppression)
       {
         v20 = "Y";
       }
@@ -254,50 +254,50 @@
   return v13;
 }
 
-- (void)modifyAlert:(id)a3
+- (void)modifyAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [(ANCAlertSource *)self alerts];
-  v6 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v4 categoryID]);
-  v8 = [v5 objectForKeyedSubscript:v6];
+  alertCopy = alert;
+  alerts = [(ANCAlertSource *)self alerts];
+  v6 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [alertCopy categoryID]);
+  v8 = [alerts objectForKeyedSubscript:v6];
 
-  [v8 exchangeObjectAtIndex:objc_msgSend(v8 withObjectAtIndex:{"indexOfObject:", v4), objc_msgSend(v8, "count") - 1}];
-  [v4 setSilent:{-[ANCAlertSource isAlertSilent:](self, "isAlertSilent:", v4)}];
-  v7 = [(ANCAlertSource *)self delegate];
-  [v7 alertModified:v4];
+  [v8 exchangeObjectAtIndex:objc_msgSend(v8 withObjectAtIndex:{"indexOfObject:", alertCopy), objc_msgSend(v8, "count") - 1}];
+  [alertCopy setSilent:{-[ANCAlertSource isAlertSilent:](self, "isAlertSilent:", alertCopy)}];
+  delegate = [(ANCAlertSource *)self delegate];
+  [delegate alertModified:alertCopy];
 }
 
-- (void)removeAlert:(id)a3
+- (void)removeAlert:(id)alert
 {
-  v10 = a3;
-  v4 = [(ANCAlertSource *)self alerts];
-  v5 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v10 categoryID]);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  alertCopy = alert;
+  alerts = [(ANCAlertSource *)self alerts];
+  v5 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [alertCopy categoryID]);
+  v6 = [alerts objectForKeyedSubscript:v5];
 
-  [v6 removeObject:v10];
+  [v6 removeObject:alertCopy];
   if (![v6 count])
   {
-    v7 = [(ANCAlertSource *)self alerts];
-    v8 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [v10 categoryID]);
-    [v7 removeObjectForKey:v8];
+    alerts2 = [(ANCAlertSource *)self alerts];
+    v8 = +[NSNumber numberWithUnsignedChar:](NSNumber, "numberWithUnsignedChar:", [alertCopy categoryID]);
+    [alerts2 removeObjectForKey:v8];
   }
 
-  [v10 setSilent:{-[ANCAlertSource isAlertSilent:](self, "isAlertSilent:", v10)}];
-  v9 = [(ANCAlertSource *)self delegate];
-  [v9 alertRemoved:v10];
+  [alertCopy setSilent:{-[ANCAlertSource isAlertSilent:](self, "isAlertSilent:", alertCopy)}];
+  delegate = [(ANCAlertSource *)self delegate];
+  [delegate alertRemoved:alertCopy];
 }
 
-- (void)observer:(id)a3 addBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer addBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(ANCAlertSource *)self bbBulletinAlerts];
-  v10 = [v8 bulletinID];
-  v11 = [v9 objectForKey:v10];
+  observerCopy = observer;
+  bulletinCopy = bulletin;
+  bbBulletinAlerts = [(ANCAlertSource *)self bbBulletinAlerts];
+  bulletinID = [bulletinCopy bulletinID];
+  v11 = [bbBulletinAlerts objectForKey:bulletinID];
 
   if (!v11)
   {
-    if ([v8 contentPreviewSetting] == 3)
+    if ([bulletinCopy contentPreviewSetting] == 3)
     {
       v12 = qword_1000DDBC8;
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -310,23 +310,23 @@
 
     else
     {
-      v13 = [v8 sectionID];
-      v14 = [(ANCAlertSource *)self isSpecialSectionID:v13];
+      sectionID = [bulletinCopy sectionID];
+      v14 = [(ANCAlertSource *)self isSpecialSectionID:sectionID];
 
       if ((v14 & 1) == 0)
       {
-        v15 = [v8 sectionID];
-        v16 = [(ANCAlertSource *)self categoryIDForAppIdentifier:v15];
+        sectionID2 = [bulletinCopy sectionID];
+        v16 = [(ANCAlertSource *)self categoryIDForAppIdentifier:sectionID2];
 
-        v17 = [[ANCBulletinAlert alloc] initWithBulletin:v8 observer:v7 categoryID:v16];
+        v17 = [[ANCBulletinAlert alloc] initWithBulletin:bulletinCopy observer:observerCopy categoryID:v16];
         v18 = +[NSDate date];
-        v19 = [v8 publicationDate];
-        [v18 timeIntervalSinceDate:v19];
+        publicationDate = [bulletinCopy publicationDate];
+        [v18 timeIntervalSinceDate:publicationDate];
         v21 = v20 > 30.0;
 
-        v22 = [(ANCAlertSource *)self bbBulletinAlerts];
-        v23 = [v8 bulletinID];
-        [v22 setObject:v17 forKeyedSubscript:v23];
+        bbBulletinAlerts2 = [(ANCAlertSource *)self bbBulletinAlerts];
+        bulletinID2 = [bulletinCopy bulletinID];
+        [bbBulletinAlerts2 setObject:v17 forKeyedSubscript:bulletinID2];
 
         [(ANCAlertSource *)self addAlert:v17 isPreExisting:v21];
       }
@@ -334,12 +334,12 @@
   }
 }
 
-- (void)observer:(id)a3 modifyBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer modifyBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v6 = a4;
-  v7 = [v6 threadSummary];
+  bulletinCopy = bulletin;
+  threadSummary = [bulletinCopy threadSummary];
 
-  if (v7)
+  if (threadSummary)
   {
     v8 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -351,42 +351,42 @@
 
   else
   {
-    v9 = [(ANCAlertSource *)self bbBulletinAlerts];
-    v10 = [v6 bulletinID];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    bbBulletinAlerts = [(ANCAlertSource *)self bbBulletinAlerts];
+    bulletinID = [bulletinCopy bulletinID];
+    v11 = [bbBulletinAlerts objectForKeyedSubscript:bulletinID];
 
     if (v11)
     {
-      [v11 setBulletin:v6];
+      [v11 setBulletin:bulletinCopy];
       [(ANCAlertSource *)self modifyAlert:v11];
     }
   }
 }
 
-- (void)observer:(id)a3 removeBulletin:(id)a4 forFeed:(unint64_t)a5
+- (void)observer:(id)observer removeBulletin:(id)bulletin forFeed:(unint64_t)feed
 {
-  v11 = a4;
-  v6 = [(ANCAlertSource *)self bbBulletinAlerts];
-  v7 = [v11 bulletinID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  bulletinCopy = bulletin;
+  bbBulletinAlerts = [(ANCAlertSource *)self bbBulletinAlerts];
+  bulletinID = [bulletinCopy bulletinID];
+  v8 = [bbBulletinAlerts objectForKeyedSubscript:bulletinID];
 
   if (v8)
   {
     [(ANCAlertSource *)self removeAlert:v8];
-    v9 = [(ANCAlertSource *)self bbBulletinAlerts];
-    v10 = [v11 bulletinID];
-    [v9 removeObjectForKey:v10];
+    bbBulletinAlerts2 = [(ANCAlertSource *)self bbBulletinAlerts];
+    bulletinID2 = [bulletinCopy bulletinID];
+    [bbBulletinAlerts2 removeObjectForKey:bulletinID2];
   }
 }
 
-- (void)observer:(id)a3 noteInvalidatedBulletinIDs:(id)a4
+- (void)observer:(id)observer noteInvalidatedBulletinIDs:(id)ds
 {
-  v5 = a4;
+  dsCopy = ds;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [dsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -398,75 +398,75 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(ANCAlertSource *)self bbBulletinAlerts];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        bbBulletinAlerts = [(ANCAlertSource *)self bbBulletinAlerts];
+        v12 = [bbBulletinAlerts objectForKeyedSubscript:v10];
 
         if (v12)
         {
           [(ANCAlertSource *)self removeAlert:v12];
-          v13 = [(ANCAlertSource *)self bbBulletinAlerts];
-          [v13 removeObjectForKey:v10];
+          bbBulletinAlerts2 = [(ANCAlertSource *)self bbBulletinAlerts];
+          [bbBulletinAlerts2 removeObjectForKey:v10];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [dsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)isSpecialSectionID:(id)a3
+- (BOOL)isSpecialSectionID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.mobilephone"])
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.mobilephone"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.facetime"];
+    v4 = [dCopy isEqualToString:@"com.apple.facetime"];
   }
 
   return v4;
 }
 
-- (unsigned)categoryIDForAppIdentifier:(id)a3
+- (unsigned)categoryIDForAppIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ANCAlertSource *)self appIdentifierToCategoryCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  appIdentifierToCategoryCache = [(ANCAlertSource *)self appIdentifierToCategoryCache];
+  v6 = [appIdentifierToCategoryCache objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
     goto LABEL_16;
   }
 
-  v7 = [(ANCAlertSource *)self firstPartyAppIdentifierToCategoryMap];
-  v6 = [v7 objectForKeyedSubscript:v4];
+  firstPartyAppIdentifierToCategoryMap = [(ANCAlertSource *)self firstPartyAppIdentifierToCategoryMap];
+  v6 = [firstPartyAppIdentifierToCategoryMap objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
 LABEL_15:
-    v18 = [(ANCAlertSource *)self appIdentifierToCategoryCache];
-    [v18 setObject:v6 forKeyedSubscript:v4];
+    appIdentifierToCategoryCache2 = [(ANCAlertSource *)self appIdentifierToCategoryCache];
+    [appIdentifierToCategoryCache2 setObject:v6 forKeyedSubscript:identifierCopy];
 
     goto LABEL_16;
   }
 
-  v8 = [LSApplicationProxy applicationProxyForIdentifier:v4];
-  v9 = [v8 bundleContainerURL];
-  v10 = [v9 path];
+  v8 = [LSApplicationProxy applicationProxyForIdentifier:identifierCopy];
+  bundleContainerURL = [v8 bundleContainerURL];
+  path = [bundleContainerURL path];
 
-  v11 = [v10 stringByAppendingPathComponent:@"Info.plist"];
+  v11 = [path stringByAppendingPathComponent:@"Info.plist"];
   v12 = [NSDictionary dictionaryWithContentsOfFile:v11];
   v13 = [v12 objectForKeyedSubscript:@"SBMatchingApplicationGenres"];
   if (v13)
@@ -477,33 +477,33 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v14 = [v13 firstObject];
-    v15 = [(ANCAlertSource *)self genreIDForGenre:v14];
+    firstObject = [v13 firstObject];
+    unsignedIntegerValue = [(ANCAlertSource *)self genreIDForGenre:firstObject];
   }
 
   else
   {
     v21 = v8;
-    v14 = [v10 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
-    v16 = [NSDictionary dictionaryWithContentsOfFile:v14];
+    firstObject = [path stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+    v16 = [NSDictionary dictionaryWithContentsOfFile:firstObject];
     v17 = [v16 objectForKeyedSubscript:@"genreId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v15 = 0;
+      unsignedIntegerValue = 0;
     }
 
     v8 = v21;
   }
 
-  if (v15)
+  if (unsignedIntegerValue)
   {
-    v6 = [NSNumber numberWithUnsignedChar:[(ANCAlertSource *)self categoryIDForGenreID:v15]];
+    v6 = [NSNumber numberWithUnsignedChar:[(ANCAlertSource *)self categoryIDForGenreID:unsignedIntegerValue]];
     goto LABEL_14;
   }
 
@@ -517,15 +517,15 @@ LABEL_14:
   }
 
 LABEL_16:
-  v19 = [v6 unsignedCharValue];
+  unsignedCharValue = [v6 unsignedCharValue];
 
-  return v19;
+  return unsignedCharValue;
 }
 
 - (void)callStatusChanged
 {
-  v3 = [(ANCAlertSource *)self tuCallCenter];
-  v4 = [v3 audioAndVideoCallsWithStatus:4];
+  tuCallCenter = [(ANCAlertSource *)self tuCallCenter];
+  v4 = [tuCallCenter audioAndVideoCallsWithStatus:4];
 
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -536,7 +536,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "# incoming calls: %lu", buf, 0xCu);
   }
 
-  v7 = [(ANCAlertSource *)self tuIncomingCalls];
+  tuIncomingCalls = [(ANCAlertSource *)self tuIncomingCalls];
   v16[4] = self;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -547,10 +547,10 @@ LABEL_16:
   v16[1] = 3221225472;
   v16[2] = sub_10005F92C;
   v16[3] = &unk_1000BE528;
-  [(ANCAlertSource *)self combineCurrentArray:v7 withNewArray:v4 maxCount:-1 objectRemoved:v17 objectAdded:v16];
+  [(ANCAlertSource *)self combineCurrentArray:tuIncomingCalls withNewArray:v4 maxCount:-1 objectRemoved:v17 objectAdded:v16];
 
-  v8 = [(ANCAlertSource *)self tuCallCenter];
-  v9 = [v8 audioAndVideoCallsWithStatus:1];
+  tuCallCenter2 = [(ANCAlertSource *)self tuCallCenter];
+  v9 = [tuCallCenter2 audioAndVideoCallsWithStatus:1];
 
   v10 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -562,7 +562,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "# active calls: %lu", buf, 0xCu);
   }
 
-  v13 = [(ANCAlertSource *)self tuActiveCalls];
+  tuActiveCalls = [(ANCAlertSource *)self tuActiveCalls];
   v14[4] = self;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -573,25 +573,25 @@ LABEL_16:
   v14[1] = 3221225472;
   v14[2] = sub_10005FA88;
   v14[3] = &unk_1000BE528;
-  [(ANCAlertSource *)self combineCurrentArray:v13 withNewArray:v9 maxCount:-1 objectRemoved:v15 objectAdded:v14];
+  [(ANCAlertSource *)self combineCurrentArray:tuActiveCalls withNewArray:v9 maxCount:-1 objectRemoved:v15 objectAdded:v14];
 }
 
-- (void)callIdentificationChanged:(id)a3
+- (void)callIdentificationChanged:(id)changed
 {
-  v12 = [a3 object];
-  v4 = [(ANCAlertSource *)self tuIncomingCalls];
-  v5 = [v4 containsObject:v12];
+  object = [changed object];
+  tuIncomingCalls = [(ANCAlertSource *)self tuIncomingCalls];
+  v5 = [tuIncomingCalls containsObject:object];
 
   if (v5)
   {
-    v6 = [(ANCAlertSource *)self tuIncomingCallAlerts];
-    v7 = [v6 objectForKey:v12];
+    tuIncomingCallAlerts = [(ANCAlertSource *)self tuIncomingCallAlerts];
+    v7 = [tuIncomingCallAlerts objectForKey:object];
 
-    v8 = [(ANCAlertSource *)self tuIncomingCalls];
-    v9 = [(ANCAlertSource *)self tuIncomingCalls];
-    v10 = [v9 indexOfObject:v12];
-    v11 = [(ANCAlertSource *)self tuIncomingCalls];
-    [v8 exchangeObjectAtIndex:v10 withObjectAtIndex:{objc_msgSend(v11, "count") - 1}];
+    tuIncomingCalls2 = [(ANCAlertSource *)self tuIncomingCalls];
+    tuIncomingCalls3 = [(ANCAlertSource *)self tuIncomingCalls];
+    v10 = [tuIncomingCalls3 indexOfObject:object];
+    tuIncomingCalls4 = [(ANCAlertSource *)self tuIncomingCalls];
+    [tuIncomingCalls2 exchangeObjectAtIndex:v10 withObjectAtIndex:{objc_msgSend(tuIncomingCalls4, "count") - 1}];
 
     [(ANCAlertSource *)self modifyAlert:v7];
   }
@@ -599,16 +599,16 @@ LABEL_16:
 
 - (void)callHistoryChangedNotification
 {
-  v3 = [(ANCAlertSource *)self queue];
+  queue = [(ANCAlertSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005FCDC;
   block[3] = &unk_1000BD398;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)callHistoryChanged:(BOOL)a3
+- (void)callHistoryChanged:(BOOL)changed
 {
   v5 = [CHRecentCall predicateForCallsWithStatus:kCHCallStatusMissed];
   v15[0] = v5;
@@ -617,10 +617,10 @@ LABEL_16:
   v7 = [NSArray arrayWithObjects:v15 count:2];
   v8 = [NSCompoundPredicate andPredicateWithSubpredicates:v7];
 
-  v9 = [(ANCAlertSource *)self chManager];
-  v10 = [v9 callsWithPredicate:v8 limit:0 offset:0 batchSize:0];
+  chManager = [(ANCAlertSource *)self chManager];
+  v10 = [chManager callsWithPredicate:v8 limit:0 offset:0 batchSize:0];
 
-  v11 = [(ANCAlertSource *)self chUnreadMissedCalls];
+  chUnreadMissedCalls = [(ANCAlertSource *)self chUnreadMissedCalls];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10005FEC4;
@@ -631,27 +631,27 @@ LABEL_16:
   v12[2] = sub_10005FF94;
   v12[3] = &unk_1000BE578;
   v12[4] = self;
-  v13 = a3;
-  [(ANCAlertSource *)self combineCurrentArray:v11 withNewArray:v10 maxCount:5 objectRemoved:v14 objectAdded:v12];
+  changedCopy = changed;
+  [(ANCAlertSource *)self combineCurrentArray:chUnreadMissedCalls withNewArray:v10 maxCount:5 objectRemoved:v14 objectAdded:v12];
 }
 
 - (void)voicemailsChangedNotification
 {
-  v3 = [(ANCAlertSource *)self queue];
+  queue = [(ANCAlertSource *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100060110;
   block[3] = &unk_1000BD398;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)voicemailsChanged:(BOOL)a3
+- (void)voicemailsChanged:(BOOL)changed
 {
-  v5 = [(ANCAlertSource *)self vvManager];
-  v6 = [v5 voicemailsPassingTest:&stru_1000BE5B8];
+  vvManager = [(ANCAlertSource *)self vvManager];
+  v6 = [vvManager voicemailsPassingTest:&stru_1000BE5B8];
 
-  v7 = [(ANCAlertSource *)self vvUnreadVoicemails];
+  vvUnreadVoicemails = [(ANCAlertSource *)self vvUnreadVoicemails];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100060294;
@@ -662,15 +662,15 @@ LABEL_16:
   v8[2] = sub_100060334;
   v8[3] = &unk_1000BE608;
   v8[4] = self;
-  v9 = a3;
-  [(ANCAlertSource *)self combineCurrentArray:v7 withNewArray:v6 maxCount:5 objectRemoved:v10 objectAdded:v8];
+  changedCopy = changed;
+  [(ANCAlertSource *)self combineCurrentArray:vvUnreadVoicemails withNewArray:v6 maxCount:5 objectRemoved:v10 objectAdded:v8];
 }
 
 - (id)lazyContactStore
 {
-  v3 = [(ANCAlertSource *)self contactStore];
+  contactStore = [(ANCAlertSource *)self contactStore];
 
-  if (!v3)
+  if (!contactStore)
   {
     v4 = objc_alloc_init(CNContactStore);
     [(ANCAlertSource *)self setContactStore:v4];
@@ -679,59 +679,59 @@ LABEL_16:
   return [(ANCAlertSource *)self contactStore];
 }
 
-- (void)combineCurrentArray:(id)a3 withNewArray:(id)a4 maxCount:(unint64_t)a5 objectRemoved:(id)a6 objectAdded:(id)a7
+- (void)combineCurrentArray:(id)array withNewArray:(id)newArray maxCount:(unint64_t)count objectRemoved:(id)removed objectAdded:(id)added
 {
-  v23 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [v23 count];
-  v15 = v23;
+  arrayCopy = array;
+  newArrayCopy = newArray;
+  removedCopy = removed;
+  addedCopy = added;
+  v14 = [arrayCopy count];
+  v15 = arrayCopy;
   if (v14)
   {
     v16 = 0;
     do
     {
       v17 = [v15 objectAtIndexedSubscript:v16];
-      if ([v11 containsObject:v17] && objc_msgSend(v11, "indexOfObject:", v17) < a5)
+      if ([newArrayCopy containsObject:v17] && objc_msgSend(newArrayCopy, "indexOfObject:", v17) < count)
       {
         ++v16;
       }
 
       else
       {
-        v12[2](v12, v17);
-        [v23 removeObjectAtIndex:v16];
+        removedCopy[2](removedCopy, v17);
+        [arrayCopy removeObjectAtIndex:v16];
       }
 
-      v18 = [v23 count];
-      v15 = v23;
+      v18 = [arrayCopy count];
+      v15 = arrayCopy;
     }
 
     while (v16 != v18);
   }
 
-  v19 = [v11 count];
-  if (v19 >= a5)
+  v19 = [newArrayCopy count];
+  if (v19 >= count)
   {
-    v20 = a5;
+    countCopy = count;
   }
 
   else
   {
-    v20 = v19;
+    countCopy = v19;
   }
 
-  if (v20)
+  if (countCopy)
   {
-    v21 = v20 - 1;
+    v21 = countCopy - 1;
     do
     {
-      v22 = [v11 objectAtIndexedSubscript:v21];
-      if (([v23 containsObject:v22] & 1) == 0)
+      v22 = [newArrayCopy objectAtIndexedSubscript:v21];
+      if (([arrayCopy containsObject:v22] & 1) == 0)
       {
-        [v23 addObject:v22];
-        v13[2](v13, v22);
+        [arrayCopy addObject:v22];
+        addedCopy[2](addedCopy, v22);
       }
 
       --v21;
@@ -741,115 +741,115 @@ LABEL_16:
   }
 }
 
-- (unint64_t)genreIDForGenre:(id)a3
+- (unint64_t)genreIDForGenre:(id)genre
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Business"])
+  genreCopy = genre;
+  if ([genreCopy isEqualToString:@"Business"])
   {
     v4 = 6000;
   }
 
-  else if ([v3 isEqualToString:@"Weather"])
+  else if ([genreCopy isEqualToString:@"Weather"])
   {
     v4 = 6001;
   }
 
-  else if ([v3 isEqualToString:@"Utilities"])
+  else if ([genreCopy isEqualToString:@"Utilities"])
   {
     v4 = 6002;
   }
 
-  else if ([v3 isEqualToString:@"Travel"])
+  else if ([genreCopy isEqualToString:@"Travel"])
   {
     v4 = 6003;
   }
 
-  else if ([v3 isEqualToString:@"Sports"])
+  else if ([genreCopy isEqualToString:@"Sports"])
   {
     v4 = 6004;
   }
 
-  else if ([v3 isEqualToString:@"Social Networking"])
+  else if ([genreCopy isEqualToString:@"Social Networking"])
   {
     v4 = 6005;
   }
 
-  else if ([v3 isEqualToString:@"Reference"])
+  else if ([genreCopy isEqualToString:@"Reference"])
   {
     v4 = 6006;
   }
 
-  else if ([v3 isEqualToString:@"Productivity"])
+  else if ([genreCopy isEqualToString:@"Productivity"])
   {
     v4 = 6007;
   }
 
-  else if ([v3 isEqualToString:@"Photo & Video"])
+  else if ([genreCopy isEqualToString:@"Photo & Video"])
   {
     v4 = 6008;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([genreCopy isEqualToString:@"News"])
   {
     v4 = 6009;
   }
 
-  else if ([v3 isEqualToString:@"Navigation"])
+  else if ([genreCopy isEqualToString:@"Navigation"])
   {
     v4 = 6010;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([genreCopy isEqualToString:@"Music"])
   {
     v4 = 6011;
   }
 
-  else if ([v3 isEqualToString:@"Lifestyle"])
+  else if ([genreCopy isEqualToString:@"Lifestyle"])
   {
     v4 = 6012;
   }
 
-  else if ([v3 isEqualToString:@"Health & Fitness"])
+  else if ([genreCopy isEqualToString:@"Health & Fitness"])
   {
     v4 = 6013;
   }
 
-  else if ([v3 isEqualToString:@"Games"])
+  else if ([genreCopy isEqualToString:@"Games"])
   {
     v4 = 6014;
   }
 
-  else if ([v3 isEqualToString:@"Finance"])
+  else if ([genreCopy isEqualToString:@"Finance"])
   {
     v4 = 6015;
   }
 
-  else if ([v3 isEqualToString:@"Entertainment"])
+  else if ([genreCopy isEqualToString:@"Entertainment"])
   {
     v4 = 6016;
   }
 
-  else if ([v3 isEqualToString:@"Education"])
+  else if ([genreCopy isEqualToString:@"Education"])
   {
     v4 = 6017;
   }
 
-  else if ([v3 isEqualToString:@"Books"])
+  else if ([genreCopy isEqualToString:@"Books"])
   {
     v4 = 6018;
   }
 
-  else if ([v3 isEqualToString:@"Medical"])
+  else if ([genreCopy isEqualToString:@"Medical"])
   {
     v4 = 6020;
   }
 
-  else if ([v3 isEqualToString:@"Newsstand"])
+  else if ([genreCopy isEqualToString:@"Newsstand"])
   {
     v4 = 6021;
   }
 
-  else if ([v3 isEqualToString:@"Catalogs"])
+  else if ([genreCopy isEqualToString:@"Catalogs"])
   {
     v4 = 6022;
   }
@@ -862,16 +862,16 @@ LABEL_16:
   return v4;
 }
 
-- (unsigned)categoryIDForGenreID:(unint64_t)a3
+- (unsigned)categoryIDForGenreID:(unint64_t)d
 {
-  if (a3 - 6000 > 0x15)
+  if (d - 6000 > 0x15)
   {
     return 0;
   }
 
   else
   {
-    return byte_100092130[a3 - 6000];
+    return byte_100092130[d - 6000];
   }
 }
 

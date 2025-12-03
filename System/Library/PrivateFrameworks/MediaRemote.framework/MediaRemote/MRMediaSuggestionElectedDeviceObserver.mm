@@ -1,26 +1,26 @@
 @interface MRMediaSuggestionElectedDeviceObserver
-- (MRMediaSuggestionElectedDeviceObserver)initWithDelegate:(id)a3;
+- (MRMediaSuggestionElectedDeviceObserver)initWithDelegate:(id)delegate;
 - (MRMediaSuggestionElectedDeviceObserverDelegate)delegate;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)deviceAvailableForMediaSuggestionsNotification:(id)a3;
-- (void)setElectedDeviceIdentifier:(id)a3;
+- (void)deviceAvailableForMediaSuggestionsNotification:(id)notification;
+- (void)setElectedDeviceIdentifier:(id)identifier;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MRMediaSuggestionElectedDeviceObserver
 
-- (MRMediaSuggestionElectedDeviceObserver)initWithDelegate:(id)a3
+- (MRMediaSuggestionElectedDeviceObserver)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = MRMediaSuggestionElectedDeviceObserver;
   v5 = [(MRMediaSuggestionElectedDeviceObserver *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[MRMediaRemoteServiceClient sharedServiceClient];
     [v7 addMediaSuggestionElectedDeviceObserver:v6];
   }
@@ -41,8 +41,8 @@
 - (void)start
 {
   [(MRMediaSuggestionElectedDeviceObserver *)self setObserving:1];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_deviceAvailableForMediaSuggestionsNotification_ name:@"_MRMediaRemoteDeviceAvailableForMediaSuggestionsNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_deviceAvailableForMediaSuggestionsNotification_ name:@"_MRMediaRemoteDeviceAvailableForMediaSuggestionsNotification" object:0];
 
   MRMediaRemoteSetWantsRouteChangeNotifications(1);
   v4 = MRGetSharedService();
@@ -74,46 +74,46 @@ void __47__MRMediaSuggestionElectedDeviceObserver_start__block_invoke(uint64_t a
 - (void)stop
 {
   MRMediaRemoteSetWantsRouteChangeNotifications(0);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_MRMediaRemoteDeviceAvailableForMediaSuggestionsNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_MRMediaRemoteDeviceAvailableForMediaSuggestionsNotification" object:0];
 
   [(MRMediaSuggestionElectedDeviceObserver *)self setObserving:0];
 }
 
-- (void)setElectedDeviceIdentifier:(id)a3
+- (void)setElectedDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   electedDeviceIdentifier = self->_electedDeviceIdentifier;
-  if (electedDeviceIdentifier != v4)
+  if (electedDeviceIdentifier != identifierCopy)
   {
-    v12 = v4;
-    v6 = [(NSString *)electedDeviceIdentifier isEqual:v4];
-    v4 = v12;
+    v12 = identifierCopy;
+    v6 = [(NSString *)electedDeviceIdentifier isEqual:identifierCopy];
+    identifierCopy = v12;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v12 copy];
       v8 = self->_electedDeviceIdentifier;
       self->_electedDeviceIdentifier = v7;
 
-      v9 = [(MRMediaSuggestionElectedDeviceObserver *)self delegate];
+      delegate = [(MRMediaSuggestionElectedDeviceObserver *)self delegate];
       v10 = objc_opt_respondsToSelector();
 
-      v4 = v12;
+      identifierCopy = v12;
       if (v10)
       {
-        v11 = [(MRMediaSuggestionElectedDeviceObserver *)self delegate];
-        [v11 mediaSuggestionElectedDeviceObserverDeviceDidChange:self];
+        delegate2 = [(MRMediaSuggestionElectedDeviceObserver *)self delegate];
+        [delegate2 mediaSuggestionElectedDeviceObserverDeviceDidChange:self];
 
-        v4 = v12;
+        identifierCopy = v12;
       }
     }
   }
 }
 
-- (void)deviceAvailableForMediaSuggestionsNotification:(id)a3
+- (void)deviceAvailableForMediaSuggestionsNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"kMRAVEndpointOutputDeviceIdentifierUserInfoKey"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"kMRAVEndpointOutputDeviceIdentifierUserInfoKey"];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -128,8 +128,8 @@ void __47__MRMediaSuggestionElectedDeviceObserver_start__block_invoke(uint64_t a
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MRMediaSuggestionElectedDeviceObserver *)self electedDeviceIdentifier];
-  v5 = [v3 stringWithFormat:@"    electedDeviceIdentifier = %@\n    observing = %d\n", v4, -[MRMediaSuggestionElectedDeviceObserver isObserving](self, "isObserving")];
+  electedDeviceIdentifier = [(MRMediaSuggestionElectedDeviceObserver *)self electedDeviceIdentifier];
+  v5 = [v3 stringWithFormat:@"    electedDeviceIdentifier = %@\n    observing = %d\n", electedDeviceIdentifier, -[MRMediaSuggestionElectedDeviceObserver isObserving](self, "isObserving")];
   v6 = MRCreateFormattedDebugDescriptionFromClass(self, v5);
 
   return v6;

@@ -1,18 +1,18 @@
 @interface SXDebugComponentInserter
-- (id)componentInsertForMarker:(id)a3 DOMObjectProvider:(id)a4 layoutProvider:(id)a5;
+- (id)componentInsertForMarker:(id)marker DOMObjectProvider:(id)provider layoutProvider:(id)layoutProvider;
 @end
 
 @implementation SXDebugComponentInserter
 
-- (id)componentInsertForMarker:(id)a3 DOMObjectProvider:(id)a4 layoutProvider:(id)a5
+- (id)componentInsertForMarker:(id)marker DOMObjectProvider:(id)provider layoutProvider:(id)layoutProvider
 {
-  v5 = a5;
+  layoutProviderCopy = layoutProvider;
   v6 = objc_alloc_init(SXInsertedDebugComponent);
   v7 = [SXInsertComponentLayout alloc];
-  v8 = [v5 columnLayout];
+  columnLayout = [layoutProviderCopy columnLayout];
 
-  v9 = [v8 documentLayout];
-  v10 = -[SXInsertComponentLayout initWithColumnRange:](v7, "initWithColumnRange:", 0, [v9 columns]);
+  documentLayout = [columnLayout documentLayout];
+  v10 = -[SXInsertComponentLayout initWithColumnRange:](v7, "initWithColumnRange:", 0, [documentLayout columns]);
 
   [(SXInsertComponentLayout *)v10 setIgnoreDocumentMargin:3];
   v11 = [[SXComponentInsert alloc] initWithComponent:v6 componentLayout:v10];

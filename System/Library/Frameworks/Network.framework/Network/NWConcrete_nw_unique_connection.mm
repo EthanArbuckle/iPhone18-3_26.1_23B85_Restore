@@ -9,8 +9,8 @@
 - (NSString)description
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     v16 = __nwlog_obj();
     *out = 136446210;
@@ -84,9 +84,9 @@ LABEL_33:
     goto LABEL_35;
   }
 
-  v3 = v2;
+  v3 = selfCopy;
   memset(out, 0, sizeof(out));
-  uuid_unparse(v2->uuid, out);
+  uuid_unparse(selfCopy->uuid, out);
   connection = v3->connection;
   if (connection)
   {
@@ -163,7 +163,7 @@ LABEL_36:
     *buf = 136446466;
     v17 = "[NWConcrete_nw_unique_connection dealloc]";
     v18 = 2114;
-    v19 = self;
+    selfCopy5 = self;
     v12 = 22;
     v11 = buf;
     v4 = _os_log_send_and_compose_impl();
@@ -183,7 +183,7 @@ LABEL_36:
           *buf = 136446466;
           v17 = "[NWConcrete_nw_unique_connection dealloc]";
           v18 = 2114;
-          v19 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v5, v6, "%{public}s nw_unique_connection %{public}@ dealloc with dupedSocketFD", buf, 0x16u);
         }
       }
@@ -203,7 +203,7 @@ LABEL_36:
             *buf = 136446722;
             v17 = "[NWConcrete_nw_unique_connection dealloc]";
             v18 = 2114;
-            v19 = self;
+            selfCopy5 = self;
             v20 = 2082;
             v21 = backtrace_string;
             _os_log_impl(&dword_181A37000, v5, v8, "%{public}s nw_unique_connection %{public}@ dealloc with dupedSocketFD, dumping backtrace:%{public}s", buf, 0x20u);
@@ -223,7 +223,7 @@ LABEL_36:
           *buf = 136446466;
           v17 = "[NWConcrete_nw_unique_connection dealloc]";
           v18 = 2114;
-          v19 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v5, v8, "%{public}s nw_unique_connection %{public}@ dealloc with dupedSocketFD, no backtrace", buf, 0x16u);
         }
       }
@@ -239,7 +239,7 @@ LABEL_36:
           *buf = 136446466;
           v17 = "[NWConcrete_nw_unique_connection dealloc]";
           v18 = 2114;
-          v19 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_181A37000, v5, v10, "%{public}s nw_unique_connection %{public}@ dealloc with dupedSocketFD, backtrace limit exceeded", buf, 0x16u);
         }
       }

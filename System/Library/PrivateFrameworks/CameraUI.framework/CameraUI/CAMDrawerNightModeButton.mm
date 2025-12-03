@@ -1,25 +1,25 @@
 @interface CAMDrawerNightModeButton
 - (id)imageNameForAXHUD;
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setOn:(BOOL)a3;
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated;
+- (void)setOn:(BOOL)on;
 @end
 
 @implementation CAMDrawerNightModeButton
 
-- (void)setDisabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setDisabled:(BOOL)disabled animated:(BOOL)animated
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_disabled = disabled;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
   }
 }
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(CAMControlDrawerButton *)self updateImage];
   }
 }
@@ -28,15 +28,15 @@
 {
   if ([(CAMDrawerNightModeButton *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"camera.nightmode.slash";
+    imageNameForCurrentState = @"camera.nightmode.slash";
   }
 
   else
   {
-    v3 = [(CAMDrawerNightModeButton *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMDrawerNightModeButton *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 @end

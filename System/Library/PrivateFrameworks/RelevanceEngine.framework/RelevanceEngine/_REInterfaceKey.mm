@@ -1,43 +1,43 @@
 @interface _REInterfaceKey
-- (BOOL)conforms:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_REInterfaceKey)initWithClass:(Class)a3;
-- (_REInterfaceKey)initWithProtocol:(id)a3;
+- (BOOL)conforms:(id)conforms;
+- (BOOL)isEqual:(id)equal;
+- (_REInterfaceKey)initWithClass:(Class)class;
+- (_REInterfaceKey)initWithProtocol:(id)protocol;
 - (_REInterfaceKey)superclassKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)enumerateAutomaticProperties:(id)a3;
-- (void)enumerateConformedProperties:(id)a3;
-- (void)enumerateExposedMethods:(id)a3;
-- (void)enumerateExposedProperties:(id)a3;
+- (void)enumerateAutomaticProperties:(id)properties;
+- (void)enumerateConformedProperties:(id)properties;
+- (void)enumerateExposedMethods:(id)methods;
+- (void)enumerateExposedProperties:(id)properties;
 @end
 
 @implementation _REInterfaceKey
 
-- (_REInterfaceKey)initWithClass:(Class)a3
+- (_REInterfaceKey)initWithClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = _REInterfaceKey;
   result = [(_REInterfaceKey *)&v5 init];
   if (result)
   {
-    result->_c = a3;
+    result->_c = class;
     result->_isClass = 1;
   }
 
   return result;
 }
 
-- (_REInterfaceKey)initWithProtocol:(id)a3
+- (_REInterfaceKey)initWithProtocol:(id)protocol
 {
-  v5 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = _REInterfaceKey;
   v6 = [(_REInterfaceKey *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_p, a3);
+    objc_storeStrong(&v6->_p, protocol);
     v7->_isClass = 0;
   }
 
@@ -68,23 +68,23 @@
   return v5;
 }
 
-- (BOOL)conforms:(id)a3
+- (BOOL)conforms:(id)conforms
 {
   if (self->_isClass)
   {
-    return class_conformsToProtocol(self->_c, a3);
+    return class_conformsToProtocol(self->_c, conforms);
   }
 
   else
   {
-    return protocol_conformsToProtocol(self->_p, a3);
+    return protocol_conformsToProtocol(self->_p, conforms);
   }
 }
 
-- (void)enumerateAutomaticProperties:(id)a3
+- (void)enumerateAutomaticProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     if (self->_isClass)
     {
@@ -101,7 +101,7 @@
             if (Name)
             {
               v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:Name];
-              v4[2](v4, v9);
+              propertiesCopy[2](propertiesCopy, v9);
             }
           }
         }
@@ -112,10 +112,10 @@
   }
 }
 
-- (void)enumerateConformedProperties:(id)a3
+- (void)enumerateConformedProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     outCount = 0;
     v5 = self->_isClass ? class_copyProtocolList(self->_c, &outCount) : protocol_copyProtocolList(self->_p, &outCount);
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)enumerateExposedProperties:(id)a3
+- (void)enumerateExposedProperties:(id)properties
 {
-  v4 = a3;
-  if (v4)
+  propertiesCopy = properties;
+  if (propertiesCopy)
   {
     if (!self->_isClass)
     {
@@ -153,7 +153,7 @@
             if (Name)
             {
               v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:Name];
-              v4[2](v4, v9);
+              propertiesCopy[2](propertiesCopy, v9);
             }
           }
         }
@@ -164,10 +164,10 @@
   }
 }
 
-- (void)enumerateExposedMethods:(id)a3
+- (void)enumerateExposedMethods:(id)methods
 {
-  v4 = a3;
-  if (v4 && !self->_isClass)
+  methodsCopy = methods;
+  if (methodsCopy && !self->_isClass)
   {
     v5 = [MEMORY[0x277CBEB58] set];
     v15[0] = MEMORY[0x277D85DD0];
@@ -196,7 +196,7 @@
 
             if ((v13 & 1) == 0)
             {
-              v4[2](v4, v11);
+              methodsCopy[2](methodsCopy, v11);
             }
           }
 
@@ -230,10 +230,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -243,7 +243,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_isClass == v5->_isClass)
       {
@@ -273,10 +273,10 @@
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   isClass = self->_isClass;
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (isClass)
   {
     c = self->_c;

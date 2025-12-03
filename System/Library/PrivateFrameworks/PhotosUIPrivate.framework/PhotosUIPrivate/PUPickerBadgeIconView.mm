@@ -1,25 +1,25 @@
 @interface PUPickerBadgeIconView
-- (PUPickerBadgeIconView)initWithFrame:(CGRect)a3;
-- (void)flipToPrivacyIconAfterDelay:(double)a3;
+- (PUPickerBadgeIconView)initWithFrame:(CGRect)frame;
+- (void)flipToPrivacyIconAfterDelay:(double)delay;
 @end
 
 @implementation PUPickerBadgeIconView
 
-- (void)flipToPrivacyIconAfterDelay:(double)a3
+- (void)flipToPrivacyIconAfterDelay:(double)delay
 {
-  v5 = [(PUPickerBadgeIconView *)self photosImageView];
-  v6 = [(PUPickerBadgeIconView *)self privacyImageView];
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
+  photosImageView = [(PUPickerBadgeIconView *)self photosImageView];
+  privacyImageView = [(PUPickerBadgeIconView *)self privacyImageView];
+  v7 = dispatch_time(0, (delay * 1000000000.0));
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__PUPickerBadgeIconView_flipToPrivacyIconAfterDelay___block_invoke;
   v10[3] = &unk_1E7B7F248;
   v13 = xmmword_1B3D0D0D0;
   v14 = xmmword_1B3D0D0E0;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = photosImageView;
+  v12 = privacyImageView;
+  v8 = privacyImageView;
+  v9 = photosImageView;
   dispatch_after(v7, MEMORY[0x1E69E96A0], v10);
 }
 
@@ -37,11 +37,11 @@ void __53__PUPickerBadgeIconView_flipToPrivacyIconAfterDelay___block_invoke(uint
   [v3 startAnimation];
 }
 
-- (PUPickerBadgeIconView)initWithFrame:(CGRect)a3
+- (PUPickerBadgeIconView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = PUPickerBadgeIconView;
-  v3 = [(PUPickerBadgeIconView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPickerBadgeIconView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);

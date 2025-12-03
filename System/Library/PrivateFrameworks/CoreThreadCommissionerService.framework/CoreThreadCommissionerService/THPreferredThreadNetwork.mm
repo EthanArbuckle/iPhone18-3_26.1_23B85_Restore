@@ -1,17 +1,17 @@
 @interface THPreferredThreadNetwork
 + (id)keyChainQueryForDeleteAllPreferredNetworks;
-+ (id)keyChainQueryForDeletePreferredNetworkRecord:(id)a3;
-+ (id)keyChainQueryForDeletePreferredNetworkRecordForNetworkSignature:(id)a3;
-+ (id)keyChainQueryForDeletePreferredNetworkRecordOperationForNetworkName:(id)a3;
-+ (id)keyChainQueryForDeletePreferredNetworkRecordWithNetworkName:(id)a3;
++ (id)keyChainQueryForDeletePreferredNetworkRecord:(id)record;
++ (id)keyChainQueryForDeletePreferredNetworkRecordForNetworkSignature:(id)signature;
++ (id)keyChainQueryForDeletePreferredNetworkRecordOperationForNetworkName:(id)name;
++ (id)keyChainQueryForDeletePreferredNetworkRecordWithNetworkName:(id)name;
 + (id)keyChainQueryForFetchPreferredNetworkRecordsOperation;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForLabelAsSSID:(id)a3;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetwork:(id)a3;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkName:(id)a3;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkSignature:(id)a3;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetwork:(id)a3;
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetworkWithSignature:(id)a3;
-+ (id)preferredNetworkFromKeychainDictionary:(id)a3;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForLabelAsSSID:(id)d;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetwork:(id)network;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkName:(id)name;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkSignature:(id)signature;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetwork:(id)network;
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetworkWithSignature:(id)signature;
++ (id)preferredNetworkFromKeychainDictionary:(id)dictionary;
 - (id)DEBUGkeyChainItemRepresentationForpreferredNetworkAddOperation;
 - (id)DEBUGkeyChainQueryForpreferredNetworkUpdateOperation;
 - (id)keyChainItemRepresentationForpreferredNetworkAddOperation;
@@ -21,15 +21,15 @@
 
 @implementation THPreferredThreadNetwork
 
-+ (id)preferredNetworkFromKeychainDictionary:(id)a3
++ (id)preferredNetworkFromKeychainDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 objectForKey:kSecAttrAccount];
+  v5 = [dictionaryCopy objectForKey:kSecAttrAccount];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 objectForKey:kSecAttrAccount];
+    v6 = [dictionaryCopy objectForKey:kSecAttrAccount];
   }
 
   else
@@ -37,11 +37,11 @@
     v6 = 0;
   }
 
-  v7 = [v3 objectForKey:kSecAttrServer];
+  v7 = [dictionaryCopy objectForKey:kSecAttrServer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v3 objectForKey:kSecAttrServer];
+    v8 = [dictionaryCopy objectForKey:kSecAttrServer];
   }
 
   else
@@ -50,11 +50,11 @@
   }
 
   v9 = sub_100018650(v8);
-  v10 = [v3 objectForKey:kSecAttrPort];
+  v10 = [dictionaryCopy objectForKey:kSecAttrPort];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v3 objectForKey:kSecAttrPort];
+    v11 = [dictionaryCopy objectForKey:kSecAttrPort];
   }
 
   else
@@ -62,11 +62,11 @@
     v11 = 0;
   }
 
-  v12 = [v3 objectForKey:kSecAttrProtocol];
+  v12 = [dictionaryCopy objectForKey:kSecAttrProtocol];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v3 objectForKey:kSecAttrProtocol];
+    v13 = [dictionaryCopy objectForKey:kSecAttrProtocol];
   }
 
   else
@@ -78,11 +78,11 @@
   v14 = sub_100018650(v11);
   v49 = v13;
   v15 = sub_100018650(v13);
-  v16 = [v3 objectForKey:kSecAttrAuthenticationType];
+  v16 = [dictionaryCopy objectForKey:kSecAttrAuthenticationType];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v51 = [v3 objectForKey:kSecAttrAuthenticationType];
+    v51 = [dictionaryCopy objectForKey:kSecAttrAuthenticationType];
   }
 
   else
@@ -92,11 +92,11 @@
 
   if (v6 && v9 && v14 && v15)
   {
-    v17 = [v3 objectForKey:kSecAttrSecurityDomain];
+    v17 = [dictionaryCopy objectForKey:kSecAttrSecurityDomain];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [v3 objectForKey:kSecAttrSecurityDomain];
+      v18 = [dictionaryCopy objectForKey:kSecAttrSecurityDomain];
 
       if (v18)
       {
@@ -117,21 +117,21 @@
     v18 = &stru_100079A28;
 LABEL_30:
     v48 = v9;
-    v21 = [v3 objectForKey:kSecAttrLabel];
+    v21 = [dictionaryCopy objectForKey:kSecAttrLabel];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v22 = [v3 objectForKey:kSecAttrLabel];
+      v22 = [dictionaryCopy objectForKey:kSecAttrLabel];
 
       if (v22)
       {
 LABEL_37:
-        v24 = [v3 objectForKey:kSecValueData];
+        v24 = [dictionaryCopy objectForKey:kSecValueData];
         objc_opt_class();
         v45 = v8;
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v3 objectForKey:kSecValueData];
+          v25 = [dictionaryCopy objectForKey:kSecValueData];
         }
 
         else
@@ -149,8 +149,8 @@ LABEL_37:
         {
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v26 network];
-            [v29 networkName];
+            network = [v26 network];
+            [network networkName];
             v46 = v14;
             v30 = v15;
             v31 = v4;
@@ -188,11 +188,11 @@ LABEL_37:
           if (v35)
           {
             v41 = v22;
-            v36 = [v3 objectForKey:kSecAttrCreationDate];
+            v36 = [dictionaryCopy objectForKey:kSecAttrCreationDate];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v37 = [v3 objectForKey:kSecAttrCreationDate];
+              v37 = [dictionaryCopy objectForKey:kSecAttrCreationDate];
             }
 
             else
@@ -200,11 +200,11 @@ LABEL_37:
               v37 = 0;
             }
 
-            v38 = [v3 objectForKey:kSecAttrModificationDate];
+            v38 = [dictionaryCopy objectForKey:kSecAttrModificationDate];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v39 = [v3 objectForKey:kSecAttrModificationDate];
+              v39 = [dictionaryCopy objectForKey:kSecAttrModificationDate];
             }
 
             else
@@ -278,12 +278,12 @@ LABEL_62:
 
 - (id)DEBUGkeyChainItemRepresentationForpreferredNetworkAddOperation
 {
-  v3 = [(THPreferredThreadNetwork *)self DEBUGkeyChainQueryForpreferredNetworkUpdateOperation];
-  v4 = [(THPreferredThreadNetwork *)self keyChainItemRepresentationForpreferredNetworkUpdateOperation];
-  v5 = v4;
-  if (v3 && v4)
+  dEBUGkeyChainQueryForpreferredNetworkUpdateOperation = [(THPreferredThreadNetwork *)self DEBUGkeyChainQueryForpreferredNetworkUpdateOperation];
+  keyChainItemRepresentationForpreferredNetworkUpdateOperation = [(THPreferredThreadNetwork *)self keyChainItemRepresentationForpreferredNetworkUpdateOperation];
+  v5 = keyChainItemRepresentationForpreferredNetworkUpdateOperation;
+  if (dEBUGkeyChainQueryForpreferredNetworkUpdateOperation && keyChainItemRepresentationForpreferredNetworkUpdateOperation)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [dEBUGkeyChainQueryForpreferredNetworkUpdateOperation mutableCopy];
     [v6 addEntriesFromDictionary:v5];
     v10[0] = kSecAttrIsInvisible;
     v10[1] = kSecAttrSynchronizable;
@@ -321,17 +321,17 @@ LABEL_62:
 
 - (id)DEBUGkeyChainQueryForpreferredNetworkUpdateOperation
 {
-  v3 = [(THPreferredThreadNetwork *)self network];
-  v4 = [v3 networkName];
-  if (!v4)
+  network = [(THPreferredThreadNetwork *)self network];
+  networkName = [network networkName];
+  if (!networkName)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [(THPreferredThreadNetwork *)self network];
-  v7 = [v6 extendedPANID];
-  if (!v7)
+  v5 = networkName;
+  network2 = [(THPreferredThreadNetwork *)self network];
+  extendedPANID = [network2 extendedPANID];
+  if (!extendedPANID)
   {
 LABEL_7:
 
@@ -339,20 +339,20 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = v7;
-  v9 = [(THPreferredThreadNetwork *)self networkSignature];
-  v10 = [v9 ipv4NwSignature];
-  if (!v10)
+  v8 = extendedPANID;
+  networkSignature = [(THPreferredThreadNetwork *)self networkSignature];
+  ipv4NwSignature = [networkSignature ipv4NwSignature];
+  if (!ipv4NwSignature)
   {
 
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(THPreferredThreadNetwork *)self networkSignature];
-  v13 = [v12 ipv6NwSignature];
+  v11 = ipv4NwSignature;
+  networkSignature2 = [(THPreferredThreadNetwork *)self networkSignature];
+  ipv6NwSignature = [networkSignature2 ipv6NwSignature];
 
-  if (v13)
+  if (ipv6NwSignature)
   {
     v28[0] = kSecClass;
     v28[1] = kSecAttrSynchronizable;
@@ -361,35 +361,35 @@ LABEL_8:
     v29[2] = kSecAttrViewHintHome;
     v28[2] = kSecAttrSyncViewHint;
     v28[3] = kSecAttrAccount;
-    v14 = [(THPreferredThreadNetwork *)self network];
-    v27 = [v14 networkName];
-    v29[3] = v27;
+    network3 = [(THPreferredThreadNetwork *)self network];
+    networkName2 = [network3 networkName];
+    v29[3] = networkName2;
     v28[4] = kSecAttrServer;
-    v26 = [(THPreferredThreadNetwork *)self network];
-    v25 = [v26 extendedPANID];
-    v15 = sub_100018B58(v25);
+    network4 = [(THPreferredThreadNetwork *)self network];
+    extendedPANID2 = [network4 extendedPANID];
+    v15 = sub_100018B58(extendedPANID2);
     v29[4] = v15;
     v28[5] = kSecAttrPort;
-    v16 = [(THPreferredThreadNetwork *)self networkSignature];
-    v17 = [v16 ipv4NwSignature];
-    v18 = sub_100018B58(v17);
+    networkSignature3 = [(THPreferredThreadNetwork *)self networkSignature];
+    ipv4NwSignature2 = [networkSignature3 ipv4NwSignature];
+    v18 = sub_100018B58(ipv4NwSignature2);
     v29[5] = v18;
     v28[6] = kSecAttrProtocol;
-    v19 = [(THPreferredThreadNetwork *)self networkSignature];
-    v20 = [v19 ipv6NwSignature];
-    v21 = sub_100018B58(v20);
+    networkSignature4 = [(THPreferredThreadNetwork *)self networkSignature];
+    ipv6NwSignature2 = [networkSignature4 ipv6NwSignature];
+    v21 = sub_100018B58(ipv6NwSignature2);
     v29[6] = v21;
     v28[7] = kSecAttrAuthenticationType;
-    v22 = [(THPreferredThreadNetwork *)self userInfo];
-    v29[7] = v22;
+    userInfo = [(THPreferredThreadNetwork *)self userInfo];
+    v29[7] = userInfo;
     v23 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:8];
 
     goto LABEL_12;
   }
 
 LABEL_9:
-  v14 = sub_10001B194(1);
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  network3 = sub_10001B194(1);
+  if (os_log_type_enabled(network3, OS_LOG_TYPE_ERROR))
   {
     sub_100047624();
   }
@@ -402,12 +402,12 @@ LABEL_12:
 
 - (id)keyChainItemRepresentationForpreferredNetworkAddOperation
 {
-  v3 = [(THPreferredThreadNetwork *)self keyChainQueryForpreferredNetworkUpdateOperation];
-  v4 = [(THPreferredThreadNetwork *)self keyChainItemRepresentationForpreferredNetworkUpdateOperation];
-  v5 = v4;
-  if (v3 && v4)
+  keyChainQueryForpreferredNetworkUpdateOperation = [(THPreferredThreadNetwork *)self keyChainQueryForpreferredNetworkUpdateOperation];
+  keyChainItemRepresentationForpreferredNetworkUpdateOperation = [(THPreferredThreadNetwork *)self keyChainItemRepresentationForpreferredNetworkUpdateOperation];
+  v5 = keyChainItemRepresentationForpreferredNetworkUpdateOperation;
+  if (keyChainQueryForpreferredNetworkUpdateOperation && keyChainItemRepresentationForpreferredNetworkUpdateOperation)
   {
-    v6 = [v3 mutableCopy];
+    v6 = [keyChainQueryForpreferredNetworkUpdateOperation mutableCopy];
     [v6 addEntriesFromDictionary:v5];
     v10[0] = kSecAttrIsInvisible;
     v10[1] = kSecAttrSynchronizable;
@@ -445,17 +445,17 @@ LABEL_12:
 
 - (id)keyChainQueryForpreferredNetworkUpdateOperation
 {
-  v3 = [(THPreferredThreadNetwork *)self network];
-  v4 = [v3 networkName];
-  if (!v4)
+  network = [(THPreferredThreadNetwork *)self network];
+  networkName = [network networkName];
+  if (!networkName)
   {
     goto LABEL_12;
   }
 
-  v5 = v4;
-  v6 = [(THPreferredThreadNetwork *)self network];
-  v7 = [v6 extendedPANID];
-  if (!v7)
+  v5 = networkName;
+  network2 = [(THPreferredThreadNetwork *)self network];
+  extendedPANID = [network2 extendedPANID];
+  if (!extendedPANID)
   {
 LABEL_11:
 
@@ -463,43 +463,43 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = v7;
-  v9 = [(THPreferredThreadNetwork *)self networkSignature];
-  v10 = [v9 ipv4NwSignature];
-  if (!v10)
+  v8 = extendedPANID;
+  networkSignature = [(THPreferredThreadNetwork *)self networkSignature];
+  ipv4NwSignature = [networkSignature ipv4NwSignature];
+  if (!ipv4NwSignature)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v11 = v10;
-  v12 = [(THPreferredThreadNetwork *)self networkSignature];
-  v13 = [v12 ipv6NwSignature];
-  if (!v13)
+  v11 = ipv4NwSignature;
+  networkSignature2 = [(THPreferredThreadNetwork *)self networkSignature];
+  ipv6NwSignature = [networkSignature2 ipv6NwSignature];
+  if (!ipv6NwSignature)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v14 = v13;
-  v15 = [(THPreferredThreadNetwork *)self networkSignature];
-  v16 = [v15 wifiSSID];
-  if (!v16)
+  v14 = ipv6NwSignature;
+  networkSignature3 = [(THPreferredThreadNetwork *)self networkSignature];
+  wifiSSID = [networkSignature3 wifiSSID];
+  if (!wifiSSID)
   {
 
     goto LABEL_9;
   }
 
-  v48 = v16;
-  v52 = v15;
-  v46 = [(THPreferredThreadNetwork *)self networkSignature];
-  v17 = [v46 wifiPassword];
-  if (v17)
+  v48 = wifiSSID;
+  v52 = networkSignature3;
+  networkSignature4 = [(THPreferredThreadNetwork *)self networkSignature];
+  wifiPassword = [networkSignature4 wifiPassword];
+  if (wifiPassword)
   {
-    v18 = [(THPreferredThreadNetwork *)self userInfo];
-    v50 = v18 == 0;
+    userInfo = [(THPreferredThreadNetwork *)self userInfo];
+    v50 = userInfo == 0;
   }
 
   else
@@ -509,17 +509,17 @@ LABEL_9:
 
   if (!v50)
   {
-    v22 = [(THPreferredThreadNetwork *)self networkSignature];
-    v23 = [v22 wifiSSID];
-    if ([v23 length])
+    networkSignature5 = [(THPreferredThreadNetwork *)self networkSignature];
+    wifiSSID2 = [networkSignature5 wifiSSID];
+    if ([wifiSSID2 length])
     {
     }
 
     else
     {
-      v24 = [(THPreferredThreadNetwork *)self networkSignature];
-      v25 = [v24 wifiPassword];
-      v26 = [v25 length];
+      networkSignature6 = [(THPreferredThreadNetwork *)self networkSignature];
+      wifiPassword2 = [networkSignature6 wifiPassword];
+      v26 = [wifiPassword2 length];
 
       if (!v26)
       {
@@ -530,27 +530,27 @@ LABEL_9:
         v57[2] = kSecAttrViewHintHome;
         v56[2] = kSecAttrSyncViewHint;
         v56[3] = kSecAttrAccount;
-        v19 = [(THPreferredThreadNetwork *)self network];
-        v53 = [v19 networkName];
-        v57[3] = v53;
+        network3 = [(THPreferredThreadNetwork *)self network];
+        networkName2 = [network3 networkName];
+        v57[3] = networkName2;
         v56[4] = kSecAttrServer;
-        v51 = [(THPreferredThreadNetwork *)self network];
-        v49 = [v51 extendedPANID];
-        v35 = sub_100018B58(v49);
+        network4 = [(THPreferredThreadNetwork *)self network];
+        extendedPANID2 = [network4 extendedPANID];
+        v35 = sub_100018B58(extendedPANID2);
         v57[4] = v35;
         v56[5] = kSecAttrPort;
-        v36 = [(THPreferredThreadNetwork *)self networkSignature];
-        v37 = [v36 ipv4NwSignature];
-        v38 = sub_100018B58(v37);
+        networkSignature7 = [(THPreferredThreadNetwork *)self networkSignature];
+        ipv4NwSignature2 = [networkSignature7 ipv4NwSignature];
+        v38 = sub_100018B58(ipv4NwSignature2);
         v57[5] = v38;
         v56[6] = kSecAttrProtocol;
-        v39 = [(THPreferredThreadNetwork *)self networkSignature];
-        v40 = [v39 ipv6NwSignature];
-        v41 = sub_100018B58(v40);
+        networkSignature8 = [(THPreferredThreadNetwork *)self networkSignature];
+        ipv6NwSignature2 = [networkSignature8 ipv6NwSignature];
+        v41 = sub_100018B58(ipv6NwSignature2);
         v57[6] = v41;
         v56[7] = kSecAttrAuthenticationType;
-        v42 = [(THPreferredThreadNetwork *)self userInfo];
-        v57[7] = v42;
+        userInfo2 = [(THPreferredThreadNetwork *)self userInfo];
+        v57[7] = userInfo2;
         v20 = [NSDictionary dictionaryWithObjects:v57 forKeys:v56 count:8];
 
         goto LABEL_25;
@@ -564,35 +564,35 @@ LABEL_9:
     v55[2] = kSecAttrViewHintHome;
     v54[2] = kSecAttrSyncViewHint;
     v54[3] = kSecAttrAccount;
-    v19 = [(THPreferredThreadNetwork *)self network];
-    v53 = [v19 networkName];
-    v55[3] = v53;
+    network3 = [(THPreferredThreadNetwork *)self network];
+    networkName2 = [network3 networkName];
+    v55[3] = networkName2;
     v54[4] = kSecAttrServer;
-    v51 = [(THPreferredThreadNetwork *)self network];
-    v49 = [v51 extendedPANID];
-    v47 = sub_100018B58(v49);
+    network4 = [(THPreferredThreadNetwork *)self network];
+    extendedPANID2 = [network4 extendedPANID];
+    v47 = sub_100018B58(extendedPANID2);
     v55[4] = v47;
     v54[5] = kSecAttrPort;
-    v45 = [(THPreferredThreadNetwork *)self networkSignature];
-    v44 = [v45 ipv4NwSignature];
-    v43 = sub_100018B58(v44);
+    networkSignature9 = [(THPreferredThreadNetwork *)self networkSignature];
+    ipv4NwSignature3 = [networkSignature9 ipv4NwSignature];
+    v43 = sub_100018B58(ipv4NwSignature3);
     v55[5] = v43;
     v54[6] = kSecAttrProtocol;
-    v27 = [(THPreferredThreadNetwork *)self networkSignature];
-    v28 = [v27 ipv6NwSignature];
-    v29 = sub_100018B58(v28);
+    networkSignature10 = [(THPreferredThreadNetwork *)self networkSignature];
+    ipv6NwSignature3 = [networkSignature10 ipv6NwSignature];
+    v29 = sub_100018B58(ipv6NwSignature3);
     v55[6] = v29;
     v54[7] = kSecAttrSecurityDomain;
-    v30 = [(THPreferredThreadNetwork *)self networkSignature];
-    v31 = [v30 wifiSSID];
-    v55[7] = v31;
+    networkSignature11 = [(THPreferredThreadNetwork *)self networkSignature];
+    wifiSSID3 = [networkSignature11 wifiSSID];
+    v55[7] = wifiSSID3;
     v54[8] = kSecAttrLabel;
-    v32 = [(THPreferredThreadNetwork *)self networkSignature];
-    v33 = [v32 wifiPassword];
-    v55[8] = v33;
+    networkSignature12 = [(THPreferredThreadNetwork *)self networkSignature];
+    wifiPassword3 = [networkSignature12 wifiPassword];
+    v55[8] = wifiPassword3;
     v54[9] = kSecAttrAuthenticationType;
-    v34 = [(THPreferredThreadNetwork *)self userInfo];
-    v55[9] = v34;
+    userInfo3 = [(THPreferredThreadNetwork *)self userInfo];
+    v55[9] = userInfo3;
     v20 = [NSDictionary dictionaryWithObjects:v55 forKeys:v54 count:10];
 
 LABEL_25:
@@ -600,8 +600,8 @@ LABEL_25:
   }
 
 LABEL_13:
-  v19 = sub_10001B194(1);
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+  network3 = sub_10001B194(1);
+  if (os_log_type_enabled(network3, OS_LOG_TYPE_ERROR))
   {
     sub_10004772C();
   }
@@ -614,9 +614,9 @@ LABEL_16:
 
 - (id)keyChainItemRepresentationForpreferredNetworkUpdateOperation
 {
-  v2 = [(THPreferredThreadNetwork *)self credentialsDataSetRecord];
+  credentialsDataSetRecord = [(THPreferredThreadNetwork *)self credentialsDataSetRecord];
   v7 = 0;
-  v3 = [NSKeyedArchiver archivedDataWithRootObject:v2 requiringSecureCoding:1 error:&v7];
+  v3 = [NSKeyedArchiver archivedDataWithRootObject:credentialsDataSetRecord requiringSecureCoding:1 error:&v7];
   v4 = v7;
 
   v8 = kSecValueData;
@@ -626,18 +626,18 @@ LABEL_16:
   return v5;
 }
 
-+ (id)keyChainQueryForDeletePreferredNetworkRecordOperationForNetworkName:(id)a3
++ (id)keyChainQueryForDeletePreferredNetworkRecordOperationForNetworkName:(id)name
 {
   v11[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 network];
-  v5 = [v4 networkName];
-  v12[0] = v5;
+  nameCopy = name;
+  network = [nameCopy network];
+  networkName = [network networkName];
+  v12[0] = networkName;
   v11[1] = kSecAttrServer;
-  v6 = [v3 network];
+  network2 = [nameCopy network];
 
-  v7 = [v6 extendedPANID];
-  v8 = sub_100018B58(v7);
+  extendedPANID = [network2 extendedPANID];
+  v8 = sub_100018B58(extendedPANID);
   v12[1] = v8;
   v12[2] = kSecClassInternetPassword;
   v11[2] = kSecClass;
@@ -690,16 +690,16 @@ LABEL_16:
   return v2;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetwork:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetwork:(id)network
 {
   v9[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 networkName];
-  v10[0] = v4;
+  networkCopy = network;
+  networkName = [networkCopy networkName];
+  v10[0] = networkName;
   v9[1] = kSecAttrServer;
-  v5 = [v3 extendedPANID];
+  extendedPANID = [networkCopy extendedPANID];
 
-  v6 = sub_100018B58(v5);
+  v6 = sub_100018B58(extendedPANID);
   v10[1] = v6;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;
@@ -720,11 +720,11 @@ LABEL_16:
   return v7;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkName:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkName:(id)name
 {
   v6[0] = kSecAttrAccount;
   v6[1] = kSecClass;
-  v7[0] = a3;
+  v7[0] = name;
   v7[1] = kSecClassInternetPassword;
   v6[2] = kSecAttrSynchronizable;
   v6[3] = kSecAttrAccessGroup;
@@ -738,30 +738,30 @@ LABEL_16:
   v7[5] = &__kCFBooleanTrue;
   v7[6] = &__kCFBooleanTrue;
   v7[7] = kSecMatchLimitAll;
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSDictionary dictionaryWithObjects:v7 forKeys:v6 count:8];
 
   return v4;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetworkWithSignature:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetworkWithSignature:(id)signature
 {
-  v3 = a3;
-  v4 = [v3 ipv4NwSignature];
-  v5 = [v4 length];
+  signatureCopy = signature;
+  ipv4NwSignature = [signatureCopy ipv4NwSignature];
+  v5 = [ipv4NwSignature length];
 
   if (v5)
   {
     v22[0] = kSecAttrPort;
-    v6 = [v3 ipv4NwSignature];
-    v7 = sub_100018B58(v6);
+    ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+    v7 = sub_100018B58(ipv4NwSignature2);
     v23[0] = v7;
     v22[1] = kSecAttrSecurityDomain;
-    v8 = [v3 wifiSSID];
-    v23[1] = v8;
+    wifiSSID = [signatureCopy wifiSSID];
+    v23[1] = wifiSSID;
     v22[2] = kSecAttrLabel;
-    v9 = [v3 wifiPassword];
-    v23[2] = v9;
+    wifiPassword = [signatureCopy wifiPassword];
+    v23[2] = wifiPassword;
     v23[3] = kSecClassInternetPassword;
     v22[3] = kSecClass;
     v22[4] = kSecAttrSynchronizable;
@@ -783,21 +783,21 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [v3 ipv6NwSignature];
-  v13 = [v12 length];
+  ipv6NwSignature = [signatureCopy ipv6NwSignature];
+  v13 = [ipv6NwSignature length];
 
   if (v13)
   {
     v20[0] = kSecAttrProtocol;
-    v6 = [v3 ipv6NwSignature];
-    v7 = sub_100018B58(v6);
+    ipv4NwSignature2 = [signatureCopy ipv6NwSignature];
+    v7 = sub_100018B58(ipv4NwSignature2);
     v21[0] = v7;
     v20[1] = kSecAttrSecurityDomain;
-    v8 = [v3 wifiSSID];
-    v21[1] = v8;
+    wifiSSID = [signatureCopy wifiSSID];
+    v21[1] = wifiSSID;
     v20[2] = kSecAttrLabel;
-    v9 = [v3 wifiPassword];
-    v21[2] = v9;
+    wifiPassword = [signatureCopy wifiPassword];
+    v21[2] = wifiPassword;
     v21[3] = kSecClassInternetPassword;
     v20[3] = kSecClass;
     v20[4] = kSecAttrSynchronizable;
@@ -818,19 +818,19 @@ LABEL_5:
   }
 
   v18[0] = kSecAttrPort;
-  v6 = [v3 ipv4NwSignature];
-  v7 = sub_100018B58(v6);
+  ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+  v7 = sub_100018B58(ipv4NwSignature2);
   v19[0] = v7;
   v18[1] = kSecAttrProtocol;
-  v8 = [v3 ipv6NwSignature];
-  v9 = sub_100018B58(v8);
-  v19[1] = v9;
+  wifiSSID = [signatureCopy ipv6NwSignature];
+  wifiPassword = sub_100018B58(wifiSSID);
+  v19[1] = wifiPassword;
   v18[2] = kSecAttrSecurityDomain;
-  v16 = [v3 wifiSSID];
-  v19[2] = v16;
+  wifiSSID2 = [signatureCopy wifiSSID];
+  v19[2] = wifiSSID2;
   v18[3] = kSecAttrLabel;
-  v17 = [v3 wifiPassword];
-  v19[3] = v17;
+  wifiPassword2 = [signatureCopy wifiPassword];
+  v19[3] = wifiPassword2;
   v19[4] = kSecClassInternetPassword;
   v18[4] = kSecClass;
   v18[5] = kSecAttrSynchronizable;
@@ -852,11 +852,11 @@ LABEL_6:
   return v14;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetwork:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForWifiNetwork:(id)network
 {
   v6[0] = kSecAttrSecurityDomain;
-  v3 = [a3 wifiSSID];
-  v7[0] = v3;
+  wifiSSID = [network wifiSSID];
+  v7[0] = wifiSSID;
   v7[1] = kSecClassInternetPassword;
   v6[1] = kSecClass;
   v6[2] = kSecAttrSynchronizable;
@@ -876,11 +876,11 @@ LABEL_6:
   return v4;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForLabelAsSSID:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForLabelAsSSID:(id)d
 {
   v6[0] = kSecAttrLabel;
-  v3 = [a3 wifiSSID];
-  v7[0] = v3;
+  wifiSSID = [d wifiSSID];
+  v7[0] = wifiSSID;
   v7[1] = kSecClassInternetPassword;
   v6[1] = kSecClass;
   v6[2] = kSecAttrSynchronizable;
@@ -900,17 +900,17 @@ LABEL_6:
   return v4;
 }
 
-+ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkSignature:(id)a3
++ (id)keyChainQueryForPreferredNetworkRecordsOperationForNetworkSignature:(id)signature
 {
-  v3 = a3;
-  v4 = [v3 ipv4NwSignature];
-  v5 = [v4 length];
+  signatureCopy = signature;
+  ipv4NwSignature = [signatureCopy ipv4NwSignature];
+  v5 = [ipv4NwSignature length];
 
   if (v5)
   {
     v20[0] = kSecAttrPort;
-    v6 = [v3 ipv4NwSignature];
-    v7 = sub_100018B58(v6);
+    ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+    v7 = sub_100018B58(ipv4NwSignature2);
     v21[0] = v7;
     v21[1] = kSecClassInternetPassword;
     v20[1] = kSecClass;
@@ -933,14 +933,14 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v10 = [v3 ipv6NwSignature];
-  v11 = [v10 length];
+  ipv6NwSignature = [signatureCopy ipv6NwSignature];
+  v11 = [ipv6NwSignature length];
 
   if (v11)
   {
     v18[0] = kSecAttrProtocol;
-    v6 = [v3 ipv6NwSignature];
-    v7 = sub_100018B58(v6);
+    ipv4NwSignature2 = [signatureCopy ipv6NwSignature];
+    v7 = sub_100018B58(ipv4NwSignature2);
     v19[0] = v7;
     v19[1] = kSecClassInternetPassword;
     v18[1] = kSecClass;
@@ -962,12 +962,12 @@ LABEL_5:
   }
 
   v16[0] = kSecAttrPort;
-  v6 = [v3 ipv4NwSignature];
-  v7 = sub_100018B58(v6);
+  ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+  v7 = sub_100018B58(ipv4NwSignature2);
   v17[0] = v7;
   v16[1] = kSecAttrProtocol;
-  v14 = [v3 ipv6NwSignature];
-  v15 = sub_100018B58(v14);
+  ipv6NwSignature2 = [signatureCopy ipv6NwSignature];
+  v15 = sub_100018B58(ipv6NwSignature2);
   v17[1] = v15;
   v17[2] = kSecClassInternetPassword;
   v16[2] = kSecClass;
@@ -990,33 +990,33 @@ LABEL_6:
   return v12;
 }
 
-+ (id)keyChainQueryForDeletePreferredNetworkRecord:(id)a3
++ (id)keyChainQueryForDeletePreferredNetworkRecord:(id)record
 {
   v19[0] = kSecAttrAccount;
-  v3 = a3;
-  v18 = [v3 network];
-  v17 = [v18 networkName];
-  v20[0] = v17;
+  recordCopy = record;
+  network = [recordCopy network];
+  networkName = [network networkName];
+  v20[0] = networkName;
   v19[1] = kSecAttrServer;
-  v16 = [v3 network];
-  v15 = [v16 extendedPANID];
-  v4 = sub_100018B58(v15);
+  network2 = [recordCopy network];
+  extendedPANID = [network2 extendedPANID];
+  v4 = sub_100018B58(extendedPANID);
   v20[1] = v4;
   v19[2] = kSecAttrPort;
-  v5 = [v3 networkSignature];
-  v6 = [v5 ipv4NwSignature];
-  v7 = sub_100018B58(v6);
+  networkSignature = [recordCopy networkSignature];
+  ipv4NwSignature = [networkSignature ipv4NwSignature];
+  v7 = sub_100018B58(ipv4NwSignature);
   v20[2] = v7;
   v19[3] = kSecAttrProtocol;
-  v8 = [v3 networkSignature];
-  v9 = [v8 ipv6NwSignature];
-  v10 = sub_100018B58(v9);
+  networkSignature2 = [recordCopy networkSignature];
+  ipv6NwSignature = [networkSignature2 ipv6NwSignature];
+  v10 = sub_100018B58(ipv6NwSignature);
   v20[3] = v10;
   v19[4] = kSecAttrSecurityDomain;
-  v11 = [v3 networkSignature];
+  networkSignature3 = [recordCopy networkSignature];
 
-  v12 = [v11 wifiSSID];
-  v20[4] = v12;
+  wifiSSID = [networkSignature3 wifiSSID];
+  v20[4] = wifiSSID;
   v20[5] = kSecClassInternetPassword;
   v19[5] = kSecClass;
   v19[6] = kSecAttrSynchronizable;
@@ -1030,39 +1030,39 @@ LABEL_6:
   return v13;
 }
 
-+ (id)keyChainQueryForDeletePreferredNetworkRecordForNetworkSignature:(id)a3
++ (id)keyChainQueryForDeletePreferredNetworkRecordForNetworkSignature:(id)signature
 {
-  v3 = a3;
-  v4 = [v3 ipv4NwSignature];
-  if (![v4 length])
+  signatureCopy = signature;
+  ipv4NwSignature = [signatureCopy ipv4NwSignature];
+  if (![ipv4NwSignature length])
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 ipv6NwSignature];
-  if (![v5 length])
+  ipv6NwSignature = [signatureCopy ipv6NwSignature];
+  if (![ipv6NwSignature length])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v6 = [v3 wifiSSID];
-  v7 = [v6 length];
+  wifiSSID = [signatureCopy wifiSSID];
+  v7 = [wifiSSID length];
 
   if (v7)
   {
     v27[0] = kSecAttrPort;
-    v8 = [v3 ipv4NwSignature];
-    v9 = sub_100018B58(v8);
+    ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+    v9 = sub_100018B58(ipv4NwSignature2);
     v28[0] = v9;
     v27[1] = kSecAttrProtocol;
-    v10 = [v3 ipv6NwSignature];
-    v11 = sub_100018B58(v10);
+    ipv6NwSignature2 = [signatureCopy ipv6NwSignature];
+    v11 = sub_100018B58(ipv6NwSignature2);
     v28[1] = v11;
     v27[2] = kSecAttrSecurityDomain;
-    v12 = [v3 wifiSSID];
-    v28[2] = v12;
+    wifiSSID2 = [signatureCopy wifiSSID];
+    v28[2] = wifiSSID2;
     v28[3] = kSecClassInternetPassword;
     v27[3] = kSecClass;
     v27[4] = kSecAttrSynchronizable;
@@ -1077,14 +1077,14 @@ LABEL_6:
   }
 
 LABEL_7:
-  v14 = [v3 wifiSSID];
-  v15 = [v14 length];
+  wifiSSID3 = [signatureCopy wifiSSID];
+  v15 = [wifiSSID3 length];
 
   if (v15)
   {
     v25[0] = kSecAttrSecurityDomain;
-    v8 = [v3 wifiSSID];
-    v26[0] = v8;
+    ipv4NwSignature2 = [signatureCopy wifiSSID];
+    v26[0] = ipv4NwSignature2;
     v26[1] = kSecClassInternetPassword;
     v25[1] = kSecClass;
     v25[2] = kSecAttrSynchronizable;
@@ -1097,14 +1097,14 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v16 = [v3 ipv6NwSignature];
-  v17 = [v16 length];
+  ipv6NwSignature3 = [signatureCopy ipv6NwSignature];
+  v17 = [ipv6NwSignature3 length];
 
   if (v17)
   {
     v23[0] = kSecAttrProtocol;
-    v8 = [v3 ipv6NwSignature];
-    v9 = sub_100018B58(v8);
+    ipv4NwSignature2 = [signatureCopy ipv6NwSignature];
+    v9 = sub_100018B58(ipv4NwSignature2);
     v24[0] = v9;
     v24[1] = kSecClassInternetPassword;
     v23[1] = kSecClass;
@@ -1121,8 +1121,8 @@ LABEL_7:
   else
   {
     v21[0] = kSecAttrPort;
-    v8 = [v3 ipv4NwSignature];
-    v9 = sub_100018B58(v8);
+    ipv4NwSignature2 = [signatureCopy ipv4NwSignature];
+    v9 = sub_100018B58(ipv4NwSignature2);
     v22[0] = v9;
     v22[1] = kSecClassInternetPassword;
     v21[1] = kSecClass;
@@ -1144,16 +1144,16 @@ LABEL_14:
   return v13;
 }
 
-+ (id)keyChainQueryForDeletePreferredNetworkRecordWithNetworkName:(id)a3
++ (id)keyChainQueryForDeletePreferredNetworkRecordWithNetworkName:(id)name
 {
   v9[0] = kSecAttrAccount;
-  v3 = a3;
-  v4 = [v3 networkName];
-  v10[0] = v4;
+  nameCopy = name;
+  networkName = [nameCopy networkName];
+  v10[0] = networkName;
   v9[1] = kSecAttrServer;
-  v5 = [v3 extendedPANID];
+  extendedPANID = [nameCopy extendedPANID];
 
-  v6 = sub_100018B58(v5);
+  v6 = sub_100018B58(extendedPANID);
   v10[1] = v6;
   v10[2] = kSecClassInternetPassword;
   v9[2] = kSecClass;

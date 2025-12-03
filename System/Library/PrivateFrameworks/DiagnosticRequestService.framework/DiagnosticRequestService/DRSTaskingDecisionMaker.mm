@@ -1,57 +1,57 @@
 @interface DRSTaskingDecisionMaker
-+ (BOOL)passesPercentAccept:(double)a3;
-- (BOOL)_configDoesPassTeamHysteresis:(id)a3 logTelemetry:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)passesPercentAccept:(double)accept;
+- (BOOL)_configDoesPassTeamHysteresis:(id)hysteresis logTelemetry:(BOOL)telemetry;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)reportToDecisionServer;
-- (DRSTaskingDecisionMaker)initWithTimezone:(id)a3 limitingParameters:(id)a4 dbWorkingDirectoryPath:(id)a5 cloudKitHelper:(id)a6 enforceDate:(BOOL)a7 enforceBuild:(BOOL)a8 enforceSampling:(BOOL)a9 enforceTeamHysteresis:(BOOL)a10 enforceGlobalHysteresisAndCap:(BOOL)a11 allowRefereshLimitingParameters:(BOOL)a12 errorOut:(id *)a13;
-- (id)_configsPassingOverallHysteresis:(id)a3 logTelemetry:(BOOL)a4;
-- (id)_configsPassingSampling:(id)a3 logTelemetry:(BOOL)a4;
-- (id)_hysteresisPredicate:(id)a3 config:(id)a4;
-- (id)_teamTaskingsPassingBuild:(id)a3 logTelemetry:(BOOL)a4 allowWildcardBuild:(BOOL)a5;
-- (id)_teamTaskingsPassingDate:(id)a3 logTelemetry:(BOOL)a4;
-- (id)acceptedCancels:(id)a3;
-- (void)_logConfigReceipt:(id)a3;
-- (void)_persistReceivedMetadata:(id)a3;
-- (void)_rejectTaskingMessageDueToDisabledState:(id)a3 logTelemetry:(BOOL)a4;
-- (void)clientCompletedConfigUUID:(id)a3;
-- (void)clientRejectsConfigUUID:(id)a3;
+- (DRSTaskingDecisionMaker)initWithTimezone:(id)timezone limitingParameters:(id)parameters dbWorkingDirectoryPath:(id)path cloudKitHelper:(id)helper enforceDate:(BOOL)date enforceBuild:(BOOL)build enforceSampling:(BOOL)sampling enforceTeamHysteresis:(BOOL)self0 enforceGlobalHysteresisAndCap:(BOOL)self1 allowRefereshLimitingParameters:(BOOL)self2 errorOut:(id *)self3;
+- (id)_configsPassingOverallHysteresis:(id)hysteresis logTelemetry:(BOOL)telemetry;
+- (id)_configsPassingSampling:(id)sampling logTelemetry:(BOOL)telemetry;
+- (id)_hysteresisPredicate:(id)predicate config:(id)config;
+- (id)_teamTaskingsPassingBuild:(id)build logTelemetry:(BOOL)telemetry allowWildcardBuild:(BOOL)wildcardBuild;
+- (id)_teamTaskingsPassingDate:(id)date logTelemetry:(BOOL)telemetry;
+- (id)acceptedCancels:(id)cancels;
+- (void)_logConfigReceipt:(id)receipt;
+- (void)_persistReceivedMetadata:(id)metadata;
+- (void)_rejectTaskingMessageDueToDisabledState:(id)state logTelemetry:(BOOL)telemetry;
+- (void)clientCompletedConfigUUID:(id)d;
+- (void)clientRejectsConfigUUID:(id)d;
 - (void)refreshLimitingParameters;
 @end
 
 @implementation DRSTaskingDecisionMaker
 
-+ (BOOL)passesPercentAccept:(double)a3
++ (BOOL)passesPercentAccept:(double)accept
 {
-  if (a3 >= 100.0)
+  if (accept >= 100.0)
   {
     return 1;
   }
 
-  if (a3 <= 0.0)
+  if (accept <= 0.0)
   {
     return 0;
   }
 
-  return a3 * 10000.0 >= arc4random_uniform(0xF4240u);
+  return accept * 10000.0 >= arc4random_uniform(0xF4240u);
 }
 
-- (DRSTaskingDecisionMaker)initWithTimezone:(id)a3 limitingParameters:(id)a4 dbWorkingDirectoryPath:(id)a5 cloudKitHelper:(id)a6 enforceDate:(BOOL)a7 enforceBuild:(BOOL)a8 enforceSampling:(BOOL)a9 enforceTeamHysteresis:(BOOL)a10 enforceGlobalHysteresisAndCap:(BOOL)a11 allowRefereshLimitingParameters:(BOOL)a12 errorOut:(id *)a13
+- (DRSTaskingDecisionMaker)initWithTimezone:(id)timezone limitingParameters:(id)parameters dbWorkingDirectoryPath:(id)path cloudKitHelper:(id)helper enforceDate:(BOOL)date enforceBuild:(BOOL)build enforceSampling:(BOOL)sampling enforceTeamHysteresis:(BOOL)self0 enforceGlobalHysteresisAndCap:(BOOL)self1 allowRefereshLimitingParameters:(BOOL)self2 errorOut:(id *)self3
 {
   v42 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  if (!v18)
+  timezoneCopy = timezone;
+  parametersCopy = parameters;
+  pathCopy = path;
+  helperCopy = helper;
+  if (!parametersCopy)
   {
-    v18 = +[DRSTaskingLimitingParameters defaultDeviceParameters];
+    parametersCopy = +[DRSTaskingLimitingParameters defaultDeviceParameters];
   }
 
-  v21 = v17;
-  v22 = v21;
+  v21 = timezoneCopy;
+  localTimeZone = v21;
   if (v21)
   {
-    if (v19)
+    if (pathCopy)
     {
       goto LABEL_5;
     }
@@ -61,15 +61,15 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x277CBEBB0] localTimeZone];
-  if (!v19)
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  if (!pathCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_5:
   v37 = 0;
-  v23 = [[DRSConfigPersistedStore alloc] initWithWorkingDirectory:v19 isReadOnly:0 cloudKitHelper:v20 errorOut:&v37];
+  v23 = [[DRSConfigPersistedStore alloc] initWithWorkingDirectory:pathCopy isReadOnly:0 cloudKitHelper:helperCopy errorOut:&v37];
   v24 = v37;
   v25 = v24;
   if (v23)
@@ -83,28 +83,28 @@ LABEL_9:
     v27 = v26;
     if (v26)
     {
-      objc_storeStrong(&v26->_deviceTimezone, v22);
-      objc_storeStrong(&v27->_limitingParameters, v18);
-      objc_storeStrong(&v27->_dbWorkingDirectoryPath, a5);
-      v27->_enforceDate = a7;
-      v27->_enforceBuild = a8;
-      v27->_enforceSampling = a9;
-      v27->_enforceTeamHysteresis = a10;
-      v27->_enforceGlobalHysteresisAndCap = a11;
+      objc_storeStrong(&v26->_deviceTimezone, localTimeZone);
+      objc_storeStrong(&v27->_limitingParameters, parametersCopy);
+      objc_storeStrong(&v27->_dbWorkingDirectoryPath, path);
+      v27->_enforceDate = date;
+      v27->_enforceBuild = build;
+      v27->_enforceSampling = sampling;
+      v27->_enforceTeamHysteresis = hysteresis;
+      v27->_enforceGlobalHysteresisAndCap = cap;
       objc_storeStrong(&v27->_configStore, v25);
-      v28 = [(DRSTaskingDecisionMaker *)v27 configStore];
+      configStore = [(DRSTaskingDecisionMaker *)v27 configStore];
 
-      if (!v28)
+      if (!configStore)
       {
         *&v27->_enforceTeamHysteresis = 0;
       }
 
-      v27->_allowRefreshLimitingParameters = a12;
-      objc_storeStrong(&v27->_cloudKitHelper, a6);
+      v27->_allowRefreshLimitingParameters = limitingParameters;
+      objc_storeStrong(&v27->_cloudKitHelper, helper);
     }
 
     self = v27;
-    v29 = self;
+    selfCopy = self;
     goto LABEL_14;
   }
 
@@ -112,82 +112,82 @@ LABEL_9:
   if (os_signpost_enabled(v32))
   {
     *buf = 138543618;
-    v39 = v19;
+    v39 = pathCopy;
     v40 = 2114;
     v41 = v25;
     _os_signpost_emit_with_name_impl(&dword_232906000, v32, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TaskingDecisionMakerInitFailure", "Failed to init with working directory: %{public}@ (Error: %{public}@)", buf, 0x16u);
   }
 
-  if (a13)
+  if (out)
   {
     v33 = v25;
-    v29 = 0;
-    *a13 = v25;
+    selfCopy = 0;
+    *out = v25;
   }
 
   else
   {
-    v29 = 0;
+    selfCopy = 0;
   }
 
 LABEL_14:
 
   v30 = *MEMORY[0x277D85DE8];
-  return v29;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v24 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(DRSTaskingDecisionMaker *)self enforceDate];
-    if (v7 != [(DRSTaskingDecisionMaker *)v6 enforceDate])
+    enforceDate = [(DRSTaskingDecisionMaker *)self enforceDate];
+    if (enforceDate != [(DRSTaskingDecisionMaker *)v6 enforceDate])
     {
       goto LABEL_15;
     }
 
-    v8 = [(DRSTaskingDecisionMaker *)self enforceSampling];
-    if (v8 != [(DRSTaskingDecisionMaker *)v6 enforceSampling])
+    enforceSampling = [(DRSTaskingDecisionMaker *)self enforceSampling];
+    if (enforceSampling != [(DRSTaskingDecisionMaker *)v6 enforceSampling])
     {
       goto LABEL_15;
     }
 
-    v9 = [(DRSTaskingDecisionMaker *)self enforceTeamHysteresis];
-    if (v9 != [(DRSTaskingDecisionMaker *)v6 enforceTeamHysteresis])
+    enforceTeamHysteresis = [(DRSTaskingDecisionMaker *)self enforceTeamHysteresis];
+    if (enforceTeamHysteresis != [(DRSTaskingDecisionMaker *)v6 enforceTeamHysteresis])
     {
       goto LABEL_15;
     }
 
-    v10 = [(DRSTaskingDecisionMaker *)self enforceGlobalHysteresisAndCap];
-    if (v10 != [(DRSTaskingDecisionMaker *)v6 enforceGlobalHysteresisAndCap])
+    enforceGlobalHysteresisAndCap = [(DRSTaskingDecisionMaker *)self enforceGlobalHysteresisAndCap];
+    if (enforceGlobalHysteresisAndCap != [(DRSTaskingDecisionMaker *)v6 enforceGlobalHysteresisAndCap])
     {
       goto LABEL_15;
     }
 
-    v11 = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
-    v12 = [(DRSTaskingDecisionMaker *)v6 dbWorkingDirectoryPath];
-    IsNil = _oneIsNil(v11, v12);
+    dbWorkingDirectoryPath = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
+    dbWorkingDirectoryPath2 = [(DRSTaskingDecisionMaker *)v6 dbWorkingDirectoryPath];
+    IsNil = _oneIsNil(dbWorkingDirectoryPath, dbWorkingDirectoryPath2);
 
     if (IsNil)
     {
       goto LABEL_15;
     }
 
-    v14 = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
-    if (v14)
+    dbWorkingDirectoryPath3 = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
+    if (dbWorkingDirectoryPath3)
     {
-      v15 = v14;
-      v16 = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
-      v17 = [(DRSTaskingDecisionMaker *)v6 dbWorkingDirectoryPath];
-      v18 = [v16 isEqualToString:v17];
+      v15 = dbWorkingDirectoryPath3;
+      dbWorkingDirectoryPath4 = [(DRSTaskingDecisionMaker *)self dbWorkingDirectoryPath];
+      dbWorkingDirectoryPath5 = [(DRSTaskingDecisionMaker *)v6 dbWorkingDirectoryPath];
+      v18 = [dbWorkingDirectoryPath4 isEqualToString:dbWorkingDirectoryPath5];
 
       if (!v18)
       {
@@ -195,15 +195,15 @@ LABEL_14:
       }
     }
 
-    v19 = [(DRSTaskingDecisionMaker *)v6 limitingParameters];
-    v20 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-    v21 = [v19 isEqual:v20];
+    limitingParameters = [(DRSTaskingDecisionMaker *)v6 limitingParameters];
+    limitingParameters2 = [(DRSTaskingDecisionMaker *)self limitingParameters];
+    v21 = [limitingParameters isEqual:limitingParameters2];
 
     if (v21)
     {
-      v22 = [(DRSTaskingDecisionMaker *)self deviceTimezone];
-      v23 = [(DRSTaskingDecisionMaker *)v6 deviceTimezone];
-      v24 = [v22 isEqualToTimeZone:v23];
+      deviceTimezone = [(DRSTaskingDecisionMaker *)self deviceTimezone];
+      deviceTimezone2 = [(DRSTaskingDecisionMaker *)v6 deviceTimezone];
+      v24 = [deviceTimezone isEqualToTimeZone:deviceTimezone2];
     }
 
     else
@@ -221,17 +221,17 @@ LABEL_15:
   return v24;
 }
 
-- (void)_persistReceivedMetadata:(id)a3
+- (void)_persistReceivedMetadata:(id)metadata
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DRSTaskingDecisionMaker *)self configStore];
+  metadataCopy = metadata;
+  configStore = [(DRSTaskingDecisionMaker *)self configStore];
 
-  if (v5)
+  if (configStore)
   {
-    v6 = [(DRSTaskingDecisionMaker *)self configStore];
+    configStore2 = [(DRSTaskingDecisionMaker *)self configStore];
     v12 = 0;
-    v7 = [v6 addConfigMetdata:v4 errorOut:&v12];
+    v7 = [configStore2 addConfigMetdata:metadataCopy errorOut:&v12];
     v8 = v12;
 
     if ((v7 & 1) == 0)
@@ -239,35 +239,35 @@ LABEL_15:
       v9 = DPLogHandle_TaskingDecisionMakerError();
       if (os_signpost_enabled(v9))
       {
-        v10 = [v4 configUUID];
+        configUUID = [metadataCopy configUUID];
         *buf = 138543618;
-        v14 = v10;
+        v14 = configUUID;
         v15 = 2114;
         v16 = v8;
         _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "MetadataPersistanceFailure", "Failed to persist %{public}@ due to error %{public}@", buf, 0x16u);
       }
     }
 
-    [(DRSTaskingDecisionMaker *)self _logConfigReceipt:v4];
+    [(DRSTaskingDecisionMaker *)self _logConfigReceipt:metadataCopy];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_logConfigReceipt:(id)a3
+- (void)_logConfigReceipt:(id)receipt
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 logTelemetry])
+  receiptCopy = receipt;
+  if ([receiptCopy logTelemetry])
   {
-    if ([v3 state])
+    if ([receiptCopy state])
     {
-      if ([v3 state] == 2)
+      if ([receiptCopy state] == 2)
       {
         v4 = @"Applied";
       }
 
-      else if ([v3 state] == 1)
+      else if ([receiptCopy state] == 1)
       {
         v4 = @"WaitingToApply";
       }
@@ -275,12 +275,12 @@ LABEL_15:
       else
       {
         v4 = @"Unknown";
-        if ([v3 state] == 3)
+        if ([receiptCopy state] == 3)
         {
-          v5 = [v3 completionDescription];
-          if (v5)
+          completionDescription = [receiptCopy completionDescription];
+          if (completionDescription)
           {
-            v4 = v5;
+            v4 = completionDescription;
           }
         }
       }
@@ -292,30 +292,30 @@ LABEL_15:
     }
 
     v18[0] = kUUIDKey;
-    v6 = [v3 configUUID];
-    v7 = [v6 UUIDString];
-    v19[0] = v7;
+    configUUID = [receiptCopy configUUID];
+    uUIDString = [configUUID UUIDString];
+    v19[0] = uUIDString;
     v18[1] = kTeamIDKey;
-    v8 = [v3 teamID];
+    teamID = [receiptCopy teamID];
     v18[2] = kConfigReceivedEventKey_ReceiptResult;
-    v19[1] = v8;
+    v19[1] = teamID;
     v19[2] = v4;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
 
     DRSCoreAnalyticsSendEvent(kConfigReceivedEventName, v9);
-    if ([v3 reportToDecisionServer])
+    if ([receiptCopy reportToDecisionServer])
     {
       v10 = +[DRSTaskingCloudKitHelper prodContainerHelper];
-      v11 = [v3 teamID];
-      v12 = [v3 configUUID];
-      v13 = [v12 UUIDString];
+      teamID2 = [receiptCopy teamID];
+      configUUID2 = [receiptCopy configUUID];
+      uUIDString2 = [configUUID2 UUIDString];
       v14 = os_transaction_create();
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __45__DRSTaskingDecisionMaker__logConfigReceipt___block_invoke;
       v16[3] = &unk_27899F820;
-      v17 = v3;
-      [v10 reportTaskingConfigReceipt:v11 uuidString:v13 receiptResult:v4 transaction:v14 completionHandler:v16];
+      v17 = receiptCopy;
+      [v10 reportTaskingConfigReceipt:teamID2 uuidString:uUIDString2 receiptResult:v4 transaction:v14 completionHandler:v16];
     }
   }
 
@@ -343,30 +343,30 @@ void __45__DRSTaskingDecisionMaker__logConfigReceipt___block_invoke(uint64_t a1,
 - (BOOL)reportToDecisionServer
 {
   v2 = +[DRSSystemProfile sharedInstance];
-  v3 = [v2 isInternal];
+  isInternal = [v2 isInternal];
 
-  return v3;
+  return isInternal;
 }
 
-- (id)_teamTaskingsPassingDate:(id)a3 logTelemetry:(BOOL)a4
+- (id)_teamTaskingsPassingDate:(id)date logTelemetry:(BOOL)telemetry
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v6 teamTaskings];
+  dateCopy = date;
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  teamTaskings = [dateCopy teamTaskings];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__DRSTaskingDecisionMaker__teamTaskingsPassingDate_logTelemetry___block_invoke;
   v15[3] = &unk_27899F848;
   v15[4] = self;
-  v16 = v8;
-  v17 = v6;
-  v19 = a4;
-  v10 = v7;
+  v16 = date;
+  v17 = dateCopy;
+  telemetryCopy = telemetry;
+  v10 = array;
   v18 = v10;
-  v11 = v6;
-  v12 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v15];
+  v11 = dateCopy;
+  v12 = date;
+  [teamTaskings enumerateKeysAndObjectsUsingBlock:v15];
 
   if ([v10 count])
   {
@@ -440,24 +440,24 @@ LABEL_6:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_teamTaskingsPassingBuild:(id)a3 logTelemetry:(BOOL)a4 allowWildcardBuild:(BOOL)a5
+- (id)_teamTaskingsPassingBuild:(id)build logTelemetry:(BOOL)telemetry allowWildcardBuild:(BOOL)wildcardBuild
 {
-  v5 = a5;
+  wildcardBuildCopy = wildcardBuild;
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
-  v50 = [MEMORY[0x277CBEAA8] date];
+  buildCopy = build;
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v8 = v6;
+  v8 = buildCopy;
   v52 = [v8 countByEnumeratingWithState:&v54 objects:v66 count:16];
   if (v52)
   {
     v51 = *v55;
     v48 = v8;
-    v47 = v5;
+    v47 = wildcardBuildCopy;
     do
     {
       for (i = 0; i != v52; ++i)
@@ -473,78 +473,78 @@ LABEL_6:
           goto LABEL_11;
         }
 
-        if (v5)
+        if (wildcardBuildCopy)
         {
-          v11 = [v10 config];
-          v12 = [v11 build];
-          v13 = [v12 isEqualToString:kDRConfigWildcardBuild];
+          config = [v10 config];
+          build = [config build];
+          v13 = [build isEqualToString:kDRConfigWildcardBuild];
 
           if (v13)
           {
             v14 = +[DRSSystemProfile sharedInstance];
-            v15 = [v14 build];
-            v16 = [v10 config];
-            [v16 setBuild:v15];
+            build2 = [v14 build];
+            config2 = [v10 config];
+            [config2 setBuild:build2];
           }
         }
 
         v17 = +[DRSSystemProfile sharedInstance];
-        v18 = [v17 build];
-        v19 = [v10 config];
-        v20 = [v19 build];
-        v21 = [v18 isEqualToString:v20];
+        build3 = [v17 build];
+        config3 = [v10 config];
+        build4 = [config3 build];
+        v21 = [build3 isEqualToString:build4];
 
         if ((v21 & 1) == 0)
         {
           v22 = DPLogHandle_TaskingDecisionMakerError();
           if (os_signpost_enabled(v22))
           {
-            v46 = [v10 config];
-            v23 = [v46 configUUID];
-            v24 = [v10 teamID];
-            v25 = [v10 config];
-            v26 = [v25 build];
+            config4 = [v10 config];
+            configUUID = [config4 configUUID];
+            teamID = [v10 teamID];
+            config5 = [v10 config];
+            build5 = [config5 build];
             v27 = +[DRSSystemProfile sharedInstance];
             [v27 build];
-            v29 = v28 = v7;
+            v29 = v28 = array;
             *buf = 138544130;
-            v59 = v23;
+            v59 = configUUID;
             v60 = 2114;
-            v61 = v24;
+            v61 = teamID;
             v62 = 2114;
-            v63 = v26;
+            v63 = build5;
             v64 = 2114;
             v65 = v29;
             _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "RejectedConfig", "Rejecting config %{public}@ for Team ID %{public}@ due to mismatching build: %{public}@ vs. %{public}@ (expected)", buf, 0x2Au);
 
-            v7 = v28;
+            array = v28;
           }
 
           v30 = MEMORY[0x277CCACA8];
-          v31 = [v10 config];
-          v32 = [v31 build];
+          config6 = [v10 config];
+          build6 = [config6 build];
           v33 = +[DRSSystemProfile sharedInstance];
-          v34 = [v33 build];
-          v35 = [v30 stringWithFormat:@"Config build did not match device: %@ vs. %@ (expected)", v32, v34];
+          build7 = [v33 build];
+          v35 = [v30 stringWithFormat:@"Config build did not match device: %@ vs. %@ (expected)", build6, build7];
 
           v36 = [DRSConfigMetadata alloc];
-          v37 = [v10 teamID];
-          v38 = [v10 config];
-          v39 = [v38 configUUID];
-          v40 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+          teamID2 = [v10 teamID];
+          config7 = [v10 config];
+          configUUID2 = [config7 configUUID];
+          currentReceivedDate = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
           BYTE1(v45) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-          LOBYTE(v45) = a4;
-          v41 = [DRSConfigMetadata initWithTeamID:v36 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v37 completionType:v39 receivedDate:3 appliedDate:1 completedDate:v40 completionDescription:v50 config:v35 logTelemetry:0 reportToDecisionServer:v45];
+          LOBYTE(v45) = telemetry;
+          v41 = [DRSConfigMetadata initWithTeamID:v36 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID2 completionType:configUUID2 receivedDate:3 appliedDate:1 completedDate:currentReceivedDate completionDescription:date config:v35 logTelemetry:0 reportToDecisionServer:v45];
 
           [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v41];
           v8 = v48;
-          v5 = v47;
+          wildcardBuildCopy = v47;
         }
 
         else
         {
 LABEL_11:
-          [v7 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -554,9 +554,9 @@ LABEL_11:
     while (v52);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
-    v42 = v7;
+    v42 = array;
   }
 
   else
@@ -569,15 +569,15 @@ LABEL_11:
   return v42;
 }
 
-- (id)_configsPassingSampling:(id)a3 logTelemetry:(BOOL)a4
+- (id)_configsPassingSampling:(id)sampling logTelemetry:(BOOL)telemetry
 {
   v82 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  samplingCopy = sampling;
+  v6 = samplingCopy;
+  if (samplingCopy && [samplingCopy count])
   {
-    v7 = [MEMORY[0x277CBEB18] array];
-    v62 = [MEMORY[0x277CBEAA8] date];
+    array = [MEMORY[0x277CBEB18] array];
+    date = [MEMORY[0x277CBEAA8] date];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -592,9 +592,9 @@ LABEL_11:
 
     v9 = v8;
     v10 = *v68;
-    v60 = v7;
+    v60 = array;
     v64 = *v68;
-    v65 = self;
+    selfCopy = self;
     while (1)
     {
       v11 = 0;
@@ -613,98 +613,98 @@ LABEL_11:
         }
 
         v13 = +[DRSSystemProfile sharedInstance];
-        v14 = [v13 deviceModel];
-        v15 = [(DRSTaskingDecisionMaker *)self deviceTimezone];
-        v16 = [v15 abbreviation];
-        v17 = [v12 samplingParametersForHWModel:v14 timezoneAbbreviation:v16];
+        deviceModel = [v13 deviceModel];
+        deviceTimezone = [(DRSTaskingDecisionMaker *)self deviceTimezone];
+        abbreviation = [deviceTimezone abbreviation];
+        config3 = [v12 samplingParametersForHWModel:deviceModel timezoneAbbreviation:abbreviation];
 
         v18 = DPLogHandle_TaskingDecisionMaker();
         if (os_signpost_enabled(v18))
         {
-          v19 = [v12 config];
-          v20 = [v19 configUUID];
-          v21 = [v12 jsonDictRepresentationAbbreviated];
+          config = [v12 config];
+          configUUID = [config configUUID];
+          jsonDictRepresentationAbbreviated = [v12 jsonDictRepresentationAbbreviated];
           *buf = 138543618;
-          v72 = v20;
+          v72 = configUUID;
           v73 = 2114;
-          v74 = v21;
+          v74 = jsonDictRepresentationAbbreviated;
           _os_signpost_emit_with_name_impl(&dword_232906000, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamSamplingEvaluation", "Evaluating sampling for: %{public}@:\n%{public}@", buf, 0x16u);
         }
 
         v22 = DPLogHandle_TaskingDecisionMaker();
         v23 = os_signpost_enabled(v22);
-        if (v17)
+        if (config3)
         {
           if (v23)
           {
-            v59 = [v12 config];
-            v24 = [v59 configUUID];
-            v25 = [v12 teamID];
-            [v17 samplingPercentage];
+            config2 = [v12 config];
+            configUUID2 = [config2 configUUID];
+            teamID = [v12 teamID];
+            [config3 samplingPercentage];
             v27 = v26;
             v28 = +[DRSSystemProfile sharedInstance];
-            v29 = [v28 deviceModel];
-            v30 = [(DRSTaskingDecisionMaker *)self deviceTimezone];
-            v31 = [v30 abbreviation];
+            deviceModel2 = [v28 deviceModel];
+            deviceTimezone2 = [(DRSTaskingDecisionMaker *)self deviceTimezone];
+            abbreviation2 = [deviceTimezone2 abbreviation];
             *buf = 138544386;
-            v72 = v24;
+            v72 = configUUID2;
             v73 = 2114;
-            v74 = v25;
+            v74 = teamID;
             v75 = 2050;
             v76 = v27;
             v77 = 2114;
-            v78 = v29;
+            v78 = deviceModel2;
             v79 = 2114;
-            v80 = v31;
+            v80 = abbreviation2;
             _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamConfigSampling", "%{public}@ for team %{public}@: Got sampling percentage of %{public}.2f for HW model %{public}@, TZ: %{public}@", buf, 0x34u);
 
-            v7 = v60;
-            self = v65;
+            array = v60;
+            self = selfCopy;
 
             v9 = v61;
           }
 
-          [v17 samplingPercentage];
+          [config3 samplingPercentage];
           if ([DRSTaskingDecisionMaker passesPercentAccept:?])
           {
 
             v10 = v64;
 LABEL_16:
-            v17 = [v12 config];
-            [v7 addObject:v17];
+            config3 = [v12 config];
+            [array addObject:config3];
             goto LABEL_24;
           }
 
           v41 = DPLogHandle_TaskingDecisionMaker();
           if (os_signpost_enabled(v41))
           {
-            v42 = [v12 config];
-            v43 = [v42 configUUID];
-            v44 = [v12 teamID];
-            [v17 samplingPercentage];
+            config4 = [v12 config];
+            configUUID3 = [config4 configUUID];
+            teamID2 = [v12 teamID];
+            [config3 samplingPercentage];
             *buf = 138543874;
-            v72 = v43;
+            v72 = configUUID3;
             v73 = 2114;
-            v74 = v44;
+            v74 = teamID2;
             v75 = 2048;
             v76 = v45;
             _os_signpost_emit_with_name_impl(&dword_232906000, v41, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamHysteresisRejection", "Rejecting config %{public}@ for team ID %{public}@ due to failed roll (%f%% chance of success)", buf, 0x20u);
           }
 
           v46 = MEMORY[0x277CCACA8];
-          [v17 samplingPercentage];
+          [config3 samplingPercentage];
           v40 = [v46 stringWithFormat:@"Failed roll (%f%% chance of success)", v47];
           v48 = [DRSConfigMetadata alloc];
-          v49 = [v12 teamID];
-          v50 = [v12 config];
-          v51 = [v50 configUUID];
-          v52 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+          teamID3 = [v12 teamID];
+          config5 = [v12 config];
+          configUUID4 = [config5 configUUID];
+          currentReceivedDate = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
           BYTE1(v57) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-          LOBYTE(v57) = a4;
-          v53 = [DRSConfigMetadata initWithTeamID:v48 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v49 completionType:v51 receivedDate:3 appliedDate:1 completedDate:v52 completionDescription:v62 config:v40 logTelemetry:0 reportToDecisionServer:v57];
+          LOBYTE(v57) = telemetry;
+          v53 = [DRSConfigMetadata initWithTeamID:v48 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID3 completionType:configUUID4 receivedDate:3 appliedDate:1 completedDate:currentReceivedDate completionDescription:date config:v40 logTelemetry:0 reportToDecisionServer:v57];
 
           [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v53];
-          v7 = v60;
+          array = v60;
           v9 = v61;
         }
 
@@ -712,27 +712,27 @@ LABEL_16:
         {
           if (v23)
           {
-            v32 = [v12 config];
-            v33 = [v32 configUUID];
-            v34 = [v12 teamID];
+            config6 = [v12 config];
+            configUUID5 = [config6 configUUID];
+            teamID4 = [v12 teamID];
             *buf = 138543618;
-            v72 = v33;
+            v72 = configUUID5;
             v73 = 2114;
-            v74 = v34;
+            v74 = teamID4;
             _os_signpost_emit_with_name_impl(&dword_232906000, v22, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamHysteresisRejection", "Rejecting config %{public}@ for team %{public}@ to missing sampling parameters", buf, 0x16u);
           }
 
           v35 = [DRSConfigMetadata alloc];
-          v36 = [v12 teamID];
-          v37 = [v12 config];
-          v38 = [v37 configUUID];
-          v39 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
-          BYTE1(v57) = [(DRSTaskingDecisionMaker *)v65 reportToDecisionServer];
-          LOBYTE(v57) = a4;
-          v40 = [DRSConfigMetadata initWithTeamID:v35 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v36 completionType:v38 receivedDate:3 appliedDate:1 completedDate:v39 completionDescription:v62 config:@"No applicable sampling parameters" logTelemetry:0 reportToDecisionServer:v57];
+          teamID5 = [v12 teamID];
+          config7 = [v12 config];
+          configUUID6 = [config7 configUUID];
+          currentReceivedDate2 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+          BYTE1(v57) = [(DRSTaskingDecisionMaker *)selfCopy reportToDecisionServer];
+          LOBYTE(v57) = telemetry;
+          v40 = [DRSConfigMetadata initWithTeamID:v35 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID5 completionType:configUUID6 receivedDate:3 appliedDate:1 completedDate:currentReceivedDate2 completionDescription:date config:@"No applicable sampling parameters" logTelemetry:0 reportToDecisionServer:v57];
 
-          self = v65;
-          [(DRSTaskingDecisionMaker *)v65 _persistReceivedMetadata:v40];
+          self = selfCopy;
+          [(DRSTaskingDecisionMaker *)selfCopy _persistReceivedMetadata:v40];
         }
 
         v10 = v64;
@@ -747,9 +747,9 @@ LABEL_24:
       {
 LABEL_26:
 
-        if ([v7 count])
+        if ([array count])
         {
-          v54 = v7;
+          v54 = array;
         }
 
         else
@@ -771,50 +771,50 @@ LABEL_31:
   return v54;
 }
 
-- (id)_hysteresisPredicate:(id)a3 config:(id)a4
+- (id)_hysteresisPredicate:(id)predicate config:(id)config
 {
-  v6 = a3;
-  if (([a4 skippedHysteresis] & 1) != 0 || !-[DRSTaskingDecisionMaker enforceTeamHysteresis](self, "enforceTeamHysteresis"))
+  predicateCopy = predicate;
+  if (([config skippedHysteresis] & 1) != 0 || !-[DRSTaskingDecisionMaker enforceTeamHysteresis](self, "enforceTeamHysteresis"))
   {
-    v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"completionType == %llu", 4097];
+    4097 = [MEMORY[0x277CCAC30] predicateWithFormat:@"completionType == %llu", 4097];
   }
 
   else
   {
-    v7 = [(DRSTaskingDecisionMaker *)self _hysteresisPredicate:v6];
+    4097 = [(DRSTaskingDecisionMaker *)self _hysteresisPredicate:predicateCopy];
   }
 
-  v8 = v7;
+  v8 = 4097;
 
   return v8;
 }
 
-- (BOOL)_configDoesPassTeamHysteresis:(id)a3 logTelemetry:(BOOL)a4
+- (BOOL)_configDoesPassTeamHysteresis:(id)hysteresis logTelemetry:(BOOL)telemetry
 {
   v52[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] date];
+  hysteresisCopy = hysteresis;
+  date = [MEMORY[0x277CBEAA8] date];
   v7 = MEMORY[0x277CCAC30];
-  v8 = [v5 teamID];
-  v9 = [v7 predicateWithFormat:@"teamID == %@", v8];
+  teamID = [hysteresisCopy teamID];
+  v9 = [v7 predicateWithFormat:@"teamID == %@", teamID];
 
   v10 = MEMORY[0x277CBEAA8];
-  v11 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-  [v11 perTeamTaskingHysteresisInterval];
+  limitingParameters = [(DRSTaskingDecisionMaker *)self limitingParameters];
+  [limitingParameters perTeamTaskingHysteresisInterval];
   v13 = -v12;
-  v14 = [MEMORY[0x277CBEAA8] date];
-  v15 = [v10 dateWithTimeInterval:v14 sinceDate:v13];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  v15 = [v10 dateWithTimeInterval:date2 sinceDate:v13];
 
-  v16 = [(DRSTaskingDecisionMaker *)self _hysteresisPredicate:v15 config:v5];
+  v16 = [(DRSTaskingDecisionMaker *)self _hysteresisPredicate:v15 config:hysteresisCopy];
   v17 = MEMORY[0x277CCA920];
   v52[0] = v9;
   v52[1] = v16;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:2];
   v19 = [v17 andPredicateWithSubpredicates:v18];
 
-  v20 = [(DRSTaskingDecisionMaker *)self configStore];
+  configStore = [(DRSTaskingDecisionMaker *)self configStore];
   v47 = 0;
-  v21 = [v20 metadataCountForPredicate:v19 fetchLimit:1 withErrorOut:&v47];
+  v21 = [configStore metadataCountForPredicate:v19 fetchLimit:1 withErrorOut:&v47];
   v22 = v47;
 
   if (v22)
@@ -825,25 +825,25 @@ LABEL_31:
     v23 = DPLogHandle_TaskingDecisionMakerError();
     if (os_signpost_enabled(v23))
     {
-      v24 = [v5 configUUID];
+      configUUID = [hysteresisCopy configUUID];
       *buf = 138543618;
-      v49 = v24;
+      v49 = configUUID;
       v50 = 2114;
       v51 = v22;
       _os_signpost_emit_with_name_impl(&dword_232906000, v23, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "PerTeamHysteresisError", "Rejecting config %{public}@ due to team hysteresis error %{public}@", buf, 0x16u);
     }
 
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v22 localizedDescription];
-    v27 = [v25 stringWithFormat:@"Per-team hysteresis error %@", v26];
+    localizedDescription = [v22 localizedDescription];
+    v27 = [v25 stringWithFormat:@"Per-team hysteresis error %@", localizedDescription];
 
     v28 = [DRSConfigMetadata alloc];
-    v29 = [v5 teamID];
-    v30 = [v5 configUUID];
-    v31 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+    teamID2 = [hysteresisCopy teamID];
+    configUUID2 = [hysteresisCopy configUUID];
+    currentReceivedDate = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
     BYTE1(v42) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-    LOBYTE(v42) = a4;
-    v32 = [(DRSConfigMetadata *)v28 initWithTeamID:v29 configUUID:v30 state:3 completionType:1 receivedDate:v31 appliedDate:v6 completedDate:v6 completionDescription:v27 config:0 logTelemetry:v42 reportToDecisionServer:?];
+    LOBYTE(v42) = telemetry;
+    v32 = [(DRSConfigMetadata *)v28 initWithTeamID:teamID2 configUUID:configUUID2 state:3 completionType:1 receivedDate:currentReceivedDate appliedDate:date completedDate:date completionDescription:v27 config:0 logTelemetry:v42 reportToDecisionServer:?];
 
     [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v32];
   }
@@ -862,21 +862,21 @@ LABEL_31:
     v33 = DPLogHandle_TaskingDecisionMaker();
     if (os_signpost_enabled(v33))
     {
-      v34 = [v5 configUUID];
+      configUUID3 = [hysteresisCopy configUUID];
       *buf = 138543618;
-      v49 = v34;
+      v49 = configUUID3;
       v50 = 2048;
       v51 = v21;
       _os_signpost_emit_with_name_impl(&dword_232906000, v33, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TeamHysteresisRejection", "Rejecting config %{public}@ due to team hysteresis (matching count of %lu)", buf, 0x16u);
     }
 
     v35 = [DRSConfigMetadata alloc];
-    v36 = [v5 teamID];
-    v37 = [v5 configUUID];
-    v38 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+    teamID3 = [hysteresisCopy teamID];
+    configUUID4 = [hysteresisCopy configUUID];
+    currentReceivedDate2 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
     BYTE1(v42) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-    LOBYTE(v42) = a4;
-    v27 = [(DRSConfigMetadata *)v35 initWithTeamID:v36 configUUID:v37 state:3 completionType:1 receivedDate:v38 appliedDate:v6 completedDate:v6 completionDescription:@"Rejected by per-team hysteresis" config:0 logTelemetry:v42 reportToDecisionServer:?];
+    LOBYTE(v42) = telemetry;
+    v27 = [(DRSConfigMetadata *)v35 initWithTeamID:teamID3 configUUID:configUUID4 state:3 completionType:1 receivedDate:currentReceivedDate2 appliedDate:date completedDate:date completionDescription:@"Rejected by per-team hysteresis" config:0 logTelemetry:v42 reportToDecisionServer:?];
 
     [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v27];
   }
@@ -891,27 +891,27 @@ LABEL_10:
   return v39;
 }
 
-- (id)_configsPassingOverallHysteresis:(id)a3 logTelemetry:(BOOL)a4
+- (id)_configsPassingOverallHysteresis:(id)hysteresis logTelemetry:(BOOL)telemetry
 {
   v117 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  hysteresisCopy = hysteresis;
   if ([(DRSTaskingDecisionMaker *)self enforceGlobalHysteresisAndCap])
   {
-    v83 = v5;
-    v91 = [MEMORY[0x277CBEAA8] date];
+    v83 = hysteresisCopy;
+    date = [MEMORY[0x277CBEAA8] date];
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-    [v7 taskingHysteresisInterval];
+    limitingParameters = [(DRSTaskingDecisionMaker *)self limitingParameters];
+    [limitingParameters taskingHysteresisInterval];
     v9 = -v8;
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [v6 dateWithTimeInterval:v10 sinceDate:v9];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v11 = [v6 dateWithTimeInterval:date2 sinceDate:v9];
 
-    v12 = [(DRSTaskingDecisionMaker *)self configStore];
+    configStore = [(DRSTaskingDecisionMaker *)self configStore];
     v82 = v11;
     v13 = [(DRSTaskingDecisionMaker *)self _hysteresisPredicate:v11];
-    v14 = [(DRSTaskingDecisionMaker *)self limitingParameters];
+    limitingParameters2 = [(DRSTaskingDecisionMaker *)self limitingParameters];
     v108 = 0;
-    v15 = [v12 metadataCountForPredicate:v13 fetchLimit:objc_msgSend(v14 withErrorOut:{"acceptedConfigCountCap"), &v108}];
+    v15 = [configStore metadataCountForPredicate:v13 fetchLimit:objc_msgSend(limitingParameters2 withErrorOut:{"acceptedConfigCountCap"), &v108}];
     v16 = v108;
 
     v89 = v16;
@@ -946,16 +946,16 @@ LABEL_10:
 
             v22 = *(*(&v104 + 1) + 8 * i);
             v23 = MEMORY[0x277CCACA8];
-            v24 = [v89 localizedDescription];
-            v25 = [v23 stringWithFormat:@"Overall hysteresis error %@", v24];
+            localizedDescription = [v89 localizedDescription];
+            v25 = [v23 stringWithFormat:@"Overall hysteresis error %@", localizedDescription];
 
             v26 = [DRSConfigMetadata alloc];
-            v27 = [v22 teamID];
-            v28 = [v22 configUUID];
-            v29 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+            teamID = [v22 teamID];
+            configUUID = [v22 configUUID];
+            currentReceivedDate = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
             BYTE1(v81) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-            LOBYTE(v81) = a4;
-            v30 = [DRSConfigMetadata initWithTeamID:v26 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v27 completionType:v28 receivedDate:3 appliedDate:1 completedDate:v29 completionDescription:v91 config:v25 logTelemetry:0 reportToDecisionServer:v81];
+            LOBYTE(v81) = telemetry;
+            v30 = [DRSConfigMetadata initWithTeamID:v26 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID completionType:configUUID receivedDate:3 appliedDate:1 completedDate:currentReceivedDate completionDescription:date config:v25 logTelemetry:0 reportToDecisionServer:v81];
 
             [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v30];
           }
@@ -968,24 +968,24 @@ LABEL_10:
 
       v31 = 0;
       v32 = v82;
-      v5 = v83;
+      hysteresisCopy = v83;
     }
 
     else
     {
-      v33 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-      v34 = [v33 acceptedConfigCountCap];
+      limitingParameters3 = [(DRSTaskingDecisionMaker *)self limitingParameters];
+      acceptedConfigCountCap = [limitingParameters3 acceptedConfigCountCap];
 
-      if (v15 >= v34)
+      if (v15 >= acceptedConfigCountCap)
       {
-        v64 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v65 = DPLogHandle_TaskingDecisionMaker();
         if (os_signpost_enabled(v65))
         {
-          v66 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-          v67 = [v66 acceptedConfigCountCap];
+          limitingParameters4 = [(DRSTaskingDecisionMaker *)self limitingParameters];
+          acceptedConfigCountCap2 = [limitingParameters4 acceptedConfigCountCap];
           *buf = 134217984;
-          v110 = v67;
+          v110 = acceptedConfigCountCap2;
           _os_signpost_emit_with_name_impl(&dword_232906000, v65, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "OverallHysteresisRejection", "Rejecting all configs due to being at or over the accepted config count cap %lu", buf, 0xCu);
         }
 
@@ -1011,18 +1011,18 @@ LABEL_10:
               v73 = *(*(&v100 + 1) + 8 * j);
               if ([v73 skippedHysteresis])
               {
-                [v64 addObject:v73];
+                [array addObject:v73];
               }
 
               else
               {
                 v74 = [DRSConfigMetadata alloc];
-                v75 = [v73 teamID];
-                v76 = [v73 configUUID];
-                v77 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+                teamID2 = [v73 teamID];
+                configUUID2 = [v73 configUUID];
+                currentReceivedDate2 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
                 BYTE1(v81) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-                LOBYTE(v81) = a4;
-                v78 = [DRSConfigMetadata initWithTeamID:v74 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v75 completionType:v76 receivedDate:3 appliedDate:1 completedDate:v77 completionDescription:v91 config:@"No open overall slots" logTelemetry:0 reportToDecisionServer:v81];
+                LOBYTE(v81) = telemetry;
+                v78 = [DRSConfigMetadata initWithTeamID:v74 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID2 completionType:configUUID2 receivedDate:3 appliedDate:1 completedDate:currentReceivedDate2 completionDescription:date config:@"No open overall slots" logTelemetry:0 reportToDecisionServer:v81];
 
                 [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v78];
               }
@@ -1034,9 +1034,9 @@ LABEL_10:
           while (v70);
         }
 
-        if ([v64 count])
+        if ([array count])
         {
-          v31 = v64;
+          v31 = array;
         }
 
         else
@@ -1045,17 +1045,17 @@ LABEL_10:
         }
 
         v32 = v82;
-        v5 = v83;
+        hysteresisCopy = v83;
       }
 
       else
       {
-        v35 = [(DRSTaskingDecisionMaker *)self limitingParameters];
-        v36 = [v35 acceptedConfigCountCap];
+        limitingParameters5 = [(DRSTaskingDecisionMaker *)self limitingParameters];
+        acceptedConfigCountCap3 = [limitingParameters5 acceptedConfigCountCap];
 
-        v5 = v83;
-        v86 = v36 - v15;
-        if (v36 - v15 >= [v83 count])
+        hysteresisCopy = v83;
+        v86 = acceptedConfigCountCap3 - v15;
+        if (acceptedConfigCountCap3 - v15 >= [v83 count])
         {
           v31 = v83;
           v32 = v82;
@@ -1064,15 +1064,15 @@ LABEL_10:
         else
         {
           v37 = [v83 mutableCopy];
-          v38 = [MEMORY[0x277CBEB18] array];
-          if (v36 != v15)
+          array2 = [MEMORY[0x277CBEB18] array];
+          if (acceptedConfigCountCap3 != v15)
           {
-            v39 = v36 - v15;
+            v39 = acceptedConfigCountCap3 - v15;
             do
             {
               v40 = arc4random_uniform([v37 count]);
               v41 = [v37 objectAtIndexedSubscript:v40];
-              [v38 addObject:v41];
+              [array2 addObject:v41];
               [v37 removeObjectAtIndex:v40];
 
               --v39;
@@ -1081,15 +1081,15 @@ LABEL_10:
             while (v39);
           }
 
-          v85 = v38;
-          v42 = [MEMORY[0x277CBEB18] array];
+          v85 = array2;
+          array3 = [MEMORY[0x277CBEB18] array];
           v96 = 0u;
           v97 = 0u;
           v98 = 0u;
           v99 = 0u;
           v43 = v37;
           v44 = [v43 countByEnumeratingWithState:&v96 objects:v114 count:16];
-          v84 = v42;
+          v84 = array3;
           if (v44)
           {
             v45 = v44;
@@ -1106,18 +1106,18 @@ LABEL_10:
                 v48 = *(*(&v96 + 1) + 8 * k);
                 if ([v48 skippedHysteresis])
                 {
-                  [v42 addObject:v48];
-                  [v38 addObject:v48];
+                  [array3 addObject:v48];
+                  [array2 addObject:v48];
                   v49 = DPLogHandle_TaskingDecisionMaker();
                   if (os_signpost_enabled(v49))
                   {
-                    v50 = [v48 configUUID];
+                    configUUID3 = [v48 configUUID];
                     *buf = 138543362;
-                    v110 = v50;
+                    v110 = configUUID3;
                     _os_signpost_emit_with_name_impl(&dword_232906000, v49, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ConfigAcceptedBySkippingHysteresis", "Accepted %{public}@ due to 'skipHysteresis'", buf, 0xCu);
                   }
 
-                  v42 = v84;
+                  array3 = v84;
                 }
               }
 
@@ -1127,9 +1127,9 @@ LABEL_10:
             while (v45);
           }
 
-          if ([v42 count])
+          if ([array3 count])
           {
-            [v43 removeObjectsInArray:v42];
+            [v43 removeObjectsInArray:array3];
           }
 
           v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Not selected for one of the %llu open slots", v86];
@@ -1156,21 +1156,21 @@ LABEL_10:
                 v57 = DPLogHandle_TaskingDecisionMaker();
                 if (os_signpost_enabled(v57))
                 {
-                  v58 = [v56 configUUID];
+                  configUUID4 = [v56 configUUID];
                   *buf = 138543618;
-                  v110 = v58;
+                  v110 = configUUID4;
                   v111 = 2048;
                   v112 = v86;
                   _os_signpost_emit_with_name_impl(&dword_232906000, v57, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "OverallHysteresisRejection", "Rejected %{public}@ due to not being picked for one of the %llu open slots", buf, 0x16u);
                 }
 
                 v59 = [DRSConfigMetadata alloc];
-                v60 = [v56 teamID];
-                v61 = [v56 configUUID];
-                v62 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
+                teamID3 = [v56 teamID];
+                configUUID5 = [v56 configUUID];
+                currentReceivedDate3 = [(DRSTaskingDecisionMaker *)self currentReceivedDate];
                 BYTE1(v81) = [(DRSTaskingDecisionMaker *)self reportToDecisionServer];
-                LOBYTE(v81) = a4;
-                v63 = [DRSConfigMetadata initWithTeamID:v59 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:v60 completionType:v61 receivedDate:3 appliedDate:1 completedDate:v62 completionDescription:v91 config:v51 logTelemetry:0 reportToDecisionServer:v81];
+                LOBYTE(v81) = telemetry;
+                v63 = [DRSConfigMetadata initWithTeamID:v59 configUUID:"initWithTeamID:configUUID:state:completionType:receivedDate:appliedDate:completedDate:completionDescription:config:logTelemetry:reportToDecisionServer:" state:teamID3 completionType:configUUID5 receivedDate:3 appliedDate:1 completedDate:currentReceivedDate3 completionDescription:date config:v51 logTelemetry:0 reportToDecisionServer:v81];
 
                 [(DRSTaskingDecisionMaker *)self _persistReceivedMetadata:v63];
               }
@@ -1182,7 +1182,7 @@ LABEL_10:
           }
 
           v32 = v82;
-          v5 = v83;
+          hysteresisCopy = v83;
           v31 = v85;
         }
       }
@@ -1191,7 +1191,7 @@ LABEL_10:
 
   else
   {
-    v31 = v5;
+    v31 = hysteresisCopy;
   }
 
   v79 = *MEMORY[0x277D85DE8];
@@ -1199,22 +1199,22 @@ LABEL_10:
   return v31;
 }
 
-- (void)_rejectTaskingMessageDueToDisabledState:(id)a3 logTelemetry:(BOOL)a4
+- (void)_rejectTaskingMessageDueToDisabledState:(id)state logTelemetry:(BOOL)telemetry
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
-  v8 = [v6 date];
-  v9 = [v7 teamTaskings];
+  stateCopy = state;
+  date = [v6 date];
+  teamTaskings = [stateCopy teamTaskings];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__DRSTaskingDecisionMaker__rejectTaskingMessageDueToDisabledState_logTelemetry___block_invoke;
   v11[3] = &unk_27899F870;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v10 = v8;
-  [v9 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = date;
+  telemetryCopy = telemetry;
+  v10 = date;
+  [teamTaskings enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __80__DRSTaskingDecisionMaker__rejectTaskingMessageDueToDisabledState_logTelemetry___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1256,52 +1256,52 @@ void __80__DRSTaskingDecisionMaker__rejectTaskingMessageDueToDisabledState_logTe
   }
 }
 
-- (id)acceptedCancels:(id)a3
+- (id)acceptedCancels:(id)cancels
 {
-  v4 = a3;
-  v5 = [(DRSTaskingDecisionMaker *)self configStore];
+  cancelsCopy = cancels;
+  configStore = [(DRSTaskingDecisionMaker *)self configStore];
 
-  if (v5)
+  if (configStore)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    v7 = [MEMORY[0x277CBEAA8] date];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    date = [MEMORY[0x277CBEAA8] date];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [v4 messageUUID];
-    v10 = [v9 UUIDString];
-    v11 = [v8 stringWithFormat:@"Cancelled by cancel tasking message %@", v10];
+    messageUUID = [cancelsCopy messageUUID];
+    uUIDString = [messageUUID UUIDString];
+    v11 = [v8 stringWithFormat:@"Cancelled by cancel tasking message %@", uUIDString];
 
-    v12 = [v4 perTeamCancelledConfigUUIDs];
+    perTeamCancelledConfigUUIDs = [cancelsCopy perTeamCancelledConfigUUIDs];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __43__DRSTaskingDecisionMaker_acceptedCancels___block_invoke;
     v18[3] = &unk_27899F898;
     v18[4] = self;
-    v19 = v7;
+    v19 = date;
     v20 = v11;
-    v21 = v4;
-    v13 = v6;
+    v21 = cancelsCopy;
+    v13 = dictionary;
     v22 = v13;
     v14 = v11;
-    v15 = v7;
-    [v12 enumerateKeysAndObjectsUsingBlock:v18];
+    v15 = date;
+    [perTeamCancelledConfigUUIDs enumerateKeysAndObjectsUsingBlock:v18];
 
     if ([v13 count])
     {
-      v16 = v13;
+      perTeamCancelledConfigUUIDs2 = v13;
     }
 
     else
     {
-      v16 = 0;
+      perTeamCancelledConfigUUIDs2 = 0;
     }
   }
 
   else
   {
-    v16 = [v4 perTeamCancelledConfigUUIDs];
+    perTeamCancelledConfigUUIDs2 = [cancelsCopy perTeamCancelledConfigUUIDs];
   }
 
-  return v16;
+  return perTeamCancelledConfigUUIDs2;
 }
 
 void __43__DRSTaskingDecisionMaker_acceptedCancels___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -1437,14 +1437,14 @@ LABEL_26:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientCompletedConfigUUID:(id)a3
+- (void)clientCompletedConfigUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DRSTaskingDecisionMaker *)self configStore];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  dCopy = d;
+  configStore = [(DRSTaskingDecisionMaker *)self configStore];
+  date = [MEMORY[0x277CBEAA8] date];
   v14 = 0;
-  v7 = [v5 completeConfigWithUUID:v4 completedDate:v6 completionType:8196 completionDescription:@"Completed by client" errorOut:&v14];
+  v7 = [configStore completeConfigWithUUID:dCopy completedDate:date completionType:8196 completionDescription:@"Completed by client" errorOut:&v14];
   v8 = v14;
 
   if ((v7 & 1) == 0)
@@ -1452,16 +1452,16 @@ LABEL_26:
     v9 = DPLogHandle_TaskingDecisionMakerError();
     if (os_signpost_enabled(v9))
     {
-      v10 = [v8 localizedDescription];
-      v11 = v10;
+      localizedDescription = [v8 localizedDescription];
+      v11 = localizedDescription;
       v12 = @"Unknown";
-      if (v10)
+      if (localizedDescription)
       {
-        v12 = v10;
+        v12 = localizedDescription;
       }
 
       *buf = 138543618;
-      v16 = v4;
+      v16 = dCopy;
       v17 = 2114;
       v18 = v12;
       _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientCompletionFailed", "Failed to complete config UUID %{public}@ due to error: %{public}@", buf, 0x16u);
@@ -1471,14 +1471,14 @@ LABEL_26:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientRejectsConfigUUID:(id)a3
+- (void)clientRejectsConfigUUID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DRSTaskingDecisionMaker *)self configStore];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  dCopy = d;
+  configStore = [(DRSTaskingDecisionMaker *)self configStore];
+  date = [MEMORY[0x277CBEAA8] date];
   v14 = 0;
-  v7 = [v5 completeConfigWithUUID:v4 completedDate:v6 completionType:1 completionDescription:@"Rejected by client" errorOut:&v14];
+  v7 = [configStore completeConfigWithUUID:dCopy completedDate:date completionType:1 completionDescription:@"Rejected by client" errorOut:&v14];
   v8 = v14;
 
   if ((v7 & 1) == 0)
@@ -1486,16 +1486,16 @@ LABEL_26:
     v9 = DPLogHandle_TaskingDecisionMakerError();
     if (os_signpost_enabled(v9))
     {
-      v10 = [v8 localizedDescription];
-      v11 = v10;
+      localizedDescription = [v8 localizedDescription];
+      v11 = localizedDescription;
       v12 = @"Unknown";
-      if (v10)
+      if (localizedDescription)
       {
-        v12 = v10;
+        v12 = localizedDescription;
       }
 
       *buf = 138543618;
-      v16 = v4;
+      v16 = dCopy;
       v17 = 2114;
       v18 = v12;
       _os_signpost_emit_with_name_impl(&dword_232906000, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ClientRejectionFailed", "Failed to reject config UUID %{public}@ due to error: %{public}@", buf, 0x16u);

@@ -1,16 +1,16 @@
 @interface CSTimerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
-- (void)setAlpha:(double)a3;
+- (void)setAlpha:(double)alpha;
 @end
 
 @implementation CSTimerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CSTimerView" hasInstanceVariable:@"_endDate" withType:"NSDate"];
-  [v3 validateClass:@"CSTimerView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CSTimerView" hasInstanceVariable:@"_endDate" withType:"NSDate"];
+  [validationsCopy validateClass:@"CSTimerView" isKindOfClass:@"UIView"];
 }
 
 - (id)accessibilityLabel
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v5.receiver = self;
   v5.super_class = CSTimerViewAccessibility;
   [(CSTimerViewAccessibility *)&v5 setAlpha:?];
-  if (a3 == 1.0)
+  if (alpha == 1.0)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7488], self);
   }

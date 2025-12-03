@@ -1,13 +1,13 @@
 @interface PRUISPosterChannel
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 galleryMetadata:(id)a5 policy:(unint64_t)a6 error:(id *)a7;
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 policy:(unint64_t)a5 error:(id *)a6;
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state galleryMetadata:(id)metadata policy:(unint64_t)policy error:(id *)error;
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state policy:(unint64_t)policy error:(id *)error;
 - (NSDate)creationDate;
 - (NSDate)lastModifiedDate;
 - (NSString)description;
 - (NSUUID)channelIdentifier;
 - (PRSPosterConfiguration)posterConfiguration;
 - (PRUISPosterChannel)init;
-- (PRUISPosterChannel)initWithModelCoordinator:(id)a3 state:(id)a4 error:(id *)a5;
+- (PRUISPosterChannel)initWithModelCoordinator:(id)coordinator state:(id)state error:(id *)error;
 - (PRUISPosterChannelContext)channelContext;
 - (PRUISPosterGallery)currentGallery;
 - (PRUISPosterSnapshotController)snapshotController;
@@ -16,42 +16,42 @@
 - (id)_lock_buildReaper;
 - (id)_lock_currentGallery;
 - (id)_lock_currentPosterConfiguration;
-- (id)_lock_reapStaleSnapshotsWithReaper:(id)a3;
+- (id)_lock_reapStaleSnapshotsWithReaper:(id)reaper;
 - (id)_lock_snapshotCache;
 - (id)_lock_snapshotController;
 - (id)_lock_state;
-- (id)cachedSnapshotBundleSatisfyingPredicate:(id)a3;
-- (id)coordinateWithRemoveChannelBlock:(id)a3;
-- (id)descriptorsForState:(id)a3;
-- (id)extensionInstanceForReason:(id)a3 outError:(id *)a4;
-- (id)pooledExtensionInstanceWithError:(id *)a3;
+- (id)cachedSnapshotBundleSatisfyingPredicate:(id)predicate;
+- (id)coordinateWithRemoveChannelBlock:(id)block;
+- (id)descriptorsForState:(id)state;
+- (id)extensionInstanceForReason:(id)reason outError:(id *)error;
+- (id)pooledExtensionInstanceWithError:(id *)error;
 - (id)reapEverything;
 - (id)reapStaleSnapshots;
-- (id)updateGalleryWithUpdateSessionInfoProvider:(id)a3 extensionIdentifiers:(id)a4 policy:(unint64_t)a5;
+- (id)updateGalleryWithUpdateSessionInfoProvider:(id)provider extensionIdentifiers:(id)identifiers policy:(unint64_t)policy;
 - (unint64_t)version;
 - (void)_notifyObserversDidInvalidate;
-- (void)_notifyObserversDidUpdateContext:(id)a3;
-- (void)_notifyObserversDidUpdateGallery:(id)a3;
-- (void)_notifyObserversDidUpdatePoster:(id)a3;
+- (void)_notifyObserversDidUpdateContext:(id)context;
+- (void)_notifyObserversDidUpdateGallery:(id)gallery;
+- (void)_notifyObserversDidUpdatePoster:(id)poster;
 - (void)_notifyObserversWillInvalidate;
 - (void)_notifyObserversWillUpdateContext;
 - (void)_notifyObserversWillUpdateGallery;
 - (void)_notifyObserversWillUpdatePoster;
-- (void)addChannelObserver:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)applyUpdater:(id)a3 error:(id *)a4;
-- (void)cacheSnapshotBundle:(id)a3 forPredicate:(id)a4;
-- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)a3;
-- (void)coordinator:(id)a3 didUpdateDescriptors:(id)a4 galleryMetadata:(id)a5;
-- (void)fetchSnapshotForDescriptor:(id)a3 completion:(id)a4;
+- (void)addChannelObserver:(id)observer;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)applyUpdater:(id)updater error:(id *)error;
+- (void)cacheSnapshotBundle:(id)bundle forPredicate:(id)predicate;
+- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)predicate;
+- (void)coordinator:(id)coordinator didUpdateDescriptors:(id)descriptors galleryMetadata:(id)metadata;
+- (void)fetchSnapshotForDescriptor:(id)descriptor completion:(id)completion;
 - (void)invalidate;
-- (void)prewarmSnapshotForDefinition:(id)a3 interfaceOrientation:(int64_t)a4;
-- (void)prewarmSnapshotForDescriptor:(id)a3;
-- (void)reapStaleStateOmittingLast:(unint64_t)a3 error:(id *)a4;
-- (void)relinquishExtensionInstanceForReason:(id)a3;
-- (void)relinquishPooledExtensionInstance:(id)a3;
-- (void)removeChannelObserver:(id)a3;
-- (void)updateGalleryWithUpdateSessionInfoProvider:(id)a3 extensionIdentifiers:(id)a4 policy:(unint64_t)a5 completion:(id)a6;
+- (void)prewarmSnapshotForDefinition:(id)definition interfaceOrientation:(int64_t)orientation;
+- (void)prewarmSnapshotForDescriptor:(id)descriptor;
+- (void)reapStaleStateOmittingLast:(unint64_t)last error:(id *)error;
+- (void)relinquishExtensionInstanceForReason:(id)reason;
+- (void)relinquishPooledExtensionInstance:(id)instance;
+- (void)removeChannelObserver:(id)observer;
+- (void)updateGalleryWithUpdateSessionInfoProvider:(id)provider extensionIdentifiers:(id)identifiers policy:(unint64_t)policy completion:(id)completion;
 @end
 
 @implementation PRUISPosterChannel
@@ -59,10 +59,10 @@
 - (_TtC21PosterBoardUIServices23PRUISPosterChannelState)state
 {
   [(PFOSUnfairLock *)self->_lock lock];
-  v3 = [(PRUISPosterChannel *)self _lock_state];
+  _lock_state = [(PRUISPosterChannel *)self _lock_state];
   [(PFOSUnfairLock *)self->_lock unlock];
 
-  return v3;
+  return _lock_state;
 }
 
 - (id)_lock_state
@@ -70,9 +70,9 @@
   lock_state = self->_lock_state;
   if (!lock_state)
   {
-    v4 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator state];
+    state = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator state];
     v5 = self->_lock_state;
-    self->_lock_state = v4;
+    self->_lock_state = state;
 
     lock_state = self->_lock_state;
   }
@@ -82,74 +82,74 @@
 
 - (NSUUID)channelIdentifier
 {
-  v2 = [(PRUISPosterChannel *)self state];
-  v3 = [v2 channelIdentifier];
+  state = [(PRUISPosterChannel *)self state];
+  channelIdentifier = [state channelIdentifier];
 
-  return v3;
+  return channelIdentifier;
 }
 
 - (unint64_t)version
 {
-  v2 = [(PRUISPosterChannel *)self state];
-  v3 = [v2 channelVersion];
+  state = [(PRUISPosterChannel *)self state];
+  channelVersion = [state channelVersion];
 
-  return v3;
+  return channelVersion;
 }
 
 - (PRUISPosterChannelContext)channelContext
 {
-  v2 = [(PRUISPosterChannel *)self state];
-  v3 = [v2 channelContext];
+  state = [(PRUISPosterChannel *)self state];
+  channelContext = [state channelContext];
 
-  return v3;
+  return channelContext;
 }
 
 - (PRSPosterConfiguration)posterConfiguration
 {
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) != 0)
   {
-    v3 = 0;
+    _lock_currentPosterConfiguration = 0;
   }
 
   else
   {
     [(PFOSUnfairLock *)self->_lock lock];
-    v3 = [(PRUISPosterChannel *)self _lock_currentPosterConfiguration];
+    _lock_currentPosterConfiguration = [(PRUISPosterChannel *)self _lock_currentPosterConfiguration];
     [(PFOSUnfairLock *)self->_lock unlock];
   }
 
-  return v3;
+  return _lock_currentPosterConfiguration;
 }
 
 - (NSDate)creationDate
 {
-  v2 = [(PRUISPosterChannel *)self state];
-  v3 = [v2 creationDate];
+  state = [(PRUISPosterChannel *)self state];
+  creationDate = [state creationDate];
 
-  return v3;
+  return creationDate;
 }
 
 - (NSDate)lastModifiedDate
 {
-  v2 = [(PRUISPosterChannel *)self state];
-  v3 = [v2 lastModifiedDate];
+  state = [(PRUISPosterChannel *)self state];
+  lastModifiedDate = [state lastModifiedDate];
 
-  return v3;
+  return lastModifiedDate;
 }
 
 - (PRUISPosterSnapshotController)snapshotController
 {
   [(PFOSUnfairLock *)self->_lock lock];
-  v3 = [(PRUISPosterChannel *)self _lock_snapshotController];
+  _lock_snapshotController = [(PRUISPosterChannel *)self _lock_snapshotController];
   [(PFOSUnfairLock *)self->_lock unlock];
 
-  return v3;
+  return _lock_snapshotController;
 }
 
-- (void)fetchSnapshotForDescriptor:(id)a3 completion:(id)a4
+- (void)fetchSnapshotForDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  descriptorCopy = descriptor;
+  completionCopy = completion;
   v8 = self->_completionScheduler;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
@@ -158,26 +158,26 @@
     v28[2] = __60__PRUISPosterChannel_fetchSnapshotForDescriptor_completion___block_invoke;
     v28[3] = &unk_1E83A8558;
     v28[4] = self;
-    v29 = v7;
+    v29 = completionCopy;
     [(PFTScheduler *)v8 performBlock:v28];
-    v9 = v29;
+    posterConfiguration = v29;
   }
 
   else
   {
-    v9 = [(PRUISPosterChannel *)self posterConfiguration];
-    if (v9)
+    posterConfiguration = [(PRUISPosterChannel *)self posterConfiguration];
+    if (posterConfiguration)
     {
       [(PFOSUnfairLock *)self->_lock lock];
-      v10 = [(PRUISPosterChannel *)self _lock_snapshotController];
+      _lock_snapshotController = [(PRUISPosterChannel *)self _lock_snapshotController];
       v11 = objc_alloc(MEMORY[0x1E69C52E8]);
-      v12 = [v9 _path];
-      v13 = [v11 _initWithPath:v12];
+      _path = [posterConfiguration _path];
+      v13 = [v11 _initWithPath:_path];
 
       v19 = v13;
-      v14 = [[PRUISPosterSnapshotRequest alloc] initWithPoster:v13 snapshotDescriptor:v6];
+      v14 = [[PRUISPosterSnapshotRequest alloc] initWithPoster:v13 snapshotDescriptor:descriptorCopy];
       v25 = 0;
-      v15 = [v10 currentSnapshotBundleForRequest:v14 error:&v25];
+      v15 = [_lock_snapshotController currentSnapshotBundleForRequest:v14 error:&v25];
       v16 = v25;
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
@@ -185,7 +185,7 @@
       aBlock[3] = &unk_1E83A8800;
       aBlock[4] = self;
       v23 = v8;
-      v24 = v7;
+      v24 = completionCopy;
       v17 = _Block_copy(aBlock);
       v18 = v17;
       if (v15)
@@ -202,7 +202,7 @@
         v20[3] = &unk_1E83A8828;
         v20[4] = self;
         v21 = v17;
-        [v10 executeSnapshotRequest:v14 completion:v20];
+        [_lock_snapshotController executeSnapshotRequest:v14 completion:v20];
         [(PFOSUnfairLock *)self->_lock unlock];
       }
     }
@@ -214,7 +214,7 @@
       v26[2] = __60__PRUISPosterChannel_fetchSnapshotForDescriptor_completion___block_invoke_2;
       v26[3] = &unk_1E83A8558;
       v26[4] = self;
-      v27 = v7;
+      v27 = completionCopy;
       [(PFTScheduler *)v8 performBlock:v26];
       v16 = v27;
     }
@@ -301,36 +301,36 @@ LABEL_8:
   (*(v11 + 16))(v11, v12, v9);
 }
 
-- (void)prewarmSnapshotForDefinition:(id)a3 interfaceOrientation:(int64_t)a4
+- (void)prewarmSnapshotForDefinition:(id)definition interfaceOrientation:(int64_t)orientation
 {
-  v7 = a3;
-  if (!v7)
+  definitionCopy = definition;
+  if (!definitionCopy)
   {
     [PRUISPosterChannel prewarmSnapshotForDefinition:a2 interfaceOrientation:?];
   }
 
-  if (!a4)
+  if (!orientation)
   {
     [PRUISPosterChannel prewarmSnapshotForDefinition:a2 interfaceOrientation:?];
   }
 
-  v8 = v7;
-  v9 = [(PRUISPosterChannel *)self posterConfiguration];
-  if (v9)
+  v8 = definitionCopy;
+  posterConfiguration = [(PRUISPosterChannel *)self posterConfiguration];
+  if (posterConfiguration)
   {
-    v10 = [(PRUISPosterChannel *)self snapshotCache];
+    snapshotCache = [(PRUISPosterChannel *)self snapshotCache];
     v11 = objc_alloc_init(MEMORY[0x1E69C55C8]);
-    v12 = [v9 pr_posterUUID];
-    [v11 setPosterUUID:v12];
+    pr_posterUUID = [posterConfiguration pr_posterUUID];
+    [v11 setPosterUUID:pr_posterUUID];
 
-    v13 = [v8 uniqueIdentifier];
-    [v11 setSnapshotDefinitionIdentifier:v13];
+    uniqueIdentifier = [v8 uniqueIdentifier];
+    [v11 setSnapshotDefinitionIdentifier:uniqueIdentifier];
 
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     [v11 setInterfaceOrientation:v14];
 
-    v15 = [v10 underlyingCache];
-    v16 = [v15 latestSnapshotBundleMatchingPredicate:v11];
+    underlyingCache = [snapshotCache underlyingCache];
+    v16 = [underlyingCache latestSnapshotBundleMatchingPredicate:v11];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__PRUISPosterChannel_prewarmSnapshotForDefinition_interfaceOrientation___block_invoke;
@@ -342,29 +342,29 @@ LABEL_8:
   }
 }
 
-- (void)prewarmSnapshotForDescriptor:(id)a3
+- (void)prewarmSnapshotForDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (!v5)
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
     [PRUISPosterChannel prewarmSnapshotForDescriptor:a2];
   }
 
-  v6 = v5;
-  v7 = [(PRUISPosterChannel *)self posterConfiguration];
-  if (v7)
+  v6 = descriptorCopy;
+  posterConfiguration = [(PRUISPosterChannel *)self posterConfiguration];
+  if (posterConfiguration)
   {
-    v8 = [(PRUISPosterChannel *)self snapshotCache];
-    v9 = [[PRUISPosterSnapshotRequest alloc] initWithPoster:v7 snapshotDescriptor:v6];
+    snapshotCache = [(PRUISPosterChannel *)self snapshotCache];
+    v9 = [[PRUISPosterSnapshotRequest alloc] initWithPoster:posterConfiguration snapshotDescriptor:v6];
     v10 = [(PRUISPosterSnapshotRequest *)v9 buildPUISnapshotRequestForPriority:0 sceneAttachments:0 error:0];
     if (v10)
     {
       v11 = [MEMORY[0x1E69C55C8] predicateMatchingRequest:v10];
-      v12 = [v7 pr_posterUUID];
-      [v11 setPosterUUID:v12];
+      pr_posterUUID = [posterConfiguration pr_posterUUID];
+      [v11 setPosterUUID:pr_posterUUID];
 
-      v13 = [v8 underlyingCache];
-      v14 = [v13 latestSnapshotBundleMatchingPredicate:v11];
+      underlyingCache = [snapshotCache underlyingCache];
+      v14 = [underlyingCache latestSnapshotBundleMatchingPredicate:v11];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __51__PRUISPosterChannel_prewarmSnapshotForDescriptor___block_invoke;
@@ -377,37 +377,37 @@ LABEL_8:
   }
 }
 
-- (void)cacheSnapshotBundle:(id)a3 forPredicate:(id)a4
+- (void)cacheSnapshotBundle:(id)bundle forPredicate:(id)predicate
 {
   inMemorySnapshotCacheLock = self->_inMemorySnapshotCacheLock;
-  v7 = a4;
-  v8 = a3;
+  predicateCopy = predicate;
+  bundleCopy = bundle;
   [(PFOSUnfairLock *)inMemorySnapshotCacheLock lock];
-  [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache cacheSnapshotBundle:v8 forPredicate:v7];
+  [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache cacheSnapshotBundle:bundleCopy forPredicate:predicateCopy];
 
   v9 = self->_inMemorySnapshotCacheLock;
 
   [(PFOSUnfairLock *)v9 unlock];
 }
 
-- (id)cachedSnapshotBundleSatisfyingPredicate:(id)a3
+- (id)cachedSnapshotBundleSatisfyingPredicate:(id)predicate
 {
   inMemorySnapshotCacheLock = self->_inMemorySnapshotCacheLock;
-  v5 = a3;
+  predicateCopy = predicate;
   [(PFOSUnfairLock *)inMemorySnapshotCacheLock lock];
-  v6 = [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache cachedSnapshotBundleSatisfyingPredicate:v5];
+  v6 = [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache cachedSnapshotBundleSatisfyingPredicate:predicateCopy];
 
   [(PFOSUnfairLock *)self->_inMemorySnapshotCacheLock unlock];
 
   return v6;
 }
 
-- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)a3
+- (void)clearCachedSnapshotBundlesSatisfyingPredicate:(id)predicate
 {
   inMemorySnapshotCacheLock = self->_inMemorySnapshotCacheLock;
-  v5 = a3;
+  predicateCopy = predicate;
   [(PFOSUnfairLock *)inMemorySnapshotCacheLock lock];
-  [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache clearCachedSnapshotBundlesSatisfyingPredicate:v5];
+  [(PUIPosterSnapshotBundleInMemoryCache *)self->_inMemorySnapshotCacheLock_cache clearCachedSnapshotBundlesSatisfyingPredicate:predicateCopy];
 
   v6 = self->_inMemorySnapshotCacheLock;
 
@@ -421,7 +421,7 @@ LABEL_8:
   v8 = 3221225472;
   v9 = __33__PRUISPosterChannel_description__block_invoke;
   v10 = &unk_1E83A7100;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -430,33 +430,33 @@ LABEL_8:
   return v5;
 }
 
-- (id)updateGalleryWithUpdateSessionInfoProvider:(id)a3 extensionIdentifiers:(id)a4 policy:(unint64_t)a5
+- (id)updateGalleryWithUpdateSessionInfoProvider:(id)provider extensionIdentifiers:(id)identifiers policy:(unint64_t)policy
 {
-  v8 = a4;
-  v9 = a3;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   v10 = objc_alloc_init(PRUISPosterChannelGalleryFetchOptions);
-  [(PRUISPosterChannelGalleryFetchOptions *)v10 setUpdateSessionInfoProvider:v9];
+  [(PRUISPosterChannelGalleryFetchOptions *)v10 setUpdateSessionInfoProvider:providerCopy];
 
-  v11 = [v8 copy];
+  v11 = [identifiersCopy copy];
   [(PRUISPosterChannelGalleryFetchOptions *)v10 setExtensionIdentifiers:v11];
 
-  [(PRUISPosterChannelGalleryFetchOptions *)v10 setPolicy:a5];
+  [(PRUISPosterChannelGalleryFetchOptions *)v10 setPolicy:policy];
   v12 = [(PRUISPosterChannel *)self updateGalleryWithFetchOptions:v10];
 
   return v12;
 }
 
-- (void)updateGalleryWithUpdateSessionInfoProvider:(id)a3 extensionIdentifiers:(id)a4 policy:(unint64_t)a5 completion:(id)a6
+- (void)updateGalleryWithUpdateSessionInfoProvider:(id)provider extensionIdentifiers:(id)identifiers policy:(unint64_t)policy completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(PRUISPosterChannel *)self updateGalleryWithUpdateSessionInfoProvider:a3 extensionIdentifiers:a4 policy:a5];
-  if (v10)
+  completionCopy = completion;
+  v11 = [(PRUISPosterChannel *)self updateGalleryWithUpdateSessionInfoProvider:provider extensionIdentifiers:identifiers policy:policy];
+  if (completionCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __104__PRUISPosterChannel_updateGalleryWithUpdateSessionInfoProvider_extensionIdentifiers_policy_completion___block_invoke;
     v12[3] = &unk_1E83A8878;
-    v13 = v10;
+    v13 = completionCopy;
     [v11 addCompletionBlock:v12 scheduler:self->_completionScheduler];
   }
 }
@@ -464,15 +464,15 @@ LABEL_8:
 - (PRUISPosterGallery)currentGallery
 {
   [(PFOSUnfairLock *)self->_lock lock];
-  v3 = [(PRUISPosterChannel *)self _lock_currentGallery];
+  _lock_currentGallery = [(PRUISPosterChannel *)self _lock_currentGallery];
   [(PFOSUnfairLock *)self->_lock unlock];
 
-  return v3;
+  return _lock_currentGallery;
 }
 
-- (void)addChannelObserver:(id)a3
+- (void)addChannelObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
     lock = self->_lock;
@@ -481,14 +481,14 @@ LABEL_8:
     v6[2] = __41__PRUISPosterChannel_addChannelObserver___block_invoke;
     v6[3] = &unk_1E83A7100;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     [(PFOSUnfairLock *)lock performBlock:v6];
   }
 }
 
-- (void)removeChannelObserver:(id)a3
+- (void)removeChannelObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled]& 1) == 0)
   {
     lock = self->_lock;
@@ -497,7 +497,7 @@ LABEL_8:
     v6[2] = __44__PRUISPosterChannel_removeChannelObserver___block_invoke;
     v6[3] = &unk_1E83A7100;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     [(PFOSUnfairLock *)lock performBlock:v6];
   }
 }
@@ -509,17 +509,17 @@ LABEL_8:
   return 0;
 }
 
-- (PRUISPosterChannel)initWithModelCoordinator:(id)a3 state:(id)a4 error:(id *)a5
+- (PRUISPosterChannel)initWithModelCoordinator:(id)coordinator state:(id)state error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  if (!v10)
+  coordinatorCopy = coordinator;
+  stateCopy = state;
+  if (!coordinatorCopy)
   {
     [PRUISPosterChannel initWithModelCoordinator:a2 state:? error:?];
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = stateCopy;
+  if (!stateCopy)
   {
     [PRUISPosterChannel initWithModelCoordinator:a2 state:? error:?];
   }
@@ -529,12 +529,12 @@ LABEL_8:
   v13 = [(PRUISPosterChannel *)&v44 init];
   if (v13)
   {
-    v14 = [v12 channelIdentifier];
+    channelIdentifier = [v12 channelIdentifier];
     channelIdentifier = v13->_channelIdentifier;
-    v13->_channelIdentifier = v14;
+    v13->_channelIdentifier = channelIdentifier;
 
-    objc_storeStrong(&v13->_modelCoordinator, a3);
-    v16 = [[_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator alloc] initWithModelCoordinator:v10 state:v12 error:a5];
+    objc_storeStrong(&v13->_modelCoordinator, coordinator);
+    v16 = [[_TtC21PosterBoardUIServices34PRUISPosterChannelStateCoordinator alloc] initWithModelCoordinator:coordinatorCopy state:v12 error:error];
     stateCoordinator = v13->_stateCoordinator;
     v13->_stateCoordinator = v16;
 
@@ -554,23 +554,23 @@ LABEL_8:
     inMemorySnapshotCacheLock = v13->_inMemorySnapshotCacheLock;
     v13->_inMemorySnapshotCacheLock = v21;
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     lock_observers = v13->_lock_observers;
-    v13->_lock_observers = v23;
+    v13->_lock_observers = weakObjectsHashTable;
 
     v25 = MEMORY[0x1E69C5268];
     v26 = MEMORY[0x1E696AEC0];
     v27 = objc_opt_class();
-    v28 = [(NSUUID *)v13->_channelIdentifier UUIDString];
-    v29 = [v26 stringWithFormat:@"%@:%@-CompletionQueue", v27, v28];
+    uUIDString = [(NSUUID *)v13->_channelIdentifier UUIDString];
+    v29 = [v26 stringWithFormat:@"%@:%@-CompletionQueue", v27, uUIDString];
     v30 = [v25 serialDispatchQueueSchedulerWithName:v29 qualityOfService:25];
     completionScheduler = v13->_completionScheduler;
     v13->_completionScheduler = v30;
 
     v32 = MEMORY[0x1E696AEC0];
     v33 = objc_opt_class();
-    v34 = [(NSUUID *)v13->_channelIdentifier UUIDString];
-    v35 = [v32 stringWithFormat:@"%@:%@-ObserverQueue", v33, v34];
+    uUIDString2 = [(NSUUID *)v13->_channelIdentifier UUIDString];
+    v35 = [v32 stringWithFormat:@"%@:%@-ObserverQueue", v33, uUIDString2];
     Serial = BSDispatchQueueCreateSerial();
     observerQueue = v13->_observerQueue;
     v13->_observerQueue = Serial;
@@ -590,30 +590,30 @@ LABEL_8:
   return v42;
 }
 
-- (void)applyUpdater:(id)a3 error:(id *)a4
+- (void)applyUpdater:(id)updater error:(id *)error
 {
-  v7 = a3;
+  updaterCopy = updater;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
-    if (a4)
+    if (error)
     {
       v6 = PFFunctionNameForAddress();
-      *a4 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
   }
 
   else
   {
-    [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator applyUpdater:v7 error:a4];
+    [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator applyUpdater:updaterCopy error:error];
   }
 }
 
-- (void)reapStaleStateOmittingLast:(unint64_t)a3 error:(id *)a4
+- (void)reapStaleStateOmittingLast:(unint64_t)last error:(id *)error
 {
   [(PFOSUnfairLock *)self->_lock lock];
   if (self->_lock_isBeingRemoved)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -623,11 +623,11 @@ LABEL_8:
 
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
-    if (a4)
+    if (error)
     {
 LABEL_6:
       v7 = PFFunctionNameForAddress();
-      *a4 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
 
 LABEL_7:
@@ -637,13 +637,13 @@ LABEL_7:
     return;
   }
 
-  v10 = [(PRUISPosterChannel *)self _lock_buildReaper];
+  _lock_buildReaper = [(PRUISPosterChannel *)self _lock_buildReaper];
   [(PFOSUnfairLock *)self->_lock unlock];
-  v9 = [v10 reapStaleStateOmittingLast:a3];
-  if (a4 && v9)
+  v9 = [_lock_buildReaper reapStaleStateOmittingLast:last];
+  if (error && v9)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 }
 
@@ -654,7 +654,7 @@ LABEL_7:
   {
     [(PFOSUnfairLock *)self->_lock unlock];
     v3 = MEMORY[0x1E69C5258];
-    v4 = PFFunctionNameForAddress();
+    _lock_buildReaper = PFFunctionNameForAddress();
 LABEL_5:
     v5 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     v6 = [v3 futureWithError:{v5, 0}];
@@ -665,23 +665,23 @@ LABEL_5:
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
     v3 = MEMORY[0x1E69C5258];
-    v4 = PFFunctionNameForAddress();
+    _lock_buildReaper = PFFunctionNameForAddress();
     goto LABEL_5;
   }
 
-  v4 = [(PRUISPosterChannel *)self _lock_buildReaper];
-  v6 = [(PRUISPosterChannel *)self _lock_reapStaleSnapshotsWithReaper:v4];
+  _lock_buildReaper = [(PRUISPosterChannel *)self _lock_buildReaper];
+  v6 = [(PRUISPosterChannel *)self _lock_reapStaleSnapshotsWithReaper:_lock_buildReaper];
   [(PFOSUnfairLock *)self->_lock unlock];
 LABEL_7:
 
   return v6;
 }
 
-- (id)_lock_reapStaleSnapshotsWithReaper:(id)a3
+- (id)_lock_reapStaleSnapshotsWithReaper:(id)reaper
 {
-  v4 = [a3 reapStaleSnapshots];
+  reapStaleSnapshots = [reaper reapStaleSnapshots];
   lock_reapStaleSnapshotsFuture = self->_lock_reapStaleSnapshotsFuture;
-  self->_lock_reapStaleSnapshotsFuture = v4;
+  self->_lock_reapStaleSnapshotsFuture = reapStaleSnapshots;
 
   v6 = self->_lock_reapStaleSnapshotsFuture;
   v9[0] = MEMORY[0x1E69E9820];
@@ -714,10 +714,10 @@ id __57__PRUISPosterChannel__lock_reapStaleSnapshotsWithReaper___block_invoke(ui
   return v5;
 }
 
-- (id)coordinateWithRemoveChannelBlock:(id)a3
+- (id)coordinateWithRemoveChannelBlock:(id)block
 {
-  v4 = a3;
-  if (v4 && ![(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
+  blockCopy = block;
+  if (blockCopy && ![(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
     [(PFOSUnfairLock *)self->_lock lock];
     self->_lock_isBeingRemoved = 1;
@@ -728,7 +728,7 @@ id __57__PRUISPosterChannel__lock_reapStaleSnapshotsWithReaper___block_invoke(ui
     aBlock[1] = 3221225472;
     aBlock[2] = __55__PRUISPosterChannel_coordinateWithRemoveChannelBlock___block_invoke;
     aBlock[3] = &unk_1E83A88C8;
-    v19 = v4;
+    v19 = blockCopy;
     objc_copyWeak(&v20, &location);
     v9 = _Block_copy(aBlock);
     v10 = v9;
@@ -803,7 +803,7 @@ void __55__PRUISPosterChannel_coordinateWithRemoveChannelBlock___block_invoke_2(
   {
     [(PFOSUnfairLock *)self->_lock unlock];
     v3 = MEMORY[0x1E69C5258];
-    v4 = PFFunctionNameForAddress();
+    _lock_buildReaper = PFFunctionNameForAddress();
     v9 = 0;
     v5 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     v6 = v3;
@@ -812,8 +812,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v4 = [(PRUISPosterChannel *)self _lock_buildReaper];
-  v5 = [v4 reapStaleStateOmittingLast:1];
+  _lock_buildReaper = [(PRUISPosterChannel *)self _lock_buildReaper];
+  v5 = [_lock_buildReaper reapStaleStateOmittingLast:1];
   if (v5)
   {
     [(PFOSUnfairLock *)self->_lock unlock];
@@ -821,7 +821,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v7 = [(PRUISPosterChannel *)self _lock_reapStaleSnapshotsWithReaper:v4];
+  v7 = [(PRUISPosterChannel *)self _lock_reapStaleSnapshotsWithReaper:_lock_buildReaper];
   [(PFOSUnfairLock *)self->_lock unlock];
 LABEL_5:
 
@@ -832,18 +832,18 @@ LABEL_5:
 {
   v3 = [_TtC21PosterBoardUIServices24PRUISPosterChannelReaper alloc];
   modelCoordinator = self->_modelCoordinator;
-  v5 = [(PRUISPosterChannel *)self _lock_state];
-  v6 = [(PRUISPosterChannel *)self _lock_currentPosterConfiguration];
-  v7 = [(PRUISPosterChannel *)self _lock_currentGallery];
-  v8 = [(PRUISPosterChannel *)self _lock_snapshotCache];
-  v9 = [(PRUISPosterChannelReaper *)v3 initWithModelCoordinator:modelCoordinator currentState:v5 currentPosterConfiguration:v6 currentGallery:v7 snapshotCache:v8];
+  _lock_state = [(PRUISPosterChannel *)self _lock_state];
+  _lock_currentPosterConfiguration = [(PRUISPosterChannel *)self _lock_currentPosterConfiguration];
+  _lock_currentGallery = [(PRUISPosterChannel *)self _lock_currentGallery];
+  _lock_snapshotCache = [(PRUISPosterChannel *)self _lock_snapshotCache];
+  v9 = [(PRUISPosterChannelReaper *)v3 initWithModelCoordinator:modelCoordinator currentState:_lock_state currentPosterConfiguration:_lock_currentPosterConfiguration currentGallery:_lock_currentGallery snapshotCache:_lock_snapshotCache];
 
   return v9;
 }
 
-- (id)descriptorsForState:(id)a3
+- (id)descriptorsForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
     v5 = objc_alloc(MEMORY[0x1E69C5018]);
@@ -853,35 +853,35 @@ LABEL_5:
 
   else
   {
-    v7 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator descriptorsForState:v4];
+    v7 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator descriptorsForState:stateCopy];
   }
 
   return v7;
 }
 
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 policy:(unint64_t)a5 error:(id *)a6
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state policy:(unint64_t)policy error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
+  stateCopy = state;
+  descriptorsCopy = descriptors;
   v12 = [_TtC21PosterBoardUIServices26PRUISPosterGalleryMetadata alloc];
   v13 = [MEMORY[0x1E695DF00] now];
   v14 = [(PRUISPosterGalleryMetadata *)v12 initWithCreationDate:v13];
-  LOBYTE(a6) = [(PRUISPosterChannel *)self ingestUpdatedDescriptors:v11 forState:v10 galleryMetadata:v14 policy:a5 error:a6];
+  LOBYTE(error) = [(PRUISPosterChannel *)self ingestUpdatedDescriptors:descriptorsCopy forState:stateCopy galleryMetadata:v14 policy:policy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)ingestUpdatedDescriptors:(id)a3 forState:(id)a4 galleryMetadata:(id)a5 policy:(unint64_t)a6 error:(id *)a7
+- (BOOL)ingestUpdatedDescriptors:(id)descriptors forState:(id)state galleryMetadata:(id)metadata policy:(unint64_t)policy error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  descriptorsCopy = descriptors;
+  stateCopy = state;
+  metadataCopy = metadata;
   if ([(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
-    if (a7)
+    if (error)
     {
       v15 = PFFunctionNameForAddress();
-      *a7 = PFGeneralErrorFromObjectWithLocalizedFailureReason();
+      *error = PFGeneralErrorFromObjectWithLocalizedFailureReason();
     }
 
     v16 = 0;
@@ -891,121 +891,121 @@ LABEL_5:
   {
     stateCoordinator = self->_stateCoordinator;
     v20 = 0;
-    [(PRUISPosterChannelStateCoordinator *)stateCoordinator ingestUpdatedDescriptors:v12 forState:v13 withMetadata:v14 withPolicy:a6 error:&v20];
+    [(PRUISPosterChannelStateCoordinator *)stateCoordinator ingestUpdatedDescriptors:descriptorsCopy forState:stateCopy withMetadata:metadataCopy withPolicy:policy error:&v20];
     v18 = v20;
     v16 = v18 == 0;
-    if (a7 && v18)
+    if (error && v18)
     {
       v18 = v18;
-      *a7 = v18;
+      *error = v18;
     }
   }
 
   return v16;
 }
 
-- (id)extensionInstanceForReason:(id)a3 outError:(id *)a4
+- (id)extensionInstanceForReason:(id)reason outError:(id *)error
 {
-  v7 = a3;
-  if (!v7)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [PRUISPosterChannel extensionInstanceForReason:a2 outError:?];
   }
 
-  v8 = v7;
-  v9 = [(PRUISPosterChannel *)self state];
-  v10 = [v9 posterConfigurationIdentity];
-  v11 = [v10 provider];
+  v8 = reasonCopy;
+  state = [(PRUISPosterChannel *)self state];
+  posterConfigurationIdentity = [state posterConfigurationIdentity];
+  provider = [posterConfigurationIdentity provider];
 
-  if (v11)
+  if (provider)
   {
-    v12 = [(PRUISPosterChannel *)self _extensionProvider];
-    v13 = [v12 acquireInstanceForExtensionWithIdentifier:v11 reason:v8 error:a4];
+    _extensionProvider = [(PRUISPosterChannel *)self _extensionProvider];
+    v13 = [_extensionProvider acquireInstanceForExtensionWithIdentifier:provider reason:v8 error:error];
   }
 
   else
   {
-    v12 = PFFunctionNameForAddress();
+    _extensionProvider = PFFunctionNameForAddress();
     PFGeneralErrorFromObjectWithLocalizedFailureReason();
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   return v13;
 }
 
-- (void)relinquishExtensionInstanceForReason:(id)a3
+- (void)relinquishExtensionInstanceForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [PRUISPosterChannel relinquishExtensionInstanceForReason:a2];
   }
 
-  v6 = v5;
-  v7 = [(PRUISPosterChannel *)self state];
-  v8 = [v7 posterConfigurationIdentity];
-  v9 = [v8 provider];
+  v6 = reasonCopy;
+  state = [(PRUISPosterChannel *)self state];
+  posterConfigurationIdentity = [state posterConfigurationIdentity];
+  provider = [posterConfigurationIdentity provider];
 
-  if (v9)
+  if (provider)
   {
-    v10 = [(PRUISPosterChannel *)self _extensionProvider];
-    [v10 relinquishExtensionInstanceWithIdentifier:v9 reason:v6];
+    _extensionProvider = [(PRUISPosterChannel *)self _extensionProvider];
+    [_extensionProvider relinquishExtensionInstanceWithIdentifier:provider reason:v6];
   }
 
   else
   {
-    v10 = PRUISLogChannels();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    _extensionProvider = PRUISLogChannels();
+    if (os_log_type_enabled(_extensionProvider, OS_LOG_TYPE_ERROR))
     {
-      [(PRUISPosterChannel *)v6 relinquishExtensionInstanceForReason:v10];
+      [(PRUISPosterChannel *)v6 relinquishExtensionInstanceForReason:_extensionProvider];
     }
   }
 }
 
-- (id)pooledExtensionInstanceWithError:(id *)a3
+- (id)pooledExtensionInstanceWithError:(id *)error
 {
-  v5 = [(PRUISPosterChannel *)self state];
-  v6 = [v5 posterConfigurationIdentity];
-  v7 = [v6 provider];
+  state = [(PRUISPosterChannel *)self state];
+  posterConfigurationIdentity = [state posterConfigurationIdentity];
+  provider = [posterConfigurationIdentity provider];
 
-  if (v7)
+  if (provider)
   {
-    v8 = [(PRUISPosterChannel *)self _extensionProvider];
-    v9 = [v8 instancePool];
-    v10 = [v9 acquireInstanceForExtensionWithIdentifier:v7 error:a3];
+    _extensionProvider = [(PRUISPosterChannel *)self _extensionProvider];
+    instancePool = [_extensionProvider instancePool];
+    v10 = [instancePool acquireInstanceForExtensionWithIdentifier:provider error:error];
   }
 
   else
   {
-    v8 = PFFunctionNameForAddress();
+    _extensionProvider = PFFunctionNameForAddress();
     PFGeneralErrorFromObjectWithLocalizedFailureReason();
-    *a3 = v10 = 0;
+    *error = v10 = 0;
   }
 
   return v10;
 }
 
-- (void)relinquishPooledExtensionInstance:(id)a3
+- (void)relinquishPooledExtensionInstance:(id)instance
 {
-  v5 = a3;
-  if (!v5)
+  instanceCopy = instance;
+  if (!instanceCopy)
   {
     [PRUISPosterChannel relinquishPooledExtensionInstance:a2];
   }
 
-  v8 = v5;
-  v6 = [(PRUISPosterChannel *)self _extensionProvider];
-  v7 = [v6 instancePool];
-  [v7 relinquishExtensionInstance:v8];
+  v8 = instanceCopy;
+  _extensionProvider = [(PRUISPosterChannel *)self _extensionProvider];
+  instancePool = [_extensionProvider instancePool];
+  [instancePool relinquishExtensionInstance:v8];
 }
 
 - (PRUISPosterSnapshotSQLiteCache)snapshotCache
 {
   [(PFOSUnfairLock *)self->_lock lock];
-  v3 = [(PRUISPosterChannel *)self _lock_snapshotCache];
+  _lock_snapshotCache = [(PRUISPosterChannel *)self _lock_snapshotCache];
   [(PFOSUnfairLock *)self->_lock unlock];
 
-  return v3;
+  return _lock_snapshotCache;
 }
 
 - (void)invalidate
@@ -1019,9 +1019,9 @@ LABEL_5:
 
     if (!self->_lock_state)
     {
-      v4 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator state];
+      state = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator state];
       lock_state = self->_lock_state;
-      self->_lock_state = v4;
+      self->_lock_state = state;
     }
 
     stateCoordinator = self->_stateCoordinator;
@@ -1033,16 +1033,16 @@ LABEL_5:
   }
 }
 
-- (void)coordinator:(id)a3 didUpdateDescriptors:(id)a4 galleryMetadata:(id)a5
+- (void)coordinator:(id)coordinator didUpdateDescriptors:(id)descriptors galleryMetadata:(id)metadata
 {
-  if (a4)
+  if (descriptors)
   {
-    v7 = a5;
-    v8 = a4;
+    metadataCopy = metadata;
+    descriptorsCopy = descriptors;
     v9 = [PRUISPosterGallery alloc];
-    v10 = [(PRUISPosterChannel *)self state];
-    v11 = [v10 channelContext];
-    v12 = [(PRUISPosterGallery *)v9 initWithContext:v11 descriptors:v8 metadata:v7];
+    state = [(PRUISPosterChannel *)self state];
+    channelContext = [state channelContext];
+    v12 = [(PRUISPosterGallery *)v9 initWithContext:channelContext descriptors:descriptorsCopy metadata:metadataCopy];
   }
 
   else
@@ -1058,8 +1058,8 @@ LABEL_5:
   lock_snapshotCache = self->_lock_snapshotCache;
   if (!lock_snapshotCache)
   {
-    v4 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator snapshotCacheURL];
-    v5 = [[PRUISPosterSnapshotSQLiteCache alloc] initWithURL:v4];
+    snapshotCacheURL = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator snapshotCacheURL];
+    v5 = [[PRUISPosterSnapshotSQLiteCache alloc] initWithURL:snapshotCacheURL];
     v6 = self->_lock_snapshotCache;
     self->_lock_snapshotCache = v5;
 
@@ -1074,11 +1074,11 @@ LABEL_5:
   lock_snapshotController = self->_lock_snapshotController;
   if (!lock_snapshotController)
   {
-    v4 = [(PRUISPosterChannel *)self _lock_snapshotCache];
+    _lock_snapshotCache = [(PRUISPosterChannel *)self _lock_snapshotCache];
     v5 = [PRUISPosterSnapshotController alloc];
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [(PRUISPosterChannel *)self _extensionProvider];
-    v8 = [(PRUISPosterSnapshotController *)v5 initWithSQLiteCache:v4 instanceIdentifier:v6 extensionProvider:v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    _extensionProvider = [(PRUISPosterChannel *)self _extensionProvider];
+    v8 = [(PRUISPosterSnapshotController *)v5 initWithSQLiteCache:_lock_snapshotCache instanceIdentifier:uUID extensionProvider:_extensionProvider];
     v9 = self->_lock_snapshotController;
     self->_lock_snapshotController = v8;
 
@@ -1093,9 +1093,9 @@ LABEL_5:
   lock_currentPosterConfiguration = self->_lock_currentPosterConfiguration;
   if (!lock_currentPosterConfiguration)
   {
-    v4 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator currentPosterConfiguration];
+    currentPosterConfiguration = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator currentPosterConfiguration];
     v5 = self->_lock_currentPosterConfiguration;
-    self->_lock_currentPosterConfiguration = v4;
+    self->_lock_currentPosterConfiguration = currentPosterConfiguration;
 
     lock_currentPosterConfiguration = self->_lock_currentPosterConfiguration;
   }
@@ -1108,14 +1108,14 @@ LABEL_5:
   lock_currentGallery = self->_lock_currentGallery;
   if (!lock_currentGallery)
   {
-    v4 = [(PRUISPosterChannel *)self _lock_state];
-    v5 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator descriptorsForState:v4];
+    _lock_state = [(PRUISPosterChannel *)self _lock_state];
+    v5 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator descriptorsForState:_lock_state];
     if (v5)
     {
-      v6 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator galleryMetadataForState:v4];
+      v6 = [(PRUISPosterChannelStateCoordinator *)self->_stateCoordinator galleryMetadataForState:_lock_state];
       v7 = [PRUISPosterGallery alloc];
-      v8 = [v4 channelContext];
-      v9 = [(PRUISPosterGallery *)v7 initWithContext:v8 descriptors:v5 metadata:v6];
+      channelContext = [_lock_state channelContext];
+      v9 = [(PRUISPosterGallery *)v7 initWithContext:channelContext descriptors:v5 metadata:v6];
       v10 = self->_lock_currentGallery;
       self->_lock_currentGallery = v9;
     }
@@ -1137,13 +1137,13 @@ LABEL_5:
   self->_lock_currentGallery = 0;
 
   [(PFOSUnfairLock *)self->_lock unlock];
-  v6 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PRUISPosterChannel__notifyObserversWillUpdateContext__block_invoke;
   v7[3] = &unk_1E83A8940;
   v7[4] = self;
-  [v6 pf_eachRespondingToSelector:sel_channelWillUpdateContext_ performBlock:v7];
+  [allObjects pf_eachRespondingToSelector:sel_channelWillUpdateContext_ performBlock:v7];
 }
 
 void __55__PRUISPosterChannel__notifyObserversWillUpdateContext__block_invoke(uint64_t a1, void *a2)
@@ -1161,9 +1161,9 @@ void __55__PRUISPosterChannel__notifyObserversWillUpdateContext__block_invoke(ui
   dispatch_async(v5, v7);
 }
 
-- (void)_notifyObserversDidUpdateContext:(id)a3
+- (void)_notifyObserversDidUpdateContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(PFOSUnfairLock *)self->_lock lock];
   v5 = [(NSHashTable *)self->_lock_observers copy];
   lock_state = self->_lock_state;
@@ -1173,15 +1173,15 @@ void __55__PRUISPosterChannel__notifyObserversWillUpdateContext__block_invoke(ui
   self->_lock_currentGallery = 0;
 
   [(PFOSUnfairLock *)self->_lock unlock];
-  v8 = [v5 allObjects];
+  allObjects = [v5 allObjects];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__PRUISPosterChannel__notifyObserversDidUpdateContext___block_invoke;
   v10[3] = &unk_1E83A8968;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 pf_eachRespondingToSelector:sel_channel_didUpdateContext_ performBlock:v10];
+  v11 = contextCopy;
+  v9 = contextCopy;
+  [allObjects pf_eachRespondingToSelector:sel_channel_didUpdateContext_ performBlock:v10];
 }
 
 void __55__PRUISPosterChannel__notifyObserversDidUpdateContext___block_invoke(uint64_t a1, void *a2)
@@ -1206,13 +1206,13 @@ void __55__PRUISPosterChannel__notifyObserversDidUpdateContext___block_invoke(ui
   [(PFOSUnfairLock *)self->_lock lock];
   v3 = [(NSHashTable *)self->_lock_observers copy];
   [(PFOSUnfairLock *)self->_lock unlock];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PRUISPosterChannel__notifyObserversWillUpdatePoster__block_invoke;
   v5[3] = &unk_1E83A8940;
   v5[4] = self;
-  [v4 pf_eachRespondingToSelector:sel_channelWillUpdatePoster_ performBlock:v5];
+  [allObjects pf_eachRespondingToSelector:sel_channelWillUpdatePoster_ performBlock:v5];
 }
 
 void __54__PRUISPosterChannel__notifyObserversWillUpdatePoster__block_invoke(uint64_t a1, void *a2)
@@ -1230,25 +1230,25 @@ void __54__PRUISPosterChannel__notifyObserversWillUpdatePoster__block_invoke(uin
   dispatch_async(v5, v7);
 }
 
-- (void)_notifyObserversDidUpdatePoster:(id)a3
+- (void)_notifyObserversDidUpdatePoster:(id)poster
 {
-  v5 = a3;
+  posterCopy = poster;
   [(PFOSUnfairLock *)self->_lock lock];
   v6 = [(NSHashTable *)self->_lock_observers copy];
-  objc_storeStrong(&self->_lock_currentPosterConfiguration, a3);
+  objc_storeStrong(&self->_lock_currentPosterConfiguration, poster);
   lock_state = self->_lock_state;
   self->_lock_state = 0;
 
   [(PFOSUnfairLock *)self->_lock unlock];
-  v8 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__PRUISPosterChannel__notifyObserversDidUpdatePoster___block_invoke;
   v10[3] = &unk_1E83A8968;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
-  [v8 pf_eachRespondingToSelector:sel_channel_didUpdatePoster_ performBlock:v10];
+  v11 = posterCopy;
+  v9 = posterCopy;
+  [allObjects pf_eachRespondingToSelector:sel_channel_didUpdatePoster_ performBlock:v10];
 }
 
 void __54__PRUISPosterChannel__notifyObserversDidUpdatePoster___block_invoke(uint64_t a1, void *a2)
@@ -1273,13 +1273,13 @@ void __54__PRUISPosterChannel__notifyObserversDidUpdatePoster___block_invoke(uin
   [(PFOSUnfairLock *)self->_lock lock];
   v3 = [(NSHashTable *)self->_lock_observers copy];
   [(PFOSUnfairLock *)self->_lock unlock];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PRUISPosterChannel__notifyObserversWillUpdateGallery__block_invoke;
   v5[3] = &unk_1E83A8940;
   v5[4] = self;
-  [v4 pf_eachRespondingToSelector:sel_channelWillUpdateGallery_ performBlock:v5];
+  [allObjects pf_eachRespondingToSelector:sel_channelWillUpdateGallery_ performBlock:v5];
 }
 
 void __55__PRUISPosterChannel__notifyObserversWillUpdateGallery__block_invoke(uint64_t a1, void *a2)
@@ -1297,22 +1297,22 @@ void __55__PRUISPosterChannel__notifyObserversWillUpdateGallery__block_invoke(ui
   dispatch_async(v5, v7);
 }
 
-- (void)_notifyObserversDidUpdateGallery:(id)a3
+- (void)_notifyObserversDidUpdateGallery:(id)gallery
 {
-  v5 = a3;
+  galleryCopy = gallery;
   [(PFOSUnfairLock *)self->_lock lock];
   v6 = [(NSHashTable *)self->_lock_observers copy];
-  objc_storeStrong(&self->_lock_currentGallery, a3);
+  objc_storeStrong(&self->_lock_currentGallery, gallery);
   [(PFOSUnfairLock *)self->_lock unlock];
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__PRUISPosterChannel__notifyObserversDidUpdateGallery___block_invoke;
   v9[3] = &unk_1E83A8968;
   v9[4] = self;
-  v10 = v5;
-  v8 = v5;
-  [v7 pf_eachRespondingToSelector:sel_channel_didUpdateGallery_ performBlock:v9];
+  v10 = galleryCopy;
+  v8 = galleryCopy;
+  [allObjects pf_eachRespondingToSelector:sel_channel_didUpdateGallery_ performBlock:v9];
 }
 
 void __55__PRUISPosterChannel__notifyObserversDidUpdateGallery___block_invoke(uint64_t a1, void *a2)
@@ -1337,13 +1337,13 @@ void __55__PRUISPosterChannel__notifyObserversDidUpdateGallery___block_invoke(ui
   [(PFOSUnfairLock *)self->_lock lock];
   v3 = [(NSHashTable *)self->_lock_observers copy];
   [(PFOSUnfairLock *)self->_lock unlock];
-  v4 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__PRUISPosterChannel__notifyObserversWillInvalidate__block_invoke;
   v5[3] = &unk_1E83A8940;
   v5[4] = self;
-  [v4 pf_eachRespondingToSelector:sel_channelWillInvalidate_ performBlock:v5];
+  [allObjects pf_eachRespondingToSelector:sel_channelWillInvalidate_ performBlock:v5];
 }
 
 void __52__PRUISPosterChannel__notifyObserversWillInvalidate__block_invoke(uint64_t a1, void *a2)
@@ -1372,13 +1372,13 @@ void __52__PRUISPosterChannel__notifyObserversWillInvalidate__block_invoke(uint6
   self->_lock_currentGallery = 0;
 
   [(PFOSUnfairLock *)self->_lock unlock];
-  v6 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PRUISPosterChannel__notifyObserversDidInvalidate__block_invoke;
   v7[3] = &unk_1E83A8940;
   v7[4] = self;
-  [v6 pf_eachRespondingToSelector:sel_channelDidInvalidate_ performBlock:v7];
+  [allObjects pf_eachRespondingToSelector:sel_channelDidInvalidate_ performBlock:v7];
 }
 
 void __51__PRUISPosterChannel__notifyObserversDidInvalidate__block_invoke(uint64_t a1, void *a2)
@@ -1396,14 +1396,14 @@ void __51__PRUISPosterChannel__notifyObserversDidInvalidate__block_invoke(uint64
   dispatch_async(v5, v7);
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [(NSUUID *)self->_channelIdentifier UUIDString];
-  [v7 appendString:v4 withName:@"identifier"];
+  formatterCopy = formatter;
+  uUIDString = [(NSUUID *)self->_channelIdentifier UUIDString];
+  [formatterCopy appendString:uUIDString withName:@"identifier"];
 
-  v5 = [(PRUISPosterChannel *)self state];
-  v6 = [v7 appendObject:v5 withName:@"state"];
+  state = [(PRUISPosterChannel *)self state];
+  v6 = [formatterCopy appendObject:state withName:@"state"];
 }
 
 void __60__PRUISPosterChannel_fetchSnapshotForDescriptor_completion___block_invoke_5_cold_1(uint64_t a1, void *a2)

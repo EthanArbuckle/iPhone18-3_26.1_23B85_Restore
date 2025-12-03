@@ -6,9 +6,9 @@
 
 - (id)wf_normalizedFileURLForROSP
 {
-  if (([a1 isFileURL] & 1) != 0 || (objc_msgSend(a1, "scheme"), v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "length"), v2, !v3))
+  if (([self isFileURL] & 1) != 0 || (objc_msgSend(self, "scheme"), v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "length"), v2, !v3))
   {
-    v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+    v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
     [v5 setScheme:@"file"];
     v6 = [v5 URL];
     v7 = v6;
@@ -19,27 +19,27 @@
       v9 = v29;
       if (v8)
       {
-        v4 = a1;
+        selfCopy6 = self;
       }
 
       else
       {
-        v10 = [MEMORY[0x1E696AC08] defaultManager];
-        v11 = [v10 URLsForDirectory:1 inDomains:2];
-        v12 = [v11 firstObject];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        v11 = [defaultManager URLsForDirectory:1 inDomains:2];
+        firstObject = [v11 firstObject];
 
-        if (v12)
+        if (firstObject)
         {
-          v13 = [v12 path];
-          v14 = [v13 stringByStandardizingPath];
+          path = [firstObject path];
+          stringByStandardizingPath = [path stringByStandardizingPath];
 
-          v15 = [v7 path];
-          v16 = [v15 stringByStandardizingPath];
+          path2 = [v7 path];
+          stringByStandardizingPath2 = [path2 stringByStandardizingPath];
 
-          if ([v16 hasPrefix:v14])
+          if ([stringByStandardizingPath2 hasPrefix:stringByStandardizingPath])
           {
-            v17 = [v7 pathComponents];
-            v18 = [v17 mutableCopy];
+            pathComponents = [v7 pathComponents];
+            v18 = [pathComponents mutableCopy];
 
             v27 = v18;
             [v18 insertObject:@"/System" atIndex:0];
@@ -51,51 +51,51 @@
             v21 = [v19 URL];
             v28 = v9;
             v22 = [v21 checkResourceIsReachableAndReturnError:&v28];
-            v23 = v14;
+            v23 = stringByStandardizingPath;
             v24 = v28;
 
             if (v22)
             {
-              v25 = v21;
+              selfCopy2 = v21;
             }
 
             else
             {
-              v25 = a1;
+              selfCopy2 = self;
             }
 
-            v4 = v25;
+            selfCopy6 = selfCopy2;
 
             v9 = v24;
-            v14 = v23;
+            stringByStandardizingPath = v23;
             v5 = v19;
           }
 
           else
           {
-            v4 = a1;
+            selfCopy6 = self;
           }
         }
 
         else
         {
-          v4 = a1;
+          selfCopy6 = self;
         }
       }
     }
 
     else
     {
-      v4 = a1;
+      selfCopy6 = self;
     }
   }
 
   else
   {
-    v4 = a1;
+    selfCopy6 = self;
   }
 
-  return v4;
+  return selfCopy6;
 }
 
 @end

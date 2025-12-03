@@ -13,8 +13,8 @@
 
   [v4 setAllowsEditing:0];
   v6 = objc_alloc(MEMORY[0x1E695DF90]);
-  v7 = [v4 _properties];
-  v8 = [v6 initWithDictionary:v7];
+  _properties = [v4 _properties];
+  v8 = [v6 initWithDictionary:_properties];
 
   v9 = *MEMORY[0x1E695E4D0];
   [v8 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69DE9D0]];

@@ -1,18 +1,18 @@
 @interface AKAppleIDSigningController
 - (AKAppleIDSigningController)init;
-- (AKAppleIDSigningController)initWithDaemonXPCEndpoint:(id)a3;
+- (AKAppleIDSigningController)initWithDaemonXPCEndpoint:(id)endpoint;
 - (id)_connection;
-- (id)_parseDERCertificatesFromChain:(id)a3 error:(id *)a4;
-- (void)_additionalAbsintheHeadersForRequest:(id)a3 completion:(id)a4;
-- (void)_additionalAttestationHeadersForRequest:(id)a3 options:(id)a4 completion:(id)a5;
+- (id)_parseDERCertificatesFromChain:(id)chain error:(id *)error;
+- (void)_additionalAbsintheHeadersForRequest:(id)request completion:(id)completion;
+- (void)_additionalAttestationHeadersForRequest:(id)request options:(id)options completion:(id)completion;
 - (void)_connectionInterrupted;
 - (void)_connectionInvalidated;
-- (void)absintheSignatureForData:(id)a3 completion:(id)a4;
-- (void)attestationDataForRequest:(id)a3 completion:(id)a4;
+- (void)absintheSignatureForData:(id)data completion:(id)completion;
+- (void)attestationDataForRequest:(id)request completion:(id)completion;
 - (void)dealloc;
-- (void)signWithBAAHeaders:(id)a3 completion:(id)a4;
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)signingHeadersForRequest:(id)a3 completion:(id)a4;
+- (void)signWithBAAHeaders:(id)headers completion:(id)completion;
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion;
+- (void)signingHeadersForRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AKAppleIDSigningController
@@ -26,46 +26,46 @@
   return v3;
 }
 
-- (AKAppleIDSigningController)initWithDaemonXPCEndpoint:(id)a3
+- (AKAppleIDSigningController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v13;
-  v13 = 0;
+  objc_storeStrong(location, endpoint);
+  v3 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v3;
   v11.super_class = AKAppleIDSigningController;
-  v13 = [(AKAppleIDSigningController *)&v11 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKAppleIDSigningController *)&v11 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v13->_listenerEndpoint, location[0]);
+    objc_storeStrong(&selfCopy->_listenerEndpoint, location[0]);
     v4 = objc_alloc_init(AKAppleIDAuthenticationController);
-    authenticationController = v13->_authenticationController;
-    v13->_authenticationController = v4;
+    authenticationController = selfCopy->_authenticationController;
+    selfCopy->_authenticationController = v4;
     MEMORY[0x1E69E5920](authenticationController);
-    v13->_signerLock._os_unfair_lock_opaque = 0;
+    selfCopy->_signerLock._os_unfair_lock_opaque = 0;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.authkit.signingQ", v10);
-    signingQueue = v13->_signingQueue;
-    v13->_signingQueue = v6;
+    signingQueue = selfCopy->_signingQueue;
+    selfCopy->_signingQueue = v6;
     MEMORY[0x1E69E5920](signingQueue);
     MEMORY[0x1E69E5920](v10);
   }
 
-  v9 = MEMORY[0x1E69E5928](v13);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(NSXPCConnection *)self->_connection invalidate];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKAppleIDSigningController;
   [(AKAppleIDSigningController *)&v2 dealloc];
 }
@@ -173,7 +173,7 @@ void __41__AKAppleIDSigningController__connection__block_invoke_4(id *a1)
 
 - (void)_connectionInterrupted
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v12 = 16;
@@ -186,20 +186,20 @@ void __41__AKAppleIDSigningController__connection__block_invoke_4(id *a1)
   }
 
   objc_storeStrong(location, 0);
-  p_signerLock = &v14->_signerLock;
+  p_signerLock = &selfCopy->_signerLock;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __52__AKAppleIDSigningController__connectionInterrupted__block_invoke;
   v9 = &unk_1E73D34C0;
-  v10 = MEMORY[0x1E69E5928](v14);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   ak_unfair_lock_perform_1(p_signerLock, &v5);
   objc_storeStrong(&v10, 0);
 }
 
 - (void)_connectionInvalidated
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v12 = 2;
@@ -212,25 +212,25 @@ void __41__AKAppleIDSigningController__connection__block_invoke_4(id *a1)
   }
 
   objc_storeStrong(location, 0);
-  p_signerLock = &v14->_signerLock;
+  p_signerLock = &selfCopy->_signerLock;
   v5 = MEMORY[0x1E69E9820];
   v6 = -1073741824;
   v7 = 0;
   v8 = __52__AKAppleIDSigningController__connectionInvalidated__block_invoke;
   v9 = &unk_1E73D34C0;
-  v10 = MEMORY[0x1E69E5928](v14);
+  v10 = MEMORY[0x1E69E5928](selfCopy);
   ak_unfair_lock_perform_1(p_signerLock, &v5);
   objc_storeStrong(&v10, 0);
 }
 
-- (void)absintheSignatureForData:(id)a3 completion:(id)a4
+- (void)absintheSignatureForData:(id)data completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, completion);
   v30 = _os_activity_create(&dword_193225000, "authkit/absinthe-signature-for-data", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v31 = v30;
   state.opaque[0] = 0;
@@ -241,18 +241,18 @@ void __41__AKAppleIDSigningController__connection__block_invoke_4(id *a1)
   v23 = 0;
   v24 = __66__AKAppleIDSigningController_absintheSignatureForData_completion___block_invoke;
   v25 = &unk_1E73D61D8;
-  v26 = MEMORY[0x1E69E5928](v34);
+  v26 = MEMORY[0x1E69E5928](selfCopy);
   v27 = MEMORY[0x1E69E5928](v32);
   v28 = MEMORY[0x193B165F0](&v21);
-  v6 = [(AKAppleIDSigningController *)v34 _connection];
+  _connection = [(AKAppleIDSigningController *)selfCopy _connection];
   v14 = MEMORY[0x1E69E9820];
   v15 = -1073741824;
   v16 = 0;
   v17 = __66__AKAppleIDSigningController_absintheSignatureForData_completion___block_invoke_2;
   v18 = &unk_1E73D3510;
   v19 = MEMORY[0x1E69E5928](v28);
-  v20 = [v6 remoteObjectProxyWithErrorHandler:&v14];
-  MEMORY[0x1E69E5920](v6);
+  v20 = [_connection remoteObjectProxyWithErrorHandler:&v14];
+  MEMORY[0x1E69E5920](_connection);
   v5 = v20;
   v4 = location[0];
   v8 = MEMORY[0x1E69E9820];
@@ -349,16 +349,16 @@ void __66__AKAppleIDSigningController_absintheSignatureForData_completion___bloc
   *MEMORY[0x1E69E9840];
 }
 
-- (void)signaturesForData:(id)a3 options:(id)a4 completion:(id)a5
+- (void)signaturesForData:(id)data options:(id)options completion:(id)completion
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v36 = 0;
-  objc_storeStrong(&v36, a4);
+  objc_storeStrong(&v36, options);
   v35 = 0;
-  objc_storeStrong(&v35, a5);
+  objc_storeStrong(&v35, completion);
   v33 = _os_activity_create(&dword_193225000, "authkit/signatures-for-data", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v34 = v33;
   state.opaque[0] = 0;
@@ -369,18 +369,18 @@ void __66__AKAppleIDSigningController_absintheSignatureForData_completion___bloc
   v26 = 0;
   v27 = __67__AKAppleIDSigningController_signaturesForData_options_completion___block_invoke;
   v28 = &unk_1E73D6200;
-  v29 = MEMORY[0x1E69E5928](v38);
+  v29 = MEMORY[0x1E69E5928](selfCopy);
   v30 = MEMORY[0x1E69E5928](v35);
   v31 = MEMORY[0x193B165F0](&v24);
-  v8 = [(AKAppleIDSigningController *)v38 _connection];
+  _connection = [(AKAppleIDSigningController *)selfCopy _connection];
   v17 = MEMORY[0x1E69E9820];
   v18 = -1073741824;
   v19 = 0;
   v20 = __67__AKAppleIDSigningController_signaturesForData_options_completion___block_invoke_2;
   v21 = &unk_1E73D3510;
   v22 = MEMORY[0x1E69E5928](v31);
-  v23 = [v8 remoteObjectProxyWithErrorHandler:&v17];
-  MEMORY[0x1E69E5920](v8);
+  v23 = [_connection remoteObjectProxyWithErrorHandler:&v17];
+  MEMORY[0x1E69E5920](_connection);
   v7 = v23;
   v5 = location[0];
   v6 = v36;
@@ -485,32 +485,32 @@ void __67__AKAppleIDSigningController_signaturesForData_options_completion___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)attestationDataForRequest:(id)a3 completion:(id)a4
+- (void)attestationDataForRequest:(id)request completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, completion);
   v15 = _AKLogSystem();
   v14 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v19, v18, location[0]);
+    __os_log_helper_16_2_2_8_64_8_64(v19, selfCopy, location[0]);
     _os_log_debug_impl(&dword_193225000, v15, v14, "%@: Generating attestation data for request (%@)", v19, 0x16u);
   }
 
   objc_storeStrong(&v15, 0);
-  v5 = v18;
+  v5 = selfCopy;
   v4 = location[0];
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
   v10 = __67__AKAppleIDSigningController_attestationDataForRequest_completion___block_invoke;
   v11 = &unk_1E73D4BA0;
-  v12 = MEMORY[0x1E69E5928](v18);
+  v12 = MEMORY[0x1E69E5928](selfCopy);
   v13 = MEMORY[0x1E69E5928](v16);
   [(AKAppleIDSigningController *)v5 signingHeadersForRequest:v4 completion:&v7];
   objc_storeStrong(&v13, 0);
@@ -568,25 +568,25 @@ void __67__AKAppleIDSigningController_attestationDataForRequest_completion___blo
   *MEMORY[0x1E69E9840];
 }
 
-- (void)signingHeadersForRequest:(id)a3 completion:(id)a4
+- (void)signingHeadersForRequest:(id)request completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v4 = [(AKAppleIDSigningController *)v16 authenticationController];
+  objc_storeStrong(&v14, completion);
+  authenticationController = [(AKAppleIDSigningController *)selfCopy authenticationController];
   v6 = MEMORY[0x1E69E9820];
   v7 = -1073741824;
   v8 = 0;
   v9 = __79__AKAppleIDSigningController_Convenience__signingHeadersForRequest_completion___block_invoke;
   v10 = &unk_1E73D6340;
-  v11 = MEMORY[0x1E69E5928](v16);
+  v11 = MEMORY[0x1E69E5928](selfCopy);
   v12 = MEMORY[0x1E69E5928](location[0]);
   v13 = MEMORY[0x1E69E5928](v14);
-  [AKAppleIDAuthenticationController fetchURLBagForAltDSID:v4 completion:"fetchURLBagForAltDSID:completion:"];
-  MEMORY[0x1E69E5920](v4);
+  [AKAppleIDAuthenticationController fetchURLBagForAltDSID:authenticationController completion:"fetchURLBagForAltDSID:completion:"];
+  MEMORY[0x1E69E5920](authenticationController);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v11, 0);
@@ -1024,16 +1024,16 @@ uint64_t __79__AKAppleIDSigningController_Convenience__signingHeadersForRequest_
   return result;
 }
 
-- (void)signWithBAAHeaders:(id)a3 completion:(id)a4
+- (void)signWithBAAHeaders:(id)headers completion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v5 = v18;
+  objc_storeStrong(&v16, completion);
+  v5 = selfCopy;
   v4 = location[0];
   v19 = @"AKAttestationUseDeviceCheckKeychainAccess";
   v20[0] = &unk_1F07B4EB0;
@@ -1043,7 +1043,7 @@ uint64_t __79__AKAppleIDSigningController_Convenience__signingHeadersForRequest_
   v10 = 0;
   v11 = __73__AKAppleIDSigningController_Convenience__signWithBAAHeaders_completion___block_invoke;
   v12 = &unk_1E73D6340;
-  v13 = MEMORY[0x1E69E5928](v18);
+  v13 = MEMORY[0x1E69E5928](selfCopy);
   v14 = MEMORY[0x1E69E5928](location[0]);
   v15 = MEMORY[0x1E69E5928](v16);
   [(AKAppleIDSigningController *)v5 _additionalAttestationHeadersForRequest:v4 options:v6 completion:&v8];
@@ -1358,25 +1358,25 @@ void __73__AKAppleIDSigningController_Convenience__signWithBAAHeaders_completion
   objc_storeStrong(location, 0);
 }
 
-- (id)_parseDERCertificatesFromChain:(id)a3 error:(id *)a4
+- (id)_parseDERCertificatesFromChain:(id)chain error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, chain);
+  errorCopy = error;
   v31 = 0;
   memset(__b, 0, sizeof(__b));
-  v30 = 0;
+  bytes = 0;
   v29 = 0;
   v28 = 0;
   v18 = location[0];
   v4 = location[0];
-  v30 = [v18 bytes];
-  v19 = v30;
+  bytes = [v18 bytes];
+  v19 = bytes;
   v29 = v19 + [location[0] length];
-  v27 = CTParseCertificateSet(v30, v29, __b, 3, &v28);
+  v27 = CTParseCertificateSet(bytes, v29, __b, 3, &v28);
   if (!v27 && v28)
   {
     v6 = objc_alloc(MEMORY[0x1E695DF70]);
@@ -1414,11 +1414,11 @@ void __73__AKAppleIDSigningController_Convenience__signWithBAAHeaders_completion
     }
 
     objc_storeStrong(&v22, 0);
-    if (v32)
+    if (errorCopy)
     {
       v12 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7066];
       v9 = v12;
-      *v32 = v12;
+      *errorCopy = v12;
     }
 
     v34 = 0;
@@ -1436,11 +1436,11 @@ void __73__AKAppleIDSigningController_Convenience__signWithBAAHeaders_completion
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v32)
+    if (errorCopy)
     {
       v16 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7066];
       v5 = v16;
-      *v32 = v16;
+      *errorCopy = v16;
     }
 
     v34 = 0;
@@ -1456,17 +1456,17 @@ LABEL_19:
   return v10;
 }
 
-- (void)_additionalAbsintheHeadersForRequest:(id)a3 completion:(id)a4
+- (void)_additionalAbsintheHeadersForRequest:(id)request completion:(id)completion
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  objc_initWeak(&from, v17);
-  v5 = v17;
-  v4 = [location[0] HTTPBody];
+  objc_storeStrong(&v15, completion);
+  objc_initWeak(&from, selfCopy);
+  v5 = selfCopy;
+  hTTPBody = [location[0] HTTPBody];
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
   v9 = 0;
@@ -1474,8 +1474,8 @@ LABEL_19:
   v11 = &unk_1E73D63B8;
   objc_copyWeak(v13, &from);
   v12 = MEMORY[0x1E69E5928](v15);
-  [(AKAppleIDSigningController *)v5 absintheSignatureForData:v4 completion:&v7];
-  MEMORY[0x1E69E5920](v4);
+  [(AKAppleIDSigningController *)v5 absintheSignatureForData:hTTPBody completion:&v7];
+  MEMORY[0x1E69E5920](hTTPBody);
   objc_storeStrong(&v12, 0);
   objc_destroyWeak(v13);
   objc_destroyWeak(&from);
@@ -1575,48 +1575,48 @@ void __91__AKAppleIDSigningController_Convenience___additionalAbsintheHeadersFor
   *MEMORY[0x1E69E9840];
 }
 
-- (void)_additionalAttestationHeadersForRequest:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_additionalAttestationHeadersForRequest:(id)request options:(id)options completion:(id)completion
 {
-  v44 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, options);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, completion);
   v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
   v39 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v16 = [MEMORY[0x1E695DF00] date];
-  v38 = [v16 ak_serverFriendlyString];
-  MEMORY[0x1E69E5920](v16);
+  date = [MEMORY[0x1E695DF00] date];
+  ak_serverFriendlyString = [date ak_serverFriendlyString];
+  MEMORY[0x1E69E5920](date);
   v17 = [v42 objectForKeyedSubscript:@"AKAttestationUseDeviceCheckKeychainAccess"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
   MEMORY[0x1E69E5920](v17);
-  if (v18)
+  if (bOOLValue)
   {
-    [v39 setObject:v38 forKeyedSubscript:@"X-Apple-I-Client-Time"];
-    v37 = [location[0] HTTPBody];
-    if (v37)
+    [v39 setObject:ak_serverFriendlyString forKeyedSubscript:@"X-Apple-I-Client-Time"];
+    hTTPBody = [location[0] HTTPBody];
+    if (hTTPBody)
     {
-      v36 = [v37 ak_SHA256Data];
-      v15 = [v36 aaf_toHexString];
-      v35 = [v15 lowercaseString];
-      MEMORY[0x1E69E5920](v15);
-      [v39 setObject:v35 forKeyedSubscript:@"X-Apple-I-Payload-Hash"];
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v35, v38];
+      ak_SHA256Data = [hTTPBody ak_SHA256Data];
+      aaf_toHexString = [ak_SHA256Data aaf_toHexString];
+      lowercaseString = [aaf_toHexString lowercaseString];
+      MEMORY[0x1E69E5920](aaf_toHexString);
+      [v39 setObject:lowercaseString forKeyedSubscript:@"X-Apple-I-Payload-Hash"];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", lowercaseString, ak_serverFriendlyString];
       v33 = [v34 dataUsingEncoding:4];
       [v40 setObject:v33 forKeyedSubscript:@"X-Apple-I-Baa-S"];
       objc_storeStrong(&v33, 0);
       objc_storeStrong(&v34, 0);
-      objc_storeStrong(&v35, 0);
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&lowercaseString, 0);
+      objc_storeStrong(&ak_SHA256Data, 0);
     }
 
     v14 = +[AKDevice currentDevice];
-    v13 = [v14 uniqueDeviceIdentifier];
-    v32 = [v13 dataUsingEncoding:4];
-    MEMORY[0x1E69E5920](v13);
+    uniqueDeviceIdentifier = [v14 uniqueDeviceIdentifier];
+    v32 = [uniqueDeviceIdentifier dataUsingEncoding:4];
+    MEMORY[0x1E69E5920](uniqueDeviceIdentifier);
     MEMORY[0x1E69E5920](v14);
     if (v32)
     {
@@ -1626,9 +1626,9 @@ void __91__AKAppleIDSigningController_Convenience___additionalAbsintheHeadersFor
     if (+[AKDevice hasUniqueDeviceIdentifier])
     {
       v12 = +[AKDevice currentDevice];
-      v11 = [v12 provisioningDeviceIdentifier];
-      v31 = [v11 dataUsingEncoding:4];
-      MEMORY[0x1E69E5920](v11);
+      provisioningDeviceIdentifier = [v12 provisioningDeviceIdentifier];
+      v31 = [provisioningDeviceIdentifier dataUsingEncoding:4];
+      MEMORY[0x1E69E5920](provisioningDeviceIdentifier);
       MEMORY[0x1E69E5920](v12);
       if (v31)
       {
@@ -1639,17 +1639,17 @@ void __91__AKAppleIDSigningController_Convenience___additionalAbsintheHeadersFor
     }
 
     objc_storeStrong(&v32, 0);
-    objc_storeStrong(&v37, 0);
+    objc_storeStrong(&hTTPBody, 0);
   }
 
   v10 = +[AKDevice currentDevice];
-  v9 = [v10 serverFriendlyDescription];
-  v30 = [v9 dataUsingEncoding:4];
-  MEMORY[0x1E69E5920](v9);
+  serverFriendlyDescription = [v10 serverFriendlyDescription];
+  v30 = [serverFriendlyDescription dataUsingEncoding:4];
+  MEMORY[0x1E69E5920](serverFriendlyDescription);
   MEMORY[0x1E69E5920](v10);
   if (v30)
   {
-    if (v44->_isProxy)
+    if (selfCopy->_isProxy)
     {
       v5 = @"X-MMe-Proxied-Client-Info-S";
     }
@@ -1662,8 +1662,8 @@ void __91__AKAppleIDSigningController_Convenience___additionalAbsintheHeadersFor
     [v40 setObject:v30 forKeyedSubscript:v5];
   }
 
-  objc_initWeak(&v29, v44);
-  v8 = v44;
+  objc_initWeak(&v29, selfCopy);
+  v8 = selfCopy;
   v6 = v40;
   v7 = v42;
   v21 = MEMORY[0x1E69E9820];
@@ -1680,7 +1680,7 @@ void __91__AKAppleIDSigningController_Convenience___additionalAbsintheHeadersFor
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v29);
   objc_storeStrong(&v30, 0);
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&ak_serverFriendlyString, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v40, 0);
   objc_storeStrong(&v41, 0);

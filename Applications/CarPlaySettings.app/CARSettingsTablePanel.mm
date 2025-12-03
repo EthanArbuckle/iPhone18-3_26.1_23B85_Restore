@@ -1,10 +1,10 @@
 @interface CARSettingsTablePanel
 - (id)preferredFocusEnvironments;
-- (void)_performBatchUpdatesForReloadIndexPaths:(id)a3 insertIndexPaths:(id)a4 removeIndexPaths:(id)a5;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_performBatchUpdatesForReloadIndexPaths:(id)paths insertIndexPaths:(id)indexPaths removeIndexPaths:(id)removeIndexPaths;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)reloadSpecifiers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CARSettingsTablePanel
@@ -15,187 +15,187 @@
   v54.super_class = CARSettingsTablePanel;
   [(CARSettingsPanel *)&v54 viewDidLoad];
   v3 = [CARSettingsPanelTableSource alloc];
-  v4 = [(CARSettingsTablePanel *)self cellSpecifiers];
-  v5 = [(CARSettingsTablePanel *)self specifierSections];
-  v6 = [(CARSettingsPanelTableSource *)v3 initWithSpecifiers:v4 specifierSections:v5];
+  cellSpecifiers = [(CARSettingsTablePanel *)self cellSpecifiers];
+  specifierSections = [(CARSettingsTablePanel *)self specifierSections];
+  v6 = [(CARSettingsPanelTableSource *)v3 initWithSpecifiers:cellSpecifiers specifierSections:specifierSections];
   [(CARSettingsTablePanel *)self setTableSource:v6];
 
   v7 = [[CARTableView alloc] initWithFrame:2 style:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CARSettingsTablePanel *)self setTableView:v7];
 
-  v8 = [(CARSettingsTablePanel *)self tableView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(CARSettingsTablePanel *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(CARSettingsTablePanel *)self tableSource];
-  v10 = [(CARSettingsTablePanel *)self tableView];
-  [v10 setDataSource:v9];
+  tableSource = [(CARSettingsTablePanel *)self tableSource];
+  tableView2 = [(CARSettingsTablePanel *)self tableView];
+  [tableView2 setDataSource:tableSource];
 
-  v11 = [(CARSettingsTablePanel *)self tableSource];
-  v12 = [(CARSettingsTablePanel *)self tableView];
-  [v12 setDelegate:v11];
+  tableSource2 = [(CARSettingsTablePanel *)self tableSource];
+  tableView3 = [(CARSettingsTablePanel *)self tableView];
+  [tableView3 setDelegate:tableSource2];
 
   left = UIEdgeInsetsZero.left;
   bottom = UIEdgeInsetsZero.bottom;
   right = UIEdgeInsetsZero.right;
-  v16 = [(CARSettingsTablePanel *)self tableView];
-  [v16 setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
+  tableView4 = [(CARSettingsTablePanel *)self tableView];
+  [tableView4 setContentInset:{UIEdgeInsetsZero.top, left, bottom, right}];
 
-  v17 = [(CARSettingsTablePanel *)self tableView];
-  [v17 _setHeaderAndFooterViewsFloat:0];
+  tableView5 = [(CARSettingsTablePanel *)self tableView];
+  [tableView5 _setHeaderAndFooterViewsFloat:0];
 
-  v18 = [(CARSettingsTablePanel *)self tableView];
+  tableView6 = [(CARSettingsTablePanel *)self tableView];
   v19 = objc_opt_class();
   v20 = +[_TtC15CarPlaySettings24CARSettingsTableViewCell reuseIdentifier];
-  [v18 registerClass:v19 forCellReuseIdentifier:v20];
+  [tableView6 registerClass:v19 forCellReuseIdentifier:v20];
 
-  v21 = [(CARSettingsTablePanel *)self tableView];
+  tableView7 = [(CARSettingsTablePanel *)self tableView];
   v22 = objc_opt_class();
   v23 = +[CARSettingsTableFooterView identifier];
-  [v21 registerClass:v22 forHeaderFooterViewReuseIdentifier:v23];
+  [tableView7 registerClass:v22 forHeaderFooterViewReuseIdentifier:v23];
 
-  v24 = [(CARSettingsTablePanel *)self tableView];
+  tableView8 = [(CARSettingsTablePanel *)self tableView];
   v25 = objc_opt_class();
   v26 = +[CARSettingsTableHeaderView identifier];
-  [v24 registerClass:v25 forHeaderFooterViewReuseIdentifier:v26];
+  [tableView8 registerClass:v25 forHeaderFooterViewReuseIdentifier:v26];
 
-  v27 = [(CARSettingsTablePanel *)self view];
-  v28 = [(CARSettingsTablePanel *)self tableView];
-  [v27 addSubview:v28];
+  view = [(CARSettingsTablePanel *)self view];
+  tableView9 = [(CARSettingsTablePanel *)self tableView];
+  [view addSubview:tableView9];
 
   v29 = +[UIColor clearColor];
-  v30 = [(CARSettingsTablePanel *)self view];
-  [v30 setBackgroundColor:v29];
+  view2 = [(CARSettingsTablePanel *)self view];
+  [view2 setBackgroundColor:v29];
 
   v31 = +[UIColor clearColor];
-  v32 = [(CARSettingsTablePanel *)self tableView];
-  [v32 setBackgroundColor:v31];
+  tableView10 = [(CARSettingsTablePanel *)self tableView];
+  [tableView10 setBackgroundColor:v31];
 
-  v53 = [(CARSettingsTablePanel *)self tableView];
-  v51 = [v53 topAnchor];
-  v52 = [(CARSettingsTablePanel *)self view];
-  v50 = [v52 topAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  tableView11 = [(CARSettingsTablePanel *)self tableView];
+  topAnchor = [tableView11 topAnchor];
+  view3 = [(CARSettingsTablePanel *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v49;
-  v48 = [(CARSettingsTablePanel *)self tableView];
-  v46 = [v48 leftAnchor];
-  v47 = [(CARSettingsTablePanel *)self view];
-  v45 = [v47 leftAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  tableView12 = [(CARSettingsTablePanel *)self tableView];
+  leftAnchor = [tableView12 leftAnchor];
+  view4 = [(CARSettingsTablePanel *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v44 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v55[1] = v44;
-  v43 = [(CARSettingsTablePanel *)self tableView];
-  v33 = [v43 rightAnchor];
-  v34 = [(CARSettingsTablePanel *)self view];
-  v35 = [v34 rightAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  tableView13 = [(CARSettingsTablePanel *)self tableView];
+  rightAnchor = [tableView13 rightAnchor];
+  view5 = [(CARSettingsTablePanel *)self view];
+  rightAnchor2 = [view5 rightAnchor];
+  v36 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v55[2] = v36;
-  v37 = [(CARSettingsTablePanel *)self tableView];
-  v38 = [v37 bottomAnchor];
-  v39 = [(CARSettingsTablePanel *)self view];
-  v40 = [v39 bottomAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  tableView14 = [(CARSettingsTablePanel *)self tableView];
+  bottomAnchor = [tableView14 bottomAnchor];
+  view6 = [(CARSettingsTablePanel *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v55[3] = v41;
   v42 = [NSArray arrayWithObjects:v55 count:4];
   [NSLayoutConstraint activateConstraints:v42];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = [(CARSettingsTablePanel *)self tableView];
-  v6 = [v4 indexPathForSelectedRow];
+  tableView = [(CARSettingsTablePanel *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v6)
+  if (indexPathForSelectedRow)
   {
-    v5 = [(CARSettingsTablePanel *)self tableView];
-    [v5 deselectRowAtIndexPath:v6 animated:0];
+    tableView2 = [(CARSettingsTablePanel *)self tableView];
+    [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v4 = [v8 previouslyFocusedItem];
+  contextCopy = context;
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v8;
+  v6 = contextCopy;
   if (isKindOfClass)
   {
-    v7 = [v8 previouslyFocusedItem];
-    if ([v7 isSelected])
+    previouslyFocusedItem2 = [contextCopy previouslyFocusedItem];
+    if ([previouslyFocusedItem2 isSelected])
     {
-      [v7 setSelected:0 animated:0];
+      [previouslyFocusedItem2 setSelected:0 animated:0];
     }
 
-    if ([v7 isHighlighted])
+    if ([previouslyFocusedItem2 isHighlighted])
     {
-      [v7 setHighlighted:0 animated:0];
+      [previouslyFocusedItem2 setHighlighted:0 animated:0];
     }
 
-    v6 = v8;
+    v6 = contextCopy;
   }
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(CARSettingsTablePanel *)self tableSource];
-  v4 = [(CARSettingsTablePanel *)self tableView];
-  v5 = [v3 preferredFocusEnvironmentsForTableView:v4];
+  tableSource = [(CARSettingsTablePanel *)self tableSource];
+  tableView = [(CARSettingsTablePanel *)self tableView];
+  v5 = [tableSource preferredFocusEnvironmentsForTableView:tableView];
 
   if (v5)
   {
-    v6 = v5;
+    preferredFocusEnvironments = v5;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CARSettingsTablePanel;
-    v6 = [(CARSettingsTablePanel *)&v9 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(CARSettingsTablePanel *)&v9 preferredFocusEnvironments];
   }
 
-  v7 = v6;
+  v7 = preferredFocusEnvironments;
 
   return v7;
 }
 
 - (void)reloadSpecifiers
 {
-  v3 = [(CARSettingsTablePanel *)self cellSpecifiers];
-  v4 = [(CARSettingsTablePanel *)self specifierSections];
-  if ([v3 count] || (-[CARSettingsTablePanel tableSource](self, "tableSource"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "specifiers"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7))
+  cellSpecifiers = [(CARSettingsTablePanel *)self cellSpecifiers];
+  specifierSections = [(CARSettingsTablePanel *)self specifierSections];
+  if ([cellSpecifiers count] || (-[CARSettingsTablePanel tableSource](self, "tableSource"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "specifiers"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v5, v7))
   {
-    v8 = [(CARSettingsTablePanel *)self cellSpecifiers];
-    v9 = [(CARSettingsTablePanel *)self tableSource];
-    [v9 setSpecifiers:v8];
+    cellSpecifiers2 = [(CARSettingsTablePanel *)self cellSpecifiers];
+    tableSource = [(CARSettingsTablePanel *)self tableSource];
+    [tableSource setSpecifiers:cellSpecifiers2];
 
-    v10 = [(CARSettingsTablePanel *)self tableView];
-    [v10 reloadData];
+    tableView = [(CARSettingsTablePanel *)self tableView];
+    [tableView reloadData];
 
     goto LABEL_4;
   }
 
-  if ([v4 count])
+  if ([specifierSections count])
   {
-    v11 = [(CARSettingsTablePanel *)self tableSource];
-    v12 = [v11 specifierSections];
-    v13 = [v12 count];
+    tableSource2 = [(CARSettingsTablePanel *)self tableSource];
+    specifierSections2 = [tableSource2 specifierSections];
+    v13 = [specifierSections2 count];
 
     if (v13)
     {
-      v14 = [(CARSettingsTablePanel *)self tableSource];
-      v15 = [v14 specifierSections];
+      tableSource3 = [(CARSettingsTablePanel *)self tableSource];
+      specifierSections3 = [tableSource3 specifierSections];
 
-      v16 = [(CARSettingsTablePanel *)self tableSource];
-      [v16 setSpecifierSections:v4];
+      tableSource4 = [(CARSettingsTablePanel *)self tableSource];
+      [tableSource4 setSpecifierSections:specifierSections];
 
       v17 = +[NSMutableIndexSet indexSet];
       v50 = +[NSMutableIndexSet indexSet];
       v49 = +[NSMutableIndexSet indexSet];
       v52 = +[NSMutableIndexSet indexSet];
       v53 = +[NSMutableIndexSet indexSet];
-      v18 = [v15 count];
-      v48 = v4;
-      v19 = [v4 count];
+      v18 = [specifierSections3 count];
+      v48 = specifierSections;
+      v19 = [specifierSections count];
       if (v18 <= v19)
       {
         v20 = v19;
@@ -213,19 +213,19 @@
         v51 = v17;
         while (1)
         {
-          if ([v15 count] <= v21)
+          if ([specifierSections3 count] <= v21)
           {
             v22 = 0;
           }
 
           else
           {
-            v22 = [v15 objectAtIndexedSubscript:v21];
+            v22 = [specifierSections3 objectAtIndexedSubscript:v21];
           }
 
-          v23 = [(CARSettingsTablePanel *)self tableSource];
-          v24 = [v23 specifierSections];
-          v25 = [v24 count];
+          tableSource5 = [(CARSettingsTablePanel *)self tableSource];
+          specifierSections4 = [tableSource5 specifierSections];
+          v25 = [specifierSections4 count];
 
           if (v25 <= v21)
           {
@@ -236,9 +236,9 @@
 
           else
           {
-            v26 = [(CARSettingsTablePanel *)self tableSource];
-            v27 = [v26 specifierSections];
-            v28 = [v27 objectAtIndexedSubscript:v21];
+            tableSource6 = [(CARSettingsTablePanel *)self tableSource];
+            specifierSections5 = [tableSource6 specifierSections];
+            v28 = [specifierSections5 objectAtIndexedSubscript:v21];
 
             v29 = v22 == 0;
             v30 = v28 != 0;
@@ -260,10 +260,10 @@ LABEL_31:
 
           if (([v22 isEqualToSpecifierSection:v28] & 1) == 0)
           {
-            v32 = [v22 specifiers];
-            v33 = [v32 count];
-            v34 = [v28 specifiers];
-            if (v33 == [v34 count])
+            specifiers = [v22 specifiers];
+            v33 = [specifiers count];
+            specifiers2 = [v28 specifiers];
+            if (v33 == [specifiers2 count])
             {
               v35 = [v22 hasEqualSpecifiers:v28];
 
@@ -274,9 +274,9 @@ LABEL_31:
                   if (([v22 hasEqualFooter:v28] & 1) == 0)
                   {
                     [v49 addIndex:v21];
-                    v36 = [(CARSettingsTablePanel *)self tableSource];
-                    v37 = [v36 specifierSections];
-                    v38 = v21 == [v37 count] - 1;
+                    tableSource7 = [(CARSettingsTablePanel *)self tableSource];
+                    specifierSections6 = [tableSource7 specifierSections];
+                    v38 = v21 == [specifierSections6 count] - 1;
 
                     v54 &= v38;
                   }
@@ -342,29 +342,29 @@ LABEL_37:
 
       else
       {
-        v41 = [(CARSettingsTablePanel *)self tableView];
-        [v41 beginUpdates];
+        tableView2 = [(CARSettingsTablePanel *)self tableView];
+        [tableView2 beginUpdates];
 
         v39 = v52;
         v40 = v53;
         [(CARSettingsTablePanel *)self _performBatchUpdatesForReloadIndexPaths:v17 insertIndexPaths:v52 removeIndexPaths:v53];
-        v42 = [(CARSettingsTablePanel *)self tableView];
-        [v42 endUpdates];
+        tableView3 = [(CARSettingsTablePanel *)self tableView];
+        [tableView3 endUpdates];
       }
 
-      v4 = v48;
+      specifierSections = v48;
     }
   }
 
-  v43 = [(CARSettingsTablePanel *)self tableSource];
-  v44 = [v43 savedFocusedIndexPath];
+  tableSource8 = [(CARSettingsTablePanel *)self tableSource];
+  savedFocusedIndexPath = [tableSource8 savedFocusedIndexPath];
 
-  if (v44)
+  if (savedFocusedIndexPath)
   {
-    v45 = self;
-    v46 = [[_UIFocusUpdateRequest alloc] initWithEnvironment:v45];
+    selfCopy = self;
+    v46 = [[_UIFocusUpdateRequest alloc] initWithEnvironment:selfCopy];
     [v46 setAllowsDeferral:0];
-    v47 = [UIFocusSystem focusSystemForEnvironment:v45];
+    v47 = [UIFocusSystem focusSystemForEnvironment:selfCopy];
 
     [v47 _requestFocusUpdate:v46];
   }
@@ -372,23 +372,23 @@ LABEL_37:
 LABEL_4:
 }
 
-- (void)_performBatchUpdatesForReloadIndexPaths:(id)a3 insertIndexPaths:(id)a4 removeIndexPaths:(id)a5
+- (void)_performBatchUpdatesForReloadIndexPaths:(id)paths insertIndexPaths:(id)indexPaths removeIndexPaths:(id)removeIndexPaths
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count") || objc_msgSend(v10, "count"))
+  pathsCopy = paths;
+  indexPathsCopy = indexPaths;
+  removeIndexPathsCopy = removeIndexPaths;
+  if ([pathsCopy count] || objc_msgSend(indexPathsCopy, "count") || objc_msgSend(removeIndexPathsCopy, "count"))
   {
-    v11 = [(CARSettingsTablePanel *)self tableView];
+    tableView = [(CARSettingsTablePanel *)self tableView];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100011B78;
     v12[3] = &unk_1000DB118;
-    v13 = v10;
-    v14 = self;
-    v15 = v9;
-    v16 = v8;
-    [v11 performBatchUpdates:v12 completion:0];
+    v13 = removeIndexPathsCopy;
+    selfCopy = self;
+    v15 = indexPathsCopy;
+    v16 = pathsCopy;
+    [tableView performBatchUpdates:v12 completion:0];
   }
 }
 

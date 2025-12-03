@@ -3,47 +3,47 @@
 - (BOOL)showsCollaboratorStatuses;
 - (BOOL)updatesVisibleRangesOnly;
 - (ICAuthorHighlightsUpdater)init;
-- (ICAuthorHighlightsUpdater)initWithAuthorHighlightsController:(id)a3 textLayoutManager:(id)a4;
+- (ICAuthorHighlightsUpdater)initWithAuthorHighlightsController:(id)controller textLayoutManager:(id)manager;
 - (ICSearchResultRegexMatchFinder)searchHighlightRegexFinder;
 - (ICTTTextEditFilter)filter;
 - (NSValue)focusedRangeValue;
 - (NSValue)highlightedRangeValue;
 - (double)highlightedValue;
-- (void)flashHighlightsForFilter:(id)a3;
-- (void)flashHighlightsForRanges:(id)a3 inTextStorage:(id)a4;
-- (void)noteShowsCollaboratorCursorsDidChange:(id)a3;
-- (void)scheduleUpdateAnimated:(BOOL)a3;
-- (void)scheduleUpdateAnimated:(BOOL)a3 force:(BOOL)a4;
-- (void)setFilter:(id)a3;
-- (void)setFocusedRangeValue:(id)a3;
-- (void)setHighlightedValue:(double)a3;
-- (void)setSearchHighlightRegexFinder:(id)a3;
-- (void)setUpdatesVisibleRangesOnly:(BOOL)a3;
-- (void)updateAnimated:(BOOL)a3;
-- (void)updateAnimated:(BOOL)a3 force:(BOOL)a4;
+- (void)flashHighlightsForFilter:(id)filter;
+- (void)flashHighlightsForRanges:(id)ranges inTextStorage:(id)storage;
+- (void)noteShowsCollaboratorCursorsDidChange:(id)change;
+- (void)scheduleUpdateAnimated:(BOOL)animated;
+- (void)scheduleUpdateAnimated:(BOOL)animated force:(BOOL)force;
+- (void)setFilter:(id)filter;
+- (void)setFocusedRangeValue:(id)value;
+- (void)setHighlightedValue:(double)value;
+- (void)setSearchHighlightRegexFinder:(id)finder;
+- (void)setUpdatesVisibleRangesOnly:(BOOL)only;
+- (void)updateAnimated:(BOOL)animated;
+- (void)updateAnimated:(BOOL)animated force:(BOOL)force;
 @end
 
 @implementation ICAuthorHighlightsUpdater
 
-- (ICAuthorHighlightsUpdater)initWithAuthorHighlightsController:(id)a3 textLayoutManager:(id)a4
+- (ICAuthorHighlightsUpdater)initWithAuthorHighlightsController:(id)controller textLayoutManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
-  return AuthorHighlightsUpdater.init(authorHighlightsController:textLayoutManager:)(v5, a4);
+  controllerCopy = controller;
+  managerCopy = manager;
+  return AuthorHighlightsUpdater.init(authorHighlightsController:textLayoutManager:)(controllerCopy, manager);
 }
 
-- (void)setSearchHighlightRegexFinder:(id)a3
+- (void)setSearchHighlightRegexFinder:(id)finder
 {
   v5 = OBJC_IVAR___ICAuthorHighlightsUpdater_searchHighlightRegexFinder;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = finder;
+  finderCopy = finder;
 }
 
 - (BOOL)hasHighlights
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AuthorHighlightsUpdater.hasHighlights.getter();
 
   return v3 & 1;
@@ -56,11 +56,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHighlightedValue:(double)a3
+- (void)setHighlightedValue:(double)value
 {
   v5 = OBJC_IVAR___ICAuthorHighlightsUpdater_highlightedValue;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = value;
 }
 
 - (ICTTTextEditFilter)filter
@@ -70,14 +70,14 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
   v5 = OBJC_IVAR___ICAuthorHighlightsUpdater_filter;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.isa + v5) = filter;
+  filterCopy = filter;
+  selfCopy = self;
 
   v9 = sub_21547F9F8();
   v10 = *(&self->super.isa + v5);
@@ -86,7 +86,7 @@
 
 - (BOOL)showsCollaboratorStatuses
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AuthorHighlightsUpdater.showsCollaboratorStatuses.getter();
 
   return v3 & 1;
@@ -99,17 +99,17 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)scheduleUpdateAnimated:(BOOL)a3
+- (void)scheduleUpdateAnimated:(BOOL)animated
 {
   v4 = *(&self->super.isa + OBJC_IVAR___ICAuthorHighlightsUpdater_forceNextUpdate);
-  v5 = self;
-  AuthorHighlightsUpdater.scheduleUpdate(animated:force:)(a3, v4);
+  selfCopy = self;
+  AuthorHighlightsUpdater.scheduleUpdate(animated:force:)(animated, v4);
 }
 
-- (void)scheduleUpdateAnimated:(BOOL)a3 force:(BOOL)a4
+- (void)scheduleUpdateAnimated:(BOOL)animated force:(BOOL)force
 {
-  v6 = self;
-  AuthorHighlightsUpdater.scheduleUpdate(animated:force:)(a3, a4);
+  selfCopy = self;
+  AuthorHighlightsUpdater.scheduleUpdate(animated:force:)(animated, force);
 }
 
 - (BOOL)updatesVisibleRangesOnly
@@ -119,53 +119,53 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUpdatesVisibleRangesOnly:(BOOL)a3
+- (void)setUpdatesVisibleRangesOnly:(BOOL)only
 {
   v5 = OBJC_IVAR___ICAuthorHighlightsUpdater_updatesVisibleRangesOnly;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = self;
+  *(&self->super.isa + v5) = only;
+  selfCopy = self;
   sub_215482AA4(v6);
 }
 
-- (void)updateAnimated:(BOOL)a3
+- (void)updateAnimated:(BOOL)animated
 {
   v4 = *(&self->super.isa + OBJC_IVAR___ICAuthorHighlightsUpdater_forceNextUpdate);
-  v5 = self;
-  AuthorHighlightsUpdater.update(animated:force:)(a3, v4);
+  selfCopy = self;
+  AuthorHighlightsUpdater.update(animated:force:)(animated, v4);
 }
 
-- (void)updateAnimated:(BOOL)a3 force:(BOOL)a4
+- (void)updateAnimated:(BOOL)animated force:(BOOL)force
 {
-  v6 = self;
-  AuthorHighlightsUpdater.update(animated:force:)(a3, a4);
+  selfCopy = self;
+  AuthorHighlightsUpdater.update(animated:force:)(animated, force);
 }
 
-- (void)flashHighlightsForRanges:(id)a3 inTextStorage:(id)a4
+- (void)flashHighlightsForRanges:(id)ranges inTextStorage:(id)storage
 {
   type metadata accessor for _NSRange(0);
   v6 = sub_2154A1F4C();
-  v7 = a4;
-  v8 = self;
-  AuthorHighlightsUpdater.flashHighlights(for:in:)(v6, v7);
+  storageCopy = storage;
+  selfCopy = self;
+  AuthorHighlightsUpdater.flashHighlights(for:in:)(v6, storageCopy);
 }
 
-- (void)flashHighlightsForFilter:(id)a3
+- (void)flashHighlightsForFilter:(id)filter
 {
-  v4 = a3;
-  v5 = self;
-  AuthorHighlightsUpdater.flashHighlights(for:)(v4);
+  filterCopy = filter;
+  selfCopy = self;
+  AuthorHighlightsUpdater.flashHighlights(for:)(filterCopy);
 }
 
-- (void)noteShowsCollaboratorCursorsDidChange:(id)a3
+- (void)noteShowsCollaboratorCursorsDidChange:(id)change
 {
   v4 = sub_21549E19C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21549E16C();
-  v8 = self;
+  selfCopy = self;
   sub_2154871AC();
 
   (*(v5 + 8))(v7, v4);
@@ -182,53 +182,53 @@
 {
   v2 = self + OBJC_IVAR___ICAuthorHighlightsUpdater_focusedRange;
   swift_beginAccess();
-  v3 = 0;
+  valueWithRange_ = 0;
   if ((v2[16] & 1) == 0)
   {
-    v3 = [objc_opt_self() valueWithRange_];
+    valueWithRange_ = [objc_opt_self() valueWithRange_];
   }
 
-  return v3;
+  return valueWithRange_;
 }
 
-- (void)setFocusedRangeValue:(id)a3
+- (void)setFocusedRangeValue:(id)value
 {
-  v4 = self;
-  if (a3)
+  selfCopy = self;
+  if (value)
   {
-    v5 = [a3 rangeValue];
+    rangeValue = [value rangeValue];
     v7 = v6;
   }
 
   else
   {
-    v5 = 0;
+    rangeValue = 0;
     v7 = 0;
   }
 
-  v8 = a3 == 0;
-  v9 = v4 + OBJC_IVAR___ICAuthorHighlightsUpdater_focusedRange;
+  v8 = value == 0;
+  v9 = selfCopy + OBJC_IVAR___ICAuthorHighlightsUpdater_focusedRange;
   swift_beginAccess();
-  *v9 = v5;
+  *v9 = rangeValue;
   *(v9 + 1) = v7;
   v9[16] = v8;
 }
 
 - (NSValue)highlightedRangeValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_215486514();
   if (v5)
   {
-    v6 = 0;
+    valueWithRange_ = 0;
   }
 
   else
   {
-    v6 = [objc_opt_self() valueWithRange_];
+    valueWithRange_ = [objc_opt_self() valueWithRange_];
   }
 
-  return v6;
+  return valueWithRange_;
 }
 
 @end

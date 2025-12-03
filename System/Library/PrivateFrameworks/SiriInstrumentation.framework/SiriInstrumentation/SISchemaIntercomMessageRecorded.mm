@@ -1,49 +1,49 @@
 @interface SISchemaIntercomMessageRecorded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaIntercomMessageRecorded)initWithDictionary:(id)a3;
-- (SISchemaIntercomMessageRecorded)initWithJSON:(id)a3;
+- (SISchemaIntercomMessageRecorded)initWithDictionary:(id)dictionary;
+- (SISchemaIntercomMessageRecorded)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDisambiguationRequired:(BOOL)a3;
-- (void)setHasIntercomTarget:(BOOL)a3;
-- (void)setHasIsReply:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDisambiguationRequired:(BOOL)required;
+- (void)setHasIntercomTarget:(BOOL)target;
+- (void)setHasIsReply:(BOOL)reply;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaIntercomMessageRecorded
 
-- (SISchemaIntercomMessageRecorded)initWithDictionary:(id)a3
+- (SISchemaIntercomMessageRecorded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SISchemaIntercomMessageRecorded;
   v5 = [(SISchemaIntercomMessageRecorded *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"durationInMs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"durationInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaIntercomMessageRecorded setDurationInMs:](v5, "setDurationInMs:", [v6 longLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isReply"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isReply"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaIntercomMessageRecorded setIsReply:](v5, "setIsReply:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"disambiguationRequired"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationRequired"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaIntercomMessageRecorded setDisambiguationRequired:](v5, "setDisambiguationRequired:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"intercomTarget"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"intercomTarget"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (SISchemaIntercomMessageRecorded)initWithJSON:(id)a3
+- (SISchemaIntercomMessageRecorded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaIntercomMessageRecorded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaIntercomMessageRecorded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaIntercomMessageRecorded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaIntercomMessageRecorded disambiguationRequired](self, "disambiguationRequired")}];
-    [v3 setObject:v7 forKeyedSubscript:@"disambiguationRequired"];
+    [dictionary setObject:v7 forKeyedSubscript:@"disambiguationRequired"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaIntercomMessageRecorded durationInMs](self, "durationInMs")}];
-  [v3 setObject:v8 forKeyedSubscript:@"durationInMs"];
+  [dictionary setObject:v8 forKeyedSubscript:@"durationInMs"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -144,7 +144,7 @@ LABEL_11:
     v10 = off_1E78E4DC8[v9];
   }
 
-  [v3 setObject:v10 forKeyedSubscript:@"intercomTarget"];
+  [dictionary setObject:v10 forKeyedSubscript:@"intercomTarget"];
   if ((*&self->_has & 2) == 0)
   {
     goto LABEL_6;
@@ -152,12 +152,12 @@ LABEL_11:
 
 LABEL_5:
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaIntercomMessageRecorded isReply](self, "isReply")}];
-  [v3 setObject:v5 forKeyedSubscript:@"isReply"];
+  [dictionary setObject:v5 forKeyedSubscript:@"isReply"];
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,16 +214,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -232,13 +232,13 @@ LABEL_5:
   if (*&has)
   {
     durationInMs = self->_durationInMs;
-    if (durationInMs != [v4 durationInMs])
+    if (durationInMs != [equalCopy durationInMs])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -250,13 +250,13 @@ LABEL_5:
   if (v8)
   {
     isReply = self->_isReply;
-    if (isReply != [v4 isReply])
+    if (isReply != [equalCopy isReply])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -268,10 +268,10 @@ LABEL_5:
   if (v10)
   {
     disambiguationRequired = self->_disambiguationRequired;
-    if (disambiguationRequired == [v4 disambiguationRequired])
+    if (disambiguationRequired == [equalCopy disambiguationRequired])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_14;
     }
 
@@ -290,7 +290,7 @@ LABEL_14:
   if (v12)
   {
     intercomTarget = self->_intercomTarget;
-    if (intercomTarget != [v4 intercomTarget])
+    if (intercomTarget != [equalCopy intercomTarget])
     {
       goto LABEL_18;
     }
@@ -302,9 +302,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -351,9 +351,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasIntercomTarget:(BOOL)a3
+- (void)setHasIntercomTarget:(BOOL)target
 {
-  if (a3)
+  if (target)
   {
     v3 = 8;
   }
@@ -366,9 +366,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDisambiguationRequired:(BOOL)a3
+- (void)setHasDisambiguationRequired:(BOOL)required
 {
-  if (a3)
+  if (required)
   {
     v3 = 4;
   }
@@ -381,9 +381,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsReply:(BOOL)a3
+- (void)setHasIsReply:(BOOL)reply
 {
-  if (a3)
+  if (reply)
   {
     v3 = 2;
   }

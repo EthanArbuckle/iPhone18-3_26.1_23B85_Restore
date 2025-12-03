@@ -3,36 +3,36 @@
 - (IMHandleRegistrar)init;
 - (id)CNIDToHandlesMap;
 - (id)IDToHandlesMap;
-- (id)_accountSiblingsForHandle:(id)a3;
-- (id)_chatSiblingsForHandle:(id)a3;
-- (id)_existingAccountSiblingsForHandle:(id)a3;
-- (id)_existingChatSiblingsForHandle:(id)a3;
+- (id)_accountSiblingsForHandle:(id)handle;
+- (id)_chatSiblingsForHandle:(id)handle;
+- (id)_existingAccountSiblingsForHandle:(id)handle;
+- (id)_existingChatSiblingsForHandle:(id)handle;
 - (id)allIMHandles;
 - (id)getIDsForAllIMHandles;
 - (id)getIDsForFinalBatch;
-- (id)getIMHandlesForID:(id)a3;
-- (id)handlesForCNIdentifier:(id)a3;
-- (id)siblingsForIMHandle:(id)a3;
-- (void)_addIMHandleToIDToHandlesMap:(id)a3;
+- (id)getIMHandlesForID:(id)d;
+- (id)handlesForCNIdentifier:(id)identifier;
+- (id)siblingsForIMHandle:(id)handle;
+- (void)_addIMHandleToIDToHandlesMap:(id)map;
 - (void)_addressBookChanged;
-- (void)_buildSiblingsForIMHandle:(id)a3;
-- (void)_clearSiblingsCacheForIMHandle:(id)a3 rebuildAfter:(BOOL)a4;
+- (void)_buildSiblingsForIMHandle:(id)handle;
+- (void)_clearSiblingsCacheForIMHandle:(id)handle rebuildAfter:(BOOL)after;
 - (void)_dumpOutAllIMHandles;
-- (void)_dumpOutAllIMHandlesForAccount:(id)a3;
-- (void)_emptySiblingCacheForIMHandleGUID:(id)a3;
-- (void)_handleAddContactChangeHistoryEvent:(id)a3;
-- (void)_handleDeleteContactChangeHistoryEvent:(id)a3;
+- (void)_dumpOutAllIMHandlesForAccount:(id)account;
+- (void)_emptySiblingCacheForIMHandleGUID:(id)d;
+- (void)_handleAddContactChangeHistoryEvent:(id)event;
+- (void)_handleDeleteContactChangeHistoryEvent:(id)event;
 - (void)_handleDropEverythingChangeHistoryEvent;
-- (void)_handleNicknameDidChangeNotification:(id)a3;
-- (void)_handleUpdateContactChangeHistoryEvent:(id)a3;
+- (void)_handleNicknameDidChangeNotification:(id)notification;
+- (void)_handleUpdateContactChangeHistoryEvent:(id)event;
 - (void)_postContactChangeHistoryEventClientNotifications;
-- (void)_removeIMHandleToIDToHandlesMap:(id)a3;
-- (void)addHandleToCNIDMap:(id)a3 CNContact:(id)a4;
+- (void)_removeIMHandleToIDToHandlesMap:(id)map;
+- (void)addHandleToCNIDMap:(id)map CNContact:(id)contact;
 - (void)clearCNIDToHandlesMap;
-- (void)processContactChangeHistoryEventWithHandleIDs:(id)a3 andCNContact:(id)a4;
-- (void)registerIMHandle:(id)a3;
-- (void)removeHandleFromCNIDMap:(id)a3 withCNID:(id)a4;
-- (void)unregisterIMHandle:(id)a3;
+- (void)processContactChangeHistoryEventWithHandleIDs:(id)ds andCNContact:(id)contact;
+- (void)registerIMHandle:(id)handle;
+- (void)removeHandleFromCNIDMap:(id)map withCNID:(id)d;
+- (void)unregisterIMHandle:(id)handle;
 @end
 
 @implementation IMHandleRegistrar
@@ -139,10 +139,10 @@
 
 - (id)allIMHandles
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_allObjects(v2->_allIMHandles, v3, v4);
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_allObjects(selfCopy->_allIMHandles, v3, v4);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -172,10 +172,10 @@
   objc_msgSend_postNotificationName_object_(v18, v19, *MEMORY[0x1E69A6828], 0);
 }
 
-- (void)_handleDeleteContactChangeHistoryEvent:(id)a3
+- (void)_handleDeleteContactChangeHistoryEvent:(id)event
 {
   v72 = *MEMORY[0x1E69E9840];
-  v54 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -186,7 +186,7 @@
     }
   }
 
-  v6 = objc_msgSend_userInfo(v54, v3, v4);
+  v6 = objc_msgSend_userInfo(eventCopy, v3, v4);
   v53 = v6;
   if (v6)
   {
@@ -296,9 +296,9 @@
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAddContactChangeHistoryEvent:(id)a3
+- (void)_handleAddContactChangeHistoryEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -309,7 +309,7 @@
     }
   }
 
-  v7 = objc_msgSend_userInfo(v3, v4, v5);
+  v7 = objc_msgSend_userInfo(eventCopy, v4, v5);
   v9 = v7;
   if (v7)
   {
@@ -337,9 +337,9 @@
 LABEL_8:
 }
 
-- (void)_handleUpdateContactChangeHistoryEvent:(id)a3
+- (void)_handleUpdateContactChangeHistoryEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -350,7 +350,7 @@ LABEL_8:
     }
   }
 
-  v7 = objc_msgSend_userInfo(v3, v4, v5);
+  v7 = objc_msgSend_userInfo(eventCopy, v4, v5);
   v9 = v7;
   if (v7)
   {
@@ -378,23 +378,23 @@ LABEL_8:
 LABEL_8:
 }
 
-- (void)processContactChangeHistoryEventWithHandleIDs:(id)a3 andCNContact:(id)a4
+- (void)processContactChangeHistoryEventWithHandleIDs:(id)ds andCNContact:(id)contact
 {
   v81 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_count(v5, v7, v8);
-  v68 = v6;
-  v65 = v5;
-  if (v6 && v9)
+  dsCopy = ds;
+  contactCopy = contact;
+  v9 = objc_msgSend_count(dsCopy, v7, v8);
+  v68 = contactCopy;
+  v65 = dsCopy;
+  if (contactCopy && v9)
   {
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v10 = v5;
+    v10 = dsCopy;
     v12 = 0;
-    v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v73, v80, 16, v5);
+    v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v73, v80, 16, dsCopy);
     if (v13)
     {
       v14 = *v74;
@@ -457,10 +457,10 @@ LABEL_8:
     }
   }
 
-  if (v6)
+  if (contactCopy)
   {
     v33 = objc_msgSend_sharedInstance(MEMORY[0x1E69A7FD0], v30, v31);
-    v36 = objc_msgSend_identifier(v6, v34, v35);
+    v36 = objc_msgSend_identifier(contactCopy, v34, v35);
     v38 = objc_msgSend_handleIDsForCNID_(v33, v37, v36);
   }
 
@@ -580,11 +580,11 @@ LABEL_8:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNicknameDidChangeNotification:(id)a3
+- (void)_handleNicknameDidChangeNotification:(id)notification
 {
   v45 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = objc_msgSend_userInfo(v31, v4, v5);
+  notificationCopy = notification;
+  v6 = objc_msgSend_userInfo(notificationCopy, v4, v5);
   v32 = objc_msgSend_objectForKeyedSubscript_(v6, v7, @"__kIMNicknameDidChangeNotificationHandleIDsWithUpdatedNamesUserInfoKey");
 
   objc_opt_class();
@@ -666,11 +666,11 @@ LABEL_8:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_emptySiblingCacheForIMHandleGUID:(id)a3
+- (void)_emptySiblingCacheForIMHandleGUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = objc_msgSend_objectForKey_(self->_siblingsMap, a2, a3);
+    v3 = objc_msgSend_objectForKey_(self->_siblingsMap, a2, d);
     if (v3)
     {
       v6 = v3;
@@ -685,14 +685,14 @@ LABEL_8:
   }
 }
 
-- (void)_buildSiblingsForIMHandle:(id)a3
+- (void)_buildSiblingsForIMHandle:(id)handle
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  handleCopy = handle;
+  v7 = handleCopy;
+  if (handleCopy)
   {
-    v8 = objc_msgSend_guid(v4, v5, v6);
+    v8 = objc_msgSend_guid(handleCopy, v5, v6);
     objc_msgSend__emptySiblingCacheForIMHandleGUID_(self, v9, v8);
 
     v12 = objc_msgSend_guid(v7, v10, v11);
@@ -761,12 +761,12 @@ LABEL_8:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_clearSiblingsCacheForIMHandle:(id)a3 rebuildAfter:(BOOL)a4
+- (void)_clearSiblingsCacheForIMHandle:(id)handle rebuildAfter:(BOOL)after
 {
-  v4 = a4;
+  afterCopy = after;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_guid(v6, v7, v8);
+  handleCopy = handle;
+  v9 = objc_msgSend_guid(handleCopy, v7, v8);
   if (objc_msgSend_length(v9, v10, v11))
   {
     v13 = objc_msgSend_objectForKey_(self->_siblingsMap, v12, v9);
@@ -793,7 +793,7 @@ LABEL_8:
           }
 
           v25 = *(*(&v32 + 1) + 8 * v24);
-          if (v25 != v6)
+          if (v25 != handleCopy)
           {
             v26 = objc_msgSend_guid(v25, v20, v21, v32);
             objc_msgSend__emptySiblingCacheForIMHandleGUID_(self, v27, v26);
@@ -810,24 +810,24 @@ LABEL_8:
     }
 
     objc_msgSend__emptySiblingCacheForIMHandleGUID_(self, v28, v9);
-    if (v4)
+    if (afterCopy)
     {
-      objc_msgSend__buildSiblingsForIMHandle_(self, v29, v6);
-      objc_msgSend__clearSiblingsCacheForIMHandle_rebuildAfter_(self, v30, v6, 0);
+      objc_msgSend__buildSiblingsForIMHandle_(self, v29, handleCopy);
+      objc_msgSend__clearSiblingsCacheForIMHandle_rebuildAfter_(self, v30, handleCopy, 0);
     }
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addHandleToCNIDMap:(id)a3 CNContact:(id)a4
+- (void)addHandleToCNIDMap:(id)map CNContact:(id)contact
 {
-  v28 = a3;
-  v8 = a4;
-  if (v28 && v8)
+  mapCopy = map;
+  contactCopy = contact;
+  if (mapCopy && contactCopy)
   {
     v9 = objc_msgSend_sharedInstance(IMHandleRegistrar, v6, v7);
-    v12 = objc_msgSend_identifier(v8, v10, v11);
+    v12 = objc_msgSend_identifier(contactCopy, v10, v11);
     v14 = objc_msgSend_handlesForCNIdentifier_(v9, v13, v12);
     v17 = objc_msgSend_mutableCopy(v14, v15, v16);
 
@@ -836,7 +836,7 @@ LABEL_8:
       if (v17)
       {
 LABEL_5:
-        objc_msgSend_addObject_(v17, v18, v28);
+        objc_msgSend_addObject_(v17, v18, mapCopy);
 
         goto LABEL_6;
       }
@@ -857,7 +857,7 @@ LABEL_5:
     v21 = objc_alloc(MEMORY[0x1E695DFA8]);
     v17 = objc_msgSend_initWithCapacity_(v21, v22, 1);
     v23 = self->_CNIDToHandlesMap;
-    v26 = objc_msgSend_identifier(v8, v24, v25);
+    v26 = objc_msgSend_identifier(contactCopy, v24, v25);
     objc_msgSend_setObject_forKey_(v23, v27, v17, v26);
 
     goto LABEL_5;
@@ -866,12 +866,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)handlesForCNIdentifier:(id)a3
+- (id)handlesForCNIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  identifierCopy = identifier;
+  if (objc_msgSend_length(identifierCopy, v5, v6))
   {
-    v8 = objc_msgSend_objectForKey_(self->_CNIDToHandlesMap, v7, v4);
+    v8 = objc_msgSend_objectForKey_(self->_CNIDToHandlesMap, v7, identifierCopy);
   }
 
   else
@@ -882,11 +882,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)removeHandleFromCNIDMap:(id)a3 withCNID:(id)a4
+- (void)removeHandleFromCNIDMap:(id)map withCNID:(id)d
 {
-  v24 = a3;
-  v8 = a4;
-  if (v24 && objc_msgSend_length(v8, v6, v7))
+  mapCopy = map;
+  dCopy = d;
+  if (mapCopy && objc_msgSend_length(dCopy, v6, v7))
   {
     if (!self->_CNIDToHandlesMap)
     {
@@ -896,17 +896,17 @@ LABEL_6:
     }
 
     v13 = objc_msgSend_sharedInstance(IMHandleRegistrar, v9, v10);
-    v15 = objc_msgSend_handlesForCNIdentifier_(v13, v14, v8);
+    v15 = objc_msgSend_handlesForCNIdentifier_(v13, v14, dCopy);
     v18 = objc_msgSend_mutableCopy(v15, v16, v17);
 
     if (objc_msgSend_count(v18, v19, v20))
     {
-      objc_msgSend_removeObject_(v18, v21, v24);
+      objc_msgSend_removeObject_(v18, v21, mapCopy);
     }
 
     if (!objc_msgSend_count(v18, v21, v22))
     {
-      objc_msgSend_removeObjectForKey_(self->_CNIDToHandlesMap, v23, v8);
+      objc_msgSend_removeObjectForKey_(self->_CNIDToHandlesMap, v23, dCopy);
     }
   }
 }
@@ -933,31 +933,31 @@ LABEL_6:
   return v3;
 }
 
-- (void)registerIMHandle:(id)a3
+- (void)registerIMHandle:(id)handle
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_msgSend_addObject_(v5->_allIMHandles, v6, v4);
-  siblingsMap = v5->_siblingsMap;
-  v10 = objc_msgSend_guid(v4, v8, v9);
+  handleCopy = handle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_msgSend_addObject_(selfCopy->_allIMHandles, v6, handleCopy);
+  siblingsMap = selfCopy->_siblingsMap;
+  v10 = objc_msgSend_guid(handleCopy, v8, v9);
   v12 = objc_msgSend_objectForKey_(siblingsMap, v11, v10);
 
   if (!v12)
   {
-    v15 = objc_msgSend_guid(v4, v13, v14);
-    objc_msgSend__emptySiblingCacheForIMHandleGUID_(v5, v16, v15);
+    v15 = objc_msgSend_guid(handleCopy, v13, v14);
+    objc_msgSend__emptySiblingCacheForIMHandleGUID_(selfCopy, v16, v15);
   }
 
-  objc_msgSend__addIMHandleToIDToHandlesMap_(v5, v13, v4);
+  objc_msgSend__addIMHandleToIDToHandlesMap_(selfCopy, v13, handleCopy);
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v20 = objc_msgSend_ID(v4, v18, v19);
-      v23 = objc_msgSend_count(v5->_allIMHandles, v21, v22);
+      v20 = objc_msgSend_ID(handleCopy, v18, v19);
+      v23 = objc_msgSend_count(selfCopy->_allIMHandles, v21, v22);
       v25 = 138412546;
       v26 = v20;
       v27 = 1024;
@@ -966,40 +966,40 @@ LABEL_6:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterIMHandle:(id)a3
+- (void)unregisterIMHandle:(id)handle
 {
-  v14 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v7 = objc_msgSend_guid(v14, v5, v6);
+  handleCopy = handle;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = objc_msgSend_guid(handleCopy, v5, v6);
   if (objc_msgSend_length(v7, v8, v9))
   {
-    objc_msgSend_removeObject_(v4->_allIMHandles, v10, v14);
-    objc_msgSend__clearSiblingsCacheForIMHandle_rebuildAfter_(v4, v11, v14, 0);
-    objc_msgSend_removeObjectForKey_(v4->_siblingsMap, v12, v7);
-    objc_msgSend__removeIMHandleToIDToHandlesMap_(v4, v13, v14);
+    objc_msgSend_removeObject_(selfCopy->_allIMHandles, v10, handleCopy);
+    objc_msgSend__clearSiblingsCacheForIMHandle_rebuildAfter_(selfCopy, v11, handleCopy, 0);
+    objc_msgSend_removeObjectForKey_(selfCopy->_siblingsMap, v12, v7);
+    objc_msgSend__removeIMHandleToIDToHandlesMap_(selfCopy, v13, handleCopy);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)siblingsForIMHandle:(id)a3
+- (id)siblingsForIMHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   siblingsMap = self->_siblingsMap;
-  v8 = objc_msgSend_guid(v4, v6, v7);
+  v8 = objc_msgSend_guid(handleCopy, v6, v7);
   v10 = objc_msgSend_objectForKey_(siblingsMap, v9, v8);
 
   if (!objc_msgSend_count(v10, v11, v12))
   {
-    objc_msgSend__buildSiblingsForIMHandle_(self, v13, v4);
+    objc_msgSend__buildSiblingsForIMHandle_(self, v13, handleCopy);
     v15 = self->_siblingsMap;
-    v18 = objc_msgSend_guid(v4, v16, v17);
+    v18 = objc_msgSend_guid(handleCopy, v16, v17);
     v20 = objc_msgSend_objectForKey_(v15, v19, v18);
 
     v10 = v20;
@@ -1010,12 +1010,12 @@ LABEL_6:
   return v21;
 }
 
-- (void)_addIMHandleToIDToHandlesMap:(id)a3
+- (void)_addIMHandleToIDToHandlesMap:(id)map
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4 && (objc_msgSend_ID(v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_length(v8, v9, v10), v8, v11))
+  mapCopy = map;
+  v7 = mapCopy;
+  if (mapCopy && (objc_msgSend_ID(mapCopy, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_length(v8, v9, v10), v8, v11))
   {
     IDToHandlesMap = self->_IDToHandlesMap;
     v15 = objc_msgSend_ID(v7, v12, v13);
@@ -1052,12 +1052,12 @@ LABEL_6:
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeIMHandleToIDToHandlesMap:(id)a3
+- (void)_removeIMHandleToIDToHandlesMap:(id)map
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v7 = v4;
-  if (v4 && (objc_msgSend_ID(v4, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_length(v8, v9, v10), v8, v11))
+  mapCopy = map;
+  v7 = mapCopy;
+  if (mapCopy && (objc_msgSend_ID(mapCopy, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_length(v8, v9, v10), v8, v11))
   {
     IDToHandlesMap = self->_IDToHandlesMap;
     v15 = objc_msgSend_ID(v7, v12, v13);
@@ -1099,20 +1099,20 @@ LABEL_6:
   return v3;
 }
 
-- (id)getIMHandlesForID:(id)a3
+- (id)getIMHandlesForID:(id)d
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6))
+  dCopy = d;
+  if (objc_msgSend_length(dCopy, v5, v6))
   {
-    v8 = objc_msgSend_objectForKey_(self->_IDToHandlesMap, v7, v4);
+    v8 = objc_msgSend_objectForKey_(self->_IDToHandlesMap, v7, dCopy);
     v11 = objc_msgSend_allObjects(v8, v9, v10);
     v14 = objc_msgSend_copy(v11, v12, v13);
 
     v17 = objc_msgSend_dialingForCurrentLocale(MEMORY[0x1E69A7FD0], v15, v16);
-    if (objc_msgSend_count(v14, v18, v19) || (objc_msgSend_hasPrefix_(v4, v20, v17) & 1) != 0 || !MEMORY[0x1AC56C3C0](v4))
+    if (objc_msgSend_count(v14, v18, v19) || (objc_msgSend_hasPrefix_(dCopy, v20, v17) & 1) != 0 || !MEMORY[0x1AC56C3C0](dCopy))
     {
-      v22 = v4;
+      v22 = dCopy;
       v36 = objc_msgSend_copy(v14, v20, v21);
     }
 
@@ -1142,7 +1142,7 @@ LABEL_6:
 
     v37 = v36;
 
-    v4 = v22;
+    dCopy = v22;
   }
 
   else
@@ -1227,10 +1227,10 @@ LABEL_6:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_dumpOutAllIMHandlesForAccount:(id)a3
+- (void)_dumpOutAllIMHandlesForAccount:(id)account
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  accountCopy = account;
   if (!_IMWillLog())
   {
     goto LABEL_24;
@@ -1242,7 +1242,7 @@ LABEL_6:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v4;
+      v28 = accountCopy;
       _os_log_impl(&dword_1A823F000, v5, OS_LOG_TYPE_INFO, "All handles for account: %@", buf, 0xCu);
     }
   }
@@ -1285,7 +1285,7 @@ LABEL_20:
 
       v15 = *(*(&v22 + 1) + 8 * i);
       v16 = objc_msgSend_account(v15, v8, v9, v21, v22);
-      v17 = v16 == v4;
+      v17 = v16 == accountCopy;
 
       if (v17)
       {
@@ -1316,19 +1316,19 @@ LABEL_24:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_accountSiblingsForHandle:(id)a3
+- (id)_accountSiblingsForHandle:(id)handle
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = objc_msgSend_guid(v3, v4, v5);
+  handleCopy = handle;
+  v6 = objc_msgSend_guid(handleCopy, v4, v5);
   if (v6)
   {
     v44 = v6;
     v45 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    objc_msgSend_addObject_(v45, v7, v3);
-    v10 = objc_msgSend_countryCode(v3, v8, v9);
-    v13 = objc_msgSend_originalID(v3, v11, v12);
-    v16 = objc_msgSend_account(v3, v14, v15);
+    objc_msgSend_addObject_(v45, v7, handleCopy);
+    v10 = objc_msgSend_countryCode(handleCopy, v8, v9);
+    v13 = objc_msgSend_originalID(handleCopy, v11, v12);
+    v16 = objc_msgSend_account(handleCopy, v14, v15);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -1354,8 +1354,8 @@ LABEL_24:
           v32 = *(*(&v46 + 1) + 8 * i);
           if (v32 != v16)
           {
-            v33 = v3;
-            v34 = objc_msgSend_ID(v3, v27, v28);
+            v33 = handleCopy;
+            v34 = objc_msgSend_ID(handleCopy, v27, v28);
             v36 = objc_msgSend__imHandleWithID_alreadyCanonical_originalID_countryCode_(v32, v35, v34, 1, v13, v10);
 
             if (v36 && (objc_msgSend_containsObject_(v45, v37, v36) & 1) == 0)
@@ -1363,7 +1363,7 @@ LABEL_24:
               objc_msgSend_addObject_(v45, v38, v36);
             }
 
-            v3 = v33;
+            handleCopy = v33;
           }
         }
 
@@ -1388,16 +1388,16 @@ LABEL_24:
   return v41;
 }
 
-- (id)_existingAccountSiblingsForHandle:(id)a3
+- (id)_existingAccountSiblingsForHandle:(id)handle
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = objc_msgSend_guid(v3, v4, v5);
+  handleCopy = handle;
+  v6 = objc_msgSend_guid(handleCopy, v4, v5);
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    objc_msgSend_addObject_(v7, v8, v3);
-    v11 = objc_msgSend_account(v3, v9, v10);
+    objc_msgSend_addObject_(v7, v8, handleCopy);
+    v11 = objc_msgSend_account(handleCopy, v9, v10);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -1423,7 +1423,7 @@ LABEL_24:
           v27 = *(*(&v37 + 1) + 8 * i);
           if (v27 != v11)
           {
-            v28 = objc_msgSend_ID(v3, v22, v23);
+            v28 = objc_msgSend_ID(handleCopy, v22, v23);
             v30 = objc_msgSend_existingIMHandleWithID_alreadyCanonical_(v27, v29, v28, 1);
 
             if (v30)
@@ -1452,23 +1452,23 @@ LABEL_24:
   return v34;
 }
 
-- (id)_chatSiblingsForHandle:(id)a3
+- (id)_chatSiblingsForHandle:(id)handle
 {
   v72 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v54 = objc_msgSend_guid(v3, v4, v5);
+  handleCopy = handle;
+  v54 = objc_msgSend_guid(handleCopy, v4, v5);
   if (objc_msgSend_length(v54, v6, v7))
   {
     v59 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    objc_msgSend_addObject_(v59, v8, v3);
-    v11 = objc_msgSend_account(v3, v9, v10);
+    objc_msgSend_addObject_(v59, v8, handleCopy);
+    v11 = objc_msgSend_account(handleCopy, v9, v10);
     if (IMOSLoggingEnabled())
     {
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v71 = v3;
+        v71 = handleCopy;
         _os_log_impl(&dword_1A823F000, v12, OS_LOG_TYPE_DEBUG, "Handle %@", buf, 0xCu);
       }
     }
@@ -1484,13 +1484,13 @@ LABEL_24:
       }
     }
 
-    v16 = objc_msgSend_countryCode(v3, v13, v14);
-    v19 = objc_msgSend_originalID(v3, v17, v18);
+    v16 = objc_msgSend_countryCode(handleCopy, v13, v14);
+    v19 = objc_msgSend_originalID(handleCopy, v17, v18);
     v66 = 0u;
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v22 = objc_msgSend_service(v3, v20, v21);
+    v22 = objc_msgSend_service(handleCopy, v20, v21);
     obj = objc_msgSend_siblingServices(v22, v23, v24);
 
     v57 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v25, &v64, v69, 16);
@@ -1534,12 +1534,12 @@ LABEL_24:
                 v40 = *(*(&v60 + 1) + 8 * i);
                 if (v40 != v11)
                 {
-                  v41 = objc_msgSend_ID(v3, v35, v36);
+                  v41 = objc_msgSend_ID(handleCopy, v35, v36);
                   v43 = objc_msgSend__imHandleWithID_alreadyCanonical_originalID_countryCode_(v40, v42, v41, 1, v19, v16);
 
                   if (v43)
                   {
-                    v45 = v43 == v3;
+                    v45 = v43 == handleCopy;
                   }
 
                   else
@@ -1605,20 +1605,20 @@ LABEL_24:
   return v50;
 }
 
-- (id)_existingChatSiblingsForHandle:(id)a3
+- (id)_existingChatSiblingsForHandle:(id)handle
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v6 = objc_msgSend_guid(v3, v4, v5);
+  handleCopy = handle;
+  v6 = objc_msgSend_guid(handleCopy, v4, v5);
 
   if (v6)
   {
     v45 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    objc_msgSend_addObject_(v45, v7, v3);
-    v10 = objc_msgSend_account(v3, v8, v9);
+    objc_msgSend_addObject_(v45, v7, handleCopy);
+    v10 = objc_msgSend_account(handleCopy, v8, v9);
     v44 = objc_msgSend_service(v10, v11, v12);
-    v15 = objc_msgSend_countryCode(v3, v13, v14);
-    v18 = objc_msgSend_originalID(v3, v16, v17);
+    v15 = objc_msgSend_countryCode(handleCopy, v13, v14);
+    v18 = objc_msgSend_originalID(handleCopy, v16, v17);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -1645,12 +1645,12 @@ LABEL_24:
           {
             if ((objc_msgSend_hasCapability_(*(*(&v46 + 1) + 8 * i), v26, 1024) & 1) != 0 || (objc_msgSend_hasCapability_(v30, v26, 8) & 1) != 0 || (objc_msgSend_service(v30, v26, v31), v32 = objc_claimAutoreleasedReturnValue(), v32, v32 == v44))
             {
-              v33 = objc_msgSend_ID(v3, v26, v31);
+              v33 = objc_msgSend_ID(handleCopy, v26, v31);
               v35 = objc_msgSend_existingIMHandleWithID_alreadyCanonical_(v30, v34, v33, 1);
 
               if (v35)
               {
-                v37 = v35 == v3;
+                v37 = v35 == handleCopy;
               }
 
               else

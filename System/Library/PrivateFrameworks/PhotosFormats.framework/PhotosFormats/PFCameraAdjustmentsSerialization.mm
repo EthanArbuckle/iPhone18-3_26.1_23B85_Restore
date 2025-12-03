@@ -1,19 +1,19 @@
 @interface PFCameraAdjustmentsSerialization
-+ (BOOL)deserializeDictionary:(id)a3 toFilters:(id *)a4 portraitMetadata:(id *)a5 error:(id *)a6;
-+ (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5;
-+ (id)_errorWithMessage:(id)a3 code:(int64_t)a4;
-+ (id)deserializedAdjustmentsFromData:(id)a3 error:(id *)a4;
-+ (id)serializedDictionaryForFilters:(id)a3 portraitMetadata:(id)a4 error:(id *)a5;
++ (BOOL)deserializeDictionary:(id)dictionary toFilters:(id *)filters portraitMetadata:(id *)metadata error:(id *)error;
++ (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes;
++ (id)_errorWithMessage:(id)message code:(int64_t)code;
++ (id)deserializedAdjustmentsFromData:(id)data error:(id *)error;
++ (id)serializedDictionaryForFilters:(id)filters portraitMetadata:(id)metadata error:(id *)error;
 @end
 
 @implementation PFCameraAdjustmentsSerialization
 
-+ (Class)unarchiver:(id)a3 cannotDecodeObjectOfClassName:(id)a4 originalClasses:(id)a5
++ (Class)unarchiver:(id)unarchiver cannotDecodeObjectOfClassName:(id)name originalClasses:(id)classes
 {
-  v6 = a4;
-  if ([a5 containsObject:@"CIFilter"])
+  nameCopy = name;
+  if ([classes containsObject:@"CIFilter"])
   {
-    v7 = [MEMORY[0x1E695F648] filterWithName:v6];
+    v7 = [MEMORY[0x1E695F648] filterWithName:nameCopy];
     v8 = objc_opt_class();
   }
 
@@ -27,24 +27,24 @@
   return v8;
 }
 
-+ (id)_errorWithMessage:(id)a3 code:(int64_t)a4
++ (id)_errorWithMessage:(id)message code:(int64_t)code
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", a3];
+  message = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", message];
   v9 = *MEMORY[0x1E696A578];
-  v10[0] = v5;
+  v10[0] = message;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-  v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFCameraAdjustmentsSerializationErrorDomain" code:a4 userInfo:v6];
+  v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFCameraAdjustmentsSerializationErrorDomain" code:code userInfo:v6];
 
   return v7;
 }
 
-+ (BOOL)deserializeDictionary:(id)a3 toFilters:(id *)a4 portraitMetadata:(id *)a5 error:(id *)a6
++ (BOOL)deserializeDictionary:(id)dictionary toFilters:(id *)filters portraitMetadata:(id *)metadata error:(id *)error
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (!v10)
+  dictionaryCopy = dictionary;
+  v11 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v15 = 0;
     v16 = 0;
@@ -52,14 +52,14 @@
     goto LABEL_35;
   }
 
-  v12 = [v10 objectForKeyedSubscript:@"version"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   v13 = [v11 objectForKeyedSubscript:@"filters"];
   v46 = [v11 objectForKeyedSubscript:@"portraitMetadata"];
   if (!v12)
   {
     v14 = @"Missing version";
 LABEL_13:
-    v18 = a1;
+    selfCopy2 = self;
     v19 = -94100;
     goto LABEL_14;
   }
@@ -108,9 +108,9 @@ LABEL_13:
 
   v19 = -94101;
   v14 = @"Unsupported version";
-  v18 = a1;
+  selfCopy2 = self;
 LABEL_14:
-  v15 = [v18 _errorWithMessage:v14 code:v19];
+  v15 = [selfCopy2 _errorWithMessage:v14 code:v19];
   if (v15)
   {
     v17 = 0;
@@ -129,8 +129,8 @@ LABEL_16:
   v45 = v21;
   v23 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v21 error:&v48];
   v15 = v48;
-  [v23 setDelegate:a1];
-  v42 = a1;
+  [v23 setDelegate:self];
+  selfCopy3 = self;
   if (v23)
   {
     v17 = [v23 decodeObjectOfClasses:v22 forKey:*MEMORY[0x1E696A508]];
@@ -140,22 +140,22 @@ LABEL_16:
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Error unarchiving filters, error: %@", v15];
     v24 = v38 = v12;
-    [a1 _errorWithMessage:v24 code:-94100];
-    v40 = a4;
-    v25 = a5;
-    v27 = v26 = a6;
+    [self _errorWithMessage:v24 code:-94100];
+    filtersCopy = filters;
+    metadataCopy = metadata;
+    v27 = v26 = error;
 
     v17 = 0;
     v15 = v27;
-    a6 = v26;
-    a5 = v25;
+    error = v26;
+    metadata = metadataCopy;
     v12 = v38;
-    a4 = v40;
+    filters = filtersCopy;
   }
 
   if (!(v17 | v15))
   {
-    v15 = [v42 _errorWithMessage:@"No filters could be extracted" code:-94100];
+    v15 = [selfCopy3 _errorWithMessage:@"No filters could be extracted" code:-94100];
   }
 
   objc_autoreleasePoolPop(context);
@@ -182,17 +182,17 @@ LABEL_16:
   else
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"Error unarchiving portrait metadata, error: %@", v15];
-    v32 = v31 = a6;
-    v39 = [v42 _errorWithMessage:v32 code:-94100];
+    v32 = v31 = error;
+    v39 = [selfCopy3 _errorWithMessage:v32 code:-94100];
 
-    a6 = v31;
+    error = v31;
     v16 = 0;
     v15 = v39;
   }
 
   if (!(v16 | v15))
   {
-    v15 = [v42 _errorWithMessage:@"No portrait metadata could be extracted" code:-94100];
+    v15 = [selfCopy3 _errorWithMessage:@"No portrait metadata could be extracted" code:-94100];
   }
 
   objc_autoreleasePoolPop(contexta);
@@ -205,7 +205,7 @@ LABEL_32:
   {
 LABEL_35:
     v33 = 1;
-    if (!a4)
+    if (!filters)
     {
       goto LABEL_37;
     }
@@ -216,46 +216,46 @@ LABEL_35:
   v33 = 0;
   v16 = 0;
   v17 = 0;
-  if (a4)
+  if (filters)
   {
 LABEL_36:
     v34 = v17;
-    *a4 = v17;
+    *filters = v17;
   }
 
 LABEL_37:
-  if (a5)
+  if (metadata)
   {
     v35 = v16;
-    *a5 = v16;
+    *metadata = v16;
   }
 
-  if (a6)
+  if (error)
   {
     v36 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v33;
 }
 
-+ (id)serializedDictionaryForFilters:(id)a3 portraitMetadata:(id)a4 error:(id *)a5
++ (id)serializedDictionaryForFilters:(id)filters portraitMetadata:(id)metadata error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  filtersCopy = filters;
+  metadataCopy = metadata;
+  if (filtersCopy)
   {
     v21 = 0;
-    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v21];
+    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:filtersCopy requiringSecureCoding:1 error:&v21];
     v11 = v21;
     v12 = 0;
     if (!v10)
     {
       v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to serialize filters, error: %@", v11];
-      v12 = [a1 _errorWithMessage:v13 code:-94102];
+      v12 = [self _errorWithMessage:v13 code:-94102];
     }
 
-    if (!v9)
+    if (!metadataCopy)
     {
 LABEL_9:
       v14 = 0;
@@ -272,9 +272,9 @@ LABEL_9:
 
   else
   {
-    v12 = [a1 _errorWithMessage:@"Missing filters parameter" code:-94103];
+    v12 = [self _errorWithMessage:@"Missing filters parameter" code:-94103];
     v10 = 0;
-    if (!v9)
+    if (!metadataCopy)
     {
       goto LABEL_9;
     }
@@ -286,31 +286,31 @@ LABEL_9:
   }
 
   v20 = 0;
-  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v20];
+  v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:metadataCopy requiringSecureCoding:1 error:&v20];
 LABEL_10:
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  [v17 setObject:@"0.0" forKeyedSubscript:@"version"];
-  [v17 setObject:v10 forKeyedSubscript:@"filters"];
-  [v17 setObject:v14 forKeyedSubscript:@"portraitMetadata"];
-  v16 = [v17 copy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"0.0" forKeyedSubscript:@"version"];
+  [dictionary setObject:v10 forKeyedSubscript:@"filters"];
+  [dictionary setObject:v14 forKeyedSubscript:@"portraitMetadata"];
+  v16 = [dictionary copy];
 
   v12 = 0;
   v15 = v14;
 LABEL_11:
-  if (a5)
+  if (error)
   {
     v18 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v16;
 }
 
-+ (id)deserializedAdjustmentsFromData:(id)a3 error:(id *)a4
++ (id)deserializedAdjustmentsFromData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x1E696ACD0];
-  v6 = a3;
-  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:a4];
+  dataCopy = data;
+  v7 = [v5 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:error];
 
   return v7;
 }

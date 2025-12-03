@@ -2,9 +2,9 @@
 - (BOOL)_lock_leaveIfPossible;
 - (BOOL)didTimeout;
 - (BOOL)leave;
-- (BOOL)leaveWithResult:(id)a3;
+- (BOOL)leaveWithResult:(id)result;
 - (BOOL)wasCancelled;
-- (PLTimedDispatchGroupEnterSession)initWithGroup:(id)a3 queue:(id)a4 timeout:(double)a5 name:(id)a6;
+- (PLTimedDispatchGroupEnterSession)initWithGroup:(id)group queue:(id)queue timeout:(double)timeout name:(id)name;
 - (id)description;
 - (id)result;
 - (void)_handleTimeoutCallback;
@@ -16,10 +16,10 @@
 
 - (BOOL)didTimeout
 {
-  v2 = [(PLTimedDispatchGroupEnterSession *)self result];
-  if ([v2 isFailure])
+  result = [(PLTimedDispatchGroupEnterSession *)self result];
+  if ([result isFailure])
   {
-    v3 = [v2 error];
+    error = [result error];
     v4 = PLIsErrorEqualToCode();
   }
 
@@ -38,10 +38,10 @@
   return v2;
 }
 
-- (BOOL)leaveWithResult:(id)a3
+- (BOOL)leaveWithResult:(id)result
 {
-  v6 = a3;
-  v3 = v6;
+  resultCopy = result;
+  v3 = resultCopy;
   v4 = PLBoolResultWithUnfairLock();
 
   return v4;
@@ -61,8 +61,8 @@ uint64_t __52__PLTimedDispatchGroupEnterSession_leaveWithResult___block_invoke(u
 - (BOOL)leave
 {
   v3 = MEMORY[0x1E69BF2D0];
-  v4 = [MEMORY[0x1E695DFB0] null];
-  v5 = [v3 successWithResult:v4];
+  null = [MEMORY[0x1E695DFB0] null];
+  v5 = [v3 successWithResult:null];
 
   LOBYTE(self) = [(PLTimedDispatchGroupEnterSession *)self leaveWithResult:v5];
   return self;
@@ -70,16 +70,16 @@ uint64_t __52__PLTimedDispatchGroupEnterSession_leaveWithResult___block_invoke(u
 
 - (BOOL)wasCancelled
 {
-  v2 = [(PLTimedDispatchGroupEnterSession *)self result];
-  v3 = v2;
-  if (v2 && [v2 isFailure])
+  result = [(PLTimedDispatchGroupEnterSession *)self result];
+  v3 = result;
+  if (result && [result isFailure])
   {
-    v4 = [v3 error];
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:*MEMORY[0x1E696A250]])
+    error = [v3 error];
+    domain = [error domain];
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v6 = [v3 error];
-      v7 = [v6 code] == 3072;
+      error2 = [v3 error];
+      v7 = [error2 code] == 3072;
     }
 
     else
@@ -184,22 +184,22 @@ void __58__PLTimedDispatchGroupEnterSession__handleTimeoutCallback__block_invoke
   return v6;
 }
 
-- (PLTimedDispatchGroupEnterSession)initWithGroup:(id)a3 queue:(id)a4 timeout:(double)a5 name:(id)a6
+- (PLTimedDispatchGroupEnterSession)initWithGroup:(id)group queue:(id)queue timeout:(double)timeout name:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  groupCopy = group;
+  queueCopy = queue;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = PLTimedDispatchGroupEnterSession;
   v14 = [(PLTimedDispatchGroupEnterSession *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_group, a3);
-    objc_storeStrong(&v15->_queue, a4);
-    v15->_timeout = a5;
+    objc_storeStrong(&v14->_group, group);
+    objc_storeStrong(&v15->_queue, queue);
+    v15->_timeout = timeout;
     v15->_lock._os_unfair_lock_opaque = 0;
-    v16 = [v13 copy];
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
   }

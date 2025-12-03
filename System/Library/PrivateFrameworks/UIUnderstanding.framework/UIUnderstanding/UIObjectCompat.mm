@@ -3,17 +3,17 @@
 - (NSString)description;
 - (NSUUID)id;
 - (UIObjectCompat)init;
-- (UIObjectCompat)initWithDetection:(id)a3 clickable:(id)a4 focused:(id)a5 icon:(id)a6 boundingBox:(id)a7 children:(id)a8;
-- (UIObjectCompat)initWithLabel:(int64_t)a3 confidence:(double)a4 text:(id)a5 boundingBox:(id)a6 children:(id)a7 clickable:(BOOL)a8 focused:(BOOL)a9;
+- (UIObjectCompat)initWithDetection:(id)detection clickable:(id)clickable focused:(id)focused icon:(id)icon boundingBox:(id)box children:(id)children;
+- (UIObjectCompat)initWithLabel:(int64_t)label confidence:(double)confidence text:(id)text boundingBox:(id)box children:(id)children clickable:(BOOL)clickable focused:(BOOL)focused;
 - (_TtC15UIUnderstanding11BoundingBox)boundingBox;
 - (_TtC15UIUnderstanding11UIDetection)detection;
 - (_TtC15UIUnderstanding13IconDetection)iconDetection;
 - (_TtC15UIUnderstanding14FocusDetection)focusDetection;
 - (_TtC15UIUnderstanding21ClickabilityDetection)clickDetection;
-- (void)setBoundingBox:(id)a3;
-- (void)setChildren:(id)a3;
-- (void)setDetection:(id)a3;
-- (void)setId:(id)a3;
+- (void)setBoundingBox:(id)box;
+- (void)setChildren:(id)children;
+- (void)setDetection:(id)detection;
+- (void)setId:(id)id;
 @end
 
 @implementation UIObjectCompat
@@ -33,7 +33,7 @@
   return v8;
 }
 
-- (void)setId:(id)a3
+- (void)setId:(id)id
 {
   v4 = sub_2702B3CEC();
   v5 = *(v4 - 8);
@@ -43,7 +43,7 @@
   v8 = OBJC_IVAR___UIObjectCompat_id;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
@@ -55,13 +55,13 @@
   return *(self + v3);
 }
 
-- (void)setDetection:(id)a3
+- (void)setDetection:(id)detection
 {
   v5 = OBJC_IVAR___UIObjectCompat_detection;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = detection;
+  detectionCopy = detection;
 }
 
 - (_TtC15UIUnderstanding11BoundingBox)boundingBox
@@ -71,13 +71,13 @@
   return *(self + v3);
 }
 
-- (void)setBoundingBox:(id)a3
+- (void)setBoundingBox:(id)box
 {
   v5 = OBJC_IVAR___UIObjectCompat_boundingBox;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = box;
+  boxCopy = box;
 }
 
 - (_TtC15UIUnderstanding13IconDetection)iconDetection
@@ -110,28 +110,28 @@
   return v2;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   type metadata accessor for UIObject();
   *(self + OBJC_IVAR___UIObjectCompat_groupingInfo + 24) = sub_2702B41BC();
 }
 
-- (UIObjectCompat)initWithDetection:(id)a3 clickable:(id)a4 focused:(id)a5 icon:(id)a6 boundingBox:(id)a7 children:(id)a8
+- (UIObjectCompat)initWithDetection:(id)detection clickable:(id)clickable focused:(id)focused icon:(id)icon boundingBox:(id)box children:(id)children
 {
   type metadata accessor for UIObject();
   v13 = sub_2702B41BC();
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = sub_27028121C(v14, a4, a5, a6, a7, v13);
+  detectionCopy = detection;
+  clickableCopy = clickable;
+  focusedCopy = focused;
+  iconCopy = icon;
+  v18 = sub_27028121C(detectionCopy, clickable, focused, icon, box, v13);
 
   return v18;
 }
 
-- (UIObjectCompat)initWithLabel:(int64_t)a3 confidence:(double)a4 text:(id)a5 boundingBox:(id)a6 children:(id)a7 clickable:(BOOL)a8 focused:(BOOL)a9
+- (UIObjectCompat)initWithLabel:(int64_t)label confidence:(double)confidence text:(id)text boundingBox:(id)box children:(id)children clickable:(BOOL)clickable focused:(BOOL)focused
 {
-  if (a5)
+  if (text)
   {
     v14 = sub_2702B402C();
     v16 = v15;
@@ -145,12 +145,12 @@
 
   type metadata accessor for UIObject();
   v17 = sub_2702B41BC();
-  return UIObject.init(label:confidence:text:boundingBox:children:clickable:focused:)(a3, v14, v16, a6, a4, v17, a8, a9);
+  return UIObject.init(label:confidence:text:boundingBox:children:clickable:focused:)(label, v14, v16, box, confidence, v17, clickable, focused);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_27027F510();
 
   v3 = sub_2702B3FFC();

@@ -19,7 +19,7 @@
 - (double)safari_grayscaleComponent
 {
   v2 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0E0]);
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v2, kCGRenderingIntentDefault, [a1 CGColor], 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v2, kCGRenderingIntentDefault, [self CGColor], 0);
   v4 = *CGColorGetComponents(CopyByMatchingToColorSpace);
   CFRelease(v2);
   CFRelease(CopyByMatchingToColorSpace);
@@ -49,7 +49,7 @@
   v7 = 0.0;
   v8 = 0.0;
   v6 = 0.0;
-  [a1 getRed:&v8 green:&v7 blue:&v6 alpha:0];
+  [self getRed:&v8 green:&v7 blue:&v6 alpha:0];
   v1 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
   v9[0] = v1;
   v2 = [MEMORY[0x1E696AD98] numberWithDouble:v7];
@@ -64,9 +64,9 @@
 + (id)safari_colorWithWBSNamedColorOption:()SafariSharedExtras
 {
   v3 = a3;
-  v4 = [v3 isClearColor];
+  isClearColor = [v3 isClearColor];
   v5 = MEMORY[0x1E69DC888];
-  if (v4)
+  if (isClearColor)
   {
     [MEMORY[0x1E69DC888] clearColor];
   }
@@ -101,8 +101,8 @@
       v6 = WBS_LOG_CHANNEL_PREFIXKeyedArchiver();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v7 = [v5 safari_privacyPreservingDescription];
-        [(UIColor(SafariSharedExtras) *)v7 safari_colorWithSerializedColorData:buf, v6];
+        safari_privacyPreservingDescription = [v5 safari_privacyPreservingDescription];
+        [(UIColor(SafariSharedExtras) *)safari_privacyPreservingDescription safari_colorWithSerializedColorData:buf, v6];
       }
     }
 
@@ -121,15 +121,15 @@
 - (id)safari_colorDataForSerialization
 {
   v2 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v2 encodeObject:a1 forKey:*MEMORY[0x1E696A508]];
-  v3 = [v2 encodedData];
+  [v2 encodeObject:self forKey:*MEMORY[0x1E696A508]];
+  encodedData = [v2 encodedData];
 
-  return v3;
+  return encodedData;
 }
 
 - (double)safari_luminance
 {
-  v2 = objc_getAssociatedObject(a1, sel_safari_luminance);
+  v2 = objc_getAssociatedObject(self, sel_safari_luminance);
   v3 = v2;
   if (v2)
   {
@@ -139,10 +139,10 @@
 
   else
   {
-    [a1 _safari_luminanceUsingColorSpaceName:*MEMORY[0x1E695F140]];
+    [self _safari_luminanceUsingColorSpaceName:*MEMORY[0x1E695F140]];
     v5 = v6;
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    objc_setAssociatedObject(a1, sel_safari_luminance, v7, 1);
+    objc_setAssociatedObject(self, sel_safari_luminance, v7, 1);
   }
 
   return v5;
@@ -150,7 +150,7 @@
 
 - (double)safari_sRGBLuminance
 {
-  v2 = objc_getAssociatedObject(a1, sel_safari_sRGBLuminance);
+  v2 = objc_getAssociatedObject(self, sel_safari_sRGBLuminance);
   v3 = v2;
   if (v2)
   {
@@ -160,10 +160,10 @@
 
   else
   {
-    [a1 _safari_luminanceUsingColorSpaceName:*MEMORY[0x1E695F1C0]];
+    [self _safari_luminanceUsingColorSpaceName:*MEMORY[0x1E695F1C0]];
     v5 = v6;
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    objc_setAssociatedObject(a1, sel_safari_sRGBLuminance, v7, 1);
+    objc_setAssociatedObject(self, sel_safari_sRGBLuminance, v7, 1);
   }
 
   return v5;
@@ -172,7 +172,7 @@
 - (double)_safari_luminanceUsingColorSpaceName:()SafariSharedExtras
 {
   v4 = CGColorSpaceCreateWithName(name);
-  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, kCGRenderingIntentDefault, [a1 CGColor], 0);
+  CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v4, kCGRenderingIntentDefault, [self CGColor], 0);
   Components = CGColorGetComponents(CopyByMatchingToColorSpace);
   v7 = WBSComputeLuminance(*Components, Components[1], Components[2]);
   CFRelease(v4);
@@ -183,21 +183,21 @@
 - (double)safari_saturation
 {
   v3 = 0.0;
-  v1 = [a1 safari_sRGBColor];
-  [v1 getHue:0 saturation:&v3 brightness:0 alpha:0];
+  safari_sRGBColor = [self safari_sRGBColor];
+  [safari_sRGBColor getHue:0 saturation:&v3 brightness:0 alpha:0];
 
   return v3;
 }
 
 - (BOOL)safari_isOffWhite
 {
-  [a1 safari_saturation];
+  [self safari_saturation];
   if (v2 >= 0.05)
   {
     return 0;
   }
 
-  [a1 safari_luminance];
+  [self safari_luminance];
   return v3 > 0.8;
 }
 
@@ -205,7 +205,7 @@
 {
   [a3 safari_luminance];
   v5 = v4;
-  [a1 safari_luminance];
+  [self safari_luminance];
   if (v5 <= v6)
   {
     v7 = v6;
@@ -230,7 +230,7 @@
   v8 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
-  [a1 getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
+  [self getHue:&v8 saturation:&v7 brightness:&v6 alpha:&v5];
   v3 = [MEMORY[0x1E69DC888] colorWithHue:v8 saturation:v7 brightness:v6 * a2 alpha:v5];
 
   return v3;

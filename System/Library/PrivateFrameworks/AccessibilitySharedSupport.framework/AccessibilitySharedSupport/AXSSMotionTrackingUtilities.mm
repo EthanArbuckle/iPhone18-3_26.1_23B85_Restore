@@ -1,5 +1,5 @@
 @interface AXSSMotionTrackingUtilities
-+ (BOOL)axss_HIDDeviceIsMFiAuthenticated:(id)a3;
++ (BOOL)axss_HIDDeviceIsMFiAuthenticated:(id)authenticated;
 + (NSDictionary)axss_frequencyElementMatchingDict;
 + (NSDictionary)axss_statusElementMatchingDict;
 + (NSDictionary)axss_xPositionElementMatchingDict;
@@ -112,10 +112,10 @@ void __64__AXSSMotionTrackingUtilities_axss_frequencyElementMatchingDict__block_
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)axss_HIDDeviceIsMFiAuthenticated:(id)a3
++ (BOOL)axss_HIDDeviceIsMFiAuthenticated:(id)authenticated
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"Authenticated"];
+  authenticatedCopy = authenticated;
+  v4 = [authenticatedCopy propertyForKey:@"Authenticated"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 BOOLValue])
   {
@@ -124,7 +124,7 @@ void __64__AXSSMotionTrackingUtilities_axss_frequencyElementMatchingDict__block_
 
   else
   {
-    v5 = [objc_opt_class() _axss_iAPInterfaceExistsForHIDDeviceService:{objc_msgSend(v3, "service")}];
+    v5 = [objc_opt_class() _axss_iAPInterfaceExistsForHIDDeviceService:{objc_msgSend(authenticatedCopy, "service")}];
   }
 
   return v5;

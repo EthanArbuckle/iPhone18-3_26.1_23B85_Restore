@@ -1,33 +1,33 @@
 @interface MapsSuggestionsShortcutTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 distance:(double)a4 trafficString:(id)a5;
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry distance:(double)distance trafficString:(id)string;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsShortcutTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  entryCopy = entry;
+  etaCopy = eta;
+  v8 = etaCopy;
+  if (entryCopy)
   {
-    if (v7)
+    if (etaCopy)
     {
-      [v7 seconds];
+      [etaCopy seconds];
       v10 = v9;
       GEOConfigGetDouble();
       v12 = v11;
       *v25 = 0;
-      if (MapsSuggestionsDistanceFromHereToEntry(v6, v25) && (v13 = *v25, GEOConfigGetDouble(), v13 < v14))
+      if (MapsSuggestionsDistanceFromHereToEntry(entryCopy, v25) && (v13 = *v25, GEOConfigGetDouble(), v13 < v14))
       {
-        [v6 setBoolean:1 forKey:@"MapsSuggestionsAlreadyThereKey"];
+        [entryCopy setBoolean:1 forKey:@"MapsSuggestionsAlreadyThereKey"];
       }
 
       else
       {
-        [v6 setBoolean:v10 < v12 forKey:@"MapsSuggestionsAlreadyThereKey"];
+        [entryCopy setBoolean:v10 < v12 forKey:@"MapsSuggestionsAlreadyThereKey"];
         if (v10 >= v12)
         {
           [v8 seconds];
@@ -45,9 +45,9 @@
           v17 = ;
 LABEL_20:
           v22 = v17;
-          v23 = [v6 undecoratedTitle];
+          undecoratedTitle = [entryCopy undecoratedTitle];
           v18 = 1;
-          [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v6 title:v23 subtitle:v22 includeLockedVersions:1];
+          [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:undecoratedTitle subtitle:v22 includeLockedVersions:1];
 
           goto LABEL_21;
         }
@@ -103,16 +103,16 @@ LABEL_21:
   return v18;
 }
 
-- (BOOL)formatTitlesForEntry:(id)a3 distance:(double)a4 trafficString:(id)a5
+- (BOOL)formatTitlesForEntry:(id)entry distance:(double)distance trafficString:(id)string
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  entryCopy = entry;
+  if (entryCopy)
   {
     GEOConfigGetDouble();
     v9 = v8;
-    [v7 setBoolean:v8 > a4 forKey:@"MapsSuggestionsAlreadyThereKey"];
-    if (v9 <= a4)
+    [entryCopy setBoolean:v8 > distance forKey:@"MapsSuggestionsAlreadyThereKey"];
+    if (v9 <= distance)
     {
       v10 = MapsSuggestionsDistanceString();
     }
@@ -128,8 +128,8 @@ LABEL_21:
     }
 
     v12 = v10;
-    v13 = [v7 undecoratedTitle];
-    [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v7 title:v13 subtitle:v12 includeLockedVersions:1];
+    undecoratedTitle = [entryCopy undecoratedTitle];
+    [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:undecoratedTitle subtitle:v12 includeLockedVersions:1];
   }
 
   else
@@ -149,7 +149,7 @@ LABEL_21:
     }
   }
 
-  return v7 != 0;
+  return entryCopy != 0;
 }
 
 @end

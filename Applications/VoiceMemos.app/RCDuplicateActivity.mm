@@ -17,22 +17,22 @@
 - (id)_systemImageName
 {
   v2 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v3 = [v2 duplicateActivitySystemImageName];
+  duplicateActivitySystemImageName = [v2 duplicateActivitySystemImageName];
 
-  return v3;
+  return duplicateActivitySystemImageName;
 }
 
 - (void)performActivity
 {
-  v3 = [(RCUIActivity *)self recordingUUIDs];
-  v4 = [v3 count];
+  recordingUUIDs = [(RCUIActivity *)self recordingUUIDs];
+  v4 = [recordingUUIDs count];
 
   if (v4 == 1)
   {
     v5 = +[RCRecordingsModelInteractor sharedRecordingsModelInteractor];
-    v6 = [(RCUIActivity *)self recordingUUIDs];
-    v7 = [v6 firstObject];
-    v8 = [v5 duplicateRecordingWithUUID:v7];
+    recordingUUIDs2 = [(RCUIActivity *)self recordingUUIDs];
+    firstObject = [recordingUUIDs2 firstObject];
+    v8 = [v5 duplicateRecordingWithUUID:firstObject];
   }
 
   [(RCDuplicateActivity *)self activityDidFinish:v4 == 1];

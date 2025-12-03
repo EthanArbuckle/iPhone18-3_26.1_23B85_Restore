@@ -1,14 +1,14 @@
 @interface CILensModelCalculatorCPU
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation CILensModelCalculatorCPU
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
     return 2312;
   }
@@ -19,14 +19,14 @@
   }
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v6 = [a4 objectForKeyedSubscript:{@"inputFocusRect", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v6 = [arguments objectForKeyedSubscript:{@"inputFocusRect", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   v7 = 1.0;
   v8 = 1.0;
   v9 = 0.0;
   v10 = 0.0;
-  if (!a3 && v6)
+  if (!input && v6)
   {
     [v6 CGRectValue];
   }
@@ -38,9 +38,9 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  MEMORY[0x1EEE9AC00](a1, a2, a3, a4, a5, a6);
+  MEMORY[0x1EEE9AC00](self, a2, inputs, arguments, output, error);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -97,13 +97,13 @@
       ++*&v55[4 * v36];
     }
 
-    v37 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     for (j = 0; j != 1024; j += 4)
     {
-      [v37 appendFormat:@"%d, ", *&v55[j]];
+      [string appendFormat:@"%d, ", *&v55[j]];
     }
 
-    NSLog(&cfstr_Focus.isa, v37);
+    NSLog(&cfstr_Focus.isa, string);
     SDOFSimpleLensModelValue(@"zeroShiftPercentile", v20);
     v40 = vcvtmd_s64_f64(v39 * 64.0 * 64.0);
     if (v40 < 1)
@@ -127,11 +127,11 @@
     }
 
     v45 = ((v29 - v28) * v44) / 255.0 + v28;
-    v46 = [v7 baseAddress];
-    *v46 = v28;
-    v46[1] = v45;
-    v46[2] = 0.83689;
-    v46[3] = v29;
+    baseAddress = [v7 baseAddress];
+    *baseAddress = v28;
+    baseAddress[1] = v45;
+    baseAddress[2] = 0.83689;
+    baseAddress[3] = v29;
     [v7 region];
     if (v47 != 1.0)
     {
@@ -141,7 +141,7 @@
         v49 = 0;
         do
         {
-          memset_pattern16(([v7 baseAddress] + objc_msgSend(v7, "bytesPerRow") * v49++), v46, objc_msgSend(v7, "bytesPerRow"));
+          memset_pattern16(([v7 baseAddress] + objc_msgSend(v7, "bytesPerRow") * v49++), baseAddress, objc_msgSend(v7, "bytesPerRow"));
           [v7 region];
         }
 

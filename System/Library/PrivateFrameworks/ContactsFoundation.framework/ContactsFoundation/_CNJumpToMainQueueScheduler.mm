@@ -1,28 +1,28 @@
 @interface _CNJumpToMainQueueScheduler
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5;
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4;
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4;
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service;
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service;
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service;
 @end
 
 @implementation _CNJumpToMainQueueScheduler
 
-- (void)performBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (void)performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69E96A0];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61___CNJumpToMainQueueScheduler_performBlock_qualityOfService___block_invoke;
   v15[3] = &unk_1E6ED5F68;
-  v7 = v5;
+  v7 = blockCopy;
   v16 = v7;
   v8 = v15;
   v9 = v8;
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 <= 4)
+    if (service <= 4)
     {
-      if (a4 == 3)
+      if (service == 3)
       {
         v10 = QOS_CLASS_UTILITY;
       }
@@ -35,13 +35,13 @@
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (service == 5)
     {
       v10 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (service == 6)
     {
       v11 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v8);
 LABEL_16:
@@ -54,9 +54,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (service)
   {
-    if (a4 == 2)
+    if (service == 2)
     {
       v10 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -76,9 +76,9 @@ LABEL_17:
   dispatch_async(MEMORY[0x1E69E96A0], v12);
 }
 
-- (id)performCancelableBlock:(id)a3 qualityOfService:(unint64_t)a4
+- (id)performCancelableBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = objc_alloc_init(CNMainQueueSchedulerCancelationToken);
   v7 = MEMORY[0x1E69E96A0];
   v20[0] = MEMORY[0x1E69E9820];
@@ -87,15 +87,15 @@ LABEL_17:
   v20[3] = &unk_1E6ED5858;
   v8 = v6;
   v21 = v8;
-  v9 = v5;
+  v9 = blockCopy;
   v22 = v9;
   v10 = v20;
   v11 = v10;
-  if (a4 > 2)
+  if (service > 2)
   {
-    if (a4 <= 4)
+    if (service <= 4)
     {
-      if (a4 == 3)
+      if (service == 3)
       {
         v12 = QOS_CLASS_UTILITY;
       }
@@ -108,13 +108,13 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    if (a4 == 5)
+    if (service == 5)
     {
       v12 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a4 == 6)
+    if (service == 6)
     {
       v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v10);
 LABEL_16:
@@ -127,9 +127,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a4)
+  if (service)
   {
-    if (a4 == 2)
+    if (service == 2)
     {
       v12 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -154,9 +154,9 @@ LABEL_17:
   return v8;
 }
 
-- (id)afterDelay:(double)a3 performBlock:(id)a4 qualityOfService:(unint64_t)a5
+- (id)afterDelay:(double)delay performBlock:(id)block qualityOfService:(unint64_t)service
 {
-  v7 = a4;
+  blockCopy = block;
   v8 = objc_alloc_init(CNMainQueueSchedulerCancelationToken);
   v9 = MEMORY[0x1E69E96A0];
   v22[0] = MEMORY[0x1E69E9820];
@@ -165,15 +165,15 @@ LABEL_17:
   v22[3] = &unk_1E6ED5858;
   v10 = v8;
   v23 = v10;
-  v11 = v7;
+  v11 = blockCopy;
   v24 = v11;
   v12 = v22;
   v13 = v12;
-  if (a5 > 2)
+  if (service > 2)
   {
-    if (a5 <= 4)
+    if (service <= 4)
     {
-      if (a5 == 3)
+      if (service == 3)
       {
         v14 = QOS_CLASS_UTILITY;
       }
@@ -186,13 +186,13 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    if (a5 == 5)
+    if (service == 5)
     {
       v14 = QOS_CLASS_USER_INTERACTIVE;
       goto LABEL_15;
     }
 
-    if (a5 == 6)
+    if (service == 6)
     {
       v15 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v12);
 LABEL_16:
@@ -205,9 +205,9 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (a5)
+  if (service)
   {
-    if (a5 == 2)
+    if (service == 2)
     {
       v14 = QOS_CLASS_BACKGROUND;
 LABEL_15:
@@ -224,7 +224,7 @@ LABEL_11:
 LABEL_17:
 
   v18 = MEMORY[0x1E69E96A0];
-  dispatch_after(a3, MEMORY[0x1E69E96A0], v16);
+  dispatch_after(delay, MEMORY[0x1E69E96A0], v16);
 
   v19 = v24;
   v20 = v10;

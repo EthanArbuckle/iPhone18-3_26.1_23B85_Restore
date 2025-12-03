@@ -1,5 +1,5 @@
 @interface _UIDocumentPickerFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (CGSize)collectionViewContentSize;
 @end
 
@@ -12,8 +12,8 @@
   [(UICollectionViewFlowLayout *)&v14 collectionViewContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(_UIDocumentPickerFlowLayout *)self collectionView];
-  [v7 bounds];
+  collectionView = [(_UIDocumentPickerFlowLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   [(_UIDocumentPickerFlowLayout *)self contentSizeAdjustment];
   v11 = fmax(v6, v10 + v9);
@@ -25,19 +25,19 @@
   return result;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UICollectionViewFlowLayout *)self scrollDirection];
-  v9 = [(_UIDocumentPickerFlowLayout *)self collectionView];
-  [v9 bounds];
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
+  collectionView = [(_UIDocumentPickerFlowLayout *)self collectionView];
+  [collectionView bounds];
   v11 = v10;
   v13 = v12;
 
-  if (!v8 && v11 != width || v8 == 1 && v13 != height)
+  if (!scrollDirection && v11 != width || scrollDirection == 1 && v13 != height)
   {
     return 1;
   }

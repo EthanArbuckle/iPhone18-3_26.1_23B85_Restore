@@ -1,20 +1,20 @@
 @interface HDCloudSyncStateUpdaterMedicationScheduleDelegate
-+ (BOOL)_fetchLocalState:(void *)a3 predicate:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (BOOL)_makeUnvailableSchedulesIntoNonNilLocalState:(void *)a3 transaction:(uint64_t)a4 error:;
++ (BOOL)_fetchLocalState:(void *)state predicate:(void *)predicate profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (BOOL)_makeUnvailableSchedulesIntoNonNilLocalState:(void *)state transaction:(uint64_t)transaction error:;
 + (id)_unavailableSchedulesPredicate;
-+ (uint64_t)_canPersistCloudSchedule:(uint64_t)a1 profile:(void *)a2 transaction:(void *)a3 error:(void *)a4;
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:;
-+ (uint64_t)_newLocalSchedulesGivenCloudState:(void *)a3 localState:;
-+ (uint64_t)_shouldUpdateWithMergedState:(void *)a3 cloudState:(void *)a4 localState:(void *)a5 profile:(void *)a6 transaction:(uint64_t)a7 error:;
-+ (uint64_t)_updateCodableSyncState:(uint64_t)a1 withMergeState:(void *)a2 profile:(void *)a3 error:(void *)a4;
-+ (void)_finalScheduleFromCloudSchedule:(void *)a3 localSchedule:;
-- (BOOL)_persistCloudState:(void *)a3 profile:(uint64_t)a4 error:;
-- (BOOL)fetchLocalState:(id *)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (BOOL)persistCloudState:(id)a3 profile:(id)a4 error:(id *)a5;
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6;
++ (uint64_t)_canPersistCloudSchedule:(uint64_t)schedule profile:(void *)profile transaction:(void *)transaction error:(void *)error;
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:;
++ (uint64_t)_newLocalSchedulesGivenCloudState:(void *)state localState:;
++ (uint64_t)_shouldUpdateWithMergedState:(void *)state cloudState:(void *)cloudState localState:(void *)localState profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (uint64_t)_updateCodableSyncState:(uint64_t)state withMergeState:(void *)mergeState profile:(void *)profile error:(void *)error;
++ (void)_finalScheduleFromCloudSchedule:(void *)schedule localSchedule:;
+- (BOOL)_persistCloudState:(void *)state profile:(uint64_t)profile error:;
+- (BOOL)fetchLocalState:(id *)state profile:(id)profile transaction:(id)transaction error:(id *)error;
+- (BOOL)persistCloudState:(id)state profile:(id)profile error:(id *)error;
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error;
 - (NSString)description;
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8;
-- (void)_callUnitTestingWillPersistHandler:(uint64_t)a1;
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error;
+- (void)_callUnitTestingWillPersistHandler:(uint64_t)handler;
 @end
 
 @implementation HDCloudSyncStateUpdaterMedicationScheduleDelegate
@@ -23,31 +23,31 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self domain];
+  domain = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self domain];
   v6 = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self key];
-  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, v5, v6];
+  v7 = [v3 stringWithFormat:@"[%@:%p (%@, %@)]", v4, self, domain, v6];
 
   return v7;
 }
 
-- (BOOL)fetchLocalState:(id *)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
+- (BOOL)fetchLocalState:(id *)state profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
+  transactionCopy = transaction;
+  profileCopy = profile;
   objc_opt_self();
   v11 = +[HDMedicationScheduleEntity availableSchedulePredicate];
-  v12 = [HDCloudSyncStateUpdaterMedicationScheduleDelegate _fetchLocalState:a3 predicate:v11 profile:v10 transaction:v9 error:a6];
+  v12 = [HDCloudSyncStateUpdaterMedicationScheduleDelegate _fetchLocalState:state predicate:v11 profile:profileCopy transaction:transactionCopy error:error];
 
-  v13 = v12 && [HDCloudSyncStateUpdaterMedicationScheduleDelegate _makeUnvailableSchedulesIntoNonNilLocalState:a3 transaction:v9 error:a6];
+  v13 = v12 && [HDCloudSyncStateUpdaterMedicationScheduleDelegate _makeUnvailableSchedulesIntoNonNilLocalState:state transaction:transactionCopy error:error];
   return v13;
 }
 
-+ (BOOL)_fetchLocalState:(void *)a3 predicate:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:
++ (BOOL)_fetchLocalState:(void *)state predicate:(void *)predicate profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stateCopy = state;
+  predicateCopy = predicate;
+  profileCopy = profile;
   v13 = objc_opt_self();
   v21 = 0;
   v22 = &v21;
@@ -60,15 +60,15 @@
   v20[2] = __106__HDCloudSyncStateUpdaterMedicationScheduleDelegate__fetchLocalState_predicate_profile_transaction_error___block_invoke;
   v20[3] = &unk_2796CE530;
   v20[4] = &v21;
-  v14 = [HDVersionedMedicationScheduleSyncEntity enumerateCodableObjectsForPredicate:v10 limit:0 orderingTerms:0 profile:v11 transaction:v12 error:a6 handler:v20];
+  v14 = [HDVersionedMedicationScheduleSyncEntity enumerateCodableObjectsForPredicate:stateCopy limit:0 orderingTerms:0 profile:predicateCopy transaction:profileCopy error:transaction handler:v20];
   if (v14)
   {
     _HKInitializeLogging();
     v15 = HKLogMedication();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v22[5] schedules];
-      v17 = [v16 count];
+      schedules = [v22[5] schedules];
+      v17 = [schedules count];
       *buf = 138543618;
       v28 = v13;
       v29 = 2048;
@@ -88,10 +88,10 @@
   return v14;
 }
 
-+ (BOOL)_makeUnvailableSchedulesIntoNonNilLocalState:(void *)a3 transaction:(uint64_t)a4 error:
++ (BOOL)_makeUnvailableSchedulesIntoNonNilLocalState:(void *)state transaction:(uint64_t)transaction error:
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   v7 = objc_opt_self();
   v8 = *a2;
   if (v8)
@@ -103,8 +103,8 @@
   {
     v10 = *MEMORY[0x277D10A48];
     v11 = +[HDCloudSyncStateUpdaterMedicationScheduleDelegate _unavailableSchedulesPredicate];
-    v12 = [v6 protectedDatabase];
-    v13 = [(HDSQLiteEntity *)HDMedicationScheduleEntity countValueForProperty:v10 predicate:v11 database:v12 error:a4];
+    protectedDatabase = [stateCopy protectedDatabase];
+    v13 = [(HDSQLiteEntity *)HDMedicationScheduleEntity countValueForProperty:v10 predicate:v11 database:protectedDatabase error:transaction];
 
     v9 = v13 != 0;
     if (v13 && [v13 integerValue] >= 1)
@@ -116,7 +116,7 @@
         v17 = 138543618;
         v18 = v7;
         v19 = 2048;
-        v20 = [v13 integerValue];
+        integerValue = [v13 integerValue];
         _os_log_impl(&dword_25181C000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Found %ld unavailable local medication schedules for state sync", &v17, 0x16u);
       }
 
@@ -128,13 +128,13 @@
   return v9;
 }
 
-+ (uint64_t)_fetchCloudState:(void *)a3 codableSyncState:(uint64_t)a4 profile:(uint64_t)a5 error:
++ (uint64_t)_fetchCloudState:(void *)state codableSyncState:(uint64_t)syncState profile:(uint64_t)profile error:
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  stateCopy = state;
   v8 = objc_opt_self();
   v18 = 0;
-  v9 = [v7 decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v18 error:a5];
+  v9 = [stateCopy decodedObjectOfClass:objc_opt_class() version:0 decodedObject:&v18 error:profile];
 
   v10 = v18;
   v11 = 0;
@@ -144,8 +144,8 @@
     v12 = HKLogMedication();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v10 schedules];
-      v14 = [v13 count];
+      schedules = [v10 schedules];
+      v14 = [schedules count];
       *buf = 138543618;
       v20 = v8;
       v21 = 2048;
@@ -166,12 +166,12 @@
   return v11;
 }
 
-- (int64_t)shouldUpdateWithMergedState:(id *)a3 cloudState:(id)a4 localState:(id)a5 profile:(id)a6 transaction:(id)a7 error:(id *)a8
+- (int64_t)shouldUpdateWithMergedState:(id *)state cloudState:(id)cloudState localState:(id)localState profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  cloudStateCopy = cloudState;
+  localStateCopy = localState;
+  profileCopy = profile;
+  transactionCopy = transaction;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -184,46 +184,46 @@
     [HDCloudSyncStateUpdaterMedicationScheduleDelegate shouldUpdateWithMergedState:cloudState:localState:profile:transaction:error:];
   }
 
-  v17 = [HDCloudSyncStateUpdaterMedicationScheduleDelegate _shouldUpdateWithMergedState:a3 cloudState:v13 localState:v14 profile:v15 transaction:v16 error:a8];
+  v17 = [HDCloudSyncStateUpdaterMedicationScheduleDelegate _shouldUpdateWithMergedState:state cloudState:cloudStateCopy localState:localStateCopy profile:profileCopy transaction:transactionCopy error:error];
 
   return v17;
 }
 
-+ (uint64_t)_shouldUpdateWithMergedState:(void *)a3 cloudState:(void *)a4 localState:(void *)a5 profile:(void *)a6 transaction:(uint64_t)a7 error:
++ (uint64_t)_shouldUpdateWithMergedState:(void *)state cloudState:(void *)cloudState localState:(void *)localState profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v109 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  stateCopy = state;
+  cloudStateCopy = cloudState;
+  localStateCopy = localState;
+  profileCopy = profile;
   v15 = objc_opt_self();
   v16 = objc_alloc_init(HDCodableMedicationScheduleCollection);
   v91 = 0;
   v17 = +[HDCloudSyncStateUpdaterMedicationScheduleDelegate _unavailableSchedulesPredicate];
-  v77 = v14;
-  v78 = v13;
-  LODWORD(v14) = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)v15 _fetchLocalState:v17 predicate:v13 profile:v14 transaction:a7 error:?];
+  v77 = profileCopy;
+  v78 = localStateCopy;
+  LODWORD(profileCopy) = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)v15 _fetchLocalState:v17 predicate:localStateCopy profile:profileCopy transaction:transaction error:?];
   v18 = v91;
 
   v19 = 0;
-  if (v14)
+  if (profileCopy)
   {
     v72 = v18;
-    [v12 addSchedulesFrom:v18];
+    [cloudStateCopy addSchedulesFrom:v18];
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    obj = [v11 schedules];
+    obj = [stateCopy schedules];
     v84 = [obj countByEnumeratingWithState:&v87 objects:v108 count:16];
-    v73 = v11;
+    v73 = stateCopy;
     v20 = 0;
     if (v84)
     {
       v76 = 0;
       v21 = *v88;
       v79 = v16;
-      v80 = v12;
+      v80 = cloudStateCopy;
       v83 = v15;
       v81 = *v88;
       while (1)
@@ -237,13 +237,13 @@
           }
 
           v23 = *(*(&v87 + 1) + 8 * v22);
-          v24 = [v12 schedules];
+          schedules = [cloudStateCopy schedules];
           v86[0] = MEMORY[0x277D85DD0];
           v86[1] = 3221225472;
           v86[2] = __130__HDCloudSyncStateUpdaterMedicationScheduleDelegate__shouldUpdateWithMergedState_cloudState_localState_profile_transaction_error___block_invoke;
           v86[3] = &unk_2796CE558;
           v86[4] = v23;
-          v25 = [v24 hk_firstObjectPassingTest:v86];
+          v25 = [schedules hk_firstObjectPassingTest:v86];
 
           v26 = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)v15 _finalScheduleFromCloudSchedule:v23 localSchedule:v25];
           v27 = v26;
@@ -256,31 +256,31 @@
             {
               [v27 creationDate];
               v30 = v29;
-              v31 = [v27 compatibilityVersionRange];
-              v32 = [v31 minimum];
-              v33 = [v27 compatibilityVersionRange];
-              v34 = [v33 origin];
+              compatibilityVersionRange = [v27 compatibilityVersionRange];
+              minimum = [compatibilityVersionRange minimum];
+              compatibilityVersionRange2 = [v27 compatibilityVersionRange];
+              origin = [compatibilityVersionRange2 origin];
               [v23 creationDate];
               v36 = v35;
-              v37 = [v23 compatibilityVersionRange];
-              v38 = [v37 minimum];
-              v39 = [v23 compatibilityVersionRange];
-              v40 = [v39 origin];
+              compatibilityVersionRange3 = [v23 compatibilityVersionRange];
+              minimum2 = [compatibilityVersionRange3 minimum];
+              compatibilityVersionRange4 = [v23 compatibilityVersionRange];
+              origin2 = [compatibilityVersionRange4 origin];
               *buf = 138545154;
               v93 = v83;
               v94 = 2048;
               v95 = v30;
               v96 = 2048;
-              v97 = v32;
+              v97 = minimum;
               v98 = 2048;
-              v99 = v34;
+              v99 = origin;
               v100 = 2048;
               v101 = v36;
               v102 = 2048;
-              v103 = v38;
+              v103 = minimum2;
               v15 = v83;
               v104 = 2048;
-              v105 = v40;
+              v105 = origin2;
               v106 = 2048;
               v20 = 1;
               v107 = 1;
@@ -289,7 +289,7 @@
               v21 = v81;
               v16 = v79;
 
-              v12 = v80;
+              cloudStateCopy = v80;
             }
 
             else
@@ -330,32 +330,32 @@ LABEL_17:
             {
               [v27 creationDate];
               v46 = v45;
-              v75 = [v27 compatibilityVersionRange];
-              v47 = [v75 minimum];
-              v48 = [v27 compatibilityVersionRange];
-              v49 = [v48 origin];
+              compatibilityVersionRange5 = [v27 compatibilityVersionRange];
+              minimum3 = [compatibilityVersionRange5 minimum];
+              compatibilityVersionRange6 = [v27 compatibilityVersionRange];
+              origin3 = [compatibilityVersionRange6 origin];
               [v85 creationDate];
               v51 = v50;
-              v52 = [v85 compatibilityVersionRange];
-              v53 = [v52 minimum];
-              v54 = [v85 compatibilityVersionRange];
-              v55 = [v54 origin];
+              compatibilityVersionRange7 = [v85 compatibilityVersionRange];
+              minimum4 = [compatibilityVersionRange7 minimum];
+              compatibilityVersionRange8 = [v85 compatibilityVersionRange];
+              origin4 = [compatibilityVersionRange8 origin];
               *buf = 138545154;
               v93 = v83;
               v94 = 2048;
               v95 = v46;
               v96 = 2048;
-              v97 = v47;
-              v12 = v80;
+              v97 = minimum3;
+              cloudStateCopy = v80;
               v98 = 2048;
-              v99 = v49;
+              v99 = origin3;
               v100 = 2048;
               v101 = v51;
               v102 = 2048;
-              v103 = v53;
+              v103 = minimum4;
               v15 = v83;
               v104 = 2048;
-              v105 = v55;
+              v105 = origin4;
               v106 = 2048;
               v76 = 1;
               v107 = 1;
@@ -380,18 +380,18 @@ LABEL_17:
           {
             [v27 creationDate];
             v59 = v58;
-            v60 = [v27 compatibilityVersionRange];
-            v61 = [v60 minimum];
-            v62 = [v27 compatibilityVersionRange];
-            v63 = [v62 origin];
+            compatibilityVersionRange9 = [v27 compatibilityVersionRange];
+            minimum5 = [compatibilityVersionRange9 minimum];
+            compatibilityVersionRange10 = [v27 compatibilityVersionRange];
+            origin5 = [compatibilityVersionRange10 origin];
             *buf = 138544386;
             v93 = v15;
             v94 = 2048;
             v95 = v59;
             v96 = 2048;
-            v97 = v61;
+            v97 = minimum5;
             v98 = 2048;
-            v99 = v63;
+            v99 = origin5;
             v100 = 2048;
             v101 = 1;
             _os_log_impl(&dword_25181C000, v57, OS_LOG_TYPE_DEFAULT, "%{public}@: Update cloud by dropping cloud schedule (%f, %lld, %lld), compatibility: %ld", buf, 0x34u);
@@ -421,7 +421,7 @@ LABEL_18:
             v65 = 1;
           }
 
-          v11 = v73;
+          stateCopy = v73;
           goto LABEL_35;
         }
       }
@@ -430,7 +430,7 @@ LABEL_18:
     v65 = 1;
 LABEL_35:
 
-    obj = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)v15 _newLocalSchedulesGivenCloudState:v11 localState:v12];
+    obj = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)v15 _newLocalSchedulesGivenCloudState:stateCopy localState:cloudStateCopy];
     if ([obj count])
     {
       _HKInitializeLogging();
@@ -445,8 +445,8 @@ LABEL_35:
         _os_log_impl(&dword_25181C000, v66, OS_LOG_TYPE_DEFAULT, "%{public}@ %ld new local schedules, update the cloud state", buf, 0x16u);
       }
 
-      v68 = [(HDCodableMedicationScheduleCollection *)v16 schedules];
-      [v68 addObjectsFromArray:obj];
+      schedules2 = [(HDCodableMedicationScheduleCollection *)v16 schedules];
+      [schedules2 addObjectsFromArray:obj];
 
       v20 = 1;
     }
@@ -470,64 +470,64 @@ LABEL_35:
 LABEL_44:
 
     v18 = v72;
-    v11 = v73;
+    stateCopy = v73;
   }
 
   v70 = *MEMORY[0x277D85DE8];
   return v19;
 }
 
-- (BOOL)updateCodableSyncState:(id)a3 withMergeState:(id)a4 profile:(id)a5 error:(id *)a6
+- (BOOL)updateCodableSyncState:(id)state withMergeState:(id)mergeState profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  mergeStateCopy = mergeState;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HDCloudSyncStateUpdaterMedicationScheduleDelegate updateCodableSyncState:withMergeState:profile:error:];
   }
 
-  [HDCloudSyncStateUpdaterMedicationScheduleDelegate _updateCodableSyncState:v8 withMergeState:v9 profile:v10 error:?];
+  [HDCloudSyncStateUpdaterMedicationScheduleDelegate _updateCodableSyncState:stateCopy withMergeState:mergeStateCopy profile:profileCopy error:?];
 
   return 1;
 }
 
-+ (uint64_t)_updateCodableSyncState:(uint64_t)a1 withMergeState:(void *)a2 profile:(void *)a3 error:(void *)a4
++ (uint64_t)_updateCodableSyncState:(uint64_t)state withMergeState:(void *)mergeState profile:(void *)profile error:(void *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = a2;
+  profileCopy = profile;
+  errorCopy = error;
+  mergeStateCopy = mergeState;
   v9 = objc_opt_self();
   _HKInitializeLogging();
   v10 = HKLogMedication();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 schedules];
+    schedules = [profileCopy schedules];
     v14 = 138543618;
     v15 = v9;
     v16 = 2048;
-    v17 = [v11 count];
+    v17 = [schedules count];
     _os_log_impl(&dword_25181C000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set %ld medication schedules in cloud state for state sync", &v14, 0x16u);
   }
 
-  [v8 setCodableObject:v6 version:0 profile:v7];
+  [mergeStateCopy setCodableObject:profileCopy version:0 profile:errorCopy];
   v12 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (BOOL)persistCloudState:(id)a3 profile:(id)a4 error:(id *)a5
+- (BOOL)persistCloudState:(id)state profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  stateCopy = state;
+  profileCopy = profile;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HDCloudSyncStateUpdaterMedicationScheduleDelegate persistCloudState:profile:error:];
   }
 
-  v10 = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self _persistCloudState:v8 profile:v9 error:a5];
+  v10 = [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self _persistCloudState:stateCopy profile:profileCopy error:error];
 
   return v10;
 }
@@ -578,23 +578,23 @@ uint64_t __130__HDCloudSyncStateUpdaterMedicationScheduleDelegate__shouldUpdateW
   return v5;
 }
 
-+ (void)_finalScheduleFromCloudSchedule:(void *)a3 localSchedule:
++ (void)_finalScheduleFromCloudSchedule:(void *)schedule localSchedule:
 {
   v4 = a2;
-  v5 = a3;
+  scheduleCopy = schedule;
   objc_opt_self();
   v6 = v4;
-  if (v5)
+  if (scheduleCopy)
   {
     v6 = v4;
-    if (([v5 isLocallyUnavailable] & 1) == 0)
+    if (([scheduleCopy isLocallyUnavailable] & 1) == 0)
     {
       [v4 creationDate];
       v8 = v7;
-      [v5 creationDate];
+      [scheduleCopy creationDate];
       if (v8 < v9)
       {
-        v6 = v5;
+        v6 = scheduleCopy;
       }
 
       else
@@ -609,19 +609,19 @@ uint64_t __130__HDCloudSyncStateUpdaterMedicationScheduleDelegate__shouldUpdateW
   return v6;
 }
 
-+ (uint64_t)_canPersistCloudSchedule:(uint64_t)a1 profile:(void *)a2 transaction:(void *)a3 error:(void *)a4
++ (uint64_t)_canPersistCloudSchedule:(uint64_t)schedule profile:(void *)profile transaction:(void *)transaction error:(void *)error
 {
-  v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  errorCopy = error;
   objc_opt_self();
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 1;
-  v11 = v6;
-  v12 = v7;
-  v13 = v8;
+  v11 = profileCopy;
+  v12 = transactionCopy;
+  v13 = errorCopy;
   HKWithAutoreleasePool();
   v9 = v15[3];
 
@@ -629,12 +629,12 @@ uint64_t __130__HDCloudSyncStateUpdaterMedicationScheduleDelegate__shouldUpdateW
   return v9;
 }
 
-+ (uint64_t)_newLocalSchedulesGivenCloudState:(void *)a3 localState:
++ (uint64_t)_newLocalSchedulesGivenCloudState:(void *)state localState:
 {
   v4 = a2;
-  v5 = a3;
+  stateCopy = state;
   objc_opt_self();
-  v6 = [v5 schedules];
+  schedules = [stateCopy schedules];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -642,7 +642,7 @@ uint64_t __130__HDCloudSyncStateUpdaterMedicationScheduleDelegate__shouldUpdateW
   v10[3] = &unk_2796CE558;
   v11 = v4;
   v7 = v4;
-  v8 = [v6 hk_filter:v10];
+  v8 = [schedules hk_filter:v10];
 
   return v8;
 }
@@ -704,28 +704,28 @@ HDCodableMedicationSchedule *__86__HDCloudSyncStateUpdaterMedicationScheduleDele
   return v5;
 }
 
-- (BOOL)_persistCloudState:(void *)a3 profile:(uint64_t)a4 error:
+- (BOOL)_persistCloudState:(void *)state profile:(uint64_t)profile error:
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v7 = a3;
-    v8 = [a2 schedules];
-    v9 = [v8 hk_map:&__block_literal_global_13];
+    stateCopy = state;
+    schedules = [a2 schedules];
+    v9 = [schedules hk_map:&__block_literal_global_13];
 
     _HKInitializeLogging();
     v10 = HKLogMedication();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543618;
-      v15 = a1;
+      selfCopy = self;
       v16 = 2048;
       v17 = [v9 count];
       _os_log_impl(&dword_25181C000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Persist %ld medication schedules for state sync", &v14, 0x16u);
     }
 
-    [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)a1 _callUnitTestingWillPersistHandler:v9];
-    v11 = [HDVersionedMedicationScheduleSyncEntity receiveCodableSchedules:v9 syncProvenance:0 profile:v7 error:a4];
+    [(HDCloudSyncStateUpdaterMedicationScheduleDelegate *)self _callUnitTestingWillPersistHandler:v9];
+    v11 = [HDVersionedMedicationScheduleSyncEntity receiveCodableSchedules:v9 syncProvenance:0 profile:stateCopy error:profile];
   }
 
   else
@@ -737,12 +737,12 @@ HDCodableMedicationSchedule *__86__HDCloudSyncStateUpdaterMedicationScheduleDele
   return v11;
 }
 
-- (void)_callUnitTestingWillPersistHandler:(uint64_t)a1
+- (void)_callUnitTestingWillPersistHandler:(uint64_t)handler
 {
   v5 = a2;
-  if (a1)
+  if (handler)
   {
-    v3 = MEMORY[0x253084B70](*(a1 + 8));
+    v3 = MEMORY[0x253084B70](*(handler + 8));
     v4 = v3;
     if (v3)
     {

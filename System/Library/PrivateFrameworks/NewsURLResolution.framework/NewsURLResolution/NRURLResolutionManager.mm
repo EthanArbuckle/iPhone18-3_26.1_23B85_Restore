@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (BOOL)userHasBundleSubscription;
 - (NRURLResolutionManager)init;
-- (id)createResolutionOperationForNewsURL:(id)a3;
-- (id)createResolutionOperationForWebURL:(id)a3;
+- (id)createResolutionOperationForNewsURL:(id)l;
+- (id)createResolutionOperationForWebURL:(id)l;
 @end
 
 @implementation NRURLResolutionManager
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __39__NRURLResolutionManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -47,20 +47,20 @@ uint64_t __39__NRURLResolutionManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)createResolutionOperationForWebURL:(id)a3
+- (id)createResolutionOperationForWebURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [NRWebURLResolutionOperation alloc];
-  v6 = [(NRURLResolutionManager *)self bloomFilterInfoService];
-  v7 = [(NRWebURLResolutionOperation *)v5 initWithWebURL:v4 bloomFilterInfoService:v6];
+  bloomFilterInfoService = [(NRURLResolutionManager *)self bloomFilterInfoService];
+  v7 = [(NRWebURLResolutionOperation *)v5 initWithWebURL:lCopy bloomFilterInfoService:bloomFilterInfoService];
 
   return v7;
 }
 
-- (id)createResolutionOperationForNewsURL:(id)a3
+- (id)createResolutionOperationForNewsURL:(id)l
 {
-  v3 = a3;
-  v4 = [[NRNewsURLResolutionOperation alloc] initWithNewsURL:v3];
+  lCopy = l;
+  v4 = [[NRNewsURLResolutionOperation alloc] initWithNewsURL:lCopy];
 
   return v4;
 }

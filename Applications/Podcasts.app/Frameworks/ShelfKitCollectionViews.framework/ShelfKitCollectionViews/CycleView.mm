@@ -1,7 +1,7 @@
 @interface CycleView
 - (_TtC23ShelfKitCollectionViews9CycleView)init;
-- (_TtC23ShelfKitCollectionViews9CycleView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews9CycleView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews9CycleView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews9CycleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CycleView
@@ -21,7 +21,7 @@
   return v4;
 }
 
-- (_TtC23ShelfKitCollectionViews9CycleView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews9CycleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews9CycleView_hiddenViews) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews9CycleView_hostedViewSettings) = &_swiftEmptyDictionarySingleton;
@@ -32,7 +32,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews9CycleView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews9CycleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,50 +1,50 @@
 @interface REElement
 + (id)_supportedDictionaryEncodingKeys;
-- (BOOL)_relevanceProvidersEqualToElement:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_relevanceProvidersEqualToElement:(id)element;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNoContentElement;
-- (REElement)initWithCoder:(id)a3;
-- (REElement)initWithDictionary:(id)a3 relevanceProviderGenerator:(id)a4;
-- (REElement)initWithIdentifier:(id)a3 content:(id)a4 idealizedContent:(id)a5 action:(id)a6 relevanceProviders:(id)a7 privacyBehavior:(unint64_t)a8;
-- (id)copyElementWithUpdatedRelevanceProviders:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryEncodingWithRelevanceProviderGenerator:(id)a3;
+- (REElement)initWithCoder:(id)coder;
+- (REElement)initWithDictionary:(id)dictionary relevanceProviderGenerator:(id)generator;
+- (REElement)initWithIdentifier:(id)identifier content:(id)content idealizedContent:(id)idealizedContent action:(id)action relevanceProviders:(id)providers privacyBehavior:(unint64_t)behavior;
+- (id)copyElementWithUpdatedRelevanceProviders:(id)providers;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryEncodingWithRelevanceProviderGenerator:(id)generator;
 - (id)shallowCopy;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REElement
 
-- (REElement)initWithIdentifier:(id)a3 content:(id)a4 idealizedContent:(id)a5 action:(id)a6 relevanceProviders:(id)a7 privacyBehavior:(unint64_t)a8
+- (REElement)initWithIdentifier:(id)identifier content:(id)content idealizedContent:(id)idealizedContent action:(id)action relevanceProviders:(id)providers privacyBehavior:(unint64_t)behavior
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  identifierCopy = identifier;
+  contentCopy = content;
+  idealizedContentCopy = idealizedContent;
+  actionCopy = action;
+  providersCopy = providers;
   v31.receiver = self;
   v31.super_class = REElement;
   v19 = [(REElement *)&v31 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [identifierCopy copy];
     identifier = v19->_identifier;
     v19->_identifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [contentCopy copy];
     content = v19->_content;
     v19->_content = v22;
 
-    v24 = [v16 copy];
+    v24 = [idealizedContentCopy copy];
     idealizedContent = v19->_idealizedContent;
     v19->_idealizedContent = v24;
 
-    objc_storeStrong(&v19->_action, a6);
+    objc_storeStrong(&v19->_action, action);
     v26 = objc_alloc(MEMORY[0x277CBEA60]);
-    if (v18)
+    if (providersCopy)
     {
-      v27 = v18;
+      v27 = providersCopy;
     }
 
     else
@@ -56,7 +56,7 @@
     relevanceProviders = v19->_relevanceProviders;
     v19->_relevanceProviders = v28;
 
-    v19->_privacyBehavior = a8;
+    v19->_privacyBehavior = behavior;
   }
 
   return v19;
@@ -83,13 +83,13 @@ uint64_t __45__REElement__supportedDictionaryEncodingKeys__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (REElement)initWithDictionary:(id)a3 relevanceProviderGenerator:(id)a4
+- (REElement)initWithDictionary:(id)dictionary relevanceProviderGenerator:(id)generator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"bundle_id"];
-  v9 = [v6 objectForKeyedSubscript:@"id"];
-  v10 = [v6 objectForKeyedSubscript:@"interaction"];
+  dictionaryCopy = dictionary;
+  generatorCopy = generator;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"bundle_id"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"id"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"interaction"];
   v11 = v10;
   v12 = @"REElementInteractionDefault";
   if (v10)
@@ -99,62 +99,62 @@ uint64_t __45__REElement__supportedDictionaryEncodingKeys__block_invoke()
 
   v13 = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"app_bundle_id"];
-  v15 = [v6 objectForKeyedSubscript:@"namespaced_identifier"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"app_bundle_id"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"namespaced_identifier"];
   if (v9)
   {
     obj = v8;
     v16 = objc_alloc_init(REContent);
-    v17 = [v6 objectForKeyedSubscript:@"title"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"title"];
 
     if (v17)
     {
       v18 = objc_alloc(MEMORY[0x277CCA898]);
-      v19 = [v6 objectForKeyedSubscript:@"title"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"title"];
       v20 = [v18 initWithString:v19];
       [(REContent *)v16 setHeaderText:v20];
     }
 
-    v21 = [v6 objectForKeyedSubscript:{@"description1", obj}];
+    v21 = [dictionaryCopy objectForKeyedSubscript:{@"description1", obj}];
 
     if (v21)
     {
       v22 = objc_alloc(MEMORY[0x277CCA898]);
-      v23 = [v6 objectForKeyedSubscript:@"description1"];
+      v23 = [dictionaryCopy objectForKeyedSubscript:@"description1"];
       v24 = [v22 initWithString:v23];
       [(REContent *)v16 setDescription1Text:v24];
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"description2"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"description2"];
 
     if (v25)
     {
       v26 = objc_alloc(MEMORY[0x277CCA898]);
-      v27 = [v6 objectForKeyedSubscript:@"description2"];
+      v27 = [dictionaryCopy objectForKeyedSubscript:@"description2"];
       v28 = [v26 initWithString:v27];
       [(REContent *)v16 setDescription2Text:v28];
     }
 
-    v29 = [v6 objectForKeyedSubscript:@"description3"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"description3"];
 
     if (v29)
     {
       v30 = objc_alloc(MEMORY[0x277CCA898]);
-      v31 = [v6 objectForKeyedSubscript:@"description3"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"description3"];
       v32 = [v30 initWithString:v31];
       [(REContent *)v16 setDescription3Text:v32];
     }
 
     [(REContent *)v16 setObject:v13 forKey:@"REContentInteractionKey"];
-    v33 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invoke;
     v41[3] = &unk_2785FD2D0;
-    v42 = v7;
-    v34 = v33;
+    v42 = generatorCopy;
+    v34 = array;
     v43 = v34;
-    [v6 enumerateKeysAndObjectsUsingBlock:v41];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v41];
     v35 = [(REElement *)self initWithIdentifier:v9 content:v16 action:0 relevanceProviders:v34];
     p_isa = &v35->super.isa;
     v8 = obja;
@@ -167,15 +167,15 @@ uint64_t __45__REElement__supportedDictionaryEncodingKeys__block_invoke()
 
     self = p_isa;
 
-    v37 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v37 = 0;
+    selfCopy = 0;
   }
 
-  return v37;
+  return selfCopy;
 }
 
 void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -204,11 +204,11 @@ void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invok
   }
 }
 
-- (id)dictionaryEncodingWithRelevanceProviderGenerator:(id)a3
+- (id)dictionaryEncodingWithRelevanceProviderGenerator:(id)generator
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  generatorCopy = generator;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __62__REElement_dictionaryEncodingWithRelevanceProviderGenerator___block_invoke;
@@ -218,29 +218,29 @@ void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invok
   v38[0] = @"REContentHeaderTextKey";
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:1];
   v8 = (v6)[2](v6, v7);
-  [v5 setObject:v8 forKeyedSubscript:@"title"];
+  [dictionary setObject:v8 forKeyedSubscript:@"title"];
 
   v37 = @"REContentDescription1TextKey";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
   v10 = (v6)[2](v6, v9);
-  [v5 setObject:v10 forKeyedSubscript:@"description1"];
+  [dictionary setObject:v10 forKeyedSubscript:@"description1"];
 
   v36 = @"REContentDescription2TextKey";
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
   v12 = (v6)[2](v6, v11);
-  [v5 setObject:v12 forKeyedSubscript:@"description2"];
+  [dictionary setObject:v12 forKeyedSubscript:@"description2"];
 
   v35 = @"REContentDescription3TextKey";
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
   v14 = (v6)[2](v6, v13);
-  [v5 setObject:v14 forKeyedSubscript:@"description3"];
+  [dictionary setObject:v14 forKeyedSubscript:@"description3"];
 
-  v15 = [(REElement *)self bundleIdentifier];
-  [v5 setObject:v15 forKeyedSubscript:@"bundle_id"];
+  bundleIdentifier = [(REElement *)self bundleIdentifier];
+  [dictionary setObject:bundleIdentifier forKeyedSubscript:@"bundle_id"];
 
-  [v5 setObject:self->_identifier forKeyedSubscript:@"id"];
-  v16 = [(REElement *)self content];
-  v17 = [v16 objectForKey:@"REContentInteractionKey"];
+  [dictionary setObject:self->_identifier forKeyedSubscript:@"id"];
+  content = [(REElement *)self content];
+  v17 = [content objectForKey:@"REContentInteractionKey"];
   v18 = v17;
   if (v17)
   {
@@ -252,10 +252,10 @@ void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invok
     v19 = @"REElementInteractionDefault";
   }
 
-  [v5 setObject:v19 forKeyedSubscript:@"interaction"];
+  [dictionary setObject:v19 forKeyedSubscript:@"interaction"];
 
-  [v5 setObject:self->_applicationBundleIdentifier forKeyedSubscript:@"app_bundle_id"];
-  [v5 setObject:self->_namespacedIdentifier forKeyedSubscript:@"namespaced_identifier"];
+  [dictionary setObject:self->_applicationBundleIdentifier forKeyedSubscript:@"app_bundle_id"];
+  [dictionary setObject:self->_namespacedIdentifier forKeyedSubscript:@"namespaced_identifier"];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -275,10 +275,10 @@ void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invok
           objc_enumerationMutation(v20);
         }
 
-        v25 = [v4 encodeRelevaneProvider:{*(*(&v29 + 1) + 8 * i), v29}];
+        v25 = [generatorCopy encodeRelevaneProvider:{*(*(&v29 + 1) + 8 * i), v29}];
         if (v25)
         {
-          [v5 addEntriesFromDictionary:v25];
+          [dictionary addEntriesFromDictionary:v25];
         }
       }
 
@@ -288,7 +288,7 @@ void __59__REElement_initWithDictionary_relevanceProviderGenerator___block_invok
     while (v22);
   }
 
-  v26 = [v5 copy];
+  v26 = [dictionary copy];
   v27 = *MEMORY[0x277D85DE8];
 
   return v26;
@@ -349,38 +349,38 @@ LABEL_13:
   return v11;
 }
 
-- (id)copyElementWithUpdatedRelevanceProviders:(id)a3
+- (id)copyElementWithUpdatedRelevanceProviders:(id)providers
 {
-  v4 = a3;
-  v5 = [(REElement *)self shallowCopy];
-  v6 = [v4 copy];
+  providersCopy = providers;
+  shallowCopy = [(REElement *)self shallowCopy];
+  v6 = [providersCopy copy];
 
-  v7 = v5[5];
-  v5[5] = v6;
+  v7 = shallowCopy[5];
+  shallowCopy[5] = v6;
 
-  return v5;
+  return shallowCopy;
 }
 
-- (REElement)initWithCoder:(id)a3
+- (REElement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"_identifier"];
-  v6 = [v4 decodeObjectForKey:@"_content"];
-  v7 = [v4 decodeObjectForKey:@"_idealizedContent"];
-  v8 = [v4 decodeObjectForKey:@"_action"];
-  v9 = [v4 decodeObjectForKey:@"_relevanceProviders"];
-  v10 = -[REElement initWithIdentifier:content:idealizedContent:action:relevanceProviders:privacyBehavior:](self, "initWithIdentifier:content:idealizedContent:action:relevanceProviders:privacyBehavior:", v5, v6, v7, v8, v9, [v4 decodeIntegerForKey:@"_privacyBehavior"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"_identifier"];
+  v6 = [coderCopy decodeObjectForKey:@"_content"];
+  v7 = [coderCopy decodeObjectForKey:@"_idealizedContent"];
+  v8 = [coderCopy decodeObjectForKey:@"_action"];
+  v9 = [coderCopy decodeObjectForKey:@"_relevanceProviders"];
+  v10 = -[REElement initWithIdentifier:content:idealizedContent:action:relevanceProviders:privacyBehavior:](self, "initWithIdentifier:content:idealizedContent:action:relevanceProviders:privacyBehavior:", v5, v6, v7, v8, v9, [coderCopy decodeIntegerForKey:@"_privacyBehavior"]);
   if (v10)
   {
-    v11 = [v4 decodeObjectForKey:@"_bundleIdentifier"];
+    v11 = [coderCopy decodeObjectForKey:@"_bundleIdentifier"];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
 
-    v13 = [v4 decodeObjectForKey:@"_applicationBundleIdentifier"];
+    v13 = [coderCopy decodeObjectForKey:@"_applicationBundleIdentifier"];
     applicationBundleIdentifier = v10->_applicationBundleIdentifier;
     v10->_applicationBundleIdentifier = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_namespacedIdentifier"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_namespacedIdentifier"];
     namespacedIdentifier = v10->_namespacedIdentifier;
     v10->_namespacedIdentifier = v15;
   }
@@ -388,25 +388,25 @@ LABEL_13:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"_identifier"];
-  v5 = [(REElement *)self bundleIdentifier];
-  [v6 encodeObject:v5 forKey:@"_bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  bundleIdentifier = [(REElement *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"_bundleIdentifier"];
 
-  [v6 encodeInteger:self->_privacyBehavior forKey:@"_privacyBehavior"];
-  [v6 encodeObject:self->_content forKey:@"_content"];
-  [v6 encodeObject:self->_idealizedContent forKey:@"_idealizedContent"];
-  [v6 encodeObject:self->_action forKey:@"_action"];
-  [v6 encodeObject:self->_applicationBundleIdentifier forKey:@"_applicationBundleIdentifier"];
-  [v6 encodeObject:self->_namespacedIdentifier forKey:@"_namespacedIdentifier"];
+  [coderCopy encodeInteger:self->_privacyBehavior forKey:@"_privacyBehavior"];
+  [coderCopy encodeObject:self->_content forKey:@"_content"];
+  [coderCopy encodeObject:self->_idealizedContent forKey:@"_idealizedContent"];
+  [coderCopy encodeObject:self->_action forKey:@"_action"];
+  [coderCopy encodeObject:self->_applicationBundleIdentifier forKey:@"_applicationBundleIdentifier"];
+  [coderCopy encodeObject:self->_namespacedIdentifier forKey:@"_namespacedIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong((v4 + 8), self->_identifier);
   *(v4 + 16) = self->_privacyBehavior;
   objc_storeStrong((v4 + 24), self->_content);
@@ -493,12 +493,12 @@ LABEL_11:
   return v5 ^ v7 ^ [(NSString *)self->_applicationBundleIdentifier hash];
 }
 
-- (BOOL)_relevanceProvidersEqualToElement:(id)a3
+- (BOOL)_relevanceProvidersEqualToElement:(id)element
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 relevanceProviders];
+  relevanceProviders = [element relevanceProviders];
   v5 = [(NSArray *)self->_relevanceProviders count];
-  if (v5 == [v4 count])
+  if (v5 == [relevanceProviders count])
   {
     v16 = 0u;
     v17 = 0u;
@@ -519,7 +519,7 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          if (![v4 containsObject:{*(*(&v14 + 1) + 8 * i), v14}])
+          if (![relevanceProviders containsObject:{*(*(&v14 + 1) + 8 * i), v14}])
           {
             v11 = 0;
             goto LABEL_13;
@@ -549,10 +549,10 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -562,7 +562,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;

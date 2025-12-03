@@ -1,27 +1,27 @@
 @interface _REIntegerFeatureValue
-+ (id)featureValueWithInt64:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (_REIntegerFeatureValue)initWithValue:(int64_t)a3;
++ (id)featureValueWithInt64:(int64_t)int64;
+- (BOOL)isEqual:(id)equal;
+- (_REIntegerFeatureValue)initWithValue:(int64_t)value;
 @end
 
 @implementation _REIntegerFeatureValue
 
-- (_REIntegerFeatureValue)initWithValue:(int64_t)a3
+- (_REIntegerFeatureValue)initWithValue:(int64_t)value
 {
   v5.receiver = self;
   v5.super_class = _REIntegerFeatureValue;
   result = [(_REIntegerFeatureValue *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = value;
   }
 
   return result;
 }
 
-+ (id)featureValueWithInt64:(int64_t)a3
++ (id)featureValueWithInt64:(int64_t)int64
 {
-  switch(a3)
+  switch(int64)
   {
     case 0:
       if (featureValueWithInt64__onceToken != -1)
@@ -290,17 +290,17 @@ LABEL_101:
       v4 = v3;
       break;
     default:
-      v4 = [[_REIntegerFeatureValue alloc] initWithValue:a3];
+      v4 = [[_REIntegerFeatureValue alloc] initWithValue:int64];
       break;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -308,7 +308,7 @@ LABEL_101:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == v4->_value;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_value == equalCopy->_value;
   }
 
   return v5;

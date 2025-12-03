@@ -1,56 +1,56 @@
 @interface DRDragSessionManager
 + (id)sharedSessionManager;
-- (BOOL)_addBeginningTouchesToExistingSessions:(id)a3 viewController:(id)a4 touchWindow:(id)a5;
-- (BOOL)destinationIsSystemConnection:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)xpcQueue_hasTouchBasedDragSessionForEventsForDisplayIdentifier:(id)a3;
-- (BOOL)xpcQueue_shouldAcceptNewDestinationConnection:(id)a3;
-- (BOOL)xpcQueue_shouldAcceptNewSourceConnection:(id)a3;
+- (BOOL)_addBeginningTouchesToExistingSessions:(id)sessions viewController:(id)controller touchWindow:(id)window;
+- (BOOL)destinationIsSystemConnection:(id)connection;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)xpcQueue_hasTouchBasedDragSessionForEventsForDisplayIdentifier:(id)identifier;
+- (BOOL)xpcQueue_shouldAcceptNewDestinationConnection:(id)connection;
+- (BOOL)xpcQueue_shouldAcceptNewSourceConnection:(id)connection;
 - (DRDragSessionManager)init;
 - (DRDragSessionManagerDelegate)delegate;
-- (id)_filterTouchesForPointer:(id)a3 performingBlockForPointerTouch:(id)a4;
-- (id)allWindowContextIdsForDragSession:(id)a3;
+- (id)_filterTouchesForPointer:(id)pointer performingBlockForPointerTouch:(id)touch;
+- (id)allWindowContextIdsForDragSession:(id)session;
 - (id)xpcQueue_accessibilityDragSessionForEvents;
 - (id)xpcQueue_pointerDragSessionForEvents;
 - (void)_cancelAllDragSessions;
 - (void)_cancelPointerBeganWatchdog;
 - (void)_createExternalConnections;
-- (void)_forEachTouch:(id)a3 performBlockForSession:(id)a4;
-- (void)_getTransformForContextID:(unsigned int)a3 layerRenderID:(unint64_t)a4 displayID:(id)a5 allowingEmptyLayerID:(BOOL)a6 completion:(id)a7;
-- (void)_getTransformForLayerContext:(id)a3 completion:(id)a4;
-- (void)_notifyListenersSessionDidEnd:(id)a3;
-- (void)_notifyListenersSessionWillBegin:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (void)_forEachTouch:(id)touch performBlockForSession:(id)session;
+- (void)_getTransformForContextID:(unsigned int)d layerRenderID:(unint64_t)iD displayID:(id)displayID allowingEmptyLayerID:(BOOL)layerID completion:(id)completion;
+- (void)_getTransformForLayerContext:(id)context completion:(id)completion;
+- (void)_notifyListenersSessionDidEnd:(id)end;
+- (void)_notifyListenersSessionWillBegin:(id)begin configuration:(id)configuration completion:(id)completion;
 - (void)_pointerBeganWatchdogFired;
-- (void)beginDragWithClientSession:(id)a3 configuration:(id)a4 reply:(id)a5;
-- (void)configurePortalViewsForDragSessionOriginatingFromViewController:(id)a3;
-- (void)dragSession:(id)a3 addedItemCount:(unint64_t)a4;
-- (void)dragSession:(id)a3 animateOutVisibleItemsWithOperation:(unint64_t)a4;
-- (void)dragSession:(id)a3 enableKeyboardIfNeeded:(BOOL)a4;
-- (void)dragSession:(id)a3 findVisibleDroppedItemsInSpaceOfLayerContext:(id)a4 replyingOnQueue:(id)a5 with:(id)a6;
-- (void)dragSession:(id)a3 invalidateImageForClient:(id)a4 itemIndex:(unint64_t)a5;
-- (void)dragSession:(id)a3 moveToLocation:(CAPoint3D)a4;
-- (void)dragSession:(id)a3 removeVisibleDroppedItemsInSpaceOfLayerContext:(id)a4 replyingOnQueue:(id)a5 with:(id)a6;
-- (void)dragSession:(id)a3 updateDragItems:(id)a4 forClient:(id)a5 withFence:(id)a6;
-- (void)dragSession:(id)a3 updateRoutingPolicy:(id)a4;
-- (void)dragSession:(id)a3 updatedPotentialDrop:(id)a4 forDestinationClient:(id)a5;
-- (void)dragSessionDidEnd:(id)a3;
-- (void)dragSessionSetDownAnimationDidEnd:(id)a3;
-- (void)dragSessionWillEnd:(id)a3;
-- (void)presentationDidUpdate:(id)a3 forSession:(unsigned int)a4;
-- (void)requestImagesForSessionID:(unsigned int)a3 client:(id)a4 itemIndexSet:(id)a5;
-- (void)resetDestinationClientForDragSession:(id)a3;
+- (void)beginDragWithClientSession:(id)session configuration:(id)configuration reply:(id)reply;
+- (void)configurePortalViewsForDragSessionOriginatingFromViewController:(id)controller;
+- (void)dragSession:(id)session addedItemCount:(unint64_t)count;
+- (void)dragSession:(id)session animateOutVisibleItemsWithOperation:(unint64_t)operation;
+- (void)dragSession:(id)session enableKeyboardIfNeeded:(BOOL)needed;
+- (void)dragSession:(id)session findVisibleDroppedItemsInSpaceOfLayerContext:(id)context replyingOnQueue:(id)queue with:(id)with;
+- (void)dragSession:(id)session invalidateImageForClient:(id)client itemIndex:(unint64_t)index;
+- (void)dragSession:(id)session moveToLocation:(CAPoint3D)location;
+- (void)dragSession:(id)session removeVisibleDroppedItemsInSpaceOfLayerContext:(id)context replyingOnQueue:(id)queue with:(id)with;
+- (void)dragSession:(id)session updateDragItems:(id)items forClient:(id)client withFence:(id)fence;
+- (void)dragSession:(id)session updateRoutingPolicy:(id)policy;
+- (void)dragSession:(id)session updatedPotentialDrop:(id)drop forDestinationClient:(id)client;
+- (void)dragSessionDidEnd:(id)end;
+- (void)dragSessionSetDownAnimationDidEnd:(id)end;
+- (void)dragSessionWillEnd:(id)end;
+- (void)presentationDidUpdate:(id)update forSession:(unsigned int)session;
+- (void)requestImagesForSessionID:(unsigned int)d client:(id)client itemIndexSet:(id)set;
+- (void)resetDestinationClientForDragSession:(id)session;
 - (void)startup;
-- (void)teardownPortalViewsForDragSessionOriginatingFromViewController:(id)a3;
-- (void)touchTrackingWindow:(id)a3 touchesBegan:(id)a4;
-- (void)touchTrackingWindow:(id)a3 touchesCancelled:(id)a4;
-- (void)touchTrackingWindow:(id)a3 touchesEnded:(id)a4 pairedWithVelocities:(id)a5;
-- (void)touchTrackingWindow:(id)a3 touchesMoved:(id)a4;
+- (void)teardownPortalViewsForDragSessionOriginatingFromViewController:(id)controller;
+- (void)touchTrackingWindow:(id)window touchesBegan:(id)began;
+- (void)touchTrackingWindow:(id)window touchesCancelled:(id)cancelled;
+- (void)touchTrackingWindow:(id)window touchesEnded:(id)ended pairedWithVelocities:(id)velocities;
+- (void)touchTrackingWindow:(id)window touchesMoved:(id)moved;
 - (void)warmUp;
-- (void)xpcQueue_acceptNewDestinationConnection:(id)a3;
-- (void)xpcQueue_acceptNewSourceConnection:(id)a3;
-- (void)xpcQueue_addDragSession:(id)a3;
-- (void)xpcQueue_removeDragSession:(id)a3;
-- (void)xpcQueue_validateTouchStreamForDragSession:(id)a3;
+- (void)xpcQueue_acceptNewDestinationConnection:(id)connection;
+- (void)xpcQueue_acceptNewSourceConnection:(id)connection;
+- (void)xpcQueue_addDragSession:(id)session;
+- (void)xpcQueue_removeDragSession:(id)session;
+- (void)xpcQueue_validateTouchStreamForDragSession:(id)session;
 @end
 
 @implementation DRDragSessionManager
@@ -124,8 +124,8 @@
 
 - (void)startup
 {
-  v3 = [(DRDragSessionManager *)self keyboardArbiter];
-  [v3 connect];
+  keyboardArbiter = [(DRDragSessionManager *)self keyboardArbiter];
+  [keyboardArbiter connect];
 
   [(DRDragSessionManager *)self _createExternalConnections];
   v4 = objc_opt_new();
@@ -140,10 +140,10 @@
   [UIApp _performBlockAfterCATransactionCommits:v6];
 }
 
-- (void)requestImagesForSessionID:(unsigned int)a3 client:(id)a4 itemIndexSet:(id)a5
+- (void)requestImagesForSessionID:(unsigned int)d client:(id)client itemIndexSet:(id)set
 {
-  v8 = a4;
-  v9 = a5;
+  clientCopy = client;
+  setCopy = set;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -164,9 +164,9 @@
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        if ([v15 identifier] == a3)
+        if ([v15 identifier] == d)
         {
-          [v15 requestImagesForClient:v8 itemIndexes:v9];
+          [v15 requestImagesForClient:clientCopy itemIndexes:setCopy];
           goto LABEL_11;
         }
       }
@@ -184,9 +184,9 @@
 LABEL_11:
 }
 
-- (void)presentationDidUpdate:(id)a3 forSession:(unsigned int)a4
+- (void)presentationDidUpdate:(id)update forSession:(unsigned int)session
 {
-  v6 = a3;
+  updateCopy = update;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -207,9 +207,9 @@ LABEL_11:
         }
 
         v12 = *(*(&v13 + 1) + 8 * i);
-        if ([v12 identifier] == a4)
+        if ([v12 identifier] == session)
         {
-          [v12 notifyDragMonitorsWithUpdatedPresentation:v6];
+          [v12 notifyDragMonitorsWithUpdatedPresentation:updateCopy];
           goto LABEL_11;
         }
       }
@@ -227,21 +227,21 @@ LABEL_11:
 LABEL_11:
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_sourceListener == v6)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (self->_sourceListener == listenerCopy)
   {
-    v9 = [(DRDragSessionManager *)self xpcQueue_shouldAcceptNewSourceConnection:v7];
+    v9 = [(DRDragSessionManager *)self xpcQueue_shouldAcceptNewSourceConnection:connectionCopy];
 LABEL_6:
     v8 = v9;
     goto LABEL_7;
   }
 
-  if (self->_destinationListener == v6)
+  if (self->_destinationListener == listenerCopy)
   {
-    v9 = [(DRDragSessionManager *)self xpcQueue_shouldAcceptNewDestinationConnection:v7];
+    v9 = [(DRDragSessionManager *)self xpcQueue_shouldAcceptNewDestinationConnection:connectionCopy];
     goto LABEL_6;
   }
 
@@ -251,14 +251,14 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)xpcQueue_shouldAcceptNewSourceConnection:(id)a3
+- (BOOL)xpcQueue_shouldAcceptNewSourceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(DRDragSessionManager *)self xpcQueue_canCreateNewDragSessionWithSourceConnection:v4];
+  connectionCopy = connection;
+  v5 = [(DRDragSessionManager *)self xpcQueue_canCreateNewDragSessionWithSourceConnection:connectionCopy];
   if (v5)
   {
-    [(DRDragSessionManager *)self xpcQueue_acceptNewSourceConnection:v4];
-    [v4 resume];
+    [(DRDragSessionManager *)self xpcQueue_acceptNewSourceConnection:connectionCopy];
+    [connectionCopy resume];
   }
 
   else
@@ -274,40 +274,40 @@ LABEL_7:
   return v5;
 }
 
-- (void)xpcQueue_acceptNewSourceConnection:(id)a3
+- (void)xpcQueue_acceptNewSourceConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = [v4 processIdentifier];
+    HIDWORD(buf) = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Accepting new source connection from PID %d", &buf, 8u);
   }
 
-  [v4 _setQueue:self->_xpcQueue];
+  [connectionCopy _setQueue:self->_xpcQueue];
   v6 = _DUINewServerSourceInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = _DUINewClientSourceInterface();
-  [v4 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  objc_initWeak(&buf, v4);
+  objc_initWeak(&buf, connectionCopy);
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100026348;
   v11[3] = &unk_100054CA0;
   objc_copyWeak(&v12, &buf);
-  [v4 setInterruptionHandler:v11];
+  [connectionCopy setInterruptionHandler:v11];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100026408;
   v8[3] = &unk_1000561F0;
   objc_copyWeak(&v9, &buf);
   objc_copyWeak(&v10, &location);
-  [v4 setInvalidationHandler:v8];
+  [connectionCopy setInvalidationHandler:v8];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v12);
@@ -315,14 +315,14 @@ LABEL_7:
   objc_destroyWeak(&buf);
 }
 
-- (BOOL)xpcQueue_shouldAcceptNewDestinationConnection:(id)a3
+- (BOOL)xpcQueue_shouldAcceptNewDestinationConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(DRDragSessionManager *)self xpcQueue_canAcceptDestinationConnection:v4];
+  connectionCopy = connection;
+  v5 = [(DRDragSessionManager *)self xpcQueue_canAcceptDestinationConnection:connectionCopy];
   if (v5)
   {
-    [(DRDragSessionManager *)self xpcQueue_acceptNewDestinationConnection:v4];
-    [v4 resume];
+    [(DRDragSessionManager *)self xpcQueue_acceptNewDestinationConnection:connectionCopy];
+    [connectionCopy resume];
   }
 
   else
@@ -338,40 +338,40 @@ LABEL_7:
   return v5;
 }
 
-- (void)xpcQueue_acceptNewDestinationConnection:(id)a3
+- (void)xpcQueue_acceptNewDestinationConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = [v4 processIdentifier];
+    HIDWORD(buf) = [connectionCopy processIdentifier];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Accepting new destination connection from PID %d", &buf, 8u);
   }
 
-  [v4 _setQueue:self->_xpcQueue];
+  [connectionCopy _setQueue:self->_xpcQueue];
   v6 = _DUINewServerDestinationInterface();
-  [v4 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v4 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v7 = _DUINewClientDestinationInterface();
-  [v4 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  objc_initWeak(&buf, v4);
+  objc_initWeak(&buf, connectionCopy);
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000268B8;
   v11[3] = &unk_100054CA0;
   objc_copyWeak(&v12, &buf);
-  [v4 setInterruptionHandler:v11];
+  [connectionCopy setInterruptionHandler:v11];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100026978;
   v8[3] = &unk_1000561F0;
   objc_copyWeak(&v9, &buf);
   objc_copyWeak(&v10, &location);
-  [v4 setInvalidationHandler:v8];
+  [connectionCopy setInvalidationHandler:v8];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v12);
@@ -379,42 +379,42 @@ LABEL_7:
   objc_destroyWeak(&buf);
 }
 
-- (void)xpcQueue_addDragSession:(id)a3
+- (void)xpcQueue_addDragSession:(id)session
 {
-  v4 = a3;
-  [(NSMutableArray *)self->_dragSessions addObject:v4];
-  [(DRDragSessionManager *)self xpcQueue_validateTouchStreamForDragSession:v4];
+  sessionCopy = session;
+  [(NSMutableArray *)self->_dragSessions addObject:sessionCopy];
+  [(DRDragSessionManager *)self xpcQueue_validateTouchStreamForDragSession:sessionCopy];
   +[NSXPCConnection beginTransaction];
   v5 = DRLogTarget();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     v7 = [(NSMutableArray *)self->_dragSessions count];
     v8[0] = 67109376;
-    v8[1] = v6;
+    v8[1] = identifier;
     v9 = 2048;
     v10 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Added drag session %u (session count now: %lu)", v8, 0x12u);
   }
 }
 
-- (void)xpcQueue_removeDragSession:(id)a3
+- (void)xpcQueue_removeDragSession:(id)session
 {
-  v4 = a3;
-  v5 = [(NSMutableArray *)self->_dragSessions indexOfObjectIdenticalTo:v4];
+  sessionCopy = session;
+  v5 = [(NSMutableArray *)self->_dragSessions indexOfObjectIdenticalTo:sessionCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    v7 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     [(NSMutableArray *)self->_dragSessions removeObjectAtIndex:v6];
-    [(DRDragSessionManager *)self xpcQueue_validateTouchStreamForDragSession:v4];
+    [(DRDragSessionManager *)self xpcQueue_validateTouchStreamForDragSession:sessionCopy];
     +[NSXPCConnection endTransaction];
     v8 = DRLogTarget();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = [(NSMutableArray *)self->_dragSessions count];
       v10[0] = 67109376;
-      v10[1] = v7;
+      v10[1] = identifier;
       v11 = 2048;
       v12 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Removed drag session %u (session count now: %lu)", v10, 0x12u);
@@ -422,20 +422,20 @@ LABEL_7:
   }
 }
 
-- (void)xpcQueue_validateTouchStreamForDragSession:(id)a3
+- (void)xpcQueue_validateTouchStreamForDragSession:(id)session
 {
-  v57 = a3;
-  v60 = [(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents];
-  v64 = [(DRDragSessionManager *)self xpcQueue_accessibilityDragSessionForEvents];
-  v4 = [(DRDragSessionManager *)self delegate];
-  v5 = [v4 allDisplayIdentifiers];
+  sessionCopy = session;
+  xpcQueue_pointerDragSessionForEvents = [(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents];
+  xpcQueue_accessibilityDragSessionForEvents = [(DRDragSessionManager *)self xpcQueue_accessibilityDragSessionForEvents];
+  delegate = [(DRDragSessionManager *)self delegate];
+  allDisplayIdentifiers = [delegate allDisplayIdentifiers];
 
   v65 = +[NSMutableDictionary dictionary];
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v5;
+  obj = allDisplayIdentifiers;
   v6 = [obj countByEnumeratingWithState:&v72 objects:v87 count:16];
   if (!v6)
   {
@@ -457,23 +457,23 @@ LABEL_7:
       }
 
       v8 = *(*(&v72 + 1) + 8 * i);
-      v9 = [(DRDragSessionManager *)self delegate];
-      v10 = [v9 touchTrackingWindowForHardwareDisplayIdentifier:v8];
+      delegate2 = [(DRDragSessionManager *)self delegate];
+      v10 = [delegate2 touchTrackingWindowForHardwareDisplayIdentifier:v8];
 
       [v65 setObject:v10 forKey:v8];
-      if (v64)
+      if (xpcQueue_accessibilityDragSessionForEvents)
       {
-        v11 = [v64 displayIdentifierForSynthesizedTouch];
-        v12 = [v11 isEqualToString:v8]^ 1;
+        displayIdentifierForSynthesizedTouch = [xpcQueue_accessibilityDragSessionForEvents displayIdentifierForSynthesizedTouch];
+        v12 = [displayIdentifierForSynthesizedTouch isEqualToString:v8]^ 1;
       }
 
       else
       {
         v13 = [(DRDragSessionManager *)self xpcQueue_hasTouchBasedDragSessionForEventsForDisplayIdentifier:v8];
-        if (v60)
+        if (xpcQueue_pointerDragSessionForEvents)
         {
-          v14 = [v60 displayIdentifierForSynthesizedTouch];
-          v15 = [v14 isEqualToString:v8];
+          displayIdentifierForSynthesizedTouch2 = [xpcQueue_pointerDragSessionForEvents displayIdentifierForSynthesizedTouch];
+          v15 = [displayIdentifierForSynthesizedTouch2 isEqualToString:v8];
 
           v16 = v15 ^ 1;
           v58 |= v15 ^ 1;
@@ -486,9 +486,9 @@ LABEL_7:
           v16 = 0;
         }
 
-        v11 = DRLogTarget();
+        displayIdentifierForSynthesizedTouch = DRLogTarget();
         v12 = v16 | v13;
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(displayIdentifierForSynthesizedTouch, OS_LOG_TYPE_INFO))
         {
           *buf = 138413570;
           v78 = v8;
@@ -501,17 +501,17 @@ LABEL_7:
           v83 = 1024;
           v84 = v15;
           v85 = 2112;
-          v86 = v60;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "{xpcQueue_validateTouchStream: display %@ shouldHaveTouchStream: %d (pointer %d touch %d), shouldHavePointerStream %d, pointerSession %@, ", buf, 0x2Eu);
+          v86 = xpcQueue_pointerDragSessionForEvents;
+          _os_log_impl(&_mh_execute_header, displayIdentifierForSynthesizedTouch, OS_LOG_TYPE_INFO, "{xpcQueue_validateTouchStream: display %@ shouldHaveTouchStream: %d (pointer %d touch %d), shouldHavePointerStream %d, pointerSession %@, ", buf, 0x2Eu);
         }
       }
 
-      v17 = [v10 windowScene];
-      v18 = [v17 screen];
-      v19 = [v18 displayConfiguration];
-      v20 = [v19 hardwareIdentifier];
+      windowScene = [v10 windowScene];
+      screen = [windowScene screen];
+      displayConfiguration = [screen displayConfiguration];
+      hardwareIdentifier = [displayConfiguration hardwareIdentifier];
 
-      v21 = [v10 _contextId];
+      _contextId = [v10 _contextId];
       touchStreamsByDisplayIdentifier = self->_touchStreamsByDisplayIdentifier;
       if ((v12 & 1) == 0)
       {
@@ -552,7 +552,7 @@ LABEL_7:
       {
         v27 = [BKSTouchStream alloc];
         v28 = objc_opt_new();
-        v29 = [v27 initWithContextID:v21 displayUUID:v20 identifier:2 policy:v28];
+        v29 = [v27 initWithContextID:_contextId displayUUID:hardwareIdentifier identifier:2 policy:v28];
 
         v30 = DRLogTarget();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -574,7 +574,7 @@ LABEL_24:
 
   while (v6);
 
-  if (((v60 != 0) & v58) == 1)
+  if (((xpcQueue_pointerDragSessionForEvents != 0) & v58) == 1)
   {
     v33 = DRLogTarget();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
@@ -585,13 +585,13 @@ LABEL_24:
 
     objc_initWeak(buf, self);
     v34 = [DRDispatchTimer alloc];
-    v35 = [(DRDragSessionManager *)self xpcQueue];
+    xpcQueue = [(DRDragSessionManager *)self xpcQueue];
     v70[0] = _NSConcreteStackBlock;
     v70[1] = 3221225472;
     v70[2] = sub_1000275F4;
     v70[3] = &unk_100054CA0;
     objc_copyWeak(&v71, buf);
-    v36 = [(DRDispatchTimer *)v34 initWithQueue:v35 eventHandler:v70];
+    v36 = [(DRDispatchTimer *)v34 initWithQueue:xpcQueue eventHandler:v70];
 
     [(DRDispatchTimer *)v36 resetWithTimeout:0.5 leeway:0.1];
     [(DRDispatchTimer *)v36 activate];
@@ -623,12 +623,12 @@ LABEL_32:
 
         v41 = *(*(&v66 + 1) + 8 * j);
         v42 = [v65 objectForKey:v41];
-        v43 = [v42 windowScene];
-        v44 = [v43 screen];
-        v45 = [v44 displayConfiguration];
-        v46 = [v45 hardwareIdentifier];
+        windowScene2 = [v42 windowScene];
+        screen2 = [windowScene2 screen];
+        displayConfiguration2 = [screen2 displayConfiguration];
+        hardwareIdentifier2 = [displayConfiguration2 hardwareIdentifier];
 
-        v47 = [v42 _contextId];
+        _contextId2 = [v42 _contextId];
         pointerServiceAssertionsByDisplayIdentifier = self->_pointerServiceAssertionsByDisplayIdentifier;
         if ((v63 & 1) == 0)
         {
@@ -667,7 +667,7 @@ LABEL_32:
         if (v52)
         {
           v53 = +[BKSMousePointerService sharedInstance];
-          v54 = [v53 requestGlobalMouseEventsForDisplay:v46 targetContextID:v47];
+          v54 = [v53 requestGlobalMouseEventsForDisplay:hardwareIdentifier2 targetContextID:_contextId2];
 
           v55 = DRLogTarget();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
@@ -734,9 +734,9 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)xpcQueue_hasTouchBasedDragSessionForEventsForDisplayIdentifier:(id)a3
+- (BOOL)xpcQueue_hasTouchBasedDragSessionForEventsForDisplayIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -757,10 +757,10 @@ LABEL_12:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [(DRDragSessionManager *)self delegate];
-        v12 = [v11 sourceDisplayIdentifierForDragSession:v10];
+        delegate = [(DRDragSessionManager *)self delegate];
+        v12 = [delegate sourceDisplayIdentifierForDragSession:v10];
 
-        if ([v10 state] <= 3 && (objc_msgSend(v10, "originatedFromAccessibility") & 1) == 0 && (objc_msgSend(v10, "originatedFromPointer") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", v4) & 1) != 0)
+        if ([v10 state] <= 3 && (objc_msgSend(v10, "originatedFromAccessibility") & 1) == 0 && (objc_msgSend(v10, "originatedFromPointer") & 1) == 0 && (objc_msgSend(v12, "isEqualToString:", identifierCopy) & 1) != 0)
         {
 
           v13 = 1;
@@ -830,8 +830,8 @@ LABEL_12:
 
 - (void)_cancelPointerBeganWatchdog
 {
-  v3 = [(DRDragSessionManager *)self xpcQueue];
-  dispatch_assert_queue_V2(v3);
+  xpcQueue = [(DRDragSessionManager *)self xpcQueue];
+  dispatch_assert_queue_V2(xpcQueue);
 
   [(DRDispatchTimer *)self->_pointerWatchdogTimer cancel];
   pointerWatchdogTimer = self->_pointerWatchdogTimer;
@@ -847,8 +847,8 @@ LABEL_12:
   }
 
   dispatch_assert_queue_V2(self->_xpcQueue);
-  v4 = [(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents];
-  [v4 cancelPointerDrag];
+  xpcQueue_pointerDragSessionForEvents = [(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents];
+  [xpcQueue_pointerDragSessionForEvents cancelPointerDrag];
 
   [(DRDragSessionManager *)self _cancelPointerBeganWatchdog];
 }
@@ -865,20 +865,20 @@ LABEL_12:
   }
 }
 
-- (void)beginDragWithClientSession:(id)a3 configuration:(id)a4 reply:(id)a5
+- (void)beginDragWithClientSession:(id)session configuration:(id)configuration reply:(id)reply
 {
-  v55 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  configurationCopy = configuration;
+  replyCopy = reply;
   val = +[NSXPCConnection currentConnection];
-  v10 = [v8 axEndpoint];
+  axEndpoint = [configurationCopy axEndpoint];
 
-  v11 = [v8 touchIDs];
-  v12 = v11;
+  touchIDs = [configurationCopy touchIDs];
+  v12 = touchIDs;
   v13 = &__NSArray0__struct;
-  if (v11)
+  if (touchIDs)
   {
-    v13 = v11;
+    v13 = touchIDs;
   }
 
   v56 = v13;
@@ -886,24 +886,24 @@ LABEL_12:
   v14 = DRLogTarget();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [val processIdentifier];
+    processIdentifier = [val processIdentifier];
     v16 = [v56 count];
-    v17 = [v8 itemCollection];
-    v18 = [v17 items];
+    itemCollection = [configurationCopy itemCollection];
+    items = [itemCollection items];
     LODWORD(buf) = 67109632;
-    HIDWORD(buf) = v15;
+    HIDWORD(buf) = processIdentifier;
     v78 = 2048;
     v79 = v16;
     v80 = 2048;
-    v81 = [v18 count];
+    v81 = [items count];
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Received request to begin drag for PID %d with %ld touches, %ld items", &buf, 0x1Cu);
   }
 
-  if (v10)
+  if (axEndpoint)
   {
     v19 = [NSXPCConnection alloc];
-    v20 = [v8 axEndpoint];
-    v21 = [v19 initWithListenerEndpoint:v20];
+    axEndpoint2 = [configurationCopy axEndpoint];
+    v21 = [v19 initWithListenerEndpoint:axEndpoint2];
 
     if (v21)
     {
@@ -932,33 +932,33 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v22 = 0;
+    initiatedWithPointer = 0;
     v23 = 0;
   }
 
   else
   {
-    v22 = [v8 initiatedWithPointer];
+    initiatedWithPointer = [configurationCopy initiatedWithPointer];
     v21 = 0;
-    v23 = v22 ^ 1;
+    v23 = initiatedWithPointer ^ 1;
   }
 
-  v24 = [(DRDragSessionManager *)self xpcQueue_accessibilityDragSessionForEvents];
-  v25 = v24 == 0;
+  xpcQueue_accessibilityDragSessionForEvents = [(DRDragSessionManager *)self xpcQueue_accessibilityDragSessionForEvents];
+  v25 = xpcQueue_accessibilityDragSessionForEvents == 0;
 
   if (v25)
   {
-    if (!v22 || ([(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents], v27 = objc_claimAutoreleasedReturnValue(), v28 = v27 == 0, v27, v28))
+    if (!initiatedWithPointer || ([(DRDragSessionManager *)self xpcQueue_pointerDragSessionForEvents], v27 = objc_claimAutoreleasedReturnValue(), v28 = v27 == 0, v27, v28))
     {
-      if ((!v10 || v21) && (([v56 count] == 0) & v23) == 0 && (objc_msgSend(v56, "count") == 0) | v23 & 1 && v9)
+      if ((!axEndpoint || v21) && (([v56 count] == 0) & v23) == 0 && (objc_msgSend(v56, "count") == 0) | v23 & 1 && replyCopy)
       {
         v49 = self->_lastSessionIdentifier + 1;
         self->_lastSessionIdentifier = v49;
-        v29 = [v8 coordinateSpaceSourceLayerContext];
-        v53 = [v29 systemShellHostingSpaceIdentifier];
+        coordinateSpaceSourceLayerContext = [configurationCopy coordinateSpaceSourceLayerContext];
+        systemShellHostingSpaceIdentifier = [coordinateSpaceSourceLayerContext systemShellHostingSpaceIdentifier];
 
-        v30 = [(DRDragSessionManager *)self delegate];
-        v51 = [v30 activatedSceneGroupForSystemShellHostingSpaceIdentifier:v53];
+        delegate = [(DRDragSessionManager *)self delegate];
+        v51 = [delegate activatedSceneGroupForSystemShellHostingSpaceIdentifier:systemShellHostingSpaceIdentifier];
 
         if (v51)
         {
@@ -966,20 +966,20 @@ LABEL_12:
           dispatch_group_wait(v51, v31);
         }
 
-        v32 = [(DRDragSessionManager *)self delegate];
-        v54 = [v32 hardwareDisplayIdentifierMatchingSystemShellHostingSpaceIdentifier:v53];
+        delegate2 = [(DRDragSessionManager *)self delegate];
+        v54 = [delegate2 hardwareDisplayIdentifierMatchingSystemShellHostingSpaceIdentifier:systemShellHostingSpaceIdentifier];
 
         if (!v54)
         {
-          v33 = [(DRDragSessionManager *)self delegate];
-          v34 = [v8 sceneIdentifier];
-          v54 = [v33 displayIdentifierForSceneIdentifier:v34];
+          delegate3 = [(DRDragSessionManager *)self delegate];
+          sceneIdentifier = [configurationCopy sceneIdentifier];
+          v54 = [delegate3 displayIdentifierForSceneIdentifier:sceneIdentifier];
         }
 
-        v35 = [(DRDragSessionManager *)self delegate];
-        v50 = [v35 touchTrackingWindowForHardwareDisplayIdentifier:v54];
+        delegate4 = [(DRDragSessionManager *)self delegate];
+        v50 = [delegate4 touchTrackingWindowForHardwareDisplayIdentifier:v54];
 
-        v52 = [[DRDragSession alloc] initWithIdentifier:v49 configuration:v8 mainWindow:v50 sourceConnection:val accessibilityConnection:v21 clientSource:v55 delegate:self];
+        v52 = [[DRDragSession alloc] initWithIdentifier:v49 configuration:configurationCopy mainWindow:v50 sourceConnection:val accessibilityConnection:v21 clientSource:sessionCopy delegate:self];
         v36 = DRLogTarget();
         v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
         if (!v52)
@@ -990,15 +990,15 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Cannot begin drag: could not create drag session", &buf, 2u);
           }
 
-          (*(v9 + 2))(v9, 0, 0);
+          (*(replyCopy + 2))(replyCopy, 0, 0);
           goto LABEL_54;
         }
 
         if (v37)
         {
-          v38 = [(DRDragSession *)v52 identifier];
+          identifier = [(DRDragSession *)v52 identifier];
           LODWORD(buf) = 67109120;
-          HIDWORD(buf) = v38;
+          HIDWORD(buf) = identifier;
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Created session with ID %u", &buf, 8u);
         }
 
@@ -1011,7 +1011,7 @@ LABEL_12:
         v68 = v47;
         v39 = v52;
         v69 = v39;
-        v40 = v8;
+        v40 = configurationCopy;
         v70 = v40;
         v48 = objc_retainBlock(v67);
         if (v23)
@@ -1025,7 +1025,7 @@ LABEL_12:
             }
 
             [(DRDragSession *)v39 fail];
-            (*(v9 + 2))(v9, 0, 0);
+            (*(replyCopy + 2))(replyCopy, 0, 0);
             goto LABEL_53;
           }
 
@@ -1065,7 +1065,7 @@ LABEL_12:
           _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "Beginning drag", &buf, 2u);
         }
 
-        (*(v9 + 2))(v9, v49, v39);
+        (*(replyCopy + 2))(replyCopy, v49, v39);
         [(DRDragSession *)v39 beginDrag];
         v58[0] = _NSConcreteStackBlock;
         v58[1] = 3221225472;
@@ -1073,7 +1073,7 @@ LABEL_12:
         v58[3] = &unk_100056268;
         v59 = v40;
         v60 = v39;
-        v61 = self;
+        selfCopy = self;
         v62 = v47;
         [(DRDragSessionManager *)self _notifyListenersSessionWillBegin:v60 configuration:v59 completion:v58];
 
@@ -1092,9 +1092,9 @@ LABEL_13:
     sub_10003154C();
   }
 
-  if (v9)
+  if (replyCopy)
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 
 LABEL_17:
@@ -1103,33 +1103,33 @@ LABEL_17:
 - (void)_createExternalConnections
 {
   v3 = [DRSystemConnection alloc];
-  v4 = [(DRDragSessionManager *)self xpcQueue];
-  v5 = [(DRSystemConnection *)v3 initWithQueue:v4];
+  xpcQueue = [(DRDragSessionManager *)self xpcQueue];
+  v5 = [(DRSystemConnection *)v3 initWithQueue:xpcQueue];
   systemConnection = self->_systemConnection;
   self->_systemConnection = v5;
 
   if (+[DRDragMonitorConnectionProvider isEnsembleSupported])
   {
-    v7 = [(DRDragSessionManager *)self xpcQueue];
-    v8 = [DRDragMonitorConnectionProvider ensembleConnectionWithQueue:v7];
+    xpcQueue2 = [(DRDragSessionManager *)self xpcQueue];
+    v8 = [DRDragMonitorConnectionProvider ensembleConnectionWithQueue:xpcQueue2];
     ensembleConnection = self->_ensembleConnection;
     self->_ensembleConnection = v8;
   }
 
-  v12 = [(DRDragSessionManager *)self xpcQueue];
-  v10 = [DRDragMonitorConnectionProvider onenessConnectionWithQueue:v12];
+  xpcQueue3 = [(DRDragSessionManager *)self xpcQueue];
+  v10 = [DRDragMonitorConnectionProvider onenessConnectionWithQueue:xpcQueue3];
   onenessConnection = self->_onenessConnection;
   self->_onenessConnection = v10;
 }
 
-- (void)_notifyListenersSessionWillBegin:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)_notifyListenersSessionWillBegin:(id)begin configuration:(id)configuration completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  configurationCopy = configuration;
+  beginCopy = begin;
   v11 = dispatch_group_create();
-  [(DRSystemConnection *)self->_systemConnection notifySessionWillBegin:v10];
-  [(DRDragMonitorConnection *)self->_ensembleConnection notifySessionWillBegin:v10 configuration:v9 completion:&stru_100056288];
+  [(DRSystemConnection *)self->_systemConnection notifySessionWillBegin:beginCopy];
+  [(DRDragMonitorConnection *)self->_ensembleConnection notifySessionWillBegin:beginCopy configuration:configurationCopy completion:&stru_100056288];
   dispatch_group_enter(v11);
   onenessConnection = self->_onenessConnection;
   v14[0] = _NSConcreteStackBlock;
@@ -1138,33 +1138,33 @@ LABEL_17:
   v14[3] = &unk_100054B50;
   v15 = v11;
   v13 = v11;
-  [(DRDragMonitorConnection *)onenessConnection notifySessionWillBegin:v10 configuration:v9 completion:v14];
+  [(DRDragMonitorConnection *)onenessConnection notifySessionWillBegin:beginCopy configuration:configurationCopy completion:v14];
 
-  dispatch_group_notify(v13, self->_xpcQueue, v8);
+  dispatch_group_notify(v13, self->_xpcQueue, completionCopy);
 }
 
-- (void)_notifyListenersSessionDidEnd:(id)a3
+- (void)_notifyListenersSessionDidEnd:(id)end
 {
   systemConnection = self->_systemConnection;
-  v5 = a3;
-  [(DRSystemConnection *)systemConnection notifySessionDidEnd:v5];
-  [(DRDragMonitorConnection *)self->_ensembleConnection notifySessionDidEnd:v5];
-  [(DRDragMonitorConnection *)self->_onenessConnection notifySessionDidEnd:v5];
+  endCopy = end;
+  [(DRSystemConnection *)systemConnection notifySessionDidEnd:endCopy];
+  [(DRDragMonitorConnection *)self->_ensembleConnection notifySessionDidEnd:endCopy];
+  [(DRDragMonitorConnection *)self->_onenessConnection notifySessionDidEnd:endCopy];
 }
 
-- (void)configurePortalViewsForDragSessionOriginatingFromViewController:(id)a3
+- (void)configurePortalViewsForDragSessionOriginatingFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = self;
-  v5 = [(DRDragSessionManager *)self delegate];
-  v6 = [v5 allDisplayIdentifiers];
+  selfCopy = self;
+  delegate = [(DRDragSessionManager *)self delegate];
+  allDisplayIdentifiers = [delegate allDisplayIdentifiers];
 
-  obj = v6;
-  v32 = [v6 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  obj = allDisplayIdentifiers;
+  v32 = [allDisplayIdentifiers countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v32)
   {
     v30 = *v34;
@@ -1182,20 +1182,20 @@ LABEL_17:
         }
 
         v11 = *(*(&v33 + 1) + 8 * v10);
-        v12 = [(DRDragSessionManager *)v31 delegate];
-        v13 = [v12 contentWindowForHardwareDisplayIdentifier:v11];
+        delegate2 = [(DRDragSessionManager *)selfCopy delegate];
+        v13 = [delegate2 contentWindowForHardwareDisplayIdentifier:v11];
 
-        v14 = [v13 rootViewController];
-        v15 = v14;
-        if (v14 != v4)
+        rootViewController = [v13 rootViewController];
+        v15 = rootViewController;
+        if (rootViewController != controllerCopy)
         {
-          v16 = [v14 view];
-          v17 = [v16 window];
-          v18 = [v17 screen];
-          v19 = [v4 view];
-          v20 = [v19 window];
-          v21 = [v20 screen];
-          v22 = sub_100002334(v18, v21, CGRectZero.origin.x);
+          view = [rootViewController view];
+          window = [view window];
+          screen = [window screen];
+          view2 = [controllerCopy view];
+          window2 = [view2 window];
+          screen2 = [window2 screen];
+          v22 = sub_100002334(screen, screen2, CGRectZero.origin.x);
           v24 = v23;
           v26 = v25;
           v28 = v27;
@@ -1206,7 +1206,7 @@ LABEL_17:
           v38.size.height = v28;
           if (!CGRectIsNull(v38))
           {
-            [v15 configurePortalViewForDragSessionOriginatingFromViewController:v4];
+            [v15 configurePortalViewForDragSessionOriginatingFromViewController:controllerCopy];
           }
         }
 
@@ -1221,17 +1221,17 @@ LABEL_17:
   }
 }
 
-- (void)teardownPortalViewsForDragSessionOriginatingFromViewController:(id)a3
+- (void)teardownPortalViewsForDragSessionOriginatingFromViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(DRDragSessionManager *)self delegate];
-  v6 = [v5 allDisplayIdentifiers];
+  delegate = [(DRDragSessionManager *)self delegate];
+  allDisplayIdentifiers = [delegate allDisplayIdentifiers];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [allDisplayIdentifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1243,42 +1243,42 @@ LABEL_17:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allDisplayIdentifiers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v10);
-        v12 = [(DRDragSessionManager *)self delegate];
-        v13 = [v12 contentWindowForHardwareDisplayIdentifier:v11];
+        delegate2 = [(DRDragSessionManager *)self delegate];
+        v13 = [delegate2 contentWindowForHardwareDisplayIdentifier:v11];
 
-        v14 = [v13 rootViewController];
-        v15 = v14;
-        if (v14 != v4)
+        rootViewController = [v13 rootViewController];
+        v15 = rootViewController;
+        if (rootViewController != controllerCopy)
         {
-          [v14 teardownPortalViewForDragSessionOriginatingFromViewController:v4];
+          [rootViewController teardownPortalViewForDragSessionOriginatingFromViewController:controllerCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [allDisplayIdentifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)allWindowContextIdsForDragSession:(id)a3
+- (id)allWindowContextIdsForDragSession:(id)session
 {
   v4 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(DRDragSessionManager *)self delegate];
-  v6 = [v5 allDisplayIdentifiers];
+  delegate = [(DRDragSessionManager *)self delegate];
+  allDisplayIdentifiers = [delegate allDisplayIdentifiers];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v7 = [allDisplayIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1289,15 +1289,15 @@ LABEL_17:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allDisplayIdentifiers);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(DRDragSessionManager *)self delegate];
-        v13 = [v12 contentWindowForHardwareDisplayIdentifier:v11];
+        delegate2 = [(DRDragSessionManager *)self delegate];
+        v13 = [delegate2 contentWindowForHardwareDisplayIdentifier:v11];
 
-        v14 = [(DRDragSessionManager *)self delegate];
-        v15 = [v14 touchTrackingWindowForHardwareDisplayIdentifier:v11];
+        delegate3 = [(DRDragSessionManager *)self delegate];
+        v15 = [delegate3 touchTrackingWindowForHardwareDisplayIdentifier:v11];
 
         v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 _contextId]);
         [v4 addObject:v16];
@@ -1306,7 +1306,7 @@ LABEL_17:
         [v4 addObject:v17];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [allDisplayIdentifiers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -1315,23 +1315,23 @@ LABEL_17:
   return v4;
 }
 
-- (void)dragSession:(id)a3 updateDragItems:(id)a4 forClient:(id)a5 withFence:(id)a6
+- (void)dragSession:(id)session updateDragItems:(id)items forClient:(id)client withFence:(id)fence
 {
-  v10 = a3;
-  v11 = a4;
-  v40 = a5;
-  v39 = a6;
+  sessionCopy = session;
+  itemsCopy = items;
+  clientCopy = client;
+  fenceCopy = fence;
   v12 = dispatch_group_create();
-  v43 = self;
-  v13 = [(DRDragSessionManager *)self delegate];
-  v41 = v10;
-  v42 = [v13 sourceViewControllerForSession:v10];
+  selfCopy = self;
+  delegate = [(DRDragSessionManager *)self delegate];
+  v41 = sessionCopy;
+  v42 = [delegate sourceViewControllerForSession:sessionCopy];
 
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v14 = v11;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v15)
   {
@@ -1347,22 +1347,22 @@ LABEL_17:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v57 + 1) + 8 * v18) preview];
-        v20 = v19;
-        if (v19)
+        preview = [*(*(&v57 + 1) + 8 * v18) preview];
+        v20 = preview;
+        if (preview)
         {
-          v21 = [v19 coordinateSpaceSourceLayerContext];
-          v22 = [v21 contextID];
+          coordinateSpaceSourceLayerContext = [preview coordinateSpaceSourceLayerContext];
+          contextID = [coordinateSpaceSourceLayerContext contextID];
 
-          v23 = [v20 coordinateSpaceSourceLayerContext];
-          v24 = [v23 renderID];
+          coordinateSpaceSourceLayerContext2 = [v20 coordinateSpaceSourceLayerContext];
+          renderID = [coordinateSpaceSourceLayerContext2 renderID];
 
-          v25 = [v20 coordinateSpaceSourceLayerContext];
-          v26 = [v25 systemShellHostingSpaceIdentifier];
+          coordinateSpaceSourceLayerContext3 = [v20 coordinateSpaceSourceLayerContext];
+          systemShellHostingSpaceIdentifier = [coordinateSpaceSourceLayerContext3 systemShellHostingSpaceIdentifier];
 
-          if (v22)
+          if (contextID)
           {
-            v27 = v24 == 0;
+            v27 = renderID == 0;
           }
 
           else
@@ -1370,13 +1370,13 @@ LABEL_17:
             v27 = 1;
           }
 
-          if (!v27 && v26 != 0)
+          if (!v27 && systemShellHostingSpaceIdentifier != 0)
           {
             [v20 originalCenterInCoordinateSpace];
             v30 = v29;
             v32 = v31;
             dispatch_group_enter(v12);
-            v33 = [v20 coordinateSpaceSourceLayerContext];
+            coordinateSpaceSourceLayerContext4 = [v20 coordinateSpaceSourceLayerContext];
             v51[0] = _NSConcreteStackBlock;
             v51[1] = 3221225472;
             v51[2] = sub_100029B48;
@@ -1386,7 +1386,7 @@ LABEL_17:
             v56 = v32;
             v53 = v20;
             v54 = v12;
-            [(DRDragSessionManager *)v43 _getTransformForLayerContext:v33 completion:v51];
+            [(DRDragSessionManager *)selfCopy _getTransformForLayerContext:coordinateSpaceSourceLayerContext4 completion:v51];
           }
         }
 
@@ -1406,230 +1406,230 @@ LABEL_17:
   block[3] = &unk_100056300;
   v45 = v42;
   v46 = v41;
-  v47 = v39;
-  v48 = v40;
+  v47 = fenceCopy;
+  v48 = clientCopy;
   v49 = v14;
-  v50 = v43;
+  v50 = selfCopy;
   v34 = v14;
-  v35 = v40;
-  v36 = v39;
+  v35 = clientCopy;
+  v36 = fenceCopy;
   v37 = v41;
   v38 = v42;
   dispatch_group_notify(v12, &_dispatch_main_q, block);
 }
 
-- (void)dragSession:(id)a3 invalidateImageForClient:(id)a4 itemIndex:(unint64_t)a5
+- (void)dragSession:(id)session invalidateImageForClient:(id)client itemIndex:(unint64_t)index
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100029E20;
   v9[3] = &unk_100055720;
   v9[4] = self;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v7 = v11;
-  v8 = v10;
+  sessionCopy = session;
+  clientCopy = client;
+  indexCopy = index;
+  v7 = clientCopy;
+  v8 = sessionCopy;
   dispatch_async(&_dispatch_main_q, v9);
 }
 
-- (void)dragSession:(id)a3 addedItemCount:(unint64_t)a4
+- (void)dragSession:(id)session addedItemCount:(unint64_t)count
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029F6C;
   block[3] = &unk_100055508;
   block[4] = self;
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
+  sessionCopy = session;
+  countCopy = count;
+  v5 = sessionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dragSession:(id)a3 updatedPotentialDrop:(id)a4 forDestinationClient:(id)a5
+- (void)dragSession:(id)session updatedPotentialDrop:(id)drop forDestinationClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  dropCopy = drop;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002A1DC;
   v13[3] = &unk_100056268;
   v13[4] = self;
-  v14 = v8;
-  v15 = a5;
-  v16 = v9;
-  v10 = v9;
-  v11 = v15;
-  v12 = v8;
+  v14 = sessionCopy;
+  clientCopy = client;
+  v16 = dropCopy;
+  v10 = dropCopy;
+  v11 = clientCopy;
+  v12 = sessionCopy;
   dispatch_async(&_dispatch_main_q, v13);
 }
 
-- (void)resetDestinationClientForDragSession:(id)a3
+- (void)resetDestinationClientForDragSession:(id)session
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10002A328;
   v4[3] = &unk_100054C50;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  sessionCopy = session;
+  v3 = sessionCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (BOOL)destinationIsSystemConnection:(id)a3
+- (BOOL)destinationIsSystemConnection:(id)connection
 {
-  v4 = a3;
-  if (-[DRSystemConnection systemProcessIdentifier](self->_systemConnection, "systemProcessIdentifier") && (v5 = [v4 processIdentifier], v5 == -[DRSystemConnection systemProcessIdentifier](self->_systemConnection, "systemProcessIdentifier")))
+  connectionCopy = connection;
+  if (-[DRSystemConnection systemProcessIdentifier](self->_systemConnection, "systemProcessIdentifier") && (v5 = [connectionCopy processIdentifier], v5 == -[DRSystemConnection systemProcessIdentifier](self->_systemConnection, "systemProcessIdentifier")))
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = sub_100001F18(v4);
+    v6 = sub_100001F18(connectionCopy);
   }
 
   return v6;
 }
 
-- (void)dragSession:(id)a3 updateRoutingPolicy:(id)a4
+- (void)dragSession:(id)session updateRoutingPolicy:(id)policy
 {
   xpcQueue = self->_xpcQueue;
-  v7 = a4;
-  v8 = a3;
+  policyCopy = policy;
+  sessionCopy = session;
   dispatch_assert_queue_V2(xpcQueue);
-  [(DRTouchDetacher *)self->_touchDetacher updateRoutingPolicy:v7 forSession:v8];
+  [(DRTouchDetacher *)self->_touchDetacher updateRoutingPolicy:policyCopy forSession:sessionCopy];
 }
 
-- (void)dragSession:(id)a3 findVisibleDroppedItemsInSpaceOfLayerContext:(id)a4 replyingOnQueue:(id)a5 with:(id)a6
+- (void)dragSession:(id)session findVisibleDroppedItemsInSpaceOfLayerContext:(id)context replyingOnQueue:(id)queue with:(id)with
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  sessionCopy = session;
+  queueCopy = queue;
+  withCopy = with;
+  contextCopy = context;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002A650;
   v17[3] = &unk_100056350;
   v17[4] = self;
-  v18 = v10;
-  v21 = [v10 identifier];
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  [(DRDragSessionManager *)self _getTransformForLayerContext:v13 completion:v17];
+  v18 = sessionCopy;
+  identifier = [sessionCopy identifier];
+  v19 = queueCopy;
+  v20 = withCopy;
+  v14 = withCopy;
+  v15 = queueCopy;
+  v16 = sessionCopy;
+  [(DRDragSessionManager *)self _getTransformForLayerContext:contextCopy completion:v17];
 }
 
-- (void)dragSession:(id)a3 removeVisibleDroppedItemsInSpaceOfLayerContext:(id)a4 replyingOnQueue:(id)a5 with:(id)a6
+- (void)dragSession:(id)session removeVisibleDroppedItemsInSpaceOfLayerContext:(id)context replyingOnQueue:(id)queue with:(id)with
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  contextCopy = context;
+  queueCopy = queue;
+  withCopy = with;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002A9C4;
   v18[3] = &unk_1000563A0;
   v18[4] = self;
-  v19 = v10;
-  v23 = [v10 identifier];
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = sessionCopy;
+  identifier = [sessionCopy identifier];
+  v20 = contextCopy;
+  v21 = queueCopy;
+  v22 = withCopy;
+  v14 = withCopy;
+  v15 = queueCopy;
+  v16 = contextCopy;
+  v17 = sessionCopy;
   [(DRDragSessionManager *)self _getTransformForLayerContext:v16 completion:v18];
 }
 
-- (void)dragSessionSetDownAnimationDidEnd:(id)a3
+- (void)dragSessionSetDownAnimationDidEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(DRDragSessionManager *)self delegate];
-  v7 = [v5 targetViewControllerForSession:v4];
+  endCopy = end;
+  delegate = [(DRDragSessionManager *)self delegate];
+  v7 = [delegate targetViewControllerForSession:endCopy];
 
-  v6 = [v4 identifier];
-  [v7 teardownSetDownAnimationPortalForSessionIdentifier:v6];
+  identifier = [endCopy identifier];
+  [v7 teardownSetDownAnimationPortalForSessionIdentifier:identifier];
 }
 
-- (void)dragSession:(id)a3 moveToLocation:(CAPoint3D)a4
+- (void)dragSession:(id)session moveToLocation:(CAPoint3D)location
 {
-  z = a4.z;
-  y = a4.y;
-  x = a4.x;
+  z = location.z;
+  y = location.y;
+  x = location.x;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AD94;
   block[3] = &unk_100055810;
   block[4] = self;
-  v9 = a3;
+  sessionCopy = session;
   v10 = x;
   v11 = y;
   v12 = z;
-  v7 = v9;
+  v7 = sessionCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dragSession:(id)a3 animateOutVisibleItemsWithOperation:(unint64_t)a4
+- (void)dragSession:(id)session animateOutVisibleItemsWithOperation:(unint64_t)operation
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10002AEC4;
   v6[3] = &unk_1000563C8;
   v6[4] = self;
-  v7 = a3;
-  v9 = [v7 identifier];
-  v8 = a4;
-  v5 = v7;
+  sessionCopy = session;
+  identifier = [sessionCopy identifier];
+  operationCopy = operation;
+  v5 = sessionCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)dragSessionWillEnd:(id)a3
+- (void)dragSessionWillEnd:(id)end
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002AFD8;
   block[3] = &unk_100054DA0;
   block[4] = self;
-  v5 = a3;
-  v6 = [v5 identifier];
-  v3 = v5;
+  endCopy = end;
+  identifier = [endCopy identifier];
+  v3 = endCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)dragSessionDidEnd:(id)a3
+- (void)dragSessionDidEnd:(id)end
 {
-  v4 = a3;
-  [(DRDragSessionManager *)self _notifyListenersSessionDidEnd:v4];
-  [(DRDragSessionManager *)self dragSession:v4 enableKeyboardIfNeeded:1];
+  endCopy = end;
+  [(DRDragSessionManager *)self _notifyListenersSessionDidEnd:endCopy];
+  [(DRDragSessionManager *)self dragSession:endCopy enableKeyboardIfNeeded:1];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B118;
   block[3] = &unk_100054DA0;
   block[4] = self;
-  v7 = v4;
-  v8 = [v4 identifier];
-  v5 = v4;
+  v7 = endCopy;
+  identifier = [endCopy identifier];
+  v5 = endCopy;
   dispatch_async(&_dispatch_main_q, block);
   [(DRDragSessionManager *)self xpcQueue_removeDragSession:v5];
 }
 
-- (void)dragSession:(id)a3 enableKeyboardIfNeeded:(BOOL)a4
+- (void)dragSession:(id)session enableKeyboardIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_xpcQueue);
   v7 = DRLogTarget();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (neededCopy)
   {
     if (v8)
     {
       v9 = [(NSHashTable *)self->_keyboardSessions count];
-      v10 = [(NSHashTable *)self->_keyboardSessions containsObject:v6];
+      v10 = [(NSHashTable *)self->_keyboardSessions containsObject:sessionCopy];
       *buf = 134218240;
       v25 = v9;
       v26 = 1024;
@@ -1637,7 +1637,7 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Drag session setting keyboard enabled, with %lu extant sessions, contained = %d", buf, 0x12u);
     }
 
-    if ([(NSHashTable *)self->_keyboardSessions count]== 1 && [(NSHashTable *)self->_keyboardSessions containsObject:v6])
+    if ([(NSHashTable *)self->_keyboardSessions count]== 1 && [(NSHashTable *)self->_keyboardSessions containsObject:sessionCopy])
     {
       v11 = DRLogTarget();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1651,11 +1651,11 @@ LABEL_17:
       v22[1] = 3221225472;
       v22[2] = sub_10002B494;
       v22[3] = &unk_100054D18;
-      v23 = v6;
+      v23 = sessionCopy;
       [(DRKeyboardArbiter *)keyboardArbiter setKeyboardTotalDisable:0 withFence:0 completionHandler:v22];
     }
 
-    [(NSHashTable *)self->_keyboardSessions removeObject:v6];
+    [(NSHashTable *)self->_keyboardSessions removeObject:sessionCopy];
   }
 
   else
@@ -1663,7 +1663,7 @@ LABEL_17:
     if (v8)
     {
       v13 = [(NSHashTable *)self->_keyboardSessions count];
-      v14 = [(NSHashTable *)self->_keyboardSessions containsObject:v6];
+      v14 = [(NSHashTable *)self->_keyboardSessions containsObject:sessionCopy];
       *buf = 134218240;
       v25 = v13;
       v26 = 1024;
@@ -1685,35 +1685,35 @@ LABEL_17:
       v18 = 3221225472;
       v19 = sub_10002B538;
       v20 = &unk_100054D18;
-      v21 = v6;
+      v21 = sessionCopy;
       [(DRKeyboardArbiter *)v16 setKeyboardTotalDisable:1 withFence:0 completionHandler:&v17];
     }
 
-    [(NSHashTable *)self->_keyboardSessions addObject:v6, v17, v18, v19, v20];
+    [(NSHashTable *)self->_keyboardSessions addObject:sessionCopy, v17, v18, v19, v20];
   }
 }
 
-- (void)touchTrackingWindow:(id)a3 touchesBegan:(id)a4
+- (void)touchTrackingWindow:(id)window touchesBegan:(id)began
 {
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_10002B9E0;
   v45[3] = &unk_1000563F0;
-  v6 = a3;
-  v46 = v6;
-  v47 = self;
-  v32 = [(DRDragSessionManager *)self _filterTouchesForPointer:a4 performingBlockForPointerTouch:v45];
+  windowCopy = window;
+  v46 = windowCopy;
+  selfCopy = self;
+  v32 = [(DRDragSessionManager *)self _filterTouchesForPointer:began performingBlockForPointerTouch:v45];
   [DRDragSessionManager _forEachTouch:"_forEachTouch:performBlockForSession:" performBlockForSession:?];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v34 = self;
-  v7 = [(DRDragSessionManager *)self delegate];
-  v8 = [v7 allDisplayIdentifiers];
+  selfCopy2 = self;
+  delegate = [(DRDragSessionManager *)self delegate];
+  allDisplayIdentifiers = [delegate allDisplayIdentifiers];
 
-  obj = v8;
-  v33 = [v8 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  obj = allDisplayIdentifiers;
+  v33 = [allDisplayIdentifiers countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v33)
   {
     v31 = *v42;
@@ -1731,10 +1731,10 @@ LABEL_17:
 
         v36 = v11;
         v12 = *(*(&v41 + 1) + 8 * v11);
-        v13 = [(DRDragSessionManager *)v34 delegate];
-        v14 = [v13 contentWindowForHardwareDisplayIdentifier:v12];
+        delegate2 = [(DRDragSessionManager *)selfCopy2 delegate];
+        v14 = [delegate2 contentWindowForHardwareDisplayIdentifier:v12];
 
-        v35 = [v14 rootViewController];
+        rootViewController = [v14 rootViewController];
         v15 = +[NSMutableSet set];
         v37 = 0u;
         v38 = 0u;
@@ -1756,11 +1756,11 @@ LABEL_17:
               }
 
               v21 = *(*(&v37 + 1) + 8 * i);
-              [v21 locationInView:v6];
+              [v21 locationInView:windowCopy];
               v23 = v22;
-              v24 = [v6 screen];
-              v25 = [v14 screen];
-              v26 = sub_100002024(v24, v25, v23);
+              screen = [windowCopy screen];
+              screen2 = [v14 screen];
+              v26 = sub_100002024(screen, screen2, v23);
               v28 = v27;
 
               if (v26 != v9 || v28 != v10)
@@ -1775,9 +1775,9 @@ LABEL_17:
           while (v18);
         }
 
-        if ([v15 count] && -[DRDragSessionManager _addBeginningTouchesToExistingSessions:viewController:touchWindow:](v34, "_addBeginningTouchesToExistingSessions:viewController:touchWindow:", v15, v35, v6))
+        if ([v15 count] && -[DRDragSessionManager _addBeginningTouchesToExistingSessions:viewController:touchWindow:](selfCopy2, "_addBeginningTouchesToExistingSessions:viewController:touchWindow:", v15, rootViewController, windowCopy))
         {
-          [v35 updateWithTouches:v15];
+          [rootViewController updateWithTouches:v15];
         }
 
         v11 = v36 + 1;
@@ -1791,55 +1791,55 @@ LABEL_17:
   }
 }
 
-- (void)touchTrackingWindow:(id)a3 touchesMoved:(id)a4
+- (void)touchTrackingWindow:(id)window touchesMoved:(id)moved
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DRDragSessionManager *)self delegate];
-  v9 = [v6 windowScene];
-  v10 = sub_100001F60(v9);
-  v11 = [v8 contentWindowForHardwareDisplayIdentifier:v10];
+  windowCopy = window;
+  movedCopy = moved;
+  delegate = [(DRDragSessionManager *)self delegate];
+  windowScene = [windowCopy windowScene];
+  v10 = sub_100001F60(windowScene);
+  v11 = [delegate contentWindowForHardwareDisplayIdentifier:v10];
 
   [v11 rootViewController];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10002BCD4;
   v16 = v15[3] = &unk_100056458;
-  v17 = self;
-  v18 = v6;
-  v12 = v6;
+  selfCopy = self;
+  v18 = windowCopy;
+  v12 = windowCopy;
   v13 = v16;
-  v14 = [(DRDragSessionManager *)self _filterTouchesForPointer:v7 performingBlockForPointerTouch:v15];
+  v14 = [(DRDragSessionManager *)self _filterTouchesForPointer:movedCopy performingBlockForPointerTouch:v15];
 
   [(DRDragSessionManager *)self _forEachTouch:v14 performBlockForSession:&stru_100056478];
   [v13 updateWithTouches:v14];
 }
 
-- (void)touchTrackingWindow:(id)a3 touchesEnded:(id)a4 pairedWithVelocities:(id)a5
+- (void)touchTrackingWindow:(id)window touchesEnded:(id)ended pairedWithVelocities:(id)velocities
 {
-  v8 = a3;
-  v9 = a5;
+  windowCopy = window;
+  velocitiesCopy = velocities;
   v70[0] = _NSConcreteStackBlock;
   v70[1] = 3221225472;
   v70[2] = sub_10002C3A8;
   v70[3] = &unk_1000564A0;
   v70[4] = self;
-  v10 = [(DRDragSessionManager *)self _filterTouchesForPointer:a4 performingBlockForPointerTouch:v70];
-  v48 = self;
-  v11 = [(DRDragSessionManager *)self delegate];
-  v12 = [v8 windowScene];
-  v13 = sub_100001F60(v12);
-  v14 = [v11 contentWindowForHardwareDisplayIdentifier:v13];
+  v10 = [(DRDragSessionManager *)self _filterTouchesForPointer:ended performingBlockForPointerTouch:v70];
+  selfCopy = self;
+  delegate = [(DRDragSessionManager *)self delegate];
+  windowScene = [windowCopy windowScene];
+  v13 = sub_100001F60(windowScene);
+  v14 = [delegate contentWindowForHardwareDisplayIdentifier:v13];
 
   v49 = v14;
-  v47 = [v14 rootViewController];
+  rootViewController = [v14 rootViewController];
   v50 = v10;
-  [v47 removeTouches:v10];
+  [rootViewController removeTouches:v10];
   v15 = objc_opt_new();
   v53 = objc_opt_new();
   v46 = objc_opt_new();
   v45 = objc_opt_new();
-  [v8 bounds];
+  [windowCopy bounds];
   y = v88.origin.y;
   x = v88.origin.x;
   height = v88.size.height;
@@ -1853,7 +1853,7 @@ LABEL_17:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v9;
+  obj = velocitiesCopy;
   v20 = [obj countByEnumeratingWithState:&v66 objects:v83 count:16];
   if (v20)
   {
@@ -1869,9 +1869,9 @@ LABEL_17:
         }
 
         v24 = *(*(&v66 + 1) + 8 * i);
-        v25 = [v24 touch];
-        v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v25 _touchIdentifier]);
-        [v25 locationInView:v8];
+        touch = [v24 touch];
+        v26 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [touch _touchIdentifier]);
+        [touch locationInView:windowCopy];
         v28 = v27;
         v30 = v29;
         v64 = 0u;
@@ -1953,12 +1953,12 @@ LABEL_17:
     while (v21);
   }
 
-  xpcQueue = v48->_xpcQueue;
+  xpcQueue = selfCopy->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002C4B0;
   block[3] = &unk_1000564C8;
-  block[4] = v48;
+  block[4] = selfCopy;
   v60 = v15;
   v61 = v45;
   v62 = v46;
@@ -1970,24 +1970,24 @@ LABEL_17:
   dispatch_async(xpcQueue, block);
 }
 
-- (void)touchTrackingWindow:(id)a3 touchesCancelled:(id)a4
+- (void)touchTrackingWindow:(id)window touchesCancelled:(id)cancelled
 {
-  v6 = a3;
+  windowCopy = window;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_10002CAE4;
   v34[3] = &unk_1000564A0;
   v34[4] = self;
-  v7 = [(DRDragSessionManager *)self _filterTouchesForPointer:a4 performingBlockForPointerTouch:v34];
-  v26 = self;
-  v8 = [(DRDragSessionManager *)self delegate];
-  v9 = [v6 windowScene];
-  v10 = sub_100001F60(v9);
-  v11 = [v8 contentWindowForHardwareDisplayIdentifier:v10];
+  v7 = [(DRDragSessionManager *)self _filterTouchesForPointer:cancelled performingBlockForPointerTouch:v34];
+  selfCopy = self;
+  delegate = [(DRDragSessionManager *)self delegate];
+  windowScene = [windowCopy windowScene];
+  v10 = sub_100001F60(windowScene);
+  v11 = [delegate contentWindowForHardwareDisplayIdentifier:v10];
 
   v25 = v11;
-  v24 = [v11 rootViewController];
-  [v24 removeTouches:v7];
+  rootViewController = [v11 rootViewController];
+  [rootViewController removeTouches:v7];
   v12 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
@@ -2012,9 +2012,9 @@ LABEL_17:
         v18 = DRLogTarget();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
-          [v17 locationInView:v6];
+          [v17 locationInView:windowCopy];
           v19 = NSStringFromCGPoint(v40);
-          [v6 bounds];
+          [windowCopy bounds];
           v20 = NSStringFromCGRect(v41);
           *buf = 138412546;
           v36 = v19;
@@ -2033,12 +2033,12 @@ LABEL_17:
     while (v14);
   }
 
-  xpcQueue = v26->_xpcQueue;
+  xpcQueue = selfCopy->_xpcQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002CBEC;
   block[3] = &unk_100054C50;
-  block[4] = v26;
+  block[4] = selfCopy;
   v29 = v12;
   v23 = v12;
   dispatch_async(xpcQueue, block);
@@ -2055,18 +2055,18 @@ LABEL_17:
   dispatch_async(xpcQueue, block);
 }
 
-- (void)_forEachTouch:(id)a3 performBlockForSession:(id)a4
+- (void)_forEachTouch:(id)touch performBlockForSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  touchCopy = touch;
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v8 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = v6;
+    v9 = touchCopy;
     v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
@@ -2095,30 +2095,30 @@ LABEL_17:
       while (v11);
     }
 
-    v15 = [(DRDragSessionManager *)self xpcQueue];
+    xpcQueue = [(DRDragSessionManager *)self xpcQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002D0FC;
     block[3] = &unk_100055468;
     block[4] = self;
     v18 = v8;
-    v19 = v7;
+    v19 = sessionCopy;
     v16 = v8;
-    dispatch_async(v15, block);
+    dispatch_async(xpcQueue, block);
   }
 }
 
-- (id)_filterTouchesForPointer:(id)a3 performingBlockForPointerTouch:(id)a4
+- (id)_filterTouchesForPointer:(id)pointer performingBlockForPointerTouch:(id)touch
 {
-  v5 = a3;
-  v6 = a4;
+  pointerCopy = pointer;
+  touchCopy = touch;
   if (sub_100002668())
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v5;
+    v7 = pointerCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -2143,9 +2143,9 @@ LABEL_17:
             }
 
             [v10 removeObject:v13];
-            if (v6)
+            if (touchCopy)
             {
-              v6[2](v6, v13);
+              touchCopy[2](touchCopy, v13);
             }
           }
         }
@@ -2176,9 +2176,9 @@ LABEL_17:
 
   else
   {
-    if (v5)
+    if (pointerCopy)
     {
-      v14 = v5;
+      v14 = pointerCopy;
     }
 
     else
@@ -2192,22 +2192,22 @@ LABEL_17:
   return v16;
 }
 
-- (BOOL)_addBeginningTouchesToExistingSessions:(id)a3 viewController:(id)a4 touchWindow:(id)a5
+- (BOOL)_addBeginningTouchesToExistingSessions:(id)sessions viewController:(id)controller touchWindow:(id)window
 {
-  v8 = a3;
-  v28 = a4;
-  v9 = a5;
+  sessionsCopy = sessions;
+  controllerCopy = controller;
+  windowCopy = window;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v8;
-  v10 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  obj = sessionsCopy;
+  v10 = [sessionsCopy countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
-    v24 = self;
-    v25 = v9;
+    selfCopy = self;
+    v25 = windowCopy;
     v12 = 0;
     v13 = 0;
     v14 = 0;
@@ -2222,7 +2222,7 @@ LABEL_17:
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
-        v17 = [v28 sessionViewModelForAddingTouch:{v16, v24}];
+        v17 = [controllerCopy sessionViewModelForAddingTouch:{v16, selfCopy}];
         if (v17)
         {
           if (v13)
@@ -2239,7 +2239,7 @@ LABEL_17:
             v18 = +[NSMutableIndexSet indexSet];
           }
 
-          v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v28 sessionIDForViewModel:v17]);
+          v20 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [controllerCopy sessionIDForViewModel:v17]);
           v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v16 _touchIdentifier]);
           [v13 setObject:v21 forKey:v20];
 
@@ -2257,18 +2257,18 @@ LABEL_17:
     while (v11);
     if (v12)
     {
-      xpcQueue = v24->_xpcQueue;
+      xpcQueue = selfCopy->_xpcQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10002D788;
       block[3] = &unk_1000564C8;
-      block[4] = v24;
+      block[4] = selfCopy;
       v30 = v12;
       v14 = v14;
       v31 = v14;
       v13 = v13;
       v32 = v13;
-      v9 = v25;
+      windowCopy = v25;
       v33 = v25;
       v12 = v12;
       dispatch_sync(xpcQueue, block);
@@ -2278,7 +2278,7 @@ LABEL_17:
 
     else
     {
-      v9 = v25;
+      windowCopy = v25;
     }
   }
 
@@ -2292,57 +2292,57 @@ LABEL_17:
   return v12;
 }
 
-- (void)_getTransformForLayerContext:(id)a3 completion:(id)a4
+- (void)_getTransformForLayerContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 systemShellHostingSpaceIdentifier];
+  contextCopy = context;
+  completionCopy = completion;
+  systemShellHostingSpaceIdentifier = [contextCopy systemShellHostingSpaceIdentifier];
 
-  if (v8)
+  if (systemShellHostingSpaceIdentifier)
   {
-    v9 = [(DRDragSessionManager *)self delegate];
-    v10 = [v6 systemShellHostingSpaceIdentifier];
-    v8 = [v9 hardwareDisplayIdentifierMatchingSystemShellHostingSpaceIdentifier:v10];
+    delegate = [(DRDragSessionManager *)self delegate];
+    systemShellHostingSpaceIdentifier2 = [contextCopy systemShellHostingSpaceIdentifier];
+    systemShellHostingSpaceIdentifier = [delegate hardwareDisplayIdentifierMatchingSystemShellHostingSpaceIdentifier:systemShellHostingSpaceIdentifier2];
 
-    if (!v8)
+    if (!systemShellHostingSpaceIdentifier)
     {
       v11 = DRLogTarget();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_10003181C(v6, v11);
+        sub_10003181C(contextCopy, v11);
       }
 
-      v8 = 0;
+      systemShellHostingSpaceIdentifier = 0;
     }
   }
 
-  -[DRDragSessionManager _getTransformForContextID:layerRenderID:displayID:allowingEmptyLayerID:completion:](self, "_getTransformForContextID:layerRenderID:displayID:allowingEmptyLayerID:completion:", [v6 contextID], objc_msgSend(v6, "renderID"), v8, 0, v7);
+  -[DRDragSessionManager _getTransformForContextID:layerRenderID:displayID:allowingEmptyLayerID:completion:](self, "_getTransformForContextID:layerRenderID:displayID:allowingEmptyLayerID:completion:", [contextCopy contextID], objc_msgSend(contextCopy, "renderID"), systemShellHostingSpaceIdentifier, 0, completionCopy);
 }
 
-- (void)_getTransformForContextID:(unsigned int)a3 layerRenderID:(unint64_t)a4 displayID:(id)a5 allowingEmptyLayerID:(BOOL)a6 completion:(id)a7
+- (void)_getTransformForContextID:(unsigned int)d layerRenderID:(unint64_t)iD displayID:(id)displayID allowingEmptyLayerID:(BOOL)layerID completion:(id)completion
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a7;
-  if (v13)
+  layerIDCopy = layerID;
+  displayIDCopy = displayID;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v12 isEqualToString:off_100062738])
+    if ([displayIDCopy isEqualToString:off_100062738])
     {
 
-      v12 = 0;
+      displayIDCopy = 0;
     }
 
-    if (a4)
+    if (iD)
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = v8;
+      v14 = layerIDCopy;
     }
 
-    if (a3 && v14)
+    if (d && v14)
     {
       transformUpdateQueue = self->_transformUpdateQueue;
       if (!transformUpdateQueue)
@@ -2360,10 +2360,10 @@ LABEL_17:
       block[2] = sub_10002DE20;
       block[3] = &unk_100056518;
       v19 = &v23;
-      v23 = v12;
-      v25 = a4;
-      v26 = a3;
-      v24 = v13;
+      v23 = displayIDCopy;
+      iDCopy = iD;
+      dCopy = d;
+      v24 = completionCopy;
       dispatch_async(transformUpdateQueue, block);
     }
 
@@ -2374,7 +2374,7 @@ LABEL_17:
       v20[2] = sub_10002E008;
       v20[3] = &unk_100054B78;
       v19 = &v21;
-      v21 = v13;
+      v21 = completionCopy;
       dispatch_async(&_dispatch_main_q, v20);
     }
   }

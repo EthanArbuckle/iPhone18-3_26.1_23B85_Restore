@@ -75,9 +75,9 @@ uint64_t __65__INFocusStatusCenter_requestAuthorizationWithCompletionHandler___b
   v18 = *MEMORY[0x1E69E9840];
   if ([(INFocusStatusCenter *)self authorizationStatus]== INFocusStatusAuthorizationStatusAuthorized)
   {
-    v3 = [(INFocusStatusCenter *)self service];
+    service = [(INFocusStatusCenter *)self service];
     v13 = 0;
-    v4 = [v3 isLocalUserAvailableReturningError:&v13];
+    v4 = [service isLocalUserAvailableReturningError:&v13];
     v5 = v13;
 
     if (v5)
@@ -116,8 +116,8 @@ uint64_t __65__INFocusStatusCenter_requestAuthorizationWithCompletionHandler___b
   v2 = [(INFocusStatusCenter *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AAE8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v13 = 0;
     v14 = &v13;
@@ -137,7 +137,7 @@ uint64_t __65__INFocusStatusCenter_requestAuthorizationWithCompletionHandler___b
 
     v6 = v5;
     _Block_object_dispose(&v13, 8);
-    v7 = [v5 serviceForClientIdentifier:v4];
+    v7 = [v5 serviceForClientIdentifier:bundleIdentifier];
     service = v2->_service;
     v2->_service = v7;
 

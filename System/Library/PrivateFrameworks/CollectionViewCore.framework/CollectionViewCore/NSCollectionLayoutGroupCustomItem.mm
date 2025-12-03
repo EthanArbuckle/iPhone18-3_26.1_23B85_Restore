@@ -1,18 +1,18 @@
 @interface NSCollectionLayoutGroupCustomItem
 + (NSCollectionLayoutGroupCustomItem)customItemWithFrame:(CGRect)frame zIndex:(NSInteger)zIndex;
 - (CGRect)frame;
-- (NSCollectionLayoutGroupCustomItem)initWithFrame:(CGRect)a3 zIndex:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCollectionLayoutGroupCustomItem)initWithFrame:(CGRect)frame zIndex:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSCollectionLayoutGroupCustomItem
 
-- (NSCollectionLayoutGroupCustomItem)initWithFrame:(CGRect)a3 zIndex:(int64_t)a4
+- (NSCollectionLayoutGroupCustomItem)initWithFrame:(CGRect)frame zIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = NSCollectionLayoutGroupCustomItem;
   result = [(NSCollectionLayoutGroupCustomItem *)&v10 init];
@@ -22,7 +22,7 @@
     result->_frame.origin.y = y;
     result->_frame.size.width = width;
     result->_frame.size.height = height;
-    result->_zIndex = a4;
+    result->_zIndex = index;
   }
 
   return result;
@@ -35,17 +35,17 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(NSCollectionLayoutGroupCustomItem *)self frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(NSCollectionLayoutGroupCustomItem *)self zIndex];
+  zIndex = [(NSCollectionLayoutGroupCustomItem *)self zIndex];
 
-  return [v4 initWithFrame:v13 zIndex:{v6, v8, v10, v12}];
+  return [v4 initWithFrame:zIndex zIndex:{v6, v8, v10, v12}];
 }
 
 - (CGRect)frame

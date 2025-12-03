@@ -1,39 +1,39 @@
 @interface NRSwitchRecordCollection
-- (void)addSwitchRecordWithHistoryEntry:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
+- (void)addSwitchRecordWithHistoryEntry:(uint64_t)entry;
+- (void)encodeWithCoder:(id)coder;
 - (void)truncateSwitchRecords;
 @end
 
 @implementation NRSwitchRecordCollection
 
-- (void)addSwitchRecordWithHistoryEntry:(uint64_t)a1
+- (void)addSwitchRecordWithHistoryEntry:(uint64_t)entry
 {
   v3 = a2;
-  if (a1)
+  if (entry)
   {
     v19 = v3;
-    v4 = [v3 switchIndex];
-    v5 = *(a1 + 8);
-    v6 = [v5 lastObject];
-    v7 = v6 ? v6[6] : 0;
+    switchIndex = [v3 switchIndex];
+    v5 = *(entry + 8);
+    lastObject = [v5 lastObject];
+    v7 = lastObject ? lastObject[6] : 0;
 
     v3 = v19;
-    if (v4 != v7)
+    if (switchIndex != v7)
     {
       v8 = v19;
       objc_opt_self();
-      v9 = [v8 state];
-      v10 = [v9 activeDevice];
+      state = [v8 state];
+      activeDevice = [state activeDevice];
 
-      v11 = [v8 state];
-      v12 = [v11 activeDeviceID];
+      state2 = [v8 state];
+      activeDeviceID = [state2 activeDeviceID];
 
-      v13 = [v10 objectForKeyedSubscript:@"lastActiveDate"];
-      v14 = [v13 value];
+      v13 = [activeDevice objectForKeyedSubscript:@"lastActiveDate"];
+      value = [v13 value];
 
-      if (v14)
+      if (value)
       {
-        v15 = -[NRSwitchRecord initWithDeviceID:date:switchIndex:]([NRSwitchRecord alloc], "initWithDeviceID:date:switchIndex:", v12, v14, [v8 switchIndex]);
+        v15 = -[NRSwitchRecord initWithDeviceID:date:switchIndex:]([NRSwitchRecord alloc], "initWithDeviceID:date:switchIndex:", activeDeviceID, value, [v8 switchIndex]);
       }
 
       else
@@ -43,14 +43,14 @@
 
       if (v15)
       {
-        v16 = *(a1 + 8);
+        v16 = *(entry + 8);
         if (!v16)
         {
-          v17 = [MEMORY[0x1E695DF70] array];
-          v18 = *(a1 + 8);
-          *(a1 + 8) = v17;
+          array = [MEMORY[0x1E695DF70] array];
+          v18 = *(entry + 8);
+          *(entry + 8) = array;
 
-          v16 = *(a1 + 8);
+          v16 = *(entry + 8);
         }
 
         [v16 addObject:v15];
@@ -176,13 +176,13 @@ LABEL_12:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(NRSwitchRecordCollection *)self truncateSwitchRecords];
   v5.receiver = self;
   v5.super_class = NRSwitchRecordCollection;
-  [(NRSwitchRecordCollection *)&v5 encodeWithCoder:v4];
+  [(NRSwitchRecordCollection *)&v5 encodeWithCoder:coderCopy];
 }
 
 @end

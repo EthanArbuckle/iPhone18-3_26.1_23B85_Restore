@@ -1,39 +1,39 @@
 @interface HKMedicationsNotificationAction
-+ (id)rawValueWithIdentifier:(int64_t)a3;
-+ (int64_t)identifierWithRawValue:(id)a3;
++ (id)rawValueWithIdentifier:(int64_t)identifier;
++ (int64_t)identifierWithRawValue:(id)value;
 @end
 
 @implementation HKMedicationsNotificationAction
 
-+ (int64_t)identifierWithRawValue:(id)a3
++ (int64_t)identifierWithRawValue:(id)value
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CE20E8]])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:*MEMORY[0x277CE20E8]])
   {
     v5 = 4;
   }
 
-  else if ([v4 isEqualToString:@"RecordAllMedications"])
+  else if ([valueCopy isEqualToString:@"RecordAllMedications"])
   {
     v5 = 1;
   }
 
-  else if ([v4 isEqualToString:@"SkipAllMedications"])
+  else if ([valueCopy isEqualToString:@"SkipAllMedications"])
   {
     v5 = 2;
   }
 
-  else if ([v4 isEqualToString:@"SnoozeAllMedications"])
+  else if ([valueCopy isEqualToString:@"SnoozeAllMedications"])
   {
     v5 = 3;
   }
 
-  else if ([v4 isEqualToString:@"RecordMedication"])
+  else if ([valueCopy isEqualToString:@"RecordMedication"])
   {
     v5 = 5;
   }
 
-  else if ([v4 isEqualToString:@"SkipMedication"])
+  else if ([valueCopy isEqualToString:@"SkipMedication"])
   {
     v5 = 6;
   }
@@ -44,7 +44,7 @@
     v6 = HKLogMedication();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(HKMedicationsNotificationAction *)a1 identifierWithRawValue:v4, v6];
+      [(HKMedicationsNotificationAction *)self identifierWithRawValue:valueCopy, v6];
     }
 
     v5 = 0;
@@ -53,30 +53,30 @@
   return v5;
 }
 
-+ (id)rawValueWithIdentifier:(int64_t)a3
++ (id)rawValueWithIdentifier:(int64_t)identifier
 {
   v4 = @"RecordAllMedications";
-  if (a3 <= 3)
+  if (identifier <= 3)
   {
     v5 = @"SkipAllMedications";
-    if (a3 == 3)
+    if (identifier == 3)
     {
       v4 = @"SnoozeAllMedications";
     }
 
-    v6 = a3 == 2;
+    v6 = identifier == 2;
     goto LABEL_9;
   }
 
-  if (a3 != 4)
+  if (identifier != 4)
   {
     v5 = @"RecordMedication";
-    if (a3 == 6)
+    if (identifier == 6)
     {
       v4 = @"SkipMedication";
     }
 
-    v6 = a3 == 5;
+    v6 = identifier == 5;
 LABEL_9:
     if (v6)
     {

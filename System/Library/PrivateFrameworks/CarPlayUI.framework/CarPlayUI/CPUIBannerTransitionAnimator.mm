@@ -1,25 +1,25 @@
 @interface CPUIBannerTransitionAnimator
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5;
-- (double)transitionDuration:(id)a3;
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion;
+- (double)transitionDuration:(id)duration;
 @end
 
 @implementation CPUIBannerTransitionAnimator
 
-+ (void)animateInteractive:(BOOL)a3 animations:(id)a4 completion:(id)a5
++ (void)animateInteractive:(BOOL)interactive animations:(id)animations completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  animationsCopy = animations;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (animationsCopy)
   {
     v10 = MEMORY[0x277D75D18];
-    [a1 defaultTransitionDuration];
+    [self defaultTransitionDuration];
     v12 = v11;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __73__CPUIBannerTransitionAnimator_animateInteractive_animations_completion___block_invoke;
     v15[3] = &unk_278D9C4C0;
-    v16 = v7;
+    v16 = animationsCopy;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __73__CPUIBannerTransitionAnimator_animateInteractive_animations_completion___block_invoke_2;
@@ -28,9 +28,9 @@
     [v10 animateWithDuration:v15 animations:v13 completion:v12];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -45,7 +45,7 @@ uint64_t __73__CPUIBannerTransitionAnimator_animateInteractive_animations_comple
   return result;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   v3 = objc_opt_class();
 

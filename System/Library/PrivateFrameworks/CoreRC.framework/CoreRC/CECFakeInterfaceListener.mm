@@ -1,15 +1,15 @@
 @interface CECFakeInterfaceListener
-- (BOOL)interface:(id)a3 sendFrame:(CECFrame *)a4 withRetryCount:(unsigned __int8)a5 error:(id *)a6;
-- (id)fakeAddInterfaceWithProperties:(id)a3;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (BOOL)interface:(id)interface sendFrame:(CECFrame *)frame withRetryCount:(unsigned __int8)count error:(id *)error;
+- (id)fakeAddInterfaceWithProperties:(id)properties;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CECFakeInterfaceListener
 
-- (id)fakeAddInterfaceWithProperties:(id)a3
+- (id)fakeAddInterfaceWithProperties:(id)properties
 {
-  v4 = [[CECFakeInterface alloc] initWithInterfaceListener:self properties:a3];
+  v4 = [[CECFakeInterface alloc] initWithInterfaceListener:self properties:properties];
   if (v4)
   {
     [(CoreRCInterfaceListener *)self addInterface:v4];
@@ -18,7 +18,7 @@
   return v4;
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
@@ -26,7 +26,7 @@
   }
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
@@ -34,10 +34,10 @@
   }
 }
 
-- (BOOL)interface:(id)a3 sendFrame:(CECFrame *)a4 withRetryCount:(unsigned __int8)a5 error:(id *)a6
+- (BOOL)interface:(id)interface sendFrame:(CECFrame *)frame withRetryCount:(unsigned __int8)count error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a4->blocks[0];
+  v8 = frame->blocks[0];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -60,25 +60,25 @@
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 snoopingMode];
-        v17 = [v15 addressMask];
-        if (v15 != a3)
+        snoopingMode = [v15 snoopingMode];
+        addressMask = [v15 addressMask];
+        if (v15 != interface)
         {
-          v18 = v17 & v12;
-          if ((v17 & v12) != 0)
+          v18 = addressMask & v12;
+          if ((addressMask & v12) != 0)
           {
             v19 = 1;
           }
 
           else
           {
-            v19 = v16;
+            v19 = snoopingMode;
           }
 
           if (v19 == 1)
           {
-            v28 = *a4->blocks;
-            v29 = *(a4 + 4);
+            v28 = *frame->blocks;
+            v29 = *(frame + 4);
             [v15 receivedFrame:&v28];
           }
 
@@ -100,9 +100,9 @@
     v11 = 0;
   }
 
-  if (a6 && !v11)
+  if (error && !v11)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.private.CoreCEC.ErrorDomain" code:2 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.private.CoreCEC.ErrorDomain" code:2 userInfo:0];
   }
 
   result = v11 != 0;

@@ -1,17 +1,17 @@
 @interface BPSTinkerConnectionTracker
-- (BPSTinkerConnectionTracker)initWithDevice:(id)a3;
+- (BPSTinkerConnectionTracker)initWithDevice:(id)device;
 - (BPSTinkerConnectionTrackerDelegate)delegate;
 - (void)dealloc;
-- (void)reachability:(id)a3 device:(id)a4 connectionStatus:(unint64_t)a5;
-- (void)setSelectedDevice:(id)a3;
+- (void)reachability:(id)reachability device:(id)device connectionStatus:(unint64_t)status;
+- (void)setSelectedDevice:(id)device;
 @end
 
 @implementation BPSTinkerConnectionTracker
 
-- (BPSTinkerConnectionTracker)initWithDevice:(id)a3
+- (BPSTinkerConnectionTracker)initWithDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = BPSTinkerConnectionTracker;
   v6 = [(BPSTinkerConnectionTracker *)&v12 init];
@@ -20,18 +20,18 @@
     v7 = pbb_bridge_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 pairingID];
+      pairingID = [deviceCopy pairingID];
       *buf = 136315394;
       v14 = "[BPSTinkerConnectionTracker initWithDevice:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = pairingID;
       _os_log_impl(&dword_241E74000, v7, OS_LOG_TYPE_DEFAULT, "%s for %@", buf, 0x16u);
     }
 
-    objc_storeStrong(&v6->_selectedDevice, a3);
-    v9 = [MEMORY[0x277D37A70] sharedInstance];
+    objc_storeStrong(&v6->_selectedDevice, device);
+    mEMORY[0x277D37A70] = [MEMORY[0x277D37A70] sharedInstance];
     reachability = v6->_reachability;
-    v6->_reachability = v9;
+    v6->_reachability = mEMORY[0x277D37A70];
 
     [(PBBridgeIDSReachability *)v6->_reachability addObserver:v6];
   }
@@ -39,29 +39,29 @@
   return v6;
 }
 
-- (void)setSelectedDevice:(id)a3
+- (void)setSelectedDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NRDevice *)self->_selectedDevice pairingID];
-    v8 = [(NRDevice *)v5 pairingID];
+    pairingID = [(NRDevice *)self->_selectedDevice pairingID];
+    pairingID2 = [(NRDevice *)deviceCopy pairingID];
     v10 = 136315650;
     v11 = "[BPSTinkerConnectionTracker setSelectedDevice:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = pairingID;
     v14 = 2112;
-    v15 = v8;
+    v15 = pairingID2;
     _os_log_impl(&dword_241E74000, v6, OS_LOG_TYPE_DEFAULT, "%s from %@ to %@", &v10, 0x20u);
   }
 
-  if (self->_selectedDevice != v5)
+  if (self->_selectedDevice != deviceCopy)
   {
-    objc_storeStrong(&self->_selectedDevice, a3);
-    v9 = [MEMORY[0x277D37A70] sharedInstance];
-    -[BPSTinkerConnectionTracker reachability:device:connectionStatus:](self, "reachability:device:connectionStatus:", v9, v5, [v9 reachabilityForDevice:v5]);
+    objc_storeStrong(&self->_selectedDevice, device);
+    mEMORY[0x277D37A70] = [MEMORY[0x277D37A70] sharedInstance];
+    -[BPSTinkerConnectionTracker reachability:device:connectionStatus:](self, "reachability:device:connectionStatus:", mEMORY[0x277D37A70], deviceCopy, [mEMORY[0x277D37A70] reachabilityForDevice:deviceCopy]);
   }
 }
 
@@ -73,10 +73,10 @@
   [(BPSTinkerConnectionTracker *)&v3 dealloc];
 }
 
-- (void)reachability:(id)a3 device:(id)a4 connectionStatus:(unint64_t)a5
+- (void)reachability:(id)reachability device:(id)device connectionStatus:(unint64_t)status
 {
   v15 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  deviceCopy = device;
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,15 +85,15 @@
     _os_log_impl(&dword_241E74000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  if (self->_selectedDevice == v7)
+  if (self->_selectedDevice == deviceCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__BPSTinkerConnectionTracker_reachability_device_connectionStatus___block_invoke;
     block[3] = &unk_278D238C0;
-    v12 = a5;
-    v10 = v7;
-    v11 = self;
+    statusCopy = status;
+    v10 = deviceCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }

@@ -1,41 +1,41 @@
 @interface ATXBackgroundSystemTask
-- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)a3;
-- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)a3 logHandle:(id)a4;
+- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)task;
+- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)task logHandle:(id)handle;
 - (BOOL)_didDeferForTestMode;
 - (BOOL)_setDoneForTestMode;
 - (BOOL)didDefer;
 - (BOOL)setDone;
 - (BOOL)shouldDefer;
-- (id)initForTestingWithIdentifier:(id)a3 configuration:(id)a4;
+- (id)initForTestingWithIdentifier:(id)identifier configuration:(id)configuration;
 - (id)resultStatusForJob;
 - (void)didDefer;
-- (void)setProgressUnits:(unsigned __int8)a3;
+- (void)setProgressUnits:(unsigned __int8)units;
 - (void)shouldDefer;
 @end
 
 @implementation ATXBackgroundSystemTask
 
-- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)a3
+- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = __atxlog_handle_default();
-  v6 = [(ATXBackgroundSystemTask *)self initWithBackgroundSystemTask:v4 logHandle:v5];
+  v6 = [(ATXBackgroundSystemTask *)self initWithBackgroundSystemTask:taskCopy logHandle:v5];
 
   return v6;
 }
 
-- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)a3 logHandle:(id)a4
+- (ATXBackgroundSystemTask)initWithBackgroundSystemTask:(id)task logHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  handleCopy = handle;
   v14.receiver = self;
   v14.super_class = ATXBackgroundSystemTask;
   v8 = [(ATXBackgroundSystemTask *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(ATXBackgroundSystemTask *)v8 setBgSystemTask:v6];
-    [(ATXBackgroundSystemTask *)v9 setHandle:v7];
+    [(ATXBackgroundSystemTask *)v8 setBgSystemTask:taskCopy];
+    [(ATXBackgroundSystemTask *)v9 setHandle:handleCopy];
     [(ATXBackgroundSystemTask *)v9 setTaskDeferred:0];
     [(ATXBackgroundSystemTask *)v9 setTaskExpiryCalled:0];
     [(ATXBackgroundSystemTask *)v9 setCurrentProgressUnits:0];
@@ -45,7 +45,7 @@
     v11[2] = __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___block_invoke;
     v11[3] = &unk_1E80C22A0;
     objc_copyWeak(&v12, &location);
-    [v6 setExpirationHandlerWithReason:v11];
+    [taskCopy setExpirationHandlerWithReason:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -73,18 +73,18 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
   }
 }
 
-- (id)initForTestingWithIdentifier:(id)a3 configuration:(id)a4
+- (id)initForTestingWithIdentifier:(id)identifier configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = ATXBackgroundSystemTask;
   v8 = [(ATXBackgroundSystemTask *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(ATXBackgroundSystemTask *)v8 setIdentifier:v6];
-    [(ATXBackgroundSystemTask *)v9 setConfiguration:v7];
+    [(ATXBackgroundSystemTask *)v8 setIdentifier:identifierCopy];
+    [(ATXBackgroundSystemTask *)v9 setConfiguration:configurationCopy];
     v10 = [MEMORY[0x1E695DF00] now];
     [(ATXBackgroundSystemTask *)v9 setJobCreationTime:v10];
 
@@ -97,17 +97,17 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 
 - (BOOL)_didDeferForTestMode
 {
-  v3 = [(ATXBackgroundSystemTask *)self configuration];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E698AF68]];
+  configuration = [(ATXBackgroundSystemTask *)self configuration];
+  v4 = [configuration objectForKeyedSubscript:*MEMORY[0x1E698AF68]];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([v4 doubleValue], v6 = v5, objc_msgSend(MEMORY[0x1E695DF00], "now"), v7 = objc_claimAutoreleasedReturnValue(), -[ATXBackgroundSystemTask jobCreationTime](self, "jobCreationTime"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "timeIntervalSinceDate:", v8), v10 = v9, v8, v7, v6 > 0.0) ? (v11 = v10 <= v6) : (v11 = 1), !v11))
   {
-    v13 = [(ATXBackgroundSystemTask *)self resultStatus];
-    [v13 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E698AF70]];
+    resultStatus = [(ATXBackgroundSystemTask *)self resultStatus];
+    [resultStatus setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E698AF70]];
 
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-    v15 = [(ATXBackgroundSystemTask *)self resultStatus];
-    [v15 setObject:v14 forKeyedSubscript:*MEMORY[0x1E698AF80]];
+    resultStatus2 = [(ATXBackgroundSystemTask *)self resultStatus];
+    [resultStatus2 setObject:v14 forKeyedSubscript:*MEMORY[0x1E698AF80]];
 
     v16 = 1;
   }
@@ -123,10 +123,10 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 - (BOOL)didDefer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E698AFF8] sharedInstance];
-  v4 = [v3 isTestModeEnabled];
+  mEMORY[0x1E698AFF8] = [MEMORY[0x1E698AFF8] sharedInstance];
+  isTestModeEnabled = [mEMORY[0x1E698AFF8] isTestModeEnabled];
 
-  if (v4)
+  if (isTestModeEnabled)
   {
 
     return [(ATXBackgroundSystemTask *)self _didDeferForTestMode];
@@ -136,21 +136,21 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
   {
     if ([(ATXBackgroundSystemTask *)self taskDeferred]&& ![(ATXBackgroundSystemTask *)self taskExpiryCalled])
     {
-      v6 = [(ATXBackgroundSystemTask *)self bgSystemTask];
+      bgSystemTask = [(ATXBackgroundSystemTask *)self bgSystemTask];
       v13 = 0;
-      v7 = [v6 setTaskExpiredWithRetryAfter:&v13 error:0.0];
+      v7 = [bgSystemTask setTaskExpiredWithRetryAfter:&v13 error:0.0];
       v8 = v13;
 
-      v9 = [(ATXBackgroundSystemTask *)self handle];
-      v10 = v9;
+      handle = [(ATXBackgroundSystemTask *)self handle];
+      v10 = handle;
       if (v7)
       {
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(handle, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(ATXBackgroundSystemTask *)self bgSystemTask];
-          v12 = [v11 identifier];
+          bgSystemTask2 = [(ATXBackgroundSystemTask *)self bgSystemTask];
+          identifier = [bgSystemTask2 identifier];
           *buf = 138412290;
-          v15 = v12;
+          v15 = identifier;
           _os_log_impl(&dword_1BF549000, v10, OS_LOG_TYPE_DEFAULT, "Successfully called setTaskExpiredWithRetryAfter:BGSystemTaskRetryAfterDefault for %@", buf, 0xCu);
         }
 
@@ -160,7 +160,7 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 
       else
       {
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(handle, OS_LOG_TYPE_ERROR))
         {
           [(ATXBackgroundSystemTask *)self didDefer];
         }
@@ -173,8 +173,8 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 
 - (BOOL)shouldDefer
 {
-  v3 = [(ATXBackgroundSystemTask *)self handle];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  handle = [(ATXBackgroundSystemTask *)self handle];
+  if (os_log_type_enabled(handle, OS_LOG_TYPE_FAULT))
   {
     [(ATXBackgroundSystemTask *)self shouldDefer];
   }
@@ -182,37 +182,37 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
   return [(ATXBackgroundSystemTask *)self taskDeferred];
 }
 
-- (void)setProgressUnits:(unsigned __int8)a3
+- (void)setProgressUnits:(unsigned __int8)units
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E698AFF8] sharedInstance];
-  v6 = [v5 isTestModeEnabled];
+  unitsCopy = units;
+  mEMORY[0x1E698AFF8] = [MEMORY[0x1E698AFF8] sharedInstance];
+  isTestModeEnabled = [mEMORY[0x1E698AFF8] isTestModeEnabled];
 
-  if (v6)
+  if (isTestModeEnabled)
   {
 
-    [(ATXBackgroundSystemTask *)self _setProgressUnitsForTestMode:v3];
+    [(ATXBackgroundSystemTask *)self _setProgressUnitsForTestMode:unitsCopy];
   }
 
-  else if ((v3 - 1) <= 0x63 && [(ATXBackgroundSystemTask *)self currentProgressUnits]< v3)
+  else if ((unitsCopy - 1) <= 0x63 && [(ATXBackgroundSystemTask *)self currentProgressUnits]< unitsCopy)
   {
-    [(ATXBackgroundSystemTask *)self setCurrentProgressUnits:v3];
+    [(ATXBackgroundSystemTask *)self setCurrentProgressUnits:unitsCopy];
     v7 = objc_alloc(MEMORY[0x1E698E4A8]);
-    v8 = [(ATXBackgroundSystemTask *)self bgSystemTask];
-    v9 = [v8 identifier];
+    bgSystemTask = [(ATXBackgroundSystemTask *)self bgSystemTask];
+    identifier = [bgSystemTask identifier];
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:qos_class_self()];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:v3];
-    v12 = [v7 initWithIdentifier:v9 qos:v10 workloadCategory:50 expectedMetricValue:0 itemsCompleted:v11 totalItemCount:&unk_1F3E5FE98];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedChar:unitsCopy];
+    v12 = [v7 initWithIdentifier:identifier qos:v10 workloadCategory:50 expectedMetricValue:0 itemsCompleted:v11 totalItemCount:&unk_1F3E5FE98];
 
-    v13 = [MEMORY[0x1E698E4B8] sharedScheduler];
+    mEMORY[0x1E698E4B8] = [MEMORY[0x1E698E4B8] sharedScheduler];
     v16 = 0;
-    LOBYTE(v9) = [v13 reportProgressMetrics:v12 error:&v16];
+    LOBYTE(identifier) = [mEMORY[0x1E698E4B8] reportProgressMetrics:v12 error:&v16];
     v14 = v16;
 
-    if ((v9 & 1) == 0)
+    if ((identifier & 1) == 0)
     {
-      v15 = [(ATXBackgroundSystemTask *)self handle];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      handle = [(ATXBackgroundSystemTask *)self handle];
+      if (os_log_type_enabled(handle, OS_LOG_TYPE_ERROR))
       {
         [ATXBackgroundSystemTask setProgressUnits:?];
       }
@@ -222,26 +222,26 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 
 - (BOOL)_setDoneForTestMode
 {
-  v3 = [(ATXBackgroundSystemTask *)self resultStatus];
-  [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E698AF78]];
+  resultStatus = [(ATXBackgroundSystemTask *)self resultStatus];
+  [resultStatus setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E698AF78]];
 
   v4 = MEMORY[0x1E696AD98];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [(ATXBackgroundSystemTask *)self jobCreationTime];
-  [v5 timeIntervalSinceDate:v6];
+  jobCreationTime = [(ATXBackgroundSystemTask *)self jobCreationTime];
+  [v5 timeIntervalSinceDate:jobCreationTime];
   v7 = [v4 numberWithDouble:?];
-  v8 = [(ATXBackgroundSystemTask *)self resultStatus];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E698AF80]];
+  resultStatus2 = [(ATXBackgroundSystemTask *)self resultStatus];
+  [resultStatus2 setObject:v7 forKeyedSubscript:*MEMORY[0x1E698AF80]];
 
   return 1;
 }
 
 - (BOOL)setDone
 {
-  v3 = [MEMORY[0x1E698AFF8] sharedInstance];
-  v4 = [v3 isTestModeEnabled];
+  mEMORY[0x1E698AFF8] = [MEMORY[0x1E698AFF8] sharedInstance];
+  isTestModeEnabled = [mEMORY[0x1E698AFF8] isTestModeEnabled];
 
-  if (v4)
+  if (isTestModeEnabled)
   {
 
     return [(ATXBackgroundSystemTask *)self _setDoneForTestMode];
@@ -250,8 +250,8 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
   else
   {
     [(ATXBackgroundSystemTask *)self setProgressUnits:100];
-    v6 = [(ATXBackgroundSystemTask *)self bgSystemTask];
-    [v6 setTaskCompleted];
+    bgSystemTask = [(ATXBackgroundSystemTask *)self bgSystemTask];
+    [bgSystemTask setTaskCompleted];
 
     [(ATXBackgroundSystemTask *)self setBgSystemTask:0];
     return 1;
@@ -260,16 +260,16 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 
 - (id)resultStatusForJob
 {
-  v2 = [(ATXBackgroundSystemTask *)self resultStatus];
-  v3 = [v2 copy];
+  resultStatus = [(ATXBackgroundSystemTask *)self resultStatus];
+  v3 = [resultStatus copy];
 
   return v3;
 }
 
 - (void)didDefer
 {
-  v1 = [a1 bgSystemTask];
-  v2 = [v1 identifier];
+  bgSystemTask = [self bgSystemTask];
+  identifier = [bgSystemTask identifier];
   OUTLINED_FUNCTION_0_17();
   OUTLINED_FUNCTION_1_4(&dword_1BF549000, v3, v4, "Failed to call setTaskExpiredWithRetryAfter for %@ : %@", v5, v6, v7, v8, v9);
 }
@@ -277,10 +277,10 @@ void __66__ATXBackgroundSystemTask_initWithBackgroundSystemTask_logHandle___bloc
 - (void)shouldDefer
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 bgSystemTask];
-  v4 = [v3 identifier];
+  bgSystemTask = [self bgSystemTask];
+  identifier = [bgSystemTask identifier];
   v5 = 138412290;
-  v6 = v4;
+  v6 = identifier;
   _os_log_fault_impl(&dword_1BF549000, a2, OS_LOG_TYPE_FAULT, "Activities using BGST (%@) should only call didDefer which handles the deferral", &v5, 0xCu);
 }
 

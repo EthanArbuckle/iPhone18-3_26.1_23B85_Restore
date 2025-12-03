@@ -1,7 +1,7 @@
 @interface CKPlaceholderOperation
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5;
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand;
 - (void)main;
 - (void)start;
 @end
@@ -42,7 +42,7 @@
     *buf = 138543874;
     v19 = v15;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v17;
     _os_log_debug_impl(&dword_1883EA000, v13, OS_LOG_TYPE_DEBUG, "Placeholder op <%{public}@: %p; %{public}@> starting", buf, 0x20u);
@@ -90,13 +90,13 @@
   dispatch_group_notify(group, v8, block);
 }
 
-- (id)CKDescriptionPropertiesWithPublic:(BOOL)a3 private:(BOOL)a4 shouldExpand:(BOOL)a5
+- (id)CKDescriptionPropertiesWithPublic:(BOOL)public private:(BOOL)private shouldExpand:(BOOL)expand
 {
-  v5 = a3;
+  publicCopy = public;
   v7 = objc_alloc(MEMORY[0x1E695DF90]);
   v9 = objc_msgSend_initWithCapacity_(v7, v8, 3);
   v11 = v9;
-  if (v5)
+  if (publicCopy)
   {
     if (self)
     {

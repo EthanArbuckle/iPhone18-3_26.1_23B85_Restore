@@ -1,25 +1,25 @@
 @interface ReplicationListenerService.ServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtCC11NanoTimeKit26ReplicationListenerServiceP33_AE83D9433EE81C01A115B3EC259ECD2214ServerDelegate)init;
-- (void)registerWithCompletion:(id)a3;
-- (void)sendGalleryRefreshMessageWithCompletion:(id)a3;
+- (void)registerWithCompletion:(id)completion;
+- (void)sendGalleryRefreshMessageWithCompletion:(id)completion;
 @end
 
 @implementation ReplicationListenerService.ServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
 
-  v7 = sub_22DC89630(v6);
+  v7 = sub_22DC89630(connectionCopy);
 
   return v7 & 1;
 }
 
-- (void)registerWithCompletion:(id)a3
+- (void)registerWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   _Block_copy(v3);
 
   sub_22DC89CD4(v4, v3);
@@ -27,12 +27,12 @@
   _Block_release(v3);
 }
 
-- (void)sendGalleryRefreshMessageWithCompletion:(id)a3
+- (void)sendGalleryRefreshMessageWithCompletion:(id)completion
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DA2D440);
   MEMORY[0x28223BE20](v5 - 8, v6, v7);
   v9 = &v14 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   v12 = sub_22DCB62BC();

@@ -1,7 +1,7 @@
 @interface UnanimatedContainerBoxView
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithArrangedSubviews:(id)a3;
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithCoder:(id)a3;
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithFrame:(CGRect)a3;
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithArrangedSubviews:(id)subviews;
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithCoder:(id)coder;
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -22,7 +22,7 @@
   v8[2] = sub_100026440;
   v8[3] = &unk_10072AA60;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation:v6];
   _Block_release(v6);
@@ -34,21 +34,21 @@
   }
 }
 
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithFrame:(CGRect)a3
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for UnanimatedContainerBoxView();
   return [(UnanimatedContainerBoxView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithArrangedSubviews:(id)a3
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithArrangedSubviews:(id)subviews
 {
-  isa = a3;
-  if (a3)
+  isa = subviews;
+  if (subviews)
   {
     sub_100003540(0, &qword_10076B020);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -62,12 +62,12 @@
   return v5;
 }
 
-- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithCoder:(id)a3
+- (_TtC9RemindersP33_867866E3C408EC8E125699C6A4109C4226UnanimatedContainerBoxView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for UnanimatedContainerBoxView();
-  v4 = a3;
-  v5 = [(UnanimatedContainerBoxView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UnanimatedContainerBoxView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

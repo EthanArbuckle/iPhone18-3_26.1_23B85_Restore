@@ -1,15 +1,15 @@
 @interface _BCPPTFlawlessImageEntry
-+ (id)entryOfSize:(CGSize)a3;
++ (id)entryOfSize:(CGSize)size;
 - (CGSize)imageSize;
 - (id)entryLocationFromParameters;
 @end
 
 @implementation _BCPPTFlawlessImageEntry
 
-+ (id)entryOfSize:(CGSize)a3
++ (id)entryOfSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(objc_opt_class());
   [v5 setImageSize:{width, height}];
   [v5 setLevel:0];
@@ -24,9 +24,9 @@
 - (id)entryLocationFromParameters
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (CGSize)imageSize

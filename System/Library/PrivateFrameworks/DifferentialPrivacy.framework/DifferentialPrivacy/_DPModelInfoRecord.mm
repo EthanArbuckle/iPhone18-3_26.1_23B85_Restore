@@ -1,17 +1,17 @@
 @interface _DPModelInfoRecord
-+ (id)createRecordFromManagedObject:(id)a3;
-- (BOOL)copyFromManagedObject:(id)a3;
-- (BOOL)copyToManagedObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModelInfo:(id)a3;
++ (id)createRecordFromManagedObject:(id)object;
+- (BOOL)copyFromManagedObject:(id)object;
+- (BOOL)copyToManagedObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModelInfo:(id)info;
 - (_DPModelInfoRecord)init;
-- (_DPModelInfoRecord)initWithCoder:(id)a3;
-- (_DPModelInfoRecord)initWithMajorVersion:(signed __int16)a3 minorVersion:(signed __int16)a4 creationDate:(double)a5 objectId:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_DPModelInfoRecord)initWithCoder:(id)coder;
+- (_DPModelInfoRecord)initWithMajorVersion:(signed __int16)version minorVersion:(signed __int16)minorVersion creationDate:(double)date objectId:(id)id;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)entityName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _DPModelInfoRecord
@@ -25,58 +25,58 @@
   return [(_DPModelInfoRecord *)self initWithMajorVersion:0 minorVersion:0 creationDate:0 objectId:v5];
 }
 
-- (_DPModelInfoRecord)initWithMajorVersion:(signed __int16)a3 minorVersion:(signed __int16)a4 creationDate:(double)a5 objectId:(id)a6
+- (_DPModelInfoRecord)initWithMajorVersion:(signed __int16)version minorVersion:(signed __int16)minorVersion creationDate:(double)date objectId:(id)id
 {
-  v11 = a6;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = _DPModelInfoRecord;
   v12 = [(_DPModelInfoRecord *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_majorVersion = a3;
-    v12->_minorVersion = a4;
-    v12->_creationDate = a5;
+    v12->_majorVersion = version;
+    v12->_minorVersion = minorVersion;
+    v12->_creationDate = date;
     v12->_submitted = 0;
-    objc_storeStrong(&v12->_objectId, a6);
+    objc_storeStrong(&v12->_objectId, id);
   }
 
   return v13;
 }
 
-- (_DPModelInfoRecord)initWithCoder:(id)a3
+- (_DPModelInfoRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"majorVersion"];
-  v6 = [v5 shortValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"majorVersion"];
+  shortValue = [v5 shortValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minorVersion"];
-  v8 = [v7 shortValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minorVersion"];
+  shortValue2 = [v7 shortValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
 
   [v9 doubleValue];
   v11 = v10;
 
-  return [(_DPModelInfoRecord *)self initWithMajorVersion:v6 minorVersion:v8 creationDate:0 objectId:v11];
+  return [(_DPModelInfoRecord *)self initWithMajorVersion:shortValue minorVersion:shortValue2 creationDate:0 objectId:v11];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithShort:self->_majorVersion];
-  [v8 encodeObject:v4 forKey:@"majorVersion"];
+  [coderCopy encodeObject:v4 forKey:@"majorVersion"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithShort:self->_minorVersion];
-  [v8 encodeObject:v5 forKey:@"minorVersion"];
+  [coderCopy encodeObject:v5 forKey:@"minorVersion"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_creationDate];
-  [v8 encodeObject:v6 forKey:@"creationDate"];
+  [coderCopy encodeObject:v6 forKey:@"creationDate"];
 
   objectId = self->_objectId;
   if (objectId)
   {
-    [v8 encodeObject:objectId forKey:@"objectId"];
+    [coderCopy encodeObject:objectId forKey:@"objectId"];
   }
 }
 
@@ -100,51 +100,51 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(_DPModelInfoRecord *)self majorVersion];
-  v6 = [(_DPModelInfoRecord *)self minorVersion];
+  majorVersion = [(_DPModelInfoRecord *)self majorVersion];
+  minorVersion = [(_DPModelInfoRecord *)self minorVersion];
   [(_DPModelInfoRecord *)self creationDate];
   v8 = v7;
-  v9 = [(_DPModelInfoRecord *)self objectId];
-  v10 = [v4 initWithMajorVersion:v5 minorVersion:v6 creationDate:v9 objectId:v8];
+  objectId = [(_DPModelInfoRecord *)self objectId];
+  v10 = [v4 initWithMajorVersion:majorVersion minorVersion:minorVersion creationDate:objectId objectId:v8];
 
   return v10;
 }
 
-- (BOOL)isEqualToModelInfo:(id)a3
+- (BOOL)isEqualToModelInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
     goto LABEL_8;
   }
 
   [(_DPModelInfoRecord *)self creationDate];
   v6 = v5;
-  [v4 creationDate];
+  [infoCopy creationDate];
   v8 = areEqualTimeIntervals(v6, v7);
-  v9 = [(_DPModelInfoRecord *)self objectId];
+  objectId = [(_DPModelInfoRecord *)self objectId];
 
-  if (v9)
+  if (objectId)
   {
-    v10 = [(_DPModelInfoRecord *)self objectId];
-    v11 = [v4 objectId];
-    v12 = [v10 isEqual:v11];
+    objectId2 = [(_DPModelInfoRecord *)self objectId];
+    objectId3 = [infoCopy objectId];
+    v12 = [objectId2 isEqual:objectId3];
   }
 
   else
   {
-    v13 = [v4 objectId];
+    objectId4 = [infoCopy objectId];
 
-    v12 = v13 == 0;
+    v12 = objectId4 == 0;
   }
 
-  if ((v8 & v12) == 1 && (v14 = -[_DPModelInfoRecord majorVersion](self, "majorVersion"), v14 == [v4 majorVersion]))
+  if ((v8 & v12) == 1 && (v14 = -[_DPModelInfoRecord majorVersion](self, "majorVersion"), v14 == [infoCopy majorVersion]))
   {
-    v15 = [(_DPModelInfoRecord *)self minorVersion];
-    v16 = v15 == [v4 minorVersion];
+    minorVersion = [(_DPModelInfoRecord *)self minorVersion];
+    v16 = minorVersion == [infoCopy minorVersion];
   }
 
   else
@@ -156,18 +156,18 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPModelInfoRecord *)self isEqualToModelInfo:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_DPModelInfoRecord *)self isEqualToModelInfo:v5];
   }
 
   return v6;
@@ -175,21 +175,21 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(_DPModelInfoRecord *)self majorVersion];
-  v4 = [(_DPModelInfoRecord *)self minorVersion]^ v3;
+  majorVersion = [(_DPModelInfoRecord *)self majorVersion];
+  v4 = [(_DPModelInfoRecord *)self minorVersion]^ majorVersion;
   [(_DPModelInfoRecord *)self creationDate];
   v6 = v5;
-  v7 = [(_DPModelInfoRecord *)self objectId];
-  v8 = v4 ^ [v7 hash];
+  objectId = [(_DPModelInfoRecord *)self objectId];
+  v8 = v4 ^ [objectId hash];
 
   return v8 ^ v6;
 }
 
-+ (id)createRecordFromManagedObject:(id)a3
++ (id)createRecordFromManagedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_opt_new();
-  v5 = [v4 copyFromManagedObject:v3];
+  v5 = [v4 copyFromManagedObject:objectCopy];
 
   if (v5)
   {
@@ -211,42 +211,42 @@ LABEL_8:
   return [v2 entityName];
 }
 
-- (BOOL)copyToManagedObject:(id)a3
+- (BOOL)copyToManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     [v6 setMajorVersion:{-[_DPModelInfoRecord majorVersion](self, "majorVersion")}];
     [v6 setMinorVersion:{-[_DPModelInfoRecord minorVersion](self, "minorVersion")}];
-    v7 = [(_DPModelInfoRecord *)self objectId];
-    v8 = [v6 objectID];
+    objectId = [(_DPModelInfoRecord *)self objectId];
+    objectID = [v6 objectID];
 
-    if (v7 != v8)
+    if (objectId != objectID)
     {
-      v9 = [v6 objectID];
-      [(_DPModelInfoRecord *)self setObjectId:v9];
+      objectID2 = [v6 objectID];
+      [(_DPModelInfoRecord *)self setObjectId:objectID2];
     }
   }
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)copyFromManagedObject:(id)a3
+- (BOOL)copyFromManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v6 = v4;
+    v6 = objectCopy;
     -[_DPModelInfoRecord setMajorVersion:](self, "setMajorVersion:", [v6 majorVersion]);
     -[_DPModelInfoRecord setMinorVersion:](self, "setMinorVersion:", [v6 minorVersion]);
-    v7 = [v6 objectID];
+    objectID = [v6 objectID];
 
-    [(_DPModelInfoRecord *)self setObjectId:v7];
+    [(_DPModelInfoRecord *)self setObjectId:objectID];
   }
 
   return isKindOfClass & 1;

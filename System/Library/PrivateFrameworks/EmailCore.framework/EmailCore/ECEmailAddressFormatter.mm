@@ -1,54 +1,54 @@
 @interface ECEmailAddressFormatter
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5;
-- (ECEmailAddressFormatter)initWithStyle:(int64_t)a3;
-- (id)_groupListString:(id)a3;
-- (id)_stringFromEmailAddressList:(id)a3 includeDisplayName:(BOOL)a4;
-- (id)_stringFromGroupEmailAddress:(id)a3;
-- (id)_stringFromMailboxAddress:(id)a3 includeDisplayName:(BOOL)a4;
-- (id)emailAddressFromString:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromEmailAddress:(id)a3;
-- (id)stringFromEmailAddressConvertible:(id)a3;
-- (id)stringFromEmailAddressList:(id)a3;
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description;
+- (ECEmailAddressFormatter)initWithStyle:(int64_t)style;
+- (id)_groupListString:(id)string;
+- (id)_stringFromEmailAddressList:(id)list includeDisplayName:(BOOL)name;
+- (id)_stringFromGroupEmailAddress:(id)address;
+- (id)_stringFromMailboxAddress:(id)address includeDisplayName:(BOOL)name;
+- (id)emailAddressFromString:(id)string;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromEmailAddress:(id)address;
+- (id)stringFromEmailAddressConvertible:(id)convertible;
+- (id)stringFromEmailAddressList:(id)list;
 @end
 
 @implementation ECEmailAddressFormatter
 
-- (ECEmailAddressFormatter)initWithStyle:(int64_t)a3
+- (ECEmailAddressFormatter)initWithStyle:(int64_t)style
 {
   v5.receiver = self;
   v5.super_class = ECEmailAddressFormatter;
   result = [(ECEmailAddressFormatter *)&v5 init];
   if (result)
   {
-    result->_style = a3;
+    result->_style = style;
   }
 
   return result;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddress:v4];
+    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddress:valueCopy];
 LABEL_5:
     v6 = v5;
     goto LABEL_6;
   }
 
-  if ([v4 conformsToProtocol:&unk_284054FB0])
+  if ([valueCopy conformsToProtocol:&unk_284054FB0])
   {
-    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddressConvertible:v4];
+    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddressConvertible:valueCopy];
     goto LABEL_5;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 ef_all:&__block_literal_global_7])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy ef_all:&__block_literal_global_7])
   {
-    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddressList:v4];
+    v5 = [(ECEmailAddressFormatter *)self stringFromEmailAddressList:valueCopy];
     goto LABEL_5;
   }
 
@@ -58,84 +58,84 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)getObjectValue:(id *)a3 forString:(id)a4 errorDescription:(id *)a5
+- (BOOL)getObjectValue:(id *)value forString:(id)string errorDescription:(id *)description
 {
-  v8 = a4;
-  v9 = [(ECEmailAddressFormatter *)self emailAddressFromString:v8];
+  stringCopy = string;
+  v9 = [(ECEmailAddressFormatter *)self emailAddressFromString:stringCopy];
   v10 = v9;
   if (v9)
   {
-    if (a3)
+    if (value)
     {
       v11 = v9;
-      *a3 = v10;
+      *value = v10;
     }
   }
 
-  else if (a5)
+  else if (description)
   {
-    *a5 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to parse: %@", v8];
+    *description = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to parse: %@", stringCopy];
   }
 
   return v10 != 0;
 }
 
-- (id)emailAddressFromString:(id)a3
+- (id)emailAddressFromString:(id)string
 {
-  v3 = [ECEmailAddress emailAddressWithString:a3];
+  v3 = [ECEmailAddress emailAddressWithString:string];
 
   return v3;
 }
 
-- (id)stringFromEmailAddress:(id)a3
+- (id)stringFromEmailAddress:(id)address
 {
-  v5 = a3;
-  if (!v5)
+  addressCopy = address;
+  if (!addressCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ECEmailAddressFormatter.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECEmailAddressFormatter.m" lineNumber:90 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
   }
 
-  v6 = [(ECEmailAddressFormatter *)self _stringFromEmailAddress:v5 includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
+  v6 = [(ECEmailAddressFormatter *)self _stringFromEmailAddress:addressCopy includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
 
   return v6;
 }
 
-- (id)stringFromEmailAddressConvertible:(id)a3
+- (id)stringFromEmailAddressConvertible:(id)convertible
 {
-  v5 = a3;
-  if (!v5)
+  convertibleCopy = convertible;
+  if (!convertibleCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ECEmailAddressFormatter.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"emailAddressConvertible"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECEmailAddressFormatter.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"emailAddressConvertible"}];
   }
 
-  v6 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressConvertible:v5 includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
+  v6 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressConvertible:convertibleCopy includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
 
   return v6;
 }
 
-- (id)stringFromEmailAddressList:(id)a3
+- (id)stringFromEmailAddressList:(id)list
 {
-  v4 = a3;
-  v5 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressList:v4 includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
+  listCopy = list;
+  v5 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressList:listCopy includeDisplayName:[(ECEmailAddressFormatter *)self shouldIncludeDisplayName]];
 
   return v5;
 }
 
-- (id)_stringFromEmailAddressList:(id)a3 includeDisplayName:(BOOL)a4
+- (id)_stringFromEmailAddressList:(id)list includeDisplayName:(BOOL)name
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAB68] string];
+  listCopy = list;
+  string = [MEMORY[0x277CCAB68] string];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__ECEmailAddressFormatter__stringFromEmailAddressList_includeDisplayName___block_invoke;
   v11[3] = &unk_27874B9B8;
-  v8 = v7;
+  v8 = string;
   v12 = v8;
-  v13 = self;
-  v14 = a4;
-  [v6 enumerateObjectsUsingBlock:v11];
+  selfCopy = self;
+  nameCopy = name;
+  [listCopy enumerateObjectsUsingBlock:v11];
   v9 = [v8 copy];
 
   return v9;
@@ -155,80 +155,80 @@ void __74__ECEmailAddressFormatter__stringFromEmailAddressList_includeDisplayNam
   [v4 appendFormat:@"%@%@", v6, v5];
 }
 
-- (id)_stringFromMailboxAddress:(id)a3 includeDisplayName:(BOOL)a4
+- (id)_stringFromMailboxAddress:(id)address includeDisplayName:(BOOL)name
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  nameCopy = name;
+  addressCopy = address;
+  v7 = addressCopy;
   style = self->_style;
   if (style == 1)
   {
-    v10 = [v6 idnaAddress];
+    idnaAddress = [addressCopy idnaAddress];
   }
 
   else
   {
     if (style == 2)
     {
-      v9 = [v6 ef_publicDescription];
+      ef_publicDescription = [addressCopy ef_publicDescription];
       goto LABEL_12;
     }
 
-    v10 = [v6 simpleAddress];
+    idnaAddress = [addressCopy simpleAddress];
   }
 
-  v11 = v10;
-  if (!v4)
+  v11 = idnaAddress;
+  if (!nameCopy)
   {
     goto LABEL_10;
   }
 
-  v12 = [v7 displayName];
-  v13 = [v12 ecemailaddress_trimmedAndQuotedDisplayName];
+  displayName = [v7 displayName];
+  ecemailaddress_trimmedAndQuotedDisplayName = [displayName ecemailaddress_trimmedAndQuotedDisplayName];
 
-  if (![v13 length])
+  if (![ecemailaddress_trimmedAndQuotedDisplayName length])
   {
 
 LABEL_10:
-    v9 = v11;
+    ef_publicDescription = v11;
     goto LABEL_11;
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <%@>", v13, v11];
+  ef_publicDescription = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ <%@>", ecemailaddress_trimmedAndQuotedDisplayName, v11];
 
 LABEL_11:
 LABEL_12:
 
-  return v9;
+  return ef_publicDescription;
 }
 
-- (id)_groupListString:(id)a3
+- (id)_groupListString:(id)string
 {
-  v4 = [a3 groupList];
-  v5 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressList:v4 includeDisplayName:1];
+  groupList = [string groupList];
+  v5 = [(ECEmailAddressFormatter *)self _stringFromEmailAddressList:groupList includeDisplayName:1];
 
   return v5;
 }
 
-- (id)_stringFromGroupEmailAddress:(id)a3
+- (id)_stringFromGroupEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = v4;
+  addressCopy = address;
+  v5 = addressCopy;
   if (self->_style == 2)
   {
-    v6 = [v4 ef_publicDescription];
+    ef_publicDescription = [addressCopy ef_publicDescription];
   }
 
   else
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [v4 displayName];
-    v9 = [v8 ecemailaddress_trimmedAndQuotedDisplayName];
+    displayName = [addressCopy displayName];
+    ecemailaddress_trimmedAndQuotedDisplayName = [displayName ecemailaddress_trimmedAndQuotedDisplayName];
     v10 = [(ECEmailAddressFormatter *)self _groupListString:v5];
-    v6 = [v7 stringWithFormat:@"%@:%@", v9, v10];;
+    ef_publicDescription = [v7 stringWithFormat:@"%@:%@", ecemailaddress_trimmedAndQuotedDisplayName, v10];;
   }
 
-  return v6;
+  return ef_publicDescription;
 }
 
 @end

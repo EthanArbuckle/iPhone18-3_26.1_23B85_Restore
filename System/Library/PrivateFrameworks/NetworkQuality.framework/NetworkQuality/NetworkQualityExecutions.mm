@@ -1,75 +1,75 @@
 @interface NetworkQualityExecutions
 - (BOOL)isDraining;
-- (NetworkQualityExecutions)initWithConfiguration:(id)a3;
-- (NetworkQualityExecutions)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (NetworkQualityExecutions)initWithConfiguration:(id)configuration;
+- (NetworkQualityExecutions)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (id)createDefaultNSURLSessionConfiguration;
-- (id)createDefaultRequestwithURL:(id)a3;
+- (id)createDefaultRequestwithURL:(id)l;
 - (int64_t)currentThroughput;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_cancelWithOptionalError:(id)a3;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_cancelWithOptionalError:(id)error;
 - (void)_sendSymptomReport;
 - (void)cancel;
-- (void)captureError:(id)a3;
+- (void)captureError:(id)error;
 - (void)checkTimeout;
 - (void)drain;
-- (void)execDLWithCompletionHandler:(id)a3;
-- (void)execParallelWithCompletionHandler:(id)a3;
-- (void)execULWithCompletionHandler:(id)a3;
+- (void)execDLWithCompletionHandler:(id)handler;
+- (void)execParallelWithCompletionHandler:(id)handler;
+- (void)execULWithCompletionHandler:(id)handler;
 - (void)reallyExecuteDL;
 - (void)reallyExecuteParallel;
 - (void)reallyExecuteUL;
-- (void)reportingCompletionHandler:(id)a3;
+- (void)reportingCompletionHandler:(id)handler;
 - (void)run;
-- (void)runWithCompletionHandler:(id)a3;
+- (void)runWithCompletionHandler:(id)handler;
 - (void)setTimeout;
 - (void)shareProgress;
-- (void)validateAndAdjustRuntimeParameters:(id)a3;
+- (void)validateAndAdjustRuntimeParameters:(id)parameters;
 @end
 
 @implementation NetworkQualityExecutions
 
-- (void)validateAndAdjustRuntimeParameters:(id)a3
+- (void)validateAndAdjustRuntimeParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 maxRuntime];
-  if ([v3 maxRuntime] || objc_msgSend(v3, "minRuntime") < 1 || objc_msgSend(v3, "minRuntime") >= 46)
+  parametersCopy = parameters;
+  maxRuntime = [parametersCopy maxRuntime];
+  if ([parametersCopy maxRuntime] || objc_msgSend(parametersCopy, "minRuntime") < 1 || objc_msgSend(parametersCopy, "minRuntime") >= 46)
   {
-    if (![v3 maxRuntime] && objc_msgSend(v3, "minRuntime") >= 1)
+    if (![parametersCopy maxRuntime] && objc_msgSend(parametersCopy, "minRuntime") >= 1)
     {
-      v8 = [v3 minRuntime] + 1;
-      v9 = v3;
+      v8 = [parametersCopy minRuntime] + 1;
+      v9 = parametersCopy;
 LABEL_17:
       [v9 setMaxRuntime:v8];
       goto LABEL_18;
     }
 
-    v5 = [v3 minRuntime];
-    if (v5 >= [v3 maxRuntime])
+    minRuntime = [parametersCopy minRuntime];
+    if (minRuntime >= [parametersCopy maxRuntime])
     {
       netqual_log_init();
       v6 = os_log_netqual;
       if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_ERROR))
       {
-        [(NetworkQualityExecutions *)v6 validateAndAdjustRuntimeParameters:v3];
+        [(NetworkQualityExecutions *)v6 validateAndAdjustRuntimeParameters:parametersCopy];
       }
 
-      if ([v3 maxRuntime] < 2)
+      if ([parametersCopy maxRuntime] < 2)
       {
         v7 = 0;
       }
 
       else
       {
-        v7 = [v3 maxRuntime] - 1;
+        v7 = [parametersCopy maxRuntime] - 1;
       }
 
-      [v3 setMinRuntime:v7];
+      [parametersCopy setMinRuntime:v7];
     }
   }
 
-  if (v4 <= 0)
+  if (maxRuntime <= 0)
   {
-    v9 = v3;
+    v9 = parametersCopy;
     v8 = 45;
     goto LABEL_17;
   }
@@ -77,9 +77,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (NetworkQualityExecutions)initWithConfiguration:(id)a3
+- (NetworkQualityExecutions)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v22.receiver = self;
   v22.super_class = NetworkQualityExecutions;
   v5 = [(NetworkQualityExecutions *)&v22 init];
@@ -88,7 +88,7 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [configurationCopy mutableCopy];
   config = v5->config;
   v5->config = v6;
 
@@ -114,9 +114,9 @@ LABEL_18:
   progressResults = v5->_progressResults;
   v5->_progressResults = v14;
 
-  v16 = [(NetworkQualityConfiguration *)v5->config networkInterfaceName];
+  networkInterfaceName = [(NetworkQualityConfiguration *)v5->config networkInterfaceName];
 
-  if (!v16)
+  if (!networkInterfaceName)
   {
 LABEL_5:
     [(NetworkQualityExecutions *)v5 validateAndAdjustRuntimeParameters:v5->config];
@@ -126,8 +126,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v17 = [(NetworkQualityConfiguration *)v5->config networkInterfaceName];
-  [v17 cStringUsingEncoding:4];
+  networkInterfaceName2 = [(NetworkQualityConfiguration *)v5->config networkInterfaceName];
+  [networkInterfaceName2 cStringUsingEncoding:4];
   v18 = nw_interface_create_with_name();
 
   if (v18)
@@ -149,14 +149,14 @@ LABEL_7:
   return v19;
 }
 
-- (NetworkQualityExecutions)initWithConfiguration:(id)a3 delegate:(id)a4
+- (NetworkQualityExecutions)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
-  v7 = a4;
-  v8 = [(NetworkQualityExecutions *)self initWithConfiguration:a3];
+  delegateCopy = delegate;
+  v8 = [(NetworkQualityExecutions *)self initWithConfiguration:configuration];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_delegate, a4);
+    objc_storeStrong(&v8->_delegate, delegate);
   }
 
   return v9;
@@ -164,51 +164,51 @@ LABEL_7:
 
 - (id)createDefaultNSURLSessionConfiguration
 {
-  v3 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v3 setRequestCachePolicy:1];
-  [v3 setURLCache:0];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setRequestCachePolicy:1];
+  [defaultSessionConfiguration setURLCache:0];
   if ([(NetworkQualityConfiguration *)self->config forceHTTP3])
   {
-    [v3 set_allowsHTTP3:1];
+    [defaultSessionConfiguration set_allowsHTTP3:1];
   }
 
   if ([(NetworkQualityConfiguration *)self->config forceL4S])
   {
-    [v3 set_enablesL4S:1];
+    [defaultSessionConfiguration set_enablesL4S:1];
   }
 
   if ([(NetworkQualityConfiguration *)self->config forceDisableL4S])
   {
-    [v3 set_enablesL4S:0];
+    [defaultSessionConfiguration set_enablesL4S:0];
   }
 
   if ([(NetworkQualityConfiguration *)self->config privateRelay])
   {
-    [v3 set_sourceApplicationSecondaryIdentifier:@"com.apple.networkQuality.private-relay"];
+    [defaultSessionConfiguration set_sourceApplicationSecondaryIdentifier:@"com.apple.networkQuality.private-relay"];
   }
 
   if ([(NetworkQualityConfiguration *)self->config multipathServiceType])
   {
-    [v3 setMultipathServiceType:{-[NetworkQualityConfiguration multipathServiceType](self->config, "multipathServiceType")}];
+    [defaultSessionConfiguration setMultipathServiceType:{-[NetworkQualityConfiguration multipathServiceType](self->config, "multipathServiceType")}];
   }
 
   if ([(NetworkQualityConfiguration *)self->config useUnifiedHTTPStack])
   {
-    [v3 setUsesClassicLoadingMode:0];
+    [defaultSessionConfiguration setUsesClassicLoadingMode:0];
   }
 
-  return v3;
+  return defaultSessionConfiguration;
 }
 
-- (id)createDefaultRequestwithURL:(id)a3
+- (id)createDefaultRequestwithURL:(id)l
 {
-  v4 = [MEMORY[0x277CCAB70] requestWithURL:a3];
-  v5 = [(NetworkQualityConfiguration *)self->config networkInterfaceName];
+  v4 = [MEMORY[0x277CCAB70] requestWithURL:l];
+  networkInterfaceName = [(NetworkQualityConfiguration *)self->config networkInterfaceName];
 
-  if (v5)
+  if (networkInterfaceName)
   {
-    v6 = [(NetworkQualityConfiguration *)self->config networkInterfaceName];
-    [v4 setBoundInterfaceIdentifier:v6];
+    networkInterfaceName2 = [(NetworkQualityConfiguration *)self->config networkInterfaceName];
+    [v4 setBoundInterfaceIdentifier:networkInterfaceName2];
   }
 
   if (![(NetworkQualityConfiguration *)self->config forceHTTP1]&& ![(NetworkQualityConfiguration *)self->config forceHTTP2])
@@ -254,7 +254,7 @@ LABEL_8:
         v19 = 1024;
         v20 = 289;
         v21 = 2080;
-        v22 = [v7 UTF8String];
+        uTF8String = [v7 UTF8String];
         _os_log_impl(&dword_25B962000, v10, OS_LOG_TYPE_DEFAULT, "%s:%u - [Staging] %s. Moving on.", buf, 0x1Cu);
       }
 
@@ -298,55 +298,55 @@ LABEL_8:
 
 - (int64_t)currentThroughput
 {
-  v3 = [(NetworkQualityResult *)self->_progressResults downlinkCapacity];
-  v4 = [v3 value];
+  downlinkCapacity = [(NetworkQualityResult *)self->_progressResults downlinkCapacity];
+  value = [downlinkCapacity value];
 
-  if (v4)
+  if (value)
   {
-    v5 = [(NetworkQualityResult *)self->_progressResults downlinkCapacity];
-    v6 = [v5 value];
-    v7 = [v6 integerValue];
+    downlinkCapacity2 = [(NetworkQualityResult *)self->_progressResults downlinkCapacity];
+    value2 = [downlinkCapacity2 value];
+    integerValue = [value2 integerValue];
   }
 
   else
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v8 = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
-  v9 = [v8 value];
+  uplinkCapacity = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
+  value3 = [uplinkCapacity value];
 
-  if (v9)
+  if (value3)
   {
-    v10 = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
-    v11 = [v10 value];
-    v12 = [v11 integerValue];
+    uplinkCapacity2 = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
+    value4 = [uplinkCapacity2 value];
+    integerValue2 = [value4 integerValue];
 
-    if (v12 < v7)
+    if (integerValue2 < integerValue)
     {
-      v13 = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
-      v14 = [v13 value];
-      v7 = [v14 integerValue];
+      uplinkCapacity3 = [(NetworkQualityResult *)self->_progressResults uplinkCapacity];
+      value5 = [uplinkCapacity3 value];
+      integerValue = [value5 integerValue];
     }
   }
 
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
   else
   {
-    return v7;
+    return integerValue;
   }
 }
 
-- (void)reportingCompletionHandler:(id)a3
+- (void)reportingCompletionHandler:(id)handler
 {
   if (!self->cancelled)
   {
     [(NetworkQualityExecutions *)self captureError:?];
-    if (!a3)
+    if (!handler)
     {
       [(NetworkQualityExecutions *)self _sendSymptomReport];
     }
@@ -355,8 +355,8 @@ LABEL_8:
     nw_activity_complete_with_reason();
     completionHandler = self->_completionHandler;
     progressResults = self->_progressResults;
-    v9 = [(NetworkQualityResult *)progressResults error];
-    completionHandler[2](completionHandler, progressResults, v9);
+    error = [(NetworkQualityResult *)progressResults error];
+    completionHandler[2](completionHandler, progressResults, error);
 
     [(NetworkQualityExecutions *)self _cancelWithOptionalError:0];
   }
@@ -390,9 +390,9 @@ LABEL_8:
 
     else
     {
-      v12 = [(NetworkQualityConfiguration *)self->config upload];
-      v13 = [(NetworkQualityConfiguration *)self->config download];
-      if (v13 && v12)
+      upload = [(NetworkQualityConfiguration *)self->config upload];
+      download = [(NetworkQualityConfiguration *)self->config download];
+      if (download && upload)
       {
         v4 = 2;
       }
@@ -402,7 +402,7 @@ LABEL_8:
         v4 = 1;
       }
 
-      if (!v13 && !v12)
+      if (!download && !upload)
       {
         goto LABEL_18;
       }
@@ -968,8 +968,8 @@ LABEL_14:
         v30 = self->_operationQueue;
         v31 = [(NetworkQualityRemoteConfiguration *)self->remoteConfig testEndpoint:0];
         v32 = self->_progressResults;
-        v33 = [(ThroughputDelegate *)self->dlDelegate getSessions];
-        v34 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v28 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v29 testEndpoint:v33 resultsObject:@"lud_foreign_tcp_handshake_443" resultsDelegate:@"lud_foreign_tls_handshake" urlSessions:@"lud_foreign_h2_req_resp" tcpKey:@"lud_self_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
+        getSessions = [(ThroughputDelegate *)self->dlDelegate getSessions];
+        v34 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v28 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v29 testEndpoint:getSessions resultsObject:@"lud_foreign_tcp_handshake_443" resultsDelegate:@"lud_foreign_tls_handshake" urlSessions:@"lud_foreign_h2_req_resp" tcpKey:@"lud_self_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
 
         if (self->latencyDelegate)
         {
@@ -1054,8 +1054,8 @@ LABEL_30:
         v47 = self->_operationQueue;
         v48 = [(NetworkQualityRemoteConfiguration *)self->remoteConfig testEndpoint:0];
         v49 = self->_progressResults;
-        v50 = [(ThroughputDelegate *)self->dlDelegate getSessions];
-        v51 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v45 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v46 testEndpoint:v50 resultsObject:@"lud_foreign_dl_tcp_handshake_443" resultsDelegate:@"lud_foreign_dl_tls_handshake" urlSessions:@"lud_foreign_dl_h2_req_resp" tcpKey:@"lud_self_dl_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
+        getSessions2 = [(ThroughputDelegate *)self->dlDelegate getSessions];
+        v51 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v45 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v46 testEndpoint:getSessions2 resultsObject:@"lud_foreign_dl_tcp_handshake_443" resultsDelegate:@"lud_foreign_dl_tls_handshake" urlSessions:@"lud_foreign_dl_h2_req_resp" tcpKey:@"lud_self_dl_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
 
         if (self->latencyDelegate)
         {
@@ -1138,8 +1138,8 @@ LABEL_30:
         v62 = self->_operationQueue;
         v63 = [(NetworkQualityRemoteConfiguration *)self->remoteConfig testEndpoint:0];
         v64 = self->_progressResults;
-        v65 = [(ThroughputDelegate *)self->ulDelegate getSessions];
-        v66 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v60 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v61 testEndpoint:v65 resultsObject:@"lud_foreign_ul_tcp_handshake_443" resultsDelegate:@"lud_foreign_ul_tls_handshake" urlSessions:@"lud_foreign_ul_h2_req_resp" tcpKey:@"lud_self_ul_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
+        getSessions3 = [(ThroughputDelegate *)self->ulDelegate getSessions];
+        v66 = [WorkingLatencyURLSessionDelegate initWithConfiguration:v60 testName:"initWithConfiguration:testName:queue:testEndpoint:resultsObject:resultsDelegate:urlSessions:tcpKey:tlsKey:reqrespKey:selfKey:" queue:v61 testEndpoint:getSessions3 resultsObject:@"lud_foreign_ul_tcp_handshake_443" resultsDelegate:@"lud_foreign_ul_tls_handshake" urlSessions:@"lud_foreign_ul_h2_req_resp" tcpKey:@"lud_self_ul_h2_req_resp" tlsKey:? reqrespKey:? selfKey:?];
 
         if (self->latencyDelegate)
         {
@@ -1387,17 +1387,17 @@ uint64_t __31__NetworkQualityExecutions_run__block_invoke_111(uint64_t a1)
   return result;
 }
 
-- (void)runWithCompletionHandler:(id)a3
+- (void)runWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   executionsQueue = self->_executionsQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__NetworkQualityExecutions_runWithCompletionHandler___block_invoke;
   v7[3] = &unk_279969418;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(executionsQueue, v7);
 }
 
@@ -1818,21 +1818,21 @@ void __53__NetworkQualityExecutions_runWithCompletionHandler___block_invoke_134(
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureError:(id)a3
+- (void)captureError:(id)error
 {
-  v5 = a3;
-  v4 = [(NetworkQualityResult *)self->_progressResults error];
+  errorCopy = error;
+  error = [(NetworkQualityResult *)self->_progressResults error];
 
-  if (!v4)
+  if (!error)
   {
-    [(NetworkQualityResult *)self->_progressResults setError:v5];
+    [(NetworkQualityResult *)self->_progressResults setError:errorCopy];
   }
 }
 
-- (void)execDLWithCompletionHandler:(id)a3
+- (void)execDLWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   netqual_log_init();
   v5 = os_log_netqual;
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
@@ -1884,8 +1884,8 @@ void __53__NetworkQualityExecutions_runWithCompletionHandler___block_invoke_134(
   v20[2] = __56__NetworkQualityExecutions_execDLWithCompletionHandler___block_invoke_182;
   v20[3] = &unk_279969440;
   v20[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = handlerCopy;
+  v18 = handlerCopy;
   [(ThroughputDelegate *)v12 executeTaskWithRequest:v7 saturationHandler:v22 completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2025,10 +2025,10 @@ void __56__NetworkQualityExecutions_execDLWithCompletionHandler___block_invoke_1
   }
 }
 
-- (void)execULWithCompletionHandler:(id)a3
+- (void)execULWithCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   netqual_log_init();
   v5 = os_log_netqual;
   if (os_log_type_enabled(os_log_netqual, OS_LOG_TYPE_DEFAULT))
@@ -2080,8 +2080,8 @@ void __56__NetworkQualityExecutions_execDLWithCompletionHandler___block_invoke_1
   v20[2] = __56__NetworkQualityExecutions_execULWithCompletionHandler___block_invoke_188;
   v20[3] = &unk_279969440;
   v20[4] = self;
-  v21 = v4;
-  v18 = v4;
+  v21 = handlerCopy;
+  v18 = handlerCopy;
   [(ThroughputDelegate *)v12 executeTaskWithRequest:v7 saturationHandler:v22 completionHandler:v20];
 
   v19 = *MEMORY[0x277D85DE8];
@@ -2221,10 +2221,10 @@ void __56__NetworkQualityExecutions_execULWithCompletionHandler___block_invoke_1
   }
 }
 
-- (void)execParallelWithCompletionHandler:(id)a3
+- (void)execParallelWithCompletionHandler:(id)handler
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
@@ -2311,7 +2311,7 @@ void __56__NetworkQualityExecutions_execULWithCompletionHandler___block_invoke_1
   v36[2] = __62__NetworkQualityExecutions_execParallelWithCompletionHandler___block_invoke_195;
   v36[3] = &unk_279969490;
   v36[4] = self;
-  v23 = v4;
+  v23 = handlerCopy;
   v37 = v23;
   v38 = v43;
   v39 = v41;
@@ -2866,22 +2866,22 @@ LABEL_11:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cancelWithOptionalError:(id)a3
+- (void)_cancelWithOptionalError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   netqual_log_init();
   v5 = os_log_netqual;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (errorCopy)
     {
-      v6 = [v4 code];
+      code = [errorCopy code];
     }
 
     else
     {
-      v6 = 0;
+      code = 0;
     }
 
     v19 = 136315650;
@@ -2889,7 +2889,7 @@ LABEL_11:
     v21 = 1024;
     v22 = 1504;
     v23 = 2048;
-    v24 = v6;
+    v24 = code;
     _os_log_impl(&dword_25B962000, v5, OS_LOG_TYPE_DEFAULT, "%s:%u - Canceling with %ld", &v19, 0x1Cu);
   }
 
@@ -2902,7 +2902,7 @@ LABEL_11:
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
 
-    [(NetworkQualityExecutions *)self captureError:v4];
+    [(NetworkQualityExecutions *)self captureError:errorCopy];
     dlDelegate = self->dlDelegate;
     if (dlDelegate)
     {
@@ -2935,7 +2935,7 @@ LABEL_11:
       self->_configSession = 0;
     }
 
-    if (v4)
+    if (errorCopy)
     {
       parentNWActivity = self->_parentNWActivity;
       nw_activity_complete_with_reason();
@@ -2980,21 +2980,21 @@ void __34__NetworkQualityExecutions_cancel__block_invoke(uint64_t a1)
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v12 = a5;
-  v8 = a6;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   if ([(NetworkQualityConfiguration *)self->config validateCertificate])
   {
-    v8[2](v8, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v9 = MEMORY[0x277CCACF0];
-    v10 = [v12 protectionSpace];
-    v11 = [v9 credentialForTrust:{objc_msgSend(v10, "serverTrust")}];
-    (v8)[2](v8, 0, v11);
+    protectionSpace = [challengeCopy protectionSpace];
+    v11 = [v9 credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
+    (handlerCopy)[2](handlerCopy, 0, v11);
   }
 }
 

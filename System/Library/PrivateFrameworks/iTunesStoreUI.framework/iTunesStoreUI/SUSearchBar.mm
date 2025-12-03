@@ -1,6 +1,6 @@
 @interface SUSearchBar
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_setupCancelButtonWithAppearance:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_setupCancelButtonWithAppearance:(id)appearance;
 - (void)removeFromSuperview;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)removeFromSuperview
 {
-  v3 = [(SUSearchBar *)self delegate];
+  delegate = [(SUSearchBar *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = self;
-    [v3 searchBarWillRemoveFromSuperview:self];
+    selfCopy = self;
+    [delegate searchBarWillRemoveFromSuperview:self];
   }
 
   v5.receiver = self;
@@ -20,19 +20,19 @@
   [(SUSearchBar *)&v5 removeFromSuperview];
 }
 
-- (void)_setupCancelButtonWithAppearance:(id)a3
+- (void)_setupCancelButtonWithAppearance:(id)appearance
 {
   v3.receiver = self;
   v3.super_class = SUSearchBar;
   [(SUSearchBar *)&v3 _setupCancelButtonWithAppearance:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v6.receiver = self;
   v6.super_class = SUSearchBar;
-  [(SUSearchBar *)&v6 sizeThatFits:a3.width, a3.height];
+  [(SUSearchBar *)&v6 sizeThatFits:fits.width, fits.height];
   if (v4 >= width)
   {
     v4 = width;

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchExactPhraseScorer_$1
-- (OrgApacheLuceneSearchExactPhraseScorer_$1)initWithOrgApacheLuceneSearchExactPhraseScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4;
+- (OrgApacheLuceneSearchExactPhraseScorer_$1)initWithOrgApacheLuceneSearchExactPhraseScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchExactPhraseScorer_$1
 
-- (OrgApacheLuceneSearchExactPhraseScorer_$1)initWithOrgApacheLuceneSearchExactPhraseScorer:(id)a3 withOrgApacheLuceneSearchDocIdSetIterator:(id)a4
+- (OrgApacheLuceneSearchExactPhraseScorer_$1)initWithOrgApacheLuceneSearchExactPhraseScorer:(id)scorer withOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, a4);
+  JreStrongAssign(&self->this$0_, scorer);
+  OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(self, iterator);
   return self;
 }
 

@@ -2,7 +2,7 @@
 - (TVCellMetrics)cellMetrics;
 - (_TVGridViewFlowLayout)init;
 - (double)expectedLineSpacing;
-- (void)setCellMetrics:(TVCellMetrics *)a3;
+- (void)setCellMetrics:(TVCellMetrics *)metrics;
 @end
 
 @implementation _TVGridViewFlowLayout
@@ -23,35 +23,35 @@
   return v3;
 }
 
-- (void)setCellMetrics:(TVCellMetrics *)a3
+- (void)setCellMetrics:(TVCellMetrics *)metrics
 {
-  self->_cellMetrics.cellSize = a3->cellSize;
-  v4 = *&a3->cellInset.bottom;
-  v6 = *&a3->cellPadding.top;
-  v5 = *&a3->cellPadding.bottom;
-  *&self->_cellMetrics.cellInset.top = *&a3->cellInset.top;
+  self->_cellMetrics.cellSize = metrics->cellSize;
+  v4 = *&metrics->cellInset.bottom;
+  v6 = *&metrics->cellPadding.top;
+  v5 = *&metrics->cellPadding.bottom;
+  *&self->_cellMetrics.cellInset.top = *&metrics->cellInset.top;
   *&self->_cellMetrics.cellInset.bottom = v4;
   *&self->_cellMetrics.cellPadding.top = v6;
   *&self->_cellMetrics.cellPadding.bottom = v5;
-  v7 = *&a3->cellMargin.bottom;
-  v9 = *&a3->cellInsetAlt.top;
-  v8 = *&a3->cellInsetAlt.bottom;
-  *&self->_cellMetrics.cellMargin.top = *&a3->cellMargin.top;
+  v7 = *&metrics->cellMargin.bottom;
+  v9 = *&metrics->cellInsetAlt.top;
+  v8 = *&metrics->cellInsetAlt.bottom;
+  *&self->_cellMetrics.cellMargin.top = *&metrics->cellMargin.top;
   *&self->_cellMetrics.cellMargin.bottom = v7;
   *&self->_cellMetrics.cellInsetAlt.top = v9;
   *&self->_cellMetrics.cellInsetAlt.bottom = v8;
-  width = a3->cellSize.width;
-  if (a3->cellSize.width == 0.0)
+  width = metrics->cellSize.width;
+  if (metrics->cellSize.width == 0.0)
   {
-    height = a3->cellSize.height;
+    height = metrics->cellSize.height;
   }
 
   else
   {
-    height = a3->cellSize.width;
+    height = metrics->cellSize.width;
   }
 
-  if (height > 2.22044605e-16 && a3->cellSize.height > 2.22044605e-16)
+  if (height > 2.22044605e-16 && metrics->cellSize.height > 2.22044605e-16)
   {
     [(UICollectionViewFlowLayout *)self setItemSize:?];
   }
@@ -96,11 +96,11 @@
   v12 = 0u;
   v10 = 0u;
   v5 = [TVMLUtilities rowSpacingMetricsForRowMetrics:v4, 0];
-  v6 = [v5 firstObject];
-  v7 = v6;
-  if (v6)
+  firstObject = [v5 firstObject];
+  v7 = firstObject;
+  if (firstObject)
   {
-    [v6 tv_rowMetricsValue];
+    [firstObject tv_rowMetricsValue];
   }
 
   else

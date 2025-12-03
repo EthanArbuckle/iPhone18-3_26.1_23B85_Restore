@@ -1,126 +1,126 @@
 @interface PPTopicReadWriteClient
 + (id)sharedInstance;
-- (BOOL)_doDeletionSyncCallWithError:(id *)a3 deletedCount:(unint64_t *)a4 syncCall:(id)a5;
-- (BOOL)_doSyncCallWithError:(id *)a3 syncCall:(id)a4;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 exactMatchesInSourceText:(id)a8 error:(id *)a9;
+- (BOOL)_doDeletionSyncCallWithError:(id *)error deletedCount:(unint64_t *)count syncCall:(id)call;
+- (BOOL)_doSyncCallWithError:(id *)error syncCall:(id)call;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)error;
 - (PPTopicReadWriteClient)init;
 @end
 
 @implementation PPTopicReadWriteClient
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date deletedCount:(unint64_t *)count error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  dateCopy = date;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __106__PPTopicReadWriteClient_deleteAllTopicsFromSourcesWithBundleId_groupId_olderThanDate_deletedCount_error___block_invoke;
   v19[3] = &unk_1E77F6140;
-  v20 = v12;
-  v21 = v13;
-  v22 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  LOBYTE(a6) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:a7 deletedCount:a6 syncCall:v19];
+  v20 = idCopy;
+  v21 = groupIdCopy;
+  v22 = dateCopy;
+  v15 = dateCopy;
+  v16 = groupIdCopy;
+  v17 = idCopy;
+  LOBYTE(count) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:error deletedCount:count syncCall:v19];
 
-  return a6;
+  return count;
 }
 
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v8 = a3;
+  idCopy = id;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__PPTopicReadWriteClient_deleteAllTopicsWithTopicId_deletedCount_error___block_invoke;
   v11[3] = &unk_1E77F6118;
-  v12 = v8;
-  v9 = v8;
-  LOBYTE(a5) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:a5 deletedCount:a4 syncCall:v11];
+  v12 = idCopy;
+  v9 = idCopy;
+  LOBYTE(error) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:error deletedCount:count syncCall:v11];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v8 = a3;
+  idCopy = id;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PPTopicReadWriteClient_deleteAllTopicsFromSourcesWithBundleId_deletedCount_error___block_invoke;
   v11[3] = &unk_1E77F6118;
-  v12 = v8;
-  v9 = v8;
-  LOBYTE(a5) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:a5 deletedCount:a4 syncCall:v11];
+  v12 = idCopy;
+  v9 = idCopy;
+  LOBYTE(error) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:error deletedCount:count syncCall:v11];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93__PPTopicReadWriteClient_deleteAllTopicsFromSourcesWithBundleId_groupIds_deletedCount_error___block_invoke;
   v15[3] = &unk_1E77F60F0;
-  v16 = v10;
-  v17 = v11;
-  v12 = v11;
-  v13 = v10;
-  LOBYTE(a6) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:a6 deletedCount:a5 syncCall:v15];
+  v16 = idCopy;
+  v17 = idsCopy;
+  v12 = idsCopy;
+  v13 = idCopy;
+  LOBYTE(error) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:error deletedCount:count syncCall:v15];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  idCopy = id;
+  idsCopy = ids;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __96__PPTopicReadWriteClient_deleteAllTopicsFromSourcesWithBundleId_documentIds_deletedCount_error___block_invoke;
   v15[3] = &unk_1E77F60F0;
-  v16 = v10;
-  v17 = v11;
-  v12 = v11;
-  v13 = v10;
-  LOBYTE(a6) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:a6 deletedCount:a5 syncCall:v15];
+  v16 = idCopy;
+  v17 = idsCopy;
+  v12 = idsCopy;
+  v13 = idCopy;
+  LOBYTE(error) = [(PPTopicReadWriteClient *)self _doDeletionSyncCallWithError:error deletedCount:count syncCall:v15];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 exactMatchesInSourceText:(id)a8 error:(id *)a9
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
+  topicsCopy = topics;
+  sourceCopy = source;
+  textCopy = text;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __112__PPTopicReadWriteClient_donateTopics_source_algorithm_cloudSync_sentimentScore_exactMatchesInSourceText_error___block_invoke;
   v23[3] = &unk_1E77F60C8;
-  v24 = v16;
-  v25 = v17;
-  v29 = a6;
-  v28 = a7;
-  v26 = v18;
-  v27 = a5;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  LOBYTE(a9) = [(PPTopicReadWriteClient *)self _doSyncCallWithError:a9 syncCall:v23];
+  v24 = topicsCopy;
+  v25 = sourceCopy;
+  syncCopy = sync;
+  scoreCopy = score;
+  v26 = textCopy;
+  algorithmCopy = algorithm;
+  v19 = textCopy;
+  v20 = sourceCopy;
+  v21 = topicsCopy;
+  LOBYTE(error) = [(PPTopicReadWriteClient *)self _doSyncCallWithError:error syncCall:v23];
 
-  return a9;
+  return error;
 }
 
-- (BOOL)_doDeletionSyncCallWithError:(id *)a3 deletedCount:(unint64_t *)a4 syncCall:(id)a5
+- (BOOL)_doDeletionSyncCallWithError:(id *)error deletedCount:(unint64_t *)count syncCall:(id)call
 {
-  v8 = a5;
+  callCopy = call;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -156,28 +156,28 @@
   v15[6] = &v16;
   v10 = MEMORY[0x1AC568040](v15);
   v11 = [(PPTopicReadWriteClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v9];
-  v8[2](v8, v11, v10);
+  callCopy[2](callCopy, v11, v10);
 
-  if (a4)
+  if (count)
   {
-    *a4 = v17[3];
+    *count = v17[3];
   }
 
   v12 = v32[5];
   if (v12)
   {
     v13 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v21[5];
+      *error = v21[5];
     }
 
     v13 = *(v27 + 24);
@@ -200,9 +200,9 @@ void __77__PPTopicReadWriteClient__doDeletionSyncCallWithError_deletedCount_sync
   *(*(a1[6] + 8) + 24) = a3;
 }
 
-- (BOOL)_doSyncCallWithError:(id *)a3 syncCall:(id)a4
+- (BOOL)_doSyncCallWithError:(id *)error syncCall:(id)call
 {
-  v6 = a4;
+  callCopy = call;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -233,23 +233,23 @@ void __77__PPTopicReadWriteClient__doDeletionSyncCallWithError_deletedCount_sync
   v13[5] = &v14;
   v8 = MEMORY[0x1AC568040](v13);
   v9 = [(PPTopicReadWriteClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
-  v6[2](v6, v9, v8);
+  callCopy[2](callCopy, v9, v8);
 
   v10 = v26[5];
   if (v10)
   {
     v11 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = v10;
+      *error = v10;
     }
   }
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = v15[5];
+      *error = v15[5];
     }
 
     v11 = *(v21 + 24);
@@ -285,7 +285,7 @@ void __77__PPTopicReadWriteClient__doDeletionSyncCallWithError_deletedCount_sync
   block[1] = 3221225472;
   block[2] = __40__PPTopicReadWriteClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken2_542 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken2_542, block);

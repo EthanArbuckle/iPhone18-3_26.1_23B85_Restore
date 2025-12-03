@@ -1,23 +1,23 @@
 @interface TTRIContentUnavailableButtonProperties
 - (UIAction)primaryAction;
-- (void)setPrimaryAction:(id)a3;
+- (void)setPrimaryAction:(id)action;
 @end
 
 @implementation TTRIContentUnavailableButtonProperties
 
 - (UIAction)primaryAction
 {
-  v2 = [(TTRIContentUnavailableButtonProperties *)self asUIKit];
-  v3 = [v2 primaryAction];
+  asUIKit = [(TTRIContentUnavailableButtonProperties *)self asUIKit];
+  primaryAction = [asUIKit primaryAction];
 
-  return v3;
+  return primaryAction;
 }
 
-- (void)setPrimaryAction:(id)a3
+- (void)setPrimaryAction:(id)action
 {
-  v4 = a3;
-  v5 = [(TTRIContentUnavailableButtonProperties *)self asUIKit];
-  [v5 setPrimaryAction:v4];
+  actionCopy = action;
+  asUIKit = [(TTRIContentUnavailableButtonProperties *)self asUIKit];
+  [asUIKit setPrimaryAction:actionCopy];
 }
 
 @end

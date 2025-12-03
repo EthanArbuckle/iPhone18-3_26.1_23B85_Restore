@@ -34,8 +34,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v1 = [a1 flattenErrors];
-  v2 = [v1 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  flattenErrors = [self flattenErrors];
+  v2 = [flattenErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v2)
   {
     v13 = 1;
@@ -51,13 +51,13 @@
     {
       if (*v16 != v4)
       {
-        objc_enumerationMutation(v1);
+        objc_enumerationMutation(flattenErrors);
       }
 
       v7 = *(*(&v15 + 1) + 8 * i);
-      v8 = [v7 domain];
+      domain = [v7 domain];
       v9 = GEOErrorDomain();
-      if (([v8 isEqualToString:v9] & 1) == 0)
+      if (([domain isEqualToString:v9] & 1) == 0)
       {
 
 LABEL_18:
@@ -67,29 +67,29 @@ LABEL_18:
 
       if ([v7 code] == -7)
       {
-        v10 = [v7 userInfo];
-        v11 = [v10 objectForKeyedSubscript:v5];
+        userInfo = [v7 userInfo];
+        v11 = [userInfo objectForKeyedSubscript:v5];
         if ([v11 integerValue] == 429)
         {
 
           continue;
         }
 
-        v12 = [v7 code];
+        code = [v7 code];
       }
 
       else
       {
-        v12 = [v7 code];
+        code = [v7 code];
       }
 
-      if (v12 != -3)
+      if (code != -3)
       {
         goto LABEL_18;
       }
     }
 
-    v3 = [v1 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v3 = [flattenErrors countByEnumeratingWithState:&v15 objects:v19 count:16];
     v13 = 1;
     if (v3)
     {
@@ -111,8 +111,8 @@ LABEL_19:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v1 = [a1 flattenErrors];
-  v2 = [v1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  flattenErrors = [self flattenErrors];
+  v2 = [flattenErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v2)
   {
     v3 = v2;
@@ -124,12 +124,12 @@ LABEL_19:
       {
         if (*v13 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(flattenErrors);
         }
 
         v7 = *(*(&v12 + 1) + 8 * i);
-        v8 = [v7 domain];
-        if (![v8 isEqualToString:v5])
+        domain = [v7 domain];
+        if (![domain isEqualToString:v5])
         {
 
 LABEL_13:
@@ -137,15 +137,15 @@ LABEL_13:
           goto LABEL_14;
         }
 
-        v9 = [v7 code];
+        code = [v7 code];
 
-        if (v9 != 15)
+        if (code != 15)
         {
           goto LABEL_13;
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v3 = [flattenErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
       v10 = 1;
       if (v3)
       {
@@ -168,12 +168,12 @@ LABEL_14:
 
 - (uint64_t)isBluePOITileNotAvailableError
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKey:@"HTTPStatus"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKey:@"HTTPStatus"];
   if (v3)
   {
-    v4 = [a1 userInfo];
-    v5 = [v4 objectForKey:@"HTTPStatus"];
+    userInfo2 = [self userInfo];
+    v5 = [userInfo2 objectForKey:@"HTTPStatus"];
     v6 = [v5 isEqual:&unk_2845A0770];
   }
 
@@ -192,8 +192,8 @@ LABEL_14:
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v1 = [a1 flattenErrors];
-  v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+  flattenErrors = [self flattenErrors];
+  v2 = [flattenErrors countByEnumeratingWithState:&v6 objects:v10 count:16];
   if (v2)
   {
     v3 = *v7;
@@ -203,7 +203,7 @@ LABEL_14:
       {
         if (*v7 != v3)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(flattenErrors);
         }
 
         if ([*(*(&v6 + 1) + 8 * i) code] == 111)
@@ -213,7 +213,7 @@ LABEL_14:
         }
       }
 
-      v2 = [v1 countByEnumeratingWithState:&v6 objects:v10 count:16];
+      v2 = [flattenErrors countByEnumeratingWithState:&v6 objects:v10 count:16];
       if (v2)
       {
         continue;
@@ -235,8 +235,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v1 = [a1 flattenErrors];
-  v2 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  flattenErrors = [self flattenErrors];
+  v2 = [flattenErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v2)
   {
     v3 = v2;
@@ -247,16 +247,16 @@ LABEL_11:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(flattenErrors);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 domain];
-        if ([v7 isEqualToString:@"NSPOSIXErrorDomain"])
+        domain = [v6 domain];
+        if ([domain isEqualToString:@"NSPOSIXErrorDomain"])
         {
-          v8 = [v6 code];
+          code = [v6 code];
 
-          if (v8 == 28)
+          if (code == 28)
           {
             v9 = 1;
             goto LABEL_13;
@@ -268,7 +268,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [flattenErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v3);
@@ -282,17 +282,17 @@ LABEL_13:
 
 - (id)_underlyingErrorsRTMultiError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x277D01448]] && objc_msgSend(a1, "code") == 9)
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x277D01448]] && objc_msgSend(self, "code") == 9)
   {
-    v3 = [a1 userInfo];
+    userInfo = [self userInfo];
     v4 = *MEMORY[0x277D01440];
-    v5 = [v3 objectForKeyedSubscript:*MEMORY[0x277D01440]];
+    v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D01440]];
 
     if (v5)
     {
-      v6 = [a1 userInfo];
-      v7 = [v6 objectForKeyedSubscript:v4];
+      userInfo2 = [self userInfo];
+      array = [userInfo2 objectForKeyedSubscript:v4];
 
       goto LABEL_7;
     }
@@ -302,36 +302,36 @@ LABEL_13:
   {
   }
 
-  v7 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_7:
 
-  return v7;
+  return array;
 }
 
 - (id)_detailedErrors
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [a1 _underlyingErrorsRTMultiError];
-  [v2 addObjectsFromArray:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  _underlyingErrorsRTMultiError = [self _underlyingErrorsRTMultiError];
+  [array addObjectsFromArray:_underlyingErrorsRTMultiError];
 
-  v4 = [a1 underlyingErrors];
-  [v2 addObjectsFromArray:v4];
+  underlyingErrors = [self underlyingErrors];
+  [array addObjectsFromArray:underlyingErrors];
 
-  return v2;
+  return array;
 }
 
 - (id)flattenErrors
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [a1 _detailedErrors];
-  if ([v3 count])
+  array = [MEMORY[0x277CBEB18] array];
+  _detailedErrors = [self _detailedErrors];
+  if ([_detailedErrors count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = v3;
+    v4 = _detailedErrors;
     v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
@@ -346,8 +346,8 @@ LABEL_7:
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v11 + 1) + 8 * i) flattenErrors];
-          [v2 addObjectsFromArray:v9];
+          flattenErrors = [*(*(&v11 + 1) + 8 * i) flattenErrors];
+          [array addObjectsFromArray:flattenErrors];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -359,10 +359,10 @@ LABEL_7:
 
   else
   {
-    [v2 addObject:a1];
+    [array addObject:self];
   }
 
-  return v2;
+  return array;
 }
 
 @end

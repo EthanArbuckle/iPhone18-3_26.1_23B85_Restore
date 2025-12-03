@@ -1,25 +1,25 @@
 @interface PGMeaningfulEventProcessorCache
-- (PGMeaningfulEventProcessorCache)initWithMomentNodes:(id)a3;
-- (id)addressNodesForMomentNodes:(id)a3;
-- (id)dateNodesForMomentNodes:(id)a3;
-- (id)mobilityNodesForMomentNodes:(id)a3;
-- (id)peopleNodesForMomentNodes:(id)a3;
-- (id)poiNodesWithNonzeroConfidenceForMomentNodes:(id)a3;
-- (id)preciseAddressNodesForMomentNodes:(id)a3;
-- (id)publicEventCategoryNodesForMomentNodes:(id)a3;
-- (id)reliableSceneNodesForMomentNodes:(id)a3;
-- (id)roiNodesWithNonzeroConfidenceForMomentNodes:(id)a3;
-- (id)sceneNodesForMomentNodes:(id)a3;
-- (id)socialGroupNodesForMomentNodes:(id)a3;
-- (unint64_t)partsOfDayForMomentNodes:(id)a3;
-- (unint64_t)significantPartsOfDayForMomentNodes:(id)a3;
+- (PGMeaningfulEventProcessorCache)initWithMomentNodes:(id)nodes;
+- (id)addressNodesForMomentNodes:(id)nodes;
+- (id)dateNodesForMomentNodes:(id)nodes;
+- (id)mobilityNodesForMomentNodes:(id)nodes;
+- (id)peopleNodesForMomentNodes:(id)nodes;
+- (id)poiNodesWithNonzeroConfidenceForMomentNodes:(id)nodes;
+- (id)preciseAddressNodesForMomentNodes:(id)nodes;
+- (id)publicEventCategoryNodesForMomentNodes:(id)nodes;
+- (id)reliableSceneNodesForMomentNodes:(id)nodes;
+- (id)roiNodesWithNonzeroConfidenceForMomentNodes:(id)nodes;
+- (id)sceneNodesForMomentNodes:(id)nodes;
+- (id)socialGroupNodesForMomentNodes:(id)nodes;
+- (unint64_t)partsOfDayForMomentNodes:(id)nodes;
+- (unint64_t)significantPartsOfDayForMomentNodes:(id)nodes;
 @end
 
 @implementation PGMeaningfulEventProcessorCache
 
-- (id)mobilityNodesForMomentNodes:(id)a3
+- (id)mobilityNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   mobilityNodesByMomentNode = self->_mobilityNodesByMomentNode;
   if (!mobilityNodesByMomentNode)
@@ -34,22 +34,22 @@
     mobilityNodesByMomentNode = self->_mobilityNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)mobilityNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)mobilityNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (unint64_t)significantPartsOfDayForMomentNodes:(id)a3
+- (unint64_t)significantPartsOfDayForMomentNodes:(id)nodes
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   significantPartOfDayNodesByMomentNode = self->_significantPartOfDayNodesByMomentNode;
   if (!significantPartOfDayNodesByMomentNode)
   {
-    v6 = [v4 graph];
-    v7 = ([v6 version] - 1) < 0x18F;
+    graph = [nodesCopy graph];
+    v7 = ([graph version] - 1) < 0x18F;
 
     v8 = MEMORY[0x277D22BF8];
     momentNodes = self->_momentNodes;
@@ -61,13 +61,13 @@
     significantPartOfDayNodesByMomentNode = self->_significantPartOfDayNodesByMomentNode;
   }
 
-  v13 = [(MABinaryAdjacency *)significantPartOfDayNodesByMomentNode targetsForSources:v4];
+  v13 = [(MABinaryAdjacency *)significantPartOfDayNodesByMomentNode targetsForSources:nodesCopy];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [v13 partsOfDay];
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  partsOfDay = [v13 partsOfDay];
+  v15 = [partsOfDay countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
     v16 = v15;
@@ -79,13 +79,13 @@
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(partsOfDay);
         }
 
         v18 |= [*(*(&v22 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v16 = [partsOfDay countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v16);
@@ -101,10 +101,10 @@
   return v18;
 }
 
-- (unint64_t)partsOfDayForMomentNodes:(id)a3
+- (unint64_t)partsOfDayForMomentNodes:(id)nodes
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   partOfDayNodesByMomentNode = self->_partOfDayNodesByMomentNode;
   if (!partOfDayNodesByMomentNode)
@@ -119,13 +119,13 @@
     partOfDayNodesByMomentNode = self->_partOfDayNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)partOfDayNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)partOfDayNodesByMomentNode targetsForSources:nodesCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = [v11 partsOfDay];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  partsOfDay = [v11 partsOfDay];
+  v13 = [partsOfDay countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -137,13 +137,13 @@
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(partsOfDay);
         }
 
         v16 |= [*(*(&v20 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [partsOfDay countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
@@ -159,10 +159,10 @@
   return v16;
 }
 
-- (id)publicEventCategoryNodesForMomentNodes:(id)a3
+- (id)publicEventCategoryNodesForMomentNodes:(id)nodes
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   publicEventCategoryNodesByMomentNode = self->_publicEventCategoryNodesByMomentNode;
   if (!publicEventCategoryNodesByMomentNode)
@@ -182,7 +182,7 @@
     publicEventCategoryNodesByMomentNode = self->_publicEventCategoryNodesByMomentNode;
   }
 
-  v13 = [(MABinaryAdjacency *)publicEventCategoryNodesByMomentNode targetsForSources:v4];
+  v13 = [(MABinaryAdjacency *)publicEventCategoryNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   v14 = *MEMORY[0x277D85DE8];
@@ -190,9 +190,9 @@
   return v13;
 }
 
-- (id)socialGroupNodesForMomentNodes:(id)a3
+- (id)socialGroupNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   socialGroupNodesByMomentNode = self->_socialGroupNodesByMomentNode;
   if (!socialGroupNodesByMomentNode)
@@ -207,15 +207,15 @@
     socialGroupNodesByMomentNode = self->_socialGroupNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)socialGroupNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)socialGroupNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)peopleNodesForMomentNodes:(id)a3
+- (id)peopleNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   personNodesByMomentNode = self->_personNodesByMomentNode;
   if (!personNodesByMomentNode)
@@ -230,15 +230,15 @@
     personNodesByMomentNode = self->_personNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)personNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)personNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)dateNodesForMomentNodes:(id)a3
+- (id)dateNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   dateNodesByMomentNode = self->_dateNodesByMomentNode;
   if (!dateNodesByMomentNode)
@@ -253,15 +253,15 @@
     dateNodesByMomentNode = self->_dateNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)dateNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)dateNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)preciseAddressNodesForMomentNodes:(id)a3
+- (id)preciseAddressNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   preciseAddressNodesByMomentNode = self->_preciseAddressNodesByMomentNode;
   if (!preciseAddressNodesByMomentNode)
@@ -276,15 +276,15 @@
     preciseAddressNodesByMomentNode = self->_preciseAddressNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)preciseAddressNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)preciseAddressNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)addressNodesForMomentNodes:(id)a3
+- (id)addressNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   addressNodesByMomentNode = self->_addressNodesByMomentNode;
   if (!addressNodesByMomentNode)
@@ -299,21 +299,21 @@
     addressNodesByMomentNode = self->_addressNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)addressNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)addressNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)roiNodesWithNonzeroConfidenceForMomentNodes:(id)a3
+- (id)roiNodesWithNonzeroConfidenceForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   roiNodesByMomentNode = self->_roiNodesByMomentNode;
   if (!roiNodesByMomentNode)
   {
-    v6 = [v4 graph];
-    v7 = ([v6 version] - 1) < 0x18F;
+    graph = [nodesCopy graph];
+    v7 = ([graph version] - 1) < 0x18F;
 
     v8 = MEMORY[0x277D22BF8];
     momentNodes = self->_momentNodes;
@@ -325,21 +325,21 @@
     roiNodesByMomentNode = self->_roiNodesByMomentNode;
   }
 
-  v13 = [(MABinaryAdjacency *)roiNodesByMomentNode targetsForSources:v4];
+  v13 = [(MABinaryAdjacency *)roiNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v13;
 }
 
-- (id)poiNodesWithNonzeroConfidenceForMomentNodes:(id)a3
+- (id)poiNodesWithNonzeroConfidenceForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   poiNodesByMomentNode = self->_poiNodesByMomentNode;
   if (!poiNodesByMomentNode)
   {
-    v6 = [v4 graph];
-    v7 = ([v6 version] - 1) < 0x18F;
+    graph = [nodesCopy graph];
+    v7 = ([graph version] - 1) < 0x18F;
 
     v8 = MEMORY[0x277D22BF8];
     momentNodes = self->_momentNodes;
@@ -351,15 +351,15 @@
     poiNodesByMomentNode = self->_poiNodesByMomentNode;
   }
 
-  v13 = [(MABinaryAdjacency *)poiNodesByMomentNode targetsForSources:v4];
+  v13 = [(MABinaryAdjacency *)poiNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v13;
 }
 
-- (id)reliableSceneNodesForMomentNodes:(id)a3
+- (id)reliableSceneNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   reliableSceneNodesByMomentNode = self->_reliableSceneNodesByMomentNode;
   if (!reliableSceneNodesByMomentNode)
@@ -374,15 +374,15 @@
     reliableSceneNodesByMomentNode = self->_reliableSceneNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)reliableSceneNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)reliableSceneNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (id)sceneNodesForMomentNodes:(id)a3
+- (id)sceneNodesForMomentNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   os_unfair_lock_lock(&self->_lock);
   sceneNodesByMomentNode = self->_sceneNodesByMomentNode;
   if (!sceneNodesByMomentNode)
@@ -397,22 +397,22 @@
     sceneNodesByMomentNode = self->_sceneNodesByMomentNode;
   }
 
-  v11 = [(MABinaryAdjacency *)sceneNodesByMomentNode targetsForSources:v4];
+  v11 = [(MABinaryAdjacency *)sceneNodesByMomentNode targetsForSources:nodesCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v11;
 }
 
-- (PGMeaningfulEventProcessorCache)initWithMomentNodes:(id)a3
+- (PGMeaningfulEventProcessorCache)initWithMomentNodes:(id)nodes
 {
-  v5 = a3;
+  nodesCopy = nodes;
   v9.receiver = self;
   v9.super_class = PGMeaningfulEventProcessorCache;
   v6 = [(PGMeaningfulEventProcessorCache *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_momentNodes, a3);
+    objc_storeStrong(&v6->_momentNodes, nodes);
     v7->_lock._os_unfair_lock_opaque = 0;
   }
 

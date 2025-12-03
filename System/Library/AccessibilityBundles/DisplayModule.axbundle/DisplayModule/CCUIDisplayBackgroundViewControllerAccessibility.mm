@@ -1,17 +1,17 @@
 @interface CCUIDisplayBackgroundViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CCUIDisplayBackgroundViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIDisplayBackgroundViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUIDisplayBackgroundViewController" hasInstanceMethod:@"nightShiftButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CCUIDisplayBackgroundViewController" hasInstanceMethod:@"trueToneButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIDisplayBackgroundViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUIDisplayBackgroundViewController" hasInstanceMethod:@"nightShiftButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CCUIDisplayBackgroundViewController" hasInstanceMethod:@"trueToneButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

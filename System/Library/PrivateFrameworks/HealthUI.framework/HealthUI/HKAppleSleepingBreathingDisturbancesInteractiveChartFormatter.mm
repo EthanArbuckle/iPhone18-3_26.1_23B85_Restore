@@ -1,40 +1,40 @@
 @interface HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter
-- (id)_attributedBreathingDisturbancesClassification:(id)a3;
-- (id)_formattedAnnotationValueForChartData:(id)a3;
-- (id)_formattedCurrentValueForChartData:(id)a3;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (int64_t)_statisticsTypeForChartData:(id)a3 context:(int64_t)a4;
+- (id)_attributedBreathingDisturbancesClassification:(id)classification;
+- (id)_formattedAnnotationValueForChartData:(id)data;
+- (id)_formattedCurrentValueForChartData:(id)data;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (int64_t)_statisticsTypeForChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v7 = a3;
-  v8 = v7;
-  if (!v7 || ![v7 count])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (!dataCopy || ![dataCopy count])
   {
     v4 = MEMORY[0x1E695E0F0];
     goto LABEL_12;
   }
 
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v12.receiver = self;
     v12.super_class = HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter;
-    v10 = [(HKInteractiveChartGenericStatFormatter *)&v12 formattedSelectedRangeLabelDataWithChartData:v8 context:a4];
+    v10 = [(HKInteractiveChartGenericStatFormatter *)&v12 formattedSelectedRangeLabelDataWithChartData:v8 context:context];
     goto LABEL_10;
   }
 
-  if (a4 == 1)
+  if (context == 1)
   {
     v10 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _formattedCurrentValueForChartData:v8];
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!context)
   {
     v10 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _formattedAnnotationValueForChartData:v8];
 LABEL_10:
@@ -46,12 +46,12 @@ LABEL_12:
   return v4;
 }
 
-- (id)_formattedAnnotationValueForChartData:(id)a3
+- (id)_formattedAnnotationValueForChartData:(id)data
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [HKSleepApneaUtilities averageBreathingDisturbancesForChartData:v4];
-  v6 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _statisticsTypeForChartData:v4 context:0];
+  dataCopy = data;
+  v5 = [HKSleepApneaUtilities averageBreathingDisturbancesForChartData:dataCopy];
+  v6 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _statisticsTypeForChartData:dataCopy context:0];
 
   v7 = [[HKSelectedRangeData alloc] initWithStatisticsType:v6];
   v8 = HKAppleSleepingBreathingDisturbancesClassificationForQuantity();
@@ -59,8 +59,8 @@ LABEL_12:
   [(HKSelectedRangeData *)v7 setAttributedString:v9];
 
   v10 = MEMORY[0x1E696AD98];
-  v11 = [MEMORY[0x1E696C510] countUnit];
-  [v5 doubleValueForUnit:v11];
+  countUnit = [MEMORY[0x1E696C510] countUnit];
+  [v5 doubleValueForUnit:countUnit];
   v12 = [v10 numberWithDouble:?];
   [(HKSelectedRangeData *)v7 setValueAsNumber:v12];
 
@@ -70,12 +70,12 @@ LABEL_12:
   return v13;
 }
 
-- (id)_formattedCurrentValueForChartData:(id)a3
+- (id)_formattedCurrentValueForChartData:(id)data
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [HKSleepApneaUtilities mostFrequentBreathingDisturbancesClassificationForChartData:v4];
-  v6 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _statisticsTypeForChartData:v4 context:1];
+  dataCopy = data;
+  v5 = [HKSleepApneaUtilities mostFrequentBreathingDisturbancesClassificationForChartData:dataCopy];
+  v6 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _statisticsTypeForChartData:dataCopy context:1];
 
   v7 = [[HKSelectedRangeData alloc] initWithStatisticsType:v6];
   v8 = [(HKAppleSleepingBreathingDisturbancesInteractiveChartFormatter *)self _attributedBreathingDisturbancesClassification:v5];
@@ -88,20 +88,20 @@ LABEL_12:
   return v9;
 }
 
-- (id)_attributedBreathingDisturbancesClassification:(id)a3
+- (id)_attributedBreathingDisturbancesClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   v5 = [HKDateCache alloc];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [(HKDateCache *)v5 initWithCalendar:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [(HKDateCache *)v5 initWithCalendar:currentCalendar];
 
-  v8 = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
-  v9 = [v8 effectiveVisibleRangeActive];
-  v10 = [v9 endDate];
+  chartRangeProvider = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
+  effectiveVisibleRangeActive = [chartRangeProvider effectiveVisibleRangeActive];
+  endDate = [effectiveVisibleRangeActive endDate];
 
-  if (v4)
+  if (classificationCopy)
   {
-    v11 = -[_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider initWithBreathingDisturbancesClassification:date:]([_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider alloc], "initWithBreathingDisturbancesClassification:date:", [v4 intValue], v10);
+    v11 = -[_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider initWithBreathingDisturbancesClassification:date:]([_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider alloc], "initWithBreathingDisturbancesClassification:date:", [classificationCopy intValue], endDate);
   }
 
   else
@@ -110,23 +110,23 @@ LABEL_12:
   }
 
   v12 = v11;
-  v13 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v14 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v15 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v16 = [(_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider *)v12 attributedStringWithDisplayType:v13 unitController:v14 valueFont:v15 unitFont:0 dateCache:v7];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v16 = [(_HKAppleSleepingBreathingDisturbancesCurrentValueDataProvider *)v12 attributedStringWithDisplayType:displayType unitController:unitController valueFont:majorFont unitFont:0 dateCache:v7];
 
   return v16;
 }
 
-- (int64_t)_statisticsTypeForChartData:(id)a3 context:(int64_t)a4
+- (int64_t)_statisticsTypeForChartData:(id)data context:(int64_t)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [dataCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -138,13 +138,13 @@ LABEL_12:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dataCopy);
         }
 
         v8 += [*(*(&v15 + 1) + 8 * i) recordCount];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [dataCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -167,7 +167,7 @@ LABEL_12:
     v11 = 25;
   }
 
-  if (a4 == 1)
+  if (context == 1)
   {
     v13 = v11;
   }

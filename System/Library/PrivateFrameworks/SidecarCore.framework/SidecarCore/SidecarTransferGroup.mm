@@ -1,12 +1,12 @@
 @interface SidecarTransferGroup
-- (BOOL)handleMessage:(id)a3 error:(id *)a4;
+- (BOOL)handleMessage:(id)message error:(id *)error;
 - (NSArray)items;
-- (SidecarTransferGroup)initWithMessage:(id)a3;
+- (SidecarTransferGroup)initWithMessage:(id)message;
 @end
 
 @implementation SidecarTransferGroup
 
-- (BOOL)handleMessage:(id)a3 error:(id *)a4
+- (BOOL)handleMessage:(id)message error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
   v25 = 0;
@@ -15,9 +15,9 @@
   v28 = __Block_byref_object_copy_;
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
-  v6 = a3;
+  messageCopy = message;
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v8 = [v6 objectForKey:&unk_2877BFC38];
+  v8 = [messageCopy objectForKey:&unk_2877BFC38];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,10 +26,10 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [v8 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
-    v21 = a4;
-    v11 = self;
+    allKeys = [v8 allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
+    errorCopy = error;
+    selfCopy = self;
     if (v10)
     {
       v12 = *v32;
@@ -39,7 +39,7 @@
         {
           if (*v32 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v31 + 1) + 8 * i);
@@ -49,14 +49,14 @@
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v10);
     }
 
-    self = v11;
-    a4 = v21;
+    self = selfCopy;
+    error = errorCopy;
   }
 
   v22[0] = MEMORY[0x277D85DD0];
@@ -64,17 +64,17 @@
   v22[2] = __44__SidecarTransferGroup_handleMessage_error___block_invoke;
   v22[3] = &unk_279BC2F58;
   v22[4] = self;
-  v15 = v6;
+  v15 = messageCopy;
   v23 = v15;
   v24 = &v25;
   [v7 enumerateIndexesUsingBlock:v22];
   v16 = v26;
-  if (a4)
+  if (error)
   {
     v17 = v26[5];
     if (v17)
     {
-      *a4 = v17;
+      *error = v17;
       v16 = v26;
     }
   }
@@ -159,10 +159,10 @@ void __44__SidecarTransferGroup_handleMessage_error___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (SidecarTransferGroup)initWithMessage:(id)a3
+- (SidecarTransferGroup)initWithMessage:(id)message
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v24.receiver = self;
   v24.super_class = SidecarTransferGroup;
   v5 = [(SidecarTransferGroup *)&v24 init];
@@ -173,12 +173,12 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  Type = SidecarMessageGetType(v4);
+  Type = SidecarMessageGetType(messageCopy);
   v7 = 0;
   if (Type <= 4 && ((1 << Type) & 0x1A) != 0)
   {
     v5->_type = Type;
-    v8 = [v4 objectForKey:&unk_2877BFC80];
+    v8 = [messageCopy objectForKey:&unk_2877BFC80];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

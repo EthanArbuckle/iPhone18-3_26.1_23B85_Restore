@@ -1,35 +1,35 @@
 @interface UIKBTouchOrderedTaskList
-+ (id)taskListForTouchUUID:(id)a3 withPathIndex:(unint64_t)a4;
-- (BOOL)executeTasksInView:(id)a3 withBlock:(id)a4;
++ (id)taskListForTouchUUID:(id)d withPathIndex:(unint64_t)index;
+- (BOOL)executeTasksInView:(id)view withBlock:(id)block;
 - (BOOL)isExecutingFirstTask;
-- (UIKBTouchOrderedTaskList)initWithTouchUUID:(id)a3 withPathIndex:(unint64_t)a4;
-- (id)firstTouchStateForUITouchPhase:(int64_t)a3;
-- (void)addTask:(id)a3;
+- (UIKBTouchOrderedTaskList)initWithTouchUUID:(id)d withPathIndex:(unint64_t)index;
+- (id)firstTouchStateForUITouchPhase:(int64_t)phase;
+- (void)addTask:(id)task;
 - (void)dealloc;
-- (void)removeTasksMatchingFilter:(id)a3;
+- (void)removeTasksMatchingFilter:(id)filter;
 @end
 
 @implementation UIKBTouchOrderedTaskList
 
-+ (id)taskListForTouchUUID:(id)a3 withPathIndex:(unint64_t)a4
++ (id)taskListForTouchUUID:(id)d withPathIndex:(unint64_t)index
 {
-  v5 = a3;
-  v6 = [[UIKBTouchOrderedTaskList alloc] initWithTouchUUID:v5 withPathIndex:a4];
+  dCopy = d;
+  v6 = [[UIKBTouchOrderedTaskList alloc] initWithTouchUUID:dCopy withPathIndex:index];
 
   return v6;
 }
 
-- (UIKBTouchOrderedTaskList)initWithTouchUUID:(id)a3 withPathIndex:(unint64_t)a4
+- (UIKBTouchOrderedTaskList)initWithTouchUUID:(id)d withPathIndex:(unint64_t)index
 {
-  v7 = a3;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = UIKBTouchOrderedTaskList;
   v8 = [(UIKBTouchOrderedTaskList *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_touchUUID, a3);
-    v9->_pathIndex = a4;
+    objc_storeStrong(&v8->_touchUUID, d);
+    v9->_pathIndex = index;
     v10 = dispatch_queue_create(0, 0);
     touchStateTasksQueue = v9->_touchStateTasksQueue;
     v9->_touchStateTasksQueue = v10;
@@ -66,16 +66,16 @@ void __35__UIKBTouchOrderedTaskList_dealloc__block_invoke(uint64_t a1)
   *(v1 + 24) = 0;
 }
 
-- (void)addTask:(id)a3
+- (void)addTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 touchState];
-  v6 = [v5 phase];
+  taskCopy = task;
+  touchState = [taskCopy touchState];
+  phase = [touchState phase];
 
-  if (!v6)
+  if (!phase)
   {
-    v7 = [v4 touchState];
-    [v7 timestamp];
+    touchState2 = [taskCopy touchState];
+    [touchState2 timestamp];
     self->_originalStartTime = v8;
   }
 
@@ -85,8 +85,8 @@ void __35__UIKBTouchOrderedTaskList_dealloc__block_invoke(uint64_t a1)
   v11[2] = __36__UIKBTouchOrderedTaskList_addTask___block_invoke;
   v11[3] = &unk_1E70F35B8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = taskCopy;
+  v10 = taskCopy;
   dispatch_sync(touchStateTasksQueue, v11);
 }
 
@@ -112,16 +112,16 @@ uint64_t __36__UIKBTouchOrderedTaskList_addTask___block_invoke(uint64_t a1)
 
 - (BOOL)isExecutingFirstTask
 {
-  v2 = [(NSMutableArray *)self->_touchStateTasks firstObject];
-  v3 = [v2 isBusy];
+  firstObject = [(NSMutableArray *)self->_touchStateTasks firstObject];
+  isBusy = [firstObject isBusy];
 
-  return v3;
+  return isBusy;
 }
 
-- (void)removeTasksMatchingFilter:(id)a3
+- (void)removeTasksMatchingFilter:(id)filter
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filterCopy = filter;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -155,7 +155,7 @@ uint64_t __36__UIKBTouchOrderedTaskList_addTask___block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (v4[2](v4, v10))
+        if (filterCopy[2](filterCopy, v10))
         {
           v11 = self->_touchStateTasksQueue;
           v12[0] = MEMORY[0x1E69E9820];
@@ -185,10 +185,10 @@ void __54__UIKBTouchOrderedTaskList_removeTasksMatchingFilter___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (BOOL)executeTasksInView:(id)a3 withBlock:(id)a4
+- (BOOL)executeTasksInView:(id)view withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  blockCopy = block;
   v27 = 0;
   v21 = 0;
   v22 = &v21;
@@ -208,7 +208,7 @@ void __54__UIKBTouchOrderedTaskList_removeTasksMatchingFilter___block_invoke(uin
   if (v9)
   {
     [v9 setIsBusy:1];
-    if (v7 && ([v22[5] touchState], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22[5], "task"), v11 = objc_claimAutoreleasedReturnValue(), v7[2](v7, v10, v11, &v27), v11, v10, v27))
+    if (blockCopy && ([v22[5] touchState], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22[5], "task"), v11 = objc_claimAutoreleasedReturnValue(), blockCopy[2](blockCopy, v10, v11, &v27), v11, v10, v27))
     {
       [v22[5] setIsBusy:0];
     }
@@ -216,9 +216,9 @@ void __54__UIKBTouchOrderedTaskList_removeTasksMatchingFilter___block_invoke(uin
     else
     {
       v12 = MEMORY[0x1E696B098];
-      v13 = [v22[5] touchState];
-      [v13 locationInWindow];
-      [v6 convertPoint:0 fromView:?];
+      touchState = [v22[5] touchState];
+      [touchState locationInWindow];
+      [viewCopy convertPoint:0 fromView:?];
       v14 = [v12 valueWithCGPoint:?];
       currentTouchPoint = self->_currentTouchPoint;
       self->_currentTouchPoint = v14;
@@ -247,7 +247,7 @@ void __57__UIKBTouchOrderedTaskList_executeTasksInView_withBlock___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)firstTouchStateForUITouchPhase:(int64_t)a3
+- (id)firstTouchStateForUITouchPhase:(int64_t)phase
 {
   v12 = 0;
   v13 = &v12;
@@ -267,9 +267,9 @@ void __57__UIKBTouchOrderedTaskList_executeTasksInView_withBlock___block_invoke(
   v6 = v13[5];
   if (v6)
   {
-    v7 = [v6 phase];
+    phase = [v6 phase];
     v5 = v13;
-    if (v7 != a3)
+    if (phase != phase)
     {
       v8 = v13[5];
       v13[5] = 0;

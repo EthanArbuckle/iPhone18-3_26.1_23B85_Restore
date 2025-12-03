@@ -1,33 +1,33 @@
 @interface PDDPTakerWork
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addInfoDict:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addInfoDict:(id)dict;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPTakerWork
 
-- (void)addInfoDict:(id)a3
+- (void)addInfoDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   infoDicts = self->_infoDicts;
-  v8 = v4;
+  v8 = dictCopy;
   if (!infoDicts)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_infoDicts;
     self->_infoDicts = v6;
 
-    v4 = v8;
+    dictCopy = v8;
     infoDicts = self->_infoDicts;
   }
 
-  [(NSMutableArray *)infoDicts addObject:v4];
+  [(NSMutableArray *)infoDicts addObject:dictCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v7.receiver = self;
   v7.super_class = PDDPTakerWork;
   v3 = [(PDDPTakerWork *)&v7 description];
-  v4 = [(PDDPTakerWork *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPTakerWork *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -72,15 +72,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v10 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v12 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   etag = self->_etag;
@@ -98,22 +98,22 @@
   takerMarkupAsset = self->_takerMarkupAsset;
   if (takerMarkupAsset)
   {
-    v16 = [(PDDPAsset *)takerMarkupAsset dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"taker_markup_asset"];
+    dictionaryRepresentation3 = [(PDDPAsset *)takerMarkupAsset dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"taker_markup_asset"];
   }
 
   graderMarkupAsset = self->_graderMarkupAsset;
   if (graderMarkupAsset)
   {
-    v18 = [(PDDPAsset *)graderMarkupAsset dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"grader_markup_asset"];
+    dictionaryRepresentation4 = [(PDDPAsset *)graderMarkupAsset dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"grader_markup_asset"];
   }
 
   graderScoreAsset = self->_graderScoreAsset;
   if (graderScoreAsset)
   {
-    v20 = [(PDDPAsset *)graderScoreAsset dictionaryRepresentation];
-    [v4 setObject:v20 forKey:@"grader_score_asset"];
+    dictionaryRepresentation5 = [(PDDPAsset *)graderScoreAsset dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"grader_score_asset"];
   }
 
   if ([(NSMutableArray *)self->_infoDicts count])
@@ -138,8 +138,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation6 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation6];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -154,9 +154,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
     PBDataWriterWriteStringField();
@@ -245,124 +245,124 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_objectId)
   {
-    [v8 setObjectId:?];
+    [toCopy setObjectId:?];
   }
 
   if (self->_takerUserId)
   {
-    [v8 setTakerUserId:?];
+    [toCopy setTakerUserId:?];
   }
 
   if (self->_makerUserId)
   {
-    [v8 setMakerUserId:?];
+    [toCopy setMakerUserId:?];
   }
 
   if (self->_parentObjectId)
   {
-    [v8 setParentObjectId:?];
+    [toCopy setParentObjectId:?];
   }
 
   if (self->_dateCreated)
   {
-    [v8 setDateCreated:?];
+    [toCopy setDateCreated:?];
   }
 
   if (self->_dateLastModified)
   {
-    [v8 setDateLastModified:?];
+    [toCopy setDateLastModified:?];
   }
 
   if (self->_etag)
   {
-    [v8 setEtag:?];
+    [toCopy setEtag:?];
   }
 
   if (self->_selfIdentifiedName)
   {
-    [v8 setSelfIdentifiedName:?];
+    [toCopy setSelfIdentifiedName:?];
   }
 
   if (self->_takerMarkupAsset)
   {
-    [v8 setTakerMarkupAsset:?];
+    [toCopy setTakerMarkupAsset:?];
   }
 
   if (self->_graderMarkupAsset)
   {
-    [v8 setGraderMarkupAsset:?];
+    [toCopy setGraderMarkupAsset:?];
   }
 
   if (self->_graderScoreAsset)
   {
-    [v8 setGraderScoreAsset:?];
+    [toCopy setGraderScoreAsset:?];
   }
 
   if ([(PDDPTakerWork *)self infoDictsCount])
   {
-    [v8 clearInfoDicts];
-    v4 = [(PDDPTakerWork *)self infoDictsCount];
-    if (v4)
+    [toCopy clearInfoDicts];
+    infoDictsCount = [(PDDPTakerWork *)self infoDictsCount];
+    if (infoDictsCount)
     {
-      v5 = v4;
+      v5 = infoDictsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPTakerWork *)self infoDictAtIndex:i];
-        [v8 addInfoDict:v7];
+        [toCopy addInfoDict:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_objectId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_objectId copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_takerUserId copyWithZone:a3];
+  v8 = [(NSString *)self->_takerUserId copyWithZone:zone];
   v9 = v5[12];
   v5[12] = v8;
 
-  v10 = [(NSString *)self->_makerUserId copyWithZone:a3];
+  v10 = [(NSString *)self->_makerUserId copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(NSString *)self->_parentObjectId copyWithZone:a3];
+  v12 = [(NSString *)self->_parentObjectId copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
-  v14 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v14 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
-  v16 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v16 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
-  v18 = [(NSString *)self->_etag copyWithZone:a3];
+  v18 = [(NSString *)self->_etag copyWithZone:zone];
   v19 = v5[3];
   v5[3] = v18;
 
-  v20 = [(NSString *)self->_selfIdentifiedName copyWithZone:a3];
+  v20 = [(NSString *)self->_selfIdentifiedName copyWithZone:zone];
   v21 = v5[10];
   v5[10] = v20;
 
-  v22 = [(PDDPAsset *)self->_takerMarkupAsset copyWithZone:a3];
+  v22 = [(PDDPAsset *)self->_takerMarkupAsset copyWithZone:zone];
   v23 = v5[11];
   v5[11] = v22;
 
-  v24 = [(PDDPAsset *)self->_graderMarkupAsset copyWithZone:a3];
+  v24 = [(PDDPAsset *)self->_graderMarkupAsset copyWithZone:zone];
   v25 = v5[4];
   v5[4] = v24;
 
-  v26 = [(PDDPAsset *)self->_graderScoreAsset copyWithZone:a3];
+  v26 = [(PDDPAsset *)self->_graderScoreAsset copyWithZone:zone];
   v27 = v5[5];
   v5[5] = v26;
 
@@ -386,7 +386,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v35 + 1) + 8 * v32) copyWithZone:{a3, v35}];
+        v33 = [*(*(&v35 + 1) + 8 * v32) copyWithZone:{zone, v35}];
         [v5 addInfoDict:v33];
 
         v32 = v32 + 1;
@@ -402,16 +402,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   objectId = self->_objectId;
-  if (objectId | v4[8])
+  if (objectId | equalCopy[8])
   {
     if (![(NSString *)objectId isEqual:?])
     {
@@ -420,27 +420,27 @@
   }
 
   takerUserId = self->_takerUserId;
-  if (takerUserId | v4[12] && ![(NSString *)takerUserId isEqual:?])
+  if (takerUserId | equalCopy[12] && ![(NSString *)takerUserId isEqual:?])
   {
     goto LABEL_26;
   }
 
   makerUserId = self->_makerUserId;
-  if (makerUserId | v4[7] && ![(NSString *)makerUserId isEqual:?])
+  if (makerUserId | equalCopy[7] && ![(NSString *)makerUserId isEqual:?])
   {
     goto LABEL_26;
   }
 
   parentObjectId = self->_parentObjectId;
-  if (parentObjectId | v4[9] && ![(NSString *)parentObjectId isEqual:?])
+  if (parentObjectId | equalCopy[9] && ![(NSString *)parentObjectId isEqual:?])
   {
     goto LABEL_26;
   }
 
-  if (((dateCreated = self->_dateCreated, !(dateCreated | v4[1])) || [(PDDPDate *)dateCreated isEqual:?]) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | v4[2])) || [(PDDPDate *)dateLastModified isEqual:?]) && ((etag = self->_etag, !(etag | v4[3])) || [(NSString *)etag isEqual:?]) && ((selfIdentifiedName = self->_selfIdentifiedName, !(selfIdentifiedName | v4[10])) || [(NSString *)selfIdentifiedName isEqual:?]) && ((takerMarkupAsset = self->_takerMarkupAsset, !(takerMarkupAsset | v4[11])) || [(PDDPAsset *)takerMarkupAsset isEqual:?]) && ((graderMarkupAsset = self->_graderMarkupAsset, !(graderMarkupAsset | v4[4])) || [(PDDPAsset *)graderMarkupAsset isEqual:?]) && ((graderScoreAsset = self->_graderScoreAsset, !(graderScoreAsset | v4[5])) || [(PDDPAsset *)graderScoreAsset isEqual:?]))
+  if (((dateCreated = self->_dateCreated, !(dateCreated | equalCopy[1])) || [(PDDPDate *)dateCreated isEqual:?]) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | equalCopy[2])) || [(PDDPDate *)dateLastModified isEqual:?]) && ((etag = self->_etag, !(etag | equalCopy[3])) || [(NSString *)etag isEqual:?]) && ((selfIdentifiedName = self->_selfIdentifiedName, !(selfIdentifiedName | equalCopy[10])) || [(NSString *)selfIdentifiedName isEqual:?]) && ((takerMarkupAsset = self->_takerMarkupAsset, !(takerMarkupAsset | equalCopy[11])) || [(PDDPAsset *)takerMarkupAsset isEqual:?]) && ((graderMarkupAsset = self->_graderMarkupAsset, !(graderMarkupAsset | equalCopy[4])) || [(PDDPAsset *)graderMarkupAsset isEqual:?]) && ((graderScoreAsset = self->_graderScoreAsset, !(graderScoreAsset | equalCopy[5])) || [(PDDPAsset *)graderScoreAsset isEqual:?]))
   {
     infoDicts = self->_infoDicts;
-    if (infoDicts | v4[6])
+    if (infoDicts | equalCopy[6])
     {
       v17 = [(NSMutableArray *)infoDicts isEqual:?];
     }
@@ -476,31 +476,31 @@ LABEL_26:
   return v13 ^ [(NSMutableArray *)self->_infoDicts hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(PDDPTakerWork *)self setObjectId:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(PDDPTakerWork *)self setTakerUserId:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PDDPTakerWork *)self setMakerUserId:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PDDPTakerWork *)self setParentObjectId:?];
   }
 
   dateCreated = self->_dateCreated;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dateCreated)
   {
     if (v6)
@@ -515,7 +515,7 @@ LABEL_26:
   }
 
   dateLastModified = self->_dateLastModified;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (dateLastModified)
   {
     if (v8)
@@ -529,18 +529,18 @@ LABEL_26:
     [(PDDPTakerWork *)self setDateLastModified:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPTakerWork *)self setEtag:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PDDPTakerWork *)self setSelfIdentifiedName:?];
   }
 
   takerMarkupAsset = self->_takerMarkupAsset;
-  v10 = *(v4 + 11);
+  v10 = *(fromCopy + 11);
   if (takerMarkupAsset)
   {
     if (v10)
@@ -555,7 +555,7 @@ LABEL_26:
   }
 
   graderMarkupAsset = self->_graderMarkupAsset;
-  v12 = *(v4 + 4);
+  v12 = *(fromCopy + 4);
   if (graderMarkupAsset)
   {
     if (v12)
@@ -570,7 +570,7 @@ LABEL_26:
   }
 
   graderScoreAsset = self->_graderScoreAsset;
-  v14 = *(v4 + 5);
+  v14 = *(fromCopy + 5);
   if (graderScoreAsset)
   {
     if (v14)
@@ -588,7 +588,7 @@ LABEL_26:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = *(v4 + 6);
+  v15 = *(fromCopy + 6);
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v16)
   {

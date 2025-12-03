@@ -8,55 +8,55 @@
 - (id)formattedDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 codingSystem];
-  v4 = [v3 name];
-  v5 = [a1 code];
-  v6 = [a1 displayString];
-  v7 = [v2 stringWithFormat:@"%@\n%@\n%@", v4, v5, v6];
+  codingSystem = [self codingSystem];
+  name = [codingSystem name];
+  code = [self code];
+  displayString = [self displayString];
+  v7 = [v2 stringWithFormat:@"%@\n%@\n%@", name, code, displayString];
 
   return v7;
 }
 
 - (id)formattedTitle
 {
-  v2 = [a1 codingSystem];
-  v3 = [MEMORY[0x1E696C238] textSystem];
-  v4 = [v2 isEqual:v3];
+  codingSystem = [self codingSystem];
+  textSystem = [MEMORY[0x1E696C238] textSystem];
+  v4 = [codingSystem isEqual:textSystem];
 
-  v5 = [a1 codingSystem];
-  v6 = [v5 name];
-  v7 = v6;
+  codingSystem2 = [self codingSystem];
+  name = [codingSystem2 name];
+  v7 = name;
   if ((v4 & 1) == 0)
   {
 
     if (v7)
     {
-      v8 = [a1 code];
+      code = [self code];
 
-      if (v8)
+      if (code)
       {
         v9 = MEMORY[0x1E696AEC0];
-        v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v10 = [v5 localizedStringForKey:@"%@_CODE_SEPARATOR_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Clinical-Health-Records"];
-        v11 = [a1 codingSystem];
-        v12 = [v11 name];
-        v13 = [a1 code];
-        v7 = [v9 stringWithFormat:v10, v12, v13];
+        codingSystem2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+        v10 = [codingSystem2 localizedStringForKey:@"%@_CODE_SEPARATOR_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Clinical-Health-Records"];
+        codingSystem3 = [self codingSystem];
+        name2 = [codingSystem3 name];
+        code2 = [self code];
+        v7 = [v9 stringWithFormat:v10, name2, code2];
 
         goto LABEL_8;
       }
 
-      v5 = [a1 codingSystem];
-      v14 = [v5 name];
+      codingSystem2 = [self codingSystem];
+      name3 = [codingSystem2 name];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v14 = [v5 localizedStringForKey:@"OTHER_CODE_SYSTEM" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Clinical-Health-Records"];
+      codingSystem2 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
+      name3 = [codingSystem2 localizedStringForKey:@"OTHER_CODE_SYSTEM" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Clinical-Health-Records"];
     }
 
-    v7 = v14;
+    v7 = name3;
   }
 
 LABEL_8:

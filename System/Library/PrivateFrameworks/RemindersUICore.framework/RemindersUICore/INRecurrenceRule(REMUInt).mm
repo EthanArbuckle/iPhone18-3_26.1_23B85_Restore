@@ -6,7 +6,7 @@
 
 + (id)rem_recurrenceRuleWithInterval:()REMUInt frequency:
 {
-  v4 = [[a1 alloc] initWithInterval:a3 frequency:a4];
+  v4 = [[self alloc] initWithInterval:a3 frequency:a4];
 
   return v4;
 }

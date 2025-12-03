@@ -1,9 +1,9 @@
 @interface HPSUISpatialProfileSingleStepPearlEnrollView
-- (HPSUISpatialProfileSingleStepPearlEnrollView)initWithVideoCaptureSession:(id)a3 inSheet:(BOOL)a4 squareNeedsPositionLayout:(BOOL)a5;
+- (HPSUISpatialProfileSingleStepPearlEnrollView)initWithVideoCaptureSession:(id)session inSheet:(BOOL)sheet squareNeedsPositionLayout:(BOOL)layout;
 - (id)crossHairs;
 - (void)layoutSubviews;
-- (void)setAlpha:(double)a3;
-- (void)setCameraBlurAmount:(double)a3 useShade:(BOOL)a4 duration:(double)a5 completion:(id)a6;
+- (void)setAlpha:(double)alpha;
+- (void)setCameraBlurAmount:(double)amount useShade:(BOOL)shade duration:(double)duration completion:(id)completion;
 @end
 
 @implementation HPSUISpatialProfileSingleStepPearlEnrollView
@@ -24,11 +24,11 @@
   return enrollmentCustomCrossHairs;
 }
 
-- (HPSUISpatialProfileSingleStepPearlEnrollView)initWithVideoCaptureSession:(id)a3 inSheet:(BOOL)a4 squareNeedsPositionLayout:(BOOL)a5
+- (HPSUISpatialProfileSingleStepPearlEnrollView)initWithVideoCaptureSession:(id)session inSheet:(BOOL)sheet squareNeedsPositionLayout:(BOOL)layout
 {
   v8.receiver = self;
   v8.super_class = HPSUISpatialProfileSingleStepPearlEnrollView;
-  v5 = [(BKUIPearlEnrollView *)&v8 initWithVideoCaptureSession:a3 inSheet:a4 squareNeedsPositionLayout:a5];
+  v5 = [(BKUIPearlEnrollView *)&v8 initWithVideoCaptureSession:session inSheet:sheet squareNeedsPositionLayout:layout];
   v6 = v5;
   if (v5)
   {
@@ -38,95 +38,95 @@
   return v6;
 }
 
-- (void)setCameraBlurAmount:(double)a3 useShade:(BOOL)a4 duration:(double)a5 completion:(id)a6
+- (void)setCameraBlurAmount:(double)amount useShade:(BOOL)shade duration:(double)duration completion:(id)completion
 {
-  v7 = a4;
+  shadeCopy = shade;
   v22 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  completionCopy = completion;
   v11 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    v15 = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self pauseBlur];
+    pauseBlur = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self pauseBlur];
     v16 = 1024;
-    v17 = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self forceBlur];
+    forceBlur = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self forceBlur];
     v18 = 2048;
-    v19 = a3;
+    amountCopy = amount;
     v20 = 2048;
-    v21 = a5;
+    durationCopy = duration;
     _os_log_impl(&dword_1AC1C3000, v11, OS_LOG_TYPE_DEFAULT, "Spatial Profile: Set Camera Blur Blurring paused %d, Blurring forced %d, Requested Blur %f duration = %f ", buf, 0x22u);
   }
 
-  if (a3 == 0.0 && [(HPSUISpatialProfileSingleStepPearlEnrollView *)self forceBlur])
+  if (amount == 0.0 && [(HPSUISpatialProfileSingleStepPearlEnrollView *)self forceBlur])
   {
-    LODWORD(v7) = 0;
-    a3 = 15.0;
+    LODWORD(shadeCopy) = 0;
+    amount = 15.0;
   }
 
-  else if (a3 == 0.0)
+  else if (amount == 0.0)
   {
     goto LABEL_9;
   }
 
-  v12 = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self pauseBlur];
-  v7 = v7 & !v12;
-  if (v12)
+  pauseBlur2 = [(HPSUISpatialProfileSingleStepPearlEnrollView *)self pauseBlur];
+  shadeCopy = shadeCopy & !pauseBlur2;
+  if (pauseBlur2)
   {
-    a3 = 0.0;
+    amount = 0.0;
   }
 
 LABEL_9:
   v13.receiver = self;
   v13.super_class = HPSUISpatialProfileSingleStepPearlEnrollView;
-  [(BKUIPearlEnrollView *)&v13 setCameraBlurAmount:v7 useShade:v10 duration:a3 completion:a5];
+  [(BKUIPearlEnrollView *)&v13 setCameraBlurAmount:shadeCopy useShade:completionCopy duration:amount completion:duration];
 }
 
 - (void)layoutSubviews
 {
   if (_os_feature_enabled_impl())
   {
-    v3 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+    tutorialMovieView = [(BKUIPearlEnrollView *)self tutorialMovieView];
 
-    if (!v3)
+    if (!tutorialMovieView)
     {
-      v4 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-      [v4 removeFromSuperview];
+      tutorialMovieView2 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+      [tutorialMovieView2 removeFromSuperview];
 
       v5 = [HPSUISpatialProfileSingleStepPearlMovieLoopView alloc];
       v6 = [(HPSUISpatialProfileSingleStepPearlMovieLoopView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
       [(BKUIPearlEnrollView *)self setTutorialMovieView:v6];
 
-      v7 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-      [(BKUIPearlEnrollView *)self setTutorialMovieView:v7];
+      tutorialMovieView3 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+      [(BKUIPearlEnrollView *)self setTutorialMovieView:tutorialMovieView3];
 
-      v8 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-      [(HPSUISpatialProfileSingleStepPearlEnrollView *)self addSubview:v8];
+      tutorialMovieView4 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+      [(HPSUISpatialProfileSingleStepPearlEnrollView *)self addSubview:tutorialMovieView4];
 
-      v9 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-      [v9 load];
+      tutorialMovieView5 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+      [tutorialMovieView5 load];
     }
   }
 
-  v10 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-  v11 = [v10 layer];
-  [v11 setMasksToBounds:0];
+  tutorialMovieView6 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+  layer = [tutorialMovieView6 layer];
+  [layer setMasksToBounds:0];
 
-  v12 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-  v13 = [v12 layer];
-  [v13 setCornerRadius:0.0];
+  tutorialMovieView7 = [(BKUIPearlEnrollView *)self tutorialMovieView];
+  layer2 = [tutorialMovieView7 layer];
+  [layer2 setCornerRadius:0.0];
 
   v14.receiver = self;
   v14.super_class = HPSUISpatialProfileSingleStepPearlEnrollView;
   [(BKUIPearlEnrollView *)&v14 layoutSubviews];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v6.receiver = self;
   v6.super_class = HPSUISpatialProfileSingleStepPearlEnrollView;
   [(HPSUISpatialProfileSingleStepPearlEnrollView *)&v6 setAlpha:?];
-  v5 = [(BKUIPearlEnrollView *)self tutorialMovieView];
-  [v5 setAlpha:a3];
+  tutorialMovieView = [(BKUIPearlEnrollView *)self tutorialMovieView];
+  [tutorialMovieView setAlpha:alpha];
 }
 
 @end

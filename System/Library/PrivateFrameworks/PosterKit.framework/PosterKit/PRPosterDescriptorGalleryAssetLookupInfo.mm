@@ -2,13 +2,13 @@
 + (id)_assetManagerCache;
 + (id)defaultLookupInfo;
 + (id)imageCache;
-+ (id)lookUpInfoForAssetCatalogIdentifier:(id)a3;
-+ (id)lookUpInfoForMicaAsset:(id)a3;
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithAssetCatalogIdentifier:(id)a3;
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithCoder:(id)a3;
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithDictionary:(id)a3;
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithMicaAssetIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)lookUpInfoForAssetCatalogIdentifier:(id)identifier;
++ (id)lookUpInfoForMicaAsset:(id)asset;
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithAssetCatalogIdentifier:(id)identifier;
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithCoder:(id)coder;
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithDictionary:(id)dictionary;
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithMicaAssetIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PRPosterDescriptorGalleryAssetLookupInfo
@@ -55,15 +55,15 @@ uint64_t __62__PRPosterDescriptorGalleryAssetLookupInfo__assetManagerCache__bloc
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithDictionary:(id)a3
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PRPosterDescriptorGalleryAssetLookupInfo;
   v5 = [(PRPosterDescriptorGalleryAssetLookupInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     lookupInfo = v5->_lookupInfo;
     v5->_lookupInfo = v6;
   }
@@ -71,11 +71,11 @@ uint64_t __62__PRPosterDescriptorGalleryAssetLookupInfo__assetManagerCache__bloc
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(NSDictionary *)self->_lookupInfo count])
   {
-    v4 = [objc_opt_class() allocWithZone:a3];
+    v4 = [objc_opt_class() allocWithZone:zone];
     lookupInfo = self->_lookupInfo;
 
     return [v4 initWithDictionary:lookupInfo];
@@ -88,12 +88,12 @@ uint64_t __62__PRPosterDescriptorGalleryAssetLookupInfo__assetManagerCache__bloc
   }
 }
 
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithCoder:(id)a3
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
   v6 = objc_opt_self();
-  v7 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:v6 forKey:@"lookupInfo"];
+  v7 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:v6 forKey:@"lookupInfo"];
 
   v8 = [(PRPosterDescriptorGalleryAssetLookupInfo *)self initWithDictionary:v7];
   return v8;
@@ -121,11 +121,11 @@ uint64_t __61__PRPosterDescriptorGalleryAssetLookupInfo_defaultLookupInfo__block
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)lookUpInfoForAssetCatalogIdentifier:(id)a3
++ (id)lookUpInfoForAssetCatalogIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v4)
+  if (!identifierCopy)
   {
     [PRPosterDescriptorGalleryAssetLookupInfo lookUpInfoForAssetCatalogIdentifier:a2];
   }
@@ -135,16 +135,16 @@ uint64_t __61__PRPosterDescriptorGalleryAssetLookupInfo_defaultLookupInfo__block
     [PRPosterDescriptorGalleryAssetLookupInfo lookUpInfoForAssetCatalogIdentifier:a2];
   }
 
-  v5 = [objc_alloc(objc_opt_class()) initWithAssetCatalogIdentifier:v4];
+  v5 = [objc_alloc(objc_opt_class()) initWithAssetCatalogIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)lookUpInfoForMicaAsset:(id)a3
++ (id)lookUpInfoForMicaAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v4)
+  if (!assetCopy)
   {
     [PRPosterDescriptorGalleryAssetLookupInfo lookUpInfoForMicaAsset:a2];
   }
@@ -154,17 +154,17 @@ uint64_t __61__PRPosterDescriptorGalleryAssetLookupInfo_defaultLookupInfo__block
     [PRPosterDescriptorGalleryAssetLookupInfo lookUpInfoForMicaAsset:a2];
   }
 
-  v5 = [objc_alloc(objc_opt_class()) initWithMicaAssetIdentifier:v4];
+  v5 = [objc_alloc(objc_opt_class()) initWithMicaAssetIdentifier:assetCopy];
 
   return v5;
 }
 
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithAssetCatalogIdentifier:(id)a3
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithAssetCatalogIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     [PRPosterDescriptorGalleryAssetLookupInfo initWithAssetCatalogIdentifier:a2];
   }
@@ -175,19 +175,19 @@ uint64_t __61__PRPosterDescriptorGalleryAssetLookupInfo_defaultLookupInfo__block
   }
 
   v9 = @"assetCatalogIdentifier";
-  v10[0] = v5;
+  v10[0] = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [(PRPosterDescriptorGalleryAssetLookupInfo *)self initWithDictionary:v6];
 
   return v7;
 }
 
-- (PRPosterDescriptorGalleryAssetLookupInfo)initWithMicaAssetIdentifier:(id)a3
+- (PRPosterDescriptorGalleryAssetLookupInfo)initWithMicaAssetIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v5)
+  if (!identifierCopy)
   {
     [PRPosterDescriptorGalleryAssetLookupInfo initWithMicaAssetIdentifier:a2];
   }
@@ -198,7 +198,7 @@ uint64_t __61__PRPosterDescriptorGalleryAssetLookupInfo_defaultLookupInfo__block
   }
 
   v9 = @"micaAssetIdentifier";
-  v10[0] = v5;
+  v10[0] = identifierCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v7 = [(PRPosterDescriptorGalleryAssetLookupInfo *)self initWithDictionary:v6];
 

@@ -1,37 +1,37 @@
 @interface SPIDSProtobuf
-+ (id)cacheRequestWithProtoData:(id)a3 identifier:(id)a4;
-+ (id)protobufWithSPPlist:(id)a3 identifier:(id)a4;
++ (id)cacheRequestWithProtoData:(id)data identifier:(id)identifier;
++ (id)protobufWithSPPlist:(id)plist identifier:(id)identifier;
 @end
 
 @implementation SPIDSProtobuf
 
-+ (id)cacheRequestWithProtoData:(id)a3 identifier:(id)a4
++ (id)cacheRequestWithProtoData:(id)data identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  dataCopy = data;
   v7 = objc_alloc_init(SPProtoSockPuppetIDSObject);
-  [(SPProtoSockPuppetIDSObject *)v7 setObjectData:v6];
+  [(SPProtoSockPuppetIDSObject *)v7 setObjectData:dataCopy];
 
-  [(SPProtoSockPuppetIDSObject *)v7 setReceiver:v5];
+  [(SPProtoSockPuppetIDSObject *)v7 setReceiver:identifierCopy];
   [(SPProtoSockPuppetIDSObject *)v7 setType:2];
-  v8 = [(SPProtoSockPuppetIDSObject *)v7 data];
-  v9 = [[IDSProtobuf alloc] initWithProtobufData:v8 type:1 isResponse:0];
+  data = [(SPProtoSockPuppetIDSObject *)v7 data];
+  v9 = [[IDSProtobuf alloc] initWithProtobufData:data type:1 isResponse:0];
 
   return v9;
 }
 
-+ (id)protobufWithSPPlist:(id)a3 identifier:(id)a4
++ (id)protobufWithSPPlist:(id)plist identifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 data];
-  if (v6)
+  identifierCopy = identifier;
+  data = [plist data];
+  if (data)
   {
     v7 = objc_alloc_init(SPProtoSockPuppetIDSObject);
-    [(SPProtoSockPuppetIDSObject *)v7 setObjectData:v6];
-    [(SPProtoSockPuppetIDSObject *)v7 setReceiver:v5];
+    [(SPProtoSockPuppetIDSObject *)v7 setObjectData:data];
+    [(SPProtoSockPuppetIDSObject *)v7 setReceiver:identifierCopy];
     [(SPProtoSockPuppetIDSObject *)v7 setType:3];
-    v8 = [(SPProtoSockPuppetIDSObject *)v7 data];
-    v9 = [[IDSProtobuf alloc] initWithProtobufData:v8 type:1 isResponse:0];
+    data2 = [(SPProtoSockPuppetIDSObject *)v7 data];
+    v9 = [[IDSProtobuf alloc] initWithProtobufData:data2 type:1 isResponse:0];
   }
 
   else

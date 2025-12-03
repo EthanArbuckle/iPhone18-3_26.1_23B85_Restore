@@ -1,43 +1,43 @@
 @interface MTLLegacySVHeap
-- (MTLLegacySVHeap)initWithHeap:(id)a3 descriptor:(id)a4 device:(id)a5;
+- (MTLLegacySVHeap)initWithHeap:(id)heap descriptor:(id)descriptor device:(id)device;
 - (id).cxx_construct;
-- (id)_newGPUDebugAccelerationStructure:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3;
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5;
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5;
-- (id)newTextureWithDescriptor:(id)a3;
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4;
-- (void)enumerateAccelerationStructureIndices:(id)a3;
-- (void)enumerateBufferIndices:(id)a3;
-- (void)enumerateTextureIndices:(id)a3;
-- (void)notifyResourceReleasing:(id)a3;
+- (id)_newGPUDebugAccelerationStructure:(id)structure;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor;
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset;
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index;
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset;
+- (id)newTextureWithDescriptor:(id)descriptor;
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset;
+- (void)enumerateAccelerationStructureIndices:(id)indices;
+- (void)enumerateBufferIndices:(id)indices;
+- (void)enumerateTextureIndices:(id)indices;
+- (void)notifyResourceReleasing:(id)releasing;
 @end
 
 @implementation MTLLegacySVHeap
 
-- (MTLLegacySVHeap)initWithHeap:(id)a3 descriptor:(id)a4 device:(id)a5
+- (MTLLegacySVHeap)initWithHeap:(id)heap descriptor:(id)descriptor device:(id)device
 {
   v7.receiver = self;
   v7.super_class = MTLLegacySVHeap;
-  result = [(MTLToolsObject *)&v7 initWithBaseObject:a3 parent:a5];
+  result = [(MTLToolsObject *)&v7 initWithBaseObject:heap parent:device];
   if (result)
   {
     *&result->_enableResourceUsageValidation = 0;
     result->_textureLock._os_unfair_lock_opaque = 0;
-    *(&result->super.super._externalReferences + 4) = (*(a5 + 284) & 0x200000001) != 0;
+    *(&result->super.super._externalReferences + 4) = (*(device + 284) & 0x200000001) != 0;
   }
 
   return result;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options
 {
-  v5 = [(MTLToolsObject *)self->super.super._baseObject newBufferWithLength:a3 options:a4];
+  v5 = [(MTLToolsObject *)self->super.super._baseObject newBufferWithLength:length options:options];
   if (!v5)
   {
     return 0;
@@ -48,7 +48,7 @@
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
     os_unfair_lock_lock(&self->_enableResourceUsageValidation);
-    v8 = [(MTLLegacySVBuffer *)v7 bufferIndex];
+    bufferIndex = [(MTLLegacySVBuffer *)v7 bufferIndex];
     p_bufferIndices = &self->_bufferIndices;
     end = self->_bufferIndices.__end_;
     cap = self->_bufferIndices.__cap_;
@@ -81,7 +81,7 @@
         std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned int>>(p_bufferIndices, v19);
       }
 
-      *(4 * v15) = v8;
+      *(4 * v15) = bufferIndex;
       v12 = (4 * v15 + 4);
       memcpy(0, begin, v14);
       v20 = p_bufferIndices->__begin_;
@@ -96,7 +96,7 @@
 
     else
     {
-      *end = v8;
+      *end = bufferIndex;
       v12 = end + 1;
     }
 
@@ -107,9 +107,9 @@
   return v7;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 offset:(unint64_t)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options offset:(unint64_t)offset
 {
-  v6 = [(MTLToolsObject *)self->super.super._baseObject newBufferWithLength:a3 options:a4 offset:a5];
+  v6 = [(MTLToolsObject *)self->super.super._baseObject newBufferWithLength:length options:options offset:offset];
   if (!v6)
   {
     return 0;
@@ -120,7 +120,7 @@
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
     os_unfair_lock_lock(&self->_enableResourceUsageValidation);
-    v9 = [(MTLLegacySVBuffer *)v8 bufferIndex];
+    bufferIndex = [(MTLLegacySVBuffer *)v8 bufferIndex];
     p_bufferIndices = &self->_bufferIndices;
     end = self->_bufferIndices.__end_;
     cap = self->_bufferIndices.__cap_;
@@ -153,7 +153,7 @@
         std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned int>>(p_bufferIndices, v20);
       }
 
-      *(4 * v16) = v9;
+      *(4 * v16) = bufferIndex;
       v13 = (4 * v16 + 4);
       memcpy(0, begin, v15);
       v21 = p_bufferIndices->__begin_;
@@ -168,7 +168,7 @@
 
     else
     {
-      *end = v9;
+      *end = bufferIndex;
       v13 = end + 1;
     }
 
@@ -179,9 +179,9 @@
   return v8;
 }
 
-- (id)newTextureWithDescriptor:(id)a3
+- (id)newTextureWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self->super.super._baseObject newTextureWithDescriptor:a3];
+  v4 = [(MTLToolsObject *)self->super.super._baseObject newTextureWithDescriptor:descriptor];
   if (!v4)
   {
     return 0;
@@ -192,7 +192,7 @@
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
     os_unfair_lock_lock(&self->_textureLock);
-    v7 = [(MTLLegacySVTexture *)v6 gpuIdentifier];
+    gpuIdentifier = [(MTLLegacySVTexture *)v6 gpuIdentifier];
     p_textureIndices = &self->_textureIndices;
     end = self->_textureIndices.__end_;
     cap = self->_textureIndices.__cap_;
@@ -225,7 +225,7 @@
         std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned int>>(p_textureIndices, v18);
       }
 
-      *(4 * v14) = v7;
+      *(4 * v14) = gpuIdentifier;
       v11 = (4 * v14 + 4);
       memcpy(0, begin, v13);
       v19 = p_textureIndices->__begin_;
@@ -240,7 +240,7 @@
 
     else
     {
-      *end = v7;
+      *end = gpuIdentifier;
       v11 = end + 1;
     }
 
@@ -251,9 +251,9 @@
   return v6;
 }
 
-- (id)newTextureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newTextureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v5 = [(MTLToolsObject *)self->super.super._baseObject newTextureWithDescriptor:a3 offset:a4];
+  v5 = [(MTLToolsObject *)self->super.super._baseObject newTextureWithDescriptor:descriptor offset:offset];
   if (!v5)
   {
     return 0;
@@ -264,7 +264,7 @@
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
     os_unfair_lock_lock(&self->_textureLock);
-    v8 = [(MTLLegacySVTexture *)v7 gpuIdentifier];
+    gpuIdentifier = [(MTLLegacySVTexture *)v7 gpuIdentifier];
     p_textureIndices = &self->_textureIndices;
     end = self->_textureIndices.__end_;
     cap = self->_textureIndices.__cap_;
@@ -297,7 +297,7 @@
         std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned int>>(p_textureIndices, v19);
       }
 
-      *(4 * v15) = v8;
+      *(4 * v15) = gpuIdentifier;
       v12 = (4 * v15 + 4);
       memcpy(0, begin, v14);
       v20 = p_textureIndices->__begin_;
@@ -312,7 +312,7 @@
 
     else
     {
-      *end = v8;
+      *end = gpuIdentifier;
       v12 = end + 1;
     }
 
@@ -323,7 +323,7 @@
   return v7;
 }
 
-- (void)notifyResourceReleasing:(id)a3
+- (void)notifyResourceReleasing:(id)releasing
 {
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
@@ -335,16 +335,16 @@
       p_textureIndices = &self->_textureIndices;
       begin = self->_textureIndices.__begin_;
       end = p_textureIndices->__end_;
-      v9 = [a3 resourceIndex];
+      resourceIndex = [releasing resourceIndex];
       while (begin != end)
       {
-        if (*begin == v9)
+        if (*begin == resourceIndex)
         {
           if (begin != end)
           {
             for (i = begin + 1; i != end; ++i)
             {
-              if (*i != v9)
+              if (*i != resourceIndex)
               {
                 *begin++ = *i;
               }
@@ -368,16 +368,16 @@
         p_bufferIndices = &self->_bufferIndices;
         v11 = self->_bufferIndices.__begin_;
         v12 = p_bufferIndices->__end_;
-        v13 = [a3 bufferIndex];
+        bufferIndex = [releasing bufferIndex];
         while (v11 != v12)
         {
-          if (*v11 == v13)
+          if (*v11 == bufferIndex)
           {
             if (v11 != v12)
             {
               for (j = v11 + 1; j != v12; ++j)
               {
-                if (*j != v13)
+                if (*j != bufferIndex)
                 {
                   *v11++ = *j;
                 }
@@ -404,16 +404,16 @@
         p_accelerationStructureIndices = &self->_accelerationStructureIndices;
         v15 = self->_accelerationStructureIndices.__begin_;
         v16 = p_accelerationStructureIndices->__end_;
-        v17 = [a3 resourceIndex];
+        resourceIndex2 = [releasing resourceIndex];
         while (v15 != v16)
         {
-          if (*v15 == v17)
+          if (*v15 == resourceIndex2)
           {
             if (v15 != v16)
             {
               for (k = v15 + 1; k != v16; ++k)
               {
-                if (*k != v17)
+                if (*k != resourceIndex2)
                 {
                   *v15++ = *k;
                 }
@@ -432,45 +432,45 @@
   }
 }
 
-- (void)enumerateBufferIndices:(id)a3
+- (void)enumerateBufferIndices:(id)indices
 {
   os_unfair_lock_lock(&self->_enableResourceUsageValidation);
   v5 = (self->_bufferIndices.__end_ - self->_bufferIndices.__begin_) >> 2;
-  (*(a3 + 2))(a3);
+  (*(indices + 2))(indices);
 
   os_unfair_lock_unlock(&self->_enableResourceUsageValidation);
 }
 
-- (void)enumerateTextureIndices:(id)a3
+- (void)enumerateTextureIndices:(id)indices
 {
   os_unfair_lock_lock(&self->_textureLock);
   v5 = (self->_textureIndices.__end_ - self->_textureIndices.__begin_) >> 2;
-  (*(a3 + 2))(a3);
+  (*(indices + 2))(indices);
 
   os_unfair_lock_unlock(&self->_textureLock);
 }
 
-- (void)enumerateAccelerationStructureIndices:(id)a3
+- (void)enumerateAccelerationStructureIndices:(id)indices
 {
   os_unfair_lock_lock(&self->_accelerationStructureLock);
   v5 = (self->_accelerationStructureIndices.__end_ - self->_accelerationStructureIndices.__begin_) >> 2;
-  (*(a3 + 2))(a3);
+  (*(indices + 2))(indices);
 
   os_unfair_lock_unlock(&self->_accelerationStructureLock);
 }
 
-- (id)_newGPUDebugAccelerationStructure:(id)a3
+- (id)_newGPUDebugAccelerationStructure:(id)structure
 {
-  if (!a3)
+  if (!structure)
   {
     return 0;
   }
 
-  v5 = [[MTLLegacySVAccelerationStructure alloc] initWithAccelerationStructure:a3 heap:self];
+  v5 = [[MTLLegacySVAccelerationStructure alloc] initWithAccelerationStructure:structure heap:self];
   if (*(&self->super.super._externalReferences + 4) == 1)
   {
     os_unfair_lock_lock(&self->_accelerationStructureLock);
-    v6 = [(MTLToolsAccelerationStructure *)v5 resourceIndex];
+    resourceIndex = [(MTLToolsAccelerationStructure *)v5 resourceIndex];
     p_accelerationStructureIndices = &self->_accelerationStructureIndices;
     end = self->_accelerationStructureIndices.__end_;
     cap = self->_accelerationStructureIndices.__cap_;
@@ -503,7 +503,7 @@
         std::__allocate_at_least[abi:ne200100]<std::allocator<unsigned int>>(p_accelerationStructureIndices, v17);
       }
 
-      *(4 * v13) = v6;
+      *(4 * v13) = resourceIndex;
       v10 = (4 * v13 + 4);
       memcpy(0, begin, v12);
       v18 = p_accelerationStructureIndices->__begin_;
@@ -518,7 +518,7 @@
 
     else
     {
-      *end = v6;
+      *end = resourceIndex;
       v10 = end + 1;
     }
 
@@ -529,44 +529,44 @@
   return v5;
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3
+- (id)newAccelerationStructureWithSize:(unint64_t)size
 {
-  v4 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:a3];
+  v4 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:size];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v4];
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(a3)];
+  v4 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(descriptor)];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v4];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset
 {
-  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:a3 offset:a4];
+  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:size offset:offset];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v5];
 }
 
-- (id)newAccelerationStructureWithDescriptor:(id)a3 offset:(unint64_t)a4
+- (id)newAccelerationStructureWithDescriptor:(id)descriptor offset:(unint64_t)offset
 {
-  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(a3) offset:a4];
+  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithDescriptor:unwrapAccelerationStructureDescriptor(descriptor) offset:offset];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v5];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newAccelerationStructureWithSize:(unint64_t)size resourceIndex:(unint64_t)index
 {
-  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:a3 resourceIndex:a4];
+  v5 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:size resourceIndex:index];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v5];
 }
 
-- (id)newAccelerationStructureWithSize:(unint64_t)a3 offset:(unint64_t)a4 resourceIndex:(unint64_t)a5
+- (id)newAccelerationStructureWithSize:(unint64_t)size offset:(unint64_t)offset resourceIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:a3 offset:a4 resourceIndex:a5];
+  v6 = [(MTLToolsObject *)self->super.super._baseObject newAccelerationStructureWithSize:size offset:offset resourceIndex:index];
 
   return [(MTLLegacySVHeap *)self _newGPUDebugAccelerationStructure:v6];
 }

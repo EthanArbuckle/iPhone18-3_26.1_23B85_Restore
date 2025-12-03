@@ -1,52 +1,52 @@
 @interface CSRemoteContentSession
-- (BOOL)_invalidateForReason:(int64_t)a3 error:(id)a4 completion:(id)a5;
-- (BOOL)prefersInlineForPreferences:(id)a3;
-- (CSRemoteContentSession)initWithDefinition:(id)a3 authenticationStatusProvider:(id)a4;
+- (BOOL)_invalidateForReason:(int64_t)reason error:(id)error completion:(id)completion;
+- (BOOL)prefersInlineForPreferences:(id)preferences;
+- (CSRemoteContentSession)initWithDefinition:(id)definition authenticationStatusProvider:(id)provider;
 - (CSRemoteContentSessionHostDelegate)hostDelegate;
 - (CSRemoteContentSessionPreferencesProvider)preferencesProvider;
 - (double)remoteContentComplicationHeightInset;
 - (double)remoteContentComplicationTopYInset;
-- (id)_errorWithCode:(int64_t)a3;
-- (id)_remoteContentViewControllerForPreferences:(id)a3;
-- (void)_activateHostViewControllerWithPreferences:(id)a3;
-- (void)_activateRemoteViewController:(id)a3 remoteError:(id)a4;
-- (void)_invalidateWithErrorCode:(int64_t)a3;
+- (id)_errorWithCode:(int64_t)code;
+- (id)_remoteContentViewControllerForPreferences:(id)preferences;
+- (void)_activateHostViewControllerWithPreferences:(id)preferences;
+- (void)_activateRemoteViewController:(id)controller remoteError:(id)error;
+- (void)_invalidateWithErrorCode:(int64_t)code;
 - (void)_reactivate;
-- (void)_requestRemoteViewControllerWithConnectionHandler:(id)a3;
+- (void)_requestRemoteViewControllerWithConnectionHandler:(id)handler;
 - (void)activate;
 - (void)dealloc;
-- (void)didChangeRemoteHostContentFrame:(CGRect)a3;
-- (void)didChangeRemotePreferences:(id)a3;
+- (void)didChangeRemoteHostContentFrame:(CGRect)frame;
+- (void)didChangeRemotePreferences:(id)preferences;
 - (void)forceDisconnect;
-- (void)remoteContentHostViewController:(id)a3 didTerminateWithError:(id)a4;
+- (void)remoteContentHostViewController:(id)controller didTerminateWithError:(id)error;
 @end
 
 @implementation CSRemoteContentSession
 
-- (CSRemoteContentSession)initWithDefinition:(id)a3 authenticationStatusProvider:(id)a4
+- (CSRemoteContentSession)initWithDefinition:(id)definition authenticationStatusProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  definitionCopy = definition;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = CSRemoteContentSession;
   v8 = [(CSRemoteContentSession *)&v18 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [definitionCopy copy];
     definition = v8->_definition;
     v8->_definition = v9;
 
-    objc_storeStrong(&v8->_authenticationStatusProvider, a4);
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
+    objc_storeStrong(&v8->_authenticationStatusProvider, provider);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     sessionID = v8->_sessionID;
-    v8->_sessionID = v12;
+    v8->_sessionID = uUIDString;
 
     v8->_valid = 1;
     v14 = +[CSLockScreenDomain rootSettings];
-    v15 = [v14 dashBoardRemoteContentSettings];
+    dashBoardRemoteContentSettings = [v14 dashBoardRemoteContentSettings];
     remoteContentSettings = v8->_remoteContentSettings;
-    v8->_remoteContentSettings = v15;
+    v8->_remoteContentSettings = dashBoardRemoteContentSettings;
   }
 
   return v8;
@@ -56,7 +56,7 @@
 {
   [(CSRemoteContentViewControllerProtocol *)self->_containerViewController setHostViewController:0];
   [(CSRemoteContentHostViewController *)self->_hostViewController setDelegate:0];
-  v3 = [(_UIRemoteViewController *)self->_hostViewController disconnect];
+  disconnect = [(_UIRemoteViewController *)self->_hostViewController disconnect];
   hostViewController = self->_hostViewController;
   self->_hostViewController = 0;
 
@@ -77,7 +77,7 @@
     {
       sessionID = self->_sessionID;
       *buf = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = sessionID;
       _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Activate session %{public}@", buf, 0x16u);
@@ -103,29 +103,29 @@
   self->_containerViewController = 0;
 
   [(CSRemoteContentHostViewController *)self->_hostViewController setDelegate:0];
-  v4 = [(_UIRemoteViewController *)self->_hostViewController disconnect];
+  disconnect = [(_UIRemoteViewController *)self->_hostViewController disconnect];
   hostViewController = self->_hostViewController;
   self->_hostViewController = 0;
 }
 
-- (void)_requestRemoteViewControllerWithConnectionHandler:(id)a3
+- (void)_requestRemoteViewControllerWithConnectionHandler:(id)handler
 {
-  v7 = a3;
-  v4 = [(SBSRemoteContentDefinition *)self->_definition viewControllerClassName];
-  v5 = [(SBSRemoteContentDefinition *)self->_definition serviceName];
-  v6 = [CSRemoteContentHostViewController requestViewController:v4 fromServiceWithBundleIdentifier:v5 connectionHandler:v7];
+  handlerCopy = handler;
+  viewControllerClassName = [(SBSRemoteContentDefinition *)self->_definition viewControllerClassName];
+  serviceName = [(SBSRemoteContentDefinition *)self->_definition serviceName];
+  v6 = [CSRemoteContentHostViewController requestViewController:viewControllerClassName fromServiceWithBundleIdentifier:serviceName connectionHandler:handlerCopy];
 }
 
-- (void)_activateRemoteViewController:(id)a3 remoteError:(id)a4
+- (void)_activateRemoteViewController:(id)controller remoteError:(id)error
 {
   *&v29[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   BSDispatchQueueAssertMain();
   if (self->_activated && self->_valid)
   {
     v8 = objc_opt_class();
-    v9 = v6;
+    v9 = controllerCopy;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -146,37 +146,37 @@
 
     v11 = v10;
 
-    if (!(v7 | v11))
+    if (!(errorCopy | v11))
     {
       v14 = SBLogDashBoard();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_21EB05000, v14, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Failed to activate remote view controller", buf, 0xCu);
       }
 
-      v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:0 userInfo:0];
+      errorCopy = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:0 userInfo:0];
     }
 
     v15 = SBLogDashBoard();
     v16 = v15;
-    if (v7)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(CSRemoteContentSession *)self _activateRemoteViewController:v7 remoteError:v16];
+        [(CSRemoteContentSession *)self _activateRemoteViewController:errorCopy remoteError:v16];
       }
 
-      v17 = [v7 userInfo];
-      v18 = [v17 objectForKey:*MEMORY[0x277CCA7E8]];
+      userInfo = [errorCopy userInfo];
+      v18 = [userInfo objectForKey:*MEMORY[0x277CCA7E8]];
 
-      v19 = [v18 domain];
-      if ([v19 isEqualToString:*MEMORY[0x277D0ABC8]])
+      domain = [v18 domain];
+      if ([domain isEqualToString:*MEMORY[0x277D0ABC8]])
       {
-        v20 = [v18 code];
+        code = [v18 code];
 
-        if (v20 == 6)
+        if (code == 6)
         {
           v21 = dispatch_time(0, 1000000000);
           block[0] = MEMORY[0x277D85DD0];
@@ -195,7 +195,7 @@ LABEL_29:
       {
       }
 
-      [(CSRemoteContentSession *)self _invalidateWithError:v7];
+      [(CSRemoteContentSession *)self _invalidateWithError:errorCopy];
       goto LABEL_29;
     }
 
@@ -203,7 +203,7 @@ LABEL_29:
     {
       sessionID = self->_sessionID;
       *buf = 138543618;
-      v27 = self;
+      selfCopy4 = self;
       v28 = 2114;
       *v29 = sessionID;
       _os_log_impl(&dword_21EB05000, v16, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Successfully activated remote view controller for session %{public}@!", buf, 0x16u);
@@ -222,7 +222,7 @@ LABEL_29:
     {
       v24 = self->_sessionID;
       *buf = 138543618;
-      v27 = self;
+      selfCopy4 = self;
       v28 = 2114;
       *v29 = v24;
       _os_log_impl(&dword_21EB05000, v23, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Configuring remote view controller and waiting for preferences for session %{public}@", buf, 0x16u);
@@ -239,7 +239,7 @@ LABEL_29:
       activated = self->_activated;
       valid = self->_valid;
       *buf = 138543874;
-      v27 = self;
+      selfCopy4 = self;
       v28 = 1024;
       *v29 = activated;
       v29[2] = 1024;
@@ -251,10 +251,10 @@ LABEL_29:
 LABEL_30:
 }
 
-- (void)_activateHostViewControllerWithPreferences:(id)a3
+- (void)_activateHostViewControllerWithPreferences:(id)preferences
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preferencesCopy = preferences;
   BSDispatchQueueAssertMain();
   containerViewController = self->_containerViewController;
   if (containerViewController)
@@ -264,7 +264,7 @@ LABEL_30:
 
   else
   {
-    v6 = [(CSRemoteContentSession *)self _remoteContentViewControllerForPreferences:v4];
+    v6 = [(CSRemoteContentSession *)self _remoteContentViewControllerForPreferences:preferencesCopy];
     v7 = self->_containerViewController;
     self->_containerViewController = v6;
 
@@ -278,7 +278,7 @@ LABEL_30:
     {
       sessionID = self->_sessionID;
       v17 = 138543618;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2114;
       v20 = sessionID;
       _os_log_impl(&dword_21EB05000, WeakRetained, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Successfully re-presented session %{public}@!", &v17, 0x16u);
@@ -296,7 +296,7 @@ LABEL_30:
       [CSRemoteContentSession _activateHostViewControllerWithPreferences:];
     }
 
-    v15 = self;
+    selfCopy3 = self;
     v16 = 3;
     goto LABEL_18;
   }
@@ -312,10 +312,10 @@ LABEL_30:
       [CSRemoteContentSession _activateHostViewControllerWithPreferences:];
     }
 
-    v15 = self;
+    selfCopy3 = self;
     v16 = 2;
 LABEL_18:
-    [(CSRemoteContentSession *)v15 _invalidateWithErrorCode:v16];
+    [(CSRemoteContentSession *)selfCopy3 _invalidateWithErrorCode:v16];
     goto LABEL_19;
   }
 
@@ -323,7 +323,7 @@ LABEL_18:
   {
     v13 = self->_sessionID;
     v17 = 138543618;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2114;
     v20 = v13;
     _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Successfully presented remote view controller for session %{public}@!", &v17, 0x16u);
@@ -332,17 +332,17 @@ LABEL_18:
 LABEL_19:
 }
 
-- (id)_remoteContentViewControllerForPreferences:(id)a3
+- (id)_remoteContentViewControllerForPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(CSRemoteContentSession *)self prefersInlineForPreferences:v4];
+  preferencesCopy = preferences;
+  v5 = [(CSRemoteContentSession *)self prefersInlineForPreferences:preferencesCopy];
   v6 = off_27838A5E8;
   if (!v5)
   {
     v6 = off_27838A5F8;
   }
 
-  v7 = [objc_alloc(*v6) initWithContentDefinition:self->_definition preferences:v4 hostViewController:self->_hostViewController authenticationStatusProvider:self->_authenticationStatusProvider];
+  v7 = [objc_alloc(*v6) initWithContentDefinition:self->_definition preferences:preferencesCopy hostViewController:self->_hostViewController authenticationStatusProvider:self->_authenticationStatusProvider];
 
   return v7;
 }
@@ -356,7 +356,7 @@ LABEL_19:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138543362;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21EB05000, v3, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Reactivating view service.", &v4, 0xCu);
     }
 
@@ -371,17 +371,17 @@ LABEL_19:
   }
 }
 
-- (void)_invalidateWithErrorCode:(int64_t)a3
+- (void)_invalidateWithErrorCode:(int64_t)code
 {
-  v4 = [(CSRemoteContentSession *)self _errorWithCode:a3];
+  v4 = [(CSRemoteContentSession *)self _errorWithCode:code];
   [(CSRemoteContentSession *)self _invalidateWithError:v4];
 }
 
-- (BOOL)_invalidateForReason:(int64_t)a3 error:(id)a4 completion:(id)a5
+- (BOOL)_invalidateForReason:(int64_t)reason error:(id)error completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
   if (!self->_valid)
   {
@@ -393,7 +393,7 @@ LABEL_19:
   self->_valid = 0;
   v11 = SBLogDashBoard();
   v12 = v11;
-  if (v9)
+  if (errorCopy)
   {
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -402,9 +402,9 @@ LABEL_19:
 
     v13 = NSStringFromSelector(a2);
     v14 = NSStringFromSBSRemoteContentDismissType();
-    v15 = [v9 descriptionWithMultilinePrefix:0];
+    v15 = [errorCopy descriptionWithMultilinePrefix:0];
     *buf = 138544130;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
     v32 = v13;
     v33 = 2114;
@@ -424,7 +424,7 @@ LABEL_19:
     v13 = NSStringFromSelector(a2);
     v14 = NSStringFromSBSRemoteContentDismissType();
     *buf = 138543874;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
     v32 = v13;
     v33 = 2114;
@@ -437,13 +437,13 @@ LABEL_9:
   v22 = 3221225472;
   v23 = __64__CSRemoteContentSession__invalidateForReason_error_completion___block_invoke;
   v24 = &unk_27838CE88;
-  v25 = self;
-  v28 = a3;
-  v26 = v9;
-  v27 = v10;
+  selfCopy3 = self;
+  reasonCopy = reason;
+  v26 = errorCopy;
+  v27 = completionCopy;
   v17 = MEMORY[0x223D698D0](&v21);
   v18 = v17;
-  if (a3 == 1 || !self->_presented)
+  if (reason == 1 || !self->_presented)
   {
     (*(v17 + 16))(v17);
     v16 = 1;
@@ -452,7 +452,7 @@ LABEL_9:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_hostDelegate);
-    v16 = [WeakRetained remoteContentSession:self dismissWithReason:a3 completion:{v18, v21, v22, v23, v24, v25, v26}];
+    v16 = [WeakRetained remoteContentSession:self dismissWithReason:reason completion:{v18, v21, v22, v23, v24, selfCopy3, v26}];
   }
 
 LABEL_14:
@@ -483,43 +483,43 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
   return result;
 }
 
-- (id)_errorWithCode:(int64_t)a3
+- (id)_errorWithCode:(int64_t)code
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a3 >= 4)
+  if (code >= 4)
   {
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:a3 userInfo:0];
+    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:code userInfo:0];
   }
 
   else
   {
-    v4 = off_27838CEA8[a3];
+    v4 = off_27838CEA8[code];
     v5 = MEMORY[0x277CCA9B8];
     v9 = *MEMORY[0x277CCA450];
     v10[0] = v4;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    v7 = [v5 errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:a3 userInfo:v6];
+    v7 = [v5 errorWithDomain:@"CSRemoteContentSessionErrorDomain" code:code userInfo:v6];
   }
 
   return v7;
 }
 
-- (BOOL)prefersInlineForPreferences:(id)a3
+- (BOOL)prefersInlineForPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   if (CSFeatureEnabled(0))
   {
     if ([(CSDashBoardRemoteContentSettings *)self->_remoteContentSettings overrideContentPreferences])
     {
-      v5 = [(CSDashBoardRemoteContentSettings *)self->_remoteContentSettings prefersInlinePresentationOverride];
+      prefersInlinePresentationOverride = [(CSDashBoardRemoteContentSettings *)self->_remoteContentSettings prefersInlinePresentationOverride];
     }
 
     else
     {
-      v5 = [v4 prefersInlinePresentation];
+      prefersInlinePresentationOverride = [preferencesCopy prefersInlinePresentation];
     }
 
-    v6 = v5;
+    v6 = prefersInlinePresentationOverride;
   }
 
   else
@@ -530,27 +530,27 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
   return v6;
 }
 
-- (void)didChangeRemotePreferences:(id)a3
+- (void)didChangeRemotePreferences:(id)preferences
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  preferencesCopy = preferences;
   BSDispatchQueueAssertMain();
-  if (v4)
+  if (preferencesCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_preferencesProvider);
     v6 = [WeakRetained preferencesForRemoteContentSession:self];
-    [WeakRetained remoteContentSession:self didUpdateWithPreferences:v4];
+    [WeakRetained remoteContentSession:self didUpdateWithPreferences:preferencesCopy];
     if (self->_waitingForPreferences)
     {
       self->_waitingForPreferences = 0;
-      if ([(CSRemoteContentSession *)self prefersInlineForPreferences:v4]&& ([(CSRemoteContentHostViewController *)self->_hostViewController contentFrame], ![(CSRemoteContentSession *)self _remoteContentFrameIsValid:?]))
+      if ([(CSRemoteContentSession *)self prefersInlineForPreferences:preferencesCopy]&& ([(CSRemoteContentHostViewController *)self->_hostViewController contentFrame], ![(CSRemoteContentSession *)self _remoteContentFrameIsValid:?]))
       {
         v14 = SBLogDashBoard();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           sessionID = self->_sessionID;
           v16 = 138543618;
-          v17 = self;
+          selfCopy4 = self;
           v18 = 2114;
           v19 = sessionID;
           _os_log_impl(&dword_21EB05000, v14, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Waiting for contentFrame for session %{public}@", &v16, 0x16u);
@@ -566,19 +566,19 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
         {
           v8 = self->_sessionID;
           v16 = 138543618;
-          v17 = self;
+          selfCopy4 = self;
           v18 = 2114;
           v19 = v8;
           _os_log_impl(&dword_21EB05000, v7, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Received valid preferences and contentFrame for session %{public}@, presenting hostVC", &v16, 0x16u);
         }
 
-        [(CSRemoteContentSession *)self _activateHostViewControllerWithPreferences:v4];
+        [(CSRemoteContentSession *)self _activateHostViewControllerWithPreferences:preferencesCopy];
       }
     }
 
     else
     {
-      v9 = [v4 isEqual:v6];
+      v9 = [preferencesCopy isEqual:v6];
       v10 = SBLogDashBoard();
       v11 = v10;
       if (v9)
@@ -586,7 +586,7 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 138543362;
-          v17 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Ignoring identical remote preferences", &v16, 0xCu);
         }
       }
@@ -597,7 +597,7 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
         {
           v12 = self->_sessionID;
           v16 = 138543618;
-          v17 = self;
+          selfCopy4 = self;
           v18 = 2114;
           v19 = v12;
           _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_INFO, "[RemoteContent] %{public}@: remoteContentDidUpdateStyle for session %{public}@", &v16, 0x16u);
@@ -611,12 +611,12 @@ uint64_t __64__CSRemoteContentSession__invalidateForReason_error_completion___bl
   }
 }
 
-- (void)didChangeRemoteHostContentFrame:(CGRect)a3
+- (void)didChangeRemoteHostContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssertMain();
   if (self->_waitingForContentFrame)
@@ -663,7 +663,7 @@ LABEL_16:
       v19.size.height = height;
       v12 = NSStringFromCGRect(v19);
       v13 = 138543618;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v12;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_INFO, "[RemoteContent] %{public}@: Remote content frame is not valid: %{public}@", &v13, 0x16u);
@@ -680,19 +680,19 @@ LABEL_16:
   }
 }
 
-- (void)remoteContentHostViewController:(id)a3 didTerminateWithError:(id)a4
+- (void)remoteContentHostViewController:(id)controller didTerminateWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   if (self->_activated && self->_valid)
   {
     v6 = SBLogDashBoard();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       sessionID = self->_sessionID;
-      v8 = [v5 descriptionWithMultilinePrefix:0];
+      v8 = [errorCopy descriptionWithMultilinePrefix:0];
       v11 = 138543874;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = sessionID;
       v15 = 2114;
@@ -710,7 +710,7 @@ LABEL_16:
     {
       v10 = self->_sessionID;
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v10;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[RemoteContent] %{public}@: Remote view connection lost while inactive/invalid for session %{public}@", &v11, 0x16u);

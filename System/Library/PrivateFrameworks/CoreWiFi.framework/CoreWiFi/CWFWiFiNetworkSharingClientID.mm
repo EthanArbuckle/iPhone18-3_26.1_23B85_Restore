@@ -1,37 +1,37 @@
 @interface CWFWiFiNetworkSharingClientID
-+ (CWFWiFiNetworkSharingClientID)clientIDWithAccessoryID:(id)a3 bundleID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWiFiNetworkSharingClientID:(id)a3;
-- (CWFWiFiNetworkSharingClientID)initWithAccessoryID:(id)a3 bundleID:(id)a4;
-- (CWFWiFiNetworkSharingClientID)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (CWFWiFiNetworkSharingClientID)clientIDWithAccessoryID:(id)d bundleID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWiFiNetworkSharingClientID:(id)d;
+- (CWFWiFiNetworkSharingClientID)initWithAccessoryID:(id)d bundleID:(id)iD;
+- (CWFWiFiNetworkSharingClientID)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFWiFiNetworkSharingClientID
 
-+ (CWFWiFiNetworkSharingClientID)clientIDWithAccessoryID:(id)a3 bundleID:(id)a4
++ (CWFWiFiNetworkSharingClientID)clientIDWithAccessoryID:(id)d bundleID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CWFWiFiNetworkSharingClientID alloc] initWithAccessoryID:v6 bundleID:v5];
+  iDCopy = iD;
+  dCopy = d;
+  v7 = [[CWFWiFiNetworkSharingClientID alloc] initWithAccessoryID:dCopy bundleID:iDCopy];
 
   return v7;
 }
 
-- (CWFWiFiNetworkSharingClientID)initWithAccessoryID:(id)a3 bundleID:(id)a4
+- (CWFWiFiNetworkSharingClientID)initWithAccessoryID:(id)d bundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v11.receiver = self;
   v11.super_class = CWFWiFiNetworkSharingClientID;
   v8 = [(CWFWiFiNetworkSharingClientID *)&v11 init];
   v9 = v8;
-  if (v6 && v8 && ([(CWFWiFiNetworkSharingClientID *)v8 setAccessoryID:v6], v7))
+  if (dCopy && v8 && ([(CWFWiFiNetworkSharingClientID *)v8 setAccessoryID:dCopy], iDCopy))
   {
-    [(CWFWiFiNetworkSharingClientID *)v9 setBundleID:v7];
+    [(CWFWiFiNetworkSharingClientID *)v9 setBundleID:iDCopy];
   }
 
   else
@@ -46,31 +46,31 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-  v5 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-  v6 = [v5 redactedForWiFi];
-  v7 = [v3 stringWithFormat:@"(%@/%@)", v4, v6];
+  bundleID = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+  accessoryID = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+  redactedForWiFi = [accessoryID redactedForWiFi];
+  v7 = [v3 stringWithFormat:@"(%@/%@)", bundleID, redactedForWiFi];
 
   return v7;
 }
 
-- (BOOL)isEqualToWiFiNetworkSharingClientID:(id)a3
+- (BOOL)isEqualToWiFiNetworkSharingClientID:(id)d
 {
-  v6 = a3;
-  v7 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-  v8 = [v6 accessoryID];
-  if (v7 != v8)
+  dCopy = d;
+  accessoryID = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+  accessoryID2 = [dCopy accessoryID];
+  if (accessoryID != accessoryID2)
   {
-    v9 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-    if (!v9)
+    accessoryID3 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+    if (!accessoryID3)
     {
       v20 = 0;
       goto LABEL_20;
     }
 
-    v3 = v9;
-    v4 = [v6 accessoryID];
-    if (!v4)
+    v3 = accessoryID3;
+    accessoryID4 = [dCopy accessoryID];
+    if (!accessoryID4)
     {
       v20 = 0;
 LABEL_19:
@@ -78,9 +78,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v10 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-    v11 = [v6 accessoryID];
-    if (![v10 isEqual:v11])
+    accessoryID5 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+    accessoryID6 = [dCopy accessoryID];
+    if (![accessoryID5 isEqual:accessoryID6])
     {
       v20 = 0;
 LABEL_18:
@@ -88,14 +88,14 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v24 = v11;
-    v25 = v10;
+    v24 = accessoryID6;
+    v25 = accessoryID5;
   }
 
-  v12 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-  v13 = [v6 bundleID];
-  v14 = v13;
-  if (v12 == v13)
+  bundleID = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+  bundleID2 = [dCopy bundleID];
+  v14 = bundleID2;
+  if (bundleID == bundleID2)
   {
 
     v20 = 1;
@@ -103,21 +103,21 @@ LABEL_18:
 
   else
   {
-    v15 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-    if (v15)
+    bundleID3 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+    if (bundleID3)
     {
-      v16 = v15;
-      v17 = [v6 bundleID];
-      if (v17)
+      v16 = bundleID3;
+      bundleID4 = [dCopy bundleID];
+      if (bundleID4)
       {
         [(CWFWiFiNetworkSharingClientID *)self bundleID];
-        v18 = v22 = v4;
-        [v6 bundleID];
+        v18 = v22 = accessoryID4;
+        [dCopy bundleID];
         v19 = v23 = v3;
         v20 = [v18 isEqual:v19];
 
         v3 = v23;
-        v4 = v22;
+        accessoryID4 = v22;
       }
 
       else
@@ -133,9 +133,9 @@ LABEL_18:
     }
   }
 
-  v11 = v24;
-  v10 = v25;
-  if (v7 != v8)
+  accessoryID6 = v24;
+  accessoryID5 = v25;
+  if (accessoryID != accessoryID2)
   {
     goto LABEL_18;
   }
@@ -145,18 +145,18 @@ LABEL_20:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFWiFiNetworkSharingClientID *)self isEqualToWiFiNetworkSharingClientID:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFWiFiNetworkSharingClientID *)self isEqualToWiFiNetworkSharingClientID:v5];
   }
 
   return v6;
@@ -164,46 +164,46 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-  v4 = [v3 hash];
-  v5 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-  v6 = [v5 hash];
+  accessoryID = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+  v4 = [accessoryID hash];
+  bundleID = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+  v6 = [bundleID hash];
 
   return v6 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFWiFiNetworkSharingClientID allocWithZone:?]];
-  v5 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-  [(CWFWiFiNetworkSharingClientID *)v4 setAccessoryID:v5];
+  accessoryID = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+  [(CWFWiFiNetworkSharingClientID *)v4 setAccessoryID:accessoryID];
 
-  v6 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-  [(CWFWiFiNetworkSharingClientID *)v4 setBundleID:v6];
+  bundleID = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+  [(CWFWiFiNetworkSharingClientID *)v4 setBundleID:bundleID];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
-  [v4 encodeObject:v5 forKey:@"accessoryID"];
+  coderCopy = coder;
+  accessoryID = [(CWFWiFiNetworkSharingClientID *)self accessoryID];
+  [coderCopy encodeObject:accessoryID forKey:@"accessoryID"];
 
-  v6 = [(CWFWiFiNetworkSharingClientID *)self bundleID];
-  [v4 encodeObject:v6 forKey:@"bundleID"];
+  bundleID = [(CWFWiFiNetworkSharingClientID *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 }
 
-- (CWFWiFiNetworkSharingClientID)initWithCoder:(id)a3
+- (CWFWiFiNetworkSharingClientID)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CWFWiFiNetworkSharingClientID *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryID"];
     [(CWFWiFiNetworkSharingClientID *)v5 setAccessoryID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     [(CWFWiFiNetworkSharingClientID *)v5 setBundleID:v7];
   }
 

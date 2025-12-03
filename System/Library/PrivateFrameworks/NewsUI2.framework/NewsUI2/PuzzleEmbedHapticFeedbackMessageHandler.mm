@@ -1,6 +1,6 @@
 @interface PuzzleEmbedHapticFeedbackMessageHandler
 - (_TtC7NewsUI239PuzzleEmbedHapticFeedbackMessageHandler)init;
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4;
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin;
 @end
 
 @implementation PuzzleEmbedHapticFeedbackMessageHandler
@@ -14,12 +14,12 @@
   return [(PuzzleEmbedHapticFeedbackMessageHandler *)&v4 init];
 }
 
-- (void)didReceiveMessage:(id)a3 securityOrigin:(id)a4
+- (void)didReceiveMessage:(id)message securityOrigin:(id)origin
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_218C86C44(a3);
+  selfCopy = self;
+  sub_218C86C44(message);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

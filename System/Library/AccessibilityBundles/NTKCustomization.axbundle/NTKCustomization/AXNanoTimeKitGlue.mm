@@ -1,52 +1,52 @@
 @interface AXNanoTimeKitGlue
 + (void)accessibilityInitializeBundle;
-+ (void)installNanoTimeKitClasses:(id)a3;
++ (void)installNanoTimeKitClasses:(id)classes;
 @end
 
 @implementation AXNanoTimeKitGlue
 
-+ (void)installNanoTimeKitClasses:(id)a3
++ (void)installNanoTimeKitClasses:(id)classes
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"NTKMonogramCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKAnalogHandsViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKVictoryAnalogBackgroundViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKLauncherComplicationDataSourceAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKComplicationDisplayWrapperViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKFaceColorEditOptionAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKEmptyCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKTimeIntervalLabelAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKComplicationAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKComplicationControllerAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKTimeTravelModuleViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKModularTemplateViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKUtilityImageAndLabelsComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKCircularSmallSimpleComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKCircularSmallStackTextComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKDateComplicationAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKFaceViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKCircularWellnessUtilityComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKModuleViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKDensityEditOptionAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKPigmentEditOptionAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKWorldClockComplicationAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKDateComplicationLabelAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKUtilityComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKExtraLargeTimeViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKContainerViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"_NTKKeylinePathViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"_NTKPigmentAddCellAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKRingsAndDotsViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKFaceViewControllerAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKDateComplicationControllerAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKComplicationModuleViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKCircularComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKWellnessCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKCircularSmallCircularImageViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKFaceAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKModularSmallActivityTemplateViewAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKVideoListingAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"NTKEnumeratedEditOptionAccessibility" canInteractWithTargetClass:1];
+  classesCopy = classes;
+  [classesCopy installSafeCategory:@"NTKMonogramCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKAnalogHandsViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKVictoryAnalogBackgroundViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKLauncherComplicationDataSourceAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKComplicationDisplayWrapperViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKFaceColorEditOptionAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKEmptyCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKTimeIntervalLabelAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKComplicationAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKComplicationControllerAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKTimeTravelModuleViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKModularTemplateViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKUtilityImageAndLabelsComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKCircularSmallSimpleComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKCircularSmallStackTextComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKDateComplicationAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKFaceViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKCircularWellnessUtilityComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKModuleViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKDensityEditOptionAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKPigmentEditOptionAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKWorldClockComplicationAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKDateComplicationLabelAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKUtilityComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKExtraLargeTimeViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKContainerViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"_NTKKeylinePathViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"_NTKPigmentAddCellAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKRingsAndDotsViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKFaceViewControllerAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKDateComplicationControllerAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKComplicationModuleViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKCircularComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKWellnessCircularSmallComplicationViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKCircularSmallCircularImageViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKFaceAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKModularSmallActivityTemplateViewAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKVideoListingAccessibility" canInteractWithTargetClass:1];
+  [classesCopy installSafeCategory:@"NTKEnumeratedEditOptionAccessibility" canInteractWithTargetClass:1];
 }
 
 + (void)accessibilityInitializeBundle
@@ -55,7 +55,7 @@
   block[1] = 3221225472;
   block[2] = __50__AXNanoTimeKitGlue_accessibilityInitializeBundle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessibilityInitializeBundle_onceToken_0 != -1)
   {
     dispatch_once(&accessibilityInitializeBundle_onceToken_0, block);

@@ -1,23 +1,23 @@
 @interface CLMiLoExportDatabaseTableResult
-- (CLMiLoExportDatabaseTableResult)initWithCoder:(id)a3;
-- (CLMiLoExportDatabaseTableResult)initWithExportDir:(id)a3 fileName:(id)a4 sandboxExtensionTok:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLMiLoExportDatabaseTableResult)initWithCoder:(id)coder;
+- (CLMiLoExportDatabaseTableResult)initWithExportDir:(id)dir fileName:(id)name sandboxExtensionTok:(id)tok;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLMiLoExportDatabaseTableResult
 
-- (CLMiLoExportDatabaseTableResult)initWithExportDir:(id)a3 fileName:(id)a4 sandboxExtensionTok:(id)a5
+- (CLMiLoExportDatabaseTableResult)initWithExportDir:(id)dir fileName:(id)name sandboxExtensionTok:(id)tok
 {
   v10.receiver = self;
   v10.super_class = CLMiLoExportDatabaseTableResult;
   v8 = [(CLMiLoExportDatabaseTableResult *)&v10 init];
   if (v8)
   {
-    v8->_exportDir = a3;
-    v8->_fileName = a4;
-    v8->_sandboxExtensionTok = a5;
+    v8->_exportDir = dir;
+    v8->_fileName = name;
+    v8->_sandboxExtensionTok = tok;
   }
 
   return v8;
@@ -30,9 +30,9 @@
   [(CLMiLoExportDatabaseTableResult *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   exportDir = self->_exportDir;
   fileName = self->_fileName;
   sandboxExtensionTok = self->_sandboxExtensionTok;
@@ -40,22 +40,22 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithExportDir_fileName_sandboxExtensionTok_);
 }
 
-- (CLMiLoExportDatabaseTableResult)initWithCoder:(id)a3
+- (CLMiLoExportDatabaseTableResult)initWithCoder:(id)coder
 {
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultExportDir"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultFileName"];
-  [a3 decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultsandboxExtensionTok"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultExportDir"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultFileName"];
+  [coder decodeObjectOfClass:objc_opt_class() forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultsandboxExtensionTok"];
 
   return MEMORY[0x1EEE66B58](self, sel_initWithExportDir_fileName_sandboxExtensionTok_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_exportDir forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultExportDir"];
-  [a3 encodeObject:self->_fileName forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultFileName"];
+  [coder encodeObject:self->_exportDir forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultExportDir"];
+  [coder encodeObject:self->_fileName forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultFileName"];
   sandboxExtensionTok = self->_sandboxExtensionTok;
 
-  [a3 encodeObject:sandboxExtensionTok forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultsandboxExtensionTok"];
+  [coder encodeObject:sandboxExtensionTok forKey:@"kCLMiLoConnectionCodingKeyExportDatabaseTableResultsandboxExtensionTok"];
 }
 
 @end

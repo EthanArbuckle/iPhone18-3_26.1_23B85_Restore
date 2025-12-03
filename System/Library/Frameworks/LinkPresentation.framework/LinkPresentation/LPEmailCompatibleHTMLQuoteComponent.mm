@@ -1,75 +1,75 @@
 @interface LPEmailCompatibleHTMLQuoteComponent
 + (id)baseRules;
-+ (id)ruleDictionaryForStyle:(id)a3;
-- (LPEmailCompatibleHTMLQuoteComponent)initWithText:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6;
++ (id)ruleDictionaryForStyle:(id)style;
+- (LPEmailCompatibleHTMLQuoteComponent)initWithText:(id)text style:(id)style themePath:(id)path generator:(id)generator;
 @end
 
 @implementation LPEmailCompatibleHTMLQuoteComponent
 
-- (LPEmailCompatibleHTMLQuoteComponent)initWithText:(id)a3 style:(id)a4 themePath:(id)a5 generator:(id)a6
+- (LPEmailCompatibleHTMLQuoteComponent)initWithText:(id)text style:(id)style themePath:(id)path generator:(id)generator
 {
-  v58 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  textCopy = text;
+  styleCopy = style;
+  pathCopy = path;
+  generatorCopy = generator;
   v59.receiver = self;
   v59.super_class = LPEmailCompatibleHTMLQuoteComponent;
-  v13 = [(LPHTMLComponent *)&v59 initWithTagName:@"div" themePath:v11 generator:v12];
+  v13 = [(LPHTMLComponent *)&v59 initWithTagName:@"div" themePath:pathCopy generator:generatorCopy];
   v15 = v13;
   if (v13)
   {
     LPWebLock(v13, v14);
     v16 = MEMORY[0x1E696AEC0];
-    v17 = [v10 font];
-    [v17 pointSize];
+    font = [styleCopy font];
+    [font pointSize];
     v19 = [v16 stringWithFormat:@"%gpt", v18];
-    v20 = [v12 cssResolver];
-    v21 = [v20 localVariables];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-font-size", v11];
-    [v21 setObject:v19 forKeyedSubscript:v22];
+    cssResolver = [generatorCopy cssResolver];
+    localVariables = [cssResolver localVariables];
+    pathCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-font-size", pathCopy];
+    [localVariables setObject:v19 forKeyedSubscript:pathCopy];
 
-    v23 = CSSAlignmentFromLPTextAlignment([v10 textAlignment]);
-    v24 = [v12 cssResolver];
-    v25 = [v24 localVariables];
-    v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-text-alignment", v11];
-    [v25 setObject:v23 forKeyedSubscript:v26];
+    v23 = CSSAlignmentFromLPTextAlignment([styleCopy textAlignment]);
+    cssResolver2 = [generatorCopy cssResolver];
+    localVariables2 = [cssResolver2 localVariables];
+    pathCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-text-alignment", pathCopy];
+    [localVariables2 setObject:v23 forKeyedSubscript:pathCopy2];
 
-    v27 = [v10 color];
-    v28 = [v27 _lp_CSSText];
-    v29 = [v12 cssResolver];
-    v30 = [v29 localVariables];
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-color", v11];
-    [v30 setObject:v28 forKeyedSubscript:v31];
+    color = [styleCopy color];
+    _lp_CSSText = [color _lp_CSSText];
+    cssResolver3 = [generatorCopy cssResolver];
+    localVariables3 = [cssResolver3 localVariables];
+    pathCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-color", pathCopy];
+    [localVariables3 setObject:_lp_CSSText forKeyedSubscript:pathCopy3];
 
-    v32 = [v12 rootWidth];
-    [v32 value];
+    rootWidth = [generatorCopy rootWidth];
+    [rootWidth value];
     v34 = v33;
-    v35 = [v10 padding];
-    v36 = [v35 leading];
-    [v36 value];
+    padding = [styleCopy padding];
+    leading = [padding leading];
+    [leading value];
     v38 = v37;
-    v39 = [v10 padding];
-    v40 = [v39 trailing];
-    [v40 value];
+    padding2 = [styleCopy padding];
+    trailing = [padding2 trailing];
+    [trailing value];
     v42 = v34 - v38 - v41;
 
     v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%gpx", *&v42];
-    v44 = [v12 cssResolver];
-    v45 = [v44 localVariables];
-    v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-width", v11];
-    [v45 setObject:v43 forKeyedSubscript:v46];
+    cssResolver4 = [generatorCopy cssResolver];
+    localVariables4 = [cssResolver4 localVariables];
+    pathCopy4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"local-%@-width", pathCopy];
+    [localVariables4 setObject:v43 forKeyedSubscript:pathCopy4];
 
-    v47 = [v12 cssResolver];
-    v48 = [@"lp-rich-link-" stringByAppendingString:v11];
-    v49 = [(LPHTMLComponent *)v15 element];
-    [v47 addStyle:v48 toElement:v49 inComponent:v15];
+    cssResolver5 = [generatorCopy cssResolver];
+    v48 = [@"lp-rich-link-" stringByAppendingString:pathCopy];
+    element = [(LPHTMLComponent *)v15 element];
+    [cssResolver5 addStyle:v48 toElement:element inComponent:v15];
 
-    v50 = [(LPHTMLComponent *)v15 element];
-    v51 = [(LPHTMLComponent *)v15 generator];
-    v52 = [v51 parentDocument];
-    v53 = truncatedStringAtMaximumMetadataLength(v58);
-    v54 = [v52 createTextNode:v53];
-    v55 = [v50 appendChild:v54];
+    element2 = [(LPHTMLComponent *)v15 element];
+    generator = [(LPHTMLComponent *)v15 generator];
+    parentDocument = [generator parentDocument];
+    v53 = truncatedStringAtMaximumMetadataLength(textCopy);
+    v54 = [parentDocument createTextNode:v53];
+    v55 = [element2 appendChild:v54];
 
     v56 = v15;
   }
@@ -106,11 +106,11 @@
   return v7;
 }
 
-+ (id)ruleDictionaryForStyle:(id)a3
++ (id)ruleDictionaryForStyle:(id)style
 {
-  v3 = [a1 baseRules];
+  baseRules = [self baseRules];
 
-  return v3;
+  return baseRules;
 }
 
 @end

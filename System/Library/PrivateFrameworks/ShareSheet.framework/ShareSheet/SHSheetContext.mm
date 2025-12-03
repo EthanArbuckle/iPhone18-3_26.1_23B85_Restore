@@ -1,5 +1,5 @@
 @interface SHSheetContext
-- (SHSheetContext)initWithActivityViewController:(id)a3 activityItems:(id)a4;
+- (SHSheetContext)initWithActivityViewController:(id)controller activityItems:(id)items;
 - (UIActivityViewController)activityViewController;
 - (UIActivityViewControllerObjectManipulationDelegate)objectManipulationDelegate;
 - (id)description;
@@ -21,19 +21,19 @@
   return WeakRetained;
 }
 
-- (SHSheetContext)initWithActivityViewController:(id)a3 activityItems:(id)a4
+- (SHSheetContext)initWithActivityViewController:(id)controller activityItems:(id)items
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  itemsCopy = items;
   v16.receiver = self;
   v16.super_class = SHSheetContext;
   v8 = [(SHSheetContext *)&v16 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_activityViewController, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_activityViewController, controllerCopy);
+    v10 = [itemsCopy copy];
     activityItems = v9->_activityItems;
     v9->_activityItems = v10;
 
@@ -69,15 +69,15 @@
   v33.receiver = self;
   v33.super_class = SHSheetContext;
   v32 = [(SHSheetContext *)&v33 description];
-  v29 = [(SHSheetContext *)self activityViewController];
-  v31 = [(SHSheetContext *)self activityItems];
-  v27 = [(SHSheetContext *)self applicationActivities];
-  v30 = [(SHSheetContext *)self activityTypesToCreateInShareService];
-  v19 = [(SHSheetContext *)self sharingStyle];
-  v18 = [(SHSheetContext *)self activityTypeOrder];
-  v28 = [(SHSheetContext *)self excludedActivityTypes];
-  v17 = [(SHSheetContext *)self includedActivityTypes];
-  v16 = [(SHSheetContext *)self excludedActivityCategories];
+  activityViewController = [(SHSheetContext *)self activityViewController];
+  activityItems = [(SHSheetContext *)self activityItems];
+  applicationActivities = [(SHSheetContext *)self applicationActivities];
+  activityTypesToCreateInShareService = [(SHSheetContext *)self activityTypesToCreateInShareService];
+  sharingStyle = [(SHSheetContext *)self sharingStyle];
+  activityTypeOrder = [(SHSheetContext *)self activityTypeOrder];
+  excludedActivityTypes = [(SHSheetContext *)self excludedActivityTypes];
+  includedActivityTypes = [(SHSheetContext *)self includedActivityTypes];
+  excludedActivityCategories = [(SHSheetContext *)self excludedActivityCategories];
   [(SHSheetContext *)self allowsEmbedding];
   v26 = NSStringFromBOOL();
   [(SHSheetContext *)self configureForCloudSharing];
@@ -96,18 +96,18 @@
   v13 = NSStringFromBOOL();
   [(SHSheetContext *)self whitelistActionActivitiesOnly];
   v12 = NSStringFromBOOL();
-  v10 = [(SHSheetContext *)self photosHeaderMetadata];
-  v11 = [(SHSheetContext *)self objectManipulationDelegate];
+  photosHeaderMetadata = [(SHSheetContext *)self photosHeaderMetadata];
+  objectManipulationDelegate = [(SHSheetContext *)self objectManipulationDelegate];
   [(SHSheetContext *)self instantShareSheet];
   v9 = NSStringFromBOOL();
   [(SHSheetContext *)self useRemoteUIService];
   v3 = NSStringFromBOOL();
-  v4 = [(SHSheetContext *)self peopleSuggestionBundleIds];
-  v5 = [(SHSheetContext *)self collaborationModeRestriction];
-  v6 = [(SHSheetContext *)self managedFileURL];
+  peopleSuggestionBundleIds = [(SHSheetContext *)self peopleSuggestionBundleIds];
+  collaborationModeRestriction = [(SHSheetContext *)self collaborationModeRestriction];
+  managedFileURL = [(SHSheetContext *)self managedFileURL];
   [(SHSheetContext *)self showCustomScene];
   v7 = NSStringFromBOOL();
-  v21 = [v20 stringWithFormat:@"<%@ activityViewController:%@ activityItems:%@ applicationActivities:%@ activityTypesToCreateInShareService:%@ sharingStyle:%ld activityTypeOrder:%@ excludedActivityTypes:%@ includedActivityTypes:%@ excludedActivityCategories:%ld allowsEmbedding:%@ configureForCloudSharing:%@ configureForPhotosEdit:%@ hideHeaderView:%@ hideSuggestions:%@ isContentManaged:%@ shouldSuggestFamilyMembers:%@ showKeyboardAutomatically:%@ whitelistActionActivitiesOnly:%@ photosHeaderMetadata:%@ objectManipulationDelegate:%@ instantShareSheet:%@ useRemoteUIService:%@ peopleSuggestionBundleIds:%@ collaborationModeRestriction:%@ managedFileURL:%@ showCustomScene:%@ xrRenderingMode:%lu>", v32, v29, v31, v27, v30, v19, v18, v28, v17, v16, v26, v25, v15, v24, v14, v23, v22, v13, v12, v10, v11, v9, v3, v4, v5, v6, v7, -[SHSheetContext xrRenderingMode](self, "xrRenderingMode")];
+  v21 = [v20 stringWithFormat:@"<%@ activityViewController:%@ activityItems:%@ applicationActivities:%@ activityTypesToCreateInShareService:%@ sharingStyle:%ld activityTypeOrder:%@ excludedActivityTypes:%@ includedActivityTypes:%@ excludedActivityCategories:%ld allowsEmbedding:%@ configureForCloudSharing:%@ configureForPhotosEdit:%@ hideHeaderView:%@ hideSuggestions:%@ isContentManaged:%@ shouldSuggestFamilyMembers:%@ showKeyboardAutomatically:%@ whitelistActionActivitiesOnly:%@ photosHeaderMetadata:%@ objectManipulationDelegate:%@ instantShareSheet:%@ useRemoteUIService:%@ peopleSuggestionBundleIds:%@ collaborationModeRestriction:%@ managedFileURL:%@ showCustomScene:%@ xrRenderingMode:%lu>", v32, activityViewController, activityItems, applicationActivities, activityTypesToCreateInShareService, sharingStyle, activityTypeOrder, excludedActivityTypes, includedActivityTypes, excludedActivityCategories, v26, v25, v15, v24, v14, v23, v22, v13, v12, photosHeaderMetadata, objectManipulationDelegate, v9, v3, peopleSuggestionBundleIds, collaborationModeRestriction, managedFileURL, v7, -[SHSheetContext xrRenderingMode](self, "xrRenderingMode")];
 
   return v21;
 }

@@ -1,68 +1,68 @@
 @interface CNAvatarImageRenderingScope
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 rightToLeft:(BOOL)a5 style:(unint64_t)a6 backgroundStyle:(unint64_t)a7;
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8;
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11;
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 color:(id)a9;
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle;
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style;
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1;
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style color:(id)a9;
 @end
 
 @implementation CNAvatarImageRenderingScope
 
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 backgroundStyle:(unint64_t)a9 color:(id)a10 maskedAvatarIndices:(id)a11
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle color:(id)self0 maskedAvatarIndices:(id)self1
 {
-  v15 = a7;
-  height = a3.height;
-  width = a3.width;
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
   v21 = MEMORY[0x1E6996B98];
-  v22 = a6;
-  v23 = a11;
+  colorCopy = color;
+  indicesCopy = indices;
   v24 = a10;
-  v25 = [a6 CGColor];
-  if (a9 - 1 >= 4)
+  cGColor = [color CGColor];
+  if (backgroundStyle - 1 >= 4)
   {
-    v26 = 0;
+    backgroundStyleCopy = 0;
   }
 
   else
   {
-    v26 = a9;
+    backgroundStyleCopy = backgroundStyle;
   }
 
-  v27 = [v21 renderingScopeWithPointSize:v25 scale:v15 strokeWidth:a8 == 1 strokeColor:v26 rightToLeft:v24 style:v23 backgroundStyle:width color:height maskedAvatarIndices:{a4, a5}];
+  v27 = [v21 renderingScopeWithPointSize:cGColor scale:leftCopy strokeWidth:style == 1 strokeColor:backgroundStyleCopy rightToLeft:v24 style:indicesCopy backgroundStyle:width color:height maskedAvatarIndices:{scale, width}];
 
   return v27;
 }
 
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8 color:(id)a9
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style color:(id)a9
 {
-  v11 = a7;
-  height = a3.height;
-  width = a3.width;
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
   v17 = MEMORY[0x1E6996B98];
-  v18 = a6;
+  colorCopy = color;
   v19 = a9;
-  v20 = [v17 renderingScopeWithPointSize:objc_msgSend(a6 scale:"CGColor") strokeWidth:v11 strokeColor:a8 == 1 rightToLeft:v19 style:width color:{height, a4, a5}];
+  v20 = [v17 renderingScopeWithPointSize:objc_msgSend(color scale:"CGColor") strokeWidth:leftCopy strokeColor:style == 1 rightToLeft:v19 style:width color:{height, scale, width}];
 
   return v20;
 }
 
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 strokeWidth:(double)a5 strokeColor:(id)a6 rightToLeft:(BOOL)a7 style:(unint64_t)a8
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale strokeWidth:(double)width strokeColor:(id)color rightToLeft:(BOOL)left style:(unint64_t)style
 {
-  v9 = a7;
-  height = a3.height;
-  width = a3.width;
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
   v14 = MEMORY[0x1E6996B98];
-  v15 = [a6 CGColor];
+  cGColor = [color CGColor];
 
-  return [v14 renderingScopeWithPointSize:v15 scale:v9 strokeWidth:a8 == 1 strokeColor:0 rightToLeft:width style:height color:{a4, a5}];
+  return [v14 renderingScopeWithPointSize:cGColor scale:leftCopy strokeWidth:style == 1 strokeColor:0 rightToLeft:width style:height color:{scale, width}];
 }
 
-+ (id)scopeWithPointSize:(CGSize)a3 scale:(double)a4 rightToLeft:(BOOL)a5 style:(unint64_t)a6 backgroundStyle:(unint64_t)a7
++ (id)scopeWithPointSize:(CGSize)size scale:(double)scale rightToLeft:(BOOL)left style:(unint64_t)style backgroundStyle:(unint64_t)backgroundStyle
 {
-  v9 = a5;
-  height = a3.height;
-  width = a3.width;
-  v14 = [MEMORY[0x1E696AC90] indexSet];
-  v15 = [a1 scopeWithPointSize:0 scale:v9 strokeWidth:a6 strokeColor:a7 rightToLeft:0 style:v14 backgroundStyle:width color:height maskedAvatarIndices:{a4, 0.0}];
+  leftCopy = left;
+  height = size.height;
+  width = size.width;
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  v15 = [self scopeWithPointSize:0 scale:leftCopy strokeWidth:style strokeColor:backgroundStyle rightToLeft:0 style:indexSet backgroundStyle:width color:height maskedAvatarIndices:{scale, 0.0}];
 
   return v15;
 }

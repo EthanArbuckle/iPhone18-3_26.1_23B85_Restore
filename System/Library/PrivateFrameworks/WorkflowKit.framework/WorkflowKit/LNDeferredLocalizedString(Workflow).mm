@@ -8,9 +8,9 @@
 {
   v4 = a3;
   v5 = objc_alloc(MEMORY[0x1E69AC718]);
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v6 localeIdentifier];
-  v8 = [v5 initWithPrintedString:a1 spokenString:0 localeIdentifier:v7];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v8 = [v5 initWithPrintedString:self spokenString:0 localeIdentifier:localeIdentifier];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;

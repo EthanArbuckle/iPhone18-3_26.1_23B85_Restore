@@ -1,12 +1,12 @@
 @interface UICloudSharingController
-+ (id)allowedSharingOptionsFromPermissions:(unint64_t)a3;
++ (id)allowedSharingOptionsFromPermissions:(unint64_t)permissions;
 - (UICloudSharingController)initWithPreparationHandler:(void *)preparationHandler;
 - (UICloudSharingController)initWithShare:(CKShare *)share container:(CKContainer *)container;
-- (UICloudSharingController)initWithShare:(id)a3 preparationHandler:(id)a4;
+- (UICloudSharingController)initWithShare:(id)share preparationHandler:(id)handler;
 - (UIViewController)_originalPresentingViewController;
 - (_UICloudSharingControllerDelegate_Internal)internalDelegate;
 - (_UIRemoteViewController)_containedRemoteViewController;
-- (id)_customPresentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)_customPresentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (id)_sharingViewPresentationController;
 - (id)activityItemSource;
 - (id)createActivityLinkMetadata;
@@ -14,65 +14,65 @@
 - (id)excludedActivityTypes;
 - (int64_t)modalPresentationStyle;
 - (uint64_t)_commonInit;
-- (void)__viewControllerWillBePresented:(BOOL)a3;
-- (void)_callPreparationHandler:(id)a3;
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6;
+- (void)__viewControllerWillBePresented:(BOOL)presented;
+- (void)_callPreparationHandler:(id)handler;
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height;
 - (void)_cloudSharingControllerDidActivateShowActivityController;
 - (void)_cloudSharingControllerDidActivateShowSharedFolder;
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3;
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3;
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3;
-- (void)_deleteShareAfterDismissalWithoutSave:(id)a3;
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport;
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch;
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch;
+- (void)_deleteShareAfterDismissalWithoutSave:(id)save;
 - (void)_didDismiss;
-- (void)_dismissForActivityRepresentation:(id)a3;
-- (void)_dismissViewControllerWithError:(id)a3;
-- (void)_representFullscreenAfterActivityDismissal:(id)a3;
+- (void)_dismissForActivityRepresentation:(id)representation;
+- (void)_dismissViewControllerWithError:(id)error;
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal;
 - (void)_sendDidStopSharingDelegate;
-- (void)_setFolderSubitemName:(id)a3;
-- (void)_setHeaderPrimaryImage:(id)a3;
-- (void)_setHeaderSecondaryImage:(id)a3;
-- (void)_setParticipantDetails:(id)a3;
-- (void)_setPrimaryAuxiliarySwitchState:(BOOL)a3;
-- (void)_setPrimaryAuxiliarySwitchTitle:(id)a3;
-- (void)_setRootFolderTitle:(id)a3;
-- (void)_setSecondaryAuxiliarySwitchState:(BOOL)a3;
-- (void)_setSecondaryAuxiliarySwitchTitle:(id)a3;
-- (void)_setSectionTitleForAuxiliarySwitches:(id)a3;
-- (void)_shareDidChange:(id)a3;
-- (void)addResizingChildViewController:(id)a3;
+- (void)_setFolderSubitemName:(id)name;
+- (void)_setHeaderPrimaryImage:(id)image;
+- (void)_setHeaderSecondaryImage:(id)image;
+- (void)_setParticipantDetails:(id)details;
+- (void)_setPrimaryAuxiliarySwitchState:(BOOL)state;
+- (void)_setPrimaryAuxiliarySwitchTitle:(id)title;
+- (void)_setRootFolderTitle:(id)title;
+- (void)_setSecondaryAuxiliarySwitchState:(BOOL)state;
+- (void)_setSecondaryAuxiliarySwitchTitle:(id)title;
+- (void)_setSectionTitleForAuxiliarySwitches:(id)switches;
+- (void)_shareDidChange:(id)change;
+- (void)addResizingChildViewController:(id)controller;
 - (void)dealloc;
-- (void)setContainer:(id)a3;
+- (void)setContainer:(id)container;
 @end
 
 @implementation UICloudSharingController
 
 - (uint64_t)_commonInit
 {
-  v2 = [a1 preparationHandler];
-  if (!v2)
+  preparationHandler = [self preparationHandler];
+  if (!preparationHandler)
   {
-    v3 = [a1 share];
-    if (v3)
+    share = [self share];
+    if (share)
     {
-      v4 = v3;
-      v5 = [a1 container];
+      v4 = share;
+      container = [self container];
 
-      if (v5)
+      if (container)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v2 handleFailureInMethod:sel__commonInit object:a1 file:@"UICloudSharingController.m" lineNumber:120 description:@"Must have either share or preparation handler set"];
+    preparationHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [preparationHandler handleFailureInMethod:sel__commonInit object:self file:@"UICloudSharingController.m" lineNumber:120 description:@"Must have either share or preparation handler set"];
   }
 
 LABEL_6:
-  v6 = [a1 preparationHandler];
-  if (v6)
+  preparationHandler2 = [self preparationHandler];
+  if (preparationHandler2)
   {
-    v7 = [a1 share];
-    v8 = v7 != 0;
+    share2 = [self share];
+    v8 = share2 != 0;
   }
 
   else
@@ -93,21 +93,21 @@ LABEL_6:
   if (v11)
   {
     v13 = dispatch_semaphore_create(0);
-    v14 = a1[124];
-    a1[124] = v13;
+    v14 = self[124];
+    self[124] = v13;
 
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __39__UICloudSharingController__commonInit__block_invoke;
     v18[3] = &unk_1E712CA18;
-    v18[4] = a1;
+    v18[4] = self;
     v15 = [_UIResilientRemoteViewContainerViewController instantiateWithExtension:v11 completion:v18];
-    [a1 addResizingChildViewController:v15];
-    v16 = a1[130];
-    a1[130] = v15;
+    [self addResizingChildViewController:v15];
+    v16 = self[130];
+    self[130] = v15;
 
-    [a1 setModalPresentationStyle:7];
-    [a1 setPreferredContentSize:{375.0, 636.0}];
+    [self setModalPresentationStyle:7];
+    [self setPreferredContentSize:{375.0, 636.0}];
   }
 
   return v12;
@@ -261,10 +261,10 @@ void __39__UICloudSharingController__commonInit__block_invoke(uint64_t a1, uint6
   return v10;
 }
 
-- (UICloudSharingController)initWithShare:(id)a3 preparationHandler:(id)a4
+- (UICloudSharingController)initWithShare:(id)share preparationHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = UICloudSharingController;
   v9 = [(UIViewController *)&v17 init];
@@ -273,19 +273,19 @@ void __39__UICloudSharingController__commonInit__block_invoke(uint64_t a1, uint6
     goto LABEL_5;
   }
 
-  v10 = [v7 participants];
-  v11 = [v10 count];
+  participants = [shareCopy participants];
+  v11 = [participants count];
 
   if (v11 >= 2)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = NSStringFromSelector(a2);
     v16 = NSStringFromSelector(sel_initWithShare_container_);
-    [v14 handleFailureInMethod:a2 object:v9 file:@"UICloudSharingController.m" lineNumber:255 description:{@"Share passed in to %@ has multiple participants. Use %@ for an existing share.", v15, v16}];
+    [currentHandler handleFailureInMethod:a2 object:v9 file:@"UICloudSharingController.m" lineNumber:255 description:{@"Share passed in to %@ has multiple participants. Use %@ for an existing share.", v15, v16}];
   }
 
-  [(UICloudSharingController *)v9 setShare:v7];
-  [(UICloudSharingController *)v9 setPreparationHandler:v8];
+  [(UICloudSharingController *)v9 setShare:shareCopy];
+  [(UICloudSharingController *)v9 setPreparationHandler:handlerCopy];
   if (![(UICloudSharingController *)v9 _commonInit])
   {
     v12 = 0;
@@ -322,22 +322,22 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [(UICloudSharingController *)self _remoteViewController];
-  [v3 setPublicController:0];
+  _remoteViewController = [(UICloudSharingController *)self _remoteViewController];
+  [_remoteViewController setPublicController:0];
 
   v4.receiver = self;
   v4.super_class = UICloudSharingController;
   [(UIViewController *)&v4 dealloc];
 }
 
-- (void)__viewControllerWillBePresented:(BOOL)a3
+- (void)__viewControllerWillBePresented:(BOOL)presented
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v4 = [(UICloudSharingController *)self preparationHandler];
-  if (v4)
+  preparationHandler = [(UICloudSharingController *)self preparationHandler];
+  if (preparationHandler)
   {
-    v5 = [(UICloudSharingController *)self share];
-    v6 = v5 != 0;
+    share = [(UICloudSharingController *)self share];
+    v6 = share != 0;
   }
 
   else
@@ -347,9 +347,9 @@ LABEL_5:
 
   if (IsGelatoEnabled() && !(v6 | ((dyld_program_sdk_at_least() & 1) == 0)))
   {
-    v7 = [(UICloudSharingController *)self _activityViewController];
+    _activityViewController = [(UICloudSharingController *)self _activityViewController];
 
-    if (!v7)
+    if (!_activityViewController)
     {
       v8 = [objc_opt_class() allowedSharingOptionsFromPermissions:{-[UICloudSharingController availablePermissions](self, "availablePermissions")}];
       v9 = [_UISharingControllerActivityItemProvider alloc];
@@ -552,7 +552,7 @@ LABEL_7:
 
 - (id)createActivityLinkMetadata
 {
-  v3 = [(UICloudSharingController *)self delegate];
+  delegate = [(UICloudSharingController *)self delegate];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -572,12 +572,12 @@ LABEL_7:
   v5 = v4;
   _Block_object_dispose(&v23, 8);
   v6 = objc_alloc_init(v4);
-  v7 = [v3 itemTitleForCloudSharingController:self];
+  v7 = [delegate itemTitleForCloudSharingController:self];
   [v6 setTitle:v7];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v3 itemThumbnailDataForCloudSharingController:self];
+    v8 = [delegate itemThumbnailDataForCloudSharingController:self];
     if (v8)
     {
       v9 = v8;
@@ -628,40 +628,40 @@ LABEL_7:
   return v6;
 }
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
-  v10 = a3;
-  objc_storeStrong(&self->_container, a3);
-  v5 = [v10 setupInfo];
+  containerCopy = container;
+  objc_storeStrong(&self->_container, container);
+  setupInfo = [containerCopy setupInfo];
   containerSetupInfo = self->_containerSetupInfo;
-  self->_containerSetupInfo = v5;
+  self->_containerSetupInfo = setupInfo;
 
   if (self->_containerSetupInfo)
   {
-    v7 = [(UICloudSharingController *)self _childViewController];
-    v8 = [v7 remoteViewController];
-    v9 = [v8 serviceViewControllerProxy];
+    _childViewController = [(UICloudSharingController *)self _childViewController];
+    remoteViewController = [_childViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-    [v9 _setCloudKitContainerSetupInfo:self->_containerSetupInfo];
+    [serviceViewControllerProxy _setCloudKitContainerSetupInfo:self->_containerSetupInfo];
   }
 }
 
-- (void)_callPreparationHandler:(id)a3
+- (void)_callPreparationHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(UICloudSharingController *)self preparationHandler];
+  handlerCopy = handler;
+  preparationHandler = [(UICloudSharingController *)self preparationHandler];
 
-  if (v6)
+  if (preparationHandler)
   {
-    v7 = [(UICloudSharingController *)self preparationHandler];
+    preparationHandler2 = [(UICloudSharingController *)self preparationHandler];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __52__UICloudSharingController__callPreparationHandler___block_invoke;
     v8[3] = &unk_1E712CB80;
     v10 = a2;
     v8[4] = self;
-    v9 = v5;
-    (v7)[2](v7, self, v8);
+    v9 = handlerCopy;
+    (preparationHandler2)[2](preparationHandler2, self, v8);
   }
 }
 
@@ -769,48 +769,48 @@ uint64_t __52__UICloudSharingController__callPreparationHandler___block_invoke_4
   return v2();
 }
 
-- (void)addResizingChildViewController:(id)a3
+- (void)addResizingChildViewController:(id)controller
 {
-  v27 = a3;
-  [v27 beginAppearanceTransition:1 animated:0];
-  [(UIViewController *)self addChildViewController:v27];
-  v4 = [v27 view];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  controllerCopy = controller;
+  [controllerCopy beginAppearanceTransition:1 animated:0];
+  [(UIViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(UIViewController *)self view];
-  v6 = [v27 view];
-  [v5 addSubview:v6];
+  view2 = [(UIViewController *)self view];
+  view3 = [controllerCopy view];
+  [view2 addSubview:view3];
 
-  v7 = [(UIViewController *)self view];
+  view4 = [(UIViewController *)self view];
   v8 = MEMORY[0x1E69977A0];
-  v9 = [(UIViewController *)self view];
-  v10 = [v27 view];
-  v11 = [v8 constraintWithItem:v9 attribute:7 relatedBy:0 toItem:v10 attribute:7 multiplier:1.0 constant:0.0];
-  [v7 addConstraint:v11];
+  view5 = [(UIViewController *)self view];
+  view6 = [controllerCopy view];
+  v11 = [v8 constraintWithItem:view5 attribute:7 relatedBy:0 toItem:view6 attribute:7 multiplier:1.0 constant:0.0];
+  [view4 addConstraint:v11];
 
-  v12 = [(UIViewController *)self view];
+  view7 = [(UIViewController *)self view];
   v13 = MEMORY[0x1E69977A0];
-  v14 = [(UIViewController *)self view];
-  v15 = [v27 view];
-  v16 = [v13 constraintWithItem:v14 attribute:8 relatedBy:0 toItem:v15 attribute:8 multiplier:1.0 constant:0.0];
-  [v12 addConstraint:v16];
+  view8 = [(UIViewController *)self view];
+  view9 = [controllerCopy view];
+  v16 = [v13 constraintWithItem:view8 attribute:8 relatedBy:0 toItem:view9 attribute:8 multiplier:1.0 constant:0.0];
+  [view7 addConstraint:v16];
 
-  v17 = [(UIViewController *)self view];
+  view10 = [(UIViewController *)self view];
   v18 = MEMORY[0x1E69977A0];
-  v19 = [(UIViewController *)self view];
-  v20 = [v27 view];
-  v21 = [v18 constraintWithItem:v19 attribute:1 relatedBy:0 toItem:v20 attribute:1 multiplier:1.0 constant:0.0];
-  [v17 addConstraint:v21];
+  view11 = [(UIViewController *)self view];
+  view12 = [controllerCopy view];
+  v21 = [v18 constraintWithItem:view11 attribute:1 relatedBy:0 toItem:view12 attribute:1 multiplier:1.0 constant:0.0];
+  [view10 addConstraint:v21];
 
-  v22 = [(UIViewController *)self view];
+  view13 = [(UIViewController *)self view];
   v23 = MEMORY[0x1E69977A0];
-  v24 = [(UIViewController *)self view];
-  v25 = [v27 view];
-  v26 = [v23 constraintWithItem:v24 attribute:3 relatedBy:0 toItem:v25 attribute:3 multiplier:1.0 constant:0.0];
-  [v22 addConstraint:v26];
+  view14 = [(UIViewController *)self view];
+  view15 = [controllerCopy view];
+  v26 = [v23 constraintWithItem:view14 attribute:3 relatedBy:0 toItem:view15 attribute:3 multiplier:1.0 constant:0.0];
+  [view13 addConstraint:v26];
 
-  [v27 didMoveToParentViewController:self];
-  [v27 endAppearanceTransition];
+  [controllerCopy didMoveToParentViewController:self];
+  [controllerCopy endAppearanceTransition];
 }
 
 - (void)_didDismiss
@@ -827,7 +827,7 @@ uint64_t __52__UICloudSharingController__callPreparationHandler___block_invoke_4
       if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy2 = self;
         _os_log_fault_impl(&dword_188A29000, v11, OS_LOG_TYPE_FAULT, "Cyclic reference to %@ wasn't cleared out. This means that the view service didn't call us back.", buf, 0xCu);
       }
     }
@@ -839,7 +839,7 @@ uint64_t __52__UICloudSharingController__callPreparationHandler___block_invoke_4
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v15 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "Cyclic reference to %@ wasn't cleared out. This means that the view service didn't call us back.", buf, 0xCu);
     }
   }
@@ -847,12 +847,12 @@ uint64_t __52__UICloudSharingController__callPreparationHandler___block_invoke_4
   v5 = self->_strongReferenceToOurself;
   self->_strongReferenceToOurself = 0;
 
-  v6 = [(UICloudSharingController *)self _childViewController];
-  v7 = [v6 remoteViewController];
-  [v7 setPublicController:0];
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  [remoteViewController setPublicController:0];
 
-  v8 = [(UICloudSharingController *)self _childViewController];
-  [v8 invalidate];
+  _childViewController2 = [(UICloudSharingController *)self _childViewController];
+  [_childViewController2 invalidate];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -880,10 +880,10 @@ void __39__UICloudSharingController__didDismiss__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_deleteShareAfterDismissalWithoutSave:(id)a3
+- (void)_deleteShareAfterDismissalWithoutSave:(id)save
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saveCopy = save;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -903,8 +903,8 @@ void __39__UICloudSharingController__didDismiss__block_invoke(uint64_t a1)
   v6 = v5;
   _Block_object_dispose(&v17, 8);
   v7 = [v5 alloc];
-  v8 = [(CKShare *)self->_share recordID];
-  v21[0] = v8;
+  recordID = [(CKShare *)self->_share recordID];
+  v21[0] = recordID;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
   v10 = [v7 initWithRecordsToSave:MEMORY[0x1E695E0F0] recordIDsToDelete:v9];
 
@@ -914,12 +914,12 @@ void __39__UICloudSharingController__didDismiss__block_invoke(uint64_t a1)
   v14[2] = __66__UICloudSharingController__deleteShareAfterDismissalWithoutSave___block_invoke;
   v14[3] = &unk_1E712CBA8;
   v14[4] = self;
-  v15 = v4;
-  v11 = v4;
+  v15 = saveCopy;
+  v11 = saveCopy;
   [v10 setModifyRecordsCompletionBlock:v14];
-  v12 = [(UICloudSharingController *)self container];
-  v13 = [v12 privateCloudDatabase];
-  [v13 addOperation:v10];
+  container = [(UICloudSharingController *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [privateCloudDatabase addOperation:v10];
 }
 
 void __66__UICloudSharingController__deleteShareAfterDismissalWithoutSave___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -955,24 +955,24 @@ void __66__UICloudSharingController__deleteShareAfterDismissalWithoutSave___bloc
   }
 }
 
-- (void)_dismissViewControllerWithError:(id)a3
+- (void)_dismissViewControllerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (![(UIViewController *)self isBeingDismissed])
   {
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __60__UICloudSharingController__dismissViewControllerWithError___block_invoke;
     v11 = &unk_1E70F35B8;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = errorCopy;
     v5 = _Block_copy(&v8);
     v6 = [(UIViewController *)self presentingViewController:v8];
 
     if (v6)
     {
-      v7 = [(UIViewController *)self presentingViewController];
-      [v7 dismissViewControllerAnimated:1 completion:v5];
+      presentingViewController = [(UIViewController *)self presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:v5];
     }
 
     else
@@ -1000,144 +1000,144 @@ void __60__UICloudSharingController__dismissViewControllerWithError___block_invo
   return v3;
 }
 
-- (void)_setParticipantDetails:(id)a3
+- (void)_setParticipantDetails:(id)details
 {
-  if (self->_participantDetails != a3)
+  if (self->_participantDetails != details)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    detailsCopy = details;
+    v5 = [detailsCopy copy];
     participantDetails = self->_participantDetails;
     self->_participantDetails = v5;
 
-    v7 = [(UICloudSharingController *)self _childViewController];
-    v8 = [v7 remoteViewController];
-    v9 = [v8 serviceViewControllerProxy];
+    _childViewController = [(UICloudSharingController *)self _childViewController];
+    remoteViewController = [_childViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-    [v9 _setParticipantDetails:v4];
+    [serviceViewControllerProxy _setParticipantDetails:detailsCopy];
   }
 }
 
-- (void)_setSectionTitleForAuxiliarySwitches:(id)a3
+- (void)_setSectionTitleForAuxiliarySwitches:(id)switches
 {
-  v4 = a3;
-  if (self->_sectionTitleForAuxiliarySwitches != v4)
+  switchesCopy = switches;
+  if (self->_sectionTitleForAuxiliarySwitches != switchesCopy)
   {
-    v10 = v4;
-    v5 = [(NSString *)v4 copy];
+    v10 = switchesCopy;
+    v5 = [(NSString *)switchesCopy copy];
     sectionTitleForAuxiliarySwitches = self->_sectionTitleForAuxiliarySwitches;
     self->_sectionTitleForAuxiliarySwitches = v5;
 
-    v7 = [(UICloudSharingController *)self _childViewController];
-    v8 = [v7 remoteViewController];
-    v9 = [v8 serviceViewControllerProxy];
+    _childViewController = [(UICloudSharingController *)self _childViewController];
+    remoteViewController = [_childViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
     if (objc_opt_respondsToSelector())
     {
-      [v9 _setSectionTitleForAuxiliarySwitches:v10];
+      [serviceViewControllerProxy _setSectionTitleForAuxiliarySwitches:v10];
     }
 
-    v4 = v10;
+    switchesCopy = v10;
   }
 }
 
-- (void)_setPrimaryAuxiliarySwitchTitle:(id)a3
+- (void)_setPrimaryAuxiliarySwitchTitle:(id)title
 {
-  if (self->_primaryAuxiliarySwitchTitle != a3)
+  if (self->_primaryAuxiliarySwitchTitle != title)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    titleCopy = title;
+    v5 = [titleCopy copy];
     primaryAuxiliarySwitchTitle = self->_primaryAuxiliarySwitchTitle;
     self->_primaryAuxiliarySwitchTitle = v5;
 
-    v7 = [(UICloudSharingController *)self _childViewController];
-    v8 = [v7 remoteViewController];
-    v9 = [v8 serviceViewControllerProxy];
+    _childViewController = [(UICloudSharingController *)self _childViewController];
+    remoteViewController = [_childViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-    [v9 _setPrimaryAuxiliarySwitchTitle:v4];
+    [serviceViewControllerProxy _setPrimaryAuxiliarySwitchTitle:titleCopy];
   }
 }
 
-- (void)_setPrimaryAuxiliarySwitchState:(BOOL)a3
+- (void)_setPrimaryAuxiliarySwitchState:(BOOL)state
 {
-  v3 = a3;
-  self->_primaryAuxiliarySwitchState = a3;
-  v4 = [(UICloudSharingController *)self _childViewController];
-  v5 = [v4 remoteViewController];
-  v6 = [v5 serviceViewControllerProxy];
+  stateCopy = state;
+  self->_primaryAuxiliarySwitchState = state;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v6 _setPrimaryAuxiliarySwitchState:v3];
+  [serviceViewControllerProxy _setPrimaryAuxiliarySwitchState:stateCopy];
 }
 
-- (void)_setSecondaryAuxiliarySwitchTitle:(id)a3
+- (void)_setSecondaryAuxiliarySwitchTitle:(id)title
 {
-  if (self->_secondaryAuxiliarySwitchTitle != a3)
+  if (self->_secondaryAuxiliarySwitchTitle != title)
   {
-    v4 = a3;
-    v5 = [v4 copy];
+    titleCopy = title;
+    v5 = [titleCopy copy];
     secondaryAuxiliarySwitchTitle = self->_secondaryAuxiliarySwitchTitle;
     self->_secondaryAuxiliarySwitchTitle = v5;
 
-    v7 = [(UICloudSharingController *)self _childViewController];
-    v8 = [v7 remoteViewController];
-    v9 = [v8 serviceViewControllerProxy];
+    _childViewController = [(UICloudSharingController *)self _childViewController];
+    remoteViewController = [_childViewController remoteViewController];
+    serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-    [v9 _setSecondaryAuxiliarySwitchTitle:v4];
+    [serviceViewControllerProxy _setSecondaryAuxiliarySwitchTitle:titleCopy];
   }
 }
 
-- (void)_setSecondaryAuxiliarySwitchState:(BOOL)a3
+- (void)_setSecondaryAuxiliarySwitchState:(BOOL)state
 {
-  v3 = a3;
-  self->_secondaryAuxiliarySwitchState = a3;
-  v4 = [(UICloudSharingController *)self _childViewController];
-  v5 = [v4 remoteViewController];
-  v6 = [v5 serviceViewControllerProxy];
+  stateCopy = state;
+  self->_secondaryAuxiliarySwitchState = state;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v6 _setSecondaryAuxiliarySwitchState:v3];
+  [serviceViewControllerProxy _setSecondaryAuxiliarySwitchState:stateCopy];
 }
 
-- (void)_setRootFolderTitle:(id)a3
+- (void)_setRootFolderTitle:(id)title
 {
-  objc_storeStrong(&self->_rootFolderTitle, a3);
-  v5 = a3;
-  v6 = [(UICloudSharingController *)self _childViewController];
-  v7 = [v6 remoteViewController];
-  v8 = [v7 serviceViewControllerProxy];
+  objc_storeStrong(&self->_rootFolderTitle, title);
+  titleCopy = title;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v8 _setRootFolderTitle:v5];
+  [serviceViewControllerProxy _setRootFolderTitle:titleCopy];
 }
 
-- (void)_setFolderSubitemName:(id)a3
+- (void)_setFolderSubitemName:(id)name
 {
-  objc_storeStrong(&self->_folderSubitemName, a3);
-  v5 = a3;
-  v6 = [(UICloudSharingController *)self _childViewController];
-  v7 = [v6 remoteViewController];
-  v8 = [v7 serviceViewControllerProxy];
+  objc_storeStrong(&self->_folderSubitemName, name);
+  nameCopy = name;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v8 _setFolderSubitemName:v5];
+  [serviceViewControllerProxy _setFolderSubitemName:nameCopy];
 }
 
-- (void)_setHeaderPrimaryImage:(id)a3
+- (void)_setHeaderPrimaryImage:(id)image
 {
-  objc_storeStrong(&self->_headerPrimaryImage, a3);
-  v5 = a3;
-  v6 = [(UICloudSharingController *)self _childViewController];
-  v7 = [v6 remoteViewController];
-  v8 = [v7 serviceViewControllerProxy];
+  objc_storeStrong(&self->_headerPrimaryImage, image);
+  imageCopy = image;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v8 _setHeaderPrimaryImage:v5];
+  [serviceViewControllerProxy _setHeaderPrimaryImage:imageCopy];
 }
 
-- (void)_setHeaderSecondaryImage:(id)a3
+- (void)_setHeaderSecondaryImage:(id)image
 {
-  objc_storeStrong(&self->_headerSecondaryImage, a3);
-  v5 = a3;
-  v6 = [(UICloudSharingController *)self _childViewController];
-  v7 = [v6 remoteViewController];
-  v8 = [v7 serviceViewControllerProxy];
+  objc_storeStrong(&self->_headerSecondaryImage, image);
+  imageCopy = image;
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
 
-  [v8 _setHeaderSecondaryImage:v5];
+  [serviceViewControllerProxy _setHeaderSecondaryImage:imageCopy];
 }
 
 - (int64_t)modalPresentationStyle
@@ -1147,15 +1147,15 @@ void __60__UICloudSharingController__dismissViewControllerWithError___block_invo
   return [(UIViewController *)&v3 modalPresentationStyle];
 }
 
-- (id)_customPresentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_customPresentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIPopoverPresentationController *)[_UISharingViewPresentationController alloc] initWithPresentedViewController:v8 presentingViewController:v9];
+  controllerCopy = controller;
+  presentingControllerCopy = presentingController;
+  sourceControllerCopy = sourceController;
+  v11 = [(UIPopoverPresentationController *)[_UISharingViewPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:presentingControllerCopy];
   objc_initWeak(&location, self);
-  v12 = [v10 view];
-  [(UIPresentationController *)v11 setSourceView:v12];
+  view = [sourceControllerCopy view];
+  [(UIPresentationController *)v11 setSourceView:view];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -1177,11 +1177,11 @@ void __118__UICloudSharingController__customPresentationControllerForPresentedCo
 
 - (id)_sharingViewPresentationController
 {
-  v2 = [(UIViewController *)self presentationController];
+  presentationController = [(UIViewController *)self presentationController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = presentationController;
   }
 
   else
@@ -1192,24 +1192,24 @@ void __118__UICloudSharingController__customPresentationControllerForPresentedCo
   return v3;
 }
 
-- (void)_dismissForActivityRepresentation:(id)a3
+- (void)_dismissForActivityRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self presentingViewController];
-  [(UICloudSharingController *)self _setOriginalPresentingViewController:v5];
+  representationCopy = representation;
+  presentingViewController = [(UIViewController *)self presentingViewController];
+  [(UICloudSharingController *)self _setOriginalPresentingViewController:presentingViewController];
 
-  v6 = [(UICloudSharingController *)self _sharingViewPresentationController];
-  [v6 setSuppressDismissalHandlerUnlessDimmingViewTapped:1];
+  _sharingViewPresentationController = [(UICloudSharingController *)self _sharingViewPresentationController];
+  [_sharingViewPresentationController setSuppressDismissalHandlerUnlessDimmingViewTapped:1];
 
-  v7 = [(UIViewController *)self presentingViewController];
+  presentingViewController2 = [(UIViewController *)self presentingViewController];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__UICloudSharingController__dismissForActivityRepresentation___block_invoke;
   v9[3] = &unk_1E70F37C0;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v7 dismissViewControllerAnimated:0 completion:v9];
+  v10 = representationCopy;
+  v8 = representationCopy;
+  [presentingViewController2 dismissViewControllerAnimated:0 completion:v9];
 }
 
 uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___block_invoke(uint64_t a1)
@@ -1220,15 +1220,15 @@ uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___bloc
   return v2();
 }
 
-- (void)_representFullscreenAfterActivityDismissal:(id)a3
+- (void)_representFullscreenAfterActivityDismissal:(id)dismissal
 {
-  v4 = a3;
+  dismissalCopy = dismissal;
   [(UIViewController *)self setModalPresentationStyle:5];
-  v5 = [(UICloudSharingController *)self _sharingViewPresentationController];
-  [v5 setSuppressDismissalHandlerUnlessDimmingViewTapped:0];
+  _sharingViewPresentationController = [(UICloudSharingController *)self _sharingViewPresentationController];
+  [_sharingViewPresentationController setSuppressDismissalHandlerUnlessDimmingViewTapped:0];
 
-  v6 = [(UICloudSharingController *)self _originalPresentingViewController];
-  [v6 presentViewController:self animated:0 completion:v4];
+  _originalPresentingViewController = [(UICloudSharingController *)self _originalPresentingViewController];
+  [_originalPresentingViewController presentViewController:self animated:0 completion:dismissalCopy];
 
   strongReferenceToOurself = self->_strongReferenceToOurself;
   self->_strongReferenceToOurself = 0;
@@ -1236,9 +1236,9 @@ uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___bloc
   objc_storeWeak(&self->_originalPresentingViewController, 0);
 }
 
-- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifyPrimarySwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   objc_copyWeak(&to, &self->_delegate);
   v4 = objc_loadWeakRetained(&to);
   v5 = objc_opt_respondsToSelector();
@@ -1246,15 +1246,15 @@ uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___bloc
   if (v5)
   {
     v6 = objc_loadWeakRetained(&to);
-    [v6 _cloudSharingControllerDidModifyPrimarySwitch:v3];
+    [v6 _cloudSharingControllerDidModifyPrimarySwitch:switchCopy];
   }
 
   objc_destroyWeak(&to);
 }
 
-- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)a3
+- (void)_cloudSharingControllerDidModifySecondarySwitch:(BOOL)switch
 {
-  v3 = a3;
+  switchCopy = switch;
   objc_copyWeak(&to, &self->_delegate);
   v4 = objc_loadWeakRetained(&to);
   v5 = objc_opt_respondsToSelector();
@@ -1262,7 +1262,7 @@ uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___bloc
   if (v5)
   {
     v6 = objc_loadWeakRetained(&to);
-    [v6 _cloudSharingControllerDidModifySecondarySwitch:v3];
+    [v6 _cloudSharingControllerDidModifySecondarySwitch:switchCopy];
   }
 
   objc_destroyWeak(&to);
@@ -1283,19 +1283,19 @@ uint64_t __62__UICloudSharingController__dismissForActivityRepresentation___bloc
   objc_destroyWeak(&to);
 }
 
-+ (id)allowedSharingOptionsFromPermissions:(unint64_t)a3
++ (id)allowedSharingOptionsFromPermissions:(unint64_t)permissions
 {
-  if (a3)
+  if (permissions)
   {
-    v3 = [objc_alloc(getCKAllowedSharingOptionsClass()) initWithAllowedParticipantPermissionOptions:(a3 >> 2) & 3 allowedParticipantAccessOptions:a3 & 3];
+    standardOptions = [objc_alloc(getCKAllowedSharingOptionsClass()) initWithAllowedParticipantPermissionOptions:(permissions >> 2) & 3 allowedParticipantAccessOptions:permissions & 3];
   }
 
   else
   {
-    v3 = [getCKAllowedSharingOptionsClass() standardOptions];
+    standardOptions = [getCKAllowedSharingOptionsClass() standardOptions];
   }
 
-  return v3;
+  return standardOptions;
 }
 
 - (id)excludedActivityTypes
@@ -1336,38 +1336,38 @@ void __49__UICloudSharingController_excludedActivityTypes__block_invoke(uint64_t
 
 - (void)_cloudSharingControllerDidActivateShowActivityController
 {
-  v5 = [(UIViewController *)self view];
-  [v5 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v7);
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view2 = [(UIViewController *)self view];
+  [view2 bounds];
   [(UICloudSharingController *)self _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:MidX y:CGRectGetMidY(v8) width:0.0 height:0.0];
 }
 
-- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)a3 y:(double)a4 width:(double)a5 height:(double)a6
+- (void)_cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:(double)x y:(double)y width:(double)width height:(double)height
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v12 = [(UICloudSharingController *)self share];
+  share = [(UICloudSharingController *)self share];
 
-  if (!v12)
+  if (!share)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"UICloudSharingController.m" lineNumber:826 description:{@"%s: Expect a CKShare while presenting share sheet", "-[UICloudSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICloudSharingController.m" lineNumber:826 description:{@"%s: Expect a CKShare while presenting share sheet", "-[UICloudSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
   }
 
-  v13 = [(UICloudSharingController *)self container];
+  container = [(UICloudSharingController *)self container];
 
-  if (!v13)
+  if (!container)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"UICloudSharingController.m" lineNumber:827 description:{@"%s: Expect a CKShare while presenting share sheet", "-[UICloudSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICloudSharingController.m" lineNumber:827 description:{@"%s: Expect a CKShare while presenting share sheet", "-[UICloudSharingController _cloudSharingControllerDidActivateAddPeopleWithRemoteSourceX:y:width:height:]"}];
   }
 
   v14 = [objc_opt_class() allowedSharingOptionsFromPermissions:{-[UICloudSharingController availablePermissions](self, "availablePermissions")}];
   v15 = [_UISharingControllerActivityItemProvider alloc];
-  v16 = [(UICloudSharingController *)self share];
-  v17 = [(UICloudSharingController *)self container];
-  v18 = [(_UISharingControllerActivityItemProvider *)v15 initWithCKShare:v16 container:v17 allowedSharingOptions:v14];
+  share2 = [(UICloudSharingController *)self share];
+  container2 = [(UICloudSharingController *)self container];
+  v18 = [(_UISharingControllerActivityItemProvider *)v15 initWithCKShare:share2 container:container2 allowedSharingOptions:v14];
 
   v19 = [UIActivityItemsConfiguration alloc];
   v34[0] = v18;
@@ -1383,15 +1383,15 @@ void __49__UICloudSharingController_excludedActivityTypes__block_invoke(uint64_t
   [(UIActivityItemsConfiguration *)v21 setPerItemMetadataProvider:v31];
   v22 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItemsConfiguration:v21];
   [v22 setCollaborationMode:4];
-  v23 = [(UICloudSharingController *)self excludedActivityTypes];
-  [v22 setExcludedActivityTypes:v23];
+  excludedActivityTypes = [(UICloudSharingController *)self excludedActivityTypes];
+  [v22 setExcludedActivityTypes:excludedActivityTypes];
 
-  v24 = [(UIViewController *)self view];
-  v25 = [v22 popoverPresentationController];
-  [v25 setSourceView:v24];
+  view = [(UIViewController *)self view];
+  popoverPresentationController = [v22 popoverPresentationController];
+  [popoverPresentationController setSourceView:view];
 
-  v26 = [v22 popoverPresentationController];
-  [v26 setSourceRect:{a3, a4, a5, a6}];
+  popoverPresentationController2 = [v22 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -1432,9 +1432,9 @@ void __104__UICloudSharingController__cloudSharingControllerDidActivateAddPeople
   }
 }
 
-- (void)_cloudSharingControllerDidChooseTransport:(id)a3
+- (void)_cloudSharingControllerDidChooseTransport:(id)transport
 {
-  v4 = a3;
+  transportCopy = transport;
   objc_copyWeak(&to, &self->_delegate);
   v5 = objc_loadWeakRetained(&to);
   v6 = objc_opt_respondsToSelector();
@@ -1442,18 +1442,18 @@ void __104__UICloudSharingController__cloudSharingControllerDidActivateAddPeople
   if (v6)
   {
     v7 = objc_loadWeakRetained(&to);
-    [v7 _cloudSharingControllerDidChooseTransport:v4];
+    [v7 _cloudSharingControllerDidChooseTransport:transportCopy];
   }
 
   objc_destroyWeak(&to);
 }
 
-- (void)_shareDidChange:(id)a3
+- (void)_shareDidChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
-    [(UICloudSharingController *)self setShare:v4];
+    [(UICloudSharingController *)self setShare:changeCopy];
   }
 
   self->_shareNeedsDeletion = 0;
@@ -1487,10 +1487,10 @@ void __104__UICloudSharingController__cloudSharingControllerDidActivateAddPeople
 
 - (_UIRemoteViewController)_containedRemoteViewController
 {
-  v2 = [(UICloudSharingController *)self _childViewController];
-  v3 = [v2 remoteViewController];
+  _childViewController = [(UICloudSharingController *)self _childViewController];
+  remoteViewController = [_childViewController remoteViewController];
 
-  return v3;
+  return remoteViewController;
 }
 
 - (id)delegate

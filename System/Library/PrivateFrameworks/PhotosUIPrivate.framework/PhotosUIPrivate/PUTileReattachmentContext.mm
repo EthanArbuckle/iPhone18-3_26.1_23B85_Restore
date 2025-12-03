@@ -1,33 +1,33 @@
 @interface PUTileReattachmentContext
-- (PUDisplayVelocity)velocityForTileController:(id)a3;
-- (void)setVelocity:(PUDisplayVelocity)a3 forTileController:(id)a4;
+- (PUDisplayVelocity)velocityForTileController:(id)controller;
+- (void)setVelocity:(PUDisplayVelocity)velocity forTileController:(id)controller;
 @end
 
 @implementation PUTileReattachmentContext
 
-- (void)setVelocity:(PUDisplayVelocity)a3 forTileController:(id)a4
+- (void)setVelocity:(PUDisplayVelocity)velocity forTileController:(id)controller
 {
-  rotation = a3.rotation;
-  scale = a3.scale;
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v11 = [(PUTileReattachmentContext *)self _tileControllerVelocities];
-  if (!v11)
+  rotation = velocity.rotation;
+  scale = velocity.scale;
+  y = velocity.y;
+  x = velocity.x;
+  controllerCopy = controller;
+  _tileControllerVelocities = [(PUTileReattachmentContext *)self _tileControllerVelocities];
+  if (!_tileControllerVelocities)
   {
-    v11 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-    objc_storeStrong(&self->__tileControllerVelocities, v11);
+    _tileControllerVelocities = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&self->__tileControllerVelocities, _tileControllerVelocities);
   }
 
   v10 = [MEMORY[0x1E696B098] pu_valueWithDisplayVelocity:{x, y, scale, rotation}];
-  [v11 setObject:v10 forKey:v9];
+  [_tileControllerVelocities setObject:v10 forKey:controllerCopy];
 }
 
-- (PUDisplayVelocity)velocityForTileController:(id)a3
+- (PUDisplayVelocity)velocityForTileController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PUTileReattachmentContext *)self _tileControllerVelocities];
-  v6 = [v5 objectForKey:v4];
+  controllerCopy = controller;
+  _tileControllerVelocities = [(PUTileReattachmentContext *)self _tileControllerVelocities];
+  v6 = [_tileControllerVelocities objectForKey:controllerCopy];
 
   if (v6)
   {

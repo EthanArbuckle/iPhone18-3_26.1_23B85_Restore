@@ -1,9 +1,9 @@
 @interface ISBundleIdentifierIcon
-- (ISBundleIdentifierIcon)initWithBundleIdentifier:(id)a3;
-- (ISBundleIdentifierIcon)initWithCoder:(id)a3;
-- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)a3;
+- (ISBundleIdentifierIcon)initWithBundleIdentifier:(id)identifier;
+- (ISBundleIdentifierIcon)initWithCoder:(id)coder;
+- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)fallback;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISBundleIdentifierIcon
@@ -14,29 +14,29 @@
   Class = object_getClass(self);
   Name = class_getName(Class);
   bundleIdentifier = self->_bundleIdentifier;
-  v7 = [(ISConcreteIcon *)self digest];
-  v8 = [v3 initWithFormat:@"<%s %p>BundleID: %@ digest: %@", Name, self, bundleIdentifier, v7];
+  digest = [(ISConcreteIcon *)self digest];
+  v8 = [v3 initWithFormat:@"<%s %p>BundleID: %@ digest: %@", Name, self, bundleIdentifier, digest];
 
   return v8;
 }
 
-- (ISBundleIdentifierIcon)initWithBundleIdentifier:(id)a3
+- (ISBundleIdentifierIcon)initWithBundleIdentifier:(id)identifier
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v7 stringByAppendingPathComponent:v5];
+  v8 = [v7 stringByAppendingPathComponent:identifierCopy];
 
-  v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v5 allowPlaceholder:1 error:0];
+  v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
   v10 = 0x1E696A000uLL;
   if (!v9)
   {
-    v11 = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
+    bundleRecordForCurrentProcess = [MEMORY[0x1E6963620] bundleRecordForCurrentProcess];
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v11 bundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", v5), v12, (v13))
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([bundleRecordForCurrentProcess bundleIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", identifierCopy), v12, (v13))
     {
-      if (v11)
+      if (bundleRecordForCurrentProcess)
       {
         goto LABEL_9;
       }
@@ -46,32 +46,32 @@
     {
     }
 
-    v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifierOfSystemPlaceholder:v5 error:0];
+    v9 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifierOfSystemPlaceholder:identifierCopy error:0];
     if (!v9)
     {
-      v38 = _ISDefaultLog();
-      if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+      alternateIconName = _ISDefaultLog();
+      if (os_log_type_enabled(alternateIconName, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v54 = v5;
-        _os_log_impl(&dword_1A77B8000, v38, OS_LOG_TYPE_DEFAULT, "No record for %@", buf, 0xCu);
+        v54 = identifierCopy;
+        _os_log_impl(&dword_1A77B8000, alternateIconName, OS_LOG_TYPE_DEFAULT, "No record for %@", buf, 0xCu);
       }
 
-      v11 = 0;
-      v27 = 0;
+      bundleRecordForCurrentProcess = 0;
+      persistentIdentifier = 0;
       goto LABEL_25;
     }
   }
 
-  v11 = v9;
+  bundleRecordForCurrentProcess = v9;
 LABEL_9:
-  if ([v11 isPlaceholder])
+  if ([bundleRecordForCurrentProcess isPlaceholder])
   {
-    v14 = [v11 URL];
-    v15 = [v14 __is__contentModifiedDate];
+    v14 = [bundleRecordForCurrentProcess URL];
+    __is__contentModifiedDate = [v14 __is__contentModifiedDate];
 
     v16 = MEMORY[0x1E696AEC0];
-    [v15 timeIntervalSinceReferenceDate];
+    [__is__contentModifiedDate timeIntervalSinceReferenceDate];
     v18 = [v16 stringWithFormat:@"%f", v17];
     v19 = [v8 stringByAppendingPathComponent:v18];
 
@@ -81,29 +81,29 @@ LABEL_9:
       [(ISBundleIdentifierIcon *)v19 initWithBundleIdentifier:v20, v21, v22, v23, v24, v25, v26];
     }
 
-    v27 = 0;
+    persistentIdentifier = 0;
   }
 
   else
   {
-    v27 = [v11 persistentIdentifier];
+    persistentIdentifier = [bundleRecordForCurrentProcess persistentIdentifier];
 
-    if (!v27)
+    if (!persistentIdentifier)
     {
       goto LABEL_18;
     }
 
-    v27 = [v11 exactBundleVersion];
+    persistentIdentifier = [bundleRecordForCurrentProcess exactBundleVersion];
     v28 = MEMORY[0x1E696AFB0];
-    v29 = [v11 persistentIdentifier];
-    v30 = [v28 _IF_UUIDWithData:v29];
-    v31 = [v30 UUIDString];
-    v19 = [v5 stringByAppendingPathComponent:v31];
+    persistentIdentifier2 = [bundleRecordForCurrentProcess persistentIdentifier];
+    v30 = [v28 _IF_UUIDWithData:persistentIdentifier2];
+    uUIDString = [v30 UUIDString];
+    v19 = [identifierCopy stringByAppendingPathComponent:uUIDString];
 
-    v15 = _ISDefaultLog();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    __is__contentModifiedDate = _ISDefaultLog();
+    if (os_log_type_enabled(__is__contentModifiedDate, OS_LOG_TYPE_DEBUG))
     {
-      [(ISBundleIdentifierIcon *)v19 initWithBundleIdentifier:v15, v32, v33, v34, v35, v36, v37];
+      [(ISBundleIdentifierIcon *)v19 initWithBundleIdentifier:__is__contentModifiedDate, v32, v33, v34, v35, v36, v37];
     }
 
     v10 = 0x1E696A000;
@@ -111,15 +111,15 @@ LABEL_9:
 
   v8 = v19;
 LABEL_18:
-  v38 = [v11 alternateIconName];
-  if (!v38)
+  alternateIconName = [bundleRecordForCurrentProcess alternateIconName];
+  if (!alternateIconName)
   {
 LABEL_25:
     v39 = v8;
     goto LABEL_26;
   }
 
-  v39 = [v5 stringByAppendingPathComponent:v38];
+  v39 = [identifierCopy stringByAppendingPathComponent:alternateIconName];
 
   v40 = _ISDefaultLog();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -135,27 +135,27 @@ LABEL_26:
   v49 = v48;
   if (v48)
   {
-    objc_storeStrong(&v48->_bundleIdentifier, a3);
-    objc_storeStrong(&v49->_bundleVersion, v27);
+    objc_storeStrong(&v48->_bundleIdentifier, identifier);
+    objc_storeStrong(&v49->_bundleVersion, persistentIdentifier);
   }
 
   v50 = *MEMORY[0x1E69E9840];
   return v49;
 }
 
-- (ISBundleIdentifierIcon)initWithCoder:(id)a3
+- (ISBundleIdentifierIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ISBundleIdentifierIcon;
-  v5 = [(ISConcreteIcon *)&v11 initWithCoder:v4];
+  v5 = [(ISConcreteIcon *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v8;
   }
@@ -163,24 +163,24 @@ LABEL_26:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ISBundleIdentifierIcon;
-  v4 = a3;
-  [(ISConcreteIcon *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_bundleVersion forKey:@"bundleVersion"];
+  coderCopy = coder;
+  [(ISConcreteIcon *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:{@"bundleIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_bundleVersion forKey:@"bundleVersion"];
 }
 
-- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)a3
+- (id)_makeResourceProviderAllowIconResourceFallback:(BOOL)fallback
 {
-  v3 = a3;
+  fallbackCopy = fallback;
   v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:self->_bundleIdentifier allowPlaceholder:1 error:0];
   v6 = +[ISDefaults sharedInstance];
-  v7 = [v6 enableAppIconOverides];
+  enableAppIconOverides = [v6 enableAppIconOverides];
 
-  if (!v7 || (+[ISCustomIconManager sharedInstance](ISCustomIconManager, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), [v8 overrideResourceForBundleIdentifier:self->_bundleIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!enableAppIconOverides || (+[ISCustomIconManager sharedInstance](ISCustomIconManager, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), [v8 overrideResourceForBundleIdentifier:self->_bundleIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     if (v5)
     {
@@ -198,9 +198,9 @@ LABEL_26:
 
       if (([v5 _is_canProvideIconResources] & 1) == 0)
       {
-        v13 = [v5 containingBundleRecord];
+        containingBundleRecord = [v5 containingBundleRecord];
 
-        v5 = v13;
+        v5 = containingBundleRecord;
       }
 
       if (!v5)
@@ -221,7 +221,7 @@ LABEL_14:
           if (v15)
           {
             v10 = v15;
-            if (!v3)
+            if (!fallbackCopy)
             {
               goto LABEL_25;
             }
@@ -232,11 +232,11 @@ LABEL_14:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v16 = [v11 containingBundleRecord];
+              containingBundleRecord2 = [v11 containingBundleRecord];
 
-              v10 = [[ISRecordResourceProvider alloc] initWithRecord:v16 options:0];
-              v11 = v16;
-              if (!v3)
+              v10 = [[ISRecordResourceProvider alloc] initWithRecord:containingBundleRecord2 options:0];
+              v11 = containingBundleRecord2;
+              if (!fallbackCopy)
               {
                 goto LABEL_25;
               }
@@ -245,14 +245,14 @@ LABEL_14:
             else
             {
               v10 = 0;
-              if (!v3)
+              if (!fallbackCopy)
               {
 LABEL_25:
-                v20 = [(ISResourceProvider *)v10 suggestedRecipe];
-                if (v20)
+                suggestedRecipe = [(ISResourceProvider *)v10 suggestedRecipe];
+                if (suggestedRecipe)
                 {
-                  v21 = [(ISResourceProvider *)v10 suggestedRecipe];
-                  [(ISResourceProvider *)v10 setSuggestedRecipe:v21];
+                  suggestedRecipe2 = [(ISResourceProvider *)v10 suggestedRecipe];
+                  [(ISResourceProvider *)v10 setSuggestedRecipe:suggestedRecipe2];
                 }
 
                 else
@@ -266,9 +266,9 @@ LABEL_25:
             }
           }
 
-          v17 = [(ISRecordResourceProvider *)v10 iconResource];
+          iconResource = [(ISRecordResourceProvider *)v10 iconResource];
 
-          if (!v17)
+          if (!iconResource)
           {
             v18 = _ISDefaultLog();
             if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))

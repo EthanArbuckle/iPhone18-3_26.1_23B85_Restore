@@ -1,8 +1,8 @@
 @interface MIOVideoEncoderController
-- (BOOL)closeEncoderError:(id *)a3;
-- (BOOL)encodeFrame:(__CVBuffer *)a3 pts:(id *)a4 properties:(__CFDictionary *)a5 context:(void *)a6 error:(id *)a7;
-- (BOOL)openEncoderWithContext:(id)a3 error:(id *)a4;
-- (MIOVideoEncoderController)initWithEncoderConfig:(id)a3 formtDescription:(opaqueCMFormatDescription *)a4 inProcessEncoding:(BOOL)a5 frameRate:(double)a6 aveHighPerfMode:(BOOL)a7 outputCallback:(void *)a8 delegate:(id)a9;
+- (BOOL)closeEncoderError:(id *)error;
+- (BOOL)encodeFrame:(__CVBuffer *)frame pts:(id *)pts properties:(__CFDictionary *)properties context:(void *)context error:(id *)error;
+- (BOOL)openEncoderWithContext:(id)context error:(id *)error;
+- (MIOVideoEncoderController)initWithEncoderConfig:(id)config formtDescription:(opaqueCMFormatDescription *)description inProcessEncoding:(BOOL)encoding frameRate:(double)rate aveHighPerfMode:(BOOL)mode outputCallback:(void *)callback delegate:(id)delegate;
 - (id)encoderSpecification;
 - (int)applyDefaultSessionProperties;
 - (int)enableAVEHighPerformanceProfile;
@@ -13,24 +13,24 @@
 
 @implementation MIOVideoEncoderController
 
-- (MIOVideoEncoderController)initWithEncoderConfig:(id)a3 formtDescription:(opaqueCMFormatDescription *)a4 inProcessEncoding:(BOOL)a5 frameRate:(double)a6 aveHighPerfMode:(BOOL)a7 outputCallback:(void *)a8 delegate:(id)a9
+- (MIOVideoEncoderController)initWithEncoderConfig:(id)config formtDescription:(opaqueCMFormatDescription *)description inProcessEncoding:(BOOL)encoding frameRate:(double)rate aveHighPerfMode:(BOOL)mode outputCallback:(void *)callback delegate:(id)delegate
 {
-  v17 = a3;
-  v18 = a9;
+  configCopy = config;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = MIOVideoEncoderController;
   v19 = [(MIOVideoEncoderController *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_delegate, v18);
-    v20->_enableInProcessEncoding = a5;
-    v20->_frameRate = a6;
-    v20->_aveHighPerfMode = a7;
-    objc_storeStrong(&v20->_config, a3);
-    v20->_formatDesc = a4;
-    CFRetain(a4);
-    v20->_callbackFunc = a8;
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    v20->_enableInProcessEncoding = encoding;
+    v20->_frameRate = rate;
+    v20->_aveHighPerfMode = mode;
+    objc_storeStrong(&v20->_config, config);
+    v20->_formatDesc = description;
+    CFRetain(description);
+    v20->_callbackFunc = callback;
   }
 
   return v20;
@@ -61,11 +61,11 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained codecTypeOverride];
+    codecTypeOverride = [WeakRetained codecTypeOverride];
 
-    if (v6)
+    if (codecTypeOverride)
     {
-      return v6;
+      return codecTypeOverride;
     }
 
     else
@@ -80,29 +80,29 @@
   v8[2] = *MEMORY[0x277D85DE8];
   if (self->_config)
   {
-    v2 = [(MOVStreamEncoderConfig *)self->_config encoderSpecification];
+    encoderSpecification = [(MOVStreamEncoderConfig *)self->_config encoderSpecification];
 LABEL_3:
-    v3 = v2;
+    overrideVideoEncoderSpecification = encoderSpecification;
     goto LABEL_5;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained overrideVideoEncoderSpecification];
+  overrideVideoEncoderSpecification = [WeakRetained overrideVideoEncoderSpecification];
 
-  if (!v3)
+  if (!overrideVideoEncoderSpecification)
   {
     v6 = *MEMORY[0x277CE2BB0];
     v7[0] = *MEMORY[0x277CE2BA8];
     v7[1] = v6;
     v8[0] = MEMORY[0x277CBEC38];
     v8[1] = MEMORY[0x277CBEC38];
-    v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
+    encoderSpecification = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:2];
     goto LABEL_3;
   }
 
 LABEL_5:
 
-  return v3;
+  return overrideVideoEncoderSpecification;
 }
 
 - (int)applyDefaultSessionProperties
@@ -146,15 +146,15 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)openEncoderWithContext:(id)a3 error:(id *)a4
+- (BOOL)openEncoderWithContext:(id)context error:(id *)error
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   Dimensions = CMVideoFormatDescriptionGetDimensions(self->_formatDesc);
   v8 = Dimensions;
   v9 = HIDWORD(Dimensions);
-  v10 = [(MIOVideoEncoderController *)self encoderSpecification];
-  v11 = [(MIOVideoEncoderController *)self codecType];
+  encoderSpecification = [(MIOVideoEncoderController *)self encoderSpecification];
+  codecType = [(MIOVideoEncoderController *)self codecType];
   if (!self->_enableInProcessEncoding)
   {
     goto LABEL_5;
@@ -171,13 +171,13 @@ LABEL_5:
   v34[0] = MEMORY[0x277CBEC38];
   compressionSessionOut = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
   p_compressionSession = &self->_compressionSession;
-  outputCallbackRefCon = v6;
+  outputCallbackRefCon = contextCopy;
   v13 = VTCompressionSessionCreateWithOptions();
 
   if (!self->_enableInProcessEncoding)
   {
 LABEL_5:
-    v13 = VTCompressionSessionCreate(*MEMORY[0x277CBECE8], v8, v9, v11, v10, 0, 0, self->_callbackFunc, v6, &self->_compressionSession);
+    v13 = VTCompressionSessionCreate(*MEMORY[0x277CBECE8], v8, v9, codecType, encoderSpecification, 0, 0, self->_callbackFunc, contextCopy, &self->_compressionSession);
   }
 
   if (!v13)
@@ -188,7 +188,7 @@ LABEL_5:
       if (![(MOVStreamEncoderConfig *)config applySessionProperties:self->_compressionSession])
       {
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VTCompressionSession set properties failed."];
-        if (a4)
+        if (error)
         {
           goto LABEL_8;
         }
@@ -215,11 +215,11 @@ LABEL_17:
 
       if ((v20 & 1) == 0)
       {
-        v21 = [(MIOVideoEncoderController *)self applyDefaultSessionProperties];
-        if (v21)
+        applyDefaultSessionProperties = [(MIOVideoEncoderController *)self applyDefaultSessionProperties];
+        if (applyDefaultSessionProperties)
         {
-          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error applying default settings errNo: %d", v21];
-          if (a4)
+          v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error applying default settings errNo: %d", applyDefaultSessionProperties];
+          if (error)
           {
             goto LABEL_8;
           }
@@ -251,9 +251,9 @@ LABEL_17:
         v23 = +[MIOLog defaultLog];
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v24 = [(MIOVideoEncoderController *)self frameReorderingEnabled];
+          frameReorderingEnabled = [(MIOVideoEncoderController *)self frameReorderingEnabled];
           *buf = 67109120;
-          LODWORD(v32) = v24;
+          LODWORD(v32) = frameReorderingEnabled;
           _os_log_impl(&dword_257883000, v23, OS_LOG_TYPE_DEBUG, "AllowFrameReordering: %d", buf, 8u);
         }
       }
@@ -261,11 +261,11 @@ LABEL_17:
       CFRelease(propertyValueOut);
     }
 
-    v25 = [(MIOVideoEncoderController *)self propagateColorAttachments];
-    if (v25)
+    propagateColorAttachments = [(MIOVideoEncoderController *)self propagateColorAttachments];
+    if (propagateColorAttachments)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error propagateColorAttachments errNo: %d", v25];
-      if (a4)
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error propagateColorAttachments errNo: %d", propagateColorAttachments];
+      if (error)
       {
         goto LABEL_8;
       }
@@ -287,9 +287,9 @@ LABEL_17:
         goto LABEL_19;
       }
 
-      v26 = [(MIOVideoEncoderController *)self enableAVEHighPerformanceProfile];
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error enabling AVE High Performance Mode errNo: %d", v26];
-      if (a4)
+      enableAVEHighPerformanceProfile = [(MIOVideoEncoderController *)self enableAVEHighPerformanceProfile];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error enabling AVE High Performance Mode errNo: %d", enableAVEHighPerformanceProfile];
+      if (error)
       {
         goto LABEL_8;
       }
@@ -307,7 +307,7 @@ LABEL_17:
   }
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VTCompressionSessionCreate errNo: %d", v13];
-  if (!a4)
+  if (!error)
   {
     v16 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -321,7 +321,7 @@ LABEL_17:
   }
 
 LABEL_8:
-  *a4 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v14 code:{14, outputCallbackRefCon}];
+  *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v14 code:{14, outputCallbackRefCon}];
 LABEL_18:
 
   v17 = 0;
@@ -430,20 +430,20 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)encodeFrame:(__CVBuffer *)a3 pts:(id *)a4 properties:(__CFDictionary *)a5 context:(void *)a6 error:(id *)a7
+- (BOOL)encodeFrame:(__CVBuffer *)frame pts:(id *)pts properties:(__CFDictionary *)properties context:(void *)context error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
   infoFlagsOut = 0;
   compressionSession = self->_compressionSession;
-  presentationTimeStamp = *a4;
+  presentationTimeStamp = *pts;
   duration = **&MEMORY[0x277CC0890];
-  v9 = VTCompressionSessionEncodeFrame(compressionSession, a3, &presentationTimeStamp, &duration, a5, a6, &infoFlagsOut);
+  v9 = VTCompressionSessionEncodeFrame(compressionSession, frame, &presentationTimeStamp, &duration, properties, context, &infoFlagsOut);
   if (v9)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VTCompressionSessionEncodeFrame errNo: %d infoFlags: %d", v9, infoFlagsOut];
-    if (a7)
+    infoFlagsOut = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VTCompressionSessionEncodeFrame errNo: %d infoFlags: %d", v9, infoFlagsOut];
+    if (error)
     {
-      *a7 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v10 code:14];
+      *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:infoFlagsOut code:14];
     }
 
     else
@@ -452,7 +452,7 @@ LABEL_11:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         LODWORD(presentationTimeStamp.value) = 138412290;
-        *(&presentationTimeStamp.value + 4) = v10;
+        *(&presentationTimeStamp.value + 4) = infoFlagsOut;
         _os_log_impl(&dword_257883000, v11, OS_LOG_TYPE_ERROR, "%@", &presentationTimeStamp, 0xCu);
       }
     }
@@ -461,7 +461,7 @@ LABEL_11:
   return v9 == 0;
 }
 
-- (BOOL)closeEncoderError:(id *)a3
+- (BOOL)closeEncoderError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   if (![(MIOVideoEncoderController *)self closed])
@@ -481,9 +481,9 @@ LABEL_11:
       }
 
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error VTCompressionSessionCompleteFrames errNo: %d", v7];
-      if (a3)
+      if (error)
       {
-        *a3 = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v8 code:14];
+        *error = [MEMORY[0x277CCA9B8] internalErrorWithMessage:v8 code:14];
       }
 
       else
@@ -500,10 +500,10 @@ LABEL_11:
 
     else
     {
-      if (a3)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] internalErrorWithMessage:@"Error closeEncoder: no VTCompressionSession" code:14];
-        *a3 = v5 = 0;
+        *error = v5 = 0;
         return v5;
       }
 

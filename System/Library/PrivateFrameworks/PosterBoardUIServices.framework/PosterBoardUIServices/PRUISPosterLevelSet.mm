@@ -1,20 +1,20 @@
 @interface PRUISPosterLevelSet
-+ (id)PRUISPosterLevelSetForPUIPosterLevelSet:(id)a3;
++ (id)PRUISPosterLevelSetForPUIPosterLevelSet:(id)set;
 + (id)allLevelsExceptFloating;
 + (id)compositeLevelSet;
 + (id)defaultLevelSet;
-+ (id)levelSetForLevel:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLevelSet:(id)a3;
++ (id)levelSetForLevel:(int64_t)level;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLevelSet:(id)set;
 - (PRUISPosterLevelSet)init;
-- (PRUISPosterLevelSet)initWithCoder:(id)a3;
-- (PRUISPosterLevelSet)initWithLevel:(int64_t)a3;
-- (PRUISPosterLevelSet)initWithLevels:(id)a3;
-- (PRUISPosterLevelSet)initWithNumberOfLevels:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRUISPosterLevelSet)initWithCoder:(id)coder;
+- (PRUISPosterLevelSet)initWithLevel:(int64_t)level;
+- (PRUISPosterLevelSet)initWithLevels:(id)levels;
+- (PRUISPosterLevelSet)initWithNumberOfLevels:(unint64_t)levels;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)sortedLevels;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRUISPosterLevelSet
@@ -79,19 +79,19 @@ void __46__PRUISPosterLevelSet_allLevelsExceptFloating__block_invoke()
   allLevelsExceptFloating_allLevelsExceptFloating = v0;
 }
 
-+ (id)levelSetForLevel:(int64_t)a3
++ (id)levelSetForLevel:(int64_t)level
 {
-  v3 = [[PRUISPosterLevelSet alloc] initWithLevel:a3];
+  v3 = [[PRUISPosterLevelSet alloc] initWithLevel:level];
 
   return v3;
 }
 
-+ (id)PRUISPosterLevelSetForPUIPosterLevelSet:(id)a3
++ (id)PRUISPosterLevelSetForPUIPosterLevelSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = objc_alloc_init(PRUISPosterLevelSet);
   underlyingLevelSet = v4->_underlyingLevelSet;
-  v4->_underlyingLevelSet = v3;
+  v4->_underlyingLevelSet = setCopy;
 
   return v4;
 }
@@ -107,7 +107,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v5;
 }
 
-- (PRUISPosterLevelSet)initWithNumberOfLevels:(unint64_t)a3
+- (PRUISPosterLevelSet)initWithNumberOfLevels:(unint64_t)levels
 {
   v12.receiver = self;
   v12.super_class = PRUISPosterLevelSet;
@@ -115,7 +115,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   if (v4)
   {
     v5 = objc_opt_new();
-    for (i = &v13; a3; --a3)
+    for (i = &v13; levels; --levels)
     {
       v6 = i++;
       v7 = [MEMORY[0x1E696AD98] numberWithInteger:*v6];
@@ -130,7 +130,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v4;
 }
 
-- (PRUISPosterLevelSet)initWithLevel:(int64_t)a3
+- (PRUISPosterLevelSet)initWithLevel:(int64_t)level
 {
   v12.receiver = self;
   v12.super_class = PRUISPosterLevelSet;
@@ -139,7 +139,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   {
     v5 = objc_alloc(MEMORY[0x1E69C5590]);
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:level];
     v8 = [v6 setWithObject:v7];
     v9 = [v5 initWithSet:v8];
     underlyingLevelSet = v4->_underlyingLevelSet;
@@ -149,15 +149,15 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v4;
 }
 
-- (PRUISPosterLevelSet)initWithLevels:(id)a3
+- (PRUISPosterLevelSet)initWithLevels:(id)levels
 {
-  v4 = a3;
+  levelsCopy = levels;
   v9.receiver = self;
   v9.super_class = PRUISPosterLevelSet;
   v5 = [(PRUISPosterLevelSet *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C5590]) initWithSet:v4];
+    v6 = [objc_alloc(MEMORY[0x1E69C5590]) initWithSet:levelsCopy];
     underlyingLevelSet = v5->_underlyingLevelSet;
     v5->_underlyingLevelSet = v6;
   }
@@ -180,9 +180,9 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v2;
 }
 
-- (PRUISPosterLevelSet)initWithCoder:(id)a3
+- (PRUISPosterLevelSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PRUISPosterLevelSet;
   v5 = [(PRUISPosterLevelSet *)&v14 init];
@@ -192,7 +192,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
     v7 = objc_opt_self();
     v8 = objc_opt_self();
     v9 = [v6 setWithObjects:{v7, v8, 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"levels"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"levels"];
 
     v11 = [objc_alloc(MEMORY[0x1E69C5590]) initWithSet:v10];
     underlyingLevelSet = v5->_underlyingLevelSet;
@@ -202,18 +202,18 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   underlyingLevelSet = self->_underlyingLevelSet;
-  v4 = a3;
-  v5 = [(PUIPosterLevelSet *)underlyingLevelSet levels];
-  [v4 encodeObject:v5 forKey:@"levels"];
+  coderCopy = coder;
+  levels = [(PUIPosterLevelSet *)underlyingLevelSet levels];
+  [coderCopy encodeObject:levels forKey:@"levels"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -223,28 +223,28 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = (isKindOfClass & 1) != 0 && [(PRUISPosterLevelSet *)self isEqualToLevelSet:v4];
+    v7 = (isKindOfClass & 1) != 0 && [(PRUISPosterLevelSet *)self isEqualToLevelSet:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToLevelSet:(id)a3
+- (BOOL)isEqualToLevelSet:(id)set
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (v4)
+  setCopy = set;
+  p_isa = &setCopy->super.isa;
+  if (setCopy)
   {
-    if (self == v4)
+    if (self == setCopy)
     {
       v8 = 1;
     }
 
     else
     {
-      v6 = [(PUIPosterLevelSet *)self->_underlyingLevelSet levels];
-      v7 = [p_isa[1] levels];
-      v8 = [v6 isEqualToSet:v7];
+      levels = [(PUIPosterLevelSet *)self->_underlyingLevelSet levels];
+      levels2 = [p_isa[1] levels];
+      v8 = [levels isEqualToSet:levels2];
     }
   }
 
@@ -256,7 +256,7 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PRUISPosterLevelSet allocWithZone:?]];
   v5 = [(PUIPosterLevelSet *)self->_underlyingLevelSet copy];
@@ -268,22 +268,22 @@ PRUISPosterLevelSet *__64__PRUISPosterLevelSet_PRUISPosterLevelSetsForPRPosterLe
 
 - (id)sortedLevels
 {
-  v2 = [(PUIPosterLevelSet *)self->_underlyingLevelSet sortedLevels];
-  v3 = [v2 array];
+  sortedLevels = [(PUIPosterLevelSet *)self->_underlyingLevelSet sortedLevels];
+  array = [sortedLevels array];
 
-  return v3;
+  return array;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRUISPosterLevelSet *)self sortedLevels];
-  v5 = [v4 bs_mapNoNulls:&__block_literal_global_44];
+  sortedLevels = [(PRUISPosterLevelSet *)self sortedLevels];
+  v5 = [sortedLevels bs_mapNoNulls:&__block_literal_global_44];
   [v3 appendArraySection:v5 withName:@"levels" skipIfEmpty:1];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 __CFString *__34__PRUISPosterLevelSet_description__block_invoke(uint64_t a1, void *a2)

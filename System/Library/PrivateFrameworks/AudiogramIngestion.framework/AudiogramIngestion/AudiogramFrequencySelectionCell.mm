@@ -1,13 +1,13 @@
 @interface AudiogramFrequencySelectionCell
-- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithCoder:(id)a3;
-- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithCoder:(id)coder;
+- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation AudiogramFrequencySelectionCell
 
-- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_2417E419C();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18AudiogramIngestion31AudiogramFrequencySelectionCell_frequency) = 0;
@@ -24,19 +24,19 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for AudiogramFrequencySelectionCell();
-  v7 = [(AudiogramFrequencySelectionCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(AudiogramFrequencySelectionCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithCoder:(id)a3
+- (_TtC18AudiogramIngestion31AudiogramFrequencySelectionCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18AudiogramIngestion31AudiogramFrequencySelectionCell_frequency) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18AudiogramIngestion31AudiogramFrequencySelectionCell_frequencySelected) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AudiogramFrequencySelectionCell();
-  v4 = a3;
-  v5 = [(AudiogramFrequencySelectionCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AudiogramFrequencySelectionCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

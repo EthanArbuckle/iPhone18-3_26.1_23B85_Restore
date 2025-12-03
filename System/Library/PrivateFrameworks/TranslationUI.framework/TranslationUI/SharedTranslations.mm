@@ -4,8 +4,8 @@
 - (_TtC13TranslationUI18SharedTranslations)init;
 - (void)dealloc;
 - (void)presentedItemDidChange;
-- (void)setPresentedItemOperationQueue:(id)a3;
-- (void)setPresentedItemURL:(id)a3;
+- (void)setPresentedItemOperationQueue:(id)queue;
+- (void)setPresentedItemURL:(id)l;
 @end
 
 @implementation SharedTranslations
@@ -17,13 +17,13 @@
   return *(self + v3);
 }
 
-- (void)setPresentedItemOperationQueue:(id)a3
+- (void)setPresentedItemOperationQueue:(id)queue
 {
   v5 = OBJC_IVAR____TtC13TranslationUI18SharedTranslations_presentedItemOperationQueue;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = queue;
+  queueCopy = queue;
 }
 
 - (NSURL)presentedItemURL
@@ -49,13 +49,13 @@
   return v11;
 }
 
-- (void)setPresentedItemURL:(id)a3
+- (void)setPresentedItemURL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2806DF2A0, &qword_26F4A7190);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     sub_26F49D848();
     v9 = sub_26F49D878();
@@ -70,23 +70,23 @@
 
   v11 = OBJC_IVAR____TtC13TranslationUI18SharedTranslations_presentedItemURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_26F42EEF8(v8, self + v11);
   swift_endAccess();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_26F4301E8();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for SharedTranslations(0);
   [(SharedTranslations *)&v3 dealloc];
 }
 
 - (void)presentedItemDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_26F4337F0();
 }
 

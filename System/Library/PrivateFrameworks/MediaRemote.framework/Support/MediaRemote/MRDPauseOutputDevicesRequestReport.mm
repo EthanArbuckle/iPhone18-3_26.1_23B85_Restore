@@ -1,5 +1,5 @@
 @interface MRDPauseOutputDevicesRequestReport
-- (MRDPauseOutputDevicesRequestReport)initWithOutputDevices:(id)a3 requestID:(id)a4;
+- (MRDPauseOutputDevicesRequestReport)initWithOutputDevices:(id)devices requestID:(id)d;
 - (NSError)error;
 - (id)description;
 - (int)appletvsEffected;
@@ -10,23 +10,23 @@
 - (int)endpointsPaused;
 - (int)endpointsRemoved;
 - (int)homepodsEffected;
-- (void)addOperation:(id)a3;
+- (void)addOperation:(id)operation;
 @end
 
 @implementation MRDPauseOutputDevicesRequestReport
 
-- (MRDPauseOutputDevicesRequestReport)initWithOutputDevices:(id)a3 requestID:(id)a4
+- (MRDPauseOutputDevicesRequestReport)initWithOutputDevices:(id)devices requestID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  dCopy = d;
   v16.receiver = self;
   v16.super_class = MRDPauseOutputDevicesRequestReport;
   v9 = [(MRDPauseOutputDevicesRequestReport *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_requestID, a4);
-    objc_storeStrong(&v10->_outputDevices, a3);
+    objc_storeStrong(&v9->_requestID, d);
+    objc_storeStrong(&v10->_outputDevices, devices);
     v11 = objc_alloc_init(NSMutableArray);
     operations = v10->_operations;
     v10->_operations = v11;
@@ -39,21 +39,21 @@
   return v10;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v4 = self->_operations;
   objc_sync_enter(v4);
-  [(NSMutableArray *)self->_operations addObject:v5];
+  [(NSMutableArray *)self->_operations addObject:operationCopy];
   objc_sync_exit(v4);
 }
 
 - (NSError)error
 {
   v2 = [(NSMutableArray *)self->_operations msv_firstWhere:&stru_1004BB828];
-  v3 = [v2 error];
+  error = [v2 error];
 
-  return v3;
+  return error;
 }
 
 - (int)homepodsEffected
@@ -78,9 +78,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) pauseOperation];
-        v9 = [v8 relevantOutputDevices];
-        v10 = [v9 msv_filter:&stru_1004BB848];
+        pauseOperation = [*(*(&v12 + 1) + 8 * i) pauseOperation];
+        relevantOutputDevices = [pauseOperation relevantOutputDevices];
+        v10 = [relevantOutputDevices msv_filter:&stru_1004BB848];
         v5 = [v10 count] + v5;
       }
 
@@ -120,9 +120,9 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) pauseOperation];
-        v9 = [v8 relevantOutputDevices];
-        v10 = [v9 msv_filter:&stru_1004BB868];
+        pauseOperation = [*(*(&v12 + 1) + 8 * i) pauseOperation];
+        relevantOutputDevices = [pauseOperation relevantOutputDevices];
+        v10 = [relevantOutputDevices msv_filter:&stru_1004BB868];
         v5 = [v10 count] + v5;
       }
 
@@ -162,10 +162,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) pauseOperation];
-        v9 = [v8 type];
+        pauseOperation = [*(*(&v11 + 1) + 8 * i) pauseOperation];
+        type = [pauseOperation type];
 
-        if (v9 == 3)
+        if (type == 3)
         {
           ++v5;
         }
@@ -208,14 +208,14 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 pauseOperation];
-        v10 = [v9 type];
+        pauseOperation = [v8 pauseOperation];
+        type = [pauseOperation type];
 
-        if (v10 == 3)
+        if (type == 3)
         {
-          v11 = [v8 pauseOperation];
-          v12 = [v11 relevantOutputDevices];
-          v5 += [v12 count];
+          pauseOperation2 = [v8 pauseOperation];
+          relevantOutputDevices = [pauseOperation2 relevantOutputDevices];
+          v5 += [relevantOutputDevices count];
         }
       }
 
@@ -255,10 +255,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) pauseOperation];
-        v9 = [v8 type];
+        pauseOperation = [*(*(&v11 + 1) + 8 * i) pauseOperation];
+        type = [pauseOperation type];
 
-        if (v9 == 2)
+        if (type == 2)
         {
           ++v5;
         }
@@ -301,14 +301,14 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 pauseOperation];
-        v10 = [v9 type];
+        pauseOperation = [v8 pauseOperation];
+        type = [pauseOperation type];
 
-        if (v10 == 2)
+        if (type == 2)
         {
-          v11 = [v8 pauseOperation];
-          v12 = [v11 relevantOutputDevices];
-          v5 += [v12 count];
+          pauseOperation2 = [v8 pauseOperation];
+          relevantOutputDevices = [pauseOperation2 relevantOutputDevices];
+          v5 += [relevantOutputDevices count];
         }
       }
 
@@ -348,10 +348,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) pauseOperation];
-        v9 = [v8 type];
+        pauseOperation = [*(*(&v11 + 1) + 8 * i) pauseOperation];
+        type = [pauseOperation type];
 
-        if (v9 == 1)
+        if (type == 1)
         {
           ++v5;
         }
@@ -394,14 +394,14 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 pauseOperation];
-        v10 = [v9 type];
+        pauseOperation = [v8 pauseOperation];
+        type = [pauseOperation type];
 
-        if (v10 == 1)
+        if (type == 1)
         {
-          v11 = [v8 pauseOperation];
-          v12 = [v11 relevantOutputDevices];
-          v5 += [v12 count];
+          pauseOperation2 = [v8 pauseOperation];
+          relevantOutputDevices = [pauseOperation2 relevantOutputDevices];
+          v5 += [relevantOutputDevices count];
         }
       }
 
@@ -448,40 +448,40 @@
 
         v6 = *(*(&v42 + 1) + 8 * v5);
         [v3 appendFormat:@"{\n"];
-        v7 = [v6 pauseOperation];
-        v8 = [v7 type];
+        pauseOperation = [v6 pauseOperation];
+        type = [pauseOperation type];
         v9 = @"?";
-        if (v8 <= 4)
+        if (type <= 4)
         {
-          v9 = off_1004BB888[v8];
+          v9 = off_1004BB888[type];
         }
 
         v37 = v5;
         [v3 appendFormat:@" Operation: %@\n", v9];
 
-        v10 = [v6 pauseOperation];
-        v11 = [v10 reason];
-        [v3 appendFormat:@" Reason: %@\n", v11];
+        pauseOperation2 = [v6 pauseOperation];
+        reason = [pauseOperation2 reason];
+        [v3 appendFormat:@" Reason: %@\n", reason];
 
-        v12 = [v6 endpoint];
-        v13 = [v12 debugName];
-        [v3 appendFormat:@" Endpoint: %@\n", v13];
+        endpoint = [v6 endpoint];
+        debugName = [endpoint debugName];
+        [v3 appendFormat:@" Endpoint: %@\n", debugName];
 
         [v6 duration];
         [v3 appendFormat:@" Duration: %lf\n", v14];
-        v15 = [v6 pauseOperation];
-        v16 = [v15 relevantOutputDevices];
-        v17 = [v16 count];
+        pauseOperation3 = [v6 pauseOperation];
+        relevantOutputDevices = [pauseOperation3 relevantOutputDevices];
+        v17 = [relevantOutputDevices count];
 
         if (v17)
         {
-          v18 = [v6 pauseOperation];
-          v19 = [v18 relevantOutputDeviceUIDs];
-          [v3 appendFormat:@" RelevantOuptutDevices: %@\n", v19];
+          pauseOperation4 = [v6 pauseOperation];
+          relevantOutputDeviceUIDs = [pauseOperation4 relevantOutputDeviceUIDs];
+          [v3 appendFormat:@" RelevantOuptutDevices: %@\n", relevantOutputDeviceUIDs];
 
-          v20 = [v6 pauseOperation];
-          v21 = [v20 devicesInGroup];
-          [v3 appendFormat:@" DevicesInGroup: %@\n", v21];
+          pauseOperation5 = [v6 pauseOperation];
+          devicesInGroup = [pauseOperation5 devicesInGroup];
+          [v3 appendFormat:@" DevicesInGroup: %@\n", devicesInGroup];
         }
 
         [v3 appendFormat:@" Events:\n"];
@@ -489,8 +489,8 @@
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v22 = [v6 events];
-        v23 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        events = [v6 events];
+        v23 = [events countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v23)
         {
           v24 = v23;
@@ -501,28 +501,28 @@
             {
               if (*v39 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(events);
               }
 
               v27 = *(*(&v38 + 1) + 8 * i);
-              v28 = [v27 error];
+              error = [v27 error];
 
-              v29 = [v27 name];
+              name = [v27 name];
               [v27 duration];
               v31 = v30;
-              if (v28)
+              if (error)
               {
-                v32 = [v27 error];
-                [v3 appendFormat:@"    %@ : %lf seconds : %@\n", v29, v31, v32];
+                error2 = [v27 error];
+                [v3 appendFormat:@"    %@ : %lf seconds : %@\n", name, v31, error2];
               }
 
               else
               {
-                [v3 appendFormat:@"    %@ : %lf seconds\n", v29, v30];
+                [v3 appendFormat:@"    %@ : %lf seconds\n", name, v30];
               }
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v24 = [events countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v24);

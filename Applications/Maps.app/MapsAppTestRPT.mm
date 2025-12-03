@@ -1,14 +1,14 @@
 @interface MapsAppTestRPT
 - ($1AB5FA073B851C12C2339EC22442E995)startPoint;
 - (BOOL)runTest;
-- (MapsAppTestRPT)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
-- (void)addFullyDrawnCallback:(id)a3;
-- (void)enterLookAroundForTest:(id)a3;
-- (void)expandLookAroundToFullscreen:(BOOL)a3 withLookAroundView:(id)a4 mapItem:(id)a5 completionBlock:(id)a6;
+- (MapsAppTestRPT)initWithApplication:(id)application testName:(id)name options:(id)options;
+- (void)addFullyDrawnCallback:(id)callback;
+- (void)enterLookAroundForTest:(id)test;
+- (void)expandLookAroundToFullscreen:(BOOL)fullscreen withLookAroundView:(id)view mapItem:(id)item completionBlock:(id)block;
 - (void)initialLoadComplete;
-- (void)onFullyDrawn:(id)a3;
-- (void)onLookAroundView:(id)a3 didBecomeAdequatelyDrawnCallback:(id)a4;
-- (void)onLookAroundView:(id)a3 didCompletionPostTransitionAnimation:(id)a4;
+- (void)onFullyDrawn:(id)drawn;
+- (void)onLookAroundView:(id)view didBecomeAdequatelyDrawnCallback:(id)callback;
+- (void)onLookAroundView:(id)view didCompletionPostTransitionAnimation:(id)animation;
 - (void)rptTestCompleted;
 @end
 
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (void)enterLookAroundForTest:(id)a3
+- (void)enterLookAroundForTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v5 = +[VKDebugSettings sharedSettingsExt];
   self->_savedDebugDrawContinuously = [v5 layoutContinuously];
 
@@ -35,14 +35,14 @@
   [v6 setLayoutContinuously:1];
 
   [(MapsAppTest *)self startedSubTest:@"lookAroundEnter"];
-  v7 = [(MapsAppTest *)self mainMKMapView];
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
   v8 = [MKPlacemark alloc];
-  [v7 centerCoordinate];
+  [mainMKMapView centerCoordinate];
   v9 = [v8 initWithCoordinate:?];
   v10 = [[MKMapItem alloc] initWithPlacemark:v9];
   v11 = [MKLookAroundEntryPoint entryPointWithMapItem:v10];
-  v12 = [(MapsAppTest *)self testCoordinator];
-  [v12 pptTestEnterLookAroundWithEntryPoint:v11 lookAroundView:0 showsFullScreen:0];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestEnterLookAroundWithEntryPoint:v11 lookAroundView:0 showsFullScreen:0];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -50,50 +50,50 @@
   v15[3] = &unk_101638720;
   v15[4] = self;
   v16 = v10;
-  v17 = v4;
-  v13 = v4;
+  v17 = testCopy;
+  v13 = testCopy;
   v14 = v10;
   [PPTNotificationCenter addOnceObserverForName:@"LookAroundTrayContaineeViewControllerDidAppear" object:0 usingBlock:v15];
 }
 
-- (void)expandLookAroundToFullscreen:(BOOL)a3 withLookAroundView:(id)a4 mapItem:(id)a5 completionBlock:(id)a6
+- (void)expandLookAroundToFullscreen:(BOOL)fullscreen withLookAroundView:(id)view mapItem:(id)item completionBlock:(id)block
 {
-  v8 = a3;
+  fullscreenCopy = fullscreen;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10088B94C;
   v15[3] = &unk_101638720;
   v15[4] = self;
-  v16 = a4;
-  v17 = a6;
-  v10 = v17;
-  v11 = v16;
-  v12 = a5;
+  viewCopy = view;
+  blockCopy = block;
+  v10 = blockCopy;
+  v11 = viewCopy;
+  itemCopy = item;
   [PPTNotificationCenter addOnceObserverForName:@"PPTLookAroundContainerViewControllerDidTransitionToFullscreen" object:0 usingBlock:v15];
-  v13 = [MKLookAroundEntryPoint entryPointWithMapItem:v12];
+  v13 = [MKLookAroundEntryPoint entryPointWithMapItem:itemCopy];
 
-  v14 = [(MapsAppTest *)self testCoordinator];
-  [v14 pptTestEnterLookAroundWithEntryPoint:v13 lookAroundView:v11 showsFullScreen:v8];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestEnterLookAroundWithEntryPoint:v13 lookAroundView:v11 showsFullScreen:fullscreenCopy];
 }
 
-- (void)onLookAroundView:(id)a3 didCompletionPostTransitionAnimation:(id)a4
+- (void)onLookAroundView:(id)view didCompletionPostTransitionAnimation:(id)animation
 {
-  v4 = a4;
+  animationCopy = animation;
   v5 = dispatch_time(0, 200000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10088BAF4;
   block[3] = &unk_101661760;
-  v8 = v4;
-  v6 = v4;
+  v8 = animationCopy;
+  v6 = animationCopy;
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)onLookAroundView:(id)a3 didBecomeAdequatelyDrawnCallback:(id)a4
+- (void)onLookAroundView:(id)view didBecomeAdequatelyDrawnCallback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 adequatelyDrawn])
+  viewCopy = view;
+  callbackCopy = callback;
+  if ([viewCopy adequatelyDrawn])
   {
     v7 = sub_100798614();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -103,13 +103,13 @@
       *buf = 138412546;
       v14 = v9;
       v15 = 2048;
-      v16 = v5;
+      v16 = viewCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "<%@:%p> is already adequately drawn", buf, 0x16u);
     }
 
-    if (v6)
+    if (callbackCopy)
     {
-      v6[2](v6);
+      callbackCopy[2](callbackCopy);
     }
   }
 
@@ -120,35 +120,35 @@
     v11[1] = 3221225472;
     v11[2] = sub_10088BC94;
     v11[3] = &unk_10164FAC0;
-    v12 = v6;
-    [PPTNotificationCenter addOnceObserverForName:v10 object:v5 usingBlock:v11];
+    v12 = callbackCopy;
+    [PPTNotificationCenter addOnceObserverForName:v10 object:viewCopy usingBlock:v11];
   }
 }
 
-- (void)onFullyDrawn:(id)a3
+- (void)onFullyDrawn:(id)drawn
 {
-  v18 = a3;
-  v5 = [v18 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"hasFailedTiles"];
-  v7 = [v6 BOOLValue];
+  drawnCopy = drawn;
+  userInfo = [drawnCopy userInfo];
+  object2 = [userInfo objectForKeyedSubscript:@"hasFailedTiles"];
+  bOOLValue = [object2 BOOLValue];
 
-  v8 = [v18 object];
-  if (v8)
+  object = [drawnCopy object];
+  if (object)
   {
-    v6 = [v18 object];
-    v9 = [(MapsAppTest *)self mainVKMapView];
-    v3 = v9;
-    if (v6 != v9)
+    object2 = [drawnCopy object];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    v3 = mainVKMapView;
+    if (object2 != mainVKMapView)
     {
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(MapsAppTest *)self mainVKMapView];
-  v11 = [v10 isFullyDrawn] & (v7 ^ 1);
+  mainVKMapView2 = [(MapsAppTest *)self mainVKMapView];
+  v11 = [mainVKMapView2 isFullyDrawn] & (bOOLValue ^ 1);
 
-  if (v8)
+  if (object)
   {
 
     if ((v11 & 1) == 0)
@@ -167,34 +167,34 @@
 
   while (1)
   {
-    v13 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v14 = [v13 count];
+    fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+    v14 = [fullyDrawnCallbacks count];
 
     if (!v14)
     {
       break;
     }
 
-    v15 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v16 = [v15 firstObject];
+    fullyDrawnCallbacks2 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    firstObject = [fullyDrawnCallbacks2 firstObject];
 
-    v17 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    [v17 removeObjectAtIndex:0];
+    fullyDrawnCallbacks3 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    [fullyDrawnCallbacks3 removeObjectAtIndex:0];
 
-    v16[2](v16);
+    firstObject[2](firstObject);
   }
 
 LABEL_11:
 }
 
-- (void)addFullyDrawnCallback:(id)a3
+- (void)addFullyDrawnCallback:(id)callback
 {
-  v4 = a3;
-  v5 = [(MapsAppTest *)self fullyDrawnCallbacks];
-  v6 = [v4 copy];
+  callbackCopy = callback;
+  fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+  v6 = [callbackCopy copy];
 
   v7 = objc_retainBlock(v6);
-  [v5 addObject:v7];
+  [fullyDrawnCallbacks addObject:v7];
 
   v8 = dispatch_time(0, 100000000);
   block[0] = _NSConcreteStackBlock;
@@ -207,7 +207,7 @@ LABEL_11:
 
 - (void)rptTestCompleted
 {
-  v3 = [(MapsAppTest *)self mainVKMapView];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
   if (self->_isLookAroundTest)
   {
     savedDebugDrawContinuously = self->_savedDebugDrawContinuously;
@@ -215,15 +215,15 @@ LABEL_11:
     [v5 setLayoutContinuously:savedDebugDrawContinuously];
   }
 
-  [v3 disableTestStatistics];
-  [v3 disableTileStatistics];
-  v17 = v3;
-  v6 = [v3 testStatistics];
+  [mainVKMapView disableTestStatistics];
+  [mainVKMapView disableTileStatistics];
+  v17 = mainVKMapView;
+  testStatistics = [mainVKMapView testStatistics];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [testStatistics countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -234,27 +234,27 @@ LABEL_11:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(testStatistics);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v6 objectForKey:v11];
-        v13 = [(MapsAppTest *)self results];
+        v12 = [testStatistics objectForKey:v11];
+        results = [(MapsAppTest *)self results];
         v14 = [NSString stringWithFormat:@"sub:rpt:%@", v11];
-        [v13 setObject:v12 forKey:v14];
+        [results setObject:v12 forKey:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [testStatistics countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [v17 tileStatistics];
-  if (v15)
+  tileStatistics = [v17 tileStatistics];
+  if (tileStatistics)
   {
-    v16 = [(MapsAppTest *)self results];
-    [v16 addEntriesFromDictionary:v15];
+    results2 = [(MapsAppTest *)self results];
+    [results2 addEntriesFromDictionary:tileStatistics];
   }
 
   [v17 resetTestStatistics];
@@ -275,24 +275,24 @@ LABEL_11:
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self options];
+  options = [(MapsAppTest *)self options];
   if (![(MapsAppTest *)self isRunningOnCarPlay])
   {
-    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [v3 _mapstest_mapType]);
+    -[MapsAppTest switchToMapType:](self, "switchToMapType:", [options _mapstest_mapType]);
   }
 
   [(MapsAppTest *)self setupForVKTest];
-  v4 = [(MapsAppTest *)self mainMKMapView];
-  [v4 _setLocationPulseEnabled:0];
+  mainMKMapView = [(MapsAppTest *)self mainMKMapView];
+  [mainMKMapView _setLocationPulseEnabled:0];
 
-  v5 = [(MapsAppTest *)self mainVKMapView];
-  [v5 setDisableTransitLines:0];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView setDisableTransitLines:0];
   [(MapsAppTestRPT *)self startPoint];
   v6 = [GEOMapRegion _mapstest_mapRegionAtCenterLocation:?];
   [(MapsAppTestRPT *)self pitch];
   v8 = v7;
   [(MapsAppTestRPT *)self yaw];
-  [v5 setMapRegion:v6 pitch:v8 yaw:v9];
+  [mainVKMapView setMapRegion:v6 pitch:v8 yaw:v9];
   objc_initWeak(&location, self);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -306,32 +306,32 @@ LABEL_11:
   return 1;
 }
 
-- (MapsAppTestRPT)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestRPT)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  optionsCopy = options;
   v22.receiver = self;
   v22.super_class = MapsAppTestRPT;
-  v10 = [(MapsAppTest *)&v22 initWithApplication:a3 testName:v8 options:v9];
+  v10 = [(MapsAppTest *)&v22 initWithApplication:application testName:nameCopy options:optionsCopy];
   v11 = v10;
   if (v10)
   {
     p_startPoint = &v10->_startPoint;
-    [v9 _mapstest_startPoint];
+    [optionsCopy _mapstest_startPoint];
     *&p_startPoint->latitude = v13;
     v11->_startPoint.longitude = v14;
     v11->_startPoint.altitude = v15;
-    [v9 _mapstest_pitch];
+    [optionsCopy _mapstest_pitch];
     v11->_pitch = v16;
-    [v9 _mapstest_yaw];
+    [optionsCopy _mapstest_yaw];
     v11->_yaw = v17;
-    v18 = [v9 _mapstest_rptTestActions];
+    _mapstest_rptTestActions = [optionsCopy _mapstest_rptTestActions];
     testActions = v11->_testActions;
-    v11->_testActions = v18;
+    v11->_testActions = _mapstest_rptTestActions;
 
-    [v9 _mapstest_animationDurationWithDefault:2.0];
+    [optionsCopy _mapstest_animationDurationWithDefault:2.0];
     v11->_actionDuration = v20;
-    v11->_isLookAroundTest = [v8 rangeOfString:@"LookAround"] == 3;
+    v11->_isLookAroundTest = [nameCopy rangeOfString:@"LookAround"] == 3;
   }
 
   return v11;

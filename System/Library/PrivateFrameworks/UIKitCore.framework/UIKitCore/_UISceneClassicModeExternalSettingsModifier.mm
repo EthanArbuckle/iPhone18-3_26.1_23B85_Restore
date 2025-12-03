@@ -1,53 +1,53 @@
 @interface _UISceneClassicModeExternalSettingsModifier
 - (NSString)debugDescription;
-- (_UISceneClassicModeExternalSettingsModifier)initWithBSXPCCoder:(id)a3;
-- (_UISceneClassicModeExternalSettingsModifier)initWithMainDisplayConfiguration:(id)a3 maximumPortraitSize:(CGSize)a4 cornerRadiusConfiguration:(id)a5;
+- (_UISceneClassicModeExternalSettingsModifier)initWithBSXPCCoder:(id)coder;
+- (_UISceneClassicModeExternalSettingsModifier)initWithMainDisplayConfiguration:(id)configuration maximumPortraitSize:(CGSize)size cornerRadiusConfiguration:(id)radiusConfiguration;
 - (id)succinctDescription;
-- (id)updaterForProposedSettings:(id)a3 withSettingsDiff:(id)a4;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (id)updaterForProposedSettings:(id)settings withSettingsDiff:(id)diff;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation _UISceneClassicModeExternalSettingsModifier
 
-- (_UISceneClassicModeExternalSettingsModifier)initWithMainDisplayConfiguration:(id)a3 maximumPortraitSize:(CGSize)a4 cornerRadiusConfiguration:(id)a5
+- (_UISceneClassicModeExternalSettingsModifier)initWithMainDisplayConfiguration:(id)configuration maximumPortraitSize:(CGSize)size cornerRadiusConfiguration:(id)radiusConfiguration
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
+  height = size.height;
+  width = size.width;
+  configurationCopy = configuration;
+  radiusConfigurationCopy = radiusConfiguration;
   v15.receiver = self;
   v15.super_class = _UISceneClassicModeExternalSettingsModifier;
   v12 = [(_UISceneClassicModeExternalSettingsModifier *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mainDisplayConfiguration, a3);
+    objc_storeStrong(&v12->_mainDisplayConfiguration, configuration);
     v13->_maximumPortraitSize.width = width;
     v13->_maximumPortraitSize.height = height;
-    objc_storeStrong(&v13->_cornerRadiusConfiguration, a5);
+    objc_storeStrong(&v13->_cornerRadiusConfiguration, radiusConfiguration);
   }
 
   return v13;
 }
 
-- (id)updaterForProposedSettings:(id)a3 withSettingsDiff:(id)a4
+- (id)updaterForProposedSettings:(id)settings withSettingsDiff:(id)diff
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 containsProperty:sel_displayConfiguration];
-  v9 = [v7 containsProperty:sel_frame];
-  v10 = [v7 containsProperty:sel_cornerRadiusConfiguration];
+  settingsCopy = settings;
+  diffCopy = diff;
+  v8 = [diffCopy containsProperty:sel_displayConfiguration];
+  v9 = [diffCopy containsProperty:sel_frame];
+  v10 = [diffCopy containsProperty:sel_cornerRadiusConfiguration];
 
   if ((v8 & 1) == 0 && (v9 & 1) == 0 && !v10)
   {
     goto LABEL_31;
   }
 
-  v11 = [v6 displayConfiguration];
-  v12 = [v11 isMainDisplay];
+  displayConfiguration = [settingsCopy displayConfiguration];
+  isMainDisplay = [displayConfiguration isMainDisplay];
 
-  if (!v12)
+  if (!isMainDisplay)
   {
     goto LABEL_31;
   }
@@ -70,7 +70,7 @@
     }
   }
 
-  [v6 frame];
+  [settingsCopy frame];
   width = self->_maximumPortraitSize.width;
   height = self->_maximumPortraitSize.height;
   if (v20 > width || v21 > height)
@@ -102,12 +102,12 @@
 LABEL_19:
   if ((v10 | v8))
   {
-    v25 = [v6 cornerRadiusConfiguration];
-    v26 = [v25 isEqual:self->_cornerRadiusConfiguration];
+    cornerRadiusConfiguration = [settingsCopy cornerRadiusConfiguration];
+    v26 = [cornerRadiusConfiguration isEqual:self->_cornerRadiusConfiguration];
     v27 = 0;
-    if (v25 && (v26 & 1) == 0)
+    if (cornerRadiusConfiguration && (v26 & 1) == 0)
     {
-      if ([v25 isCongruent] && (objc_msgSend(v25, "topLeft"), v28 == 0.0))
+      if ([cornerRadiusConfiguration isCongruent] && (objc_msgSend(cornerRadiusConfiguration, "topLeft"), v28 == 0.0))
       {
         v27 = 0;
       }
@@ -164,50 +164,50 @@ LABEL_33:
   return v29;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   mainDisplayConfiguration = self->_mainDisplayConfiguration;
-  v5 = a3;
-  [v5 encodeObject:mainDisplayConfiguration forKey:@"mainDisplayConfiguration"];
-  [v5 encodeCGSize:@"maximumPortraitSize" forKey:{self->_maximumPortraitSize.width, self->_maximumPortraitSize.height}];
-  [v5 encodeObject:self->_cornerRadiusConfiguration forKey:@"cornerRadiusConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mainDisplayConfiguration forKey:@"mainDisplayConfiguration"];
+  [coderCopy encodeCGSize:@"maximumPortraitSize" forKey:{self->_maximumPortraitSize.width, self->_maximumPortraitSize.height}];
+  [coderCopy encodeObject:self->_cornerRadiusConfiguration forKey:@"cornerRadiusConfiguration"];
 }
 
-- (_UISceneClassicModeExternalSettingsModifier)initWithBSXPCCoder:(id)a3
+- (_UISceneClassicModeExternalSettingsModifier)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mainDisplayConfiguration"];
-  [v4 decodeCGSizeForKey:@"maximumPortraitSize"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mainDisplayConfiguration"];
+  [coderCopy decodeCGSizeForKey:@"maximumPortraitSize"];
   v7 = v6;
   v9 = v8;
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cornerRadiusConfiguration"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cornerRadiusConfiguration"];
 
   v11 = [(_UISceneClassicModeExternalSettingsModifier *)self initWithMainDisplayConfiguration:v5 maximumPortraitSize:v10 cornerRadiusConfiguration:v7, v9];
   return v11;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73___UISceneClassicModeExternalSettingsModifier_appendDescriptionToStream___block_invoke;
   v11[3] = &unk_1E70F35B8;
-  v5 = v4;
+  v5 = streamCopy;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v11];
-  v6 = [v5 style];
-  v7 = [v6 verbosity];
+  style = [v5 style];
+  verbosity = [style verbosity];
 
-  if (v7 != 2)
+  if (verbosity != 2)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __73___UISceneClassicModeExternalSettingsModifier_appendDescriptionToStream___block_invoke_2;
     v8[3] = &unk_1E70F35B8;
     v9 = v5;
-    v10 = self;
+    selfCopy2 = self;
     [v9 appendBodySectionWithName:0 block:v8];
   }
 }
@@ -215,8 +215,8 @@ LABEL_33:
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
@@ -224,8 +224,8 @@ LABEL_33:
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] debugStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  debugStyle = [MEMORY[0x1E698E690] debugStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:debugStyle];
 
   return v5;
 }

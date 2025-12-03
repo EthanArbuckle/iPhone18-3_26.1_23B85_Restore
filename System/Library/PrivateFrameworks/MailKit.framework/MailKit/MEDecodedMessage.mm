@@ -1,8 +1,8 @@
 @interface MEDecodedMessage
-- (BOOL)isEqual:(id)a3;
-- (MEDecodedMessage)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MEDecodedMessage)initWithCoder:(id)coder;
 - (MEDecodedMessage)initWithData:(NSData *)rawData securityInformation:(MEMessageSecurityInformation *)securityInformation context:(NSData *)context banner:(MEDecodedMessageBanner *)banner;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEDecodedMessage
@@ -28,55 +28,55 @@
   return v16;
 }
 
-- (MEDecodedMessage)initWithCoder:(id)a3
+- (MEDecodedMessage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_context"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_banner"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_securityInformation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_rawData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_context"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_banner"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_securityInformation"];
   v9 = [(MEDecodedMessage *)self initWithData:v5 securityInformation:v8 context:v6 banner:v7];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(MEDecodedMessage *)self rawData];
-  [v8 encodeObject:v4 forKey:@"EFPropertyKey_rawData"];
+  coderCopy = coder;
+  rawData = [(MEDecodedMessage *)self rawData];
+  [coderCopy encodeObject:rawData forKey:@"EFPropertyKey_rawData"];
 
-  v5 = [(MEDecodedMessage *)self securityInformation];
-  [v8 encodeObject:v5 forKey:@"EFPropertyKey_securityInformation"];
+  securityInformation = [(MEDecodedMessage *)self securityInformation];
+  [coderCopy encodeObject:securityInformation forKey:@"EFPropertyKey_securityInformation"];
 
-  v6 = [(MEDecodedMessage *)self context];
-  [v8 encodeObject:v6 forKey:@"EFPropertyKey_context"];
+  context = [(MEDecodedMessage *)self context];
+  [coderCopy encodeObject:context forKey:@"EFPropertyKey_context"];
 
-  v7 = [(MEDecodedMessage *)self banner];
-  [v8 encodeObject:v7 forKey:@"EFPropertyKey_banner"];
+  banner = [(MEDecodedMessage *)self banner];
+  [coderCopy encodeObject:banner forKey:@"EFPropertyKey_banner"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEDecodedMessage *)self rawData];
-    v8 = [v6 rawData];
+    v6 = equalCopy;
+    rawData = [(MEDecodedMessage *)self rawData];
+    rawData2 = [v6 rawData];
     if (EFObjectsAreEqual())
     {
-      v9 = [(MEDecodedMessage *)self securityInformation];
-      v10 = [v6 securityInformation];
-      if ([v9 isEqual:v10])
+      securityInformation = [(MEDecodedMessage *)self securityInformation];
+      securityInformation2 = [v6 securityInformation];
+      if ([securityInformation isEqual:securityInformation2])
       {
-        v16 = [(MEDecodedMessage *)self context];
-        v11 = [v6 context];
+        context = [(MEDecodedMessage *)self context];
+        context2 = [v6 context];
         if (EFObjectsAreEqual())
         {
-          v15 = [(MEDecodedMessage *)self banner];
-          v12 = [v6 banner];
+          banner = [(MEDecodedMessage *)self banner];
+          banner2 = [v6 banner];
           v13 = EFObjectsAreEqual();
         }
 

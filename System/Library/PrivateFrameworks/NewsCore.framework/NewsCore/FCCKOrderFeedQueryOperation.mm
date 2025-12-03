@@ -1,29 +1,29 @@
 @interface FCCKOrderFeedQueryOperation
-+ (id)_constructQueryForRequests:(id)a3 resultsLimit:(unint64_t)a4 queryPriority:(unint64_t)a5 articleLinkKeys:(id)a6;
-+ (id)_predicateForPerFeedFieldName:(id)a3 key:(id)a4 defaultValue:(id)a5 requests:(id)a6;
++ (id)_constructQueryForRequests:(id)requests resultsLimit:(unint64_t)limit queryPriority:(unint64_t)priority articleLinkKeys:(id)keys;
++ (id)_predicateForPerFeedFieldName:(id)name key:(id)key defaultValue:(id)value requests:(id)requests;
 + (id)_requiredKeys;
-+ (void)streamRecordsWithDatabase:(void *)a3 feedRequests:(void *)a4 desiredKeys:(uint64_t)a5 resultsLimit:(uint64_t)a6 queryPriority:(void *)a7 articleLinkKeys:(void *)a8 recordHandler:(void *)a9 networkEventHandler:(void *)a10 completionHandler:;
++ (void)streamRecordsWithDatabase:(void *)database feedRequests:(void *)requests desiredKeys:(uint64_t)keys resultsLimit:(uint64_t)limit queryPriority:(void *)priority articleLinkKeys:(void *)linkKeys recordHandler:(void *)handler networkEventHandler:(void *)self0 completionHandler:;
 - (BOOL)validateOperation;
-- (id)_feedRelativeDictionaryFromResultsArray:(id)a3;
-- (id)_responseForRequest:(id)a3 feedItemAndArticleRecords:(id)a4 allFeedItemAndArticleRecords:(id)a5 wasDropped:(id)a6 reachedMinOrder:(id)a7 reachedEnd:(id)a8 nextOrder:(id)a9;
-- (void)_processResultsRecord:(id)a3 feedItemAndArticleRecords:(id)a4 tagRecords:(id)a5 issueRecords:(id)a6 requestUUID:(id)a7;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_feedRelativeDictionaryFromResultsArray:(id)array;
+- (id)_responseForRequest:(id)request feedItemAndArticleRecords:(id)records allFeedItemAndArticleRecords:(id)articleRecords wasDropped:(id)dropped reachedMinOrder:(id)order reachedEnd:(id)end nextOrder:(id)nextOrder;
+- (void)_processResultsRecord:(id)record feedItemAndArticleRecords:(id)records tagRecords:(id)tagRecords issueRecords:(id)issueRecords requestUUID:(id)d;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)resetForRetry;
-- (void)setDatabase:(uint64_t)a1;
-- (void)setResultError:(uint64_t)a1;
-- (void)setResultFeedItemAndArticleRecords:(uint64_t)a1;
-- (void)setResultFeedResponses:(uint64_t)a1;
-- (void)setResultIssueRecords:(uint64_t)a1;
-- (void)setResultTagRecords:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
+- (void)setResultError:(uint64_t)error;
+- (void)setResultFeedItemAndArticleRecords:(uint64_t)records;
+- (void)setResultFeedResponses:(uint64_t)responses;
+- (void)setResultIssueRecords:(uint64_t)records;
+- (void)setResultTagRecords:(uint64_t)records;
 @end
 
 @implementation FCCKOrderFeedQueryOperation
 
 - (BOOL)validateOperation
 {
-  v2 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x1E69E9840];
   if (self && self->_database)
   {
@@ -43,7 +43,7 @@
     v17 = v8;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_5;
     }
@@ -53,13 +53,13 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_5:
-  feedRequests = v2->_feedRequests;
+  feedRequests = selfCopy->_feedRequests;
 LABEL_6:
   if (![(NSArray *)feedRequests count]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -74,37 +74,37 @@ LABEL_6:
     v17 = v9;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v10, 0x26u);
 
-    if (!v2)
+    if (!selfCopy)
     {
       goto LABEL_12;
     }
   }
 
-  else if (!v2)
+  else if (!selfCopy)
   {
     goto LABEL_12;
   }
 
-  v4 = v2->_database;
+  v4 = selfCopy->_database;
   if (v4)
   {
     v5 = v4;
-    LOBYTE(v2) = [(NSArray *)v2->_feedRequests count]!= 0;
+    LOBYTE(selfCopy) = [(NSArray *)selfCopy->_feedRequests count]!= 0;
   }
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
 LABEL_12:
   v6 = *MEMORY[0x1E69E9840];
-  return v2;
+  return selfCopy;
 }
 
 - (void)prepareOperation
 {
-  v2 = self;
+  selfCopy = self;
   v23 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -124,7 +124,7 @@ LABEL_12:
     v22 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v15, 0x26u);
 
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_6;
     }
@@ -134,22 +134,22 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  if (!v2)
+  if (!selfCopy)
   {
     goto LABEL_19;
   }
 
 LABEL_6:
-  feedRequests = v2->_feedRequests;
+  feedRequests = selfCopy->_feedRequests;
   if ([(NSArray *)feedRequests count]< 0x191)
   {
     goto LABEL_13;
   }
 
 LABEL_7:
-  if (v2)
+  if (selfCopy)
   {
-    v4 = v2->_feedRequests;
+    v4 = selfCopy->_feedRequests;
   }
 
   else
@@ -158,21 +158,21 @@ LABEL_7:
   }
 
   v6 = [(NSArray *)v4 fc_subarrayWithMaxCount:400];
-  if (v2)
+  if (selfCopy)
   {
-    objc_setProperty_nonatomic_copy(v2, v5, v6, 376);
+    objc_setProperty_nonatomic_copy(selfCopy, v5, v6, 376);
   }
 
   v7 = FCOperationLog;
   if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_ERROR))
   {
     v13 = v7;
-    v14 = [(FCOperation *)v2 shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
     v15 = 138543362;
-    v16 = v14;
+    v16 = shortOperationDescription;
     _os_log_error_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_ERROR, "%{public}@ dropping feeds because the limit was exeeded", &v15, 0xCu);
 
-    if (v2)
+    if (selfCopy)
     {
       goto LABEL_14;
     }
@@ -181,10 +181,10 @@ LABEL_7:
   else
   {
 LABEL_13:
-    if (v2)
+    if (selfCopy)
     {
 LABEL_14:
-      v8 = v2->_feedRequests;
+      v8 = selfCopy->_feedRequests;
       goto LABEL_15;
     }
   }
@@ -192,9 +192,9 @@ LABEL_14:
   v8 = 0;
 LABEL_15:
   v10 = [(NSArray *)v8 sortedArrayUsingComparator:&__block_literal_global_68];
-  if (v2)
+  if (selfCopy)
   {
-    objc_setProperty_nonatomic_copy(v2, v9, v10, 376);
+    objc_setProperty_nonatomic_copy(selfCopy, v9, v10, 376);
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -234,7 +234,7 @@ LABEL_4:
 
 - (void)performOperation
 {
-  v2 = self;
+  selfCopy = self;
   v59 = *MEMORY[0x1E69E9840];
   if (self)
   {
@@ -248,11 +248,11 @@ LABEL_4:
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v37 = [(FCOperation *)v2 shortOperationDescription];
-      v38 = v37;
-      if (v2)
+      shortOperationDescription = [(FCOperation *)selfCopy shortOperationDescription];
+      v38 = shortOperationDescription;
+      if (selfCopy)
       {
-        feedRequests = v2->_feedRequests;
+        feedRequests = selfCopy->_feedRequests;
       }
 
       else
@@ -261,7 +261,7 @@ LABEL_4:
       }
 
       *buf = 138543618;
-      *&buf[4] = v37;
+      *&buf[4] = shortOperationDescription;
       *&buf[12] = 2112;
       *&buf[14] = feedRequests;
       _os_log_debug_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ started with feed requests: %@", buf, 0x16u);
@@ -270,11 +270,11 @@ LABEL_4:
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(FCOperation *)v2 shortOperationDescription];
-    v7 = v6;
-    if (v2)
+    shortOperationDescription2 = [(FCOperation *)selfCopy shortOperationDescription];
+    v7 = shortOperationDescription2;
+    if (selfCopy)
     {
-      v8 = v2->_feedRequests;
+      v8 = selfCopy->_feedRequests;
     }
 
     else
@@ -283,19 +283,19 @@ LABEL_4:
     }
 
     *buf = 138543618;
-    *&buf[4] = v6;
+    *&buf[4] = shortOperationDescription2;
     *&buf[12] = 2112;
     *&buf[14] = v8;
     _os_log_impl(&dword_1B63EF000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ started with feed requests: %@", buf, 0x16u);
   }
 
   v9 = objc_opt_class();
-  if (v2)
+  if (selfCopy)
   {
-    v10 = v2->_feedRequests;
-    resultsLimit = v2->_resultsLimit;
-    queryPriority = v2->_queryPriority;
-    articleLinkKeys = v2->_articleLinkKeys;
+    v10 = selfCopy->_feedRequests;
+    resultsLimit = selfCopy->_resultsLimit;
+    queryPriority = selfCopy->_queryPriority;
+    articleLinkKeys = selfCopy->_articleLinkKeys;
   }
 
   else
@@ -309,9 +309,9 @@ LABEL_4:
   v14 = articleLinkKeys;
   v15 = [v9 _constructQueryForRequests:v10 resultsLimit:resultsLimit queryPriority:queryPriority articleLinkKeys:v14];
 
-  if (v2)
+  if (selfCopy)
   {
-    v16 = v2->_feedRequests;
+    v16 = selfCopy->_feedRequests;
   }
 
   else
@@ -326,11 +326,11 @@ LABEL_4:
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      v40 = [(FCOperation *)v2 shortOperationDescription];
-      v41 = v40;
-      if (v2)
+      shortOperationDescription3 = [(FCOperation *)selfCopy shortOperationDescription];
+      v41 = shortOperationDescription3;
+      if (selfCopy)
       {
-        v42 = v2->_resultsLimit;
+        v42 = selfCopy->_resultsLimit;
       }
 
       else
@@ -339,7 +339,7 @@ LABEL_4:
       }
 
       *buf = 138543874;
-      *&buf[4] = v40;
+      *&buf[4] = shortOperationDescription3;
       *&buf[12] = 2048;
       *&buf[14] = v42;
       *&buf[22] = 2112;
@@ -350,11 +350,11 @@ LABEL_4:
 
   else if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(FCOperation *)v2 shortOperationDescription];
-    v21 = v20;
-    if (v2)
+    shortOperationDescription4 = [(FCOperation *)selfCopy shortOperationDescription];
+    v21 = shortOperationDescription4;
+    if (selfCopy)
     {
-      v22 = v2->_resultsLimit;
+      v22 = selfCopy->_resultsLimit;
     }
 
     else
@@ -363,7 +363,7 @@ LABEL_4:
     }
 
     *buf = 138543874;
-    *&buf[4] = v20;
+    *&buf[4] = shortOperationDescription4;
     *&buf[12] = 2048;
     *&buf[14] = v22;
     *&buf[22] = 2112;
@@ -373,21 +373,21 @@ LABEL_4:
 
   v23 = objc_alloc_init(FCCKContentQueryOperation);
   v24 = v23;
-  if (v2)
+  if (selfCopy)
   {
     [(FCCKContentQueryOperation *)v23 setDatabase:?];
     [(FCCKContentQueryOperation *)v24 setQuery:v15];
     v26 = v24 == 0;
     if (v24)
     {
-      *(v24 + 400) = v2->_resultsLimit;
+      *(v24 + 400) = selfCopy->_resultsLimit;
       *(v24 + 372) = 10;
-      objc_setProperty_nonatomic_copy(v24, v25, v2->_additionalRequestHTTPHeaders, 440);
-      objc_setProperty_nonatomic_copy(v24, v27, v2->_edgeCacheHint, 448);
-      *(v24 + 464) = v2->_queryPriority;
+      objc_setProperty_nonatomic_copy(v24, v25, selfCopy->_additionalRequestHTTPHeaders, 440);
+      objc_setProperty_nonatomic_copy(v24, v27, selfCopy->_edgeCacheHint, 448);
+      *(v24 + 464) = selfCopy->_queryPriority;
     }
 
-    desiredKeys = v2->_desiredKeys;
+    desiredKeys = selfCopy->_desiredKeys;
   }
 
   else
@@ -413,8 +413,8 @@ LABEL_4:
   }
 
   v29 = desiredKeys;
-  v30 = [objc_opt_class() _requiredKeys];
-  v31 = [(NSArray *)v29 arrayByAddingObjectsFromArray:v30];
+  _requiredKeys = [objc_opt_class() _requiredKeys];
+  v31 = [(NSArray *)v29 arrayByAddingObjectsFromArray:_requiredKeys];
   v32 = [v31 sortedArrayUsingSelector:sel_compare_];
 
   if (!v26)
@@ -427,19 +427,19 @@ LABEL_4:
   *&buf[16] = 0x3032000000;
   v56 = __Block_byref_object_copy__35;
   v57 = __Block_byref_object_dispose__35;
-  v58 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v53[0] = 0;
   v53[1] = v53;
   v53[2] = 0x3032000000;
   v53[3] = __Block_byref_object_copy__35;
   v53[4] = __Block_byref_object_dispose__35;
-  v54 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v51[0] = 0;
   v51[1] = v51;
   v51[2] = 0x3032000000;
   v51[3] = __Block_byref_object_copy__35;
   v51[4] = __Block_byref_object_dispose__35;
-  v52 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -465,7 +465,7 @@ LABEL_4:
   v45[2] = __47__FCCKOrderFeedQueryOperation_performOperation__block_invoke_2;
   v45[3] = &unk_1E7C40650;
   objc_copyWeak(&v46, &location);
-  v45[4] = v2;
+  v45[4] = selfCopy;
   v45[5] = buf;
   v45[6] = v53;
   v45[7] = v49;
@@ -475,7 +475,7 @@ LABEL_4:
     objc_setProperty_nonatomic_copy(v24, v35, v45, 424);
   }
 
-  [(FCOperation *)v2 associateChildOperation:v24];
+  [(FCOperation *)selfCopy associateChildOperation:v24];
   [v24 start];
   objc_destroyWeak(&v46);
   objc_destroyWeak(&location);
@@ -725,11 +725,11 @@ LABEL_33:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setResultError:(uint64_t)a1
+- (void)setResultError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 480), a2);
+    objc_storeStrong((error + 480), a2);
   }
 }
 
@@ -743,42 +743,42 @@ LABEL_33:
   [(FCCKOrderFeedQueryOperation *)self setResultError:?];
 }
 
-- (void)setResultFeedItemAndArticleRecords:(uint64_t)a1
+- (void)setResultFeedItemAndArticleRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 448), a2);
+    objc_storeStrong((records + 448), a2);
   }
 }
 
-- (void)setResultTagRecords:(uint64_t)a1
+- (void)setResultTagRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 456), a2);
+    objc_storeStrong((records + 456), a2);
   }
 }
 
-- (void)setResultIssueRecords:(uint64_t)a1
+- (void)setResultIssueRecords:(uint64_t)records
 {
-  if (a1)
+  if (records)
   {
-    objc_storeStrong((a1 + 464), a2);
+    objc_storeStrong((records + 464), a2);
   }
 }
 
-- (void)setResultFeedResponses:(uint64_t)a1
+- (void)setResultFeedResponses:(uint64_t)responses
 {
-  if (a1)
+  if (responses)
   {
-    objc_storeStrong((a1 + 472), a2);
+    objc_storeStrong((responses + 472), a2);
   }
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if (self)
   {
     feedRequests = self->_feedRequests;
@@ -799,7 +799,7 @@ LABEL_33:
       goto LABEL_10;
     }
 
-    v9 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       resultFeedResponses = self->_resultFeedResponses;
@@ -813,7 +813,7 @@ LABEL_33:
     v11 = resultFeedResponses;
     v12 = [(NSArray *)v11 description];
     v26 = 138543618;
-    v27 = v9;
+    v27 = shortOperationDescription;
     v28 = 2112;
     v29 = v12;
     _os_log_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ finished with feed responses: %@", &v26, 0x16u);
@@ -822,7 +822,7 @@ LABEL_33:
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       v25 = self->_resultFeedResponses;
@@ -836,7 +836,7 @@ LABEL_33:
     v11 = v25;
     v12 = [(NSArray *)v11 description];
     v26 = 138543618;
-    v27 = v9;
+    v27 = shortOperationDescription;
     v28 = 2112;
     v29 = v12;
     _os_log_debug_impl(&dword_1B63EF000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ finished with feed responses: %@", &v26, 0x16u);
@@ -880,7 +880,7 @@ LABEL_10:
 
       else
       {
-        resultError = v4;
+        resultError = errorCopy;
       }
 
       (*(v21 + 2))(v21, v19, resultError);
@@ -890,60 +890,60 @@ LABEL_10:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_constructQueryForRequests:(id)a3 resultsLimit:(unint64_t)a4 queryPriority:(unint64_t)a5 articleLinkKeys:(id)a6
++ (id)_constructQueryForRequests:(id)requests resultsLimit:(unint64_t)limit queryPriority:(unint64_t)priority articleLinkKeys:(id)keys
 {
-  v10 = a6;
+  keysCopy = keys;
   v11 = MEMORY[0x1E695DF70];
-  v12 = a3;
-  v13 = [v11 array];
-  v14 = [a1 _predicateForPerFeedFieldName:@"tagID" key:@"feedID" defaultValue:0 requests:v12];
-  [v13 addObject:v14];
+  requestsCopy = requests;
+  array = [v11 array];
+  v14 = [self _predicateForPerFeedFieldName:@"tagID" key:@"feedID" defaultValue:0 requests:requestsCopy];
+  [array addObject:v14];
 
-  v15 = [a1 _predicateForPerFeedFieldName:@"maxOrder" key:@"maxOrder" defaultValue:&unk_1F2E70458 requests:v12];
-  [v13 addObject:v15];
+  v15 = [self _predicateForPerFeedFieldName:@"maxOrder" key:@"maxOrder" defaultValue:&unk_1F2E70458 requests:requestsCopy];
+  [array addObject:v15];
 
-  v16 = [a1 _predicateForPerFeedFieldName:@"minOrder" key:@"minOrder" defaultValue:&unk_1F2E70470 requests:v12];
-  [v13 addObject:v16];
+  v16 = [self _predicateForPerFeedFieldName:@"minOrder" key:@"minOrder" defaultValue:&unk_1F2E70470 requests:requestsCopy];
+  [array addObject:v16];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v18 = [a1 _predicateForPerFeedFieldName:@"hardLimit" key:@"resultsLimit" defaultValue:v17 requests:v12];
-  [v13 addObject:v18];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
+  v18 = [self _predicateForPerFeedFieldName:@"hardLimit" key:@"resultsLimit" defaultValue:v17 requests:requestsCopy];
+  [array addObject:v18];
 
-  v19 = [a1 _predicateForPerFeedFieldName:@"topK" key:@"topK" defaultValue:&unk_1F2E70488 requests:v12];
+  v19 = [self _predicateForPerFeedFieldName:@"topK" key:@"topK" defaultValue:&unk_1F2E70488 requests:requestsCopy];
 
-  [v13 addObject:v19];
+  [array addObject:v19];
   v20 = MEMORY[0x1E696AE18];
-  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:priority];
   v22 = [v20 predicateWithFormat:@"%K == %@", @"priority", v21];
-  [v13 addObject:v22];
+  [array addObject:v22];
 
-  if ([v10 count])
+  if ([keysCopy count])
   {
     v23 = MEMORY[0x1E696AE18];
-    v24 = [v10 sortedArrayUsingSelector:sel_compare_];
+    v24 = [keysCopy sortedArrayUsingSelector:sel_compare_];
     v25 = [v23 predicateWithFormat:@"%K == %@", @"fetchFields", v24];
-    [v13 addObject:v25];
+    [array addObject:v25];
   }
 
-  v26 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v13];
+  v26 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:array];
   v27 = [objc_alloc(MEMORY[0x1E695BA30]) initWithRecordType:@"OrderFeed" predicate:v26];
 
   return v27;
 }
 
-+ (id)_predicateForPerFeedFieldName:(id)a3 key:(id)a4 defaultValue:(id)a5 requests:(id)a6
++ (id)_predicateForPerFeedFieldName:(id)name key:(id)key defaultValue:(id)value requests:(id)requests
 {
   v41 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [MEMORY[0x1E695DF70] array];
+  nameCopy = name;
+  keyCopy = key;
+  valueCopy = value;
+  requestsCopy = requests;
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = v11;
+  v13 = requestsCopy;
   v14 = [v13 countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v14)
   {
@@ -960,20 +960,20 @@ LABEL_10:
           objc_enumerationMutation(v13);
         }
 
-        v19 = [*(*(&v28 + 1) + 8 * v18) valueForKey:v9];
+        v19 = [*(*(&v28 + 1) + 8 * v18) valueForKey:keyCopy];
         if (v19)
         {
-          v20 = v12;
+          v20 = array;
           v21 = v19;
 LABEL_10:
           [v20 addObject:v21];
           goto LABEL_11;
         }
 
-        if (v10)
+        if (valueCopy)
         {
-          v20 = v12;
-          v21 = v10;
+          v20 = array;
+          v21 = valueCopy;
           goto LABEL_10;
         }
 
@@ -1004,11 +1004,11 @@ LABEL_11:
     while (v23);
   }
 
-  v24 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", v12, v27];
+  nameCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%@ CONTAINS %K", array, nameCopy];
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v24;
+  return nameCopy;
 }
 
 + (id)_requiredKeys
@@ -1032,21 +1032,21 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)_processResultsRecord:(id)a3 feedItemAndArticleRecords:(id)a4 tagRecords:(id)a5 issueRecords:(id)a6 requestUUID:(id)a7
+- (void)_processResultsRecord:(id)record feedItemAndArticleRecords:(id)records tagRecords:(id)tagRecords issueRecords:(id)issueRecords requestUUID:(id)d
 {
   v89 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v56 = a5;
-  v55 = a6;
-  v58 = [v11 objectForKeyedSubscript:@"droppedFeeds"];
+  recordCopy = record;
+  recordsCopy = records;
+  tagRecordsCopy = tagRecords;
+  issueRecordsCopy = issueRecords;
+  v58 = [recordCopy objectForKeyedSubscript:@"droppedFeeds"];
   if ([v58 unsignedIntegerValue])
   {
     v13 = FCOperationLog;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(FCOperation *)self shortOperationDescription];
-      v15 = [v58 unsignedIntegerValue];
+      shortOperationDescription = [(FCOperation *)self shortOperationDescription];
+      unsignedIntegerValue = [v58 unsignedIntegerValue];
       if (self)
       {
         feedRequests = self->_feedRequests;
@@ -1059,36 +1059,36 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
 
       v17 = feedRequests;
       *buf = 138543874;
-      v83 = v14;
+      v83 = shortOperationDescription;
       v84 = 2048;
-      v85 = v15;
+      v85 = unsignedIntegerValue;
       v86 = 2048;
       v87[0] = [(NSArray *)v17 count];
       _os_log_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ %lu of %lu feeds were dropped", buf, 0x20u);
     }
   }
 
-  v65 = [MEMORY[0x1E695DF70] array];
-  v18 = [v11 objectForKeyedSubscript:@"reachedMinOrder"];
+  array = [MEMORY[0x1E695DF70] array];
+  v18 = [recordCopy objectForKeyedSubscript:@"reachedMinOrder"];
   v64 = [(FCCKOrderFeedQueryOperation *)self _feedRelativeDictionaryFromResultsArray:v18];
 
-  v19 = [v11 objectForKeyedSubscript:@"reachedEnd"];
+  v19 = [recordCopy objectForKeyedSubscript:@"reachedEnd"];
   v63 = [(FCCKOrderFeedQueryOperation *)self _feedRelativeDictionaryFromResultsArray:v19];
 
-  v20 = [v11 objectForKeyedSubscript:@"feedDropped"];
+  v20 = [recordCopy objectForKeyedSubscript:@"feedDropped"];
   v62 = [(FCCKOrderFeedQueryOperation *)self _feedRelativeDictionaryFromResultsArray:v20];
 
-  v57 = v11;
-  v21 = [v11 objectForKeyedSubscript:@"nextOrder"];
-  v66 = self;
+  v57 = recordCopy;
+  v21 = [recordCopy objectForKeyedSubscript:@"nextOrder"];
+  selfCopy = self;
   v61 = [(FCCKOrderFeedQueryOperation *)self _feedRelativeDictionaryFromResultsArray:v21];
 
-  v72 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v12;
+  obj = recordsCopy;
   v22 = [obj countByEnumeratingWithState:&v77 objects:v88 count:16];
   if (v22)
   {
@@ -1138,15 +1138,15 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
         }
 
         v30 = [v27 objectForKeyedSubscript:@"tagID"];
-        v31 = [v72 objectForKeyedSubscript:v30];
+        v31 = [dictionary objectForKeyedSubscript:v30];
 
         if (!v31)
         {
-          v32 = [MEMORY[0x1E695DF70] array];
-          [v72 setObject:v32 forKeyedSubscript:v30];
+          array2 = [MEMORY[0x1E695DF70] array];
+          [dictionary setObject:array2 forKeyedSubscript:v30];
         }
 
-        v33 = [v72 objectForKeyedSubscript:v30];
+        v33 = [dictionary objectForKeyedSubscript:v30];
         [v33 addObject:v27];
       }
 
@@ -1160,9 +1160,9 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
   v76 = 0u;
   v73 = 0u;
   v74 = 0u;
-  if (v66)
+  if (selfCopy)
   {
-    v36 = v66->_feedRequests;
+    v36 = selfCopy->_feedRequests;
   }
 
   else
@@ -1170,7 +1170,7 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
     v36 = 0;
   }
 
-  v37 = v72;
+  v37 = dictionary;
   v59 = v36;
   v67 = [(NSArray *)v59 countByEnumeratingWithState:&v73 objects:v81 count:16];
   if (v67)
@@ -1247,11 +1247,11 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
 
         v50 = v49;
         v51 = [v61 objectForKeyedSubscript:v50];
-        v52 = [(FCCKOrderFeedQueryOperation *)v66 _responseForRequest:v39 feedItemAndArticleRecords:v70 allFeedItemAndArticleRecords:obj wasDropped:v42 reachedMinOrder:v45 reachedEnd:v48 nextOrder:v51];
+        v52 = [(FCCKOrderFeedQueryOperation *)selfCopy _responseForRequest:v39 feedItemAndArticleRecords:v70 allFeedItemAndArticleRecords:obj wasDropped:v42 reachedMinOrder:v45 reachedEnd:v48 nextOrder:v51];
 
-        [v65 addObject:v52];
+        [array addObject:v52];
         ++v38;
-        v37 = v72;
+        v37 = dictionary;
       }
 
       while (v67 != v38);
@@ -1262,28 +1262,28 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
     while (v53);
   }
 
-  [(FCCKOrderFeedQueryOperation *)v66 setResultFeedItemAndArticleRecords:?];
-  [(FCCKOrderFeedQueryOperation *)v66 setResultFeedResponses:v65];
-  [(FCCKOrderFeedQueryOperation *)v66 setResultTagRecords:v56];
-  [(FCCKOrderFeedQueryOperation *)v66 setResultIssueRecords:v55];
+  [(FCCKOrderFeedQueryOperation *)selfCopy setResultFeedItemAndArticleRecords:?];
+  [(FCCKOrderFeedQueryOperation *)selfCopy setResultFeedResponses:array];
+  [(FCCKOrderFeedQueryOperation *)selfCopy setResultTagRecords:tagRecordsCopy];
+  [(FCCKOrderFeedQueryOperation *)selfCopy setResultIssueRecords:issueRecordsCopy];
 
   v54 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_responseForRequest:(id)a3 feedItemAndArticleRecords:(id)a4 allFeedItemAndArticleRecords:(id)a5 wasDropped:(id)a6 reachedMinOrder:(id)a7 reachedEnd:(id)a8 nextOrder:(id)a9
+- (id)_responseForRequest:(id)request feedItemAndArticleRecords:(id)records allFeedItemAndArticleRecords:(id)articleRecords wasDropped:(id)dropped reachedMinOrder:(id)order reachedEnd:(id)end nextOrder:(id)nextOrder
 {
   v71 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  requestCopy = request;
+  recordsCopy = records;
+  droppedCopy = dropped;
+  orderCopy = order;
+  endCopy = end;
+  nextOrderCopy = nextOrder;
   v19 = objc_alloc_init(FCCKOrderFeedResponse);
   v21 = v19;
-  if (v13)
+  if (requestCopy)
   {
-    v22 = v13[1];
+    v22 = requestCopy[1];
   }
 
   else
@@ -1291,22 +1291,22 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
     v22 = 0;
   }
 
-  v66 = v15;
+  v66 = droppedCopy;
   if (v19)
   {
     objc_setProperty_nonatomic_copy(v19, v20, v22, 16);
-    objc_setProperty_nonatomic_copy(v21, v23, v14, 24);
-    v21->_wasDropped = [v15 BOOLValue];
-    v24 = v17;
-    v21->_reachedEnd = [v17 BOOLValue];
-    v25 = v16;
-    v21->_reachedMinOrder = [v16 BOOLValue];
-    v26 = [v18 unsignedLongLongValue];
-    v27 = v26;
-    v28 = v26 == 0;
-    if (v26)
+    objc_setProperty_nonatomic_copy(v21, v23, recordsCopy, 24);
+    v21->_wasDropped = [droppedCopy BOOLValue];
+    v24 = endCopy;
+    v21->_reachedEnd = [endCopy BOOLValue];
+    v25 = orderCopy;
+    v21->_reachedMinOrder = [orderCopy BOOLValue];
+    unsignedLongLongValue = [nextOrderCopy unsignedLongLongValue];
+    unsignedLongLongValue2 = unsignedLongLongValue;
+    v28 = unsignedLongLongValue == 0;
+    if (unsignedLongLongValue)
     {
-      v29 = v26 + 1;
+      v29 = unsignedLongLongValue + 1;
     }
 
     else
@@ -1319,21 +1319,21 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
 
   else
   {
-    [v15 BOOLValue];
-    v24 = v17;
-    [v17 BOOLValue];
-    v25 = v16;
-    [v16 BOOLValue];
-    v27 = [v18 unsignedLongLongValue];
-    v28 = v27 == 0;
+    [droppedCopy BOOLValue];
+    v24 = endCopy;
+    [endCopy BOOLValue];
+    v25 = orderCopy;
+    [orderCopy BOOLValue];
+    unsignedLongLongValue2 = [nextOrderCopy unsignedLongLongValue];
+    v28 = unsignedLongLongValue2 == 0;
   }
 
   v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"@min.%@", @"order"];
-  v65 = v14;
-  v31 = [v14 valueForKeyPath:v30];
-  v32 = [v31 unsignedLongLongValue];
+  v65 = recordsCopy;
+  v31 = [recordsCopy valueForKeyPath:v30];
+  unsignedLongLongValue3 = [v31 unsignedLongLongValue];
 
-  v64 = v18;
+  v64 = nextOrderCopy;
   if (v21)
   {
     if (v21->_wasDropped)
@@ -1342,10 +1342,10 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [(FCOperation *)self shortOperationDescription];
+        shortOperationDescription = [(FCOperation *)self shortOperationDescription];
         feedID = v21->_feedID;
         *buf = 138543618;
-        v68 = v35;
+        v68 = shortOperationDescription;
         v69 = 2114;
         v70 = feedID;
         _os_log_impl(&dword_1B63EF000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@ feed was dropped: %{public}@", buf, 0x16u);
@@ -1353,7 +1353,7 @@ uint64_t __44__FCCKOrderFeedQueryOperation__requiredKeys__block_invoke_2()
 
       *&v21->_reachedEnd = 0;
 LABEL_78:
-      v21->_extent = v32;
+      v21->_extent = unsignedLongLongValue3;
       goto LABEL_79;
     }
 
@@ -1382,7 +1382,7 @@ LABEL_19:
         goto LABEL_28;
       }
 
-      if (!v13)
+      if (!requestCopy)
       {
         goto LABEL_28;
       }
@@ -1392,8 +1392,8 @@ LABEL_19:
         goto LABEL_28;
       }
 
-      v39 = v13 + 5;
-      if (!v13[5])
+      v39 = requestCopy + 5;
+      if (!requestCopy[5])
       {
         goto LABEL_28;
       }
@@ -1403,13 +1403,13 @@ LABEL_19:
 
     else
     {
-      if (!v13)
+      if (!requestCopy)
       {
         goto LABEL_28;
       }
 
-      v39 = v13 + 5;
-      if (!v13[5])
+      v39 = requestCopy + 5;
+      if (!requestCopy[5])
       {
         goto LABEL_28;
       }
@@ -1427,7 +1427,7 @@ LABEL_19:
     }
 
 LABEL_28:
-    if (v32)
+    if (unsignedLongLongValue3)
     {
       v44 = v28;
     }
@@ -1442,11 +1442,11 @@ LABEL_28:
       v45 = FCOperationLog;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
-        v46 = [(FCOperation *)self shortOperationDescription];
-        v47 = v46;
-        if (v13)
+        shortOperationDescription2 = [(FCOperation *)self shortOperationDescription];
+        v47 = shortOperationDescription2;
+        if (requestCopy)
         {
-          v48 = v13[1];
+          v48 = requestCopy[1];
         }
 
         else
@@ -1455,7 +1455,7 @@ LABEL_28:
         }
 
         *buf = 138543618;
-        v68 = v46;
+        v68 = shortOperationDescription2;
         v69 = 2114;
         v70 = v48;
         v49 = "%{public}@ received an invalid Results record; will repair nextOrder to correspond to the last feed item instead of zero, feedID=%{public}@";
@@ -1466,7 +1466,7 @@ LABEL_58:
 
     else
     {
-      if (v27 <= v32 || !v32)
+      if (unsignedLongLongValue2 <= unsignedLongLongValue3 || !unsignedLongLongValue3)
       {
         if (!v21)
         {
@@ -1482,24 +1482,24 @@ LABEL_76:
             goto LABEL_79;
           }
 
-          v32 = 0;
+          unsignedLongLongValue3 = 0;
           goto LABEL_78;
         }
 
-        if (v13)
+        if (requestCopy)
         {
-          extent = v13[3];
-          if (v27 > extent)
+          extent = requestCopy[3];
+          if (unsignedLongLongValue2 > extent)
           {
 LABEL_45:
             v51 = FCOperationLog;
             if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
             {
-              v55 = [(FCOperation *)self shortOperationDescription];
-              v56 = v55;
-              if (v13)
+              shortOperationDescription3 = [(FCOperation *)self shortOperationDescription];
+              v56 = shortOperationDescription3;
+              if (requestCopy)
               {
-                v57 = v13[1];
+                v57 = requestCopy[1];
               }
 
               else
@@ -1508,7 +1508,7 @@ LABEL_45:
               }
 
               *buf = 138543618;
-              v68 = v55;
+              v68 = shortOperationDescription3;
               v69 = 2114;
               v70 = v57;
               _os_log_error_impl(&dword_1B63EF000, v51, OS_LOG_TYPE_ERROR, "%{public}@ received an invalid Results record; will repair reachedMinOrder to be false, feedID=%{public}@", buf, 0x16u);
@@ -1521,7 +1521,7 @@ LABEL_45:
 
         else
         {
-          if (v27)
+          if (unsignedLongLongValue2)
           {
             goto LABEL_45;
           }
@@ -1541,11 +1541,11 @@ LABEL_45:
       v45 = FCOperationLog;
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
-        v53 = [(FCOperation *)self shortOperationDescription];
-        v47 = v53;
-        if (v13)
+        shortOperationDescription4 = [(FCOperation *)self shortOperationDescription];
+        v47 = shortOperationDescription4;
+        if (requestCopy)
         {
-          v54 = v13[1];
+          v54 = requestCopy[1];
         }
 
         else
@@ -1554,7 +1554,7 @@ LABEL_45:
         }
 
         *buf = 138543618;
-        v68 = v53;
+        v68 = shortOperationDescription4;
         v69 = 2114;
         v70 = v54;
         v49 = "%{public}@ received an invalid Results record; will repair nextOrder to correspond to the last feed item instead of a greater value, feedID=%{public}@";
@@ -1567,18 +1567,18 @@ LABEL_45:
       goto LABEL_79;
     }
 
-    v21->_extent = v32;
+    v21->_extent = unsignedLongLongValue3;
     goto LABEL_42;
   }
 
   v52 = FCOperationLog;
   if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
   {
-    v58 = [(FCOperation *)self shortOperationDescription];
-    v59 = v58;
-    if (v13)
+    shortOperationDescription5 = [(FCOperation *)self shortOperationDescription];
+    v59 = shortOperationDescription5;
+    if (requestCopy)
     {
-      v60 = v13[1];
+      v60 = requestCopy[1];
     }
 
     else
@@ -1587,7 +1587,7 @@ LABEL_45:
     }
 
     *buf = 138543618;
-    v68 = v58;
+    v68 = shortOperationDescription5;
     v69 = 2114;
     v70 = v60;
     _os_log_error_impl(&dword_1B63EF000, v52, OS_LOG_TYPE_ERROR, "%{public}@ received an invalid Results record; will repair response to look like the range was exhausted, feedID=%{public}@", buf, 0x16u);
@@ -1598,14 +1598,14 @@ LABEL_45:
     v21->_reachedMinOrder = 1;
   }
 
-  if (v13)
+  if (requestCopy)
   {
-    v32 = v13[3];
+    unsignedLongLongValue3 = requestCopy[3];
   }
 
   else
   {
-    v32 = 0;
+    unsignedLongLongValue3 = 0;
   }
 
   if (v21)
@@ -1620,13 +1620,13 @@ LABEL_79:
   return v21;
 }
 
-- (id)_feedRelativeDictionaryFromResultsArray:(id)a3
+- (id)_feedRelativeDictionaryFromResultsArray:(id)array
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
-    v5 = [v4 count];
+    v5 = [arrayCopy count];
     v6 = self ? self->_feedRequests : 0;
     if (v5 != [(NSArray *)v6 count]&& os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -1643,8 +1643,8 @@ LABEL_79:
     }
   }
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v4 count])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([arrayCopy count])
   {
     if (self)
     {
@@ -1655,14 +1655,14 @@ LABEL_79:
     v11[1] = 3221225472;
     v11[2] = __71__FCCKOrderFeedQueryOperation__feedRelativeDictionaryFromResultsArray___block_invoke;
     v11[3] = &unk_1E7C40678;
-    v12 = v4;
-    v13 = v7;
+    v12 = arrayCopy;
+    v13 = dictionary;
     [(FCCKOrderFeedQueryOperation *)self enumerateObjectsUsingBlock:v11];
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return v7;
+  return dictionary;
 }
 
 void __71__FCCKOrderFeedQueryOperation__feedRelativeDictionaryFromResultsArray___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1682,32 +1682,32 @@ void __71__FCCKOrderFeedQueryOperation__feedRelativeDictionaryFromResultsArray__
   [*(a1 + 40) setObject:v5 forKey:v6];
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 
-+ (void)streamRecordsWithDatabase:(void *)a3 feedRequests:(void *)a4 desiredKeys:(uint64_t)a5 resultsLimit:(uint64_t)a6 queryPriority:(void *)a7 articleLinkKeys:(void *)a8 recordHandler:(void *)a9 networkEventHandler:(void *)a10 completionHandler:
++ (void)streamRecordsWithDatabase:(void *)database feedRequests:(void *)requests desiredKeys:(uint64_t)keys resultsLimit:(uint64_t)limit queryPriority:(void *)priority articleLinkKeys:(void *)linkKeys recordHandler:(void *)handler networkEventHandler:(void *)self0 completionHandler:
 {
-  v27 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a4;
-  v21 = a3;
+  eventHandlerCopy = eventHandler;
+  handlerCopy = handler;
+  linkKeysCopy = linkKeys;
+  priorityCopy = priority;
+  requestsCopy = requests;
+  databaseCopy = database;
   v22 = a2;
   v23 = objc_opt_self();
-  v28 = [objc_opt_class() _constructQueryForRequests:v21 resultsLimit:a5 queryPriority:a6 articleLinkKeys:v19];
+  v28 = [objc_opt_class() _constructQueryForRequests:databaseCopy resultsLimit:keys queryPriority:limit articleLinkKeys:priorityCopy];
 
-  v24 = [v23 _requiredKeys];
-  v25 = [v20 arrayByAddingObjectsFromArray:v24];
+  _requiredKeys = [v23 _requiredKeys];
+  v25 = [requestsCopy arrayByAddingObjectsFromArray:_requiredKeys];
 
   v26 = [v25 sortedArrayUsingSelector:sel_compare_];
 
-  [FCCKContentQueryOperation streamRecordsWithDatabase:v22 query:v28 desiredKeys:v26 resultsLimit:a5 queryPriority:a6 networkEventType:10 edgeCacheHint:0 recordHandler:v18 networkEventHandler:v17 completionHandler:v27];
+  [FCCKContentQueryOperation streamRecordsWithDatabase:v22 query:v28 desiredKeys:v26 resultsLimit:keys queryPriority:limit networkEventType:10 edgeCacheHint:0 recordHandler:linkKeysCopy networkEventHandler:handlerCopy completionHandler:eventHandlerCopy];
 }
 
 @end

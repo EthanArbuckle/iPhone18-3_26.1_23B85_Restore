@@ -1,39 +1,39 @@
 @interface LACAnalyticsSessionClient
-- (LACAnalyticsSessionClient)initWithContext:(id)a3;
-- (id)_bootstrapServiceWithError:(id *)a3;
-- (id)_callBlockOnSynchronousRemoteObjectProxy:(id)a3;
-- (id)_connectionWithError:(id *)a3;
-- (void)_connectionDidClose:(BOOL)a3;
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3;
-- (void)authenticationStartedForEvent:(int64_t)a3;
-- (void)authenticationSuccessfulForEvent:(int64_t)a3;
+- (LACAnalyticsSessionClient)initWithContext:(id)context;
+- (id)_bootstrapServiceWithError:(id *)error;
+- (id)_callBlockOnSynchronousRemoteObjectProxy:(id)proxy;
+- (id)_connectionWithError:(id *)error;
+- (void)_connectionDidClose:(BOOL)close;
+- (void)authenticationAttemptFailedForEvent:(int64_t)event;
+- (void)authenticationStartedForEvent:(int64_t)event;
+- (void)authenticationSuccessfulForEvent:(int64_t)event;
 - (void)connectToExistingSession;
 - (void)finishSession;
-- (void)setContext:(id)a3;
-- (void)startSessionForDialogID:(id)a3 bundleID:(id)a4;
+- (void)setContext:(id)context;
+- (void)startSessionForDialogID:(id)d bundleID:(id)iD;
 @end
 
 @implementation LACAnalyticsSessionClient
 
-- (LACAnalyticsSessionClient)initWithContext:(id)a3
+- (LACAnalyticsSessionClient)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = LACAnalyticsSessionClient;
   v6 = [(LACAnalyticsSessionClient *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (void)startSessionForDialogID:(id)a3 bundleID:(id)a4
+- (void)startSessionForDialogID:(id)d bundleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v8 = self->_context;
   v18 = 0;
   v19 = &v18;
@@ -47,9 +47,9 @@
   v13[3] = &unk_1E7A97D48;
   v9 = v8;
   v14 = v9;
-  v10 = v6;
+  v10 = dCopy;
   v15 = v10;
-  v11 = v7;
+  v11 = iDCopy;
   v16 = v11;
   v17 = &v18;
   v12 = [(LACAnalyticsSessionClient *)self _callBlockOnSynchronousRemoteObjectProxy:v13];
@@ -231,7 +231,7 @@ void __42__LACAnalyticsSessionClient_finishSession__block_invoke(uint64_t a1, in
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authenticationStartedForEvent:(int64_t)a3
+- (void)authenticationStartedForEvent:(int64_t)event
 {
   if (self->_session)
   {
@@ -242,9 +242,9 @@ void __42__LACAnalyticsSessionClient_finishSession__block_invoke(uint64_t a1, in
     v8[2] = __59__LACAnalyticsSessionClient_authenticationStartedForEvent___block_invoke;
     v8[3] = &unk_1E7A97DE8;
     v9 = v5;
-    v10 = a3;
+    eventCopy = event;
     v7 = v5;
-    [(LACAnalyticsSessionXPC *)session authenticationStartedForEvent:a3 reply:v8];
+    [(LACAnalyticsSessionXPC *)session authenticationStartedForEvent:event reply:v8];
   }
 
   else
@@ -296,7 +296,7 @@ void __59__LACAnalyticsSessionClient_authenticationStartedForEvent___block_invok
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authenticationAttemptFailedForEvent:(int64_t)a3
+- (void)authenticationAttemptFailedForEvent:(int64_t)event
 {
   if (self->_session)
   {
@@ -307,9 +307,9 @@ void __59__LACAnalyticsSessionClient_authenticationStartedForEvent___block_invok
     v8[2] = __65__LACAnalyticsSessionClient_authenticationAttemptFailedForEvent___block_invoke;
     v8[3] = &unk_1E7A97DE8;
     v9 = v5;
-    v10 = a3;
+    eventCopy = event;
     v7 = v5;
-    [(LACAnalyticsSessionXPC *)session authenticationAttemptFailedForEvent:a3 reply:v8];
+    [(LACAnalyticsSessionXPC *)session authenticationAttemptFailedForEvent:event reply:v8];
   }
 
   else
@@ -361,7 +361,7 @@ void __65__LACAnalyticsSessionClient_authenticationAttemptFailedForEvent___block
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authenticationSuccessfulForEvent:(int64_t)a3
+- (void)authenticationSuccessfulForEvent:(int64_t)event
 {
   if (self->_session)
   {
@@ -372,9 +372,9 @@ void __65__LACAnalyticsSessionClient_authenticationAttemptFailedForEvent___block
     v8[2] = __62__LACAnalyticsSessionClient_authenticationSuccessfulForEvent___block_invoke;
     v8[3] = &unk_1E7A97DE8;
     v9 = v5;
-    v10 = a3;
+    eventCopy = event;
     v7 = v5;
-    [(LACAnalyticsSessionXPC *)session authenticationSuccessfulForEvent:a3 reply:v8];
+    [(LACAnalyticsSessionXPC *)session authenticationSuccessfulForEvent:event reply:v8];
   }
 
   else
@@ -468,23 +468,23 @@ void __58__LACAnalyticsSessionClient_authenticationAction_failing___block_invoke
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   if (self->_session)
   {
-    if (v5)
+    if (contextCopy)
     {
-      objc_storeStrong(&self->_context, a3);
+      objc_storeStrong(&self->_context, context);
       session = self->_session;
-      v8 = [(LACContext *)self->_context uuid];
+      uuid = [(LACContext *)self->_context uuid];
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __40__LACAnalyticsSessionClient_setContext___block_invoke;
       v10[3] = &unk_1E7A97DC0;
       v11 = v6;
-      [(LACAnalyticsSessionXPC *)session updateContextUUID:v8 reply:v10];
+      [(LACAnalyticsSessionXPC *)session updateContextUUID:uuid reply:v10];
 
       v9 = v11;
     }
@@ -544,9 +544,9 @@ void __40__LACAnalyticsSessionClient_setContext___block_invoke(uint64_t a1, int 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_callBlockOnSynchronousRemoteObjectProxy:(id)a3
+- (id)_callBlockOnSynchronousRemoteObjectProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -577,7 +577,7 @@ LABEL_3:
     v8 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
     if (v8)
     {
-      v4[2](v4, v8);
+      proxyCopy[2](proxyCopy, v8);
     }
 
     v9 = v14[5];
@@ -593,7 +593,7 @@ LABEL_3:
   return v9;
 }
 
-- (id)_connectionWithError:(id *)a3
+- (id)_connectionWithError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -606,11 +606,11 @@ LABEL_3:
     [v6 setRemoteObjectInterface:v7];
 
     v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F269D4F0];
-    v9 = [v6 remoteObjectInterface];
-    [v9 setInterface:v8 forSelector:sel_startSessionForContext_dialogID_bundleID_reply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface = [v6 remoteObjectInterface];
+    [remoteObjectInterface setInterface:v8 forSelector:sel_startSessionForContext_dialogID_bundleID_reply_ argumentIndex:0 ofReply:1];
 
-    v10 = [v6 remoteObjectInterface];
-    [v10 setInterface:v8 forSelector:sel_connectSessionForContext_reply_ argumentIndex:0 ofReply:1];
+    remoteObjectInterface2 = [v6 remoteObjectInterface];
+    [remoteObjectInterface2 setInterface:v8 forSelector:sel_connectSessionForContext_reply_ argumentIndex:0 ofReply:1];
 
     objc_initWeak(location, self);
     v16[0] = MEMORY[0x1E69E9820];
@@ -663,24 +663,24 @@ void __50__LACAnalyticsSessionClient__connectionWithError___block_invoke_2(uint6
   [WeakRetained _connectionDidClose:0];
 }
 
-- (void)_connectionDidClose:(BOOL)a3
+- (void)_connectionDidClose:(BOOL)close
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_connection)
   {
-    v3 = a3;
+    closeCopy = close;
     v5 = LACLogAnalytics();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       connection = self->_connection;
       v9 = "interrupted";
       v10 = 138543874;
-      if (v3)
+      if (closeCopy)
       {
         v9 = "invalidated";
       }
 
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = connection;
       v14 = 2082;
@@ -696,7 +696,7 @@ void __50__LACAnalyticsSessionClient__connectionWithError___block_invoke_2(uint6
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_bootstrapServiceWithError:(id *)a3
+- (id)_bootstrapServiceWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -718,9 +718,9 @@ void __50__LACAnalyticsSessionClient__connectionWithError___block_invoke_2(uint6
   v7[4] = &v14;
   v7[5] = &v8;
   [(LACContext *)context bootstrapServiceType:@"kLAServiceTypeAnalytics" completionHandler:v7];
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = v15[5];

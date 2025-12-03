@@ -2,9 +2,9 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (FPUIActionRemoteContextDelegate)delegate;
-- (void)_completeRequestWithUserInfo:(id)a3 error:(id)a4;
-- (void)_didEncounterError:(id)a3 completionHandler:(id)a4;
-- (void)_openExtensionURL:(id)a3 completionHandler:(id)a4;
+- (void)_completeRequestWithUserInfo:(id)info error:(id)error;
+- (void)_didEncounterError:(id)error completionHandler:(id)handler;
+- (void)_openExtensionURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation FPUIActionRemoteContext
@@ -47,19 +47,19 @@ uint64_t __60__FPUIActionRemoteContext__extensionAuxiliaryVendorProtocol__block_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_openExtensionURL:(id)a3 completionHandler:(id)a4
+- (void)_openExtensionURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(0, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__FPUIActionRemoteContext__openExtensionURL_completionHandler___block_invoke;
   v10[3] = &unk_278A51488;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   dispatch_async(v7, v10);
 }
 
@@ -104,19 +104,19 @@ void __63__FPUIActionRemoteContext__openExtensionURL_completionHandler___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_completeRequestWithUserInfo:(id)a3 error:(id)a4
+- (void)_completeRequestWithUserInfo:(id)info error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__FPUIActionRemoteContext__completeRequestWithUserInfo_error___block_invoke;
   block[3] = &unk_278A514B0;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = infoCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -126,19 +126,19 @@ void __62__FPUIActionRemoteContext__completeRequestWithUserInfo_error___block_in
   [v2 remoteActionContextDidFinishAction:*(a1 + 32) userInfo:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)_didEncounterError:(id)a3 completionHandler:(id)a4
+- (void)_didEncounterError:(id)error completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__FPUIActionRemoteContext__didEncounterError_completionHandler___block_invoke;
   block[3] = &unk_278A51398;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = errorCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

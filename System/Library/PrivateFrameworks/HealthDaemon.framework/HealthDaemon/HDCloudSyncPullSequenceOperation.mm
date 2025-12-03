@@ -1,12 +1,12 @@
 @interface HDCloudSyncPullSequenceOperation
-- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequence:(id)a6 changes:(id)a7;
+- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequence:(id)sequence changes:(id)changes;
 - (void)main;
 @end
 
 @implementation HDCloudSyncPullSequenceOperation
 
-- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -16,20 +16,20 @@
   return 0;
 }
 
-- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)a3 cloudState:(id)a4 target:(id)a5 sequence:(id)a6 changes:(id)a7
+- (HDCloudSyncPullSequenceOperation)initWithConfiguration:(id)configuration cloudState:(id)state target:(id)target sequence:(id)sequence changes:(id)changes
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  targetCopy = target;
+  sequenceCopy = sequence;
+  changesCopy = changes;
   v21.receiver = self;
   v21.super_class = HDCloudSyncPullSequenceOperation;
-  v16 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:a3 cloudState:a4];
+  v16 = [(HDCloudSyncOperation *)&v21 initWithConfiguration:configuration cloudState:state];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_target, a5);
-    objc_storeStrong(&v17->_sequenceRecord, a6);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_target, target);
+    objc_storeStrong(&v17->_sequenceRecord, sequence);
+    v18 = [changesCopy copy];
     changeRecords = v17->_changeRecords;
     v17->_changeRecords = v18;
   }
@@ -40,8 +40,8 @@
 - (void)main
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self progress];
-  [v3 setTotalUnitCount:0];
+  progress = [(HDCloudSyncOperation *)self progress];
+  [progress setTotalUnitCount:0];
 
   _HKInitializeLogging();
   v4 = MEMORY[0x277CCC328];
@@ -85,13 +85,13 @@
           v15 = v14;
           [v13 recordID];
           v17 = v16 = v4;
-          v18 = [v13 decodedSyncAnchorRangeMap];
+          decodedSyncAnchorRangeMap = [v13 decodedSyncAnchorRangeMap];
           *buf = 67109634;
           *v43 = v10;
           *&v43[4] = 2114;
           *&v43[6] = v17;
           *&v43[14] = 2114;
-          *&v43[16] = v18;
+          *&v43[16] = decodedSyncAnchorRangeMap;
           _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "\t%02d: %{public}@: %{public}@", buf, 0x1Cu);
 
           v4 = v16;
@@ -106,8 +106,8 @@
   }
 
   v19 = [HDCloudSyncCompoundOperation alloc];
-  v20 = [(HDCloudSyncOperation *)self configuration];
-  v21 = [(HDCloudSyncCompoundOperation *)v19 initWithConfiguration:v20 cloudState:0 name:@"Pull Changes" continueOnSubOperationError:0];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  v21 = [(HDCloudSyncCompoundOperation *)v19 initWithConfiguration:configuration cloudState:0 name:@"Pull Changes" continueOnSubOperationError:0];
 
   v35 = 0u;
   v36 = 0u;
@@ -130,8 +130,8 @@
 
         v26 = *(*(&v33 + 1) + 8 * j);
         v27 = [HDCloudSyncPullChangeRecordOperation alloc];
-        v28 = [(HDCloudSyncOperation *)self configuration];
-        v29 = [(HDCloudSyncPullChangeRecordOperation *)v27 initWithConfiguration:v28 cloudState:0 target:self->_target sequenceRecord:self->_sequenceRecord changeRecord:v26];
+        configuration2 = [(HDCloudSyncOperation *)self configuration];
+        v29 = [(HDCloudSyncPullChangeRecordOperation *)v27 initWithConfiguration:configuration2 cloudState:0 target:self->_target sequenceRecord:self->_sequenceRecord changeRecord:v26];
 
         [(HDCloudSyncCompoundOperation *)v21 addOperation:v29 transitionHandler:0];
       }

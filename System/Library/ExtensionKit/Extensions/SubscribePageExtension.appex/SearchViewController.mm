@@ -1,42 +1,42 @@
 @interface SearchViewController
-- (_TtC22SubscribePageExtension20SearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22SubscribePageExtension20SearchViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)didDismissSearchController:(id)a3;
-- (void)presentSearchController:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didDismissSearchController:(id)controller;
+- (void)presentSearchController:(id)controller;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SearchViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100574F54();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100575600(a3);
+  selfCopy = self;
+  sub_100575600(appear);
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(SearchViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(SearchViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -47,33 +47,33 @@
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100575814(v6, a4);
+  selfCopy = self;
+  sub_100575814(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_100575944(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100575944(change);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = type metadata accessor for SearchViewController();
   swift_unknownObjectRetain();
   v7 = v8.receiver;
-  [(SearchViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
-  [*&v7[OBJC_IVAR____TtC22SubscribePageExtension20SearchViewController_searchResultsContainerViewController] viewWillTransitionToSize:a4 withTransitionCoordinator:{width, height, v8.receiver, v8.super_class}];
+  [(SearchViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
+  [*&v7[OBJC_IVAR____TtC22SubscribePageExtension20SearchViewController_searchResultsContainerViewController] viewWillTransitionToSize:coordinator withTransitionCoordinator:{width, height, v8.receiver, v8.super_class}];
 
   swift_unknownObjectRelease();
 }
@@ -84,58 +84,58 @@
   v4.super_class = type metadata accessor for SearchViewController();
   v2 = v4.receiver;
   [(SearchViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC22SubscribePageExtension20SearchViewController_searchController] searchBar];
+  searchBar = [*&v2[OBJC_IVAR____TtC22SubscribePageExtension20SearchViewController_searchController] searchBar];
   [v2 pageMarginInsets];
-  [v3 setLayoutMargins:?];
+  [searchBar setLayoutMargins:?];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100575D5C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_100578B2C();
 }
 
-- (void)presentSearchController:(id)a3
+- (void)presentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1005728A0(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1005728A0(controllerCopy);
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100572998(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100572998(controllerCopy);
 }
 
-- (void)didDismissSearchController:(id)a3
+- (void)didDismissSearchController:(id)controller
 {
-  v3 = self;
+  selfCopy = self;
   sub_1006AB550(0);
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v3 = self;
+  selfCopy = self;
   sub_1002C35BC();
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_100572C34(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100572C34(controllerCopy);
 }
 
-- (_TtC22SubscribePageExtension20SearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension20SearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

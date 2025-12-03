@@ -1,19 +1,19 @@
 @interface RTStoredTripSegmentFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (RTStoredTripSegmentFetchOptions)initWithAscending:(BOOL)a3 dateInterval:(id)a4 limit:(id)a5;
-- (RTStoredTripSegmentFetchOptions)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (RTStoredTripSegmentFetchOptions)initWithAscending:(BOOL)ascending dateInterval:(id)interval limit:(id)limit;
+- (RTStoredTripSegmentFetchOptions)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredTripSegmentFetchOptions
 
-- (RTStoredTripSegmentFetchOptions)initWithAscending:(BOOL)a3 dateInterval:(id)a4 limit:(id)a5
+- (RTStoredTripSegmentFetchOptions)initWithAscending:(BOOL)ascending dateInterval:(id)interval limit:(id)limit
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && ![v10 unsignedIntegerValue])
+  intervalCopy = interval;
+  limitCopy = limit;
+  v11 = limitCopy;
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -22,7 +22,7 @@
       _os_log_error_impl(&dword_1BF1C4000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: !limit || (limit && limit.unsignedIntegerValue > 0)", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -33,48 +33,48 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      v12->_ascending = a3;
-      objc_storeStrong(&v12->_dateInterval, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      v12->_ascending = ascending;
+      objc_storeStrong(&v12->_dateInterval, interval);
+      objc_storeStrong(p_isa + 3, limit);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredTripSegmentFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredTripSegmentFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   ascending = self->_ascending;
-  v7 = [v5 isAscending];
+  isAscending = [optionsCopy isAscending];
   dateInterval = self->_dateInterval;
   if (dateInterval)
   {
     goto LABEL_2;
   }
 
-  v3 = [v5 dateInterval];
-  if (!v3)
+  dateInterval = [optionsCopy dateInterval];
+  if (!dateInterval)
   {
     v13 = 1;
     goto LABEL_11;
@@ -83,13 +83,13 @@
   if (self->_dateInterval)
   {
 LABEL_2:
-    v9 = [v5 dateInterval];
-    if (v9)
+    dateInterval2 = [optionsCopy dateInterval];
+    if (dateInterval2)
     {
-      v10 = v9;
+      v10 = dateInterval2;
       v11 = self->_dateInterval;
-      v12 = [v5 dateInterval];
-      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:v12];
+      dateInterval3 = [optionsCopy dateInterval];
+      v13 = [(NSDateInterval *)v11 isEqualToDateInterval:dateInterval3];
 
       if (dateInterval)
       {
@@ -121,8 +121,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v3 = [v5 limit];
-  if (!v3)
+  dateInterval = [optionsCopy limit];
+  if (!dateInterval)
   {
     v19 = 1;
     goto LABEL_22;
@@ -137,13 +137,13 @@ LABEL_22:
   }
 
 LABEL_13:
-  v15 = [v5 limit];
-  if (v15)
+  limit = [optionsCopy limit];
+  if (limit)
   {
-    v16 = v15;
+    v16 = limit;
     v17 = self->_limit;
-    v18 = [v5 limit];
-    v19 = [(NSNumber *)v17 isEqualToNumber:v18];
+    limit2 = [optionsCopy limit];
+    v19 = [(NSNumber *)v17 isEqualToNumber:limit2];
 
     if (!limit)
     {
@@ -162,24 +162,24 @@ LABEL_13:
 
 LABEL_23:
 
-  return (ascending == v7) & v13 & v19;
+  return (ascending == isAscending) & v13 & v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ascending = self->_ascending;
-  v5 = a3;
-  [v5 encodeBool:ascending forKey:@"ascending"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_limit forKey:@"limit"];
+  coderCopy = coder;
+  [coderCopy encodeBool:ascending forKey:@"ascending"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
 }
 
-- (RTStoredTripSegmentFetchOptions)initWithCoder:(id)a3
+- (RTStoredTripSegmentFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"ascending"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"ascending"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
 
   v8 = [(RTStoredTripSegmentFetchOptions *)self initWithAscending:v5 dateInterval:v6 limit:v7];
   return v8;

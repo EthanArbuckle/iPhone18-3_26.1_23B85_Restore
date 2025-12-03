@@ -6,16 +6,16 @@
 
 - (BOOL)sruif_hasButton
 {
-  v2 = [a1 confirmationOptions];
+  confirmationOptions = [self confirmationOptions];
 
-  if (!v2)
+  if (!confirmationOptions)
   {
     return 0;
   }
 
-  v3 = [a1 confirmationOptions];
-  v4 = [v3 allConfirmationOptions];
-  v5 = [v4 count] != 0;
+  confirmationOptions2 = [self confirmationOptions];
+  allConfirmationOptions = [confirmationOptions2 allConfirmationOptions];
+  v5 = [allConfirmationOptions count] != 0;
 
   return v5;
 }

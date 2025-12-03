@@ -1,98 +1,98 @@
 @interface CCCameraConnectionInternal
 - (CCCameraConnection)parent;
-- (void)takePhotoWithCountdown:(unint64_t)a3;
-- (void)xpc_beginBurstCaptureWithReply:(id)a3;
+- (void)takePhotoWithCountdown:(unint64_t)countdown;
+- (void)xpc_beginBurstCaptureWithReply:(id)reply;
 - (void)xpc_cancelCountdown;
-- (void)xpc_endBurstCaptureWithReply:(id)a3;
-- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)a3 reply:(id)a4;
-- (void)xpc_pauseCaptureWithReply:(id)a3;
-- (void)xpc_resumeCaptureWithReply:(id)a3;
-- (void)xpc_setCaptureDevice:(int64_t)a3 reply:(id)a4;
-- (void)xpc_setCaptureMode:(int64_t)a3 reply:(id)a4;
-- (void)xpc_setFlashMode:(int64_t)a3;
-- (void)xpc_setFocusPoint:(id)a3;
-- (void)xpc_setHDRMode:(int64_t)a3;
-- (void)xpc_setIrisMode:(int64_t)a3;
-- (void)xpc_setPreviewEndpoint:(id)a3;
-- (void)xpc_setSharedLibraryMode:(int64_t)a3;
-- (void)xpc_setZoom:(float)a3 reply:(id)a4;
-- (void)xpc_setZoomMagnification:(float)a3 reply:(id)a4;
-- (void)xpc_startCaptureWithMode:(int64_t)a3 reply:(id)a4;
-- (void)xpc_stopCaptureWithReply:(id)a3;
+- (void)xpc_endBurstCaptureWithReply:(id)reply;
+- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)modes reply:(id)reply;
+- (void)xpc_pauseCaptureWithReply:(id)reply;
+- (void)xpc_resumeCaptureWithReply:(id)reply;
+- (void)xpc_setCaptureDevice:(int64_t)device reply:(id)reply;
+- (void)xpc_setCaptureMode:(int64_t)mode reply:(id)reply;
+- (void)xpc_setFlashMode:(int64_t)mode;
+- (void)xpc_setFocusPoint:(id)point;
+- (void)xpc_setHDRMode:(int64_t)mode;
+- (void)xpc_setIrisMode:(int64_t)mode;
+- (void)xpc_setPreviewEndpoint:(id)endpoint;
+- (void)xpc_setSharedLibraryMode:(int64_t)mode;
+- (void)xpc_setZoom:(float)zoom reply:(id)reply;
+- (void)xpc_setZoomMagnification:(float)magnification reply:(id)reply;
+- (void)xpc_startCaptureWithMode:(int64_t)mode reply:(id)reply;
+- (void)xpc_stopCaptureWithReply:(id)reply;
 - (void)xpc_suspend;
 - (void)xpc_toggleCameraDevice;
 @end
 
 @implementation CCCameraConnectionInternal
 
-- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)a3 reply:(id)a4
+- (void)xpc_ensureSwitchedToOneOfSupportedCaptureModes:(id)modes reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  modesCopy = modes;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_ensureSwitchedToOneOfSupportedCaptureModes:v7 reply:v6];
+  [WeakRetained xpc_ensureSwitchedToOneOfSupportedCaptureModes:modesCopy reply:replyCopy];
 }
 
-- (void)takePhotoWithCountdown:(unint64_t)a3
+- (void)takePhotoWithCountdown:(unint64_t)countdown
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained takePhotoWithCountdown:a3];
+  [WeakRetained takePhotoWithCountdown:countdown];
 }
 
-- (void)xpc_beginBurstCaptureWithReply:(id)a3
+- (void)xpc_beginBurstCaptureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_beginBurstCaptureWithReply:v4];
+  [WeakRetained xpc_beginBurstCaptureWithReply:replyCopy];
 }
 
-- (void)xpc_endBurstCaptureWithReply:(id)a3
+- (void)xpc_endBurstCaptureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_endBurstCaptureWithReply:v4];
+  [WeakRetained xpc_endBurstCaptureWithReply:replyCopy];
 }
 
-- (void)xpc_setCaptureDevice:(int64_t)a3 reply:(id)a4
+- (void)xpc_setCaptureDevice:(int64_t)device reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setCaptureDevice:a3 reply:v6];
+  [WeakRetained xpc_setCaptureDevice:device reply:replyCopy];
 }
 
-- (void)xpc_setCaptureMode:(int64_t)a3 reply:(id)a4
+- (void)xpc_setCaptureMode:(int64_t)mode reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setCaptureMode:a3 reply:v6];
+  [WeakRetained xpc_setCaptureMode:mode reply:replyCopy];
 }
 
-- (void)xpc_startCaptureWithMode:(int64_t)a3 reply:(id)a4
+- (void)xpc_startCaptureWithMode:(int64_t)mode reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_startCaptureWithMode:a3 reply:v6];
+  [WeakRetained xpc_startCaptureWithMode:mode reply:replyCopy];
 }
 
-- (void)xpc_pauseCaptureWithReply:(id)a3
+- (void)xpc_pauseCaptureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_pauseCaptureWithReply:v4];
+  [WeakRetained xpc_pauseCaptureWithReply:replyCopy];
 }
 
-- (void)xpc_resumeCaptureWithReply:(id)a3
+- (void)xpc_resumeCaptureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_resumeCaptureWithReply:v4];
+  [WeakRetained xpc_resumeCaptureWithReply:replyCopy];
 }
 
-- (void)xpc_stopCaptureWithReply:(id)a3
+- (void)xpc_stopCaptureWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_stopCaptureWithReply:v4];
+  [WeakRetained xpc_stopCaptureWithReply:replyCopy];
 }
 
 - (void)xpc_suspend
@@ -101,18 +101,18 @@
   [WeakRetained xpc_suspend];
 }
 
-- (void)xpc_setPreviewEndpoint:(id)a3
+- (void)xpc_setPreviewEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setPreviewEndpoint:v4];
+  [WeakRetained xpc_setPreviewEndpoint:endpointCopy];
 }
 
-- (void)xpc_setFocusPoint:(id)a3
+- (void)xpc_setFocusPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setFocusPoint:v4];
+  [WeakRetained xpc_setFocusPoint:pointCopy];
 }
 
 - (void)xpc_cancelCountdown
@@ -121,44 +121,44 @@
   [WeakRetained xpc_cancelCountdown];
 }
 
-- (void)xpc_setZoom:(float)a3 reply:(id)a4
+- (void)xpc_setZoom:(float)zoom reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  *&v7 = a3;
-  [WeakRetained xpc_setZoom:v6 reply:v7];
+  *&v7 = zoom;
+  [WeakRetained xpc_setZoom:replyCopy reply:v7];
 }
 
-- (void)xpc_setZoomMagnification:(float)a3 reply:(id)a4
+- (void)xpc_setZoomMagnification:(float)magnification reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  *&v7 = a3;
-  [WeakRetained xpc_setZoomMagnification:v6 reply:v7];
+  *&v7 = magnification;
+  [WeakRetained xpc_setZoomMagnification:replyCopy reply:v7];
 }
 
-- (void)xpc_setFlashMode:(int64_t)a3
+- (void)xpc_setFlashMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setFlashMode:a3];
+  [WeakRetained xpc_setFlashMode:mode];
 }
 
-- (void)xpc_setHDRMode:(int64_t)a3
+- (void)xpc_setHDRMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setHDRMode:a3];
+  [WeakRetained xpc_setHDRMode:mode];
 }
 
-- (void)xpc_setIrisMode:(int64_t)a3
+- (void)xpc_setIrisMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setIrisMode:a3];
+  [WeakRetained xpc_setIrisMode:mode];
 }
 
-- (void)xpc_setSharedLibraryMode:(int64_t)a3
+- (void)xpc_setSharedLibraryMode:(int64_t)mode
 {
   WeakRetained = objc_loadWeakRetained(&self->_parent);
-  [WeakRetained xpc_setSharedLibraryMode:a3];
+  [WeakRetained xpc_setSharedLibraryMode:mode];
 }
 
 - (void)xpc_toggleCameraDevice

@@ -1,21 +1,21 @@
 @interface AXBuddySettingsSwitchItem
-- (AXBuddySettingsSwitchItem)initWithName:(id)a3 delegate:(id)a4;
-- (id)representativeCellForIndexPath:(id)a3 inTableView:(id)a4;
-- (void)registerCellClassWithTableView:(id)a3;
+- (AXBuddySettingsSwitchItem)initWithName:(id)name delegate:(id)delegate;
+- (id)representativeCellForIndexPath:(id)path inTableView:(id)view;
+- (void)registerCellClassWithTableView:(id)view;
 @end
 
 @implementation AXBuddySettingsSwitchItem
 
-- (AXBuddySettingsSwitchItem)initWithName:(id)a3 delegate:(id)a4
+- (AXBuddySettingsSwitchItem)initWithName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = AXBuddySettingsSwitchItem;
   v8 = [(AXBuddySettingsSwitchItem *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
@@ -23,22 +23,22 @@
     extantCells = v8->_extantCells;
     v8->_extantCells = v11;
 
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- (id)representativeCellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)representativeCellForIndexPath:(id)path inTableView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXBuddySettingsSwitchItem *)self reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8 forIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  reuseIdentifier = [(AXBuddySettingsSwitchItem *)self reuseIdentifier];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   name = self->_name;
-  v11 = [v9 textLabel];
-  [v11 setText:name];
+  textLabel = [v9 textLabel];
+  [textLabel setText:name];
 
   [v9 setDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -49,12 +49,12 @@
   return v9;
 }
 
-- (void)registerCellClassWithTableView:(id)a3
+- (void)registerCellClassWithTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(AXBuddySettingsSwitchItem *)self cellClass];
-  v6 = [(AXBuddySettingsSwitchItem *)self reuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v6];
+  viewCopy = view;
+  cellClass = [(AXBuddySettingsSwitchItem *)self cellClass];
+  reuseIdentifier = [(AXBuddySettingsSwitchItem *)self reuseIdentifier];
+  [viewCopy registerClass:cellClass forCellReuseIdentifier:reuseIdentifier];
 }
 
 @end

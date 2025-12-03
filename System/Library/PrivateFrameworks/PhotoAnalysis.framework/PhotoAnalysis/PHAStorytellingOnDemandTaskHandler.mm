@@ -2,34 +2,34 @@
 - (BOOL)hasRemainingOperations;
 - (BOOL)isQuiescent;
 - (PHAJobTimeHandlerProtocol)jobTimeHandler;
-- (PHAStorytellingOnDemandTaskHandler)initWithGraphManager:(id)a3 jobTimeHandler:(id)a4;
+- (PHAStorytellingOnDemandTaskHandler)initWithGraphManager:(id)manager jobTimeHandler:(id)handler;
 - (PHAStorytellingOnDemandTaskHandlerDelegate)delegate;
 - (id)nextOperation;
-- (void)_runCachingCPAnalyticsTestWithOptions:(id)a3 reply:(id)a4;
-- (void)_runEnrichmentTestWithOptions:(id)a3 reply:(id)a4;
-- (void)cacheCPAnalyticsPropertiesWithContext:(id)a3 reply:(id)a4;
+- (void)_runCachingCPAnalyticsTestWithOptions:(id)options reply:(id)reply;
+- (void)_runEnrichmentTestWithOptions:(id)options reply:(id)reply;
+- (void)cacheCPAnalyticsPropertiesWithContext:(id)context reply:(id)reply;
 - (void)cancelCurrentOperation;
 - (void)dequeueOperationsIfNeeded;
 - (void)forceCancellationIfShutdown;
-- (void)generateMemoriesWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)generateSuggestionsWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)handleOperation:(id)a3;
-- (void)reportMetricsWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestAssetRevGeocodingWithContext:(id)a3 reply:(id)a4;
-- (void)requestEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestExternalAssetRelevanceProcessingWithContext:(id)a3 reply:(id)a4;
-- (void)requestGenerateQuestionsWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestHighlightCollectionEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestHighlightEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestOnDemandTasksWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestRelationshipInferencesForPersonLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestRevGeocodingSyndicationLibraryWithContext:(id)a3 reply:(id)a4;
-- (void)requestSuggestedContributionsForAssetsMetadata:(id)a3 options:(id)a4 context:(id)a5 reply:(id)a6;
-- (void)requestSuggestedPersonsWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5 context:(id)a6 reply:(id)a7;
-- (void)requestSyndicationProcessingWithOptions:(id)a3 context:(id)a4 reply:(id)a5;
-- (void)runPerformanceTest:(id)a3 options:(id)a4 context:(id)a5 reply:(id)a6;
+- (void)generateMemoriesWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)generateSuggestionsWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)handleOperation:(id)operation;
+- (void)reportMetricsWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply;
+- (void)requestAssetRevGeocodingWithContext:(id)context reply:(id)reply;
+- (void)requestEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestExternalAssetRelevanceProcessingWithContext:(id)context reply:(id)reply;
+- (void)requestGenerateQuestionsWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestHighlightCollectionEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestHighlightEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestOnDemandTasksWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestRelationshipInferencesForPersonLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply;
+- (void)requestRevGeocodingSyndicationLibraryWithContext:(id)context reply:(id)reply;
+- (void)requestSuggestedContributionsForAssetsMetadata:(id)metadata options:(id)options context:(id)context reply:(id)reply;
+- (void)requestSuggestedPersonsWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options context:(id)context reply:(id)reply;
+- (void)requestSyndicationProcessingWithOptions:(id)options context:(id)context reply:(id)reply;
+- (void)runPerformanceTest:(id)test options:(id)options context:(id)context reply:(id)reply;
 - (void)shutdown;
 @end
 
@@ -49,52 +49,52 @@
   return WeakRetained;
 }
 
-- (void)requestSuggestedPersonsWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestSuggestedPersonsWithOptions:(id)options context:(id)context reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v18 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v18];
   v11 = v18;
   if (v10)
   {
-    v12 = [v7 objectForKey:@"PHPeopleSuggestionClientKey"];
+    v12 = [optionsCopy objectForKey:@"PHPeopleSuggestionClientKey"];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
       v15 = 0;
-      if (v14 <= 1)
+      if (unsignedIntegerValue <= 1)
       {
-        if (v14)
+        if (unsignedIntegerValue)
         {
-          if (v14 == 1)
+          if (unsignedIntegerValue == 1)
           {
-            v16 = [(PGManager *)self->_graphManager suggestedPersonsForHome];
+            suggestedPersonsForHome = [(PGManager *)self->_graphManager suggestedPersonsForHome];
             goto LABEL_14;
           }
 
 LABEL_15:
-          v8[2](v8, v15, v11);
+          replyCopy[2](replyCopy, v15, v11);
 
           goto LABEL_16;
         }
       }
 
-      else if ((v14 - 2) >= 2)
+      else if ((unsignedIntegerValue - 2) >= 2)
       {
-        if (v14 == 4)
+        if (unsignedIntegerValue == 4)
         {
-          v16 = [(PGManager *)self->_graphManager suggestedPersonsForSharedLibraryParticipants];
+          suggestedPersonsForHome = [(PGManager *)self->_graphManager suggestedPersonsForSharedLibraryParticipants];
           goto LABEL_14;
         }
 
-        if (v14 == 5)
+        if (unsignedIntegerValue == 5)
         {
-          v16 = [(PGManager *)self->_graphManager suggestedPersonsForSharedLibraryContentInclusion];
+          suggestedPersonsForHome = [(PGManager *)self->_graphManager suggestedPersonsForSharedLibraryContentInclusion];
 LABEL_14:
-          v15 = v16;
+          v15 = suggestedPersonsForHome;
           goto LABEL_15;
         }
 
@@ -109,71 +109,71 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v8[2](v8, 0, v11);
+  replyCopy[2](replyCopy, 0, v11);
 LABEL_16:
 }
 
-- (void)requestRelationshipInferencesForPersonLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestRelationshipInferencesForPersonLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v13 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v13];
   v11 = v13;
   if (v10)
   {
-    v12 = [(PGManager *)self->_graphManager relationshipInferencesForPersonLocalIdentifiers:v7];
-    v8[2](v8, v12, 0);
+    v12 = [(PGManager *)self->_graphManager relationshipInferencesForPersonLocalIdentifiers:identifiersCopy];
+    replyCopy[2](replyCopy, v12, 0);
   }
 
   else
   {
-    (v8)[2](v8, 0, v11);
+    (replyCopy)[2](replyCopy, 0, v11);
   }
 }
 
-- (void)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)a3 momentLocalIdentifiers:(id)a4 options:(id)a5 context:(id)a6 reply:(id)a7
+- (void)requestSuggestedRecipientsForAssetLocalIdentifiers:(id)identifiers momentLocalIdentifiers:(id)localIdentifiers options:(id)options context:(id)context reply:(id)reply
 {
   v42 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  identifiersCopy = identifiers;
+  localIdentifiersCopy = localIdentifiers;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v40 = 0;
-  LOBYTE(a7) = [(PGManager *)graphManager isReadyWithError:&v40];
+  LOBYTE(reply) = [(PGManager *)graphManager isReadyWithError:&v40];
   v16 = v40;
-  if (a7)
+  if (reply)
   {
-    v17 = [v13 objectForKey:@"PHPeopleSuggestionClientKey"];
+    v17 = [optionsCopy objectForKey:@"PHPeopleSuggestionClientKey"];
     v18 = v17;
     if (v17)
     {
-      v19 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v19 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v20 = [MEMORY[0x277D3BBD8] optionsForClient:v19];
-    v21 = [v13 objectForKey:@"PHSuggestedRecipientsSharingStreamKey"];
+    v20 = [MEMORY[0x277D3BBD8] optionsForClient:unsignedIntegerValue];
+    v21 = [optionsCopy objectForKey:@"PHSuggestedRecipientsSharingStreamKey"];
     v22 = v21;
     if (v21)
     {
       [v20 setSharingStream:{objc_msgSend(v21, "unsignedIntegerValue")}];
     }
 
-    v23 = [(PGManager *)self->_graphManager suggestedRecipientsForAssetLocalIdentifiers:v11 momentLocalIdentifiers:v12 sharingOptions:v20];
+    v23 = [(PGManager *)self->_graphManager suggestedRecipientsForAssetLocalIdentifiers:identifiersCopy momentLocalIdentifiers:localIdentifiersCopy sharingOptions:v20];
     if ([v23 count])
     {
       v31 = v22;
       v32 = v20;
       v33 = v18;
-      v34 = v12;
-      v35 = v11;
+      v34 = localIdentifiersCopy;
+      v35 = identifiersCopy;
       v24 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v23, "count")}];
       v36 = 0u;
       v37 = 0u;
@@ -194,8 +194,8 @@ LABEL_16:
               objc_enumerationMutation(v25);
             }
 
-            v30 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-            [v24 addObject:v30];
+            dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+            [v24 addObject:dictionaryRepresentation];
           }
 
           v27 = [v25 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -204,9 +204,9 @@ LABEL_16:
         while (v27);
       }
 
-      v14[2](v14, v24, 0);
-      v12 = v34;
-      v11 = v35;
+      replyCopy[2](replyCopy, v24, 0);
+      localIdentifiersCopy = v34;
+      identifiersCopy = v35;
       v20 = v32;
       v18 = v33;
       v22 = v31;
@@ -214,41 +214,41 @@ LABEL_16:
 
     else
     {
-      v14[2](v14, MEMORY[0x277CBEBF8], 0);
+      replyCopy[2](replyCopy, MEMORY[0x277CBEBF8], 0);
     }
   }
 
   else
   {
-    (v14)[2](v14, 0, v16);
+    (replyCopy)[2](replyCopy, 0, v16);
   }
 }
 
-- (void)requestSuggestedContributionsForAssetsMetadata:(id)a3 options:(id)a4 context:(id)a5 reply:(id)a6
+- (void)requestSuggestedContributionsForAssetsMetadata:(id)metadata options:(id)options context:(id)context reply:(id)reply
 {
-  v8 = a3;
-  v9 = a6;
+  metadataCopy = metadata;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v14 = 0;
   v11 = [(PGManager *)graphManager isReadyWithError:&v14];
   v12 = v14;
   if (v11)
   {
-    v13 = [(PGManager *)self->_graphManager suggestedContributionsForAssetsMetadata:v8];
-    v9[2](v9, v13, 0);
+    v13 = [(PGManager *)self->_graphManager suggestedContributionsForAssetsMetadata:metadataCopy];
+    replyCopy[2](replyCopy, v13, 0);
   }
 
   else
   {
-    (v9)[2](v9, 0, v12);
+    (replyCopy)[2](replyCopy, 0, v12);
   }
 }
 
-- (void)_runEnrichmentTestWithOptions:(id)a3 reply:(id)a4
+- (void)_runEnrichmentTestWithOptions:(id)options reply:(id)reply
 {
   v31[5] = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  replyCopy = reply;
   v7 = objc_alloc_init(PHAPeopleSuggestionEnrichmentTask);
   v31[0] = v7;
   v8 = objc_alloc_init(PHAHighlightCollectionEnrichmentTask);
@@ -284,18 +284,18 @@ LABEL_16:
         v19 = *(*(&v26 + 1) + 8 * i);
         if ([v19 currentPlatformIsSupported] && objc_msgSend(v19, "shouldRunWithGraphManager:", self->_graphManager))
         {
-          v20 = [v19 name];
-          [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v20];
+          name = [v19 name];
+          [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
           graphManager = self->_graphManager;
-          v22 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+          onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
           v25 = v16;
-          LODWORD(graphManager) = [v19 runWithGraphManager:graphManager progressReporter:v22 error:&v25];
+          LODWORD(graphManager) = [v19 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v25];
           v23 = v25;
 
           if (!graphManager)
           {
-            v6[2](v6, 0, v23);
+            replyCopy[2](replyCopy, 0, v23);
 
             goto LABEL_16;
           }
@@ -319,33 +319,33 @@ LABEL_16:
     v16 = 0;
   }
 
-  v6[2](v6, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
   v23 = v16;
 LABEL_16:
 }
 
-- (void)_runCachingCPAnalyticsTestWithOptions:(id)a3 reply:(id)a4
+- (void)_runCachingCPAnalyticsTestWithOptions:(id)options reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = objc_alloc_init(PHACachingCPAnalyticsPropertiesTask);
-  v7 = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v7];
+  name = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   graphManager = self->_graphManager;
-  v9 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v12 = 0;
-  v10 = [(PHACachingCPAnalyticsPropertiesTask *)v6 runWithGraphManager:graphManager progressReporter:v9 error:&v12];
+  v10 = [(PHACachingCPAnalyticsPropertiesTask *)v6 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v12];
   v11 = v12;
 
-  v5[2](v5, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 }
 
-- (void)runPerformanceTest:(id)a3 options:(id)a4 context:(id)a5 reply:(id)a6
+- (void)runPerformanceTest:(id)test options:(id)options context:(id)context reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  testCopy = test;
+  optionsCopy = options;
+  replyCopy = reply;
   if ((PFOSVariantHasInternalDiagnostics() & 1) == 0)
   {
     loggingConnection = self->_loggingConnection;
@@ -356,25 +356,25 @@ LABEL_16:
     }
 
     v13 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:3];
-    v11[2](v11, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   v14 = self->_loggingConnection;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v9;
+    v18 = testCopy;
     _os_log_impl(&dword_22FA28000, v14, OS_LOG_TYPE_DEFAULT, "Running Performance Test: %@", &v17, 0xCu);
   }
 
-  if ([v9 isEqualToString:@"CachingCPAnalytics"])
+  if ([testCopy isEqualToString:@"CachingCPAnalytics"])
   {
-    [(PHAStorytellingOnDemandTaskHandler *)self _runCachingCPAnalyticsTestWithOptions:v10 reply:v11];
+    [(PHAStorytellingOnDemandTaskHandler *)self _runCachingCPAnalyticsTestWithOptions:optionsCopy reply:replyCopy];
   }
 
-  else if ([v9 isEqualToString:@"Enrichment"])
+  else if ([testCopy isEqualToString:@"Enrichment"])
   {
-    [(PHAStorytellingOnDemandTaskHandler *)self _runEnrichmentTestWithOptions:v10 reply:v11];
+    [(PHAStorytellingOnDemandTaskHandler *)self _runEnrichmentTestWithOptions:optionsCopy reply:replyCopy];
   }
 
   else
@@ -383,17 +383,17 @@ LABEL_16:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v9;
+      v18 = testCopy;
     }
 
     v16 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:3];
-    v11[2](v11, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
   }
 }
 
-- (void)requestRevGeocodingSyndicationLibraryWithContext:(id)a3 reply:(id)a4
+- (void)requestRevGeocodingSyndicationLibraryWithContext:(id)context reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v19 = 0;
   v7 = [(PGManager *)graphManager isReadyWithError:&v19];
@@ -401,116 +401,116 @@ LABEL_16:
   if (v7)
   {
     v9 = objc_alloc_init(PHARevGeocodeSyndicationTask);
-    v10 = [(PHARevGeocodeSyndicationTask *)v9 name];
-    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v10];
+    name = [(PHARevGeocodeSyndicationTask *)v9 name];
+    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
     v11 = self->_graphManager;
-    v12 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
     v18 = v8;
-    v13 = [(PHARevGeocodeSyndicationTask *)v9 runWithGraphManager:v11 progressReporter:v12 error:&v18];
+    v13 = [(PHARevGeocodeSyndicationTask *)v9 runWithGraphManager:v11 progressReporter:onDemandTaskProgressReporter error:&v18];
     v14 = v18;
 
     if (v13)
     {
       WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-      v16 = [MEMORY[0x277CBEAA8] date];
-      v17 = [(PHARevGeocodeSyndicationTask *)v9 name];
-      [WeakRetained setLibraryScopedWorkerPreferencesValue:v16 forKey:v17];
+      date = [MEMORY[0x277CBEAA8] date];
+      name2 = [(PHARevGeocodeSyndicationTask *)v9 name];
+      [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
     }
 
-    v5[2](v5, v13, v14);
+    replyCopy[2](replyCopy, v13, v14);
   }
 
   else
   {
-    v5[2](v5, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
     v14 = v8;
   }
 }
 
-- (void)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestAssetRevGeocodingForAssetLocalIdentifiers:(id)identifiers context:(id)context reply:(id)reply
 {
   v7 = MEMORY[0x277D3BBA8];
   graphManager = self->_graphManager;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PGManager *)graphManager workingContext];
-  v12 = [v11 photoLibrary];
-  v19 = [v7 reverseGeoFetchOptionsForPhotoLibrary:v12];
+  replyCopy = reply;
+  identifiersCopy = identifiers;
+  workingContext = [(PGManager *)graphManager workingContext];
+  photoLibrary = [workingContext photoLibrary];
+  v19 = [v7 reverseGeoFetchOptionsForPhotoLibrary:photoLibrary];
 
-  v13 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:v10 options:v19];
+  v13 = [MEMORY[0x277CD97A8] fetchAssetsWithLocalIdentifiers:identifiersCopy options:v19];
 
   v14 = objc_alloc(MEMORY[0x277D3BBA8]);
-  v15 = [(PGManager *)self->_graphManager photoLibrary];
+  photoLibrary2 = [(PGManager *)self->_graphManager photoLibrary];
   loggingConnection = self->_loggingConnection;
-  v17 = [(PGManager *)self->_graphManager locationCache];
-  v18 = [v14 initWithPhotoLibrary:v15 homeLocations:MEMORY[0x277CBEBF8] loggingConnection:loggingConnection locationCache:v17];
+  locationCache = [(PGManager *)self->_graphManager locationCache];
+  v18 = [v14 initWithPhotoLibrary:photoLibrary2 homeLocations:MEMORY[0x277CBEBF8] loggingConnection:loggingConnection locationCache:locationCache];
 
   [v18 revGeocodeAssets:v13 progressBlock:&__block_literal_global_2774];
-  v9[2](v9, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)requestAssetRevGeocodingWithContext:(id)a3 reply:(id)a4
+- (void)requestAssetRevGeocodingWithContext:(id)context reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = objc_alloc_init(PHAAssetRevGeocodeEnrichmentTask);
-  v7 = [(PHAEnrichmentTask *)v6 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v7];
+  name = [(PHAEnrichmentTask *)v6 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   graphManager = self->_graphManager;
-  v9 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v15 = 0;
-  v10 = [(PHAEnrichmentTask *)v6 runWithGraphManager:graphManager progressReporter:v9 error:&v15];
+  v10 = [(PHAEnrichmentTask *)v6 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v15];
   v11 = v15;
 
   if (v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [(PHAEnrichmentTask *)v6 name];
-    [WeakRetained setLibraryScopedWorkerPreferencesValue:v13 forKey:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    name2 = [(PHAEnrichmentTask *)v6 name];
+    [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
   }
 
-  v5[2](v5, v11);
+  replyCopy[2](replyCopy, v11);
 }
 
-- (void)requestHighlightCollectionEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestHighlightCollectionEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[PHAHighlightCollectionEnrichmentTask alloc] initWithOptions:v8];
+  replyCopy = reply;
+  optionsCopy = options;
+  v9 = [[PHAHighlightCollectionEnrichmentTask alloc] initWithOptions:optionsCopy];
 
-  v10 = [(PHAEnrichmentTask *)v9 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v10];
+  name = [(PHAEnrichmentTask *)v9 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   graphManager = self->_graphManager;
-  v12 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v18 = 0;
-  v13 = [(PHAEnrichmentTask *)v9 runWithGraphManager:graphManager progressReporter:v12 error:&v18];
+  v13 = [(PHAEnrichmentTask *)v9 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v18];
   v14 = v18;
 
   if (v13)
   {
     WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v17 = [(PHAEnrichmentTask *)v9 name];
-    [WeakRetained setLibraryScopedWorkerPreferencesValue:v16 forKey:v17];
+    date = [MEMORY[0x277CBEAA8] date];
+    name2 = [(PHAEnrichmentTask *)v9 name];
+    [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
   }
 
-  v7[2](v7, v14);
+  replyCopy[2](replyCopy, v14);
 }
 
-- (void)requestHighlightEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestHighlightEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v10 = v7;
+  v10 = optionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (!v11)
   {
@@ -520,7 +520,7 @@ LABEL_16:
   }
 
   v12 = v11;
-  v31 = self;
+  selfCopy = self;
   v13 = 0;
   v14 = 0;
   v15 = *v36;
@@ -535,7 +535,7 @@ LABEL_16:
       }
 
       v17 = *(*(&v35 + 1) + 8 * v16);
-      if ([v17 isEqualToString:{@"force", v31}])
+      if ([v17 isEqualToString:{@"force", selfCopy}])
       {
         v14 |= 0x40000000uLL;
         goto LABEL_25;
@@ -596,7 +596,7 @@ LABEL_24:
       if (!v32)
       {
         v30 = [MEMORY[0x277CCA9B8] pl_analysisErrorForInvalidParameterValue:v17 named:@"option"];
-        v8[2](v8, v30);
+        replyCopy[2](replyCopy, v30);
 
         v24 = v10;
         goto LABEL_41;
@@ -624,7 +624,7 @@ LABEL_25:
     v19 = v14 | 0xFF;
   }
 
-  self = v31;
+  self = selfCopy;
 LABEL_35:
   if ([v9 count])
   {
@@ -633,44 +633,44 @@ LABEL_35:
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
 
     WeakRetained = [objc_alloc(MEMORY[0x277D3B928]) initWithManager:self->_graphManager enrichmentProcessors:v21];
-    v23 = [MEMORY[0x277D22C80] ignoreProgress];
+    ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
     v34 = 0;
-    [WeakRetained enrichDataModelForHighlightUUIDs:v9 progressReporter:v23 error:&v34];
+    [WeakRetained enrichDataModelForHighlightUUIDs:v9 progressReporter:ignoreProgress error:&v34];
     v24 = v34;
     goto LABEL_39;
   }
 
   v21 = objc_alloc_init(PHAHighlightEnrichmentTask);
   [(PHAHighlightEnrichmentTask *)v21 setTailorOptions:v19];
-  v25 = [(PHAEnrichmentTask *)v21 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v25];
+  name = [(PHAEnrichmentTask *)v21 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   graphManager = self->_graphManager;
-  v27 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v33 = 0;
-  v28 = [(PHAHighlightEnrichmentTask *)v21 runWithGraphManager:graphManager progressReporter:v27 error:&v33];
+  v28 = [(PHAHighlightEnrichmentTask *)v21 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v33];
   v24 = v33;
 
   if (v28)
   {
     WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-    v23 = [MEMORY[0x277CBEAA8] date];
-    v29 = [(PHAEnrichmentTask *)v21 name];
-    [WeakRetained setLibraryScopedWorkerPreferencesValue:v23 forKey:v29];
+    ignoreProgress = [MEMORY[0x277CBEAA8] date];
+    name2 = [(PHAEnrichmentTask *)v21 name];
+    [WeakRetained setLibraryScopedWorkerPreferencesValue:ignoreProgress forKey:name2];
 
 LABEL_39:
   }
 
-  v8[2](v8, v24);
+  replyCopy[2](replyCopy, v24);
 LABEL_41:
 }
 
-- (void)requestEnrichmentWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestEnrichmentWithOptions:(id)options context:(id)context reply:(id)reply
 {
   v61[7] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v46 = a4;
-  v48 = a5;
+  optionsCopy = options;
+  contextCopy = context;
+  replyCopy = reply;
   v9 = objc_alloc_init(PHAPeopleSuggestionEnrichmentTask);
   v61[0] = v9;
   v10 = objc_alloc_init(PHAForcedHighlightEnrichmentTask);
@@ -683,25 +683,25 @@ LABEL_41:
   v61[4] = v13;
   v14 = objc_alloc_init(PHAPortraitDonationEnrichmentTask);
   v61[5] = v14;
-  v15 = [[PHAMemoriesEnrichmentTask alloc] initWithOptions:v8];
+  v15 = [[PHAMemoriesEnrichmentTask alloc] initWithOptions:optionsCopy];
   v61[6] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:7];
 
-  v47 = v8;
-  v17 = [v8 objectForKeyedSubscript:@"processor"];
-  v18 = [v17 lowercaseString];
+  v47 = optionsCopy;
+  v17 = [optionsCopy objectForKeyedSubscript:@"processor"];
+  lowercaseString = [v17 lowercaseString];
 
-  if (v18)
+  if (lowercaseString)
   {
-    if (([v18 isEqualToString:@"force-all"] & 1) == 0)
+    if (([lowercaseString isEqualToString:@"force-all"] & 1) == 0)
     {
-      v19 = [v18 stringByReplacingOccurrencesOfString:@"backgroundjob" withString:&stru_2844B1BF0];
+      v19 = [lowercaseString stringByReplacingOccurrencesOfString:@"backgroundjob" withString:&stru_2844B1BF0];
 
       v20 = [v19 stringByReplacingOccurrencesOfString:@"background" withString:&stru_2844B1BF0];
 
       v21 = [v20 stringByReplacingOccurrencesOfString:@"processor" withString:&stru_2844B1BF0];
 
-      v18 = [v21 stringByReplacingOccurrencesOfString:@"enrichment" withString:&stru_2844B1BF0];
+      lowercaseString = [v21 stringByReplacingOccurrencesOfString:@"enrichment" withString:&stru_2844B1BF0];
 
       v56 = 0u;
       v57 = 0u;
@@ -724,10 +724,10 @@ LABEL_41:
             }
 
             v27 = *(*(&v54 + 1) + 8 * i);
-            v28 = [v27 name];
-            v29 = [v28 lowercaseString];
+            name = [v27 name];
+            lowercaseString2 = [name lowercaseString];
 
-            if ([v29 containsString:v18])
+            if ([lowercaseString2 containsString:lowercaseString])
             {
               v59 = v27;
               v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
@@ -754,11 +754,11 @@ LABEL_13:
     if (![v16 count])
     {
       v30 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:19];
-      v48[2](v48, v30);
+      replyCopy[2](replyCopy, v30);
     }
   }
 
-  v45 = v18;
+  v45 = lowercaseString;
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -782,26 +782,26 @@ LABEL_13:
         v37 = *(*(&v50 + 1) + 8 * j);
         if ([v37 currentPlatformIsSupported] && objc_msgSend(v37, "shouldRunWithGraphManager:", self->_graphManager))
         {
-          v38 = [v37 name];
-          [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v38];
+          name2 = [v37 name];
+          [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name2];
 
           graphManager = self->_graphManager;
-          v40 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+          onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
           v49 = v34;
-          LODWORD(graphManager) = [v37 runWithGraphManager:graphManager progressReporter:v40 error:&v49];
+          LODWORD(graphManager) = [v37 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v49];
           v41 = v49;
 
           if (!graphManager)
           {
-            v48[2](v48, v41);
+            replyCopy[2](replyCopy, v41);
             v34 = v41;
             goto LABEL_30;
           }
 
           WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-          v43 = [MEMORY[0x277CBEAA8] date];
-          v44 = [v37 name];
-          [WeakRetained setLibraryScopedWorkerPreferencesValue:v43 forKey:v44];
+          date = [MEMORY[0x277CBEAA8] date];
+          name3 = [v37 name];
+          [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name3];
 
           v34 = v41;
         }
@@ -824,36 +824,36 @@ LABEL_13:
 
 LABEL_30:
 
-  v48[2](v48, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)cacheCPAnalyticsPropertiesWithContext:(id)a3 reply:(id)a4
+- (void)cacheCPAnalyticsPropertiesWithContext:(id)context reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v6 = objc_alloc_init(PHACachingCPAnalyticsPropertiesTask);
-  v7 = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v7];
+  name = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   graphManager = self->_graphManager;
-  v9 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v15 = 0;
-  v10 = [(PHACachingCPAnalyticsPropertiesTask *)v6 runWithGraphManager:graphManager progressReporter:v9 error:&v15];
+  v10 = [(PHACachingCPAnalyticsPropertiesTask *)v6 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v15];
   v11 = v15;
 
   if (v10)
   {
     WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-    v13 = [MEMORY[0x277CBEAA8] date];
-    v14 = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
-    [WeakRetained setLibraryScopedWorkerPreferencesValue:v13 forKey:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    name2 = [(PHACachingCPAnalyticsPropertiesTask *)v6 name];
+    [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
   }
 
-  v5[2](v5, v10, v11);
+  replyCopy[2](replyCopy, v10, v11);
 }
 
-- (void)requestExternalAssetRelevanceProcessingWithContext:(id)a3 reply:(id)a4
+- (void)requestExternalAssetRelevanceProcessingWithContext:(id)context reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v20 = 0;
   v7 = [(PGManager *)graphManager isReadyWithError:&v20];
@@ -861,38 +861,38 @@ LABEL_30:
   if (v7)
   {
     v9 = objc_alloc_init(PHAExternalAssetsTask);
-    v10 = [(PHAExternalAssetsTask *)v9 name];
-    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v10];
+    name = [(PHAExternalAssetsTask *)v9 name];
+    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
     v11 = self->_graphManager;
-    v12 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
     v19 = v8;
-    v13 = [(PHAExternalAssetsTask *)v9 runWithGraphManager:v11 progressReporter:v12 error:&v19];
+    v13 = [(PHAExternalAssetsTask *)v9 runWithGraphManager:v11 progressReporter:onDemandTaskProgressReporter error:&v19];
     v14 = v19;
 
     if (v13)
     {
       WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-      v16 = [MEMORY[0x277CBEAA8] date];
-      v17 = [(PHAExternalAssetsTask *)v9 name];
-      [WeakRetained setLibraryScopedWorkerPreferencesValue:v16 forKey:v17];
+      date = [MEMORY[0x277CBEAA8] date];
+      name2 = [(PHAExternalAssetsTask *)v9 name];
+      [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
     }
 
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v13];
-    v5[2](v5, v18, v14);
+    replyCopy[2](replyCopy, v18, v14);
   }
 
   else
   {
-    v5[2](v5, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
     v14 = v8;
   }
 }
 
-- (void)requestSyndicationProcessingWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestSyndicationProcessingWithOptions:(id)options context:(id)context reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v29 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v29];
@@ -902,30 +902,30 @@ LABEL_30:
     v12 = objc_alloc_init(PHASyndicationTask);
     v13 = MEMORY[0x277D3B0E8];
     v14 = MEMORY[0x277D3B0E0];
-    if (v7)
+    if (optionsCopy)
     {
-      v15 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3B0E0]];
+      v15 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3B0E0]];
       -[PHASyndicationTask setPerformCurationJob:](v12, "setPerformCurationJob:", [v15 BOOLValue]);
 
-      v16 = [v7 objectForKeyedSubscript:*v13];
+      v16 = [optionsCopy objectForKeyedSubscript:*v13];
       -[PHASyndicationTask setPerformGuestInferenceJob:](v12, "setPerformGuestInferenceJob:", [v16 BOOLValue]);
     }
 
-    v17 = [(PHASyndicationTask *)v12 name];
-    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v17];
+    name = [(PHASyndicationTask *)v12 name];
+    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
     v18 = self->_graphManager;
-    v19 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
     v28 = v11;
-    v20 = [(PHASyndicationTask *)v12 runWithGraphManager:v18 progressReporter:v19 error:&v28];
+    v20 = [(PHASyndicationTask *)v12 runWithGraphManager:v18 progressReporter:onDemandTaskProgressReporter error:&v28];
     v21 = v28;
 
     if (v20)
     {
       WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-      v23 = [MEMORY[0x277CBEAA8] date];
-      v24 = [(PHASyndicationTask *)v12 name];
-      [WeakRetained setLibraryScopedWorkerPreferencesValue:v23 forKey:v24];
+      date = [MEMORY[0x277CBEAA8] date];
+      name2 = [(PHASyndicationTask *)v12 name];
+      [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
     }
 
     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -941,74 +941,74 @@ LABEL_30:
       [v25 setObject:v27 forKeyedSubscript:*v13];
     }
 
-    v8[2](v8, v25, v21);
+    replyCopy[2](replyCopy, v25, v21);
   }
 
   else
   {
-    v8[2](v8, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
     v21 = v11;
   }
 }
 
-- (void)requestGenerateQuestionsWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestGenerateQuestionsWithOptions:(id)options context:(id)context reply:(id)reply
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v54 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v54];
   v11 = v54;
   if ((v10 & 1) == 0)
   {
-    v8[2](v8, 0, v11);
+    replyCopy[2](replyCopy, 0, v11);
     goto LABEL_5;
   }
 
   v12 = *MEMORY[0x277D3AFC0];
-  v13 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AFC0]];
-  v14 = [v13 BOOLValue];
+  v13 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AFC0]];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v14)
+  if (bOOLValue)
   {
     v15 = [PHAPhotosChallengeTask currentQuestionsKVSDataFromGraphManager:self->_graphManager];
     v61 = v12;
     v62[0] = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:&v61 count:1];
-    (v8)[2](v8, v16, 0);
+    (replyCopy)[2](replyCopy, v16, 0);
 
     goto LABEL_5;
   }
 
-  v17 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AFA0]];
-  v18 = [v17 BOOLValue];
+  v17 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AFA0]];
+  bOOLValue2 = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue2)
   {
     [PHAPhotosChallengeTask removeCurrentKVSDataFromGraphManager:self->_graphManager];
-    v8[2](v8, MEMORY[0x277CBEC10], 0);
+    replyCopy[2](replyCopy, MEMORY[0x277CBEC10], 0);
     goto LABEL_5;
   }
 
-  v19 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AFD8]];
-  v20 = [v19 BOOLValue];
+  v19 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AFD8]];
+  bOOLValue3 = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue3)
   {
-    v21 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AF98]];
+    v21 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AF98]];
     v22 = v21;
     if (v21)
     {
-      v23 = v21;
+      date = v21;
     }
 
     else
     {
-      v23 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v45 = v23;
+    v45 = date;
 
     v46 = [PHAPhotosChallengeTask postSubmissionNotificationIfNeededWithGraphManager:self->_graphManager notificationDate:v45];
     v59 = *MEMORY[0x277D3AFB0];
@@ -1019,29 +1019,29 @@ LABEL_30:
     v50 = &v59;
 LABEL_25:
     v52 = [v48 dictionaryWithObjects:v49 forKeys:v50 count:1];
-    (v8)[2](v8, v52, 0);
+    (replyCopy)[2](replyCopy, v52, 0);
 
     goto LABEL_5;
   }
 
-  v24 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AFD0]];
-  v25 = [v24 BOOLValue];
+  v24 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AFD0]];
+  bOOLValue4 = [v24 BOOLValue];
 
-  if (v25)
+  if (bOOLValue4)
   {
-    v26 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AF98]];
+    v26 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AF98]];
     v27 = v26;
     if (v26)
     {
-      v28 = v26;
+      date2 = v26;
     }
 
     else
     {
-      v28 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
     }
 
-    v45 = v28;
+    v45 = date2;
 
     v51 = [PHAPhotosChallengeTask postNewQuestionsNotificationIfNeededWithGraphManager:self->_graphManager notificationDate:v45];
     v57 = *MEMORY[0x277D3AFA8];
@@ -1053,54 +1053,54 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v29 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AFC8]];
-  v30 = [v29 unsignedIntegerValue];
+  v29 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AFC8]];
+  unsignedIntegerValue = [v29 unsignedIntegerValue];
 
-  v31 = [v7 objectForKeyedSubscript:*MEMORY[0x277D3AF90]];
-  v32 = [v31 integerValue];
+  v31 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D3AF90]];
+  integerValue = [v31 integerValue];
 
   v33 = objc_alloc_init(PHAPhotosChallengeTask);
   v34 = v33;
-  if (v32)
+  if (integerValue)
   {
-    [(PHAPhotosChallengeTask *)v33 setLimit:v32];
+    [(PHAPhotosChallengeTask *)v33 setLimit:integerValue];
   }
 
-  if (v30)
+  if (unsignedIntegerValue)
   {
-    [(PHAPhotosChallengeTask *)v34 setQuestionOptions:v30];
+    [(PHAPhotosChallengeTask *)v34 setQuestionOptions:unsignedIntegerValue];
   }
 
-  v35 = [(PHAPhotosChallengeTask *)v34 name];
-  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v35];
+  name = [(PHAPhotosChallengeTask *)v34 name];
+  [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
   v36 = self->_graphManager;
-  v37 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
   v53 = v11;
-  v38 = [(PHAPhotosChallengeTask *)v34 runWithGraphManager:v36 progressReporter:v37 error:&v53];
+  v38 = [(PHAPhotosChallengeTask *)v34 runWithGraphManager:v36 progressReporter:onDemandTaskProgressReporter error:&v53];
   v39 = v53;
 
   if (v38)
   {
     WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-    v41 = [MEMORY[0x277CBEAA8] date];
-    v42 = [(PHAPhotosChallengeTask *)v34 name];
-    [WeakRetained setLibraryScopedWorkerPreferencesValue:v41 forKey:v42];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    name2 = [(PHAPhotosChallengeTask *)v34 name];
+    [WeakRetained setLibraryScopedWorkerPreferencesValue:date3 forKey:name2];
   }
 
   v55 = *MEMORY[0x277D3AFB8];
   v43 = [MEMORY[0x277CCABB0] numberWithBool:v38];
   v56 = v43;
   v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-  (v8)[2](v8, v44, v39);
+  (replyCopy)[2](replyCopy, v44, v39);
 
   v11 = v39;
 LABEL_5:
 }
 
-- (void)reportMetricsWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)reportMetricsWithOptions:(id)options context:(id)context reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v20 = 0;
   v8 = [(PGManager *)graphManager isReadyWithError:&v20];
@@ -1108,38 +1108,38 @@ LABEL_5:
   if (v8)
   {
     v10 = objc_alloc_init(PHAMetricReportingTask);
-    v11 = [(PHAMetricReportingTask *)v10 name];
-    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v11];
+    name = [(PHAMetricReportingTask *)v10 name];
+    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
     v12 = self->_graphManager;
-    v13 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
     v19 = v9;
-    v14 = [(PHAMetricReportingTask *)v10 runWithGraphManager:v12 progressReporter:v13 error:&v19];
+    v14 = [(PHAMetricReportingTask *)v10 runWithGraphManager:v12 progressReporter:onDemandTaskProgressReporter error:&v19];
     v15 = v19;
 
     if (v14)
     {
       WeakRetained = objc_loadWeakRetained(&self->_jobTimeHandler);
-      v17 = [MEMORY[0x277CBEAA8] date];
-      v18 = [(PHAMetricReportingTask *)v10 name];
-      [WeakRetained setLibraryScopedWorkerPreferencesValue:v17 forKey:v18];
+      date = [MEMORY[0x277CBEAA8] date];
+      name2 = [(PHAMetricReportingTask *)v10 name];
+      [WeakRetained setLibraryScopedWorkerPreferencesValue:date forKey:name2];
     }
 
-    v6[2](v6, v14, v15);
+    replyCopy[2](replyCopy, v14, v15);
   }
 
   else
   {
-    v6[2](v6, 0, v9);
+    replyCopy[2](replyCopy, 0, v9);
     v15 = v9;
   }
 }
 
-- (void)generateSuggestionsWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)generateSuggestionsWithOptions:(id)options context:(id)context reply:(id)reply
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v51 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v51];
@@ -1150,32 +1150,32 @@ LABEL_5:
     v44 = 3221225472;
     v45 = __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_context_reply___block_invoke;
     v46 = &unk_2788B1FE0;
-    v12 = v7;
+    v12 = optionsCopy;
     v47 = v12;
-    v48 = self;
-    v13 = v8;
+    selfCopy = self;
+    v13 = replyCopy;
     v50 = v13;
     v11 = v11;
     v49 = v11;
     v14 = _Block_copy(&v43);
     v15 = [v12 objectForKeyedSubscript:{*MEMORY[0x277D3B0C8], v43, v44, v45, v46}];
-    v16 = [v15 integerValue];
+    integerValue = [v15 integerValue];
 
-    if (v16 > 7u)
+    if (integerValue > 7u)
     {
-      if (v16 == 8)
+      if (integerValue == 8)
       {
         v31 = [PHAWallpaperSuggestionGenerationWeeklyTask alloc];
         v32 = 8;
         goto LABEL_26;
       }
 
-      if (v16 == 11)
+      if (integerValue == 11)
       {
         v21 = objc_alloc_init(PGCameraStyleableSuggestionGenerator);
         v22 = self->_graphManager;
-        v23 = [MEMORY[0x277D22C80] ignoreProgress];
-        v24 = [(PGCameraStyleableSuggestionGenerator *)v21 generateSuggestionsWithGraphManager:v22 progressReporter:v23];
+        ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+        v24 = [(PGCameraStyleableSuggestionGenerator *)v21 generateSuggestionsWithGraphManager:v22 progressReporter:ignoreProgress];
 
         v54 = *MEMORY[0x277D3B0D8];
         v55[0] = v24;
@@ -1188,19 +1188,19 @@ LABEL_5:
 
     else
     {
-      if (v16 == 1)
+      if (integerValue == 1)
       {
         v20 = PHASharingSuggestionGenerationTask;
         goto LABEL_17;
       }
 
-      if (v16 == 6)
+      if (integerValue == 6)
       {
         v17 = [v12 objectForKeyedSubscript:*MEMORY[0x277D3B0B8]];
-        v18 = [v17 integerValue];
+        integerValue2 = [v17 integerValue];
 
-        v19 = v18;
-        if (v18 == 680)
+        v19 = integerValue2;
+        if (integerValue2 == 680)
         {
           v20 = PHAWallpaperSettlingEffectGenerationTask;
 LABEL_17:
@@ -1212,9 +1212,9 @@ LABEL_27:
           goto LABEL_28;
         }
 
-        v34 = [MEMORY[0x277CD99E0] allTopWallpaperSuggestionSubtypes];
-        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v18];
-        v36 = [v34 containsObject:v35];
+        allTopWallpaperSuggestionSubtypes = [MEMORY[0x277CD99E0] allTopWallpaperSuggestionSubtypes];
+        v35 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:integerValue2];
+        v36 = [allTopWallpaperSuggestionSubtypes containsObject:v35];
 
         if (v36)
         {
@@ -1223,9 +1223,9 @@ LABEL_27:
 
         else
         {
-          v38 = [MEMORY[0x277CD99E0] allShuffleWallpaperSuggestionSubtypes];
-          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v18];
-          v40 = [v38 containsObject:v39];
+          allShuffleWallpaperSuggestionSubtypes = [MEMORY[0x277CD99E0] allShuffleWallpaperSuggestionSubtypes];
+          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:integerValue2];
+          v40 = [allShuffleWallpaperSuggestionSubtypes containsObject:v39];
 
           v41 = 19;
           if (v19 == 901)
@@ -1253,9 +1253,9 @@ LABEL_26:
     }
 
     v26 = [v12 objectForKeyedSubscript:*MEMORY[0x277D3B080]];
-    v27 = [v26 BOOLValue];
+    bOOLValue = [v26 BOOLValue];
 
-    if (v16 || v27)
+    if (integerValue || bOOLValue)
     {
       v20 = PHASuggestionGenerationTask;
       goto LABEL_17;
@@ -1274,7 +1274,7 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  (*(v8 + 2))(v8, 0, v11);
+  (*(replyCopy + 2))(replyCopy, 0, v11);
 LABEL_29:
 }
 
@@ -1296,10 +1296,10 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
   (*(a1[7] + 16))();
 }
 
-- (void)generateMemoriesWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)generateMemoriesWithOptions:(id)options context:(id)context reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   graphManager = self->_graphManager;
   v43 = 0;
   v10 = [(PGManager *)graphManager isReadyWithError:&v43];
@@ -1309,10 +1309,10 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
   {
     v40 = v11;
     v13 = objc_alloc_init(PHAMemoryElectionTask);
-    v14 = [(PHAMemoryElectionTask *)v13 name];
-    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:v14];
+    name = [(PHAMemoryElectionTask *)v13 name];
+    [(PGProgressCallChecker *)self->_progressCallChecker setTaskName:name];
 
-    v15 = [v7 objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionDateKey"];
     if (v15)
     {
       [(PHAMemoryElectionTask *)v13 setUniversalDate:v15];
@@ -1320,14 +1320,14 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
 
     else
     {
-      v16 = [MEMORY[0x277CBEAA8] date];
-      [(PHAMemoryElectionTask *)v13 setUniversalDate:v16];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(PHAMemoryElectionTask *)v13 setUniversalDate:date];
     }
 
-    v17 = [v7 objectForKeyedSubscript:@"PHMemoryOptionLocationKey"];
+    v17 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionLocationKey"];
     [(PHAMemoryElectionTask *)v13 setLocation:v17];
 
-    v18 = [v7 objectForKeyedSubscript:@"PHMemoryOptionExtraParametersKey"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionExtraParametersKey"];
     v19 = [v18 objectForKeyedSubscript:@"notification"];
     -[PHAMemoryElectionTask setForceNotification:](v13, "setForceNotification:", [v19 BOOLValue]);
 
@@ -1350,16 +1350,16 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
     if (v24)
     {
       v26 = MEMORY[0x277D3B6C8];
-      v27 = [v24 unsignedIntegerValue];
+      unsignedIntegerValue = [v24 unsignedIntegerValue];
       v28 = [v18 objectForKeyedSubscript:@"PHMemoryOptionRequestedFeatureIdentifierKey"];
-      v29 = [v26 featureWithType:v27 name:v28];
+      v29 = [v26 featureWithType:unsignedIntegerValue name:v28];
       [(PHAMemoryElectionTask *)v13 setRequestedFeature:v29];
     }
 
     v30 = [v18 objectForKeyedSubscript:@"PHMemoryOptionRequestedUniqueMemoryIdentifierKey"];
     [(PHAMemoryElectionTask *)v13 setRequestedUniqueMemoryIdentifier:v30];
 
-    v31 = [v7 objectForKeyedSubscript:@"PHMemoryOptionReasonKey"];
+    v31 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionReasonKey"];
     v32 = v31;
     if (v31)
     {
@@ -1372,7 +1372,7 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
     }
 
     [(PHAMemoryElectionTask *)v13 setUserInitiated:v33];
-    v34 = [v7 objectForKeyedSubscript:@"PHMemoryOptionCommitChangesKey"];
+    v34 = [optionsCopy objectForKeyedSubscript:@"PHMemoryOptionCommitChangesKey"];
     v35 = v34;
     if (v34)
     {
@@ -1386,28 +1386,28 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
 
     [(PHAMemoryElectionTask *)v13 setCreateTransientMemories:v36];
     v37 = self->_graphManager;
-    v38 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __80__PHAStorytellingOnDemandTaskHandler_generateMemoriesWithOptions_context_reply___block_invoke;
     v41[3] = &unk_2788B1FB8;
-    v42 = v8;
-    [(PHAMemoryElectionTask *)v13 runWithGraphManager:v37 progressReporter:v38 reply:v41];
+    v42 = replyCopy;
+    [(PHAMemoryElectionTask *)v13 runWithGraphManager:v37 progressReporter:onDemandTaskProgressReporter reply:v41];
 
     v12 = v40;
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, v11);
+    (*(replyCopy + 2))(replyCopy, 0, v11);
   }
 }
 
-- (void)requestOnDemandTasksWithOptions:(id)a3 context:(id)a4 reply:(id)a5
+- (void)requestOnDemandTasksWithOptions:(id)options context:(id)context reply:(id)reply
 {
   v53[3] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [a3 objectForKeyedSubscript:*MEMORY[0x277D3AF08]];
+  replyCopy = reply;
+  v8 = [options objectForKeyedSubscript:*MEMORY[0x277D3AF08]];
   if ([v8 isEqualToString:@"contentGeneration"])
   {
     v9 = objc_alloc_init(PHAMemoryElectionTask);
@@ -1504,7 +1504,7 @@ void __83__PHAStorytellingOnDemandTaskHandler_generateSuggestionsWithOptions_con
         if (![v8 isEqualToString:@"wallpaperWeeklyMe"])
         {
           v35 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:3 localizedDescription:@"Task not supported returned NO"];
-          v7[2](v7, 0, v35);
+          replyCopy[2](replyCopy, 0, v35);
 
           goto LABEL_54;
         }
@@ -1555,7 +1555,7 @@ LABEL_36:
     if (v17)
     {
       v18 = v17;
-      v36 = v7;
+      v36 = replyCopy;
       v19 = 0;
       v20 = *v39;
       while (2)
@@ -1574,19 +1574,19 @@ LABEL_36:
           {
             v30 = MEMORY[0x277CCA9B8];
             v31 = MEMORY[0x277CCACA8];
-            v32 = [v23 name];
-            v33 = [v31 stringWithFormat:@"%@'s shouldRunWithGraphManager returned NO", v32];
+            name = [v23 name];
+            v33 = [v31 stringWithFormat:@"%@'s shouldRunWithGraphManager returned NO", name];
             v34 = [v30 pl_analysisErrorWithCode:14 localizedDescription:v33];
-            v7 = v36;
+            replyCopy = v36;
             v36[2](v36, 0, v34);
 
             goto LABEL_53;
           }
 
           graphManager = self->_graphManager;
-          v25 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+          onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
           v37 = v22;
-          LODWORD(graphManager) = [v23 runWithGraphManager:graphManager progressReporter:v25 error:&v37];
+          LODWORD(graphManager) = [v23 runWithGraphManager:graphManager progressReporter:onDemandTaskProgressReporter error:&v37];
           v19 = v37;
 
           if (!graphManager)
@@ -1611,7 +1611,7 @@ LABEL_36:
 
       v26 = 1;
 LABEL_51:
-      v7 = v36;
+      replyCopy = v36;
     }
 
     else
@@ -1620,7 +1620,7 @@ LABEL_51:
       v26 = 1;
     }
 
-    v7[2](v7, v26, v19);
+    replyCopy[2](replyCopy, v26, v19);
 LABEL_53:
   }
 
@@ -1629,7 +1629,7 @@ LABEL_53:
     v27 = MEMORY[0x277CCA9B8];
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"No tasks to run for %@", v8];
     v29 = [v27 pl_analysisErrorWithCode:19 localizedDescription:v28];
-    v7[2](v7, 0, v29);
+    replyCopy[2](replyCopy, 0, v29);
   }
 
 LABEL_54:
@@ -1637,8 +1637,8 @@ LABEL_54:
 
 - (void)shutdown
 {
-  v3 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
-  [v3 cancelOperation];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  [onDemandTaskProgressReporter cancelOperation];
 
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableArray *)self->_operationsToRun removeAllObjects];
@@ -1668,15 +1668,15 @@ void __46__PHAStorytellingOnDemandTaskHandler_shutdown__block_invoke(uint64_t a1
 {
   if (self->_isShutdown)
   {
-    v3 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
-    [v3 cancelOperation];
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    [onDemandTaskProgressReporter cancelOperation];
   }
 }
 
 - (void)cancelCurrentOperation
 {
-  v2 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
-  [v2 cancelOperation];
+  onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+  [onDemandTaskProgressReporter cancelOperation];
 }
 
 - (BOOL)isQuiescent
@@ -1689,8 +1689,8 @@ void __46__PHAStorytellingOnDemandTaskHandler_shutdown__block_invoke(uint64_t a1
 
   else
   {
-    v4 = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
-    v3 = v4 == 0;
+    onDemandTaskProgressReporter = [(PHAStorytellingOnDemandTaskHandler *)self onDemandTaskProgressReporter];
+    v3 = onDemandTaskProgressReporter == 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -1818,45 +1818,45 @@ void __63__PHAStorytellingOnDemandTaskHandler_dequeueOperationsIfNeeded__block_i
 - (id)nextOperation
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableArray *)self->_operationsToRun firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_operationsToRun firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_operationsToRun removeObjectAtIndex:0];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return firstObject;
 }
 
-- (void)handleOperation:(id)a3
+- (void)handleOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_operationsToRun addObject:v4];
+  [(NSMutableArray *)self->_operationsToRun addObject:operationCopy];
 
   os_unfair_lock_unlock(&self->_lock);
-  v5 = [(PHAStorytellingOnDemandTaskHandler *)self delegate];
-  [v5 onDemandTaskHandlerStartingOperation:self];
+  delegate = [(PHAStorytellingOnDemandTaskHandler *)self delegate];
+  [delegate onDemandTaskHandlerStartingOperation:self];
 
   [(PHAStorytellingOnDemandTaskHandler *)self dequeueOperationsIfNeeded];
 }
 
-- (PHAStorytellingOnDemandTaskHandler)initWithGraphManager:(id)a3 jobTimeHandler:(id)a4
+- (PHAStorytellingOnDemandTaskHandler)initWithGraphManager:(id)manager jobTimeHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v22.receiver = self;
   v22.super_class = PHAStorytellingOnDemandTaskHandler;
   v9 = [(PHAStorytellingOnDemandTaskHandler *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_graphManager, a3);
-    v11 = [(PGManager *)v10->_graphManager workingContext];
-    v12 = [v11 photoLibrary];
+    objc_storeStrong(&v9->_graphManager, manager);
+    workingContext = [(PGManager *)v10->_graphManager workingContext];
+    photoLibrary = [workingContext photoLibrary];
     photoLibrary = v10->_photoLibrary;
-    v10->_photoLibrary = v12;
+    v10->_photoLibrary = photoLibrary;
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("com.apple.photoanalysis.ondemandtask", v14);
@@ -1864,12 +1864,12 @@ void __63__PHAStorytellingOnDemandTaskHandler_dequeueOperationsIfNeeded__block_i
     v10->_executionQueue = v15;
 
     v10->_isShutdown = 0;
-    v17 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     operationsToRun = v10->_operationsToRun;
-    v10->_operationsToRun = v17;
+    v10->_operationsToRun = array;
 
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v10->_jobTimeHandler, v8);
+    objc_storeWeak(&v10->_jobTimeHandler, handlerCopy);
     v19 = os_log_create("com.apple.photoanalysisd", "ondemandtaskhandler");
     loggingConnection = v10->_loggingConnection;
     v10->_loggingConnection = v19;

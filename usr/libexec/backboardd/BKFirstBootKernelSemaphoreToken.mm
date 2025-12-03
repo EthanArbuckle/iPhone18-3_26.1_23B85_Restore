@@ -65,9 +65,9 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendBool:-[BKFirstBootKernelSemaphoreToken isTokenSet](self withName:{"isTokenSet"), @"isTokenSet"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (BKFirstBootKernelSemaphoreToken)init

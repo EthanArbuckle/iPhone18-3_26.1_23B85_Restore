@@ -1,28 +1,28 @@
 @interface ATXActionPredictions
-+ (BOOL)actionScoreAboveThresholdOrWhitelistedAction:(id)a3 confidenceThreshold:(double)a4 actionKeyWhitelist:(id)a5 actionTypeWhitelist:(id)a6;
-+ (BOOL)isActionPredictionContainerEligibleForLimit:(id)a3;
-+ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)a3 candidateActiontypes:(id)a4 firstStageScoreLogger:(id)a5 secondStageScoreLogger:(id)a6 multiStageScoreLogger:(id)a7 context:(id)a8 featureCache:(id)a9 remainingPredictionItems:(void *)a10;
-+ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)a3 candidateActiontypes:(id)a4 firstStageScoreLogger:(id)a5 secondStageScoreLogger:(id)a6 multiStageScoreLogger:(id)a7 featureCache:(id)a8 remainingPredictionItems:(void *)a9;
-+ (id)actionsFromActions:(id)a3 byMovingActionsWithBundleIdentifiers:(id)a4 toRemainingPredictionItems:(void *)a5;
-+ (id)filterHighQualityActionResults:(id)a3 consumerSubType:(unsigned __int8)a4;
-+ (id)removeActionsBelowThresholdForActionPredictions:(id)a3 withThreshold:(double)a4 actionKeyWhitelist:(id)a5 actionTypeWhitelist:(id)a6;
-+ (id)scoredActionsWithoutLog:(id)a3;
-+ (id)sortStageScores:(id)a3;
-+ (unint64_t)numActionResultsWithOnlyPredictionItemForLogging:(id)a3;
-+ (void)fetchDataAndUpdateContentAttributeSetForActions:(id)a3;
-+ (void)penalizeMultipleActionsPerAppAndKeepSorted:(id)a3;
-+ (void)setTVActionPredictionsConfidenceToLow:(id)a3;
++ (BOOL)actionScoreAboveThresholdOrWhitelistedAction:(id)action confidenceThreshold:(double)threshold actionKeyWhitelist:(id)whitelist actionTypeWhitelist:(id)typeWhitelist;
++ (BOOL)isActionPredictionContainerEligibleForLimit:(id)limit;
++ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)identifiers candidateActiontypes:(id)actiontypes firstStageScoreLogger:(id)logger secondStageScoreLogger:(id)scoreLogger multiStageScoreLogger:(id)stageScoreLogger context:(id)context featureCache:(id)cache remainingPredictionItems:(void *)self0;
++ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)identifiers candidateActiontypes:(id)actiontypes firstStageScoreLogger:(id)logger secondStageScoreLogger:(id)scoreLogger multiStageScoreLogger:(id)stageScoreLogger featureCache:(id)cache remainingPredictionItems:(void *)items;
++ (id)actionsFromActions:(id)actions byMovingActionsWithBundleIdentifiers:(id)identifiers toRemainingPredictionItems:(void *)items;
++ (id)filterHighQualityActionResults:(id)results consumerSubType:(unsigned __int8)type;
++ (id)removeActionsBelowThresholdForActionPredictions:(id)predictions withThreshold:(double)threshold actionKeyWhitelist:(id)whitelist actionTypeWhitelist:(id)typeWhitelist;
++ (id)scoredActionsWithoutLog:(id)log;
++ (id)sortStageScores:(id)scores;
++ (unint64_t)numActionResultsWithOnlyPredictionItemForLogging:(id)logging;
++ (void)fetchDataAndUpdateContentAttributeSetForActions:(id)actions;
++ (void)penalizeMultipleActionsPerAppAndKeepSorted:(id)sorted;
++ (void)setTVActionPredictionsConfidenceToLow:(id)low;
 @end
 
 @implementation ATXActionPredictions
 
-+ (BOOL)isActionPredictionContainerEligibleForLimit:(id)a3
++ (BOOL)isActionPredictionContainerEligibleForLimit:(id)limit
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CEBC70] sharedInstance];
-  v5 = [v4 isTestModeEnabled];
+  limitCopy = limit;
+  mEMORY[0x277CEBC70] = [MEMORY[0x277CEBC70] sharedInstance];
+  isTestModeEnabled = [mEMORY[0x277CEBC70] isTestModeEnabled];
 
-  if (v5)
+  if (isTestModeEnabled)
   {
     v6 = 0;
   }
@@ -30,9 +30,9 @@
   else
   {
     v7 = MEMORY[0x277CEB7F8];
-    v8 = [v3 scoredAction];
-    v9 = [v8 predictedItem];
-    LOBYTE(v7) = [v7 isActionEligibleForAnySettingsSuggestions:v9];
+    scoredAction = [limitCopy scoredAction];
+    predictedItem = [scoredAction predictedItem];
+    LOBYTE(v7) = [v7 isActionEligibleForAnySettingsSuggestions:predictedItem];
 
     v6 = v7 ^ 1;
   }
@@ -40,29 +40,29 @@
   return v6;
 }
 
-+ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)a3 candidateActiontypes:(id)a4 firstStageScoreLogger:(id)a5 secondStageScoreLogger:(id)a6 multiStageScoreLogger:(id)a7 featureCache:(id)a8 remainingPredictionItems:(void *)a9
++ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)identifiers candidateActiontypes:(id)actiontypes firstStageScoreLogger:(id)logger secondStageScoreLogger:(id)scoreLogger multiStageScoreLogger:(id)stageScoreLogger featureCache:(id)cache remainingPredictionItems:(void *)items
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  identifiersCopy = identifiers;
+  actiontypesCopy = actiontypes;
+  loggerCopy = logger;
+  scoreLoggerCopy = scoreLogger;
+  stageScoreLoggerCopy = stageScoreLogger;
+  cacheCopy = cache;
   v21 = +[_ATXAppPredictor sharedInstance];
-  v22 = [v21 appLaunchMonitor];
+  appLaunchMonitor = [v21 appLaunchMonitor];
 
-  if (v22)
+  if (appLaunchMonitor)
   {
     v23 = +[ATXPredictionContextBuilder sharedInstance];
-    v24 = [v23 predictionContextForCurrentContext];
+    predictionContextForCurrentContext = [v23 predictionContextForCurrentContext];
 
-    if (!v24)
+    if (!predictionContextForCurrentContext)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:a1 file:@"ATXActionPredictions.mm" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"predictionContext"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ATXActionPredictions.mm" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"predictionContext"}];
     }
 
-    v25 = [a1 _actionPredictionCandidatesForCandidateBundleIdentifiers:v15 candidateActiontypes:v16 firstStageScoreLogger:v17 secondStageScoreLogger:v18 multiStageScoreLogger:v19 context:v24 featureCache:v20 remainingPredictionItems:a9];
+    v25 = [self _actionPredictionCandidatesForCandidateBundleIdentifiers:identifiersCopy candidateActiontypes:actiontypesCopy firstStageScoreLogger:loggerCopy secondStageScoreLogger:scoreLoggerCopy multiStageScoreLogger:stageScoreLoggerCopy context:predictionContextForCurrentContext featureCache:cacheCopy remainingPredictionItems:items];
   }
 
   else
@@ -73,22 +73,22 @@
   return v25;
 }
 
-+ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)a3 candidateActiontypes:(id)a4 firstStageScoreLogger:(id)a5 secondStageScoreLogger:(id)a6 multiStageScoreLogger:(id)a7 context:(id)a8 featureCache:(id)a9 remainingPredictionItems:(void *)a10
++ (id)_actionPredictionCandidatesForCandidateBundleIdentifiers:(id)identifiers candidateActiontypes:(id)actiontypes firstStageScoreLogger:(id)logger secondStageScoreLogger:(id)scoreLogger multiStageScoreLogger:(id)stageScoreLogger context:(id)context featureCache:(id)cache remainingPredictionItems:(void *)self0
 {
   v112 = *MEMORY[0x277D85DE8];
-  v79 = a3;
-  v80 = a4;
-  v83 = a5;
-  v88 = a6;
-  v89 = a7;
-  v91 = a8;
-  v78 = a9;
+  identifiersCopy = identifiers;
+  actiontypesCopy = actiontypes;
+  loggerCopy = logger;
+  scoreLoggerCopy = scoreLogger;
+  stageScoreLoggerCopy = stageScoreLogger;
+  contextCopy = context;
+  cacheCopy = cache;
   v85 = objc_opt_new();
   v77 = objc_autoreleasePoolPush();
   v81 = +[_ATXAppPredictor sharedInstance];
   v87 = +[_ATXGlobals sharedInstance];
-  v15 = [v81 predictWithLimit:objc_msgSend(v87 consumerSubType:"actionPredictionFirstStageBeamWidth") intent:24 candidateBundleIdentifiers:0 candidateActiontypes:v79 scoreLogger:v80 predictionItemsToKeep:v83 predictedItemsOutParameter:a10 context:0 featureCache:{v91, v78}];
-  if (v83)
+  v15 = [v81 predictWithLimit:objc_msgSend(v87 consumerSubType:"actionPredictionFirstStageBeamWidth") intent:24 candidateBundleIdentifiers:0 candidateActiontypes:identifiersCopy scoreLogger:actiontypesCopy predictionItemsToKeep:loggerCopy predictedItemsOutParameter:items context:0 featureCache:{contextCopy, cacheCopy}];
+  if (loggerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@
       v105[3] = &unk_27859AED0;
       v17 = v16;
       v106 = v17;
-      [v83 flushWithCompletion:v105];
+      [loggerCopy flushWithCompletion:v105];
       [MEMORY[0x277D425A0] waitForSemaphore:v17 timeoutSeconds:&__block_literal_global_132 onAcquire:&__block_literal_global_50 onTimeout:5.0];
     }
   }
@@ -108,8 +108,8 @@
   if (v15 && ([v15 predictionSetChunk], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v76 = v15;
-    v19 = [v15 feedbackStateChunk];
-    v20 = v19 == 0;
+    feedbackStateChunk = [v15 feedbackStateChunk];
+    v20 = feedbackStateChunk == 0;
 
     if (v20)
     {
@@ -125,12 +125,12 @@
       }
 
       v22 = MEMORY[0x277CEB7D0];
-      v23 = [v76 predictionSetChunk];
-      v75 = [v22 bundleIdReader:v23];
+      predictionSetChunk = [v76 predictionSetChunk];
+      v75 = [v22 bundleIdReader:predictionSetChunk];
 
       v93 = [v75 readScoredPredictionsWithLimit:0x7FFFFFFFLL];
-      v24 = [v76 feedbackStateChunk];
-      [ATXActionCacheReader getActionKeyToPredictionItemMapFromChunk:v24];
+      feedbackStateChunk2 = [v76 feedbackStateChunk];
+      [ATXActionCacheReader getActionKeyToPredictionItemMapFromChunk:feedbackStateChunk2];
 
       v82 = objc_opt_new();
       v25 = objc_opt_new();
@@ -163,37 +163,37 @@
       {
         context = objc_autoreleasePoolPush();
         v95 = [v93 objectAtIndexedSubscript:v96];
-        v103 = [v95 predictedItem];
-        v32 = std::__hash_table<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringHash,ATXNSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringEqual,ATXNSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>>>::find<NSString * {__strong}>(v104, &v103);
+        predictedItem = [v95 predictedItem];
+        v32 = std::__hash_table<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,std::__unordered_map_hasher<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringHash,ATXNSStringEqual,true>,std::__unordered_map_equal<NSString * {__strong},std::__hash_value_type<NSString * {__strong},ATXPredictionItem>,ATXNSStringEqual,ATXNSStringHash,true>,std::allocator<std::__hash_value_type<NSString * {__strong},ATXPredictionItem>>>::find<NSString * {__strong}>(v104, &predictedItem);
         if (v32)
         {
-          v94 = [v90 statisticsForActionKey:v103 context:v91];
-          v33 = v103;
+          v94 = [v90 statisticsForActionKey:predictedItem context:contextCopy];
+          v33 = predictedItem;
           [v95 score];
           v35 = v34;
           [v87 predictionsForMultiStageLoggingLimit];
           v37 = v36;
-          v38 = [v91 timeContext];
-          v39 = [v38 date];
+          timeContext = [contextCopy timeContext];
+          date = [timeContext date];
           if (v96 == v84)
           {
-            [v90 actionPredictionsForActionKey:v33 statistics:v94 appActionPredictionItem:v32 + 3 appActionLogProbability:v88 scoreLogger:v37 andLimit:0 forMagicalMoments:v35 predictionItemsToKeep:a10 currentDate:v39];
+            [v90 actionPredictionsForActionKey:v33 statistics:v94 appActionPredictionItem:v32 + 3 appActionLogProbability:scoreLoggerCopy scoreLogger:v37 andLimit:0 forMagicalMoments:v35 predictionItemsToKeep:items currentDate:date];
           }
 
           else
           {
-            [v90 actionPredictionsForActionKey:v33 statistics:v94 appActionPredictionItem:v32 + 3 appActionLogProbability:v88 scoreLogger:v37 andLimit:0 forMagicalMoments:v35 currentDate:v39];
+            [v90 actionPredictionsForActionKey:v33 statistics:v94 appActionPredictionItem:v32 + 3 appActionLogProbability:scoreLoggerCopy scoreLogger:v37 andLimit:0 forMagicalMoments:v35 currentDate:date];
           }
           v40 = ;
 
           [v86 updateActionStatisticsForSlotResolutionStatistics:v94 candidateActionPredictions:v40];
-          if (v89)
+          if (stageScoreLoggerCopy)
           {
             v41 = MEMORY[0x277CCABB0];
             [v95 score];
             v42 = [v41 numberWithFloat:?];
             v43 = MEMORY[0x277CCACA8];
-            v44 = v103;
+            v44 = predictedItem;
             [v95 score];
             v46 = [v43 stringWithFormat:@"%@:%f", v44, v45];
             [v82 setObject:v42 forKeyedSubscript:v46];
@@ -217,8 +217,8 @@
                   }
 
                   v51 = *(*(&v99 + 1) + 8 * i);
-                  v52 = [v51 scoredAction];
-                  v53 = [v52 description];
+                  scoredAction = [v51 scoredAction];
+                  v53 = [scoredAction description];
 
                   v54 = MEMORY[0x277CCABB0];
                   [v51 score];
@@ -241,7 +241,7 @@
               *buf = 138412546;
               v109 = v40;
               v110 = 2112;
-              v111 = v103;
+              v111 = predictedItem;
               _os_log_debug_impl(&dword_2263AA000, v56, OS_LOG_TYPE_DEBUG, "Got %@ predictions based on slot resolution for: %@", buf, 0x16u);
             }
 
@@ -277,7 +277,7 @@
 
       v64 = objc_opt_new();
       [v64 setFeatureValuesAndFilterPredictableActions:v57 actionStatistics:v86];
-      if (v88)
+      if (scoreLoggerCopy)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -289,18 +289,18 @@
           v97[3] = &unk_27859AED0;
           v66 = v65;
           v98 = v66;
-          [v88 flushWithCompletion:v97];
+          [scoreLoggerCopy flushWithCompletion:v97];
           [MEMORY[0x277D425A0] waitForSemaphore:v66 timeoutSeconds:&__block_literal_global_65_0 onAcquire:&__block_literal_global_68 onTimeout:5.0];
         }
       }
 
-      if (v89)
+      if (stageScoreLoggerCopy)
       {
         v67 = [ATXActionPredictions sortStageScores:v82];
-        [v89 logStageScores:v67 forStageType:0];
+        [stageScoreLoggerCopy logStageScores:v67 forStageType:0];
 
         v68 = [ATXActionPredictions sortStageScores:v25];
-        [v89 logStageScores:v68 forStageType:1];
+        [stageScoreLoggerCopy logStageScores:v68 forStageType:1];
       }
 
       v69 = __atxlog_handle_action_prediction();
@@ -387,30 +387,30 @@ void __188__ATXActionPredictions__predictionsForConsumerSubType_thirdStageScoreL
   }
 }
 
-+ (id)actionsFromActions:(id)a3 byMovingActionsWithBundleIdentifiers:(id)a4 toRemainingPredictionItems:(void *)a5
++ (id)actionsFromActions:(id)actions byMovingActionsWithBundleIdentifiers:(id)identifiers toRemainingPredictionItems:(void *)items
 {
-  v7 = a3;
-  v8 = a4;
+  actionsCopy = actions;
+  identifiersCopy = identifiers;
   v9 = objc_opt_new();
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIdentifiers_toRemainingPredictionItems___block_invoke;
   v16[3] = &unk_27859E088;
-  v10 = v8;
+  v10 = identifiersCopy;
   v17 = v10;
-  v19 = a5;
+  itemsCopy = items;
   v11 = v9;
   v18 = v11;
-  [v7 enumerateObjectsUsingBlock:v16];
+  [actionsCopy enumerateObjectsUsingBlock:v16];
   v12 = [v11 count];
-  if (v12 == [v7 count])
+  if (v12 == [actionsCopy count])
   {
-    v13 = v7;
+    v13 = actionsCopy;
   }
 
   else
   {
-    v13 = [v7 objectsAtIndexes:v11];
+    v13 = [actionsCopy objectsAtIndexes:v11];
   }
 
   v14 = v13;
@@ -461,15 +461,15 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
   }
 }
 
-+ (void)fetchDataAndUpdateContentAttributeSetForActions:(id)a3
++ (void)fetchDataAndUpdateContentAttributeSetForActions:(id)actions
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  actionsCopy = actions;
+  v4 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -480,18 +480,18 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actionsCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * v6) scoredAction];
-        v8 = [v7 predictedItem];
-        [_ATXActionUtils fetchDataAndUpdateContentAttributeSetForAction:v8];
+        scoredAction = [*(*(&v10 + 1) + 8 * v6) scoredAction];
+        predictedItem = [scoredAction predictedItem];
+        [_ATXActionUtils fetchDataAndUpdateContentAttributeSetForAction:predictedItem];
 
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -500,9 +500,9 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setTVActionPredictionsConfidenceToLow:(id)a3
++ (void)setTVActionPredictionsConfidenceToLow:(id)low
 {
-  MEMORY[0x28223BE20](a1, a2);
+  MEMORY[0x28223BE20](self, a2);
   v32 = *MEMORY[0x277D85DE8];
   v18 = v3;
   v4 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.tv" actionType:@"INPlayMediaIntent"];
@@ -525,8 +525,8 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [v9 actionKey];
-        v11 = [v10 isEqualToString:v4];
+        actionKey = [v9 actionKey];
+        v11 = [actionKey isEqualToString:v4];
 
         if (v11)
         {
@@ -574,10 +574,10 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filterHighQualityActionResults:(id)a3 consumerSubType:(unsigned __int8)a4
++ (id)filterHighQualityActionResults:(id)results consumerSubType:(unsigned __int8)type
 {
-  v4 = a4;
-  v5 = a3;
+  typeCopy = type;
+  resultsCopy = results;
   v6 = +[_ATXGlobals sharedInstance];
   v32 = 0;
   v33 = &v32;
@@ -591,19 +591,19 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
   aBlock[3] = &unk_27859E0D0;
   aBlock[4] = &v32;
   v7 = _Block_copy(aBlock);
-  switch(v4)
+  switch(typeCopy)
   {
     case '1':
-      v22 = [v5 _pas_filteredArrayWithTest:&__block_literal_global_92_0];
+      v22 = [resultsCopy _pas_filteredArrayWithTest:&__block_literal_global_92_0];
       v23 = v33[5];
       v33[5] = v22;
 
       v18 = v33[5];
       v24 = [v18 count];
-      v25 = [v6 maxSettingsZKWSuggestionsToBlend];
-      if (v24 >= v25)
+      maxSettingsZKWSuggestionsToBlend = [v6 maxSettingsZKWSuggestionsToBlend];
+      if (v24 >= maxSettingsZKWSuggestionsToBlend)
       {
-        v21 = v25;
+        v21 = maxSettingsZKWSuggestionsToBlend;
       }
 
       else
@@ -613,16 +613,16 @@ void __107__ATXActionPredictions_actionsFromActions_byMovingActionsWithBundleIde
 
       goto LABEL_11;
     case '.':
-      v16 = [v5 _pas_filteredArrayWithTest:&__block_literal_global_90_1];
+      v16 = [resultsCopy _pas_filteredArrayWithTest:&__block_literal_global_90_1];
       v17 = v33[5];
       v33[5] = v16;
 
       v18 = v33[5];
       v19 = [v18 count];
-      v20 = [v6 maxSettingsZKWSuggestionsToBlend];
-      if (v19 >= v20)
+      maxSettingsZKWSuggestionsToBlend2 = [v6 maxSettingsZKWSuggestionsToBlend];
+      if (v19 >= maxSettingsZKWSuggestionsToBlend2)
       {
-        v21 = v20;
+        v21 = maxSettingsZKWSuggestionsToBlend2;
       }
 
       else
@@ -637,15 +637,15 @@ LABEL_11:
       goto LABEL_12;
     case '&':
       v8 = MEMORY[0x277CBEB98];
-      v9 = [v6 whitelistedActionKeysForHomeScreen];
-      v10 = [v8 setWithArray:v9];
+      whitelistedActionKeysForHomeScreen = [v6 whitelistedActionKeysForHomeScreen];
+      v10 = [v8 setWithArray:whitelistedActionKeysForHomeScreen];
 
       v11 = MEMORY[0x277CBEB98];
-      v12 = [v6 whitelistedActionTypesForHomeScreen];
-      v13 = [v11 setWithArray:v12];
+      whitelistedActionTypesForHomeScreen = [v6 whitelistedActionTypesForHomeScreen];
+      v13 = [v11 setWithArray:whitelistedActionTypesForHomeScreen];
 
       [v6 behavioralHomeScreenActionMinimumConfidenceThreshold];
-      v14 = [ATXActionPredictions removeActionsBelowThresholdForActionPredictions:v5 withThreshold:v10 actionKeyWhitelist:v13 actionTypeWhitelist:?];
+      v14 = [ATXActionPredictions removeActionsBelowThresholdForActionPredictions:resultsCopy withThreshold:v10 actionKeyWhitelist:v13 actionTypeWhitelist:?];
       v15 = v33[5];
       v33[5] = v14;
 
@@ -656,7 +656,7 @@ LABEL_12:
   }
 
   [v6 actionExperienceMediumConfidenceThreshold];
-  v27 = [ATXActionPredictions removeActionsBelowThresholdForActionPredictions:v5 withThreshold:0 actionKeyWhitelist:0 actionTypeWhitelist:?];
+  v27 = [ATXActionPredictions removeActionsBelowThresholdForActionPredictions:resultsCopy withThreshold:0 actionKeyWhitelist:0 actionTypeWhitelist:?];
   v28 = v33[5];
   v33[5] = v27;
 
@@ -709,21 +709,21 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
   return v5;
 }
 
-+ (id)removeActionsBelowThresholdForActionPredictions:(id)a3 withThreshold:(double)a4 actionKeyWhitelist:(id)a5 actionTypeWhitelist:(id)a6
++ (id)removeActionsBelowThresholdForActionPredictions:(id)predictions withThreshold:(double)threshold actionKeyWhitelist:(id)whitelist actionTypeWhitelist:(id)typeWhitelist
 {
   v42 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v29 = a5;
-  v30 = a6;
+  predictionsCopy = predictions;
+  whitelistCopy = whitelist;
+  typeWhitelistCopy = typeWhitelist;
   v28 = objc_opt_new();
-  v9 = [objc_opt_class() numActionResultsWithOnlyPredictionItemForLogging:v26];
-  if ([v26 count])
+  v9 = [objc_opt_class() numActionResultsWithOnlyPredictionItemForLogging:predictionsCopy];
+  if ([predictionsCopy count])
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = v26;
+    obj = predictionsCopy;
     v10 = [obj countByEnumeratingWithState:&v31 objects:v41 count:16];
     if (v10)
     {
@@ -738,16 +738,16 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
           }
 
           v13 = *(*(&v31 + 1) + 8 * i);
-          if ([ATXActionPredictions actionScoreAboveThresholdOrWhitelistedAction:v13 confidenceThreshold:v29 actionKeyWhitelist:v30 actionTypeWhitelist:a4])
+          if ([ATXActionPredictions actionScoreAboveThresholdOrWhitelistedAction:v13 confidenceThreshold:whitelistCopy actionKeyWhitelist:typeWhitelistCopy actionTypeWhitelist:threshold])
           {
             v14 = __atxlog_handle_action_prediction();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
-              v15 = [v13 scoredAction];
-              v16 = [v15 predictedItem];
-              v17 = [v16 actionTitle];
+              scoredAction = [v13 scoredAction];
+              predictedItem = [scoredAction predictedItem];
+              actionTitle = [predictedItem actionTitle];
               *buf = 138412290;
-              v36 = v17;
+              v36 = actionTitle;
               _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_INFO, "Adding high confidence action %@", buf, 0xCu);
             }
 
@@ -780,11 +780,11 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v22 = [v28 count];
-    v23 = [v26 count];
+    v23 = [predictionsCopy count];
     *buf = 134218496;
     v36 = v22;
     v37 = 2048;
-    v38 = a4;
+    thresholdCopy = threshold;
     v39 = 2048;
     v40 = v23;
     _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_INFO, "Filtered %tu predictions with score above %0.2f threshold, out of %tu.", buf, 0x20u);
@@ -795,16 +795,16 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
   return v28;
 }
 
-+ (unint64_t)numActionResultsWithOnlyPredictionItemForLogging:(id)a3
++ (unint64_t)numActionResultsWithOnlyPredictionItemForLogging:(id)logging
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
+  loggingCopy = logging;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [loggingCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -814,21 +814,21 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(loggingCopy);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 scoredAction];
-        if (!v9)
+        scoredAction = [v8 scoredAction];
+        if (!scoredAction)
         {
-          v10 = [v8 actionKey];
-          v11 = [v10 isEqualToString:@"predictionItem"];
+          actionKey = [v8 actionKey];
+          v11 = [actionKey isEqualToString:@"predictionItem"];
 
           v4 += v11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [loggingCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -838,47 +838,47 @@ uint64_t __71__ATXActionPredictions_filterHighQualityActionResults_consumerSubTy
   return v4;
 }
 
-+ (BOOL)actionScoreAboveThresholdOrWhitelistedAction:(id)a3 confidenceThreshold:(double)a4 actionKeyWhitelist:(id)a5 actionTypeWhitelist:(id)a6
++ (BOOL)actionScoreAboveThresholdOrWhitelistedAction:(id)action confidenceThreshold:(double)threshold actionKeyWhitelist:(id)whitelist actionTypeWhitelist:(id)typeWhitelist
 {
   v55 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v48 = a6;
-  v11 = [v9 scoredAction];
+  actionCopy = action;
+  whitelistCopy = whitelist;
+  typeWhitelistCopy = typeWhitelist;
+  scoredAction = [actionCopy scoredAction];
 
-  if (v11)
+  if (scoredAction)
   {
-    if ([v9 predictionItem] && *(objc_msgSend(v9, "predictionItem") + 1028) < 3.0)
+    if ([actionCopy predictionItem] && *(objc_msgSend(actionCopy, "predictionItem") + 1028) < 3.0)
     {
-      v12 = [v9 scoredAction];
-      v13 = [v12 predictedItem];
-      v14 = [v13 parameterKeysForToolInvocation];
-      if ([v14 count])
+      scoredAction2 = [actionCopy scoredAction];
+      predictedItem = [scoredAction2 predictedItem];
+      parameterKeysForToolInvocation = [predictedItem parameterKeysForToolInvocation];
+      if ([parameterKeysForToolInvocation count])
       {
 
 LABEL_7:
-        v20 = __atxlog_handle_action_prediction();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+        actionKey = __atxlog_handle_action_prediction();
+        if (os_log_type_enabled(actionKey, OS_LOG_TYPE_INFO))
         {
-          v21 = [v9 scoredAction];
-          v22 = [v21 predictedItem];
-          v23 = *([v9 predictionItem] + 1028);
+          scoredAction3 = [actionCopy scoredAction];
+          predictedItem2 = [scoredAction3 predictedItem];
+          v23 = *([actionCopy predictionItem] + 1028);
           *buf = 138412546;
-          v50 = v22;
+          v50 = predictedItem2;
           v51 = 2048;
           v52 = v23;
-          _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_INFO, "Filtering out low confidence parameterized action: %@ : %f", buf, 0x16u);
+          _os_log_impl(&dword_2263AA000, actionKey, OS_LOG_TYPE_INFO, "Filtering out low confidence parameterized action: %@ : %f", buf, 0x16u);
         }
 
         v24 = 0;
         goto LABEL_25;
       }
 
-      v15 = [v9 scoredAction];
-      v16 = [v15 predictedItem];
-      v17 = [v16 intent];
-      v18 = [v17 atx_nonNilParameters];
-      v19 = [v18 count];
+      scoredAction4 = [actionCopy scoredAction];
+      predictedItem3 = [scoredAction4 predictedItem];
+      intent = [predictedItem3 intent];
+      atx_nonNilParameters = [intent atx_nonNilParameters];
+      v19 = [atx_nonNilParameters count];
 
       if (v19)
       {
@@ -886,25 +886,25 @@ LABEL_7:
       }
     }
 
-    if ([v9 predictionItem])
+    if ([actionCopy predictionItem])
     {
       v25 = __atxlog_handle_action_prediction();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v9 scoredAction];
-        v27 = [v26 predictedItem];
-        v28 = *([v9 predictionItem] + 1028);
+        scoredAction5 = [actionCopy scoredAction];
+        predictedItem4 = [scoredAction5 predictedItem];
+        v28 = *([actionCopy predictionItem] + 1028);
         *buf = 138412546;
-        v50 = v27;
+        v50 = predictedItem4;
         v51 = 2048;
         v52 = v28;
         _os_log_impl(&dword_2263AA000, v25, OS_LOG_TYPE_DEFAULT, "Allowing action: %@ : %f", buf, 0x16u);
       }
     }
 
-    v29 = [v9 scoredAction];
-    [v29 score];
-    v31 = v30 < a4;
+    scoredAction6 = [actionCopy scoredAction];
+    [scoredAction6 score];
+    v31 = v30 < threshold;
 
     if (!v31)
     {
@@ -915,22 +915,22 @@ LABEL_7:
     v32 = __atxlog_handle_action_prediction();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v9 scoredAction];
-      v34 = [v33 predictedItem];
-      v35 = [v9 scoredAction];
-      [v35 score];
+      scoredAction7 = [actionCopy scoredAction];
+      predictedItem5 = [scoredAction7 predictedItem];
+      scoredAction8 = [actionCopy scoredAction];
+      [scoredAction8 score];
       *buf = 138412802;
-      v50 = v34;
+      v50 = predictedItem5;
       v51 = 2048;
       v52 = v36;
       v53 = 2048;
-      v54 = a4;
+      thresholdCopy = threshold;
       _os_log_impl(&dword_2263AA000, v32, OS_LOG_TYPE_DEFAULT, "Action %@ has a score of %f which is below the confidenceThreshold of %f", buf, 0x20u);
     }
 
-    v37 = [v9 scoredAction];
-    v38 = [v37 predictedItem];
-    v39 = [v38 intent];
+    scoredAction9 = [actionCopy scoredAction];
+    predictedItem6 = [scoredAction9 predictedItem];
+    intent2 = [predictedItem6 intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -939,26 +939,26 @@ LABEL_7:
       goto LABEL_21;
     }
 
-    v41 = [v9 scoredAction];
-    v42 = [v41 predictedItem];
-    v43 = [v42 intent];
+    scoredAction10 = [actionCopy scoredAction];
+    predictedItem7 = [scoredAction10 predictedItem];
+    intent3 = [predictedItem7 intent];
 
-    v44 = [v43 _nonNilParameters];
-    LOBYTE(v42) = [v44 containsObject:@"content"];
+    _nonNilParameters = [intent3 _nonNilParameters];
+    LOBYTE(predictedItem7) = [_nonNilParameters containsObject:@"content"];
 
-    if ((v42 & 1) == 0)
+    if ((predictedItem7 & 1) == 0)
     {
 LABEL_21:
-      v20 = [v9 actionKey];
-      v45 = [_ATXActionUtils getActionTypeFromActionKey:v20];
-      if ([v10 containsObject:v20])
+      actionKey = [actionCopy actionKey];
+      v45 = [_ATXActionUtils getActionTypeFromActionKey:actionKey];
+      if ([whitelistCopy containsObject:actionKey])
       {
         v24 = 1;
       }
 
       else
       {
-        v24 = [v48 containsObject:v45];
+        v24 = [typeWhitelistCopy containsObject:v45];
       }
 
 LABEL_25:
@@ -973,16 +973,16 @@ LABEL_26:
   return v24;
 }
 
-+ (id)scoredActionsWithoutLog:(id)a3
++ (id)scoredActionsWithoutLog:(id)log
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  logCopy = log;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(logCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = logCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -997,8 +997,8 @@ LABEL_26:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 scoredAction];
-        v11 = [v10 copy];
+        scoredAction = [v9 scoredAction];
+        v11 = [scoredAction copy];
 
         [v9 score];
         [v11 setScore:?];
@@ -1016,17 +1016,17 @@ LABEL_26:
   return v4;
 }
 
-+ (void)penalizeMultipleActionsPerAppAndKeepSorted:(id)a3
++ (void)penalizeMultipleActionsPerAppAndKeepSorted:(id)sorted
 {
   v30 = *MEMORY[0x277D85DE8];
-  v23 = a3;
+  sortedCopy = sorted;
   v24 = +[_ATXGlobals sharedInstance];
   v3 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = v23;
+  v4 = sortedCopy;
   v5 = [v4 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v5)
   {
@@ -1042,23 +1042,23 @@ LABEL_26:
 
         v8 = *(*(&v25 + 1) + 8 * i);
         v9 = MEMORY[0x277CEB7F8];
-        v10 = [v8 scoredAction];
-        v11 = [v10 predictedItem];
-        LOBYTE(v9) = [v9 isActionEligibleForAnySettingsSuggestions:v11];
+        scoredAction = [v8 scoredAction];
+        predictedItem = [scoredAction predictedItem];
+        LOBYTE(v9) = [v9 isActionEligibleForAnySettingsSuggestions:predictedItem];
 
         if ((v9 & 1) == 0)
         {
-          v12 = [v8 scoredAction];
-          v13 = [v12 predictedItem];
-          v14 = [v13 bundleId];
+          scoredAction2 = [v8 scoredAction];
+          predictedItem2 = [scoredAction2 predictedItem];
+          bundleId = [predictedItem2 bundleId];
 
-          v15 = [v3 objectForKeyedSubscript:v14];
-          v16 = [v15 integerValue];
+          v15 = [v3 objectForKeyedSubscript:bundleId];
+          integerValue = [v15 integerValue];
 
-          v17 = [MEMORY[0x277CCABB0] numberWithInteger:v16 + 1];
-          [v3 setObject:v17 forKeyedSubscript:v14];
+          v17 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
+          [v3 setObject:v17 forKeyedSubscript:bundleId];
 
-          if (v16 >= 1)
+          if (integerValue >= 1)
           {
             [v24 penaltyForMultipleActionsPerApp];
             v19 = v18;
@@ -1080,9 +1080,9 @@ LABEL_26:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)sortStageScores:(id)a3
++ (id)sortStageScores:(id)scores
 {
-  v3 = [a3 keysSortedByValueUsingComparator:&__block_literal_global_102_1];
+  v3 = [scores keysSortedByValueUsingComparator:&__block_literal_global_102_1];
 
   return v3;
 }

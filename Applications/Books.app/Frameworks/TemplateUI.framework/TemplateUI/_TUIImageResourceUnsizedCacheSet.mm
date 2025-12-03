@@ -1,7 +1,7 @@
 @interface _TUIImageResourceUnsizedCacheSet
 - (_TUIImageResourceUnsizedCacheSet)init;
-- (id)largestResourceWithContentAndNaturalSize:(CGSize)a3 contentsScale:(double)a4;
-- (void)addImageResource:(id)a3;
+- (id)largestResourceWithContentAndNaturalSize:(CGSize)size contentsScale:(double)scale;
+- (void)addImageResource:(id)resource;
 @end
 
 @implementation _TUIImageResourceUnsizedCacheSet
@@ -23,37 +23,37 @@
   return v3;
 }
 
-- (void)addImageResource:(id)a3
+- (void)addImageResource:(id)resource
 {
-  if (a3)
+  if (resource)
   {
-    v4 = a3;
+    resourceCopy = resource;
     os_unfair_lock_lock_with_options();
-    [(NSHashTable *)self->_set addObject:v4];
+    [(NSHashTable *)self->_set addObject:resourceCopy];
 
     os_unfair_lock_unlock(&self->_setLock);
   }
 }
 
-- (id)largestResourceWithContentAndNaturalSize:(CGSize)a3 contentsScale:(double)a4
+- (id)largestResourceWithContentAndNaturalSize:(CGSize)size contentsScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   os_unfair_lock_lock_with_options();
-  v8 = [(NSHashTable *)self->_set allObjects];
+  allObjects = [(NSHashTable *)self->_set allObjects];
   os_unfair_lock_unlock(&self->_setLock);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v8;
+  v9 = allObjects;
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = 0;
-    v13 = width * a4;
-    v14 = height * a4;
+    v13 = width * scale;
+    v14 = height * scale;
     v15 = *v35;
     v16 = 0.0;
     do
@@ -72,9 +72,9 @@
         [v18 contentsScale];
         v24 = v23;
         v25 = [v18 imageContentWithOptions:1];
-        v26 = [v25 image];
+        image = [v25 image];
 
-        if (v26)
+        if (image)
         {
           v27 = v20 * v24;
           v28 = v22 * v24;

@@ -1,6 +1,6 @@
 @interface _GCSystemButtonResponder
 - (_GCSystemButtonResponder)init;
-- (id)_initWithBundleIdentifier:(id *)a1;
+- (id)_initWithBundleIdentifier:(id *)identifier;
 - (void)invalidate;
 @end
 
@@ -21,18 +21,18 @@
   [(_GCSystemButtonResponder *)self didChangeValueForKey:@"invalid"];
 }
 
-- (id)_initWithBundleIdentifier:(id *)a1
+- (id)_initWithBundleIdentifier:(id *)identifier
 {
   v4 = a2;
-  if (a1)
+  if (identifier)
   {
-    v6.receiver = a1;
+    v6.receiver = identifier;
     v6.super_class = _GCSystemButtonResponder;
-    a1 = objc_msgSendSuper2(&v6, sel_init);
-    objc_storeStrong(a1 + 2, a2);
+    identifier = objc_msgSendSuper2(&v6, sel_init);
+    objc_storeStrong(identifier + 2, a2);
   }
 
-  return a1;
+  return identifier;
 }
 
 @end

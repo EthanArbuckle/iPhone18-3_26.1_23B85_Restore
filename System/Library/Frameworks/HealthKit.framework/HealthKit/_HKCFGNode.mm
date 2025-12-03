@@ -1,5 +1,5 @@
 @interface _HKCFGNode
-- (_HKCFGNode)initWithRangeOfString:(_NSRange)a3;
+- (_HKCFGNode)initWithRangeOfString:(_NSRange)string;
 - (_NSRange)rangeOfString;
 - (id)evaluate;
 @end
@@ -15,10 +15,10 @@
   return result;
 }
 
-- (_HKCFGNode)initWithRangeOfString:(_NSRange)a3
+- (_HKCFGNode)initWithRangeOfString:(_NSRange)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = string.length;
+  location = string.location;
   v6.receiver = self;
   v6.super_class = _HKCFGNode;
   result = [(_HKCFGNode *)&v6 init];

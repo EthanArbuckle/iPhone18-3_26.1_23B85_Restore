@@ -1,13 +1,13 @@
 @interface CSAttendingUsecaseFactory
-+ (id)attendingUseCaseByAttendingType:(int64_t)a3 audioProviderSelector:(id)a4;
++ (id)attendingUseCaseByAttendingType:(int64_t)type audioProviderSelector:(id)selector;
 @end
 
 @implementation CSAttendingUsecaseFactory
 
-+ (id)attendingUseCaseByAttendingType:(int64_t)a3 audioProviderSelector:(id)a4
++ (id)attendingUseCaseByAttendingType:(int64_t)type audioProviderSelector:(id)selector
 {
-  v4 = a4;
-  v5 = [[CSAttendingSpeechDetectionController alloc] initWithAudioProviderSelector:v4];
+  selectorCopy = selector;
+  v5 = [[CSAttendingSpeechDetectionController alloc] initWithAudioProviderSelector:selectorCopy];
 
   return v5;
 }

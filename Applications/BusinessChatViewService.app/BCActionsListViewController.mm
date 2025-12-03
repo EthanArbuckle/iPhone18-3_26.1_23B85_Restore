@@ -1,79 +1,79 @@
 @interface BCActionsListViewController
-- (BCActionsListViewController)initWithActionItems:(id)a3 brandedHeaderDelegate:(id)a4;
-- (BCActionsListViewController)initWithCoder:(id)a3;
-- (BCActionsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (BCActionsListViewController)initWithStyle:(int64_t)a3;
+- (BCActionsListViewController)initWithActionItems:(id)items brandedHeaderDelegate:(id)delegate;
+- (BCActionsListViewController)initWithCoder:(id)coder;
+- (BCActionsListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (BCActionsListViewController)initWithStyle:(int64_t)style;
 - (BCBrandedHeaderViewControllerDelegate)brandedHeaderDelegate;
 - (CGSize)contentSize;
 - (double)cellSeparatorHeight;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_computeMaxHeights;
 - (void)_handleSizeClassDidChange;
-- (void)_replaceActionItem:(id)a3 atIndex:(unint64_t)a4 reloadRowImmediately:(BOOL)a5;
+- (void)_replaceActionItem:(id)item atIndex:(unint64_t)index reloadRowImmediately:(BOOL)immediately;
 - (void)_sizeAndLoadTable;
-- (void)addActionItems:(id)a3;
+- (void)addActionItems:(id)items;
 - (void)dealloc;
 - (void)reloadHeader;
 - (void)reloadHeaderIcon;
-- (void)setBusinessItem:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setBusinessItem:(id)item;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateActionListViewWithAnimation;
 - (void)updateContentIfNecessary;
 - (void)updateLastActionItemWithAnimationIfNecessary;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BCActionsListViewController
 
-- (BCActionsListViewController)initWithActionItems:(id)a3 brandedHeaderDelegate:(id)a4
+- (BCActionsListViewController)initWithActionItems:(id)items brandedHeaderDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = BCActionsListViewController;
   v9 = [(BCActionsListViewController *)&v12 initWithStyle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_actionItems, a3);
-    objc_storeWeak(&v10->_brandedHeaderDelegate, v8);
+    objc_storeStrong(&v9->_actionItems, items);
+    objc_storeWeak(&v10->_brandedHeaderDelegate, delegateCopy);
   }
 
   return v10;
 }
 
-- (BCActionsListViewController)initWithStyle:(int64_t)a3
+- (BCActionsListViewController)initWithStyle:(int64_t)style
 {
   v4.receiver = self;
   v4.super_class = BCActionsListViewController;
-  return [(BCActionsListViewController *)&v4 initWithStyle:a3];
+  return [(BCActionsListViewController *)&v4 initWithStyle:style];
 }
 
-- (BCActionsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BCActionsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = BCActionsListViewController;
-  return [(BCActionsListViewController *)&v5 initWithNibName:a3 bundle:a4];
+  return [(BCActionsListViewController *)&v5 initWithNibName:name bundle:bundle];
 }
 
-- (BCActionsListViewController)initWithCoder:(id)a3
+- (BCActionsListViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = BCActionsListViewController;
-  return [(BCActionsListViewController *)&v4 initWithCoder:a3];
+  return [(BCActionsListViewController *)&v4 initWithCoder:coder];
 }
 
 - (void)dealloc
 {
-  v3 = [(BCActionsListViewController *)self traitChangeRegistration];
+  traitChangeRegistration = [(BCActionsListViewController *)self traitChangeRegistration];
 
-  if (v3)
+  if (traitChangeRegistration)
   {
-    v4 = [(BCActionsListViewController *)self traitChangeRegistration];
-    [(BCActionsListViewController *)self unregisterForTraitChanges:v4];
+    traitChangeRegistration2 = [(BCActionsListViewController *)self traitChangeRegistration];
+    [(BCActionsListViewController *)self unregisterForTraitChanges:traitChangeRegistration2];
   }
 
   v5.receiver = self;
@@ -86,41 +86,41 @@
   v21.receiver = self;
   v21.super_class = BCActionsListViewController;
   [(BCActionsListViewController *)&v21 viewDidLoad];
-  v3 = [(BCActionsListViewController *)self tableView];
+  tableView = [(BCActionsListViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[BCAlertHeaderTableViewCell reuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(BCActionsListViewController *)self tableView];
-  [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellWithTitleAndIcon"];
+  tableView2 = [(BCActionsListViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellWithTitleAndIcon"];
 
-  v7 = [(BCActionsListViewController *)self tableView];
-  [v7 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellWithTitleSubTitleAndIcon"];
+  tableView3 = [(BCActionsListViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"CellWithTitleSubTitleAndIcon"];
 
-  v8 = [(BCActionsListViewController *)self tableView];
-  [v8 setScrollEnabled:1];
+  tableView4 = [(BCActionsListViewController *)self tableView];
+  [tableView4 setScrollEnabled:1];
 
-  v9 = [(BCActionsListViewController *)self tableView];
-  [v9 setShowsVerticalScrollIndicator:1];
+  tableView5 = [(BCActionsListViewController *)self tableView];
+  [tableView5 setShowsVerticalScrollIndicator:1];
 
-  v10 = [(BCActionsListViewController *)self tableView];
-  [v10 setUserInteractionEnabled:1];
+  tableView6 = [(BCActionsListViewController *)self tableView];
+  [tableView6 setUserInteractionEnabled:1];
 
-  v11 = [(BCActionsListViewController *)self tableView];
-  [v11 setBounces:0];
+  tableView7 = [(BCActionsListViewController *)self tableView];
+  [tableView7 setBounces:0];
 
   v12 = +[UIColor clearColor];
-  v13 = [(BCActionsListViewController *)self tableView];
-  [v13 setBackgroundColor:v12];
+  tableView8 = [(BCActionsListViewController *)self tableView];
+  [tableView8 setBackgroundColor:v12];
 
-  v14 = [(BCActionsListViewController *)self tableView];
-  [v14 setRowHeight:UITableViewAutomaticDimension];
+  tableView9 = [(BCActionsListViewController *)self tableView];
+  [tableView9 setRowHeight:UITableViewAutomaticDimension];
 
-  v15 = [(BCActionsListViewController *)self tableView];
-  [v15 setEstimatedRowHeight:UITableViewAutomaticDimension];
+  tableView10 = [(BCActionsListViewController *)self tableView];
+  [tableView10 setEstimatedRowHeight:UITableViewAutomaticDimension];
 
-  v16 = [(BCActionsListViewController *)self tableView];
-  [v16 setSeparatorStyle:0];
+  tableView11 = [(BCActionsListViewController *)self tableView];
+  [tableView11 setSeparatorStyle:0];
 
   v17 = objc_opt_self();
   v22[0] = v17;
@@ -137,8 +137,8 @@
 {
   [(BCActionsListViewController *)self contentSize];
   [(BCActionsListViewController *)self setPreferredContentSize:?];
-  v3 = [(BCActionsListViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(BCActionsListViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_handleSizeClassDidChange
@@ -160,16 +160,16 @@
 
 - (void)_computeMaxHeights
 {
-  v3 = [(BCActionsListViewController *)self tableView];
-  [v3 frame];
+  tableView = [(BCActionsListViewController *)self tableView];
+  [tableView frame];
   v5 = v4;
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(BCActionsListViewController *)self actionItems];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v7 = [actionItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v7)
   {
     v10 = 0.0;
@@ -188,14 +188,14 @@
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(actionItems);
       }
 
       v13 = *(*(&v21 + 1) + 8 * v12);
       if ([v13 actionType] == 1)
       {
-        v14 = [(BCActionsListViewController *)self businessItem];
-        [BCAlertHeaderTableViewCell heightForBusinessItem:v14 forWidth:v5];
+        businessItem = [(BCActionsListViewController *)self businessItem];
+        [BCAlertHeaderTableViewCell heightForBusinessItem:businessItem forWidth:v5];
         v16 = v15;
 
 LABEL_8:
@@ -214,8 +214,8 @@ LABEL_8:
           goto LABEL_15;
         }
 
-        v18 = [v13 title];
-        [BCAlertHeaderTableViewCell heightForTitleText:v18 forWidth:v5];
+        title = [v13 title];
+        [BCAlertHeaderTableViewCell heightForTitleText:title forWidth:v5];
         v16 = v19;
 
         goto LABEL_8;
@@ -232,7 +232,7 @@ LABEL_15:
     }
 
     while (v8 != v12);
-    v20 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v20 = [actionItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     v8 = v20;
   }
 
@@ -245,8 +245,8 @@ LABEL_22:
 
 - (CGSize)contentSize
 {
-  v3 = [(BCActionsListViewController *)self tableView];
-  [v3 frame];
+  tableView = [(BCActionsListViewController *)self tableView];
+  [tableView frame];
   v5 = v4;
 
   [(BCActionsListViewController *)self _computeMaxHeights];
@@ -254,8 +254,8 @@ LABEL_22:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(BCActionsListViewController *)self actionItems];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v7 = [actionItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -267,7 +267,7 @@ LABEL_22:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actionItems);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
@@ -289,7 +289,7 @@ LABEL_14:
         v10 = v10 + v15;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [actionItems countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (!v8)
       {
         goto LABEL_18;
@@ -307,14 +307,14 @@ LABEL_18:
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = BCActionsListViewController;
-  v7 = a4;
-  [(BCActionsListViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(BCActionsListViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[4] = self;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -325,15 +325,15 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_100005378;
   v8[3] = &unk_1000185D8;
-  [v7 animateAlongsideTransition:v9 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:v9 completion:v8];
 }
 
 - (double)cellSeparatorHeight
 {
-  v2 = [(BCActionsListViewController *)self tableView];
-  v3 = [v2 window];
-  v4 = [v3 screen];
-  [v4 scale];
+  tableView = [(BCActionsListViewController *)self tableView];
+  window = [tableView window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
 
   if (v6 > 0.0)
@@ -351,51 +351,51 @@ LABEL_18:
 - (void)reloadHeader
 {
   v3 = [NSIndexPath indexPathForRow:0 inSection:0];
-  v4 = [(BCActionsListViewController *)self actionItems];
-  v5 = [v4 objectAtIndex:{objc_msgSend(v3, "row")}];
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v5 = [actionItems objectAtIndex:{objc_msgSend(v3, "row")}];
 
   if ([v5 actionType] == 1 || objc_msgSend(v5, "actionType") == 2)
   {
-    v6 = [(BCActionsListViewController *)self tableView];
+    tableView = [(BCActionsListViewController *)self tableView];
     v8 = v3;
     v7 = [NSArray arrayWithObjects:&v8 count:1];
-    [v6 reloadRowsAtIndexPaths:v7 withRowAnimation:5];
+    [tableView reloadRowsAtIndexPaths:v7 withRowAnimation:5];
   }
 }
 
 - (void)reloadHeaderIcon
 {
-  v3 = [(BCActionsListViewController *)self actionItems];
-  v9 = [v3 firstObject];
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  firstObject = [actionItems firstObject];
 
-  v4 = v9;
-  if (v9)
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [(BCActionsListViewController *)self actionItems];
-    v6 = [v5 count];
+    actionItems2 = [(BCActionsListViewController *)self actionItems];
+    v6 = [actionItems2 count];
 
-    v4 = v9;
+    v4 = firstObject;
     if (v6 >= 2)
     {
-      v7 = [v9 icon];
-      v8 = [(BCActionsListViewController *)self headerImageView];
-      [v8 setImage:v7];
+      icon = [firstObject icon];
+      headerImageView = [(BCActionsListViewController *)self headerImageView];
+      [headerImageView setImage:icon];
 
-      v4 = v9;
+      v4 = firstObject;
     }
   }
 }
 
-- (void)_replaceActionItem:(id)a3 atIndex:(unint64_t)a4 reloadRowImmediately:(BOOL)a5
+- (void)_replaceActionItem:(id)item atIndex:(unint64_t)index reloadRowImmediately:(BOOL)immediately
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(BCActionsListViewController *)self actionItems];
-  v10 = [v9 mutableCopy];
+  immediatelyCopy = immediately;
+  itemCopy = item;
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v10 = [actionItems mutableCopy];
 
-  if ([v10 count] > a4)
+  if ([v10 count] > index)
   {
-    [v10 replaceObjectAtIndex:a4 withObject:v8];
+    [v10 replaceObjectAtIndex:index withObject:itemCopy];
   }
 
   v11 = [v10 copy];
@@ -403,13 +403,13 @@ LABEL_18:
 
   [(BCActionsListViewController *)self contentSize];
   [(BCActionsListViewController *)self setPreferredContentSize:?];
-  if (v5)
+  if (immediatelyCopy)
   {
-    v12 = [NSIndexPath indexPathForRow:a4 inSection:0];
-    v13 = [(BCActionsListViewController *)self tableView];
+    v12 = [NSIndexPath indexPathForRow:index inSection:0];
+    tableView = [(BCActionsListViewController *)self tableView];
     v15 = v12;
     v14 = [NSArray arrayWithObjects:&v15 count:1];
-    [v13 reloadRowsAtIndexPaths:v14 withRowAnimation:0];
+    [tableView reloadRowsAtIndexPaths:v14 withRowAnimation:0];
   }
 }
 
@@ -420,27 +420,27 @@ LABEL_18:
   [(BCActionsListViewController *)self setPreferredContentSize:?];
 }
 
-- (void)addActionItems:(id)a3
+- (void)addActionItems:(id)items
 {
-  v4 = a3;
-  v5 = [(BCActionsListViewController *)self actionItems];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  itemsCopy = items;
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v6 = [itemsCopy arrayByAddingObjectsFromArray:actionItems];
   [(BCActionsListViewController *)self setActionItems:v6];
 
-  [(BCActionsListViewController *)self setItemsToAdd:v4];
+  [(BCActionsListViewController *)self setItemsToAdd:itemsCopy];
 
   [(BCActionsListViewController *)self updateContentIfNecessary];
 }
 
-- (void)setBusinessItem:(id)a3
+- (void)setBusinessItem:(id)item
 {
-  v5 = a3;
-  if (v5 && !self->_businessItem)
+  itemCopy = item;
+  if (itemCopy && !self->_businessItem)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_businessItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_businessItem, item);
     [(BCActionsListViewController *)self updateContentIfNecessary];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -449,28 +449,28 @@ LABEL_18:
   if ([(BCActionsListViewController *)self lastActionItemPendingUpdate])
   {
     [(BCActionsListViewController *)self setLastActionItemPendingUpdate:0];
-    v3 = [(BCActionsListViewController *)self actionItems];
-    v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v3 count] - 1, 0);
+    actionItems = [(BCActionsListViewController *)self actionItems];
+    v4 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [actionItems count] - 1, 0);
 
-    v5 = [(BCActionsListViewController *)self tableView];
+    tableView = [(BCActionsListViewController *)self tableView];
     v7 = v4;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [v5 reloadRowsAtIndexPaths:v6 withRowAnimation:0];
+    [tableView reloadRowsAtIndexPaths:v6 withRowAnimation:0];
   }
 }
 
 - (void)updateActionListViewWithAnimation
 {
-  v3 = [(BCActionsListViewController *)self itemsToAdd];
-  v4 = [v3 count];
+  itemsToAdd = [(BCActionsListViewController *)self itemsToAdd];
+  v4 = [itemsToAdd count];
 
   if (v4)
   {
-    v5 = [(BCActionsListViewController *)self itemsToAdd];
-    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    itemsToAdd2 = [(BCActionsListViewController *)self itemsToAdd];
+    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsToAdd2 count]);
 
-    v6 = [(BCActionsListViewController *)self itemsToAdd];
-    v7 = [v6 count];
+    itemsToAdd3 = [(BCActionsListViewController *)self itemsToAdd];
+    v7 = [itemsToAdd3 count];
 
     if (v7)
     {
@@ -481,48 +481,48 @@ LABEL_18:
         [v13 addObject:v9];
 
         ++v8;
-        v10 = [(BCActionsListViewController *)self itemsToAdd];
-        v11 = [v10 count];
+        itemsToAdd4 = [(BCActionsListViewController *)self itemsToAdd];
+        v11 = [itemsToAdd4 count];
       }
 
       while (v8 < v11);
     }
 
-    v12 = [(BCActionsListViewController *)self tableView];
-    [v12 insertRowsAtIndexPaths:v13 withRowAnimation:0];
+    tableView = [(BCActionsListViewController *)self tableView];
+    [tableView insertRowsAtIndexPaths:v13 withRowAnimation:0];
 
     [(BCActionsListViewController *)self setItemsToAdd:0];
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(BCActionsListViewController *)self actionItems:a3];
+  v4 = [(BCActionsListViewController *)self actionItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCActionsListViewController *)self actionItems];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v9 = [actionItems objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   if ([v9 actionType] != 6 && objc_msgSend(v9, "actionType") != 3 && objc_msgSend(v9, "actionType") != 4)
   {
     if ([v9 actionType] == 1)
     {
       v25 = +[BCAlertHeaderTableViewCell reuseIdentifier];
-      v11 = [v6 dequeueReusableCellWithIdentifier:v25 forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:v25 forIndexPath:pathCopy];
 
-      v26 = [(BCActionsListViewController *)self businessItem];
-      v27 = [(BCActionsListViewController *)self brandedHeaderDelegate];
-      [v11 updateContentViewUsingBusinessItem:v26 brandedHeaderDelegate:v27];
+      businessItem = [(BCActionsListViewController *)self businessItem];
+      brandedHeaderDelegate = [(BCActionsListViewController *)self brandedHeaderDelegate];
+      [v11 updateContentViewUsingBusinessItem:businessItem brandedHeaderDelegate:brandedHeaderDelegate];
 
-      v28 = [v11 mainImageView];
-      [(BCActionsListViewController *)self setHeaderImageView:v28];
+      mainImageView = [v11 mainImageView];
+      [(BCActionsListViewController *)self setHeaderImageView:mainImageView];
     }
 
     else
@@ -534,29 +534,29 @@ LABEL_18:
       }
 
       v29 = +[BCAlertHeaderTableViewCell reuseIdentifier];
-      v11 = [v6 dequeueReusableCellWithIdentifier:v29 forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:v29 forIndexPath:pathCopy];
 
-      v30 = [v9 title];
-      [v11 updateContentViewUsingTitleText:v30];
+      title = [v9 title];
+      [v11 updateContentViewUsingTitleText:title];
 
-      v31 = [v11 mainImageView];
-      [(BCActionsListViewController *)self setHeaderImageView:v31];
+      mainImageView2 = [v11 mainImageView];
+      [(BCActionsListViewController *)self setHeaderImageView:mainImageView2];
 
-      v28 = [v9 title];
-      [(BCActionsListViewController *)self setHeaderTitleText:v28];
+      mainImageView = [v9 title];
+      [(BCActionsListViewController *)self setHeaderTitleText:mainImageView];
     }
 
     goto LABEL_15;
   }
 
   v10 = [BCAlertActionTableViewCell reuseIdentifierForItem:v9];
-  v11 = [v6 dequeueReusableCellWithIdentifier:v10 forIndexPath:v7];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
   if ([v9 actionType] == 4)
   {
     v12 = +[UIColor _systemBlueColor2];
-    v13 = [v11 titleContainerView];
-    [v13 setBackgroundColor:v12];
+    titleContainerView = [v11 titleContainerView];
+    [titleContainerView setBackgroundColor:v12];
 
     [UIColor colorNamed:@"CellBackgroundColor"];
   }
@@ -564,30 +564,30 @@ LABEL_18:
   else
   {
     v14 = +[UIColor secondarySystemBackgroundColor];
-    v15 = [v11 titleContainerView];
-    [v15 setBackgroundColor:v14];
+    titleContainerView2 = [v11 titleContainerView];
+    [titleContainerView2 setBackgroundColor:v14];
 
     +[UIColor _systemBlueColor2];
   }
   v16 = ;
-  v17 = [v11 titleLabel];
-  [v17 setTextColor:v16];
+  titleLabel = [v11 titleLabel];
+  [titleLabel setTextColor:v16];
 
-  v18 = [v9 title];
-  v19 = [v11 titleLabel];
-  [v19 setText:v18];
+  title2 = [v9 title];
+  titleLabel2 = [v11 titleLabel];
+  [titleLabel2 setText:title2];
 
-  v20 = [v9 subTitle];
-  v21 = [v11 subTitleLabel];
-  [v21 setText:v20];
+  subTitle = [v9 subTitle];
+  subTitleLabel = [v11 subTitleLabel];
+  [subTitleLabel setText:subTitle];
 
-  v22 = [v9 icon];
-  v23 = [v11 mainImageView];
-  [v23 setImage:v22];
+  icon = [v9 icon];
+  mainImageView3 = [v11 mainImageView];
+  [mainImageView3 setImage:icon];
 
-  v24 = [v9 icon];
+  icon2 = [v9 icon];
 
-  if (!v24)
+  if (!icon2)
   {
     [v11 activateCenterAlignConstraints];
   }
@@ -597,28 +597,28 @@ LABEL_15:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(BCActionsListViewController *)self actionItems];
-  v7 = [v5 row];
+  pathCopy = path;
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v7 = [pathCopy row];
 
-  v10 = [v6 objectAtIndex:v7];
+  v10 = [actionItems objectAtIndex:v7];
 
-  v8 = [v10 handler];
+  handler = [v10 handler];
 
-  if (v8)
+  if (handler)
   {
-    v9 = [v10 handler];
-    (v9)[2](v9, v10);
+    handler2 = [v10 handler];
+    (handler2)[2](handler2, v10);
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(BCActionsListViewController *)self tableView];
-  [v6 frame];
+  pathCopy = path;
+  tableView = [(BCActionsListViewController *)self tableView];
+  [tableView frame];
   v8 = v7;
 
   [(BCActionsListViewController *)self maxHeaderCellHeight];
@@ -633,10 +633,10 @@ LABEL_15:
     v11 = v10 != 0.0;
   }
 
-  v12 = [(BCActionsListViewController *)self actionItems];
-  v13 = [v5 row];
+  actionItems = [(BCActionsListViewController *)self actionItems];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndex:v13];
+  v14 = [actionItems objectAtIndex:v13];
 
   if ([v14 actionType] == 1)
   {
@@ -645,8 +645,8 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v17 = [(BCActionsListViewController *)self businessItem];
-    [BCAlertHeaderTableViewCell heightForBusinessItem:v17 forWidth:v8];
+    businessItem = [(BCActionsListViewController *)self businessItem];
+    [BCAlertHeaderTableViewCell heightForBusinessItem:businessItem forWidth:v8];
 LABEL_14:
     v16 = v18;
 
@@ -674,8 +674,8 @@ LABEL_14:
 
   if (!v11)
   {
-    v17 = [(BCActionsListViewController *)self headerTitleText];
-    [BCAlertHeaderTableViewCell heightForTitleText:v17 forWidth:v8];
+    businessItem = [(BCActionsListViewController *)self headerTitleText];
+    [BCAlertHeaderTableViewCell heightForTitleText:businessItem forWidth:v8];
     goto LABEL_14;
   }
 

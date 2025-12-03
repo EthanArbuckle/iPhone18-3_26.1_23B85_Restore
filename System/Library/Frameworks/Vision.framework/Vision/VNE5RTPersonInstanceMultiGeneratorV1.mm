@@ -1,9 +1,9 @@
 @interface VNE5RTPersonInstanceMultiGeneratorV1
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4;
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error;
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error;
 + (id)outputMaskBlobNameToRequestKey;
 + (id)outputMaskBlobNames;
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7;
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error;
 @end
 
 @implementation VNE5RTPersonInstanceMultiGeneratorV1
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __59__VNE5RTPersonInstanceMultiGeneratorV1_outputMaskBlobNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTPersonInstanceMultiGeneratorV1 outputMaskBlobNames]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTPersonInstanceMultiGeneratorV1 outputMaskBlobNames]::onceToken, block);
@@ -74,7 +74,7 @@ void __59__VNE5RTPersonInstanceMultiGeneratorV1_outputMaskBlobNames__block_invok
   block[1] = 3221225472;
   block[2] = __70__VNE5RTPersonInstanceMultiGeneratorV1_outputMaskBlobNameToRequestKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNE5RTPersonInstanceMultiGeneratorV1 outputMaskBlobNameToRequestKey]::onceToken != -1)
   {
     dispatch_once(&+[VNE5RTPersonInstanceMultiGeneratorV1 outputMaskBlobNameToRequestKey]::onceToken, block);
@@ -126,10 +126,10 @@ void __70__VNE5RTPersonInstanceMultiGeneratorV1_outputMaskBlobNameToRequestKey__
   +[VNE5RTPersonInstanceMultiGeneratorV1 outputMaskBlobNameToRequestKey]::outputMaskBlobNameToRequestKey = v10;
 }
 
-+ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)createE5RTFunctionDescriptorForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [a1 E5RTVisionCoreComputeDeviceForConfigurationOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [self E5RTVisionCoreComputeDeviceForConfigurationOptions:optionsCopy error:error];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -153,9 +153,9 @@ void __70__VNE5RTPersonInstanceMultiGeneratorV1_outputMaskBlobNameToRequestKey__
     v9 = +[VNE5RTPersonInstanceMultiGeneratorV1 createE5RTFunctionDescriptorForConfigurationOptions:error:]::descriptor;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -174,20 +174,20 @@ void __98__VNE5RTPersonInstanceMultiGeneratorV1_createE5RTFunctionDescriptorForC
   +[VNE5RTPersonInstanceMultiGeneratorV1 createE5RTFunctionDescriptorForConfigurationOptions:error:]::descriptor = v3;
 }
 
-+ (id)modelURLForConfigurationOptions:(id)a3 error:(id *)a4
++ (id)modelURLForConfigurationOptions:(id)options error:(id *)error
 {
-  v4 = [MEMORY[0x1E69DF960] modelFileURLForModelVersion:objc_msgSend(a1 error:{"modelVersion", a3), a4}];
+  v4 = [MEMORY[0x1E69DF960] modelFileURLForModelVersion:objc_msgSend(self error:{"modelVersion", options), error}];
 
   return v4;
 }
 
-- (id)observationsFromE5RTExecutionOutputs:(id)a3 forFunctionDescriptor:(id)a4 originatingRequestSpecifier:(id)a5 options:(id)a6 error:(id *)a7
+- (id)observationsFromE5RTExecutionOutputs:(id)outputs forFunctionDescriptor:(id)descriptor originatingRequestSpecifier:(id)specifier options:(id)options error:(id *)error
 {
   v96 = *MEMORY[0x1E69E9840];
-  v61 = a3;
-  v60 = a4;
-  v59 = a5;
-  v62 = a6;
+  outputsCopy = outputs;
+  descriptorCopy = descriptor;
+  specifierCopy = specifier;
+  optionsCopy = options;
   v12 = [VNValidationUtilities requiredSessionInOptions:"requiredSessionInOptions:error:" error:?];
   if (!v12)
   {
@@ -196,12 +196,12 @@ void __98__VNE5RTPersonInstanceMultiGeneratorV1_createE5RTFunctionDescriptorForC
   }
 
   v57 = v12;
-  v13 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_ObjectClassIDs" inOptions:v62 error:a7];
+  v13 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_ObjectClassIDs" inOptions:optionsCopy error:error];
   v56 = v13;
   if (v13)
   {
-    v14 = [v13 unsignedIntegerValue];
-    v15 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat" inOptions:v62 error:a7];
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
+    v15 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OutputPixelFormat" inOptions:optionsCopy error:error];
     if (!v15)
     {
       v41 = 0;
@@ -212,7 +212,7 @@ LABEL_47:
 
     v53 = v15;
     v79 = 0;
-    if (![VNValidationUtilities getBOOLValue:&v79 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:v62 error:a7])
+    if (![VNValidationUtilities getBOOLValue:&v79 forKey:@"VNSegmentationGeneratorProcessOption_ImageRotated" inOptions:optionsCopy error:error])
     {
       v41 = 0;
 LABEL_46:
@@ -220,8 +220,8 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v49 = v60;
-    v48 = [v49 objectMaskDescriptorsForObjectClassIDs:v14 error:a7];
+    v49 = descriptorCopy;
+    v48 = [v49 objectMaskDescriptorsForObjectClassIDs:unsignedIntegerValue error:error];
     if (!v48)
     {
       v41 = 0;
@@ -240,9 +240,9 @@ LABEL_45:
       [i addObject:v18];
     }
 
-    v46 = [v16 outputMaskBlobNameToRequestKey];
-    v19 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OriginalRequestSpecifiers" inOptions:v62 error:a7];
-    if (!v19 || (v78 = 0, ![VNValidationUtilities getFloatValue:&v78 forKey:@"VNSegmentationGeneratorProcessOption_MinimumConfidence" inOptions:v62 withDefaultValue:a7 error:0.0]))
+    outputMaskBlobNameToRequestKey = [v16 outputMaskBlobNameToRequestKey];
+    v19 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNSegmentationGeneratorProcessOption_OriginalRequestSpecifiers" inOptions:optionsCopy error:error];
+    if (!v19 || (v78 = 0, ![VNValidationUtilities getFloatValue:&v78 forKey:@"VNSegmentationGeneratorProcessOption_MinimumConfidence" inOptions:optionsCopy withDefaultValue:error error:0.0]))
     {
       v41 = 0;
 LABEL_44:
@@ -251,10 +251,10 @@ LABEL_44:
     }
 
     v44 = v19;
-    v20 = [v49 objectMaskDescriptorsForObjectClassIDs:16 error:a7];
-    v54 = [v20 firstObject];
+    v20 = [v49 objectMaskDescriptorsForObjectClassIDs:16 error:error];
+    firstObject = [v20 firstObject];
 
-    if (v54)
+    if (firstObject)
     {
       v76 = 0u;
       v77 = 0u;
@@ -277,22 +277,22 @@ LABEL_44:
             }
 
             v24 = *(*(&v74 + 1) + 8 * j);
-            v25 = [v24 name];
-            v26 = [v54 name];
-            v27 = [v25 isEqualToString:v26];
+            name = [v24 name];
+            name2 = [firstObject name];
+            v27 = [name isEqualToString:name2];
 
             if ((v27 & 1) == 0)
             {
               v28 = v78;
-              v29 = v25;
-              v30 = v54;
-              v55 = v61;
+              v29 = name;
+              v30 = firstObject;
+              v55 = outputsCopy;
               if (!v52)
               {
 
 LABEL_41:
                 v41 = 0;
-                v42 = obj;
+                firstObject2 = obj;
                 goto LABEL_42;
               }
 
@@ -318,8 +318,8 @@ LABEL_41:
               v85 = &v87;
               v86 = v28;
               v32 = _Block_copy(aBlock);
-              v33 = [v31 name];
-              v34 = [v55 accessReadOnlyDataForName:v33 usingBlock:v32 error:a7];
+              name3 = [v31 name];
+              v34 = [v55 accessReadOnlyDataForName:name3 usingBlock:v32 error:error];
 
               if (v34)
               {
@@ -355,14 +355,14 @@ LABEL_41:
                 v65 = v37;
                 v66 = v52;
                 v67 = v57;
-                v68 = v46;
+                v68 = outputMaskBlobNameToRequestKey;
                 v69 = v47;
                 v70 = v44;
                 v72 = v35;
                 v71 = i;
                 v38 = _Block_copy(v63);
-                v39 = [v24 name];
-                v40 = [v55 accessReadOnlyDataForName:v39 usingBlock:v38 error:a7];
+                name4 = [v24 name];
+                v40 = [v55 accessReadOnlyDataForName:name4 usingBlock:v38 error:error];
 
                 if ((v40 & 1) == 0)
                 {
@@ -389,7 +389,7 @@ LABEL_41:
         goto LABEL_43;
       }
 
-      if ([v59 specifiesRequestClass:objc_opt_class()])
+      if ([specifierCopy specifiesRequestClass:objc_opt_class()])
       {
         v41 = [i copy];
 LABEL_43:
@@ -398,21 +398,21 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v42 = [i firstObject];
-      v41 = [v42 copy];
+      firstObject2 = [i firstObject];
+      v41 = [firstObject2 copy];
     }
 
     else
     {
-      if (!a7)
+      if (!error)
       {
         v41 = 0;
         goto LABEL_43;
       }
 
-      v42 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find confidence score descriptor"];
+      firstObject2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Cannot find confidence score descriptor"];
       [VNError errorForInternalErrorWithLocalizedDescription:?];
-      *a7 = v41 = 0;
+      *error = v41 = 0;
     }
 
 LABEL_42:

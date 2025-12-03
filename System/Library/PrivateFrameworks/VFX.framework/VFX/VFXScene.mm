@@ -1,19 +1,19 @@
 @interface VFXScene
 + (NSArray)builtinEffectIdentifiers;
 + (NSBundle)vfxAssetsFrameworkBundle;
-+ (id)cloneAndSetupReplicationWithModelWorld:(id)a3;
-+ (id)vfxLibraryURLFor:(id)a3;
++ (id)cloneAndSetupReplicationWithModelWorld:(id)world;
++ (id)vfxLibraryURLFor:(id)for;
 + (uint64_t)applicationWillEnterForeground;
-+ (void)appendWithTrigger:(id)a3 contact:(id)a4 inWorld:(id)a5;
-+ (void)appendWithTrigger:(id)a3 touchEvent:(id)a4 view:(id)a5 inWorld:(id)a6;
-+ (void)registerWithTriggerManager:(id)a3 inWorld:(id)a4;
-+ (void)setBuiltinEffectIdentifiers:(id)a3;
-+ (void)stopReplicationWithModel:(id)a3 runtime:(id)a4;
++ (void)appendWithTrigger:(id)trigger contact:(id)contact inWorld:(id)world;
++ (void)appendWithTrigger:(id)trigger touchEvent:(id)event view:(id)view inWorld:(id)world;
++ (void)registerWithTriggerManager:(id)manager inWorld:(id)world;
++ (void)setBuiltinEffectIdentifiers:(id)identifiers;
++ (void)stopReplicationWithModel:(id)model runtime:(id)runtime;
 - (BOOL)additiveWritesToAlpha;
 - (BOOL)anyDrawNeedsLinearDepth;
-- (BOOL)isEnabled:(id)a3;
+- (BOOL)isEnabled:(id)enabled;
 - (BOOL)isPlaying;
-- (BOOL)loadWithUrl:(id)a3 loadingFor:(int)a4 options:(id)a5 infoOut:(id)a6 error:(id *)a7;
+- (BOOL)loadWithUrl:(id)url loadingFor:(int)for options:(id)options infoOut:(id)out error:(id *)error;
 - (BOOL)needsUpdate;
 - (BOOL)wantsCollisionPlanes;
 - (NSArray)bindings;
@@ -22,85 +22,85 @@
 - (NSObject)assetManager;
 - (NSString)headerInludeString;
 - (NSString)name;
-- (_TtC3VFX8VFXScene)initWithContentsOf:(id)a3 error:(id *)a4;
-- (_TtC3VFX8VFXScene)initWithContentsOf:(id)a3 options:(id)a4 error:(id *)a5;
-- (__n128)evaluateForceFieldsAtPosition:(float32x4_t)a3 velocity:(float)a4 mass:(double)a5 charge:(float)a6 time:(float)a7 dt:(uint64_t)a8 categoryMask:(int)a9;
-- (id)addEffectFrom:(id)a3 error:(id *)a4;
-- (id)addEffectFromTemplate:(id)a3;
-- (id)addEffectWithEffectID:(int)a3;
-- (id)bindingOf:(id)a3 named:(id)a4;
-- (id)createEntityPropertyHelperWithObjectID:(int64_t)a3;
+- (_TtC3VFX8VFXScene)initWithContentsOf:(id)of error:(id *)error;
+- (_TtC3VFX8VFXScene)initWithContentsOf:(id)of options:(id)options error:(id *)error;
+- (__n128)evaluateForceFieldsAtPosition:(float32x4_t)position velocity:(float)velocity mass:(double)mass charge:(float)charge time:(float)time dt:(uint64_t)dt categoryMask:(int)mask;
+- (id)addEffectFrom:(id)from error:(id *)error;
+- (id)addEffectFromTemplate:(id)template;
+- (id)addEffectWithEffectID:(int)d;
+- (id)bindingOf:(id)of named:(id)named;
+- (id)createEntityPropertyHelperWithObjectID:(int64_t)d;
 - (id)createNullEntityPropertyHelper;
 - (id)destinationReplicationDelegate;
-- (id)firstBindingWithName:(id)a3;
+- (id)firstBindingWithName:(id)name;
 - (id)makeDefaultCamera;
-- (id)mergeScene:(id)a3;
+- (id)mergeScene:(id)scene;
 - (id)opaqueEntityManager;
-- (id)parameterOf:(id)a3 named:(id)a4;
-- (id)recycleBuffersGetCompletionWithRenderer:(id)a3;
+- (id)parameterOf:(id)of named:(id)named;
+- (id)recycleBuffersGetCompletionWithRenderer:(id)renderer;
 - (id)sourceReplicationDelegate;
-- (id)textureForEntity:(int64_t)a3 isFallback:(BOOL *)a4 isDynamic:(BOOL *)a5 renderer:(id)a6;
-- (id)valueAtPath:(id)a3;
+- (id)textureForEntity:(int64_t)entity isFallback:(BOOL *)fallback isDynamic:(BOOL *)dynamic renderer:(id)renderer;
+- (id)valueAtPath:(id)path;
 - (int64_t)drawCallCount;
-- (int64_t)drawCallCountWithEmitterID:(int64_t)a3;
-- (int64_t)entityWithTag:(id)a3;
+- (int64_t)drawCallCountWithEmitterID:(int64_t)d;
+- (int64_t)entityWithTag:(id)tag;
 - (int64_t)newObject;
 - (int64_t)version;
-- (uint64_t)createCollisionPlane:(float32x4_t)a3 transform:(float32x4_t)a4;
+- (uint64_t)createCollisionPlane:(float32x4_t)plane transform:(float32x4_t)transform;
 - (void)beginTransaction;
-- (void)checkNoReferenceToOldECS:(id)a3 oldWorldRef:(id)a4;
+- (void)checkNoReferenceToOldECS:(id)s oldWorldRef:(id)ref;
 - (void)clearCaches;
 - (void)dealloc;
-- (void)destroyCollisionPlane:(int64_t)a3;
-- (void)destroyObject:(int64_t)a3;
-- (void)didRenameTag:(id)a3 to:(id)a4;
+- (void)destroyCollisionPlane:(int64_t)plane;
+- (void)destroyObject:(int64_t)object;
+- (void)didRenameTag:(id)tag to:(id)to;
 - (void)dump;
-- (void)encodeAuthoringWithEncoder:(id)a3 renderer:(id)a4 colorFormat:(unint64_t)a5 depthStencilFormat:(unint64_t)a6 sampleCount:(int64_t)a7;
+- (void)encodeAuthoringWithEncoder:(id)encoder renderer:(id)renderer colorFormat:(unint64_t)format depthStencilFormat:(unint64_t)stencilFormat sampleCount:(int64_t)count;
 - (void)endTransaction;
 - (void)enterBackground;
 - (void)enterForeground;
-- (void)enumerateDrawCall:(id)a3;
-- (void)initializeAssetManagerWithBundleURL:(id)a3;
+- (void)enumerateDrawCall:(id)call;
+- (void)initializeAssetManagerWithBundleURL:(id)l;
 - (void)invalidateCachedScriptParams;
 - (void)invalidateGraphV1;
-- (void)performTransaction:(id)a3;
+- (void)performTransaction:(id)transaction;
 - (void)prepare;
-- (void)prepareDrawCallsWithFrameIndex:(int64_t)a3 renderer:(id)a4;
-- (void)prepareWithRenderer:(id)a3;
+- (void)prepareDrawCallsWithFrameIndex:(int64_t)index renderer:(id)renderer;
+- (void)prepareWithRenderer:(id)renderer;
 - (void)recycleDrawCalls;
-- (void)remapEntityReferences:(id)a3 duplicating:(BOOL)a4;
+- (void)remapEntityReferences:(id)references duplicating:(BOOL)duplicating;
 - (void)removeAllEffects;
-- (void)removeEffect:(id)a3;
-- (void)resolveObjectReferencesWithRemapTableWithWorld:(id)a3 objectsByIdentifier:(id)a4;
+- (void)removeEffect:(id)effect;
+- (void)resolveObjectReferencesWithRemapTableWithWorld:(id)world objectsByIdentifier:(id)identifier;
 - (void)restart;
-- (void)selectObject:(int64_t)a3 selected:(BOOL)a4;
-- (void)setAdditiveWritesToAlpha:(BOOL)a3;
-- (void)setAllowsCameraControl:(BOOL)a3;
-- (void)setAssetManager:(id)a3;
-- (void)setDestinationReplicationDelegate:(id)a3;
-- (void)setEffects:(id)a3;
-- (void)setEnabled:(id)a3 enabled:(BOOL)a4;
-- (void)setIsFrozen:(BOOL)a3;
-- (void)setMetalBinaryArchiveURLs:(id)a3;
-- (void)setName:(id)a3;
-- (void)setParameterOf:(id)a3 named:(id)a4 :(id)a5;
-- (void)setPaused:(BOOL)a3;
-- (void)setSourceReplicationDelegate:(id)a3;
-- (void)setValue:(id)a3 atPath:(id)a4;
+- (void)selectObject:(int64_t)object selected:(BOOL)selected;
+- (void)setAdditiveWritesToAlpha:(BOOL)alpha;
+- (void)setAllowsCameraControl:(BOOL)control;
+- (void)setAssetManager:(id)manager;
+- (void)setDestinationReplicationDelegate:(id)delegate;
+- (void)setEffects:(id)effects;
+- (void)setEnabled:(id)enabled enabled:(BOOL)a4;
+- (void)setIsFrozen:(BOOL)frozen;
+- (void)setMetalBinaryArchiveURLs:(id)ls;
+- (void)setName:(id)name;
+- (void)setParameterOf:(id)of named:(id)named :(id)a5;
+- (void)setPaused:(BOOL)paused;
+- (void)setSourceReplicationDelegate:(id)delegate;
+- (void)setValue:(id)value atPath:(id)path;
 - (void)startRuntimeThread;
 - (void)stopRuntimeThread;
-- (void)triggerRenderWithRendererIdentifier:(unint64_t)a3 with:(id)a4;
-- (void)updateAtTime:(double)a3 deltaTime:(double)a4 frameIndex:(int64_t)a5 renderer:(id)a6;
-- (void)updateCollisionPlane:(int64_t)a3 collideOutsideExtents:(BOOL)a4;
-- (void)updateCollisionPlane:(int64_t)a3 scale:orientation:position:;
-- (void)updateForceField:(void *)a3 of:(int64_t)a4;
+- (void)triggerRenderWithRendererIdentifier:(unint64_t)identifier with:(id)with;
+- (void)updateAtTime:(double)time deltaTime:(double)deltaTime frameIndex:(int64_t)index renderer:(id)renderer;
+- (void)updateCollisionPlane:(int64_t)plane collideOutsideExtents:(BOOL)extents;
+- (void)updateCollisionPlane:(int64_t)plane scale:orientation:position:;
+- (void)updateForceField:(void *)field of:(int64_t)of;
 - (void)updateMemoryOwnership;
-- (void)updateVFX2RenderOutputWithPointOfView:(id)a3 commandBuffer:(id)a4 renderer:(id)a5 particleMaterialOverride:(unint64_t)a6;
-- (void)updateWithDeltaTime:(double)a3;
-- (void)updateWorldTransform:(__n128)a3 of:(__n128)a4;
-- (void)willRemoveAudioAsset:(id)a3 fromWorld:(id)a4;
-- (void)withPointerToParameterOf:(id)a3 named:(id)a4 block:(id)a5;
-- (void)withPointerToValueAtPath:(id)a3 block:(id)a4;
+- (void)updateVFX2RenderOutputWithPointOfView:(id)view commandBuffer:(id)buffer renderer:(id)renderer particleMaterialOverride:(unint64_t)override;
+- (void)updateWithDeltaTime:(double)time;
+- (void)updateWorldTransform:(__n128)transform of:(__n128)of;
+- (void)willRemoveAudioAsset:(id)asset fromWorld:(id)world;
+- (void)withPointerToParameterOf:(id)of named:(id)named block:(id)block;
+- (void)withPointerToValueAtPath:(id)path block:(id)block;
 @end
 
 @implementation VFXScene
@@ -191,7 +191,7 @@ LABEL_14:
 
 - (NSString)headerInludeString
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF8BB88C();
 
   v3 = sub_1AFDFCEC8();
@@ -199,23 +199,23 @@ LABEL_14:
   return v3;
 }
 
-+ (void)registerWithTriggerManager:(id)a3 inWorld:(id)a4
++ (void)registerWithTriggerManager:(id)manager inWorld:(id)world
 {
-  v5 = a3;
-  v6 = a4;
-  sub_1AFAD0E08(v5, v6);
+  managerCopy = manager;
+  worldCopy = world;
+  sub_1AFAD0E08(managerCopy, worldCopy);
 }
 
-+ (void)appendWithTrigger:(id)a3 contact:(id)a4 inWorld:(id)a5
++ (void)appendWithTrigger:(id)trigger contact:(id)contact inWorld:(id)world
 {
   v7 = sub_1AFDFCEF8();
   v9 = v8;
-  v10 = a4;
-  v11 = a5;
-  sub_1AFAD0F74(v7, v9, v10, v11);
+  contactCopy = contact;
+  worldCopy = world;
+  sub_1AFAD0F74(v7, v9, contactCopy, worldCopy);
 }
 
-+ (void)appendWithTrigger:(id)a3 touchEvent:(id)a4 view:(id)a5 inWorld:(id)a6
++ (void)appendWithTrigger:(id)trigger touchEvent:(id)event view:(id)view inWorld:(id)world
 {
   sub_1AFDFD638();
   sub_1AFDFD628();
@@ -227,10 +227,10 @@ LABEL_14:
 
   v9 = sub_1AFDFCEF8();
   v11 = v10;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  sub_1AFAD1130(v9, v11, v12, v13, v14);
+  eventCopy = event;
+  viewCopy = view;
+  worldCopy = world;
+  sub_1AFAD1130(v9, v11, eventCopy, viewCopy, worldCopy);
 }
 
 + (NSBundle)vfxAssetsFrameworkBundle
@@ -257,7 +257,7 @@ LABEL_14:
   return v2;
 }
 
-+ (void)setBuiltinEffectIdentifiers:(id)a3
++ (void)setBuiltinEffectIdentifiers:(id)identifiers
 {
   v3 = sub_1AFDFD418();
   if (qword_1EB6373C8 != -1)
@@ -270,7 +270,7 @@ LABEL_14:
   qword_1EB643AF8 = v3;
 }
 
-+ (id)vfxLibraryURLFor:(id)a3
++ (id)vfxLibraryURLFor:(id)for
 {
   sub_1AF455364();
   MEMORY[0x1EEE9AC00](v3 - 8, v4);
@@ -301,7 +301,7 @@ LABEL_14:
   return v2;
 }
 
-- (void)setEffects:(id)a3
+- (void)setEffects:(id)effects
 {
   type metadata accessor for VFXEffect();
   *(self + OBJC_IVAR____TtC3VFX8VFXScene_effects) = sub_1AFDFD418();
@@ -309,7 +309,7 @@ LABEL_14:
 
 - (int64_t)version
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AFCCEBC4();
 
   return v3;
@@ -323,7 +323,7 @@ LABEL_14:
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_1AFDFCEF8();
   v5 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
@@ -331,15 +331,15 @@ LABEL_14:
   *(v5 + 32) = v6;
 }
 
-- (_TtC3VFX8VFXScene)initWithContentsOf:(id)a3 options:(id)a4 error:(id *)a5
+- (_TtC3VFX8VFXScene)initWithContentsOf:(id)of options:(id)options error:(id *)error
 {
   v7 = sub_1AFDFC128();
   v8 = *(v7 - 8);
   MEMORY[0x1EEE9AC00](v7, v9);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AFDFC0B8();
-  v12 = a4;
-  v13 = [(VFXScene *)self initWithOptions:v12];
+  optionsCopy = options;
+  v13 = [(VFXScene *)self initWithOptions:optionsCopy];
   if (qword_1ED72FDA8 != -1)
   {
     swift_once();
@@ -351,7 +351,7 @@ LABEL_14:
   return v13;
 }
 
-- (_TtC3VFX8VFXScene)initWithContentsOf:(id)a3 error:(id *)a4
+- (_TtC3VFX8VFXScene)initWithContentsOf:(id)of error:(id *)error
 {
   v4 = sub_1AFDFC128();
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
@@ -364,12 +364,12 @@ LABEL_14:
 {
   if (*(self + OBJC_IVAR____TtC3VFX8VFXScene_hasSharedEntityManager) == 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
 
     sub_1AF65F760();
   }
@@ -396,9 +396,9 @@ LABEL_14:
   return v2;
 }
 
-- (void)setMetalBinaryArchiveURLs:(id)a3
+- (void)setMetalBinaryArchiveURLs:(id)ls
 {
-  if (a3)
+  if (ls)
   {
     sub_1AFDFC128();
     v4 = sub_1AFDFD418();
@@ -414,13 +414,13 @@ LABEL_14:
 
 - (void)enterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF6FA358();
 }
 
 - (void)enterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF6FA444();
 }
 
@@ -438,17 +438,17 @@ LABEL_14:
   }
 }
 
-- (void)setIsFrozen:(BOOL)a3
+- (void)setIsFrozen:(BOOL)frozen
 {
   v3 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + OBJC_IVAR____TtC3VFX13EntityManager_clock;
-  *(v3 + 82) = a3;
-  if (a3)
+  *(v3 + 82) = frozen;
+  if (frozen)
   {
     *(v3 + 83) = 0;
   }
 }
 
-- (void)setAllowsCameraControl:(BOOL)a3
+- (void)setAllowsCameraControl:(BOOL)control
 {
   if (qword_1ED730EA0 != -1)
   {
@@ -474,36 +474,36 @@ LABEL_14:
   }
 }
 
-- (void)setAdditiveWritesToAlpha:(BOOL)a3
+- (void)setAdditiveWritesToAlpha:(BOOL)alpha
 {
   v3 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_legacyRenderer);
-  if (v3 && *(v3 + 272) != a3)
+  if (v3 && *(v3 + 272) != alpha)
   {
-    *(v3 + 272) = a3;
+    *(v3 + 272) = alpha;
     v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-    v5 = self;
+    selfCopy = self;
 
     sub_1AF885E08(v4);
   }
 }
 
-- (id)bindingOf:(id)a3 named:(id)a4
+- (id)bindingOf:(id)of named:(id)named
 {
   v5 = sub_1AFDFCEF8();
   v7 = v6;
   v8 = sub_1AFDFCEF8();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12 = sub_1AFC7E36C(v5, v7, v8, v10, 0x200000000);
 
   return v12;
 }
 
-- (id)firstBindingWithName:(id)a3
+- (id)firstBindingWithName:(id)name
 {
   v4 = sub_1AFDFCEF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1AFC7E8C4(v4, v6, 0x200000000);
 
   return v8;
@@ -511,7 +511,7 @@ LABEL_14:
 
 - (NSArray)bindings
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFC7F614(0x200000000, 0, 0);
 
   sub_1AFC88F24();
@@ -520,43 +520,43 @@ LABEL_14:
   return v3;
 }
 
-- (void)updateWithDeltaTime:(double)a3
+- (void)updateWithDeltaTime:(double)time
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v5 = self;
-  sub_1AF666CF8(v4, v5, a3);
+  selfCopy = self;
+  sub_1AF666CF8(v4, selfCopy, time);
 }
 
 - (void)restart
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFCD2E0C();
 }
 
 - (void)prepare
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v3 = self;
-  sub_1AF6652B8(v2, v3);
+  selfCopy = self;
+  sub_1AF6652B8(v2, selfCopy);
 }
 
 - (void)clearCaches
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v3 = self;
-  sub_1AF667144(v2, v3);
+  selfCopy = self;
+  sub_1AF667144(v2, selfCopy);
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(transaction);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1AFCD3350(sub_1AFCCE684, v5);
 }
 
-- (id)parameterOf:(id)a3 named:(id)a4
+- (id)parameterOf:(id)of named:(id)named
 {
   v5 = sub_1AFDFCEF8();
   v7 = v6;
@@ -564,7 +564,7 @@ LABEL_14:
   v10 = v9;
   v11 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
 
-  v12 = self;
+  selfCopy = self;
   sub_1AF66C6B4(v11, v11, v5, v7, 0x200000000, v8, v10, v22);
 
   v13 = v23;
@@ -588,17 +588,17 @@ LABEL_14:
   return v19;
 }
 
-- (void)setParameterOf:(id)a3 named:(id)a4 :(id)a5
+- (void)setParameterOf:(id)of named:(id)named :(id)a5
 {
   v6 = sub_1AFDFCEF8();
   v8 = v7;
   v9 = sub_1AFDFCEF8();
   v11 = v10;
   swift_unknownObjectRetain();
-  v12 = self;
+  selfCopy = self;
   sub_1AFDFDFB8();
   swift_unknownObjectRelease();
-  v13[2] = *(v12 + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
+  v13[2] = *(selfCopy + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
   v13[3] = v6;
   v13[4] = v8;
   v14 = 0;
@@ -611,31 +611,31 @@ LABEL_14:
   _s3VFX14_BinaryDecoderC16SingleValueStoreVwxx_0(v19);
 }
 
-- (void)withPointerToParameterOf:(id)a3 named:(id)a4 block:(id)a5
+- (void)withPointerToParameterOf:(id)of named:(id)named block:(id)block
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(block);
   v7 = sub_1AFDFCEF8();
   v9 = v8;
   v10 = sub_1AFDFCEF8();
   v12 = v11;
   _Block_copy(v6);
-  v13 = self;
-  sub_1AFCD98BC(v7, v9, v10, v12, v13, v6);
+  selfCopy = self;
+  sub_1AFCD98BC(v7, v9, v10, v12, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)setValue:(id)a3 atPath:(id)a4
+- (void)setValue:(id)value atPath:(id)path
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  pathCopy = path;
+  selfCopy = self;
   sub_1AFDFDFB8();
   swift_unknownObjectRelease();
   v8 = sub_1AFDFCEF8();
   v10 = v9;
 
-  v11[2] = v7;
+  v11[2] = selfCopy;
   v11[3] = v12;
   v11[4] = v8;
   v11[5] = v10;
@@ -644,14 +644,14 @@ LABEL_14:
   _s3VFX14_BinaryDecoderC16SingleValueStoreVwxx_0(v12);
 }
 
-- (id)valueAtPath:(id)a3
+- (id)valueAtPath:(id)path
 {
   v4 = sub_1AFDFCEF8();
   v6 = v5;
   v7 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v8 = self;
+  selfCopy = self;
 
-  sub_1AF66CF74(v7, v8, v4, v6, &v18);
+  sub_1AF66CF74(v7, selfCopy, v4, v6, &v18);
 
   v9 = v19;
   if (v19)
@@ -674,7 +674,7 @@ LABEL_14:
   return v15;
 }
 
-- (void)withPointerToValueAtPath:(id)a3 block:(id)a4
+- (void)withPointerToValueAtPath:(id)path block:(id)block
 {
   if (qword_1ED730EA0 != -1)
   {
@@ -693,36 +693,36 @@ LABEL_14:
   sub_1AF0D4F18(v4, &v6, 0xD00000000000003DLL, 0x80000001AFF4D770);
 }
 
-- (void)setEnabled:(id)a3 enabled:(BOOL)a4
+- (void)setEnabled:(id)enabled enabled:(BOOL)a4
 {
   v6 = sub_1AFDFCEF8();
   v8 = v7;
   v9 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
 
-  v10 = self;
+  selfCopy = self;
   sub_1AF6621E4(v9, v9, v6, v8, 0x200000000, a4);
 }
 
-- (BOOL)isEnabled:(id)a3
+- (BOOL)isEnabled:(id)enabled
 {
   v4 = sub_1AFDFCEF8();
   v6 = v5;
   v7 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
 
-  v8 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1AF671A7C(v7, v7, v4, v6, 0x200000000);
 
   return v4 & 1;
 }
 
-- (id)addEffectFrom:(id)a3 error:(id *)a4
+- (id)addEffectFrom:(id)from error:(id *)error
 {
   v5 = sub_1AFDFC128();
   v6 = *(v5 - 8);
   MEMORY[0x1EEE9AC00](v5, v7);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AFDFC0B8();
-  v10 = self;
+  selfCopy = self;
   sub_1AFCD4E08(v9);
   v12 = v11;
   (*(v6 + 8))(v9, v5);
@@ -730,27 +730,27 @@ LABEL_14:
   return v12;
 }
 
-- (id)addEffectWithEffectID:(int)a3
+- (id)addEffectWithEffectID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v8 = 0;
   v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v5 = self;
-  sub_1AF667400(v4, &v8, v5, v3);
+  selfCopy = self;
+  sub_1AF667400(v4, &v8, selfCopy, v3);
 
   v6 = v8;
 
   return v6;
 }
 
-- (id)addEffectFromTemplate:(id)a3
+- (id)addEffectFromTemplate:(id)template
 {
   v11 = 0;
   v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
-  v8 = v6;
+  templateCopy = template;
+  selfCopy = self;
+  v7 = templateCopy;
+  v8 = selfCopy;
   sub_1AF667698(v4, v7, v8, &v11);
 
   v9 = v11;
@@ -758,27 +758,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)removeEffect:(id)a3
+- (void)removeEffect:(id)effect
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v5 = self;
-  v7 = a3;
-  v6 = v5;
-  sub_1AF6679A8(v4, v6, v7);
+  selfCopy = self;
+  effectCopy = effect;
+  v6 = selfCopy;
+  sub_1AF6679A8(v4, v6, effectCopy);
 }
 
 - (void)removeAllEffects
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v3 = self;
-  sub_1AF667D30(v2, v3);
+  selfCopy = self;
+  sub_1AF667D30(v2, selfCopy);
 }
 
 - (id)makeDefaultCamera
 {
   v3 = OBJC_IVAR____TtC3VFX8VFXScene_entityManager;
   v4 = **(*(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + OBJC_IVAR____TtC3VFX13EntityManager_commandQueues);
-  v5 = self;
+  selfCopy = self;
   v15 = 1;
   v6 = sub_1AFD04EFC(0x100000000uLL, v4);
   LODWORD(v4) = v6;
@@ -800,36 +800,36 @@ LABEL_14:
 - (NSObject)assetManager
 {
   v2 = *(*(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + 184);
-  v3 = self;
+  selfCopy = self;
 
   v4 = sub_1AF6D5628(&type metadata for AssetManagerInstance, &off_1F25418A0, v2);
 
   return v4;
 }
 
-- (void)setAssetManager:(id)a3
+- (void)setAssetManager:(id)manager
 {
-  v5 = a3;
-  v6 = self;
-  VFXScene.assetManager.setter(a3, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  VFXScene.assetManager.setter(manager, selfCopy);
 }
 
-- (void)initializeAssetManagerWithBundleURL:(id)a3
+- (void)initializeAssetManagerWithBundleURL:(id)l
 {
   v4 = sub_1AFDFC128();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AFDFC0B8();
-  v9 = self;
+  selfCopy = self;
   VFXScene.initializeAssetManagerWithBundleURL(_:)();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (int64_t)entityWithTag:(id)a3
+- (int64_t)entityWithTag:(id)tag
 {
-  if (a3)
+  if (tag)
   {
     v4 = sub_1AFDFCEF8();
     v6 = v5;
@@ -841,7 +841,7 @@ LABEL_14:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8.value._countAndFlagsBits = v4;
   v8.value._object = v6;
   v9 = VFXScene.entity(withTag:)(v8);
@@ -849,11 +849,11 @@ LABEL_14:
   return v9;
 }
 
-- (id)textureForEntity:(int64_t)a3 isFallback:(BOOL *)a4 isDynamic:(BOOL *)a5 renderer:(id)a6
+- (id)textureForEntity:(int64_t)entity isFallback:(BOOL *)fallback isDynamic:(BOOL *)dynamic renderer:(id)renderer
 {
   swift_unknownObjectRetain();
-  v10 = self;
-  v11 = sub_1AFCD6280(a3, a4, a5);
+  selfCopy = self;
+  v11 = sub_1AFCD6280(entity, fallback, dynamic);
   swift_unknownObjectRelease();
 
   return v11;
@@ -862,36 +862,36 @@ LABEL_14:
 - (void)updateMemoryOwnership
 {
   v3 = OBJC_IVAR____TtC3VFX8VFXScene_entityManager;
-  v4 = self;
+  selfCopy = self;
   sub_1AF65F830();
   v5 = *(self + v3);
-  v6 = v4;
+  v6 = selfCopy;
   sub_1AF6680F0(v5, v6);
 }
 
-- (BOOL)loadWithUrl:(id)a3 loadingFor:(int)a4 options:(id)a5 infoOut:(id)a6 error:(id *)a7
+- (BOOL)loadWithUrl:(id)url loadingFor:(int)for options:(id)options infoOut:(id)out error:(id *)error
 {
   v11 = sub_1AFDFC128();
   v12 = *(v11 - 8);
   MEMORY[0x1EEE9AC00](v11, v13);
   v15 = &v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1AFDFC0B8();
-  v16 = a5;
-  v17 = a6;
-  v18 = self;
-  VFXScene.load(url:loadingFor:options:infoOut:)(v15, a4, a5, a6);
+  optionsCopy = options;
+  outCopy = out;
+  selfCopy = self;
+  VFXScene.load(url:loadingFor:options:infoOut:)(v15, for, options, out);
   (*(v12 + 8))(v15, v11);
 
   return 1;
 }
 
-- (void)didRenameTag:(id)a3 to:(id)a4
+- (void)didRenameTag:(id)tag to:(id)to
 {
   v5 = sub_1AFDFCEF8();
   v7 = v6;
   v8 = sub_1AFDFCEF8();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -899,10 +899,10 @@ LABEL_14:
   VFXScene.didRenameTag(_:to:)(v12, v13);
 }
 
-- (id)createEntityPropertyHelperWithObjectID:(int64_t)a3
+- (id)createEntityPropertyHelperWithObjectID:(int64_t)d
 {
-  v4 = self;
-  v5 = VFXScene.createEntityPropertyHelper(withObjectID:)(a3);
+  selfCopy = self;
+  v5 = VFXScene.createEntityPropertyHelper(withObjectID:)(d);
 
   return v5;
 }
@@ -921,42 +921,42 @@ LABEL_14:
   return v4;
 }
 
-- (void)resolveObjectReferencesWithRemapTableWithWorld:(id)a3 objectsByIdentifier:(id)a4
+- (void)resolveObjectReferencesWithRemapTableWithWorld:(id)world objectsByIdentifier:(id)identifier
 {
   v6 = sub_1AFDFCC08();
-  v7 = a3;
-  v8 = self;
-  VFXScene.resolveObjectReferencesWithRemapTable(world:objectsByIdentifier:)(v7, v6);
+  worldCopy = world;
+  selfCopy = self;
+  VFXScene.resolveObjectReferencesWithRemapTable(world:objectsByIdentifier:)(worldCopy, v6);
 }
 
-- (void)updateVFX2RenderOutputWithPointOfView:(id)a3 commandBuffer:(id)a4 renderer:(id)a5 particleMaterialOverride:(unint64_t)a6
+- (void)updateVFX2RenderOutputWithPointOfView:(id)view commandBuffer:(id)buffer renderer:(id)renderer particleMaterialOverride:(unint64_t)override
 {
-  v10 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v11 = self;
-  _s3VFX8VFXSceneC22updateVFX2RenderOutput11pointOfView13commandBuffer8renderer24particleMaterialOverrideyAA13VFXCoreCameraC_So010MTLCommandK0_pyXls6UInt64VtF_0(v10, a4, a5, a6);
+  selfCopy = self;
+  _s3VFX8VFXSceneC22updateVFX2RenderOutput11pointOfView13commandBuffer8renderer24particleMaterialOverrideyAA13VFXCoreCameraC_So010MTLCommandK0_pyXls6UInt64VtF_0(viewCopy, buffer, renderer, override);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)remapEntityReferences:(id)a3 duplicating:(BOOL)a4
+- (void)remapEntityReferences:(id)references duplicating:(BOOL)duplicating
 {
-  v6 = a3;
-  v7 = self;
-  VFXScene.remapEntityReferences(_:duplicating:)(v6, a4);
+  referencesCopy = references;
+  selfCopy = self;
+  VFXScene.remapEntityReferences(_:duplicating:)(referencesCopy, duplicating);
 }
 
 - (void)beginTransaction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFCDF55C();
 }
 
 - (void)endTransaction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AFCDF624();
 }
 
@@ -969,7 +969,7 @@ LABEL_14:
 - (void)invalidateGraphV1
 {
   v3 = OBJC_IVAR____TtC3VFX8VFXScene_entityManager;
-  v5 = self;
+  selfCopy = self;
 
   v4 = sub_1AFCDAC04(type metadata accessor for GraphScriptRunner);
 
@@ -983,73 +983,73 @@ LABEL_14:
 
 - (void)dump
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF65F9AC();
 }
 
-- (void)checkNoReferenceToOldECS:(id)a3 oldWorldRef:(id)a4
+- (void)checkNoReferenceToOldECS:(id)s oldWorldRef:(id)ref
 {
-  v6 = a3;
+  sCopy = s;
   swift_unknownObjectRetain();
-  v7 = self;
-  VFXScene.checkNoReferenceToOldECS(_:oldWorldRef:)(v6, a4);
+  selfCopy = self;
+  VFXScene.checkNoReferenceToOldECS(_:oldWorldRef:)(sCopy, ref);
 
   swift_unknownObjectRelease();
 }
 
-- (id)mergeScene:(id)a3
+- (id)mergeScene:(id)scene
 {
   v5 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v6 = *(a3 + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
+  v6 = *(scene + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1AF677AE4(v6, v5, v6, v7);
+  sceneCopy = scene;
+  selfCopy = self;
+  v9 = sub_1AF677AE4(v6, v5, v6, sceneCopy);
 
   return v9;
 }
 
-- (void)prepareWithRenderer:(id)a3
+- (void)prepareWithRenderer:(id)renderer
 {
   v4 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v5 = self;
+  selfCopy = self;
   swift_unknownObjectRetain_n();
-  v6 = v5;
-  sub_1AF6689CC(v4, v6, a3);
+  v6 = selfCopy;
+  sub_1AF6689CC(v4, v6, renderer);
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateAtTime:(double)a3 deltaTime:(double)a4 frameIndex:(int64_t)a5 renderer:(id)a6
+- (void)updateAtTime:(double)time deltaTime:(double)deltaTime frameIndex:(int64_t)index renderer:(id)renderer
 {
   v10 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v11 = self;
+  selfCopy = self;
   swift_unknownObjectRetain_n();
-  v12 = v11;
-  sub_1AF668C28(v10, v12, a5, a6, a3, a4);
+  v12 = selfCopy;
+  sub_1AF668C28(v10, v12, index, renderer, time, deltaTime);
 
   swift_unknownObjectRelease();
 }
 
-- (void)prepareDrawCallsWithFrameIndex:(int64_t)a3 renderer:(id)a4
+- (void)prepareDrawCallsWithFrameIndex:(int64_t)index renderer:(id)renderer
 {
   v6 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRetain_n();
-  v8 = v7;
-  sub_1AF669210(v6, v8, a3, a4);
+  v8 = selfCopy;
+  sub_1AF669210(v6, v8, index, renderer);
 
   swift_unknownObjectRelease();
 }
 
-- (void)enumerateDrawCall:(id)a3
+- (void)enumerateDrawCall:(id)call
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(call);
   v5 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
   v8[2] = v4;
   v6 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_transientDrawCall);
 
-  v7 = self;
+  selfCopy = self;
   sub_1AF661130(v5, v5, v6, sub_1AF756EB4, v8);
   _Block_release(v4);
 }
@@ -1058,7 +1058,7 @@ LABEL_14:
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
   v3 = qword_1EB6373D0;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -1083,10 +1083,10 @@ LABEL_14:
   return v5;
 }
 
-- (int64_t)drawCallCountWithEmitterID:(int64_t)a3
+- (int64_t)drawCallCountWithEmitterID:(int64_t)d
 {
   v3 = *(*(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + 184);
-  v4 = self;
+  selfCopy = self;
 
   v5 = sub_1AF6D6004(&type metadata for DrawCallPool, &off_1F25608D0, v3, sub_1AFCF4958);
 
@@ -1096,46 +1096,46 @@ LABEL_14:
 - (void)recycleDrawCalls
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v3 = self;
+  selfCopy = self;
   sub_1AFB4600C(v2);
 }
 
 - (BOOL)anyDrawNeedsLinearDepth
 {
   v2 = *(*(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + 184);
-  v3 = self;
+  selfCopy = self;
 
   v4 = sub_1AF6D62BC(&type metadata for DrawCallPool, &off_1F25608D0, v2);
 
   return v4 & 1;
 }
 
-- (void)triggerRenderWithRendererIdentifier:(unint64_t)a3 with:(id)a4
+- (void)triggerRenderWithRendererIdentifier:(unint64_t)identifier with:(id)with
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(with);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  VFXScene.triggerRender(rendererIdentifier:with:)(a3, sub_1AFCCE684, v7);
+  selfCopy = self;
+  VFXScene.triggerRender(rendererIdentifier:with:)(identifier, sub_1AFCCE684, v7);
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v3 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + OBJC_IVAR____TtC3VFX13EntityManager_clock;
-  *(v3 + 82) = a3;
-  if (a3)
+  *(v3 + 82) = paused;
+  if (paused)
   {
     *(v3 + 83) = 0;
   }
 }
 
-- (void)encodeAuthoringWithEncoder:(id)a3 renderer:(id)a4 colorFormat:(unint64_t)a5 depthStencilFormat:(unint64_t)a6 sampleCount:(int64_t)a7
+- (void)encodeAuthoringWithEncoder:(id)encoder renderer:(id)renderer colorFormat:(unint64_t)format depthStencilFormat:(unint64_t)stencilFormat sampleCount:(int64_t)count
 {
-  v7 = a7;
+  countCopy = count;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v13 = self;
-  VFXScene.encodeAuthoring(encoder:renderer:colorFormat:depthStencilFormat:sampleCount:)(a3, a4, a5, a6, v7);
+  selfCopy = self;
+  VFXScene.encodeAuthoring(encoder:renderer:colorFormat:depthStencilFormat:sampleCount:)(encoder, renderer, format, stencilFormat, countCopy);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
@@ -1163,27 +1163,27 @@ LABEL_14:
   }
 }
 
-- (void)destroyObject:(int64_t)a3
+- (void)destroyObject:(int64_t)object
 {
   v3 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v4 = a3 & 0xFFFFFFFF00000000;
-  if (a3)
+  v4 = object & 0xFFFFFFFF00000000;
+  if (object)
   {
-    v5 = a3;
+    objectCopy = object;
   }
 
   else
   {
-    v5 = 0xFFFFFFFFLL;
+    objectCopy = 0xFFFFFFFFLL;
   }
 
-  v6 = self;
-  sub_1AF65CE88(v5 | v4, v3);
+  selfCopy = self;
+  sub_1AF65CE88(objectCopy | v4, v3);
 }
 
-- (void)updateWorldTransform:(__n128)a3 of:(__n128)a4
+- (void)updateWorldTransform:(__n128)transform of:(__n128)of
 {
-  v7 = *&a1[OBJC_IVAR____TtC3VFX8VFXScene_entityManager];
+  v7 = *&self[OBJC_IVAR____TtC3VFX8VFXScene_entityManager];
   v8 = a7 & 0xFFFFFFFF00000000;
   if (a7)
   {
@@ -1195,81 +1195,81 @@ LABEL_14:
     v9 = 0xFFFFFFFFLL;
   }
 
-  v10 = a1;
-  sub_1AF680204(v9 | v8, v7, a2, a3, a4, a5);
+  selfCopy = self;
+  sub_1AF680204(v9 | v8, v7, a2, transform, of, a5);
 }
 
-- (void)selectObject:(int64_t)a3 selected:(BOOL)a4
+- (void)selectObject:(int64_t)object selected:(BOOL)selected
 {
-  v6 = HIDWORD(a3);
-  if (a3)
+  v6 = HIDWORD(object);
+  if (object)
   {
-    v7 = a3;
+    objectCopy = object;
   }
 
   else
   {
-    v7 = -1;
+    objectCopy = -1;
   }
 
   v8 = swift_allocObject();
-  *(v8 + 16) = a4;
+  *(v8 + 16) = selected;
   *(v8 + 24) = self;
-  *(v8 + 32) = v7;
+  *(v8 + 32) = objectCopy;
   *(v8 + 36) = v6;
-  v9 = self;
+  selfCopy = self;
   sub_1AF66D948(sub_1AFCF439C, v8);
 }
 
 - (void)invalidateCachedScriptParams
 {
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v3 = self;
-  sub_1AF66955C(v2, v3);
+  selfCopy = self;
+  sub_1AF66955C(v2, selfCopy);
 }
 
-- (void)updateForceField:(void *)a3 of:(int64_t)a4
+- (void)updateForceField:(void *)field of:(int64_t)of
 {
   v5 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
-  v6 = a4 & 0xFFFFFFFF00000000;
-  v9[2] = a3;
-  if (a4)
+  v6 = of & 0xFFFFFFFF00000000;
+  v9[2] = field;
+  if (of)
   {
-    v7 = a4;
+    ofCopy = of;
   }
 
   else
   {
-    v7 = 0xFFFFFFFFLL;
+    ofCopy = 0xFFFFFFFFLL;
   }
 
-  v8 = self;
-  sub_1AF670200(v7 | v6, v5, v5, v7 | v6, sub_1AFCF4988, v9);
+  selfCopy = self;
+  sub_1AF670200(ofCopy | v6, v5, v5, ofCopy | v6, sub_1AFCF4988, v9);
 }
 
-- (__n128)evaluateForceFieldsAtPosition:(float32x4_t)a3 velocity:(float)a4 mass:(double)a5 charge:(float)a6 time:(float)a7 dt:(uint64_t)a8 categoryMask:(int)a9
+- (__n128)evaluateForceFieldsAtPosition:(float32x4_t)position velocity:(float)velocity mass:(double)mass charge:(float)charge time:(float)time dt:(uint64_t)dt categoryMask:(int)mask
 {
-  v13 = a1;
-  v14.n128_f32[0] = a4;
-  sub_1AFCEFDCC(a9, a2, a3, v14, a6, a7);
+  selfCopy = self;
+  v14.n128_f32[0] = velocity;
+  sub_1AFCEFDCC(mask, a2, position, v14, charge, time);
   v19 = v15;
 
   return v19;
 }
 
-+ (void)stopReplicationWithModel:(id)a3 runtime:(id)a4
++ (void)stopReplicationWithModel:(id)model runtime:(id)runtime
 {
-  *(*(a3 + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + OBJC_IVAR____TtC3VFX13EntityManager_replicationStream) = 0;
-  v5 = a3;
-  v6 = a4;
+  *(*(model + OBJC_IVAR____TtC3VFX8VFXScene_entityManager) + OBJC_IVAR____TtC3VFX13EntityManager_replicationStream) = 0;
+  modelCopy = model;
+  runtimeCopy = runtime;
 
-  *(*&v6[OBJC_IVAR____TtC3VFX8VFXScene_entityManager] + OBJC_IVAR____TtC3VFX13EntityManager_replicationStream) = 0;
+  *(*&runtimeCopy[OBJC_IVAR____TtC3VFX8VFXScene_entityManager] + OBJC_IVAR____TtC3VFX13EntityManager_replicationStream) = 0;
 }
 
-+ (id)cloneAndSetupReplicationWithModelWorld:(id)a3
++ (id)cloneAndSetupReplicationWithModelWorld:(id)world
 {
-  v3 = a3;
-  v4 = _s3VFX8VFXSceneC24cloneAndSetupReplication10modelWorldAA26VFXBidirectionalRemapTableCSo8VFXWorldC_tFZ_0(v3);
+  worldCopy = world;
+  v4 = _s3VFX8VFXSceneC24cloneAndSetupReplication10modelWorldAA26VFXBidirectionalRemapTableCSo8VFXWorldC_tFZ_0(worldCopy);
 
   return v4;
 }
@@ -1289,11 +1289,11 @@ LABEL_14:
   return Strong;
 }
 
-- (void)setSourceReplicationDelegate:(id)a3
+- (void)setSourceReplicationDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  VFXScene.sourceReplicationDelegate.setter(a3);
+  selfCopy = self;
+  VFXScene.sourceReplicationDelegate.setter(delegate);
 }
 
 - (id)destinationReplicationDelegate
@@ -1311,26 +1311,26 @@ LABEL_14:
   return Strong;
 }
 
-- (void)setDestinationReplicationDelegate:(id)a3
+- (void)setDestinationReplicationDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  VFXScene.destinationReplicationDelegate.setter(a3);
+  selfCopy = self;
+  VFXScene.destinationReplicationDelegate.setter(delegate);
 }
 
 - (void)startRuntimeThread
 {
-  v2 = self;
+  selfCopy = self;
   VFXScene.startRuntimeThread()();
 }
 
 - (void)stopRuntimeThread
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AF65F760();
 }
 
-- (id)recycleBuffersGetCompletionWithRenderer:(id)a3
+- (id)recycleBuffersGetCompletionWithRenderer:(id)renderer
 {
   v5[4] = nullsub_106;
   v5[5] = 0;
@@ -1345,17 +1345,17 @@ LABEL_14:
 
 - (BOOL)needsUpdate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AF6F6CDC();
 
   return v3 & 1;
 }
 
-- (void)willRemoveAudioAsset:(id)a3 fromWorld:(id)a4
+- (void)willRemoveAudioAsset:(id)asset fromWorld:(id)world
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  assetCopy = asset;
+  worldCopy = world;
+  selfCopy = self;
   sub_1AFCF33B0();
 }
 
@@ -1364,7 +1364,7 @@ LABEL_14:
   v2 = *(self + OBJC_IVAR____TtC3VFX8VFXScene_entityManager);
   v3 = OBJC_IVAR____TtC3VFX13EntityManager_commandQueues;
   v4 = *(**(v2 + OBJC_IVAR____TtC3VFX13EntityManager_commandQueues) + 32);
-  v5 = self;
+  selfCopy = self;
   ecs_stack_allocator_push_snapshot(v4);
   LOBYTE(v4) = sub_1AFA1B8FC();
   ecs_stack_allocator_pop_snapshot(*(**(v2 + v3) + 32));
@@ -1372,33 +1372,33 @@ LABEL_14:
   return v4 & 1;
 }
 
-- (uint64_t)createCollisionPlane:(float32x4_t)a3 transform:(float32x4_t)a4
+- (uint64_t)createCollisionPlane:(float32x4_t)plane transform:(float32x4_t)transform
 {
-  v6 = a1;
-  v7 = sub_1AFCEEF50(a2, a3, a4, a5, a6);
+  selfCopy = self;
+  v7 = sub_1AFCEEF50(a2, plane, transform, a5, a6);
 
   return v7;
 }
 
-- (void)updateCollisionPlane:(int64_t)a3 scale:orientation:position:
+- (void)updateCollisionPlane:(int64_t)plane scale:orientation:position:
 {
   v10 = v5;
   v8 = v3;
   v9 = v4;
-  v7 = self;
-  sub_1AFCEF054(a3, v8, v9, v10);
+  selfCopy = self;
+  sub_1AFCEF054(plane, v8, v9, v10);
 }
 
-- (void)destroyCollisionPlane:(int64_t)a3
+- (void)destroyCollisionPlane:(int64_t)plane
 {
-  v4 = self;
-  sub_1AFCEF188(a3);
+  selfCopy = self;
+  sub_1AFCEF188(plane);
 }
 
-- (void)updateCollisionPlane:(int64_t)a3 collideOutsideExtents:(BOOL)a4
+- (void)updateCollisionPlane:(int64_t)plane collideOutsideExtents:(BOOL)extents
 {
-  v6 = self;
-  sub_1AFCEF350(a3, a4);
+  selfCopy = self;
+  sub_1AFCEF350(plane, extents);
 }
 
 @end

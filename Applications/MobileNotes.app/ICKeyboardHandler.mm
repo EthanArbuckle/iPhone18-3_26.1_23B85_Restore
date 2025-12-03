@@ -1,25 +1,25 @@
 @interface ICKeyboardHandler
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)firstResponderInhibitsGlobalKeyCommands;
 - (BOOL)globalKeyCommandsInhibited;
-- (ICKeyboardHandler)initWithDelegate:(id)a3;
+- (ICKeyboardHandler)initWithDelegate:(id)delegate;
 - (ICKeyboardHandlerDelegate)delegate;
 - (UIResponder)mostRecentInhibitingGlobalKeyCommandResponder;
 - (UIResponder)parentResponder;
 - (id)nextResponder;
-- (void)addFolder:(id)a3;
-- (void)addNote:(id)a3;
-- (void)findAndReplace:(id)a3;
-- (void)keyboardDidChangeFrame:(id)a3;
-- (void)lockAllNotes:(id)a3;
-- (void)performFindInNote:(id)a3;
-- (void)printNote:(id)a3;
-- (void)replaceInNote:(id)a3;
-- (void)scanDocument:(id)a3;
-- (void)setInHardwareKeyboardMode:(BOOL)a3;
-- (void)shareAction:(id)a3;
+- (void)addFolder:(id)folder;
+- (void)addNote:(id)note;
+- (void)findAndReplace:(id)replace;
+- (void)keyboardDidChangeFrame:(id)frame;
+- (void)lockAllNotes:(id)notes;
+- (void)performFindInNote:(id)note;
+- (void)printNote:(id)note;
+- (void)replaceInNote:(id)note;
+- (void)scanDocument:(id)document;
+- (void)setInHardwareKeyboardMode:(BOOL)mode;
+- (void)shareAction:(id)action;
 - (void)updateHardwareKeyboardAvailability;
-- (void)validateCommand:(id)a3;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation ICKeyboardHandler
@@ -33,21 +33,21 @@
 
 - (id)nextResponder
 {
-  v3 = [(ICKeyboardHandler *)self parentResponder];
-  v4 = v3;
-  if (v3)
+  parentResponder = [(ICKeyboardHandler *)self parentResponder];
+  v4 = parentResponder;
+  if (parentResponder)
   {
-    v5 = v3;
+    nextResponder = parentResponder;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ICKeyboardHandler;
-    v5 = [(ICKeyboardHandler *)&v8 nextResponder];
+    nextResponder = [(ICKeyboardHandler *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }
@@ -59,16 +59,16 @@
   return WeakRetained;
 }
 
-- (ICKeyboardHandler)initWithDelegate:(id)a3
+- (ICKeyboardHandler)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICKeyboardHandler;
   v5 = [(ICKeyboardHandler *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"keyboardDidChangeFrame:" name:UIKeyboardDidChangeFrameNotification object:0];
 
@@ -78,122 +78,122 @@
   return v6;
 }
 
-- (void)addNote:(id)a3
+- (void)addNote:(id)note
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  noteCopy = note;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performAddNote:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performAddNote:noteCopy];
   }
 }
 
-- (void)addFolder:(id)a3
+- (void)addFolder:(id)folder
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  folderCopy = folder;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performAddFolder:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performAddFolder:folderCopy];
   }
 }
 
-- (void)printNote:(id)a3
+- (void)printNote:(id)note
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  noteCopy = note;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performPrintNote:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performPrintNote:noteCopy];
   }
 }
 
-- (void)scanDocument:(id)a3
+- (void)scanDocument:(id)document
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  documentCopy = document;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performScanDocument:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performScanDocument:documentCopy];
   }
 }
 
-- (void)performFindInNote:(id)a3
+- (void)performFindInNote:(id)note
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  noteCopy = note;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performFindInNote:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performFindInNote:noteCopy];
   }
 }
 
-- (void)replaceInNote:(id)a3
+- (void)replaceInNote:(id)note
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  noteCopy = note;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performReplaceInNote:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performReplaceInNote:noteCopy];
   }
 }
 
-- (void)shareAction:(id)a3
+- (void)shareAction:(id)action
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  actionCopy = action;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performShareAction:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performShareAction:actionCopy];
   }
 }
 
-- (void)lockAllNotes:(id)a3
+- (void)lockAllNotes:(id)notes
 {
-  v7 = a3;
-  v4 = [(ICKeyboardHandler *)self delegate];
+  notesCopy = notes;
+  delegate = [(ICKeyboardHandler *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICKeyboardHandler *)self delegate];
-    [v6 performLockAllNotesAction:v7];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    [delegate2 performLockAllNotesAction:notesCopy];
   }
 }
 
-- (void)keyboardDidChangeFrame:(id)a3
+- (void)keyboardDidChangeFrame:(id)frame
 {
   v4 = +[UIKeyboard isInHardwareKeyboardMode];
 
   [(ICKeyboardHandler *)self setInHardwareKeyboardMode:v4];
 }
 
-- (void)setInHardwareKeyboardMode:(BOOL)a3
+- (void)setInHardwareKeyboardMode:(BOOL)mode
 {
-  if (self->_inHardwareKeyboardMode != a3)
+  if (self->_inHardwareKeyboardMode != mode)
   {
-    self->_inHardwareKeyboardMode = a3;
+    self->_inHardwareKeyboardMode = mode;
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 postNotificationName:@"ICHardwareKeyboardModeDidChange" object:0];
   }
@@ -209,35 +209,35 @@
   v3 = +[ICAppDelegate sharedInstance];
   if ([v3 isAnyWelcomeScreenVisible])
   {
-    v4 = 1;
+    firstResponderInhibitsGlobalKeyCommands = 1;
   }
 
   else
   {
-    v4 = [(ICKeyboardHandler *)self firstResponderInhibitsGlobalKeyCommands];
+    firstResponderInhibitsGlobalKeyCommands = [(ICKeyboardHandler *)self firstResponderInhibitsGlobalKeyCommands];
   }
 
-  return v4;
+  return firstResponderInhibitsGlobalKeyCommands;
 }
 
 - (BOOL)firstResponderInhibitsGlobalKeyCommands
 {
-  v3 = [(ICKeyboardHandler *)self delegate];
+  delegate = [(ICKeyboardHandler *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ICKeyboardHandler *)self delegate];
-    v6 = [v5 firstResponder];
+    delegate2 = [(ICKeyboardHandler *)self delegate];
+    firstResponder = [delegate2 firstResponder];
 
-    v7 = v6;
+    v7 = firstResponder;
     if (v7)
     {
-      v8 = [(ICKeyboardHandler *)self mostRecentInhibitingGlobalKeyCommandResponder];
+      mostRecentInhibitingGlobalKeyCommandResponder = [(ICKeyboardHandler *)self mostRecentInhibitingGlobalKeyCommandResponder];
 
-      if (v7 == v8)
+      if (v7 == mostRecentInhibitingGlobalKeyCommandResponder)
       {
-        LOBYTE(v10) = [(ICKeyboardHandler *)self mostRecentInhibitingGlobalKeyCommandResponderResult];
+        LOBYTE(ic_inhibitsGlobalKeyCommands) = [(ICKeyboardHandler *)self mostRecentInhibitingGlobalKeyCommandResponderResult];
       }
 
       else
@@ -245,36 +245,36 @@
         v9 = v7;
         do
         {
-          v10 = [v9 ic_inhibitsGlobalKeyCommands];
-          if (v10)
+          ic_inhibitsGlobalKeyCommands = [v9 ic_inhibitsGlobalKeyCommands];
+          if (ic_inhibitsGlobalKeyCommands)
           {
             break;
           }
 
-          v11 = [v9 nextResponder];
+          nextResponder = [v9 nextResponder];
 
-          v9 = v11;
+          v9 = nextResponder;
         }
 
-        while (v11);
+        while (nextResponder);
         [(ICKeyboardHandler *)self setMostRecentInhibitingGlobalKeyCommandResponder:v7];
-        [(ICKeyboardHandler *)self setMostRecentInhibitingGlobalKeyCommandResponderResult:v10];
+        [(ICKeyboardHandler *)self setMostRecentInhibitingGlobalKeyCommandResponderResult:ic_inhibitsGlobalKeyCommands];
       }
     }
 
     else
     {
       [(ICKeyboardHandler *)self setMostRecentInhibitingGlobalKeyCommandResponder:0];
-      LOBYTE(v10) = 0;
+      LOBYTE(ic_inhibitsGlobalKeyCommands) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v10) = 0;
+    LOBYTE(ic_inhibitsGlobalKeyCommands) = 0;
   }
 
-  return v10;
+  return ic_inhibitsGlobalKeyCommands;
 }
 
 - (ICKeyboardHandlerDelegate)delegate
@@ -291,11 +291,11 @@
   return WeakRetained;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -304,27 +304,27 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = ICKeyboardHandler.canPerformAction(_:withSender:)(a3, v10);
+  v8 = ICKeyboardHandler.canPerformAction(_:withSender:)(action, v10);
 
   sub_10027CAAC(v10);
   return v8 & 1;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  ICKeyboardHandler.validate(_:)(v4);
+  commandCopy = command;
+  selfCopy = self;
+  ICKeyboardHandler.validate(_:)(commandCopy);
 }
 
-- (void)findAndReplace:(id)a3
+- (void)findAndReplace:(id)replace
 {
-  if (a3)
+  if (replace)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -333,14 +333,14 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v5 = self;
+    selfCopy2 = self;
   }
 
-  v6 = [(ICKeyboardHandler *)self delegate];
-  if (v6)
+  delegate = [(ICKeyboardHandler *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    if (([(ICKeyboardHandlerDelegate *)v6 respondsToSelector:"performFindAndReplace:"]& 1) != 0)
+    v7 = delegate;
+    if (([(ICKeyboardHandlerDelegate *)delegate respondsToSelector:"performFindAndReplace:"]& 1) != 0)
     {
       sub_10027CA3C(v9, &v8);
       sub_10015DA04(&qword_1006BE7A0);

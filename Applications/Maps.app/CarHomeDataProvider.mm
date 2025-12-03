@@ -1,7 +1,7 @@
 @interface CarHomeDataProvider
-- (void)carMapsSuggestionControllerDidRefresh:(id)a3;
+- (void)carMapsSuggestionControllerDidRefresh:(id)refresh;
 - (void)dealloc;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 @end
 
 @implementation CarHomeDataProvider
@@ -10,15 +10,15 @@
 {
   ObjectType = swift_getObjectType();
   v4 = qword_1019066C8;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
-    v8 = v5;
+    v8 = selfCopy;
     swift_once();
-    v5 = v8;
+    selfCopy = v8;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
   v7 = sub_1002E2C5C();
   [v7 unregisterObserver:v6];
 
@@ -27,18 +27,18 @@
   [(CarHomeDataProvider *)&v9 dealloc];
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001DCA04(&unk_101609B30, sub_1001DCD50, &unk_101609B48);
   swift_unknownObjectRelease();
 }
 
-- (void)carMapsSuggestionControllerDidRefresh:(id)a3
+- (void)carMapsSuggestionControllerDidRefresh:(id)refresh
 {
-  v4 = a3;
-  v5 = self;
+  refreshCopy = refresh;
+  selfCopy = self;
   sub_1001DCA04(&unk_101609AE0, sub_1001DCCB8, &unk_101609AF8);
 }
 

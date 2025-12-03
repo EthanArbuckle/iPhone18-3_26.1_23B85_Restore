@@ -1,36 +1,36 @@
 @interface ChannelDeferredPublishInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPushPriority:(id)a3;
+- (int)StringAsPushPriority:(id)priority;
 - (int)pushPriority;
 - (unint64_t)hash;
-- (void)addChannelProvisionOffGridPacketInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRetryCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addChannelProvisionOffGridPacketInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRetryCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelDeferredPublishInfo
 
-- (void)addChannelProvisionOffGridPacketInfo:(id)a3
+- (void)addChannelProvisionOffGridPacketInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   channelProvisionOffGridPacketInfos = self->_channelProvisionOffGridPacketInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!channelProvisionOffGridPacketInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_channelProvisionOffGridPacketInfos;
     self->_channelProvisionOffGridPacketInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     channelProvisionOffGridPacketInfos = self->_channelProvisionOffGridPacketInfos;
   }
 
-  [(NSMutableArray *)channelProvisionOffGridPacketInfos addObject:v4];
+  [(NSMutableArray *)channelProvisionOffGridPacketInfos addObject:infoCopy];
 }
 
 - (int)pushPriority
@@ -46,20 +46,20 @@
   }
 }
 
-- (int)StringAsPushPriority:(id)a3
+- (int)StringAsPushPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOW"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"LOW"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NORMAL"])
+  else if ([priorityCopy isEqualToString:@"NORMAL"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"HIGH"])
+  else if ([priorityCopy isEqualToString:@"HIGH"])
   {
     v4 = 2;
   }
@@ -72,9 +72,9 @@
   return v4;
 }
 
-- (void)setHasRetryCount:(BOOL)a3
+- (void)setHasRetryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = ChannelDeferredPublishInfo;
   v4 = [(ChannelDeferredPublishInfo *)&v8 description];
-  v5 = [(ChannelDeferredPublishInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelDeferredPublishInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,12 +102,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   channelIdentity = self->_channelIdentity;
   if (channelIdentity)
   {
-    v5 = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"channel_identity"];
+    dictionaryRepresentation = [(ChannelIdentity *)channelIdentity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"channel_identity"];
   }
 
   if ([(NSMutableArray *)self->_channelProvisionOffGridPacketInfos count])
@@ -132,8 +132,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -142,7 +142,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"channel_provision_off_grid_packet_info"];
+    [dictionary setObject:v6 forKey:@"channel_provision_off_grid_packet_info"];
   }
 
   has = self->_has;
@@ -159,7 +159,7 @@
       v15 = off_27843E048[pushPriority];
     }
 
-    [v3 setObject:v15 forKey:@"push_priority"];
+    [dictionary setObject:v15 forKey:@"push_priority"];
 
     has = self->_has;
   }
@@ -167,24 +167,24 @@
   if ((has & 2) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_retryCount];
-    [v3 setObject:v16 forKey:@"retry_count"];
+    [dictionary setObject:v16 forKey:@"retry_count"];
   }
 
   adopter = self->_adopter;
   if (adopter)
   {
-    [v3 setObject:adopter forKey:@"adopter"];
+    [dictionary setObject:adopter forKey:@"adopter"];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_channelIdentity)
   {
     PBDataWriterWriteSubmessage();
@@ -241,56 +241,56 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if (self->_channelIdentity)
   {
-    [v10 setChannelIdentity:?];
+    [toCopy setChannelIdentity:?];
   }
 
   if ([(ChannelDeferredPublishInfo *)self channelProvisionOffGridPacketInfosCount])
   {
-    [v10 clearChannelProvisionOffGridPacketInfos];
-    v4 = [(ChannelDeferredPublishInfo *)self channelProvisionOffGridPacketInfosCount];
-    if (v4)
+    [toCopy clearChannelProvisionOffGridPacketInfos];
+    channelProvisionOffGridPacketInfosCount = [(ChannelDeferredPublishInfo *)self channelProvisionOffGridPacketInfosCount];
+    if (channelProvisionOffGridPacketInfosCount)
     {
-      v5 = v4;
+      v5 = channelProvisionOffGridPacketInfosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ChannelDeferredPublishInfo *)self channelProvisionOffGridPacketInfoAtIndex:i];
-        [v10 addChannelProvisionOffGridPacketInfo:v7];
+        [toCopy addChannelProvisionOffGridPacketInfo:v7];
       }
     }
   }
 
   has = self->_has;
-  v9 = v10;
+  v9 = toCopy;
   if (has)
   {
-    *(v10 + 8) = self->_pushPriority;
-    *(v10 + 40) |= 1u;
+    *(toCopy + 8) = self->_pushPriority;
+    *(toCopy + 40) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v10 + 9) = self->_retryCount;
-    *(v10 + 40) |= 2u;
+    *(toCopy + 9) = self->_retryCount;
+    *(toCopy + 40) |= 2u;
   }
 
   if (self->_adopter)
   {
-    [v10 setAdopter:?];
-    v9 = v10;
+    [toCopy setAdopter:?];
+    v9 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ChannelIdentity *)self->_channelIdentity copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -313,7 +313,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{a3, v19}];
+        v13 = [*(*(&v19 + 1) + 8 * i) copyWithZone:{zone, v19}];
         [v5 addChannelProvisionOffGridPacketInfo:v13];
       }
 
@@ -337,7 +337,7 @@
     *(v5 + 40) |= 2u;
   }
 
-  v15 = [(NSString *)self->_adopter copyWithZone:a3, v19];
+  v15 = [(NSString *)self->_adopter copyWithZone:zone, v19];
   v16 = *(v5 + 8);
   *(v5 + 8) = v15;
 
@@ -345,16 +345,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   channelIdentity = self->_channelIdentity;
-  if (channelIdentity | *(v4 + 2))
+  if (channelIdentity | *(equalCopy + 2))
   {
     if (![(ChannelIdentity *)channelIdentity isEqual:?])
     {
@@ -363,7 +363,7 @@
   }
 
   channelProvisionOffGridPacketInfos = self->_channelProvisionOffGridPacketInfos;
-  if (channelProvisionOffGridPacketInfos | *(v4 + 3))
+  if (channelProvisionOffGridPacketInfos | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)channelProvisionOffGridPacketInfos isEqual:?])
     {
@@ -371,16 +371,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_pushPriority != *(v4 + 8))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_pushPriority != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_18:
     v9 = 0;
@@ -389,19 +389,19 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_retryCount != *(v4 + 9))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_retryCount != *(equalCopy + 9))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   adopter = self->_adopter;
-  if (adopter | *(v4 + 1))
+  if (adopter | *(equalCopy + 1))
   {
     v9 = [(NSString *)adopter isEqual:?];
   }
@@ -444,12 +444,12 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ [(NSString *)self->_adopter hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   channelIdentity = self->_channelIdentity;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (channelIdentity)
   {
     if (v6)
@@ -467,7 +467,7 @@ LABEL_3:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -491,21 +491,21 @@ LABEL_3:
     while (v9);
   }
 
-  v12 = *(v4 + 40);
+  v12 = *(fromCopy + 40);
   if (v12)
   {
-    self->_pushPriority = *(v4 + 8);
+    self->_pushPriority = *(fromCopy + 8);
     *&self->_has |= 1u;
-    v12 = *(v4 + 40);
+    v12 = *(fromCopy + 40);
   }
 
   if ((v12 & 2) != 0)
   {
-    self->_retryCount = *(v4 + 9);
+    self->_retryCount = *(fromCopy + 9);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ChannelDeferredPublishInfo *)self setAdopter:?];
   }

@@ -1,15 +1,15 @@
 @interface FMDevicePasscodeViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (void)cancelActionWithSender:(id)a3;
-- (void)nextActionWithSender:(id)a3;
-- (void)textChangedWithSender:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (void)cancelActionWithSender:(id)sender;
+- (void)nextActionWithSender:(id)sender;
+- (void)textChangedWithSender:(id)sender;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -25,38 +25,38 @@
   sub_1002B3CD8();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for FMDevicePasscodeViewController();
   v4 = v5.receiver;
-  [(FMDevicePasscodeViewController *)&v5 viewWillAppear:v3];
+  [(FMDevicePasscodeViewController *)&v5 viewWillAppear:appearCopy];
   sub_1002B58CC();
   sub_1002B5BB4();
   sub_1002B417C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for FMDevicePasscodeViewController();
   v4 = v6.receiver;
-  [(FMDevicePasscodeViewController *)&v6 viewDidAppear:v3];
+  [(FMDevicePasscodeViewController *)&v6 viewDidAppear:appearCopy];
   v5 = *&v4[OBJC_IVAR____TtC6FindMy30FMDevicePasscodeViewController_hiddenPasscodeTextField];
   [v5 becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4 = *&self->OBWelcomeController_opaque[OBJC_IVAR____TtC6FindMy30FMDevicePasscodeViewController_hiddenPasscodeTextField];
-  v5 = self;
+  selfCopy = self;
   [v4 resignFirstResponder];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for FMDevicePasscodeViewController();
-  [(FMDevicePasscodeViewController *)&v6 viewWillDisappear:v3];
+  [(FMDevicePasscodeViewController *)&v6 viewWillDisappear:disappearCopy];
   sub_1002B44BC();
 }
 
@@ -69,50 +69,50 @@
   sub_1002B5200();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002B46A8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002B46A8(change);
 }
 
-- (void)textChangedWithSender:(id)a3
+- (void)textChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1002B8CC4();
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
+  fieldCopy = field;
+  selfCopy = self;
   LOBYTE(length) = sub_1002B8F08(location, length, v9, v11);
 
   return length & 1;
 }
 
-- (void)nextActionWithSender:(id)a3
+- (void)nextActionWithSender:(id)sender
 {
   if (*&self->mediator[OBJC_IVAR____TtC6FindMy30FMDevicePasscodeViewController_firstPasscode])
   {
 
-    v4 = self;
+    selfCopy = self;
     sub_1002B7EA0();
   }
 }
 
-- (void)cancelActionWithSender:(id)a3
+- (void)cancelActionWithSender:(id)sender
 {
-  v6 = self;
-  v3 = [(FMDevicePasscodeViewController *)v6 navigationController];
-  if (v3)
+  selfCopy = self;
+  navigationController = [(FMDevicePasscodeViewController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v4 = v3;
+    v4 = navigationController;
     aBlock[4] = State.rawValue.getter;
     aBlock[5] = 0;
     aBlock[0] = _NSConcreteStackBlock;
@@ -130,14 +130,14 @@
   }
 }
 
-- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -145,12 +145,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_1002B6ED4(v9, v11, a4, v13, v14, v16, a6);
+    return sub_1002B6ED4(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -158,16 +158,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_1002B6ED4(v9, v11, a4, v13, v14, v16, a6);
+  return sub_1002B6ED4(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy30FMDevicePasscodeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -176,8 +176,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_1002B73B8(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_1002B73B8(v9, v11, text, v13, icon, layout);
 }
 
 @end

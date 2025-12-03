@@ -1,31 +1,31 @@
 @interface MFEmailSet
 + (id)set;
-- (BOOL)intersectsSet:(id)a3;
-- (BOOL)isEqualToSet:(id)a3;
-- (BOOL)isSubsetOfSet:(id)a3;
+- (BOOL)intersectsSet:(id)set;
+- (BOOL)isEqualToSet:(id)set;
+- (BOOL)isSubsetOfSet:(id)set;
 - (MFEmailSet)init;
-- (MFEmailSet)initWithCapacity:(unint64_t)a3;
-- (MFEmailSet)initWithSet:(id)a3;
-- (id)_generateAllObjectsFromSelector:(SEL)a3;
-- (id)member:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (MFEmailSet)initWithCapacity:(unint64_t)capacity;
+- (MFEmailSet)initWithSet:(id)set;
+- (id)_generateAllObjectsFromSelector:(SEL)selector;
+- (id)member:(id)member;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
 - (id)serializedRepresentation;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation MFEmailSet
 
 + (id)set
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -44,7 +44,7 @@
   return v3;
 }
 
-- (MFEmailSet)initWithCapacity:(unint64_t)a3
+- (MFEmailSet)initWithCapacity:(unint64_t)capacity
 {
   v7.receiver = self;
   v7.super_class = MFEmailSet;
@@ -52,23 +52,23 @@
   v5 = v4;
   if (v4)
   {
-    [(MFEmailSet *)v4 _setupSetWithCapacity:a3];
+    [(MFEmailSet *)v4 _setupSetWithCapacity:capacity];
   }
 
   return v5;
 }
 
-- (MFEmailSet)initWithSet:(id)a3
+- (MFEmailSet)initWithSet:(id)set
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = -[MFEmailSet initWithCapacity:](self, "initWithCapacity:", [a3 count]);
+  v4 = -[MFEmailSet initWithCapacity:](self, "initWithCapacity:", [set count]);
   if (v4)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v5 = [set countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v6 = v5;
@@ -80,7 +80,7 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           v9 = *(*(&v14 + 1) + 8 * v8);
@@ -99,7 +99,7 @@
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [set countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -123,7 +123,7 @@
   [(MFEmailSet *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MFEmailSet);
   CFSetApplyFunction(self->_set, _copyFunction, v4->_set);
@@ -133,12 +133,12 @@
 - (id)serializedRepresentation
 {
   v2 = [objc_alloc(MEMORY[0x1E699AFD8]) initWithSet:self];
-  v3 = [v2 serializedRepresentation];
+  serializedRepresentation = [v2 serializedRepresentation];
 
-  return v3;
+  return serializedRepresentation;
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -146,7 +146,7 @@
     [MFEmailSet member:];
   }
 
-  v5 = [[_MFEmailSetEmail alloc] initWithAddress:a3];
+  v5 = [[_MFEmailSetEmail alloc] initWithAddress:member];
   if (v5)
   {
     v6 = v5;
@@ -161,12 +161,12 @@
   return [Value address];
 }
 
-- (BOOL)intersectsSet:(id)a3
+- (BOOL)intersectsSet:(id)set
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [set count])
   {
-    v5 = *(a3 + 2);
+    v5 = *(set + 2);
     context[0] = 0xAAAAAAAAAAAAAA00;
     context[1] = v5;
     CFSetApplyFunction(self->_set, _intersectsFunction, context);
@@ -176,9 +176,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 count])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [set count])
     {
-      v7 = [[MFEmailSet alloc] initWithSet:a3];
+      v7 = [[MFEmailSet alloc] initWithSet:set];
       v8 = [(MFEmailSet *)self intersectsSet:v7];
 
       return v8;
@@ -186,18 +186,18 @@
 
     v10.receiver = self;
     v10.super_class = MFEmailSet;
-    v6 = [(EAEmailAddressSet *)&v10 intersectsSet:a3];
+    v6 = [(EAEmailAddressSet *)&v10 intersectsSet:set];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)isSubsetOfSet:(id)a3
+- (BOOL)isSubsetOfSet:(id)set
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [set count])
   {
-    v5 = *(a3 + 2);
+    v5 = *(set + 2);
     context[0] = 0xAAAAAAAAAAAAAA01;
     context[1] = v5;
     CFSetApplyFunction(self->_set, _subsetFunction, context);
@@ -207,9 +207,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 count])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [set count])
     {
-      v7 = [[MFEmailSet alloc] initWithSet:a3];
+      v7 = [[MFEmailSet alloc] initWithSet:set];
       v8 = [(MFEmailSet *)self isSubsetOfSet:v7];
 
       return v8;
@@ -217,22 +217,22 @@
 
     v10.receiver = self;
     v10.super_class = MFEmailSet;
-    v6 = [(EAEmailAddressSet *)&v10 isSubsetOfSet:a3];
+    v6 = [(EAEmailAddressSet *)&v10 isSubsetOfSet:set];
   }
 
   return v6 & 1;
 }
 
-- (BOOL)isEqualToSet:(id)a3
+- (BOOL)isEqualToSet:(id)set
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(MFEmailSet *)self count];
-    if (v5 == [a3 count])
+    if (v5 == [set count])
     {
 
-      return [(MFEmailSet *)self isSubsetOfSet:a3];
+      return [(MFEmailSet *)self isSubsetOfSet:set];
     }
 
     else
@@ -244,9 +244,9 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 count])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [set count])
     {
-      v7 = [[MFEmailSet alloc] initWithSet:a3];
+      v7 = [[MFEmailSet alloc] initWithSet:set];
       v8 = [(MFEmailSet *)self isEqualToSet:v7];
 
       return v8;
@@ -256,12 +256,12 @@
     {
       v9.receiver = self;
       v9.super_class = MFEmailSet;
-      return [(EAEmailAddressSet *)&v9 isEqualToSet:a3];
+      return [(EAEmailAddressSet *)&v9 isEqualToSet:set];
     }
   }
 }
 
-- (id)_generateAllObjectsFromSelector:(SEL)a3
+- (id)_generateAllObjectsFromSelector:(SEL)selector
 {
   Count = CFSetGetCount(self->_set);
   v6 = malloc_type_malloc(8 * Count, 0x80040B8603338uLL);
@@ -276,7 +276,7 @@
     do
     {
       v12 = *v9++;
-      *v10++ = [v12 a3];
+      *v10++ = [v12 selector];
       --v11;
     }
 
@@ -296,15 +296,15 @@
   return v2;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v6 = [(__CFSet *)self->_set countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v6 = [(__CFSet *)self->_set countByEnumeratingWithState:state objects:objects count:count];
   if (v6)
   {
     v7 = 0;
     do
     {
-      a3->var1[v7] = [a3->var1[v7] address];
+      state->var1[v7] = [state->var1[v7] address];
       ++v7;
     }
 
@@ -314,7 +314,7 @@
   return v6;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   v12 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -323,7 +323,7 @@
     [MFEmailSet addObject:];
   }
 
-  v5 = [[_MFEmailSetEmail alloc] initWithAddress:a3];
+  v5 = [[_MFEmailSetEmail alloc] initWithAddress:object];
   if (v5)
   {
     v9 = v5;
@@ -337,7 +337,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v11 = a3;
+      objectCopy = object;
       _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "attempt to add illegal email address to email set, skipping '%@'", buf, 0xCu);
     }
 
@@ -345,7 +345,7 @@
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -353,7 +353,7 @@
     [MFEmailSet removeObject:];
   }
 
-  v5 = [[_MFEmailSetEmail alloc] initWithAddress:a3];
+  v5 = [[_MFEmailSetEmail alloc] initWithAddress:object];
   if (v5)
   {
     v6 = v5;
@@ -361,12 +361,12 @@
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = *(a3 + 2);
+    v5 = *(set + 2);
     set = self->_set;
 
     CFSetApplyFunction(v5, _unionFunction, set);
@@ -377,7 +377,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[MFEmailSet alloc] initWithSet:a3];
+      v7 = [[MFEmailSet alloc] initWithSet:set];
       [(MFEmailSet *)self unionSet:v7];
     }
 
@@ -385,17 +385,17 @@
     {
       v8.receiver = self;
       v8.super_class = MFEmailSet;
-      [(EAEmailAddressSet *)&v8 unionSet:a3];
+      [(EAEmailAddressSet *)&v8 unionSet:set];
     }
   }
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = *(a3 + 2);
+    v5 = *(set + 2);
     set = self->_set;
 
     CFSetApplyFunction(v5, _minusFunction, set);
@@ -406,7 +406,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[MFEmailSet alloc] initWithSet:a3];
+      v7 = [[MFEmailSet alloc] initWithSet:set];
       [(MFEmailSet *)self minusSet:v7];
     }
 
@@ -414,15 +414,15 @@
     {
       v8.receiver = self;
       v8.super_class = MFEmailSet;
-      [(EAEmailAddressSet *)&v8 minusSet:a3];
+      [(EAEmailAddressSet *)&v8 minusSet:set];
     }
   }
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 == self)
+  if (set == self)
   {
     goto LABEL_16;
   }
@@ -431,7 +431,7 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6 = *(a3 + 2);
+    v6 = *(set + 2);
     context[0] = v5;
     context[1] = v6;
     CFSetApplyFunction(self->_set, _intersectFunction, context);
@@ -470,26 +470,26 @@
   {
     v14.receiver = self;
     v14.super_class = MFEmailSet;
-    [(EAEmailAddressSet *)&v14 intersectSet:a3];
+    [(EAEmailAddressSet *)&v14 intersectSet:set];
 LABEL_16:
     v12 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  v13 = [[MFEmailSet alloc] initWithSet:a3];
+  v13 = [[MFEmailSet alloc] initWithSet:set];
   [(MFEmailSet *)self intersectSet:?];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
-  if (a3 != self)
+  if (set != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       CFSetRemoveAllValues(self->_set);
-      v5 = *(a3 + 2);
+      v5 = *(set + 2);
       set = self->_set;
 
       CFSetApplyFunction(v5, _unionFunction, set);
@@ -500,7 +500,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [[MFEmailSet alloc] initWithSet:a3];
+        v7 = [[MFEmailSet alloc] initWithSet:set];
         [(MFEmailSet *)self setSet:v7];
       }
 
@@ -508,7 +508,7 @@ LABEL_16:
       {
         v8.receiver = self;
         v8.super_class = MFEmailSet;
-        [(EAEmailAddressSet *)&v8 setSet:a3];
+        [(EAEmailAddressSet *)&v8 setSet:set];
       }
     }
   }

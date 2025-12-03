@@ -6,14 +6,14 @@
 
 - (uint32x2_t)debugQuickLookObject
 {
-  v1 = [a1 traceState];
-  v2 = v1;
-  if (v1)
+  traceState = [self traceState];
+  v2 = traceState;
+  if (traceState)
   {
-    v3 = *(v1 + 24);
+    v3 = *(traceState + 24);
     if (v3)
     {
-      v4 = *(v1 + 28);
+      v4 = *(traceState + 28);
       v5 = 0;
       do
       {

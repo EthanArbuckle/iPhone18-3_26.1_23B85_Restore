@@ -1,19 +1,19 @@
 @interface AR3DSkeletonDetectionResult
 + (NSArray)jointNames;
-- (AR3DSkeletonDetectionResult)initWithCoder:(id)a3;
-- (AR3DSkeletonDetectionResult)initWithJoints:(AR3DSkeletonDetectionResult *)self numberOfJoints:(SEL)a2 referenceDetectionResult:;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isJointTracked:(int64_t)a3;
+- (AR3DSkeletonDetectionResult)initWithCoder:(id)coder;
+- (AR3DSkeletonDetectionResult)initWithJoints:(AR3DSkeletonDetectionResult *)self numberOfJoints:(SEL)joints referenceDetectionResult:;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isJointTracked:(int64_t)tracked;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createResultScaledByFactor:(float)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createResultScaledByFactor:(float)factor;
 - (uint64_t)jointsLocalSpace;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AR3DSkeletonDetectionResult
 
-- (AR3DSkeletonDetectionResult)initWithJoints:(AR3DSkeletonDetectionResult *)self numberOfJoints:(SEL)a2 referenceDetectionResult:
+- (AR3DSkeletonDetectionResult)initWithJoints:(AR3DSkeletonDetectionResult *)self numberOfJoints:(SEL)joints referenceDetectionResult:
 {
   v5 = v4;
   v6 = v3;
@@ -48,9 +48,9 @@
 - (uint64_t)jointsLocalSpace
 {
   v35 = *MEMORY[0x1E69E9840];
-  result = a1[4];
-  v4 = a1[5];
-  v5 = a1 + 4;
+  result = self[4];
+  v4 = self[5];
+  v5 = self + 4;
   v6 = *(v5 - 3);
   v7 = *(v5 - 2);
   if (v4 - result != v7 - v6)
@@ -78,8 +78,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v26 = [*(*(&v27 + 1) + 8 * i) intValue];
-          std::deque<std::pair<int,int>>::push_back(v31, &v26);
+          intValue = [*(*(&v27 + 1) + 8 * i) intValue];
+          std::deque<std::pair<int,int>>::push_back(v31, &intValue);
         }
 
         v10 = [v9 countByEnumeratingWithState:&v27 objects:v34 count:16];
@@ -102,7 +102,7 @@
         *&v32 = v32 - 512;
       }
 
-      *(a1[4] + 16 * v15) = vsubq_f32(*(a1[1] + 16 * v15), *(a1[1] + 16 * v14));
+      *(self[4] + 16 * v15) = vsubq_f32(*(self[1] + 16 * v15), *(self[1] + 16 * v14));
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
@@ -124,8 +124,8 @@
               objc_enumerationMutation(v17);
             }
 
-            v26 = v20 | [*(*(&v22 + 1) + 8 * j) intValue];
-            std::deque<std::pair<int,int>>::push_back(v31, &v26);
+            intValue = v20 | [*(*(&v22 + 1) + 8 * j) intValue];
+            std::deque<std::pair<int,int>>::push_back(v31, &intValue);
           }
 
           v18 = [v17 countByEnumeratingWithState:&v22 objects:v33 count:16];
@@ -142,19 +142,19 @@
   return result;
 }
 
-- (BOOL)isJointTracked:(int64_t)a3
+- (BOOL)isJointTracked:(int64_t)tracked
 {
-  if (a3 < 0)
+  if (tracked < 0)
   {
     return 0;
   }
 
-  if (((*&self->_anon_8[8] - *self->_anon_8) >> 4) - 1 < a3)
+  if (((*&self->_anon_8[8] - *self->_anon_8) >> 4) - 1 < tracked)
   {
     return 0;
   }
 
-  v4 = ARRigInputJointsDependencies[a3];
+  v4 = ARRigInputJointsDependencies[tracked];
   if ((v4 & 0x80000000) != 0 || [(ABPK2DDetectionResult *)self->_skeletonDetectionResult2D jointCount]- 1 < v4)
   {
     return 0;
@@ -163,7 +163,7 @@
   return *([(ABPK2DDetectionResult *)self->_skeletonDetectionResult2D jointTrackingStates]+ 4 * v4) == 1;
 }
 
-- (id)createResultScaledByFactor:(float)a3
+- (id)createResultScaledByFactor:(float)factor
 {
   _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEEC2B8ne200100Em(&__p, (*&self->_anon_8[8] - *self->_anon_8) >> 4);
   v4 = *self->_anon_8;
@@ -174,7 +174,7 @@
     do
     {
       v7 = *v4++;
-      *v6++ = vmulq_n_f32(v7, a3);
+      *v6++ = vmulq_n_f32(v7, factor);
     }
 
     while (v4 != v5);
@@ -183,8 +183,8 @@
   v8 = [AR3DSkeletonDetectionResult alloc];
   v9 = __p;
   v10 = v16;
-  v11 = [(AR3DSkeletonDetectionResult *)self skeletonDetectionResult2D];
-  v12 = [(AR3DSkeletonDetectionResult *)v8 initWithJoints:v9 numberOfJoints:(v10 - v9) >> 4 referenceDetectionResult:v11];
+  skeletonDetectionResult2D = [(AR3DSkeletonDetectionResult *)self skeletonDetectionResult2D];
+  v12 = [(AR3DSkeletonDetectionResult *)v8 initWithJoints:v9 numberOfJoints:(v10 - v9) >> 4 referenceDetectionResult:skeletonDetectionResult2D];
 
   if (__p)
   {
@@ -195,12 +195,12 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *self->_anon_8;
     v7 = *&self->_anon_8[8];
     v8 = v5[1];
@@ -249,9 +249,9 @@ LABEL_12:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4 != self)
   {
@@ -262,31 +262,31 @@ LABEL_12:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8];
-  [v5 encodeObject:v4 forKey:@"jointsVector"];
-  [v5 encodeObject:self->_skeletonDetectionResult2D forKey:@"skeletonDetectionResult2D"];
+  [coderCopy encodeObject:v4 forKey:@"jointsVector"];
+  [coderCopy encodeObject:self->_skeletonDetectionResult2D forKey:@"skeletonDetectionResult2D"];
 }
 
-- (AR3DSkeletonDetectionResult)initWithCoder:(id)a3
+- (AR3DSkeletonDetectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AR3DSkeletonDetectionResult;
   v5 = [(AR3DSkeletonDetectionResult *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jointsVector"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jointsVector"];
     v7 = v6;
     if (v6)
     {
       v8 = [v6 length];
-      v9 = [v7 bytes];
+      bytes = [v7 bytes];
       v14 = 0uLL;
       v15 = 0;
-      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v14, v9, v9 + 16 * (v8 >> 4), (v8 >> 4));
+      _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(&v14, bytes, bytes + 16 * (v8 >> 4), (v8 >> 4));
       v10 = *(v5 + 1);
       if (v10)
       {
@@ -301,7 +301,7 @@ LABEL_12:
       *(v5 + 3) = v15;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skeletonDetectionResult2D"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skeletonDetectionResult2D"];
     v12 = *(v5 + 7);
     *(v5 + 7) = v11;
   }

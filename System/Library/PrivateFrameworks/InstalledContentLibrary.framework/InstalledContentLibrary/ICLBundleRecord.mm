@@ -1,93 +1,93 @@
 @interface ICLBundleRecord
-+ (id)bundleRecordArrayToInfoDictionaryArray:(id)a3;
-+ (id)infoDictionaryArrayToBundleRecordArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ICLBundleRecord)initWithCoder:(id)a3;
-- (ICLBundleRecord)initWithLegacyRecordDictionary:(id)a3;
++ (id)bundleRecordArrayToInfoDictionaryArray:(id)array;
++ (id)infoDictionaryArrayToBundleRecordArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (ICLBundleRecord)initWithCoder:(id)coder;
+- (ICLBundleRecord)initWithLegacyRecordDictionary:(id)dictionary;
 - (NSDictionary)legacyRecordDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICLBundleRecord
 
-- (ICLBundleRecord)initWithCoder:(id)a3
+- (ICLBundleRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ICLBundleRecord *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
     bundleVersion = v5->_bundleVersion;
     v5->_bundleVersion = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersion"];
     bundleShortVersion = v5->_bundleShortVersion;
     v5->_bundleShortVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
     bundleURL = v5->_bundleURL;
     v5->_bundleURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedPlaceholderURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedPlaceholderURL"];
     serializedPlaceholderURL = v5->_serializedPlaceholderURL;
     v5->_serializedPlaceholderURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signerIdentity"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signerIdentity"];
     signerIdentity = v5->_signerIdentity;
     v5->_signerIdentity = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signatureVersion"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signatureVersion"];
     signatureVersion = v5->_signatureVersion;
     v5->_signatureVersion = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signerOrganization"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signerOrganization"];
     signerOrganization = v5->_signerOrganization;
     v5->_signerOrganization = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
     teamIdentifier = v5->_teamIdentifier;
     v5->_teamIdentifier = v22;
 
-    v5->_codeSigningInfoNotAuthoritative = [v4 decodeBoolForKey:@"codeSigningInfoNotAuthoritative"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codeInfoIdentifier"];
+    v5->_codeSigningInfoNotAuthoritative = [coderCopy decodeBoolForKey:@"codeSigningInfoNotAuthoritative"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codeInfoIdentifier"];
     codeInfoIdentifier = v5->_codeInfoIdentifier;
     v5->_codeInfoIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codeSignerType"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codeSignerType"];
     v5->_codeSignerType = [v26 unsignedIntegerValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"profileValidationType"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"profileValidationType"];
     v5->_profileValidationType = [v27 unsignedIntegerValue];
 
-    v5->_isPlaceholder = [v4 decodeBoolForKey:@"isPlaceholder"];
-    v5->_isNoLongerCompatible = [v4 decodeBoolForKey:@"isNoLongerCompatible"];
-    v5->_hasSettingsBundle = [v4 decodeBoolForKey:@"hasSettingsBundle"];
-    v5->_isContainerized = [v4 decodeBoolForKey:@"isContainerized"];
-    v5->_hasAppGroupContainers = [v4 decodeBoolForKey:@"hasAppGroupContainers"];
-    v5->_hasSystemContainer = [v4 decodeBoolForKey:@"hasSystemContainer"];
-    v5->_hasSystemGroupContainers = [v4 decodeBoolForKey:@"hasSystemGroupContainers"];
-    v5->_isOnMountedDiskImage = [v4 decodeBoolForKey:@"isOnMountedDiskImage"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"compatibilityState"];
+    v5->_isPlaceholder = [coderCopy decodeBoolForKey:@"isPlaceholder"];
+    v5->_isNoLongerCompatible = [coderCopy decodeBoolForKey:@"isNoLongerCompatible"];
+    v5->_hasSettingsBundle = [coderCopy decodeBoolForKey:@"hasSettingsBundle"];
+    v5->_isContainerized = [coderCopy decodeBoolForKey:@"isContainerized"];
+    v5->_hasAppGroupContainers = [coderCopy decodeBoolForKey:@"hasAppGroupContainers"];
+    v5->_hasSystemContainer = [coderCopy decodeBoolForKey:@"hasSystemContainer"];
+    v5->_hasSystemGroupContainers = [coderCopy decodeBoolForKey:@"hasSystemGroupContainers"];
+    v5->_isOnMountedDiskImage = [coderCopy decodeBoolForKey:@"isOnMountedDiskImage"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"compatibilityState"];
     v5->_compatibilityState = [v28 unsignedIntegerValue];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationType"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationType"];
     v5->_applicationType = [v29 unsignedIntegerValue];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"staticDiskUsage"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staticDiskUsage"];
     staticDiskUsage = v5->_staticDiskUsage;
     v5->_staticDiskUsage = v30;
 
     v32 = MEMORY[0x1E695DFD8];
     v33 = objc_opt_class();
     v34 = [v32 setWithObjects:{v33, objc_opt_class(), 0}];
-    v35 = [v4 decodeObjectOfClasses:v34 forKey:@"counterpartIdentifiers"];
+    v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"counterpartIdentifiers"];
     counterpartIdentifiers = v5->_counterpartIdentifiers;
     v5->_counterpartIdentifiers = v35;
 
@@ -96,18 +96,18 @@
     v39 = objc_opt_class();
     v40 = objc_opt_class();
     v41 = [v37 setWithObjects:{v38, v39, v40, objc_opt_class(), 0}];
-    v42 = [v4 decodeObjectOfClasses:v41 forKey:@"entitlements"];
+    v42 = [coderCopy decodeObjectOfClasses:v41 forKey:@"entitlements"];
     entitlements = v5->_entitlements;
     v5->_entitlements = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataContainerURL"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataContainerURL"];
     dataContainerURL = v5->_dataContainerURL;
     v5->_dataContainerURL = v44;
 
     v46 = MEMORY[0x1E695DFD8];
     v47 = objc_opt_class();
     v48 = [v46 setWithObjects:{v47, objc_opt_class(), 0}];
-    v49 = [v4 decodeObjectOfClasses:v48 forKey:@"environmentVariables"];
+    v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"environmentVariables"];
     environmentVariables = v5->_environmentVariables;
     v5->_environmentVariables = v49;
 
@@ -115,7 +115,7 @@
     v52 = objc_opt_class();
     v53 = objc_opt_class();
     v54 = [v51 setWithObjects:{v52, v53, objc_opt_class(), 0}];
-    v55 = [v4 decodeObjectOfClasses:v54 forKey:@"groupContainers"];
+    v55 = [coderCopy decodeObjectOfClasses:v54 forKey:@"groupContainers"];
     groupContainers = v5->_groupContainers;
     v5->_groupContainers = v55;
 
@@ -123,7 +123,7 @@
     v58 = objc_opt_class();
     v59 = objc_opt_class();
     v60 = [v57 setWithObjects:{v58, v59, objc_opt_class(), 0}];
-    v61 = [v4 decodeObjectOfClasses:v60 forKey:@"personasRecordMap"];
+    v61 = [coderCopy decodeObjectOfClasses:v60 forKey:@"personasRecordMap"];
     personasRecordMap = v5->_personasRecordMap;
     v5->_personasRecordMap = v61;
   }
@@ -131,90 +131,90 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICLBundleRecord *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(ICLBundleRecord *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(ICLBundleRecord *)self bundleVersion];
-  [v4 encodeObject:v6 forKey:@"bundleVersion"];
+  bundleVersion = [(ICLBundleRecord *)self bundleVersion];
+  [coderCopy encodeObject:bundleVersion forKey:@"bundleVersion"];
 
-  v7 = [(ICLBundleRecord *)self bundleShortVersion];
-  [v4 encodeObject:v7 forKey:@"bundleShortVersion"];
+  bundleShortVersion = [(ICLBundleRecord *)self bundleShortVersion];
+  [coderCopy encodeObject:bundleShortVersion forKey:@"bundleShortVersion"];
 
-  v8 = [(ICLBundleRecord *)self bundleURL];
-  [v4 encodeObject:v8 forKey:@"bundleURL"];
+  bundleURL = [(ICLBundleRecord *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 
-  v9 = [(ICLBundleRecord *)self serializedPlaceholderURL];
-  [v4 encodeObject:v9 forKey:@"serializedPlaceholderURL"];
+  serializedPlaceholderURL = [(ICLBundleRecord *)self serializedPlaceholderURL];
+  [coderCopy encodeObject:serializedPlaceholderURL forKey:@"serializedPlaceholderURL"];
 
-  v10 = [(ICLBundleRecord *)self signerIdentity];
-  [v4 encodeObject:v10 forKey:@"signerIdentity"];
+  signerIdentity = [(ICLBundleRecord *)self signerIdentity];
+  [coderCopy encodeObject:signerIdentity forKey:@"signerIdentity"];
 
-  v11 = [(ICLBundleRecord *)self signatureVersion];
-  [v4 encodeObject:v11 forKey:@"signatureVersion"];
+  signatureVersion = [(ICLBundleRecord *)self signatureVersion];
+  [coderCopy encodeObject:signatureVersion forKey:@"signatureVersion"];
 
-  v12 = [(ICLBundleRecord *)self signerOrganization];
-  [v4 encodeObject:v12 forKey:@"signerOrganization"];
+  signerOrganization = [(ICLBundleRecord *)self signerOrganization];
+  [coderCopy encodeObject:signerOrganization forKey:@"signerOrganization"];
 
-  v13 = [(ICLBundleRecord *)self teamIdentifier];
-  [v4 encodeObject:v13 forKey:@"teamIdentifier"];
+  teamIdentifier = [(ICLBundleRecord *)self teamIdentifier];
+  [coderCopy encodeObject:teamIdentifier forKey:@"teamIdentifier"];
 
-  [v4 encodeBool:-[ICLBundleRecord codeSigningInfoNotAuthoritative](self forKey:{"codeSigningInfoNotAuthoritative"), @"codeSigningInfoNotAuthoritative"}];
-  v14 = [(ICLBundleRecord *)self codeInfoIdentifier];
-  [v4 encodeObject:v14 forKey:@"codeInfoIdentifier"];
+  [coderCopy encodeBool:-[ICLBundleRecord codeSigningInfoNotAuthoritative](self forKey:{"codeSigningInfoNotAuthoritative"), @"codeSigningInfoNotAuthoritative"}];
+  codeInfoIdentifier = [(ICLBundleRecord *)self codeInfoIdentifier];
+  [coderCopy encodeObject:codeInfoIdentifier forKey:@"codeInfoIdentifier"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICLBundleRecord codeSignerType](self, "codeSignerType")}];
-  [v4 encodeObject:v15 forKey:@"codeSignerType"];
+  [coderCopy encodeObject:v15 forKey:@"codeSignerType"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICLBundleRecord profileValidationType](self, "profileValidationType")}];
-  [v4 encodeObject:v16 forKey:@"profileValidationType"];
+  [coderCopy encodeObject:v16 forKey:@"profileValidationType"];
 
-  [v4 encodeBool:-[ICLBundleRecord isPlaceholder](self forKey:{"isPlaceholder"), @"isPlaceholder"}];
-  [v4 encodeBool:-[ICLBundleRecord isNoLongerCompatible](self forKey:{"isNoLongerCompatible"), @"isNoLongerCompatible"}];
-  [v4 encodeBool:-[ICLBundleRecord hasSettingsBundle](self forKey:{"hasSettingsBundle"), @"hasSettingsBundle"}];
-  [v4 encodeBool:-[ICLBundleRecord isContainerized](self forKey:{"isContainerized"), @"isContainerized"}];
-  [v4 encodeBool:-[ICLBundleRecord hasAppGroupContainers](self forKey:{"hasAppGroupContainers"), @"hasAppGroupContainers"}];
-  [v4 encodeBool:-[ICLBundleRecord hasSystemContainer](self forKey:{"hasSystemContainer"), @"hasSystemContainer"}];
-  [v4 encodeBool:-[ICLBundleRecord hasSystemGroupContainers](self forKey:{"hasSystemGroupContainers"), @"hasSystemGroupContainers"}];
-  [v4 encodeBool:-[ICLBundleRecord isOnMountedDiskImage](self forKey:{"isOnMountedDiskImage"), @"isOnMountedDiskImage"}];
+  [coderCopy encodeBool:-[ICLBundleRecord isPlaceholder](self forKey:{"isPlaceholder"), @"isPlaceholder"}];
+  [coderCopy encodeBool:-[ICLBundleRecord isNoLongerCompatible](self forKey:{"isNoLongerCompatible"), @"isNoLongerCompatible"}];
+  [coderCopy encodeBool:-[ICLBundleRecord hasSettingsBundle](self forKey:{"hasSettingsBundle"), @"hasSettingsBundle"}];
+  [coderCopy encodeBool:-[ICLBundleRecord isContainerized](self forKey:{"isContainerized"), @"isContainerized"}];
+  [coderCopy encodeBool:-[ICLBundleRecord hasAppGroupContainers](self forKey:{"hasAppGroupContainers"), @"hasAppGroupContainers"}];
+  [coderCopy encodeBool:-[ICLBundleRecord hasSystemContainer](self forKey:{"hasSystemContainer"), @"hasSystemContainer"}];
+  [coderCopy encodeBool:-[ICLBundleRecord hasSystemGroupContainers](self forKey:{"hasSystemGroupContainers"), @"hasSystemGroupContainers"}];
+  [coderCopy encodeBool:-[ICLBundleRecord isOnMountedDiskImage](self forKey:{"isOnMountedDiskImage"), @"isOnMountedDiskImage"}];
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICLBundleRecord compatibilityState](self, "compatibilityState")}];
-  [v4 encodeObject:v17 forKey:@"compatibilityState"];
+  [coderCopy encodeObject:v17 forKey:@"compatibilityState"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[ICLBundleRecord applicationType](self, "applicationType")}];
-  [v4 encodeObject:v18 forKey:@"applicationType"];
+  [coderCopy encodeObject:v18 forKey:@"applicationType"];
 
-  v19 = [(ICLBundleRecord *)self staticDiskUsage];
-  [v4 encodeObject:v19 forKey:@"staticDiskUsage"];
+  staticDiskUsage = [(ICLBundleRecord *)self staticDiskUsage];
+  [coderCopy encodeObject:staticDiskUsage forKey:@"staticDiskUsage"];
 
-  v20 = [(ICLBundleRecord *)self counterpartIdentifiers];
-  [v4 encodeObject:v20 forKey:@"counterpartIdentifiers"];
+  counterpartIdentifiers = [(ICLBundleRecord *)self counterpartIdentifiers];
+  [coderCopy encodeObject:counterpartIdentifiers forKey:@"counterpartIdentifiers"];
 
-  v21 = [(ICLBundleRecord *)self entitlements];
-  [v4 encodeObject:v21 forKey:@"entitlements"];
+  entitlements = [(ICLBundleRecord *)self entitlements];
+  [coderCopy encodeObject:entitlements forKey:@"entitlements"];
 
-  v22 = [(ICLBundleRecord *)self dataContainerURL];
-  [v4 encodeObject:v22 forKey:@"dataContainerURL"];
+  dataContainerURL = [(ICLBundleRecord *)self dataContainerURL];
+  [coderCopy encodeObject:dataContainerURL forKey:@"dataContainerURL"];
 
-  v23 = [(ICLBundleRecord *)self environmentVariables];
-  [v4 encodeObject:v23 forKey:@"environmentVariables"];
+  environmentVariables = [(ICLBundleRecord *)self environmentVariables];
+  [coderCopy encodeObject:environmentVariables forKey:@"environmentVariables"];
 
-  v24 = [(ICLBundleRecord *)self groupContainers];
-  [v4 encodeObject:v24 forKey:@"groupContainers"];
+  groupContainers = [(ICLBundleRecord *)self groupContainers];
+  [coderCopy encodeObject:groupContainers forKey:@"groupContainers"];
 
-  v25 = [(ICLBundleRecord *)self personasRecordMap];
-  [v4 encodeObject:v25 forKey:@"personasRecordMap"];
+  personasRecordMap = [(ICLBundleRecord *)self personasRecordMap];
+  [coderCopy encodeObject:personasRecordMap forKey:@"personasRecordMap"];
 }
 
-- (ICLBundleRecord)initWithLegacyRecordDictionary:(id)a3
+- (ICLBundleRecord)initWithLegacyRecordDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICLBundleRecord *)self init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E4F0]];
     objc_opt_class();
     v7 = v6;
     if (objc_opt_isKindOfClass())
@@ -228,7 +228,7 @@
     }
 
     [(ICLBundleRecord *)v5 setBundleIdentifier:v8];
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E500]];
+    v9 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E500]];
     objc_opt_class();
     v10 = v9;
     if (objc_opt_isKindOfClass())
@@ -242,7 +242,7 @@
     }
 
     [(ICLBundleRecord *)v5 setBundleVersion:v11];
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E695E148]];
+    v12 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E695E148]];
     objc_opt_class();
     v13 = v12;
     if (objc_opt_isKindOfClass())
@@ -256,7 +256,7 @@
     }
 
     [(ICLBundleRecord *)v5 setBundleShortVersion:v14];
-    v15 = [v4 objectForKeyedSubscript:@"Path"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"Path"];
     objc_opt_class();
     v16 = v15;
     if (objc_opt_isKindOfClass())
@@ -276,7 +276,7 @@
     }
 
     v92 = v17;
-    v19 = [v4 objectForKeyedSubscript:@"SerializedPlaceholderPath"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"SerializedPlaceholderPath"];
     objc_opt_class();
     v20 = v19;
     if (objc_opt_isKindOfClass())
@@ -296,7 +296,7 @@
     }
 
     v91 = v21;
-    v23 = [v4 objectForKeyedSubscript:@"SignerIdentity"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"SignerIdentity"];
     objc_opt_class();
     v24 = v23;
     if (objc_opt_isKindOfClass())
@@ -310,7 +310,7 @@
     }
 
     [(ICLBundleRecord *)v5 setSignerIdentity:v25];
-    v26 = [v4 objectForKeyedSubscript:@"SignatureVersion"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"SignatureVersion"];
     objc_opt_class();
     v27 = v26;
     if (objc_opt_isKindOfClass())
@@ -324,7 +324,7 @@
     }
 
     [(ICLBundleRecord *)v5 setSignatureVersion:v28];
-    v29 = [v4 objectForKeyedSubscript:@"SignerOrganization"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"SignerOrganization"];
     objc_opt_class();
     v30 = v29;
     if (objc_opt_isKindOfClass())
@@ -338,7 +338,7 @@
     }
 
     [(ICLBundleRecord *)v5 setSignerOrganization:v31];
-    v32 = [v4 objectForKeyedSubscript:@"TeamIdentifier"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"TeamIdentifier"];
     objc_opt_class();
     v33 = v32;
     if (objc_opt_isKindOfClass())
@@ -352,10 +352,10 @@
     }
 
     [(ICLBundleRecord *)v5 setTeamIdentifier:v34];
-    v35 = [v4 objectForKeyedSubscript:@"CodeSigningInfoNotAuthoritative"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"CodeSigningInfoNotAuthoritative"];
     [(ICLBundleRecord *)v5 setCodeSigningInfoNotAuthoritative:MIBooleanValue(v35, 0)];
 
-    v36 = [v4 objectForKeyedSubscript:@"CodeInfoIdentifier"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"CodeInfoIdentifier"];
     objc_opt_class();
     v37 = v36;
     if (objc_opt_isKindOfClass())
@@ -369,7 +369,7 @@
     }
 
     [(ICLBundleRecord *)v5 setCodeInfoIdentifier:v38];
-    v39 = [v4 objectForKeyedSubscript:@"ProfileValidated"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"ProfileValidated"];
     v40 = MIBooleanValue(v39, 0);
 
     if (v40)
@@ -379,7 +379,7 @@
 
     else
     {
-      v42 = [v4 objectForKeyedSubscript:@"IsAdHocSigned"];
+      v42 = [dictionaryCopy objectForKeyedSubscript:@"IsAdHocSigned"];
       v43 = MIBooleanValue(v42, 0);
 
       if (v43)
@@ -399,7 +399,7 @@
     }
 
     [(ICLBundleRecord *)v5 setCodeSignerType:v41];
-    v44 = [v4 objectForKeyedSubscript:@"UPPValidated"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"UPPValidated"];
     v45 = MIBooleanValue(v44, 0);
 
     if (v45)
@@ -409,7 +409,7 @@
 
     else
     {
-      v47 = [v4 objectForKeyedSubscript:@"FreeProfileValidated"];
+      v47 = [dictionaryCopy objectForKeyedSubscript:@"FreeProfileValidated"];
       v48 = MIBooleanValue(v47, 0);
 
       if (v48)
@@ -424,31 +424,31 @@
     }
 
     [(ICLBundleRecord *)v5 setProfileValidationType:v46];
-    v49 = [v4 objectForKeyedSubscript:@"IsPlaceholder"];
+    v49 = [dictionaryCopy objectForKeyedSubscript:@"IsPlaceholder"];
     [(ICLBundleRecord *)v5 setIsPlaceholder:MIBooleanValue(v49, 0)];
 
-    v50 = [v4 objectForKeyedSubscript:@"IsNoLongerCompatible"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"IsNoLongerCompatible"];
     [(ICLBundleRecord *)v5 setIsNoLongerCompatible:MIBooleanValue(v50, 0)];
 
-    v51 = [v4 objectForKeyedSubscript:@"HasSettingsBundle"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"HasSettingsBundle"];
     [(ICLBundleRecord *)v5 setHasSettingsBundle:MIBooleanValue(v51, 0)];
 
-    v52 = [v4 objectForKeyedSubscript:@"IsContainerized"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"IsContainerized"];
     [(ICLBundleRecord *)v5 setIsContainerized:MIBooleanValue(v52, 0)];
 
-    v53 = [v4 objectForKeyedSubscript:@"HasAppGroupContainers"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"HasAppGroupContainers"];
     [(ICLBundleRecord *)v5 setHasAppGroupContainers:MIBooleanValue(v53, 0)];
 
-    v54 = [v4 objectForKeyedSubscript:@"HasSystemContainer"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"HasSystemContainer"];
     [(ICLBundleRecord *)v5 setHasSystemContainer:MIBooleanValue(v54, 0)];
 
-    v55 = [v4 objectForKeyedSubscript:@"HasSystemGroupContainers"];
+    v55 = [dictionaryCopy objectForKeyedSubscript:@"HasSystemGroupContainers"];
     [(ICLBundleRecord *)v5 setHasSystemGroupContainers:MIBooleanValue(v55, 0)];
 
-    v56 = [v4 objectForKeyedSubscript:@"IsOnMountedDiskImage"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"IsOnMountedDiskImage"];
     [(ICLBundleRecord *)v5 setIsOnMountedDiskImage:MIBooleanValue(v56, 0)];
 
-    v57 = [v4 objectForKeyedSubscript:@"CompatibilityState"];
+    v57 = [dictionaryCopy objectForKeyedSubscript:@"CompatibilityState"];
     objc_opt_class();
     v58 = v57;
     if (objc_opt_isKindOfClass())
@@ -462,7 +462,7 @@
     }
 
     -[ICLBundleRecord setCompatibilityState:](v5, "setCompatibilityState:", [v59 unsignedIntegerValue]);
-    v60 = [v4 objectForKeyedSubscript:@"ApplicationType"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"ApplicationType"];
     if ([v60 isEqualToString:@"Any"])
     {
       v61 = 6;
@@ -499,7 +499,7 @@
     }
 
     [(ICLBundleRecord *)v5 setApplicationType:v61];
-    v62 = [v4 objectForKeyedSubscript:@"StaticDiskUsage"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"StaticDiskUsage"];
     objc_opt_class();
     v63 = v62;
     if (objc_opt_isKindOfClass())
@@ -513,7 +513,7 @@
     }
 
     [(ICLBundleRecord *)v5 setStaticDiskUsage:v64];
-    v65 = [v4 objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
+    v65 = [dictionaryCopy objectForKeyedSubscript:@"LSCounterpartIdentifiers"];
     objc_opt_class();
     v66 = v65;
     if (objc_opt_isKindOfClass())
@@ -535,7 +535,7 @@
       }
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"Entitlements"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"Entitlements"];
     objc_opt_class();
     v69 = v68;
     if (objc_opt_isKindOfClass())
@@ -557,7 +557,7 @@
       }
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"Container"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"Container"];
     objc_opt_class();
     v73 = v72;
     if (objc_opt_isKindOfClass())
@@ -576,7 +576,7 @@
       [(ICLBundleRecord *)v5 setDataContainerURL:v75];
     }
 
-    v76 = [v4 objectForKeyedSubscript:@"EnvironmentVariables"];
+    v76 = [dictionaryCopy objectForKeyedSubscript:@"EnvironmentVariables"];
     objc_opt_class();
     v77 = v76;
     if (objc_opt_isKindOfClass())
@@ -599,7 +599,7 @@
       }
     }
 
-    v81 = [v4 objectForKeyedSubscript:@"GroupContainers"];
+    v81 = [dictionaryCopy objectForKeyedSubscript:@"GroupContainers"];
     objc_opt_class();
     v82 = v81;
     if (objc_opt_isKindOfClass())
@@ -645,48 +645,48 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ICLBundleRecord *)self bundleIdentifier];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  bundleIdentifier = [(ICLBundleRecord *)self bundleIdentifier];
+  v7 = [bundleIdentifier copyWithZone:zone];
   [v5 setBundleIdentifier:v7];
 
-  v8 = [(ICLBundleRecord *)self bundleVersion];
-  v9 = [v8 copyWithZone:a3];
+  bundleVersion = [(ICLBundleRecord *)self bundleVersion];
+  v9 = [bundleVersion copyWithZone:zone];
   [v5 setBundleVersion:v9];
 
-  v10 = [(ICLBundleRecord *)self bundleShortVersion];
-  v11 = [v10 copyWithZone:a3];
+  bundleShortVersion = [(ICLBundleRecord *)self bundleShortVersion];
+  v11 = [bundleShortVersion copyWithZone:zone];
   [v5 setBundleShortVersion:v11];
 
-  v12 = [(ICLBundleRecord *)self bundleURL];
-  v13 = [v12 copyWithZone:a3];
+  bundleURL = [(ICLBundleRecord *)self bundleURL];
+  v13 = [bundleURL copyWithZone:zone];
   [v5 setBundleURL:v13];
 
-  v14 = [(ICLBundleRecord *)self serializedPlaceholderURL];
-  v15 = [v14 copyWithZone:a3];
+  serializedPlaceholderURL = [(ICLBundleRecord *)self serializedPlaceholderURL];
+  v15 = [serializedPlaceholderURL copyWithZone:zone];
   [v5 setSerializedPlaceholderURL:v15];
 
-  v16 = [(ICLBundleRecord *)self signerIdentity];
-  v17 = [v16 copyWithZone:a3];
+  signerIdentity = [(ICLBundleRecord *)self signerIdentity];
+  v17 = [signerIdentity copyWithZone:zone];
   [v5 setSignerIdentity:v17];
 
-  v18 = [(ICLBundleRecord *)self signatureVersion];
-  v19 = [v18 copyWithZone:a3];
+  signatureVersion = [(ICLBundleRecord *)self signatureVersion];
+  v19 = [signatureVersion copyWithZone:zone];
   [v5 setSignatureVersion:v19];
 
-  v20 = [(ICLBundleRecord *)self signerOrganization];
-  v21 = [v20 copyWithZone:a3];
+  signerOrganization = [(ICLBundleRecord *)self signerOrganization];
+  v21 = [signerOrganization copyWithZone:zone];
   [v5 setSignerOrganization:v21];
 
-  v22 = [(ICLBundleRecord *)self teamIdentifier];
-  v23 = [v22 copyWithZone:a3];
+  teamIdentifier = [(ICLBundleRecord *)self teamIdentifier];
+  v23 = [teamIdentifier copyWithZone:zone];
   [v5 setTeamIdentifier:v23];
 
   [v5 setCodeSigningInfoNotAuthoritative:{-[ICLBundleRecord codeSigningInfoNotAuthoritative](self, "codeSigningInfoNotAuthoritative")}];
-  v24 = [(ICLBundleRecord *)self codeInfoIdentifier];
-  v25 = [v24 copyWithZone:a3];
+  codeInfoIdentifier = [(ICLBundleRecord *)self codeInfoIdentifier];
+  v25 = [codeInfoIdentifier copyWithZone:zone];
   [v5 setCodeInfoIdentifier:v25];
 
   [v5 setCodeSignerType:{-[ICLBundleRecord codeSignerType](self, "codeSignerType")}];
@@ -701,32 +701,32 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
   [v5 setIsOnMountedDiskImage:{-[ICLBundleRecord isOnMountedDiskImage](self, "isOnMountedDiskImage")}];
   [v5 setCompatibilityState:{-[ICLBundleRecord compatibilityState](self, "compatibilityState")}];
   [v5 setApplicationType:{-[ICLBundleRecord applicationType](self, "applicationType")}];
-  v26 = [(ICLBundleRecord *)self staticDiskUsage];
-  v27 = [v26 copyWithZone:a3];
+  staticDiskUsage = [(ICLBundleRecord *)self staticDiskUsage];
+  v27 = [staticDiskUsage copyWithZone:zone];
   [v5 setStaticDiskUsage:v27];
 
-  v28 = [(ICLBundleRecord *)self counterpartIdentifiers];
-  v29 = [v28 copyWithZone:a3];
+  counterpartIdentifiers = [(ICLBundleRecord *)self counterpartIdentifiers];
+  v29 = [counterpartIdentifiers copyWithZone:zone];
   [v5 setCounterpartIdentifiers:v29];
 
-  v30 = [(ICLBundleRecord *)self entitlements];
-  v31 = [v30 copyWithZone:a3];
+  entitlements = [(ICLBundleRecord *)self entitlements];
+  v31 = [entitlements copyWithZone:zone];
   [v5 setEntitlements:v31];
 
-  v32 = [(ICLBundleRecord *)self dataContainerURL];
-  v33 = [v32 copyWithZone:a3];
+  dataContainerURL = [(ICLBundleRecord *)self dataContainerURL];
+  v33 = [dataContainerURL copyWithZone:zone];
   [v5 setDataContainerURL:v33];
 
-  v34 = [(ICLBundleRecord *)self environmentVariables];
-  v35 = [v34 copyWithZone:a3];
+  environmentVariables = [(ICLBundleRecord *)self environmentVariables];
+  v35 = [environmentVariables copyWithZone:zone];
   [v5 setEnvironmentVariables:v35];
 
-  v36 = [(ICLBundleRecord *)self groupContainers];
-  v37 = [v36 copyWithZone:a3];
+  groupContainers = [(ICLBundleRecord *)self groupContainers];
+  v37 = [groupContainers copyWithZone:zone];
   [v5 setGroupContainers:v37];
 
-  v38 = [(ICLBundleRecord *)self personasRecordMap];
-  v39 = [v38 copyWithZone:a3];
+  personasRecordMap = [(ICLBundleRecord *)self personasRecordMap];
+  v39 = [personasRecordMap copyWithZone:zone];
   [v5 setPersonasRecordMap:v39];
 
   return v5;
@@ -741,68 +741,68 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
     [v3 setObject:off_1E7AE1DD8[v4] forKeyedSubscript:@"ApplicationType"];
   }
 
-  v5 = [(ICLBundleRecord *)self bundleIdentifier];
-  if (v5)
+  bundleIdentifier = [(ICLBundleRecord *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E695E4F0]];
+    [v3 setObject:bundleIdentifier forKeyedSubscript:*MEMORY[0x1E695E4F0]];
   }
 
-  v6 = [(ICLBundleRecord *)self bundleVersion];
-  if (v6)
+  bundleVersion = [(ICLBundleRecord *)self bundleVersion];
+  if (bundleVersion)
   {
-    [v3 setObject:v6 forKeyedSubscript:*MEMORY[0x1E695E500]];
+    [v3 setObject:bundleVersion forKeyedSubscript:*MEMORY[0x1E695E500]];
   }
 
-  v7 = [(ICLBundleRecord *)self bundleShortVersion];
-  if (v7)
+  bundleShortVersion = [(ICLBundleRecord *)self bundleShortVersion];
+  if (bundleShortVersion)
   {
-    [v3 setObject:v7 forKeyedSubscript:*MEMORY[0x1E695E148]];
+    [v3 setObject:bundleShortVersion forKeyedSubscript:*MEMORY[0x1E695E148]];
   }
 
-  v8 = [(ICLBundleRecord *)self bundleURL];
-  v9 = [v8 path];
+  bundleURL = [(ICLBundleRecord *)self bundleURL];
+  path = [bundleURL path];
 
-  if (v9)
+  if (path)
   {
-    [v3 setObject:v9 forKeyedSubscript:@"Path"];
+    [v3 setObject:path forKeyedSubscript:@"Path"];
   }
 
-  v10 = [(ICLBundleRecord *)self serializedPlaceholderURL];
-  v11 = [v10 path];
+  serializedPlaceholderURL = [(ICLBundleRecord *)self serializedPlaceholderURL];
+  path2 = [serializedPlaceholderURL path];
 
-  if (v11)
+  if (path2)
   {
-    [v3 setObject:v11 forKeyedSubscript:@"SerializedPlaceholderPath"];
+    [v3 setObject:path2 forKeyedSubscript:@"SerializedPlaceholderPath"];
   }
 
-  v12 = [(ICLBundleRecord *)self signerIdentity];
-  if (v12)
+  signerIdentity = [(ICLBundleRecord *)self signerIdentity];
+  if (signerIdentity)
   {
-    [v3 setObject:v12 forKeyedSubscript:@"SignerIdentity"];
+    [v3 setObject:signerIdentity forKeyedSubscript:@"SignerIdentity"];
   }
 
-  v13 = [(ICLBundleRecord *)self signatureVersion];
-  if (v13)
+  signatureVersion = [(ICLBundleRecord *)self signatureVersion];
+  if (signatureVersion)
   {
-    [v3 setObject:v13 forKeyedSubscript:@"SignatureVersion"];
+    [v3 setObject:signatureVersion forKeyedSubscript:@"SignatureVersion"];
   }
 
-  v14 = [(ICLBundleRecord *)self signerOrganization];
-  if (v14)
+  signerOrganization = [(ICLBundleRecord *)self signerOrganization];
+  if (signerOrganization)
   {
-    [v3 setObject:v14 forKeyedSubscript:@"SignerOrganization"];
+    [v3 setObject:signerOrganization forKeyedSubscript:@"SignerOrganization"];
   }
 
-  v15 = [(ICLBundleRecord *)self teamIdentifier];
-  if (v15)
+  teamIdentifier = [(ICLBundleRecord *)self teamIdentifier];
+  if (teamIdentifier)
   {
-    [v3 setObject:v15 forKeyedSubscript:@"TeamIdentifier"];
+    [v3 setObject:teamIdentifier forKeyedSubscript:@"TeamIdentifier"];
   }
 
-  v16 = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
+  codeSigningInfoNotAuthoritative = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
   v17 = MEMORY[0x1E695E110];
   v18 = MEMORY[0x1E695E118];
-  if (v16)
+  if (codeSigningInfoNotAuthoritative)
   {
     v19 = MEMORY[0x1E695E118];
   }
@@ -813,10 +813,10 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
   }
 
   [v3 setObject:v19 forKeyedSubscript:@"CodeSigningInfoNotAuthoritative"];
-  v20 = [(ICLBundleRecord *)self codeInfoIdentifier];
-  if (v20)
+  codeInfoIdentifier = [(ICLBundleRecord *)self codeInfoIdentifier];
+  if (codeInfoIdentifier)
   {
-    [v3 setObject:v20 forKeyedSubscript:@"CodeInfoIdentifier"];
+    [v3 setObject:codeInfoIdentifier forKeyedSubscript:@"CodeInfoIdentifier"];
   }
 
   if ([(ICLBundleRecord *)self codeSignerType]== 3)
@@ -957,37 +957,37 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
     [v3 setObject:v33 forKeyedSubscript:@"CompatibilityState"];
   }
 
-  v34 = [(ICLBundleRecord *)self staticDiskUsage];
-  if (v34)
+  staticDiskUsage = [(ICLBundleRecord *)self staticDiskUsage];
+  if (staticDiskUsage)
   {
-    [v3 setObject:v34 forKeyedSubscript:@"StaticDiskUsage"];
+    [v3 setObject:staticDiskUsage forKeyedSubscript:@"StaticDiskUsage"];
   }
 
-  v35 = [(ICLBundleRecord *)self counterpartIdentifiers];
-  [v3 setObject:v35 forKeyedSubscript:@"LSCounterpartIdentifiers"];
+  counterpartIdentifiers = [(ICLBundleRecord *)self counterpartIdentifiers];
+  [v3 setObject:counterpartIdentifiers forKeyedSubscript:@"LSCounterpartIdentifiers"];
 
-  v36 = [(ICLBundleRecord *)self entitlements];
-  if (v36)
+  entitlements = [(ICLBundleRecord *)self entitlements];
+  if (entitlements)
   {
-    [v3 setObject:v36 forKeyedSubscript:@"Entitlements"];
+    [v3 setObject:entitlements forKeyedSubscript:@"Entitlements"];
   }
 
-  v37 = [(ICLBundleRecord *)self dataContainerURL];
-  v38 = [v37 path];
+  dataContainerURL = [(ICLBundleRecord *)self dataContainerURL];
+  path3 = [dataContainerURL path];
 
-  if (v38)
+  if (path3)
   {
-    [v3 setObject:v38 forKeyedSubscript:@"Container"];
+    [v3 setObject:path3 forKeyedSubscript:@"Container"];
   }
 
-  v39 = [(ICLBundleRecord *)self environmentVariables];
-  if (v39)
+  environmentVariables = [(ICLBundleRecord *)self environmentVariables];
+  if (environmentVariables)
   {
-    [v3 setObject:v39 forKeyedSubscript:@"EnvironmentVariables"];
+    [v3 setObject:environmentVariables forKeyedSubscript:@"EnvironmentVariables"];
   }
 
-  v40 = [(ICLBundleRecord *)self groupContainers];
-  if (v40)
+  groupContainers = [(ICLBundleRecord *)self groupContainers];
+  if (groupContainers)
   {
     v41 = objc_opt_new();
     v46[0] = MEMORY[0x1E69E9820];
@@ -996,7 +996,7 @@ void __50__ICLBundleRecord_initWithLegacyRecordDictionary___block_invoke(uint64_
     v46[3] = &unk_1E7AE1DB8;
     v42 = v41;
     v47 = v42;
-    [v40 enumerateKeysAndObjectsUsingBlock:v46];
+    [groupContainers enumerateKeysAndObjectsUsingBlock:v46];
     v43 = [v42 copy];
     if (v43)
     {
@@ -1016,10 +1016,10 @@ void __41__ICLBundleRecord_legacyRecordDictionary__block_invoke(uint64_t a1, voi
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v34 = 1;
   }
@@ -1029,145 +1029,145 @@ void __41__ICLBundleRecord_legacyRecordDictionary__block_invoke(uint64_t a1, voi
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ICLBundleRecord *)self bundleIdentifier];
-      v7 = [(ICLBundleRecord *)v5 bundleIdentifier];
-      v8 = MICompareObjects(v6, v7);
+      v5 = equalCopy;
+      bundleIdentifier = [(ICLBundleRecord *)self bundleIdentifier];
+      bundleIdentifier2 = [(ICLBundleRecord *)v5 bundleIdentifier];
+      v8 = MICompareObjects(bundleIdentifier, bundleIdentifier2);
 
       if (v8)
       {
-        v9 = [(ICLBundleRecord *)self bundleVersion];
-        v10 = [(ICLBundleRecord *)v5 bundleVersion];
-        v11 = MICompareObjects(v9, v10);
+        bundleVersion = [(ICLBundleRecord *)self bundleVersion];
+        bundleVersion2 = [(ICLBundleRecord *)v5 bundleVersion];
+        v11 = MICompareObjects(bundleVersion, bundleVersion2);
 
         if (v11)
         {
-          v12 = [(ICLBundleRecord *)self bundleShortVersion];
-          v13 = [(ICLBundleRecord *)v5 bundleShortVersion];
-          v14 = MICompareObjects(v12, v13);
+          bundleShortVersion = [(ICLBundleRecord *)self bundleShortVersion];
+          bundleShortVersion2 = [(ICLBundleRecord *)v5 bundleShortVersion];
+          v14 = MICompareObjects(bundleShortVersion, bundleShortVersion2);
 
           if (v14)
           {
-            v15 = [(ICLBundleRecord *)self bundleURL];
-            v16 = [(ICLBundleRecord *)v5 bundleURL];
-            v17 = MICompareObjects(v15, v16);
+            bundleURL = [(ICLBundleRecord *)self bundleURL];
+            bundleURL2 = [(ICLBundleRecord *)v5 bundleURL];
+            v17 = MICompareObjects(bundleURL, bundleURL2);
 
             if (v17)
             {
-              v18 = [(ICLBundleRecord *)self serializedPlaceholderURL];
-              v19 = [(ICLBundleRecord *)v5 serializedPlaceholderURL];
-              v20 = MICompareObjects(v18, v19);
+              serializedPlaceholderURL = [(ICLBundleRecord *)self serializedPlaceholderURL];
+              serializedPlaceholderURL2 = [(ICLBundleRecord *)v5 serializedPlaceholderURL];
+              v20 = MICompareObjects(serializedPlaceholderURL, serializedPlaceholderURL2);
 
               if (v20)
               {
-                v21 = [(ICLBundleRecord *)self signerIdentity];
-                v22 = [(ICLBundleRecord *)v5 signerIdentity];
-                v23 = MICompareObjects(v21, v22);
+                signerIdentity = [(ICLBundleRecord *)self signerIdentity];
+                signerIdentity2 = [(ICLBundleRecord *)v5 signerIdentity];
+                v23 = MICompareObjects(signerIdentity, signerIdentity2);
 
                 if (v23)
                 {
-                  v24 = [(ICLBundleRecord *)self signatureVersion];
-                  v25 = [(ICLBundleRecord *)v5 signatureVersion];
-                  v26 = MICompareObjects(v24, v25);
+                  signatureVersion = [(ICLBundleRecord *)self signatureVersion];
+                  signatureVersion2 = [(ICLBundleRecord *)v5 signatureVersion];
+                  v26 = MICompareObjects(signatureVersion, signatureVersion2);
 
                   if (v26)
                   {
-                    v27 = [(ICLBundleRecord *)self signerOrganization];
-                    v28 = [(ICLBundleRecord *)v5 signerOrganization];
-                    v29 = MICompareObjects(v27, v28);
+                    signerOrganization = [(ICLBundleRecord *)self signerOrganization];
+                    signerOrganization2 = [(ICLBundleRecord *)v5 signerOrganization];
+                    v29 = MICompareObjects(signerOrganization, signerOrganization2);
 
                     if (v29)
                     {
-                      v30 = [(ICLBundleRecord *)self teamIdentifier];
-                      v31 = [(ICLBundleRecord *)v5 teamIdentifier];
-                      v32 = MICompareObjects(v30, v31);
+                      teamIdentifier = [(ICLBundleRecord *)self teamIdentifier];
+                      teamIdentifier2 = [(ICLBundleRecord *)v5 teamIdentifier];
+                      v32 = MICompareObjects(teamIdentifier, teamIdentifier2);
 
                       if (v32)
                       {
-                        v33 = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
-                        if (v33 == [(ICLBundleRecord *)v5 codeSigningInfoNotAuthoritative])
+                        codeSigningInfoNotAuthoritative = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
+                        if (codeSigningInfoNotAuthoritative == [(ICLBundleRecord *)v5 codeSigningInfoNotAuthoritative])
                         {
-                          v36 = [(ICLBundleRecord *)self codeInfoIdentifier];
-                          v37 = [(ICLBundleRecord *)v5 codeInfoIdentifier];
-                          v38 = MICompareObjects(v36, v37);
+                          codeInfoIdentifier = [(ICLBundleRecord *)self codeInfoIdentifier];
+                          codeInfoIdentifier2 = [(ICLBundleRecord *)v5 codeInfoIdentifier];
+                          v38 = MICompareObjects(codeInfoIdentifier, codeInfoIdentifier2);
 
                           if (v38)
                           {
-                            v39 = [(ICLBundleRecord *)self codeSignerType];
-                            if (v39 == [(ICLBundleRecord *)v5 codeSignerType])
+                            codeSignerType = [(ICLBundleRecord *)self codeSignerType];
+                            if (codeSignerType == [(ICLBundleRecord *)v5 codeSignerType])
                             {
-                              v40 = [(ICLBundleRecord *)self profileValidationType];
-                              if (v40 == [(ICLBundleRecord *)v5 profileValidationType])
+                              profileValidationType = [(ICLBundleRecord *)self profileValidationType];
+                              if (profileValidationType == [(ICLBundleRecord *)v5 profileValidationType])
                               {
-                                v41 = [(ICLBundleRecord *)self isPlaceholder];
-                                if (v41 == [(ICLBundleRecord *)v5 isPlaceholder])
+                                isPlaceholder = [(ICLBundleRecord *)self isPlaceholder];
+                                if (isPlaceholder == [(ICLBundleRecord *)v5 isPlaceholder])
                                 {
-                                  v42 = [(ICLBundleRecord *)self isNoLongerCompatible];
-                                  if (v42 == [(ICLBundleRecord *)v5 isNoLongerCompatible])
+                                  isNoLongerCompatible = [(ICLBundleRecord *)self isNoLongerCompatible];
+                                  if (isNoLongerCompatible == [(ICLBundleRecord *)v5 isNoLongerCompatible])
                                   {
-                                    v43 = [(ICLBundleRecord *)self hasSettingsBundle];
-                                    if (v43 == [(ICLBundleRecord *)v5 hasSettingsBundle])
+                                    hasSettingsBundle = [(ICLBundleRecord *)self hasSettingsBundle];
+                                    if (hasSettingsBundle == [(ICLBundleRecord *)v5 hasSettingsBundle])
                                     {
-                                      v44 = [(ICLBundleRecord *)self isContainerized];
-                                      if (v44 == [(ICLBundleRecord *)v5 isContainerized])
+                                      isContainerized = [(ICLBundleRecord *)self isContainerized];
+                                      if (isContainerized == [(ICLBundleRecord *)v5 isContainerized])
                                       {
-                                        v45 = [(ICLBundleRecord *)self hasAppGroupContainers];
-                                        if (v45 == [(ICLBundleRecord *)v5 hasAppGroupContainers])
+                                        hasAppGroupContainers = [(ICLBundleRecord *)self hasAppGroupContainers];
+                                        if (hasAppGroupContainers == [(ICLBundleRecord *)v5 hasAppGroupContainers])
                                         {
-                                          v46 = [(ICLBundleRecord *)self hasSystemContainer];
-                                          if (v46 == [(ICLBundleRecord *)v5 hasSystemContainer])
+                                          hasSystemContainer = [(ICLBundleRecord *)self hasSystemContainer];
+                                          if (hasSystemContainer == [(ICLBundleRecord *)v5 hasSystemContainer])
                                           {
-                                            v47 = [(ICLBundleRecord *)self hasSystemGroupContainers];
-                                            if (v47 == [(ICLBundleRecord *)v5 hasSystemGroupContainers])
+                                            hasSystemGroupContainers = [(ICLBundleRecord *)self hasSystemGroupContainers];
+                                            if (hasSystemGroupContainers == [(ICLBundleRecord *)v5 hasSystemGroupContainers])
                                             {
-                                              v48 = [(ICLBundleRecord *)self isOnMountedDiskImage];
-                                              if (v48 == [(ICLBundleRecord *)v5 isOnMountedDiskImage])
+                                              isOnMountedDiskImage = [(ICLBundleRecord *)self isOnMountedDiskImage];
+                                              if (isOnMountedDiskImage == [(ICLBundleRecord *)v5 isOnMountedDiskImage])
                                               {
-                                                v49 = [(ICLBundleRecord *)self compatibilityState];
-                                                if (v49 == [(ICLBundleRecord *)v5 compatibilityState])
+                                                compatibilityState = [(ICLBundleRecord *)self compatibilityState];
+                                                if (compatibilityState == [(ICLBundleRecord *)v5 compatibilityState])
                                                 {
-                                                  v50 = [(ICLBundleRecord *)self applicationType];
-                                                  if (v50 == [(ICLBundleRecord *)v5 applicationType])
+                                                  applicationType = [(ICLBundleRecord *)self applicationType];
+                                                  if (applicationType == [(ICLBundleRecord *)v5 applicationType])
                                                   {
-                                                    v51 = [(ICLBundleRecord *)self staticDiskUsage];
-                                                    v52 = [(ICLBundleRecord *)v5 staticDiskUsage];
-                                                    v53 = MICompareObjects(v51, v52);
+                                                    staticDiskUsage = [(ICLBundleRecord *)self staticDiskUsage];
+                                                    staticDiskUsage2 = [(ICLBundleRecord *)v5 staticDiskUsage];
+                                                    v53 = MICompareObjects(staticDiskUsage, staticDiskUsage2);
 
                                                     if (v53)
                                                     {
-                                                      v54 = [(ICLBundleRecord *)self counterpartIdentifiers];
-                                                      v55 = [(ICLBundleRecord *)v5 counterpartIdentifiers];
-                                                      v56 = MICompareObjects(v54, v55);
+                                                      counterpartIdentifiers = [(ICLBundleRecord *)self counterpartIdentifiers];
+                                                      counterpartIdentifiers2 = [(ICLBundleRecord *)v5 counterpartIdentifiers];
+                                                      v56 = MICompareObjects(counterpartIdentifiers, counterpartIdentifiers2);
 
                                                       if (v56)
                                                       {
-                                                        v57 = [(ICLBundleRecord *)self entitlements];
-                                                        v58 = [(ICLBundleRecord *)v5 entitlements];
-                                                        v59 = MICompareObjects(v57, v58);
+                                                        entitlements = [(ICLBundleRecord *)self entitlements];
+                                                        entitlements2 = [(ICLBundleRecord *)v5 entitlements];
+                                                        v59 = MICompareObjects(entitlements, entitlements2);
 
                                                         if (v59)
                                                         {
-                                                          v60 = [(ICLBundleRecord *)self dataContainerURL];
-                                                          v61 = [(ICLBundleRecord *)v5 dataContainerURL];
-                                                          v62 = MICompareObjects(v60, v61);
+                                                          dataContainerURL = [(ICLBundleRecord *)self dataContainerURL];
+                                                          dataContainerURL2 = [(ICLBundleRecord *)v5 dataContainerURL];
+                                                          v62 = MICompareObjects(dataContainerURL, dataContainerURL2);
 
                                                           if (v62)
                                                           {
-                                                            v63 = [(ICLBundleRecord *)self environmentVariables];
-                                                            v64 = [(ICLBundleRecord *)v5 environmentVariables];
-                                                            v65 = MICompareObjects(v63, v64);
+                                                            environmentVariables = [(ICLBundleRecord *)self environmentVariables];
+                                                            environmentVariables2 = [(ICLBundleRecord *)v5 environmentVariables];
+                                                            v65 = MICompareObjects(environmentVariables, environmentVariables2);
 
                                                             if (v65)
                                                             {
-                                                              v66 = [(ICLBundleRecord *)self groupContainers];
-                                                              v67 = [(ICLBundleRecord *)v5 groupContainers];
-                                                              v68 = MICompareObjects(v66, v67);
+                                                              groupContainers = [(ICLBundleRecord *)self groupContainers];
+                                                              groupContainers2 = [(ICLBundleRecord *)v5 groupContainers];
+                                                              v68 = MICompareObjects(groupContainers, groupContainers2);
 
                                                               if (v68)
                                                               {
-                                                                v69 = [(ICLBundleRecord *)self personasRecordMap];
-                                                                v70 = [(ICLBundleRecord *)v5 personasRecordMap];
-                                                                v71 = MICompareObjects(v69, v70);
+                                                                personasRecordMap = [(ICLBundleRecord *)self personasRecordMap];
+                                                                personasRecordMap2 = [(ICLBundleRecord *)v5 personasRecordMap];
+                                                                v71 = MICompareObjects(personasRecordMap, personasRecordMap2);
 
                                                                 if (v71)
                                                                 {
@@ -1372,15 +1372,15 @@ LABEL_47:
 
 - (unint64_t)hash
 {
-  v3 = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
-  v4 = [(ICLBundleRecord *)self isPlaceholder];
+  codeSigningInfoNotAuthoritative = [(ICLBundleRecord *)self codeSigningInfoNotAuthoritative];
+  isPlaceholder = [(ICLBundleRecord *)self isPlaceholder];
   v5 = 2;
-  if (!v4)
+  if (!isPlaceholder)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
+  v6 = v5 | codeSigningInfoNotAuthoritative;
   if ([(ICLBundleRecord *)self isNoLongerCompatible])
   {
     v7 = 4;
@@ -1391,9 +1391,9 @@ LABEL_47:
     v7 = 0;
   }
 
-  v8 = [(ICLBundleRecord *)self hasSettingsBundle];
+  hasSettingsBundle = [(ICLBundleRecord *)self hasSettingsBundle];
   v9 = 8;
-  if (!v8)
+  if (!hasSettingsBundle)
   {
     v9 = 0;
   }
@@ -1409,17 +1409,17 @@ LABEL_47:
     v11 = 0;
   }
 
-  v12 = [(ICLBundleRecord *)self hasAppGroupContainers];
+  hasAppGroupContainers = [(ICLBundleRecord *)self hasAppGroupContainers];
   v13 = 32;
-  if (!v12)
+  if (!hasAppGroupContainers)
   {
     v13 = 0;
   }
 
   v14 = v11 | v13;
-  v15 = [(ICLBundleRecord *)self hasSystemContainer];
+  hasSystemContainer = [(ICLBundleRecord *)self hasSystemContainer];
   v16 = 64;
-  if (!v15)
+  if (!hasSystemContainer)
   {
     v16 = 0;
   }
@@ -1435,64 +1435,64 @@ LABEL_47:
     v18 = 0;
   }
 
-  v19 = [(ICLBundleRecord *)self isOnMountedDiskImage];
+  isOnMountedDiskImage = [(ICLBundleRecord *)self isOnMountedDiskImage];
   v20 = 256;
-  if (!v19)
+  if (!isOnMountedDiskImage)
   {
     v20 = 0;
   }
 
   v21 = v18 ^ v20;
-  v22 = [(ICLBundleRecord *)self bundleIdentifier];
-  v23 = v21 ^ [v22 hash];
+  bundleIdentifier = [(ICLBundleRecord *)self bundleIdentifier];
+  v23 = v21 ^ [bundleIdentifier hash];
 
-  v24 = [(ICLBundleRecord *)self bundleVersion];
-  v25 = v17 ^ v23 ^ [v24 hash];
+  bundleVersion = [(ICLBundleRecord *)self bundleVersion];
+  v25 = v17 ^ v23 ^ [bundleVersion hash];
 
-  v26 = [(ICLBundleRecord *)self bundleShortVersion];
-  v27 = [v26 hash];
+  bundleShortVersion = [(ICLBundleRecord *)self bundleShortVersion];
+  v27 = [bundleShortVersion hash];
 
-  v28 = [(ICLBundleRecord *)self bundleURL];
-  v29 = v27 ^ [v28 hash];
+  bundleURL = [(ICLBundleRecord *)self bundleURL];
+  v29 = v27 ^ [bundleURL hash];
 
-  v30 = [(ICLBundleRecord *)self serializedPlaceholderURL];
-  v31 = v29 ^ [v30 hash];
+  serializedPlaceholderURL = [(ICLBundleRecord *)self serializedPlaceholderURL];
+  v31 = v29 ^ [serializedPlaceholderURL hash];
 
-  v32 = [(ICLBundleRecord *)self signerIdentity];
-  v33 = v31 ^ [v32 hash];
+  signerIdentity = [(ICLBundleRecord *)self signerIdentity];
+  v33 = v31 ^ [signerIdentity hash];
 
-  v34 = [(ICLBundleRecord *)self signatureVersion];
-  v35 = v33 ^ [v34 hash];
+  signatureVersion = [(ICLBundleRecord *)self signatureVersion];
+  v35 = v33 ^ [signatureVersion hash];
 
-  v36 = [(ICLBundleRecord *)self signerOrganization];
-  v37 = v25 ^ v35 ^ [v36 hash];
+  signerOrganization = [(ICLBundleRecord *)self signerOrganization];
+  v37 = v25 ^ v35 ^ [signerOrganization hash];
 
-  v38 = [(ICLBundleRecord *)self teamIdentifier];
-  v39 = [v38 hash];
+  teamIdentifier = [(ICLBundleRecord *)self teamIdentifier];
+  v39 = [teamIdentifier hash];
 
-  v40 = [(ICLBundleRecord *)self codeInfoIdentifier];
-  v41 = v39 ^ [v40 hash];
+  codeInfoIdentifier = [(ICLBundleRecord *)self codeInfoIdentifier];
+  v41 = v39 ^ [codeInfoIdentifier hash];
 
-  v42 = [(ICLBundleRecord *)self staticDiskUsage];
-  v43 = v41 ^ [v42 hash];
+  staticDiskUsage = [(ICLBundleRecord *)self staticDiskUsage];
+  v43 = v41 ^ [staticDiskUsage hash];
 
-  v44 = [(ICLBundleRecord *)self counterpartIdentifiers];
-  v45 = v43 ^ [v44 hash];
+  counterpartIdentifiers = [(ICLBundleRecord *)self counterpartIdentifiers];
+  v45 = v43 ^ [counterpartIdentifiers hash];
 
-  v46 = [(ICLBundleRecord *)self entitlements];
-  v47 = v45 ^ [v46 hash];
+  entitlements = [(ICLBundleRecord *)self entitlements];
+  v47 = v45 ^ [entitlements hash];
 
-  v48 = [(ICLBundleRecord *)self dataContainerURL];
-  v49 = v47 ^ [v48 hash];
+  dataContainerURL = [(ICLBundleRecord *)self dataContainerURL];
+  v49 = v47 ^ [dataContainerURL hash];
 
-  v50 = [(ICLBundleRecord *)self environmentVariables];
-  v51 = v37 ^ v49 ^ [v50 hash];
+  environmentVariables = [(ICLBundleRecord *)self environmentVariables];
+  v51 = v37 ^ v49 ^ [environmentVariables hash];
 
-  v52 = [(ICLBundleRecord *)self groupContainers];
-  v53 = [v52 hash];
+  groupContainers = [(ICLBundleRecord *)self groupContainers];
+  v53 = [groupContainers hash];
 
-  v54 = [(ICLBundleRecord *)self personasRecordMap];
-  v55 = v53 ^ [v54 hash];
+  personasRecordMap = [(ICLBundleRecord *)self personasRecordMap];
+  v55 = v53 ^ [personasRecordMap hash];
 
   v56 = v55 ^ [(ICLBundleRecord *)self codeSignerType];
   v57 = v56 ^ [(ICLBundleRecord *)self profileValidationType];
@@ -1502,24 +1502,24 @@ LABEL_47:
 
 - (id)description
 {
-  v2 = [(ICLBundleRecord *)self legacyRecordDictionary];
-  v3 = [v2 description];
+  legacyRecordDictionary = [(ICLBundleRecord *)self legacyRecordDictionary];
+  v3 = [legacyRecordDictionary description];
 
   return v3;
 }
 
-+ (id)bundleRecordArrayToInfoDictionaryArray:(id)a3
++ (id)bundleRecordArrayToInfoDictionaryArray:(id)array
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -1534,8 +1534,8 @@ LABEL_47:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) legacyRecordDictionary];
-          [v4 addObject:v10];
+          legacyRecordDictionary = [*(*(&v13 + 1) + 8 * i) legacyRecordDictionary];
+          [v4 addObject:legacyRecordDictionary];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1555,18 +1555,18 @@ LABEL_47:
   return v11;
 }
 
-+ (id)infoDictionaryArrayToBundleRecordArray:(id)a3
++ (id)infoDictionaryArrayToBundleRecordArray:(id)array
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  arrayCopy = array;
+  if (arrayCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = v3;
+    v5 = arrayCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {

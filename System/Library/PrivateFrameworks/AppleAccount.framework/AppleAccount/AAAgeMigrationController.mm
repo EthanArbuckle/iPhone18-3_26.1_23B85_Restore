@@ -1,22 +1,22 @@
 @interface AAAgeMigrationController
-- (AAAgeMigrationController)initWithDaemonXPCEndpoint:(id)a3;
-- (void)clearAgeMigrationFollowUpWithCompletion:(id)a3;
-- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)a3 completion:(id)a4;
-- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)a3 completion:(id)a4;
-- (void)displayMisconfiguredAgePromptWithContext:(id)a3 completion:(id)a4;
+- (AAAgeMigrationController)initWithDaemonXPCEndpoint:(id)endpoint;
+- (void)clearAgeMigrationFollowUpWithCompletion:(id)completion;
+- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)context completion:(id)completion;
+- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)context completion:(id)completion;
+- (void)displayMisconfiguredAgePromptWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AAAgeMigrationController
 
-- (AAAgeMigrationController)initWithDaemonXPCEndpoint:(id)a3
+- (AAAgeMigrationController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v9.receiver = self;
   v9.super_class = AAAgeMigrationController;
   v5 = [(AAAgeMigrationController *)&v9 init];
   if (v5)
   {
-    v6 = [[AAAgeMigrationDaemonConnection alloc] initWithListenerEndpoint:v4];
+    v6 = [[AAAgeMigrationDaemonConnection alloc] initWithListenerEndpoint:endpointCopy];
     daemonConnection = v5->_daemonConnection;
     v5->_daemonConnection = v6;
   }
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)clearAgeMigrationFollowUpWithCompletion:(id)a3
+- (void)clearAgeMigrationFollowUpWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1B6F6A000, "age-migration/clear-child-migration-cfu", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -36,17 +36,17 @@
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__1;
   v22[4] = __Block_byref_object_dispose__1;
-  v6 = self;
-  v23 = v6;
+  selfCopy = self;
+  v23 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7C9B050;
   v21 = v22;
-  v7 = v4;
+  v7 = completionCopy;
   v20 = v7;
   v8 = _Block_copy(aBlock);
-  daemonConnection = v6->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___block_invoke_2;
@@ -114,11 +114,11 @@ void __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)displayMisconfiguredAgePromptWithContext:(id)a3 completion:(id)a4
+- (void)displayMisconfiguredAgePromptWithContext:(id)context completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     v8 = _os_activity_create(&dword_1B6F6A000, "age-migration/misconfigured-age-prompt", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -150,8 +150,8 @@ void __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___bl
     v37 = 0x3032000000;
     v38 = __Block_byref_object_copy__1;
     v39 = __Block_byref_object_dispose__1;
-    v16 = self;
-    v40 = v16;
+    selfCopy = self;
+    v40 = selfCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_completion___block_invoke;
@@ -159,9 +159,9 @@ void __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___bl
     p_buf = &buf;
     v33 = v10;
     v34 = v12;
-    v31 = v7;
+    v31 = completionCopy;
     v17 = _Block_copy(aBlock);
-    daemonConnection = v16->_daemonConnection;
+    daemonConnection = selfCopy->_daemonConnection;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_completion___block_invoke_33;
@@ -182,7 +182,7 @@ void __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___bl
     v25[3] = &unk_1E7C9B3B0;
     v22 = v19;
     v26 = v22;
-    [v20 displayMisconfiguredAgePromptWithContext:v6 completion:v25];
+    [v20 displayMisconfiguredAgePromptWithContext:contextCopy completion:v25];
 
     _Block_object_dispose(&buf, 8);
     os_activity_scope_leave(&state);
@@ -197,7 +197,7 @@ void __68__AAAgeMigrationController_clearAgeMigrationFollowUpWithCompletion___bl
       _os_log_impl(&dword_1B6F6A000, v23, OS_LOG_TYPE_DEFAULT, "nothing to see here... feature is not on", &buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -269,11 +269,11 @@ void __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)a3 completion:(id)a4
+- (void)clearUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)context completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     v8 = _os_activity_create(&dword_1B6F6A000, "age-migration/misconfigured-clear-user-acknowledge-cache", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -305,8 +305,8 @@ void __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_com
     v37 = 0x3032000000;
     v38 = __Block_byref_object_copy__1;
     v39 = __Block_byref_object_dispose__1;
-    v16 = self;
-    v40 = v16;
+    selfCopy = self;
+    v40 = selfCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptWithContext_completion___block_invoke;
@@ -314,9 +314,9 @@ void __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_com
     p_buf = &buf;
     v33 = v10;
     v34 = v12;
-    v31 = v7;
+    v31 = completionCopy;
     v17 = _Block_copy(aBlock);
-    daemonConnection = v16->_daemonConnection;
+    daemonConnection = selfCopy->_daemonConnection;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptWithContext_completion___block_invoke_35;
@@ -337,7 +337,7 @@ void __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_com
     v25[3] = &unk_1E7C9B078;
     v22 = v19;
     v26 = v22;
-    [v20 clearUserAcknowledgeMisconfiguredAgedPromptWithContext:v6 completion:v25];
+    [v20 clearUserAcknowledgeMisconfiguredAgedPromptWithContext:contextCopy completion:v25];
 
     _Block_object_dispose(&buf, 8);
     os_activity_scope_leave(&state);
@@ -352,7 +352,7 @@ void __80__AAAgeMigrationController_displayMisconfiguredAgePromptWithContext_com
       _os_log_impl(&dword_1B6F6A000, v23, OS_LOG_TYPE_DEFAULT, "Nothing to see here... feature is not on", &buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -422,11 +422,11 @@ void __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptW
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)a3 completion:(id)a4
+- (void)didUserAcknowledgeMisconfiguredAgedPromptWithContext:(id)context completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (_os_feature_enabled_impl())
   {
     v8 = _os_activity_create(&dword_1B6F6A000, "age-migration/misconfigured-fetch-user-acknowledge-cache", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -458,8 +458,8 @@ void __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptW
     v37 = 0x3032000000;
     v38 = __Block_byref_object_copy__1;
     v39 = __Block_byref_object_dispose__1;
-    v16 = self;
-    v40 = v16;
+    selfCopy = self;
+    v40 = selfCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __92__AAAgeMigrationController_didUserAcknowledgeMisconfiguredAgedPromptWithContext_completion___block_invoke;
@@ -467,9 +467,9 @@ void __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptW
     p_buf = &buf;
     v33 = v10;
     v34 = v12;
-    v31 = v7;
+    v31 = completionCopy;
     v17 = _Block_copy(aBlock);
-    daemonConnection = v16->_daemonConnection;
+    daemonConnection = selfCopy->_daemonConnection;
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __92__AAAgeMigrationController_didUserAcknowledgeMisconfiguredAgedPromptWithContext_completion___block_invoke_38;
@@ -490,7 +490,7 @@ void __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptW
     v25[3] = &unk_1E7C9ABB8;
     v22 = v19;
     v26 = v22;
-    [v20 didUserAcknowledgeMisconfiguredAgedPromptWithContext:v6 completion:v25];
+    [v20 didUserAcknowledgeMisconfiguredAgedPromptWithContext:contextCopy completion:v25];
 
     _Block_object_dispose(&buf, 8);
     os_activity_scope_leave(&state);
@@ -505,7 +505,7 @@ void __94__AAAgeMigrationController_clearUserAcknowledgeMisconfiguredAgedPromptW
       _os_log_impl(&dword_1B6F6A000, v23, OS_LOG_TYPE_DEFAULT, "Nothing to see here... feature is not on", &buf, 2u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v24 = *MEMORY[0x1E69E9840];

@@ -1,40 +1,40 @@
 @interface ASCContingentOffer
-- (ASCContingentOffer)initWithCoder:(id)a3;
-- (ASCContingentOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 organicOffer:(id)a9 streamlinedOffer:(id)a10 offerID:(id)a11 iapItemID:(id)a12 iapItemName:(id)a13 iapProductName:(id)a14 offerType:(int64_t)a15;
-- (ASCContingentOffer)offerWithMetrics:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASCContingentOffer)initWithCoder:(id)coder;
+- (ASCContingentOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics organicOffer:(id)offer streamlinedOffer:(id)self0 offerID:(id)self1 iapItemID:(id)self2 iapItemName:(id)self3 iapProductName:(id)self4 offerType:(int64_t)self5;
+- (ASCContingentOffer)offerWithMetrics:(id)metrics;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCContingentOffer
 
-- (ASCContingentOffer)initWithID:(id)a3 titles:(id)a4 subtitles:(id)a5 flags:(int64_t)a6 ageRating:(id)a7 metrics:(id)a8 organicOffer:(id)a9 streamlinedOffer:(id)a10 offerID:(id)a11 iapItemID:(id)a12 iapItemName:(id)a13 iapProductName:(id)a14 offerType:(int64_t)a15
+- (ASCContingentOffer)initWithID:(id)d titles:(id)titles subtitles:(id)subtitles flags:(int64_t)flags ageRating:(id)rating metrics:(id)metrics organicOffer:(id)offer streamlinedOffer:(id)self0 offerID:(id)self1 iapItemID:(id)self2 iapItemName:(id)self3 iapProductName:(id)self4 offerType:(int64_t)self5
 {
-  v54 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a7;
-  v53 = a7;
-  v55 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = v20;
-  v27 = a13;
-  v28 = a14;
+  dCopy = d;
+  titlesCopy = titles;
+  subtitlesCopy = subtitles;
+  ratingCopy = rating;
+  ratingCopy2 = rating;
+  metricsCopy = metrics;
+  offerCopy = offer;
+  streamlinedOfferCopy = streamlinedOffer;
+  iDCopy = iD;
+  itemIDCopy = itemID;
+  v26 = subtitlesCopy;
+  nameCopy = name;
+  productNameCopy = productName;
   v56.receiver = self;
   v56.super_class = ASCContingentOffer;
   v29 = [(ASCContingentOffer *)&v56 init];
   if (v29)
   {
-    v30 = [v54 copy];
+    v30 = [dCopy copy];
     id = v29->_id;
     v29->_id = v30;
 
-    v32 = [v19 copy];
+    v32 = [titlesCopy copy];
     titles = v29->_titles;
     v29->_titles = v32;
 
@@ -42,84 +42,84 @@
     subtitles = v29->_subtitles;
     v29->_subtitles = v34;
 
-    v29->_flags = a6;
-    objc_storeStrong(&v29->_ageRating, v21);
-    v36 = [v55 copy];
+    v29->_flags = flags;
+    objc_storeStrong(&v29->_ageRating, ratingCopy);
+    v36 = [metricsCopy copy];
     metrics = v29->_metrics;
     v29->_metrics = v36;
 
-    v38 = [v22 copyWithZone:0];
+    v38 = [offerCopy copyWithZone:0];
     organicOffer = v29->_organicOffer;
     v29->_organicOffer = v38;
 
-    v40 = [v23 copyWithZone:0];
+    v40 = [streamlinedOfferCopy copyWithZone:0];
     streamlinedOffer = v29->_streamlinedOffer;
     v29->_streamlinedOffer = v40;
 
-    v42 = [v24 copy];
+    v42 = [iDCopy copy];
     offerID = v29->_offerID;
     v29->_offerID = v42;
 
-    v44 = [v25 copy];
+    v44 = [itemIDCopy copy];
     iapItemID = v29->_iapItemID;
     v29->_iapItemID = v44;
 
-    v46 = [v27 copy];
+    v46 = [nameCopy copy];
     iapItemName = v29->_iapItemName;
     v29->_iapItemName = v46;
 
-    v48 = [v28 copy];
+    v48 = [productNameCopy copy];
     iapProductName = v29->_iapProductName;
     v29->_iapProductName = v48;
 
-    v29->_offerType = a15;
+    v29->_offerType = type;
   }
 
   return v29;
 }
 
-- (ASCContingentOffer)initWithCoder:(id)a3
+- (ASCContingentOffer)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = ASCOfferTitlesDecodeForKey(v4, @"titles");
+    v6 = ASCOfferTitlesDecodeForKey(coderCopy, @"titles");
     if (v6)
     {
-      v7 = ASCOfferTitlesDecodeForKey(v4, @"subtitles");
+      v7 = ASCOfferTitlesDecodeForKey(coderCopy, @"subtitles");
       if (v7)
       {
-        v8 = [v4 decodeIntegerForKey:@"flags"];
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
-        v10 = ASCMetricsDataDecodeArrayForKey(v4, @"metrics");
+        v8 = [coderCopy decodeIntegerForKey:@"flags"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
+        v10 = ASCMetricsDataDecodeArrayForKey(coderCopy, @"metrics");
         if (v10)
         {
-          v11 = ASCOfferDecodeForKey(v4, @"organicOffer");
+          v11 = ASCOfferDecodeForKey(coderCopy, @"organicOffer");
           v12 = v11;
           if (v11)
           {
             v97 = v9;
             v98 = v11;
-            v99 = ASCOfferDecodeForKey(v4, @"streamlinedOffer");
-            v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerID"];
+            v99 = ASCOfferDecodeForKey(coderCopy, @"streamlinedOffer");
+            v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerID"];
             if (v13)
             {
-              v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iapItemID"];
+              v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iapItemID"];
               if (v14)
               {
-                v96 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iapItemName"];
+                v96 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iapItemName"];
                 if (v96)
                 {
-                  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iapProductName"];
+                  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iapProductName"];
                   if (v15)
                   {
                     v94 = v15;
-                    v95 = [v4 decodeIntegerForKey:@"offerType"];
-                    v16 = self;
+                    v95 = [coderCopy decodeIntegerForKey:@"offerType"];
+                    selfCopy = self;
                     v17 = v15;
                     v9 = v97;
-                    v18 = [(ASCContingentOffer *)v16 initWithID:v5 titles:v6 subtitles:v7 flags:v8 ageRating:v97 metrics:v10 organicOffer:v98 streamlinedOffer:v99 offerID:v13 iapItemID:v14 iapItemName:v96 iapProductName:v94 offerType:v95];
+                    v18 = [(ASCContingentOffer *)selfCopy initWithID:v5 titles:v6 subtitles:v7 flags:v8 ageRating:v97 metrics:v10 organicOffer:v98 streamlinedOffer:v99 offerID:v13 iapItemID:v14 iapItemName:v96 iapProductName:v94 offerType:v95];
                     v19 = v17;
                     self = v18;
                     v20 = v18;
@@ -239,62 +239,62 @@
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = [(ASCContingentOffer *)self id];
-  [v15 encodeObject:v4 forKey:@"id"];
+  [coderCopy encodeObject:v4 forKey:@"id"];
 
-  v5 = [(ASCContingentOffer *)self titles];
-  [v15 encodeObject:v5 forKey:@"titles"];
+  titles = [(ASCContingentOffer *)self titles];
+  [coderCopy encodeObject:titles forKey:@"titles"];
 
-  v6 = [(ASCContingentOffer *)self subtitles];
-  [v15 encodeObject:v6 forKey:@"subtitles"];
+  subtitles = [(ASCContingentOffer *)self subtitles];
+  [coderCopy encodeObject:subtitles forKey:@"subtitles"];
 
-  [v15 encodeInteger:-[ASCContingentOffer flags](self forKey:{"flags"), @"flags"}];
-  v7 = [(ASCContingentOffer *)self ageRating];
-  [v15 encodeObject:v7 forKey:@"ageRating"];
+  [coderCopy encodeInteger:-[ASCContingentOffer flags](self forKey:{"flags"), @"flags"}];
+  ageRating = [(ASCContingentOffer *)self ageRating];
+  [coderCopy encodeObject:ageRating forKey:@"ageRating"];
 
-  v8 = [(ASCContingentOffer *)self metrics];
-  [v15 encodeObject:v8 forKey:@"metrics"];
+  metrics = [(ASCContingentOffer *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  v9 = [(ASCContingentOffer *)self organicOffer];
-  [v15 encodeObject:v9 forKey:@"organicOffer"];
+  organicOffer = [(ASCContingentOffer *)self organicOffer];
+  [coderCopy encodeObject:organicOffer forKey:@"organicOffer"];
 
-  v10 = [(ASCContingentOffer *)self streamlinedOffer];
-  [v15 encodeObject:v10 forKey:@"streamlinedOffer"];
+  streamlinedOffer = [(ASCContingentOffer *)self streamlinedOffer];
+  [coderCopy encodeObject:streamlinedOffer forKey:@"streamlinedOffer"];
 
-  v11 = [(ASCContingentOffer *)self offerID];
-  [v15 encodeObject:v11 forKey:@"offerID"];
+  offerID = [(ASCContingentOffer *)self offerID];
+  [coderCopy encodeObject:offerID forKey:@"offerID"];
 
-  v12 = [(ASCContingentOffer *)self iapItemID];
-  [v15 encodeObject:v12 forKey:@"iapItemID"];
+  iapItemID = [(ASCContingentOffer *)self iapItemID];
+  [coderCopy encodeObject:iapItemID forKey:@"iapItemID"];
 
-  v13 = [(ASCContingentOffer *)self iapItemName];
-  [v15 encodeObject:v13 forKey:@"iapItemName"];
+  iapItemName = [(ASCContingentOffer *)self iapItemName];
+  [coderCopy encodeObject:iapItemName forKey:@"iapItemName"];
 
-  v14 = [(ASCContingentOffer *)self iapProductName];
-  [v15 encodeObject:v14 forKey:@"iapProductName"];
+  iapProductName = [(ASCContingentOffer *)self iapProductName];
+  [coderCopy encodeObject:iapProductName forKey:@"iapProductName"];
 
-  [v15 encodeInteger:-[ASCContingentOffer offerType](self forKey:{"offerType"), @"offerType"}];
+  [coderCopy encodeInteger:-[ASCContingentOffer offerType](self forKey:{"offerType"), @"offerType"}];
 }
 
-- (ASCContingentOffer)offerWithMetrics:(id)a3
+- (ASCContingentOffer)offerWithMetrics:(id)metrics
 {
-  v18 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc(objc_opt_class());
   v5 = [(ASCContingentOffer *)self id];
-  v17 = [(ASCContingentOffer *)self titles];
-  v16 = [(ASCContingentOffer *)self subtitles];
-  v14 = [(ASCContingentOffer *)self flags];
-  v6 = [(ASCContingentOffer *)self ageRating];
-  v13 = [(ASCContingentOffer *)self organicOffer];
-  v7 = [(ASCContingentOffer *)self streamlinedOffer];
-  v8 = [(ASCContingentOffer *)self offerID];
-  v9 = [(ASCContingentOffer *)self iapItemID];
-  v10 = [(ASCContingentOffer *)self iapItemName];
-  v11 = [(ASCContingentOffer *)self iapProductName];
-  v15 = [v4 initWithID:v5 titles:v17 subtitles:v16 flags:v14 ageRating:v6 metrics:v18 organicOffer:v13 streamlinedOffer:v7 offerID:v8 iapItemID:v9 iapItemName:v10 iapProductName:v11 offerType:{-[ASCContingentOffer offerType](self, "offerType")}];
+  titles = [(ASCContingentOffer *)self titles];
+  subtitles = [(ASCContingentOffer *)self subtitles];
+  flags = [(ASCContingentOffer *)self flags];
+  ageRating = [(ASCContingentOffer *)self ageRating];
+  organicOffer = [(ASCContingentOffer *)self organicOffer];
+  streamlinedOffer = [(ASCContingentOffer *)self streamlinedOffer];
+  offerID = [(ASCContingentOffer *)self offerID];
+  iapItemID = [(ASCContingentOffer *)self iapItemID];
+  iapItemName = [(ASCContingentOffer *)self iapItemName];
+  iapProductName = [(ASCContingentOffer *)self iapProductName];
+  v15 = [v4 initWithID:v5 titles:titles subtitles:subtitles flags:flags ageRating:ageRating metrics:metricsCopy organicOffer:organicOffer streamlinedOffer:streamlinedOffer offerID:offerID iapItemID:iapItemID iapItemName:iapItemName iapProductName:iapProductName offerType:{-[ASCContingentOffer offerType](self, "offerType")}];
 
   return v15;
 }
@@ -305,48 +305,48 @@
   v4 = [(ASCContingentOffer *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCContingentOffer *)self titles];
-  [(ASCHasher *)v3 combineObject:v5];
+  titles = [(ASCContingentOffer *)self titles];
+  [(ASCHasher *)v3 combineObject:titles];
 
-  v6 = [(ASCContingentOffer *)self subtitles];
-  [(ASCHasher *)v3 combineObject:v6];
+  subtitles = [(ASCContingentOffer *)self subtitles];
+  [(ASCHasher *)v3 combineObject:subtitles];
 
   [(ASCHasher *)v3 combineInteger:[(ASCContingentOffer *)self flags]];
-  v7 = [(ASCContingentOffer *)self ageRating];
-  [(ASCHasher *)v3 combineObject:v7];
+  ageRating = [(ASCContingentOffer *)self ageRating];
+  [(ASCHasher *)v3 combineObject:ageRating];
 
-  v8 = [(ASCContingentOffer *)self metrics];
-  [(ASCHasher *)v3 combineObject:v8];
+  metrics = [(ASCContingentOffer *)self metrics];
+  [(ASCHasher *)v3 combineObject:metrics];
 
-  v9 = [(ASCContingentOffer *)self organicOffer];
-  [(ASCHasher *)v3 combineObject:v9];
+  organicOffer = [(ASCContingentOffer *)self organicOffer];
+  [(ASCHasher *)v3 combineObject:organicOffer];
 
-  v10 = [(ASCContingentOffer *)self streamlinedOffer];
-  [(ASCHasher *)v3 combineObject:v10];
+  streamlinedOffer = [(ASCContingentOffer *)self streamlinedOffer];
+  [(ASCHasher *)v3 combineObject:streamlinedOffer];
 
-  v11 = [(ASCContingentOffer *)self offerID];
-  [(ASCHasher *)v3 combineObject:v11];
+  offerID = [(ASCContingentOffer *)self offerID];
+  [(ASCHasher *)v3 combineObject:offerID];
 
-  v12 = [(ASCContingentOffer *)self iapItemID];
-  [(ASCHasher *)v3 combineObject:v12];
+  iapItemID = [(ASCContingentOffer *)self iapItemID];
+  [(ASCHasher *)v3 combineObject:iapItemID];
 
-  v13 = [(ASCContingentOffer *)self iapItemName];
-  [(ASCHasher *)v3 combineObject:v13];
+  iapItemName = [(ASCContingentOffer *)self iapItemName];
+  [(ASCHasher *)v3 combineObject:iapItemName];
 
-  v14 = [(ASCContingentOffer *)self iapProductName];
-  [(ASCHasher *)v3 combineObject:v14];
+  iapProductName = [(ASCContingentOffer *)self iapProductName];
+  [(ASCHasher *)v3 combineObject:iapProductName];
 
   [(ASCHasher *)v3 combineInteger:[(ASCContingentOffer *)self offerType]];
-  v15 = [(ASCHasher *)v3 finalizeHash];
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
 
-  return v15;
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -377,129 +377,129 @@
       if ([v8 isEqual:v9])
       {
 LABEL_10:
-        v11 = [(ASCContingentOffer *)self titles];
-        v12 = [v7 titles];
-        v13 = v12;
-        if (v11 && v12)
+        titles = [(ASCContingentOffer *)self titles];
+        titles2 = [v7 titles];
+        v13 = titles2;
+        if (titles && titles2)
         {
-          if ([v11 isEqual:v12])
+          if ([titles isEqual:titles2])
           {
 LABEL_13:
-            v14 = [(ASCContingentOffer *)self subtitles];
-            v15 = [v7 subtitles];
-            v16 = v15;
-            if (v14 && v15)
+            subtitles = [(ASCContingentOffer *)self subtitles];
+            subtitles2 = [v7 subtitles];
+            v16 = subtitles2;
+            if (subtitles && subtitles2)
             {
-              if (![v14 isEqual:v15])
+              if (![subtitles isEqual:subtitles2])
               {
                 goto LABEL_49;
               }
             }
 
-            else if (v14 != v15)
+            else if (subtitles != subtitles2)
             {
               goto LABEL_49;
             }
 
-            v18 = [(ASCContingentOffer *)self flags];
-            if (v18 == [v7 flags])
+            flags = [(ASCContingentOffer *)self flags];
+            if (flags == [v7 flags])
             {
-              v19 = [(ASCContingentOffer *)self ageRating];
-              v20 = [v7 ageRating];
-              v21 = v20;
-              if (v19 && v20)
+              ageRating = [(ASCContingentOffer *)self ageRating];
+              ageRating2 = [v7 ageRating];
+              v21 = ageRating2;
+              if (ageRating && ageRating2)
               {
-                v22 = v19;
+                v22 = ageRating;
                 v66 = v16;
-                v23 = v19;
+                v23 = ageRating;
                 v24 = v21;
                 v25 = [v22 isEqual:v21];
                 v21 = v24;
-                v19 = v23;
+                ageRating = v23;
                 v16 = v66;
                 if (v25)
                 {
 LABEL_27:
                   v64 = v21;
-                  v65 = v19;
-                  v26 = [(ASCContingentOffer *)self metrics];
-                  v27 = [v7 metrics];
-                  v28 = v27;
-                  v68 = v26;
-                  if (v26 && v27)
+                  v65 = ageRating;
+                  metrics = [(ASCContingentOffer *)self metrics];
+                  metrics2 = [v7 metrics];
+                  v28 = metrics2;
+                  v68 = metrics;
+                  if (metrics && metrics2)
                   {
-                    v29 = v27;
-                    v30 = [v68 isEqual:v27];
+                    v29 = metrics2;
+                    v30 = [v68 isEqual:metrics2];
                     v28 = v29;
                     if (v30)
                     {
 LABEL_30:
                       v62 = v28;
-                      v31 = [(ASCContingentOffer *)self organicOffer];
-                      v32 = [v7 organicOffer];
-                      v33 = v32;
-                      v63 = v31;
-                      if (v31 && v32)
+                      organicOffer = [(ASCContingentOffer *)self organicOffer];
+                      organicOffer2 = [v7 organicOffer];
+                      v33 = organicOffer2;
+                      v63 = organicOffer;
+                      if (organicOffer && organicOffer2)
                       {
-                        v34 = v32;
-                        v35 = [v63 isEqual:v32];
+                        v34 = organicOffer2;
+                        v35 = [v63 isEqual:organicOffer2];
                         v33 = v34;
                         if (v35)
                         {
 LABEL_33:
                           v60 = v33;
-                          v36 = [(ASCContingentOffer *)self streamlinedOffer];
-                          v37 = [v7 streamlinedOffer];
-                          v38 = v37;
-                          v61 = v36;
-                          if (v36 && v37)
+                          streamlinedOffer = [(ASCContingentOffer *)self streamlinedOffer];
+                          streamlinedOffer2 = [v7 streamlinedOffer];
+                          v38 = streamlinedOffer2;
+                          v61 = streamlinedOffer;
+                          if (streamlinedOffer && streamlinedOffer2)
                           {
-                            v39 = v37;
-                            v40 = [v61 isEqual:v37];
+                            v39 = streamlinedOffer2;
+                            v40 = [v61 isEqual:streamlinedOffer2];
                             v38 = v39;
                             if (v40)
                             {
 LABEL_36:
                               v58 = v38;
-                              v41 = [(ASCContingentOffer *)self offerID];
-                              v42 = [v7 offerID];
-                              v59 = v41;
-                              v57 = v42;
-                              if (v41 && v42)
+                              offerID = [(ASCContingentOffer *)self offerID];
+                              offerID2 = [v7 offerID];
+                              v59 = offerID;
+                              v57 = offerID2;
+                              if (offerID && offerID2)
                               {
-                                if ([v41 isEqual:v42])
+                                if ([offerID isEqual:offerID2])
                                 {
 LABEL_39:
-                                  v43 = [(ASCContingentOffer *)self iapItemID];
-                                  v44 = [v7 iapItemID];
-                                  v55 = v44;
-                                  v56 = v43;
-                                  if (v43 && v44)
+                                  iapItemID = [(ASCContingentOffer *)self iapItemID];
+                                  iapItemID2 = [v7 iapItemID];
+                                  v55 = iapItemID2;
+                                  v56 = iapItemID;
+                                  if (iapItemID && iapItemID2)
                                   {
-                                    if ([v43 isEqual:v44])
+                                    if ([iapItemID isEqual:iapItemID2])
                                     {
 LABEL_42:
-                                      v45 = [(ASCContingentOffer *)self iapItemName];
-                                      v46 = [v7 iapItemName];
-                                      v54 = v45;
-                                      if (v45 && v46)
+                                      iapItemName = [(ASCContingentOffer *)self iapItemName];
+                                      iapItemName2 = [v7 iapItemName];
+                                      v54 = iapItemName;
+                                      if (iapItemName && iapItemName2)
                                       {
-                                        v47 = v46;
-                                        if ([v54 isEqual:v46])
+                                        v47 = iapItemName2;
+                                        if ([v54 isEqual:iapItemName2])
                                         {
 LABEL_45:
                                           v67 = v16;
-                                          v48 = [(ASCContingentOffer *)self iapProductName];
-                                          v49 = [v7 iapProductName];
-                                          v53 = v48;
-                                          if (v48 && v49)
+                                          iapProductName = [(ASCContingentOffer *)self iapProductName];
+                                          iapProductName2 = [v7 iapProductName];
+                                          v53 = iapProductName;
+                                          if (iapProductName && iapProductName2)
                                           {
-                                            v50 = v49;
-                                            if ([v53 isEqual:v49])
+                                            v50 = iapProductName2;
+                                            if ([v53 isEqual:iapProductName2])
                                             {
 LABEL_48:
-                                              v51 = [(ASCContingentOffer *)self offerType];
-                                              v17 = v51 == [v7 offerType];
+                                              offerType = [(ASCContingentOffer *)self offerType];
+                                              v17 = offerType == [v7 offerType];
 LABEL_66:
 
                                               v16 = v67;
@@ -509,8 +509,8 @@ LABEL_66:
 
                                           else
                                           {
-                                            v50 = v49;
-                                            if (v53 == v49)
+                                            v50 = iapProductName2;
+                                            if (v53 == iapProductName2)
                                             {
                                               goto LABEL_48;
                                             }
@@ -523,8 +523,8 @@ LABEL_66:
 
                                       else
                                       {
-                                        v47 = v46;
-                                        if (v54 == v46)
+                                        v47 = iapItemName2;
+                                        if (v54 == iapItemName2)
                                         {
                                           goto LABEL_45;
                                         }
@@ -537,7 +537,7 @@ LABEL_67:
                                     }
                                   }
 
-                                  else if (v43 == v44)
+                                  else if (iapItemID == iapItemID2)
                                   {
                                     goto LABEL_42;
                                   }
@@ -549,7 +549,7 @@ LABEL_68:
                                 }
                               }
 
-                              else if (v41 == v42)
+                              else if (offerID == offerID2)
                               {
                                 goto LABEL_39;
                               }
@@ -562,7 +562,7 @@ LABEL_69:
                             }
                           }
 
-                          else if (v36 == v37)
+                          else if (streamlinedOffer == streamlinedOffer2)
                           {
                             goto LABEL_36;
                           }
@@ -575,7 +575,7 @@ LABEL_70:
                         }
                       }
 
-                      else if (v31 == v32)
+                      else if (organicOffer == organicOffer2)
                       {
                         goto LABEL_33;
                       }
@@ -588,7 +588,7 @@ LABEL_71:
                     }
                   }
 
-                  else if (v26 == v27)
+                  else if (metrics == metrics2)
                   {
                     goto LABEL_30;
                   }
@@ -597,12 +597,12 @@ LABEL_71:
 LABEL_72:
 
                   v21 = v64;
-                  v19 = v65;
+                  ageRating = v65;
                   goto LABEL_73;
                 }
               }
 
-              else if (v19 == v20)
+              else if (ageRating == ageRating2)
               {
                 goto LABEL_27;
               }
@@ -621,7 +621,7 @@ LABEL_74:
           }
         }
 
-        else if (v11 == v12)
+        else if (titles == titles2)
         {
           goto LABEL_13;
         }
@@ -656,43 +656,43 @@ LABEL_77:
   v4 = [(ASCContingentOffer *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCContingentOffer *)self titles];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"titles"];
+  titles = [(ASCContingentOffer *)self titles];
+  [(ASCDescriber *)v3 addObject:titles withName:@"titles"];
 
-  v6 = [(ASCContingentOffer *)self subtitles];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"subtitles"];
+  subtitles = [(ASCContingentOffer *)self subtitles];
+  [(ASCDescriber *)v3 addObject:subtitles withName:@"subtitles"];
 
   v7 = ASCOfferFlagsGetDescription([(ASCContingentOffer *)self flags]);
   [(ASCDescriber *)v3 addObject:v7 withName:@"flags"];
 
-  v8 = [(ASCContingentOffer *)self ageRating];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"ageRating"];
+  ageRating = [(ASCContingentOffer *)self ageRating];
+  [(ASCDescriber *)v3 addObject:ageRating withName:@"ageRating"];
 
-  v9 = [(ASCContingentOffer *)self metrics];
-  [(ASCDescriber *)v3 addSensitiveObject:v9 withName:@"metrics"];
+  metrics = [(ASCContingentOffer *)self metrics];
+  [(ASCDescriber *)v3 addSensitiveObject:metrics withName:@"metrics"];
 
-  v10 = [(ASCContingentOffer *)self organicOffer];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"organicOffer"];
+  organicOffer = [(ASCContingentOffer *)self organicOffer];
+  [(ASCDescriber *)v3 addObject:organicOffer withName:@"organicOffer"];
 
-  v11 = [(ASCContingentOffer *)self streamlinedOffer];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"streamlinedOffer"];
+  streamlinedOffer = [(ASCContingentOffer *)self streamlinedOffer];
+  [(ASCDescriber *)v3 addObject:streamlinedOffer withName:@"streamlinedOffer"];
 
-  v12 = [(ASCContingentOffer *)self offerID];
-  [(ASCDescriber *)v3 addObject:v12 withName:@"offerID"];
+  offerID = [(ASCContingentOffer *)self offerID];
+  [(ASCDescriber *)v3 addObject:offerID withName:@"offerID"];
 
-  v13 = [(ASCContingentOffer *)self iapItemID];
-  [(ASCDescriber *)v3 addObject:v13 withName:@"iapItemID"];
+  iapItemID = [(ASCContingentOffer *)self iapItemID];
+  [(ASCDescriber *)v3 addObject:iapItemID withName:@"iapItemID"];
 
-  v14 = [(ASCContingentOffer *)self iapItemName];
-  [(ASCDescriber *)v3 addObject:v14 withName:@"iapItemName"];
+  iapItemName = [(ASCContingentOffer *)self iapItemName];
+  [(ASCDescriber *)v3 addObject:iapItemName withName:@"iapItemName"];
 
-  v15 = [(ASCContingentOffer *)self iapProductName];
-  [(ASCDescriber *)v3 addObject:v15 withName:@"iapProductName"];
+  iapProductName = [(ASCContingentOffer *)self iapProductName];
+  [(ASCDescriber *)v3 addObject:iapProductName withName:@"iapProductName"];
 
   [(ASCDescriber *)v3 addInteger:[(ASCContingentOffer *)self offerType] withName:@"offerType"];
-  v16 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v16;
+  return finalizeDescription;
 }
 
 @end

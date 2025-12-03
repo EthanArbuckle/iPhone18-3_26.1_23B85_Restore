@@ -1,16 +1,16 @@
 @interface TSDPathIntersection
 - (CGPoint)point;
-- (TSDPathIntersection)initWithSegment:(int64_t)a3 atT:(double)a4 onSegmentB:(int64_t)a5 atT:(double)a6 atPoint:(CGPoint)a7;
-- (int64_t)compareSegmentAndT:(id)a3;
-- (int64_t)compareT:(id)a3;
+- (TSDPathIntersection)initWithSegment:(int64_t)segment atT:(double)t onSegmentB:(int64_t)b atT:(double)atT atPoint:(CGPoint)point;
+- (int64_t)compareSegmentAndT:(id)t;
+- (int64_t)compareT:(id)t;
 @end
 
 @implementation TSDPathIntersection
 
-- (TSDPathIntersection)initWithSegment:(int64_t)a3 atT:(double)a4 onSegmentB:(int64_t)a5 atT:(double)a6 atPoint:(CGPoint)a7
+- (TSDPathIntersection)initWithSegment:(int64_t)segment atT:(double)t onSegmentB:(int64_t)b atT:(double)atT atPoint:(CGPoint)point
 {
-  y = a7.y;
-  x = a7.x;
+  y = point.y;
+  x = point.x;
   v14.receiver = self;
   v14.super_class = TSDPathIntersection;
   result = [(TSDPathIntersection *)&v14 init];
@@ -18,37 +18,37 @@
   {
     result->mPoint.x = x;
     result->mPoint.y = y;
-    result->mSegment = a3;
-    result->mSegmentB = a5;
-    result->mT = a4;
-    result->mTB = a6;
+    result->mSegment = segment;
+    result->mSegmentB = b;
+    result->mT = t;
+    result->mTB = atT;
   }
 
   return result;
 }
 
-- (int64_t)compareSegmentAndT:(id)a3
+- (int64_t)compareSegmentAndT:(id)t
 {
-  v5 = [(TSDPathIntersection *)self segment];
-  v6 = [a3 segment];
-  if (v5 < v6)
+  segment = [(TSDPathIntersection *)self segment];
+  segment2 = [t segment];
+  if (segment < segment2)
   {
     return -1;
   }
 
-  if (v5 > v6)
+  if (segment > segment2)
   {
     return 1;
   }
 
-  return [(TSDPathIntersection *)self compareT:a3];
+  return [(TSDPathIntersection *)self compareT:t];
 }
 
-- (int64_t)compareT:(id)a3
+- (int64_t)compareT:(id)t
 {
   [(TSDPathIntersection *)self t];
   v5 = v4;
-  [a3 t];
+  [t t];
   if (v5 < v6)
   {
     return -1;

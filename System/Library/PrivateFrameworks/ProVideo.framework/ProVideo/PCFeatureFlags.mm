@@ -1,12 +1,12 @@
 @interface PCFeatureFlags
-+ (BOOL)checkFeature:(id)a3;
++ (BOOL)checkFeature:(id)feature;
 + (id)sharedInstance;
-+ (void)overwriteFeatureFlags:(id)a3;
-+ (void)setAllFeatureFlags:(id)a3;
-- (BOOL)checkFeature:(id)a3;
++ (void)overwriteFeatureFlags:(id)flags;
++ (void)setAllFeatureFlags:(id)flags;
+- (BOOL)checkFeature:(id)feature;
 - (void)dealloc;
-- (void)overwriteFeatureFlags:(id)a3;
-- (void)setAllFeatureFlags:(id)a3;
+- (void)overwriteFeatureFlags:(id)flags;
+- (void)setAllFeatureFlags:(id)flags;
 @end
 
 @implementation PCFeatureFlags
@@ -18,12 +18,12 @@
   [(PCFeatureFlags *)&v3 dealloc];
 }
 
-- (void)setAllFeatureFlags:(id)a3
+- (void)setAllFeatureFlags:(id)flags
 {
-  if (self->_features != a3)
+  if (self->_features != flags)
   {
     objc_sync_enter(self);
-    v5 = [a3 copy];
+    v5 = [flags copy];
 
     self->_features = v5;
 
@@ -31,7 +31,7 @@
   }
 }
 
-- (void)overwriteFeatureFlags:(id)a3
+- (void)overwriteFeatureFlags:(id)flags
 {
   v17 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
@@ -52,8 +52,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [a3 keyEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  keyEnumerator = [flags keyEnumerator];
+  v9 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -64,15 +64,15 @@
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyEnumerator);
         }
 
-        [v7 setObject:objc_msgSend(a3 forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v12 + 1) + 8 * v11)), *(*(&v12 + 1) + 8 * v11)}];
+        [v7 setObject:objc_msgSend(flags forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v12 + 1) + 8 * v11)), *(*(&v12 + 1) + 8 * v11)}];
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
@@ -81,12 +81,12 @@
   [(PCFeatureFlags *)self setAllFeatureFlags:v7];
 }
 
-- (BOOL)checkFeature:(id)a3
+- (BOOL)checkFeature:(id)feature
 {
   objc_sync_enter(self);
-  LOBYTE(a3) = [-[NSDictionary objectForKeyedSubscript:](self->_features objectForKeyedSubscript:{a3), "BOOLValue"}];
+  LOBYTE(feature) = [-[NSDictionary objectForKeyedSubscript:](self->_features objectForKeyedSubscript:{feature), "BOOLValue"}];
   objc_sync_exit(self);
-  return a3;
+  return feature;
 }
 
 + (id)sharedInstance
@@ -106,25 +106,25 @@ uint64_t __32__PCFeatureFlags_sharedInstance__block_invoke()
   return result;
 }
 
-+ (BOOL)checkFeature:(id)a3
++ (BOOL)checkFeature:(id)feature
 {
   v4 = +[PCFeatureFlags sharedInstance];
 
-  return [(PCFeatureFlags *)v4 checkFeature:a3];
+  return [(PCFeatureFlags *)v4 checkFeature:feature];
 }
 
-+ (void)setAllFeatureFlags:(id)a3
++ (void)setAllFeatureFlags:(id)flags
 {
   v4 = +[PCFeatureFlags sharedInstance];
 
-  [(PCFeatureFlags *)v4 setAllFeatureFlags:a3];
+  [(PCFeatureFlags *)v4 setAllFeatureFlags:flags];
 }
 
-+ (void)overwriteFeatureFlags:(id)a3
++ (void)overwriteFeatureFlags:(id)flags
 {
   v4 = +[PCFeatureFlags sharedInstance];
 
-  [(PCFeatureFlags *)v4 overwriteFeatureFlags:a3];
+  [(PCFeatureFlags *)v4 overwriteFeatureFlags:flags];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface TUIKeyboardInputManagerMux
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 + (id)sharedInstance;
 - (BOOL)_systemHasKbd;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isKindOfClass:(Class)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isKindOfClass:(Class)class;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (TIKeyboardInputManagerToImplProtocol)implProxy;
 - (TUICandidateInterceptor)candidateMultiplexer;
 - (TUIKeyboardInputManagerMux)init;
 - (TUIKeyboardInputManagerProviding)inputManagerProvider;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)newSystemInputManagerWithImplProxy:(id)a3;
-- (void)addClient:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)processPayloadInfo:(id)a3;
-- (void)pushAutocorrections:(id)a3 requestToken:(id)a4;
-- (void)pushCandidateResultSet:(id)a3 requestToken:(id)a4;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)newSystemInputManagerWithImplProxy:(id)proxy;
+- (void)addClient:(id)client;
+- (void)forwardInvocation:(id)invocation;
+- (void)processPayloadInfo:(id)info;
+- (void)pushAutocorrections:(id)autocorrections requestToken:(id)token;
+- (void)pushCandidateResultSet:(id)set requestToken:(id)token;
 - (void)removeAllClients;
-- (void)removeClient:(id)a3;
-- (void)setResponseDelegate:(id)a3;
-- (void)setSystemInputManagerFromTextInputTraits:(id)a3 autofillMode:(unint64_t)a4 implProxy:(id)a5;
-- (void)updateClientResponseDelegatesWithDelegate:(id)a3;
+- (void)removeClient:(id)client;
+- (void)setResponseDelegate:(id)delegate;
+- (void)setSystemInputManagerFromTextInputTraits:(id)traits autofillMode:(unint64_t)mode implProxy:(id)proxy;
+- (void)updateClientResponseDelegatesWithDelegate:(id)delegate;
 @end
 
 @implementation TUIKeyboardInputManagerMux
@@ -98,40 +98,40 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
   return WeakRetained;
 }
 
-- (void)pushCandidateResultSet:(id)a3 requestToken:(id)a4
+- (void)pushCandidateResultSet:(id)set requestToken:(id)token
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUIKeyboardInputManagerMux *)self implProxy];
-  [v8 pushCandidateResultSet:v7 requestToken:v6];
+  tokenCopy = token;
+  setCopy = set;
+  implProxy = [(TUIKeyboardInputManagerMux *)self implProxy];
+  [implProxy pushCandidateResultSet:setCopy requestToken:tokenCopy];
 }
 
-- (void)pushAutocorrections:(id)a3 requestToken:(id)a4
+- (void)pushAutocorrections:(id)autocorrections requestToken:(id)token
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(TUIKeyboardInputManagerMux *)self candidateMultiplexer];
-  v8 = [v7 willHandleDeliveryForCandidates:v10 requestToken:v6];
+  autocorrectionsCopy = autocorrections;
+  tokenCopy = token;
+  candidateMultiplexer = [(TUIKeyboardInputManagerMux *)self candidateMultiplexer];
+  v8 = [candidateMultiplexer willHandleDeliveryForCandidates:autocorrectionsCopy requestToken:tokenCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(TUIKeyboardInputManagerMux *)self implProxy];
-    [v9 pushAutocorrections:v10 requestToken:v6];
+    implProxy = [(TUIKeyboardInputManagerMux *)self implProxy];
+    [implProxy pushAutocorrections:autocorrectionsCopy requestToken:tokenCopy];
   }
 }
 
-- (void)processPayloadInfo:(id)a3
+- (void)processPayloadInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(TUIKeyboardInputManagerMux *)self implProxy];
-  [v5 processPayloadInfo:v4];
+  infoCopy = info;
+  implProxy = [(TUIKeyboardInputManagerMux *)self implProxy];
+  [implProxy processPayloadInfo:infoCopy];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 invokeWithTarget:self->_systemInputManager];
+  invocationCopy = invocation;
+  [invocationCopy invokeWithTarget:self->_systemInputManager];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -155,7 +155,7 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (v10 != self->_systemInputManager)
         {
-          v11 = [MEMORY[0x1E69D9608] untargetedInvocationWithInvocation:v4 withCompletion:{0, v12}];
+          v11 = [MEMORY[0x1E69D9608] untargetedInvocationWithInvocation:invocationCopy withCompletion:{0, v12}];
           [v11 invokeWithTarget:v10];
         }
 
@@ -170,7 +170,7 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v9.receiver = self;
   v9.super_class = TUIKeyboardInputManagerMux;
@@ -183,7 +183,7 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
 
   else
   {
-    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:a3];
+    v6 = [MEMORY[0x1E69D9610] instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -191,25 +191,25 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
   return v7;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v7.receiver = self;
   v7.super_class = TUIKeyboardInputManagerMux;
-  if ([(TUIKeyboardInputManagerMux *)&v7 conformsToProtocol:v4])
+  if ([(TUIKeyboardInputManagerMux *)&v7 conformsToProtocol:protocolCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:v4];
+    v5 = [MEMORY[0x1E69D9610] conformsToProtocol:protocolCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = TUIKeyboardInputManagerMux;
@@ -220,11 +220,11 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
 
   else
   {
-    return [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
+    return [(objc_class *)class isSubclassOfClass:objc_opt_class()];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = TUIKeyboardInputManagerMux;
@@ -235,21 +235,21 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 
-- (void)setResponseDelegate:(id)a3
+- (void)setResponseDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_responseDelegate, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_responseDelegate, delegate);
+  delegateCopy = delegate;
   [(TUIKeyboardInputManagerMux *)self updateClientResponseDelegatesWithDelegate:self->_responseDelegate];
 }
 
-- (void)updateClientResponseDelegatesWithDelegate:(id)a3
+- (void)updateClientResponseDelegatesWithDelegate:(id)delegate
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -272,7 +272,7 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
         v10 = *(*(&v11 + 1) + 8 * i);
         if ([v10 conformsToProtocol:{&unk_1F04340B0, v11}])
         {
-          [v10 setResponseDelegate:v4];
+          [v10 setResponseDelegate:delegateCopy];
         }
       }
 
@@ -294,70 +294,70 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
   [(NSMutableArray *)clients removeAllObjects];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v4 = a3;
-  if (v4)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v6 = v4;
-    if ([v4 conformsToProtocol:&unk_1F04340B0])
+    v6 = clientCopy;
+    if ([clientCopy conformsToProtocol:&unk_1F04340B0])
     {
       [v6 setResponseDelegate:0];
     }
 
-    v5 = [(TUIKeyboardInputManagerMux *)self clients];
-    [v5 removeObject:v6];
+    clients = [(TUIKeyboardInputManagerMux *)self clients];
+    [clients removeObject:v6];
 
-    v4 = v6;
+    clientCopy = v6;
   }
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v9 = a3;
-  if (v9)
+  clientCopy = client;
+  if (clientCopy)
   {
-    v4 = [(TUIKeyboardInputManagerMux *)self clients];
-    v5 = [v4 containsObject:v9];
+    clients = [(TUIKeyboardInputManagerMux *)self clients];
+    v5 = [clients containsObject:clientCopy];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [(TUIKeyboardInputManagerMux *)self clients];
-      [v6 addObject:v9];
+      clients2 = [(TUIKeyboardInputManagerMux *)self clients];
+      [clients2 addObject:clientCopy];
 
-      if ([v9 conformsToProtocol:&unk_1F04340B0])
+      if ([clientCopy conformsToProtocol:&unk_1F04340B0])
       {
-        v7 = [(TUIKeyboardInputManagerMux *)self responseDelegate];
-        [v9 setResponseDelegate:v7];
+        responseDelegate = [(TUIKeyboardInputManagerMux *)self responseDelegate];
+        [clientCopy setResponseDelegate:responseDelegate];
 
-        v8 = [(TUIKeyboardInputManagerMux *)self responseDelegate];
-        [v8 _requestInputManagerSync];
+        responseDelegate2 = [(TUIKeyboardInputManagerMux *)self responseDelegate];
+        [responseDelegate2 _requestInputManagerSync];
       }
     }
   }
 }
 
-- (void)setSystemInputManagerFromTextInputTraits:(id)a3 autofillMode:(unint64_t)a4 implProxy:(id)a5
+- (void)setSystemInputManagerFromTextInputTraits:(id)traits autofillMode:(unint64_t)mode implProxy:(id)proxy
 {
-  v24 = a3;
-  v8 = a5;
+  traitsCopy = traits;
+  proxyCopy = proxy;
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v24 keyboardSuggestionOptions];
-    v10 = [(TUIKeyboardInputManagerMux *)self candidateMultiplexer];
-    [v10 setKeyboardSuggestionOptions:v9];
+    keyboardSuggestionOptions = [traitsCopy keyboardSuggestionOptions];
+    candidateMultiplexer = [(TUIKeyboardInputManagerMux *)self candidateMultiplexer];
+    [candidateMultiplexer setKeyboardSuggestionOptions:keyboardSuggestionOptions];
   }
 
-  if ([v24 isDevicePasscodeEntry])
+  if ([traitsCopy isDevicePasscodeEntry])
   {
     v11 = 1;
   }
 
-  else if ([v24 isSecureTextEntry])
+  else if ([traitsCopy isSecureTextEntry])
   {
-    [v24 keyboardType];
+    [traitsCopy keyboardType];
     IsNumberPad = UIKeyboardTypeIsNumberPad();
-    if (a4 == 3)
+    if (mode == 3)
     {
       v11 = 0;
     }
@@ -373,19 +373,19 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
     v11 = 0;
   }
 
-  v13 = [(TUIKeyboardInputManagerMux *)self inputManagerProvider];
-  v14 = v13;
-  if (v13)
+  inputManagerProvider = [(TUIKeyboardInputManagerMux *)self inputManagerProvider];
+  v14 = inputManagerProvider;
+  if (inputManagerProvider)
   {
-    v15 = v13;
+    selfCopy = inputManagerProvider;
   }
 
   else
   {
-    v15 = self;
+    selfCopy = self;
   }
 
-  v16 = v15;
+  v16 = selfCopy;
 
   if (!v11)
   {
@@ -398,25 +398,25 @@ void __43__TUIKeyboardInputManagerMux__systemHasKbd__block_invoke()
     systemInputManager = self->_systemInputManager;
     self->_systemInputManager = 0;
 
-    v18 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-    v19 = [v18 currentInputMode];
-    v20 = [MEMORY[0x1E69DCBE8] dictationInputMode];
-    v21 = [v19 isEqual:v20];
+    mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+    currentInputMode = [mEMORY[0x1E69DCBF0] currentInputMode];
+    dictationInputMode = [MEMORY[0x1E69DCBE8] dictationInputMode];
+    v21 = [currentInputMode isEqual:dictationInputMode];
 
     if (!v21 && [(TUIKeyboardInputManagerMux *)v16 _systemHasKbd])
     {
-      objc_storeWeak(&self->_implProxy, v8);
-      v22 = [(TUIKeyboardInputManagerMux *)v16 newSystemInputManagerWithImplProxy:self];
+      objc_storeWeak(&self->_implProxy, proxyCopy);
+      newInputManagerStub = [(TUIKeyboardInputManagerMux *)v16 newSystemInputManagerWithImplProxy:self];
 LABEL_21:
       v23 = self->_systemInputManager;
-      self->_systemInputManager = v22;
+      self->_systemInputManager = newInputManagerStub;
 
       goto LABEL_22;
     }
 
 LABEL_20:
     objc_storeWeak(&self->_implProxy, 0);
-    v22 = [(TUIKeyboardInputManagerMux *)v16 newInputManagerStub];
+    newInputManagerStub = [(TUIKeyboardInputManagerMux *)v16 newInputManagerStub];
     goto LABEL_21;
   }
 
@@ -428,18 +428,18 @@ LABEL_20:
 LABEL_22:
 }
 
-- (id)newSystemInputManagerWithImplProxy:(id)a3
+- (id)newSystemInputManagerWithImplProxy:(id)proxy
 {
   v3 = MEMORY[0x1E69D9600];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithImplProxy:v4];
+  proxyCopy = proxy;
+  v5 = [[v3 alloc] initWithImplProxy:proxyCopy];
 
   return v5;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___TUIKeyboardInputManagerMux;
   if (objc_msgSendSuper2(&v5, sel_instancesRespondToSelector_))
   {
@@ -448,7 +448,7 @@ LABEL_22:
 
   else
   {
-    return [MEMORY[0x1E69D9610] instancesRespondToSelector:a3];
+    return [MEMORY[0x1E69D9610] instancesRespondToSelector:selector];
   }
 }
 

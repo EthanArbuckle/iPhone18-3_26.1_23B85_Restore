@@ -31,8 +31,8 @@
 
 - (void)main
 {
-  v3 = [(UIActivityItemProvider *)self item];
-  [(UIActivityItemProvider *)self setProvidedItem:v3];
+  item = [(UIActivityItemProvider *)self item];
+  [(UIActivityItemProvider *)self setProvidedItem:item];
 }
 
 @end

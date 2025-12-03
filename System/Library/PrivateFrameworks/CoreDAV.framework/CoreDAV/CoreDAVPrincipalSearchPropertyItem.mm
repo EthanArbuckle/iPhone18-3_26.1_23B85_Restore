@@ -13,11 +13,11 @@
   v4 = [(CoreDAVItem *)&v8 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVPrincipalSearchPropertyItem *)self prop];
-  [v3 appendFormat:@"\n  Prop: [%@]", v5];
+  prop = [(CoreDAVPrincipalSearchPropertyItem *)self prop];
+  [v3 appendFormat:@"\n  Prop: [%@]", prop];
 
-  v6 = [(CoreDAVPrincipalSearchPropertyItem *)self descriptionItem];
-  [v3 appendFormat:@"\n  Description: [%@]", v6];
+  descriptionItem = [(CoreDAVPrincipalSearchPropertyItem *)self descriptionItem];
+  [v3 appendFormat:@"\n  Description: [%@]", descriptionItem];
 
   return v3;
 }
@@ -25,7 +25,7 @@
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -38,7 +38,7 @@
     v5 = [v6 initWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[CoreDAVItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 

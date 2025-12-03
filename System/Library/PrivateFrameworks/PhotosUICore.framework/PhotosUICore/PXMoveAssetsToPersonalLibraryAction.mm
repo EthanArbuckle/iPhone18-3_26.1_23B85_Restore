@@ -1,22 +1,22 @@
 @interface PXMoveAssetsToPersonalLibraryAction
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXMoveAssetsToPersonalLibraryAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  PXSharedLibraryMoveAssetsToSharedLibrary(v5, v4);
+  undoCopy = undo;
+  assets = [(PXAssetsAction *)self assets];
+  PXSharedLibraryMoveAssetsToSharedLibrary(assets, undoCopy);
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXAssetsAction *)self assets];
-  PXSharedLibraryMoveAssetsToPersonalLibrary(v5, v4);
+  actionCopy = action;
+  assets = [(PXAssetsAction *)self assets];
+  PXSharedLibraryMoveAssetsToPersonalLibrary(assets, actionCopy);
 }
 
 @end

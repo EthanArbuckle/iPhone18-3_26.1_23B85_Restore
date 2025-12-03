@@ -1,11 +1,11 @@
 @interface BankConnectMessagesManager
 + (id)makeManager;
-- (BOOL)isAccountMessageDismissed:(int64_t)a3 forAccountIdentifier:(id)a4;
-- (BOOL)isPassMessageDismissed:(int64_t)a3 forFPANIdentifier:(id)a4;
+- (BOOL)isAccountMessageDismissed:(int64_t)dismissed forAccountIdentifier:(id)identifier;
+- (BOOL)isPassMessageDismissed:(int64_t)dismissed forFPANIdentifier:(id)identifier;
 - (_TtC10FinanceKit26BankConnectMessagesManager)init;
-- (void)resetMessagesForFPANIdentifier:(id)a3;
-- (void)setIsDismissed:(BOOL)a3 forAccountMessage:(int64_t)a4 withAccountIdentifier:(id)a5;
-- (void)setIsDismissed:(BOOL)a3 forPassMessage:(int64_t)a4 withFPANIdentifier:(id)a5;
+- (void)resetMessagesForFPANIdentifier:(id)identifier;
+- (void)setIsDismissed:(BOOL)dismissed forAccountMessage:(int64_t)message withAccountIdentifier:(id)identifier;
+- (void)setIsDismissed:(BOOL)dismissed forPassMessage:(int64_t)message withFPANIdentifier:(id)identifier;
 @end
 
 @implementation BankConnectMessagesManager
@@ -39,20 +39,20 @@
   return v4;
 }
 
-- (void)resetMessagesForFPANIdentifier:(id)a3
+- (void)resetMessagesForFPANIdentifier:(id)identifier
 {
   v4 = sub_1B7800868();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   BankConnectMessagesManager.resetMessages(forFPANIdentifier:)(v8);
 }
 
-- (void)setIsDismissed:(BOOL)a3 forPassMessage:(int64_t)a4 withFPANIdentifier:(id)a5
+- (void)setIsDismissed:(BOOL)dismissed forPassMessage:(int64_t)message withFPANIdentifier:(id)identifier
 {
   v8 = sub_1B7800868();
-  if (a4)
+  if (message)
   {
     sub_1B7801C88();
     __break(1u);
@@ -63,23 +63,23 @@
     v11[0] = v8;
     v11[1] = v9;
     v12 = 0;
-    v10 = self;
-    sub_1B737C27C(a3, v11);
+    selfCopy = self;
+    sub_1B737C27C(dismissed, v11);
   }
 }
 
-- (void)setIsDismissed:(BOOL)a3 forAccountMessage:(int64_t)a4 withAccountIdentifier:(id)a5
+- (void)setIsDismissed:(BOOL)dismissed forAccountMessage:(int64_t)message withAccountIdentifier:(id)identifier
 {
   v8 = sub_1B7800868();
   v10 = v9;
-  v11 = self;
-  BankConnectMessagesManager.setIsDismissed(_:for:with:)(a3, a4, v8, v10);
+  selfCopy = self;
+  BankConnectMessagesManager.setIsDismissed(_:for:with:)(dismissed, message, v8, v10);
 }
 
-- (BOOL)isPassMessageDismissed:(int64_t)a3 forFPANIdentifier:(id)a4
+- (BOOL)isPassMessageDismissed:(int64_t)dismissed forFPANIdentifier:(id)identifier
 {
   sub_1B7800868();
-  if (a3)
+  if (dismissed)
   {
     result = sub_1B7801C88();
     __break(1u);
@@ -89,7 +89,7 @@
   {
     v6 = *&self->userDefaults[OBJC_IVAR____TtC10FinanceKit26BankConnectMessagesManager_userDefaults + 24];
     __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR____TtC10FinanceKit26BankConnectMessagesManager_userDefaults), *&self->userDefaults[OBJC_IVAR____TtC10FinanceKit26BankConnectMessagesManager_userDefaults + 16]);
-    v7 = self;
+    selfCopy = self;
     v8 = sub_1B737BA8C();
     v9 = (*(*(v6 + 8) + 24))(v8);
 
@@ -99,13 +99,13 @@
   return result;
 }
 
-- (BOOL)isAccountMessageDismissed:(int64_t)a3 forAccountIdentifier:(id)a4
+- (BOOL)isAccountMessageDismissed:(int64_t)dismissed forAccountIdentifier:(id)identifier
 {
   sub_1B7800868();
-  v6 = self;
-  LOBYTE(a3) = BankConnectMessagesManager.isAccountMessageDismissed(_:for:)(a3);
+  selfCopy = self;
+  LOBYTE(dismissed) = BankConnectMessagesManager.isAccountMessageDismissed(_:for:)(dismissed);
 
-  return a3 & 1;
+  return dismissed & 1;
 }
 
 @end

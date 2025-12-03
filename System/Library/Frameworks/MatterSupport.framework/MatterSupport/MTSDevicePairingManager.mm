@@ -1,67 +1,67 @@
 @interface MTSDevicePairingManager
 + (id)logCategory;
-- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)a3;
-- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)a3 serverProxy:(id)a4;
+- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)pairing;
+- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)pairing serverProxy:(id)proxy;
 - (id)logIdentifier;
 - (void)dealloc;
-- (void)fetchPairingsWithCompletionHandler:(id)a3;
-- (void)openCommissioningWindowWithDuration:(double)a3 completionHandler:(id)a4;
-- (void)readCommissioningWindowStatusWithCompletionHandler:(id)a3;
-- (void)removeAllPairingsWithCompletionHandler:(id)a3;
-- (void)removePairingWithUUID:(id)a3 completionHandler:(id)a4;
+- (void)fetchPairingsWithCompletionHandler:(id)handler;
+- (void)openCommissioningWindowWithDuration:(double)duration completionHandler:(id)handler;
+- (void)readCommissioningWindowStatusWithCompletionHandler:(id)handler;
+- (void)removeAllPairingsWithCompletionHandler:(id)handler;
+- (void)removePairingWithUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation MTSDevicePairingManager
 
 - (id)logIdentifier
 {
-  v2 = [(MTSDevicePairingManager *)self systemCommissionerPairing];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)self systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (void)readCommissioningWindowStatusWithCompletionHandler:(id)a3
+- (void)readCommissioningWindowStatusWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Read commissioning window status"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v23 = v10;
     v24 = 2114;
-    v25 = v12;
+    v25 = shortDescription;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Reading commissioning window status", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(MTSDevicePairingManager *)v8 serverProxy];
-  v14 = [(MTSDevicePairingManager *)v8 systemCommissionerPairing];
-  v15 = [v14 uuid];
+  serverProxy = [(MTSDevicePairingManager *)selfCopy serverProxy];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)selfCopy systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__MTSDevicePairingManager_readCommissioningWindowStatusWithCompletionHandler___block_invoke;
   v19[3] = &unk_278AA18A8;
-  v19[4] = v8;
+  v19[4] = selfCopy;
   v20 = v6;
   v21 = v5;
   v16 = v5;
   v17 = v6;
-  [v13 readCommissioningWindowStatusForSystemCommissionerPairingUUID:v15 completionHandler:v19];
+  [serverProxy readCommissioningWindowStatusForSystemCommissionerPairingUUID:uuid completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -119,46 +119,46 @@ LABEL_6:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)openCommissioningWindowWithDuration:(double)a3 completionHandler:(id)a4
+- (void)openCommissioningWindowWithDuration:(double)duration completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v7 = v6;
+  v7 = handlerCopy;
   v8 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Open commissioning window"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v12;
     v26 = 2114;
-    v27 = v14;
+    v27 = shortDescription;
     _os_log_impl(&dword_239824000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Opening commissioning window", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v15 = [(MTSDevicePairingManager *)v10 serverProxy];
-  v16 = [(MTSDevicePairingManager *)v10 systemCommissionerPairing];
-  v17 = [v16 uuid];
+  serverProxy = [(MTSDevicePairingManager *)selfCopy serverProxy];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)selfCopy systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__MTSDevicePairingManager_openCommissioningWindowWithDuration_completionHandler___block_invoke;
   v21[3] = &unk_278AA1880;
-  v21[4] = v10;
+  v21[4] = selfCopy;
   v22 = v8;
   v23 = v7;
   v18 = v7;
   v19 = v8;
-  [v15 openCommissioningWindowForSystemCommissionerPairingUUID:v17 duration:v21 completionHandler:a3];
+  [serverProxy openCommissioningWindowForSystemCommissionerPairingUUID:uuid duration:v21 completionHandler:duration];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -221,46 +221,46 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllPairingsWithCompletionHandler:(id)a3
+- (void)removeAllPairingsWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Remove all device pairings"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v23 = v10;
     v24 = 2114;
-    v25 = v12;
+    v25 = shortDescription;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing all device pairings", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(MTSDevicePairingManager *)v8 serverProxy];
-  v14 = [(MTSDevicePairingManager *)v8 systemCommissionerPairing];
-  v15 = [v14 uuid];
+  serverProxy = [(MTSDevicePairingManager *)selfCopy serverProxy];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)selfCopy systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__MTSDevicePairingManager_removeAllPairingsWithCompletionHandler___block_invoke;
   v19[3] = &unk_278AA1928;
-  v19[4] = v8;
+  v19[4] = selfCopy;
   v20 = v6;
   v21 = v5;
   v16 = v5;
   v17 = v6;
-  [v13 removeAllDevicePairingsForSystemCommissionerPairingUUID:v15 completionHandler:v19];
+  [serverProxy removeAllDevicePairingsForSystemCommissionerPairingUUID:uuid completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -317,56 +317,56 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePairingWithUUID:(id)a3 completionHandler:(id)a4
+- (void)removePairingWithUUID:(id)d completionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
 LABEL_7:
     _HMFPreconditionFailure();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
   v9 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Remove device pairing"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v26 = v13;
     v27 = 2114;
-    v28 = v15;
+    v28 = shortDescription;
     v29 = 2112;
-    v30 = v6;
+    v30 = dCopy;
     _os_log_impl(&dword_239824000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Removing device pairing with UUID: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  v16 = [(MTSDevicePairingManager *)v11 serverProxy];
-  v17 = [(MTSDevicePairingManager *)v11 systemCommissionerPairing];
-  v18 = [v17 uuid];
+  serverProxy = [(MTSDevicePairingManager *)selfCopy serverProxy];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)selfCopy systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __67__MTSDevicePairingManager_removePairingWithUUID_completionHandler___block_invoke;
   v22[3] = &unk_278AA1928;
-  v22[4] = v11;
+  v22[4] = selfCopy;
   v23 = v9;
   v24 = v8;
   v19 = v8;
   v20 = v9;
-  [v16 removeDevicePairingWithUUID:v6 forSystemCommissionerPairingUUID:v18 completionHandler:v22];
+  [serverProxy removeDevicePairingWithUUID:dCopy forSystemCommissionerPairingUUID:uuid completionHandler:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -423,46 +423,46 @@ LABEL_6:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchPairingsWithCompletionHandler:(id)a3
+- (void)fetchPairingsWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Fetch all device pairings"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v23 = v10;
     v24 = 2114;
-    v25 = v12;
+    v25 = shortDescription;
     _os_log_impl(&dword_239824000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching all device pairings", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  v13 = [(MTSDevicePairingManager *)v8 serverProxy];
-  v14 = [(MTSDevicePairingManager *)v8 systemCommissionerPairing];
-  v15 = [v14 uuid];
+  serverProxy = [(MTSDevicePairingManager *)selfCopy serverProxy];
+  systemCommissionerPairing = [(MTSDevicePairingManager *)selfCopy systemCommissionerPairing];
+  uuid = [systemCommissionerPairing uuid];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__MTSDevicePairingManager_fetchPairingsWithCompletionHandler___block_invoke;
   v19[3] = &unk_278AA1900;
-  v19[4] = v8;
+  v19[4] = selfCopy;
   v20 = v6;
   v21 = v5;
   v16 = v5;
   v17 = v6;
-  [v13 fetchDevicePairingsForSystemCommissionerPairingUUID:v15 completionHandler:v19];
+  [serverProxy fetchDevicePairingsForSystemCommissionerPairingUUID:uuid completionHandler:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -528,18 +528,18 @@ LABEL_6:
   [(MTSDevicePairingManager *)&v3 dealloc];
 }
 
-- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)a3 serverProxy:(id)a4
+- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)pairing serverProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  pairingCopy = pairing;
+  proxyCopy = proxy;
+  if (!pairingCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = proxyCopy;
+  if (!proxyCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -551,21 +551,21 @@ LABEL_7:
   v9 = [(MTSDevicePairingManager *)&v16 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [pairingCopy copy];
     systemCommissionerPairing = v9->_systemCommissionerPairing;
     v9->_systemCommissionerPairing = v10;
 
-    objc_storeStrong(&v9->_serverProxy, a4);
+    objc_storeStrong(&v9->_serverProxy, proxy);
   }
 
   return v9;
 }
 
-- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)a3
+- (MTSDevicePairingManager)initWithSystemCommissionerPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = objc_alloc_init(MTSXPCServerProxy);
-  v6 = [(MTSDevicePairingManager *)self initWithSystemCommissionerPairing:v4 serverProxy:v5];
+  v6 = [(MTSDevicePairingManager *)self initWithSystemCommissionerPairing:pairingCopy serverProxy:v5];
 
   return v6;
 }

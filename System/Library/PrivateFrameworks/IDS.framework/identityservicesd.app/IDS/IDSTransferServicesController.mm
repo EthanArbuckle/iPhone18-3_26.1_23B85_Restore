@@ -1,20 +1,20 @@
 @interface IDSTransferServicesController
-- (void)sendFilePath:(id)a3 topic:(id)a4 userInfo:(id)a5 transferID:(id)a6 encryptFile:(BOOL)a7 progressBlock:(id)a8 completionBlock:(id)a9;
+- (void)sendFilePath:(id)path topic:(id)topic userInfo:(id)info transferID:(id)d encryptFile:(BOOL)file progressBlock:(id)block completionBlock:(id)completionBlock;
 @end
 
 @implementation IDSTransferServicesController
 
-- (void)sendFilePath:(id)a3 topic:(id)a4 userInfo:(id)a5 transferID:(id)a6 encryptFile:(BOOL)a7 progressBlock:(id)a8 completionBlock:(id)a9
+- (void)sendFilePath:(id)path topic:(id)topic userInfo:(id)info transferID:(id)d encryptFile:(BOOL)file progressBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a7;
-  v15 = a9;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  fileCopy = file;
+  completionBlockCopy = completionBlock;
+  blockCopy = block;
+  dCopy = d;
+  infoCopy = info;
+  topicCopy = topic;
+  pathCopy = path;
   v21 = [IDSDaemon _IMTransferServiceController]_0();
-  [v21 sendFilePath:v20 topic:v19 userInfo:v18 transferID:v17 sourceAppID:0 encryptFile:v10 progressBlock:v16 completionBlock:v15];
+  [v21 sendFilePath:pathCopy topic:topicCopy userInfo:infoCopy transferID:dCopy sourceAppID:0 encryptFile:fileCopy progressBlock:blockCopy completionBlock:completionBlockCopy];
 }
 
 @end

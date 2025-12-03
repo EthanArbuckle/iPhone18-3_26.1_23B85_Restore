@@ -1,11 +1,11 @@
 @interface UserLocationSearchResult
 - (UserLocationSearchResult)init;
 - (double)accuracy;
-- (void)_updateFloorOrdinal:(int)a3;
-- (void)locationManagerApprovalDidChange:(id)a3;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setLocation:(id)a3;
-- (void)setReverseGeocoded:(BOOL)a3;
+- (void)_updateFloorOrdinal:(int)ordinal;
+- (void)locationManagerApprovalDidChange:(id)change;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setLocation:(id)location;
+- (void)setReverseGeocoded:(BOOL)geocoded;
 @end
 
 @implementation UserLocationSearchResult
@@ -20,32 +20,32 @@
     v3 = +[NSNotificationCenter defaultCenter];
     [v3 addObserver:v2 selector:"locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 
-    v4 = [(SearchResult *)v2 defaultName];
-    v5 = [(SearchResultRepr *)v2 place];
-    [v5 setName:v4];
+    defaultName = [(SearchResult *)v2 defaultName];
+    place = [(SearchResultRepr *)v2 place];
+    [place setName:defaultName];
   }
 
   return v2;
 }
 
-- (void)locationManagerApprovalDidChange:(id)a3
+- (void)locationManagerApprovalDidChange:(id)change
 {
-  v8 = [(SearchResult *)self defaultName];
-  v4 = [(SearchResultRepr *)self place];
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:v8];
+  defaultName = [(SearchResult *)self defaultName];
+  place = [(SearchResultRepr *)self place];
+  name = [place name];
+  v6 = [name isEqualToString:defaultName];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(SearchResultRepr *)self place];
-    [v7 setName:v8];
+    place2 = [(SearchResultRepr *)self place];
+    [place2 setName:defaultName];
   }
 }
 
-- (void)setReverseGeocoded:(BOOL)a3
+- (void)setReverseGeocoded:(BOOL)geocoded
 {
-  v3 = a3;
-  if (a3)
+  geocodedCopy = geocoded;
+  if (geocoded)
   {
     self->_reverseGeocodeUpdateTime = CFAbsoluteTimeGetCurrent();
     [(SearchResult *)self coordinate];
@@ -57,12 +57,12 @@
 
   v8.receiver = self;
   v8.super_class = UserLocationSearchResult;
-  [(SearchResult *)&v8 setReverseGeocoded:v3];
+  [(SearchResult *)&v8 setReverseGeocoded:geocodedCopy];
 }
 
-- (void)_updateFloorOrdinal:(int)a3
+- (void)_updateFloorOrdinal:(int)ordinal
 {
-  if (a3 == 0x7FFFFFFF)
+  if (ordinal == 0x7FFFFFFF)
   {
     [(SearchResultRepr *)self setHasFloorOrdinal:0];
   }
@@ -73,14 +73,14 @@
   }
 }
 
-- (void)setLocation:(id)a3
+- (void)setLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   location = self->_location;
-  v9 = v5;
-  if (location != v5)
+  v9 = locationCopy;
+  if (location != locationCopy)
   {
-    objc_storeStrong(&self->_location, a3);
+    objc_storeStrong(&self->_location, location);
     location = self->_location;
   }
 
@@ -99,17 +99,17 @@
 
 - (double)accuracy
 {
-  v2 = [(UserLocationSearchResult *)self location];
-  [v2 horizontalAccuracy];
+  location = [(UserLocationSearchResult *)self location];
+  [location horizontalAccuracy];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v6 = CFAbsoluteTimeGetCurrent() - self->_reverseGeocodeUpdateTime;
   GEOCalculateDistance();
   v8 = v7;

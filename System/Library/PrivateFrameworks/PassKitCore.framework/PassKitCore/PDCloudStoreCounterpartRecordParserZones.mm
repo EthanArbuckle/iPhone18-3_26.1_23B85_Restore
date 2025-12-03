@@ -1,9 +1,9 @@
 @interface PDCloudStoreCounterpartRecordParserZones
 - (PDCloudStoreCounterpartRecordParserZones)init;
 - (id)allRecords;
-- (void)addRecord:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
-- (void)removeIdentifiers:(id)a3;
+- (void)addRecord:(id)record;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
+- (void)removeIdentifiers:(id)identifiers;
 @end
 
 @implementation PDCloudStoreCounterpartRecordParserZones
@@ -23,26 +23,26 @@
   return v2;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v9 = v4;
-    v5 = [v4 recordID];
-    v6 = [v5 zoneID];
-    v7 = [v6 zoneName];
+    v9 = recordCopy;
+    recordID = [recordCopy recordID];
+    zoneID = [recordID zoneID];
+    zoneName = [zoneID zoneName];
 
-    v8 = [(NSMutableDictionary *)self->_zoneNameToRecords objectForKey:v7];
+    v8 = [(NSMutableDictionary *)self->_zoneNameToRecords objectForKey:zoneName];
     if (!v8)
     {
       v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      [(NSMutableDictionary *)self->_zoneNameToRecords setObject:v8 forKey:v7];
+      [(NSMutableDictionary *)self->_zoneNameToRecords setObject:v8 forKey:zoneName];
     }
 
     [v8 addObject:v9];
 
-    v4 = v9;
+    recordCopy = v9;
   }
 }
 
@@ -69,15 +69,15 @@ void __54__PDCloudStoreCounterpartRecordParserZones_allRecords__block_invoke(uin
   [v3 addObjectsFromArray:v4];
 }
 
-- (void)removeIdentifiers:(id)a3
+- (void)removeIdentifiers:(id)identifiers
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -89,30 +89,30 @@ void __54__PDCloudStoreCounterpartRecordParserZones_allRecords__block_invoke(uin
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         [(NSMutableDictionary *)self->_zoneNameToRecords removeObjectForKey:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   zoneNameToRecords = self->_zoneNameToRecords;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__PDCloudStoreCounterpartRecordParserZones_enumerateKeysAndObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E79C86D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableDictionary *)zoneNameToRecords enumerateKeysAndObjectsUsingBlock:v7];
 }
 

@@ -1,107 +1,107 @@
 @interface DIBaseParams
 - (BOOL)RAMdisk;
 - (BOOL)hasUnlockedBackend;
-- (BOOL)prepareImageWithXpcHandler:(id)a3 fileMode:(int64_t)a4 error:(id *)a5;
+- (BOOL)prepareImageWithXpcHandler:(id)handler fileMode:(int64_t)mode error:(id *)error;
 - (BOOL)requiresRootDaemon;
-- (BOOL)tryResolvePstackChain:(id *)a3;
-- (BOOL)unlockWithPassphrase:(const char *)a3 error:(id *)a4;
-- (BOOL)validateDeserializationWithError:(id *)a3;
-- (DIBaseParams)initWithCoder:(id)a3;
-- (DIBaseParams)initWithURL:(id)a3 error:(id *)a4;
+- (BOOL)tryResolvePstackChain:(id *)chain;
+- (BOOL)unlockWithPassphrase:(const char *)passphrase error:(id *)error;
+- (BOOL)validateDeserializationWithError:(id *)error;
+- (DIBaseParams)initWithCoder:(id)coder;
+- (DIBaseParams)initWithURL:(id)l error:(id *)error;
 - (NSUUID)encryptionUUID;
 - (NSUUID)instanceID;
 - (id)description;
 - (shared_ptr<Backend>)backend;
 - (void)cryptoHeader;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSymmetricKey:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSymmetricKey:(id)key;
 @end
 
 @implementation DIBaseParams
 
 - (BOOL)RAMdisk
 {
-  v2 = [(DIBaseParams *)self diskImageParamsXPC];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (DIBaseParams)initWithCoder:(id)a3
+- (DIBaseParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = DIBaseParams;
   v5 = [(DIBaseParams *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeBoolForKey:@"debugLogsEnabled"];
-    v7 = [v4 decodeBoolForKey:@"forwardLogs"];
+    v6 = [coderCopy decodeBoolForKey:@"debugLogsEnabled"];
+    v7 = [coderCopy decodeBoolForKey:@"forwardLogs"];
     DISetDebugLogsEnabled(v6);
-    v8 = [MEMORY[0x277CCAC38] processInfo];
-    v9 = [v8 processName];
-    v10 = [v9 isEqualToString:@"diskimagesiod"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v10 = [processName isEqualToString:@"diskimagesiod"];
 
     if ((v10 & 1) == 0)
     {
       DISetForwardLogs(v7);
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inputURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inputURL"];
     inputURL = v5->_inputURL;
     v5->_inputURL = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shadowChain"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shadowChain"];
     shadowChain = v5->_shadowChain;
     v5->_shadowChain = v13;
 
-    v5->_readPassphraseFlags = [v4 decodeIntegerForKey:@"readPassphraseFlags"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diskImageParams"];
+    v5->_readPassphraseFlags = [coderCopy decodeIntegerForKey:@"readPassphraseFlags"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diskImageParams"];
     diskImageParamsXPC = v5->_diskImageParamsXPC;
     v5->_diskImageParamsXPC = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deserializationError"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deserializationError"];
     deserializationError = v5->_deserializationError;
     v5->_deserializationError = v17;
 
-    v5->_blockSize = [v4 decodeIntegerForKey:@"blockSize"];
+    v5->_blockSize = [coderCopy decodeIntegerForKey:@"blockSize"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeBool:DIDebugLogsEnabled() forKey:@"debugLogsEnabled"];
-  [v8 encodeBool:DIForwardLogs() forKey:@"forwardLogs"];
-  v4 = [(DIBaseParams *)self diskImageParamsXPC];
-  [v8 encodeObject:v4 forKey:@"diskImageParams"];
+  coderCopy = coder;
+  [coderCopy encodeBool:DIDebugLogsEnabled() forKey:@"debugLogsEnabled"];
+  [coderCopy encodeBool:DIForwardLogs() forKey:@"forwardLogs"];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  [coderCopy encodeObject:diskImageParamsXPC forKey:@"diskImageParams"];
 
-  v5 = [(DIBaseParams *)self inputURL];
-  [v8 encodeObject:v5 forKey:@"inputURL"];
+  inputURL = [(DIBaseParams *)self inputURL];
+  [coderCopy encodeObject:inputURL forKey:@"inputURL"];
 
-  v6 = [(DIBaseParams *)self shadowChain];
-  [v8 encodeObject:v6 forKey:@"shadowChain"];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  [coderCopy encodeObject:shadowChain forKey:@"shadowChain"];
 
-  [v8 encodeInteger:-[DIBaseParams readPassphraseFlags](self forKey:{"readPassphraseFlags"), @"readPassphraseFlags"}];
-  v7 = [(DIBaseParams *)self deserializationError];
-  [v8 encodeObject:v7 forKey:@"deserializationError"];
+  [coderCopy encodeInteger:-[DIBaseParams readPassphraseFlags](self forKey:{"readPassphraseFlags"), @"readPassphraseFlags"}];
+  deserializationError = [(DIBaseParams *)self deserializationError];
+  [coderCopy encodeObject:deserializationError forKey:@"deserializationError"];
 
-  [v8 encodeInteger:-[DIBaseParams blockSize](self forKey:{"blockSize"), @"blockSize"}];
+  [coderCopy encodeInteger:-[DIBaseParams blockSize](self forKey:{"blockSize"), @"blockSize"}];
 }
 
-- (DIBaseParams)initWithURL:(id)a3 error:(id *)a4
+- (DIBaseParams)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v17.receiver = self;
   v17.super_class = DIBaseParams;
   v7 = [(DIBaseParams *)&v17 init];
   if (v7)
   {
-    v8 = [DIURL newDIURLWithNSURL:v6];
+    v8 = [DIURL newDIURLWithNSURL:lCopy];
     inputURL = v7->_inputURL;
     v7->_inputURL = v8;
 
@@ -111,14 +111,14 @@
     v7->_shadowChain = v10;
 
     v7->_blockSize = 512;
-    v12 = [(DIURL *)v7->_inputURL path];
-    if (!v12 || ([MEMORY[0x277CCACE0] componentsWithURL:v6 resolvingAgainstBaseURL:1], v13 = objc_claimAutoreleasedReturnValue(), v13, v12, !v13))
+    path = [(DIURL *)v7->_inputURL path];
+    if (!path || ([MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:1], v13 = objc_claimAutoreleasedReturnValue(), v13, path, !v13))
     {
-      v14 = [DIError nilWithPOSIXCode:22 description:@"Malformed URL format" error:a4];
+      v14 = [DIError nilWithPOSIXCode:22 description:@"Malformed URL format" error:error];
       goto LABEL_9;
     }
 
-    if (![(DIBaseParams *)v7 tryResolvePstackChain:a4])
+    if (![(DIBaseParams *)v7 tryResolvePstackChain:error])
     {
       v15 = 0;
       goto LABEL_10;
@@ -126,7 +126,7 @@
 
     if ([(DIBaseParams *)v7 isPstack]&& ![(DIBaseParams *)v7 supportsPstack])
     {
-      v14 = [DIError nilWithPOSIXCode:22 verboseInfo:@"This operation doesn't support pstack files" error:a4];
+      v14 = [DIError nilWithPOSIXCode:22 verboseInfo:@"This operation doesn't support pstack files" error:error];
       goto LABEL_9;
     }
   }
@@ -139,47 +139,47 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)tryResolvePstackChain:(id *)a3
+- (BOOL)tryResolvePstackChain:(id *)chain
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = [SerializedDiskImageGraph alloc];
-  v6 = [(DIBaseParams *)self inputURL];
+  inputURL = [(DIBaseParams *)self inputURL];
   v29 = 0;
-  v7 = [(SerializedDiskImageGraph *)v5 initWithPstackURL:v6 error:&v29];
+  v7 = [(SerializedDiskImageGraph *)v5 initWithPstackURL:inputURL error:&v29];
   v8 = v29;
 
   if (v7)
   {
     self->_isPstack = 1;
     v9 = v7;
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(DiskImageGraph *)v9 activeNode];
-    if (v11)
+    array = [MEMORY[0x277CBEB18] array];
+    activeNode = [(DiskImageGraph *)v9 activeNode];
+    if (activeNode)
     {
       do
       {
-        v12 = [v11 toDIShadowNode];
-        [v10 addObject:v12];
+        toDIShadowNode = [activeNode toDIShadowNode];
+        [array addObject:toDIShadowNode];
 
-        v13 = [v11 parent];
+        parent = [activeNode parent];
 
-        v11 = v13;
+        activeNode = parent;
       }
 
-      while (v13);
+      while (parent);
     }
 
-    v14 = [v10 lastObject];
-    [v10 removeLastObject];
-    v15 = [v10 reverseObjectEnumerator];
-    v16 = [v15 allObjects];
+    lastObject = [array lastObject];
+    [array removeLastObject];
+    reverseObjectEnumerator = [array reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
-    v17 = [(DIBaseParams *)self shadowChain];
-    v18 = [v17 addShadowNodes:v16 error:a3];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    v18 = [shadowChain addShadowNodes:allObjects error:chain];
 
     if (v18)
     {
-      v19 = [v14 URL];
+      v19 = [lastObject URL];
       inputURL = self->_inputURL;
       self->_inputURL = v19;
     }
@@ -187,8 +187,8 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v21 = [v8 domain];
-  if (![v21 isEqualToString:@"com.apple.DiskImages2.ErrorDomain"])
+  domain = [v8 domain];
+  if (![domain isEqualToString:@"com.apple.DiskImages2.ErrorDomain"])
   {
 
     goto LABEL_14;
@@ -199,7 +199,7 @@ LABEL_10:
   if (!v22)
   {
 LABEL_14:
-    v18 = [DIError failWithInError:v8 outError:a3];
+    v18 = [DIError failWithInError:v8 outError:chain];
     goto LABEL_20;
   }
 
@@ -266,52 +266,52 @@ LABEL_20:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DIBaseParams *)self diskImageParamsXPC];
-  v7 = [v3 stringWithFormat:@"%@[%@]", v5, v6];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  v7 = [v3 stringWithFormat:@"%@[%@]", v5, diskImageParamsXPC];
 
   return v7;
 }
 
-- (BOOL)prepareImageWithXpcHandler:(id)a3 fileMode:(int64_t)a4 error:(id *)a5
+- (BOOL)prepareImageWithXpcHandler:(id)handler fileMode:(int64_t)mode error:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([(DIBaseParams *)self hasUnlockedBackend]|| !*[(DIBaseParams *)self cryptoHeader]|| (v9 = [(DIEncryptionFrontend *)[DIEncryptionUnlocker alloc] initWithParams:self], v10 = [(DIEncryptionFrontend *)v9 unlockWithXpcHandler:v8 error:a5], v9, v10))
+  handlerCopy = handler;
+  if ([(DIBaseParams *)self hasUnlockedBackend]|| !*[(DIBaseParams *)self cryptoHeader]|| (v9 = [(DIEncryptionFrontend *)[DIEncryptionUnlocker alloc] initWithParams:self], v10 = [(DIEncryptionFrontend *)v9 unlockWithXpcHandler:handlerCopy error:error], v9, v10))
   {
-    v11 = [(DIBaseParams *)self shadowChain];
-    v12 = [v11 isEmpty];
+    shadowChain = [(DIBaseParams *)self shadowChain];
+    isEmpty = [shadowChain isEmpty];
 
-    if (v12)
+    if (isEmpty)
     {
-      v13 = [(DIBaseParams *)self shadowChain];
-      v14 = [(DIBaseParams *)self diskImageParamsXPC];
-      [v14 setShadowChain:v13];
+      shadowChain2 = [(DIBaseParams *)self shadowChain];
+      diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+      [diskImageParamsXPC setShadowChain:shadowChain2];
     }
 
     else
     {
-      if (a4 != 2)
+      if (mode != 2)
       {
-        v15 = [(DIBaseParams *)self shadowChain];
-        [v15 openWritable:1 createNonExisting:a4 != 3];
+        shadowChain3 = [(DIBaseParams *)self shadowChain];
+        [shadowChain3 openWritable:1 createNonExisting:mode != 3];
 
-        v16 = [(DIBaseParams *)self shadowChain];
-        v17 = [(DIBaseParams *)self diskImageParamsXPC];
-        [v17 setShadowChain:v16];
+        shadowChain4 = [(DIBaseParams *)self shadowChain];
+        diskImageParamsXPC2 = [(DIBaseParams *)self diskImageParamsXPC];
+        [diskImageParamsXPC2 setShadowChain:shadowChain4];
       }
 
-      v18 = [(DIBaseParams *)self diskImageParamsXPC];
-      v19 = [v18 shadowChain];
-      v20 = v19 == 0;
+      diskImageParamsXPC3 = [(DIBaseParams *)self diskImageParamsXPC];
+      shadowChain5 = [diskImageParamsXPC3 shadowChain];
+      v20 = shadowChain5 == 0;
 
       if (v20)
       {
-        v21 = [(DIBaseParams *)self shadowChain];
-        [v21 openWritable:0 createNonExisting:0];
+        shadowChain6 = [(DIBaseParams *)self shadowChain];
+        [shadowChain6 openWritable:0 createNonExisting:0];
 
-        v22 = [(DIBaseParams *)self shadowChain];
-        v23 = [(DIBaseParams *)self diskImageParamsXPC];
-        [v23 setShadowChain:v22];
+        shadowChain7 = [(DIBaseParams *)self shadowChain];
+        diskImageParamsXPC4 = [(DIBaseParams *)self diskImageParamsXPC];
+        [diskImageParamsXPC4 setShadowChain:shadowChain7];
       }
     }
 
@@ -324,34 +324,34 @@ LABEL_20:
 
 - (BOOL)hasUnlockedBackend
 {
-  v2 = [(DIBaseParams *)self diskImageParamsXPC];
-  v3 = [v2 backendXPC];
-  v4 = [v3 isUnlocked];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  backendXPC = [diskImageParamsXPC backendXPC];
+  isUnlocked = [backendXPC isUnlocked];
 
-  return v4;
+  return isUnlocked;
 }
 
-- (BOOL)validateDeserializationWithError:(id *)a3
+- (BOOL)validateDeserializationWithError:(id *)error
 {
-  v5 = [(DIBaseParams *)self deserializationError];
+  deserializationError = [(DIBaseParams *)self deserializationError];
 
-  if (!v5)
+  if (!deserializationError)
   {
     return 1;
   }
 
-  v6 = [(DIBaseParams *)self deserializationError];
-  v7 = [DIError failWithInError:v6 outError:a3];
+  deserializationError2 = [(DIBaseParams *)self deserializationError];
+  v7 = [DIError failWithInError:deserializationError2 outError:error];
 
   return v7;
 }
 
 - (NSUUID)instanceID
 {
-  v2 = [(DIBaseParams *)self diskImageParamsXPC];
-  v3 = [v2 instanceID];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  instanceID = [diskImageParamsXPC instanceID];
 
-  return v3;
+  return instanceID;
 }
 
 - (BOOL)requiresRootDaemon
@@ -414,9 +414,9 @@ LABEL_15:
   return v10;
 }
 
-- (void)setSymmetricKey:(id)a3
+- (void)setSymmetricKey:(id)key
 {
-  v8 = a3;
+  keyCopy = key;
   mutableSymmetricKey = self->_mutableSymmetricKey;
   if (mutableSymmetricKey)
   {
@@ -425,22 +425,22 @@ LABEL_15:
     self->_mutableSymmetricKey = 0;
   }
 
-  if (v8)
+  if (keyCopy)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:v8];
+    v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithData:keyCopy];
     v7 = self->_mutableSymmetricKey;
     self->_mutableSymmetricKey = v6;
   }
 }
 
-- (BOOL)unlockWithPassphrase:(const char *)a3 error:(id *)a4
+- (BOOL)unlockWithPassphrase:(const char *)passphrase error:(id *)error
 {
-  v7 = [(DIBaseParams *)self diskImageParamsXPC];
-  if (v7)
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  if (diskImageParamsXPC)
   {
   }
 
-  else if (![(DIBaseParams *)self openExistingImageWithError:a4])
+  else if (![(DIBaseParams *)self openExistingImageWithError:error])
   {
     return 0;
   }
@@ -451,7 +451,7 @@ LABEL_15:
   }
 
   v8 = [(DIEncryptionFrontend *)[DIEncryptionUnlocker alloc] initWithParams:self];
-  v9 = [(DIEncryptionFrontend *)v8 unlockWithPassphrase:a3 error:a4];
+  v9 = [(DIEncryptionFrontend *)v8 unlockWithPassphrase:passphrase error:error];
 
   return v9;
 }
@@ -467,12 +467,12 @@ LABEL_15:
 - (shared_ptr<Backend>)backend
 {
   v3 = v2;
-  v8 = [(DIBaseParams *)self diskImageParamsXPC];
-  v4 = [v8 backendXPC];
-  v5 = v4;
-  if (v4)
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  backendXPC = [diskImageParamsXPC backendXPC];
+  v5 = backendXPC;
+  if (backendXPC)
   {
-    [v4 backend];
+    [backendXPC backend];
   }
 
   else
@@ -488,11 +488,11 @@ LABEL_15:
 
 - (void)cryptoHeader
 {
-  v2 = [(DIBaseParams *)self diskImageParamsXPC];
-  v3 = [v2 backendXPC];
-  v4 = [v3 cryptoHeader];
+  diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+  backendXPC = [diskImageParamsXPC backendXPC];
+  cryptoHeader = [backendXPC cryptoHeader];
 
-  return v4;
+  return cryptoHeader;
 }
 
 @end

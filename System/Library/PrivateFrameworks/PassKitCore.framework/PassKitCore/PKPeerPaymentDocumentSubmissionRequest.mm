@@ -1,16 +1,16 @@
 @interface PKPeerPaymentDocumentSubmissionRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentDocumentSubmissionRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v9 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v9 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -105,7 +105,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B47A8 queryParameters:0 appleAccountInformation:v7];
+  v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B47A8 queryParameters:0 appleAccountInformation:informationCopy];
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   if (![(NSArray *)self->_certificates count])
@@ -128,27 +128,27 @@ LABEL_28:
   }
 
   v10 = 0x1E695D000uLL;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   frontImageData = self->_frontImageData;
   if (frontImageData)
   {
     v13 = [(NSData *)frontImageData base64EncodedStringWithOptions:0];
-    [v11 setObject:v13 forKey:@"documentFrontImage"];
+    [dictionary setObject:v13 forKey:@"documentFrontImage"];
   }
 
   backImageData = self->_backImageData;
   if (backImageData)
   {
     v15 = [(NSData *)backImageData base64EncodedStringWithOptions:0];
-    [v11 setObject:v15 forKey:@"documentBackImage"];
+    [dictionary setObject:v15 forKey:@"documentBackImage"];
   }
 
-  [v11 setObject:self->_documentCountryCode forKey:@"documentCountryCode"];
+  [dictionary setObject:self->_documentCountryCode forKey:@"documentCountryCode"];
   v16 = PKPaymentDocumentTypeToString(self->_documentType);
-  [v11 setObject:v16 forKey:@"documentType"];
+  [dictionary setObject:v16 forKey:@"documentType"];
 
   v17 = objc_autoreleasePoolPush();
-  if (![v11 count])
+  if (![dictionary count])
   {
     v25 = 0;
 LABEL_39:
@@ -160,14 +160,14 @@ LABEL_39:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v11 allKeys];
-    v21 = [v19 stringWithFormat:@"Encrypted document data: %@", v20];
+    allKeys = [dictionary allKeys];
+    v21 = [v19 stringWithFormat:@"Encrypted document data: %@", allKeys];
     *buf = 138477827;
     v43 = v21;
     _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "%{private}@", buf, 0xCu);
   }
 
-  v22 = [objc_opt_class() _HTTPBodyWithDictionary:v11];
+  v22 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   certificates = self->_certificates;
   v41 = 0;
   v24 = PKPeerPaymentEncryptDataWithCertChain(v22, certificates, &v41);
@@ -188,17 +188,17 @@ LABEL_39:
   v10 = 0x1E695D000;
 LABEL_40:
   objc_autoreleasePoolPop(v17);
-  v37 = [*(v10 + 3984) dictionary];
+  dictionary2 = [*(v10 + 3984) dictionary];
   if (v24)
   {
     v38 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v24 encoding:4];
-    [v37 setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
-    [v37 setObject:v38 forKey:@"encryptedDocumentData"];
-    v39 = [v25 hexEncoding];
-    [v37 setObject:v39 forKey:@"publicKeyHash"];
+    [dictionary2 setObject:@"EV_ECC_v1-ASN.1" forKey:@"encryptionVersion"];
+    [dictionary2 setObject:v38 forKey:@"encryptedDocumentData"];
+    hexEncoding = [v25 hexEncoding];
+    [dictionary2 setObject:hexEncoding forKey:@"publicKeyHash"];
   }
 
-  v40 = [objc_opt_class() _HTTPBodyWithDictionary:v37];
+  v40 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary2];
   [v9 setHTTPBody:v40];
 
   v35 = [v9 copy];

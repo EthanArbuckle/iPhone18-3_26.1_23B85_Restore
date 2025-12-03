@@ -1,43 +1,43 @@
 @interface FAAppleCashPresentationHandler
-- (FAAppleCashPresentationHandler)initWithNavigationController:(id)a3;
-- (id)peerPaymentPassForAccount:(id)a3 passLibraryDataProvider:(id)a4;
+- (FAAppleCashPresentationHandler)initWithNavigationController:(id)controller;
+- (id)peerPaymentPassForAccount:(id)account passLibraryDataProvider:(id)provider;
 - (void)presentPaymentPassDetailViewController;
-- (void)presentPeerPaymentControllerWithAttributes:(id)a3 completion:(id)a4;
-- (void)presentPeerPaymentControllerWithFamilyCircle:(id)a3 member:(id)a4 attributes:(id)a5;
+- (void)presentPeerPaymentControllerWithAttributes:(id)attributes completion:(id)completion;
+- (void)presentPeerPaymentControllerWithFamilyCircle:(id)circle member:(id)member attributes:(id)attributes;
 @end
 
 @implementation FAAppleCashPresentationHandler
 
-- (FAAppleCashPresentationHandler)initWithNavigationController:(id)a3
+- (FAAppleCashPresentationHandler)initWithNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = FAAppleCashPresentationHandler;
   v6 = [(FAAppleCashPresentationHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationController, a3);
+    objc_storeStrong(&v6->_navigationController, controller);
   }
 
   return v7;
 }
 
-- (void)presentPeerPaymentControllerWithAttributes:(id)a3 completion:(id)a4
+- (void)presentPeerPaymentControllerWithAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x277D08280]);
   [v8 setQualityOfService:33];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttributes_completion___block_invoke;
   v11[3] = &unk_2782F3810;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v6;
-  v10 = v7;
+  selfCopy = self;
+  v14 = completionCopy;
+  v12 = attributesCopy;
+  v9 = attributesCopy;
+  v10 = completionCopy;
   [v8 startRequestWithCompletionHandler:v11];
 }
 
@@ -88,11 +88,11 @@ void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttrib
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)presentPeerPaymentControllerWithFamilyCircle:(id)a3 member:(id)a4 attributes:(id)a5
+- (void)presentPeerPaymentControllerWithFamilyCircle:(id)circle member:(id)member attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  circleCopy = circle;
+  memberCopy = member;
+  attributesCopy = attributes;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -112,8 +112,8 @@ void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttrib
   v12 = v11;
   _Block_object_dispose(&v27, 8);
   v13 = [v11 alloc];
-  v14 = [v8 members];
-  v15 = [v13 initWithFamilyMembers:v14];
+  members = [circleCopy members];
+  v15 = [v13 initWithFamilyMembers:members];
   [(FAAppleCashPresentationHandler *)self setPeerPaymentController:v15];
 
   v27 = 0;
@@ -134,13 +134,13 @@ void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttrib
 
   v17 = v16;
   _Block_object_dispose(&v27, 8);
-  v18 = [[v16 alloc] initWithFAFamilyMember:v9 options:v10];
+  v18 = [[v16 alloc] initWithFAFamilyMember:memberCopy options:attributesCopy];
   [(FAAppleCashPresentationHandler *)self setContext:v18];
 
-  v19 = [(FAAppleCashPresentationHandler *)self peerPaymentController];
-  v20 = [(FAAppleCashPresentationHandler *)self context];
-  v21 = [(FAAppleCashPresentationHandler *)self navigationController];
-  [v19 presentAssociatedAccountsFlowWithPresentationContext:v20 fromNavigationController:v21];
+  peerPaymentController = [(FAAppleCashPresentationHandler *)self peerPaymentController];
+  context = [(FAAppleCashPresentationHandler *)self context];
+  navigationController = [(FAAppleCashPresentationHandler *)self navigationController];
+  [peerPaymentController presentAssociatedAccountsFlowWithPresentationContext:context fromNavigationController:navigationController];
 }
 
 - (void)presentPaymentPassDetailViewController
@@ -166,13 +166,13 @@ void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttrib
   v5 = objc_alloc_init(v3);
   [(FAAppleCashPresentationHandler *)self setDefaultBehavior:v5];
 
-  v6 = [MEMORY[0x277D381A0] sharedInstance];
-  v7 = [v6 account];
+  mEMORY[0x277D381A0] = [MEMORY[0x277D381A0] sharedInstance];
+  account = [mEMORY[0x277D381A0] account];
 
-  v8 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
-  v9 = [v8 passLibraryDataProvider];
-  v25 = v7;
-  v24 = [(FAAppleCashPresentationHandler *)self peerPaymentPassForAccount:v7 passLibraryDataProvider:v9];
+  defaultBehavior = [(FAAppleCashPresentationHandler *)self defaultBehavior];
+  passLibraryDataProvider = [defaultBehavior passLibraryDataProvider];
+  v25 = account;
+  v24 = [(FAAppleCashPresentationHandler *)self peerPaymentPassForAccount:account passLibraryDataProvider:passLibraryDataProvider];
 
   v31 = 0;
   v32 = &v31;
@@ -193,31 +193,31 @@ void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttrib
   v11 = v10;
   _Block_object_dispose(&v31, 8);
   v12 = [v10 alloc];
-  v13 = [MEMORY[0x277D38170] sharedService];
-  v23 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
-  v14 = [v23 peerPaymentDataSource];
-  v15 = [v14 peerPaymentWebService];
-  v16 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
-  v17 = [v16 passLibraryDataProvider];
-  v18 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
-  v19 = [v18 paymentDataProvider];
-  v20 = [v12 initWithPass:v24 group:0 groupsController:0 webService:v13 peerPaymentWebService:v15 style:1 passLibraryDataProvider:v17 paymentServiceDataProvider:v19];
+  mEMORY[0x277D38170] = [MEMORY[0x277D38170] sharedService];
+  defaultBehavior2 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
+  peerPaymentDataSource = [defaultBehavior2 peerPaymentDataSource];
+  peerPaymentWebService = [peerPaymentDataSource peerPaymentWebService];
+  defaultBehavior3 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
+  passLibraryDataProvider2 = [defaultBehavior3 passLibraryDataProvider];
+  defaultBehavior4 = [(FAAppleCashPresentationHandler *)self defaultBehavior];
+  paymentDataProvider = [defaultBehavior4 paymentDataProvider];
+  v20 = [v12 initWithPass:v24 group:0 groupsController:0 webService:mEMORY[0x277D38170] peerPaymentWebService:peerPaymentWebService style:1 passLibraryDataProvider:passLibraryDataProvider2 paymentServiceDataProvider:paymentDataProvider];
   [(FAAppleCashPresentationHandler *)self setPassDetailsViewController:v20];
 
-  v21 = [(FAAppleCashPresentationHandler *)self navigationController];
-  v22 = [(FAAppleCashPresentationHandler *)self passDetailsViewController];
-  [v21 pushViewController:v22 animated:1];
+  navigationController = [(FAAppleCashPresentationHandler *)self navigationController];
+  passDetailsViewController = [(FAAppleCashPresentationHandler *)self passDetailsViewController];
+  [navigationController pushViewController:passDetailsViewController animated:1];
 }
 
-- (id)peerPaymentPassForAccount:(id)a3 passLibraryDataProvider:(id)a4
+- (id)peerPaymentPassForAccount:(id)account passLibraryDataProvider:(id)provider
 {
-  v5 = a4;
-  v6 = [a3 associatedPassUniqueID];
-  v7 = [v5 passWithUniqueID:v6];
+  providerCopy = provider;
+  associatedPassUniqueID = [account associatedPassUniqueID];
+  v7 = [providerCopy passWithUniqueID:associatedPassUniqueID];
 
-  v8 = [v7 paymentPass];
+  paymentPass = [v7 paymentPass];
 
-  return v8;
+  return paymentPass;
 }
 
 void __88__FAAppleCashPresentationHandler_presentPeerPaymentControllerWithAttributes_completion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

@@ -1,14 +1,14 @@
 @interface _MKResizingLayer
 - (NSArray)sizeToBoundsLayers;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setMask:(id)a3;
-- (void)sizeSublayerToBounds:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setMask:(id)mask;
+- (void)sizeSublayerToBounds:(id)bounds;
 @end
 
 @implementation _MKResizingLayer
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -18,8 +18,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(_MKResizingLayer *)self sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  sublayers = [(_MKResizingLayer *)self sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -31,53 +31,53 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) setContentsScale:a3];
+        [*(*(&v11 + 1) + 8 * v9++) setContentsScale:scale];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(_MKResizingLayer *)self mask];
-  [v10 setContentsScale:a3];
+  mask = [(_MKResizingLayer *)self mask];
+  [mask setContentsScale:scale];
 }
 
-- (void)setMask:(id)a3
+- (void)setMask:(id)mask
 {
   v17.receiver = self;
   v17.super_class = _MKResizingLayer;
-  v4 = a3;
-  [(_MKResizingLayer *)&v17 setMask:v4];
+  maskCopy = mask;
+  [(_MKResizingLayer *)&v17 setMask:maskCopy];
   [(_MKResizingLayer *)self contentsScale:v17.receiver];
   v6 = v5;
-  v7 = [(_MKResizingLayer *)self mask];
-  [v7 setContentsScale:v6];
+  mask = [(_MKResizingLayer *)self mask];
+  [mask setContentsScale:v6];
 
-  LODWORD(v7) = [(NSMutableArray *)self->_sizedLayers containsObject:v4];
-  if (v7)
+  LODWORD(mask) = [(NSMutableArray *)self->_sizedLayers containsObject:maskCopy];
+  if (mask)
   {
     [(_MKResizingLayer *)self bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(_MKResizingLayer *)self mask];
-    [v16 setFrame:{v9, v11, v13, v15}];
+    mask2 = [(_MKResizingLayer *)self mask];
+    [mask2 setFrame:{v9, v11, v13, v15}];
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v30 = *MEMORY[0x1E69E9840];
   if (self->_needsLayoutOnBoundsChange)
   {
@@ -90,17 +90,17 @@
 
   else
   {
-    v15 = a3.size.height;
-    v13 = a3.size.width;
-    v11 = a3.origin.y;
-    v9 = a3.origin.x;
+    v15 = bounds.size.height;
+    v13 = bounds.size.width;
+    v11 = bounds.origin.y;
+    v9 = bounds.origin.x;
   }
 
   v28.receiver = self;
   v28.super_class = _MKResizingLayer;
   [(_MKResizingLayer *)&v28 setBounds:x, y, width, height];
-  v16 = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
-  if ((v16 & 1) == 0)
+  _mapkit_shouldAdoptImplicitAnimationParameters = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
+  if ((_mapkit_shouldAdoptImplicitAnimationParameters & 1) == 0)
   {
     v17 = +[MKThreadContext currentContext];
     [v17 _CA_setDisableActions:1];
@@ -149,25 +149,25 @@
     [(_MKResizingLayer *)self layoutSublayers];
   }
 
-  if ((v16 & 1) == 0)
+  if ((_mapkit_shouldAdoptImplicitAnimationParameters & 1) == 0)
   {
     v23 = +[MKThreadContext currentContext];
     [v23 _CA_setDisableActions:0];
   }
 }
 
-- (void)sizeSublayerToBounds:(id)a3
+- (void)sizeSublayerToBounds:(id)bounds
 {
   sizedLayers = self->_sizedLayers;
   if (sizedLayers)
   {
 
-    [(NSMutableArray *)sizedLayers addObject:a3];
+    [(NSMutableArray *)sizedLayers addObject:bounds];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF70] arrayWithObject:a3];
+    v5 = [MEMORY[0x1E695DF70] arrayWithObject:bounds];
     v6 = self->_sizedLayers;
     self->_sizedLayers = v5;
   }

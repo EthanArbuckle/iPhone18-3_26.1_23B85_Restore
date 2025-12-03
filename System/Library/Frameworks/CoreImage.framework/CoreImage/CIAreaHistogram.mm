@@ -40,10 +40,10 @@
     return 0;
   }
 
-  v6 = [(NSNumber *)self->inputCount unsignedIntValue];
-  v7 = v6;
+  unsignedIntValue = [(NSNumber *)self->inputCount unsignedIntValue];
+  v7 = unsignedIntValue;
   inputImage = self->inputImage;
-  if (v6 < 0x100)
+  if (unsignedIntValue < 0x100)
   {
     v9 = 256;
 LABEL_13:
@@ -61,15 +61,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((v6 & (v6 - 1)) != 0)
+  if ((unsignedIntValue & (unsignedIntValue - 1)) != 0)
   {
-    v10 = (v6 - 1) | ((v6 - 1) >> 1) | (((v6 - 1) | ((v6 - 1) >> 1)) >> 2);
+    v10 = (unsignedIntValue - 1) | ((unsignedIntValue - 1) >> 1) | (((unsignedIntValue - 1) | ((unsignedIntValue - 1) >> 1)) >> 2);
     v11 = v10 | (v10 >> 4) | ((v10 | (v10 >> 4)) >> 8);
     v9 = (v11 | HIWORD(v11)) + 1;
     goto LABEL_13;
   }
 
-  v9 = v6;
+  v9 = unsignedIntValue;
 LABEL_14:
   v21 = *(&v38 + 1);
   v22 = v39;
@@ -400,8 +400,8 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  v3 = [(NSNumber *)self->inputCount intValue];
-  if (v3 - 257 <= 0xFFFFFEFF)
+  intValue = [(NSNumber *)self->inputCount intValue];
+  if (intValue - 257 <= 0xFFFFFEFF)
   {
     v4 = ci_logger_filter();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -412,10 +412,10 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  v7 = v3;
-  if (v3 <= 0xFF)
+  v7 = intValue;
+  if (intValue <= 0xFF)
   {
-    -[CIImage filteredImage:keysAndValues:](self->inputImage, "filteredImage:keysAndValues:", @"CIExposureAdjust", @"inputEV", [MEMORY[0x1E696AD98] numberWithDouble:{log2(vcvtd_n_f64_u32(v3, 8uLL))}], 0);
+    -[CIImage filteredImage:keysAndValues:](self->inputImage, "filteredImage:keysAndValues:", @"CIExposureAdjust", @"inputEV", [MEMORY[0x1E696AD98] numberWithDouble:{log2(vcvtd_n_f64_u32(intValue, 8uLL))}], 0);
   }
 
   v8 = 0;
@@ -437,15 +437,15 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
     [(CIAreaHistogram *)self _netExtent];
   }
 
-  v3 = [(NSNumber *)self->inputCount intValue];
+  intValue = [(NSNumber *)self->inputCount intValue];
   [(NSNumber *)self->inputScale doubleValue];
   v5 = v4;
   v6 = *(&v34 + 1);
   v7 = *&v35;
   inputImage = self->inputImage;
-  if (v3 >= 256)
+  if (intValue >= 256)
   {
-    v19 = v3;
+    v19 = intValue;
   }
 
   else
@@ -456,15 +456,15 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
     v13 = v12;
     v15 = v14;
     v17 = v16;
-    v18 = vcvtd_n_f64_s32(v3, 8uLL);
+    v18 = vcvtd_n_f64_s32(intValue, 8uLL);
     *&v18 = v18;
     v37[0] = inputImage;
     v37[1] = [MEMORY[0x1E696AD98] numberWithFloat:v18];
     inputImage = -[CIColorKernel applyWithExtent:arguments:](v9, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2], v11, v13, v15, v17);
-    v19 = v3;
+    v19 = intValue;
   }
 
-  if (v3 <= 256)
+  if (intValue <= 256)
   {
     v20 = 266;
   }
@@ -483,12 +483,12 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
   XXH64_update(v33, &__src, 8uLL);
   __src = v35;
   XXH64_update(v33, &__src, 8uLL);
-  LODWORD(__src) = v3;
+  LODWORD(__src) = intValue;
   XXH64_update(v33, &__src, 4uLL);
   v21 = v5 / (v6 * v7);
   __src = v21;
   XXH64_update(v33, &__src, 8uLL);
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CIAreaHistogram_%dbins", v3];
+  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CIAreaHistogram_%dbins", intValue];
   v23 = XXH64_digest(v33);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -500,7 +500,7 @@ double __38__CIAreaHistogram_MPS__outputImageMPS__block_invoke_2(uint64_t a1)
   v25[1] = 3221225472;
   v25[2] = __36__CIAreaHistogram_outputImageNonMPS__block_invoke_2;
   v25[3] = &__block_descriptor_68_e62_v24__0___CIImageProcessorInput__8___CIImageProcessorOutput__16l;
-  v29 = v3;
+  v29 = intValue;
   v26 = v34;
   v27 = v35;
   v28 = v21;

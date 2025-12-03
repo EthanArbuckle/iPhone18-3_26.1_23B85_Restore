@@ -1,7 +1,7 @@
 @interface PXMiniHTMLParser
 + (NSDictionary)charactersForEntityNames;
-+ (id)stringByConvertingToHTML:(id)a3;
-- (PXMiniHTMLParser)initWithString:(id)a3;
++ (id)stringByConvertingToHTML:(id)l;
+- (PXMiniHTMLParser)initWithString:(id)string;
 - (void)parse;
 @end
 
@@ -10,8 +10,8 @@
 - (void)parse
 {
   v3 = [PXMiniXMLParser alloc];
-  v4 = [(PXMiniHTMLParser *)self _string];
-  v5 = [(PXMiniXMLParser *)v3 initWithString:v4];
+  _string = [(PXMiniHTMLParser *)self _string];
+  v5 = [(PXMiniXMLParser *)v3 initWithString:_string];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -129,31 +129,31 @@ void __25__PXMiniHTMLParser_parse__block_invoke_4(uint64_t a1, void *a2)
   }
 }
 
-- (PXMiniHTMLParser)initWithString:(id)a3
+- (PXMiniHTMLParser)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = PXMiniHTMLParser;
   v6 = [(PXMiniHTMLParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__string, a3);
+    objc_storeStrong(&v6->__string, string);
   }
 
   return v7;
 }
 
-+ (id)stringByConvertingToHTML:(id)a3
++ (id)stringByConvertingToHTML:(id)l
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__256372;
   v14 = __Block_byref_object_dispose__256373;
-  v3 = a3;
-  v15 = v3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"&" withString:@"&amp"];;
+  lCopy = l;
+  v15 = lCopy;
+  v4 = [lCopy stringByReplacingOccurrencesOfString:@"&" withString:@"&amp"];;
   v5 = v11[5];
   v11[5] = v4;
 

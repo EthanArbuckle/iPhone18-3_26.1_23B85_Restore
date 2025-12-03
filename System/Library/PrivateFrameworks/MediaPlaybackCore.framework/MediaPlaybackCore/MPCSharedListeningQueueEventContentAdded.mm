@@ -1,5 +1,5 @@
 @interface MPCSharedListeningQueueEventContentAdded
-- (MPCSharedListeningQueueEventContentAdded)initWithItems:(id)a3 container:(id)a4;
+- (MPCSharedListeningQueueEventContentAdded)initWithItems:(id)items container:(id)container;
 - (id)description;
 @end
 
@@ -22,18 +22,18 @@
   return v3;
 }
 
-- (MPCSharedListeningQueueEventContentAdded)initWithItems:(id)a3 container:(id)a4
+- (MPCSharedListeningQueueEventContentAdded)initWithItems:(id)items container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = MPCSharedListeningQueueEventContentAdded;
   v8 = [(MPCSharedListeningQueueEventContentAdded *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_container, a4);
-    v10 = [v6 copy];
+    objc_storeStrong(&v8->_container, container);
+    v10 = [itemsCopy copy];
     items = v9->_items;
     v9->_items = v10;
   }

@@ -1,45 +1,45 @@
 @interface IDSDeviceIDEncrypter
-- (IDSDeviceIDEncrypter)initWithPublicKeyStorage:(id)a3 accountController:(id)a4 fullDeviceIdentityContainerEncrypter:(id)a5 rateLimiter:(id)a6 forceLegacy:(BOOL)a7;
-- (id)_decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5;
-- (id)_decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5 error:(id *)a6;
-- (id)_legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 error:(id *)a5;
-- (id)_validateDecryptionParametersWithError:(id *)a3;
-- (id)decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5 onQueue:(id)a6 error:(id *)a7;
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 error:(id *)a6;
-- (void)decryptData:(id)a3 usingIdentifier:(id)a4 onQueue:(id)a5 isRetry:(BOOL)a6 replayKey:(id)a7 withCompletion:(id)a8;
-- (void)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 withCompletion:(id)a6;
+- (IDSDeviceIDEncrypter)initWithPublicKeyStorage:(id)storage accountController:(id)controller fullDeviceIdentityContainerEncrypter:(id)encrypter rateLimiter:(id)limiter forceLegacy:(BOOL)legacy;
+- (id)_decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry;
+- (id)_decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry error:(id *)error;
+- (id)_legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes error:(id *)error;
+- (id)_validateDecryptionParametersWithError:(id *)error;
+- (id)decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry onQueue:(id)queue error:(id *)error;
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue error:(id *)error;
+- (void)decryptData:(id)data usingIdentifier:(id)identifier onQueue:(id)queue isRetry:(BOOL)retry replayKey:(id)key withCompletion:(id)completion;
+- (void)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation IDSDeviceIDEncrypter
 
-- (IDSDeviceIDEncrypter)initWithPublicKeyStorage:(id)a3 accountController:(id)a4 fullDeviceIdentityContainerEncrypter:(id)a5 rateLimiter:(id)a6 forceLegacy:(BOOL)a7
+- (IDSDeviceIDEncrypter)initWithPublicKeyStorage:(id)storage accountController:(id)controller fullDeviceIdentityContainerEncrypter:(id)encrypter rateLimiter:(id)limiter forceLegacy:(BOOL)legacy
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  storageCopy = storage;
+  controllerCopy = controller;
+  encrypterCopy = encrypter;
+  limiterCopy = limiter;
   v20.receiver = self;
   v20.super_class = IDSDeviceIDEncrypter;
   v17 = [(IDSDeviceIDEncrypter *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_publicKeyStorage, a3);
-    objc_storeStrong(&v18->_accountController, a4);
-    objc_storeStrong(&v18->_fullDeviceIdentityContainerEncrypter, a5);
-    objc_storeStrong(&v18->_rateLimiter, a6);
-    v18->_forceLegacy = a7;
+    objc_storeStrong(&v17->_publicKeyStorage, storage);
+    objc_storeStrong(&v18->_accountController, controller);
+    objc_storeStrong(&v18->_fullDeviceIdentityContainerEncrypter, encrypter);
+    objc_storeStrong(&v18->_rateLimiter, limiter);
+    v18->_forceLegacy = legacy;
   }
 
   return v18;
 }
 
-- (id)_legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 error:(id *)a5
+- (id)_legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IDSDeviceIDEncrypter *)self deviceID];
-  v11 = [v10 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
+  dataCopy = data;
+  attributesCopy = attributes;
+  deviceID = [(IDSDeviceIDEncrypter *)self deviceID];
+  v11 = [deviceID isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
 
   if (v11)
   {
@@ -57,12 +57,12 @@
       _IDSLogTransport();
     }
 
-    if (a5)
+    if (error)
     {
       v13 = [NSError errorWithDomain:IDSEncryptionErrorDomain code:2 userInfo:0];
 LABEL_17:
       v16 = 0;
-      *a5 = v13;
+      *error = v13;
       goto LABEL_27;
     }
 
@@ -71,9 +71,9 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  v14 = [(IDSDeviceIDEncrypter *)self deviceID];
+  deviceID2 = [(IDSDeviceIDEncrypter *)self deviceID];
 
-  if (!v14)
+  if (!deviceID2)
   {
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -89,7 +89,7 @@ LABEL_18:
       _IDSLogTransport();
     }
 
-    if (a5)
+    if (error)
     {
       v13 = [NSError errorWithDomain:IDSEncryptionErrorDomain code:3 userInfo:0];
       goto LABEL_17;
@@ -101,7 +101,7 @@ LABEL_18:
   v15 = [(IDSPublicKeyStorage *)self->_publicKeyStorage publicDeviceIdentityContainerForDeviceID:self->_deviceID];
   if (v15)
   {
-    v16 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter legacyEncryptData:v8 withEncryptedAttributes:v9 withPublicDeviceIdentityContainer:v15 error:a5];
+    v16 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter legacyEncryptData:dataCopy withEncryptedAttributes:attributesCopy withPublicDeviceIdentityContainer:v15 error:error];
   }
 
   else
@@ -109,28 +109,28 @@ LABEL_18:
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v19 = [(IDSDeviceIDEncrypter *)self deviceID];
+      deviceID3 = [(IDSDeviceIDEncrypter *)self deviceID];
       *buf = 138412290;
-      v25 = v19;
+      v25 = deviceID3;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Missing identity to encrypt with {deviceID: %@}", buf, 0xCu);
     }
 
     if (os_log_shim_legacy_logging_enabled())
     {
-      v21 = [(IDSDeviceIDEncrypter *)self deviceID];
+      deviceID4 = [(IDSDeviceIDEncrypter *)self deviceID];
       _IDSWarnV();
 
-      v22 = [(IDSDeviceIDEncrypter *)self deviceID];
+      deviceID5 = [(IDSDeviceIDEncrypter *)self deviceID];
       _IDSLogV();
 
-      v23 = [(IDSDeviceIDEncrypter *)self deviceID];
+      deviceID6 = [(IDSDeviceIDEncrypter *)self deviceID];
       _IDSLogTransport();
     }
 
-    if (a5)
+    if (error)
     {
       [NSError errorWithDomain:IDSEncryptionErrorDomain code:4 userInfo:0];
-      *a5 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -144,11 +144,11 @@ LABEL_27:
   return v16;
 }
 
-- (id)_validateDecryptionParametersWithError:(id *)a3
+- (id)_validateDecryptionParametersWithError:(id *)error
 {
-  v5 = [(IDSDeviceIDEncrypter *)self deviceID];
+  deviceID = [(IDSDeviceIDEncrypter *)self deviceID];
 
-  if (v5)
+  if (deviceID)
   {
     v6 = [(IDSPublicKeyStorage *)self->_publicKeyStorage publicDeviceIdentityContainerForDeviceID:self->_deviceID];
     v7 = v6;
@@ -162,27 +162,27 @@ LABEL_27:
       v10 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [(IDSDeviceIDEncrypter *)self deviceID];
+        deviceID2 = [(IDSDeviceIDEncrypter *)self deviceID];
         *buf = 138412290;
-        v17 = v11;
+        v17 = deviceID2;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Missing identity to decrypt with {deviceID: %@}", buf, 0xCu);
       }
 
       if (os_log_shim_legacy_logging_enabled())
       {
-        v13 = [(IDSDeviceIDEncrypter *)self deviceID];
+        deviceID3 = [(IDSDeviceIDEncrypter *)self deviceID];
         _IDSWarnV();
 
-        v14 = [(IDSDeviceIDEncrypter *)self deviceID];
+        deviceID4 = [(IDSDeviceIDEncrypter *)self deviceID];
         _IDSLogV();
 
-        v15 = [(IDSDeviceIDEncrypter *)self deviceID];
+        deviceID5 = [(IDSDeviceIDEncrypter *)self deviceID];
         _IDSLogTransport();
       }
 
-      if (a3)
+      if (error)
       {
-        *a3 = [NSError errorWithDomain:IDSDecryptionErrorDomain code:4 userInfo:0];
+        *error = [NSError errorWithDomain:IDSDecryptionErrorDomain code:4 userInfo:0];
       }
     }
   }
@@ -203,10 +203,10 @@ LABEL_27:
       _IDSLogTransport();
     }
 
-    if (a3)
+    if (error)
     {
       [NSError errorWithDomain:IDSDecryptionErrorDomain code:3 userInfo:0];
-      *a3 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -218,14 +218,14 @@ LABEL_27:
   return v7;
 }
 
-- (id)_decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5 error:(id *)a6
+- (id)_decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(IDSDeviceIDEncrypter *)self _validateDecryptionParametersWithError:a6];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v11 = [(IDSDeviceIDEncrypter *)self _validateDecryptionParametersWithError:error];
   if (v11)
   {
-    v12 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter decryptData:v9 withPublicDeviceIdentityContainer:v11 error:a6 usingIdentifier:v10 isRetry:0];
+    v12 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter decryptData:dataCopy withPublicDeviceIdentityContainer:v11 error:error usingIdentifier:identifierCopy isRetry:0];
   }
 
   else
@@ -236,33 +236,33 @@ LABEL_27:
   return v12;
 }
 
-- (id)_decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5
+- (id)_decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v14 = 0;
   v9 = [(IDSDeviceIDEncrypter *)self _validateDecryptionParametersWithError:&v14];
   v10 = v14;
   if (v9)
   {
-    v11 = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter decryptData:v7 decryptionContext:0 withPublicDeviceIdentityContainer:v9 usingIdentifier:v8 isRetry:0];
+    promise = [(IDSMPFullDeviceIdentityContainerEncrypter *)self->_fullDeviceIdentityContainerEncrypter decryptData:dataCopy decryptionContext:0 withPublicDeviceIdentityContainer:v9 usingIdentifier:identifierCopy isRetry:0];
   }
 
   else
   {
     v12 = objc_alloc_init(CUTUnsafePromiseSeal);
     [v12 failWithError:v10];
-    v11 = [v12 promise];
+    promise = [v12 promise];
   }
 
-  return v11;
+  return promise;
 }
 
-- (id)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 error:(id *)a6
+- (id)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  attributesCopy = attributes;
+  queueCopy = queue;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -281,18 +281,18 @@ LABEL_27:
   v18[3] = &unk_100BD98F0;
   v21 = &v29;
   v18[4] = self;
-  v13 = v10;
+  v13 = dataCopy;
   v19 = v13;
-  v14 = v11;
+  v14 = attributesCopy;
   v20 = v14;
   v22 = &v23;
-  [v12 performSyncBlock:v18];
-  if (a6)
+  [queueCopy performSyncBlock:v18];
+  if (error)
   {
     v15 = v24[5];
     if (v15)
     {
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -304,14 +304,14 @@ LABEL_27:
   return v16;
 }
 
-- (void)legacyEncryptData:(id)a3 withEncryptedAttributes:(id)a4 onQueue:(id)a5 withCompletion:(id)a6
+- (void)legacyEncryptData:(id)data withEncryptedAttributes:(id)attributes onQueue:(id)queue withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(IDSDeviceIDEncrypter *)self deviceID];
-  v15 = [v14 isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
+  dataCopy = data;
+  attributesCopy = attributes;
+  queueCopy = queue;
+  completionCopy = completion;
+  deviceID = [(IDSDeviceIDEncrypter *)self deviceID];
+  v15 = [deviceID isEqualToString:IDSDeviceDefaultPairedDeviceUniqueID];
 
   if (v15)
   {
@@ -330,7 +330,7 @@ LABEL_27:
     }
 
     v17 = [NSError errorWithDomain:IDSEncryptionErrorDomain code:2 userInfo:0];
-    (*(v13 + 2))(v13, 0, v17, 0);
+    (*(completionCopy + 2))(completionCopy, 0, v17, 0);
   }
 
   v22[0] = _NSConcreteStackBlock;
@@ -338,22 +338,22 @@ LABEL_27:
   v22[2] = sub_10037F920;
   v22[3] = &unk_100BD9620;
   v22[4] = self;
-  v23 = v10;
-  v25 = v12;
-  v26 = v13;
-  v24 = v11;
-  v18 = v12;
-  v19 = v13;
-  v20 = v11;
-  v21 = v10;
+  v23 = dataCopy;
+  v25 = queueCopy;
+  v26 = completionCopy;
+  v24 = attributesCopy;
+  v18 = queueCopy;
+  v19 = completionCopy;
+  v20 = attributesCopy;
+  v21 = dataCopy;
   [v18 performAsyncBlock:v22];
 }
 
-- (id)decryptData:(id)a3 usingIdentifier:(id)a4 isRetry:(BOOL)a5 onQueue:(id)a6 error:(id *)a7
+- (id)decryptData:(id)data usingIdentifier:(id)identifier isRetry:(BOOL)retry onQueue:(id)queue error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -372,16 +372,16 @@ LABEL_27:
   v19[3] = &unk_100BD9918;
   v22 = &v31;
   v19[4] = self;
-  v15 = v12;
+  v15 = dataCopy;
   v20 = v15;
-  v16 = v13;
-  v24 = a5;
+  v16 = identifierCopy;
+  retryCopy = retry;
   v21 = v16;
   v23 = &v25;
-  [v14 performSyncBlock:v19];
-  if (a7)
+  [queueCopy performSyncBlock:v19];
+  if (error)
   {
-    *a7 = v26[5];
+    *error = v26[5];
   }
 
   v17 = v32[5];
@@ -392,24 +392,24 @@ LABEL_27:
   return v17;
 }
 
-- (void)decryptData:(id)a3 usingIdentifier:(id)a4 onQueue:(id)a5 isRetry:(BOOL)a6 replayKey:(id)a7 withCompletion:(id)a8
+- (void)decryptData:(id)data usingIdentifier:(id)identifier onQueue:(id)queue isRetry:(BOOL)retry replayKey:(id)key withCompletion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100380328;
   v19[3] = &unk_100BD9990;
   v19[4] = self;
-  v20 = v13;
-  v24 = a6;
-  v22 = a5;
-  v23 = a8;
-  v21 = v14;
-  v15 = v22;
-  v16 = v23;
-  v17 = v14;
-  v18 = v13;
+  v20 = dataCopy;
+  retryCopy = retry;
+  queueCopy = queue;
+  completionCopy = completion;
+  v21 = identifierCopy;
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v17 = identifierCopy;
+  v18 = dataCopy;
   [v15 performAsyncBlock:v19];
 }
 

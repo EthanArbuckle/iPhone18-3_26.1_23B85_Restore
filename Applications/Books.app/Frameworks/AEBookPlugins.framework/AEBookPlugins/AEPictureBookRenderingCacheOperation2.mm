@@ -1,38 +1,38 @@
 @interface AEPictureBookRenderingCacheOperation2
-+ (id)renderCacheWithOptions:(unint64_t)a3;
++ (id)renderCacheWithOptions:(unint64_t)options;
 - (AEPaginatedBookSnapshotWebViewBuilder)webViewBuilder;
-- (AEPictureBookRenderingCacheOperation2)initWithOptions:(int64_t)a3;
+- (AEPictureBookRenderingCacheOperation2)initWithOptions:(int64_t)options;
 - (AEPictureBookRenderingPiggyBack)piggyBack;
 - (CGSize)snapshotSize;
-- (id)generateImage:(CGSize)a3;
+- (id)generateImage:(CGSize)image;
 - (void)_releaseWebView;
-- (void)_snapshotPathForKey:(id *)a3 name:(id *)a4;
+- (void)_snapshotPathForKey:(id *)key name:(id *)name;
 - (void)_takeSnapshot;
 - (void)_takeSnapshotWhenReady;
-- (void)_takeSnapshotWithConfiguration:(id)a3 retryOnBlank:(BOOL)a4 completionHandler:(id)a5;
+- (void)_takeSnapshotWithConfiguration:(id)configuration retryOnBlank:(BOOL)blank completionHandler:(id)handler;
 - (void)_timeoutWaitingForFirstPaint;
 - (void)_updateSignal;
-- (void)addExtraCompletion:(id)a3;
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4;
-- (void)navigationHandler:(id)a3 failedToLoadURL:(id)a4 error:(id)a5;
-- (void)navigationHandlerFirstSignificantPaintCompleted:(id)a3;
+- (void)addExtraCompletion:(id)completion;
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l;
+- (void)navigationHandler:(id)handler failedToLoadURL:(id)l error:(id)error;
+- (void)navigationHandlerFirstSignificantPaintCompleted:(id)completed;
 - (void)setupWebView;
 @end
 
 @implementation AEPictureBookRenderingCacheOperation2
 
-+ (id)renderCacheWithOptions:(unint64_t)a3
++ (id)renderCacheWithOptions:(unint64_t)options
 {
-  v3 = [[AEPictureBookRenderingCacheOperation2 alloc] initWithOptions:a3];
+  v3 = [[AEPictureBookRenderingCacheOperation2 alloc] initWithOptions:options];
 
   return v3;
 }
 
-- (AEPictureBookRenderingCacheOperation2)initWithOptions:(int64_t)a3
+- (AEPictureBookRenderingCacheOperation2)initWithOptions:(int64_t)options
 {
   v4.receiver = self;
   v4.super_class = AEPictureBookRenderingCacheOperation2;
-  result = [(AEPictureBookRenderingCacheOperation2 *)&v4 initWithOptions:a3];
+  result = [(AEPictureBookRenderingCacheOperation2 *)&v4 initWithOptions:options];
   if (result)
   {
     result->_extraCompletionsAccessLock._os_unfair_lock_opaque = 0;
@@ -45,20 +45,20 @@
 {
   if ([(AEPictureBookRenderingCacheOperation2 *)self isCancelled])
   {
-    v35 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
-    dispatch_semaphore_signal(v35);
+    dispatchSemaphore = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
+    dispatch_semaphore_signal(dispatchSemaphore);
   }
 
   else
   {
-    v3 = [(AEPictureBookRenderingCacheOperation2 *)self pageNumber];
+    pageNumber = [(AEPictureBookRenderingCacheOperation2 *)self pageNumber];
     if (!self->_webView)
     {
       [(AEPictureBookRenderingCacheOperation2 *)self desiredSize];
       width = v4;
       height = v6;
-      v8 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
-      [v8 fixedLayoutSize];
+      bookInfoSnapshot = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
+      [bookInfoSnapshot fixedLayoutSize];
       v10 = v9;
       v12 = v11;
 
@@ -74,33 +74,33 @@
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_webViewBuilder);
-      v14 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
-      v15 = [WeakRetained webViewForSnapshotting:v14 size:{width, height}];
+      bookInfoSnapshot2 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
+      v15 = [WeakRetained webViewForSnapshotting:bookInfoSnapshot2 size:{width, height}];
       webView = self->_webView;
       self->_webView = v15;
 
-      v17 = [(WKWebView *)self->_webView scrollView];
-      [v17 _setPocketsEnabled:0];
+      scrollView = [(WKWebView *)self->_webView scrollView];
+      [scrollView _setPocketsEnabled:0];
 
-      v18 = [(WKWebView *)self->_webView be_navigationHandler];
-      [v18 setDelegate:self];
+      be_navigationHandler = [(WKWebView *)self->_webView be_navigationHandler];
+      [be_navigationHandler setDelegate:self];
     }
 
     v19 = objc_loadWeakRetained(&self->_piggyBack);
 
     if (v19)
     {
-      v20 = (v3 - 1);
-      v21 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
-      v22 = [v21 spineIndexInPackage];
-      v23 = +[BECFIUtilitiesJS textNodeCharacterCountsScriptForSpineIndex:documentOrdinal:](BECFIUtilitiesJS, "textNodeCharacterCountsScriptForSpineIndex:documentOrdinal:", [v22 integerValue], v20);
+      v20 = (pageNumber - 1);
+      bookInfoSnapshot3 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
+      spineIndexInPackage = [bookInfoSnapshot3 spineIndexInPackage];
+      v23 = +[BECFIUtilitiesJS textNodeCharacterCountsScriptForSpineIndex:documentOrdinal:](BECFIUtilitiesJS, "textNodeCharacterCountsScriptForSpineIndex:documentOrdinal:", [spineIndexInPackage integerValue], v20);
 
-      v24 = [(AEPictureBookRenderingCacheOperation2 *)self piggyBack];
-      v25 = [v24 navigationInfoHrefsForOrdinal:v20];
+      piggyBack = [(AEPictureBookRenderingCacheOperation2 *)self piggyBack];
+      v25 = [piggyBack navigationInfoHrefsForOrdinal:v20];
       v26 = [BECFIUtilitiesJS cfisForHrefsScript:v25];
 
       objc_initWeak(&location, self);
-      v27 = [(WKWebView *)self->_webView be_navigationHandler];
+      be_navigationHandler2 = [(WKWebView *)self->_webView be_navigationHandler];
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
       v36[2] = sub_E0F2C;
@@ -111,34 +111,34 @@
       v37 = v28;
       v29 = v23;
       v38 = v29;
-      [v27 performAfterLoadCompleteOrFailure:v36];
+      [be_navigationHandler2 performAfterLoadCompleteOrFailure:v36];
 
       objc_destroyWeak(v39);
       objc_destroyWeak(&location);
     }
 
-    v30 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
+    webView = [(AEPictureBookRenderingCacheOperation2 *)self webView];
     v31 = [(AEPictureBookRenderingCacheOperation2 *)self url];
     v32 = BEURLHandleriBooksImgUrlFromiBooksURL();
     v33 = [NSURLRequest requestWithURL:v32];
-    v34 = [v30 loadRequest:v33];
+    v34 = [webView loadRequest:v33];
   }
 }
 
-- (void)_snapshotPathForKey:(id *)a3 name:(id *)a4
+- (void)_snapshotPathForKey:(id *)key name:(id *)name
 {
-  if (a3 && a4)
+  if (key && name)
   {
-    v13 = [(AEPictureBookRenderingCacheOperation2 *)self storageKey];
-    v7 = [v13 componentsSeparatedByString:@""];;
+    storageKey = [(AEPictureBookRenderingCacheOperation2 *)self storageKey];
+    v7 = [storageKey componentsSeparatedByString:@""];;
     v8 = [v7 objectAtIndex:1];
-    *a3 = [NSString stringWithFormat:@"snap_%@", v8];
+    *key = [NSString stringWithFormat:@"snap_%@", v8];
 
     v9 = [(WKWebView *)self->_webView URL];
-    v10 = [v9 lastPathComponent];
-    v11 = [v10 stringByDeletingPathExtension];
+    lastPathComponent = [v9 lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    *a4 = [NSString stringWithFormat:@"%@/dump_%@_%@_%p", *a3, v11, v13, self->_webView];
+    *name = [NSString stringWithFormat:@"%@/dump_%@_%@_%p", *key, stringByDeletingPathExtension, storageKey, self->_webView];
   }
 
   else
@@ -154,9 +154,9 @@
   }
 }
 
-- (id)generateImage:(CGSize)a3
+- (id)generateImage:(CGSize)image
 {
-  if (([(AEPictureBookRenderingCacheOperation2 *)self isCancelled:a3.width]& 1) != 0)
+  if (([(AEPictureBookRenderingCacheOperation2 *)self isCancelled:image.width]& 1) != 0)
   {
     v4 = 0;
   }
@@ -176,8 +176,8 @@
       block[3] = &unk_1E2BD0;
       block[4] = self;
       dispatch_async(&_dispatch_main_q, block);
-      v6 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
-      dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
+      dispatchSemaphore = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
+      dispatch_semaphore_wait(dispatchSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
@@ -186,19 +186,19 @@
       v16[4] = self;
       dispatch_async(&_dispatch_main_q, v16);
 
-      v7 = [(AEPictureBookRenderingCacheOperation2 *)self isCancelled];
-      v8 = 0;
-      if ((v7 & 1) == 0)
+      isCancelled = [(AEPictureBookRenderingCacheOperation2 *)self isCancelled];
+      image = 0;
+      if ((isCancelled & 1) == 0)
       {
-        v8 = [(AEPictureBookRenderingCacheOperation2 *)self image];
+        image = [(AEPictureBookRenderingCacheOperation2 *)self image];
       }
 
       v10 = _NSConcreteStackBlock;
       v11 = 3221225472;
       v12 = sub_E1638;
       v13 = &unk_1E3F50;
-      v14 = self;
-      v4 = v8;
+      selfCopy = self;
+      v4 = image;
       v15 = v4;
       os_unfair_lock_lock(&self->_extraCompletionsAccessLock);
       sub_E1638(&v10);
@@ -210,13 +210,13 @@
   return v4;
 }
 
-- (void)navigationHandlerFirstSignificantPaintCompleted:(id)a3
+- (void)navigationHandlerFirstSignificantPaintCompleted:(id)completed
 {
   [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_timeoutWaitingForFirstPaint" object:0];
   if (([(AEPictureBookRenderingCacheOperation2 *)self isCancelled]& 1) != 0)
   {
-    v4 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
-    dispatch_semaphore_signal(v4);
+    dispatchSemaphore = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
+    dispatch_semaphore_signal(dispatchSemaphore);
   }
 
   else
@@ -230,9 +230,9 @@
   }
 }
 
-- (void)navigationHandler:(id)a3 didFinishLoadOfURL:(id)a4
+- (void)navigationHandler:(id)handler didFinishLoadOfURL:(id)l
 {
-  if (([(AEPictureBookRenderingCacheOperation2 *)self isCancelled:a3]& 1) != 0)
+  if (([(AEPictureBookRenderingCacheOperation2 *)self isCancelled:handler]& 1) != 0)
   {
 
     [(AEPictureBookRenderingCacheOperation2 *)self _updateSignal];
@@ -277,25 +277,25 @@
   [(WKWebView *)webView _doAfterNextPresentationUpdate:v3];
 }
 
-- (void)navigationHandler:(id)a3 failedToLoadURL:(id)a4 error:(id)a5
+- (void)navigationHandler:(id)handler failedToLoadURL:(id)l error:(id)error
 {
-  v5 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore:a3];
+  v5 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore:handler];
   dispatch_semaphore_signal(v5);
 }
 
 - (void)_takeSnapshot
 {
-  v3 = [(AEPictureBookRenderingCacheOperation2 *)self storageKey];
+  storageKey = [(AEPictureBookRenderingCacheOperation2 *)self storageKey];
 
-  if (v3)
+  if (storageKey)
   {
     objc_initWeak(&location, self);
-    v4 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
+    dispatchSemaphore = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
     v5 = objc_alloc_init(WKSnapshotConfiguration);
-    v6 = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
-    v7 = [v6 isFixedLayout];
+    bookInfoSnapshot = [(AEPictureBookRenderingCacheOperation2 *)self bookInfoSnapshot];
+    isFixedLayout = [bookInfoSnapshot isFixedLayout];
 
-    if (v7)
+    if (isFixedLayout)
     {
       [(AEPictureBookRenderingCacheOperation2 *)self desiredSize];
       v8 = [NSNumber numberWithDouble:?];
@@ -307,7 +307,7 @@
     v10[2] = sub_E1C3C;
     v10[3] = &unk_1E5A00;
     objc_copyWeak(&v12, &location);
-    v9 = v4;
+    v9 = dispatchSemaphore;
     v11 = v9;
     [(AEPictureBookRenderingCacheOperation2 *)self _takeSnapshotWithConfiguration:v5 retryOnBlank:1 completionHandler:v10];
 
@@ -322,23 +322,23 @@
   }
 }
 
-- (void)_takeSnapshotWithConfiguration:(id)a3 retryOnBlank:(BOOL)a4 completionHandler:(id)a5
+- (void)_takeSnapshotWithConfiguration:(id)configuration retryOnBlank:(BOOL)blank completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v10 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
+  webView = [(AEPictureBookRenderingCacheOperation2 *)self webView];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_E1DEC;
   v13[3] = &unk_1E5A78;
   objc_copyWeak(&v16, &location);
-  v17 = a4;
-  v11 = v8;
+  blankCopy = blank;
+  v11 = configurationCopy;
   v14 = v11;
-  v12 = v9;
+  v12 = handlerCopy;
   v15 = v12;
-  [v10 takeSnapshotWithConfiguration:v11 completionHandler:v13];
+  [webView takeSnapshotWithConfiguration:v11 completionHandler:v13];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -346,16 +346,16 @@
 
 - (void)_releaseWebView
 {
-  v3 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
+  webView = [(AEPictureBookRenderingCacheOperation2 *)self webView];
 
-  if (v3)
+  if (webView)
   {
-    v4 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
-    v5 = [v4 be_navigationHandler];
-    [v5 setDelegate:0];
+    webView2 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
+    be_navigationHandler = [webView2 be_navigationHandler];
+    [be_navigationHandler setDelegate:0];
 
-    v6 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
-    [v6 stopLoading];
+    webView3 = [(AEPictureBookRenderingCacheOperation2 *)self webView];
+    [webView3 stopLoading];
 
     [(AEPictureBookRenderingCacheOperation2 *)self setWebView:0];
   }
@@ -363,25 +363,25 @@
 
 - (void)_updateSignal
 {
-  v3 = [(AEPictureBookRenderingCacheOperation2 *)self piggyBack];
-  v4 = [(AEPictureBookRenderingCacheOperation2 *)self textNodeCharacterCounts];
-  v5 = [(AEPictureBookRenderingCacheOperation2 *)self cfisForHrefs];
-  [v3 renderingCacheOperationCompleted:self textNodeCharacterCounts:v4 cfisForHrefs:v5];
+  piggyBack = [(AEPictureBookRenderingCacheOperation2 *)self piggyBack];
+  textNodeCharacterCounts = [(AEPictureBookRenderingCacheOperation2 *)self textNodeCharacterCounts];
+  cfisForHrefs = [(AEPictureBookRenderingCacheOperation2 *)self cfisForHrefs];
+  [piggyBack renderingCacheOperationCompleted:self textNodeCharacterCounts:textNodeCharacterCounts cfisForHrefs:cfisForHrefs];
 
-  v6 = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
-  dispatch_semaphore_signal(v6);
+  dispatchSemaphore = [(AEPictureBookRenderingCacheOperation2 *)self dispatchSemaphore];
+  dispatch_semaphore_signal(dispatchSemaphore);
 }
 
-- (void)addExtraCompletion:(id)a3
+- (void)addExtraCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_E22CC;
   v5[3] = &unk_1E3F50;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_extraCompletionsAccessLock);
+  selfCopy = self;
+  completionCopy = completion;
+  v4 = completionCopy;
+  os_unfair_lock_lock(&selfCopy->_extraCompletionsAccessLock);
   sub_E22CC(v5);
   os_unfair_lock_unlock(&self->_extraCompletionsAccessLock);
 }

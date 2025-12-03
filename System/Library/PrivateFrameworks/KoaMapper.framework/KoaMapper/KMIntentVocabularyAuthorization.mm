@@ -1,14 +1,14 @@
 @interface KMIntentVocabularyAuthorization
-- (BOOL)isAuthorizedApp:(id)a3;
+- (BOOL)isAuthorizedApp:(id)app;
 @end
 
 @implementation KMIntentVocabularyAuthorization
 
-- (BOOL)isAuthorizedApp:(id)a3
+- (BOOL)isAuthorizedApp:(id)app
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CD43D0] _siriAuthorizationStatusForAppID:v3];
+  appCopy = app;
+  v4 = [MEMORY[0x277CD43D0] _siriAuthorizationStatusForAppID:appCopy];
   if (v4 != 3)
   {
     v5 = KMLogContextCore;
@@ -20,7 +20,7 @@
       v11 = 136315650;
       v12 = "[KMIntentVocabularyAuthorization isAuthorizedApp:]";
       v13 = 2112;
-      v14 = v3;
+      v14 = appCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&dword_2559DF000, v7, OS_LOG_TYPE_INFO, "%s App is not authorized to share vocabulary with Siri. appId=%@ authStatus=%@", &v11, 0x20u);

@@ -1,39 +1,39 @@
 @interface SBContinuityDisplayLayoutPublisher
 - (FBSDisplayLayout)currentLayout;
-- (SBContinuityDisplayLayoutPublisher)initWithCoordinator:(id)a3;
-- (id)addElement:(id)a3;
-- (id)transitionAssertionWithReason:(id)a3;
+- (SBContinuityDisplayLayoutPublisher)initWithCoordinator:(id)coordinator;
+- (id)addElement:(id)element;
+- (id)transitionAssertionWithReason:(id)reason;
 - (int64_t)backlightLevel;
 - (int64_t)interfaceOrientation;
-- (void)_removeElementForKey:(id)a3;
-- (void)_removeTransitionForKey:(id)a3;
+- (void)_removeElementForKey:(id)key;
+- (void)_removeTransitionForKey:(id)key;
 - (void)activate;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)flush;
 - (void)invalidate;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)setBacklightLevel:(int64_t)a3;
-- (void)setDisplayConfiguration:(id)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
+- (void)removeObserver:(id)observer;
+- (void)setBacklightLevel:(int64_t)level;
+- (void)setDisplayConfiguration:(id)configuration;
+- (void)setInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBContinuityDisplayLayoutPublisher
 
-- (SBContinuityDisplayLayoutPublisher)initWithCoordinator:(id)a3
+- (SBContinuityDisplayLayoutPublisher)initWithCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v23.receiver = self;
   v23.super_class = SBContinuityDisplayLayoutPublisher;
   v6 = [(SBContinuityDisplayLayoutPublisher *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coordinator, a3);
-    v8 = [v5 rootPublisher];
+    objc_storeStrong(&v6->_coordinator, coordinator);
+    rootPublisher = [coordinatorCopy rootPublisher];
     rootPublisher = v7->_rootPublisher;
-    v7->_rootPublisher = v8;
+    v7->_rootPublisher = rootPublisher;
 
     v10 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v7->_observers;
@@ -71,7 +71,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"publisher was not invalidated"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = 138544642;
@@ -94,17 +94,17 @@
   __break(0);
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
-  v8 = v5;
+  configurationCopy = configuration;
+  v8 = configurationCopy;
   if (self->_displayConfiguration)
   {
     [(SBContinuityDisplayLayoutPublisher *)a2 setDisplayConfiguration:?];
-    v5 = v8;
+    configurationCopy = v8;
   }
 
-  v6 = [v5 copy];
+  v6 = [configurationCopy copy];
   displayConfiguration = self->_displayConfiguration;
   self->_displayConfiguration = v6;
 }
@@ -121,12 +121,12 @@
         [SBContinuityDisplayLayoutPublisher currentLayout];
       }
 
-      v4 = 0;
+      currentLayout = 0;
     }
 
     else
     {
-      v4 = [(FBSDisplayLayoutPublisher *)self->_rootPublisher currentLayout];
+      currentLayout = [(FBSDisplayLayoutPublisher *)self->_rootPublisher currentLayout];
     }
   }
 
@@ -138,13 +138,13 @@
       [SBContinuityDisplayLayoutPublisher currentLayout];
     }
 
-    v4 = self->_emptyLayout;
+    currentLayout = self->_emptyLayout;
   }
 
-  return v4;
+  return currentLayout;
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
   v12 = *MEMORY[0x277D85DE8];
   if (self->_activated)
@@ -180,7 +180,7 @@
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Pending setting interface orientation on display layout publisher to %{public}@ because it is not activated", &v10, 0xCu);
     }
 
-    self->_pendedInterfaceOrientation = a3;
+    self->_pendedInterfaceOrientation = orientation;
   }
 }
 
@@ -204,7 +204,7 @@
   return [(FBSDisplayLayout *)emptyLayout interfaceOrientation];
 }
 
-- (void)setBacklightLevel:(int64_t)a3
+- (void)setBacklightLevel:(int64_t)level
 {
   v10 = *MEMORY[0x277D85DE8];
   if (self->_activated)
@@ -215,7 +215,7 @@
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 134217984;
-        v9 = a3;
+        levelCopy2 = level;
         _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Ignoring setting backlight level display layout publisher to %ld because it is invalid", &v8, 0xCu);
       }
     }
@@ -234,11 +234,11 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      levelCopy2 = level;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Pending setting backlight level on display layout publisher to %ld because it is not activated", &v8, 0xCu);
     }
 
-    self->_pendedBacklightLevel = a3;
+    self->_pendedBacklightLevel = level;
   }
 }
 
@@ -257,31 +257,31 @@
   return [(FBSDisplayLayoutPublisher *)self->_rootPublisher backlightLevel];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (id)addElement:(id)a3
+- (id)addElement:(id)element
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v4 identifier];
-  v9 = [v5 stringWithFormat:@"<%@:%p %@>", v7, v4, v8];
+  identifier = [elementCopy identifier];
+  v9 = [v5 stringWithFormat:@"<%@:%p %@>", v7, elementCopy, identifier];
 
   if (self->_activated)
   {
@@ -293,7 +293,7 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = v4;
+        v24 = elementCopy;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Failed to add element %{public}@ to display layout publisher because it is invalid", buf, 0xCu);
       }
 
@@ -307,7 +307,7 @@
         [SBContinuityDisplayLayoutPublisher addElement:];
       }
 
-      v16 = [(FBSDisplayLayoutPublisher *)self->_rootPublisher addElement:v4];
+      v16 = [(FBSDisplayLayoutPublisher *)self->_rootPublisher addElement:elementCopy];
       [(NSMutableDictionary *)self->_activeElements setObject:v16 forKey:v9];
       v17 = objc_alloc(MEMORY[0x277CF0CE8]);
       v19[0] = MEMORY[0x277D85DD0];
@@ -326,11 +326,11 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v24 = v4;
+      v24 = elementCopy;
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Pending activation of layout element %{public}@ to display layout publisher because the layout monitor is not activated yet", buf, 0xCu);
     }
 
-    [(NSMutableDictionary *)self->_elementsPendingActivation setObject:v4 forKey:v9];
+    [(NSMutableDictionary *)self->_elementsPendingActivation setObject:elementCopy forKey:v9];
     v15 = objc_alloc(MEMORY[0x277CF0CE8]);
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -344,21 +344,21 @@
   return v13;
 }
 
-- (id)transitionAssertionWithReason:(id)a3
+- (id)transitionAssertionWithReason:(id)reason
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  reasonCopy = reason;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v5 UUIDString];
-  v8 = v7;
+  uUIDString = [uUID UUIDString];
+  v8 = uUIDString;
   v9 = @"nil";
-  if (v4)
+  if (reasonCopy)
   {
-    v9 = v4;
+    v9 = reasonCopy;
   }
 
-  v10 = [v6 stringWithFormat:@"<%@:%p (%@)>", v7, v5, v9];
+  v10 = [v6 stringWithFormat:@"<%@:%p (%@)>", uUIDString, uUID, v9];
 
   if (self->_activated)
   {
@@ -368,14 +368,14 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = v4;
+        v27 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Failed to start transition with reason %{public}@ for display layout publisher because it is invalid", buf, 0xCu);
       }
 
       v12 = objc_alloc(MEMORY[0x277CF0CE8]);
-      if (v4)
+      if (reasonCopy)
       {
-        v13 = v4;
+        v13 = reasonCopy;
       }
 
       else
@@ -388,7 +388,7 @@
 
     else
     {
-      v18 = [(FBSDisplayLayoutPublisher *)self->_rootPublisher transitionAssertionWithReason:v4];
+      v18 = [(FBSDisplayLayoutPublisher *)self->_rootPublisher transitionAssertionWithReason:reasonCopy];
       [(NSMutableDictionary *)self->_activeTransitions setObject:v18 forKey:v10];
       v19 = objc_alloc(MEMORY[0x277CF0CE8]);
       v22[0] = MEMORY[0x277D85DD0];
@@ -407,14 +407,14 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = v4;
+      v27 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Pending transition with reason %{public}@ to display layout publisher because the layout monitor is not activated yet", buf, 0xCu);
     }
 
     transitionsPendingActivation = self->_transitionsPendingActivation;
-    if (v4)
+    if (reasonCopy)
     {
-      v17 = [(__CFString *)v4 copy];
+      v17 = [(__CFString *)reasonCopy copy];
       [(NSMutableDictionary *)transitionsPendingActivation setObject:v17 forKey:v10];
     }
 
@@ -483,8 +483,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(NSMutableDictionary *)self->_activeElements allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  allKeys = [(NSMutableDictionary *)self->_activeElements allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -496,7 +496,7 @@
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [(NSMutableDictionary *)self->_activeElements objectForKeyedSubscript:*(*(&v22 + 1) + 8 * v8)];
@@ -506,7 +506,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -518,8 +518,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(NSMutableDictionary *)self->_activeTransitions allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_activeTransitions allKeys];
+  v11 = [allKeys2 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -531,7 +531,7 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys2);
         }
 
         v15 = [(NSMutableDictionary *)self->_activeTransitions objectForKeyedSubscript:*(*(&v18 + 1) + 8 * v14)];
@@ -541,7 +541,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [allKeys2 countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
@@ -551,13 +551,13 @@
   [(BSInvalidatable *)self->_coordinatorActivation invalidate];
   [v3 invalidate];
   rootPublisher = self->_rootPublisher;
-  v17 = [(SBContinuityDisplayLayoutPublisher *)self currentLayout];
-  [(SBContinuityDisplayLayoutPublisher *)self publisher:rootPublisher didUpdateLayout:v17 withTransition:0];
+  currentLayout = [(SBContinuityDisplayLayoutPublisher *)self currentLayout];
+  [(SBContinuityDisplayLayoutPublisher *)self publisher:rootPublisher didUpdateLayout:currentLayout withTransition:0];
 }
 
 - (void)activate
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"attempted double activation of %@", a1];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"attempted double activation of %@", self];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v5 = NSStringFromSelector(a2);
@@ -568,7 +568,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = a1;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"SBContinuityDisplayLayoutPublisher.m";
     v16 = 1024;
@@ -583,11 +583,11 @@
   __break(0);
 }
 
-- (void)_removeElementForKey:(id)a3
+- (void)_removeElementForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NSMutableDictionary *)self->_elementsPendingActivation objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_elementsPendingActivation objectForKey:keyCopy];
   if (v5)
   {
     v6 = SBLogContinuitySession();
@@ -597,17 +597,17 @@
     }
   }
 
-  [(NSMutableDictionary *)self->_elementsPendingActivation removeObjectForKey:v4];
-  v7 = [(NSMutableDictionary *)self->_activeElements objectForKey:v4];
+  [(NSMutableDictionary *)self->_elementsPendingActivation removeObjectForKey:keyCopy];
+  v7 = [(NSMutableDictionary *)self->_activeElements objectForKey:keyCopy];
   [v7 invalidate];
-  [(NSMutableDictionary *)self->_activeElements removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_activeElements removeObjectForKey:keyCopy];
 }
 
-- (void)_removeTransitionForKey:(id)a3
+- (void)_removeTransitionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(NSMutableDictionary *)self->_transitionsPendingActivation objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_transitionsPendingActivation objectForKey:keyCopy];
   if (v5)
   {
     v6 = SBLogContinuitySession();
@@ -617,18 +617,18 @@
     }
   }
 
-  [(NSMutableDictionary *)self->_transitionsPendingActivation removeObjectForKey:v4];
-  v7 = [(NSMutableDictionary *)self->_activeTransitions objectForKey:v4];
+  [(NSMutableDictionary *)self->_transitionsPendingActivation removeObjectForKey:keyCopy];
+  v7 = [(NSMutableDictionary *)self->_activeTransitions objectForKey:keyCopy];
   [v7 invalidate];
-  [(NSMutableDictionary *)self->_activeTransitions removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_activeTransitions removeObjectForKey:keyCopy];
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  publisherCopy = publisher;
+  layoutCopy = layout;
+  transitionCopy = transition;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -649,7 +649,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [*(*(&v16 + 1) + 8 * v15++) publisher:v8 didUpdateLayout:v9 withTransition:{v10, v16}];
+        [*(*(&v16 + 1) + 8 * v15++) publisher:publisherCopy didUpdateLayout:layoutCopy withTransition:{transitionCopy, v16}];
       }
 
       while (v13 != v15);

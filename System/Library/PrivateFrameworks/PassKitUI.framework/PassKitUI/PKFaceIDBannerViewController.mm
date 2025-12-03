@@ -1,6 +1,6 @@
 @interface PKFaceIDBannerViewController
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
 - (CGRect)captureBounds;
 - (NSArray)recordableConfigurations;
 - (NSArray)states;
@@ -11,11 +11,11 @@
 - (NSString)configurationName;
 - (PKBannerViewControllerPresentable)presentable;
 - (UIView)viewToCapture;
-- (double)maximumLatencyToExitLoopingState:(id)a3;
-- (id)allowedNextStatesForState:(id)a3;
-- (id)associateWithContext:(id)a3 fromInitialState:(id)a4;
+- (double)maximumLatencyToExitLoopingState:(id)state;
+- (id)allowedNextStatesForState:(id)state;
+- (id)associateWithContext:(id)context fromInitialState:(id)state;
 - (uint64_t)_activePlaybackState;
-- (uint64_t)_appearWithTransitionCoordinator:(uint64_t)a1;
+- (uint64_t)_appearWithTransitionCoordinator:(uint64_t)coordinator;
 - (void)_cancelRevokeTimer;
 - (void)_init;
 - (void)_revoke;
@@ -27,30 +27,30 @@
 - (void)_updateState;
 - (void)dealloc;
 - (void)loadView;
-- (void)recordingModeChanged:(BOOL)a3;
-- (void)resetToState:(id)a3 completion:(id)a4;
+- (void)recordingModeChanged:(BOOL)changed;
+- (void)resetToState:(id)state completion:(id)completion;
 - (void)revoked;
-- (void)setActiveComponentStates:(id)a3;
-- (void)setActiveConfiguration:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setBannerDetached:(BOOL)a3;
-- (void)setPresentable:(id)a3;
-- (void)setState:(id)a3;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (void)setActiveComponentStates:(id)states;
+- (void)setActiveConfiguration:(id)configuration;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setBannerDetached:(BOOL)detached;
+- (void)setPresentable:(id)presentable;
+- (void)setState:(id)state;
+- (void)transitionToState:(id)state completion:(id)completion;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKFaceIDBannerViewController
 
 - (void)_init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = PKFaceIDBannerViewController;
   v1 = objc_msgSendSuper2(&v6, sel_initWithNibName_bundle_, 0, 0);
   if (v1)
@@ -93,8 +93,8 @@
 
   if (self->_revokeBackgroundTask != *MEMORY[0x1E69DDBE8])
   {
-    v4 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v4 endBackgroundTask:self->_revokeBackgroundTask];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:self->_revokeBackgroundTask];
   }
 
   glyphLegibilityTimer = self->_glyphLegibilityTimer;
@@ -123,25 +123,25 @@
   v20.receiver = self;
   v20.super_class = PKFaceIDBannerViewController;
   [(PKFaceIDBannerViewController *)&v20 loadView];
-  v3 = [(PKFaceIDBannerViewController *)self view];
-  [v3 setOpaque:0];
-  [v3 setAutoresizingMask:0];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKFaceIDBannerViewController *)self view];
+  [view setOpaque:0];
+  [view setAutoresizingMask:0];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
   if (self->_secureVariantRequired)
   {
     goto LABEL_10;
   }
 
-  v5 = [MEMORY[0x1E69AD2F8] createSystemApertureConfiguration];
-  [v5 setInitialStyle:4];
+  createSystemApertureConfiguration = [MEMORY[0x1E69AD2F8] createSystemApertureConfiguration];
+  [createSystemApertureConfiguration setInitialStyle:4];
   if (self->_recordingType)
   {
-    [v5 setRecording:1];
+    [createSystemApertureConfiguration setRecording:1];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E69AD300]) initWithConfiguration:v5];
+  v6 = [objc_alloc(MEMORY[0x1E69AD300]) initWithConfiguration:createSystemApertureConfiguration];
   glyphView = self->_glyphView;
   self->_glyphView = v6;
 
@@ -162,18 +162,18 @@
 
       [(UIView *)self->_containerView setOpaque:0];
       v12 = self->_containerView;
-      v13 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIView *)v12 setBackgroundColor:v13];
+      clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+      [(UIView *)v12 setBackgroundColor:clearColor2];
 
-      [v3 addSubview:self->_containerView];
+      [view addSubview:self->_containerView];
       v14 = objc_alloc_init(PKBlurView);
       glyphContainerView = self->_glyphContainerView;
       self->_glyphContainerView = v14;
 
       [(PKBlurView *)self->_glyphContainerView setAnchorPoint:0.5, 0.0];
       v16 = self->_glyphContainerView;
-      v17 = [MEMORY[0x1E69DC888] clearColor];
-      [(PKBlurView *)v16 setBackgroundColor:v17];
+      clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+      [(PKBlurView *)v16 setBackgroundColor:clearColor3];
 
       [(PKBlurView *)self->_glyphContainerView addSubview:self->_glyphView];
       v19[0] = MEMORY[0x1E69E9820];
@@ -183,8 +183,8 @@
       v19[4] = self;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v19];
       [(UIView *)self->_containerView addSubview:self->_glyphContainerView];
-      v18 = [(UIView *)self->_containerView layer];
-      [v18 setAllowsHitTesting:0];
+      layer = [(UIView *)self->_containerView layer];
+      [layer setAllowsHitTesting:0];
 
       [(UIView *)self->_containerView setUserInteractionEnabled:0];
 LABEL_10:
@@ -214,14 +214,14 @@ uint64_t __40__PKFaceIDBannerViewController_loadView__block_invoke(uint64_t a1)
   [(PKFaceIDBannerViewController *)&v47 viewWillLayoutSubviews];
   if ((self->_activeLayoutMode + 1) >= 2)
   {
-    v3 = [(PKFaceIDBannerViewController *)self view];
-    [v3 bounds];
+    view = [(PKFaceIDBannerViewController *)self view];
+    [view bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [v3 SBUISA_systemApertureObstructedAreaLayoutGuide];
-    [v12 layoutFrame];
+    sBUISA_systemApertureObstructedAreaLayoutGuide = [view SBUISA_systemApertureObstructedAreaLayoutGuide];
+    [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
@@ -229,8 +229,8 @@ uint64_t __40__PKFaceIDBannerViewController_loadView__block_invoke(uint64_t a1)
 
     PKFloatRoundToPixel();
     [(UIView *)self->_containerView setFrame:v14 + v21, v16 + v20, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-    [(UIView *)self->_containerView convertRect:v3 fromView:v5, v7, v9, v11];
-    [(UIView *)self->_containerView convertRect:v3 fromView:v14, v16, v18, v20];
+    [(UIView *)self->_containerView convertRect:view fromView:v5, v7, v9, v11];
+    [(UIView *)self->_containerView convertRect:view fromView:v14, v16, v18, v20];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -293,23 +293,23 @@ LABEL_5:
 
 - (void)_cancelRevokeTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1024);
+    v2 = *(self + 1024);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 1024);
-      *(a1 + 1024) = 0;
+      v3 = *(self + 1024);
+      *(self + 1024) = 0;
     }
 
     v4 = *MEMORY[0x1E69DDBE8];
-    if (*(a1 + 1016) != *MEMORY[0x1E69DDBE8])
+    if (*(self + 1016) != *MEMORY[0x1E69DDBE8])
     {
-      v5 = [MEMORY[0x1E69DC668] sharedApplication];
-      [v5 endBackgroundTask:*(a1 + 1016)];
+      mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+      [mEMORY[0x1E69DC668] endBackgroundTask:*(self + 1016)];
 
-      *(a1 + 1016) = v4;
+      *(self + 1016) = v4;
     }
   }
 }
@@ -338,23 +338,23 @@ void __49__PKFaceIDBannerViewController__startRevokeTimer__block_invoke_2(uint64
 
 - (void)_revoke
 {
-  if (a1)
+  if (self)
   {
-    if ((*(a1 + 1008) & 1) == 0)
+    if ((*(self + 1008) & 1) == 0)
     {
-      v2 = *(a1 + 1016);
+      v2 = *(self + 1016);
       v3 = *MEMORY[0x1E69DDBE8];
-      *(a1 + 1016) = *MEMORY[0x1E69DDBE8];
-      *(a1 + 1008) = 1;
-      [*(a1 + 1096) invalidate];
-      [(PKFaceIDBannerViewController *)a1 _cancelRevokeTimer];
-      WeakRetained = objc_loadWeakRetained((a1 + 1184));
+      *(self + 1016) = *MEMORY[0x1E69DDBE8];
+      *(self + 1008) = 1;
+      [*(self + 1096) invalidate];
+      [(PKFaceIDBannerViewController *)self _cancelRevokeTimer];
+      WeakRetained = objc_loadWeakRetained((self + 1184));
       [WeakRetained revoke];
 
       if (v2 != v3)
       {
-        v5 = [MEMORY[0x1E69DC668] sharedApplication];
-        [v5 endBackgroundTask:v2];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        [mEMORY[0x1E69DC668] endBackgroundTask:v2];
       }
     }
   }
@@ -373,39 +373,39 @@ void __49__PKFaceIDBannerViewController__startRevokeTimer__block_invoke_3(uint64
 
 - (void)_updateState
 {
-  if (!a1 || (*(a1 + 1008) & 1) != 0)
+  if (!self || (*(self + 1008) & 1) != 0)
   {
     return;
   }
 
-  if (*(a1 + 1152) == 1 && _os_feature_enabled_impl())
+  if (*(self + 1152) == 1 && _os_feature_enabled_impl())
   {
 
-    [(PKFaceIDBannerViewController *)a1 _updatePlayback];
+    [(PKFaceIDBannerViewController *)self _updatePlayback];
     return;
   }
 
-  v2 = *(a1 + 992);
+  v2 = *(self + 992);
   if (v2 == 3 || v2 == 6 || v2 == 0)
   {
-    if ((*(a1 + 1104) || *(a1 + 1176) == 1) && !*(a1 + 1034) && !*(a1 + 1060))
+    if ((*(self + 1104) || *(self + 1176) == 1) && !*(self + 1034) && !*(self + 1060))
     {
-      if (!*(a1 + 1104))
+      if (!*(self + 1104))
       {
         if (v2 == 3)
         {
 LABEL_24:
-          if ((*(a1 + 1008) & 1) != 0 || *(a1 + 1056))
+          if ((*(self + 1008) & 1) != 0 || *(self + 1056))
           {
             return;
           }
 
-          v6 = [a1 viewIfLoaded];
-          v7 = v6;
-          if (v6)
+          viewIfLoaded = [self viewIfLoaded];
+          v7 = viewIfLoaded;
+          if (viewIfLoaded)
           {
-            [v6 bounds];
-            [a1 setPreferredContentSize:{v8, v9}];
+            [viewIfLoaded bounds];
+            [self setPreferredContentSize:{v8, v9}];
             v10 = MEMORY[0x1E69DD250];
             v15 = MEMORY[0x1E69E9820];
             v16 = 3221225472;
@@ -429,43 +429,43 @@ LABEL_33:
 
         if (!v5)
         {
-          if (!*(a1 + 1104) && !*(a1 + 1056))
+          if (!*(self + 1104) && !*(self + 1056))
           {
 
-            [(PKFaceIDBannerViewController *)a1 _revoke];
+            [(PKFaceIDBannerViewController *)self _revoke];
           }
 
           return;
         }
 
-        if (v2 != 6 || (*(a1 + 1008) & 1) != 0)
+        if (v2 != 6 || (*(self + 1008) & 1) != 0)
         {
           return;
         }
 
-        v13 = [a1 viewIfLoaded];
-        v7 = v13;
-        if (v13)
+        viewIfLoaded2 = [self viewIfLoaded];
+        v7 = viewIfLoaded2;
+        if (viewIfLoaded2)
         {
           v14 = MEMORY[0x1E69DD250];
           v15 = MEMORY[0x1E69E9820];
           v16 = 3221225472;
           v17 = __39__PKFaceIDBannerViewController__expand__block_invoke;
           v18 = &unk_1E8010970;
-          v19 = v13;
+          v19 = viewIfLoaded2;
           [v14 performWithoutAnimation:&v15];
         }
 
         v11 = 1;
 LABEL_44:
-        *(a1 + 992) = v11;
-        [(PKFaceIDBannerViewController *)a1 _updatePreferredContentSize];
-        [(PKFaceIDBannerViewController *)a1 _updateServerBannerState];
+        *(self + 992) = v11;
+        [(PKFaceIDBannerViewController *)self _updatePreferredContentSize];
+        [(PKFaceIDBannerViewController *)self _updateServerBannerState];
 
         return;
       }
 
-      v5 = *(a1 + 1105) != 0;
+      v5 = *(self + 1105) != 0;
     }
 
     else
@@ -490,57 +490,57 @@ LABEL_44:
 - (void)_updatePlayback
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (*(a1 + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0)
+  if (*(self + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0)
   {
     goto LABEL_93;
   }
 
-  v2 = *(a1 + 1144);
-  v3 = [a1 flipBookName];
-  v28 = [v2 objectForKeyedSubscript:v3];
+  v2 = *(self + 1144);
+  flipBookName = [self flipBookName];
+  v28 = [v2 objectForKeyedSubscript:flipBookName];
 
   if (!v28)
   {
     goto LABEL_91;
   }
 
-  active = [(PKFaceIDBannerViewController *)a1 _activePlaybackState];
-  if (*(a1 + 1128) != active)
+  active = [(PKFaceIDBannerViewController *)self _activePlaybackState];
+  if (*(self + 1128) != active)
   {
     goto LABEL_91;
   }
 
   v5 = active;
-  v6 = *(a1 + 1130);
+  v6 = *(self + 1130);
   if ((active & 0xFFFFFFFB) == 1 && v6 == 1)
   {
-    *(a1 + 1130) = 2;
-    v6 = *(a1 + 1130);
+    *(self + 1130) = 2;
+    v6 = *(self + 1130);
   }
 
   if (v6 == 2)
   {
-    if (!*(a1 + 1034) && *(a1 + 1129) != 1)
+    if (!*(self + 1034) && *(self + 1129) != 1)
     {
 LABEL_17:
-      v7 = *(a1 + 1040);
+      glyphState = *(self + 1040);
       goto LABEL_30;
     }
 
-    *(a1 + 1130) = 3;
-    v6 = *(a1 + 1130);
+    *(self + 1130) = 3;
+    v6 = *(self + 1130);
   }
 
   if (active == 1 && v6 == 3)
   {
-    *(a1 + 1129) = 0;
-    *(a1 + 1130) = 0;
-    v6 = *(a1 + 1130);
+    *(self + 1129) = 0;
+    *(self + 1130) = 0;
+    v6 = *(self + 1130);
   }
 
   if ((v6 - 1) < 2)
@@ -550,24 +550,24 @@ LABEL_17:
 
   if (v6 == 3)
   {
-    v7 = 0;
+    glyphState = 0;
   }
 
   else
   {
-    v8 = *(a1 + 1034);
-    if (*(a1 + 1034))
+    v8 = *(self + 1034);
+    if (*(self + 1034))
     {
       if ((active - 3) > 1u)
       {
-        v7 = 2;
+        glyphState = 2;
       }
 
       else
       {
         if (v8 == 1)
         {
-          v7 = 3;
+          glyphState = 3;
         }
 
         else
@@ -577,34 +577,34 @@ LABEL_17:
             goto LABEL_93;
           }
 
-          v7 = 4;
+          glyphState = 4;
         }
 
-        *(a1 + 1130) = 1;
-        *(a1 + 1034) = 0;
+        *(self + 1130) = 1;
+        *(self + 1034) = 0;
       }
     }
 
     else
     {
-      v7 = *(a1 + 1000);
-      if (v7)
+      glyphState = *(self + 1000);
+      if (glyphState)
       {
-        v7 = [v7 glyphState];
+        glyphState = [glyphState glyphState];
       }
     }
   }
 
 LABEL_30:
-  *(a1 + 1040) = v7;
-  [(PKFaceIDBannerViewController *)a1 _updateKeyColor];
-  if (*(a1 + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0)
+  *(self + 1040) = glyphState;
+  [(PKFaceIDBannerViewController *)self _updateKeyColor];
+  if (*(self + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0)
   {
     goto LABEL_93;
   }
 
   v9 = 0;
-  v10 = *(a1 + 1040);
+  v10 = *(self + 1040);
   if (v10 <= 1)
   {
     if (!v10)
@@ -655,7 +655,7 @@ LABEL_40:
   }
 
 LABEL_47:
-  if (*(a1 + 1176) == 1 && *(a1 + 1130) != 1 && !*(a1 + 1034) && !*(a1 + 1060))
+  if (*(self + 1176) == 1 && *(self + 1130) != 1 && !*(self + 1034) && !*(self + 1060))
   {
     v9 = 0;
   }
@@ -818,13 +818,13 @@ LABEL_78:
 LABEL_79:
 
 LABEL_86:
-  v23 = [v26 firstObject];
-  v24 = v23;
-  if (v23)
+  firstObject = [v26 firstObject];
+  v24 = firstObject;
+  if (firstObject)
   {
-    *(a1 + 1128) = [v23 integerValue];
-    v25 = [a1 systemApertureElementContext];
-    [v25 setElementNeedsUpdate];
+    *(self + 1128) = [firstObject integerValue];
+    systemApertureElementContext = [self systemApertureElementContext];
+    [systemApertureElementContext setElementNeedsUpdate];
 
     goto LABEL_91;
   }
@@ -832,7 +832,7 @@ LABEL_86:
 LABEL_89:
   if (!v9)
   {
-    [(PKFaceIDBannerViewController *)a1 _revoke];
+    [(PKFaceIDBannerViewController *)self _revoke];
   }
 
 LABEL_91:
@@ -840,24 +840,24 @@ LABEL_91:
 
 - (void)_updatePreferredContentSize
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 992);
+  v2 = *(self + 992);
   if (v2 > 6 || ((1 << v2) & 0x36) == 0)
   {
     goto LABEL_26;
   }
 
-  if (*(a1 + 1033) & 1) != 0 || (*(a1 + 1008))
+  if (*(self + 1033) & 1) != 0 || (*(self + 1008))
   {
     return;
   }
 
-  *(a1 + 1033) = 1;
-  v3 = *(a1 + 992);
+  *(self + 1033) = 1;
+  v3 = *(self + 992);
   if (v3 <= 2)
   {
     if (v3 == 1)
@@ -881,8 +881,8 @@ LABEL_16:
       {
         v4 = 5;
 LABEL_17:
-        *(a1 + 992) = v4;
-        [(PKFaceIDBannerViewController *)a1 _updateServerBannerState];
+        *(self + 992) = v4;
+        [(PKFaceIDBannerViewController *)self _updateServerBannerState];
         goto LABEL_18;
       }
 
@@ -899,29 +899,29 @@ LABEL_26:
   }
 
 LABEL_18:
-  [a1 preferredContentSize];
+  [self preferredContentSize];
   v6 = v5;
   v7 = *(MEMORY[0x1E695F060] + 8);
   if (*MEMORY[0x1E695F060] != v8 || v7 != v6)
   {
-    [a1 setPreferredContentSize:{*MEMORY[0x1E695F060], v7}];
+    [self setPreferredContentSize:{*MEMORY[0x1E695F060], v7}];
   }
 
-  *(a1 + 1033) = 0;
-  v10 = [a1 systemApertureElementContext];
-  [v10 setElementNeedsUpdateWithCoordinatedAnimations:&__block_literal_global_269];
+  *(self + 1033) = 0;
+  systemApertureElementContext = [self systemApertureElementContext];
+  [systemApertureElementContext setElementNeedsUpdateWithCoordinatedAnimations:&__block_literal_global_269];
 }
 
 - (void)_updateServerBannerState
 {
-  if (!a1 || *(a1 + 1152) != 1 || ![a1 isViewLoaded])
+  if (!self || *(self + 1152) != 1 || ![self isViewLoaded])
   {
     return;
   }
 
   if (_os_feature_enabled_impl())
   {
-    if (([(PKFaceIDBannerViewController *)a1 _activePlaybackState]- 1) > 3u)
+    if (([(PKFaceIDBannerViewController *)self _activePlaybackState]- 1) > 3u)
     {
 LABEL_6:
       v2 = 0;
@@ -929,31 +929,31 @@ LABEL_6:
     }
   }
 
-  else if ((*(a1 + 992) - 2) >= 3)
+  else if ((*(self + 992) - 2) >= 3)
   {
     goto LABEL_6;
   }
 
-  v2 = *(a1 + 1040) < 3uLL;
+  v2 = *(self + 1040) < 3uLL;
 LABEL_9:
-  if (*(a1 + 1153) != v2)
+  if (*(self + 1153) != v2)
   {
-    *(a1 + 1153) = v2;
-    if (*(a1 + 1153) == 1)
+    *(self + 1153) = v2;
+    if (*(self + 1153) == 1)
     {
       v3 = 1;
-      if ((*(a1 + 1154) & 1) == 0)
+      if ((*(self + 1154) & 1) == 0)
       {
-        *(a1 + 1154) = 1;
-        ++*(a1 + 1060);
+        *(self + 1154) = 1;
+        ++*(self + 1060);
         v4 = dispatch_time(0, 2000000000);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __56__PKFaceIDBannerViewController__updateServerBannerState__block_invoke;
         block[3] = &unk_1E8010970;
-        block[4] = a1;
+        block[4] = self;
         dispatch_after(v4, MEMORY[0x1E69E96A0], block);
-        v3 = *(a1 + 1153);
+        v3 = *(self + 1153);
       }
     }
 
@@ -963,27 +963,27 @@ LABEL_9:
     }
 
     v5 = [MEMORY[0x1E69B8888] createForSecurelyVisible:v3 & 1];
-    v6 = *(a1 + 1168);
-    *(a1 + 1168) = v5;
+    v6 = *(self + 1168);
+    *(self + 1168) = v5;
 
-    WeakRetained = objc_loadWeakRetained((a1 + 1160));
-    [WeakRetained setState:*(a1 + 1168)];
+    WeakRetained = objc_loadWeakRetained((self + 1160));
+    [WeakRetained setState:*(self + 1168)];
   }
 }
 
-- (uint64_t)_appearWithTransitionCoordinator:(uint64_t)a1
+- (uint64_t)_appearWithTransitionCoordinator:(uint64_t)coordinator
 {
   v31 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (coordinator)
   {
-    if ((*(a1 + 992) & 0xFFFFFFFD) != 0 || !v3)
+    if ((*(coordinator + 992) & 0xFFFFFFFD) != 0 || !v3)
     {
       __break(1u);
     }
 
-    v5 = *(a1 + 1192);
+    v5 = *(coordinator + 1192);
     v6 = PKLogFacilityTypeGetObject();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5 == 4)
@@ -991,20 +991,20 @@ LABEL_9:
       if (v7)
       {
         *buf = 134217984;
-        v28 = a1;
+        coordinatorCopy2 = coordinator;
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKFaceIDBVC (%p): appearing.", buf, 0xCu);
       }
 
-      ++*(a1 + 1056);
-      objc_initWeak(buf, a1);
+      ++*(coordinator + 1056);
+      objc_initWeak(buf, coordinator);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __65__PKFaceIDBannerViewController__appearWithTransitionCoordinator___block_invoke;
       aBlock[3] = &unk_1E8010998;
       objc_copyWeak(&v26, buf);
       v8 = _Block_copy(aBlock);
-      v9 = *(a1 + 992);
-      v10 = [a1 view];
+      v9 = *(coordinator + 992);
+      view = [coordinator view];
       if (v9)
       {
         v11 = 0;
@@ -1034,8 +1034,8 @@ LABEL_9:
       v21[1] = 3221225472;
       v21[2] = __65__PKFaceIDBannerViewController__appearWithTransitionCoordinator___block_invoke_2;
       v21[3] = &unk_1E8020758;
-      v21[4] = a1;
-      v14 = v10;
+      v21[4] = coordinator;
+      v14 = view;
       v22 = v14;
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -1049,7 +1049,7 @@ LABEL_9:
 
       objc_destroyWeak(&v26);
       objc_destroyWeak(buf);
-      a1 = 1;
+      coordinator = 1;
     }
 
     else
@@ -1057,17 +1057,17 @@ LABEL_9:
       if (v7)
       {
         *buf = 134218240;
-        v28 = a1;
+        coordinatorCopy2 = coordinator;
         v29 = 2048;
         v30 = v5;
         _os_log_impl(&dword_1BD026000, v6, OS_LOG_TYPE_DEFAULT, "PKFaceIDBVC (%p): deferring apperance while in mode %ld.", buf, 0x16u);
       }
 
-      a1 = 0;
+      coordinator = 0;
     }
   }
 
-  return a1;
+  return coordinator;
 }
 
 void __65__PKFaceIDBannerViewController__appearWithTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1093,15 +1093,15 @@ void __65__PKFaceIDBannerViewController__appearWithTransitionCoordinator___block
 
 - (void)_updateGlyphState
 {
-  if (!a1 || *(a1 + 1048) || *(a1 + 1152) == 1 && (_os_feature_enabled_impl() & 1) != 0)
+  if (!self || *(self + 1048) || *(self + 1152) == 1 && (_os_feature_enabled_impl() & 1) != 0)
   {
     return;
   }
 
-  v2 = *(a1 + 992);
+  v2 = *(self + 992);
   if ((v2 - 4) >= 2)
   {
-    v3 = v2 == 3 && *(a1 + 996) == 0;
+    v3 = v2 == 3 && *(self + 996) == 0;
   }
 
   else
@@ -1109,32 +1109,32 @@ void __65__PKFaceIDBannerViewController__appearWithTransitionCoordinator___block
     v3 = 1;
   }
 
-  v4 = *(a1 + 1000);
-  if (v4)
+  glyphState = *(self + 1000);
+  if (glyphState)
   {
-    v4 = [v4 glyphState];
+    glyphState = [glyphState glyphState];
   }
 
-  if (*(a1 + 1104))
+  if (*(self + 1104))
   {
     if (v3)
     {
-      v5 = (a1 + 1034);
-      v6 = *(a1 + 1034);
+      v5 = (self + 1034);
+      v6 = *(self + 1034);
       v7 = 3;
       if (v6 != 1)
       {
-        v7 = v4;
+        v7 = glyphState;
       }
 
       if (v6 == 2)
       {
-        v4 = 4;
+        glyphState = 4;
       }
 
       else
       {
-        v4 = v7;
+        glyphState = v7;
       }
 
 LABEL_20:
@@ -1142,58 +1142,58 @@ LABEL_20:
       goto LABEL_31;
     }
 
-    v4 = 0;
+    glyphState = 0;
   }
 
   else
   {
-    v5 = (a1 + 1034);
-    v8 = *(a1 + 1034);
+    v5 = (self + 1034);
+    v8 = *(self + 1034);
     v9 = 2;
-    if (!*(a1 + 1034))
+    if (!*(self + 1034))
     {
-      v9 = v4;
+      v9 = glyphState;
     }
 
-    if (*(a1 + 1034) != 0 && v3)
+    if (*(self + 1034) != 0 && v3)
     {
-      if (*(a1 + 1040) == 2)
+      if (*(self + 1040) == 2)
       {
         if (v8 == 2)
         {
-          v4 = 4;
+          glyphState = 4;
         }
 
         else if (v8 == 1)
         {
-          v4 = 3;
+          glyphState = 3;
         }
 
         goto LABEL_20;
       }
 
-      v4 = 2;
+      glyphState = 2;
     }
 
     else
     {
-      v4 = v9;
+      glyphState = v9;
     }
   }
 
 LABEL_31:
-  if (*(a1 + 1040) != v4)
+  if (*(self + 1040) != glyphState)
   {
-    *(a1 + 1040) = v4;
-    if (*(a1 + 1152) == 1 && (_os_feature_enabled_impl() & 1) == 0)
+    *(self + 1040) = glyphState;
+    if (*(self + 1152) == 1 && (_os_feature_enabled_impl() & 1) == 0)
     {
-      [(PKFaceIDBannerViewController *)a1 _updateServerBannerState];
+      [(PKFaceIDBannerViewController *)self _updateServerBannerState];
     }
 
-    [(PKFaceIDBannerViewController *)a1 _updateKeyColor];
-    if ([a1 isViewLoaded] && (*(a1 + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0))
+    [(PKFaceIDBannerViewController *)self _updateKeyColor];
+    if ([self isViewLoaded] && (*(self + 1152) != 1 || (_os_feature_enabled_impl() & 1) == 0))
     {
-      v10 = *(a1 + 1040);
+      v10 = *(self + 1040);
       if (v10 >= 5)
       {
         __break(1u);
@@ -1201,32 +1201,32 @@ LABEL_31:
 
       else
       {
-        if (*(a1 + 1104))
+        if (*(self + 1104))
         {
-          if (*(a1 + 1105) == 4 && v10 == 2)
+          if (*(self + 1105) == 4 && v10 == 2)
           {
             v12 = 5;
           }
 
           else
           {
-            v12 = *(a1 + 1040);
+            v12 = *(self + 1040);
           }
         }
 
         else
         {
-          v12 = *(a1 + 1040);
+          v12 = *(self + 1040);
         }
 
-        if (*(a1 + 992))
+        if (*(self + 992))
         {
           if (v10 - 3 >= 2)
           {
             v13 = 0.0;
             if (v10 == 2)
             {
-              v13 = dbl_1BE1171E0[*(a1 + 1056) == 0];
+              v13 = dbl_1BE1171E0[*(self + 1056) == 0];
             }
           }
 
@@ -1235,9 +1235,9 @@ LABEL_31:
             v13 = 0.45;
           }
 
-          ++*(a1 + 1060);
-          [(PKFaceIDBannerViewController *)a1 _updateState];
-          objc_initWeak(&location, a1);
+          ++*(self + 1060);
+          [(PKFaceIDBannerViewController *)self _updateState];
+          objc_initWeak(&location, self);
           if (v13 <= 0.0)
           {
             v14 = 0;
@@ -1253,18 +1253,18 @@ LABEL_31:
             objc_copyWeak(&v24, &location);
             v23 = &__block_literal_global_72_0;
             dispatch_source_set_event_handler(v14, handler);
-            objc_storeStrong((a1 + 1048), v14);
+            objc_storeStrong((self + 1048), v14);
 
             objc_destroyWeak(&v24);
           }
 
-          if (*(a1 + 1040) == 4)
+          if (*(self + 1040) == 4)
           {
-            v15 = [a1 systemApertureElementContext];
-            [v15 requestNegativeResponseAnimation];
+            systemApertureElementContext = [self systemApertureElementContext];
+            [systemApertureElementContext requestNegativeResponseAnimation];
           }
 
-          v16 = *(a1 + 1096);
+          v16 = *(self + 1096);
           v18[0] = MEMORY[0x1E69E9820];
           v18[1] = 3221225472;
           v18[2] = __47__PKFaceIDBannerViewController__pushGlyphState__block_invoke_3;
@@ -1282,7 +1282,7 @@ LABEL_31:
 
         else
         {
-          [*(a1 + 1096) setState:v12 animated:0];
+          [*(self + 1096) setState:v12 animated:0];
         }
       }
     }
@@ -1362,12 +1362,12 @@ void __65__PKFaceIDBannerViewController__shrinkWithTransitionCoordinator___block
 
 - (void)_updateKeyColor
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 1040);
-    if (v2 == 3 || v2 != 4 && ((v3 = *(a1 + 1034), v3 == 1) || v3 != 2 && v2))
+    v2 = *(self + 1040);
+    if (v2 == 3 || v2 != 4 && ((v3 = *(self + 1034), v3 == 1) || v3 != 2 && v2))
     {
-      v4 = *(a1 + 1072);
+      v4 = *(self + 1072);
     }
 
     else
@@ -1375,12 +1375,12 @@ void __65__PKFaceIDBannerViewController__shrinkWithTransitionCoordinator___block
       v4 = 0;
     }
 
-    if (*(a1 + 1064) != v4)
+    if (*(self + 1064) != v4)
     {
       v6 = v4;
-      objc_storeStrong((a1 + 1064), v4);
-      v5 = [a1 systemApertureElementContext];
-      [v5 setElementNeedsUpdate];
+      objc_storeStrong((self + 1064), v4);
+      systemApertureElementContext = [self systemApertureElementContext];
+      [systemApertureElementContext setElementNeedsUpdate];
 
       v4 = v6;
     }
@@ -1453,16 +1453,16 @@ void __47__PKFaceIDBannerViewController__pushGlyphState__block_invoke_3(uint64_t
     if (result)
     {
       v2 = v1[143];
-      v3 = [v1 flipBookName];
-      v4 = [v2 objectForKeyedSubscript:v3];
+      flipBookName = [v1 flipBookName];
+      initialState = [v2 objectForKeyedSubscript:flipBookName];
 
-      if (!v4)
+      if (!initialState)
       {
-        v4 = [v1 initialState];
+        initialState = [v1 initialState];
       }
 
       v6 = 0;
-      FBCStateFromString(v4, &v6);
+      FBCStateFromString(initialState, &v6);
       v5 = v6;
 
       return v5;
@@ -1498,24 +1498,24 @@ uint64_t __56__PKFaceIDBannerViewController__updateServerBannerState__block_invo
   }
 }
 
-- (void)setPresentable:(id)a3
+- (void)setPresentable:(id)presentable
 {
-  v5 = a3;
-  objc_storeWeak(&self->_presentable, v5);
-  v4 = v5;
-  if (v5 && self->_revoked)
+  presentableCopy = presentable;
+  objc_storeWeak(&self->_presentable, presentableCopy);
+  v4 = presentableCopy;
+  if (presentableCopy && self->_revoked)
   {
-    [v5 revoke];
-    v4 = v5;
+    [presentableCopy revoke];
+    v4 = presentableCopy;
   }
 }
 
-- (void)setBannerDetached:(BOOL)a3
+- (void)setBannerDetached:(BOOL)detached
 {
-  if (self->_bannerDetached != a3)
+  if (self->_bannerDetached != detached)
   {
-    self->_bannerDetached = a3;
-    if (a3)
+    self->_bannerDetached = detached;
+    if (detached)
     {
       if (self->_recordingType)
       {
@@ -1526,13 +1526,13 @@ uint64_t __56__PKFaceIDBannerViewController__updateServerBannerState__block_invo
       {
         [(PKFaceIDBannerViewController *)self _cancelRevokeTimer];
         objc_initWeak(&location, self);
-        v4 = [MEMORY[0x1E69DC668] sharedApplication];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __49__PKFaceIDBannerViewController__startRevokeTimer__block_invoke;
         v12[3] = &unk_1E8010998;
         objc_copyWeak(&v13, &location);
-        self->_revokeBackgroundTask = [v4 beginBackgroundTaskWithName:@"face_id.revoke" expirationHandler:v12];
+        self->_revokeBackgroundTask = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"face_id.revoke" expirationHandler:v12];
 
         v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
         revokeTimer = self->_revokeTimer;
@@ -1564,25 +1564,25 @@ uint64_t __56__PKFaceIDBannerViewController__updateServerBannerState__block_invo
   }
 }
 
-- (id)associateWithContext:(id)a3 fromInitialState:(id)a4
+- (id)associateWithContext:(id)context fromInitialState:(id)state
 {
-  v6 = a3;
-  [(PKFaceIDBannerViewController *)self setState:a4];
-  objc_storeWeak(&self->_context, v6);
+  contextCopy = context;
+  [(PKFaceIDBannerViewController *)self setState:state];
+  objc_storeWeak(&self->_context, contextCopy);
 
   serverBannerState = self->_serverBannerState;
 
   return serverBannerState;
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v5 = a3;
-  v9 = v5;
-  if (v5)
+  stateCopy = state;
+  v9 = stateCopy;
+  if (stateCopy)
   {
-    v6 = [(PKFaceIDBannerHandleState *)v5 type]== 1;
-    v5 = v9;
+    v6 = [(PKFaceIDBannerHandleState *)stateCopy type]== 1;
+    stateCopy = v9;
     if (!v6)
     {
       __break(1u);
@@ -1590,18 +1590,18 @@ uint64_t __56__PKFaceIDBannerViewController__updateServerBannerState__block_invo
     }
   }
 
-  if (self->_bannerState != v5)
+  if (self->_bannerState != stateCopy)
   {
-    objc_storeStrong(&self->_bannerState, a3);
-    v7 = [(PKFaceIDBannerHandleState *)self->_bannerState glyphState];
-    if (v7 == 3)
+    objc_storeStrong(&self->_bannerState, state);
+    glyphState = [(PKFaceIDBannerHandleState *)self->_bannerState glyphState];
+    if (glyphState == 3)
     {
       v8 = 1;
     }
 
     else
     {
-      if (v7 != 4)
+      if (glyphState != 4)
       {
 LABEL_10:
         [(PKFaceIDBannerViewController *)self _updateGlyphState];
@@ -1629,46 +1629,46 @@ LABEL_10:
 LABEL_15:
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  if (self->_activeLayoutMode != a3)
+  if (self->_activeLayoutMode != mode)
   {
-    v5 = [(PKFaceIDBannerViewController *)self viewIfLoaded];
-    v6 = v5;
-    if (v5)
+    viewIfLoaded = [(PKFaceIDBannerViewController *)self viewIfLoaded];
+    v6 = viewIfLoaded;
+    if (viewIfLoaded)
     {
       v7 = MEMORY[0x1E69DD250];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __52__PKFaceIDBannerViewController_setActiveLayoutMode___block_invoke;
       v13[3] = &unk_1E8010970;
-      v8 = v5;
+      v8 = viewIfLoaded;
       v14 = v8;
       [v7 performWithoutAnimation:v13];
 
-      self->_activeLayoutMode = a3;
-      v9 = [(PKFaceIDBannerViewController *)self systemApertureElementContext];
-      v10 = [v9 requestAlertingAssertion];
-      [v10 setAutomaticallyInvalidatable:0];
+      self->_activeLayoutMode = mode;
+      systemApertureElementContext = [(PKFaceIDBannerViewController *)self systemApertureElementContext];
+      requestAlertingAssertion = [systemApertureElementContext requestAlertingAssertion];
+      [requestAlertingAssertion setAutomaticallyInvalidatable:0];
 
       [v8 setNeedsLayout];
     }
 
     else
     {
-      self->_activeLayoutMode = a3;
-      v11 = [(PKFaceIDBannerViewController *)self systemApertureElementContext];
-      v12 = [v11 requestAlertingAssertion];
-      [v12 setAutomaticallyInvalidatable:0];
+      self->_activeLayoutMode = mode;
+      systemApertureElementContext2 = [(PKFaceIDBannerViewController *)self systemApertureElementContext];
+      requestAlertingAssertion2 = [systemApertureElementContext2 requestAlertingAssertion];
+      [requestAlertingAssertion2 setAutomaticallyInvalidatable:0];
     }
   }
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  coordinatorCopy = coordinator;
+  v5 = coordinatorCopy;
   if (self->_revoked || self->_secureVariantRequired)
   {
     goto LABEL_17;
@@ -1685,15 +1685,15 @@ LABEL_15:
     if (state)
     {
 LABEL_9:
-      v7 = [(PKFaceIDBannerViewController *)self viewIfLoaded];
-      v8 = v7;
-      if (v7)
+      viewIfLoaded = [(PKFaceIDBannerViewController *)self viewIfLoaded];
+      v8 = viewIfLoaded;
+      if (viewIfLoaded)
       {
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
         v14[2] = __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoordinator___block_invoke_2;
         v14[3] = &unk_1E80127E0;
-        v15 = v7;
+        v15 = viewIfLoaded;
         [v5 animateAlongsideTransition:v14 completion:0];
       }
 
@@ -1703,7 +1703,7 @@ LABEL_9:
     if (!self->_recordingType || self->_recordingState)
     {
 LABEL_8:
-      if (([(PKFaceIDBannerViewController *)self _appearWithTransitionCoordinator:v4]& 1) != 0)
+      if (([(PKFaceIDBannerViewController *)self _appearWithTransitionCoordinator:coordinatorCopy]& 1) != 0)
       {
         goto LABEL_17;
       }
@@ -1722,7 +1722,7 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v9 = v4;
+  v9 = coordinatorCopy;
   if (self->_state != 5 || (v10 = v9) == 0)
   {
     __break(1u);
@@ -1738,14 +1738,14 @@ LABEL_19:
   }
 
   ++self->_transitionAnimationCounter;
-  v12 = [(PKFaceIDBannerViewController *)self view];
+  view = [(PKFaceIDBannerViewController *)self view];
   objc_initWeak(&location, self);
   *&buf = MEMORY[0x1E69E9820];
   *(&buf + 1) = 3221225472;
   v21 = __65__PKFaceIDBannerViewController__shrinkWithTransitionCoordinator___block_invoke;
   v22 = &unk_1E8020758;
-  v23 = self;
-  v13 = v12;
+  selfCopy = self;
+  v13 = view;
   v24 = v13;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -1765,11 +1765,11 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
   [v1 setElementNeedsUpdate];
 }
 
-- (void)recordingModeChanged:(BOOL)a3
+- (void)recordingModeChanged:(BOOL)changed
 {
   if (self->_recordingType)
   {
-    if (!a3)
+    if (!changed)
     {
       [(PKFaceIDBannerViewController *)self _revoke];
     }
@@ -1790,23 +1790,23 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
   activePlaybackConfiguration = self->_activePlaybackConfiguration;
   if (activePlaybackConfiguration)
   {
-    v3 = activePlaybackConfiguration;
+    preferredConfiguration = activePlaybackConfiguration;
   }
 
   else
   {
-    v3 = [(PKFaceIDBannerViewController *)self preferredConfiguration];
+    preferredConfiguration = [(PKFaceIDBannerViewController *)self preferredConfiguration];
   }
 
-  return v3;
+  return preferredConfiguration;
 }
 
-- (void)setActiveConfiguration:(id)a3
+- (void)setActiveConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v6 copy];
+    v4 = [configurationCopy copy];
     activePlaybackConfiguration = self->_activePlaybackConfiguration;
     self->_activePlaybackConfiguration = v4;
   }
@@ -1815,8 +1815,8 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
 - (NSDictionary)preferredComponentStates
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKFaceIDBannerViewController *)self flipBookName];
-  v7 = v3;
+  flipBookName = [(PKFaceIDBannerViewController *)self flipBookName];
+  v7 = flipBookName;
   v4 = FBCStateToString(self->_requestedPlaybackState);
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
@@ -1835,8 +1835,8 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
 
   else
   {
-    v4 = [(PKFaceIDBannerViewController *)self flipBookName];
-    v6 = v4;
+    flipBookName = [(PKFaceIDBannerViewController *)self flipBookName];
+    v6 = flipBookName;
     v7[0] = @"Empty";
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   }
@@ -1844,12 +1844,12 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
   return v3;
 }
 
-- (void)setActiveComponentStates:(id)a3
+- (void)setActiveComponentStates:(id)states
 {
-  v6 = a3;
+  statesCopy = states;
   if (_os_feature_enabled_impl())
   {
-    v4 = [v6 copy];
+    v4 = [statesCopy copy];
     activePlaybackComponentStates = self->_activePlaybackComponentStates;
     self->_activePlaybackComponentStates = v4;
 
@@ -1875,36 +1875,36 @@ void __80__PKFaceIDBannerViewController_viewWillLayoutSubviewsWithTransitionCoor
   v7[2] = *MEMORY[0x1E69E9840];
   v6[1] = &unk_1F3CC81C8;
   v7[0] = MEMORY[0x1E695E0F0];
-  v5 = self;
+  selfCopy = self;
   v6[0] = &unk_1F3CC81B0;
-  v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v5 count:1];
+  v2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy count:1];
   v7[1] = v2;
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v3;
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  fromCopy = from;
+  toCopy = to;
+  sequenceCopy = sequence;
+  stateCopy = state;
   v24 = 0;
-  FBCStateFromString(v9, &v24);
+  FBCStateFromString(fromCopy, &v24);
   v23 = 0;
-  FBCStateFromString(v10, &v23);
-  v13 = [v11 isEqualToString:@"hidden"];
-  if ((v13 & 1) == 0 && ![v11 isEqualToString:@"presented"])
+  FBCStateFromString(toCopy, &v23);
+  v13 = [sequenceCopy isEqualToString:@"hidden"];
+  if ((v13 & 1) == 0 && ![sequenceCopy isEqualToString:@"presented"])
   {
     goto LABEL_30;
   }
 
-  v14 = [v12 isEqualToString:@"hidden"];
+  v14 = [stateCopy isEqualToString:@"hidden"];
   v15 = v14;
   if ((v14 & 1) == 0)
   {
-    v14 = [v12 isEqualToString:@"presented"];
+    v14 = [stateCopy isEqualToString:@"presented"];
     if (!v14)
     {
       goto LABEL_30;
@@ -2064,10 +2064,10 @@ void __38__PKFaceIDBannerViewController_states__block_invoke(uint64_t a1, __CFSt
   [v2 addObject:v3];
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   v13 = 0;
-  FBCStateFromString(a3, &v13);
+  FBCStateFromString(state, &v13);
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = v13;
   v8 = MEMORY[0x1E69E9820];
@@ -2089,14 +2089,14 @@ void __58__PKFaceIDBannerViewController_allowedNextStatesForState___block_invoke
   [v2 addObject:v3];
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  secureCopy = secure;
+  stateCopy = state;
   v12 = 0;
-  FBCStateFromString(v5, &v12);
+  FBCStateFromString(secureCopy, &v12);
   v11 = 0;
-  FBCStateFromString(v6, &v11);
+  FBCStateFromString(stateCopy, &v11);
   LOBYTE(v8) = 0;
   if (v12 > 2u)
   {
@@ -2165,11 +2165,11 @@ LABEL_19:
   return result;
 }
 
-- (double)maximumLatencyToExitLoopingState:(id)a3
+- (double)maximumLatencyToExitLoopingState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v6 = 0;
-  FBCStateFromString(v3, &v6);
+  FBCStateFromString(stateCopy, &v6);
   if (v6 >= 6uLL)
   {
     __break(1u);
@@ -2195,9 +2195,9 @@ LABEL_19:
 
 - (CGRect)captureBounds
 {
-  v2 = [(PKFaceIDBannerViewController *)self referenceView];
-  v3 = [v2 SBUISA_systemApertureObstructedAreaLayoutGuide];
-  [v3 layoutFrame];
+  referenceView = [(PKFaceIDBannerViewController *)self referenceView];
+  sBUISA_systemApertureObstructedAreaLayoutGuide = [referenceView SBUISA_systemApertureObstructedAreaLayoutGuide];
+  [sBUISA_systemApertureObstructedAreaLayoutGuide layoutFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -2216,19 +2216,19 @@ LABEL_19:
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   if (self->_resettingRecordingState || (self->_resettingRecordingState = 1, self->_inRecordingStateTransition) || ((state = self->_state, state <= 5) ? (v9 = ((1 << state) & 0x36) == 0) : (v9 = 1), !v9))
   {
     __break(1u);
     return;
   }
 
-  v10 = v7;
+  v10 = completionCopy;
   v24 = 0;
-  FBCStateFromString(v6, &v24);
+  FBCStateFromString(stateCopy, &v24);
   v11 = v24;
   if (v24 - 2 <= 2)
   {
@@ -2446,18 +2446,18 @@ void __56__PKFaceIDBannerViewController_resetToState_completion___block_invoke_4
   }
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   if (self->_inRecordingStateTransition)
   {
     goto LABEL_64;
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v36 = 0;
-  FBCStateFromString(v6, &v36);
+  FBCStateFromString(stateCopy, &v36);
   if (self->_recordingState == v36 && (self->_recordingStateTransitionTimer || self->_recordingStateTransitionCompletion))
   {
     goto LABEL_64;

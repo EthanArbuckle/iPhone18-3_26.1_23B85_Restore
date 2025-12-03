@@ -6,12 +6,12 @@
 
 - (void)launchBridge
 {
-  v2 = [objc_opt_class() launchURL];
-  if (v2)
+  launchURL = [objc_opt_class() launchURL];
+  if (launchURL)
   {
     v3 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
     v9[0] = FBSOpenApplicationOptionKeyPayloadURL;
-    v4 = [NSURL URLWithString:v2];
+    v4 = [NSURL URLWithString:launchURL];
     v9[1] = FBSOpenApplicationOptionKeyIsSensitiveURL;
     v10[0] = v4;
     v10[1] = &__kCFBooleanTrue;

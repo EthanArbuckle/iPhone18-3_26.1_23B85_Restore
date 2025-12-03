@@ -1,15 +1,15 @@
 @interface SBUISizeObservingView
 - (SBUISizeObservingViewDelegate)delegate;
-- (void)setBounds:(CGRect)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SBUISizeObservingView
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -19,12 +19,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(SBUISizeObservingView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -42,12 +42,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBUISizeObservingView *)self bounds];
   v9 = v8;
   v11 = v10;

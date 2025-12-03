@@ -1,11 +1,11 @@
 @interface OrgApacheLuceneSearchPhraseQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)getPositions;
 - (id)getTerms;
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
-- (void)addWithOrgApacheLuceneIndexTerm:(id)a3;
+- (void)addWithOrgApacheLuceneIndexTerm:(id)term;
 - (void)dealloc;
 @end
 
@@ -44,14 +44,14 @@
         break;
       }
 
-      v8 = [v7 intValue];
+      intValue = [v7 intValue];
       size = v4->super.size_;
       if (v5 >= size)
       {
         IOSArray_throwOutOfBoundsWithMsg(size, v5);
       }
 
-      *(&i->super.size_ + 1) = v8;
+      *(&i->super.size_ + 1) = intValue;
       if (++v5 >= [*(&self->terms_ + 4) size])
       {
         return v4;
@@ -65,7 +65,7 @@ LABEL_10:
   return v4;
 }
 
-- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (id)rewriteWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
   v4 = *(&self->field_ + 4);
   if (!v4)
@@ -91,14 +91,14 @@ LABEL_10:
         {
           v20.receiver = self;
           v20.super_class = OrgApacheLuceneSearchPhraseQuery;
-          return [(OrgApacheLuceneSearchQuery *)&v20 rewriteWithOrgApacheLuceneIndexIndexReader:a3];
+          return [(OrgApacheLuceneSearchQuery *)&v20 rewriteWithOrgApacheLuceneIndexIndexReader:reader];
         }
 
-        v9 = [(OrgApacheLuceneSearchPhraseQuery *)self getPositions];
-        if (v9)
+        getPositions = [(OrgApacheLuceneSearchPhraseQuery *)self getPositions];
+        if (getPositions)
         {
-          v10 = v9;
-          v11 = [IOSIntArray arrayWithLength:v9[2]];
+          v10 = getPositions;
+          v11 = [IOSIntArray arrayWithLength:getPositions[2]];
           v12 = v10[2];
           if (v12 >= 1)
           {
@@ -121,9 +121,9 @@ LABEL_10:
           }
 
           v15 = *&self->mutable__;
-          v16 = [(OrgApacheLuceneSearchPhraseQuery *)self getTerms];
+          getTerms = [(OrgApacheLuceneSearchPhraseQuery *)self getTerms];
           v17 = [OrgApacheLuceneSearchPhraseQuery alloc];
-          sub_1000AC334(v17, v15, v16, v11);
+          sub_1000AC334(v17, v15, getTerms, v11);
           initWithOrgApacheLuceneIndexTerm = v17;
           goto LABEL_19;
         }
@@ -142,26 +142,26 @@ LABEL_19:
   return v18;
 }
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
-  v4 = self;
-  v5 = [(OrgApacheLuceneSearchPhraseQuery *)self getTerms];
-  v6 = [(OrgApacheLuceneSearchPhraseQuery *)v4 getPositions];
+  selfCopy = self;
+  getTerms = [(OrgApacheLuceneSearchPhraseQuery *)self getTerms];
+  getPositions = [(OrgApacheLuceneSearchPhraseQuery *)selfCopy getPositions];
   v7 = new_JavaLangStringBuilder_init();
-  v8 = *&v4->slop_;
-  if (v8 && ([v8 isEqual:a3] & 1) == 0)
+  v8 = *&selfCopy->slop_;
+  if (v8 && ([v8 isEqual:string] & 1) == 0)
   {
-    [(JavaLangStringBuilder *)v7 appendWithNSString:*&v4->slop_];
+    [(JavaLangStringBuilder *)v7 appendWithNSString:*&selfCopy->slop_];
     [(JavaLangStringBuilder *)v7 appendWithNSString:@":"];
   }
 
   [(JavaLangStringBuilder *)v7 appendWithNSString:@""];
-  if (!v6)
+  if (!getPositions)
   {
     goto LABEL_44;
   }
 
-  v9 = v6[2];
+  v9 = getPositions[2];
   if (v9)
   {
     v10 = v9 - 1;
@@ -170,7 +170,7 @@ LABEL_19:
       IOSArray_throwOutOfBoundsWithMsg(v9, v10);
     }
 
-    v11 = v6[v10 + 3] + 1;
+    v11 = getPositions[v10 + 3] + 1;
   }
 
   else
@@ -179,26 +179,26 @@ LABEL_19:
   }
 
   v12 = [IOSObjectArray arrayWithLength:v11 type:NSString_class_()];
-  if (!v5)
+  if (!getTerms)
   {
 LABEL_44:
     JreThrowNullPointerException();
   }
 
   v13 = v12;
-  if (v5[2] >= 1)
+  if (getTerms[2] >= 1)
   {
-    v35 = v4;
+    v35 = selfCopy;
     v14 = 0;
     do
     {
-      v15 = v6[2];
+      v15 = getPositions[2];
       if (v14 >= v15)
       {
         IOSArray_throwOutOfBoundsWithMsg(v15, v14);
       }
 
-      v16 = v6[v14 + 3];
+      v16 = getPositions[v14 + 3];
       v17 = v16;
       v18 = *(v13 + 8);
       if (v16 < 0 || v16 >= v18)
@@ -207,7 +207,7 @@ LABEL_44:
       }
 
       v19 = *(v13 + 24 + 8 * v16);
-      v20 = v5[2];
+      v20 = getTerms[2];
       if (v19)
       {
         if (v14 >= v20)
@@ -215,14 +215,14 @@ LABEL_44:
           IOSArray_throwOutOfBoundsWithMsg(v20, v14);
         }
 
-        v21 = *&v5[2 * v14 + 6];
+        v21 = *&getTerms[2 * v14 + 6];
         if (!v21)
         {
           goto LABEL_44;
         }
 
         [v21 text];
-        v29 = JreStrcat("$C$", v22, v23, v24, v25, v26, v27, v28, v19);
+        text = JreStrcat("$C$", v22, v23, v24, v25, v26, v27, v28, v19);
       }
 
       else
@@ -232,21 +232,21 @@ LABEL_44:
           IOSArray_throwOutOfBoundsWithMsg(v20, v14);
         }
 
-        v30 = *&v5[2 * v14 + 6];
+        v30 = *&getTerms[2 * v14 + 6];
         if (!v30)
         {
           goto LABEL_44;
         }
 
-        v29 = [v30 text];
+        text = [v30 text];
       }
 
-      IOSObjectArray_Set(v13, v17, v29);
+      IOSObjectArray_Set(v13, v17, text);
       ++v14;
     }
 
-    while (v14 < v5[2]);
-    v4 = v35;
+    while (v14 < getTerms[2]);
+    selfCopy = v35;
   }
 
   if (*(v13 + 8) >= 1)
@@ -282,19 +282,19 @@ LABEL_44:
   }
 
   [(JavaLangStringBuilder *)v7 appendWithNSString:@""];
-  if (*&v4->mutable__)
+  if (*&selfCopy->mutable__)
   {
     [(JavaLangStringBuilder *)v7 appendWithNSString:@"~"];
-    [(JavaLangStringBuilder *)v7 appendWithInt:*&v4->mutable__];
+    [(JavaLangStringBuilder *)v7 appendWithInt:*&selfCopy->mutable__];
   }
 
-  [(OrgApacheLuceneSearchQuery *)v4 getBoost];
+  [(OrgApacheLuceneSearchQuery *)selfCopy getBoost];
   [(JavaLangStringBuilder *)v7 appendWithNSString:OrgApacheLuceneUtilToStringUtils_boostWithFloat_(v33)];
 
   return [(JavaLangStringBuilder *)v7 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = OrgApacheLuceneSearchPhraseQuery;
@@ -302,7 +302,7 @@ LABEL_44:
   if (v5)
   {
     objc_opt_class();
-    if (!a3)
+    if (!equal)
     {
       goto LABEL_12;
     }
@@ -312,7 +312,7 @@ LABEL_44:
       JreThrowClassCastException();
     }
 
-    if (*&self->mutable__ != *(a3 + 4))
+    if (*&self->mutable__ != *(equal + 4))
     {
       LOBYTE(v5) = 0;
       return v5;
@@ -324,7 +324,7 @@ LABEL_44:
       goto LABEL_12;
     }
 
-    v5 = [v6 isEqual:*(a3 + 28)];
+    v5 = [v6 isEqual:*(equal + 28)];
     if (!v5)
     {
       return v5;
@@ -337,7 +337,7 @@ LABEL_12:
       JreThrowNullPointerException();
     }
 
-    LOBYTE(v5) = [v7 isEqual:*(a3 + 36)];
+    LOBYTE(v5) = [v7 isEqual:*(equal + 36)];
   }
 
   return v5;
@@ -358,7 +358,7 @@ LABEL_12:
   return ([v7 hash] - v8 + 32 * v8);
 }
 
-- (void)addWithOrgApacheLuceneIndexTerm:(id)a3
+- (void)addWithOrgApacheLuceneIndexTerm:(id)term
 {
   v4 = *(&self->terms_ + 4);
   if (!v4)
@@ -382,7 +382,7 @@ LABEL_9:
   v7 = 0;
 LABEL_6:
 
-  [(OrgApacheLuceneSearchPhraseQuery *)self addWithOrgApacheLuceneIndexTerm:a3 withInt:v7];
+  [(OrgApacheLuceneSearchPhraseQuery *)self addWithOrgApacheLuceneIndexTerm:term withInt:v7];
 }
 
 - (void)dealloc

@@ -1,11 +1,11 @@
 @interface HMDBufferingStructureDataFilter
-- (HMDBufferingStructureDataFilter)initWithUnderlyingWriter:(id)a3 block:(id)a4;
-- (void)emitRootValue:(id)a3;
+- (HMDBufferingStructureDataFilter)initWithUnderlyingWriter:(id)writer block:(id)block;
+- (void)emitRootValue:(id)value;
 @end
 
 @implementation HMDBufferingStructureDataFilter
 
-- (void)emitRootValue:(id)a3
+- (void)emitRootValue:(id)value
 {
   v4 = (*(self->_block + 2))();
   v5 = 0;
@@ -23,23 +23,23 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
-    [(HMDStructuredWriter *)writer failWithError:v8];
+    hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+    [(HMDStructuredWriter *)writer failWithError:hmfUnspecifiedError];
   }
 }
 
-- (HMDBufferingStructureDataFilter)initWithUnderlyingWriter:(id)a3 block:(id)a4
+- (HMDBufferingStructureDataFilter)initWithUnderlyingWriter:(id)writer block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  writerCopy = writer;
+  blockCopy = block;
+  if (!writerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = blockCopy;
+  if (!blockCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -52,7 +52,7 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_writer, a3);
+    objc_storeStrong(&v10->_writer, writer);
     v12 = _Block_copy(v9);
     block = v11->_block;
     v11->_block = v12;

@@ -1,21 +1,21 @@
 @interface MOMetaDataCurationUtility
-+ (id)getPersonFromBirthdayPhotoTrait:(id)a3 eventBundle:(id)a4;
-+ (id)selectBirthdayFromPhotoTraits:(id)a3;
-+ (id)selectHolidayFromPhotoTraits:(id)a3;
-+ (unint64_t)getTheBestPersonRelationtshipTagFor:(id)a3 useRelationshipInference:(BOOL)a4;
++ (id)getPersonFromBirthdayPhotoTrait:(id)trait eventBundle:(id)bundle;
++ (id)selectBirthdayFromPhotoTraits:(id)traits;
++ (id)selectHolidayFromPhotoTraits:(id)traits;
++ (unint64_t)getTheBestPersonRelationtshipTagFor:(id)for useRelationshipInference:(BOOL)inference;
 @end
 
 @implementation MOMetaDataCurationUtility
 
-+ (unint64_t)getTheBestPersonRelationtshipTagFor:(id)a3 useRelationshipInference:(BOOL)a4
++ (unint64_t)getTheBestPersonRelationtshipTagFor:(id)for useRelationshipInference:(BOOL)inference
 {
-  v4 = a4;
-  v5 = a3;
+  inferenceCopy = inference;
+  forCopy = for;
   v6 = 1.0;
   v7 = 1.0;
   v8 = 1.0;
   v9 = 1.0;
-  if (v4)
+  if (inferenceCopy)
   {
     v9 = 0.927661;
     v8 = 0.959;
@@ -24,8 +24,8 @@
   }
 
   v10 = objc_opt_new();
-  v11 = [v5 personRelationships];
-  v12 = [v11 count];
+  personRelationships = [forCopy personRelationships];
+  v12 = [personRelationships count];
 
   if (v12)
   {
@@ -33,8 +33,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v5 personRelationships];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    personRelationships2 = [forCopy personRelationships];
+    v14 = [personRelationships2 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
       v15 = v14;
@@ -45,7 +45,7 @@
         {
           if (*v35 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(personRelationships2);
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
@@ -93,7 +93,7 @@ LABEL_19:
           [v10 setObject:v25 forKeyedSubscript:v19];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v15 = [personRelationships2 countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v15);
@@ -185,7 +185,7 @@ LABEL_44:
       v26 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:v5 useRelationshipInference:?];
+        [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:forCopy useRelationshipInference:?];
       }
 
       v27 = 1;
@@ -197,7 +197,7 @@ LABEL_44:
     v26 = _mo_log_facility_get_os_log(&MOLogFacilityPatternEmbedding);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
-      [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:v5 useRelationshipInference:?];
+      [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:forCopy useRelationshipInference:?];
     }
 
     v27 = 0;
@@ -208,11 +208,11 @@ LABEL_41:
   return v27;
 }
 
-+ (id)selectHolidayFromPhotoTraits:(id)a3
++ (id)selectHolidayFromPhotoTraits:(id)traits
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  traitsCopy = traits;
+  v4 = traitsCopy;
+  if (!traitsCopy || ![traitsCopy count])
   {
     v16 = 0;
     goto LABEL_20;
@@ -245,27 +245,27 @@ LABEL_41:
       }
 
       v11 = *(*(&v20 + 1) + 8 * i);
-      v12 = [v11 labelType];
-      if ([v12 isEqualToString:@"holiday"])
+      labelType = [v11 labelType];
+      if ([labelType isEqualToString:@"holiday"])
       {
-        v13 = [v11 relevantAssetUUIDs];
-        if ([v13 count] <= v8)
+        relevantAssetUUIDs = [v11 relevantAssetUUIDs];
+        if ([relevantAssetUUIDs count] <= v8)
         {
         }
 
         else
         {
-          v14 = [v11 name];
+          name = [v11 name];
 
-          if (!v14)
+          if (!name)
           {
             continue;
           }
 
-          v15 = [v11 relevantAssetUUIDs];
-          v8 = [v15 count];
+          relevantAssetUUIDs2 = [v11 relevantAssetUUIDs];
+          v8 = [relevantAssetUUIDs2 count];
 
-          v12 = v19;
+          labelType = v19;
           v19 = v11;
         }
       }
@@ -284,11 +284,11 @@ LABEL_20:
   return v16;
 }
 
-+ (id)selectBirthdayFromPhotoTraits:(id)a3
++ (id)selectBirthdayFromPhotoTraits:(id)traits
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  traitsCopy = traits;
+  v4 = traitsCopy;
+  if (!traitsCopy || ![traitsCopy count])
   {
     v23 = 0;
     goto LABEL_23;
@@ -323,14 +323,14 @@ LABEL_20:
       }
 
       v11 = *(*(&v29 + 1) + 8 * i);
-      v12 = [v11 labelType];
-      if (![v12 isEqualToString:@"meaning"])
+      labelType = [v11 labelType];
+      if (![labelType isEqualToString:@"meaning"])
       {
         goto LABEL_15;
       }
 
-      v13 = [v11 meaningIdentifier];
-      if (([v13 isEqualToString:v9] & 1) == 0)
+      meaningIdentifier = [v11 meaningIdentifier];
+      if (([meaningIdentifier isEqualToString:v9] & 1) == 0)
       {
 
         goto LABEL_15;
@@ -338,24 +338,24 @@ LABEL_20:
 
       v14 = v5;
       v15 = v9;
-      v16 = [v11 relevantAssetUUIDs];
-      v17 = [v16 count];
+      relevantAssetUUIDs = [v11 relevantAssetUUIDs];
+      v17 = [relevantAssetUUIDs count];
 
       if (v17 > v28)
       {
-        v18 = [v11 associatedPersonLocalIdentifiers];
-        if (v18)
+        associatedPersonLocalIdentifiers = [v11 associatedPersonLocalIdentifiers];
+        if (associatedPersonLocalIdentifiers)
         {
-          v19 = v18;
-          v20 = [v11 associatedPersonLocalIdentifiers];
-          v21 = [v20 count];
+          v19 = associatedPersonLocalIdentifiers;
+          associatedPersonLocalIdentifiers2 = [v11 associatedPersonLocalIdentifiers];
+          v21 = [associatedPersonLocalIdentifiers2 count];
 
           if (v21)
           {
-            v22 = [v11 relevantAssetUUIDs];
-            v28 = [v22 count];
+            relevantAssetUUIDs2 = [v11 relevantAssetUUIDs];
+            v28 = [relevantAssetUUIDs2 count];
 
-            v12 = v26;
+            labelType = v26;
             v26 = v11;
             v9 = v15;
             v5 = v14;
@@ -385,40 +385,40 @@ LABEL_23:
   return v23;
 }
 
-+ (id)getPersonFromBirthdayPhotoTrait:(id)a3 eventBundle:(id)a4
++ (id)getPersonFromBirthdayPhotoTrait:(id)trait eventBundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = 0;
-  if (!v5 || !v6)
+  traitCopy = trait;
+  bundleCopy = bundle;
+  v7 = bundleCopy;
+  firstObject = 0;
+  if (!traitCopy || !bundleCopy)
   {
     goto LABEL_22;
   }
 
-  v9 = [v5 associatedPersonLocalIdentifiers];
-  v8 = [v9 firstObject];
-  if (!v8)
+  associatedPersonLocalIdentifiers = [traitCopy associatedPersonLocalIdentifiers];
+  firstObject = [associatedPersonLocalIdentifiers firstObject];
+  if (!firstObject)
   {
 
     goto LABEL_22;
   }
 
-  v10 = [v7 persons];
-  if (!v10)
+  persons = [v7 persons];
+  if (!persons)
   {
 
     goto LABEL_20;
   }
 
-  v11 = v10;
-  v12 = [v7 persons];
-  v13 = [v12 count];
+  v11 = persons;
+  persons2 = [v7 persons];
+  v13 = [persons2 count];
 
   if (!v13)
   {
 LABEL_20:
-    v8 = 0;
+    firstObject = 0;
     goto LABEL_22;
   }
 
@@ -443,17 +443,17 @@ LABEL_20:
         }
 
         v18 = *(*(&v27 + 1) + 8 * i);
-        v19 = [v18 localIdentifier];
-        v20 = [v5 associatedPersonLocalIdentifiers];
-        v21 = [v20 firstObject];
-        if ([v19 isEqualToString:v21])
+        localIdentifier = [v18 localIdentifier];
+        associatedPersonLocalIdentifiers2 = [traitCopy associatedPersonLocalIdentifiers];
+        firstObject2 = [associatedPersonLocalIdentifiers2 firstObject];
+        if ([localIdentifier isEqualToString:firstObject2])
         {
-          v22 = [v18 name];
-          v23 = [v22 length];
+          name = [v18 name];
+          v23 = [name length];
 
           if (v23)
           {
-            v8 = v18;
+            firstObject = v18;
 
             goto LABEL_21;
           }
@@ -470,12 +470,12 @@ LABEL_20:
     while (v15);
   }
 
-  v8 = 0;
+  firstObject = 0;
 LABEL_21:
   v7 = v25;
 LABEL_22:
 
-  return v8;
+  return firstObject;
 }
 
 + (void)getTheBestPersonRelationtshipTagFor:(void *)a1 useRelationshipInference:.cold.1(void *a1)

@@ -1,27 +1,27 @@
 @interface HKViewTableViewCell
-- (HKViewTableViewCell)initWithReuseIdentifier:(id)a3;
-- (void)_pinViewToContent:(id)a3;
+- (HKViewTableViewCell)initWithReuseIdentifier:(id)identifier;
+- (void)_pinViewToContent:(id)content;
 - (void)prepareForReuse;
-- (void)setHostedView:(id)a3;
+- (void)setHostedView:(id)view;
 @end
 
 @implementation HKViewTableViewCell
 
-- (HKViewTableViewCell)initWithReuseIdentifier:(id)a3
+- (HKViewTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = HKViewTableViewCell;
-  return [(HKViewTableViewCell *)&v4 initWithStyle:0 reuseIdentifier:a3];
+  return [(HKViewTableViewCell *)&v4 initWithStyle:0 reuseIdentifier:identifier];
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  objc_storeStrong(&self->_hostedView, a3);
-  v5 = a3;
-  v6 = [(HKViewTableViewCell *)self contentView];
-  [v6 addSubview:v5];
+  objc_storeStrong(&self->_hostedView, view);
+  viewCopy = view;
+  contentView = [(HKViewTableViewCell *)self contentView];
+  [contentView addSubview:viewCopy];
 
-  [(HKViewTableViewCell *)self _pinViewToContent:v5];
+  [(HKViewTableViewCell *)self _pinViewToContent:viewCopy];
 
   [(HKViewTableViewCell *)self setNeedsLayout];
 }
@@ -35,33 +35,33 @@
   self->_hostedView = 0;
 }
 
-- (void)_pinViewToContent:(id)a3
+- (void)_pinViewToContent:(id)content
 {
-  v4 = a3;
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HKViewTableViewCell *)self contentView];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentCopy = content;
+  [contentCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [contentCopy leadingAnchor];
+  contentView = [(HKViewTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v8 setActive:1];
 
-  v9 = [v4 trailingAnchor];
-  v10 = [(HKViewTableViewCell *)self contentView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  trailingAnchor = [contentCopy trailingAnchor];
+  contentView2 = [(HKViewTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v12 setActive:1];
 
-  v13 = [v4 topAnchor];
-  v14 = [(HKViewTableViewCell *)self contentView];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  topAnchor = [contentCopy topAnchor];
+  contentView3 = [(HKViewTableViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v16 setActive:1];
 
-  v20 = [v4 bottomAnchor];
+  bottomAnchor = [contentCopy bottomAnchor];
 
-  v17 = [(HKViewTableViewCell *)self contentView];
-  v18 = [v17 bottomAnchor];
-  v19 = [v20 constraintEqualToAnchor:v18];
+  contentView4 = [(HKViewTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v19 setActive:1];
 }
 

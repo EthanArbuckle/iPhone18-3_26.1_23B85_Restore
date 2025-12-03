@@ -1,29 +1,29 @@
 @interface AMSMetricsIdentifierCloudDataSource
-+ (id)_saveCloudObject:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5;
-+ (id)_saveIdInfo:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5;
-+ (id)_saveStoreInfo:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5;
++ (id)_saveCloudObject:(id)object intoDatabase:(id)database isServerRecord:(BOOL)record;
++ (id)_saveIdInfo:(id)info intoDatabase:(id)database isServerRecord:(BOOL)record;
++ (id)_saveStoreInfo:(id)info intoDatabase:(id)database isServerRecord:(BOOL)record;
 + (void)clearSyncState;
 + (void)removeAllRecords;
 - (AMSMetricsIdentifierCloudDataSourceDelegate)delegate;
-- (id)_createRecordForIdentifier:(id)a3;
-- (id)_createRecordForIdentifierStore:(id)a3;
-- (id)_parseRecord:(id)a3 error:(id *)a4;
-- (void)fetchModifiedRecordsWithCompletion:(id)a3;
-- (void)removeRecordWithIdentifier:(id)a3;
-- (void)saveRecord:(id)a3 isServerRecord:(BOOL)a4;
+- (id)_createRecordForIdentifier:(id)identifier;
+- (id)_createRecordForIdentifierStore:(id)store;
+- (id)_parseRecord:(id)record error:(id *)error;
+- (void)fetchModifiedRecordsWithCompletion:(id)completion;
+- (void)removeRecordWithIdentifier:(id)identifier;
+- (void)saveRecord:(id)record isServerRecord:(BOOL)serverRecord;
 @end
 
 @implementation AMSMetricsIdentifierCloudDataSource
 
 + (void)clearSyncState
 {
-  v3 = [a1 _sharedQueue];
+  _sharedQueue = [self _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__AMSMetricsIdentifierCloudDataSource_clearSyncState__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_sync(v3, block);
+  block[4] = self;
+  dispatch_sync(_sharedQueue, block);
 }
 
 void __53__AMSMetricsIdentifierCloudDataSource_clearSyncState__block_invoke(uint64_t a1)
@@ -75,18 +75,18 @@ void __53__AMSMetricsIdentifierCloudDataSource_clearSyncState__block_invoke(uint
   }
 }
 
-- (void)fetchModifiedRecordsWithCompletion:(id)a3
+- (void)fetchModifiedRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _sharedQueue];
+  completionCopy = completion;
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__AMSMetricsIdentifierCloudDataSource_fetchModifiedRecordsWithCompletion___block_invoke;
   v7[3] = &unk_1E73B36D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(_sharedQueue, v7);
 }
 
 void __74__AMSMetricsIdentifierCloudDataSource_fetchModifiedRecordsWithCompletion___block_invoke(uint64_t a1)
@@ -245,13 +245,13 @@ LABEL_6:
 
 + (void)removeAllRecords
 {
-  v3 = [objc_opt_class() _sharedQueue];
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__AMSMetricsIdentifierCloudDataSource_removeAllRecords__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
-  dispatch_sync(v3, block);
+  block[4] = self;
+  dispatch_sync(_sharedQueue, block);
 }
 
 void __55__AMSMetricsIdentifierCloudDataSource_removeAllRecords__block_invoke()
@@ -303,18 +303,18 @@ void __55__AMSMetricsIdentifierCloudDataSource_removeAllRecords__block_invoke()
   }
 }
 
-- (void)removeRecordWithIdentifier:(id)a3
+- (void)removeRecordWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _sharedQueue];
+  identifierCopy = identifier;
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AMSMetricsIdentifierCloudDataSource_removeRecordWithIdentifier___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = identifierCopy;
+  v6 = identifierCopy;
+  dispatch_async(_sharedQueue, v7);
 }
 
 void __66__AMSMetricsIdentifierCloudDataSource_removeRecordWithIdentifier___block_invoke(uint64_t a1)
@@ -376,19 +376,19 @@ void __66__AMSMetricsIdentifierCloudDataSource_removeRecordWithIdentifier___bloc
   }
 }
 
-- (void)saveRecord:(id)a3 isServerRecord:(BOOL)a4
+- (void)saveRecord:(id)record isServerRecord:(BOOL)serverRecord
 {
-  v6 = a3;
-  v7 = [objc_opt_class() _sharedQueue];
+  recordCopy = record;
+  _sharedQueue = [objc_opt_class() _sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__AMSMetricsIdentifierCloudDataSource_saveRecord_isServerRecord___block_invoke;
   block[3] = &unk_1E73B9C20;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = recordCopy;
+  serverRecordCopy = serverRecord;
+  v8 = recordCopy;
+  dispatch_async(_sharedQueue, block);
 }
 
 void __65__AMSMetricsIdentifierCloudDataSource_saveRecord_isServerRecord___block_invoke(uint64_t a1)
@@ -434,15 +434,15 @@ void __65__AMSMetricsIdentifierCloudDataSource_saveRecord_isServerRecord___block
   }
 }
 
-+ (id)_saveCloudObject:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5
++ (id)_saveCloudObject:(id)object intoDatabase:(id)database isServerRecord:(BOOL)record
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  objectCopy = object;
+  databaseCopy = database;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [a1 _saveStoreInfo:v8 intoDatabase:v9 isServerRecord:v5];
+    v10 = [self _saveStoreInfo:objectCopy intoDatabase:databaseCopy isServerRecord:recordCopy];
 LABEL_5:
     v11 = v10;
     goto LABEL_7;
@@ -451,7 +451,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [a1 _saveIdInfo:v8 intoDatabase:v9 isServerRecord:v5];
+    v10 = [self _saveIdInfo:objectCopy intoDatabase:databaseCopy isServerRecord:recordCopy];
     goto LABEL_5;
   }
 
@@ -461,45 +461,45 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_saveStoreInfo:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5
++ (id)_saveStoreInfo:(id)info intoDatabase:(id)database isServerRecord:(BOOL)record
 {
-  v5 = a5;
+  recordCopy = record;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  databaseCopy = database;
   v9 = +[AMSLogConfig sharedMetricsConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:recordCopy];
     *buf = 138544130;
     v25 = v11;
     v26 = 2114;
     v27 = v12;
     v28 = 2114;
-    v29 = v7;
+    v29 = infoCopy;
     v30 = 2114;
     v31 = v13;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Maybe saving Store Info %{public}@. from cloudkit server %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Maybe saving Store Info %{public}@. from cloudkit server %{public}@", buf, 0x2Au);
   }
 
-  v14 = [v7 storeKey];
+  storeKey = [infoCopy storeKey];
   v20 = 0;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __82__AMSMetricsIdentifierCloudDataSource__saveStoreInfo_intoDatabase_isServerRecord___block_invoke;
   v21[3] = &unk_1E73B9C48;
-  v22 = v7;
-  v23 = v5;
-  v15 = v7;
-  v16 = [v8 identifierStoreForKey:v14 updateMaybe:v21 error:&v20];
+  v22 = infoCopy;
+  v23 = recordCopy;
+  v15 = infoCopy;
+  v16 = [databaseCopy identifierStoreForKey:storeKey updateMaybe:v21 error:&v20];
   v17 = v20;
   v18 = v20;
 
@@ -530,45 +530,45 @@ uint64_t __82__AMSMetricsIdentifierCloudDataSource__saveStoreInfo_intoDatabase_i
   return v11;
 }
 
-+ (id)_saveIdInfo:(id)a3 intoDatabase:(id)a4 isServerRecord:(BOOL)a5
++ (id)_saveIdInfo:(id)info intoDatabase:(id)database isServerRecord:(BOOL)record
 {
-  v5 = a5;
+  recordCopy = record;
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  databaseCopy = database;
   v9 = +[AMSLogConfig sharedMetricsConfig];
   if (!v9)
   {
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     v12 = AMSLogKey();
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:recordCopy];
     *buf = 138544130;
     v25 = v11;
     v26 = 2114;
     v27 = v12;
     v28 = 2114;
-    v29 = v7;
+    v29 = infoCopy;
     v30 = 2114;
     v31 = v13;
-    _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Maybe saving Id Info %{public}@. from cloudkit server %{public}@", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Maybe saving Id Info %{public}@. from cloudkit server %{public}@", buf, 0x2Au);
   }
 
-  v14 = [v7 idKey];
+  idKey = [infoCopy idKey];
   v20 = 0;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __79__AMSMetricsIdentifierCloudDataSource__saveIdInfo_intoDatabase_isServerRecord___block_invoke;
   v21[3] = &unk_1E73B9C48;
-  v22 = v7;
-  v23 = v5;
-  v15 = v7;
-  v16 = [v8 identifierForKey:v14 updateMaybe:v21 error:&v20];
+  v22 = infoCopy;
+  v23 = recordCopy;
+  v15 = infoCopy;
+  v16 = [databaseCopy identifierForKey:idKey updateMaybe:v21 error:&v20];
   v17 = v20;
   v18 = v20;
 
@@ -633,136 +633,136 @@ LABEL_6:
   return v6;
 }
 
-- (id)_createRecordForIdentifierStore:(id)a3
+- (id)_createRecordForIdentifierStore:(id)store
 {
-  v4 = a3;
-  v5 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v6 = [v4 storeKey];
-  v7 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v8 = [v7 identifierStoreRecordType];
-  v9 = [v5 createRecordForKey:v6 recordType:v8];
+  storeCopy = store;
+  delegate = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  storeKey = [storeCopy storeKey];
+  delegate2 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  identifierStoreRecordType = [delegate2 identifierStoreRecordType];
+  v9 = [delegate createRecordForKey:storeKey recordType:identifierStoreRecordType];
 
   if (v9)
   {
     v10 = v9;
-    v11 = [v4 account];
-    [v10 setField:v11 forKey:@"account"];
+    account = [storeCopy account];
+    [v10 setField:account forKey:@"account"];
 
     v12 = MEMORY[0x1E696AD98];
-    [v4 resetInterval];
+    [storeCopy resetInterval];
     v13 = [v12 numberWithDouble:?];
     [v10 setField:v13 forKey:@"resetInterval"];
 
-    v14 = [v4 modified];
-    [v10 setField:v14 forKey:@"modified"];
+    modified = [storeCopy modified];
+    [v10 setField:modified forKey:@"modified"];
 
-    v15 = [v4 started];
-    [v10 setField:v15 forKey:@"started"];
+    started = [storeCopy started];
+    [v10 setField:started forKey:@"started"];
 
-    v16 = [v4 storeUUID];
-    [v10 setField:v16 forKey:@"storeUUID"];
+    storeUUID = [storeCopy storeUUID];
+    [v10 setField:storeUUID forKey:@"storeUUID"];
   }
 
   return v9;
 }
 
-- (id)_createRecordForIdentifier:(id)a3
+- (id)_createRecordForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v6 = [v4 idKey];
-  v7 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v8 = [v7 identifierRecordType];
-  v9 = [v5 createRecordForKey:v6 recordType:v8];
+  identifierCopy = identifier;
+  delegate = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  idKey = [identifierCopy idKey];
+  delegate2 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  identifierRecordType = [delegate2 identifierRecordType];
+  v9 = [delegate createRecordForKey:idKey recordType:identifierRecordType];
 
   if (v9)
   {
     v10 = v9;
-    v11 = [v4 expires];
-    [v10 setField:v11 forKey:@"expires"];
+    expires = [identifierCopy expires];
+    [v10 setField:expires forKey:@"expires"];
 
-    v12 = [v4 modified];
-    [v10 setField:v12 forKey:@"modified"];
+    modified = [identifierCopy modified];
+    [v10 setField:modified forKey:@"modified"];
 
-    v13 = [v4 name];
-    [v10 setField:v13 forKey:@"name"];
+    name = [identifierCopy name];
+    [v10 setField:name forKey:@"name"];
 
-    v14 = [v4 storeUUID];
-    [v10 setField:v14 forKey:@"storeUUID"];
+    storeUUID = [identifierCopy storeUUID];
+    [v10 setField:storeUUID forKey:@"storeUUID"];
 
-    v15 = [v4 value];
-    [v10 setField:v15 forKey:@"value"];
+    value = [identifierCopy value];
+    [v10 setField:value forKey:@"value"];
 
-    v16 = [v4 serverProvidedAt];
-    [v10 setField:v16 forKey:@"serverProvidedAt"];
+    serverProvidedAt = [identifierCopy serverProvidedAt];
+    [v10 setField:serverProvidedAt forKey:@"serverProvidedAt"];
   }
 
   return v9;
 }
 
-- (id)_parseRecord:(id)a3 error:(id *)a4
+- (id)_parseRecord:(id)record error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 type];
-  v8 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v9 = [v6 identifier];
-  v10 = [v8 keyForRecordIdentifier:v9];
+  recordCopy = record;
+  type = [recordCopy type];
+  delegate = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  identifier = [recordCopy identifier];
+  v10 = [delegate keyForRecordIdentifier:identifier];
 
-  v11 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v12 = [v11 identifierStoreRecordType];
-  v13 = [v7 isEqualToString:v12];
+  delegate2 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  identifierStoreRecordType = [delegate2 identifierStoreRecordType];
+  v13 = [type isEqualToString:identifierStoreRecordType];
 
   if (v13)
   {
     v14 = objc_opt_new();
     [v14 setStoreKey:v10];
     [v14 setCrossDeviceSync:1];
-    v15 = [v6 fieldForKey:@"account"];
+    v15 = [recordCopy fieldForKey:@"account"];
     [v14 setAccount:v15];
 
-    v16 = [v6 fieldForKey:@"resetInterval"];
+    v16 = [recordCopy fieldForKey:@"resetInterval"];
     [v16 doubleValue];
     [v14 setResetInterval:?];
 
-    v17 = [v6 fieldForKey:@"started"];
+    v17 = [recordCopy fieldForKey:@"started"];
     [v14 setStarted:v17];
 
-    v18 = [v6 fieldForKey:@"storeUUID"];
+    v18 = [recordCopy fieldForKey:@"storeUUID"];
     [v14 setStoreUUID:v18];
 
-    v19 = [v6 fieldForKey:@"modified"];
+    v19 = [recordCopy fieldForKey:@"modified"];
     [v14 setModified:v19];
 
     v20 = [MEMORY[0x1E695DF00] now];
     [v14 setLastSync:v20];
 
-    v21 = [v14 storeKey];
-    if (!v21)
+    storeKey = [v14 storeKey];
+    if (!storeKey)
     {
       goto LABEL_20;
     }
 
-    v22 = v21;
-    v23 = [v14 storeUUID];
-    if (!v23)
+    v22 = storeKey;
+    storeUUID = [v14 storeUUID];
+    if (!storeUUID)
     {
       goto LABEL_19;
     }
 
-    v24 = v23;
-    v25 = [v14 account];
-    if (v25)
+    v24 = storeUUID;
+    account = [v14 account];
+    if (account)
     {
-      v26 = v25;
-      v27 = [v14 modified];
+      v26 = account;
+      modified = [v14 modified];
 
-      if (!v27)
+      if (!modified)
       {
 LABEL_20:
-        if (*a4)
+        if (*error)
         {
           AMSError(0, @"Invalid record data", @"Record data is not valid.", 0);
-          *a4 = v45 = 0;
+          *error = v45 = 0;
         }
 
         else
@@ -786,61 +786,61 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v28 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
-  v29 = [v28 identifierRecordType];
-  v30 = [v7 isEqualToString:v29];
+  delegate3 = [(AMSMetricsIdentifierCloudDataSource *)self delegate];
+  identifierRecordType = [delegate3 identifierRecordType];
+  v30 = [type isEqualToString:identifierRecordType];
 
   if (v30)
   {
     v14 = objc_opt_new();
     [v14 setIdKey:v10];
     [v14 setCrossDeviceSync:1];
-    v31 = [v6 fieldForKey:@"expires"];
+    v31 = [recordCopy fieldForKey:@"expires"];
     [v14 setExpires:v31];
 
-    v32 = [v6 fieldForKey:@"name"];
+    v32 = [recordCopy fieldForKey:@"name"];
     [v14 setName:v32];
 
-    v33 = [v6 fieldForKey:@"storeUUID"];
+    v33 = [recordCopy fieldForKey:@"storeUUID"];
     [v14 setStoreUUID:v33];
 
-    v34 = [v6 fieldForKey:@"value"];
+    v34 = [recordCopy fieldForKey:@"value"];
     [v14 setValue:v34];
 
-    v35 = [v6 fieldForKey:@"modified"];
+    v35 = [recordCopy fieldForKey:@"modified"];
     [v14 setModified:v35];
 
     v36 = [MEMORY[0x1E695DF00] now];
     [v14 setLastSync:v36];
 
-    v37 = [v6 fieldForKey:@"serverProvidedAt"];
+    v37 = [recordCopy fieldForKey:@"serverProvidedAt"];
     [v14 setServerProvidedAt:v37];
 
-    v38 = [v14 idKey];
-    if (!v38)
+    idKey = [v14 idKey];
+    if (!idKey)
     {
       goto LABEL_20;
     }
 
-    v22 = v38;
-    v39 = [v14 storeUUID];
-    if (!v39)
+    v22 = idKey;
+    storeUUID2 = [v14 storeUUID];
+    if (!storeUUID2)
     {
       goto LABEL_19;
     }
 
-    v24 = v39;
-    v40 = [v14 name];
-    if (v40)
+    v24 = storeUUID2;
+    name = [v14 name];
+    if (name)
     {
-      v41 = v40;
-      v42 = [v14 modified];
-      if (v42)
+      v41 = name;
+      modified2 = [v14 modified];
+      if (modified2)
       {
-        v43 = v42;
-        v44 = [v14 value];
+        v43 = modified2;
+        value = [v14 value];
 
-        if (!v44)
+        if (!value)
         {
           goto LABEL_20;
         }
@@ -852,10 +852,10 @@ LABEL_19:
     goto LABEL_18;
   }
 
-  if (*a4)
+  if (*error)
   {
     AMSError(0, @"Unknown record type", @"Record type is unrecognized.", 0);
-    *a4 = v45 = 0;
+    *error = v45 = 0;
   }
 
   else

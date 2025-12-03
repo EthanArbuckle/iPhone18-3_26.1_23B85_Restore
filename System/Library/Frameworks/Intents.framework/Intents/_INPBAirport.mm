@@ -1,43 +1,43 @@
 @interface _INPBAirport
-- (BOOL)isEqual:(id)a3;
-- (_INPBAirport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAirport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIataCode:(id)a3;
-- (void)setIcaoCode:(id)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIataCode:(id)code;
+- (void)setIcaoCode:(id)code;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAirport
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_iataCode)
   {
-    v4 = [(_INPBAirport *)self iataCode];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"iataCode"];
+    iataCode = [(_INPBAirport *)self iataCode];
+    v5 = [iataCode copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"iataCode"];
   }
 
   if (self->_icaoCode)
   {
-    v6 = [(_INPBAirport *)self icaoCode];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"icaoCode"];
+    icaoCode = [(_INPBAirport *)self icaoCode];
+    v7 = [icaoCode copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"icaoCode"];
   }
 
   if (self->_name)
   {
-    v8 = [(_INPBAirport *)self name];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"name"];
+    name = [(_INPBAirport *)self name];
+    v9 = [name copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"name"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -47,28 +47,28 @@
   return v4 ^ [(NSString *)self->_name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBAirport *)self iataCode];
-  v6 = [v4 iataCode];
-  if ((v5 != 0) == (v6 == 0))
+  iataCode = [(_INPBAirport *)self iataCode];
+  iataCode2 = [equalCopy iataCode];
+  if ((iataCode != 0) == (iataCode2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBAirport *)self iataCode];
-  if (v7)
+  iataCode3 = [(_INPBAirport *)self iataCode];
+  if (iataCode3)
   {
-    v8 = v7;
-    v9 = [(_INPBAirport *)self iataCode];
-    v10 = [v4 iataCode];
-    v11 = [v9 isEqual:v10];
+    v8 = iataCode3;
+    iataCode4 = [(_INPBAirport *)self iataCode];
+    iataCode5 = [equalCopy iataCode];
+    v11 = [iataCode4 isEqual:iataCode5];
 
     if (!v11)
     {
@@ -80,20 +80,20 @@
   {
   }
 
-  v5 = [(_INPBAirport *)self icaoCode];
-  v6 = [v4 icaoCode];
-  if ((v5 != 0) == (v6 == 0))
+  iataCode = [(_INPBAirport *)self icaoCode];
+  iataCode2 = [equalCopy icaoCode];
+  if ((iataCode != 0) == (iataCode2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBAirport *)self icaoCode];
-  if (v12)
+  icaoCode = [(_INPBAirport *)self icaoCode];
+  if (icaoCode)
   {
-    v13 = v12;
-    v14 = [(_INPBAirport *)self icaoCode];
-    v15 = [v4 icaoCode];
-    v16 = [v14 isEqual:v15];
+    v13 = icaoCode;
+    icaoCode2 = [(_INPBAirport *)self icaoCode];
+    icaoCode3 = [equalCopy icaoCode];
+    v16 = [icaoCode2 isEqual:icaoCode3];
 
     if (!v16)
     {
@@ -105,12 +105,12 @@
   {
   }
 
-  v5 = [(_INPBAirport *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) != (v6 == 0))
+  iataCode = [(_INPBAirport *)self name];
+  iataCode2 = [equalCopy name];
+  if ((iataCode != 0) != (iataCode2 == 0))
   {
-    v17 = [(_INPBAirport *)self name];
-    if (!v17)
+    name = [(_INPBAirport *)self name];
+    if (!name)
     {
 
 LABEL_20:
@@ -118,10 +118,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_INPBAirport *)self name];
-    v20 = [v4 name];
-    v21 = [v19 isEqual:v20];
+    v18 = name;
+    name2 = [(_INPBAirport *)self name];
+    name3 = [equalCopy name];
+    v21 = [name2 isEqual:name3];
 
     if (v21)
     {
@@ -141,96 +141,96 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAirport allocWithZone:](_INPBAirport init];
-  v6 = [(NSString *)self->_iataCode copyWithZone:a3];
+  v6 = [(NSString *)self->_iataCode copyWithZone:zone];
   [(_INPBAirport *)v5 setIataCode:v6];
 
-  v7 = [(NSString *)self->_icaoCode copyWithZone:a3];
+  v7 = [(NSString *)self->_icaoCode copyWithZone:zone];
   [(_INPBAirport *)v5 setIcaoCode:v7];
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   [(_INPBAirport *)v5 setName:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAirport *)self data];
+  coderCopy = coder;
+  data = [(_INPBAirport *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAirport)initWithCoder:(id)a3
+- (_INPBAirport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAirport *)self initWithData:v6];
+    self = [(_INPBAirport *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(_INPBAirport *)self iataCode];
+  toCopy = to;
+  iataCode = [(_INPBAirport *)self iataCode];
 
-  if (v4)
+  if (iataCode)
   {
     iataCode = self->_iataCode;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_INPBAirport *)self icaoCode];
+  icaoCode = [(_INPBAirport *)self icaoCode];
 
-  if (v6)
+  if (icaoCode)
   {
     icaoCode = self->_icaoCode;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBAirport *)self name];
+  name = [(_INPBAirport *)self name];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (name)
   {
     name = self->_name;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8](v4, name);
 }
 
-- (void)setIcaoCode:(id)a3
+- (void)setIcaoCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   icaoCode = self->_icaoCode;
   self->_icaoCode = v4;
 
   MEMORY[0x1EEE66BB8](v4, icaoCode);
 }
 
-- (void)setIataCode:(id)a3
+- (void)setIataCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   iataCode = self->_iataCode;
   self->_iataCode = v4;
 

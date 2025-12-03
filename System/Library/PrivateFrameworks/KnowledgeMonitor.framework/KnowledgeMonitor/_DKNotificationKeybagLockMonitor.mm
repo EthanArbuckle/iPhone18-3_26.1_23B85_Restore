@@ -1,14 +1,14 @@
 @interface _DKNotificationKeybagLockMonitor
-+ (id)_eventWithState:(id)a3;
++ (id)_eventWithState:(id)state;
 + (id)log;
 + (int)getCurrentLockState;
 + (void)getCurrentLockState;
 - (void)_activate;
 - (void)_deactivate;
-- (void)_receiveNotificationEvent:(id)a3;
+- (void)_receiveNotificationEvent:(id)event;
 - (void)_resume;
-- (void)_updateWithKeybagLocked:(id)a3 timestamp:(double)a4;
-- (void)receiveNotificationEvent:(id)a3;
+- (void)_updateWithKeybagLocked:(id)locked timestamp:(double)timestamp;
+- (void)receiveNotificationEvent:(id)event;
 - (void)start;
 - (void)stop;
 - (void)synchronouslyReflectCurrentValue;
@@ -48,8 +48,8 @@
 
 - (void)_resume
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_activated && !self->_donationQueueResumed)
   {
@@ -58,10 +58,10 @@
   }
 }
 
-+ (id)_eventWithState:(id)a3
++ (id)_eventWithState:(id)state
 {
-  v3 = a3;
-  if ([v3 BOOLValue])
+  stateCopy = state;
+  if ([stateCopy BOOLValue])
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -71,33 +71,33 @@
     [MEMORY[0x277CFE1A0] no];
   }
   v4 = ;
-  v5 = [v3 BOOLValue];
+  bOOLValue = [stateCopy BOOLValue];
 
-  [_DKNotificationKeybagLockMonitor setIsLocked:v5];
+  [_DKNotificationKeybagLockMonitor setIsLocked:bOOLValue];
   v6 = MEMORY[0x277CFE1D8];
-  v7 = [MEMORY[0x277CFE298] keybagIsLockedStream];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [MEMORY[0x277CBEAA8] distantFuture];
-  v10 = [v6 eventWithStream:v7 startDate:v8 endDate:v9 value:v4];
+  keybagIsLockedStream = [MEMORY[0x277CFE298] keybagIsLockedStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v10 = [v6 eventWithStream:keybagIsLockedStream startDate:date endDate:distantFuture value:v4];
 
   return v10;
 }
 
 - (void)start
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41___DKNotificationKeybagLockMonitor_start__block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (void)_activate
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [objc_opt_class() log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -138,19 +138,19 @@
 
 - (void)stop
 {
-  v3 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40___DKNotificationKeybagLockMonitor_stop__block_invoke;
   block[3] = &unk_27856F060;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_deactivate
 {
-  v3 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_activated = 0;
   if (!self->_donationQueueResumed)
@@ -171,9 +171,9 @@
 
 - (void)synchronouslyReflectCurrentValue
 {
-  v2 = [(_DKMonitor *)self currentEvent];
+  currentEvent = [(_DKMonitor *)self currentEvent];
 
-  if (!v2)
+  if (!currentEvent)
   {
     v3 = +[_DKNotificationKeybagLockMonitor getCurrentLockState];
     if (v3 != -1)
@@ -184,18 +184,18 @@
   }
 }
 
-- (void)_updateWithKeybagLocked:(id)a3 timestamp:(double)a4
+- (void)_updateWithKeybagLocked:(id)locked timestamp:(double)timestamp
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lockedCopy = locked;
   dispatch_assert_queue_V2(self->_donationQueue);
   v7 = [objc_opt_class() log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543618;
-    v17 = v6;
+    v17 = lockedCopy;
     v18 = 2048;
-    v19 = a4;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_22595A000, v7, OS_LOG_TYPE_DEFAULT, "Writing keybagLocked event %{public}@ at %f", &v16, 0x16u);
   }
 
@@ -203,35 +203,35 @@
   if (!source)
   {
     v9 = BiomeLibrary();
-    v10 = [v9 Device];
-    v11 = [v10 KeybagLocked];
-    v12 = [v11 source];
+    device = [v9 Device];
+    keybagLocked = [device KeybagLocked];
+    source = [keybagLocked source];
     v13 = self->_source;
-    self->_source = v12;
+    self->_source = source;
 
     source = self->_source;
   }
 
-  [(BMSource *)source sendEvent:v6 timestamp:a4];
+  [(BMSource *)source sendEvent:lockedCopy timestamp:timestamp];
   lastEvent = self->_lastEvent;
-  self->_lastEvent = v6;
+  self->_lastEvent = lockedCopy;
 
-  self->_lastUpdate = a4;
+  self->_lastUpdate = timestamp;
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(_DKMonitor *)self queue];
+  eventCopy = event;
+  queue = [(_DKMonitor *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61___DKNotificationKeybagLockMonitor_receiveNotificationEvent___block_invoke;
   v10[3] = &unk_27856F0B0;
   v10[4] = self;
-  v11 = v4;
+  v11 = eventCopy;
   v6 = v10;
-  v7 = v4;
+  v7 = eventCopy;
   v8 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -240,18 +240,18 @@
   v13 = v8;
   v14 = v6;
   v9 = v8;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
-- (void)_receiveNotificationEvent:(id)a3
+- (void)_receiveNotificationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_activated)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Notification"];
+    v6 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277D28B30]];
     v8 = [v6 isEqual:v7];
 
@@ -269,9 +269,9 @@
       {
         if (!v10)
         {
-          v12 = [(_DKMonitor *)self currentEvent];
+          currentEvent = [(_DKMonitor *)self currentEvent];
 
-          if (!v12)
+          if (!currentEvent)
           {
             v13 = [objc_opt_class() log];
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -281,15 +281,15 @@
             }
 
             v14 = MEMORY[0x277CBEAA8];
-            v15 = [MEMORY[0x277CCAC38] processInfo];
-            [v15 systemUptime];
+            processInfo = [MEMORY[0x277CCAC38] processInfo];
+            [processInfo systemUptime];
             v17 = [v14 dateWithTimeIntervalSinceNow:-v16];
 
             v18 = MEMORY[0x277CFE1D8];
-            v19 = [MEMORY[0x277CFE298] keybagIsLockedStream];
-            v20 = [MEMORY[0x277CBEAA8] distantFuture];
+            keybagIsLockedStream = [MEMORY[0x277CFE298] keybagIsLockedStream];
+            distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
             v21 = [MEMORY[0x277CFE1A0] yes];
-            v22 = [v18 eventWithStream:v19 startDate:v17 endDate:v20 value:v21];
+            v22 = [v18 eventWithStream:keybagIsLockedStream startDate:v17 endDate:distantFuture value:v21];
 
             [(_DKMonitor *)self setCurrentEvent:v22 inferHistoricalState:0];
           }
@@ -309,7 +309,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_fault_impl(&dword_22595A000, a2, OS_LOG_TYPE_FAULT, "Unexpected lock state %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

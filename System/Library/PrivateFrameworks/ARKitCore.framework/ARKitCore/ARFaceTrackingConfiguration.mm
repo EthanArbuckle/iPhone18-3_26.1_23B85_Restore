@@ -1,25 +1,25 @@
 @interface ARFaceTrackingConfiguration
 + (BOOL)isSupported;
-+ (BOOL)supportsFrameSemantics:(unint64_t)a3;
++ (BOOL)supportsFrameSemantics:(unint64_t)semantics;
 + (BOOL)supportsWorldTracking;
 + (id)_querySupportedVideoFormats;
 + (id)_querySupportedVideoFormatsForWorldTracking;
 + (id)fallbackVideoFormat;
 + (id)supportedVideoFormats;
 + (id)supportedVideoFormatsForWorldTracking;
-+ (void)setShouldProvideRGBVideoFormats:(BOOL)a3;
++ (void)setShouldProvideRGBVideoFormats:(BOOL)formats;
 - (ARFaceTrackingConfiguration)init;
 - (BOOL)_selectedVideoFormatSupportsMulticam;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)imageSensorSettings;
 - (id)imageSensorSettingsForLowPower;
 - (id)imageSensorSettingsForWorldTracking;
 - (id)parentImageSensorSettings;
 - (id)secondaryTechniques;
-- (void)createTechniques:(id)a3;
-- (void)setCameraPosition:(int64_t)a3;
-- (void)setLightEstimationEnabled:(BOOL)a3;
+- (void)createTechniques:(id)techniques;
+- (void)setCameraPosition:(int64_t)position;
+- (void)setLightEstimationEnabled:(BOOL)enabled;
 - (void)setMaximumNumberOfTrackedFaces:(NSInteger)maximumNumberOfTrackedFaces;
 @end
 
@@ -37,23 +37,23 @@
   return v2;
 }
 
-+ (BOOL)supportsFrameSemantics:(unint64_t)a3
++ (BOOL)supportsFrameSemantics:(unint64_t)semantics
 {
-  if (a3 <= 1 && (ARAppleNeuralEngine() & 1) != 0)
+  if (semantics <= 1 && (ARAppleNeuralEngine() & 1) != 0)
   {
     return 1;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___ARFaceTrackingConfiguration;
-  return objc_msgSendSuper2(&v6, sel_supportsFrameSemantics_, a3);
+  return objc_msgSendSuper2(&v6, sel_supportsFrameSemantics_, semantics);
 }
 
-+ (void)setShouldProvideRGBVideoFormats:(BOOL)a3
++ (void)setShouldProvideRGBVideoFormats:(BOOL)formats
 {
-  if (s_shouldProvideRGBVideoFormats != a3)
+  if (s_shouldProvideRGBVideoFormats != formats)
   {
-    s_shouldProvideRGBVideoFormats = a3;
+    s_shouldProvideRGBVideoFormats = formats;
     v3 = s_supportedFormatsCache;
     if (s_supportedFormatsCache)
     {
@@ -66,11 +66,11 @@
 {
   v5.receiver = self;
   v5.super_class = ARFaceTrackingConfiguration;
-  v2 = [(ARConfiguration *)&v5 initPrivate];
-  v3 = v2;
-  if (v2)
+  initPrivate = [(ARConfiguration *)&v5 initPrivate];
+  v3 = initPrivate;
+  if (initPrivate)
   {
-    [(ARFaceTrackingConfiguration *)v2 setLightEstimationEnabled:1];
+    [(ARFaceTrackingConfiguration *)initPrivate setLightEstimationEnabled:1];
     [(ARFaceTrackingConfiguration *)v3 setWorldTrackingEnabled:0];
     [(ARFaceTrackingConfiguration *)v3 setMaximumNumberOfTrackedFaces:1];
     [(ARFaceTrackingConfiguration *)v3 setLowPower:[ARKitUserDefaults BOOLForKey:@"com.apple.arkit.faceTracking.lowPowerMode.enabled"]];
@@ -79,9 +79,9 @@
   return v3;
 }
 
-- (void)setLightEstimationEnabled:(BOOL)a3
+- (void)setLightEstimationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 2;
   }
@@ -94,31 +94,31 @@
   [(ARConfiguration *)self setLightEstimation:v3];
 }
 
-- (void)setCameraPosition:(int64_t)a3
+- (void)setCameraPosition:(int64_t)position
 {
   v19 = *MEMORY[0x1E69E9840];
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.faceTracking.backCamera.allowed"])
   {
-    if (a3 && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != a3))
+    if (position && (-[ARConfiguration videoFormat](self, "videoFormat"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 captureDevicePosition], v5, v6 != position))
     {
       v14.receiver = self;
       v14.super_class = ARFaceTrackingConfiguration;
-      [(ARConfiguration *)&v14 setCameraPosition:a3];
+      [(ARConfiguration *)&v14 setCameraPosition:position];
     }
 
     else
     {
-      v7 = [objc_opt_class() supportedVideoFormats];
+      supportedVideoFormats = [objc_opt_class() supportedVideoFormats];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __49__ARFaceTrackingConfiguration_setCameraPosition___block_invoke;
       v13[3] = &__block_descriptor_40_e30_B32__0__ARVideoFormat_8Q16_B24l;
-      v13[4] = a3;
-      v8 = [v7 ar_firstObjectPassingTest:v13];
+      v13[4] = position;
+      v8 = [supportedVideoFormats ar_firstObjectPassingTest:v13];
       videoFormat = self->super._videoFormat;
       self->super._videoFormat = v8;
 
-      self->super._cameraPosition = a3;
+      self->super._cameraPosition = position;
     }
   }
 
@@ -132,7 +132,7 @@
       *buf = 138543618;
       v16 = v12;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: setCameraPosition failed: The camera position for face tracking cannot be changed.", buf, 0x16u);
     }
   }
@@ -140,7 +140,7 @@
 
 + (BOOL)isSupported
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___ARFaceTrackingConfiguration;
   v2 = objc_msgSendSuper2(&v4, sel_isSupported);
   if (v2)
@@ -155,16 +155,16 @@
 {
   if (s_supportedFormatsCache && ![s_supportedFormatsCache count])
   {
-    v3 = [a1 _querySupportedVideoFormats];
+    _querySupportedVideoFormats = [self _querySupportedVideoFormats];
     v4 = s_supportedFormatsCache;
-    s_supportedFormatsCache = v3;
+    s_supportedFormatsCache = _querySupportedVideoFormats;
   }
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__ARFaceTrackingConfiguration_supportedVideoFormats__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (supportedVideoFormats_onceToken != -1)
   {
     dispatch_once(&supportedVideoFormats_onceToken, block);
@@ -185,7 +185,7 @@ void __52__ARFaceTrackingConfiguration_supportedVideoFormats__block_invoke(uint6
 + (id)fallbackVideoFormat
 {
   v3 = ARFaceTrackingDevice();
-  v4 = [a1 fallbackVideoFormatWithCaptureDeviceType:v3];
+  v4 = [self fallbackVideoFormatWithCaptureDeviceType:v3];
 
   return v4;
 }
@@ -206,14 +206,14 @@ void __52__ARFaceTrackingConfiguration_supportedVideoFormats__block_invoke(uint6
 
   if (ARRGBFaceTrackingEnabled() && ![v3 count])
   {
-    v7 = [a1 fallbackVideoFormat];
-    if (v7)
+    fallbackVideoFormat = [self fallbackVideoFormat];
+    if (fallbackVideoFormat)
     {
-      [v3 addObject:v7];
+      [v3 addObject:fallbackVideoFormat];
     }
   }
 
-  if ([a1 shouldProvideRGBVideoFormats])
+  if ([self shouldProvideRGBVideoFormats])
   {
     v73 = xmmword_1C25C84C0;
     v8 = [MEMORY[0x1E696B098] valueWithBytes:&v73 objCType:"{CGSize=dd}"];
@@ -389,16 +389,16 @@ void __52__ARFaceTrackingConfiguration_supportedVideoFormats__block_invoke(uint6
   {
     if (supportedVideoFormatsForWorldTracking_supportedFormats && ![supportedVideoFormatsForWorldTracking_supportedFormats count])
     {
-      v3 = [a1 _querySupportedVideoFormatsForWorldTracking];
+      _querySupportedVideoFormatsForWorldTracking = [self _querySupportedVideoFormatsForWorldTracking];
       v4 = supportedVideoFormatsForWorldTracking_supportedFormats;
-      supportedVideoFormatsForWorldTracking_supportedFormats = v3;
+      supportedVideoFormatsForWorldTracking_supportedFormats = _querySupportedVideoFormatsForWorldTracking;
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __68__ARFaceTrackingConfiguration_supportedVideoFormatsForWorldTracking__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (supportedVideoFormatsForWorldTracking_onceToken != -1)
     {
       dispatch_once(&supportedVideoFormatsForWorldTracking_onceToken, block);
@@ -456,7 +456,7 @@ LABEL_11:
     *buf = 138543874;
     v21 = v10;
     v22 = 2048;
-    v23 = a1;
+    selfCopy3 = self;
     v24 = 2112;
     v25 = v6;
     _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_INFO, "%{public}@ <%p>: The resolution of video format %@ is not supported by the world tracking technique on current device, trying a fallback video format", buf, 0x20u);
@@ -481,7 +481,7 @@ LABEL_11:
       *buf = 138543874;
       v21 = v14;
       v22 = 2048;
-      v23 = a1;
+      selfCopy3 = self;
       v24 = 2114;
       v25 = v7;
       _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_INFO, "%{public}@ <%p>: The resolution of video format %{public}@ is not supported by the world tracking technique on current device", buf, 0x20u);
@@ -496,7 +496,7 @@ LABEL_11:
     *buf = 138543618;
     v21 = v17;
     v22 = 2048;
-    v23 = a1;
+    selfCopy3 = self;
     _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not find supported video format for running world tracking in multicam mode.", buf, 0x16u);
   }
 
@@ -506,10 +506,10 @@ LABEL_18:
   return v11;
 }
 
-- (void)createTechniques:(id)a3
+- (void)createTechniques:(id)techniques
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  techniquesCopy = techniques;
   if ([(ARFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces]< 1)
   {
     goto LABEL_4;
@@ -524,26 +524,26 @@ LABEL_18:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v9 = [(ARParentTechnique *)v7 initWithParallelTechniques:v8];
 
-    [v4 addObject:v9];
+    [techniquesCopy addObject:v9];
 LABEL_4:
     v10.receiver = self;
     v10.super_class = ARFaceTrackingConfiguration;
-    [(ARConfiguration *)&v10 createTechniques:v4];
+    [(ARConfiguration *)&v10 createTechniques:techniquesCopy];
   }
 }
 
 - (id)secondaryTechniques
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([objc_opt_class() supportsWorldTracking] && -[ARFaceTrackingConfiguration _selectedVideoFormatSupportsMulticam](self, "_selectedVideoFormatSupportsMulticam") && -[ARFaceTrackingConfiguration isWorldTrackingEnabled](self, "isWorldTrackingEnabled"))
   {
-    v4 = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForWorldTracking];
-    v5 = [[ARWorldTrackingOptions alloc] initWithImageSensorSettings:v4];
+    imageSensorSettingsForWorldTracking = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForWorldTracking];
+    v5 = [[ARWorldTrackingOptions alloc] initWithImageSensorSettings:imageSensorSettingsForWorldTracking];
     [(ARWorldTrackingOptions *)v5 setPlaneEstimationShouldUseJasperData:0];
-    v6 = [(ARConfiguration *)self replaySensor];
-    v7 = v6;
-    if (v6 && [v6 replayMode])
+    replaySensor = [(ARConfiguration *)self replaySensor];
+    v7 = replaySensor;
+    if (replaySensor && [replaySensor replayMode])
     {
       [(ARWorldTrackingOptions *)v5 setDeterministicMode:1];
     }
@@ -555,46 +555,46 @@ LABEL_4:
       v14[0] = v8;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
       v11 = [(ARParentTechnique *)v9 initWithParallelTechniques:v10];
-      [v3 addObject:v11];
+      [array addObject:v11];
     }
 
     v12 = [[ARWorldAlignmentTechnique alloc] initWithAlignment:[(ARConfiguration *)self worldAlignment] cameraPosition:1];
-    [v3 addObject:v12];
+    [array addObject:v12];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)parentImageSensorSettings
 {
   v21.receiver = self;
   v21.super_class = ARFaceTrackingConfiguration;
-  v3 = [(ARConfiguration *)&v21 parentImageSensorSettings];
-  v4 = [v3 settings];
-  v5 = [v4 mutableCopy];
+  parentImageSensorSettings = [(ARConfiguration *)&v21 parentImageSensorSettings];
+  settings = [parentImageSensorSettings settings];
+  v5 = [settings mutableCopy];
 
   if ([objc_opt_class() supportsWorldTracking] && -[ARFaceTrackingConfiguration _selectedVideoFormatSupportsMulticam](self, "_selectedVideoFormatSupportsMulticam"))
   {
-    v6 = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForWorldTracking];
-    v7 = [v6 videoFormat];
-    if (v7)
+    imageSensorSettingsForWorldTracking = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForWorldTracking];
+    videoFormat = [imageSensorSettingsForWorldTracking videoFormat];
+    if (videoFormat)
     {
-      v8 = v7;
-      v9 = [(ARConfiguration *)self videoFormat];
-      if (v9)
+      v8 = videoFormat;
+      videoFormat2 = [(ARConfiguration *)self videoFormat];
+      if (videoFormat2)
       {
-        v10 = v9;
-        v11 = [v6 videoFormat];
-        v12 = [v11 captureDevicePosition];
-        v13 = [(ARConfiguration *)self videoFormat];
-        if (v12 == [v13 captureDevicePosition])
+        v10 = videoFormat2;
+        videoFormat3 = [imageSensorSettingsForWorldTracking videoFormat];
+        captureDevicePosition = [videoFormat3 captureDevicePosition];
+        videoFormat4 = [(ARConfiguration *)self videoFormat];
+        if (captureDevicePosition == [videoFormat4 captureDevicePosition])
         {
-          v20 = [v6 videoFormat];
-          [v20 captureDeviceType];
-          v14 = v18 = v11;
-          v15 = [(ARConfiguration *)self videoFormat];
-          v16 = [v15 captureDeviceType];
-          v19 = [v14 isEqualToString:v16];
+          videoFormat5 = [imageSensorSettingsForWorldTracking videoFormat];
+          [videoFormat5 captureDeviceType];
+          v14 = v18 = videoFormat3;
+          videoFormat6 = [(ARConfiguration *)self videoFormat];
+          captureDeviceType = [videoFormat6 captureDeviceType];
+          v19 = [v14 isEqualToString:captureDeviceType];
 
           if (v19)
           {
@@ -606,8 +606,8 @@ LABEL_4:
         {
         }
 
-        [v6 setEnabled:{-[ARFaceTrackingConfiguration isWorldTrackingEnabled](self, "isWorldTrackingEnabled")}];
-        [v5 addObject:v6];
+        [imageSensorSettingsForWorldTracking setEnabled:{-[ARFaceTrackingConfiguration isWorldTrackingEnabled](self, "isWorldTrackingEnabled")}];
+        [v5 addObject:imageSensorSettingsForWorldTracking];
       }
 
       else
@@ -618,9 +618,9 @@ LABEL_4:
 LABEL_11:
   }
 
-  [v3 setSettings:v5];
+  [parentImageSensorSettings setSettings:v5];
 
-  return v3;
+  return parentImageSensorSettings;
 }
 
 - (id)imageSensorSettingsForLowPower
@@ -630,8 +630,8 @@ LABEL_11:
   v4 = v3;
   [(ARVideoFormat *)self->super._videoFormat imageResolution];
   v6 = v5;
-  v7 = [(ARVideoFormat *)self->super._videoFormat captureDevicePosition];
-  v8 = [ARVideoFormat bestVideoFormatForDevicePosition:v7 deviceType:*MEMORY[0x1E6986950] resolution:v4 | (v6 << 32) frameRate:1 videoBinned:[(ARVideoFormat *)self->super._videoFormat framesPerSecond]];
+  captureDevicePosition = [(ARVideoFormat *)self->super._videoFormat captureDevicePosition];
+  v8 = [ARVideoFormat bestVideoFormatForDevicePosition:captureDevicePosition deviceType:*MEMORY[0x1E6986950] resolution:v4 | (v6 << 32) frameRate:1 videoBinned:[(ARVideoFormat *)self->super._videoFormat framesPerSecond]];
   v9 = [[ARImageSensorSettings alloc] initWithVideoFormat:v8];
   [(ARImageSensorSettings *)v9 setAutoFocusEnabled:[(ARConfiguration *)self isAutoFocusEnabled]];
   [(ARImageSensorSettings *)v9 setSupportsCapturingHighResolutionFrames:1];
@@ -641,7 +641,7 @@ LABEL_11:
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
       if (_ARLogSensor_onceToken_11 != -1)
       {
         [ARFaceTrackingConfiguration imageSensorSettingsForLowPower];
@@ -656,7 +656,7 @@ LABEL_11:
         v17 = "disabled";
         *v19 = 138543874;
         *&v19[4] = v16;
-        if (v12)
+        if (bOOLValue)
         {
           v17 = "enabled";
         }
@@ -671,10 +671,10 @@ LABEL_11:
 
     else
     {
-      v12 = 1;
+      bOOLValue = 1;
     }
 
-    [(ARImageSensorSettings *)v9 setMirrorVideoOutput:v12, *v19];
+    [(ARImageSensorSettings *)v9 setMirrorVideoOutput:bOOLValue, *v19];
   }
 
   return v9;
@@ -684,20 +684,20 @@ LABEL_11:
 {
   if (self->_lowPower)
   {
-    v3 = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForLowPower];
+    imageSensorSettingsForLowPower = [(ARFaceTrackingConfiguration *)self imageSensorSettingsForLowPower];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ARFaceTrackingConfiguration;
-    v3 = [(ARConfiguration *)&v8 imageSensorSettings];
+    imageSensorSettingsForLowPower = [(ARConfiguration *)&v8 imageSensorSettings];
   }
 
-  v4 = v3;
-  v5 = [(ARFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces];
+  v4 = imageSensorSettingsForLowPower;
+  maximumNumberOfTrackedFaces = [(ARFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces];
   v6 = MEMORY[0x1E6987018];
-  if (v5 <= 0)
+  if (maximumNumberOfTrackedFaces <= 0)
   {
     v6 = MEMORY[0x1E6986FE8];
   }
@@ -712,16 +712,16 @@ LABEL_11:
 - (id)imageSensorSettingsForWorldTracking
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() supportedVideoFormatsForWorldTracking];
-  v4 = [v3 firstObject];
+  supportedVideoFormatsForWorldTracking = [objc_opt_class() supportedVideoFormatsForWorldTracking];
+  firstObject = [supportedVideoFormatsForWorldTracking firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
     v5 = 0;
     goto LABEL_19;
   }
 
-  v5 = [[ARImageSensorSettings alloc] initWithVideoFormat:v4];
+  v5 = [[ARImageSensorSettings alloc] initWithVideoFormat:firstObject];
   [(ARImageSensorSettings *)v5 setAutoFocusEnabled:[(ARConfiguration *)self isAutoFocusEnabled]];
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.worldTracking.visionData"])
   {
@@ -761,7 +761,7 @@ LABEL_11:
         v19 = 138543618;
         v20 = v13;
         v21 = 2048;
-        v22 = self;
+        selfCopy2 = self;
         v14 = "%{public}@ <%p>: Error reading vision data output parameters.";
         v15 = v11;
         v16 = OS_LOG_TYPE_ERROR;
@@ -777,7 +777,7 @@ LABEL_16:
       v19 = 138543618;
       v20 = v13;
       v21 = 2048;
-      v22 = self;
+      selfCopy2 = self;
       v14 = "Error: %{public}@ <%p>: Error reading vision data output parameters.";
       v15 = v11;
       v16 = OS_LOG_TYPE_INFO;
@@ -797,11 +797,11 @@ LABEL_19:
 
 - (BOOL)_selectedVideoFormatSupportsMulticam
 {
-  v2 = [(ARConfiguration *)self videoFormat];
-  v3 = [v2 deviceFormat];
-  v4 = [v3 isMultiCamSupported];
+  videoFormat = [(ARConfiguration *)self videoFormat];
+  deviceFormat = [videoFormat deviceFormat];
+  isMultiCamSupported = [deviceFormat isMultiCamSupported];
 
-  return v4;
+  return isMultiCamSupported;
 }
 
 - (void)setMaximumNumberOfTrackedFaces:(NSInteger)maximumNumberOfTrackedFaces
@@ -837,19 +837,19 @@ LABEL_3:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = ARFaceTrackingConfiguration;
-  if ([(ARConfiguration *)&v12 isEqual:v4])
+  if ([(ARConfiguration *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
-    v6 = [(ARFaceTrackingConfiguration *)self isWorldTrackingEnabled];
-    if (v6 == [v5 isWorldTrackingEnabled] && (v7 = -[ARFaceTrackingConfiguration maximumNumberOfTrackedFaces](self, "maximumNumberOfTrackedFaces"), v7 == objc_msgSend(v5, "maximumNumberOfTrackedFaces")) && (v8 = -[ARFaceTrackingConfiguration lowPower](self, "lowPower"), v8 == objc_msgSend(v5, "lowPower")))
+    v5 = equalCopy;
+    isWorldTrackingEnabled = [(ARFaceTrackingConfiguration *)self isWorldTrackingEnabled];
+    if (isWorldTrackingEnabled == [v5 isWorldTrackingEnabled] && (v7 = -[ARFaceTrackingConfiguration maximumNumberOfTrackedFaces](self, "maximumNumberOfTrackedFaces"), v7 == objc_msgSend(v5, "maximumNumberOfTrackedFaces")) && (v8 = -[ARFaceTrackingConfiguration lowPower](self, "lowPower"), v8 == objc_msgSend(v5, "lowPower")))
     {
-      v11 = [(ARFaceTrackingConfiguration *)self prepareForPortraitImageData];
-      v9 = v11 ^ [v5 prepareForPortraitImageData] ^ 1;
+      prepareForPortraitImageData = [(ARFaceTrackingConfiguration *)self prepareForPortraitImageData];
+      v9 = prepareForPortraitImageData ^ [v5 prepareForPortraitImageData] ^ 1;
     }
 
     else
@@ -866,11 +866,11 @@ LABEL_3:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ARFaceTrackingConfiguration;
-  v4 = [(ARConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(ARConfiguration *)&v6 copyWithZone:zone];
   v4[112] = [(ARFaceTrackingConfiguration *)self isWorldTrackingEnabled];
   *(v4 + 15) = [(ARFaceTrackingConfiguration *)self maximumNumberOfTrackedFaces];
   v4[113] = [(ARFaceTrackingConfiguration *)self lowPower];

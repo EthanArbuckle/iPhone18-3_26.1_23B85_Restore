@@ -1,17 +1,17 @@
 @interface CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility)initWithReuseIdentifier:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility)initWithReuseIdentifier:(id)identifier;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceVariable:@"_buttonTextView" withType:"UITextView"];
-  [v3 validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceMethod:@"initWithReuseIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceMethod:@"handleUserTap:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceVariable:@"_buttonTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceMethod:@"initWithReuseIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CKDetailsDownloadAttachmentsHeaderFooterView" hasInstanceMethod:@"handleUserTap:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,8 +22,8 @@
   objc_initWeak(&location, self);
   v3 = [(CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility *)self safeUIViewForKey:@"_buttonTextView"];
   [v3 setIsAccessibilityElement:1];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits];
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __103__CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
@@ -49,11 +49,11 @@ void __103__CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility__accessibi
   [WeakRetained handleUserTap:0];
 }
 
-- (CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility)initWithReuseIdentifier:(id)a3
+- (CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility)initWithReuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility;
-  v3 = [(CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility *)&v5 initWithReuseIdentifier:a3];
+  v3 = [(CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility *)&v5 initWithReuseIdentifier:identifier];
   [(CKDetailsDownloadAttachmentsHeaderFooterViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

@@ -1,20 +1,20 @@
 @interface PFSceneTaxonomyNode
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)children;
 - (NSSet)detectors;
 - (NSSet)parents;
-- (PFSceneTaxonomyNode)initWithNodeRef:(void *)a3 taxonomy:(id)a4;
+- (PFSceneTaxonomyNode)initWithNodeRef:(void *)ref taxonomy:(id)taxonomy;
 - (id)localizedSynonyms;
 - (unsigned)sceneClassId;
-- (void)traverse:(int64_t)a3 visitor:(id)a4;
+- (void)traverse:(int64_t)traverse visitor:(id)visitor;
 @end
 
 @implementation PFSceneTaxonomyNode
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -22,7 +22,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFSceneTaxonomyNode *)self isEqualToNode:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PFSceneTaxonomyNode *)self isEqualToNode:equalCopy];
   }
 
   return v5;
@@ -44,11 +44,11 @@
   return v3;
 }
 
-- (void)traverse:(int64_t)a3 visitor:(id)a4
+- (void)traverse:(int64_t)traverse visitor:(id)visitor
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 1)
+  visitorCopy = visitor;
+  v7 = visitorCopy;
+  if (traverse == 1)
   {
     nodeRef = self->_nodeRef;
     v11[0] = MEMORY[0x1E69E9820];
@@ -56,16 +56,16 @@
     v11[2] = __40__PFSceneTaxonomyNode_traverse_visitor___block_invoke_2;
     v11[3] = &unk_1E7B65960;
     v11[4] = self;
-    v12 = v6;
+    v12 = visitorCopy;
     PFSceneTaxonomyNodeTraverseChildren(nodeRef, v11);
     v9 = v12;
   }
 
   else
   {
-    if (a3)
+    if (traverse)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid PFSceneTaxonomyNodeTraversal passed: %lu", a3}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid PFSceneTaxonomyNodeTraversal passed: %lu", traverse}];
       goto LABEL_7;
     }
 
@@ -75,7 +75,7 @@
     v13[2] = __40__PFSceneTaxonomyNode_traverse_visitor___block_invoke;
     v13[3] = &unk_1E7B65960;
     v13[4] = self;
-    v14 = v6;
+    v14 = visitorCopy;
     PFSceneTaxonomyNodeTraverseParents(v8, v13);
     v9 = v14;
   }
@@ -217,10 +217,10 @@ uint64_t __30__PFSceneTaxonomyNode_parents__block_invoke(uint64_t a1, uint64_t a
   }
 }
 
-- (PFSceneTaxonomyNode)initWithNodeRef:(void *)a3 taxonomy:(id)a4
+- (PFSceneTaxonomyNode)initWithNodeRef:(void *)ref taxonomy:(id)taxonomy
 {
-  v7 = a4;
-  if (a3)
+  taxonomyCopy = taxonomy;
+  if (ref)
   {
     v11.receiver = self;
     v11.super_class = PFSceneTaxonomyNode;
@@ -228,8 +228,8 @@ uint64_t __30__PFSceneTaxonomyNode_parents__block_invoke(uint64_t a1, uint64_t a
     v9 = v8;
     if (v8)
     {
-      v8->_nodeRef = a3;
-      objc_storeStrong(&v8->_taxonomy, a4);
+      v8->_nodeRef = ref;
+      objc_storeStrong(&v8->_taxonomy, taxonomy);
     }
   }
 

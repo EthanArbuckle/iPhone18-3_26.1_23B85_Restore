@@ -1,5 +1,5 @@
 @interface NSKeyValueAccessor
-- (NSKeyValueAccessor)initWithContainerClassID:(id)a3 key:(id)a4 implementation:(void *)a5 selector:(SEL)a6 extraArguments:(void *)a7[3] count:(unint64_t)a8;
+- (NSKeyValueAccessor)initWithContainerClassID:(id)d key:(id)key implementation:(void *)implementation selector:(SEL)selector extraArguments:(void *)arguments[3] count:(unint64_t)count;
 - (SEL)selector;
 - (void)dealloc;
 @end
@@ -28,7 +28,7 @@
   }
 }
 
-- (NSKeyValueAccessor)initWithContainerClassID:(id)a3 key:(id)a4 implementation:(void *)a5 selector:(SEL)a6 extraArguments:(void *)a7[3] count:(unint64_t)a8
+- (NSKeyValueAccessor)initWithContainerClassID:(id)d key:(id)key implementation:(void *)implementation selector:(SEL)selector extraArguments:(void *)arguments[3] count:(unint64_t)count
 {
   v22 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -37,43 +37,43 @@
   v15 = v14;
   if (v14)
   {
-    v14->_containerClassID = a3;
-    v16 = [a4 copy];
+    v14->_containerClassID = d;
+    v16 = [key copy];
     v15->_key = v16;
-    v15->_implementation = a5;
-    if (a6)
+    v15->_implementation = implementation;
+    if (selector)
     {
-      v17 = a6;
+      selectorCopy = selector;
     }
 
     else
     {
-      v17 = 0;
+      selectorCopy = 0;
     }
 
-    v15->_selector = v17;
+    v15->_selector = selectorCopy;
     if (v16)
     {
       v16 = CFHash(v16);
     }
 
-    v15->_hash = v16 ^ a3;
-    v15->_extraArgumentCount = a8;
-    key = *a7;
-    if (*a7 == a4)
+    v15->_hash = v16 ^ d;
+    v15->_extraArgumentCount = count;
+    key = *arguments;
+    if (*arguments == key)
     {
       key = v15->_key;
     }
 
     v15->_extraArgument1 = key;
-    v19 = a7[1];
-    if (v19 == a4)
+    v19 = arguments[1];
+    if (v19 == key)
     {
       v19 = v15->_key;
     }
 
     v15->_extraArgument2 = v19;
-    v15->_extraArgument3 = a7[2];
+    v15->_extraArgument3 = arguments[2];
   }
 
   return v15;

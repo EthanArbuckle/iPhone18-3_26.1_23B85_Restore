@@ -1,101 +1,101 @@
 @interface NLAnalyticsWorkoutEventBuilder
-- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)a3 workout:(id)a4 activity:(id)a5;
-- (BOOL)hasCyclingSensorMetadata:(id)a3;
-- (BOOL)hasNonZeroMetadataValue:(id)a3 forAnyKey:(id)a4;
-- (BOOL)isFitnessPlusWorkoutForExperienceType:(int64_t)a3;
-- (NLAnalyticsWorkoutEventBuilder)initWithLiveWorkoutConfiguration:(id)a3 formattingManager:(id)a4 analyticsIdentifier:(id)a5;
-- (id)_removePrefix:(id)a3 fromString:(id)a4;
-- (id)_shortenedActivityMoveMode:(int64_t)a3;
+- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)types workout:(id)workout activity:(id)activity;
+- (BOOL)hasCyclingSensorMetadata:(id)metadata;
+- (BOOL)hasNonZeroMetadataValue:(id)value forAnyKey:(id)key;
+- (BOOL)isFitnessPlusWorkoutForExperienceType:(int64_t)type;
+- (NLAnalyticsWorkoutEventBuilder)initWithLiveWorkoutConfiguration:(id)configuration formattingManager:(id)manager analyticsIdentifier:(id)identifier;
+- (id)_removePrefix:(id)prefix fromString:(id)string;
+- (id)_shortenedActivityMoveMode:(int64_t)mode;
 - (id)encodedMetricPlatterStatistics;
 - (void)_finalizeCounts;
-- (void)_finalizeMetricPlatterAccumulatedWithWorkout:(id)a3;
-- (void)_recordConfiguration:(id)a3 formattingManager:(id)a4;
+- (void)_finalizeMetricPlatterAccumulatedWithWorkout:(id)workout;
+- (void)_recordConfiguration:(id)configuration formattingManager:(id)manager;
 - (void)_recordCurrentSettings;
-- (void)recordGoalCompletionFactor:(double)a3;
-- (void)recordHasFitnessPlusSubscription:(BOOL)a3;
-- (void)recordMetricPlatterType:(id)a3 atElapsedTime:(double)a4;
-- (void)recordPairedWatchNearby:(BOOL)a3;
-- (void)recordPairedWatchUnlockedAndOnWrist:(BOOL)a3;
-- (void)recordPreferredWorkoutMetric:(unint64_t)a3;
-- (void)recordSensorTypes:(id)a3;
-- (void)recordStartSource:(unint64_t)a3;
-- (void)recordWorkout:(id)a3;
-- (void)recordWorkoutBuddySelectedVoiceIndex:(int64_t)a3;
-- (void)recordWorkoutMediaDidStart:(BOOL)a3;
-- (void)recordWorkoutMediaEnabled:(BOOL)a3;
-- (void)recordWorkoutMediaSource:(id)a3;
-- (void)recordWorkoutMetricTypes:(id)a3;
-- (void)recoverStateWithSessionActivity:(id)a3;
+- (void)recordGoalCompletionFactor:(double)factor;
+- (void)recordHasFitnessPlusSubscription:(BOOL)subscription;
+- (void)recordMetricPlatterType:(id)type atElapsedTime:(double)time;
+- (void)recordPairedWatchNearby:(BOOL)nearby;
+- (void)recordPairedWatchUnlockedAndOnWrist:(BOOL)wrist;
+- (void)recordPreferredWorkoutMetric:(unint64_t)metric;
+- (void)recordSensorTypes:(id)types;
+- (void)recordStartSource:(unint64_t)source;
+- (void)recordWorkout:(id)workout;
+- (void)recordWorkoutBuddySelectedVoiceIndex:(int64_t)index;
+- (void)recordWorkoutMediaDidStart:(BOOL)start;
+- (void)recordWorkoutMediaEnabled:(BOOL)enabled;
+- (void)recordWorkoutMediaSource:(id)source;
+- (void)recordWorkoutMetricTypes:(id)types;
+- (void)recoverStateWithSessionActivity:(id)activity;
 - (void)sendEvent;
 @end
 
 @implementation NLAnalyticsWorkoutEventBuilder
 
-- (NLAnalyticsWorkoutEventBuilder)initWithLiveWorkoutConfiguration:(id)a3 formattingManager:(id)a4 analyticsIdentifier:(id)a5
+- (NLAnalyticsWorkoutEventBuilder)initWithLiveWorkoutConfiguration:(id)configuration formattingManager:(id)manager analyticsIdentifier:(id)identifier
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, manager);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  v5 = v21;
-  v21 = 0;
+  objc_storeStrong(&v18, identifier);
+  v5 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v5;
   v17.super_class = NLAnalyticsWorkoutEventBuilder;
   v16 = [(NLAnalyticsWorkoutEventBuilder *)&v17 init];
-  v21 = v16;
-  objc_storeStrong(&v21, v16);
+  selfCopy = v16;
+  objc_storeStrong(&selfCopy, v16);
   if (v16)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    workoutEvent = v21->_workoutEvent;
-    v21->_workoutEvent = v6;
+    workoutEvent = selfCopy->_workoutEvent;
+    selfCopy->_workoutEvent = v6;
     MEMORY[0x277D82BD8](workoutEvent);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    metricPlatterAccumulatedTime = v21->_metricPlatterAccumulatedTime;
-    v21->_metricPlatterAccumulatedTime = v8;
+    metricPlatterAccumulatedTime = selfCopy->_metricPlatterAccumulatedTime;
+    selfCopy->_metricPlatterAccumulatedTime = v8;
     MEMORY[0x277D82BD8](metricPlatterAccumulatedTime);
     v12 = v18;
-    v13 = [(NLAnalyticsWorkoutEventBuilder *)v21 workoutEvent];
-    [(NSMutableDictionary *)v13 setObject:v12 forKeyedSubscript:@"instanceIdentifier"];
-    MEMORY[0x277D82BD8](v13);
-    [(NLAnalyticsWorkoutEventBuilder *)v21 _recordConfiguration:location[0] formattingManager:v19];
-    [(NLAnalyticsWorkoutEventBuilder *)v21 _recordCurrentSettings];
+    workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+    [(NSMutableDictionary *)workoutEvent setObject:v12 forKeyedSubscript:@"instanceIdentifier"];
+    MEMORY[0x277D82BD8](workoutEvent);
+    [(NLAnalyticsWorkoutEventBuilder *)selfCopy _recordConfiguration:location[0] formattingManager:v19];
+    [(NLAnalyticsWorkoutEventBuilder *)selfCopy _recordCurrentSettings];
   }
 
-  v11 = MEMORY[0x277D82BE0](v21);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)_recordConfiguration:(id)a3 formattingManager:(id)a4
+- (void)_recordConfiguration:(id)configuration formattingManager:(id)manager
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, configuration);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, manager);
   v6 = [location[0] analyticsAlertsConfiguredWithFormattingManager:v11];
-  v5 = [(NLAnalyticsWorkoutEventBuilder *)v13 workoutEvent];
-  [(NSMutableDictionary *)v5 setObject:v6 forKeyedSubscript:@"alertsConfigured"];
-  MEMORY[0x277D82BD8](v5);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v6 forKeyedSubscript:@"alertsConfigured"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v6);
-  v8 = [location[0] analyticsConfigurationType];
-  v7 = [(NLAnalyticsWorkoutEventBuilder *)v13 workoutEvent];
-  [(NSMutableDictionary *)v7 setObject:v8 forKeyedSubscript:@"configurationType"];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  analyticsConfigurationType = [location[0] analyticsConfigurationType];
+  workoutEvent2 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent2 setObject:analyticsConfigurationType forKeyedSubscript:@"configurationType"];
+  MEMORY[0x277D82BD8](workoutEvent2);
+  MEMORY[0x277D82BD8](analyticsConfigurationType);
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(location[0], "isUltraMode")}];
-  v9 = [(NLAnalyticsWorkoutEventBuilder *)v13 workoutEvent];
-  [(NSMutableDictionary *)v9 setObject:v10 forKeyedSubscript:@"ultraModeEnabled"];
-  MEMORY[0x277D82BD8](v9);
+  workoutEvent3 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent3 setObject:v10 forKeyedSubscript:@"ultraModeEnabled"];
+  MEMORY[0x277D82BD8](workoutEvent3);
   MEMORY[0x277D82BD8](v10);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
@@ -238,145 +238,145 @@ void __56__NLAnalyticsWorkoutEventBuilder__recordCurrentSettings__block_invoke_4
   objc_storeStrong(location, 0);
 }
 
-- (void)recordWorkout:(id)a3
+- (void)recordWorkout:(id)workout
 {
-  v101 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v44 = [location[0] identifier];
-  v43 = [v44 UUIDString];
-  v42 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v42 setObject:v43 forKeyedSubscript:@"instanceIdentifier"];
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  MEMORY[0x277D82BD8](v44);
-  v48 = [location[0] sessionActivity];
-  v47 = [v48 configuration];
-  v46 = [v47 analyticsActivityType];
-  v45 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v45 setObject:v46 forKeyedSubscript:@"activityType"];
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
-  MEMORY[0x277D82BD8](v48);
-  v52 = [location[0] sessionActivity];
-  v51 = [v52 configuration];
-  v50 = [v51 analyticsSubActivities];
-  v49 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v49 setObject:v50 forKeyedSubscript:@"subActivities"];
-  MEMORY[0x277D82BD8](v49);
-  MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  MEMORY[0x277D82BD8](v52);
+  objc_storeStrong(location, workout);
+  identifier = [location[0] identifier];
+  uUIDString = [identifier UUIDString];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:uUIDString forKeyedSubscript:@"instanceIdentifier"];
+  MEMORY[0x277D82BD8](workoutEvent);
+  MEMORY[0x277D82BD8](uUIDString);
+  MEMORY[0x277D82BD8](identifier);
+  sessionActivity = [location[0] sessionActivity];
+  configuration = [sessionActivity configuration];
+  analyticsActivityType = [configuration analyticsActivityType];
+  workoutEvent2 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent2 setObject:analyticsActivityType forKeyedSubscript:@"activityType"];
+  MEMORY[0x277D82BD8](workoutEvent2);
+  MEMORY[0x277D82BD8](analyticsActivityType);
+  MEMORY[0x277D82BD8](configuration);
+  MEMORY[0x277D82BD8](sessionActivity);
+  sessionActivity2 = [location[0] sessionActivity];
+  configuration2 = [sessionActivity2 configuration];
+  analyticsSubActivities = [configuration2 analyticsSubActivities];
+  workoutEvent3 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent3 setObject:analyticsSubActivities forKeyedSubscript:@"subActivities"];
+  MEMORY[0x277D82BD8](workoutEvent3);
+  MEMORY[0x277D82BD8](analyticsSubActivities);
+  MEMORY[0x277D82BD8](configuration2);
+  MEMORY[0x277D82BD8](sessionActivity2);
   v54 = NLWorkoutStateIdentifierDescription([location[0] state]);
-  v53 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v53 setObject:v54 forKeyedSubscript:@"state"];
-  MEMORY[0x277D82BD8](v53);
+  workoutEvent4 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent4 setObject:v54 forKeyedSubscript:@"state"];
+  MEMORY[0x277D82BD8](workoutEvent4);
   MEMORY[0x277D82BD8](v54);
-  v59 = [location[0] sessionActivity];
-  v58 = [v59 configuration];
-  v57 = [v58 currentGoal];
-  [v57 goalTypeIdentifier];
+  sessionActivity3 = [location[0] sessionActivity];
+  configuration3 = [sessionActivity3 configuration];
+  currentGoal = [configuration3 currentGoal];
+  [currentGoal goalTypeIdentifier];
   v56 = FIUIHKWorkoutGoalTypeDescription();
-  v55 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v55 setObject:v56 forKeyedSubscript:@"goalType"];
-  MEMORY[0x277D82BD8](v55);
+  workoutEvent5 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent5 setObject:v56 forKeyedSubscript:@"goalType"];
+  MEMORY[0x277D82BD8](workoutEvent5);
   MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
-  MEMORY[0x277D82BD8](v58);
-  MEMORY[0x277D82BD8](v59);
+  MEMORY[0x277D82BD8](currentGoal);
+  MEMORY[0x277D82BD8](configuration3);
+  MEMORY[0x277D82BD8](sessionActivity3);
   v60 = MEMORY[0x277CCABB0];
-  v65 = [location[0] sessionActivity];
-  v64 = [v65 configuration];
-  v63 = [v64 currentGoal];
-  [v63 doubleValue];
+  sessionActivity4 = [location[0] sessionActivity];
+  configuration4 = [sessionActivity4 configuration];
+  currentGoal2 = [configuration4 currentGoal];
+  [currentGoal2 doubleValue];
   v62 = [v60 numberWithDouble:?];
-  v61 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v61 setObject:v62 forKeyedSubscript:@"goalValue"];
-  MEMORY[0x277D82BD8](v61);
+  workoutEvent6 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent6 setObject:v62 forKeyedSubscript:@"goalValue"];
+  MEMORY[0x277D82BD8](workoutEvent6);
   MEMORY[0x277D82BD8](v62);
-  MEMORY[0x277D82BD8](v63);
-  MEMORY[0x277D82BD8](v64);
-  MEMORY[0x277D82BD8](v65);
+  MEMORY[0x277D82BD8](currentGoal2);
+  MEMORY[0x277D82BD8](configuration4);
+  MEMORY[0x277D82BD8](sessionActivity4);
   v67 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(location[0], "discarded")}];
-  v66 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v66 setObject:v67 forKeyedSubscript:@"discarded"];
-  MEMORY[0x277D82BD8](v66);
+  workoutEvent7 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent7 setObject:v67 forKeyedSubscript:@"discarded"];
+  MEMORY[0x277D82BD8](workoutEvent7);
   MEMORY[0x277D82BD8](v67);
-  v68 = v101;
-  v71 = [location[0] sessionActivity];
-  v70 = -[NLAnalyticsWorkoutEventBuilder _shortenedActivityMoveMode:](v68, "_shortenedActivityMoveMode:", [v71 activityMoveMode]);
-  v69 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v69 setObject:v70 forKeyedSubscript:@"activityMoveMode"];
-  MEMORY[0x277D82BD8](v69);
+  v68 = selfCopy;
+  sessionActivity5 = [location[0] sessionActivity];
+  v70 = -[NLAnalyticsWorkoutEventBuilder _shortenedActivityMoveMode:](v68, "_shortenedActivityMoveMode:", [sessionActivity5 activityMoveMode]);
+  workoutEvent8 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent8 setObject:v70 forKeyedSubscript:@"activityMoveMode"];
+  MEMORY[0x277D82BD8](workoutEvent8);
   MEMORY[0x277D82BD8](v70);
-  MEMORY[0x277D82BD8](v71);
+  MEMORY[0x277D82BD8](sessionActivity5);
   v72 = MEMORY[0x277CCABB0];
-  v75 = [location[0] hkWorkout];
-  [v75 duration];
+  hkWorkout = [location[0] hkWorkout];
+  [hkWorkout duration];
   v74 = [v72 numberWithDouble:?];
-  v73 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v73 setObject:v74 forKeyedSubscript:@"duration"];
-  MEMORY[0x277D82BD8](v73);
+  workoutEvent9 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent9 setObject:v74 forKeyedSubscript:@"duration"];
+  MEMORY[0x277D82BD8](workoutEvent9);
   MEMORY[0x277D82BD8](v74);
-  MEMORY[0x277D82BD8](v75);
-  v79 = [location[0] sessionActivity];
-  v78 = [v79 activityType];
-  v3 = [v78 isIndoor];
+  MEMORY[0x277D82BD8](hkWorkout);
+  sessionActivity6 = [location[0] sessionActivity];
+  activityType = [sessionActivity6 activityType];
+  isIndoor = [activityType isIndoor];
   v4 = @"indoor";
-  if ((v3 & 1) == 0)
+  if ((isIndoor & 1) == 0)
   {
     v4 = @"outdoor";
   }
 
   v76 = v4;
-  v77 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v77 setObject:v76 forKeyedSubscript:@"locationType"];
-  MEMORY[0x277D82BD8](v77);
-  MEMORY[0x277D82BD8](v78);
-  MEMORY[0x277D82BD8](v79);
-  v82 = [location[0] activityType];
-  [v82 swimmingLocationType];
+  workoutEvent10 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent10 setObject:v76 forKeyedSubscript:@"locationType"];
+  MEMORY[0x277D82BD8](workoutEvent10);
+  MEMORY[0x277D82BD8](activityType);
+  MEMORY[0x277D82BD8](sessionActivity6);
+  activityType2 = [location[0] activityType];
+  [activityType2 swimmingLocationType];
   v81 = _HKWorkoutSwimmingLocationTypeName();
-  v80 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v80 setObject:v81 forKeyedSubscript:@"swimmingLocationType"];
-  MEMORY[0x277D82BD8](v80);
+  workoutEvent11 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent11 setObject:v81 forKeyedSubscript:@"swimmingLocationType"];
+  MEMORY[0x277D82BD8](workoutEvent11);
   MEMORY[0x277D82BD8](v81);
-  MEMORY[0x277D82BD8](v82);
-  v83 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v83 setObject:@"detailed" forKeyedSubscript:@"metricsViewMode"];
-  MEMORY[0x277D82BD8](v83);
+  MEMORY[0x277D82BD8](activityType2);
+  workoutEvent12 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent12 setObject:@"detailed" forKeyedSubscript:@"metricsViewMode"];
+  MEMORY[0x277D82BD8](workoutEvent12);
   v84 = MEMORY[0x277CCABB0];
-  v88 = [location[0] sessionActivity];
-  v87 = [v88 segmentMarkers];
-  v86 = [v84 numberWithUnsignedInteger:{objc_msgSend(v87, "count")}];
-  v85 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v85 setObject:v86 forKeyedSubscript:@"segmentsCount"];
-  MEMORY[0x277D82BD8](v85);
+  sessionActivity7 = [location[0] sessionActivity];
+  segmentMarkers = [sessionActivity7 segmentMarkers];
+  v86 = [v84 numberWithUnsignedInteger:{objc_msgSend(segmentMarkers, "count")}];
+  workoutEvent13 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent13 setObject:v86 forKeyedSubscript:@"segmentsCount"];
+  MEMORY[0x277D82BD8](workoutEvent13);
   MEMORY[0x277D82BD8](v86);
-  MEMORY[0x277D82BD8](v87);
-  MEMORY[0x277D82BD8](v88);
+  MEMORY[0x277D82BD8](segmentMarkers);
+  MEMORY[0x277D82BD8](sessionActivity7);
   v90 = NLWorkoutEndReasonDescription([location[0] endReason]);
-  v89 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v89 setObject:v90 forKeyedSubscript:@"endReason"];
-  MEMORY[0x277D82BD8](v89);
+  workoutEvent14 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent14 setObject:v90 forKeyedSubscript:@"endReason"];
+  MEMORY[0x277D82BD8](workoutEvent14);
   MEMORY[0x277D82BD8](v90);
   v91 = MEMORY[0x277CCABB0];
-  v95 = [location[0] sessionActivity];
-  v94 = [v95 activityType];
-  [v94 effectiveTypeIdentifier];
+  sessionActivity8 = [location[0] sessionActivity];
+  activityType3 = [sessionActivity8 activityType];
+  [activityType3 effectiveTypeIdentifier];
   v93 = [v91 numberWithBool:FIActivityTypeIsCalorimetryOptimized()];
-  v92 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v92 setObject:v93 forKeyedSubscript:@"topLevelWorkout"];
-  MEMORY[0x277D82BD8](v92);
+  workoutEvent15 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent15 setObject:v93 forKeyedSubscript:@"topLevelWorkout"];
+  MEMORY[0x277D82BD8](workoutEvent15);
   MEMORY[0x277D82BD8](v93);
-  MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
-  v96 = [location[0] hkWorkout];
-  v97 = [v96 metadata];
+  MEMORY[0x277D82BD8](activityType3);
+  MEMORY[0x277D82BD8](sessionActivity8);
+  hkWorkout2 = [location[0] hkWorkout];
+  metadata = [hkWorkout2 metadata];
   v98 = +[WOTrackRunningMetadataKeys promptedForTrackMode];
-  v99 = [v97 objectForKeyedSubscript:?];
+  v99 = [metadata objectForKeyedSubscript:?];
   if (v99)
   {
     v41 = v99;
@@ -387,48 +387,48 @@ void __56__NLAnalyticsWorkoutEventBuilder__recordCurrentSettings__block_invoke_4
     v41 = MEMORY[0x277CBEC28];
   }
 
-  v21 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v21 setObject:v41 forKeyedSubscript:@"trackModeAvailable"];
-  MEMORY[0x277D82BD8](v21);
+  workoutEvent16 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent16 setObject:v41 forKeyedSubscript:@"trackModeAvailable"];
+  MEMORY[0x277D82BD8](workoutEvent16);
   MEMORY[0x277D82BD8](v99);
   MEMORY[0x277D82BD8](v98);
-  MEMORY[0x277D82BD8](v97);
-  MEMORY[0x277D82BD8](v96);
+  MEMORY[0x277D82BD8](metadata);
+  MEMORY[0x277D82BD8](hkWorkout2);
   v22 = MEMORY[0x277CCABB0];
-  v28 = [location[0] hkWorkout];
-  v27 = [v28 metadata];
+  hkWorkout3 = [location[0] hkWorkout];
+  metadata2 = [hkWorkout3 metadata];
   v26 = +[WOTrackRunningMetadataKeys trackIdentifier];
-  v25 = [v27 objectForKeyedSubscript:?];
+  v25 = [metadata2 objectForKeyedSubscript:?];
   v24 = [v22 numberWithInt:v25 != 0];
-  v23 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v23 setObject:v24 forKeyedSubscript:@"trackModeEnabled"];
-  MEMORY[0x277D82BD8](v23);
+  workoutEvent17 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent17 setObject:v24 forKeyedSubscript:@"trackModeEnabled"];
+  MEMORY[0x277D82BD8](workoutEvent17);
   MEMORY[0x277D82BD8](v24);
   MEMORY[0x277D82BD8](v25);
   MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
-  v32 = [location[0] sessionActivity];
-  v31 = [v32 configuration];
-  v30 = [v31 providerBundleIdentifier];
-  v29 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v29 setObject:v30 forKeyedSubscript:@"provider"];
-  MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
+  MEMORY[0x277D82BD8](metadata2);
+  MEMORY[0x277D82BD8](hkWorkout3);
+  sessionActivity9 = [location[0] sessionActivity];
+  configuration5 = [sessionActivity9 configuration];
+  providerBundleIdentifier = [configuration5 providerBundleIdentifier];
+  workoutEvent18 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent18 setObject:providerBundleIdentifier forKeyedSubscript:@"provider"];
+  MEMORY[0x277D82BD8](workoutEvent18);
+  MEMORY[0x277D82BD8](providerBundleIdentifier);
+  MEMORY[0x277D82BD8](configuration5);
+  MEMORY[0x277D82BD8](sessionActivity9);
   v34 = MEMORY[0x277CCABB0];
-  v33 = v101;
-  v37 = [location[0] hkWorkout];
+  v33 = selfCopy;
+  hkWorkout4 = [location[0] hkWorkout];
   v36 = [v34 numberWithBool:{-[NLAnalyticsWorkoutEventBuilder hasCyclingSensorMetadata:](v33, "hasCyclingSensorMetadata:")}];
-  v35 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v35 setObject:v36 forKeyedSubscript:@"cyclingSensorEnabled"];
-  MEMORY[0x277D82BD8](v35);
+  workoutEvent19 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent19 setObject:v36 forKeyedSubscript:@"cyclingSensorEnabled"];
+  MEMORY[0x277D82BD8](workoutEvent19);
   MEMORY[0x277D82BD8](v36);
-  MEMORY[0x277D82BD8](v37);
-  v38 = [location[0] hkWorkout];
-  v39 = [v38 metadata];
-  v40 = [v39 objectForKeyedSubscript:@"_HKPrivateMetadataKeyMirroredWorkout"];
+  MEMORY[0x277D82BD8](hkWorkout4);
+  hkWorkout5 = [location[0] hkWorkout];
+  metadata3 = [hkWorkout5 metadata];
+  v40 = [metadata3 objectForKeyedSubscript:@"_HKPrivateMetadataKeyMirroredWorkout"];
   if (v40)
   {
     v20 = v40;
@@ -439,59 +439,59 @@ void __56__NLAnalyticsWorkoutEventBuilder__recordCurrentSettings__block_invoke_4
     v20 = MEMORY[0x277CBEC28];
   }
 
-  v5 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v5 setObject:v20 forKeyedSubscript:@"mirroredWorkout"];
-  MEMORY[0x277D82BD8](v5);
+  workoutEvent20 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent20 setObject:v20 forKeyedSubscript:@"mirroredWorkout"];
+  MEMORY[0x277D82BD8](workoutEvent20);
   MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v38);
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[NLAnalyticsWorkoutEventBuilder isFitnessPlusWorkoutForExperienceType:](v101, "isFitnessPlusWorkoutForExperienceType:", objc_msgSend(location[0], "experienceType"))}];
-  v6 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v6 setObject:v7 forKeyedSubscript:@"fitnessPlusWorkout"];
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](metadata3);
+  MEMORY[0x277D82BD8](hkWorkout5);
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[NLAnalyticsWorkoutEventBuilder isFitnessPlusWorkoutForExperienceType:](selfCopy, "isFitnessPlusWorkoutForExperienceType:", objc_msgSend(location[0], "experienceType"))}];
+  workoutEvent21 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent21 setObject:v7 forKeyedSubscript:@"fitnessPlusWorkout"];
+  MEMORY[0x277D82BD8](workoutEvent21);
   MEMORY[0x277D82BD8](v7);
   v8 = MEMORY[0x277CCABB0];
-  v12 = [location[0] sessionActivity];
-  v11 = [v12 configuration];
-  v10 = [v8 numberWithBool:{objc_msgSend(v11, "configureWithWorkoutVoiceMotivationWithShouldLog:", 0)}];
-  v9 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v9 setObject:v10 forKeyedSubscript:@"workoutVoiceMotivationEnabled"];
-  MEMORY[0x277D82BD8](v9);
+  sessionActivity10 = [location[0] sessionActivity];
+  configuration6 = [sessionActivity10 configuration];
+  v10 = [v8 numberWithBool:{objc_msgSend(configuration6, "configureWithWorkoutVoiceMotivationWithShouldLog:", 0)}];
+  workoutEvent22 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent22 setObject:v10 forKeyedSubscript:@"workoutVoiceMotivationEnabled"];
+  MEMORY[0x277D82BD8](workoutEvent22);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](configuration6);
+  MEMORY[0x277D82BD8](sessionActivity10);
   v13 = MEMORY[0x277CCABB0];
-  v17 = [location[0] sessionActivity];
-  v16 = [v17 configuration];
-  v15 = [v13 numberWithBool:{objc_msgSend(v16, "isWorkoutBuddyMuted")}];
-  v14 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v14 setObject:v15 forKeyedSubscript:@"workoutVoiceMotivationMuted"];
-  MEMORY[0x277D82BD8](v14);
+  sessionActivity11 = [location[0] sessionActivity];
+  configuration7 = [sessionActivity11 configuration];
+  v15 = [v13 numberWithBool:{objc_msgSend(configuration7, "isWorkoutBuddyMuted")}];
+  workoutEvent23 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent23 setObject:v15 forKeyedSubscript:@"workoutVoiceMotivationMuted"];
+  MEMORY[0x277D82BD8](workoutEvent23);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NLAnalyticsWorkoutEventBuilder initiatePlatformForStartSource:](v101, "initiatePlatformForStartSource:", v101->_startSource)}];
-  v18 = [(NLAnalyticsWorkoutEventBuilder *)v101 workoutEvent];
-  [(NSMutableDictionary *)v18 setObject:v19 forKeyedSubscript:@"initiatePlatform"];
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](configuration7);
+  MEMORY[0x277D82BD8](sessionActivity11);
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NLAnalyticsWorkoutEventBuilder initiatePlatformForStartSource:](selfCopy, "initiatePlatformForStartSource:", selfCopy->_startSource)}];
+  workoutEvent24 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent24 setObject:v19 forKeyedSubscript:@"initiatePlatform"];
+  MEMORY[0x277D82BD8](workoutEvent24);
   MEMORY[0x277D82BD8](v19);
-  [(NLAnalyticsWorkoutEventBuilder *)v101 _finalizeCounts];
-  [(NLAnalyticsWorkoutEventBuilder *)v101 _finalizeMetricPlatterAccumulatedWithWorkout:location[0]];
+  [(NLAnalyticsWorkoutEventBuilder *)selfCopy _finalizeCounts];
+  [(NLAnalyticsWorkoutEventBuilder *)selfCopy _finalizeMetricPlatterAccumulatedWithWorkout:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)isFitnessPlusWorkoutForExperienceType:(int64_t)a3
+- (BOOL)isFitnessPlusWorkoutForExperienceType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
 LABEL_6:
     v4 = 1;
     return v4 & 1;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
       return v4 & 1;
     }
@@ -503,13 +503,13 @@ LABEL_6:
   return v4 & 1;
 }
 
-- (BOOL)hasCyclingSensorMetadata:(id)a3
+- (BOOL)hasCyclingSensorMetadata:(id)metadata
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, metadata);
   v20 = MEMORY[0x277CCC9C0];
   v19 = [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCC9C0]];
   v40[0] = v19;
@@ -534,10 +534,10 @@ LABEL_6:
     {
       v29 = 0;
       v17 = 1;
-      if (![(NLAnalyticsWorkoutEventBuilder *)v35 hasAnyNonZeroStatisticForDiscreteQuantityTypes:v32 workout:location[0] activity:0])
+      if (![(NLAnalyticsWorkoutEventBuilder *)selfCopy hasAnyNonZeroStatisticForDiscreteQuantityTypes:v32 workout:location[0] activity:0])
       {
-        v16 = v35;
-        v30 = [location[0] metadata];
+        v16 = selfCopy;
+        metadata = [location[0] metadata];
         v29 = 1;
         v17 = [NLAnalyticsWorkoutEventBuilder hasNonZeroMetadataValue:v16 forAnyKey:"hasNonZeroMetadataValue:forAnyKey:"];
       }
@@ -545,7 +545,7 @@ LABEL_6:
       v36 = v17 & 1;
       if (v29)
       {
-        MEMORY[0x277D82BD8](v30);
+        MEMORY[0x277D82BD8](metadata);
       }
 
       v28 = 1;
@@ -553,7 +553,7 @@ LABEL_6:
 
     else
     {
-      v36 = [(NLAnalyticsWorkoutEventBuilder *)v35 hasAnyNonZeroStatisticForDiscreteQuantityTypes:v33 workout:location[0] activity:0];
+      v36 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy hasAnyNonZeroStatisticForDiscreteQuantityTypes:v33 workout:location[0] activity:0];
       v28 = 1;
     }
   }
@@ -582,13 +582,13 @@ LABEL_6:
         }
 
         v27 = *(__b[1] + 8 * v12);
-        v6 = [v27 workoutConfiguration];
-        v7 = [v6 locationType] == 2;
-        MEMORY[0x277D82BD8](v6);
-        v8 = [v27 workoutConfiguration];
-        v9 = [v8 activityType];
-        MEMORY[0x277D82BD8](v8);
-        if (v9 == 13)
+        workoutConfiguration = [v27 workoutConfiguration];
+        v7 = [workoutConfiguration locationType] == 2;
+        MEMORY[0x277D82BD8](workoutConfiguration);
+        workoutConfiguration2 = [v27 workoutConfiguration];
+        activityType = [workoutConfiguration2 activityType];
+        MEMORY[0x277D82BD8](workoutConfiguration2);
+        if (activityType == 13)
         {
           break;
         }
@@ -609,10 +609,10 @@ LABEL_6:
       {
         v24 = 0;
         v5 = 1;
-        if (![(NLAnalyticsWorkoutEventBuilder *)v35 hasAnyNonZeroStatisticForDiscreteQuantityTypes:v32 workout:location[0] activity:v27])
+        if (![(NLAnalyticsWorkoutEventBuilder *)selfCopy hasAnyNonZeroStatisticForDiscreteQuantityTypes:v32 workout:location[0] activity:v27])
         {
-          v4 = v35;
-          v25 = [location[0] metadata];
+          v4 = selfCopy;
+          metadata2 = [location[0] metadata];
           v24 = 1;
           v5 = [NLAnalyticsWorkoutEventBuilder hasNonZeroMetadataValue:v4 forAnyKey:"hasNonZeroMetadataValue:forAnyKey:"];
         }
@@ -620,7 +620,7 @@ LABEL_6:
         v36 = v5 & 1;
         if (v24)
         {
-          MEMORY[0x277D82BD8](v25);
+          MEMORY[0x277D82BD8](metadata2);
         }
 
         v28 = 1;
@@ -628,7 +628,7 @@ LABEL_6:
 
       else
       {
-        v36 = [(NLAnalyticsWorkoutEventBuilder *)v35 hasAnyNonZeroStatisticForDiscreteQuantityTypes:v33 workout:location[0] activity:v27];
+        v36 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy hasAnyNonZeroStatisticForDiscreteQuantityTypes:v33 workout:location[0] activity:v27];
         v28 = 1;
       }
     }
@@ -656,15 +656,15 @@ LABEL_26:
   return v36 & 1;
 }
 
-- (BOOL)hasNonZeroMetadataValue:(id)a3 forAnyKey:(id)a4
+- (BOOL)hasNonZeroMetadataValue:(id)value forAnyKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, value);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, key);
   memset(__b, 0, sizeof(__b));
   v10 = MEMORY[0x277D82BE0](v16);
   v11 = [v10 countByEnumeratingWithState:__b objects:v19 count:16];
@@ -731,17 +731,17 @@ LABEL_13:
   return v18 & 1;
 }
 
-- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)a3 workout:(id)a4 activity:(id)a5
+- (BOOL)hasAnyNonZeroStatisticForDiscreteQuantityTypes:(id)types workout:(id)workout activity:(id)activity
 {
   v26 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, workout);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
+  objc_storeStrong(&v21, activity);
   memset(__b, 0, sizeof(__b));
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = [v14 countByEnumeratingWithState:__b objects:v25 count:16];
@@ -762,11 +762,11 @@ LABEL_13:
       if (v21)
       {
         v6 = [v21 statisticsForType:v20];
-        v16 = [v6 averageQuantity];
+        averageQuantity = [v6 averageQuantity];
         MEMORY[0x277D82BD8](v6);
-        if (v16)
+        if (averageQuantity)
         {
-          v24 = [v16 fiui_isNonzero] & 1;
+          v24 = [averageQuantity fiui_isNonzero] & 1;
           v17 = 1;
         }
 
@@ -775,7 +775,7 @@ LABEL_13:
           v17 = 0;
         }
 
-        objc_storeStrong(&v16, 0);
+        objc_storeStrong(&averageQuantity, 0);
         if (v17)
         {
           goto LABEL_18;
@@ -785,11 +785,11 @@ LABEL_13:
       else
       {
         v7 = [v22 statisticsForType:v20];
-        v18 = [v7 averageQuantity];
+        averageQuantity2 = [v7 averageQuantity];
         MEMORY[0x277D82BD8](v7);
-        if (v18)
+        if (averageQuantity2)
         {
-          v24 = [v18 fiui_isNonzero] & 1;
+          v24 = [averageQuantity2 fiui_isNonzero] & 1;
           v17 = 1;
         }
 
@@ -798,7 +798,7 @@ LABEL_13:
           v17 = 0;
         }
 
-        objc_storeStrong(&v18, 0);
+        objc_storeStrong(&averageQuantity2, 0);
         if (v17)
         {
           goto LABEL_18;
@@ -834,50 +834,50 @@ LABEL_18:
   return v24 & 1;
 }
 
-- (void)recordStartSource:(unint64_t)a3
+- (void)recordStartSource:(unint64_t)source
 {
-  self->_startSource = a3;
-  v4 = NLWorkoutStartSourceDescription(a3);
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"startSource"];
-  MEMORY[0x277D82BD8](v3);
+  self->_startSource = source;
+  v4 = NLWorkoutStartSourceDescription(source);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"startSource"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordHasFitnessPlusSubscription:(BOOL)a3
+- (void)recordHasFitnessPlusSubscription:(BOOL)subscription
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"hasFitnessPlusSubscription"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:subscription];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"hasFitnessPlusSubscription"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordWorkoutBuddySelectedVoiceIndex:(int64_t)a3
+- (void)recordWorkoutBuddySelectedVoiceIndex:(int64_t)index
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"workoutVoiceMotivationVoiceSelected"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:index];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"workoutVoiceMotivationVoiceSelected"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordPreferredWorkoutMetric:(unint64_t)a3
+- (void)recordPreferredWorkoutMetric:(unint64_t)metric
 {
-  v4 = MEMORY[0x20F2E8500](a3);
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"preferredMetric"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = MEMORY[0x20F2E8500](metric);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"preferredMetric"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordWorkoutMetricTypes:(id)a3
+- (void)recordWorkoutMetricTypes:(id)types
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -916,9 +916,9 @@ LABEL_18:
   MEMORY[0x277D82BD8](obj);
   [v15 sortUsingComparator:&__block_literal_global_3];
   v4 = [v15 componentsJoinedByString:{@", "}];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)v17 workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"workoutMetrics"];
-  MEMORY[0x277D82BD8](v3);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"workoutMetrics"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
@@ -938,17 +938,17 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
   return v5;
 }
 
-- (void)recordMetricPlatterType:(id)a3 atElapsedTime:(double)a4
+- (void)recordMetricPlatterType:(id)type atElapsedTime:(double)time
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
-  if (v16->_currentMetricPlatterType)
+  objc_storeStrong(location, type);
+  timeCopy = time;
+  if (selfCopy->_currentMetricPlatterType)
   {
     v12 = 0;
-    v11 = v14 - v16->_currentMetricPlatterElapsedTime;
+    v11 = timeCopy - selfCopy->_currentMetricPlatterElapsedTime;
     if (0 >= v11)
     {
       v8 = v12;
@@ -963,9 +963,9 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
     v13 = v8;
     if (v8 > 0.0)
     {
-      v10[0] = MEMORY[0x277D82BE0](v16->_currentMetricPlatterType);
+      v10[0] = MEMORY[0x277D82BE0](selfCopy->_currentMetricPlatterType);
       v5 = MEMORY[0x277CCABB0];
-      v7 = [(NSMutableDictionary *)v16->_metricPlatterAccumulatedTime objectForKeyedSubscript:v10[0]];
+      v7 = [(NSMutableDictionary *)selfCopy->_metricPlatterAccumulatedTime objectForKeyedSubscript:v10[0]];
       [v7 doubleValue];
       v6 = [v5 numberWithDouble:v4 + v13];
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
@@ -975,15 +975,15 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
     }
   }
 
-  objc_storeStrong(&v16->_currentMetricPlatterType, location[0]);
-  v16->_currentMetricPlatterElapsedTime = v14;
+  objc_storeStrong(&selfCopy->_currentMetricPlatterType, location[0]);
+  selfCopy->_currentMetricPlatterElapsedTime = timeCopy;
   objc_storeStrong(location, 0);
 }
 
 - (id)encodedMetricPlatterStatistics
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = 0;
   v11 = MEMORY[0x277CCAAA0];
@@ -1002,7 +1002,7 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
 
   v20[1] = currentMetricPlatterType;
   v19[2] = @"currentMetricPlatterElapsedTime";
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:{v16->_currentMetricPlatterElapsedTime, v20, v19}];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:{selfCopy->_currentMetricPlatterElapsedTime, v20, v19}];
   v20[2] = v8;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v4 forKeys:v5 count:3];
   obj = v15[0];
@@ -1024,17 +1024,17 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
   return v9;
 }
 
-- (void)recoverStateWithSessionActivity:(id)a3
+- (void)recoverStateWithSessionActivity:(id)activity
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [location[0] builder];
-  v13 = [v14 metadata];
-  v22 = [v13 objectForKeyedSubscript:@"_HKPrivateMetadataKeyMetricPlatterStatistics"];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  objc_storeStrong(location, activity);
+  builder = [location[0] builder];
+  metadata = [builder metadata];
+  v22 = [metadata objectForKeyedSubscript:@"_HKPrivateMetadataKeyMetricPlatterStatistics"];
+  MEMORY[0x277D82BD8](metadata);
+  MEMORY[0x277D82BD8](builder);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v22 length])
   {
@@ -1051,7 +1051,7 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(NSMutableDictionary *)v24->_metricPlatterAccumulatedTime addEntriesFromDictionary:v17];
+        [(NSMutableDictionary *)selfCopy->_metricPlatterAccumulatedTime addEntriesFromDictionary:v17];
       }
 
       v16 = [v19 objectForKeyedSubscript:@"currentMetricPlatterType"];
@@ -1064,13 +1064,13 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
         {
           if ([v16 length])
           {
-            currentMetricPlatterElapsedTime = v24->_currentMetricPlatterElapsedTime;
+            currentMetricPlatterElapsedTime = selfCopy->_currentMetricPlatterElapsedTime;
             [v15 doubleValue];
             v10 = 0 >= currentMetricPlatterElapsedTime - v3 ? 0 : currentMetricPlatterElapsedTime - v3;
             if (v10 > 0.0)
             {
               v7 = MEMORY[0x277CCABB0];
-              v9 = [(NSMutableDictionary *)v24->_metricPlatterAccumulatedTime objectForKeyedSubscript:v16, v10];
+              v9 = [(NSMutableDictionary *)selfCopy->_metricPlatterAccumulatedTime objectForKeyedSubscript:v16, v10];
               [v9 doubleValue];
               v8 = [v7 numberWithDouble:v4 + v10];
               [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
@@ -1086,12 +1086,12 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
       objc_storeStrong(&v17, 0);
     }
 
-    if (v24->_currentMetricPlatterType)
+    if (selfCopy->_currentMetricPlatterType)
     {
       v5 = location[0];
-      v6 = [(NLAnalyticsWorkoutEventBuilder *)v24 encodedMetricPlatterStatistics];
+      encodedMetricPlatterStatistics = [(NLAnalyticsWorkoutEventBuilder *)selfCopy encodedMetricPlatterStatistics];
       [v5 insertOrUpdateMetadata:? forceTopLevel:?];
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](encodedMetricPlatterStatistics);
     }
 
     objc_storeStrong(&v19, 0);
@@ -1103,60 +1103,60 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
   objc_storeStrong(location, 0);
 }
 
-- (void)recordGoalCompletionFactor:(double)a3
+- (void)recordGoalCompletionFactor:(double)factor
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"goalCompletionPercentage"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:factor];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"goalCompletionPercentage"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordWorkoutMediaEnabled:(BOOL)a3
+- (void)recordWorkoutMediaEnabled:(BOOL)enabled
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"has_automatic_media_playback"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:enabled];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"has_automatic_media_playback"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordWorkoutMediaDidStart:(BOOL)a3
+- (void)recordWorkoutMediaDidStart:(BOOL)start
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"automatic_playback_initiated"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:start];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"automatic_playback_initiated"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordWorkoutMediaSource:(id)a3
+- (void)recordWorkoutMediaSource:(id)source
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, source);
   v3 = location[0];
-  v4 = [(NLAnalyticsWorkoutEventBuilder *)v6 workoutEvent];
-  [(NSMutableDictionary *)v4 setObject:v3 forKeyedSubscript:@"media_source"];
-  MEMORY[0x277D82BD8](v4);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v3 forKeyedSubscript:@"media_source"];
+  MEMORY[0x277D82BD8](workoutEvent);
   objc_storeStrong(location, 0);
 }
 
-- (void)recordSensorTypes:(id)a3
+- (void)recordSensorTypes:(id)types
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, types);
   if (location[0] && [location[0] count])
   {
     v7 = [location[0] sortedArrayUsingComparator:&__block_literal_global_489];
     v6 = [v7 componentsJoinedByString:@" | "];
     v3 = v6;
-    v4 = [(NLAnalyticsWorkoutEventBuilder *)v10 workoutEvent];
-    [(NSMutableDictionary *)v4 setObject:v3 forKeyedSubscript:@"sensorType"];
-    MEMORY[0x277D82BD8](v4);
+    workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+    [(NSMutableDictionary *)workoutEvent setObject:v3 forKeyedSubscript:@"sensorType"];
+    MEMORY[0x277D82BD8](workoutEvent);
     objc_storeStrong(&v6, 0);
     objc_storeStrong(&v7, 0);
     v8 = 0;
@@ -1164,9 +1164,9 @@ uint64_t __59__NLAnalyticsWorkoutEventBuilder_recordWorkoutMetricTypes___block_i
 
   else
   {
-    v5 = [(NLAnalyticsWorkoutEventBuilder *)v10 workoutEvent];
-    [(NSMutableDictionary *)v5 setObject:&stru_28225A4E8 forKeyedSubscript:@"sensorType"];
-    MEMORY[0x277D82BD8](v5);
+    workoutEvent2 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy workoutEvent];
+    [(NSMutableDictionary *)workoutEvent2 setObject:&stru_28225A4E8 forKeyedSubscript:@"sensorType"];
+    MEMORY[0x277D82BD8](workoutEvent2);
     v8 = 1;
   }
 
@@ -1186,49 +1186,49 @@ uint64_t __52__NLAnalyticsWorkoutEventBuilder_recordSensorTypes___block_invoke(v
   return v5;
 }
 
-- (void)recordPairedWatchUnlockedAndOnWrist:(BOOL)a3
+- (void)recordPairedWatchUnlockedAndOnWrist:(BOOL)wrist
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"pairedWatchUnlockedAndOnWrist"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:wrist];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"pairedWatchUnlockedAndOnWrist"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
-- (void)recordPairedWatchNearby:(BOOL)a3
+- (void)recordPairedWatchNearby:(BOOL)nearby
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  v3 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v3 setObject:v4 forKeyedSubscript:@"pairedWatchNearby"];
-  MEMORY[0x277D82BD8](v3);
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:nearby];
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v4 forKeyedSubscript:@"pairedWatchNearby"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v4);
 }
 
 - (void)_finalizeCounts
 {
   v3 = [MEMORY[0x277CCABB0] numberWithInteger:self->_manualPauseCount];
-  v2 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v2 setObject:v3 forKeyedSubscript:@"manualPauseCount"];
-  MEMORY[0x277D82BD8](v2);
+  workoutEvent = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent setObject:v3 forKeyedSubscript:@"manualPauseCount"];
+  MEMORY[0x277D82BD8](workoutEvent);
   MEMORY[0x277D82BD8](v3);
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:self->_autoPauseCount];
-  v4 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
-  [(NSMutableDictionary *)v4 setObject:v5 forKeyedSubscript:@"autoPauseCount"];
-  MEMORY[0x277D82BD8](v4);
+  workoutEvent2 = [(NLAnalyticsWorkoutEventBuilder *)self workoutEvent];
+  [(NSMutableDictionary *)workoutEvent2 setObject:v5 forKeyedSubscript:@"autoPauseCount"];
+  MEMORY[0x277D82BD8](workoutEvent2);
   MEMORY[0x277D82BD8](v5);
 }
 
-- (void)_finalizeMetricPlatterAccumulatedWithWorkout:(id)a3
+- (void)_finalizeMetricPlatterAccumulatedWithWorkout:(id)workout
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v14->_currentMetricPlatterType)
+  objc_storeStrong(location, workout);
+  if (selfCopy->_currentMetricPlatterType)
   {
     v11 = 0;
     [location[0] elapsedTime];
-    v10 = v3 - v14->_currentMetricPlatterElapsedTime;
+    v10 = v3 - selfCopy->_currentMetricPlatterElapsedTime;
     if (0 >= v10)
     {
       v8 = v11;
@@ -1243,9 +1243,9 @@ uint64_t __52__NLAnalyticsWorkoutEventBuilder_recordSensorTypes___block_invoke(v
     v12 = v8;
     if (v8 > 0.0)
     {
-      v9[0] = MEMORY[0x277D82BE0](v14->_currentMetricPlatterType);
+      v9[0] = MEMORY[0x277D82BE0](selfCopy->_currentMetricPlatterType);
       v5 = MEMORY[0x277CCABB0];
-      v7 = [(NSMutableDictionary *)v14->_metricPlatterAccumulatedTime objectForKeyedSubscript:v9[0]];
+      v7 = [(NSMutableDictionary *)selfCopy->_metricPlatterAccumulatedTime objectForKeyedSubscript:v9[0]];
       [v7 doubleValue];
       v6 = [v5 numberWithDouble:v4 + v12];
       [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
@@ -1255,14 +1255,14 @@ uint64_t __52__NLAnalyticsWorkoutEventBuilder_recordSensorTypes___block_invoke(v
     }
   }
 
-  objc_storeStrong(&v14->_currentMetricPlatterType, 0);
-  v14->_currentMetricPlatterElapsedTime = 0.0;
+  objc_storeStrong(&selfCopy->_currentMetricPlatterType, 0);
+  selfCopy->_currentMetricPlatterElapsedTime = 0.0;
   objc_storeStrong(location, 0);
 }
 
 - (void)sendEvent
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   queue = dispatch_get_global_queue(17, 0);
   v3 = MEMORY[0x277D85DD0];
@@ -1270,7 +1270,7 @@ uint64_t __52__NLAnalyticsWorkoutEventBuilder_recordSensorTypes___block_invoke(v
   v5 = 0;
   v6 = __43__NLAnalyticsWorkoutEventBuilder_sendEvent__block_invoke;
   v7 = &unk_277D88890;
-  v8[0] = MEMORY[0x277D82BE0](v9);
+  v8[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v3);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v8, 0);
@@ -1465,28 +1465,28 @@ id __43__NLAnalyticsWorkoutEventBuilder_sendEvent__block_invoke_496(uint64_t a1)
   return v2;
 }
 
-- (id)_shortenedActivityMoveMode:(int64_t)a3
+- (id)_shortenedActivityMoveMode:(int64_t)mode
 {
-  v7 = self;
+  selfCopy = self;
   v6[2] = a2;
-  v6[1] = a3;
+  v6[1] = mode;
   v6[0] = MEMORY[0x277D82BE0](@"HKActivityMoveMode");
   v5 = NLHKActivityMoveModeString();
-  v4 = [(NLAnalyticsWorkoutEventBuilder *)v7 _removePrefix:v6[0] fromString:v5];
+  v4 = [(NLAnalyticsWorkoutEventBuilder *)selfCopy _removePrefix:v6[0] fromString:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(v6, 0);
 
   return v4;
 }
 
-- (id)_removePrefix:(id)a3 fromString:(id)a4
+- (id)_removePrefix:(id)prefix fromString:(id)string
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, prefix);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, string);
   v9 = [v10 copy];
   if ([v10 hasPrefix:location[0]])
   {

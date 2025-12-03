@@ -1,12 +1,12 @@
 @interface WebEmbedDebugView
-- (_TtC8NewsFeed17WebEmbedDebugView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed17WebEmbedDebugView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed17WebEmbedDebugView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed17WebEmbedDebugView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation WebEmbedDebugView
 
-- (_TtC8NewsFeed17WebEmbedDebugView)initWithCoder:(id)a3
+- (_TtC8NewsFeed17WebEmbedDebugView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed17WebEmbedDebugView_label;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) initWithFrame_];
@@ -26,7 +26,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC8NewsFeed17WebEmbedDebugView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed17WebEmbedDebugView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

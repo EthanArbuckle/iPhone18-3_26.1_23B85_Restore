@@ -1,22 +1,22 @@
 @interface AMSStreamHTTPArchiveEntryController
 + (AMSCircularBuffer)buffer;
-+ (BOOL)_shouldWriteEntryDirectlyToDiskForURLString:(id)a3;
-+ (BOOL)_writeData:(id)a3 enumeratingBytesToStream:(id)a4;
-+ (BOOL)_writeFooterToStream:(id)a3;
-+ (BOOL)_writeHeaderToStream:(id)a3;
-+ (id)_createNewFileNameForCombining:(BOOL)a3 extension:(id)a4;
-+ (id)_createNewFileWithFileName:(id)a3 outputDirectory:(id)a4 error:(id *)a5;
++ (BOOL)_shouldWriteEntryDirectlyToDiskForURLString:(id)string;
++ (BOOL)_writeData:(id)data enumeratingBytesToStream:(id)stream;
++ (BOOL)_writeFooterToStream:(id)stream;
++ (BOOL)_writeHeaderToStream:(id)stream;
++ (id)_createNewFileNameForCombining:(BOOL)combining extension:(id)extension;
++ (id)_createNewFileWithFileName:(id)name outputDirectory:(id)directory error:(id *)error;
 + (id)_footerData;
-+ (id)_harFileURLsInPath:(id)a3;
++ (id)_harFileURLsInPath:(id)path;
 + (id)_headerData;
-+ (id)ams_combineEntriesForPath:(id)a3 error:(id *)a4;
-+ (void)_moveTemporaryFileURL:(id)a3 toFinalFileURL:(id)a4;
-+ (void)_performCombiningFiles:(id)a3 toStream:(id)a4;
++ (id)ams_combineEntriesForPath:(id)path error:(id *)error;
++ (void)_moveTemporaryFileURL:(id)l toFinalFileURL:(id)rL;
++ (void)_performCombiningFiles:(id)files toStream:(id)stream;
 + (void)_periodicCleanup;
-+ (void)_streamToDiskWithEntries:(id)a3;
++ (void)_streamToDiskWithEntries:(id)entries;
 + (void)_updateMaxBufferSize;
-+ (void)_writeEntries:(id)a3 toStream:(id)a4;
-+ (void)ams_addEntriesForTaskInfo:(id)a3;
++ (void)_writeEntries:(id)entries toStream:(id)stream;
++ (void)ams_addEntriesForTaskInfo:(id)info;
 + (void)ams_streamEntriesToDisk;
 + (void)initialize;
 @end
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E3108 != -1)
   {
     dispatch_once(&qword_1ED6E3108, block);
@@ -51,8 +51,8 @@
       v3 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v5 = objc_opt_class();
       v6 = AMSLogKey();
@@ -60,21 +60,21 @@
       v12 = v5;
       v13 = 2114;
       v14 = v6;
-      _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error adding HAR, disabled", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error adding HAR, disabled", buf, 0x16u);
     }
   }
 
   else
   {
-    v7 = [a1 buffer];
-    v8 = [v7 count];
+    buffer = [self buffer];
+    v8 = [buffer count];
 
     if (v8 >= 5)
     {
-      v9 = [a1 buffer];
-      v10 = [v9 flush];
+      buffer2 = [self buffer];
+      flush = [buffer2 flush];
 
-      [a1 _streamToDiskWithEntries:v10];
+      [self _streamToDiskWithEntries:flush];
     }
   }
 }
@@ -84,8 +84,8 @@
   v4 = [[AMSObserver alloc] initWithResultBlock:&__block_literal_global_132];
   [AMSMemoryPressure subscribe:v4];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _AMSHTTPArchiveControllerShouldSaveToDisk, @"SSHTTPArchiveShouldSaveToDiskNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _AMSHTTPArchiveControllerShouldSaveToDiskDecompressed, @"SSHTTPArchiveShouldSaveToDiskDecompressedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AMSHTTPArchiveControllerShouldSaveToDisk, @"SSHTTPArchiveShouldSaveToDiskNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _AMSHTTPArchiveControllerShouldSaveToDiskDecompressed, @"SSHTTPArchiveShouldSaveToDiskDecompressedNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
@@ -103,67 +103,67 @@ void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
   dispatch_async(v4, block);
 }
 
-+ (void)ams_addEntriesForTaskInfo:(id)a3
++ (void)ams_addEntriesForTaskInfo:(id)info
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infoCopy = info;
   if (!+[AMSHTTPArchiveController _disabled])
   {
     v5 = AMSSetLogKeyIfNeeded();
-    v6 = [[AMSStreamHTTPArchiveEntry alloc] initWithHTTPArchiveTaskInfo:v4];
-    v9 = [(AMSStreamHTTPArchiveEntry *)v6 entries];
-    v10 = [v9 count];
+    oSLogObject5 = [[AMSStreamHTTPArchiveEntry alloc] initWithHTTPArchiveTaskInfo:infoCopy];
+    entries = [(AMSStreamHTTPArchiveEntry *)oSLogObject5 entries];
+    v10 = [entries count];
 
     if (!v10)
     {
       v35 = +[AMSUnitTests isRunningUnitTests];
       v36 = +[AMSLogConfig sharedHARLoggingConfig];
-      v13 = v36;
+      defaultCenter = v36;
       if (v35)
       {
         if (!v36)
         {
-          v13 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v37 = [v13 OSLogObject];
-        if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v38 = objc_opt_class();
-          v39 = [(AMSStreamHTTPArchiveEntry *)v6 urlString];
+          urlString = [(AMSStreamHTTPArchiveEntry *)oSLogObject5 urlString];
           *buf = 138543874;
           v44 = v38;
           v45 = 2114;
           v46 = v5;
           v47 = 2114;
-          v48 = v39;
-          _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Found empty entries array for url: %{public}@", buf, 0x20u);
+          v48 = urlString;
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Found empty entries array for url: %{public}@", buf, 0x20u);
         }
 
-        v13 = [MEMORY[0x1E696AD88] defaultCenter];
-        v24 = +[AMSLogConfig sharedHARLoggingConfig];
-        [v13 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v24 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedHARLoggingConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v36)
         {
-          v13 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v24 = [v13 OSLogObject];
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v40 = objc_opt_class();
-          v41 = [(AMSStreamHTTPArchiveEntry *)v6 urlString];
+          urlString2 = [(AMSStreamHTTPArchiveEntry *)oSLogObject5 urlString];
           *buf = 138543874;
           v44 = v40;
           v45 = 2114;
           v46 = v5;
           v47 = 2114;
-          v48 = v41;
-          _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Found empty entries array for url: %{public}@", buf, 0x20u);
+          v48 = urlString2;
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@: [%{public}@] Found empty entries array for url: %{public}@", buf, 0x20u);
         }
       }
 
@@ -171,8 +171,8 @@ void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
     }
 
     v11 = MEMORY[0x1E695DFF8];
-    v12 = [(AMSStreamHTTPArchiveEntry *)v6 urlString];
-    v13 = [v11 URLWithString:v12];
+    urlString3 = [(AMSStreamHTTPArchiveEntry *)oSLogObject5 urlString];
+    defaultCenter = [v11 URLWithString:urlString3];
 
     v14 = +[AMSHTTPArchiveController harURLFilters];
     if (v14)
@@ -183,8 +183,8 @@ void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
 
       if (v17)
       {
-        v18 = [(AMSStreamHTTPArchiveEntry *)v6 urlString];
-        v19 = [a1 _shouldWriteEntryDirectlyToDiskForURLString:v18];
+        urlString4 = [(AMSStreamHTTPArchiveEntry *)oSLogObject5 urlString];
+        v19 = [self _shouldWriteEntryDirectlyToDiskForURLString:urlString4];
 
         if (v19)
         {
@@ -194,23 +194,23 @@ void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
             v20 = +[AMSLogConfig sharedConfig];
           }
 
-          v21 = [v20 OSLogObject];
-          if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+          oSLogObject3 = [v20 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
           {
             v22 = objc_opt_class();
-            v23 = AMSLogableURL(v13);
+            v23 = AMSLogableURL(defaultCenter);
             *buf = 138543874;
             v44 = v22;
             v45 = 2114;
             v46 = v5;
             v47 = 2114;
             v48 = v23;
-            _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing filtered HAR entries to disk for URL string: %{public}@", buf, 0x20u);
+            _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing filtered HAR entries to disk for URL string: %{public}@", buf, 0x20u);
           }
 
-          v42 = v6;
-          v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
-          [a1 _streamToDiskWithEntries:v24];
+          v42 = oSLogObject5;
+          oSLogObject2 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
+          [self _streamToDiskWithEntries:oSLogObject2];
           goto LABEL_34;
         }
       }
@@ -222,42 +222,42 @@ void __45__AMSStreamHTTPArchiveEntryController_buffer__block_invoke(uint64_t a1)
       v25 = +[AMSLogConfig sharedConfig];
     }
 
-    v26 = [v25 OSLogObject];
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v25 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
       v27 = objc_opt_class();
-      v28 = AMSLogableURL(v13);
+      v28 = AMSLogableURL(defaultCenter);
       *buf = 138543874;
       v44 = v27;
       v45 = 2114;
       v46 = v5;
       v47 = 2114;
       v48 = v28;
-      _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Stream Entry to buffer for URL string: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Write HTTP Stream Entry to buffer for URL string: %{public}@", buf, 0x20u);
     }
 
-    v29 = [a1 buffer];
-    if ([v29 count] >= 6)
+    buffer = [self buffer];
+    if ([buffer count] >= 6)
     {
-      v30 = [a1 buffer];
-      v31 = [v30 count];
-      v32 = [a1 buffer];
-      v33 = [v32 maxSize] - 3;
+      buffer2 = [self buffer];
+      v31 = [buffer2 count];
+      buffer3 = [self buffer];
+      v33 = [buffer3 maxSize] - 3;
 
       if (v31 < v33)
       {
 LABEL_23:
-        v24 = [a1 buffer];
-        [v24 addObject:v6];
+        oSLogObject2 = [self buffer];
+        [oSLogObject2 addObject:oSLogObject5];
 LABEL_34:
 
         goto LABEL_35;
       }
 
-      v34 = [a1 buffer];
-      v29 = [v34 flush];
+      buffer4 = [self buffer];
+      buffer = [buffer4 flush];
 
-      [a1 _streamToDiskWithEntries:v29];
+      [self _streamToDiskWithEntries:buffer];
     }
 
     goto LABEL_23;
@@ -269,8 +269,8 @@ LABEL_34:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [v5 OSLogObject];
+  if (os_log_type_enabled(&oSLogObject5->super, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -278,20 +278,20 @@ LABEL_34:
     v44 = v7;
     v45 = 2114;
     v46 = v8;
-    _os_log_impl(&dword_192869000, &v6->super, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error adding HAR, disabled", buf, 0x16u);
+    _os_log_impl(&dword_192869000, &oSLogObject5->super, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error adding HAR, disabled", buf, 0x16u);
   }
 
 LABEL_35:
 }
 
-+ (id)ams_combineEntriesForPath:(id)a3 error:(id *)a4
++ (id)ams_combineEntriesForPath:(id)path error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _harFileURLsInPath:v6];
-  v8 = [a1 _createNewFileNameForCombining:1 extension:@".har"];
+  pathCopy = path;
+  v7 = [self _harFileURLsInPath:pathCopy];
+  v8 = [self _createNewFileNameForCombining:1 extension:@".har"];
   v48 = 0;
-  v9 = [a1 _createNewFileWithFileName:v8 outputDirectory:v6 error:&v48];
+  v9 = [self _createNewFileWithFileName:v8 outputDirectory:pathCopy error:&v48];
 
   v10 = v48;
   v11 = +[AMSLogConfig sharedHARLoggingConfig];
@@ -300,15 +300,15 @@ LABEL_35:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     AMSLogKey();
     v45 = v8;
     v15 = v14 = v7;
     AMSLogableURL(v9);
-    v16 = a4;
+    errorCopy = error;
     v17 = v10;
     v19 = v18 = v9;
     *buf = 138543874;
@@ -317,11 +317,11 @@ LABEL_35:
     v52 = v15;
     v53 = 2114;
     v54 = v19;
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Combining HAR entries to fileURL: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Combining HAR entries to fileURL: %{public}@", buf, 0x20u);
 
     v9 = v18;
     v10 = v17;
-    a4 = v16;
+    error = errorCopy;
 
     v7 = v14;
     v8 = v45;
@@ -335,8 +335,8 @@ LABEL_35:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       *buf = 138543618;
@@ -345,16 +345,16 @@ LABEL_35:
       v52 = v10;
       v23 = v9;
       v24 = v22;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create a new HAR file. error = %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create a new HAR file. error = %{public}@", buf, 0x16u);
 
       v9 = v23;
     }
 
-    if (a4)
+    if (error)
     {
       v25 = v10;
       v26 = 0;
-      *a4 = v10;
+      *error = v10;
     }
 
     else
@@ -367,10 +367,10 @@ LABEL_35:
   {
     v27 = [MEMORY[0x1E695DFC0] outputStreamWithURL:v9 append:0];
     [v27 open];
-    if ([a1 _writeHeaderToStream:v27])
+    if ([self _writeHeaderToStream:v27])
     {
-      [a1 _performCombiningFiles:v7 toStream:v27];
-      if ([a1 _writeFooterToStream:v27])
+      [self _performCombiningFiles:v7 toStream:v27];
+      if ([self _writeFooterToStream:v27])
       {
         [v27 close];
         v26 = v7;
@@ -385,30 +385,30 @@ LABEL_35:
           v37 = +[AMSLogConfig sharedConfig];
         }
 
-        v38 = [v37 OSLogObject];
-        if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v37 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v39 = objc_opt_class();
           v47 = v39;
           AMSLogableURL(v36);
-          v40 = a4;
+          errorCopy2 = error;
           v41 = v8;
           v43 = v42 = v7;
           *buf = 138543618;
           v50 = v39;
           v51 = 2114;
           v52 = v43;
-          _os_log_impl(&dword_192869000, v38, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create footer for new fileURL: %{public}@", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create footer for new fileURL: %{public}@", buf, 0x16u);
 
           v7 = v42;
           v8 = v41;
-          a4 = v40;
+          error = errorCopy2;
         }
 
         v26 = 0;
-        if (a4)
+        if (error)
         {
-          *a4 = 0;
+          *error = 0;
         }
 
         v9 = v36;
@@ -423,10 +423,10 @@ LABEL_35:
         v28 = +[AMSLogConfig sharedConfig];
       }
 
-      v29 = [v28 OSLogObject];
-      if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [v28 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
-        v30 = a4;
+        errorCopy3 = error;
         v31 = v9;
         v32 = objc_opt_class();
         v46 = v32;
@@ -436,19 +436,19 @@ LABEL_35:
         *buf = 138543618;
         v50 = v32;
         v9 = v31;
-        a4 = v30;
+        error = errorCopy3;
         v51 = 2114;
         v52 = v35;
-        _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create header for new fileURL: %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create header for new fileURL: %{public}@", buf, 0x16u);
 
         v7 = v34;
         v8 = v33;
       }
 
       v26 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
   }
@@ -456,11 +456,11 @@ LABEL_35:
   return v26;
 }
 
-+ (BOOL)_shouldWriteEntryDirectlyToDiskForURLString:(id)a3
++ (BOOL)_shouldWriteEntryDirectlyToDiskForURLString:(id)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v11 = 0u;
     v12 = 0u;
@@ -480,7 +480,7 @@ LABEL_35:
             objc_enumerationMutation(v4);
           }
 
-          if ([v3 containsString:*(*(&v9 + 1) + 8 * i)])
+          if ([stringCopy containsString:*(*(&v9 + 1) + 8 * i)])
           {
             LOBYTE(v5) = 1;
             goto LABEL_12;
@@ -508,17 +508,17 @@ LABEL_12:
   return v5;
 }
 
-+ (void)_streamToDiskWithEntries:(id)a3
++ (void)_streamToDiskWithEntries:(id)entries
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   if (!+[AMSHTTPArchiveController _disabled])
   {
-    v5 = [a1 _createNewFileNameForCombining:0 extension:@".temp"];
+    v5 = [self _createNewFileNameForCombining:0 extension:@".temp"];
     v6 = +[AMSHTTPArchive directory];
-    v37 = a1;
+    selfCopy = self;
     v39 = 0;
-    v7 = [a1 _createNewFileWithFileName:v5 outputDirectory:v6 error:&v39];
+    v7 = [self _createNewFileWithFileName:v5 outputDirectory:v6 error:&v39];
     v8 = v39;
 
     v9 = [v5 stringByReplacingOccurrencesOfString:@".temp" withString:@".har"];
@@ -533,13 +533,13 @@ LABEL_12:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v36 = v13;
       v16 = v9;
       v17 = v5;
-      v18 = v4;
+      v18 = entriesCopy;
       v19 = v8;
       v20 = objc_opt_class();
       v21 = AMSLogKey();
@@ -547,7 +547,7 @@ LABEL_12:
       *buf = 138543874;
       v41 = v20;
       v8 = v19;
-      v4 = v18;
+      entriesCopy = v18;
       v5 = v17;
       v9 = v16;
       v13 = v36;
@@ -555,7 +555,7 @@ LABEL_12:
       v43 = v21;
       v44 = 2114;
       v45 = v22;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing HAR entries to temporary fileURL: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Writing HAR entries to temporary fileURL: %{public}@", buf, 0x20u);
     }
 
     if (v8)
@@ -566,8 +566,8 @@ LABEL_12:
         v23 = +[AMSLogConfig sharedConfig];
       }
 
-      v24 = [v23 OSLogObject];
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v23 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v25 = objc_opt_class();
         *buf = 138543618;
@@ -575,7 +575,7 @@ LABEL_12:
         v42 = 2114;
         v43 = v8;
         v26 = v25;
-        _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create a new HAR file. error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create a new HAR file. error = %{public}@", buf, 0x16u);
       }
 
       goto LABEL_25;
@@ -583,14 +583,14 @@ LABEL_12:
 
     v23 = [MEMORY[0x1E695DFC0] outputStreamWithURL:v7 append:0];
     [v23 open];
-    if ([v37 _writeHeaderToStream:v23])
+    if ([selfCopy _writeHeaderToStream:v23])
     {
-      [v37 _writeEntries:v4 toStream:v23];
-      if ([v37 _writeFooterToStream:v23])
+      [selfCopy _writeEntries:entriesCopy toStream:v23];
+      if ([selfCopy _writeFooterToStream:v23])
       {
         [v23 close];
-        [v37 _moveTemporaryFileURL:v7 toFinalFileURL:v13];
-        [v37 _periodicCleanup];
+        [selfCopy _moveTemporaryFileURL:v7 toFinalFileURL:v13];
+        [selfCopy _periodicCleanup];
 LABEL_25:
 
         goto LABEL_26;
@@ -603,8 +603,8 @@ LABEL_25:
         v28 = +[AMSLogConfig sharedConfig];
       }
 
-      v29 = [v28 OSLogObject];
-      if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v28 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
 LABEL_24:
 
@@ -633,8 +633,8 @@ LABEL_24:
         v28 = +[AMSLogConfig sharedConfig];
       }
 
-      v29 = [v28 OSLogObject];
-      if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v28 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_24;
       }
@@ -651,7 +651,7 @@ LABEL_24:
       v34 = "%{public}@: Failed to create header for temporary fileURL: %{public}@";
     }
 
-    _os_log_impl(&dword_192869000, v29, OS_LOG_TYPE_ERROR, v34, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, v34, buf, 0x16u);
 
     v13 = v32;
     v8 = 0;
@@ -662,14 +662,14 @@ LABEL_24:
 LABEL_26:
 }
 
-+ (void)_moveTemporaryFileURL:(id)a3 toFinalFileURL:(id)a4
++ (void)_moveTemporaryFileURL:(id)l toFinalFileURL:(id)rL
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v5 absoluteString];
-  v9 = [v7 fileExistsAtPath:v8];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  absoluteString = [lCopy absoluteString];
+  v9 = [defaultManager fileExistsAtPath:absoluteString];
 
   if (v9)
   {
@@ -678,9 +678,9 @@ LABEL_26:
 
   else
   {
-    v11 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0;
-    v12 = [v11 moveItemAtURL:v5 toURL:v6 error:&v18];
+    v12 = [defaultManager2 moveItemAtURL:lCopy toURL:rLCopy error:&v18];
     v10 = v18;
 
     if ((v12 & 1) == 0)
@@ -691,63 +691,63 @@ LABEL_26:
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v15 = objc_opt_class();
         v16 = v15;
-        v17 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138543874;
         v20 = v15;
         v21 = 2114;
-        v22 = v6;
+        v22 = rLCopy;
         v23 = 2114;
-        v24 = v17;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to move temporary har file to final path: %{public}@, error: %{public}@", buf, 0x20u);
+        v24 = localizedDescription;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to move temporary har file to final path: %{public}@, error: %{public}@", buf, 0x20u);
       }
     }
   }
 }
 
-+ (id)_createNewFileNameForCombining:(BOOL)a3 extension:(id)a4
++ (id)_createNewFileNameForCombining:(BOOL)combining extension:(id)extension
 {
-  v4 = a3;
+  combiningCopy = combining;
   v5 = MEMORY[0x1E696AEC0];
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = [v6 date];
-  [v8 timeIntervalSinceReferenceDate];
+  extensionCopy = extension;
+  date = [v6 date];
+  [date timeIntervalSinceReferenceDate];
   v10 = &stru_1F071BA78;
-  if (v4)
+  if (combiningCopy)
   {
     v10 = @"_amscombined";
   }
 
-  v11 = [v5 stringWithFormat:@"%@_%f_streamwrite%@%@", @"amstoold", v9, v10, v7];
+  extensionCopy = [v5 stringWithFormat:@"%@_%f_streamwrite%@%@", @"amstoold", v9, v10, extensionCopy];
 
-  return v11;
+  return extensionCopy;
 }
 
-+ (id)_createNewFileWithFileName:(id)a3 outputDirectory:(id)a4 error:(id *)a5
++ (id)_createNewFileWithFileName:(id)name outputDirectory:(id)directory error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  nameCopy = name;
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:directoryCopy];
 
   if (v10)
   {
     v11 = 0;
 LABEL_4:
-    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8];
-    v15 = [v14 URLByAppendingPathComponent:v7];
+    v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:directoryCopy];
+    v15 = [v14 URLByAppendingPathComponent:nameCopy];
 
     goto LABEL_5;
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v18 = 0;
-  v13 = [v12 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v18];
+  v13 = [defaultManager2 createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v18];
   v11 = v18;
 
   if (v13)
@@ -755,11 +755,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = v11;
     v15 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -772,23 +772,23 @@ LABEL_5:
   return v15;
 }
 
-+ (void)_writeEntries:(id)a3 toStream:(id)a4
++ (void)_writeEntries:(id)entries toStream:(id)stream
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  entriesCopy = entries;
+  streamCopy = stream;
+  if ([entriesCopy count])
   {
     v9 = 0;
     *&v8 = 138543362;
     v26 = v8;
-    v27 = v6;
+    v27 = entriesCopy;
     while (1)
     {
       v28 = v9;
-      v10 = [v6 objectAtIndexedSubscript:{v9, v26}];
-      v11 = [v10 entries];
-      v12 = [v11 count];
+      v10 = [entriesCopy objectAtIndexedSubscript:{v9, v26}];
+      entries = [v10 entries];
+      v12 = [entries count];
 
       if (v12)
       {
@@ -797,7 +797,7 @@ LABEL_5:
 
 LABEL_15:
 
-      v6 = v27;
+      entriesCopy = v27;
       v9 = v28 + 1;
       if (v28 + 1 >= [v27 count])
       {
@@ -809,16 +809,16 @@ LABEL_15:
     while (1)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = [v10 entries];
-      v16 = [v15 objectAtIndexedSubscript:v13];
+      entries2 = [v10 entries];
+      v16 = [entries2 objectAtIndexedSubscript:v13];
 
-      v17 = [v16 ams_decompressedData];
-      if ([a1 _writeData:v17 enumeratingBytesToStream:v7])
+      ams_decompressedData = [v16 ams_decompressedData];
+      if ([self _writeData:ams_decompressedData enumeratingBytesToStream:streamCopy])
       {
         if (v28 == [v27 count] - 1)
         {
-          v18 = [v10 entries];
-          v19 = [v18 count] - 1;
+          entries3 = [v10 entries];
+          v19 = [entries3 count] - 1;
 
           if (v13 == v19)
           {
@@ -827,8 +827,8 @@ LABEL_15:
         }
 
         v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@", "];
-        v21 = [v20 dataUsingEncoding:4];
-        [a1 _writeData:v21 enumeratingBytesToStream:v7];
+        oSLogObject = [v20 dataUsingEncoding:4];
+        [self _writeData:oSLogObject enumeratingBytesToStream:streamCopy];
       }
 
       else
@@ -839,22 +839,22 @@ LABEL_15:
           v20 = +[AMSLogConfig sharedConfig];
         }
 
-        v21 = [v20 OSLogObject];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v20 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v22 = objc_opt_class();
           *buf = v26;
           v30 = v22;
           v23 = v22;
-          _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to write entry to the har logging stream.", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to write entry to the har logging stream.", buf, 0xCu);
         }
       }
 
 LABEL_14:
       objc_autoreleasePoolPop(v14);
       ++v13;
-      v24 = [v10 entries];
-      v25 = [v24 count];
+      entries4 = [v10 entries];
+      v25 = [entries4 count];
 
       if (v13 >= v25)
       {
@@ -866,13 +866,13 @@ LABEL_14:
 LABEL_16:
 }
 
-+ (BOOL)_writeHeaderToStream:(id)a3
++ (BOOL)_writeHeaderToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [a1 _headerData];
-  LOBYTE(a1) = [a1 _writeData:v5 enumeratingBytesToStream:v4];
+  streamCopy = stream;
+  _headerData = [self _headerData];
+  LOBYTE(self) = [self _writeData:_headerData enumeratingBytesToStream:streamCopy];
 
-  return a1;
+  return self;
 }
 
 + (id)_headerData
@@ -885,13 +885,13 @@ LABEL_16:
   return v5;
 }
 
-+ (BOOL)_writeFooterToStream:(id)a3
++ (BOOL)_writeFooterToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [a1 _footerData];
-  LOBYTE(a1) = [a1 _writeData:v5 enumeratingBytesToStream:v4];
+  streamCopy = stream;
+  _footerData = [self _footerData];
+  LOBYTE(self) = [self _writeData:_footerData enumeratingBytesToStream:streamCopy];
 
-  return a1;
+  return self;
 }
 
 + (id)_footerData
@@ -902,10 +902,10 @@ LABEL_16:
   return v3;
 }
 
-+ (BOOL)_writeData:(id)a3 enumeratingBytesToStream:(id)a4
++ (BOOL)_writeData:(id)data enumeratingBytesToStream:(id)stream
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  streamCopy = stream;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -914,10 +914,10 @@ LABEL_16:
   v10[1] = 3221225472;
   v10[2] = __75__AMSStreamHTTPArchiveEntryController__writeData_enumeratingBytesToStream___block_invoke;
   v10[3] = &unk_1E73BC588;
-  v7 = v6;
+  v7 = streamCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateByteRangesUsingBlock:v10];
+  [dataCopy enumerateByteRangesUsingBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -947,8 +947,8 @@ uint64_t __75__AMSStreamHTTPArchiveEntryController__writeData_enumeratingBytesTo
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 25;
       goto LABEL_15;
@@ -962,10 +962,10 @@ uint64_t __75__AMSStreamHTTPArchiveEntryController__writeData_enumeratingBytesTo
     *&v11[12] = 2112;
     *&v11[14] = v8;
 LABEL_11:
-    _os_log_impl(&dword_192869000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Received memory warning, writing to disk to flush the buffer. Current max: %@", v11, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Received memory warning, writing to disk to flush the buffer. Current max: %@", v11, 0x16u);
 
 LABEL_15:
-    [a1 ams_streamEntriesToDisk];
+    [self ams_streamEntriesToDisk];
     goto LABEL_16;
   }
 
@@ -977,8 +977,8 @@ LABEL_15:
       v4 = +[AMSLogConfig sharedConfig];
     }
 
-    v5 = [v4 OSLogObject];
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v4 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 12;
       goto LABEL_15;
@@ -996,8 +996,8 @@ LABEL_15:
 
   v7 = 50;
 LABEL_16:
-  v10 = [a1 buffer];
-  [v10 setMaxSize:v7];
+  buffer = [self buffer];
+  [buffer setMaxSize:v7];
 }
 
 + (void)_periodicCleanup
@@ -1014,30 +1014,30 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
   [AMSHTTPArchive removeHTTPArchiveFilesOlderThanDate:v1];
 }
 
-+ (id)_harFileURLsInPath:(id)a3
++ (id)_harFileURLsInPath:(id)path
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v26 = AMSSetLogKeyIfNeeded();
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v5)
   {
     v25 = [MEMORY[0x1E695E0F0] mutableCopy];
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 enumeratorAtPath:v3];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager2 enumeratorAtPath:pathCopy];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v8 = v7;
-    v9 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+    oSLogObject3 = v7;
+    v9 = [oSLogObject3 countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v9)
     {
       v10 = v9;
-      v24 = v3;
+      v24 = pathCopy;
       v11 = *v28;
       do
       {
@@ -1046,7 +1046,7 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
         {
           if (*v28 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(oSLogObject3);
           }
 
           v13 = *(*(&v27 + 1) + 8 * v12);
@@ -1058,8 +1058,8 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
               v14 = +[AMSLogConfig sharedConfig];
             }
 
-            v15 = [v14 OSLogObject];
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [v14 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
               v16 = objc_opt_class();
               *buf = 138543874;
@@ -1068,7 +1068,7 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
               v34 = v26;
               v35 = 2114;
               v36 = v13;
-              _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping HAR combining for: %{public}@.", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Skipping HAR combining for: %{public}@.", buf, 0x20u);
             }
           }
 
@@ -1080,8 +1080,8 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
               v17 = +[AMSLogConfig sharedConfig];
             }
 
-            v18 = [v17 OSLogObject];
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+            oSLogObject2 = [v17 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
             {
               v19 = objc_opt_class();
               *buf = 138543874;
@@ -1090,7 +1090,7 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
               v34 = v26;
               v35 = 2114;
               v36 = v13;
-              _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Logging HAR for fileName: %{public}@.", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Logging HAR for fileName: %{public}@.", buf, 0x20u);
             }
 
             v14 = [v24 stringByAppendingPathComponent:v13];
@@ -1101,18 +1101,18 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
         }
 
         while (v10 != v12);
-        v20 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+        v20 = [oSLogObject3 countByEnumeratingWithState:&v27 objects:v37 count:16];
         v10 = v20;
       }
 
       while (v20);
-      v21 = v8;
-      v3 = v24;
+      v21 = oSLogObject3;
+      pathCopy = v24;
     }
 
     else
     {
-      v21 = v8;
+      v21 = oSLogObject3;
     }
   }
 
@@ -1124,15 +1124,15 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v21 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject3 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
       v32 = objc_opt_class();
       v33 = 2114;
       v34 = v26;
       v22 = v32;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Directory containing HAR files does not exist.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Directory containing HAR files does not exist.", buf, 0x16u);
     }
 
     v25 = 0;
@@ -1141,24 +1141,24 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
   return v25;
 }
 
-+ (void)_performCombiningFiles:(id)a3 toStream:(id)a4
++ (void)_performCombiningFiles:(id)files toStream:(id)stream
 {
   v81 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  filesCopy = files;
+  streamCopy = stream;
   v58 = AMSSetLogKeyIfNeeded();
-  v8 = [a1 _headerData];
-  v9 = [v8 length];
+  _headerData = [self _headerData];
+  v9 = [_headerData length];
 
-  v59 = a1;
-  v10 = [a1 _footerData];
-  v11 = [v10 length];
+  selfCopy = self;
+  _footerData = [self _footerData];
+  v11 = [_footerData length];
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v6;
+  obj = filesCopy;
   v51 = [obj countByEnumeratingWithState:&v68 objects:v80 count:16];
   if (v51)
   {
@@ -1167,7 +1167,7 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
     v48 = *v69;
     v49 = v11;
     v50 = v9;
-    v57 = v7;
+    v57 = streamCopy;
     do
     {
       v13 = 0;
@@ -1200,7 +1200,7 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
         {
           v21 = v47 + v17;
           v22 = v9;
-          v23 = v59;
+          v23 = selfCopy;
           while (1)
           {
             if (v21 >= 0x400)
@@ -1225,15 +1225,15 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
                 v27 = +[AMSLogConfig sharedConfig];
               }
 
-              v28 = [v27 OSLogObject];
-              if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+              oSLogObject = [v27 OSLogObject];
+              if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
               {
                 v29 = objc_opt_class();
-                v30 = [v26 localizedDescription];
-                if (v30)
+                localizedDescription = [v26 localizedDescription];
+                if (localizedDescription)
                 {
-                  v56 = [v26 localizedDescription];
-                  v31 = v56;
+                  localizedDescription2 = [v26 localizedDescription];
+                  v31 = localizedDescription2;
                 }
 
                 else
@@ -1249,18 +1249,18 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
                 v77 = v24;
                 v78 = 2114;
                 v79 = v31;
-                _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while reading bytes up to length: %lu, error: %{public}@", buf, 0x2Au);
-                if (v30)
+                _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while reading bytes up to length: %lu, error: %{public}@", buf, 0x2Au);
+                if (localizedDescription)
                 {
                 }
 
-                v23 = v59;
+                v23 = selfCopy;
               }
 
-              v7 = v57;
+              streamCopy = v57;
             }
 
-            [v23 _writeData:v25 enumeratingBytesToStream:v7];
+            [v23 _writeData:v25 enumeratingBytesToStream:streamCopy];
             if (v21 < 0x401)
             {
               break;
@@ -1279,15 +1279,15 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
                 v33 = +[AMSLogConfig sharedConfig];
               }
 
-              v34 = [v33 OSLogObject];
-              if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+              oSLogObject2 = [v33 OSLogObject];
+              if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
               {
                 v35 = objc_opt_class();
-                v36 = [v19 localizedDescription];
-                if (v36)
+                localizedDescription3 = [v19 localizedDescription];
+                if (localizedDescription3)
                 {
-                  v55 = [v19 localizedDescription];
-                  v37 = v55;
+                  localizedDescription4 = [v19 localizedDescription];
+                  v37 = localizedDescription4;
                 }
 
                 else
@@ -1303,12 +1303,12 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
                 v77 = v22;
                 v78 = 2114;
                 v79 = v37;
-                _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while seeking to offset to: %llu, error: %{public}@", buf, 0x2Au);
-                if (v36)
+                _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while seeking to offset to: %llu, error: %{public}@", buf, 0x2Au);
+                if (localizedDescription3)
                 {
                 }
 
-                v23 = v59;
+                v23 = selfCopy;
               }
             }
 
@@ -1326,9 +1326,9 @@ void __55__AMSStreamHTTPArchiveEntryController__periodicCleanup__block_invoke_2(
 
 LABEL_40:
         objc_autoreleasePoolPop(v20);
-        v38 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v62 = v19;
-        [v38 removeItemAtPath:v53 error:&v62];
+        [defaultManager removeItemAtPath:v53 error:&v62];
         v12 = v62;
 
         if (v12)
@@ -1339,12 +1339,12 @@ LABEL_40:
             v39 = +[AMSLogConfig sharedConfig];
           }
 
-          v40 = [v39 OSLogObject];
-          if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+          oSLogObject3 = [v39 OSLogObject];
+          if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
           {
             v41 = objc_opt_class();
             v42 = v41;
-            v43 = [v12 localizedDescription];
+            localizedDescription5 = [v12 localizedDescription];
             *buf = 138544130;
             v73 = v41;
             v74 = 2114;
@@ -1352,18 +1352,18 @@ LABEL_40:
             v76 = 2114;
             v77 = v53;
             v78 = 2114;
-            v79 = v43;
-            _os_log_impl(&dword_192869000, v40, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while removing item at path: %{public}@, error: %{public}@", buf, 0x2Au);
+            v79 = localizedDescription5;
+            _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Fault while removing item at path: %{public}@, error: %{public}@", buf, 0x2Au);
           }
         }
 
-        v44 = [obj lastObject];
+        lastObject = [obj lastObject];
 
-        if (v53 != v44)
+        if (v53 != lastObject)
         {
           v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@", "];
           v46 = [v45 dataUsingEncoding:4];
-          [v59 _writeData:v46 enumeratingBytesToStream:v7];
+          [selfCopy _writeData:v46 enumeratingBytesToStream:streamCopy];
         }
 
         v13 = v54 + 1;

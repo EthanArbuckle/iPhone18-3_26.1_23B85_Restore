@@ -1,21 +1,21 @@
 @interface CNClassKitServices
-+ (id)objectsMatching:(id)a3 fromStore:(id)a4;
++ (id)objectsMatching:(id)matching fromStore:(id)store;
 @end
 
 @implementation CNClassKitServices
 
-+ (id)objectsMatching:(id)a3 fromStore:(id)a4
++ (id)objectsMatching:(id)matching fromStore:(id)store
 {
   v5 = MEMORY[0x1E69967D0];
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  matchingCopy = matching;
   v8 = objc_alloc_init(v5);
-  v9 = [v8 completionHandlerAdapter];
-  [v6 objectsMatching:v7 completion:v9];
+  completionHandlerAdapter = [v8 completionHandlerAdapter];
+  [storeCopy objectsMatching:matchingCopy completion:completionHandlerAdapter];
 
   v10 = MEMORY[0x1E6996810];
-  v11 = [v8 future];
-  v12 = [v10 resultWithFuture:v11];
+  future = [v8 future];
+  v12 = [v10 resultWithFuture:future];
 
   return v12;
 }

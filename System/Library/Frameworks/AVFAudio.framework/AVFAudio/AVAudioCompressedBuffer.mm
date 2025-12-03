@@ -62,10 +62,10 @@
 - (AVAudioCompressedBuffer)initWithFormat:(AVAudioFormat *)format packetCapacity:(AVAudioPacketCount)packetCapacity maximumPacketSize:(NSInteger)maximumPacketSize
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = [(AVAudioFormat *)format streamDescription];
-  v10 = *&v9->mBitsPerChannel;
-  v11 = *&v9->mBytesPerPacket;
-  inSpecifier = *&v9->mSampleRate;
+  streamDescription = [(AVAudioFormat *)format streamDescription];
+  v10 = *&streamDescription->mBitsPerChannel;
+  v11 = *&streamDescription->mBytesPerPacket;
+  inSpecifier = *&streamDescription->mSampleRate;
   v26 = v11;
   v27 = v10;
   if (DWORD2(inSpecifier) == 1634492791 || DWORD2(inSpecifier) == 1970037111 || DWORD2(inSpecifier) == 1819304813)
@@ -137,13 +137,13 @@
 
   v24.receiver = self;
   v24.super_class = AVAudioCompressedBuffer;
-  v18 = [(AVAudioBuffer *)&v24 initWithFormat:format byteCapacity:v16 * packetCapacity];
-  v19 = v18;
-  if (v18)
+  packetCapacity = [(AVAudioBuffer *)&v24 initWithFormat:format byteCapacity:v16 * packetCapacity];
+  v19 = packetCapacity;
+  if (packetCapacity)
   {
-    *(v18->super._impl + 6) = v16;
-    *(v18->super._impl + 5) = packetCapacity;
-    *(v18->super._impl + 4) = 0;
+    *(packetCapacity->super._impl + 6) = v16;
+    *(packetCapacity->super._impl + 5) = packetCapacity;
+    *(packetCapacity->super._impl + 4) = 0;
     if (v15)
     {
       v20 = 0;
@@ -153,7 +153,7 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    *(v18->super._impl + 1) = malloc_type_calloc(packetCapacity, 0x10uLL, 0x1000040451B5BE8uLL);
+    *(packetCapacity->super._impl + 1) = malloc_type_calloc(packetCapacity, 0x10uLL, 0x1000040451B5BE8uLL);
     ioPropertyDataSize = 4;
     *buf = 0;
     if (!AudioFormatGetProperty(0x66646570u, 0x28u, &inSpecifier, &ioPropertyDataSize, buf) && *buf)

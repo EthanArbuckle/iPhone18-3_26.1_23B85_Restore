@@ -4,33 +4,33 @@
 + (FTMomentsControllerLocalCapabilities)localCapabilities;
 + (id)sharedInstance;
 - (FTLivePhotoController)init;
-- (FTLivePhotoController)initWithQueue:(id)a3 fileTransferController:(id)a4 idsService:(id)a5 mediaAssetManager:(id)a6 callCenter:(id)a7 userNotificationProviderDataSource:(id)a8 featureFlags:(id)a9;
+- (FTLivePhotoController)initWithQueue:(id)queue fileTransferController:(id)controller idsService:(id)service mediaAssetManager:(id)manager callCenter:(id)center userNotificationProviderDataSource:(id)source featureFlags:(id)flags;
 - (FTLivePhotoControllerDelegate)delegate;
-- (id)contentsOfDirectoryAtURL:(id)a3;
-- (id)sessionForTransactionID:(id)a3;
-- (id)urlFromResources:(id)a3 withExtension:(id)a4;
-- (int)availabilityWithRemoteAvailable:(BOOL)a3;
-- (void)_handleReceivedResourcesAtDirectoryURL:(id)a3 transactionID:(id)a4;
-- (void)_handleReceivedVideoURL:(id)a3;
-- (void)_saveLivePhotoWithPhotoURL:(id)a3 videoURL:(id)a4 completion:(id)a5;
-- (void)_saveVideoWithURL:(id)a3 completion:(id)a4;
-- (void)_startTimeoutForMomentsRequestWithTransactionID:(id)a3;
-- (void)_transferFileAtURL:(id)a3 forSession:(id)a4 request:(id)a5;
-- (void)cleanUpForMomentIfNecessary:(id)a3;
-- (void)deleteContentsAtURL:(id)a3;
-- (void)endRequestWithTransactionID:(id)a3 reply:(id)a4;
-- (void)fileTransferer:(id)a3 didReceiveResourcesAtURL:(id)a4 withMetadata:(id)a5 isZipped:(BOOL)a6 fromIDSDestination:(id)a7;
-- (void)fileTransferer:(id)a3 didTransferFileAtURL:(id)a4 transactionID:(id)a5 successfully:(BOOL)a6;
-- (void)handleRequestResultWithMomentDescriptor:(id)a3;
-- (void)moments:(id)a3 capabilitiesDidChange:(unsigned int)a4;
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7;
-- (void)moments:(id)a3 didFinishRequest:(id)a4 error:(id)a5;
-- (void)moments:(id)a3 didStartProcessingRequest:(id)a4 error:(id)a5;
-- (void)momentsServerDidDisconnect:(id)a3;
-- (void)requestSandboxExtensionForTransactionID:(id)a3 reply:(id)a4;
-- (void)requestSandboxExtensionForURL:(id)a3 reply:(id)a4;
-- (void)unregisterStreamToken:(int64_t)a3;
-- (void)unregisterStreamToken:(int64_t)a3 reply:(id)a4;
+- (id)contentsOfDirectoryAtURL:(id)l;
+- (id)sessionForTransactionID:(id)d;
+- (id)urlFromResources:(id)resources withExtension:(id)extension;
+- (int)availabilityWithRemoteAvailable:(BOOL)available;
+- (void)_handleReceivedResourcesAtDirectoryURL:(id)l transactionID:(id)d;
+- (void)_handleReceivedVideoURL:(id)l;
+- (void)_saveLivePhotoWithPhotoURL:(id)l videoURL:(id)rL completion:(id)completion;
+- (void)_saveVideoWithURL:(id)l completion:(id)completion;
+- (void)_startTimeoutForMomentsRequestWithTransactionID:(id)d;
+- (void)_transferFileAtURL:(id)l forSession:(id)session request:(id)request;
+- (void)cleanUpForMomentIfNecessary:(id)necessary;
+- (void)deleteContentsAtURL:(id)l;
+- (void)endRequestWithTransactionID:(id)d reply:(id)reply;
+- (void)fileTransferer:(id)transferer didReceiveResourcesAtURL:(id)l withMetadata:(id)metadata isZipped:(BOOL)zipped fromIDSDestination:(id)destination;
+- (void)fileTransferer:(id)transferer didTransferFileAtURL:(id)l transactionID:(id)d successfully:(BOOL)successfully;
+- (void)handleRequestResultWithMomentDescriptor:(id)descriptor;
+- (void)moments:(id)moments capabilitiesDidChange:(unsigned int)change;
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error;
+- (void)moments:(id)moments didFinishRequest:(id)request error:(id)error;
+- (void)moments:(id)moments didStartProcessingRequest:(id)request error:(id)error;
+- (void)momentsServerDidDisconnect:(id)disconnect;
+- (void)requestSandboxExtensionForTransactionID:(id)d reply:(id)reply;
+- (void)requestSandboxExtensionForURL:(id)l reply:(id)reply;
+- (void)unregisterStreamToken:(int64_t)token;
+- (void)unregisterStreamToken:(int64_t)token reply:(id)reply;
 @end
 
 @implementation FTLivePhotoController
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002974;
   block[3] = &unk_100050F88;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059C18 != -1)
   {
     dispatch_once(&qword_100059C18, block);
@@ -73,75 +73,75 @@
   return v15;
 }
 
-- (FTLivePhotoController)initWithQueue:(id)a3 fileTransferController:(id)a4 idsService:(id)a5 mediaAssetManager:(id)a6 callCenter:(id)a7 userNotificationProviderDataSource:(id)a8 featureFlags:(id)a9
+- (FTLivePhotoController)initWithQueue:(id)queue fileTransferController:(id)controller idsService:(id)service mediaAssetManager:(id)manager callCenter:(id)center userNotificationProviderDataSource:(id)source featureFlags:(id)flags
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
+  queueCopy = queue;
+  controllerCopy = controller;
+  serviceCopy = service;
+  managerCopy = manager;
+  centerCopy = center;
+  sourceCopy = source;
+  flagsCopy = flags;
   v35.receiver = self;
   v35.super_class = FTLivePhotoController;
   v23 = [(FTLivePhotoController *)&v35 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_queue, a3);
+    objc_storeStrong(&v23->_queue, queue);
     queue = v24->_queue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002CDC;
     block[3] = &unk_100050FF0;
     v28 = v24;
-    v29 = v22;
-    v30 = v20;
-    v31 = v17;
-    v32 = v18;
-    v33 = v19;
-    v34 = v21;
+    v29 = flagsCopy;
+    v30 = centerCopy;
+    v31 = controllerCopy;
+    v32 = serviceCopy;
+    v33 = managerCopy;
+    v34 = sourceCopy;
     dispatch_async(queue, block);
   }
 
   return v24;
 }
 
-- (void)endRequestWithTransactionID:(id)a3 reply:(id)a4
+- (void)endRequestWithTransactionID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  replyCopy = reply;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = FTDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "transactionID: %@", buf, 0xCu);
   }
 
-  v10 = [(FTLivePhotoController *)self sessionForTransactionID:v6];
-  v11 = [v10 activeRequestsByTransactionID];
-  v12 = [v11 objectForKeyedSubscript:v6];
+  v10 = [(FTLivePhotoController *)self sessionForTransactionID:dCopy];
+  activeRequestsByTransactionID = [v10 activeRequestsByTransactionID];
+  v12 = [activeRequestsByTransactionID objectForKeyedSubscript:dCopy];
 
   if (v12)
   {
-    v13 = [v12 avcRequest];
+    avcRequest = [v12 avcRequest];
     v20 = 0;
-    v14 = [v13 endWithError:&v20];
+    v14 = [avcRequest endWithError:&v20];
     v15 = v20;
 
     v16 = FTDefaultLog();
-    v17 = v16;
+    dCopy = v16;
     if (v14)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
         v24 = v12;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Successfully ended request %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, dCopy, OS_LOG_TYPE_DEFAULT, "Successfully ended request %@", buf, 0xCu);
       }
     }
 
@@ -153,9 +153,9 @@
 
   else
   {
-    v17 = [NSString stringWithFormat:@"Could not find request for transaction ID %@", v6];
+    dCopy = [NSString stringWithFormat:@"Could not find request for transaction ID %@", dCopy];
     v21 = NSLocalizedDescriptionKey;
-    v22 = v17;
+    v22 = dCopy;
     v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     v15 = [NSError errorWithDomain:@"com.apple.callservicesdaemon.FTLivePhotocontroller" code:1 userInfo:v18];
 
@@ -166,53 +166,53 @@
     }
   }
 
-  v7[2](v7, v15);
+  replyCopy[2](replyCopy, v15);
 }
 
-- (void)unregisterStreamToken:(int64_t)a3 reply:(id)a4
+- (void)unregisterStreamToken:(int64_t)token reply:(id)reply
 {
-  v6 = a4;
-  v7 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v7);
+  replyCopy = reply;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = FTDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = a3;
+    tokenCopy = token;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked to unregister stream token: %ld", &v9, 0xCu);
   }
 
-  [(FTLivePhotoController *)self unregisterStreamToken:a3];
-  v6[2](v6, 0);
+  [(FTLivePhotoController *)self unregisterStreamToken:token];
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)fileTransferer:(id)a3 didReceiveResourcesAtURL:(id)a4 withMetadata:(id)a5 isZipped:(BOOL)a6 fromIDSDestination:(id)a7
+- (void)fileTransferer:(id)transferer didReceiveResourcesAtURL:(id)l withMetadata:(id)metadata isZipped:(BOOL)zipped fromIDSDestination:(id)destination
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = [(FTLivePhotoController *)self queue];
+  lCopy = l;
+  metadataCopy = metadata;
+  destinationCopy = destination;
+  queue = [(FTLivePhotoController *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000041F0;
   block[3] = &unk_100051090;
-  v19 = v11;
-  v20 = v12;
-  v23 = a6;
-  v21 = v13;
-  v22 = self;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  dispatch_async(v14, block);
+  v19 = lCopy;
+  v20 = metadataCopy;
+  zippedCopy = zipped;
+  v21 = destinationCopy;
+  selfCopy = self;
+  v15 = destinationCopy;
+  v16 = metadataCopy;
+  v17 = lCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)fileTransferer:(id)a3 didTransferFileAtURL:(id)a4 transactionID:(id)a5 successfully:(BOOL)a6
+- (void)fileTransferer:(id)transferer didTransferFileAtURL:(id)l transactionID:(id)d successfully:(BOOL)successfully
 {
-  v9 = a4;
-  v10 = a5;
-  if (!a6)
+  lCopy = l;
+  dCopy = d;
+  if (!successfully)
   {
     v11 = FTDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -221,21 +221,21 @@
     }
   }
 
-  [(FTLivePhotoController *)self deleteContentsAtURL:v9];
-  v12 = [(FTLivePhotoController *)self sandboxURLsByRequestTransactionID];
-  [v12 setObject:0 forKeyedSubscript:v10];
+  [(FTLivePhotoController *)self deleteContentsAtURL:lCopy];
+  sandboxURLsByRequestTransactionID = [(FTLivePhotoController *)self sandboxURLsByRequestTransactionID];
+  [sandboxURLsByRequestTransactionID setObject:0 forKeyedSubscript:dCopy];
 }
 
-- (void)deleteContentsAtURL:(id)a3
+- (void)deleteContentsAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if ([objc_opt_class() shouldPreserveMomentsFile])
   {
     v4 = FTDefaultLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v3;
+      v11 = lCopy;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Preserving file at URL: %@", buf, 0xCu);
     }
   }
@@ -244,7 +244,7 @@
   {
     v5 = +[NSFileManager defaultManager];
     v9 = 0;
-    v6 = [v5 removeItemAtURL:v3 error:&v9];
+    v6 = [v5 removeItemAtURL:lCopy error:&v9];
     v4 = v9;
 
     v7 = FTDefaultLog();
@@ -254,7 +254,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v11 = v3;
+        v11 = lCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Deleted contents at URL: %@", buf, 0xCu);
       }
     }
@@ -266,12 +266,12 @@
   }
 }
 
-- (id)contentsOfDirectoryAtURL:(id)a3
+- (id)contentsOfDirectoryAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[NSFileManager defaultManager];
   v9 = 0;
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:&v9];
+  v5 = [v4 contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:0 options:0 error:&v9];
   v6 = v9;
 
   if (!v5)
@@ -288,15 +288,15 @@
   return v5;
 }
 
-- (id)urlFromResources:(id)a3 withExtension:(id)a4
+- (id)urlFromResources:(id)resources withExtension:(id)extension
 {
-  v5 = a3;
-  v6 = a4;
+  resourcesCopy = resources;
+  extensionCopy = extension;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = resourcesCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -311,8 +311,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 pathExtension];
-        v13 = [v12 isEqualToIgnoringCase:v6];
+        pathExtension = [v11 pathExtension];
+        v13 = [pathExtension isEqualToIgnoringCase:extensionCopy];
 
         if (v13)
         {
@@ -336,56 +336,56 @@ LABEL_11:
   return v8;
 }
 
-- (void)unregisterStreamToken:(int64_t)a3
+- (void)unregisterStreamToken:(int64_t)token
 {
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = FTDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    tokenCopy = token;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unregistering stream token: %ld", &v11, 0xCu);
   }
 
-  v7 = [(FTLivePhotoController *)self sessionsByToken];
-  v8 = [NSNumber numberWithLong:a3];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  sessionsByToken = [(FTLivePhotoController *)self sessionsByToken];
+  v8 = [NSNumber numberWithLong:token];
+  v9 = [sessionsByToken objectForKeyedSubscript:v8];
 
-  v10 = [v9 moments];
+  moments = [v9 moments];
   [v9 setIsRegistered:0];
-  [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:v10];
+  [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:moments];
 }
 
-- (void)cleanUpForMomentIfNecessary:(id)a3
+- (void)cleanUpForMomentIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  necessaryCopy = necessary;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 streamToken];
-  v7 = [(FTLivePhotoController *)self sessionsByToken];
-  v8 = [NSNumber numberWithLong:v6];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  streamToken = [necessaryCopy streamToken];
+  sessionsByToken = [(FTLivePhotoController *)self sessionsByToken];
+  v8 = [NSNumber numberWithLong:streamToken];
+  v9 = [sessionsByToken objectForKeyedSubscript:v8];
 
-  v10 = [v9 isRegistered];
-  LODWORD(v7) = [v4 activeRequestCount];
-  v11 = [v4 pendingRequestCount] + v7;
-  v12 = [v9 activeRequestsByTransactionID];
-  v13 = [v12 count] + v11;
+  isRegistered = [v9 isRegistered];
+  LODWORD(sessionsByToken) = [necessaryCopy activeRequestCount];
+  v11 = [necessaryCopy pendingRequestCount] + sessionsByToken;
+  activeRequestsByTransactionID = [v9 activeRequestsByTransactionID];
+  v13 = [activeRequestsByTransactionID count] + v11;
 
-  v14 = FTDefaultLog();
-  v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if ((v10 & 1) != 0 || v13)
+  sessionsByToken2 = FTDefaultLog();
+  v15 = os_log_type_enabled(sessionsByToken2, OS_LOG_TYPE_DEFAULT);
+  if ((isRegistered & 1) != 0 || v13)
   {
     if (v15)
     {
       v17 = 67109376;
-      LODWORD(v18[0]) = v10;
+      LODWORD(v18[0]) = isRegistered;
       WORD2(v18[0]) = 2048;
       *(v18 + 6) = v13;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Delaying cleanup because moment is still registered (%d) or has outstanding requests (%lu)", &v17, 0x12u);
+      _os_log_impl(&_mh_execute_header, sessionsByToken2, OS_LOG_TYPE_DEFAULT, "Delaying cleanup because moment is still registered (%d) or has outstanding requests (%lu)", &v17, 0x12u);
     }
   }
 
@@ -394,69 +394,69 @@ LABEL_11:
     if (v15)
     {
       v17 = 138412290;
-      v18[0] = v4;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cleaning up state for moment: %@", &v17, 0xCu);
+      v18[0] = necessaryCopy;
+      _os_log_impl(&_mh_execute_header, sessionsByToken2, OS_LOG_TYPE_DEFAULT, "Cleaning up state for moment: %@", &v17, 0xCu);
     }
 
-    v14 = [(FTLivePhotoController *)self sessionsByToken];
-    v16 = [NSNumber numberWithLong:v6];
-    [v14 setObject:0 forKeyedSubscript:v16];
+    sessionsByToken2 = [(FTLivePhotoController *)self sessionsByToken];
+    v16 = [NSNumber numberWithLong:streamToken];
+    [sessionsByToken2 setObject:0 forKeyedSubscript:v16];
   }
 }
 
-- (void)_transferFileAtURL:(id)a3 forSession:(id)a4 request:(id)a5
+- (void)_transferFileAtURL:(id)l forSession:(id)session request:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  lCopy = l;
+  sessionCopy = session;
+  requestCopy = request;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = FTDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v21 = v8;
+    v21 = lCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = sessionCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = requestCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "url: %@ session: %@ request: %@", buf, 0x20u);
   }
 
-  v13 = [v9 remoteRequesterIDSDestinationFor:v10];
+  v13 = [sessionCopy remoteRequesterIDSDestinationFor:requestCopy];
   v14 = [NSSet setWithObject:v13];
 
-  v15 = [v10 transactionID];
-  v19 = v15;
+  transactionID = [requestCopy transactionID];
+  v19 = transactionID;
   v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-  v17 = [(FTLivePhotoController *)self fileTransferController];
-  [v17 transferFileAtURL:v8 toDestinations:v14 withMetadata:v16];
+  fileTransferController = [(FTLivePhotoController *)self fileTransferController];
+  [fileTransferController transferFileAtURL:lCopy toDestinations:v14 withMetadata:v16];
 }
 
-- (void)_handleReceivedResourcesAtDirectoryURL:(id)a3 transactionID:(id)a4
+- (void)_handleReceivedResourcesAtDirectoryURL:(id)l transactionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  lCopy = l;
+  dCopy = d;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = FTDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v6;
+    v27 = lCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "url: %@", buf, 0xCu);
   }
 
   v10 = +[NSFileManager defaultManager];
-  v11 = [v6 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  path = [lCopy path];
+  v12 = [v10 fileExistsAtPath:path];
 
   if (v12)
   {
-    v13 = [(FTLivePhotoController *)self contentsOfDirectoryAtURL:v6];
+    v13 = [(FTLivePhotoController *)self contentsOfDirectoryAtURL:lCopy];
     v14 = [(FTLivePhotoController *)self urlFromResources:v13 withExtension:@"jpg"];
     v15 = [(FTLivePhotoController *)self urlFromResources:v13 withExtension:@"heic"];
     v16 = v15;
@@ -480,8 +480,8 @@ LABEL_11:
       v23[2] = sub_100005548;
       v23[3] = &unk_1000510E0;
       v23[4] = self;
-      v24 = v6;
-      v25 = v7;
+      v24 = lCopy;
+      v25 = dCopy;
       [(FTLivePhotoController *)self _saveLivePhotoWithPhotoURL:v18 videoURL:v20 completion:v23];
     }
 
@@ -493,7 +493,7 @@ LABEL_11:
         sub_100038A70();
       }
 
-      [(FTLivePhotoController *)self deleteContentsAtURL:v6];
+      [(FTLivePhotoController *)self deleteContentsAtURL:lCopy];
     }
   }
 
@@ -505,51 +505,51 @@ LABEL_11:
       sub_100038A08();
     }
 
-    [(FTLivePhotoController *)self deleteContentsAtURL:v6];
+    [(FTLivePhotoController *)self deleteContentsAtURL:lCopy];
   }
 }
 
-- (void)_handleReceivedVideoURL:(id)a3
+- (void)_handleReceivedVideoURL:(id)l
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  lCopy = l;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = FTDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = lCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_handleReceivedVideoURL: %@", buf, 0xCu);
   }
 
-  if (v4 && TUAllowLocalVideoRecording())
+  if (lCopy && TUAllowLocalVideoRecording())
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100005798;
     v7[3] = &unk_100051108;
     v7[4] = self;
-    v8 = v4;
+    v8 = lCopy;
     [(FTLivePhotoController *)self _saveVideoWithURL:v8 completion:v7];
   }
 }
 
-- (void)_saveLivePhotoWithPhotoURL:(id)a3 videoURL:(id)a4 completion:(id)a5
+- (void)_saveLivePhotoWithPhotoURL:(id)l videoURL:(id)rL completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  lCopy = l;
+  rLCopy = rL;
+  completionCopy = completion;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = FTDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v8;
+    v23 = lCopy;
     v24 = 2112;
-    v25 = v9;
+    v25 = rLCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "saving live photo with photo url: %@ video url: %@", buf, 0x16u);
   }
 
@@ -557,23 +557,23 @@ LABEL_11:
   v18[1] = 3221225472;
   v18[2] = sub_100005A38;
   v18[3] = &unk_100051130;
-  v19 = v8;
-  v20 = v9;
-  v21 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v19 = lCopy;
+  v20 = rLCopy;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = rLCopy;
+  v15 = lCopy;
   v16 = objc_retainBlock(v18);
-  v17 = [(FTLivePhotoController *)self mediaAssetManager];
-  [v17 saveLivePhotoWithPhotoURL:v15 videoURL:v14 completion:v16];
+  mediaAssetManager = [(FTLivePhotoController *)self mediaAssetManager];
+  [mediaAssetManager saveLivePhotoWithPhotoURL:v15 videoURL:v14 completion:v16];
 }
 
-- (void)_saveVideoWithURL:(id)a3 completion:(id)a4
+- (void)_saveVideoWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v8);
+  lCopy = l;
+  completionCopy = completion;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (TUAllowLocalVideoRecording())
   {
@@ -581,7 +581,7 @@ LABEL_11:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = lCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Saving video with url: %@", buf, 0xCu);
     }
 
@@ -589,49 +589,49 @@ LABEL_11:
     v14 = 3221225472;
     v15 = sub_100005C4C;
     v16 = &unk_100051158;
-    v10 = v6;
+    v10 = lCopy;
     v17 = v10;
-    v18 = v7;
+    v18 = completionCopy;
     v11 = objc_retainBlock(&v13);
     v12 = [(FTLivePhotoController *)self mediaAssetManager:v13];
     [v12 saveVideoWithURL:v10 completion:v11];
   }
 }
 
-- (void)_startTimeoutForMomentsRequestWithTransactionID:(id)a3
+- (void)_startTimeoutForMomentsRequestWithTransactionID:(id)d
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(FTLivePhotoController *)self serverBag];
-  [v6 momentsRequestTimeout];
+  serverBag = [(FTLivePhotoController *)self serverBag];
+  [serverBag momentsRequestTimeout];
   v8 = dispatch_time(0, (v7 * 1000000000.0));
-  v9 = [(FTLivePhotoController *)self queue];
+  queue2 = [(FTLivePhotoController *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100005DE4;
   v11[3] = &unk_1000510B8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  dispatch_after(v8, v9, v11);
+  v12 = dCopy;
+  v10 = dCopy;
+  dispatch_after(v8, queue2, v11);
 }
 
-- (id)sessionForTransactionID:(id)a3
+- (id)sessionForTransactionID:(id)d
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(FTLivePhotoController *)self sessionsByToken];
-  v7 = [v6 allValues];
+  sessionsByToken = [(FTLivePhotoController *)self sessionsByToken];
+  allValues = [sessionsByToken allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -641,12 +641,12 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 activeRequestsByTransactionID];
-        v13 = [v12 objectForKeyedSubscript:v4];
+        activeRequestsByTransactionID = [v11 activeRequestsByTransactionID];
+        v13 = [activeRequestsByTransactionID objectForKeyedSubscript:dCopy];
 
         if (v13)
         {
@@ -655,7 +655,7 @@ LABEL_11:
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -670,31 +670,31 @@ LABEL_11:
   return v8;
 }
 
-- (void)handleRequestResultWithMomentDescriptor:(id)a3
+- (void)handleRequestResultWithMomentDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  descriptorCopy = descriptor;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = FTDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = descriptorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "momentDescriptor: %@", &v8, 0xCu);
   }
 
-  v7 = [(FTLivePhotoController *)self clientObject];
-  [v7 didReceiveLocallyRequestedMomentDescriptor:v4];
+  clientObject = [(FTLivePhotoController *)self clientObject];
+  [clientObject didReceiveLocallyRequestedMomentDescriptor:descriptorCopy];
 }
 
 + (BOOL)isFaceTimePhotosAvailable
 {
-  v3 = [a1 localCapabilities];
-  if ([v3 isEnabled])
+  localCapabilities = [self localCapabilities];
+  if ([localCapabilities isEnabled])
   {
-    v4 = [a1 localCapabilities];
-    v5 = [v4 isRegionBlocked] ^ 1;
+    localCapabilities2 = [self localCapabilities];
+    v5 = [localCapabilities2 isRegionBlocked] ^ 1;
   }
 
   else
@@ -717,25 +717,25 @@ LABEL_11:
   return v3;
 }
 
-- (int)availabilityWithRemoteAvailable:(BOOL)a3
+- (int)availabilityWithRemoteAvailable:(BOOL)available
 {
-  v3 = a3;
-  v5 = [objc_opt_class() localCapabilities];
-  v6 = [v5 isRegionBlocked];
+  availableCopy = available;
+  localCapabilities = [objc_opt_class() localCapabilities];
+  isRegionBlocked = [localCapabilities isRegionBlocked];
 
-  if (v6)
+  if (isRegionBlocked)
   {
     return 2;
   }
 
-  v8 = [objc_opt_class() isFaceTimePhotosAvailable];
+  isFaceTimePhotosAvailable = [objc_opt_class() isFaceTimePhotosAvailable];
   result = 1;
-  if (v8 && v3)
+  if (isFaceTimePhotosAvailable && availableCopy)
   {
-    v9 = [(FTLivePhotoController *)self serverBag];
-    v10 = [v9 isMomentsDisabled];
+    serverBag = [(FTLivePhotoController *)self serverBag];
+    isMomentsDisabled = [serverBag isMomentsDisabled];
 
-    if (v10)
+    if (isMomentsDisabled)
     {
       return 1;
     }
@@ -759,45 +759,45 @@ LABEL_11:
   return byte_100059C30;
 }
 
-- (void)moments:(id)a3 didFinishRequest:(id)a4 error:(id)a5
+- (void)moments:(id)moments didFinishRequest:(id)request error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  requestCopy = request;
+  errorCopy = error;
+  momentsCopy = moments;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = FTDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v8;
+    v14 = requestCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didFinish request: %@, error: %@", &v13, 0x16u);
   }
 
-  [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:v10];
+  [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:momentsCopy];
 }
 
-- (void)moments:(id)a3 capabilitiesDidChange:(unsigned int)a4
+- (void)moments:(id)moments capabilitiesDidChange:(unsigned int)change
 {
-  v6 = a3;
-  v7 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v7);
+  momentsCopy = moments;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = FTDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109120;
-    v14[1] = a4;
+    v14[1] = change;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "new capabilities: %u", v14, 8u);
   }
 
   v9 = [(FTLivePhotoController *)self availabilityWithRemoteAvailable:1];
   if (v9 == 3)
   {
-    mediaTypesCapabilitiesSetForCapabilities(a4);
+    mediaTypesCapabilitiesSetForCapabilities(change);
   }
 
   else
@@ -806,30 +806,30 @@ LABEL_11:
   }
   v10 = ;
   v11 = [[TUMomentsCapabilities alloc] initWithAvailability:v9 supportedMediaTypes:v10];
-  v12 = [(FTLivePhotoController *)self clientObject];
-  v13 = [v6 streamToken];
+  clientObject = [(FTLivePhotoController *)self clientObject];
+  streamToken = [momentsCopy streamToken];
 
-  [v12 didUpdateCapabilities:v11 forVideoStreamToken:v13];
+  [clientObject didUpdateCapabilities:v11 forVideoStreamToken:streamToken];
 }
 
-- (void)moments:(id)a3 didStartProcessingRequest:(id)a4 error:(id)a5
+- (void)moments:(id)moments didStartProcessingRequest:(id)request error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v11);
+  momentsCopy = moments;
+  requestCopy = request;
+  errorCopy = error;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = FTDefaultLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v9;
+    v35 = requestCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "didStartProcessing request: %@", buf, 0xCu);
   }
 
-  v13 = [(FTLivePhotoController *)self serverBag];
-  if ([v13 isMomentsDisabled])
+  serverBag = [(FTLivePhotoController *)self serverBag];
+  if ([serverBag isMomentsDisabled])
   {
 
 LABEL_15:
@@ -842,16 +842,16 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v14 = [objc_opt_class() isFaceTimePhotosAvailable];
+  isFaceTimePhotosAvailable = [objc_opt_class() isFaceTimePhotosAvailable];
 
-  if ((v14 & 1) == 0)
+  if ((isFaceTimePhotosAvailable & 1) == 0)
   {
     goto LABEL_15;
   }
 
   v15 = FTDefaultLog();
   v16 = v15;
-  if (v9)
+  if (requestCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -859,33 +859,33 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Requesting sandbox extension for temp URL", buf, 2u);
     }
 
-    v17 = [(FTLivePhotoController *)self sandboxDataSource];
+    sandboxDataSource = [(FTLivePhotoController *)self sandboxDataSource];
     v18 = NSTemporaryDirectory();
     v19 = [NSURL fileURLWithPath:v18];
     v28 = _NSConcreteStackBlock;
     v29 = 3221225472;
     v30 = sub_100006954;
     v31 = &unk_1000511C0;
-    v32 = self;
-    v20 = v9;
+    selfCopy = self;
+    v20 = requestCopy;
     v33 = v20;
-    [v17 requestSandboxExtensionForURL:v19 reply:&v28];
+    [sandboxDataSource requestSandboxExtensionForURL:v19 reply:&v28];
 
     if ([v20 mediaType] != 2 || (TUAllowLocalVideoRecording() & 1) == 0)
     {
-      v21 = [(FTLivePhotoController *)self clientObject];
-      v22 = [v20 requesterID];
-      [v21 willCaptureRemoteRequestFromRequesterID:v22];
+      clientObject = [(FTLivePhotoController *)self clientObject];
+      requesterID = [v20 requesterID];
+      [clientObject willCaptureRemoteRequestFromRequesterID:requesterID];
     }
 
-    v23 = [v20 requesterID];
+    requesterID2 = [v20 requesterID];
 
-    if (v23)
+    if (requesterID2)
     {
-      v24 = [(FTLivePhotoController *)self userNotificationProviderDataSource];
-      v25 = [v8 streamToken];
-      v26 = [v20 requesterID];
-      [v24 momentCapturedForStreamToken:v25 requesterID:v26 reply:&stru_100051200];
+      userNotificationProviderDataSource = [(FTLivePhotoController *)self userNotificationProviderDataSource];
+      streamToken = [momentsCopy streamToken];
+      requesterID3 = [v20 requesterID];
+      [userNotificationProviderDataSource momentCapturedForStreamToken:streamToken requesterID:requesterID3 reply:&stru_100051200];
     }
   }
 
@@ -900,37 +900,37 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)moments:(id)a3 didEndProcessingRequest:(id)a4 stillImageURL:(id)a5 movieURL:(id)a6 error:(id)a7
+- (void)moments:(id)moments didEndProcessingRequest:(id)request stillImageURL:(id)l movieURL:(id)rL error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v15);
+  momentsCopy = moments;
+  requestCopy = request;
+  lCopy = l;
+  rLCopy = rL;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v16 = FTDefaultLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v99 = v12;
+    v99 = requestCopy;
     v100 = 2112;
-    v101 = v13;
+    v101 = lCopy;
     v102 = 2112;
-    v103 = v14;
+    v103 = rLCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "didEndProcessing request: %@, stillImageURL: %@ movieURL: %@", buf, 0x20u);
   }
 
-  v17 = [(FTLivePhotoController *)self serverBag];
-  if ([v17 isMomentsDisabled])
+  serverBag = [(FTLivePhotoController *)self serverBag];
+  if ([serverBag isMomentsDisabled])
   {
 
     goto LABEL_15;
   }
 
-  v18 = [objc_opt_class() isFaceTimePhotosAvailable];
+  isFaceTimePhotosAvailable = [objc_opt_class() isFaceTimePhotosAvailable];
 
-  if ((v18 & 1) == 0)
+  if ((isFaceTimePhotosAvailable & 1) == 0)
   {
 LABEL_15:
     v21 = FTDefaultLog();
@@ -942,27 +942,27 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v19 = [(FTLivePhotoController *)self sessionsByToken];
-  v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v11 streamToken]);
-  v21 = [v19 objectForKeyedSubscript:v20];
+  sessionsByToken = [(FTLivePhotoController *)self sessionsByToken];
+  v20 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [momentsCopy streamToken]);
+  v21 = [sessionsByToken objectForKeyedSubscript:v20];
 
   if (!v21)
   {
     v37 = FTDefaultLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      sub_10003909C(v11);
+      sub_10003909C(momentsCopy);
     }
 
     goto LABEL_20;
   }
 
-  if ([v12 mediaType] != 2 && (TUAllowLocalVideoRecording() & 1) == 0)
+  if ([requestCopy mediaType] != 2 && (TUAllowLocalVideoRecording() & 1) == 0)
   {
-    v38 = [v21 remoteRequesterIDSDestinationFor:v12];
+    v38 = [v21 remoteRequesterIDSDestinationFor:requestCopy];
     if (v38)
     {
-      if (v13 && v14)
+      if (lCopy && rLCopy)
       {
         v97[0] = @"jpg";
         v97[1] = @"heic";
@@ -970,13 +970,13 @@ LABEL_15:
         v39 = [NSArray arrayWithObjects:v97 count:3];
         v40 = [NSSet setWithArray:v39];
 
-        v41 = [v13 pathExtension];
-        v42 = [v41 lowercaseString];
+        pathExtension = [lCopy pathExtension];
+        lowercaseString = [pathExtension lowercaseString];
         v89 = v40;
-        if ([v40 containsObject:v42])
+        if ([v40 containsObject:lowercaseString])
         {
-          v82 = [v14 pathExtension];
-          [v82 lowercaseString];
+          pathExtension2 = [rLCopy pathExtension];
+          [pathExtension2 lowercaseString];
           v43 = v87 = v38;
           v44 = [v40 containsObject:v43];
 
@@ -984,19 +984,19 @@ LABEL_15:
           if (v44)
           {
             v45 = [NSUUID alloc];
-            v46 = [v12 transactionID];
-            v47 = [v45 initWithUUIDString:v46];
+            transactionID = [requestCopy transactionID];
+            v47 = [v45 initWithUUIDString:transactionID];
 
             if (v47)
             {
               NSTemporaryDirectory();
               v83 = v79 = v47;
               v96[0] = v83;
-              v77 = [v47 UUIDString];
-              v96[1] = v77;
+              uUIDString = [v47 UUIDString];
+              v96[1] = uUIDString;
               v48 = +[NSUUID UUID];
-              v49 = [v48 UUIDString];
-              v96[2] = v49;
+              uUIDString2 = [v48 UUIDString];
+              v96[2] = uUIDString2;
               v50 = [NSArray arrayWithObjects:v96 count:3];
               v51 = [NSURL fileURLWithPathComponents:v50];
 
@@ -1009,30 +1009,30 @@ LABEL_15:
               if (v51)
               {
                 v54 = [v84 URLByAppendingPathComponent:@"lp_image"];
-                v55 = [v13 pathExtension];
-                v56 = [v54 URLByAppendingPathExtension:v55];
+                pathExtension3 = [lCopy pathExtension];
+                v56 = [v54 URLByAppendingPathExtension:pathExtension3];
 
                 v57 = +[NSFileManager defaultManager];
                 v93 = v53;
                 v78 = v56;
-                LOBYTE(v55) = [v57 copyItemAtURL:v13 toURL:v56 error:&v93];
+                LOBYTE(pathExtension3) = [v57 copyItemAtURL:lCopy toURL:v56 error:&v93];
                 v58 = v93;
 
-                if (v55)
+                if (pathExtension3)
                 {
                   v59 = [v84 URLByAppendingPathComponent:@"lp_movie"];
-                  v60 = [v14 pathExtension];
-                  v61 = [v59 URLByAppendingPathExtension:v60];
+                  pathExtension4 = [rLCopy pathExtension];
+                  v61 = [v59 URLByAppendingPathExtension:pathExtension4];
 
                   v62 = +[NSFileManager defaultManager];
                   v92 = v58;
-                  LOBYTE(v60) = [v62 copyItemAtURL:v14 toURL:v61 error:&v92];
+                  LOBYTE(pathExtension4) = [v62 copyItemAtURL:rLCopy toURL:v61 error:&v92];
                   v76 = v92;
 
-                  v75 = v60;
-                  if (v60)
+                  v75 = pathExtension4;
+                  if (pathExtension4)
                   {
-                    [(FTLivePhotoController *)self _transferFileAtURL:v84 forSession:v21 request:v12];
+                    [(FTLivePhotoController *)self _transferFileAtURL:v84 forSession:v21 request:requestCopy];
                     v63 = v87;
                     v64 = v89;
                   }
@@ -1080,7 +1080,7 @@ LABEL_15:
               v70 = FTDefaultLog();
               if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
               {
-                sub_100038F00(v12);
+                sub_100038F00(requestCopy);
               }
             }
 
@@ -1117,7 +1117,7 @@ LABEL_48:
       v65 = FTDefaultLog();
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
-        sub_100038F8C(v12, v21);
+        sub_100038F8C(requestCopy, v21);
       }
     }
 
@@ -1127,11 +1127,11 @@ LABEL_48:
   if (!TUAllowLocalVideoRecording())
   {
 LABEL_53:
-    [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:v11];
+    [(FTLivePhotoController *)self cleanUpForMomentIfNecessary:momentsCopy];
     goto LABEL_17;
   }
 
-  if (!v14)
+  if (!rLCopy)
   {
     v37 = FTDefaultLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1143,15 +1143,15 @@ LABEL_53:
   }
 
   v22 = [NSUUID alloc];
-  v23 = [v12 transactionID];
-  v24 = [v22 initWithUUIDString:v23];
+  transactionID2 = [requestCopy transactionID];
+  v24 = [v22 initWithUUIDString:transactionID2];
 
   if (!v24)
   {
     v37 = FTDefaultLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      sub_100038F00(v12);
+      sub_100038F00(requestCopy);
     }
 
 LABEL_20:
@@ -1162,11 +1162,11 @@ LABEL_20:
   v85 = NSTemporaryDirectory();
   v88 = v24;
   v95[0] = v85;
-  v80 = [v24 UUIDString];
-  v95[1] = v80;
+  uUIDString3 = [v24 UUIDString];
+  v95[1] = uUIDString3;
   v25 = +[NSUUID UUID];
-  v26 = [v25 UUIDString];
-  v95[2] = v26;
+  uUIDString4 = [v25 UUIDString];
+  v95[2] = uUIDString4;
   v27 = [NSArray arrayWithObjects:v95 count:3];
   v28 = [NSURL fileURLWithPathComponents:v27];
 
@@ -1189,12 +1189,12 @@ LABEL_20:
 
   v81 = v28;
   v31 = [v28 URLByAppendingPathComponent:@"lp_movie"];
-  v32 = [v14 pathExtension];
-  v33 = [v31 URLByAppendingPathExtension:v32];
+  pathExtension5 = [rLCopy pathExtension];
+  v33 = [v31 URLByAppendingPathExtension:pathExtension5];
 
   v34 = +[NSFileManager defaultManager];
   v90 = v30;
-  v35 = [v34 copyItemAtURL:v14 toURL:v33 error:&v90];
+  v35 = [v34 copyItemAtURL:rLCopy toURL:v33 error:&v90];
   v86 = v90;
 
   if (v35)
@@ -1221,11 +1221,11 @@ LABEL_20:
 LABEL_17:
 }
 
-- (void)momentsServerDidDisconnect:(id)a3
+- (void)momentsServerDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(FTLivePhotoController *)self queue];
-  dispatch_assert_queue_V2(v5);
+  disconnectCopy = disconnect;
+  queue = [(FTLivePhotoController *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = FTDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1233,19 +1233,19 @@ LABEL_17:
     sub_10003915C();
   }
 
-  v7 = [(FTLivePhotoController *)self sessionsByToken];
-  [v7 removeAllObjects];
+  sessionsByToken = [(FTLivePhotoController *)self sessionsByToken];
+  [sessionsByToken removeAllObjects];
 }
 
-- (void)requestSandboxExtensionForTransactionID:(id)a3 reply:(id)a4
+- (void)requestSandboxExtensionForTransactionID:(id)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v8 = FTDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "requesting sandbox extension for transactionID: %@", buf, 0xCu);
   }
 
@@ -1254,26 +1254,26 @@ LABEL_17:
   v15[2] = sub_1000076C8;
   v15[3] = &unk_100051228;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
+  v16 = dCopy;
+  v17 = replyCopy;
+  v9 = replyCopy;
+  v10 = dCopy;
   v11 = objc_retainBlock(v15);
-  v12 = [(FTLivePhotoController *)self sandboxDataSource];
+  sandboxDataSource = [(FTLivePhotoController *)self sandboxDataSource];
   v13 = NSTemporaryDirectory();
   v14 = [NSURL fileURLWithPath:v13];
-  [v12 requestSandboxExtensionForURL:v14 reply:v11];
+  [sandboxDataSource requestSandboxExtensionForURL:v14 reply:v11];
 }
 
-- (void)requestSandboxExtensionForURL:(id)a3 reply:(id)a4
+- (void)requestSandboxExtensionForURL:(id)l reply:(id)reply
 {
-  v4 = a4;
+  replyCopy = reply;
   v5 = [TUSandboxExtendedURL alloc];
   v6 = NSTemporaryDirectory();
   v7 = [NSURL fileURLWithPath:v6];
   v8 = [v5 initWithURL:v7];
 
-  v4[2](v4, v8, 0);
+  replyCopy[2](replyCopy, v8, 0);
 }
 
 - (FTLivePhotoControllerDelegate)delegate

@@ -1,22 +1,22 @@
 @interface VNRecognizedHandPointsSpecifier
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedHandPointsSpecifier)initWithCoder:(id)a3;
-- (VNRecognizedHandPointsSpecifier)initWithVCPHandObservation:(id)a3 originatingRequestSpecifier:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedHandPointsSpecifier)initWithCoder:(id)coder;
+- (VNRecognizedHandPointsSpecifier)initWithVCPHandObservation:(id)observation originatingRequestSpecifier:(id)specifier;
 - (id)availableGroupKeys;
 - (id)pointKeyGroupLabelsMapping;
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3;
+- (id)populatedMLMultiArrayAndReturnError:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedHandPointsSpecifier
 
-- (VNRecognizedHandPointsSpecifier)initWithCoder:(id)a3
+- (VNRecognizedHandPointsSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = VNRecognizedHandPointsSpecifier;
-  v5 = [(VNRecognizedPointsSpecifier *)&v19 initWithCoder:v4];
+  v5 = [(VNRecognizedPointsSpecifier *)&v19 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_7;
@@ -26,20 +26,20 @@
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"OrderedKeypoints"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"OrderedKeypoints"];
   orderedHandKeypoints = v5->_orderedHandKeypoints;
   v5->_orderedHandKeypoints = v10;
 
   if (!v5->_orderedHandKeypoints)
   {
     v14 = [VNError errorForDataUnavailableWithLocalizedDescription:@"ordered keypoints are not available"];
-    [v4 failWithError:v14];
+    [coderCopy failWithError:v14];
     goto LABEL_9;
   }
 
-  if ([v4 containsValueForKey:@"Chirality"])
+  if ([coderCopy containsValueForKey:@"Chirality"])
   {
-    v12 = [v4 decodeIntegerForKey:@"Chirality"];
+    v12 = [coderCopy decodeIntegerForKey:@"Chirality"];
     if ((v12 + 1) <= 2)
     {
       v5->_chirality = v12;
@@ -51,7 +51,7 @@
     v14 = [v16 stringWithFormat:@"%@ has an invalid value of %@", @"Chirality", v17];
 
     v18 = [VNError errorForOutOfBoundsErrorWithLocalizedDescription:v14];
-    [v4 failWithError:v18];
+    [coderCopy failWithError:v18];
 
 LABEL_9:
     v13 = 0;
@@ -67,21 +67,21 @@ LABEL_10:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNRecognizedHandPointsSpecifier;
-  v4 = a3;
-  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_orderedHandKeypoints forKey:{@"OrderedKeypoints", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_chirality forKey:@"Chirality"];
+  coderCopy = coder;
+  [(VNRecognizedPointsSpecifier *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_orderedHandKeypoints forKey:{@"OrderedKeypoints", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_chirality forKey:@"Chirality"];
 }
 
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3
+- (id)populatedMLMultiArrayAndReturnError:(id *)error
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v5 = [(VNRecognizedPointsSpecifier *)self originatingRequestSpecifier];
-  if ([v5 specifiesRequestClass:objc_opt_class()] && objc_msgSend(v5, "requestRevision") == 1)
+  originatingRequestSpecifier = [(VNRecognizedPointsSpecifier *)self originatingRequestSpecifier];
+  if ([originatingRequestSpecifier specifiesRequestClass:objc_opt_class()] && objc_msgSend(originatingRequestSpecifier, "requestRevision") == 1)
   {
     v6 = [(NSArray *)self->_orderedHandKeypoints count];
     v7 = objc_alloc(MEMORY[0x1E695FED0]);
@@ -90,48 +90,48 @@ LABEL_10:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
     v26[2] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
-    v10 = [v7 initWithShape:v9 dataType:65600 error:a3];
+    v10 = [v7 initWithShape:v9 dataType:65600 error:error];
 
     if (v10)
     {
-      v25 = v5;
-      v11 = [v10 dataPointer];
-      v12 = [v10 strides];
-      v13 = [v12 objectAtIndexedSubscript:2];
-      v14 = [v13 intValue];
+      v25 = originatingRequestSpecifier;
+      dataPointer = [v10 dataPointer];
+      strides = [v10 strides];
+      v13 = [strides objectAtIndexedSubscript:2];
+      intValue = [v13 intValue];
 
-      v24 = v12;
-      v15 = [v12 objectAtIndexedSubscript:1];
-      v16 = [v15 intValue];
+      v24 = strides;
+      v15 = [strides objectAtIndexedSubscript:1];
+      intValue2 = [v15 intValue];
 
       if (v6)
       {
         v17 = 0;
-        v18 = 8 * v14;
+        v18 = 8 * intValue;
         do
         {
           v19 = [(NSArray *)self->_orderedHandKeypoints objectAtIndex:v17];
           [v19 location];
-          *v11 = v20;
-          v11[v16] = v21;
+          *dataPointer = v20;
+          dataPointer[intValue2] = v21;
           [v19 confidence];
-          *&v11[2 * v16] = v22;
+          *&dataPointer[2 * intValue2] = v22;
 
           ++v17;
-          v11 = (v11 + v18);
+          dataPointer = (dataPointer + v18);
         }
 
         while (v6 != v17);
       }
 
-      v5 = v25;
+      originatingRequestSpecifier = v25;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    [VNError errorForUnsupportedRequestSpecifier:v5];
-    *a3 = v10 = 0;
+    [VNError errorForUnsupportedRequestSpecifier:originatingRequestSpecifier];
+    *error = v10 = 0;
   }
 
   else
@@ -203,10 +203,10 @@ void __53__VNRecognizedHandPointsSpecifier_availableGroupKeys__block_invoke()
   availableGroupKeys_groupKeys_30411 = v0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -215,7 +215,7 @@ void __53__VNRecognizedHandPointsSpecifier_availableGroupKeys__block_invoke()
   {
     v7.receiver = self;
     v7.super_class = VNRecognizedHandPointsSpecifier;
-    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedHandKeypoints isEqualToArray:v4->_orderedHandKeypoints];
+    v5 = [(VNRecognizedPointsSpecifier *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(NSArray *)self->_orderedHandKeypoints isEqualToArray:equalCopy->_orderedHandKeypoints];
   }
 
   return v5;
@@ -228,22 +228,22 @@ void __53__VNRecognizedHandPointsSpecifier_availableGroupKeys__block_invoke()
   return [(NSArray *)self->_orderedHandKeypoints hash]^ __ROR8__([(VNRecognizedPointsSpecifier *)&v3 hash], 51);
 }
 
-- (VNRecognizedHandPointsSpecifier)initWithVCPHandObservation:(id)a3 originatingRequestSpecifier:(id)a4
+- (VNRecognizedHandPointsSpecifier)initWithVCPHandObservation:(id)observation originatingRequestSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
-  v35 = v5;
-  v7 = [v5 keypoints];
-  v8 = [v7 count];
+  observationCopy = observation;
+  specifierCopy = specifier;
+  v35 = observationCopy;
+  keypoints = [observationCopy keypoints];
+  v8 = [keypoints count];
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
   v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:v8];
-  v11 = [v6 requestRevision];
+  requestRevision = [specifierCopy requestRevision];
   if (v8)
   {
-    v12 = v11;
+    v12 = requestRevision;
     for (i = 0; i != v8; ++i)
     {
-      v14 = [v7 objectAtIndex:i];
+      v14 = [keypoints objectAtIndex:i];
       [v14 location];
       v16 = v15;
       v18 = v17;
@@ -271,7 +271,7 @@ void __53__VNRecognizedHandPointsSpecifier_availableGroupKeys__block_invoke()
 
   v36.receiver = self;
   v36.super_class = VNRecognizedHandPointsSpecifier;
-  v28 = [(VNRecognizedPointsSpecifier *)&v36 initWithOriginatingRequestSpecifier:v6 allRecognizedPoints:v10];
+  v28 = [(VNRecognizedPointsSpecifier *)&v36 initWithOriginatingRequestSpecifier:specifierCopy allRecognizedPoints:v10];
   if (v28)
   {
     v29 = [v9 copy];
@@ -280,14 +280,14 @@ void __53__VNRecognizedHandPointsSpecifier_availableGroupKeys__block_invoke()
 
     if (objc_opt_respondsToSelector())
     {
-      v31 = [v35 chirality];
-      if (v31 == -1)
+      chirality = [v35 chirality];
+      if (chirality == -1)
       {
         v32 = -1;
         goto LABEL_15;
       }
 
-      if (v31 == 1)
+      if (chirality == 1)
       {
         v32 = 1;
 LABEL_15:

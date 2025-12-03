@@ -1,60 +1,60 @@
 @interface CKBlackholeTranscriptViewController
-- (CKBlackholeTranscriptViewController)initWithConversation:(id)a3;
+- (CKBlackholeTranscriptViewController)initWithConversation:(id)conversation;
 - (id)_alertTitleForDelete;
 - (id)_handleIDsForCurrentConversation;
 - (id)generateHeader;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_confirmDeleteConversation:(id)a3 view:(id)a4 withCompletionHandler:(id)a5;
-- (void)_deleteConversation:(id)a3 withCompletionHandler:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_confirmDeleteConversation:(id)conversation view:(id)view withCompletionHandler:(id)handler;
+- (void)_deleteConversation:(id)conversation withCompletionHandler:(id)handler;
 - (void)_openRestoredChatInMessages;
 - (void)_restoreConversation;
 - (void)_updateTranscriptHistory;
-- (void)chatAllowedByScreenTimeChanged:(id)a3;
+- (void)chatAllowedByScreenTimeChanged:(id)changed;
 - (void)dealloc;
 - (void)layoutLockoutView;
 - (void)removeLockoutControllerIfNeeded;
 - (void)showScreenTimeShieldIfNeeded;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateScreenTimeShieldIfNeededForChat:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateScreenTimeShieldIfNeededForChat:(id)chat;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKBlackholeTranscriptViewController
 
-- (CKBlackholeTranscriptViewController)initWithConversation:(id)a3
+- (CKBlackholeTranscriptViewController)initWithConversation:(id)conversation
 {
-  v5 = a3;
+  conversationCopy = conversation;
   v16.receiver = self;
   v16.super_class = CKBlackholeTranscriptViewController;
   v6 = [(CKBlackholeTranscriptViewController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conversation, a3);
+    objc_storeStrong(&v6->_conversation, conversation);
     if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled])
     {
       [(CKBlackholeTranscriptViewController *)v7 removeLockoutControllerIfNeeded];
-      v8 = [(CKConversation *)v7->_conversation chat];
-      if (v8)
+      chat = [(CKConversation *)v7->_conversation chat];
+      if (chat)
       {
-        v9 = v8;
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
+        v9 = chat;
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v11 = *MEMORY[0x1E69A56E8];
-        [v10 removeObserver:v7 name:*MEMORY[0x1E69A56E8] object:v9];
+        [defaultCenter removeObserver:v7 name:*MEMORY[0x1E69A56E8] object:v9];
 
-        v12 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v12 addObserver:v7 selector:sel_chatAllowedByScreenTimeChanged_ name:v11 object:v9];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:v7 selector:sel_chatAllowedByScreenTimeChanged_ name:v11 object:v9];
 
         [(CKBlackholeTranscriptViewController *)v7 updateScreenTimeShieldIfNeededForChat:v9];
       }
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v7 selector:sel__updateTranscriptHistory name:*MEMORY[0x1E69A5748] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v7 selector:sel__updateTranscriptHistory name:*MEMORY[0x1E69A5748] object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _openRestoredChatInMessagesEventReceived, *MEMORY[0x1E69A5858], v7, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
@@ -72,19 +72,19 @@
   [(CKBlackholeTranscriptViewController *)self setTitle:v4];
 
   v5 = objc_alloc(MEMORY[0x1E69DD020]);
-  v6 = [(CKBlackholeTranscriptViewController *)self view];
-  [v6 bounds];
+  view = [(CKBlackholeTranscriptViewController *)self view];
+  [view bounds];
   v7 = [v5 initWithFrame:2 style:?];
   [(CKBlackholeTranscriptViewController *)self setTableView:v7];
 
-  v8 = [(CKBlackholeTranscriptViewController *)self tableView];
-  [v8 registerClass:objc_opt_class() forCellReuseIdentifier:@"action"];
+  tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"action"];
 
-  v9 = [(CKBlackholeTranscriptViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:@"history"];
+  tableView2 = [(CKBlackholeTranscriptViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"history"];
 
-  v10 = [(CKBlackholeTranscriptViewController *)self generateHeader];
-  [(CKBlackholeTranscriptViewController *)self setHeaderTextView:v10];
+  generateHeader = [(CKBlackholeTranscriptViewController *)self generateHeader];
+  [(CKBlackholeTranscriptViewController *)self setHeaderTextView:generateHeader];
 }
 
 - (void)viewDidLayoutSubviews
@@ -95,8 +95,8 @@
   [(UITextView *)self->_headerTextView frame];
   v4 = v3;
   headerTextView = self->_headerTextView;
-  v6 = [(CKBlackholeTranscriptViewController *)self view];
-  [v6 bounds];
+  view = [(CKBlackholeTranscriptViewController *)self view];
+  [view bounds];
   [(UITextView *)headerTextView sizeThatFits:v7, 1.79769313e308];
   v9 = v8;
   v11 = v10;
@@ -104,46 +104,46 @@
   if (v4 != v11)
   {
     [(UITextView *)self->_headerTextView setFrame:0.0, 0.0, v9, v11];
-    v12 = [(CKBlackholeTranscriptViewController *)self tableView];
-    [v12 setTableHeaderView:self->_headerTextView];
+    tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+    [tableView setTableHeaderView:self->_headerTextView];
 
-    v13 = [(CKBlackholeTranscriptViewController *)self tableView];
-    [v13 layoutIfNeeded];
+    tableView2 = [(CKBlackholeTranscriptViewController *)self tableView];
+    [tableView2 layoutIfNeeded];
   }
 
   [(CKBlackholeTranscriptViewController *)self layoutLockoutView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = CKBlackholeTranscriptViewController;
-  [(CKBlackholeTranscriptViewController *)&v7 viewWillAppear:a3];
-  v4 = [(CKBlackholeTranscriptViewController *)self navigationController];
-  v5 = [v4 navigationBar];
-  [v5 setPrefersLargeTitles:0];
+  [(CKBlackholeTranscriptViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(CKBlackholeTranscriptViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:0];
 
   [(CKBlackholeTranscriptViewController *)self _updateTranscriptHistory];
-  v6 = [MEMORY[0x1E69A5B50] sharedController];
-  [v6 addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x1E69A6268] | *MEMORY[0x1E69A6258]) | *MEMORY[0x1E69A6280]];
+  mEMORY[0x1E69A5B50] = [MEMORY[0x1E69A5B50] sharedController];
+  [mEMORY[0x1E69A5B50] addListenerID:@"CKSettingsMessagesController" capabilities:(*MEMORY[0x1E69A6268] | *MEMORY[0x1E69A6258]) | *MEMORY[0x1E69A6280]];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v12 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = CKBlackholeTranscriptViewController;
-  [(CKBlackholeTranscriptViewController *)&v7 viewWillDisappear:a3];
+  [(CKBlackholeTranscriptViewController *)&v7 viewWillDisappear:disappear];
   if ([(CKBlackholeTranscriptViewController *)self isMovingFromParentViewController])
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CKBlackholeTranscriptViewController *)self isMovingFromParentViewController];
+      isMovingFromParentViewController = [(CKBlackholeTranscriptViewController *)self isMovingFromParentViewController];
       *buf = 138412546;
       v9 = @"CKSettingsMessagesController";
       v10 = 1024;
-      v11 = v5;
+      v11 = isMovingFromParentViewController;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "viewWillDisappear. Will remove listener: %@:, movingFromParentViewController: %d", buf, 0x12u);
     }
 
@@ -156,80 +156,80 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKBlackholeTranscriptViewController;
   [(CKBlackholeTranscriptViewController *)&v4 dealloc];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] < 1)
+    if ([pathCopy section] < 1)
     {
       v7 = objc_opt_new();
       goto LABEL_14;
     }
 
-    v6 = [(CKBlackholeTranscriptViewController *)self tableView];
-    v7 = [v6 dequeueReusableCellWithIdentifier:@"action"];
+    tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+    v7 = [tableView dequeueReusableCellWithIdentifier:@"action"];
 
-    v8 = [v7 textLabel];
-    [v8 setTextAlignment:1];
+    textLabel = [v7 textLabel];
+    [textLabel setTextAlignment:1];
 
-    if ([v5 section] == 1)
+    if ([pathCopy section] == 1)
     {
-      v9 = [v7 textLabel];
-      v10 = [MEMORY[0x1E69DC888] systemBlueColor];
-      [v9 setColor:v10];
+      textLabel2 = [v7 textLabel];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      [textLabel2 setColor:systemBlueColor];
       v11 = @"BLACKHOLE_TRANSCRIPT_RESTORE";
     }
 
     else
     {
-      if ([v5 section] != 2)
+      if ([pathCopy section] != 2)
       {
         goto LABEL_14;
       }
 
-      v9 = [v7 textLabel];
-      v10 = [MEMORY[0x1E69DC888] systemRedColor];
-      [v9 setColor:v10];
+      textLabel2 = [v7 textLabel];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemRedColor];
+      [textLabel2 setColor:systemBlueColor];
       v11 = @"BLACKHOLE_TRANSCRIPT_DELETE";
     }
 
-    v13 = [v7 textLabel];
+    textLabel3 = [v7 textLabel];
     v19 = CKFrameworkBundle();
     v20 = [v19 localizedStringForKey:v11 value:&stru_1F04268F8 table:@"ChatKit"];
-    [v13 setText:v20];
+    [textLabel3 setText:v20];
   }
 
   else
   {
-    v12 = [(CKBlackholeTranscriptViewController *)self tableView];
-    v7 = [v12 dequeueReusableCellWithIdentifier:@"history"];
+    tableView2 = [(CKBlackholeTranscriptViewController *)self tableView];
+    v7 = [tableView2 dequeueReusableCellWithIdentifier:@"history"];
 
-    v13 = -[NSMutableArray objectAtIndex:](self->_messages, "objectAtIndex:", [v5 row]);
-    if ([v5 row] < 1)
+    textLabel3 = -[NSMutableArray objectAtIndex:](self->_messages, "objectAtIndex:", [pathCopy row]);
+    if ([pathCopy row] < 1)
     {
       v18 = 1;
     }
 
     else
     {
-      v14 = -[NSMutableArray objectAtIndex:](self->_messages, "objectAtIndex:", [v5 row] - 1);
-      v15 = [v14 handle];
-      v16 = [v13 handle];
-      v17 = [v15 isEqualToString:v16];
+      v14 = -[NSMutableArray objectAtIndex:](self->_messages, "objectAtIndex:", [pathCopy row] - 1);
+      handle = [v14 handle];
+      handle2 = [textLabel3 handle];
+      v17 = [handle isEqualToString:handle2];
 
       v18 = v17 ^ 1u;
     }
 
-    [v7 configureForMessageItem:v13 showSender:v18];
+    [v7 configureForMessageItem:textLabel3 showSender:v18];
   }
 
 LABEL_14:
@@ -237,14 +237,14 @@ LABEL_14:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKBlackholeTranscriptViewController *)self tableView];
-  [v8 deselectRowAtIndexPath:v7 animated:1];
+  viewCopy = view;
+  pathCopy = path;
+  tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  if ([v7 section] == 1)
+  if ([pathCopy section] == 1)
   {
     v9 = CKFrameworkBundle();
     v10 = [v9 localizedStringForKey:@"BLACKHOLE_RESTORE_PROMPT_DESCRIPTION" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -268,17 +268,17 @@ LABEL_14:
     [v11 presentFromViewController:self animated:1 completion:0];
   }
 
-  else if ([v7 section] == 2)
+  else if ([pathCopy section] == 2)
   {
     objc_initWeak(&location, self);
     conversation = self->_conversation;
-    v19 = [(CKBlackholeTranscriptViewController *)self view];
+    view = [(CKBlackholeTranscriptViewController *)self view];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __73__CKBlackholeTranscriptViewController_tableView_didSelectRowAtIndexPath___block_invoke_2;
     v20[3] = &unk_1E72EE728;
     objc_copyWeak(&v21, &location);
-    [(CKBlackholeTranscriptViewController *)self _confirmDeleteConversation:conversation view:v19 withCompletionHandler:v20];
+    [(CKBlackholeTranscriptViewController *)self _confirmDeleteConversation:conversation view:view withCompletionHandler:v20];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -295,11 +295,11 @@ void __73__CKBlackholeTranscriptViewController_tableView_didSelectRowAtIndexPath
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    return a4 > 0;
+    return section > 0;
   }
 
   else
@@ -308,23 +308,23 @@ void __73__CKBlackholeTranscriptViewController_tableView_didSelectRowAtIndexPath
   }
 }
 
-- (void)_confirmDeleteConversation:(id)a3 view:(id)a4 withCompletionHandler:(id)a5
+- (void)_confirmDeleteConversation:(id)conversation view:(id)view withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  conversationCopy = conversation;
+  viewCopy = view;
+  handlerCopy = handler;
+  if (conversationCopy)
   {
     objc_initWeak(location, self);
-    v11 = [(CKBlackholeTranscriptViewController *)self _alertTitleForDelete];
+    _alertTitleForDelete = [(CKBlackholeTranscriptViewController *)self _alertTitleForDelete];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __93__CKBlackholeTranscriptViewController__confirmDeleteConversation_view_withCompletionHandler___block_invoke;
     v19[3] = &unk_1E72EE750;
-    v12 = v8;
+    v12 = conversationCopy;
     v20 = v12;
     objc_copyWeak(&v22, location);
-    v13 = v10;
+    v13 = handlerCopy;
     v21 = v13;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -333,7 +333,7 @@ void __73__CKBlackholeTranscriptViewController_tableView_didSelectRowAtIndexPath
     objc_copyWeak(&v18, location);
     v16 = v12;
     v17 = v13;
-    [(UITableViewController *)self _confirmDeleteConversationFromView:v9 alertTitle:v11 forMultipleConversations:0 withReportSpamHander:v19 withNotReportSpamHandler:v15 withCancelHandler:0];
+    [(UITableViewController *)self _confirmDeleteConversationFromView:viewCopy alertTitle:_alertTitleForDelete forMultipleConversations:0 withReportSpamHander:v19 withNotReportSpamHandler:v15 withCancelHandler:0];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v22);
@@ -373,22 +373,22 @@ void __93__CKBlackholeTranscriptViewController__confirmDeleteConversation_view_w
   v3 = IMLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CKConversation *)self->_conversation chat];
-    v5 = [v4 guid];
+    chat = [(CKConversation *)self->_conversation chat];
+    guid = [chat guid];
     v11 = 138412290;
-    v12 = v5;
+    v12 = guid;
     _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "User chose to restore chat (%@)", &v11, 0xCu);
   }
 
-  v6 = [(CKConversation *)self->_conversation chat];
-  [v6 updateIsBlackholed:0];
+  chat2 = [(CKConversation *)self->_conversation chat];
+  [chat2 updateIsBlackholed:0];
 
-  v7 = [(CKConversation *)self->_conversation chat];
-  LODWORD(v6) = [v7 isGroupChat];
+  chat3 = [(CKConversation *)self->_conversation chat];
+  LODWORD(chat2) = [chat3 isGroupChat];
 
-  v8 = [MEMORY[0x1E69A8168] sharedInstance];
-  v9 = v8;
-  if (v6)
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  v9 = mEMORY[0x1E69A8168];
+  if (chat2)
   {
     v10 = 19;
   }
@@ -398,7 +398,7 @@ void __93__CKBlackholeTranscriptViewController__confirmDeleteConversation_view_w
     v10 = 18;
   }
 
-  [v8 trackSpamEvent:v10];
+  [mEMORY[0x1E69A8168] trackSpamEvent:v10];
 }
 
 - (void)_openRestoredChatInMessages
@@ -407,47 +407,47 @@ void __93__CKBlackholeTranscriptViewController__confirmDeleteConversation_view_w
   v3 = IMLogHandleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(CKConversation *)self->_conversation chat];
-    v5 = [v4 guid];
+    chat = [(CKConversation *)self->_conversation chat];
+    guid = [chat guid];
     v11 = 138412290;
-    v12 = v5;
+    v12 = guid;
     _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Opening chat (%@) after restoration", &v11, 0xCu);
   }
 
   v6 = MEMORY[0x1E695DFF8];
-  v7 = [(CKConversation *)self->_conversation chat];
-  v8 = [v7 chatIdentifier];
-  v9 = [v6 __im_URLForChatIdentifier:v8 entryBody:0];
+  chat2 = [(CKConversation *)self->_conversation chat];
+  chatIdentifier = [chat2 chatIdentifier];
+  v9 = [v6 __im_URLForChatIdentifier:chatIdentifier entryBody:0];
 
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v10 openURL:v9 withCompletionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v9 withCompletionHandler:0];
 }
 
-- (void)_deleteConversation:(id)a3 withCompletionHandler:(id)a4
+- (void)_deleteConversation:(id)conversation withCompletionHandler:(id)handler
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [(CKBlackholeTranscriptViewController *)self _conversationList];
-  [v7 removeConversation:v6];
+  handlerCopy = handler;
+  conversationCopy = conversation;
+  _conversationList = [(CKBlackholeTranscriptViewController *)self _conversationList];
+  [_conversationList removeConversation:conversationCopy];
 
-  v8 = [(CKBlackholeTranscriptViewController *)self _conversationList];
-  [v8 deleteConversation:v6];
+  _conversationList2 = [(CKBlackholeTranscriptViewController *)self _conversationList];
+  [_conversationList2 deleteConversation:conversationCopy];
 
-  v9 = v10;
-  if (v10)
+  v9 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v10 + 2))(v10, 1);
-    v9 = v10;
+    (*(handlerCopy + 2))(handlerCopy, 1);
+    v9 = handlerCopy;
   }
 }
 
 - (id)_alertTitleForDelete
 {
-  v2 = [MEMORY[0x1E69A5B20] sharedInstance];
-  v3 = [v2 isEnabled];
+  mEMORY[0x1E69A5B20] = [MEMORY[0x1E69A5B20] sharedInstance];
+  isEnabled = [mEMORY[0x1E69A5B20] isEnabled];
   v4 = CKFrameworkBundle();
   v5 = v4;
-  if (v3)
+  if (isEnabled)
   {
     v6 = @"DELETE_ALERT_MESSAGE_ON_ICLOUD";
   }
@@ -469,17 +469,17 @@ void __93__CKBlackholeTranscriptViewController__confirmDeleteConversation_view_w
   messages = self->_messages;
   self->_messages = v3;
 
-  v5 = [(CKConversation *)self->_conversation chat];
-  v6 = [v5 _items];
+  chat = [(CKConversation *)self->_conversation chat];
+  _items = [chat _items];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_invoke;
   v8[3] = &unk_1E72EE7A0;
   v8[4] = self;
-  [v6 enumerateObjectsUsingBlock:v8];
+  [_items enumerateObjectsUsingBlock:v8];
 
-  v7 = [(CKBlackholeTranscriptViewController *)self tableView];
-  [v7 reloadData];
+  tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+  [tableView reloadData];
 }
 
 void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_invoke(uint64_t a1, void *a2)
@@ -504,58 +504,58 @@ void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_i
 {
   if ([(CKBlackholeTranscriptViewController *)self isShowingLockoutView])
   {
-    v3 = [(CKBlackholeTranscriptViewController *)self lockoutView];
+    lockoutView = [(CKBlackholeTranscriptViewController *)self lockoutView];
 
-    if (v3)
+    if (lockoutView)
     {
-      v4 = [(CKBlackholeTranscriptViewController *)self view];
-      [v4 bounds];
+      view = [(CKBlackholeTranscriptViewController *)self view];
+      [view bounds];
       v6 = v5;
       v8 = v7;
       v10 = v9;
       v12 = v11;
 
-      v13 = [(CKBlackholeTranscriptViewController *)self view];
-      [v13 safeAreaInsets];
+      view2 = [(CKBlackholeTranscriptViewController *)self view];
+      [view2 safeAreaInsets];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
 
-      v22 = [(CKBlackholeTranscriptViewController *)self headerTextView];
-      [v22 setBounds:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+      headerTextView = [(CKBlackholeTranscriptViewController *)self headerTextView];
+      [headerTextView setBounds:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
-      v23 = [(CKBlackholeTranscriptViewController *)self lockoutView];
-      [v23 setFrame:{v6 + v17, v8 + v15, v10 - (v17 + v21), v12 - (v15 + v19)}];
+      lockoutView2 = [(CKBlackholeTranscriptViewController *)self lockoutView];
+      [lockoutView2 setFrame:{v6 + v17, v8 + v15, v10 - (v17 + v21), v12 - (v15 + v19)}];
     }
   }
 }
 
-- (void)chatAllowedByScreenTimeChanged:(id)a3
+- (void)chatAllowedByScreenTimeChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled];
-  v5 = v7;
-  if (v4)
+  changedCopy = changed;
+  isContactLimitsFeatureEnabled = [MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled];
+  v5 = changedCopy;
+  if (isContactLimitsFeatureEnabled)
   {
-    v6 = [v7 object];
+    object = [changedCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CKBlackholeTranscriptViewController *)self updateScreenTimeShieldIfNeededForChat:v6];
+      [(CKBlackholeTranscriptViewController *)self updateScreenTimeShieldIfNeededForChat:object];
     }
 
-    v5 = v7;
+    v5 = changedCopy;
   }
 }
 
-- (void)updateScreenTimeShieldIfNeededForChat:(id)a3
+- (void)updateScreenTimeShieldIfNeededForChat:(id)chat
 {
-  v4 = a3;
-  if (v4)
+  chatCopy = chat;
+  if (chatCopy)
   {
-    v5 = v4;
-    if ([(CKBlackholeTranscriptViewController *)self isChatAllowedByScreenTime:v4])
+    v5 = chatCopy;
+    if ([(CKBlackholeTranscriptViewController *)self isChatAllowedByScreenTime:chatCopy])
     {
       [(CKBlackholeTranscriptViewController *)self removeLockoutControllerIfNeeded];
     }
@@ -565,7 +565,7 @@ void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_i
       [(CKBlackholeTranscriptViewController *)self showScreenTimeShieldIfNeeded];
     }
 
-    v4 = v5;
+    chatCopy = v5;
   }
 }
 
@@ -573,22 +573,22 @@ void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_i
 {
   if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled] && -[CKBlackholeTranscriptViewController isShowingLockoutView](self, "isShowingLockoutView"))
   {
-    v7 = [(CKBlackholeTranscriptViewController *)self lockoutViewController];
-    v3 = [v7 view];
-    [v3 removeFromSuperview];
+    lockoutViewController = [(CKBlackholeTranscriptViewController *)self lockoutViewController];
+    view = [lockoutViewController view];
+    [view removeFromSuperview];
 
-    [v7 removeFromParentViewController];
+    [lockoutViewController removeFromParentViewController];
     [(CKBlackholeTranscriptViewController *)self setLockoutViewController:0];
     [(CKBlackholeTranscriptViewController *)self setLockoutView:0];
-    v4 = [(CKBlackholeTranscriptViewController *)self generateHeader];
-    [(CKBlackholeTranscriptViewController *)self setHeaderTextView:v4];
+    generateHeader = [(CKBlackholeTranscriptViewController *)self generateHeader];
+    [(CKBlackholeTranscriptViewController *)self setHeaderTextView:generateHeader];
 
     [(CKBlackholeTranscriptViewController *)self setIsShowingLockoutView:0];
-    v5 = [(CKBlackholeTranscriptViewController *)self conversation];
-    [(CKBlackholeTranscriptViewController *)self setConversation:v5];
+    conversation = [(CKBlackholeTranscriptViewController *)self conversation];
+    [(CKBlackholeTranscriptViewController *)self setConversation:conversation];
 
-    v6 = [(CKBlackholeTranscriptViewController *)self tableView];
-    [v6 setScrollEnabled:1];
+    tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+    [tableView setScrollEnabled:1];
 
     [(CKBlackholeTranscriptViewController *)self reloadInputViews];
   }
@@ -598,69 +598,69 @@ void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_i
 {
   if ([MEMORY[0x1E69A5B68] isContactLimitsFeatureEnabled] && -[CKBlackholeTranscriptViewController shouldPresentBlockingDowntimeViewController](self, "shouldPresentBlockingDowntimeViewController") && !-[CKBlackholeTranscriptViewController isShowingLockoutView](self, "isShowingLockoutView"))
   {
-    v3 = [MEMORY[0x1E69A7FD0] sharedInstance];
-    v4 = [v3 getContactStore];
+    mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+    getContactStore = [mEMORY[0x1E69A7FD0] getContactStore];
 
     if (!showScreenTimeShieldIfNeeded_CKSTLockoutViewController_0)
     {
       showScreenTimeShieldIfNeeded_CKSTLockoutViewController_0 = MEMORY[0x193AF5EC0](@"STLockoutViewController", @"ScreenTimeUI");
     }
 
-    v5 = [(CKBlackholeTranscriptViewController *)self conversation];
-    v6 = [v5 chat];
+    conversation = [(CKBlackholeTranscriptViewController *)self conversation];
+    chat = [conversation chat];
 
-    if (v6)
+    if (chat)
     {
       v7 = IMSharedDowntimeController();
-      v8 = [(CKBlackholeTranscriptViewController *)self conversation];
-      v9 = [v8 chat];
-      v10 = [v7 conversationContextForChat:v9];
+      conversation2 = [(CKBlackholeTranscriptViewController *)self conversation];
+      chat2 = [conversation2 chat];
+      v10 = [v7 conversationContextForChat:chat2];
       [(CKBlackholeTranscriptViewController *)self setConversationContext:v10];
     }
 
-    v11 = [(CKBlackholeTranscriptViewController *)self conversationContext];
+    conversationContext = [(CKBlackholeTranscriptViewController *)self conversationContext];
 
     v12 = showScreenTimeShieldIfNeeded_CKSTLockoutViewController_0;
-    if (v11 && v4)
+    if (conversationContext && getContactStore)
     {
-      v13 = [(CKBlackholeTranscriptViewController *)self conversationContext];
-      v14 = [(CKBlackholeTranscriptViewController *)self conversation];
-      v15 = [v14 contactNameByHandle];
-      v16 = [v12 lockoutViewControllerWithConversationContext:v13 bundleIdentifier:@"com.apple.MobileSMS" contactStore:v4 applicationName:0 contactNameByHandle:v15];
+      conversationContext2 = [(CKBlackholeTranscriptViewController *)self conversationContext];
+      conversation3 = [(CKBlackholeTranscriptViewController *)self conversation];
+      contactNameByHandle = [conversation3 contactNameByHandle];
+      v16 = [v12 lockoutViewControllerWithConversationContext:conversationContext2 bundleIdentifier:@"com.apple.MobileSMS" contactStore:getContactStore applicationName:0 contactNameByHandle:contactNameByHandle];
     }
 
     else
     {
-      v13 = [(CKBlackholeTranscriptViewController *)self _handleIDsForCurrentConversation];
-      v14 = [(CKBlackholeTranscriptViewController *)self conversation];
-      v15 = [v14 contactNameByHandle];
-      v16 = [v12 lockoutViewControllerWithBundleIdentifier:@"com.apple.MobileSMS" contactsHandles:v13 contactNameByHandle:v15];
+      conversationContext2 = [(CKBlackholeTranscriptViewController *)self _handleIDsForCurrentConversation];
+      conversation3 = [(CKBlackholeTranscriptViewController *)self conversation];
+      contactNameByHandle = [conversation3 contactNameByHandle];
+      v16 = [v12 lockoutViewControllerWithBundleIdentifier:@"com.apple.MobileSMS" contactsHandles:conversationContext2 contactNameByHandle:contactNameByHandle];
     }
 
     v24 = v16;
 
     [v24 setMainButtonAlwaysHidden:1];
-    v17 = [v24 view];
-    [(CKBlackholeTranscriptViewController *)self setLockoutView:v17];
+    view = [v24 view];
+    [(CKBlackholeTranscriptViewController *)self setLockoutView:view];
 
     v18 = objc_alloc_init(MEMORY[0x1E69DD168]);
     [(CKBlackholeTranscriptViewController *)self setHeaderTextView:v18];
 
     [(CKBlackholeTranscriptViewController *)self setLockoutViewController:v24];
-    v19 = [(CKBlackholeTranscriptViewController *)self view];
-    v20 = [(CKBlackholeTranscriptViewController *)self lockoutView];
-    [v19 addSubview:v20];
+    view2 = [(CKBlackholeTranscriptViewController *)self view];
+    lockoutView = [(CKBlackholeTranscriptViewController *)self lockoutView];
+    [view2 addSubview:lockoutView];
 
     [(CKBlackholeTranscriptViewController *)self addChildViewController:v24];
     [(CKBlackholeTranscriptViewController *)self setIsShowingLockoutView:1];
-    v21 = [(CKBlackholeTranscriptViewController *)self tableView];
-    [v21 setScrollEnabled:0];
+    tableView = [(CKBlackholeTranscriptViewController *)self tableView];
+    [tableView setScrollEnabled:0];
 
-    v22 = [(CKBlackholeTranscriptViewController *)self view];
-    [v22 setNeedsLayout];
+    view3 = [(CKBlackholeTranscriptViewController *)self view];
+    [view3 setNeedsLayout];
 
-    v23 = [(CKBlackholeTranscriptViewController *)self view];
-    [v23 layoutIfNeeded];
+    view4 = [(CKBlackholeTranscriptViewController *)self view];
+    [view4 layoutIfNeeded];
 
     [(CKBlackholeTranscriptViewController *)self reloadInputViews];
   }
@@ -668,9 +668,9 @@ void __63__CKBlackholeTranscriptViewController__updateTranscriptHistory__block_i
 
 - (id)_handleIDsForCurrentConversation
 {
-  v2 = [(CKBlackholeTranscriptViewController *)self conversation];
-  v3 = [v2 recipients];
-  v4 = [v3 __imArrayByApplyingBlock:&__block_literal_global_34];
+  conversation = [(CKBlackholeTranscriptViewController *)self conversation];
+  recipients = [conversation recipients];
+  v4 = [recipients __imArrayByApplyingBlock:&__block_literal_global_34];
 
   return v4;
 }
@@ -698,8 +698,8 @@ id __71__CKBlackholeTranscriptViewController__handleIDsForCurrentConversation__b
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v3 setFont:v6];
 
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v3 setTextColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v3 setTextColor:secondaryLabelColor];
 
   [v3 setBackgroundColor:0];
   [v3 setTextContainerInset:{12.0, 24.0, 12.0, 24.0}];

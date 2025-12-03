@@ -7,24 +7,24 @@
 + (id)vs_defaultSessionConfigurationForSourceAppWithAuditToken:()VSAdditions
 {
   v4 = a3;
-  v5 = [a1 defaultSessionConfiguration];
-  v6 = [v5 copy];
+  defaultSessionConfiguration = [self defaultSessionConfiguration];
+  v6 = [defaultSessionConfiguration copy];
 
   if (v4)
   {
     v7 = v4;
-    v8 = [v7 bundleIdentifier];
-    v9 = [v7 tokenBytes];
+    bundleIdentifier = [v7 bundleIdentifier];
+    tokenBytes = [v7 tokenBytes];
   }
 
   else
   {
-    v9 = 0;
-    v8 = 0;
+    tokenBytes = 0;
+    bundleIdentifier = 0;
   }
 
-  [v6 set_sourceApplicationBundleIdentifier:v8];
-  [v6 set_sourceApplicationAuditTokenData:v9];
+  [v6 set_sourceApplicationBundleIdentifier:bundleIdentifier];
+  [v6 set_sourceApplicationAuditTokenData:tokenBytes];
 
   return v6;
 }

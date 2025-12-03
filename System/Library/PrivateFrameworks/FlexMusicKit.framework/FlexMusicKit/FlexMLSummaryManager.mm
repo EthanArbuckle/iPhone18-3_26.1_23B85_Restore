@@ -1,37 +1,37 @@
 @interface FlexMLSummaryManager
-- (FlexMLSummaryManager)initWithSummaryMapping:(id)a3 bundlePath:(id)a4 metadataPath:(id)a5 targetTimeScale:(int)a6;
+- (FlexMLSummaryManager)initWithSummaryMapping:(id)mapping bundlePath:(id)path metadataPath:(id)metadataPath targetTimeScale:(int)scale;
 - (double)averageGranularityBetweenSummaries;
-- (id)_summaryForDuration:(id *)a3;
-- (id)summaryForDuration:(id *)a3;
+- (id)_summaryForDuration:(id *)duration;
+- (id)summaryForDuration:(id *)duration;
 @end
 
 @implementation FlexMLSummaryManager
 
-- (FlexMLSummaryManager)initWithSummaryMapping:(id)a3 bundlePath:(id)a4 metadataPath:(id)a5 targetTimeScale:(int)a6
+- (FlexMLSummaryManager)initWithSummaryMapping:(id)mapping bundlePath:(id)path metadataPath:(id)metadataPath targetTimeScale:(int)scale
 {
   v74 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  mappingCopy = mapping;
+  pathCopy = path;
+  metadataPathCopy = metadataPath;
   v72.receiver = self;
   v72.super_class = FlexMLSummaryManager;
   v13 = [(FlexMLSummaryManager *)&v72 init];
   v18 = v13;
   if (v13)
   {
-    v60 = v12;
+    v60 = metadataPathCopy;
     v61 = v13;
-    v62 = a5;
-    v63 = v11;
-    v13->_targetTimeScale = a6;
+    metadataPathCopy2 = metadataPath;
+    v63 = pathCopy;
+    v13->_targetTimeScale = scale;
     v19 = objc_msgSend_array(MEMORY[0x277CBEB18], v14, v15, v16, v17);
     v24 = objc_msgSend_array(MEMORY[0x277CBEB18], v20, v21, v22, v23);
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v64 = v10;
-    obj = v10;
+    v64 = mappingCopy;
+    obj = mappingCopy;
     v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v25, &v68, v73, 16);
     if (v26)
     {
@@ -51,7 +51,7 @@
           v38 = objc_msgSend_objectAtIndex_(v33, v35, 1, v36, v37);
           memset(&v67, 0, sizeof(v67));
           objc_msgSend_doubleValue(v34, v39, v40, v41, v42);
-          CMTimeMakeWithSeconds(&v67, v43, a6);
+          CMTimeMakeWithSeconds(&v67, v43, scale);
           v66 = v67;
           v47 = objc_msgSend_valueWithCMTime_(MEMORY[0x277CCAE60], v44, &v66, v45, v46);
           objc_msgSend_addObject_(v19, v48, v38, v49, v50);
@@ -73,12 +73,12 @@
     v61->_allDurations = v24;
     v57 = v24;
 
-    objc_storeStrong(&v61->_rootPath, a4);
-    objc_storeStrong(&v61->_metadataPath, v62);
+    objc_storeStrong(&v61->_rootPath, path);
+    objc_storeStrong(&v61->_metadataPath, metadataPathCopy2);
 
-    v11 = v63;
-    v10 = v64;
-    v12 = v60;
+    pathCopy = v63;
+    mappingCopy = v64;
+    metadataPathCopy = v60;
   }
 
   v58 = *MEMORY[0x277D85DE8];
@@ -112,9 +112,9 @@
   return v9;
 }
 
-- (id)summaryForDuration:(id *)a3
+- (id)summaryForDuration:(id *)duration
 {
-  v7 = objc_msgSend_allDurations(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_allDurations(self, a2, duration, v3, v4);
   v12 = objc_msgSend_lastObject(v7, v8, v9, v10, v11);
 
   memset(&v75[1], 0, sizeof(CMTime));
@@ -132,23 +132,23 @@
     objc_msgSend_CMTimeValue(v22, v23, v24, v25, v26);
   }
 
-  time1 = *a3;
+  time1 = *duration;
   time2 = v75[1];
   if (CMTimeCompare(&time1, &time2) < 1)
   {
-    time1 = *a3;
+    time1 = *duration;
     v69 = objc_msgSend__summaryForDuration_(self, v27, &time1, v29, v30);
   }
 
   else
   {
     v31 = objc_msgSend_array(MEMORY[0x277CBEB18], v27, v28, v29, v30);
-    time1 = *a3;
+    time1 = *duration;
     time2 = v75[0];
     Seconds = CMTimeGetSeconds(&time2);
     time2 = v75[1];
     v33 = CMTimeGetSeconds(&time2);
-    time2 = *a3;
+    time2 = *duration;
     v34 = Seconds / v33;
     v35 = CMTimeGetSeconds(&time2);
     time2 = v75[1];
@@ -220,19 +220,19 @@
   return v69;
 }
 
-- (id)_summaryForDuration:(id *)a3
+- (id)_summaryForDuration:(id *)duration
 {
   v319 = *MEMORY[0x277D85DE8];
-  v5 = objc_msgSend_allDurations(self, a2, a3, v3, v4);
+  v5 = objc_msgSend_allDurations(self, a2, duration, v3, v4);
   v10 = objc_msgSend_count(v5, v6, v7, v8, v9);
 
   if (v10)
   {
     v15 = -1;
-    v16 = self;
+    selfCopy3 = self;
     while (1)
     {
-      v17 = objc_msgSend_allDurations(v16, v11, v12, v13, v14);
+      v17 = objc_msgSend_allDurations(selfCopy3, v11, v12, v13, v14);
       v21 = objc_msgSend_objectAtIndex_(v17, v18, v15 + 1, v19, v20);
 
       memset(&v296, 0, 24);
@@ -243,7 +243,7 @@
 
       *&time1.start.value = *&v296.start.value;
       time1.start.epoch = v296.start.epoch;
-      time2 = *a3;
+      time2 = *duration;
       if (!CMTimeCompare(&time1.start, &time2))
       {
 
@@ -253,7 +253,7 @@
 
       *&time1.start.value = *&v296.start.value;
       time1.start.epoch = v296.start.epoch;
-      time2 = *a3;
+      time2 = *duration;
       v26 = CMTimeCompare(&time1.start, &time2);
 
       if ((v26 & 0x80000000) == 0)
@@ -261,7 +261,7 @@
         break;
       }
 
-      v16 = self;
+      selfCopy3 = self;
       v27 = objc_msgSend_allDurations(self, v11, v12, v13, v14);
       v32 = objc_msgSend_count(v27, v28, v29, v30, v31);
 
@@ -283,23 +283,23 @@
   }
 
 LABEL_12:
-  v16 = self;
+  selfCopy3 = self;
 LABEL_13:
   v35 = v33 & ~(v33 >> 63);
-  v36 = objc_msgSend_rootPath(v16, v11, v12, v13, v14);
+  v36 = objc_msgSend_rootPath(selfCopy3, v11, v12, v13, v14);
   v40 = objc_msgSend_stringByAppendingPathComponent_(v36, v37, @"Summaries", v38, v39);
 
-  v45 = objc_msgSend_allFileNames(v16, v41, v42, v43, v44);
+  v45 = objc_msgSend_allFileNames(selfCopy3, v41, v42, v43, v44);
   v49 = objc_msgSend_objectAtIndex_(v45, v46, v35, v47, v48);
 
   v53 = objc_msgSend_stringByAppendingPathComponent_(v40, v50, v49, v51, v52);
   v57 = objc_msgSend_dictionaryWithContentsOfFile_(MEMORY[0x277CBEB38], v54, v53, v55, v56);
   v58 = [FlexMLSummary alloc];
-  v63 = objc_msgSend_targetTimeScale(v16, v59, v60, v61, v62);
+  v63 = objc_msgSend_targetTimeScale(selfCopy3, v59, v60, v61, v62);
   v278 = v57;
   v66 = objc_msgSend_initWithDictionary_targetTimeScale_(v58, v64, v57, v63, v65);
   v67 = MEMORY[0x277CBEB38];
-  v72 = objc_msgSend_metadataPath(v16, v68, v69, v70, v71);
+  v72 = objc_msgSend_metadataPath(selfCopy3, v68, v69, v70, v71);
   v76 = objc_msgSend_dictionaryWithContentsOfFile_(v67, v73, v72, v74, v75);
 
   v84 = objc_msgSend_objectForKeyedSubscript_(v76, v77, @"songBeats", v78, v79);
@@ -536,7 +536,7 @@ LABEL_44:
                   if (CMTimeCompare(&v292, &lhs))
                   {
 LABEL_70:
-                    if (!v211 || (v292 = *a3, v291 = time2, CMTimeSubtract(&lhs, &v292, &v291), v292 = time, CMTimeCompare(&v292, &lhs)) && (lhs = time, v292 = *a3, CMTimeCompare(&lhs, &v292)))
+                    if (!v211 || (v292 = *duration, v291 = time2, CMTimeSubtract(&lhs, &v292, &v291), v292 = time, CMTimeCompare(&v292, &lhs)) && (lhs = time, v292 = *duration, CMTimeCompare(&lhs, &v292)))
                     {
                       lhs = time;
                       v227 = CMTimeGetSeconds(&lhs);

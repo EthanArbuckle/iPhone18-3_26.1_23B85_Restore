@@ -5,22 +5,22 @@
 - (id)loadKnownUserVoiceProfiles;
 - (id)loadRequestIdsToAudioIdsMapping;
 - (int64_t)getVoiceProfileStoreVersion;
-- (void)applyContentsToVoiceProfileStorePrefs:(id)a3;
-- (void)saveEnrollmentSamplingMetaDataDict:(id)a3;
-- (void)saveKnownUserVoiceProfiles:(id)a3;
-- (void)saveRequestIdsToAudioIdsMapping:(id)a3;
-- (void)setVoiceProfileStoreVersion:(unint64_t)a3;
+- (void)applyContentsToVoiceProfileStorePrefs:(id)prefs;
+- (void)saveEnrollmentSamplingMetaDataDict:(id)dict;
+- (void)saveKnownUserVoiceProfiles:(id)profiles;
+- (void)saveRequestIdsToAudioIdsMapping:(id)mapping;
+- (void)setVoiceProfileStoreVersion:(unint64_t)version;
 @end
 
 @implementation SSRVoiceProfileStorePrefs
 
-- (void)applyContentsToVoiceProfileStorePrefs:(id)a3
+- (void)applyContentsToVoiceProfileStorePrefs:(id)prefs
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  prefsCopy = prefs;
   v20 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v20];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:prefsCopy error:&v20];
 
   v7 = v20;
   if (v7)
@@ -39,25 +39,25 @@
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
     {
       v10 = v9;
-      v11 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 136315394;
       v22 = "[SSRVoiceProfileStorePrefs applyContentsToVoiceProfileStorePrefs:]";
       v23 = 2112;
-      v24 = v11;
+      v24 = localizedDescription;
       _os_log_error_impl(&dword_225E12000, v10, OS_LOG_TYPE_ERROR, "%s Unable to decode blob, not restoring with error %@", buf, 0x16u);
     }
   }
 
   else
   {
-    v12 = [v6 vpArray];
-    if (v12 && (v13 = v12, [v6 vpArray], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15))
+    vpArray = [v6 vpArray];
+    if (vpArray && (v13 = vpArray, [v6 vpArray], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "count"), v14, v13, v15))
     {
-      v16 = [v6 version];
-      -[SSRVoiceProfileStorePrefs setVoiceProfileStoreVersion:](self, "setVoiceProfileStoreVersion:", [v16 integerValue]);
+      version = [v6 version];
+      -[SSRVoiceProfileStorePrefs setVoiceProfileStoreVersion:](self, "setVoiceProfileStoreVersion:", [version integerValue]);
 
-      v17 = [v6 vpArray];
-      [(SSRVoiceProfileStorePrefs *)self saveKnownUserVoiceProfiles:v17];
+      vpArray2 = [v6 vpArray];
+      [(SSRVoiceProfileStorePrefs *)self saveKnownUserVoiceProfiles:vpArray2];
     }
 
     else
@@ -79,13 +79,13 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   CFPreferencesAppSynchronize(@"com.apple.speakerrecognition");
-  v3 = [(SSRVoiceProfileStorePrefs *)self loadKnownUserVoiceProfiles];
-  if (v3)
+  loadKnownUserVoiceProfiles = [(SSRVoiceProfileStorePrefs *)self loadKnownUserVoiceProfiles];
+  if (loadKnownUserVoiceProfiles)
   {
-    v4 = [(SSRVoiceProfileStorePrefs *)self getVoiceProfileStoreVersion];
+    getVoiceProfileStoreVersion = [(SSRVoiceProfileStorePrefs *)self getVoiceProfileStoreVersion];
     v5 = [SSRVoiceProfileStoreData alloc];
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
-    v7 = [(SSRVoiceProfileStoreData *)v5 initWithVoiceProfileArray:v3 withVersion:v6];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:getVoiceProfileStoreVersion];
+    v7 = [(SSRVoiceProfileStoreData *)v5 initWithVoiceProfileArray:loadKnownUserVoiceProfiles withVersion:v6];
 
     v17 = 0;
     v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v17];
@@ -96,11 +96,11 @@
       if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_ERROR))
       {
         v15 = v12;
-        v16 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315394;
         v19 = "[SSRVoiceProfileStorePrefs getAllContentsOfVoiceProfileStorePrefs]";
         v20 = 2112;
-        v21 = v16;
+        v21 = localizedDescription;
         _os_log_error_impl(&dword_225E12000, v15, OS_LOG_TYPE_ERROR, "%s Failed to serialize dict with err %@", buf, 0x16u);
       }
 
@@ -138,15 +138,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (id)loadEnrollmentSamplingMetaDataDict
@@ -173,30 +173,30 @@
   return v2;
 }
 
-- (void)saveRequestIdsToAudioIdsMapping:(id)a3
+- (void)saveRequestIdsToAudioIdsMapping:(id)mapping
 {
-  value = a3;
+  value = mapping;
   CFPreferencesAppSynchronize(@"com.apple.speakerrecognition");
   CFPreferencesSetAppValue(@"requestId to audioId mapping", value, @"com.apple.speakerrecognition");
 }
 
-- (void)setVoiceProfileStoreVersion:(unint64_t)a3
+- (void)setVoiceProfileStoreVersion:(unint64_t)version
 {
   CFPreferencesAppSynchronize(@"com.apple.speakerrecognition");
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
   CFPreferencesSetAppValue(@"Voice Profile Store Version", v4, @"com.apple.speakerrecognition");
 }
 
-- (void)saveEnrollmentSamplingMetaDataDict:(id)a3
+- (void)saveEnrollmentSamplingMetaDataDict:(id)dict
 {
-  value = a3;
+  value = dict;
   CFPreferencesAppSynchronize(@"com.apple.speakerrecognition");
   CFPreferencesSetAppValue(@"Enrollment Sampling Meta Data", value, @"com.apple.speakerrecognition");
 }
 
-- (void)saveKnownUserVoiceProfiles:(id)a3
+- (void)saveKnownUserVoiceProfiles:(id)profiles
 {
-  value = a3;
+  value = profiles;
   CFPreferencesAppSynchronize(@"com.apple.speakerrecognition");
   CFPreferencesSetAppValue(@"Known User Voice Profiles", value, @"com.apple.speakerrecognition");
 }

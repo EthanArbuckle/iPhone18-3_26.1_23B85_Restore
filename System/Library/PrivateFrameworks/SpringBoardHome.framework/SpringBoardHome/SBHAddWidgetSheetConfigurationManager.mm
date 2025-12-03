@@ -1,51 +1,51 @@
 @interface SBHAddWidgetSheetConfigurationManager
-+ (unint64_t)_galleryVariantForAddWidgetSheetLocation:(unint64_t)a3;
-- (BOOL)_isContainerBundleIdentifierUnprotected:(id)a3;
-- (BOOL)_isDescriptorAllowed:(id)a3;
-- (BOOL)_isDescriptorContainerUnprotected:(id)a3;
-- (BOOL)_isDescriptorSupportedByDelegate:(id)a3;
-- (BOOL)_isDescriptorUpdatedForSDKRequirements:(id)a3;
-- (BOOL)_shouldAddSpecialAvocadoOfType:(unint64_t)a3;
-- (SBHAddWidgetSheetConfigurationManager)initWithWidgetExtensionProvider:(id)a3;
++ (unint64_t)_galleryVariantForAddWidgetSheetLocation:(unint64_t)location;
+- (BOOL)_isContainerBundleIdentifierUnprotected:(id)unprotected;
+- (BOOL)_isDescriptorAllowed:(id)allowed;
+- (BOOL)_isDescriptorContainerUnprotected:(id)unprotected;
+- (BOOL)_isDescriptorSupportedByDelegate:(id)delegate;
+- (BOOL)_isDescriptorUpdatedForSDKRequirements:(id)requirements;
+- (BOOL)_shouldAddSpecialAvocadoOfType:(unint64_t)type;
+- (SBHAddWidgetSheetConfigurationManager)initWithWidgetExtensionProvider:(id)provider;
 - (SBHAddWidgetSheetConfigurationManagerDelegate)configurationManagerDelegate;
 - (SBHIconModel)iconModel;
 - (SBHWidgetDragHandling)widgetDragHandlerDelegate;
 - (SBIconListLayoutProvider)listLayoutProvider;
-- (id)_widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4;
-- (id)_widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4;
+- (id)_widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class;
+- (id)_widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class;
 - (id)applicationControlCollections;
-- (id)applicationWidgetCollectionsForEditingViewController:(id)a3 withAllowedSizeClasses:(id *)a4 allowingNonStackableItems:(BOOL)a5;
+- (id)applicationWidgetCollectionsForEditingViewController:(id)controller withAllowedSizeClasses:(id *)classes allowingNonStackableItems:(BOOL)items;
 - (id)effectiveGridSizeClassDomain;
 - (id)homeScreenDefaults;
-- (id)vendorNameForAppWithBundleIdentifier:(id)a3;
+- (id)vendorNameForAppWithBundleIdentifier:(id)identifier;
 - (unint64_t)_defaultEditingSuggestedWidgetItemsFamilyMask;
-- (void)_addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:(id)a3;
-- (void)_addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:(id)a3;
-- (void)_addFilesSpecialAvocadosToApplicationWidgetCollections:(id)a3;
-- (void)_addShortcutsSpecialAvocadoToApplicationWidgetCollections:(id)a3;
-- (void)_addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:(id)a3;
-- (void)_fetchGalleryContentForGridSize:(unint64_t)a3 withFamilyMask:(unint64_t)a4 completion:(id)a5;
-- (void)_insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections:(id)a3;
-- (void)_processGalleryContentItems:(id)a3 gridSize:(unint64_t)a4 addWidgetSheetViewController:(id)a5;
-- (void)_sortApplicationWidgetCollections:(id)a3;
-- (void)fetchGalleryContentForHomeScreenEditingWithGridSize:(unint64_t)a3 addWidgetSheetViewController:(id)a4;
-- (void)fetchGalleryContentForHomeScreenEditingWithRequest:(id)a3 addWidgetSheetViewController:(id)a4;
-- (void)fetchGalleryContentForStackConfigurationViewController:(id)a3 addWidgetSheetViewController:(id)a4;
-- (void)updatePresentedWidgetEditingViewController:(id)a3;
+- (void)_addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:(id)collections;
+- (void)_addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:(id)allowed;
+- (void)_addFilesSpecialAvocadosToApplicationWidgetCollections:(id)collections;
+- (void)_addShortcutsSpecialAvocadoToApplicationWidgetCollections:(id)collections;
+- (void)_addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:(id)collections;
+- (void)_fetchGalleryContentForGridSize:(unint64_t)size withFamilyMask:(unint64_t)mask completion:(id)completion;
+- (void)_insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections:(id)collections;
+- (void)_processGalleryContentItems:(id)items gridSize:(unint64_t)size addWidgetSheetViewController:(id)controller;
+- (void)_sortApplicationWidgetCollections:(id)collections;
+- (void)fetchGalleryContentForHomeScreenEditingWithGridSize:(unint64_t)size addWidgetSheetViewController:(id)controller;
+- (void)fetchGalleryContentForHomeScreenEditingWithRequest:(id)request addWidgetSheetViewController:(id)controller;
+- (void)fetchGalleryContentForStackConfigurationViewController:(id)controller addWidgetSheetViewController:(id)viewController;
+- (void)updatePresentedWidgetEditingViewController:(id)controller;
 @end
 
 @implementation SBHAddWidgetSheetConfigurationManager
 
-- (SBHAddWidgetSheetConfigurationManager)initWithWidgetExtensionProvider:(id)a3
+- (SBHAddWidgetSheetConfigurationManager)initWithWidgetExtensionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = SBHAddWidgetSheetConfigurationManager;
   v6 = [(SBHAddWidgetSheetConfigurationManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_widgetExtensionProvider, a3);
+    objc_storeStrong(&v6->_widgetExtensionProvider, provider);
     v7->_allowedWidgetFamilies = 94;
     [(SBHAddWidgetSheetConfigurationManager *)v7 setAllowsFakeWidgets:1];
     [(SBHAddWidgetSheetConfigurationManager *)v7 setMinimumRequiredSDKVersion:0];
@@ -54,29 +54,29 @@
   return v7;
 }
 
-- (void)fetchGalleryContentForStackConfigurationViewController:(id)a3 addWidgetSheetViewController:(id)a4
+- (void)fetchGalleryContentForStackConfigurationViewController:(id)controller addWidgetSheetViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 sourceStackIconView];
-  if (v8)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sourceStackIconView = [controllerCopy sourceStackIconView];
+  if (sourceStackIconView)
   {
-    v9 = [(SBHAddWidgetSheetConfigurationManager *)self _stackConfigurationGridSize];
-    v10 = [v8 icon];
-    v11 = [v10 gridSizeClass];
+    _stackConfigurationGridSize = [(SBHAddWidgetSheetConfigurationManager *)self _stackConfigurationGridSize];
+    icon = [sourceStackIconView icon];
+    gridSizeClass = [icon gridSizeClass];
 
-    v12 = [[SBHIconGridSizeClassSet alloc] initWithGridSizeClass:v11];
-    v13 = [(SBHIconGridSizeClassSet *)v12 chsWidgetFamilyMask];
+    v12 = [[SBHIconGridSizeClassSet alloc] initWithGridSizeClass:gridSizeClass];
+    chsWidgetFamilyMask = [(SBHIconGridSizeClassSet *)v12 chsWidgetFamilyMask];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __125__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForStackConfigurationViewController_addWidgetSheetViewController___block_invoke;
     v14[3] = &unk_1E8091038;
-    v15 = v6;
-    v16 = v8;
-    v17 = self;
-    v18 = v7;
-    v19 = v9;
-    [(SBHAddWidgetSheetConfigurationManager *)self _fetchGalleryContentForGridSize:v9 withFamilyMask:v13 completion:v14];
+    v15 = controllerCopy;
+    v16 = sourceStackIconView;
+    selfCopy = self;
+    v18 = viewControllerCopy;
+    v19 = _stackConfigurationGridSize;
+    [(SBHAddWidgetSheetConfigurationManager *)self _fetchGalleryContentForGridSize:_stackConfigurationGridSize withFamilyMask:chsWidgetFamilyMask completion:v14];
   }
 }
 
@@ -100,21 +100,21 @@ uint64_t __125__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForStac
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)fetchGalleryContentForHomeScreenEditingWithRequest:(id)a3 addWidgetSheetViewController:(id)a4
+- (void)fetchGalleryContentForHomeScreenEditingWithRequest:(id)request addWidgetSheetViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E698AEC0] sharedInstance];
+  requestCopy = request;
+  controllerCopy = controller;
+  mEMORY[0x1E698AEC0] = [MEMORY[0x1E698AEC0] sharedInstance];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __121__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForHomeScreenEditingWithRequest_addWidgetSheetViewController___block_invoke;
   v11[3] = &unk_1E8091060;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 fetchWidgetGalleryItemsWithRequest:v10 completionHandler:v11];
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = controllerCopy;
+  v9 = controllerCopy;
+  v10 = requestCopy;
+  [mEMORY[0x1E698AEC0] fetchWidgetGalleryItemsWithRequest:v10 completionHandler:v11];
 }
 
 void __121__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForHomeScreenEditingWithRequest_addWidgetSheetViewController___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -188,47 +188,47 @@ void __121__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForHomeScre
   [v2 _processGalleryContentItems:v3 gridSize:objc_msgSend(*(a1 + 48) addWidgetSheetViewController:{"widgetGridSize"), *(a1 + 56)}];
 }
 
-- (void)fetchGalleryContentForHomeScreenEditingWithGridSize:(unint64_t)a3 addWidgetSheetViewController:(id)a4
+- (void)fetchGalleryContentForHomeScreenEditingWithGridSize:(unint64_t)size addWidgetSheetViewController:(id)controller
 {
-  v6 = a4;
-  v7 = [(SBHAddWidgetSheetConfigurationManager *)self _defaultEditingSuggestedWidgetItemsFamilyMask];
+  controllerCopy = controller;
+  _defaultEditingSuggestedWidgetItemsFamilyMask = [(SBHAddWidgetSheetConfigurationManager *)self _defaultEditingSuggestedWidgetItemsFamilyMask];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __122__SBHAddWidgetSheetConfigurationManager_fetchGalleryContentForHomeScreenEditingWithGridSize_addWidgetSheetViewController___block_invoke;
   v9[3] = &unk_1E8091088;
-  v10 = v6;
-  v11 = a3;
+  v10 = controllerCopy;
+  sizeCopy = size;
   v9[4] = self;
-  v8 = v6;
-  [(SBHAddWidgetSheetConfigurationManager *)self _fetchGalleryContentForGridSize:a3 withFamilyMask:v7 completion:v9];
+  v8 = controllerCopy;
+  [(SBHAddWidgetSheetConfigurationManager *)self _fetchGalleryContentForGridSize:size withFamilyMask:_defaultEditingSuggestedWidgetItemsFamilyMask completion:v9];
 }
 
-- (void)_processGalleryContentItems:(id)a3 gridSize:(unint64_t)a4 addWidgetSheetViewController:(id)a5
+- (void)_processGalleryContentItems:(id)items gridSize:(unint64_t)size addWidgetSheetViewController:(id)controller
 {
-  v11 = a3;
-  v8 = a5;
-  [(SBHAddWidgetSheetConfigurationManager *)self setEditingSuggestedWidgetItems:v11];
-  v9 = [v8 presenter];
-  v10 = v9;
-  if (v9 && [v9 presenterType] != 2)
+  itemsCopy = items;
+  controllerCopy = controller;
+  [(SBHAddWidgetSheetConfigurationManager *)self setEditingSuggestedWidgetItems:itemsCopy];
+  presenter = [controllerCopy presenter];
+  v10 = presenter;
+  if (presenter && [presenter presenterType] != 2)
   {
-    [v8 setSuggestedItems:v11 forGalleryLayoutSize:a4];
+    [controllerCopy setSuggestedItems:itemsCopy forGalleryLayoutSize:size];
   }
 }
 
-- (void)_fetchGalleryContentForGridSize:(unint64_t)a3 withFamilyMask:(unint64_t)a4 completion:(id)a5
+- (void)_fetchGalleryContentForGridSize:(unint64_t)size withFamilyMask:(unint64_t)mask completion:(id)completion
 {
-  v8 = a5;
-  v9 = [MEMORY[0x1E698AEC0] sharedInstance];
+  completionCopy = completion;
+  mEMORY[0x1E698AEC0] = [MEMORY[0x1E698AEC0] sharedInstance];
   v10 = [SBHAddWidgetSheetConfigurationManager _galleryVariantForAddWidgetSheetLocation:[(SBHAddWidgetSheetConfigurationManager *)self addWidgetSheetLocation]];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize_withFamilyMask_completion___block_invoke;
   v12[3] = &unk_1E80910B0;
-  v13 = v8;
-  v14 = a4;
-  v11 = v8;
-  [v9 fetchGalleryItemsForVariant:v10 gridSize:a3 supportedFamilies:a4 completionHandler:v12];
+  v13 = completionCopy;
+  maskCopy = mask;
+  v11 = completionCopy;
+  [mEMORY[0x1E698AEC0] fetchGalleryItemsForVariant:v10 gridSize:size supportedFamilies:mask completionHandler:v12];
 }
 
 void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize_withFamilyMask_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -277,16 +277,16 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
   }
 }
 
-+ (unint64_t)_galleryVariantForAddWidgetSheetLocation:(unint64_t)a3
++ (unint64_t)_galleryVariantForAddWidgetSheetLocation:(unint64_t)location
 {
-  if (a3 == 3)
+  if (location == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return location == 2;
   }
 }
 
@@ -303,22 +303,22 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
   }
 }
 
-- (id)applicationWidgetCollectionsForEditingViewController:(id)a3 withAllowedSizeClasses:(id *)a4 allowingNonStackableItems:(BOOL)a5
+- (id)applicationWidgetCollectionsForEditingViewController:(id)controller withAllowedSizeClasses:(id *)classes allowingNonStackableItems:(BOOL)items
 {
-  v45 = a5;
+  itemsCopy = items;
   v67 = *MEMORY[0x1E69E9840];
-  v47 = a3;
-  v49 = *a4;
-  v48 = [MEMORY[0x1E695DF70] array];
-  v6 = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider sbh_descriptorsByExtensionIdentifier];
+  controllerCopy = controller;
+  v49 = *classes;
+  array = [MEMORY[0x1E695DF70] array];
+  sbh_descriptorsByExtensionIdentifier = [(CHSWidgetExtensionProvider *)self->_widgetExtensionProvider sbh_descriptorsByExtensionIdentifier];
   v52 = objc_opt_new();
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v6;
+  obj = sbh_descriptorsByExtensionIdentifier;
   v7 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
-  v51 = self;
+  selfCopy = self;
   if (v7)
   {
     v8 = v7;
@@ -353,7 +353,7 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
 
           [v15 addObjectsFromArray:v14];
 
-          self = v51;
+          self = selfCopy;
         }
       }
 
@@ -363,13 +363,13 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
     while (v8);
   }
 
-  v16 = v48;
-  [(SBHAddWidgetSheetConfigurationManager *)self _addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:v48];
-  v17 = [v47 presenterType];
-  v18 = v17;
-  if (v17)
+  v16 = array;
+  [(SBHAddWidgetSheetConfigurationManager *)self _addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:array];
+  presenterType = [controllerCopy presenterType];
+  v18 = presenterType;
+  if (presenterType)
   {
-    if (v17 != 1)
+    if (presenterType != 1)
     {
       v21 = 0;
       v20 = v49;
@@ -388,8 +388,8 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
   v21 = *v19;
   if (v21)
   {
-    v22 = [(SBHAddWidgetSheetConfigurationManager *)self listLayoutProvider];
-    v23 = [v22 layoutForIconLocation:v21];
+    listLayoutProvider = [(SBHAddWidgetSheetConfigurationManager *)self listLayoutProvider];
+    v23 = [listLayoutProvider layoutForIconLocation:v21];
 
     v24 = SBHIconListLayoutSupportedIconGridSizeClasses(v23);
 
@@ -397,7 +397,7 @@ void __99__SBHAddWidgetSheetConfigurationManager__fetchGalleryContentForGridSize
   }
 
 LABEL_20:
-  v25 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+  configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
   v26 = objc_opt_respondsToSelector();
   if (v18 == 1 && (v26 & 1) != 0)
   {
@@ -405,11 +405,11 @@ LABEL_20:
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v27 = [v25 rootFolderForAddWidgetSheetConfigurationManager:self];
-    v28 = [v27 todayList];
-    v29 = [v28 icons];
+    v27 = [configurationManagerDelegate rootFolderForAddWidgetSheetConfigurationManager:self];
+    todayList = [v27 todayList];
+    icons = [todayList icons];
 
-    v30 = [v29 countByEnumeratingWithState:&v56 objects:v65 count:16];
+    v30 = [icons countByEnumeratingWithState:&v56 objects:v65 count:16];
     if (v30)
     {
       v31 = v30;
@@ -422,28 +422,28 @@ LABEL_20:
         {
           if (*v57 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(icons);
           }
 
           v34 = *(*(&v56 + 1) + 8 * j);
           if ([v34 isWidgetIcon])
           {
-            v35 = [v34 gridSizeClass];
-            v36 = v35;
-            if (v35 == @"SBHIconGridSizeClassNewsLargeTall")
+            gridSizeClass = [v34 gridSizeClass];
+            v36 = gridSizeClass;
+            if (gridSizeClass == @"SBHIconGridSizeClassNewsLargeTall")
             {
 
-              self = v51;
+              self = selfCopy;
 LABEL_34:
               v20 = [v50 gridSizeClassSetByRemovingGridSizeClass:@"SBHIconGridSizeClassNewsLargeTall"];
 
               goto LABEL_35;
             }
 
-            v37 = [v34 gridSizeClass];
-            v38 = [v37 isEqualToString:@"SBHIconGridSizeClassNewsLargeTall"];
+            gridSizeClass2 = [v34 gridSizeClass];
+            v38 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassNewsLargeTall"];
 
-            self = v51;
+            self = selfCopy;
             if (v38)
             {
               goto LABEL_34;
@@ -451,7 +451,7 @@ LABEL_34:
           }
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v56 objects:v65 count:16];
+        v31 = [icons countByEnumeratingWithState:&v56 objects:v65 count:16];
         if (v31)
         {
           continue;
@@ -462,7 +462,7 @@ LABEL_34:
 
       v20 = v50;
 LABEL_35:
-      v16 = v48;
+      v16 = array;
       v21 = v44;
     }
   }
@@ -476,13 +476,13 @@ LABEL_35:
   v55 = v39;
   [v52 enumerateKeysAndObjectsUsingBlock:v54];
   [(SBHAddWidgetSheetConfigurationManager *)self _sortApplicationWidgetCollections:v39];
-  if (v45)
+  if (itemsCopy)
   {
     [(SBHAddWidgetSheetConfigurationManager *)self _insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections:v39];
   }
 
   v40 = v20;
-  *a4 = v20;
+  *classes = v20;
   v41 = v55;
   v42 = v39;
 
@@ -542,7 +542,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
 - (id)applicationControlCollections
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -552,7 +552,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
   if (v38)
   {
     v36 = *v55;
-    v37 = v3;
+    v37 = array;
     do
     {
       v4 = 0;
@@ -565,22 +565,22 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
 
         v41 = v4;
         v5 = *(*(&v54 + 1) + 8 * v4);
-        v6 = [v5 containerBundleIdentifier];
+        containerBundleIdentifier = [v5 containerBundleIdentifier];
         v7 = [SBLeafIcon alloc];
-        v8 = [MEMORY[0x1E696AFB0] UUID];
-        v9 = [v8 UUIDString];
-        v43 = [(SBLeafIcon *)v7 initWithLeafIdentifier:v9 applicationBundleID:v6];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        v43 = [(SBLeafIcon *)v7 initWithLeafIdentifier:uUIDString applicationBundleID:containerBundleIdentifier];
 
-        v40 = v6;
-        v42 = [(SBHAddWidgetSheetConfigurationManager *)self vendorNameForAppWithBundleIdentifier:v6];
+        v40 = containerBundleIdentifier;
+        v42 = [(SBHAddWidgetSheetConfigurationManager *)self vendorNameForAppWithBundleIdentifier:containerBundleIdentifier];
         v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
         v39 = v5;
-        v45 = [v5 allExtensions];
-        v11 = [v45 countByEnumeratingWithState:&v50 objects:v59 count:16];
+        allExtensions = [v5 allExtensions];
+        v11 = [allExtensions countByEnumeratingWithState:&v50 objects:v59 count:16];
         if (v11)
         {
           v12 = v11;
@@ -592,14 +592,14 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
             {
               if (*v51 != v13)
               {
-                objc_enumerationMutation(v45);
+                objc_enumerationMutation(allExtensions);
               }
 
-              v15 = [*(*(&v50 + 1) + 8 * i) orderedControlDescriptors];
-              if ([v15 count])
+              orderedControlDescriptors = [*(*(&v50 + 1) + 8 * i) orderedControlDescriptors];
+              if ([orderedControlDescriptors count])
               {
-                v16 = [v15 firstObject];
-                v17 = [(SBHAddWidgetSheetConfigurationManager *)self _isDescriptorContainerUnprotected:v16];
+                firstObject = [orderedControlDescriptors firstObject];
+                v17 = [(SBHAddWidgetSheetConfigurationManager *)self _isDescriptorContainerUnprotected:firstObject];
 
                 if (v17)
                 {
@@ -607,7 +607,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
                   v49 = 0u;
                   v46 = 0u;
                   v47 = 0u;
-                  v18 = v15;
+                  v18 = orderedControlDescriptors;
                   v19 = [v18 countByEnumeratingWithState:&v46 objects:v58 count:16];
                   if (v19)
                   {
@@ -640,7 +640,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
               }
             }
 
-            v12 = [v45 countByEnumeratingWithState:&v50 objects:v59 count:16];
+            v12 = [allExtensions countByEnumeratingWithState:&v50 objects:v59 count:16];
           }
 
           while (v12);
@@ -649,26 +649,26 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
         v25 = v42;
         v24 = v43;
         v26 = [[SBHApplicationWidgetCollection alloc] initWithIcon:v43 galleryItems:v10 vendorName:v42];
-        v27 = [v39 localizedContainerDisplayName];
-        [(SBHApplicationWidgetCollection *)v26 setContainerName:v27];
+        localizedContainerDisplayName = [v39 localizedContainerDisplayName];
+        [(SBHApplicationWidgetCollection *)v26 setContainerName:localizedContainerDisplayName];
 
         if (!v43)
         {
-          v28 = [v10 firstObject];
-          v29 = [v28 extensionIdentity];
-          v30 = [v29 extensionBundleIdentifier];
-          v31 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(v30);
+          firstObject2 = [v10 firstObject];
+          extensionIdentity = [firstObject2 extensionIdentity];
+          extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
+          v31 = SBHContainingBundleRecordForWidgetWithBundleIdentifier(extensionBundleIdentifier);
 
-          v32 = [v31 localizedName];
-          if (v32)
+          localizedName = [v31 localizedName];
+          if (localizedName)
           {
-            [(SBHApplicationWidgetCollection *)v26 setContainerName:v32];
+            [(SBHApplicationWidgetCollection *)v26 setContainerName:localizedName];
           }
 
           else
           {
-            v33 = [v31 localizedShortName];
-            [(SBHApplicationWidgetCollection *)v26 setContainerName:v33];
+            localizedShortName = [v31 localizedShortName];
+            [(SBHApplicationWidgetCollection *)v26 setContainerName:localizedShortName];
           }
 
           [(SBHApplicationWidgetCollection *)v26 setIconImageApplicationBundleIdentifier:v40];
@@ -676,7 +676,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
           v24 = 0;
         }
 
-        v3 = v37;
+        array = v37;
         [v37 addObject:v26];
 
         v4 = v41 + 1;
@@ -689,19 +689,19 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
     while (v38);
   }
 
-  [(SBHAddWidgetSheetConfigurationManager *)self _addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:v3];
-  [(SBHAddWidgetSheetConfigurationManager *)self _sortApplicationWidgetCollections:v3];
+  [(SBHAddWidgetSheetConfigurationManager *)self _addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:array];
+  [(SBHAddWidgetSheetConfigurationManager *)self _sortApplicationWidgetCollections:array];
 
-  return v3;
+  return array;
 }
 
-- (id)vendorNameForAppWithBundleIdentifier:(id)a3
+- (id)vendorNameForAppWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+  identifierCopy = identifier;
+  configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 addWidgetSheetConfigurationManager:self vendorNameForAppWithBundleIdentifier:v4];
+    v6 = [configurationManagerDelegate addWidgetSheetConfigurationManager:self vendorNameForAppWithBundleIdentifier:identifierCopy];
   }
 
   else
@@ -712,20 +712,20 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
   return v6;
 }
 
-- (BOOL)_isDescriptorAllowed:(id)a3
+- (BOOL)_isDescriptorAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69D3F88] sharedInstance];
-  if ([v5 showInternalWidgets])
+  allowedCopy = allowed;
+  mEMORY[0x1E69D3F88] = [MEMORY[0x1E69D3F88] sharedInstance];
+  if ([mEMORY[0x1E69D3F88] showInternalWidgets])
   {
     LOBYTE(v6) = 1;
   }
 
-  else if (-[SBHAddWidgetSheetConfigurationManager _isVisibilityWidgetDefined:](self, "_isVisibilityWidgetDefined:", [v4 widgetVisibility]))
+  else if (-[SBHAddWidgetSheetConfigurationManager _isVisibilityWidgetDefined:](self, "_isVisibilityWidgetDefined:", [allowedCopy widgetVisibility]))
   {
     v7 = objc_alloc(MEMORY[0x1E695E000]);
-    v8 = [v4 extensionBundleIdentifier];
-    v9 = [v7 initWithSuiteName:v8];
+    extensionBundleIdentifier = [allowedCopy extensionBundleIdentifier];
+    v9 = [v7 initWithSuiteName:extensionBundleIdentifier];
 
     v10 = *MEMORY[0x1E6994210];
     v11 = [v9 objectForKey:*MEMORY[0x1E6994210]];
@@ -737,7 +737,7 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
 
     else
     {
-      v12 = [(SBHAddWidgetSheetConfigurationManager *)self _isDescriptorVisibleByDefault:v4];
+      v12 = [(SBHAddWidgetSheetConfigurationManager *)self _isDescriptorVisibleByDefault:allowedCopy];
     }
 
     LOBYTE(v6) = v12;
@@ -745,45 +745,45 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
 
   else
   {
-    v6 = [v4 isInternal] ^ 1;
+    v6 = [allowedCopy isInternal] ^ 1;
   }
 
   return v6;
 }
 
-- (BOOL)_isDescriptorUpdatedForSDKRequirements:(id)a3
+- (BOOL)_isDescriptorUpdatedForSDKRequirements:(id)requirements
 {
-  v4 = a3;
-  v5 = [(SBHAddWidgetSheetConfigurationManager *)self homeScreenDefaults];
-  if ([v5 shouldIgnoreMinimumRequiredSDKVersionForWidgets])
+  requirementsCopy = requirements;
+  homeScreenDefaults = [(SBHAddWidgetSheetConfigurationManager *)self homeScreenDefaults];
+  if ([homeScreenDefaults shouldIgnoreMinimumRequiredSDKVersionForWidgets])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 sbh_isLinkedOnOrAfter:{-[SBHAddWidgetSheetConfigurationManager minimumRequiredSDKVersion](self, "minimumRequiredSDKVersion")}];
+    v6 = [requirementsCopy sbh_isLinkedOnOrAfter:{-[SBHAddWidgetSheetConfigurationManager minimumRequiredSDKVersion](self, "minimumRequiredSDKVersion")}];
   }
 
   return v6;
 }
 
-- (BOOL)_isDescriptorContainerUnprotected:(id)a3
+- (BOOL)_isDescriptorContainerUnprotected:(id)unprotected
 {
-  v4 = a3;
-  v5 = [v4 extensionIdentity];
-  v6 = [v5 containerBundleIdentifier];
-  v7 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+  unprotectedCopy = unprotected;
+  extensionIdentity = [unprotectedCopy extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
+  configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 addWidgetSheetConfigurationManager:self containerBundleIdentiferForDescriptor:v4];
+    v8 = [configurationManagerDelegate addWidgetSheetConfigurationManager:self containerBundleIdentiferForDescriptor:unprotectedCopy];
 
-    v6 = v8;
+    containerBundleIdentifier = v8;
   }
 
-  if (v6)
+  if (containerBundleIdentifier)
   {
-    v9 = [(SBHAddWidgetSheetConfigurationManager *)self _isContainerBundleIdentifierUnprotected:v6];
+    v9 = [(SBHAddWidgetSheetConfigurationManager *)self _isContainerBundleIdentifierUnprotected:containerBundleIdentifier];
   }
 
   else
@@ -794,22 +794,22 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
   return v9;
 }
 
-- (BOOL)_isContainerBundleIdentifierUnprotected:(id)a3
+- (BOOL)_isContainerBundleIdentifierUnprotected:(id)unprotected
 {
-  v3 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:a3];
-  v4 = [v3 isHidden];
-  v5 = v4 | [v3 isLocked];
+  v3 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:unprotected];
+  isHidden = [v3 isHidden];
+  v5 = isHidden | [v3 isLocked];
 
   return (v5 & 1) == 0;
 }
 
-- (BOOL)_isDescriptorSupportedByDelegate:(id)a3
+- (BOOL)_isDescriptorSupportedByDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+  delegateCopy = delegate;
+  configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 addWidgetSheetConfigurationManager:self isDescriptorSupported:v4];
+    v6 = [configurationManagerDelegate addWidgetSheetConfigurationManager:self isDescriptorSupported:delegateCopy];
   }
 
   else
@@ -820,13 +820,13 @@ void __143__SBHAddWidgetSheetConfigurationManager_applicationWidgetCollectionsFo
   return v6;
 }
 
-- (void)_sortApplicationWidgetCollections:(id)a3
+- (void)_sortApplicationWidgetCollections:(id)collections
 {
-  v3 = a3;
-  [v3 sortUsingComparator:&__block_literal_global_72];
-  v4 = [v3 bs_filter:&__block_literal_global_44];
-  [v3 removeObjectsInArray:v4];
-  [v3 addObjectsFromArray:v4];
+  collectionsCopy = collections;
+  [collectionsCopy sortUsingComparator:&__block_literal_global_72];
+  v4 = [collectionsCopy bs_filter:&__block_literal_global_44];
+  [collectionsCopy removeObjectsInArray:v4];
+  [collectionsCopy addObjectsFromArray:v4];
 }
 
 uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetCollections___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -860,35 +860,35 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
   return v7;
 }
 
-- (void)_addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:(id)a3
+- (void)_addCustomApplicationWidgetCollectionsToApplicationWidgetCollections:(id)collections
 {
-  v6 = a3;
-  v4 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+  collectionsCopy = collections;
+  configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 customApplicationWidgetCollectionsForAddWidgetSheetConfigurationManager:self];
-    [v6 addObjectsFromArray:v5];
+    v5 = [configurationManagerDelegate customApplicationWidgetCollectionsForAddWidgetSheetConfigurationManager:self];
+    [collectionsCopy addObjectsFromArray:v5];
   }
 }
 
-- (void)updatePresentedWidgetEditingViewController:(id)a3
+- (void)updatePresentedWidgetEditingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 presenter];
+  controllerCopy = controller;
+  presenter = [controllerCopy presenter];
   v6 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = v4;
-    v9 = [v8 allowedWidgets];
+    v8 = controllerCopy;
+    allowedWidgets = [v8 allowedWidgets];
     v11 = v10;
     v12 = [SBHIconGridSizeClassSet alloc];
-    v13 = [(SBHAddWidgetSheetConfigurationManager *)self effectiveGridSizeClassDomain];
-    v14 = [(SBHIconGridSizeClassSet *)v12 initWithCHSWidgetFamilyMask:v9 inDomain:v13];
+    effectiveGridSizeClassDomain = [(SBHAddWidgetSheetConfigurationManager *)self effectiveGridSizeClassDomain];
+    v14 = [(SBHIconGridSizeClassSet *)v12 initWithCHSWidgetFamilyMask:allowedWidgets inDomain:effectiveGridSizeClassDomain];
 
     v17 = v14;
-    v15 = [(SBHAddWidgetSheetConfigurationManager *)self applicationWidgetCollectionsForEditingViewController:v5 withAllowedSizeClasses:&v17 allowingNonStackableItems:v11 & 1];
+    v15 = [(SBHAddWidgetSheetConfigurationManager *)self applicationWidgetCollectionsForEditingViewController:presenter withAllowedSizeClasses:&v17 allowingNonStackableItems:v11 & 1];
     v16 = v17;
 
     [v8 setApplicationWidgetCollections:v15];
@@ -900,10 +900,10 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
   homeScreenDefaults = self->_homeScreenDefaults;
   if (!homeScreenDefaults)
   {
-    v4 = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
+    configurationManagerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self configurationManagerDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 homeScreenDefaultsForAddWidgetSheetConfigurationManager:self];
+      v5 = [configurationManagerDelegate homeScreenDefaultsForAddWidgetSheetConfigurationManager:self];
     }
 
     else
@@ -922,34 +922,34 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
 
 - (id)effectiveGridSizeClassDomain
 {
-  v2 = [(SBHAddWidgetSheetConfigurationManager *)self gridSizeClassDomain];
-  if (!v2)
+  gridSizeClassDomain = [(SBHAddWidgetSheetConfigurationManager *)self gridSizeClassDomain];
+  if (!gridSizeClassDomain)
   {
-    v2 = +[SBHIconGridSizeClassDomain globalDomain];
+    gridSizeClassDomain = +[SBHIconGridSizeClassDomain globalDomain];
   }
 
-  return v2;
+  return gridSizeClassDomain;
 }
 
-- (void)_addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:(id)a3
+- (void)_addFakeWidgetsToApplicationWidgetCollectionsIfAllowed:(id)allowed
 {
   if (self->_allowsFakeWidgets)
   {
-    v5 = a3;
-    [(SBHAddWidgetSheetConfigurationManager *)self _addShortcutsSpecialAvocadoToApplicationWidgetCollections:v5];
-    [(SBHAddWidgetSheetConfigurationManager *)self _addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:v5];
-    [(SBHAddWidgetSheetConfigurationManager *)self _addFilesSpecialAvocadosToApplicationWidgetCollections:v5];
+    allowedCopy = allowed;
+    [(SBHAddWidgetSheetConfigurationManager *)self _addShortcutsSpecialAvocadoToApplicationWidgetCollections:allowedCopy];
+    [(SBHAddWidgetSheetConfigurationManager *)self _addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:allowedCopy];
+    [(SBHAddWidgetSheetConfigurationManager *)self _addFilesSpecialAvocadosToApplicationWidgetCollections:allowedCopy];
   }
 }
 
-- (void)_addShortcutsSpecialAvocadoToApplicationWidgetCollections:(id)a3
+- (void)_addShortcutsSpecialAvocadoToApplicationWidgetCollections:(id)collections
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   if ([(SBHAddWidgetSheetConfigurationManager *)self _shouldAddSpecialAvocadoOfType:2]|| [(SBHAddWidgetSheetConfigurationManager *)self _shouldAddSpecialAvocadoOfType:6])
   {
-    v5 = [(SBHAddWidgetSheetConfigurationManager *)self iconModel];
-    v6 = [v5 applicationIconForBundleIdentifier:@"com.apple.shortcuts"];
+    iconModel = [(SBHAddWidgetSheetConfigurationManager *)self iconModel];
+    v6 = [iconModel applicationIconForBundleIdentifier:@"com.apple.shortcuts"];
 
     if (v6)
     {
@@ -963,15 +963,15 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
       v12 = [v11 localizedStringForKey:@"APPLE_WIDGET_COLLECTION_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       v13 = [(SBHApplicationWidgetCollection *)v7 initWithIcon:v6 galleryItems:v10 vendorName:v12];
 
-      [v4 addObject:v13];
+      [collectionsCopy addObject:v13];
     }
   }
 }
 
-- (void)_addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:(id)a3
+- (void)_addSiriSuggestionsSpecialAvocadosToApplicationWidgetCollections:(id)collections
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   if ([(SBHAddWidgetSheetConfigurationManager *)self _shouldAddSpecialAvocadoOfType:1])
   {
     v5 = [[SBHSpecialWidgetDescriptor alloc] initWithType:1];
@@ -989,18 +989,18 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
     v14 = [v13 localizedStringForKey:@"PROACTIVE_SUGGESTIONS_WIDGET_COLLECTION_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     [(SBHApplicationWidgetCollection *)v12 setContainerName:v14];
 
-    [v4 addObject:v12];
+    [collectionsCopy addObject:v12];
   }
 }
 
-- (void)_addFilesSpecialAvocadosToApplicationWidgetCollections:(id)a3
+- (void)_addFilesSpecialAvocadosToApplicationWidgetCollections:(id)collections
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   if ([(SBHAddWidgetSheetConfigurationManager *)self _shouldAddSpecialAvocadoOfType:3]&& [(SBHAddWidgetSheetConfigurationManager *)self _isContainerBundleIdentifierUnprotected:@"com.apple.DocumentsApp"])
   {
-    v5 = [(SBHAddWidgetSheetConfigurationManager *)self iconModel];
-    v6 = [v5 applicationIconForBundleIdentifier:@"com.apple.DocumentsApp"];
+    iconModel = [(SBHAddWidgetSheetConfigurationManager *)self iconModel];
+    v6 = [iconModel applicationIconForBundleIdentifier:@"com.apple.DocumentsApp"];
 
     if (v6)
     {
@@ -1012,7 +1012,7 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
       v11 = [v10 localizedStringForKey:@"APPLE_WIDGET_COLLECTION_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
       v12 = [(SBHApplicationWidgetCollection *)v7 initWithIcon:v6 galleryItems:v9 vendorName:v11];
 
-      [v4 addObject:v12];
+      [collectionsCopy addObject:v12];
     }
 
     else
@@ -1026,10 +1026,10 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
   }
 }
 
-- (void)_insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections:(id)a3
+- (void)_insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections:(id)collections
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  collectionsCopy = collections;
   if ([(SBHAddWidgetSheetConfigurationManager *)self _shouldAddSpecialAvocadoOfType:5])
   {
     v5 = [[SBHSpecialWidgetDescriptor alloc] initWithType:5];
@@ -1042,17 +1042,17 @@ uint64_t __75__SBHAddWidgetSheetConfigurationManager__sortApplicationWidgetColle
     v10 = [v9 localizedStringForKey:@"APPLE_WIDGET_COLLECTION_NAME" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     v11 = [(SBHApplicationWidgetCollection *)v8 initWithIcon:v7 galleryItems:MEMORY[0x1E695E0F0] vendorName:v10];
 
-    [v4 insertObject:v11 atIndex:0];
-    v12 = [MEMORY[0x1E698AEC0] sharedInstance];
+    [collectionsCopy insertObject:v11 atIndex:0];
+    mEMORY[0x1E698AEC0] = [MEMORY[0x1E698AEC0] sharedInstance];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __112__SBHAddWidgetSheetConfigurationManager__insertSmartStackSpecialAvocadosAtTheTopOfApplicationWidgetCollections___block_invoke;
     v14[3] = &unk_1E8091140;
     v15 = v11;
-    v16 = self;
-    v17 = v4;
+    selfCopy = self;
+    v17 = collectionsCopy;
     v13 = v11;
-    [v12 fetchSmartStackOfVariant:0 completionHandler:v14];
+    [mEMORY[0x1E698AEC0] fetchSmartStackOfVariant:0 completionHandler:v14];
   }
 }
 
@@ -1267,7 +1267,7 @@ void __112__SBHAddWidgetSheetConfigurationManager__insertSmartStackSpecialAvocad
   [v38 setApplicationWidgetCollections:*(v39 + 56)];
 }
 
-- (BOOL)_shouldAddSpecialAvocadoOfType:(unint64_t)a3
+- (BOOL)_shouldAddSpecialAvocadoOfType:(unint64_t)type
 {
   if (!self->_allowsFakeWidgets)
   {
@@ -1275,9 +1275,9 @@ void __112__SBHAddWidgetSheetConfigurationManager__insertSmartStackSpecialAvocad
   }
 
   v3 = @"com.apple.shortcuts";
-  if (a3 != 2 && a3 != 6)
+  if (type != 2 && type != 6)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       return 1;
     }
@@ -1291,13 +1291,13 @@ void __112__SBHAddWidgetSheetConfigurationManager__insertSmartStackSpecialAvocad
   return v5;
 }
 
-- (id)_widgetIconForDescriptor:(id)a3 sizeClass:(int64_t)a4
+- (id)_widgetIconForDescriptor:(id)descriptor sizeClass:(int64_t)class
 {
-  v6 = a3;
-  v7 = [(SBHAddWidgetSheetConfigurationManager *)self widgetDragHandlerDelegate];
+  descriptorCopy = descriptor;
+  widgetDragHandlerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self widgetDragHandlerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 widgetIconForDescriptor:v6 sizeClass:a4];
+    v8 = [widgetDragHandlerDelegate widgetIconForDescriptor:descriptorCopy sizeClass:class];
   }
 
   else
@@ -1308,13 +1308,13 @@ void __112__SBHAddWidgetSheetConfigurationManager__insertSmartStackSpecialAvocad
   return v8;
 }
 
-- (id)_widgetIconForDescriptors:(id)a3 sizeClass:(int64_t)a4
+- (id)_widgetIconForDescriptors:(id)descriptors sizeClass:(int64_t)class
 {
-  v6 = a3;
-  v7 = [(SBHAddWidgetSheetConfigurationManager *)self widgetDragHandlerDelegate];
+  descriptorsCopy = descriptors;
+  widgetDragHandlerDelegate = [(SBHAddWidgetSheetConfigurationManager *)self widgetDragHandlerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 widgetIconForDescriptors:v6 sizeClass:a4];
+    v8 = [widgetDragHandlerDelegate widgetIconForDescriptors:descriptorsCopy sizeClass:class];
   }
 
   else

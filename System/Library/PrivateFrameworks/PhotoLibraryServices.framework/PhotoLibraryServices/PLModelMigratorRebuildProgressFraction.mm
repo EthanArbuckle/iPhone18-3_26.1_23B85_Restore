@@ -1,13 +1,13 @@
 @interface PLModelMigratorRebuildProgressFraction
-- (PLModelMigratorRebuildProgressFraction)initWithLegacyRecoveryEnabled:(BOOL)a3;
-- (float)progressFractionForType:(unsigned __int8)a3;
+- (PLModelMigratorRebuildProgressFraction)initWithLegacyRecoveryEnabled:(BOOL)enabled;
+- (float)progressFractionForType:(unsigned __int8)type;
 @end
 
 @implementation PLModelMigratorRebuildProgressFraction
 
-- (float)progressFractionForType:(unsigned __int8)a3
+- (float)progressFractionForType:(unsigned __int8)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v4 = 0.25;
     if ([(PLModelMigratorRebuildProgressFraction *)self isRebuildEnabled])
@@ -21,7 +21,7 @@
   }
 
   v4 = 0.0;
-  if (a3 == 1)
+  if (type == 1)
   {
     if (![(PLModelMigratorRebuildProgressFraction *)self isLegacyRecoveryEnabled])
     {
@@ -34,7 +34,7 @@
     goto LABEL_11;
   }
 
-  if (!a3 && [(PLModelMigratorRebuildProgressFraction *)self isRebuildEnabled])
+  if (!type && [(PLModelMigratorRebuildProgressFraction *)self isRebuildEnabled])
   {
     v5 = ![(PLModelMigratorRebuildProgressFraction *)self isLegacyRecoveryEnabled];
     v6 = 0.75;
@@ -55,14 +55,14 @@ LABEL_11:
   return v4;
 }
 
-- (PLModelMigratorRebuildProgressFraction)initWithLegacyRecoveryEnabled:(BOOL)a3
+- (PLModelMigratorRebuildProgressFraction)initWithLegacyRecoveryEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = PLModelMigratorRebuildProgressFraction;
   result = [(PLModelMigratorRebuildProgressFraction *)&v5 init];
   if (result)
   {
-    result->_legacyRecoveryEnabled = a3;
+    result->_legacyRecoveryEnabled = enabled;
   }
 
   return result;

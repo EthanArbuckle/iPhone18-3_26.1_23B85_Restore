@@ -1,9 +1,9 @@
 @interface CTSweetgumUsagePlanItemData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumUsagePlanItemData)init;
-- (CTSweetgumUsagePlanItemData)initWithCoder:(id)a3;
+- (CTSweetgumUsagePlanItemData)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumUsagePlanItemData
@@ -40,30 +40,30 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", units=%s", CTSweetgumDataUnitsAsString(-[CTSweetgumUsagePlanItemData units](self, "units"))];
-  v4 = [(CTSweetgumUsagePlanItemData *)self capacity];
-  [v3 appendFormat:@", capacity=%@", v4];
+  capacity = [(CTSweetgumUsagePlanItemData *)self capacity];
+  [v3 appendFormat:@", capacity=%@", capacity];
 
-  v5 = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
-  [v3 appendFormat:@", maxDataBeforeThrottling=%@", v5];
+  maxDataBeforeThrottling = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
+  [v3 appendFormat:@", maxDataBeforeThrottling=%@", maxDataBeforeThrottling];
 
-  v6 = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
-  [v3 appendFormat:@", used=%@", v6];
+  thisDeviceDataUsed = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
+  [v3 appendFormat:@", used=%@", thisDeviceDataUsed];
 
-  v7 = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
-  [v3 appendFormat:@", sharedDataUsed=%@", v7];
+  sharedDataUsed = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
+  [v3 appendFormat:@", sharedDataUsed=%@", sharedDataUsed];
 
-  v8 = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
-  [v3 appendFormat:@", sharedPlanIdentifier=%@", v8];
+  sharedPlanIdentifier = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
+  [v3 appendFormat:@", sharedPlanIdentifier=%@", sharedPlanIdentifier];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -73,36 +73,36 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTSweetgumUsagePlanItemData *)self units];
-      if (v7 == [(CTSweetgumUsagePlanItemData *)v6 units])
+      units = [(CTSweetgumUsagePlanItemData *)self units];
+      if (units == [(CTSweetgumUsagePlanItemData *)equalCopy units])
       {
-        v8 = [(CTSweetgumUsagePlanItemData *)self capacity];
-        v9 = [(CTSweetgumUsagePlanItemData *)v6 capacity];
-        if (v8 != v9)
+        capacity = [(CTSweetgumUsagePlanItemData *)self capacity];
+        capacity2 = [(CTSweetgumUsagePlanItemData *)equalCopy capacity];
+        if (capacity != capacity2)
         {
-          v10 = [(CTSweetgumUsagePlanItemData *)self capacity];
-          v42 = [(CTSweetgumUsagePlanItemData *)v6 capacity];
-          v43 = v10;
-          if (![v10 isEqualToString:?])
+          capacity3 = [(CTSweetgumUsagePlanItemData *)self capacity];
+          capacity4 = [(CTSweetgumUsagePlanItemData *)equalCopy capacity];
+          v43 = capacity3;
+          if (![capacity3 isEqualToString:?])
           {
             v11 = 0;
             goto LABEL_30;
           }
         }
 
-        v12 = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
-        v13 = [(CTSweetgumUsagePlanItemData *)v6 maxDataBeforeThrottling];
-        if (v12 != v13)
+        maxDataBeforeThrottling = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
+        maxDataBeforeThrottling2 = [(CTSweetgumUsagePlanItemData *)equalCopy maxDataBeforeThrottling];
+        if (maxDataBeforeThrottling != maxDataBeforeThrottling2)
         {
-          v3 = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
-          v4 = [(CTSweetgumUsagePlanItemData *)v6 maxDataBeforeThrottling];
-          if (![v3 isEqualToString:v4])
+          maxDataBeforeThrottling3 = [(CTSweetgumUsagePlanItemData *)self maxDataBeforeThrottling];
+          maxDataBeforeThrottling4 = [(CTSweetgumUsagePlanItemData *)equalCopy maxDataBeforeThrottling];
+          if (![maxDataBeforeThrottling3 isEqualToString:maxDataBeforeThrottling4])
           {
             v11 = 0;
 LABEL_28:
 
 LABEL_29:
-            if (v8 == v9)
+            if (capacity == capacity2)
             {
 LABEL_31:
 
@@ -115,24 +115,24 @@ LABEL_30:
           }
         }
 
-        v14 = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
-        v15 = [(CTSweetgumUsagePlanItemData *)v6 thisDeviceDataUsed];
-        v41 = v14;
-        v16 = v14 == v15;
-        v17 = v15;
+        thisDeviceDataUsed = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
+        thisDeviceDataUsed2 = [(CTSweetgumUsagePlanItemData *)equalCopy thisDeviceDataUsed];
+        v41 = thisDeviceDataUsed;
+        v16 = thisDeviceDataUsed == thisDeviceDataUsed2;
+        v17 = thisDeviceDataUsed2;
         if (!v16)
         {
-          v18 = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
-          v36 = [(CTSweetgumUsagePlanItemData *)v6 thisDeviceDataUsed];
-          v37 = v18;
-          if (![v18 isEqualToString:?])
+          thisDeviceDataUsed3 = [(CTSweetgumUsagePlanItemData *)self thisDeviceDataUsed];
+          thisDeviceDataUsed4 = [(CTSweetgumUsagePlanItemData *)equalCopy thisDeviceDataUsed];
+          v37 = thisDeviceDataUsed3;
+          if (![thisDeviceDataUsed3 isEqualToString:?])
           {
             v11 = 0;
             v19 = v41;
 LABEL_26:
 
 LABEL_27:
-            if (v12 == v13)
+            if (maxDataBeforeThrottling == maxDataBeforeThrottling2)
             {
               goto LABEL_29;
             }
@@ -141,37 +141,37 @@ LABEL_27:
           }
         }
 
-        v20 = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
-        v38 = [(CTSweetgumUsagePlanItemData *)v6 sharedDataUsed];
+        sharedDataUsed = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
+        sharedDataUsed2 = [(CTSweetgumUsagePlanItemData *)equalCopy sharedDataUsed];
         v39 = v17;
-        v40 = v4;
-        if (v20 == v38)
+        v40 = maxDataBeforeThrottling4;
+        if (sharedDataUsed == sharedDataUsed2)
         {
-          v35 = v3;
+          v35 = maxDataBeforeThrottling3;
         }
 
         else
         {
-          v21 = v3;
-          v22 = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
-          v33 = [(CTSweetgumUsagePlanItemData *)v6 sharedDataUsed];
-          v34 = v22;
-          if (![v22 isEqualToString:?])
+          v21 = maxDataBeforeThrottling3;
+          sharedDataUsed3 = [(CTSweetgumUsagePlanItemData *)self sharedDataUsed];
+          sharedDataUsed4 = [(CTSweetgumUsagePlanItemData *)equalCopy sharedDataUsed];
+          v34 = sharedDataUsed3;
+          if (![sharedDataUsed3 isEqualToString:?])
           {
             v11 = 0;
-            v30 = v38;
-            v3 = v21;
-            v4 = v40;
+            v30 = sharedDataUsed2;
+            maxDataBeforeThrottling3 = v21;
+            maxDataBeforeThrottling4 = v40;
             goto LABEL_24;
           }
 
           v35 = v21;
         }
 
-        v23 = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
-        v24 = [(CTSweetgumUsagePlanItemData *)v6 sharedPlanIdentifier];
-        v25 = v24;
-        if (v23 == v24)
+        sharedPlanIdentifier = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
+        sharedPlanIdentifier2 = [(CTSweetgumUsagePlanItemData *)equalCopy sharedPlanIdentifier];
+        v25 = sharedPlanIdentifier2;
+        if (sharedPlanIdentifier == sharedPlanIdentifier2)
         {
 
           v11 = 1;
@@ -179,22 +179,22 @@ LABEL_27:
 
         else
         {
-          v26 = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
-          [(CTSweetgumUsagePlanItemData *)v6 sharedPlanIdentifier];
-          v32 = v13;
-          v27 = v12;
-          v29 = v28 = v20;
-          v11 = [v26 isEqualToString:v29];
+          sharedPlanIdentifier3 = [(CTSweetgumUsagePlanItemData *)self sharedPlanIdentifier];
+          [(CTSweetgumUsagePlanItemData *)equalCopy sharedPlanIdentifier];
+          v32 = maxDataBeforeThrottling2;
+          v27 = maxDataBeforeThrottling;
+          v29 = v28 = sharedDataUsed;
+          v11 = [sharedPlanIdentifier3 isEqualToString:v29];
 
-          v20 = v28;
-          v12 = v27;
-          v13 = v32;
+          sharedDataUsed = v28;
+          maxDataBeforeThrottling = v27;
+          maxDataBeforeThrottling2 = v32;
         }
 
-        v30 = v38;
-        v3 = v35;
-        v4 = v40;
-        if (v20 == v38)
+        v30 = sharedDataUsed2;
+        maxDataBeforeThrottling3 = v35;
+        maxDataBeforeThrottling4 = v40;
+        if (sharedDataUsed == sharedDataUsed2)
         {
 LABEL_25:
 
@@ -222,44 +222,44 @@ LABEL_32:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   units = self->_units;
-  v5 = a3;
-  [v5 encodeInteger:units forKey:@"units"];
-  [v5 encodeObject:self->_capacity forKey:@"capacity"];
-  [v5 encodeObject:self->_maxDataBeforeThrottling forKey:@"maxDataBeforeThrottling"];
-  [v5 encodeObject:self->_thisDeviceDataUsed forKey:@"thisDeviceDataUsed"];
-  [v5 encodeObject:self->_sharedDataUsed forKey:@"sharedDataUsed"];
-  [v5 encodeObject:self->_sharedPlanIdentifier forKey:@"sharedPlanIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:units forKey:@"units"];
+  [coderCopy encodeObject:self->_capacity forKey:@"capacity"];
+  [coderCopy encodeObject:self->_maxDataBeforeThrottling forKey:@"maxDataBeforeThrottling"];
+  [coderCopy encodeObject:self->_thisDeviceDataUsed forKey:@"thisDeviceDataUsed"];
+  [coderCopy encodeObject:self->_sharedDataUsed forKey:@"sharedDataUsed"];
+  [coderCopy encodeObject:self->_sharedPlanIdentifier forKey:@"sharedPlanIdentifier"];
 }
 
-- (CTSweetgumUsagePlanItemData)initWithCoder:(id)a3
+- (CTSweetgumUsagePlanItemData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CTSweetgumUsagePlanItemData;
   v5 = [(CTSweetgumUsagePlanItemData *)&v17 init];
   if (v5)
   {
-    v5->_units = [v4 decodeIntegerForKey:@"units"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
+    v5->_units = [coderCopy decodeIntegerForKey:@"units"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
     capacity = v5->_capacity;
     v5->_capacity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxDataBeforeThrottling"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxDataBeforeThrottling"];
     maxDataBeforeThrottling = v5->_maxDataBeforeThrottling;
     v5->_maxDataBeforeThrottling = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"thisDeviceDataUsed"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"thisDeviceDataUsed"];
     thisDeviceDataUsed = v5->_thisDeviceDataUsed;
     v5->_thisDeviceDataUsed = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedDataUsed"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedDataUsed"];
     sharedDataUsed = v5->_sharedDataUsed;
     v5->_sharedDataUsed = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedPlanIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedPlanIdentifier"];
     sharedPlanIdentifier = v5->_sharedPlanIdentifier;
     v5->_sharedPlanIdentifier = v14;
   }

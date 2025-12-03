@@ -1,16 +1,16 @@
 @interface NSMethodSignature
 + (NSMethodSignature)signatureWithObjCTypes:(const char *)types;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (Class)_classForObjectAtArgumentIndex:(int64_t)a3;
-- (NSMethodFrameArgInfo)_argInfo:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (Class)_classForObjectAtArgumentIndex:(int64_t)index;
+- (NSMethodFrameArgInfo)_argInfo:(int64_t)info;
 - (NSUInteger)methodReturnLength;
 - (const)_cTypeString;
 - (const)getArgumentTypeAtIndex:(NSUInteger)idx;
 - (const)methodReturnType;
-- (id)_initWithROMEntry:(const CFMethodSignatureROMEntry *)a3;
-- (id)_protocolsForObjectAtArgumentIndex:(int64_t)a3;
-- (id)_signatureForBlockAtArgumentIndex:(int64_t)a3;
+- (id)_initWithROMEntry:(const CFMethodSignatureROMEntry *)entry;
+- (id)_protocolsForObjectAtArgumentIndex:(int64_t)index;
+- (id)_signatureForBlockAtArgumentIndex:(int64_t)index;
 - (id)_typeString;
 - (id)debugDescription;
 - (unint64_t)hash;
@@ -162,7 +162,7 @@ LABEL_12:
 
 + (void)initialize
 {
-  if (NSMethodSignature == a1 && *MEMORY[0x1E69E5908] != 0)
+  if (NSMethodSignature == self && *MEMORY[0x1E69E5908] != 0)
   {
     _objc_registerTaggedPointerClass();
   }
@@ -285,7 +285,7 @@ LABEL_25:
           while (*v37);
         }
 
-        v23 = [a1 alloc];
+        v23 = [self alloc];
         v23[1] = v14;
         is_memory_immutable = _dyld_is_memory_immutable();
         v25 = types;
@@ -438,7 +438,7 @@ LABEL_7:
   return Value;
 }
 
-- (id)_initWithROMEntry:(const CFMethodSignatureROMEntry *)a3
+- (id)_initWithROMEntry:(const CFMethodSignatureROMEntry *)entry
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -446,9 +446,9 @@ LABEL_7:
   result = [(NSMethodSignature *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3->var0;
-    var2 = a3->var2;
-    *(result + 2) = a3->var1;
+    *(result + 1) = entry->var0;
+    var2 = entry->var2;
+    *(result + 2) = entry->var1;
     *(result + 3) = var2;
   }
 
@@ -485,15 +485,15 @@ LABEL_7:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (NSMethodFrameArgInfo)_argInfo:(int64_t)a3
+- (NSMethodFrameArgInfo)_argInfo:(int64_t)info
 {
   result = _getFrameDescriptor(self);
-  if (a3 == -1)
+  if (info == -1)
   {
     return result->var0;
   }
 
-  v5 = a3 + 1;
+  v5 = info + 1;
   do
   {
     result = result->var1;
@@ -504,10 +504,10 @@ LABEL_7:
   return result;
 }
 
-- (id)_signatureForBlockAtArgumentIndex:(int64_t)a3
+- (id)_signatureForBlockAtArgumentIndex:(int64_t)index
 {
   v8 = *MEMORY[0x1E69E9840];
-  result = [(NSMethodSignature *)self _argInfo:a3];
+  result = [(NSMethodSignature *)self _argInfo:index];
   if (result)
   {
     if ((~*(result + 17) & 0xA000) != 0 || !*result)
@@ -533,14 +533,14 @@ LABEL_7:
   return result;
 }
 
-- (Class)_classForObjectAtArgumentIndex:(int64_t)a3
+- (Class)_classForObjectAtArgumentIndex:(int64_t)index
 {
-  if (a3 < -1 || (a3 & 0x8000000000000000) == 0 && [(NSMethodSignature *)self numberOfArguments]<= a3)
+  if (index < -1 || (index & 0x8000000000000000) == 0 && [(NSMethodSignature *)self numberOfArguments]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMethodSignature *)self _argInfo:a3];
+  v5 = [(NSMethodSignature *)self _argInfo:index];
   if (!v5)
   {
     return 0;
@@ -560,21 +560,21 @@ LABEL_7:
   return objc_getClass(var0->var25);
 }
 
-- (id)_protocolsForObjectAtArgumentIndex:(int64_t)a3
+- (id)_protocolsForObjectAtArgumentIndex:(int64_t)index
 {
-  if (a3 < -1)
+  if (index < -1)
   {
     return 0;
   }
 
   v13 = v4;
   v14 = v3;
-  if ((a3 & 0x8000000000000000) == 0 && [(NSMethodSignature *)self numberOfArguments]<= a3)
+  if ((index & 0x8000000000000000) == 0 && [(NSMethodSignature *)self numberOfArguments]<= index)
   {
     return 0;
   }
 
-  result = [(NSMethodSignature *)self _argInfo:a3, v13, v14, v5, v6];
+  result = [(NSMethodSignature *)self _argInfo:index, v13, v14, v5, v6];
   if (!result)
   {
     return result;
@@ -652,17 +652,17 @@ LABEL_7:
   return &v3[__NSMS5(FrameDescriptor[1])];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v7) = 1;
   }
 
-  else if (a3 && (objc_opt_isKindOfClass() & 1) != 0)
+  else if (equal && (objc_opt_isKindOfClass() & 1) != 0)
   {
     FrameDescriptor = _getFrameDescriptor(self);
-    v6 = _getFrameDescriptor(a3);
+    v6 = _getFrameDescriptor(equal);
     v7 = __NSMS6(*FrameDescriptor, *v6);
     if (v7)
     {

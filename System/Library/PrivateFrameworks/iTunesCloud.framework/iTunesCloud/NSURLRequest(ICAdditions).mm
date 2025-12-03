@@ -9,8 +9,8 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = a3;
-  v18 = [MEMORY[0x1E695DF70] array];
-  v17 = [a1 ic_valueForHTTPHeaderField:@"Cookie"];
+  array = [MEMORY[0x1E695DF70] array];
+  v17 = [self ic_valueForHTTPHeaderField:@"Cookie"];
   v4 = [v17 componentsSeparatedByString:@" "];;
   v20 = 0u;
   v21 = 0u;
@@ -40,7 +40,7 @@
           if (![v19 caseInsensitiveCompare:v14])
           {
             v15 = [v9 substringFromIndex:v12 + v13];
-            [v18 addObject:v15];
+            [array addObject:v15];
           }
         }
       }
@@ -51,13 +51,13 @@
     while (v6);
   }
 
-  return v18;
+  return array;
 }
 
 - (id)ic_valueForHTTPHeaderField:()ICAdditions
 {
   v4 = a3;
-  v5 = [a1 valueForHTTPHeaderField:v4];
+  v5 = [self valueForHTTPHeaderField:v4];
   v6 = v5;
   if (v5)
   {
@@ -72,14 +72,14 @@
     v16 = __Block_byref_object_copy__35903;
     v17 = __Block_byref_object_dispose__35904;
     v18 = 0;
-    v8 = [a1 allHTTPHeaderFields];
+    allHTTPHeaderFields = [self allHTTPHeaderFields];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __56__NSURLRequest_ICAdditions__ic_valueForHTTPHeaderField___block_invoke;
     v10[3] = &unk_1E7BF9098;
     v11 = v4;
     v12 = &v13;
-    [v8 enumerateKeysAndObjectsUsingBlock:v10];
+    [allHTTPHeaderFields enumerateKeysAndObjectsUsingBlock:v10];
 
     v7 = v14[5];
     _Block_object_dispose(&v13, 8);

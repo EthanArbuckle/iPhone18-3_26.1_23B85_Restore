@@ -6,125 +6,125 @@
 - (AFUISiriRemoteSceneViewControllerDelegate)delegate;
 - (id)_connection;
 - (id)serviceViewControllerProxy;
-- (id)serviceViewControllerProxyWithErrorHandler:(id)a3;
-- (void)_audioCategoriesDisablingVolumeHUDDidChangeTo:(id)a3;
-- (void)_handleInvalidationForReason:(unint64_t)a3 explanation:(id)a4;
-- (void)_handleSceneDidActivateWithIdentifier:(id)a3;
+- (id)serviceViewControllerProxyWithErrorHandler:(id)handler;
+- (void)_audioCategoriesDisablingVolumeHUDDidChangeTo:(id)to;
+- (void)_handleInvalidationForReason:(unint64_t)reason explanation:(id)explanation;
+- (void)_handleSceneDidActivateWithIdentifier:(id)identifier;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)animatedDisappearanceDidBeginWithDuration:(double)a3 reason:(int64_t)a4;
+- (void)animatedDisappearanceDidBeginWithDuration:(double)duration reason:(int64_t)reason;
 - (void)applicationDidBecomeActive;
 - (void)applicationWillEnterForeground;
 - (void)applicationWillResignActive;
 - (void)dealloc;
-- (void)didDetectGestureEvent:(int64_t)a3 inRegion:(int64_t)a4;
+- (void)didDetectGestureEvent:(int64_t)event inRegion:(int64_t)region;
 - (void)didReceiveBugButtonLongPress;
 - (void)didReceiveHelpAction;
 - (void)didReceiveOrbViewTapToCancelRequest;
 - (void)didReceiveReportBugAction;
-- (void)didReceiveShortTapActionWithRequestOptions:(id)a3;
-- (void)didSuccessfullyHandleCommandsInDelayedActionCommand:(id)a3;
+- (void)didReceiveShortTapActionWithRequestOptions:(id)options;
+- (void)didSuccessfullyHandleCommandsInDelayedActionCommand:(id)command;
 - (void)dismissSiriResults;
-- (void)emitInstrumentationEvent:(id)a3;
-- (void)emitInstrumentationEvent:(id)a3 atTime:(unint64_t)a4;
-- (void)emitUIStateTransitionForSiriDismissalWithDismissalReason:(int)a3 completion:(id)a4;
-- (void)getScreenshotWithReplyHandler:(id)a3;
-- (void)handlePasscodeUnlockWithClient:(unint64_t)a3 withCompletion:(id)a4;
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4;
-- (void)inputTypeDidChange:(int64_t)a3;
+- (void)emitInstrumentationEvent:(id)event;
+- (void)emitInstrumentationEvent:(id)event atTime:(unint64_t)time;
+- (void)emitUIStateTransitionForSiriDismissalWithDismissalReason:(int)reason completion:(id)completion;
+- (void)getScreenshotWithReplyHandler:(id)handler;
+- (void)handlePasscodeUnlockWithClient:(unint64_t)client withCompletion:(id)completion;
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion;
+- (void)inputTypeDidChange:(int64_t)change;
 - (void)invalidate;
 - (void)invalidateSystemApertureAssertion;
 - (void)noteApplicationTransition;
-- (void)openURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5 completion:(id)a6;
-- (void)openURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5 launchOptions:(id)a6 completion:(id)a7;
-- (void)orientationWillChangeTo:(int64_t)a3;
+- (void)openURL:(id)l bundleId:(id)id inPlace:(BOOL)place completion:(id)completion;
+- (void)openURL:(id)l bundleId:(id)id inPlace:(BOOL)place launchOptions:(id)options completion:(id)completion;
+- (void)orientationWillChangeTo:(int64_t)to;
 - (void)preloadPluginBundles;
-- (void)preloadPresentationBundleWithIdentifier:(id)a3;
+- (void)preloadPresentationBundleWithIdentifier:(id)identifier;
 - (void)presentationDidPresentKeyboard;
-- (void)presentationStateUpdatedFromPresentationState:(int64_t)a3 toPresentationState:(int64_t)a4;
+- (void)presentationStateUpdatedFromPresentationState:(int64_t)state toPresentationState:(int64_t)presentationState;
 - (void)pulseHelpButton;
-- (void)requestHostBlurVisible:(BOOL)a3 reason:(int64_t)a4 fence:(id)a5;
+- (void)requestHostBlurVisible:(BOOL)visible reason:(int64_t)reason fence:(id)fence;
 - (void)requestSystemApertureCollapse;
-- (void)sceneController:(id)a3 didCreateSiriScene:(id)a4;
-- (void)sceneController:(id)a3 willInvalidateScene:(id)a4 forReason:(unint64_t)a5;
-- (void)serviceBulletinWithIdentifier:(id)a3 replyHandler:(id)a4;
+- (void)sceneController:(id)controller didCreateSiriScene:(id)scene;
+- (void)sceneController:(id)controller willInvalidateScene:(id)scene forReason:(unint64_t)reason;
+- (void)serviceBulletinWithIdentifier:(id)identifier replyHandler:(id)handler;
 - (void)serviceCancelHIDEventDefferal;
 - (void)serviceDidDetectAudioRoutePickerTap;
 - (void)serviceDidDetectMicButtonLongPressBegan;
 - (void)serviceDidDetectMicButtonLongPressEnded;
 - (void)serviceDidDetectMicButtonTap;
-- (void)serviceDidDismissViewControllerWithStatusBarStyle:(int64_t)a3;
+- (void)serviceDidDismissViewControllerWithStatusBarStyle:(int64_t)style;
 - (void)serviceDidEndEditing;
 - (void)serviceDidEnterUITrackingMode;
 - (void)serviceDidExitUITrackingMode;
 - (void)serviceDidPresentConversationFromBreadcrumb;
 - (void)serviceDidPresentUserInterface;
-- (void)serviceDidPresentViewControllerWithStatusBarStyle:(int64_t)a3;
-- (void)serviceDidRequestCurrentTextInput:(id)a3;
-- (void)serviceDidRequestKeyboard:(BOOL)a3;
-- (void)serviceDidRequestKeyboard:(BOOL)a3 minimized:(BOOL)a4;
+- (void)serviceDidPresentViewControllerWithStatusBarStyle:(int64_t)style;
+- (void)serviceDidRequestCurrentTextInput:(id)input;
+- (void)serviceDidRequestKeyboard:(BOOL)keyboard;
+- (void)serviceDidRequestKeyboard:(BOOL)keyboard minimized:(BOOL)minimized;
 - (void)serviceDidResetTextInput;
-- (void)servicePresentationDidChangePeekMode:(unint64_t)a3;
-- (void)servicePresentationDidChangeVisualState:(unint64_t)a3;
-- (void)servicePresentedIntentWithBundleId:(id)a3;
-- (void)serviceRequestsActivationSourceWithReplyHandler:(id)a3;
-- (void)serviceRequestsDismissalWithUserInfo:(id)a3 withReason:(int64_t)a4;
+- (void)servicePresentationDidChangePeekMode:(unint64_t)mode;
+- (void)servicePresentationDidChangeVisualState:(unint64_t)state;
+- (void)servicePresentedIntentWithBundleId:(id)id;
+- (void)serviceRequestsActivationSourceWithReplyHandler:(id)handler;
+- (void)serviceRequestsDismissalWithUserInfo:(id)info withReason:(int64_t)reason;
 - (void)serviceRequestsHIDEventDefferal;
 - (void)serviceStartGuidedAccess;
-- (void)serviceStartRequestWithOptions:(id)a3;
+- (void)serviceStartRequestWithOptions:(id)options;
 - (void)serviceUserRelevantEventDidOccur;
-- (void)serviceViewControllerRequestsDismissalWithDismissalReason:(int64_t)a3 completion:(id)a4;
-- (void)serviceViewControllerRequestsKeyboardWithCompletion:(id)a3;
-- (void)serviceViewControllerRequestsPresentation:(id)a3;
-- (void)serviceViewControllerWillChangeKeyboardVisibility:(BOOL)a3;
+- (void)serviceViewControllerRequestsDismissalWithDismissalReason:(int64_t)reason completion:(id)completion;
+- (void)serviceViewControllerRequestsKeyboardWithCompletion:(id)completion;
+- (void)serviceViewControllerRequestsPresentation:(id)presentation;
+- (void)serviceViewControllerWillChangeKeyboardVisibility:(BOOL)visibility;
 - (void)serviceWillBeginEditing;
-- (void)serviceWillDismissViewControllerWithStatusBarStyle:(int64_t)a3;
-- (void)serviceWillPresentViewControllerWithStatusBarStyle:(int64_t)a3;
-- (void)setBottomContentInset:(double)a3;
-- (void)setBugReportingAvailable:(BOOL)a3;
-- (void)setDockFrame:(CGRect)a3;
-- (void)setFullScreenDimmingLayerVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHelpButtonEmphasized:(BOOL)a3;
-- (void)setRequestHandlingStatus:(unint64_t)a3;
-- (void)setRequestOptions:(id)a3;
-- (void)setSession:(id)a3;
-- (void)setShouldDismissForSwipesOutsideContent:(BOOL)a3;
-- (void)setShouldDismissForTapOutsideContent:(BOOL)a3;
-- (void)setShouldDismissForTapsOutsideContent:(BOOL)a3;
-- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)a3;
-- (void)setStatusBarFrame:(CGRect)a3;
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setStatusViewDisabled:(BOOL)a3;
-- (void)setStatusViewHeight:(double)a3;
-- (void)setStatusViewHidden:(BOOL)a3;
-- (void)setStatusViewUserInteractionEnabled:(BOOL)a3;
-- (void)setSystemContentFrame:(CGRect)a3;
-- (void)setTypeToSiriViewHidden:(BOOL)a3;
-- (void)setWaitingForTelephonyToStart:(BOOL)a3;
-- (void)showAppUnlockForAppId:(id)a3 completion:(id)a4;
-- (void)showPresentationWithIdentifier:(id)a3 properties:(id)a4 lockState:(unint64_t)a5;
-- (void)siriDidActivateFromSource:(int64_t)a3;
+- (void)serviceWillDismissViewControllerWithStatusBarStyle:(int64_t)style;
+- (void)serviceWillPresentViewControllerWithStatusBarStyle:(int64_t)style;
+- (void)setBottomContentInset:(double)inset;
+- (void)setBugReportingAvailable:(BOOL)available;
+- (void)setDockFrame:(CGRect)frame;
+- (void)setFullScreenDimmingLayerVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setHelpButtonEmphasized:(BOOL)emphasized;
+- (void)setRequestHandlingStatus:(unint64_t)status;
+- (void)setRequestOptions:(id)options;
+- (void)setSession:(id)session;
+- (void)setShouldDismissForSwipesOutsideContent:(BOOL)content;
+- (void)setShouldDismissForTapOutsideContent:(BOOL)content;
+- (void)setShouldDismissForTapsOutsideContent:(BOOL)content;
+- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)board;
+- (void)setStatusBarFrame:(CGRect)frame;
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setStatusViewDisabled:(BOOL)disabled;
+- (void)setStatusViewHeight:(double)height;
+- (void)setStatusViewHidden:(BOOL)hidden;
+- (void)setStatusViewUserInteractionEnabled:(BOOL)enabled;
+- (void)setSystemContentFrame:(CGRect)frame;
+- (void)setTypeToSiriViewHidden:(BOOL)hidden;
+- (void)setWaitingForTelephonyToStart:(BOOL)start;
+- (void)showAppUnlockForAppId:(id)id completion:(id)completion;
+- (void)showPresentationWithIdentifier:(id)identifier properties:(id)properties lockState:(unint64_t)state;
+- (void)siriDidActivateFromSource:(int64_t)source;
 - (void)siriDidDeactivate;
 - (void)siriDidHidePasscodeUnlock;
-- (void)siriIdleAndQuietStatusDidChange:(BOOL)a3;
-- (void)siriKeyboardViewDidChange:(id *)a3;
+- (void)siriIdleAndQuietStatusDidChange:(BOOL)change;
+- (void)siriKeyboardViewDidChange:(id *)change;
 - (void)siriResultsDidDismissInTamale;
-- (void)siriWillActivateFromSource:(int64_t)a3;
-- (void)siriWillBePresented:(int64_t)a3;
-- (void)siriWillBeginTearDownForDismissalReason:(int64_t)a3 withOriginalDismissalOptions:(id)a4;
-- (void)siriWillHidePasscodeUnlockForResult:(int64_t)a3;
-- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)a3;
-- (void)startHostingSceneForConfiguration:(id)a3 withCompletionBlock:(id)a4;
-- (void)startRequestForText:(id)a3;
-- (void)takeScreenshotWithCompletion:(id)a3;
-- (void)toggleHomeAffordanceHidden:(BOOL)a3;
-- (void)toggleSiriHomeAffordanceGestureControl:(BOOL)a3;
-- (void)updateEdgeLightWindowLevel:(int64_t)a3;
-- (void)updateRemoteSceneWithFrontMostAppInterfaceOrientation:(int64_t)a3;
-- (void)updateToPresentationWithIdentifier:(id)a3 presentationProperties:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)siriWillActivateFromSource:(int64_t)source;
+- (void)siriWillBePresented:(int64_t)presented;
+- (void)siriWillBeginTearDownForDismissalReason:(int64_t)reason withOriginalDismissalOptions:(id)options;
+- (void)siriWillHidePasscodeUnlockForResult:(int64_t)result;
+- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)request;
+- (void)startHostingSceneForConfiguration:(id)configuration withCompletionBlock:(id)block;
+- (void)startRequestForText:(id)text;
+- (void)takeScreenshotWithCompletion:(id)completion;
+- (void)toggleHomeAffordanceHidden:(BOOL)hidden;
+- (void)toggleSiriHomeAffordanceGestureControl:(BOOL)control;
+- (void)updateEdgeLightWindowLevel:(int64_t)level;
+- (void)updateRemoteSceneWithFrontMostAppInterfaceOrientation:(int64_t)orientation;
+- (void)updateToPresentationWithIdentifier:(id)identifier presentationProperties:(id)properties animated:(BOOL)animated completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation AFUISiriRemoteSceneViewController
@@ -192,12 +192,12 @@
     objc_copyWeak(&v23, buf);
     [(NSXPCConnection *)v11 setInterruptionHandler:&v18];
     v13 = self->_remoteConnection;
-    v14 = [objc_opt_class() remoteObjectInterface];
-    [(NSXPCConnection *)v13 setRemoteObjectInterface:v14];
+    remoteObjectInterface = [objc_opt_class() remoteObjectInterface];
+    [(NSXPCConnection *)v13 setRemoteObjectInterface:remoteObjectInterface];
 
     v15 = self->_remoteConnection;
-    v16 = [objc_opt_class() exportedInterface];
-    [(NSXPCConnection *)v15 setExportedInterface:v16];
+    exportedInterface = [objc_opt_class() exportedInterface];
+    [(NSXPCConnection *)v15 setExportedInterface:exportedInterface];
 
     [(NSXPCConnection *)self->_remoteConnection setExportedObject:self];
     [(NSXPCConnection *)self->_remoteConnection _setQueue:MEMORY[0x277D85CD0]];
@@ -226,8 +226,8 @@
 
 - (void)serviceDidPresentUserInterface
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidPresentUserInterface:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidPresentUserInterface:self];
 }
 
 + (id)remoteObjectInterface
@@ -332,23 +332,23 @@ void __48__AFUISiriRemoteSceneViewController__connection__block_invoke_4(uint64_
 
 - (id)serviceViewControllerProxy
 {
-  v2 = [(AFUISiriRemoteSceneViewController *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(AFUISiriRemoteSceneViewController *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)serviceViewControllerProxyWithErrorHandler:(id)a3
+- (id)serviceViewControllerProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self _connection];
+  handlerCopy = handler;
+  _connection = [(AFUISiriRemoteSceneViewController *)self _connection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __80__AFUISiriRemoteSceneViewController_serviceViewControllerProxyWithErrorHandler___block_invoke;
   v9[3] = &unk_278CD57E0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v9];
+  v10 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [_connection remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
@@ -368,8 +368,8 @@ void __80__AFUISiriRemoteSceneViewController_serviceViewControllerProxyWithError
 - (void)_invalidated
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [(NSXPCConnection *)self->_remoteConnection processIdentifier];
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Connection to Siri.app was invalidated pid=%d _remoteConnection=%@", v3, self->_remoteConnection];
+  processIdentifier = [(NSXPCConnection *)self->_remoteConnection processIdentifier];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Connection to Siri.app was invalidated pid=%d _remoteConnection=%@", processIdentifier, self->_remoteConnection];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -386,8 +386,8 @@ void __80__AFUISiriRemoteSceneViewController_serviceViewControllerProxyWithError
 
 - (void)_interrupted
 {
-  v3 = [(NSXPCConnection *)self->_remoteConnection processIdentifier];
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Connection to Siri.app was interrupted pid=%d _remoteConnection=%@", v3, self->_remoteConnection];
+  processIdentifier = [(NSXPCConnection *)self->_remoteConnection processIdentifier];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Connection to Siri.app was interrupted pid=%d _remoteConnection=%@", processIdentifier, self->_remoteConnection];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
     [AFUISiriRemoteSceneViewController _interrupted];
@@ -396,21 +396,21 @@ void __80__AFUISiriRemoteSceneViewController_serviceViewControllerProxyWithError
   [(AFUISceneHostingViewController *)self invalidateSceneForReason:4 explanation:v4];
 }
 
-- (void)startHostingSceneForConfiguration:(id)a3 withCompletionBlock:(id)a4
+- (void)startHostingSceneForConfiguration:(id)configuration withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__AFUISiriRemoteSceneViewController_startHostingSceneForConfiguration_withCompletionBlock___block_invoke;
   v10[3] = &unk_278CD5808;
   objc_copyWeak(&v12, &location);
-  v8 = v7;
+  v8 = blockCopy;
   v11 = v8;
   v9.receiver = self;
   v9.super_class = AFUISiriRemoteSceneViewController;
-  [(AFUISceneHostingViewController *)&v9 startHostingSceneForConfiguration:v6 withCompletionBlock:v10];
+  [(AFUISceneHostingViewController *)&v9 startHostingSceneForConfiguration:configurationCopy withCompletionBlock:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -453,28 +453,28 @@ void __91__AFUISiriRemoteSceneViewController_startHostingSceneForConfiguration_w
   }
 }
 
-- (void)sceneController:(id)a3 didCreateSiriScene:(id)a4
+- (void)sceneController:(id)controller didCreateSiriScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v6 siriRemoteViewController:self didCreateSiriScene:v5];
+  sceneCopy = scene;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didCreateSiriScene:sceneCopy];
 }
 
-- (void)sceneController:(id)a3 willInvalidateScene:(id)a4 forReason:(unint64_t)a5
+- (void)sceneController:(id)controller willInvalidateScene:(id)scene forReason:(unint64_t)reason
 {
-  if (a5 <= 5)
+  if (reason <= 5)
   {
-    self->_expectingInvalidation = 0x1010100uLL >> (8 * a5);
+    self->_expectingInvalidation = 0x1010100uLL >> (8 * reason);
   }
 }
 
-- (void)_handleInvalidationForReason:(unint64_t)a3 explanation:(id)a4
+- (void)_handleInvalidationForReason:(unint64_t)reason explanation:(id)explanation
 {
-  v6 = a4;
+  explanationCopy = explanation;
   objc_initWeak(&location, self);
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
-  v7 = v6;
+  v8[1] = reason;
+  v7 = explanationCopy;
   SiriUIInvokeOnMainQueue();
 
   objc_destroyWeak(v8);
@@ -522,14 +522,14 @@ void __78__AFUISiriRemoteSceneViewController__handleInvalidationForReason_explan
   }
 }
 
-- (void)_audioCategoriesDisablingVolumeHUDDidChangeTo:(id)a3
+- (void)_audioCategoriesDisablingVolumeHUDDidChangeTo:(id)to
 {
-  v5 = a3;
-  v6 = v5;
+  toCopy = to;
+  v6 = toCopy;
   audioCategoriesDisablingVolumeHUD = self->_audioCategoriesDisablingVolumeHUD;
-  if (v5 && audioCategoriesDisablingVolumeHUD)
+  if (toCopy && audioCategoriesDisablingVolumeHUD)
   {
-    if ([(NSArray *)v5 isEqualToArray:?])
+    if ([(NSArray *)toCopy isEqualToArray:?])
     {
       goto LABEL_7;
     }
@@ -537,10 +537,10 @@ void __78__AFUISiriRemoteSceneViewController__handleInvalidationForReason_explan
     goto LABEL_6;
   }
 
-  if (audioCategoriesDisablingVolumeHUD != v5)
+  if (audioCategoriesDisablingVolumeHUD != toCopy)
   {
 LABEL_6:
-    objc_storeStrong(&self->_audioCategoriesDisablingVolumeHUD, a3);
+    objc_storeStrong(&self->_audioCategoriesDisablingVolumeHUD, to);
     objc_initWeak(&location, self);
     objc_copyWeak(&v9, &location);
     v8 = v6;
@@ -566,12 +566,12 @@ void __83__AFUISiriRemoteSceneViewController__audioCategoriesDisablingVolumeHUDD
   }
 }
 
-- (void)_handleSceneDidActivateWithIdentifier:(id)a3
+- (void)_handleSceneDidActivateWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   objc_copyWeak(&v6, &location);
-  v5 = v4;
+  v5 = identifierCopy;
   SiriUIInvokeOnMainQueue();
 
   objc_destroyWeak(&v6);
@@ -600,12 +600,12 @@ void __75__AFUISiriRemoteSceneViewController__handleSceneDidActivateWithIdentifi
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7 = *MEMORY[0x277D85DE8];
   v4.receiver = self;
   v4.super_class = AFUISiriRemoteSceneViewController;
-  [(AFUISiriRemoteSceneViewController *)&v4 viewDidAppear:a3];
+  [(AFUISiriRemoteSceneViewController *)&v4 viewDidAppear:appear];
   v3 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -615,9 +615,9 @@ void __75__AFUISiriRemoteSceneViewController__handleSceneDidActivateWithIdentifi
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v9 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -629,7 +629,7 @@ void __75__AFUISiriRemoteSceneViewController__handleSceneDidActivateWithIdentifi
 
   v6.receiver = self;
   v6.super_class = AFUISiriRemoteSceneViewController;
-  [(AFUISiriRemoteSceneViewController *)&v6 viewDidDisappear:v3];
+  [(AFUISiriRemoteSceneViewController *)&v6 viewDidDisappear:disappearCopy];
 }
 
 void __52__AFUISiriRemoteSceneViewController_sessionDelegate__block_invoke(uint64_t a1, void *a2)
@@ -641,20 +641,20 @@ void __52__AFUISiriRemoteSceneViewController_sessionDelegate__block_invoke(uint6
   }
 }
 
-- (void)serviceRequestsActivationSourceWithReplyHandler:(id)a3
+- (void)serviceRequestsActivationSourceWithReplyHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v5 = a3;
-    v6 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    (*(a3 + 2))(v5, [v6 siriRemoteViewControllerRequestsActivationSource:self]);
+    handlerCopy = handler;
+    delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+    (*(handler + 2))(handlerCopy, [delegate siriRemoteViewControllerRequestsActivationSource:self]);
   }
 }
 
-- (void)serviceRequestsDismissalWithUserInfo:(id)a3 withReason:(int64_t)a4
+- (void)serviceRequestsDismissalWithUserInfo:(id)info withReason:(int64_t)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -667,168 +667,168 @@ void __52__AFUISiriRemoteSceneViewController_sessionDelegate__block_invoke(uint6
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation %@", &v11, 0x16u);
   }
 
-  v10 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v10 dismissSiriRemoteViewController:self userInfo:v6 withReason:a4];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate dismissSiriRemoteViewController:self userInfo:infoCopy withReason:reason];
 }
 
 - (void)serviceStartGuidedAccess
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 startGuidedAccessForRemoteViewController:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate startGuidedAccessForRemoteViewController:self];
 }
 
-- (void)serviceBulletinWithIdentifier:(id)a3 replyHandler:(id)a4
+- (void)serviceBulletinWithIdentifier:(id)identifier replyHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v7 = a4;
-    v8 = a3;
-    v10 = [(AFUISiriRemoteSceneViewController *)self dataSource];
-    v9 = [v10 siriRemoteViewController:self bulletinWithIdentifier:v8];
+    handlerCopy = handler;
+    identifierCopy = identifier;
+    dataSource = [(AFUISiriRemoteSceneViewController *)self dataSource];
+    v9 = [dataSource siriRemoteViewController:self bulletinWithIdentifier:identifierCopy];
 
-    (*(a4 + 2))(v7, v9);
+    (*(handler + 2))(handlerCopy, v9);
   }
 }
 
-- (void)serviceStartRequestWithOptions:(id)a3
+- (void)serviceStartRequestWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self startRequestWithOptions:v4];
+  optionsCopy = options;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self startRequestWithOptions:optionsCopy];
 }
 
 - (void)serviceUserRelevantEventDidOccur
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 userRelevantEventDidOccurInSiriRemoteViewController:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate userRelevantEventDidOccurInSiriRemoteViewController:self];
 }
 
-- (void)serviceDidRequestCurrentTextInput:(id)a3
+- (void)serviceDidRequestCurrentTextInput:(id)input
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self didRequestCurrentTextInputWithReplyHandler:v4];
+  inputCopy = input;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didRequestCurrentTextInputWithReplyHandler:inputCopy];
 }
 
-- (void)siriIdleAndQuietStatusDidChange:(BOOL)a3
+- (void)siriIdleAndQuietStatusDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self siriIdleAndQuietStatusDidChange:v3];
+  changeCopy = change;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self siriIdleAndQuietStatusDidChange:changeCopy];
 }
 
-- (void)setStatusViewHidden:(BOOL)a3
+- (void)setStatusViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setStatusViewHidden:v3];
+  hiddenCopy = hidden;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setStatusViewHidden:hiddenCopy];
 }
 
-- (void)setTypeToSiriViewHidden:(BOOL)a3
+- (void)setTypeToSiriViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setTypeToSiriViewHidden:v3];
+  hiddenCopy = hidden;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setTypeToSiriViewHidden:hiddenCopy];
 }
 
-- (void)setFullScreenDimmingLayerVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setFullScreenDimmingLayerVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v7 siriRemoteViewController:self setFullScreenDimmingLayerVisible:v5 animated:v4];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setFullScreenDimmingLayerVisible:visibleCopy animated:animatedCopy];
 }
 
-- (void)inputTypeDidChange:(int64_t)a3
+- (void)inputTypeDidChange:(int64_t)change
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self inputTypeDidChange:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self inputTypeDidChange:change];
 }
 
-- (void)setStatusViewDisabled:(BOOL)a3
+- (void)setStatusViewDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setStatusViewDisabled:v3];
+  disabledCopy = disabled;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setStatusViewDisabled:disabledCopy];
 }
 
-- (void)setStatusViewUserInteractionEnabled:(BOOL)a3
+- (void)setStatusViewUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setStatusViewUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setStatusViewUserInteractionEnabled:enabledCopy];
 }
 
-- (void)serviceWillPresentViewControllerWithStatusBarStyle:(int64_t)a3
+- (void)serviceWillPresentViewControllerWithStatusBarStyle:(int64_t)style
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self willPresentViewControllerWithStatusBarStyle:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self willPresentViewControllerWithStatusBarStyle:style];
 }
 
-- (void)serviceDidPresentViewControllerWithStatusBarStyle:(int64_t)a3
+- (void)serviceDidPresentViewControllerWithStatusBarStyle:(int64_t)style
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self didPresentViewControllerWithStatusBarStyle:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didPresentViewControllerWithStatusBarStyle:style];
 }
 
-- (void)serviceWillDismissViewControllerWithStatusBarStyle:(int64_t)a3
+- (void)serviceWillDismissViewControllerWithStatusBarStyle:(int64_t)style
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self willDismissViewControllerWithStatusBarStyle:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self willDismissViewControllerWithStatusBarStyle:style];
 }
 
-- (void)serviceDidDismissViewControllerWithStatusBarStyle:(int64_t)a3
+- (void)serviceDidDismissViewControllerWithStatusBarStyle:(int64_t)style
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self didDismissViewControllerWithStatusBarStyle:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didDismissViewControllerWithStatusBarStyle:style];
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v7 siriRemoteViewController:self setStatusBarHidden:v5 animated:v4];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setStatusBarHidden:hiddenCopy animated:animatedCopy];
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v9 siriRemoteViewController:self setStatusBarHidden:v6 animated:v5 completion:v8];
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  completionCopy = completion;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setStatusBarHidden:hiddenCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)setHelpButtonEmphasized:(BOOL)a3
+- (void)setHelpButtonEmphasized:(BOOL)emphasized
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setHelpButtonEmphasized:v3];
+  emphasizedCopy = emphasized;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setHelpButtonEmphasized:emphasizedCopy];
 }
 
-- (void)setBugReportingAvailable:(BOOL)a3
+- (void)setBugReportingAvailable:(BOOL)available
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setBugReportingAvailable:v3];
+  availableCopy = available;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setBugReportingAvailable:availableCopy];
 }
 
-- (void)setRequestHandlingStatus:(unint64_t)a3
+- (void)setRequestHandlingStatus:(unint64_t)status
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self setRequestHandlingStatus:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self setRequestHandlingStatus:status];
 }
 
-- (void)getScreenshotWithReplyHandler:(id)a3
+- (void)getScreenshotWithReplyHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v3 = a3;
+    handlerCopy = handler;
     v4 = UICreateScreenImage();
     v6 = [MEMORY[0x277D755B8] imageWithCGImage:v4];
     v5 = UIImagePNGRepresentation(v6);
-    v3[2](v3, v5);
+    handlerCopy[2](handlerCopy, v5);
 
     if (v4)
     {
@@ -837,94 +837,94 @@ void __52__AFUISiriRemoteSceneViewController_sessionDelegate__block_invoke(uint6
   }
 }
 
-- (void)handlePasscodeUnlockWithClient:(unint64_t)a3 withCompletion:(id)a4
+- (void)handlePasscodeUnlockWithClient:(unint64_t)client withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v7 siriRemoteViewController:self handlePasscodeUnlockWithClient:a3 withCompletion:v6];
+  completionCopy = completion;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self handlePasscodeUnlockWithClient:client withCompletion:completionCopy];
 }
 
 - (void)pulseHelpButton
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerPulseHelpButton:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerPulseHelpButton:self];
 }
 
-- (void)serviceDidRequestKeyboard:(BOOL)a3
+- (void)serviceDidRequestKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self didRequestKeyboard:v3];
+  keyboardCopy = keyboard;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didRequestKeyboard:keyboardCopy];
 }
 
-- (void)serviceDidRequestKeyboard:(BOOL)a3 minimized:(BOOL)a4
+- (void)serviceDidRequestKeyboard:(BOOL)keyboard minimized:(BOOL)minimized
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v7 siriRemoteViewController:self didRequestKeyboard:v5 minimized:v4];
+  minimizedCopy = minimized;
+  keyboardCopy = keyboard;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didRequestKeyboard:keyboardCopy minimized:minimizedCopy];
 }
 
 - (void)serviceDidResetTextInput
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidResetTextInput:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidResetTextInput:self];
 }
 
-- (void)serviceViewControllerRequestsKeyboardWithCompletion:(id)a3
+- (void)serviceViewControllerRequestsKeyboardWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self requestsKeyboardWithCompletion:v4];
+  completionCopy = completion;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self requestsKeyboardWithCompletion:completionCopy];
 }
 
 - (void)serviceWillBeginEditing
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerWillBeginEditing:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerWillBeginEditing:self];
 }
 
 - (void)serviceDidEndEditing
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidEndEditing:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidEndEditing:self];
 }
 
 - (void)serviceRequestsHIDEventDefferal
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerRequestsHIDEventDefferal:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerRequestsHIDEventDefferal:self];
 }
 
 - (void)serviceCancelHIDEventDefferal
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerCancelHIDEventDefferal:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerCancelHIDEventDefferal:self];
 }
 
 - (void)serviceDidEnterUITrackingMode
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidEnterUITrackingMode:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidEnterUITrackingMode:self];
 }
 
 - (void)serviceDidExitUITrackingMode
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidExitUITrackingMode:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidExitUITrackingMode:self];
 }
 
-- (void)openURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5 completion:(id)a6
+- (void)openURL:(id)l bundleId:(id)id inPlace:(BOOL)place completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
+  placeCopy = place;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__AFUISiriRemoteSceneViewController_openURL_bundleId_inPlace_completion___block_invoke;
   v12[3] = &unk_278CD5880;
-  v13 = v10;
-  v11 = v10;
-  [(AFUISiriRemoteSceneViewController *)self openURL:a3 bundleId:a4 inPlace:v6 launchOptions:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(AFUISiriRemoteSceneViewController *)self openURL:l bundleId:id inPlace:placeCopy launchOptions:0 completion:v12];
 }
 
 uint64_t __73__AFUISiriRemoteSceneViewController_openURL_bundleId_inPlace_completion___block_invoke(uint64_t a1)
@@ -938,76 +938,76 @@ uint64_t __73__AFUISiriRemoteSceneViewController_openURL_bundleId_inPlace_comple
   return result;
 }
 
-- (void)openURL:(id)a3 bundleId:(id)a4 inPlace:(BOOL)a5 launchOptions:(id)a6 completion:(id)a7
+- (void)openURL:(id)l bundleId:(id)id inPlace:(BOOL)place launchOptions:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v16 openURL:v15 bundleId:v14 inPlace:v8 launchOptions:v13 completion:v12];
+  placeCopy = place;
+  completionCopy = completion;
+  optionsCopy = options;
+  idCopy = id;
+  lCopy = l;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate openURL:lCopy bundleId:idCopy inPlace:placeCopy launchOptions:optionsCopy completion:completionCopy];
 }
 
 - (void)serviceDidDetectMicButtonTap
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidDetectMicButtonTap:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidDetectMicButtonTap:self];
 }
 
 - (void)serviceDidDetectMicButtonLongPressBegan
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidDetectMicButtonLongPressBegan:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidDetectMicButtonLongPressBegan:self];
 }
 
 - (void)serviceDidDetectMicButtonLongPressEnded
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidDetectMicButtonLongPressEnded:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidDetectMicButtonLongPressEnded:self];
 }
 
-- (void)servicePresentationDidChangePeekMode:(unint64_t)a3
+- (void)servicePresentationDidChangePeekMode:(unint64_t)mode
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self didChangePresentationPeekMode:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self didChangePresentationPeekMode:mode];
 }
 
-- (void)servicePresentationDidChangeVisualState:(unint64_t)a3
+- (void)servicePresentationDidChangeVisualState:(unint64_t)state
 {
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v7 siriRemoteViewController:self didChangePresentationVisualState:a3];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 siriRemoteViewController:self didChangePresentationVisualState:state];
   }
 }
 
 - (void)serviceDidPresentConversationFromBreadcrumb
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidPresentConversationFromBreadcrumb:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidPresentConversationFromBreadcrumb:self];
 }
 
 - (void)serviceDidDetectAudioRoutePickerTap
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v3 siriRemoteViewControllerDidDetectAudioRoutePickerTap:self];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewControllerDidDetectAudioRoutePickerTap:self];
 }
 
-- (void)serviceViewControllerRequestsPresentation:(id)a3
+- (void)serviceViewControllerRequestsPresentation:(id)presentation
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self requestsPresentation:v4];
+  presentationCopy = presentation;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self requestsPresentation:presentationCopy];
 }
 
-- (void)serviceViewControllerRequestsDismissalWithDismissalReason:(int64_t)a3 completion:(id)a4
+- (void)serviceViewControllerRequestsDismissalWithDismissalReason:(int64_t)reason completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -1020,60 +1020,60 @@ uint64_t __73__AFUISiriRemoteSceneViewController_openURL_bundleId_inPlace_comple
     _os_log_impl(&dword_241432000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation dismissal requested %@", &v11, 0x16u);
   }
 
-  v10 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v10 siriRemoteViewController:self requestsDismissalWithReason:a3 withCompletion:v6];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self requestsDismissalWithReason:reason withCompletion:completionCopy];
 }
 
-- (void)servicePresentedIntentWithBundleId:(id)a3
+- (void)servicePresentedIntentWithBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self presentedIntentWithBundleId:v4];
+  idCopy = id;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self presentedIntentWithBundleId:idCopy];
 }
 
-- (void)setShouldDismissForTapOutsideContent:(BOOL)a3
+- (void)setShouldDismissForTapOutsideContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  contentCopy = content;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v7 setShouldDismissForTapOutsideContent:v3];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 setShouldDismissForTapOutsideContent:contentCopy];
   }
 }
 
-- (void)setShouldDismissForTapsOutsideContent:(BOOL)a3
+- (void)setShouldDismissForTapsOutsideContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  contentCopy = content;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v7 setShouldDismissForTapsOutsideContent:v3];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 setShouldDismissForTapsOutsideContent:contentCopy];
   }
 }
 
-- (void)setShouldDismissForSwipesOutsideContent:(BOOL)a3
+- (void)setShouldDismissForSwipesOutsideContent:(BOOL)content
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  contentCopy = content;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v7 setShouldDismissForSwipesOutsideContent:v3];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 setShouldDismissForSwipesOutsideContent:contentCopy];
   }
 }
 
-- (void)requestHostBlurVisible:(BOOL)a3 reason:(int64_t)a4 fence:(id)a5
+- (void)requestHostBlurVisible:(BOOL)visible reason:(int64_t)reason fence:(id)fence
 {
-  v6 = a5;
-  v5 = v6;
+  fenceCopy = fence;
+  v5 = fenceCopy;
   SiriUIInvokeOnMainQueue();
 }
 
@@ -1089,40 +1089,40 @@ void __54__AFUISiriRemoteSceneViewController_reduceOrbOpacity___block_invoke(uin
   [v2 siriRemoteViewController:*(a1 + 32) reduceOrbOpacity:*(a1 + 40)];
 }
 
-- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)a3
+- (void)setShouldPassTouchesThroughToSpringBoard:(BOOL)board
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  boardCopy = board;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v7 setShouldPassTouchesThroughToSpringBoard:v3];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 setShouldPassTouchesThroughToSpringBoard:boardCopy];
   }
 }
 
 - (void)requestSystemApertureCollapse
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v5 requestSystemApertureCollapse];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 requestSystemApertureCollapse];
   }
 }
 
 - (void)invalidateSystemApertureAssertion
 {
-  v3 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v5 invalidateSystemApertureAssertion];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 invalidateSystemApertureAssertion];
   }
 }
 
@@ -1138,43 +1138,43 @@ void __54__AFUISiriRemoteSceneViewController_reduceOrbOpacity___block_invoke(uin
   }
 }
 
-- (void)toggleHomeAffordanceHidden:(BOOL)a3
+- (void)toggleHomeAffordanceHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v4 toggleHomeAffordanceHidden:v3];
+  hiddenCopy = hidden;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate toggleHomeAffordanceHidden:hiddenCopy];
 }
 
-- (void)toggleSiriHomeAffordanceGestureControl:(BOOL)a3
+- (void)toggleSiriHomeAffordanceGestureControl:(BOOL)control
 {
-  v3 = a3;
-  v4 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v4 toggleSiriHomeAffordanceGestureControl:v3];
+  controlCopy = control;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate toggleSiriHomeAffordanceGestureControl:controlCopy];
 }
 
-- (void)updateEdgeLightWindowLevel:(int64_t)a3
+- (void)updateEdgeLightWindowLevel:(int64_t)level
 {
-  v4 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v4 updateEdgeLightWindowLevel:a3];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate updateEdgeLightWindowLevel:level];
 }
 
-- (void)updateToPresentationWithIdentifier:(id)a3 presentationProperties:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)updateToPresentationWithIdentifier:(id)identifier presentationProperties:(id)properties animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
+  animatedCopy = animated;
+  identifierCopy = identifier;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __115__AFUISiriRemoteSceneViewController_updateToPresentationWithIdentifier_presentationProperties_animated_completion___block_invoke;
   v17[3] = &unk_278CD58D0;
-  v18 = v10;
-  v11 = v10;
-  v12 = a6;
-  v13 = a4;
+  v18 = identifierCopy;
+  v11 = identifierCopy;
+  completionCopy = completion;
+  propertiesCopy = properties;
   v14 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v17];
   v15 = v14;
-  if (v12)
+  if (completionCopy)
   {
-    v16 = v12;
+    v16 = completionCopy;
   }
 
   else
@@ -1182,7 +1182,7 @@ void __54__AFUISiriRemoteSceneViewController_reduceOrbOpacity___block_invoke(uin
     v16 = &__block_literal_global_174;
   }
 
-  [v14 updateToPresentationWithIdentifier:v11 presentationProperties:v13 animated:v7 completion:v16];
+  [v14 updateToPresentationWithIdentifier:v11 presentationProperties:propertiesCopy animated:animatedCopy completion:v16];
 }
 
 void __115__AFUISiriRemoteSceneViewController_updateToPresentationWithIdentifier_presentationProperties_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -1194,12 +1194,12 @@ void __115__AFUISiriRemoteSceneViewController_updateToPresentationWithIdentifier
   }
 }
 
-- (void)setDockFrame:(CGRect)a3
+- (void)setDockFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_176];
   v7 = [MEMORY[0x277CCAE60] valueWithCGRect:{x, y, width, height}];
   [v8 setDockFrameValue:v7];
@@ -1214,10 +1214,10 @@ void __50__AFUISiriRemoteSceneViewController_setDockFrame___block_invoke(uint64_
   }
 }
 
-- (void)updateRemoteSceneWithFrontMostAppInterfaceOrientation:(int64_t)a3
+- (void)updateRemoteSceneWithFrontMostAppInterfaceOrientation:(int64_t)orientation
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_179];
-  [v4 setHostFrontMostAppOrientation:a3];
+  [v4 setHostFrontMostAppOrientation:orientation];
 }
 
 void __91__AFUISiriRemoteSceneViewController_updateRemoteSceneWithFrontMostAppInterfaceOrientation___block_invoke(uint64_t a1, void *a2)
@@ -1229,13 +1229,13 @@ void __91__AFUISiriRemoteSceneViewController_updateRemoteSceneWithFrontMostAppIn
   }
 }
 
-- (void)siriWillActivateFromSource:(int64_t)a3
+- (void)siriWillActivateFromSource:(int64_t)source
 {
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_181];
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v5 setHostFrontMostAppOrientation:{objc_msgSend(v4, "_frontMostAppOrientation")}];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [v5 setHostFrontMostAppOrientation:{objc_msgSend(mEMORY[0x277D75128], "_frontMostAppOrientation")}];
 
-  [v5 siriWillActivateFromSource:a3];
+  [v5 siriWillActivateFromSource:source];
 }
 
 void __64__AFUISiriRemoteSceneViewController_siriWillActivateFromSource___block_invoke(uint64_t a1, void *a2)
@@ -1247,10 +1247,10 @@ void __64__AFUISiriRemoteSceneViewController_siriWillActivateFromSource___block_
   }
 }
 
-- (void)siriDidActivateFromSource:(int64_t)a3
+- (void)siriDidActivateFromSource:(int64_t)source
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_184];
-  [v4 siriDidActivateFromSource:a3];
+  [v4 siriDidActivateFromSource:source];
 }
 
 void __63__AFUISiriRemoteSceneViewController_siriDidActivateFromSource___block_invoke(uint64_t a1, void *a2)
@@ -1262,15 +1262,15 @@ void __63__AFUISiriRemoteSceneViewController_siriDidActivateFromSource___block_i
   }
 }
 
-- (void)setRequestOptions:(id)a3
+- (void)setRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__AFUISiriRemoteSceneViewController_setRequestOptions___block_invoke;
   v7[3] = &unk_278CD58D0;
-  v8 = v4;
-  v5 = v4;
+  v8 = optionsCopy;
+  v5 = optionsCopy;
   v6 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v7];
   [v6 setRequestOptions:v5];
 }
@@ -1284,15 +1284,15 @@ void __55__AFUISiriRemoteSceneViewController_setRequestOptions___block_invoke(ui
   }
 }
 
-- (void)preloadPresentationBundleWithIdentifier:(id)a3
+- (void)preloadPresentationBundleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__AFUISiriRemoteSceneViewController_preloadPresentationBundleWithIdentifier___block_invoke;
   v7[3] = &unk_278CD58D0;
-  v8 = v4;
-  v5 = v4;
+  v8 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v7];
   [v6 preloadPresentationBundleWithIdentifier:v5];
 }
@@ -1315,18 +1315,18 @@ void __57__AFUISiriRemoteSceneViewController_preloadPluginBundles__block_invoke(
   }
 }
 
-- (void)showPresentationWithIdentifier:(id)a3 properties:(id)a4 lockState:(unint64_t)a5
+- (void)showPresentationWithIdentifier:(id)identifier properties:(id)properties lockState:(unint64_t)state
 {
-  v8 = a4;
+  propertiesCopy = properties;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__AFUISiriRemoteSceneViewController_showPresentationWithIdentifier_properties_lockState___block_invoke;
   v12[3] = &unk_278CD58D0;
-  v13 = v8;
-  v9 = v8;
-  v10 = a3;
+  v13 = propertiesCopy;
+  v9 = propertiesCopy;
+  identifierCopy = identifier;
   v11 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v12];
-  [v11 showPresentationWithIdentifier:v10 properties:v9 lockState:a5];
+  [v11 showPresentationWithIdentifier:identifierCopy properties:v9 lockState:state];
 }
 
 void __89__AFUISiriRemoteSceneViewController_showPresentationWithIdentifier_properties_lockState___block_invoke(uint64_t a1, void *a2)
@@ -1338,18 +1338,18 @@ void __89__AFUISiriRemoteSceneViewController_showPresentationWithIdentifier_prop
   }
 }
 
-- (void)showAppUnlockForAppId:(id)a3 completion:(id)a4
+- (void)showAppUnlockForAppId:(id)id completion:(id)completion
 {
-  v6 = a3;
+  idCopy = id;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__AFUISiriRemoteSceneViewController_showAppUnlockForAppId_completion___block_invoke;
   v10[3] = &unk_278CD58D0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a4;
+  v11 = idCopy;
+  v7 = idCopy;
+  completionCopy = completion;
   v9 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v10];
-  [v9 showAppUnlockForAppId:v7 completion:v8];
+  [v9 showAppUnlockForAppId:v7 completion:completionCopy];
 }
 
 void __70__AFUISiriRemoteSceneViewController_showAppUnlockForAppId_completion___block_invoke(uint64_t a1, void *a2)
@@ -1361,10 +1361,10 @@ void __70__AFUISiriRemoteSceneViewController_showAppUnlockForAppId_completion___
   }
 }
 
-- (void)siriWillBePresented:(int64_t)a3
+- (void)siriWillBePresented:(int64_t)presented
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_188];
-  [v4 siriWillBePresented:a3];
+  [v4 siriWillBePresented:presented];
 }
 
 void __57__AFUISiriRemoteSceneViewController_siriWillBePresented___block_invoke(uint64_t a1, void *a2)
@@ -1385,13 +1385,13 @@ void __57__AFUISiriRemoteSceneViewController_siriWillBePresented___block_invoke(
   aBlock[3] = &unk_278CD55A0;
   objc_copyWeak(&v15, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(AFUISiriRemoteSceneViewController *)self delegate];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AFUISiriRemoteSceneViewController *)self delegate];
-    [v6 siriRemoteViewControllerDidDeactivateScene:self];
+    delegate2 = [(AFUISiriRemoteSceneViewController *)self delegate];
+    [delegate2 siriRemoteViewControllerDidDeactivateScene:self];
   }
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -1452,11 +1452,11 @@ void __72__AFUISiriRemoteSceneViewController_didReceiveOrbViewTapToCancelRequest
   }
 }
 
-- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)a3
+- (void)siriWillShowPasscodeUnlockAndCancelRequest:(BOOL)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_198];
-  [v4 siriWillShowPasscodeUnlockAndCancelRequest:v3];
+  [v4 siriWillShowPasscodeUnlockAndCancelRequest:requestCopy];
 }
 
 void __80__AFUISiriRemoteSceneViewController_siriWillShowPasscodeUnlockAndCancelRequest___block_invoke(uint64_t a1, void *a2)
@@ -1468,10 +1468,10 @@ void __80__AFUISiriRemoteSceneViewController_siriWillShowPasscodeUnlockAndCancel
   }
 }
 
-- (void)siriWillHidePasscodeUnlockForResult:(int64_t)a3
+- (void)siriWillHidePasscodeUnlockForResult:(int64_t)result
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_200];
-  [v4 siriWillHidePasscodeUnlockForResult:a3];
+  [v4 siriWillHidePasscodeUnlockForResult:result];
 }
 
 void __73__AFUISiriRemoteSceneViewController_siriWillHidePasscodeUnlockForResult___block_invoke(uint64_t a1, void *a2)
@@ -1498,11 +1498,11 @@ void __62__AFUISiriRemoteSceneViewController_siriDidHidePasscodeUnlock__block_in
   }
 }
 
-- (void)startRequestForText:(id)a3
+- (void)startRequestForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_204];
-  [v5 startRequestForText:v4];
+  [v5 startRequestForText:textCopy];
 }
 
 void __57__AFUISiriRemoteSceneViewController_startRequestForText___block_invoke(uint64_t a1, void *a2)
@@ -1514,10 +1514,10 @@ void __57__AFUISiriRemoteSceneViewController_startRequestForText___block_invoke(
   }
 }
 
-- (void)siriKeyboardViewDidChange:(id *)a3
+- (void)siriKeyboardViewDidChange:(id *)change
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_206];
-  [v4 siriKeyboardViewDidChange:a3];
+  [v4 siriKeyboardViewDidChange:change];
 }
 
 void __63__AFUISiriRemoteSceneViewController_siriKeyboardViewDidChange___block_invoke(uint64_t a1, void *a2)
@@ -1529,12 +1529,12 @@ void __63__AFUISiriRemoteSceneViewController_siriKeyboardViewDidChange___block_i
   }
 }
 
-- (void)setStatusBarFrame:(CGRect)a3
+- (void)setStatusBarFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_208];
   v7 = [MEMORY[0x277CCAE60] valueWithCGRect:{x, y, width, height}];
   [v8 setStatusBarFrameValue:v7];
@@ -1549,10 +1549,10 @@ void __55__AFUISiriRemoteSceneViewController_setStatusBarFrame___block_invoke(ui
   }
 }
 
-- (void)setStatusViewHeight:(double)a3
+- (void)setStatusViewHeight:(double)height
 {
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_210];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:height];
   [v5 setStatusViewHeightNumber:v4];
 }
 
@@ -1565,10 +1565,10 @@ void __57__AFUISiriRemoteSceneViewController_setStatusViewHeight___block_invoke(
   }
 }
 
-- (void)setBottomContentInset:(double)a3
+- (void)setBottomContentInset:(double)inset
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_213];
-  [v4 setBottomContentInset:a3];
+  [v4 setBottomContentInset:inset];
 }
 
 void __59__AFUISiriRemoteSceneViewController_setBottomContentInset___block_invoke(uint64_t a1, void *a2)
@@ -1580,12 +1580,12 @@ void __59__AFUISiriRemoteSceneViewController_setBottomContentInset___block_invok
   }
 }
 
-- (void)setSystemContentFrame:(CGRect)a3
+- (void)setSystemContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_215];
   [v7 setSystemContentFrame:{x, y, width, height}];
 }
@@ -1599,11 +1599,11 @@ void __59__AFUISiriRemoteSceneViewController_setSystemContentFrame___block_invok
   }
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_217];
-  [v5 setSession:v4];
+  [v5 setSession:sessionCopy];
 }
 
 void __48__AFUISiriRemoteSceneViewController_setSession___block_invoke(uint64_t a1, void *a2)
@@ -1660,11 +1660,11 @@ void __65__AFUISiriRemoteSceneViewController_didReceiveBugButtonLongPress__block
   }
 }
 
-- (void)didReceiveShortTapActionWithRequestOptions:(id)a3
+- (void)didReceiveShortTapActionWithRequestOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_225];
-  [v5 didReceiveShortTapActionWIthRequestOptions:v4];
+  [v5 didReceiveShortTapActionWIthRequestOptions:optionsCopy];
 }
 
 void __80__AFUISiriRemoteSceneViewController_didReceiveShortTapActionWithRequestOptions___block_invoke(uint64_t a1, void *a2)
@@ -1721,11 +1721,11 @@ void __63__AFUISiriRemoteSceneViewController_applicationDidBecomeActive__block_i
   }
 }
 
-- (void)setWaitingForTelephonyToStart:(BOOL)a3
+- (void)setWaitingForTelephonyToStart:(BOOL)start
 {
-  v3 = a3;
+  startCopy = start;
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_233];
-  [v4 setWaitingForTelephonyToStart:v3];
+  [v4 setWaitingForTelephonyToStart:startCopy];
 }
 
 void __67__AFUISiriRemoteSceneViewController_setWaitingForTelephonyToStart___block_invoke(uint64_t a1, void *a2)
@@ -1737,11 +1737,11 @@ void __67__AFUISiriRemoteSceneViewController_setWaitingForTelephonyToStart___blo
   }
 }
 
-- (void)hasContentAtPoint:(CGPoint)a3 completion:(id)a4
+- (void)hasContentAtPoint:(CGPoint)point completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__AFUISiriRemoteSceneViewController_hasContentAtPoint_completion___block_invoke;
@@ -1754,8 +1754,8 @@ void __67__AFUISiriRemoteSceneViewController_setWaitingForTelephonyToStart___blo
   v11[1] = 3221225472;
   v11[2] = __66__AFUISiriRemoteSceneViewController_hasContentAtPoint_completion___block_invoke_235;
   v11[3] = &unk_278CD5938;
-  v12 = v7;
-  v10 = v7;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [v8 hasContentAtPoint:v9 completion:v11];
 }
 
@@ -1779,16 +1779,16 @@ uint64_t __66__AFUISiriRemoteSceneViewController_hasContentAtPoint_completion___
   return result;
 }
 
-- (void)didDetectGestureEvent:(int64_t)a3 inRegion:(int64_t)a4
+- (void)didDetectGestureEvent:(int64_t)event inRegion:(int64_t)region
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__AFUISiriRemoteSceneViewController_didDetectGestureEvent_inRegion___block_invoke;
   v7[3] = &__block_descriptor_48_e17_v16__0__NSError_8l;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = event;
+  v7[5] = region;
   v6 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v7];
-  [v6 didDetectGestureEvent:a3 inRegion:a4];
+  [v6 didDetectGestureEvent:event inRegion:region];
 }
 
 void __68__AFUISiriRemoteSceneViewController_didDetectGestureEvent_inRegion___block_invoke(uint64_t a1, void *a2)
@@ -1816,10 +1816,10 @@ void __62__AFUISiriRemoteSceneViewController_noteApplicationTransition__block_in
   }
 }
 
-- (void)orientationWillChangeTo:(int64_t)a3
+- (void)orientationWillChangeTo:(int64_t)to
 {
   v4 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_239];
-  [v4 orientationWillChangeTo:a3];
+  [v4 orientationWillChangeTo:to];
 }
 
 void __61__AFUISiriRemoteSceneViewController_orientationWillChangeTo___block_invoke(uint64_t a1, void *a2)
@@ -1831,16 +1831,16 @@ void __61__AFUISiriRemoteSceneViewController_orientationWillChangeTo___block_inv
   }
 }
 
-- (void)siriWillBeginTearDownForDismissalReason:(int64_t)a3 withOriginalDismissalOptions:(id)a4
+- (void)siriWillBeginTearDownForDismissalReason:(int64_t)reason withOriginalDismissalOptions:(id)options
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __106__AFUISiriRemoteSceneViewController_siriWillBeginTearDownForDismissalReason_withOriginalDismissalOptions___block_invoke;
   v8[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v8[4] = a3;
-  v6 = a4;
+  v8[4] = reason;
+  optionsCopy = options;
   v7 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v8];
-  [v7 siriWillBeginTearDownForDismissalReason:a3 withOriginalDismissalOptions:v6];
+  [v7 siriWillBeginTearDownForDismissalReason:reason withOriginalDismissalOptions:optionsCopy];
 }
 
 void __106__AFUISiriRemoteSceneViewController_siriWillBeginTearDownForDismissalReason_withOriginalDismissalOptions___block_invoke(uint64_t a1, void *a2)
@@ -1852,10 +1852,10 @@ void __106__AFUISiriRemoteSceneViewController_siriWillBeginTearDownForDismissalR
   }
 }
 
-- (void)presentationStateUpdatedFromPresentationState:(int64_t)a3 toPresentationState:(int64_t)a4
+- (void)presentationStateUpdatedFromPresentationState:(int64_t)state toPresentationState:(int64_t)presentationState
 {
   v6 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_242];
-  [v6 hostApplicationPresentationStateUpdatedFromPresentationState:a3 toPresentationState:a4];
+  [v6 hostApplicationPresentationStateUpdatedFromPresentationState:state toPresentationState:presentationState];
 }
 
 void __103__AFUISiriRemoteSceneViewController_presentationStateUpdatedFromPresentationState_toPresentationState___block_invoke(uint64_t a1, void *a2)
@@ -1867,10 +1867,10 @@ void __103__AFUISiriRemoteSceneViewController_presentationStateUpdatedFromPresen
   }
 }
 
-- (void)animatedDisappearanceDidBeginWithDuration:(double)a3 reason:(int64_t)a4
+- (void)animatedDisappearanceDidBeginWithDuration:(double)duration reason:(int64_t)reason
 {
   v6 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_244];
-  [v6 animatedDisappearanceDidBeginWithDuration:a4 reason:a3];
+  [v6 animatedDisappearanceDidBeginWithDuration:reason reason:duration];
 }
 
 void __86__AFUISiriRemoteSceneViewController_animatedDisappearanceDidBeginWithDuration_reason___block_invoke(uint64_t a1, void *a2)
@@ -1899,28 +1899,28 @@ void __55__AFUISiriRemoteSceneViewController_dismissSiriResults__block_invoke(ui
 
 - (void)siriResultsDidDismissInTamale
 {
-  v2 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v2 siriResultsDidDismissInTamale];
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriResultsDidDismissInTamale];
 }
 
-- (void)serviceViewControllerWillChangeKeyboardVisibility:(BOOL)a3
+- (void)serviceViewControllerWillChangeKeyboardVisibility:(BOOL)visibility
 {
-  v3 = a3;
-  v5 = [(AFUISiriRemoteSceneViewController *)self delegate];
-  [v5 siriRemoteViewController:self willChangeKeyboardVisibility:v3];
+  visibilityCopy = visibility;
+  delegate = [(AFUISiriRemoteSceneViewController *)self delegate];
+  [delegate siriRemoteViewController:self willChangeKeyboardVisibility:visibilityCopy];
 }
 
-- (void)emitUIStateTransitionForSiriDismissalWithDismissalReason:(int)a3 completion:(id)a4
+- (void)emitUIStateTransitionForSiriDismissalWithDismissalReason:(int)reason completion:(id)completion
 {
-  v4 = *&a3;
+  v4 = *&reason;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __105__AFUISiriRemoteSceneViewController_emitUIStateTransitionForSiriDismissalWithDismissalReason_completion___block_invoke;
   v8[3] = &__block_descriptor_36_e17_v16__0__NSError_8l;
-  v9 = a3;
-  v6 = a4;
+  reasonCopy = reason;
+  completionCopy = completion;
   v7 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:v8];
-  [v7 hostApplicationRequestsEmitUIStateTransitionForSiriDismissalWithReason:v4 completion:v6];
+  [v7 hostApplicationRequestsEmitUIStateTransitionForSiriDismissalWithReason:v4 completion:completionCopy];
 }
 
 void __105__AFUISiriRemoteSceneViewController_emitUIStateTransitionForSiriDismissalWithDismissalReason_completion___block_invoke(uint64_t a1, void *a2)
@@ -1932,11 +1932,11 @@ void __105__AFUISiriRemoteSceneViewController_emitUIStateTransitionForSiriDismis
   }
 }
 
-- (void)emitInstrumentationEvent:(id)a3
+- (void)emitInstrumentationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_249];
-  [v5 hostApplicationRequestsEmitInstrumentationEvent:v4];
+  [v5 hostApplicationRequestsEmitInstrumentationEvent:eventCopy];
 }
 
 void __62__AFUISiriRemoteSceneViewController_emitInstrumentationEvent___block_invoke(uint64_t a1, void *a2)
@@ -1948,11 +1948,11 @@ void __62__AFUISiriRemoteSceneViewController_emitInstrumentationEvent___block_in
   }
 }
 
-- (void)emitInstrumentationEvent:(id)a3 atTime:(unint64_t)a4
+- (void)emitInstrumentationEvent:(id)event atTime:(unint64_t)time
 {
-  v6 = a3;
+  eventCopy = event;
   v7 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_251];
-  [v7 hostApplicationRequestsEmitInstrumentationEvent:v6 atTime:a4];
+  [v7 hostApplicationRequestsEmitInstrumentationEvent:eventCopy atTime:time];
 }
 
 void __69__AFUISiriRemoteSceneViewController_emitInstrumentationEvent_atTime___block_invoke(uint64_t a1, void *a2)
@@ -1964,11 +1964,11 @@ void __69__AFUISiriRemoteSceneViewController_emitInstrumentationEvent_atTime___b
   }
 }
 
-- (void)didSuccessfullyHandleCommandsInDelayedActionCommand:(id)a3
+- (void)didSuccessfullyHandleCommandsInDelayedActionCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_253];
-  [v5 hostApplicationDidSuccessfullyHandleCommandsInDelayedActionCommand:v4];
+  [v5 hostApplicationDidSuccessfullyHandleCommandsInDelayedActionCommand:commandCopy];
 }
 
 void __89__AFUISiriRemoteSceneViewController_didSuccessfullyHandleCommandsInDelayedActionCommand___block_invoke(uint64_t a1, void *a2)
@@ -1980,11 +1980,11 @@ void __89__AFUISiriRemoteSceneViewController_didSuccessfullyHandleCommandsInDela
   }
 }
 
-- (void)takeScreenshotWithCompletion:(id)a3
+- (void)takeScreenshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(AFUISiriRemoteSceneViewController *)self serviceViewControllerProxyWithErrorHandler:&__block_literal_global_255];
-  [v5 hostApplicationRequestsScreenshotWithCompletion:v4];
+  [v5 hostApplicationRequestsScreenshotWithCompletion:completionCopy];
 }
 
 void __66__AFUISiriRemoteSceneViewController_takeScreenshotWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -2005,7 +2005,7 @@ void __66__AFUISiriRemoteSceneViewController_takeScreenshotWithCompletion___bloc
     *buf = 136315394;
     v6 = "[AFUISiriRemoteSceneViewController dealloc]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241432000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 

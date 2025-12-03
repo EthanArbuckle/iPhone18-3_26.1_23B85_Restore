@@ -1,17 +1,17 @@
 @interface COSAppleIDSilentSignInController
 + (double)silentAuthTimeout;
-- (COSAppleIDSilentSignInController)initWithDelegate:(id)a3 device:(id)a4;
+- (COSAppleIDSilentSignInController)initWithDelegate:(id)delegate device:(id)device;
 - (COSAppleIDSilentSignInControllerDelegate)delegate;
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5;
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error;
 - (void)startSigninIn;
 @end
 
 @implementation COSAppleIDSilentSignInController
 
-- (COSAppleIDSilentSignInController)initWithDelegate:(id)a3 device:(id)a4
+- (COSAppleIDSilentSignInController)initWithDelegate:(id)delegate device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  deviceCopy = device;
   v35.receiver = self;
   v35.super_class = COSAppleIDSilentSignInController;
   v8 = [(COSAppleIDSilentSignInController *)&v35 init];
@@ -21,8 +21,8 @@
     goto LABEL_39;
   }
 
-  objc_storeWeak(&v8->_delegate, v6);
-  objc_storeStrong(&v9->_device, a4);
+  objc_storeWeak(&v8->_delegate, delegateCopy);
+  objc_storeStrong(&v9->_device, device);
   device = v9->_device;
   v11 = [[NSUUID alloc] initWithUUIDString:@"DEBFF23F-9327-44FB-A219-0428BEBD5BA7"];
   LODWORD(device) = [(NRDevice *)device supportsCapability:v11];
@@ -299,25 +299,25 @@ LABEL_42:
   return result;
 }
 
-- (void)appleIDAuthController:(id)a3 didSignInWithSuccess:(BOOL)a4 error:(id)a5
+- (void)appleIDAuthController:(id)controller didSignInWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  successCopy = success;
+  controllerCopy = controller;
+  errorCopy = error;
   objc_initWeak(&location, self);
-  if (self->_iCloudAuthController == v8)
+  if (self->_iCloudAuthController == controllerCopy)
   {
-    if (v6)
+    if (successCopy)
     {
       v14 = 0;
     }
 
     else
     {
-      v23 = [v9 domain];
-      if ([v23 isEqualToString:@"com.apple.appleaccount"])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:@"com.apple.appleaccount"])
       {
-        v14 = [v9 code] == -6;
+        v14 = [errorCopy code] == -6;
       }
 
       else
@@ -327,14 +327,14 @@ LABEL_42:
     }
 
     v30 = pbb_accountsignin_log();
-    v31 = v14 || v6;
+    v31 = v14 || successCopy;
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       iCloudAccount = self->_iCloudAccount;
       *buf = 138412546;
       v76 = iCloudAccount;
       v77 = 1024;
-      v78 = v14 || v6;
+      v78 = v14 || successCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Silent sign in for iCloud account (%@) completed with success: (%d)", buf, 0x12u);
     }
 
@@ -343,7 +343,7 @@ LABEL_42:
     v71[2] = sub_1000FD9D4;
     v71[3] = &unk_100268FC8;
     objc_copyWeak(&v72, &location);
-    v73 = v14 || v6;
+    v73 = v14 || successCopy;
     v33 = objc_retainBlock(v71);
     if (self->_iMessageAccount && !self->_shouldSigniMessageAccountSeparately)
     {
@@ -387,8 +387,8 @@ LABEL_42:
         }
 
         [COSiTunesStoreAuthController saveToPairedDeviceiTunesStoreAccount:self->_iTunesStoreAccount fromAccountStore:self->_accountStore completion:&stru_10026BCF0];
-        v40 = [(COSAppleIDSilentSignInController *)self delegate];
-        [v40 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
+        delegate = [(COSAppleIDSilentSignInController *)self delegate];
+        [delegate appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
       }
 
       else
@@ -399,8 +399,8 @@ LABEL_42:
           sub_10018A4F8(v41, v42, v43, v44, v45, v46, v47, v48);
         }
 
-        v40 = objc_loadWeakRetained(&self->_delegate);
-        [v40 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
+        delegate = objc_loadWeakRetained(&self->_delegate);
+        [delegate appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
       }
     }
 
@@ -409,7 +409,7 @@ LABEL_42:
     objc_destroyWeak(&v72);
   }
 
-  else if (self->_iMessageAuthController == v8)
+  else if (self->_iMessageAuthController == controllerCopy)
   {
     v15 = pbb_accountsignin_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -418,7 +418,7 @@ LABEL_42:
       *buf = 138412546;
       v76 = iMessageAccount;
       v77 = 1024;
-      v78 = v6;
+      v78 = successCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Silent sign in for iMessage account (%@) completed with success: (%d)", buf, 0x12u);
     }
 
@@ -427,7 +427,7 @@ LABEL_42:
     v68[2] = sub_1000FDB08;
     v68[3] = &unk_100268FC8;
     objc_copyWeak(&v69, &location);
-    v70 = v6;
+    v70 = successCopy;
     v17 = objc_retainBlock(v68);
     if (self->_faceTimeAccount && !self->_shouldSignFaceTimeAccountSeparately && self->_faceTimeAccountIsForSameUserAsiMessageAccount)
     {
@@ -435,17 +435,17 @@ LABEL_42:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v76) = v6;
+        LODWORD(v76) = successCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Silent combined sign in for FaceTime (via iMessage) completed with success: (%d)", buf, 8u);
       }
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 appleIDSilentSignInControllerSignedAccountType:2 withSuccess:v6];
+      [v19 appleIDSilentSignInControllerSignedAccountType:2 withSuccess:successCopy];
     }
 
     if (self->_iTunesStoreAccount && !self->_shouldSigniTunesStoreAccountSeparately && self->_iTunesStoreAccountIsForSameUserAsiMessageAccount)
     {
-      if (v6)
+      if (successCopy)
       {
         v20 = pbb_accountsignin_log();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -457,8 +457,8 @@ LABEL_42:
         }
 
         [COSiTunesStoreAuthController saveToPairedDeviceiTunesStoreAccount:self->_iTunesStoreAccount fromAccountStore:self->_accountStore completion:&stru_10026BD10];
-        v22 = [(COSAppleIDSilentSignInController *)self delegate];
-        [v22 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
+        delegate2 = [(COSAppleIDSilentSignInController *)self delegate];
+        [delegate2 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
       }
 
       else
@@ -469,8 +469,8 @@ LABEL_42:
           sub_10018A4C0(v49, v50, v51, v52, v53, v54, v55, v56);
         }
 
-        v22 = objc_loadWeakRetained(&self->_delegate);
-        [v22 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
+        delegate2 = objc_loadWeakRetained(&self->_delegate);
+        [delegate2 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
       }
     }
 
@@ -479,7 +479,7 @@ LABEL_42:
     objc_destroyWeak(&v69);
   }
 
-  else if (self->_faceTimeAuthController == v8)
+  else if (self->_faceTimeAuthController == controllerCopy)
   {
     v24 = pbb_accountsignin_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -488,7 +488,7 @@ LABEL_42:
       *buf = 138412546;
       v76 = faceTimeAccount;
       v77 = 1024;
-      v78 = v6;
+      v78 = successCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Silent sign in for FaceTime account (%@) completed with success: (%d)", buf, 0x12u);
     }
 
@@ -497,11 +497,11 @@ LABEL_42:
     v65[2] = sub_1000FDC3C;
     v65[3] = &unk_100268FC8;
     objc_copyWeak(&v66, &location);
-    v67 = v6;
+    v67 = successCopy;
     v26 = objc_retainBlock(v65);
     if (self->_iTunesStoreAccount && !self->_shouldSigniTunesStoreAccountSeparately && self->_iTunesStoreAccountIsForSameUserAsFaceTimeAccount)
     {
-      if (v6)
+      if (successCopy)
       {
         v27 = pbb_accountsignin_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -513,8 +513,8 @@ LABEL_42:
         }
 
         [COSiTunesStoreAuthController saveToPairedDeviceiTunesStoreAccount:self->_iTunesStoreAccount fromAccountStore:self->_accountStore completion:&stru_10026BD30];
-        v29 = [(COSAppleIDSilentSignInController *)self delegate];
-        [v29 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
+        delegate3 = [(COSAppleIDSilentSignInController *)self delegate];
+        [delegate3 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:1];
       }
 
       else
@@ -525,8 +525,8 @@ LABEL_42:
           sub_10018A488(v57, v58, v59, v60, v61, v62, v63, v64);
         }
 
-        v29 = objc_loadWeakRetained(&self->_delegate);
-        [v29 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
+        delegate3 = objc_loadWeakRetained(&self->_delegate);
+        [delegate3 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:0];
       }
     }
 
@@ -535,7 +535,7 @@ LABEL_42:
     objc_destroyWeak(&v66);
   }
 
-  else if (self->_iTunesStoreAuthController == v8)
+  else if (self->_iTunesStoreAuthController == controllerCopy)
   {
     v10 = pbb_accountsignin_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -544,12 +544,12 @@ LABEL_42:
       *buf = 138412546;
       v76 = v11;
       v77 = 1024;
-      v78 = v6;
+      v78 = successCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Silent sign in for iTunesStore account (%@) completed with success: (%d)", buf, 0x12u);
     }
 
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:v6];
+    [v12 appleIDSilentSignInControllerSignedAccountType:3 withSuccess:successCopy];
 
     [(COSAppleIDAuthController *)self->_iTunesStoreAuthController setDelegate:0];
     iTunesStoreAuthController = self->_iTunesStoreAuthController;

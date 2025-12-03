@@ -1,9 +1,9 @@
 @interface ATXRSFilter
 - (ATXRSFilter)init;
-- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)a3;
-- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)a3 appLaunches:(id)a4;
-- (id)_candidatesByUsingAppLaunchHistogramsToFilterCandidates:(id)a3;
-- (id)filterCandidatesBySuggestionRequirements:(id)a3;
+- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)manager;
+- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)manager appLaunches:(id)launches;
+- (id)_candidatesByUsingAppLaunchHistogramsToFilterCandidates:(id)candidates;
+- (id)filterCandidatesBySuggestionRequirements:(id)requirements;
 @end
 
 @implementation ATXRSFilter
@@ -16,43 +16,43 @@
   return v4;
 }
 
-- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)a3
+- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_opt_new();
-  v6 = [(ATXRSFilter *)self initWithAppLaunchHistogramManager:v4 appLaunches:v5];
+  v6 = [(ATXRSFilter *)self initWithAppLaunchHistogramManager:managerCopy appLaunches:v5];
 
   return v6;
 }
 
-- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)a3 appLaunches:(id)a4
+- (ATXRSFilter)initWithAppLaunchHistogramManager:(id)manager appLaunches:(id)launches
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  launchesCopy = launches;
   v12.receiver = self;
   v12.super_class = ATXRSFilter;
   v9 = [(ATXRSFilter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appLaunchHistogramManager, a3);
-    objc_storeStrong(&v10->_appLaunches, a4);
+    objc_storeStrong(&v9->_appLaunchHistogramManager, manager);
+    objc_storeStrong(&v10->_appLaunches, launches);
   }
 
   return v10;
 }
 
-- (id)filterCandidatesBySuggestionRequirements:(id)a3
+- (id)filterCandidatesBySuggestionRequirements:(id)requirements
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requirementsCopy = requirements;
   v27 = objc_opt_new();
   v4 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = requirementsCopy;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v5)
   {
@@ -69,10 +69,10 @@
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
-        v11 = [v10 widgetDescriptor];
-        v12 = [v11 extensionBundleIdentifier];
+        widgetDescriptor = [v10 widgetDescriptor];
+        extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
 
-        v13 = v12;
+        v13 = extensionBundleIdentifier;
         v14 = v13;
         v15 = v4;
         if (CFPreferencesGetAppBooleanValue(@"widgetKitDeveloperModeEnabled", @"com.apple.duetexpertd", 0))
@@ -96,9 +96,9 @@
           v14 = __atxlog_handle_relevant_shortcut();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [v10 widgetDescriptor];
+            widgetDescriptor2 = [v10 widgetDescriptor];
             *keyExistsAndHasValidFormat = 138412290;
-            v34 = v17;
+            v34 = widgetDescriptor2;
             _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "ATXRSFilter: WidgetKit Developer Mode enabled. Bypassing filtering for debug allowed widget: %@", keyExistsAndHasValidFormat, 0xCu);
           }
 
@@ -140,18 +140,18 @@ LABEL_14:
   return v21;
 }
 
-- (id)_candidatesByUsingAppLaunchHistogramsToFilterCandidates:(id)a3
+- (id)_candidatesByUsingAppLaunchHistogramsToFilterCandidates:(id)candidates
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = objc_opt_new();
-  v57 = self;
+  selfCopy = self;
   v66 = [(_ATXAppLaunchHistogramManager *)self->_appLaunchHistogramManager histogramForLaunchType:2];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  obj = v4;
+  obj = candidatesCopy;
   v60 = [obj countByEnumeratingWithState:&v73 objects:v87 count:16];
   if (v60)
   {
@@ -173,20 +173,20 @@ LABEL_14:
 
         v61 = v9;
         v10 = *(*(&v73 + 1) + 8 * v9);
-        v11 = [v10 donationBundleIdentifier];
-        v12 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:v11];
+        donationBundleIdentifier = [v10 donationBundleIdentifier];
+        v12 = [ATXRSWidgetSuggestionProducer replacementContainerBundleIdForDonationBundleId:donationBundleIdentifier];
         v13 = v12;
         if (v12)
         {
-          v14 = v12;
+          donationBundleIdentifier2 = v12;
         }
 
         else
         {
-          v14 = [v10 donationBundleIdentifier];
+          donationBundleIdentifier2 = [v10 donationBundleIdentifier];
         }
 
-        v15 = v14;
+        v15 = donationBundleIdentifier2;
 
         v16 = v15;
         if (([v16 isEqualToString:@"com.apple.Health.Sleep"] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"com.apple.PeopleViewService"))
@@ -205,7 +205,7 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        [(ATXAppLaunches *)v57->_appLaunches timesAppHasBeenLaunchedOverLast28Days:v16];
+        [(ATXAppLaunches *)selfCopy->_appLaunches timesAppHasBeenLaunchedOverLast28Days:v16];
         if (v20 >= 10.0)
         {
           v71 = 0u;
@@ -213,8 +213,8 @@ LABEL_12:
           v69 = 0u;
           v70 = 0u;
           v63 = v10;
-          v31 = [v10 relevantContexts];
-          v68 = [v31 countByEnumeratingWithState:&v69 objects:v86 count:16];
+          relevantContexts = [v10 relevantContexts];
+          v68 = [relevantContexts countByEnumeratingWithState:&v69 objects:v86 count:16];
           if (!v68)
           {
 
@@ -229,14 +229,14 @@ LABEL_13:
           v67 = *v70;
           v32 = 1;
           v62 = v16;
-          v65 = v31;
+          v65 = relevantContexts;
           do
           {
             for (i = 0; i != v68; ++i)
             {
               if (*v70 != v67)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(relevantContexts);
               }
 
               v34 = *(*(&v69 + 1) + 8 * i);
@@ -266,9 +266,9 @@ LABEL_13:
               {
                 v85 = v16;
                 v39 = [*(v8 + 2656) arrayWithObjects:&v85 count:1];
-                v40 = [v38 startDate];
+                startDate = [v38 startDate];
                 LODWORD(v41) = 1.0;
-                [v66 totalLaunchesForBundleIds:v39 forDate:v40 distanceScale:v41];
+                [v66 totalLaunchesForBundleIds:v39 forDate:startDate distanceScale:v41];
                 v43 = v42;
 
                 if (v43 < 4.0)
@@ -276,22 +276,22 @@ LABEL_13:
                   v44 = __atxlog_handle_relevant_shortcut();
                   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
                   {
-                    v64 = [v63 widgetDescriptor];
-                    v45 = [v64 extensionBundleIdentifier];
-                    v46 = [v63 widgetDescriptor];
-                    v47 = [v46 kind];
-                    v48 = [v63 intent];
-                    [v48 intentDescription];
+                    widgetDescriptor = [v63 widgetDescriptor];
+                    extensionBundleIdentifier = [widgetDescriptor extensionBundleIdentifier];
+                    widgetDescriptor2 = [v63 widgetDescriptor];
+                    kind = [widgetDescriptor2 kind];
+                    intent = [v63 intent];
+                    [intent intentDescription];
                     v50 = v49 = v7;
-                    v51 = [v38 startDate];
+                    startDate2 = [v38 startDate];
                     *buf = 138413058;
-                    v78 = v45;
+                    v78 = extensionBundleIdentifier;
                     v79 = 2112;
-                    v80 = v47;
+                    v80 = kind;
                     v81 = 2112;
                     v82 = v50;
                     v83 = 2112;
-                    v84 = v51;
+                    v84 = startDate2;
                     _os_log_impl(&dword_2263AA000, v44, OS_LOG_TYPE_DEFAULT, "ATXRSFilter: Candidate (%@ - %@ - %@) failed dayOfWeek filter for start date: %@", buf, 0x2Au);
 
                     v7 = v49;
@@ -301,12 +301,12 @@ LABEL_13:
                   }
 
                   v32 = 0;
-                  v31 = v65;
+                  relevantContexts = v65;
                 }
               }
             }
 
-            v68 = [v31 countByEnumeratingWithState:&v69 objects:v86 count:16];
+            v68 = [relevantContexts countByEnumeratingWithState:&v69 objects:v86 count:16];
           }
 
           while (v68);
@@ -323,17 +323,17 @@ LABEL_13:
           v21 = __atxlog_handle_relevant_shortcut();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
           {
-            v22 = [v10 widgetDescriptor];
-            v23 = [v22 extensionBundleIdentifier];
-            v24 = [v10 widgetDescriptor];
-            v25 = [v24 kind];
+            widgetDescriptor3 = [v10 widgetDescriptor];
+            extensionBundleIdentifier2 = [widgetDescriptor3 extensionBundleIdentifier];
+            widgetDescriptor4 = [v10 widgetDescriptor];
+            kind2 = [widgetDescriptor4 kind];
             v26 = v10;
-            v27 = v25;
-            v28 = [v26 intent];
-            [v28 intentDescription];
+            v27 = kind2;
+            intent2 = [v26 intent];
+            [intent2 intentDescription];
             v30 = v29 = v16;
             *buf = v55;
-            v78 = v23;
+            v78 = extensionBundleIdentifier2;
             v79 = 2112;
             v80 = v27;
             v81 = 2112;

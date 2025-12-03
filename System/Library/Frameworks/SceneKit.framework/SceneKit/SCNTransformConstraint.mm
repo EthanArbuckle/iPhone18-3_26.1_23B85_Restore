@@ -2,16 +2,16 @@
 + (SCNTransformConstraint)orientationConstraintInWorldSpace:(BOOL)world withBlock:(void *)block;
 + (SCNTransformConstraint)positionConstraintInWorldSpace:(BOOL)world withBlock:(void *)block;
 + (SCNTransformConstraint)transformConstraintInWorldSpace:(BOOL)world withBlock:(void *)block;
-- (SCNTransformConstraint)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initOrientationInWorldSpace:(BOOL)a3 withBlock:(id)a4;
-- (id)initPositionInWorld:(BOOL)a3 withBlock:(id)a4;
-- (id)initTransformInWorld:(BOOL)a3 withBlock:(id)a4;
+- (SCNTransformConstraint)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initOrientationInWorldSpace:(BOOL)space withBlock:(id)block;
+- (id)initPositionInWorld:(BOOL)world withBlock:(id)block;
+- (id)initTransformInWorld:(BOOL)world withBlock:(id)block;
 @end
 
 @implementation SCNTransformConstraint
 
-- (id)initTransformInWorld:(BOOL)a3 withBlock:(id)a4
+- (id)initTransformInWorld:(BOOL)world withBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = SCNTransformConstraint;
@@ -22,8 +22,8 @@
     v8[1] = 3221225472;
     v8[2] = __57__SCNTransformConstraint_initTransformInWorld_withBlock___block_invoke;
     v8[3] = &unk_278301AD8;
-    v9 = a3;
-    v8[4] = a4;
+    worldCopy = world;
+    v8[4] = block;
     v6->super._constraintRef = C3DConstraintCreateProcedural(v8, @"transform");
   }
 
@@ -84,7 +84,7 @@ void *__57__SCNTransformConstraint_initTransformInWorld_withBlock___block_invoke
   return result;
 }
 
-- (id)initPositionInWorld:(BOOL)a3 withBlock:(id)a4
+- (id)initPositionInWorld:(BOOL)world withBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = SCNTransformConstraint;
@@ -95,8 +95,8 @@ void *__57__SCNTransformConstraint_initTransformInWorld_withBlock___block_invoke
     v8[1] = 3221225472;
     v8[2] = __56__SCNTransformConstraint_initPositionInWorld_withBlock___block_invoke;
     v8[3] = &unk_278301AD8;
-    v9 = a3;
-    v8[4] = a4;
+    worldCopy = world;
+    v8[4] = block;
     v6->super._constraintRef = C3DConstraintCreateProcedural(v8, @"translation");
   }
 
@@ -169,7 +169,7 @@ void *__56__SCNTransformConstraint_initPositionInWorld_withBlock___block_invoke(
   return result;
 }
 
-- (id)initOrientationInWorldSpace:(BOOL)a3 withBlock:(id)a4
+- (id)initOrientationInWorldSpace:(BOOL)space withBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = SCNTransformConstraint;
@@ -180,8 +180,8 @@ void *__56__SCNTransformConstraint_initPositionInWorld_withBlock___block_invoke(
     v8[1] = 3221225472;
     v8[2] = __64__SCNTransformConstraint_initOrientationInWorldSpace_withBlock___block_invoke;
     v8[3] = &unk_278301AD8;
-    v9 = a3;
-    v8[4] = a4;
+    spaceCopy = space;
+    v8[4] = block;
     v6->super._constraintRef = C3DConstraintCreateProcedural(v8, @"quaternion");
   }
 
@@ -319,7 +319,7 @@ void *__64__SCNTransformConstraint_initOrientationInWorldSpace_withBlock___block
   return v4;
 }
 
-- (SCNTransformConstraint)initWithCoder:(id)a3
+- (SCNTransformConstraint)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SCNTransformConstraint;
@@ -327,13 +327,13 @@ void *__64__SCNTransformConstraint_initOrientationInWorldSpace_withBlock___block
   if (v4)
   {
     v4->super._constraintRef = C3DConstraintCreateProcedural(&__block_literal_global_131, @"transform");
-    [(SCNConstraint *)v4 finalizeDecodeConstraint:a3];
+    [(SCNConstraint *)v4 finalizeDecodeConstraint:coder];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   Copy = C3DConstraintProceduralCreateCopy(self->super._constraintRef);

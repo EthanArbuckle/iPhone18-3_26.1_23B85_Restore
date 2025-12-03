@@ -12,7 +12,7 @@
   v6 = a4;
   v7 = *MEMORY[0x277CB8C40];
   v8 = a3;
-  v9 = [a1 accountTypeWithAccountTypeIdentifier:v7];
+  v9 = [self accountTypeWithAccountTypeIdentifier:v7];
   v10 = [objc_alloc(MEMORY[0x277CB8F30]) initWithAccountType:v9];
   [v10 setAccountDescription:v8];
 
@@ -22,7 +22,7 @@
   v12[3] = &unk_279CA4CF8;
   v13 = v6;
   v11 = v6;
-  [a1 sl_openGoogleAuthenticationSheetForAccount:v10 shouldConfirm:0 completion:v12];
+  [self sl_openGoogleAuthenticationSheetForAccount:v10 shouldConfirm:0 completion:v12];
 }
 
 - (void)sl_openYouTubeAuthenticationSheetWithAccountDescription:()SLGoogle completion:
@@ -30,7 +30,7 @@
   v6 = a4;
   v7 = *MEMORY[0x277CB8C40];
   v8 = a3;
-  v9 = [a1 accountTypeWithAccountTypeIdentifier:v7];
+  v9 = [self accountTypeWithAccountTypeIdentifier:v7];
   v10 = [objc_alloc(MEMORY[0x277CB8F30]) initWithAccountType:v9];
   [v10 setAccountDescription:v8];
 
@@ -40,7 +40,7 @@
   v12[3] = &unk_279CA4CF8;
   v13 = v6;
   v11 = v6;
-  [a1 sl_openGoogleAuthenticationSheetForAccount:v10 shouldConfirm:0 delegateClassName:@"SLYouTubeAuthFlowController" completion:v12];
+  [self sl_openGoogleAuthenticationSheetForAccount:v10 shouldConfirm:0 delegateClassName:@"SLYouTubeAuthFlowController" completion:v12];
 }
 
 - (void)sl_openYouTubeAuthenticationSheetWithUsername:()SLGoogle accountDescription:completion:
@@ -49,7 +49,7 @@
   v9 = *MEMORY[0x277CB8C40];
   v10 = a4;
   v11 = a3;
-  v12 = [a1 accountTypeWithAccountTypeIdentifier:v9];
+  v12 = [self accountTypeWithAccountTypeIdentifier:v9];
   v13 = [objc_alloc(MEMORY[0x277CB8F30]) initWithAccountType:v12];
   [v13 setUsername:v11];
 
@@ -60,7 +60,7 @@
   v15[3] = &unk_279CA4CF8;
   v16 = v8;
   v14 = v8;
-  [a1 sl_openGoogleAuthenticationSheetForAccount:v13 shouldConfirm:1 delegateClassName:@"SLYouTubeAuthFlowController" completion:v15];
+  [self sl_openGoogleAuthenticationSheetForAccount:v13 shouldConfirm:1 delegateClassName:@"SLYouTubeAuthFlowController" completion:v15];
 }
 
 - (void)sl_openGoogleAuthenticationSheetForAccount:()SLGoogle shouldConfirm:delegateClassName:completion:
@@ -77,7 +77,7 @@
   v16[3] = &unk_279CA4CF8;
   v17 = v10;
   v15 = v10;
-  [a1 openAuthenticationURLForAccount:v12 withDelegateClassName:v11 fromBundleAtPath:v14 shouldConfirm:a4 completion:v16];
+  [self openAuthenticationURLForAccount:v12 withDelegateClassName:v11 fromBundleAtPath:v14 shouldConfirm:a4 completion:v16];
 }
 
 @end

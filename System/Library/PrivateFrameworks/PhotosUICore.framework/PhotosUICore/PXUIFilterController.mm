@@ -1,28 +1,28 @@
 @interface PXUIFilterController
 - (PXFilterControllerDelegate)filterControllerDelegate;
-- (PXUIFilterController)initWithDelegate:(id)a3 libraryFilterState:(id)a4 initialContentFilterState:(id)a5 sharedLibraryStatusProvider:(id)a6 filterControllerOptions:(unint64_t)a7;
+- (PXUIFilterController)initWithDelegate:(id)delegate libraryFilterState:(id)state initialContentFilterState:(id)filterState sharedLibraryStatusProvider:(id)provider filterControllerOptions:(unint64_t)options;
 - (id)_contentFilterGroups;
 - (id)_localizedCounts;
 - (id)_localizedGuestCounts;
 - (id)_sectionHeaderTitleTextAttributes;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (int64_t)_contentFilterGroupsCount;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_doneButtonPressed:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_doneButtonPressed:(id)pressed;
 - (void)_filterControllerDidClose;
-- (void)_setVisibilityForSender:(id)a3;
+- (void)_setVisibilityForSender:(id)sender;
 - (void)_setupNavigationBar;
 - (void)_setupTableView;
-- (void)_tappedRowAtIndexPath:(id)a3;
-- (void)_updateContentFilterStateWithFilterItemTag:(int64_t)a3 shouldEnable:(BOOL)a4;
+- (void)_tappedRowAtIndexPath:(id)path;
+- (void)_updateContentFilterStateWithFilterItemTag:(int64_t)tag shouldEnable:(BOOL)enable;
 - (void)_updateFooterLayout;
 - (void)_updateFooterStatus;
 - (void)_updateTableView;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)setContentFilterState:(id)a3;
-- (void)setDataSourceManager:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)setContentFilterState:(id)state;
+- (void)setDataSourceManager:(id)manager;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -36,25 +36,25 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXContentSyndicationConfigurationObservationContext_175640 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXContentSyndicationConfigurationObservationContext_175640 == context)
   {
-    if ((v6 & 5) == 0)
+    if ((changeCopy & 5) == 0)
     {
       goto LABEL_16;
     }
 
-    v10 = v8;
-    v9 = [(PXUIFilterController *)self contentFilterState];
+    v10 = observableCopy;
+    contentFilterState = [(PXUIFilterController *)self contentFilterState];
 
-    if (v9)
+    if (contentFilterState)
     {
       [(PXUIFilterController *)self setContentFilterState:0];
 LABEL_15:
-      v8 = v10;
+      observableCopy = v10;
       goto LABEL_16;
     }
 
@@ -63,21 +63,21 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (PXCountsControllerObserverContext == a5)
+  if (PXCountsControllerObserverContext == context)
   {
-    if ((v6 & 1) == 0)
+    if ((changeCopy & 1) == 0)
     {
       goto LABEL_16;
     }
 
-    v10 = v8;
+    v10 = observableCopy;
     [(PXUIFilterController *)self _updateFooterStatus];
     goto LABEL_15;
   }
 
-  if (PXSharedLibraryStatusProviderObservationContext_175641 == a5)
+  if (PXSharedLibraryStatusProviderObservationContext_175641 == context)
   {
-    if ((v6 & 3) == 0)
+    if ((changeCopy & 3) == 0)
     {
       goto LABEL_16;
     }
@@ -85,25 +85,25 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  if ((v6 & 1) != 0 && PXLibraryFilterStateObservationContext_175642 == a5)
+  if ((changeCopy & 1) != 0 && PXLibraryFilterStateObservationContext_175642 == context)
   {
 LABEL_13:
-    v10 = v8;
+    v10 = observableCopy;
     goto LABEL_14;
   }
 
 LABEL_16:
 }
 
-- (void)setContentFilterState:(id)a3
+- (void)setContentFilterState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   contentFilterState = self->_contentFilterState;
-  if (contentFilterState != v4)
+  if (contentFilterState != stateCopy)
   {
-    v14 = v4;
-    v6 = [(PXContentFilterState *)contentFilterState isEqual:v4];
-    v4 = v14;
+    v14 = stateCopy;
+    v6 = [(PXContentFilterState *)contentFilterState isEqual:stateCopy];
+    stateCopy = v14;
     if (!v6)
     {
       v7 = [(PXContentFilterState *)v14 copy];
@@ -111,61 +111,61 @@ LABEL_16:
       if (v7)
       {
         v9 = v7;
-        v10 = self->_contentFilterState;
+        photoLibrary = self->_contentFilterState;
         self->_contentFilterState = v9;
       }
 
       else
       {
-        v10 = [(PXContentFilterState *)self->_contentFilterState photoLibrary];
-        v11 = [PXContentFilterState defaultFilterStateForPhotoLibrary:v10];
+        photoLibrary = [(PXContentFilterState *)self->_contentFilterState photoLibrary];
+        v11 = [PXContentFilterState defaultFilterStateForPhotoLibrary:photoLibrary];
         v12 = self->_contentFilterState;
         self->_contentFilterState = v11;
       }
 
       [(PXUIFilterController *)self _updateTableView];
-      v13 = [(PXUIFilterController *)self filterControllerDelegate];
-      [v13 filterController:self contentFilterStateChanged:self->_contentFilterState];
+      filterControllerDelegate = [(PXUIFilterController *)self filterControllerDelegate];
+      [filterControllerDelegate filterController:self contentFilterStateChanged:self->_contentFilterState];
 
-      v4 = v14;
+      stateCopy = v14;
     }
   }
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v7 = [a3 presentedViewController];
-  v8 = [v7 modalPresentationStyle];
+  presentedViewController = [controller presentedViewController];
+  modalPresentationStyle = [presentedViewController modalPresentationStyle];
 
-  if (a4 == -1 && v8 == 7)
+  if (style == -1 && modalPresentationStyle == 7)
   {
-    v9 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
   }
 
-  v11 = v9;
-  v10 = [(PXUIFilterController *)self tableView];
-  [v10 setBackgroundColor:v11];
+  v11 = clearColor;
+  tableView = [(PXUIFilterController *)self tableView];
+  [tableView setBackgroundColor:v11];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [(PXUIFilterController *)self _contentFilterGroups];
-  v7 = [v6 objectAtIndexedSubscript:a4];
-  v8 = [v7 name];
+  _contentFilterGroups = [(PXUIFilterController *)self _contentFilterGroups];
+  v7 = [_contentFilterGroups objectAtIndexedSubscript:section];
+  name = [v7 name];
 
-  v9 = [MEMORY[0x1E69DCC28] headerConfiguration];
+  headerConfiguration = [MEMORY[0x1E69DCC28] headerConfiguration];
   v10 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v11 = [(PXUIFilterController *)self _sectionHeaderTitleTextAttributes];
-  v12 = [v10 initWithString:v8 attributes:v11];
-  [v9 setAttributedText:v12];
+  _sectionHeaderTitleTextAttributes = [(PXUIFilterController *)self _sectionHeaderTitleTextAttributes];
+  v12 = [v10 initWithString:name attributes:_sectionHeaderTitleTextAttributes];
+  [headerConfiguration setAttributedText:v12];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DD050]);
-  [v13 setContentConfiguration:v9];
+  [v13 setContentConfiguration:headerConfiguration];
   [v13 setAutomaticallyUpdatesContentConfiguration:1];
 
   return v13;
@@ -178,78 +178,78 @@ LABEL_16:
   v2 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] withSymbolicTraits:2 options:1];
   v7[0] = v2;
   v6[1] = *MEMORY[0x1E69DB650];
-  v3 = [MEMORY[0x1E69DC888] labelColor];
-  v7[1] = v3;
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v7[1] = labelColor;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:2];
 
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v40 = v6;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"PXFilterControllerCellIdentifier"];
+  viewCopy = view;
+  pathCopy = path;
+  v40 = viewCopy;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"PXFilterControllerCellIdentifier"];
   if (!v8)
   {
     v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:3 reuseIdentifier:@"PXFilterControllerCellIdentifier"];
     [v8 setSeparatorInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
     [v8 setSelectionStyle:0];
     [v8 setInsetsLayoutMarginsFromSafeArea:0];
-    v9 = [v8 textLabel];
-    [v9 setAdjustsFontSizeToFitWidth:1];
-    [v9 setNumberOfLines:2];
-    [v9 setLineBreakMode:0];
-    [v9 setMinimumScaleFactor:0.600000024];
-    v10 = [v8 detailTextLabel];
-    [v10 setAdjustsFontSizeToFitWidth:1];
-    [v10 setMinimumScaleFactor:0.400000006];
+    textLabel = [v8 textLabel];
+    [textLabel setAdjustsFontSizeToFitWidth:1];
+    [textLabel setNumberOfLines:2];
+    [textLabel setLineBreakMode:0];
+    [textLabel setMinimumScaleFactor:0.600000024];
+    detailTextLabel = [v8 detailTextLabel];
+    [detailTextLabel setAdjustsFontSizeToFitWidth:1];
+    [detailTextLabel setMinimumScaleFactor:0.400000006];
   }
 
-  v11 = [v8 textLabel];
-  [v11 setText:0];
+  textLabel2 = [v8 textLabel];
+  [textLabel2 setText:0];
 
-  v12 = [v8 detailTextLabel];
-  [v12 setText:0];
+  detailTextLabel2 = [v8 detailTextLabel];
+  [detailTextLabel2 setText:0];
 
-  v13 = [v8 imageView];
-  [v13 setImage:0];
+  imageView = [v8 imageView];
+  [imageView setImage:0];
 
   [v8 setAccessoryType:0];
   [v8 setAccessoryView:0];
-  v14 = [v7 section];
-  v15 = [(PXUIFilterController *)self _contentFilterGroups];
-  v16 = [v15 objectAtIndexedSubscript:v14];
-  v17 = [v16 filterIdentifiers];
-  v39 = v7;
-  v18 = [v17 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
-  v19 = [v18 intValue];
+  section = [pathCopy section];
+  _contentFilterGroups = [(PXUIFilterController *)self _contentFilterGroups];
+  v16 = [_contentFilterGroups objectAtIndexedSubscript:section];
+  filterIdentifiers = [v16 filterIdentifiers];
+  v39 = pathCopy;
+  v18 = [filterIdentifiers objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+  intValue = [v18 intValue];
 
-  v20 = [(PXUIFilterController *)self contentFilterState];
-  v21 = [v20 isContentFilterActive:v19];
+  contentFilterState = [(PXUIFilterController *)self contentFilterState];
+  v21 = [contentFilterState isContentFilterActive:intValue];
 
-  v22 = PXContentFilterImageForItemTag(v19);
-  v23 = [v8 imageView];
-  [v23 setImage:v22];
+  v22 = PXContentFilterImageForItemTag(intValue);
+  imageView2 = [v8 imageView];
+  [imageView2 setImage:v22];
 
-  v24 = PXContentFilterTitleForItemTag(v19);
-  v25 = [v8 textLabel];
-  [v25 setText:v24];
+  v24 = PXContentFilterTitleForItemTag(intValue);
+  textLabel3 = [v8 textLabel];
+  [textLabel3 setText:v24];
 
-  v26 = [(PXUIFilterController *)self libraryFilterState];
-  v27 = [v26 viewMode];
+  libraryFilterState = [(PXUIFilterController *)self libraryFilterState];
+  viewMode = [libraryFilterState viewMode];
 
-  v28 = [(PXUIFilterController *)self sharedLibraryStatusProvider];
-  v29 = PXContentFilterSubtitleForItemTag(v19, v28, v27);
-  v30 = [v8 detailTextLabel];
-  [v30 setText:v29];
+  sharedLibraryStatusProvider = [(PXUIFilterController *)self sharedLibraryStatusProvider];
+  v29 = PXContentFilterSubtitleForItemTag(intValue, sharedLibraryStatusProvider, viewMode);
+  detailTextLabel3 = [v8 detailTextLabel];
+  [detailTextLabel3 setText:v29];
 
-  v31 = [MEMORY[0x1E69DC888] grayColor];
-  v32 = [v8 detailTextLabel];
-  [v32 setTextColor:v31];
+  grayColor = [MEMORY[0x1E69DC888] grayColor];
+  detailTextLabel4 = [v8 detailTextLabel];
+  [detailTextLabel4 setTextColor:grayColor];
 
-  [v8 setTag:v19];
+  [v8 setTag:intValue];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__PXUIFilterController_tableView_cellForRowAtIndexPath___block_invoke;
@@ -259,9 +259,9 @@ LABEL_16:
   v33 = v8;
   v42 = v33;
   v34 = _Block_copy(aBlock);
-  if ([PXUIFilterController _isContentFilterItemTagHandledBySwitch:v19])
+  if ([PXUIFilterController _isContentFilterItemTagHandledBySwitch:intValue])
   {
-    v34[2](v34, v19);
+    v34[2](v34, intValue);
     v36 = v39;
     v35 = v40;
   }
@@ -291,12 +291,12 @@ void __56__PXUIFilterController_tableView_cellForRowAtIndexPath___block_invoke(u
   [*(a1 + 40) setAccessoryView:v4];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PXUIFilterController *)self _contentFilterGroups];
-  v6 = [v5 objectAtIndexedSubscript:a4];
-  v7 = [v6 filterIdentifiers];
-  v8 = [v7 count];
+  _contentFilterGroups = [(PXUIFilterController *)self _contentFilterGroups];
+  v6 = [_contentFilterGroups objectAtIndexedSubscript:section];
+  filterIdentifiers = [v6 filterIdentifiers];
+  v8 = [filterIdentifiers count];
 
   return v8;
 }
@@ -316,17 +316,17 @@ void __56__PXUIFilterController_tableView_cellForRowAtIndexPath___block_invoke(u
   [(PXUIFilterController *)&v4 viewDidLoad];
   [(PXUIFilterController *)self _setupNavigationBar];
   [(PXUIFilterController *)self _setupTableView];
-  v3 = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
-  [v3 registerChangeObserver:self context:PXContentSyndicationConfigurationObservationContext_175640];
+  contentSyndicationConfigurationProvider = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
+  [contentSyndicationConfigurationProvider registerChangeObserver:self context:PXContentSyndicationConfigurationObservationContext_175640];
 }
 
-- (void)setDataSourceManager:(id)a3
+- (void)setDataSourceManager:(id)manager
 {
-  v5 = a3;
-  if (self->_dataSourceManager != v5)
+  managerCopy = manager;
+  if (self->_dataSourceManager != managerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_dataSourceManager, a3);
+    v8 = managerCopy;
+    objc_storeStrong(&self->_dataSourceManager, manager);
     [(PXAssetsDataSourceCountsController *)self->_countsController unregisterChangeObserver:self context:PXCountsControllerObserverContext];
     v6 = [[off_1E77214A8 alloc] initWithAssetsDataSourceManager:v8];
     countsController = self->_countsController;
@@ -335,29 +335,29 @@ void __56__PXUIFilterController_tableView_cellForRowAtIndexPath___block_invoke(u
     [(PXAssetsDataSourceCountsController *)self->_countsController registerChangeObserver:self context:PXCountsControllerObserverContext];
     [(PXAssetsDataSourceCountsController *)self->_countsController prepareCountsIfNeeded];
     [(PXUIFilterController *)self _updateFooterStatus];
-    v5 = v8;
+    managerCopy = v8;
   }
 }
 
-- (PXUIFilterController)initWithDelegate:(id)a3 libraryFilterState:(id)a4 initialContentFilterState:(id)a5 sharedLibraryStatusProvider:(id)a6 filterControllerOptions:(unint64_t)a7
+- (PXUIFilterController)initWithDelegate:(id)delegate libraryFilterState:(id)state initialContentFilterState:(id)filterState sharedLibraryStatusProvider:(id)provider filterControllerOptions:(unint64_t)options
 {
-  v7 = a7;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (v14)
+  optionsCopy = options;
+  delegateCopy = delegate;
+  stateCopy = state;
+  filterStateCopy = filterState;
+  providerCopy = provider;
+  if (stateCopy)
   {
-    if (v15)
+    if (filterStateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"contentFilterState"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"contentFilterState"}];
 
-    if (v16)
+    if (providerCopy)
     {
       goto LABEL_4;
     }
@@ -365,23 +365,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"libraryFilterState"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:320 description:{@"Invalid parameter not satisfying: %@", @"libraryFilterState"}];
 
-  if (!v15)
+  if (!filterStateCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (providerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXUIFilterController.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"sharedLibraryStatusProvider"}];
 
 LABEL_4:
   v26.receiver = self;
@@ -390,13 +390,13 @@ LABEL_4:
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sharedLibraryStatusProvider, a6);
-    objc_storeStrong(&v18->_libraryFilterState, a4);
-    objc_storeStrong(&v18->_contentFilterState, a5);
-    objc_storeWeak(&v18->_filterControllerDelegate, v13);
-    v18->_hidesFooter = (v7 & 8) != 0;
-    v19 = [(PXContentFilterState *)v18->_contentFilterState photoLibrary];
-    v20 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:v19];
+    objc_storeStrong(&v17->_sharedLibraryStatusProvider, provider);
+    objc_storeStrong(&v18->_libraryFilterState, state);
+    objc_storeStrong(&v18->_contentFilterState, filterState);
+    objc_storeWeak(&v18->_filterControllerDelegate, delegateCopy);
+    v18->_hidesFooter = (optionsCopy & 8) != 0;
+    photoLibrary = [(PXContentFilterState *)v18->_contentFilterState photoLibrary];
+    v20 = [PXContentSyndicationConfigurationProvider contentSyndicationConfigurationProviderWithPhotoLibrary:photoLibrary];
     contentSyndicationConfigurationProvider = v18->_contentSyndicationConfigurationProvider;
     v18->_contentSyndicationConfigurationProvider = v20;
 
@@ -407,9 +407,9 @@ LABEL_4:
   return v18;
 }
 
-- (void)_doneButtonPressed:(id)a3
+- (void)_doneButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -429,63 +429,63 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
 
 - (void)_filterControllerDidClose
 {
-  v3 = [(PXUIFilterController *)self filterControllerDelegate];
+  filterControllerDelegate = [(PXUIFilterController *)self filterControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 filterControllerDidClose:self];
+    [filterControllerDelegate filterControllerDidClose:self];
   }
 }
 
-- (void)_updateContentFilterStateWithFilterItemTag:(int64_t)a3 shouldEnable:(BOOL)a4
+- (void)_updateContentFilterStateWithFilterItemTag:(int64_t)tag shouldEnable:(BOOL)enable
 {
-  v4 = a4;
-  v7 = [(PXUIFilterController *)self contentFilterState];
-  v13 = PXContentFilterGetUpdatedState(v7, a3, v4, 0);
+  enableCopy = enable;
+  contentFilterState = [(PXUIFilterController *)self contentFilterState];
+  v13 = PXContentFilterGetUpdatedState(contentFilterState, tag, enableCopy, 0);
 
   [(PXUIFilterController *)self setContentFilterState:v13];
-  if (a3 == 3)
+  if (tag == 3)
   {
     if (v13)
     {
-      v8 = [v13 includeSharedWithYou];
+      includeSharedWithYou = [v13 includeSharedWithYou];
     }
 
     else
     {
-      v8 = 1;
+      includeSharedWithYou = 1;
     }
 
-    v9 = [MEMORY[0x1E696AD98] numberWithBool:v8];
-    v10 = [off_1E7721948 standardUserDefaults];
-    [v10 setIncludeSharedWithYou:v9];
+    v9 = [MEMORY[0x1E696AD98] numberWithBool:includeSharedWithYou];
+    standardUserDefaults = [off_1E7721948 standardUserDefaults];
+    [standardUserDefaults setIncludeSharedWithYou:v9];
   }
 
-  if (v4)
+  if (enableCopy)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    PXContentFilterSendAnalyticsForItemSelected(a3, v12);
+    PXContentFilterSendAnalyticsForItemSelected(tag, v12);
   }
 }
 
-- (void)_tappedRowAtIndexPath:(id)a3
+- (void)_tappedRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PXUIFilterController *)self tableView];
-  v8 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(PXUIFilterController *)self tableView];
+  v8 = [tableView cellForRowAtIndexPath:pathCopy];
 
-  v6 = [v8 isSelected];
+  isSelected = [v8 isSelected];
   v7 = [v8 tag];
   if (![PXUIFilterController _isContentFilterItemTagHandledBySwitch:v7])
   {
-    [(PXUIFilterController *)self _updateContentFilterStateWithFilterItemTag:v7 shouldEnable:v6];
+    [(PXUIFilterController *)self _updateContentFilterStateWithFilterItemTag:v7 shouldEnable:isSelected];
   }
 }
 
 - (int64_t)_contentFilterGroupsCount
 {
-  v2 = [(PXUIFilterController *)self _contentFilterGroups];
-  v3 = [v2 count];
+  _contentFilterGroups = [(PXUIFilterController *)self _contentFilterGroups];
+  v3 = [_contentFilterGroups count];
 
   return v3;
 }
@@ -497,8 +497,8 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
   {
     v4 = 0x1E695D000uLL;
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-    v6 = [(PXUIFilterController *)self filterControllerDelegate];
-    v7 = [v6 contentFilterHiddenTypesForFilterController:self];
+    filterControllerDelegate = [(PXUIFilterController *)self filterControllerDelegate];
+    v7 = [filterControllerDelegate contentFilterHiddenTypesForFilterController:self];
 
     if (([v7 containsObject:&unk_1F190D0D8] & 1) == 0)
     {
@@ -506,32 +506,32 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
       [(NSArray *)v5 addObject:v8];
     }
 
-    v9 = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
-    if ([v9 showUnsavedSyndicatedContentInPhotosGrids])
+    contentSyndicationConfigurationProvider = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
+    if ([contentSyndicationConfigurationProvider showUnsavedSyndicatedContentInPhotosGrids])
     {
-      v10 = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
-      if ([v10 contentSyndicationIsAvailable])
+      contentSyndicationConfigurationProvider2 = [(PXUIFilterController *)self contentSyndicationConfigurationProvider];
+      if ([contentSyndicationConfigurationProvider2 contentSyndicationIsAvailable])
       {
-        v11 = [off_1E7721948 standardUserDefaults];
-        v12 = [v11 includeSharedWithYou];
-        v13 = [v12 BOOLValue];
+        standardUserDefaults = [off_1E7721948 standardUserDefaults];
+        includeSharedWithYou = [standardUserDefaults includeSharedWithYou];
+        bOOLValue = [includeSharedWithYou BOOLValue];
 
         v4 = 0x1E695D000;
       }
 
       else
       {
-        v13 = 0;
+        bOOLValue = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      bOOLValue = 0;
     }
 
     v14 = [objc_alloc(*(v4 + 3952)) initWithCapacity:4];
-    if (v13)
+    if (bOOLValue)
     {
       if (([v7 containsObject:&unk_1F190D0F0] & 1) == 0)
       {
@@ -584,15 +584,15 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
       [v14 addObject:&unk_1F190D1C8];
     }
 
-    v15 = [(PXUIFilterController *)self contentFilterState];
-    v16 = [v15 shouldExcludeScreenshots];
+    contentFilterState = [(PXUIFilterController *)self contentFilterState];
+    shouldExcludeScreenshots = [contentFilterState shouldExcludeScreenshots];
 
-    if ((v16 & 1) == 0 && ([v7 containsObject:&unk_1F190D1E0] & 1) == 0)
+    if ((shouldExcludeScreenshots & 1) == 0 && ([v7 containsObject:&unk_1F190D1E0] & 1) == 0)
     {
       [v14 addObject:&unk_1F190D1E0];
     }
 
-    if (v13 && ([v7 containsObject:&unk_1F190D1F8] & 1) == 0)
+    if (bOOLValue && ([v7 containsObject:&unk_1F190D1F8] & 1) == 0)
     {
       [v14 addObject:&unk_1F190D1F8];
     }
@@ -606,7 +606,7 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
     }
 
     v19 = [objc_alloc(*(v4 + 3952)) initWithCapacity:2];
-    if (v13 && ([v7 containsObject:&unk_1F190D210] & 1) == 0)
+    if (bOOLValue && ([v7 containsObject:&unk_1F190D210] & 1) == 0)
     {
       [v19 addObject:&unk_1F190D210];
     }
@@ -628,31 +628,31 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
   return contentFilterGroups;
 }
 
-- (void)_setVisibilityForSender:(id)a3
+- (void)_setVisibilityForSender:(id)sender
 {
-  v4 = a3;
-  v5 = [v4 tag];
-  v6 = [v4 isOn];
+  senderCopy = sender;
+  v5 = [senderCopy tag];
+  isOn = [senderCopy isOn];
 
-  [(PXUIFilterController *)self _updateContentFilterStateWithFilterItemTag:v5 shouldEnable:v6];
+  [(PXUIFilterController *)self _updateContentFilterStateWithFilterItemTag:v5 shouldEnable:isOn];
 }
 
 - (void)_updateFooterStatus
 {
-  v3 = [(PXUIFilterController *)self tableView];
-  v4 = [v3 tableFooterView];
+  tableView = [(PXUIFilterController *)self tableView];
+  tableFooterView = [tableView tableFooterView];
 
-  v5 = [(PXUIFilterController *)self _localizedCounts];
-  v6 = [(PXUIFilterController *)self _localizedGuestCounts];
+  _localizedCounts = [(PXUIFilterController *)self _localizedCounts];
+  _localizedGuestCounts = [(PXUIFilterController *)self _localizedGuestCounts];
   v7 = @"shared.with.you";
-  if (!v6)
+  if (!_localizedGuestCounts)
   {
     v7 = 0;
   }
 
   v8 = v7;
-  v9 = [(PXUIFilterController *)self contentFilterState];
-  if ([v9 isFiltering])
+  contentFilterState = [(PXUIFilterController *)self contentFilterState];
+  if ([contentFilterState isFiltering])
   {
     v10 = @"PXContentFilterFooterSubtitle_FilterResults";
   }
@@ -664,20 +664,20 @@ void __43__PXUIFilterController__doneButtonPressed___block_invoke(uint64_t a1)
 
   v11 = PXLocalizedStringFromTable(v10, @"PhotosUICore");
 
-  v12 = [v4 viewModel];
+  viewModel = [tableFooterView viewModel];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __43__PXUIFilterController__updateFooterStatus__block_invoke;
   v20 = &unk_1E77403C8;
-  v21 = v5;
-  v22 = v6;
+  v21 = _localizedCounts;
+  v22 = _localizedGuestCounts;
   v23 = v8;
   v24 = v11;
   v13 = v11;
   v14 = v8;
-  v15 = v6;
-  v16 = v5;
-  [v12 performChanges:&v17];
+  v15 = _localizedGuestCounts;
+  v16 = _localizedCounts;
+  [viewModel performChanges:&v17];
 
   [(PXUIFilterController *)self _updateFooterLayout:v17];
 }
@@ -694,34 +694,34 @@ void __43__PXUIFilterController__updateFooterStatus__block_invoke(void *a1, void
 
 - (void)_updateFooterLayout
 {
-  v45 = [(PXUIFilterController *)self tableView];
-  v3 = [v45 tableFooterView];
-  [v3 frame];
+  tableView = [(PXUIFilterController *)self tableView];
+  tableFooterView = [tableView tableFooterView];
+  [tableFooterView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  [tableFooterView systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v13 = v12;
   if (v12 != v11)
   {
-    [v3 setFrame:{v5, v7, v9, v12}];
-    [v45 setTableFooterView:v3];
+    [tableFooterView setFrame:{v5, v7, v9, v12}];
+    [tableView setTableFooterView:tableFooterView];
   }
 
-  v14 = [(PXUIFilterController *)self traitCollection];
-  v15 = [v14 userInterfaceIdiom];
+  traitCollection = [(PXUIFilterController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v15 != 1)
+  if (userInterfaceIdiom != 1)
   {
-    [v45 rectForSection:{objc_msgSend(v45, "numberOfSections") - 1}];
+    [tableView rectForSection:{objc_msgSend(tableView, "numberOfSections") - 1}];
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    [v45 contentOffset];
+    [tableView contentOffset];
     v25 = v24;
-    [v45 frame];
+    [tableView frame];
     v26 = v25 + CGRectGetHeight(v47);
     v48.origin.x = v17;
     v48.origin.y = v19;
@@ -734,14 +734,14 @@ void __43__PXUIFilterController__updateFooterStatus__block_invoke(void *a1, void
     }
 
     v28 = v13 + v25 - v27;
-    [v3 frame];
+    [tableFooterView frame];
     v30 = v29;
     v32 = v31;
     v34 = v33;
-    v35 = [MEMORY[0x1E69DC938] currentDevice];
-    v36 = [v35 orientation];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    orientation = [currentDevice orientation];
 
-    if (v36 == 1)
+    if (orientation == 1)
     {
       v37 = 50.0;
     }
@@ -751,18 +751,18 @@ void __43__PXUIFilterController__updateFooterStatus__block_invoke(void *a1, void
       v37 = 0.0;
     }
 
-    [v45 bounds];
-    [v3 setFrame:{v30, v28 + v38 - v34 - v37, v32, v34}];
+    [tableView bounds];
+    [tableFooterView setFrame:{v30, v28 + v38 - v34 - v37, v32, v34}];
   }
 
-  v39 = [(PXUIFilterController *)self tableView];
-  [v39 contentSize];
+  tableView2 = [(PXUIFilterController *)self tableView];
+  [tableView2 contentSize];
   v41 = v40;
   v43 = v42;
-  v44 = [(PXUIFilterController *)self parentViewController];
-  [v44 setPreferredContentSize:{v41, v43}];
+  parentViewController = [(PXUIFilterController *)self parentViewController];
+  [parentViewController setPreferredContentSize:{v41, v43}];
 
-  [v3 setHidden:{-[PXUIFilterController hidesFooter](self, "hidesFooter")}];
+  [tableFooterView setHidden:{-[PXUIFilterController hidesFooter](self, "hidesFooter")}];
 }
 
 - (id)_localizedGuestCounts
@@ -778,19 +778,19 @@ void __43__PXUIFilterController__updateFooterStatus__block_invoke(void *a1, void
   v4 = +[PXLemonadeSettings sharedInstance];
   if ([v4 sharedWithYouOnlyFilterIncludesUnsaved])
   {
-    v5 = 0;
+    showOnlySharedWithYou = 0;
   }
 
   else
   {
-    v6 = [(PXUIFilterController *)self contentFilterState];
-    v5 = [v6 showOnlySharedWithYou];
+    contentFilterState = [(PXUIFilterController *)self contentFilterState];
+    showOnlySharedWithYou = [contentFilterState showOnlySharedWithYou];
   }
 
   v7 = 0;
   if (v11 != 0x7FFFFFFFFFFFFFFFLL && *(&v11 + 1) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ((*(&v11 + 1) + v11 + v12 != 0) | v5 & 1)
+    if ((*(&v11 + 1) + v11 + v12 != 0) | showOnlySharedWithYou & 1)
     {
       v9 = v11;
       v10 = v12;
@@ -823,10 +823,10 @@ void __43__PXUIFilterController__updateFooterStatus__block_invoke(void *a1, void
 
   else
   {
-    v5 = [(PXUIFilterController *)self contentFilterState];
-    v6 = [v5 showOnlySharedWithYou];
+    contentFilterState = [(PXUIFilterController *)self contentFilterState];
+    showOnlySharedWithYou = [contentFilterState showOnlySharedWithYou];
 
-    if (v6)
+    if (showOnlySharedWithYou)
     {
       v7 = 0;
       goto LABEL_11;
@@ -851,8 +851,8 @@ LABEL_11:
   contentFilterGroups = self->_contentFilterGroups;
   self->_contentFilterGroups = 0;
 
-  v4 = [(PXUIFilterController *)self tableView];
-  [v4 reloadData];
+  tableView = [(PXUIFilterController *)self tableView];
+  [tableView reloadData];
 
   [(PXUIFilterController *)self _updateFooterStatus];
 }
@@ -864,9 +864,9 @@ LABEL_11:
   v4 = objc_alloc_init(off_1E7721588);
   [(PXPhotosGlobalFooterView *)v6 setViewModel:v4];
 
-  v5 = [(PXUIFilterController *)self tableView];
-  [v5 setAllowsMultipleSelection:1];
-  [v5 setTableFooterView:v6];
+  tableView = [(PXUIFilterController *)self tableView];
+  [tableView setAllowsMultipleSelection:1];
+  [tableView setTableFooterView:v6];
 }
 
 - (void)_setupNavigationBar
@@ -875,8 +875,8 @@ LABEL_11:
   [(PXUIFilterController *)self setTitle:v3];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__doneButtonPressed_];
-  v4 = [(PXUIFilterController *)self navigationItem];
-  [v4 setRightBarButtonItem:v5];
+  navigationItem = [(PXUIFilterController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v5];
 }
 
 @end

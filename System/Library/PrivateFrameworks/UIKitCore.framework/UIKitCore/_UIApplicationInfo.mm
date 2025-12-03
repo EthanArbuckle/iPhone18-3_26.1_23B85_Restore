@@ -1,36 +1,36 @@
 @interface _UIApplicationInfo
-+ (id)_genreNameForID:(int64_t)a3;
-+ (id)_localizedFolderNameForName:(id)a3;
-- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4;
-- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4 withUserInterfaceIdiom:(int64_t)a5;
-- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4;
-- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4 withUserInterfaceIdiom:(int64_t)a5;
++ (id)_genreNameForID:(int64_t)d;
++ (id)_localizedFolderNameForName:(id)name;
+- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display;
+- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display withUserInterfaceIdiom:(int64_t)idiom;
+- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display;
+- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display withUserInterfaceIdiom:(int64_t)idiom;
 - (NSArray)folderNames;
 - (NSString)fallbackFolderName;
-- (void)_loadFromProxy:(id)a3;
+- (void)_loadFromProxy:(id)proxy;
 - (void)_lock_loadFolderNamesIfNecessary;
 @end
 
 @implementation _UIApplicationInfo
 
-- (void)_loadFromProxy:(id)a3
+- (void)_loadFromProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = objc_autoreleasePoolPush();
   v16.receiver = self;
   v16.super_class = _UIApplicationInfo;
-  [(_UIApplicationInfo *)&v16 _loadFromProxy:v4];
-  v6 = [[_UIApplicationInfoParser alloc] initWithApplicationProxy:v4];
+  [(_UIApplicationInfo *)&v16 _loadFromProxy:proxyCopy];
+  v6 = [[_UIApplicationInfoParser alloc] initWithApplicationProxy:proxyCopy];
   plistParser = self->_plistParser;
   self->_plistParser = v6;
 
-  v8 = [(_UIApplicationInfoParser *)self->_plistParser launchImageFile];
+  launchImageFile = [(_UIApplicationInfoParser *)self->_plistParser launchImageFile];
   launchImageFile = self->_launchImageFile;
-  self->_launchImageFile = v8;
+  self->_launchImageFile = launchImageFile;
 
-  v10 = [(_UIApplicationInfoParser *)self->_plistParser keyColorAssetName];
+  keyColorAssetName = [(_UIApplicationInfoParser *)self->_plistParser keyColorAssetName];
   keyColorAssetName = self->_keyColorAssetName;
-  self->_keyColorAssetName = v10;
+  self->_keyColorAssetName = keyColorAssetName;
 
   self->_canChangeBackgroundStyle = [(_UIApplicationInfoParser *)self->_plistParser canChangeBackgroundStyle];
   self->_backgroundStyle = [(_UIApplicationInfoParser *)self->_plistParser backgroundStyle];
@@ -41,28 +41,28 @@
   self->_viewControllerBasedStatusBarAppearance = [(_UIApplicationInfoParser *)self->_plistParser viewControllerBasedStatusBarAppearance];
   self->_systemWindowsSecure = [(_UIApplicationInfoParser *)self->_plistParser systemWindowsSecure];
   self->_optOutOfRTL = [(_UIApplicationInfoParser *)self->_plistParser optOutOfRTL];
-  v12 = [(_UIApplicationInfoParser *)self->_plistParser interfaceOrientation];
+  interfaceOrientation = [(_UIApplicationInfoParser *)self->_plistParser interfaceOrientation];
   v15.receiver = self;
   v15.super_class = _UIApplicationInfo;
-  [(_UIApplicationInfo *)&v15 setInterfaceOrientation:v12];
-  v13 = [(_UIApplicationInfoParser *)self->_plistParser supportedInterfaceOrientations];
+  [(_UIApplicationInfo *)&v15 setInterfaceOrientation:interfaceOrientation];
+  supportedInterfaceOrientations = [(_UIApplicationInfoParser *)self->_plistParser supportedInterfaceOrientations];
   v14.receiver = self;
   v14.super_class = _UIApplicationInfo;
-  [(_UIApplicationInfo *)&v14 setSupportedInterfaceOrientations:v13];
+  [(_UIApplicationInfo *)&v14 setSupportedInterfaceOrientations:supportedInterfaceOrientations];
   self->_launchingInterfaceOrientation = [(_UIApplicationInfoParser *)self->_plistParser launchingInterfaceOrientationForSpringBoard];
   self->_supportedUserInterfaceStyle = [(_UIApplicationInfoParser *)self->_plistParser supportedUserInterfaceStyle];
   objc_autoreleasePoolPop(v5);
 }
 
-+ (id)_localizedFolderNameForName:(id)a3
++ (id)_localizedFolderNameForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if (qword_1ED49A290 != -1)
   {
     dispatch_once(&qword_1ED49A290, &__block_literal_global_234_1);
   }
 
-  v4 = [_MergedGlobals_3_10 objectForKeyedSubscript:v3];
+  v4 = [_MergedGlobals_3_10 objectForKeyedSubscript:nameCopy];
   if (v4)
   {
     v5 = [MEMORY[0x1E6982C40] _typeWithIdentifier:v4 allowUndeclared:1];
@@ -72,7 +72,7 @@
   else
   {
     v5 = _UIKitBundle();
-    [v5 localizedStringForKey:v3 value:v3 table:0];
+    [v5 localizedStringForKey:nameCopy value:nameCopy table:0];
   }
   v6 = ;
 
@@ -101,12 +101,12 @@
   return self->_lazy_fallbackFolderName;
 }
 
-- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4 withUserInterfaceIdiom:(int64_t)a5
+- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display withUserInterfaceIdiom:(int64_t)idiom
 {
-  v8 = a4;
-  if ([v8 isMainDisplay])
+  displayCopy = display;
+  if ([displayCopy isMainDisplay])
   {
-    v9 = [(_UIApplicationInfo *)self statusBarHidden]|| [(_UIApplicationInfo *)self statusBarForcedHiddenForInterfaceOrientation:a3 onDisplay:v8 withUserInterfaceIdiom:a5];
+    v9 = [(_UIApplicationInfo *)self statusBarHidden]|| [(_UIApplicationInfo *)self statusBarForcedHiddenForInterfaceOrientation:orientation onDisplay:displayCopy withUserInterfaceIdiom:idiom];
   }
 
   else
@@ -117,12 +117,12 @@
   return v9;
 }
 
-- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4 withUserInterfaceIdiom:(int64_t)a5
+- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display withUserInterfaceIdiom:(int64_t)idiom
 {
-  v8 = a4;
-  if ([v8 isMainDisplay] && -[_UIApplicationInfo statusBarHiddenWhenVerticallyCompact](self, "statusBarHiddenWhenVerticallyCompact") && (objc_msgSend(v8, "bounds"), !a5))
+  displayCopy = display;
+  if ([displayCopy isMainDisplay] && -[_UIApplicationInfo statusBarHiddenWhenVerticallyCompact](self, "statusBarHiddenWhenVerticallyCompact") && (objc_msgSend(displayCopy, "bounds"), !idiom))
   {
-    if ((a3 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       v13 = v10;
     }
@@ -144,48 +144,48 @@
   return v11;
 }
 
-- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4
+- (BOOL)statusBarHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display
 {
-  v6 = a4;
+  displayCopy = display;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(_UIApplicationInfo *)self supportsDeviceFamily:2])
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(_UIApplicationInfo *)self supportsDeviceFamily:2])
   {
-    v8 = 0;
+    userInterfaceIdiom = 0;
   }
 
-  v11 = [(_UIApplicationInfo *)self statusBarHiddenForInterfaceOrientation:a3 onDisplay:v6 withUserInterfaceIdiom:v8];
+  v11 = [(_UIApplicationInfo *)self statusBarHiddenForInterfaceOrientation:orientation onDisplay:displayCopy withUserInterfaceIdiom:userInterfaceIdiom];
 
   return v11;
 }
 
-- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)a3 onDisplay:(id)a4
+- (BOOL)statusBarForcedHiddenForInterfaceOrientation:(int64_t)orientation onDisplay:(id)display
 {
-  v6 = a4;
+  displayCopy = display;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom2 = [v9 userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(_UIApplicationInfo *)self supportsDeviceFamily:2])
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1 && ![(_UIApplicationInfo *)self supportsDeviceFamily:2])
   {
-    v8 = 0;
+    userInterfaceIdiom = 0;
   }
 
-  v11 = [(_UIApplicationInfo *)self statusBarForcedHiddenForInterfaceOrientation:a3 onDisplay:v6 withUserInterfaceIdiom:v8];
+  v11 = [(_UIApplicationInfo *)self statusBarForcedHiddenForInterfaceOrientation:orientation onDisplay:displayCopy withUserInterfaceIdiom:userInterfaceIdiom];
 
   return v11;
 }
 
-+ (id)_genreNameForID:(int64_t)a3
++ (id)_genreNameForID:(int64_t)d
 {
   result = 0;
-  switch(a3)
+  switch(d)
   {
     case 6000:
       result = @"Business";
@@ -250,7 +250,7 @@
       result = @"Medical";
       break;
     default:
-      switch(a3)
+      switch(d)
       {
         case 7001:
           result = @"Action Games";
@@ -324,19 +324,19 @@
   v52 = *MEMORY[0x1E69E9840];
   if (!self->_lazy_folderNames)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = objc_autoreleasePoolPush();
     v4 = MEMORY[0x1E69635E0];
-    v5 = [(_UIApplicationInfo *)v2 bundleIdentifier];
-    v6 = [v4 applicationProxyForIdentifier:v5];
+    bundleIdentifier = [(_UIApplicationInfo *)selfCopy bundleIdentifier];
+    v6 = [v4 applicationProxyForIdentifier:bundleIdentifier];
 
     if (v6)
     {
-      v7 = [MEMORY[0x1E695DF70] array];
-      if ([(_UIApplicationInfo *)v2 type]> 1)
+      array = [MEMORY[0x1E695DF70] array];
+      if ([(_UIApplicationInfo *)selfCopy type]> 1)
       {
         v35 = v3;
-        v38 = v2;
+        v38 = selfCopy;
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __54___UIApplicationInfo__lock_loadFolderNamesIfNecessary__block_invoke_2;
@@ -348,8 +348,8 @@
         v42 = 0u;
         v43 = 0u;
         v36 = v6;
-        v18 = [v6 subgenres];
-        v19 = [v18 bs_objectsOfClass:objc_opt_class()];
+        subgenres = [v6 subgenres];
+        v19 = [subgenres bs_objectsOfClass:objc_opt_class()];
 
         obj = v19;
         v20 = [v19 countByEnumeratingWithState:&v40 objects:v50 count:16];
@@ -373,7 +373,7 @@
 
               if ([v27 length])
               {
-                [v7 addObject:v27];
+                [array addObject:v27];
               }
             }
 
@@ -384,25 +384,25 @@
         }
 
         v6 = v36;
-        v28 = [v36 genreID];
-        v29 = [v36 genre];
-        v30 = v17[2](v17, v28, v29);
+        genreID = [v36 genreID];
+        genre = [v36 genre];
+        v30 = v17[2](v17, genreID, genre);
 
         if ([v30 length])
         {
-          [v7 addObject:v30];
-          v12 = v30;
+          [array addObject:v30];
+          firstObject = v30;
         }
 
         else
         {
-          v12 = 0;
+          firstObject = 0;
         }
 
         v3 = v35;
 
         v9 = v45;
-        v2 = v38;
+        selfCopy = v38;
       }
 
       else
@@ -417,13 +417,13 @@
         if (v10)
         {
           v11 = v10;
-          v37 = v2;
-          v12 = 0;
+          v37 = selfCopy;
+          firstObject = 0;
           v13 = *v47;
           do
           {
             v14 = 0;
-            v15 = v12;
+            v15 = firstObject;
             do
             {
               if (*v47 != v13)
@@ -434,13 +434,13 @@
               v16 = [_UIApplicationInfo _localizedFolderNameForName:*(*(&v46 + 1) + 8 * v14)];
               if (v16)
               {
-                [v7 addObject:v16];
+                [array addObject:v16];
               }
 
-              v12 = [v7 firstObject];
+              firstObject = [array firstObject];
 
               ++v14;
-              v15 = v12;
+              v15 = firstObject;
             }
 
             while (v11 != v14);
@@ -448,18 +448,18 @@
           }
 
           while (v11);
-          v2 = v37;
+          selfCopy = v37;
         }
 
         else
         {
-          v12 = 0;
+          firstObject = 0;
         }
       }
 
-      if ([v7 count])
+      if ([array count])
       {
-        v31 = [v7 copy];
+        v31 = [array copy];
       }
 
       else
@@ -467,12 +467,12 @@
         v31 = MEMORY[0x1E695E0F0];
       }
 
-      lazy_folderNames = v2->_lazy_folderNames;
-      v2->_lazy_folderNames = v31;
+      lazy_folderNames = selfCopy->_lazy_folderNames;
+      selfCopy->_lazy_folderNames = v31;
 
-      v33 = [v12 copy];
-      lazy_fallbackFolderName = v2->_lazy_fallbackFolderName;
-      v2->_lazy_fallbackFolderName = v33;
+      v33 = [firstObject copy];
+      lazy_fallbackFolderName = selfCopy->_lazy_fallbackFolderName;
+      selfCopy->_lazy_fallbackFolderName = v33;
     }
 
     objc_autoreleasePoolPop(v3);

@@ -1,7 +1,7 @@
 @interface OUSemanticSegmentation
-- (BOOL)setupRotater:(id)a3;
+- (BOOL)setupRotater:(id)rotater;
 - (OUSemanticSegmentation)init;
-- (__CVBuffer)generateSemanticOnWideCameraWithFrame:(id)a3;
+- (__CVBuffer)generateSemanticOnWideCameraWithFrame:(id)frame;
 @end
 
 @implementation OUSemanticSegmentation
@@ -22,39 +22,39 @@
   return v3;
 }
 
-- (BOOL)setupRotater:(id)a3
+- (BOOL)setupRotater:(id)rotater
 {
-  v4 = a3;
-  if (![v4 semanticLabelBuffer])
+  rotaterCopy = rotater;
+  if (![rotaterCopy semanticLabelBuffer])
   {
     goto LABEL_15;
   }
 
   if (!self->_initRotater)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType([v4 colorBuffer]);
-    v6 = CVPixelBufferGetPixelFormatType([v4 semanticLabelBuffer]);
-    Width = CVPixelBufferGetWidth([v4 colorBuffer]);
-    Height = CVPixelBufferGetHeight([v4 colorBuffer]);
-    v9 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:90 resolution:PixelFormatType pixelFormat:Height, Width];
+    PixelFormatType = CVPixelBufferGetPixelFormatType([rotaterCopy colorBuffer]);
+    v6 = CVPixelBufferGetPixelFormatType([rotaterCopy semanticLabelBuffer]);
+    Width = CVPixelBufferGetWidth([rotaterCopy colorBuffer]);
+    Height = CVPixelBufferGetHeight([rotaterCopy colorBuffer]);
+    width = [[OUCVPixelBufferRotate alloc] initForRotationDegree:90 resolution:PixelFormatType pixelFormat:Height, Width];
     cvRotate90 = self->cvRotate90;
-    self->cvRotate90 = v9;
+    self->cvRotate90 = width;
 
     v11 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:270 resolution:v6 pixelFormat:256.0, 192.0];
     cvRotate90r = self->cvRotate90r;
     self->cvRotate90r = v11;
 
-    v13 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:180 resolution:PixelFormatType pixelFormat:Width, Height];
+    height = [[OUCVPixelBufferRotate alloc] initForRotationDegree:180 resolution:PixelFormatType pixelFormat:Width, Height];
     cvRotate180 = self->cvRotate180;
-    self->cvRotate180 = v13;
+    self->cvRotate180 = height;
 
     v15 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:180 resolution:v6 pixelFormat:256.0, 192.0];
     cvRotate180r = self->cvRotate180r;
     self->cvRotate180r = v15;
 
-    v17 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:270 resolution:PixelFormatType pixelFormat:Height, Width];
+    width2 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:270 resolution:PixelFormatType pixelFormat:Height, Width];
     cvRotate270 = self->cvRotate270;
-    self->cvRotate270 = v17;
+    self->cvRotate270 = width2;
 
     v19 = [[OUCVPixelBufferRotate alloc] initForRotationDegree:90 resolution:v6 pixelFormat:256.0, 192.0];
     cvRotate270r = self->cvRotate270r;
@@ -63,15 +63,15 @@
     self->_initRotater = 1;
   }
 
-  if (!self->_initSegModel || (deviceOrientation = self->deviceOrientation, deviceOrientation != [v4 deviceOrientation]))
+  if (!self->_initSegModel || (deviceOrientation = self->deviceOrientation, deviceOrientation != [rotaterCopy deviceOrientation]))
   {
-    self->deviceOrientation = [v4 deviceOrientation];
+    self->deviceOrientation = [rotaterCopy deviceOrientation];
     v23 = objc_alloc_init(MEMORY[0x277D4B718]);
     semanticConfig = self->semanticConfig;
     self->semanticConfig = v23;
 
-    v25 = [v4 deviceOrientation];
-    if ((v25 - 3) < 2)
+    deviceOrientation = [rotaterCopy deviceOrientation];
+    if ((deviceOrientation - 3) < 2)
     {
       [(SISceneSegmentationNetworkConfiguration *)self->semanticConfig setNetworkModeEnum:1];
       v26 = objc_alloc(MEMORY[0x277D4B708]);
@@ -80,7 +80,7 @@
       goto LABEL_11;
     }
 
-    if ((v25 - 1) <= 1)
+    if ((deviceOrientation - 1) <= 1)
     {
       [(SISceneSegmentationNetworkConfiguration *)self->semanticConfig setNetworkModeEnum:2];
       v26 = objc_alloc(MEMORY[0x277D4B708]);
@@ -125,28 +125,28 @@ LABEL_16:
   return v22;
 }
 
-- (__CVBuffer)generateSemanticOnWideCameraWithFrame:(id)a3
+- (__CVBuffer)generateSemanticOnWideCameraWithFrame:(id)frame
 {
-  v4 = a3;
-  if ([(OUSemanticSegmentation *)self setupRotater:v4])
+  frameCopy = frame;
+  if ([(OUSemanticSegmentation *)self setupRotater:frameCopy])
   {
-    v5 = [v4 sceneColorBuffer];
+    sceneColorBuffer = [frameCopy sceneColorBuffer];
     v6 = _OULoggingGetOSLogForCategoryObjectUnderstanding();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       [OUSemanticSegmentation generateSemanticOnWideCameraWithFrame:];
     }
 
-    v7 = [v4 deviceOrientation];
-    if (v7 > 2)
+    deviceOrientation = [frameCopy deviceOrientation];
+    if (deviceOrientation > 2)
     {
-      if (v7 == 3)
+      if (deviceOrientation == 3)
       {
         siSceneSegmentationAlgorithm = self->siSceneSegmentationAlgorithm;
         IOSurface = CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData semantic]);
         v19 = CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData confidence]);
-        [(SISceneSegmentationAlgorithm *)siSceneSegmentationAlgorithm runWithInput:v5 output:IOSurface confidenceOutput:v19 uncertaintyOutput:CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData uncertainty]) resampleOutput:1 networkConfiguration:1];
-        v11 = [(SISceneSegmentationData *)self->semResultData semantic];
+        [(SISceneSegmentationAlgorithm *)siSceneSegmentationAlgorithm runWithInput:sceneColorBuffer output:IOSurface confidenceOutput:v19 uncertaintyOutput:CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData uncertainty]) resampleOutput:1 networkConfiguration:1];
+        semantic = [(SISceneSegmentationData *)self->semResultData semantic];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
           [OUSemanticSegmentation generateSemanticOnWideCameraWithFrame:];
@@ -155,7 +155,7 @@ LABEL_16:
         goto LABEL_23;
       }
 
-      if (v7 == 4)
+      if (deviceOrientation == 4)
       {
         v8 = 32;
         v9 = 24;
@@ -165,26 +165,26 @@ LABEL_16:
 
     else
     {
-      if (v7 == 1)
+      if (deviceOrientation == 1)
       {
         v8 = 16;
         v9 = 8;
         goto LABEL_18;
       }
 
-      if (v7 == 2)
+      if (deviceOrientation == 2)
       {
         v8 = 48;
         v9 = 40;
 LABEL_18:
         v10 = *(&self->super.isa + v9);
         v12 = *(&self->super.isa + v8);
-        v13 = [v10 rotateImage:v5];
+        v13 = [v10 rotateImage:sceneColorBuffer];
         v14 = self->siSceneSegmentationAlgorithm;
         v15 = CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData semantic]);
         v16 = CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData confidence]);
         [(SISceneSegmentationAlgorithm *)v14 runWithInput:v13 output:v15 confidenceOutput:v16 uncertaintyOutput:CVPixelBufferGetIOSurface([(SISceneSegmentationData *)self->semResultData uncertainty]) resampleOutput:1 networkConfiguration:self->semanticModel];
-        v11 = [v12 rotateImage:{-[SISceneSegmentationData semantic](self->semResultData, "semantic")}];
+        semantic = [v12 rotateImage:{-[SISceneSegmentationData semantic](self->semResultData, "semantic")}];
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           *v21 = 0;
@@ -200,7 +200,7 @@ LABEL_18:
       [OUSemanticSegmentation generateSemanticOnWideCameraWithFrame:];
     }
 
-    v11 = 0;
+    semantic = 0;
 LABEL_23:
     v10 = v6;
     goto LABEL_24;
@@ -212,10 +212,10 @@ LABEL_23:
     [OUSemanticSegmentation generateSemanticOnWideCameraWithFrame:];
   }
 
-  v11 = 0;
+  semantic = 0;
 LABEL_24:
 
-  return v11;
+  return semantic;
 }
 
 @end

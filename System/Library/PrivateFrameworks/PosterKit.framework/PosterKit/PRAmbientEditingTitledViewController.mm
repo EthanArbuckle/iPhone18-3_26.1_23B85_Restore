@@ -1,6 +1,6 @@
 @interface PRAmbientEditingTitledViewController
-- (PRAmbientEditingTitledViewController)initWithCoder:(id)a3;
-- (PRAmbientEditingTitledViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PRAmbientEditingTitledViewController)initWithCoder:(id)coder;
+- (PRAmbientEditingTitledViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PRAmbientEditingTitledViewControllerDelegate)delegate;
 - (id)accessibilityTitleLabel;
 - (void)loadView;
@@ -16,7 +16,7 @@
   return Strong;
 }
 
-- (PRAmbientEditingTitledViewController)initWithCoder:(id)a3
+- (PRAmbientEditingTitledViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   sub_1A8BA3FE4(0, &qword_1ED7F2360);
@@ -30,7 +30,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   AmbientEditingTitledViewController.loadView()();
 }
 
@@ -38,13 +38,13 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_1A8BDE1F4();
 
   return v5;
 }
 
-- (PRAmbientEditingTitledViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PRAmbientEditingTitledViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

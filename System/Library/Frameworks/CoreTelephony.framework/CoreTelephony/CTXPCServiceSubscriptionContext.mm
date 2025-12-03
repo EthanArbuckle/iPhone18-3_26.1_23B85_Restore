@@ -1,17 +1,17 @@
 @interface CTXPCServiceSubscriptionContext
-+ (CTXPCServiceSubscriptionContext)contextWithServiceDescriptor:(id)a3;
-+ (CTXPCServiceSubscriptionContext)contextWithSlot:(int64_t)a3;
-+ (CTXPCServiceSubscriptionContext)contextWithUUID:(id)a3;
-+ (CTXPCServiceSubscriptionContext)contextWithXPCContextInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CTXPCServiceSubscriptionContext)initWithCoder:(id)a3;
-- (CTXPCServiceSubscriptionContext)initWithSlot:(int64_t)a3;
-- (CTXPCServiceSubscriptionContext)initWithUUID:(id)a3 andSlot:(int64_t)a4;
++ (CTXPCServiceSubscriptionContext)contextWithServiceDescriptor:(id)descriptor;
++ (CTXPCServiceSubscriptionContext)contextWithSlot:(int64_t)slot;
++ (CTXPCServiceSubscriptionContext)contextWithUUID:(id)d;
++ (CTXPCServiceSubscriptionContext)contextWithXPCContextInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (CTXPCServiceSubscriptionContext)initWithCoder:(id)coder;
+- (CTXPCServiceSubscriptionContext)initWithSlot:(int64_t)slot;
+- (CTXPCServiceSubscriptionContext)initWithUUID:(id)d andSlot:(int64_t)slot;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTXPCServiceSubscriptionContext
@@ -19,29 +19,29 @@
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CTXPCServiceSubscriptionContext *)self ct_shortName];
+  ct_shortName = [(CTXPCServiceSubscriptionContext *)self ct_shortName];
   if ([(CTXPCServiceSubscriptionContext *)self slotID])
   {
-    v5 = [(CTXPCServiceSubscriptionContext *)self slotID];
+    slotID = [(CTXPCServiceSubscriptionContext *)self slotID];
     v6 = @"???";
-    if (v5 == 2)
+    if (slotID == 2)
     {
       v6 = @"two";
     }
 
-    if (v5 == 1)
+    if (slotID == 1)
     {
       v6 = @"one";
     }
 
-    v7 = [v3 stringWithFormat:@"<%@ id=%@>", v4, v6];
+    v7 = [v3 stringWithFormat:@"<%@ id=%@>", ct_shortName, v6];
   }
 
   else
   {
-    v8 = [(CTXPCServiceSubscriptionContext *)self uuid];
-    v9 = [v8 UUIDString];
-    v7 = [v3 stringWithFormat:@"<%@ id=%@>", v4, v9];
+    uuid = [(CTXPCServiceSubscriptionContext *)self uuid];
+    uUIDString = [uuid UUIDString];
+    v7 = [v3 stringWithFormat:@"<%@ id=%@>", ct_shortName, uUIDString];
   }
 
   return v7;
@@ -50,52 +50,52 @@
 - (id)redactedDescription
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTXPCServiceSubscriptionContext *)self slotID];
+  slotID = [(CTXPCServiceSubscriptionContext *)self slotID];
   v5 = "CTSubscriptionSlotUnknown";
-  if (v4 == 2)
+  if (slotID == 2)
   {
     v5 = "CTSubscriptionSlotTwo";
   }
 
-  if (v4 == 1)
+  if (slotID == 1)
   {
     v5 = "CTSubscriptionSlotOne";
   }
 
   [v3 appendFormat:@" slotID=%s", v5];
-  v6 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
-  [v3 appendFormat:@", [userDataPreferred=%@", v6];
+  userDataPreferred = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
+  [v3 appendFormat:@", [userDataPreferred=%@", userDataPreferred];
 
-  v7 = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
-  [v3 appendFormat:@", userDefaultVoice=%@", v7];
+  userDefaultVoice = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
+  [v3 appendFormat:@", userDefaultVoice=%@", userDefaultVoice];
 
-  v8 = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
+  isSimPresent = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
   v9 = "absent";
-  if (v8)
+  if (isSimPresent)
   {
     v9 = "present";
   }
 
   objc_msgSend(v3, "appendFormat:", @", SIM:(%s"), v9;
-  v10 = [(CTXPCServiceSubscriptionContext *)self isSimGood];
+  isSimGood = [(CTXPCServiceSubscriptionContext *)self isSimGood];
   v11 = "bad";
-  if (v10)
+  if (isSimGood)
   {
     v11 = "good";
   }
 
   [v3 appendFormat:@", %s", v11];
-  v12 = [(CTXPCServiceSubscriptionContext *)self isSimHidden];
+  isSimHidden = [(CTXPCServiceSubscriptionContext *)self isSimHidden];
   v13 = "exposed";
-  if (v12)
+  if (isSimHidden)
   {
     v13 = "hidden";
   }
 
   [v3 appendFormat:@", %s", v13];
-  v14 = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
+  isSimDataOnly = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
   v15 = "voice+data";
-  if (v14)
+  if (isSimDataOnly)
   {
     v15 = "dataonly";
   }
@@ -109,64 +109,64 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTXPCServiceSubscriptionContext *)self slotID];
+  slotID = [(CTXPCServiceSubscriptionContext *)self slotID];
   v5 = "CTSubscriptionSlotUnknown";
-  if (v4 == 2)
+  if (slotID == 2)
   {
     v5 = "CTSubscriptionSlotTwo";
   }
 
-  if (v4 == 1)
+  if (slotID == 1)
   {
     v5 = "CTSubscriptionSlotOne";
   }
 
   [v3 appendFormat:@" slotID=%s", v5];
-  v6 = [(CTXPCServiceSubscriptionContext *)self uuid];
-  [v3 appendFormat:@", uuid=%@", v6];
+  uuid = [(CTXPCServiceSubscriptionContext *)self uuid];
+  [v3 appendFormat:@", uuid=%@", uuid];
 
-  v7 = [(CTXPCServiceSubscriptionContext *)self labelID];
-  [v3 appendFormat:@", labelID=%@", v7];
+  labelID = [(CTXPCServiceSubscriptionContext *)self labelID];
+  [v3 appendFormat:@", labelID=%@", labelID];
 
-  v8 = [(CTXPCServiceSubscriptionContext *)self label];
-  [v3 appendFormat:@", label=%@", v8];
+  label = [(CTXPCServiceSubscriptionContext *)self label];
+  [v3 appendFormat:@", label=%@", label];
 
-  v9 = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
-  [v3 appendFormat:@", phoneNumber=%@", v9];
+  phoneNumber = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
+  [v3 appendFormat:@", phoneNumber=%@", phoneNumber];
 
-  v10 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
-  [v3 appendFormat:@", [userDataPreferred=%@", v10];
+  userDataPreferred = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
+  [v3 appendFormat:@", [userDataPreferred=%@", userDataPreferred];
 
-  v11 = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
-  [v3 appendFormat:@", userDefaultVoice=%@", v11];
+  userDefaultVoice = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
+  [v3 appendFormat:@", userDefaultVoice=%@", userDefaultVoice];
 
-  v12 = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
+  isSimPresent = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
   v13 = "absent";
-  if (v12)
+  if (isSimPresent)
   {
     v13 = "present";
   }
 
   objc_msgSend(v3, "appendFormat:", @", SIM:(%s"), v13;
-  v14 = [(CTXPCServiceSubscriptionContext *)self isSimGood];
+  isSimGood = [(CTXPCServiceSubscriptionContext *)self isSimGood];
   v15 = "bad";
-  if (v14)
+  if (isSimGood)
   {
     v15 = "good";
   }
 
   [v3 appendFormat:@", %s", v15];
-  v16 = [(CTXPCServiceSubscriptionContext *)self isSimHidden];
+  isSimHidden = [(CTXPCServiceSubscriptionContext *)self isSimHidden];
   v17 = "exposed";
-  if (v16)
+  if (isSimHidden)
   {
     v17 = "hidden";
   }
 
   [v3 appendFormat:@", %s", v17];
-  v18 = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
+  isSimDataOnly = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
   v19 = "voice+data";
-  if (v18)
+  if (isSimDataOnly)
   {
     v19 = "dataonly";
   }
@@ -177,50 +177,50 @@
   return v3;
 }
 
-- (CTXPCServiceSubscriptionContext)initWithSlot:(int64_t)a3
+- (CTXPCServiceSubscriptionContext)initWithSlot:(int64_t)slot
 {
-  v5 = CTSubscriptionSlotAsUUID(a3);
-  v6 = [(CTXPCServiceSubscriptionContext *)self initWithUUID:v5 andSlot:a3];
+  v5 = CTSubscriptionSlotAsUUID(slot);
+  v6 = [(CTXPCServiceSubscriptionContext *)self initWithUUID:v5 andSlot:slot];
 
   return v6;
 }
 
-+ (CTXPCServiceSubscriptionContext)contextWithSlot:(int64_t)a3
++ (CTXPCServiceSubscriptionContext)contextWithSlot:(int64_t)slot
 {
-  v3 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:a3];
+  v3 = [[CTXPCServiceSubscriptionContext alloc] initWithSlot:slot];
 
   return v3;
 }
 
-+ (CTXPCServiceSubscriptionContext)contextWithUUID:(id)a3
++ (CTXPCServiceSubscriptionContext)contextWithUUID:(id)d
 {
-  v3 = a3;
-  v4 = [[CTXPCServiceSubscriptionContext alloc] initWithUUID:v3];
+  dCopy = d;
+  v4 = [[CTXPCServiceSubscriptionContext alloc] initWithUUID:dCopy];
 
   return v4;
 }
 
-- (CTXPCServiceSubscriptionContext)initWithUUID:(id)a3 andSlot:(int64_t)a4
+- (CTXPCServiceSubscriptionContext)initWithUUID:(id)d andSlot:(int64_t)slot
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = CTXPCServiceSubscriptionContext;
   v8 = [(CTXPCServiceSubscriptionContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_uuid, a3);
-    v9->_slotID = a4;
+    objc_storeStrong(&v8->_uuid, d);
+    v9->_slotID = slot;
     *&v9->_isSimPresent = 256;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
-  if (v7 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v13) = 1;
   }
@@ -230,12 +230,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [(CTXPCServiceSubscriptionContext *)self slotID];
-      if (v8 == [(CTXPCServiceSubscriptionContext *)v7 slotID])
+      slotID = [(CTXPCServiceSubscriptionContext *)self slotID];
+      if (slotID == [(CTXPCServiceSubscriptionContext *)equalCopy slotID])
       {
-        v9 = [(CTXPCServiceSubscriptionContext *)self uuid];
-        v10 = [(CTXPCServiceSubscriptionContext *)v7 uuid];
-        if (![v9 isEqual:v10])
+        uuid = [(CTXPCServiceSubscriptionContext *)self uuid];
+        uuid2 = [(CTXPCServiceSubscriptionContext *)equalCopy uuid];
+        if (![uuid isEqual:uuid2])
         {
           LOBYTE(v13) = 0;
 LABEL_91:
@@ -243,16 +243,16 @@ LABEL_91:
           goto LABEL_92;
         }
 
-        v11 = [(CTXPCServiceSubscriptionContext *)self labelID];
-        if (v11 && (-[CTXPCServiceSubscriptionContext labelID](self, "labelID"), v3 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext labelID](v7, "labelID"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqual:v4] & 1) != 0))
+        labelID = [(CTXPCServiceSubscriptionContext *)self labelID];
+        if (labelID && (-[CTXPCServiceSubscriptionContext labelID](self, "labelID"), v3 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext labelID](equalCopy, "labelID"), v4 = objc_claimAutoreleasedReturnValue(), ([v3 isEqual:v4] & 1) != 0))
         {
           v12 = 0;
         }
 
         else
         {
-          v14 = [(CTXPCServiceSubscriptionContext *)self labelID];
-          if (v14)
+          labelID2 = [(CTXPCServiceSubscriptionContext *)self labelID];
+          if (labelID2)
           {
             LOBYTE(v13) = 0;
 LABEL_87:
@@ -260,8 +260,8 @@ LABEL_87:
             goto LABEL_88;
           }
 
-          v15 = [(CTXPCServiceSubscriptionContext *)v7 labelID];
-          if (v15)
+          labelID3 = [(CTXPCServiceSubscriptionContext *)equalCopy labelID];
+          if (labelID3)
           {
 
 LABEL_48:
@@ -272,8 +272,8 @@ LABEL_48:
           v12 = 1;
         }
 
-        v16 = [(CTXPCServiceSubscriptionContext *)self label];
-        if (v16 && (-[CTXPCServiceSubscriptionContext label](self, "label"), v5 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext label](v7, "label"), v48 = v5, v47 = objc_claimAutoreleasedReturnValue(), ([v5 isEqual:v47] & 1) != 0))
+        label = [(CTXPCServiceSubscriptionContext *)self label];
+        if (label && (-[CTXPCServiceSubscriptionContext label](self, "label"), userDataPreferred2 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext label](equalCopy, "label"), v48 = userDataPreferred2, v47 = objc_claimAutoreleasedReturnValue(), ([userDataPreferred2 isEqual:v47] & 1) != 0))
         {
           v45 = 0;
           v46 = v12;
@@ -281,18 +281,18 @@ LABEL_48:
 
         else
         {
-          v17 = [(CTXPCServiceSubscriptionContext *)self label];
-          if (v17)
+          label2 = [(CTXPCServiceSubscriptionContext *)self label];
+          if (label2)
           {
             LOBYTE(v13) = 0;
             goto LABEL_83;
           }
 
-          v18 = [(CTXPCServiceSubscriptionContext *)v7 label];
-          if (v18)
+          label3 = [(CTXPCServiceSubscriptionContext *)equalCopy label];
+          if (label3)
           {
 
-            if (!v16)
+            if (!label)
             {
               goto LABEL_48;
             }
@@ -304,29 +304,29 @@ LABEL_48:
           v46 = v12;
         }
 
-        v19 = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
-        if (v19 && (-[CTXPCServiceSubscriptionContext phoneNumber](self, "phoneNumber"), v5 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext phoneNumber](v7, "phoneNumber"), v43 = objc_claimAutoreleasedReturnValue(), v44 = v5, ([v5 isEqual:v43] & 1) != 0))
+        phoneNumber = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
+        if (phoneNumber && (-[CTXPCServiceSubscriptionContext phoneNumber](self, "phoneNumber"), userDataPreferred2 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext phoneNumber](equalCopy, "phoneNumber"), v43 = objc_claimAutoreleasedReturnValue(), v44 = userDataPreferred2, ([userDataPreferred2 isEqual:v43] & 1) != 0))
         {
           v41 = 0;
         }
 
         else
         {
-          v20 = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
-          if (v20)
+          phoneNumber2 = [(CTXPCServiceSubscriptionContext *)self phoneNumber];
+          if (phoneNumber2)
           {
             LOBYTE(v13) = 0;
             goto LABEL_78;
           }
 
-          v21 = [(CTXPCServiceSubscriptionContext *)v7 phoneNumber];
-          if (v21)
+          phoneNumber3 = [(CTXPCServiceSubscriptionContext *)equalCopy phoneNumber];
+          if (phoneNumber3)
           {
 
-            if (!v19)
+            if (!phoneNumber)
             {
 LABEL_45:
-              if (!v16)
+              if (!label)
               {
 LABEL_47:
 
@@ -347,34 +347,34 @@ LABEL_44:
           v41 = 1;
         }
 
-        v42 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
-        if (v42)
+        userDataPreferred = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
+        if (userDataPreferred)
         {
-          v5 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
-          v39 = [(CTXPCServiceSubscriptionContext *)v7 userDataPreferred];
-          v40 = v5;
-          if ([v5 isEqual:v39])
+          userDataPreferred2 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
+          userDataPreferred3 = [(CTXPCServiceSubscriptionContext *)equalCopy userDataPreferred];
+          v40 = userDataPreferred2;
+          if ([userDataPreferred2 isEqual:userDataPreferred3])
           {
             v37 = 0;
 LABEL_50:
-            v38 = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
-            if (v38 && (-[CTXPCServiceSubscriptionContext userDefaultVoice](self, "userDefaultVoice"), v5 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext userDefaultVoice](v7, "userDefaultVoice"), v36 = objc_claimAutoreleasedReturnValue(), ([v5 isEqual:?] & 1) != 0))
+            userDefaultVoice = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
+            if (userDefaultVoice && (-[CTXPCServiceSubscriptionContext userDefaultVoice](self, "userDefaultVoice"), userDataPreferred2 = objc_claimAutoreleasedReturnValue(), -[CTXPCServiceSubscriptionContext userDefaultVoice](equalCopy, "userDefaultVoice"), v36 = objc_claimAutoreleasedReturnValue(), ([userDataPreferred2 isEqual:?] & 1) != 0))
             {
               v35 = 0;
             }
 
             else
             {
-              v24 = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
-              if (v24)
+              userDefaultVoice2 = [(CTXPCServiceSubscriptionContext *)self userDefaultVoice];
+              if (userDefaultVoice2)
               {
 LABEL_63:
 
-                v26 = v38;
-                if (v38)
+                v26 = userDefaultVoice;
+                if (userDefaultVoice)
                 {
 
-                  v26 = v38;
+                  v26 = userDefaultVoice;
                 }
 
                 LOBYTE(v13) = 0;
@@ -386,12 +386,12 @@ LABEL_66:
                 }
 
 LABEL_72:
-                v22 = 0;
+                userDataPreferred4 = 0;
                 goto LABEL_73;
               }
 
-              v25 = [(CTXPCServiceSubscriptionContext *)v7 userDefaultVoice];
-              if (v25)
+              userDefaultVoice3 = [(CTXPCServiceSubscriptionContext *)equalCopy userDefaultVoice];
+              if (userDefaultVoice3)
               {
                 LOBYTE(v13) = 0;
                 goto LABEL_56;
@@ -400,20 +400,20 @@ LABEL_72:
               v35 = 1;
             }
 
-            v32 = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
-            if (v32 != [(CTXPCServiceSubscriptionContext *)v7 isSimPresent]|| (v33 = [(CTXPCServiceSubscriptionContext *)self isSimGood], v33 != [(CTXPCServiceSubscriptionContext *)v7 isSimGood]) || (v34 = [(CTXPCServiceSubscriptionContext *)self isSimHidden], v34 != [(CTXPCServiceSubscriptionContext *)v7 isSimHidden]))
+            isSimPresent = [(CTXPCServiceSubscriptionContext *)self isSimPresent];
+            if (isSimPresent != [(CTXPCServiceSubscriptionContext *)equalCopy isSimPresent]|| (v33 = [(CTXPCServiceSubscriptionContext *)self isSimGood], v33 != [(CTXPCServiceSubscriptionContext *)equalCopy isSimGood]) || (v34 = [(CTXPCServiceSubscriptionContext *)self isSimHidden], v34 != [(CTXPCServiceSubscriptionContext *)equalCopy isSimHidden]))
             {
               if (v35)
               {
-                v24 = 0;
+                userDefaultVoice2 = 0;
                 goto LABEL_63;
               }
 
               LOBYTE(v13) = 0;
 LABEL_69:
-              v27 = v38;
+              v27 = userDefaultVoice;
               v28 = v36;
-              if (!v38)
+              if (!userDefaultVoice)
               {
                 goto LABEL_71;
               }
@@ -421,30 +421,30 @@ LABEL_69:
               goto LABEL_70;
             }
 
-            v31 = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
-            v13 = v31 ^ [(CTXPCServiceSubscriptionContext *)v7 isSimDataOnly]^ 1;
+            isSimDataOnly = [(CTXPCServiceSubscriptionContext *)self isSimDataOnly];
+            v13 = isSimDataOnly ^ [(CTXPCServiceSubscriptionContext *)equalCopy isSimDataOnly]^ 1;
             if ((v35 & 1) == 0)
             {
-              v26 = v38;
+              v26 = userDefaultVoice;
               v28 = v36;
-              if (!v38)
+              if (!userDefaultVoice)
               {
                 goto LABEL_66;
               }
 
 LABEL_70:
 
-              v27 = v38;
+              v27 = userDefaultVoice;
 LABEL_71:
 
               if ((v37 & 1) == 0)
               {
 LABEL_74:
-                v29 = v42;
-                if (v42)
+                v29 = userDataPreferred;
+                if (userDataPreferred)
                 {
 
-                  v29 = v42;
+                  v29 = userDataPreferred;
                 }
 
                 if ((v41 & 1) == 0)
@@ -452,29 +452,29 @@ LABEL_74:
                   goto LABEL_79;
                 }
 
-                v20 = 0;
+                phoneNumber2 = 0;
 LABEL_78:
 
 LABEL_79:
-                if (v19)
+                if (phoneNumber)
                 {
                 }
 
                 if ((v45 & 1) == 0)
                 {
                   v12 = v46;
-                  if (!v16)
+                  if (!label)
                   {
 LABEL_85:
 
                     if (v12)
                     {
-                      v14 = 0;
+                      labelID2 = 0;
                       goto LABEL_87;
                     }
 
 LABEL_88:
-                    if (v11)
+                    if (labelID)
                     {
                     }
 
@@ -486,11 +486,11 @@ LABEL_84:
                   goto LABEL_85;
                 }
 
-                v17 = 0;
+                label2 = 0;
                 v12 = v46;
 LABEL_83:
 
-                if (!v16)
+                if (!label)
                 {
                   goto LABEL_85;
                 }
@@ -501,15 +501,15 @@ LABEL_83:
               goto LABEL_72;
             }
 
-            v25 = 0;
+            userDefaultVoice3 = 0;
 LABEL_56:
 
             goto LABEL_69;
           }
         }
 
-        v22 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
-        if (v22)
+        userDataPreferred4 = [(CTXPCServiceSubscriptionContext *)self userDataPreferred];
+        if (userDataPreferred4)
         {
           LOBYTE(v13) = 0;
 LABEL_73:
@@ -517,18 +517,18 @@ LABEL_73:
           goto LABEL_74;
         }
 
-        v23 = [(CTXPCServiceSubscriptionContext *)v7 userDataPreferred];
-        if (!v23)
+        userDataPreferred5 = [(CTXPCServiceSubscriptionContext *)equalCopy userDataPreferred];
+        if (!userDataPreferred5)
         {
           v37 = 1;
           goto LABEL_50;
         }
 
-        if (v42)
+        if (userDataPreferred)
         {
         }
 
-        if (!v19)
+        if (!phoneNumber)
         {
           goto LABEL_44;
         }
@@ -545,14 +545,14 @@ LABEL_92:
   return v13;
 }
 
-+ (CTXPCServiceSubscriptionContext)contextWithServiceDescriptor:(id)a3
++ (CTXPCServiceSubscriptionContext)contextWithServiceDescriptor:(id)descriptor
 {
-  v3 = a3;
-  if ([v3 domain] == 1)
+  descriptorCopy = descriptor;
+  if ([descriptorCopy domain] == 1)
   {
     v4 = objc_alloc(objc_opt_class());
-    v5 = [v3 instance];
-    v6 = [v4 initWithSlot:{objc_msgSend(v5, "integerValue")}];
+    instance = [descriptorCopy instance];
+    v6 = [v4 initWithSlot:{objc_msgSend(instance, "integerValue")}];
   }
 
   else
@@ -563,24 +563,24 @@ LABEL_92:
   return v6;
 }
 
-+ (CTXPCServiceSubscriptionContext)contextWithXPCContextInfo:(id)a3
++ (CTXPCServiceSubscriptionContext)contextWithXPCContextInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_class();
-  if (v3)
+  if (infoCopy)
   {
     v5 = [v4 alloc];
-    v6 = [v3 uuid];
-    v7 = [v5 initWithUUID:v6 andSlot:{objc_msgSend(v3, "slotID")}];
+    uuid = [infoCopy uuid];
+    v7 = [v5 initWithUUID:uuid andSlot:{objc_msgSend(infoCopy, "slotID")}];
 
-    v8 = [v3 label];
-    [v7 setLabel:v8];
+    label = [infoCopy label];
+    [v7 setLabel:label];
 
-    v9 = [v3 labelID];
-    [v7 setLabelID:v9];
+    labelID = [infoCopy labelID];
+    [v7 setLabelID:labelID];
 
-    v10 = [v3 phoneNumber];
-    [v7 setPhoneNumber:v10];
+    phoneNumber = [infoCopy phoneNumber];
+    [v7 setPhoneNumber:phoneNumber];
   }
 
   else
@@ -591,69 +591,69 @@ LABEL_92:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CTXPCServiceSubscriptionContext *)self uuid];
-  v6 = [v4 initWithUUID:v5 andSlot:{-[CTXPCServiceSubscriptionContext slotID](self, "slotID")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  uuid = [(CTXPCServiceSubscriptionContext *)self uuid];
+  v6 = [v4 initWithUUID:uuid andSlot:{-[CTXPCServiceSubscriptionContext slotID](self, "slotID")}];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   slotID = self->_slotID;
-  v5 = a3;
-  [v5 encodeInteger:slotID forKey:@"slot_id"];
-  [v5 encodeObject:self->_labelID forKey:@"label_id"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phone_number"];
-  [v5 encodeObject:self->_userDataPreferred forKey:@"user_data_preferred"];
-  [v5 encodeObject:self->_userDefaultVoice forKey:@"user_default_voice"];
-  [v5 encodeObject:self->_uuid forKey:@"uuid"];
-  [v5 encodeBool:self->_isSimPresent forKey:@"isSimPresent"];
-  [v5 encodeBool:self->_isSimGood forKey:@"isSimGood"];
-  [v5 encodeBool:self->_isSimHidden forKey:@"isSimHidden"];
-  [v5 encodeBool:self->_isSimDataOnly forKey:@"isSimDataOnly"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:slotID forKey:@"slot_id"];
+  [coderCopy encodeObject:self->_labelID forKey:@"label_id"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phone_number"];
+  [coderCopy encodeObject:self->_userDataPreferred forKey:@"user_data_preferred"];
+  [coderCopy encodeObject:self->_userDefaultVoice forKey:@"user_default_voice"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeBool:self->_isSimPresent forKey:@"isSimPresent"];
+  [coderCopy encodeBool:self->_isSimGood forKey:@"isSimGood"];
+  [coderCopy encodeBool:self->_isSimHidden forKey:@"isSimHidden"];
+  [coderCopy encodeBool:self->_isSimDataOnly forKey:@"isSimDataOnly"];
 }
 
-- (CTXPCServiceSubscriptionContext)initWithCoder:(id)a3
+- (CTXPCServiceSubscriptionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTXPCServiceSubscriptionContext;
   v5 = [(CTXPCServiceSubscriptionContext *)&v19 init];
   if (v5)
   {
-    v5->_slotID = [v4 decodeIntegerForKey:@"slot_id"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label_id"];
+    v5->_slotID = [coderCopy decodeIntegerForKey:@"slot_id"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label_id"];
     labelID = v5->_labelID;
     v5->_labelID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phone_number"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phone_number"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user_data_preferred"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user_data_preferred"];
     userDataPreferred = v5->_userDataPreferred;
     v5->_userDataPreferred = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user_default_voice"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user_default_voice"];
     userDefaultVoice = v5->_userDefaultVoice;
     v5->_userDefaultVoice = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v16;
 
-    v5->_isSimPresent = [v4 decodeBoolForKey:@"isSimPresent"];
-    v5->_isSimGood = [v4 decodeBoolForKey:@"isSimGood"];
-    v5->_isSimHidden = [v4 decodeBoolForKey:@"isSimHidden"];
-    v5->_isSimDataOnly = [v4 decodeBoolForKey:@"isSimDataOnly"];
+    v5->_isSimPresent = [coderCopy decodeBoolForKey:@"isSimPresent"];
+    v5->_isSimGood = [coderCopy decodeBoolForKey:@"isSimGood"];
+    v5->_isSimHidden = [coderCopy decodeBoolForKey:@"isSimHidden"];
+    v5->_isSimDataOnly = [coderCopy decodeBoolForKey:@"isSimDataOnly"];
   }
 
   return v5;

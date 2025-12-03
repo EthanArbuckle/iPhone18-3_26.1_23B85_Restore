@@ -1,6 +1,6 @@
 @interface ProxyAnalytics
 - (void)dealloc;
-- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)a3 interfaceType:(id)a4 radioType:(id)a5 radioBand:(id)a6 latitude:(double)a7 longitude:(double)a8;
+- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)prefix interfaceType:(id)type radioType:(id)radioType radioBand:(id)band latitude:(double)latitude longitude:(double)longitude;
 - (void)performAppEndpointTrackingPeriodicTasks;
 - (void)performAppExperiencePeriodicTasks;
 - (void)performAppPeriodicTasks;
@@ -79,15 +79,15 @@ void __51__ProxyAnalytics_trainModelAndScore_lastScoreDate___block_invoke_76(uin
     objc_initWeak(&location, self);
     [(NSXPCConnection *)self->_connection setInterruptionHandler:&__block_literal_global_19];
     [(NSXPCConnection *)self->_connection resume];
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v5)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __41__ProxyAnalytics_performAppPeriodicTasks__block_invoke_2;
       v8[3] = &unk_27898CE90;
       objc_copyWeak(&v9, &location);
-      [v5 performAppPeriodicTasksWithReply:v8];
+      [remoteObjectProxy performAppPeriodicTasksWithReply:v8];
       objc_destroyWeak(&v9);
     }
 
@@ -128,13 +128,13 @@ void __41__ProxyAnalytics_performAppPeriodicTasks__block_invoke_2(uint64_t a1, v
   }
 }
 
-- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)a3 interfaceType:(id)a4 radioType:(id)a5 radioBand:(id)a6 latitude:(double)a7 longitude:(double)a8
+- (void)donateBiomeEventForEdgeSelectionWithPrefix:(id)prefix interfaceType:(id)type radioType:(id)radioType radioBand:(id)band latitude:(double)latitude longitude:(double)longitude
 {
   v31 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  prefixCopy = prefix;
+  typeCopy = type;
+  radioTypeCopy = radioType;
+  bandCopy = band;
   v18 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.symptomsd.helper" options:4096];
   v19 = otherLogHandle;
   if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -160,8 +160,8 @@ void __41__ProxyAnalytics_performAppPeriodicTasks__block_invoke_2(uint64_t a1, v
     }
 
     [v18 activate];
-    v22 = [v18 remoteObjectProxy];
-    if (v22)
+    remoteObjectProxy = [v18 remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
@@ -169,7 +169,7 @@ void __41__ProxyAnalytics_performAppPeriodicTasks__block_invoke_2(uint64_t a1, v
       v25[3] = &unk_27898CEB8;
       objc_copyWeak(&v27, &location);
       v26 = v18;
-      [v22 donateBiomeEventForEdgeSelectionWithPrefix:v14 interfaceType:v15 radioType:v16 radioBand:v17 latitude:v25 longitude:a7 reply:a8];
+      [remoteObjectProxy donateBiomeEventForEdgeSelectionWithPrefix:prefixCopy interfaceType:typeCopy radioType:radioTypeCopy radioBand:bandCopy latitude:v25 longitude:latitude reply:longitude];
 
       objc_destroyWeak(&v27);
     }
@@ -234,15 +234,15 @@ void __114__ProxyAnalytics_donateBiomeEventForEdgeSelectionWithPrefix_interfaceT
     objc_initWeak(&location, self);
     [(NSXPCConnection *)self->_connection setInterruptionHandler:&__block_literal_global_88];
     [(NSXPCConnection *)self->_connection resume];
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v5)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __49__ProxyAnalytics_performAppTrackingPeriodicTasks__block_invoke_2;
       v8[3] = &unk_27898CE90;
       objc_copyWeak(&v9, &location);
-      [v5 performAppTrackingPeriodicTasksWithReply:v8];
+      [remoteObjectProxy performAppTrackingPeriodicTasksWithReply:v8];
       objc_destroyWeak(&v9);
     }
 
@@ -296,15 +296,15 @@ void __49__ProxyAnalytics_performAppTrackingPeriodicTasks__block_invoke_2(uint64
     objc_initWeak(&location, self);
     [(NSXPCConnection *)self->_connection setInterruptionHandler:&__block_literal_global_92];
     [(NSXPCConnection *)self->_connection resume];
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v5)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __57__ProxyAnalytics_performAppEndpointTrackingPeriodicTasks__block_invoke_2;
       v8[3] = &unk_27898CE90;
       objc_copyWeak(&v9, &location);
-      [v5 performAppEndpointTrackingPeriodicTasksWithReply:v8];
+      [remoteObjectProxy performAppEndpointTrackingPeriodicTasksWithReply:v8];
       objc_destroyWeak(&v9);
     }
 
@@ -358,15 +358,15 @@ void __57__ProxyAnalytics_performAppEndpointTrackingPeriodicTasks__block_invoke_
     objc_initWeak(&location, self);
     [(NSXPCConnection *)self->_connection setInterruptionHandler:&__block_literal_global_96];
     [(NSXPCConnection *)self->_connection resume];
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v5)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __51__ProxyAnalytics_performAppExperiencePeriodicTasks__block_invoke_2;
       v8[3] = &unk_27898CE90;
       objc_copyWeak(&v9, &location);
-      [v5 performAppExperiencePeriodicTasksWithReply:v8];
+      [remoteObjectProxy performAppExperiencePeriodicTasksWithReply:v8];
       objc_destroyWeak(&v9);
     }
 
@@ -425,15 +425,15 @@ void __51__ProxyAnalytics_performAppExperiencePeriodicTasks__block_invoke_2(uint
     objc_copyWeak(&v11, &location);
     [(NSXPCConnection *)self->_connection setInterruptionHandler:v10];
     [(NSXPCConnection *)self->_connection resume];
-    v5 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-    if (v5)
+    remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+    if (remoteObjectProxy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __51__ProxyAnalytics_performPersistentStoreHealthCheck__block_invoke_104;
       v8[3] = &unk_27898CE90;
       objc_copyWeak(&v9, &location);
-      [v5 performPersistentStoreHealthCheckWithReply:v8];
+      [remoteObjectProxy performPersistentStoreHealthCheckWithReply:v8];
       objc_destroyWeak(&v9);
     }
 

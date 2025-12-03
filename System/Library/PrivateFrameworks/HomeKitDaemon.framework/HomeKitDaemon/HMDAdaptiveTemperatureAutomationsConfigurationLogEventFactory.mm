@@ -1,8 +1,8 @@
 @interface HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory
 - (HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory)init;
-- (HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory)initWithDataSource:(id)a3;
+- (HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory)initWithDataSource:(id)source;
 - (HMDHouseholdMetricsDataSource)dataSource;
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date;
 @end
 
 @implementation HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory
@@ -15,16 +15,16 @@
   return v3;
 }
 
-- (HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory)initWithDataSource:(id)a3
+- (HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory)initWithDataSource:(id)source
 {
-  *(&self->super.super.isa + OBJC_IVAR___HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory_dataSource) = a3;
+  *(&self->super.super.isa + OBJC_IVAR___HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory_dataSource) = source;
   v4.receiver = self;
   v4.super_class = HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory;
   swift_unknownObjectRetain();
   return [(HMDAdaptiveTemperatureAutomationsConfigurationLogEventFactory *)&v4 init];
 }
 
-- (id)logEventsPopulatedForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventsPopulatedForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
   v5 = sub_22A4DB74C();
   v6 = *(v5 - 8);
@@ -38,7 +38,7 @@
   v14 = (&v19 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
   sub_22A4DB79C();
   sub_22A4DB70C();
-  v15 = self;
+  selfCopy = self;
   v16 = sub_2295F5FE4(v14);
 
   (*(v6 + 8))(v9, v5);

@@ -1,9 +1,9 @@
 @interface _BlastDoorLPIconMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BlastDoorLPIconMetadata)init;
-- (_BlastDoorLPIconMetadata)initWithCoder:(id)a3;
-- (id)_initWithURL:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPIconMetadata)initWithCoder:(id)coder;
+- (id)_initWithURL:(id)l;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPIconMetadata
@@ -25,35 +25,35 @@
   return v3;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = [(_BlastDoorLPIconMetadata *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (_BlastDoorLPIconMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPIconMetadata)initWithCoder:(id)coder
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _BlastDoorLPIconMetadata;
   v5 = [(_BlastDoorLPIconMetadata *)&v13 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"accessibilityText");
+    v8 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v8;
 
@@ -64,22 +64,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt32:version forKey:@"version"];
-  [v5 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = _BlastDoorLPIconMetadata;
-  if ([(_BlastDoorLPIconMetadata *)&v12 isEqual:v4])
+  if ([(_BlastDoorLPIconMetadata *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -89,7 +89,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && ((v8 = v6[2], !(v8 | self->_URL)) || [v8 isEqual:?]))
       {

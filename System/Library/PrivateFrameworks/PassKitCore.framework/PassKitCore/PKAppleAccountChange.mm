@@ -1,29 +1,29 @@
 @interface PKAppleAccountChange
-+ (int64_t)changeTypeToAccount:(id)a3 fromAccount:(id)a4;
++ (int64_t)changeTypeToAccount:(id)account fromAccount:(id)fromAccount;
 - (BOOL)didEnablementOfRelevantDataclassesChange;
 - (BOOL)shouldBeNotedByPassLibrary;
-- (PKAppleAccountChange)initWithCoder:(id)a3;
-- (PKAppleAccountChange)initWithEvent:(int64_t)a3 currentAccount:(id)a4 previousAccount:(id)a5;
+- (PKAppleAccountChange)initWithCoder:(id)coder;
+- (PKAppleAccountChange)initWithEvent:(int64_t)event currentAccount:(id)account previousAccount:(id)previousAccount;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleAccountChange
 
-- (PKAppleAccountChange)initWithEvent:(int64_t)a3 currentAccount:(id)a4 previousAccount:(id)a5
+- (PKAppleAccountChange)initWithEvent:(int64_t)event currentAccount:(id)account previousAccount:(id)previousAccount
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  accountCopy = account;
+  previousAccountCopy = previousAccount;
+  v10 = previousAccountCopy;
+  if (accountCopy)
   {
-    v9 = v8;
+    previousAccountCopy = accountCopy;
   }
 
-  v11 = [v9 accountType];
-  v12 = [v11 identifier];
+  accountType = [previousAccountCopy accountType];
+  identifier = [accountType identifier];
   v13 = *MEMORY[0x1E69597F8];
-  v14 = v12;
+  v14 = identifier;
   v15 = v14;
   if (v14 != v13)
   {
@@ -51,7 +51,7 @@
       }
     }
 
-    v23 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -61,9 +61,9 @@ LABEL_12:
   v18 = [(PKAppleAccountChange *)&v25 init];
   if (v18)
   {
-    v18->_type = [objc_opt_class() changeTypeToAccount:v8 fromAccount:v10];
-    v18->_event = a3;
-    v19 = [[PKAppleAccountState alloc] initWithAccount:v8];
+    v18->_type = [objc_opt_class() changeTypeToAccount:accountCopy fromAccount:v10];
+    v18->_event = event;
+    v19 = [[PKAppleAccountState alloc] initWithAccount:accountCopy];
     currentState = v18->_currentState;
     v18->_currentState = v19;
 
@@ -73,46 +73,46 @@ LABEL_12:
   }
 
   self = v18;
-  v23 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v23;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   type = self->_type;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:type];
-  [v8 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_event];
-  [v8 encodeObject:v7 forKey:@"event"];
+  [coderCopy encodeObject:v7 forKey:@"event"];
 
-  [v8 encodeObject:self->_currentState forKey:@"currentState"];
-  [v8 encodeObject:self->_previousState forKey:@"previousState"];
+  [coderCopy encodeObject:self->_currentState forKey:@"currentState"];
+  [coderCopy encodeObject:self->_previousState forKey:@"previousState"];
 }
 
-- (PKAppleAccountChange)initWithCoder:(id)a3
+- (PKAppleAccountChange)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAppleAccountChange;
   v5 = [(PKAppleAccountChange *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v6 integerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
     v5->_event = [v7 integerValue];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentState"];
     currentState = v5->_currentState;
     v5->_currentState = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previousState"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previousState"];
     previousState = v5->_previousState;
     v5->_previousState = v10;
   }
@@ -194,12 +194,12 @@ LABEL_16:
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"changeType: %@, event: %@, \n before - \n  %@, \n after - \n  %@, \n (will notify library: %i)", v3, v6, self->_previousState, self->_currentState, -[PKAppleAccountChange shouldBeNotedByPassLibrary](self, "shouldBeNotedByPassLibrary")];
 }
 
-+ (int64_t)changeTypeToAccount:(id)a3 fromAccount:(id)a4
++ (int64_t)changeTypeToAccount:(id)account fromAccount:(id)fromAccount
 {
   v5 = *MEMORY[0x1E698B760];
-  v6 = a4;
-  v7 = [a3 aa_isAccountClass:v5];
-  v8 = [v6 aa_isAccountClass:v5];
+  fromAccountCopy = fromAccount;
+  v7 = [account aa_isAccountClass:v5];
+  v8 = [fromAccountCopy aa_isAccountClass:v5];
 
   v9 = 3;
   if (((v7 ^ 1) & v8) == 0)

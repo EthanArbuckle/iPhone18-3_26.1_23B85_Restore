@@ -1,10 +1,10 @@
 @interface RenderPipelineDiagnostics.Recorder
-- (void)recordNotification:(id)a3;
+- (void)recordNotification:(id)notification;
 @end
 
 @implementation RenderPipelineDiagnostics.Recorder
 
-- (void)recordNotification:(id)a3
+- (void)recordNotification:(id)notification
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);

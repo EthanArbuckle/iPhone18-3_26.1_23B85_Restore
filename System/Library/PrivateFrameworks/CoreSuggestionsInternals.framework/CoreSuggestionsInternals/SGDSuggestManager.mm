@@ -1,194 +1,194 @@
 @interface SGDSuggestManager
 + (id)contactAggregator;
-+ (id)entityTagForCategory:(int64_t)a3;
-+ (id)extractAttributeSetsFromRealtimeEvents:(id)a3;
-+ (id)filterAttributesForDonation:(id)a3;
-+ (id)filterPseudoEvents:(id)a3 keepPastEvents:(BOOL)a4 keepPartialEvents:(BOOL)a5 keepEventsFromOldDocuments:(BOOL)a6 keepUnsupportedEventCategoryStatus:(BOOL)a7 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)a8 keepLLMExtractionForRealTime:(BOOL)a9;
-+ (id)getAggregatedAttributeSet:(id)a3;
-+ (id)getProcessedItemFromEvents:(id)a3 uniqueID:(id)a4 bundleID:(id)a5;
-+ (id)preprocessSearchableItem:(id)a3;
++ (id)entityTagForCategory:(int64_t)category;
++ (id)extractAttributeSetsFromRealtimeEvents:(id)events;
++ (id)filterAttributesForDonation:(id)donation;
++ (id)filterPseudoEvents:(id)events keepPastEvents:(BOOL)pastEvents keepPartialEvents:(BOOL)partialEvents keepEventsFromOldDocuments:(BOOL)documents keepUnsupportedEventCategoryStatus:(BOOL)status keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)message keepLLMExtractionForRealTime:(BOOL)time;
++ (id)getAggregatedAttributeSet:(id)set;
++ (id)getProcessedItemFromEvents:(id)events uniqueID:(id)d bundleID:(id)iD;
++ (id)preprocessSearchableItem:(id)item;
 + (id)requestCache;
 + (id)simpleWritebackHandler;
 + (void)clearRequestCache;
-+ (void)updateOriginalDocumentsWith:(id)a3 completionHandler:(id)a4;
-- (BOOL)_canBannerUseStoredDissection:(id)a3 options:(unint64_t)a4;
-- (BOOL)_harvestPeopleFromInteractions:(id)a3 bundleId:(id)a4;
-- (BOOL)_isContactInteresting:(id)a3 emailEntity:(id)a4 enrichments:(id)a5 hasContactCard:(unint64_t)a6;
++ (void)updateOriginalDocumentsWith:(id)with completionHandler:(id)handler;
+- (BOOL)_canBannerUseStoredDissection:(id)dissection options:(unint64_t)options;
+- (BOOL)_harvestPeopleFromInteractions:(id)interactions bundleId:(id)id;
+- (BOOL)_isContactInteresting:(id)interesting emailEntity:(id)entity enrichments:(id)enrichments hasContactCard:(unint64_t)card;
 - (BOOL)clientIsMail;
 - (BOOL)clientIsMessages;
-- (BOOL)containsNonCuratedData:(id)a3;
-- (BOOL)isSGEvent:(id)a3 duplicateOfEKEvent:(id)a4;
-- (BOOL)isSearchableItemPartOfReimport:(id)a3;
-- (BOOL)isSearchableItemPartOfReimportWithGetterBlock:(id)a3 bundleIdentifier:(id)a4;
-- (SGDSuggestManager)initWithConnection:(id)a3 store:(id)a4;
-- (SGDSuggestManager)initWithMessagesConnection:(id)a3 store:(id)a4;
-- (SGDSuggestManager)initWithStore:(id)a3;
-- (SGDSuggestManager)initWithStore:(id)a3 ctsManager:(id)a4 ekStoreProvider:(id)a5 contactStore:(id)a6 pet2Tracker:(id)a7;
-- (SGMContactDetailUsedApp_)_appEnumForBundleId:(id)a3;
+- (BOOL)containsNonCuratedData:(id)data;
+- (BOOL)isSGEvent:(id)event duplicateOfEKEvent:(id)kEvent;
+- (BOOL)isSearchableItemPartOfReimport:(id)reimport;
+- (BOOL)isSearchableItemPartOfReimportWithGetterBlock:(id)block bundleIdentifier:(id)identifier;
+- (SGDSuggestManager)initWithConnection:(id)connection store:(id)store;
+- (SGDSuggestManager)initWithMessagesConnection:(id)connection store:(id)store;
+- (SGDSuggestManager)initWithStore:(id)store;
+- (SGDSuggestManager)initWithStore:(id)store ctsManager:(id)manager ekStoreProvider:(id)provider contactStore:(id)contactStore pet2Tracker:(id)tracker;
+- (SGMContactDetailUsedApp_)_appEnumForBundleId:(id)id;
 - (id)_emailContentCacheSalt;
-- (id)_mapToPseudoEvents:(id)a3;
+- (id)_mapToPseudoEvents:(id)events;
 - (id)_maybeFormatString;
 - (id)_pmlTraining;
-- (id)_showInFormatStringWithLocalization:(id)a3;
-- (id)cachedResultForKey:(id)a3 generateResult:(id)a4 validateResults:(id)a5;
-- (id)consumeInteractionWithContext:(id)a3;
-- (id)consumeMailContentWithContext:(id)a3;
-- (id)consumeMessagesContentWithContext:(id)a3;
-- (id)createLaunchIntentForStorageEvent:(id)a3;
-- (id)curatedEventKeyForExactMatchOfPseudoEvent:(id)a3 candidates:(id)a4;
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3;
-- (id)enrichmentFromExternalExtraction:(id)a3 origin:(id)a4;
-- (id)entityFromUniqueKey:(id)a3;
-- (id)filterRealtimeEvents:(id)a3;
-- (id)realtimeContactsFromEntity:(id)a3 enrichments:(id)a4 sourceTextMessage:(id)a5 store:(id)a6;
-- (id)realtimeEventsFromEntity:(id)a3 enrichments:(id)a4 store:(id)a5;
-- (id)realtimeEventsFromEntity:(id)a3 message:(id)a4 enrichments:(id)a5 store:(id)a6 keepPastEvents:(BOOL)a7 keepPartialEvents:(BOOL)a8 keepEventsFromOldDocuments:(BOOL)a9 keepUnsupportedEventCategoryStatus:(BOOL)a10 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)a11 keepLLMExtractionForRealtime:(BOOL)a12 keepAttributesForEvents:(BOOL)a13;
-- (id)realtimeWalletOrdersFromEntity:(id)a3 enrichments:(id)a4;
-- (id)realtimeWalletPassesFromEntity:(id)a3 enrichments:(id)a4;
-- (id)storageContactFromRecordId:(id)a3;
-- (unsigned)interfaceForRealtimeReminder:(id)a3;
-- (void)_confirmReminderByRecordId:(id)a3 completion:(id)a4;
-- (void)_executeBoxTasks:(id)a3;
-- (void)_harvestReservationsFromInteractions:(id)a3 bundleId:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)_performAction:(id)a3 onContactDetailRecord:(id)a4 confirmRejectUI:(int)a5 completion:(id)a6;
-- (void)_performAction:(id)a3 onRecord:(id)a4 withParentConfirmation:(BOOL)a5 confirmRejectUI:(int)a6 completion:(id)a7;
-- (void)_processReservationInteractions:(id)a3 bundleId:(id)a4 completion:(id)a5;
-- (void)_rejectReminderByRecordId:(id)a3 completion:(id)a4;
-- (void)_sendChatChangedNotificationWithDomainIdentifier:(id)a3;
-- (void)_setupHistoryObserver:(id)a3;
-- (void)_storeAndGeocodeEntity:(id)a3 spotlightBundleIdentifier:(id)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6 store:(id)a7 afterCallbackQueue:(id)a8 finalize:(id)a9;
-- (void)_suggestionsFromMessage:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 completionDelivery:(unint64_t)a6 completionHandler:(id)a7;
-- (void)_suggestionsFromSingleSearchableItem:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 processingType:(unint64_t)a6 completionDelivery:(unint64_t)a7 withCompletion:(id)a8;
-- (void)addInteractions:(id)a3 bundleId:(id)a4 completion:(id)a5;
-- (void)addSearchableItemMetadata:(id)a3 htmlData:(id)a4 completion:(id)a5;
-- (void)addSearchableItems:(id)a3 completion:(id)a4;
-- (void)allDeliveriesWithLimit:(unint64_t)a3 withCompletion:(id)a4;
-- (void)allEventsLimitedTo:(unint64_t)a3 withCompletion:(id)a4;
-- (void)allRemindersLimitedTo:(unint64_t)a3 withCompletion:(id)a4;
-- (void)batchSuggestionsFromMessages:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 batchCompletion:(id)a6 writeBackCompletion:(id)a7 shouldStopSignal:(id)a8;
-- (void)batchSuggestionsFromSearchableItems:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 processingType:(unint64_t)a6 completionDelivery:(unint64_t)a7 batchCompletion:(id)a8 writeBackCompletion:(id)a9 shouldStopSignal:(id)a10;
-- (void)birthdayExtractionsForInterval:(id)a3 withCompletion:(id)a4;
-- (void)bumptTTLForNLEvent:(id)a3;
-- (void)celebrationExtractionsForInterval:(id)a3 withCompletion:(id)a4;
-- (void)clearCachesFully:(BOOL)a3 withCompletion:(id)a4;
+- (id)_showInFormatStringWithLocalization:(id)localization;
+- (id)cachedResultForKey:(id)key generateResult:(id)result validateResults:(id)results;
+- (id)consumeInteractionWithContext:(id)context;
+- (id)consumeMailContentWithContext:(id)context;
+- (id)consumeMessagesContentWithContext:(id)context;
+- (id)createLaunchIntentForStorageEvent:(id)event;
+- (id)curatedEventKeyForExactMatchOfPseudoEvent:(id)event candidates:(id)candidates;
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request;
+- (id)enrichmentFromExternalExtraction:(id)extraction origin:(id)origin;
+- (id)entityFromUniqueKey:(id)key;
+- (id)filterRealtimeEvents:(id)events;
+- (id)realtimeContactsFromEntity:(id)entity enrichments:(id)enrichments sourceTextMessage:(id)message store:(id)store;
+- (id)realtimeEventsFromEntity:(id)entity enrichments:(id)enrichments store:(id)store;
+- (id)realtimeEventsFromEntity:(id)entity message:(id)message enrichments:(id)enrichments store:(id)store keepPastEvents:(BOOL)events keepPartialEvents:(BOOL)partialEvents keepEventsFromOldDocuments:(BOOL)documents keepUnsupportedEventCategoryStatus:(BOOL)self0 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)self1 keepLLMExtractionForRealtime:(BOOL)self2 keepAttributesForEvents:(BOOL)self3;
+- (id)realtimeWalletOrdersFromEntity:(id)entity enrichments:(id)enrichments;
+- (id)realtimeWalletPassesFromEntity:(id)entity enrichments:(id)enrichments;
+- (id)storageContactFromRecordId:(id)id;
+- (unsigned)interfaceForRealtimeReminder:(id)reminder;
+- (void)_confirmReminderByRecordId:(id)id completion:(id)completion;
+- (void)_executeBoxTasks:(id)tasks;
+- (void)_harvestReservationsFromInteractions:(id)interactions bundleId:(id)id queue:(id)queue completion:(id)completion;
+- (void)_performAction:(id)action onContactDetailRecord:(id)record confirmRejectUI:(int)i completion:(id)completion;
+- (void)_performAction:(id)action onRecord:(id)record withParentConfirmation:(BOOL)confirmation confirmRejectUI:(int)i completion:(id)completion;
+- (void)_processReservationInteractions:(id)interactions bundleId:(id)id completion:(id)completion;
+- (void)_rejectReminderByRecordId:(id)id completion:(id)completion;
+- (void)_sendChatChangedNotificationWithDomainIdentifier:(id)identifier;
+- (void)_setupHistoryObserver:(id)observer;
+- (void)_storeAndGeocodeEntity:(id)entity spotlightBundleIdentifier:(id)identifier spotlightUniqueIdentifier:(id)uniqueIdentifier spotlightDomainIdentifier:(id)domainIdentifier store:(id)store afterCallbackQueue:(id)queue finalize:(id)finalize;
+- (void)_suggestionsFromMessage:(id)message options:(unint64_t)options dissectIfNecessary:(BOOL)necessary completionDelivery:(unint64_t)delivery completionHandler:(id)handler;
+- (void)_suggestionsFromSingleSearchableItem:(id)item options:(unint64_t)options dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)type completionDelivery:(unint64_t)delivery withCompletion:(id)completion;
+- (void)addInteractions:(id)interactions bundleId:(id)id completion:(id)completion;
+- (void)addSearchableItemMetadata:(id)metadata htmlData:(id)data completion:(id)completion;
+- (void)addSearchableItems:(id)items completion:(id)completion;
+- (void)allDeliveriesWithLimit:(unint64_t)limit withCompletion:(id)completion;
+- (void)allEventsLimitedTo:(unint64_t)to withCompletion:(id)completion;
+- (void)allRemindersLimitedTo:(unint64_t)to withCompletion:(id)completion;
+- (void)batchSuggestionsFromMessages:(id)messages options:(unint64_t)options completionDelivery:(unint64_t)delivery batchCompletion:(id)completion writeBackCompletion:(id)backCompletion shouldStopSignal:(id)signal;
+- (void)batchSuggestionsFromSearchableItems:(id)items options:(unint64_t)options dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)type completionDelivery:(unint64_t)delivery batchCompletion:(id)completion writeBackCompletion:(id)backCompletion shouldStopSignal:(id)self0;
+- (void)birthdayExtractionsForInterval:(id)interval withCompletion:(id)completion;
+- (void)bumptTTLForNLEvent:(id)event;
+- (void)celebrationExtractionsForInterval:(id)interval withCompletion:(id)completion;
+- (void)clearCachesFully:(BOOL)fully withCompletion:(id)completion;
 - (void)clearContactAggregator;
-- (void)clearContactAggregatorConversation:(id)a3;
-- (void)cnContactMatchesForRecordId:(id)a3 withCompletion:(id)a4;
-- (void)cnContactMatchesForRecordIds:(id)a3 withCompletion:(id)a4;
-- (void)confirmContact:(id)a3 confirmRejectUI:(int)a4 completion:(id)a5;
-- (void)confirmEvent:(id)a3 completion:(id)a4;
-- (void)confirmEventByRecordId:(id)a3 completion:(id)a4;
-- (void)confirmRealtimeReminder:(id)a3 completion:(id)a4;
-- (void)confirmReminderByRecordId:(id)a3 completion:(id)a4;
-- (void)contactFromRecordId:(id)a3 withCompletion:(id)a4;
-- (void)contactMatchesByEmailAddress:(id)a3 withCompletion:(id)a4;
-- (void)contactMatchesByPhoneNumber:(id)a3 withCompletion:(id)a4;
-- (void)contactMatchesBySocialProfile:(id)a3 withCompletion:(id)a4;
-- (void)contactMatchesWithContact:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5;
-- (void)contactMatchesWithContactIdentifier:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5;
-- (void)contactMatchesWithContactIdentifiers:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5;
-- (void)contactMatchesWithFullTextSearch:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5;
-- (void)contactMatchesWithMessagingPrefix:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5;
-- (void)contentAdmissionBlocklistDidChange:(id)a3;
-- (void)daemonExitWithCompletion:(id)a3;
+- (void)clearContactAggregatorConversation:(id)conversation;
+- (void)cnContactMatchesForRecordId:(id)id withCompletion:(id)completion;
+- (void)cnContactMatchesForRecordIds:(id)ids withCompletion:(id)completion;
+- (void)confirmContact:(id)contact confirmRejectUI:(int)i completion:(id)completion;
+- (void)confirmEvent:(id)event completion:(id)completion;
+- (void)confirmEventByRecordId:(id)id completion:(id)completion;
+- (void)confirmRealtimeReminder:(id)reminder completion:(id)completion;
+- (void)confirmReminderByRecordId:(id)id completion:(id)completion;
+- (void)contactFromRecordId:(id)id withCompletion:(id)completion;
+- (void)contactMatchesByEmailAddress:(id)address withCompletion:(id)completion;
+- (void)contactMatchesByPhoneNumber:(id)number withCompletion:(id)completion;
+- (void)contactMatchesBySocialProfile:(id)profile withCompletion:(id)completion;
+- (void)contactMatchesWithContact:(id)contact limitTo:(unint64_t)to withCompletion:(id)completion;
+- (void)contactMatchesWithContactIdentifier:(id)identifier limitTo:(unint64_t)to withCompletion:(id)completion;
+- (void)contactMatchesWithContactIdentifiers:(id)identifiers limitTo:(unint64_t)to withCompletion:(id)completion;
+- (void)contactMatchesWithFullTextSearch:(id)search limitTo:(unint64_t)to withCompletion:(id)completion;
+- (void)contactMatchesWithMessagingPrefix:(id)prefix limitTo:(unint64_t)to withCompletion:(id)completion;
+- (void)contentAdmissionBlocklistDidChange:(id)change;
+- (void)daemonExitWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)deleteCloudKitZoneWithCompletion:(id)a3;
-- (void)deleteEventByRecordId:(id)a3 completion:(id)a4;
-- (void)deleteInteractionsWithBundleId:(id)a3 completion:(id)a4;
-- (void)deleteInteractionsWithBundleId:(id)a3 groupIdentifiers:(id)a4 completion:(id)a5;
-- (void)deleteInteractionsWithBundleId:(id)a3 identifiers:(id)a4 completion:(id)a5;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 domainIdentifiers:(id)a4 completion:(id)a5;
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5;
-- (void)dissectAttachmentsFromSearchableItem:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5;
-- (void)emailAddressIsSignificant:(id)a3 withCompletion:(id)a4;
-- (void)enqueueSearchableItems:(id)a3 completion:(id)a4;
-- (void)evaluateRecipe:(id)a3 attachments:(id)a4 completion:(id)a5;
-- (void)eventFromRecordId:(id)a3 withCompletion:(id)a4;
-- (void)eventFromUniqueId:(id)a3 completion:(id)a4;
-- (void)extractAttributesAndDonate:(id)a3 withCompletion:(id)a4;
-- (void)filteredSuggestionsFromExtractions:(id)a3 origin:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6;
-- (void)foundInStringForRecordId:(id)a3 style:(unsigned __int8)a4 withCompletion:(id)a5;
-- (void)fullDownloadRequestBatch:(unint64_t)a3 withCompletion:(id)a4;
-- (void)geocodeEnrichmentsInPipelineEntity:(id)a3 withCompletion:(id)a4;
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6;
-- (void)harvestedSuggestionsFromMessages:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)harvestedSuggestionsFromSearchableItem:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5;
-- (void)identifyComposeWarningsFromSubject:(id)a3 content:(id)a4 attributes:(id)a5 toRecipients:(id)a6 ccRecipients:(id)a7 bccRecipients:(id)a8 originalToRecipients:(id)a9 originalCcRecipients:(id)a10 attachments:(id)a11 withCompletion:(id)a12;
-- (void)identifyFollowUpWarningFromSubject:(id)a3 body:(id)a4 date:(id)a5 withCompletion:(id)a6;
-- (void)interactionStoreLookupForDetail:(id)a3 withCompletion:(id)a4;
-- (void)ipsosMessagesFromSearchableItems:(id)a3 withCompletion:(id)a4;
-- (void)isEnabledWithCompletion:(id)a3;
-- (void)isEventCandidateForURL:(id)a3 andTitle:(id)a4 containsSchemaOrg:(BOOL)a5 withCompletion:(id)a6;
-- (void)isEventCandidateForURL:(id)a3 title:(id)a4 withCompletion:(id)a5;
-- (void)keepDirty:(BOOL)a3;
-- (void)launchAppForSuggestedEventUsingLaunchInfo:(id)a3 completion:(id)a4;
-- (void)launchInfoForSuggestedEventWithUniqueIdentifier:(id)a3 sourceURL:(id)a4 clientLocale:(id)a5 ignoreUserActivitySupport:(BOOL)a6 ignoreMailCheck:(BOOL)a7 completion:(id)a8;
-- (void)logEventInteractionForEventWithUniqueKey:(id)a3 interface:(unsigned __int16)a4 actionType:(unsigned __int16)a5;
-- (void)logMetricAutocompleteResult:(int)a3 recordId:(id)a4 contactIdentifier:(id)a5 bundleId:(id)a6;
-- (void)logMetricAutocompleteUserSelectedRecordId:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5;
-- (void)logMetricContactCreated:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5;
-- (void)logMetricContactSearchResult:(int)a3 recordId:(id)a4 contactIdentifier:(id)a5 bundleId:(id)a6;
-- (void)logMetricContactSearchResultSelected:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5;
-- (void)logMetricSearchResultsIncludedPureSuggestionWithBundleId:(id)a3;
-- (void)logMetricSuggestedContactDetailShown:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5;
-- (void)logMetricSuggestedContactDetailUsed:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5;
-- (void)logUnknownContactInformationShownCount:(unint64_t)a3 notShownCount:(unint64_t)a4 bundleId:(id)a5;
-- (void)logUserCreatedReminderTitle:(id)a3 withCompletion:(id)a4;
-- (void)messagesToRefreshWithCompletion:(id)a3;
-- (void)namesForDetailCacheSnapshotsWithCompletion:(id)a3;
-- (void)noopWithCompletion:(id)a3;
-- (void)originFromRecordId:(id)a3 completion:(id)a4;
-- (void)pingWithCompletion:(id)a3;
-- (void)planReceivedFromServerWithPayload:(id)a3 completion:(id)a4;
-- (void)powerStateWithCompletion:(id)a3;
-- (void)predictedCCEmailAddressesWithToAddresses:(id)a3 ccAddresses:(id)a4 fromAddress:(id)a5 date:(double)a6 bounds:(id)a7 completion:(id)a8;
-- (void)predictedToEmailAddressesWithToAddresses:(id)a3 ccAddresses:(id)a4 fromAddress:(id)a5 date:(double)a6 bounds:(id)a7 completion:(id)a8;
-- (void)prepareForRealtimeExtraction:(id)a3;
-- (void)preventUnsubscriptionOpportunitiesSuggestionsForField:(int64_t)a3 toValues:(id)a4 withCompletion:(id)a5;
-- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5;
-- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)a3 options:(unint64_t)a4 completion:(id)a5 completionDelivery:(unint64_t)a6 providedBy:(id)a7 searchableItem:(id)a8 dissectIfNecessary:(BOOL)a9 isTextMessage:(BOOL)a10;
-- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)a3 options:(unint64_t)a4 completion:(id)a5 completionDelivery:(unint64_t)a6 providedBy:(id)a7 searchableItem:(id)a8 dissectIfNecessary:(BOOL)a9 processingType:(unint64_t)a10 isTextMessage:(BOOL)a11;
-- (void)realtimeSuggestionsFromURL:(id)a3 title:(id)a4 HTMLPayload:(id)a5 extractionDate:(id)a6 withCompletion:(id)a7;
-- (void)rebuildNamesForDetailCache:(id)a3;
-- (void)recentURLsWithLimit:(unsigned int)a3 withCompletion:(id)a4;
+- (void)deleteCloudKitZoneWithCompletion:(id)completion;
+- (void)deleteEventByRecordId:(id)id completion:(id)completion;
+- (void)deleteInteractionsWithBundleId:(id)id completion:(id)completion;
+- (void)deleteInteractionsWithBundleId:(id)id groupIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteInteractionsWithBundleId:(id)id identifiers:(id)identifiers completion:(id)completion;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier domainIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)dissectAttachmentsFromSearchableItem:(id)item options:(unint64_t)options withCompletion:(id)completion;
+- (void)emailAddressIsSignificant:(id)significant withCompletion:(id)completion;
+- (void)enqueueSearchableItems:(id)items completion:(id)completion;
+- (void)evaluateRecipe:(id)recipe attachments:(id)attachments completion:(id)completion;
+- (void)eventFromRecordId:(id)id withCompletion:(id)completion;
+- (void)eventFromUniqueId:(id)id completion:(id)completion;
+- (void)extractAttributesAndDonate:(id)donate withCompletion:(id)completion;
+- (void)filteredSuggestionsFromExtractions:(id)extractions origin:(id)origin options:(unint64_t)options withCompletion:(id)completion;
+- (void)foundInStringForRecordId:(id)id style:(unsigned __int8)style withCompletion:(id)completion;
+- (void)fullDownloadRequestBatch:(unint64_t)batch withCompletion:(id)completion;
+- (void)geocodeEnrichmentsInPipelineEntity:(id)entity withCompletion:(id)completion;
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler;
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion;
+- (void)harvestedSuggestionsFromMessages:(id)messages bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler;
+- (void)harvestedSuggestionsFromSearchableItem:(id)item options:(unint64_t)options withCompletion:(id)completion;
+- (void)identifyComposeWarningsFromSubject:(id)subject content:(id)content attributes:(id)attributes toRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients originalToRecipients:(id)toRecipients originalCcRecipients:(id)self0 attachments:(id)self1 withCompletion:(id)self2;
+- (void)identifyFollowUpWarningFromSubject:(id)subject body:(id)body date:(id)date withCompletion:(id)completion;
+- (void)interactionStoreLookupForDetail:(id)detail withCompletion:(id)completion;
+- (void)ipsosMessagesFromSearchableItems:(id)items withCompletion:(id)completion;
+- (void)isEnabledWithCompletion:(id)completion;
+- (void)isEventCandidateForURL:(id)l andTitle:(id)title containsSchemaOrg:(BOOL)org withCompletion:(id)completion;
+- (void)isEventCandidateForURL:(id)l title:(id)title withCompletion:(id)completion;
+- (void)keepDirty:(BOOL)dirty;
+- (void)launchAppForSuggestedEventUsingLaunchInfo:(id)info completion:(id)completion;
+- (void)launchInfoForSuggestedEventWithUniqueIdentifier:(id)identifier sourceURL:(id)l clientLocale:(id)locale ignoreUserActivitySupport:(BOOL)support ignoreMailCheck:(BOOL)check completion:(id)completion;
+- (void)logEventInteractionForEventWithUniqueKey:(id)key interface:(unsigned __int16)interface actionType:(unsigned __int16)type;
+- (void)logMetricAutocompleteResult:(int)result recordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId;
+- (void)logMetricAutocompleteUserSelectedRecordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId;
+- (void)logMetricContactCreated:(id)created contactIdentifier:(id)identifier bundleId:(id)id;
+- (void)logMetricContactSearchResult:(int)result recordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId;
+- (void)logMetricContactSearchResultSelected:(id)selected contactIdentifier:(id)identifier bundleId:(id)id;
+- (void)logMetricSearchResultsIncludedPureSuggestionWithBundleId:(id)id;
+- (void)logMetricSuggestedContactDetailShown:(id)shown contactIdentifier:(id)identifier bundleId:(id)id;
+- (void)logMetricSuggestedContactDetailUsed:(id)used contactIdentifier:(id)identifier bundleId:(id)id;
+- (void)logUnknownContactInformationShownCount:(unint64_t)count notShownCount:(unint64_t)shownCount bundleId:(id)id;
+- (void)logUserCreatedReminderTitle:(id)title withCompletion:(id)completion;
+- (void)messagesToRefreshWithCompletion:(id)completion;
+- (void)namesForDetailCacheSnapshotsWithCompletion:(id)completion;
+- (void)noopWithCompletion:(id)completion;
+- (void)originFromRecordId:(id)id completion:(id)completion;
+- (void)pingWithCompletion:(id)completion;
+- (void)planReceivedFromServerWithPayload:(id)payload completion:(id)completion;
+- (void)powerStateWithCompletion:(id)completion;
+- (void)predictedCCEmailAddressesWithToAddresses:(id)addresses ccAddresses:(id)ccAddresses fromAddress:(id)address date:(double)date bounds:(id)bounds completion:(id)completion;
+- (void)predictedToEmailAddressesWithToAddresses:(id)addresses ccAddresses:(id)ccAddresses fromAddress:(id)address date:(double)date bounds:(id)bounds completion:(id)completion;
+- (void)prepareForRealtimeExtraction:(id)extraction;
+- (void)preventUnsubscriptionOpportunitiesSuggestionsForField:(int64_t)field toValues:(id)values withCompletion:(id)completion;
+- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion;
+- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)hash options:(unint64_t)options completion:(id)completion completionDelivery:(unint64_t)delivery providedBy:(id)by searchableItem:(id)item dissectIfNecessary:(BOOL)necessary isTextMessage:(BOOL)self0;
+- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)hash options:(unint64_t)options completion:(id)completion completionDelivery:(unint64_t)delivery providedBy:(id)by searchableItem:(id)item dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)self0 isTextMessage:(BOOL)self1;
+- (void)realtimeSuggestionsFromURL:(id)l title:(id)title HTMLPayload:(id)payload extractionDate:(id)date withCompletion:(id)completion;
+- (void)rebuildNamesForDetailCache:(id)cache;
+- (void)recentURLsWithLimit:(unsigned int)limit withCompletion:(id)completion;
 - (void)registerForCoreSpotlightIndexing;
 - (void)registerForProactiveHarvesting;
-- (void)rejectContact:(id)a3 confirmRejectUI:(int)a4 completion:(id)a5;
-- (void)rejectEvent:(id)a3 completion:(id)a4;
-- (void)rejectEventByRecordId:(id)a3 completion:(id)a4;
-- (void)rejectRealtimeReminder:(id)a3 completion:(id)a4;
-- (void)rejectReminderByRecordId:(id)a3 completion:(id)a4;
-- (void)reminderAlarmTriggeredForRecordId:(id)a3 completion:(id)a4;
-- (void)reminderTitleForContent:(id)a3 withCompletion:(id)a4;
-- (void)removeAllStoredPseudoContactsWithCompletion:(id)a3;
-- (void)reportMailIntelligenceFollowUpUserEngagement:(int64_t)a3 forStringFromFollowUpWarning:(id)a4 withCompletion:(id)a5;
-- (void)reportMessagesFound:(id)a3 lost:(id)a4 withCompletion:(id)a5;
-- (void)resetConfirmationAndRejectionHistory:(id)a3;
-- (void)resolveFullDownloadRequests:(id)a3 withCompletion:(id)a4;
-- (void)saliencyFromEmailHeaders:(id)a3 withCompletion:(id)a4;
-- (void)saliencyFromRFC822Data:(id)a3 withCompletion:(id)a4;
-- (void)schemaOrgToEvents:(id)a3 completion:(id)a4;
-- (void)sendRTCLogsWithCompletion:(id)a3;
-- (void)setupManagerWithConnection:(id)a3 store:(id)a4 ctsManager:(id)a5 ekStoreProvider:(id)a6 contactStore:(id)a7 pet2Tracker:(id)a8;
-- (void)sleepWithCompletion:(id)a3;
-- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)a3 limit:(unint64_t)a4 withCompletion:(id)a5;
-- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)a3 minCount:(unint64_t)a4 minScore:(double)a5 limit:(unint64_t)a6 withCompletion:(id)a7;
-- (void)spotlightReimportFromIdentifier:(id)a3 forPersonHandle:(id)a4 startDate:(id)a5 endDate:(id)a6 completion:(id)a7;
-- (void)suggestionsFromEmailContent:(id)a3 headers:(id)a4 source:(id)a5 options:(unint64_t)a6 withCompletion:(id)a7;
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 completionHandler:(id)a6 fullCompletionHandler:(id)a7;
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 fullCompletionHandler:(id)a5;
-- (void)suggestionsFromRFC822Data:(id)a3 source:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6;
-- (void)suggestionsFromSearchableItem:(id)a3 options:(unint64_t)a4 processingType:(unint64_t)a5 withCompletion:(id)a6;
-- (void)suggestionsFromSimpleMailMessage:(id)a3 headers:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6;
-- (void)suggestionsFromSingleMessage:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 completionHandler:(id)a6 fullCompletionHandler:(id)a7;
-- (void)suggestionsFromURL:(id)a3 title:(id)a4 HTMLPayload:(id)a5 withCompletion:(id)a6;
-- (void)titleSuggestionForMessage:(id)a3 withCompletion:(id)a4;
-- (void)topSalienciesForMailboxId:(id)a3 limit:(int64_t)a4 withCompletion:(id)a5;
-- (void)updateMessages:(id)a3 state:(unint64_t)a4 completion:(id)a5;
-- (void)waitForEventWithIdentifier:(id)a3 toAppearInEventStoreWithLastModificationDate:(id)a4 completion:(id)a5;
+- (void)rejectContact:(id)contact confirmRejectUI:(int)i completion:(id)completion;
+- (void)rejectEvent:(id)event completion:(id)completion;
+- (void)rejectEventByRecordId:(id)id completion:(id)completion;
+- (void)rejectRealtimeReminder:(id)reminder completion:(id)completion;
+- (void)rejectReminderByRecordId:(id)id completion:(id)completion;
+- (void)reminderAlarmTriggeredForRecordId:(id)id completion:(id)completion;
+- (void)reminderTitleForContent:(id)content withCompletion:(id)completion;
+- (void)removeAllStoredPseudoContactsWithCompletion:(id)completion;
+- (void)reportMailIntelligenceFollowUpUserEngagement:(int64_t)engagement forStringFromFollowUpWarning:(id)warning withCompletion:(id)completion;
+- (void)reportMessagesFound:(id)found lost:(id)lost withCompletion:(id)completion;
+- (void)resetConfirmationAndRejectionHistory:(id)history;
+- (void)resolveFullDownloadRequests:(id)requests withCompletion:(id)completion;
+- (void)saliencyFromEmailHeaders:(id)headers withCompletion:(id)completion;
+- (void)saliencyFromRFC822Data:(id)data withCompletion:(id)completion;
+- (void)schemaOrgToEvents:(id)events completion:(id)completion;
+- (void)sendRTCLogsWithCompletion:(id)completion;
+- (void)setupManagerWithConnection:(id)connection store:(id)store ctsManager:(id)manager ekStoreProvider:(id)provider contactStore:(id)contactStore pet2Tracker:(id)tracker;
+- (void)sleepWithCompletion:(id)completion;
+- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)field limit:(unint64_t)limit withCompletion:(id)completion;
+- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)field minCount:(unint64_t)count minScore:(double)score limit:(unint64_t)limit withCompletion:(id)completion;
+- (void)spotlightReimportFromIdentifier:(id)identifier forPersonHandle:(id)handle startDate:(id)date endDate:(id)endDate completion:(id)completion;
+- (void)suggestionsFromEmailContent:(id)content headers:(id)headers source:(id)source options:(unint64_t)options withCompletion:(id)completion;
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionDelivery:(unint64_t)delivery completionHandler:(id)handler fullCompletionHandler:(id)completionHandler;
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionHandler:(id)handler;
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options fullCompletionHandler:(id)handler;
+- (void)suggestionsFromRFC822Data:(id)data source:(id)source options:(unint64_t)options withCompletion:(id)completion;
+- (void)suggestionsFromSearchableItem:(id)item options:(unint64_t)options processingType:(unint64_t)type withCompletion:(id)completion;
+- (void)suggestionsFromSimpleMailMessage:(id)message headers:(id)headers options:(unint64_t)options withCompletion:(id)completion;
+- (void)suggestionsFromSingleMessage:(id)message options:(unint64_t)options completionDelivery:(unint64_t)delivery completionHandler:(id)handler fullCompletionHandler:(id)completionHandler;
+- (void)suggestionsFromURL:(id)l title:(id)title HTMLPayload:(id)payload withCompletion:(id)completion;
+- (void)titleSuggestionForMessage:(id)message withCompletion:(id)completion;
+- (void)topSalienciesForMailboxId:(id)id limit:(int64_t)limit withCompletion:(id)completion;
+- (void)updateMessages:(id)messages state:(unint64_t)state completion:(id)completion;
+- (void)waitForEventWithIdentifier:(id)identifier toAppearInEventStoreWithLastModificationDate:(id)date completion:(id)completion;
 @end
 
 @implementation SGDSuggestManager
@@ -217,8 +217,8 @@
   v4 = +[SGAsset asset];
   [v4 deregisterUpdateHandlerAsyncWithToken:self->_assetUpdateToken];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6 = sgLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -266,11 +266,11 @@
   return v4;
 }
 
-- (void)extractAttributesAndDonate:(id)a3 withCompletion:(id)a4
+- (void)extractAttributesAndDonate:(id)donate withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  donateCopy = donate;
+  completionCopy = completion;
   if (_os_feature_enabled_impl() && (_os_feature_enabled_impl() & 1) == 0)
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:0 userInfo:&unk_28474B350];
@@ -287,12 +287,12 @@
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 bundleID];
-    v10 = [v6 uniqueIdentifier];
+    bundleID = [donateCopy bundleID];
+    uniqueIdentifier = [donateCopy uniqueIdentifier];
     *buf = 138413058;
-    v26 = v9;
+    v26 = bundleID;
     v27 = 2112;
-    v28 = v10;
+    v28 = uniqueIdentifier;
     v29 = 2048;
     v30 = 1069547522;
     v31 = 2112;
@@ -300,13 +300,13 @@
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager: extractAttributesAndDonate: %@ : %@ options: %tu, processingType: %@", buf, 0x2Au);
   }
 
-  v11 = [v6 bundleID];
-  v12 = [v11 isEqualToString:*MEMORY[0x277D021C0]];
+  bundleID2 = [donateCopy bundleID];
+  v12 = [bundleID2 isEqualToString:*MEMORY[0x277D021C0]];
 
   if (!v12)
   {
-    v15 = [v6 bundleID];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D021D0]];
+    bundleID3 = [donateCopy bundleID];
+    v16 = [bundleID3 isEqualToString:*MEMORY[0x277D021D0]];
 
     if (v16)
     {
@@ -321,16 +321,16 @@
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:&unk_28474B378];
 LABEL_16:
     v19 = [MEMORY[0x277D02138] responseWithError:v14];
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
 
     goto LABEL_17;
   }
 
-  v13 = [SGDSuggestManager preprocessSearchableItem:v6];
+  v13 = [SGDSuggestManager preprocessSearchableItem:donateCopy];
   if (v13)
   {
     v14 = v13;
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
@@ -339,7 +339,7 @@ LABEL_16:
     v23[1] = 3221225472;
     v23[2] = __63__SGDSuggestManager_extractAttributesAndDonate_withCompletion___block_invoke;
     v23[3] = &unk_27894BBA8;
-    v24 = v7;
+    v24 = completionCopy;
     v21 = MEMORY[0x2383809F0](v23);
     v22 = sgLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -348,7 +348,7 @@ LABEL_16:
       _os_log_impl(&dword_231E60000, v22, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager using legacy suggestions path to extract events", buf, 2u);
     }
 
-    [(SGDSuggestManager *)self _suggestionsFromSingleSearchableItem:v6 options:1069547522 dissectIfNecessary:1 processingType:0 completionDelivery:0 withCompletion:v21];
+    [(SGDSuggestManager *)self _suggestionsFromSingleSearchableItem:donateCopy options:1069547522 dissectIfNecessary:1 processingType:0 completionDelivery:0 withCompletion:v21];
     v14 = 0;
   }
 
@@ -394,39 +394,39 @@ void __63__SGDSuggestManager_extractAttributesAndDonate_withCompletion___block_i
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)consumeInteractionWithContext:(id)a3
+- (id)consumeInteractionWithContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 content];
-  v6 = [v5 interaction];
+  contextCopy = context;
+  content = [contextCopy content];
+  interaction = [content interaction];
 
-  v7 = [v4 content];
+  content2 = [contextCopy content];
 
-  v8 = [v7 bundleIdentifier];
+  bundleIdentifier = [content2 bundleIdentifier];
 
   v9 = sgLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v8;
+    v20 = bundleIdentifier;
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: consumeInteractionWithContext: %@", buf, 0xCu);
   }
 
-  v18 = v6;
+  v18 = interaction;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v18 count:1];
-  [(SGDSuggestManager *)self _harvestPeopleFromInteractions:v10 bundleId:v8];
+  [(SGDSuggestManager *)self _harvestPeopleFromInteractions:v10 bundleId:bundleIdentifier];
 
   if (consumeInteractionWithContext___pasOnceToken254 != -1)
   {
     dispatch_once(&consumeInteractionWithContext___pasOnceToken254, &__block_literal_global_955);
   }
 
-  v17 = v6;
+  v17 = interaction;
   v11 = MEMORY[0x277CBEA60];
   v12 = consumeInteractionWithContext___pasExprOnceResult;
   v13 = [v11 arrayWithObjects:&v17 count:1];
-  [(SGDSuggestManager *)self _harvestReservationsFromInteractions:v13 bundleId:v8 queue:v12 completion:&__block_literal_global_958, v17];
+  [(SGDSuggestManager *)self _harvestReservationsFromInteractions:v13 bundleId:bundleIdentifier queue:v12 completion:&__block_literal_global_958, v17];
 
   v14 = [MEMORY[0x277D41DF0] successWithNumberOfExtractions:0];
 
@@ -445,31 +445,31 @@ void __51__SGDSuggestManager_consumeInteractionWithContext___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)consumeMessagesContentWithContext:(id)a3
+- (id)consumeMessagesContentWithContext:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 content];
-    v7 = [v6 uniqueId];
-    v8 = [v4 content];
+    content = [contextCopy content];
+    uniqueId = [content uniqueId];
+    content2 = [contextCopy content];
     v23 = 138412547;
-    v24 = v7;
+    v24 = uniqueId;
     v25 = 2117;
-    v26 = v8;
+    v26 = content2;
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: consumeMessagesContentWithContext %@: %{sensitive}@", &v23, 0x16u);
   }
 
   v9 = [SGTextMessage alloc];
-  v10 = [v4 content];
-  v11 = [v4 contentProtection];
-  v12 = [(SGTextMessage *)v9 initWithMessagesContentEvent:v10 contentProtection:v11];
+  content3 = [contextCopy content];
+  contentProtection = [contextCopy contentProtection];
+  v12 = [(SGTextMessage *)v9 initWithMessagesContentEvent:content3 contentProtection:contentProtection];
 
   v13 = [SGRequestContext alloc];
-  v14 = [(SGDManagerForCTS *)self->_ctsManager serviceContext];
-  v15 = [(SGRequestContext *)v13 initWithServiceContext:v14 concurrencyBehavior:1 backpressureHazard:0];
+  serviceContext = [(SGDManagerForCTS *)self->_ctsManager serviceContext];
+  v15 = [(SGRequestContext *)v13 initWithServiceContext:serviceContext concurrencyBehavior:1 backpressureHazard:0];
 
   v16 = [SGHarvestQueueMetrics alloc];
   v17 = [(SGHarvestQueueMetrics *)v16 initWithBundleIdentifier:*MEMORY[0x277D41E60] highPriority:0 harvestedOnBattery:0 receivedOnBattery:0 harvestSource:8];
@@ -484,49 +484,49 @@ void __51__SGDSuggestManager_consumeInteractionWithContext___block_invoke()
   return v20;
 }
 
-- (id)consumeMailContentWithContext:(id)a3
+- (id)consumeMailContentWithContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = [MEMORY[0x277D41DF0] successWithNumberOfExtractions:0];
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v7 = sgLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v5 content];
-      v9 = [v8 uniqueId];
-      v10 = [v5 content];
+      content = [contextCopy content];
+      uniqueId = [content uniqueId];
+      content2 = [contextCopy content];
       *buf = 138412547;
-      v29 = v9;
+      v29 = uniqueId;
       v30 = 2117;
-      v31 = v10;
+      v31 = content2;
       _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: consumeMailContentWithContext %@: %{sensitive}@", buf, 0x16u);
     }
 
-    v11 = [v5 htmlParser];
-    if (!v11)
+    htmlParser = [contextCopy htmlParser];
+    if (!htmlParser)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5430 description:{@"Invalid parameter not satisfying: %@", @"htmlParserNonNull != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5430 description:{@"Invalid parameter not satisfying: %@", @"htmlParserNonNull != nil"}];
     }
 
     v12 = [SGSimpleMailMessage alloc];
-    v13 = [v5 content];
-    v14 = [v5 contentProtection];
-    v15 = [(SGSimpleMailMessage *)v12 initWithMailContentEvent:v13 contentProtection:v14 htmlParser:v11];
+    content3 = [contextCopy content];
+    contentProtection = [contextCopy contentProtection];
+    v15 = [(SGSimpleMailMessage *)v12 initWithMailContentEvent:content3 contentProtection:contentProtection htmlParser:htmlParser];
 
     v16 = [SGRequestContext alloc];
-    v17 = [(SGDManagerForCTS *)self->_ctsManager serviceContext];
-    v18 = [(SGRequestContext *)v16 initWithServiceContext:v17 concurrencyBehavior:1 backpressureHazard:0];
+    serviceContext = [(SGDManagerForCTS *)self->_ctsManager serviceContext];
+    v18 = [(SGRequestContext *)v16 initWithServiceContext:serviceContext concurrencyBehavior:1 backpressureHazard:0];
 
     v19 = [SGHarvestQueueMetrics alloc];
     v20 = [(SGHarvestQueueMetrics *)v19 initWithBundleIdentifier:*MEMORY[0x277D41E50] highPriority:0 harvestedOnBattery:0 receivedOnBattery:0 harvestSource:8];
     ctsManager = self->_ctsManager;
-    v22 = [v5 content];
-    v23 = [v22 headers];
+    content4 = [contextCopy content];
+    headers = [content4 headers];
     v24 = +[SGPipeline fullPipeline];
-    [(SGDManagerForCTS *)ctsManager processMailMessage:v15 headers:v23 pipeline:v24 context:v18 harvestMetrics:v20];
+    [(SGDManagerForCTS *)ctsManager processMailMessage:v15 headers:headers pipeline:v24 context:v18 harvestMetrics:v20];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -534,9 +534,9 @@ void __51__SGDSuggestManager_consumeInteractionWithContext___block_invoke()
   return v6;
 }
 
-- (id)deleteDataDerivedFromContentMatchingRequest:(id)a3
+- (id)deleteDataDerivedFromContentMatchingRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -564,7 +564,7 @@ void __51__SGDSuggestManager_consumeInteractionWithContext___block_invoke()
   v8[1] = 3221225472;
   v8[2] = __65__SGDSuggestManager_deleteDataDerivedFromContentMatchingRequest___block_invoke_7;
   v8[3] = &unk_27894BE58;
-  [v4 accessCriteriaUsingBundleIdentifierBlock:v11 domainSelectionBlock:v10 incontrovertiblyDeletedUniqueIdentifiersBlock:v9 purgedUniqueIdentifiersBlock:v8];
+  [requestCopy accessCriteriaUsingBundleIdentifierBlock:v11 domainSelectionBlock:v10 incontrovertiblyDeletedUniqueIdentifiersBlock:v9 purgedUniqueIdentifiersBlock:v8];
 
   v6 = [MEMORY[0x277D41DF0] successWithNumberOfExtractions:0];
 
@@ -666,19 +666,19 @@ void __65__SGDSuggestManager_deleteDataDerivedFromContentMatchingRequest___block
 
 - (void)registerForProactiveHarvesting
 {
-  v3 = [MEMORY[0x277D41DE8] defaultCoordinator];
-  [v3 registerInteractionConsumer:self levelOfService:3];
+  defaultCoordinator = [MEMORY[0x277D41DE8] defaultCoordinator];
+  [defaultCoordinator registerInteractionConsumer:self levelOfService:3];
 }
 
-- (void)foundInStringForRecordId:(id)a3 style:(unsigned __int8)a4 withCompletion:(id)a5
+- (void)foundInStringForRecordId:(id)id style:(unsigned __int8)style withCompletion:(id)completion
 {
-  v6 = a4;
+  styleCopy = style;
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (idCopy)
     {
       goto LABEL_3;
     }
@@ -686,81 +686,81 @@ void __65__SGDSuggestManager_deleteDataDerivedFromContentMatchingRequest___block
 
   else
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5312 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5312 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
-    if (v9)
+    if (idCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v43 = [MEMORY[0x277CCA890] currentHandler];
-  [v43 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5313 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:5313 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
 
 LABEL_3:
   v11 = sgLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v50 = v9;
+    v50 = idCopy;
     v51 = 1024;
-    LODWORD(v52) = v6;
+    LODWORD(v52) = styleCopy;
     _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEFAULT, "SGSuggestManager-foundInStringForRecordId:%@ style:%u called", buf, 0x12u);
   }
 
-  v12 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:v9];
+  v12 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:idCopy];
   v13 = v12;
   if (v12)
   {
     v14 = [v12 loadOrigin:self->_harvestStore];
-    v15 = [v14 localizedApplicationName];
-    if (!v15)
+    localizedApplicationName = [v14 localizedApplicationName];
+    if (!localizedApplicationName)
     {
       v32 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:-1 userInfo:&unk_28474B328];
       v29 = [MEMORY[0x277D02138] responseWithError:v32];
-      v10[2](v10, v29);
+      completionCopy[2](completionCopy, v29);
 LABEL_28:
 
       goto LABEL_29;
     }
 
-    v16 = [v13 duplicateKey];
-    v17 = [v16 entityType];
+    duplicateKey = [v13 duplicateKey];
+    entityType = [duplicateKey entityType];
 
-    if (v17 == 22)
+    if (entityType == 22)
     {
       v18 = [SGStorageReminder storageReminderFromEntity:v13 origin:v14];
       v19 = sgRemindersLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         [v13 loggingIdentifier];
-        v45 = v6;
+        v45 = styleCopy;
         v21 = v20 = v18;
-        v22 = [v20 loggingIdentifier];
+        loggingIdentifier = [v20 loggingIdentifier];
         *buf = 138543618;
         v50 = v21;
         v51 = 2114;
-        v52 = v22;
+        v52 = loggingIdentifier;
         _os_log_impl(&dword_231E60000, v19, OS_LOG_TYPE_DEFAULT, "Entity %{public}@ -> SGStorageReminder %{public}@", buf, 0x16u);
 
         v18 = v20;
-        v6 = v45;
+        styleCopy = v45;
       }
 
-      v23 = [v18 contactIdentifier];
-      v24 = [v23 length];
+      contactIdentifier = [v18 contactIdentifier];
+      v24 = [contactIdentifier length];
 
       if (v24)
       {
         v46 = v18;
-        v25 = [v18 contactIdentifier];
+        contactIdentifier2 = [v18 contactIdentifier];
         v26 = [MEMORY[0x277CBDA78] descriptorForRequiredKeysForStyle:1000];
         v48 = v26;
         v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v48 count:1];
         contactStore = self->_contactStore;
         v47 = 0;
-        v29 = [SGContactsInterface unifiedContactWithIdentifier:v25 keysToFetch:v27 usingContactStore:contactStore error:&v47];
+        v29 = [SGContactsInterface unifiedContactWithIdentifier:contactIdentifier2 keysToFetch:v27 usingContactStore:contactStore error:&v47];
         v44 = v47;
 
         if (v29)
@@ -769,7 +769,7 @@ LABEL_28:
           if (v30)
           {
             v31 = v44;
-            if (v6 == 1)
+            if (styleCopy == 1)
             {
               v32 = [SGFoundInAppsStrings foundInAppsStringCompactVersionWithContactName:v30];
               v33 = +[SGRTCLogging defaultLogger];
@@ -780,7 +780,7 @@ LABEL_28:
 
             else
             {
-              if (v6)
+              if (styleCopy)
               {
                 v32 = 0;
 LABEL_37:
@@ -793,7 +793,7 @@ LABEL_37:
                 goto LABEL_26;
               }
 
-              v32 = [SGFoundInAppsStrings foundInAppsStringLongVersionForAppName:v15 contactName:v30];
+              v32 = [SGFoundInAppsStrings foundInAppsStringLongVersionForAppName:localizedApplicationName contactName:v30];
               v33 = +[SGRTCLogging defaultLogger];
               v34 = v33;
               v35 = v46;
@@ -840,10 +840,10 @@ LABEL_37:
 
     v29 = 0;
 LABEL_26:
-    v32 = [SGFoundInAppsStrings foundInAppsStringWithoutContactForAppName:v15];
+    v32 = [SGFoundInAppsStrings foundInAppsStringWithoutContactForAppName:localizedApplicationName];
 LABEL_27:
     v40 = [MEMORY[0x277D02138] responseWith:v32];
-    v10[2](v10, v40);
+    completionCopy[2](completionCopy, v40);
 
     goto LABEL_28;
   }
@@ -852,33 +852,33 @@ LABEL_27:
   if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v50 = v9;
+    v50 = idCopy;
     _os_log_error_impl(&dword_231E60000, v37, OS_LOG_TYPE_ERROR, "No entity found for recordId: %@", buf, 0xCu);
   }
 
   v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:&unk_28474B300];
-  v15 = [MEMORY[0x277D02138] responseWithError:v14];
-  v10[2](v10, v15);
+  localizedApplicationName = [MEMORY[0x277D02138] responseWithError:v14];
+  completionCopy[2](completionCopy, localizedApplicationName);
 LABEL_29:
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendChatChangedNotificationWithDomainIdentifier:(id)a3
+- (void)_sendChatChangedNotificationWithDomainIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v3 = objc_autoreleasePoolPush();
-  v4 = [@"com.apple.suggestions.internal.messages.processed." stringByAppendingString:v6];
+  v4 = [@"com.apple.suggestions.internal.messages.processed." stringByAppendingString:identifierCopy];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, v4, v4, 0, 0);
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)filterRealtimeEvents:(id)a3
+- (id)filterRealtimeEvents:(id)events
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  eventsCopy = events;
+  if ([eventsCopy count])
   {
     v25 = objc_opt_new();
     v4 = objc_opt_new();
@@ -886,8 +886,8 @@ LABEL_29:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v24 = v3;
-    obj = v3;
+    v24 = eventsCopy;
+    obj = eventsCopy;
     v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v5)
     {
@@ -905,23 +905,23 @@ LABEL_29:
           }
 
           v9 = *(*(&v29 + 1) + 8 * i);
-          v10 = [v9 event];
-          v11 = [v10 opaqueKey];
+          event = [v9 event];
+          opaqueKey = [event opaqueKey];
 
-          if (v11)
+          if (opaqueKey)
           {
-            v12 = [v4 objectForKeyedSubscript:v11];
+            v12 = [v4 objectForKeyedSubscript:opaqueKey];
             v13 = v12;
             if (!v12)
             {
               goto LABEL_10;
             }
 
-            v14 = [v12 event];
-            v15 = [v14 creationDate];
-            v16 = [v9 event];
-            v17 = [v16 creationDate];
-            v18 = [v15 compare:v17];
+            event2 = [v12 event];
+            creationDate = [event2 creationDate];
+            event3 = [v9 event];
+            creationDate2 = [event3 creationDate];
+            v18 = [creationDate compare:creationDate2];
 
             v7 = v27;
             v19 = v18 == 1;
@@ -929,7 +929,7 @@ LABEL_29:
             if (!v19)
             {
 LABEL_10:
-              [v4 setObject:v9 forKeyedSubscript:v11];
+              [v4 setObject:v9 forKeyedSubscript:opaqueKey];
             }
           }
 
@@ -946,17 +946,17 @@ LABEL_10:
     }
 
     v20 = objc_autoreleasePoolPush();
-    v21 = [v4 allValues];
+    allValues = [v4 allValues];
     objc_autoreleasePoolPop(v20);
-    [v25 addObjectsFromArray:v21];
+    [v25 addObjectsFromArray:allValues];
 
     [v25 sortUsingComparator:&__block_literal_global_918];
-    v3 = v24;
+    eventsCopy = v24;
   }
 
   else
   {
-    v25 = v3;
+    v25 = eventsCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -977,16 +977,16 @@ uint64_t __42__SGDSuggestManager_filterRealtimeEvents___block_invoke(uint64_t a1
   return v9;
 }
 
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___block_invoke;
   v10[3] = &unk_27894ED20;
-  v11 = v8;
-  v9 = v8;
-  [(SGDSuggestManager *)self suggestionsFromMessage:a3 options:a4 completionDelivery:0 completionHandler:v10 fullCompletionHandler:0];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(SGDSuggestManager *)self suggestionsFromMessage:message options:options completionDelivery:0 completionHandler:v10 fullCompletionHandler:0];
 }
 
 void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1005,25 +1005,25 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
   (*(v2 + 16))(v2);
 }
 
-- (void)harvestedSuggestionsFromMessages:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)harvestedSuggestionsFromMessages:(id)messages bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler
 {
   v75 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v41 = a4;
-  v42 = a6;
+  messagesCopy = messages;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    *&buf[4] = [v49 count];
+    *&buf[4] = [messagesCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = options;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Messages: harvestedSuggestionsFromMessages: %tu messages (options %tu)", buf, 0x16u);
   }
 
-  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:v41])
+  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:identifierCopy])
   {
-    if ([v49 count])
+    if ([messagesCopy count])
     {
       v47 = objc_opt_new();
       v46 = objc_opt_new();
@@ -1042,13 +1042,13 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
       v66 = 0u;
       v67 = 0u;
       v68 = 0u;
-      v14 = [v49 reverseObjectEnumerator];
-      v15 = [v14 countByEnumeratingWithState:&v65 objects:v70 count:16];
+      reverseObjectEnumerator = [messagesCopy reverseObjectEnumerator];
+      v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v65 objects:v70 count:16];
       if (v15)
       {
         v16 = *v66;
         v43 = *MEMORY[0x277CCA1A0];
-        obj = v14;
+        obj = reverseObjectEnumerator;
         do
         {
           for (i = 0; i != v15; ++i)
@@ -1059,8 +1059,8 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
             }
 
             v18 = *(*(&v65 + 1) + 8 * i);
-            v19 = [v18 protection];
-            v20 = v19 == 0;
+            protection = [v18 protection];
+            v20 = protection == 0;
 
             if (v20)
             {
@@ -1068,24 +1068,24 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
             }
 
             dispatch_group_enter(v13);
-            v21 = [v18 attributeSet];
-            v22 = [v21 contentCreationDate];
+            attributeSet = [v18 attributeSet];
+            contentCreationDate = [attributeSet contentCreationDate];
 
-            if (v22 && ([MEMORY[0x277CBEAA8] date], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "timeIntervalSinceDate:", v22), v25 = v24 < 10.0, v23, !v25))
+            if (contentCreationDate && ([MEMORY[0x277CBEAA8] date], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "timeIntervalSinceDate:", contentCreationDate), v25 = v24 < 10.0, v23, !v25))
             {
               v30 = 0;
             }
 
             else
             {
-              v26 = [v18 uniqueIdentifier];
-              v27 = v26 == 0;
+              uniqueIdentifier = [v18 uniqueIdentifier];
+              v27 = uniqueIdentifier == 0;
 
               if (!v27)
               {
-                v28 = [MEMORY[0x277D02120] sharedInstance];
-                v29 = [v18 uniqueIdentifier];
-                [v28 waitForUniqueIdentifierToProcess:v29];
+                mEMORY[0x277D02120] = [MEMORY[0x277D02120] sharedInstance];
+                uniqueIdentifier2 = [v18 uniqueIdentifier];
+                [mEMORY[0x277D02120] waitForUniqueIdentifierToProcess:uniqueIdentifier2];
               }
 
               v30 = 1;
@@ -1099,20 +1099,20 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
             v59 = v18;
             v60 = v47;
             v61 = v46;
-            v62 = v49;
+            v62 = messagesCopy;
             v64 = buf;
             v63 = v13;
-            [(SGDSuggestManager *)self _suggestionsFromMessage:v18 options:a5 dissectIfNecessary:v30 completionDelivery:0 completionHandler:v57];
+            [(SGDSuggestManager *)self _suggestionsFromMessage:v18 options:options dissectIfNecessary:v30 completionDelivery:0 completionHandler:v57];
           }
 
-          v14 = obj;
+          reverseObjectEnumerator = obj;
           v15 = [obj countByEnumeratingWithState:&v65 objects:v70 count:16];
         }
 
         while (v15);
       }
 
-      v31 = self;
+      selfCopy2 = self;
       if ([v47 count]< 2)
       {
         v33 = v47;
@@ -1120,25 +1120,25 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
 
       else
       {
-        v32 = [v47 lastObject];
-        v69 = v32;
+        lastObject = [v47 lastObject];
+        v69 = lastObject;
         v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
 
-        v31 = self;
+        selfCopy2 = self;
       }
 
-      v37 = [(SGDSuggestManager *)v31 filterRealtimeEvents:v46, v41];
+      identifierCopy = [(SGDSuggestManager *)selfCopy2 filterRealtimeEvents:v46, identifierCopy];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __97__SGDSuggestManager_harvestedSuggestionsFromMessages_bundleIdentifier_options_completionHandler___block_invoke_913;
       block[3] = &unk_27894BDC0;
       v51 = v33;
-      v52 = v37;
-      v55 = v42;
+      v52 = identifierCopy;
+      v55 = handlerCopy;
       v56 = buf;
-      v53 = v49;
-      v54 = v31;
-      v38 = v37;
+      v53 = messagesCopy;
+      v54 = selfCopy2;
+      v38 = identifierCopy;
       v39 = v33;
       dispatch_group_notify(v13, queue, block);
 
@@ -1148,10 +1148,10 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
 
     else
     {
-      if (v42)
+      if (handlerCopy)
       {
         v36 = [MEMORY[0x277D02140] responseWith:0 also:0 also:0];
-        (*(v42 + 2))(v42, v36);
+        (*(handlerCopy + 2))(handlerCopy, v36);
       }
 
       v35 = sgLogHandle();
@@ -1172,10 +1172,10 @@ void __70__SGDSuggestManager_suggestionsFromMessage_options_completionHandler___
     _os_log_impl(&dword_231E60000, v34, OS_LOG_TYPE_DEFAULT, "harvestedSuggestionsFromMessages ignoring item since the bundle is disallowed by user's settings", buf, 2u);
   }
 
-  if (v42)
+  if (handlerCopy)
   {
     v35 = [MEMORY[0x277D02140] responseWith:0 also:0 also:0];
-    (*(v42 + 2))(v42, v35);
+    (*(handlerCopy + 2))(handlerCopy, v35);
 LABEL_32:
   }
 
@@ -1316,27 +1316,27 @@ BOOL __97__SGDSuggestManager_harvestedSuggestionsFromMessages_bundleIdentifier_o
   return v4;
 }
 
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options completionHandler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  messageCopy = message;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v13 = sgLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 bundleID];
-    v15 = [v10 uniqueIdentifier];
+    bundleID = [messageCopy bundleID];
+    uniqueIdentifier = [messageCopy uniqueIdentifier];
     *buf = 138412802;
-    v27 = v14;
+    v27 = bundleID;
     v28 = 2112;
-    v29 = v15;
+    v29 = uniqueIdentifier;
     v30 = 2048;
-    v31 = a5;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Messages: harvestedSuggestionsFromMessage (deprecated): %@ : %@ options: %tu", buf, 0x20u);
   }
 
-  if (([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:v11] & 1) == 0)
+  if (([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:identifierCopy] & 1) == 0)
   {
     v22 = sgLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1348,23 +1348,23 @@ BOOL __97__SGDSuggestManager_harvestedSuggestionsFromMessages_bundleIdentifier_o
     goto LABEL_11;
   }
 
-  v16 = [v10 domainIdentifier];
+  domainIdentifier = [messageCopy domainIdentifier];
 
-  if (!v16)
+  if (!domainIdentifier)
   {
     harvestStore = self->_harvestStore;
-    v18 = [v10 uniqueIdentifier];
-    v19 = [(SGSqlEntityStore *)harvestStore domainIdentifierForSpotlightReferenceForBundleIdentifier:v11 uniqueIdentifier:v18];
-    [v10 setDomainIdentifier:v19];
+    uniqueIdentifier2 = [messageCopy uniqueIdentifier];
+    v19 = [(SGSqlEntityStore *)harvestStore domainIdentifierForSpotlightReferenceForBundleIdentifier:identifierCopy uniqueIdentifier:uniqueIdentifier2];
+    [messageCopy setDomainIdentifier:v19];
   }
 
-  v20 = [v10 domainIdentifier];
+  domainIdentifier2 = [messageCopy domainIdentifier];
 
-  if (!v20)
+  if (!domainIdentifier2)
   {
 LABEL_11:
     v21 = [MEMORY[0x277D02140] responseWith:0 also:0 also:0];
-    v12[2](v12, v21);
+    handlerCopy[2](handlerCopy, v21);
     goto LABEL_12;
   }
 
@@ -1372,8 +1372,8 @@ LABEL_11:
   v24[1] = 3221225472;
   v24[2] = __96__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_options_completionHandler___block_invoke;
   v24[3] = &unk_27894ECA8;
-  v25 = v12;
-  [(SGDSuggestManager *)self _suggestionsFromMessage:v10 options:a5 dissectIfNecessary:0 completionDelivery:0 completionHandler:v24];
+  v25 = handlerCopy;
+  [(SGDSuggestManager *)self _suggestionsFromMessage:messageCopy options:options dissectIfNecessary:0 completionDelivery:0 completionHandler:v24];
   v21 = v25;
 LABEL_12:
 
@@ -1396,27 +1396,27 @@ void __96__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
   }
 }
 
-- (void)harvestedSuggestionsFromMessage:(id)a3 bundleIdentifier:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6
+- (void)harvestedSuggestionsFromMessage:(id)message bundleIdentifier:(id)identifier options:(unint64_t)options withCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v13 = sgLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 bundleID];
-    v15 = [v10 uniqueIdentifier];
+    bundleID = [messageCopy bundleID];
+    uniqueIdentifier = [messageCopy uniqueIdentifier];
     *buf = 138412802;
-    v27 = v14;
+    v27 = bundleID;
     v28 = 2112;
-    v29 = v15;
+    v29 = uniqueIdentifier;
     v30 = 2048;
-    v31 = a5;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Messages: harvestedSuggestionsFromMessage: %@ : %@ options: %tu", buf, 0x20u);
   }
 
-  if (([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:v11] & 1) == 0)
+  if (([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:identifierCopy] & 1) == 0)
   {
     v22 = sgLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1428,23 +1428,23 @@ void __96__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
     goto LABEL_11;
   }
 
-  v16 = [v10 domainIdentifier];
+  domainIdentifier = [messageCopy domainIdentifier];
 
-  if (!v16)
+  if (!domainIdentifier)
   {
     harvestStore = self->_harvestStore;
-    v18 = [v10 uniqueIdentifier];
-    v19 = [(SGSqlEntityStore *)harvestStore domainIdentifierForSpotlightReferenceForBundleIdentifier:v11 uniqueIdentifier:v18];
-    [v10 setDomainIdentifier:v19];
+    uniqueIdentifier2 = [messageCopy uniqueIdentifier];
+    v19 = [(SGSqlEntityStore *)harvestStore domainIdentifierForSpotlightReferenceForBundleIdentifier:identifierCopy uniqueIdentifier:uniqueIdentifier2];
+    [messageCopy setDomainIdentifier:v19];
   }
 
-  v20 = [v10 domainIdentifier];
+  domainIdentifier2 = [messageCopy domainIdentifier];
 
-  if (!v20)
+  if (!domainIdentifier2)
   {
 LABEL_11:
     v21 = [MEMORY[0x277D02138] responseWith:0];
-    v12[2](v12, v21);
+    completionCopy[2](completionCopy, v21);
     goto LABEL_12;
   }
 
@@ -1452,8 +1452,8 @@ LABEL_11:
   v24[1] = 3221225472;
   v24[2] = __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_options_withCompletion___block_invoke;
   v24[3] = &unk_27894ECA8;
-  v25 = v12;
-  [(SGDSuggestManager *)self _suggestionsFromMessage:v10 options:a5 dissectIfNecessary:0 completionDelivery:0 completionHandler:v24];
+  v25 = completionCopy;
+  [(SGDSuggestManager *)self _suggestionsFromMessage:messageCopy options:options dissectIfNecessary:0 completionDelivery:0 completionHandler:v24];
   v21 = v25;
 LABEL_12:
 
@@ -1480,19 +1480,19 @@ void __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
   }
 }
 
-- (void)filteredSuggestionsFromExtractions:(id)a3 origin:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6
+- (void)filteredSuggestionsFromExtractions:(id)extractions origin:(id)origin options:(unint64_t)options withCompletion:(id)completion
 {
-  v7 = a5;
+  optionsCopy = options;
   v52[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v11 type] != 1)
+  extractionsCopy = extractions;
+  originCopy = origin;
+  completionCopy = completion;
+  if ([originCopy type] != 1)
   {
     v23 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277D02208];
     v51 = @"message";
-    v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"origin type '%ld' is not supported", objc_msgSend(v11, "type")];
+    v25 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"origin type '%ld' is not supported", objc_msgSend(originCopy, "type")];
     v52[0] = v25;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:1];
     v13 = [v23 errorWithDomain:v24 code:4 userInfo:v26];
@@ -1506,17 +1506,17 @@ void __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
     }
 
     v28 = [MEMORY[0x277D02138] responseWithError:v13];
-    v12[2](v12, v28);
+    completionCopy[2](completionCopy, v28);
     goto LABEL_29;
   }
 
-  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(extractionsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v39 = v10;
-  v14 = v10;
+  v39 = extractionsCopy;
+  v14 = extractionsCopy;
   v15 = [v14 countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v15)
   {
@@ -1546,12 +1546,12 @@ void __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
           }
 
           v30 = [MEMORY[0x277D02138] responseWithError:v28];
-          v12[2](v12, v30);
-          v10 = v39;
+          completionCopy[2](completionCopy, v30);
+          extractionsCopy = v39;
           goto LABEL_28;
         }
 
-        v20 = [(SGDSuggestManager *)self enrichmentFromExternalExtraction:v19 origin:v11];
+        v20 = [(SGDSuggestManager *)self enrichmentFromExternalExtraction:v19 origin:originCopy];
         if (v20)
         {
           [v13 addObject:v20];
@@ -1568,10 +1568,10 @@ void __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
     }
   }
 
-  if ((v7 & 0x20000000) != 0)
+  if ((optionsCopy & 0x20000000) != 0)
   {
-    v21 = 1;
-    if ((v7 & 0x2000000) != 0)
+    showPastEvents = 1;
+    if ((optionsCopy & 0x2000000) != 0)
     {
       goto LABEL_14;
     }
@@ -1579,29 +1579,29 @@ void __93__SGDSuggestManager_harvestedSuggestionsFromMessage_bundleIdentifier_op
 
   else
   {
-    v21 = [MEMORY[0x277D02098] showPastEvents];
-    if ((v7 & 0x2000000) != 0)
+    showPastEvents = [MEMORY[0x277D02098] showPastEvents];
+    if ((optionsCopy & 0x2000000) != 0)
     {
 LABEL_14:
-      v22 = 1;
+      showPastEvents2 = 1;
       goto LABEL_23;
     }
   }
 
-  v22 = [MEMORY[0x277D02098] showPastEvents];
+  showPastEvents2 = [MEMORY[0x277D02098] showPastEvents];
 LABEL_23:
-  v10 = v39;
+  extractionsCopy = v39;
   v31 = 1;
-  if ((v7 & 0x400000) == 0)
+  if ((optionsCopy & 0x400000) == 0)
   {
-    v31 = [v11 type] == 1;
+    v31 = [originCopy type] == 1;
   }
 
   BYTE5(v38) = 0;
   *(&v38 + 3) = 1;
   BYTE2(v38) = v31;
-  LOWORD(v38) = v22;
-  v28 = [SGDSuggestManager realtimeEventsFromEnrichments:"realtimeEventsFromEnrichments:origin:participants:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:keepExceptions:" origin:v13 participants:v11 store:0 keepPastEvents:0 keepPartialEvents:v21 keepEventsFromOldDocuments:0 keepUnsupportedEventCategoryStatus:v38 keepUnsupportedEventCategoryStatusForTextMessage:? keepLLMExtractionForRealtime:? keepAttributesForEvents:? keepExceptions:?];
+  LOWORD(v38) = showPastEvents2;
+  v28 = [SGDSuggestManager realtimeEventsFromEnrichments:"realtimeEventsFromEnrichments:origin:participants:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:keepExceptions:" origin:v13 participants:originCopy store:0 keepPastEvents:0 keepPartialEvents:showPastEvents keepEventsFromOldDocuments:0 keepUnsupportedEventCategoryStatus:v38 keepUnsupportedEventCategoryStatusForTextMessage:? keepLLMExtractionForRealtime:? keepAttributesForEvents:? keepExceptions:?];
   v30 = sgFilter();
   v32 = sgEventsLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -1619,7 +1619,7 @@ LABEL_23:
   }
 
   v36 = [MEMORY[0x277D02138] responseWith:v30];
-  v12[2](v12, v36);
+  completionCopy[2](completionCopy, v36);
 
 LABEL_28:
 LABEL_29:
@@ -1641,21 +1641,21 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
   return v4;
 }
 
-- (id)enrichmentFromExternalExtraction:(id)a3 origin:(id)a4
+- (id)enrichmentFromExternalExtraction:(id)extraction origin:(id)origin
 {
   v105 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  extractionCopy = extraction;
+  originCopy = origin;
   v7 = [SGPipelineEntity alloc];
-  v8 = [v6 sourceKey];
-  v9 = [v6 externalKey];
-  v10 = [SGDuplicateKey duplicateKeyForEmailWithSource:v8 messageId:v9];
-  v11 = [v6 title];
-  v12 = [(SGPipelineEntity *)v7 initWithDuplicateKey:v10 title:v11];
+  sourceKey = [originCopy sourceKey];
+  externalKey = [originCopy externalKey];
+  v10 = [SGDuplicateKey duplicateKeyForEmailWithSource:sourceKey messageId:externalKey];
+  title = [originCopy title];
+  v12 = [(SGPipelineEntity *)v7 initWithDuplicateKey:v10 title:title];
 
-  v13 = [v5 icsAttachmentData];
+  icsAttachmentData = [extractionCopy icsAttachmentData];
 
-  if (!v13)
+  if (!icsAttachmentData)
   {
     goto LABEL_31;
   }
@@ -1668,9 +1668,9 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
   }
 
   v15 = objc_alloc(MEMORY[0x277D7F108]);
-  v16 = [v5 icsAttachmentData];
+  icsAttachmentData2 = [extractionCopy icsAttachmentData];
   v101 = 0;
-  v17 = [v15 initWithData:v16 options:0 error:&v101];
+  v17 = [v15 initWithData:icsAttachmentData2 options:0 error:&v101];
   v18 = v101;
 
   if (v18 || !v17)
@@ -1684,30 +1684,30 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
     }
 
     v47 = 0;
-    v19 = v17;
+    calendar = v17;
   }
 
   else
   {
-    v19 = [v17 calendar];
-    v20 = [v19 calscale];
-    if (!v20 || (v21 = v20, [v19 calscale], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", @"GREGORIAN"), v22, v21, (v23 & 1) != 0))
+    calendar = [v17 calendar];
+    calscale = [calendar calscale];
+    if (!calscale || (v21 = calscale, [calendar calscale], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", @"GREGORIAN"), v22, v21, (v23 & 1) != 0))
     {
-      v90 = v6;
+      v90 = originCopy;
       v99 = 0u;
       v100 = 0u;
       v97 = 0u;
       v98 = 0u;
-      v24 = [v17 calendar];
-      v25 = [v24 componentKeys];
+      calendar2 = [v17 calendar];
+      componentKeys = [calendar2 componentKeys];
 
-      v26 = [v25 countByEnumeratingWithState:&v97 objects:v102 count:16];
+      v26 = [componentKeys countByEnumeratingWithState:&v97 objects:v102 count:16];
       if (v26)
       {
         v27 = v26;
-        v91 = v19;
+        v91 = calendar;
         v89 = v12;
-        v94 = v5;
+        v94 = extractionCopy;
         v95 = 0;
         v28 = *v98;
         v29 = 0x277D7F000uLL;
@@ -1718,24 +1718,24 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
           {
             if (*v98 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(componentKeys);
             }
 
             v31 = *(*(&v97 + 1) + 8 * i);
             v32 = objc_autoreleasePoolPush();
-            v33 = [v17 calendar];
-            v34 = [v33 componentForKey:v31];
+            calendar3 = [v17 calendar];
+            v34 = [calendar3 componentForKey:v31];
 
             v35 = *(v29 + 280);
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v36 = v29;
-              v37 = v25;
+              v37 = componentKeys;
               v38 = v17;
-              v39 = [v34 summary];
-              v40 = [v94 title];
-              v41 = [v39 isEqualToString:v40];
+              summary = [v34 summary];
+              title2 = [v94 title];
+              v41 = [summary isEqualToString:title2];
 
               if (v41)
               {
@@ -1745,7 +1745,7 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
               }
 
               v17 = v38;
-              v25 = v37;
+              componentKeys = v37;
               v29 = v36;
               v28 = v93;
             }
@@ -1753,58 +1753,58 @@ uint64_t __86__SGDSuggestManager_filteredSuggestionsFromExtractions_origin_optio
             objc_autoreleasePoolPop(v32);
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v97 objects:v102 count:16];
+          v27 = [componentKeys countByEnumeratingWithState:&v97 objects:v102 count:16];
         }
 
         while (v27);
 
-        v5 = v94;
+        extractionCopy = v94;
         v43 = v95;
         v12 = v89;
-        v19 = v91;
+        calendar = v91;
         if (v95)
         {
 
           v44 = 0;
-          v45 = v95;
+          identifier = v95;
 LABEL_32:
           v96 = v43;
-          v49 = [(SGEntity *)v12 duplicateKey];
-          v50 = [SGDuplicateKey duplicateKeyForPseudoEventWithGroupId:v45 parentKey:v49];
+          duplicateKey = [(SGEntity *)v12 duplicateKey];
+          v50 = [SGDuplicateKey duplicateKeyForPseudoEventWithGroupId:identifier parentKey:duplicateKey];
 
           if (v44)
           {
           }
 
           v51 = [SGPipelineEnrichment alloc];
-          v52 = [v5 title];
+          title3 = [extractionCopy title];
           v92 = v50;
           v53 = v12;
-          v47 = [(SGPipelineEnrichment *)v51 initWithDuplicateKey:v50 title:v52 parent:v12];
+          v47 = [(SGPipelineEnrichment *)v51 initWithDuplicateKey:v50 title:title3 parent:v12];
 
-          v54 = [v5 content];
-          [(SGEntity *)v47 setContent:v54];
+          content = [extractionCopy content];
+          [(SGEntity *)v47 setContent:content];
 
-          v55 = [v5 creationDate];
-          [v55 timeIntervalSince1970];
+          creationDate = [extractionCopy creationDate];
+          [creationDate timeIntervalSince1970];
           [(SGPipelineEnrichment *)v47 setCreationTimestamp:?];
 
-          v56 = [v5 creationDate];
-          [v56 timeIntervalSince1970];
+          creationDate2 = [extractionCopy creationDate];
+          [creationDate2 timeIntervalSince1970];
           [(SGPipelineEnrichment *)v47 setLastModifiedTimestamp:?];
 
-          v57 = [v5 startTime];
-          if (v57)
+          startTime = [extractionCopy startTime];
+          if (startTime)
           {
             v58 = MEMORY[0x277D020E8];
-            v59 = [v5 startTime];
-            v60 = [v5 startTimeZone];
-            v61 = [v5 endTime];
-            [v5 endTimeZone];
-            v63 = v62 = v5;
-            v46 = [v58 rangeWithStartDate:v59 startTimeZone:v60 endDate:v61 endTimeZone:v63];
+            startTime2 = [extractionCopy startTime];
+            startTimeZone = [extractionCopy startTimeZone];
+            endTime = [extractionCopy endTime];
+            [extractionCopy endTimeZone];
+            v63 = v62 = extractionCopy;
+            v46 = [v58 rangeWithStartDate:startTime2 startTimeZone:startTimeZone endDate:endTime endTimeZone:v63];
 
-            v5 = v62;
+            extractionCopy = v62;
           }
 
           else
@@ -1812,70 +1812,70 @@ LABEL_32:
             v46 = 0;
           }
 
-          v6 = v90;
+          originCopy = v90;
 
           [(SGEntity *)v47 setTimeRange:v46];
-          if ([v5 isAllDay])
+          if ([extractionCopy isAllDay])
           {
-            v64 = [MEMORY[0x277D01FA0] allDay];
-            [(SGEntity *)v47 addTag:v64];
+            allDay = [MEMORY[0x277D01FA0] allDay];
+            [(SGEntity *)v47 addTag:allDay];
           }
 
-          v65 = [v5 fallbackIdentifier];
+          fallbackIdentifier = [extractionCopy fallbackIdentifier];
 
-          if (v65)
+          if (fallbackIdentifier)
           {
             v66 = MEMORY[0x277D01FA0];
-            v67 = [v5 fallbackIdentifier];
-            v68 = [v66 extraKey:v67];
+            fallbackIdentifier2 = [extractionCopy fallbackIdentifier];
+            v68 = [v66 extraKey:fallbackIdentifier2];
             [(SGEntity *)v47 addTag:v68];
           }
 
-          if ([v5 status] == 3)
+          if ([extractionCopy status] == 3)
           {
-            v69 = [MEMORY[0x277D01FA0] extractedEventCancellation];
-            [(SGEntity *)v47 addTag:v69];
+            extractedEventCancellation = [MEMORY[0x277D01FA0] extractedEventCancellation];
+            [(SGEntity *)v47 addTag:extractedEventCancellation];
           }
 
-          v70 = [objc_opt_class() entityTagForCategory:{objc_msgSend(v5, "category")}];
+          v70 = [objc_opt_class() entityTagForCategory:{objc_msgSend(extractionCopy, "category")}];
           if (v70)
           {
             [(SGEntity *)v47 addTag:v70];
           }
 
-          v71 = [v5 creationDate];
-          v72 = [v71 sg_isMoreThanWeekOld];
+          creationDate3 = [extractionCopy creationDate];
+          sg_isMoreThanWeekOld = [creationDate3 sg_isMoreThanWeekOld];
 
-          if (v72)
+          if (sg_isMoreThanWeekOld)
           {
-            v73 = [MEMORY[0x277D01FA0] eventExtractedFromOldDocument];
-            [(SGEntity *)v47 addTag:v73];
+            eventExtractedFromOldDocument = [MEMORY[0x277D01FA0] eventExtractedFromOldDocument];
+            [(SGEntity *)v47 addTag:eventExtractedFromOldDocument];
           }
 
-          v74 = [(SGEntity *)v47 locations];
-          v75 = [v5 locations];
+          locations = [(SGEntity *)v47 locations];
+          locations2 = [extractionCopy locations];
           v76 = sgMap();
-          [v74 addObjectsFromArray:v76];
+          [locations addObjectsFromArray:v76];
 
-          v77 = [v5 icsAttachmentData];
+          icsAttachmentData3 = [extractionCopy icsAttachmentData];
 
-          if (v77)
+          if (icsAttachmentData3)
           {
             v78 = MEMORY[0x277D01FA0];
-            v79 = [v5 icsAttachmentData];
-            v80 = [v78 icsAttachmentData:v79];
+            icsAttachmentData4 = [extractionCopy icsAttachmentData];
+            v80 = [v78 icsAttachmentData:icsAttachmentData4];
             [(SGEntity *)v47 addTag:v80];
 
-            v81 = [MEMORY[0x277D01FA0] fromCalendarAttachment];
-            [(SGEntity *)v47 addTag:v81];
+            fromCalendarAttachment = [MEMORY[0x277D01FA0] fromCalendarAttachment];
+            [(SGEntity *)v47 addTag:fromCalendarAttachment];
           }
 
-          v82 = [v5 url];
+          v82 = [extractionCopy url];
 
           if (v82)
           {
             v83 = MEMORY[0x277D01FA0];
-            v84 = [v5 url];
+            v84 = [extractionCopy url];
             v85 = [v83 url:v84];
             [(SGEntity *)v47 addTag:v85];
           }
@@ -1884,7 +1884,7 @@ LABEL_32:
           [(SGEntity *)v47 setRecordId:v86];
 
           v12 = v53;
-          v19 = v92;
+          calendar = v92;
           v18 = v96;
           goto LABEL_52;
         }
@@ -1901,10 +1901,10 @@ LABEL_32:
         _os_log_error_impl(&dword_231E60000, v48, OS_LOG_TYPE_ERROR, "Failed synthesize groupIdentifier for calendar attachment event from icsData, fallingback to EventKit identifier", buf, 2u);
       }
 
-      v6 = v90;
+      originCopy = v90;
 LABEL_31:
-      v90 = v6;
-      v45 = [v5 identifier];
+      v90 = originCopy;
+      identifier = [extractionCopy identifier];
       v43 = 0;
       v44 = 1;
       goto LABEL_32;
@@ -1928,42 +1928,42 @@ LABEL_52:
   return v47;
 }
 
-- (void)dissectAttachmentsFromSearchableItem:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5
+- (void)dissectAttachmentsFromSearchableItem:(id)item options:(unint64_t)options withCompletion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 uniqueIdentifier];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
     *buf = 138412546;
-    v25 = v11;
+    v25 = uniqueIdentifier;
     v26 = 2048;
-    v27 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Mail: dissectAttachmentsFromSearchableItem: %@ options: %tu", buf, 0x16u);
   }
 
   v12 = objc_initWeak(buf, self);
   [(SGDSuggestManager *)self clearCachesFully:1 withCompletion:&__block_literal_global_880];
 
-  v13 = [v8 uniqueIdentifier];
-  v14 = [v13 dataUsingEncoding:4];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+  v14 = [uniqueIdentifier2 dataUsingEncoding:4];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __81__SGDSuggestManager_dissectAttachmentsFromSearchableItem_options_withCompletion___block_invoke_881;
   v22[3] = &unk_27894ECA8;
-  v15 = v9;
+  v15 = completionCopy;
   v23 = v15;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __81__SGDSuggestManager_dissectAttachmentsFromSearchableItem_options_withCompletion___block_invoke_2;
   v20[3] = &unk_27894ECD0;
-  v16 = v8;
+  v16 = itemCopy;
   v21 = v16;
   LOBYTE(v19) = 0;
   LOBYTE(v18) = 1;
-  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v14 options:a4 completion:v22 completionDelivery:0 providedBy:v20 searchableItem:v16 dissectIfNecessary:v18 processingType:1 isTextMessage:v19];
+  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v14 options:options completion:v22 completionDelivery:0 providedBy:v20 searchableItem:v16 dissectIfNecessary:v18 processingType:1 isTextMessage:v19];
 
   objc_destroyWeak(buf);
   v17 = *MEMORY[0x277D85DE8];
@@ -2015,43 +2015,43 @@ void __81__SGDSuggestManager_dissectAttachmentsFromSearchableItem_options_withCo
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suggestionsFromSimpleMailMessage:(id)a3 headers:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6
+- (void)suggestionsFromSimpleMailMessage:(id)message headers:(id)headers options:(unint64_t)options withCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  messageCopy = message;
+  completionCopy = completion;
+  headersCopy = headers;
   v13 = sgLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 spotlightBundleIdentifier];
-    v15 = [v10 spotlightUniqueIdentifier];
+    spotlightBundleIdentifier = [messageCopy spotlightBundleIdentifier];
+    spotlightUniqueIdentifier = [messageCopy spotlightUniqueIdentifier];
     *buf = 138412802;
-    v27 = v14;
+    v27 = spotlightBundleIdentifier;
     v28 = 2112;
-    v29 = v15;
+    v29 = spotlightUniqueIdentifier;
     v30 = 2048;
-    v31 = a5;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Mail: suggestionsFromSimpleMailMessage: %@ : %@ options: %tu", buf, 0x20u);
   }
 
-  v16 = [(SGDSuggestManager *)self _emailContentCacheSalt];
-  v17 = SGSha256Data(v12, v16);
+  _emailContentCacheSalt = [(SGDSuggestManager *)self _emailContentCacheSalt];
+  v17 = SGSha256Data(headersCopy, _emailContentCacheSalt);
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __85__SGDSuggestManager_suggestionsFromSimpleMailMessage_headers_options_withCompletion___block_invoke;
   v24[3] = &unk_27894ECA8;
-  v25 = v11;
+  v25 = completionCopy;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __85__SGDSuggestManager_suggestionsFromSimpleMailMessage_headers_options_withCompletion___block_invoke_2;
   v22[3] = &unk_27894ECD0;
-  v23 = v10;
-  v18 = v10;
-  v19 = v11;
+  v23 = messageCopy;
+  v18 = messageCopy;
+  v19 = completionCopy;
   LOWORD(v21) = 1;
-  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v17 options:a5 completion:v24 completionDelivery:0 providedBy:v22 searchableItem:0 dissectIfNecessary:v21 isTextMessage:?];
+  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v17 options:options completion:v24 completionDelivery:0 providedBy:v22 searchableItem:0 dissectIfNecessary:v21 isTextMessage:?];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -2068,44 +2068,44 @@ void __85__SGDSuggestManager_suggestionsFromSimpleMailMessage_headers_options_wi
   }
 }
 
-- (void)suggestionsFromEmailContent:(id)a3 headers:(id)a4 source:(id)a5 options:(unint64_t)a6 withCompletion:(id)a7
+- (void)suggestionsFromEmailContent:(id)content headers:(id)headers source:(id)source options:(unint64_t)options withCompletion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  contentCopy = content;
+  headersCopy = headers;
+  sourceCopy = source;
+  completionCopy = completion;
   v16 = sgLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v32 = v14;
+    v32 = sourceCopy;
     v33 = 2048;
-    v34 = a6;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v16, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Mail: suggestionsFromEmailContent: %@ options: %tu", buf, 0x16u);
   }
 
-  v17 = [(SGDSuggestManager *)self _emailContentCacheSalt];
-  v18 = SGSha256Data(v13, v17);
+  _emailContentCacheSalt = [(SGDSuggestManager *)self _emailContentCacheSalt];
+  v18 = SGSha256Data(headersCopy, _emailContentCacheSalt);
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_withCompletion___block_invoke;
   v29[3] = &unk_27894ECA8;
-  v30 = v15;
+  v30 = completionCopy;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_withCompletion___block_invoke_2;
   v25[3] = &unk_27894BD10;
-  v26 = v13;
-  v27 = v12;
-  v28 = v14;
-  v19 = v14;
-  v20 = v12;
-  v21 = v13;
-  v22 = v15;
+  v26 = headersCopy;
+  v27 = contentCopy;
+  v28 = sourceCopy;
+  v19 = sourceCopy;
+  v20 = contentCopy;
+  v21 = headersCopy;
+  v22 = completionCopy;
   LOWORD(v24) = 1;
-  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v18 options:a6 completion:v29 completionDelivery:0 providedBy:v25 searchableItem:0 dissectIfNecessary:v24 isTextMessage:?];
+  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v18 options:options completion:v29 completionDelivery:0 providedBy:v25 searchableItem:0 dissectIfNecessary:v24 isTextMessage:?];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -2122,32 +2122,32 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
   }
 }
 
-- (void)harvestedSuggestionsFromSearchableItem:(id)a3 options:(unint64_t)a4 withCompletion:(id)a5
+- (void)harvestedSuggestionsFromSearchableItem:(id)item options:(unint64_t)options withCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v8 bundleID];
-    v12 = [v8 uniqueIdentifier];
+    bundleID = [itemCopy bundleID];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
     v18 = 138412802;
-    v19 = v11;
+    v19 = bundleID;
     v20 = 2112;
-    v21 = v12;
+    v21 = uniqueIdentifier;
     v22 = 2048;
-    v23 = a4;
+    optionsCopy = options;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Mail: harvestedSuggestionsFromSearchableItem: %@ : %@ options: %tu", &v18, 0x20u);
   }
 
   v13 = MEMORY[0x277D41DF8];
-  v14 = [v8 bundleID];
-  LOBYTE(v13) = [v13 shouldAdmitContentFromBundleIdentifier:v14];
+  bundleID2 = [itemCopy bundleID];
+  LOBYTE(v13) = [v13 shouldAdmitContentFromBundleIdentifier:bundleID2];
 
   if (v13)
   {
-    [(SGDSuggestManager *)self _suggestionsFromSearchableItem:v8 options:a4 dissectIfNecessary:0 withCompletion:v9];
+    [(SGDSuggestManager *)self _suggestionsFromSearchableItem:itemCopy options:options dissectIfNecessary:0 withCompletion:completionCopy];
   }
 
   else
@@ -2160,47 +2160,47 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
     }
 
     v16 = [MEMORY[0x277D02138] responseWith:0];
-    v9[2](v9, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suggestionsFromSearchableItem:(id)a3 options:(unint64_t)a4 processingType:(unint64_t)a5 withCompletion:(id)a6
+- (void)suggestionsFromSearchableItem:(id)item options:(unint64_t)options processingType:(unint64_t)type withCompletion:(id)completion
 {
-  v12 = a3;
-  v10 = a6;
-  v11 = [SGDSuggestManager preprocessSearchableItem:v12];
+  itemCopy = item;
+  completionCopy = completion;
+  v11 = [SGDSuggestManager preprocessSearchableItem:itemCopy];
   if (v11)
   {
-    v10[2](v10, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
   else
   {
-    [(SGDSuggestManager *)self _suggestionsFromSearchableItem:v12 options:a4 dissectIfNecessary:1 processingType:a5 completionDelivery:0 withCompletion:v10];
+    [(SGDSuggestManager *)self _suggestionsFromSearchableItem:itemCopy options:options dissectIfNecessary:1 processingType:type completionDelivery:0 withCompletion:completionCopy];
   }
 }
 
-- (void)recentURLsWithLimit:(unsigned int)a3 withCompletion:(id)a4
+- (void)recentURLsWithLimit:(unsigned int)limit withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  if (!v7)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4699 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4699 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v16) = a3;
+    LODWORD(v16) = limit;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager-recentURLsWithLimit:%u called", buf, 8u);
   }
 
-  v9 = [(SGSqlEntityStore *)self->_harvestStore recentURLsWithLimit:a3];
+  v9 = [(SGSqlEntityStore *)self->_harvestStore recentURLsWithLimit:limit];
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -2211,16 +2211,16 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
   }
 
   v12 = [MEMORY[0x277D02138] responseWith:v9];
-  v7[2](v7, v12);
+  completionCopy[2](completionCopy, v12);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)titleSuggestionForMessage:(id)a3 withCompletion:(id)a4
+- (void)titleSuggestionForMessage:(id)message withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   if ([objc_opt_class() titleSuggestionForMessageFeatureEnabled])
   {
     v9 = sgLogHandle();
@@ -2230,10 +2230,10 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
       _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-titleSuggestionForMessage", buf, 2u);
     }
 
-    if (!v8)
+    if (!completionCopy)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4591 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4591 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
     }
 
     if (titleSuggestionForMessage_withCompletion___pasOnceToken205 != -1)
@@ -2258,7 +2258,7 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
     block[1] = 3221225472;
     block[2] = __62__SGDSuggestManager_titleSuggestionForMessage_withCompletion___block_invoke_2;
     block[3] = &unk_2789561A8;
-    v22 = v7;
+    v22 = messageCopy;
     v24 = buf;
     v12 = v10;
     v23 = v12;
@@ -2276,7 +2276,7 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
       }
 
       v15 = [MEMORY[0x277D02138] responseWith:*(v26 + 5)];
-      v8[2](v8, v15);
+      completionCopy[2](completionCopy, v15);
     }
 
     else
@@ -2289,7 +2289,7 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
       }
 
       v15 = [MEMORY[0x277D02138] responseWith:0];
-      v8[2](v8, v15);
+      completionCopy[2](completionCopy, v15);
     }
 
     _Block_object_dispose(buf, 8);
@@ -2298,7 +2298,7 @@ void __87__SGDSuggestManager_suggestionsFromEmailContent_headers_source_options_
   else
   {
     v16 = [MEMORY[0x277D02138] responseWith:0];
-    v8[2](v8, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2536,15 +2536,15 @@ void __62__SGDSuggestManager_titleSuggestionForMessage_withCompletion___block_in
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)ipsosMessagesFromSearchableItems:(id)a3 withCompletion:(id)a4
+- (void)ipsosMessagesFromSearchableItems:(id)items withCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v22 = a4;
-  if (!v22)
+  itemsCopy = items;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4562 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4562 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v8 = sgLogHandle();
@@ -2559,7 +2559,7 @@ void __62__SGDSuggestManager_titleSuggestionForMessage_withCompletion___block_in
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v7;
+  v10 = itemsCopy;
   v11 = [v10 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v11)
   {
@@ -2593,21 +2593,21 @@ void __62__SGDSuggestManager_titleSuggestionForMessage_withCompletion___block_in
   }
 
   v19 = [MEMORY[0x277D02138] responseWith:v9];
-  v22[2](v22, v19);
+  completionCopy[2](completionCopy, v19);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_showInFormatStringWithLocalization:(id)a3
+- (id)_showInFormatStringWithLocalization:(id)localization
 {
-  v3 = a3;
+  localizationCopy = localization;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__SGDSuggestManager__showInFormatStringWithLocalization___block_invoke;
   block[3] = &unk_278954A30;
-  v10 = v3;
+  v10 = localizationCopy;
   v4 = _showInFormatStringWithLocalization__once;
-  v5 = v3;
+  v5 = localizationCopy;
   if (v4 != -1)
   {
     dispatch_once(&_showInFormatStringWithLocalization__once, block);
@@ -2649,27 +2649,27 @@ void __39__SGDSuggestManager__maybeFormatString__block_invoke()
   }
 }
 
-- (void)powerStateWithCompletion:(id)a3
+- (void)powerStateWithCompletion:(id)completion
 {
   v3 = MEMORY[0x277D41E28];
-  v4 = a3;
-  v5 = [v3 defaultBudget];
-  v7 = [v5 throttlingState];
+  completionCopy = completion;
+  defaultBudget = [v3 defaultBudget];
+  throttlingState = [defaultBudget throttlingState];
 
-  v6 = [MEMORY[0x277D02138] responseWith:v7];
-  v4[2](v4, v6);
+  v6 = [MEMORY[0x277D02138] responseWith:throttlingState];
+  completionCopy[2](completionCopy, v6);
 }
 
-- (void)deleteCloudKitZoneWithCompletion:(id)a3
+- (void)deleteCloudKitZoneWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SGDCloudKitSync sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54__SGDSuggestManager_deleteCloudKitZoneWithCompletion___block_invoke;
   v6[3] = &unk_27894BCE8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 deleteZoneWithCompletion:v6];
 }
 
@@ -2690,41 +2690,41 @@ void __54__SGDSuggestManager_deleteCloudKitZoneWithCompletion___block_invoke(uin
   (*(v2 + 16))(v2);
 }
 
-- (void)clearContactAggregatorConversation:(id)a3
+- (void)clearContactAggregatorConversation:(id)conversation
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  conversationCopy = conversation;
   v4 = sgLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = conversationCopy;
     _os_log_debug_impl(&dword_231E60000, v4, OS_LOG_TYPE_DEBUG, "SGDSuggestManager: Dropping aggregated contact for conversation: %@", &v7, 0xCu);
   }
 
   v5 = +[SGDSuggestManager contactAggregator];
-  [v5 clearContactsWithConversationIdentifier:v3];
+  [v5 clearContactsWithConversationIdentifier:conversationCopy];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pingWithCompletion:(id)a3
+- (void)pingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  (*(a3 + 2))(v4, v5);
+  (*(completion + 2))(completionCopy, v5);
 }
 
-- (void)sleepWithCompletion:(id)a3
+- (void)sleepWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(17, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__SGDSuggestManager_sleepWithCompletion___block_invoke;
   block[3] = &unk_27894E850;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -2736,9 +2736,9 @@ void __41__SGDSuggestManager_sleepWithCompletion___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)daemonExitWithCompletion:(id)a3
+- (void)daemonExitWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sgLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -2749,27 +2749,27 @@ void __41__SGDSuggestManager_sleepWithCompletion___block_invoke(uint64_t a1)
   _exit(0);
 }
 
-- (void)removeAllStoredPseudoContactsWithCompletion:(id)a3
+- (void)removeAllStoredPseudoContactsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   [v5 removeAllStoredPseudoContacts];
   v4 = objc_opt_new();
-  v3[2](v3, v4);
+  completionCopy[2](completionCopy, v4);
 }
 
-- (void)logEventInteractionForEventWithUniqueKey:(id)a3 interface:(unsigned __int16)a4 actionType:(unsigned __int16)a5
+- (void)logEventInteractionForEventWithUniqueKey:(id)key interface:(unsigned __int16)interface actionType:(unsigned __int16)type
 {
-  v8 = a3;
+  keyCopy = key;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__SGDSuggestManager_logEventInteractionForEventWithUniqueKey_interface_actionType___block_invoke;
   v11[3] = &unk_27894D8D8;
   v11[4] = self;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v9 = v8;
+  v12 = keyCopy;
+  interfaceCopy = interface;
+  typeCopy = type;
+  v9 = keyCopy;
   v10 = MEMORY[0x2383809F0](v11);
   if (logEventInteractionForEventWithUniqueKey_interface_actionType___pasOnceToken198 != -1)
   {
@@ -2802,17 +2802,17 @@ void __71__SGDSuggestManager_logEventInteractionForEntity_interface_actionType__
   [MEMORY[0x277D02060] recordInteractionForEventWithInterface:*(a1 + 40) actionType:*(a1 + 42) harvestedSGEvent:*(a1 + 32) curatedEKEvent:v3];
 }
 
-- (id)entityFromUniqueKey:(id)a3
+- (id)entityFromUniqueKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 hasPrefix:@"x-apple-eventkit:///SuggestedEventInfo/"])
+  keyCopy = key;
+  if ([keyCopy hasPrefix:@"x-apple-eventkit:///SuggestedEventInfo/"])
   {
     v6 = sgLogHandle();
     if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = keyCopy;
       v7 = "Not logging event interaction for bogus uniqueKey: %@";
 LABEL_13:
       _os_log_impl(&dword_231E60000, &v6->super, OS_LOG_TYPE_DEFAULT, v7, buf, 0xCu);
@@ -2822,19 +2822,19 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v5)
+  if (!keyCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4364 description:{@"Invalid parameter not satisfying: %@", @"uniqueKey"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:4364 description:{@"Invalid parameter not satisfying: %@", @"uniqueKey"}];
   }
 
-  if (![SGDuplicateKey serializationPassesBasicScrutiny:v5])
+  if (![SGDuplicateKey serializationPassesBasicScrutiny:keyCopy])
   {
     v6 = sgLogHandle();
     if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = keyCopy;
       v7 = "Not logging event interaction for uniqueKey with bad serialization: %@";
       goto LABEL_13;
     }
@@ -2844,12 +2844,12 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v6 = [[SGDuplicateKey alloc] initWithSerialized:v5];
+  v6 = [[SGDuplicateKey alloc] initWithSerialized:keyCopy];
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v17 = v5;
+    v17 = keyCopy;
     _os_log_debug_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEBUG, "Attempting to retrieve entity from harvestStore for uniqueKey = %@", buf, 0xCu);
   }
 
@@ -2866,7 +2866,7 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = keyCopy;
       _os_log_error_impl(&dword_231E60000, v12, OS_LOG_TYPE_ERROR, "Couldn't find Entity with uniqueKey = %@", buf, 0xCu);
     }
   }
@@ -2995,184 +2995,184 @@ id __92__SGDSuggestManager_logEventInteractionForEventWithExternalIdentifier_int
   return v2;
 }
 
-- (void)logMetricSearchResultsIncludedPureSuggestionWithBundleId:(id)a3
+- (void)logMetricSearchResultsIncludedPureSuggestionWithBundleId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = objc_opt_new();
-  v5.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v4];
+  v5.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:idCopy];
 
   [v12 setApp:v5.var0];
-  v6 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v6 trackScalarForMessage:v12];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v12];
 
   v7 = objc_alloc(MEMORY[0x277CCACA8]);
   v8 = *MEMORY[0x277D02470];
   v9 = [v12 key];
   v10 = [v7 initWithFormat:@"%@.%@", v8, v9];
 
-  v11 = [v12 dictionaryRepresentation];
+  dictionaryRepresentation = [v12 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricContactCreated:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5
+- (void)logMetricContactCreated:(id)created contactIdentifier:(id)identifier bundleId:(id)id
 {
-  v7 = a5;
+  idCopy = id;
   v15 = objc_opt_new();
-  [v15 setWasSuggestedContact:a3 != 0];
-  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v7];
+  [v15 setWasSuggestedContact:created != 0];
+  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:idCopy];
 
   [v15 setApp:v8.var0];
-  v9 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v9 trackScalarForMessage:v15];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v15];
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
   v11 = *MEMORY[0x277D02470];
   v12 = [v15 key];
   v13 = [v10 initWithFormat:@"%@.%@", v11, v12];
 
-  v14 = [v15 dictionaryRepresentation];
+  dictionaryRepresentation = [v15 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricSuggestedContactDetailShown:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5
+- (void)logMetricSuggestedContactDetailShown:(id)shown contactIdentifier:(id)identifier bundleId:(id)id
 {
-  v6 = a5;
+  idCopy = id;
   v14 = objc_opt_new();
-  v7.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v6];
+  v7.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:idCopy];
 
   [v14 setApp:v7.var0];
-  v8 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v8 trackScalarForMessage:v14];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v14];
 
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
   v10 = *MEMORY[0x277D02470];
   v11 = [v14 key];
   v12 = [v9 initWithFormat:@"%@.%@", v10, v11];
 
-  v13 = [v14 dictionaryRepresentation];
+  dictionaryRepresentation = [v14 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricSuggestedContactDetailUsed:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5
+- (void)logMetricSuggestedContactDetailUsed:(id)used contactIdentifier:(id)identifier bundleId:(id)id
 {
-  v6 = a5;
+  idCopy = id;
   v14 = objc_opt_new();
-  v7.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v6];
+  v7.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:idCopy];
 
   [v14 setApp:v7.var0];
-  v8 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v8 trackScalarForMessage:v14];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v14];
 
   v9 = objc_alloc(MEMORY[0x277CCACA8]);
   v10 = *MEMORY[0x277D02470];
   v11 = [v14 key];
   v12 = [v9 initWithFormat:@"%@.%@", v10, v11];
 
-  v13 = [v14 dictionaryRepresentation];
+  dictionaryRepresentation = [v14 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricContactSearchResultSelected:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5
+- (void)logMetricContactSearchResultSelected:(id)selected contactIdentifier:(id)identifier bundleId:(id)id
 {
-  v7 = a5;
+  idCopy = id;
   v15 = objc_opt_new();
-  [v15 setWasSuggestedContact:a3 != 0];
+  [v15 setWasSuggestedContact:selected != 0];
   [v15 setWasKnownContact:0];
-  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v7];
+  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:idCopy];
 
   [v15 setApp:v8.var0];
-  v9 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v9 trackScalarForMessage:v15];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v15];
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
   v11 = *MEMORY[0x277D02470];
   v12 = [v15 key];
   v13 = [v10 initWithFormat:@"%@.%@", v11, v12];
 
-  v14 = [v15 dictionaryRepresentation];
+  dictionaryRepresentation = [v15 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricAutocompleteUserSelectedRecordId:(id)a3 contactIdentifier:(id)a4 bundleId:(id)a5
+- (void)logMetricAutocompleteUserSelectedRecordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId
 {
-  v7 = a5;
+  bundleIdCopy = bundleId;
   v15 = objc_opt_new();
-  [v15 setWasSuggestedContact:a3 != 0];
+  [v15 setWasSuggestedContact:id != 0];
   [v15 setWasKnownContact:*MEMORY[0x277D02410] != 0];
-  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v7];
+  v8.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:bundleIdCopy];
 
   [v15 setApp:v8.var0];
-  v9 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v9 trackScalarForMessage:v15];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v15];
 
   v10 = objc_alloc(MEMORY[0x277CCACA8]);
   v11 = *MEMORY[0x277D02470];
   v12 = [v15 key];
   v13 = [v10 initWithFormat:@"%@.%@", v11, v12];
 
-  v14 = [v15 dictionaryRepresentation];
+  dictionaryRepresentation = [v15 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricContactSearchResult:(int)a3 recordId:(id)a4 contactIdentifier:(id)a5 bundleId:(id)a6
+- (void)logMetricContactSearchResult:(int)result recordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId
 {
-  v7 = (a3 >> 3) & 1;
-  v8 = a4 != 0;
-  v9 = a6;
+  v7 = (result >> 3) & 1;
+  v8 = id != 0;
+  bundleIdCopy = bundleId;
   v17 = objc_opt_new();
   [v17 setWasSuggestedContact:v8];
   [v17 setWasKnownContact:v7];
-  v10.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v9];
+  v10.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:bundleIdCopy];
 
   [v17 setApp:v10.var0];
-  v11 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v11 trackScalarForMessage:v17];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v17];
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
   v13 = *MEMORY[0x277D02470];
   v14 = [v17 key];
   v15 = [v12 initWithFormat:@"%@.%@", v13, v14];
 
-  v16 = [v17 dictionaryRepresentation];
+  dictionaryRepresentation = [v17 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logMetricAutocompleteResult:(int)a3 recordId:(id)a4 contactIdentifier:(id)a5 bundleId:(id)a6
+- (void)logMetricAutocompleteResult:(int)result recordId:(id)id contactIdentifier:(id)identifier bundleId:(id)bundleId
 {
-  v7 = (a3 >> 3) & 1;
-  v8 = a4 != 0;
-  v9 = a6;
+  v7 = (result >> 3) & 1;
+  v8 = id != 0;
+  bundleIdCopy = bundleId;
   v17 = objc_opt_new();
   [v17 setWasSuggestedContact:v8];
   [v17 setWasKnownContact:v7];
-  v10.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:v9];
+  v10.var0 = [(SGDSuggestManager *)self _appEnumForBundleId:bundleIdCopy];
 
   [v17 setApp:v10.var0];
-  v11 = [MEMORY[0x277D41DA8] sharedInstance];
-  [v11 trackScalarForMessage:v17];
+  mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+  [mEMORY[0x277D41DA8] trackScalarForMessage:v17];
 
   v12 = objc_alloc(MEMORY[0x277CCACA8]);
   v13 = *MEMORY[0x277D02470];
   v14 = [v17 key];
   v15 = [v12 initWithFormat:@"%@.%@", v13, v14];
 
-  v16 = [v17 dictionaryRepresentation];
+  dictionaryRepresentation = [v17 dictionaryRepresentation];
   AnalyticsSendEvent();
 }
 
-- (void)logUnknownContactInformationShownCount:(unint64_t)a3 notShownCount:(unint64_t)a4 bundleId:(id)a5
+- (void)logUnknownContactInformationShownCount:(unint64_t)count notShownCount:(unint64_t)shownCount bundleId:(id)id
 {
-  v8 = a5;
+  idCopy = id;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __83__SGDSuggestManager_logUnknownContactInformationShownCount_notShownCount_bundleId___block_invoke;
   v11[3] = &unk_27894BC48;
   v11[4] = self;
-  v12 = v8;
-  v9 = v8;
+  v12 = idCopy;
+  v9 = idCopy;
   v10 = MEMORY[0x2383809F0](v11);
-  v10[2](v10, 1, a3);
-  v10[2](v10, 0, a4);
+  v10[2](v10, 1, count);
+  v10[2](v10, 0, shownCount);
 }
 
 void __83__SGDSuggestManager_logUnknownContactInformationShownCount_notShownCount_bundleId___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -3214,12 +3214,12 @@ void __83__SGDSuggestManager_logUnknownContactInformationShownCount_notShownCoun
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (SGMContactDetailUsedApp_)_appEnumForBundleId:(id)a3
+- (SGMContactDetailUsedApp_)_appEnumForBundleId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = v4;
+    v5 = idCopy;
   }
 
   else
@@ -3249,15 +3249,15 @@ LABEL_8:
     objc_autoreleasePoolPop(v9);
     v11 = objc_opt_new();
     [v11 setBundleId:v5];
-    v12 = [MEMORY[0x277D41DA8] sharedInstance];
-    [v12 trackScalarForMessage:v11];
+    mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
+    [mEMORY[0x277D41DA8] trackScalarForMessage:v11];
 
     v13 = objc_alloc(MEMORY[0x277CCACA8]);
     v14 = *MEMORY[0x277D02470];
     v15 = [v11 key];
     v16 = [v13 initWithFormat:@"%@.%@", v14, v15];
 
-    v17 = [v11 dictionaryRepresentation];
+    dictionaryRepresentation = [v11 dictionaryRepresentation];
     AnalyticsSendEvent();
 
     goto LABEL_8;
@@ -3270,19 +3270,19 @@ LABEL_10:
   return v8;
 }
 
-- (void)waitForEventWithIdentifier:(id)a3 toAppearInEventStoreWithLastModificationDate:(id)a4 completion:(id)a5
+- (void)waitForEventWithIdentifier:(id)identifier toAppearInEventStoreWithLastModificationDate:(id)date completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
+  completionCopy = completion;
   v11 = sgLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v30 = v8;
+    v30 = identifierCopy;
     v31 = 2112;
-    v32 = v9;
+    v32 = dateCopy;
     _os_log_impl(&dword_231E60000, v11, OS_LOG_TYPE_INFO, "SGDSuggestManager-waitForEventWithIdentifier: %@ -toAppearInEventStoreWithLastModificationDate: %@", buf, 0x16u);
   }
 
@@ -3290,7 +3290,7 @@ LABEL_10:
   v27[1] = 3221225472;
   v27[2] = __104__SGDSuggestManager_waitForEventWithIdentifier_toAppearInEventStoreWithLastModificationDate_completion___block_invoke;
   v27[3] = &unk_27894BBD0;
-  v12 = v9;
+  v12 = dateCopy;
   v28 = v12;
   v13 = MEMORY[0x2383809F0](v27);
   ekStoreProvider = self->_ekStoreProvider;
@@ -3303,7 +3303,7 @@ LABEL_10:
   v16 = ekStoreProvider;
   v17 = callBlockWithEKEventStoreForReading();
 
-  v18 = [v17 eventWithIdentifier:v8];
+  v18 = [v17 eventWithIdentifier:identifierCopy];
   if (!(v13)[2](v13, v18))
   {
     v20 = dispatch_get_global_queue(9, 0);
@@ -3312,19 +3312,19 @@ LABEL_10:
     block[2] = __104__SGDSuggestManager_waitForEventWithIdentifier_toAppearInEventStoreWithLastModificationDate_completion___block_invoke_2;
     block[3] = &unk_27894BC20;
     v23 = v17;
-    v24 = v8;
+    v24 = identifierCopy;
     v25 = v13;
-    v26 = v10;
+    v26 = completionCopy;
     dispatch_async(v20, block);
 
     v19 = v23;
     goto LABEL_9;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v19 = [MEMORY[0x277D02138] responseWith:MEMORY[0x277CBEC38]];
-    (*(v10 + 2))(v10, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
 LABEL_9:
   }
 
@@ -3406,19 +3406,19 @@ void __104__SGDSuggestManager_waitForEventWithIdentifier_toAppearInEventStoreWit
   }
 }
 
-- (void)noopWithCompletion:(id)a3
+- (void)noopWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
-  (*(a3 + 2))(v4, v5);
+  (*(completion + 2))(completionCopy, v5);
 }
 
-- (void)keepDirty:(BOOL)a3
+- (void)keepDirty:(BOOL)dirty
 {
-  v3 = a3;
+  dirtyCopy = dirty;
   [(NSLock *)self->_dirtyLock lock];
   dirtyTransaction = self->_dirtyTransaction;
-  if (v3)
+  if (dirtyCopy)
   {
     if (dirtyTransaction)
     {
@@ -3442,34 +3442,34 @@ LABEL_6:
   [(NSLock *)dirtyLock unlock];
 }
 
-- (void)realtimeSuggestionsFromURL:(id)a3 title:(id)a4 HTMLPayload:(id)a5 extractionDate:(id)a6 withCompletion:(id)a7
+- (void)realtimeSuggestionsFromURL:(id)l title:(id)title HTMLPayload:(id)payload extractionDate:(id)date withCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  titleCopy = title;
+  payloadCopy = payload;
+  dateCopy = date;
+  completionCopy = completion;
   v16 = *MEMORY[0x277D021F8];
   if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:*MEMORY[0x277D021F8]])
   {
     v17 = [SGDuplicateKey duplicateKeyForWebPageFromSource:v16];
-    v18 = [[SGPipelineEntity alloc] initWithDuplicateKey:v17 title:v12];
-    [v14 timeIntervalSince1970];
+    v18 = [[SGPipelineEntity alloc] initWithDuplicateKey:v17 title:titleCopy];
+    [dateCopy timeIntervalSince1970];
     [(SGPipelineEntity *)v18 setCreationTimestamp:?];
-    [v14 timeIntervalSince1970];
+    [dateCopy timeIntervalSince1970];
     [(SGPipelineEntity *)v18 setLastModifiedTimestamp:?];
     v31 = objc_opt_new();
-    v32 = v13;
-    v33 = v11;
-    [v31 dissectURL:v11 title:v12 htmlPayload:v13 entity:v18];
+    v32 = payloadCopy;
+    v33 = lCopy;
+    [v31 dissectURL:lCopy title:titleCopy htmlPayload:payloadCopy entity:v18];
     v19 = +[SGSqlEntityStore sqlStoreInMemory];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = [(SGPipelineEntity *)v18 enrichments];
-    v21 = [v20 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    enrichments = [(SGPipelineEntity *)v18 enrichments];
+    v21 = [enrichments countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v21)
     {
       v22 = v21;
@@ -3480,28 +3480,28 @@ LABEL_6:
         {
           if (*v36 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(enrichments);
           }
 
           [v19 writeEnrichment:*(*(&v35 + 1) + 8 * i)];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v22 = [enrichments countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v22);
     }
 
-    v25 = [(SGPipelineEntity *)v18 enrichments];
+    enrichments2 = [(SGPipelineEntity *)v18 enrichments];
     v34 = v19;
     v26 = v19;
     v27 = sgMapAndFilter();
 
     v28 = [MEMORY[0x277D02138] responseWith:v27];
-    v15[2](v15, v28);
+    completionCopy[2](completionCopy, v28);
 
-    v13 = v32;
-    v11 = v33;
+    payloadCopy = v32;
+    lCopy = v33;
   }
 
   else
@@ -3514,7 +3514,7 @@ LABEL_6:
     }
 
     v17 = [MEMORY[0x277D02138] responseWith:0];
-    v15[2](v15, v17);
+    completionCopy[2](completionCopy, v17);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -3550,11 +3550,11 @@ LABEL_4:
   return v10;
 }
 
-- (void)geocodeEnrichmentsInPipelineEntity:(id)a3 withCompletion:(id)a4
+- (void)geocodeEnrichmentsInPipelineEntity:(id)entity withCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v24 = a4;
+  entityCopy = entity;
+  completionCopy = completion;
   v6 = *MEMORY[0x277D021A0];
   v7 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   LODWORD(v6) = [v7 containsObject:v6];
@@ -3584,9 +3584,9 @@ LABEL_4:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v26 = v5;
-  v11 = [v5 enrichments];
-  v12 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  v26 = entityCopy;
+  enrichments = [entityCopy enrichments];
+  v12 = [enrichments countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -3598,7 +3598,7 @@ LABEL_4:
       {
         if (*v34 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(enrichments);
         }
 
         v16 = *(*(&v33 + 1) + 8 * v15);
@@ -3627,7 +3627,7 @@ LABEL_4:
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v13 = [enrichments countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v13);
@@ -3685,13 +3685,13 @@ void __71__SGDSuggestManager_geocodeEnrichmentsInPipelineEntity_withCompletion__
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)suggestionsFromURL:(id)a3 title:(id)a4 HTMLPayload:(id)a5 withCompletion:(id)a6
+- (void)suggestionsFromURL:(id)l title:(id)title HTMLPayload:(id)payload withCompletion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  titleCopy = title;
+  payloadCopy = payload;
+  completionCopy = completion;
   v14 = sgEventsLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -3702,12 +3702,12 @@ void __71__SGDSuggestManager_geocodeEnrichmentsInPipelineEntity_withCompletion__
   v15 = sgEventsLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v10 host];
-    v20 = [v12 length];
+    host = [lCopy host];
+    v20 = [payloadCopy length];
     *buf = 138740483;
-    v28 = v19;
+    v28 = host;
     v29 = 2117;
-    v30 = v11;
+    v30 = titleCopy;
     v31 = 2053;
     v32 = v20;
     _os_log_debug_impl(&dword_231E60000, v15, OS_LOG_TYPE_DEBUG, "SGDSuggestManager-suggestionsFromURL: %{sensitive}@ -title: %{sensitive}@ -HTMLPayload length: %{sensitive}lu ", buf, 0x20u);
@@ -3719,11 +3719,11 @@ void __71__SGDSuggestManager_geocodeEnrichmentsInPipelineEntity_withCompletion__
     v21[1] = 3221225472;
     v21[2] = __73__SGDSuggestManager_suggestionsFromURL_title_HTMLPayload_withCompletion___block_invoke;
     v21[3] = &unk_27894E040;
-    v22 = v11;
-    v23 = v10;
-    v24 = v12;
-    v25 = self;
-    v26 = v13;
+    v22 = titleCopy;
+    v23 = lCopy;
+    v24 = payloadCopy;
+    selfCopy = self;
+    v26 = completionCopy;
     SGNotUserInitiated(@"suggestionsFromURL", 2, v21);
 
     v16 = v22;
@@ -3739,7 +3739,7 @@ void __71__SGDSuggestManager_geocodeEnrichmentsInPipelineEntity_withCompletion__
     }
 
     v16 = [MEMORY[0x277D02138] responseWith:0];
-    (*(v13 + 2))(v13, v16);
+    (*(completionCopy + 2))(completionCopy, v16);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -3850,21 +3850,21 @@ void __73__SGDSuggestManager_suggestionsFromURL_title_HTMLPayload_withCompletion
   }
 }
 
-- (void)isEventCandidateForURL:(id)a3 title:(id)a4 withCompletion:(id)a5
+- (void)isEventCandidateForURL:(id)l title:(id)title withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  titleCopy = title;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__SGDSuggestManager_isEventCandidateForURL_title_withCompletion___block_invoke;
   v13[3] = &unk_278955A98;
-  v14 = v7;
-  v15 = v8;
-  v16 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = v7;
+  v14 = lCopy;
+  v15 = titleCopy;
+  v16 = completionCopy;
+  v10 = completionCopy;
+  v11 = titleCopy;
+  v12 = lCopy;
   SGNotUserInitiated(@"isEventCandidateForURL", 2, v13);
 }
 
@@ -3915,29 +3915,29 @@ void __65__SGDSuggestManager_isEventCandidateForURL_title_withCompletion___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isEventCandidateForURL:(id)a3 andTitle:(id)a4 containsSchemaOrg:(BOOL)a5 withCompletion:(id)a6
+- (void)isEventCandidateForURL:(id)l andTitle:(id)title containsSchemaOrg:(BOOL)org withCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  titleCopy = title;
+  completionCopy = completion;
   v13 = sgEventsLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v22 = [v10 host];
+    host = [lCopy host];
     *buf = 138740227;
-    v26 = v22;
+    v26 = host;
     v27 = 2117;
-    v28 = v11;
+    v28 = titleCopy;
     _os_log_debug_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEBUG, "isEventCandidateForURL: %{sensitive}@ -title: %{sensitive}@", buf, 0x16u);
   }
 
-  if (v10 && v11)
+  if (lCopy && titleCopy)
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = ([MEMORY[0x277D02098] allowAnyDomainForMarkup] & 1) != 0 || +[SGDomainWhitelistChecker isStructuredEventCandidateForURL:title:](SGDomainWhitelistChecker, "isStructuredEventCandidateForURL:title:", v10, v11);
+    v15 = ([MEMORY[0x277D02098] allowAnyDomainForMarkup] & 1) != 0 || +[SGDomainWhitelistChecker isStructuredEventCandidateForURL:title:](SGDomainWhitelistChecker, "isStructuredEventCandidateForURL:title:", lCopy, titleCopy);
     v17 = [v14 numberWithInt:v15];
-    if (v17 && !a5)
+    if (v17 && !org)
     {
       v20 = sgEventsLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -3950,8 +3950,8 @@ void __65__SGDSuggestManager_isEventCandidateForURL_title_withCompletion___block
       v23[1] = 3221225472;
       v23[2] = __86__SGDSuggestManager_isEventCandidateForURL_andTitle_containsSchemaOrg_withCompletion___block_invoke;
       v23[3] = &unk_27894BBA8;
-      v24 = v12;
-      [(SGDSuggestManager *)self isEventCandidateForURL:v10 title:v11 withCompletion:v23];
+      v24 = completionCopy;
+      [(SGDSuggestManager *)self isEventCandidateForURL:lCopy title:titleCopy withCompletion:v23];
       v19 = v24;
       goto LABEL_20;
     }
@@ -3976,10 +3976,10 @@ void __65__SGDSuggestManager_isEventCandidateForURL_title_withCompletion___block
     _os_log_debug_impl(&dword_231E60000, v18, OS_LOG_TYPE_DEBUG, "SGSuggestionsService isEventCandidateForURL: eventCandidate is nil, domain appears not to be whitelisted.", buf, 2u);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v19 = [MEMORY[0x277D02138] responseWith:v17];
-    (*(v12 + 2))(v12, v19);
+    (*(completionCopy + 2))(completionCopy, v19);
 LABEL_20:
   }
 
@@ -3998,10 +3998,10 @@ void __86__SGDSuggestManager_isEventCandidateForURL_andTitle_containsSchemaOrg_w
   }
 }
 
-- (void)schemaOrgToEvents:(id)a3 completion:(id)a4
+- (void)schemaOrgToEvents:(id)events completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  eventsCopy = events;
   v7 = sgLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -4010,52 +4010,52 @@ void __86__SGDSuggestManager_isEventCandidateForURL_andTitle_containsSchemaOrg_w
   }
 
   v8 = objc_opt_new();
-  v9 = [v8 eventsFromSchemaOrgItems:v6];
+  v9 = [v8 eventsFromSchemaOrgItems:eventsCopy];
 
   v10 = [MEMORY[0x277D02138] responseWith:v9];
-  v5[2](v5, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 groupIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id groupIdentifiers:(id)identifiers completion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v8 = a5;
-  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:a3 groupIdentifiers:a4];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:id groupIdentifiers:identifiers];
   v9 = objc_opt_new();
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 identifiers:(id)a4 completion:(id)a5
+- (void)deleteInteractionsWithBundleId:(id)id identifiers:(id)identifiers completion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v8 = a5;
-  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:a3 identifiers:a4];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:id identifiers:identifiers];
   v9 = objc_opt_new();
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)deleteInteractionsWithBundleId:(id)a3 completion:(id)a4
+- (void)deleteInteractionsWithBundleId:(id)id completion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v6 = a4;
-  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:a3];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore deleteInteractionsWithBundleId:id];
   v7 = objc_opt_new();
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_completion___block_invoke;
   v10[3] = &unk_278955A98;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifierCopy;
   SGNotUserInitiated(@"deleteSpotlightReferencesWithBundleIdentifier", 2, v10);
 }
 
@@ -4095,33 +4095,33 @@ void __78__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_compl
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 domainIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier domainIdentifiers:(id)identifiers completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 copy];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = [identifiers copy];
   v11 = sgLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v35 = v8;
+    v35 = identifierCopy;
     v36 = 2112;
     v37 = v10;
     _os_log_debug_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEBUG, "SGDSuggestManager: deleting spotlight references: %@ : %@", buf, 0x16u);
   }
 
-  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:v8])
+  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:identifierCopy])
   {
-    [(SGSqlEntityStore *)self->_harvestStore deleteSpotlightReferencesWithBundleIdentifier:v8 domainIdentifiers:v10];
-    if ([v8 isEqualToString:*MEMORY[0x277D021D0]])
+    [(SGSqlEntityStore *)self->_harvestStore deleteSpotlightReferencesWithBundleIdentifier:identifierCopy domainIdentifiers:v10];
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D021D0]])
     {
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v12 = [v10 allDomains];
-      v13 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      allDomains = [v10 allDomains];
+      v13 = [allDomains countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v13)
       {
         v14 = v13;
@@ -4133,14 +4133,14 @@ void __78__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_compl
           {
             if (*v30 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(allDomains);
             }
 
             [(SGDSuggestManager *)self clearContactAggregatorConversation:*(*(&v29 + 1) + 8 * v16++)];
           }
 
           while (v14 != v16);
-          v14 = [v12 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v14 = [allDomains countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v14);
@@ -4148,11 +4148,11 @@ void __78__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_compl
     }
   }
 
-  v17 = [v10 allDomains];
-  v18 = [v17 allObjects];
+  allDomains2 = [v10 allDomains];
+  allObjects = [allDomains2 allObjects];
 
-  v19 = [(SGDSuggestManager *)self _pmlTraining];
-  [v19 deleteSessionsWithDomainIdentifiers:v18 bundleID:v8];
+  _pmlTraining = [(SGDSuggestManager *)self _pmlTraining];
+  [_pmlTraining deleteSessionsWithDomainIdentifiers:allObjects bundleID:identifierCopy];
 
   v20 = +[SGDPluginManager sharedInstance];
   v25[0] = MEMORY[0x277D85DD0];
@@ -4160,12 +4160,12 @@ void __78__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_compl
   v25[2] = __96__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_domainIdentifiers_completion___block_invoke;
   v25[3] = &unk_27894BB58;
   v26 = v10;
-  v27 = v8;
-  v28 = v9;
-  v21 = v9;
-  v22 = v8;
+  v27 = identifierCopy;
+  v28 = completionCopy;
+  v21 = completionCopy;
+  v22 = identifierCopy;
   v23 = v10;
-  [v20 deleteSpotlightReferencesWithBundleIdentifier:v22 domainIdentifiers:v18 completion:v25];
+  [v20 deleteSpotlightReferencesWithBundleIdentifier:v22 domainIdentifiers:allObjects completion:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -4192,31 +4192,31 @@ void __96__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_domai
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5
+- (void)deleteSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(SGSqlEntityStore *)self->_harvestStore deleteSpotlightReferencesWithBundleIdentifier:v8 uniqueIdentifiers:v9];
-  if ([v8 isEqualToString:*MEMORY[0x277D021D0]])
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  [(SGSqlEntityStore *)self->_harvestStore deleteSpotlightReferencesWithBundleIdentifier:identifierCopy uniqueIdentifiers:identifiersCopy];
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D021D0]])
   {
     [(SGDSuggestManager *)self clearContactAggregator];
   }
 
-  v11 = [(SGDSuggestManager *)self _pmlTraining];
-  [v11 deleteSessionsWithIdentifiers:v9 bundleID:v8];
+  _pmlTraining = [(SGDSuggestManager *)self _pmlTraining];
+  [_pmlTraining deleteSessionsWithIdentifiers:identifiersCopy bundleID:identifierCopy];
 
   v12 = +[SGDPluginManager sharedInstance];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __96__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_uniqueIdentifiers_completion___block_invoke;
   v16[3] = &unk_27894BB58;
-  v17 = v9;
-  v18 = v8;
-  v19 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v17 = identifiersCopy;
+  v18 = identifierCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  v15 = identifiersCopy;
   [v12 deleteSpotlightReferencesWithBundleIdentifier:v14 uniqueIdentifiers:v15 completion:v16];
 }
 
@@ -4242,14 +4242,14 @@ void __96__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_uniqu
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4 completion:(id)a5
+- (void)purgeSpotlightReferencesWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:v8])
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if ([MEMORY[0x277D41DF8] shouldAdmitContentFromBundleIdentifier:identifierCopy])
   {
-    [(SGSqlEntityStore *)self->_harvestStore markLostSpotlightReferencesWithBundleIdentifier:v8 uniqueIdentifiers:v9];
+    [(SGSqlEntityStore *)self->_harvestStore markLostSpotlightReferencesWithBundleIdentifier:identifierCopy uniqueIdentifiers:identifiersCopy];
   }
 
   v11 = +[SGDPluginManager sharedInstance];
@@ -4257,12 +4257,12 @@ void __96__SGDSuggestManager_deleteSpotlightReferencesWithBundleIdentifier_uniqu
   v15[1] = 3221225472;
   v15[2] = __95__SGDSuggestManager_purgeSpotlightReferencesWithBundleIdentifier_uniqueIdentifiers_completion___block_invoke;
   v15[3] = &unk_27894BB58;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = identifiersCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = identifiersCopy;
   [v11 purgeSpotlightReferencesWithBundleIdentifier:v13 uniqueIdentifiers:v14 completion:v15];
 }
 
@@ -4288,18 +4288,18 @@ void __95__SGDSuggestManager_purgeSpotlightReferencesWithBundleIdentifier_unique
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)spotlightReimportFromIdentifier:(id)a3 forPersonHandle:(id)a4 startDate:(id)a5 endDate:(id)a6 completion:(id)a7
+- (void)spotlightReimportFromIdentifier:(id)identifier forPersonHandle:(id)handle startDate:(id)date endDate:(id)endDate completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  completionCopy = completion;
+  endDateCopy = endDate;
+  dateCopy = date;
+  handleCopy = handle;
+  identifierCopy = identifier;
   v16 = +[SGDSpotlightCommander sharedInstance];
-  [v16 requestReimportFromIdentifier:v15 forPersonHandle:v14 startDate:v13 endDate:v12];
+  [v16 requestReimportFromIdentifier:identifierCopy forPersonHandle:handleCopy startDate:dateCopy endDate:endDateCopy];
 
   v17 = objc_opt_new();
-  v11[2](v11, v17);
+  completionCopy[2](completionCopy, v17);
 }
 
 - (void)registerForCoreSpotlightIndexing
@@ -4309,11 +4309,11 @@ void __95__SGDSuggestManager_purgeSpotlightReferencesWithBundleIdentifier_unique
   [v3 setIndexDelegate:harvestStore];
 }
 
-- (void)_processReservationInteractions:(id)a3 bundleId:(id)a4 completion:(id)a5
+- (void)_processReservationInteractions:(id)interactions bundleId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionsCopy = interactions;
+  idCopy = id;
+  completionCopy = completion;
   if (_processReservationInteractions_bundleId_completion___pasOnceToken163 != -1)
   {
     dispatch_once(&_processReservationInteractions_bundleId_completion___pasOnceToken163, &__block_literal_global_760);
@@ -4324,13 +4324,13 @@ void __95__SGDSuggestManager_purgeSpotlightReferencesWithBundleIdentifier_unique
   v16[1] = 3221225472;
   v16[2] = __73__SGDSuggestManager__processReservationInteractions_bundleId_completion___block_invoke_2;
   v16[3] = &unk_27894E090;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v20 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = interactionsCopy;
+  v18 = idCopy;
+  selfCopy = self;
+  v20 = completionCopy;
+  v12 = completionCopy;
+  v13 = idCopy;
+  v14 = interactionsCopy;
   v15 = v11;
   dispatch_async(v15, v16);
 }
@@ -4520,12 +4520,12 @@ void __73__SGDSuggestManager__processReservationInteractions_bundleId_completion
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)_harvestReservationsFromInteractions:(id)a3 bundleId:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)_harvestReservationsFromInteractions:(id)interactions bundleId:(id)id queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  interactionsCopy = interactions;
+  idCopy = id;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = self->_bufferedInteractionsForBundleLock;
   v27 = 0;
   v28 = &v27;
@@ -4535,9 +4535,9 @@ void __73__SGDSuggestManager__processReservationInteractions_bundleId_completion
   v23[1] = 3221225472;
   v23[2] = __84__SGDSuggestManager__harvestReservationsFromInteractions_bundleId_queue_completion___block_invoke;
   v23[3] = &unk_278950C08;
-  v15 = v10;
+  v15 = interactionsCopy;
   v24 = v15;
-  v16 = v11;
+  v16 = idCopy;
   v25 = v16;
   v26 = &v27;
   [(_PASLock *)v14 runWithLockAcquired:v23];
@@ -4550,14 +4550,14 @@ void __73__SGDSuggestManager__processReservationInteractions_bundleId_completion
     v18[3] = &unk_278955E58;
     v22 = &v27;
     v19 = v14;
-    v20 = self;
-    v21 = v13;
-    [v17 runAsyncOnQueue:v12 afterDelaySeconds:v18 block:0.2];
+    selfCopy = self;
+    v21 = completionCopy;
+    [v17 runAsyncOnQueue:queueCopy afterDelaySeconds:v18 block:0.2];
   }
 
   else
   {
-    v13[2](v13);
+    completionCopy[2](completionCopy);
   }
 
   _Block_object_dispose(&v27, 8);
@@ -4765,19 +4765,19 @@ void __84__SGDSuggestManager__harvestReservationsFromInteractions_bundleId_queue
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_harvestPeopleFromInteractions:(id)a3 bundleId:(id)a4
+- (BOOL)_harvestPeopleFromInteractions:(id)interactions bundleId:(id)id
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v32 = a4;
-  if (([v32 hasPrefix:@"com.apple."] & 1) == 0)
+  interactionsCopy = interactions;
+  idCopy = id;
+  if (([idCopy hasPrefix:@"com.apple."] & 1) == 0)
   {
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v27 = v6;
-    obj = v6;
+    v27 = interactionsCopy;
+    obj = interactionsCopy;
     v30 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (!v30)
     {
@@ -4801,15 +4801,15 @@ void __84__SGDSuggestManager__harvestReservationsFromInteractions_bundleId_queue
         v10 = sgLogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v9 identifier];
+          identifier = [v9 identifier];
           *buf = 138412546;
-          v43 = v11;
+          v43 = identifier;
           v44 = 2112;
-          v45 = v32;
+          v45 = idCopy;
           _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: _harvestPeopleFromInteractions: harvesting from %@ %@", buf, 0x16u);
         }
 
-        v12 = [SGParsedPersonFromInteraction parseInteraction:v9 bundleId:v32];
+        v12 = [SGParsedPersonFromInteraction parseInteraction:v9 bundleId:idCopy];
         v33 = 0u;
         v34 = 0u;
         v35 = 0u;
@@ -4831,32 +4831,32 @@ void __84__SGDSuggestManager__harvestReservationsFromInteractions_bundleId_queue
 
               v17 = *(*(&v33 + 1) + 8 * v16);
               [v17 grabNameIfNeededFromContactStore:self->_contactStore];
-              v18 = [v17 socialProfile];
-              if (v18)
+              socialProfile = [v17 socialProfile];
+              if (socialProfile)
               {
                 goto LABEL_15;
               }
 
-              v19 = [v17 displayName];
+              displayName = [v17 displayName];
 
-              if (!v19)
+              if (!displayName)
               {
                 goto LABEL_16;
               }
 
-              v18 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789@"];
-              v20 = [v17 displayName];
-              v21 = [v20 rangeOfCharacterFromSet:v18];
+              socialProfile = [MEMORY[0x277CCA900] characterSetWithCharactersInString:@"0123456789@"];
+              displayName2 = [v17 displayName];
+              v21 = [displayName2 rangeOfCharacterFromSet:socialProfile];
 
               if (v21 == 0x7FFFFFFFFFFFFFFFLL)
               {
 LABEL_15:
 
 LABEL_16:
-                v18 = [v17 pipelineEntity];
-                if (v18)
+                socialProfile = [v17 pipelineEntity];
+                if (socialProfile)
                 {
-                  [(SGSqlEntityStore *)self->_harvestStore writeEntity:v18];
+                  [(SGSqlEntityStore *)self->_harvestStore writeEntity:socialProfile];
                   ++v7;
                 }
 
@@ -4867,7 +4867,7 @@ LABEL_16:
               if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412290;
-                v43 = v32;
+                v43 = idCopy;
                 _os_log_impl(&dword_231E60000, v22, OS_LOG_TYPE_INFO, "Interaction from %@ rejected. Display name is very likely a phone-number or email address.", buf, 0xCu);
               }
 
@@ -4905,7 +4905,7 @@ LABEL_18:
       {
 LABEL_32:
 
-        v6 = v27;
+        interactionsCopy = v27;
         break;
       }
     }
@@ -4915,11 +4915,11 @@ LABEL_32:
   return 1;
 }
 
-- (void)addInteractions:(id)a3 bundleId:(id)a4 completion:(id)a5
+- (void)addInteractions:(id)interactions bundleId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionsCopy = interactions;
+  idCopy = id;
+  completionCopy = completion;
   if (addInteractions_bundleId_completion___pasOnceToken153 != -1)
   {
     dispatch_once(&addInteractions_bundleId_completion___pasOnceToken153, &__block_literal_global_744);
@@ -4930,15 +4930,15 @@ LABEL_32:
   block[1] = 3221225472;
   block[2] = __57__SGDSuggestManager_addInteractions_bundleId_completion___block_invoke_2;
   block[3] = &unk_27894E040;
-  v17 = v9;
-  v18 = v8;
+  v17 = idCopy;
+  v18 = interactionsCopy;
   v20 = v11;
-  v21 = v10;
-  v19 = self;
+  v21 = completionCopy;
+  selfCopy = self;
   v12 = v11;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v13 = completionCopy;
+  v14 = interactionsCopy;
+  v15 = idCopy;
   dispatch_async(v12, block);
 }
 
@@ -5021,16 +5021,16 @@ void __57__SGDSuggestManager_addInteractions_bundleId_completion___block_invoke(
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)addSearchableItems:(id)a3 completion:(id)a4
+- (void)addSearchableItems:(id)items completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__SGDSuggestManager_addSearchableItems_completion___block_invoke;
   v8[3] = &unk_27894BB30;
-  v9 = v6;
-  v7 = v6;
-  [(SGDSuggestManager *)self enqueueSearchableItems:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(SGDSuggestManager *)self enqueueSearchableItems:items completion:v8];
 }
 
 void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64_t a1)
@@ -5040,11 +5040,11 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)addSearchableItemMetadata:(id)a3 htmlData:(id)a4 completion:(id)a5
+- (void)addSearchableItemMetadata:(id)metadata htmlData:(id)data completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [MEMORY[0x277D41E30] deserializeAttributes:a3 andBody:a4];
+  completionCopy = completion;
+  v9 = [MEMORY[0x277D41E30] deserializeAttributes:metadata andBody:data];
   if (v9)
   {
     v10 = [MEMORY[0x277D41E08] searchableItemIsEligibleForHarvesting:v9 eligibleExceptForAge:0];
@@ -5054,29 +5054,29 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v13 = [v9 uniqueIdentifier];
+        uniqueIdentifier = [v9 uniqueIdentifier];
         *buf = 138412290;
-        v22 = v13;
+        v22 = uniqueIdentifier;
         _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_INFO, "SGDSuggestManager: addSearchableItemMetadata: %@ is eligible for harvesting.", buf, 0xCu);
       }
 
       v20 = v9;
-      v14 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
-      [(SGDSuggestManager *)self addSearchableItems:v14 completion:v8];
+      response = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
+      [(SGDSuggestManager *)self addSearchableItems:response completion:completionCopy];
     }
 
     else
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v9 uniqueIdentifier];
+        uniqueIdentifier2 = [v9 uniqueIdentifier];
         *buf = 138412290;
-        v22 = v18;
+        v22 = uniqueIdentifier2;
         _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: addSearchableItemMetadata: %@ is NOT eligible for harvesting.", buf, 0xCu);
       }
 
-      v14 = [MEMORY[0x277D02130] response];
-      v8[2](v8, v14);
+      response = [MEMORY[0x277D02130] response];
+      completionCopy[2](completionCopy, response);
     }
   }
 
@@ -5090,31 +5090,31 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
     }
 
     v16 = MEMORY[0x277D02130];
-    v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:12 userInfo:0];
-    v17 = [v16 responseWithError:v14];
-    v8[2](v8, v17);
+    response = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:12 userInfo:0];
+    v17 = [v16 responseWithError:response];
+    completionCopy[2](completionCopy, v17);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueSearchableItems:(id)a3 completion:(id)a4
+- (void)enqueueSearchableItems:(id)items completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  itemsCopy = items;
+  completionCopy = completion;
+  v8 = [itemsCopy count];
   if (v8)
   {
     v20 = v8;
-    v21 = v7;
+    v21 = completionCopy;
     [SGDPowerLog startIngestOfMessages:v8];
     v9 = [[SGRequestContext alloc] initWithServiceContext:self->_context concurrencyBehavior:1 backpressureHazard:0];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    obj = v6;
+    obj = itemsCopy;
     v10 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
@@ -5147,25 +5147,25 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
     [(SGSqlEntityStore *)self->_harvestStore incStatsCounterWithKey:@"enqueued_items" byValue:v20];
     [SGDPowerLog endIngestOfMessages:v20];
 
-    v7 = v21;
+    completionCopy = v21;
   }
 
   v18 = objc_opt_new();
-  v7[2](v7, v18);
+  completionCopy[2](completionCopy, v18);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSearchableItemPartOfReimportWithGetterBlock:(id)a3 bundleIdentifier:(id)a4
+- (BOOL)isSearchableItemPartOfReimportWithGetterBlock:(id)block bundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SGSqlEntityStore *)self->_harvestStore reimportRequestsContainBundleIdentifier:v7 uniqueIdentifier:0])
+  blockCopy = block;
+  identifierCopy = identifier;
+  if ([(SGSqlEntityStore *)self->_harvestStore reimportRequestsContainBundleIdentifier:identifierCopy uniqueIdentifier:0])
   {
     harvestStore = self->_harvestStore;
-    v9 = v6[2](v6);
-    v10 = [v9 uniqueIdentifier];
-    v11 = [(SGSqlEntityStore *)harvestStore reimportRequestsContainBundleIdentifier:v7 uniqueIdentifier:v10];
+    v9 = blockCopy[2](blockCopy);
+    uniqueIdentifier = [v9 uniqueIdentifier];
+    v11 = [(SGSqlEntityStore *)harvestStore reimportRequestsContainBundleIdentifier:identifierCopy uniqueIdentifier:uniqueIdentifier];
   }
 
   else
@@ -5176,135 +5176,135 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
   return v11;
 }
 
-- (BOOL)isSearchableItemPartOfReimport:(id)a3
+- (BOOL)isSearchableItemPartOfReimport:(id)reimport
 {
   harvestStore = self->_harvestStore;
-  v4 = a3;
-  v5 = [v4 bundleID];
-  v6 = [v4 uniqueIdentifier];
+  reimportCopy = reimport;
+  bundleID = [reimportCopy bundleID];
+  uniqueIdentifier = [reimportCopy uniqueIdentifier];
 
-  LOBYTE(harvestStore) = [(SGSqlEntityStore *)harvestStore reimportRequestsContainBundleIdentifier:v5 uniqueIdentifier:v6];
+  LOBYTE(harvestStore) = [(SGSqlEntityStore *)harvestStore reimportRequestsContainBundleIdentifier:bundleID uniqueIdentifier:uniqueIdentifier];
   return harvestStore;
 }
 
-- (void)reportMailIntelligenceFollowUpUserEngagement:(int64_t)a3 forStringFromFollowUpWarning:(id)a4 withCompletion:(id)a5
+- (void)reportMailIntelligenceFollowUpUserEngagement:(int64_t)engagement forStringFromFollowUpWarning:(id)warning withCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  warningCopy = warning;
+  completionCopy = completion;
   v9 = sgMailIntelligenceLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:engagement];
     v15 = 138412547;
     v16 = v10;
     v17 = 2117;
-    v18 = v7;
+    v18 = warningCopy;
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_DEFAULT, "Suggestions received feedback %@ for StringFromFollowUpWarning %{sensitive}@.", &v15, 0x16u);
   }
 
-  v11 = [objc_alloc(MEMORY[0x277D02018]) initWithString:v7];
+  v11 = [objc_alloc(MEMORY[0x277D02018]) initWithString:warningCopy];
   v12 = sgMailIntelligenceLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138740227;
-    v16 = v7;
+    v16 = warningCopy;
     v17 = 2117;
     v18 = v11;
     _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEFAULT, "FollowUpFeedback: for StringFromFollowUpWarning %{sensitive}@ for warning %{sensitive}@", &v15, 0x16u);
   }
 
-  [SGMIFollowUpAnalyzer reportUserEngagement:a3 forWarning:v11];
+  [SGMIFollowUpAnalyzer reportUserEngagement:engagement forWarning:v11];
   v13 = [MEMORY[0x277D02138] responseWith:&unk_284749260];
-  v8[2](v8, v13);
+  completionCopy[2](completionCopy, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)identifyFollowUpWarningFromSubject:(id)a3 body:(id)a4 date:(id)a5 withCompletion:(id)a6
+- (void)identifyFollowUpWarningFromSubject:(id)subject body:(id)body date:(id)date withCompletion:(id)completion
 {
-  v9 = a6;
-  v11 = [SGMIFollowUpAnalyzer identifyFollowUpWarningFromSubject:a3 body:a4 date:a5];
+  completionCopy = completion;
+  v11 = [SGMIFollowUpAnalyzer identifyFollowUpWarningFromSubject:subject body:body date:date];
   v10 = [MEMORY[0x277D02138] responseWith:v11];
-  v9[2](v9, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)identifyComposeWarningsFromSubject:(id)a3 content:(id)a4 attributes:(id)a5 toRecipients:(id)a6 ccRecipients:(id)a7 bccRecipients:(id)a8 originalToRecipients:(id)a9 originalCcRecipients:(id)a10 attachments:(id)a11 withCompletion:(id)a12
+- (void)identifyComposeWarningsFromSubject:(id)subject content:(id)content attributes:(id)attributes toRecipients:(id)recipients ccRecipients:(id)ccRecipients bccRecipients:(id)bccRecipients originalToRecipients:(id)toRecipients originalCcRecipients:(id)self0 attachments:(id)self1 withCompletion:(id)self2
 {
-  v18 = a12;
-  v20 = [SGMIOmissionAnalyzer identifyComposeWarningsFromSubject:a3 content:a4 attributes:a5 toRecipients:a6 ccRecipients:a7 bccRecipients:a8 originalToRecipients:a9 originalCcRecipients:a10 attachments:a11];
+  completionCopy = completion;
+  v20 = [SGMIOmissionAnalyzer identifyComposeWarningsFromSubject:subject content:content attributes:attributes toRecipients:recipients ccRecipients:ccRecipients bccRecipients:bccRecipients originalToRecipients:toRecipients originalCcRecipients:originalCcRecipients attachments:attachments];
   v19 = [MEMORY[0x277D02138] responseWith:v20];
-  v18[2](v18, v19);
+  completionCopy[2](completionCopy, v19);
 }
 
-- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)a3 limit:(unint64_t)a4 withCompletion:(id)a5
+- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)field limit:(unint64_t)limit withCompletion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v8 = a5;
-  v10 = [(SGSqlEntityStore *)harvestStore sortedUnsubscriptionOpportunitiesForField:a3 limit:a4];
+  completionCopy = completion;
+  v10 = [(SGSqlEntityStore *)harvestStore sortedUnsubscriptionOpportunitiesForField:field limit:limit];
   v9 = [MEMORY[0x277D02138] responseWith:v10];
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)a3 minCount:(unint64_t)a4 minScore:(double)a5 limit:(unint64_t)a6 withCompletion:(id)a7
+- (void)sortedUnsubscriptionOpportunitiesForField:(int64_t)field minCount:(unint64_t)count minScore:(double)score limit:(unint64_t)limit withCompletion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v12 = a7;
-  v14 = [(SGSqlEntityStore *)harvestStore sortedUnsubscriptionOpportunitiesForField:a3 minCount:a4 minScore:a6 limit:a5];
+  completionCopy = completion;
+  v14 = [(SGSqlEntityStore *)harvestStore sortedUnsubscriptionOpportunitiesForField:field minCount:count minScore:limit limit:score];
   v13 = [MEMORY[0x277D02138] responseWith:v14];
-  v12[2](v12, v13);
+  completionCopy[2](completionCopy, v13);
 }
 
-- (void)preventUnsubscriptionOpportunitiesSuggestionsForField:(int64_t)a3 toValues:(id)a4 withCompletion:(id)a5
+- (void)preventUnsubscriptionOpportunitiesSuggestionsForField:(int64_t)field toValues:(id)values withCompletion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v8 = a5;
-  [(SGSqlEntityStore *)harvestStore preventUnsubscriptionOpportunitiesSuggestionsForField:a3 toValues:a4];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore preventUnsubscriptionOpportunitiesSuggestionsForField:field toValues:values];
   v9 = objc_opt_new();
-  v8[2](v8, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (void)topSalienciesForMailboxId:(id)a3 limit:(int64_t)a4 withCompletion:(id)a5
+- (void)topSalienciesForMailboxId:(id)id limit:(int64_t)limit withCompletion:(id)completion
 {
-  v15 = a3;
+  idCopy = id;
   harvestStore = self->_harvestStore;
-  v9 = a5;
-  v10 = [(SGSqlEntityStore *)harvestStore topSalienciesForMailboxId:v15 limit:a4];
-  if (v15)
+  completionCopy = completion;
+  v10 = [(SGSqlEntityStore *)harvestStore topSalienciesForMailboxId:idCopy limit:limit];
+  if (idCopy)
   {
     v11 = +[SGSqlEntityStore defaultStore];
-    [v11 setNSString:v15 forKey:@"lastMailboxCheckedForTopSGMISaliency"];
+    [v11 setNSString:idCopy forKey:@"lastMailboxCheckedForTopSGMISaliency"];
 
     v12 = +[SGSqlEntityStore defaultStore];
-    v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v13 = [MEMORY[0x277CCABB0] numberWithInteger:limit];
     [v12 setInt64NSNumber:v13 forKey:@"lastLimitCheckedForTopSGMISaliency"];
   }
 
   v14 = [MEMORY[0x277D02138] responseWith:v10];
-  v9[2](v9, v14);
+  completionCopy[2](completionCopy, v14);
 }
 
-- (void)saliencyFromEmailHeaders:(id)a3 withCompletion:(id)a4
+- (void)saliencyFromEmailHeaders:(id)headers withCompletion:(id)completion
 {
   v45[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v35 = a4;
+  headersCopy = headers;
+  completionCopy = completion;
   v44[0] = @"message-id";
-  v6 = [v5 messageId];
-  v45[0] = v6;
+  messageId = [headersCopy messageId];
+  v45[0] = messageId;
   v44[1] = @"subject";
-  v7 = [v5 subject];
-  v45[1] = v7;
+  subject = [headersCopy subject];
+  v45[1] = subject;
   v44[2] = @"from";
-  v8 = [v5 from];
-  v9 = [v8 _pas_componentsJoinedByString:{@", "}];
+  from = [headersCopy from];
+  v9 = [from _pas_componentsJoinedByString:{@", "}];
   v45[2] = v9;
   v44[3] = @"to";
-  v10 = [v5 to];
+  v10 = [headersCopy to];
   v11 = [v10 _pas_componentsJoinedByString:{@", "}];
   v45[3] = v11;
   v44[4] = @"cc";
-  v12 = [v5 cc];
+  v12 = [headersCopy cc];
   v13 = [v12 _pas_componentsJoinedByString:{@", "}];
   v45[4] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:v44 count:5];
@@ -5346,9 +5346,9 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
 
   v24 = [SGSimpleMailMessage simpleMailMessageFromHeaders:v15];
   v25 = [SGMIFeatureVector alloc];
-  v26 = [v24 messageId];
+  messageId2 = [v24 messageId];
   v27 = +[SGSqlEntityStore defaultStore];
-  v28 = [(SGMIFeatureVector *)v25 initWithMessageId:v26 hasHashedMessageId:0 simpleMailMessage:v24 senderConnectionScore:&unk_284749DE8 biomeMessageSummary:0 store:v27 preLoadedFeatureNames:MEMORY[0x277CBEBF8]];
+  v28 = [(SGMIFeatureVector *)v25 initWithMessageId:messageId2 hasHashedMessageId:0 simpleMailMessage:v24 senderConnectionScore:&unk_284749DE8 biomeMessageSummary:0 store:v27 preLoadedFeatureNames:MEMORY[0x277CBEBF8]];
 
   v29 = +[SGMISaliencyModelConfig defaultConfig];
   v36 = 0;
@@ -5367,20 +5367,20 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
   }
 
   v33 = [MEMORY[0x277D02138] responseWith:v30];
-  v35[2](v35, v33);
+  completionCopy[2](completionCopy, v33);
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saliencyFromRFC822Data:(id)a3 withCompletion:(id)a4
+- (void)saliencyFromRFC822Data:(id)data withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [SGSimpleMailMessage parseRfc822:a3];
+  completionCopy = completion;
+  v6 = [SGSimpleMailMessage parseRfc822:data];
   v7 = [SGMIFeatureVector alloc];
-  v8 = [v6 messageId];
+  messageId = [v6 messageId];
   v9 = +[SGSqlEntityStore defaultStore];
-  v10 = [(SGMIFeatureVector *)v7 initWithMessageId:v8 hasHashedMessageId:0 simpleMailMessage:v6 senderConnectionScore:&unk_284749DE8 biomeMessageSummary:0 store:v9 preLoadedFeatureNames:MEMORY[0x277CBEBF8]];
+  v10 = [(SGMIFeatureVector *)v7 initWithMessageId:messageId hasHashedMessageId:0 simpleMailMessage:v6 senderConnectionScore:&unk_284749DE8 biomeMessageSummary:0 store:v9 preLoadedFeatureNames:MEMORY[0x277CBEBF8]];
 
   v11 = +[SGMISaliencyModelConfig defaultConfig];
   v17 = 0;
@@ -5399,22 +5399,22 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
   }
 
   v15 = [MEMORY[0x277D02138] responseWith:v12];
-  v5[2](v5, v15);
+  completionCopy[2](completionCopy, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evaluateRecipe:(id)a3 attachments:(id)a4 completion:(id)a5
+- (void)evaluateRecipe:(id)recipe attachments:(id)attachments completion:(id)completion
 {
   v7 = MEMORY[0x277D41F88];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  attachmentsCopy = attachments;
+  recipeCopy = recipe;
   v11 = +[SGPaths suggestionsDirectory];
   v12 = [v7 sharedSingletonWithDirectory:v11];
 
   v16 = 0;
-  v13 = [v12 planReceivedWithRecipe:v10 attachments:v9 error:&v16];
+  v13 = [v12 planReceivedWithRecipe:recipeCopy attachments:attachmentsCopy error:&v16];
 
   v14 = v16;
   if (v14)
@@ -5427,19 +5427,19 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
     [MEMORY[0x277D02138] responseWith:v13];
   }
   v15 = ;
-  v8[2](v8, v15);
+  completionCopy[2](completionCopy, v15);
 }
 
-- (void)planReceivedFromServerWithPayload:(id)a3 completion:(id)a4
+- (void)planReceivedFromServerWithPayload:(id)payload completion:(id)completion
 {
   v5 = MEMORY[0x277D41F88];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  payloadCopy = payload;
   v8 = +[SGPaths suggestionsDirectory];
   v9 = [v5 sharedSingletonWithDirectory:v8];
 
   v13 = 0;
-  v10 = [v9 planReceivedWithPayload:v7 error:&v13];
+  v10 = [v9 planReceivedWithPayload:payloadCopy error:&v13];
 
   v11 = v13;
   if (v11)
@@ -5452,19 +5452,19 @@ void __51__SGDSuggestManager_addSearchableItems_completion___block_invoke(uint64
     [MEMORY[0x277D02138] responseWith:v10];
   }
   v12 = ;
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)sendRTCLogsWithCompletion:(id)a3
+- (void)sendRTCLogsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SGRTCLogging defaultLogger];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke;
   v6[3] = &unk_27894BAB8;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 sendRTCLogsWithCompletion:v6];
 }
 
@@ -5486,71 +5486,71 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
   }
 }
 
-- (void)predictedCCEmailAddressesWithToAddresses:(id)a3 ccAddresses:(id)a4 fromAddress:(id)a5 date:(double)a6 bounds:(id)a7 completion:(id)a8
+- (void)predictedCCEmailAddressesWithToAddresses:(id)addresses ccAddresses:(id)ccAddresses fromAddress:(id)address date:(double)date bounds:(id)bounds completion:(id)completion
 {
   v9 = MEMORY[0x277D02138];
-  v10 = a8;
+  completionCopy = completion;
   v11 = [v9 responseWith:MEMORY[0x277CBEBF8]];
-  (*(a8 + 2))(v10, v11);
+  (*(completion + 2))(completionCopy, v11);
 }
 
-- (void)predictedToEmailAddressesWithToAddresses:(id)a3 ccAddresses:(id)a4 fromAddress:(id)a5 date:(double)a6 bounds:(id)a7 completion:(id)a8
+- (void)predictedToEmailAddressesWithToAddresses:(id)addresses ccAddresses:(id)ccAddresses fromAddress:(id)address date:(double)date bounds:(id)bounds completion:(id)completion
 {
   v9 = MEMORY[0x277D02138];
-  v10 = a8;
+  completionCopy = completion;
   v11 = [v9 responseWith:MEMORY[0x277CBEBF8]];
-  (*(a8 + 2))(v10, v11);
+  (*(completion + 2))(completionCopy, v11);
 }
 
-- (void)rebuildNamesForDetailCache:(id)a3
+- (void)rebuildNamesForDetailCache:(id)cache
 {
   harvestStore = self->_harvestStore;
-  v4 = a3;
+  cacheCopy = cache;
   [(SGSqlEntityStore *)harvestStore rebuildContactDetailsCacheWithShouldContinueBlock:&__block_literal_global_722];
   v5 = objc_opt_new();
-  v4[2](v4, v5);
+  cacheCopy[2](cacheCopy, v5);
 }
 
-- (void)resetConfirmationAndRejectionHistory:(id)a3
+- (void)resetConfirmationAndRejectionHistory:(id)history
 {
   history = self->_history;
-  v4 = a3;
+  historyCopy = history;
   [(SGSuggestHistory *)history reset];
   v5 = objc_opt_new();
-  v4[2](v4, v5);
+  historyCopy[2](historyCopy, v5);
 }
 
-- (void)rejectContact:(id)a3 confirmRejectUI:(int)a4 completion:(id)a5
+- (void)rejectContact:(id)contact confirmRejectUI:(int)i completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   harvestStore = self->_harvestStore;
   v20 = 0;
-  [(SGSqlEntityStore *)harvestStore rejectRealtimeContact:v8 error:&v20];
+  [(SGSqlEntityStore *)harvestStore rejectRealtimeContact:contactCopy error:&v20];
   v11 = v20;
-  [SGAggregateLogging contactRejected:v8 inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
+  [SGAggregateLogging contactRejected:contactCopy inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
   v12 = MEMORY[0x277D020F8];
-  v13 = [(SGDSuggestManager *)self clientIsMail];
+  clientIsMail = [(SGDSuggestManager *)self clientIsMail];
   v14 = MEMORY[0x277D02210];
-  if (!v13)
+  if (!clientIsMail)
   {
     v14 = MEMORY[0x277D02218];
   }
 
-  if (a4 > 4)
+  if (i > 4)
   {
     v15 = 2;
   }
 
   else
   {
-    v15 = dword_232106DF0[a4];
+    v15 = dword_232106DF0[i];
   }
 
-  [v12 recordRejectedContact:v8 inApp:*v14 rejectionUI:v15 pet2Tracker:self->_pet2Tracker];
+  [v12 recordRejectedContact:contactCopy inApp:*v14 rejectionUI:v15 pet2Tracker:self->_pet2Tracker];
   v16 = +[SGDSuggestManager contactAggregator];
-  v17 = [v8 contact];
-  [v16 removeContact:v17];
+  contact = [contactCopy contact];
+  [v16 removeContact:contact];
 
   +[SGDSuggestManager clearRequestCache];
   if (v11)
@@ -5564,22 +5564,22 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
   }
 
   v19 = v18;
-  v9[2](v9, v18);
+  completionCopy[2](completionCopy, v18);
 }
 
-- (void)_performAction:(id)a3 onRecord:(id)a4 withParentConfirmation:(BOOL)a5 confirmRejectUI:(int)a6 completion:(id)a7
+- (void)_performAction:(id)action onRecord:(id)record withParentConfirmation:(BOOL)confirmation confirmRejectUI:(int)i completion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactByRecordId:v12 withSnippets:0 filterConfirmRejectDetails:0];
-  v15 = [v14 recordId];
-  v16 = [v15 isEqual:v12];
+  actionCopy = action;
+  recordCopy = record;
+  completionCopy = completion;
+  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactByRecordId:recordCopy withSnippets:0 filterConfirmRejectDetails:0];
+  recordId = [v14 recordId];
+  v16 = [recordId isEqual:recordCopy];
 
   if (v16)
   {
-    if ([v11 isEqualToString:@"confirm"])
+    if ([actionCopy isEqualToString:@"confirm"])
     {
       v17 = sgLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -5593,29 +5593,29 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
       v34 = 3221225472;
       v35 = __95__SGDSuggestManager__performAction_onRecord_withParentConfirmation_confirmRejectUI_completion___block_invoke;
       v36 = &unk_2789508E8;
-      v37 = self;
+      selfCopy = self;
       v18 = v14;
       v38 = v18;
       [v18 enumerateDetailsWithBlock:&v33];
-      [(SGSqlEntityStore *)self->_harvestStore confirmContactByRecordID:v12 error:0, v33, v34, v35, v36, v37];
+      [(SGSqlEntityStore *)self->_harvestStore confirmContactByRecordID:recordCopy error:0, v33, v34, v35, v36, selfCopy];
       [SGAggregateLogging recordConfirmedForContact:v18];
       v19 = MEMORY[0x277D020F8];
       v20 = [MEMORY[0x277D020A0] realtimeContactForNewContact:v18];
-      v21 = [(SGDSuggestManager *)self clientIsMail];
+      clientIsMail = [(SGDSuggestManager *)self clientIsMail];
       v22 = MEMORY[0x277D02210];
-      if (!v21)
+      if (!clientIsMail)
       {
         v22 = MEMORY[0x277D02218];
       }
 
-      if (a6 > 4)
+      if (i > 4)
       {
         v23 = 2;
       }
 
       else
       {
-        v23 = dword_232106DF0[a6];
+        v23 = dword_232106DF0[i];
       }
 
       [v19 recordBannerConfirmedWithContact:v20 proposedCNContact:0 confirmedCNContact:0 inApp:*v22 confirmationUI:v23 pet2Tracker:self->_pet2Tracker];
@@ -5624,25 +5624,25 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
     else
     {
       [(SGSuggestHistory *)self->_history rejectContact:v14];
-      [(SGSqlEntityStore *)self->_harvestStore rejectContactByRecordID:v12 error:0];
+      [(SGSqlEntityStore *)self->_harvestStore rejectContactByRecordID:recordCopy error:0];
       [SGAggregateLogging recordRejectedForContact:v14];
       v26 = MEMORY[0x277D020F8];
       v27 = [MEMORY[0x277D020A0] realtimeContactForNewContact:v14];
-      v28 = [(SGDSuggestManager *)self clientIsMail];
+      clientIsMail2 = [(SGDSuggestManager *)self clientIsMail];
       v29 = MEMORY[0x277D02210];
-      if (!v28)
+      if (!clientIsMail2)
       {
         v29 = MEMORY[0x277D02218];
       }
 
-      if (a6 > 4)
+      if (i > 4)
       {
         v30 = 2;
       }
 
       else
       {
-        v30 = dword_232106DF0[a6];
+        v30 = dword_232106DF0[i];
       }
 
       [v26 recordRejectedContact:v27 inApp:*v29 rejectionUI:v30 pet2Tracker:self->_pet2Tracker];
@@ -5654,99 +5654,99 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
     v24 = sgLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v14 recordId];
+      recordId2 = [v14 recordId];
       *buf = 138412546;
-      v40 = v12;
+      v40 = recordCopy;
       v41 = 2112;
-      v42 = v25;
+      v42 = recordId2;
       _os_log_impl(&dword_231E60000, v24, OS_LOG_TYPE_DEFAULT, "While confirming/rejecting contact, provided recordId was not contactId: %@ %@", buf, 0x16u);
     }
   }
 
   +[SGDSuggestManager clearRequestCache];
-  if (v13)
+  if (completionCopy)
   {
     v31 = objc_opt_new();
-    v13[2](v13, v31);
+    completionCopy[2](completionCopy, v31);
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performAction:(id)a3 onContactDetailRecord:(id)a4 confirmRejectUI:(int)a5 completion:(id)a6
+- (void)_performAction:(id)action onContactDetailRecord:(id)record confirmRejectUI:(int)i completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:v10];
+  actionCopy = action;
+  recordCopy = record;
+  completionCopy = completion;
+  v12 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:recordCopy];
   if ([v12 groupId] < 1)
   {
     if ([v12 masterEntityId] < 1)
     {
-      v13 = [v10 rowId];
+      rowId = [recordCopy rowId];
     }
 
     else
     {
-      v13 = [v12 masterEntityId];
+      rowId = [v12 masterEntityId];
     }
   }
 
   else
   {
-    v13 = [v12 groupId];
+    rowId = [v12 groupId];
   }
 
-  if (v13)
+  if (rowId)
   {
-    v14 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:v13];
+    v14 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:rowId];
     v15 = [(SGSqlEntityStore *)self->_harvestStore suggestContactByRecordId:v14 withSnippets:0 filterConfirmRejectDetails:0];
-    v16 = [v15 detailForRecordId:v10];
+    v16 = [v15 detailForRecordId:recordCopy];
     if (!v16)
     {
       v18 = sgLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v43 = v10;
+        v43 = recordCopy;
         _os_log_impl(&dword_231E60000, v18, OS_LOG_TYPE_DEFAULT, "While confirming/rejecting contact detail, requested detail not in loaded contract for record id: %@", buf, 0xCu);
       }
 
       +[SGDSuggestManager clearRequestCache];
       v19 = objc_opt_new();
-      v11[2](v11, v19);
+      completionCopy[2](completionCopy, v19);
 
       goto LABEL_31;
     }
 
     [(SGSuggestHistory *)self->_history confirmOrRejectDetail:v16 forContact:v15];
-    v39 = v9;
+    v39 = actionCopy;
     v40 = v15;
-    if ([v9 isEqualToString:@"confirm"])
+    if ([actionCopy isEqualToString:@"confirm"])
     {
-      [(SGSqlEntityStore *)self->_harvestStore confirmContactDetailByRecordID:v10 error:0];
+      [(SGSqlEntityStore *)self->_harvestStore confirmContactDetailByRecordID:recordCopy error:0];
       [SGAggregateLogging detail:v16 confirmedForContact:v15];
       v37 = 0;
     }
 
     else
     {
-      v20 = [v12 duplicateKey];
-      [v20 entityType];
+      duplicateKey = [v12 duplicateKey];
+      [duplicateKey entityType];
       IsContactDetail = SGEntityTypeIsContactDetail();
 
       if (IsContactDetail)
       {
         history = self->_history;
-        v23 = [v12 duplicateKey];
-        v24 = [v23 contactDetailKey];
-        [(SGSuggestHistory *)history rejectContactDetailKey:v24];
+        duplicateKey2 = [v12 duplicateKey];
+        contactDetailKey = [duplicateKey2 contactDetailKey];
+        [(SGSuggestHistory *)history rejectContactDetailKey:contactDetailKey];
 
         v15 = v40;
       }
 
-      [(SGSqlEntityStore *)self->_harvestStore rejectContactDetailByRecordID:v10 error:0];
+      [(SGSqlEntityStore *)self->_harvestStore rejectContactDetailByRecordID:recordCopy error:0];
       [SGAggregateLogging detail:v16 rejectedForContact:v15];
       v37 = 1;
     }
@@ -5779,28 +5779,28 @@ void __47__SGDSuggestManager_sendRTCLogsWithCompletion___block_invoke(uint64_t a
 
 LABEL_27:
 
-        v29 = [v25 extractionInfo];
-        v30 = [v29 extractionType];
-        v31 = [v25 extractionInfo];
-        v32 = [v31 modelVersion];
-        if (a5 > 4)
+        extractionInfo = [v25 extractionInfo];
+        extractionType = [extractionInfo extractionType];
+        extractionInfo2 = [v25 extractionInfo];
+        modelVersion = [extractionInfo2 modelVersion];
+        if (i > 4)
         {
           v33 = 2;
         }
 
         else
         {
-          v33 = dword_232106DF0[a5];
+          v33 = dword_232106DF0[i];
         }
 
-        [v36 recordContactDetailEngagementWithResolution:v37 detailType:v27 extractionType:v30 modelVersion:v32 confirmRejectUI:v33 pet2Tracker:{self->_pet2Tracker, v36}];
+        [v36 recordContactDetailEngagementWithResolution:v37 detailType:v27 extractionType:extractionType modelVersion:modelVersion confirmRejectUI:v33 pet2Tracker:{self->_pet2Tracker, v36}];
 
         +[SGDSuggestManager clearRequestCache];
         v34 = objc_opt_new();
-        v11[2](v11, v34);
+        completionCopy[2](completionCopy, v34);
 
         v14 = v38;
-        v9 = v39;
+        actionCopy = v39;
         v15 = v40;
 LABEL_31:
 
@@ -5818,59 +5818,59 @@ LABEL_31:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v43 = v10;
+    v43 = recordCopy;
     _os_log_impl(&dword_231E60000, v17, OS_LOG_TYPE_DEFAULT, "While confirming/rejecting contact detail, failed to load detail for record id: %@", buf, 0xCu);
   }
 
   +[SGDSuggestManager clearRequestCache];
   v14 = objc_opt_new();
-  v11[2](v11, v14);
+  completionCopy[2](completionCopy, v14);
 LABEL_32:
 
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmContact:(id)a3 confirmRejectUI:(int)a4 completion:(id)a5
+- (void)confirmContact:(id)contact confirmRejectUI:(int)i completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v8 cnContactIdentifier];
+    cnContactIdentifier = [contactCopy cnContactIdentifier];
     *buf = 138412290;
-    v25 = v11;
+    v25 = cnContactIdentifier;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_INFO, "SGDSuggestManager-confirmContact: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v23 = 0;
-  [(SGSqlEntityStore *)harvestStore confirmRealtimeContact:v8 error:&v23];
+  [(SGSqlEntityStore *)harvestStore confirmRealtimeContact:contactCopy error:&v23];
   v13 = v23;
-  [SGAggregateLogging contactConfirmed:v8 inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
+  [SGAggregateLogging contactConfirmed:contactCopy inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
   v14 = MEMORY[0x277D020F8];
-  v15 = [(SGDSuggestManager *)self clientIsMail];
+  clientIsMail = [(SGDSuggestManager *)self clientIsMail];
   v16 = MEMORY[0x277D02210];
-  if (!v15)
+  if (!clientIsMail)
   {
     v16 = MEMORY[0x277D02218];
   }
 
-  if (a4 > 4)
+  if (i > 4)
   {
     v17 = 2;
   }
 
   else
   {
-    v17 = dword_232106DF0[a4];
+    v17 = dword_232106DF0[i];
   }
 
-  [v14 recordBannerConfirmedWithContact:v8 proposedCNContact:0 confirmedCNContact:0 inApp:*v16 confirmationUI:v17 pet2Tracker:self->_pet2Tracker];
+  [v14 recordBannerConfirmedWithContact:contactCopy proposedCNContact:0 confirmedCNContact:0 inApp:*v16 confirmationUI:v17 pet2Tracker:self->_pet2Tracker];
   v18 = +[SGDSuggestManager contactAggregator];
-  v19 = [v8 contact];
-  [v18 removeContact:v19];
+  contact = [contactCopy contact];
+  [v18 removeContact:contact];
 
   +[SGDSuggestManager clearRequestCache];
   if (v13)
@@ -5884,36 +5884,36 @@ LABEL_32:
   }
 
   v21 = v20;
-  v9[2](v9, v20);
+  completionCopy[2](completionCopy, v20);
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteEventByRecordId:(id)a3 completion:(id)a4
+- (void)deleteEventByRecordId:(id)id completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgEventsLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v6;
+    v28 = idCopy;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager - deleteEventByRecordId: event Id: (%{public}@)", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v25 = 0;
-  [(SGSqlEntityStore *)harvestStore rejectEventByRecordId:v6 error:&v25];
+  [(SGSqlEntityStore *)harvestStore rejectEventByRecordId:idCopy error:&v25];
   v10 = v25;
-  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:v6];
+  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:idCopy];
   v12 = v11;
   if (v11)
   {
     v13 = self->_harvestStore;
-    v14 = [v11 duplicateKey];
-    v15 = [v14 parentKey];
-    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:v15];
+    duplicateKey = [v11 duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:parentKey];
 
     if (v16)
     {
@@ -5926,9 +5926,9 @@ LABEL_32:
         v19 = [v18 objectAtIndexedSubscript:0];
         [SGAggregateLogging eventRejectedByRecord:v19];
 
-        v20 = [v12 duplicateKey];
-        v21 = [v20 serialize];
-        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:v21 interface:7 actionType:9];
+        duplicateKey2 = [v12 duplicateKey];
+        serialize = [duplicateKey2 serialize];
+        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:serialize interface:7 actionType:9];
       }
     }
   }
@@ -5945,36 +5945,36 @@ LABEL_32:
   }
 
   v23 = v22;
-  v7[2](v7, v22);
+  completionCopy[2](completionCopy, v22);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rejectEventByRecordId:(id)a3 completion:(id)a4
+- (void)rejectEventByRecordId:(id)id completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = idCopy;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "SGDSuggestManager-rejectEventByRecordId: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v25 = 0;
-  [(SGSqlEntityStore *)harvestStore rejectEventByRecordId:v6 error:&v25];
+  [(SGSqlEntityStore *)harvestStore rejectEventByRecordId:idCopy error:&v25];
   v10 = v25;
-  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:v6];
+  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:idCopy];
   v12 = v11;
   if (v11)
   {
     v13 = self->_harvestStore;
-    v14 = [v11 duplicateKey];
-    v15 = [v14 parentKey];
-    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:v15];
+    duplicateKey = [v11 duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:parentKey];
 
     if (v16)
     {
@@ -5987,9 +5987,9 @@ LABEL_32:
         v19 = [v18 objectAtIndexedSubscript:0];
         [SGAggregateLogging eventRejectedByRecord:v19];
 
-        v20 = [v12 duplicateKey];
-        v21 = [v20 serialize];
-        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:v21 interface:7 actionType:7];
+        duplicateKey2 = [v12 duplicateKey];
+        serialize = [duplicateKey2 serialize];
+        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:serialize interface:7 actionType:7];
       }
     }
   }
@@ -6006,39 +6006,39 @@ LABEL_32:
   }
 
   v23 = v22;
-  v7[2](v7, v22);
+  completionCopy[2](completionCopy, v22);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rejectEvent:(id)a3 completion:(id)a4
+- (void)rejectEvent:(id)event completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
     *buf = 138412290;
-    v21 = v9;
+    v21 = eventIdentifier;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "SGDSuggestManager-rejectEvent: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v19 = 0;
-  [(SGSqlEntityStore *)harvestStore rejectRealtimeEvent:v6 error:&v19];
+  [(SGSqlEntityStore *)harvestStore rejectRealtimeEvent:eventCopy error:&v19];
   v11 = v19;
-  [SGAggregateLogging eventRejected:v6 inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
+  [SGAggregateLogging eventRejected:eventCopy inApp:[(SGDSuggestManager *)self clientIsMail]^ 1];
   v12 = MEMORY[0x277D020F8];
-  v13 = [(SGDSuggestManager *)self clientIsMail];
+  clientIsMail = [(SGDSuggestManager *)self clientIsMail];
   v14 = MEMORY[0x277D02210];
-  if (!v13)
+  if (!clientIsMail)
   {
     v14 = MEMORY[0x277D02218];
   }
 
-  [v12 recordBannerRejectedWithEvent:v6 inApp:*v14];
+  [v12 recordBannerRejectedWithEvent:eventCopy inApp:*v14];
   if ([(SGDSuggestManager *)self clientIsMail])
   {
     v15 = 1;
@@ -6049,7 +6049,7 @@ LABEL_32:
     v15 = 4;
   }
 
-  [(SGDSuggestManager *)self logEventInteractionForRealtimeEvent:v6 interface:v15 actionType:7];
+  [(SGDSuggestManager *)self logEventInteractionForRealtimeEvent:eventCopy interface:v15 actionType:7];
   +[SGDSuggestManager clearRequestCache];
   if (v11)
   {
@@ -6062,36 +6062,36 @@ LABEL_32:
   }
 
   v17 = v16;
-  v7[2](v7, v16);
+  completionCopy[2](completionCopy, v16);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmEventByRecordId:(id)a3 completion:(id)a4
+- (void)confirmEventByRecordId:(id)id completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = v6;
+    v28 = idCopy;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "SGDSuggestManager-confirmEventByRecordId: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v25 = 0;
-  [(SGSqlEntityStore *)harvestStore confirmEventByRecordId:v6 error:&v25];
+  [(SGSqlEntityStore *)harvestStore confirmEventByRecordId:idCopy error:&v25];
   v10 = v25;
-  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:v6];
+  v11 = [(SGSqlEntityStore *)self->_harvestStore loadEntityByRecordId:idCopy];
   v12 = v11;
   if (v11)
   {
     v13 = self->_harvestStore;
-    v14 = [v11 duplicateKey];
-    v15 = [v14 parentKey];
-    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:v15];
+    duplicateKey = [v11 duplicateKey];
+    parentKey = [duplicateKey parentKey];
+    v16 = [(SGSqlEntityStore *)v13 loadEntityByKey:parentKey];
 
     if (v16)
     {
@@ -6104,9 +6104,9 @@ LABEL_32:
         v19 = [v18 objectAtIndexedSubscript:0];
         [SGAggregateLogging eventConfirmedByRecord:v19];
 
-        v20 = [v12 duplicateKey];
-        v21 = [v20 serialize];
-        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:v21 interface:7 actionType:6];
+        duplicateKey2 = [v12 duplicateKey];
+        serialize = [duplicateKey2 serialize];
+        [(SGDSuggestManager *)self logEventInteractionForEventWithUniqueKey:serialize interface:7 actionType:6];
       }
     }
   }
@@ -6123,31 +6123,31 @@ LABEL_32:
   }
 
   v23 = v22;
-  v7[2](v7, v22);
+  completionCopy[2](completionCopy, v22);
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)confirmEvent:(id)a3 completion:(id)a4
+- (void)confirmEvent:(id)event completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
     *buf = 138412290;
-    v31 = v9;
+    v31 = eventIdentifier;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "SGDSuggestManager-confirmEvent: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v29 = 0;
-  [(SGSqlEntityStore *)harvestStore confirmRealtimeEvent:v6 error:&v29];
+  [(SGSqlEntityStore *)harvestStore confirmRealtimeEvent:eventCopy error:&v29];
   v11 = v29;
-  v12 = [(SGDSuggestManager *)self clientIsMail];
-  [SGAggregateLogging eventConfirmed:v6 inApp:!v12];
+  clientIsMail = [(SGDSuggestManager *)self clientIsMail];
+  [SGAggregateLogging eventConfirmed:eventCopy inApp:!clientIsMail];
   v13 = self->_ekStoreProvider;
   v14 = MEMORY[0x277D425A0];
   v15 = dispatch_get_global_queue(9, 0);
@@ -6157,12 +6157,12 @@ LABEL_32:
   v25 = &unk_27894BB08;
   v16 = v13;
   v26 = v16;
-  v17 = v6;
+  v17 = eventCopy;
   v27 = v17;
-  v28 = v12;
+  v28 = clientIsMail;
   [v14 runAsyncOnQueue:v15 afterDelaySeconds:&v22 block:60.0];
 
-  if (v12)
+  if (clientIsMail)
   {
     v18 = 1;
   }
@@ -6185,7 +6185,7 @@ LABEL_32:
   }
 
   v20 = v19;
-  v7[2](v7, v19);
+  completionCopy[2](completionCopy, v19);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -6227,24 +6227,24 @@ void __45__SGDSuggestManager_confirmEvent_completion___block_invoke(uint64_t a1)
   [MEMORY[0x277D020F8] recordBannerConfirmedWithEvent:*(a1 + 40) proposedEKEvent:v7 confirmedEKEvent:v5 inApp:*v8];
 }
 
-- (void)originFromRecordId:(id)a3 completion:(id)a4
+- (void)originFromRecordId:(id)id completion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v6 = a4;
-  v8 = [(SGSqlEntityStore *)harvestStore loadOriginByRecordId:a3];
+  completionCopy = completion;
+  v8 = [(SGSqlEntityStore *)harvestStore loadOriginByRecordId:id];
   v7 = [MEMORY[0x277D02138] responseWith:v8];
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)launchAppForSuggestedEventUsingLaunchInfo:(id)a3 completion:(id)a4
+- (void)launchAppForSuggestedEventUsingLaunchInfo:(id)info completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v7 = objc_alloc(MEMORY[0x277CC1E70]);
-  v8 = [v5 bundleId];
+  bundleId = [infoCopy bundleId];
   v25 = 0;
-  v9 = [v7 initWithBundleIdentifier:v8 allowPlaceholder:0 error:&v25];
+  v9 = [v7 initWithBundleIdentifier:bundleId allowPlaceholder:0 error:&v25];
   v10 = v25;
 
   if (v10)
@@ -6257,32 +6257,32 @@ void __45__SGDSuggestManager_confirmEvent_completion___block_invoke(uint64_t a1)
       _os_log_error_impl(&dword_231E60000, v11, OS_LOG_TYPE_ERROR, "SGDSuggestManager-launchAppForSuggestedEventUsingLaunchInfo: Error creating application record: %@", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x277D02130] responseWithError:v10];
-    v6[2](v6, v12);
+    defaultWorkspace = [MEMORY[0x277D02130] responseWithError:v10];
+    completionCopy[2](completionCopy, defaultWorkspace);
   }
 
   else
   {
-    v12 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v13 = [v5 intent];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    intent = [infoCopy intent];
 
-    if (v13)
+    if (intent)
     {
-      v14 = [v5 userActivity];
-      if (v14)
+      userActivity = [infoCopy userActivity];
+      if (userActivity)
       {
         v15 = objc_alloc(MEMORY[0x277CD3D58]);
-        v16 = [v5 intent];
-        v17 = [v15 initWithIntent:v16 response:0];
+        intent2 = [infoCopy intent];
+        v17 = [v15 initWithIntent:intent2 response:0];
 
         [v17 setIntentHandlingStatus:5];
-        [v14 _setInteraction:v17 donate:0];
+        [userActivity _setInteraction:v17 donate:0];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completion___block_invoke;
         v23[3] = &unk_27894BAB8;
-        v24 = v6;
-        [v12 openUserActivity:v14 usingApplicationRecord:v9 configuration:0 completionHandler:v23];
+        v24 = completionCopy;
+        [defaultWorkspace openUserActivity:userActivity usingApplicationRecord:v9 configuration:0 completionHandler:v23];
 
         v10 = 0;
       }
@@ -6291,33 +6291,33 @@ void __45__SGDSuggestManager_confirmEvent_completion___block_invoke(uint64_t a1)
       {
         v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:-1 userInfo:&unk_28474B288];
         v17 = [MEMORY[0x277D02130] responseWithError:v10];
-        v6[2](v6, v17);
+        completionCopy[2](completionCopy, v17);
       }
     }
 
     else
     {
-      v18 = [v5 sourceURL];
+      sourceURL = [infoCopy sourceURL];
 
-      if (v18)
+      if (sourceURL)
       {
-        v19 = [v5 sourceURL];
+        sourceURL2 = [infoCopy sourceURL];
         v21[0] = MEMORY[0x277D85DD0];
         v21[1] = 3221225472;
         v21[2] = __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completion___block_invoke_702;
         v21[3] = &unk_27894BAE0;
-        v22 = v6;
-        [v12 openURL:v19 configuration:0 completionHandler:v21];
+        v22 = completionCopy;
+        [defaultWorkspace openURL:sourceURL2 configuration:0 completionHandler:v21];
 
         v10 = 0;
-        v14 = v22;
+        userActivity = v22;
       }
 
       else
       {
         v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:-1 userInfo:&unk_28474B2B0];
-        v14 = [MEMORY[0x277D02130] responseWithError:v10];
-        v6[2](v6, v14);
+        userActivity = [MEMORY[0x277D02130] responseWithError:v10];
+        completionCopy[2](completionCopy, userActivity);
       }
     }
   }
@@ -6372,49 +6372,49 @@ void __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completio
   (*(v3 + 16))(v3);
 }
 
-- (void)launchInfoForSuggestedEventWithUniqueIdentifier:(id)a3 sourceURL:(id)a4 clientLocale:(id)a5 ignoreUserActivitySupport:(BOOL)a6 ignoreMailCheck:(BOOL)a7 completion:(id)a8
+- (void)launchInfoForSuggestedEventWithUniqueIdentifier:(id)identifier sourceURL:(id)l clientLocale:(id)locale ignoreUserActivitySupport:(BOOL)support ignoreMailCheck:(BOOL)check completion:(id)completion
 {
   v117 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v95 = a4;
-  v94 = a5;
-  v98 = a8;
-  if (!v13)
+  identifierCopy = identifier;
+  lCopy = l;
+  localeCopy = locale;
+  completionCopy = completion;
+  if (!identifierCopy)
   {
-    v89 = [MEMORY[0x277CCA890] currentHandler];
-    [v89 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2621 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2621 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
   }
 
   v14 = sgEventsLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager-launchInfoForSuggestedEventWithUniqueIdentifier: %@", &buf, 0xCu);
   }
 
-  if (![SGDuplicateKey serializationPassesBasicScrutiny:v13])
+  if (![SGDuplicateKey serializationPassesBasicScrutiny:identifierCopy])
   {
     v20 = MEMORY[0x277D02138];
     v99 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:0];
     v97 = [v20 responseWithError:v99];
-    v98[2](v98, v97);
+    completionCopy[2](completionCopy, v97);
     goto LABEL_106;
   }
 
-  v15 = [[SGDuplicateKey alloc] initWithSerialized:v13];
+  v15 = [[SGDuplicateKey alloc] initWithSerialized:identifierCopy];
   harvestStore = self->_harvestStore;
-  v17 = [(SGDuplicateKey *)v15 entityKey];
-  v93 = [(SGSqlEntityStore *)harvestStore loadEntitiesByEntityKey:v17 entityType:2 resolveDuplicates:&__block_literal_global_681];
+  entityKey = [(SGDuplicateKey *)v15 entityKey];
+  v93 = [(SGSqlEntityStore *)harvestStore loadEntitiesByEntityKey:entityKey entityType:2 resolveDuplicates:&__block_literal_global_681];
 
   if ([v93 count])
   {
-    v18 = [v93 lastObject];
-    v99 = [SGStorageEvent storageEventFromEntity:v18];
+    lastObject = [v93 lastObject];
+    v99 = [SGStorageEvent storageEventFromEntity:lastObject];
 
-    v19 = [v99 duplicateKey];
+    duplicateKey = [v99 duplicateKey];
 
-    v15 = v19;
+    v15 = duplicateKey;
   }
 
   else
@@ -6441,11 +6441,11 @@ void __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completio
   v104[3] = &unk_27894B8A0;
   v97 = v15;
   v105 = v97;
-  v106 = self;
+  selfCopy = self;
   p_buf = &buf;
   (v22->_callBlockWithEKEventStoreForReading)(v22, v104);
 
-  if (!(v95 | v99) && !*(*(&buf + 1) + 40))
+  if (!(lCopy | v99) && !*(*(&buf + 1) + 40))
   {
     v33 = sgEventsLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -6457,10 +6457,10 @@ void __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completio
     goto LABEL_112;
   }
 
-  v23 = [(SGDuplicateKey *)v97 parentKey];
-  v90 = [v23 entityType];
+  parentKey = [(SGDuplicateKey *)v97 parentKey];
+  entityType = [parentKey entityType];
 
-  if (!v90)
+  if (!entityType)
   {
     v33 = sgEventsLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -6472,9 +6472,9 @@ void __74__SGDSuggestManager_launchAppForSuggestedEventUsingLaunchInfo_completio
     goto LABEL_112;
   }
 
-  if (v90 != 16)
+  if (entityType != 16)
   {
-    switch(v90)
+    switch(entityType)
     {
       case 18:
         if (*(*(&buf + 1) + 40))
@@ -6488,7 +6488,7 @@ LABEL_79:
 
         break;
       case 13:
-        if (!v95 || ([v95 scheme], v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "lowercaseString"), v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isEqualToString:", @"sms"), v56, v55, !v57))
+        if (!lCopy || ([lCopy scheme], v55 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v55, "lowercaseString"), v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "isEqualToString:", @"sms"), v56, v55, !v57))
         {
           v53 = 0;
           v27 = 0;
@@ -6496,10 +6496,10 @@ LABEL_79:
           goto LABEL_87;
         }
 
-        if (!a7)
+        if (!check)
         {
-          v58 = [(NSXPCConnection *)self->_connection sgd_clientName];
-          [v58 isEqualToString:*MEMORY[0x277D021D0]];
+          sgd_clientName = [(NSXPCConnection *)self->_connection sgd_clientName];
+          [sgd_clientName isEqualToString:*MEMORY[0x277D021D0]];
         }
 
         v41 = sgEventsLogHandle();
@@ -6511,23 +6511,23 @@ LABEL_79:
 
         goto LABEL_66;
       case 5:
-        if (v95)
+        if (lCopy)
         {
-          v34 = [v95 scheme];
-          v35 = [v34 lowercaseString];
-          v36 = [v35 isEqualToString:@"message"];
+          scheme = [lCopy scheme];
+          lowercaseString = [scheme lowercaseString];
+          v36 = [lowercaseString isEqualToString:@"message"];
 
           if (v36)
           {
-            if (a7)
+            if (check)
             {
               goto LABEL_42;
             }
 
-            v37 = [(NSXPCConnection *)self->_connection sgd_clientName];
-            v38 = [v37 isEqualToString:*MEMORY[0x277D021C0]];
+            sgd_clientName2 = [(NSXPCConnection *)self->_connection sgd_clientName];
+            v38 = [sgd_clientName2 isEqualToString:*MEMORY[0x277D021C0]];
 
-            if ((v38 & 1) != 0 || (+[SGMailClientUtil sharedInstance](SGMailClientUtil, "sharedInstance"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 isMessageAvailable:v95], v39, v40))
+            if ((v38 & 1) != 0 || (+[SGMailClientUtil sharedInstance](SGMailClientUtil, "sharedInstance"), v39 = objc_claimAutoreleasedReturnValue(), v40 = [v39 isMessageAvailable:lCopy], v39, v40))
             {
 LABEL_42:
               v41 = sgEventsLogHandle();
@@ -6539,8 +6539,8 @@ LABEL_42:
 
 LABEL_66:
 
-              v50 = [MEMORY[0x277CC1E70] sg_preferredApplicationRecordForURL:v95];
-              v59 = v95;
+              v50 = [MEMORY[0x277CC1E70] sg_preferredApplicationRecordForURL:lCopy];
+              v59 = lCopy;
 LABEL_80:
               v53 = v59;
               v27 = 0;
@@ -6572,7 +6572,7 @@ LABEL_80:
 LABEL_112:
 
         v50 = [MEMORY[0x277D02138] responseWith:0];
-        v98[2](v98, v50);
+        completionCopy[2](completionCopy, v50);
         goto LABEL_105;
     }
 
@@ -6580,7 +6580,7 @@ LABEL_112:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *v109 = 134217984;
-      v110 = v90;
+      v110 = entityType;
       _os_log_impl(&dword_231E60000, v33, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager-launchInfoForSuggestedEventWithUniqueIdentifier: Can't find a bundleId for entity type: '%lld'", v109, 0xCu);
     }
 
@@ -6591,8 +6591,8 @@ LABEL_112:
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v24 = [v99 tags];
-  v25 = [v24 countByEnumeratingWithState:&v100 objects:v111 count:16];
+  tags = [v99 tags];
+  v25 = [tags countByEnumeratingWithState:&v100 objects:v111 count:16];
   if (!v25)
   {
 
@@ -6609,16 +6609,16 @@ LABEL_112:
     {
       if (*v101 != v28)
       {
-        objc_enumerationMutation(v24);
+        objc_enumerationMutation(tags);
       }
 
       v30 = *(*(&v100 + 1) + 8 * i);
       if ([v30 isIntentResponseUserActivityString])
       {
-        v31 = [v30 intentResponseUserActivityString];
-        if (v31)
+        intentResponseUserActivityString = [v30 intentResponseUserActivityString];
+        if (intentResponseUserActivityString)
         {
-          v32 = [MEMORY[0x277CC1EF0] sg_userActivityWithRequiredString:v31];
+          v32 = [MEMORY[0x277CC1EF0] sg_userActivityWithRequiredString:intentResponseUserActivityString];
 
           v27 = v32;
         }
@@ -6632,11 +6632,11 @@ LABEL_112:
         }
 
         [v30 value];
-        v26 = v31 = v26;
+        v26 = intentResponseUserActivityString = v26;
       }
     }
 
-    v25 = [v24 countByEnumeratingWithState:&v100 objects:v111 count:16];
+    v25 = [tags countByEnumeratingWithState:&v100 objects:v111 count:16];
   }
 
   while (v25);
@@ -6647,20 +6647,20 @@ LABEL_49:
     v27 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:@"INGetReservationDetailsIntent"];
   }
 
-  if (a6)
+  if (support)
   {
-    v42 = [v99 duplicateKey];
-    v43 = [v42 parentKey];
-    v44 = [v43 bundleId];
-    v45 = v44 == 0;
+    duplicateKey2 = [v99 duplicateKey];
+    parentKey2 = [duplicateKey2 parentKey];
+    bundleId = [parentKey2 bundleId];
+    v45 = bundleId == 0;
 
     if (!v45)
     {
       v46 = objc_alloc(MEMORY[0x277CC1E70]);
-      v47 = [v99 duplicateKey];
-      v48 = [v47 parentKey];
-      v49 = [v48 bundleId];
-      v50 = [v46 initWithBundleIdentifier:v49 allowPlaceholder:0 error:0];
+      duplicateKey3 = [v99 duplicateKey];
+      parentKey3 = [duplicateKey3 parentKey];
+      bundleId2 = [parentKey3 bundleId];
+      v50 = [v46 initWithBundleIdentifier:bundleId2 allowPlaceholder:0 error:0];
       goto LABEL_54;
     }
 
@@ -6670,11 +6670,11 @@ LABEL_49:
   else
   {
     v51 = MEMORY[0x277CC1E70];
-    v47 = [v27 activityType];
-    v48 = [v99 duplicateKey];
-    v49 = [v48 parentKey];
-    v52 = [v49 bundleId];
-    v50 = [v51 sg_preferredApplicationRecordForUserActivityType:v47 withTeamIdentifier:v26 preferredBundleIdentifier:v52];
+    duplicateKey3 = [v27 activityType];
+    parentKey3 = [v99 duplicateKey];
+    bundleId2 = [parentKey3 parentKey];
+    v49BundleId = [bundleId2 bundleId];
+    v50 = [v51 sg_preferredApplicationRecordForUserActivityType:duplicateKey3 withTeamIdentifier:v26 preferredBundleIdentifier:v49BundleId];
 
 LABEL_54:
   }
@@ -6688,8 +6688,8 @@ LABEL_56:
 
   if (v50)
   {
-    v54 = [v50 applicationState];
-    if ([v54 isInstalled])
+    applicationState = [v50 applicationState];
+    if ([applicationState isInstalled])
     {
       v53 = 0;
       goto LABEL_85;
@@ -6707,7 +6707,7 @@ LABEL_84:
     v64 = [MEMORY[0x277CC1E70] sg_preferredApplicationRecordForURL:v61];
 
     v53 = *(*(&buf + 1) + 40);
-    v54 = v27;
+    applicationState = v27;
     v50 = v64;
     v27 = 0;
 LABEL_85:
@@ -6744,7 +6744,7 @@ LABEL_87:
   }
 
   v67 = 0;
-  if (v90 == 16)
+  if (entityType == 16)
   {
     if (v27)
     {
@@ -6761,43 +6761,43 @@ LABEL_87:
 LABEL_97:
 
         v69 = [MEMORY[0x277D02138] responseWith:0];
-        v98[2](v98, v69);
+        completionCopy[2](completionCopy, v69);
         goto LABEL_104;
       }
     }
   }
 
-  if (v94)
+  if (localeCopy)
   {
-    v92 = [v94 localeIdentifier];
+    localeIdentifier = [localeCopy localeIdentifier];
   }
 
   else
   {
-    v70 = [MEMORY[0x277CBEAF8] currentLocale];
-    v92 = [v70 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
   }
 
   if ([v50 sg_isAppleBundleIdentifier] && (objc_msgSend(v50, "applicationState"), v71 = objc_claimAutoreleasedReturnValue(), v72 = objc_msgSend(v71, "isInstalled"), v71, (v72 & 1) == 0))
   {
-    v74 = [v50 bundleIdentifier];
+    bundleIdentifier = [v50 bundleIdentifier];
   }
 
   else
   {
-    v108 = v92;
+    v108 = localeIdentifier;
     v73 = [MEMORY[0x277CBEA60] arrayWithObjects:&v108 count:1];
-    v74 = [v50 localizedNameWithPreferredLocalizations:v73];
+    bundleIdentifier = [v50 localizedNameWithPreferredLocalizations:v73];
   }
 
-  v75 = [(SGDSuggestManager *)self _showInFormatStringWithLocalization:v92];
-  v83 = _PASValidatedFormat(v75, v76, v77, v78, v79, v80, v81, v82, v74);
+  v75 = [(SGDSuggestManager *)self _showInFormatStringWithLocalization:localeIdentifier];
+  v83 = _PASValidatedFormat(v75, v76, v77, v78, v79, v80, v81, v82, bundleIdentifier);
   v84 = objc_alloc(MEMORY[0x277D02100]);
-  v85 = [v50 bundleIdentifier];
-  v86 = [v84 initWithBundleId:v85 localizedShowInString:v83 userActivity:v27 intent:v67 sourceURL:v53];
+  bundleIdentifier2 = [v50 bundleIdentifier];
+  v86 = [v84 initWithBundleId:bundleIdentifier2 localizedShowInString:v83 userActivity:v27 intent:v67 sourceURL:v53];
 
   v87 = [MEMORY[0x277D02138] responseWith:v86];
-  v98[2](v98, v87);
+  completionCopy[2](completionCopy, v87);
 
   v69 = v53;
   v53 = v27;
@@ -6891,19 +6891,19 @@ LABEL_13:
   return v3;
 }
 
-- (id)createLaunchIntentForStorageEvent:(id)a3
+- (id)createLaunchIntentForStorageEvent:(id)event
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 duplicateKey];
-  v5 = [v4 serialize];
+  eventCopy = event;
+  duplicateKey = [eventCopy duplicateKey];
+  serialize = [duplicateKey serialize];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [v3 tags];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v30 count:16];
+  tags = [eventCopy tags];
+  v7 = [tags countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v7)
   {
     v9 = 0;
@@ -6917,20 +6917,20 @@ LABEL_3:
     {
       if (*v24 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(tags);
       }
 
       v13 = *(*(&v23 + 1) + 8 * v12);
       if ([v13 isReservationItemReferences])
       {
-        v14 = [v13 reservationItemReferences];
-        if (![v14 count])
+        reservationItemReferences = [v13 reservationItemReferences];
+        if (![reservationItemReferences count])
         {
           v19 = sgLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
             *buf = v22;
-            v29 = v5;
+            v29 = serialize;
             _os_log_error_impl(&dword_231E60000, v19, OS_LOG_TYPE_ERROR, "SGDSuggestManager-launchInfoForSuggestedEventWithUniqueIdentifier: Found no item references for event with unique id '%@'", buf, 0xCu);
           }
 
@@ -6938,9 +6938,9 @@ LABEL_3:
           goto LABEL_25;
         }
 
-        v15 = [v14 firstObject];
+        firstObject = [reservationItemReferences firstObject];
 
-        v9 = v15;
+        v9 = firstObject;
       }
 
       else
@@ -6950,20 +6950,20 @@ LABEL_3:
           goto LABEL_13;
         }
 
-        v16 = [v13 reservationContainerReference];
+        reservationContainerReference = [v13 reservationContainerReference];
 
-        if (v16)
+        if (reservationContainerReference)
         {
-          v10 = v16;
+          v10 = reservationContainerReference;
           goto LABEL_13;
         }
 
-        v14 = sgLogHandle();
-        if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+        reservationItemReferences = sgLogHandle();
+        if (os_log_type_enabled(reservationItemReferences, OS_LOG_TYPE_DEBUG))
         {
           *buf = v22;
-          v29 = v5;
-          _os_log_debug_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEBUG, "SGDSuggestManager-launchInfoForSuggestedEventWithUniqueIdentifier: Found no container reference for event with unique id '%@'", buf, 0xCu);
+          v29 = serialize;
+          _os_log_debug_impl(&dword_231E60000, reservationItemReferences, OS_LOG_TYPE_DEBUG, "SGDSuggestManager-launchInfoForSuggestedEventWithUniqueIdentifier: Found no container reference for event with unique id '%@'", buf, 0xCu);
         }
 
         v10 = 0;
@@ -6972,7 +6972,7 @@ LABEL_3:
 LABEL_13:
       if (v7 == ++v12)
       {
-        v17 = [v6 countByEnumeratingWithState:&v23 objects:v30 count:16];
+        v17 = [tags countByEnumeratingWithState:&v23 objects:v30 count:16];
         v7 = v17;
         if (v17)
         {
@@ -6983,8 +6983,8 @@ LABEL_13:
         {
           v18 = objc_alloc(MEMORY[0x277CD3C70]);
           v27 = v9;
-          v6 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
-          v7 = [v18 initWithReservationContainerReference:v10 reservationItemReferences:v6];
+          tags = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
+          v7 = [v18 initWithReservationContainerReference:v10 reservationItemReferences:tags];
           goto LABEL_25;
         }
 
@@ -7004,33 +7004,33 @@ LABEL_26:
   return v7;
 }
 
-- (void)eventFromUniqueId:(id)a3 completion:(id)a4
+- (void)eventFromUniqueId:(id)id completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  idCopy = id;
+  completionCopy = completion;
+  if (!idCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2570 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2570 description:{@"Invalid parameter not satisfying: %@", @"uniqueId"}];
   }
 
   v9 = sgLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v7;
+    v21 = idCopy;
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-eventFromUniqueId: %@", buf, 0xCu);
   }
 
-  if ([SGDuplicateKey serializationPassesBasicScrutiny:v7])
+  if ([SGDuplicateKey serializationPassesBasicScrutiny:idCopy])
   {
-    v10 = [[SGDuplicateKey alloc] initWithSerialized:v7];
+    v10 = [[SGDuplicateKey alloc] initWithSerialized:idCopy];
     v11 = sgLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = idCopy;
       _os_log_debug_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEBUG, "dupKey: %@", buf, 0xCu);
     }
 
@@ -7040,18 +7040,18 @@ LABEL_26:
     v14 = sgLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v13 uniqueKey];
+      uniqueKey = [v13 uniqueKey];
       *buf = 138412802;
-      v21 = v7;
+      v21 = idCopy;
       v22 = 2112;
       v23 = v10;
       v24 = 2112;
-      v25 = v18;
+      v25 = uniqueKey;
       _os_log_debug_impl(&dword_231E60000, v14, OS_LOG_TYPE_DEBUG, "eventFromUniqueId: %@ resulted in dupKey: %@ and event: %@", buf, 0x20u);
     }
 
     v15 = [MEMORY[0x277D02138] responseWith:v13];
-    v8[2](v8, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
   else
@@ -7059,25 +7059,25 @@ LABEL_26:
     v16 = MEMORY[0x277D02138];
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:0];
     v13 = [v16 responseWithError:v10];
-    v8[2](v8, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveFullDownloadRequests:(id)a3 withCompletion:(id)a4
+- (void)resolveFullDownloadRequests:(id)requests withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__SGDSuggestManager_resolveFullDownloadRequests_withCompletion___block_invoke;
   v10[3] = &unk_278955A98;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = requestsCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestsCopy;
   SGNotUserInitiated(@"resolveFullDownloadRequests", 2, v10);
 }
 
@@ -7107,17 +7107,17 @@ SGEmailKey *__64__SGDSuggestManager_resolveFullDownloadRequests_withCompletion__
   return v3;
 }
 
-- (void)fullDownloadRequestBatch:(unint64_t)a3 withCompletion:(id)a4
+- (void)fullDownloadRequestBatch:(unint64_t)batch withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__SGDSuggestManager_fullDownloadRequestBatch_withCompletion___block_invoke;
   v8[3] = &unk_27894BA90;
   v8[4] = self;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = completionCopy;
+  batchCopy = batch;
+  v7 = completionCopy;
   SGNotUserInitiated(@"fullDownloadRequestBatch", 2, v8);
 }
 
@@ -7139,22 +7139,22 @@ void __61__SGDSuggestManager_fullDownloadRequestBatch_withCompletion___block_inv
   (*(v5 + 16))(v5, v8);
 }
 
-- (void)reportMessagesFound:(id)a3 lost:(id)a4 withCompletion:(id)a5
+- (void)reportMessagesFound:(id)found lost:(id)lost withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  foundCopy = found;
+  lostCopy = lost;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__SGDSuggestManager_reportMessagesFound_lost_withCompletion___block_invoke;
   v14[3] = &unk_27894E090;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = foundCopy;
+  selfCopy = self;
+  v17 = lostCopy;
+  v18 = completionCopy;
+  v11 = completionCopy;
+  v12 = lostCopy;
+  v13 = foundCopy;
   SGNotUserInitiated(@"reportMessagesFound", 2, v14);
 }
 
@@ -7198,20 +7198,20 @@ SGEmailKey *__61__SGDSuggestManager_reportMessagesFound_lost_withCompletion___bl
   return v3;
 }
 
-- (void)updateMessages:(id)a3 state:(unint64_t)a4 completion:(id)a5
+- (void)updateMessages:(id)messages state:(unint64_t)state completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  messagesCopy = messages;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__SGDSuggestManager_updateMessages_state_completion___block_invoke;
   v12[3] = &unk_27894BA68;
-  v13 = v8;
-  v14 = self;
-  v15 = v9;
-  v16 = a4;
-  v10 = v9;
-  v11 = v8;
+  v13 = messagesCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  stateCopy = state;
+  v10 = completionCopy;
+  v11 = messagesCopy;
   SGNotUserInitiated(@"updateMessages", 2, v12);
 }
 
@@ -7242,16 +7242,16 @@ SGEmailKey *__53__SGDSuggestManager_updateMessages_state_completion___block_invo
   return v3;
 }
 
-- (void)messagesToRefreshWithCompletion:(id)a3
+- (void)messagesToRefreshWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke;
   v6[3] = &unk_278955EE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   SGNotUserInitiated(@"messagesToRefreshWithCompletion", 2, v6);
 }
 
@@ -7280,11 +7280,11 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
   (*(v6 + 16))(v6, v9);
 }
 
-- (void)birthdayExtractionsForInterval:(id)a3 withCompletion:(id)a4
+- (void)birthdayExtractionsForInterval:(id)interval withCompletion:(id)completion
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v45 = a4;
+  intervalCopy = interval;
+  completionCopy = completion;
   v7 = sgLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -7292,17 +7292,17 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
     _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_INFO, "SGDSuggestManager-birthdayExtractionsForInterval", buf, 2u);
   }
 
-  if (!v6)
+  if (!intervalCopy)
   {
-    v42 = [MEMORY[0x277CCA890] currentHandler];
-    [v42 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2469 description:{@"Invalid parameter not satisfying: %@", @"interval"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2469 description:{@"Invalid parameter not satisfying: %@", @"interval"}];
   }
 
-  v8 = [v6 startDate];
-  v46 = v6;
-  v43 = [v6 endDate];
-  v44 = v8;
-  v9 = [(SGSqlEntityStore *)self->_harvestStore allContactsWithExtractionStartDate:v8 extractionEndDate:?];
+  startDate = [intervalCopy startDate];
+  v46 = intervalCopy;
+  endDate = [intervalCopy endDate];
+  v44 = startDate;
+  v9 = [(SGSqlEntityStore *)self->_harvestStore allContactsWithExtractionStartDate:startDate extractionEndDate:?];
   v10 = [v9 count];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -7310,7 +7310,7 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
   block[3] = &unk_27894B7D8;
   v11 = v9;
   v60 = v11;
-  v61 = self;
+  selfCopy = self;
   dispatch_apply(v10, 0, block);
   v47 = objc_opt_new();
   v55 = 0u;
@@ -7333,17 +7333,17 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
 
         v14 = *(*(&v55 + 1) + 8 * i);
         harvestStore = self->_harvestStore;
-        v16 = [v14 recordId];
-        v17 = [(SGSqlEntityStore *)harvestStore loadEntityByRecordId:v16];
+        recordId = [v14 recordId];
+        v17 = [(SGSqlEntityStore *)harvestStore loadEntityByRecordId:recordId];
 
         if (v17)
         {
           v18 = [SGMessageKey alloc];
-          v19 = [v17 duplicateKey];
-          v20 = [v19 parentKey];
-          v21 = [v20 entityKey];
-          v22 = [v21 serialize];
-          v23 = [(SGMessageKey *)v18 initWithSerialized:v22];
+          duplicateKey = [v17 duplicateKey];
+          parentKey = [duplicateKey parentKey];
+          entityKey = [parentKey entityKey];
+          serialize = [entityKey serialize];
+          v23 = [(SGMessageKey *)v18 initWithSerialized:serialize];
 
           contactStore = self->_contactStore;
           v54 = 0;
@@ -7365,21 +7365,21 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
           if (v25)
           {
             v49 = objc_alloc(MEMORY[0x277D01F98]);
-            v28 = [(SGMessageKey *)v23 uniqueIdentifier];
-            v29 = [(SGMessageKey *)v23 source];
-            v50 = [v17 duplicateKey];
-            v30 = [v50 parentKey];
+            uniqueIdentifier = [(SGMessageKey *)v23 uniqueIdentifier];
+            source = [(SGMessageKey *)v23 source];
+            duplicateKey2 = [v17 duplicateKey];
+            parentKey2 = [duplicateKey2 parentKey];
             v31 = v12;
-            v32 = [v30 entityType];
+            entityType = [parentKey2 entityType];
             [v17 creationTimestamp];
             v34 = v33;
             [v25 cnContactIdentifier];
             v51 = v23;
             v35 = v25;
             v37 = v36 = v26;
-            v38 = v32;
+            v38 = entityType;
             v12 = v31;
-            v39 = [v49 initWithSpotlightIdentifier:v28 source:v29 entityType:v38 creationTimestamp:1 extractionType:v37 contactIdentifier:v34];
+            v39 = [v49 initWithSpotlightIdentifier:uniqueIdentifier source:source entityType:v38 creationTimestamp:1 extractionType:v37 contactIdentifier:v34];
 
             v26 = v36;
             v25 = v35;
@@ -7397,7 +7397,7 @@ void __53__SGDSuggestManager_messagesToRefreshWithCompletion___block_invoke(uint
   }
 
   v40 = [MEMORY[0x277D02138] responseWith:v47];
-  v45[2](v45, v40);
+  completionCopy[2](completionCopy, v40);
 
   v41 = *MEMORY[0x277D85DE8];
 }
@@ -7421,10 +7421,10 @@ void __67__SGDSuggestManager_birthdayExtractionsForInterval_withCompletion___blo
   }
 }
 
-- (void)celebrationExtractionsForInterval:(id)a3 withCompletion:(id)a4
+- (void)celebrationExtractionsForInterval:(id)interval withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  intervalCopy = interval;
+  completionCopy = completion;
   v9 = sgLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -7432,19 +7432,19 @@ void __67__SGDSuggestManager_birthdayExtractionsForInterval_withCompletion___blo
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-celebrationExtractionsForInterval", buf, 2u);
   }
 
-  if (!v7)
+  if (!intervalCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2461 description:{@"Invalid parameter not satisfying: %@", @"interval"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2461 description:{@"Invalid parameter not satisfying: %@", @"interval"}];
   }
 
-  [(SGDSuggestManager *)self birthdayExtractionsForInterval:v7 withCompletion:v8];
+  [(SGDSuggestManager *)self birthdayExtractionsForInterval:intervalCopy withCompletion:completionCopy];
 }
 
-- (void)contactMatchesBySocialProfile:(id)a3 withCompletion:(id)a4
+- (void)contactMatchesBySocialProfile:(id)profile withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  profileCopy = profile;
+  completionCopy = completion;
   v9 = sgLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -7452,22 +7452,22 @@ void __67__SGDSuggestManager_birthdayExtractionsForInterval_withCompletion___blo
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-contactsBySocialProfile", buf, 2u);
   }
 
-  if (!v7)
+  if (!profileCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2453 description:{@"Invalid parameter not satisfying: %@", @"socialProfile"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2453 description:{@"Invalid parameter not satisfying: %@", @"socialProfile"}];
   }
 
   v10 = MEMORY[0x277D02138];
-  v11 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesBySocialProfile:v7];
+  v11 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesBySocialProfile:profileCopy];
   v12 = [v10 responseWith:v11];
-  v8[2](v8, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)contactMatchesByEmailAddress:(id)a3 withCompletion:(id)a4
+- (void)contactMatchesByEmailAddress:(id)address withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v9 = sgLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -7475,32 +7475,32 @@ void __67__SGDSuggestManager_birthdayExtractionsForInterval_withCompletion___blo
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-contactsByEmailAddress", buf, 2u);
   }
 
-  if (!v7)
+  if (!addressCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2445 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:2445 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
   }
 
   v10 = MEMORY[0x277D02138];
-  v11 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesByEmailAddress:v7];
+  v11 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesByEmailAddress:addressCopy];
   v12 = [v10 responseWith:v11];
-  v8[2](v8, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)namesForDetailCacheSnapshotsWithCompletion:(id)a3
+- (void)namesForDetailCacheSnapshotsWithCompletion:(id)completion
 {
   harvestStore = self->_harvestStore;
-  v5 = a3;
-  v6 = [(SGSqlEntityStore *)harvestStore kvCacheManager];
-  v12 = [v6 cacheOfType:0];
+  completionCopy = completion;
+  kvCacheManager = [(SGSqlEntityStore *)harvestStore kvCacheManager];
+  v12 = [kvCacheManager cacheOfType:0];
 
-  v7 = [(SGSqlEntityStore *)self->_harvestStore kvCacheManager];
-  v8 = [v7 cacheOfType:1];
+  kvCacheManager2 = [(SGSqlEntityStore *)self->_harvestStore kvCacheManager];
+  v8 = [kvCacheManager2 cacheOfType:1];
 
   v9 = MEMORY[0x277D02140];
-  v10 = [(SGDSuggestManager *)self _maybeFormatString];
-  v11 = [v9 responseWith:v8 also:v12 also:v10];
-  v5[2](v5, v11);
+  _maybeFormatString = [(SGDSuggestManager *)self _maybeFormatString];
+  v11 = [v9 responseWith:v8 also:v12 also:_maybeFormatString];
+  completionCopy[2](completionCopy, v11);
 }
 
 uint64_t __88__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignificant_withCompletion___block_invoke(uint64_t a1)
@@ -7630,43 +7630,43 @@ void __107__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignifican
   }
 }
 
-- (void)interactionStoreLookupForDetail:(id)a3 withCompletion:(id)a4
+- (void)interactionStoreLookupForDetail:(id)detail withCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  detailCopy = detail;
+  completionCopy = completion;
   v7 = sgLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138478083;
-    v18 = v5;
+    v18 = detailCopy;
     v19 = 2050;
-    v20 = [v5 length];
+    v20 = [detailCopy length];
     _os_log_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager-interactionStoreLookupForDetail:%{private}@ (length %{public}tu)", &v17, 0x16u);
   }
 
-  v8 = [[SGPSInteractionLookup alloc] initWithDetail:v5];
-  v9 = [(SGPSInteractionLookup *)v8 interactionString];
+  v8 = [[SGPSInteractionLookup alloc] initWithDetail:detailCopy];
+  interactionString = [(SGPSInteractionLookup *)v8 interactionString];
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 length];
-    v12 = [v9 length];
+    v11 = [detailCopy length];
+    v12 = [interactionString length];
     v17 = 138478595;
-    v18 = v5;
+    v18 = detailCopy;
     v19 = 2050;
     v20 = v11;
     v21 = 2113;
-    v22 = v9;
+    v22 = interactionString;
     v23 = 2050;
     v24 = v12;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager-interactionStoreLookupForDetail:%{private}@ (length %{public}tu) -> result: %{private}@ (length %{public}tu)", &v17, 0x2Au);
   }
 
   v13 = MEMORY[0x277D02138];
-  if ([v9 length])
+  if ([interactionString length])
   {
-    v14 = v9;
+    v14 = interactionString;
   }
 
   else
@@ -7675,15 +7675,15 @@ void __107__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignifican
   }
 
   v15 = [v13 responseWith:v14];
-  v6[2](v6, v15);
+  completionCopy[2](completionCopy, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactMatchesByPhoneNumber:(id)a3 withCompletion:(id)a4
+- (void)contactMatchesByPhoneNumber:(id)number withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -7692,45 +7692,45 @@ void __107__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignifican
   }
 
   v9 = MEMORY[0x277D02138];
-  v10 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesByPhoneNumber:v7];
+  v10 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesByPhoneNumber:numberCopy];
 
   v11 = [v9 responseWith:v10];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
-- (id)realtimeContactsFromEntity:(id)a3 enrichments:(id)a4 sourceTextMessage:(id)a5 store:(id)a6
+- (id)realtimeContactsFromEntity:(id)entity enrichments:(id)enrichments sourceTextMessage:(id)message store:(id)store
 {
   v155 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v100 = a4;
-  v99 = a5;
-  v11 = a6;
+  entityCopy = entity;
+  enrichmentsCopy = enrichments;
+  messageCopy = message;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    SGFeatureVectorLog([v10 inhumanFeatures]);
+    SGFeatureVectorLog([entityCopy inhumanFeatures]);
   }
 
-  if ([v10 isInhuman])
+  if ([entityCopy isInhuman])
   {
-    v12 = sgLogHandle();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+    value = sgLogHandle();
+    if (os_log_type_enabled(value, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_INFO, "Entity is from inhuman sender", buf, 2u);
+      _os_log_impl(&dword_231E60000, value, OS_LOG_TYPE_INFO, "Entity is from inhuman sender", buf, 2u);
     }
 
     v13 = MEMORY[0x277CBEBF8];
     goto LABEL_100;
   }
 
-  v97 = v11;
+  v97 = storeCopy;
   v143 = 0u;
   v144 = 0u;
   v141 = 0u;
   v142 = 0u;
-  v14 = [v10 tags];
-  v15 = [v14 countByEnumeratingWithState:&v141 objects:v154 count:16];
+  tags = [entityCopy tags];
+  v15 = [tags countByEnumeratingWithState:&v141 objects:v154 count:16];
   if (v15)
   {
     v16 = v15;
@@ -7741,18 +7741,18 @@ void __107__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignifican
       {
         if (*v142 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(tags);
         }
 
         v19 = *(*(&v141 + 1) + 8 * i);
         if ([v19 isMailingListId])
         {
-          v12 = [v19 value];
+          value = [v19 value];
           goto LABEL_17;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v141 objects:v154 count:16];
+      v16 = [tags countByEnumeratingWithState:&v141 objects:v154 count:16];
       if (v16)
       {
         continue;
@@ -7762,7 +7762,7 @@ void __107__SGDSuggestManager_namesForDetail_limitTo_prependMaybe_onlySignifican
     }
   }
 
-  v12 = 0;
+  value = 0;
 LABEL_17:
 
   v20 = objc_opt_new();
@@ -7771,17 +7771,17 @@ LABEL_17:
   v131 = 3221225472;
   v132 = __84__SGDSuggestManager_realtimeContactsFromEntity_enrichments_sourceTextMessage_store___block_invoke;
   v133 = &unk_27894B940;
-  v95 = v10;
+  v95 = entityCopy;
   v140 = a2;
-  v93 = v10;
+  v93 = entityCopy;
   v134 = v93;
-  v135 = self;
+  selfCopy = self;
   v94 = v20;
   v136 = v94;
   v137 = v97;
   v96 = v21;
   v138 = v96;
-  v139 = v100;
+  v139 = enrichmentsCopy;
   v92 = v139;
   v22 = sgMapAndFilter();
   v23 = sgLogHandle();
@@ -7804,7 +7804,7 @@ LABEL_17:
     v26 = v25;
     v27 = *v127;
     v101 = *v127;
-    v102 = v12;
+    v102 = value;
     do
     {
       v28 = 0;
@@ -7817,29 +7817,29 @@ LABEL_17:
         }
 
         v29 = *(*(&v126 + 1) + 8 * v28);
-        if (v12)
+        if (value)
         {
-          v30 = [*(*(&v126 + 1) + 8 * v28) emailAddresses];
+          emailAddresses = [*(*(&v126 + 1) + 8 * v28) emailAddresses];
           v121 = MEMORY[0x277D85DD0];
           v122 = 3221225472;
           v123 = __84__SGDSuggestManager_realtimeContactsFromEntity_enrichments_sourceTextMessage_store___block_invoke_604;
           v124 = &unk_27894B968;
-          v125 = v12;
+          v125 = value;
           v31 = sgFilter();
 
           [v29 setEmailAddresses:v31];
         }
 
-        v32 = [v29 name];
+        name = [v29 name];
 
-        if (!v32)
+        if (!name)
         {
           v119 = 0u;
           v120 = 0u;
           v117 = 0u;
           v118 = 0u;
-          v33 = [v29 emailAddresses];
-          v34 = [v33 countByEnumeratingWithState:&v117 objects:v150 count:16];
+          emailAddresses2 = [v29 emailAddresses];
+          v34 = [emailAddresses2 countByEnumeratingWithState:&v117 objects:v150 count:16];
           if (v34)
           {
             v35 = v34;
@@ -7850,24 +7850,24 @@ LABEL_17:
               {
                 if (*v118 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(emailAddresses2);
                 }
 
                 v38 = *(*(&v117 + 1) + 8 * j);
-                v39 = [v38 emailAddress];
-                v40 = [v39 length];
+                emailAddress = [v38 emailAddress];
+                v40 = [emailAddress length];
 
                 if (v40)
                 {
-                  v41 = [v38 emailAddress];
-                  v42 = [SGNames nameStringFromEmailAddress:v41];
+                  emailAddress2 = [v38 emailAddress];
+                  v42 = [SGNames nameStringFromEmailAddress:emailAddress2];
 
                   if (v42)
                   {
-                    v43 = [v38 origin];
-                    v44 = [v38 recordId];
+                    origin = [v38 origin];
+                    recordId = [v38 recordId];
                     v45 = [MEMORY[0x277D01FD8] extractionInfoWithExtractionType:0 modelVersion:0 confidence:0];
-                    v46 = [SGNames sgNameFromString:v42 origin:v43 recordId:v44 extractionInfo:v45];
+                    v46 = [SGNames sgNameFromString:v42 origin:origin recordId:recordId extractionInfo:v45];
                     [v29 setName:v46];
 
                     goto LABEL_38;
@@ -7875,7 +7875,7 @@ LABEL_17:
                 }
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v117 objects:v150 count:16];
+              v35 = [emailAddresses2 countByEnumeratingWithState:&v117 objects:v150 count:16];
               if (v35)
               {
                 continue;
@@ -7887,7 +7887,7 @@ LABEL_17:
 
 LABEL_38:
 
-          v12 = v102;
+          value = v102;
           v24 = v103;
           v27 = v101;
           v26 = v104;
@@ -7903,8 +7903,8 @@ LABEL_38:
     while (v26);
   }
 
-  v47 = [v99 conversationIdentifier];
-  if (![v47 length])
+  conversationIdentifier = [messageCopy conversationIdentifier];
+  if (![conversationIdentifier length])
   {
     v50 = v92;
     v49 = v93;
@@ -7919,25 +7919,25 @@ LABEL_94:
   {
     if ([v24 count] == 1)
     {
-      v47 = [v24 objectAtIndexedSubscript:0];
+      conversationIdentifier = [v24 objectAtIndexedSubscript:0];
     }
 
     else
     {
-      v47 = 0;
+      conversationIdentifier = 0;
     }
 
-    v51 = [v99 author];
-    v52 = [v51 handles];
-    v53 = [v52 firstObject];
+    author = [messageCopy author];
+    handles = [author handles];
+    firstObject = [handles firstObject];
 
     v54 = 0x277CBE000;
-    v106 = v51;
-    if (!v47)
+    v106 = author;
+    if (!conversationIdentifier)
     {
-      v66 = 0;
+      uniqueIdentifier = 0;
 LABEL_80:
-      if ([v53 containsString:@"@"])
+      if ([firstObject containsString:@"@"])
       {
         SGNormalizeEmailAddress();
       }
@@ -7948,15 +7948,15 @@ LABEL_80:
       }
       v78 = ;
 
-      v47 = 0;
-      v66 = v78;
+      conversationIdentifier = 0;
+      uniqueIdentifier = v78;
 LABEL_84:
-      v79 = v53;
-      if (v66)
+      v79 = firstObject;
+      if (uniqueIdentifier)
       {
         v80 = +[SGDSuggestManager contactAggregator];
-        v81 = [v99 conversationIdentifier];
-        v82 = [v80 augmentSuggestedContactWithContact:v47 conversationId:v81 store:self->_harvestStore handle:v66];
+        conversationIdentifier2 = [messageCopy conversationIdentifier];
+        v82 = [v80 augmentSuggestedContactWithContact:conversationIdentifier conversationId:conversationIdentifier2 store:self->_harvestStore handle:uniqueIdentifier];
 
         if (v82)
         {
@@ -7970,7 +7970,7 @@ LABEL_89:
           if (os_log_type_enabled(v83, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v153 = v47;
+            v153 = conversationIdentifier;
             _os_log_debug_impl(&dword_231E60000, v83, OS_LOG_TYPE_DEBUG, "Contact pre-aggregation: %@", buf, 0xCu);
           }
 
@@ -7995,7 +7995,7 @@ LABEL_89:
       goto LABEL_89;
     }
 
-    v55 = [SGIdentityKey keyForPersonHandle:v51];
+    v55 = [SGIdentityKey keyForPersonHandle:author];
     v56 = SGNormalizePhoneNumber();
     v57 = [SGIdentityKey keyForNormalizedPhone:v56];
 
@@ -8004,7 +8004,7 @@ LABEL_89:
 
     v105 = v55;
     v91 = v59;
-    if ([v99 senderIsAccountOwner])
+    if ([messageCopy senderIsAccountOwner])
     {
       v115 = 0uLL;
       v116 = 0uLL;
@@ -8035,13 +8035,13 @@ LABEL_89:
               if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v153 = v47;
+                v153 = conversationIdentifier;
                 _os_log_impl(&dword_231E60000, v74, OS_LOG_TYPE_DEFAULT, "Extracted Realtime contact details about the user and tried to show them in a banner: %@", buf, 0xCu);
               }
 
-              v66 = 0;
-              v65 = v47;
-              v47 = 0;
+              uniqueIdentifier = 0;
+              anyObject = conversationIdentifier;
+              conversationIdentifier = 0;
               goto LABEL_72;
             }
           }
@@ -8056,8 +8056,8 @@ LABEL_89:
         }
       }
 
-      v65 = [v96 anyObject];
-      v66 = [v65 uniqueIdentifier];
+      anyObject = [v96 anyObject];
+      uniqueIdentifier = [anyObject uniqueIdentifier];
 LABEL_72:
       v54 = 0x277CBE000uLL;
       v75 = v105;
@@ -8081,7 +8081,7 @@ LABEL_72:
         v69 = v68;
         v70 = *v110;
 LABEL_62:
-        v71 = v53;
+        v71 = firstObject;
         v72 = 0;
         while (1)
         {
@@ -8099,7 +8099,7 @@ LABEL_62:
           if (v69 == ++v72)
           {
             v69 = [v67 countByEnumeratingWithState:&v109 objects:v147 count:16];
-            v53 = v71;
+            firstObject = v71;
             if (v69)
             {
               goto LABEL_62;
@@ -8109,10 +8109,10 @@ LABEL_62:
           }
         }
 
-        v66 = [v73 uniqueIdentifier];
+        uniqueIdentifier = [v73 uniqueIdentifier];
 
-        v53 = v71;
-        if (!v66)
+        firstObject = v71;
+        if (!uniqueIdentifier)
         {
           goto LABEL_75;
         }
@@ -8123,7 +8123,7 @@ LABEL_62:
         v76 = v91;
 LABEL_79:
 
-        if (v47)
+        if (conversationIdentifier)
         {
           goto LABEL_84;
         }
@@ -8141,13 +8141,13 @@ LABEL_75:
       if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v153 = v47;
+        v153 = conversationIdentifier;
         _os_log_impl(&dword_231E60000, v77, OS_LOG_TYPE_DEFAULT, "Extracted a contact with a different handle to the sender: %@", buf, 0xCu);
       }
 
-      v66 = 0;
-      v65 = v47;
-      v47 = 0;
+      uniqueIdentifier = 0;
+      anyObject = conversationIdentifier;
+      conversationIdentifier = 0;
       v75 = v105;
     }
 
@@ -8161,7 +8161,7 @@ LABEL_95:
   v108 = v50;
   v13 = sgMapAndFilter();
   v85 = sgLogHandle();
-  v10 = v95;
+  entityCopy = v95;
   if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
   {
     v86 = [v13 count];
@@ -8178,7 +8178,7 @@ LABEL_95:
     _os_log_debug_impl(&dword_231E60000, v87, OS_LOG_TYPE_DEBUG, "Realtime contacts: %@", buf, 0xCu);
   }
 
-  v11 = v97;
+  storeCopy = v97;
 LABEL_100:
 
   v88 = *MEMORY[0x277D85DE8];
@@ -8481,7 +8481,7 @@ id __84__SGDSuggestManager_realtimeContactsFromEntity_enrichments_sourceTextMess
   return v11;
 }
 
-- (id)realtimeWalletPassesFromEntity:(id)a3 enrichments:(id)a4
+- (id)realtimeWalletPassesFromEntity:(id)entity enrichments:(id)enrichments
 {
   v4 = sgMapAndFilter();
   v5 = v4;
@@ -8600,16 +8600,16 @@ LABEL_23:
   return v23;
 }
 
-- (BOOL)_isContactInteresting:(id)a3 emailEntity:(id)a4 enrichments:(id)a5 hasContactCard:(unint64_t)a6
+- (BOOL)_isContactInteresting:(id)interesting emailEntity:(id)entity enrichments:(id)enrichments hasContactCard:(unint64_t)card
 {
   v82 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D01FA0] isSent];
-  v12 = [v9 hasTag:v11];
+  interestingCopy = interesting;
+  entityCopy = entity;
+  enrichmentsCopy = enrichments;
+  isSent = [MEMORY[0x277D01FA0] isSent];
+  v12 = [entityCopy hasTag:isSent];
 
-  v66 = v9;
+  v66 = entityCopy;
   if (v12)
   {
     v13 = 0;
@@ -8617,13 +8617,13 @@ LABEL_23:
 
   else
   {
-    v14 = [v9 author];
-    v15 = [v14 sg_emailAddress];
-    v16 = v15;
+    author = [entityCopy author];
+    sg_emailAddress = [author sg_emailAddress];
+    v16 = sg_emailAddress;
     v17 = &stru_284703F00;
-    if (v15)
+    if (sg_emailAddress)
     {
-      v17 = v15;
+      v17 = sg_emailAddress;
     }
 
     v18 = v17;
@@ -8633,8 +8633,8 @@ LABEL_23:
     v76 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v20 = [v8 emailAddresses];
-    v21 = [v20 countByEnumeratingWithState:&v75 objects:v81 count:16];
+    emailAddresses = [interestingCopy emailAddresses];
+    v21 = [emailAddresses countByEnumeratingWithState:&v75 objects:v81 count:16];
     if (v21)
     {
       v22 = v21;
@@ -8646,10 +8646,10 @@ LABEL_23:
         {
           if (*v76 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v25 = [*(*(&v75 + 1) + 8 * i) emailAddress];
+          emailAddress = [*(*(&v75 + 1) + 8 * i) emailAddress];
           v26 = SGNormalizeEmailAddress();
           v27 = [v26 isEqualToString:v19];
 
@@ -8660,7 +8660,7 @@ LABEL_23:
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v75 objects:v81 count:16];
+        v22 = [emailAddresses countByEnumeratingWithState:&v75 objects:v81 count:16];
         if (v22)
         {
           continue;
@@ -8684,7 +8684,7 @@ LABEL_15:
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v28 = v10;
+  v28 = enrichmentsCopy;
   v29 = [v28 countByEnumeratingWithState:&v71 objects:v80 count:16];
   if (v29)
   {
@@ -8701,23 +8701,23 @@ LABEL_15:
         }
 
         v33 = *(*(&v71 + 1) + 8 * j);
-        v34 = [v33 duplicateKey];
-        [v34 entityType];
+        duplicateKey = [v33 duplicateKey];
+        [duplicateKey entityType];
         IsContact = SGEntityTypeIsContact();
 
         if (IsContact)
         {
-          v36 = [v8 name];
-          v37 = [v36 fullName];
-          v38 = [v33 title];
-          v39 = [v37 isEqual:v38];
+          name = [interestingCopy name];
+          fullName = [name fullName];
+          title = [v33 title];
+          v39 = [fullName isEqual:title];
 
           if (v39)
           {
-            v40 = [v33 extractionInfo];
-            v41 = [v40 extractionType];
+            extractionInfo = [v33 extractionInfo];
+            extractionType = [extractionInfo extractionType];
 
-            if (v41 == 2)
+            if (extractionType == 2)
             {
               v42 = 1;
               goto LABEL_30;
@@ -8765,22 +8765,22 @@ LABEL_34:
       }
 
       v48 = *(*(&v67 + 1) + 8 * v47);
-      v49 = [v48 extractionInfo];
-      v50 = [v49 extractionType];
+      extractionInfo2 = [v48 extractionInfo];
+      extractionType2 = [extractionInfo2 extractionType];
 
-      if (v50 == 64)
+      if (extractionType2 == 64)
       {
         break;
       }
 
-      v51 = [v48 extractionInfo];
-      v52 = [v51 extractionType];
+      extractionInfo3 = [v48 extractionInfo];
+      extractionType3 = [extractionInfo3 extractionType];
 
-      if (v52 == 128)
+      if (extractionType3 == 128)
       {
 
         v53 = 0;
-        v54 = 0;
+        hasNonTrivialInfo = 0;
         if ([v43 count] != 1)
         {
           goto LABEL_48;
@@ -8807,16 +8807,16 @@ LABEL_34:
       goto LABEL_48;
     }
 
-    if (a6 == 2)
+    if (card == 2)
     {
-      v54 = 0;
+      hasNonTrivialInfo = 0;
     }
 
     else
     {
-      v61 = [v8 name];
-      v62 = [v61 fullName];
-      v54 = [v62 length] == 0;
+      name2 = [interestingCopy name];
+      fullName2 = [name2 fullName];
+      hasNonTrivialInfo = [fullName2 length] == 0;
     }
   }
 
@@ -8826,9 +8826,9 @@ LABEL_41:
 
     v53 = 0;
 LABEL_48:
-    v55 = [v8 birthday];
+    birthday = [interestingCopy birthday];
 
-    if (a6 == 2)
+    if (card == 2)
     {
       v56 = 0;
     }
@@ -8838,9 +8838,9 @@ LABEL_48:
       v56 = v42;
     }
 
-    if (a6)
+    if (card)
     {
-      v57 = v55 == 0;
+      v57 = birthday == 0;
     }
 
     else
@@ -8849,20 +8849,20 @@ LABEL_48:
     }
 
     v58 = !v57;
-    v54 = 1;
+    hasNonTrivialInfo = 1;
     if ((v56 & 1) == 0 && ((v13 | v53) & 1) == 0 && (v58 & 1) == 0)
     {
-      v54 = [v8 hasNonTrivialInfo];
+      hasNonTrivialInfo = [interestingCopy hasNonTrivialInfo];
     }
   }
 
 LABEL_61:
 
   v59 = *MEMORY[0x277D85DE8];
-  return v54;
+  return hasNonTrivialInfo;
 }
 
-- (id)realtimeWalletOrdersFromEntity:(id)a3 enrichments:(id)a4
+- (id)realtimeWalletOrdersFromEntity:(id)entity enrichments:(id)enrichments
 {
   v4 = sgMapAndFilter();
   v5 = v4;
@@ -8979,15 +8979,15 @@ LABEL_23:
   return v23;
 }
 
-- (BOOL)containsNonCuratedData:(id)a3
+- (BOOL)containsNonCuratedData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dataCopy = data;
+  v4 = [dataCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -8997,20 +8997,20 @@ LABEL_23:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dataCopy);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * i) origin];
-        v8 = [v7 type];
+        origin = [*(*(&v11 + 1) + 8 * i) origin];
+        type = [origin type];
 
-        if (v8 != 2)
+        if (type != 2)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [dataCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -9026,10 +9026,10 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)isSGEvent:(id)a3 duplicateOfEKEvent:(id)a4
+- (BOOL)isSGEvent:(id)event duplicateOfEKEvent:(id)kEvent
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  kEventCopy = kEvent;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -9045,9 +9045,9 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __50__SGDSuggestManager_isSGEvent_duplicateOfEKEvent___block_invoke;
   v13[3] = &unk_27894B8A0;
-  v10 = v6;
+  v10 = eventCopy;
   v14 = v10;
-  v11 = v7;
+  v11 = kEventCopy;
   v15 = v11;
   v16 = &v17;
   (v9->_callBlockWithEKEventStoreForReading)(v9, v13);
@@ -9119,26 +9119,26 @@ void __50__SGDSuggestManager_isSGEvent_duplicateOfEKEvent___block_invoke(uint64_
   }
 }
 
-- (id)curatedEventKeyForExactMatchOfPseudoEvent:(id)a3 candidates:(id)a4
+- (id)curatedEventKeyForExactMatchOfPseudoEvent:(id)event candidates:(id)candidates
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  candidatesCopy = candidates;
   v7 = [SGDuplicateKey alloc];
-  v8 = [v5 duplicateKey];
-  v9 = [v8 parentKey];
-  v10 = [v9 serialize];
-  v37 = [(SGDuplicateKey *)v7 initWithSerialized:v10];
+  duplicateKey = [eventCopy duplicateKey];
+  parentKey = [duplicateKey parentKey];
+  serialize = [parentKey serialize];
+  v37 = [(SGDuplicateKey *)v7 initWithSerialized:serialize];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v11 = v6;
+  v11 = candidatesCopy;
   v12 = [v11 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v12)
   {
-    v36 = v5;
+    v36 = eventCopy;
     v13 = *v39;
     while (1)
     {
@@ -9151,47 +9151,47 @@ void __50__SGDSuggestManager_isSGEvent_duplicateOfEKEvent___block_invoke(uint64_
         }
 
         v15 = *(*(&v38 + 1) + 8 * v14);
-        v16 = [v15 suggestionInfo];
-        if (v16)
+        suggestionInfo = [v15 suggestionInfo];
+        if (suggestionInfo)
         {
-          v17 = v16;
-          v18 = [v15 calendar];
-          if ([v18 isSuggestedEventCalendar])
+          uniqueKey = suggestionInfo;
+          calendar = [v15 calendar];
+          if ([calendar isSuggestedEventCalendar])
           {
             goto LABEL_8;
           }
 
-          v19 = [v15 calendar];
-          v20 = [v19 isNaturalLanguageSuggestedEventCalendar];
+          calendar2 = [v15 calendar];
+          isNaturalLanguageSuggestedEventCalendar = [calendar2 isNaturalLanguageSuggestedEventCalendar];
 
-          if (v20)
+          if (isNaturalLanguageSuggestedEventCalendar)
           {
             goto LABEL_23;
           }
 
-          v21 = [v15 suggestionInfo];
-          v17 = [v21 uniqueKey];
+          suggestionInfo2 = [v15 suggestionInfo];
+          uniqueKey = [suggestionInfo2 uniqueKey];
 
-          if (v17)
+          if (uniqueKey)
           {
-            if ([SGDuplicateKey serializationPassesBasicScrutiny:v17])
+            if ([SGDuplicateKey serializationPassesBasicScrutiny:uniqueKey])
             {
-              v22 = [[SGDuplicateKey alloc] initWithSerialized:v17];
-              v18 = v22;
+              v22 = [[SGDuplicateKey alloc] initWithSerialized:uniqueKey];
+              calendar = v22;
               if (v22)
               {
-                v23 = [(SGDuplicateKey *)v22 parentKey];
-                v24 = [v23 isEqualToDuplicateKey:v37];
+                parentKey2 = [(SGDuplicateKey *)v22 parentKey];
+                v24 = [parentKey2 isEqualToDuplicateKey:v37];
 
                 if (v24)
                 {
-                  v25 = [v15 eventIdentifier];
+                  eventIdentifier = [v15 eventIdentifier];
 
-                  if (v25)
+                  if (eventIdentifier)
                   {
                     v32 = [SGCuratedEventKey alloc];
-                    v33 = [v15 eventIdentifier];
-                    v12 = [(SGCuratedEventKey *)v32 initWithExternalId:v33];
+                    eventIdentifier2 = [v15 eventIdentifier];
+                    v12 = [(SGCuratedEventKey *)v32 initWithExternalId:eventIdentifier2];
 
                     goto LABEL_30;
                   }
@@ -9225,7 +9225,7 @@ LABEL_21:
             }
 
             *buf = 138477827;
-            v43 = v17;
+            v43 = uniqueKey;
             v28 = v27;
             v29 = "Skipping event with dupKeyString that does not pass basic scrutiny: %{private}@";
             v30 = 12;
@@ -9259,7 +9259,7 @@ LABEL_23:
       if (!v31)
       {
 LABEL_30:
-        v5 = v36;
+        eventCopy = v36;
         break;
       }
     }
@@ -9964,28 +9964,28 @@ LABEL_22:
   return v26;
 }
 
-- (id)realtimeEventsFromEntity:(id)a3 message:(id)a4 enrichments:(id)a5 store:(id)a6 keepPastEvents:(BOOL)a7 keepPartialEvents:(BOOL)a8 keepEventsFromOldDocuments:(BOOL)a9 keepUnsupportedEventCategoryStatus:(BOOL)a10 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)a11 keepLLMExtractionForRealtime:(BOOL)a12 keepAttributesForEvents:(BOOL)a13
+- (id)realtimeEventsFromEntity:(id)entity message:(id)message enrichments:(id)enrichments store:(id)store keepPastEvents:(BOOL)events keepPartialEvents:(BOOL)partialEvents keepEventsFromOldDocuments:(BOOL)documents keepUnsupportedEventCategoryStatus:(BOOL)self0 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)self1 keepLLMExtractionForRealtime:(BOOL)self2 keepAttributesForEvents:(BOOL)self3
 {
-  v38 = a8;
-  v37 = a7;
-  v16 = a3;
-  v17 = a4;
-  v35 = a6;
-  v34 = a5;
+  partialEventsCopy = partialEvents;
+  eventsCopy = events;
+  entityCopy = entity;
+  messageCopy = message;
+  storeCopy = store;
+  enrichmentsCopy = enrichments;
   if (os_variant_has_internal_diagnostics())
   {
-    v31 = [v16 hasExtractionException];
+    hasExtractionException = [entityCopy hasExtractionException];
   }
 
   else
   {
-    v31 = 0;
+    hasExtractionException = 0;
   }
 
-  v33 = v17;
-  if (v17)
+  v33 = messageCopy;
+  if (messageCopy)
   {
-    v32 = [MEMORY[0x277CC5A40] sg_fetchMessageParticipants:v17];
+    v32 = [MEMORY[0x277CC5A40] sg_fetchMessageParticipants:messageCopy];
   }
 
   else
@@ -9994,44 +9994,44 @@ LABEL_22:
   }
 
   v18 = MEMORY[0x277D02070];
-  v19 = [v16 duplicateKey];
-  v20 = [v18 originTypeForEntityType:{objc_msgSend(v19, "entityType")}];
-  v21 = [v16 duplicateKey];
-  v22 = [v21 messageKey];
-  v23 = [v22 source];
-  v24 = [v16 duplicateKey];
-  v25 = [v24 messageKey];
-  v26 = [v25 uniqueIdentifier];
-  v27 = [v18 originWithType:v20 sourceKey:v23 externalKey:v26 fromForwardedMessage:0];
+  duplicateKey = [entityCopy duplicateKey];
+  v20 = [v18 originTypeForEntityType:{objc_msgSend(duplicateKey, "entityType")}];
+  duplicateKey2 = [entityCopy duplicateKey];
+  messageKey = [duplicateKey2 messageKey];
+  source = [messageKey source];
+  duplicateKey3 = [entityCopy duplicateKey];
+  messageKey2 = [duplicateKey3 messageKey];
+  uniqueIdentifier = [messageKey2 uniqueIdentifier];
+  v27 = [v18 originWithType:v20 sourceKey:source externalKey:uniqueIdentifier fromForwardedMessage:0];
 
-  [v27 addDetailsFromOriginatingGenericEntity:v16];
-  BYTE5(v30) = v31;
-  BYTE4(v30) = a13;
-  BYTE3(v30) = a12;
-  BYTE2(v30) = a11;
-  LOWORD(v30) = __PAIR16__(a10, a9);
-  v28 = [SGDSuggestManager realtimeEventsFromEnrichments:"realtimeEventsFromEnrichments:origin:participants:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:keepExceptions:" origin:v34 participants:v27 store:v32 keepPastEvents:v35 keepPartialEvents:v37 keepEventsFromOldDocuments:v38 keepUnsupportedEventCategoryStatus:v30 keepUnsupportedEventCategoryStatusForTextMessage:? keepLLMExtractionForRealtime:? keepAttributesForEvents:? keepExceptions:?];
+  [v27 addDetailsFromOriginatingGenericEntity:entityCopy];
+  BYTE5(v30) = hasExtractionException;
+  BYTE4(v30) = forEvents;
+  BYTE3(v30) = realtime;
+  BYTE2(v30) = textMessage;
+  LOWORD(v30) = __PAIR16__(status, documents);
+  v28 = [SGDSuggestManager realtimeEventsFromEnrichments:"realtimeEventsFromEnrichments:origin:participants:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:keepExceptions:" origin:enrichmentsCopy participants:v27 store:v32 keepPastEvents:storeCopy keepPartialEvents:eventsCopy keepEventsFromOldDocuments:partialEventsCopy keepUnsupportedEventCategoryStatus:v30 keepUnsupportedEventCategoryStatusForTextMessage:? keepLLMExtractionForRealtime:? keepAttributesForEvents:? keepExceptions:?];
 
   return v28;
 }
 
-- (id)realtimeEventsFromEntity:(id)a3 enrichments:(id)a4 store:(id)a5
+- (id)realtimeEventsFromEntity:(id)entity enrichments:(id)enrichments store:(id)store
 {
   v8 = MEMORY[0x277D02098];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  storeCopy = store;
+  enrichmentsCopy = enrichments;
+  entityCopy = entity;
   BYTE4(v14) = 0;
   LODWORD(v14) = [v8 showPastEvents];
-  v12 = -[SGDSuggestManager realtimeEventsFromEntity:message:enrichments:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:](self, "realtimeEventsFromEntity:message:enrichments:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:", v11, 0, v10, v9, [MEMORY[0x277D02098] showPastEvents], 0, v14);
+  v12 = -[SGDSuggestManager realtimeEventsFromEntity:message:enrichments:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:](self, "realtimeEventsFromEntity:message:enrichments:store:keepPastEvents:keepPartialEvents:keepEventsFromOldDocuments:keepUnsupportedEventCategoryStatus:keepUnsupportedEventCategoryStatusForTextMessage:keepLLMExtractionForRealtime:keepAttributesForEvents:", entityCopy, 0, enrichmentsCopy, storeCopy, [MEMORY[0x277D02098] showPastEvents], 0, v14);
 
   return v12;
 }
 
-- (void)bumptTTLForNLEvent:(id)a3
+- (void)bumptTTLForNLEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 isNaturalLanguageEvent])
+  eventCopy = event;
+  if ([eventCopy isNaturalLanguageEvent])
   {
     v5 = self->_ekStoreProvider;
     v8 = MEMORY[0x277D85DD0];
@@ -10039,7 +10039,7 @@ LABEL_22:
     v10 = __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke;
     v11 = &unk_278955830;
     v12 = v5;
-    v13 = v4;
+    v13 = eventCopy;
     v6 = v5;
     v7 = MEMORY[0x2383809F0](&v8);
     if (bumptTTLForNLEvent___pasOnceToken56 != -1)
@@ -10082,13 +10082,13 @@ void __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke_558()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)cachedResultForKey:(id)a3 generateResult:(id)a4 validateResults:(id)a5
+- (id)cachedResultForKey:(id)key generateResult:(id)result validateResults:(id)results
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 mutableCopy];
+  keyCopy = key;
+  resultCopy = result;
+  resultsCopy = results;
+  v10 = [keyCopy mutableCopy];
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
   v12 = +[SGAsset asset];
   v13 = [v11 initWithFormat:@"%lu", objc_msgSend(v12, "assetVersion")];
@@ -10102,7 +10102,7 @@ void __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke_558()
   v46 = __Block_byref_object_dispose__4009;
   v47 = 0;
   v15 = +[SGDSuggestManager requestCache];
-  v16 = [v15 resultIfAvailable];
+  resultIfAvailable = [v15 resultIfAvailable];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults___block_invoke;
@@ -10110,7 +10110,7 @@ void __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke_558()
   v41 = &v42;
   v17 = v10;
   v40 = v17;
-  [v16 runWithLockAcquired:v39];
+  [resultIfAvailable runWithLockAcquired:v39];
 
   if (v43[5])
   {
@@ -10149,7 +10149,7 @@ void __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke_558()
       _os_log_impl(&dword_231E60000, v21, OS_LOG_TYPE_INFO, "Suggestions Cache miss", buf, 2u);
     }
 
-    v22 = v8[2](v8);
+    v22 = resultCopy[2](resultCopy);
     v23 = [v22 copy];
     v24 = v43[5];
     v43[5] = v23;
@@ -10163,30 +10163,30 @@ void __40__SGDSuggestManager_bumptTTLForNLEvent___block_invoke_558()
 
     objc_setAssociatedObject(v25, &kAssociatedCacheObjectKey, v17, 1);
     v26 = +[SGDSuggestManager requestCache];
-    v27 = [v26 result];
+    result = [v26 result];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults___block_invoke_554;
     v36[3] = &unk_278951000;
     v37 = v17;
     v38 = &v42;
-    [v27 runWithLockAcquired:v36];
+    [result runWithLockAcquired:v36];
 
     v19 = v37;
   }
 
-  v28 = [v43[5] suggestionsCount];
-  v29 = v9[2](v9, v43[5]);
-  if ([v29 suggestionsCount] != v28)
+  suggestionsCount = [v43[5] suggestionsCount];
+  v29 = resultsCopy[2](resultsCopy, v43[5]);
+  if ([v29 suggestionsCount] != suggestionsCount)
   {
     v30 = sgLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [v29 suggestionsCount];
+      suggestionsCount2 = [v29 suggestionsCount];
       *buf = 67109376;
-      *v49 = v28;
+      *v49 = suggestionsCount;
       *&v49[4] = 1024;
-      *&v49[6] = v34;
+      *&v49[6] = suggestionsCount2;
       _os_log_debug_impl(&dword_231E60000, v30, OS_LOG_TYPE_DEBUG, "Went from %d to %d suggestions after filtering out already acted-on suggestions", buf, 0xEu);
     }
   }
@@ -10220,20 +10220,20 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   [v3 setObject:*(*(*(a1 + 40) + 8) + 40) forKeyedSubscript:*(a1 + 32)];
 }
 
-- (void)suggestionsFromRFC822Data:(id)a3 source:(id)a4 options:(unint64_t)a5 withCompletion:(id)a6
+- (void)suggestionsFromRFC822Data:(id)data source:(id)source options:(unint64_t)options withCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  +[SGPatterns useAllLanguagesAtOnce:](SGPatterns, "useAllLanguagesAtOnce:", [v11 isEqualToString:@"suggest_tool"]);
-  v14 = [SGSimpleMailMessage parseRfc822:v12];
-  v13 = [v14 htmlBody];
-  [(SGDSuggestManager *)self suggestionsFromEmailContent:v13 headers:v12 source:v11 options:a5 withCompletion:v10];
+  completionCopy = completion;
+  sourceCopy = source;
+  dataCopy = data;
+  +[SGPatterns useAllLanguagesAtOnce:](SGPatterns, "useAllLanguagesAtOnce:", [sourceCopy isEqualToString:@"suggest_tool"]);
+  v14 = [SGSimpleMailMessage parseRfc822:dataCopy];
+  htmlBody = [v14 htmlBody];
+  [(SGDSuggestManager *)self suggestionsFromEmailContent:htmlBody headers:dataCopy source:sourceCopy options:options withCompletion:completionCopy];
 }
 
-- (void)allDeliveriesWithLimit:(unint64_t)a3 withCompletion:(id)a4
+- (void)allDeliveriesWithLimit:(unint64_t)limit withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = sgLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -10242,15 +10242,15 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 
   v8 = MEMORY[0x277D02138];
-  v9 = [(SGSqlEntityStore *)self->_harvestStore allDeliveriesWithLimit:a3];
+  v9 = [(SGSqlEntityStore *)self->_harvestStore allDeliveriesWithLimit:limit];
   v10 = [v8 responseWith:v9];
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)logUserCreatedReminderTitle:(id)a3 withCompletion:(id)a4
+- (void)logUserCreatedReminderTitle:(id)title withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  titleCopy = title;
   v7 = sgRemindersLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -10258,15 +10258,15 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     _os_log_debug_impl(&dword_231E60000, v7, OS_LOG_TYPE_DEBUG, "SuggestionsManager logging user created reminder title", v9, 2u);
   }
 
-  [SGDPLogging logUserCreatedReminderTitle:v6];
+  [SGDPLogging logUserCreatedReminderTitle:titleCopy];
   v8 = objc_opt_new();
-  v5[2](v5, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)reminderTitleForContent:(id)a3 withCompletion:(id)a4
+- (void)reminderTitleForContent:(id)content withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contentCopy = content;
   v7 = sgRemindersLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -10276,15 +10276,15 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
 
   v8 = MEMORY[0x277D02138];
   v9 = +[SGReminderDissector sharedInstance];
-  v10 = [v9 reminderTitleForContent:v6];
+  v10 = [v9 reminderTitleForContent:contentCopy];
 
   v11 = [v8 responseWith:v10];
-  v5[2](v5, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
-- (void)allRemindersLimitedTo:(unint64_t)a3 withCompletion:(id)a4
+- (void)allRemindersLimitedTo:(unint64_t)to withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = sgRemindersLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -10293,27 +10293,27 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 
   v8 = MEMORY[0x277D02138];
-  v9 = [(SGSqlEntityStore *)self->_harvestStore allRemindersLimitedTo:a3];
+  v9 = [(SGSqlEntityStore *)self->_harvestStore allRemindersLimitedTo:to];
   v10 = [v8 responseWith:v9];
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
 }
 
-- (void)reminderAlarmTriggeredForRecordId:(id)a3 completion:(id)a4
+- (void)reminderAlarmTriggeredForRecordId:(id)id completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgRemindersLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = idCopy;
     _os_log_impl(&dword_231E60000, v8, OS_LOG_TYPE_INFO, "SGDSuggestManager-alarmTriggeredForRecordId: %@", buf, 0xCu);
   }
 
   harvestStore = self->_harvestStore;
   v14 = 0;
-  [(SGSqlEntityStore *)harvestStore reminderAlarmTriggeredForRecordId:v6 error:&v14];
+  [(SGSqlEntityStore *)harvestStore reminderAlarmTriggeredForRecordId:idCopy error:&v14];
   v10 = v14;
   if (v10)
   {
@@ -10326,17 +10326,17 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 
   v12 = v11;
-  v7[2](v7, v11);
+  completionCopy[2](completionCopy, v11);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)interfaceForRealtimeReminder:(id)a3
+- (unsigned)interfaceForRealtimeReminder:(id)reminder
 {
-  v3 = [a3 origin];
-  v4 = [v3 type];
+  origin = [reminder origin];
+  type = [origin type];
 
-  if (v4 == 1)
+  if (type == 1)
   {
     return 1;
   }
@@ -10347,12 +10347,12 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 }
 
-- (void)_rejectReminderByRecordId:(id)a3 completion:(id)a4
+- (void)_rejectReminderByRecordId:(id)id completion:(id)completion
 {
   harvestStore = self->_harvestStore;
   v10 = 0;
-  v6 = a4;
-  [(SGSqlEntityStore *)harvestStore rejectReminderByRecordId:a3 error:&v10];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore rejectReminderByRecordId:id error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -10365,13 +10365,13 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 
   v9 = v8;
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)rejectRealtimeReminder:(id)a3 completion:(id)a4
+- (void)rejectRealtimeReminder:(id)reminder completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  reminderCopy = reminder;
+  completionCopy = completion;
   v9 = sgRemindersLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -10379,30 +10379,30 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-rejectRealtimeReminer", buf, 2u);
   }
 
-  v10 = [v7 uniqueKey];
-  if ([SGDuplicateKey serializationPassesBasicScrutiny:v10])
+  uniqueKey = [reminderCopy uniqueKey];
+  if ([SGDuplicateKey serializationPassesBasicScrutiny:uniqueKey])
   {
     harvestStore = self->_harvestStore;
     v12 = [SGDuplicateKey alloc];
-    v13 = [v7 uniqueKey];
-    v14 = [(SGDuplicateKey *)v12 initWithSerialized:v13];
+    uniqueKey2 = [reminderCopy uniqueKey];
+    v14 = [(SGDuplicateKey *)v12 initWithSerialized:uniqueKey2];
     v15 = [(SGSqlEntityStore *)harvestStore loadReminderByKey:v14];
 
     if (v15)
     {
-      v16 = [v15 recordId];
-      [(SGDSuggestManager *)self _rejectReminderByRecordId:v16 completion:v8];
+      recordId = [v15 recordId];
+      [(SGDSuggestManager *)self _rejectReminderByRecordId:recordId completion:completionCopy];
 
-      v17 = [v15 recordId];
+      recordId2 = [v15 recordId];
 
-      if (!v17)
+      if (!recordId2)
       {
-        v23 = [MEMORY[0x277CCA890] currentHandler];
-        [v23 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1301 description:{@"Invalid parameter not satisfying: %@", @"storageReminder.recordId"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1301 description:{@"Invalid parameter not satisfying: %@", @"storageReminder.recordId"}];
       }
 
-      v18 = [v15 recordId];
-      [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:v18 interface:[(SGDSuggestManager *)self interfaceForRealtimeReminder:v7] actionType:7];
+      recordId3 = [v15 recordId];
+      [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:recordId3 interface:[(SGDSuggestManager *)self interfaceForRealtimeReminder:reminderCopy] actionType:7];
     }
 
     else
@@ -10415,14 +10415,14 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
       }
 
       v22 = +[SGSuggestHistory sharedSuggestHistory];
-      [v22 rejectReminder:v7];
+      [v22 rejectReminder:reminderCopy];
 
-      v18 = objc_opt_new();
-      v8[2](v8, v18);
+      recordId3 = objc_opt_new();
+      completionCopy[2](completionCopy, recordId3);
     }
 
     v20 = +[SGRTCLogging defaultLogger];
-    [v20 logReminderInteractionFromReminder:v7 interface:-[SGDSuggestManager interfaceForRealtimeReminder:](self actionType:{"interfaceForRealtimeReminder:", v7), 7}];
+    [v20 logReminderInteractionFromReminder:reminderCopy interface:-[SGDSuggestManager interfaceForRealtimeReminder:](self actionType:{"interfaceForRealtimeReminder:", reminderCopy), 7}];
   }
 
   else
@@ -10430,41 +10430,41 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     v19 = MEMORY[0x277D02130];
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:0];
     v20 = [v19 responseWithError:v15];
-    v8[2](v8, v20);
+    completionCopy[2](completionCopy, v20);
   }
 }
 
-- (void)rejectReminderByRecordId:(id)a3 completion:(id)a4
+- (void)rejectReminderByRecordId:(id)id completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v9 = sgRemindersLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = idCopy;
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-rejectReminderByRecordId: %@", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!idCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1281 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1281 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
   }
 
-  [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:v7 interface:21 actionType:7];
-  [(SGDSuggestManager *)self _rejectReminderByRecordId:v7 completion:v8];
+  [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:idCopy interface:21 actionType:7];
+  [(SGDSuggestManager *)self _rejectReminderByRecordId:idCopy completion:completionCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_confirmReminderByRecordId:(id)a3 completion:(id)a4
+- (void)_confirmReminderByRecordId:(id)id completion:(id)completion
 {
   harvestStore = self->_harvestStore;
   v10 = 0;
-  v6 = a4;
-  [(SGSqlEntityStore *)harvestStore confirmReminderByRecordId:a3 error:&v10];
+  completionCopy = completion;
+  [(SGSqlEntityStore *)harvestStore confirmReminderByRecordId:id error:&v10];
   v7 = v10;
   if (v7)
   {
@@ -10477,13 +10477,13 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
   }
 
   v9 = v8;
-  v6[2](v6, v8);
+  completionCopy[2](completionCopy, v8);
 }
 
-- (void)confirmRealtimeReminder:(id)a3 completion:(id)a4
+- (void)confirmRealtimeReminder:(id)reminder completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  reminderCopy = reminder;
+  completionCopy = completion;
   v9 = sgRemindersLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -10491,28 +10491,28 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-confirmRealtimeReminder", buf, 2u);
   }
 
-  v10 = [v7 uniqueKey];
-  if (v10 && [SGDuplicateKey serializationPassesBasicScrutiny:v10])
+  uniqueKey = [reminderCopy uniqueKey];
+  if (uniqueKey && [SGDuplicateKey serializationPassesBasicScrutiny:uniqueKey])
   {
     harvestStore = self->_harvestStore;
-    v12 = [[SGDuplicateKey alloc] initWithSerialized:v10];
+    v12 = [[SGDuplicateKey alloc] initWithSerialized:uniqueKey];
     v13 = [(SGSqlEntityStore *)harvestStore loadReminderByKey:v12];
 
     if (v13)
     {
-      v14 = [v13 recordId];
-      [(SGDSuggestManager *)self _confirmReminderByRecordId:v14 completion:v8];
+      recordId = [v13 recordId];
+      [(SGDSuggestManager *)self _confirmReminderByRecordId:recordId completion:completionCopy];
 
-      v15 = [v13 recordId];
+      recordId2 = [v13 recordId];
 
-      if (!v15)
+      if (!recordId2)
       {
-        v21 = [MEMORY[0x277CCA890] currentHandler];
-        [v21 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1254 description:{@"Invalid parameter not satisfying: %@", @"storageReminder.recordId"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1254 description:{@"Invalid parameter not satisfying: %@", @"storageReminder.recordId"}];
       }
 
-      v16 = [v13 recordId];
-      [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:v16 interface:[(SGDSuggestManager *)self interfaceForRealtimeReminder:v7] actionType:6];
+      recordId3 = [v13 recordId];
+      [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:recordId3 interface:[(SGDSuggestManager *)self interfaceForRealtimeReminder:reminderCopy] actionType:6];
     }
 
     else
@@ -10525,14 +10525,14 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
       }
 
       v20 = +[SGSuggestHistory sharedSuggestHistory];
-      [v20 confirmReminder:v7];
+      [v20 confirmReminder:reminderCopy];
 
-      v16 = objc_opt_new();
-      v8[2](v8, v16);
+      recordId3 = objc_opt_new();
+      completionCopy[2](completionCopy, recordId3);
     }
 
     v18 = +[SGRTCLogging defaultLogger];
-    [v18 logReminderInteractionFromReminder:v7 interface:-[SGDSuggestManager interfaceForRealtimeReminder:](self actionType:{"interfaceForRealtimeReminder:", v7), 6}];
+    [v18 logReminderInteractionFromReminder:reminderCopy interface:-[SGDSuggestManager interfaceForRealtimeReminder:](self actionType:{"interfaceForRealtimeReminder:", reminderCopy), 6}];
   }
 
   else
@@ -10540,58 +10540,58 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     v17 = MEMORY[0x277D02130];
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:0];
     v18 = [v17 responseWithError:v13];
-    v8[2](v8, v18);
+    completionCopy[2](completionCopy, v18);
   }
 }
 
-- (void)confirmReminderByRecordId:(id)a3 completion:(id)a4
+- (void)confirmReminderByRecordId:(id)id completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v9 = sgRemindersLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = v7;
+    v13 = idCopy;
     _os_log_impl(&dword_231E60000, v9, OS_LOG_TYPE_INFO, "SGDSuggestManager-confirmReminderByRecordId: %@", buf, 0xCu);
   }
 
-  if (!v7)
+  if (!idCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1236 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1236 description:{@"Invalid parameter not satisfying: %@", @"recordId"}];
   }
 
-  [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:v7 interface:21 actionType:6];
-  [(SGDSuggestManager *)self _confirmReminderByRecordId:v7 completion:v8];
+  [(SGDSuggestManager *)self logSuggestionInteractionForRecordId:idCopy interface:21 actionType:6];
+  [(SGDSuggestManager *)self _confirmReminderByRecordId:idCopy completion:completionCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allEventsLimitedTo:(unint64_t)a3 withCompletion:(id)a4
+- (void)allEventsLimitedTo:(unint64_t)to withCompletion:(id)completion
 {
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a4;
+  completionCopy = completion;
   v9 = [v6 dateWithTimeIntervalSince1970:0.0];
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  [(SGDSuggestManager *)self eventsStartingAt:v9 endingAt:v8 limitTo:a3 options:2 withCompletion:v7];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  [(SGDSuggestManager *)self eventsStartingAt:v9 endingAt:distantFuture limitTo:to options:2 withCompletion:completionCopy];
 }
 
-- (void)eventFromRecordId:(id)a3 withCompletion:(id)a4
+- (void)eventFromRecordId:(id)id withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412290;
-    v16 = v6;
+    v16 = idCopy;
     _os_log_debug_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEBUG, "eventFromRecordId: %@", &v15, 0xCu);
   }
 
-  v9 = [(SGSqlEntityStore *)self->_harvestStore loadEventByRecordId:v6];
+  v9 = [(SGSqlEntityStore *)self->_harvestStore loadEventByRecordId:idCopy];
   v10 = v9;
   v11 = MEMORY[0x277D02138];
   if (v9)
@@ -10606,21 +10606,21 @@ void __71__SGDSuggestManager_cachedResultForKey_generateResult_validateResults__
     [v11 responseWithError:v12];
   }
   v13 = ;
-  v7[2](v7, v13);
+  completionCopy[2](completionCopy, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_mapToPseudoEvents:(id)a3
+- (id)_mapToPseudoEvents:(id)events
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  eventsCopy = events;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -10669,15 +10669,15 @@ void __68__SGDSuggestManager_allContactsWithSnippets_limitTo_withCompletion___bl
   }
 }
 
-- (void)contactMatchesWithMessagingPrefix:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5
+- (void)contactMatchesWithMessagingPrefix:(id)prefix limitTo:(unint64_t)to withCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  prefixCopy = prefix;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (prefixCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -10685,8 +10685,8 @@ void __68__SGDSuggestManager_allContactsWithSnippets_limitTo_withCompletion___bl
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1153 description:{@"Invalid parameter not satisfying: %@", @"prefix"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1153 description:{@"Invalid parameter not satisfying: %@", @"prefix"}];
 
     if (v11)
     {
@@ -10694,37 +10694,37 @@ void __68__SGDSuggestManager_allContactsWithSnippets_limitTo_withCompletion___bl
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v12 = sgLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v9;
+    v20 = prefixCopy;
     v21 = 2048;
-    v22 = a4;
+    toCopy = to;
     _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_INFO, "SGDSuggestManager-contactMatchesWithMessagingPrefix:%@ limitTo:%lu", buf, 0x16u);
   }
 
   v13 = MEMORY[0x277D02138];
-  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithMessagingPrefix:v9 limitTo:a4];
+  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithMessagingPrefix:prefixCopy limitTo:to];
   v15 = [v13 responseWith:v14];
   (v11)[2](v11, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactMatchesWithFullTextSearch:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5
+- (void)contactMatchesWithFullTextSearch:(id)search limitTo:(unint64_t)to withCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  searchCopy = search;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (searchCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -10732,8 +10732,8 @@ LABEL_3:
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1145 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1145 description:{@"Invalid parameter not satisfying: %@", @"query"}];
 
     if (v11)
     {
@@ -10741,57 +10741,57 @@ LABEL_3:
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1146 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1146 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v12 = sgLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v9;
+    v20 = searchCopy;
     v21 = 2048;
-    v22 = a4;
+    toCopy = to;
     _os_log_impl(&dword_231E60000, v12, OS_LOG_TYPE_INFO, "SGDSuggestManager-contactMatchesWithFullTextSearch:%@ limitTo:%lu", buf, 0x16u);
   }
 
   v13 = MEMORY[0x277D02138];
-  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithFullTextSearch:v9 limitTo:a4];
+  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithFullTextSearch:searchCopy limitTo:to];
   v15 = [v13 responseWith:v14];
   (v11)[2](v11, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)storageContactFromRecordId:(id)a3
+- (id)storageContactFromRecordId:(id)id
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = idCopy;
     _os_log_debug_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEBUG, "storageContactFromRecordId: %@", &v9, 0xCu);
   }
 
-  v6 = [(SGSqlEntityStore *)self->_harvestStore storageContactByRecordId:v4 withSnippets:1];
+  v6 = [(SGSqlEntityStore *)self->_harvestStore storageContactByRecordId:idCopy withSnippets:1];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (void)cnContactMatchesForRecordIds:(id)a3 withCompletion:(id)a4
+- (void)cnContactMatchesForRecordIds:(id)ids withCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idsCopy = ids;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v6 count];
+    *(&buf + 4) = [idsCopy count];
     _os_log_debug_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEBUG, "cnContactMatchesForRecordIds (%lu ids)", &buf, 0xCu);
   }
 
@@ -10810,7 +10810,7 @@ LABEL_3:
   v13[3] = &unk_27894B7B0;
   v13[4] = self;
   v13[5] = &buf;
-  v9 = [v6 _pas_mappedArrayWithTransform:v13];
+  v9 = [idsCopy _pas_mappedArrayWithTransform:v13];
   v10 = v9;
   if (!*(*(&buf + 1) + 40))
   {
@@ -10822,12 +10822,12 @@ LABEL_3:
     v10 = MEMORY[0x277CBEBF8];
 LABEL_7:
     v11 = [MEMORY[0x277D02138] responseWith:v10];
-    v7[2](v7, v11);
+    completionCopy[2](completionCopy, v11);
     goto LABEL_8;
   }
 
   v11 = [MEMORY[0x277D02138] responseWithError:?];
-  v7[2](v7, v11);
+  completionCopy[2](completionCopy, v11);
   v10 = MEMORY[0x277CBEBF8];
 LABEL_8:
 
@@ -10928,22 +10928,22 @@ LABEL_23:
   return v6;
 }
 
-- (void)cnContactMatchesForRecordId:(id)a3 withCompletion:(id)a4
+- (void)cnContactMatchesForRecordId:(id)id withCompletion:(id)completion
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v16[0] = a3;
+  completionCopy = completion;
+  v16[0] = id;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a3;
+  idCopy = id;
   v10 = [v8 arrayWithObjects:v16 count:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__SGDSuggestManager_cnContactMatchesForRecordId_withCompletion___block_invoke;
   v13[3] = &unk_27894B788;
-  v14 = v7;
+  v14 = completionCopy;
   v15 = a2;
   v13[4] = self;
-  v11 = v7;
+  v11 = completionCopy;
   [(SGDSuggestManager *)self cnContactMatchesForRecordIds:v10 withCompletion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -10978,35 +10978,35 @@ void __64__SGDSuggestManager_cnContactMatchesForRecordId_withCompletion___block_
   (*(v5 + 16))(v5, v8);
 }
 
-- (void)contactFromRecordId:(id)a3 withCompletion:(id)a4
+- (void)contactFromRecordId:(id)id withCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = sgLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = idCopy;
     _os_log_debug_impl(&dword_231E60000, v8, OS_LOG_TYPE_DEBUG, "contactFromRecordId: %@", &v12, 0xCu);
   }
 
-  v9 = [(SGSqlEntityStore *)self->_harvestStore suggestContactByRecordId:v6];
+  v9 = [(SGSqlEntityStore *)self->_harvestStore suggestContactByRecordId:idCopy];
   v10 = [MEMORY[0x277D02138] responseWith:v9];
-  v7[2](v7, v10);
+  completionCopy[2](completionCopy, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)emailAddressIsSignificant:(id)a3 withCompletion:(id)a4
+- (void)emailAddressIsSignificant:(id)significant withCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  significantCopy = significant;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (significantCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -11014,8 +11014,8 @@ void __64__SGDSuggestManager_cnContactMatchesForRecordId_withCompletion___block_
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1053 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1053 description:{@"Invalid parameter not satisfying: %@", @"emailAddress"}];
 
     if (v9)
     {
@@ -11023,22 +11023,22 @@ void __64__SGDSuggestManager_cnContactMatchesForRecordId_withCompletion___block_
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1054 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1054 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v10 = sgLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v26 = v7;
+    v26 = significantCopy;
     _os_log_impl(&dword_231E60000, v10, OS_LOG_TYPE_INFO, "SGDSuggestManager-emailAddressIsSignificant:%@", buf, 0xCu);
   }
 
   v11 = [MEMORY[0x277D020C8] recordIdForContactWithRowId:0];
   v12 = MEMORY[0x277D01F90];
   v13 = [MEMORY[0x277D01FD8] extractionInfoWithExtractionType:0 modelVersion:0 confidence:0];
-  v14 = [v12 emailAddress:v7 label:@"none" extractionInfo:v13 withRecordId:v11];
+  v14 = [v12 emailAddress:significantCopy label:@"none" extractionInfo:v13 withRecordId:v11];
 
   v15 = MEMORY[0x277D01F60];
   v24 = v14;
@@ -11053,15 +11053,15 @@ LABEL_3:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactMatchesWithContactIdentifiers:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5
+- (void)contactMatchesWithContactIdentifiers:(id)identifiers limitTo:(unint64_t)to withCompletion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (identifiersCopy)
   {
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -11069,8 +11069,8 @@ LABEL_3:
 
   else
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1016 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifiers"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1016 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifiers"}];
 
     if (v10)
     {
@@ -11078,8 +11078,8 @@ LABEL_3:
     }
   }
 
-  v32 = [MEMORY[0x277CCA890] currentHandler];
-  [v32 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:1017 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v33 = v10;
@@ -11087,7 +11087,7 @@ LABEL_3:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v51 = [v8 count];
+    v51 = [identifiersCopy count];
     _os_log_debug_impl(&dword_231E60000, v11, OS_LOG_TYPE_DEBUG, "contactsFromContactIdentifiers (%lu ids)", buf, 0xCu);
   }
 
@@ -11096,7 +11096,7 @@ LABEL_3:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v13 = v8;
+  v13 = identifiersCopy;
   v14 = [v13 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v14)
   {
@@ -11117,7 +11117,7 @@ LABEL_3:
       do
       {
         v19 = v12;
-        v20 = self;
+        selfCopy = self;
         if (*v45 != v42)
         {
           objc_enumerationMutation(obj);
@@ -11136,7 +11136,7 @@ LABEL_3:
         v48[7] = v16;
         v48[8] = v17;
         v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:9];
-        v24 = [SGContactsInterface unifiedContactWithIdentifier:v21 keysToFetch:v23 usingContactStore:v20->_contactStore error:&v43];
+        v24 = [SGContactsInterface unifiedContactWithIdentifier:v21 keysToFetch:v23 usingContactStore:selfCopy->_contactStore error:&v43];
 
         if (!v24)
         {
@@ -11169,12 +11169,12 @@ LABEL_3:
           goto LABEL_20;
         }
 
-        v25 = [(SGSqlEntityStore *)v20->_harvestStore suggestContactMatchesWithContact:v24 limitTo:a4];
+        v25 = [(SGSqlEntityStore *)selfCopy->_harvestStore suggestContactMatchesWithContact:v24 limitTo:to];
         v12 = v19;
         [v19 addObject:v25];
 
         ++v18;
-        self = v20;
+        self = selfCopy;
       }
 
       while (v15 != v18);
@@ -11197,15 +11197,15 @@ LABEL_20:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactMatchesWithContactIdentifier:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5
+- (void)contactMatchesWithContactIdentifier:(id)identifier limitTo:(unint64_t)to withCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -11213,8 +11213,8 @@ LABEL_20:
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:984 description:{@"Invalid parameter not satisfying: %@", @"contactIdentifier"}];
 
     if (v11)
     {
@@ -11222,15 +11222,15 @@ LABEL_20:
     }
   }
 
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:985 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:985 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v12 = sgLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v28 = v9;
+    v28 = identifierCopy;
     _os_log_debug_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEBUG, "contactsFromContactIdentifier: %@", buf, 0xCu);
   }
 
@@ -11250,11 +11250,11 @@ LABEL_3:
   v26[7] = v17;
   v26[8] = *MEMORY[0x277CBCF90];
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:9];
-  v19 = [SGContactsInterface unifiedContactWithIdentifier:v9 keysToFetch:v18 usingContactStore:self->_contactStore error:&v25];
+  v19 = [SGContactsInterface unifiedContactWithIdentifier:identifierCopy keysToFetch:v18 usingContactStore:self->_contactStore error:&v25];
 
   if (v19)
   {
-    [(SGDSuggestManager *)self contactMatchesWithContact:v19 limitTo:a4 withCompletion:v11];
+    [(SGDSuggestManager *)self contactMatchesWithContact:v19 limitTo:to withCompletion:v11];
   }
 
   else
@@ -11286,15 +11286,15 @@ LABEL_3:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)contactMatchesWithContact:(id)a3 limitTo:(unint64_t)a4 withCompletion:(id)a5
+- (void)contactMatchesWithContact:(id)contact limitTo:(unint64_t)to withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  contactCopy = contact;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (contactCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -11302,8 +11302,8 @@ LABEL_3:
 
   else
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:976 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:976 description:{@"Invalid parameter not satisfying: %@", @"contact"}];
 
     if (v11)
     {
@@ -11311,49 +11311,49 @@ LABEL_3:
     }
   }
 
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:977 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager.m" lineNumber:977 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v12 = sgLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v9;
+    v20 = contactCopy;
     _os_log_debug_impl(&dword_231E60000, v12, OS_LOG_TYPE_DEBUG, "contactsFromContact: %@", buf, 0xCu);
   }
 
   v13 = MEMORY[0x277D02138];
-  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithContact:v9 limitTo:a4];
+  v14 = [(SGSqlEntityStore *)self->_harvestStore suggestContactMatchesWithContact:contactCopy limitTo:to];
   v15 = [v13 responseWith:v14];
   (v11)[2](v11, v15);
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isEnabledWithCompletion:(id)a3
+- (void)isEnabledWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D02138];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 responseWith:MEMORY[0x277CBEC38]];
-  (*(a3 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)clearCachesFully:(BOOL)a3 withCompletion:(id)a4
+- (void)clearCachesFully:(BOOL)fully withCompletion:(id)completion
 {
-  v4 = a3;
+  fullyCopy = fully;
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = sgLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v9[0] = 67109120;
-    v9[1] = v4;
+    v9[1] = fullyCopy;
     _os_log_debug_impl(&dword_231E60000, v6, OS_LOG_TYPE_DEBUG, "clearCachesFully: %i", v9, 8u);
   }
 
   +[SGDSuggestManager clearRequestCache];
-  if (v4)
+  if (fullyCopy)
   {
     +[SGPatterns clearAllRegexCaches];
     _PASSimpleICUClearCache();
@@ -11362,19 +11362,19 @@ LABEL_3:
     [MEMORY[0x277D042E8] resetSharedCachesAndModels];
   }
 
-  if (v5)
+  if (completionCopy)
   {
     v7 = objc_opt_new();
-    v5[2](v5, v7);
+    completionCopy[2](completionCopy, v7);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareForRealtimeExtraction:(id)a3
+- (void)prepareForRealtimeExtraction:(id)extraction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extractionCopy = extraction;
   Current = CFAbsoluteTimeGetCurrent();
   v6 = Current - *&prepareForRealtimeExtraction__lastWarmTime;
   v7 = sgLogHandle();
@@ -11389,7 +11389,7 @@ LABEL_3:
     }
 
     v10 = objc_opt_new();
-    v4[2](v4, v10);
+    extractionCopy[2](extractionCopy, v10);
   }
 
   else
@@ -11409,7 +11409,7 @@ LABEL_3:
     block[3] = &unk_27894BA90;
     block[4] = self;
     v14 = Current;
-    v13 = v4;
+    v13 = extractionCopy;
     dispatch_async(v9, block);
   }
 
@@ -11466,56 +11466,56 @@ void __50__SGDSuggestManager_prepareForRealtimeExtraction___block_invoke(uint64_
 
 - (BOOL)clientIsMessages
 {
-  v2 = [(NSXPCConnection *)self->_connection exportedInterface];
-  v3 = [v2 protocol];
-  isEqual = protocol_isEqual(v3, &unk_284758328);
+  exportedInterface = [(NSXPCConnection *)self->_connection exportedInterface];
+  protocol = [exportedInterface protocol];
+  isEqual = protocol_isEqual(protocol, &unk_284758328);
 
   return isEqual;
 }
 
 - (BOOL)clientIsMail
 {
-  v2 = [(NSXPCConnection *)self->_connection exportedInterface];
-  v3 = [v2 protocol];
-  isEqual = protocol_isEqual(v3, &unk_2847564D8);
+  exportedInterface = [(NSXPCConnection *)self->_connection exportedInterface];
+  protocol = [exportedInterface protocol];
+  isEqual = protocol_isEqual(protocol, &unk_2847564D8);
 
   return isEqual;
 }
 
-- (SGDSuggestManager)initWithStore:(id)a3
+- (SGDSuggestManager)initWithStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = +[SGDManagerForCTS sharedSingletonInstance];
   v6 = +[SGEKEventStoreProvider defaultEKStoreProvider];
   v7 = +[SGContactStoreFactory contactStore];
-  v8 = [(SGDSuggestManager *)self initWithStore:v4 ctsManager:v5 ekStoreProvider:v6 contactStore:v7 pet2Tracker:0];
+  v8 = [(SGDSuggestManager *)self initWithStore:storeCopy ctsManager:v5 ekStoreProvider:v6 contactStore:v7 pet2Tracker:0];
 
   return v8;
 }
 
-- (SGDSuggestManager)initWithStore:(id)a3 ctsManager:(id)a4 ekStoreProvider:(id)a5 contactStore:(id)a6 pet2Tracker:(id)a7
+- (SGDSuggestManager)initWithStore:(id)store ctsManager:(id)manager ekStoreProvider:(id)provider contactStore:(id)contactStore pet2Tracker:(id)tracker
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  storeCopy = store;
+  managerCopy = manager;
+  providerCopy = provider;
+  contactStoreCopy = contactStore;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = SGDSuggestManager;
   v17 = [(SGDSuggestManager *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    [(SGDSuggestManager *)v17 setupManagerWithConnection:0 store:v12 ctsManager:v13 ekStoreProvider:v14 contactStore:v15 pet2Tracker:v16];
+    [(SGDSuggestManager *)v17 setupManagerWithConnection:0 store:storeCopy ctsManager:managerCopy ekStoreProvider:providerCopy contactStore:contactStoreCopy pet2Tracker:trackerCopy];
   }
 
   return v18;
 }
 
-- (SGDSuggestManager)initWithMessagesConnection:(id)a3 store:(id)a4
+- (SGDSuggestManager)initWithMessagesConnection:(id)connection store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = SGDSuggestManager;
   v8 = [(SGDSuggestManager *)&v16 init];
@@ -11527,7 +11527,7 @@ void __50__SGDSuggestManager_prepareForRealtimeExtraction___block_invoke(uint64_
   v9 = +[SGDManagerForCTS sharedSingletonInstance];
   v10 = +[SGEKEventStoreProvider defaultEKStoreProvider];
   v11 = +[SGContactStoreFactory contactStore];
-  [(SGDSuggestManager *)v8 setupManagerWithConnection:v6 store:v7 ctsManager:v9 ekStoreProvider:v10 contactStore:v11 pet2Tracker:0];
+  [(SGDSuggestManager *)v8 setupManagerWithConnection:connectionCopy store:storeCopy ctsManager:v9 ekStoreProvider:v10 contactStore:v11 pet2Tracker:0];
 
   if (!v8->_harvestStore)
   {
@@ -11550,10 +11550,10 @@ LABEL_3:
   return v12;
 }
 
-- (SGDSuggestManager)initWithConnection:(id)a3 store:(id)a4
+- (SGDSuggestManager)initWithConnection:(id)connection store:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = SGDSuggestManager;
   v8 = [(SGDSuggestManager *)&v16 init];
@@ -11565,7 +11565,7 @@ LABEL_3:
   v9 = +[SGDManagerForCTS sharedSingletonInstance];
   v10 = +[SGEKEventStoreProvider defaultEKStoreProvider];
   v11 = +[SGContactStoreFactory contactStore];
-  [(SGDSuggestManager *)v8 setupManagerWithConnection:v6 store:v7 ctsManager:v9 ekStoreProvider:v10 contactStore:v11 pet2Tracker:0];
+  [(SGDSuggestManager *)v8 setupManagerWithConnection:connectionCopy store:storeCopy ctsManager:v9 ekStoreProvider:v10 contactStore:v11 pet2Tracker:0];
 
   if (!v8->_harvestStore)
   {
@@ -11588,15 +11588,15 @@ LABEL_3:
   return v12;
 }
 
-- (void)contentAdmissionBlocklistDidChange:(id)a3
+- (void)contentAdmissionBlocklistDidChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = sgLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = [v4 count];
+    v18 = [changeCopy count];
     _os_log_impl(&dword_231E60000, v5, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: contentAdmissionBlocklistDidChange: called with %tu bundles", buf, 0xCu);
   }
 
@@ -11604,7 +11604,7 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = changeCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -11633,16 +11633,16 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupHistoryObserver:(id)a3
+- (void)_setupHistoryObserver:(id)observer
 {
-  v3 = a3;
+  observerCopy = observer;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__SGDSuggestManager__setupHistoryObserver___block_invoke;
   block[3] = &unk_278954A30;
-  v7 = v3;
+  v7 = observerCopy;
   v4 = _setupHistoryObserver__onceToken;
-  v5 = v3;
+  v5 = observerCopy;
   if (v4 != -1)
   {
     dispatch_once(&_setupHistoryObserver__onceToken, block);
@@ -11656,22 +11656,22 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   [v1 addSuggestHistoryObserver:v2];
 }
 
-- (void)_executeBoxTasks:(id)a3
+- (void)_executeBoxTasks:(id)tasks
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deleteUniqueIds];
+  tasksCopy = tasks;
+  deleteUniqueIds = [tasksCopy deleteUniqueIds];
   v6 = objc_opt_new();
-  v36 = v4;
-  [v4 setDeleteUniqueIds:v6];
+  v36 = tasksCopy;
+  [tasksCopy setDeleteUniqueIds:v6];
 
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v37 = v5;
-  v7 = [v5 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  v37 = deleteUniqueIds;
+  allKeys = [deleteUniqueIds allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v8)
   {
     v9 = v8;
@@ -11682,22 +11682,22 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
       {
         if (*v47 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v46 + 1) + 8 * i);
-        v13 = [v5 objectForKeyedSubscript:v12];
-        v14 = [v13 allObjects];
-        [(SGDSuggestManager *)self deleteSpotlightReferencesWithBundleIdentifier:v12 uniqueIdentifiers:v14 completion:&__block_literal_global_292];
+        v13 = [deleteUniqueIds objectForKeyedSubscript:v12];
+        allObjects = [v13 allObjects];
+        [(SGDSuggestManager *)self deleteSpotlightReferencesWithBundleIdentifier:v12 uniqueIdentifiers:allObjects completion:&__block_literal_global_292];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [v36 deleteDomainIds];
+  deleteDomainIds = [v36 deleteDomainIds];
   v16 = objc_opt_new();
   [v36 setDeleteDomainIds:v16];
 
@@ -11705,8 +11705,8 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v17 = [v15 allKeys];
-  v18 = [v17 countByEnumeratingWithState:&v42 objects:v51 count:16];
+  allKeys2 = [deleteDomainIds allKeys];
+  v18 = [allKeys2 countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v18)
   {
     v19 = v18;
@@ -11717,23 +11717,23 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
       {
         if (*v43 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allKeys2);
         }
 
         v22 = *(*(&v42 + 1) + 8 * j);
-        v23 = [v15 objectForKeyedSubscript:v22];
+        v23 = [deleteDomainIds objectForKeyedSubscript:v22];
         [(SGDSuggestManager *)self deleteSpotlightReferencesWithBundleIdentifier:v22 domainIdentifiers:v23 completion:&__block_literal_global_294];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      v19 = [allKeys2 countByEnumeratingWithState:&v42 objects:v51 count:16];
     }
 
     while (v19);
   }
 
-  v35 = v15;
+  v35 = deleteDomainIds;
 
-  v24 = [v36 purgeUniqueIds];
+  purgeUniqueIds = [v36 purgeUniqueIds];
   v25 = objc_opt_new();
   [v36 setPurgeUniqueIds:v25];
 
@@ -11741,8 +11741,8 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v26 = [v24 allKeys];
-  v27 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  allKeys3 = [purgeUniqueIds allKeys];
+  v27 = [allKeys3 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v27)
   {
     v28 = v27;
@@ -11753,16 +11753,16 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
       {
         if (*v39 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allKeys3);
         }
 
         v31 = *(*(&v38 + 1) + 8 * k);
-        v32 = [v24 objectForKeyedSubscript:v31];
-        v33 = [v32 allObjects];
-        [(SGDSuggestManager *)self purgeSpotlightReferencesWithBundleIdentifier:v31 uniqueIdentifiers:v33 completion:&__block_literal_global_296];
+        v32 = [purgeUniqueIds objectForKeyedSubscript:v31];
+        allObjects2 = [v32 allObjects];
+        [(SGDSuggestManager *)self purgeSpotlightReferencesWithBundleIdentifier:v31 uniqueIdentifiers:allObjects2 completion:&__block_literal_global_296];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v28 = [allKeys3 countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v28);
@@ -11771,32 +11771,32 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupManagerWithConnection:(id)a3 store:(id)a4 ctsManager:(id)a5 ekStoreProvider:(id)a6 contactStore:(id)a7 pet2Tracker:(id)a8
+- (void)setupManagerWithConnection:(id)connection store:(id)store ctsManager:(id)manager ekStoreProvider:(id)provider contactStore:(id)contactStore pet2Tracker:(id)tracker
 {
   v93[20] = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v82 = a4;
-  v65 = a5;
-  v66 = a6;
-  v67 = a7;
-  v15 = a8;
-  v68 = v15;
-  if (v15)
+  connectionCopy = connection;
+  storeCopy = store;
+  managerCopy = manager;
+  providerCopy = provider;
+  contactStoreCopy = contactStore;
+  trackerCopy = tracker;
+  v68 = trackerCopy;
+  if (trackerCopy)
   {
-    v16 = v15;
+    mEMORY[0x277D41DA8] = trackerCopy;
   }
 
   else
   {
-    v16 = [MEMORY[0x277D41DA8] sharedInstance];
+    mEMORY[0x277D41DA8] = [MEMORY[0x277D41DA8] sharedInstance];
   }
 
   pet2Tracker = self->_pet2Tracker;
-  self->_pet2Tracker = v16;
+  self->_pet2Tracker = mEMORY[0x277D41DA8];
 
-  if (v82)
+  if (storeCopy)
   {
-    v18 = v82;
+    v18 = storeCopy;
   }
 
   else
@@ -11811,7 +11811,7 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   context = self->_context;
   self->_context = v20;
 
-  objc_storeStrong(&self->_connection, a3);
+  objc_storeStrong(&self->_connection, connection);
   v22 = +[SGSuggestHistory sharedSuggestHistory];
   history = self->_history;
   self->_history = v22;
@@ -11832,18 +11832,18 @@ void __43__SGDSuggestManager__setupHistoryObserver___block_invoke(uint64_t a1)
   assetUpdateToken = self->_assetUpdateToken;
   self->_assetUpdateToken = v25;
 
-  objc_storeStrong(&self->_ctsManager, a5);
-  objc_storeStrong(&self->_ekStoreProvider, a6);
-  objc_storeStrong(&self->_contactStore, a7);
+  objc_storeStrong(&self->_ctsManager, manager);
+  objc_storeStrong(&self->_ekStoreProvider, provider);
+  objc_storeStrong(&self->_contactStore, contactStore);
   v27 = objc_opt_new();
   messageHarvestQueue = self->_messageHarvestQueue;
   self->_messageHarvestQueue = v27;
 
   [(NSOperationQueue *)self->_messageHarvestQueue setQualityOfService:17];
   [(NSOperationQueue *)self->_messageHarvestQueue setMaxConcurrentOperationCount:2];
-  v29 = [v73 sgd_clientName];
+  sgd_clientName = [connectionCopy sgd_clientName];
   clientName = self->_clientName;
-  self->_clientName = v29;
+  self->_clientName = sgd_clientName;
 
   v31 = objc_opt_new();
   dirtyLock = self->_dirtyLock;
@@ -12046,29 +12046,29 @@ void __106__SGDSuggestManager_setupManagerWithConnection_store_ctsManager_ekStor
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)entityTagForCategory:(int64_t)a3
++ (id)entityTagForCategory:(int64_t)category
 {
-  v3 = 0;
-  if (a3 <= 5)
+  extractedFlight = 0;
+  if (category <= 5)
   {
-    if (a3 <= 2)
+    if (category <= 2)
     {
-      if (a3 == 1)
+      if (category == 1)
       {
-        v3 = [MEMORY[0x277D01FA0] extractedFlight];
+        extractedFlight = [MEMORY[0x277D01FA0] extractedFlight];
       }
 
-      else if (a3 == 2)
+      else if (category == 2)
       {
-        v3 = [MEMORY[0x277D01FA0] extractedBus];
+        extractedFlight = [MEMORY[0x277D01FA0] extractedBus];
       }
     }
 
     else
     {
-      if (a3 != 3)
+      if (category != 3)
       {
-        if (a3 == 4)
+        if (category == 4)
         {
           [MEMORY[0x277D01FA0] extractedHotel];
         }
@@ -12081,31 +12081,31 @@ void __106__SGDSuggestManager_setupManagerWithConnection_store_ctsManager_ekStor
         goto LABEL_6;
       }
 
-      v3 = [MEMORY[0x277D01FA0] extractedTrain];
+      extractedFlight = [MEMORY[0x277D01FA0] extractedTrain];
     }
   }
 
-  else if (a3 > 8)
+  else if (category > 8)
   {
-    switch(a3)
+    switch(category)
     {
       case 9:
-        v3 = [MEMORY[0x277D01FA0] extractedSocial];
+        extractedFlight = [MEMORY[0x277D01FA0] extractedSocial];
         break;
       case 10:
-        v3 = [MEMORY[0x277D01FA0] extractedBoat];
+        extractedFlight = [MEMORY[0x277D01FA0] extractedBoat];
         break;
       case 11:
-        v3 = [MEMORY[0x277D01FA0] extractedAppointment];
+        extractedFlight = [MEMORY[0x277D01FA0] extractedAppointment];
         break;
     }
   }
 
   else
   {
-    if (a3 != 6)
+    if (category != 6)
     {
-      if (a3 == 7)
+      if (category == 7)
       {
         [MEMORY[0x277D01FA0] extractedMovie];
       }
@@ -12115,38 +12115,38 @@ void __106__SGDSuggestManager_setupManagerWithConnection_store_ctsManager_ekStor
         [MEMORY[0x277D01FA0] extractedFood];
       }
 
-      v3 = LABEL_6:;
+      extractedFlight = LABEL_6:;
       goto LABEL_25;
     }
 
-    v3 = [MEMORY[0x277D01FA0] extractedTicket];
+    extractedFlight = [MEMORY[0x277D01FA0] extractedTicket];
   }
 
 LABEL_25:
 
-  return v3;
+  return extractedFlight;
 }
 
-+ (id)preprocessSearchableItem:(id)a3
++ (id)preprocessSearchableItem:(id)item
 {
-  v3 = a3;
-  if ([MEMORY[0x277D41E30] mailItemIsValid:v3])
+  itemCopy = item;
+  if ([MEMORY[0x277D41E30] mailItemIsValid:itemCopy])
   {
     v4 = MEMORY[0x277D41DF8];
-    v5 = [v3 bundleID];
-    LOBYTE(v4) = [v4 shouldAdmitContentFromBundleIdentifier:v5];
+    bundleID = [itemCopy bundleID];
+    LOBYTE(v4) = [v4 shouldAdmitContentFromBundleIdentifier:bundleID];
 
     if (v4)
     {
-      v6 = [v3 protection];
+      protection = [itemCopy protection];
 
-      if (!v6)
+      if (!protection)
       {
-        v7 = [v3 bundleID];
+        bundleID2 = [itemCopy bundleID];
         HVDataSourceForBundleIdentifier();
 
         v8 = HVDataSourceFileProtection();
-        [v3 setProtection:v8];
+        [itemCopy setProtection:v8];
       }
 
       v9 = 0;
@@ -12182,9 +12182,9 @@ LABEL_25:
   return v9;
 }
 
-+ (id)filterPseudoEvents:(id)a3 keepPastEvents:(BOOL)a4 keepPartialEvents:(BOOL)a5 keepEventsFromOldDocuments:(BOOL)a6 keepUnsupportedEventCategoryStatus:(BOOL)a7 keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)a8 keepLLMExtractionForRealTime:(BOOL)a9
++ (id)filterPseudoEvents:(id)events keepPastEvents:(BOOL)pastEvents keepPartialEvents:(BOOL)partialEvents keepEventsFromOldDocuments:(BOOL)documents keepUnsupportedEventCategoryStatus:(BOOL)status keepUnsupportedEventCategoryStatusForTextMessage:(BOOL)message keepLLMExtractionForRealTime:(BOOL)time
 {
-  v9 = a3;
+  eventsCopy = events;
   v10 = objc_opt_new();
   [v10 isLLMPreferredForLocale];
   v11 = v10;
@@ -12305,9 +12305,9 @@ LABEL_31:
 
 + (void)clearRequestCache
 {
-  v3 = [a1 requestCache];
-  v2 = [v3 resultIfAvailable];
-  [v2 runWithLockAcquired:&__block_literal_global_238];
+  requestCache = [self requestCache];
+  resultIfAvailable = [requestCache resultIfAvailable];
+  [resultIfAvailable runWithLockAcquired:&__block_literal_global_238];
 }
 
 void __38__SGDSuggestManager_contactAggregator__block_invoke()
@@ -12380,26 +12380,26 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
   [WeakRetained runWithLockAcquired:&__block_literal_global_233];
 }
 
-+ (void)updateOriginalDocumentsWith:(id)a3 completionHandler:(id)a4
++ (void)updateOriginalDocumentsWith:(id)with completionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  withCopy = with;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v5 count])
+    if ([withCopy count])
     {
-      v7 = [v5 firstObject];
-      v8 = [v7 bundleID];
+      firstObject = [withCopy firstObject];
+      bundleID = [firstObject bundleID];
 
-      v9 = [v5 firstObject];
-      v10 = [v9 protection];
+      firstObject2 = [withCopy firstObject];
+      protection = [firstObject2 protection];
 
-      v11 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"SuggestedEventsUpdate" protectionClass:v10 bundleIdentifier:v8];
+      v11 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"SuggestedEventsUpdate" protectionClass:protection bundleIdentifier:bundleID];
       v12 = v11;
       if (v11)
       {
-        [v11 indexSearchableItems:v5 completionHandler:v6];
+        [v11 indexSearchableItems:withCopy completionHandler:handlerCopy];
       }
 
       else
@@ -12409,29 +12409,29 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
         v18[0] = @"index is not initialized";
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
         v15 = [v13 errorWithDomain:@"SGDOriginalDocDonationErrorDomain" code:-1000 userInfo:v14];
-        v6[2](v6, v15);
+        handlerCopy[2](handlerCopy, v15);
       }
     }
 
     else
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getProcessedItemFromEvents:(id)a3 uniqueID:(id)a4 bundleID:(id)a5
++ (id)getProcessedItemFromEvents:(id)events uniqueID:(id)d bundleID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [SGDSuggestManager extractAttributeSetsFromRealtimeEvents:a3];
+  dCopy = d;
+  iDCopy = iD;
+  v9 = [SGDSuggestManager extractAttributeSetsFromRealtimeEvents:events];
   v10 = [SGDSuggestManager getAggregatedAttributeSet:v9];
   if (v10)
   {
-    v11 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:v7 domainIdentifier:0 attributeSet:v10];
-    [v11 setBundleID:v8];
+    v11 = [objc_alloc(MEMORY[0x277CC34B0]) initWithUniqueIdentifier:dCopy domainIdentifier:0 attributeSet:v10];
+    [v11 setBundleID:iDCopy];
     [v11 setIsUpdate:1];
   }
 
@@ -12443,15 +12443,15 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
   return v11;
 }
 
-+ (id)getAggregatedAttributeSet:(id)a3
++ (id)getAggregatedAttributeSet:(id)set
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 attributeDictionary];
-    v6 = [SGDSuggestManager filterAttributesForDonation:v5];
+    v4 = [setCopy objectAtIndexedSubscript:0];
+    attributeDictionary = [v4 attributeDictionary];
+    v6 = [SGDSuggestManager filterAttributesForDonation:attributeDictionary];
 
     v20 = v6;
     v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
@@ -12460,7 +12460,7 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v3;
+    v9 = setCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
@@ -12475,8 +12475,8 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v21 + 1) + 8 * i) attributeDictionary];
-          v15 = [v14 objectForKey:@"kMDItemEventType"];
+          attributeDictionary2 = [*(*(&v21 + 1) + 8 * i) attributeDictionary];
+          v15 = [attributeDictionary2 objectForKey:@"kMDItemEventType"];
 
           if (v15)
           {
@@ -12490,8 +12490,8 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
       while (v11);
     }
 
-    v16 = [v8 allObjects];
-    [v7 setObject:v16 forKey:@"kMDItemDetectedEventTypes"];
+    allObjects = [v8 allObjects];
+    [v7 setObject:allObjects forKey:@"kMDItemDetectedEventTypes"];
 
     v17 = [objc_alloc(MEMORY[0x277CC34B8]) initWithAttributes:v7];
   }
@@ -12506,16 +12506,16 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
   return v17;
 }
 
-+ (id)extractAttributeSetsFromRealtimeEvents:(id)a3
++ (id)extractAttributeSetsFromRealtimeEvents:(id)events
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  eventsCopy = events;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v3;
+  v5 = eventsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v6)
   {
@@ -12538,16 +12538,16 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 event];
+          event = [v11 event];
 
-          if (v12)
+          if (event)
           {
-            v13 = [v11 event];
-            v14 = [v13 attributeSetForEvent];
+            event2 = [v11 event];
+            attributeSetForEvent = [event2 attributeSetForEvent];
 
-            if (v14)
+            if (attributeSetForEvent)
             {
-              [v4 addObject:v14];
+              [v4 addObject:attributeSetForEvent];
             }
 
             else
@@ -12585,10 +12585,10 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
   return v18;
 }
 
-+ (id)filterAttributesForDonation:(id)a3
++ (id)filterAttributesForDonation:(id)donation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  donationCopy = donation;
   if (filterAttributesForDonation__onceToken != -1)
   {
     dispatch_once(&filterAttributesForDonation__onceToken, &__block_literal_global_12_6335);
@@ -12615,7 +12615,7 @@ void __33__SGDSuggestManager_requestCache__block_invoke_5(uint64_t a1)
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 objectForKey:{v10, v15}];
+        v11 = [donationCopy objectForKey:{v10, v15}];
         if (v11)
         {
           [v4 setObject:v11 forKey:v10];
@@ -12755,34 +12755,34 @@ LABEL_13:
   return v11;
 }
 
-- (void)_storeAndGeocodeEntity:(id)a3 spotlightBundleIdentifier:(id)a4 spotlightUniqueIdentifier:(id)a5 spotlightDomainIdentifier:(id)a6 store:(id)a7 afterCallbackQueue:(id)a8 finalize:(id)a9
+- (void)_storeAndGeocodeEntity:(id)entity spotlightBundleIdentifier:(id)identifier spotlightUniqueIdentifier:(id)uniqueIdentifier spotlightDomainIdentifier:(id)domainIdentifier store:(id)store afterCallbackQueue:(id)queue finalize:(id)finalize
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v14 = a9;
-  queue = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  entityCopy = entity;
+  finalizeCopy = finalize;
+  queue = queue;
+  storeCopy = store;
+  domainIdentifierCopy = domainIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  identifierCopy = identifier;
   v19 = objc_opt_new();
   if ([MEMORY[0x277D02098] shouldHarvestEvents])
   {
-    v20 = v29;
-    v21 = [v19 geocodeOperation:v29 withDependencies:MEMORY[0x277CBEBF8]];
+    v20 = entityCopy;
+    v21 = [v19 geocodeOperation:entityCopy withDependencies:MEMORY[0x277CBEBF8]];
   }
 
   else
   {
     v21 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:&__block_literal_global_124];
-    v20 = v29;
+    v20 = entityCopy;
   }
 
   v32[0] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
-  v23 = [v19 storeOperation:v20 spotlightBundleIdentifier:v18 spotlightUniqueIdentifier:v17 spotlightDomainIdentifier:v16 withStore:v15 dependencies:v22];
+  v23 = [v19 storeOperation:v20 spotlightBundleIdentifier:identifierCopy spotlightUniqueIdentifier:uniqueIdentifierCopy spotlightDomainIdentifier:domainIdentifierCopy withStore:storeCopy dependencies:v22];
 
-  v24 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v14];
+  v24 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:finalizeCopy];
 
   [v24 addDependency:v23];
   v25 = objc_opt_new();
@@ -12802,11 +12802,11 @@ LABEL_13:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canBannerUseStoredDissection:(id)a3 options:(unint64_t)a4
+- (BOOL)_canBannerUseStoredDissection:(id)dissection options:(unint64_t)options
 {
-  if (a3)
+  if (dissection)
   {
-    return [a3 isPartiallyDownloaded] ^ 1;
+    return [dissection isPartiallyDownloaded] ^ 1;
   }
 
   else
@@ -12815,31 +12815,31 @@ LABEL_13:
   }
 }
 
-- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)a3 options:(unint64_t)a4 completion:(id)a5 completionDelivery:(unint64_t)a6 providedBy:(id)a7 searchableItem:(id)a8 dissectIfNecessary:(BOOL)a9 processingType:(unint64_t)a10 isTextMessage:(BOOL)a11
+- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)hash options:(unint64_t)options completion:(id)completion completionDelivery:(unint64_t)delivery providedBy:(id)by searchableItem:(id)item dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)self0 isTextMessage:(BOOL)self1
 {
   v186 = *MEMORY[0x277D85DE8];
-  v101 = a3;
-  v102 = a5;
-  v16 = a7;
-  v17 = a8;
+  hashCopy = hash;
+  completionCopy = completion;
+  byCopy = by;
+  itemCopy = item;
   v18 = sgLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v17 bundleID];
-    v20 = [v17 uniqueIdentifier];
+    bundleID = [itemCopy bundleID];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
     *buf = 138412546;
-    *&buf[4] = v19;
+    *&buf[4] = bundleID;
     *&buf[12] = 2112;
-    *&buf[14] = v20;
+    *&buf[14] = uniqueIdentifier;
     _os_log_impl(&dword_231E60000, v18, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: realtimeSuggestionsForMailOrMessageWithHash: %@ : %@", buf, 0x16u);
   }
 
   v115 = dispatch_queue_create("after banner callback", 0);
   dispatch_suspend(v115);
-  if (!a4)
+  if (!options)
   {
-    v95 = [MEMORY[0x277CCA890] currentHandler];
-    [v95 handleFailureInMethod:a2 object:self file:@"SGDSuggestManager+RealtimeDonations.m" lineNumber:438 description:@"Passing 0 for options would return nothing"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGDSuggestManager+RealtimeDonations.m" lineNumber:438 description:@"Passing 0 for options would return nothing"];
   }
 
   if (realtimeSuggestionsForMailOrMessageWithHash_options_completion_completionDelivery_providedBy_searchableItem_dissectIfNecessary_processingType_isTextMessage__initMemoryStoreOneTimeToken != -1)
@@ -12859,36 +12859,36 @@ LABEL_13:
   v172[1] = v172;
   v172[2] = 0x2020000000;
   v173 = 0;
-  v21 = [(SGDSuggestManager *)self context];
-  v22 = vdupq_n_s64(a4);
+  context = [(SGDSuggestManager *)self context];
+  v22 = vdupq_n_s64(options);
   v23 = vand_s8(vmovn_s32(vuzp1q_s32(vshlq_u64(v22, xmmword_232106D30), vshlq_u64(v22, xmmword_232106D20))), 0x1000100010001);
   v111 = vandq_s8(v22, xmmword_232106D40);
   v155[0] = MEMORY[0x277D85DD0];
   v155[1] = 3221225472;
   v155[2] = __196__SGDSuggestManager_RealtimeDonations__realtimeSuggestionsForMailOrMessageWithHash_options_completion_completionDelivery_providedBy_searchableItem_dissectIfNecessary_processingType_isTextMessage___block_invoke_2;
   v155[3] = &unk_27894EDC0;
-  v24 = v16;
+  v24 = byCopy;
   v160 = v24;
   v155[4] = self;
   v163 = v111;
-  v164 = a10;
-  v167 = a9;
-  v98 = v17;
+  typeCopy = type;
+  necessaryCopy = necessary;
+  v98 = itemCopy;
   v156 = v98;
   v161 = buf;
   object = v115;
   v157 = object;
-  v96 = v21;
+  v96 = context;
   v158 = v96;
   v162 = v172;
   v25 = v114;
   v168 = vuzp1_s8(v23, v26).u32[0];
-  v169 = (a4 & 0x400000) != 0;
-  v170 = (a4 & 0x800000) != 0;
-  v171 = (a4 & 0x8000000) != 0;
+  v169 = (options & 0x400000) != 0;
+  v170 = (options & 0x800000) != 0;
+  v171 = (options & 0x8000000) != 0;
   dsema = v25;
   v159 = v25;
-  v165 = a4 & 1;
+  v165 = options & 1;
   v166 = a2;
   v104 = MEMORY[0x2383809F0](v155);
   v148[0] = MEMORY[0x277D85DD0];
@@ -12898,13 +12898,13 @@ LABEL_13:
   v151 = v174;
   v148[4] = self;
   v152 = v175;
-  v153 = a11;
-  v154 = (a4 & 0x40000000) == 0;
+  messageCopy = message;
+  v154 = (options & 0x40000000) == 0;
   v110 = v24;
   v149 = v110;
   v150 = v172;
   v103 = MEMORY[0x2383809F0](v148);
-  if (a11)
+  if (message)
   {
     v27 = v104[2]();
     v28 = [v27 copy];
@@ -12919,22 +12919,22 @@ LABEL_13:
       v105 = 0;
     }
 
-    v29 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v29 = self;
-    v105 = [(SGDSuggestManager *)self cachedResultForKey:v101 generateResult:v104 validateResults:v103];
+    selfCopy2 = self;
+    v105 = [(SGDSuggestManager *)self cachedResultForKey:hashCopy generateResult:v104 validateResults:v103];
   }
 
-  v30 = [(SGDSuggestManager *)v29 harvestStore];
-  v31 = [v30 kvCacheManager];
-  v113 = [v31 cacheOfType:0];
+  harvestStore = [(SGDSuggestManager *)selfCopy2 harvestStore];
+  kvCacheManager = [harvestStore kvCacheManager];
+  v113 = [kvCacheManager cacheOfType:0];
 
-  v32 = [(SGDSuggestManager *)self harvestStore];
-  v33 = [v32 kvCacheManager];
-  v112 = [v33 cacheOfType:1];
+  harvestStore2 = [(SGDSuggestManager *)self harvestStore];
+  kvCacheManager2 = [harvestStore2 kvCacheManager];
+  v112 = [kvCacheManager2 cacheOfType:1];
 
   v146 = 0u;
   v147 = 0u;
@@ -12954,14 +12954,14 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v34 = [*(*(&v144 + 1) + 8 * i) contact];
+        contact = [*(*(&v144 + 1) + 8 * i) contact];
         v142 = 0u;
         v143 = 0u;
         v140 = 0u;
         v141 = 0u;
-        v116 = v34;
-        v35 = [v34 phones];
-        v36 = [v35 countByEnumeratingWithState:&v140 objects:v182 count:16];
+        v116 = contact;
+        phones = [contact phones];
+        v36 = [phones countByEnumeratingWithState:&v140 objects:v182 count:16];
         if (v36)
         {
           v37 = *v141;
@@ -12971,18 +12971,18 @@ LABEL_13:
             {
               if (*v141 != v37)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(phones);
               }
 
               v39 = *(*(&v140 + 1) + 8 * j);
-              v40 = [v39 phoneNumber];
+              phoneNumber = [v39 phoneNumber];
               v41 = SGNormalizePhoneNumber();
 
               *v180 = 0;
               *&v180[8] = v180;
               *&v180[16] = 0x2020000000;
               v181 = 0;
-              v42 = [(SGDSuggestManager *)self recentlyHarvestedDetailLock];
+              recentlyHarvestedDetailLock = [(SGDSuggestManager *)self recentlyHarvestedDetailLock];
               v137[0] = MEMORY[0x277D85DD0];
               v137[1] = 3221225472;
               v137[2] = __196__SGDSuggestManager_RealtimeDonations__realtimeSuggestionsForMailOrMessageWithHash_options_completion_completionDelivery_providedBy_searchableItem_dissectIfNecessary_processingType_isTextMessage___block_invoke_2_113;
@@ -12990,24 +12990,24 @@ LABEL_13:
               v43 = v41;
               v138 = v43;
               v139 = v180;
-              [v42 runWithLockAcquired:v137];
+              [recentlyHarvestedDetailLock runWithLockAcquired:v137];
 
               if (*(*&v180[8] + 24) == 1)
               {
                 v44 = MEMORY[0x277D01FF8];
-                v45 = [v116 name];
-                v46 = [v45 fullName];
-                v47 = [v44 encodedStringForFullName:v46];
+                name = [v116 name];
+                fullName = [name fullName];
+                v47 = [v44 encodedStringForFullName:fullName];
 
                 [v113 setValueIfNotPresent:v47 forKey:v43 fromRecordId:0];
-                v48 = [v39 recordId];
-                [SGDNotificationBroadcaster emitContactUpdated:v48];
+                recordId = [v39 recordId];
+                [SGDNotificationBroadcaster emitContactUpdated:recordId];
               }
 
               _Block_object_dispose(v180, 8);
             }
 
-            v36 = [v35 countByEnumeratingWithState:&v140 objects:v182 count:16];
+            v36 = [phones countByEnumeratingWithState:&v140 objects:v182 count:16];
           }
 
           while (v36);
@@ -13017,8 +13017,8 @@ LABEL_13:
         v136 = 0u;
         v133 = 0u;
         v134 = 0u;
-        v49 = [v116 emailAddresses];
-        v50 = [v49 countByEnumeratingWithState:&v133 objects:v179 count:16];
+        emailAddresses = [v116 emailAddresses];
+        v50 = [emailAddresses countByEnumeratingWithState:&v133 objects:v179 count:16];
         if (v50)
         {
           v51 = *v134;
@@ -13028,18 +13028,18 @@ LABEL_13:
             {
               if (*v134 != v51)
               {
-                objc_enumerationMutation(v49);
+                objc_enumerationMutation(emailAddresses);
               }
 
               v53 = *(*(&v133 + 1) + 8 * k);
-              v54 = [v53 emailAddress];
+              emailAddress = [v53 emailAddress];
               v55 = SGNormalizeEmailAddress();
 
               *v180 = 0;
               *&v180[8] = v180;
               *&v180[16] = 0x2020000000;
               v181 = 0;
-              v56 = [(SGDSuggestManager *)self recentlyHarvestedDetailLock];
+              recentlyHarvestedDetailLock2 = [(SGDSuggestManager *)self recentlyHarvestedDetailLock];
               v130[0] = MEMORY[0x277D85DD0];
               v130[1] = 3221225472;
               v130[2] = __196__SGDSuggestManager_RealtimeDonations__realtimeSuggestionsForMailOrMessageWithHash_options_completion_completionDelivery_providedBy_searchableItem_dissectIfNecessary_processingType_isTextMessage___block_invoke_3_117;
@@ -13047,24 +13047,24 @@ LABEL_13:
               v57 = v55;
               v131 = v57;
               v132 = v180;
-              [v56 runWithLockAcquired:v130];
+              [recentlyHarvestedDetailLock2 runWithLockAcquired:v130];
 
               if (*(*&v180[8] + 24) == 1)
               {
                 v58 = MEMORY[0x277D01FF8];
-                v59 = [v116 name];
-                v60 = [v59 fullName];
-                v61 = [v58 encodedStringForFullName:v60];
+                name2 = [v116 name];
+                fullName2 = [name2 fullName];
+                v61 = [v58 encodedStringForFullName:fullName2];
 
                 [v112 setValueIfNotPresent:v61 forKey:v57 fromRecordId:0];
-                v62 = [v53 recordId];
-                [SGDNotificationBroadcaster emitContactUpdated:v62];
+                recordId2 = [v53 recordId];
+                [SGDNotificationBroadcaster emitContactUpdated:recordId2];
               }
 
               _Block_object_dispose(v180, 8);
             }
 
-            v50 = [v49 countByEnumeratingWithState:&v133 objects:v179 count:16];
+            v50 = [emailAddresses countByEnumeratingWithState:&v133 objects:v179 count:16];
           }
 
           while (v50);
@@ -13080,19 +13080,19 @@ LABEL_13:
   v63 = sgLogHandle();
   if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
   {
-    v64 = [v98 uniqueIdentifier];
+    uniqueIdentifier2 = [v98 uniqueIdentifier];
     *v180 = 138412546;
-    *&v180[4] = v64;
+    *&v180[4] = uniqueIdentifier2;
     *&v180[12] = 2112;
     *&v180[14] = v105;
     _os_log_impl(&dword_231E60000, v63, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: realtimeSuggestionsForMailOrMessageWithHash: %@: results: %@", v180, 0x16u);
   }
 
-  if (!a6)
+  if (!delivery)
   {
-    v102[2](v102, v105);
+    completionCopy[2](completionCopy, v105);
 
-    v102 = 0;
+    completionCopy = 0;
   }
 
   dispatch_resume(object);
@@ -13109,8 +13109,8 @@ LABEL_13:
     v129 = 0uLL;
     v126 = 0uLL;
     v127 = 0uLL;
-    v67 = [v105 events];
-    v68 = [v67 countByEnumeratingWithState:&v126 objects:v178 count:16];
+    events = [v105 events];
+    v68 = [events countByEnumeratingWithState:&v126 objects:v178 count:16];
     if (v68)
     {
       v69 = *v127;
@@ -13120,21 +13120,21 @@ LABEL_13:
         {
           if (*v127 != v69)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(events);
           }
 
           v71 = *(*(&v126 + 1) + 8 * m);
-          v72 = [v71 event];
-          v73 = [v72 isNaturalLanguageEvent];
+          event = [v71 event];
+          isNaturalLanguageEvent = [event isNaturalLanguageEvent];
 
-          if (v73)
+          if (isNaturalLanguageEvent)
           {
-            v74 = [v71 event];
-            [(SGDSuggestManager *)self bumptTTLForNLEvent:v74];
+            event2 = [v71 event];
+            [(SGDSuggestManager *)self bumptTTLForNLEvent:event2];
           }
         }
 
-        v68 = [v67 countByEnumeratingWithState:&v126 objects:v178 count:16];
+        v68 = [events countByEnumeratingWithState:&v126 objects:v178 count:16];
       }
 
       while (v68);
@@ -13149,8 +13149,8 @@ LABEL_13:
     v125 = 0uLL;
     v122 = 0uLL;
     v123 = 0uLL;
-    v67 = [v105 reminders];
-    v76 = [v67 countByEnumeratingWithState:&v122 objects:v177 count:16];
+    events = [v105 reminders];
+    v76 = [events countByEnumeratingWithState:&v122 objects:v177 count:16];
     if (v76)
     {
       v77 = *v123;
@@ -13160,16 +13160,16 @@ LABEL_13:
         {
           if (*v123 != v77)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(events);
           }
 
           v79 = *(*(&v122 + 1) + 8 * n);
           v80 = +[SGRTCLogging defaultLogger];
-          v81 = [v79 reminder];
-          [v80 logReminderInteractionFromReminder:v81 interface:1 actionType:4];
+          reminder = [v79 reminder];
+          [v80 logReminderInteractionFromReminder:reminder interface:1 actionType:4];
         }
 
-        v76 = [v67 countByEnumeratingWithState:&v122 objects:v177 count:16];
+        v76 = [events countByEnumeratingWithState:&v122 objects:v177 count:16];
       }
 
       while (v76);
@@ -13182,8 +13182,8 @@ LABEL_13:
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v82 = [v105 events];
-  v83 = [v82 countByEnumeratingWithState:&v118 objects:v176 count:16];
+  events2 = [v105 events];
+  v83 = [events2 countByEnumeratingWithState:&v118 objects:v176 count:16];
   if (v83)
   {
     v84 = *v119;
@@ -13193,14 +13193,14 @@ LABEL_13:
       {
         if (*v119 != v84)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(events2);
         }
 
         v86 = *(*(&v118 + 1) + 8 * ii);
-        v87 = [v86 event];
-        v88 = [v87 isNaturalLanguageEvent];
+        event3 = [v86 event];
+        isNaturalLanguageEvent2 = [event3 isNaturalLanguageEvent];
 
-        if ((v88 & 1) == 0)
+        if ((isNaturalLanguageEvent2 & 1) == 0)
         {
           v89 = [SGPipelineEntity alloc];
           v90 = objc_autoreleasePoolPush();
@@ -13213,20 +13213,20 @@ LABEL_13:
         }
       }
 
-      v83 = [v82 countByEnumeratingWithState:&v118 objects:v176 count:16];
+      v83 = [events2 countByEnumeratingWithState:&v118 objects:v176 count:16];
     }
 
     while (v83);
   }
 
-  if (a6 == 1)
+  if (delivery == 1)
   {
     if (*(*&buf[8] + 24) == 1)
     {
       dispatch_semaphore_wait(dsema, 0xFFFFFFFFFFFFFFFFLL);
     }
 
-    v102[2](v102, v105);
+    completionCopy[2](completionCopy, v105);
   }
 
   _Block_object_dispose(v172, 8);
@@ -14143,55 +14143,55 @@ uint64_t __196__SGDSuggestManager_RealtimeDonations__realtimeSuggestionsForMailO
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)a3 options:(unint64_t)a4 completion:(id)a5 completionDelivery:(unint64_t)a6 providedBy:(id)a7 searchableItem:(id)a8 dissectIfNecessary:(BOOL)a9 isTextMessage:(BOOL)a10
+- (void)realtimeSuggestionsForMailOrMessageWithHash:(id)hash options:(unint64_t)options completion:(id)completion completionDelivery:(unint64_t)delivery providedBy:(id)by searchableItem:(id)item dissectIfNecessary:(BOOL)necessary isTextMessage:(BOOL)self0
 {
-  LOBYTE(v11) = a10;
-  LOBYTE(v10) = a9;
-  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:a3 options:a4 completion:a5 completionDelivery:a6 providedBy:a7 searchableItem:a8 dissectIfNecessary:v10 processingType:2 isTextMessage:v11];
+  LOBYTE(v11) = message;
+  LOBYTE(v10) = necessary;
+  [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:hash options:options completion:completion completionDelivery:delivery providedBy:by searchableItem:item dissectIfNecessary:v10 processingType:2 isTextMessage:v11];
 }
 
-- (void)_suggestionsFromMessage:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 completionDelivery:(unint64_t)a6 completionHandler:(id)a7
+- (void)_suggestionsFromMessage:(id)message options:(unint64_t)options dissectIfNecessary:(BOOL)necessary completionDelivery:(unint64_t)delivery completionHandler:(id)handler
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a7;
-  if (!v9)
+  necessaryCopy = necessary;
+  messageCopy = message;
+  handlerCopy = handler;
+  if (!necessaryCopy)
   {
     goto LABEL_15;
   }
 
-  v14 = [v12 attributeSet];
-  v15 = [v14 authors];
-  v16 = [v15 count];
+  attributeSet = [messageCopy attributeSet];
+  authors = [attributeSet authors];
+  v16 = [authors count];
 
   if (v16)
   {
-    v17 = [v12 domainIdentifier];
-    v18 = [v17 length];
+    domainIdentifier = [messageCopy domainIdentifier];
+    v18 = [domainIdentifier length];
 
     if (v18)
     {
-      v19 = [v12 protection];
+      protection = [messageCopy protection];
 
-      if (v19)
+      if (protection)
       {
         v20 = 1;
 LABEL_16:
-        v24 = [(SGDSuggestManager *)self harvestStore];
-        v25 = [v12 bundleID];
-        v26 = [v12 uniqueIdentifier];
-        [v24 markReimportItemAsSeenByReceiverWithBundleId:v25 uniqueId:v26];
+        harvestStore = [(SGDSuggestManager *)self harvestStore];
+        bundleID = [messageCopy bundleID];
+        uniqueIdentifier = [messageCopy uniqueIdentifier];
+        [harvestStore markReimportItemAsSeenByReceiverWithBundleId:bundleID uniqueId:uniqueIdentifier];
 
-        v27 = [v12 uniqueIdentifier];
-        v28 = [v27 dataUsingEncoding:4];
+        uniqueIdentifier2 = [messageCopy uniqueIdentifier];
+        v28 = [uniqueIdentifier2 dataUsingEncoding:4];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __128__SGDSuggestManager_RealtimeDonations___suggestionsFromMessage_options_dissectIfNecessary_completionDelivery_completionHandler___block_invoke;
         v30[3] = &unk_27894ED98;
-        v31 = v12;
+        v31 = messageCopy;
         BYTE1(v29) = 1;
         LOBYTE(v29) = v20;
-        [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v28 options:a4 completion:v13 completionDelivery:a6 providedBy:v30 searchableItem:v31 dissectIfNecessary:v29 isTextMessage:?];
+        [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v28 options:options completion:handlerCopy completionDelivery:delivery providedBy:v30 searchableItem:v31 dissectIfNecessary:v29 isTextMessage:?];
 
         goto LABEL_17;
       }
@@ -14229,7 +14229,7 @@ LABEL_10:
     }
   }
 
-  v13[2](v13, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_17:
 }
 
@@ -14240,21 +14240,21 @@ SGTextMessage *__128__SGDSuggestManager_RealtimeDonations___suggestionsFromMessa
   return v1;
 }
 
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 completionHandler:(id)a6 fullCompletionHandler:(id)a7
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options completionDelivery:(unint64_t)delivery completionHandler:(id)handler fullCompletionHandler:(id)completionHandler
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v12 = a6;
-  v13 = v12;
-  if (a7)
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (completionHandler)
   {
-    v14 = a3;
-    [(SGDSuggestManager *)self suggestionsFromSingleMessage:v14 options:a4 completionDelivery:a5 completionHandler:v13 fullCompletionHandler:a7];
+    messageCopy = message;
+    [(SGDSuggestManager *)self suggestionsFromSingleMessage:messageCopy options:options completionDelivery:delivery completionHandler:v13 fullCompletionHandler:completionHandler];
 
-    v15 = sgLogHandle();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    messageCopy2 = sgLogHandle();
+    if (os_log_type_enabled(messageCopy2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_231E60000, v15, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager+RealtimeDonations: suggestionsFromMessage legacy path processing", buf, 2u);
+      _os_log_impl(&dword_231E60000, messageCopy2, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager+RealtimeDonations: suggestionsFromMessage legacy path processing", buf, 2u);
     }
   }
 
@@ -14264,13 +14264,13 @@ SGTextMessage *__128__SGDSuggestManager_RealtimeDonations___suggestionsFromMessa
     v20[1] = 3221225472;
     v20[2] = __130__SGDSuggestManager_RealtimeDonations__suggestionsFromMessage_options_completionDelivery_completionHandler_fullCompletionHandler___block_invoke;
     v20[3] = &unk_27894ECF8;
-    v21 = v12;
-    v15 = a3;
+    v21 = handlerCopy;
+    messageCopy2 = message;
     v16 = MEMORY[0x2383809F0](v20);
-    v23[0] = v15;
+    v23[0] = messageCopy2;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     v18 = +[SGDSuggestManager simpleWritebackHandler];
-    [(SGDSuggestManager *)self batchSuggestionsFromMessages:v17 options:a4 completionDelivery:a5 batchCompletion:v16 writeBackCompletion:v18 shouldStopSignal:0];
+    [(SGDSuggestManager *)self batchSuggestionsFromMessages:v17 options:options completionDelivery:delivery batchCompletion:v16 writeBackCompletion:v18 shouldStopSignal:0];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -14316,46 +14316,46 @@ void __130__SGDSuggestManager_RealtimeDonations__suggestionsFromMessage_options_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)suggestionsFromSingleMessage:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 completionHandler:(id)a6 fullCompletionHandler:(id)a7
+- (void)suggestionsFromSingleMessage:(id)message options:(unint64_t)options completionDelivery:(unint64_t)delivery completionHandler:(id)handler fullCompletionHandler:(id)completionHandler
 {
   v73 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  messageCopy = message;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v15 = sgLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v12 bundleID];
-    v17 = [v12 uniqueIdentifier];
+    bundleID = [messageCopy bundleID];
+    uniqueIdentifier = [messageCopy uniqueIdentifier];
     *buf = 138413058;
-    v66 = v16;
+    v66 = bundleID;
     v67 = 2112;
-    v68 = v17;
+    v68 = uniqueIdentifier;
     v69 = 2048;
-    v70 = a4;
+    optionsCopy = options;
     v71 = 2048;
-    v72 = a5;
+    deliveryCopy = delivery;
     _os_log_impl(&dword_231E60000, v15, OS_LOG_TYPE_DEFAULT, "SGDSuggestManager: Messages: suggestionsFromMessage: %@ : %@ options: %tu completionDelivery: %tu", buf, 0x2Au);
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v19 = [v12 bundleID];
+  bundleID2 = [messageCopy bundleID];
 
-  if (!v19)
+  if (!bundleID2)
   {
-    [v12 setBundleID:*MEMORY[0x277D41E60]];
+    [messageCopy setBundleID:*MEMORY[0x277D41E60]];
   }
 
-  v20 = [v12 protection];
+  protection = [messageCopy protection];
 
-  if (!v20)
+  if (!protection)
   {
-    [v12 setProtection:*MEMORY[0x277CCA1A0]];
+    [messageCopy setProtection:*MEMORY[0x277CCA1A0]];
   }
 
   v21 = MEMORY[0x277D41DF8];
-  v22 = [v12 bundleID];
-  LOBYTE(v21) = [v21 shouldAdmitContentFromBundleIdentifier:v22];
+  bundleID3 = [messageCopy bundleID];
+  LOBYTE(v21) = [v21 shouldAdmitContentFromBundleIdentifier:bundleID3];
 
   if ((v21 & 1) == 0)
   {
@@ -14372,8 +14372,8 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v23 = [v12 domainIdentifier];
-  v24 = [v23 length];
+  domainIdentifier = [messageCopy domainIdentifier];
+  v24 = [domainIdentifier length];
 
   if (!v24)
   {
@@ -14388,33 +14388,33 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v25 = [v12 attributeSet];
-  v26 = [v25 textContentNoCopy];
+  attributeSet = [messageCopy attributeSet];
+  textContentNoCopy = [attributeSet textContentNoCopy];
 
-  if (v26)
+  if (textContentNoCopy)
   {
     v27 = objc_opt_new();
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __136__SGDSuggestManager_RealtimeDonations__suggestionsFromSingleMessage_options_completionDelivery_completionHandler_fullCompletionHandler___block_invoke;
     v61[3] = &unk_27894ED48;
-    v62 = v13;
-    v63 = v14;
+    v62 = handlerCopy;
+    v63 = completionHandlerCopy;
     v52 = v27;
     [v27 wait:v61];
-    if (a4 == 3 && !a5)
+    if (options == 3 && !delivery)
     {
       v28 = [SGSearchableItemIdTriple alloc];
-      v29 = [v12 bundleID];
-      v30 = [v12 domainIdentifier];
-      v31 = [v12 uniqueIdentifier];
-      v32 = [(SGSearchableItemIdTriple *)v28 initWithBundleId:v29 domainId:v30 uniqueId:v31];
+      bundleID4 = [messageCopy bundleID];
+      domainIdentifier2 = [messageCopy domainIdentifier];
+      uniqueIdentifier2 = [messageCopy uniqueIdentifier];
+      v32 = [(SGSearchableItemIdTriple *)v28 initWithBundleId:bundleID4 domainId:domainIdentifier2 uniqueId:uniqueIdentifier2];
 
-      v33 = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
-      [v33 lock];
+      lastSuggestionsFromMessageLock = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
+      [lastSuggestionsFromMessageLock lock];
 
-      v34 = [(SGDSuggestManager *)self lastSuggestionsFromMessageRequest];
-      if ([(SGSearchableItemIdTriple *)v32 isEqualToSearchableItemIdTriple:v34])
+      lastSuggestionsFromMessageRequest = [(SGDSuggestManager *)self lastSuggestionsFromMessageRequest];
+      if ([(SGSearchableItemIdTriple *)v32 isEqualToSearchableItemIdTriple:lastSuggestionsFromMessageRequest])
       {
         v35 = sgLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
@@ -14423,12 +14423,12 @@ LABEL_22:
           _os_log_debug_impl(&dword_231E60000, v35, OS_LOG_TYPE_DEBUG, "suggestionsFromMessage consolidating repeated item with previous request", buf, 2u);
         }
 
-        v36 = [(SGDSuggestManager *)self lastSuggestionsFromMessageResponse];
-        v37 = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
-        [v37 unlock];
+        lastSuggestionsFromMessageResponse = [(SGDSuggestManager *)self lastSuggestionsFromMessageResponse];
+        lastSuggestionsFromMessageLock2 = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
+        [lastSuggestionsFromMessageLock2 unlock];
 
-        v38 = [v52 completer];
-        [v36 wait:v38];
+        completer = [v52 completer];
+        [lastSuggestionsFromMessageResponse wait:completer];
 
 LABEL_35:
         goto LABEL_36;
@@ -14436,35 +14436,35 @@ LABEL_35:
 
       [(SGDSuggestManager *)self setLastSuggestionsFromMessageRequest:v32];
       [(SGDSuggestManager *)self setLastSuggestionsFromMessageResponse:v52];
-      v41 = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
-      [v41 unlock];
+      lastSuggestionsFromMessageLock3 = [(SGDSuggestManager *)self lastSuggestionsFromMessageLock];
+      [lastSuggestionsFromMessageLock3 unlock];
     }
 
     v42 = [SGXpcTransaction transactionWithName:"suggestionsFromMessage message harvest queue"];
-    v43 = [(SGDSuggestManager *)self messageHarvestQueue];
+    messageHarvestQueue = [(SGDSuggestManager *)self messageHarvestQueue];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __136__SGDSuggestManager_RealtimeDonations__suggestionsFromSingleMessage_options_completionDelivery_completionHandler_fullCompletionHandler___block_invoke_41;
     v54[3] = &unk_2789553C8;
     v54[4] = self;
-    v44 = v12;
+    v44 = messageCopy;
     v55 = v44;
-    v58 = a4;
-    v59 = a5;
+    optionsCopy2 = options;
+    deliveryCopy2 = delivery;
     v60 = Current;
     v56 = v52;
     v32 = v42;
     v57 = v32;
-    [v43 addOperationWithBlock:v54];
+    [messageHarvestQueue addOperationWithBlock:v54];
 
-    if ((a4 & 0x4000000) == 0)
+    if ((options & 0x4000000) == 0)
     {
-      v45 = [MEMORY[0x277D41E00] defaultReceiver];
+      defaultReceiver = [MEMORY[0x277D41E00] defaultReceiver];
       v64 = v44;
       v46 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
-      v47 = [v44 bundleID];
+      bundleID5 = [v44 bundleID];
       v53 = 0;
-      v48 = [v45 donateSearchableItems:v46 bundleIdentifier:v47 error:&v53];
+      v48 = [defaultReceiver donateSearchableItems:v46 bundleIdentifier:bundleID5 error:&v53];
       v49 = v53;
 
       if ((v48 & 1) == 0)
@@ -14492,14 +14492,14 @@ LABEL_35:
 
 LABEL_23:
 
-  if (v13)
+  if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 0, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0);
   }
 
-  if (v14)
+  if (completionHandlerCopy)
   {
-    (*(v14 + 2))(v14, 0, 0, 0, 0);
+    (*(completionHandlerCopy + 2))(completionHandlerCopy, 0, 0, 0, 0);
   }
 
 LABEL_36:
@@ -14590,16 +14590,16 @@ void __136__SGDSuggestManager_RealtimeDonations__suggestionsFromSingleMessage_op
   [v9 addOperationWithBlock:v10];
 }
 
-- (void)suggestionsFromMessage:(id)a3 options:(unint64_t)a4 fullCompletionHandler:(id)a5
+- (void)suggestionsFromMessage:(id)message options:(unint64_t)options fullCompletionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __93__SGDSuggestManager_RealtimeDonations__suggestionsFromMessage_options_fullCompletionHandler___block_invoke;
   v10[3] = &unk_27894ED20;
-  v11 = v8;
-  v9 = v8;
-  [(SGDSuggestManager *)self suggestionsFromMessage:a3 options:a4 completionDelivery:1 completionHandler:0 fullCompletionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(SGDSuggestManager *)self suggestionsFromMessage:message options:options completionDelivery:1 completionHandler:0 fullCompletionHandler:v10];
 }
 
 void __93__SGDSuggestManager_RealtimeDonations__suggestionsFromMessage_options_fullCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -14672,20 +14672,20 @@ void __147__SGDSuggestManager_RealtimeDonations___suggestionsFromSearchableItem_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_suggestionsFromSingleSearchableItem:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 processingType:(unint64_t)a6 completionDelivery:(unint64_t)a7 withCompletion:(id)a8
+- (void)_suggestionsFromSingleSearchableItem:(id)item options:(unint64_t)options dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)type completionDelivery:(unint64_t)delivery withCompletion:(id)completion
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = [v14 attributeSet];
-  v17 = [v16 emailHeaders];
+  itemCopy = item;
+  completionCopy = completion;
+  attributeSet = [itemCopy attributeSet];
+  emailHeaders = [attributeSet emailHeaders];
 
-  v18 = [v14 attributeSet];
-  v19 = [v18 accountIdentifier];
+  attributeSet2 = [itemCopy attributeSet];
+  accountIdentifier = [attributeSet2 accountIdentifier];
 
-  if (v17 && v19)
+  if (emailHeaders && accountIdentifier)
   {
-    v31 = a4;
-    if ([MEMORY[0x277D41E30] mailItemIsSPAM:v14])
+    optionsCopy = options;
+    if ([MEMORY[0x277D41E30] mailItemIsSPAM:itemCopy])
     {
       v20 = sgLogHandle();
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -14693,7 +14693,7 @@ void __147__SGDSuggestManager_RealtimeDonations___suggestionsFromSearchableItem_
 LABEL_13:
 
         v24 = [MEMORY[0x277D02138] responseWith:MEMORY[0x277CBEBF8]];
-        v15[2](v15, v24);
+        completionCopy[2](completionCopy, v24);
         goto LABEL_15;
       }
 
@@ -14703,26 +14703,26 @@ LABEL_13:
 
     else
     {
-      if (![MEMORY[0x277D41E30] mailItemIsInTrash:v14])
+      if (![MEMORY[0x277D41E30] mailItemIsInTrash:itemCopy])
       {
-        v26 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v17 requiringSecureCoding:1 error:0];
+        v26 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:emailHeaders requiringSecureCoding:1 error:0];
         [(SGDSuggestManager *)self _emailContentCacheSalt];
-        v27 = v30 = a7;
+        v27 = v30 = delivery;
         v24 = SGSha256Data(v26, v27);
 
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __153__SGDSuggestManager_RealtimeDonations___suggestionsFromSingleSearchableItem_options_dissectIfNecessary_processingType_completionDelivery_withCompletion___block_invoke;
         v34[3] = &unk_27894ECA8;
-        v35 = v15;
+        v35 = completionCopy;
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __153__SGDSuggestManager_RealtimeDonations___suggestionsFromSingleSearchableItem_options_dissectIfNecessary_processingType_completionDelivery_withCompletion___block_invoke_2;
         v32[3] = &unk_27894ECD0;
-        v33 = v14;
+        v33 = itemCopy;
         LOBYTE(v29) = 0;
-        LOBYTE(v28) = a5;
-        [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v24 options:v31 completion:v34 completionDelivery:v30 providedBy:v32 searchableItem:v33 dissectIfNecessary:v28 processingType:a6 isTextMessage:v29];
+        LOBYTE(v28) = necessary;
+        [(SGDSuggestManager *)self realtimeSuggestionsForMailOrMessageWithHash:v24 options:optionsCopy completion:v34 completionDelivery:v30 providedBy:v32 searchableItem:v33 dissectIfNecessary:v28 processingType:type isTextMessage:v29];
 
         goto LABEL_15;
       }
@@ -14751,7 +14751,7 @@ LABEL_13:
   v23 = MEMORY[0x277D02138];
   v24 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D02208] code:4 userInfo:0];
   v25 = [v23 responseWithError:v24];
-  v15[2](v15, v25);
+  completionCopy[2](completionCopy, v25);
 
 LABEL_15:
 }
@@ -14768,72 +14768,72 @@ void __153__SGDSuggestManager_RealtimeDonations___suggestionsFromSingleSearchabl
   }
 }
 
-- (void)batchSuggestionsFromMessages:(id)a3 options:(unint64_t)a4 completionDelivery:(unint64_t)a5 batchCompletion:(id)a6 writeBackCompletion:(id)a7 shouldStopSignal:(id)a8
+- (void)batchSuggestionsFromMessages:(id)messages options:(unint64_t)options completionDelivery:(unint64_t)delivery batchCompletion:(id)completion writeBackCompletion:(id)backCompletion shouldStopSignal:(id)signal
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v25 = a6;
-  v13 = a7;
-  v14 = a8;
+  messagesCopy = messages;
+  completionCopy = completion;
+  backCompletionCopy = backCompletion;
+  signalCopy = signal;
   v15 = sgLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v39 = [v12 count];
+    v39 = [messagesCopy count];
     _os_log_impl(&dword_231E60000, v15, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager: batchSuggestionsFromMessages: %lu item(s)", buf, 0xCu);
   }
 
   v28 = objc_opt_new();
   v16 = objc_opt_new();
   v17 = dispatch_group_create();
-  if (v13)
+  if (backCompletionCopy)
   {
-    v18 = a4 | 0x8000000;
+    optionsCopy = options | 0x8000000;
   }
 
   else
   {
-    v18 = a4;
+    optionsCopy = options;
   }
 
-  if ([v12 count])
+  if ([messagesCopy count])
   {
     v19 = 0;
     do
     {
-      if (v14 && (v14[2](v14) & 1) != 0)
+      if (signalCopy && (signalCopy[2](signalCopy) & 1) != 0)
       {
         break;
       }
 
-      v20 = [v12 objectAtIndexedSubscript:v19];
+      v20 = [messagesCopy objectAtIndexedSubscript:v19];
       dispatch_group_enter(v17);
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __146__SGDSuggestManager_BatchDonations__batchSuggestionsFromMessages_options_completionDelivery_batchCompletion_writeBackCompletion_shouldStopSignal___block_invoke;
       v32[3] = &unk_27894FD30;
       v33 = v28;
-      v37 = v13;
+      v37 = backCompletionCopy;
       v34 = v16;
       v35 = v20;
       v36 = v17;
       v21 = v20;
-      [(SGDSuggestManager *)self suggestionsFromSingleMessage:v21 options:v18 completionDelivery:a5 completionHandler:v32 fullCompletionHandler:0];
+      [(SGDSuggestManager *)self suggestionsFromSingleMessage:v21 options:optionsCopy completionDelivery:delivery completionHandler:v32 fullCompletionHandler:0];
 
       ++v19;
     }
 
-    while (v19 < [v12 count]);
+    while (v19 < [messagesCopy count]);
   }
 
   dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
-  if (v25)
+  if (completionCopy)
   {
     v22 = [v28 copy];
-    v25[2](v25, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
-  if (v13 && [v16 count])
+  if (backCompletionCopy && [v16 count])
   {
     v23 = dispatch_get_global_queue(17, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -14841,7 +14841,7 @@ void __153__SGDSuggestManager_RealtimeDonations___suggestionsFromSingleSearchabl
     block[2] = __146__SGDSuggestManager_BatchDonations__batchSuggestionsFromMessages_options_completionDelivery_batchCompletion_writeBackCompletion_shouldStopSignal___block_invoke_2;
     block[3] = &unk_278955EE8;
     v30 = v16;
-    v31 = v13;
+    v31 = backCompletionCopy;
     dispatch_async(v23, block);
   }
 
@@ -14886,42 +14886,42 @@ void __146__SGDSuggestManager_BatchDonations__batchSuggestionsFromMessages_optio
   [SGDSuggestManager updateOriginalDocumentsWith:v2 completionHandler:*(a1 + 40)];
 }
 
-- (void)batchSuggestionsFromSearchableItems:(id)a3 options:(unint64_t)a4 dissectIfNecessary:(BOOL)a5 processingType:(unint64_t)a6 completionDelivery:(unint64_t)a7 batchCompletion:(id)a8 writeBackCompletion:(id)a9 shouldStopSignal:(id)a10
+- (void)batchSuggestionsFromSearchableItems:(id)items options:(unint64_t)options dissectIfNecessary:(BOOL)necessary processingType:(unint64_t)type completionDelivery:(unint64_t)delivery batchCompletion:(id)completion writeBackCompletion:(id)backCompletion shouldStopSignal:(id)self0
 {
-  v27 = a5;
+  necessaryCopy = necessary;
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v25 = a8;
-  v13 = a9;
-  v14 = a10;
+  itemsCopy = items;
+  completionCopy = completion;
+  backCompletionCopy = backCompletion;
+  signalCopy = signal;
   v15 = sgLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v41 = [v12 count];
+    v41 = [itemsCopy count];
     _os_log_impl(&dword_231E60000, v15, OS_LOG_TYPE_DEFAULT, "**** SGDSuggestManager: batchSuggestionsFromSearchableItems: %lu item(s)", buf, 0xCu);
   }
 
   v30 = objc_opt_new();
   v16 = objc_opt_new();
   v17 = dispatch_group_create();
-  v18 = v13;
-  if (v13)
+  v18 = backCompletionCopy;
+  if (backCompletionCopy)
   {
-    a4 |= 0x8000000uLL;
+    options |= 0x8000000uLL;
   }
 
-  if ([v12 count])
+  if ([itemsCopy count])
   {
     v19 = 0;
     do
     {
-      if (v14 && (v14[2](v14) & 1) != 0)
+      if (signalCopy && (signalCopy[2](signalCopy) & 1) != 0)
       {
         break;
       }
 
-      v20 = [v12 objectAtIndexedSubscript:v19];
+      v20 = [itemsCopy objectAtIndexedSubscript:v19];
       dispatch_group_enter(v17);
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
@@ -14933,19 +14933,19 @@ void __146__SGDSuggestManager_BatchDonations__batchSuggestionsFromMessages_optio
       v37 = v20;
       v38 = v17;
       v21 = v20;
-      [(SGDSuggestManager *)self _suggestionsFromSingleSearchableItem:v21 options:a4 dissectIfNecessary:v27 processingType:a6 completionDelivery:a7 withCompletion:v34];
+      [(SGDSuggestManager *)self _suggestionsFromSingleSearchableItem:v21 options:options dissectIfNecessary:necessaryCopy processingType:type completionDelivery:delivery withCompletion:v34];
 
       ++v19;
     }
 
-    while (v19 < [v12 count]);
+    while (v19 < [itemsCopy count]);
   }
 
   dispatch_group_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
-  if (v25)
+  if (completionCopy)
   {
     v22 = [v30 copy];
-    v25[2](v25, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   if (v18 && [v16 count])

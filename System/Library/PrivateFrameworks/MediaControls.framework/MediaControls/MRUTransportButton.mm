@@ -1,23 +1,23 @@
 @interface MRUTransportButton
-- (MRUTransportButton)initWithFrame:(CGRect)a3;
-- (id)pointerStyleWithProposedEffect:(id)a3 proposedShape:(id)a4;
+- (MRUTransportButton)initWithFrame:(CGRect)frame;
+- (id)pointerStyleWithProposedEffect:(id)effect proposedShape:(id)shape;
 - (int64_t)iconStyle;
 - (void)addSymbolEffectIfNeeded;
-- (void)didSelect:(id)a3;
+- (void)didSelect:(id)select;
 - (void)layoutSubviews;
 - (void)resetImageViewScale;
 - (void)scaleDownImageView;
 - (void)schedulePendingTraitCollectionUpdates;
-- (void)setAsset:(id)a3 animated:(BOOL)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setImage:(id)a3 forState:(unint64_t)a4 animated:(BOOL)a5;
-- (void)setPackageGlyphState:(id)a3;
-- (void)setPackageState:(unint64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setTransportControlItem:(id)a3;
+- (void)setAsset:(id)asset animated:(BOOL)animated;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setImage:(id)image forState:(unint64_t)state animated:(BOOL)animated;
+- (void)setPackageGlyphState:(id)state;
+- (void)setPackageState:(unint64_t)state;
+- (void)setSelected:(BOOL)selected;
+- (void)setStylingProvider:(id)provider;
+- (void)setTransportControlItem:(id)item;
 - (void)updateBackgroundView;
 - (void)updateContentView;
 - (void)updateHighlighted;
@@ -26,12 +26,12 @@
 
 @implementation MRUTransportButton
 
-- (MRUTransportButton)initWithFrame:(CGRect)a3
+- (MRUTransportButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19[2] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = MRUTransportButton;
@@ -40,16 +40,16 @@
   if (v7)
   {
     [(MRUTransportButton *)v7 setCursorScale:1.0];
-    v9 = [(MRUTransportButton *)v8 imageView];
-    [v9 setContentMode:4];
+    imageView = [(MRUTransportButton *)v8 imageView];
+    [imageView setContentMode:4];
 
     v10 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{x, y, width, height}];
     backgroundView = v8->_backgroundView;
     v8->_backgroundView = v10;
 
     [(UIView *)v8->_backgroundView setUserInteractionEnabled:0];
-    v12 = [MEMORY[0x1E69DC888] systemWhiteColor];
-    [(UIView *)v8->_backgroundView setBackgroundColor:v12];
+    systemWhiteColor = [MEMORY[0x1E69DC888] systemWhiteColor];
+    [(UIView *)v8->_backgroundView setBackgroundColor:systemWhiteColor];
 
     [(MRUTransportButton *)v8 insertSubview:v8->_backgroundView atIndex:0];
     v13 = objc_alloc_init(MRUCAPackageView);
@@ -132,25 +132,25 @@ id __36__MRUTransportButton_initWithFrame___block_invoke(uint64_t a1, void *a2)
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:v9 * 0.5];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUTransportButton *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v7.receiver = self;
   v7.super_class = MRUTransportButton;
   [(MRUTransportButton *)&v7 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -171,13 +171,13 @@ id __36__MRUTransportButton_initWithFrame___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = MRUTransportButton;
   [(MRUTransportButton *)&v6 setSelected:?];
-  if (v3)
+  if (selectedCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -195,97 +195,97 @@ id __36__MRUTransportButton_initWithFrame___block_invoke(uint64_t a1, void *a2)
   [(MRUTransportButton *)self updateVisualStyling];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4.receiver = self;
   v4.super_class = MRUTransportButton;
-  [(MRUTransportButton *)&v4 setEnabled:a3];
+  [(MRUTransportButton *)&v4 setEnabled:enabled];
   [(MRUTransportButton *)self updateVisualStyling];
 }
 
-- (void)setPackageState:(unint64_t)a3
+- (void)setPackageState:(unint64_t)state
 {
-  self->_packageState = a3;
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"State %ld", a3 + 1];
+  self->_packageState = state;
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"State %ld", state + 1];
   [(MRUTransportButton *)self setPackageGlyphState:v4];
 }
 
-- (void)setTransportControlItem:(id)a3
+- (void)setTransportControlItem:(id)item
 {
-  objc_storeStrong(&self->_transportControlItem, a3);
-  v5 = a3;
-  v6 = [v5 asset];
-  [(MRUTransportButton *)self setAsset:v6];
+  objc_storeStrong(&self->_transportControlItem, item);
+  itemCopy = item;
+  asset = [itemCopy asset];
+  [(MRUTransportButton *)self setAsset:asset];
 
-  v7 = [v5 isEnabled];
+  isEnabled = [itemCopy isEnabled];
 
-  [(MRUTransportButton *)self setEnabled:v7];
+  [(MRUTransportButton *)self setEnabled:isEnabled];
 }
 
-- (void)setAsset:(id)a3 animated:(BOOL)a4
+- (void)setAsset:(id)asset animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 packageAsset];
+  animatedCopy = animated;
+  assetCopy = asset;
+  packageAsset = [assetCopy packageAsset];
 
-  if (v7)
+  if (packageAsset)
   {
-    [(MRUTransportButton *)self setImage:0 forState:0 animated:v4];
-    v8 = [(MRUTransportButton *)self packageView];
-    v9 = [v6 packageAsset];
-    [v8 setAsset:v9];
+    [(MRUTransportButton *)self setImage:0 forState:0 animated:animatedCopy];
+    packageView = [(MRUTransportButton *)self packageView];
+    packageAsset2 = [assetCopy packageAsset];
+    [packageView setAsset:packageAsset2];
 
-    v11 = [v6 accessibilityIdentifier];
+    accessibilityIdentifier = [assetCopy accessibilityIdentifier];
 
-    v10 = [(MRUTransportButton *)self packageView];
-    [v10 setAccessibilityIdentifier:v11];
+    packageView2 = [(MRUTransportButton *)self packageView];
+    [packageView2 setAccessibilityIdentifier:accessibilityIdentifier];
   }
 
   else
   {
     [(MRUTransportButton *)self clearPackage];
-    v11 = [v6 image];
+    accessibilityIdentifier = [assetCopy image];
 
-    [(MRUTransportButton *)self setImage:v11 forState:0 animated:v4];
+    [(MRUTransportButton *)self setImage:accessibilityIdentifier forState:0 animated:animatedCopy];
   }
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4 animated:(BOOL)a5
+- (void)setImage:(id)image forState:(unint64_t)state animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  if (v5)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (animatedCopy)
   {
-    v9 = [(MRUTransportButton *)self currentImage];
-    v10 = v9;
-    if (v9 == v8 || [v9 isEqual:v8])
+    currentImage = [(MRUTransportButton *)self currentImage];
+    v10 = currentImage;
+    if (currentImage == imageCopy || [currentImage isEqual:imageCopy])
     {
     }
 
     else
     {
-      v11 = [(MRUTransportButton *)self currentImage];
+      currentImage2 = [(MRUTransportButton *)self currentImage];
 
-      if (v11)
+      if (currentImage2)
       {
-        v12 = [(MRUTransportButton *)self imageView];
-        [v12 _removeAllAnimations:1];
-        [(MRUTransportButton *)self setPendingImage:v8];
+        imageView = [(MRUTransportButton *)self imageView];
+        [imageView _removeAllAnimations:1];
+        [(MRUTransportButton *)self setPendingImage:imageCopy];
         v13 = MEMORY[0x1E69DD250];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __49__MRUTransportButton_setImage_forState_animated___block_invoke;
         v20[3] = &unk_1E76639D0;
         v20[4] = self;
-        v21 = v12;
+        v21 = imageView;
         v15[0] = MEMORY[0x1E69E9820];
         v15[1] = 3221225472;
         v15[2] = __49__MRUTransportButton_setImage_forState_animated___block_invoke_2;
         v15[3] = &unk_1E76640A8;
         v15[4] = self;
-        v18 = a4;
+        stateCopy = state;
         v19 = 6;
-        v16 = v8;
+        v16 = imageCopy;
         v17 = v21;
         v14 = v21;
         [v13 _animateUsingSpringWithDuration:6 delay:v20 options:v15 mass:0.3175 stiffness:0.0 damping:1.0 initialVelocity:845.74 animations:58.1632 completion:0.0];
@@ -295,7 +295,7 @@ id __36__MRUTransportButton_initWithFrame___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  [(MRUTransportButton *)self setImage:v8 forState:a4];
+  [(MRUTransportButton *)self setImage:imageCopy forState:state];
 LABEL_6:
 }
 
@@ -337,42 +337,42 @@ uint64_t __49__MRUTransportButton_setImage_forState_animated___block_invoke_3(ui
   return [v2 setAlpha:1.0];
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v6 = a3;
+  imageCopy = image;
   [(MRUTransportButton *)self setPendingImage:0];
   v7.receiver = self;
   v7.super_class = MRUTransportButton;
-  [(MRUTransportButton *)&v7 setImage:v6 forState:a4];
+  [(MRUTransportButton *)&v7 setImage:imageCopy forState:state];
 }
 
-- (void)setPackageGlyphState:(id)a3
+- (void)setPackageGlyphState:(id)state
 {
-  v4 = a3;
-  v5 = [(MRUTransportButton *)self packageView];
-  [v5 setGlyphState:v4];
+  stateCopy = state;
+  packageView = [(MRUTransportButton *)self packageView];
+  [packageView setGlyphState:stateCopy];
 }
 
 - (void)addSymbolEffectIfNeeded
 {
   if (![(MRUTransportButton *)self isRunningSymbolEffect])
   {
-    v3 = [(MRUTransportButton *)self transportControlItem];
-    v4 = [v3 asset];
+    transportControlItem = [(MRUTransportButton *)self transportControlItem];
+    asset = [transportControlItem asset];
 
-    v5 = [v4 symbolEffect];
-    v6 = [v4 symbolEffectOptions];
-    if (v5)
+    symbolEffect = [asset symbolEffect];
+    symbolEffectOptions = [asset symbolEffectOptions];
+    if (symbolEffect)
     {
       [(MRUTransportButton *)self setIsRunningSymbolEffect:1];
       objc_initWeak(&location, self);
-      v7 = [(MRUTransportButton *)self imageView];
+      imageView = [(MRUTransportButton *)self imageView];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __45__MRUTransportButton_addSymbolEffectIfNeeded__block_invoke;
       v8[3] = &unk_1E76640D0;
       objc_copyWeak(&v9, &location);
-      [v7 addSymbolEffect:v5 options:v6 animated:1 completion:v8];
+      [imageView addSymbolEffect:symbolEffect options:symbolEffectOptions animated:1 completion:v8];
 
       objc_destroyWeak(&v9);
       objc_destroyWeak(&location);
@@ -386,30 +386,30 @@ void __45__MRUTransportButton_addSymbolEffectIfNeeded__block_invoke(uint64_t a1)
   [WeakRetained setIsRunningSymbolEffect:0];
 }
 
-- (void)didSelect:(id)a3
+- (void)didSelect:(id)select
 {
-  v4 = a3;
-  v8 = [(MRUTransportButton *)self transportControlItem];
-  v5 = [v4 isHolding];
+  selectCopy = select;
+  transportControlItem = [(MRUTransportButton *)self transportControlItem];
+  isHolding = [selectCopy isHolding];
 
-  if ((v5 & 1) == 0)
+  if ((isHolding & 1) == 0)
   {
-    v6 = [v8 mainAction];
+    mainAction = [transportControlItem mainAction];
 
-    if (v6)
+    if (mainAction)
     {
       [(MRUTransportButton *)self setPackageState:([(MRUTransportButton *)self packageState]+ 1) & 3];
       [(MRUTransportButton *)self addSymbolEffectIfNeeded];
-      v7 = [v8 mainAction];
-      v7[2]();
+      mainAction2 = [transportControlItem mainAction];
+      mainAction2[2]();
     }
   }
 }
 
-- (id)pointerStyleWithProposedEffect:(id)a3 proposedShape:(id)a4
+- (id)pointerStyleWithProposedEffect:(id)effect proposedShape:(id)shape
 {
-  v7 = a3;
-  v8 = a4;
+  effectCopy = effect;
+  shapeCopy = shape;
   pointerStyle = self->_pointerStyle;
   if (pointerStyle == 1)
   {
@@ -446,7 +446,7 @@ void __45__MRUTransportButton_addSymbolEffectIfNeeded__block_invoke(uint64_t a1)
     v11 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:?];
     v12 = [v10 shapeWithPath:v11];
 
-    v4 = [MEMORY[0x1E69DCDD0] styleWithEffect:v7 shape:v12];
+    v4 = [MEMORY[0x1E69DCDD0] styleWithEffect:effectCopy shape:v12];
   }
 
 LABEL_6:
@@ -479,30 +479,30 @@ uint64_t __59__MRUTransportButton_schedulePendingTraitCollectionUpdates__block_i
 
 - (void)updateVisualStyling
 {
-  v3 = [(MRUTransportButton *)self iconStyle];
+  iconStyle = [(MRUTransportButton *)self iconStyle];
   stylingProvider = self->_stylingProvider;
-  v5 = [(MRUTransportButton *)self imageView];
-  v6 = [(MRUTransportButton *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:v3 toView:v5 traitCollection:v6];
+  imageView = [(MRUTransportButton *)self imageView];
+  traitCollection = [(MRUTransportButton *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:iconStyle toView:imageView traitCollection:traitCollection];
 
   v7 = self->_stylingProvider;
-  v8 = [(MRUTransportButton *)self packageView];
-  v9 = [(MRUTransportButton *)self traitCollection];
-  [(MRUVisualStylingProvider *)v7 applyStyle:v3 toView:v8 traitCollection:v9];
+  packageView = [(MRUTransportButton *)self packageView];
+  traitCollection2 = [(MRUTransportButton *)self traitCollection];
+  [(MRUVisualStylingProvider *)v7 applyStyle:iconStyle toView:packageView traitCollection:traitCollection2];
 
   v10 = self->_stylingProvider;
-  v13 = [(MRUTransportButton *)self traitCollection];
-  v11 = [(MRUVisualStylingProvider *)v10 colorForStyle:0 traitCollection:v13];
-  v12 = [(MRUTransportButton *)self backgroundView];
-  [v12 setBackgroundColor:v11];
+  traitCollection3 = [(MRUTransportButton *)self traitCollection];
+  v11 = [(MRUVisualStylingProvider *)v10 colorForStyle:0 traitCollection:traitCollection3];
+  backgroundView = [(MRUTransportButton *)self backgroundView];
+  [backgroundView setBackgroundColor:v11];
 }
 
 - (int64_t)iconStyle
 {
-  v3 = [(MRUTransportButton *)self traitCollection];
-  v4 = [v3 mr_shouldDim];
+  traitCollection = [(MRUTransportButton *)self traitCollection];
+  mr_shouldDim = [traitCollection mr_shouldDim];
 
-  if (v4)
+  if (mr_shouldDim)
   {
     return 3;
   }
@@ -530,9 +530,9 @@ uint64_t __59__MRUTransportButton_schedulePendingTraitCollectionUpdates__block_i
 
   else
   {
-    v5 = [(MRUTransportButton *)self isSelected];
+    isSelected = [(MRUTransportButton *)self isSelected];
     v6 = self->_backgroundView;
-    if (v5)
+    if (isSelected)
     {
       [(UIView *)v6 setAlpha:0.1];
       backgroundView = self->_backgroundView;
@@ -565,8 +565,8 @@ uint64_t __59__MRUTransportButton_schedulePendingTraitCollectionUpdates__block_i
     {
       [(MRUTransportButton *)self packageScale];
       v4 = 0.8 * v3;
-      v5 = [(MRUTransportButton *)self packageView];
-      [v5 setScale:v4];
+      packageView = [(MRUTransportButton *)self packageView];
+      [packageView setScale:v4];
 
       [(MRUTransportButton *)self scaleDownImageView];
     }
@@ -576,8 +576,8 @@ uint64_t __59__MRUTransportButton_schedulePendingTraitCollectionUpdates__block_i
   {
     [(MRUTransportButton *)self packageScale];
     v7 = v6;
-    v8 = [(MRUTransportButton *)self packageView];
-    [v8 setScale:v7];
+    packageView2 = [(MRUTransportButton *)self packageView];
+    [packageView2 setScale:v7];
 
     [(MRUTransportButton *)self resetImageViewScale];
   }
@@ -592,31 +592,31 @@ uint64_t __59__MRUTransportButton_schedulePendingTraitCollectionUpdates__block_i
 
 - (void)scaleDownImageView
 {
-  v3 = [(MRUTransportButton *)self imageView];
-  v4 = [v3 image];
+  imageView = [(MRUTransportButton *)self imageView];
+  image = [imageView image];
 
-  if (v4)
+  if (image)
   {
     CGAffineTransformMakeScale(&v7, 0.8, 0.8);
-    v5 = [(MRUTransportButton *)self imageView];
+    imageView2 = [(MRUTransportButton *)self imageView];
     v6 = v7;
-    [v5 setTransform:&v6];
+    [imageView2 setTransform:&v6];
   }
 }
 
 - (void)resetImageViewScale
 {
-  v3 = [(MRUTransportButton *)self imageView];
-  v4 = [v3 image];
+  imageView = [(MRUTransportButton *)self imageView];
+  image = [imageView image];
 
-  if (v4)
+  if (image)
   {
-    v5 = [(MRUTransportButton *)self imageView];
+    imageView2 = [(MRUTransportButton *)self imageView];
     v6 = *(MEMORY[0x1E695EFD0] + 16);
     v7[0] = *MEMORY[0x1E695EFD0];
     v7[1] = v6;
     v7[2] = *(MEMORY[0x1E695EFD0] + 32);
-    [v5 setTransform:v7];
+    [imageView2 setTransform:v7];
   }
 }
 

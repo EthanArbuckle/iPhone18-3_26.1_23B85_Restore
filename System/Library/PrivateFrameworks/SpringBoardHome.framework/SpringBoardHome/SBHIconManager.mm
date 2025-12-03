@@ -1,101 +1,101 @@
 @interface SBHIconManager
-+ (id)undoActionNameForDraggedIcons:(id)a3;
++ (id)undoActionNameForDraggedIcons:(id)icons;
 - (APSubjectMonitorSubscription)appPrototectionSubjectMonitorSubscription;
 - (BOOL)_alwaysPresentStackConfigurationSheet;
-- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)a3;
-- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)a3 withinStackViewController:(id)a4;
+- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)visible;
+- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)visible withinStackViewController:(id)controller;
 - (BOOL)_isShowingLeadingCustomViewSearch;
 - (BOOL)_isShowingLeadingCustomViewSearchOrTransitioning;
 - (BOOL)_isShowingOrTransitioningToSearchableLeadingCustomView;
 - (BOOL)_isShowingPullDownSearchOrTransitioning;
 - (BOOL)_isShowingSearchableLeadingCustomView;
-- (BOOL)_shouldLibraryOverlayAllowSwipeToDismissGesture:(id)a3;
-- (BOOL)_shouldParallaxInIconLocation:(id)a3;
+- (BOOL)_shouldLibraryOverlayAllowSwipeToDismissGesture:(id)gesture;
+- (BOOL)_shouldParallaxInIconLocation:(id)location;
 - (BOOL)_shouldRespondToIconCloseBoxes;
 - (BOOL)_shouldUseHomeScreenLargeIconSize;
-- (BOOL)addDefaultFirstPageWidgetsToHomeScreen:(BOOL)a3;
-- (BOOL)addDefaultSecondPageWidgetsToHomeScreen:(BOOL)a3;
+- (BOOL)addDefaultFirstPageWidgetsToHomeScreen:(BOOL)screen;
+- (BOOL)addDefaultSecondPageWidgetsToHomeScreen:(BOOL)screen;
 - (BOOL)addDefaultWidgetsToHomeScreen;
-- (BOOL)allowsBadgingForIcon:(id)a3;
-- (BOOL)allowsBadgingForIconLocation:(id)a3;
+- (BOOL)allowsBadgingForIcon:(id)icon;
+- (BOOL)allowsBadgingForIconLocation:(id)location;
 - (BOOL)allowsFocus;
 - (BOOL)allowsNestedFolders;
 - (BOOL)applyOriginaliconStateForWidgetDiscoverability;
 - (BOOL)areAnyIconShareSheetsShowing;
-- (BOOL)canAddIconToIgnoredList:(id)a3;
+- (BOOL)canAddIconToIgnoredList:(id)list;
 - (BOOL)canCloseFolders;
-- (BOOL)canOpenFolderForIcon:(id)a3;
-- (BOOL)canSaveIconState:(id)a3;
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4;
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 focusModeIdentifier:(id)a5;
+- (BOOL)canOpenFolderForIcon:(id)icon;
+- (BOOL)canSaveIconState:(id)state;
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier;
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier focusModeIdentifier:(id)modeIdentifier;
 - (BOOL)clearTodayLayout;
-- (BOOL)contextMenuManager:(id)a3 shouldBeginContextMenuPresentationForIconView:(id)a4;
-- (BOOL)contextMenuManager:(id)a3 shouldPreviewOverlapMenuForIconView:(id)a4;
+- (BOOL)contextMenuManager:(id)manager shouldBeginContextMenuPresentationForIconView:(id)view;
+- (BOOL)contextMenuManager:(id)manager shouldPreviewOverlapMenuForIconView:(id)view;
 - (BOOL)currentHomeScreenWallpaperDimState;
-- (BOOL)dismissSpotlightAnimated:(BOOL)a3 completionHandler:(id)a4;
-- (BOOL)dismissSpotlightOrTodayViewAnimated:(BOOL)a3;
-- (BOOL)folderController:(id)a3 canChangeCurrentPageIndexToIndex:(int64_t)a4;
-- (BOOL)folderControllerShouldClose:(id)a3 withPinchGesture:(id)a4;
+- (BOOL)dismissSpotlightAnimated:(BOOL)animated completionHandler:(id)handler;
+- (BOOL)dismissSpotlightOrTodayViewAnimated:(BOOL)animated;
+- (BOOL)folderController:(id)controller canChangeCurrentPageIndexToIndex:(int64_t)index;
+- (BOOL)folderControllerShouldClose:(id)close withPinchGesture:(id)gesture;
 - (BOOL)hasAnimatingFolder;
-- (BOOL)hasConfiguredFilesStackWithURL:(id)a3;
+- (BOOL)hasConfiguredFilesStackWithURL:(id)l;
 - (BOOL)hasOpenFolder;
-- (BOOL)hasOpenFolderInLocation:(id)a3;
+- (BOOL)hasOpenFolderInLocation:(id)location;
 - (BOOL)hasRootFolderController;
 - (BOOL)hasRootViewController;
-- (BOOL)icon:(id)a3 canReceiveGrabbedIcon:(id)a4;
-- (BOOL)iconDragManager:(id)a3 canAcceptDropInSession:(id)a4 inIconListView:(id)a5;
-- (BOOL)iconDragManager:(id)a3 canAddDragItemsToSession:(id)a4 fromIconView:(id)a5;
-- (BOOL)iconDragManager:(id)a3 canBeginDragForIconView:(id)a4;
-- (BOOL)iconDragManager:(id)a3 canBeginIconDragForIconView:(id)a4;
-- (BOOL)iconDragManager:(id)a3 dragsSupportSystemDragsForIconView:(id)a4;
-- (BOOL)iconDragManager:(id)a3 shouldDuplicateIconsInDragSession:(id)a4;
-- (BOOL)iconModel:(id)a3 shouldAvoidPlacingIconOnFirstPage:(id)a4;
-- (BOOL)iconModel:(id)a3 shouldLeaveGapForMissingArchivedIconWithIdentifier:(id)a4;
-- (BOOL)iconModel:(id)a3 shouldPlaceIconOnIgnoredList:(id)a4;
-- (BOOL)iconShouldAllowTap:(id)a3;
-- (BOOL)iconView:(id)a3 editingModeGestureRecognizerDidFire:(id)a4;
-- (BOOL)iconView:(id)a3 shouldActivateApplicationShortcutItem:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)iconView:(id)a3 shouldContinueToUseBackgroundViewForComponents:(id)a4;
-- (BOOL)iconView:(id)a3 supportsConfigurationForDataSource:(id)a4;
-- (BOOL)iconViewDisplaysAccessories:(id)a3;
-- (BOOL)iconViewDisplaysCloseBox:(id)a3;
-- (BOOL)iconViewDisplaysLabel:(id)a3;
-- (BOOL)iconViewDisplaysResizeHandle:(id)a3;
+- (BOOL)icon:(id)icon canReceiveGrabbedIcon:(id)grabbedIcon;
+- (BOOL)iconDragManager:(id)manager canAcceptDropInSession:(id)session inIconListView:(id)view;
+- (BOOL)iconDragManager:(id)manager canAddDragItemsToSession:(id)session fromIconView:(id)view;
+- (BOOL)iconDragManager:(id)manager canBeginDragForIconView:(id)view;
+- (BOOL)iconDragManager:(id)manager canBeginIconDragForIconView:(id)view;
+- (BOOL)iconDragManager:(id)manager dragsSupportSystemDragsForIconView:(id)view;
+- (BOOL)iconDragManager:(id)manager shouldDuplicateIconsInDragSession:(id)session;
+- (BOOL)iconModel:(id)model shouldAvoidPlacingIconOnFirstPage:(id)page;
+- (BOOL)iconModel:(id)model shouldLeaveGapForMissingArchivedIconWithIdentifier:(id)identifier;
+- (BOOL)iconModel:(id)model shouldPlaceIconOnIgnoredList:(id)list;
+- (BOOL)iconShouldAllowTap:(id)tap;
+- (BOOL)iconView:(id)view editingModeGestureRecognizerDidFire:(id)fire;
+- (BOOL)iconView:(id)view shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index;
+- (BOOL)iconView:(id)view shouldContinueToUseBackgroundViewForComponents:(id)components;
+- (BOOL)iconView:(id)view supportsConfigurationForDataSource:(id)source;
+- (BOOL)iconViewDisplaysAccessories:(id)accessories;
+- (BOOL)iconViewDisplaysCloseBox:(id)box;
+- (BOOL)iconViewDisplaysLabel:(id)label;
+- (BOOL)iconViewDisplaysResizeHandle:(id)handle;
 - (BOOL)iconsShouldAllowCloseBoxes;
-- (BOOL)isAnimatingFolderIconTransitionForIconDragManager:(id)a3;
-- (BOOL)isCustomIconElementValid:(id)a3;
+- (BOOL)isAnimatingFolderIconTransitionForIconDragManager:(id)manager;
+- (BOOL)isCustomIconElementValid:(id)valid;
 - (BOOL)isCustomLeadingViewTodayView;
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4 options:(unint64_t)a5;
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4;
-- (BOOL)isDisplayingIcon:(id)a3 options:(unint64_t)a4;
-- (BOOL)isDisplayingIcon:(id)a3 queryOptions:(unint64_t)a4;
-- (BOOL)isDisplayingIconView:(id)a3;
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4;
-- (BOOL)isDisplayingIconView:(id)a3 options:(unint64_t)a4;
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location options:(unint64_t)options;
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations;
+- (BOOL)isDisplayingIcon:(id)icon options:(unint64_t)options;
+- (BOOL)isDisplayingIcon:(id)icon queryOptions:(unint64_t)options;
+- (BOOL)isDisplayingIconView:(id)view;
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location;
+- (BOOL)isDisplayingIconView:(id)view options:(unint64_t)options;
 - (BOOL)isEditing;
 - (BOOL)isEditingAllowed;
-- (BOOL)isEditingAllowedForIconListView:(id)a3;
-- (BOOL)isEditingAllowedForIconLocation:(id)a3;
-- (BOOL)isEditingAllowedForIconView:(id)a3;
-- (BOOL)isEditingForIconListView:(id)a3;
-- (BOOL)isEditingForIconLocation:(id)a3;
+- (BOOL)isEditingAllowedForIconListView:(id)view;
+- (BOOL)isEditingAllowedForIconLocation:(id)location;
+- (BOOL)isEditingAllowedForIconView:(id)view;
+- (BOOL)isEditingForIconListView:(id)view;
+- (BOOL)isEditingForIconLocation:(id)location;
 - (BOOL)isFloatingDockSupported;
 - (BOOL)isFloatingDockUtilitiesSupported;
 - (BOOL)isFloatingDockVisible;
-- (BOOL)isFolderOpenForIconDragManager:(id)a3;
+- (BOOL)isFolderOpenForIconDragManager:(id)manager;
 - (BOOL)isFolderPageManagementUIVisible;
 - (BOOL)isFolderScrolling;
 - (BOOL)isIconContentPossiblyVisibleOverApplication;
 - (BOOL)isIconDragging;
-- (BOOL)isIconIgnored:(id)a3;
-- (BOOL)isIconViewRecycled:(id)a3;
-- (BOOL)isIconVisiblyRepresented:(id)a3;
+- (BOOL)isIconIgnored:(id)ignored;
+- (BOOL)isIconViewRecycled:(id)recycled;
+- (BOOL)isIconVisiblyRepresented:(id)represented;
 - (BOOL)isMainDisplayLibraryViewVisible;
 - (BOOL)isOverlayTodayOrLibraryViewVisible;
 - (BOOL)isPerformingCancelledCollapseTransition;
 - (BOOL)isPerformingCancelledExpandTransition;
 - (BOOL)isPerformingExpandTransition;
-- (BOOL)isPresentingIconLocation:(id)a3;
+- (BOOL)isPresentingIconLocation:(id)location;
 - (BOOL)isRootFolderContentVisible;
 - (BOOL)isRootFolderScrolling;
 - (BOOL)isScrolling;
@@ -110,47 +110,47 @@
 - (BOOL)isTrackingScroll;
 - (BOOL)isTransitioning;
 - (BOOL)isTransitioningHomeScreenState;
-- (BOOL)isWidgetValid:(id)a3 iconSizeClass:(id)a4;
-- (BOOL)listsAllowRotatedLayoutForFolderClass:(Class)a3;
-- (BOOL)multiplexingManager:(id)a3 shouldCacheRecentViewController:(id)a4 forIdentifier:(id)a5;
-- (BOOL)openApplicationWindowsContextMenuProvider:(id)a3 canProvideContextMenuSectionsForBundleIdentifier:(id)a4;
-- (BOOL)presentHomeScreenIconsAnimated:(BOOL)a3;
-- (BOOL)presentSpotlightFromSource:(unint64_t)a3 animated:(BOOL)a4 completionHandler:(id)a5;
+- (BOOL)isWidgetValid:(id)valid iconSizeClass:(id)class;
+- (BOOL)listsAllowRotatedLayoutForFolderClass:(Class)class;
+- (BOOL)multiplexingManager:(id)manager shouldCacheRecentViewController:(id)controller forIdentifier:(id)identifier;
+- (BOOL)openApplicationWindowsContextMenuProvider:(id)provider canProvideContextMenuSectionsForBundleIdentifier:(id)identifier;
+- (BOOL)presentHomeScreenIconsAnimated:(BOOL)animated;
+- (BOOL)presentSpotlightFromSource:(unint64_t)source animated:(BOOL)animated completionHandler:(id)handler;
 - (BOOL)prototypeSettingBumpLeastUsedApps;
 - (BOOL)prototypeSettingEditButtonAsUndo;
 - (BOOL)prototypeSettingShowExtraLargeTVWidget;
 - (BOOL)prototypeSettingShowWidgetIntroduction;
 - (BOOL)prototypeSettingSimpleBottomSnaking;
-- (BOOL)recentDocumentsContextMenuProvider:(id)a3 canProvideContextMenuSectionsForBundleIdentifier:(id)a4;
+- (BOOL)recentDocumentsContextMenuProvider:(id)provider canProvideContextMenuSectionsForBundleIdentifier:(id)identifier;
 - (BOOL)relayout;
-- (BOOL)requestDeleteFileStackIcon:(id)a3;
-- (BOOL)resetIconLayoutWithOptions:(unint64_t)a3;
+- (BOOL)requestDeleteFileStackIcon:(id)icon;
+- (BOOL)resetIconLayoutWithOptions:(unint64_t)options;
 - (BOOL)resetTodayLayout;
-- (BOOL)rootFolder:(id)a3 canAddIcon:(id)a4 toIconList:(id)a5 inFolder:(id)a6;
-- (BOOL)rootFolder:(id)a3 canBounceIcon:(id)a4;
-- (BOOL)rootFolder:(id)a3 isGridLayoutValid:(id)a4 forIconList:(id)a5 inFolder:(id)a6;
+- (BOOL)rootFolder:(id)folder canAddIcon:(id)icon toIconList:(id)list inFolder:(id)inFolder;
+- (BOOL)rootFolder:(id)folder canBounceIcon:(id)icon;
+- (BOOL)rootFolder:(id)folder isGridLayoutValid:(id)valid forIconList:(id)list inFolder:(id)inFolder;
 - (BOOL)rootFolderContainsSuggestedWidget;
 - (BOOL)rootFolderContainsWidgets;
-- (BOOL)rootFolderController:(id)a3 allowsRemovalOfIconDataSourceWithinStack:(id)a4;
-- (BOOL)rootFolderControllerCanUseSeparateWindowForRotation:(id)a3;
-- (BOOL)rootFolderControllerDidSetPrototypeSettingEditAsUndo:(id)a3;
+- (BOOL)rootFolderController:(id)controller allowsRemovalOfIconDataSourceWithinStack:(id)stack;
+- (BOOL)rootFolderControllerCanUseSeparateWindowForRotation:(id)rotation;
+- (BOOL)rootFolderControllerDidSetPrototypeSettingEditAsUndo:(id)undo;
 - (BOOL)shouldEnforceMaxCombinedUserAndUtilitiesIconCountForFloatingDock;
-- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)a3 atLocation:(CGPoint)a4;
-- (BOOL)shouldHighlightTouchedIconView:(id)a3;
-- (BOOL)shouldRecycleIconView:(id)a3;
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4;
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 focusModeIdentifier:(id)a5;
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 inRootFolder:(id)a5 focusModeIdentifier:(id)a6;
+- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)view atLocation:(CGPoint)location;
+- (BOOL)shouldHighlightTouchedIconView:(id)view;
+- (BOOL)shouldRecycleIconView:(id)view;
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier;
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier focusModeIdentifier:(id)modeIdentifier;
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier inRootFolder:(id)folder focusModeIdentifier:(id)modeIdentifier;
 - (BOOL)userHasUsedWidget;
-- (BOOL)viewMap:(id)a3 shouldRecycleView:(id)a4;
-- (BOOL)widgetIconIsOnboardingWidget:(id)a3;
-- (BOOL)widgetStackViewController:(id)a3 isDataSourceBlockedForScreenTimeExpiration:(id)a4;
-- (BOOL)widgetStackViewControllerCanFlashPageControl:(id)a3;
-- (CGRect)iconView:(id)a3 contentBoundingRectForConfigurationInteraction:(id)a4;
+- (BOOL)viewMap:(id)map shouldRecycleView:(id)view;
+- (BOOL)widgetIconIsOnboardingWidget:(id)widget;
+- (BOOL)widgetStackViewController:(id)controller isDataSourceBlockedForScreenTimeExpiration:(id)expiration;
+- (BOOL)widgetStackViewControllerCanFlashPageControl:(id)control;
+- (CGRect)iconView:(id)view contentBoundingRectForConfigurationInteraction:(id)interaction;
 - (CHSWidgetExtensionProvider)widgetExtensionProvider;
-- (Class)controllerClassForFolder:(id)a3;
-- (Class)controllerClassForFolderClass:(Class)a3;
-- (Class)iconModel:(id)a3 iconClassForApplicationWithBundleIdentifier:(id)a4 proposedClass:(Class)a5;
+- (Class)controllerClassForFolder:(id)folder;
+- (Class)controllerClassForFolderClass:(Class)class;
+- (Class)iconModel:(id)model iconClassForApplicationWithBundleIdentifier:(id)identifier proposedClass:(Class)class;
 - (Class)iconViewClass;
 - (NSArray)defaultFirstPageSuggestedWidgetIcons;
 - (NSArray)defaultSecondPageSuggestedWidgetIcons;
@@ -160,8 +160,8 @@
 - (SBFolder)openedFolder;
 - (SBFolderController)openedFolderController;
 - (SBFolderIconImageCache)folderIconImageCache;
-- (SBHIconGridSize)listGridSizeForFolderClass:(Class)a3;
-- (SBHIconGridSize)listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)a3;
+- (SBHIconGridSize)listGridSizeForFolderClass:(Class)class;
+- (SBHIconGridSize)listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)class;
 - (SBHIconImageCache)iconImageCache;
 - (SBHIconManager)init;
 - (SBHIconManagerDelegate)delegate;
@@ -177,589 +177,589 @@
 - (SBIconListView)floatingDockListView;
 - (SBIconListView)floatingDockSuggestionsListView;
 - (SBSearchGesture)searchGesture;
-- (UIEdgeInsets)contentOverlayInsetsFromParentIfAvailableForFolderController:(id)a3;
-- (UIEdgeInsets)statusBarEdgeInsetsForFolderController:(id)a3;
+- (UIEdgeInsets)contentOverlayInsetsFromParentIfAvailableForFolderController:(id)controller;
+- (UIEdgeInsets)statusBarEdgeInsetsForFolderController:(id)controller;
 - (UIImpactFeedbackGenerator)iconEditingFeedbackBehavior;
-- (double)defaultIconLayoutAnimationDurationForIconDragManager:(id)a3;
-- (double)distanceToTopOfSpotlightIconsForRootFolderController:(id)a3;
-- (double)externalDockHeightForRootFolderController:(id)a3;
-- (double)iconDragManager:(id)a3 additionalDragLiftScaleForIconView:(id)a4;
-- (double)maxExternalDockHeightForRootFolderController:(id)a3;
-- (double)minimumHomeScreenScaleForFolderController:(id)a3;
-- (double)preferredExternalDockVerticalMarginForRootFolderController:(id)a3;
-- (double)verticalMarginPercentageForConfigurationOfIconView:(id)a3;
-- (id)_archivedIntentForDataSource:(id)a3 inIcon:(id)a4 loadingIfNecessary:(BOOL)a5;
-- (id)_containerViewControllerForPersonDetailInteractionTargetingIconView:(id)a3;
-- (id)_containerViewForPersonDetailInteractionTargetingIconView:(id)a3;
-- (id)_createAppropriateRootViewControllerForRootFolder:(id)a3;
-- (id)_createRootFolderControllerForRootFolder:(id)a3;
-- (id)_createRootTableControllerForRootFolder:(id)a3;
+- (double)defaultIconLayoutAnimationDurationForIconDragManager:(id)manager;
+- (double)distanceToTopOfSpotlightIconsForRootFolderController:(id)controller;
+- (double)externalDockHeightForRootFolderController:(id)controller;
+- (double)iconDragManager:(id)manager additionalDragLiftScaleForIconView:(id)view;
+- (double)maxExternalDockHeightForRootFolderController:(id)controller;
+- (double)minimumHomeScreenScaleForFolderController:(id)controller;
+- (double)preferredExternalDockVerticalMarginForRootFolderController:(id)controller;
+- (double)verticalMarginPercentageForConfigurationOfIconView:(id)view;
+- (id)_archivedIntentForDataSource:(id)source inIcon:(id)icon loadingIfNecessary:(BOOL)necessary;
+- (id)_containerViewControllerForPersonDetailInteractionTargetingIconView:(id)view;
+- (id)_containerViewForPersonDetailInteractionTargetingIconView:(id)view;
+- (id)_createAppropriateRootViewControllerForRootFolder:(id)folder;
+- (id)_createRootFolderControllerForRootFolder:(id)folder;
+- (id)_createRootTableControllerForRootFolder:(id)folder;
 - (id)_currentFolderController;
-- (id)_customViewControllerForResizingIcon:(id)a3 gridSizeClass:(id)a4 dataSource:(id)a5 location:(id)a6;
-- (id)_dumpRootFolderForStateCapture:(id)a3;
+- (id)_customViewControllerForResizingIcon:(id)icon gridSizeClass:(id)class dataSource:(id)source location:(id)location;
+- (id)_dumpRootFolderForStateCapture:(id)capture;
 - (id)_effectiveAppPredictionViewControllersForUniqueIdentifier;
 - (id)_effectiveTodayViewController;
 - (id)_effectiveWidgetMultiplexingManager;
 - (id)_fetchCurrentStyleConfiguration;
-- (id)_folderControllerForIcon:(id)a3 inLocation:(id)a4;
-- (id)_homeScreenContentViewForPersonDetailInteractionTargetingIconView:(id)a3;
-- (id)_iconForDescriptor:(id)a3;
-- (id)_iconLabelImageParametersForPrewarm:(unint64_t)a3;
-- (id)_intentForDataSource:(id)a3 inIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6;
-- (id)_intentForWidget:(id)a3 ofIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6;
+- (id)_folderControllerForIcon:(id)icon inLocation:(id)location;
+- (id)_homeScreenContentViewForPersonDetailInteractionTargetingIconView:(id)view;
+- (id)_iconForDescriptor:(id)descriptor;
+- (id)_iconLabelImageParametersForPrewarm:(unint64_t)prewarm;
+- (id)_intentForDataSource:(id)source inIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary;
+- (id)_intentForWidget:(id)widget ofIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary;
 - (id)_libraryViewControllers;
-- (id)_makeCustomViewControllerForWidgetIcon:(id)a3 dataSource:(id)a4 location:(id)a5;
-- (id)_makeCustomViewControllerForWidgetIcon:(id)a3 dataSource:(id)a4 location:(id)a5 gridSizeClass:(id)a6;
-- (id)_multiplexingViewControllerForIcon:(id)a3 dataSource:(id)a4 location:(id)a5 withPriority:(unint64_t)a6;
-- (id)_newIntentForDataSource:(id)a3 inIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6;
-- (id)_personDetailInteractionContextForPersonURL:(id)a3 iconView:(id)a4;
-- (id)_proposedFolderNameForGrabbedIcon:(id)a3 recipientIcon:(id)a4;
-- (id)_stackConfigurationForStackIcon:(id)a3;
-- (id)_stashedIconsWithRemovableDataSourcesForStashedIcons:(id)a3 newIcons:(id)a4;
+- (id)_makeCustomViewControllerForWidgetIcon:(id)icon dataSource:(id)source location:(id)location;
+- (id)_makeCustomViewControllerForWidgetIcon:(id)icon dataSource:(id)source location:(id)location gridSizeClass:(id)class;
+- (id)_multiplexingViewControllerForIcon:(id)icon dataSource:(id)source location:(id)location withPriority:(unint64_t)priority;
+- (id)_newIntentForDataSource:(id)source inIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary;
+- (id)_personDetailInteractionContextForPersonURL:(id)l iconView:(id)view;
+- (id)_proposedFolderNameForGrabbedIcon:(id)icon recipientIcon:(id)recipientIcon;
+- (id)_stackConfigurationForStackIcon:(id)icon;
+- (id)_stashedIconsWithRemovableDataSourcesForStashedIcons:(id)icons newIcons:(id)newIcons;
 - (id)_stateCaptureString;
 - (id)_widgetIntroductionHomeScreenPreviewView;
-- (id)accessibilityTintColorForIconView:(id)a3;
-- (id)accessibilityTintColorForScreenRect:(CGRect)a3;
-- (id)addApplicationPlaceholders:(id)a3;
-- (id)addWidgetSheetConfigurationManager:(id)a3 containerBundleIdentiferForDescriptor:(id)a4;
-- (id)addWidgetSheetConfigurationManager:(id)a3 vendorNameForAppWithBundleIdentifier:(id)a4;
-- (id)addWidgetSheetConfigurationManagerCreatingIfNecessary:(BOOL)a3;
-- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)a3;
+- (id)accessibilityTintColorForIconView:(id)view;
+- (id)accessibilityTintColorForScreenRect:(CGRect)rect;
+- (id)addApplicationPlaceholders:(id)placeholders;
+- (id)addWidgetSheetConfigurationManager:(id)manager containerBundleIdentiferForDescriptor:(id)descriptor;
+- (id)addWidgetSheetConfigurationManager:(id)manager vendorNameForAppWithBundleIdentifier:(id)identifier;
+- (id)addWidgetSheetConfigurationManagerCreatingIfNecessary:(BOOL)necessary;
+- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)manager;
 - (id)addWidgetsToEachPage;
 - (id)additionalIconViewsToUpdateDuringColorPicking;
 - (id)allowedGridSizeClassesForDock;
 - (id)allowedGridSizeClassesForTodayList;
-- (id)animator:(id)a3 animationSettingsForOperation:(unint64_t)a4 childViewController:(id)a5;
-- (id)appPredictionViewControllerForIconView:(id)a3;
-- (id)appPredictionsIconViewDisplayingIconView:(id)a3 options:(unint64_t)a4;
-- (id)applicationShortcutSectionOrderingForIconView:(id)a3;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (id)backgroundViewForDockForRootFolderController:(id)a3;
-- (id)backgroundViewForEditingDoneButtonForRootFolderController:(id)a3;
-- (id)beginHidingIconsFromLayout:(id)a3 reason:(id)a4 options:(unint64_t)a5;
-- (id)bestHomeScreenLocationForIcon:(id)a3;
-- (id)bestLocationForIcon:(id)a3;
+- (id)animator:(id)animator animationSettingsForOperation:(unint64_t)operation childViewController:(id)controller;
+- (id)appPredictionViewControllerForIconView:(id)view;
+- (id)appPredictionsIconViewDisplayingIconView:(id)view options:(unint64_t)options;
+- (id)applicationShortcutSectionOrderingForIconView:(id)view;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (id)backgroundViewForDockForRootFolderController:(id)controller;
+- (id)backgroundViewForEditingDoneButtonForRootFolderController:(id)controller;
+- (id)beginHidingIconsFromLayout:(id)layout reason:(id)reason options:(unint64_t)options;
+- (id)bestHomeScreenLocationForIcon:(id)icon;
+- (id)bestLocationForIcon:(id)icon;
 - (id)cachingImageAppearances;
 - (id)cachingImageStyleConfiguration;
 - (id)captureHomeScreenOnboardingSnapshot;
-- (id)contextMenuManager:(id)a3 containerViewForPresentingContextMenuForIconView:(id)a4;
-- (id)contextMenuManager:(id)a3 orderedActionContextMenuProvidersForIconView:(id)a4;
-- (id)createNewFolderFromRecipientIcon:(id)a3 grabbedIcon:(id)a4;
-- (id)customImageViewControllerForIconView:(id)a3;
-- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)a3;
+- (id)contextMenuManager:(id)manager containerViewForPresentingContextMenuForIconView:(id)view;
+- (id)contextMenuManager:(id)manager orderedActionContextMenuProvidersForIconView:(id)view;
+- (id)createNewFolderFromRecipientIcon:(id)icon grabbedIcon:(id)grabbedIcon;
+- (id)customImageViewControllerForIconView:(id)view;
+- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)provider;
 - (id)debuggingActiveWidgetInfo;
-- (id)defaultIconStateForIconModel:(id)a3;
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)fakeStatusBarForFolderController:(id)a3;
-- (id)firstIconViewForIcon:(id)a3;
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4;
-- (id)firstIconViewForIcon:(id)a3 options:(unint64_t)a4;
-- (id)firstIconViewWithOptions:(unint64_t)a3 iconPassingTest:(id)a4;
+- (id)defaultIconStateForIconModel:(id)model;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)fakeStatusBarForFolderController:(id)controller;
+- (id)firstIconViewForIcon:(id)icon;
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations;
+- (id)firstIconViewForIcon:(id)icon options:(unint64_t)options;
+- (id)firstIconViewWithOptions:(unint64_t)options iconPassingTest:(id)test;
 - (id)floatingDockUtilitiesListView;
-- (id)floatingDockViewControllerForView:(id)a3;
-- (id)folderControllerForFolder:(id)a3;
-- (id)folderControllerWantsToHideStatusBar:(id)a3 animated:(BOOL)a4;
-- (id)gridPathForIcon:(id)a3;
+- (id)floatingDockViewControllerForView:(id)view;
+- (id)folderControllerForFolder:(id)folder;
+- (id)folderControllerWantsToHideStatusBar:(id)bar animated:(BOOL)animated;
+- (id)gridPathForIcon:(id)icon;
 - (id)gridSizeClassDomain;
-- (id)gridSizeClassSizesForIconModel:(id)a3;
-- (id)highPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)a3;
+- (id)gridSizeClassSizesForIconModel:(id)model;
+- (id)highPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration;
 - (id)homescreenIconAccessoryViewMap;
 - (id)homescreenIconImageViewMap;
 - (id)homescreenIconLabelAccessoryViewMap;
-- (id)iconDataSourceForReplacingAppIconWithWidgetIcon:(id)a3;
-- (id)iconDragManager:(id)a3 dragPreviewForIconView:(id)a4;
-- (id)iconDragManager:(id)a3 targetedDragPreviewForIconView:(id)a4 item:(id)a5 session:(id)a6 previewParameters:(id)a7;
-- (id)iconForReplacingWidgetIconWithAppIcon:(id)a3;
+- (id)iconDataSourceForReplacingAppIconWithWidgetIcon:(id)icon;
+- (id)iconDragManager:(id)manager dragPreviewForIconView:(id)view;
+- (id)iconDragManager:(id)manager targetedDragPreviewForIconView:(id)view item:(id)item session:(id)session previewParameters:(id)parameters;
+- (id)iconForReplacingWidgetIconWithAppIcon:(id)icon;
 - (id)iconGridSizeClassSizes;
-- (id)iconListViewForIndexPath:(id)a3;
-- (id)iconLocationForList:(id)a3 inFolder:(id)a4 ofRootFolder:(id)a5;
+- (id)iconListViewForIndexPath:(id)path;
+- (id)iconLocationForList:(id)list inFolder:(id)folder ofRootFolder:(id)rootFolder;
 - (id)iconLocationForListsWithNonDefaultSizedIcons;
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4;
-- (id)iconModel:(id)a3 customInsertionGridPathForIcon:(id)a4 inRootFolder:(id)a5;
-- (id)iconModel:(id)a3 customInsertionIndexPathForIcon:(id)a4 inRootFolder:(id)a5;
-- (id)iconModel:(id)a3 validatedFileStackIconForFileStackIcon:(id)a4;
-- (id)iconSizeChangeAnimator:(id)a3 intentForWidget:(id)a4;
-- (id)iconSizeChangeAnimator:(id)a3 viewControllerForIconDataSource:(id)a4 icon:(id)a5 gridSizeClass:(id)a6;
-- (id)iconView:(id)a3 applicationShortcutItemsWithProposedItems:(id)a4;
-- (id)iconView:(id)a3 backgroundViewForComponentsOfType:(int64_t)a4;
-- (id)iconView:(id)a3 configurationInteractionForDataSource:(id)a4;
-- (id)iconView:(id)a3 containerViewControllerForConfigurationInteraction:(id)a4;
-- (id)iconView:(id)a3 containerViewForConfigurationInteraction:(id)a4;
-- (id)iconView:(id)a3 homeScreenContentViewForConfigurationInteraction:(id)a4;
-- (id)iconView:(id)a3 iconAccessoryViewOfClass:(Class)a4;
-- (id)iconView:(id)a3 iconLabelAccessoryViewOfType:(int64_t)a4;
-- (id)iconView:(id)a3 labelContentWithParameters:(id)a4;
-- (id)iconView:(id)a3 labelImageWithParameters:(id)a4;
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5;
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class;
+- (id)iconModel:(id)model customInsertionGridPathForIcon:(id)icon inRootFolder:(id)folder;
+- (id)iconModel:(id)model customInsertionIndexPathForIcon:(id)icon inRootFolder:(id)folder;
+- (id)iconModel:(id)model validatedFileStackIconForFileStackIcon:(id)icon;
+- (id)iconSizeChangeAnimator:(id)animator intentForWidget:(id)widget;
+- (id)iconSizeChangeAnimator:(id)animator viewControllerForIconDataSource:(id)source icon:(id)icon gridSizeClass:(id)class;
+- (id)iconView:(id)view applicationShortcutItemsWithProposedItems:(id)items;
+- (id)iconView:(id)view backgroundViewForComponentsOfType:(int64_t)type;
+- (id)iconView:(id)view configurationInteractionForDataSource:(id)source;
+- (id)iconView:(id)view containerViewControllerForConfigurationInteraction:(id)interaction;
+- (id)iconView:(id)view containerViewForConfigurationInteraction:(id)interaction;
+- (id)iconView:(id)view homeScreenContentViewForConfigurationInteraction:(id)interaction;
+- (id)iconView:(id)view iconAccessoryViewOfClass:(Class)class;
+- (id)iconView:(id)view iconLabelAccessoryViewOfType:(int64_t)type;
+- (id)iconView:(id)view labelContentWithParameters:(id)parameters;
+- (id)iconView:(id)view labelImageWithParameters:(id)parameters;
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options;
 - (id)iconViewMap;
 - (id)iconViewShowingContextMenu;
 - (id)iconViewsToPreviewForIconStylePicker;
 - (id)iconsToRecacheForIconStylePickerPreview;
 - (id)iconsToRecacheForImageAppearanceChange;
-- (id)imageViewForIconView:(id)a3;
-- (id)launchActionsForIconView:(id)a3;
-- (id)launchURLForIconView:(id)a3;
+- (id)imageViewForIconView:(id)view;
+- (id)launchActionsForIconView:(id)view;
+- (id)launchURLForIconView:(id)view;
 - (id)leadingTodayViewController;
-- (id)listRotatedLayoutClusterGridSizeClassForIconModel:(id)a3;
+- (id)listRotatedLayoutClusterGridSizeClassForIconModel:(id)model;
 - (id)listViewsToUpdateDuringColorPicking;
 - (id)localizedDefaultFolderName;
-- (id)localizedFolderNameForDefaultDisplayName:(id)a3;
-- (id)lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)a3;
-- (id)makeResizedCopyOfWidgetIcon:(id)a3 withGridSizeClass:(id)a4;
-- (id)metricsForCHSWidget:(id)a3 inLocation:(id)a4;
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4;
-- (id)onboardingWidgetPreviewsForWidgetIcon:(id)a3;
-- (id)parallaxSettingsForComponentsOfIconView:(id)a3;
+- (id)localizedFolderNameForDefaultDisplayName:(id)name;
+- (id)lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration;
+- (id)makeResizedCopyOfWidgetIcon:(id)icon withGridSizeClass:(id)class;
+- (id)metricsForCHSWidget:(id)widget inLocation:(id)location;
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController;
+- (id)onboardingWidgetPreviewsForWidgetIcon:(id)icon;
+- (id)parallaxSettingsForComponentsOfIconView:(id)view;
 - (id)persistedHomeScreenColorConfiguration;
-- (id)preWarmCustomViewControllerForWidgetIcon:(id)a3;
-- (id)preWarmCustomViewControllerForWidgetIcon:(id)a3 withGridSizeClass:(id)a4;
-- (id)precacheLayersForIcons:(id)a3 appearances:(id)a4 reason:(id)a5;
+- (id)preWarmCustomViewControllerForWidgetIcon:(id)icon;
+- (id)preWarmCustomViewControllerForWidgetIcon:(id)icon withGridSizeClass:(id)class;
+- (id)precacheLayersForIcons:(id)icons appearances:(id)appearances reason:(id)reason;
 - (id)prepareForUndo;
 - (id)primaryWindowScene;
 - (id)prioritizedCachingImageAppearances;
-- (id)prioritizedCachingImageAppearancesForIconImageStyleConfiguration:(id)a3 priority:(int64_t)a4;
-- (id)promoteSuggestedWidget:(id)a3 withinStack:(id)a4;
-- (id)reasonToDisallowInteractionOnIconView:(id)a3;
-- (id)reasonToDisallowTapOnIconView:(id)a3;
-- (id)recycledViewsContainerProviderForViewMap:(id)a3;
-- (id)replaceApplicationPlaceholderWithApplication:(id)a3;
-- (id)resizeGestureHandler:(id)a3 intentForWidget:(id)a4;
-- (id)resizeGestureHandler:(id)a3 viewControllerForIconDataSource:(id)a4 icon:(id)a5 gridSizeClass:(id)a6;
-- (id)resizeGestureHandlerForIconView:(id)a3;
-- (id)rootFolder:(id)a3 shouldBounceIcon:(id)a4 afterInsertingIcons:(id)a5 forIconList:(id)a6 inFolder:(id)a7;
-- (id)rootFolderController:(id)a3 dragPreviewForIconView:(id)a4;
-- (id)rootFolderController:(id)a3 draggedIconForStackConfigurationInteractionForIdentifier:(id)a4;
-- (id)rootIconListAtIndex:(int64_t)a3;
+- (id)prioritizedCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration priority:(int64_t)priority;
+- (id)promoteSuggestedWidget:(id)widget withinStack:(id)stack;
+- (id)reasonToDisallowInteractionOnIconView:(id)view;
+- (id)reasonToDisallowTapOnIconView:(id)view;
+- (id)recycledViewsContainerProviderForViewMap:(id)map;
+- (id)replaceApplicationPlaceholderWithApplication:(id)application;
+- (id)resizeGestureHandler:(id)handler intentForWidget:(id)widget;
+- (id)resizeGestureHandler:(id)handler viewControllerForIconDataSource:(id)source icon:(id)icon gridSizeClass:(id)class;
+- (id)resizeGestureHandlerForIconView:(id)view;
+- (id)rootFolder:(id)folder shouldBounceIcon:(id)icon afterInsertingIcons:(id)icons forIconList:(id)list inFolder:(id)inFolder;
+- (id)rootFolderController:(id)controller dragPreviewForIconView:(id)view;
+- (id)rootFolderController:(id)controller draggedIconForStackConfigurationInteractionForIdentifier:(id)identifier;
+- (id)rootIconListAtIndex:(int64_t)index;
 - (id)rootListLayout;
-- (id)rootViewForIconDragManager:(id)a3;
-- (id)screenSnapshotProviderForComponentsOfIconView:(id)a3;
-- (id)silhouetteLayoutForPageAtIndex:(unint64_t)a3;
-- (id)stackConfigurationInteractionForIconView:(id)a3;
-- (id)statusBarStyleRequestForFolderController:(id)a3;
+- (id)rootViewForIconDragManager:(id)manager;
+- (id)screenSnapshotProviderForComponentsOfIconView:(id)view;
+- (id)silhouetteLayoutForPageAtIndex:(unint64_t)index;
+- (id)stackConfigurationInteractionForIconView:(id)view;
+- (id)statusBarStyleRequestForFolderController:(id)controller;
 - (id)succinctDescription;
-- (id)supportedGridSizeClassesForIconView:(id)a3;
-- (id)supportedGridSizeClassesForWidgetWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5;
-- (id)supportedIconGridSizeClassesForResizeOfIconView:(id)a3;
+- (id)supportedGridSizeClassesForIconView:(id)view;
+- (id)supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier;
+- (id)supportedIconGridSizeClassesForResizeOfIconView:(id)view;
 - (id)todayViewControllers;
 - (id)trailingLibraryViewController;
-- (id)validatedWidgetIconForWidgetIcon:(id)a3;
+- (id)validatedWidgetIconForWidgetIcon:(id)icon;
 - (id)viewControllerForPresentingViewControllers;
-- (id)viewMap:(id)a3 makeNewViewOfClass:(Class)a4;
+- (id)viewMap:(id)map makeNewViewOfClass:(Class)class;
 - (id)visibleIconsToRecacheForImageAppearanceChange;
 - (id)widgetBackgroundViewMap;
-- (id)widgetIconWithWidgetExtensionIdentifiers:(id)a3 widgetKinds:(id)a4 sizeClass:(id)a5;
-- (id)widgetInsertionRippleIconAnimatorForIcon:(id)a3 iconListView:(id)a4 withReferenceIconView:(id)a5;
-- (id)widgetMetricsProvider:(id)a3 listLayoutProviderForScreenType:(unint64_t)a4;
-- (id)widgetStackViewController:(id)a3 containerApplicationNameForDataSource:(id)a4;
-- (id)widgetStackViewController:(id)a3 viewControllerForDataSource:(id)a4;
-- (id)windowForIconDragPreviewsForIconDragManager:(id)a3 forWindowScene:(id)a4;
-- (id)windowForStackConfigurationIconDragPreviewsForRootFolderController:(id)a3 forWindowScene:(id)a4;
-- (int64_t)closeBoxTypeForIconView:(id)a3;
-- (int64_t)contextMenuManager:(id)a3 preferredMenuElementOrderForIconView:(id)a4;
+- (id)widgetIconWithWidgetExtensionIdentifiers:(id)identifiers widgetKinds:(id)kinds sizeClass:(id)class;
+- (id)widgetInsertionRippleIconAnimatorForIcon:(id)icon iconListView:(id)view withReferenceIconView:(id)iconView;
+- (id)widgetMetricsProvider:(id)provider listLayoutProviderForScreenType:(unint64_t)type;
+- (id)widgetStackViewController:(id)controller containerApplicationNameForDataSource:(id)source;
+- (id)widgetStackViewController:(id)controller viewControllerForDataSource:(id)source;
+- (id)windowForIconDragPreviewsForIconDragManager:(id)manager forWindowScene:(id)scene;
+- (id)windowForStackConfigurationIconDragPreviewsForRootFolderController:(id)controller forWindowScene:(id)scene;
+- (int64_t)closeBoxTypeForIconView:(id)view;
+- (int64_t)contextMenuManager:(id)manager preferredMenuElementOrderForIconView:(id)view;
 - (int64_t)currentIconListIndex;
-- (int64_t)iconDragManager:(id)a3 draggingStartLocationForIconView:(id)a4 proposedStartLocation:(int64_t)a5;
-- (int64_t)iconView:(id)a3 userInterfaceStyleForConfigurationInteraction:(id)a4;
+- (int64_t)iconDragManager:(id)manager draggingStartLocationForIconView:(id)view proposedStartLocation:(int64_t)location;
+- (int64_t)iconView:(id)view userInterfaceStyleForConfigurationInteraction:(id)interaction;
 - (int64_t)interfaceOrientation;
 - (int64_t)listsFixedIconLocationBehavior;
-- (int64_t)listsFixedIconLocationBehaviorForFolderClass:(Class)a3;
+- (int64_t)listsFixedIconLocationBehaviorForFolderClass:(Class)class;
 - (int64_t)listsIconDisplacementBehavior;
-- (int64_t)listsIconDisplacementBehaviorForFolderClass:(Class)a3;
-- (unint64_t)addWidgetSheetStyleForRootFolderController:(id)a3;
+- (int64_t)listsIconDisplacementBehaviorForFolderClass:(Class)class;
+- (unint64_t)addWidgetSheetStyleForRootFolderController:(id)controller;
 - (unint64_t)allowedInterfaceOrientations;
 - (unint64_t)columnCountForTodayList;
-- (unint64_t)contextMenuManager:(id)a3 supportedMultitaskingShortcutActionsForIconView:(id)a4;
+- (unint64_t)contextMenuManager:(id)manager supportedMultitaskingShortcutActionsForIconView:(id)view;
 - (unint64_t)effectiveRootFolderControllerContentVisibility;
-- (unint64_t)focusEffectTypeForIconView:(id)a3;
+- (unint64_t)focusEffectTypeForIconView:(id)view;
 - (unint64_t)gridCellInfoOptions;
-- (unint64_t)iconModel:(id)a3 maxColumnCountForListInRootFolderWithInterfaceOrientation:(int64_t)a4;
-- (unint64_t)iconModel:(id)a3 maxRowCountForListInRootFolderWithInterfaceOrientation:(int64_t)a4;
+- (unint64_t)iconModel:(id)model maxColumnCountForListInRootFolderWithInterfaceOrientation:(int64_t)orientation;
+- (unint64_t)iconModel:(id)model maxRowCountForListInRootFolderWithInterfaceOrientation:(int64_t)orientation;
 - (unint64_t)maxIconCountForDock;
 - (unint64_t)maxIconCountForDockUtilities;
 - (unint64_t)maxListCountForFolders;
 - (unint64_t)possibleInterfaceOrientations;
-- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)a3;
-- (unint64_t)viewMap:(id)a3 maxRecycledViewsOfClass:(Class)a4;
-- (void)_addTouchedIconView:(id)a3;
-- (void)_animateFolderIcon:(id)a3 open:(BOOL)a4 location:(id)a5 animated:(BOOL)a6 withCompletion:(id)a7;
-- (void)_applyBarButtonItemsToStylePicker:(id)a3 forHomeScreenConfiguration:(id)a4;
-- (void)_archiveConfiguration:(id)a3 forDataSource:(id)a4 ofIcon:(id)a5;
-- (void)_beginObservingLeafIconsInModel:(id)a3;
-- (void)_cleanupForClosingFolderAnimated:(BOOL)a3;
-- (void)_cleanupLabelCachesWithReason:(id)a3;
+- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)view;
+- (unint64_t)viewMap:(id)map maxRecycledViewsOfClass:(Class)class;
+- (void)_addTouchedIconView:(id)view;
+- (void)_animateFolderIcon:(id)icon open:(BOOL)open location:(id)location animated:(BOOL)animated withCompletion:(id)completion;
+- (void)_applyBarButtonItemsToStylePicker:(id)picker forHomeScreenConfiguration:(id)configuration;
+- (void)_archiveConfiguration:(id)configuration forDataSource:(id)source ofIcon:(id)icon;
+- (void)_beginObservingLeafIconsInModel:(id)model;
+- (void)_cleanupForClosingFolderAnimated:(BOOL)animated;
+- (void)_cleanupLabelCachesWithReason:(id)reason;
 - (void)_clearStashedIconsForRelayout;
-- (void)_closeFolderController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5;
-- (void)_compactRootListsAfterFolderCloseWithAnimation:(BOOL)a3;
-- (void)_configureRootFolderConfiguration:(id)a3;
-- (void)_discardEndEditingTimerAndDontResetUntilReasonIsRemoved:(id)a3;
+- (void)_closeFolderController:(id)controller animated:(BOOL)animated withCompletion:(id)completion;
+- (void)_compactRootListsAfterFolderCloseWithAnimation:(BOOL)animation;
+- (void)_configureRootFolderConfiguration:(id)configuration;
+- (void)_discardEndEditingTimerAndDontResetUntilReasonIsRemoved:(id)removed;
 - (void)_dismissStylePickerViewControllerImmediately;
-- (void)_endObservingLeafIconsInModel:(id)a3;
-- (void)_engageWallpaperTintColorDropper:(id)a3;
-- (void)_enqueueTransitionName:(id)a3 withHandler:(id)a4;
+- (void)_endObservingLeafIconsInModel:(id)model;
+- (void)_engageWallpaperTintColorDropper:(id)dropper;
+- (void)_enqueueTransitionName:(id)name withHandler:(id)handler;
 - (void)_ensureRootFolderController;
-- (void)_ensureWidgetIsVisibleForDebuggingWithDescriptor:(id)a3 sizeClass:(int64_t)a4;
-- (void)_enumerateEditableViewController:(id)a3 usingBlock:(id)a4;
-- (void)_fetchWallpaperProminentColor:(id)a3;
-- (void)_finishResetRootIconListsReusingPreviousControllers:(BOOL)a3;
-- (void)_folderDidFinishOpenClose:(BOOL)a3 animated:(BOOL)a4 success:(BOOL)a5;
-- (void)_handleRemovedDataSource:(id)a3 ofIcon:(id)a4;
-- (void)_handleUpdatedConfiguration:(id)a3 forDataSource:(id)a4 ofIcon:(id)a5 archiving:(BOOL)a6;
-- (void)_iconModelDidLayout:(id)a3;
-- (void)_iconVisibilityChanged:(id)a3;
+- (void)_ensureWidgetIsVisibleForDebuggingWithDescriptor:(id)descriptor sizeClass:(int64_t)class;
+- (void)_enumerateEditableViewController:(id)controller usingBlock:(id)block;
+- (void)_fetchWallpaperProminentColor:(id)color;
+- (void)_finishResetRootIconListsReusingPreviousControllers:(BOOL)controllers;
+- (void)_folderDidFinishOpenClose:(BOOL)close animated:(BOOL)animated success:(BOOL)success;
+- (void)_handleRemovedDataSource:(id)source ofIcon:(id)icon;
+- (void)_handleUpdatedConfiguration:(id)configuration forDataSource:(id)source ofIcon:(id)icon archiving:(BOOL)archiving;
+- (void)_iconModelDidLayout:(id)layout;
+- (void)_iconVisibilityChanged:(id)changed;
 - (void)_invalidateWallpaperTintColorDropper;
-- (void)_loadAndSaveDefaultIntentIfNecessaryForWidget:(id)a3 ofIcon:(id)a4 viewController:(id)a5;
+- (void)_loadAndSaveDefaultIntentIfNecessaryForWidget:(id)widget ofIcon:(id)icon viewController:(id)controller;
 - (void)_noteUserIsInteractingWithIcons;
 - (void)_precacheDataForRootIcons;
 - (void)_precacheDataForRootIconsAfterIconAppearanceChange;
 - (void)_precacheImagesForRootIcons;
-- (void)_precacheImagesForRootIconsForStyleConfiguration:(id)a3;
+- (void)_precacheImagesForRootIconsForStyleConfiguration:(id)configuration;
 - (void)_precacheIntentsForRootIcons;
-- (void)_precacheLabelsForRootIcons:(BOOL)a3 reason:(id)a4;
+- (void)_precacheLabelsForRootIcons:(BOOL)icons reason:(id)reason;
 - (void)_prepareToResetRootIconLists;
 - (void)_presentStylePickerViewController;
-- (void)_presentStylePickerViewControllerForStylePickerConfiguration:(id)a3;
+- (void)_presentStylePickerViewControllerForStylePickerConfiguration:(id)configuration;
 - (void)_processPendingDefaultIntents;
-- (void)_removeReasonToNotResetEndEditingTimer:(id)a3;
-- (void)_removeTouchedIconView:(id)a3;
-- (void)_resetHomescreenIconStateTo:(id)a3;
+- (void)_removeReasonToNotResetEndEditingTimer:(id)timer;
+- (void)_removeTouchedIconView:(id)view;
+- (void)_resetHomescreenIconStateTo:(id)to;
 - (void)_restartEditingEndTimer;
-- (void)_scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:(id)a3;
-- (void)_setupApplicationShortcutItemsForPresentation:(id)a3;
+- (void)_scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:(id)dismissal;
+- (void)_setupApplicationShortcutItemsForPresentation:(id)presentation;
 - (void)_setupStateCaptureHandleIfNeeded;
-- (void)_todayViewControllerSuppressesEditingStateForListViews:(BOOL)a3;
-- (void)_toggleHomeScreenIconSize:(id)a3;
-- (void)_tryScrollToIconToRevealAnimated:(BOOL)a3;
-- (void)_updateCaptureOnlyBackgroundViewForCustomIconImageViewController:(id)a3;
-- (void)_updateIconView:(id)a3 forCustomIconImageViewController:(id)a4;
+- (void)_todayViewControllerSuppressesEditingStateForListViews:(BOOL)views;
+- (void)_toggleHomeScreenIconSize:(id)size;
+- (void)_tryScrollToIconToRevealAnimated:(BOOL)animated;
+- (void)_updateCaptureOnlyBackgroundViewForCustomIconImageViewController:(id)controller;
+- (void)_updateIconView:(id)view forCustomIconImageViewController:(id)controller;
 - (void)_updateLegibilitySettings;
-- (void)_updateMaximumEditingIconSizeForFloatingDockViewController:(id)a3;
+- (void)_updateMaximumEditingIconSizeForFloatingDockViewController:(id)controller;
 - (void)_updateOverlayOcclusionForRootFolderController;
-- (void)_updateOverscrollModalLibraryForScrollToPresented:(BOOL)a3;
-- (void)_updateShouldUseHomeScreenLargeIconSize:(BOOL)a3;
-- (void)_updateStyleConfiguration:(id)a3;
+- (void)_updateOverscrollModalLibraryForScrollToPresented:(BOOL)presented;
+- (void)_updateShouldUseHomeScreenLargeIconSize:(BOOL)size;
+- (void)_updateStyleConfiguration:(id)configuration;
 - (void)_updateVisibleIconsViewsForAllowableCloseBoxes;
-- (void)_updateWidgetMultiplexingViewController:(id)a3 forIconView:(id)a4;
+- (void)_updateWidgetMultiplexingViewController:(id)controller forIconView:(id)view;
 - (void)_validateAndRepairIntentsForConfigurableWidgets;
 - (void)_willAnimateWidgetInsertion;
-- (void)addAdditionalIconImageCacheForPrecaching:(id)a3;
+- (void)addAdditionalIconImageCacheForPrecaching:(id)precaching;
 - (void)addAllEligibleIconsToIgnoredList;
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5;
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5 orientation:(int64_t)a6;
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 iconIndex:(unint64_t)a5;
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5;
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5 orientation:(int64_t)a6;
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 iconIndex:(unint64_t)a5;
-- (void)addFileStackWithURL:(id)a3;
-- (void)addFolderPresentationObserver:(id)a3;
-- (void)addIconToIgnoredList:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)addIcons:(id)a3 intoFolderIcon:(id)a4 openFolderOnFinish:(BOOL)a5 completion:(id)a6;
-- (void)addNewIconToDesignatedLocation:(id)a3 options:(unint64_t)a4;
-- (void)addNewIconsToDesignatedLocations:(id)a3 saveIconState:(BOOL)a4;
-- (void)addPageStateObserver:(id)a3;
-- (void)addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)a3;
-- (void)addSuggestedActiveWidgetToStack:(id)a3;
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate;
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate orientation:(int64_t)orientation;
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page iconIndex:(unint64_t)index;
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate;
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate orientation:(int64_t)orientation;
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page iconIndex:(unint64_t)index;
+- (void)addFileStackWithURL:(id)l;
+- (void)addFolderPresentationObserver:(id)observer;
+- (void)addIconToIgnoredList:(id)list options:(unint64_t)options completion:(id)completion;
+- (void)addIcons:(id)icons intoFolderIcon:(id)icon openFolderOnFinish:(BOOL)finish completion:(id)completion;
+- (void)addNewIconToDesignatedLocation:(id)location options:(unint64_t)options;
+- (void)addNewIconsToDesignatedLocations:(id)locations saveIconState:(BOOL)state;
+- (void)addPageStateObserver:(id)observer;
+- (void)addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)screen;
+- (void)addSuggestedActiveWidgetToStack:(id)stack;
 - (void)addWidgetStackToCurrentPage;
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int64_t)a4 withSizeClass:(id)a5;
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int64_t)a4 withSizeClass:(id)a5;
-- (void)addWidgets:(id)a3 toGridPath:(id)a4 overflowOptions:(unint64_t)a5;
-- (void)animateToDefaultStateWithCompletionHandler:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int64_t)page withSizeClass:(id)class;
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int64_t)page withSizeClass:(id)class;
+- (void)addWidgets:(id)widgets toGridPath:(id)path overflowOptions:(unint64_t)options;
+- (void)animateToDefaultStateWithCompletionHandler:(id)handler;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)cancelAllDrags;
 - (void)cancelAllFolderScrolling;
-- (void)changeSizeOfWidgetIcon:(id)a3 toSizeClass:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)changeSizeOfWidgetIcon:(id)icon toSizeClass:(id)class animated:(BOOL)animated completionHandler:(id)handler;
 - (void)checkForInvalidCustomElements;
 - (void)checkForInvalidWidgets;
 - (void)clearHighlightedIcon;
-- (void)clearHighlightedIcon:(id)a3;
-- (void)closeFolderAnimated:(BOOL)a3 withCompletion:(id)a4;
-- (void)configureFeedbackView:(id)a3;
-- (void)configureFloatingDockViewController:(id)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
-- (void)configureLibraryViewController:(id)a3;
-- (void)contextMenuManager:(id)a3 iconView:(id)a4 willUseContextMenuStyle:(id)a5;
-- (void)continueChangingSizeOfWidgetIcon:(id)a3 toSizeClass:(id)a4 newIcon:(id)a5 displayedIconView:(id)a6 listView:(id)a7 resizedViewController:(id)a8 undoPreparation:(id)a9 previousIconGridPath:(id)a10 currentIconGridPath:(id)a11 animated:(BOOL)a12 completionHandler:(id)a13;
+- (void)clearHighlightedIcon:(id)icon;
+- (void)closeFolderAnimated:(BOOL)animated withCompletion:(id)completion;
+- (void)configureFeedbackView:(id)view;
+- (void)configureFloatingDockViewController:(id)controller;
+- (void)configureIconView:(id)view forIcon:(id)icon;
+- (void)configureLibraryViewController:(id)controller;
+- (void)contextMenuManager:(id)manager iconView:(id)view willUseContextMenuStyle:(id)style;
+- (void)continueChangingSizeOfWidgetIcon:(id)icon toSizeClass:(id)class newIcon:(id)newIcon displayedIconView:(id)view listView:(id)listView resizedViewController:(id)controller undoPreparation:(id)preparation previousIconGridPath:(id)self0 currentIconGridPath:(id)self1 animated:(BOOL)self2 completionHandler:(id)self3;
 - (void)dealloc;
-- (void)didDeleteIconState:(id)a3;
-- (void)didSaveIconState:(id)a3;
+- (void)didDeleteIconState:(id)state;
+- (void)didSaveIconState:(id)state;
 - (void)disableUserInteractionForWidgetDiscoverability;
 - (void)dismissFolderPageManagementUI;
 - (void)dismissIconContextMenu;
 - (void)dismissIconShareSheets;
-- (void)dismissLibraryForIconDragManager:(id)a3 windowScene:(id)a4;
+- (void)dismissLibraryForIconDragManager:(id)manager windowScene:(id)scene;
 - (void)dismissModalInteractions;
 - (void)dismissModalInteractionsImmediately;
-- (void)dismissTodayOverlayForIconDragManager:(id)a3;
+- (void)dismissTodayOverlayForIconDragManager:(id)manager;
 - (void)displayEnterEditingModeFeatureIntroductions;
-- (void)displayFeatureIntroductionItemIfUnlocked:(id)a3;
-- (void)displayPronouncedContainerViewVisibility:(BOOL)a3 isVertical:(BOOL)a4;
-- (void)editingDidChangeWithFeedbackBehavior:(id)a3 location:(CGPoint)a4;
+- (void)displayFeatureIntroductionItemIfUnlocked:(id)unlocked;
+- (void)displayPronouncedContainerViewVisibility:(BOOL)visibility isVertical:(BOOL)vertical;
+- (void)editingDidChangeWithFeedbackBehavior:(id)behavior location:(CGPoint)location;
 - (void)enableUserInteractionForWidgetDiscoverability;
 - (void)ensureFixedIconLocationsIfNecessary;
-- (void)enumerateAllIconImageCachesUsingBlock:(id)a3;
-- (void)enumerateAppPredictionViewControllersInIconLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4;
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3;
-- (void)enumerateEditableViewControllersUsingBlock:(id)a3;
-- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateIconViewsDisplayedInAppPredictionsInLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateKnownIconViewsUsingBlock:(id)a3;
-- (void)enumeratePageStateObserversUsingBlock:(id)a3;
-- (void)enumerateViewsToUpdateDuringColorPickingUsingListViewBlock:(id)a3 iconViewBlock:(id)a4;
-- (void)finishInstallingIconAnimated:(BOOL)a3;
-- (void)floatingDockViewController:(id)a3 didChangeContentHeight:(double)a4 animated:(BOOL)a5;
-- (void)floatingDockViewController:(id)a3 wantsToBeginEditingAtScreenLocation:(CGPoint)a4;
-- (void)floatingDockViewController:(id)a3 willCloseFolderController:(id)a4;
-- (void)floatingDockViewController:(id)a3 willOpenFolderController:(id)a4;
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5;
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5;
-- (void)folder:(id)a3 listHiddenDidChange:(id)a4;
-- (void)folderController:(id)a3 willRemoveFakeStatusBar:(id)a4;
-- (void)folderController:(id)a3 willUseIconTransitionAnimator:(id)a4 forOperation:(int64_t)a5 onViewController:(id)a6 animated:(BOOL)a7;
-- (void)folderControllerDidEndScrolling:(id)a3;
-- (void)folderControllerShouldBeginEditing:(id)a3 withHaptic:(BOOL)a4;
-- (void)folderControllerWillBeginScrolling:(id)a3;
-- (void)folderControllerWillClose:(id)a3;
-- (void)folderControllerWillOpen:(id)a3;
+- (void)enumerateAllIconImageCachesUsingBlock:(id)block;
+- (void)enumerateAppPredictionViewControllersInIconLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block;
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block;
+- (void)enumerateEditableViewControllersUsingBlock:(id)block;
+- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateIconViewsDisplayedInAppPredictionsInLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateKnownIconViewsUsingBlock:(id)block;
+- (void)enumeratePageStateObserversUsingBlock:(id)block;
+- (void)enumerateViewsToUpdateDuringColorPickingUsingListViewBlock:(id)block iconViewBlock:(id)viewBlock;
+- (void)finishInstallingIconAnimated:(BOOL)animated;
+- (void)floatingDockViewController:(id)controller didChangeContentHeight:(double)height animated:(BOOL)animated;
+- (void)floatingDockViewController:(id)controller wantsToBeginEditingAtScreenLocation:(CGPoint)location;
+- (void)floatingDockViewController:(id)controller willCloseFolderController:(id)folderController;
+- (void)floatingDockViewController:(id)controller willOpenFolderController:(id)folderController;
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons;
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon;
+- (void)folder:(id)folder listHiddenDidChange:(id)change;
+- (void)folderController:(id)controller willRemoveFakeStatusBar:(id)bar;
+- (void)folderController:(id)controller willUseIconTransitionAnimator:(id)animator forOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated;
+- (void)folderControllerDidEndScrolling:(id)scrolling;
+- (void)folderControllerShouldBeginEditing:(id)editing withHaptic:(BOOL)haptic;
+- (void)folderControllerWillBeginScrolling:(id)scrolling;
+- (void)folderControllerWillClose:(id)close;
+- (void)folderControllerWillOpen:(id)open;
 - (void)folderIconImageCache;
-- (void)getListView:(id *)a3 folder:(id *)a4 relativePath:(id *)a5 forIndexPath:(id)a6;
-- (void)getStatistics:(SBHIconManagerStatistics *)a3;
+- (void)getListView:(id *)view folder:(id *)folder relativePath:(id *)path forIndexPath:(id)indexPath;
+- (void)getStatistics:(SBHIconManagerStatistics *)statistics;
 - (void)hasAnimatingFolderChanged;
-- (void)hideSiriSuggestionOnWidgetFromStack:(id)a3;
-- (void)hideSuggestedWidgetFromStack:(id)a3;
-- (void)highlightIconView:(id)a3;
-- (void)icon:(id)a3 touchEnded:(BOOL)a4;
-- (void)iconCloseBoxTapped:(id)a3;
-- (void)iconDragManager:(id)a3 didAddItemsToIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5;
-- (void)iconDragManager:(id)a3 didEndIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5;
-- (void)iconDragManager:(id)a3 didSpringLoadIconView:(id)a4;
-- (void)iconDragManager:(id)a3 iconDropSessionDidEnter:(id)a4;
-- (void)iconDragManager:(id)a3 iconView:(id)a4 willAnimateDragLiftWithAnimator:(id)a5 session:(id)a6;
-- (void)iconDragManager:(id)a3 willBeginIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5;
-- (void)iconDragManagerIconDraggingDidChange:(id)a3;
-- (void)iconModel:(id)a3 didAddIcon:(id)a4;
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6;
-- (void)iconModel:(id)a3 willRemoveIcon:(id)a4;
+- (void)hideSiriSuggestionOnWidgetFromStack:(id)stack;
+- (void)hideSuggestedWidgetFromStack:(id)stack;
+- (void)highlightIconView:(id)view;
+- (void)icon:(id)icon touchEnded:(BOOL)ended;
+- (void)iconCloseBoxTapped:(id)tapped;
+- (void)iconDragManager:(id)manager didAddItemsToIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items;
+- (void)iconDragManager:(id)manager didEndIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items;
+- (void)iconDragManager:(id)manager didSpringLoadIconView:(id)view;
+- (void)iconDragManager:(id)manager iconDropSessionDidEnter:(id)enter;
+- (void)iconDragManager:(id)manager iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session;
+- (void)iconDragManager:(id)manager willBeginIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items;
+- (void)iconDragManagerIconDraggingDidChange:(id)change;
+- (void)iconModel:(id)model didAddIcon:(id)icon;
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context;
+- (void)iconModel:(id)model willRemoveIcon:(id)icon;
 - (void)iconSizeButtonTriggered;
-- (void)iconTapped:(id)a3 modifierFlags:(int64_t)a4;
-- (void)iconTouchBegan:(id)a3;
-- (void)iconView:(id)a3 configurationDidEndWithInteraction:(id)a4;
-- (void)iconView:(id)a3 configurationDidUpdateWithInteraction:(id)a4;
-- (void)iconView:(id)a3 configurationWillBeginWithInteraction:(id)a4;
-- (void)iconView:(id)a3 configurationWillEndWithInteraction:(id)a4;
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4;
-- (void)iconView:(id)a3 didDiscardCustomImageViewController:(id)a4;
-- (void)iconView:(id)a3 dropSessionDidEnter:(id)a4;
-- (void)iconView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)iconView:(id)a3 wantsResizeToGridSizeClass:(id)a4 completionHandler:(id)a5;
-- (void)iconView:(id)a3 willRemoveIconAccessoryView:(id)a4;
-- (void)iconView:(id)a3 willRemoveIconImageView:(id)a4;
-- (void)iconView:(id)a3 willRemoveIconLabelAccessoryView:(id)a4;
-- (void)iconViewDidBeginTrackingPossibleResize:(id)a3 context:(id)a4;
-- (void)iconViewDidEndTrackingPossibleResize:(id)a3 context:(id)a4;
-- (void)informUsageMonitorOfTodayViewVisibilityChange:(id)a3;
-- (void)informUsageMonitorOfVisibleIconRectsForTodayViewController:(id)a3;
-- (void)insertIcons:(id)a3 intoWidgetStack:(id)a4;
+- (void)iconTapped:(id)tapped modifierFlags:(int64_t)flags;
+- (void)iconTouchBegan:(id)began;
+- (void)iconView:(id)view configurationDidEndWithInteraction:(id)interaction;
+- (void)iconView:(id)view configurationDidUpdateWithInteraction:(id)interaction;
+- (void)iconView:(id)view configurationWillBeginWithInteraction:(id)interaction;
+- (void)iconView:(id)view configurationWillEndWithInteraction:(id)interaction;
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller;
+- (void)iconView:(id)view didDiscardCustomImageViewController:(id)controller;
+- (void)iconView:(id)view dropSessionDidEnter:(id)enter;
+- (void)iconView:(id)view dropSessionDidExit:(id)exit;
+- (void)iconView:(id)view wantsResizeToGridSizeClass:(id)class completionHandler:(id)handler;
+- (void)iconView:(id)view willRemoveIconAccessoryView:(id)accessoryView;
+- (void)iconView:(id)view willRemoveIconImageView:(id)imageView;
+- (void)iconView:(id)view willRemoveIconLabelAccessoryView:(id)accessoryView;
+- (void)iconViewDidBeginTrackingPossibleResize:(id)resize context:(id)context;
+- (void)iconViewDidEndTrackingPossibleResize:(id)resize context:(id)context;
+- (void)informUsageMonitorOfTodayViewVisibilityChange:(id)change;
+- (void)informUsageMonitorOfVisibleIconRectsForTodayViewController:(id)controller;
+- (void)insertIcons:(id)icons intoWidgetStack:(id)stack;
 - (void)invalidateOnboardingWidgetPreviewViewControllers;
-- (void)launchFolderFromIconView:(id)a3 withActions:(id)a4 modifierFlags:(int64_t)a5;
-- (void)launchFromIconView:(id)a3 withActions:(id)a4 modifierFlags:(int64_t)a5;
-- (void)layoutIconListsWithAnimationType:(int64_t)a3 forceRelayout:(BOOL)a4;
-- (void)libraryViewController:(id)a3 didAcceptDrop:(id)a4;
-- (void)libraryViewController:(id)a3 willDismissSearchController:(id)a4;
-- (void)libraryViewController:(id)a3 willLaunchIcon:(id)a4 fromLocation:(id)a5;
-- (void)libraryViewController:(id)a3 willPresentSearchController:(id)a4;
-- (void)libraryViewControllerDidDismiss:(id)a3;
-- (void)libraryViewControllerDidPresent:(id)a3;
+- (void)launchFolderFromIconView:(id)view withActions:(id)actions modifierFlags:(int64_t)flags;
+- (void)launchFromIconView:(id)view withActions:(id)actions modifierFlags:(int64_t)flags;
+- (void)layoutIconListsWithAnimationType:(int64_t)type forceRelayout:(BOOL)relayout;
+- (void)libraryViewController:(id)controller didAcceptDrop:(id)drop;
+- (void)libraryViewController:(id)controller willDismissSearchController:(id)searchController;
+- (void)libraryViewController:(id)controller willLaunchIcon:(id)icon fromLocation:(id)location;
+- (void)libraryViewController:(id)controller willPresentSearchController:(id)searchController;
+- (void)libraryViewControllerDidDismiss:(id)dismiss;
+- (void)libraryViewControllerDidPresent:(id)present;
 - (void)minimumHomeScreenScaleDidChange;
-- (void)modalInteractionDidEnd:(id)a3;
-- (void)modalInteractionWillBegin:(id)a3;
-- (void)moveIconToHiddenPage:(id)a3;
-- (void)multiplexingManager:(id)a3 cachedRecentViewController:(id)a4 forIdentifier:(id)a5;
-- (void)multiplexingManager:(id)a3 willRemoveViewController:(id)a4 forIdentifier:(id)a5;
-- (void)multiplexingWrapperViewControllerDidChangeGridAlignment:(id)a3;
-- (void)multiplexingWrapperViewControllerWillChangeGridAlignment:(id)a3;
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6;
+- (void)modalInteractionDidEnd:(id)end;
+- (void)modalInteractionWillBegin:(id)begin;
+- (void)moveIconToHiddenPage:(id)page;
+- (void)multiplexingManager:(id)manager cachedRecentViewController:(id)controller forIdentifier:(id)identifier;
+- (void)multiplexingManager:(id)manager willRemoveViewController:(id)controller forIdentifier:(id)identifier;
+- (void)multiplexingWrapperViewControllerDidChangeGridAlignment:(id)alignment;
+- (void)multiplexingWrapperViewControllerWillChangeGridAlignment:(id)alignment;
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator;
 - (void)noteFloatingDockWillAnimateChangeInHeight;
 - (void)noteFloatingDockWillChangeHeight;
 - (void)noteIconStateChangedExternally;
-- (void)noteIconViewWillZoomDown:(id)a3;
+- (void)noteIconViewWillZoomDown:(id)down;
 - (void)noteInterfaceOrientationChanged;
 - (void)noteRootFolderDidMutate;
-- (void)openFolderIcon:(id)a3 location:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
-- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3;
-- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)a3;
-- (void)performAfterAllIconTouchesFinishedUsingBlock:(id)a3;
-- (void)performAfterCachingWidgetIntentsUsingBlock:(id)a3;
-- (void)performAfterIconContextMenuDismissesUsingBlock:(id)a3;
-- (void)popExpandedIconFromLocation:(id)a3 interactionContext:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)openFolderIcon:(id)icon location:(id)location animated:(BOOL)animated withCompletion:(id)completion;
+- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)count;
+- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)count;
+- (void)performAfterAllIconTouchesFinishedUsingBlock:(id)block;
+- (void)performAfterCachingWidgetIntentsUsingBlock:(id)block;
+- (void)performAfterIconContextMenuDismissesUsingBlock:(id)block;
+- (void)popExpandedIconFromLocation:(id)location interactionContext:(id)context animated:(BOOL)animated completionHandler:(id)handler;
 - (void)popModalInteraction;
 - (void)popToCurrentRootIconList;
 - (void)popToCurrentRootIconListWhenPossible;
 - (void)prepareModalWidgetIntroductionWidgetViewSnapshots;
-- (void)presentLeadingCustomViewWithCompletion:(id)a3;
-- (void)presentLibraryForIconDragManager:(id)a3 windowScene:(id)a4;
+- (void)presentLeadingCustomViewWithCompletion:(id)completion;
+- (void)presentLibraryForIconDragManager:(id)manager windowScene:(id)scene;
 - (void)presentTodayOverlay;
-- (void)presentTodayOverlayForIconDragManager:(id)a3;
-- (void)presentTrailingCustomViewWithCompletion:(id)a3;
+- (void)presentTodayOverlayForIconDragManager:(id)manager;
+- (void)presentTrailingCustomViewWithCompletion:(id)completion;
 - (void)prototypeSetDefaultSecondPageWidgetIcons;
 - (void)purgeUnnecessaryAppearanceIconImageData;
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7;
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 forcePoppingPriorExpandedIcon:(BOOL)a6 animated:(BOOL)a7 completionHandler:(id)a8;
-- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3;
-- (void)recycleIconView:(id)a3;
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context animated:(BOOL)animated completionHandler:(id)handler;
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context forcePoppingPriorExpandedIcon:(BOOL)expandedIcon animated:(BOOL)animated completionHandler:(id)handler;
+- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)count;
+- (void)recycleIconView:(id)view;
 - (void)refreshAppPredictionBadges;
 - (void)relayout;
 - (void)removeAllIconAnimations;
 - (void)removeAllWidgetIcons;
-- (void)removeFileStackWithURL:(id)a3;
-- (void)removeFirstWidgetFromRootFolderListAtIndex:(unint64_t)a3;
-- (void)removeFolderPresentationObserver:(id)a3;
-- (void)removeIcon:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)a3;
-- (void)removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:(BOOL)a3;
+- (void)removeFileStackWithURL:(id)l;
+- (void)removeFirstWidgetFromRootFolderListAtIndex:(unint64_t)index;
+- (void)removeFolderPresentationObserver:(id)observer;
+- (void)removeIcon:(id)icon options:(unint64_t)options completion:(id)completion;
+- (void)removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)screen;
+- (void)removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:(BOOL)needed;
 - (void)removeWidgetIconsFromHomeScreen;
-- (void)replaceAppIcon:(id)a3 withWidgetOfSize:(id)a4;
-- (void)replaceApplicationPlaceholderWithApplication:(id)a3 completionHandler:(id)a4;
-- (void)replaceFolderIcon:(id)a3 byContainedIcon:(id)a4 animated:(BOOL)a5;
+- (void)replaceAppIcon:(id)icon withWidgetOfSize:(id)size;
+- (void)replaceApplicationPlaceholderWithApplication:(id)application completionHandler:(id)handler;
+- (void)replaceFolderIcon:(id)icon byContainedIcon:(id)containedIcon animated:(BOOL)animated;
 - (void)replaceHomescreenWithWidgets;
-- (void)replaceWidgetIconWithAppIcon:(id)a3;
+- (void)replaceWidgetIconWithAppIcon:(id)icon;
 - (void)resetAllIconImageCaches;
 - (void)resetRootIconLists;
-- (void)resizeGestureHandler:(id)a3 didFinishWithGridSizeClass:(id)a4;
-- (void)revealIcon:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5;
-- (void)rootFolder:(id)a3 wantsToDoPageHidingEducationWithCompletion:(id)a4;
-- (void)rootFolderController:(id)a3 didDismissPageManagementWithLayoutManager:(id)a4 context:(id)a5;
-- (void)rootFolderController:(id)a3 didDismissWidgetEditingViewController:(id)a4;
-- (void)rootFolderController:(id)a3 didEndOverscrollOnFirstPageWithVelocity:(double)a4 translation:(double)a5;
-- (void)rootFolderController:(id)a3 didEndOverscrollOnLastPageWithVelocity:(double)a4 translation:(double)a5;
-- (void)rootFolderController:(id)a3 didOverscrollOnFirstPageByAmount:(double)a4;
-- (void)rootFolderController:(id)a3 didOverscrollOnLastPageByAmount:(double)a4;
-- (void)rootFolderController:(id)a3 didPresentWidgetEditingViewController:(id)a4;
-- (void)rootFolderController:(id)a3 handleInsertionForWidgetIcon:(id)a4 withReferenceIconView:(id)a5 fromPresenter:(id)a6 dismissViewControllerHandler:(id)a7;
-- (void)rootFolderController:(id)a3 noteDragItemWasConsumedExternallyForDropSession:(id)a4;
-- (void)rootFolderController:(id)a3 prepareAddSheetViewController:(id)a4;
-- (void)rootFolderController:(id)a3 setSuppressesEditingStateForExternalDockListViews:(BOOL)a4;
-- (void)rootFolderController:(id)a3 statusBarInsetsDidChange:(UIEdgeInsets)a4;
-- (void)rootFolderController:(id)a3 viewDidTransitionToSize:(CGSize)a4;
-- (void)rootFolderController:(id)a3 wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:(CGPoint)a4;
-- (void)rootFolderController:(id)a3 willDismissPageManagementUsingAnimator:(id)a4 context:(id)a5;
-- (void)rootFolderController:(id)a3 willDismissWidgetEditingViewController:(id)a4;
-- (void)rootFolderController:(id)a3 willPresentAddSheetViewController:(id)a4;
-- (void)rootFolderController:(id)a3 willPresentPageManagementWithLayoutManager:(id)a4 animator:(id)a5 context:(id)a6;
-- (void)rootFolderController:(id)a3 willPresentWidgetEditingViewController:(id)a4;
-- (void)rootFolderController:(id)a3 willUsePropertyAnimator:(id)a4 toTransitionToState:(int64_t)a5;
-- (void)rootFolderController:(id)a3 willUseTransitionContext:(id)a4 toTransitionToState:(int64_t)a5;
-- (void)rootFolderControllerDidAcceptWidgetIntroduction:(id)a3;
-- (void)rootFolderControllerDidEditWidgetIntroduction:(id)a3;
-- (void)rootFolderControllerDidUndoWidgetIntroduction:(id)a3;
-- (void)rootFolderControllerViewDidDisappear:(id)a3;
-- (void)rootFolderControllerViewWillAppear:(id)a3;
-- (void)rootFolderControllerWantsHomeScreenWallpaperViewControllerPresented:(id)a3;
-- (void)rootFolderPageStateProvider:(id)a3 didContinueTransitionToState:(int64_t)a4 progress:(double)a5;
-- (void)rootFolderPageStateProvider:(id)a3 didEndTransitionFromState:(int64_t)a4 toState:(int64_t)a5 successfully:(BOOL)a6;
-- (void)rootFolderPageStateProvider:(id)a3 willBeginTransitionToState:(int64_t)a4 animated:(BOOL)a5 interactive:(BOOL)a6;
-- (void)rootFolderPageStateProvider:(id)a3 willEndTransitionToState:(int64_t)a4 successfully:(BOOL)a5;
+- (void)resizeGestureHandler:(id)handler didFinishWithGridSizeClass:(id)class;
+- (void)revealIcon:(id)icon animated:(BOOL)animated completionHandler:(id)handler;
+- (void)rootFolder:(id)folder wantsToDoPageHidingEducationWithCompletion:(id)completion;
+- (void)rootFolderController:(id)controller didDismissPageManagementWithLayoutManager:(id)manager context:(id)context;
+- (void)rootFolderController:(id)controller didDismissWidgetEditingViewController:(id)viewController;
+- (void)rootFolderController:(id)controller didEndOverscrollOnFirstPageWithVelocity:(double)velocity translation:(double)translation;
+- (void)rootFolderController:(id)controller didEndOverscrollOnLastPageWithVelocity:(double)velocity translation:(double)translation;
+- (void)rootFolderController:(id)controller didOverscrollOnFirstPageByAmount:(double)amount;
+- (void)rootFolderController:(id)controller didOverscrollOnLastPageByAmount:(double)amount;
+- (void)rootFolderController:(id)controller didPresentWidgetEditingViewController:(id)viewController;
+- (void)rootFolderController:(id)controller handleInsertionForWidgetIcon:(id)icon withReferenceIconView:(id)view fromPresenter:(id)presenter dismissViewControllerHandler:(id)handler;
+- (void)rootFolderController:(id)controller noteDragItemWasConsumedExternallyForDropSession:(id)session;
+- (void)rootFolderController:(id)controller prepareAddSheetViewController:(id)viewController;
+- (void)rootFolderController:(id)controller setSuppressesEditingStateForExternalDockListViews:(BOOL)views;
+- (void)rootFolderController:(id)controller statusBarInsetsDidChange:(UIEdgeInsets)change;
+- (void)rootFolderController:(id)controller viewDidTransitionToSize:(CGSize)size;
+- (void)rootFolderController:(id)controller wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:(CGPoint)offset;
+- (void)rootFolderController:(id)controller willDismissPageManagementUsingAnimator:(id)animator context:(id)context;
+- (void)rootFolderController:(id)controller willDismissWidgetEditingViewController:(id)viewController;
+- (void)rootFolderController:(id)controller willPresentAddSheetViewController:(id)viewController;
+- (void)rootFolderController:(id)controller willPresentPageManagementWithLayoutManager:(id)manager animator:(id)animator context:(id)context;
+- (void)rootFolderController:(id)controller willPresentWidgetEditingViewController:(id)viewController;
+- (void)rootFolderController:(id)controller willUsePropertyAnimator:(id)animator toTransitionToState:(int64_t)state;
+- (void)rootFolderController:(id)controller willUseTransitionContext:(id)context toTransitionToState:(int64_t)state;
+- (void)rootFolderControllerDidAcceptWidgetIntroduction:(id)introduction;
+- (void)rootFolderControllerDidEditWidgetIntroduction:(id)introduction;
+- (void)rootFolderControllerDidUndoWidgetIntroduction:(id)introduction;
+- (void)rootFolderControllerViewDidDisappear:(id)disappear;
+- (void)rootFolderControllerViewWillAppear:(id)appear;
+- (void)rootFolderControllerWantsHomeScreenWallpaperViewControllerPresented:(id)presented;
+- (void)rootFolderPageStateProvider:(id)provider didContinueTransitionToState:(int64_t)state progress:(double)progress;
+- (void)rootFolderPageStateProvider:(id)provider didEndTransitionFromState:(int64_t)state toState:(int64_t)toState successfully:(BOOL)successfully;
+- (void)rootFolderPageStateProvider:(id)provider willBeginTransitionToState:(int64_t)state animated:(BOOL)animated interactive:(BOOL)interactive;
+- (void)rootFolderPageStateProvider:(id)provider willEndTransitionToState:(int64_t)state successfully:(BOOL)successfully;
 - (void)runDownloadingIconTest;
 - (void)runRemoveAndRestoreIconTest;
-- (void)saveGridPath:(id)a3 asPriorLocationBeforeResizeForIcon:(id)a4;
+- (void)saveGridPath:(id)path asPriorLocationBeforeResizeForIcon:(id)icon;
 - (void)saveOriginalIconStateForWidgetDiscoverability;
 - (void)scrollToDefaultWidgets;
-- (void)scrollToIconListContainingIcon:(id)a3 animate:(BOOL)a4;
-- (void)setAnimatingFolderCreation:(BOOL)a3;
-- (void)setAnimatingFolderOpeningOrClosing:(BOOL)a3;
-- (void)setContentVisibility:(unint64_t)a3;
-- (void)setEditing:(BOOL)a3 forIconLocation:(id)a4;
-- (void)setEditing:(BOOL)a3 fromIconListView:(id)a4;
-- (void)setEditing:(BOOL)a3 fromIconView:(id)a4;
-- (void)setEditing:(BOOL)a3 withFeedbackBehavior:(id)a4 location:(CGPoint)a5;
-- (void)setFloatingDockViewController:(id)a3;
-- (void)setIconModel:(id)a3;
-- (void)setIconStylePickerVisible:(BOOL)a3;
-- (void)setIconToReveal:(id)a3 revealingPrevious:(BOOL)a4;
-- (void)setIdleModeText:(id)a3;
-- (void)setLeadingCustomViewControllers:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setListLayoutProvider:(id)a3 animated:(BOOL)a4;
-- (void)setListLayoutProviderLayoutOptions:(unint64_t)a3 animated:(BOOL)a4;
-- (void)setMainDisplayLibraryViewVisibilityTransitioning:(BOOL)a3;
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3;
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3 libraryViewTransitioning:(BOOL)a4;
-- (void)setOverlayCoverSheetTodayViewController:(id)a3;
-- (void)setOverlayCoverSheetTodayViewVisible:(BOOL)a3;
-- (void)setOverlayLibraryViewController:(id)a3;
-- (void)setOverlayTodayViewController:(id)a3;
-- (void)setOverlayTodayViewVisibilityTransitioning:(BOOL)a3;
-- (void)setOverlayTodayViewVisible:(BOOL)a3;
-- (void)setOverlayTodayViewVisible:(BOOL)a3 todayViewTransitioning:(BOOL)a4;
-- (void)setPrefersFlatImageLayers:(BOOL)a3;
-- (void)setPreviewInteractingIconView:(id)a3;
-- (void)setRootFolder:(id)a3;
-- (void)setRootFolderController:(id)a3;
-- (void)setTemporaryIntent:(id)a3 forIconWithIdentifier:(id)a4 widgetUniqueIdentifier:(id)a5;
-- (void)setTrailingCustomViewControllers:(id)a3;
-- (void)setUsageMonitoringEnabled:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)scrollToIconListContainingIcon:(id)icon animate:(BOOL)animate;
+- (void)setAnimatingFolderCreation:(BOOL)creation;
+- (void)setAnimatingFolderOpeningOrClosing:(BOOL)closing;
+- (void)setContentVisibility:(unint64_t)visibility;
+- (void)setEditing:(BOOL)editing forIconLocation:(id)location;
+- (void)setEditing:(BOOL)editing fromIconListView:(id)view;
+- (void)setEditing:(BOOL)editing fromIconView:(id)view;
+- (void)setEditing:(BOOL)editing withFeedbackBehavior:(id)behavior location:(CGPoint)location;
+- (void)setFloatingDockViewController:(id)controller;
+- (void)setIconModel:(id)model;
+- (void)setIconStylePickerVisible:(BOOL)visible;
+- (void)setIconToReveal:(id)reveal revealingPrevious:(BOOL)previous;
+- (void)setIdleModeText:(id)text;
+- (void)setLeadingCustomViewControllers:(id)controllers;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setListLayoutProvider:(id)provider animated:(BOOL)animated;
+- (void)setListLayoutProviderLayoutOptions:(unint64_t)options animated:(BOOL)animated;
+- (void)setMainDisplayLibraryViewVisibilityTransitioning:(BOOL)transitioning;
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible;
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible libraryViewTransitioning:(BOOL)transitioning;
+- (void)setOverlayCoverSheetTodayViewController:(id)controller;
+- (void)setOverlayCoverSheetTodayViewVisible:(BOOL)visible;
+- (void)setOverlayLibraryViewController:(id)controller;
+- (void)setOverlayTodayViewController:(id)controller;
+- (void)setOverlayTodayViewVisibilityTransitioning:(BOOL)transitioning;
+- (void)setOverlayTodayViewVisible:(BOOL)visible;
+- (void)setOverlayTodayViewVisible:(BOOL)visible todayViewTransitioning:(BOOL)transitioning;
+- (void)setPrefersFlatImageLayers:(BOOL)layers;
+- (void)setPreviewInteractingIconView:(id)view;
+- (void)setRootFolder:(id)folder;
+- (void)setRootFolderController:(id)controller;
+- (void)setTemporaryIntent:(id)intent forIconWithIdentifier:(id)identifier widgetUniqueIdentifier:(id)uniqueIdentifier;
+- (void)setTrailingCustomViewControllers:(id)controllers;
+- (void)setUsageMonitoringEnabled:(BOOL)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)setupHomeScreenForWidgetScrollPerformanceTest;
 - (void)shuffleWidgetStackForTestRecipe;
-- (void)stylePickerViewController:(id)a3 didUpdateDesiredDetent:(double)a4;
-- (void)stylePickerViewController:(id)a3 didUpdateHomeScreenConfiguration:(id)a4;
-- (void)stylePickerViewControllerDidFinish:(id)a3;
+- (void)stylePickerViewController:(id)controller didUpdateDesiredDetent:(double)detent;
+- (void)stylePickerViewController:(id)controller didUpdateHomeScreenConfiguration:(id)configuration;
+- (void)stylePickerViewControllerDidFinish:(id)finish;
 - (void)tearDownAndResetRootIconLists;
-- (void)todayViewController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6;
-- (void)toggleHomeScreenWallpaperDim:(id)a3;
+- (void)todayViewController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading;
+- (void)toggleHomeScreenWallpaperDim:(id)dim;
 - (void)toggleSuggestedWidgetInStackForTestRecipe;
-- (void)tryScrollToIconToRevealAnimated:(BOOL)a3;
-- (void)undoChangeWithPreparation:(id)a3;
+- (void)tryScrollToIconToRevealAnimated:(BOOL)animated;
+- (void)undoChangeWithPreparation:(id)preparation;
 - (void)undoDefaultTVWidget;
-- (void)undoDefaultWidgets:(BOOL)a3;
-- (void)undoPreparation:(id)a3 registerWithUndoManager:(id)a4 actionName:(id)a5 observer:(id)a6;
-- (void)uninstallIcon:(id)a3 animate:(BOOL)a4 completion:(id)a5;
-- (void)unscatterAnimated:(BOOL)a3 afterDelay:(double)a4 withCompletion:(id)a5;
-- (void)updateAppPredictionViewControllersWithListLayoutProvider:(id)a3 oldListLayoutProvider:(id)a4 animated:(BOOL)a5;
+- (void)undoDefaultWidgets:(BOOL)widgets;
+- (void)undoPreparation:(id)preparation registerWithUndoManager:(id)manager actionName:(id)name observer:(id)observer;
+- (void)uninstallIcon:(id)icon animate:(BOOL)animate completion:(id)completion;
+- (void)unscatterAnimated:(BOOL)animated afterDelay:(double)delay withCompletion:(id)completion;
+- (void)updateAppPredictionViewControllersWithListLayoutProvider:(id)provider oldListLayoutProvider:(id)layoutProvider animated:(BOOL)animated;
 - (void)updateIconViewAccessoryVisibility;
-- (void)updateLargeIconsEnabledForAppPredictionViewController:(id)a3 animated:(BOOL)a4;
-- (void)updatePronouncedContainerViewVisibility:(BOOL)a3 vertical:(BOOL)a4;
-- (void)updateVisibleIconsToShowLeafIcons:(id)a3 hideLeafIcons:(id)a4;
-- (void)updateWidgetDiscoverabilityUserPreferencesByDeletingWidget:(id)a3;
-- (void)updateWidgetViewControllersWithCustomDisplayConfiguration:(id)a3;
-- (void)updateWidgetViewControllersWithRenderScheme:(id)a3;
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4;
-- (void)widgetHostViewControllerUsesSystemBackgroundMaterialDidChange:(id)a3;
-- (void)widgetStackViewController:(id)a3 didActivateDataSource:(id)a4 fromUserInteraction:(BOOL)a5;
-- (void)widgetStackViewController:(id)a3 didFinishUsingBackgroundView:(id)a4;
-- (void)widgetStackViewController:(id)a3 didRemoveViewController:(id)a4;
-- (void)widgetStackViewControllerDidFlashPageControl:(id)a3;
+- (void)updateLargeIconsEnabledForAppPredictionViewController:(id)controller animated:(BOOL)animated;
+- (void)updatePronouncedContainerViewVisibility:(BOOL)visibility vertical:(BOOL)vertical;
+- (void)updateVisibleIconsToShowLeafIcons:(id)icons hideLeafIcons:(id)leafIcons;
+- (void)updateWidgetDiscoverabilityUserPreferencesByDeletingWidget:(id)widget;
+- (void)updateWidgetViewControllersWithCustomDisplayConfiguration:(id)configuration;
+- (void)updateWidgetViewControllersWithRenderScheme:(id)scheme;
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch;
+- (void)widgetHostViewControllerUsesSystemBackgroundMaterialDidChange:(id)change;
+- (void)widgetStackViewController:(id)controller didActivateDataSource:(id)source fromUserInteraction:(BOOL)interaction;
+- (void)widgetStackViewController:(id)controller didFinishUsingBackgroundView:(id)view;
+- (void)widgetStackViewController:(id)controller didRemoveViewController:(id)viewController;
+- (void)widgetStackViewControllerDidFlashPageControl:(id)control;
 @end
 
 @implementation SBHIconManager
 
 - (BOOL)isShowingPullDownSearch
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isPullDownSearchVisible];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isPullDownSearchVisible = [rootFolderController isPullDownSearchVisible];
 
-  return v3;
+  return isPullDownSearchVisible;
 }
 
 - (unint64_t)effectiveRootFolderControllerContentVisibility
 {
-  v3 = [(SBHIconManager *)self contentVisibility];
-  if (SBHContentVisibilityIsVisible(v3))
+  contentVisibility = [(SBHIconManager *)self contentVisibility];
+  if (SBHContentVisibilityIsVisible(contentVisibility))
   {
     if ([(SBHIconManager *)self isOverlayTodayViewVisible]&& ![(SBHIconManager *)self isOverlayTodayViewVisibilityTransitioning])
     {
-      v3 = 1;
+      contentVisibility = 1;
     }
 
     if ([(SBHIconManager *)self isMainDisplayLibraryViewVisible])
     {
       if (![(SBHIconManager *)self isMainDisplayLibraryViewVisibilityTransitioning])
       {
-        v4 = [(SBHIconManager *)self trailingLibraryViewController];
+        trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
 
-        if (!v4)
+        if (!trailingLibraryViewController)
         {
           return 1;
         }
@@ -767,21 +767,21 @@
     }
   }
 
-  return v3;
+  return contentVisibility;
 }
 
 - (BOOL)isShowingModalInteraction
 {
-  v3 = [(SBHIconManager *)self currentConfiguringIconView];
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
 
-  if (v3)
+  if (currentConfiguringIconView)
   {
     return 1;
   }
 
-  v4 = [(SBHIconManager *)self currentPersonDetailInteraction];
+  currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
 
-  if (v4)
+  if (currentPersonDetailInteraction)
   {
     return 1;
   }
@@ -829,10 +829,10 @@ uint64_t __27__SBHIconManager_isEditing__block_invoke(uint64_t a1, void *a2, _BY
 - (id)_libraryViewControllers
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 libraryViewControllersForIconManager:self];
+    v4 = [delegate libraryViewControllersForIconManager:self];
   }
 
   else
@@ -840,19 +840,19 @@ uint64_t __27__SBHIconManager_isEditing__block_invoke(uint64_t a1, void *a2, _BY
     v4 = 0;
   }
 
-  v5 = [(SBHIconManager *)self overlayLibraryViewController];
-  if (v5 && ([v4 containsObject:v5] & 1) == 0)
+  overlayLibraryViewController = [(SBHIconManager *)self overlayLibraryViewController];
+  if (overlayLibraryViewController && ([v4 containsObject:overlayLibraryViewController] & 1) == 0)
   {
     if (v4)
     {
-      v6 = [v4 arrayByAddingObject:v5];
+      v6 = [v4 arrayByAddingObject:overlayLibraryViewController];
 
       v4 = v6;
     }
 
     else
     {
-      v8[0] = v5;
+      v8[0] = overlayLibraryViewController;
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     }
   }
@@ -869,10 +869,10 @@ uint64_t __27__SBHIconManager_isEditing__block_invoke(uint64_t a1, void *a2, _BY
 
 - (BOOL)areAnyIconShareSheetsShowing
 {
-  v2 = [(SBHIconManager *)self iconShareSheetManager];
-  v3 = [v2 areAnyAppIconShareSheetsShowing];
+  iconShareSheetManager = [(SBHIconManager *)self iconShareSheetManager];
+  areAnyAppIconShareSheetsShowing = [iconShareSheetManager areAnyAppIconShareSheetsShowing];
 
-  return v3;
+  return areAnyAppIconShareSheetsShowing;
 }
 
 - (id)leadingTodayViewController
@@ -882,8 +882,8 @@ uint64_t __27__SBHIconManager_isEditing__block_invoke(uint64_t a1, void *a2, _BY
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SBHIconManager *)self leadingCustomViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  leadingCustomViewControllers = [(SBHIconManager *)self leadingCustomViewControllers];
+  v3 = [leadingCustomViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -894,7 +894,7 @@ LABEL_3:
     {
       if (*v12 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(leadingCustomViewControllers);
       }
 
       v7 = *(*(&v11 + 1) + 8 * v6);
@@ -908,7 +908,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v4 = [leadingCustomViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -937,8 +937,8 @@ LABEL_12:
 
   else
   {
-    v4 = [(SBHIconManager *)self trailingLibraryViewController];
-    v2 = (v4 != 0) & [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
+    trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
+    v2 = (trailingLibraryViewController != 0) & [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
   }
 
   return v2;
@@ -946,43 +946,43 @@ LABEL_12:
 
 - (id)_currentFolderController
 {
-  v3 = [(SBHIconManager *)self openedFolderController];
-  v4 = v3;
-  if (v3)
+  openedFolderController = [(SBHIconManager *)self openedFolderController];
+  v4 = openedFolderController;
+  if (openedFolderController)
   {
-    v5 = v3;
+    rootFolderController = openedFolderController;
   }
 
   else
   {
-    v5 = [(SBHIconManager *)self rootFolderController];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
   }
 
-  v6 = v5;
+  v6 = rootFolderController;
 
   return v6;
 }
 
 - (SBFolderController)openedFolderController
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  v4 = [v3 presentedFolderController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  presentedFolderController = [floatingDockViewController presentedFolderController];
 
-  if (!v4)
+  if (!presentedFolderController)
   {
-    v5 = [(SBHIconManager *)self rootFolderController];
-    v4 = [v5 deepestFolderController];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    presentedFolderController = [rootFolderController deepestFolderController];
   }
 
-  return v4;
+  return presentedFolderController;
 }
 
 - (BOOL)isShowingOrTransitioningToTrailingCustomView
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isTrailingCustomViewVisibleOrTransitionDestination];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isTrailingCustomViewVisibleOrTransitionDestination = [rootFolderController isTrailingCustomViewVisibleOrTransitionDestination];
 
-  return v3;
+  return isTrailingCustomViewVisibleOrTransitionDestination;
 }
 
 - (id)trailingLibraryViewController
@@ -992,8 +992,8 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SBHIconManager *)self trailingCustomViewControllers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  trailingCustomViewControllers = [(SBHIconManager *)self trailingCustomViewControllers];
+  v3 = [trailingCustomViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = *v11;
@@ -1003,7 +1003,7 @@ LABEL_12:
       {
         if (*v11 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(trailingCustomViewControllers);
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
@@ -1017,7 +1017,7 @@ LABEL_12:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v3 = [trailingCustomViewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v3)
       {
         continue;
@@ -1034,107 +1034,107 @@ LABEL_11:
 
 - (BOOL)isTodayViewEffectivelyVisible
 {
-  v3 = [(SBHIconManager *)self isOverlayTodayViewVisible];
-  v4 = [(SBHIconManager *)self isCustomLeadingViewTodayView];
-  if (v4)
+  isOverlayTodayViewVisible = [(SBHIconManager *)self isOverlayTodayViewVisible];
+  isCustomLeadingViewTodayView = [(SBHIconManager *)self isCustomLeadingViewTodayView];
+  if (isCustomLeadingViewTodayView)
   {
-    LOBYTE(v4) = [(SBHIconManager *)self isShowingLeadingCustomView];
+    LOBYTE(isCustomLeadingViewTodayView) = [(SBHIconManager *)self isShowingLeadingCustomView];
   }
 
-  return v3 || v4;
+  return isOverlayTodayViewVisible || isCustomLeadingViewTodayView;
 }
 
 - (void)clearHighlightedIcon
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self highlightedIconView];
-  if (v3)
+  highlightedIconView = [(SBHIconManager *)self highlightedIconView];
+  if (highlightedIconView)
   {
     v4 = SBLogIcon();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = highlightedIconView;
       _os_log_impl(&dword_1BEB18000, v4, OS_LOG_TYPE_INFO, "Clearing highlight from icon view: %@", &v5, 0xCu);
     }
 
-    [v3 setHighlighted:0];
+    [highlightedIconView setHighlighted:0];
     [(SBHIconManager *)self setHighlightedIconView:0];
   }
 }
 
 - (BOOL)isCustomLeadingViewTodayView
 {
-  v2 = [(SBHIconManager *)self leadingTodayViewController];
-  v3 = v2 != 0;
+  leadingTodayViewController = [(SBHIconManager *)self leadingTodayViewController];
+  v3 = leadingTodayViewController != 0;
 
   return v3;
 }
 
 - (BOOL)_isShowingSearchableLeadingCustomView
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isOnLeadingCustomPage];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isOnLeadingCustomPage = [rootFolderController isOnLeadingCustomPage];
 
-  return v3;
+  return isOnLeadingCustomPage;
 }
 
 - (BOOL)isPerformingCancelledExpandTransition
 {
-  v3 = [(SBHIconManager *)self isTransitioning];
-  if (v3)
+  isTransitioning = [(SBHIconManager *)self isTransitioning];
+  if (isTransitioning)
   {
-    v3 = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator isCancelled];
-    if (v3)
+    isTransitioning = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator isCancelled];
+    if (isTransitioning)
     {
-      LOBYTE(v3) = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator currentOperation]== 1;
+      LOBYTE(isTransitioning) = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator currentOperation]== 1;
     }
   }
 
-  return v3;
+  return isTransitioning;
 }
 
 - (BOOL)isTransitioning
 {
-  v2 = [(SBHIconManager *)self currentTransitionAnimator];
-  v3 = v2 != 0;
+  currentTransitionAnimator = [(SBHIconManager *)self currentTransitionAnimator];
+  v3 = currentTransitionAnimator != 0;
 
   return v3;
 }
 
 - (BOOL)hasOpenFolder
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  if ([v3 isPresentingFolder])
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  if ([floatingDockViewController isPresentingFolder])
   {
     v4 = 1;
   }
 
   else if ([(SBHIconManager *)self hasRootFolderController])
   {
-    v5 = [(SBHIconManager *)self rootViewController];
-    v6 = [v5 deepestFolderController];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    deepestFolderController = [rootViewController deepestFolderController];
 
-    if (v6)
+    if (deepestFolderController)
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [(SBHIconManager *)self rootFolderController];
-      v8 = [v7 deepestFolderController];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      deepestFolderController2 = [rootFolderController deepestFolderController];
 
-      if (v8)
+      if (deepestFolderController2)
       {
         v4 = 1;
       }
 
       else
       {
-        v9 = [(SBHIconManager *)self _currentFolderController];
-        v10 = [v9 deepestFolderController];
-        v4 = v10 != 0;
+        _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+        deepestFolderController3 = [_currentFolderController deepestFolderController];
+        v4 = deepestFolderController3 != 0;
       }
     }
   }
@@ -1149,8 +1149,8 @@ LABEL_11:
 
 - (BOOL)hasRootFolderController
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = v2 != 0;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  v3 = rootFolderController != 0;
 
   return v3;
 }
@@ -1221,19 +1221,19 @@ LABEL_11:
 {
   if ([(SBHIconManager *)self isTodayViewEffectivelyVisible])
   {
-    v3 = [(SBHIconManager *)self leadingTodayViewController];
-    v4 = v3;
-    if (v3)
+    leadingTodayViewController = [(SBHIconManager *)self leadingTodayViewController];
+    v4 = leadingTodayViewController;
+    if (leadingTodayViewController)
     {
-      v5 = v3;
+      overlayTodayViewController = leadingTodayViewController;
     }
 
     else
     {
-      v5 = [(SBHIconManager *)self overlayTodayViewController];
+      overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
     }
 
-    v6 = v5;
+    v6 = overlayTodayViewController;
   }
 
   else
@@ -1249,9 +1249,9 @@ LABEL_11:
   iconEditingFeedbackBehavior = self->_iconEditingFeedbackBehavior;
   if (!iconEditingFeedbackBehavior)
   {
-    v4 = [(SBHIconManager *)self rootViewController];
-    v5 = [v4 view];
-    [(SBHIconManager *)self configureFeedbackView:v5];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    view = [rootViewController view];
+    [(SBHIconManager *)self configureFeedbackView:view];
 
     iconEditingFeedbackBehavior = self->_iconEditingFeedbackBehavior;
   }
@@ -1261,11 +1261,11 @@ LABEL_11:
 
 - (BOOL)_isShowingPullDownSearchOrTransitioning
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
-  if ([v3 isPullDownSearchVisibleOrTransitioning])
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if ([rootFolderController isPullDownSearchVisibleOrTransitioning])
   {
-    v4 = [(SBHIconManager *)self rootFolderController];
-    v5 = [v4 isOnLeadingCustomPage] ^ 1;
+    rootFolderController2 = [(SBHIconManager *)self rootFolderController];
+    v5 = [rootFolderController2 isOnLeadingCustomPage] ^ 1;
   }
 
   else
@@ -1278,34 +1278,34 @@ LABEL_11:
 
 - (BOOL)_isShowingLeadingCustomViewSearchOrTransitioning
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isLeadingCustomViewSearchVisibleOrTransitioning];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isLeadingCustomViewSearchVisibleOrTransitioning = [rootFolderController isLeadingCustomViewSearchVisibleOrTransitioning];
 
-  return v3;
+  return isLeadingCustomViewSearchVisibleOrTransitioning;
 }
 
 - (BOOL)isFolderScrolling
 {
-  v2 = [(SBHIconManager *)self openedFolderController];
-  v3 = [v2 isScrolling];
+  openedFolderController = [(SBHIconManager *)self openedFolderController];
+  isScrolling = [openedFolderController isScrolling];
 
-  return v3;
+  return isScrolling;
 }
 
 - (BOOL)isRootFolderScrolling
 {
-  v2 = [(SBHIconManager *)self rootViewController];
-  v3 = [v2 isScrolling];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  isScrolling = [rootViewController isScrolling];
 
-  return v3;
+  return isScrolling;
 }
 
 - (void)cancelAllFolderScrolling
 {
   if ([(SBHIconManager *)self isScrolling])
   {
-    v3 = [(SBHIconManager *)self rootViewController];
-    [v3 cancelScrolling];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    [rootViewController cancelScrolling];
   }
 }
 
@@ -1329,25 +1329,25 @@ LABEL_11:
 
   else if (self->_listLayoutProvider && self->_iconModel && ([(SBHIconManager *)self rootFolderController], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(SBHIconManager *)self rootFolderController];
-    v7 = [v6 traitCollection];
-    [v7 displayScale];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    traitCollection = [rootFolderController traitCollection];
+    [traitCollection displayScale];
     v9 = v8;
 
-    v10 = [v6 traitCollection];
-    v11 = [v10 preferredContentSizeCategory];
+    traitCollection2 = [rootFolderController traitCollection];
+    preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
 
-    v12 = [(SBHIconManager *)self listLayoutProvider];
-    v13 = [v12 layoutForIconLocation:@"SBIconLocationRoot"];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v13 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
-    [(objc_class *)[(SBHIconManager *)self iconViewClass] maxLabelSizeForListLayout:v13 contentSizeCategory:v11 options:0];
+    [(objc_class *)[(SBHIconManager *)self iconViewClass] maxLabelSizeForListLayout:v13 contentSizeCategory:preferredContentSizeCategory options:0];
     v16 = [[SBIconLabelImageCache alloc] initWithMaxLabelSize:v14 scale:v15, v9];
     v17 = self->_labelImageCache;
     self->_labelImageCache = v16;
 
     v18 = self->_labelImageCache;
-    v19 = [(SBHIconManager *)self legibilitySettings];
-    [(SBIconLabelImageCache *)v18 setLegibilitySettings:v19];
+    legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+    [(SBIconLabelImageCache *)v18 setLegibilitySettings:legibilitySettings];
 
     v3 = self->_labelImageCache;
   }
@@ -1362,10 +1362,10 @@ LABEL_11:
 
 - (BOOL)isShowingPullDownSearchOrTransitioningToVisible
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isPullDownSearchVisibleOrTransitioningToVisible];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isPullDownSearchVisibleOrTransitioningToVisible = [rootFolderController isPullDownSearchVisibleOrTransitioningToVisible];
 
-  return v3;
+  return isPullDownSearchVisibleOrTransitioningToVisible;
 }
 
 - (BOOL)isPerformingExpandTransition
@@ -1375,18 +1375,18 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(SBHIconManager *)self currentTransitionAnimator];
-  v4 = [v3 currentOperation] == 0;
+  currentTransitionAnimator = [(SBHIconManager *)self currentTransitionAnimator];
+  v4 = [currentTransitionAnimator currentOperation] == 0;
 
   return v4;
 }
 
 - (id)iconLocationForListsWithNonDefaultSizedIcons
 {
-  v2 = [(SBHIconManager *)self listLayoutProvider];
-  v3 = [objc_opt_class() defaultIconLocationForListsWithNonDefaultSizedIcons];
-  v4 = [v2 layoutForIconLocation:@"SBIconLocationRoot"];
-  v5 = [v2 layoutForIconLocation:v3];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  defaultIconLocationForListsWithNonDefaultSizedIcons = [objc_opt_class() defaultIconLocationForListsWithNonDefaultSizedIcons];
+  v4 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
+  v5 = [listLayoutProvider layoutForIconLocation:defaultIconLocationForListsWithNonDefaultSizedIcons];
   v6 = SBHIconListLayoutListGridSize(v4, 1);
   v7 = SBHIconListLayoutListGridSize(v5, 1);
   [v4 layoutInsetsForOrientation:1];
@@ -1400,7 +1400,7 @@ LABEL_11:
   v21 = v20;
   v23 = v22;
   v24 = SBHIconGridSizeEqualToIconGridSize(v6, v7);
-  v25 = v3;
+  v25 = defaultIconLocationForListsWithNonDefaultSizedIcons;
   if (v24)
   {
     if (v13 == v21 && v15 == v23 && v9 == v17 && v11 == v19)
@@ -1410,7 +1410,7 @@ LABEL_11:
 
     else
     {
-      v25 = v3;
+      v25 = defaultIconLocationForListsWithNonDefaultSizedIcons;
     }
   }
 
@@ -1431,18 +1431,18 @@ LABEL_11:
 
 - (BOOL)isIconDragging
 {
-  v2 = [(SBHIconManager *)self iconDragManager];
-  v3 = [v2 isIconDragging];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  isIconDragging = [iconDragManager isIconDragging];
 
-  return v3;
+  return isIconDragging;
 }
 
 - (BOOL)isTransitioningHomeScreenState
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isTransitioningPageState];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isTransitioningPageState = [rootFolderController isTransitioningPageState];
 
-  return v3;
+  return isTransitioningPageState;
 }
 
 - (id)iconViewMap
@@ -1454,8 +1454,8 @@ LABEL_11:
     v5 = self->_iconViewMap;
     self->_iconViewMap = v4;
 
-    v6 = [(SBHIconManager *)self listLayoutProvider];
-    v7 = [v6 layoutForIconLocation:@"SBIconLocationRoot"];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v7 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
     -[SBHReusableViewMap addRecycledViewsOfClass:upToCount:](self->_iconViewMap, "addRecycledViewsOfClass:upToCount:", -[SBHIconManager iconViewClass](self, "iconViewClass"), ([v7 numberOfColumnsForOrientation:1] + 2) * objc_msgSend(v7, "numberOfRowsForOrientation:", 1));
     iconViewMap = self->_iconViewMap;
@@ -1476,18 +1476,18 @@ LABEL_11:
 
 - (BOOL)iconsShouldAllowCloseBoxes
 {
-  v2 = [(SBHIconManager *)self iconDragManager];
-  v3 = [v2 isTrackingMultipleItemIconDrags];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  isTrackingMultipleItemIconDrags = [iconDragManager isTrackingMultipleItemIconDrags];
 
-  return v3 ^ 1;
+  return isTrackingMultipleItemIconDrags ^ 1;
 }
 
 - (BOOL)isEditingAllowed
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isEditingAllowedForIconManager:self];
+    v4 = [delegate isEditingAllowedForIconManager:self];
   }
 
   else
@@ -1500,19 +1500,19 @@ LABEL_11:
 
 - (id)gridSizeClassDomain
 {
-  v2 = [(SBHIconManager *)self iconModel];
-  v3 = [v2 gridSizeClassDomain];
+  iconModel = [(SBHIconManager *)self iconModel];
+  gridSizeClassDomain = [iconModel gridSizeClassDomain];
 
-  return v3;
+  return gridSizeClassDomain;
 }
 
 - (id)_effectiveWidgetMultiplexingManager
 {
   if (!self->_widgetMultiplexingManagersForLayoutOptions)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     widgetMultiplexingManagersForLayoutOptions = self->_widgetMultiplexingManagersForLayoutOptions;
-    self->_widgetMultiplexingManagersForLayoutOptions = v3;
+    self->_widgetMultiplexingManagersForLayoutOptions = dictionary;
   }
 
   v5 = _SBHLayoutOptionsKeyTypeForListLayoutProvider(self->_listLayoutProvider);
@@ -1532,7 +1532,7 @@ LABEL_11:
   widgetExtensionProvider = self->_widgetExtensionProvider;
   if (!widgetExtensionProvider)
   {
-    v4 = [(SBHWidgetMetricsProvider *)self->_widgetMetricsProvider systemDefaultMetricsSpecification];
+    systemDefaultMetricsSpecification = [(SBHWidgetMetricsProvider *)self->_widgetMetricsProvider systemDefaultMetricsSpecification];
     v5 = [MEMORY[0x1E695DFA8] set];
     pendingWidgetIntentConfigurationInitializations = self->_pendingWidgetIntentConfigurationInitializations;
     self->_pendingWidgetIntentConfigurationInitializations = v5;
@@ -1552,8 +1552,8 @@ LABEL_11:
 {
   if (![(NSCountedSet *)self->_reasonsToNotRestartEditingTimer count])
   {
-    v3 = [(SBHIconManager *)self editingEndTimer];
-    [v3 invalidate];
+    editingEndTimer = [(SBHIconManager *)self editingEndTimer];
+    [editingEndTimer invalidate];
 
     if ([(SBHIconManager *)self isEditing]&& ![(SBHIconManager *)self isIconDragging])
     {
@@ -1581,8 +1581,8 @@ LABEL_11:
 
 - (void)_noteUserIsInteractingWithIcons
 {
-  v3 = [(SBHIconManager *)self rootViewController];
-  [v3 noteUserIsInteractingWithIcons];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController noteUserIsInteractingWithIcons];
 
   [(SBHIconManager *)self _restartEditingEndTimer];
 }
@@ -1604,10 +1604,10 @@ LABEL_11:
 
 - (BOOL)_isShowingOrTransitioningToSearchableLeadingCustomView
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isLeadingCustomViewVisibleOrTransitionDestination];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isLeadingCustomViewVisibleOrTransitionDestination = [rootFolderController isLeadingCustomViewVisibleOrTransitionDestination];
 
-  return v3;
+  return isLeadingCustomViewVisibleOrTransitionDestination;
 }
 
 - (SBHIconManager)init
@@ -1666,10 +1666,10 @@ LABEL_11:
     v2[488] = v25 == 2;
     if (v25 != 2)
     {
-      v28 = [MEMORY[0x1E69DC938] currentDevice];
-      v29 = [v28 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v27 = (v29 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+      v27 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
     }
 
     v2[488] = v27;
@@ -1679,28 +1679,28 @@ LABEL_11:
     *(v2 + 95) = v30;
 
     [*(v2 + 95) addKeyObserver:v2];
-    v32 = [*(v2 + 95) rootFolderSettings];
+    rootFolderSettings = [*(v2 + 95) rootFolderSettings];
     v33 = *(v2 + 96);
-    *(v2 + 96) = v32;
+    *(v2 + 96) = rootFolderSettings;
 
     [*(v2 + 96) addKeyObserver:v2];
-    v34 = [*(v2 + 95) iconSettings];
-    v35 = [v34 badgeParallaxSettings];
+    iconSettings = [*(v2 + 95) iconSettings];
+    badgeParallaxSettings = [iconSettings badgeParallaxSettings];
     v36 = *(v2 + 104);
-    *(v2 + 104) = v35;
+    *(v2 + 104) = badgeParallaxSettings;
 
     [*(v2 + 104) addKeyObserver:v2];
     v37 = +[SBHHomeScreenDomain rootSettings];
-    v38 = [v37 widgetIntroductionSettings];
+    widgetIntroductionSettings = [v37 widgetIntroductionSettings];
     v39 = *(v2 + 106);
-    *(v2 + 106) = v38;
+    *(v2 + 106) = widgetIntroductionSettings;
 
     [*(v2 + 106) addKeyObserver:v2];
     objc_storeStrong(v2 + 125, @"SBHIconGridSizeClassSmall");
     objc_storeStrong(v2 + 127, @"SBHIconGridSizeClassSmall");
-    v40 = [*(v2 + 95) legibilityLabelSettings];
+    legibilityLabelSettings = [*(v2 + 95) legibilityLabelSettings];
     v41 = *(v2 + 107);
-    *(v2 + 107) = v40;
+    *(v2 + 107) = legibilityLabelSettings;
 
     [*(v2 + 107) addKeyObserver:v2];
     *(v2 + 65) = 0;
@@ -1719,9 +1719,9 @@ LABEL_11:
       *(v2 + 117) = v43;
     }
 
-    v45 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v45 addObserver:v2 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x1E69DD920] object:0];
-    [v45 addObserver:v2 selector:sel__sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__reduceTransparencyStatusDidChange_ name:*MEMORY[0x1E69DD920] object:0];
+    [defaultCenter addObserver:v2 selector:sel__sizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
     [v2 _setupStateCaptureHandleIfNeeded];
     v46 = objc_alloc_init(SBHWidgetIntroductionFeatureIntroductionItem);
     v47 = *(v2 + 130);
@@ -1733,8 +1733,8 @@ LABEL_11:
     *(v2 + 78) = v48;
 
     [*(v2 + 78) addFeatureIntroductionItem:*(v2 + 130) atLocations:14];
-    v50 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-    v51 = [v50 addMonitor:v2 subjectMask:1 subscriptionOptions:1];
+    subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+    v51 = [subjectMonitorRegistry addMonitor:v2 subjectMask:1 subscriptionOptions:1];
     objc_storeWeak(v2 + 87, v51);
 
     v52 = objc_alloc_init(SBHIconViewApplicationShortcutsContextMenuProvider);
@@ -1746,10 +1746,10 @@ LABEL_11:
     v56 = *(v2 + 88);
     *(v2 + 88) = v55;
 
-    v57 = [MEMORY[0x1E69DC938] currentDevice];
-    v58 = [v57 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v58 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v59 = objc_alloc_init(SBHOpenApplicationWindowsContextMenuProvider);
       [(SBHOpenApplicationWindowsContextMenuProvider *)v59 setDelegate:v2];
@@ -1793,44 +1793,44 @@ LABEL_11:
 
 - (SBSearchGesture)searchGesture
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 searchGesture];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  searchGesture = [rootFolderController searchGesture];
 
-  return v3;
+  return searchGesture;
 }
 
 - (int64_t)interfaceOrientation
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 interfaceOrientationForIconManager:self];
+    orientation = [delegate interfaceOrientationForIconManager:self];
   }
 
   else
   {
-    v5 = [(SBHIconManager *)self rootViewController];
-    v6 = v5;
-    if (v5)
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    v6 = rootViewController;
+    if (rootViewController)
     {
-      v4 = [v5 orientation];
+      orientation = [rootViewController orientation];
     }
 
     else
     {
-      v4 = 1;
+      orientation = 1;
     }
   }
 
-  return v4;
+  return orientation;
 }
 
 - (unint64_t)allowedInterfaceOrientations
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 allowedInterfaceOrientationsForIconManager:self];
+    v4 = [delegate allowedInterfaceOrientationsForIconManager:self];
   }
 
   else
@@ -1843,10 +1843,10 @@ LABEL_11:
 
 - (unint64_t)possibleInterfaceOrientations
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 possibleInterfaceOrientationsForIconManager:self];
+    v4 = [delegate possibleInterfaceOrientationsForIconManager:self];
   }
 
   else
@@ -1861,62 +1861,62 @@ LABEL_11:
 {
   if ([(SBHIconManager *)self hasRootViewController])
   {
-    v5 = [(SBHIconManager *)self rootFolderController];
-    v3 = [(SBHIconManager *)self interfaceOrientation];
-    [v5 setOrientation:v3];
-    v4 = [v5 folderView];
-    [v4 setOrientation:v3];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    interfaceOrientation = [(SBHIconManager *)self interfaceOrientation];
+    [rootFolderController setOrientation:interfaceOrientation];
+    folderView = [rootFolderController folderView];
+    [folderView setOrientation:interfaceOrientation];
   }
 }
 
 - (id)primaryWindowScene
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
-  v4 = [v3 view];
-  v5 = [v4 window];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  view = [rootFolderController view];
+  window = [view window];
 
-  v6 = [v5 windowScene];
-  if (!v6)
+  windowScene = [window windowScene];
+  if (!windowScene)
   {
-    v7 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v7 primaryWindowSceneForIconManager:self];
+      windowScene = [delegate primaryWindowSceneForIconManager:self];
     }
 
     else
     {
-      v6 = 0;
+      windowScene = 0;
     }
   }
 
-  return v6;
+  return windowScene;
 }
 
 - (BOOL)hasRootViewController
 {
-  v2 = [(SBHIconManager *)self rootViewController];
-  v3 = v2 != 0;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  v3 = rootViewController != 0;
 
   return v3;
 }
 
-- (void)setIconModel:(id)a3
+- (void)setIconModel:(id)model
 {
-  v5 = a3;
-  if (self->_iconModel != v5)
+  modelCopy = model;
+  if (self->_iconModel != modelCopy)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"SBIconModelWillLayoutIconStateNotification" object:self->_iconModel];
-    [v6 removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
-    [v6 removeObserver:self name:@"SBIconModelVisibilityDidChangeNotification" object:self->_iconModel];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"SBIconModelWillLayoutIconStateNotification" object:self->_iconModel];
+    [defaultCenter removeObserver:self name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
+    [defaultCenter removeObserver:self name:@"SBIconModelVisibilityDidChangeNotification" object:self->_iconModel];
     [(SBHIconManager *)self _endObservingLeafIconsInModel:self->_iconModel];
-    v7 = [(SBHIconModel *)self->_iconModel rootFolder];
-    [v7 removeFolderObserver:self];
+    rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
+    [rootFolder removeFolderObserver:self];
 
-    v8 = [(SBHIconModel *)self->_iconModel delegate];
+    delegate = [(SBHIconModel *)self->_iconModel delegate];
 
-    if (v8 == self)
+    if (delegate == self)
     {
       [(SBHIconModel *)self->_iconModel setDelegate:0];
     }
@@ -1939,23 +1939,23 @@ LABEL_11:
     folderIconImageCache = self->_folderIconImageCache;
     self->_folderIconImageCache = 0;
 
-    objc_storeStrong(&self->_iconModel, a3);
+    objc_storeStrong(&self->_iconModel, model);
     if ([(SBHIconManager *)self ownsIconModel])
     {
       [(SBHIconModel *)self->_iconModel setDelegate:self];
     }
 
-    [v6 addObserver:self selector:sel__iconModelWillLayout_ name:@"SBIconModelWillLayoutIconStateNotification" object:self->_iconModel];
-    [v6 addObserver:self selector:sel__iconModelDidLayout_ name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
-    [v6 addObserver:self selector:sel__iconVisibilityChanged_ name:@"SBIconModelVisibilityDidChangeNotification" object:self->_iconModel];
+    [defaultCenter addObserver:self selector:sel__iconModelWillLayout_ name:@"SBIconModelWillLayoutIconStateNotification" object:self->_iconModel];
+    [defaultCenter addObserver:self selector:sel__iconModelDidLayout_ name:@"SBIconModelDidLayoutIconStateNotification" object:self->_iconModel];
+    [defaultCenter addObserver:self selector:sel__iconVisibilityChanged_ name:@"SBIconModelVisibilityDidChangeNotification" object:self->_iconModel];
     [(SBHIconModel *)self->_iconModel layoutIfNeeded];
-    v14 = [(SBHIconModel *)self->_iconModel rootFolder];
-    [(SBHIconManager *)self setRootFolder:v14];
-    v15 = [(SBHIconManager *)self _rootFolderForRootViewControllerForRootFolder:v14];
-    v16 = [(SBHIconManager *)self rootViewController];
-    [v16 setFolder:v15];
+    rootFolder2 = [(SBHIconModel *)self->_iconModel rootFolder];
+    [(SBHIconManager *)self setRootFolder:rootFolder2];
+    v15 = [(SBHIconManager *)self _rootFolderForRootViewControllerForRootFolder:rootFolder2];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    [rootViewController setFolder:v15];
 
-    [v6 postNotificationName:@"SBHIconManagerIconModelDidChange" object:self];
+    [defaultCenter postNotificationName:@"SBHIconManagerIconModelDidChange" object:self];
     [(SBHIconManager *)self _beginObservingLeafIconsInModel:self->_iconModel];
     v17 = *MEMORY[0x1E69DDA98];
     v22[0] = MEMORY[0x1E69E9820];
@@ -1966,40 +1966,40 @@ LABEL_11:
     [v17 _performBlockAfterCATransactionCommits:v22];
     [(SBHIconManager *)self noteRootFolderDidMutate];
     v18 = [(SBHIconManager *)self addWidgetSheetConfigurationManagerCreatingIfNecessary:0];
-    [v18 setIconModel:v5];
+    [v18 setIconModel:modelCopy];
 
-    v19 = [(SBHIconManager *)self floatingDockViewController];
-    v20 = [v14 dock];
-    [v19 setDockListModel:v20];
-    v21 = [v14 dockUtilities];
-    [v19 setDockUtilitiesListModel:v21];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    dock = [rootFolder2 dock];
+    [floatingDockViewController setDockListModel:dock];
+    dockUtilities = [rootFolder2 dockUtilities];
+    [floatingDockViewController setDockUtilitiesListModel:dockUtilities];
   }
 }
 
-- (void)setRootFolder:(id)a3
+- (void)setRootFolder:(id)folder
 {
-  v5 = a3;
+  folderCopy = folder;
   rootFolder = self->_rootFolder;
-  if (rootFolder != v5)
+  if (rootFolder != folderCopy)
   {
-    v13 = v5;
+    v13 = folderCopy;
     p_rootFolder = &self->_rootFolder;
-    v8 = [(SBRootFolder *)rootFolder delegate];
+    delegate = [(SBRootFolder *)rootFolder delegate];
 
-    if (v8 == self)
+    if (delegate == self)
     {
       [(SBRootFolder *)*p_rootFolder setDelegate:0];
     }
 
     [(SBFolder *)self->_rootFolder removeFolderObserver:self];
-    v9 = [(SBFolder *)self->_rootFolder badgeBehaviorProvider];
+    badgeBehaviorProvider = [(SBFolder *)self->_rootFolder badgeBehaviorProvider];
 
-    if (v9 == self)
+    if (badgeBehaviorProvider == self)
     {
       [(SBFolder *)*p_rootFolder setBadgeBehaviorProvider:0];
     }
 
-    objc_storeStrong(&self->_rootFolder, a3);
+    objc_storeStrong(&self->_rootFolder, folder);
     if ([(SBHIconManager *)self ownsIconModel])
     {
       [(SBRootFolder *)self->_rootFolder setDelegate:self];
@@ -2007,22 +2007,22 @@ LABEL_11:
     }
 
     [(SBFolder *)self->_rootFolder addFolderObserver:self];
-    v10 = [(SBRootFolder *)v13 dock];
-    v11 = [(SBHIconManager *)self floatingDockViewController];
-    [v11 setDockListModel:v10];
-    v12 = [(SBRootFolder *)v13 dockUtilities];
-    [v11 setDockUtilitiesListModel:v12];
+    dock = [(SBRootFolder *)v13 dock];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    [floatingDockViewController setDockListModel:dock];
+    dockUtilities = [(SBRootFolder *)v13 dockUtilities];
+    [floatingDockViewController setDockUtilitiesListModel:dockUtilities];
 
-    v5 = v13;
+    folderCopy = v13;
   }
 
-  MEMORY[0x1EEE66BB8](rootFolder, v5);
+  MEMORY[0x1EEE66BB8](rootFolder, folderCopy);
 }
 
 - (BOOL)relayout
 {
-  v3 = [(SBHIconManager *)self hasAnimatingFolder];
-  if (v3)
+  hasAnimatingFolder = [(SBHIconManager *)self hasAnimatingFolder];
+  if (hasAnimatingFolder)
   {
     [(SBHIconManager *)self setNeedsRelayout:1];
     v4 = SBLogCommon();
@@ -2034,13 +2034,13 @@ LABEL_11:
 
   else
   {
-    v5 = [(SBHIconManager *)self iconModel];
-    [v5 layout];
+    iconModel = [(SBHIconManager *)self iconModel];
+    [iconModel layout];
 
     [(SBHIconManager *)self setNeedsRelayout:0];
   }
 
-  return !v3;
+  return !hasAnimatingFolder;
 }
 
 - (Class)iconViewClass
@@ -2058,20 +2058,20 @@ LABEL_11:
 
 - (id)cachingImageStyleConfiguration
 {
-  v3 = [(SBHIconManager *)self rootViewController];
-  v4 = [v3 traitCollection];
-  v5 = [v4 sbh_iconImageStyleConfiguration];
-  if (v5)
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  traitCollection = [rootViewController traitCollection];
+  sbh_iconImageStyleConfiguration = [traitCollection sbh_iconImageStyleConfiguration];
+  if (sbh_iconImageStyleConfiguration)
   {
     goto LABEL_5;
   }
 
-  v6 = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
-  if (!v6 || (v7 = v6, [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:v6], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  _fetchCurrentStyleConfiguration = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
+  if (!_fetchCurrentStyleConfiguration || (v7 = _fetchCurrentStyleConfiguration, [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:_fetchCurrentStyleConfiguration], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
-    v5 = +[SBHIconImageStyleConfiguration defaultStyleConfiguration];
+    sbh_iconImageStyleConfiguration = +[SBHIconImageStyleConfiguration defaultStyleConfiguration];
 LABEL_5:
-    v8 = v5;
+    v8 = sbh_iconImageStyleConfiguration;
   }
 
   return v8;
@@ -2080,18 +2080,18 @@ LABEL_5:
 - (id)cachingImageAppearances
 {
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
-  v4 = [(SBHIconManager *)self rootViewController];
-  v5 = [v4 traitCollection];
-  if (v5)
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  traitCollection = [rootViewController traitCollection];
+  if (traitCollection)
   {
-    v6 = v5;
+    v6 = traitCollection;
   }
 
   else
   {
     v7 = MEMORY[0x1E69DD1B8];
-    v8 = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
-    v6 = [v7 sbh_traitCollectionWithHomeScreenStyleConfiguration:v8];
+    _fetchCurrentStyleConfiguration = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
+    v6 = [v7 sbh_traitCollectionWithHomeScreenStyleConfiguration:_fetchCurrentStyleConfiguration];
 
     if (!v6)
     {
@@ -2140,7 +2140,7 @@ LABEL_11:
 
 - (id)prioritizedCachingImageAppearances
 {
-  v2 = [(SBHIconManager *)self cachingImageAppearances];
+  cachingImageAppearances = [(SBHIconManager *)self cachingImageAppearances];
   v3 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -2148,7 +2148,7 @@ LABEL_11:
   v6[3] = &unk_1E808FC08;
   v4 = v3;
   v7 = v4;
-  [v2 enumerateKeysAndObjectsUsingBlock:v6];
+  [cachingImageAppearances enumerateKeysAndObjectsUsingBlock:v6];
 
   return v4;
 }
@@ -2171,49 +2171,49 @@ void __52__SBHIconManager_prioritizedCachingImageAppearances__block_invoke(uint6
   [v7 setObject:v8 forKey:v5];
 }
 
-- (id)prioritizedCachingImageAppearancesForIconImageStyleConfiguration:(id)a3 priority:(int64_t)a4
+- (id)prioritizedCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration priority:(int64_t)priority
 {
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
+  configurationCopy = configuration;
   v8 = [[v6 alloc] initWithCapacity:2];
-  v9 = [(SBHIconManager *)self rootFolderController];
-  if (!v9)
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if (!rootFolderController)
   {
-    v9 = [(SBHIconManager *)self primaryWindowScene];
+    rootFolderController = [(SBHIconManager *)self primaryWindowScene];
   }
 
-  v10 = [v9 traitCollection];
-  v11 = v10;
-  if (v10)
+  traitCollection = [rootFolderController traitCollection];
+  v11 = traitCollection;
+  if (traitCollection)
   {
-    v12 = [v10 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
   else
   {
-    v12 = 1;
+    userInterfaceStyle = 1;
   }
 
-  v13 = [v7 iconImageAppearanceWithUserInterfaceStyle:v12];
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v13 = [configurationCopy iconImageAppearanceWithUserInterfaceStyle:userInterfaceStyle];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:priority];
   [v8 setObject:v14 forKey:v13];
 
-  v15 = [v7 variant];
-  if (v15 == 2)
+  variant = [configurationCopy variant];
+  if (variant == 2)
   {
-    v16 = [v13 appearanceType];
-    if (v16 <= 2)
+    appearanceType = [v13 appearanceType];
+    if (appearanceType <= 2)
     {
-      if (v16)
+      if (appearanceType)
       {
-        if (v16 == 1)
+        if (appearanceType == 1)
         {
           v17 = +[SBHIconImageAppearance lightAppearance];
         }
 
         else
         {
-          if (v16 != 2)
+          if (appearanceType != 2)
           {
             goto LABEL_21;
           }
@@ -2237,18 +2237,18 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    switch(v16)
+    switch(appearanceType)
     {
       case 3:
         v17 = +[SBHIconImageAppearance clearLightAppearance];
         goto LABEL_19;
       case 4:
-        v18 = [v13 tintColor];
-        v19 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:v18];
+        tintColor = [v13 tintColor];
+        v19 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:tintColor];
         break;
       case 5:
-        v18 = [v13 tintColor];
-        v19 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:v18];
+        tintColor = [v13 tintColor];
+        v19 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:tintColor];
         break;
       default:
         goto LABEL_21;
@@ -2268,86 +2268,86 @@ LABEL_21:
   return v8;
 }
 
-- (id)highPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)a3
+- (id)highPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  if (!v5)
+  configurationCopy = configuration;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if (!rootFolderController)
   {
-    v5 = [(SBHIconManager *)self primaryWindowScene];
+    rootFolderController = [(SBHIconManager *)self primaryWindowScene];
   }
 
-  v6 = [v5 traitCollection];
-  v7 = v6;
-  if (v6)
+  traitCollection = [rootFolderController traitCollection];
+  v7 = traitCollection;
+  if (traitCollection)
   {
-    v8 = [v6 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
   else
   {
-    v8 = 1;
+    userInterfaceStyle = 1;
   }
 
-  v9 = [v4 iconImageAppearanceWithUserInterfaceStyle:v8];
+  v9 = [configurationCopy iconImageAppearanceWithUserInterfaceStyle:userInterfaceStyle];
   v12[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
   return v10;
 }
 
-- (id)lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)a3
+- (id)lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:(id)configuration
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  if (!v5)
+  configurationCopy = configuration;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if (!rootFolderController)
   {
-    v5 = [(SBHIconManager *)self primaryWindowScene];
+    rootFolderController = [(SBHIconManager *)self primaryWindowScene];
   }
 
-  v6 = [v5 traitCollection];
-  v7 = v6;
-  if (v6)
+  traitCollection = [rootFolderController traitCollection];
+  v7 = traitCollection;
+  if (traitCollection)
   {
-    v8 = [v6 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
   }
 
   else
   {
-    v8 = 1;
+    userInterfaceStyle = 1;
   }
 
-  v9 = [v4 iconImageAppearanceWithUserInterfaceStyle:v8];
-  v10 = [v4 variant];
+  v9 = [configurationCopy iconImageAppearanceWithUserInterfaceStyle:userInterfaceStyle];
+  variant = [configurationCopy variant];
 
-  if (v10 != 2)
+  if (variant != 2)
   {
     goto LABEL_23;
   }
 
-  v11 = [v9 appearanceType];
+  appearanceType = [v9 appearanceType];
   v12 = MEMORY[0x1E695E0F0];
-  if (v11 > 2)
+  if (appearanceType > 2)
   {
-    if (v11 != 3)
+    if (appearanceType != 3)
     {
-      if (v11 == 4)
+      if (appearanceType == 4)
       {
-        v14 = [v9 tintColor];
-        v15 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:v14];
+        tintColor = [v9 tintColor];
+        v15 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:tintColor];
       }
 
       else
       {
-        if (v11 != 5)
+        if (appearanceType != 5)
         {
           goto LABEL_24;
         }
 
-        v14 = [v9 tintColor];
-        v15 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:v14];
+        tintColor = [v9 tintColor];
+        v15 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:tintColor];
       }
 
       v16 = v15;
@@ -2363,16 +2363,16 @@ LABEL_21:
     v13 = +[SBHIconImageAppearance clearLightAppearance];
   }
 
-  else if (v11)
+  else if (appearanceType)
   {
-    if (v11 == 1)
+    if (appearanceType == 1)
     {
       v13 = +[SBHIconImageAppearance lightAppearance];
     }
 
     else
     {
-      if (v11 != 2)
+      if (appearanceType != 2)
       {
         goto LABEL_24;
       }
@@ -2441,33 +2441,33 @@ LABEL_24:
   }
 }
 
-- (id)_iconLabelImageParametersForPrewarm:(unint64_t)a3
+- (id)_iconLabelImageParametersForPrewarm:(unint64_t)prewarm
 {
   v64 = *MEMORY[0x1E69E9840];
-  v4 = [(SBHIconManager *)self rootFolder];
-  v5 = [(SBHIconManager *)self iconImageCache];
-  v6 = [(SBHIconManager *)self folderIconImageCache];
-  v7 = [(SBHIconManager *)self iconLocationForPrecachingImages];
-  v8 = [(SBHIconManager *)self legibilitySettings];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  iconImageCache = [(SBHIconManager *)self iconImageCache];
+  folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+  iconLocationForPrecachingImages = [(SBHIconManager *)self iconLocationForPrecachingImages];
+  legibilitySettings = [(SBHIconManager *)self legibilitySettings];
   v9 = objc_alloc([(SBHIconManager *)self iconViewClass]);
-  v10 = [(SBHIconManager *)self listLayoutProvider];
-  v11 = [v9 initWithConfigurationOptions:212 listLayoutProvider:v10];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v11 = [v9 initWithConfigurationOptions:212 listLayoutProvider:listLayoutProvider];
 
   [v11 setDelegate:self];
-  v51 = v5;
-  [v11 setIconImageCache:v5];
-  v50 = v6;
-  [v11 setFolderIconImageCache:v6];
-  [v11 setLocation:v7];
+  v51 = iconImageCache;
+  [v11 setIconImageCache:iconImageCache];
+  v50 = folderIconImageCache;
+  [v11 setFolderIconImageCache:folderIconImageCache];
+  [v11 setLocation:iconLocationForPrecachingImages];
   v12 = +[SBIconLabelViewPrewarmFactory sharedInstance];
   [v11 setIconLabelViewFactory:v12];
 
-  v48 = [(SBHIconManager *)self cachingImageAppearances];
-  v13 = [v48 objectForKey:@"primary"];
-  v14 = [v11 traitOverrides];
+  cachingImageAppearances = [(SBHIconManager *)self cachingImageAppearances];
+  v13 = [cachingImageAppearances objectForKey:@"primary"];
+  traitOverrides = [v11 traitOverrides];
   v15 = objc_opt_self();
   v46 = v13;
-  [v14 setObject:v13 forTrait:v15];
+  [traitOverrides setObject:v13 forTrait:v15];
 
   v16 = objc_alloc_init(SBIconLabelImageParametersBuilder);
   v49 = v11;
@@ -2478,22 +2478,22 @@ LABEL_24:
   aBlock[3] = &unk_1E808FC30;
   v43 = v16;
   v60 = v43;
-  v45 = v7;
+  v45 = iconLocationForPrecachingImages;
   v61 = v45;
-  v44 = v8;
+  v44 = legibilitySettings;
   v62 = v44;
   v17 = _Block_copy(aBlock);
   v18 = objc_opt_new();
-  v52 = v4;
-  v19 = [v4 icons];
-  [v18 addObjectsFromArray:v19];
+  v52 = rootFolder;
+  icons = [rootFolder icons];
+  [v18 addObjectsFromArray:icons];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v20 = [(SBHIconManager *)self _libraryViewControllers];
-  v21 = [v20 countByEnumeratingWithState:&v55 objects:v63 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v21 = [_libraryViewControllers countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2504,45 +2504,45 @@ LABEL_24:
       {
         if (*v56 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
         v25 = *(*(&v55 + 1) + 8 * i);
-        v26 = [v25 categoriesRootFolder];
-        v27 = [v26 allIcons];
+        categoriesRootFolder = [v25 categoriesRootFolder];
+        allIcons = [categoriesRootFolder allIcons];
 
-        if ([v27 count])
+        if ([allIcons count])
         {
-          [v18 unionSet:v27];
+          [v18 unionSet:allIcons];
         }
 
-        v28 = [v25 podTopLevelDisplayedIcons];
-        if (v28)
+        podTopLevelDisplayedIcons = [v25 podTopLevelDisplayedIcons];
+        if (podTopLevelDisplayedIcons)
         {
-          v29 = [v18 bs_array];
-          v30 = [v28 sbh_arrayByRemovingObjectsFromArray:v29];
+          bs_array = [v18 bs_array];
+          v30 = [podTopLevelDisplayedIcons sbh_arrayByRemovingObjectsFromArray:bs_array];
 
           [v18 addObjectsFromArray:v30];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v55 objects:v63 count:16];
+      v22 = [_libraryViewControllers countByEnumeratingWithState:&v55 objects:v63 count:16];
     }
 
     while (v22);
   }
 
-  v31 = [v18 bs_array];
-  v32 = [v31 count];
+  bs_array2 = [v18 bs_array];
+  v32 = [bs_array2 count];
   v33 = MEMORY[0x1E695DFA0];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL || (v34 = v32, v32 <= a3))
+  if (prewarm == 0x7FFFFFFFFFFFFFFFLL || (v34 = v32, v32 <= prewarm))
   {
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __54__SBHIconManager__iconLabelImageParametersForPrewarm___block_invoke_2;
     v53[3] = &unk_1E808FC58;
     v54 = v17;
-    v41 = [v31 bs_mapNoNulls:v53];
+    v41 = [bs_array2 bs_mapNoNulls:v53];
     v40 = [v33 orderedSetWithArray:v41];
 
     v35 = v54;
@@ -2552,7 +2552,7 @@ LABEL_24:
   {
     v35 = objc_opt_new();
     v36 = objc_opt_new();
-    while ([v35 count] < a3)
+    while ([v35 count] < prewarm)
     {
       if ([v36 count] >= v34)
       {
@@ -2562,7 +2562,7 @@ LABEL_24:
       v37 = arc4random_uniform(v34);
       if (([v36 containsIndex:v37] & 1) == 0)
       {
-        v38 = [v31 objectAtIndex:v37];
+        v38 = [bs_array2 objectAtIndex:v37];
         [v36 addIndex:v37];
         v39 = (*(v17 + 2))(v17, v38);
         if (v39)
@@ -2587,31 +2587,31 @@ uint64_t __54__SBHIconManager__iconLabelImageParametersForPrewarm___block_invoke
   return [v3 buildParameters];
 }
 
-- (void)_cleanupLabelCachesWithReason:(id)a3
+- (void)_cleanupLabelCachesWithReason:(id)reason
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [(SBHIconManager *)self currentRootIconList];
-  v7 = [v6 model];
+  reasonCopy = reason;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  model = [currentRootIconList model];
 
-  if (v7 || ([v5 firstList], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (model || ([rootFolder firstList], (model = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = [(SBHIconManager *)self _libraryViewControllers];
-    v9 = [v8 count];
+    _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+    v9 = [_libraryViewControllers count];
 
     if (v9)
     {
-      v10 = [MEMORY[0x1E696AEC0] sbh_bootInstanceIdentifier];
-      v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v12 = [v11 stringForKey:@"last_label_cache_cleanup"];
-      if ([v12 isEqualToString:v10])
+      sbh_bootInstanceIdentifier = [MEMORY[0x1E696AEC0] sbh_bootInstanceIdentifier];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v12 = [standardUserDefaults stringForKey:@"last_label_cache_cleanup"];
+      if ([v12 isEqualToString:sbh_bootInstanceIdentifier])
       {
-        v13 = SBLogLabels();
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+        iconLabelImageCache = SBLogLabels();
+        if (os_log_type_enabled(iconLabelImageCache, OS_LOG_TYPE_DEFAULT))
         {
           LOWORD(v26) = 0;
-          _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "_cleanupLabelCachesWithReason: skipping cleanup; already accomplished for this boot.", &v26, 2u);
+          _os_log_impl(&dword_1BEB18000, iconLabelImageCache, OS_LOG_TYPE_DEFAULT, "_cleanupLabelCachesWithReason: skipping cleanup; already accomplished for this boot.", &v26, 2u);
         }
       }
 
@@ -2626,7 +2626,7 @@ uint64_t __54__SBHIconManager__iconLabelImageParametersForPrewarm___block_invoke
             _os_log_impl(&dword_1BEB18000, v25, OS_LOG_TYPE_DEFAULT, "_cleanupLabelCachesWithReason: never cleaned up ever, so not going to do it today.", &v26, 2u);
           }
 
-          [v11 setObject:v10 forKey:@"last_label_cache_cleanup"];
+          [standardUserDefaults setObject:sbh_bootInstanceIdentifier forKey:@"last_label_cache_cleanup"];
           goto LABEL_20;
         }
 
@@ -2645,18 +2645,18 @@ uint64_t __54__SBHIconManager__iconLabelImageParametersForPrewarm___block_invoke
           _os_signpost_emit_with_name_impl(&dword_1BEB18000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v17, "_cleanupLabelCachesWithReason:", "", &v26, 2u);
         }
 
-        v13 = [(SBHIconManager *)self iconLabelImageCache];
+        iconLabelImageCache = [(SBHIconManager *)self iconLabelImageCache];
         v18 = [(SBHIconManager *)self _iconLabelImageParametersForPrewarm:0x7FFFFFFFFFFFFFFFLL];
         v19 = [v18 set];
-        [v13 ensureLabelImagesAreCached:v19];
+        [iconLabelImageCache ensureLabelImagesAreCached:v19];
 
-        [v11 setObject:v10 forKey:@"last_label_cache_cleanup"];
+        [standardUserDefaults setObject:sbh_bootInstanceIdentifier forKey:@"last_label_cache_cleanup"];
         v20 = CFAbsoluteTimeGetCurrent();
         v21 = SBLogLabels();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v26 = 138543618;
-          v27 = v4;
+          v27 = reasonCopy;
           v28 = 2048;
           v29 = v20 - Current;
           _os_log_impl(&dword_1BEB18000, v21, OS_LOG_TYPE_DEFAULT, "_cleanupLabelCachesWithReason: %{public}@; generation %f", &v26, 0x16u);
@@ -2684,28 +2684,28 @@ void __48__SBHIconManager__cleanupLabelCachesWithReason___block_invoke()
   _cleanupLabelCachesWithReason__signpostID = os_signpost_id_generate(v0);
 }
 
-- (void)_precacheLabelsForRootIcons:(BOOL)a3 reason:(id)a4
+- (void)_precacheLabelsForRootIcons:(BOOL)icons reason:(id)reason
 {
-  v4 = a3;
+  iconsCopy = icons;
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(SBHIconManager *)self rootFolder];
-  v8 = [(SBHIconManager *)self currentRootIconList];
-  v9 = [v8 model];
+  reasonCopy = reason;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  model = [currentRootIconList model];
 
-  if (!v9)
+  if (!model)
   {
-    v10 = [v7 firstList];
-    if (!v10)
+    firstList = [rootFolder firstList];
+    if (!firstList)
     {
       goto LABEL_46;
     }
 
-    v9 = v10;
+    model = firstList;
   }
 
-  v11 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  v12 = [(SBHIconManager *)self iconLabelImageCache];
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  iconLabelImageCache = [(SBHIconManager *)self iconLabelImageCache];
   if (_precacheLabelsForRootIcons_reason__onceToken != -1)
   {
     [SBHIconManager _precacheLabelsForRootIcons:reason:];
@@ -2721,31 +2721,31 @@ void __48__SBHIconManager__cleanupLabelCachesWithReason___block_invoke()
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v46 = v7;
-  v47 = v6;
-  v45 = v11;
-  if (v4)
+  v46 = rootFolder;
+  v47 = reasonCopy;
+  v45 = preferredContentSizeCategory;
+  if (iconsCopy)
   {
-    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Forced reason: %@", v6];;
+    reasonCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Forced reason: %@", reasonCopy];;
   }
 
   else if (self->_precacheLabelsGeneration)
   {
-    if ([v12 numberOfCachedLabelImages])
+    if ([iconLabelImageCache numberOfCachedLabelImages])
     {
       if ([(SBHIconManager *)self _shouldUseHomeScreenLargeIconSize])
       {
         v18 = 0;
         v19 = 0;
-        v17 = @"Labels are not being drawn right now; don't precache anything label wise.";
+        reasonCopy = @"Labels are not being drawn right now; don't precache anything label wise.";
       }
 
       else
       {
-        v20 = [(SBHIconManager *)self legibilitySettings];
-        if (!v20)
+        legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+        if (!legibilitySettings)
         {
-          v20 = +[SBHLegibilitySettings defaultLegibilitySettings];
+          legibilitySettings = +[SBHLegibilitySettings defaultLegibilitySettings];
         }
 
         v21 = MEMORY[0x1E696AEC0];
@@ -2756,7 +2756,7 @@ void __48__SBHIconManager__cleanupLabelCachesWithReason___block_invoke()
           v23 = @"YES";
         }
 
-        v17 = [v21 stringWithFormat:@"read gooder is enabled: %@", v23];
+        reasonCopy = [v21 stringWithFormat:@"read gooder is enabled: %@", v23];
         [(SBHIconManager *)self _iconLabelImageParametersForPrewarm:5];
         v48 = 0u;
         v49 = 0u;
@@ -2776,12 +2776,12 @@ void __48__SBHIconManager__cleanupLabelCachesWithReason___block_invoke()
                 objc_enumerationMutation(v24);
               }
 
-              v29 = [v12 cachedLabelContentForParameters:*(*(&v48 + 1) + 8 * i)];
+              v29 = [iconLabelImageCache cachedLabelContentForParameters:*(*(&v48 + 1) + 8 * i)];
 
               if (!v29)
               {
 
-                v17 = @"legibility cache fault detected";
+                reasonCopy = @"legibility cache fault detected";
                 goto LABEL_31;
               }
             }
@@ -2798,46 +2798,46 @@ void __48__SBHIconManager__cleanupLabelCachesWithReason___block_invoke()
 
         v18 = 0;
         v19 = 0;
-        v7 = v46;
-        v6 = v47;
-        v11 = v45;
+        rootFolder = v46;
+        reasonCopy = v47;
+        preferredContentSizeCategory = v45;
       }
 
       goto LABEL_40;
     }
 
-    v17 = @"no images currently cached; def need to rebuild";
+    reasonCopy = @"no images currently cached; def need to rebuild";
   }
 
   else
   {
     self->_labelCachesNecessitateCleanup = 1;
-    v17 = @"first run";
+    reasonCopy = @"first run";
   }
 
 LABEL_31:
-  v30 = [v12 numberOfCachedLegibilityImages];
-  v31 = [v12 numberOfCachedLabelImages];
+  numberOfCachedLegibilityImages = [iconLabelImageCache numberOfCachedLegibilityImages];
+  numberOfCachedLabelImages = [iconLabelImageCache numberOfCachedLabelImages];
   v32 = [(SBHIconManager *)self _iconLabelImageParametersForPrewarm:0x7FFFFFFFFFFFFFFFLL];
-  v33 = [v32 array];
-  [v12 prewarmLabelImages:v33];
+  array = [v32 array];
+  [iconLabelImageCache prewarmLabelImages:array];
 
-  v34 = [v12 numberOfCachedLegibilityImages];
-  v35 = [v12 numberOfCachedLabelImages];
-  if (v35 != v31)
+  numberOfCachedLegibilityImages2 = [iconLabelImageCache numberOfCachedLegibilityImages];
+  numberOfCachedLabelImages2 = [iconLabelImageCache numberOfCachedLabelImages];
+  if (numberOfCachedLabelImages2 != numberOfCachedLabelImages)
   {
     v36 = SBLogLabels();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&v53 = v35 - v31;
+      *&v53 = numberOfCachedLabelImages2 - numberOfCachedLabelImages;
       _os_log_impl(&dword_1BEB18000, v36, OS_LOG_TYPE_DEFAULT, "_precacheLabelsForRootIcons: new cache hits: %lu", buf, 0xCu);
     }
   }
 
-  *&v37 = v34 - v30;
-  v6 = v47;
-  v11 = v45;
+  *&v37 = numberOfCachedLegibilityImages2 - numberOfCachedLegibilityImages;
+  reasonCopy = v47;
+  preferredContentSizeCategory = v45;
   if (v37 != 0.0)
   {
     v38 = SBLogLabels();
@@ -2849,9 +2849,9 @@ LABEL_31:
     }
   }
 
-  v19 = v35 != v31;
+  v19 = numberOfCachedLabelImages2 != numberOfCachedLabelImages;
   v18 = 1;
-  v7 = v46;
+  rootFolder = v46;
 LABEL_40:
   v39 = CFAbsoluteTimeGetCurrent();
   v40 = SBLogLabels();
@@ -2865,7 +2865,7 @@ LABEL_40:
     v56 = 1024;
     v57 = v19;
     v58 = 2114;
-    v59 = v17;
+    v59 = reasonCopy;
     v60 = 2048;
     v61 = precacheLabelsGeneration;
     _os_log_impl(&dword_1BEB18000, v40, OS_LOG_TYPE_DEFAULT, "_precacheLabelsForRootIcons: %f; should prewarm? %{BOOL}u did prewarm? %{BOOL}u reason: %{public}@; generation %lu", buf, 0x2Cu);
@@ -2881,7 +2881,7 @@ LABEL_40:
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v43, OS_SIGNPOST_INTERVAL_END, v44, "_precacheLabelsForRootIcons", "", buf, 2u);
   }
 
-  [(SBHIconManager *)self setPrecachedContentSizeCategory:v11];
+  [(SBHIconManager *)self setPrecachedContentSizeCategory:preferredContentSizeCategory];
 LABEL_46:
 }
 
@@ -2893,13 +2893,13 @@ void __53__SBHIconManager__precacheLabelsForRootIcons_reason___block_invoke()
 
 - (void)_precacheIntentsForRootIcons
 {
-  v3 = [(SBHIconManager *)self rootFolder];
+  rootFolder = [(SBHIconManager *)self rootFolder];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke;
   v4[3] = &unk_1E808DA78;
   v4[4] = self;
-  [v3 enumerateAllIconsWithOptions:1 usingBlock:v4];
+  [rootFolder enumerateAllIconsWithOptions:1 usingBlock:v4];
 }
 
 void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1, void *a2)
@@ -2943,14 +2943,14 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
 
 - (void)_precacheImagesForRootIcons
 {
-  v3 = [(SBHIconManager *)self cachingImageStyleConfiguration];
-  [(SBHIconManager *)self _precacheImagesForRootIconsForStyleConfiguration:v3];
+  cachingImageStyleConfiguration = [(SBHIconManager *)self cachingImageStyleConfiguration];
+  [(SBHIconManager *)self _precacheImagesForRootIconsForStyleConfiguration:cachingImageStyleConfiguration];
 }
 
-- (void)_precacheImagesForRootIconsForStyleConfiguration:(id)a3
+- (void)_precacheImagesForRootIconsForStyleConfiguration:(id)configuration
 {
   v153 = *MEMORY[0x1E69E9840];
-  v89 = a3;
+  configurationCopy = configuration;
   queue = [(SBHIconManager *)self iconPrecachingHighPriorityQueue];
   if (!queue)
   {
@@ -2965,26 +2965,26 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     [(SBHIconManager *)self setIconPrecachingMediumPriorityQueue:?];
   }
 
-  v91 = [(SBHIconManager *)self iconPrecachingLowPriorityQueue];
-  if (!v91)
+  iconPrecachingLowPriorityQueue = [(SBHIconManager *)self iconPrecachingLowPriorityQueue];
+  if (!iconPrecachingLowPriorityQueue)
   {
-    v91 = BSDispatchQueueCreateSerialWithQoS();
+    iconPrecachingLowPriorityQueue = BSDispatchQueueCreateSerialWithQoS();
     [(SBHIconManager *)self setIconPrecachingLowPriorityQueue:?];
   }
 
-  v94 = [(SBHIconManager *)self rootFolder];
-  v4 = [(SBHIconManager *)self currentRootIconList];
-  v5 = [v4 model];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  model = [currentRootIconList model];
 
-  if (v5 && (v6 = v5, [v94 indexOfList:v5] != 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(v94, "firstList"), v7 = objc_claimAutoreleasedReturnValue(), v5, (v6 = v7) != 0))
+  if (model && (v6 = model, [rootFolder indexOfList:model] != 0x7FFFFFFFFFFFFFFFLL) || (objc_msgSend(rootFolder, "firstList"), v7 = objc_claimAutoreleasedReturnValue(), model, (v6 = v7) != 0))
   {
     v85 = v6;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v9 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v10 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v11 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-    v86 = [v94 dock];
-    [v86 directlyContainedApplicationIcons];
+    dock = [rootFolder dock];
+    [dock directlyContainedApplicationIcons];
     v149 = 0u;
     v150 = 0u;
     v147 = 0u;
@@ -3002,9 +3002,9 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
             objc_enumerationMutation(v12);
           }
 
-          v16 = [*(*(&v147 + 1) + 8 * i) applicationBundleID];
-          [v8 addObject:v16];
-          [v10 addObject:v16];
+          applicationBundleID = [*(*(&v147 + 1) + 8 * i) applicationBundleID];
+          [v8 addObject:applicationBundleID];
+          [v10 addObject:applicationBundleID];
         }
 
         v13 = [v12 countByEnumeratingWithState:&v147 objects:v152 count:16];
@@ -3030,34 +3030,34 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     v145 = v146;
     v83 = v8;
     v144 = v83;
-    [v94 enumerateListsNearestToList:v85 usingBlock:v140];
-    v19 = [(SBHIconManager *)self _libraryViewControllers];
-    v84 = [v19 firstObject];
+    [rootFolder enumerateListsNearestToList:v85 usingBlock:v140];
+    _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+    firstObject = [_libraryViewControllers firstObject];
 
-    v20 = [v84 iconPrecachingInfo];
-    v88 = [v20 topLevelIcons];
-    v90 = v20;
-    v87 = [v20 additionalIcons];
-    v21 = [v88 bs_compactMap:&__block_literal_global_200];
-    v79 = [v87 bs_compactMap:&__block_literal_global_203];
-    [v20 topLevelImageInfo];
+    iconPrecachingInfo = [firstObject iconPrecachingInfo];
+    topLevelIcons = [iconPrecachingInfo topLevelIcons];
+    v90 = iconPrecachingInfo;
+    additionalIcons = [iconPrecachingInfo additionalIcons];
+    v21 = [topLevelIcons bs_compactMap:&__block_literal_global_200];
+    v79 = [additionalIcons bs_compactMap:&__block_literal_global_203];
+    [iconPrecachingInfo topLevelImageInfo];
     v75 = v23;
     v77 = v22;
     v73 = v24;
     v26 = v25;
-    [v20 additionalImageInfo];
+    [iconPrecachingInfo additionalImageInfo];
     v70 = v28;
     v71 = v27;
     v68 = v30;
     v69 = v29;
-    v66 = [v94 ignoredList];
-    v65 = [v66 icons];
-    v31 = [v65 mutableCopy];
+    ignoredList = [rootFolder ignoredList];
+    icons = [ignoredList icons];
+    v31 = [icons mutableCopy];
     v32 = v31;
     if (v90)
     {
-      [v31 removeObjectsInArray:v88];
-      [v32 removeObjectsInArray:v87];
+      [v31 removeObjectsInArray:topLevelIcons];
+      [v32 removeObjectsInArray:additionalIcons];
     }
 
     v67 = v21;
@@ -3080,9 +3080,9 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
             objc_enumerationMutation(v33);
           }
 
-          v37 = [*(*(&v136 + 1) + 8 * j) applicationBundleID];
-          [v17 addObject:v37];
-          [v18 addObject:v37];
+          applicationBundleID2 = [*(*(&v136 + 1) + 8 * j) applicationBundleID];
+          [v17 addObject:applicationBundleID2];
+          [v18 addObject:applicationBundleID2];
         }
 
         v34 = [v33 countByEnumeratingWithState:&v136 objects:v151 count:16];
@@ -3091,12 +3091,12 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
       while (v34);
     }
 
-    v38 = [(SBHIconManager *)self highPriorityCachingImageAppearancesForIconImageStyleConfiguration:v89];
-    v39 = [(SBHIconManager *)self lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:v89];
-    v40 = [v83 array];
-    v41 = [v17 array];
-    v63 = [v18 array];
-    v42 = [v82 array];
+    v38 = [(SBHIconManager *)self highPriorityCachingImageAppearancesForIconImageStyleConfiguration:configurationCopy];
+    v39 = [(SBHIconManager *)self lowPriorityCachingImageAppearancesForIconImageStyleConfiguration:configurationCopy];
+    array = [v83 array];
+    array2 = [v17 array];
+    array3 = [v18 array];
+    array4 = [v82 array];
     [(SBHIconManager *)self rootIconImageInfo];
     v62 = v43;
     v45 = v44;
@@ -3113,12 +3113,12 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     block[3] = &unk_1E808FCA8;
     v57 = v38;
     v115 = v57;
-    v116 = v40;
+    v116 = array;
     v120 = v45;
     v121 = v47;
     v122 = v49;
     v123 = v62;
-    v58 = v42;
+    v58 = array4;
     v124 = v52;
     v125 = v54;
     v126 = v56;
@@ -3136,19 +3136,19 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     v135 = v68;
     v76 = v79;
     v74 = v67;
-    v72 = v40;
+    v72 = array;
     dispatch_async(queue, block);
     v107[0] = MEMORY[0x1E69E9820];
     v107[1] = 3221225472;
     v107[2] = __67__SBHIconManager__precacheImagesForRootIconsForStyleConfiguration___block_invoke_7;
     v107[3] = &unk_1E808B778;
     v108 = v57;
-    v109 = v41;
+    v109 = array2;
     v110 = v45;
     v111 = v47;
     v112 = v49;
     v113 = v62;
-    v80 = v41;
+    v80 = array2;
     v78 = v57;
     dispatch_async(SerialWithQoS, v107);
     v95[0] = MEMORY[0x1E69E9820];
@@ -3156,7 +3156,7 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     v95[2] = __67__SBHIconManager__precacheImagesForRootIconsForStyleConfiguration___block_invoke_8;
     v95[3] = &unk_1E808FCD0;
     v96 = v39;
-    v97 = v63;
+    v97 = array3;
     v99 = v45;
     v100 = v47;
     v101 = v49;
@@ -3167,9 +3167,9 @@ void __46__SBHIconManager__precacheIntentsForRootIcons__block_invoke(uint64_t a1
     v105 = v56;
     v106 = v81;
     v59 = v58;
-    v60 = v63;
+    v60 = array3;
     v61 = v39;
-    dispatch_async(v91, v95);
+    dispatch_async(iconPrecachingLowPriorityQueue, v95);
 
     _Block_object_dispose(v146, 8);
   }
@@ -3425,50 +3425,50 @@ void __67__SBHIconManager__precacheImagesForRootIconsForStyleConfiguration___blo
   }
 }
 
-- (void)addAdditionalIconImageCacheForPrecaching:(id)a3
+- (void)addAdditionalIconImageCacheForPrecaching:(id)precaching
 {
-  v4 = a3;
+  precachingCopy = precaching;
   additionalPrecachingIconImageCaches = self->_additionalPrecachingIconImageCaches;
-  v12 = v4;
+  v12 = precachingCopy;
   if (!additionalPrecachingIconImageCaches)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_additionalPrecachingIconImageCaches;
     self->_additionalPrecachingIconImageCaches = v6;
 
-    v4 = v12;
+    precachingCopy = v12;
     additionalPrecachingIconImageCaches = self->_additionalPrecachingIconImageCaches;
   }
 
-  [(NSMutableSet *)additionalPrecachingIconImageCaches addObject:v4];
-  v8 = [(SBHIconManager *)self iconsToRecacheForImageAppearanceChange];
-  v9 = [(SBHIconManager *)self prioritizedCachingImageAppearances];
-  v10 = [v9 allKeys];
-  v11 = [v12 cacheImagesForIcons:v8 imageAppearances:v10 priority:0 reason:@"add additional icon image cache" options:0 completionHandler:0];
+  [(NSMutableSet *)additionalPrecachingIconImageCaches addObject:precachingCopy];
+  iconsToRecacheForImageAppearanceChange = [(SBHIconManager *)self iconsToRecacheForImageAppearanceChange];
+  prioritizedCachingImageAppearances = [(SBHIconManager *)self prioritizedCachingImageAppearances];
+  allKeys = [prioritizedCachingImageAppearances allKeys];
+  v11 = [v12 cacheImagesForIcons:iconsToRecacheForImageAppearanceChange imageAppearances:allKeys priority:0 reason:@"add additional icon image cache" options:0 completionHandler:0];
 }
 
 - (id)iconsToRecacheForImageAppearanceChange
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(SBHIconManager *)self rootFolder];
-  v5 = [(SBHIconManager *)self currentRootIconList];
-  v6 = [v5 model];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  model = [currentRootIconList model];
 
-  if (v6)
+  if (model)
   {
-    v7 = [v4 dock];
-    v8 = [v7 icons];
-    [v3 addObjectsFromArray:v8];
+    dock = [rootFolder dock];
+    icons = [dock icons];
+    [v3 addObjectsFromArray:icons];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke;
     v15[3] = &unk_1E808E678;
     v9 = v3;
     v16 = v9;
-    [v4 enumerateListsNearestToList:v6 usingBlock:v15];
-    v10 = [v4 ignoredList];
-    v11 = [v10 icons];
-    [v9 addObjectsFromArray:v11];
+    [rootFolder enumerateListsNearestToList:model usingBlock:v15];
+    ignoredList = [rootFolder ignoredList];
+    icons2 = [ignoredList icons];
+    [v9 addObjectsFromArray:icons2];
   }
 
   else
@@ -3478,8 +3478,8 @@ void __67__SBHIconManager__precacheImagesForRootIconsForStyleConfiguration___blo
     v13[2] = __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke_2;
     v13[3] = &unk_1E808DA78;
     v14 = v3;
-    [v4 enumerateAllIconsWithOptions:1 usingBlock:v13];
-    v7 = v14;
+    [rootFolder enumerateAllIconsWithOptions:1 usingBlock:v13];
+    dock = v14;
   }
 
   return v3;
@@ -3532,17 +3532,17 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
 - (id)visibleIconsToRecacheForImageAppearanceChange
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(SBHIconManager *)self rootFolder];
-  v5 = [v4 dock];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  dock = [rootFolder dock];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __63__SBHIconManager_visibleIconsToRecacheForImageAppearanceChange__block_invoke;
   v15[3] = &unk_1E808A678;
   v6 = v3;
   v16 = v6;
-  [v5 enumerateIconsUsingBlock:v15];
-  v7 = [(SBHIconManager *)self currentRootIconList];
-  v8 = [v7 model];
+  [dock enumerateIconsUsingBlock:v15];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  model = [currentRootIconList model];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3550,7 +3550,7 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
   v13[3] = &unk_1E808A678;
   v9 = v6;
   v14 = v9;
-  [v8 enumerateIconsUsingBlock:v13];
+  [model enumerateIconsUsingBlock:v13];
   v10 = v14;
   v11 = v9;
 
@@ -3568,22 +3568,22 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
 
 - (void)purgeUnnecessaryAppearanceIconImageData
 {
-  v7 = [(SBHIconManager *)self prioritizedCachingImageAppearances];
-  v3 = [v7 allKeys];
+  prioritizedCachingImageAppearances = [(SBHIconManager *)self prioritizedCachingImageAppearances];
+  allKeys = [prioritizedCachingImageAppearances allKeys];
   v4 = +[SBHIconImageAppearance tintableAppearance];
-  v5 = [v3 arrayByAddingObject:v4];
+  v5 = [allKeys arrayByAddingObject:v4];
 
-  v6 = [(SBHIconManager *)self iconImageCache];
-  [v6 purgeAllCachedImagesForAppearancesOtherThanAppearances:v5];
+  iconImageCache = [(SBHIconManager *)self iconImageCache];
+  [iconImageCache purgeAllCachedImagesForAppearancesOtherThanAppearances:v5];
 }
 
-- (void)updateVisibleIconsToShowLeafIcons:(id)a3 hideLeafIcons:(id)a4
+- (void)updateVisibleIconsToShowLeafIcons:(id)icons hideLeafIcons:(id)leafIcons
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self iconModel];
-  v9 = [(SBHIconManager *)self rootFolder];
+  iconsCopy = icons;
+  leafIconsCopy = leafIcons;
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
   if (!self->_previousIconLocationTracker)
   {
     v10 = objc_alloc_init(SBIconPreviousLocationTracker);
@@ -3593,16 +3593,16 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
 
   if (!self->_previousIconLocations)
   {
-    v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     previousIconLocations = self->_previousIconLocations;
-    self->_previousIconLocations = v12;
+    self->_previousIconLocations = weakToStrongObjectsMapTable;
   }
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v14 = v7;
+  v14 = leafIconsCopy;
   v15 = [v14 countByEnumeratingWithState:&v39 objects:v45 count:16];
   if (v15)
   {
@@ -3618,8 +3618,8 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
         }
 
         v19 = *(*(&v39 + 1) + 8 * i);
-        [(SBIconPreviousLocationTracker *)self->_previousIconLocationTracker captureLocationInfoForIcon:v19 inModel:v8];
-        v20 = [v9 relativePathForIcon:v19 listGridCellInfoOptions:0];
+        [(SBIconPreviousLocationTracker *)self->_previousIconLocationTracker captureLocationInfoForIcon:v19 inModel:iconModel];
+        v20 = [rootFolder relativePathForIcon:v19 listGridCellInfoOptions:0];
         [(NSMapTable *)self->_previousIconLocations setObject:v20 forKey:v19];
       }
 
@@ -3629,13 +3629,13 @@ void __56__SBHIconManager_iconsToRecacheForImageAppearanceChange__block_invoke(u
     while (v16);
   }
 
-  if ([v6 count])
+  if ([iconsCopy count])
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v21 = v6;
+    v21 = iconsCopy;
     v22 = [v21 countByEnumeratingWithState:&v35 objects:v44 count:16];
     if (v22)
     {
@@ -3689,7 +3689,7 @@ LABEL_23:
             objc_enumerationMutation(v26);
           }
 
-          [v9 removeIcon:*(*(&v31 + 1) + 8 * k) options:{0x100000, v31}];
+          [rootFolder removeIcon:*(*(&v31 + 1) + 8 * k) options:{0x100000, v31}];
         }
 
         v28 = [v26 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -3700,19 +3700,19 @@ LABEL_23:
 
 LABEL_31:
     [(SBHIconManager *)self layoutIconListsWithAnimationType:-1, v31];
-    [v8 saveIconStateIfNeeded];
+    [iconModel saveIconStateIfNeeded];
   }
 }
 
 - (void)_clearStashedIconsForRelayout
 {
   v29 = *MEMORY[0x1E69E9840];
-  v17 = [(SBHIconManager *)self iconModel];
-  v3 = [v17 leafIcons];
-  v4 = [v3 allObjects];
+  iconModel = [(SBHIconManager *)self iconModel];
+  leafIcons = [iconModel leafIcons];
+  allObjects = [leafIcons allObjects];
 
-  v16 = v4;
-  v5 = [(SBHIconManager *)self _stashedIconsWithRemovableDataSourcesForStashedIcons:self->_stashedLeafIconsForRelayout newIcons:v4];
+  v16 = allObjects;
+  v5 = [(SBHIconManager *)self _stashedIconsWithRemovableDataSourcesForStashedIcons:self->_stashedLeafIconsForRelayout newIcons:allObjects];
   self->_shouldStashIconsForRelayout = 0;
   v23 = 0u;
   v24 = 0u;
@@ -3778,17 +3778,17 @@ LABEL_31:
   [(NSMutableArray *)self->_stashedLeafIconsForRelayout removeAllObjects];
 }
 
-- (id)_stashedIconsWithRemovableDataSourcesForStashedIcons:(id)a3 newIcons:(id)a4
+- (id)_stashedIconsWithRemovableDataSourcesForStashedIcons:(id)icons newIcons:(id)newIcons
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
+  iconsCopy = icons;
+  newIconsCopy = newIcons;
   v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = iconsCopy;
   v28 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v28)
   {
@@ -3810,13 +3810,13 @@ LABEL_31:
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v8 = [v7 iconDataSources];
-        v9 = [v8 countByEnumeratingWithState:&v39 objects:v50 count:16];
+        iconDataSources = [v7 iconDataSources];
+        v9 = [iconDataSources countByEnumeratingWithState:&v39 objects:v50 count:16];
         if (v9)
         {
           v10 = v9;
           v11 = *v40;
-          v33 = v8;
+          v33 = iconDataSources;
           v34 = v7;
           v32 = *v40;
           do
@@ -3825,7 +3825,7 @@ LABEL_31:
             {
               if (*v40 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(iconDataSources);
               }
 
               v13 = *(*(&v39 + 1) + 8 * i);
@@ -3835,7 +3835,7 @@ LABEL_31:
                 v38 = 0u;
                 v35 = 0u;
                 v36 = 0u;
-                v14 = v31;
+                v14 = newIconsCopy;
                 v15 = [v14 countByEnumeratingWithState:&v35 objects:v49 count:16];
                 if (v15)
                 {
@@ -3851,8 +3851,8 @@ LABEL_31:
                       }
 
                       v19 = *(*(&v35 + 1) + 8 * j);
-                      v20 = [v13 uniqueIdentifier];
-                      v21 = [v19 firstIconDataSourceWithUniqueIdentifier:v20];
+                      uniqueIdentifier = [v13 uniqueIdentifier];
+                      v21 = [v19 firstIconDataSourceWithUniqueIdentifier:uniqueIdentifier];
 
                       if (v21)
                       {
@@ -3873,13 +3873,13 @@ LABEL_31:
 
                 [v30 addObject:v13];
 LABEL_23:
-                v8 = v33;
+                iconDataSources = v33;
                 v7 = v34;
                 v11 = v32;
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v39 objects:v50 count:16];
+            v10 = [iconDataSources countByEnumeratingWithState:&v39 objects:v50 count:16];
           }
 
           while (v10);
@@ -3903,9 +3903,9 @@ LABEL_23:
   v22 = SBLogWidgetIntent();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v26 allKeys];
+    allKeys = [v26 allKeys];
     *buf = 138412290;
-    v48 = v23;
+    v48 = allKeys;
     _os_log_impl(&dword_1BEB18000, v22, OS_LOG_TYPE_DEFAULT, "stashedIconsWithRemovableDataSources:%@", buf, 0xCu);
   }
 
@@ -3936,31 +3936,31 @@ LABEL_23:
   }
 
   [(SBHIconManager *)self setResettingRootIconLists:1];
-  v4 = [(SBHIconManager *)self rootFolder];
-  if (v4)
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  if (rootFolder)
   {
-    v5 = [(SBHIconManager *)self _currentFolderController];
-    v6 = [v5 currentIconListView];
-    v7 = [v6 model];
+    _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+    currentIconListView = [_currentFolderController currentIconListView];
+    model = [currentIconListView model];
 
-    v8 = [v4 indexPathForList:v7];
-    v9 = [v4 uniqueIdentifiersForIndexPath:v8];
+    v8 = [rootFolder indexPathForList:model];
+    v9 = [rootFolder uniqueIdentifiersForIndexPath:v8];
     [(SBHIconManager *)self setPostResetPathIdentifiers:v9];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __46__SBHIconManager__prepareToResetRootIconLists__block_invoke;
     v13[3] = &unk_1E808DA78;
     v13[4] = self;
-    [v4 enumerateAllIconsWithOptions:1 usingBlock:v13];
+    [rootFolder enumerateAllIconsWithOptions:1 usingBlock:v13];
   }
 
-  v10 = [(NSMutableSet *)self->_touchedIconViews anyObject];
-  v11 = [v10 window];
-  v12 = [v11 _eventRoutingScene];
+  anyObject = [(NSMutableSet *)self->_touchedIconViews anyObject];
+  window = [anyObject window];
+  _eventRoutingScene = [window _eventRoutingScene];
 
-  if (v12)
+  if (_eventRoutingScene)
   {
-    [*MEMORY[0x1E69DDA98] _cancelAllEventsOfType:0 onEventRoutingScene:v12];
+    [*MEMORY[0x1E69DDA98] _cancelAllEventsOfType:0 onEventRoutingScene:_eventRoutingScene];
   }
 }
 
@@ -4049,7 +4049,7 @@ LABEL_22:
   }
 }
 
-- (void)_finishResetRootIconListsReusingPreviousControllers:(BOOL)a3
+- (void)_finishResetRootIconListsReusingPreviousControllers:(BOOL)controllers
 {
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -4058,64 +4058,64 @@ LABEL_22:
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "_finishResetRootIconLists", v18, 2u);
   }
 
-  v6 = [(SBHIconManager *)self delegate];
-  v7 = [(SBHIconManager *)self rootViewController];
-  v8 = [(SBHIconManager *)self rootFolderController];
-  if (!a3)
+  delegate = [(SBHIconManager *)self delegate];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if (!controllers)
   {
     if (objc_opt_respondsToSelector())
     {
-      [v6 iconManager:self willDestroyRootFolderController:v8];
+      [delegate iconManager:self willDestroyRootFolderController:rootFolderController];
     }
 
     [(SBHIconManager *)self setRootFolderController:0];
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 iconManager:self willDestroyRootViewController:v7];
+      [delegate iconManager:self willDestroyRootViewController:rootViewController];
     }
 
     [(SBHIconManager *)self setRootViewController:0];
 
-    v8 = 0;
-    v7 = 0;
+    rootFolderController = 0;
+    rootViewController = 0;
   }
 
-  v9 = [(SBHIconModel *)self->_iconModel rootFolder];
-  if (!v9)
+  rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
+  if (!rootFolder)
   {
     [(SBHIconModel *)self->_iconModel layout];
-    v9 = [(SBHIconModel *)self->_iconModel rootFolder];
+    rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
   }
 
-  [(SBHIconManager *)self setRootFolder:v9];
+  [(SBHIconManager *)self setRootFolder:rootFolder];
   [(SBHIconManager *)self ensureFixedIconLocationsIfNecessary];
-  if (v7)
+  if (rootViewController)
   {
-    v10 = [(SBHIconManager *)self _rootFolderForRootViewControllerForRootFolder:v9];
-    [v7 setFolder:v10];
-    v11 = [(SBHIconManager *)self iconImageCache];
-    [v7 setIconImageCache:v11];
+    v10 = [(SBHIconManager *)self _rootFolderForRootViewControllerForRootFolder:rootFolder];
+    [rootViewController setFolder:v10];
+    iconImageCache = [(SBHIconManager *)self iconImageCache];
+    [rootViewController setIconImageCache:iconImageCache];
 
-    v12 = [(SBHIconManager *)self folderIconImageCache];
-    [v7 setFolderIconImageCache:v12];
+    folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+    [rootViewController setFolderIconImageCache:folderIconImageCache];
 
-    v13 = [(SBHIconManager *)self interfaceOrientation];
-    [v8 setOrientation:v13];
-    v14 = [v8 folderView];
-    [v14 setOrientation:v13];
+    interfaceOrientation = [(SBHIconManager *)self interfaceOrientation];
+    [rootFolderController setOrientation:interfaceOrientation];
+    folderView = [rootFolderController folderView];
+    [folderView setOrientation:interfaceOrientation];
 
-    v15 = [(SBHIconManager *)self postResetPathIdentifiers];
-    if (v15)
+    postResetPathIdentifiers = [(SBHIconManager *)self postResetPathIdentifiers];
+    if (postResetPathIdentifiers)
     {
-      [v8 restoreExpandedPathIdentifiers:v15];
+      [rootFolderController restoreExpandedPathIdentifiers:postResetPathIdentifiers];
       [(SBHIconManager *)self setPostResetPathIdentifiers:0];
     }
   }
 
   else
   {
-    v10 = [(SBHIconManager *)self _createAppropriateRootViewControllerForRootFolder:v9];
+    v10 = [(SBHIconManager *)self _createAppropriateRootViewControllerForRootFolder:rootFolder];
     [(SBHIconManager *)self setRootViewController:v10];
     v16 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -4128,27 +4128,27 @@ LABEL_22:
     [v10 setEditing:-[SBHIconManager isEditing](self animated:{"isEditing"), 0}];
     if (objc_opt_respondsToSelector())
     {
-      [v6 iconManager:self didCreateRootViewController:v10];
+      [delegate iconManager:self didCreateRootViewController:v10];
     }
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 postNotificationName:@"SBHIconManagerRootViewControllerDidChange" object:self];
+    postResetPathIdentifiers = [MEMORY[0x1E696AD88] defaultCenter];
+    [postResetPathIdentifiers postNotificationName:@"SBHIconManagerRootViewControllerDidChange" object:self];
   }
 
   [(SBHIconManager *)self setResettingRootIconLists:0];
 }
 
-- (id)_createAppropriateRootViewControllerForRootFolder:(id)a3
+- (id)_createAppropriateRootViewControllerForRootFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self homeScreenSettings];
-  if ([v5 usesMinimumViableHomeScreen])
+  folderCopy = folder;
+  homeScreenSettings = [(SBHIconManager *)self homeScreenSettings];
+  if ([homeScreenSettings usesMinimumViableHomeScreen])
   {
     v6 = MGGetBoolAnswer();
 
     if (v6)
     {
-      v7 = [(SBHIconManager *)self _createRootTableControllerForRootFolder:v4];
+      v7 = [(SBHIconManager *)self _createRootTableControllerForRootFolder:folderCopy];
       goto LABEL_6;
     }
   }
@@ -4157,40 +4157,40 @@ LABEL_22:
   {
   }
 
-  v7 = [(SBHIconManager *)self _createRootFolderControllerForRootFolder:v4];
+  v7 = [(SBHIconManager *)self _createRootFolderControllerForRootFolder:folderCopy];
 LABEL_6:
   v8 = v7;
 
   return v8;
 }
 
-- (void)_configureRootFolderConfiguration:(id)a3
+- (void)_configureRootFolderConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self listLayoutProvider];
-  [v4 setListLayoutProvider:v5];
+  configurationCopy = configuration;
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  [configurationCopy setListLayoutProvider:listLayoutProvider];
 
-  [v4 setOrientation:{-[SBHIconManager interfaceOrientation](self, "interfaceOrientation")}];
-  [v4 setAllowedOrientations:{-[SBHIconManager possibleInterfaceOrientations](self, "possibleInterfaceOrientations")}];
-  [v4 setIconViewProvider:self];
-  v6 = [(SBHIconManager *)self folderIconImageCache];
-  [v4 setFolderIconImageCache:v6];
+  [configurationCopy setOrientation:{-[SBHIconManager interfaceOrientation](self, "interfaceOrientation")}];
+  [configurationCopy setAllowedOrientations:{-[SBHIconManager possibleInterfaceOrientations](self, "possibleInterfaceOrientations")}];
+  [configurationCopy setIconViewProvider:self];
+  folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+  [configurationCopy setFolderIconImageCache:folderIconImageCache];
 
-  v7 = [(SBHIconManager *)self iconImageCache];
-  [v4 setIconImageCache:v7];
+  iconImageCache = [(SBHIconManager *)self iconImageCache];
+  [configurationCopy setIconImageCache:iconImageCache];
 
-  v8 = [(SBHIconManager *)self legibilitySettings];
-  [v4 setLegibilitySettings:v8];
+  legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+  [configurationCopy setLegibilitySettings:legibilitySettings];
 
-  [v4 setDelegate:self];
-  [v4 setFolderDelegate:self];
-  [v4 setShowsDoneButtonWhileEditing:{-[SBHIconManager showsDoneButtonWhileEditing](self, "showsDoneButtonWhileEditing")}];
+  [configurationCopy setDelegate:self];
+  [configurationCopy setFolderDelegate:self];
+  [configurationCopy setShowsDoneButtonWhileEditing:{-[SBHIconManager showsDoneButtonWhileEditing](self, "showsDoneButtonWhileEditing")}];
   if ([(SBHIconManager *)self isFloatingDockSupported])
   {
     v9 = objc_alloc_init(SBHLibraryOverscrollViewController);
-    [v4 setTrailingCustomViewController:v9];
+    [configurationCopy setTrailingCustomViewController:v9];
 
-    [v4 setDockExternal:1];
+    [configurationCopy setDockExternal:1];
     v10 = SBLogIcon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -4200,29 +4200,29 @@ LABEL_6:
   }
 }
 
-- (id)_createRootFolderControllerForRootFolder:(id)a3
+- (id)_createRootFolderControllerForRootFolder:(id)folder
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  folderCopy = folder;
   v5 = [(SBHIconManager *)self controllerClassForFolderClass:objc_opt_class()];
   v6 = objc_alloc_init(SBRootFolderControllerConfiguration);
-  [(SBFolderControllerConfiguration *)v6 setFolder:v4];
+  [(SBFolderControllerConfiguration *)v6 setFolder:folderCopy];
   [(SBHIconManager *)self _configureRootFolderConfiguration:v6];
-  v7 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v26 = v5;
-    [v7 iconManager:self willUseRootFolderControllerConfiguration:v6];
-    v8 = [(SBHIconManager *)self legibilitySettings];
-    v9 = [(SBRootFolderControllerConfiguration *)v6 leadingCustomViewControllers];
-    if (v9)
+    [delegate iconManager:self willUseRootFolderControllerConfiguration:v6];
+    legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+    leadingCustomViewControllers = [(SBRootFolderControllerConfiguration *)v6 leadingCustomViewControllers];
+    if (leadingCustomViewControllers)
     {
-      [(SBHIconManager *)self setLeadingCustomViewControllers:v9];
+      [(SBHIconManager *)self setLeadingCustomViewControllers:leadingCustomViewControllers];
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v10 = v9;
+      v10 = leadingCustomViewControllers;
       v11 = [v10 countByEnumeratingWithState:&v31 objects:v38 count:16];
       if (v11)
       {
@@ -4237,7 +4237,7 @@ LABEL_6:
               objc_enumerationMutation(v10);
             }
 
-            [*(*(&v31 + 1) + 8 * i) setLegibilitySettings:v8];
+            [*(*(&v31 + 1) + 8 * i) setLegibilitySettings:legibilitySettings];
           }
 
           v12 = [v10 countByEnumeratingWithState:&v31 objects:v38 count:16];
@@ -4247,16 +4247,16 @@ LABEL_6:
       }
     }
 
-    v15 = [(SBRootFolderControllerConfiguration *)v6 trailingCustomViewControllers];
-    if (v15)
+    trailingCustomViewControllers = [(SBRootFolderControllerConfiguration *)v6 trailingCustomViewControllers];
+    if (trailingCustomViewControllers)
     {
-      v25 = v4;
-      [(SBHIconManager *)self setTrailingCustomViewControllers:v15];
+      v25 = folderCopy;
+      [(SBHIconManager *)self setTrailingCustomViewControllers:trailingCustomViewControllers];
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v16 = v15;
+      v16 = trailingCustomViewControllers;
       v17 = [v16 countByEnumeratingWithState:&v27 objects:v37 count:16];
       if (v17)
       {
@@ -4271,7 +4271,7 @@ LABEL_6:
               objc_enumerationMutation(v16);
             }
 
-            [*(*(&v27 + 1) + 8 * j) setLegibilitySettings:v8];
+            [*(*(&v27 + 1) + 8 * j) setLegibilitySettings:legibilitySettings];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v27 objects:v37 count:16];
@@ -4280,7 +4280,7 @@ LABEL_6:
         while (v18);
       }
 
-      v4 = v25;
+      folderCopy = v25;
     }
 
     v5 = v26;
@@ -4291,16 +4291,16 @@ LABEL_6:
   [v21 addPageStateObserver:self];
   [v21 setContentVisibility:{-[SBHIconManager effectiveRootFolderControllerContentVisibility](self, "effectiveRootFolderControllerContentVisibility")}];
   [(SBHIconManager *)self setRootFolderController:v21];
-  v22 = [(SBHIconManager *)self postResetPathIdentifiers];
-  if (v22)
+  postResetPathIdentifiers = [(SBHIconManager *)self postResetPathIdentifiers];
+  if (postResetPathIdentifiers)
   {
-    if (([v21 restoreExpandedPathIdentifiers:v22] & 1) == 0)
+    if (([v21 restoreExpandedPathIdentifiers:postResetPathIdentifiers] & 1) == 0)
     {
       v23 = SBLogCommon();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v36 = v22;
+        v36 = postResetPathIdentifiers;
         _os_log_impl(&dword_1BEB18000, v23, OS_LOG_TYPE_INFO, "_resetRootIconLists: restoreExpandedPathIdentifiers: failed with path '%@'.", buf, 0xCu);
       }
     }
@@ -4310,69 +4310,69 @@ LABEL_6:
 
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self didCreateRootFolderController:v21];
+    [delegate iconManager:self didCreateRootFolderController:v21];
   }
 
   return v21;
 }
 
-- (id)_createRootTableControllerForRootFolder:(id)a3
+- (id)_createRootTableControllerForRootFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = objc_alloc_init(SBHIconRootTableViewController);
-  v6 = [(SBHIconManager *)self legibilitySettings];
-  [(SBHIconRootTableViewController *)v5 setLegibilitySettings:v6];
+  legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+  [(SBHIconRootTableViewController *)v5 setLegibilitySettings:legibilitySettings];
 
-  v7 = [(SBHIconManager *)self folderIconImageCache];
-  [(SBHIconRootTableViewController *)v5 setFolderIconImageCache:v7];
+  folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+  [(SBHIconRootTableViewController *)v5 setFolderIconImageCache:folderIconImageCache];
 
-  v8 = [(SBHIconManager *)self iconImageCache];
-  [(SBHIconRootTableViewController *)v5 setIconImageCache:v8];
+  iconImageCache = [(SBHIconManager *)self iconImageCache];
+  [(SBHIconRootTableViewController *)v5 setIconImageCache:iconImageCache];
 
-  [(SBHIconRootTableViewController *)v5 setFolder:v4];
+  [(SBHIconRootTableViewController *)v5 setFolder:folderCopy];
 
   return v5;
 }
 
 - (void)_ensureRootFolderController
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
 
-  if (!v3)
+  if (!rootFolderController)
   {
 
     [(SBHIconManager *)self _finishResetRootIconLists];
   }
 }
 
-- (void)setRootFolderController:(id)a3
+- (void)setRootFolderController:(id)controller
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  controllerCopy = controller;
   rootFolderController = self->_rootFolderController;
-  if (rootFolderController != v5)
+  if (rootFolderController != controllerCopy)
   {
     if (rootFolderController)
     {
-      v7 = [(SBHIconManager *)self rootFolderControllerIconStyleChangeRegistration];
-      if (v7)
+      rootFolderControllerIconStyleChangeRegistration = [(SBHIconManager *)self rootFolderControllerIconStyleChangeRegistration];
+      if (rootFolderControllerIconStyleChangeRegistration)
       {
-        [(SBRootFolderController *)self->_rootFolderController unregisterForTraitChanges:v7];
+        [(SBRootFolderController *)self->_rootFolderController unregisterForTraitChanges:rootFolderControllerIconStyleChangeRegistration];
         [(SBHIconManager *)self setRootFolderControllerIconStyleChangeRegistration:0];
       }
     }
 
-    objc_storeStrong(&self->_rootFolderController, a3);
-    if (v5)
+    objc_storeStrong(&self->_rootFolderController, controller);
+    if (controllerCopy)
     {
       v8 = objc_opt_self();
       v16[0] = v8;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-      v10 = [(SBRootFolderController *)v5 registerForTraitChanges:v9 withTarget:self action:sel__precacheDataForRootIconsAfterIconAppearanceChange];
+      v10 = [(SBRootFolderController *)controllerCopy registerForTraitChanges:v9 withTarget:self action:sel__precacheDataForRootIconsAfterIconAppearanceChange];
 
       [(SBHIconManager *)self setRootFolderControllerIconStyleChangeRegistration:v10];
-      v11 = [(SBRootFolderController *)v5 traitCollection];
-      [v11 displayScale];
+      traitCollection = [(SBRootFolderController *)controllerCopy traitCollection];
+      [traitCollection displayScale];
       v13 = v12;
 
       [(SBIconLabelImageCache *)self->_labelImageCache scale];
@@ -4386,13 +4386,13 @@ LABEL_6:
   }
 }
 
-- (void)setLeadingCustomViewControllers:(id)a3
+- (void)setLeadingCustomViewControllers:(id)controllers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   if ((BSEqualArrays() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [controllersCopy copy];
     leadingCustomViewControllers = self->_leadingCustomViewControllers;
     self->_leadingCustomViewControllers = v5;
 
@@ -4400,7 +4400,7 @@ LABEL_6:
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = controllersCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -4451,13 +4451,13 @@ LABEL_6:
   }
 }
 
-- (void)setTrailingCustomViewControllers:(id)a3
+- (void)setTrailingCustomViewControllers:(id)controllers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   if ((BSEqualArrays() & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [controllersCopy copy];
     trailingCustomViewControllers = self->_trailingCustomViewControllers;
     self->_trailingCustomViewControllers = v5;
 
@@ -4465,7 +4465,7 @@ LABEL_6:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = controllersCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -4502,30 +4502,30 @@ LABEL_6:
   }
 }
 
-- (void)configureLibraryViewController:(id)a3
+- (void)configureLibraryViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setBadgeBehaviorProvider:self];
-  [v4 setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+  controllerCopy = controller;
+  [controllerCopy setBadgeBehaviorProvider:self];
+  [controllerCopy setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
 }
 
-- (void)_ensureWidgetIsVisibleForDebuggingWithDescriptor:(id)a3 sizeClass:(int64_t)a4
+- (void)_ensureWidgetIsVisibleForDebuggingWithDescriptor:(id)descriptor sizeClass:(int64_t)class
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self iconModel];
-  v8 = [v6 extensionBundleIdentifier];
-  v9 = [v6 kind];
-  v10 = [v7 widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:v8 kind:v9 sizeClass:a4];
+  descriptorCopy = descriptor;
+  iconModel = [(SBHIconManager *)self iconModel];
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  kind = [descriptorCopy kind];
+  v10 = [iconModel widgetIconsContainingWidgetsMatchingExtensionBundleIdentifier:extensionBundleIdentifier kind:kind sizeClass:class];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_sizeClass___block_invoke;
   v13[3] = &unk_1E808B200;
   v14 = v10;
-  v15 = v6;
-  v16 = self;
-  v17 = a4;
-  v11 = v6;
+  v15 = descriptorCopy;
+  selfCopy = self;
+  classCopy = class;
+  v11 = descriptorCopy;
   v12 = v10;
   dispatch_async(MEMORY[0x1E69E96A0], v13);
 }
@@ -4632,30 +4632,30 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
   return v8;
 }
 
-- (void)setListLayoutProvider:(id)a3 animated:(BOOL)a4
+- (void)setListLayoutProvider:(id)provider animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_listLayoutProvider != v7)
+  animatedCopy = animated;
+  providerCopy = provider;
+  if (self->_listLayoutProvider != providerCopy)
   {
     p_listLayoutProvider = &self->_listLayoutProvider;
     if ([(SBHIconManager *)self hasRootViewController])
     {
-      v9 = [(SBHIconManager *)self isResettingRootIconLists];
+      isResettingRootIconLists = [(SBHIconManager *)self isResettingRootIconLists];
     }
 
     else
     {
-      v9 = 1;
+      isResettingRootIconLists = 1;
     }
 
-    v10 = SBHIconListLayoutProviderListGridSizeMatchesListLayoutProvider(*p_listLayoutProvider, v7, @"SBIconLocationRoot", 1);
-    if (!v9 && !v10)
+    v10 = SBHIconListLayoutProviderListGridSizeMatchesListLayoutProvider(*p_listLayoutProvider, providerCopy, @"SBIconLocationRoot", 1);
+    if (!isResettingRootIconLists && !v10)
     {
       [(SBHIconManager *)self _prepareToResetRootIconLists];
     }
 
-    v37 = [(SBIconListLayoutProvider *)v7 layoutForIconLocation:@"SBIconLocationRoot"];
+    v37 = [(SBIconListLayoutProvider *)providerCopy layoutForIconLocation:@"SBIconLocationRoot"];
     [v37 iconImageInfo];
     v12 = v11;
     v14 = v13;
@@ -4676,38 +4676,38 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
     self->_labelImageCache = 0;
 
     v27 = [(SBHIconManager *)self addWidgetSheetConfigurationManagerCreatingIfNecessary:0];
-    [v27 setListLayoutProvider:v7];
+    [v27 setListLayoutProvider:providerCopy];
 
-    objc_storeStrong(&self->_listLayoutProvider, a3);
-    if (v9 || v10)
+    objc_storeStrong(&self->_listLayoutProvider, provider);
+    if (isResettingRootIconLists || v10)
     {
-      if (!v9 && v10)
+      if (!isResettingRootIconLists && v10)
       {
-        v28 = [(SBHIconManager *)self usageMonitor];
-        [v28 noteIconManagerListLayoutProviderChanged];
+        usageMonitor = [(SBHIconManager *)self usageMonitor];
+        [usageMonitor noteIconManagerListLayoutProviderChanged];
 
-        v29 = [(SBHIconManager *)self rootFolderController];
-        [v29 setListLayoutProvider:v7 animated:v4];
-        v30 = [(SBHIconManager *)self iconImageCache];
-        [v29 setIconImageCache:v30];
+        rootFolderController = [(SBHIconManager *)self rootFolderController];
+        [rootFolderController setListLayoutProvider:providerCopy animated:animatedCopy];
+        iconImageCache = [(SBHIconManager *)self iconImageCache];
+        [rootFolderController setIconImageCache:iconImageCache];
 
-        v31 = [(SBHIconManager *)self folderIconImageCache];
-        [v29 setFolderIconImageCache:v31];
+        folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+        [rootFolderController setFolderIconImageCache:folderIconImageCache];
 
-        v32 = [(SBHIconManager *)self todayViewControllers];
+        todayViewControllers = [(SBHIconManager *)self todayViewControllers];
         v38[0] = MEMORY[0x1E69E9820];
         v38[1] = 3221225472;
         v38[2] = __49__SBHIconManager_setListLayoutProvider_animated___block_invoke;
         v38[3] = &unk_1E808FD28;
-        v33 = v7;
+        v33 = providerCopy;
         v39 = v33;
-        v40 = v4;
-        [v32 enumerateObjectsUsingBlock:v38];
+        v40 = animatedCopy;
+        [todayViewControllers enumerateObjectsUsingBlock:v38];
 
-        v34 = [(SBHIconManager *)self floatingDockViewController];
-        [v34 setListLayoutProvider:v33 animated:v4];
+        floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+        [floatingDockViewController setListLayoutProvider:v33 animated:animatedCopy];
 
-        [(SBHIconManager *)self updateAppPredictionViewControllersWithListLayoutProvider:self->_listLayoutProvider oldListLayoutProvider:v19 animated:v4];
+        [(SBHIconManager *)self updateAppPredictionViewControllersWithListLayoutProvider:self->_listLayoutProvider oldListLayoutProvider:v19 animated:animatedCopy];
       }
     }
 
@@ -4716,41 +4716,41 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
       [(SBHIconManager *)self _finishResetRootIconListsReusingPreviousControllers:0];
     }
 
-    v35 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v35 iconManagerListLayoutProviderDidChange:self];
+      [delegate iconManagerListLayoutProviderDidChange:self];
     }
 
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 postNotificationName:@"SBHIconManagerListLayoutProviderDidChange" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SBHIconManagerListLayoutProviderDidChange" object:self];
   }
 }
 
-- (void)setListLayoutProviderLayoutOptions:(unint64_t)a3 animated:(BOOL)a4
+- (void)setListLayoutProviderLayoutOptions:(unint64_t)options animated:(BOOL)animated
 {
-  if (self->_listLayoutProviderLayoutOptions != a3)
+  if (self->_listLayoutProviderLayoutOptions != options)
   {
-    v5 = a4;
-    self->_listLayoutProviderLayoutOptions = a3;
-    v8 = [[SBHDefaultIconListLayoutProvider alloc] initWithLayoutOptions:a3];
-    [(SBHIconManager *)self setListLayoutProvider:v8 animated:v5];
-    v7 = [(SBHIconManager *)self floatingDockViewController];
-    [(SBHIconManager *)self _updateMaximumEditingIconSizeForFloatingDockViewController:v7];
+    animatedCopy = animated;
+    self->_listLayoutProviderLayoutOptions = options;
+    v8 = [[SBHDefaultIconListLayoutProvider alloc] initWithLayoutOptions:options];
+    [(SBHIconManager *)self setListLayoutProvider:v8 animated:animatedCopy];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    [(SBHIconManager *)self _updateMaximumEditingIconSizeForFloatingDockViewController:floatingDockViewController];
   }
 }
 
-- (id)widgetMetricsProvider:(id)a3 listLayoutProviderForScreenType:(unint64_t)a4
+- (id)widgetMetricsProvider:(id)provider listLayoutProviderForScreenType:(unint64_t)type
 {
-  v6 = [(SBHIconManager *)self widgetMetricsDelegate];
+  widgetMetricsDelegate = [(SBHIconManager *)self widgetMetricsDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self widgetMetricsListLayoutProviderForScreenType:a4];
+    v7 = [widgetMetricsDelegate iconManager:self widgetMetricsListLayoutProviderForScreenType:type];
   }
 
   else
   {
-    v7 = [[SBHDefaultIconListLayoutProvider alloc] initWithScreenType:a4];
+    v7 = [[SBHDefaultIconListLayoutProvider alloc] initWithScreenType:type];
   }
 
   v8 = v7;
@@ -4768,9 +4768,9 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
   return v6;
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  obj = [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:a3];
+  obj = [SBHLegibilitySettings legibilitySettingsForLegibilitySettings:settings];
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_legibilitySettings, obj);
@@ -4782,23 +4782,23 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
 {
   v38 = *MEMORY[0x1E69E9840];
   [(SBHIconManager *)self setPrecachedContentSizeCategory:0];
-  v3 = [(SBHIconManager *)self legibilitySettings];
-  v4 = [(SBHIconManager *)self iconLabelImageCache];
-  [v4 setLegibilitySettings:v3];
+  legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+  iconLabelImageCache = [(SBHIconManager *)self iconLabelImageCache];
+  [iconLabelImageCache setLegibilitySettings:legibilitySettings];
 
   [(SBHIconManager *)self _precacheLabelsForRootIcons:SBHFeatureEnabled(0) ^ 1 reason:@"legibility settings were updated"];
-  v5 = [(SBHIconManager *)self rootViewController];
-  [v5 setLegibilitySettings:v3];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController setLegibilitySettings:legibilitySettings];
 
-  v6 = [(SBHIconManager *)self floatingDockViewController];
-  [v6 setLegibilitySettings:v3];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController setLegibilitySettings:legibilitySettings];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(SBHIconManager *)self leadingCustomViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  leadingCustomViewControllers = [(SBHIconManager *)self leadingCustomViewControllers];
+  v8 = [leadingCustomViewControllers countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4810,14 +4810,14 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
       {
         if (*v32 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(leadingCustomViewControllers);
         }
 
-        [*(*(&v31 + 1) + 8 * v11++) setLegibilitySettings:v3];
+        [*(*(&v31 + 1) + 8 * v11++) setLegibilitySettings:legibilitySettings];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
+      v9 = [leadingCustomViewControllers countByEnumeratingWithState:&v31 objects:v37 count:16];
     }
 
     while (v9);
@@ -4827,8 +4827,8 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = [(SBHIconManager *)self trailingCustomViewControllers];
-  v13 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
+  trailingCustomViewControllers = [(SBHIconManager *)self trailingCustomViewControllers];
+  v13 = [trailingCustomViewControllers countByEnumeratingWithState:&v27 objects:v36 count:16];
   if (v13)
   {
     v14 = v13;
@@ -4840,28 +4840,28 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(trailingCustomViewControllers);
         }
 
-        [*(*(&v27 + 1) + 8 * v16++) setLegibilitySettings:v3];
+        [*(*(&v27 + 1) + 8 * v16++) setLegibilitySettings:legibilitySettings];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v27 objects:v36 count:16];
+      v14 = [trailingCustomViewControllers countByEnumeratingWithState:&v27 objects:v36 count:16];
     }
 
     while (v14);
   }
 
-  v17 = [(SBHIconManager *)self overlayTodayViewController];
-  [v17 setLegibilitySettings:v3];
+  overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+  [overlayTodayViewController setLegibilitySettings:legibilitySettings];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v18 = [(SBHIconManager *)self _libraryViewControllers];
-  v19 = [v18 countByEnumeratingWithState:&v23 objects:v35 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v19 = [_libraryViewControllers countByEnumeratingWithState:&v23 objects:v35 count:16];
   if (v19)
   {
     v20 = v19;
@@ -4873,31 +4873,31 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
       {
         if (*v24 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [*(*(&v23 + 1) + 8 * v22++) setLegibilitySettings:v3];
+        [*(*(&v23 + 1) + 8 * v22++) setLegibilitySettings:legibilitySettings];
       }
 
       while (v20 != v22);
-      v20 = [v18 countByEnumeratingWithState:&v23 objects:v35 count:16];
+      v20 = [_libraryViewControllers countByEnumeratingWithState:&v23 objects:v35 count:16];
     }
 
     while (v20);
   }
 }
 
-- (void)setFloatingDockViewController:(id)a3
+- (void)setFloatingDockViewController:(id)controller
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_floatingDockViewController != v5)
+  controllerCopy = controller;
+  if (self->_floatingDockViewController != controllerCopy)
   {
     v6 = SBLogIcon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = 138543362;
-      v8 = v5;
+      v8 = controllerCopy;
       _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_INFO, "setting floating dock view controller to %{public}@", &v7, 0xCu);
     }
 
@@ -4905,44 +4905,44 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
     {
       [(SBHIconManager *)self _prepareToResetRootIconLists];
       [(SBFloatingDockViewController *)self->_floatingDockViewController setIconDelegate:0];
-      objc_storeStrong(&self->_floatingDockViewController, a3);
-      [(SBHIconManager *)self configureFloatingDockViewController:v5];
+      objc_storeStrong(&self->_floatingDockViewController, controller);
+      [(SBHIconManager *)self configureFloatingDockViewController:controllerCopy];
       [(SBHIconManager *)self _finishResetRootIconLists];
     }
 
     else
     {
       [(SBFloatingDockViewController *)self->_floatingDockViewController setIconDelegate:0];
-      objc_storeStrong(&self->_floatingDockViewController, a3);
-      [(SBHIconManager *)self configureFloatingDockViewController:v5];
+      objc_storeStrong(&self->_floatingDockViewController, controller);
+      [(SBHIconManager *)self configureFloatingDockViewController:controllerCopy];
     }
   }
 }
 
-- (void)configureFloatingDockViewController:(id)a3
+- (void)configureFloatingDockViewController:(id)controller
 {
-  v6 = a3;
-  v4 = [v6 iconDelegate];
-  if (([(SBHIconManager *)self isEqual:v4]& 1) == 0)
+  controllerCopy = controller;
+  iconDelegate = [controllerCopy iconDelegate];
+  if (([(SBHIconManager *)self isEqual:iconDelegate]& 1) == 0)
   {
-    [v6 setIconDelegate:0];
+    [controllerCopy setIconDelegate:0];
   }
 
-  v5 = [(SBHIconManager *)self legibilitySettings];
-  [v6 setLegibilitySettings:v5];
-  [(SBHIconManager *)self _updateMaximumEditingIconSizeForFloatingDockViewController:v6];
-  [v6 setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+  legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+  [controllerCopy setLegibilitySettings:legibilitySettings];
+  [(SBHIconManager *)self _updateMaximumEditingIconSizeForFloatingDockViewController:controllerCopy];
+  [controllerCopy setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
 }
 
-- (void)_updateMaximumEditingIconSizeForFloatingDockViewController:(id)a3
+- (void)_updateMaximumEditingIconSizeForFloatingDockViewController:(id)controller
 {
-  v11 = a3;
-  v4 = [(SBHIconManager *)self listLayoutProvider];
-  v5 = [v4 layoutForIconLocation:@"SBIconLocationFloatingDock"];
+  controllerCopy = controller;
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v5 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationFloatingDock"];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 floatingDockVisualConfiguration];
-    [v6 maximumEditingIconSize];
+    floatingDockVisualConfiguration = [v5 floatingDockVisualConfiguration];
+    [floatingDockVisualConfiguration maximumEditingIconSize];
     v8 = v7;
     v10 = v9;
   }
@@ -4953,16 +4953,16 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
     v10 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  [v11 setMaximumEditingIconSize:{v8, v10}];
+  [controllerCopy setMaximumEditingIconSize:{v8, v10}];
 }
 
-- (id)floatingDockViewControllerForView:(id)a3
+- (id)floatingDockViewControllerForView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self floatingDockViewControllerForView:v4];
+    v6 = [delegate iconManager:self floatingDockViewControllerForView:viewCopy];
   }
 
   else
@@ -4973,89 +4973,89 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
   return v6;
 }
 
-- (void)setOverlayTodayViewController:(id)a3
+- (void)setOverlayTodayViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   overlayTodayViewController = self->_overlayTodayViewController;
-  if (overlayTodayViewController != v5)
+  if (overlayTodayViewController != controllerCopy)
   {
-    v9 = v5;
+    v9 = controllerCopy;
     [overlayTodayViewController removeObserver:self];
-    objc_storeStrong(&self->_overlayTodayViewController, a3);
+    objc_storeStrong(&self->_overlayTodayViewController, controller);
     v7 = self->_overlayTodayViewController;
-    v8 = [(SBHIconManager *)self legibilitySettings];
-    [(SBHTodayViewControlling *)v7 setLegibilitySettings:v8];
+    legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+    [(SBHTodayViewControlling *)v7 setLegibilitySettings:legibilitySettings];
 
     overlayTodayViewController = [(SBHIconManager *)self isUsageMonitoringEnabled];
-    v5 = v9;
+    controllerCopy = v9;
     if (overlayTodayViewController)
     {
       overlayTodayViewController = [(SBHTodayViewControlling *)self->_overlayTodayViewController addObserver:self];
-      v5 = v9;
+      controllerCopy = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](overlayTodayViewController, v5);
+  MEMORY[0x1EEE66BB8](overlayTodayViewController, controllerCopy);
 }
 
-- (void)setOverlayCoverSheetTodayViewController:(id)a3
+- (void)setOverlayCoverSheetTodayViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   overlayCoverSheetTodayViewController = self->_overlayCoverSheetTodayViewController;
-  if (overlayCoverSheetTodayViewController != v5)
+  if (overlayCoverSheetTodayViewController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [overlayCoverSheetTodayViewController removeObserver:self];
-    objc_storeStrong(&self->_overlayCoverSheetTodayViewController, a3);
+    objc_storeStrong(&self->_overlayCoverSheetTodayViewController, controller);
     overlayCoverSheetTodayViewController = [(SBHIconManager *)self isUsageMonitoringEnabled];
-    v5 = v7;
+    controllerCopy = v7;
     if (overlayCoverSheetTodayViewController)
     {
       overlayCoverSheetTodayViewController = [(SBHTodayViewControlling *)self->_overlayCoverSheetTodayViewController addObserver:self];
-      v5 = v7;
+      controllerCopy = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](overlayCoverSheetTodayViewController, v5);
+  MEMORY[0x1EEE66BB8](overlayCoverSheetTodayViewController, controllerCopy);
 }
 
 - (id)todayViewControllers
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(SBHIconManager *)self overlayTodayViewController];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+  if (overlayTodayViewController)
   {
-    [v3 addObject:v4];
+    [array addObject:overlayTodayViewController];
   }
 
-  v5 = [(SBHIconManager *)self overlayCoverSheetTodayViewController];
-  if (v5)
+  overlayCoverSheetTodayViewController = [(SBHIconManager *)self overlayCoverSheetTodayViewController];
+  if (overlayCoverSheetTodayViewController)
   {
-    [v3 addObject:v5];
+    [array addObject:overlayCoverSheetTodayViewController];
   }
 
-  v6 = [(SBHIconManager *)self leadingTodayViewController];
-  if (v6)
+  leadingTodayViewController = [(SBHIconManager *)self leadingTodayViewController];
+  if (leadingTodayViewController)
   {
-    [v3 addObject:v6];
+    [array addObject:leadingTodayViewController];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setOverlayLibraryViewController:(id)a3
+- (void)setOverlayLibraryViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_overlayLibraryViewController != v5)
+  controllerCopy = controller;
+  if (self->_overlayLibraryViewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_overlayLibraryViewController, a3);
+    v8 = controllerCopy;
+    objc_storeStrong(&self->_overlayLibraryViewController, controller);
     overlayLibraryViewController = self->_overlayLibraryViewController;
-    v7 = [(SBHIconManager *)self legibilitySettings];
-    [(SBHLibraryViewController *)overlayLibraryViewController setLegibilitySettings:v7];
+    legibilitySettings = [(SBHIconManager *)self legibilitySettings];
+    [(SBHLibraryViewController *)overlayLibraryViewController setLegibilitySettings:legibilitySettings];
 
     [(SBHIconManager *)self configureLibraryViewController:v8];
-    v5 = v8;
+    controllerCopy = v8;
   }
 }
 
@@ -5071,17 +5071,17 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
 
 - (BOOL)isFloatingDockSupported
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
 
-  v4 = [(SBHIconManager *)self delegate];
-  if (v3)
+  delegate = [(SBHIconManager *)self delegate];
+  if (floatingDockViewController)
   {
     v5 = 1;
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 isFloatingDockSupportedForIconManager:self];
+    v5 = [delegate isFloatingDockSupportedForIconManager:self];
   }
 
   else
@@ -5099,10 +5099,10 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
     return 0;
   }
 
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isFloatingDockUtilitiesSupportedForIconManager:self];
+    v4 = [delegate isFloatingDockUtilitiesSupportedForIconManager:self];
   }
 
   else
@@ -5115,17 +5115,17 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
 
 - (BOOL)isFloatingDockVisible
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
 
-  if (!v3)
+  if (!floatingDockViewController)
   {
     return 0;
   }
 
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 isFloatingDockVisibleForIconManager:self];
+    v5 = [delegate isFloatingDockVisibleForIconManager:self];
   }
 
   else
@@ -5136,65 +5136,65 @@ uint64_t __77__SBHIconManager__ensureWidgetIsVisibleForDebuggingWithDescriptor_s
   return v5;
 }
 
-- (void)setOverlayCoverSheetTodayViewVisible:(BOOL)a3
+- (void)setOverlayCoverSheetTodayViewVisible:(BOOL)visible
 {
-  if (self->_overlayCoverSheetTodayViewVisible != a3)
+  if (self->_overlayCoverSheetTodayViewVisible != visible)
   {
-    v4 = a3;
-    self->_overlayCoverSheetTodayViewVisible = a3;
-    v6 = [(SBHIconManager *)self usageMonitor];
-    v8 = v6;
-    if (v4)
+    visibleCopy = visible;
+    self->_overlayCoverSheetTodayViewVisible = visible;
+    usageMonitor = [(SBHIconManager *)self usageMonitor];
+    v8 = usageMonitor;
+    if (visibleCopy)
     {
-      [v6 noteIconManagerCoverSheetTodayViewDidAppear];
-      v7 = [(SBHIconManager *)self overlayCoverSheetTodayViewController];
-      [(SBHIconManager *)self informUsageMonitorOfVisibleIconRectsForTodayViewController:v7];
+      [usageMonitor noteIconManagerCoverSheetTodayViewDidAppear];
+      overlayCoverSheetTodayViewController = [(SBHIconManager *)self overlayCoverSheetTodayViewController];
+      [(SBHIconManager *)self informUsageMonitorOfVisibleIconRectsForTodayViewController:overlayCoverSheetTodayViewController];
     }
 
     else
     {
-      [v6 noteIconManagerCoverSheetTodayViewDidDisappear];
+      [usageMonitor noteIconManagerCoverSheetTodayViewDidDisappear];
     }
   }
 }
 
-- (void)setOverlayTodayViewVisible:(BOOL)a3
+- (void)setOverlayTodayViewVisible:(BOOL)visible
 {
-  if (self->_overlayTodayViewVisible != a3)
+  if (self->_overlayTodayViewVisible != visible)
   {
-    self->_overlayTodayViewVisible = a3;
+    self->_overlayTodayViewVisible = visible;
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
-    v5 = [(SBHIconManager *)self overlayTodayViewController];
-    [(SBHIconManager *)self informUsageMonitorOfTodayViewVisibilityChange:v5];
+    overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+    [(SBHIconManager *)self informUsageMonitorOfTodayViewVisibilityChange:overlayTodayViewController];
   }
 }
 
-- (void)setOverlayTodayViewVisibilityTransitioning:(BOOL)a3
+- (void)setOverlayTodayViewVisibilityTransitioning:(BOOL)transitioning
 {
-  if (self->_overlayTodayViewVisibilityTransitioning != a3)
+  if (self->_overlayTodayViewVisibilityTransitioning != transitioning)
   {
-    self->_overlayTodayViewVisibilityTransitioning = a3;
+    self->_overlayTodayViewVisibilityTransitioning = transitioning;
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
   }
 }
 
-- (void)setOverlayTodayViewVisible:(BOOL)a3 todayViewTransitioning:(BOOL)a4
+- (void)setOverlayTodayViewVisible:(BOOL)visible todayViewTransitioning:(BOOL)transitioning
 {
-  v4 = a4;
-  v5 = a3;
+  transitioningCopy = transitioning;
+  visibleCopy = visible;
   overlayTodayViewVisible = self->_overlayTodayViewVisible;
-  if (!a4)
+  if (!transitioning)
   {
     if (!self->_overlayTodayViewVisibilityTransitioning)
     {
       goto LABEL_10;
     }
 
-    if (!a3 && self->_overlayTodayViewIsDismissingFromFullyPresented)
+    if (!visible && self->_overlayTodayViewIsDismissingFromFullyPresented)
     {
-      v9 = [(SBHIconManager *)self rootFolderController];
-      v10 = [v9 rootFolderView];
-      [v10 _flashPageDotsForReason:@"today-view-dismiss"];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      rootFolderView = [rootFolderController rootFolderView];
+      [rootFolderView _flashPageDotsForReason:@"today-view-dismiss"];
     }
 
     v8 = 0;
@@ -5209,12 +5209,12 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (overlayTodayViewVisible == v5)
+  if (overlayTodayViewVisible == visibleCopy)
   {
-    if (self->_overlayTodayViewVisibilityTransitioning != v4)
+    if (self->_overlayTodayViewVisibilityTransitioning != transitioningCopy)
     {
-      self->_overlayTodayViewVisible = v5;
-      self->_overlayTodayViewVisibilityTransitioning = v4;
+      self->_overlayTodayViewVisible = visibleCopy;
+      self->_overlayTodayViewVisibilityTransitioning = transitioningCopy;
 
       [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
     }
@@ -5222,37 +5222,37 @@ LABEL_10:
 
   else
   {
-    self->_overlayTodayViewVisible = v5;
-    self->_overlayTodayViewVisibilityTransitioning = v4;
+    self->_overlayTodayViewVisible = visibleCopy;
+    self->_overlayTodayViewVisibilityTransitioning = transitioningCopy;
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
-    v11 = [(SBHIconManager *)self overlayTodayViewController];
-    [(SBHIconManager *)self informUsageMonitorOfTodayViewVisibilityChange:v11];
+    overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+    [(SBHIconManager *)self informUsageMonitorOfTodayViewVisibilityChange:overlayTodayViewController];
   }
 }
 
-- (void)informUsageMonitorOfTodayViewVisibilityChange:(id)a3
+- (void)informUsageMonitorOfTodayViewVisibilityChange:(id)change
 {
-  v5 = a3;
-  v4 = [(SBHIconManager *)self usageMonitor];
+  changeCopy = change;
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
   if ([(SBHIconManager *)self isTodayViewEffectivelyVisible])
   {
-    [v4 noteIconManagerOverlayTodayViewDidAppear];
-    [(SBHIconManager *)self informUsageMonitorOfVisibleIconRectsForTodayViewController:v5];
+    [usageMonitor noteIconManagerOverlayTodayViewDidAppear];
+    [(SBHIconManager *)self informUsageMonitorOfVisibleIconRectsForTodayViewController:changeCopy];
   }
 
   else
   {
-    [v4 noteIconManagerOverlayTodayViewDidDisappear];
+    [usageMonitor noteIconManagerOverlayTodayViewDidDisappear];
   }
 }
 
-- (void)informUsageMonitorOfVisibleIconRectsForTodayViewController:(id)a3
+- (void)informUsageMonitorOfVisibleIconRectsForTodayViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SBHIconManager *)self isUsageMonitoringEnabled])
   {
-    v5 = [v4 scrollView];
-    [v5 visibleBounds];
+    scrollView = [controllerCopy scrollView];
+    [scrollView visibleBounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -5266,14 +5266,14 @@ LABEL_10:
     *&v19[6] = v10;
     *&v19[7] = v12;
     v14 = _Block_copy(v19);
-    v15 = [v4 listView];
-    v16 = [v15 iconVisibilityInfoForRect:1 normalized:{v7, v9, v11, v13}];
-    v14[2](v14, v15);
-    v17 = [v16 visibleIconRects];
-    v18 = [(SBHIconManager *)self usageMonitor];
+    listView = [controllerCopy listView];
+    v16 = [listView iconVisibilityInfoForRect:1 normalized:{v7, v9, v11, v13}];
+    v14[2](v14, listView);
+    visibleIconRects = [v16 visibleIconRects];
+    usageMonitor = [(SBHIconManager *)self usageMonitor];
     [(SBHIconManager *)self overlayCoverSheetTodayViewController];
 
-    [v18 noteIconManagerTodayViewAtLocation:1 didScrollToRevealIcons:v17];
+    [usageMonitor noteIconManagerTodayViewAtLocation:1 didScrollToRevealIcons:visibleIconRects];
   }
 }
 
@@ -5379,29 +5379,29 @@ void __77__SBHIconManager_informUsageMonitorOfVisibleIconRectsForTodayViewContro
   }
 }
 
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible
 {
-  if (self->_mainDisplayLibraryViewVisible != a3)
+  if (self->_mainDisplayLibraryViewVisible != visible)
   {
-    self->_mainDisplayLibraryViewVisible = a3;
+    self->_mainDisplayLibraryViewVisible = visible;
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
   }
 }
 
-- (void)setMainDisplayLibraryViewVisibilityTransitioning:(BOOL)a3
+- (void)setMainDisplayLibraryViewVisibilityTransitioning:(BOOL)transitioning
 {
-  if (self->_mainDisplayLibraryViewVisibilityTransitioning != a3)
+  if (self->_mainDisplayLibraryViewVisibilityTransitioning != transitioning)
   {
-    self->_mainDisplayLibraryViewVisibilityTransitioning = a3;
+    self->_mainDisplayLibraryViewVisibilityTransitioning = transitioning;
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
   }
 }
 
-- (void)setMainDisplayLibraryViewVisible:(BOOL)a3 libraryViewTransitioning:(BOOL)a4
+- (void)setMainDisplayLibraryViewVisible:(BOOL)visible libraryViewTransitioning:(BOOL)transitioning
 {
-  v4 = a4;
-  v5 = a3;
-  if (a4)
+  transitioningCopy = transitioning;
+  visibleCopy = visible;
+  if (transitioning)
   {
     if (!self->_mainDisplayLibraryViewVisibilityTransitioning)
     {
@@ -5413,21 +5413,21 @@ LABEL_9:
 
   else if (self->_mainDisplayLibraryViewVisibilityTransitioning)
   {
-    if (!a3 && self->_mainDisplayLibraryViewIsDismissingFromFullyPresented)
+    if (!visible && self->_mainDisplayLibraryViewIsDismissingFromFullyPresented)
     {
-      v8 = [(SBHIconManager *)self rootFolderController];
-      v9 = [v8 rootFolderView];
-      [v9 _flashPageDotsForReason:@"library-dismiss"];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      rootFolderView = [rootFolderController rootFolderView];
+      [rootFolderView _flashPageDotsForReason:@"library-dismiss"];
     }
 
     mainDisplayLibraryViewVisible = 0;
     goto LABEL_9;
   }
 
-  if (self->_mainDisplayLibraryViewVisible != v5 || self->_mainDisplayLibraryViewVisibilityTransitioning != v4)
+  if (self->_mainDisplayLibraryViewVisible != visibleCopy || self->_mainDisplayLibraryViewVisibilityTransitioning != transitioningCopy)
   {
-    self->_mainDisplayLibraryViewVisible = v5;
-    self->_mainDisplayLibraryViewVisibilityTransitioning = v4;
+    self->_mainDisplayLibraryViewVisible = visibleCopy;
+    self->_mainDisplayLibraryViewVisibilityTransitioning = transitioningCopy;
 
     [(SBHIconManager *)self _updateOverlayOcclusionForRootFolderController];
   }
@@ -5436,9 +5436,9 @@ LABEL_9:
 - (void)_updateOverlayOcclusionForRootFolderController
 {
   v4 = self->_overlayTodayViewVisible || self->_mainDisplayLibraryViewVisible;
-  v5 = [(SBHIconManager *)self effectiveRootFolderControllerContentVisibility];
+  effectiveRootFolderControllerContentVisibility = [(SBHIconManager *)self effectiveRootFolderControllerContentVisibility];
   [(SBRootFolderController *)self->_rootFolderController setOccludedByOverlay:v4];
-  [(SBFolderController *)self->_rootFolderController setContentVisibility:v5];
+  [(SBFolderController *)self->_rootFolderController setContentVisibility:effectiveRootFolderControllerContentVisibility];
   rootFolderController = self->_rootFolderController;
   v7 = NSStringFromSelector(a2);
   [(SBRootFolderController *)rootFolderController setParallaxDisabled:v4 forReason:v7];
@@ -5446,19 +5446,19 @@ LABEL_9:
 
 - (void)presentTodayOverlay
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 presentTodayOverlayForIconManager:self];
+    [delegate presentTodayOverlayForIconManager:self];
   }
 }
 
 - (int64_t)listsFixedIconLocationBehavior
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconManagerListsFixedIconLocationBehavior:self];
+    v4 = [delegate iconManagerListsFixedIconLocationBehavior:self];
   }
 
   else
@@ -5471,10 +5471,10 @@ LABEL_9:
 
 - (int64_t)listsIconDisplacementBehavior
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconManagerListsIconDisplacementBehavior:self];
+    v4 = [delegate iconManagerListsIconDisplacementBehavior:self];
   }
 
   else
@@ -5489,28 +5489,28 @@ LABEL_9:
 {
   if ([(SBHIconManager *)self listsFixedIconLocationBehavior])
   {
-    v3 = [(SBHIconManager *)self rootFolder];
-    [v3 enumerateListsWithOptions:4 usingBlock:&__block_literal_global_278];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    [rootFolder enumerateListsWithOptions:4 usingBlock:&__block_literal_global_278];
   }
 }
 
-- (id)_folderControllerForIcon:(id)a3 inLocation:(id)a4
+- (id)_folderControllerForIcon:(id)icon inLocation:(id)location
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || ![v6 isFolderIcon] || !SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", v7))
+  iconCopy = icon;
+  locationCopy = location;
+  if (!locationCopy || ![iconCopy isFolderIcon] || !SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", locationCopy))
   {
     goto LABEL_17;
   }
 
-  v8 = [(SBHIconManager *)self trailingLibraryViewController];
+  trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(SBHIconManager *)self _libraryViewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v10 = [_libraryViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = *v18;
@@ -5520,18 +5520,18 @@ LABEL_9:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v13 isDisplayingIcon:v6])
+        if ([v13 isDisplayingIcon:iconCopy])
         {
           v10 = v13;
           goto LABEL_14;
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [_libraryViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -5542,22 +5542,22 @@ LABEL_9:
   }
 
 LABEL_14:
-  if ((v9, (v14 = v8) == 0) && (v14 = v10) == 0 || ([v14 folderController], v15 = objc_claimAutoreleasedReturnValue(), v10, v8, !v15))
+  if ((_libraryViewControllers, (v14 = trailingLibraryViewController) == 0) && (v14 = v10) == 0 || ([v14 folderController], rootFolderController = objc_claimAutoreleasedReturnValue(), v10, trailingLibraryViewController, !rootFolderController))
   {
 LABEL_17:
-    v15 = [(SBHIconManager *)self rootFolderController];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
   }
 
-  return v15;
+  return rootFolderController;
 }
 
-- (void)setEditing:(BOOL)a3 withFeedbackBehavior:(id)a4 location:(CGPoint)a5
+- (void)setEditing:(BOOL)editing withFeedbackBehavior:(id)behavior location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v53 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (!a3)
+  behaviorCopy = behavior;
+  if (!editing)
   {
     if (![(SBHIconManager *)self isEditing])
     {
@@ -5575,22 +5575,22 @@ LABEL_7:
       self->_editingActivity = 0;
     }
 
-    v16 = [(SBHIconManager *)self rootFolder];
-    [v16 enumerateAllIconsWithOptions:1 usingBlock:&__block_literal_global_281];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    [rootFolder enumerateAllIconsWithOptions:1 usingBlock:&__block_literal_global_281];
 
     v13 = 0;
     v14 = 0;
     goto LABEL_10;
   }
 
-  v10 = [(SBHIconManager *)self isEditingAllowed];
-  if (v10 == [(SBHIconManager *)self isEditing])
+  isEditingAllowed = [(SBHIconManager *)self isEditingAllowed];
+  if (isEditingAllowed == [(SBHIconManager *)self isEditing])
   {
     goto LABEL_34;
   }
 
-  self->_editing = v10;
-  if (!v10)
+  self->_editing = isEditingAllowed;
+  if (!isEditingAllowed)
   {
     goto LABEL_7;
   }
@@ -5612,18 +5612,18 @@ LABEL_10:
   }
 
   [(SBHIconManager *)self setPreviewInteractingIconView:0];
-  v18 = [(SBHIconManager *)self floatingDockViewController];
-  [v18 setEditing:v13 animated:1];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController setEditing:v13 animated:1];
 
-  v19 = [(SBHIconManager *)self rootViewController];
-  [v19 setEditing:v13 animated:1];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController setEditing:v13 animated:1];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v20 = [(SBHIconManager *)self leadingCustomViewControllers];
-  v21 = [v20 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  leadingCustomViewControllers = [(SBHIconManager *)self leadingCustomViewControllers];
+  v21 = [leadingCustomViewControllers countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v21)
   {
     v22 = v21;
@@ -5634,13 +5634,13 @@ LABEL_10:
       {
         if (*v45 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(leadingCustomViewControllers);
         }
 
         [*(*(&v44 + 1) + 8 * i) setEditing:v13 animated:1];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v22 = [leadingCustomViewControllers countByEnumeratingWithState:&v44 objects:v50 count:16];
     }
 
     while (v22);
@@ -5650,8 +5650,8 @@ LABEL_10:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v25 = [(SBHIconManager *)self trailingCustomViewControllers];
-  v26 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  trailingCustomViewControllers = [(SBHIconManager *)self trailingCustomViewControllers];
+  v26 = [trailingCustomViewControllers countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v26)
   {
     v27 = v26;
@@ -5662,27 +5662,27 @@ LABEL_10:
       {
         if (*v41 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(trailingCustomViewControllers);
         }
 
         [*(*(&v40 + 1) + 8 * j) setEditing:v13 animated:1];
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v27 = [trailingCustomViewControllers countByEnumeratingWithState:&v40 objects:v49 count:16];
     }
 
     while (v27);
   }
 
-  v30 = [(SBHIconManager *)self overlayTodayViewController];
-  [v30 setEditing:v13 animated:1];
+  overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+  [overlayTodayViewController setEditing:v13 animated:1];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v31 = [(SBHIconManager *)self _libraryViewControllers];
-  v32 = [v31 countByEnumeratingWithState:&v36 objects:v48 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v32 = [_libraryViewControllers countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v32)
   {
     v33 = v32;
@@ -5693,19 +5693,19 @@ LABEL_10:
       {
         if (*v37 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
         [*(*(&v36 + 1) + 8 * k) setEditing:v13 animated:1];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v36 objects:v48 count:16];
+      v33 = [_libraryViewControllers countByEnumeratingWithState:&v36 objects:v48 count:16];
     }
 
     while (v33);
   }
 
-  [(SBHIconManager *)self editingDidChangeWithFeedbackBehavior:v9 location:x, y];
+  [(SBHIconManager *)self editingDidChangeWithFeedbackBehavior:behaviorCopy location:x, y];
 LABEL_34:
 }
 
@@ -5719,97 +5719,97 @@ void __59__SBHIconManager_setEditing_withFeedbackBehavior_location___block_invok
   }
 }
 
-- (void)editingDidChangeWithFeedbackBehavior:(id)a3 location:(CGPoint)a4
+- (void)editingDidChangeWithFeedbackBehavior:(id)behavior location:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  v7 = [(SBHIconManager *)self isEditing];
-  v8 = [(SBHIconManager *)self iconModel];
-  if (v7)
+  y = location.y;
+  x = location.x;
+  behaviorCopy = behavior;
+  isEditing = [(SBHIconManager *)self isEditing];
+  iconModel = [(SBHIconManager *)self iconModel];
+  if (isEditing)
   {
-    [v15 impactOccurredWithIntensity:1.0 atLocation:{x, y}];
+    [behaviorCopy impactOccurredWithIntensity:1.0 atLocation:{x, y}];
     [(SBHIconManager *)self _restartEditingEndTimer];
     [(SBHIconManager *)self displayEnterEditingModeFeatureIntroductions];
   }
 
   else
   {
-    v9 = [(SBHIconManager *)self editingAutosaveDisableAssertion];
-    [v9 invalidate];
+    editingAutosaveDisableAssertion = [(SBHIconManager *)self editingAutosaveDisableAssertion];
+    [editingAutosaveDisableAssertion invalidate];
 
     [(SBHIconManager *)self setEditingAutosaveDisableAssertion:0];
-    [v8 saveIconStateIfNeeded];
-    [v8 clearDesiredIconState];
-    v10 = [(SBHIconManager *)self editingEndTimer];
-    [v10 invalidate];
+    [iconModel saveIconStateIfNeeded];
+    [iconModel clearDesiredIconState];
+    editingEndTimer = [(SBHIconManager *)self editingEndTimer];
+    [editingEndTimer invalidate];
 
     [(SBHIconManager *)self setEditingEndTimer:0];
   }
 
-  v11 = [(SBHIconManager *)self searchGesture];
-  [v11 setDisabled:v7 forReason:@"SBHIconManager Editing"];
+  searchGesture = [(SBHIconManager *)self searchGesture];
+  [searchGesture setDisabled:isEditing forReason:@"SBHIconManager Editing"];
 
-  v12 = [(SBHIconManager *)self iconDragManager];
-  [v12 noteIconManagerEditingDidChange];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteIconManagerEditingDidChange];
 
-  v13 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v13 iconManagerEditingDidChange:self];
+    [delegate iconManagerEditingDidChange:self];
   }
 
-  v14 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v14 postNotificationName:@"SBHIconManagerEditingStateChanged" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHIconManagerEditingStateChanged" object:self];
 
-  if (!v7)
+  if (!isEditing)
   {
     [(SBHIconManager *)self enumerateKnownIconViewsUsingBlock:&__block_literal_global_286];
   }
 }
 
-- (void)setEditing:(BOOL)a3 fromIconListView:(id)a4
+- (void)setEditing:(BOOL)editing fromIconListView:(id)view
 {
-  v4 = a3;
-  v7 = a4;
+  editingCopy = editing;
+  viewCopy = view;
   if ([(SBHIconManager *)self isEditingAllowed])
   {
-    [(SBHIconManager *)self setEditing:v4];
+    [(SBHIconManager *)self setEditing:editingCopy];
   }
 
-  else if ([(SBHIconManager *)self isEditingAllowedForIconListView:v7])
+  else if ([(SBHIconManager *)self isEditingAllowedForIconListView:viewCopy])
   {
-    v6 = [v7 iconLocation];
-    [(SBHIconManager *)self setEditing:v4 forIconLocation:v6];
+    iconLocation = [viewCopy iconLocation];
+    [(SBHIconManager *)self setEditing:editingCopy forIconLocation:iconLocation];
   }
 }
 
-- (void)setEditing:(BOOL)a3 fromIconView:(id)a4
+- (void)setEditing:(BOOL)editing fromIconView:(id)view
 {
-  v4 = a3;
-  v7 = a4;
+  editingCopy = editing;
+  viewCopy = view;
   if ([(SBHIconManager *)self isEditingAllowedForIconView:?])
   {
     if ([(SBHIconManager *)self isEditingAllowed])
     {
-      [(SBHIconManager *)self setEditing:v4];
+      [(SBHIconManager *)self setEditing:editingCopy];
     }
 
     else
     {
-      v6 = [v7 location];
-      [(SBHIconManager *)self setEditing:v4 forIconLocation:v6];
+      location = [viewCopy location];
+      [(SBHIconManager *)self setEditing:editingCopy forIconLocation:location];
     }
   }
 }
 
-- (void)setEditing:(BOOL)a3 forIconLocation:(id)a4
+- (void)setEditing:(BOOL)editing forIconLocation:(id)location
 {
-  v4 = a3;
+  editingCopy = editing;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  locationCopy = location;
   partialEditingIconLocations = self->_partialEditingIconLocations;
-  if (v4)
+  if (editingCopy)
   {
     if (!partialEditingIconLocations)
     {
@@ -5820,22 +5820,22 @@ void __59__SBHIconManager_setEditing_withFeedbackBehavior_location___block_invok
       partialEditingIconLocations = self->_partialEditingIconLocations;
     }
 
-    [(NSMutableSet *)partialEditingIconLocations addObject:v6];
+    [(NSMutableSet *)partialEditingIconLocations addObject:locationCopy];
   }
 
   else
   {
-    [(NSMutableSet *)partialEditingIconLocations removeObject:v6];
+    [(NSMutableSet *)partialEditingIconLocations removeObject:locationCopy];
   }
 
-  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", v6))
+  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", locationCopy))
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [(SBHIconManager *)self leadingCustomViewControllers];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    leadingCustomViewControllers = [(SBHIconManager *)self leadingCustomViewControllers];
+    v11 = [leadingCustomViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -5847,35 +5847,35 @@ void __59__SBHIconManager_setEditing_withFeedbackBehavior_location___block_invok
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(leadingCustomViewControllers);
           }
 
-          [*(*(&v16 + 1) + 8 * v14++) setEditing:v4];
+          [*(*(&v16 + 1) + 8 * v14++) setEditing:editingCopy];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [leadingCustomViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
     }
 
-    v15 = [(SBHIconManager *)self overlayTodayViewController];
-    [v15 setEditing:v4];
+    overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+    [overlayTodayViewController setEditing:editingCopy];
 
     goto LABEL_16;
   }
 
-  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v6))
+  if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", locationCopy))
   {
 LABEL_16:
     [(SBHIconManager *)self editingDidChange];
   }
 }
 
-- (BOOL)isEditingForIconLocation:(id)a3
+- (BOOL)isEditingForIconLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ([(SBHIconManager *)self isEditing])
   {
     v5 = 1;
@@ -5883,26 +5883,26 @@ LABEL_16:
 
   else
   {
-    v5 = [(NSMutableSet *)self->_partialEditingIconLocations containsObject:v4];
+    v5 = [(NSMutableSet *)self->_partialEditingIconLocations containsObject:locationCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEditingAllowedForIconLocation:(id)a3
+- (BOOL)isEditingAllowedForIconLocation:(id)location
 {
-  v4 = a3;
-  if (-[SBHIconManager isEditingAllowed](self, "isEditingAllowed") || -[SBHIconManager isIconContentPossiblyVisibleOverApplication](self, "isIconContentPossiblyVisibleOverApplication") && ((SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v4) & 1) != 0 || ([v4 isEqualToString:@"SBIconLocationFolder"] & 1) != 0))
+  locationCopy = location;
+  if (-[SBHIconManager isEditingAllowed](self, "isEditingAllowed") || -[SBHIconManager isIconContentPossiblyVisibleOverApplication](self, "isIconContentPossiblyVisibleOverApplication") && ((SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", locationCopy) & 1) != 0 || ([locationCopy isEqualToString:@"SBIconLocationFolder"] & 1) != 0))
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 iconManager:self isPartialEditingAllowedForIconLocation:v4];
+      v5 = [delegate iconManager:self isPartialEditingAllowedForIconLocation:locationCopy];
     }
 
     else
@@ -5914,13 +5914,13 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEditingAllowedForIconView:(id)a3
+- (BOOL)isEditingAllowedForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self isEditingAllowedForIconView:v4];
+    v6 = [delegate iconManager:self isEditingAllowedForIconView:viewCopy];
   }
 
   else
@@ -5928,41 +5928,41 @@ LABEL_16:
     v6 = 1;
   }
 
-  v7 = [v4 location];
-  v8 = [(SBHIconManager *)self isEditingAllowedForIconLocation:v7];
+  location = [viewCopy location];
+  v8 = [(SBHIconManager *)self isEditingAllowedForIconLocation:location];
 
   return v6 & v8;
 }
 
-- (BOOL)isEditingAllowedForIconListView:(id)a3
+- (BOOL)isEditingAllowedForIconListView:(id)view
 {
-  v4 = [a3 iconLocation];
-  LOBYTE(self) = [(SBHIconManager *)self isEditingAllowedForIconLocation:v4];
+  iconLocation = [view iconLocation];
+  LOBYTE(self) = [(SBHIconManager *)self isEditingAllowedForIconLocation:iconLocation];
 
   return self;
 }
 
-- (BOOL)isEditingForIconListView:(id)a3
+- (BOOL)isEditingForIconListView:(id)view
 {
-  v4 = [a3 iconLocation];
-  LOBYTE(self) = [(SBHIconManager *)self isEditingForIconLocation:v4];
+  iconLocation = [view iconLocation];
+  LOBYTE(self) = [(SBHIconManager *)self isEditingForIconLocation:iconLocation];
 
   return self;
 }
 
-- (void)enumerateEditableViewControllersUsingBlock:(id)a3
+- (void)enumerateEditableViewControllersUsingBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootViewController];
-  [(SBHIconManager *)self _enumerateEditableViewController:v5 usingBlock:v4];
+  blockCopy = block;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [(SBHIconManager *)self _enumerateEditableViewController:rootViewController usingBlock:blockCopy];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(SBHIconManager *)self leadingCustomViewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  leadingCustomViewControllers = [(SBHIconManager *)self leadingCustomViewControllers];
+  v7 = [leadingCustomViewControllers countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -5974,28 +5974,28 @@ LABEL_16:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(leadingCustomViewControllers);
         }
 
-        [(SBHIconManager *)self _enumerateEditableViewController:*(*(&v21 + 1) + 8 * v10++) usingBlock:v4];
+        [(SBHIconManager *)self _enumerateEditableViewController:*(*(&v21 + 1) + 8 * v10++) usingBlock:blockCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v8 = [leadingCustomViewControllers countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [(SBHIconManager *)self overlayTodayViewController];
-  [(SBHIconManager *)self _enumerateEditableViewController:v11 usingBlock:v4];
+  overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+  [(SBHIconManager *)self _enumerateEditableViewController:overlayTodayViewController usingBlock:blockCopy];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v12 = [(SBHIconManager *)self _libraryViewControllers];
-  v13 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v13 = [_libraryViewControllers countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -6007,26 +6007,26 @@ LABEL_16:
       {
         if (*v18 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [(SBHIconManager *)self _enumerateEditableViewController:*(*(&v17 + 1) + 8 * v16++) usingBlock:v4];
+        [(SBHIconManager *)self _enumerateEditableViewController:*(*(&v17 + 1) + 8 * v16++) usingBlock:blockCopy];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v14 = [_libraryViewControllers countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v14);
   }
 }
 
-- (void)_enumerateEditableViewController:(id)a3 usingBlock:(id)a4
+- (void)_enumerateEditableViewController:(id)controller usingBlock:(id)block
 {
-  if (a3)
+  if (controller)
   {
     v4 = 0;
-    (*(a4 + 2))(a4, a3, &v4);
+    (*(block + 2))(block, controller, &v4);
   }
 }
 
@@ -6039,13 +6039,13 @@ void __41__SBHIconManager__restartEditingEndTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)configureFeedbackView:(id)a3
+- (void)configureFeedbackView:(id)view
 {
   v4 = MEMORY[0x1E69DCAE8];
-  v5 = a3;
+  viewCopy = view;
   v6 = [v4 alloc];
-  v9 = [MEMORY[0x1E69DD560] defaultConfiguration];
-  v7 = [v6 initWithConfiguration:v9 view:v5];
+  defaultConfiguration = [MEMORY[0x1E69DD560] defaultConfiguration];
+  v7 = [v6 initWithConfiguration:defaultConfiguration view:viewCopy];
 
   iconEditingFeedbackBehavior = self->_iconEditingFeedbackBehavior;
   self->_iconEditingFeedbackBehavior = v7;
@@ -6054,16 +6054,16 @@ void __41__SBHIconManager__restartEditingEndTimer__block_invoke(uint64_t a1)
 - (void)displayEnterEditingModeFeatureIntroductions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SBHIconManager *)self featureIntroductionManager];
-  v5 = [v4 featureIntroductionItemAtLocation:8];
-  v6 = [v5 allObjects];
+  featureIntroductionManager = [(SBHIconManager *)self featureIntroductionManager];
+  v5 = [featureIntroductionManager featureIntroductionItemAtLocation:8];
+  allObjects = [v5 allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -6075,58 +6075,58 @@ void __41__SBHIconManager__restartEditingEndTimer__block_invoke(uint64_t a1)
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v3 iconManager:self displayFeatureIntroductionItem:v11 atLocation:8];
+          [delegate iconManager:self displayFeatureIntroductionItem:v11 atLocation:8];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)displayFeatureIntroductionItemIfUnlocked:(id)a3
+- (void)displayFeatureIntroductionItemIfUnlocked:(id)unlocked
 {
-  v5 = a3;
-  v4 = [(SBHIconManager *)self delegate];
+  unlockedCopy = unlocked;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManager:self displayFeatureIntroductionItemIfUnlocked:v5];
+    [delegate iconManager:self displayFeatureIntroductionItemIfUnlocked:unlockedCopy];
   }
 }
 
-- (void)_addTouchedIconView:(id)a3
+- (void)_addTouchedIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   touchedIconViews = self->_touchedIconViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!touchedIconViews)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v7 = self->_touchedIconViews;
     self->_touchedIconViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     touchedIconViews = self->_touchedIconViews;
   }
 
-  [(NSMutableSet *)touchedIconViews addObject:v4];
+  [(NSMutableSet *)touchedIconViews addObject:viewCopy];
 }
 
-- (void)_removeTouchedIconView:(id)a3
+- (void)_removeTouchedIconView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  [(NSMutableSet *)self->_touchedIconViews removeObject:a3];
+  [(NSMutableSet *)self->_touchedIconViews removeObject:view];
   if (![(NSMutableSet *)self->_touchedIconViews count])
   {
     iconTouchesFinishedBlocks = self->_iconTouchesFinishedBlocks;
@@ -6170,9 +6170,9 @@ void __41__SBHIconManager__restartEditingEndTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)performAfterAllIconTouchesFinishedUsingBlock:(id)a3
+- (void)performAfterAllIconTouchesFinishedUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(SBHIconManager *)self isIconTouched])
   {
     v5 = SBLogIcon();
@@ -6192,48 +6192,48 @@ void __41__SBHIconManager__restartEditingEndTimer__block_invoke(uint64_t a1)
       iconTouchesFinishedBlocks = self->_iconTouchesFinishedBlocks;
     }
 
-    v9 = [v4 copy];
+    v9 = [blockCopy copy];
     v10 = _Block_copy(v9);
     [(NSMutableArray *)iconTouchesFinishedBlocks addObject:v10];
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (BOOL)shouldHighlightTouchedIconView:(id)a3
+- (BOOL)shouldHighlightTouchedIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  v6 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:v4];
+  viewCopy = view;
+  icon = [viewCopy icon];
+  v6 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:viewCopy];
 
-  if (v6 || ([v4 isGrabbed] & 1) != 0 || objc_msgSend(v5, "isFolderIcon") && !-[SBHIconManager canOpenFolderForIcon:](self, "canOpenFolderForIcon:", v5) || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isTrackingDroppingIconDrags"), v7, (v8 & 1) != 0) || (objc_msgSend(v4, "isPaused") & 1) != 0)
+  if (v6 || ([viewCopy isGrabbed] & 1) != 0 || objc_msgSend(icon, "isFolderIcon") && !-[SBHIconManager canOpenFolderForIcon:](self, "canOpenFolderForIcon:", icon) || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isTrackingDroppingIconDrags"), v7, (v8 & 1) != 0) || (objc_msgSend(viewCopy, "isPaused") & 1) != 0)
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = [v4 lastTouchWasPointer] ^ 1;
+    v9 = [viewCopy lastTouchWasPointer] ^ 1;
   }
 
   return v9;
 }
 
-- (void)highlightIconView:(id)a3
+- (void)highlightIconView:(id)view
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self highlightedIconView];
-  if (v5 == v4)
+  viewCopy = view;
+  highlightedIconView = [(SBHIconManager *)self highlightedIconView];
+  if (highlightedIconView == viewCopy)
   {
     v6 = SBLogIcon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *v9 = 138412290;
-      *&v9[4] = v4;
+      *&v9[4] = viewCopy;
       v8 = "Icon view is already highlighted: %@";
 LABEL_10:
       _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_INFO, v8, v9, 0xCu);
@@ -6246,12 +6246,12 @@ LABEL_11:
 
   v6 = SBLogIcon();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-  if (!v5)
+  if (!highlightedIconView)
   {
     if (v7)
     {
       *v9 = 138412290;
-      *&v9[4] = v4;
+      *&v9[4] = viewCopy;
       v8 = "Highlighting icon view: %@";
       goto LABEL_10;
     }
@@ -6262,25 +6262,25 @@ LABEL_11:
   if (v7)
   {
     *v9 = 138412546;
-    *&v9[4] = v5;
+    *&v9[4] = highlightedIconView;
     *&v9[12] = 2112;
-    *&v9[14] = v4;
+    *&v9[14] = viewCopy;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_INFO, "Unhighlighting icon view '%@' to highlight '%@'", v9, 0x16u);
   }
 
-  [v5 setHighlighted:0];
+  [highlightedIconView setHighlighted:0];
 LABEL_12:
-  [v4 setHighlighted:{1, *v9}];
-  [(SBHIconManager *)self setHighlightedIconView:v4];
+  [viewCopy setHighlighted:{1, *v9}];
+  [(SBHIconManager *)self setHighlightedIconView:viewCopy];
 }
 
-- (void)clearHighlightedIcon:(id)a3
+- (void)clearHighlightedIcon:(id)icon
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self highlightedIconView];
-  v6 = [v5 icon];
-  v7 = [v6 isEqual:v4];
+  iconCopy = icon;
+  highlightedIconView = [(SBHIconManager *)self highlightedIconView];
+  icon = [highlightedIconView icon];
+  v7 = [icon isEqual:iconCopy];
 
   if (v7)
   {
@@ -6288,41 +6288,41 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = highlightedIconView;
       _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_INFO, "Clearing highlight from icon view: %@", &v9, 0xCu);
     }
 
-    [v5 setHighlighted:0];
+    [highlightedIconView setHighlighted:0];
     [(SBHIconManager *)self setHighlightedIconView:0];
   }
 }
 
 - (SBIconListView)currentRootIconList
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 currentIconListView];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  currentIconListView = [rootFolderController currentIconListView];
 
-  return v3;
+  return currentIconListView;
 }
 
-- (id)rootIconListAtIndex:(int64_t)a3
+- (id)rootIconListAtIndex:(int64_t)index
 {
-  if (a3 == 10000)
+  if (index == 10000)
   {
-    v3 = [(SBHIconManager *)self effectiveDockListView];
+    effectiveDockListView = [(SBHIconManager *)self effectiveDockListView];
 LABEL_5:
-    v5 = v3;
+    v5 = effectiveDockListView;
     goto LABEL_7;
   }
 
-  if (a3 == 40000)
+  if (index == 40000)
   {
-    v3 = [(SBHIconManager *)self effectiveDockUtilitiesListView];
+    effectiveDockListView = [(SBHIconManager *)self effectiveDockUtilitiesListView];
     goto LABEL_5;
   }
 
-  v6 = [(SBHIconManager *)self rootFolderController];
-  v5 = [v6 iconListViewAtIndex:a3];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  v5 = [rootFolderController iconListViewAtIndex:index];
 
 LABEL_7:
 
@@ -6331,43 +6331,43 @@ LABEL_7:
 
 - (SBIconListView)dockListView
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 dockListView];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  dockListView = [rootFolderController dockListView];
 
-  return v3;
+  return dockListView;
 }
 
 - (SBIconListView)floatingDockListView
 {
-  v2 = [(SBHIconManager *)self floatingDockViewController];
-  v3 = [v2 userIconListView];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  userIconListView = [floatingDockViewController userIconListView];
 
-  return v3;
+  return userIconListView;
 }
 
 - (id)floatingDockUtilitiesListView
 {
-  v2 = [(SBHIconManager *)self floatingDockViewController];
-  v3 = [v2 utilitiesIconListView];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  utilitiesIconListView = [floatingDockViewController utilitiesIconListView];
 
-  return v3;
+  return utilitiesIconListView;
 }
 
 - (SBIconListView)floatingDockSuggestionsListView
 {
-  v2 = [(SBHIconManager *)self floatingDockViewController];
-  v3 = [v2 recentIconListView];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  recentIconListView = [floatingDockViewController recentIconListView];
 
-  return v3;
+  return recentIconListView;
 }
 
 - (BOOL)shouldEnforceMaxCombinedUserAndUtilitiesIconCountForFloatingDock
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SBHIconManager *)self floatingDockViewController];
-    v5 = [v3 iconManager:self shouldEnforceMaxCombinedUserAndUtilitiesIconCountForFloatingDock:v4];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    v5 = [delegate iconManager:self shouldEnforceMaxCombinedUserAndUtilitiesIconCountForFloatingDock:floatingDockViewController];
   }
 
   else
@@ -6380,42 +6380,42 @@ LABEL_7:
 
 - (SBIconListView)effectiveDockListView
 {
-  v3 = [(SBHIconManager *)self dockListView];
-  if (!v3)
+  dockListView = [(SBHIconManager *)self dockListView];
+  if (!dockListView)
   {
-    v3 = [(SBHIconManager *)self floatingDockListView];
+    dockListView = [(SBHIconManager *)self floatingDockListView];
   }
 
-  return v3;
+  return dockListView;
 }
 
 - (BOOL)_shouldRespondToIconCloseBoxes
 {
-  v2 = [(SBHIconManager *)self iconDragManager];
-  v3 = [v2 isTrackingActiveOrDroppingIconDrags];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  isTrackingActiveOrDroppingIconDrags = [iconDragManager isTrackingActiveOrDroppingIconDrags];
 
-  return v3 ^ 1;
+  return isTrackingActiveOrDroppingIconDrags ^ 1;
 }
 
-- (void)enumerateDisplayedIconViewsUsingBlock:(id)a3
+- (void)enumerateDisplayedIconViewsUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootViewController];
-  [v5 enumerateDisplayedIconViewsUsingBlock:v4];
+  blockCopy = block;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
-  v6 = [(SBHIconManager *)self floatingDockViewController];
-  [v6 enumerateDisplayedIconViewsUsingBlock:v4];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
-  v7 = [(SBHIconManager *)self _effectiveTodayViewController];
-  [v7 enumerateDisplayedIconViewsUsingBlock:v4];
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+  [_effectiveTodayViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = [(SBHIconManager *)self _libraryViewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v9 = [_libraryViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -6427,40 +6427,40 @@ LABEL_7:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) enumerateDisplayedIconViewsUsingBlock:v4];
+        [*(*(&v13 + 1) + 8 * v12++) enumerateDisplayedIconViewsUsingBlock:blockCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [_libraryViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)enumerateDisplayedIconViewsForIcon:(id)a3 usingBlock:(id)a4
+- (void)enumerateDisplayedIconViewsForIcon:(id)icon usingBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self rootViewController];
-  [v8 enumerateDisplayedIconViewsForIcon:v6 usingBlock:v7];
+  iconCopy = icon;
+  blockCopy = block;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController enumerateDisplayedIconViewsForIcon:iconCopy usingBlock:blockCopy];
 
-  v9 = [(SBHIconManager *)self floatingDockViewController];
-  [v9 enumerateDisplayedIconViewsForIcon:v6 usingBlock:v7];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController enumerateDisplayedIconViewsForIcon:iconCopy usingBlock:blockCopy];
 
-  v10 = [(SBHIconManager *)self _effectiveTodayViewController];
-  [v10 enumerateDisplayedIconViewsForIcon:v6 usingBlock:v7];
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+  [_effectiveTodayViewController enumerateDisplayedIconViewsForIcon:iconCopy usingBlock:blockCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [(SBHIconManager *)self _libraryViewControllers];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v12 = [_libraryViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -6472,42 +6472,42 @@ LABEL_7:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [*(*(&v16 + 1) + 8 * v15++) enumerateDisplayedIconViewsForIcon:v6 usingBlock:v7];
+        [*(*(&v16 + 1) + 8 * v15++) enumerateDisplayedIconViewsForIcon:iconCopy usingBlock:blockCopy];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [_libraryViewControllers countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)enumerateKnownIconViewsUsingBlock:(id)a3
+- (void)enumerateKnownIconViewsUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconViewMap];
-  [v5 enumerateRecycledViewsUsingBlock:v4];
+  blockCopy = block;
+  iconViewMap = [(SBHIconManager *)self iconViewMap];
+  [iconViewMap enumerateRecycledViewsUsingBlock:blockCopy];
 
-  v6 = [(SBHIconManager *)self rootViewController];
-  [v6 enumerateDisplayedIconViewsUsingBlock:v4];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
-  v7 = [(SBHIconManager *)self floatingDockViewController];
-  [v7 enumerateDisplayedIconViewsUsingBlock:v4];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
-  v8 = [(SBHIconManager *)self overlayTodayViewController];
-  [v8 enumerateDisplayedIconViewsUsingBlock:v4];
+  overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+  [overlayTodayViewController enumerateDisplayedIconViewsUsingBlock:blockCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = [(SBHIconManager *)self _libraryViewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v10 = [_libraryViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
     v11 = v10;
@@ -6519,14 +6519,14 @@ LABEL_7:
       {
         if (*v15 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) enumerateDisplayedIconViewsUsingBlock:v4];
+        [*(*(&v14 + 1) + 8 * v13++) enumerateDisplayedIconViewsUsingBlock:blockCopy];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v11 = [_libraryViewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v11);
@@ -6535,13 +6535,13 @@ LABEL_7:
 
 - (void)_updateVisibleIconsViewsForAllowableCloseBoxes
 {
-  v3 = [(SBHIconManager *)self iconsShouldAllowCloseBoxes];
+  iconsShouldAllowCloseBoxes = [(SBHIconManager *)self iconsShouldAllowCloseBoxes];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__SBHIconManager__updateVisibleIconsViewsForAllowableCloseBoxes__block_invoke;
   v4[3] = &unk_1E808CC60;
   v4[4] = self;
-  v5 = v3;
+  v5 = iconsShouldAllowCloseBoxes;
   [(SBHIconManager *)self enumerateDisplayedIconViewsUsingBlock:v4];
 }
 
@@ -6564,48 +6564,48 @@ LABEL_6:
   [v5 setAllowsCloseBox:v4 & 1];
 }
 
-- (BOOL)isIconVisiblyRepresented:(id)a3
+- (BOOL)isIconVisiblyRepresented:(id)represented
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 containsIcon:v4];
+  representedCopy = represented;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v6 = [rootFolder containsIcon:representedCopy];
 
   return v6;
 }
 
-- (BOOL)isIconIgnored:(id)a3
+- (BOOL)isIconIgnored:(id)ignored
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 ignoredList];
-  v7 = [v6 directlyContainsIcon:v4];
+  ignoredCopy = ignored;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  ignoredList = [rootFolder ignoredList];
+  v7 = [ignoredList directlyContainsIcon:ignoredCopy];
 
   return v7;
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconModel];
-  v6 = [v5 applicationIconForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  iconModel = [(SBHIconManager *)self iconModel];
+  v6 = [iconModel applicationIconForBundleIdentifier:identifierCopy];
 
-  v7 = [v6 application];
+  application = [v6 application];
 
-  return v7;
+  return application;
 }
 
-- (id)addApplicationPlaceholders:(id)a3
+- (id)addApplicationPlaceholders:(id)placeholders
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconModel];
-  v20 = [(SBHIconManager *)self rootFolder];
+  placeholdersCopy = placeholders;
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
   v21 = [MEMORY[0x1E695DFA8] set];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = placeholdersCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -6623,8 +6623,8 @@ LABEL_6:
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 applicationBundleIdentifier];
-        v12 = [v5 applicationIconsForBundleIdentifier:v11];
+        applicationBundleIdentifier = [v10 applicationBundleIdentifier];
+        v12 = [iconModel applicationIconsForBundleIdentifier:applicationBundleIdentifier];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __45__SBHIconManager_addApplicationPlaceholders___block_invoke;
@@ -6632,11 +6632,11 @@ LABEL_6:
         v13 = v12;
         v24 = v13;
         [(SBHIconManager *)self enumerateAllIconImageCachesUsingBlock:v23];
-        v14 = [v5 addApplicationPlaceholder:v10];
+        v14 = [iconModel addApplicationPlaceholder:v10];
         if (v14)
         {
           [v21 addObject:v14];
-          v15 = [v20 indexPathForIcon:v14];
+          v15 = [rootFolder indexPathForIcon:v14];
 
           if (!v15)
           {
@@ -6664,7 +6664,7 @@ LABEL_6:
 
     if (v18)
     {
-      [v5 saveIconStateIfNeeded];
+      [iconModel saveIconStateIfNeeded];
     }
   }
 
@@ -6675,13 +6675,13 @@ LABEL_6:
   return v21;
 }
 
-- (id)replaceApplicationPlaceholderWithApplication:(id)a3
+- (id)replaceApplicationPlaceholderWithApplication:(id)application
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconModel];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v5 applicationIconsForBundleIdentifier:v6];
+  applicationCopy = application;
+  iconModel = [(SBHIconManager *)self iconModel];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  v7 = [iconModel applicationIconsForBundleIdentifier:bundleIdentifier];
   if ([v7 count])
   {
     v18 = 0u;
@@ -6703,7 +6703,7 @@ LABEL_6:
             objc_enumerationMutation(v8);
           }
 
-          [*(*(&v16 + 1) + 8 * i) replaceIconDataSourcesWithApplication:{v4, v16}];
+          [*(*(&v16 + 1) + 8 * i) replaceIconDataSourcesWithApplication:{applicationCopy, v16}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -6717,7 +6717,7 @@ LABEL_6:
 
   else
   {
-    v8 = [v5 addApplication:v4];
+    v8 = [iconModel addApplication:applicationCopy];
     if (v8)
     {
       [(SBHIconManager *)self addNewIconToDesignatedLocation:v8 options:4];
@@ -6728,61 +6728,61 @@ LABEL_6:
     }
   }
 
-  v14 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
-- (void)replaceApplicationPlaceholderWithApplication:(id)a3 completionHandler:(id)a4
+- (void)replaceApplicationPlaceholderWithApplication:(id)application completionHandler:(id)handler
 {
-  v11 = a4;
-  v6 = a3;
-  v7 = [(SBHIconManager *)self iconModel];
-  v8 = [v7 addApplication:v6];
+  handlerCopy = handler;
+  applicationCopy = application;
+  iconModel = [(SBHIconManager *)self iconModel];
+  v8 = [iconModel addApplication:applicationCopy];
 
-  v9 = [(SBHIconManager *)self rootFolder];
-  v10 = [v9 indexPathForIcon:v8];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v10 = [rootFolder indexPathForIcon:v8];
 
   if (!v10)
   {
     [(SBHIconManager *)self addNewIconToDesignatedLocation:v8 options:4];
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    v11[2](v11, v8);
+    handlerCopy[2](handlerCopy, v8);
   }
 }
 
-- (void)uninstallIcon:(id)a3 animate:(BOOL)a4 completion:(id)a5
+- (void)uninstallIcon:(id)icon animate:(BOOL)animate completion:(id)completion
 {
-  v6 = a4;
+  animateCopy = animate;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  iconCopy = icon;
+  completionCopy = completion;
+  if (iconCopy)
   {
-    if (![v8 isUninstalled])
+    if (![iconCopy isUninstalled])
     {
       v10 = SBLogIcon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109378;
-        v20 = v6;
+        v20 = animateCopy;
         v21 = 2112;
-        v22 = v8;
+        v22 = iconCopy;
         _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Uninstall icon animated=%{BOOL}u : %@", buf, 0x12u);
       }
 
-      [v8 setUninstalled];
+      [iconCopy setUninstalled];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __51__SBHIconManager_uninstallIcon_animate_completion___block_invoke;
       v15[3] = &unk_1E808FE10;
-      v16 = v8;
-      v17 = self;
-      v18 = v9;
-      [(SBHIconManager *)self removeIcon:v16 options:v6 completion:v15];
+      v16 = iconCopy;
+      selfCopy = self;
+      v18 = completionCopy;
+      [(SBHIconManager *)self removeIcon:v16 options:animateCopy completion:v15];
 
       goto LABEL_13;
     }
@@ -6806,7 +6806,7 @@ LABEL_6:
         [SBHIconManager uninstallIcon:animate:completion:];
       }
 
-      if (v9)
+      if (completionCopy)
       {
         goto LABEL_12;
       }
@@ -6819,16 +6819,16 @@ LABEL_6:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v20 = v6;
+    v20 = animateCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = iconCopy;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "Ignoring uninstall icon animated=%{BOOL}u because it is already uninstalled : %@", buf, 0x12u);
   }
 
-  if (v9)
+  if (completionCopy)
   {
 LABEL_12:
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_13:
@@ -6862,30 +6862,30 @@ uint64_t __51__SBHIconManager_uninstallIcon_animate_completion___block_invoke(ui
   return result;
 }
 
-- (void)addIconToIgnoredList:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)addIconToIgnoredList:(id)list options:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  optionsCopy = options;
   v57 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  listCopy = list;
+  completionCopy = completion;
+  if (listCopy)
   {
-    v10 = v6 & 1;
+    v10 = optionsCopy & 1;
     v11 = SBLogIcon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v54 = v6 & 1;
+      v54 = optionsCopy & 1;
       v55 = 2112;
-      v56 = v8;
+      v56 = listCopy;
       _os_log_impl(&dword_1BEB18000, v11, OS_LOG_TYPE_DEFAULT, "Uninstall icon animated=%{BOOL}u : %@", buf, 0x12u);
     }
 
-    if ([v8 isFolderIcon] && !-[SBHIconManager canAddIconToIgnoredList:](self, "canAddIconToIgnoredList:", v8))
+    if ([listCopy isFolderIcon] && !-[SBHIconManager canAddIconToIgnoredList:](self, "canAddIconToIgnoredList:", listCopy))
     {
-      v38 = [v8 folder];
-      v12 = [v38 allIcons];
-      v13 = [v12 copy];
+      folder = [listCopy folder];
+      allIcons = [folder allIcons];
+      v13 = [allIcons copy];
 
       v49 = 0u;
       v50 = 0u;
@@ -6926,13 +6926,13 @@ uint64_t __51__SBHIconManager_uninstallIcon_animate_completion___block_invoke(ui
     }
 
     v20 = v10 | 2;
-    v21 = [(SBHIconManager *)self iconModel];
-    if ([v8 isLeafIcon] && (objc_msgSend(v8, "applicationBundleID"), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
+    iconModel = [(SBHIconManager *)self iconModel];
+    if ([listCopy isLeafIcon] && (objc_msgSend(listCopy, "applicationBundleID"), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v23 = v22;
-      v24 = [v21 applicationIconsForBundleIdentifier:v22];
+      v24 = [iconModel applicationIconsForBundleIdentifier:v22];
 
-      if ((v6 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
 LABEL_20:
         v45 = 0u;
@@ -6963,9 +6963,9 @@ LABEL_20:
           while (v27);
         }
 
-        if (v9)
+        if (completionCopy)
         {
-          v9[2](v9, 1);
+          completionCopy[2](completionCopy, 1);
         }
 
 LABEL_43:
@@ -6977,22 +6977,22 @@ LABEL_43:
     else
     {
       v24 = MEMORY[0x1E695E0F0];
-      if ((v6 & 2) != 0)
+      if ((optionsCopy & 2) != 0)
       {
         goto LABEL_20;
       }
     }
 
-    if ([v8 isApplicationIcon] && objc_msgSend(v24, "count") >= 2)
+    if ([listCopy isApplicationIcon] && objc_msgSend(v24, "count") >= 2)
     {
-      if ([v8 leafIdentifierAndApplicationBundleIDMatches])
+      if ([listCopy leafIdentifierAndApplicationBundleIDMatches])
       {
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __58__SBHIconManager_addIconToIgnoredList_options_completion___block_invoke;
         v41[3] = &unk_1E808FE38;
-        v8 = v8;
-        v42 = v8;
+        listCopy = listCopy;
+        v42 = listCopy;
         v30 = [v24 indexOfObjectPassingTest:v41];
         if (v30 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -7004,14 +7004,14 @@ LABEL_43:
           v31 = [v24 objectAtIndex:v30];
         }
 
-        v35 = [v21 rootFolder];
-        v36 = v35;
+        rootFolder = [iconModel rootFolder];
+        v36 = rootFolder;
         if (v31)
         {
-          [v35 swapIcon:v8 withIcon:v31 options:0];
+          [rootFolder swapIcon:listCopy withIcon:v31 options:0];
           v37 = v31;
 
-          v8 = v37;
+          listCopy = v37;
         }
       }
     }
@@ -7025,8 +7025,8 @@ LABEL_43:
     v39[1] = 3221225472;
     v39[2] = __58__SBHIconManager_addIconToIgnoredList_options_completion___block_invoke_2;
     v39[3] = &unk_1E808A0B8;
-    v40 = v9;
-    [(SBHIconManager *)self removeIcon:v8 options:v10 completion:v39];
+    v40 = completionCopy;
+    [(SBHIconManager *)self removeIcon:listCopy options:v10 completion:v39];
 
     goto LABEL_43;
   }
@@ -7045,9 +7045,9 @@ LABEL_43:
     [SBHIconManager addIconToIgnoredList:options:completion:];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_44:
@@ -7064,13 +7064,13 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
   return result;
 }
 
-- (BOOL)canAddIconToIgnoredList:(id)a3
+- (BOOL)canAddIconToIgnoredList:(id)list
 {
-  v4 = a3;
-  if ([v4 isLeafIcon] && (objc_msgSend(v4, "isWidgetIcon") & 1) == 0)
+  listCopy = list;
+  if ([listCopy isLeafIcon] && (objc_msgSend(listCopy, "isWidgetIcon") & 1) == 0)
   {
-    v6 = [(SBHIconManager *)self delegate];
-    v5 = (objc_opt_respondsToSelector() & 1) == 0 || [v6 iconManager:self canAddIconToIgnoredList:v4];
+    delegate = [(SBHIconManager *)self delegate];
+    v5 = (objc_opt_respondsToSelector() & 1) == 0 || [delegate iconManager:self canAddIconToIgnoredList:listCopy];
   }
 
   else
@@ -7081,42 +7081,42 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
   return v5;
 }
 
-- (void)removeIcon:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)removeIcon:(id)icon options:(unint64_t)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  iconCopy = icon;
+  completionCopy = completion;
+  if (iconCopy)
   {
-    v10 = [(SBHIconManager *)self rootFolder];
-    v11 = [v10 indexPathForIcon:v8];
-    v12 = [(SBHIconManager *)self iconModel];
-    v13 = [(SBHIconManager *)self gridCellInfoOptions];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    v11 = [rootFolder indexPathForIcon:iconCopy];
+    iconModel = [(SBHIconManager *)self iconModel];
+    gridCellInfoOptions = [(SBHIconManager *)self gridCellInfoOptions];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __48__SBHIconManager_removeIcon_options_completion___block_invoke;
     aBlock[3] = &unk_1E808FE60;
-    v14 = v12;
+    v14 = iconModel;
     v40 = v14;
-    v15 = v10;
+    v15 = rootFolder;
     v41 = v15;
-    v42 = v13;
-    v43 = a4;
+    v42 = gridCellInfoOptions;
+    optionsCopy = options;
     v16 = _Block_copy(aBlock);
     if (v11)
     {
       v37 = v14;
       v17 = [v15 folderContainingIndexPath:v11 relativeIndexPath:0];
       v18 = [(SBHIconManager *)self iconListViewForIndexPath:v11];
-      v19 = [v18 displayedIconViewForIcon:v8];
+      v19 = [v18 displayedIconViewForIcon:iconCopy];
       v20 = v19;
       if (v19)
       {
         [v19 setAllowsEditingAnimation:0];
-        [v18 markIcon:v8 asNeedingAnimation:0];
+        [v18 markIcon:iconCopy asNeedingAnimation:0];
       }
 
       v21 = [v17 startCoalescingContentChangesForReason:@"SBIconManager.removeIcon"];
-      v16[2](v16, v8);
+      v16[2](v16, iconCopy);
       v36 = v21;
       [v21 invalidate];
       if (v17 != v15 && [v17 isEmpty])
@@ -7128,22 +7128,22 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
 
         else
         {
-          v26 = [v17 icon];
-          [(SBHIconManager *)self uninstallIcon:v26 animate:1];
+          icon = [v17 icon];
+          [(SBHIconManager *)self uninstallIcon:icon animate:1];
         }
       }
 
       v38 = v11;
-      v27 = [v8 gridSizeClass];
-      if (v27 == @"SBHIconGridSizeClassDefault")
+      gridSizeClass = [iconCopy gridSizeClass];
+      if (gridSizeClass == @"SBHIconGridSizeClassDefault")
       {
         v34 = 0;
       }
 
       else
       {
-        [v8 gridSizeClass];
-        v35 = v9;
+        [iconCopy gridSizeClass];
+        v35 = completionCopy;
         v28 = v17;
         v29 = v15;
         v30 = v20;
@@ -7156,13 +7156,13 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
         v20 = v30;
         v15 = v29;
         v17 = v28;
-        v9 = v35;
+        completionCopy = v35;
       }
 
       [(SBHIconManager *)self layoutIconListsWithAnimationType:v34];
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       v14 = v37;
@@ -7177,14 +7177,14 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
         [SBHIconManager removeIcon:options:completion:];
       }
 
-      if ([v8 isLeafIcon] && objc_msgSend(v14, "shouldSkipAddingIcon:toRootFolder:", v8, v15))
+      if ([iconCopy isLeafIcon] && objc_msgSend(v14, "shouldSkipAddingIcon:toRootFolder:", iconCopy, v15))
       {
-        v16[2](v16, v8);
+        v16[2](v16, iconCopy);
       }
 
-      if (v9)
+      if (completionCopy)
       {
-        v9[2](v9, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
@@ -7205,9 +7205,9 @@ uint64_t __58__SBHIconManager_addIconToIgnoredList_options_completion___block_in
       [SBHIconManager removeIcon:options:completion:];
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -7252,16 +7252,16 @@ LABEL_7:
   [*(a1 + 32) saveIconStateIfNeeded];
 }
 
-- (void)addNewIconsToDesignatedLocations:(id)a3 saveIconState:(BOOL)a4
+- (void)addNewIconsToDesignatedLocations:(id)locations saveIconState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  locationsCopy = locations;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v7 = [locationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -7273,44 +7273,44 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(locationsCopy);
         }
 
         [(SBHIconManager *)self addNewIconToDesignatedLocation:*(*(&v12 + 1) + 8 * v10++) options:0];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [locationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 
-  if (v4)
+  if (stateCopy)
   {
-    v11 = [(SBHIconManager *)self iconModel];
-    [v11 saveIconStateIfNeeded];
+    iconModel = [(SBHIconManager *)self iconModel];
+    [iconModel saveIconStateIfNeeded];
   }
 }
 
-- (void)addNewIconToDesignatedLocation:(id)a3 options:(unint64_t)a4
+- (void)addNewIconToDesignatedLocation:(id)location options:(unint64_t)options
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self iconModel];
-  if ((a4 & 8) != 0)
+  locationCopy = location;
+  iconModel = [(SBHIconManager *)self iconModel];
+  if ((options & 8) != 0)
   {
     [(SBHIconManager *)self addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:@"SBHIconManagerAddNewIconOverridingUserPreference"];
   }
 
-  [v7 addIconToDesignatedLocation:v6 options:(a4 >> 3) & 0xE | (a4 >> 2) & 1 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
-  v8 = [v7 rootFolder];
-  v9 = [v8 indexPathForIcon:v6];
-  if ((a4 & 8) != 0)
+  [iconModel addIconToDesignatedLocation:locationCopy options:(options >> 3) & 0xE | (options >> 2) & 1 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
+  rootFolder = [iconModel rootFolder];
+  v9 = [rootFolder indexPathForIcon:locationCopy];
+  if ((options & 8) != 0)
   {
     [(SBHIconManager *)self removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:@"SBHIconManagerAddNewIconOverridingUserPreference"];
   }
 
-  v10 = a4 & 4;
+  v10 = options & 4;
   if (v9)
   {
     v11 = [(SBHIconManager *)self iconListViewForIndexPath:v9];
@@ -7321,18 +7321,18 @@ LABEL_7:
     v11 = 0;
   }
 
-  [v11 markIcon:v6 asNeedingAnimation:1];
+  [v11 markIcon:locationCopy asNeedingAnimation:1];
   [v11 layoutIconsIfNeededWithAnimationType:0 options:0];
-  v12 = [(SBHIconManager *)self rootFolderController];
-  if ((a4 & 2) != 0 && v9)
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if ((options & 2) != 0 && v9)
   {
-    v13 = a4 & 1;
-    v14 = [v12 pageIndexForIconListModelIndex:SBFolderRelativeListIndex(v9)];
+    v13 = options & 1;
+    v14 = [rootFolderController pageIndexForIconListModelIndex:SBFolderRelativeListIndex(v9)];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __57__SBHIconManager_addNewIconToDesignatedLocation_options___block_invoke;
     v15[3] = &unk_1E808B1B0;
-    v16 = v12;
+    v16 = rootFolderController;
     v17 = v14;
     v18 = v13;
     [(SBHIconManager *)self performAfterIconContextMenuDismissesUsingBlock:v15];
@@ -7340,19 +7340,19 @@ LABEL_7:
 
   if (v10)
   {
-    [v7 saveIconStateIfNeeded];
+    [iconModel saveIconStateIfNeeded];
   }
 }
 
-- (void)addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)a3
+- (void)addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)screen
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  screenCopy = screen;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = screenCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "Overriding user preference for adding new icons to the home screen for reason: %@", &v9, 0xCu);
   }
 
@@ -7366,41 +7366,41 @@ LABEL_7:
     reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen = self->_reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen;
   }
 
-  [(NSCountedSet *)reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen addObject:v4];
+  [(NSCountedSet *)reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen addObject:screenCopy];
 }
 
-- (void)removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)a3
+- (void)removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:(id)screen
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  screenCopy = screen;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = screenCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_INFO, "End overriding user preference for adding new icons to the home screen for reason: %@", &v6, 0xCu);
   }
 
-  [(NSCountedSet *)self->_reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen removeObject:v4];
+  [(NSCountedSet *)self->_reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen removeObject:screenCopy];
 }
 
-- (void)scrollToIconListContainingIcon:(id)a3 animate:(BOOL)a4
+- (void)scrollToIconListContainingIcon:(id)icon animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBHIconManager *)self rootFolder];
-  v8 = [(SBHIconManager *)self rootFolder];
-  v9 = [v8 indexPathForIcon:v6];
+  animateCopy = animate;
+  iconCopy = icon;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  rootFolder2 = [(SBHIconManager *)self rootFolder];
+  v9 = [rootFolder2 indexPathForIcon:iconCopy];
   v15 = 0;
-  v10 = [v7 folderContainingIndexPath:v9 relativeIndexPath:&v15];
+  v10 = [rootFolder folderContainingIndexPath:v9 relativeIndexPath:&v15];
   v11 = v15;
 
   if (v10)
   {
     v12 = SBFolderRelativeListIndex(v11);
-    v13 = [(SBHIconManager *)self rootFolder];
+    rootFolder3 = [(SBHIconManager *)self rootFolder];
 
-    if (v10 == v13)
+    if (v10 == rootFolder3)
     {
       if (v12 == 20000)
       {
@@ -7413,35 +7413,35 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v14 = [(SBHIconManager *)self rootFolderController];
-      [v14 setCurrentPageIndex:objc_msgSend(v14 animated:{"pageIndexForIconListModelIndex:", v12), v4}];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      [rootFolderController setCurrentPageIndex:objc_msgSend(rootFolderController animated:{"pageIndexForIconListModelIndex:", v12), animateCopy}];
     }
 
     else
     {
-      v14 = [(SBHIconManager *)self _currentFolderController];
-      [v14 setCurrentPageIndexToListDirectlyContainingIcon:v6 animated:v4];
+      rootFolderController = [(SBHIconManager *)self _currentFolderController];
+      [rootFolderController setCurrentPageIndexToListDirectlyContainingIcon:iconCopy animated:animateCopy];
     }
   }
 
 LABEL_8:
 }
 
-- (BOOL)_shouldLibraryOverlayAllowSwipeToDismissGesture:(id)a3
+- (BOOL)_shouldLibraryOverlayAllowSwipeToDismissGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v6 = [v4 view];
+  gestureCopy = gesture;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  view = [gestureCopy view];
 
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  v9 = [v5 view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
+  window = [view window];
+  windowScene = [window windowScene];
+  view2 = [rootFolderController view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
 
-  if (v8 == v11 && ((v13 = [v5 currentPageIndex], v13 == objc_msgSend(v5, "trailingCustomViewPageIndex")) || objc_msgSend(v5, "destinationPageState") == 4))
+  if (windowScene == windowScene2 && ((v13 = [rootFolderController currentPageIndex], v13 == objc_msgSend(rootFolderController, "trailingCustomViewPageIndex")) || objc_msgSend(rootFolderController, "destinationPageState") == 4))
   {
-    v12 = [v5 isScrollTracking] ^ 1;
+    v12 = [rootFolderController isScrollTracking] ^ 1;
   }
 
   else
@@ -7452,65 +7452,65 @@ LABEL_8:
   return v12;
 }
 
-- (void)_scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:(id)a3
+- (void)_scrollToLastIconPageIfNecessaryForLibraryOverlayDismissal:(id)dismissal
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v6 = [v4 view];
+  dismissalCopy = dismissal;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  view = [dismissalCopy view];
 
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  v9 = [v5 view];
-  v10 = [v9 window];
-  v11 = [v10 windowScene];
+  window = [view window];
+  windowScene = [window windowScene];
+  view2 = [rootFolderController view];
+  window2 = [view2 window];
+  windowScene2 = [window2 windowScene];
 
-  if (v8 == v11)
+  if (windowScene == windowScene2)
   {
-    v12 = [v5 currentPageIndex];
-    if ((v12 == [v5 trailingCustomViewPageIndex] || objc_msgSend(v5, "destinationPageState") == 4) && (objc_msgSend(v5, "isScrollTracking") & 1) == 0 && !-[SBHIconManager disablesScrollingToLastIconPageForLibraryDismissal](self, "disablesScrollingToLastIconPageForLibraryDismissal"))
+    currentPageIndex = [rootFolderController currentPageIndex];
+    if ((currentPageIndex == [rootFolderController trailingCustomViewPageIndex] || objc_msgSend(rootFolderController, "destinationPageState") == 4) && (objc_msgSend(rootFolderController, "isScrollTracking") & 1) == 0 && !-[SBHIconManager disablesScrollingToLastIconPageForLibraryDismissal](self, "disablesScrollingToLastIconPageForLibraryDismissal"))
     {
-      v13 = [(SBHIconManager *)self contentVisibility];
+      contentVisibility = [(SBHIconManager *)self contentVisibility];
       v14 = SBLogIcon();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16[0] = 67109120;
-        v16[1] = v13 != 2;
+        v16[1] = contentVisibility != 2;
         _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "Scrolling to last icon page due to modal library dismissal; animating scroll: %{BOOL}u", v16, 8u);
       }
 
-      v15 = [v5 lastIconPageIndex];
-      if (v13 == 2)
+      lastIconPageIndex = [rootFolderController lastIconPageIndex];
+      if (contentVisibility == 2)
       {
-        [v5 setCurrentPageIndex:v15 animated:0];
+        [rootFolderController setCurrentPageIndex:lastIconPageIndex animated:0];
       }
 
       else
       {
-        [v5 scrollUsingDecelerationAnimationToPageIndex:v15 withCompletionHandler:0];
+        [rootFolderController scrollUsingDecelerationAnimationToPageIndex:lastIconPageIndex withCompletionHandler:0];
       }
     }
   }
 }
 
-- (void)animateToDefaultStateWithCompletionHandler:(id)a3
+- (void)animateToDefaultStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  [v5 scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:v4];
+  handlerCopy = handler;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController scrollUsingDecelerationAnimationToDefaultPageWithCompletionHandler:handlerCopy];
 }
 
-- (void)setIconToReveal:(id)a3 revealingPrevious:(BOOL)a4
+- (void)setIconToReveal:(id)reveal revealingPrevious:(BOOL)previous
 {
-  v4 = a4;
-  v7 = a3;
+  previousCopy = previous;
+  revealCopy = reveal;
   iconToReveal = self->_iconToReveal;
-  if (iconToReveal != v7)
+  if (iconToReveal != revealCopy)
   {
-    v10 = v7;
+    v10 = revealCopy;
     if (iconToReveal)
     {
-      v9 = !v4;
+      v9 = !previousCopy;
     }
 
     else
@@ -7518,30 +7518,30 @@ LABEL_8:
       v9 = 1;
     }
 
-    if (!v9 && ([(SBIcon *)iconToReveal isEqual:v7]& 1) == 0)
+    if (!v9 && ([(SBIcon *)iconToReveal isEqual:revealCopy]& 1) == 0)
     {
       [(SBHIconManager *)self addNewIconToDesignatedLocation:self->_iconToReveal options:4];
     }
 
-    objc_storeStrong(&self->_iconToReveal, a3);
-    v7 = v10;
+    objc_storeStrong(&self->_iconToReveal, reveal);
+    revealCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](iconToReveal, v7);
+  MEMORY[0x1EEE66BB8](iconToReveal, revealCopy);
 }
 
-- (void)finishInstallingIconAnimated:(BOOL)a3
+- (void)finishInstallingIconAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v9 = [(SBHIconManager *)self iconToReveal];
-  if (v9)
+  animatedCopy = animated;
+  iconToReveal = [(SBHIconManager *)self iconToReveal];
+  if (iconToReveal)
   {
-    v5 = [(SBHIconManager *)self rootFolder];
-    v6 = [v5 containsIcon:v9];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    v6 = [rootFolder containsIcon:iconToReveal];
 
     if ((v6 & 1) == 0)
     {
-      if (v3)
+      if (animatedCopy)
       {
         v7 = 5;
       }
@@ -7551,51 +7551,51 @@ LABEL_8:
         v7 = 4;
       }
 
-      [(SBHIconManager *)self addNewIconToDesignatedLocation:v9 options:v7];
+      [(SBHIconManager *)self addNewIconToDesignatedLocation:iconToReveal options:v7];
     }
   }
 
-  v8 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManagerDidFinishInstallForIcon:self];
+    [delegate iconManagerDidFinishInstallForIcon:self];
   }
 
   [(SBHIconManager *)self setIconToReveal:0 revealingPrevious:0];
   [(SBHIconModel *)self->_iconModel saveIconStateIfNeeded];
 }
 
-- (void)tryScrollToIconToRevealAnimated:(BOOL)a3
+- (void)tryScrollToIconToRevealAnimated:(BOOL)animated
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = MEMORY[0x1BFB4EF60](a3, a2);
+  v6 = MEMORY[0x1BFB4EF60](animated, a2);
   v7 = [v5 stringWithFormat:@"tryScrollToIconToRevealAnimated:%@", v6];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__SBHIconManager_tryScrollToIconToRevealAnimated___block_invoke;
   v8[3] = &unk_1E80897D8;
   v8[4] = self;
-  v9 = a3;
+  animatedCopy = animated;
   [(SBHIconManager *)self _enqueueTransitionName:v7 withHandler:v8];
 }
 
-- (void)_tryScrollToIconToRevealAnimated:(BOOL)a3
+- (void)_tryScrollToIconToRevealAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SBHIconManager *)self rootViewController];
-  v6 = [(SBHIconManager *)self rootFolderController];
-  v7 = [(SBHIconManager *)self iconToReveal];
-  if (v7)
+  animatedCopy = animated;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  iconToReveal = [(SBHIconManager *)self iconToReveal];
+  if (iconToReveal)
   {
-    if (([v6 isLeadingCustomViewVisible] & 1) != 0 || objc_msgSend(v6, "isPullDownSearchVisible"))
+    if (([rootFolderController isLeadingCustomViewVisible] & 1) != 0 || objc_msgSend(rootFolderController, "isPullDownSearchVisible"))
     {
       [(SBHIconManager *)self finishInstallingIconAnimated:0];
     }
 
     else
     {
-      v8 = [(SBHIconManager *)self rootFolder];
-      v9 = [v8 indexPathForIcon:v7];
+      rootFolder = [(SBHIconManager *)self rootFolder];
+      v9 = [rootFolder indexPathForIcon:iconToReveal];
 
       if (!v9)
       {
@@ -7611,36 +7611,36 @@ LABEL_8:
       v11[2] = __51__SBHIconManager__tryScrollToIconToRevealAnimated___block_invoke;
       v11[3] = &unk_1E808B508;
       v11[4] = self;
-      v12 = v3;
-      [v5 revealIcon:v7 animated:v3 completionHandler:v11];
+      v12 = animatedCopy;
+      [rootViewController revealIcon:iconToReveal animated:animatedCopy completionHandler:v11];
     }
   }
 }
 
-- (void)revealIcon:(id)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (void)revealIcon:(id)icon animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBHIconManager *)self rootViewController];
-  v11 = [(SBHIconManager *)self rootFolder];
-  v12 = [v11 indexPathForIcon:v8];
+  animatedCopy = animated;
+  iconCopy = icon;
+  handlerCopy = handler;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v12 = [rootFolder indexPathForIcon:iconCopy];
   if (v12)
   {
-    v13 = [v11 folderContainingIndexPath:v12 relativeIndexPath:0];
-    v22 = [(SBHIconManager *)self openedFolderController];
-    v14 = [v22 folder];
+    v13 = [rootFolder folderContainingIndexPath:v12 relativeIndexPath:0];
+    openedFolderController = [(SBHIconManager *)self openedFolderController];
+    folder = [openedFolderController folder];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __56__SBHIconManager_revealIcon_animated_completionHandler___block_invoke;
     aBlock[3] = &unk_1E808FE88;
-    v23 = v10;
-    v15 = v10;
+    v23 = rootViewController;
+    v15 = rootViewController;
     v36 = v15;
-    v37 = v8;
-    v39 = v6;
-    v24 = v9;
-    v38 = v9;
+    v37 = iconCopy;
+    v39 = animatedCopy;
+    v24 = handlerCopy;
+    v38 = handlerCopy;
     v16 = _Block_copy(aBlock);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
@@ -7648,12 +7648,12 @@ LABEL_8:
     v27[3] = &unk_1E808FED8;
     v17 = v13;
     v28 = v17;
-    v29 = v11;
-    v18 = v14;
+    v29 = rootFolder;
+    v18 = folder;
     v30 = v18;
-    v34 = v6;
+    v34 = animatedCopy;
     v31 = v15;
-    v32 = self;
+    selfCopy = self;
     v19 = v16;
     v33 = v19;
     v20 = _Block_copy(v27);
@@ -7670,16 +7670,16 @@ LABEL_8:
       v25[2] = __56__SBHIconManager_revealIcon_animated_completionHandler___block_invoke_5;
       v25[3] = &unk_1E808A0B8;
       v26 = v20;
-      [(SBHIconManager *)self popExpandedIconAnimated:v6 completionHandler:v25];
+      [(SBHIconManager *)self popExpandedIconAnimated:animatedCopy completionHandler:v25];
     }
 
-    v10 = v23;
-    v9 = v24;
+    rootViewController = v23;
+    handlerCopy = v24;
   }
 
-  else if (v9)
+  else if (handlerCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -7726,18 +7726,18 @@ void __56__SBHIconManager_revealIcon_animated_completionHandler___block_invoke_3
   [v3 pushExpandedIcon:v4 location:v2 context:0 animated:v5 completionHandler:v6];
 }
 
-- (void)layoutIconListsWithAnimationType:(int64_t)a3 forceRelayout:(BOOL)a4
+- (void)layoutIconListsWithAnimationType:(int64_t)type forceRelayout:(BOOL)relayout
 {
-  v4 = a4;
+  relayoutCopy = relayout;
   v30 = *MEMORY[0x1E69E9840];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(SBHIconManager *)self rootFolderController];
-  v8 = [v7 folderControllers];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  folderControllers = [rootFolderController folderControllers];
 
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  v9 = [folderControllers countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -7749,31 +7749,31 @@ void __56__SBHIconManager_revealIcon_animated_completionHandler___block_invoke_3
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(folderControllers);
         }
 
-        [*(*(&v24 + 1) + 8 * v12++) layoutIconListsWithAnimationType:a3 forceRelayout:v4];
+        [*(*(&v24 + 1) + 8 * v12++) layoutIconListsWithAnimationType:type forceRelayout:relayoutCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v10 = [folderControllers countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v10);
   }
 
-  v13 = [(SBHIconManager *)self floatingDockViewController];
-  [v13 layoutUserControlledIconListsWithAnimationType:a3 forceRelayout:v4];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController layoutUserControlledIconListsWithAnimationType:type forceRelayout:relayoutCopy];
 
-  v14 = [(SBHIconManager *)self _effectiveTodayViewController];
-  [v14 layoutIconListViewWithAnimationType:a3 forceRelayout:v4];
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+  [_effectiveTodayViewController layoutIconListViewWithAnimationType:type forceRelayout:relayoutCopy];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = [(SBHIconManager *)self _libraryViewControllers];
-  v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v16 = [_libraryViewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v16)
   {
     v17 = v16;
@@ -7785,42 +7785,42 @@ void __56__SBHIconManager_revealIcon_animated_completionHandler___block_invoke_3
       {
         if (*v21 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        [*(*(&v20 + 1) + 8 * v19++) layoutIconListsWithAnimationType:a3 forceRelayout:v4];
+        [*(*(&v20 + 1) + 8 * v19++) layoutIconListsWithAnimationType:type forceRelayout:relayoutCopy];
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v17 = [_libraryViewControllers countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)unscatterAnimated:(BOOL)a3 afterDelay:(double)a4 withCompletion:(id)a5
+- (void)unscatterAnimated:(BOOL)animated afterDelay:(double)delay withCompletion:(id)completion
 {
-  v6 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(SBHIconManager *)self setAnimatingForUnscatter:1];
   [(SBHIconManager *)self setEditing:0];
   [(SBHIconManager *)self _ensureRootFolderController];
-  v9 = [(SBHIconManager *)self rootFolderController];
-  if (v9)
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if (rootFolderController)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__SBHIconManager_unscatterAnimated_afterDelay_withCompletion___block_invoke;
     v10[3] = &unk_1E808B3C0;
     v10[4] = self;
-    v11 = v8;
-    [v9 unscatterAnimated:v6 afterDelay:v10 withCompletion:a4];
+    v11 = completionCopy;
+    [rootFolderController unscatterAnimated:animatedCopy afterDelay:v10 withCompletion:delay];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    (*(v8 + 2))(v8, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -7838,27 +7838,27 @@ uint64_t __62__SBHIconManager_unscatterAnimated_afterDelay_withCompletion___bloc
   return result;
 }
 
-- (void)getListView:(id *)a3 folder:(id *)a4 relativePath:(id *)a5 forIndexPath:(id)a6
+- (void)getListView:(id *)view folder:(id *)folder relativePath:(id *)path forIndexPath:(id)indexPath
 {
-  v10 = a6;
-  v11 = [(SBHIconManager *)self rootFolder];
+  indexPathCopy = indexPath;
+  rootFolder = [(SBHIconManager *)self rootFolder];
   v23 = 0;
-  v12 = [v11 folderContainingIndexPath:v10 relativeIndexPath:&v23];
+  v12 = [rootFolder folderContainingIndexPath:indexPathCopy relativeIndexPath:&v23];
 
   v13 = v23;
-  if (a3)
+  if (view)
   {
-    v14 = [(SBHIconManager *)self rootFolderController];
-    v15 = [v14 folderControllerForFolder:v12];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    v15 = [rootFolderController folderControllerForFolder:v12];
     if ([v15 isOpen])
     {
       v16 = SBFolderRelativeListIndex(v13);
-      v17 = [v15 iconListViewForIconListModelIndex:v16];
-      if (v17)
+      listView = [v15 iconListViewForIconListModelIndex:v16];
+      if (listView)
       {
 LABEL_13:
-        v20 = v17;
-        *a3 = v17;
+        v20 = listView;
+        *view = listView;
 
         goto LABEL_14;
       }
@@ -7868,44 +7868,44 @@ LABEL_13:
         switch(v16)
         {
           case 20000:
-            v18 = [(SBHIconManager *)self _effectiveTodayViewController];
-            v17 = [v18 listView];
+            _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+            listView = [_effectiveTodayViewController listView];
 
             goto LABEL_13;
           case 10000:
-            v19 = [(SBHIconManager *)self floatingDockListView];
+            floatingDockListView = [(SBHIconManager *)self floatingDockListView];
 LABEL_11:
-            v17 = v19;
+            listView = floatingDockListView;
             goto LABEL_13;
           case 40000:
-            v19 = [(SBHIconManager *)self floatingDockUtilitiesListView];
+            floatingDockListView = [(SBHIconManager *)self floatingDockUtilitiesListView];
             goto LABEL_11;
         }
       }
     }
 
-    v17 = 0;
+    listView = 0;
     goto LABEL_13;
   }
 
 LABEL_14:
-  if (a4)
+  if (folder)
   {
     v21 = v12;
-    *a4 = v12;
+    *folder = v12;
   }
 
-  if (a5)
+  if (path)
   {
     v22 = v13;
-    *a5 = v13;
+    *path = v13;
   }
 }
 
-- (id)iconListViewForIndexPath:(id)a3
+- (id)iconListViewForIndexPath:(id)path
 {
   v5 = 0;
-  [(SBHIconManager *)self getListView:&v5 folder:0 relativePath:0 forIndexPath:a3];
+  [(SBHIconManager *)self getListView:&v5 folder:0 relativePath:0 forIndexPath:path];
   v3 = v5;
 
   return v3;
@@ -7917,12 +7917,12 @@ LABEL_14:
   folderIconImageCache = self->_folderIconImageCache;
   if (!folderIconImageCache)
   {
-    v5 = [(SBHIconManager *)self listLayoutProvider];
-    v6 = [v5 layoutForIconLocation:@"SBIconLocationFolder"];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v6 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationFolder"];
 
     v7 = [SBFolderIconImageCache alloc];
-    v8 = [(SBHIconManager *)self iconImageCache];
-    v9 = [(SBFolderIconImageCache *)v7 initWithListLayout:v6 iconImageCache:v8];
+    iconImageCache = [(SBHIconManager *)self iconImageCache];
+    v9 = [(SBFolderIconImageCache *)v7 initWithListLayout:v6 iconImageCache:iconImageCache];
     v10 = self->_folderIconImageCache;
     self->_folderIconImageCache = v9;
 
@@ -7943,8 +7943,8 @@ LABEL_14:
   iconImageCache = self->_iconImageCache;
   if (!iconImageCache)
   {
-    v4 = [(SBHIconManager *)self listLayoutProvider];
-    v5 = [v4 layoutForIconLocation:@"SBIconLocationRoot"];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v5 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
     [v5 iconImageInfo];
     v7 = v6;
     v9 = v8;
@@ -7955,10 +7955,10 @@ LABEL_14:
     v15 = self->_iconImageCache;
     self->_iconImageCache = v14;
 
-    v16 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v16 iconManager:self willUseIconImageCache:self->_iconImageCache];
+      [delegate iconManager:self willUseIconImageCache:self->_iconImageCache];
     }
 
     iconImageCache = self->_iconImageCache;
@@ -7967,11 +7967,11 @@ LABEL_14:
   return iconImageCache;
 }
 
-- (void)enumerateAllIconImageCachesUsingBlock:(id)a3
+- (void)enumerateAllIconImageCachesUsingBlock:(id)block
 {
   if (self->_iconImageCache)
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
   }
 }
 
@@ -7984,29 +7984,29 @@ LABEL_14:
 
 - (id)rootListLayout
 {
-  v2 = [(SBHIconManager *)self listLayoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v3 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   return v3;
 }
 
 - (SBIconImageInfo)rootIconImageInfo
 {
-  v3 = [(SBHIconManager *)self iconImageCache];
-  [v3 iconImageInfo];
+  iconImageCache = [(SBHIconManager *)self iconImageCache];
+  [iconImageCache iconImageInfo];
 
   return result;
 }
 
 - (SBIconImageInfo)folderMiniIconImageInfo
 {
-  v3 = [(SBHIconManager *)self rootListLayout];
-  SBHIconListLayoutFolderIconGridCellIconImageInfo(v3);
+  rootListLayout = [(SBHIconManager *)self rootListLayout];
+  SBHIconListLayoutFolderIconGridCellIconImageInfo(rootListLayout);
 
   return result;
 }
 
-- (id)addWidgetSheetConfigurationManagerCreatingIfNecessary:(BOOL)a3
+- (id)addWidgetSheetConfigurationManagerCreatingIfNecessary:(BOOL)necessary
 {
   addWidgetSheetConfigurationManager = self->_addWidgetSheetConfigurationManager;
   if (addWidgetSheetConfigurationManager)
@@ -8016,26 +8016,26 @@ LABEL_14:
 
   else
   {
-    v5 = !a3;
+    v5 = !necessary;
   }
 
   if (!v5)
   {
     v6 = [SBHAddWidgetSheetConfigurationManager alloc];
-    v7 = [(SBHIconManager *)self widgetExtensionProvider];
-    v8 = [(SBHAddWidgetSheetConfigurationManager *)v6 initWithWidgetExtensionProvider:v7];
+    widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+    v8 = [(SBHAddWidgetSheetConfigurationManager *)v6 initWithWidgetExtensionProvider:widgetExtensionProvider];
 
     [(SBHAddWidgetSheetConfigurationManager *)v8 setConfigurationManagerDelegate:self];
-    v9 = [(SBHIconManager *)self iconModel];
-    [(SBHAddWidgetSheetConfigurationManager *)v8 setIconModel:v9];
+    iconModel = [(SBHIconManager *)self iconModel];
+    [(SBHAddWidgetSheetConfigurationManager *)v8 setIconModel:iconModel];
 
-    v10 = [(SBHIconManager *)self listLayoutProvider];
-    [(SBHAddWidgetSheetConfigurationManager *)v8 setListLayoutProvider:v10];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    [(SBHAddWidgetSheetConfigurationManager *)v8 setListLayoutProvider:listLayoutProvider];
 
-    v11 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 addWidgetSheetStyleForIconManager:self];
+      v12 = [delegate addWidgetSheetStyleForIconManager:self];
     }
 
     else
@@ -8053,17 +8053,17 @@ LABEL_14:
   return addWidgetSheetConfigurationManager;
 }
 
-- (BOOL)shouldRecycleIconView:(id)a3
+- (BOOL)shouldRecycleIconView:(id)view
 {
-  v4 = a3;
-  if (!-[SBHIconManager recyclesIconViews](self, "recyclesIconViews") || ([v4 _wantsAutolayout] & 1) != 0 || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isTrackingDragOriginatingFromIconView:", v4), v5, (v6 & 1) != 0) || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isTrackingDropIntoDestinationIconView:", v4), v7, (v8 & 1) != 0) || (objc_msgSend(v4, "isShowingContextMenu") & 1) != 0 || (objc_msgSend(v4, "isShowingConfigurationCard") & 1) != 0 || (objc_msgSend(v4, "isCursorActive") & 1) != 0)
+  viewCopy = view;
+  if (!-[SBHIconManager recyclesIconViews](self, "recyclesIconViews") || ([viewCopy _wantsAutolayout] & 1) != 0 || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isTrackingDragOriginatingFromIconView:", viewCopy), v5, (v6 & 1) != 0) || (-[SBHIconManager iconDragManager](self, "iconDragManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isTrackingDropIntoDestinationIconView:", viewCopy), v7, (v8 & 1) != 0) || (objc_msgSend(viewCopy, "isShowingContextMenu") & 1) != 0 || (objc_msgSend(viewCopy, "isShowingConfigurationCard") & 1) != 0 || (objc_msgSend(viewCopy, "isCursorActive") & 1) != 0)
   {
     LOBYTE(v9) = 0;
   }
 
   else
   {
-    v9 = [v4 isCrossfadingImageWithView] ^ 1;
+    v9 = [viewCopy isCrossfadingImageWithView] ^ 1;
   }
 
   return v9;
@@ -8071,10 +8071,10 @@ LABEL_14:
 
 - (BOOL)isRootFolderContentVisible
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isRootFolderContentVisibleForIconManager:self];
+    v4 = [delegate isRootFolderContentVisibleForIconManager:self];
   }
 
   else
@@ -8087,10 +8087,10 @@ LABEL_14:
 
 - (BOOL)isIconContentPossiblyVisibleOverApplication
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isIconContentPossiblyVisibleOverApplicationForIconManager:self];
+    v4 = [delegate isIconContentPossiblyVisibleOverApplicationForIconManager:self];
   }
 
   else
@@ -8101,43 +8101,43 @@ LABEL_14:
   return v4;
 }
 
-- (void)setContentVisibility:(unint64_t)a3
+- (void)setContentVisibility:(unint64_t)visibility
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_contentVisibility != a3)
+  if (self->_contentVisibility != visibility)
   {
     v5 = SBLogIcon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = SBHStringFromContentVisibility(a3);
+      v6 = SBHStringFromContentVisibility(visibility);
       v15 = 138543362;
       v16 = v6;
       _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Changing icon manager content visibility to %{public}@", &v15, 0xCu);
     }
 
-    self->_contentVisibility = a3;
-    v7 = [(SBHIconManager *)self rootViewController];
-    [v7 setContentVisibility:{-[SBHIconManager effectiveRootFolderControllerContentVisibility](self, "effectiveRootFolderControllerContentVisibility")}];
+    self->_contentVisibility = visibility;
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    [rootViewController setContentVisibility:{-[SBHIconManager effectiveRootFolderControllerContentVisibility](self, "effectiveRootFolderControllerContentVisibility")}];
 
-    v8 = [(SBHIconManager *)self floatingDockViewController];
-    if ([v8 isPresentingLibrary])
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    if ([floatingDockViewController isPresentingLibrary])
     {
-      v9 = [v8 libraryViewController];
-      [v9 setContentVisibility:0];
+      libraryViewController = [floatingDockViewController libraryViewController];
+      [libraryViewController setContentVisibility:0];
     }
 
-    if (a3 == 2 && [(SBHIconManager *)self isShowingModalInteraction])
+    if (visibility == 2 && [(SBHIconManager *)self isShowingModalInteraction])
     {
       [(SBHIconManager *)self dismissModalInteractionsImmediately];
     }
 
-    v10 = [(SBHIconManager *)self contentHiddenPauseLightAngleUpdatesAssertion];
-    v11 = v10;
-    if (a3 != 2 || v10)
+    contentHiddenPauseLightAngleUpdatesAssertion = [(SBHIconManager *)self contentHiddenPauseLightAngleUpdatesAssertion];
+    v11 = contentHiddenPauseLightAngleUpdatesAssertion;
+    if (visibility != 2 || contentHiddenPauseLightAngleUpdatesAssertion)
     {
-      if (a3 != 2 && v10)
+      if (visibility != 2 && contentHiddenPauseLightAngleUpdatesAssertion)
       {
-        [v10 invalidate];
+        [contentHiddenPauseLightAngleUpdatesAssertion invalidate];
         [(SBHIconManager *)self setContentHiddenPauseLightAngleUpdatesAssertion:0];
       }
     }
@@ -8150,57 +8150,57 @@ LABEL_14:
       [(SBHIconManager *)self setContentHiddenPauseLightAngleUpdatesAssertion:v13];
     }
 
-    v14 = [(SBHIconManager *)self usageMonitor];
-    [v14 noteIconManagerContentOccludedChanged];
+    usageMonitor = [(SBHIconManager *)self usageMonitor];
+    [usageMonitor noteIconManagerContentOccludedChanged];
 
-    if (a3 == 2 && self->_labelCachesNecessitateCleanup)
+    if (visibility == 2 && self->_labelCachesNecessitateCleanup)
     {
       [(SBHIconManager *)self _cleanupLabelCachesWithReason:@"content is hidden; we can cleanup now"];
     }
   }
 }
 
-- (void)setIdleModeText:(id)a3
+- (void)setIdleModeText:(id)text
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootViewController];
-  [v5 setIdleText:v4];
+  textCopy = text;
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  [rootViewController setIdleText:textCopy];
 }
 
 - (void)removeAllIconAnimations
 {
-  v3 = [(SBHIconManager *)self currentRootIconList];
-  [v3 removeAllIconAnimations];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  [currentRootIconList removeAllIconAnimations];
 
-  v5 = [(SBHIconManager *)self dockListView];
-  v4 = [v5 layer];
-  [v4 removeAllAnimations];
+  dockListView = [(SBHIconManager *)self dockListView];
+  layer = [dockListView layer];
+  [layer removeAllAnimations];
 }
 
 - (void)noteFloatingDockWillChangeHeight
 {
-  v2 = [(SBHIconManager *)self rootViewController];
-  v3 = [v2 contentView];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  contentView = [rootViewController contentView];
 
-  [v3 setNeedsLayout];
+  [contentView setNeedsLayout];
 }
 
 - (void)noteFloatingDockWillAnimateChangeInHeight
 {
-  v2 = [(SBHIconManager *)self rootViewController];
-  v3 = [v2 contentView];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  contentView = [rootViewController contentView];
 
-  [v3 layoutIfNeeded];
+  [contentView layoutIfNeeded];
 }
 
-- (void)noteIconViewWillZoomDown:(id)a3
+- (void)noteIconViewWillZoomDown:(id)down
 {
-  v15 = a3;
+  downCopy = down;
   v4 = [(SBHIconManager *)self floatingDockViewControllerForView:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 libraryViewController];
+    libraryViewController = [v4 libraryViewController];
     if (([v5 isPresentingLibrary] & 1) == 0)
     {
       goto LABEL_10;
@@ -8209,19 +8209,19 @@ LABEL_14:
 
   else
   {
-    v7 = [(SBHIconManager *)self overlayLibraryViewController];
-    v8 = v7;
-    if (v7)
+    overlayLibraryViewController = [(SBHIconManager *)self overlayLibraryViewController];
+    v8 = overlayLibraryViewController;
+    if (overlayLibraryViewController)
     {
-      v9 = v7;
+      trailingLibraryViewController = overlayLibraryViewController;
     }
 
     else
     {
-      v9 = [(SBHIconManager *)self trailingLibraryViewController];
+      trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
     }
 
-    v6 = v9;
+    libraryViewController = trailingLibraryViewController;
 
     if (![(SBHIconManager *)self isMainDisplayLibraryViewVisible])
     {
@@ -8229,34 +8229,34 @@ LABEL_14:
     }
   }
 
-  v10 = [v15 location];
-  v11 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", v10);
+  location = [downCopy location];
+  v11 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupAppLibrary", location);
 
   if (v11)
   {
-    [v6 noteIconViewWillZoomDown:v15];
+    [libraryViewController noteIconViewWillZoomDown:downCopy];
   }
 
 LABEL_10:
   if ([(SBHIconManager *)self isOverlayTodayViewVisible])
   {
-    v12 = [(SBHIconManager *)self overlayTodayViewController];
-    v13 = [v12 isDisplayingIconView:v15];
+    overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+    v13 = [overlayTodayViewController isDisplayingIconView:downCopy];
 
     if (v13)
     {
-      v14 = [(SBHIconManager *)self overlayTodayViewController];
-      [v14 noteIconViewWillZoomDown:v15];
+      overlayTodayViewController2 = [(SBHIconManager *)self overlayTodayViewController];
+      [overlayTodayViewController2 noteIconViewWillZoomDown:downCopy];
     }
   }
 }
 
 - (id)viewControllerForPresentingViewControllers
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 viewControllerForPresentingViewControllersForIconManager:self];
+    v4 = [delegate viewControllerForPresentingViewControllersForIconManager:self];
   }
 
   else
@@ -8267,16 +8267,16 @@ LABEL_10:
   return v4;
 }
 
-- (id)accessibilityTintColorForScreenRect:(CGRect)a3
+- (id)accessibilityTintColorForScreenRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(SBHIconManager *)self delegate];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self accessibilityTintColorForScreenRect:{x, y, width, height}];
+    v9 = [delegate iconManager:self accessibilityTintColorForScreenRect:{x, y, width, height}];
   }
 
   else
@@ -8287,16 +8287,16 @@ LABEL_10:
   return v9;
 }
 
-- (void)moveIconToHiddenPage:(id)a3
+- (void)moveIconToHiddenPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __39__SBHIconManager_moveIconToHiddenPage___block_invoke;
   v6[3] = &unk_1E80893F0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = pageCopy;
+  v5 = pageCopy;
   [(SBHIconManager *)self removeIcon:v5 options:1 completion:v6];
 }
 
@@ -8306,13 +8306,13 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
   [v2 removeIcon:*(a1 + 40) options:0];
 }
 
-- (BOOL)resetIconLayoutWithOptions:(unint64_t)a3
+- (BOOL)resetIconLayoutWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   [(SBHIconManager *)self addReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:@"resetIconLayout"];
-  v5 = [(SBHIconManager *)self iconModel];
-  v6 = [v5 deleteIconStateWithOptions:v3 & 1];
-  [v5 clearDesiredIconStateWithOptions:v3 & 1];
+  iconModel = [(SBHIconManager *)self iconModel];
+  v6 = [iconModel deleteIconStateWithOptions:optionsCopy & 1];
+  [iconModel clearDesiredIconStateWithOptions:optionsCopy & 1];
   [(SBHIconManager *)self removeReasonToIgnoreUserPreferenceForAddingNewIconsToHomeScreen:@"resetIconLayout"];
 
   return v6;
@@ -8320,18 +8320,18 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
 
 - (BOOL)resetTodayLayout
 {
-  v2 = [(SBHIconManager *)self iconModel];
-  v3 = [v2 defaultIconState];
-  v4 = [[SBHIconStateUnarchiver alloc] initWithArchive:v3 iconModel:v2];
-  v5 = [(SBHIconStateUnarchiver *)v4 unarchive];
-  if ([v5 isValid])
+  iconModel = [(SBHIconManager *)self iconModel];
+  defaultIconState = [iconModel defaultIconState];
+  v4 = [[SBHIconStateUnarchiver alloc] initWithArchive:defaultIconState iconModel:iconModel];
+  unarchive = [(SBHIconStateUnarchiver *)v4 unarchive];
+  if ([unarchive isValid])
   {
-    v6 = [v5 rootFolder];
-    v7 = [v2 rootFolder];
-    v8 = v7;
-    if (v6)
+    rootFolder = [unarchive rootFolder];
+    rootFolder2 = [iconModel rootFolder];
+    v8 = rootFolder2;
+    if (rootFolder)
     {
-      v9 = v7 == 0;
+      v9 = rootFolder2 == 0;
     }
 
     else
@@ -8342,15 +8342,15 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
     v10 = !v9;
     if (!v9)
     {
-      v11 = [v7 todayList];
-      v16 = [v11 icons];
-      [v11 removeAllIcons];
-      [v2 removeIcons:v16];
-      v12 = [v6 todayList];
-      v13 = [v12 icons];
+      todayList = [rootFolder2 todayList];
+      icons = [todayList icons];
+      [todayList removeAllIcons];
+      [iconModel removeIcons:icons];
+      todayList2 = [rootFolder todayList];
+      icons2 = [todayList2 icons];
 
-      v14 = [v11 addIcons:v13];
-      [v2 saveIconStateIfNeeded];
+      v14 = [todayList addIcons:icons2];
+      [iconModel saveIconStateIfNeeded];
     }
   }
 
@@ -8364,33 +8364,33 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
 
 - (BOOL)clearTodayLayout
 {
-  v2 = [(SBHIconManager *)self iconModel];
-  v3 = [v2 rootFolder];
-  v4 = [v3 todayList];
-  [v4 removeAllIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [iconModel rootFolder];
+  todayList = [rootFolder todayList];
+  [todayList removeAllIcons];
 
-  [v2 saveIconStateIfNeeded];
+  [iconModel saveIconStateIfNeeded];
   return 1;
 }
 
 - (void)minimumHomeScreenScaleDidChange
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  [v2 minimumHomeScreenScaleDidChange];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController minimumHomeScreenScaleDidChange];
 }
 
 - (void)runDownloadingIconTest
 {
   v34 = *MEMORY[0x1E69E9840];
-  v2 = [(SBHIconManager *)self iconModel];
-  v3 = [v2 leafIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  leafIcons = [iconModel leafIcons];
   v22 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(leafIcons, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = leafIcons;
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
@@ -8405,14 +8405,14 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
-        if ([v2 isIconVisible:v9] && objc_msgSend(v9, "isApplicationIcon"))
+        if ([iconModel isIconVisible:v9] && objc_msgSend(v9, "isApplicationIcon"))
         {
-          v10 = [v9 applicationBundleID];
-          v11 = [v9 application];
-          v12 = v11;
-          if (v10)
+          applicationBundleID = [v9 applicationBundleID];
+          application = [v9 application];
+          v12 = application;
+          if (applicationBundleID)
           {
-            v13 = v11 == 0;
+            v13 = application == 0;
           }
 
           else
@@ -8423,12 +8423,12 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
           if (!v13)
           {
             v14 = objc_alloc_init(SBHFakeApplicationPlaceholder);
-            [(SBHFakeApplicationPlaceholder *)v14 setApplicationBundleIdentifier:v10];
-            v15 = [v9 displayName];
-            [(SBHFakeApplicationPlaceholder *)v14 setApplicationDisplayName:v15];
+            [(SBHFakeApplicationPlaceholder *)v14 setApplicationBundleIdentifier:applicationBundleID];
+            displayName = [v9 displayName];
+            [(SBHFakeApplicationPlaceholder *)v14 setApplicationDisplayName:displayName];
 
             [v4 addObject:v14];
-            [v22 setObject:v12 forKey:v10];
+            [v22 setObject:v12 forKey:applicationBundleID];
           }
         }
       }
@@ -8454,7 +8454,7 @@ void __39__SBHIconManager_moveIconToHiddenPage___block_invoke(uint64_t a1)
   v24 = v18;
   v19 = v22;
   v25 = v19;
-  v26 = self;
+  selfCopy = self;
   v20 = [v17 scheduledTimerWithTimeInterval:1 repeats:v23 block:0.25];
 
   _Block_object_dispose(v28, 8);
@@ -8537,9 +8537,9 @@ void __40__SBHIconManager_runDownloadingIconTest__block_invoke(uint64_t a1, void
 
 - (void)runRemoveAndRestoreIconTest
 {
-  v3 = [(SBHIconManager *)self iconModel];
-  v4 = [v3 leafIcons];
-  v5 = [v4 mutableCopy];
+  iconModel = [(SBHIconManager *)self iconModel];
+  leafIcons = [iconModel leafIcons];
+  v5 = [leafIcons mutableCopy];
 
   v6 = [MEMORY[0x1E695DFA8] set];
   v7 = MEMORY[0x1E695DFF0];
@@ -8548,7 +8548,7 @@ void __40__SBHIconManager_runDownloadingIconTest__block_invoke(uint64_t a1, void
   v11[2] = __45__SBHIconManager_runRemoveAndRestoreIconTest__block_invoke;
   v11[3] = &unk_1E808FF48;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v14 = v6;
   v8 = v6;
   v9 = v5;
@@ -8588,31 +8588,31 @@ void __45__SBHIconManager_runRemoveAndRestoreIconTest__block_invoke(id *a1, void
 
 - (void)addAllEligibleIconsToIgnoredList
 {
-  v9 = [(SBHIconManager *)self iconModel];
-  v3 = [v9 leafIcons];
-  v4 = [(SBHIconManager *)self rootFolder];
-  v5 = [v4 ignoredList];
-  v6 = [v3 allObjects];
-  v7 = [v5 allowedIconsForIcons:v6];
+  iconModel = [(SBHIconManager *)self iconModel];
+  leafIcons = [iconModel leafIcons];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  ignoredList = [rootFolder ignoredList];
+  allObjects = [leafIcons allObjects];
+  v7 = [ignoredList allowedIconsForIcons:allObjects];
 
-  v8 = [v5 addIcons:v7];
-  [v4 pruneEmptyFolders];
-  [v4 compactLists];
+  v8 = [ignoredList addIcons:v7];
+  [rootFolder pruneEmptyFolders];
+  [rootFolder compactLists];
 }
 
 - (void)removeAllWidgetIcons
 {
-  v4 = [(SBHIconManager *)self iconModel];
-  v2 = [v4 widgetIcons];
-  v3 = [v2 allObjects];
+  iconModel = [(SBHIconManager *)self iconModel];
+  widgetIcons = [iconModel widgetIcons];
+  allObjects = [widgetIcons allObjects];
 
-  [v4 removeIcons:v3];
+  [iconModel removeIcons:allObjects];
 }
 
 - (void)removeWidgetIconsFromHomeScreen
 {
-  v2 = [(SBHIconManager *)self iconModel];
-  v3 = [v2 rootFolder];
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [iconModel rootFolder];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -8620,8 +8620,8 @@ void __45__SBHIconManager_runRemoveAndRestoreIconTest__block_invoke(id *a1, void
   v6[3] = &unk_1E808E678;
   v7 = v4;
   v5 = v4;
-  [v3 enumerateListsWithOptions:4 usingBlock:v6];
-  [v2 removeIcons:v5];
+  [rootFolder enumerateListsWithOptions:4 usingBlock:v6];
+  [iconModel removeIcons:v5];
 }
 
 void __49__SBHIconManager_removeWidgetIconsFromHomeScreen__block_invoke(uint64_t a1, void *a2)
@@ -8630,38 +8630,38 @@ void __49__SBHIconManager_removeWidgetIconsFromHomeScreen__block_invoke(uint64_t
   [*(a1 + 32) addObjectsFromArray:v3];
 }
 
-- (void)addFileStackWithURL:(id)a3
+- (void)addFileStackWithURL:(id)l
 {
-  v8 = a3;
+  lCopy = l;
   if ([(SBHIconManager *)self isFloatingDockSupported])
   {
-    v4 = [(SBHIconManager *)self floatingDockViewController];
-    if (v4)
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    if (floatingDockViewController)
     {
-      v5 = [[SBHFileStackIcon alloc] initWithUniqueLeafIdentifier];
-      [(SBHFileStackIcon *)v5 setUrl:v8];
-      v6 = [v4 dockUtilitiesListModel];
-      v7 = [v6 addIcon:v5];
+      initWithUniqueLeafIdentifier = [[SBHFileStackIcon alloc] initWithUniqueLeafIdentifier];
+      [(SBHFileStackIcon *)initWithUniqueLeafIdentifier setUrl:lCopy];
+      dockUtilitiesListModel = [floatingDockViewController dockUtilitiesListModel];
+      v7 = [dockUtilitiesListModel addIcon:initWithUniqueLeafIdentifier];
     }
   }
 }
 
-- (BOOL)hasConfiguredFilesStackWithURL:(id)a3
+- (BOOL)hasConfiguredFilesStackWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if ([(SBHIconManager *)self isFloatingDockSupported])
   {
-    v5 = [(SBHIconManager *)self floatingDockViewController];
-    v6 = v5;
-    if (v5)
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    v6 = floatingDockViewController;
+    if (floatingDockViewController)
     {
-      v7 = [v5 dockUtilitiesListModel];
+      dockUtilitiesListModel = [floatingDockViewController dockUtilitiesListModel];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __49__SBHIconManager_hasConfiguredFilesStackWithURL___block_invoke;
       v11[3] = &unk_1E808BFD8;
-      v12 = v4;
-      v8 = [v7 iconsPassingTest:v11];
+      v12 = lCopy;
+      v8 = [dockUtilitiesListModel iconsPassingTest:v11];
       v9 = [v8 count] != 0;
     }
 
@@ -8721,23 +8721,23 @@ uint64_t __49__SBHIconManager_hasConfiguredFilesStackWithURL___block_invoke(uint
   return v7;
 }
 
-- (void)removeFileStackWithURL:(id)a3
+- (void)removeFileStackWithURL:(id)l
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   if ([(SBHIconManager *)self isFloatingDockSupported])
   {
-    v5 = [(SBHIconManager *)self floatingDockViewController];
-    v6 = v5;
-    if (v5)
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    v6 = floatingDockViewController;
+    if (floatingDockViewController)
     {
-      v7 = [v5 dockUtilitiesListModel];
+      dockUtilitiesListModel = [floatingDockViewController dockUtilitiesListModel];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __41__SBHIconManager_removeFileStackWithURL___block_invoke;
       v17[3] = &unk_1E808BFD8;
-      v18 = v4;
-      v8 = [v7 iconsPassingTest:v17];
+      v18 = lCopy;
+      v8 = [dockUtilitiesListModel iconsPassingTest:v17];
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
@@ -8757,7 +8757,7 @@ uint64_t __49__SBHIconManager_hasConfiguredFilesStackWithURL___block_invoke(uint
               objc_enumerationMutation(v8);
             }
 
-            [v7 removeIcon:*(*(&v13 + 1) + 8 * v12++)];
+            [dockUtilitiesListModel removeIcon:*(*(&v13 + 1) + 8 * v12++)];
           }
 
           while (v10 != v12);
@@ -8814,20 +8814,20 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
 
 - (void)shuffleWidgetStackForTestRecipe
 {
-  v14 = [(SBHIconManager *)self currentRootIconList];
-  v2 = [v14 icons];
-  v3 = [v2 bs_firstObjectPassingTest:&__block_literal_global_370];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  icons = [currentRootIconList icons];
+  v3 = [icons bs_firstObjectPassingTest:&__block_literal_global_370];
 
   if (v3)
   {
-    v4 = [v3 iconDataSourceCount];
-    v5 = [v3 iconDataSources];
-    v6 = [v3 activeDataSource];
-    v7 = [v5 indexOfObject:v6];
+    iconDataSourceCount = [v3 iconDataSourceCount];
+    iconDataSources = [v3 iconDataSources];
+    activeDataSource = [v3 activeDataSource];
+    v7 = [iconDataSources indexOfObject:activeDataSource];
 
     v8 = arc4random();
-    v9 = v8 % v4;
-    if (v9 + 1 == v4)
+    v9 = v8 % iconDataSourceCount;
+    if (v9 + 1 == iconDataSourceCount)
     {
       v10 = 0;
     }
@@ -8844,11 +8844,11 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
 
     else
     {
-      v11 = v8 % v4;
+      v11 = v8 % iconDataSourceCount;
     }
 
-    v12 = [v3 iconDataSources];
-    v13 = [v12 objectAtIndex:v11];
+    iconDataSources2 = [v3 iconDataSources];
+    v13 = [iconDataSources2 objectAtIndex:v11];
 
     [v3 setStackChangeReason:1];
     [v3 setActiveDataSource:v13];
@@ -8858,14 +8858,14 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
 - (void)toggleSuggestedWidgetInStackForTestRecipe
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self currentRootIconList];
-  v4 = [v3 icons];
-  v5 = [v4 bs_firstObjectPassingTest:&__block_literal_global_372];
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  icons = [currentRootIconList icons];
+  v5 = [icons bs_firstObjectPassingTest:&__block_literal_global_372];
 
   if (v5)
   {
-    v6 = [v5 widgets];
-    v7 = [v6 bs_firstObjectPassingTest:&__block_literal_global_374];
+    widgets = [v5 widgets];
+    v7 = [widgets bs_firstObjectPassingTest:&__block_literal_global_374];
 
     if (v7)
     {
@@ -8879,16 +8879,16 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
       v7 = [(SBHWidget *)v8 copyWithSuggestionSource:1];
 
       v9 = SBHWeatherWidgetTestIntent();
-      v10 = [v5 uniqueIdentifier];
-      v11 = [v7 uniqueIdentifier];
-      [(SBHIconManager *)self setTemporaryIntent:v9 forIconWithIdentifier:v10 widgetUniqueIdentifier:v11];
+      uniqueIdentifier = [v5 uniqueIdentifier];
+      uniqueIdentifier2 = [v7 uniqueIdentifier];
+      [(SBHIconManager *)self setTemporaryIntent:v9 forIconWithIdentifier:uniqueIdentifier widgetUniqueIdentifier:uniqueIdentifier2];
 
       [v5 setStackChangeReason:2];
       v16[0] = v7;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
       v13 = MEMORY[0x1E696AC90];
-      v14 = [v5 iconDataSources];
-      v15 = [v13 indexSetWithIndex:{objc_msgSend(v14, "count")}];
+      iconDataSources = [v5 iconDataSources];
+      v15 = [v13 indexSetWithIndex:{objc_msgSend(iconDataSources, "count")}];
       [v5 insertIconDataSources:v12 atIndexes:v15];
 
       [v5 setActiveDataSource:v7];
@@ -8896,38 +8896,38 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
   }
 }
 
-- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)a3
+- (void)organizeAllIconsIntoFoldersWithPageCount:(unint64_t)count
 {
-  v32 = [(SBHIconManager *)self iconModel];
-  v5 = [(SBHIconManager *)self rootFolder];
-  [v32 visibleLeafIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  [iconModel visibleLeafIcons];
   v31 = v30 = self;
-  v6 = [(SBHIconManager *)self listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   v29 = v7;
   v8 = SBHIconListLayoutMaximumIconCount(v7);
-  v9 = [v5 maxListCount];
-  if (v9 >= a3)
+  maxListCount = [rootFolder maxListCount];
+  if (maxListCount >= count)
   {
-    v10 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v10 = v9;
+    countCopy = maxListCount;
   }
 
-  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10 * v8];
-  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v10 * v8];
-  if (v10 * v8)
+  v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:countCopy * v8];
+  v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:countCopy * v8];
+  if (countCopy * v8)
   {
     v13 = 1;
-    v14 = v10 * v8;
+    v14 = countCopy * v8;
     do
     {
       v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Folder %lu", v13, v29];
-      v16 = [v32 makeFolderWithDisplayName:v15];
+      v16 = [iconModel makeFolderWithDisplayName:v15];
 
       v17 = [[SBFolderIcon alloc] initWithFolder:v16];
       [v11 addObject:v16];
@@ -8946,12 +8946,12 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
     v19 = 0;
     do
     {
-      v20 = [v18 anyObject];
-      [v18 removeObject:v20];
+      anyObject = [v18 anyObject];
+      [v18 removeObject:anyObject];
       v21 = [v11 objectAtIndex:v19];
-      v22 = [v21 addIcon:v20];
-      v23 = [v21 containsIcon:v20];
-      if (v19 + 1 < v10 * v8)
+      v22 = [v21 addIcon:anyObject];
+      v23 = [v21 containsIcon:anyObject];
+      if (v19 + 1 < countCopy * v8)
       {
         v24 = v19 + 1;
       }
@@ -8970,8 +8970,8 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
     while ([v18 count]);
   }
 
-  [v5 removeAllLists];
-  for (; v10; --v10)
+  [rootFolder removeAllLists];
+  for (; countCopy; --countCopy)
   {
     v25 = [v12 count];
     if (v8 >= v25)
@@ -8986,85 +8986,85 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
 
     v27 = [v12 subarrayWithRange:{0, v26}];
     [v12 removeObjectsInRange:{0, v26}];
-    v28 = [v5 addListWithIcons:v27];
+    v28 = [rootFolder addListWithIcons:v27];
   }
 
   [(SBHIconManager *)v30 layoutIconListsWithAnimationType:-1];
   [(SBHIconManager *)v30 _precacheDataForRootIcons];
 }
 
-- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3
+- (void)organizeAllIconsAcrossPagesWithPageCount:(unint64_t)count
 {
-  v23 = [(SBHIconManager *)self iconModel];
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v23 visibleLeafIcons];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:sel_localizedCompareDisplayNames_];
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  visibleLeafIcons = [iconModel visibleLeafIcons];
+  allObjects = [visibleLeafIcons allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:sel_localizedCompareDisplayNames_];
 
-  v9 = [(SBHIconManager *)self listLayoutProvider];
-  v10 = [v9 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v10 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
-  v11 = [v5 maxListCount];
-  if (v11 >= a3)
+  maxListCount = [rootFolder maxListCount];
+  if (maxListCount >= count)
   {
-    v12 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v12 = v11;
+    countCopy = maxListCount;
   }
 
   v13 = [v8 count];
-  v14 = v13 / v12;
+  v14 = v13 / countCopy;
   v15 = SBHIconListLayoutMaximumIconCount(v10);
-  if (v13 / v12 >= v15)
+  if (v13 / countCopy >= v15)
   {
     v14 = v15;
   }
 
-  [v5 removeAllLists];
+  [rootFolder removeAllLists];
   v16 = 0;
-  if (v12 <= 1)
+  if (countCopy <= 1)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v12;
+    v17 = countCopy;
   }
 
   do
   {
     v18 = [v8 subarrayWithRange:{v16 * v14, v14}];
-    v19 = [v5 addListWithIcons:v18];
+    v19 = [rootFolder addListWithIcons:v18];
 
     ++v16;
     --v17;
   }
 
   while (v17);
-  v20 = [v8 subarrayWithRange:{v14 * v12, v13 - v14 * v12}];
-  v21 = [v5 ignoredList];
-  v22 = [v21 addIcons:v20];
+  v20 = [v8 subarrayWithRange:{v14 * countCopy, v13 - v14 * countCopy}];
+  ignoredList = [rootFolder ignoredList];
+  v22 = [ignoredList addIcons:v20];
 
   [(SBHIconManager *)self layoutIconListsWithAnimationType:-1];
 }
 
-- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)a3
+- (void)randomizeAllIconsAcrossPagesWithPageCount:(unint64_t)count
 {
   v71 = *MEMORY[0x1E69E9840];
-  v56 = [(SBHIconManager *)self iconModel];
-  v5 = [(SBHIconManager *)self rootFolder];
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v59 = v5;
-  v7 = [v5 lists];
-  v8 = [v7 countByEnumeratingWithState:&v65 objects:v70 count:16];
+  v59 = rootFolder;
+  lists = [rootFolder lists];
+  v8 = [lists countByEnumeratingWithState:&v65 objects:v70 count:16];
   if (v8)
   {
     v9 = v8;
@@ -9075,7 +9075,7 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
       {
         if (*v66 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(lists);
         }
 
         v12 = *(*(&v65 + 1) + 8 * i);
@@ -9083,28 +9083,28 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
         [v12 addIconsOfClass:v13 toSet:v6];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v65 objects:v70 count:16];
+      v9 = [lists countByEnumeratingWithState:&v65 objects:v70 count:16];
     }
 
     while (v9);
   }
 
-  v54 = self;
-  v14 = [(SBHIconManager *)self listLayoutProvider];
-  v15 = [v14 layoutForIconLocation:@"SBIconLocationRoot"];
+  selfCopy = self;
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v15 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
-  v16 = [v59 maxListCount];
-  if (v16 >= a3)
+  maxListCount = [v59 maxListCount];
+  if (maxListCount >= count)
   {
-    v17 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v17 = v16;
+    countCopy = maxListCount;
   }
 
-  v58 = v17;
+  v58 = countCopy;
   v18 = [v6 count];
   v52 = v15;
   v19 = SBHIconListLayoutMaximumIconCount(v15);
@@ -9134,22 +9134,22 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
       }
 
       v25 = arc4random_uniform(2u) + 1;
-      v26 = [v56 makeFolderWithDisplayName:@"Folder"];
+      v26 = [iconModel makeFolderWithDisplayName:@"Folder"];
       v27 = v26;
       while ([v26 iconCount] < v25 && objc_msgSend(v6, "count"))
       {
-        v28 = [v6 anyObject];
-        if ([v27 canAddIcon:v28])
+        anyObject = [v6 anyObject];
+        if ([v27 canAddIcon:anyObject])
         {
-          v29 = [v27 addIcon:v28];
+          v29 = [v27 addIcon:anyObject];
         }
 
         else
         {
-          [v20 addObject:v28];
+          [v20 addObject:anyObject];
         }
 
-        [v6 removeObject:v28];
+        [v6 removeObject:anyObject];
 
         v26 = v27;
       }
@@ -9164,8 +9164,8 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
     while (v24 != v23);
   }
 
-  v31 = [v6 allObjects];
-  [v20 addObjectsFromArray:v31];
+  allObjects = [v6 allObjects];
+  [v20 addObjectsFromArray:allObjects];
 
   if (v58)
   {
@@ -9175,7 +9175,7 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
     {
       v60 = v32;
       v33 = arc4random_uniform(__upper_bound) + 4;
-      v34 = [v59 addEmptyList];
+      addEmptyList = [v59 addEmptyList];
       if (v33)
       {
         v35 = 0;
@@ -9183,26 +9183,26 @@ uint64_t __41__SBHIconManager_removeFileStackWithURL___block_invoke(uint64_t a1,
         {
           v36 = arc4random_uniform([v20 count]);
           v37 = [v20 objectAtIndex:v36];
-          if ([v34 allowsAddingIcon:v37])
+          if ([addEmptyList allowsAddingIcon:v37])
           {
-            v38 = [v34 addIcon:v37];
+            v38 = [addEmptyList addIcon:v37];
             [v20 removeObjectAtIndex:v36];
             ++v35;
           }
 
           else
           {
-            v39 = [v37 gridSizeClass];
-            v40 = v39;
-            if (v39 == @"SBHIconGridSizeClassDefault")
+            gridSizeClass = [v37 gridSizeClass];
+            v40 = gridSizeClass;
+            if (gridSizeClass == @"SBHIconGridSizeClassDefault")
             {
 
 LABEL_37:
               break;
             }
 
-            v41 = [v37 gridSizeClass];
-            v42 = [v41 isEqualToString:@"SBHIconGridSizeClassDefault"];
+            gridSizeClass2 = [v37 gridSizeClass];
+            v42 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
 
             if (v42)
             {
@@ -9245,14 +9245,14 @@ LABEL_42:
         }
 
         v48 = *(*(&v61 + 1) + 8 * v47);
-        v49 = [v20 lastObject];
-        if (!v49)
+        lastObject = [v20 lastObject];
+        if (!lastObject)
         {
           break;
         }
 
-        v50 = v49;
-        if ([v48 canAddIcon:v49])
+        v50 = lastObject;
+        if ([v48 canAddIcon:lastObject])
         {
           v51 = [v48 addIcon:v50];
         }
@@ -9273,13 +9273,13 @@ LABEL_42:
     }
   }
 
-  [(SBHIconManager *)v54 layoutIconListsWithAnimationType:-1];
+  [(SBHIconManager *)selfCopy layoutIconListsWithAnimationType:-1];
 }
 
 - (void)replaceHomescreenWithWidgets
 {
-  v3 = [(SBHIconManager *)self delegate];
-  v4 = [v3 testSetupForIconManagerWidgetScrollTest:self];
+  delegate = [(SBHIconManager *)self delegate];
+  v4 = [delegate testSetupForIconManagerWidgetScrollTest:self];
 
   [(SBHIconManager *)self _resetHomescreenIconStateTo:v4];
 }
@@ -9287,13 +9287,13 @@ LABEL_42:
 - (id)addWidgetsToEachPage
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self rootFolder];
-  v4 = [(SBHIconManager *)self widgetExtensionProvider];
-  v5 = [v4 sbh_descriptors];
-  v6 = [v5 valueForKey:@"extensionBundleIdentifier"];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+  sbh_descriptors = [widgetExtensionProvider sbh_descriptors];
+  v6 = [sbh_descriptors valueForKey:@"extensionBundleIdentifier"];
 
-  v7 = [(SBHIconManager *)self delegate];
-  v8 = [v7 testSetupForIconManagerAddWidgetsToEachPage:self];
+  delegate = [(SBHIconManager *)self delegate];
+  v8 = [delegate testSetupForIconManagerAddWidgetsToEachPage:self];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -9303,8 +9303,8 @@ LABEL_42:
   v30 = v24;
   v9 = [v8 bs_filter:v29];
 
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [v3 firstVisibleListIndex];
+  array = [MEMORY[0x1E695DF70] array];
+  firstVisibleListIndex = [rootFolder firstVisibleListIndex];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -9328,17 +9328,17 @@ LABEL_42:
         if (v17)
         {
           v18 = v17;
-          v19 = [v3 gridPathWithListAtIndex:v11 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
-          v20 = [v3 insertIcon:v18 atGridPath:v19 options:2];
-          v21 = [v3 nextVisibleListIndexAfterIndex:v11];
+          v19 = [rootFolder gridPathWithListAtIndex:firstVisibleListIndex gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
+          v20 = [rootFolder insertIcon:v18 atGridPath:v19 options:2];
+          v21 = [rootFolder nextVisibleListIndexAfterIndex:firstVisibleListIndex];
           if (v21 == 0x7FFFFFFFFFFFFFFFLL)
           {
 
             goto LABEL_13;
           }
 
-          v11 = v21;
-          [v10 addObject:v18];
+          firstVisibleListIndex = v21;
+          [array addObject:v18];
         }
       }
 
@@ -9354,7 +9354,7 @@ LABEL_42:
 
 LABEL_13:
 
-  v22 = [v10 copy];
+  v22 = [array copy];
 
   return v22;
 }
@@ -9393,23 +9393,23 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
 
 - (void)setupHomeScreenForWidgetScrollPerformanceTest
 {
-  v3 = [(SBHIconManager *)self delegate];
-  v4 = [v3 testSetupForIconManagerWidgetScrollPerformanceTest:self];
+  delegate = [(SBHIconManager *)self delegate];
+  v4 = [delegate testSetupForIconManagerWidgetScrollPerformanceTest:self];
 
   [(SBHIconManager *)self _resetHomescreenIconStateTo:v4];
 }
 
-- (void)_resetHomescreenIconStateTo:(id)a3
+- (void)_resetHomescreenIconStateTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = [(SBHIconManager *)self rootFolder];
-  [v20 removeAllLists];
+  toCopy = to;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  [rootFolder removeAllLists];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = toCopy;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v5)
   {
@@ -9426,7 +9426,7 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
         }
 
         v9 = *(*(&v25 + 1) + 8 * v8);
-        v10 = [v20 addEmptyList];
+        addEmptyList = [rootFolder addEmptyList];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -9450,7 +9450,7 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
               v16 = [(SBHIconManager *)self _iconForDescriptor:*(*(&v21 + 1) + 8 * v15)];
               if (v16)
               {
-                v17 = [v10 addIcon:v16];
+                v17 = [addEmptyList addIcon:v16];
               }
 
               ++v15;
@@ -9473,33 +9473,33 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
     while (v6);
   }
 
-  v18 = [v20 model];
-  [v18 saveIconStateIfNeeded];
+  model = [rootFolder model];
+  [model saveIconStateIfNeeded];
 }
 
-- (id)_iconForDescriptor:(id)a3
+- (id)_iconForDescriptor:(id)descriptor
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v4 = [v24 sbh_iconDescriptorType];
-  if ((v4 - 2) >= 2)
+  descriptorCopy = descriptor;
+  sbh_iconDescriptorType = [descriptorCopy sbh_iconDescriptorType];
+  if ((sbh_iconDescriptorType - 2) >= 2)
   {
-    if (v4 == 1)
+    if (sbh_iconDescriptorType == 1)
     {
-      v6 = v24;
-      v7 = self;
-      v8 = [(SBHIconManager *)self iconModel];
-      v9 = [v6 bundleIdentifier];
+      v6 = descriptorCopy;
+      selfCopy = self;
+      iconModel = [(SBHIconManager *)self iconModel];
+      bundleIdentifier = [v6 bundleIdentifier];
 
-      v10 = [v8 leafIconForIdentifier:v9];
+      v10 = [iconModel leafIconForIdentifier:bundleIdentifier];
 
-      v11 = [(SBHIconManager *)v7 iconModel];
-      v12 = [v11 addAdditionalIconMatchingIcon:v10];
+      iconModel2 = [(SBHIconManager *)selfCopy iconModel];
+      initWithUniqueLeafIdentifier = [iconModel2 addAdditionalIconMatchingIcon:v10];
     }
 
     else
     {
-      v12 = 0;
+      initWithUniqueLeafIdentifier = 0;
     }
   }
 
@@ -9517,20 +9517,20 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
     aBlock[3] = &unk_1E808FFB8;
     aBlock[4] = self;
     aBlock[5] = v32;
-    v25 = self;
+    selfCopy2 = self;
     v5 = _Block_copy(aBlock);
-    if ([v24 sbh_iconDescriptorType] == 3)
+    if ([descriptorCopy sbh_iconDescriptorType] == 3)
     {
-      [v24 widgetIconDescriptors];
+      [descriptorCopy widgetIconDescriptors];
     }
 
     else
     {
-      v37[0] = v24;
+      v37[0] = descriptorCopy;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
     }
     v13 = ;
-    v12 = [(SBLeafIcon *)[SBWidgetIcon alloc] initWithUniqueLeafIdentifier];
+    initWithUniqueLeafIdentifier = [(SBLeafIcon *)[SBWidgetIcon alloc] initWithUniqueLeafIdentifier];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -9553,17 +9553,17 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v17 element];
-            [(SBLeafIcon *)v12 addIconDataSource:v18];
+            element = [v17 element];
+            [(SBLeafIcon *)initWithUniqueLeafIdentifier addIconDataSource:element];
           }
 
           else
           {
-            v18 = v5[2](v5, v17);
-            if (v18)
+            element = v5[2](v5, v17);
+            if (element)
             {
-              v19 = [(SBHIconManager *)v25 gridSizeClassDomain];
-              v20 = [v18 sbh_iconDataSourceInDomain:v19];
+              gridSizeClassDomain = [(SBHIconManager *)selfCopy2 gridSizeClassDomain];
+              v20 = [element sbh_iconDataSourceInDomain:gridSizeClassDomain];
               v21 = SBLogWidgets();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
               {
@@ -9572,7 +9572,7 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
                 _os_log_impl(&dword_1BEB18000, v21, OS_LOG_TYPE_DEFAULT, "Widget %{public}@ created from descriptor.", buf, 0xCu);
               }
 
-              [(SBLeafIcon *)v12 addIconDataSource:v20];
+              [(SBLeafIcon *)initWithUniqueLeafIdentifier addIconDataSource:v20];
             }
           }
         }
@@ -9583,13 +9583,13 @@ uint64_t __38__SBHIconManager_addWidgetsToEachPage__block_invoke(uint64_t a1, vo
       while (v14);
     }
 
-    v22 = [v24 sizeClass];
-    [(SBIcon *)v12 setGridSizeClass:v22];
+    sizeClass = [descriptorCopy sizeClass];
+    [(SBIcon *)initWithUniqueLeafIdentifier setGridSizeClass:sizeClass];
 
     _Block_object_dispose(v32, 8);
   }
 
-  return v12;
+  return initWithUniqueLeafIdentifier;
 }
 
 id __37__SBHIconManager__iconForDescriptor___block_invoke(uint64_t a1, void *a2)
@@ -9689,73 +9689,73 @@ LABEL_21:
 
 - (void)addWidgetStackToCurrentPage
 {
-  v16 = [(SBHIconManager *)self rootFolder];
-  v3 = [(SBHIconManager *)self delegate];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 testSetupHomeScreenForWidgetScrollPerformanceTest:self];
+    v4 = [delegate testSetupHomeScreenForWidgetScrollPerformanceTest:self];
     v5 = [[SBHTestWidgetStackIconDescriptor alloc] initWithWidgetIconDescriptors:v4];
     v6 = [(SBHIconManager *)self _iconForDescriptor:v5];
 
-    v7 = [v6 iconDataSources];
-    v8 = [v7 objectAtIndex:2];
+    iconDataSources = [v6 iconDataSources];
+    v8 = [iconDataSources objectAtIndex:2];
     [v6 setActiveDataSource:v8];
 
-    v9 = [MEMORY[0x1E69DC938] currentDevice];
-    v10 = [v9 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v11 = [v16 todayList];
-      v12 = [v11 insertIcon:v6 atIndex:0];
-      v13 = [(SBHIconManager *)self _effectiveTodayViewController];
-      v14 = [v13 listView];
-      [v14 layoutIconsNow];
+      todayList = [rootFolder todayList];
+      v12 = [todayList insertIcon:v6 atIndex:0];
+      _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+      listView = [_effectiveTodayViewController listView];
+      [listView layoutIconsNow];
     }
 
     else
     {
-      v11 = [(SBHIconManager *)self rootFolderController];
-      v13 = [v11 folderView];
-      v14 = [v16 gridPathWithListAtIndex:objc_msgSend(v13 gridCellIndex:"iconListModelIndexForPageIndex:" listGridCellInfoOptions:{objc_msgSend(v13, "currentPageIndex")), 0, -[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
-      v15 = [v16 insertIcon:v6 atGridPath:v14 options:2];
-      [v11 layoutIconListsWithAnimationType:-1 forceRelayout:0];
+      todayList = [(SBHIconManager *)self rootFolderController];
+      _effectiveTodayViewController = [todayList folderView];
+      listView = [rootFolder gridPathWithListAtIndex:objc_msgSend(_effectiveTodayViewController gridCellIndex:"iconListModelIndexForPageIndex:" listGridCellInfoOptions:{objc_msgSend(_effectiveTodayViewController, "currentPageIndex")), 0, -[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
+      v15 = [rootFolder insertIcon:v6 atGridPath:listView options:2];
+      [todayList layoutIconListsWithAnimationType:-1 forceRelayout:0];
     }
   }
 }
 
-- (id)widgetIconWithWidgetExtensionIdentifiers:(id)a3 widgetKinds:(id)a4 sizeClass:(id)a5
+- (id)widgetIconWithWidgetExtensionIdentifiers:(id)identifiers widgetKinds:(id)kinds sizeClass:(id)class
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SBWidgetIcon alloc] initWithWidgetExtensionIdentifiers:v9 widgetKinds:v8];
+  classCopy = class;
+  kindsCopy = kinds;
+  identifiersCopy = identifiers;
+  v10 = [[SBWidgetIcon alloc] initWithWidgetExtensionIdentifiers:identifiersCopy widgetKinds:kindsCopy];
 
-  [(SBIcon *)v10 setGridSizeClass:v7];
+  [(SBIcon *)v10 setGridSizeClass:classCopy];
 
   return v10;
 }
 
-- (void)addWidgets:(id)a3 toGridPath:(id)a4 overflowOptions:(unint64_t)a5
+- (void)addWidgets:(id)widgets toGridPath:(id)path overflowOptions:(unint64_t)options
 {
   v107 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBHIconManager *)self rootFolder];
+  widgetsCopy = widgets;
+  pathCopy = path;
+  rootFolder = [(SBHIconManager *)self rootFolder];
   if ([(SBHIconManager *)self prototypeSettingSimpleBottomSnaking])
   {
-    v79 = a5;
-    v11 = [(SBHIconManager *)self iconGridSizeClassSizes];
+    optionsCopy = options;
+    iconGridSizeClassSizes = [(SBHIconManager *)self iconGridSizeClassSizes];
     v92 = 0u;
     v93 = 0u;
     v94 = 0u;
     v95 = 0u;
-    obj = v8;
+    obj = widgetsCopy;
     v12 = [obj countByEnumeratingWithState:&v92 objects:v106 count:16];
     if (v12)
     {
       v13 = v12;
-      v14 = v10;
+      v14 = rootFolder;
       LODWORD(v15) = 0;
       v16 = *v93;
       do
@@ -9767,15 +9767,15 @@ LABEL_21:
             objc_enumerationMutation(obj);
           }
 
-          v18 = [*(*(&v92 + 1) + 8 * i) gridSizeClass];
-          v15 = [v11 gridSizeAreaForGridSizeClass:v18] + v15;
+          gridSizeClass = [*(*(&v92 + 1) + 8 * i) gridSizeClass];
+          v15 = [iconGridSizeClassSizes gridSizeAreaForGridSizeClass:gridSizeClass] + v15;
         }
 
         v13 = [obj countByEnumeratingWithState:&v92 objects:v106 count:16];
       }
 
       while (v13);
-      v10 = v14;
+      rootFolder = v14;
     }
 
     else
@@ -9783,21 +9783,21 @@ LABEL_21:
       v15 = 0;
     }
 
-    v20 = [v10 listAtGridPath:v9];
-    v21 = [v20 numberOfIcons];
-    v22 = [v20 maxNumberOfIcons];
-    if (v22 - v21 > v15)
+    v20 = [rootFolder listAtGridPath:pathCopy];
+    numberOfIcons = [v20 numberOfIcons];
+    maxNumberOfIcons = [v20 maxNumberOfIcons];
+    if (maxNumberOfIcons - numberOfIcons > v15)
     {
       v23 = -1;
     }
 
     else
     {
-      v23 = v22 - v15;
+      v23 = maxNumberOfIcons - v15;
     }
 
     v81 = v23;
-    if (v23 < 0 || (v24 = v21 - 1, v21 - 1 < 0))
+    if (v23 < 0 || (v24 = numberOfIcons - 1, numberOfIcons - 1 < 0))
     {
       v69 = SBLogWidgetDiscoverabilityMigration();
       if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
@@ -9806,34 +9806,34 @@ LABEL_21:
         _os_log_impl(&dword_1BEB18000, v69, OS_LOG_TYPE_DEFAULT, "Nothing to bump for onboarding widgets", buf, 2u);
       }
 
-      v70 = [v10 insertIcons:obj atGridPath:v9 options:v79];
+      v70 = [rootFolder insertIcons:obj atGridPath:pathCopy options:optionsCopy];
     }
 
     else
     {
-      v78 = [v10 indexOfList:v20];
-      v76 = [MEMORY[0x1E695DF70] array];
-      v80 = [MEMORY[0x1E695DF70] array];
-      v77 = v8;
+      v78 = [rootFolder indexOfList:v20];
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
+      v77 = widgetsCopy;
       if ([(SBHIconManager *)self prototypeSettingBumpLeastUsedApps])
       {
-        v73 = v21;
-        v25 = v21 - v81;
-        v26 = [(SBHIconManager *)self atxIconRanker];
+        v73 = numberOfIcons;
+        v25 = numberOfIcons - v81;
+        atxIconRanker = [(SBHIconManager *)self atxIconRanker];
 
-        if (!v26)
+        if (!atxIconRanker)
         {
           v27 = objc_alloc_init(MEMORY[0x1E698AF00]);
           [(SBHIconManager *)self setAtxIconRanker:v27];
         }
 
-        v72 = v21 - 1;
-        v75 = v9;
-        v28 = [(SBHIconManager *)self atxIconRanker];
-        v29 = [v28 iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:v78];
+        v72 = numberOfIcons - 1;
+        v75 = pathCopy;
+        atxIconRanker2 = [(SBHIconManager *)self atxIconRanker];
+        v29 = [atxIconRanker2 iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:v78];
 
         v30 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v29];
-        v31 = [v30 array];
+        array3 = [v30 array];
 
         v32 = [v29 count];
         if (v25 >= v32)
@@ -9846,7 +9846,7 @@ LABEL_21:
           v33 = v25;
         }
 
-        v34 = [v31 subarrayWithRange:{0, v33}];
+        v34 = [array3 subarrayWithRange:{0, v33}];
 
         v35 = SBLogWidgetDiscoverabilityMigration();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -9859,10 +9859,10 @@ LABEL_21:
         }
 
         v71 = v29;
-        v74 = v10;
+        v74 = rootFolder;
 
-        v36 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
-        [v36 addObjectsFromArray:v34];
+        defaultWidgetsIconsRestoringRecordOriginalIndex = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
+        [defaultWidgetsIconsRestoringRecordOriginalIndex addObjectsFromArray:v34];
 
         v90 = 0u;
         v91 = 0u;
@@ -9883,47 +9883,47 @@ LABEL_21:
                 objc_enumerationMutation(v82);
               }
 
-              v41 = [*(*(&v88 + 1) + 8 * j) integerValue];
-              if (v41 < [v20 numberOfIcons])
+              integerValue = [*(*(&v88 + 1) + 8 * j) integerValue];
+              if (integerValue < [v20 numberOfIcons])
               {
-                v42 = [v20 iconAtIndex:v41];
-                v43 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-                [v43 addObject:v42];
+                v42 = [v20 iconAtIndex:integerValue];
+                defaultWidgetsBumpedIconUsageRanking = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+                [defaultWidgetsBumpedIconUsageRanking addObject:v42];
 
-                if (!v41)
+                if (!integerValue)
                 {
                   goto LABEL_36;
                 }
 
-                v44 = v41 - 1;
+                v44 = integerValue - 1;
                 if (v44 >= [v20 numberOfIcons])
                 {
-                  v45 = [v20 lastIcon];
-                  if (!v45)
+                  lastIcon = [v20 lastIcon];
+                  if (!lastIcon)
                   {
                     goto LABEL_36;
                   }
 
 LABEL_34:
-                  v46 = v45;
-                  v47 = v46;
+                  null = lastIcon;
+                  v47 = null;
                 }
 
                 else
                 {
-                  v45 = [v20 iconAtIndex:v44];
-                  if (v45)
+                  lastIcon = [v20 iconAtIndex:v44];
+                  if (lastIcon)
                   {
                     goto LABEL_34;
                   }
 
 LABEL_36:
-                  v46 = [MEMORY[0x1E695DFB0] null];
+                  null = [MEMORY[0x1E695DFB0] null];
                   v47 = 0;
                 }
 
-                v48 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                [v48 setObject:v46 forKey:v42];
+                defaultWidgetsIconsRestoringRecord = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                [defaultWidgetsIconsRestoringRecord setObject:null forKey:v42];
 
                 continue;
               }
@@ -9938,12 +9938,12 @@ LABEL_36:
         v49 = SBLogWidgetDiscoverabilityMigration();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
         {
-          v50 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-          v51 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+          defaultWidgetsBumpedIconUsageRanking2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+          defaultWidgetsIconsRestoringRecord2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
           *buf = 138412546;
-          v97 = v50;
+          v97 = defaultWidgetsBumpedIconUsageRanking2;
           v98 = 2112;
-          v99 = v51;
+          v99 = defaultWidgetsIconsRestoringRecord2;
           _os_log_impl(&dword_1BEB18000, v49, OS_LOG_TYPE_DEFAULT, "Adding onboarding widgets by overflow icons: %@ \n usage record: %@", buf, 0x16u);
         }
 
@@ -9951,8 +9951,8 @@ LABEL_36:
         v87 = 0u;
         v84 = 0u;
         v85 = 0u;
-        v52 = [v20 icons];
-        v53 = [v52 countByEnumeratingWithState:&v84 objects:v104 count:16];
+        icons = [v20 icons];
+        v53 = [icons countByEnumeratingWithState:&v84 objects:v104 count:16];
         if (v53)
         {
           v54 = v53;
@@ -9963,12 +9963,12 @@ LABEL_36:
             {
               if (*v85 != v55)
               {
-                objc_enumerationMutation(v52);
+                objc_enumerationMutation(icons);
               }
 
               v57 = *(*(&v84 + 1) + 8 * k);
-              v58 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-              v59 = [v58 containsObject:v57];
+              defaultWidgetsBumpedIconUsageRanking3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+              v59 = [defaultWidgetsBumpedIconUsageRanking3 containsObject:v57];
 
               if (v59)
               {
@@ -9977,16 +9977,16 @@ LABEL_36:
               }
             }
 
-            v54 = [v52 countByEnumeratingWithState:&v84 objects:v104 count:16];
+            v54 = [icons countByEnumeratingWithState:&v84 objects:v104 count:16];
           }
 
           while (v54);
         }
 
-        v10 = v74;
-        v9 = v75;
+        rootFolder = v74;
+        pathCopy = v75;
         v24 = v72;
-        v21 = v73;
+        numberOfIcons = v73;
       }
 
       v61 = v78 + 1;
@@ -9994,7 +9994,7 @@ LABEL_36:
       {
         do
         {
-          v62 = v21 - 1;
+          v62 = numberOfIcons - 1;
           if (v62 >= [v20 numberOfIcons])
           {
             break;
@@ -10003,19 +10003,19 @@ LABEL_36:
           [v20 iconAtIndex:v62];
           v64 = v63 = v62;
           [v20 removeIcon:v64];
-          [v76 insertObject:v64 atIndex:0];
+          [array insertObject:v64 atIndex:0];
           v65 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:v63 listIndex:v61];
-          [v80 insertObject:v65 atIndex:0];
+          [array2 insertObject:v65 atIndex:0];
 
-          v21 = v63;
+          numberOfIcons = v63;
         }
 
         while (v63 > v81);
       }
 
-      if ([v10 listCount] <= v61)
+      if ([rootFolder listCount] <= v61)
       {
-        v66 = [v10 addEmptyList];
+        addEmptyList = [rootFolder addEmptyList];
       }
 
       v67 = SBLogWidgetDiscoverabilityMigration();
@@ -10024,55 +10024,55 @@ LABEL_36:
         *buf = 138413058;
         v97 = obj;
         v98 = 2112;
-        v99 = v10;
+        v99 = rootFolder;
         v100 = 2112;
-        v101 = v9;
+        v101 = pathCopy;
         v102 = 1024;
-        v103 = v79;
+        v103 = optionsCopy;
         _os_log_impl(&dword_1BEB18000, v67, OS_LOG_TYPE_DEFAULT, "Insert icons(%@) to rootFolder(%@) at gridPath(%@) with overflowOptions(%d)", buf, 0x26u);
       }
 
-      v68 = [v10 insertIcons:obj atGridPath:v9 options:v79];
-      [v10 _swapInsertIcons:v76 atIndexPaths:v80];
+      v68 = [rootFolder insertIcons:obj atGridPath:pathCopy options:optionsCopy];
+      [rootFolder _swapInsertIcons:array atIndexPaths:array2];
 
-      v8 = v77;
+      widgetsCopy = v77;
     }
   }
 
   else
   {
-    v19 = [v10 insertIcons:v8 atGridPath:v9 options:a5];
+    v19 = [rootFolder insertIcons:widgetsCopy atGridPath:pathCopy options:options];
   }
 }
 
-- (void)addWidgetWithIdentifier:(id)a3 toPage:(int64_t)a4 withSizeClass:(id)a5
+- (void)addWidgetWithIdentifier:(id)identifier toPage:(int64_t)page withSizeClass:(id)class
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  identifierCopy = identifier;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v12 count:1];
+  classCopy = class;
+  identifierCopy2 = identifier;
+  v11 = [v8 arrayWithObjects:&identifierCopy count:1];
 
-  [(SBHIconManager *)self addWidgetStackWithIdentifiers:v11 toPage:a4 withSizeClass:v9, v12, v13];
+  [(SBHIconManager *)self addWidgetStackWithIdentifiers:v11 toPage:page withSizeClass:classCopy, identifierCopy, v13];
 }
 
-- (void)addWidgetStackWithIdentifiers:(id)a3 toPage:(int64_t)a4 withSizeClass:(id)a5
+- (void)addWidgetStackWithIdentifiers:(id)identifiers toPage:(int64_t)page withSizeClass:(id)class
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v26 = a5;
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v25 = self;
-  v11 = [(SBHIconManager *)self rootFolder];
-  v24 = [v11 gridPathWithListAtIndex:a4 gridCellIndex:0 listGridCellInfoOptions:0];
+  identifiersCopy = identifiers;
+  classCopy = class;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v24 = [rootFolder gridPathWithListAtIndex:page gridCellIndex:0 listGridCellInfoOptions:0];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v8;
+  v12 = identifiersCopy;
   v13 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v13)
   {
@@ -10094,7 +10094,7 @@ LABEL_36:
           v19 = [v18 componentsSeparatedByString:{@", "}];
 
           v20 = [v19 objectAtIndexedSubscript:0];
-          [v9 addObject:v20];
+          [array addObject:v20];
 
           if ([v19 count] < 2)
           {
@@ -10105,17 +10105,17 @@ LABEL_36:
           {
             [v19 objectAtIndexedSubscript:1];
           }
-          v21 = ;
+          null = ;
           v15 = v19;
         }
 
         else
         {
-          [v9 addObject:v18];
-          v21 = [MEMORY[0x1E695DFB0] null];
+          [array addObject:v18];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        [v10 addObject:v21];
+        [array2 addObject:null];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -10129,122 +10129,122 @@ LABEL_36:
     v15 = 0;
   }
 
-  v22 = [(SBHIconManager *)v25 widgetIconWithWidgetExtensionIdentifiers:v9 widgetKinds:v10 sizeClass:v26];
+  v22 = [(SBHIconManager *)selfCopy widgetIconWithWidgetExtensionIdentifiers:array widgetKinds:array2 sizeClass:classCopy];
   v31 = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-  [(SBHIconManager *)v25 addWidgets:v23 toGridPath:v24 overflowOptions:2];
+  [(SBHIconManager *)selfCopy addWidgets:v23 toGridPath:v24 overflowOptions:2];
 }
 
-- (void)removeFirstWidgetFromRootFolderListAtIndex:(unint64_t)a3
+- (void)removeFirstWidgetFromRootFolderListAtIndex:(unint64_t)index
 {
-  v7 = [(SBHIconManager *)self rootFolder];
-  v4 = [v7 listAtIndex:a3];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v4 = [rootFolder listAtIndex:index];
   v5 = [v4 directlyContainedIconsPassingTest:&__block_literal_global_411];
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
-    [v7 removeIcon:v6 options:0x800000];
+    firstObject = [v5 firstObject];
+    [rootFolder removeIcon:firstObject options:0x800000];
   }
 }
 
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 iconIndex:(unint64_t)a5
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page iconIndex:(unint64_t)index
 {
-  v8 = a3;
-  v15 = [(SBHIconManager *)self iconModel];
-  v9 = [v15 applicationIconForBundleIdentifier:v8];
+  identifierCopy = identifier;
+  iconModel = [(SBHIconManager *)self iconModel];
+  v9 = [iconModel applicationIconForBundleIdentifier:identifierCopy];
 
   if (v9)
   {
-    v10 = [v15 rootFolder];
-    if (([v10 isIconInIgnoredList:v9] & 1) == 0)
+    rootFolder = [iconModel rootFolder];
+    if (([rootFolder isIconInIgnoredList:v9] & 1) == 0)
     {
-      v11 = [v15 addAdditionalIconMatchingIcon:v9];
+      v11 = [iconModel addAdditionalIconMatchingIcon:v9];
 
       v9 = v11;
     }
   }
 
-  v12 = [(SBHIconManager *)self rootFolder];
-  v13 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:a5 listIndex:a4];
-  v14 = [v12 insertIcon:v9 atIndexPath:v13 options:2];
+  rootFolder2 = [(SBHIconManager *)self rootFolder];
+  v13 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:index listIndex:page];
+  v14 = [rootFolder2 insertIcon:v9 atIndexPath:v13 options:2];
 }
 
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate
 {
-  row = a5.row;
-  column = a5.column;
-  v9 = a3;
-  [(SBHIconManager *)self addApplicationIconWithBundleIdentifier:v9 toPage:a4 coordinate:column orientation:row, [(SBHIconManager *)self interfaceOrientation]];
+  row = coordinate.row;
+  column = coordinate.column;
+  identifierCopy = identifier;
+  [(SBHIconManager *)self addApplicationIconWithBundleIdentifier:identifierCopy toPage:page coordinate:column orientation:row, [(SBHIconManager *)self interfaceOrientation]];
 }
 
-- (void)addApplicationIconWithBundleIdentifier:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5 orientation:(int64_t)a6
+- (void)addApplicationIconWithBundleIdentifier:(id)identifier toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate orientation:(int64_t)orientation
 {
-  row = a5.row;
-  column = a5.column;
-  v11 = a3;
-  v24 = [(SBHIconManager *)self iconModel];
-  v12 = [v24 applicationIconForBundleIdentifier:v11];
+  row = coordinate.row;
+  column = coordinate.column;
+  identifierCopy = identifier;
+  iconModel = [(SBHIconManager *)self iconModel];
+  v12 = [iconModel applicationIconForBundleIdentifier:identifierCopy];
 
   if (v12)
   {
-    v13 = [v24 rootFolder];
-    if (([v13 isIconInIgnoredList:v12] & 1) == 0)
+    rootFolder = [iconModel rootFolder];
+    if (([rootFolder isIconInIgnoredList:v12] & 1) == 0)
     {
-      v14 = [v24 addAdditionalIconMatchingIcon:v12];
+      v14 = [iconModel addAdditionalIconMatchingIcon:v12];
 
       v12 = v14;
     }
   }
 
-  v15 = [(SBHIconManager *)self rootFolder];
-  v16 = [v15 listAtIndex:a4];
-  v17 = [(SBHIconManager *)self gridCellInfoOptionsForOrientation:a6];
+  rootFolder2 = [(SBHIconManager *)self rootFolder];
+  v16 = [rootFolder2 listAtIndex:page];
+  v17 = [(SBHIconManager *)self gridCellInfoOptionsForOrientation:orientation];
   v18 = [v16 gridCellInfoWithOptions:v17];
   v19 = [v18 gridCellIndexForCoordinate:{column, row}];
   v20 = [SBHIconGridPath alloc];
-  v21 = [v16 uniqueIdentifier];
-  v22 = [(SBHIconGridPath *)v20 initWithFolderIdentifier:0 listIdentifier:v21 gridCellIndex:v19 gridCellInfoOptions:v17];
+  uniqueIdentifier = [v16 uniqueIdentifier];
+  v22 = [(SBHIconGridPath *)v20 initWithFolderIdentifier:0 listIdentifier:uniqueIdentifier gridCellIndex:v19 gridCellInfoOptions:v17];
 
-  v23 = [v15 insertIcon:v12 atGridPath:v22 options:2];
+  v23 = [rootFolder2 insertIcon:v12 atGridPath:v22 options:2];
 }
 
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 iconIndex:(unint64_t)a5
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page iconIndex:(unint64_t)index
 {
-  v8 = a3;
-  v12 = [(SBLeafIcon *)[SBDebugIcon alloc] initWithUniqueLeafIdentifier];
-  [(SBIcon *)v12 setGridSizeClass:v8];
+  classCopy = class;
+  initWithUniqueLeafIdentifier = [(SBLeafIcon *)[SBDebugIcon alloc] initWithUniqueLeafIdentifier];
+  [(SBIcon *)initWithUniqueLeafIdentifier setGridSizeClass:classCopy];
 
-  v9 = [(SBHIconManager *)self rootFolder];
-  v10 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:a5 listIndex:a4];
-  v11 = [v9 insertIcon:v12 atIndexPath:v10 options:2];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v10 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:index listIndex:page];
+  v11 = [rootFolder insertIcon:initWithUniqueLeafIdentifier atIndexPath:v10 options:2];
 }
 
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate
 {
-  row = a5.row;
-  column = a5.column;
-  v9 = a3;
-  [(SBHIconManager *)self addDebugIconOfSizeClass:v9 toPage:a4 coordinate:column orientation:row, [(SBHIconManager *)self interfaceOrientation]];
+  row = coordinate.row;
+  column = coordinate.column;
+  classCopy = class;
+  [(SBHIconManager *)self addDebugIconOfSizeClass:classCopy toPage:page coordinate:column orientation:row, [(SBHIconManager *)self interfaceOrientation]];
 }
 
-- (void)addDebugIconOfSizeClass:(id)a3 toPage:(unint64_t)a4 coordinate:(SBIconCoordinate)a5 orientation:(int64_t)a6
+- (void)addDebugIconOfSizeClass:(id)class toPage:(unint64_t)page coordinate:(SBIconCoordinate)coordinate orientation:(int64_t)orientation
 {
-  row = a5.row;
-  column = a5.column;
-  v11 = a3;
-  v21 = [(SBHIconManager *)self rootFolder];
-  v12 = [v21 listAtIndex:a4];
-  v13 = [(SBHIconManager *)self gridCellInfoOptionsForOrientation:a6];
+  row = coordinate.row;
+  column = coordinate.column;
+  classCopy = class;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v12 = [rootFolder listAtIndex:page];
+  v13 = [(SBHIconManager *)self gridCellInfoOptionsForOrientation:orientation];
   v14 = [v12 gridCellInfoWithOptions:v13];
   v15 = [v14 gridCellIndexForCoordinate:{column, row}];
   v16 = [SBHIconGridPath alloc];
-  v17 = [v12 uniqueIdentifier];
-  v18 = [(SBHIconGridPath *)v16 initWithFolderIdentifier:0 listIdentifier:v17 gridCellIndex:v15 gridCellInfoOptions:v13];
+  uniqueIdentifier = [v12 uniqueIdentifier];
+  v18 = [(SBHIconGridPath *)v16 initWithFolderIdentifier:0 listIdentifier:uniqueIdentifier gridCellIndex:v15 gridCellInfoOptions:v13];
 
-  v19 = [(SBLeafIcon *)[SBDebugIcon alloc] initWithUniqueLeafIdentifier];
-  [(SBIcon *)v19 setGridSizeClass:v11];
+  initWithUniqueLeafIdentifier = [(SBLeafIcon *)[SBDebugIcon alloc] initWithUniqueLeafIdentifier];
+  [(SBIcon *)initWithUniqueLeafIdentifier setGridSizeClass:classCopy];
 
-  v20 = [v21 insertIcon:v19 atGridPath:v18 options:2];
+  v20 = [rootFolder insertIcon:initWithUniqueLeafIdentifier atGridPath:v18 options:2];
 }
 
 - (id)debuggingActiveWidgetInfo
@@ -10280,21 +10280,21 @@ LABEL_36:
   v5 = v4;
   v26 = v5;
   [(SBHIconManager *)self enumerateDisplayedIconViewsUsingBlock:v25];
-  v6 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_3;
   v23[3] = &unk_1E8090030;
   v7 = v5;
   v24 = v7;
-  [v6 enumerateAllViewControllersUsingBlock:v23];
+  [_effectiveWidgetMultiplexingManager enumerateAllViewControllersUsingBlock:v23];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController keyEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v44 count:16];
+  keyEnumerator = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController keyEnumerator];
+  v9 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v44 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -10304,7 +10304,7 @@ LABEL_36:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
@@ -10313,12 +10313,12 @@ LABEL_36:
 
         if (isKindOfClass)
         {
-          v15 = [v12 contentViewController];
-          (*(v7 + 2))(v7, v15);
+          contentViewController = [v12 contentViewController];
+          (*(v7 + 2))(v7, contentViewController);
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v44 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v19 objects:v44 count:16];
     }
 
     while (v9);
@@ -10422,14 +10422,14 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)setUsageMonitoringEnabled:(BOOL)a3
+- (void)setUsageMonitoringEnabled:(BOOL)enabled
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_usageMonitoringEnabled != a3)
+  if (self->_usageMonitoringEnabled != enabled)
   {
-    v3 = a3;
-    self->_usageMonitoringEnabled = a3;
-    if (a3)
+    enabledCopy = enabled;
+    self->_usageMonitoringEnabled = enabled;
+    if (enabled)
     {
       v5 = [[SBHHomeScreenUsageMonitor alloc] initWithIconManager:self];
     }
@@ -10440,12 +10440,12 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
     }
 
     [(SBHIconManager *)self setUsageMonitor:v5];
-    v6 = [(SBHIconManager *)self todayViewControllers];
+    todayViewControllers = [(SBHIconManager *)self todayViewControllers];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [todayViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -10456,11 +10456,11 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(todayViewControllers);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
-          if (v3)
+          if (enabledCopy)
           {
             [v11 addObserver:self];
           }
@@ -10471,7 +10471,7 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [todayViewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -10481,31 +10481,31 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
 
 - (BOOL)isFolderPageManagementUIVisible
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isPageManagementUIVisible];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isPageManagementUIVisible = [rootFolderController isPageManagementUIVisible];
 
-  return v3;
+  return isPageManagementUIVisible;
 }
 
 - (void)dismissFolderPageManagementUI
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  [v2 exitPageManagementUIWithCompletionHandler:0];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController exitPageManagementUIWithCompletionHandler:0];
 }
 
-- (id)silhouetteLayoutForPageAtIndex:(unint64_t)a3
+- (id)silhouetteLayoutForPageAtIndex:(unint64_t)index
 {
-  v5 = [(SBHIconManager *)self rootFolderController];
-  if ([v5 iconListViewCount] <= a3)
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  if ([rootFolderController iconListViewCount] <= index)
   {
     v69 = 0;
   }
 
   else
   {
-    v6 = [v5 rootFolderView];
-    v7 = [v5 iconListViewAtIndex:a3];
-    [v6 bounds];
+    rootFolderView = [rootFolderController rootFolderView];
+    v7 = [rootFolderController iconListViewAtIndex:index];
+    [rootFolderView bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -10548,9 +10548,9 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
     v124 = v23;
     v97 = v119;
     [v119 enumerateIconViewsUsingBlock:v118];
-    v30 = [(SBHIconManager *)self floatingDockViewController];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
     v94 = v29;
-    if (v30)
+    if (floatingDockViewController)
     {
       v115[0] = MEMORY[0x1E69E9820];
       v115[1] = 3221225472;
@@ -10564,7 +10564,7 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
       v108[2] = __49__SBHIconManager_silhouetteLayoutForPageAtIndex___block_invoke_4;
       v108[3] = &unk_1E80900A8;
       v110 = v31;
-      v32 = v6;
+      v32 = rootFolderView;
       v109 = v32;
       v33 = v95;
       v34 = v96;
@@ -10573,47 +10573,47 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
       v113 = v96;
       v114 = v24;
       v93 = v31;
-      [v30 enumerateDisplayedIconViewsUsingBlock:v108];
-      v35 = [v30 dockView];
-      [v35 mainPlatterView];
-      v37 = v36 = v6;
-      v38 = [v35 window];
-      v39 = [v38 screen];
-      v40 = [v39 coordinateSpace];
+      [floatingDockViewController enumerateDisplayedIconViewsUsingBlock:v108];
+      dockView = [floatingDockViewController dockView];
+      [dockView mainPlatterView];
+      v37 = v36 = rootFolderView;
+      window = [dockView window];
+      screen = [window screen];
+      coordinateSpace = [screen coordinateSpace];
 
       [v37 frame];
       v42 = v41;
       v44 = v43;
       v46 = v45;
       v48 = v47;
-      v49 = [v37 superview];
-      [v49 convertRect:v40 toCoordinateSpace:{v42, v44, v46, v48}];
+      superview = [v37 superview];
+      [superview convertRect:coordinateSpace toCoordinateSpace:{v42, v44, v46, v48}];
       v51 = v50;
       v53 = v52;
       v55 = v54;
       v57 = v56;
 
-      [v32 convertRect:v40 fromCoordinateSpace:{v51, v53, v55, v57}];
+      [v32 convertRect:coordinateSpace fromCoordinateSpace:{v51, v53, v55, v57}];
       v59 = v58;
       v61 = v60;
       v63 = v62;
       v65 = v64;
-      [v35 currentDockContinuousCornerRadius];
+      [dockView currentDockContinuousCornerRadius];
       v67 = v66;
 
-      v6 = v36;
-      v68 = v116;
+      rootFolderView = v36;
+      dockIconListView = v116;
     }
 
     else
     {
-      v68 = [v5 dockIconListView];
+      dockIconListView = [rootFolderController dockIconListView];
       v101[0] = MEMORY[0x1E69E9820];
       v101[1] = 3221225472;
       v101[2] = __49__SBHIconManager_silhouetteLayoutForPageAtIndex___block_invoke_5;
       v101[3] = &unk_1E8090080;
       v103 = v29;
-      v70 = v6;
+      v70 = rootFolderView;
       v102 = v70;
       v33 = v95;
       v34 = v96;
@@ -10621,22 +10621,22 @@ void __43__SBHIconManager_debuggingActiveWidgetInfo__block_invoke_2(uint64_t a1,
       v105 = v95;
       v106 = v96;
       v107 = v24;
-      [v68 enumerateIconViewsUsingBlock:v101];
-      v71 = [v70 dockView];
-      v72 = [v71 backgroundView];
-      [v72 frame];
+      [dockIconListView enumerateIconViewsUsingBlock:v101];
+      dockView2 = [v70 dockView];
+      backgroundView = [dockView2 backgroundView];
+      [backgroundView frame];
       v74 = v73;
       v76 = v75;
       v78 = v77;
       v80 = v79;
-      v81 = [v72 superview];
-      [v70 convertRect:v81 fromView:{v74, v76, v78, v80}];
+      superview2 = [backgroundView superview];
+      [v70 convertRect:superview2 fromView:{v74, v76, v78, v80}];
       v59 = v82;
       v61 = v83;
       v63 = v84;
       v65 = v85;
 
-      [v72 _cornerRadius];
+      [backgroundView _cornerRadius];
       v67 = v86;
     }
 
@@ -10709,7 +10709,7 @@ void __49__SBHIconManager_silhouetteLayoutForPageAtIndex___block_invoke_3(uint64
 
 - (id)iconsToRecacheForIconStylePickerPreview
 {
-  v2 = [(SBHIconManager *)self rootViewController];
+  rootViewController = [(SBHIconManager *)self rootViewController];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -10717,7 +10717,7 @@ void __49__SBHIconManager_silhouetteLayoutForPageAtIndex___block_invoke_3(uint64
   v6[3] = &unk_1E8089928;
   v4 = v3;
   v7 = v4;
-  [v2 enumerateDisplayedIconViewsUsingBlock:v6];
+  [rootViewController enumerateDisplayedIconViewsUsingBlock:v6];
 
   return v4;
 }
@@ -10761,7 +10761,7 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
 
 - (id)iconViewsToPreviewForIconStylePicker
 {
-  v2 = [(SBHIconManager *)self rootViewController];
+  rootViewController = [(SBHIconManager *)self rootViewController];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -10769,18 +10769,18 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   v6[3] = &unk_1E8089928;
   v4 = v3;
   v7 = v4;
-  [v2 enumerateDisplayedIconViewsUsingBlock:v6];
+  [rootViewController enumerateDisplayedIconViewsUsingBlock:v6];
 
   return v4;
 }
 
-- (id)precacheLayersForIcons:(id)a3 appearances:(id)a4 reason:(id)a5
+- (id)precacheLayersForIcons:(id)icons appearances:(id)appearances reason:(id)reason
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v9 = a5;
-  v10 = [[SBHCompoundAssertion alloc] initWithReason:v9];
+  iconsCopy = icons;
+  appearancesCopy = appearances;
+  reasonCopy = reason;
+  v10 = [[SBHCompoundAssertion alloc] initWithReason:reasonCopy];
   [(SBHIconManager *)self rootIconImageInfo];
   v12 = v11;
   v14 = v13;
@@ -10790,7 +10790,7 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v8;
+  obj = iconsCopy;
   v32 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v32)
   {
@@ -10811,7 +10811,7 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v21 = v31;
+        v21 = appearancesCopy;
         v22 = [v21 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v22)
         {
@@ -10827,7 +10827,7 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
               }
 
               v26 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:*(*(&v34 + 1) + 8 * i)];
-              v27 = [v20 prefetchIconLayerWithInfo:v26 traitCollection:1 imageOptions:0 priority:v9 reason:0 prefetchBehavior:{v12, v14, v16, v18}];
+              v27 = [v20 prefetchIconLayerWithInfo:v26 traitCollection:1 imageOptions:0 priority:reasonCopy reason:0 prefetchBehavior:{v12, v14, v16, v18}];
               if (v27)
               {
                 [(SBHCompoundAssertion *)v10 addAssertion:v27];
@@ -10855,34 +10855,34 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
 
 - (void)cancelAllDrags
 {
-  v2 = [(SBHIconManager *)self iconDragManager];
-  [v2 cancelAllDrags];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager cancelAllDrags];
 }
 
-- (BOOL)iconDragManager:(id)a3 canBeginIconDragForIconView:(id)a4
+- (BOOL)iconDragManager:(id)manager canBeginIconDragForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 iconManagerCanBeginIconDrags:self] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(v6, "iconManager:canBeginDragForIconView:", self, v5) || (-[SBHIconManager reasonToDisallowInteractionOnIconView:](self, "reasonToDisallowInteractionOnIconView:", v5), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate iconManagerCanBeginIconDrags:self] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(delegate, "iconManager:canBeginDragForIconView:", self, viewCopy) || (-[SBHIconManager reasonToDisallowInteractionOnIconView:](self, "reasonToDisallowInteractionOnIconView:", viewCopy), v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     LOBYTE(v8) = 0;
   }
 
   else
   {
-    v9 = [v5 icon];
+    icon = [viewCopy icon];
     v10 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = v9;
-      v13 = [v5 draggingStartLocation];
+      v12 = icon;
+      draggingStartLocation = [viewCopy draggingStartLocation];
       v14 = MEMORY[0x1E698B0D0];
-      v15 = [v12 applicationBundleID];
-      v16 = [v14 applicationWithBundleIdentifier:v15];
+      applicationBundleID = [v12 applicationBundleID];
+      v16 = [v14 applicationWithBundleIdentifier:applicationBundleID];
 
-      if (v13 == 4)
+      if (draggingStartLocation == 4)
       {
         v8 = [v16 isHidden] ^ 1;
       }
@@ -10902,46 +10902,46 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v8;
 }
 
-- (void)iconDragManager:(id)a3 iconView:(id)a4 willAnimateDragLiftWithAnimator:(id)a5 session:(id)a6
+- (void)iconDragManager:(id)manager iconView:(id)view willAnimateDragLiftWithAnimator:(id)animator session:(id)session
 {
-  v7 = a4;
+  viewCopy = view;
   [(SBHIconManager *)self _restartEditingEndTimer];
-  v8 = [v7 icon];
+  icon = [viewCopy icon];
 
-  [(SBHIconManager *)self clearHighlightedIcon:v8];
+  [(SBHIconManager *)self clearHighlightedIcon:icon];
 }
 
-- (void)iconDragManagerIconDraggingDidChange:(id)a3
+- (void)iconDragManagerIconDraggingDidChange:(id)change
 {
-  v4 = [a3 isIconDragging];
+  isIconDragging = [change isIconDragging];
   [(SBHIconManager *)self _restartEditingEndTimer];
-  v5 = [(SBHIconManager *)self rootFolderController];
-  [v5 setAllowsAutoscrollToLeadingCustomView:v4 ^ 1];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController setAllowsAutoscrollToLeadingCustomView:isIconDragging ^ 1];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"SBHIconManagerIconDraggingChanged" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHIconManagerIconDraggingChanged" object:self];
 
-  v7 = [(SBHIconManager *)self searchGesture];
-  [v7 setDisabled:v4 forReason:@"SBHIconManager Dragging"];
+  searchGesture = [(SBHIconManager *)self searchGesture];
+  [searchGesture setDisabled:isIconDragging forReason:@"SBHIconManager Dragging"];
 
-  v8 = [(SBHIconManager *)self floatingDockViewController];
-  [v8 setIconsDragging:v4];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController setIconsDragging:isIconDragging];
 
   [(SBHIconManager *)self _updateVisibleIconsViewsForAllowableCloseBoxes];
-  v9 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManagerIconDraggingDidChange:self];
+    [delegate iconManagerIconDraggingDidChange:self];
   }
 }
 
-- (id)iconDragManager:(id)a3 dragPreviewForIconView:(id)a4
+- (id)iconDragManager:(id)manager dragPreviewForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self dragPreviewForIconView:v5];
+    v7 = [delegate iconManager:self dragPreviewForIconView:viewCopy];
   }
 
   else
@@ -10952,13 +10952,13 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v7;
 }
 
-- (id)windowForIconDragPreviewsForIconDragManager:(id)a3 forWindowScene:(id)a4
+- (id)windowForIconDragPreviewsForIconDragManager:(id)manager forWindowScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  sceneCopy = scene;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 windowForIconDragPreviewsForIconManager:self forWindowScene:v5];
+    v7 = [delegate windowForIconDragPreviewsForIconManager:self forWindowScene:sceneCopy];
   }
 
   else
@@ -10969,16 +10969,16 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v7;
 }
 
-- (id)iconDragManager:(id)a3 targetedDragPreviewForIconView:(id)a4 item:(id)a5 session:(id)a6 previewParameters:(id)a7
+- (id)iconDragManager:(id)manager targetedDragPreviewForIconView:(id)view item:(id)item session:(id)session previewParameters:(id)parameters
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  itemCopy = item;
+  sessionCopy = session;
+  parametersCopy = parameters;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v16 = [v15 iconManager:self targetedDragPreviewForIconView:v11 item:v12 session:v13 previewParameters:v14];
+    v16 = [delegate iconManager:self targetedDragPreviewForIconView:viewCopy item:itemCopy session:sessionCopy previewParameters:parametersCopy];
   }
 
   else
@@ -10989,61 +10989,61 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v16;
 }
 
-- (id)rootViewForIconDragManager:(id)a3
+- (id)rootViewForIconDragManager:(id)manager
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
-  v4 = [v3 view];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  view = [rootFolderController view];
 
-  return v4;
+  return view;
 }
 
-- (void)iconDragManager:(id)a3 willBeginIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5
+- (void)iconDragManager:(id)manager willBeginIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items
 {
-  v8 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self willBeginIconDragWithUniqueIdentifier:v8 numberOfDraggedItems:a5];
+    [delegate iconManager:self willBeginIconDragWithUniqueIdentifier:identifierCopy numberOfDraggedItems:items];
   }
 }
 
-- (void)iconDragManager:(id)a3 didAddItemsToIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5
+- (void)iconDragManager:(id)manager didAddItemsToIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items
 {
-  v8 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self didAddItemsToIconDragWithUniqueIdentifier:v8 numberOfDraggedItems:a5];
+    [delegate iconManager:self didAddItemsToIconDragWithUniqueIdentifier:identifierCopy numberOfDraggedItems:items];
   }
 }
 
-- (void)iconDragManager:(id)a3 didEndIconDragWithUniqueIdentifier:(id)a4 numberOfDraggedItems:(unint64_t)a5
+- (void)iconDragManager:(id)manager didEndIconDragWithUniqueIdentifier:(id)identifier numberOfDraggedItems:(unint64_t)items
 {
-  v8 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self didEndIconDragWithUniqueIdentifier:v8 numberOfDraggedItems:a5];
+    [delegate iconManager:self didEndIconDragWithUniqueIdentifier:identifierCopy numberOfDraggedItems:items];
   }
 }
 
-- (void)iconDragManager:(id)a3 iconDropSessionDidEnter:(id)a4
+- (void)iconDragManager:(id)manager iconDropSessionDidEnter:(id)enter
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self delegate];
+  enterCopy = enter;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self iconDropSessionDidEnter:v6];
+    [delegate iconManager:self iconDropSessionDidEnter:enterCopy];
   }
 }
 
-- (BOOL)iconDragManager:(id)a3 canBeginDragForIconView:(id)a4
+- (BOOL)iconDragManager:(id)manager canBeginDragForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self canBeginDragForIconView:v5];
+    v7 = [delegate iconManager:self canBeginDragForIconView:viewCopy];
   }
 
   else
@@ -11054,14 +11054,14 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v7;
 }
 
-- (BOOL)iconDragManager:(id)a3 canAddDragItemsToSession:(id)a4 fromIconView:(id)a5
+- (BOOL)iconDragManager:(id)manager canAddDragItemsToSession:(id)session fromIconView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SBHIconManager *)self delegate];
+  sessionCopy = session;
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 iconManager:self canAddDragItemsToSession:v7 fromIconView:v8];
+    v10 = [delegate iconManager:self canAddDragItemsToSession:sessionCopy fromIconView:viewCopy];
   }
 
   else
@@ -11072,14 +11072,14 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v10;
 }
 
-- (BOOL)iconDragManager:(id)a3 canAcceptDropInSession:(id)a4 inIconListView:(id)a5
+- (BOOL)iconDragManager:(id)manager canAcceptDropInSession:(id)session inIconListView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SBHIconManager *)self delegate];
+  sessionCopy = session;
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 iconManager:self canAcceptDropInSession:v7 inIconListView:v8];
+    v10 = [delegate iconManager:self canAcceptDropInSession:sessionCopy inIconListView:viewCopy];
   }
 
   else
@@ -11090,97 +11090,97 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v10;
 }
 
-- (double)iconDragManager:(id)a3 additionalDragLiftScaleForIconView:(id)a4
+- (double)iconDragManager:(id)manager additionalDragLiftScaleForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   v7 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconManager:self additionalDragLiftScaleForIconView:v5];
+    [delegate iconManager:self additionalDragLiftScaleForIconView:viewCopy];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (int64_t)iconDragManager:(id)a3 draggingStartLocationForIconView:(id)a4 proposedStartLocation:(int64_t)a5
+- (int64_t)iconDragManager:(id)manager draggingStartLocationForIconView:(id)view proposedStartLocation:(int64_t)location
 {
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    a5 = [v8 iconManager:self draggingStartLocationForIconView:v7 proposedStartLocation:a5];
+    location = [delegate iconManager:self draggingStartLocationForIconView:viewCopy proposedStartLocation:location];
   }
 
-  return a5;
+  return location;
 }
 
-- (void)presentTodayOverlayForIconDragManager:(id)a3
+- (void)presentTodayOverlayForIconDragManager:(id)manager
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 presentTodayOverlayForIconManager:self];
-  }
-}
-
-- (void)dismissTodayOverlayForIconDragManager:(id)a3
-{
-  v4 = [(SBHIconManager *)self delegate];
-  if (objc_opt_respondsToSelector())
-  {
-    [v4 dismissTodayOverlayForIconManager:self];
+    [delegate presentTodayOverlayForIconManager:self];
   }
 }
 
-- (void)presentLibraryForIconDragManager:(id)a3 windowScene:(id)a4
+- (void)dismissTodayOverlayForIconDragManager:(id)manager
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 presentLibraryForIconManager:self windowScene:v6 animated:1];
+    [delegate dismissTodayOverlayForIconManager:self];
   }
 }
 
-- (void)dismissLibraryForIconDragManager:(id)a3 windowScene:(id)a4
+- (void)presentLibraryForIconDragManager:(id)manager windowScene:(id)scene
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self delegate];
+  sceneCopy = scene;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 dismissLibraryForIconManager:self windowScene:v6 animated:1];
+    [delegate presentLibraryForIconManager:self windowScene:sceneCopy animated:1];
   }
 }
 
-- (BOOL)isAnimatingFolderIconTransitionForIconDragManager:(id)a3
+- (void)dismissLibraryForIconDragManager:(id)manager windowScene:(id)scene
 {
-  v3 = [(SBHIconManager *)self currentTransitionAnimator];
-  v4 = v3;
-  if (v3)
+  sceneCopy = scene;
+  delegate = [(SBHIconManager *)self delegate];
+  if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 iconAnimator];
-    v6 = [v5 isAnimating];
+    [delegate dismissLibraryForIconManager:self windowScene:sceneCopy animated:1];
+  }
+}
+
+- (BOOL)isAnimatingFolderIconTransitionForIconDragManager:(id)manager
+{
+  currentTransitionAnimator = [(SBHIconManager *)self currentTransitionAnimator];
+  v4 = currentTransitionAnimator;
+  if (currentTransitionAnimator)
+  {
+    iconAnimator = [currentTransitionAnimator iconAnimator];
+    isAnimating = [iconAnimator isAnimating];
   }
 
   else
   {
-    v6 = 0;
+    isAnimating = 0;
   }
 
-  return v6;
+  return isAnimating;
 }
 
-- (BOOL)isFolderOpenForIconDragManager:(id)a3
+- (BOOL)isFolderOpenForIconDragManager:(id)manager
 {
-  v3 = [(SBHIconManager *)self openedFolderController];
-  v4 = v3 != 0;
+  openedFolderController = [(SBHIconManager *)self openedFolderController];
+  v4 = openedFolderController != 0;
 
   return v4;
 }
 
-- (double)defaultIconLayoutAnimationDurationForIconDragManager:(id)a3
+- (double)defaultIconLayoutAnimationDurationForIconDragManager:(id)manager
 {
   v3 = objc_opt_class();
 
@@ -11188,33 +11188,33 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return result;
 }
 
-- (BOOL)iconDragManager:(id)a3 shouldDuplicateIconsInDragSession:(id)a4
+- (BOOL)iconDragManager:(id)manager shouldDuplicateIconsInDragSession:(id)session
 {
-  v4 = [a4 items];
-  v5 = [v4 firstObject];
-  v6 = [v5 sbh_appDragLocalContext];
-  v7 = [v6 startLocation] == 4;
+  items = [session items];
+  firstObject = [items firstObject];
+  sbh_appDragLocalContext = [firstObject sbh_appDragLocalContext];
+  v7 = [sbh_appDragLocalContext startLocation] == 4;
 
   return v7;
 }
 
-- (void)iconDragManager:(id)a3 didSpringLoadIconView:(id)a4
+- (void)iconDragManager:(id)manager didSpringLoadIconView:(id)view
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self didSpringLoadIconView:v6];
+    [delegate iconManager:self didSpringLoadIconView:viewCopy];
   }
 }
 
-- (BOOL)iconDragManager:(id)a3 dragsSupportSystemDragsForIconView:(id)a4
+- (BOOL)iconDragManager:(id)manager dragsSupportSystemDragsForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self dragsSupportSystemDragsForIconView:v5];
+    v7 = [delegate iconManager:self dragsSupportSystemDragsForIconView:viewCopy];
   }
 
   else
@@ -11225,43 +11225,43 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
   return v7;
 }
 
-- (void)insertIcons:(id)a3 intoWidgetStack:(id)a4
+- (void)insertIcons:(id)icons intoWidgetStack:(id)stack
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self iconModel];
-  [v6 addDataSourcesFromWidgetIcons:v7];
+  stackCopy = stack;
+  iconsCopy = icons;
+  iconModel = [(SBHIconManager *)self iconModel];
+  [stackCopy addDataSourcesFromWidgetIcons:iconsCopy];
 
-  [v8 removeIcons:v7];
+  [iconModel removeIcons:iconsCopy];
 }
 
-- (void)addSuggestedActiveWidgetToStack:(id)a3
+- (void)addSuggestedActiveWidgetToStack:(id)stack
 {
-  v6 = a3;
-  v4 = [v6 firstSuggestedIconDataSource];
-  v5 = [(SBHIconManager *)self promoteSuggestedWidget:v4 withinStack:v6];
+  stackCopy = stack;
+  firstSuggestedIconDataSource = [stackCopy firstSuggestedIconDataSource];
+  v5 = [(SBHIconManager *)self promoteSuggestedWidget:firstSuggestedIconDataSource withinStack:stackCopy];
 }
 
-- (id)promoteSuggestedWidget:(id)a3 withinStack:(id)a4
+- (id)promoteSuggestedWidget:(id)widget withinStack:(id)stack
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  widgetCopy = widget;
+  stackCopy = stack;
+  v8 = stackCopy;
   v9 = 0;
-  if (!v6 || !v7)
+  if (!widgetCopy || !stackCopy)
   {
     goto LABEL_18;
   }
 
-  v10 = [v6 uniqueIdentifier];
-  v11 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-  v12 = [v11 viewControllerForIdentifier:v10];
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  v12 = [_effectiveWidgetMultiplexingManager viewControllerForIdentifier:uniqueIdentifier];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (![v6 suggestionSource])
+    if (![widgetCopy suggestionSource])
     {
       NSLog(&cfstr_SbhwidgetDoesN.isa);
     }
@@ -11276,132 +11276,132 @@ uint64_t __57__SBHIconManager_iconsToRecacheForIconStylePickerPreview__block_inv
       goto LABEL_11;
     }
 
-    if (![v6 suggestionSource])
+    if (![widgetCopy suggestionSource])
     {
       NSLog(&cfstr_FakewidgetDoes.isa);
     }
   }
 
-  v9 = [v6 copyWithSuggestionSource:0];
+  v9 = [widgetCopy copyWithSuggestionSource:0];
 LABEL_11:
-  [v8 replaceIconDataSource:v6 withIconDataSource:v9];
+  [v8 replaceIconDataSource:widgetCopy withIconDataSource:v9];
   v13 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v15 = [v12 widget];
-    v16 = [v15 intentReference];
-    v17 = [v16 intent];
+    widget = [v12 widget];
+    intentReference = [widget intentReference];
+    intent = [intentReference intent];
 
-    if (v17)
+    if (intent)
     {
-      v18 = [v15 extensionIdentity];
-      v23 = [v18 extensionBundleIdentifier];
+      extensionIdentity = [widget extensionIdentity];
+      extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-      v19 = [v15 kind];
+      kind = [widget kind];
       v20 = SBLogIcon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v25 = v23;
+        v25 = extensionBundleIdentifier;
         v26 = 2112;
-        v27 = v19;
+        v27 = kind;
         v28 = 2112;
-        v29 = v17;
+        v29 = intent;
         _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, "Saving intent for 'added' suggested widget (%@ - %@): %@", buf, 0x20u);
       }
 
-      [(SBHIconManager *)self _archiveConfiguration:v17 forDataSource:v9 ofIcon:v8];
+      [(SBHIconManager *)self _archiveConfiguration:intent forDataSource:v9 ofIcon:v8];
     }
   }
 
-  v21 = [(SBHIconManager *)self usageMonitor];
-  [v21 noteUserAddedWidgetIconStackSuggestion:v8];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteUserAddedWidgetIconStackSuggestion:v8];
 
 LABEL_18:
 
   return v9;
 }
 
-- (void)hideSuggestedWidgetFromStack:(id)a3
+- (void)hideSuggestedWidgetFromStack:(id)stack
 {
-  v5 = a3;
-  v4 = [(SBHIconManager *)self usageMonitor];
-  [v4 noteUserDislikedWidgetIconStackSuggestion:v5];
+  stackCopy = stack;
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteUserDislikedWidgetIconStackSuggestion:stackCopy];
 
-  [v5 removeFirstSuggestedIconDataSource];
+  [stackCopy removeFirstSuggestedIconDataSource];
 }
 
-- (void)hideSiriSuggestionOnWidgetFromStack:(id)a3
+- (void)hideSiriSuggestionOnWidgetFromStack:(id)stack
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self usageMonitor];
-  [v5 noteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:v4];
+  stackCopy = stack;
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteUserDislikedSiriSuggestionOnWidgetIconStackSuggestion:stackCopy];
 }
 
-- (id)gridPathForIcon:(id)a3
+- (id)gridPathForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 gridPathForIcon:v4 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
+  iconCopy = icon;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v6 = [rootFolder gridPathForIcon:iconCopy listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptions](self, "gridCellInfoOptions")}];
 
   return v6;
 }
 
-- (void)saveGridPath:(id)a3 asPriorLocationBeforeResizeForIcon:(id)a4
+- (void)saveGridPath:(id)path asPriorLocationBeforeResizeForIcon:(id)icon
 {
-  v10 = a3;
-  v6 = a4;
+  pathCopy = path;
+  iconCopy = icon;
   previousIconGridPathsBeforeResize = self->_previousIconGridPathsBeforeResize;
   if (!previousIconGridPathsBeforeResize)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v9 = self->_previousIconGridPathsBeforeResize;
-    self->_previousIconGridPathsBeforeResize = v8;
+    self->_previousIconGridPathsBeforeResize = weakToStrongObjectsMapTable;
 
     previousIconGridPathsBeforeResize = self->_previousIconGridPathsBeforeResize;
   }
 
-  [(NSMapTable *)previousIconGridPathsBeforeResize setObject:v10 forKey:v6];
+  [(NSMapTable *)previousIconGridPathsBeforeResize setObject:pathCopy forKey:iconCopy];
 }
 
-- (void)changeSizeOfWidgetIcon:(id)a3 toSizeClass:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)changeSizeOfWidgetIcon:(id)icon toSizeClass:(id)class animated:(BOOL)animated completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SBHIconManager *)self rootFolder];
-  v14 = [v13 indexPathForIcon:v10];
+  iconCopy = icon;
+  classCopy = class;
+  handlerCopy = handler;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v14 = [rootFolder indexPathForIcon:iconCopy];
   if (v14)
   {
-    v15 = [v10 gridSizeClass];
-    v16 = v15;
-    if (v15 == v11)
+    gridSizeClass = [iconCopy gridSizeClass];
+    v16 = gridSizeClass;
+    if (gridSizeClass == classCopy)
     {
     }
 
     else
     {
-      v17 = [v10 gridSizeClass];
-      v18 = [v17 isEqualToString:v11];
+      gridSizeClass2 = [iconCopy gridSizeClass];
+      v18 = [gridSizeClass2 isEqualToString:classCopy];
 
       if (!v18)
       {
-        v28 = [(SBHIconManager *)self prepareForUndo];
-        v19 = [(SBHIconManager *)self delegate];
-        v20 = [(SBHIconManager *)self makeResizedCopyOfWidgetIcon:v10 withGridSizeClass:v11];
+        prepareForUndo = [(SBHIconManager *)self prepareForUndo];
+        delegate = [(SBHIconManager *)self delegate];
+        v20 = [(SBHIconManager *)self makeResizedCopyOfWidgetIcon:iconCopy withGridSizeClass:classCopy];
         if (objc_opt_respondsToSelector())
         {
-          [v19 iconManager:self willChangeSizeOfIcon:v10 toSizeClass:v11 byReplacingWithIcon:v20];
+          [delegate iconManager:self willChangeSizeOfIcon:iconCopy toSizeClass:classCopy byReplacingWithIcon:v20];
         }
 
-        v27 = v19;
+        v27 = delegate;
         v32 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v20];
         v21 = [(SBHIconManager *)self iconListViewForIndexPath:v14];
-        v22 = [v21 displayedIconViewForIcon:v10];
-        v31 = [(NSMapTable *)self->_previousIconGridPathsBeforeResize objectForKey:v10];
-        [(SBHIconManager *)self gridPathForIcon:v10];
+        v22 = [v21 displayedIconViewForIcon:iconCopy];
+        v31 = [(NSMapTable *)self->_previousIconGridPathsBeforeResize objectForKey:iconCopy];
+        [(SBHIconManager *)self gridPathForIcon:iconCopy];
         v30 = v29 = v22;
         if (v22)
         {
@@ -11410,29 +11410,29 @@ LABEL_18:
           v33[2] = __80__SBHIconManager_changeSizeOfWidgetIcon_toSizeClass_animated_completionHandler___block_invoke;
           v33[3] = &unk_1E8090100;
           v33[4] = self;
-          v34 = v10;
-          v35 = v11;
+          v34 = iconCopy;
+          v35 = classCopy;
           v36 = v20;
           v37 = v22;
           v38 = v21;
           v39 = v32;
           v23 = v20;
-          v24 = a5;
-          v25 = v28;
-          v40 = v28;
+          animatedCopy = animated;
+          v25 = prepareForUndo;
+          v40 = prepareForUndo;
           v41 = v31;
           v42 = v30;
-          v44 = v24;
+          v44 = animatedCopy;
           v20 = v23;
-          v43 = v12;
+          v43 = handlerCopy;
           [v37 performAfterContextMenusDismissUsingBlock:v33];
         }
 
         else
         {
-          LOBYTE(v26) = a5;
-          v25 = v28;
-          [(SBHIconManager *)self continueChangingSizeOfWidgetIcon:v10 toSizeClass:v11 newIcon:v20 displayedIconView:0 listView:v21 resizedViewController:v32 undoPreparation:v28 previousIconGridPath:v31 currentIconGridPath:v30 animated:v26 completionHandler:v12];
+          LOBYTE(v26) = animated;
+          v25 = prepareForUndo;
+          [(SBHIconManager *)self continueChangingSizeOfWidgetIcon:iconCopy toSizeClass:classCopy newIcon:v20 displayedIconView:0 listView:v21 resizedViewController:v32 undoPreparation:prepareForUndo previousIconGridPath:v31 currentIconGridPath:v30 animated:v26 completionHandler:handlerCopy];
         }
 
         goto LABEL_13;
@@ -11440,50 +11440,50 @@ LABEL_18:
     }
   }
 
-  if (v12)
+  if (handlerCopy)
   {
-    v12[2](v12);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_13:
 }
 
-- (void)continueChangingSizeOfWidgetIcon:(id)a3 toSizeClass:(id)a4 newIcon:(id)a5 displayedIconView:(id)a6 listView:(id)a7 resizedViewController:(id)a8 undoPreparation:(id)a9 previousIconGridPath:(id)a10 currentIconGridPath:(id)a11 animated:(BOOL)a12 completionHandler:(id)a13
+- (void)continueChangingSizeOfWidgetIcon:(id)icon toSizeClass:(id)class newIcon:(id)newIcon displayedIconView:(id)view listView:(id)listView resizedViewController:(id)controller undoPreparation:(id)preparation previousIconGridPath:(id)self0 currentIconGridPath:(id)self1 animated:(BOOL)self2 completionHandler:(id)self3
 {
   v56[1] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v18 = a4;
-  v47 = a5;
-  v19 = a6;
-  v20 = a7;
-  v46 = a9;
-  v49 = a10;
-  v21 = a13;
-  v40 = a11;
-  v22 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  classCopy = class;
+  newIconCopy = newIcon;
+  viewCopy = view;
+  listViewCopy = listView;
+  preparationCopy = preparation;
+  pathCopy = path;
+  handlerCopy = handler;
+  gridPathCopy = gridPath;
+  delegate = [(SBHIconManager *)self delegate];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_displayedIconView_listView_resizedViewController_undoPreparation_previousIconGridPath_currentIconGridPath_animated_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8090128;
   aBlock[4] = self;
-  v44 = v45;
+  v44 = iconCopy;
   v51 = v44;
-  v42 = v22;
+  v42 = delegate;
   v52 = v42;
-  v23 = v18;
-  v24 = v19;
+  v23 = classCopy;
+  v24 = viewCopy;
   v43 = v23;
   v53 = v23;
-  v25 = v47;
+  v25 = newIconCopy;
   v54 = v25;
-  v41 = v21;
+  v41 = handlerCopy;
   v55 = v41;
   v26 = _Block_copy(aBlock);
   v48 = v24;
-  if (a12)
+  if (animated)
   {
-    v27 = [(SBHIconManager *)self widgetMetricsProvider];
-    v28 = [[SBIconListViewIconSizeChangeAnimator alloc] initWithIconView:v24 iconListView:v20 widgetMetricsProvider:v27];
+    widgetMetricsProvider = [(SBHIconManager *)self widgetMetricsProvider];
+    v28 = [[SBIconListViewIconSizeChangeAnimator alloc] initWithIconView:v24 iconListView:listViewCopy widgetMetricsProvider:widgetMetricsProvider];
     [(SBIconListViewIconSizeChangeAnimator *)v28 setDelegate:self];
     [(SBIconListViewIconSizeChangeAnimator *)v28 addAnimationCompletionHandler:v26];
   }
@@ -11493,44 +11493,44 @@ LABEL_13:
     v28 = 0;
   }
 
-  v29 = [(SBHIconManager *)self iconModel];
-  v30 = [(SBHIconManager *)self rootFolder];
-  v31 = [(SBHIconManager *)self gridCellInfoOptions];
-  if ([v30 containsIcon:v44])
+  iconModel = [(SBHIconManager *)self iconModel];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  gridCellInfoOptions = [(SBHIconManager *)self gridCellInfoOptions];
+  if ([rootFolder containsIcon:v44])
   {
     v56[0] = v25;
-    v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
-    v33 = [v30 replaceIcon:v44 withIcons:v32 options:8390146 listGridCellInfoOptions:v31];
+    model = [MEMORY[0x1E695DEC8] arrayWithObjects:v56 count:1];
+    v33 = [rootFolder replaceIcon:v44 withIcons:model options:8390146 listGridCellInfoOptions:gridCellInfoOptions];
   }
 
   else
   {
-    v32 = [v20 model];
-    v34 = [v30 addIcon:v25 toList:v32 options:8390146];
+    model = [listViewCopy model];
+    v34 = [rootFolder addIcon:v25 toList:model options:8390146];
   }
 
   v35 = v48;
-  if (v49)
+  if (pathCopy)
   {
-    v36 = [v30 insertIcon:v25 atGridPath:v49 options:1024];
+    v36 = [rootFolder insertIcon:v25 atGridPath:pathCopy options:1024];
   }
 
-  [v29 removeIcon:v44];
-  [v29 addIcon:v25];
-  [v20 layoutIconsIfNeededUsingAnimator:v28 options:0];
-  [(SBHIconManager *)self saveGridPath:v40 asPriorLocationBeforeResizeForIcon:v25];
+  [iconModel removeIcon:v44];
+  [iconModel addIcon:v25];
+  [listViewCopy layoutIconsIfNeededUsingAnimator:v28 options:0];
+  [(SBHIconManager *)self saveGridPath:gridPathCopy asPriorLocationBeforeResizeForIcon:v25];
 
-  v37 = [v20 undoManager];
-  if (v37)
+  undoManager = [listViewCopy undoManager];
+  if (undoManager)
   {
     v38 = SBHBundle();
     v39 = [v38 localizedStringForKey:@"UNDO_RESIZE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
-    [v46 registerWithUndoManager:v37 actionName:v39 observer:0];
+    [preparationCopy registerWithUndoManager:undoManager actionName:v39 observer:0];
 
     v35 = v48;
   }
 
-  if (!a12)
+  if (!animated)
   {
     v26[2](v26);
   }
@@ -11589,15 +11589,15 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
   }
 }
 
-- (id)makeResizedCopyOfWidgetIcon:(id)a3 withGridSizeClass:(id)a4
+- (id)makeResizedCopyOfWidgetIcon:(id)icon withGridSizeClass:(id)class
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v27 = v6;
-  v8 = [v6 copyWithUniqueLeafIdentifier];
-  [v8 setGridSizeClass:v7];
-  v26 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  classCopy = class;
+  v27 = iconCopy;
+  copyWithUniqueLeafIdentifier = [iconCopy copyWithUniqueLeafIdentifier];
+  [copyWithUniqueLeafIdentifier setGridSizeClass:classCopy];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v9 = objc_opt_respondsToSelector();
@@ -11608,8 +11608,8 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
     v9 = 0;
   }
 
-  v10 = [v8 iconDataSources];
-  v11 = [v10 copy];
+  iconDataSources = [copyWithUniqueLeafIdentifier iconDataSources];
+  v11 = [iconDataSources copy];
 
   v31 = 0u;
   v32 = 0u;
@@ -11637,19 +11637,19 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
 
         if (isKindOfClass & 1) != 0 || (objc_opt_self(), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_opt_isKindOfClass(), v19, (v20))
         {
-          v21 = [v16 copyWithUniqueIdentifier];
-          [v8 replaceIconDataSource:v16 withIconDataSource:v21];
-          if (v21 != 0 && (v9 & 1) != 0)
+          copyWithUniqueIdentifier = [v16 copyWithUniqueIdentifier];
+          [copyWithUniqueLeafIdentifier replaceIconDataSource:v16 withIconDataSource:copyWithUniqueIdentifier];
+          if (copyWithUniqueIdentifier != 0 && (v9 & 1) != 0)
           {
-            v22 = [v26 iconManager:self configurationDataForDataSource:v16 ofIcon:v27];
+            v22 = [delegate iconManager:self configurationDataForDataSource:v16 ofIcon:v27];
             v14 = v25;
-            [v26 iconManager:self dataSource:v21 ofIcon:v8 didUpdateConfigurationData:v22];
+            [delegate iconManager:self dataSource:copyWithUniqueIdentifier ofIcon:copyWithUniqueLeafIdentifier didUpdateConfigurationData:v22];
           }
         }
 
         else
         {
-          v21 = 0;
+          copyWithUniqueIdentifier = 0;
         }
       }
 
@@ -11659,18 +11659,18 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
     while (v13);
   }
 
-  return v8;
+  return copyWithUniqueLeafIdentifier;
 }
 
-- (void)replaceWidgetIconWithAppIcon:(id)a3
+- (void)replaceWidgetIconWithAppIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 listContainingIcon:v4];
+  iconCopy = icon;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v6 = [rootFolder listContainingIcon:iconCopy];
   if (v6)
   {
     v7 = objc_opt_class();
-    v8 = v4;
+    v8 = iconCopy;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -11694,10 +11694,10 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
     if (v10)
     {
       v35 = v10;
-      v11 = [(SBHIconManager *)self prepareForUndo];
-      v36 = [(SBHIconManager *)self iconModel];
+      prepareForUndo = [(SBHIconManager *)self prepareForUndo];
+      iconModel = [(SBHIconManager *)self iconModel];
       v12 = [(SBHIconManager *)self iconForReplacingWidgetIconWithAppIcon:v8];
-      v13 = [v5 containsIcon:v12];
+      v13 = [rootFolder containsIcon:v12];
       v14 = v12;
       v15 = v14;
       if ([v14 isLeafIcon])
@@ -11705,7 +11705,7 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
         v15 = v14;
         if (v13)
         {
-          v15 = [v36 addAdditionalIconMatchingIcon:v14];
+          v15 = [iconModel addAdditionalIconMatchingIcon:v14];
         }
       }
 
@@ -11713,37 +11713,37 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
       if (v15)
       {
         v30 = v14;
-        v34 = v11;
-        v33 = [(SBHIconManager *)self rootFolderController];
-        v16 = [v33 iconListViewWithIconListModel:v6];
+        v34 = prepareForUndo;
+        rootFolderController = [(SBHIconManager *)self rootFolderController];
+        v16 = [rootFolderController iconListViewWithIconListModel:v6];
         v17 = [v16 displayedIconViewForIcon:v35];
         v27 = [(NSMapTable *)self->_previousIconGridPathsBeforeResize objectForKey:v8];
         v31 = [(SBHIconManager *)self gridPathForIcon:v8];
-        v18 = [(SBHIconManager *)self delegate];
+        delegate = [(SBHIconManager *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v18 iconManager:self willChangeSizeOfIcon:v8 toSizeClass:@"SBHIconGridSizeClassDefault" byReplacingWithIcon:v15];
+          [delegate iconManager:self willChangeSizeOfIcon:v8 toSizeClass:@"SBHIconGridSizeClassDefault" byReplacingWithIcon:v15];
         }
 
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __47__SBHIconManager_replaceWidgetIconWithAppIcon___block_invoke;
         v37[3] = &unk_1E8090150;
-        v38 = v5;
+        v38 = rootFolder;
         v19 = v35;
         v39 = v19;
-        v40 = self;
+        selfCopy = self;
         v41 = v17;
         v29 = v16;
         v42 = v29;
-        v28 = v18;
+        v28 = delegate;
         v43 = v28;
         v44 = v8;
         v20 = v15;
         v45 = v20;
         v21 = v27;
         v46 = v21;
-        v47 = v36;
+        v47 = iconModel;
         v22 = v31;
         v48 = v22;
         v49 = v34;
@@ -11751,17 +11751,17 @@ void __204__SBHIconManager_continueChangingSizeOfWidgetIcon_toSizeClass_newIcon_
         [v41 performAfterContextMenusDismissUsingBlock:v37];
         if (!self->_previousWidgetDataSourceBeforeResize)
         {
-          v23 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+          weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
           previousWidgetDataSourceBeforeResize = self->_previousWidgetDataSourceBeforeResize;
-          self->_previousWidgetDataSourceBeforeResize = v23;
+          self->_previousWidgetDataSourceBeforeResize = weakToStrongObjectsMapTable;
         }
 
-        v25 = [v19 activeDataSource];
-        [(NSMapTable *)self->_previousWidgetDataSourceBeforeResize setObject:v25 forKey:v20];
+        activeDataSource = [v19 activeDataSource];
+        [(NSMapTable *)self->_previousWidgetDataSourceBeforeResize setObject:activeDataSource forKey:v20];
 
-        v11 = v34;
+        prepareForUndo = v34;
         v10 = v35;
-        v26 = v33;
+        v26 = rootFolderController;
         v14 = v30;
       }
 
@@ -11832,22 +11832,22 @@ uint64_t __47__SBHIconManager_replaceWidgetIconWithAppIcon___block_invoke_2(void
   return result;
 }
 
-- (id)iconForReplacingWidgetIconWithAppIcon:(id)a3
+- (id)iconForReplacingWidgetIconWithAppIcon:(id)icon
 {
-  v4 = a3;
-  if ([v4 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    v5 = [v4 activeDataSource];
+    activeDataSource = [iconCopy activeDataSource];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && ([v5 containerBundleIdentifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && ([activeDataSource containerBundleIdentifier], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v7 = v6;
-      v8 = [(SBHIconManager *)self iconModel];
-      v9 = [v8 applicationIconForBundleIdentifier:v7];
-      v10 = [(SBHIconManager *)self delegate];
+      iconModel = [(SBHIconManager *)self iconModel];
+      v9 = [iconModel applicationIconForBundleIdentifier:v7];
+      delegate = [(SBHIconManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v11 = [v10 iconManager:self applicationIconForReplacingIconWithAppIcon:v4 proposedApplicationIcon:v9];
+        v11 = [delegate iconManager:self applicationIconForReplacingIconWithAppIcon:iconCopy proposedApplicationIcon:v9];
 
         v9 = v11;
       }
@@ -11867,42 +11867,42 @@ uint64_t __47__SBHIconManager_replaceWidgetIconWithAppIcon___block_invoke_2(void
   return v9;
 }
 
-- (void)replaceAppIcon:(id)a3 withWidgetOfSize:(id)a4
+- (void)replaceAppIcon:(id)icon withWidgetOfSize:(id)size
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self rootFolder];
-  v9 = [v8 indexPathForIcon:v6];
+  iconCopy = icon;
+  sizeCopy = size;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v9 = [rootFolder indexPathForIcon:iconCopy];
   if (v9)
   {
-    v10 = [(SBHIconManager *)self prepareForUndo];
-    v11 = [(SBHIconManager *)self iconDataSourceForReplacingAppIconWithWidgetIcon:v6];
+    prepareForUndo = [(SBHIconManager *)self prepareForUndo];
+    v11 = [(SBHIconManager *)self iconDataSourceForReplacingAppIconWithWidgetIcon:iconCopy];
     if (v11)
     {
       v12 = v11;
-      v34 = v10;
+      v34 = prepareForUndo;
       if (objc_opt_respondsToSelector())
       {
-        v13 = [v12 copyWithUniqueIdentifier];
+        copyWithUniqueIdentifier = [v12 copyWithUniqueIdentifier];
 
-        v12 = v13;
+        v12 = copyWithUniqueIdentifier;
       }
 
-      v31 = v8;
-      v14 = [(SBLeafIcon *)[SBWidgetIcon alloc] initWithUniqueLeafIdentifier];
+      v31 = rootFolder;
+      initWithUniqueLeafIdentifier = [(SBLeafIcon *)[SBWidgetIcon alloc] initWithUniqueLeafIdentifier];
       v33 = v12;
-      [(SBLeafIcon *)v14 addIconDataSource:v12];
-      [(SBIcon *)v14 setGridSizeClass:v7];
-      v32 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v14];
+      [(SBLeafIcon *)initWithUniqueLeafIdentifier addIconDataSource:v12];
+      [(SBIcon *)initWithUniqueLeafIdentifier setGridSizeClass:sizeCopy];
+      v32 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:initWithUniqueLeafIdentifier];
       v15 = [(SBHIconManager *)self iconListViewForIndexPath:v9];
-      v16 = [v15 displayedIconViewForIcon:v6];
-      v17 = [(NSMapTable *)self->_previousIconGridPathsBeforeResize objectForKey:v6];
-      v18 = [(SBHIconManager *)self gridPathForIcon:v6];
+      v16 = [v15 displayedIconViewForIcon:iconCopy];
+      v17 = [(NSMapTable *)self->_previousIconGridPathsBeforeResize objectForKey:iconCopy];
+      v18 = [(SBHIconManager *)self gridPathForIcon:iconCopy];
       [(SBHIconManager *)self delegate];
-      v20 = v19 = v7;
+      v20 = v19 = sizeCopy;
       if (objc_opt_respondsToSelector())
       {
-        [v20 iconManager:self willChangeSizeOfIcon:v6 toSizeClass:v19 byReplacingWithIcon:v14];
+        [v20 iconManager:self willChangeSizeOfIcon:iconCopy toSizeClass:v19 byReplacingWithIcon:initWithUniqueLeafIdentifier];
       }
 
       v35[0] = MEMORY[0x1E69E9820];
@@ -11910,32 +11910,32 @@ uint64_t __47__SBHIconManager_replaceWidgetIconWithAppIcon___block_invoke_2(void
       v35[2] = __50__SBHIconManager_replaceAppIcon_withWidgetOfSize___block_invoke;
       v35[3] = &unk_1E8090150;
       v36 = v32;
-      v37 = self;
+      selfCopy = self;
       v38 = v16;
       v39 = v15;
       v40 = v20;
-      v41 = v6;
+      v41 = iconCopy;
       v30 = v19;
       v42 = v19;
-      v43 = v14;
+      v43 = initWithUniqueLeafIdentifier;
       v21 = v16;
-      v8 = v31;
+      rootFolder = v31;
       v44 = v31;
       v45 = v17;
       v46 = v18;
       v47 = v34;
       v22 = v18;
-      v10 = v34;
+      prepareForUndo = v34;
       v29 = v22;
       v28 = v17;
-      v23 = v14;
+      v23 = initWithUniqueLeafIdentifier;
       v24 = v20;
       v25 = v15;
       v26 = v21;
       v27 = v32;
       [v26 performAfterContextMenusDismissUsingBlock:v35];
 
-      v7 = v30;
+      sizeCopy = v30;
     }
   }
 }
@@ -12001,24 +12001,24 @@ uint64_t __50__SBHIconManager_replaceAppIcon_withWidgetOfSize___block_invoke_2(v
   return result;
 }
 
-- (id)iconDataSourceForReplacingAppIconWithWidgetIcon:(id)a3
+- (id)iconDataSourceForReplacingAppIconWithWidgetIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_previousWidgetDataSourceBeforeResize objectForKey:v4];
+  iconCopy = icon;
+  v5 = [(NSMapTable *)self->_previousWidgetDataSourceBeforeResize objectForKey:iconCopy];
   if (!v5)
   {
-    v6 = [v4 applicationBundleID];
-    v7 = [(SBHIconManager *)self widgetExtensionProvider];
-    v8 = [v7 sbh_defaultDescriptorForContainerBundleIdentifier:v6];
+    applicationBundleID = [iconCopy applicationBundleID];
+    widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+    v8 = [widgetExtensionProvider sbh_defaultDescriptorForContainerBundleIdentifier:applicationBundleID];
 
-    v9 = [(SBHIconManager *)self gridSizeClassDomain];
-    v5 = [v8 sbh_iconDataSourceInDomain:v9];
+    gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
+    v5 = [v8 sbh_iconDataSourceInDomain:gridSizeClassDomain];
   }
 
-  v10 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 iconManager:self widgetDataSourceForReplacingIconWithWidget:v4 proposedWidgetDataSource:v5];
+    v11 = [delegate iconManager:self widgetDataSourceForReplacingIconWithWidget:iconCopy proposedWidgetDataSource:v5];
 
     v5 = v11;
   }
@@ -12026,32 +12026,32 @@ uint64_t __50__SBHIconManager_replaceAppIcon_withWidgetOfSize___block_invoke_2(v
   return v5;
 }
 
-- (id)_intentForWidget:(id)a3 ofIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6
+- (id)_intentForWidget:(id)widget ofIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 uniqueIdentifier];
-  v13 = [(SBHIconManager *)self _intentForDataSource:v10 inIcon:v11 loadingFromArchiveIfNecessary:0 usingDefaultIntentIfNecessary:0];
-  v14 = v13;
+  ifNecessaryCopy = ifNecessary;
+  necessaryCopy = necessary;
+  widgetCopy = widget;
+  iconCopy = icon;
+  uniqueIdentifier = [widgetCopy uniqueIdentifier];
+  v13 = [(SBHIconManager *)self _intentForDataSource:widgetCopy inIcon:iconCopy loadingFromArchiveIfNecessary:0 usingDefaultIntentIfNecessary:0];
+  intent = v13;
   if (!v13)
   {
-    v15 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-    v16 = [v15 viewControllerForIdentifier:v12];
+    _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+    v16 = [_effectiveWidgetMultiplexingManager viewControllerForIdentifier:uniqueIdentifier];
 
     if ([v16 sbh_isWidgetHostViewController])
     {
-      v17 = [v16 widget];
-      [v17 intentReference];
-      v21 = v7;
-      v19 = v18 = v6;
-      v14 = [v19 intent];
+      widget = [v16 widget];
+      [widget intentReference];
+      v21 = necessaryCopy;
+      v19 = v18 = ifNecessaryCopy;
+      intent = [v19 intent];
 
-      v6 = v18;
-      v7 = v21;
+      ifNecessaryCopy = v18;
+      necessaryCopy = v21;
 
-      if (v14)
+      if (intent)
       {
         goto LABEL_7;
       }
@@ -12061,43 +12061,43 @@ uint64_t __50__SBHIconManager_replaceAppIcon_withWidgetOfSize___block_invoke_2(v
     {
     }
 
-    v14 = [(SBHIconManager *)self _intentForDataSource:v10 inIcon:v11 loadingFromArchiveIfNecessary:v7 usingDefaultIntentIfNecessary:v6];
+    intent = [(SBHIconManager *)self _intentForDataSource:widgetCopy inIcon:iconCopy loadingFromArchiveIfNecessary:necessaryCopy usingDefaultIntentIfNecessary:ifNecessaryCopy];
   }
 
 LABEL_7:
 
-  return v14;
+  return intent;
 }
 
-- (void)setTemporaryIntent:(id)a3 forIconWithIdentifier:(id)a4 widgetUniqueIdentifier:(id)a5
+- (void)setTemporaryIntent:(id)intent forIconWithIdentifier:(id)identifier widgetUniqueIdentifier:(id)uniqueIdentifier
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SBHIconManager *)self delegate];
+  intentCopy = intent;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 iconManager:self setTemporaryIntent:v11 forIconWithIdentifier:v8 widgetUniqueIdentifier:v9];
+    [delegate iconManager:self setTemporaryIntent:intentCopy forIconWithIdentifier:identifierCopy widgetUniqueIdentifier:uniqueIdentifierCopy];
   }
 }
 
-- (BOOL)canOpenFolderForIcon:(id)a3
+- (BOOL)canOpenFolderForIcon:(id)icon
 {
-  v4 = a3;
-  if ([v4 isFolderIcon])
+  iconCopy = icon;
+  if ([iconCopy isFolderIcon])
   {
-    v5 = [(SBHIconManager *)self iconDragManager];
-    v6 = [v5 isTrackingDroppingIconDrags];
+    iconDragManager = [(SBHIconManager *)self iconDragManager];
+    isTrackingDroppingIconDrags = [iconDragManager isTrackingDroppingIconDrags];
 
-    if ((v6 & 1) == 0)
+    if ((isTrackingDroppingIconDrags & 1) == 0)
     {
-      v8 = [(SBHIconManager *)self floatingDockViewController];
-      v9 = v8;
-      if (v8)
+      floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+      v9 = floatingDockViewController;
+      if (floatingDockViewController)
       {
-        v10 = [v8 isPresentingLibrary];
-        v11 = [v4 folder];
-        if ((v10 & 1) == 0)
+        isPresentingLibrary = [floatingDockViewController isPresentingLibrary];
+        folder = [iconCopy folder];
+        if ((isPresentingLibrary & 1) == 0)
         {
           goto LABEL_9;
         }
@@ -12105,15 +12105,15 @@ LABEL_7:
 
       else
       {
-        v12 = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
-        v11 = [v4 folder];
-        if (!v12)
+        isMainDisplayLibraryViewVisible = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
+        folder = [iconCopy folder];
+        if (!isMainDisplayLibraryViewVisible)
         {
           goto LABEL_9;
         }
       }
 
-      if (![v11 isLibraryCategoryFolder])
+      if (![folder isLibraryCategoryFolder])
       {
         v7 = 0;
         goto LABEL_11;
@@ -12135,44 +12135,44 @@ LABEL_12:
 
 - (BOOL)canCloseFolders
 {
-  v2 = [(SBHIconManager *)self iconDragManager];
-  v3 = [v2 isTrackingDroppingIconDrags];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  isTrackingDroppingIconDrags = [iconDragManager isTrackingDroppingIconDrags];
 
-  return v3 ^ 1;
+  return isTrackingDroppingIconDrags ^ 1;
 }
 
-- (BOOL)hasOpenFolderInLocation:(id)a3
+- (BOOL)hasOpenFolderInLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self floatingDockViewController];
-  if ([v5 isPresentingIconLocation:v4] && (objc_msgSend(v5, "isPresentingFolder") & 1) != 0)
+  locationCopy = location;
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  if ([floatingDockViewController isPresentingIconLocation:locationCopy] && (objc_msgSend(floatingDockViewController, "isPresentingFolder") & 1) != 0)
   {
     v6 = 1;
   }
 
   else if ([(SBHIconManager *)self hasRootFolderController])
   {
-    v7 = [(SBHIconManager *)self rootViewController];
-    if ([v7 isPresentingIconLocation:v4] && (objc_msgSend(v7, "deepestFolderController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    if ([rootViewController isPresentingIconLocation:locationCopy] && (objc_msgSend(rootViewController, "deepestFolderController"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       v6 = 1;
     }
 
     else
     {
-      v9 = [(SBHIconManager *)self rootFolderController];
-      if ([v9 isPresentingIconLocation:v4] && (objc_msgSend(v9, "deepestFolderController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      if ([rootFolderController isPresentingIconLocation:locationCopy] && (objc_msgSend(rootFolderController, "deepestFolderController"), v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
       {
         v6 = 1;
       }
 
       else
       {
-        v11 = [(SBHIconManager *)self _currentFolderController];
-        if ([v11 isPresentingIconLocation:v4])
+        _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+        if ([_currentFolderController isPresentingIconLocation:locationCopy])
         {
-          v12 = [v11 deepestFolderController];
-          v6 = v12 != 0;
+          deepestFolderController = [_currentFolderController deepestFolderController];
+          v6 = deepestFolderController != 0;
         }
 
         else
@@ -12193,26 +12193,26 @@ LABEL_12:
 
 - (SBFolder)openedFolder
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  v4 = [v3 presentedFolderController];
-  v5 = [v4 folder];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  presentedFolderController = [floatingDockViewController presentedFolderController];
+  folder = [presentedFolderController folder];
 
-  if (!v5)
+  if (!folder)
   {
-    v6 = [(SBHIconManager *)self openedFolderController];
-    v5 = [v6 folder];
+    openedFolderController = [(SBHIconManager *)self openedFolderController];
+    folder = [openedFolderController folder];
   }
 
-  return v5;
+  return folder;
 }
 
-- (void)setAnimatingFolderOpeningOrClosing:(BOOL)a3
+- (void)setAnimatingFolderOpeningOrClosing:(BOOL)closing
 {
-  if (self->_animatingFolderOpeningOrClosing != a3)
+  if (self->_animatingFolderOpeningOrClosing != closing)
   {
-    v5 = [(SBHIconManager *)self hasAnimatingFolder];
-    self->_animatingFolderOpeningOrClosing = a3;
-    if (v5 != [(SBHIconManager *)self hasAnimatingFolder])
+    hasAnimatingFolder = [(SBHIconManager *)self hasAnimatingFolder];
+    self->_animatingFolderOpeningOrClosing = closing;
+    if (hasAnimatingFolder != [(SBHIconManager *)self hasAnimatingFolder])
     {
 
       [(SBHIconManager *)self hasAnimatingFolderChanged];
@@ -12220,13 +12220,13 @@ LABEL_12:
   }
 }
 
-- (void)setAnimatingFolderCreation:(BOOL)a3
+- (void)setAnimatingFolderCreation:(BOOL)creation
 {
-  if (self->_animatingFolderCreation != a3)
+  if (self->_animatingFolderCreation != creation)
   {
-    v5 = [(SBHIconManager *)self hasAnimatingFolder];
-    self->_animatingFolderCreation = a3;
-    if (v5 != [(SBHIconManager *)self hasAnimatingFolder])
+    hasAnimatingFolder = [(SBHIconManager *)self hasAnimatingFolder];
+    self->_animatingFolderCreation = creation;
+    if (hasAnimatingFolder != [(SBHIconManager *)self hasAnimatingFolder])
     {
 
       [(SBHIconManager *)self hasAnimatingFolderChanged];
@@ -12248,28 +12248,28 @@ LABEL_12:
     [(SBHIconManager *)self relayout];
   }
 
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManagerFolderAnimatingDidChange:self];
+    [delegate iconManagerFolderAnimatingDidChange:self];
   }
 }
 
 - (BOOL)allowsNestedFolders
 {
   v2 = +[SBHHomeScreenDomain rootSettings];
-  v3 = [v2 folderSettings];
-  v4 = [v3 allowNestedFolders];
+  folderSettings = [v2 folderSettings];
+  allowNestedFolders = [folderSettings allowNestedFolders];
 
-  return v4;
+  return allowNestedFolders;
 }
 
 - (unint64_t)maxListCountForFolders
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 maximumListCountForFoldersForIconManager:self];
+    v4 = [delegate maximumListCountForFoldersForIconManager:self];
   }
 
   else
@@ -12282,16 +12282,16 @@ LABEL_12:
 
 - (unint64_t)maxIconCountForDock
 {
-  v3 = [(SBHIconManager *)self isFloatingDockSupported];
+  isFloatingDockSupported = [(SBHIconManager *)self isFloatingDockSupported];
   v4 = SBIconLocationFloatingDock;
-  if (!v3)
+  if (!isFloatingDockSupported)
   {
     v4 = SBIconLocationDock;
   }
 
   v5 = *v4;
-  v6 = [(SBHIconManager *)self listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:v5];
 
   v8 = SBHIconListLayoutMaximumIconCount(v7);
   return v8;
@@ -12299,16 +12299,16 @@ LABEL_12:
 
 - (unint64_t)maxIconCountForDockUtilities
 {
-  v3 = [(SBHIconManager *)self isFloatingDockUtilitiesSupported];
+  isFloatingDockUtilitiesSupported = [(SBHIconManager *)self isFloatingDockUtilitiesSupported];
   v4 = SBIconLocationFloatingDockUtilities;
-  if (!v3)
+  if (!isFloatingDockUtilitiesSupported)
   {
     v4 = &SBIconLocationNone;
   }
 
   v5 = *v4;
-  v6 = [(SBHIconManager *)self listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:v5];
 
   v8 = SBHIconListLayoutMaximumIconCount(v7);
   return v8;
@@ -12316,8 +12316,8 @@ LABEL_12:
 
 - (unint64_t)columnCountForTodayList
 {
-  v2 = [(SBHIconManager *)self listLayoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationTodayView"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v3 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationTodayView"];
 
   v4 = [v3 numberOfColumnsForOrientation:1];
   return v4;
@@ -12325,16 +12325,16 @@ LABEL_12:
 
 - (id)allowedGridSizeClassesForDock
 {
-  v3 = [(SBHIconManager *)self isFloatingDockSupported];
+  isFloatingDockSupported = [(SBHIconManager *)self isFloatingDockSupported];
   v4 = SBIconLocationFloatingDock;
-  if (!v3)
+  if (!isFloatingDockSupported)
   {
     v4 = SBIconLocationDock;
   }
 
   v5 = *v4;
-  v6 = [(SBHIconManager *)self listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:v5];
 
   v8 = SBHIconListLayoutSupportedIconGridSizeClasses(v7);
 
@@ -12343,19 +12343,19 @@ LABEL_12:
 
 - (id)allowedGridSizeClassesForTodayList
 {
-  v2 = [(SBHIconManager *)self listLayoutProvider];
-  v3 = [v2 layoutForIconLocation:@"SBIconLocationTodayView"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v3 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationTodayView"];
 
   v4 = SBHIconListLayoutSupportedIconGridSizeClasses(v3);
 
   return v4;
 }
 
-- (SBHIconGridSize)listGridSizeForFolderClass:(Class)a3
+- (SBHIconGridSize)listGridSizeForFolderClass:(Class)class
 {
-  v4 = [(objc_class *)[(SBHIconManager *)self controllerClassForFolderClass:a3] iconLocation];
-  v5 = [(SBHIconManager *)self listLayoutProvider];
-  v6 = [v5 layoutForIconLocation:v4];
+  iconLocation = [(objc_class *)[(SBHIconManager *)self controllerClassForFolderClass:class] iconLocation];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v6 = [listLayoutProvider layoutForIconLocation:iconLocation];
 
   if (v6)
   {
@@ -12373,17 +12373,17 @@ LABEL_12:
   return (v8 | v9);
 }
 
-- (SBHIconGridSize)listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)a3
+- (SBHIconGridSize)listWithNonDefaultSizedIconsGridSizeForFolderClass:(Class)class
 {
-  v5 = [(SBHIconManager *)self iconLocationForListsWithNonDefaultSizedIcons];
+  iconLocationForListsWithNonDefaultSizedIcons = [(SBHIconManager *)self iconLocationForListsWithNonDefaultSizedIcons];
   v6 = objc_opt_self();
-  if (![(objc_class *)a3 isSubclassOfClass:v6])
+  if (![(objc_class *)class isSubclassOfClass:v6])
   {
 
     goto LABEL_6;
   }
 
-  v7 = [v5 isEqualToString:@"SBIconLocationRoot"];
+  v7 = [iconLocationForListsWithNonDefaultSizedIcons isEqualToString:@"SBIconLocationRoot"];
 
   if (v7)
   {
@@ -12392,8 +12392,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v8 = [(SBHIconManager *)self listLayoutProvider];
-  v9 = [v8 layoutForIconLocation:v5];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v9 = [listLayoutProvider layoutForIconLocation:iconLocationForListsWithNonDefaultSizedIcons];
 
   if (v9)
   {
@@ -12409,11 +12409,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)listsAllowRotatedLayoutForFolderClass:(Class)a3
+- (BOOL)listsAllowRotatedLayoutForFolderClass:(Class)class
 {
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   v6 = objc_opt_self();
-  if (![(objc_class *)a3 isSubclassOfClass:v6])
+  if (![(objc_class *)class isSubclassOfClass:v6])
   {
 
     goto LABEL_5;
@@ -12428,18 +12428,18 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [v5 listsAllowRotatedLayoutForIconManager:self];
+  v8 = [delegate listsAllowRotatedLayoutForIconManager:self];
 LABEL_6:
 
   return v8;
 }
 
-- (int64_t)listsFixedIconLocationBehaviorForFolderClass:(Class)a3
+- (int64_t)listsFixedIconLocationBehaviorForFolderClass:(Class)class
 {
   v5 = objc_opt_self();
-  LODWORD(a3) = [(objc_class *)a3 isSubclassOfClass:v5];
+  LODWORD(class) = [(objc_class *)class isSubclassOfClass:v5];
 
-  if (!a3)
+  if (!class)
   {
     return 0;
   }
@@ -12447,12 +12447,12 @@ LABEL_6:
   return [(SBHIconManager *)self listsFixedIconLocationBehavior];
 }
 
-- (int64_t)listsIconDisplacementBehaviorForFolderClass:(Class)a3
+- (int64_t)listsIconDisplacementBehaviorForFolderClass:(Class)class
 {
   v5 = objc_opt_self();
-  LODWORD(a3) = [(objc_class *)a3 isSubclassOfClass:v5];
+  LODWORD(class) = [(objc_class *)class isSubclassOfClass:v5];
 
-  if (!a3)
+  if (!class)
   {
     return 1;
   }
@@ -12462,64 +12462,64 @@ LABEL_6:
 
 - (id)iconGridSizeClassSizes
 {
-  v3 = [(SBHIconManager *)self listLayoutProvider];
-  v4 = [v3 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v4 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   v5 = SBHIconListLayoutIconGridSizeClassSizes(v4, [(SBHIconManager *)self interfaceOrientation]);
 
   return v5;
 }
 
-- (id)supportedGridSizeClassesForWidgetWithKind:(id)a3 extensionBundleIdentifier:(id)a4 containerBundleIdentifier:(id)a5
+- (id)supportedGridSizeClassesForWidgetWithKind:(id)kind extensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBHIconManager *)self widgetExtensionProvider];
-  v12 = [v11 sbh_descriptorWithKind:v10 extensionBundleIdentifier:v9 containerBundleIdentifier:v8];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  kindCopy = kind;
+  widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+  v12 = [widgetExtensionProvider sbh_descriptorWithKind:kindCopy extensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy];
 
-  v13 = [(SBHIconManager *)self gridSizeClassDomain];
-  v14 = v13;
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
+  v14 = gridSizeClassDomain;
   if (v12)
   {
-    v15 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v12 supportedFamilies], v13);
+    allNonDefaultGridSizeClasses = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v12 supportedFamilies], gridSizeClassDomain);
   }
 
   else
   {
-    v15 = [v13 allNonDefaultGridSizeClasses];
+    allNonDefaultGridSizeClasses = [gridSizeClassDomain allNonDefaultGridSizeClasses];
   }
 
-  v16 = v15;
+  v16 = allNonDefaultGridSizeClasses;
 
   return v16;
 }
 
 - (int64_t)currentIconListIndex
 {
-  v2 = [(SBHIconManager *)self rootViewController];
-  v3 = [v2 currentPageIndex];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  currentPageIndex = [rootViewController currentPageIndex];
 
-  return v3;
+  return currentPageIndex;
 }
 
-- (id)folderControllerForFolder:(id)a3
+- (id)folderControllerForFolder:(id)folder
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v6 = [v5 folderControllerForFolder:v4];
+  folderCopy = folder;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  v6 = [rootFolderController folderControllerForFolder:folderCopy];
 
   if (!v6)
   {
-    v7 = [(SBHIconManager *)self floatingDockViewController];
-    v8 = [v7 presentedFolderController];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    presentedFolderController = [floatingDockViewController presentedFolderController];
 
-    v9 = [v8 folder];
-    v10 = [v9 isEqual:v4];
+    folder = [presentedFolderController folder];
+    v10 = [folder isEqual:folderCopy];
 
     if (v10)
     {
-      v6 = v8;
+      v6 = presentedFolderController;
     }
 
     else
@@ -12531,50 +12531,50 @@ LABEL_6:
   return v6;
 }
 
-- (id)createNewFolderFromRecipientIcon:(id)a3 grabbedIcon:(id)a4
+- (id)createNewFolderFromRecipientIcon:(id)icon grabbedIcon:(id)grabbedIcon
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self _proposedFolderNameForGrabbedIcon:a4 recipientIcon:v6];
-  v8 = [(SBHIconManager *)self iconModel];
-  v9 = [v8 makeFolderWithDisplayName:v7];
+  iconCopy = icon;
+  v7 = [(SBHIconManager *)self _proposedFolderNameForGrabbedIcon:grabbedIcon recipientIcon:iconCopy];
+  iconModel = [(SBHIconManager *)self iconModel];
+  v9 = [iconModel makeFolderWithDisplayName:v7];
   [v9 setCancelable:1];
   v10 = [[SBFolderIcon alloc] initWithFolder:v9];
-  v11 = [(SBHIconManager *)self rootFolder];
-  [v11 replaceIcon:v6 withIcon:v10];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  [rootFolder replaceIcon:iconCopy withIcon:v10];
 
-  [v8 addIcon:v10];
+  [iconModel addIcon:v10];
 
   return v9;
 }
 
-- (void)addIcons:(id)a3 intoFolderIcon:(id)a4 openFolderOnFinish:(BOOL)a5 completion:(id)a6
+- (void)addIcons:(id)icons intoFolderIcon:(id)icon openFolderOnFinish:(BOOL)finish completion:(id)completion
 {
-  v20 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v10 folder];
-  v13 = [v12 startCoalescingContentChangesForReason:@"SBHIconManager.addIcons:intoFolderIcon:"];
-  v21 = [(SBHIconManager *)self rootFolder];
-  v14 = [v21 indexPathForIcon:v10];
+  finishCopy = finish;
+  iconsCopy = icons;
+  iconCopy = icon;
+  completionCopy = completion;
+  folder = [iconCopy folder];
+  v13 = [folder startCoalescingContentChangesForReason:@"SBHIconManager.addIcons:intoFolderIcon:"];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v14 = [rootFolder indexPathForIcon:iconCopy];
   v22 = 0;
   [(SBHIconManager *)self getListView:&v22 folder:0 relativePath:0 forIndexPath:v14];
   v15 = v22;
-  v16 = [v15 iconViewForIcon:v10];
-  v17 = [v16 superview];
-  [v17 bringSubviewToFront:v16];
+  v16 = [v15 iconViewForIcon:iconCopy];
+  superview = [v16 superview];
+  [superview bringSubviewToFront:v16];
 
   [v16 setAllowsEditingAnimation:0];
-  v18 = [v12 addIcons:v9];
-  if (v20)
+  v18 = [folder addIcons:iconsCopy];
+  if (finishCopy)
   {
     [(SBHIconManager *)self setAnimatingFolderCreation:1];
     [v16 setAllowsEditingAnimation:1];
     [v13 invalidate];
-    v19 = [v16 location];
-    [(SBHIconManager *)self pushExpandedIcon:v10 location:v19 context:0 animated:1 completionHandler:0];
+    location = [v16 location];
+    [(SBHIconManager *)self pushExpandedIcon:iconCopy location:location context:0 animated:1 completionHandler:0];
 
-    if (!v11)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
@@ -12584,75 +12584,75 @@ LABEL_6:
 
   [v16 setAllowsEditingAnimation:1];
   [v13 invalidate];
-  if (v11)
+  if (completionCopy)
   {
 LABEL_5:
-    v11[2](v11);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_6:
   [(SBHIconManager *)self setAnimatingFolderCreation:0];
 }
 
-- (void)replaceFolderIcon:(id)a3 byContainedIcon:(id)a4 animated:(BOOL)a5
+- (void)replaceFolderIcon:(id)icon byContainedIcon:(id)containedIcon animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBHIconManager *)self rootFolder];
-  v11 = [v10 indexPathForIcon:v8];
+  animatedCopy = animated;
+  iconCopy = icon;
+  containedIconCopy = containedIcon;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v11 = [rootFolder indexPathForIcon:iconCopy];
   if (v11)
   {
-    v12 = [(SBHIconManager *)self iconListViewForIndexPath:v11];
-    v13 = [v12 iconViewForIcon:v8];
-    [v13 frameForMiniIconAtIndex:0];
+    _currentFolderController = [(SBHIconManager *)self iconListViewForIndexPath:v11];
+    currentIconListView = [_currentFolderController iconViewForIcon:iconCopy];
+    [currentIconListView frameForMiniIconAtIndex:0];
     v51 = v15;
     v52 = v14;
     v17 = v16;
     v19 = v18;
-    [v10 replaceIcon:v8 withIcon:v9];
-    v20 = [v12 iconViewForIcon:v9];
-    v21 = [v12 layout];
-    [v21 iconImageInfo];
+    [rootFolder replaceIcon:iconCopy withIcon:containedIconCopy];
+    model = [_currentFolderController iconViewForIcon:containedIconCopy];
+    layout = [_currentFolderController layout];
+    [layout iconImageInfo];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = SBHIconListLayoutFolderIconGridCellSize(v21);
-    if (v5)
+    v30 = SBHIconListLayoutFolderIconGridCellSize(layout);
+    if (animatedCopy)
     {
       v32 = v30;
       v33 = v31;
-      v48 = [v12 traitCollection];
-      v50 = v13;
+      traitCollection = [_currentFolderController traitCollection];
+      v50 = currentIconListView;
       v34 = objc_alloc(MEMORY[0x1E69DCAE0]);
-      [v20 iconImageSnapshot];
-      v35 = v49 = v21;
+      [model iconImageSnapshot];
+      v35 = v49 = layout;
       v36 = [v34 initWithImage:v35];
 
-      v37 = [(SBHIconManager *)self folderIconImageCache];
-      v47 = [v37 gridCellImageOfSize:v9 forIcon:v48 iconImageInfo:v32 compatibleWithTraitCollection:{v33, v23, v25, v27, v29}];
+      folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+      v47 = [folderIconImageCache gridCellImageOfSize:containedIconCopy forIcon:traitCollection iconImageInfo:v32 compatibleWithTraitCollection:{v33, v23, v25, v27, v29}];
 
       v38 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v47];
-      [v20 setIconImageAndAccessoryAlpha:0.0];
-      [v20 setIconLabelAlpha:0.0];
-      [v20 setRefusesRecipientStatus:1];
-      v39 = [v36 layer];
-      [v39 setAllowsEdgeAntialiasing:1];
+      [model setIconImageAndAccessoryAlpha:0.0];
+      [model setIconLabelAlpha:0.0];
+      [model setRefusesRecipientStatus:1];
+      layer = [v36 layer];
+      [layer setAllowsEdgeAntialiasing:1];
 
-      v40 = [v38 layer];
-      [v40 setAllowsEdgeAntialiasing:1];
+      layer2 = [v38 layer];
+      [layer2 setAllowsEdgeAntialiasing:1];
 
       [v36 setFrame:{v52, v51, v17, v19}];
       [v38 setFrame:{v52, v51, v17, v19}];
-      [v20 addSubview:v36];
-      [v20 addSubview:v38];
+      [model addSubview:v36];
+      [model addSubview:v38];
       v53 = MEMORY[0x1E69DD250];
       v61[0] = MEMORY[0x1E69E9820];
       v61[1] = 3221225472;
       v61[2] = __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_invoke;
       v61[3] = &unk_1E8088F88;
-      v41 = v20;
+      v41 = model;
       v62 = v41;
       v63 = v36;
       v64 = v38;
@@ -12660,8 +12660,8 @@ LABEL_6:
       v56[1] = 3221225472;
       v56[2] = __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_invoke_2;
       v56[3] = &unk_1E808CE88;
-      v57 = v12;
-      v58 = v9;
+      v57 = _currentFolderController;
+      v58 = containedIconCopy;
       v59 = v63;
       v60 = v64;
       v42 = v64;
@@ -12674,8 +12674,8 @@ LABEL_6:
       v54[3] = &unk_1E8088C90;
       v55 = v41;
       v45 = v44;
-      v21 = v49;
-      v13 = v50;
+      layout = v49;
+      currentIconListView = v50;
       [v45 animateWithDuration:0 delay:v54 options:0 animations:0.15 completion:0.35];
     }
 
@@ -12683,17 +12683,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (([v10 containsIcon:v9] & 1) == 0)
+  if (([rootFolder containsIcon:containedIconCopy] & 1) == 0)
   {
-    v12 = [(SBHIconManager *)self _currentFolderController];
-    v13 = [v12 currentIconListView];
-    v20 = [v13 model];
-    if (!v20)
+    _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+    currentIconListView = [_currentFolderController currentIconListView];
+    model = [currentIconListView model];
+    if (!model)
     {
-      v20 = [v10 firstList];
+      model = [rootFolder firstList];
     }
 
-    v46 = [v10 addIcon:v9 toList:v20 options:0];
+    v46 = [rootFolder addIcon:containedIconCopy toList:model options:0];
     goto LABEL_9;
   }
 
@@ -12734,10 +12734,10 @@ void __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_inv
 
 - (id)localizedDefaultFolderName
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 localizedDefaultFolderNameForIconManager:self];
+    [delegate localizedDefaultFolderNameForIconManager:self];
   }
 
   else
@@ -12749,13 +12749,13 @@ void __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_inv
   return v4;
 }
 
-- (id)localizedFolderNameForDefaultDisplayName:(id)a3
+- (id)localizedFolderNameForDefaultDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  nameCopy = name;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self localizedFolderNameForDefaultDisplayName:v4];
+    [delegate iconManager:self localizedFolderNameForDefaultDisplayName:nameCopy];
   }
 
   else
@@ -12767,17 +12767,17 @@ void __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_inv
   return v6;
 }
 
-- (id)_proposedFolderNameForGrabbedIcon:(id)a3 recipientIcon:(id)a4
+- (id)_proposedFolderNameForGrabbedIcon:(id)icon recipientIcon:(id)recipientIcon
 {
-  v23 = self;
-  v5 = a3;
-  v6 = a4;
-  v26 = v5;
-  v7 = [v5 folderTitleOptions];
-  v25 = v6;
-  v8 = [v6 folderTitleOptions];
-  v9 = [v7 count];
-  v10 = [v8 count];
+  selfCopy = self;
+  iconCopy = icon;
+  recipientIconCopy = recipientIcon;
+  v26 = iconCopy;
+  folderTitleOptions = [iconCopy folderTitleOptions];
+  v25 = recipientIconCopy;
+  folderTitleOptions2 = [recipientIconCopy folderTitleOptions];
+  v9 = [folderTitleOptions count];
+  v10 = [folderTitleOptions2 count];
   v29 = v9;
   v27 = v9 + v10 - 2;
   if (v27 >= 0)
@@ -12802,7 +12802,7 @@ void __61__SBHIconManager_replaceFolderIcon_byContainedIcon_animated___block_inv
         v14 = 0;
         do
         {
-          v15 = [v7 objectAtIndex:{v14, v23}];
+          v15 = [folderTitleOptions objectAtIndex:{v14, selfCopy}];
           if (v11 < 1)
           {
 LABEL_13:
@@ -12813,7 +12813,7 @@ LABEL_13:
             v16 = 1;
             while (1)
             {
-              v17 = [v8 objectAtIndex:v16 - 1];
+              v17 = [folderTitleOptions2 objectAtIndex:v16 - 1];
               v18 = [v15 isEqualToString:v17];
 
               if (v18)
@@ -12851,48 +12851,48 @@ LABEL_13:
     while (!v20);
   }
 
-  v21 = [v26 folderFallbackTitle];
-  if (!v21)
+  folderFallbackTitle = [v26 folderFallbackTitle];
+  if (!folderFallbackTitle)
   {
-    v21 = [v25 folderFallbackTitle];
-    if (!v21)
+    folderFallbackTitle = [v25 folderFallbackTitle];
+    if (!folderFallbackTitle)
     {
-      v21 = [v24 localizedDefaultFolderName];
+      folderFallbackTitle = [v24 localizedDefaultFolderName];
     }
   }
 
-  v15 = v21;
+  v15 = folderFallbackTitle;
 LABEL_23:
 
   return v15;
 }
 
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context animated:(BOOL)animated completionHandler:(id)handler
 {
-  v36 = a6;
+  animatedCopy = animated;
   v52 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v37 = a7;
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
+  handlerCopy = handler;
   v14 = SBLogIcon();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v47 = v11;
+    v47 = iconCopy;
     v48 = 2114;
-    v49 = v12;
+    v49 = locationCopy;
     v50 = 2112;
-    v51 = v13;
+    v51 = contextCopy;
     _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "push expanded icon %@ from location %{public}@ with context: %@", buf, 0x20u);
   }
 
-  if (!v13 || (objc_opt_respondsToSelector() & 1) == 0 || ([v13 iconView], v15 = objc_claimAutoreleasedReturnValue(), -[SBHIconManager floatingDockViewControllerForView:](self, "floatingDockViewControllerForView:", v15), v16 = objc_claimAutoreleasedReturnValue(), v15, !v16))
+  if (!contextCopy || (objc_opt_respondsToSelector() & 1) == 0 || ([contextCopy iconView], v15 = objc_claimAutoreleasedReturnValue(), -[SBHIconManager floatingDockViewControllerForView:](self, "floatingDockViewControllerForView:", v15), floatingDockViewController = objc_claimAutoreleasedReturnValue(), v15, !floatingDockViewController))
   {
-    v16 = [(SBHIconManager *)self floatingDockViewController];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
   }
 
-  if ([v16 isPresentingIconLocation:v12] && objc_msgSend(v11, "isFolderIcon"))
+  if ([floatingDockViewController isPresentingIconLocation:locationCopy] && objc_msgSend(iconCopy, "isFolderIcon"))
   {
     v17 = SBLogIcon();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -12901,7 +12901,7 @@ LABEL_23:
       _os_log_impl(&dword_1BEB18000, v17, OS_LOG_TYPE_DEFAULT, "telling floating dock view controller to open folder", buf, 2u);
     }
 
-    [v16 presentFolderForIcon:v11 location:v12 animated:v36 completion:v37];
+    [floatingDockViewController presentFolderForIcon:iconCopy location:locationCopy animated:animatedCopy completion:handlerCopy];
   }
 
   else
@@ -12918,22 +12918,22 @@ LABEL_23:
           _os_log_impl(&dword_1BEB18000, v19, OS_LOG_TYPE_DEFAULT, "a folder is collapsing when trying to open folder", buf, 2u);
         }
 
-        v20 = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
+        childViewController = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v20 folder];
-          v22 = [v21 icon];
+          folder = [childViewController folder];
+          icon = [folder icon];
         }
 
         else
         {
-          v22 = 0;
+          icon = 0;
         }
 
         v29 = SBLogIcon();
         v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-        if (v22 == v11)
+        if (icon == iconCopy)
         {
           if (v30)
           {
@@ -12941,7 +12941,7 @@ LABEL_23:
             _os_log_impl(&dword_1BEB18000, v29, OS_LOG_TYPE_DEFAULT, "collapsing folder is the same as what we are trying to open; reversing", buf, 2u);
           }
 
-          if (v37)
+          if (handlerCopy)
           {
             currentExpandCompletions = self->_currentExpandCompletions;
             if (!currentExpandCompletions)
@@ -12953,7 +12953,7 @@ LABEL_23:
               currentExpandCompletions = self->_currentExpandCompletions;
             }
 
-            v34 = [v37 copy];
+            v34 = [handlerCopy copy];
             v35 = _Block_copy(v34);
             [(NSMutableArray *)currentExpandCompletions addObject:v35];
           }
@@ -12976,20 +12976,20 @@ LABEL_23:
             v42[2] = __79__SBHIconManager_pushExpandedIcon_location_context_animated_completionHandler___block_invoke;
             v42[3] = &unk_1E8089E68;
             v42[4] = self;
-            v43 = v11;
-            v44 = v12;
-            v45 = v13;
+            v43 = iconCopy;
+            v44 = locationCopy;
+            v45 = contextCopy;
             [(SBHIconManager *)self _enqueueTransitionName:@"Request to open a folder while another folder is still closing" withHandler:v42];
           }
 
-          if (v37)
+          if (handlerCopy)
           {
-            (*(v37 + 2))(v37, 0);
+            (*(handlerCopy + 2))(handlerCopy, 0);
           }
         }
       }
 
-      else if (v37)
+      else if (handlerCopy)
       {
         v25 = SBLogIcon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -12998,7 +12998,7 @@ LABEL_23:
           _os_log_impl(&dword_1BEB18000, v25, OS_LOG_TYPE_DEFAULT, "a folder is transitioning (not collapsing) when trying to open folder; rejecting", buf, 2u);
         }
 
-        (*(v37 + 2))(v37, 0);
+        (*(handlerCopy + 2))(handlerCopy, 0);
       }
     }
 
@@ -13010,24 +13010,24 @@ LABEL_23:
       aBlock[2] = __79__SBHIconManager_pushExpandedIcon_location_context_animated_completionHandler___block_invoke_531;
       aBlock[3] = &unk_1E808EA20;
       objc_copyWeak(&v40, &location);
-      v23 = v37;
+      v23 = handlerCopy;
       v39 = v23;
       v24 = _Block_copy(aBlock);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SBHIconManager *)self openFolderIcon:v11 location:v12 animated:v36 withCompletion:v24];
+        [(SBHIconManager *)self openFolderIcon:iconCopy location:locationCopy animated:animatedCopy withCompletion:v24];
       }
 
       else
       {
-        v26 = [(SBHIconManager *)self delegate];
+        delegate = [(SBHIconManager *)self delegate];
         v27 = objc_opt_respondsToSelector();
         v28 = SBLogIcon();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v47 = v11;
+          v47 = iconCopy;
           v48 = 1024;
           LODWORD(v49) = v27 & 1;
           _os_log_impl(&dword_1BEB18000, v28, OS_LOG_TYPE_DEFAULT, "Unknown icon for pushing expanded icon: %@. Delegate can handle: %{BOOL}u", buf, 0x12u);
@@ -13035,7 +13035,7 @@ LABEL_23:
 
         if (v27)
         {
-          [v26 iconManager:self launchIcon:v11 location:v12 animated:v36 completionHandler:v23];
+          [delegate iconManager:self launchIcon:iconCopy location:locationCopy animated:animatedCopy completionHandler:v23];
         }
 
         else if (v23)
@@ -13144,49 +13144,49 @@ void __79__SBHIconManager_pushExpandedIcon_location_context_animated_completionH
   }
 }
 
-- (void)pushExpandedIcon:(id)a3 location:(id)a4 context:(id)a5 forcePoppingPriorExpandedIcon:(BOOL)a6 animated:(BOOL)a7 completionHandler:(id)a8
+- (void)pushExpandedIcon:(id)icon location:(id)location context:(id)context forcePoppingPriorExpandedIcon:(BOOL)expandedIcon animated:(BOOL)animated completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
-  v17 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  if (v10)
+  animatedCopy = animated;
+  expandedIconCopy = expandedIcon;
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
+  handlerCopy = handler;
+  if (expandedIconCopy)
   {
     [(SBHIconManager *)self popExpandedIconAnimated:0 completionHandler:0];
   }
 
-  [(SBHIconManager *)self pushExpandedIcon:v17 location:v14 context:v15 animated:v9 completionHandler:v16];
+  [(SBHIconManager *)self pushExpandedIcon:iconCopy location:locationCopy context:contextCopy animated:animatedCopy completionHandler:handlerCopy];
 }
 
-- (void)popExpandedIconFromLocation:(id)a3 interactionContext:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)popExpandedIconFromLocation:(id)location interactionContext:(id)context animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(SBHIconManager *)self floatingDockViewController];
-  v14 = [v13 isPresentingFolder];
-  if ([v13 isPresentingIconLocation:v10])
+  animatedCopy = animated;
+  locationCopy = location;
+  contextCopy = context;
+  handlerCopy = handler;
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  isPresentingFolder = [floatingDockViewController isPresentingFolder];
+  if ([floatingDockViewController isPresentingIconLocation:locationCopy])
   {
-    if (!v14)
+    if (!isPresentingFolder)
     {
 LABEL_8:
-      if (v12)
+      if (handlerCopy)
       {
-        v12[2](v12, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
 
       goto LABEL_20;
     }
 
 LABEL_5:
-    [v13 dismissPresentedFolderAnimated:v7 completion:v12];
+    [floatingDockViewController dismissPresentedFolderAnimated:animatedCopy completion:handlerCopy];
     goto LABEL_20;
   }
 
-  if (v14)
+  if (isPresentingFolder)
   {
     goto LABEL_5;
   }
@@ -13199,7 +13199,7 @@ LABEL_5:
       goto LABEL_8;
     }
 
-    if (v12)
+    if (handlerCopy)
     {
       currentCollapseCompletions = self->_currentCollapseCompletions;
       if (!currentCollapseCompletions)
@@ -13211,7 +13211,7 @@ LABEL_5:
         currentCollapseCompletions = self->_currentCollapseCompletions;
       }
 
-      v23 = [v12 copy];
+      v23 = [handlerCopy copy];
       v24 = _Block_copy(v23);
       [(NSMutableArray *)currentCollapseCompletions addObject:v24];
     }
@@ -13227,17 +13227,17 @@ LABEL_5:
     aBlock[2] = __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animated_completionHandler___block_invoke;
     aBlock[3] = &unk_1E808EA20;
     objc_copyWeak(&v27, &location);
-    v16 = v12;
+    v16 = handlerCopy;
     v26 = v16;
     v17 = _Block_copy(aBlock);
-    [(SBHIconManager *)self setCurrentInteractionContext:v11];
-    v18 = [(SBHIconManager *)self rootFolderController];
-    v19 = [v18 deepestNestedDescendantViewController];
+    [(SBHIconManager *)self setCurrentInteractionContext:contextCopy];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    deepestNestedDescendantViewController = [rootFolderController deepestNestedDescendantViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SBHIconManager *)self closeFolderAnimated:v7 withCompletion:v17];
+      [(SBHIconManager *)self closeFolderAnimated:animatedCopy withCompletion:v17];
     }
 
     else if (v16)
@@ -13338,20 +13338,20 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
 
 - (void)popToCurrentRootIconList
 {
-  v3 = [(SBHIconManager *)self openedFolderController];
+  openedFolderController = [(SBHIconManager *)self openedFolderController];
   do
   {
-    if (!v3)
+    if (!openedFolderController)
     {
       break;
     }
 
-    v4 = v3;
+    v4 = openedFolderController;
     [(SBHIconManager *)self popExpandedIconAnimated:0 completionHandler:0];
-    v6 = [(SBHIconManager *)self openedFolderController];
+    openedFolderController2 = [(SBHIconManager *)self openedFolderController];
 
-    v5 = [v6 isEqual:v4];
-    v3 = v6;
+    v5 = [openedFolderController2 isEqual:v4];
+    openedFolderController = openedFolderController2;
   }
 
   while (!v5);
@@ -13374,11 +13374,11 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
     return 0;
   }
 
-  v3 = [(SBHIconManager *)self currentTransitionAnimator];
-  if ([v3 isCancelled])
+  currentTransitionAnimator = [(SBHIconManager *)self currentTransitionAnimator];
+  if ([currentTransitionAnimator isCancelled])
   {
-    v4 = [(SBHIconManager *)self currentTransitionAnimator];
-    v5 = [v4 currentOperation] == 0;
+    currentTransitionAnimator2 = [(SBHIconManager *)self currentTransitionAnimator];
+    v5 = [currentTransitionAnimator2 currentOperation] == 0;
   }
 
   else
@@ -13391,38 +13391,38 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
 
 - (BOOL)isTrackingScroll
 {
-  v3 = [(SBHIconManager *)self rootViewController];
-  v4 = [v3 isScrollTracking];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  isScrollTracking = [rootViewController isScrollTracking];
 
-  if (v4)
+  if (isScrollTracking)
   {
     return 1;
   }
 
-  v6 = [(SBHIconManager *)self openedFolderController];
-  v7 = [v6 isScrollTracking];
+  openedFolderController = [(SBHIconManager *)self openedFolderController];
+  isScrollTracking2 = [openedFolderController isScrollTracking];
 
-  return v7;
+  return isScrollTracking2;
 }
 
-- (void)openFolderIcon:(id)a3 location:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (void)openFolderIcon:(id)icon location:(id)location animated:(BOOL)animated withCompletion:(id)completion
 {
-  v7 = a5;
+  animatedCopy = animated;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  iconCopy = icon;
+  locationCopy = location;
+  completionCopy = completion;
   v13 = SBLogIcon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v10;
+    v33 = iconCopy;
     v34 = 2114;
-    v35 = v11;
+    v35 = locationCopy;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "open folder icon %@ location %{public}@", buf, 0x16u);
   }
 
-  if (v10 && [(SBHIconManager *)self canOpenFolderForIcon:v10])
+  if (iconCopy && [(SBHIconManager *)self canOpenFolderForIcon:iconCopy])
   {
     if ([(SBHIconManager *)self isShowingIconContextMenu])
     {
@@ -13433,17 +13433,17 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
         _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "will wait until context menus are dismissed", buf, 2u);
       }
 
-      objc_storeWeak(&self->_pendingFolderIconToOpen, v10);
+      objc_storeWeak(&self->_pendingFolderIconToOpen, iconCopy);
       objc_initWeak(buf, self);
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __66__SBHIconManager_openFolderIcon_location_animated_withCompletion___block_invoke;
       v26[3] = &unk_1E8090178;
       objc_copyWeak(&v30, buf);
-      v29 = v12;
-      v27 = v10;
-      v28 = v11;
-      v31 = v7;
+      v29 = completionCopy;
+      v27 = iconCopy;
+      v28 = locationCopy;
+      v31 = animatedCopy;
       [(SBHIconManager *)self performAfterIconContextMenuDismissesUsingBlock:v26];
 
       objc_destroyWeak(&v30);
@@ -13453,27 +13453,27 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
     else
     {
       objc_storeWeak(&self->_pendingFolderIconToOpen, 0);
-      v16 = [v10 folder];
-      v17 = [(SBHIconManager *)self delegate];
+      folder = [iconCopy folder];
+      delegate = [(SBHIconManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v17 iconManager:self willOpenFolder:v16];
+        [delegate iconManager:self willOpenFolder:folder];
       }
 
-      v18 = [(SBHIconManager *)self iconDragManager];
-      [v18 noteFolderControllerWillOpen];
+      iconDragManager = [(SBHIconManager *)self iconDragManager];
+      [iconDragManager noteFolderControllerWillOpen];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __66__SBHIconManager_openFolderIcon_location_animated_withCompletion___block_invoke_2;
       v21[3] = &unk_1E808B370;
-      v22 = v17;
-      v23 = self;
-      v24 = v16;
-      v25 = v12;
-      v19 = v16;
-      v20 = v17;
-      [(SBHIconManager *)self _animateFolderIcon:v10 open:1 location:v11 animated:v7 withCompletion:v21];
-      if (!v7)
+      v22 = delegate;
+      selfCopy = self;
+      v24 = folder;
+      v25 = completionCopy;
+      v19 = folder;
+      v20 = delegate;
+      [(SBHIconManager *)self _animateFolderIcon:iconCopy open:1 location:locationCopy animated:animatedCopy withCompletion:v21];
+      if (!animatedCopy)
       {
         [(SBHIconManager *)self setAnimatingFolderOpeningOrClosing:0];
       }
@@ -13486,13 +13486,13 @@ void __92__SBHIconManager_popExpandedIconFromLocation_interactionContext_animate
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v10;
+      v33 = iconCopy;
       _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_INFO, "IGNORING. Icon = %@", buf, 0xCu);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -13541,47 +13541,47 @@ uint64_t __66__SBHIconManager_openFolderIcon_location_animated_withCompletion___
   return result;
 }
 
-- (void)closeFolderAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)closeFolderAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self rootFolderController];
-  v8 = [v7 deepestFolderController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  deepestFolderController = [rootFolderController deepestFolderController];
 
-  [(SBHIconManager *)self _closeFolderController:v8 animated:v4 withCompletion:v6];
+  [(SBHIconManager *)self _closeFolderController:deepestFolderController animated:animatedCopy withCompletion:completionCopy];
 }
 
-- (void)_closeFolderController:(id)a3 animated:(BOOL)a4 withCompletion:(id)a5
+- (void)_closeFolderController:(id)controller animated:(BOOL)animated withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8 && [(SBHIconManager *)self canCloseFolders])
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy && [(SBHIconManager *)self canCloseFolders])
   {
-    v10 = [(SBHIconManager *)self openedFolder];
-    [(SBHIconManager *)self setClosingFolder:v10];
-    v11 = [(SBHIconManager *)self delegate];
+    openedFolder = [(SBHIconManager *)self openedFolder];
+    [(SBHIconManager *)self setClosingFolder:openedFolder];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v11 iconManager:self willCloseFolder:v10];
+      [delegate iconManager:self willCloseFolder:openedFolder];
     }
 
-    v12 = [(SBHIconManager *)self iconDragManager];
-    [v12 noteFolderControllerWillClose:v8];
+    iconDragManager = [(SBHIconManager *)self iconDragManager];
+    [iconDragManager noteFolderControllerWillClose:controllerCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__SBHIconManager__closeFolderController_animated_withCompletion___block_invoke;
     v17[3] = &unk_1E808FED8;
     v17[4] = self;
-    v18 = v10;
-    v23 = a4;
-    v19 = v12;
-    v20 = v8;
-    v21 = v11;
-    v22 = v9;
-    v13 = v11;
-    v14 = v12;
-    v15 = v10;
+    v18 = openedFolder;
+    animatedCopy = animated;
+    v19 = iconDragManager;
+    v20 = controllerCopy;
+    v21 = delegate;
+    v22 = completionCopy;
+    v13 = delegate;
+    v14 = iconDragManager;
+    v15 = openedFolder;
     [(SBHIconManager *)self _enqueueTransitionName:@"Close Folder" withHandler:v17];
   }
 
@@ -13591,13 +13591,13 @@ uint64_t __66__SBHIconManager_openFolderIcon_location_animated_withCompletion___
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v25 = v8;
+      v25 = controllerCopy;
       _os_log_impl(&dword_1BEB18000, v16, OS_LOG_TYPE_INFO, "IGNORING. Controller = %@", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -13648,22 +13648,22 @@ uint64_t __65__SBHIconManager__closeFolderController_animated_withCompletion___b
   return result;
 }
 
-- (void)_animateFolderIcon:(id)a3 open:(BOOL)a4 location:(id)a5 animated:(BOOL)a6 withCompletion:(id)a7
+- (void)_animateFolderIcon:(id)icon open:(BOOL)open location:(id)location animated:(BOOL)animated withCompletion:(id)completion
 {
-  v8 = a6;
-  v10 = a4;
+  animatedCopy = animated;
+  openCopy = open;
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (!v12 && v10)
+  iconCopy = icon;
+  locationCopy = location;
+  completionCopy = completion;
+  if (!iconCopy && openCopy)
   {
     goto LABEL_3;
   }
 
-  if (v10)
+  if (openCopy)
   {
-    if ([(SBHIconManager *)self canOpenFolderForIcon:v12])
+    if ([(SBHIconManager *)self canOpenFolderForIcon:iconCopy])
     {
       goto LABEL_11;
     }
@@ -13673,13 +13673,13 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v24 = v12;
+      v24 = iconCopy;
       _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_INFO, "IGNORING. Icon = %@", buf, 0xCu);
     }
 
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_17;
@@ -13691,7 +13691,7 @@ LABEL_3:
   }
 
 LABEL_11:
-  if (v8)
+  if (animatedCopy)
   {
     [(SBHIconManager *)self setAnimatingFolderOpeningOrClosing:1];
   }
@@ -13701,20 +13701,20 @@ LABEL_11:
   aBlock[2] = __75__SBHIconManager__animateFolderIcon_open_location_animated_withCompletion___block_invoke;
   aBlock[3] = &unk_1E80901C8;
   aBlock[4] = self;
-  v21 = v10;
-  v22 = v8;
-  v20 = v14;
+  v21 = openCopy;
+  v22 = animatedCopy;
+  v20 = completionCopy;
   v16 = _Block_copy(aBlock);
-  v17 = [(SBHIconManager *)self _folderControllerForIcon:v12 inLocation:v13];
+  v17 = [(SBHIconManager *)self _folderControllerForIcon:iconCopy inLocation:locationCopy];
   v18 = v17;
-  if (v10)
+  if (openCopy)
   {
-    [v17 pushFolderIcon:v12 location:v13 animated:v8 completion:v16];
+    [v17 pushFolderIcon:iconCopy location:locationCopy animated:animatedCopy completion:v16];
   }
 
   else
   {
-    [v17 popFolderAnimated:v8 completion:v16];
+    [v17 popFolderAnimated:animatedCopy completion:v16];
   }
 
 LABEL_17:
@@ -13734,13 +13734,13 @@ uint64_t __75__SBHIconManager__animateFolderIcon_open_location_animated_withComp
   return result;
 }
 
-- (void)_folderDidFinishOpenClose:(BOOL)a3 animated:(BOOL)a4 success:(BOOL)a5
+- (void)_folderDidFinishOpenClose:(BOOL)close animated:(BOOL)animated success:(BOOL)success
 {
-  if (!a3)
+  if (!close)
   {
-    if (a5)
+    if (success)
     {
-      [(SBHIconManager *)self _cleanupForClosingFolderAnimated:a4];
+      [(SBHIconManager *)self _cleanupForClosingFolderAnimated:animated];
     }
 
     else
@@ -13758,7 +13758,7 @@ uint64_t __75__SBHIconManager__animateFolderIcon_open_location_animated_withComp
   [(SBHIconManager *)self setAnimatingFolderOpeningOrClosing:0];
 }
 
-- (void)_cleanupForClosingFolderAnimated:(BOOL)a3
+- (void)_cleanupForClosingFolderAnimated:(BOOL)animated
 {
   closingFolder = self->_closingFolder;
   if (!closingFolder)
@@ -13766,49 +13766,49 @@ uint64_t __75__SBHIconManager__animateFolderIcon_open_location_animated_withComp
     return;
   }
 
-  v5 = a3;
+  animatedCopy = animated;
   [(SBFolder *)closingFolder compactLists];
-  v6 = [(SBFolder *)self->_closingFolder icon];
-  v7 = [(SBFolder *)self->_closingFolder allIcons];
-  v8 = [v7 count];
+  icon = [(SBFolder *)self->_closingFolder icon];
+  allIcons = [(SBFolder *)self->_closingFolder allIcons];
+  v8 = [allIcons count];
   if (![(SBFolder *)self->_closingFolder shouldRemoveWhenEmpty])
   {
-    v9 = 0;
-    v11 = v6;
+    anyObject = 0;
+    v11 = icon;
 LABEL_9:
-    v6 = 0;
+    icon = 0;
     goto LABEL_14;
   }
 
   if (v8)
   {
-    v9 = 0;
+    anyObject = 0;
     if ([(SBFolder *)self->_closingFolder isCancelable]&& v8 == 1)
     {
-      v9 = [v7 anyObject];
+      anyObject = [allIcons anyObject];
       v11 = 0;
     }
 
     else
     {
-      v11 = v6;
-      v6 = 0;
+      v11 = icon;
+      icon = 0;
     }
 
     goto LABEL_14;
   }
 
-  if (v6)
+  if (icon)
   {
-    [(SBHIconManager *)self uninstallIcon:v6 animate:v5];
+    [(SBHIconManager *)self uninstallIcon:icon animate:animatedCopy];
 
     v11 = 0;
-    v9 = 0;
+    anyObject = 0;
     goto LABEL_9;
   }
 
   v11 = 0;
-  v9 = 0;
+  anyObject = 0;
 LABEL_14:
   if ([(SBHIconManager *)self hasAnimatingFolder]&& self->_iconToReveal)
   {
@@ -13816,97 +13816,97 @@ LABEL_14:
   }
 
   [(SBHIconManager *)self setAnimatingFolderOpeningOrClosing:0];
-  if (v9 && v6)
+  if (anyObject && icon)
   {
-    [(SBHIconManager *)self replaceFolderIcon:v6 byContainedIcon:v9 animated:v5];
+    [(SBHIconManager *)self replaceFolderIcon:icon byContainedIcon:anyObject animated:animatedCopy];
   }
 
   v10 = self->_closingFolder;
   self->_closingFolder = 0;
 }
 
-- (void)_compactRootListsAfterFolderCloseWithAnimation:(BOOL)a3
+- (void)_compactRootListsAfterFolderCloseWithAnimation:(BOOL)animation
 {
-  if (a3)
+  if (animation)
   {
     [(SBHIconManager *)self layoutIconListsWithAnimationType:0 forceRelayout:1];
   }
 }
 
-- (void)_enqueueTransitionName:(id)a3 withHandler:(id)a4
+- (void)_enqueueTransitionName:(id)name withHandler:(id)handler
 {
-  v6 = [MEMORY[0x1E698E6B0] eventWithName:a3 handler:a4];
-  v5 = [(SBHIconManager *)self transitionEventQueue];
-  [v5 executeOrInsertEvent:v6 atPosition:1];
+  v6 = [MEMORY[0x1E698E6B0] eventWithName:name handler:handler];
+  transitionEventQueue = [(SBHIconManager *)self transitionEventQueue];
+  [transitionEventQueue executeOrInsertEvent:v6 atPosition:1];
 }
 
-- (BOOL)_shouldParallaxInIconLocation:(id)a3
+- (BOOL)_shouldParallaxInIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v6 = [v5 nonDockPresentedIconLocations];
-  v7 = [v6 containsObject:v4];
+  locationCopy = location;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  nonDockPresentedIconLocations = [rootFolderController nonDockPresentedIconLocations];
+  v7 = [nonDockPresentedIconLocations containsObject:locationCopy];
 
   return v7;
 }
 
 - (unint64_t)gridCellInfoOptions
 {
-  v3 = [(SBHIconManager *)self interfaceOrientation];
+  interfaceOrientation = [(SBHIconManager *)self interfaceOrientation];
 
-  return [(SBHIconManager *)self gridCellInfoOptionsForOrientation:v3];
+  return [(SBHIconManager *)self gridCellInfoOptionsForOrientation:interfaceOrientation];
 }
 
-- (void)presentLeadingCustomViewWithCompletion:(id)a3
+- (void)presentLeadingCustomViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(SBHIconManager *)self _ensureRootFolderController];
-  v5 = [(SBHIconManager *)self rootFolderController];
-  [v5 performPageStateTransitionToState:2 reason:@"activate leading custom view" animated:1 completionHandler:v4];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController performPageStateTransitionToState:2 reason:@"activate leading custom view" animated:1 completionHandler:completionCopy];
 }
 
-- (void)presentTrailingCustomViewWithCompletion:(id)a3
+- (void)presentTrailingCustomViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(SBHIconManager *)self _ensureRootFolderController];
-  v5 = [(SBHIconManager *)self rootFolderController];
-  [v5 performPageStateTransitionToState:4 reason:@"activate trailing custom view" animated:1 completionHandler:v4];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController performPageStateTransitionToState:4 reason:@"activate trailing custom view" animated:1 completionHandler:completionCopy];
 }
 
-- (BOOL)presentSpotlightFromSource:(unint64_t)a3 animated:(BOOL)a4 completionHandler:(id)a5
+- (BOOL)presentSpotlightFromSource:(unint64_t)source animated:(BOOL)animated completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(SBHIconManager *)self rootFolderController];
-  [v9 setPresentationSource:a3];
-  if (a3 == 5)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController setPresentationSource:source];
+  if (source == 5)
   {
     [(SBHIconManager *)self popToCurrentRootIconList];
   }
 
-  [v9 presentSpotlightAnimated:v5 completionHandler:v8];
-  v10 = [v9 isAnySearchVisibleOrTransitioning];
-  [v9 setPresentationSource:0];
+  [rootFolderController presentSpotlightAnimated:animatedCopy completionHandler:handlerCopy];
+  isAnySearchVisibleOrTransitioning = [rootFolderController isAnySearchVisibleOrTransitioning];
+  [rootFolderController setPresentationSource:0];
 
-  return v10;
+  return isAnySearchVisibleOrTransitioning;
 }
 
-- (BOOL)dismissSpotlightOrTodayViewAnimated:(BOOL)a3
+- (BOOL)dismissSpotlightOrTodayViewAnimated:(BOOL)animated
 {
-  v4 = [(SBHIconManager *)self presentHomeScreenIconsAnimated:a3];
-  v5 = [(SBHIconManager *)self delegate];
-  [v5 dismissTodayOverlayForIconManager:self];
+  v4 = [(SBHIconManager *)self presentHomeScreenIconsAnimated:animated];
+  delegate = [(SBHIconManager *)self delegate];
+  [delegate dismissTodayOverlayForIconManager:self];
 
   return v4;
 }
 
-- (BOOL)presentHomeScreenIconsAnimated:(BOOL)a3
+- (BOOL)presentHomeScreenIconsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SBHIconManager *)self _isShowingPullDownSearchOrTransitioning]|| (v5 = [(SBHIconManager *)self _isShowingLeadingCustomViewSearchOrTransitioning]))
   {
-    v6 = [(SBHIconManager *)self rootFolderController];
-    [v6 performPageStateTransitionToState:0 reason:@"dismiss spotlight or today view" animated:v3 completionHandler:0];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    [rootFolderController performPageStateTransitionToState:0 reason:@"dismiss spotlight or today view" animated:animatedCopy completionHandler:0];
 
     LOBYTE(v5) = 1;
   }
@@ -13914,17 +13914,17 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)dismissSpotlightAnimated:(BOOL)a3 completionHandler:(id)a4
+- (BOOL)dismissSpotlightAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self rootFolderController];
-  v8 = [v7 isAnySearchVisibleOrTransitioning];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isAnySearchVisibleOrTransitioning = [rootFolderController isAnySearchVisibleOrTransitioning];
 
-  v9 = [(SBHIconManager *)self rootFolderController];
-  [v9 dismissSpotlightAnimated:v4 completionHandler:v6];
+  rootFolderController2 = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController2 dismissSpotlightAnimated:animatedCopy completionHandler:handlerCopy];
 
-  return v8;
+  return isAnySearchVisibleOrTransitioning;
 }
 
 - (BOOL)isShowingPullDownOrLeadingCustomViewSearch
@@ -13939,19 +13939,19 @@ LABEL_14:
 
 - (BOOL)_isShowingLeadingCustomViewSearch
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  v3 = [v2 isLeadingCustomViewSearchVisible];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  isLeadingCustomViewSearchVisible = [rootFolderController isLeadingCustomViewSearchVisible];
 
-  return v3;
+  return isLeadingCustomViewSearchVisible;
 }
 
-- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)a3
+- (unint64_t)supportedMultitaskingShortcutActionsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self supportedMultitaskingShortcutActionsForIconView:v4];
+    v6 = [delegate iconManager:self supportedMultitaskingShortcutActionsForIconView:viewCopy];
   }
 
   else
@@ -13995,53 +13995,53 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 - (BOOL)isShowingIconContextMenu
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [(SBHIconManager *)self iconViewShowingContextMenu];
-  if (v2)
+  iconViewShowingContextMenu = [(SBHIconManager *)self iconViewShowingContextMenu];
+  if (iconViewShowingContextMenu)
   {
     v3 = SBLogIcon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [v2 location];
-      v5 = [v2 icon];
+      location = [iconViewShowingContextMenu location];
+      icon = [iconViewShowingContextMenu icon];
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
       v9 = 138543618;
-      v10 = v4;
+      v10 = location;
       v11 = 2114;
       v12 = v7;
       _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_DEFAULT, "isShowingIconContextMenu at location '%{public}@' for icon type '%{public}@'", &v9, 0x16u);
     }
   }
 
-  return v2 != 0;
+  return iconViewShowingContextMenu != 0;
 }
 
 - (void)dismissIconContextMenu
 {
-  v2 = [(SBHIconManager *)self iconViewShowingContextMenu];
-  [v2 dismissContextMenuWithCompletion:0];
+  iconViewShowingContextMenu = [(SBHIconManager *)self iconViewShowingContextMenu];
+  [iconViewShowingContextMenu dismissContextMenuWithCompletion:0];
 }
 
-- (void)performAfterIconContextMenuDismissesUsingBlock:(id)a3
+- (void)performAfterIconContextMenuDismissesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconViewShowingContextMenu];
-  v6 = v5;
-  if (v5)
+  blockCopy = block;
+  iconViewShowingContextMenu = [(SBHIconManager *)self iconViewShowingContextMenu];
+  v6 = iconViewShowingContextMenu;
+  if (iconViewShowingContextMenu)
   {
-    [v5 performAfterContextMenusDismissUsingBlock:v4];
+    [iconViewShowingContextMenu performAfterContextMenusDismissUsingBlock:blockCopy];
   }
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
 - (void)dismissIconShareSheets
 {
-  v2 = [(SBHIconManager *)self iconShareSheetManager];
-  [v2 dismissIconShareSheetsIfNecessaryAndCleanUp];
+  iconShareSheetManager = [(SBHIconManager *)self iconShareSheetManager];
+  [iconShareSheetManager dismissIconShareSheetsIfNecessaryAndCleanUp];
 }
 
 - (id)prepareForUndo
@@ -14051,28 +14051,28 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (void)undoPreparation:(id)a3 registerWithUndoManager:(id)a4 actionName:(id)a5 observer:(id)a6
+- (void)undoPreparation:(id)preparation registerWithUndoManager:(id)manager actionName:(id)name observer:(id)observer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 originalRootFolder];
-  v15 = [(SBHIconManager *)self rootFolder];
+  preparationCopy = preparation;
+  managerCopy = manager;
+  nameCopy = name;
+  observerCopy = observer;
+  originalRootFolder = [preparationCopy originalRootFolder];
+  rootFolder = [(SBHIconManager *)self rootFolder];
 
-  if (v14 == v15)
+  if (originalRootFolder == rootFolder)
   {
-    [v10 setObserver:v13];
-    [v11 removeAllActionsWithTarget:self];
+    [preparationCopy setObserver:observerCopy];
+    [managerCopy removeAllActionsWithTarget:self];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __78__SBHIconManager_undoPreparation_registerWithUndoManager_actionName_observer___block_invoke;
     v20[3] = &unk_1E808AA10;
-    v21 = v10;
-    [v11 registerUndoWithTarget:self handler:v20];
-    if (v12)
+    v21 = preparationCopy;
+    [managerCopy registerUndoWithTarget:self handler:v20];
+    if (nameCopy)
     {
-      [v11 setActionName:v12];
+      [managerCopy setActionName:nameCopy];
     }
 
     v16 = dispatch_time(0, 480000000000);
@@ -14080,21 +14080,21 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     block[1] = 3221225472;
     block[2] = __78__SBHIconManager_undoPreparation_registerWithUndoManager_actionName_observer___block_invoke_2;
     block[3] = &unk_1E8088F18;
-    v18 = v11;
-    v19 = self;
+    v18 = managerCopy;
+    selfCopy = self;
     dispatch_after(v16, MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)undoChangeWithPreparation:(id)a3
+- (void)undoChangeWithPreparation:(id)preparation
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v40 = v5;
-  if (v5)
+  preparationCopy = preparation;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  v40 = rootFolderController;
+  if (rootFolderController)
   {
-    v65[0] = v5;
+    v65[0] = rootFolderController;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:1];
   }
 
@@ -14135,20 +14135,20 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 
   v39 = v8;
 
-  v14 = [(SBHIconManager *)self folderIconImageCache];
-  [v14 purgeAllCachedFolderImages];
+  folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+  [folderIconImageCache purgeAllCachedFolderImages];
 
-  v15 = [v4 observer];
-  [v15 willUndo];
-  v38 = self;
-  v16 = [(SBHIconManager *)self rootFolder];
-  v41 = v4;
-  v35 = [v4 unmodifiedOriginalRootFolder];
-  v17 = [v16 setListsFromFolder:?];
-  v36 = v16;
-  [v16 compactLists];
-  v37 = v15;
-  [v15 didUndo];
+  observer = [preparationCopy observer];
+  [observer willUndo];
+  selfCopy = self;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v41 = preparationCopy;
+  unmodifiedOriginalRootFolder = [preparationCopy unmodifiedOriginalRootFolder];
+  v17 = [rootFolder setListsFromFolder:?];
+  v36 = rootFolder;
+  [rootFolder compactLists];
+  v37 = observer;
+  [observer didUndo];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -14179,12 +14179,12 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
             v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
           }
 
-          v24 = [v21 visibleListViews];
+          visibleListViews = [v21 visibleListViews];
           v49 = 0u;
           v50 = 0u;
           v51 = 0u;
           v52 = 0u;
-          v25 = [v24 countByEnumeratingWithState:&v49 objects:v62 count:16];
+          v25 = [visibleListViews countByEnumeratingWithState:&v49 objects:v62 count:16];
           if (v25)
           {
             v26 = v25;
@@ -14195,7 +14195,7 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
               {
                 if (*v50 != v27)
                 {
-                  objc_enumerationMutation(v24);
+                  objc_enumerationMutation(visibleListViews);
                 }
 
                 v29 = [*(*(&v49 + 1) + 8 * k) addOverridingLayoutDelegate:v22 reason:@"UndoDrag"];
@@ -14205,7 +14205,7 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
                 }
               }
 
-              v26 = [v24 countByEnumeratingWithState:&v49 objects:v62 count:16];
+              v26 = [visibleListViews countByEnumeratingWithState:&v49 objects:v62 count:16];
             }
 
             while (v26);
@@ -14227,7 +14227,7 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     while (v44);
   }
 
-  [(SBHIconManager *)v38 layoutIconListsWithAnimationType:0 forceRelayout:0];
+  [(SBHIconManager *)selfCopy layoutIconListsWithAnimationType:0 forceRelayout:0];
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
@@ -14257,27 +14257,27 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
   }
 }
 
-+ (id)undoActionNameForDraggedIcons:(id)a3
++ (id)undoActionNameForDraggedIcons:(id)icons
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  iconsCopy = icons;
+  if ([iconsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
-    if ([v4 isApplicationIcon])
+    firstObject = [iconsCopy firstObject];
+    if ([firstObject isApplicationIcon])
     {
       v5 = SBHBundle();
       v6 = v5;
       v7 = @"UNDO_DRAG_APP";
     }
 
-    else if ([v4 isWidgetIcon])
+    else if ([firstObject isWidgetIcon])
     {
       v5 = SBHBundle();
       v6 = v5;
       v7 = @"UNDO_DRAG_WIDGET";
     }
 
-    else if ([v4 isFolderIcon])
+    else if ([firstObject isFolderIcon])
     {
       v5 = SBHBundle();
       v6 = v5;
@@ -14286,10 +14286,10 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 
     else
     {
-      v10 = [v4 isBookmarkIcon];
+      isBookmarkIcon = [firstObject isBookmarkIcon];
       v5 = SBHBundle();
       v6 = v5;
-      if (v10)
+      if (isBookmarkIcon)
       {
         v7 = @"UNDO_DRAG_BOOKMARK";
       }
@@ -14305,50 +14305,50 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 
   else
   {
-    v4 = SBHBundle();
-    v8 = [v4 localizedStringForKey:@"UNDO_DRAG" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
+    firstObject = SBHBundle();
+    v8 = [firstObject localizedStringForKey:@"UNDO_DRAG" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
   }
 
   return v8;
 }
 
-- (void)getStatistics:(SBHIconManagerStatistics *)a3
+- (void)getStatistics:(SBHIconManagerStatistics *)statistics
 {
-  a3->var0 = self->_relayoutCount;
-  a3->var2 = [(SBHReusableViewMap *)self->_iconViewMap recycledViewCount];
-  a3->var3 = [(SBHReusableViewMap *)self->_iconViewMap viewRecyclingCount];
-  a3->var4 = [(SBHReusableViewMap *)self->_homescreenIconAccessoryViewMap recycledViewCount];
-  a3->var5 = [(SBHReusableViewMap *)self->_homescreenIconAccessoryViewMap viewRecyclingCount];
-  a3->var6 = [(SBHReusableViewMap *)self->_homescreenIconLabelAccessoryViewMap recycledViewCount];
-  a3->var7 = [(SBHReusableViewMap *)self->_homescreenIconLabelAccessoryViewMap viewRecyclingCount];
-  a3->var8 = [(SBHReusableViewMap *)self->_homescreenIconImageViewMap recycledViewCount];
-  a3->var9 = [(SBHReusableViewMap *)self->_homescreenIconImageViewMap viewRecyclingCount];
-  a3->var10 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelImages];
-  a3->var11 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelHits];
-  a3->var12 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelMisses];
+  statistics->var0 = self->_relayoutCount;
+  statistics->var2 = [(SBHReusableViewMap *)self->_iconViewMap recycledViewCount];
+  statistics->var3 = [(SBHReusableViewMap *)self->_iconViewMap viewRecyclingCount];
+  statistics->var4 = [(SBHReusableViewMap *)self->_homescreenIconAccessoryViewMap recycledViewCount];
+  statistics->var5 = [(SBHReusableViewMap *)self->_homescreenIconAccessoryViewMap viewRecyclingCount];
+  statistics->var6 = [(SBHReusableViewMap *)self->_homescreenIconLabelAccessoryViewMap recycledViewCount];
+  statistics->var7 = [(SBHReusableViewMap *)self->_homescreenIconLabelAccessoryViewMap viewRecyclingCount];
+  statistics->var8 = [(SBHReusableViewMap *)self->_homescreenIconImageViewMap recycledViewCount];
+  statistics->var9 = [(SBHReusableViewMap *)self->_homescreenIconImageViewMap viewRecyclingCount];
+  statistics->var10 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelImages];
+  statistics->var11 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelHits];
+  statistics->var12 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLabelMisses];
   if (SBHFeatureEnabled(0))
   {
-    a3->var13 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityImages];
-    a3->var14 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityHits];
-    a3->var15 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityMisses];
+    statistics->var13 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityImages];
+    statistics->var14 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityHits];
+    statistics->var15 = [(SBIconLabelImageCache *)self->_labelImageCache numberOfCachedLegibilityMisses];
   }
 
-  a3->var16 = [(SBHIconImageCache *)self->_iconImageCache numberOfCachedImages];
-  a3->var17 = [(SBHIconImageCache *)self->_iconImageCache numberOfCacheHits];
-  a3->var18 = [(SBHIconImageCache *)self->_iconImageCache numberOfCacheMisses];
-  a3->var19 = [(SBHIconImageCache *)self->_iconImageCache numberOfMainThreadImageLoads];
-  a3->var20 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCachedImages];
-  a3->var21 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCacheHits];
-  a3->var22 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCacheMisses];
-  a3->var23 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCachedImages];
-  a3->var24 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCacheHits];
-  a3->var25 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCacheMisses];
-  a3->var1 = 0;
+  statistics->var16 = [(SBHIconImageCache *)self->_iconImageCache numberOfCachedImages];
+  statistics->var17 = [(SBHIconImageCache *)self->_iconImageCache numberOfCacheHits];
+  statistics->var18 = [(SBHIconImageCache *)self->_iconImageCache numberOfCacheMisses];
+  statistics->var19 = [(SBHIconImageCache *)self->_iconImageCache numberOfMainThreadImageLoads];
+  statistics->var20 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCachedImages];
+  statistics->var21 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCacheHits];
+  statistics->var22 = [(SBHIconImageCache *)self->_iconImageCache numberOfUnmaskedCacheMisses];
+  statistics->var23 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCachedImages];
+  statistics->var24 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCacheHits];
+  statistics->var25 = [(SBFolderIconImageCache *)self->_folderIconImageCache numberOfCacheMisses];
+  statistics->var1 = 0;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __32__SBHIconManager_getStatistics___block_invoke;
   v5[3] = &__block_descriptor_40_e24_v24__0__SBIconView_8_B16l;
-  v5[4] = a3;
+  v5[4] = statistics;
   [(SBHIconManager *)self enumerateDisplayedIconViewsUsingBlock:v5];
 }
 
@@ -14388,29 +14388,29 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
   return proactivePageSuggestionsManager;
 }
 
-- (id)_makeCustomViewControllerForWidgetIcon:(id)a3 dataSource:(id)a4 location:(id)a5
+- (id)_makeCustomViewControllerForWidgetIcon:(id)icon dataSource:(id)source location:(id)location
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 gridSizeClass];
-  v12 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:v10 dataSource:v9 location:v8 gridSizeClass:v11];
+  locationCopy = location;
+  sourceCopy = source;
+  iconCopy = icon;
+  gridSizeClass = [iconCopy gridSizeClass];
+  v12 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:iconCopy dataSource:sourceCopy location:locationCopy gridSizeClass:gridSizeClass];
 
   return v12;
 }
 
-- (id)_makeCustomViewControllerForWidgetIcon:(id)a3 dataSource:(id)a4 location:(id)a5 gridSizeClass:(id)a6
+- (id)_makeCustomViewControllerForWidgetIcon:(id)icon dataSource:(id)source location:(id)location gridSizeClass:(id)class
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  sourceCopy = source;
+  locationCopy = location;
+  classCopy = class;
+  delegate = [(SBHIconManager *)self delegate];
   v15 = objc_opt_self();
-  v69 = v11;
+  v69 = sourceCopy;
   if (objc_opt_isKindOfClass())
   {
-    v16 = v11;
+    v16 = sourceCopy;
   }
 
   else
@@ -14420,13 +14420,13 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 
   v17 = v16;
 
-  v18 = [v17 kind];
-  v19 = [v17 extensionBundleIdentifier];
-  v20 = [v17 containerBundleIdentifier];
-  v21 = [(SBHIconManager *)self gridSizeClassDomain];
+  kind = [v17 kind];
+  extensionBundleIdentifier = [v17 extensionBundleIdentifier];
+  containerBundleIdentifier = [v17 containerBundleIdentifier];
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
   if (v17)
   {
-    v22 = v18 == 0;
+    v22 = kind == 0;
   }
 
   else
@@ -14434,20 +14434,20 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     v22 = 1;
   }
 
-  v23 = v22 || v19 == 0;
-  v70 = v21;
-  v67 = v13;
-  v68 = v12;
-  v65 = v20;
-  v66 = v18;
+  v23 = v22 || extensionBundleIdentifier == 0;
+  v70 = gridSizeClassDomain;
+  v67 = classCopy;
+  v68 = locationCopy;
+  v65 = containerBundleIdentifier;
+  v66 = kind;
   if (v23)
   {
-    v24 = v14;
+    v24 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      v25 = v14;
+      v25 = delegate;
       v26 = v69;
-      v27 = [v25 iconManager:self viewControllerForCustomIcon:v10 element:v69];
+      v27 = [v25 iconManager:self viewControllerForCustomIcon:iconCopy element:v69];
     }
 
     else
@@ -14461,22 +14461,22 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
 
   else
   {
-    v29 = v21;
+    v29 = gridSizeClassDomain;
     v64 = 1;
-    v63 = v10;
-    v30 = [(SBHIconManager *)self _intentForWidget:v17 ofIcon:v10 creatingIfNecessary:1];
-    v31 = [v29 chsWidgetFamilyForIconGridSizeClass:v13];
-    v32 = v20;
+    v63 = iconCopy;
+    v30 = [(SBHIconManager *)self _intentForWidget:v17 ofIcon:iconCopy creatingIfNecessary:1];
+    v31 = [v29 chsWidgetFamilyForIconGridSizeClass:classCopy];
+    v32 = containerBundleIdentifier;
     v33 = v31;
-    v62 = v19;
-    v60 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:v19 containerBundleIdentifier:v32 deviceIdentifier:0];
+    v62 = extensionBundleIdentifier;
+    v60 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:v32 deviceIdentifier:0];
     v61 = v30;
-    v34 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v60 kind:v18 family:v33 intent:v30 activityIdentifier:0];
-    v35 = [(SBHIconManager *)self metricsForCHSWidget:v34 inLocation:v12];
-    v36 = [v12 isEqualToString:@"SBIconLocationAddWidgetSheet"];
-    v37 = [v17 suggestionSource];
-    v38 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", v12);
-    v24 = v14;
+    v34 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v60 kind:kind family:v33 intent:v30 activityIdentifier:0];
+    v35 = [(SBHIconManager *)self metricsForCHSWidget:v34 inLocation:locationCopy];
+    v36 = [locationCopy isEqualToString:@"SBIconLocationAddWidgetSheet"];
+    suggestionSource = [v17 suggestionSource];
+    v38 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", locationCopy);
+    v24 = delegate;
     v26 = v69;
     if ((v38 & 1) == 0)
     {
@@ -14491,7 +14491,7 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
       }
     }
 
-    if (v37 == 3)
+    if (suggestionSource == 3)
     {
       v39 = 1;
     }
@@ -14502,15 +14502,15 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     }
 
     v40 = [SBHWidgetViewController alloc];
-    v41 = [v17 uniqueIdentifier];
-    v27 = [(SBHWidgetViewController *)v40 initWithWidget:v34 metrics:v35 widgetConfigurationIdentifier:v41];
+    uniqueIdentifier = [v17 uniqueIdentifier];
+    v27 = [(SBHWidgetViewController *)v40 initWithWidget:v34 metrics:v35 widgetConfigurationIdentifier:uniqueIdentifier];
 
     aliveWidgetViewControllersHashTable = self->_aliveWidgetViewControllersHashTable;
     if (!aliveWidgetViewControllersHashTable)
     {
-      v43 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v44 = self->_aliveWidgetViewControllersHashTable;
-      self->_aliveWidgetViewControllersHashTable = v43;
+      self->_aliveWidgetViewControllersHashTable = weakObjectsHashTable;
 
       aliveWidgetViewControllersHashTable = self->_aliveWidgetViewControllersHashTable;
     }
@@ -14521,16 +14521,16 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     [(SBHWidgetViewController *)v27 setContentType:v39];
     [(SBHWidgetViewController *)v27 setCanAppearInSecureEnvironment:v64];
     [(SBHWidgetViewController *)v27 setDrawSystemBackgroundMaterialIfNecessary:1];
-    v45 = [(SBHIconManager *)self widgetExtensionProvider];
-    [(SBHWidgetViewController *)v27 sbh_setWidgetExtensionProvider:v45];
+    widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+    [(SBHWidgetViewController *)v27 sbh_setWidgetExtensionProvider:widgetExtensionProvider];
 
     if (objc_opt_respondsToSelector())
     {
       [v24 iconManager:self configureColorSchemeForWidgetViewController:v27];
     }
 
-    v19 = v62;
-    v10 = v63;
+    extensionBundleIdentifier = v62;
+    iconCopy = v63;
     v28 = v70;
     if (objc_opt_respondsToSelector())
     {
@@ -14564,7 +14564,7 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
   }
 
   v48 = MEMORY[0x1E696AEC0];
-  v49 = [v26 icon:v10 displayNameForLocation:@"SBIconLocationRoot"];
+  v49 = [v26 icon:iconCopy displayNameForLocation:@"SBIconLocationRoot"];
   v50 = [v48 stringWithFormat:@"widget:%@", v49];
   [(SBHWidgetViewController *)v27 setAccessibilityValue:v50];
 
@@ -14611,9 +14611,9 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
     v55 = v54;
 
     [(SBHIconManager *)self updateLargeIconsEnabledForAppPredictionViewController:v55 animated:0];
-    v56 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-    v57 = [v26 uniqueIdentifier];
-    [v56 setObject:v55 forKey:v57];
+    _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+    uniqueIdentifier2 = [v26 uniqueIdentifier];
+    [_effectiveAppPredictionViewControllersForUniqueIdentifier setObject:v55 forKey:uniqueIdentifier2];
 
     v28 = v70;
   }
@@ -14621,17 +14621,17 @@ void __44__SBHIconManager_iconViewShowingContextMenu__block_invoke(uint64_t a1, 
   return v27;
 }
 
-- (void)updateWidgetViewControllersWithRenderScheme:(id)a3
+- (void)updateWidgetViewControllersWithRenderScheme:(id)scheme
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  schemeCopy = scheme;
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__SBHIconManager_updateWidgetViewControllersWithRenderScheme___block_invoke;
   v7[3] = &unk_1E8090238;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateAllViewControllersUsingBlock:v7];
+  v8 = schemeCopy;
+  v6 = schemeCopy;
+  [_effectiveWidgetMultiplexingManager enumerateAllViewControllersUsingBlock:v7];
 }
 
 void __62__SBHIconManager_updateWidgetViewControllersWithRenderScheme___block_invoke(uint64_t a1, void *a2)
@@ -14662,17 +14662,17 @@ void __62__SBHIconManager_updateWidgetViewControllersWithRenderScheme___block_in
   [v6 setRenderScheme:*(a1 + 32)];
 }
 
-- (void)updateWidgetViewControllersWithCustomDisplayConfiguration:(id)a3
+- (void)updateWidgetViewControllersWithCustomDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  configurationCopy = configuration;
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfiguration___block_invoke;
   v7[3] = &unk_1E8090238;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateAllViewControllersUsingBlock:v7];
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  [_effectiveWidgetMultiplexingManager enumerateAllViewControllersUsingBlock:v7];
 }
 
 void __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfiguration___block_invoke(uint64_t a1, void *a2)
@@ -14703,37 +14703,37 @@ void __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfigurat
   [v6 sbh_setCustomDisplayConfiguration:*(a1 + 32)];
 }
 
-- (void)_loadAndSaveDefaultIntentIfNecessaryForWidget:(id)a3 ofIcon:(id)a4 viewController:(id)a5
+- (void)_loadAndSaveDefaultIntentIfNecessaryForWidget:(id)widget ofIcon:(id)icon viewController:(id)controller
 {
   v59 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  val = a5;
-  v10 = [val widget];
-  v11 = v10;
-  if (v10)
+  widgetCopy = widget;
+  iconCopy = icon;
+  val = controller;
+  widget = [val widget];
+  v11 = widget;
+  if (widget)
   {
-    v12 = v10;
+    v12 = widget;
   }
 
   else
   {
-    v12 = v8;
+    v12 = widgetCopy;
   }
 
   v13 = v12;
-  v14 = [v13 extensionIdentity];
-  v36 = [v14 extensionBundleIdentifier];
+  extensionIdentity = [v13 extensionIdentity];
+  extensionBundleIdentifier = [extensionIdentity extensionBundleIdentifier];
 
-  v35 = [v13 kind];
-  v15 = [(SBHIconManager *)self _intentForWidget:v8 ofIcon:v9 loadingFromArchiveIfNecessary:1 usingDefaultIntentIfNecessary:0];
+  kind = [v13 kind];
+  v15 = [(SBHIconManager *)self _intentForWidget:widgetCopy ofIcon:iconCopy loadingFromArchiveIfNecessary:1 usingDefaultIntentIfNecessary:0];
   if (v15)
   {
-    v16 = [(SBHIconManager *)self iconModel];
-    v17 = [v16 widgetIcons];
-    if ([v17 containsObject:v9])
+    iconModel = [(SBHIconManager *)self iconModel];
+    widgetIcons = [iconModel widgetIcons];
+    if ([widgetIcons containsObject:iconCopy])
     {
-      v18 = [(SBHIconManager *)self _archivedIntentForDataSource:v8 inIcon:v9 loadingIfNecessary:1];
+      v18 = [(SBHIconManager *)self _archivedIntentForDataSource:widgetCopy inIcon:iconCopy loadingIfNecessary:1];
 
       if (!v18)
       {
@@ -14741,15 +14741,15 @@ void __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfigurat
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v54 = v36;
+          v54 = extensionBundleIdentifier;
           v55 = 2112;
-          v56 = v35;
+          v56 = kind;
           v57 = 2112;
           v58 = v15;
           _os_log_impl(&dword_1BEB18000, v19, OS_LOG_TYPE_DEFAULT, "Archiving intent that was missing from archive for widget (%@ - %@): %@", buf, 0x20u);
         }
 
-        [(SBHIconManager *)self _archiveConfiguration:v15 forDataSource:v8 ofIcon:v9];
+        [(SBHIconManager *)self _archiveConfiguration:v15 forDataSource:widgetCopy ofIcon:iconCopy];
       }
     }
 
@@ -14757,10 +14757,10 @@ void __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfigurat
     {
     }
 
-    v24 = [v11 intentReference];
-    v25 = [v24 intent];
+    intentReference = [v11 intentReference];
+    intent = [intentReference intent];
 
-    if (!v25 || (v26 = [v25 _indexingHash], v26 != objc_msgSend(v15, "_indexingHash")))
+    if (!intent || (v26 = [intent _indexingHash], v26 != objc_msgSend(v15, "_indexingHash")))
     {
       v27 = [v11 widgetByReplacingIntent:v15];
       [val setWidget:v27];
@@ -14777,19 +14777,19 @@ void __76__SBHIconManager_updateWidgetViewControllersWithCustomDisplayConfigurat
     aBlock[4] = self;
     v20 = v13;
     v45 = v20;
-    v21 = v36;
+    v21 = extensionBundleIdentifier;
     v46 = v21;
-    v22 = v35;
+    v22 = kind;
     v47 = v22;
-    v32 = v9;
+    v32 = iconCopy;
     v48 = v32;
-    v31 = v8;
+    v31 = widgetCopy;
     v49 = v31;
     objc_copyWeak(&v51, &location);
     v50 = v11;
     v33 = _Block_copy(aBlock);
-    v23 = [(SBHIconManager *)self widgetExtensionProvider];
-    v34 = [v23 sbh_descriptorForWidgetIdentifiable:v20];
+    widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+    v34 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v20];
 
     if (v34)
     {
@@ -14930,9 +14930,9 @@ void __86__SBHIconManager__loadAndSaveDefaultIntentIfNecessaryForWidget_ofIcon_v
   }
 }
 
-- (void)performAfterCachingWidgetIntentsUsingBlock:(id)a3
+- (void)performAfterCachingWidgetIntentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NSMutableSet *)self->_pendingWidgetIntentConfigurationInitializations count]|| [(NSMutableSet *)self->_activeWidgetIntentConfigurationInitializations count])
   {
     if (!self->_performAfterPendingWidgetIntentConfigurationBlocks)
@@ -14942,7 +14942,7 @@ void __86__SBHIconManager__loadAndSaveDefaultIntentIfNecessaryForWidget_ofIcon_v
       self->_performAfterPendingWidgetIntentConfigurationBlocks = v5;
     }
 
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     v8 = self->_performAfterPendingWidgetIntentConfigurationBlocks;
     v9 = _Block_copy(v7);
     [(NSMutableArray *)v8 addObject:v9];
@@ -14965,7 +14965,7 @@ void __86__SBHIconManager__loadAndSaveDefaultIntentIfNecessaryForWidget_ofIcon_v
 
   else
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 }
 
@@ -14987,52 +14987,52 @@ void __61__SBHIconManager_performAfterCachingWidgetIntentsUsingBlock___block_inv
   }
 }
 
-- (id)_newIntentForDataSource:(id)a3 inIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6
+- (id)_newIntentForDataSource:(id)source inIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SBHIconManager *)self _archivedIntentForDataSource:v10 inIcon:v11 loadingIfNecessary:v7];
-  if (!v12 && v6)
+  ifNecessaryCopy = ifNecessary;
+  necessaryCopy = necessary;
+  sourceCopy = source;
+  iconCopy = icon;
+  intent = [(SBHIconManager *)self _archivedIntentForDataSource:sourceCopy inIcon:iconCopy loadingIfNecessary:necessaryCopy];
+  if (!intent && ifNecessaryCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(SBHIconManager *)self widgetExtensionProvider];
-      v14 = [v13 sbh_descriptorForWidgetIdentifiable:v10];
+      widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+      v14 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:sourceCopy];
 
-      v15 = [v14 defaultIntentReference];
-      v12 = [v15 intent];
+      defaultIntentReference = [v14 defaultIntentReference];
+      intent = [defaultIntentReference intent];
 
       v16 = SBLogWidgetIntent();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
       {
-        [SBHIconManager _newIntentForDataSource:v11 inIcon:v16 loadingFromArchiveIfNecessary:? usingDefaultIntentIfNecessary:?];
+        [SBHIconManager _newIntentForDataSource:iconCopy inIcon:v16 loadingFromArchiveIfNecessary:? usingDefaultIntentIfNecessary:?];
       }
     }
 
     else
     {
-      v12 = 0;
+      intent = 0;
     }
   }
 
-  return v12;
+  return intent;
 }
 
-- (id)_intentForDataSource:(id)a3 inIcon:(id)a4 loadingFromArchiveIfNecessary:(BOOL)a5 usingDefaultIntentIfNecessary:(BOOL)a6
+- (id)_intentForDataSource:(id)source inIcon:(id)icon loadingFromArchiveIfNecessary:(BOOL)necessary usingDefaultIntentIfNecessary:(BOOL)ifNecessary
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  ifNecessaryCopy = ifNecessary;
+  necessaryCopy = necessary;
+  sourceCopy = source;
+  iconCopy = icon;
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 uniqueIdentifier];
-    if (v12)
+    uniqueIdentifier = [sourceCopy uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v13 = [(NSMutableDictionary *)self->_widgetIntents objectForKey:v12];
+      v13 = [(NSMutableDictionary *)self->_widgetIntents objectForKey:uniqueIdentifier];
       if (v13)
       {
         v14 = v13;
@@ -15051,10 +15051,10 @@ void __61__SBHIconManager_performAfterCachingWidgetIntentsUsingBlock___block_inv
   else
   {
     v15 = 0;
-    v12 = 0;
+    uniqueIdentifier = 0;
   }
 
-  v16 = [(SBHIconManager *)self _newIntentForDataSource:v10 inIcon:v11 loadingFromArchiveIfNecessary:v7 usingDefaultIntentIfNecessary:v6];
+  v16 = [(SBHIconManager *)self _newIntentForDataSource:sourceCopy inIcon:iconCopy loadingFromArchiveIfNecessary:necessaryCopy usingDefaultIntentIfNecessary:ifNecessaryCopy];
   v14 = v16;
   if (v15 && v16)
   {
@@ -15068,7 +15068,7 @@ void __61__SBHIconManager_performAfterCachingWidgetIntentsUsingBlock___block_inv
       widgetIntents = self->_widgetIntents;
     }
 
-    [(NSMutableDictionary *)widgetIntents setObject:v14 forKey:v12];
+    [(NSMutableDictionary *)widgetIntents setObject:v14 forKey:uniqueIdentifier];
   }
 
 LABEL_13:
@@ -15076,28 +15076,28 @@ LABEL_13:
   return v14;
 }
 
-- (id)_archivedIntentForDataSource:(id)a3 inIcon:(id)a4 loadingIfNecessary:(BOOL)a5
+- (id)_archivedIntentForDataSource:(id)source inIcon:(id)icon loadingIfNecessary:(BOOL)necessary
 {
-  v5 = a5;
+  necessaryCopy = necessary;
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  iconCopy = icon;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v11 = 0;
-    v10 = 0;
+    uniqueIdentifier = 0;
 LABEL_7:
     v12 = 0;
 LABEL_8:
-    if (!v5)
+    if (!necessaryCopy)
     {
       goto LABEL_23;
     }
 
-    v13 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 iconManager:self configurationDataForDataSource:v8 ofIcon:v9];
+      v14 = [delegate iconManager:self configurationDataForDataSource:sourceCopy ofIcon:iconCopy];
       if (v14)
       {
         v15 = v14;
@@ -15113,9 +15113,9 @@ LABEL_8:
         {
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v11 _indexingHash];
+            _indexingHash = [v11 _indexingHash];
             *buf = 134218242;
-            v45 = v21;
+            v45 = _indexingHash;
             v46 = 2114;
             v47 = v15;
             _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, "Successfully unarchived widget intent '%llu' from %{public}@", buf, 0x16u);
@@ -15130,7 +15130,7 @@ LABEL_8:
         v42 = v18;
 
         v29 = objc_opt_class();
-        v30 = v8;
+        v30 = sourceCopy;
         if (v29)
         {
           if (objc_opt_isKindOfClass())
@@ -15151,13 +15151,13 @@ LABEL_8:
 
         v32 = v31;
 
-        v33 = [v32 extensionBundleIdentifier];
+        extensionBundleIdentifier = [v32 extensionBundleIdentifier];
 
-        if ([v33 isEqualToString:@"com.apple.mobilecal.CalendarWidgetExtension"])
+        if ([extensionBundleIdentifier isEqualToString:@"com.apple.mobilecal.CalendarWidgetExtension"])
         {
           v41 = v15;
-          v34 = [v11 _className];
-          v35 = [v34 isEqualToString:@"CalendarSpatialWidgetIntent"];
+          _className = [v11 _className];
+          v35 = [_className isEqualToString:@"CalendarSpatialWidgetIntent"];
 
           if ((v35 & 1) == 0)
           {
@@ -15166,7 +15166,7 @@ LABEL_8:
             goto LABEL_38;
           }
 
-          v33 = v11;
+          extensionBundleIdentifier = v11;
           v11 = 0;
           v15 = v41;
         }
@@ -15192,7 +15192,7 @@ LABEL_38:
             archivedWidgetIntents = self->_archivedWidgetIntents;
           }
 
-          [(NSMutableDictionary *)archivedWidgetIntents setObject:v11 forKey:v10];
+          [(NSMutableDictionary *)archivedWidgetIntents setObject:v11 forKey:uniqueIdentifier];
         }
 
         goto LABEL_22;
@@ -15203,15 +15203,15 @@ LABEL_38:
         v22 = SBLogWidgetIntent();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
-          v23 = [v9 applicationBundleID];
-          v24 = [v9 activeDataSource];
-          v25 = SBHConfigurationIdentifierFromDataSource(v24);
-          v26 = [v9 activeDataSource];
-          v27 = SBHUniqueIdentifierOfDataSource(v26);
+          applicationBundleID = [iconCopy applicationBundleID];
+          activeDataSource = [iconCopy activeDataSource];
+          v25 = SBHConfigurationIdentifierFromDataSource(activeDataSource);
+          activeDataSource2 = [iconCopy activeDataSource];
+          v27 = SBHUniqueIdentifierOfDataSource(activeDataSource2);
           *buf = 138544130;
-          v45 = v9;
+          v45 = iconCopy;
           v46 = 2114;
-          v47 = v23;
+          v47 = applicationBundleID;
           v48 = 2114;
           v49 = v25;
           v50 = 2114;
@@ -15240,14 +15240,14 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v10 = [v8 uniqueIdentifier];
-  if (!v10)
+  uniqueIdentifier = [sourceCopy uniqueIdentifier];
+  if (!uniqueIdentifier)
   {
     v11 = 0;
     goto LABEL_7;
   }
 
-  v11 = [(NSMutableDictionary *)self->_archivedWidgetIntents objectForKey:v10];
+  v11 = [(NSMutableDictionary *)self->_archivedWidgetIntents objectForKey:uniqueIdentifier];
   v12 = 1;
   if (!v11)
   {
@@ -15259,20 +15259,20 @@ LABEL_23:
   return v11;
 }
 
-- (id)_stackConfigurationForStackIcon:(id)a3
+- (id)_stackConfigurationForStackIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self _alwaysPresentStackConfigurationSheet];
-  if (([v4 isWidgetStackIcon] & 1) != 0 || v5)
+  iconCopy = icon;
+  _alwaysPresentStackConfigurationSheet = [(SBHIconManager *)self _alwaysPresentStackConfigurationSheet];
+  if (([iconCopy isWidgetStackIcon] & 1) != 0 || _alwaysPresentStackConfigurationSheet)
   {
     v6 = objc_alloc_init(SBHStackConfiguration);
-    -[SBHStackConfiguration setAllowsSuggestions:](v6, "setAllowsSuggestions:", [v4 allowsSuggestions]);
-    -[SBHStackConfiguration setAllowsExternalSuggestions:](v6, "setAllowsExternalSuggestions:", [v4 allowsExternalSuggestions]);
-    v7 = [v4 iconDataSources];
-    [(SBHStackConfiguration *)v6 setDataSources:v7];
+    -[SBHStackConfiguration setAllowsSuggestions:](v6, "setAllowsSuggestions:", [iconCopy allowsSuggestions]);
+    -[SBHStackConfiguration setAllowsExternalSuggestions:](v6, "setAllowsExternalSuggestions:", [iconCopy allowsExternalSuggestions]);
+    iconDataSources = [iconCopy iconDataSources];
+    [(SBHStackConfiguration *)v6 setDataSources:iconDataSources];
 
-    v8 = [v4 gridSizeClass];
-    [(SBHStackConfiguration *)v6 setSizeClass:v8];
+    gridSizeClass = [iconCopy gridSizeClass];
+    [(SBHStackConfiguration *)v6 setSizeClass:gridSizeClass];
   }
 
   else
@@ -15283,17 +15283,17 @@ LABEL_23:
   return v6;
 }
 
-- (id)validatedWidgetIconForWidgetIcon:(id)a3
+- (id)validatedWidgetIconForWidgetIcon:(id)icon
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 gridSizeClass];
-  v6 = [v4 widgets];
+  iconCopy = icon;
+  gridSizeClass = [iconCopy gridSizeClass];
+  widgets = [iconCopy widgets];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  v7 = [widgets countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v7)
   {
     v9 = v7;
@@ -15306,11 +15306,11 @@ LABEL_23:
       {
         if (*v30 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(widgets);
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        if (![(SBHIconManager *)self isWidgetValid:v12 iconSizeClass:v5, v23])
+        if (![(SBHIconManager *)self isWidgetValid:v12 iconSizeClass:gridSizeClass, v23])
         {
           v13 = SBLogWidgets();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -15318,21 +15318,21 @@ LABEL_23:
             *buf = v23;
             v35 = v12;
             v36 = 2112;
-            v37 = v4;
+            v37 = iconCopy;
             _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "Removing iconDataSource:%@ from widgetIcon:%@ as it is no longer valid", buf, 0x16u);
           }
 
-          [v4 removeIconDataSource:v12];
+          [iconCopy removeIconDataSource:v12];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v9 = [widgets countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [v4 iconDataSourcesOfClass:objc_opt_class()];
+  v14 = [iconCopy iconDataSourcesOfClass:objc_opt_class()];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -15362,11 +15362,11 @@ LABEL_23:
             *buf = v24;
             v35 = v20;
             v36 = 2112;
-            v37 = v4;
+            v37 = iconCopy;
             _os_log_impl(&dword_1BEB18000, v21, OS_LOG_TYPE_DEFAULT, "Removing iconDataSource:%@ from widgetIcon:%@ as it is no longer valid", buf, 0x16u);
           }
 
-          [v4 removeIconDataSource:v20];
+          [iconCopy removeIconDataSource:v20];
         }
       }
 
@@ -15376,22 +15376,22 @@ LABEL_23:
     while (v17);
   }
 
-  return v4;
+  return iconCopy;
 }
 
-- (BOOL)isCustomIconElementValid:(id)a3
+- (BOOL)isCustomIconElementValid:(id)valid
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 containerBundleIdentifier];
-  v5 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v4];
+  validCopy = valid;
+  containerBundleIdentifier = [validCopy containerBundleIdentifier];
+  v5 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:containerBundleIdentifier];
   if (([v5 isLocked] & 1) != 0 || objc_msgSend(v5, "isHidden"))
   {
     v6 = SBLogWidgets();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v3;
+      v10 = validCopy;
       _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Application is locked or hidden; fakeWidget is invalid: %@", &v9, 0xCu);
     }
 
@@ -15406,56 +15406,56 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)isWidgetValid:(id)a3 iconSizeClass:(id)a4
+- (BOOL)isWidgetValid:(id)valid iconSizeClass:(id)class
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self widgetExtensionProvider];
-  v9 = [v8 sbh_descriptorForWidgetIdentifiable:v6];
-  v10 = [(SBHIconManager *)self delegate];
-  v11 = [(SBHIconManager *)self gridSizeClassDomain];
+  validCopy = valid;
+  classCopy = class;
+  widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+  v9 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:validCopy];
+  delegate = [(SBHIconManager *)self delegate];
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
   if (v9)
   {
-    v25 = v10;
-    v12 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v9 supportedFamilies], v11);
-    LODWORD(v13) = [(SBHIconGridSizeClassSet *)v12 containsGridSizeClass:v7];
+    v25 = delegate;
+    v12 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v9 supportedFamilies], gridSizeClassDomain);
+    LODWORD(v13) = [(SBHIconGridSizeClassSet *)v12 containsGridSizeClass:classCopy];
     if ((v13 & 1) == 0)
     {
       v14 = SBLogWidgets();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v6;
+        v27 = validCopy;
         _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "Icon size class no longer supported for widget; removing widget: %@", buf, 0xCu);
       }
     }
 
-    v15 = v6;
-    v16 = v8;
-    v17 = v11;
-    v18 = v7;
-    v19 = [v9 extensionIdentity];
-    v20 = [v19 containerBundleIdentifier];
+    v15 = validCopy;
+    v16 = widgetExtensionProvider;
+    v17 = gridSizeClassDomain;
+    v18 = classCopy;
+    extensionIdentity = [v9 extensionIdentity];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
     if (objc_opt_respondsToSelector())
     {
       v21 = [v25 iconManager:self containerBundleIdentifierForDescriptor:v9];
 
-      v20 = v21;
+      containerBundleIdentifier = v21;
     }
 
-    v22 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v20];
+    v22 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:containerBundleIdentifier];
     v23 = v22;
-    v7 = v18;
+    classCopy = v18;
     if (v13)
     {
-      v11 = v17;
+      gridSizeClassDomain = v17;
       if (([v22 isLocked] & 1) != 0 || objc_msgSend(v23, "isHidden"))
       {
         v13 = SBLogWidgets();
-        v8 = v16;
-        v6 = v15;
+        widgetExtensionProvider = v16;
+        validCopy = v15;
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -15472,24 +15472,24 @@ LABEL_23:
 
     else
     {
-      v11 = v17;
+      gridSizeClassDomain = v17;
     }
 
-    v8 = v16;
-    v6 = v15;
+    widgetExtensionProvider = v16;
+    validCopy = v15;
 LABEL_21:
-    v10 = v25;
+    delegate = v25;
 
     goto LABEL_25;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v10 iconManager:self isWidgetValid:v6])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate iconManager:self isWidgetValid:validCopy])
   {
     v12 = SBLogWidgets();
     if (os_log_type_enabled(&v12->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v6;
+      v27 = validCopy;
       _os_log_impl(&dword_1BEB18000, &v12->super, OS_LOG_TYPE_DEFAULT, "No widget descriptor found for widget, but delegate says to keep it: %@", buf, 0xCu);
     }
 
@@ -15502,7 +15502,7 @@ LABEL_21:
     if (os_log_type_enabled(&v12->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v6;
+      v27 = validCopy;
       _os_log_impl(&dword_1BEB18000, &v12->super, OS_LOG_TYPE_DEFAULT, "No widget descriptor found for widget; removing widget: %@", buf, 0xCu);
     }
 
@@ -15517,13 +15517,13 @@ LABEL_25:
 - (void)checkForInvalidWidgets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v11 = [(SBHIconManager *)self iconModel];
-  v3 = [v11 widgetIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  widgetIcons = [iconModel widgetIcons];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  v4 = [widgetIcons countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -15534,7 +15534,7 @@ LABEL_25:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(widgetIcons);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -15553,7 +15553,7 @@ LABEL_25:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [widgetIcons countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v5);
@@ -15570,8 +15570,8 @@ LABEL_25:
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_DEFAULT, "validating/repairing intents for configurable widgets", buf, 2u);
   }
 
-  v26 = [(SBHIconManager *)self iconModel];
-  [v26 widgetIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  [iconModel widgetIcons];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -15594,14 +15594,14 @@ LABEL_25:
         }
 
         v8 = *(*(&v31 + 1) + 8 * v7);
-        v9 = [v8 activeWidget];
-        v10 = v9;
-        if (v9)
+        activeWidget = [v8 activeWidget];
+        v10 = activeWidget;
+        if (activeWidget)
         {
-          v11 = [v9 uniqueIdentifier];
-          v12 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-          v30 = v11;
-          v13 = [v12 viewControllerForIdentifier:v11];
+          uniqueIdentifier = [activeWidget uniqueIdentifier];
+          _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+          v30 = uniqueIdentifier;
+          v13 = [_effectiveWidgetMultiplexingManager viewControllerForIdentifier:uniqueIdentifier];
 
           v14 = objc_opt_class();
           v15 = v13;
@@ -15627,11 +15627,11 @@ LABEL_25:
 
           if (v17)
           {
-            v18 = [v17 widget];
-            v19 = v18;
-            if (v18)
+            widget = [v17 widget];
+            v19 = widget;
+            if (widget)
             {
-              v20 = v18;
+              v20 = widget;
             }
 
             else
@@ -15644,9 +15644,9 @@ LABEL_25:
             v23 = v22 = self;
             v24 = [v23 sbh_descriptorForWidgetIdentifiable:v21];
 
-            v25 = [v24 intentType];
+            intentType = [v24 intentType];
 
-            if (v25)
+            if (intentType)
             {
               [(SBHIconManager *)v22 _loadAndSaveDefaultIntentIfNecessaryForWidget:v10 ofIcon:v8 viewController:v17];
             }
@@ -15675,37 +15675,37 @@ LABEL_25:
   _os_log_error_impl(v0, v1, v2, v3, v4, 0xCu);
 }
 
-- (id)metricsForCHSWidget:(id)a3 inLocation:(id)a4
+- (id)metricsForCHSWidget:(id)widget inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v8 iconManager:self metricsForCHSWidget:v6 inLocation:v7], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  widgetCopy = widget;
+  locationCopy = location;
+  delegate = [(SBHIconManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate iconManager:self metricsForCHSWidget:widgetCopy inLocation:locationCopy], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v10 = [(SBHIconManager *)self widgetMetricsProvider];
-    v9 = [v10 systemMetricsForWidget:v6];
+    widgetMetricsProvider = [(SBHIconManager *)self widgetMetricsProvider];
+    v9 = [widgetMetricsProvider systemMetricsForWidget:widgetCopy];
   }
 
   return v9;
 }
 
-- (void)widgetHostViewController:(id)a3 requestsLaunch:(id)a4
+- (void)widgetHostViewController:(id)controller requestsLaunch:(id)launch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-  v9 = [v8 activeMultiplexingViewControllerForViewController:v6];
+  controllerCopy = controller;
+  launchCopy = launch;
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  v9 = [_effectiveWidgetMultiplexingManager activeMultiplexingViewControllerForViewController:controllerCopy];
 
   v10 = [(NSMapTable *)self->_iconViewsForWidgetMultiplexingViewController objectForKey:v9];
   if (([v10 isShowingContextMenu] & 1) == 0 && !-[SBHIconManager isEditing](self, "isEditing"))
   {
-    v11 = [(SBHIconManager *)self currentStylePickerViewController];
+    currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
 
-    if (!v11)
+    if (!currentStylePickerViewController)
     {
-      v12 = [v10 icon];
+      icon = [v10 icon];
       v13 = objc_opt_class();
-      v14 = v12;
+      v14 = icon;
       if (v13)
       {
         if (objc_opt_isKindOfClass())
@@ -15726,33 +15726,33 @@ LABEL_25:
 
       v16 = v15;
 
-      v17 = [v16 activeWidget];
-      if (!v17)
+      activeWidget = [v16 activeWidget];
+      if (!activeWidget)
       {
         goto LABEL_45;
       }
 
-      [v6 widget];
+      [controllerCopy widget];
       v18 = v49 = v16;
-      v19 = [v18 extensionIdentity];
-      [v19 extensionBundleIdentifier];
-      v20 = v50 = v17;
-      v21 = [v50 extensionBundleIdentifier];
-      v22 = [v20 isEqualToString:v21];
+      extensionIdentity = [v18 extensionIdentity];
+      [extensionIdentity extensionBundleIdentifier];
+      v20 = v50 = activeWidget;
+      extensionBundleIdentifier = [v50 extensionBundleIdentifier];
+      v22 = [v20 isEqualToString:extensionBundleIdentifier];
 
-      v17 = v50;
+      activeWidget = v50;
       v16 = v49;
       if (!v22)
       {
         goto LABEL_45;
       }
 
-      v23 = [(SBHIconManager *)self delegate];
-      v24 = [v50 extensionBundleIdentifier];
+      delegate = [(SBHIconManager *)self delegate];
+      extensionBundleIdentifier2 = [v50 extensionBundleIdentifier];
       if (objc_opt_respondsToSelector())
       {
         v51 = 0;
-        v25 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v24 error:&v51];
+        v25 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:extensionBundleIdentifier2 error:&v51];
         v26 = v51;
         if (!v25)
         {
@@ -15764,9 +15764,9 @@ LABEL_25:
         }
 
         v47 = v26;
-        v28 = [v25 containingBundleRecord];
-        v29 = v28;
-        if (v25 && !v28)
+        containingBundleRecord = [v25 containingBundleRecord];
+        v29 = containingBundleRecord;
+        if (v25 && !containingBundleRecord)
         {
           v30 = SBLogWidgets();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -15775,10 +15775,10 @@ LABEL_25:
           }
         }
 
-        v31 = [v29 bundleIdentifier];
-        if (v31)
+        bundleIdentifier = [v29 bundleIdentifier];
+        if (bundleIdentifier)
         {
-          v45 = [v23 iconManager:self isIconVisibleForBundleIdentifier:v31];
+          v45 = [delegate iconManager:self isIconVisibleForBundleIdentifier:bundleIdentifier];
         }
 
         else
@@ -15786,7 +15786,7 @@ LABEL_25:
           v45 = 0;
         }
 
-        v17 = v50;
+        activeWidget = v50;
       }
 
       else
@@ -15794,31 +15794,31 @@ LABEL_25:
         v45 = 0;
       }
 
-      v32 = [v7 action];
-      [v7 url];
-      v48 = v46 = v24;
+      action = [launchCopy action];
+      [launchCopy url];
+      v48 = v46 = extensionBundleIdentifier2;
       if (v48)
       {
-        v33 = [v17 containerBundleIdentifier];
-        if ([v33 isEqualToString:@"com.apple.PeopleViewService"])
+        containerBundleIdentifier = [activeWidget containerBundleIdentifier];
+        if ([containerBundleIdentifier isEqualToString:@"com.apple.PeopleViewService"])
         {
-          v34 = [(SBHHomeScreenSettings *)self->_homeScreenSettings widgetSettings];
-          [v34 personDetailInteractionSettings];
-          v35 = v32;
-          v37 = v36 = v23;
-          v43 = [v37 usesCardStyle];
+          widgetSettings = [(SBHHomeScreenSettings *)self->_homeScreenSettings widgetSettings];
+          [widgetSettings personDetailInteractionSettings];
+          v35 = action;
+          v37 = v36 = delegate;
+          usesCardStyle = [v37 usesCardStyle];
 
-          v23 = v36;
-          v32 = v35;
+          delegate = v36;
+          action = v35;
 
-          if (v43)
+          if (usesCardStyle)
           {
             v38 = [(SBHIconManager *)self _personDetailInteractionContextForPersonURL:v48 iconView:v10];
             v39 = [[SBHPeopleWidgetPersonDetailInteraction alloc] initWithInteractionContext:v38];
             [(SBHPeopleWidgetPersonDetailInteraction *)v39 setModalInteractionDelegate:self];
             [(SBHPeopleWidgetPersonDetailInteraction *)v39 beginInteractionAnimated:1];
 
-            v17 = v50;
+            activeWidget = v50;
 LABEL_44:
 
             v16 = v49;
@@ -15835,32 +15835,32 @@ LABEL_45:
 
         if (objc_opt_respondsToSelector())
         {
-          v38 = [v23 iconManager:self bundleIdentifierToLaunchForWidgetURL:v48];
-          v17 = v50;
+          v38 = [delegate iconManager:self bundleIdentifierToLaunchForWidgetURL:v48];
+          activeWidget = v50;
           if (v38)
           {
-            v44 = v23;
-            v40 = [v50 containerBundleIdentifier];
-            v41 = [v38 isEqualToString:v40];
+            v44 = delegate;
+            containerBundleIdentifier2 = [v50 containerBundleIdentifier];
+            v41 = [v38 isEqualToString:containerBundleIdentifier2];
 
-            if (((v45 | v41) & 1) != 0 || ![v7 isEntitledToOpenSystemProcesses])
+            if (((v45 | v41) & 1) != 0 || ![launchCopy isEntitledToOpenSystemProcesses])
             {
-              v23 = v44;
+              delegate = v44;
             }
 
             else
             {
-              v23 = v44;
+              delegate = v44;
               if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
               {
                 if (objc_opt_respondsToSelector())
                 {
-                  [v44 iconManager:self iconView:v10 widgetWantsLaunchForBundleIdentifier:v38 withAction:v32];
+                  [v44 iconManager:self iconView:v10 widgetWantsLaunchForBundleIdentifier:v38 withAction:action];
                 }
 
                 else if (objc_opt_respondsToSelector())
                 {
-                  [v44 iconManager:self widgetWantsLaunchForBundleIdentifier:v38 withAction:v32];
+                  [v44 iconManager:self widgetWantsLaunchForBundleIdentifier:v38 withAction:action];
                 }
 
                 else
@@ -15877,7 +15877,7 @@ LABEL_45:
         else
         {
           v38 = 0;
-          v17 = v50;
+          activeWidget = v50;
         }
       }
 
@@ -15887,7 +15887,7 @@ LABEL_45:
       }
 
       [(SBHIconManager *)self highlightIconView:v10];
-      v42 = [MEMORY[0x1E695DFD8] setWithObject:v32];
+      v42 = [MEMORY[0x1E695DFD8] setWithObject:action];
       [(SBHIconManager *)self launchFromIconView:v10 withActions:v42 modifierFlags:0];
 
       goto LABEL_44;
@@ -15897,18 +15897,18 @@ LABEL_45:
 LABEL_46:
 }
 
-- (void)widgetHostViewControllerUsesSystemBackgroundMaterialDidChange:(id)a3
+- (void)widgetHostViewControllerUsesSystemBackgroundMaterialDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-  v15 = [v5 activeMultiplexingViewControllerForViewController:v4];
+  changeCopy = change;
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  v15 = [_effectiveWidgetMultiplexingManager activeMultiplexingViewControllerForViewController:changeCopy];
 
   v6 = [(NSMapTable *)self->_iconViewsForWidgetMultiplexingViewController objectForKey:v15];
   v7 = [(NSMapTable *)self->_widgetViewControllersForIconView objectForKey:v6];
   if (v7)
   {
-    v8 = [v6 icon];
-    v9 = [(SBFolder *)self->_rootFolder indexPathForIcon:v8];
+    icon = [v6 icon];
+    v9 = [(SBFolder *)self->_rootFolder indexPathForIcon:icon];
     v10 = [(SBHIconManager *)self iconListViewForIndexPath:v9];
     [v10 _insertOrRemoveCaptureOnlyBackgroundViewIfNecessaryForIconView:v6];
     v11 = objc_opt_class();
@@ -15937,9 +15937,9 @@ LABEL_46:
   }
 }
 
-- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)a3
+- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -15949,7 +15949,7 @@ LABEL_46:
   aBlock[2] = __65__SBHIconManager__determineIfAvocadoHostViewControllerIsVisible___block_invoke;
   aBlock[3] = &unk_1E80902B0;
   aBlock[4] = self;
-  v5 = v4;
+  v5 = visibleCopy;
   v9 = v5;
   v10 = &v11;
   v6 = _Block_copy(aBlock);
@@ -15984,16 +15984,16 @@ uint64_t __65__SBHIconManager__determineIfAvocadoHostViewControllerIsVisible___b
   return MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)a3 withinStackViewController:(id)a4
+- (BOOL)_determineIfAvocadoHostViewControllerIsVisible:(id)visible withinStackViewController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  visibleCopy = visible;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a4 widgetViewControllers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  widgetViewControllers = [controller widgetViewControllers];
+  v7 = [widgetViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -16003,20 +16003,20 @@ uint64_t __65__SBHIconManager__determineIfAvocadoHostViewControllerIsVisible___b
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(widgetViewControllers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 multiplexedViewController];
+        multiplexedViewController = [v10 multiplexedViewController];
 
-        if (v11 == v5)
+        if (multiplexedViewController == visibleCopy)
         {
           LOBYTE(v7) = [v10 bs_isAppearingOrAppeared];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [widgetViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -16031,48 +16031,48 @@ LABEL_11:
   return v7;
 }
 
-- (void)multiplexingManager:(id)a3 willRemoveViewController:(id)a4 forIdentifier:(id)a5
+- (void)multiplexingManager:(id)manager willRemoveViewController:(id)controller forIdentifier:(id)identifier
 {
-  v10 = a4;
-  v7 = a5;
-  if ([v10 sbh_isWidgetHostViewController])
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if ([controllerCopy sbh_isWidgetHostViewController])
   {
-    v8 = v10;
+    v8 = controllerCopy;
     [v8 setPresentationMode:1];
     [v8 invalidate];
   }
 
-  v9 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self willRemoveViewControllerForIdentifier:v7];
+    [delegate iconManager:self willRemoveViewControllerForIdentifier:identifierCopy];
   }
 }
 
-- (BOOL)multiplexingManager:(id)a3 shouldCacheRecentViewController:(id)a4 forIdentifier:(id)a5
+- (BOOL)multiplexingManager:(id)manager shouldCacheRecentViewController:(id)controller forIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if ([v8 hasSuffix:@":Preview"])
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if ([identifierCopy hasSuffix:@":Preview"])
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [(SBHIconManager *)self iconModel];
-    v11 = [v10 widgetIconsContainingWidgetsMatchingUniqueIdentifier:v8];
+    iconModel = [(SBHIconManager *)self iconModel];
+    v11 = [iconModel widgetIconsContainingWidgetsMatchingUniqueIdentifier:identifierCopy];
     if ([v11 count])
     {
-      v12 = [(SBHIconManager *)self delegate];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && ![v12 iconManager:self shouldCacheRecentViewController:v7 forIdentifier:v8])
+      delegate = [(SBHIconManager *)self delegate];
+      if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate iconManager:self shouldCacheRecentViewController:controllerCopy forIdentifier:identifierCopy])
       {
         v16 = SBLogWidgetCleanup();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v18 = 138543362;
-          v19 = v7;
+          v19 = controllerCopy;
           _os_log_impl(&dword_1BEB18000, v16, OS_LOG_TYPE_DEFAULT, "Discarding %{public}@; will not cache", &v18, 0xCu);
         }
 
@@ -16081,18 +16081,18 @@ LABEL_11:
 
       else
       {
-        v13 = [v7 bs_isAppearingOrAppeared];
+        bs_isAppearingOrAppeared = [controllerCopy bs_isAppearingOrAppeared];
         v14 = SBLogWidgetCleanup();
         v15 = v14;
-        if (v13)
+        if (bs_isAppearingOrAppeared)
         {
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             [SBHIconManager multiplexingManager:shouldCacheRecentViewController:forIdentifier:];
           }
 
-          [v7 bs_beginAppearanceTransition:0 animated:0];
-          [v7 bs_endAppearanceTransition];
+          [controllerCopy bs_beginAppearanceTransition:0 animated:0];
+          [controllerCopy bs_endAppearanceTransition];
         }
 
         else
@@ -16100,7 +16100,7 @@ LABEL_11:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
           {
             v18 = 138543362;
-            v19 = v7;
+            v19 = controllerCopy;
             _os_log_impl(&dword_1BEB18000, v15, OS_LOG_TYPE_DEFAULT, "Choosing to cache widget %{public}@ ", &v18, 0xCu);
           }
         }
@@ -16118,81 +16118,81 @@ LABEL_11:
   return v9;
 }
 
-- (void)multiplexingManager:(id)a3 cachedRecentViewController:(id)a4 forIdentifier:(id)a5
+- (void)multiplexingManager:(id)manager cachedRecentViewController:(id)controller forIdentifier:(id)identifier
 {
-  v5 = a4;
-  if ([v5 sbh_isWidgetHostViewController])
+  controllerCopy = controller;
+  if ([controllerCopy sbh_isWidgetHostViewController])
   {
-    [v5 setPresentationMode:1];
+    [controllerCopy setPresentationMode:1];
   }
 }
 
-- (id)_multiplexingViewControllerForIcon:(id)a3 dataSource:(id)a4 location:(id)a5 withPriority:(unint64_t)a6
+- (id)_multiplexingViewControllerForIcon:(id)icon dataSource:(id)source location:(id)location withPriority:(unint64_t)priority
 {
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 uniqueIdentifier];
-  v14 = v13;
+  iconCopy = icon;
+  sourceCopy = source;
+  locationCopy = location;
+  uniqueIdentifier = [sourceCopy uniqueIdentifier];
+  v14 = uniqueIdentifier;
   v15 = 0;
-  if (v10 && v11 && v13)
+  if (iconCopy && sourceCopy && uniqueIdentifier)
   {
-    v16 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+    _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v12 isEqualToString:@"SBIconLocationAddWidgetSheet"])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [locationCopy isEqualToString:@"SBIconLocationAddWidgetSheet"])
     {
       v17 = [v14 stringByAppendingString:@":Preview"];
 
       v14 = v17;
     }
 
-    if (([v16 hasViewControllerForIdentifier:v14] & 1) == 0)
+    if (([_effectiveWidgetMultiplexingManager hasViewControllerForIdentifier:v14] & 1) == 0)
     {
       v18 = SBLogIcon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v21 = 138412546;
-        v22 = v10;
+        v22 = iconCopy;
         v23 = 2112;
-        v24 = v11;
+        v24 = sourceCopy;
         _os_log_impl(&dword_1BEB18000, v18, OS_LOG_TYPE_INFO, "Creating new view controller for icon: %@, data source: %@", &v21, 0x16u);
       }
 
-      v19 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:v10 dataSource:v11 location:v12];
-      [v16 setViewController:v19 forIdentifier:v14];
+      v19 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:iconCopy dataSource:sourceCopy location:locationCopy];
+      [_effectiveWidgetMultiplexingManager setViewController:v19 forIdentifier:v14];
     }
 
-    v15 = [v16 newMultiplexingViewControllerForIdentifier:v14 atLevel:a6];
+    v15 = [_effectiveWidgetMultiplexingManager newMultiplexingViewControllerForIdentifier:v14 atLevel:priority];
   }
 
   return v15;
 }
 
-- (id)widgetStackViewController:(id)a3 viewControllerForDataSource:(id)a4
+- (id)widgetStackViewController:(id)controller viewControllerForDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 widgetIcon];
-  v9 = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController objectForKey:v6];
-  if (v9)
+  controllerCopy = controller;
+  sourceCopy = source;
+  widgetIcon = [controllerCopy widgetIcon];
+  host = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController objectForKey:controllerCopy];
+  if (host)
   {
     goto LABEL_2;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 host];
+    host = [controllerCopy host];
     v12 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      if (v9)
+      if (host)
       {
 LABEL_2:
-        v10 = [v9 location];
-        v11 = [v9 customIconImageViewControllerPriority];
+        location = [host location];
+        customIconImageViewControllerPriority = [host customIconImageViewControllerPriority];
         goto LABEL_9;
       }
     }
@@ -16203,55 +16203,55 @@ LABEL_2:
   }
 
   NSLog(&cfstr_MissingIconvie.isa);
-  v10 = @"SBIconLocationRoot";
-  v9 = 0;
-  v11 = 0;
+  location = @"SBIconLocationRoot";
+  host = 0;
+  customIconImageViewControllerPriority = 0;
 LABEL_9:
-  v14 = [(SBHIconManager *)self _multiplexingViewControllerForIcon:v8 dataSource:v7 location:v10 withPriority:v11];
+  v14 = [(SBHIconManager *)self _multiplexingViewControllerForIcon:widgetIcon dataSource:sourceCopy location:location withPriority:customIconImageViewControllerPriority];
 
-  [(SBHIconManager *)self _updateWidgetMultiplexingViewController:v14 forIconView:v9];
+  [(SBHIconManager *)self _updateWidgetMultiplexingViewController:v14 forIconView:host];
 
   return v14;
 }
 
-- (id)widgetStackViewController:(id)a3 containerApplicationNameForDataSource:(id)a4
+- (id)widgetStackViewController:(id)controller containerApplicationNameForDataSource:(id)source
 {
-  v5 = [(SBHIconManager *)self containerBundleIdentifierForDataSource:a4];
+  v5 = [(SBHIconManager *)self containerBundleIdentifierForDataSource:source];
   if (v5)
   {
     v6 = [(SBHIconManager *)self applicationWithBundleIdentifier:v5];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 displayName];
+      displayName = [v6 displayName];
     }
 
     else
     {
-      v8 = 0;
+      displayName = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    displayName = 0;
   }
 
-  return v8;
+  return displayName;
 }
 
-- (BOOL)widgetStackViewController:(id)a3 isDataSourceBlockedForScreenTimeExpiration:(id)a4
+- (BOOL)widgetStackViewController:(id)controller isDataSourceBlockedForScreenTimeExpiration:(id)expiration
 {
-  v5 = [(SBHIconManager *)self containerBundleIdentifierForDataSource:a4];
+  v5 = [(SBHIconManager *)self containerBundleIdentifierForDataSource:expiration];
   if (v5)
   {
-    v6 = [(SBHIconManager *)self iconModel];
-    v7 = [(SBHIconManager *)self delegate];
-    v8 = [v6 applicationIconForBundleIdentifier:v5];
+    iconModel = [(SBHIconManager *)self iconModel];
+    delegate = [(SBHIconManager *)self delegate];
+    v8 = [iconModel applicationIconForBundleIdentifier:v5];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 isTimedOut];
+      isTimedOut = [v8 isTimedOut];
     }
 
     else
@@ -16262,10 +16262,10 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v10 = [v7 iconManager:self isTimedOutForDataSourceContainerBundleIdentifier:v5];
+      isTimedOut = [delegate iconManager:self isTimedOutForDataSourceContainerBundleIdentifier:v5];
     }
 
-    v11 = v10;
+    v11 = isTimedOut;
 LABEL_8:
 
     goto LABEL_9;
@@ -16277,37 +16277,37 @@ LABEL_9:
   return v11;
 }
 
-- (void)widgetStackViewController:(id)a3 didActivateDataSource:(id)a4 fromUserInteraction:(BOOL)a5
+- (void)widgetStackViewController:(id)controller didActivateDataSource:(id)source fromUserInteraction:(BOOL)interaction
 {
-  v5 = a5;
+  interactionCopy = interaction;
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 widgetIcon];
-  v11 = v10;
-  if (v9 && ([v10 hasIconDataSource:v9] & 1) == 0)
+  controllerCopy = controller;
+  sourceCopy = source;
+  widgetIcon = [controllerCopy widgetIcon];
+  v11 = widgetIcon;
+  if (sourceCopy && ([widgetIcon hasIconDataSource:sourceCopy] & 1) == 0)
   {
     v14 = SBLogIcon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [SBHIconManager widgetStackViewController:v9 didActivateDataSource:v11 fromUserInteraction:v14];
+      [SBHIconManager widgetStackViewController:sourceCopy didActivateDataSource:v11 fromUserInteraction:v14];
     }
   }
 
   else
   {
-    if (v5)
+    if (interactionCopy)
     {
       [v11 setStackChangeReason:1];
-      [v11 setLastUserSelectedDataSource:v9];
+      [v11 setLastUserSelectedDataSource:sourceCopy];
       v12 = SBLogIcon();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v11 uniqueIdentifier];
+        uniqueIdentifier = [v11 uniqueIdentifier];
         v15 = 138412546;
-        v16 = v9;
+        v16 = sourceCopy;
         v17 = 2112;
-        v18 = v13;
+        v18 = uniqueIdentifier;
         _os_log_impl(&dword_1BEB18000, v12, OS_LOG_TYPE_DEFAULT, "Activating data source due to user scroll and setting last user selected data source: %@ for: %@", &v15, 0x16u);
       }
     }
@@ -16323,41 +16323,41 @@ LABEL_9:
       }
     }
 
-    [v11 setActiveDataSource:v9];
-    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:v8];
+    [v11 setActiveDataSource:sourceCopy];
+    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:controllerCopy];
   }
 }
 
-- (void)widgetStackViewController:(id)a3 didRemoveViewController:(id)a4
+- (void)widgetStackViewController:(id)controller didRemoveViewController:(id)viewController
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-  [v5 discardMultiplexingViewController:v6];
+  viewControllerCopy = viewController;
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  [_effectiveWidgetMultiplexingManager discardMultiplexingViewController:viewControllerCopy];
 
-  [(NSMapTable *)self->_iconViewsForWidgetMultiplexingViewController removeObjectForKey:v6];
+  [(NSMapTable *)self->_iconViewsForWidgetMultiplexingViewController removeObjectForKey:viewControllerCopy];
 }
 
-- (void)widgetStackViewController:(id)a3 didFinishUsingBackgroundView:(id)a4
+- (void)widgetStackViewController:(id)controller didFinishUsingBackgroundView:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SBHIconManager *)self widgetBackgroundViewMap];
-    [v5 recycleView:v6];
+    widgetBackgroundViewMap = [(SBHIconManager *)self widgetBackgroundViewMap];
+    [widgetBackgroundViewMap recycleView:viewCopy];
   }
 }
 
-- (BOOL)widgetStackViewControllerCanFlashPageControl:(id)a3
+- (BOOL)widgetStackViewControllerCanFlashPageControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   if ([(SBHIconManager *)self limitsWidgetStackPageControlFlashesToSession])
   {
-    v5 = [v4 widgetIcon];
-    v6 = [v5 uniqueIdentifier];
-    if (v6)
+    widgetIcon = [controlCopy widgetIcon];
+    uniqueIdentifier = [widgetIcon uniqueIdentifier];
+    if (uniqueIdentifier)
     {
-      v7 = [(NSMutableSet *)self->_widgetIconIdentifiersForPageControlFlashes containsObject:v6]^ 1;
+      v7 = [(NSMutableSet *)self->_widgetIconIdentifiersForPageControlFlashes containsObject:uniqueIdentifier]^ 1;
     }
 
     else
@@ -16374,11 +16374,11 @@ LABEL_9:
   return v7;
 }
 
-- (void)widgetStackViewControllerDidFlashPageControl:(id)a3
+- (void)widgetStackViewControllerDidFlashPageControl:(id)control
 {
-  v8 = [a3 widgetIcon];
-  v4 = [v8 uniqueIdentifier];
-  if (v4)
+  widgetIcon = [control widgetIcon];
+  uniqueIdentifier = [widgetIcon uniqueIdentifier];
+  if (uniqueIdentifier)
   {
     widgetIconIdentifiersForPageControlFlashes = self->_widgetIconIdentifiersForPageControlFlashes;
     if (!widgetIconIdentifiersForPageControlFlashes)
@@ -16390,74 +16390,74 @@ LABEL_9:
       widgetIconIdentifiersForPageControlFlashes = self->_widgetIconIdentifiersForPageControlFlashes;
     }
 
-    [(NSMutableSet *)widgetIconIdentifiersForPageControlFlashes addObject:v4];
+    [(NSMutableSet *)widgetIconIdentifiersForPageControlFlashes addObject:uniqueIdentifier];
   }
 }
 
-- (void)multiplexingWrapperViewControllerWillChangeGridAlignment:(id)a3
+- (void)multiplexingWrapperViewControllerWillChangeGridAlignment:(id)alignment
 {
-  v4 = a3;
-  if (([v4 isGridAligned] & 1) == 0)
+  alignmentCopy = alignment;
+  if (([alignmentCopy isGridAligned] & 1) == 0)
   {
-    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:v4];
+    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:alignmentCopy];
   }
 }
 
-- (void)multiplexingWrapperViewControllerDidChangeGridAlignment:(id)a3
+- (void)multiplexingWrapperViewControllerDidChangeGridAlignment:(id)alignment
 {
-  v4 = a3;
-  if (([v4 isGridAligned] & 1) == 0)
+  alignmentCopy = alignment;
+  if (([alignmentCopy isGridAligned] & 1) == 0)
   {
-    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:v4];
+    [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:alignmentCopy];
   }
 }
 
-- (void)_updateCaptureOnlyBackgroundViewForCustomIconImageViewController:(id)a3
+- (void)_updateCaptureOnlyBackgroundViewForCustomIconImageViewController:(id)controller
 {
-  v10 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_respondsToSelector();
-  v5 = v10;
+  v5 = controllerCopy;
   if (v4)
   {
-    v6 = [v10 icon];
-    v7 = [(SBFolder *)self->_rootFolder indexPathForIcon:v6];
+    icon = [controllerCopy icon];
+    v7 = [(SBFolder *)self->_rootFolder indexPathForIcon:icon];
     v8 = [(SBHIconManager *)self iconListViewForIndexPath:v7];
-    if ([v8 containsIcon:v6])
+    if ([v8 containsIcon:icon])
     {
-      v9 = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController objectForKey:v10];
+      v9 = [(NSMapTable *)self->_iconViewsForCustomIconImageViewController objectForKey:controllerCopy];
       if (v9)
       {
         [v8 _insertOrRemoveCaptureOnlyBackgroundViewIfNecessaryForIconView:v9];
       }
     }
 
-    v5 = v10;
+    v5 = controllerCopy;
   }
 
   MEMORY[0x1EEE66BB8](v4, v5);
 }
 
-- (void)iconTouchBegan:(id)a3
+- (void)iconTouchBegan:(id)began
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SBHIconManager *)self _addTouchedIconView:v4];
+  beganCopy = began;
+  [(SBHIconManager *)self _addTouchedIconView:beganCopy];
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = beganCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Icon touch began: %@", &v11, 0xCu);
   }
 
-  v6 = [v4 icon];
-  v7 = [(SBHIconManager *)self delegate];
-  if ([(SBHIconManager *)self shouldHighlightTouchedIconView:v4])
+  icon = [beganCopy icon];
+  delegate = [(SBHIconManager *)self delegate];
+  if ([(SBHIconManager *)self shouldHighlightTouchedIconView:beganCopy])
   {
-    [(SBHIconManager *)self highlightIconView:v4];
+    [(SBHIconManager *)self highlightIconView:beganCopy];
   }
 
-  v8 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:v4];
+  v8 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:beganCopy];
   if (v8)
   {
     v9 = SBLogIcon();
@@ -16466,7 +16466,7 @@ LABEL_9:
       v11 = 138412546;
       v12 = v8;
       v13 = 2112;
-      v14 = v4;
+      v14 = beganCopy;
       _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_DEFAULT, "Icon tap not allowed because %@: %@", &v11, 0x16u);
     }
   }
@@ -16475,65 +16475,65 @@ LABEL_9:
   {
     if (objc_opt_respondsToSelector())
     {
-      [v7 iconManager:self possibleUserIconTapBegan:v4];
+      [delegate iconManager:self possibleUserIconTapBegan:beganCopy];
     }
 
     v10 = mach_absolute_time();
-    [v6 possibleUserTapBeganWithAbsoluteTime:v10 andContinuousTime:mach_continuous_time()];
+    [icon possibleUserTapBeganWithAbsoluteTime:v10 andContinuousTime:mach_continuous_time()];
     if (objc_opt_respondsToSelector())
     {
-      [v7 iconManager:self possibleUserIconTapBeganAfterInformingIcon:v4];
+      [delegate iconManager:self possibleUserIconTapBeganAfterInformingIcon:beganCopy];
     }
   }
 }
 
-- (void)icon:(id)a3 touchEnded:(BOOL)a4
+- (void)icon:(id)icon touchEnded:(BOOL)ended
 {
-  v4 = a4;
+  endedCopy = ended;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(SBHIconManager *)self _removeTouchedIconView:v6];
-  v7 = SBLogIcon();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  iconCopy = icon;
+  [(SBHIconManager *)self _removeTouchedIconView:iconCopy];
+  icon = SBLogIcon();
+  v8 = os_log_type_enabled(icon, OS_LOG_TYPE_DEFAULT);
+  if (endedCopy)
   {
     if (v8)
     {
       v11 = 138412290;
-      v12 = v6;
-      _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "Icon touch canceled (tap gesture may still succeed): %@", &v11, 0xCu);
+      v12 = iconCopy;
+      _os_log_impl(&dword_1BEB18000, icon, OS_LOG_TYPE_DEFAULT, "Icon touch canceled (tap gesture may still succeed): %@", &v11, 0xCu);
     }
 
-    v7 = [v6 icon];
-    [v7 possibleUserTapDidCancel];
+    icon = [iconCopy icon];
+    [icon possibleUserTapDidCancel];
   }
 
   else if (v8)
   {
     v11 = 138412290;
-    v12 = v6;
-    _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "Icon touch ended: %@", &v11, 0xCu);
+    v12 = iconCopy;
+    _os_log_impl(&dword_1BEB18000, icon, OS_LOG_TYPE_DEFAULT, "Icon touch ended: %@", &v11, 0xCu);
   }
 
-  v9 = [(SBHIconManager *)self iconEditingFeedbackBehavior];
-  if ([v9 isActive])
+  iconEditingFeedbackBehavior = [(SBHIconManager *)self iconEditingFeedbackBehavior];
+  if ([iconEditingFeedbackBehavior isActive])
   {
-    [v9 deactivate];
+    [iconEditingFeedbackBehavior deactivate];
   }
 
-  v10 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 iconManager:self touchesEndedForIconView:v6];
+    [delegate iconManager:self touchesEndedForIconView:iconCopy];
   }
 }
 
-- (BOOL)iconShouldAllowTap:(id)a3
+- (BOOL)iconShouldAllowTap:(id)tap
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:v4];
-  v6 = [v4 icon];
+  tapCopy = tap;
+  v5 = [(SBHIconManager *)self reasonToDisallowTapOnIconView:tapCopy];
+  icon = [tapCopy icon];
 
   v7 = SBLogIcon();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -16541,9 +16541,9 @@ LABEL_9:
   {
     if (v8)
     {
-      v9 = [v6 uniqueIdentifier];
+      uniqueIdentifier = [icon uniqueIdentifier];
       v14 = 138412546;
-      v15 = v9;
+      v15 = uniqueIdentifier;
       v16 = 2114;
       v17 = v5;
       v10 = "Disallowing tap for icon view '%@' for reason '%{public}@'";
@@ -16556,9 +16556,9 @@ LABEL_6:
 
   else if (v8)
   {
-    v9 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [icon uniqueIdentifier];
     v14 = 138412290;
-    v15 = v9;
+    v15 = uniqueIdentifier;
     v10 = "Allowing tap for icon view '%@'";
     v11 = v7;
     v12 = 12;
@@ -16568,45 +16568,45 @@ LABEL_6:
   return v5 == 0;
 }
 
-- (id)reasonToDisallowTapOnIconView:(id)a3
+- (id)reasonToDisallowTapOnIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  v6 = [v5 isWidgetIcon];
-  if (-[SBHIconManager isEditing](self, "isEditing") && !(v6 & 1 | (([v5 isLeafIcon] & 1) == 0)))
+  viewCopy = view;
+  icon = [viewCopy icon];
+  isWidgetIcon = [icon isWidgetIcon];
+  if (-[SBHIconManager isEditing](self, "isEditing") && !(isWidgetIcon & 1 | (([icon isLeafIcon] & 1) == 0)))
   {
     v7 = @"editing";
     goto LABEL_27;
   }
 
-  if ([v4 isGrabbed])
+  if ([viewCopy isGrabbed])
   {
     v7 = @"icon is grabbed";
     goto LABEL_27;
   }
 
-  if ([v5 isFolderIcon] && !-[SBHIconManager canOpenFolderForIcon:](self, "canOpenFolderForIcon:", v5))
+  if ([icon isFolderIcon] && !-[SBHIconManager canOpenFolderForIcon:](self, "canOpenFolderForIcon:", icon))
   {
     v7 = @"can't open folder icon";
   }
 
   else
   {
-    v8 = [(SBHIconManager *)self iconDragManager];
-    v9 = [v8 isTrackingDroppingIconDrags];
+    iconDragManager = [(SBHIconManager *)self iconDragManager];
+    isTrackingDroppingIconDrags = [iconDragManager isTrackingDroppingIconDrags];
 
-    if (v9)
+    if (isTrackingDroppingIconDrags)
     {
       v7 = @"tracking dropping icon drags";
       goto LABEL_27;
     }
 
-    v10 = [(SBHIconManager *)self iconDragManager];
-    if ([v10 isTrackingUserActiveIconDrags])
+    iconDragManager2 = [(SBHIconManager *)self iconDragManager];
+    if ([iconDragManager2 isTrackingUserActiveIconDrags])
     {
-      v11 = [v5 isWidgetIcon];
+      isWidgetIcon2 = [icon isWidgetIcon];
 
-      if (v11)
+      if (isWidgetIcon2)
       {
         v7 = @"can't open widget while dragging";
         goto LABEL_27;
@@ -16617,7 +16617,7 @@ LABEL_6:
     {
     }
 
-    if (([v5 isLaunchEnabled] & 1) != 0 || -[SBHIconManager isEditing](self, "isEditing") && objc_msgSend(v5, "isWidgetStackIcon"))
+    if (([icon isLaunchEnabled] & 1) != 0 || -[SBHIconManager isEditing](self, "isEditing") && objc_msgSend(icon, "isWidgetStackIcon"))
     {
       v12 = objc_opt_self();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -16634,10 +16634,10 @@ LABEL_6:
 
       else
       {
-        v14 = [(SBHIconManager *)self delegate];
-        if ((objc_opt_respondsToSelector() & 1) == 0 || ([v14 iconManager:self reasonToDisallowTapOnIconView:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+        delegate = [(SBHIconManager *)self delegate];
+        if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate iconManager:self reasonToDisallowTapOnIconView:viewCopy], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          v7 = [(SBHIconManager *)self reasonToDisallowInteractionOnIconView:v4];
+          v7 = [(SBHIconManager *)self reasonToDisallowInteractionOnIconView:viewCopy];
         }
       }
     }
@@ -16653,13 +16653,13 @@ LABEL_27:
   return v7;
 }
 
-- (id)reasonToDisallowInteractionOnIconView:(id)a3
+- (id)reasonToDisallowInteractionOnIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self reasonToDisallowInteractionOnIconView:v4];
+    v6 = [delegate iconManager:self reasonToDisallowInteractionOnIconView:viewCopy];
   }
 
   else if ([(SBHIconManager *)self shouldDisableUserInteractionForWidgetDiscoverability])
@@ -16675,67 +16675,67 @@ LABEL_27:
   return v6;
 }
 
-- (void)launchFromIconView:(id)a3 withActions:(id)a4 modifierFlags:(int64_t)a5
+- (void)launchFromIconView:(id)view withActions:(id)actions modifierFlags:(int64_t)flags
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 icon];
-  v11 = [v8 location];
-  v12 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  actionsCopy = actions;
+  icon = [viewCopy icon];
+  location = [viewCopy location];
+  delegate = [(SBHIconManager *)self delegate];
   v13 = SBLogIcon();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v8;
+    v35 = viewCopy;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "Icon tapped: %@", buf, 0xCu);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v12 iconManager:self willPrepareIconViewForLaunch:v8];
+    [delegate iconManager:self willPrepareIconViewForLaunch:viewCopy];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __63__SBHIconManager_launchFromIconView_withActions_modifierFlags___block_invoke;
   aBlock[3] = &unk_1E80902D8;
-  v14 = v8;
+  v14 = viewCopy;
   v27 = v14;
-  v15 = v10;
+  v15 = icon;
   v28 = v15;
-  v29 = self;
-  v30 = v9;
-  v31 = v12;
-  v32 = v11;
-  v33 = a5;
-  v16 = v11;
-  v17 = v12;
-  v18 = v9;
+  selfCopy = self;
+  v30 = actionsCopy;
+  v31 = delegate;
+  v32 = location;
+  flagsCopy = flags;
+  v16 = location;
+  v17 = delegate;
+  v18 = actionsCopy;
   v19 = _Block_copy(aBlock);
   v20 = [(SBHIconManager *)self floatingDockViewControllerForView:v14];
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 isPresentingLibrary];
+    isPresentingLibrary = [v20 isPresentingLibrary];
   }
 
   else
   {
     if ([(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView])
     {
-      v23 = [(SBHIconManager *)self _currentFolderController];
+      _currentFolderController = [(SBHIconManager *)self _currentFolderController];
 LABEL_16:
       v19[2](v19);
       goto LABEL_17;
     }
 
-    v22 = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
+    isPresentingLibrary = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
   }
 
-  v24 = v22;
-  v23 = [(SBHIconManager *)self _currentFolderController];
-  if ((v24 & 1) != 0 || -[SBHIconManager isShowingLeadingCustomView](self, "isShowingLeadingCustomView") || ![v23 isDisplayingIconView:v14])
+  v24 = isPresentingLibrary;
+  _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+  if ((v24 & 1) != 0 || -[SBHIconManager isShowingLeadingCustomView](self, "isShowingLeadingCustomView") || ![_currentFolderController isDisplayingIconView:v14])
   {
     goto LABEL_16;
   }
@@ -16748,7 +16748,7 @@ LABEL_16:
     _os_log_impl(&dword_1BEB18000, v25, OS_LOG_TYPE_INFO, "Telling current folder controller to prepare to launch: %@", buf, 0xCu);
   }
 
-  [v23 prepareToLaunchTappedIcon:v15 completionHandler:v19];
+  [_currentFolderController prepareToLaunchTappedIcon:v15 completionHandler:v19];
 LABEL_17:
   [(SBHIconManager *)self setPreviewInteractingIconView:0];
 }
@@ -16860,33 +16860,33 @@ LABEL_4:
   }
 }
 
-- (void)launchFolderFromIconView:(id)a3 withActions:(id)a4 modifierFlags:(int64_t)a5
+- (void)launchFolderFromIconView:(id)view withActions:(id)actions modifierFlags:(int64_t)flags
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 icon];
-  v10 = [v7 location];
+  viewCopy = view;
+  actionsCopy = actions;
+  icon = [viewCopy icon];
+  location = [viewCopy location];
   v11 = objc_alloc_init(SBHIconLaunchContext);
-  [(SBHIconLaunchContext *)v11 setIconView:v7];
-  [(SBHIconLaunchContext *)v11 setActions:v8];
+  [(SBHIconLaunchContext *)v11 setIconView:viewCopy];
+  [(SBHIconLaunchContext *)v11 setActions:actionsCopy];
   v12 = +[SBHIconViewContextMenuStateController sharedInstance];
-  v13 = [v12 areAnyIconViewContextMenusShowing];
+  areAnyIconViewContextMenusShowing = [v12 areAnyIconViewContextMenusShowing];
 
-  if (!v13)
+  if (!areAnyIconViewContextMenusShowing)
   {
     goto LABEL_4;
   }
 
-  v14 = [(SBHIconManager *)self previewInteractingIconView];
-  v15 = [v14 icon];
+  previewInteractingIconView = [(SBHIconManager *)self previewInteractingIconView];
+  icon2 = [previewInteractingIconView icon];
 
-  if (v9 != v15)
+  if (icon != icon2)
   {
     v16 = +[SBHIconViewContextMenuStateController sharedInstance];
     [v16 earlyTerminateAnyContextMenuAnimations];
 
 LABEL_4:
-    [(SBHIconManager *)self pushExpandedIcon:v9 location:v10 context:v11 forcePoppingPriorExpandedIcon:1 animated:1 completionHandler:0];
+    [(SBHIconManager *)self pushExpandedIcon:icon location:location context:v11 forcePoppingPriorExpandedIcon:1 animated:1 completionHandler:0];
     goto LABEL_5;
   }
 
@@ -16905,9 +16905,9 @@ LABEL_4:
   v19[2] = __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___block_invoke;
   v19[3] = &unk_1E8090300;
   objc_copyWeak(&v24, buf);
-  v20 = v9;
-  v21 = v7;
-  v22 = v10;
+  v20 = icon;
+  v21 = viewCopy;
+  v22 = location;
   v23 = v11;
   [v18 dismissAppIconForceTouchControllers:v19];
 
@@ -16937,49 +16937,49 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   }
 }
 
-- (void)iconTapped:(id)a3 modifierFlags:(int64_t)a4
+- (void)iconTapped:(id)tapped modifierFlags:(int64_t)flags
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(SBHIconManager *)self highlightIconView:v6];
-  v7 = [v6 icon];
-  v8 = [(SBHIconManager *)self delegate];
-  v9 = [(SBHIconManager *)self iconDragManager];
-  [v9 noteIconTapped];
-  if ([v7 isFileStackIcon])
+  tappedCopy = tapped;
+  [(SBHIconManager *)self highlightIconView:tappedCopy];
+  icon = [tappedCopy icon];
+  delegate = [(SBHIconManager *)self delegate];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteIconTapped];
+  if ([icon isFileStackIcon])
   {
     if (objc_opt_respondsToSelector())
     {
-      [v8 iconManager:self tapFloatingDockStackIconView:v6];
+      [delegate iconManager:self tapFloatingDockStackIconView:tappedCopy];
     }
   }
 
-  else if ([v7 isLeafIcon] && -[SBHIconManager isEditing](self, "isEditing"))
+  else if ([icon isLeafIcon] && -[SBHIconManager isEditing](self, "isEditing"))
   {
-    if ([v6 supportsStackConfigurationCard])
+    if ([tappedCopy supportsStackConfigurationCard])
     {
       v10 = SBLogIcon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v6;
+        v26 = tappedCopy;
         _os_log_impl(&dword_1BEB18000, v10, OS_LOG_TYPE_DEFAULT, "Starting stack configuration of icon due to tap: %@", buf, 0xCu);
       }
 
-      [v6 presentStackConfigurationCard];
+      [tappedCopy presentStackConfigurationCard];
     }
 
-    else if ([v6 supportsConfigurationCard])
+    else if ([tappedCopy supportsConfigurationCard])
     {
       v21 = SBLogIcon();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v6;
+        v26 = tappedCopy;
         _os_log_impl(&dword_1BEB18000, v21, OS_LOG_TYPE_DEFAULT, "Starting configuration of icon due to tap: %@", buf, 0xCu);
       }
 
-      [v6 presentConfigurationCard];
+      [tappedCopy presentConfigurationCard];
     }
 
     else
@@ -16989,28 +16989,28 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v26 = v6;
+        v26 = tappedCopy;
         _os_log_impl(&dword_1BEB18000, v22, OS_LOG_TYPE_DEFAULT, "Ignoring tap to icon because of editing: %@", buf, 0xCu);
       }
     }
   }
 
-  else if ([v7 isLaunchEnabled])
+  else if ([icon isLaunchEnabled])
   {
-    if ([v7 isWidgetIcon] && (objc_msgSend(v7, "activeWidget"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([icon isWidgetIcon] && (objc_msgSend(icon, "activeWidget"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      v13 = [v11 uniqueIdentifier];
-      v14 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-      v15 = [v14 viewControllerForIdentifier:v13];
+      uniqueIdentifier = [v11 uniqueIdentifier];
+      _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+      v15 = [_effectiveWidgetMultiplexingManager viewControllerForIdentifier:uniqueIdentifier];
 
       if ([v15 sbh_isWidgetHostViewController])
       {
         v16 = v15;
-        v17 = [v6 customIconImageViewController];
-        if ([v17 sbh_isWidgetStackViewController])
+        customIconImageViewController = [tappedCopy customIconImageViewController];
+        if ([customIconImageViewController sbh_isWidgetStackViewController])
         {
-          v18 = v17;
+          v18 = customIconImageViewController;
         }
 
         else
@@ -17021,12 +17021,12 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
         v19 = v18;
         if (([v19 isWidgetHitTestingDisabled] & 1) == 0)
         {
-          v24 = [v19 sbh_underlyingAvocadoHostViewControllers];
-          if ([v24 containsObject:v16])
+          sbh_underlyingAvocadoHostViewControllers = [v19 sbh_underlyingAvocadoHostViewControllers];
+          if ([sbh_underlyingAvocadoHostViewControllers containsObject:v16])
           {
-            v23 = [v16 shouldShareTouchesWithHost];
+            shouldShareTouchesWithHost = [v16 shouldShareTouchesWithHost];
 
-            if (v23)
+            if (shouldShareTouchesWithHost)
             {
               [v16 requestLaunch];
             }
@@ -17041,8 +17041,8 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
 
     else
     {
-      v12 = [(SBHIconManager *)self launchActionsForIconView:v6];
-      [(SBHIconManager *)self launchFromIconView:v6 withActions:v12 modifierFlags:a4];
+      v12 = [(SBHIconManager *)self launchActionsForIconView:tappedCopy];
+      [(SBHIconManager *)self launchFromIconView:tappedCopy withActions:v12 modifierFlags:flags];
     }
   }
 
@@ -17052,34 +17052,34 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = tappedCopy;
       _os_log_impl(&dword_1BEB18000, v20, OS_LOG_TYPE_DEFAULT, "Ignoring tap to icon because launching is not allowed: %@", buf, 0xCu);
     }
 
     [(SBHIconManager *)self clearHighlightedIcon];
     if (objc_opt_respondsToSelector())
     {
-      [v8 iconManager:self didReceiveTapOnLaunchDisabledIconView:v6];
+      [delegate iconManager:self didReceiveTapOnLaunchDisabledIconView:tappedCopy];
     }
   }
 }
 
-- (BOOL)icon:(id)a3 canReceiveGrabbedIcon:(id)a4
+- (BOOL)icon:(id)icon canReceiveGrabbedIcon:(id)grabbedIcon
 {
-  v6 = a4;
-  v7 = [a3 icon];
+  grabbedIconCopy = grabbedIcon;
+  icon = [icon icon];
   if ([(SBHIconManager *)self hasOpenFolder])
   {
-    v8 = ([v6 isWidgetIcon] & 1) == 0 && -[SBHIconManager allowsNestedFolders](self, "allowsNestedFolders");
+    v8 = ([grabbedIconCopy isWidgetIcon] & 1) == 0 && -[SBHIconManager allowsNestedFolders](self, "allowsNestedFolders");
   }
 
-  else if ([v7 isWidgetIcon] && objc_msgSend(v6, "isWidgetIcon"))
+  else if ([icon isWidgetIcon] && objc_msgSend(grabbedIconCopy, "isWidgetIcon"))
   {
-    v9 = [v7 iconDataSourcesExcludingSuggestionsCount];
-    v10 = [v6 iconDataSourcesExcludingSuggestionsCount] + v9;
+    iconDataSourcesExcludingSuggestionsCount = [icon iconDataSourcesExcludingSuggestionsCount];
+    v10 = [grabbedIconCopy iconDataSourcesExcludingSuggestionsCount] + iconDataSourcesExcludingSuggestionsCount;
     v11 = +[SBHHomeScreenDomain rootSettings];
-    v12 = [v11 widgetSettings];
-    v8 = v10 <= [v12 maximumWidgetsInAStack];
+    widgetSettings = [v11 widgetSettings];
+    v8 = v10 <= [widgetSettings maximumWidgetsInAStack];
   }
 
   else
@@ -17090,15 +17090,15 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v8;
 }
 
-- (void)iconCloseBoxTapped:(id)a3
+- (void)iconCloseBoxTapped:(id)tapped
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = SBLogIcon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = tappedCopy;
     _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Icon close box tapped: %@", &v9, 0xCu);
   }
 
@@ -17106,29 +17106,29 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   [(SBHIconManager *)self _restartEditingEndTimer];
   if ([(SBHIconManager *)self _shouldRespondToIconCloseBoxes])
   {
-    v6 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 iconManager:self iconCloseBoxTapped:v4];
+      [delegate iconManager:self iconCloseBoxTapped:tappedCopy];
     }
 
-    v7 = [v4 icon];
-    v8 = [v4 location];
+    icon = [tappedCopy icon];
+    location = [tappedCopy location];
     if (objc_opt_respondsToSelector())
     {
-      [v6 iconManager:self wantsUninstallForIcon:v7 location:v8];
+      [delegate iconManager:self wantsUninstallForIcon:icon location:location];
     }
   }
 }
 
-- (BOOL)iconViewDisplaysAccessories:(id)a3
+- (BOOL)iconViewDisplaysAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([(SBHIconManager *)self allowsBadgingForIcon:v5])
+  accessoriesCopy = accessories;
+  icon = [accessoriesCopy icon];
+  if ([(SBHIconManager *)self allowsBadgingForIcon:icon])
   {
-    v6 = [v4 location];
-    v7 = [(SBHIconManager *)self allowsBadgingForIconLocation:v6];
+    location = [accessoriesCopy location];
+    v7 = [(SBHIconManager *)self allowsBadgingForIconLocation:location];
   }
 
   else
@@ -17139,13 +17139,13 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v7;
 }
 
-- (BOOL)iconViewDisplaysCloseBox:(id)a3
+- (BOOL)iconViewDisplaysCloseBox:(id)box
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  boxCopy = box;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self iconViewDisplaysCloseBox:v4];
+    v6 = [delegate iconManager:self iconViewDisplaysCloseBox:boxCopy];
   }
 
   else
@@ -17156,13 +17156,13 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v6;
 }
 
-- (BOOL)iconViewDisplaysLabel:(id)a3
+- (BOOL)iconViewDisplaysLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  labelCopy = label;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self iconViewDisplaysLabel:v4];
+    v6 = [delegate iconManager:self iconViewDisplaysLabel:labelCopy];
   }
 
   else
@@ -17173,18 +17173,18 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v6;
 }
 
-- (BOOL)iconViewDisplaysResizeHandle:(id)a3
+- (BOOL)iconViewDisplaysResizeHandle:(id)handle
 {
-  v3 = [a3 icon];
-  v4 = [v3 isWidgetIcon];
+  icon = [handle icon];
+  isWidgetIcon = [icon isWidgetIcon];
 
-  return v4;
+  return isWidgetIcon;
 }
 
 - (BOOL)allowsFocus
 {
-  v3 = [(SBHIconManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v3 isFocusAllowedForIconManager:self])
+  delegate = [(SBHIconManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [delegate isFocusAllowedForIconManager:self])
   {
     v4 = ![(SBHIconManager *)self isEditing];
   }
@@ -17197,13 +17197,13 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v4;
 }
 
-- (unint64_t)focusEffectTypeForIconView:(id)a3
+- (unint64_t)focusEffectTypeForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self focusEffectTypeForIconView:v4];
+    v6 = [delegate iconManager:self focusEffectTypeForIconView:viewCopy];
   }
 
   else
@@ -17214,16 +17214,16 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v6;
 }
 
-- (BOOL)iconView:(id)a3 editingModeGestureRecognizerDidFire:(id)a4
+- (BOOL)iconView:(id)view editingModeGestureRecognizerDidFire:(id)fire
 {
-  v5 = a3;
-  v6 = [(SBHIconManager *)self isEditingAllowed];
-  v7 = !v6 | [(SBHIconManager *)self isEditing];
+  viewCopy = view;
+  isEditingAllowed = [(SBHIconManager *)self isEditingAllowed];
+  v7 = !isEditingAllowed | [(SBHIconManager *)self isEditing];
   if (v7)
   {
-    if (!v6 && [(SBHIconManager *)self isEditingAllowedForIconView:v5])
+    if (!isEditingAllowed && [(SBHIconManager *)self isEditingAllowedForIconView:viewCopy])
     {
-      [(SBHIconManager *)self setEditing:1 fromIconView:v5];
+      [(SBHIconManager *)self setEditing:1 fromIconView:viewCopy];
     }
   }
 
@@ -17235,32 +17235,32 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return (v7 & 1) == 0;
 }
 
-- (void)setPreviewInteractingIconView:(id)a3
+- (void)setPreviewInteractingIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   previewInteractingIconView = self->_previewInteractingIconView;
-  if (previewInteractingIconView != v5)
+  if (previewInteractingIconView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     v7 = previewInteractingIconView;
-    objc_storeStrong(&self->_previewInteractingIconView, a3);
+    objc_storeStrong(&self->_previewInteractingIconView, view);
     if (v7)
     {
-      v8 = [(SBHIconManager *)self iconDragManager];
-      [v8 informQuickActionPlatterDidFinishPresentation:v7];
+      iconDragManager = [(SBHIconManager *)self iconDragManager];
+      [iconDragManager informQuickActionPlatterDidFinishPresentation:v7];
     }
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (id)launchActionsForIconView:(id)a3
+- (id)launchActionsForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self launchActionsForIconView:v4];
+    [delegate iconManager:self launchActionsForIconView:viewCopy];
   }
 
   else
@@ -17272,13 +17272,13 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v6;
 }
 
-- (id)launchURLForIconView:(id)a3
+- (id)launchURLForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self launchURLForIconView:v4];
+    v6 = [delegate iconManager:self launchURLForIconView:viewCopy];
   }
 
   else
@@ -17289,57 +17289,57 @@ void __69__SBHIconManager_launchFolderFromIconView_withActions_modifierFlags___b
   return v6;
 }
 
-- (id)imageViewForIconView:(id)a3
+- (id)imageViewForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self homescreenIconImageViewMap];
-  v6 = [v4 expectedIconImageViewClass];
+  viewCopy = view;
+  homescreenIconImageViewMap = [(SBHIconManager *)self homescreenIconImageViewMap];
+  expectedIconImageViewClass = [viewCopy expectedIconImageViewClass];
 
-  v7 = [v5 viewOfClass:v6];
+  v7 = [homescreenIconImageViewMap viewOfClass:expectedIconImageViewClass];
 
   return v7;
 }
 
-- (void)iconView:(id)a3 willRemoveIconImageView:(id)a4
+- (void)iconView:(id)view willRemoveIconImageView:(id)imageView
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self homescreenIconImageViewMap];
-  [v6 recycleView:v5];
+  imageViewCopy = imageView;
+  homescreenIconImageViewMap = [(SBHIconManager *)self homescreenIconImageViewMap];
+  [homescreenIconImageViewMap recycleView:imageViewCopy];
 }
 
-- (id)iconView:(id)a3 iconAccessoryViewOfClass:(Class)a4
+- (id)iconView:(id)view iconAccessoryViewOfClass:(Class)class
 {
-  v5 = [(SBHIconManager *)self homescreenIconAccessoryViewMap];
-  v6 = [v5 viewOfClass:a4];
+  homescreenIconAccessoryViewMap = [(SBHIconManager *)self homescreenIconAccessoryViewMap];
+  v6 = [homescreenIconAccessoryViewMap viewOfClass:class];
 
   return v6;
 }
 
-- (void)iconView:(id)a3 willRemoveIconAccessoryView:(id)a4
+- (void)iconView:(id)view willRemoveIconAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self homescreenIconAccessoryViewMap];
-  [v6 recycleView:v5];
+  accessoryViewCopy = accessoryView;
+  homescreenIconAccessoryViewMap = [(SBHIconManager *)self homescreenIconAccessoryViewMap];
+  [homescreenIconAccessoryViewMap recycleView:accessoryViewCopy];
 }
 
-- (id)parallaxSettingsForComponentsOfIconView:(id)a3
+- (id)parallaxSettingsForComponentsOfIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 location];
-  if (!-[SBHIconManager _shouldParallaxInIconLocation:](self, "_shouldParallaxInIconLocation:", v5) || ![MEMORY[0x1E69DD250] _motionEffectsSupported])
+  viewCopy = view;
+  location = [viewCopy location];
+  if (!-[SBHIconManager _shouldParallaxInIconLocation:](self, "_shouldParallaxInIconLocation:", location) || ![MEMORY[0x1E69DD250] _motionEffectsSupported])
   {
     goto LABEL_5;
   }
 
-  v6 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self supportsParallaxForIconView:v4];
+    v7 = [delegate iconManager:self supportsParallaxForIconView:viewCopy];
 
     if (!v7)
     {
 LABEL_5:
-      v8 = 0;
+      badgeParallaxSettings = 0;
       goto LABEL_6;
     }
   }
@@ -17349,54 +17349,54 @@ LABEL_5:
   }
 
   v10 = +[SBHHomeScreenDomain rootSettings];
-  v11 = [v10 iconSettings];
-  v8 = [v11 badgeParallaxSettings];
+  iconSettings = [v10 iconSettings];
+  badgeParallaxSettings = [iconSettings badgeParallaxSettings];
 
 LABEL_6:
 
-  return v8;
+  return badgeParallaxSettings;
 }
 
-- (id)iconView:(id)a3 iconLabelAccessoryViewOfType:(int64_t)a4
+- (id)iconView:(id)view iconLabelAccessoryViewOfType:(int64_t)type
 {
-  v5 = [(SBHIconManager *)self homescreenIconLabelAccessoryViewMap];
-  v6 = [v5 viewOfClass:SBViewClassForIconLabelAccessoryType(a4)];
+  homescreenIconLabelAccessoryViewMap = [(SBHIconManager *)self homescreenIconLabelAccessoryViewMap];
+  v6 = [homescreenIconLabelAccessoryViewMap viewOfClass:SBViewClassForIconLabelAccessoryType(type)];
 
   return v6;
 }
 
-- (void)iconView:(id)a3 willRemoveIconLabelAccessoryView:(id)a4
+- (void)iconView:(id)view willRemoveIconLabelAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self homescreenIconLabelAccessoryViewMap];
-  [v6 recycleView:v5];
+  accessoryViewCopy = accessoryView;
+  homescreenIconLabelAccessoryViewMap = [(SBHIconManager *)self homescreenIconLabelAccessoryViewMap];
+  [homescreenIconLabelAccessoryViewMap recycleView:accessoryViewCopy];
 }
 
-- (id)iconView:(id)a3 labelImageWithParameters:(id)a4
+- (id)iconView:(id)view labelImageWithParameters:(id)parameters
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self iconLabelImageCache];
-  v7 = [v6 labelImageWithParameters:v5];
+  parametersCopy = parameters;
+  iconLabelImageCache = [(SBHIconManager *)self iconLabelImageCache];
+  v7 = [iconLabelImageCache labelImageWithParameters:parametersCopy];
 
   return v7;
 }
 
-- (id)iconView:(id)a3 labelContentWithParameters:(id)a4
+- (id)iconView:(id)view labelContentWithParameters:(id)parameters
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self iconLabelImageCache];
-  v7 = [v6 labelContentWithParameters:v5];
+  parametersCopy = parameters;
+  iconLabelImageCache = [(SBHIconManager *)self iconLabelImageCache];
+  v7 = [iconLabelImageCache labelContentWithParameters:parametersCopy];
 
   return v7;
 }
 
-- (int64_t)closeBoxTypeForIconView:(id)a3
+- (int64_t)closeBoxTypeForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self closeBoxTypeForIconView:v4 proposedType:0];
+    v6 = [delegate iconManager:self closeBoxTypeForIconView:viewCopy proposedType:0];
   }
 
   else
@@ -17407,25 +17407,25 @@ LABEL_6:
   return v6;
 }
 
-- (id)supportedGridSizeClassesForIconView:(id)a3
+- (id)supportedGridSizeClassesForIconView:(id)view
 {
   v37 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v21 = [v20 icon];
-  if (![v21 isWidgetIcon])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if (![icon isWidgetIcon])
   {
     goto LABEL_24;
   }
 
-  v22 = v21;
-  v3 = [v22 iconDataSources];
-  v23 = [(SBHIconManager *)self gridSizeClassDomain];
+  v22 = icon;
+  iconDataSources = [v22 iconDataSources];
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = v3;
-  v5 = 0;
+  v4 = iconDataSources;
+  allGridSizeClasses = 0;
   v6 = [v4 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v6)
   {
@@ -17446,10 +17446,10 @@ LABEL_6:
         if (isKindOfClass)
         {
           v12 = v9;
-          v13 = [(SBHIconManager *)self widgetExtensionProvider];
-          v14 = [v13 sbh_descriptorForWidgetIdentifiable:v12];
+          widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+          v14 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v12];
 
-          v15 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v14 supportedFamilies], v23);
+          v15 = -[SBHIconGridSizeClassSet initWithCHSWidgetFamilyMask:inDomain:]([SBHIconGridSizeClassSet alloc], "initWithCHSWidgetFamilyMask:inDomain:", [v14 supportedFamilies], gridSizeClassDomain);
           if (!v15)
           {
             continue;
@@ -17470,14 +17470,14 @@ LABEL_6:
           }
         }
 
-        if (v5)
+        if (allGridSizeClasses)
         {
-          [v5 intersectGridSizeClassSet:v15];
+          [allGridSizeClasses intersectGridSizeClassSet:v15];
         }
 
         else
         {
-          v5 = [(SBHIconGridSizeClassSet *)v15 mutableCopy];
+          allGridSizeClasses = [(SBHIconGridSizeClassSet *)v15 mutableCopy];
         }
       }
 
@@ -17489,10 +17489,10 @@ LABEL_6:
     }
   }
 
-  v16 = [v20 location];
-  if ([v5 containsGridSizeClass:@"SBHIconGridSizeClassNewsLargeTall"] && SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", v16))
+  location = [viewCopy location];
+  if ([allGridSizeClasses containsGridSizeClass:@"SBHIconGridSizeClassNewsLargeTall"] && SBIconLocationGroupContainsLocation(@"SBIconLocationGroupTodayView", location))
   {
-    v17 = [(SBHIconManager *)self rootFolder];
+    rootFolder = [(SBHIconManager *)self rootFolder];
     v28 = 0;
     v29 = &v28;
     v30 = 0x2020000000;
@@ -17503,23 +17503,23 @@ LABEL_6:
     v25[3] = &unk_1E8090328;
     v26 = v22;
     v27 = &v28;
-    [v17 enumerateTodayListIconsUsingBlock:v25];
+    [rootFolder enumerateTodayListIconsUsingBlock:v25];
     if (*(v29 + 24) == 1)
     {
-      [v5 removeGridSizeClass:@"SBHIconGridSizeClassNewsLargeTall"];
+      [allGridSizeClasses removeGridSizeClass:@"SBHIconGridSizeClassNewsLargeTall"];
     }
 
     _Block_object_dispose(&v28, 8);
   }
 
-  if (!v5)
+  if (!allGridSizeClasses)
   {
 LABEL_24:
-    v18 = [(SBHIconManager *)self gridSizeClassDomain];
-    v5 = [v18 allGridSizeClasses];
+    gridSizeClassDomain2 = [(SBHIconManager *)self gridSizeClassDomain];
+    allGridSizeClasses = [gridSizeClassDomain2 allGridSizeClasses];
   }
 
-  return v5;
+  return allGridSizeClasses;
 }
 
 void __54__SBHIconManager_supportedGridSizeClassesForIconView___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -17561,22 +17561,22 @@ LABEL_6:
 LABEL_8:
 }
 
-- (id)supportedIconGridSizeClassesForResizeOfIconView:(id)a3
+- (id)supportedIconGridSizeClassesForResizeOfIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self supportedGridSizeClassesForIconView:v4];
-  v6 = [v4 icon];
+  viewCopy = view;
+  v5 = [(SBHIconManager *)self supportedGridSizeClassesForIconView:viewCopy];
+  icon = [viewCopy icon];
 
-  if (![v6 isWidgetStackIcon])
+  if (![icon isWidgetStackIcon])
   {
-    if ([v6 isWidgetIcon])
+    if ([icon isWidgetIcon])
     {
-      v7 = [(SBHIconManager *)self iconForReplacingWidgetIconWithAppIcon:v6];
+      v7 = [(SBHIconManager *)self iconForReplacingWidgetIconWithAppIcon:icon];
       if ([v7 isApplicationIcon])
       {
-        v8 = [v7 application];
-        v9 = v8;
-        if (v8 && ([v8 hasHiddenTag] & 1) == 0)
+        application = [v7 application];
+        v9 = application;
+        if (application && ([application hasHiddenTag] & 1) == 0)
         {
           v10 = [v5 gridSizeClassSetByAddingGridSizeClass:@"SBHIconGridSizeClassDefault"];
 
@@ -17590,11 +17590,11 @@ LABEL_8:
       }
     }
 
-    if ([v6 isApplicationIcon])
+    if ([icon isApplicationIcon])
     {
       v11 = MEMORY[0x1E698B0D0];
-      v12 = [v6 applicationBundleID];
-      v13 = [v11 applicationWithBundleIdentifier:v12];
+      applicationBundleID = [icon applicationBundleID];
+      v13 = [v11 applicationWithBundleIdentifier:applicationBundleID];
 
       if ([v13 isLocked])
       {
@@ -17603,10 +17603,10 @@ LABEL_8:
         goto LABEL_17;
       }
 
-      v15 = [(SBHIconManager *)self iconDataSourceForReplacingAppIconWithWidgetIcon:v6];
+      v15 = [(SBHIconManager *)self iconDataSourceForReplacingAppIconWithWidgetIcon:icon];
       if (objc_opt_respondsToSelector())
       {
-        [v15 supportedGridSizeClassesForIcon:v6];
+        [v15 supportedGridSizeClassesForIcon:icon];
       }
 
       else
@@ -17626,13 +17626,13 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)allowsBadgingForIcon:(id)a3
+- (BOOL)allowsBadgingForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self allowsBadgingForIcon:v4];
+    v6 = [delegate iconManager:self allowsBadgingForIcon:iconCopy];
   }
 
   else
@@ -17643,13 +17643,13 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)allowsBadgingForIconLocation:(id)a3
+- (BOOL)allowsBadgingForIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  locationCopy = location;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self allowsBadgingForIconLocation:v4];
+    v6 = [delegate iconManager:self allowsBadgingForIconLocation:locationCopy];
   }
 
   else
@@ -17660,13 +17660,13 @@ LABEL_17:
   return v6;
 }
 
-- (id)iconView:(id)a3 backgroundViewForComponentsOfType:(int64_t)a4
+- (id)iconView:(id)view backgroundViewForComponentsOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 iconManager:self backgroundViewForComponentsOfType:a4 forIconView:v6];
+    v8 = [delegate iconManager:self backgroundViewForComponentsOfType:type forIconView:viewCopy];
     if (v8)
     {
       goto LABEL_9;
@@ -17675,24 +17675,24 @@ LABEL_17:
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 iconManager:self backgroundViewForComponentsOfIconView:v6];
+    v8 = [delegate iconManager:self backgroundViewForComponentsOfIconView:viewCopy];
     if (v8)
     {
       goto LABEL_9;
     }
   }
 
-  v9 = [v6 icon];
-  v10 = [v9 isWidgetIcon];
+  icon = [viewCopy icon];
+  isWidgetIcon = [icon isWidgetIcon];
 
-  if (!v10)
+  if (!isWidgetIcon)
   {
     goto LABEL_10;
   }
 
-  if (a4 != 4)
+  if (type != 4)
   {
-    if (a4 == 5)
+    if (type == 5)
     {
       v8 = objc_alloc_init(SBHMultiplexingWrapperGlassBackgroundView);
 LABEL_9:
@@ -17705,22 +17705,22 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v13 = [(SBHIconManager *)self widgetBackgroundViewMap];
-  v11 = [v13 viewOfClass:objc_opt_class()];
+  widgetBackgroundViewMap = [(SBHIconManager *)self widgetBackgroundViewMap];
+  v11 = [widgetBackgroundViewMap viewOfClass:objc_opt_class()];
 
 LABEL_11:
 
   return v11;
 }
 
-- (BOOL)iconView:(id)a3 shouldContinueToUseBackgroundViewForComponents:(id)a4
+- (BOOL)iconView:(id)view shouldContinueToUseBackgroundViewForComponents:(id)components
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  componentsCopy = components;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self shouldContinueToUseBackgroundView:v7 forComponentsOfIconView:v6];
+    v9 = [delegate iconManager:self shouldContinueToUseBackgroundView:componentsCopy forComponentsOfIconView:viewCopy];
   }
 
   else
@@ -17731,13 +17731,13 @@ LABEL_11:
   return v9;
 }
 
-- (id)screenSnapshotProviderForComponentsOfIconView:(id)a3
+- (id)screenSnapshotProviderForComponentsOfIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self screenSnapshotProviderForComponentsOfIconView:v4];
+    v6 = [delegate iconManager:self screenSnapshotProviderForComponentsOfIconView:viewCopy];
   }
 
   else
@@ -17748,13 +17748,13 @@ LABEL_11:
   return v6;
 }
 
-- (id)accessibilityTintColorForIconView:(id)a3
+- (id)accessibilityTintColorForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self accessibilityTintColorForIconView:v4];
+    v6 = [delegate iconManager:self accessibilityTintColorForIconView:viewCopy];
   }
 
   else
@@ -17765,36 +17765,36 @@ LABEL_11:
   return v6;
 }
 
-- (id)customImageViewControllerForIconView:(id)a3
+- (id)customImageViewControllerForIconView:(id)view
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 icon];
-  if ([v6 isWidgetIcon])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isWidgetIcon])
   {
     widgetViewControllersForIconView = self->_widgetViewControllersForIconView;
     if (!widgetViewControllersForIconView)
     {
-      v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+      weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
       v9 = self->_widgetViewControllersForIconView;
-      self->_widgetViewControllersForIconView = v8;
+      self->_widgetViewControllersForIconView = weakToWeakObjectsMapTable;
 
       widgetViewControllersForIconView = self->_widgetViewControllersForIconView;
     }
 
-    v10 = [(NSMapTable *)widgetViewControllersForIconView objectForKey:v5];
+    v10 = [(NSMapTable *)widgetViewControllersForIconView objectForKey:viewCopy];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(SBHWidgetAddGalleryWidgetViewController *)v10 icon];
+      icon2 = [(SBHWidgetAddGalleryWidgetViewController *)v10 icon];
 
-      if (v11 != v6)
+      if (icon2 != icon)
       {
 
 LABEL_11:
-        v12 = v6;
-        v13 = [v12 activeDataSource];
-        v14 = [v5 location];
-        if ([v14 isEqualToString:@"SBIconLocationAddWidgetSheet"])
+        v12 = icon;
+        activeDataSource = [v12 activeDataSource];
+        location = [viewCopy location];
+        if ([location isEqualToString:@"SBIconLocationAddWidgetSheet"])
         {
           if (([v12 isWidgetStackIcon] & 1) == 0)
           {
@@ -17807,11 +17807,11 @@ LABEL_11:
               if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v39 = v5;
+                v39 = viewCopy;
                 _os_log_impl(&dword_1BEB18000, v17, OS_LOG_TYPE_DEFAULT, "Creating new widget custom image view controller for icon view: %@", buf, 0xCu);
               }
 
-              v18 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:v12 dataSource:v13 location:v14];
+              v18 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:v12 dataSource:activeDataSource location:location];
               v10 = [[SBHWidgetAddGalleryWidgetViewController alloc] initWithContentViewController:v18];
 
               if (!v10)
@@ -17821,10 +17821,10 @@ LABEL_11:
 
 LABEL_27:
               [(SBHIconManager *)self rootFolderController];
-              v25 = v24 = v13;
-              [v25 updatePresentationModeFolderContextForIconView:v5];
+              v25 = v24 = activeDataSource;
+              [v25 updatePresentationModeFolderContextForIconView:viewCopy];
 
-              v13 = v24;
+              activeDataSource = v24;
               goto LABEL_28;
             }
           }
@@ -17833,10 +17833,10 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = -[SBHIconManager _multiplexingViewControllerForIcon:dataSource:location:withPriority:](self, "_multiplexingViewControllerForIcon:dataSource:location:withPriority:", v12, v13, v14, [v5 customIconImageViewControllerPriority]);
+          v19 = -[SBHIconManager _multiplexingViewControllerForIcon:dataSource:location:withPriority:](self, "_multiplexingViewControllerForIcon:dataSource:location:withPriority:", v12, activeDataSource, location, [viewCopy customIconImageViewControllerPriority]);
           v20 = objc_opt_class();
           v21 = v19;
-          v35 = v14;
+          v35 = location;
           if (v20)
           {
             if (objc_opt_isKindOfClass())
@@ -17857,12 +17857,12 @@ LABEL_27:
 
           v27 = v22;
 
-          [(SBHIconManager *)self _updateWidgetMultiplexingViewController:v27 forIconView:v5];
-          v28 = [(SBHIconManager *)self delegate];
+          [(SBHIconManager *)self _updateWidgetMultiplexingViewController:v27 forIconView:viewCopy];
+          delegate = [(SBHIconManager *)self delegate];
           v37 = v12;
           if (objc_opt_respondsToSelector())
           {
-            v29 = [v28 iconManager:self canCustomElementAlignWithGrid:v13];
+            v29 = [delegate iconManager:self canCustomElementAlignWithGrid:activeDataSource];
           }
 
           else
@@ -17870,10 +17870,10 @@ LABEL_27:
             v29 = 0;
           }
 
-          v30 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-          v36 = v13;
-          v31 = [v13 uniqueIdentifier];
-          v32 = [v30 objectForKey:v31];
+          _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+          v36 = activeDataSource;
+          uniqueIdentifier = [activeDataSource uniqueIdentifier];
+          v32 = [_effectiveAppPredictionViewControllersForUniqueIdentifier objectForKey:uniqueIdentifier];
 
           if (!v32)
           {
@@ -17881,14 +17881,14 @@ LABEL_27:
           }
 
           v33 = [SBHMultiplexingWrapperViewController alloc];
-          v34 = [v5 location];
-          v10 = [(SBHMultiplexingWrapperViewController *)v33 initWithIcon:v37 location:v34 multiplexingViewController:v27 appPredictionViewController:v32 canAlignWithGrid:v29];
+          location2 = [viewCopy location];
+          v10 = [(SBHMultiplexingWrapperViewController *)v33 initWithIcon:v37 location:location2 multiplexingViewController:v27 appPredictionViewController:v32 canAlignWithGrid:v29];
 
           v12 = v37;
           [(SBHWidgetAddGalleryWidgetViewController *)v10 setDelegate:self];
 
-          v14 = v35;
-          v13 = v36;
+          location = v35;
+          activeDataSource = v36;
           if (v10)
           {
             goto LABEL_27;
@@ -17901,7 +17901,7 @@ LABEL_27:
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v39 = v5;
+            v39 = viewCopy;
             _os_log_impl(&dword_1BEB18000, v23, OS_LOG_TYPE_DEFAULT, "Creating new widget stack view controller for icon view: %@", buf, 0xCu);
           }
 
@@ -17909,7 +17909,7 @@ LABEL_27:
           [(SBHWidgetAddGalleryWidgetViewController *)v10 setDataSource:self];
           [(SBHWidgetAddGalleryWidgetViewController *)v10 setDelegate:self];
           [(SBHWidgetAddGalleryWidgetViewController *)v10 setAutomaticallyUpdatesVisiblySettled:0];
-          -[SBHWidgetAddGalleryWidgetViewController setShowsSquareCorners:](v10, "setShowsSquareCorners:", [v5 showsSquareCorners]);
+          -[SBHWidgetAddGalleryWidgetViewController setShowsSquareCorners:](v10, "setShowsSquareCorners:", [viewCopy showsSquareCorners]);
           if (v10)
           {
             goto LABEL_27;
@@ -17917,7 +17917,7 @@ LABEL_27:
         }
 
 LABEL_28:
-        [(NSMapTable *)self->_widgetViewControllersForIconView setObject:v10 forKey:v5];
+        [(NSMapTable *)self->_widgetViewControllersForIconView setObject:v10 forKey:viewCopy];
 
         if (!v10)
         {
@@ -17934,17 +17934,17 @@ LABEL_28:
     }
 
 LABEL_29:
-    [(SBHIconManager *)self _updateIconView:v5 forCustomIconImageViewController:v10];
+    [(SBHIconManager *)self _updateIconView:viewCopy forCustomIconImageViewController:v10];
     goto LABEL_30;
   }
 
-  if (![v6 isDebugIcon])
+  if (![icon isDebugIcon])
   {
     v10 = 0;
     goto LABEL_30;
   }
 
-  v10 = [[SBHDebugIconViewController alloc] initWithIcon:v6];
+  v10 = [[SBHDebugIconViewController alloc] initWithIcon:icon];
   if (v10)
   {
     goto LABEL_29;
@@ -17955,80 +17955,80 @@ LABEL_30:
   return v10;
 }
 
-- (void)iconViewDidBeginTrackingPossibleResize:(id)a3 context:(id)a4
+- (void)iconViewDidBeginTrackingPossibleResize:(id)resize context:(id)context
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [v17 icon];
-  if ([v7 isWidgetIcon])
+  resizeCopy = resize;
+  contextCopy = context;
+  icon = [resizeCopy icon];
+  if ([icon isWidgetIcon])
   {
-    v8 = v7;
-    v9 = [v17 nextSmallerGridSizeClassForResize];
-    if (v9)
+    v8 = icon;
+    nextSmallerGridSizeClassForResize = [resizeCopy nextSmallerGridSizeClassForResize];
+    if (nextSmallerGridSizeClassForResize)
     {
-      v10 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v8 withGridSizeClass:v9];
+      v10 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v8 withGridSizeClass:nextSmallerGridSizeClassForResize];
       if (v10)
       {
         v11 = v10;
-        [v6 setObject:v10 forKey:@"smallerViewController"];
+        [contextCopy setObject:v10 forKey:@"smallerViewController"];
       }
     }
 
-    v12 = [v17 nextLargerGridSizeClassForResize];
-    if (v12)
+    nextLargerGridSizeClassForResize = [resizeCopy nextLargerGridSizeClassForResize];
+    if (nextLargerGridSizeClassForResize)
     {
-      v13 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v8 withGridSizeClass:v12];
+      v13 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v8 withGridSizeClass:nextLargerGridSizeClassForResize];
       if (v13)
       {
         v14 = v13;
-        [v6 setObject:v13 forKey:@"largerViewController"];
+        [contextCopy setObject:v13 forKey:@"largerViewController"];
       }
     }
 
-    v15 = [(SBHIconManager *)self rootFolderController];
-    v16 = [v15 disableAutoScrollForReason:@"icon resize"];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    v16 = [rootFolderController disableAutoScrollForReason:@"icon resize"];
     if (v16)
     {
-      [v6 setObject:v16 forKey:@"autoScrollAssertion"];
+      [contextCopy setObject:v16 forKey:@"autoScrollAssertion"];
     }
   }
 }
 
-- (id)preWarmCustomViewControllerForWidgetIcon:(id)a3 withGridSizeClass:(id)a4
+- (id)preWarmCustomViewControllerForWidgetIcon:(id)icon withGridSizeClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 gridSizeClass];
-  v9 = v8;
-  if (v8 == v7)
+  iconCopy = icon;
+  classCopy = class;
+  gridSizeClass = [iconCopy gridSizeClass];
+  v9 = gridSizeClass;
+  if (gridSizeClass == classCopy)
   {
   }
 
   else
   {
-    v10 = [v6 gridSizeClass];
-    v11 = [v10 isEqualToString:v7];
+    gridSizeClass2 = [iconCopy gridSizeClass];
+    v11 = [gridSizeClass2 isEqualToString:classCopy];
 
     if (!v11)
     {
-      v12 = [(SBHIconManager *)self makeResizedCopyOfWidgetIcon:v6 withGridSizeClass:v7];
+      v12 = [(SBHIconManager *)self makeResizedCopyOfWidgetIcon:iconCopy withGridSizeClass:classCopy];
       v13 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v12];
 
       goto LABEL_6;
     }
   }
 
-  v13 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:v6];
+  v13 = [(SBHIconManager *)self preWarmCustomViewControllerForWidgetIcon:iconCopy];
 LABEL_6:
 
   return v13;
 }
 
-- (id)preWarmCustomViewControllerForWidgetIcon:(id)a3
+- (id)preWarmCustomViewControllerForWidgetIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [v4 activeDataSource];
-  v6 = [(SBHIconManager *)self _multiplexingViewControllerForIcon:v4 dataSource:v5 location:@"SBIconLocationRoot" withPriority:0];
+  iconCopy = icon;
+  activeDataSource = [iconCopy activeDataSource];
+  v6 = [(SBHIconManager *)self _multiplexingViewControllerForIcon:iconCopy dataSource:activeDataSource location:@"SBIconLocationRoot" withPriority:0];
 
   [v6 beginAppearanceTransition:1 animated:0];
   [v6 endAppearanceTransition];
@@ -18036,21 +18036,21 @@ LABEL_6:
   return v6;
 }
 
-- (id)_customViewControllerForResizingIcon:(id)a3 gridSizeClass:(id)a4 dataSource:(id)a5 location:(id)a6
+- (id)_customViewControllerForResizingIcon:(id)icon gridSizeClass:(id)class dataSource:(id)source location:(id)location
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  iconCopy = icon;
+  classCopy = class;
+  sourceCopy = source;
+  locationCopy = location;
   v14 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass & 1) != 0 || (objc_opt_self(), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_opt_isKindOfClass(), v16, (v17))
   {
-    v18 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:v10 dataSource:v12 location:v13 gridSizeClass:v11];
+    v18 = [(SBHIconManager *)self _makeCustomViewControllerForWidgetIcon:iconCopy dataSource:sourceCopy location:locationCopy gridSizeClass:classCopy];
   }
 
-  else if (v11 && ![v11 isEqualToString:@"SBHIconGridSizeClassDefault"])
+  else if (classCopy && ![classCopy isEqualToString:@"SBHIconGridSizeClassDefault"])
   {
     v18 = 0;
   }
@@ -18058,58 +18058,58 @@ LABEL_6:
   else
   {
     v20 = [SBHLeafIconCustomImageViewController alloc];
-    v21 = [(SBHIconManager *)self iconImageCache];
-    v18 = [(SBHLeafIconCustomImageViewController *)v20 initWithIcon:v10 iconImageCache:v21];
+    iconImageCache = [(SBHIconManager *)self iconImageCache];
+    v18 = [(SBHLeafIconCustomImageViewController *)v20 initWithIcon:iconCopy iconImageCache:iconImageCache];
   }
 
   return v18;
 }
 
-- (void)iconView:(id)a3 wantsResizeToGridSizeClass:(id)a4 completionHandler:(id)a5
+- (void)iconView:(id)view wantsResizeToGridSizeClass:(id)class completionHandler:(id)handler
 {
-  v10 = a4;
-  v8 = a5;
-  v9 = [a3 icon];
-  if ([v9 isWidgetIcon])
+  classCopy = class;
+  handlerCopy = handler;
+  icon = [view icon];
+  if ([icon isWidgetIcon])
   {
-    [(SBHIconManager *)self changeSizeOfWidgetIcon:v9 toSizeClass:v10 animated:1 completionHandler:v8];
+    [(SBHIconManager *)self changeSizeOfWidgetIcon:icon toSizeClass:classCopy animated:1 completionHandler:handlerCopy];
     [(SBHIconManager *)self _restartEditingEndTimer];
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)iconViewDidEndTrackingPossibleResize:(id)a3 context:(id)a4
+- (void)iconViewDidEndTrackingPossibleResize:(id)resize context:(id)context
 {
-  v4 = a4;
-  v5 = [v4 objectForKey:@"autoScrollAssertion"];
+  contextCopy = context;
+  v5 = [contextCopy objectForKey:@"autoScrollAssertion"];
   [v5 invalidate];
-  [v4 removeObjectForKey:@"autoScrollAssertion"];
+  [contextCopy removeObjectForKey:@"autoScrollAssertion"];
 }
 
-- (id)resizeGestureHandlerForIconView:(id)a3
+- (id)resizeGestureHandlerForIconView:(id)view
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 icon];
-  if ([v5 isWidgetIcon])
+  viewCopy = view;
+  icon = [viewCopy icon];
+  if ([icon isWidgetIcon])
   {
-    v6 = [v5 activeDataSource];
-    if (v6)
+    activeDataSource = [icon activeDataSource];
+    if (activeDataSource)
     {
-      v7 = [(SBHIconManager *)self rootFolderController];
-      v8 = [v7 rootFolderView];
-      v9 = [v8 iconListViewDisplayingIconView:v4];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      rootFolderView = [rootFolderController rootFolderView];
+      todayViewControllers = [rootFolderView iconListViewDisplayingIconView:viewCopy];
 
-      if (v9)
+      if (todayViewControllers)
       {
 LABEL_16:
         [(SBHIconManager *)self _discardEndEditingTimerAndDontResetUntilReasonIsRemoved:@"widget resize"];
-        v15 = [(SBHIconManager *)self widgetMetricsProvider];
-        v10 = [[SBWidgetIconResizeGestureHandler alloc] initWithIconView:v4 iconListView:v9 widgetMetricsProvider:v15];
+        widgetMetricsProvider = [(SBHIconManager *)self widgetMetricsProvider];
+        v10 = [[SBWidgetIconResizeGestureHandler alloc] initWithIconView:viewCopy iconListView:todayViewControllers widgetMetricsProvider:widgetMetricsProvider];
         [(SBWidgetIconResizeGestureHandler *)v10 setDelegate:self];
       }
 
@@ -18119,8 +18119,8 @@ LABEL_16:
         v20 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v9 = [(SBHIconManager *)self todayViewControllers];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        todayViewControllers = [(SBHIconManager *)self todayViewControllers];
+        v10 = [todayViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v10)
         {
           v11 = *v18;
@@ -18130,20 +18130,20 @@ LABEL_16:
             {
               if (*v18 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(todayViewControllers);
               }
 
               v13 = *(*(&v17 + 1) + 8 * i);
-              if ([v13 isDisplayingIconView:v4])
+              if ([v13 isDisplayingIconView:viewCopy])
               {
-                v14 = [v13 listView];
+                listView = [v13 listView];
 
-                v9 = v14;
+                todayViewControllers = listView;
                 goto LABEL_16;
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+            v10 = [todayViewControllers countByEnumeratingWithState:&v17 objects:v21 count:16];
             if (v10)
             {
               continue;
@@ -18169,14 +18169,14 @@ LABEL_16:
   return v10;
 }
 
-- (void)_setupApplicationShortcutItemsForPresentation:(id)a3
+- (void)_setupApplicationShortcutItemsForPresentation:(id)presentation
 {
-  v6 = a3;
+  presentationCopy = presentation;
   [(SBHIconManager *)self setPreviewInteractingIconView:?];
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 iconManager:self applicationShortcutItemsForIconView:v6];
+    v5 = [delegate iconManager:self applicationShortcutItemsForIconView:presentationCopy];
   }
 
   else
@@ -18184,45 +18184,45 @@ LABEL_16:
     v5 = 0;
   }
 
-  [v6 setApplicationShortcutItems:v5];
+  [presentationCopy setApplicationShortcutItems:v5];
 }
 
-- (BOOL)iconView:(id)a3 supportsConfigurationForDataSource:(id)a4
+- (BOOL)iconView:(id)view supportsConfigurationForDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  sourceCopy = source;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = sourceCopy;
     if (v8)
     {
-      v9 = [(SBHIconManager *)self widgetExtensionProvider];
-      v10 = [v9 sbh_descriptors];
+      widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+      sbh_descriptors = [widgetExtensionProvider sbh_descriptors];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __62__SBHIconManager_iconView_supportsConfigurationForDataSource___block_invoke;
       v23[3] = &unk_1E8090350;
       v11 = v8;
       v24 = v11;
-      v12 = [v10 bs_firstObjectPassingTest:v23];
+      v12 = [sbh_descriptors bs_firstObjectPassingTest:v23];
 
-      v13 = [v12 intentType];
+      intentType = [v12 intentType];
 
-      if (v13)
+      if (intentType)
       {
-        v14 = [v6 icon];
-        if ([v14 isWidgetIcon])
+        icon = [viewCopy icon];
+        if ([icon isWidgetIcon])
         {
-          v15 = [v6 icon];
+          icon2 = [viewCopy icon];
         }
 
         else
         {
-          v15 = 0;
+          icon2 = 0;
         }
 
-        v16 = [(SBHIconManager *)self _intentForWidget:v11 ofIcon:v15 creatingIfNecessary:0];
+        v16 = [(SBHIconManager *)self _intentForWidget:v11 ofIcon:icon2 creatingIfNecessary:0];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -18234,19 +18234,19 @@ LABEL_16:
           self = [v16 _codableDescription];
           [(SBHIconManager *)self attributes];
           v22 = v11;
-          v18 = v17 = v9;
+          v18 = v17 = widgetExtensionProvider;
           [v18 allValues];
-          v19 = v21 = v15;
+          v19 = v21 = icon2;
 
-          v9 = v17;
+          widgetExtensionProvider = v17;
           v11 = v22;
 
           LOBYTE(self) = [v19 bs_containsObjectPassingTest:&__block_literal_global_787];
-          v15 = v21;
+          icon2 = v21;
         }
       }
 
-      if (v13)
+      if (intentType)
       {
 
         goto LABEL_21;
@@ -18300,12 +18300,12 @@ uint64_t __62__SBHIconManager_iconView_supportsConfigurationForDataSource___bloc
   return v8;
 }
 
-- (id)iconView:(id)a3 configurationInteractionForDataSource:(id)a4
+- (id)iconView:(id)view configurationInteractionForDataSource:(id)source
 {
-  v6 = a4;
-  v7 = [a3 icon];
+  sourceCopy = source;
+  icon = [view icon];
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = icon;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -18330,7 +18330,7 @@ uint64_t __62__SBHIconManager_iconView_supportsConfigurationForDataSource___bloc
   if (objc_opt_isKindOfClass())
   {
     v12 = objc_opt_class();
-    v13 = v6;
+    v13 = sourceCopy;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -18351,8 +18351,8 @@ uint64_t __62__SBHIconManager_iconView_supportsConfigurationForDataSource___bloc
 
     v17 = v14;
 
-    v18 = [(SBHIconManager *)self widgetExtensionProvider];
-    v19 = [v18 sbh_descriptorForWidgetIdentifiable:v17];
+    widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
+    v19 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v17];
     v20 = [(SBHIconManager *)self _intentForWidget:v17 ofIcon:v11 creatingIfNecessary:0];
 
     if (!v19)
@@ -18401,16 +18401,16 @@ uint64_t __62__SBHIconManager_iconView_supportsConfigurationForDataSource___bloc
   }
 
   v19 = [(SBHSpecialWidgetDescriptor *)v15 initWithType:v16];
-  v20 = [(SBHIconManager *)self _newIntentForDataSource:v6 inIcon:v11];
+  v20 = [(SBHIconManager *)self _newIntentForDataSource:sourceCopy inIcon:v11];
   if (v19)
   {
 LABEL_21:
     if (v20)
     {
       v21 = [SBHWidgetConfigurationInteraction alloc];
-      v22 = [v11 gridSizeClass];
-      v23 = [(SBHIconManager *)self gridSizeClassDomain];
-      v24 = [(SBHWidgetConfigurationInteraction *)v21 initWithDescriptor:v19 gridSizeClass:v22 gridSizeClassDomain:v23 intent:v20 configuredDataSource:v6];
+      gridSizeClass = [v11 gridSizeClass];
+      gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
+      v24 = [(SBHWidgetConfigurationInteraction *)v21 initWithDescriptor:v19 gridSizeClass:gridSizeClass gridSizeClassDomain:gridSizeClassDomain intent:v20 configuredDataSource:sourceCopy];
 
       goto LABEL_29;
     }
@@ -18429,12 +18429,12 @@ LABEL_29:
   return v24;
 }
 
-- (id)stackConfigurationInteractionForIconView:(id)a3
+- (id)stackConfigurationInteractionForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 icon];
+  viewCopy = view;
+  icon = [viewCopy icon];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = icon;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -18455,61 +18455,61 @@ LABEL_29:
 
   v9 = v8;
 
-  v10 = [(SBHIconManager *)self delegate];
-  v11 = [(SBHIconManager *)self _alwaysPresentStackConfigurationSheet];
-  if (([v9 isWidgetStackIcon] & 1) != 0 || v11)
+  delegate = [(SBHIconManager *)self delegate];
+  _alwaysPresentStackConfigurationSheet = [(SBHIconManager *)self _alwaysPresentStackConfigurationSheet];
+  if (([v9 isWidgetStackIcon] & 1) != 0 || _alwaysPresentStackConfigurationSheet)
   {
     v12 = [(SBHIconManager *)self _stackConfigurationForStackIcon:v9];
     if (v12)
     {
-      v13 = [(SBHIconManager *)self rootFolderController];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
       v14 = [SBHStackConfigurationInteraction alloc];
-      v15 = [(SBHIconManager *)self listLayoutProvider];
+      listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
       v29 = v12;
-      v12 = [(SBHStackConfigurationInteraction *)v14 initWithConfiguration:v12 iconView:v4 iconViewProvider:self listLayoutProvider:v15];
+      v12 = [(SBHStackConfigurationInteraction *)v14 initWithConfiguration:v12 iconView:viewCopy iconViewProvider:self listLayoutProvider:listLayoutProvider];
 
-      v16 = [(SBHIconManager *)self iconView:v4 containerViewControllerForConfigurationInteraction:v12];
+      v16 = [(SBHIconManager *)self iconView:viewCopy containerViewControllerForConfigurationInteraction:v12];
       if ((objc_opt_respondsToSelector() & 1) == 0 || (v17 = objc_opt_respondsToSelector(), v18 = v16, (v17 & 1) == 0))
       {
-        v18 = v13;
+        v18 = rootFolderController;
       }
 
       v28 = v16;
       v19 = v18;
       [(SBHStackConfigurationInteraction *)v12 setPresenter:v19];
-      v20 = [v4 window];
-      v21 = v20;
-      if (v20)
+      window = [viewCopy window];
+      v21 = window;
+      if (window)
       {
-        [v20 interfaceOrientation];
+        [window interfaceOrientation];
       }
 
-      if (v19 == v13)
+      if (v19 == rootFolderController)
       {
-        [v13 showsAddWidgetButtonWhileEditingAllowedOrientations];
+        [rootFolderController showsAddWidgetButtonWhileEditingAllowedOrientations];
       }
 
       v27 = SBFInterfaceOrientationMaskContainsInterfaceOrientation();
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v10 iconManager:self stackConfigurationInteractionDelegateForIconView:v4];
+        v22 = [delegate iconManager:self stackConfigurationInteractionDelegateForIconView:viewCopy];
       }
 
       else
       {
-        v22 = v13;
+        v22 = rootFolderController;
       }
 
       v23 = v22;
       [(SBHStackConfigurationInteraction *)v12 setStackConfigurationDelegate:v22];
       if (objc_opt_respondsToSelector())
       {
-        v24 = [v10 iconManager:self stackConfigurationViewControllerAppearanceDelegateForIconView:v4];
+        v24 = [delegate iconManager:self stackConfigurationViewControllerAppearanceDelegateForIconView:viewCopy];
       }
 
       else
       {
-        v24 = v13;
+        v24 = rootFolderController;
       }
 
       v25 = v24;
@@ -18527,13 +18527,13 @@ LABEL_29:
   return v12;
 }
 
-- (id)iconView:(id)a3 containerViewControllerForConfigurationInteraction:(id)a4
+- (id)iconView:(id)view containerViewControllerForConfigurationInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self containerViewControllerForConfigurationOfIconView:v5];
+    v7 = [delegate iconManager:self containerViewControllerForConfigurationOfIconView:viewCopy];
   }
 
   else
@@ -18544,35 +18544,35 @@ LABEL_29:
   return v7;
 }
 
-- (id)iconView:(id)a3 containerViewForConfigurationInteraction:(id)a4
+- (id)iconView:(id)view containerViewForConfigurationInteraction:(id)interaction
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self delegate];
+  interactionCopy = interaction;
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self containerViewForConfigurationOfIconView:v7];
+    view = [delegate iconManager:self containerViewForConfigurationOfIconView:viewCopy];
   }
 
   else
   {
-    v10 = [(SBHIconManager *)self iconView:v7 containerViewControllerForConfigurationInteraction:v6];
+    v10 = [(SBHIconManager *)self iconView:viewCopy containerViewControllerForConfigurationInteraction:interactionCopy];
 
-    v9 = [v10 view];
-    v7 = v10;
+    view = [v10 view];
+    viewCopy = v10;
   }
 
-  return v9;
+  return view;
 }
 
-- (CGRect)iconView:(id)a3 contentBoundingRectForConfigurationInteraction:(id)a4
+- (CGRect)iconView:(id)view contentBoundingRectForConfigurationInteraction:(id)interaction
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self delegate];
+  interactionCopy = interaction;
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self contentBoundingRectForConfigurationOfIconView:v7];
+    [delegate iconManager:self contentBoundingRectForConfigurationOfIconView:viewCopy];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -18581,14 +18581,14 @@ LABEL_29:
 
   else
   {
-    v17 = [(SBHIconManager *)self iconView:v7 containerViewForConfigurationInteraction:v6];
+    v17 = [(SBHIconManager *)self iconView:viewCopy containerViewForConfigurationInteraction:interactionCopy];
 
     [v17 bounds];
     v10 = v18;
     v12 = v19;
     v14 = v20;
     v16 = v21;
-    v7 = v17;
+    viewCopy = v17;
   }
 
   v22 = v10;
@@ -18602,52 +18602,52 @@ LABEL_29:
   return result;
 }
 
-- (int64_t)iconView:(id)a3 userInterfaceStyleForConfigurationInteraction:(id)a4
+- (int64_t)iconView:(id)view userInterfaceStyleForConfigurationInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self userInterfaceStyleForConfigurationOfIconView:v5];
+    userInterfaceStyle = [delegate iconManager:self userInterfaceStyleForConfigurationOfIconView:viewCopy];
   }
 
   else
   {
-    v8 = [v5 traitCollection];
+    traitCollection = [viewCopy traitCollection];
 
-    v7 = [v8 userInterfaceStyle];
-    v5 = v8;
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    viewCopy = traitCollection;
   }
 
-  return v7;
+  return userInterfaceStyle;
 }
 
-- (id)iconView:(id)a3 homeScreenContentViewForConfigurationInteraction:(id)a4
+- (id)iconView:(id)view homeScreenContentViewForConfigurationInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self homeScreenContentViewForConfigurationOfIconView:v5];
+    view = [delegate iconManager:self homeScreenContentViewForConfigurationOfIconView:viewCopy];
   }
 
   else
   {
-    v8 = [(SBHIconManager *)self rootFolderController];
-    v7 = [v8 view];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    view = [rootFolderController view];
   }
 
-  return v7;
+  return view;
 }
 
-- (void)iconView:(id)a3 configurationDidUpdateWithInteraction:(id)a4
+- (void)iconView:(id)view configurationDidUpdateWithInteraction:(id)interaction
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 icon];
-  if ([v7 isLeafIcon])
+  interactionCopy = interaction;
+  icon = [view icon];
+  if ([icon isLeafIcon])
   {
-    v8 = v7;
+    v8 = icon;
     if ([v8 isWidgetIcon])
     {
       v9 = v8;
@@ -18659,9 +18659,9 @@ LABEL_29:
     }
 
     v10 = v9;
-    v11 = [v6 configuration];
+    configuration = [interactionCopy configuration];
     v12 = objc_opt_class();
-    v13 = v11;
+    v13 = configuration;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -18685,24 +18685,24 @@ LABEL_29:
     if (v15)
     {
       v49 = v8;
-      v50 = v7;
-      v51 = v6;
+      v50 = icon;
+      v51 = interactionCopy;
       [v10 setAllowsSuggestions:{objc_msgSend(v15, "allowsSuggestions")}];
       [v10 setAllowsExternalSuggestions:{objc_msgSend(v15, "allowsExternalSuggestions")}];
       v48 = v15;
-      v16 = [v15 dataSources];
-      v17 = [v10 iconDataSources];
-      v18 = [v16 differenceFromArray:v17];
+      dataSources = [v15 dataSources];
+      iconDataSources = [v10 iconDataSources];
+      v18 = [dataSources differenceFromArray:iconDataSources];
 
-      v19 = [v18 insertions];
-      v53 = [v19 bs_mapNoNulls:&__block_literal_global_813];
+      insertions = [v18 insertions];
+      v53 = [insertions bs_mapNoNulls:&__block_literal_global_813];
 
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v20 = [v18 removals];
-      v21 = [v20 countByEnumeratingWithState:&v58 objects:v64 count:16];
+      removals = [v18 removals];
+      v21 = [removals countByEnumeratingWithState:&v58 objects:v64 count:16];
       if (v21)
       {
         v22 = v21;
@@ -18713,11 +18713,11 @@ LABEL_29:
           {
             if (*v59 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(removals);
             }
 
-            v25 = [*(*(&v58 + 1) + 8 * i) object];
-            if ([v53 containsObject:v25])
+            object = [*(*(&v58 + 1) + 8 * i) object];
+            if ([v53 containsObject:object])
             {
               v26 = self->_movedStackConfigDataSources;
               if (!v26)
@@ -18725,15 +18725,15 @@ LABEL_29:
                 v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
               }
 
-              [(NSMutableArray *)v26 addObject:v25];
+              [(NSMutableArray *)v26 addObject:object];
               movedStackConfigDataSources = self->_movedStackConfigDataSources;
               self->_movedStackConfigDataSources = v26;
             }
 
-            [v10 removeIconDataSource:v25];
+            [v10 removeIconDataSource:object];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v58 objects:v64 count:16];
+          v22 = [removals countByEnumeratingWithState:&v58 objects:v64 count:16];
         }
 
         while (v22);
@@ -18760,21 +18760,21 @@ LABEL_29:
             }
 
             v32 = *(*(&v54 + 1) + 8 * j);
-            v33 = [v32 object];
-            v62 = v33;
+            object2 = [v32 object];
+            v62 = object2;
             v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v62 count:1];
             v35 = [MEMORY[0x1E696AC90] indexSetWithIndex:{objc_msgSend(v32, "index")}];
             [v10 insertIconDataSources:v34 atIndexes:v35];
 
             v36 = self->_movedStackConfigDataSources;
-            v37 = [v32 object];
-            LODWORD(v36) = [(NSMutableArray *)v36 containsObject:v37];
+            object3 = [v32 object];
+            LODWORD(v36) = [(NSMutableArray *)v36 containsObject:object3];
 
             if (v36)
             {
               v38 = self->_movedStackConfigDataSources;
-              v39 = [v32 object];
-              [(NSMutableArray *)v38 removeObject:v39];
+              object4 = [v32 object];
+              [(NSMutableArray *)v38 removeObject:object4];
             }
           }
 
@@ -18784,51 +18784,51 @@ LABEL_29:
         while (v29);
       }
 
-      v40 = [(SBHIconManager *)self rootFolder];
-      [v40 markIconStateDirty];
+      rootFolder = [(SBHIconManager *)self rootFolder];
+      [rootFolder markIconStateDirty];
 
-      v7 = v50;
-      v6 = v51;
+      icon = v50;
+      interactionCopy = v51;
       v15 = v48;
       v8 = v49;
     }
 
     else
     {
-      v41 = [v6 configuredDataSource];
-      v42 = v41;
-      if (v41)
+      configuredDataSource = [interactionCopy configuredDataSource];
+      v42 = configuredDataSource;
+      if (configuredDataSource)
       {
-        v43 = v41;
+        activeDataSource = configuredDataSource;
       }
 
       else
       {
-        v43 = [v8 activeDataSource];
+        activeDataSource = [v8 activeDataSource];
       }
 
-      v44 = v43;
+      v44 = activeDataSource;
 
-      v45 = [v6 configuration];
-      [(SBHIconManager *)self _handleUpdatedConfiguration:v45 forDataSource:v44 ofIcon:v8 archiving:1];
+      configuration2 = [interactionCopy configuration];
+      [(SBHIconManager *)self _handleUpdatedConfiguration:configuration2 forDataSource:v44 ofIcon:v8 archiving:1];
     }
 
-    v46 = [(SBHIconManager *)self usageMonitor];
-    [v46 noteUserConfiguredIcon:v8];
+    usageMonitor = [(SBHIconManager *)self usageMonitor];
+    [usageMonitor noteUserConfiguredIcon:v8];
   }
 }
 
-- (void)_handleUpdatedConfiguration:(id)a3 forDataSource:(id)a4 ofIcon:(id)a5 archiving:(BOOL)a6
+- (void)_handleUpdatedConfiguration:(id)configuration forDataSource:(id)source ofIcon:(id)icon archiving:(BOOL)archiving
 {
-  v6 = a6;
+  archivingCopy = archiving;
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11;
-  if ([v12 isWidgetIcon])
+  configurationCopy = configuration;
+  sourceCopy = source;
+  iconCopy = icon;
+  v13 = sourceCopy;
+  if ([iconCopy isWidgetIcon])
   {
-    v14 = v12;
+    v14 = iconCopy;
   }
 
   else
@@ -18880,8 +18880,8 @@ LABEL_29:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v20 = 0;
-          if (!v6)
+          copyWithUniqueIdentifier = 0;
+          if (!archivingCopy)
           {
             goto LABEL_25;
           }
@@ -18893,16 +18893,16 @@ LABEL_29:
       }
     }
 
-    v20 = objc_alloc_init(v27);
-    if (!v6)
+    copyWithUniqueIdentifier = objc_alloc_init(v27);
+    if (!archivingCopy)
     {
       goto LABEL_25;
     }
 
 LABEL_21:
-    if (v20)
+    if (copyWithUniqueIdentifier)
     {
-      v28 = v20;
+      v28 = copyWithUniqueIdentifier;
     }
 
     else
@@ -18910,70 +18910,70 @@ LABEL_21:
       v28 = v17;
     }
 
-    [(SBHIconManager *)self _archiveConfiguration:v10 forDataSource:v28 ofIcon:v12];
+    [(SBHIconManager *)self _archiveConfiguration:configurationCopy forDataSource:v28 ofIcon:iconCopy];
     goto LABEL_25;
   }
 
-  v20 = [v19 copyWithUniqueIdentifier];
+  copyWithUniqueIdentifier = [v19 copyWithUniqueIdentifier];
   v21 = SBLogWidgets();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     [v19 extensionBundleIdentifier];
-    v22 = v31 = v6;
+    v22 = v31 = archivingCopy;
     [v19 uniqueIdentifier];
     v23 = v32 = self;
-    v24 = [v20 extensionBundleIdentifier];
-    [v20 uniqueIdentifier];
+    extensionBundleIdentifier = [copyWithUniqueIdentifier extensionBundleIdentifier];
+    [copyWithUniqueIdentifier uniqueIdentifier];
     v33 = v15;
-    v26 = v25 = v10;
+    v26 = v25 = configurationCopy;
     *buf = 138544130;
     v35 = v22;
     v36 = 2114;
     v37 = v23;
     v38 = 2114;
-    v39 = v24;
+    v39 = extensionBundleIdentifier;
     v40 = 2114;
     v41 = v26;
     _os_log_impl(&dword_1BEB18000, v21, OS_LOG_TYPE_DEFAULT, "Widget %{public}@ %{public}@ created to replace widget %{public}@ %{public}@.", buf, 0x2Au);
 
-    v10 = v25;
+    configurationCopy = v25;
     v15 = v33;
 
     self = v32;
-    v6 = v31;
+    archivingCopy = v31;
   }
 
-  if (v6)
+  if (archivingCopy)
   {
     goto LABEL_21;
   }
 
 LABEL_25:
-  if (v20)
+  if (copyWithUniqueIdentifier)
   {
-    [v15 replaceIconDataSource:v17 withIconDataSource:v20];
+    [v15 replaceIconDataSource:v17 withIconDataSource:copyWithUniqueIdentifier];
     v29 = SBLogIcon();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [v15 uniqueIdentifier];
+      uniqueIdentifier = [v15 uniqueIdentifier];
       *buf = 138412546;
-      v35 = v20;
+      v35 = copyWithUniqueIdentifier;
       v36 = 2112;
-      v37 = v30;
+      v37 = uniqueIdentifier;
       _os_log_impl(&dword_1BEB18000, v29, OS_LOG_TYPE_DEFAULT, "Setting last user selected data source due to configuration update: %@ for: %@", buf, 0x16u);
     }
 
-    [v15 setLastUserSelectedDataSource:v20];
+    [v15 setLastUserSelectedDataSource:copyWithUniqueIdentifier];
   }
 }
 
-- (void)_archiveConfiguration:(id)a3 forDataSource:(id)a4 ofIcon:(id)a5
+- (void)_archiveConfiguration:(id)configuration forDataSource:(id)source ofIcon:(id)icon
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  sourceCopy = source;
+  iconCopy = icon;
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = configurationCopy;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -18996,12 +18996,12 @@ LABEL_25:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v9 uniqueIdentifier];
+    uniqueIdentifier = [sourceCopy uniqueIdentifier];
   }
 
   else
   {
-    v15 = 0;
+    uniqueIdentifier = 0;
   }
 
   v26 = 0;
@@ -19010,8 +19010,8 @@ LABEL_25:
   v18 = v17;
   if (!v16 || v17)
   {
-    v19 = SBLogIcon();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
+    delegate = SBLogIcon();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_FAULT))
     {
       [SBHIconManager _archiveConfiguration:forDataSource:ofIcon:];
     }
@@ -19019,13 +19019,13 @@ LABEL_25:
 
   else
   {
-    v19 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v19 iconManager:self dataSource:v9 ofIcon:v10 didUpdateConfigurationData:v16];
+      [delegate iconManager:self dataSource:sourceCopy ofIcon:iconCopy didUpdateConfigurationData:v16];
     }
 
-    if (v14 && v15)
+    if (v14 && uniqueIdentifier)
     {
       archivedWidgetIntents = self->_archivedWidgetIntents;
       if (!archivedWidgetIntents)
@@ -19037,11 +19037,11 @@ LABEL_25:
         archivedWidgetIntents = self->_archivedWidgetIntents;
       }
 
-      [(NSMutableDictionary *)archivedWidgetIntents setObject:v14 forKey:v15];
+      [(NSMutableDictionary *)archivedWidgetIntents setObject:v14 forKey:uniqueIdentifier];
     }
   }
 
-  if (v14 && v15)
+  if (v14 && uniqueIdentifier)
   {
     widgetIntents = self->_widgetIntents;
     if (!widgetIntents)
@@ -19053,75 +19053,75 @@ LABEL_25:
       widgetIntents = self->_widgetIntents;
     }
 
-    [(NSMutableDictionary *)widgetIntents setObject:v14 forKey:v15];
+    [(NSMutableDictionary *)widgetIntents setObject:v14 forKey:uniqueIdentifier];
   }
 }
 
-- (void)iconView:(id)a3 configurationWillBeginWithInteraction:(id)a4
+- (void)iconView:(id)view configurationWillBeginWithInteraction:(id)interaction
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self currentConfiguringIconView];
-  if (v7 != v9)
+  viewCopy = view;
+  interactionCopy = interaction;
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
+  if (currentConfiguringIconView != viewCopy)
   {
     [(SBHIconManager *)self dismissModalInteractionsImmediately];
-    [(SBHIconManager *)self setCurrentConfiguringIconView:v9];
+    [(SBHIconManager *)self setCurrentConfiguringIconView:viewCopy];
   }
 
   [(SBHIconManager *)self _discardEndEditingTimerAndDontResetUntilReasonIsRemoved:@"IconViewConfiguration"];
-  v8 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self iconView:v9 configurationWillBeginWithInteraction:v6];
+    [delegate iconManager:self iconView:viewCopy configurationWillBeginWithInteraction:interactionCopy];
   }
 }
 
-- (void)iconView:(id)a3 configurationWillEndWithInteraction:(id)a4
+- (void)iconView:(id)view configurationWillEndWithInteraction:(id)interaction
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  interactionCopy = interaction;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self iconView:v8 configurationWillEndWithInteraction:v6];
+    [delegate iconManager:self iconView:viewCopy configurationWillEndWithInteraction:interactionCopy];
   }
 }
 
-- (void)iconView:(id)a3 configurationDidEndWithInteraction:(id)a4
+- (void)iconView:(id)view configurationDidEndWithInteraction:(id)interaction
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self currentConfiguringIconView];
+  viewCopy = view;
+  interactionCopy = interaction;
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
 
-  if (v7 == v10)
+  if (currentConfiguringIconView == viewCopy)
   {
     [(SBHIconManager *)self setCurrentConfiguringIconView:0];
   }
 
   [(SBHIconManager *)self _removeReasonToNotResetEndEditingTimer:@"IconViewConfiguration"];
-  v8 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self iconView:v10 configurationDidEndWithInteraction:v6];
+    [delegate iconManager:self iconView:viewCopy configurationDidEndWithInteraction:interactionCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v10 icon];
-    if (![v9 iconDataSourceCount])
+    icon = [viewCopy icon];
+    if (![icon iconDataSourceCount])
     {
-      [(SBHIconManager *)self uninstallIcon:v9 animate:1];
+      [(SBHIconManager *)self uninstallIcon:icon animate:1];
     }
   }
 }
 
 - (BOOL)_alwaysPresentStackConfigurationSheet
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconManagerAllowsWidgetStackWithSingleWidgetToPresentStackConfigurationSheet:self];
+    v4 = [delegate iconManagerAllowsWidgetStackWithSingleWidgetToPresentStackConfigurationSheet:self];
   }
 
   else
@@ -19132,66 +19132,66 @@ LABEL_25:
   return v4;
 }
 
-- (double)verticalMarginPercentageForConfigurationOfIconView:(id)a3
+- (double)verticalMarginPercentageForConfigurationOfIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   v6 = -1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self verticalMarginPercentageForConfigurationOfIconView:v4];
+    [delegate iconManager:self verticalMarginPercentageForConfigurationOfIconView:viewCopy];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (void)modalInteractionWillBegin:(id)a3
+- (void)modalInteractionWillBegin:(id)begin
 {
-  v7 = a3;
+  beginCopy = begin;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SBHIconManager *)self currentPersonDetailInteraction];
-    v5 = v7;
-    if (v4 != v5)
+    currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
+    v5 = beginCopy;
+    if (currentPersonDetailInteraction != v5)
     {
       [(SBHIconManager *)self dismissModalInteractionsImmediately];
       [(SBHIconManager *)self setCurrentPersonDetailInteraction:v5];
     }
   }
 
-  v6 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconManager:self modalInteractionWillBegin:v7];
+    [delegate iconManager:self modalInteractionWillBegin:beginCopy];
   }
 }
 
-- (void)modalInteractionDidEnd:(id)a3
+- (void)modalInteractionDidEnd:(id)end
 {
-  v6 = a3;
-  v4 = [(SBHIconManager *)self currentPersonDetailInteraction];
+  endCopy = end;
+  currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
 
-  if (v4 == v6)
+  if (currentPersonDetailInteraction == endCopy)
   {
     [(SBHIconManager *)self setCurrentPersonDetailInteraction:0];
   }
 
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self modalInteractionDidEnd:v6];
+    [delegate iconManager:self modalInteractionDidEnd:endCopy];
   }
 }
 
-- (id)_containerViewControllerForPersonDetailInteractionTargetingIconView:(id)a3
+- (id)_containerViewControllerForPersonDetailInteractionTargetingIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self containerViewControllerForModalInteractionFromIconView:v4];
+    v6 = [delegate iconManager:self containerViewControllerForModalInteractionFromIconView:viewCopy];
   }
 
   else
@@ -19202,80 +19202,80 @@ LABEL_25:
   return v6;
 }
 
-- (id)_containerViewForPersonDetailInteractionTargetingIconView:(id)a3
+- (id)_containerViewForPersonDetailInteractionTargetingIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self containerViewForModalInteractionFromIconView:v4];
+    view = [delegate iconManager:self containerViewForModalInteractionFromIconView:viewCopy];
   }
 
   else
   {
-    v7 = [(SBHIconManager *)self _containerViewControllerForPersonDetailInteractionTargetingIconView:v4];
+    v7 = [(SBHIconManager *)self _containerViewControllerForPersonDetailInteractionTargetingIconView:viewCopy];
 
-    v6 = [v7 view];
-    v4 = v7;
+    view = [v7 view];
+    viewCopy = v7;
   }
 
-  return v6;
+  return view;
 }
 
-- (id)_homeScreenContentViewForPersonDetailInteractionTargetingIconView:(id)a3
+- (id)_homeScreenContentViewForPersonDetailInteractionTargetingIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self homeScreenContentViewForModalInteractionFromIconView:v4];
+    view = [delegate iconManager:self homeScreenContentViewForModalInteractionFromIconView:viewCopy];
   }
 
   else
   {
-    v7 = [(SBHIconManager *)self rootFolderController];
-    v6 = [v7 view];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    view = [rootFolderController view];
   }
 
-  return v6;
+  return view;
 }
 
-- (id)_personDetailInteractionContextForPersonURL:(id)a3 iconView:(id)a4
+- (id)_personDetailInteractionContextForPersonURL:(id)l iconView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 representativeIconViewForModalInteractions];
-  v9 = [(SBHIconManager *)self _containerViewControllerForPersonDetailInteractionTargetingIconView:v6];
-  v10 = [(SBHIconManager *)self _containerViewForPersonDetailInteractionTargetingIconView:v6];
-  v11 = [(SBHIconManager *)self _homeScreenContentViewForPersonDetailInteractionTargetingIconView:v6];
+  viewCopy = view;
+  lCopy = l;
+  representativeIconViewForModalInteractions = [viewCopy representativeIconViewForModalInteractions];
+  v9 = [(SBHIconManager *)self _containerViewControllerForPersonDetailInteractionTargetingIconView:viewCopy];
+  v10 = [(SBHIconManager *)self _containerViewForPersonDetailInteractionTargetingIconView:viewCopy];
+  v11 = [(SBHIconManager *)self _homeScreenContentViewForPersonDetailInteractionTargetingIconView:viewCopy];
   [v11 bounds];
   [v11 convertRect:v10 toView:?];
-  v16 = [[SBHPeopleWidgetPersonDetailInteractionContext alloc] initWithPersonURL:v7 sourceIconView:v8 referenceIconView:v6 containerViewController:v9 containerView:v10 homeScreenContentView:v11 homeScreenContentFrame:v12, v13, v14, v15];
+  v16 = [[SBHPeopleWidgetPersonDetailInteractionContext alloc] initWithPersonURL:lCopy sourceIconView:representativeIconViewForModalInteractions referenceIconView:viewCopy containerViewController:v9 containerView:v10 homeScreenContentView:v11 homeScreenContentFrame:v12, v13, v14, v15];
 
   return v16;
 }
 
-- (id)widgetInsertionRippleIconAnimatorForIcon:(id)a3 iconListView:(id)a4 withReferenceIconView:(id)a5
+- (id)widgetInsertionRippleIconAnimatorForIcon:(id)icon iconListView:(id)view withReferenceIconView:(id)iconView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 || (-[SBHIconManager rootFolder](self, "rootFolder"), v11 = objc_claimAutoreleasedReturnValue(), [v11 indexPathForIcon:v8], v12 = objc_claimAutoreleasedReturnValue(), -[SBHIconManager iconListViewForIndexPath:](self, "iconListViewForIndexPath:", v12), v9 = objc_claimAutoreleasedReturnValue(), v12, v11, v9))
+  iconCopy = icon;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  if (viewCopy || (-[SBHIconManager rootFolder](self, "rootFolder"), v11 = objc_claimAutoreleasedReturnValue(), [v11 indexPathForIcon:iconCopy], v12 = objc_claimAutoreleasedReturnValue(), -[SBHIconManager iconListViewForIndexPath:](self, "iconListViewForIndexPath:", v12), viewCopy = objc_claimAutoreleasedReturnValue(), v12, v11, viewCopy))
   {
-    v13 = [v9 iconLocation];
-    if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v13))
+    iconLocation = [viewCopy iconLocation];
+    if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", iconLocation))
     {
-      v14 = [(SBHIconManager *)self dockListView];
+      dockListView = [(SBHIconManager *)self dockListView];
     }
 
     else
     {
-      v14 = 0;
+      dockListView = 0;
     }
 
-    v15 = [v13 isEqualToString:@"SBIconLocationStackConfiguration"];
-    v16 = [(SBHIconManager *)self listLayoutProvider];
-    v17 = [v16 layoutForIconLocation:@"SBIconLocationRoot"];
+    v15 = [iconLocation isEqualToString:@"SBIconLocationStackConfiguration"];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v17 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
     v18 = [SBHWidgetInsertionRippleIconAnimator alloc];
     v21[0] = MEMORY[0x1E69E9820];
@@ -19283,7 +19283,7 @@ LABEL_25:
     v21[2] = __94__SBHIconManager_widgetInsertionRippleIconAnimatorForIcon_iconListView_withReferenceIconView___block_invoke;
     v21[3] = &unk_1E8088C90;
     v21[4] = self;
-    v19 = [(SBHWidgetInsertionRippleIconAnimator *)v18 initWithIconListView:v9 widgetIcon:v8 referenceLayout:v17 referenceIconView:v10 additionalIconListView:v14 preludeBlock:v21];
+    v19 = [(SBHWidgetInsertionRippleIconAnimator *)v18 initWithIconListView:viewCopy widgetIcon:iconCopy referenceLayout:v17 referenceIconView:iconViewCopy additionalIconListView:dockListView preludeBlock:v21];
     [(SBHWidgetInsertionRippleIconAnimator *)v19 setKeepsJumpingIconAboveListViewAsLongAsPossible:v15];
   }
 
@@ -19297,104 +19297,104 @@ LABEL_25:
 
 - (void)_willAnimateWidgetInsertion
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 iconManagerWillAnimateWidgetInsertion:self];
+    [delegate iconManagerWillAnimateWidgetInsertion:self];
   }
 }
 
 - (void)popModalInteraction
 {
-  v4 = [(SBHIconManager *)self currentConfiguringIconView];
-  [v4 popConfigurationCard];
-  [v4 popStackConfigurationCard];
-  v3 = [(SBHIconManager *)self currentPersonDetailInteraction];
-  [v3 endInteractionAnimated:1];
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
+  [currentConfiguringIconView popConfigurationCard];
+  [currentConfiguringIconView popStackConfigurationCard];
+  currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
+  [currentPersonDetailInteraction endInteractionAnimated:1];
 }
 
 - (void)dismissModalInteractions
 {
-  v4 = [(SBHIconManager *)self currentConfiguringIconView];
-  [v4 dismissConfigurationCard];
-  [v4 dismissStackConfigurationCard];
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
+  [currentConfiguringIconView dismissConfigurationCard];
+  [currentConfiguringIconView dismissStackConfigurationCard];
   [(SBHIconManager *)self setIconStylePickerVisible:0];
-  v3 = [(SBHIconManager *)self currentPersonDetailInteraction];
-  [v3 endInteractionAnimated:1];
+  currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
+  [currentPersonDetailInteraction endInteractionAnimated:1];
 }
 
 - (void)dismissModalInteractionsImmediately
 {
-  v4 = [(SBHIconManager *)self currentConfiguringIconView];
-  [v4 dismissConfigurationCardImmediately];
-  [v4 dismissStackConfigurationCardImmediately];
+  currentConfiguringIconView = [(SBHIconManager *)self currentConfiguringIconView];
+  [currentConfiguringIconView dismissConfigurationCardImmediately];
+  [currentConfiguringIconView dismissStackConfigurationCardImmediately];
   [(SBHIconManager *)self _dismissStylePickerViewControllerImmediately];
-  v3 = [(SBHIconManager *)self currentPersonDetailInteraction];
-  [v3 endInteractionAnimated:0];
+  currentPersonDetailInteraction = [(SBHIconManager *)self currentPersonDetailInteraction];
+  [currentPersonDetailInteraction endInteractionAnimated:0];
 }
 
-- (void)iconView:(id)a3 didChangeCustomImageViewController:(id)a4
+- (void)iconView:(id)view didChangeCustomImageViewController:(id)controller
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_widgetViewControllersForIconView objectForKey:v10];
-  if (v7 == v6)
+  viewCopy = view;
+  controllerCopy = controller;
+  v7 = [(NSMapTable *)self->_widgetViewControllersForIconView objectForKey:viewCopy];
+  if (v7 == controllerCopy)
   {
-    [(NSMapTable *)self->_widgetViewControllersForIconView removeObjectForKey:v10];
+    [(NSMapTable *)self->_widgetViewControllersForIconView removeObjectForKey:viewCopy];
   }
 
-  [(NSMapTable *)self->_iconViewsForCustomIconImageViewController removeObjectForKey:v6];
-  v8 = [v10 customIconImageViewController];
-  [(SBHIconManager *)self _updateIconView:v10 forCustomIconImageViewController:v8];
-  [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:v8];
-  if ([v8 sbh_isWidgetStackViewController])
+  [(NSMapTable *)self->_iconViewsForCustomIconImageViewController removeObjectForKey:controllerCopy];
+  customIconImageViewController = [viewCopy customIconImageViewController];
+  [(SBHIconManager *)self _updateIconView:viewCopy forCustomIconImageViewController:customIconImageViewController];
+  [(SBHIconManager *)self _updateCaptureOnlyBackgroundViewForCustomIconImageViewController:customIconImageViewController];
+  if ([customIconImageViewController sbh_isWidgetStackViewController])
   {
-    v9 = v8;
+    v9 = customIconImageViewController;
     [v9 setDelegate:self];
     [v9 setDataSource:self];
   }
 }
 
-- (void)_updateIconView:(id)a3 forCustomIconImageViewController:(id)a4
+- (void)_updateIconView:(id)view forCustomIconImageViewController:(id)controller
 {
-  v10 = a3;
-  v6 = a4;
+  viewCopy = view;
+  controllerCopy = controller;
   iconViewsForCustomIconImageViewController = self->_iconViewsForCustomIconImageViewController;
   if (!iconViewsForCustomIconImageViewController)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v9 = self->_iconViewsForCustomIconImageViewController;
-    self->_iconViewsForCustomIconImageViewController = v8;
+    self->_iconViewsForCustomIconImageViewController = weakToWeakObjectsMapTable;
 
     iconViewsForCustomIconImageViewController = self->_iconViewsForCustomIconImageViewController;
   }
 
-  [(NSMapTable *)iconViewsForCustomIconImageViewController setObject:v10 forKey:v6];
+  [(NSMapTable *)iconViewsForCustomIconImageViewController setObject:viewCopy forKey:controllerCopy];
 }
 
-- (void)_updateWidgetMultiplexingViewController:(id)a3 forIconView:(id)a4
+- (void)_updateWidgetMultiplexingViewController:(id)controller forIconView:(id)view
 {
-  v10 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   iconViewsForWidgetMultiplexingViewController = self->_iconViewsForWidgetMultiplexingViewController;
   if (!iconViewsForWidgetMultiplexingViewController)
   {
-    v8 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
     v9 = self->_iconViewsForWidgetMultiplexingViewController;
-    self->_iconViewsForWidgetMultiplexingViewController = v8;
+    self->_iconViewsForWidgetMultiplexingViewController = weakToWeakObjectsMapTable;
 
     iconViewsForWidgetMultiplexingViewController = self->_iconViewsForWidgetMultiplexingViewController;
   }
 
-  [(NSMapTable *)iconViewsForWidgetMultiplexingViewController setObject:v6 forKey:v10];
+  [(NSMapTable *)iconViewsForWidgetMultiplexingViewController setObject:viewCopy forKey:controllerCopy];
 }
 
-- (void)iconView:(id)a3 didDiscardCustomImageViewController:(id)a4
+- (void)iconView:(id)view didDiscardCustomImageViewController:(id)controller
 {
-  v17 = a4;
-  if ([v17 sbh_isWidgetStackViewController])
+  controllerCopy = controller;
+  if ([controllerCopy sbh_isWidgetStackViewController])
   {
-    v5 = v17;
+    v5 = controllerCopy;
     [v5 setDelegate:0];
     [v5 setDataSource:0];
   }
@@ -19404,14 +19404,14 @@ LABEL_25:
 
   if (isKindOfClass)
   {
-    v8 = v17;
-    v9 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-    v10 = [v8 multiplexingViewController];
-    [v9 discardMultiplexingViewController:v10];
+    v8 = controllerCopy;
+    _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+    multiplexingViewController = [v8 multiplexingViewController];
+    [_effectiveWidgetMultiplexingManager discardMultiplexingViewController:multiplexingViewController];
 
     iconViewsForWidgetMultiplexingViewController = self->_iconViewsForWidgetMultiplexingViewController;
-    v12 = [v8 multiplexingViewController];
-    [(NSMapTable *)iconViewsForWidgetMultiplexingViewController removeObjectForKey:v12];
+    multiplexingViewController2 = [v8 multiplexingViewController];
+    [(NSMapTable *)iconViewsForWidgetMultiplexingViewController removeObjectForKey:multiplexingViewController2];
 
     [v8 setDelegate:0];
   }
@@ -19421,62 +19421,62 @@ LABEL_25:
 
   if (v14)
   {
-    v15 = [v17 contentViewController];
-    if ([v15 sbh_isWidgetHostViewController])
+    contentViewController = [controllerCopy contentViewController];
+    if ([contentViewController sbh_isWidgetHostViewController])
     {
-      [v15 invalidate];
+      [contentViewController invalidate];
     }
   }
 
-  v16 = [v17 parentViewController];
-  [v16 bs_removeChildViewController:v17];
+  parentViewController = [controllerCopy parentViewController];
+  [parentViewController bs_removeChildViewController:controllerCopy];
 
-  [(NSMapTable *)self->_iconViewsForCustomIconImageViewController removeObjectForKey:v17];
+  [(NSMapTable *)self->_iconViewsForCustomIconImageViewController removeObjectForKey:controllerCopy];
 }
 
-- (void)iconView:(id)a3 dropSessionDidEnter:(id)a4
+- (void)iconView:(id)view dropSessionDidEnter:(id)enter
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  enterCopy = enter;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self iconView:v8 contentDropSessionDidEnter:v6];
+    [delegate iconManager:self iconView:viewCopy contentDropSessionDidEnter:enterCopy];
   }
 }
 
-- (void)iconView:(id)a3 dropSessionDidExit:(id)a4
+- (void)iconView:(id)view dropSessionDidExit:(id)exit
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  exitCopy = exit;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self iconView:v8 contentDropSessionDidExit:v6];
+    [delegate iconManager:self iconView:viewCopy contentDropSessionDidExit:exitCopy];
   }
 }
 
-- (BOOL)contextMenuManager:(id)a3 shouldBeginContextMenuPresentationForIconView:(id)a4
+- (BOOL)contextMenuManager:(id)manager shouldBeginContextMenuPresentationForIconView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self reasonToDisallowInteractionOnIconView:v7];
+  managerCopy = manager;
+  viewCopy = view;
+  v8 = [(SBHIconManager *)self reasonToDisallowInteractionOnIconView:viewCopy];
   if (v8 || ([(SBHIconManager *)self previewInteractingIconView], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else if (![(SBHIconManager *)self isEditing])
   {
-    v11 = [(SBHIconManager *)self currentTransitionAnimator];
+    currentTransitionAnimator = [(SBHIconManager *)self currentTransitionAnimator];
 
-    if (!v11)
+    if (!currentTransitionAnimator)
     {
-      v12 = [v7 icon];
-      v13 = [v12 isFolderIcon];
+      icon = [viewCopy icon];
+      isFolderIcon = [icon isFolderIcon];
 
-      if (!v13 || (WeakRetained = objc_loadWeakRetained(&self->_pendingFolderIconToOpen), WeakRetained, !WeakRetained))
+      if (!isFolderIcon || (WeakRetained = objc_loadWeakRetained(&self->_pendingFolderIconToOpen), WeakRetained, !WeakRetained))
       {
-        [(SBHIconManager *)self _setupApplicationShortcutItemsForPresentation:v7];
+        [(SBHIconManager *)self _setupApplicationShortcutItemsForPresentation:viewCopy];
         v9 = 1;
         goto LABEL_5;
       }
@@ -19489,13 +19489,13 @@ LABEL_5:
   return v9;
 }
 
-- (id)contextMenuManager:(id)a3 containerViewForPresentingContextMenuForIconView:(id)a4
+- (id)contextMenuManager:(id)manager containerViewForPresentingContextMenuForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self containerViewForPresentingContextMenuForIconView:v5];
+    v7 = [delegate iconManager:self containerViewForPresentingContextMenuForIconView:viewCopy];
   }
 
   else
@@ -19506,24 +19506,24 @@ LABEL_5:
   return v7;
 }
 
-- (void)contextMenuManager:(id)a3 iconView:(id)a4 willUseContextMenuStyle:(id)a5
+- (void)contextMenuManager:(id)manager iconView:(id)view willUseContextMenuStyle:(id)style
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  styleCopy = style;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self iconView:v9 willUseContextMenuStyle:v7];
+    [delegate iconManager:self iconView:viewCopy willUseContextMenuStyle:styleCopy];
   }
 }
 
-- (unint64_t)contextMenuManager:(id)a3 supportedMultitaskingShortcutActionsForIconView:(id)a4
+- (unint64_t)contextMenuManager:(id)manager supportedMultitaskingShortcutActionsForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self supportedMultitaskingShortcutActionsForIconView:v5];
+    v7 = [delegate iconManager:self supportedMultitaskingShortcutActionsForIconView:viewCopy];
   }
 
   else
@@ -19534,13 +19534,13 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)contextMenuManager:(id)a3 shouldPreviewOverlapMenuForIconView:(id)a4
+- (BOOL)contextMenuManager:(id)manager shouldPreviewOverlapMenuForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self shouldPreviewOverlapMenuForIconView:v5];
+    v7 = [delegate iconManager:self shouldPreviewOverlapMenuForIconView:viewCopy];
   }
 
   else
@@ -19551,12 +19551,12 @@ LABEL_5:
   return v7;
 }
 
-- (id)contextMenuManager:(id)a3 orderedActionContextMenuProvidersForIconView:(id)a4
+- (id)contextMenuManager:(id)manager orderedActionContextMenuProvidersForIconView:(id)view
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 location];
-  v7 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v6);
+  managerCopy = manager;
+  location = [view location];
+  v7 = SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", location);
 
   if (v7)
   {
@@ -19569,9 +19569,9 @@ LABEL_5:
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v23 = v5;
-    v13 = [v5 contextMenuActionProviders];
-    v14 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v23 = managerCopy;
+    contextMenuActionProviders = [managerCopy contextMenuActionProviders];
+    v14 = [contextMenuActionProviders countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v14)
     {
       v15 = v14;
@@ -19582,12 +19582,12 @@ LABEL_5:
         {
           if (*v25 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(contextMenuActionProviders);
           }
 
           v18 = *(*(&v24 + 1) + 8 * i);
-          v19 = [v18 contextMenuActionSectionType];
-          if (v19 == 1)
+          contextMenuActionSectionType = [v18 contextMenuActionSectionType];
+          if (contextMenuActionSectionType == 1)
           {
             v20 = v10;
           }
@@ -19597,12 +19597,12 @@ LABEL_5:
             v20 = v12;
           }
 
-          if (v19 == 2)
+          if (contextMenuActionSectionType == 2)
           {
             v20 = v11;
           }
 
-          if (v19 == 3)
+          if (contextMenuActionSectionType == 3)
           {
             v21 = v9;
           }
@@ -19615,7 +19615,7 @@ LABEL_5:
           [v21 addObject:v18];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v15 = [contextMenuActionProviders countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v15);
@@ -19626,7 +19626,7 @@ LABEL_5:
     [v8 addObjectsFromArray:v10];
     [v8 addObjectsFromArray:v9];
 
-    v5 = v23;
+    managerCopy = v23;
   }
 
   else
@@ -19637,13 +19637,13 @@ LABEL_5:
   return v8;
 }
 
-- (int64_t)contextMenuManager:(id)a3 preferredMenuElementOrderForIconView:(id)a4
+- (int64_t)contextMenuManager:(id)manager preferredMenuElementOrderForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self preferredMenuElementOrderForIconView:v5];
+    v7 = [delegate iconManager:self preferredMenuElementOrderForIconView:viewCopy];
   }
 
   else
@@ -19654,20 +19654,20 @@ LABEL_5:
   return v7;
 }
 
-- (id)iconView:(id)a3 applicationShortcutItemsWithProposedItems:(id)a4
+- (id)iconView:(id)view applicationShortcutItemsWithProposedItems:(id)items
 {
-  v6 = a4;
-  v7 = [a3 location];
+  itemsCopy = items;
+  location = [view location];
   v8 = MEMORY[0x1E696AE18];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __69__SBHIconManager_iconView_applicationShortcutItemsWithProposedItems___block_invoke;
   v16 = &unk_1E80903B8;
-  v17 = self;
-  v18 = v7;
-  v9 = v7;
+  selfCopy = self;
+  v18 = location;
+  v9 = location;
   v10 = [v8 predicateWithBlock:&v13];
-  v11 = [v6 filteredArrayUsingPredicate:{v10, v13, v14, v15, v16, v17}];
+  v11 = [itemsCopy filteredArrayUsingPredicate:{v10, v13, v14, v15, v16, selfCopy}];
 
   return v11;
 }
@@ -19716,12 +19716,12 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)iconView:(id)a3 shouldActivateApplicationShortcutItem:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)iconView:(id)view shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SBHIconManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v10 iconManager:self shouldActivateApplicationShortcutItem:v9 atIndex:a5 forIconView:v8] || (WeakRetained = objc_loadWeakRetained(&self->_pendingFolderIconToOpen), WeakRetained, WeakRetained))
+  viewCopy = view;
+  itemCopy = item;
+  delegate = [(SBHIconManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate iconManager:self shouldActivateApplicationShortcutItem:itemCopy atIndex:index forIconView:viewCopy] || (WeakRetained = objc_loadWeakRetained(&self->_pendingFolderIconToOpen), WeakRetained, WeakRetained))
   {
     v12 = 0;
   }
@@ -19735,15 +19735,15 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)a3 atLocation:(CGPoint)a4
+- (BOOL)shouldGroupSystemApplicationShortcutItemsForIconView:(id)view atLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self delegate];
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self shouldGroupSystemApplicationShortcutItemsForIconView:v7];
+    v9 = [delegate iconManager:self shouldGroupSystemApplicationShortcutItemsForIconView:viewCopy];
   }
 
   else
@@ -19751,18 +19751,18 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [(SBHIconViewContextMenuManager *)self->_contextMenuManager shouldGroupSystemApplicationShortcutItemsForIconView:v7 atLocation:x, y];
+  v10 = [(SBHIconViewContextMenuManager *)self->_contextMenuManager shouldGroupSystemApplicationShortcutItemsForIconView:viewCopy atLocation:x, y];
 
   return v10 & v9;
 }
 
-- (id)applicationShortcutSectionOrderingForIconView:(id)a3
+- (id)applicationShortcutSectionOrderingForIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self applicationShortcutSectionOrderingForIconView:v4];
+    v6 = [delegate iconManager:self applicationShortcutSectionOrderingForIconView:viewCopy];
   }
 
   else
@@ -19773,13 +19773,13 @@ LABEL_10:
   return v6;
 }
 
-- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)a3
+- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  providerCopy = provider;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self dataSourceForOpenApplicationWindowsContextMenuProvider:v4];
+    v6 = [delegate iconManager:self dataSourceForOpenApplicationWindowsContextMenuProvider:providerCopy];
   }
 
   else
@@ -19790,14 +19790,14 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)openApplicationWindowsContextMenuProvider:(id)a3 canProvideContextMenuSectionsForBundleIdentifier:(id)a4
+- (BOOL)openApplicationWindowsContextMenuProvider:(id)provider canProvideContextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self openApplicationWindowsContextMenuProvider:v6 canProvideContextMenuSectionsForBundleIdentifier:v7];
+    v9 = [delegate iconManager:self openApplicationWindowsContextMenuProvider:providerCopy canProvideContextMenuSectionsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -19808,14 +19808,14 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)recentDocumentsContextMenuProvider:(id)a3 canProvideContextMenuSectionsForBundleIdentifier:(id)a4
+- (BOOL)recentDocumentsContextMenuProvider:(id)provider canProvideContextMenuSectionsForBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
+  providerCopy = provider;
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self recentDocumentsContextMenuProvider:v6 canProvideContextMenuSectionsForBundleIdentifier:v7];
+    v9 = [delegate iconManager:self recentDocumentsContextMenuProvider:providerCopy canProvideContextMenuSectionsForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -19826,13 +19826,13 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)requestDeleteFileStackIcon:(id)a3
+- (BOOL)requestDeleteFileStackIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self requestDeleteFileStackIcon:v4];
+    v6 = [delegate iconManager:self requestDeleteFileStackIcon:iconCopy];
   }
 
   else
@@ -19843,16 +19843,16 @@ LABEL_10:
   return v6;
 }
 
-- (void)_beginObservingLeafIconsInModel:(id)a3
+- (void)_beginObservingLeafIconsInModel:(id)model
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v5 = objc_opt_self();
-  v6 = [v4 iconsOfClass:{v5, 0}];
+  v6 = [modelCopy iconsOfClass:{v5, 0}];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -19880,16 +19880,16 @@ LABEL_10:
   }
 }
 
-- (void)_endObservingLeafIconsInModel:(id)a3
+- (void)_endObservingLeafIconsInModel:(id)model
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v5 = objc_opt_self();
-  v6 = [v4 iconsOfClass:{v5, 0}];
+  v6 = [modelCopy iconsOfClass:{v5, 0}];
 
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
@@ -19917,30 +19917,30 @@ LABEL_10:
   }
 }
 
-- (unint64_t)viewMap:(id)a3 maxRecycledViewsOfClass:(Class)a4
+- (unint64_t)viewMap:(id)map maxRecycledViewsOfClass:(Class)class
 {
-  v5 = a3;
-  v6 = [(SBHIconManager *)self iconViewMap];
+  mapCopy = map;
+  iconViewMap = [(SBHIconManager *)self iconViewMap];
 
-  if (v6 == v5 || ([(SBHIconManager *)self homescreenIconAccessoryViewMap], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == v5) || ([(SBHIconManager *)self homescreenIconLabelAccessoryViewMap], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v5))
+  if (iconViewMap == mapCopy || ([(SBHIconManager *)self homescreenIconAccessoryViewMap], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 == mapCopy) || ([(SBHIconManager *)self homescreenIconLabelAccessoryViewMap], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == mapCopy))
   {
     maxIconViewsInHierarchy = self->_maxIconViewsInHierarchy;
   }
 
   else
   {
-    v9 = [(SBHIconManager *)self homescreenIconImageViewMap];
+    homescreenIconImageViewMap = [(SBHIconManager *)self homescreenIconImageViewMap];
 
-    if (v9 == v5)
+    if (homescreenIconImageViewMap == mapCopy)
     {
       maxIconViewsInHierarchy = -1;
     }
 
     else
     {
-      v10 = [(SBHIconManager *)self widgetBackgroundViewMap];
+      widgetBackgroundViewMap = [(SBHIconManager *)self widgetBackgroundViewMap];
 
-      if (v10 == v5)
+      if (widgetBackgroundViewMap == mapCopy)
       {
         maxIconViewsInHierarchy = 10;
       }
@@ -19955,12 +19955,12 @@ LABEL_10:
   return maxIconViewsInHierarchy;
 }
 
-- (id)recycledViewsContainerProviderForViewMap:(id)a3
+- (id)recycledViewsContainerProviderForViewMap:(id)map
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 recycledViewsContainerProviderForIconManager:self];
+    v5 = [delegate recycledViewsContainerProviderForIconManager:self];
   }
 
   else
@@ -19971,30 +19971,30 @@ LABEL_10:
   return v5;
 }
 
-- (id)viewMap:(id)a3 makeNewViewOfClass:(Class)a4
+- (id)viewMap:(id)map makeNewViewOfClass:(Class)class
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self widgetBackgroundViewMap];
+  mapCopy = map;
+  widgetBackgroundViewMap = [(SBHIconManager *)self widgetBackgroundViewMap];
 
-  if (v7 == v6)
+  if (widgetBackgroundViewMap == mapCopy)
   {
-    v10 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
-    v11 = [SBIconView componentBackgroundViewOfType:4 compatibleWithTraitCollection:v10 initialWeighting:1.0];
+    listLayoutProvider = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:0];
+    v11 = [SBIconView componentBackgroundViewOfType:4 compatibleWithTraitCollection:listLayoutProvider initialWeighting:1.0];
   }
 
   else
   {
     v8 = objc_opt_self();
 
-    if (v8 != a4)
+    if (v8 != class)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
     v12 = [SBIconView alloc];
-    v10 = [(SBHIconManager *)self listLayoutProvider];
-    v11 = [(SBIconView *)v12 initWithConfigurationOptions:0 listLayoutProvider:v10];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v11 = [(SBIconView *)v12 initWithConfigurationOptions:0 listLayoutProvider:listLayoutProvider];
   }
 
   v9 = v11;
@@ -20004,23 +20004,23 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)viewMap:(id)a3 shouldRecycleView:(id)a4
+- (BOOL)viewMap:(id)map shouldRecycleView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    LOBYTE(self) = [(SBHIconManager *)self shouldRecycleIconView:v7];
+    LOBYTE(self) = [(SBHIconManager *)self shouldRecycleIconView:viewCopy];
   }
 
   else
   {
-    v8 = [(SBHIconManager *)self widgetBackgroundViewMap];
+    widgetBackgroundViewMap = [(SBHIconManager *)self widgetBackgroundViewMap];
 
-    if (v8 == v6)
+    if (widgetBackgroundViewMap == mapCopy)
     {
-      LODWORD(self) = [v7 _wantsAutolayout] ^ 1;
+      LODWORD(self) = [viewCopy _wantsAutolayout] ^ 1;
     }
 
     else
@@ -20032,38 +20032,38 @@ LABEL_7:
   return self;
 }
 
-- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateIconViewQueryableChildrenWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  v53 = v6;
-  if ((a3 & 0x20) == 0 || (a3 &= ~0x20uLL, v69 = 0, v70 = &v69, v71 = 0x2020000000, v72 = 0, v66[0] = MEMORY[0x1E69E9820], v66[1] = 3221225472, v66[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke, v66[3] = &unk_1E80903E0, v67 = v6, v68 = &v69, [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:a3 | 0x40 usingBlock:v66], v8 = *(v70 + 24), v67, _Block_object_dispose(&v69, 8), v7 = v53, (v8 & 1) == 0))
+  blockCopy = block;
+  v7 = blockCopy;
+  v53 = blockCopy;
+  if ((options & 0x20) == 0 || (options &= ~0x20uLL, v69 = 0, v70 = &v69, v71 = 0x2020000000, v72 = 0, v66[0] = MEMORY[0x1E69E9820], v66[1] = 3221225472, v66[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke, v66[3] = &unk_1E80903E0, v67 = blockCopy, v68 = &v69, [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:options | 0x40 usingBlock:v66], v8 = *(v70 + 24), v67, _Block_object_dispose(&v69, 8), v7 = v53, (v8 & 1) == 0))
   {
     v69 = 0;
     v70 = &v69;
-    if (((a3 & 3) != 0) | a3 & 1)
+    if (((options & 3) != 0) | options & 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = (a3 >> 3) & 1;
+      v9 = (options >> 3) & 1;
     }
 
     v71 = 0x2020000000;
     v72 = 0;
-    v10 = [(SBHIconManager *)self floatingDockViewController];
-    v11 = (a3 & 0x80) != 0 || [(SBHIconManager *)self isFloatingDockVisible];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    v11 = (options & 0x80) != 0 || [(SBHIconManager *)self isFloatingDockVisible];
     v12 = v9 ^ 1;
-    if (v10)
+    if (floatingDockViewController)
     {
       if ((v12 | v11))
       {
         v13 = v70;
         *(v70 + 24) = 0;
-        (v7)[2](v7, v10, a3, v13 + 3);
+        (v7)[2](v7, floatingDockViewController, options, v13 + 3);
         if (v70[3])
         {
           goto LABEL_75;
@@ -20071,50 +20071,50 @@ LABEL_7:
       }
     }
 
-    if ((a3 & 3) != 0 && [(SBHIconManager *)self isShowingModalInteraction])
+    if ((options & 3) != 0 && [(SBHIconManager *)self isShowingModalInteraction])
     {
       goto LABEL_75;
     }
 
-    v14 = [(SBHIconManager *)self leadingTodayViewController];
-    v15 = [(SBHIconManager *)self overlayTodayViewController];
-    v51 = v15;
-    if (v14)
+    leadingTodayViewController = [(SBHIconManager *)self leadingTodayViewController];
+    overlayTodayViewController = [(SBHIconManager *)self overlayTodayViewController];
+    v51 = overlayTodayViewController;
+    if (leadingTodayViewController)
     {
-      v16 = v14;
+      v16 = leadingTodayViewController;
     }
 
     else
     {
-      v16 = v15;
+      v16 = overlayTodayViewController;
     }
 
     v17 = v16;
-    v18 = [(SBHIconManager *)self isTodayViewEffectivelyVisible];
-    v52 = v10;
-    v50 = v14;
-    if (v14)
+    isTodayViewEffectivelyVisible = [(SBHIconManager *)self isTodayViewEffectivelyVisible];
+    v52 = floatingDockViewController;
+    v50 = leadingTodayViewController;
+    if (leadingTodayViewController)
     {
-      v19 = [v14 isSpotlightVisible];
+      isSpotlightVisible = [leadingTodayViewController isSpotlightVisible];
     }
 
     else
     {
-      v19 = [v51 isSpotlightVisible];
+      isSpotlightVisible = [v51 isSpotlightVisible];
     }
 
     if (v17)
     {
-      if ((v9 & (!v18 | v19) & 1) == 0)
+      if ((v9 & (!isTodayViewEffectivelyVisible | isSpotlightVisible) & 1) == 0)
       {
         v23 = v70;
         *(v70 + 24) = 0;
-        (v7)[2](v7, v17, a3, v23 + 3);
-        if (v70[3] & 1) != 0 || (v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke_2, v62[3] = &unk_1E8090408, v63 = v7, v64 = &v69, v65 = a3, [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupTodayView" withOptions:a3 usingBlock:v62], v63, v7 = v53, (v70[3]))
+        (v7)[2](v7, v17, options, v23 + 3);
+        if (v70[3] & 1) != 0 || (v62[0] = MEMORY[0x1E69E9820], v62[1] = 3221225472, v62[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke_2, v62[3] = &unk_1E8090408, v63 = v7, v64 = &v69, v65 = options, [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupTodayView" withOptions:options usingBlock:v62], v63, v7 = v53, (v70[3]))
         {
 LABEL_74:
 
-          v10 = v52;
+          floatingDockViewController = v52;
 LABEL_75:
 
           _Block_object_dispose(&v69, 8);
@@ -20127,36 +20127,36 @@ LABEL_75:
     v49 = v17;
     if ([(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView])
     {
-      if (v10)
+      if (floatingDockViewController)
       {
-        v20 = 1;
+        isMainDisplayLibraryViewVisible = 1;
         goto LABEL_26;
       }
 
-      v21 = [(SBHIconManager *)self trailingLibraryViewController];
-      v20 = 1;
+      trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
+      isMainDisplayLibraryViewVisible = 1;
     }
 
     else
     {
-      v20 = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
-      if (v10)
+      isMainDisplayLibraryViewVisible = [(SBHIconManager *)self isMainDisplayLibraryViewVisible];
+      if (floatingDockViewController)
       {
 LABEL_26:
-        v21 = [v10 libraryViewController];
-        v22 = [v10 isPresentingLibrary];
-        if (!v21)
+        trailingLibraryViewController = [floatingDockViewController libraryViewController];
+        isPresentingLibrary = [floatingDockViewController isPresentingLibrary];
+        if (!trailingLibraryViewController)
         {
           goto LABEL_39;
         }
 
 LABEL_34:
-        if (v22 && ((v12 | v20) & 1) != 0)
+        if (isPresentingLibrary && ((v12 | isMainDisplayLibraryViewVisible) & 1) != 0)
         {
           v24 = v70;
           *(v70 + 24) = 0;
-          (v7)[2](v7, v21, a3, v24 + 3);
-          if ((v70[3] & 1) != 0 || (a3 & 3) != 0 && (v18 || v20))
+          (v7)[2](v7, trailingLibraryViewController, options, v24 + 3);
+          if ((v70[3] & 1) != 0 || (options & 3) != 0 && (isTodayViewEffectivelyVisible || isMainDisplayLibraryViewVisible))
           {
             goto LABEL_73;
           }
@@ -20165,52 +20165,52 @@ LABEL_34:
         }
 
 LABEL_39:
-        if ((a3 & 3) != 0 && (v18 || v20))
+        if ((options & 3) != 0 && (isTodayViewEffectivelyVisible || isMainDisplayLibraryViewVisible))
         {
           goto LABEL_73;
         }
 
 LABEL_41:
-        v25 = [(SBHIconManager *)self contentVisibility];
-        if ((a3 & 5) == 1 && v25 - 3 >= 0xFFFFFFFFFFFFFFFELL)
+        contentVisibility = [(SBHIconManager *)self contentVisibility];
+        if ((options & 5) == 1 && contentVisibility - 3 >= 0xFFFFFFFFFFFFFFFELL)
         {
           goto LABEL_73;
         }
 
-        v26 = [(SBHIconManager *)self _currentFolderController];
-        v48 = v21;
+        _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+        v48 = trailingLibraryViewController;
         if (self->_closingFolder || [(SBHIconManager *)self isPerformingCancelledExpandTransition])
         {
-          v27 = [(SBHIconManager *)self rootFolderController];
+          rootFolderController = [(SBHIconManager *)self rootFolderController];
 
-          v26 = v27;
+          _currentFolderController = rootFolderController;
         }
 
-        if (!v26)
+        if (!_currentFolderController)
         {
           goto LABEL_52;
         }
 
         v28 = v70;
         *(v70 + 24) = 0;
-        (v53)[2](v53, v26, a3, v28 + 3);
-        if (a3 & 1) == 0 || (v70[3])
+        (v53)[2](v53, _currentFolderController, options, v28 + 3);
+        if (options & 1) == 0 || (v70[3])
         {
           if ((v70[3] & 1) == 0)
           {
 LABEL_52:
-            v31 = [(SBHIconManager *)self rootViewController];
-            v32 = v31;
-            if (v26 || !v31 || (v33 = v70, *(v70 + 24) = 0, (v53)[2](v53, v31, a3, v33 + 3), (v70[3] & 1) == 0))
+            rootViewController = [(SBHIconManager *)self rootViewController];
+            v32 = rootViewController;
+            if (_currentFolderController || !rootViewController || (v33 = v70, *(v70 + 24) = 0, (v53)[2](v53, rootViewController, options, v33 + 3), (v70[3] & 1) == 0))
             {
-              if ((a3 & 0x40) != 0 || (*(v70 + 24) = 0, v58[0] = MEMORY[0x1E69E9820], v58[1] = 3221225472, v58[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke_3, v58[3] = &unk_1E8090408, v59 = v53, v60 = &v69, v61 = a3, [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupRoot" withOptions:a3 usingBlock:v58], v34 = *(v70 + 24), v59, (v34 & 1) == 0))
+              if ((options & 0x40) != 0 || (*(v70 + 24) = 0, v58[0] = MEMORY[0x1E69E9820], v58[1] = 3221225472, v58[2] = __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usingBlock___block_invoke_3, v58[3] = &unk_1E8090408, v59 = v53, v60 = &v69, v61 = options, [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupRoot" withOptions:options usingBlock:v58], v34 = *(v70 + 24), v59, (v34 & 1) == 0))
               {
                 v56 = 0u;
                 v57 = 0u;
                 v54 = 0u;
                 v55 = 0u;
-                v35 = [(SBHIconManager *)self trailingCustomViewControllers];
-                v36 = [v35 countByEnumeratingWithState:&v54 objects:v73 count:16];
+                trailingCustomViewControllers = [(SBHIconManager *)self trailingCustomViewControllers];
+                v36 = [trailingCustomViewControllers countByEnumeratingWithState:&v54 objects:v73 count:16];
                 v47 = v32;
                 if (v36)
                 {
@@ -20221,24 +20221,24 @@ LABEL_59:
                   {
                     if (*v55 != v37)
                     {
-                      objc_enumerationMutation(v35);
+                      objc_enumerationMutation(trailingCustomViewControllers);
                     }
 
                     v39 = *(*(&v54 + 1) + 8 * v38);
                     if (objc_opt_respondsToSelector())
                     {
-                      v40 = [(SBHIconManager *)self rootFolderController];
-                      v41 = [v40 pageState] == 4;
+                      rootFolderController2 = [(SBHIconManager *)self rootFolderController];
+                      v41 = [rootFolderController2 pageState] == 4;
 
                       if (v41)
                       {
-                        v42 = [v39 iconViewQueryable];
-                        v43 = (objc_opt_respondsToSelector() & 1) != 0 ? v42 : 0;
+                        iconViewQueryable = [v39 iconViewQueryable];
+                        v43 = (objc_opt_respondsToSelector() & 1) != 0 ? iconViewQueryable : 0;
                         v44 = v43;
 
                         v45 = v70;
                         *(v70 + 24) = 0;
-                        (v53)[2](v53, v44, a3, v45 + 3);
+                        (v53)[2](v53, v44, options, v45 + 3);
                         v46 = *(v70 + 24);
 
                         if (v46)
@@ -20250,7 +20250,7 @@ LABEL_59:
 
                     if (v36 == ++v38)
                     {
-                      v36 = [v35 countByEnumeratingWithState:&v54 objects:v73 count:16];
+                      v36 = [trailingCustomViewControllers countByEnumeratingWithState:&v54 objects:v73 count:16];
                       if (v36)
                       {
                         goto LABEL_59;
@@ -20269,8 +20269,8 @@ LABEL_59:
 
         else
         {
-          v29 = [(SBHIconManager *)self rootFolderController];
-          v30 = v26 == v29;
+          rootFolderController3 = [(SBHIconManager *)self rootFolderController];
+          v30 = _currentFolderController == rootFolderController3;
 
           if (v30)
           {
@@ -20278,18 +20278,18 @@ LABEL_59:
           }
         }
 
-        v21 = v48;
+        trailingLibraryViewController = v48;
 LABEL_73:
 
         v17 = v49;
         goto LABEL_74;
       }
 
-      v21 = [(SBHIconManager *)self overlayLibraryViewController];
+      trailingLibraryViewController = [(SBHIconManager *)self overlayLibraryViewController];
     }
 
-    v22 = 1;
-    if (!v21)
+    isPresentingLibrary = 1;
+    if (!trailingLibraryViewController)
     {
       goto LABEL_39;
     }
@@ -20322,33 +20322,33 @@ uint64_t __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usin
   return result;
 }
 
-- (void)enumerateAppPredictionViewControllersInIconLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAppPredictionViewControllersInIconLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__SBHIconManager_enumerateAppPredictionViewControllersInIconLocationGroup_withOptions_usingBlock___block_invoke;
   v10[3] = &unk_1E8090430;
-  v11 = v8;
-  v9 = v8;
-  [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:a3 withOptions:a4 usingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:group withOptions:options usingBlock:v10];
 }
 
-- (void)enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v6 = a4;
+  optionsCopy = options;
   v28 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v20 = a5;
+  groupCopy = group;
+  blockCopy = block;
   v26 = 0;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-  v9 = [v8 objectEnumerator];
+  _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+  objectEnumerator = [_effectiveAppPredictionViewControllersForUniqueIdentifier objectEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v10 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v10)
   {
     v11 = v10;
@@ -20359,24 +20359,24 @@ uint64_t __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usin
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-        v16 = [v15 activeMultiplexingViewControllerForViewController:v14];
+        _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+        v16 = [_effectiveWidgetMultiplexingManager activeMultiplexingViewControllerForViewController:v14];
 
         v17 = [(NSMapTable *)self->_iconViewsForWidgetMultiplexingViewController objectForKey:v16];
         v18 = v17;
         if (v17)
         {
-          if ((v6 & 1) == 0 || ([v17 effectiveIconImageAlpha], (BSFloatIsZero() & 1) == 0) && objc_msgSend(v18, "_isInAWindow"))
+          if ((optionsCopy & 1) == 0 || ([v17 effectiveIconImageAlpha], (BSFloatIsZero() & 1) == 0) && objc_msgSend(v18, "_isInAWindow"))
           {
-            v19 = [v18 location];
-            if (SBIconLocationGroupContainsLocation(v21, v19))
+            location = [v18 location];
+            if (SBIconLocationGroupContainsLocation(groupCopy, location))
             {
               v26 = 0;
-              v20[2](v20, v14, v18, &v26);
+              blockCopy[2](blockCopy, v14, v18, &v26);
               if (v26 == 1)
               {
 
@@ -20387,7 +20387,7 @@ uint64_t __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usin
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v11 = [objectEnumerator countByEnumeratingWithState:&v22 objects:v27 count:16];
       if (v11)
       {
         continue;
@@ -20400,14 +20400,14 @@ uint64_t __75__SBHIconManager_enumerateIconViewQueryableChildrenWithOptions_usin
 LABEL_17:
 }
 
-- (void)enumerateIconViewsDisplayedInAppPredictionsInLocationGroup:(id)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateIconViewsDisplayedInAppPredictionsInLocationGroup:(id)group withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 isEqualToString:@"SBIconLocationGroupTodayView"])
+  groupCopy = group;
+  blockCopy = block;
+  if ([groupCopy isEqualToString:@"SBIconLocationGroupTodayView"])
   {
-    v10 = [(SBHIconManager *)self _effectiveTodayViewController];
-    if (!v10 || (a4 & 1) != 0 && ![(SBHIconManager *)self isTodayViewEffectivelyVisible])
+    _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+    if (!_effectiveTodayViewController || (options & 1) != 0 && ![(SBHIconManager *)self isTodayViewEffectivelyVisible])
     {
 
       goto LABEL_8;
@@ -20418,8 +20418,8 @@ LABEL_17:
   v11[1] = 3221225472;
   v11[2] = __100__SBHIconManager_enumerateIconViewsDisplayedInAppPredictionsInLocationGroup_withOptions_usingBlock___block_invoke;
   v11[3] = &unk_1E8090430;
-  v12 = v9;
-  [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:v8 withOptions:a4 usingBlock:v11];
+  v12 = blockCopy;
+  [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:groupCopy withOptions:options usingBlock:v11];
 
 LABEL_8:
 }
@@ -20446,26 +20446,26 @@ uint64_t __100__SBHIconManager_enumerateIconViewsDisplayedInAppPredictionsInLoca
   return result;
 }
 
-- (id)appPredictionsIconViewDisplayingIconView:(id)a3 options:(unint64_t)a4
+- (id)appPredictionsIconViewDisplayingIconView:(id)view options:(unint64_t)options
 {
-  v6 = a3;
+  viewCopy = view;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__23;
   v23 = __Block_byref_object_dispose__23;
   v24 = 0;
-  v7 = [(SBHIconManager *)self _effectiveTodayViewController];
-  if (v7 && ((a4 & 1) == 0 || [(SBHIconManager *)self isTodayViewEffectivelyVisible]))
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+  if (_effectiveTodayViewController && ((options & 1) == 0 || [(SBHIconManager *)self isTodayViewEffectivelyVisible]))
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__SBHIconManager_appPredictionsIconViewDisplayingIconView_options___block_invoke;
     v15[3] = &unk_1E8090480;
-    v16 = v6;
+    v16 = viewCopy;
     v17 = &v19;
-    v18 = a4;
-    [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:@"SBIconLocationGroupTodayView" withOptions:a4 usingBlock:v15];
+    optionsCopy = options;
+    [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:@"SBIconLocationGroupTodayView" withOptions:options usingBlock:v15];
   }
 
   v8 = v20[5];
@@ -20475,10 +20475,10 @@ uint64_t __100__SBHIconManager_enumerateIconViewsDisplayedInAppPredictionsInLoca
     v11[1] = 3221225472;
     v11[2] = __67__SBHIconManager_appPredictionsIconViewDisplayingIconView_options___block_invoke_2;
     v11[3] = &unk_1E8090480;
-    v12 = v6;
+    v12 = viewCopy;
     v13 = &v19;
-    v14 = a4;
-    [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:@"SBIconLocationGroupRoot" withOptions:a4 usingBlock:v11];
+    optionsCopy2 = options;
+    [(SBHIconManager *)self enumerateAppPredictionViewControllersWithIconViewsInIconLocationGroup:@"SBIconLocationGroupRoot" withOptions:options usingBlock:v11];
 
     v8 = v20[5];
   }
@@ -20510,23 +20510,23 @@ void __67__SBHIconManager_appPredictionsIconViewDisplayingIconView_options___blo
   }
 }
 
-- (id)appPredictionViewControllerForIconView:(id)a3
+- (id)appPredictionViewControllerForIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__23;
   v19 = __Block_byref_object_dispose__23;
   v20 = 0;
-  v5 = [(SBHIconManager *)self _effectiveTodayViewController];
-  if (v5)
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+  if (_effectiveTodayViewController)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__SBHIconManager_appPredictionViewControllerForIconView___block_invoke;
     v12[3] = &unk_1E80904A8;
-    v13 = v4;
+    v13 = viewCopy;
     v14 = &v15;
     [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupTodayView" withOptions:0 usingBlock:v12];
   }
@@ -20538,7 +20538,7 @@ void __67__SBHIconManager_appPredictionsIconViewDisplayingIconView_options___blo
     v9[1] = 3221225472;
     v9[2] = __57__SBHIconManager_appPredictionViewControllerForIconView___block_invoke_2;
     v9[3] = &unk_1E80904A8;
-    v10 = v4;
+    v10 = viewCopy;
     v11 = &v15;
     [(SBHIconManager *)self enumerateAppPredictionViewControllersInIconLocationGroup:@"SBIconLocationGroupRoot" withOptions:0 usingBlock:v9];
 
@@ -20579,10 +20579,10 @@ void __57__SBHIconManager_appPredictionViewControllerForIconView___block_invoke_
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-  v3 = [v2 objectEnumerator];
+  _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+  objectEnumerator = [_effectiveAppPredictionViewControllersForUniqueIdentifier objectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -20594,14 +20594,14 @@ void __57__SBHIconManager_appPredictionViewControllerForIconView___block_invoke_
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) enumerateDisplayedIconViewsUsingBlock:&__block_literal_global_880];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -20614,7 +20614,7 @@ void __44__SBHIconManager_refreshAppPredictionBadges__block_invoke(uint64_t a1, 
   [v2 noteBadgeDidChange];
 }
 
-- (void)updateAppPredictionViewControllersWithListLayoutProvider:(id)a3 oldListLayoutProvider:(id)a4 animated:(BOOL)a5
+- (void)updateAppPredictionViewControllersWithListLayoutProvider:(id)provider oldListLayoutProvider:(id)layoutProvider animated:(BOOL)animated
 {
   appPredictionViewControllersForUniqueIdentifier = self->_appPredictionViewControllersForUniqueIdentifier;
   v6[0] = MEMORY[0x1E69E9820];
@@ -20622,21 +20622,21 @@ void __44__SBHIconManager_refreshAppPredictionBadges__block_invoke(uint64_t a1, 
   v6[2] = __106__SBHIconManager_updateAppPredictionViewControllersWithListLayoutProvider_oldListLayoutProvider_animated___block_invoke;
   v6[3] = &unk_1E80904D0;
   v6[4] = self;
-  v7 = a5;
-  [(NSMutableDictionary *)appPredictionViewControllersForUniqueIdentifier enumerateKeysAndObjectsUsingBlock:v6, a4];
+  animatedCopy = animated;
+  [(NSMutableDictionary *)appPredictionViewControllersForUniqueIdentifier enumerateKeysAndObjectsUsingBlock:v6, layoutProvider];
 }
 
-- (void)updateLargeIconsEnabledForAppPredictionViewController:(id)a3 animated:(BOOL)a4
+- (void)updateLargeIconsEnabledForAppPredictionViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setLargeIconsEnabled:(-[SBHIconManager listLayoutProviderLayoutOptions](self animated:{"listLayoutProviderLayoutOptions") >> 3) & 1, v4}];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  [controllerCopy setLargeIconsEnabled:(-[SBHIconManager listLayoutProviderLayoutOptions](self animated:{"listLayoutProviderLayoutOptions") >> 3) & 1, animatedCopy}];
 }
 
-- (id)iconViewForIcon:(id)a3 location:(id)a4 options:(unint64_t)a5
+- (id)iconViewForIcon:(id)icon location:(id)location options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  iconCopy = icon;
+  locationCopy = location;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -20647,12 +20647,12 @@ void __44__SBHIconManager_refreshAppPredictionBadges__block_invoke(uint64_t a1, 
   v14[1] = 3221225472;
   v14[2] = __51__SBHIconManager_iconViewForIcon_location_options___block_invoke;
   v14[3] = &unk_1E80904F8;
-  v10 = v9;
+  v10 = locationCopy;
   v15 = v10;
   v17 = &v18;
-  v11 = v8;
+  v11 = iconCopy;
   v16 = v11;
-  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:a5 usingBlock:v14];
+  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:options usingBlock:v14];
   v12 = v19[5];
 
   _Block_object_dispose(&v18, 8);
@@ -20677,10 +20677,10 @@ void __51__SBHIconManager_iconViewForIcon_location_options___block_invoke(uint64
   }
 }
 
-- (id)firstIconViewForIcon:(id)a3 inLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  locationsCopy = locations;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -20692,9 +20692,9 @@ void __51__SBHIconManager_iconViewForIcon_location_options___block_invoke(uint64
   v12[2] = __51__SBHIconManager_firstIconViewForIcon_inLocations___block_invoke;
   v12[3] = &unk_1E8090520;
   v15 = &v16;
-  v8 = v6;
+  v8 = iconCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = locationsCopy;
   v14 = v9;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenUsingBlock:v12];
   v10 = v17[5];
@@ -20717,9 +20717,9 @@ void __51__SBHIconManager_firstIconViewForIcon_inLocations___block_invoke(void *
   }
 }
 
-- (id)firstIconViewWithOptions:(unint64_t)a3 iconPassingTest:(id)a4
+- (id)firstIconViewWithOptions:(unint64_t)options iconPassingTest:(id)test
 {
-  v7 = a4;
+  testCopy = test;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -20732,9 +20732,9 @@ void __51__SBHIconManager_firstIconViewForIcon_inLocations___block_invoke(void *
   v11[3] = &unk_1E8090548;
   v13 = &v15;
   v14 = a2;
-  v8 = v7;
+  v8 = testCopy;
   v12 = v8;
-  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:a3 usingBlock:v11];
+  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:options usingBlock:v11];
   v9 = v16[5];
 
   _Block_object_dispose(&v15, 8);
@@ -20767,9 +20767,9 @@ void __59__SBHIconManager_firstIconViewWithOptions_iconPassingTest___block_invok
   }
 }
 
-- (id)firstIconViewForIcon:(id)a3
+- (id)firstIconViewForIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -20781,7 +20781,7 @@ void __59__SBHIconManager_firstIconViewWithOptions_iconPassingTest___block_invok
   v8[2] = __39__SBHIconManager_firstIconViewForIcon___block_invoke;
   v8[3] = &unk_1E8090570;
   v10 = &v11;
-  v5 = v4;
+  v5 = iconCopy;
   v9 = v5;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:1 usingBlock:v8];
   v6 = v12[5];
@@ -20804,10 +20804,10 @@ void __39__SBHIconManager_firstIconViewForIcon___block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)firstIconViewForIcon:(id)a3 excludingLocations:(id)a4
+- (id)firstIconViewForIcon:(id)icon excludingLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  locationsCopy = locations;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -20819,9 +20819,9 @@ void __39__SBHIconManager_firstIconViewForIcon___block_invoke(uint64_t a1, void 
   v12[2] = __58__SBHIconManager_firstIconViewForIcon_excludingLocations___block_invoke;
   v12[3] = &unk_1E8090520;
   v15 = &v16;
-  v8 = v6;
+  v8 = iconCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = locationsCopy;
   v14 = v9;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:1 usingBlock:v12];
   v10 = v17[5];
@@ -20844,10 +20844,10 @@ void __58__SBHIconManager_firstIconViewForIcon_excludingLocations___block_invoke
   }
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocation:(id)a4 options:(unint64_t)a5
+- (BOOL)isDisplayingIcon:(id)icon inLocation:(id)location options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  iconCopy = icon;
+  locationCopy = location;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -20856,16 +20856,16 @@ void __58__SBHIconManager_firstIconViewForIcon_excludingLocations___block_invoke
   v13[1] = 3221225472;
   v13[2] = __54__SBHIconManager_isDisplayingIcon_inLocation_options___block_invoke;
   v13[3] = &unk_1E80904F8;
-  v10 = v9;
+  v10 = locationCopy;
   v14 = v10;
   v16 = &v17;
-  v11 = v8;
+  v11 = iconCopy;
   v15 = v11;
-  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:a5 usingBlock:v13];
-  LOBYTE(a5) = *(v18 + 24);
+  [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:options usingBlock:v13];
+  LOBYTE(options) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return a5;
+  return options;
 }
 
 void __54__SBHIconManager_isDisplayingIcon_inLocation_options___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -20882,10 +20882,10 @@ void __54__SBHIconManager_isDisplayingIcon_inLocation_options___block_invoke(uin
   }
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 inLocation:(id)a4
+- (BOOL)isDisplayingIconView:(id)view inLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  locationCopy = location;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -20894,10 +20894,10 @@ void __54__SBHIconManager_isDisplayingIcon_inLocation_options___block_invoke(uin
   v11[1] = 3221225472;
   v11[2] = __50__SBHIconManager_isDisplayingIconView_inLocation___block_invoke;
   v11[3] = &unk_1E80904F8;
-  v8 = v7;
+  v8 = locationCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v6;
+  v9 = viewCopy;
   v13 = v9;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenUsingBlock:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -20920,10 +20920,10 @@ void __50__SBHIconManager_isDisplayingIconView_inLocation___block_invoke(void *a
   }
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 inLocations:(id)a4
+- (BOOL)isDisplayingIcon:(id)icon inLocations:(id)locations
 {
-  v6 = a3;
-  v7 = a4;
+  iconCopy = icon;
+  locationsCopy = locations;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -20932,10 +20932,10 @@ void __50__SBHIconManager_isDisplayingIconView_inLocation___block_invoke(void *a
   v11[1] = 3221225472;
   v11[2] = __47__SBHIconManager_isDisplayingIcon_inLocations___block_invoke;
   v11[3] = &unk_1E80904F8;
-  v8 = v7;
+  v8 = locationsCopy;
   v12 = v8;
   v14 = &v15;
-  v9 = v6;
+  v9 = iconCopy;
   v13 = v9;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenUsingBlock:v11];
   LOBYTE(self) = *(v16 + 24);
@@ -20993,9 +20993,9 @@ void __47__SBHIconManager_isDisplayingIcon_inLocations___block_invoke(uint64_t a
 LABEL_13:
 }
 
-- (BOOL)isDisplayingIconView:(id)a3
+- (BOOL)isDisplayingIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -21005,7 +21005,7 @@ LABEL_13:
   v7[2] = __39__SBHIconManager_isDisplayingIconView___block_invoke;
   v7[3] = &unk_1E8090570;
   v9 = &v10;
-  v5 = v4;
+  v5 = viewCopy;
   v8 = v5;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenWithOptions:1 usingBlock:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -21026,14 +21026,14 @@ uint64_t __39__SBHIconManager_isDisplayingIconView___block_invoke(uint64_t a1, v
   return result;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 queryOptions:(unint64_t)a4
+- (BOOL)isDisplayingIcon:(id)icon queryOptions:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  optionsCopy = options;
+  iconCopy = icon;
+  if (optionsCopy)
   {
-    v10 = 0;
-    if ((v4 & 2) != 0)
+    icon = 0;
+    if ((optionsCopy & 2) != 0)
     {
       goto LABEL_12;
     }
@@ -21041,19 +21041,19 @@ uint64_t __39__SBHIconManager_isDisplayingIconView___block_invoke(uint64_t a1, v
 
   else
   {
-    v7 = [(SBHIconManager *)self rootFolder];
-    v8 = [v7 indexPathForIcon:v6];
-    v9 = [v7 folderContainingIndexPath:v8 relativeIndexPath:0];
-    v10 = [v9 icon];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    v8 = [rootFolder indexPathForIcon:iconCopy];
+    v9 = [rootFolder folderContainingIndexPath:v8 relativeIndexPath:0];
+    icon = [v9 icon];
 
-    if ((v4 & 2) != 0)
+    if ((optionsCopy & 2) != 0)
     {
 LABEL_12:
-      if ((v4 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
-        v13 = [(SBHIconManager *)self _effectiveTodayViewController];
-        v14 = v13;
-        if (v13 && ([v13 isDisplayingIcon:v6] & 1) != 0)
+        _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
+        v14 = _effectiveTodayViewController;
+        if (_effectiveTodayViewController && ([_effectiveTodayViewController isDisplayingIcon:iconCopy] & 1) != 0)
         {
 
           goto LABEL_22;
@@ -21062,15 +21062,15 @@ LABEL_12:
 
       if ([(SBHIconManager *)self isRootFolderContentVisible])
       {
-        v15 = [(SBHIconManager *)self _currentFolderController];
-        v16 = v15;
-        if (v10 && ([v15 isDisplayingIcon:v10] & 1) != 0)
+        _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+        v16 = _currentFolderController;
+        if (icon && ([_currentFolderController isDisplayingIcon:icon] & 1) != 0)
         {
 
           goto LABEL_22;
         }
 
-        v17 = [v16 isDisplayingIcon:v6];
+        v17 = [v16 isDisplayingIcon:iconCopy];
 
         if (v17)
         {
@@ -21083,15 +21083,15 @@ LABEL_12:
     }
   }
 
-  v11 = [(SBHIconManager *)self floatingDockViewController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
 
-  if (!v11)
+  if (!floatingDockViewController)
   {
     goto LABEL_12;
   }
 
-  v12 = [(SBHIconManager *)self floatingDockViewController];
-  if (!-[SBHIconManager isFloatingDockVisible](self, "isFloatingDockVisible") || (!v10 || ([v12 isDisplayingIcon:v10] & 1) == 0) && (objc_msgSend(v12, "isDisplayingIcon:", v6) & 1) == 0)
+  floatingDockViewController2 = [(SBHIconManager *)self floatingDockViewController];
+  if (!-[SBHIconManager isFloatingDockVisible](self, "isFloatingDockVisible") || (!icon || ([floatingDockViewController2 isDisplayingIcon:icon] & 1) == 0) && (objc_msgSend(floatingDockViewController2, "isDisplayingIcon:", iconCopy) & 1) == 0)
   {
 
     goto LABEL_12;
@@ -21104,9 +21104,9 @@ LABEL_24:
   return v18;
 }
 
-- (id)bestLocationForIcon:(id)a3
+- (id)bestLocationForIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -21117,7 +21117,7 @@ LABEL_24:
   v8[1] = 3221225472;
   v8[2] = __38__SBHIconManager_bestLocationForIcon___block_invoke;
   v8[3] = &unk_1E808E8E8;
-  v5 = v4;
+  v5 = iconCopy;
   v9 = v5;
   v10 = &v11;
   [(SBHIconManager *)self enumerateIconViewQueryableChildrenUsingBlock:v8];
@@ -21173,15 +21173,15 @@ void __38__SBHIconManager_bestLocationForIcon___block_invoke(uint64_t a1, void *
 LABEL_11:
 }
 
-- (id)bestHomeScreenLocationForIcon:(id)a3
+- (id)bestHomeScreenLocationForIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 indexPathForIcon:v4];
+  iconCopy = icon;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v6 = [rootFolder indexPathForIcon:iconCopy];
 
   if (v6)
   {
-    if ([v5 isIconAtIndexPathInDock:v6])
+    if ([rootFolder isIconAtIndexPathInDock:v6])
     {
       v7 = SBIconLocationDock;
 LABEL_4:
@@ -21189,12 +21189,12 @@ LABEL_4:
       goto LABEL_8;
     }
 
-    if (([v5 isIconAtIndexPathInTodayList:v6] & 1) == 0 && (objc_msgSend(v5, "isIconAtIndexPathInIgnoredList:", v6) & 1) == 0)
+    if (([rootFolder isIconAtIndexPathInTodayList:v6] & 1) == 0 && (objc_msgSend(rootFolder, "isIconAtIndexPathInIgnoredList:", v6) & 1) == 0)
     {
-      v10 = [v5 folderContainingIndexPath:v6 relativeIndexPath:0];
+      v10 = [rootFolder folderContainingIndexPath:v6 relativeIndexPath:0];
 
       v7 = SBIconLocationFolder;
-      if (v10 == v5)
+      if (v10 == rootFolder)
       {
         v7 = SBIconLocationRoot;
       }
@@ -21209,9 +21209,9 @@ LABEL_8:
   return v8;
 }
 
-- (id)firstIconViewForIcon:(id)a3 options:(unint64_t)a4
+- (id)firstIconViewForIcon:(id)icon options:(unint64_t)options
 {
-  v7 = a3;
+  iconCopy = icon;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -21223,7 +21223,7 @@ LABEL_8:
   v14[2] = __47__SBHIconManager_firstIconViewForIcon_options___block_invoke;
   v14[3] = &unk_1E808E938;
   v16 = &v17;
-  v15 = v7;
+  v15 = iconCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2;
@@ -21231,7 +21231,7 @@ LABEL_8:
   v13 = &v17;
   v8 = v15;
   v12 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v14, v11);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v14, v11);
   v9 = v18[5];
 
   _Block_object_dispose(&v17, 8);
@@ -21259,9 +21259,9 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (BOOL)isDisplayingIcon:(id)a3 options:(unint64_t)a4
+- (BOOL)isDisplayingIcon:(id)icon options:(unint64_t)options
 {
-  v7 = a3;
+  iconCopy = icon;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -21271,7 +21271,7 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   v13[2] = __43__SBHIconManager_isDisplayingIcon_options___block_invoke;
   v13[3] = &unk_1E808E938;
   v15 = &v16;
-  v14 = v7;
+  v14 = iconCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __43__SBHIconManager_isDisplayingIcon_options___block_invoke_2;
@@ -21279,16 +21279,16 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   v12 = &v16;
   v8 = v14;
   v11 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v13, v10);
-  LOBYTE(a4) = *(v17 + 24);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v13, v10);
+  LOBYTE(options) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return a4;
+  return options;
 }
 
-- (BOOL)isDisplayingIconView:(id)a3 options:(unint64_t)a4
+- (BOOL)isDisplayingIconView:(id)view options:(unint64_t)options
 {
-  v7 = a3;
+  viewCopy = view;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -21298,7 +21298,7 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   v13[2] = __47__SBHIconManager_isDisplayingIconView_options___block_invoke;
   v13[3] = &unk_1E808E938;
   v15 = &v16;
-  v14 = v7;
+  v14 = viewCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __47__SBHIconManager_isDisplayingIconView_options___block_invoke_2;
@@ -21306,80 +21306,80 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   v12 = &v16;
   v8 = v14;
   v11 = v8;
-  SBIconViewQueryingHandleMethodRecursion(self, a4, a2, v13, v10);
-  LOBYTE(a4) = *(v17 + 24);
+  SBIconViewQueryingHandleMethodRecursion(self, options, a2, v13, v10);
+  LOBYTE(options) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return a4;
+  return options;
 }
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v4 = [(SBHIconManager *)self iconViewMap];
-  v5 = [v4 dequeueReusableViewOfClass:a3];
+  iconViewMap = [(SBHIconManager *)self iconViewMap];
+  v5 = [iconViewMap dequeueReusableViewOfClass:class];
 
   return v5;
 }
 
-- (void)recycleIconView:(id)a3
+- (void)recycleIconView:(id)view
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconViewMap];
-  [v5 recycleView:v4];
+  viewCopy = view;
+  iconViewMap = [(SBHIconManager *)self iconViewMap];
+  [iconViewMap recycleView:viewCopy];
 }
 
-- (BOOL)isIconViewRecycled:(id)a3
+- (BOOL)isIconViewRecycled:(id)recycled
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self iconViewMap];
-  v6 = [v5 isViewRecycled:v4];
+  recycledCopy = recycled;
+  iconViewMap = [(SBHIconManager *)self iconViewMap];
+  v6 = [iconViewMap isViewRecycled:recycledCopy];
 
   return v6;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 setAllowsCloseBox:{-[SBHIconManager iconsShouldAllowCloseBoxes](self, "iconsShouldAllowCloseBoxes")}];
-  [v10 setAllowsResizeHandle:1];
-  [v10 setDelegate:self];
-  [v10 addObserver:self];
-  v7 = [v10 location];
-  if ((SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v7) & 1) != 0 || [v7 isEqualToString:@"SBIconLocationFolder"])
+  viewCopy = view;
+  iconCopy = icon;
+  [viewCopy setAllowsCloseBox:{-[SBHIconManager iconsShouldAllowCloseBoxes](self, "iconsShouldAllowCloseBoxes")}];
+  [viewCopy setAllowsResizeHandle:1];
+  [viewCopy setDelegate:self];
+  [viewCopy addObserver:self];
+  location = [viewCopy location];
+  if ((SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", location) & 1) != 0 || [location isEqualToString:@"SBIconLocationFolder"])
   {
-    [v10 setDisplaysIconStatusInLabel:1];
+    [viewCopy setDisplaysIconStatusInLabel:1];
   }
 
-  v8 = [(SBHIconManager *)self iconDragManager];
-  [v8 configureIconView:v10];
-  [v10 setImageLoadingBehavior:1];
-  [v10 setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
-  v9 = [(SBHIconManager *)self delegate];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager configureIconView:viewCopy];
+  [viewCopy setImageLoadingBehavior:1];
+  [viewCopy setPrefersFlatImageLayers:{-[SBHIconManager prefersFlatImageLayers](self, "prefersFlatImageLayers")}];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self configureIconView:v10 forIcon:v6];
+    [delegate iconManager:self configureIconView:viewCopy forIcon:iconCopy];
   }
 }
 
-- (BOOL)isPresentingIconLocation:(id)a3
+- (BOOL)isPresentingIconLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self _currentFolderController];
-  if ([v5 isPresentingIconLocation:v4])
+  locationCopy = location;
+  _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+  if ([_currentFolderController isPresentingIconLocation:locationCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SBHIconManager *)self floatingDockViewController];
-    v8 = v7;
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    v8 = floatingDockViewController;
     v6 = 0;
-    if (v7)
+    if (floatingDockViewController)
     {
-      [v7 dockOffscreenProgress];
-      if (v9 < 1.0 && ([v8 isPresentingIconLocation:v4] & 1) != 0)
+      [floatingDockViewController dockOffscreenProgress];
+      if (v9 < 1.0 && ([v8 isPresentingIconLocation:locationCopy] & 1) != 0)
       {
         v6 = 1;
       }
@@ -21392,42 +21392,42 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
 - (NSSet)presentedIconLocations
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(SBHIconManager *)self _currentFolderController];
-  v5 = v4;
-  if (v4)
+  _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+  v5 = _currentFolderController;
+  if (_currentFolderController)
   {
-    v6 = [v4 presentedIconLocations];
-    [v3 unionSet:v6];
+    presentedIconLocations = [_currentFolderController presentedIconLocations];
+    [v3 unionSet:presentedIconLocations];
   }
 
-  v7 = [(SBHIconManager *)self floatingDockViewController];
-  v8 = v7;
-  if (v7)
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  v8 = floatingDockViewController;
+  if (floatingDockViewController)
   {
-    [v7 dockOffscreenProgress];
+    [floatingDockViewController dockOffscreenProgress];
     if (v9 < 1.0)
     {
-      v10 = [v8 presentedIconLocations];
-      [v3 unionSet:v10];
+      presentedIconLocations2 = [v8 presentedIconLocations];
+      [v3 unionSet:presentedIconLocations2];
     }
   }
 
   return v3;
 }
 
-- (Class)controllerClassForFolder:(id)a3
+- (Class)controllerClassForFolder:(id)folder
 {
   v4 = objc_opt_class();
 
   return [(SBHIconManager *)self controllerClassForFolderClass:v4];
 }
 
-- (Class)controllerClassForFolderClass:(Class)a3
+- (Class)controllerClassForFolderClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v5 = objc_opt_self();
-    v6 = [(objc_class *)a3 isSubclassOfClass:v5];
+    v6 = [(objc_class *)class isSubclassOfClass:v5];
 
     if (v6)
     {
@@ -21440,10 +21440,10 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
     }
 
     v8 = v7;
-    v9 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v9 iconManager:self folderControllerClassForFolderClass:a3 proposedClass:v8];
+      v8 = [delegate iconManager:self folderControllerClassForFolderClass:class proposedClass:v8];
     }
   }
 
@@ -21455,13 +21455,13 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v8;
 }
 
-- (BOOL)folderController:(id)a3 canChangeCurrentPageIndexToIndex:(int64_t)a4
+- (BOOL)folderController:(id)controller canChangeCurrentPageIndexToIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 iconManager:self folderController:v6 canChangeCurrentPageIndexToIndex:a4];
+    v8 = [delegate iconManager:self folderController:controllerCopy canChangeCurrentPageIndexToIndex:index];
   }
 
   else
@@ -21472,13 +21472,13 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v8;
 }
 
-- (BOOL)folderControllerShouldClose:(id)a3 withPinchGesture:(id)a4
+- (BOOL)folderControllerShouldClose:(id)close withPinchGesture:(id)gesture
 {
-  v6 = a4;
-  v7 = [a3 originatingIconLocation];
-  if (v6)
+  gestureCopy = gesture;
+  originatingIconLocation = [close originatingIconLocation];
+  if (gestureCopy)
   {
-    v8 = [[SBWorkspaceInteractionContext alloc] initWithGestureRecognizer:v6];
+    v8 = [[SBWorkspaceInteractionContext alloc] initWithGestureRecognizer:gestureCopy];
   }
 
   else
@@ -21486,31 +21486,31 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
     v8 = 0;
   }
 
-  [(SBHIconManager *)self popExpandedIconFromLocation:v7 interactionContext:v8 animated:1 completionHandler:0];
+  [(SBHIconManager *)self popExpandedIconFromLocation:originatingIconLocation interactionContext:v8 animated:1 completionHandler:0];
 
   return 0;
 }
 
-- (void)folderControllerShouldBeginEditing:(id)a3 withHaptic:(BOOL)a4
+- (void)folderControllerShouldBeginEditing:(id)editing withHaptic:(BOOL)haptic
 {
-  v19 = a3;
+  editingCopy = editing;
   if ([(SBHIconManager *)self isEditingAllowed])
   {
-    v6 = [v19 view];
-    v7 = [v19 view];
-    [v7 center];
+    view = [editingCopy view];
+    view2 = [editingCopy view];
+    [view2 center];
     v9 = v8;
     v11 = v10;
-    v12 = [(SBHIconManager *)self iconEditingFeedbackBehavior];
-    v13 = [v12 view];
-    [v6 convertPoint:v13 toView:{v9, v11}];
+    iconEditingFeedbackBehavior = [(SBHIconManager *)self iconEditingFeedbackBehavior];
+    view3 = [iconEditingFeedbackBehavior view];
+    [view convertPoint:view3 toView:{v9, v11}];
     v15 = v14;
     v17 = v16;
 
-    if (a4)
+    if (haptic)
     {
-      v18 = [(SBHIconManager *)self iconEditingFeedbackBehavior];
-      [(SBHIconManager *)self setEditing:1 withFeedbackBehavior:v18 location:v15, v17];
+      iconEditingFeedbackBehavior2 = [(SBHIconManager *)self iconEditingFeedbackBehavior];
+      [(SBHIconManager *)self setEditing:1 withFeedbackBehavior:iconEditingFeedbackBehavior2 location:v15, v17];
     }
 
     else
@@ -21520,75 +21520,75 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   }
 }
 
-- (void)folderControllerWillBeginScrolling:(id)a3
+- (void)folderControllerWillBeginScrolling:(id)scrolling
 {
-  v11 = a3;
-  v4 = [(SBHIconManager *)self delegate];
+  scrollingCopy = scrolling;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManager:self folderControllerWillBeginScrolling:v11];
+    [delegate iconManager:self folderControllerWillBeginScrolling:scrollingCopy];
   }
 
-  v5 = [(SBHIconManager *)self iconDragManager];
-  [v5 noteFolderBeganScrolling];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteFolderBeganScrolling];
 
   [(SBHIconManager *)self _discardEndEditingTimerAndDontResetUntilReasonIsRemoved:@"FOLDER_IS_BEING_SCROLLED"];
-  v6 = [(SBHIconManager *)self rootFolderController];
-  [v6 bringWidgetIntroductionPopoverToFront];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController bringWidgetIntroductionPopoverToFront];
 
-  v7 = [(SBHIconManager *)self leadingTodayViewController];
+  leadingTodayViewController = [(SBHIconManager *)self leadingTodayViewController];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 cancelTouchesOnIconViews];
-    v9 = [(SBHIconManager *)self todayViewCancelTouchesScrollingAssertion];
-    [v9 invalidate];
+    cancelTouchesOnIconViews = [leadingTodayViewController cancelTouchesOnIconViews];
+    todayViewCancelTouchesScrollingAssertion = [(SBHIconManager *)self todayViewCancelTouchesScrollingAssertion];
+    [todayViewCancelTouchesScrollingAssertion invalidate];
 
-    [(SBHIconManager *)self setTodayViewCancelTouchesScrollingAssertion:v8];
+    [(SBHIconManager *)self setTodayViewCancelTouchesScrollingAssertion:cancelTouchesOnIconViews];
   }
 
-  v10 = [(SBHIconManager *)self trailingLibraryViewController];
+  trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v10 folderControllerWillBeginScrolling:v11];
+    [trailingLibraryViewController folderControllerWillBeginScrolling:scrollingCopy];
   }
 }
 
-- (void)folderControllerDidEndScrolling:(id)a3
+- (void)folderControllerDidEndScrolling:(id)scrolling
 {
-  v10 = a3;
-  v4 = [(SBHIconManager *)self iconToReveal];
+  scrollingCopy = scrolling;
+  iconToReveal = [(SBHIconManager *)self iconToReveal];
 
-  if (v4)
+  if (iconToReveal)
   {
     [(SBHIconManager *)self finishInstallingIconAnimated:1];
   }
 
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self folderControllerDidEndScrolling:v10];
+    [delegate iconManager:self folderControllerDidEndScrolling:scrollingCopy];
   }
 
   [(SBHIconManager *)self _removeReasonToNotResetEndEditingTimer:@"FOLDER_IS_BEING_SCROLLED"];
-  v6 = [(SBHIconManager *)self rootFolderController];
-  [v6 bringWidgetIntroductionPopoverToFront];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController bringWidgetIntroductionPopoverToFront];
 
-  v7 = [(SBHIconManager *)self todayViewCancelTouchesScrollingAssertion];
-  [v7 invalidate];
+  todayViewCancelTouchesScrollingAssertion = [(SBHIconManager *)self todayViewCancelTouchesScrollingAssertion];
+  [todayViewCancelTouchesScrollingAssertion invalidate];
 
   [(SBHIconManager *)self setTodayViewCancelTouchesScrollingAssertion:0];
-  v8 = [(SBHIconManager *)self isShowingOrTransitioningToLeadingCustomView]|| [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
-  [(SBRootFolderController *)self->_rootFolderController setParallaxDisabled:v8 forReason:@"Custom leading/trailing view is not visible"];
-  v9 = [(SBHIconManager *)self trailingLibraryViewController];
-  if (v9 && ![(SBFolderController *)self->_rootFolderController isEditing])
+  isShowingOrTransitioningToTrailingCustomView = [(SBHIconManager *)self isShowingOrTransitioningToLeadingCustomView]|| [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
+  [(SBRootFolderController *)self->_rootFolderController setParallaxDisabled:isShowingOrTransitioningToTrailingCustomView forReason:@"Custom leading/trailing view is not visible"];
+  trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
+  if (trailingLibraryViewController && ![(SBFolderController *)self->_rootFolderController isEditing])
   {
-    [v9 _dismissExpandedPods:-[SBHIconManager isShowingOrTransitioningToTrailingCustomView](self completion:{"isShowingOrTransitioningToTrailingCustomView"), 0}];
+    [trailingLibraryViewController _dismissExpandedPods:-[SBHIconManager isShowingOrTransitioningToTrailingCustomView](self completion:{"isShowingOrTransitioningToTrailingCustomView"), 0}];
   }
 }
 
-- (void)_discardEndEditingTimerAndDontResetUntilReasonIsRemoved:(id)a3
+- (void)_discardEndEditingTimerAndDontResetUntilReasonIsRemoved:(id)removed
 {
-  v8 = a3;
+  removedCopy = removed;
   if ([(SBHIconManager *)self isEditing])
   {
     if (!self->_reasonsToNotRestartEditingTimer)
@@ -21598,26 +21598,26 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
       self->_reasonsToNotRestartEditingTimer = v4;
     }
 
-    v6 = [(SBHIconManager *)self editingEndTimer];
-    if (v6)
+    editingEndTimer = [(SBHIconManager *)self editingEndTimer];
+    if (editingEndTimer)
     {
-      v7 = v6;
-      [v6 invalidate];
+      v7 = editingEndTimer;
+      [editingEndTimer invalidate];
       [(SBHIconManager *)self setEditingEndTimer:0];
     }
 
-    [(NSCountedSet *)self->_reasonsToNotRestartEditingTimer addObject:v8];
+    [(NSCountedSet *)self->_reasonsToNotRestartEditingTimer addObject:removedCopy];
   }
 }
 
-- (void)_removeReasonToNotResetEndEditingTimer:(id)a3
+- (void)_removeReasonToNotResetEndEditingTimer:(id)timer
 {
-  v6 = a3;
-  v4 = [(SBHIconManager *)self isEditing];
+  timerCopy = timer;
+  isEditing = [(SBHIconManager *)self isEditing];
   reasonsToNotRestartEditingTimer = self->_reasonsToNotRestartEditingTimer;
-  if (v4)
+  if (isEditing)
   {
-    [(NSCountedSet *)reasonsToNotRestartEditingTimer removeObject:v6];
+    [(NSCountedSet *)reasonsToNotRestartEditingTimer removeObject:timerCopy];
     [(SBHIconManager *)self _restartEditingEndTimer];
   }
 
@@ -21627,27 +21627,27 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   }
 }
 
-- (double)minimumHomeScreenScaleForFolderController:(id)a3
+- (double)minimumHomeScreenScaleForFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   v6 = 1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self minimumHomeScreenScaleForFolderController:v4];
+    [delegate iconManager:self minimumHomeScreenScaleForFolderController:controllerCopy];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (UIEdgeInsets)contentOverlayInsetsFromParentIfAvailableForFolderController:(id)a3
+- (UIEdgeInsets)contentOverlayInsetsFromParentIfAvailableForFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self contentOverlayInsetsFromParentIfAvailableForFolderController:v4];
+    [delegate iconManager:self contentOverlayInsetsFromParentIfAvailableForFolderController:controllerCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -21673,37 +21673,37 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)folderControllerWillOpen:(id)a3
+- (void)folderControllerWillOpen:(id)open
 {
-  v5 = a3;
+  openCopy = open;
   [(SBHIconManager *)self setPreviewInteractingIconView:0];
   [(SBHIconManager *)self _noteUserIsInteractingWithIcons];
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManager:self willOpenFolderController:v5];
+    [delegate iconManager:self willOpenFolderController:openCopy];
   }
 }
 
-- (void)folderControllerWillClose:(id)a3
+- (void)folderControllerWillClose:(id)close
 {
-  v5 = a3;
+  closeCopy = close;
   [(SBHIconManager *)self _noteUserIsInteractingWithIcons];
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManager:self willCloseFolderController:v5];
+    [delegate iconManager:self willCloseFolderController:closeCopy];
   }
 }
 
-- (id)folderControllerWantsToHideStatusBar:(id)a3 animated:(BOOL)a4
+- (id)folderControllerWantsToHideStatusBar:(id)bar animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SBHIconManager *)self delegate];
+  animatedCopy = animated;
+  barCopy = bar;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 iconManager:self wantsToHideStatusBarForFolderController:v6 animated:v4];
+    v8 = [delegate iconManager:self wantsToHideStatusBarForFolderController:barCopy animated:animatedCopy];
   }
 
   else
@@ -21714,13 +21714,13 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v8;
 }
 
-- (id)fakeStatusBarForFolderController:(id)a3
+- (id)fakeStatusBarForFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self fakeStatusBarForFolderController:v4];
+    v6 = [delegate iconManager:self fakeStatusBarForFolderController:controllerCopy];
   }
 
   else
@@ -21731,13 +21731,13 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v6;
 }
 
-- (id)statusBarStyleRequestForFolderController:(id)a3
+- (id)statusBarStyleRequestForFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self statusBarStyleRequestForFolderController:v4];
+    v6 = [delegate iconManager:self statusBarStyleRequestForFolderController:controllerCopy];
   }
 
   else
@@ -21748,24 +21748,24 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v6;
 }
 
-- (void)folderController:(id)a3 willRemoveFakeStatusBar:(id)a4
+- (void)folderController:(id)controller willRemoveFakeStatusBar:(id)bar
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  barCopy = bar;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self willRemoveFakeStatusBar:v6 forFolderController:v8];
+    [delegate iconManager:self willRemoveFakeStatusBar:barCopy forFolderController:controllerCopy];
   }
 }
 
-- (UIEdgeInsets)statusBarEdgeInsetsForFolderController:(id)a3
+- (UIEdgeInsets)statusBarEdgeInsetsForFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self statusBarEdgeInsetsForFolderController:v4];
+    [delegate iconManager:self statusBarEdgeInsetsForFolderController:controllerCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -21791,78 +21791,78 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)folderController:(id)a3 willUseIconTransitionAnimator:(id)a4 forOperation:(int64_t)a5 onViewController:(id)a6 animated:(BOOL)a7
+- (void)folderController:(id)controller willUseIconTransitionAnimator:(id)animator forOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated
 {
-  v8 = a4;
-  [v8 setDelegate:self];
-  [(SBHIconManager *)self setCurrentTransitionAnimator:v8];
+  animatorCopy = animator;
+  [animatorCopy setDelegate:self];
+  [(SBHIconManager *)self setCurrentTransitionAnimator:animatorCopy];
 }
 
-- (void)rootFolderController:(id)a3 wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:(CGPoint)a4
+- (void)rootFolderController:(id)controller wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(SBHIconManager *)self delegate];
+  y = offset.y;
+  x = offset.x;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 iconManager:self wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:{x, y}];
+    [delegate iconManager:self wantsToAdjustLeadingCustomContentForEdgeBounceForScrollOffset:{x, y}];
   }
 }
 
-- (double)distanceToTopOfSpotlightIconsForRootFolderController:(id)a3
+- (double)distanceToTopOfSpotlightIconsForRootFolderController:(id)controller
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   v5 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v4 distanceToTopOfSpotlightIconsForIconManager:self];
+    [delegate distanceToTopOfSpotlightIconsForIconManager:self];
     v5 = v6;
   }
 
   return v5;
 }
 
-- (double)maxExternalDockHeightForRootFolderController:(id)a3
+- (double)maxExternalDockHeightForRootFolderController:(id)controller
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  [v3 maximumContentHeight];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController maximumContentHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (double)externalDockHeightForRootFolderController:(id)a3
+- (double)externalDockHeightForRootFolderController:(id)controller
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  [v3 contentHeight];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController contentHeight];
   v5 = v4;
 
   return v5;
 }
 
-- (double)preferredExternalDockVerticalMarginForRootFolderController:(id)a3
+- (double)preferredExternalDockVerticalMarginForRootFolderController:(id)controller
 {
-  v3 = [(SBHIconManager *)self floatingDockViewController];
-  [v3 preferredVerticalMargin];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController preferredVerticalMargin];
   v5 = v4;
 
   return v5;
 }
 
-- (void)rootFolderController:(id)a3 setSuppressesEditingStateForExternalDockListViews:(BOOL)a4
+- (void)rootFolderController:(id)controller setSuppressesEditingStateForExternalDockListViews:(BOOL)views
 {
-  v4 = a4;
-  v5 = [(SBHIconManager *)self floatingDockViewController];
-  [v5 setSuppressesEditingStateForListViews:v4];
+  viewsCopy = views;
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController setSuppressesEditingStateForListViews:viewsCopy];
 }
 
-- (id)backgroundViewForDockForRootFolderController:(id)a3
+- (id)backgroundViewForDockForRootFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self backgroundViewForDockForRootFolderController:v4];
+    v6 = [delegate iconManager:self backgroundViewForDockForRootFolderController:controllerCopy];
   }
 
   else
@@ -21873,13 +21873,13 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v6;
 }
 
-- (id)backgroundViewForEditingDoneButtonForRootFolderController:(id)a3
+- (id)backgroundViewForEditingDoneButtonForRootFolderController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 iconManager:self backgroundViewForEditingDoneButtonForRootFolderController:v4];
+    v6 = [delegate iconManager:self backgroundViewForEditingDoneButtonForRootFolderController:controllerCopy];
   }
 
   else
@@ -21890,12 +21890,12 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v6;
 }
 
-- (BOOL)rootFolderControllerCanUseSeparateWindowForRotation:(id)a3
+- (BOOL)rootFolderControllerCanUseSeparateWindowForRotation:(id)rotation
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 iconManagerCanUseSeparateWindowForRotation:self];
+    v5 = [delegate iconManagerCanUseSeparateWindowForRotation:self];
   }
 
   else
@@ -21906,161 +21906,161 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v5;
 }
 
-- (void)rootFolderController:(id)a3 statusBarInsetsDidChange:(UIEdgeInsets)a4
+- (void)rootFolderController:(id)controller statusBarInsetsDidChange:(UIEdgeInsets)change
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = [(SBHIconManager *)self delegate];
+  right = change.right;
+  bottom = change.bottom;
+  left = change.left;
+  top = change.top;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self statusBarInsetsDidChange:{top, left, bottom, right}];
+    [delegate iconManager:self statusBarInsetsDidChange:{top, left, bottom, right}];
   }
 }
 
-- (void)rootFolderController:(id)a3 willUseTransitionContext:(id)a4 toTransitionToState:(int64_t)a5
+- (void)rootFolderController:(id)controller willUseTransitionContext:(id)context toTransitionToState:(int64_t)state
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  contextCopy = context;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self rootFolderController:v10 willUseTransitionContext:v8 toTransitionToState:a5];
+    [delegate iconManager:self rootFolderController:controllerCopy willUseTransitionContext:contextCopy toTransitionToState:state];
   }
 }
 
-- (void)rootFolderController:(id)a3 willUsePropertyAnimator:(id)a4 toTransitionToState:(int64_t)a5
+- (void)rootFolderController:(id)controller willUsePropertyAnimator:(id)animator toTransitionToState:(int64_t)state
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  animatorCopy = animator;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self rootFolderController:v10 willUsePropertyAnimator:v8 toTransitionToState:a5];
+    [delegate iconManager:self rootFolderController:controllerCopy willUsePropertyAnimator:animatorCopy toTransitionToState:state];
   }
 }
 
-- (void)rootFolderController:(id)a3 didOverscrollOnFirstPageByAmount:(double)a4
+- (void)rootFolderController:(id)controller didOverscrollOnFirstPageByAmount:(double)amount
 {
-  v7 = a3;
-  v6 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconManager:self rootFolderController:v7 didOverscrollOnFirstPageByAmount:a4];
+    [delegate iconManager:self rootFolderController:controllerCopy didOverscrollOnFirstPageByAmount:amount];
   }
 }
 
-- (void)rootFolderController:(id)a3 didEndOverscrollOnFirstPageWithVelocity:(double)a4 translation:(double)a5
+- (void)rootFolderController:(id)controller didEndOverscrollOnFirstPageWithVelocity:(double)velocity translation:(double)translation
 {
-  v9 = a3;
-  v8 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self rootFolderController:v9 didEndOverscrollOnFirstPageWithVelocity:a4 translation:a5];
+    [delegate iconManager:self rootFolderController:controllerCopy didEndOverscrollOnFirstPageWithVelocity:velocity translation:translation];
   }
 }
 
-- (void)rootFolderController:(id)a3 didOverscrollOnLastPageByAmount:(double)a4
+- (void)rootFolderController:(id)controller didOverscrollOnLastPageByAmount:(double)amount
 {
-  v7 = a3;
-  v6 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconManager:self rootFolderController:v7 didOverscrollOnLastPageByAmount:a4];
+    [delegate iconManager:self rootFolderController:controllerCopy didOverscrollOnLastPageByAmount:amount];
   }
 }
 
-- (void)rootFolderController:(id)a3 didEndOverscrollOnLastPageWithVelocity:(double)a4 translation:(double)a5
+- (void)rootFolderController:(id)controller didEndOverscrollOnLastPageWithVelocity:(double)velocity translation:(double)translation
 {
-  v9 = a3;
-  v8 = [(SBHIconManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self rootFolderController:v9 didEndOverscrollOnLastPageWithVelocity:a4 translation:a5];
+    [delegate iconManager:self rootFolderController:controllerCopy didEndOverscrollOnLastPageWithVelocity:velocity translation:translation];
   }
 }
 
-- (void)rootFolderControllerViewWillAppear:(id)a3
+- (void)rootFolderControllerViewWillAppear:(id)appear
 {
-  v3 = [(SBHIconManager *)self usageMonitor];
-  [v3 noteIconManagerRootFolderControllerViewWillAppear];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteIconManagerRootFolderControllerViewWillAppear];
 }
 
-- (void)rootFolderControllerViewDidDisappear:(id)a3
+- (void)rootFolderControllerViewDidDisappear:(id)disappear
 {
-  v3 = [(SBHIconManager *)self usageMonitor];
-  [v3 noteIconManagerRootFolderControllerViewDidDisappear];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteIconManagerRootFolderControllerViewDidDisappear];
 }
 
-- (void)rootFolderController:(id)a3 viewDidTransitionToSize:(CGSize)a4
+- (void)rootFolderController:(id)controller viewDidTransitionToSize:(CGSize)size
 {
-  v4 = [(SBHIconManager *)self iconShareSheetManager:a3];
+  v4 = [(SBHIconManager *)self iconShareSheetManager:controller];
   [v4 showIconShareSheetsIfAnyWereHiddenForRotationAnimation];
 }
 
-- (void)rootFolderControllerWantsHomeScreenWallpaperViewControllerPresented:(id)a3
+- (void)rootFolderControllerWantsHomeScreenWallpaperViewControllerPresented:(id)presented
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 iconManagerWantsHomeScreenWallpaperEditorViewControllerPresented:self];
+    [delegate iconManagerWantsHomeScreenWallpaperEditorViewControllerPresented:self];
   }
 }
 
 - (void)iconSizeButtonTriggered
 {
-  v3 = [(SBHIconStyleLabelHidingView *)self->_labelHidingView shouldUseLargeIcons];
+  shouldUseLargeIcons = [(SBHIconStyleLabelHidingView *)self->_labelHidingView shouldUseLargeIcons];
 
-  [(SBHIconManager *)self _updateShouldUseHomeScreenLargeIconSize:v3];
+  [(SBHIconManager *)self _updateShouldUseHomeScreenLargeIconSize:shouldUseLargeIcons];
 }
 
-- (void)floatingDockViewController:(id)a3 didChangeContentHeight:(double)a4 animated:(BOOL)a5
+- (void)floatingDockViewController:(id)controller didChangeContentHeight:(double)height animated:(BOOL)animated
 {
-  v5 = [(SBHIconManager *)self rootViewController:a3];
-  v6 = [v5 contentView];
+  v5 = [(SBHIconManager *)self rootViewController:controller];
+  contentView = [v5 contentView];
 
-  [v6 layoutIfNeeded];
+  [contentView layoutIfNeeded];
 }
 
-- (void)floatingDockViewController:(id)a3 willOpenFolderController:(id)a4
+- (void)floatingDockViewController:(id)controller willOpenFolderController:(id)folderController
 {
-  v5 = [(SBHIconManager *)self rootFolderController:a3];
-  v4 = [v5 folderView];
-  [v4 setSuppressesEditingStateForListViews:1];
+  v5 = [(SBHIconManager *)self rootFolderController:controller];
+  folderView = [v5 folderView];
+  [folderView setSuppressesEditingStateForListViews:1];
 }
 
-- (void)floatingDockViewController:(id)a3 willCloseFolderController:(id)a4
+- (void)floatingDockViewController:(id)controller willCloseFolderController:(id)folderController
 {
-  v5 = [(SBHIconManager *)self rootFolderController:a3];
-  v4 = [v5 folderView];
-  [v4 setSuppressesEditingStateForListViews:0];
+  v5 = [(SBHIconManager *)self rootFolderController:controller];
+  folderView = [v5 folderView];
+  [folderView setSuppressesEditingStateForListViews:0];
 }
 
-- (void)floatingDockViewController:(id)a3 wantsToBeginEditingAtScreenLocation:(CGPoint)a4
+- (void)floatingDockViewController:(id)controller wantsToBeginEditingAtScreenLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v16 = [(SBHIconManager *)self iconEditingFeedbackBehavior];
-  v8 = [v16 view];
-  v9 = [v7 _screen];
+  y = location.y;
+  x = location.x;
+  controllerCopy = controller;
+  iconEditingFeedbackBehavior = [(SBHIconManager *)self iconEditingFeedbackBehavior];
+  view = [iconEditingFeedbackBehavior view];
+  _screen = [controllerCopy _screen];
 
-  v10 = [v9 coordinateSpace];
-  v11 = [v8 coordinateSpace];
-  [v10 convertPoint:v11 toCoordinateSpace:{x, y}];
+  coordinateSpace = [_screen coordinateSpace];
+  coordinateSpace2 = [view coordinateSpace];
+  [coordinateSpace convertPoint:coordinateSpace2 toCoordinateSpace:{x, y}];
   v13 = v12;
   v15 = v14;
 
-  [(SBHIconManager *)self setEditing:1 withFeedbackBehavior:v16 location:v13, v15];
+  [(SBHIconManager *)self setEditing:1 withFeedbackBehavior:iconEditingFeedbackBehavior location:v13, v15];
 }
 
 - (id)_fetchCurrentStyleConfiguration
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 iconStylePickerConfigurationForIconManager:self];
+    v4 = [delegate iconStylePickerConfigurationForIconManager:self];
   }
 
   else
@@ -22071,52 +22071,52 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)_updateStyleConfiguration:(id)a3
+- (void)_updateStyleConfiguration:(id)configuration
 {
-  v5 = a3;
-  v4 = [(SBHIconManager *)self delegate];
+  configurationCopy = configuration;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 updateStyleConfiguration:v5 forIconManager:self];
+    [delegate updateStyleConfiguration:configurationCopy forIconManager:self];
   }
 }
 
-- (void)_toggleHomeScreenIconSize:(id)a3
+- (void)_toggleHomeScreenIconSize:(id)size
 {
-  v6 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 iconManagerWantsIconSizeToggled:self];
+    [delegate iconManagerWantsIconSizeToggled:self];
   }
 
-  v4 = [(SBHIconManager *)self _shouldUseHomeScreenLargeIconSize];
-  v5 = [(UIBarButtonItem *)self->_iconSizeBarButtonItem customView];
-  [v5 setSelected:v4 animated:1];
-  [(SBHIconManager *)self _precacheLabelsForRootIcons:v4 ^ 1 reason:@"home screen large icon size toggled"];
+  _shouldUseHomeScreenLargeIconSize = [(SBHIconManager *)self _shouldUseHomeScreenLargeIconSize];
+  customView = [(UIBarButtonItem *)self->_iconSizeBarButtonItem customView];
+  [customView setSelected:_shouldUseHomeScreenLargeIconSize animated:1];
+  [(SBHIconManager *)self _precacheLabelsForRootIcons:_shouldUseHomeScreenLargeIconSize ^ 1 reason:@"home screen large icon size toggled"];
 }
 
-- (void)_updateShouldUseHomeScreenLargeIconSize:(BOOL)a3
+- (void)_updateShouldUseHomeScreenLargeIconSize:(BOOL)size
 {
-  if ([(SBHIconManager *)self _shouldUseHomeScreenLargeIconSize]!= a3)
+  if ([(SBHIconManager *)self _shouldUseHomeScreenLargeIconSize]!= size)
   {
-    v5 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 iconManagerWantsIconSizeToggled:self];
+      [delegate iconManagerWantsIconSizeToggled:self];
     }
 
-    v4 = [(UIBarButtonItem *)self->_iconSizeBarButtonItem customView];
-    [v4 setSelected:-[SBHIconManager _shouldUseHomeScreenLargeIconSize](self animated:{"_shouldUseHomeScreenLargeIconSize"), 1}];
+    customView = [(UIBarButtonItem *)self->_iconSizeBarButtonItem customView];
+    [customView setSelected:-[SBHIconManager _shouldUseHomeScreenLargeIconSize](self animated:{"_shouldUseHomeScreenLargeIconSize"), 1}];
     [(SBHIconManager *)self _precacheLabelsForRootIcons:1 reason:@"home screen large icon size toggled"];
   }
 }
 
 - (BOOL)_shouldUseHomeScreenLargeIconSize
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldUseHomeScreenLargeIconSizeForIconManager:self];
+    v4 = [delegate shouldUseHomeScreenLargeIconSizeForIconManager:self];
   }
 
   else
@@ -22127,24 +22127,24 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)toggleHomeScreenWallpaperDim:(id)a3
+- (void)toggleHomeScreenWallpaperDim:(id)dim
 {
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManagerToggleHomeScreenWallpaperDimming:self];
+    [delegate iconManagerToggleHomeScreenWallpaperDimming:self];
   }
 
-  v4 = [(UIBarButtonItem *)self->_dimBarButtonItem customView];
-  [v4 setSelected:-[SBHIconManager currentHomeScreenWallpaperDimState](self animated:{"currentHomeScreenWallpaperDimState"), 1}];
+  customView = [(UIBarButtonItem *)self->_dimBarButtonItem customView];
+  [customView setSelected:-[SBHIconManager currentHomeScreenWallpaperDimState](self animated:{"currentHomeScreenWallpaperDimState"), 1}];
 }
 
 - (BOOL)currentHomeScreenWallpaperDimState
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 isHomeScreenWallpaperDimmedForIconManager:self];
+    v4 = [delegate isHomeScreenWallpaperDimmedForIconManager:self];
   }
 
   else
@@ -22155,7 +22155,7 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   return v4;
 }
 
-- (void)_engageWallpaperTintColorDropper:(id)a3
+- (void)_engageWallpaperTintColorDropper:(id)dropper
 {
   v4 = SBLogIconStylePicker();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -22177,18 +22177,18 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
   else
   {
     self->_isHomeScreenTintColorEyeDropperActive = 1;
-    v6 = [(SBHIconManager *)self rootViewController];
-    v7 = [(SBHIconManager *)self currentStylePickerViewController];
-    v8 = [v7 navigationController];
-    v9 = [v8 sheetPresentationController];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
+    navigationController = [currentStylePickerViewController navigationController];
+    sheetPresentationController = [navigationController sheetPresentationController];
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __51__SBHIconManager__engageWallpaperTintColorDropper___block_invoke;
     v21[3] = &unk_1E8088F18;
-    v10 = v9;
+    v10 = sheetPresentationController;
     v22 = v10;
-    v5 = v6;
+    v5 = rootViewController;
     v23 = v5;
     [v10 animateChanges:v21];
     v11 = objc_opt_new();
@@ -22209,9 +22209,9 @@ BOOL __47__SBHIconManager_firstIconViewForIcon_options___block_invoke_2(uint64_t
     v17[2] = __51__SBHIconManager__engageWallpaperTintColorDropper___block_invoke_967;
     v17[3] = &unk_1E80905A0;
     v18 = v10;
-    v19 = self;
-    v20 = v7;
-    v15 = v7;
+    selfCopy = self;
+    v20 = currentStylePickerViewController;
+    v15 = currentStylePickerViewController;
     v16 = v10;
     [(_UIColorSampler *)v14 showSamplerWithSelectionHandler:v17];
   }
@@ -22274,22 +22274,22 @@ uint64_t __51__SBHIconManager__engageWallpaperTintColorDropper___block_invoke_2(
   if (self->_isHomeScreenTintColorEyeDropperActive)
   {
     self->_isHomeScreenTintColorEyeDropperActive = 0;
-    v4 = [(SBHIconManager *)self rootViewController];
-    v5 = [(SBHIconManager *)self currentStylePickerViewController];
-    v6 = [v5 navigationController];
-    v7 = [v6 sheetPresentationController];
+    rootViewController = [(SBHIconManager *)self rootViewController];
+    currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
+    navigationController = [currentStylePickerViewController navigationController];
+    sheetPresentationController = [navigationController sheetPresentationController];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke;
     aBlock[3] = &unk_1E8088C90;
-    v13 = v4;
-    v8 = v4;
+    v13 = rootViewController;
+    v8 = rootViewController;
     v9 = _Block_copy(aBlock);
     v10 = v9;
-    if (v7)
+    if (sheetPresentationController)
     {
-      [v7 animateChanges:v9];
+      [sheetPresentationController animateChanges:v9];
     }
 
     else
@@ -22303,11 +22303,11 @@ uint64_t __51__SBHIconManager__engageWallpaperTintColorDropper___block_invoke_2(
 
   else
   {
-    v5 = SBLogIconStylePicker();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    currentStylePickerViewController = SBLogIconStylePicker();
+    if (os_log_type_enabled(currentStylePickerViewController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1BEB18000, v5, OS_LOG_TYPE_DEFAULT, "Eyedropper is not active, bailing", buf, 2u);
+      _os_log_impl(&dword_1BEB18000, currentStylePickerViewController, OS_LOG_TYPE_DEFAULT, "Eyedropper is not active, bailing", buf, 2u);
     }
   }
 }
@@ -22328,72 +22328,72 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
   }
 }
 
-- (void)rootFolderController:(id)a3 willPresentPageManagementWithLayoutManager:(id)a4 animator:(id)a5 context:(id)a6
+- (void)rootFolderController:(id)controller willPresentPageManagementWithLayoutManager:(id)manager animator:(id)animator context:(id)context
 {
-  v15 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [(SBHIconManager *)self iconDragManager];
-  [v11 cancelAllDrags];
+  managerCopy = manager;
+  animatorCopy = animator;
+  contextCopy = context;
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager cancelAllDrags];
 
   [(SBHIconManager *)self _discardEndEditingTimerAndDontResetUntilReasonIsRemoved:@"FolderPageManagement"];
-  v12 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(SBHIconManager *)self focusModeManager];
-    v14 = [v13 activeFocusMode];
-    [v15 setActiveFocusMode:v14];
-    [v12 iconManager:self willPresentPageManagementWithLayoutManager:v15 animator:v9 context:v10];
+    focusModeManager = [(SBHIconManager *)self focusModeManager];
+    activeFocusMode = [focusModeManager activeFocusMode];
+    [managerCopy setActiveFocusMode:activeFocusMode];
+    [delegate iconManager:self willPresentPageManagementWithLayoutManager:managerCopy animator:animatorCopy context:contextCopy];
   }
 }
 
-- (void)rootFolderController:(id)a3 willDismissPageManagementUsingAnimator:(id)a4 context:(id)a5
+- (void)rootFolderController:(id)controller willDismissPageManagementUsingAnimator:(id)animator context:(id)context
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(SBHIconManager *)self iconDragManager];
-  [v8 cancelAllDrags];
+  animatorCopy = animator;
+  contextCopy = context;
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager cancelAllDrags];
 
   [(SBHIconManager *)self _removeReasonToNotResetEndEditingTimer:@"FolderPageManagement"];
-  v9 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v9 iconManager:self willDismissPageManagementUsingAnimator:v10 context:v7];
+    [delegate iconManager:self willDismissPageManagementUsingAnimator:animatorCopy context:contextCopy];
   }
 }
 
-- (void)rootFolderController:(id)a3 didDismissPageManagementWithLayoutManager:(id)a4 context:(id)a5
+- (void)rootFolderController:(id)controller didDismissPageManagementWithLayoutManager:(id)manager context:(id)context
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(SBHIconManager *)self delegate];
+  managerCopy = manager;
+  contextCopy = context;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconManager:self didDismissPageManagementWithLayoutManager:v9 context:v7];
+    [delegate iconManager:self didDismissPageManagementWithLayoutManager:managerCopy context:contextCopy];
   }
 }
 
-- (id)rootFolderController:(id)a3 draggedIconForStackConfigurationInteractionForIdentifier:(id)a4
+- (id)rootFolderController:(id)controller draggedIconForStackConfigurationInteractionForIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self iconDragManager];
-  v7 = [v6 draggedIconForIdentifier:v5];
+  identifierCopy = identifier;
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  v7 = [iconDragManager draggedIconForIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (void)rootFolderController:(id)a3 handleInsertionForWidgetIcon:(id)a4 withReferenceIconView:(id)a5 fromPresenter:(id)a6 dismissViewControllerHandler:(id)a7
+- (void)rootFolderController:(id)controller handleInsertionForWidgetIcon:(id)icon withReferenceIconView:(id)view fromPresenter:(id)presenter dismissViewControllerHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v54 = v12;
-  v53 = [v12 folder];
-  v17 = [v53 todayList];
+  controllerCopy = controller;
+  iconCopy = icon;
+  viewCopy = view;
+  presenterCopy = presenter;
+  handlerCopy = handler;
+  v54 = controllerCopy;
+  folder = [controllerCopy folder];
+  todayList = [folder todayList];
   v18 = objc_opt_class();
-  v19 = v15;
+  v19 = presenterCopy;
   if (v18)
   {
     if (objc_opt_isKindOfClass())
@@ -22414,7 +22414,7 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
 
   v21 = v20;
 
-  v22 = [(SBHIconManager *)self _effectiveTodayViewController];
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon_withReferenceIconView_fromPresenter_dismissViewControllerHandler___block_invoke;
@@ -22425,20 +22425,20 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
   v66[1] = 3221225472;
   v66[2] = __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon_withReferenceIconView_fromPresenter_dismissViewControllerHandler___block_invoke_2;
   v66[3] = &unk_1E80906C0;
-  v24 = v13;
+  v24 = iconCopy;
   v67 = v24;
-  v25 = v17;
+  v25 = todayList;
   v68 = v25;
-  v69 = self;
+  selfCopy = self;
   v26 = v21;
   v70 = v26;
-  v52 = v14;
+  v52 = viewCopy;
   v71 = v52;
   v51 = v23;
   v73 = v51;
-  v27 = v16;
+  v27 = handlerCopy;
   v74 = v27;
-  v28 = v22;
+  v28 = _effectiveTodayViewController;
   v72 = v28;
   v29 = _Block_copy(v66);
   v59[0] = MEMORY[0x1E69E9820];
@@ -22452,7 +22452,7 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
   v32 = v24;
   v62 = v32;
   v33 = v27;
-  v63 = self;
+  selfCopy2 = self;
   v64 = v33;
   v34 = v29;
   v65 = v34;
@@ -22464,37 +22464,37 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
 
   else if ([v19 presenterType] == 2 && v26)
   {
-    v36 = [v26 iconListView];
-    v37 = [v36 model];
+    iconListView = [v26 iconListView];
+    model = [iconListView model];
 
-    (*(v34 + 2))(v34, v37);
+    (*(v34 + 2))(v34, model);
   }
 
   else
   {
-    v38 = [v54 currentIconListModel];
-    if ([v38 isAllowedToContainIcon:v32])
+    currentIconListModel = [v54 currentIconListModel];
+    if ([currentIconListModel isAllowedToContainIcon:v32])
     {
-      v49 = [(SBHIconManager *)self gridCellInfoOptions];
-      v39 = [v38 bestGridCellIndexForInsertingIcon:v32 gridCellInfoOptions:?];
-      v50 = v38;
+      gridCellInfoOptions = [(SBHIconManager *)self gridCellInfoOptions];
+      v39 = [currentIconListModel bestGridCellIndexForInsertingIcon:v32 gridCellInfoOptions:?];
+      v50 = currentIconListModel;
       if (v39 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v40 = [v53 addIcon:v32 toList:v38 options:10];
+        v40 = [folder addIcon:v32 toList:currentIconListModel options:10];
       }
 
       else
       {
         v48 = v39;
         v47 = [SBHIconGridPath alloc];
-        v46 = [v38 uniqueIdentifier];
-        v41 = [(SBHIconGridPath *)v47 initWithFolderIdentifier:0 listIdentifier:v46 gridCellIndex:v48 gridCellInfoOptions:v49];
+        uniqueIdentifier = [currentIconListModel uniqueIdentifier];
+        v41 = [(SBHIconGridPath *)v47 initWithFolderIdentifier:0 listIdentifier:uniqueIdentifier gridCellIndex:v48 gridCellInfoOptions:gridCellInfoOptions];
 
-        v42 = [v53 insertIcon:v32 atGridPath:v41 options:16777218];
+        v42 = [folder insertIcon:v32 atGridPath:v41 options:16777218];
       }
 
       [v54 setCurrentPageIndexToListDirectlyContainingIcon:v32 animated:0];
-      v43 = [v54 currentIconListView];
+      currentIconListView = [v54 currentIconListView];
       v44 = [(SBHIconManager *)self widgetInsertionRippleIconAnimatorForIcon:v32 iconListView:0 withReferenceIconView:v52];
       v55[0] = MEMORY[0x1E69E9820];
       v55[1] = 3221225472;
@@ -22502,12 +22502,12 @@ void __54__SBHIconManager__invalidateWallpaperTintColorDropper__block_invoke(uin
       v55[3] = &unk_1E80905F8;
       v58 = v51;
       v56 = v32;
-      v57 = v43;
-      v45 = v43;
+      v57 = currentIconListView;
+      v45 = currentIconListView;
       [v44 animateWithCompletion:v55];
       v33[2](v33);
 
-      v38 = v50;
+      currentIconListModel = v50;
     }
 
     else
@@ -22741,20 +22741,20 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   }
 }
 
-- (void)rootFolderController:(id)a3 noteDragItemWasConsumedExternallyForDropSession:(id)a4
+- (void)rootFolderController:(id)controller noteDragItemWasConsumedExternallyForDropSession:(id)session
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self iconDragManager];
-  [v6 noteDragItemWasConsumedExternallyForDropSession:v5];
+  sessionCopy = session;
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteDragItemWasConsumedExternallyForDropSession:sessionCopy];
 }
 
-- (id)rootFolderController:(id)a3 dragPreviewForIconView:(id)a4
+- (id)rootFolderController:(id)controller dragPreviewForIconView:(id)view
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  viewCopy = view;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self dragPreviewForIconView:v5];
+    v7 = [delegate iconManager:self dragPreviewForIconView:viewCopy];
   }
 
   else
@@ -22765,13 +22765,13 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   return v7;
 }
 
-- (id)windowForStackConfigurationIconDragPreviewsForRootFolderController:(id)a3 forWindowScene:(id)a4
+- (id)windowForStackConfigurationIconDragPreviewsForRootFolderController:(id)controller forWindowScene:(id)scene
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  sceneCopy = scene;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 windowForIconDragPreviewsForIconManager:self forWindowScene:v5];
+    v7 = [delegate windowForIconDragPreviewsForIconManager:self forWindowScene:sceneCopy];
   }
 
   else
@@ -22782,13 +22782,13 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   return v7;
 }
 
-- (BOOL)rootFolderController:(id)a3 allowsRemovalOfIconDataSourceWithinStack:(id)a4
+- (BOOL)rootFolderController:(id)controller allowsRemovalOfIconDataSourceWithinStack:(id)stack
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  stackCopy = stack;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self allowsRemovalOfIconDataSourceWithinStack:v5];
+    v7 = [delegate iconManager:self allowsRemovalOfIconDataSourceWithinStack:stackCopy];
   }
 
   else
@@ -22799,49 +22799,49 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   return v7;
 }
 
-- (void)rootFolderController:(id)a3 willPresentWidgetEditingViewController:(id)a4
+- (void)rootFolderController:(id)controller willPresentWidgetEditingViewController:(id)viewController
 {
-  v6 = [(SBHIconManager *)self delegate:a3];
+  v6 = [(SBHIconManager *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v6 iconManagerWillPresentWidgetEditing:self];
   }
 
   [(SBHIconManager *)self _discardEndEditingTimerAndDontResetUntilReasonIsRemoved:@"WIDGET_EDITING_PRESENTED"];
-  v5 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-  [v5 discardCachedRecentViewControllers];
+  _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+  [_effectiveWidgetMultiplexingManager discardCachedRecentViewControllers];
 }
 
-- (void)rootFolderController:(id)a3 didPresentWidgetEditingViewController:(id)a4
+- (void)rootFolderController:(id)controller didPresentWidgetEditingViewController:(id)viewController
 {
-  v8 = a4;
-  v5 = [(SBHIconManager *)self _effectiveTodayViewController];
+  viewControllerCopy = viewController;
+  _effectiveTodayViewController = [(SBHIconManager *)self _effectiveTodayViewController];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 keepIconImageViewControllersStaticForReason:@"WIDGET_EDITING_PRESENTED"];
+    v6 = [_effectiveTodayViewController keepIconImageViewControllersStaticForReason:@"WIDGET_EDITING_PRESENTED"];
     if (v6)
     {
-      v7 = [v8 userInfo];
-      [v7 setObject:v6 forKey:@"WIDGET_EDITING_PRESENTED"];
+      userInfo = [viewControllerCopy userInfo];
+      [userInfo setObject:v6 forKey:@"WIDGET_EDITING_PRESENTED"];
     }
   }
 }
 
-- (void)rootFolderController:(id)a3 willDismissWidgetEditingViewController:(id)a4
+- (void)rootFolderController:(id)controller willDismissWidgetEditingViewController:(id)viewController
 {
-  v4 = a4;
-  v5 = [v4 userInfo];
-  v7 = [v5 objectForKey:@"WIDGET_EDITING_PRESENTED"];
+  viewControllerCopy = viewController;
+  userInfo = [viewControllerCopy userInfo];
+  v7 = [userInfo objectForKey:@"WIDGET_EDITING_PRESENTED"];
 
   [v7 invalidate];
-  v6 = [v4 userInfo];
+  userInfo2 = [viewControllerCopy userInfo];
 
-  [v6 removeObjectForKey:@"WIDGET_EDITING_PRESENTED"];
+  [userInfo2 removeObjectForKey:@"WIDGET_EDITING_PRESENTED"];
 }
 
-- (void)rootFolderController:(id)a3 didDismissWidgetEditingViewController:(id)a4
+- (void)rootFolderController:(id)controller didDismissWidgetEditingViewController:(id)viewController
 {
-  v5 = [(SBHIconManager *)self delegate:a3];
+  v5 = [(SBHIconManager *)self delegate:controller];
   if (objc_opt_respondsToSelector())
   {
     [v5 iconManagerDidDismissWidgetEditing:self];
@@ -22850,52 +22850,52 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   [(SBHIconManager *)self _removeReasonToNotResetEndEditingTimer:@"WIDGET_EDITING_PRESENTED"];
 }
 
-- (void)rootFolderController:(id)a3 prepareAddSheetViewController:(id)a4
+- (void)rootFolderController:(id)controller prepareAddSheetViewController:(id)viewController
 {
-  v6 = a4;
-  v5 = [(SBHIconManager *)self delegate];
+  viewControllerCopy = viewController;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 iconManager:self prepareAddSheetViewController:v6];
+    [delegate iconManager:self prepareAddSheetViewController:viewControllerCopy];
   }
 }
 
-- (void)rootFolderController:(id)a3 willPresentAddSheetViewController:(id)a4
+- (void)rootFolderController:(id)controller willPresentAddSheetViewController:(id)viewController
 {
-  v4 = [(SBHIconManager *)self usageMonitor:a3];
+  v4 = [(SBHIconManager *)self usageMonitor:controller];
   [v4 noteAddWidgetSheetWillPresent];
 }
 
-- (unint64_t)addWidgetSheetStyleForRootFolderController:(id)a3
+- (unint64_t)addWidgetSheetStyleForRootFolderController:(id)controller
 {
-  v3 = [(SBHIconManager *)self addWidgetSheetConfigurationManager];
-  v4 = [v3 addWidgetSheetStyle];
+  addWidgetSheetConfigurationManager = [(SBHIconManager *)self addWidgetSheetConfigurationManager];
+  addWidgetSheetStyle = [addWidgetSheetConfigurationManager addWidgetSheetStyle];
 
-  return v4;
+  return addWidgetSheetStyle;
 }
 
-- (void)rootFolderControllerDidAcceptWidgetIntroduction:(id)a3
+- (void)rootFolderControllerDidAcceptWidgetIntroduction:(id)introduction
 {
-  v5 = [(SBHIconManager *)self usageMonitor];
-  v4 = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
-  [v5 noteWidgetDiscoverabilityDidAcceptSuggestion:v4];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  defaultFirstPageWidgetDescriptors = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
+  [usageMonitor noteWidgetDiscoverabilityDidAcceptSuggestion:defaultFirstPageWidgetDescriptors];
 }
 
-- (void)rootFolderControllerDidUndoWidgetIntroduction:(id)a3
+- (void)rootFolderControllerDidUndoWidgetIntroduction:(id)introduction
 {
   [(SBHIconManager *)self undoDefaultWidgets:0];
-  v5 = [(SBHIconManager *)self usageMonitor];
-  v4 = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
-  [v5 noteWidgetDiscoverabilityDidRejectSuggestion:v4];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  defaultFirstPageWidgetDescriptors = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
+  [usageMonitor noteWidgetDiscoverabilityDidRejectSuggestion:defaultFirstPageWidgetDescriptors];
 }
 
-- (void)rootFolderControllerDidEditWidgetIntroduction:(id)a3
+- (void)rootFolderControllerDidEditWidgetIntroduction:(id)introduction
 {
-  v3 = [(SBHIconManager *)self usageMonitor];
-  [v3 noteWidgetDiscoverabilityDidEnterEditingMode];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteWidgetDiscoverabilityDidEnterEditingMode];
 }
 
-- (BOOL)rootFolderControllerDidSetPrototypeSettingEditAsUndo:(id)a3
+- (BOOL)rootFolderControllerDidSetPrototypeSettingEditAsUndo:(id)undo
 {
   if ([(SBHIconManager *)self prototypeSettingEditButtonAsUndo])
   {
@@ -22904,8 +22904,8 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
 
   if (!__sb__runningInSpringBoard())
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v3 = [v4 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v3 = [currentDevice userInterfaceIdiom] == 0;
 
     return v3;
   }
@@ -22913,37 +22913,37 @@ uint64_t __133__SBHIconManager_rootFolderController_handleInsertionForWidgetIcon
   return !SBFEffectiveDeviceClass() || SBFEffectiveDeviceClass() == 1;
 }
 
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
   currentTransitionAnimator = self->_currentTransitionAnimator;
-  if (currentTransitionAnimator != a4 || [(SBHomeScreenIconTransitionAnimator *)currentTransitionAnimator operation]!= 1)
+  if (currentTransitionAnimator != animationController || [(SBHomeScreenIconTransitionAnimator *)currentTransitionAnimator operation]!= 1)
   {
     v13 = 0;
     goto LABEL_9;
   }
 
-  v6 = [(SBHIconManager *)self currentInteractionContext];
-  v7 = [v6 interactionProgress];
-  if (v7)
+  currentInteractionContext = [(SBHIconManager *)self currentInteractionContext];
+  interactionProgress = [currentInteractionContext interactionProgress];
+  if (interactionProgress)
   {
-    v8 = v7;
+    v8 = interactionProgress;
 LABEL_5:
     [(UIInteractionProgress *)v8 percentComplete];
     if (BSFloatLessThanFloat())
     {
       v9 = +[SBHHomeScreenDomain rootSettings];
-      v10 = [v9 iconAnimationSettings];
+      iconAnimationSettings = [v9 iconAnimationSettings];
 
-      v11 = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
+      childViewController = [(SBHomeScreenIconTransitionAnimator *)self->_currentTransitionAnimator childViewController];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v10 maxFolderCloseHintProgress];
+        [iconAnimationSettings maxFolderCloseHintProgress];
       }
 
       else
       {
-        [v10 maxAppSuspendHintProgress];
+        [iconAnimationSettings maxAppSuspendHintProgress];
       }
 
       v20 = v12;
@@ -22955,9 +22955,9 @@ LABEL_5:
     goto LABEL_16;
   }
 
-  v15 = [v6 gestureRecognizer];
-  v10 = v15;
-  if (!v15 || ([v15 state] - 1) > 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  gestureRecognizer = [currentInteractionContext gestureRecognizer];
+  iconAnimationSettings = gestureRecognizer;
+  if (!gestureRecognizer || ([gestureRecognizer state] - 1) > 1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = 0;
     v13 = 0;
@@ -22967,11 +22967,11 @@ LABEL_20:
   }
 
   v16 = +[SBHHomeScreenDomain rootSettings];
-  v17 = [v16 folderSettings];
-  [v17 minPinchScale];
+  folderSettings = [v16 folderSettings];
+  [folderSettings minPinchScale];
   v19 = v18;
 
-  v8 = [[SBPinchInteractionProgress alloc] initWithPinchGesture:v10 minPinchScale:v19];
+  v8 = [[SBPinchInteractionProgress alloc] initWithPinchGesture:iconAnimationSettings minPinchScale:v19];
   if (v8)
   {
     goto LABEL_5;
@@ -22986,39 +22986,39 @@ LABEL_9:
   return v13;
 }
 
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator
 {
   v55 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v11;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
+  v13 = viewControllerCopy;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v15 = 0;
   v16 = isKindOfClass & 1;
-  v17 = a4 == 1;
-  if (a4 != 1 && (isKindOfClass & 1) != 0)
+  v17 = operation == 1;
+  if (operation != 1 && (isKindOfClass & 1) != 0)
   {
-    v18 = [(SBHIconManager *)self rootFolder];
-    v19 = [v13 folder];
-    v15 = [v18 indexPathForFolder:v19];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    folder = [v13 folder];
+    v15 = [rootFolder indexPathForFolder:folder];
     if (v15)
     {
-      v39 = v19;
-      v41 = v10;
-      v20 = [(SBHIconManager *)self rootViewController];
-      v21 = [v20 currentPageIndex];
+      v39 = folder;
+      v41 = controllerCopy;
+      rootViewController = [(SBHIconManager *)self rootViewController];
+      currentPageIndex = [rootViewController currentPageIndex];
 
-      v22 = [(SBHIconManager *)self rootFolderController];
-      v23 = [v22 iconListModelIndexForPageIndex:v21];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      v23 = [rootFolderController iconListModelIndexForPageIndex:currentPageIndex];
 
-      if ([v18 isValidListIndex:v23])
+      if ([rootFolder isValidListIndex:v23])
       {
-        v24 = [v18 listAtIndex:v23];
+        v24 = [rootFolder listAtIndex:v23];
         if (v24)
         {
-          v25 = [v18 indexPathForFirstFreeSlotStartingAtList:v24 avoidingFirstList:0];
+          v25 = [rootFolder indexPathForFirstFreeSlotStartingAtList:v24 avoidingFirstList:0];
         }
 
         else
@@ -23033,13 +23033,13 @@ LABEL_9:
         v24 = 0;
       }
 
-      v26 = [(SBHIconManager *)self iconDragManager];
-      [v26 setIndexPath:v25 whenRevertingIconsWithPathPrefix:v15];
+      iconDragManager = [(SBHIconManager *)self iconDragManager];
+      [iconDragManager setIndexPath:v25 whenRevertingIconsWithPathPrefix:v15];
 
       v27 = v15;
-      v10 = v41;
-      v17 = a4 == 1;
-      v19 = v39;
+      controllerCopy = v41;
+      v17 = operation == 1;
+      folder = v39;
     }
   }
 
@@ -23062,16 +23062,16 @@ LABEL_9:
   v49 = v30;
   v31 = v28;
   v50 = v31;
-  [v12 animateAlongsideTransition:v52 completion:v47];
-  if ([v12 isAnimated])
+  [coordinatorCopy animateAlongsideTransition:v52 completion:v47];
+  if ([coordinatorCopy isAnimated])
   {
-    [v12 animateAlongsideTransition:&__block_literal_global_1011 completion:0];
+    [coordinatorCopy animateAlongsideTransition:&__block_literal_global_1011 completion:0];
   }
 
   if (v16)
   {
     v40 = v30;
-    v42 = v10;
+    v42 = controllerCopy;
     v32 = v29;
     v43 = 0u;
     v44 = 0u;
@@ -23092,7 +23092,7 @@ LABEL_9:
             objc_enumerationMutation(v33);
           }
 
-          [*(*(&v43 + 1) + 8 * i) iconManager:self willPerformTransitionWithFolder:v32 presenting:a4 == 1 withTransitionCoordinator:v12];
+          [*(*(&v43 + 1) + 8 * i) iconManager:self willPerformTransitionWithFolder:v32 presenting:operation == 1 withTransitionCoordinator:coordinatorCopy];
         }
 
         v35 = [v33 countByEnumeratingWithState:&v43 objects:v54 count:16];
@@ -23102,13 +23102,13 @@ LABEL_9:
     }
 
     v30 = v40;
-    v10 = v42;
+    controllerCopy = v42;
   }
 
-  v38 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v38 iconManager:self nestingViewController:v10 willPerformOperation:a4 onViewController:v29 withTransitionCoordinator:v12];
+    [delegate iconManager:self nestingViewController:controllerCopy willPerformOperation:operation onViewController:v29 withTransitionCoordinator:coordinatorCopy];
   }
 }
 
@@ -23176,58 +23176,58 @@ uint64_t __104__SBHIconManager_nestingViewController_willPerformOperation_onView
   return result;
 }
 
-- (id)animator:(id)a3 animationSettingsForOperation:(unint64_t)a4 childViewController:(id)a5
+- (id)animator:(id)animator animationSettingsForOperation:(unint64_t)operation childViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 iconAnimator];
-  v11 = [(SBHIconManager *)self delegate];
+  animatorCopy = animator;
+  controllerCopy = controller;
+  iconAnimator = [animatorCopy iconAnimator];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v11 iconManager:self animator:v8 animationSettingsForOperation:a4 childViewController:v9];
+    v12 = [delegate iconManager:self animator:animatorCopy animationSettingsForOperation:operation childViewController:controllerCopy];
     goto LABEL_21;
   }
 
   v13 = +[SBHHomeScreenDomain rootSettings];
-  v14 = [v13 iconAnimationSettings];
+  iconAnimationSettings = [v13 iconAnimationSettings];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 reducedMotionSettings];
+    reducedMotionSettings = [iconAnimationSettings reducedMotionSettings];
 LABEL_19:
-    v12 = v15;
+    v12 = reducedMotionSettings;
     goto LABEL_20;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (operation)
     {
-      [v14 folderCloseSettings];
+      [iconAnimationSettings folderCloseSettings];
     }
 
     else
     {
-      [v14 folderOpenSettings];
+      [iconAnimationSettings folderOpenSettings];
     }
 
-    v15 = LABEL_14:;
+    reducedMotionSettings = LABEL_14:;
     goto LABEL_19;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (operation)
     {
-      [v14 crossfadeSuspendSettings];
+      [iconAnimationSettings crossfadeSuspendSettings];
     }
 
     else
     {
-      [v14 crossfadeLaunchSettings];
+      [iconAnimationSettings crossfadeLaunchSettings];
     }
 
     goto LABEL_14;
@@ -23236,14 +23236,14 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (operation)
     {
-      [v14 centerSuspendSettings];
+      [iconAnimationSettings centerSuspendSettings];
     }
 
     else
     {
-      [v14 centerLaunchSettings];
+      [iconAnimationSettings centerLaunchSettings];
     }
 
     goto LABEL_14;
@@ -23257,39 +23257,39 @@ LABEL_21:
   return v12;
 }
 
-- (unint64_t)iconModel:(id)a3 maxRowCountForListInRootFolderWithInterfaceOrientation:(int64_t)a4
+- (unint64_t)iconModel:(id)model maxRowCountForListInRootFolderWithInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(SBHIconManager *)self listLayoutProvider];
-  v6 = [v5 layoutForIconLocation:@"SBIconLocationRoot"];
-  v7 = [v6 numberOfRowsForOrientation:a4];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v6 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
+  v7 = [v6 numberOfRowsForOrientation:orientation];
 
   return v7;
 }
 
-- (unint64_t)iconModel:(id)a3 maxColumnCountForListInRootFolderWithInterfaceOrientation:(int64_t)a4
+- (unint64_t)iconModel:(id)model maxColumnCountForListInRootFolderWithInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(SBHIconManager *)self listLayoutProvider];
-  v6 = [v5 layoutForIconLocation:@"SBIconLocationRoot"];
-  v7 = [v6 numberOfColumnsForOrientation:a4];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v6 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
+  v7 = [v6 numberOfColumnsForOrientation:orientation];
 
   return v7;
 }
 
-- (id)gridSizeClassSizesForIconModel:(id)a3
+- (id)gridSizeClassSizesForIconModel:(id)model
 {
-  v3 = [(SBHIconManager *)self listLayoutProvider];
-  v4 = [v3 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v4 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   v5 = SBHIconListLayoutIconGridSizeClassSizes(v4, 1);
 
   return v5;
 }
 
-- (id)iconModel:(id)a3 allowedGridSizeClassesForFolderClass:(Class)a4
+- (id)iconModel:(id)model allowedGridSizeClassesForFolderClass:(Class)class
 {
-  v5 = [(objc_class *)[(SBHIconManager *)self controllerClassForFolderClass:a4] iconLocation];
-  v6 = [(SBHIconManager *)self listLayoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  iconLocation = [(objc_class *)[(SBHIconManager *)self controllerClassForFolderClass:class] iconLocation];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v7 = [listLayoutProvider layoutForIconLocation:iconLocation];
 
   if (v7)
   {
@@ -23305,42 +23305,42 @@ LABEL_21:
   return v8;
 }
 
-- (id)listRotatedLayoutClusterGridSizeClassForIconModel:(id)a3
+- (id)listRotatedLayoutClusterGridSizeClassForIconModel:(id)model
 {
-  v3 = [(SBHIconManager *)self listLayoutProvider];
-  v4 = [v3 layoutForIconLocation:@"SBIconLocationRoot"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v4 = [listLayoutProvider layoutForIconLocation:@"SBIconLocationRoot"];
 
   v5 = SBHIconListLayoutRotatedLayoutGridCellClusterSizeClass(v4);
 
   return v5;
 }
 
-- (id)iconModel:(id)a3 customInsertionIndexPathForIcon:(id)a4 inRootFolder:(id)a5
+- (id)iconModel:(id)model customInsertionIndexPathForIcon:(id)icon inRootFolder:(id)folder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelCopy = model;
+  iconCopy = icon;
+  folderCopy = folder;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__23;
   v41 = __Block_byref_object_dispose__23;
   v42 = 0;
-  v11 = [(SBIconPreviousLocationTracker *)self->_previousIconLocationTracker previousLocationInfoForIcon:v9];
+  v11 = [(SBIconPreviousLocationTracker *)self->_previousIconLocationTracker previousLocationInfoForIcon:iconCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 folder];
-    v14 = [v12 folderName];
-    v15 = v14;
-    if (v13)
+    folder = [v11 folder];
+    folderName = [v12 folderName];
+    v15 = folderName;
+    if (folder)
     {
-      v16 = [v13 indexPathForFirstFreeSlotAvoidingFirstList:0];
+      v16 = [folder indexPathForFirstFreeSlotAvoidingFirstList:0];
       v17 = v38[5];
       v38[5] = v16;
     }
 
-    else if (v14)
+    else if (folderName)
     {
       v33 = 0;
       v34 = &v33;
@@ -23350,20 +23350,20 @@ LABEL_21:
       v29[1] = 3221225472;
       v29[2] = __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder___block_invoke;
       v29[3] = &unk_1E8090758;
-      v18 = v14;
+      v18 = folderName;
       v30 = v18;
       v31 = &v37;
       v32 = &v33;
-      [v10 enumerateAllIconsUsingBlock:v29];
+      [folderCopy enumerateAllIconsUsingBlock:v29];
       if ((v34[3] & 1) == 0)
       {
-        v19 = [v8 makeFolderWithDisplayName:v18];
+        v19 = [modelCopy makeFolderWithDisplayName:v18];
         v20 = [[SBFolderIcon alloc] initWithFolder:v19];
-        v21 = [v10 addIcon:v20];
-        v22 = [(SBHIconManager *)self iconModel];
-        [v22 addIcon:v20];
+        v21 = [folderCopy addIcon:v20];
+        iconModel = [(SBHIconManager *)self iconModel];
+        [iconModel addIcon:v20];
 
-        v23 = [v10 indexPathForIcon:v20];
+        v23 = [folderCopy indexPathForIcon:v20];
         if (v23)
         {
           v24 = [v19 indexPathForFirstFreeSlotAvoidingFirstList:0];
@@ -23406,14 +23406,14 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   }
 }
 
-- (id)iconModel:(id)a3 customInsertionGridPathForIcon:(id)a4 inRootFolder:(id)a5
+- (id)iconModel:(id)model customInsertionGridPathForIcon:(id)icon inRootFolder:(id)folder
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(SBHIconManager *)self delegate];
+  iconCopy = icon;
+  folderCopy = folder;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v10 = [v9 iconManager:self customInsertionGridPathForIcon:v7 inRootFolder:v8];
+    v10 = [delegate iconManager:self customInsertionGridPathForIcon:iconCopy inRootFolder:folderCopy];
   }
 
   else
@@ -23424,17 +23424,17 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   return v10;
 }
 
-- (BOOL)canSaveIconState:(id)a3
+- (BOOL)canSaveIconState:(id)state
 {
-  if (self->_iconModel != a3)
+  if (self->_iconModel != state)
   {
     return 0;
   }
 
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v5 iconManagerCanSaveIconState:self];
+    v3 = [delegate iconManagerCanSaveIconState:self];
   }
 
   else
@@ -23445,35 +23445,35 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   return v3;
 }
 
-- (void)didSaveIconState:(id)a3
+- (void)didSaveIconState:(id)state
 {
-  if (self->_iconModel == a3)
+  if (self->_iconModel == state)
   {
-    v5 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 iconManagerDidSaveIconState:self];
+      [delegate iconManagerDidSaveIconState:self];
     }
   }
 }
 
-- (void)didDeleteIconState:(id)a3
+- (void)didDeleteIconState:(id)state
 {
-  if (self->_iconModel == a3 && ([a3 isLayingOut] & 1) == 0)
+  if (self->_iconModel == state && ([state isLayingOut] & 1) == 0)
   {
 
     [(SBHIconManager *)self noteIconStateChangedExternally];
   }
 }
 
-- (id)defaultIconStateForIconModel:(id)a3
+- (id)defaultIconStateForIconModel:(id)model
 {
-  if (self->_iconModel == a3)
+  if (self->_iconModel == model)
   {
-    v5 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v5 defaultIconStateForIconManager:self];
+      v3 = [delegate defaultIconStateForIconManager:self];
     }
 
     else
@@ -23490,15 +23490,15 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   return v3;
 }
 
-- (BOOL)iconModel:(id)a3 shouldAvoidPlacingIconOnFirstPage:(id)a4
+- (BOOL)iconModel:(id)model shouldAvoidPlacingIconOnFirstPage:(id)page
 {
-  v6 = a4;
-  if (self->_iconModel == a3)
+  pageCopy = page;
+  if (self->_iconModel == model)
   {
-    v8 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v8 iconManager:self shouldAvoidPlacingIconOnFirstPage:v6];
+      v7 = [delegate iconManager:self shouldAvoidPlacingIconOnFirstPage:pageCopy];
     }
 
     else
@@ -23515,15 +23515,15 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   return v7;
 }
 
-- (BOOL)iconModel:(id)a3 shouldPlaceIconOnIgnoredList:(id)a4
+- (BOOL)iconModel:(id)model shouldPlaceIconOnIgnoredList:(id)list
 {
-  v6 = a4;
-  if (self->_iconModel == a3 && ![(NSCountedSet *)self->_reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen count])
+  listCopy = list;
+  if (self->_iconModel == model && ![(NSCountedSet *)self->_reasonsToIgnoreUserPreferenceForAddingNewIconsToHomeScreen count])
   {
-    v9 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v9 iconManager:self shouldPlaceIconOnIgnoredList:v6];
+      v7 = [delegate iconManager:self shouldPlaceIconOnIgnoredList:listCopy];
     }
 
     else
@@ -23540,25 +23540,25 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
   return v7;
 }
 
-- (void)iconModel:(id)a3 launchIcon:(id)a4 fromLocation:(id)a5 context:(id)a6
+- (void)iconModel:(id)model launchIcon:(id)icon fromLocation:(id)location context:(id)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (self->_iconModel == v10)
+  modelCopy = model;
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
+  if (self->_iconModel == modelCopy)
   {
-    if ([v11 isFolderIcon])
+    if ([iconCopy isFolderIcon])
     {
-      v14 = [v11 folder];
-      v16 = [(SBHIconManager *)self rootFolderController];
-      v17 = [v16 folderControllerForFolder:v14];
+      folder = [iconCopy folder];
+      rootFolderController = [(SBHIconManager *)self rootFolderController];
+      v17 = [rootFolderController folderControllerForFolder:folder];
       v18 = SBLogIcon();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v11;
+        v21 = iconCopy;
         _os_log_impl(&dword_1BEB18000, v18, OS_LOG_TYPE_DEFAULT, "SBHIconManager will open folder from icon %@", &v20, 0xCu);
       }
 
@@ -23574,56 +23574,56 @@ void __73__SBHIconManager_iconModel_customInsertionIndexPathForIcon_inRootFolder
         [(SBHIconManager *)self popExpandedIconAnimated:0 completionHandler:0];
       }
 
-      [(SBHIconManager *)self pushExpandedIcon:v11 location:v12 context:v13 animated:1 completionHandler:0];
+      [(SBHIconManager *)self pushExpandedIcon:iconCopy location:locationCopy context:contextCopy animated:1 completionHandler:0];
     }
 
     else
     {
-      v14 = [v13 iconView];
-      if (!v14)
+      folder = [contextCopy iconView];
+      if (!folder)
       {
         goto LABEL_15;
       }
 
-      v16 = [(SBHIconManager *)self launchActionsForIconView:v14];
-      [(SBHIconManager *)self launchFromIconView:v14 withActions:v16 modifierFlags:0];
+      rootFolderController = [(SBHIconManager *)self launchActionsForIconView:folder];
+      [(SBHIconManager *)self launchFromIconView:folder withActions:rootFolderController modifierFlags:0];
     }
 
     goto LABEL_15;
   }
 
-  v14 = SBLogIcon();
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  folder = SBLogIcon();
+  if (os_log_type_enabled(folder, OS_LOG_TYPE_DEFAULT))
   {
     iconModel = self->_iconModel;
     v20 = 138412802;
-    v21 = v11;
+    v21 = iconCopy;
     v22 = 2048;
-    v23 = v10;
+    v23 = modelCopy;
     v24 = 2048;
     v25 = iconModel;
-    _os_log_impl(&dword_1BEB18000, v14, OS_LOG_TYPE_DEFAULT, "SBHIconManager asked to launch an icon (%@) from an unknown icon model (model: %p, ours: %p", &v20, 0x20u);
+    _os_log_impl(&dword_1BEB18000, folder, OS_LOG_TYPE_DEFAULT, "SBHIconManager asked to launch an icon (%@) from an unknown icon model (model: %p, ours: %p", &v20, 0x20u);
   }
 
 LABEL_15:
 }
 
-- (void)iconModel:(id)a3 didAddIcon:(id)a4
+- (void)iconModel:(id)model didAddIcon:(id)icon
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if ([v5 isLeafIcon])
+  iconCopy = icon;
+  if ([iconCopy isLeafIcon])
   {
-    [v5 addObserver:self];
-    if ([v5 isWidgetIcon])
+    [iconCopy addObserver:self];
+    if ([iconCopy isWidgetIcon])
     {
-      v6 = v5;
+      v6 = iconCopy;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = [v6 widgets];
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      widgets = [v6 widgets];
+      v8 = [widgets countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         v9 = v8;
@@ -23635,33 +23635,33 @@ LABEL_15:
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(widgets);
             }
 
             [(SBHIconManager *)self _loadAndSaveDefaultIntentIfNecessaryForWidget:*(*(&v13 + 1) + 8 * v11++) ofIcon:v6 viewController:0];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v9 = [widgets countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v9);
       }
 
-      v12 = [(SBHIconManager *)self delegate];
+      delegate = [(SBHIconManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v12 iconManagerDidAddOrRemoveWidgetIcon:self];
+        [delegate iconManagerDidAddOrRemoveWidgetIcon:self];
       }
     }
   }
 }
 
-- (void)iconModel:(id)a3 willRemoveIcon:(id)a4
+- (void)iconModel:(id)model willRemoveIcon:(id)icon
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 displayNameForLocation:@"SBIconLocationRoot"];
+  iconCopy = icon;
+  v6 = [iconCopy displayNameForLocation:@"SBIconLocationRoot"];
   if (v6)
   {
     labelImageCache = self->_labelImageCache;
@@ -23673,19 +23673,19 @@ LABEL_15:
   v34[1] = 3221225472;
   v34[2] = __43__SBHIconManager_iconModel_willRemoveIcon___block_invoke;
   v34[3] = &unk_1E808FDE8;
-  v9 = v5;
+  v9 = iconCopy;
   v35 = v9;
   [(SBHIconManager *)self enumerateAllIconImageCachesUsingBlock:v34];
   if ([v9 isLeafIcon])
   {
     [v9 removeObserver:self];
     v10 = v9;
-    v11 = [v10 iconDataSources];
+    iconDataSources = [v10 iconDataSources];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v37 count:16];
+    v12 = [iconDataSources countByEnumeratingWithState:&v30 objects:v37 count:16];
     if (v12)
     {
       v13 = v12;
@@ -23697,14 +23697,14 @@ LABEL_15:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(iconDataSources);
           }
 
           [(SBHIconManager *)self _handleRemovedDataSource:*(*(&v30 + 1) + 8 * v15++) ofIcon:v10];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v37 count:16];
+        v13 = [iconDataSources countByEnumeratingWithState:&v30 objects:v37 count:16];
       }
 
       while (v13);
@@ -23718,8 +23718,8 @@ LABEL_15:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v16 = [v9 iconDataSources];
-    v17 = [v16 countByEnumeratingWithState:&v26 objects:v36 count:16];
+    iconDataSources2 = [v9 iconDataSources];
+    v17 = [iconDataSources2 countByEnumeratingWithState:&v26 objects:v36 count:16];
     if (v17)
     {
       v18 = v17;
@@ -23731,31 +23731,31 @@ LABEL_15:
         {
           if (*v27 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(iconDataSources2);
           }
 
           v21 = *(*(&v26 + 1) + 8 * v20);
           if (objc_opt_respondsToSelector())
           {
-            v22 = [v21 uniqueIdentifier];
-            v23 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-            [v23 discardCachedRecentViewControllersForIdentifier:v22];
+            uniqueIdentifier = [v21 uniqueIdentifier];
+            _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+            [_effectiveWidgetMultiplexingManager discardCachedRecentViewControllersForIdentifier:uniqueIdentifier];
           }
 
           ++v20;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v26 objects:v36 count:16];
+        v18 = [iconDataSources2 countByEnumeratingWithState:&v26 objects:v36 count:16];
       }
 
       while (v18);
     }
 
-    v24 = [(SBHIconManager *)self delegate];
+    delegate = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v24 iconManagerDidAddOrRemoveWidgetIcon:self];
+      [delegate iconManagerDidAddOrRemoveWidgetIcon:self];
     }
 
     v6 = v25;
@@ -23772,18 +23772,18 @@ void __43__SBHIconManager_iconModel_willRemoveIcon___block_invoke(uint64_t a1, v
   [v3 purgeCachedImagesForIcons:{v4, v5, v6}];
 }
 
-- (void)_handleRemovedDataSource:(id)a3 ofIcon:(id)a4
+- (void)_handleRemovedDataSource:(id)source ofIcon:(id)icon
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  iconCopy = icon;
   v8 = SBLogWidgets();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v23 = v6;
+    v23 = sourceCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = iconCopy;
     _os_log_impl(&dword_1BEB18000, v8, OS_LOG_TYPE_DEFAULT, "handleRemovedDataSource:%@ ofIcon:%@", buf, 0x16u);
   }
 
@@ -23791,8 +23791,8 @@ void __43__SBHIconManager_iconModel_willRemoveIcon___block_invoke(uint64_t a1, v
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(SBHIconModel *)self->_iconModel widgetIcons];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  widgetIcons = [(SBHIconModel *)self->_iconModel widgetIcons];
+  v10 = [widgetIcons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -23803,18 +23803,18 @@ LABEL_5:
     {
       if (*v18 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(widgetIcons);
       }
 
       v14 = *(*(&v17 + 1) + 8 * v13);
-      if ([v14 isEqual:v7] & 1) == 0 && (objc_msgSend(v14, "hasIconDataSource:", v6))
+      if ([v14 isEqual:iconCopy] & 1) == 0 && (objc_msgSend(v14, "hasIconDataSource:", sourceCopy))
       {
         goto LABEL_21;
       }
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [widgetIcons countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v11)
         {
           goto LABEL_5;
@@ -23825,68 +23825,68 @@ LABEL_5:
     }
   }
 
-  if (([(NSMutableArray *)self->_movedStackConfigDataSources containsObject:v6]& 1) == 0)
+  if (([(NSMutableArray *)self->_movedStackConfigDataSources containsObject:sourceCopy]& 1) == 0)
   {
-    if (!self->_shouldStashIconsForRelayout && (objc_opt_respondsToSelector() & 1) != 0 && [v6 iconSupportsConfiguration:v7])
+    if (!self->_shouldStashIconsForRelayout && (objc_opt_respondsToSelector() & 1) != 0 && [sourceCopy iconSupportsConfiguration:iconCopy])
     {
-      v15 = [(SBHIconManager *)self delegate];
+      delegate = [(SBHIconManager *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v15 iconManager:self didRemoveConfigurableDataSource:v6 ofIcon:v7];
+        [delegate iconManager:self didRemoveConfigurableDataSource:sourceCopy ofIcon:iconCopy];
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 uniqueIdentifier];
-      [(NSMutableDictionary *)self->_widgetIntents removeObjectForKey:v9];
-      [(NSMutableDictionary *)self->_archivedWidgetIntents removeObjectForKey:v9];
-      v16 = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
-      [v16 discardCachedRecentViewControllersForIdentifier:v9];
+      widgetIcons = [sourceCopy uniqueIdentifier];
+      [(NSMutableDictionary *)self->_widgetIntents removeObjectForKey:widgetIcons];
+      [(NSMutableDictionary *)self->_archivedWidgetIntents removeObjectForKey:widgetIcons];
+      _effectiveWidgetMultiplexingManager = [(SBHIconManager *)self _effectiveWidgetMultiplexingManager];
+      [_effectiveWidgetMultiplexingManager discardCachedRecentViewControllersForIdentifier:widgetIcons];
 
 LABEL_21:
     }
   }
 }
 
-- (Class)iconModel:(id)a3 iconClassForApplicationWithBundleIdentifier:(id)a4 proposedClass:(Class)a5
+- (Class)iconModel:(id)model iconClassForApplicationWithBundleIdentifier:(id)identifier proposedClass:(Class)class
 {
-  v7 = a4;
-  v8 = [(SBHIconManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    a5 = [v8 iconManager:self iconClassForApplicationWithBundleIdentifier:v7 proposedClass:a5];
+    class = [delegate iconManager:self iconClassForApplicationWithBundleIdentifier:identifierCopy proposedClass:class];
   }
 
-  v9 = a5;
+  classCopy = class;
 
-  return a5;
+  return class;
 }
 
-- (id)iconModel:(id)a3 validatedFileStackIconForFileStackIcon:(id)a4
+- (id)iconModel:(id)model validatedFileStackIconForFileStackIcon:(id)icon
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v6 iconManager:self isFileStackIconValid:v5])
+  iconCopy = icon;
+  delegate = [(SBHIconManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate iconManager:self isFileStackIconValid:iconCopy])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v5;
+    v7 = iconCopy;
   }
 
   return v7;
 }
 
-- (BOOL)iconModel:(id)a3 shouldLeaveGapForMissingArchivedIconWithIdentifier:(id)a4
+- (BOOL)iconModel:(id)model shouldLeaveGapForMissingArchivedIconWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 iconManager:self shouldLeaveGapForMissingArchivedIconWithIdentifier:v5];
+    v7 = [delegate iconManager:self shouldLeaveGapForMissingArchivedIconWithIdentifier:identifierCopy];
   }
 
   else
@@ -23897,9 +23897,9 @@ LABEL_21:
   return v7;
 }
 
-- (void)_iconModelDidLayout:(id)a3
+- (void)_iconModelDidLayout:(id)layout
 {
-  v4 = [(SBHIconModel *)self->_iconModel rootFolder];
+  rootFolder = [(SBHIconModel *)self->_iconModel rootFolder];
   [(SBHIconManager *)self setRootFolder:?];
   [(NSMutableDictionary *)self->_widgetIntents removeAllObjects];
   [(NSMutableDictionary *)self->_archivedWidgetIntents removeAllObjects];
@@ -23916,15 +23916,15 @@ LABEL_21:
   ++self->_relayoutCount;
 }
 
-- (void)_iconVisibilityChanged:(id)a3
+- (void)_iconVisibilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKey:@"SBIconModelIconsToShowKey"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v8 = [userInfo objectForKey:@"SBIconModelIconsToShowKey"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [changedCopy userInfo];
 
-  v7 = [v6 objectForKey:@"SBIconModelIconsToHideKey"];
+  v7 = [userInfo2 objectForKey:@"SBIconModelIconsToHideKey"];
 
   [(SBHIconManager *)self updateVisibleIconsToShowLeafIcons:v8 hideLeafIcons:v7];
 }
@@ -23973,41 +23973,41 @@ void __48__SBHIconManager_noteIconStateChangedExternally__block_invoke(uint64_t 
   previousIconGridPathsBeforeResize = self->_previousIconGridPathsBeforeResize;
   self->_previousIconGridPathsBeforeResize = 0;
 
-  v4 = [(SBHIconManager *)self iconDragManager];
-  [v4 noteRootFolderDidMutate];
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteRootFolderDidMutate];
 }
 
-- (BOOL)rootFolder:(id)a3 canBounceIcon:(id)a4
+- (BOOL)rootFolder:(id)folder canBounceIcon:(id)icon
 {
-  v4 = [(SBHIconManager *)self iconDragManager:a3];
-  v5 = [v4 isIconDragging];
+  v4 = [(SBHIconManager *)self iconDragManager:folder];
+  isIconDragging = [v4 isIconDragging];
 
-  return v5;
+  return isIconDragging;
 }
 
-- (id)iconLocationForList:(id)a3 inFolder:(id)a4 ofRootFolder:(id)a5
+- (id)iconLocationForList:(id)list inFolder:(id)folder ofRootFolder:(id)rootFolder
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SBHIconManager *)self rootFolder];
+  listCopy = list;
+  folderCopy = folder;
+  rootFolderCopy = rootFolder;
+  rootFolder = [(SBHIconManager *)self rootFolder];
   v12 = @"SBIconLocationNone";
-  v13 = [v10 todayList];
+  todayList = [rootFolderCopy todayList];
 
-  if (v13 == v8)
+  if (todayList == listCopy)
   {
     v16 = SBIconLocationTodayView;
   }
 
   else
   {
-    v14 = [v10 dock];
+    dock = [rootFolderCopy dock];
 
-    if (v14 == v8)
+    if (dock == listCopy)
     {
-      v17 = [(SBHIconManager *)self isFloatingDockSupported];
+      isFloatingDockSupported = [(SBHIconManager *)self isFloatingDockSupported];
       v16 = SBIconLocationFloatingDock;
-      if (!v17)
+      if (!isFloatingDockSupported)
       {
         v16 = SBIconLocationDock;
       }
@@ -24015,21 +24015,21 @@ void __48__SBHIconManager_noteIconStateChangedExternally__block_invoke(uint64_t 
 
     else
     {
-      v15 = [v10 dockUtilities];
+      dockUtilities = [rootFolderCopy dockUtilities];
 
-      if (v15 == v8)
+      if (dockUtilities == listCopy)
       {
         v16 = SBIconLocationFloatingDockUtilities;
       }
 
-      else if (v9 && ([v9 isRootFolder] & 1) == 0)
+      else if (folderCopy && ([folderCopy isRootFolder] & 1) == 0)
       {
         v16 = SBIconLocationFolder;
       }
 
       else
       {
-        if (v11 != v10)
+        if (rootFolder != rootFolderCopy)
         {
           goto LABEL_15;
         }
@@ -24047,39 +24047,39 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)rootFolder:(id)a3 canAddIcon:(id)a4 toIconList:(id)a5 inFolder:(id)a6
+- (BOOL)rootFolder:(id)folder canAddIcon:(id)icon toIconList:(id)list inFolder:(id)inFolder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(SBHIconManager *)self rootFolder];
+  folderCopy = folder;
+  iconCopy = icon;
+  listCopy = list;
+  inFolderCopy = inFolder;
+  rootFolder = [(SBHIconManager *)self rootFolder];
 
-  if (v14 == v10)
+  if (rootFolder == folderCopy)
   {
-    v16 = [(SBHIconManager *)self iconLocationForList:v12 inFolder:v13 ofRootFolder:v10];
-    if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v16) && (-[SBHIconManager floatingDockViewController](self, "floatingDockViewController"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 canAddIcon:v11 toIconList:v12 inFolder:v13], v17, !v18))
+    v16 = [(SBHIconManager *)self iconLocationForList:listCopy inFolder:inFolderCopy ofRootFolder:folderCopy];
+    if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupFloatingDock", v16) && (-[SBHIconManager floatingDockViewController](self, "floatingDockViewController"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 canAddIcon:iconCopy toIconList:listCopy inFolder:inFolderCopy], v17, !v18))
     {
       v15 = 0;
     }
 
     else
     {
-      v19 = [(SBHIconManager *)self listLayoutProvider];
-      v20 = [v19 layoutForIconLocation:v16];
+      listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+      v20 = [listLayoutProvider layoutForIconLocation:v16];
 
-      v21 = [v11 gridSizeClass];
-      v22 = SBHIconListLayoutSupportsIconGridSizeClass(v20, v21);
+      gridSizeClass = [iconCopy gridSizeClass];
+      v22 = SBHIconListLayoutSupportsIconGridSizeClass(v20, gridSizeClass);
 
       if (v22)
       {
-        v23 = [(SBHIconManager *)self delegate];
+        delegate = [(SBHIconManager *)self delegate];
         v15 = 0;
-        if ((objc_opt_respondsToSelector() & 1) == 0 || [v23 iconManager:self canAddIcon:v11 toIconList:v12 inFolder:v13])
+        if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate iconManager:self canAddIcon:iconCopy toIconList:listCopy inFolder:inFolderCopy])
         {
-          v24 = [v10 ignoredList];
+          ignoredList = [folderCopy ignoredList];
 
-          if (v24 != v12 || [(SBHIconManager *)self canAddIconToIgnoredList:v11])
+          if (ignoredList != listCopy || [(SBHIconManager *)self canAddIconToIgnoredList:iconCopy])
           {
             v15 = 1;
           }
@@ -24101,24 +24101,24 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)rootFolder:(id)a3 isGridLayoutValid:(id)a4 forIconList:(id)a5 inFolder:(id)a6
+- (BOOL)rootFolder:(id)folder isGridLayoutValid:(id)valid forIconList:(id)list inFolder:(id)inFolder
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SBHIconManager *)self iconLocationForList:v12 inFolder:a6 ofRootFolder:v10];
+  folderCopy = folder;
+  validCopy = valid;
+  listCopy = list;
+  v13 = [(SBHIconManager *)self iconLocationForList:listCopy inFolder:inFolder ofRootFolder:folderCopy];
   if (SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v13))
   {
-    v14 = [(SBHIconManager *)self listLayoutProvider];
-    v15 = [v14 layoutForIconLocation:v13];
+    listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+    v15 = [listLayoutProvider layoutForIconLocation:v13];
 
-    v16 = [v12 allowedGridSizeClasses];
-    if (SBHIconListLayoutSupportsIconGridSizeClass(v15, @"SBHIconGridSizeClassExtraLarge") && [v16 containsGridSizeClass:@"SBHIconGridSizeClassExtraLarge"])
+    allowedGridSizeClasses = [listCopy allowedGridSizeClasses];
+    if (SBHIconListLayoutSupportsIconGridSizeClass(v15, @"SBHIconGridSizeClassExtraLarge") && [allowedGridSizeClasses containsGridSizeClass:@"SBHIconGridSizeClassExtraLarge"])
     {
-      v17 = [v10 iconGridSizeClassSizes];
-      v18 = [v17 gridSizeForGridSizeClass:@"SBHIconGridSizeClassExtraLarge"];
+      iconGridSizeClassSizes = [folderCopy iconGridSizeClassSizes];
+      v18 = [iconGridSizeClassSizes gridSizeForGridSizeClass:@"SBHIconGridSizeClassExtraLarge"];
       v19 = v18;
-      v20 = SBHIconGridSizeGetArea(v18) < 2 || [v11 countOfIconsOfSize:v19] < 3;
+      v20 = SBHIconGridSizeGetArea(v18) < 2 || [validCopy countOfIconsOfSize:v19] < 3;
     }
 
     else
@@ -24135,24 +24135,24 @@ LABEL_15:
   return v20;
 }
 
-- (id)rootFolder:(id)a3 shouldBounceIcon:(id)a4 afterInsertingIcons:(id)a5 forIconList:(id)a6 inFolder:(id)a7
+- (id)rootFolder:(id)folder shouldBounceIcon:(id)icon afterInsertingIcons:(id)icons forIconList:(id)list inFolder:(id)inFolder
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(SBHIconManager *)self iconLocationForList:v14 inFolder:a7 ofRootFolder:a3];
+  iconCopy = icon;
+  iconsCopy = icons;
+  listCopy = list;
+  v15 = [(SBHIconManager *)self iconLocationForList:listCopy inFolder:inFolder ofRootFolder:folder];
   if (!SBIconLocationGroupContainsLocation(@"SBIconLocationGroupRoot", v15))
   {
     goto LABEL_6;
   }
 
-  v16 = [v14 directlyContainedIconsPassingTest:&__block_literal_global_1050];
+  v16 = [listCopy directlyContainedIconsPassingTest:&__block_literal_global_1050];
   if ([v16 count] < 3)
   {
 LABEL_5:
 
 LABEL_6:
-    v18 = v12;
+    v18 = iconCopy;
     goto LABEL_7;
   }
 
@@ -24160,7 +24160,7 @@ LABEL_6:
   v20[1] = 3221225472;
   v20[2] = __87__SBHIconManager_rootFolder_shouldBounceIcon_afterInsertingIcons_forIconList_inFolder___block_invoke_2;
   v20[3] = &unk_1E808BFD8;
-  v21 = v13;
+  v21 = iconsCopy;
   v17 = [v16 indexOfObjectWithOptions:2 passingTest:v20];
   if (v17 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -24193,10 +24193,10 @@ uint64_t __87__SBHIconManager_rootFolder_shouldBounceIcon_afterInsertingIcons_fo
   return v5;
 }
 
-- (void)rootFolder:(id)a3 wantsToDoPageHidingEducationWithCompletion:(id)a4
+- (void)rootFolder:(id)folder wantsToDoPageHidingEducationWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self delegate];
+  completionCopy = completion;
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -24204,13 +24204,13 @@ uint64_t __87__SBHIconManager_rootFolder_shouldBounceIcon_afterInsertingIcons_fo
     v7[2] = __72__SBHIconManager_rootFolder_wantsToDoPageHidingEducationWithCompletion___block_invoke;
     v7[3] = &unk_1E808B3C0;
     v7[4] = self;
-    v8 = v5;
-    [v6 iconManager:self prepareForPageHidingEducationWithCompletionHandler:v7];
+    v8 = completionCopy;
+    [delegate iconManager:self prepareForPageHidingEducationWithCompletionHandler:v7];
   }
 
-  else if (v5)
+  else if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -24234,34 +24234,34 @@ uint64_t __72__SBHIconManager_rootFolder_wantsToDoPageHidingEducationWithComplet
   return result;
 }
 
-- (void)addPageStateObserver:(id)a3
+- (void)addPageStateObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   pageStateObservers = self->_pageStateObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!pageStateObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_pageStateObservers;
-    self->_pageStateObservers = v6;
+    self->_pageStateObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     pageStateObservers = self->_pageStateObservers;
   }
 
-  [(NSHashTable *)pageStateObservers addObject:v4];
+  [(NSHashTable *)pageStateObservers addObject:observerCopy];
 }
 
-- (void)enumeratePageStateObserversUsingBlock:(id)a3
+- (void)enumeratePageStateObserversUsingBlock:(id)block
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSHashTable *)self->_pageStateObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObjects = [(NSHashTable *)self->_pageStateObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -24273,52 +24273,52 @@ uint64_t __72__SBHIconManager_rootFolder_wantsToDoPageHidingEducationWithComplet
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 willBeginTransitionToState:(int64_t)a4 animated:(BOOL)a5 interactive:(BOOL)a6
+- (void)rootFolderPageStateProvider:(id)provider willBeginTransitionToState:(int64_t)state animated:(BOOL)animated interactive:(BOOL)interactive
 {
-  v10 = a3;
+  providerCopy = provider;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __94__SBHIconManager_rootFolderPageStateProvider_willBeginTransitionToState_animated_interactive___block_invoke;
   v12[3] = &unk_1E80894B0;
-  v13 = v10;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v11 = v10;
+  v13 = providerCopy;
+  stateCopy = state;
+  animatedCopy = animated;
+  interactiveCopy = interactive;
+  v11 = providerCopy;
   [(SBHIconManager *)self enumeratePageStateObserversUsingBlock:v12];
   [(SBHIconManager *)self setCanPresentOverscrollLibraryForPageTransition:1];
   [(SBHIconManager *)self setCanDismissOverscrollLibraryForPageTransition:1];
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 didContinueTransitionToState:(int64_t)a4 progress:(double)a5
+- (void)rootFolderPageStateProvider:(id)provider didContinueTransitionToState:(int64_t)state progress:(double)progress
 {
-  v8 = a3;
+  providerCopy = provider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__SBHIconManager_rootFolderPageStateProvider_didContinueTransitionToState_progress___block_invoke;
   v11[3] = &unk_1E8089518;
-  v9 = v8;
+  v9 = providerCopy;
   v12 = v9;
-  v13 = a4;
-  v14 = a5;
+  stateCopy = state;
+  progressCopy = progress;
   [(SBHIconManager *)self enumeratePageStateObserversUsingBlock:v11];
-  if (a4 == 4)
+  if (state == 4)
   {
-    if (a5 > 0.5 || [v9 pageState] == 4)
+    if (progress > 0.5 || [v9 pageState] == 4)
     {
       if ([(SBHIconManager *)self canPresentOverscrollLibraryForPageTransition]&& ![(SBHIconManager *)self isTrackingScroll])
       {
@@ -24337,7 +24337,7 @@ LABEL_13:
     }
   }
 
-  else if (!a4 && a5 > 0.5 && [(SBHIconManager *)self canDismissOverscrollLibraryForPageTransition])
+  else if (!state && progress > 0.5 && [(SBHIconManager *)self canDismissOverscrollLibraryForPageTransition])
   {
     [(SBHIconManager *)self _updateOverscrollModalLibraryForScrollToPresented:0];
     v10 = 0;
@@ -24346,32 +24346,32 @@ LABEL_14:
   }
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 willEndTransitionToState:(int64_t)a4 successfully:(BOOL)a5
+- (void)rootFolderPageStateProvider:(id)provider willEndTransitionToState:(int64_t)state successfully:(BOOL)successfully
 {
-  v8 = a3;
+  providerCopy = provider;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__SBHIconManager_rootFolderPageStateProvider_willEndTransitionToState_successfully___block_invoke;
   v10[3] = &unk_1E8089540;
-  v11 = v8;
-  v12 = a4;
-  v13 = a5;
-  v9 = v8;
+  v11 = providerCopy;
+  stateCopy = state;
+  successfullyCopy = successfully;
+  v9 = providerCopy;
   [(SBHIconManager *)self enumeratePageStateObserversUsingBlock:v10];
 }
 
-- (void)rootFolderPageStateProvider:(id)a3 didEndTransitionFromState:(int64_t)a4 toState:(int64_t)a5 successfully:(BOOL)a6
+- (void)rootFolderPageStateProvider:(id)provider didEndTransitionFromState:(int64_t)state toState:(int64_t)toState successfully:(BOOL)successfully
 {
-  v10 = a3;
+  providerCopy = provider;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __93__SBHIconManager_rootFolderPageStateProvider_didEndTransitionFromState_toState_successfully___block_invoke;
   v15 = &unk_1E8089568;
-  v11 = v10;
+  v11 = providerCopy;
   v16 = v11;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  stateCopy = state;
+  toStateCopy = toState;
+  successfullyCopy = successfully;
   [(SBHIconManager *)self enumeratePageStateObserversUsingBlock:&v12];
   if ([v11 pageState] == 4)
   {
@@ -24379,15 +24379,15 @@ LABEL_14:
   }
 }
 
-- (void)_updateOverscrollModalLibraryForScrollToPresented:(BOOL)a3
+- (void)_updateOverscrollModalLibraryForScrollToPresented:(BOOL)presented
 {
-  v3 = a3;
+  presentedCopy = presented;
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(SBHIconManager *)self _currentFolderController];
-    v7 = [v5 iconManager:self floatingDockViewControllerForViewController:v6];
+    _currentFolderController = [(SBHIconManager *)self _currentFolderController];
+    v7 = [delegate iconManager:self floatingDockViewControllerForViewController:_currentFolderController];
   }
 
   else
@@ -24395,10 +24395,10 @@ LABEL_14:
     v7 = 0;
   }
 
-  v8 = [v7 isPresentingLibrary];
-  if (v3)
+  isPresentingLibrary = [v7 isPresentingLibrary];
+  if (presentedCopy)
   {
-    if ((v8 & 1) == 0)
+    if ((isPresentingLibrary & 1) == 0)
     {
       [v7 presentLibraryAnimated:1 completion:0];
       v13 = *MEMORY[0x1E69D4548];
@@ -24406,27 +24406,27 @@ LABEL_14:
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
       v10 = MEMORY[0x1E69D3F90];
       v11 = v9;
-      v12 = [v10 sharedInstance];
-      [v12 emitEvent:51 withPayload:v11];
+      sharedInstance = [v10 sharedInstance];
+      [sharedInstance emitEvent:51 withPayload:v11];
     }
   }
 
-  else if (v8)
+  else if (isPresentingLibrary)
   {
     [v7 dismissLibraryAnimated:1 completion:0];
   }
 }
 
-- (void)libraryViewControllerDidPresent:(id)a3
+- (void)libraryViewControllerDidPresent:(id)present
 {
-  v4 = [(SBHIconManager *)self trailingLibraryViewController];
-  v5 = v4;
-  if (v4)
+  trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
+  v5 = trailingLibraryViewController;
+  if (trailingLibraryViewController)
   {
-    v8 = v4;
-    v4 = [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
+    v8 = trailingLibraryViewController;
+    trailingLibraryViewController = [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
     v5 = v8;
-    if (v4)
+    if (trailingLibraryViewController)
     {
       if (!self->_trailingCustomLibraryPrewarmAssertion)
       {
@@ -24439,19 +24439,19 @@ LABEL_14:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](trailingLibraryViewController, v5);
 }
 
-- (void)libraryViewControllerDidDismiss:(id)a3
+- (void)libraryViewControllerDidDismiss:(id)dismiss
 {
-  v4 = [(SBHIconManager *)self trailingLibraryViewController];
-  v5 = v4;
-  if (v4)
+  trailingLibraryViewController = [(SBHIconManager *)self trailingLibraryViewController];
+  v5 = trailingLibraryViewController;
+  if (trailingLibraryViewController)
   {
-    v7 = v4;
-    v4 = [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
+    v7 = trailingLibraryViewController;
+    trailingLibraryViewController = [(SBHIconManager *)self isShowingOrTransitioningToTrailingCustomView];
     v5 = v7;
-    if ((v4 & 1) == 0)
+    if ((trailingLibraryViewController & 1) == 0)
     {
       [(BSInvalidatable *)self->_trailingCustomLibraryPrewarmAssertion invalidate];
       trailingCustomLibraryPrewarmAssertion = self->_trailingCustomLibraryPrewarmAssertion;
@@ -24461,21 +24461,21 @@ LABEL_14:
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](trailingLibraryViewController, v5);
 }
 
-- (void)libraryViewController:(id)a3 willPresentSearchController:(id)a4
+- (void)libraryViewController:(id)controller willPresentSearchController:(id)searchController
 {
-  if ([(SBHIconManager *)self isEditing:a3])
+  if ([(SBHIconManager *)self isEditing:controller])
   {
     [(SBHIconManager *)self setEditing:0];
     self->_editingShouldBeReEnabledAfterLibrarySearchControllerIsDismissed = 1;
   }
 }
 
-- (void)libraryViewController:(id)a3 willDismissSearchController:(id)a4
+- (void)libraryViewController:(id)controller willDismissSearchController:(id)searchController
 {
-  if (self->_editingShouldBeReEnabledAfterLibrarySearchControllerIsDismissed && [(SBHIconManager *)self isEditingAllowed:a3])
+  if (self->_editingShouldBeReEnabledAfterLibrarySearchControllerIsDismissed && [(SBHIconManager *)self isEditingAllowed:controller])
   {
     [(SBHIconManager *)self setEditing:1];
   }
@@ -24483,64 +24483,64 @@ LABEL_14:
   self->_editingShouldBeReEnabledAfterLibrarySearchControllerIsDismissed = 0;
 }
 
-- (void)libraryViewController:(id)a3 willLaunchIcon:(id)a4 fromLocation:(id)a5
+- (void)libraryViewController:(id)controller willLaunchIcon:(id)icon fromLocation:(id)location
 {
-  if ([a5 isEqual:{@"SBIconLocationAppLibrarySearch", a4}])
+  if ([location isEqual:{@"SBIconLocationAppLibrarySearch", icon}])
   {
     self->_editingShouldBeReEnabledAfterLibrarySearchControllerIsDismissed = 0;
   }
 }
 
-- (void)libraryViewController:(id)a3 didAcceptDrop:(id)a4
+- (void)libraryViewController:(id)controller didAcceptDrop:(id)drop
 {
-  v5 = a4;
-  v6 = [(SBHIconManager *)self iconDragManager];
-  [v6 noteDragItemWasConsumedExternallyForDropSession:v5];
+  dropCopy = drop;
+  iconDragManager = [(SBHIconManager *)self iconDragManager];
+  [iconDragManager noteDragItemWasConsumedExternallyForDropSession:dropCopy];
 }
 
-- (void)todayViewController:(id)a3 didChangePresentationProgress:(double)a4 newPresentationProgress:(double)a5 fromLeading:(BOOL)a6
+- (void)todayViewController:(id)controller didChangePresentationProgress:(double)progress newPresentationProgress:(double)presentationProgress fromLeading:(BOOL)leading
 {
-  v8 = a3;
-  if (a5 <= 1.0)
+  controllerCopy = controller;
+  if (presentationProgress <= 1.0)
   {
-    v9 = v8;
-    [(SBHIconManager *)self _todayViewControllerSuppressesEditingStateForListViews:a5 == 1.0];
-    v8 = v9;
+    v9 = controllerCopy;
+    [(SBHIconManager *)self _todayViewControllerSuppressesEditingStateForListViews:presentationProgress == 1.0];
+    controllerCopy = v9;
   }
 }
 
-- (void)_todayViewControllerSuppressesEditingStateForListViews:(BOOL)a3
+- (void)_todayViewControllerSuppressesEditingStateForListViews:(BOOL)views
 {
-  v3 = a3;
-  v5 = [(SBHIconManager *)self rootFolderController];
-  v6 = [v5 rootFolderView];
-  [v6 setSuppressesEditingStateForListViews:v3];
+  viewsCopy = views;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  rootFolderView = [rootFolderController rootFolderView];
+  [rootFolderView setSuppressesEditingStateForListViews:viewsCopy];
 
-  v7 = [(SBHIconManager *)self floatingDockViewController];
-  [v7 setSuppressesEditingStateForListViews:v3];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  [floatingDockViewController setSuppressesEditingStateForListViews:viewsCopy];
 }
 
-- (void)addFolderPresentationObserver:(id)a3
+- (void)addFolderPresentationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   folderPresentationObservers = self->_folderPresentationObservers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!folderPresentationObservers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_folderPresentationObservers;
-    self->_folderPresentationObservers = v6;
+    self->_folderPresentationObservers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     folderPresentationObservers = self->_folderPresentationObservers;
   }
 
-  [(NSHashTable *)folderPresentationObservers addObject:v4];
+  [(NSHashTable *)folderPresentationObservers addObject:observerCopy];
 }
 
-- (void)removeFolderPresentationObserver:(id)a3
+- (void)removeFolderPresentationObserver:(id)observer
 {
-  [(NSHashTable *)self->_folderPresentationObservers removeObject:a3];
+  [(NSHashTable *)self->_folderPresentationObservers removeObject:observer];
   if (![(NSHashTable *)self->_folderPresentationObservers count])
   {
     folderPresentationObservers = self->_folderPresentationObservers;
@@ -24723,19 +24723,19 @@ void __47__SBHIconManager__processPendingDefaultIntents__block_invoke_2(uint64_t
     goto LABEL_45;
   }
 
-  v5 = [(SBHIconManager *)self delegate];
-  v46 = [(SBHIconManager *)self gridSizeClassDomain];
-  v6 = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
-  if (v6)
+  delegate = [(SBHIconManager *)self delegate];
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
+  defaultFirstPageWidgetDescriptors = [(SBHIconManager *)self defaultFirstPageWidgetDescriptors];
+  if (defaultFirstPageWidgetDescriptors)
   {
-    v41 = v5;
+    v41 = delegate;
     v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v45 = [(SBHIconManager *)self defaultFirstPageWidgetSizeClass];
+    defaultFirstPageWidgetSizeClass = [(SBHIconManager *)self defaultFirstPageWidgetSizeClass];
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    obj = v6;
+    obj = defaultFirstPageWidgetDescriptors;
     v47 = [obj countByEnumeratingWithState:&v62 objects:v71 count:16];
     if (v47)
     {
@@ -24787,14 +24787,14 @@ void __47__SBHIconManager__processPendingDefaultIntents__block_invoke_2(uint64_t
             while (v11);
           }
 
-          v16 = [[SBWidgetIcon alloc] initWithCHSWidgetDescriptors:v9 inDomain:v46];
+          v16 = [[SBWidgetIcon alloc] initWithCHSWidgetDescriptors:v9 inDomain:gridSizeClassDomain];
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
           v57 = 0u;
           v48 = v16;
-          v17 = [(SBWidgetIcon *)v16 widgets];
-          v18 = [v17 countByEnumeratingWithState:&v54 objects:v67 count:16];
+          widgets = [(SBWidgetIcon *)v16 widgets];
+          v18 = [widgets countByEnumeratingWithState:&v54 objects:v67 count:16];
           if (v18)
           {
             v19 = v18;
@@ -24805,27 +24805,27 @@ void __47__SBHIconManager__processPendingDefaultIntents__block_invoke_2(uint64_t
               {
                 if (*v55 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(widgets);
                 }
 
                 v22 = *(*(&v54 + 1) + 8 * j);
                 v23 = SBLogWidgetDiscoverabilityMigration();
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
-                  v24 = [v22 containerBundleIdentifier];
+                  containerBundleIdentifier = [v22 containerBundleIdentifier];
                   *buf = 138412290;
-                  v69 = v24;
+                  v69 = containerBundleIdentifier;
                   _os_log_impl(&dword_1BEB18000, v23, OS_LOG_TYPE_DEFAULT, "[ContainerBundleIdentifier debugging] container bundle identifier = %@", buf, 0xCu);
                 }
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v54 objects:v67 count:16];
+              v19 = [widgets countByEnumeratingWithState:&v54 objects:v67 count:16];
             }
 
             while (v19);
           }
 
-          [(SBIcon *)v48 setGridSizeClass:v45];
+          [(SBIcon *)v48 setGridSizeClass:defaultFirstPageWidgetSizeClass];
           [v44 addObject:v48];
 
           v7 = v49 + 1;
@@ -24848,7 +24848,7 @@ void __47__SBHIconManager__processPendingDefaultIntents__block_invoke_2(uint64_t
     }
 
     v27 = v25;
-    v5 = v41;
+    delegate = v41;
   }
 
   else
@@ -24859,7 +24859,7 @@ void __47__SBHIconManager__processPendingDefaultIntents__block_invoke_2(uint64_t
       goto LABEL_33;
     }
 
-    v27 = [v5 fallbackDefaultFirstPageWidgetsForIconManager:self];
+    v27 = [delegate fallbackDefaultFirstPageWidgetsForIconManager:self];
     v25 = SBLogWidgetDiscoverabilityMigration();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -24883,7 +24883,7 @@ LABEL_33:
   v31 = v28;
   if (v29)
   {
-    v31 = [v5 iconManager:self willAddDefaultFirstPageWidgetsBasedOnPinnedWidgets:MEMORY[0x1E695E0F0] suggestionWidgets:v28];
+    v31 = [delegate iconManager:self willAddDefaultFirstPageWidgetsBasedOnPinnedWidgets:MEMORY[0x1E695E0F0] suggestionWidgets:v28];
   }
 
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v31, "count")}];
@@ -24928,9 +24928,9 @@ LABEL_45:
 - (void)prototypeSetDefaultSecondPageWidgetIcons
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self widgetExtensionProvider];
+  widgetExtensionProvider = [(SBHIconManager *)self widgetExtensionProvider];
   v4 = [[SBHWidget alloc] initWithKind:@"com.apple.tv" extensionBundleIdentifier:@"com.apple.tv.TVWidgetExtension"];
-  v5 = [v3 sbh_descriptorForWidgetIdentifiable:v4];
+  v5 = [widgetExtensionProvider sbh_descriptorForWidgetIdentifiable:v4];
   v6 = v5;
   if (v5)
   {
@@ -24955,18 +24955,18 @@ LABEL_45:
 
   else
   {
-    v5 = [(SBHIconManager *)self defaultSecondPageWidgetDescriptors];
-    if (v5)
+    defaultSecondPageWidgetDescriptors = [(SBHIconManager *)self defaultSecondPageWidgetDescriptors];
+    if (defaultSecondPageWidgetDescriptors)
     {
       v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v6 = [(SBHIconManager *)self defaultSecondPageWidgetSizeClass];
-      v7 = [(SBHIconManager *)self gridSizeClassDomain];
+      defaultSecondPageWidgetSizeClass = [(SBHIconManager *)self defaultSecondPageWidgetSizeClass];
+      gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v17 = v5;
-      v8 = v5;
+      v17 = defaultSecondPageWidgetDescriptors;
+      v8 = defaultSecondPageWidgetDescriptors;
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
@@ -24981,8 +24981,8 @@ LABEL_45:
               objc_enumerationMutation(v8);
             }
 
-            v13 = [[SBWidgetIcon alloc] initWithCHSWidgetDescriptors:*(*(&v18 + 1) + 8 * i) suggestionSource:2 inDomain:v7];
-            [(SBIcon *)v13 setGridSizeClass:v6];
+            v13 = [[SBWidgetIcon alloc] initWithCHSWidgetDescriptors:*(*(&v18 + 1) + 8 * i) suggestionSource:2 inDomain:gridSizeClassDomain];
+            [(SBIcon *)v13 setGridSizeClass:defaultSecondPageWidgetSizeClass];
             [(NSArray *)v3 addObject:v13];
           }
 
@@ -24992,7 +24992,7 @@ LABEL_45:
         while (v10);
       }
 
-      v5 = v17;
+      defaultSecondPageWidgetDescriptors = v17;
     }
 
     else
@@ -25015,10 +25015,10 @@ LABEL_45:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SBHIconManager *)self rootFolder];
-  v3 = [v2 lists];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  lists = [rootFolder lists];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [lists countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -25028,7 +25028,7 @@ LABEL_45:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lists);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -25042,7 +25042,7 @@ LABEL_45:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [lists countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -25060,11 +25060,11 @@ LABEL_11:
 - (void)saveOriginalIconStateForWidgetDiscoverability
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self iconModel];
-  [v3 saveIconStateIfNeeded];
-  v4 = [v3 store];
+  iconModel = [(SBHIconManager *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
+  store = [iconModel store];
   v12 = 0;
-  v5 = [v4 loadCurrentIconState:&v12];
+  v5 = [store loadCurrentIconState:&v12];
   v6 = v12;
   if (!v5)
   {
@@ -25103,12 +25103,12 @@ LABEL_10:
 - (BOOL)applyOriginaliconStateForWidgetDiscoverability
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self iconModel];
-  [v3 saveIconStateIfNeeded];
-  v4 = [v3 store];
-  v5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem originalIconStateBeforeWidgetDiscoverability];
+  iconModel = [(SBHIconManager *)self iconModel];
+  [iconModel saveIconStateIfNeeded];
+  store = [iconModel store];
+  originalIconStateBeforeWidgetDiscoverability = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem originalIconStateBeforeWidgetDiscoverability];
   v14 = 0;
-  v6 = [v4 saveCurrentIconState:v5 error:&v14];
+  v6 = [store saveCurrentIconState:originalIconStateBeforeWidgetDiscoverability error:&v14];
   v7 = v14;
 
   if (!v6)
@@ -25141,7 +25141,7 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  [v3 layout];
+  [iconModel layout];
 LABEL_10:
 
   return v6;
@@ -25149,8 +25149,8 @@ LABEL_10:
 
 - (BOOL)addDefaultWidgetsToHomeScreen
 {
-  v3 = [(SBHIconManager *)self rootFolder];
-  if (v3 && ![(SBHIconManager *)self rootFolderContainsWidgets])
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  if (rootFolder && ![(SBHIconManager *)self rootFolderContainsWidgets])
   {
     v5 = SBLogWidgetDiscoverabilityMigration();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -25180,15 +25180,15 @@ LABEL_10:
   return v4 & 1;
 }
 
-- (void)displayPronouncedContainerViewVisibility:(BOOL)a3 isVertical:(BOOL)a4
+- (void)displayPronouncedContainerViewVisibility:(BOOL)visibility isVertical:(BOOL)vertical
 {
-  v4 = a4;
-  v5 = a3;
+  verticalCopy = vertical;
+  visibilityCopy = visibility;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 iconManagerShouldShowWidgetIntroductionPopoverForDefaultWidgets:self];
+    v8 = [delegate iconManagerShouldShowWidgetIntroductionPopoverForDefaultWidgets:self];
   }
 
   else
@@ -25196,11 +25196,11 @@ LABEL_10:
     v8 = 1;
   }
 
-  v9 = [(SBHIconManager *)self rootFolderController];
-  v10 = [v9 canShowWidgetIntroduction];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  canShowWidgetIntroduction = [rootFolderController canShowWidgetIntroduction];
 
-  v11 = [(SBHIconManager *)self homeScreenDefaults];
-  v12 = [v11 shouldShowWidgetIntroductionPopover];
+  homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+  shouldShowWidgetIntroductionPopover = [homeScreenDefaults shouldShowWidgetIntroductionPopover];
 
   v13 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -25208,118 +25208,118 @@ LABEL_10:
     v16 = 134218752;
     v17 = v8;
     v18 = 2048;
-    v19 = v10;
+    v19 = canShowWidgetIntroduction;
     v20 = 2048;
-    v21 = v12;
+    v21 = shouldShowWidgetIntroductionPopover;
     v22 = 2048;
-    v23 = v5;
+    v23 = visibilityCopy;
     _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "IM pronounced container: shouldShowPopover(%ld), rootFolderControllerCanShow(%ld), userDefaultsShouldShow(%ld), force(%ld)", &v16, 0x2Au);
   }
 
-  if ((v8 & v10 & v12 & 1) != 0 || v5)
+  if ((v8 & canShowWidgetIntroduction & shouldShowWidgetIntroductionPopover & 1) != 0 || visibilityCopy)
   {
-    v14 = [(SBHIconManager *)self usageMonitor];
-    [v14 noteWidgetDiscoverabilityStarted];
+    usageMonitor = [(SBHIconManager *)self usageMonitor];
+    [usageMonitor noteWidgetDiscoverabilityStarted];
 
-    [(SBHIconManager *)self updatePronouncedContainerViewVisibility:1 vertical:v4];
-    v15 = [(SBHIconManager *)self homeScreenDefaults];
-    [v15 setShouldShowWidgetIntroductionPopover:0];
+    [(SBHIconManager *)self updatePronouncedContainerViewVisibility:1 vertical:verticalCopy];
+    homeScreenDefaults2 = [(SBHIconManager *)self homeScreenDefaults];
+    [homeScreenDefaults2 setShouldShowWidgetIntroductionPopover:0];
   }
 }
 
-- (BOOL)addDefaultFirstPageWidgetsToHomeScreen:(BOOL)a3
+- (BOOL)addDefaultFirstPageWidgetsToHomeScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   v64 = *MEMORY[0x1E69E9840];
-  v5 = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
+  defaultFirstPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
   v6 = SBLogWidgetDiscoverabilityMigration();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v63 = v5;
+    v63 = defaultFirstPageSuggestedWidgetIcons;
     _os_log_impl(&dword_1BEB18000, v6, OS_LOG_TYPE_DEFAULT, "Default first page widget icons %@", buf, 0xCu);
   }
 
-  v7 = [(__CFString *)v5 count];
+  v7 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons count];
   if (v7)
   {
-    v8 = [(SBHIconManager *)self rootFolder];
-    v9 = [v8 firstVisibleListIndex];
+    rootFolder = [(SBHIconManager *)self rootFolder];
+    firstVisibleListIndex = [rootFolder firstVisibleListIndex];
 
-    v10 = [(SBHIconManager *)self rootFolder];
-    v11 = [v10 listAtIndex:v9];
+    rootFolder2 = [(SBHIconManager *)self rootFolder];
+    v11 = [rootFolder2 listAtIndex:firstVisibleListIndex];
 
-    if ([(__CFString *)v5 count]!= 4)
+    if ([(__CFString *)defaultFirstPageSuggestedWidgetIcons count]!= 4)
     {
       goto LABEL_30;
     }
 
-    v60 = [(__CFString *)v5 objectAtIndex:0];
-    v12 = [v60 gridSizeClass];
-    if (v12 != @"SBHIconGridSizeClassSmall")
+    v60 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:0];
+    gridSizeClass = [v60 gridSizeClass];
+    if (gridSizeClass != @"SBHIconGridSizeClassSmall")
     {
-      v13 = v3;
+      v13 = screenCopy;
       v14 = v11;
-      v15 = [(__CFString *)v5 objectAtIndex:0];
-      v16 = [v15 gridSizeClass];
-      if (![v16 isEqualToString:@"SBHIconGridSizeClassSmall"])
+      v15 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:0];
+      gridSizeClass2 = [v15 gridSizeClass];
+      if (![gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassSmall"])
       {
 
         v11 = v14;
-        v3 = v13;
+        screenCopy = v13;
         goto LABEL_30;
       }
 
       v49 = v15;
-      v10 = v16;
+      rootFolder2 = gridSizeClass2;
       v11 = v14;
-      v3 = v13;
+      screenCopy = v13;
     }
 
-    v59 = [(__CFString *)v5 objectAtIndex:1];
-    v58 = [v59 gridSizeClass];
-    v56 = v10;
-    if (v58 != @"SBHIconGridSizeClassSmall")
+    v59 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:1];
+    gridSizeClass3 = [v59 gridSizeClass];
+    v56 = rootFolder2;
+    if (gridSizeClass3 != @"SBHIconGridSizeClassSmall")
     {
-      v51 = [(__CFString *)v5 objectAtIndex:1];
-      v50 = [v51 gridSizeClass];
-      if (![v50 isEqualToString:@"SBHIconGridSizeClassSmall"])
+      v51 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:1];
+      gridSizeClass4 = [v51 gridSizeClass];
+      if (![gridSizeClass4 isEqualToString:@"SBHIconGridSizeClassSmall"])
       {
         v57 = 0;
-        v17 = v58;
+        v17 = gridSizeClass3;
         goto LABEL_23;
       }
     }
 
-    v53 = [(__CFString *)v5 objectAtIndex:2];
-    v52 = [v53 gridSizeClass];
-    if (v52 == @"SBHIconGridSizeClassMedium")
+    v53 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:2];
+    gridSizeClass5 = [v53 gridSizeClass];
+    if (gridSizeClass5 == @"SBHIconGridSizeClassMedium")
     {
-      v47 = v12;
+      v47 = gridSizeClass;
       v48 = v11;
-      v54 = v3;
+      v54 = screenCopy;
     }
 
     else
     {
-      v46 = [(__CFString *)v5 objectAtIndex:2];
-      v45 = [v46 gridSizeClass];
-      if (![v45 isEqualToString:@"SBHIconGridSizeClassMedium"])
+      v46 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:2];
+      gridSizeClass6 = [v46 gridSizeClass];
+      if (![gridSizeClass6 isEqualToString:@"SBHIconGridSizeClassMedium"])
       {
         v57 = 0;
-        v23 = v52;
+        v23 = gridSizeClass5;
         goto LABEL_21;
       }
 
-      v47 = v12;
+      v47 = gridSizeClass;
       v48 = v11;
-      v54 = v3;
+      v54 = screenCopy;
     }
 
-    v18 = [(__CFString *)v5 objectAtIndex:3];
-    v19 = [v18 gridSizeClass];
-    v20 = v19;
-    if (v19 == @"SBHIconGridSizeClassLarge")
+    v18 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:3];
+    gridSizeClass7 = [v18 gridSizeClass];
+    v20 = gridSizeClass7;
+    if (gridSizeClass7 == @"SBHIconGridSizeClassLarge")
     {
 
       v57 = 1;
@@ -25327,25 +25327,25 @@ LABEL_10:
 
     else
     {
-      v21 = [(__CFString *)v5 objectAtIndex:3];
-      v22 = [v21 gridSizeClass];
-      v57 = [v22 isEqualToString:@"SBHIconGridSizeClassLarge"];
+      v21 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:3];
+      gridSizeClass8 = [v21 gridSizeClass];
+      v57 = [gridSizeClass8 isEqualToString:@"SBHIconGridSizeClassLarge"];
     }
 
-    v23 = v52;
-    v3 = v54;
-    v12 = v47;
+    v23 = gridSizeClass5;
+    screenCopy = v54;
+    gridSizeClass = v47;
     v11 = v48;
-    if (v52 == @"SBHIconGridSizeClassMedium")
+    if (gridSizeClass5 == @"SBHIconGridSizeClassMedium")
     {
 LABEL_22:
 
-      v17 = v58;
-      if (v58 == @"SBHIconGridSizeClassSmall")
+      v17 = gridSizeClass3;
+      if (gridSizeClass3 == @"SBHIconGridSizeClassSmall")
       {
 LABEL_24:
 
-        if (v12 == @"SBHIconGridSizeClassSmall")
+        if (gridSizeClass == @"SBHIconGridSizeClassSmall")
         {
 
           if (!v57)
@@ -25365,19 +25365,19 @@ LABEL_24:
 
         if ([v11 numberOfIcons] >= 9)
         {
-          v24 = [(SBHIconManager *)self rootFolder];
-          v25 = [v24 gridPathWithListAtIndex:0 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
+          rootFolder3 = [(SBHIconManager *)self rootFolder];
+          v25 = [rootFolder3 gridPathWithListAtIndex:0 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
 
           v26 = MEMORY[0x1E695DEC8];
-          v27 = [(__CFString *)v5 subarrayWithRange:0, 2];
+          v27 = [(__CFString *)defaultFirstPageSuggestedWidgetIcons subarrayWithRange:0, 2];
           v61 = [v26 arrayWithArray:v27];
 
-          v28 = [(SBHIconManager *)self rootFolder];
-          v29 = [v28 gridPathWithListAtIndex:0 gridCellIndex:4 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
+          rootFolder4 = [(SBHIconManager *)self rootFolder];
+          v29 = [rootFolder4 gridPathWithListAtIndex:0 gridCellIndex:4 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
 
           v30 = MEMORY[0x1E695DEC8];
-          [(__CFString *)v5 objectAtIndex:2];
-          v31 = v55 = v3;
+          [(__CFString *)defaultFirstPageSuggestedWidgetIcons objectAtIndex:2];
+          v31 = v55 = screenCopy;
           v32 = [v30 arrayWithObject:v31];
 
           [(SBHIconManager *)self rootFolder];
@@ -25385,8 +25385,8 @@ LABEL_24:
           v35 = [v34 gridPathWithListAtIndex:0 gridCellIndex:12 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
 
           v36 = MEMORY[0x1E695DEC8];
-          v37 = [(__CFString *)v5 lastObject];
-          v38 = [v36 arrayWithObject:v37];
+          lastObject = [(__CFString *)defaultFirstPageSuggestedWidgetIcons lastObject];
+          v38 = [v36 arrayWithObject:lastObject];
 
           [(SBHIconManager *)self beginStopUpdatingDefaultWidgetsBumpedIconRecord];
           [(SBHIconManager *)self addWidgets:v61 toGridPath:v25 overflowOptions:0];
@@ -25395,31 +25395,31 @@ LABEL_24:
           [(SBHIconManager *)self endStopUpdatingDefaultWidgetsBumpedIconRecord];
 
           v11 = v33;
-          v3 = v55;
+          screenCopy = v55;
 
           v39 = 1;
 LABEL_33:
 
           [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem setIsVerticalWidgetIntroduction:v39];
-          [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem setForceShowWidgetIntroduction:v3];
+          [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem setForceShowWidgetIntroduction:screenCopy];
 
           goto LABEL_34;
         }
 
 LABEL_30:
-        v40 = [(SBHIconManager *)self rootFolder];
-        v25 = [v40 gridPathWithListAtIndex:v9 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
+        rootFolder5 = [(SBHIconManager *)self rootFolder];
+        v25 = [rootFolder5 gridPathWithListAtIndex:firstVisibleListIndex gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
 
         [(SBHIconManager *)self beginStopUpdatingDefaultWidgetsBumpedIconRecord];
         v41 = SBLogWidgetDiscoverabilityMigration();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v63 = v5;
+          v63 = defaultFirstPageSuggestedWidgetIcons;
           _os_log_impl(&dword_1BEB18000, v41, OS_LOG_TYPE_DEFAULT, "Add first page default widget icons(%@) to model", buf, 0xCu);
         }
 
-        [(SBHIconManager *)self addWidgets:v5 toGridPath:v25 overflowOptions:0];
+        [(SBHIconManager *)self addWidgets:defaultFirstPageSuggestedWidgetIcons toGridPath:v25 overflowOptions:0];
         [(SBHIconManager *)self endStopUpdatingDefaultWidgetsBumpedIconRecord];
         v39 = 0;
         goto LABEL_33;
@@ -25453,22 +25453,22 @@ LABEL_34:
   return v7 != 0;
 }
 
-- (BOOL)addDefaultSecondPageWidgetsToHomeScreen:(BOOL)a3
+- (BOOL)addDefaultSecondPageWidgetsToHomeScreen:(BOOL)screen
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (screen)
   {
     [(SBHIconManager *)self prototypeSetDefaultSecondPageWidgetIcons];
   }
 
-  v4 = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
-  if ([v4 count])
+  defaultSecondPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
+  if ([defaultSecondPageSuggestedWidgetIcons count])
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v5 = v4;
+    v5 = defaultSecondPageSuggestedWidgetIcons;
     v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v6)
     {
@@ -25483,16 +25483,16 @@ LABEL_34:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v29 + 1) + 8 * i) activeWidget];
-          v11 = [v10 extensionBundleIdentifier];
+          activeWidget = [*(*(&v29 + 1) + 8 * i) activeWidget];
+          extensionBundleIdentifier = [activeWidget extensionBundleIdentifier];
 
-          v12 = [(SBHIconManager *)self rootFolder];
-          v13 = [v12 containsWidgetWithExtensionBundleIdentifier:v11];
+          rootFolder = [(SBHIconManager *)self rootFolder];
+          v13 = [rootFolder containsWidgetWithExtensionBundleIdentifier:extensionBundleIdentifier];
 
           if (v13)
           {
-            v20 = [(SBHIconManager *)self proactiveWidgetSuggesterClient];
-            [v20 logEventForDefaultWidgetSuggestionType:1 event:1];
+            proactiveWidgetSuggesterClient = [(SBHIconManager *)self proactiveWidgetSuggesterClient];
+            [proactiveWidgetSuggesterClient logEventForDefaultWidgetSuggestionType:1 event:1];
 
             LOBYTE(v21) = 0;
             goto LABEL_24;
@@ -25509,33 +25509,33 @@ LABEL_34:
       }
     }
 
-    v14 = [(SBHIconManager *)self rootFolder];
-    v15 = [v14 firstVisibleListIndex];
+    rootFolder2 = [(SBHIconManager *)self rootFolder];
+    firstVisibleListIndex = [rootFolder2 firstVisibleListIndex];
 
-    v16 = [(SBHIconManager *)self rootFolder];
-    v17 = [v16 nextVisibleListIndexAfterIndex:v15];
+    rootFolder3 = [(SBHIconManager *)self rootFolder];
+    v17 = [rootFolder3 nextVisibleListIndexAfterIndex:firstVisibleListIndex];
 
-    v18 = [(SBHIconManager *)self rootFolder];
-    v19 = v18;
+    rootFolder4 = [(SBHIconManager *)self rootFolder];
+    v19 = rootFolder4;
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v18 addEmptyListRemovingLeastRecentlyHiddenListIfNecessary];
+      [rootFolder4 addEmptyListRemovingLeastRecentlyHiddenListIfNecessary];
     }
 
     else
     {
-      [v18 listAtIndex:v17];
+      [rootFolder4 listAtIndex:v17];
     }
     v22 = ;
 
     v21 = v22 != 0;
     if (v22)
     {
-      v23 = [(SBHIconManager *)self rootFolder];
-      v24 = [v23 indexOfList:v22];
+      rootFolder5 = [(SBHIconManager *)self rootFolder];
+      v24 = [rootFolder5 indexOfList:v22];
 
-      v25 = [(SBHIconManager *)self rootFolder];
-      v26 = [v25 gridPathWithListAtIndex:v24 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
+      rootFolder6 = [(SBHIconManager *)self rootFolder];
+      v26 = [rootFolder6 gridPathWithListAtIndex:v24 gridCellIndex:0 listGridCellInfoOptions:{-[SBHIconManager gridCellInfoOptionsForInsertingDefaultWidgets](self, "gridCellInfoOptionsForInsertingDefaultWidgets")}];
 
       [(SBHIconManager *)self beginStopUpdatingDefaultWidgetsBumpedIconRecord];
       [(SBHIconManager *)self addWidgets:v5 toGridPath:v26 overflowOptions:0];
@@ -25583,52 +25583,52 @@ LABEL_24:
   return v3;
 }
 
-- (void)undoDefaultWidgets:(BOOL)a3
+- (void)undoDefaultWidgets:(BOOL)widgets
 {
   [(SBHIconManager *)self updatePronouncedContainerViewVisibility:0 vertical:0];
   if (![(SBHIconManager *)self applyOriginaliconStateForWidgetDiscoverability])
   {
-    v5 = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
-    v6 = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
-    v7 = [(SBHIconManager *)self iconModel];
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    defaultFirstPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
+    defaultSecondPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
+    iconModel = [(SBHIconManager *)self iconModel];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [v7 removeIcons:v6];
+      [iconModel removeIcons:defaultSecondPageSuggestedWidgetIcons];
     }
 
-    [v7 removeIcons:v5];
+    [iconModel removeIcons:defaultFirstPageSuggestedWidgetIcons];
   }
 
-  if (!a3)
+  if (!widgets)
   {
-    v10 = [(SBHIconManager *)self homeScreenDefaults];
-    [v10 setUserDidUndoSuggestedWidget:1];
+    homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+    [homeScreenDefaults setUserDidUndoSuggestedWidget:1];
 
     [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem resetDefaultWidgetsUndoInfo];
-    v11 = [(SBHIconManager *)self widgetIntroductionSettings];
-    [v11 setShowWidgetIntroConvenienceControl:0];
+    widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+    [widgetIntroductionSettings setShowWidgetIntroConvenienceControl:0];
   }
 }
 
 - (void)undoDefaultTVWidget
 {
   [(SBHIconManager *)self updatePronouncedContainerViewVisibility:0 vertical:0];
-  v5 = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
-  v3 = [(SBHIconManager *)self iconModel];
-  [v3 removeIcons:v5];
-  v4 = [(SBHIconManager *)self widgetIntroductionSettings];
-  [v4 setShowXLTVWidget:0];
+  defaultSecondPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
+  iconModel = [(SBHIconManager *)self iconModel];
+  [iconModel removeIcons:defaultSecondPageSuggestedWidgetIcons];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  [widgetIntroductionSettings setShowXLTVWidget:0];
 }
 
 - (BOOL)rootFolderContainsSuggestedWidget
 {
-  v3 = [(SBHIconManager *)self homeScreenDefaults];
-  v4 = [v3 userDidUndoSuggestedWidget];
+  homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+  userDidUndoSuggestedWidget = [homeScreenDefaults userDidUndoSuggestedWidget];
 
-  if (v4)
+  if (userDidUndoSuggestedWidget)
   {
     v5 = 0;
   }
@@ -25639,14 +25639,14 @@ LABEL_24:
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v6 = [(SBHIconManager *)self rootFolder];
+    rootFolder = [(SBHIconManager *)self rootFolder];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __51__SBHIconManager_rootFolderContainsSuggestedWidget__block_invoke;
     v8[3] = &unk_1E8090328;
     v8[4] = self;
     v8[5] = &v9;
-    [v6 enumerateAllIconsUsingBlock:v8];
+    [rootFolder enumerateAllIconsUsingBlock:v8];
 
     v5 = *(v10 + 24);
     _Block_object_dispose(&v9, 8);
@@ -25668,42 +25668,42 @@ void __51__SBHIconManager_rootFolderContainsSuggestedWidget__block_invoke(uint64
   }
 }
 
-- (void)updateWidgetDiscoverabilityUserPreferencesByDeletingWidget:(id)a3
+- (void)updateWidgetDiscoverabilityUserPreferencesByDeletingWidget:(id)widget
 {
-  v9 = a3;
-  v4 = [(SBHIconManager *)self homeScreenDefaults];
-  if (([v4 userHasDeletedSuggestedWidget] & 1) == 0)
+  widgetCopy = widget;
+  homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+  if (([homeScreenDefaults userHasDeletedSuggestedWidget] & 1) == 0)
   {
-    v5 = [(SBHIconManager *)self widgetIconIsOnboardingWidget:v9];
+    v5 = [(SBHIconManager *)self widgetIconIsOnboardingWidget:widgetCopy];
 
     if (!v5)
     {
       goto LABEL_5;
     }
 
-    v4 = [(SBHIconManager *)self homeScreenDefaults];
-    [v4 setUserHasDeletedSuggestedWidget:1];
+    homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+    [homeScreenDefaults setUserHasDeletedSuggestedWidget:1];
   }
 
 LABEL_5:
   if ([(SBHIconManager *)self rootFolderContainsSuggestedWidget])
   {
-    v6 = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
-    v7 = [v6 containsObject:v9];
+    defaultSecondPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultSecondPageSuggestedWidgetIcons];
+    v7 = [defaultSecondPageSuggestedWidgetIcons containsObject:widgetCopy];
 
     if (!v7)
     {
       goto LABEL_10;
     }
 
-    v8 = [(SBHIconManager *)self proactiveWidgetSuggesterClient];
-    [v8 logEventForDefaultWidgetSuggestionType:1 event:3];
+    proactiveWidgetSuggesterClient = [(SBHIconManager *)self proactiveWidgetSuggesterClient];
+    [proactiveWidgetSuggesterClient logEventForDefaultWidgetSuggestionType:1 event:3];
   }
 
   else
   {
-    v8 = [(SBHIconManager *)self homeScreenDefaults];
-    [v8 setUserDidUndoSuggestedWidget:1];
+    proactiveWidgetSuggesterClient = [(SBHIconManager *)self homeScreenDefaults];
+    [proactiveWidgetSuggesterClient setUserDidUndoSuggestedWidget:1];
   }
 
 LABEL_10:
@@ -25711,82 +25711,82 @@ LABEL_10:
 
 - (void)disableUserInteractionForWidgetDiscoverability
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
-  [v3 setScrollingDisabled:1 forReason:@"SBHIconManager WidgetDiscoverability"];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController setScrollingDisabled:1 forReason:@"SBHIconManager WidgetDiscoverability"];
 
   [(SBHIconManager *)self setShouldDisableUserInteractionForWidgetDiscoverability:1];
 }
 
 - (void)enableUserInteractionForWidgetDiscoverability
 {
-  v3 = [(SBHIconManager *)self rootFolderController];
-  [v3 setScrollingDisabled:0 forReason:@"SBHIconManager WidgetDiscoverability"];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController setScrollingDisabled:0 forReason:@"SBHIconManager WidgetDiscoverability"];
 
   [(SBHIconManager *)self setShouldDisableUserInteractionForWidgetDiscoverability:0];
 }
 
-- (void)updatePronouncedContainerViewVisibility:(BOOL)a3 vertical:(BOOL)a4
+- (void)updatePronouncedContainerViewVisibility:(BOOL)visibility vertical:(BOOL)vertical
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(SBHIconManager *)self rootFolderController];
-  [v6 updatePronouncedContainerViewVisibilityIfPossible:v5 vertical:v4];
+  verticalCopy = vertical;
+  visibilityCopy = visibility;
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController updatePronouncedContainerViewVisibilityIfPossible:visibilityCopy vertical:verticalCopy];
 }
 
 - (BOOL)prototypeSettingShowWidgetIntroduction
 {
-  v2 = [(SBHIconManager *)self widgetIntroductionSettings];
-  v3 = [v2 showWidgetIntroConvenienceControl];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  showWidgetIntroConvenienceControl = [widgetIntroductionSettings showWidgetIntroConvenienceControl];
 
-  return v3;
+  return showWidgetIntroConvenienceControl;
 }
 
 - (BOOL)prototypeSettingEditButtonAsUndo
 {
-  v2 = [(SBHIconManager *)self widgetIntroductionSettings];
-  v3 = [v2 editButtonAsUndo];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  editButtonAsUndo = [widgetIntroductionSettings editButtonAsUndo];
 
-  return v3;
+  return editButtonAsUndo;
 }
 
 - (BOOL)prototypeSettingSimpleBottomSnaking
 {
-  v2 = [(SBHIconManager *)self widgetIntroductionSettings];
-  v3 = [v2 simpleBottomSnaking];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  simpleBottomSnaking = [widgetIntroductionSettings simpleBottomSnaking];
 
-  return v3;
+  return simpleBottomSnaking;
 }
 
 - (BOOL)prototypeSettingBumpLeastUsedApps
 {
-  v2 = [(SBHIconManager *)self widgetIntroductionSettings];
-  v3 = [v2 bumpLeastUsedApps];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  bumpLeastUsedApps = [widgetIntroductionSettings bumpLeastUsedApps];
 
-  return v3;
+  return bumpLeastUsedApps;
 }
 
 - (BOOL)prototypeSettingShowExtraLargeTVWidget
 {
-  v2 = [(SBHIconManager *)self widgetIntroductionSettings];
-  v3 = [v2 showXLTVWidget];
+  widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
+  showXLTVWidget = [widgetIntroductionSettings showXLTVWidget];
 
-  return v3;
+  return showXLTVWidget;
 }
 
 - (void)scrollToDefaultWidgets
 {
-  v2 = [(SBHIconManager *)self rootFolderController];
-  [v2 setCurrentPageIndex:objc_msgSend(v2 animated:"firstIconPageIndex") completion:{0, 0}];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [rootFolderController setCurrentPageIndex:objc_msgSend(rootFolderController animated:"firstIconPageIndex") completion:{0, 0}];
 }
 
 - (void)prepareModalWidgetIntroductionWidgetViewSnapshots
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
-  v4 = [v3 lastObject];
+  defaultFirstPageSuggestedWidgetIcons = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
+  lastObject = [defaultFirstPageSuggestedWidgetIcons lastObject];
 
-  v5 = [(SBHIconManager *)self rootViewController];
-  v6 = [v5 firstIconViewForIcon:v4 options:64];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  v6 = [rootViewController firstIconViewForIcon:lastObject options:64];
 
   [v6 iconImageCenter];
   [v6 convertPoint:0 toView:?];
@@ -25796,14 +25796,14 @@ LABEL_10:
   v12 = v11;
   v14 = v13;
   v15 = MEMORY[0x1E695DEC8];
-  v16 = [(SBHIconManager *)self onboardingWidgetPreviewsForWidgetIcon:v4];
+  v16 = [(SBHIconManager *)self onboardingWidgetPreviewsForWidgetIcon:lastObject];
   v45 = [v15 arrayWithArray:v16];
 
-  v17 = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
-  v18 = [v17 firstObject];
+  defaultFirstPageSuggestedWidgetIcons2 = [(SBHIconManager *)self defaultFirstPageSuggestedWidgetIcons];
+  firstObject = [defaultFirstPageSuggestedWidgetIcons2 firstObject];
 
-  v19 = [(SBHIconManager *)self rootViewController];
-  v20 = [v19 firstIconViewForIcon:v18 options:64];
+  rootViewController2 = [(SBHIconManager *)self rootViewController];
+  v20 = [rootViewController2 firstIconViewForIcon:firstObject options:64];
 
   [v20 iconImageCenter];
   [v20 convertPoint:0 toView:?];
@@ -25813,7 +25813,7 @@ LABEL_10:
   v26 = v25;
   v28 = v27;
   v29 = MEMORY[0x1E695DEC8];
-  v30 = [(SBHIconManager *)self onboardingWidgetPreviewsForWidgetIcon:v18];
+  v30 = [(SBHIconManager *)self onboardingWidgetPreviewsForWidgetIcon:firstObject];
   v31 = [v29 arrayWithArray:v30];
 
   v32 = SBLogWidgetDiscoverabilityMigration();
@@ -25846,33 +25846,33 @@ LABEL_10:
     _os_log_impl(&dword_1BEB18000, v35, OS_LOG_TYPE_DEFAULT, "Static widget center(%@); falling widget center(%@)", buf, 0x16u);
   }
 
-  v38 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+  modalIntroductionViewController = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
 
-  if (v38)
+  if (modalIntroductionViewController)
   {
-    v39 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v39 setOnboardingFallingWidgetPreviews:v45];
+    modalIntroductionViewController2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController2 setOnboardingFallingWidgetPreviews:v45];
 
-    v40 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v40 setOnboardingFallingWidgetCenterPoint:{v8, v10}];
+    modalIntroductionViewController3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController3 setOnboardingFallingWidgetCenterPoint:{v8, v10}];
 
-    v41 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v41 setOnboardingFallingWidgetBounds:{0.0, 0.0, v12, v14}];
+    modalIntroductionViewController4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController4 setOnboardingFallingWidgetBounds:{0.0, 0.0, v12, v14}];
 
-    v42 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v42 setOnboardingStaticWidgetPreviews:v31];
+    modalIntroductionViewController5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController5 setOnboardingStaticWidgetPreviews:v31];
 
-    v43 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v43 setOnboardingStaticWidgetCenterPoint:{v22, v24}];
+    modalIntroductionViewController6 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController6 setOnboardingStaticWidgetCenterPoint:{v22, v24}];
 
-    v44 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
-    [v44 setOnboardingStaticWidgetBounds:{0.0, 0.0, v26, v28}];
+    modalIntroductionViewController7 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem modalIntroductionViewController];
+    [modalIntroductionViewController7 setOnboardingStaticWidgetBounds:{0.0, 0.0, v26, v28}];
   }
 }
 
 - (id)_widgetIntroductionHomeScreenPreviewView
 {
-  v3 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -25892,12 +25892,12 @@ LABEL_10:
 - (void)invalidateOnboardingWidgetPreviewViewControllers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
-  if (v3)
+  chuisOnboardingWidgetViewControllers = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
+  if (chuisOnboardingWidgetViewControllers)
   {
-    v4 = v3;
-    v5 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
-    v6 = [v5 count];
+    v4 = chuisOnboardingWidgetViewControllers;
+    chuisOnboardingWidgetViewControllers2 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
+    v6 = [chuisOnboardingWidgetViewControllers2 count];
 
     if (v6)
     {
@@ -25905,8 +25905,8 @@ LABEL_10:
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v7 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      chuisOnboardingWidgetViewControllers3 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
+      v8 = [chuisOnboardingWidgetViewControllers3 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         v9 = v8;
@@ -25918,49 +25918,49 @@ LABEL_10:
           {
             if (*v14 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(chuisOnboardingWidgetViewControllers3);
             }
 
             [*(*(&v13 + 1) + 8 * v11++) invalidate];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v9 = [chuisOnboardingWidgetViewControllers3 countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v9);
       }
 
-      v12 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
-      [v12 removeAllObjects];
+      chuisOnboardingWidgetViewControllers4 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
+      [chuisOnboardingWidgetViewControllers4 removeAllObjects];
     }
   }
 
   [(SBHIconManager *)self setChuisOnboardingWidgetViewControllers:0];
 }
 
-- (id)onboardingWidgetPreviewsForWidgetIcon:(id)a3
+- (id)onboardingWidgetPreviewsForWidgetIcon:(id)icon
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
+  iconCopy = icon;
+  chuisOnboardingWidgetViewControllers = [(SBHIconManager *)self chuisOnboardingWidgetViewControllers];
 
-  if (!v5)
+  if (!chuisOnboardingWidgetViewControllers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     chuisOnboardingWidgetViewControllers = self->_chuisOnboardingWidgetViewControllers;
-    self->_chuisOnboardingWidgetViewControllers = v6;
+    self->_chuisOnboardingWidgetViewControllers = array;
   }
 
-  v37 = self;
-  v34 = [(SBHIconManager *)self gridSizeClassDomain];
-  v33 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  gridSizeClassDomain = [(SBHIconManager *)self gridSizeClassDomain];
+  array2 = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v35 = v4;
-  obj = [v4 iconDataSources];
+  v35 = iconCopy;
+  obj = [iconCopy iconDataSources];
   v38 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v38)
   {
@@ -25989,12 +25989,12 @@ LABEL_10:
 
         v13 = v12;
 
-        v14 = [v13 kind];
-        v15 = [v13 extensionBundleIdentifier];
-        v16 = [v13 containerBundleIdentifier];
+        kind = [v13 kind];
+        extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+        containerBundleIdentifier = [v13 containerBundleIdentifier];
         if (v13)
         {
-          v17 = v14 == 0;
+          v17 = kind == 0;
         }
 
         else
@@ -26002,29 +26002,29 @@ LABEL_10:
           v17 = 1;
         }
 
-        if (!v17 && v15 != 0)
+        if (!v17 && extensionBundleIdentifier != 0)
         {
-          v19 = [(SBHIconManager *)v37 _intentForWidget:v13 ofIcon:v35 creatingIfNecessary:1];
-          v20 = [v35 gridSizeClass];
-          v21 = [v34 chsWidgetFamilyForIconGridSizeClass:v20];
-          v22 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:v15 containerBundleIdentifier:v16 deviceIdentifier:0];
-          v23 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v22 kind:v14 family:v21 intent:v19 activityIdentifier:0];
+          v19 = [(SBHIconManager *)selfCopy _intentForWidget:v13 ofIcon:v35 creatingIfNecessary:1];
+          gridSizeClass = [v35 gridSizeClass];
+          v21 = [gridSizeClassDomain chsWidgetFamilyForIconGridSizeClass:gridSizeClass];
+          v22 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:extensionBundleIdentifier containerBundleIdentifier:containerBundleIdentifier deviceIdentifier:0];
+          v23 = [objc_alloc(MEMORY[0x1E6994370]) initWithExtensionIdentity:v22 kind:kind family:v21 intent:v19 activityIdentifier:0];
 
           if (v23)
           {
-            v24 = [(SBHIconManager *)v37 widgetMetricsProvider];
-            v25 = [v24 systemMetricsForWidget:v23];
+            widgetMetricsProvider = [(SBHIconManager *)selfCopy widgetMetricsProvider];
+            v25 = [widgetMetricsProvider systemMetricsForWidget:v23];
 
             v26 = objc_alloc(MEMORY[0x1E6994530]);
-            v27 = [v13 uniqueIdentifier];
-            v28 = [v26 initWithWidget:v23 metrics:v25 widgetConfigurationIdentifier:v27];
+            uniqueIdentifier = [v13 uniqueIdentifier];
+            v28 = [v26 initWithWidget:v23 metrics:v25 widgetConfigurationIdentifier:uniqueIdentifier];
 
             v8 = v32;
-            v29 = [(SBHIconManager *)v37 chuisOnboardingWidgetViewControllers];
-            [v29 addObject:v28];
+            chuisOnboardingWidgetViewControllers2 = [(SBHIconManager *)selfCopy chuisOnboardingWidgetViewControllers];
+            [chuisOnboardingWidgetViewControllers2 addObject:v28];
 
-            v30 = [v28 view];
-            [v33 addObject:v30];
+            view = [v28 view];
+            [array2 addObject:view];
           }
         }
       }
@@ -26035,15 +26035,15 @@ LABEL_10:
     while (v38);
   }
 
-  return v33;
+  return array2;
 }
 
-- (void)removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:(BOOL)a3
+- (void)removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [(SBHIconManager *)self rootFolder];
-  v7 = [v5 listAtIndex:{objc_msgSend(v6, "firstVisibleListIndex")}];
+  neededCopy = needed;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  rootFolder2 = [(SBHIconManager *)self rootFolder];
+  v7 = [rootFolder listAtIndex:{objc_msgSend(rootFolder2, "firstVisibleListIndex")}];
 
   v10 = 0;
   v11 = &v10;
@@ -26056,7 +26056,7 @@ LABEL_10:
   v9[4] = self;
   v9[5] = &v10;
   [v7 enumerateIconsWithOptions:0 usingBlock:v9];
-  if (*(v11 + 24) != 1 || v3)
+  if (*(v11 + 24) != 1 || neededCopy)
   {
     [(SBHIconManager *)self updatePronouncedContainerViewVisibility:0 vertical:[(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem isVerticalWidgetIntroduction]];
   }
@@ -26077,15 +26077,15 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
   }
 }
 
-- (BOOL)widgetIconIsOnboardingWidget:(id)a3
+- (BOOL)widgetIconIsOnboardingWidget:(id)widget
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 widgets];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  widgets = [widget widgets];
+  v4 = [widgets countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = 0;
@@ -26097,7 +26097,7 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(widgets);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -26112,7 +26112,7 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [widgets countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -26131,65 +26131,65 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_DEFAULT, "Capture home screen preview for widget discoverability introduction", v6, 2u);
   }
 
-  v4 = [(SBHIconManager *)self _widgetIntroductionHomeScreenPreviewView];
+  _widgetIntroductionHomeScreenPreviewView = [(SBHIconManager *)self _widgetIntroductionHomeScreenPreviewView];
 
-  return v4;
+  return _widgetIntroductionHomeScreenPreviewView;
 }
 
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self focusModeManager];
-  v9 = [v8 activeFocusMode];
-  v10 = [v9 identifier];
-  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:v7 withApplicationIconsWithWithBundleIdentifier:v6 focusModeIdentifier:v10];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  focusModeManager = [(SBHIconManager *)self focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
+  identifier = [activeFocusMode identifier];
+  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy focusModeIdentifier:identifier];
 
   return self;
 }
 
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 focusModeIdentifier:(id)a5
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier focusModeIdentifier:(id)modeIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBHIconManager *)self rootFolder];
-  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:v10 withApplicationIconsWithWithBundleIdentifier:v9 inRootFolder:v11 focusModeIdentifier:v8];
+  modeIdentifierCopy = modeIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy inRootFolder:rootFolder focusModeIdentifier:modeIdentifierCopy];
 
   return self;
 }
 
-- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 inRootFolder:(id)a5 focusModeIdentifier:(id)a6
+- (BOOL)swapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier inRootFolder:(id)folder focusModeIdentifier:(id)modeIdentifier
 {
   v87[2] = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v61 = [(SBHIconManager *)self iconModel];
-  v13 = [v11 firstList];
-  v14 = [v11 dock];
-  v52 = v12;
-  if (v12)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  folderCopy = folder;
+  modeIdentifierCopy = modeIdentifier;
+  iconModel = [(SBHIconManager *)self iconModel];
+  firstList = [folderCopy firstList];
+  dock = [folderCopy dock];
+  v52 = modeIdentifierCopy;
+  if (modeIdentifierCopy)
   {
     v81[0] = MEMORY[0x1E69E9820];
     v81[1] = 3221225472;
     v81[2] = __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundleIdentifier_withApplicationIconsWithWithBundleIdentifier_inRootFolder_focusModeIdentifier___block_invoke;
     v81[3] = &unk_1E80907F8;
-    v82 = v12;
-    v15 = [v11 indexesOfListsPassingTest:v81];
+    v82 = modeIdentifierCopy;
+    v15 = [folderCopy indexesOfListsPassingTest:v81];
     if ([v15 count])
     {
-      v16 = [v11 listAtIndex:{objc_msgSend(v15, "firstIndex")}];
+      v16 = [folderCopy listAtIndex:{objc_msgSend(v15, "firstIndex")}];
 
-      v13 = v16;
+      firstList = v16;
     }
   }
 
-  v50 = v14;
-  v51 = v13;
-  v87[0] = v14;
-  v87[1] = v13;
+  v50 = dock;
+  v51 = firstList;
+  v87[0] = dock;
+  v87[1] = firstList;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:2];
   v77 = 0u;
   v78 = 0u;
@@ -26214,7 +26214,7 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
         v75[1] = 3221225472;
         v75[2] = __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundleIdentifier_withApplicationIconsWithWithBundleIdentifier_inRootFolder_focusModeIdentifier___block_invoke_2;
         v75[3] = &unk_1E808BFD8;
-        v76 = v10;
+        v76 = bundleIdentifierCopy;
         if ([v21 directlyContainsIconPassingTest:v75])
         {
           v29 = SBLogIcon();
@@ -26227,7 +26227,7 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
           v31 = v76;
           v22 = obj;
           v24 = obj;
-          v23 = v10;
+          v23 = bundleIdentifierCopy;
           goto LABEL_21;
         }
       }
@@ -26244,27 +26244,27 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
 
   v22 = obj;
 
-  v23 = v10;
-  v24 = [v61 applicationIconForBundleIdentifier:v10];
+  v23 = bundleIdentifierCopy;
+  v24 = [iconModel applicationIconForBundleIdentifier:bundleIdentifierCopy];
   if (v24)
   {
     v73[0] = MEMORY[0x1E69E9820];
     v73[1] = 3221225472;
     v73[2] = __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundleIdentifier_withApplicationIconsWithWithBundleIdentifier_inRootFolder_focusModeIdentifier___block_invoke_1089;
     v73[3] = &unk_1E8090820;
-    v74 = v10;
-    v25 = [v11 iconsPassingTest:v73];
-    v26 = [v25 allObjects];
+    v74 = bundleIdentifierCopy;
+    v25 = [folderCopy iconsPassingTest:v73];
+    allObjects = [v25 allObjects];
 
-    if ([v26 count])
+    if ([allObjects count])
     {
-      v27 = [v26 indexOfObjectIdenticalTo:v24];
+      v27 = [allObjects indexOfObjectIdenticalTo:v24];
       if (!v27 || v27 == 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_27;
       }
 
-      v28 = [v26 mutableCopy];
+      v28 = [allObjects mutableCopy];
       [v28 removeObject:v24];
       [v28 insertObject:v24 atIndex:0];
     }
@@ -26273,11 +26273,11 @@ void __80__SBHIconManager_removeWidgetDiscoverabilityContainerViewsAndPopoverWhe
     {
       v85 = v24;
       [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
-      v26 = v28 = v26;
+      allObjects = v28 = allObjects;
     }
 
 LABEL_27:
-    v34 = [v26 objectEnumerator];
+    objectEnumerator = [allObjects objectEnumerator];
     v56 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v69 = 0u;
     v70 = 0u;
@@ -26290,7 +26290,7 @@ LABEL_27:
       v36 = v35;
       v37 = *v70;
       v54 = *v70;
-      v55 = v26;
+      v55 = allObjects;
       do
       {
         v38 = 0;
@@ -26303,14 +26303,14 @@ LABEL_27:
           }
 
           v39 = *(*(&v69 + 1) + 8 * v38);
-          if (([v39 directlyContainsAnyIconInArray:v26] & 1) == 0)
+          if (([v39 directlyContainsAnyIconInArray:allObjects] & 1) == 0)
           {
             v60 = v38;
             v66[0] = MEMORY[0x1E69E9820];
             v66[1] = 3221225472;
             v66[2] = __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundleIdentifier_withApplicationIconsWithWithBundleIdentifier_inRootFolder_focusModeIdentifier___block_invoke_2_1091;
             v66[3] = &unk_1E8090848;
-            v67 = v57;
+            v67 = identifierCopy;
             v40 = v56;
             v68 = v40;
             v41 = [v39 directlyContainedIconsPassingTest:v66];
@@ -26333,13 +26333,13 @@ LABEL_27:
                   }
 
                   v46 = *(*(&v62 + 1) + 8 * j);
-                  v47 = [v34 nextObject];
-                  if (!v47)
+                  nextObject = [objectEnumerator nextObject];
+                  if (!nextObject)
                   {
-                    v47 = [v61 addAdditionalIconMatchingIcon:v24];
+                    nextObject = [iconModel addAdditionalIconMatchingIcon:v24];
                   }
 
-                  [v11 swapIcon:v46 withIcon:v47 options:0];
+                  [folderCopy swapIcon:v46 withIcon:nextObject options:0];
                   [v40 addObject:v46];
                 }
 
@@ -26350,7 +26350,7 @@ LABEL_27:
             }
 
             v37 = v54;
-            v26 = v55;
+            allObjects = v55;
             v36 = v58;
             v38 = v60;
           }
@@ -26456,52 +26456,52 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
   return v5;
 }
 
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBHIconManager *)self focusModeManager];
-  v9 = [v8 activeFocusMode];
-  v10 = [v9 identifier];
-  LOBYTE(self) = [(SBHIconManager *)self canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:v7 withApplicationIconsWithWithBundleIdentifier:v6 focusModeIdentifier:v10];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  focusModeManager = [(SBHIconManager *)self focusModeManager];
+  activeFocusMode = [focusModeManager activeFocusMode];
+  identifier = [activeFocusMode identifier];
+  LOBYTE(self) = [(SBHIconManager *)self canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy focusModeIdentifier:identifier];
 
   return self;
 }
 
-- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)a3 withApplicationIconsWithWithBundleIdentifier:(id)a4 focusModeIdentifier:(id)a5
+- (BOOL)canSwapApplicationIconsInProminentPositionsWithBundleIdentifier:(id)identifier withApplicationIconsWithWithBundleIdentifier:(id)bundleIdentifier focusModeIdentifier:(id)modeIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBHIconManager *)self rootFolder];
-  v12 = [v11 copy];
-  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:v10 withApplicationIconsWithWithBundleIdentifier:v9 inRootFolder:v12 focusModeIdentifier:v8];
+  modeIdentifierCopy = modeIdentifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  v12 = [rootFolder copy];
+  LOBYTE(self) = [(SBHIconManager *)self swapApplicationIconsInProminentPositionsWithBundleIdentifier:identifierCopy withApplicationIconsWithWithBundleIdentifier:bundleIdentifierCopy inRootFolder:v12 focusModeIdentifier:modeIdentifierCopy];
 
   return self;
 }
 
-- (void)setPrefersFlatImageLayers:(BOOL)a3
+- (void)setPrefersFlatImageLayers:(BOOL)layers
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_prefersFlatImageLayers != a3)
+  if (self->_prefersFlatImageLayers != layers)
   {
-    v3 = a3;
-    self->_prefersFlatImageLayers = a3;
+    layersCopy = layers;
+    self->_prefersFlatImageLayers = layers;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __44__SBHIconManager_setPrefersFlatImageLayers___block_invoke;
     v15[3] = &__block_descriptor_33_e24_v24__0__SBIconView_8_B16l;
-    v16 = a3;
+    layersCopy2 = layers;
     [(SBHIconManager *)self enumerateDisplayedIconViewsUsingBlock:v15];
-    v5 = [(SBHIconManager *)self floatingDockViewController];
-    [v5 setPrefersFlatImageLayers:v3];
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    [floatingDockViewController setPrefersFlatImageLayers:layersCopy];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(SBHIconManager *)self _libraryViewControllers];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v17 count:16];
+    _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+    v7 = [_libraryViewControllers countByEnumeratingWithState:&v11 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -26513,14 +26513,14 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_libraryViewControllers);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setPrefersFlatImageLayers:v3];
+          [*(*(&v11 + 1) + 8 * v10++) setPrefersFlatImageLayers:layersCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v17 count:16];
+        v8 = [_libraryViewControllers countByEnumeratingWithState:&v11 objects:v17 count:16];
       }
 
       while (v8);
@@ -26528,27 +26528,27 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
   }
 }
 
-- (void)folder:(id)a3 didAddIcons:(id)a4 removedIcons:(id)a5
+- (void)folder:(id)folder didAddIcons:(id)icons removedIcons:(id)removedIcons
 {
   v103 = *MEMORY[0x1E69E9840];
-  v6 = a5;
+  removedIconsCopy = removedIcons;
   [(SBHIconManager *)self noteRootFolderDidMutate];
   if (![(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem stopUpdatingDefaultWidgetsBumpedIconRecord])
   {
     [(SBHIconManager *)self beginStopUpdatingDefaultWidgetsBumpedIconRecord];
-    v80 = [(SBHIconManager *)self iconGridSizeClassSizes];
+    iconGridSizeClassSizes = [(SBHIconManager *)self iconGridSizeClassSizes];
     v96 = 0u;
     v97 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v78 = v6;
-    v7 = [v6 allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v96 objects:v102 count:16];
+    v78 = removedIconsCopy;
+    allObjects = [removedIconsCopy allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v96 objects:v102 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v97;
-      v82 = v7;
+      v82 = allObjects;
       v79 = *v97;
       do
       {
@@ -26558,44 +26558,44 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
         {
           if (*v97 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v96 + 1) + 8 * v11);
           if ([v12 isWidgetIcon] && -[SBHIconManager widgetIconIsOnboardingWidget:](self, "widgetIconIsOnboardingWidget:", v12))
           {
             obj = v12;
-            v84 = [obj gridSizeClass];
-            v13 = [v80 gridSizeAreaForGridSizeClass:?];
-            v14 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-            v15 = [v14 count];
+            gridSizeClass = [obj gridSizeClass];
+            v13 = [iconGridSizeClassSizes gridSizeAreaForGridSizeClass:?];
+            defaultWidgetsBumpedIconUsageRanking = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+            v15 = [defaultWidgetsBumpedIconUsageRanking count];
 
             if (v15 >= v13)
             {
               v15 = v13;
             }
 
-            v16 = [(SBHIconManager *)self rootFolder];
-            v17 = [(SBHIconManager *)self rootFolder];
-            v18 = [v16 listAtIndex:{objc_msgSend(v17, "firstVisibleListIndex")}];
+            rootFolder = [(SBHIconManager *)self rootFolder];
+            rootFolder2 = [(SBHIconManager *)self rootFolder];
+            v18 = [rootFolder listAtIndex:{objc_msgSend(rootFolder2, "firstVisibleListIndex")}];
 
-            v19 = [v18 maxNumberOfIcons];
-            v20 = [v18 numberOfIcons];
+            maxNumberOfIcons = [v18 maxNumberOfIcons];
+            numberOfIcons = [v18 numberOfIcons];
             v87 = v15;
-            if (v20 + v15 <= v19)
+            if (numberOfIcons + v15 <= maxNumberOfIcons)
             {
-              v21 = v20;
+              v21 = numberOfIcons;
             }
 
             else
             {
-              v21 = v19 - v15;
+              v21 = maxNumberOfIcons - v15;
             }
 
-            v22 = [(SBHIconManager *)self rootFolder];
-            v23 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-            v24 = [v23 firstObject];
-            v25 = [v22 indexOfListContainingIcon:v24];
+            rootFolder3 = [(SBHIconManager *)self rootFolder];
+            defaultWidgetsBumpedIconUsageRanking2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+            firstObject = [defaultWidgetsBumpedIconUsageRanking2 firstObject];
+            v25 = [rootFolder3 indexOfListContainingIcon:firstObject];
 
             v85 = v11;
             v83 = v18;
@@ -26605,8 +26605,8 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
               v95 = 0u;
               v92 = 0u;
               v93 = 0u;
-              v26 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
-              v27 = [v26 countByEnumeratingWithState:&v92 objects:v101 count:16];
+              defaultWidgetsIconsRestoringRecordOriginalIndex = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
+              v27 = [defaultWidgetsIconsRestoringRecordOriginalIndex countByEnumeratingWithState:&v92 objects:v101 count:16];
               if (v27)
               {
                 v28 = v27;
@@ -26617,17 +26617,17 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
                   {
                     if (*v93 != v29)
                     {
-                      objc_enumerationMutation(v26);
+                      objc_enumerationMutation(defaultWidgetsIconsRestoringRecordOriginalIndex);
                     }
 
-                    v31 = [*(*(&v92 + 1) + 8 * i) integerValue];
-                    if (v31 < v21)
+                    integerValue = [*(*(&v92 + 1) + 8 * i) integerValue];
+                    if (integerValue < v21)
                     {
-                      v21 = v31;
+                      v21 = integerValue;
                     }
                   }
 
-                  v28 = [v26 countByEnumeratingWithState:&v92 objects:v101 count:16];
+                  v28 = [defaultWidgetsIconsRestoringRecordOriginalIndex countByEnumeratingWithState:&v92 objects:v101 count:16];
                 }
 
                 while (v28);
@@ -26639,17 +26639,17 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
               v32 = 0;
               while (1)
               {
-                v33 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-                v34 = [v33 firstObject];
+                defaultWidgetsBumpedIconUsageRanking3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+                firstObject2 = [defaultWidgetsBumpedIconUsageRanking3 firstObject];
 
-                v35 = v34;
+                v35 = firstObject2;
                 v36 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordKeyForIcon:v35];
-                v37 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                v38 = [v37 objectForKey:v36];
+                defaultWidgetsIconsRestoringRecord = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                v38 = [defaultWidgetsIconsRestoringRecord objectForKey:v36];
 
-                v39 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                v40 = [v39 allKeys];
-                v41 = [v40 containsObject:v38];
+                defaultWidgetsIconsRestoringRecord2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                allKeys = [defaultWidgetsIconsRestoringRecord2 allKeys];
+                v41 = [allKeys containsObject:v38];
 
                 if (v41)
                 {
@@ -26659,12 +26659,12 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
                     v43 = v38;
 
                     v44 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordKeyForIcon:v43];
-                    v45 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                    v38 = [v45 objectForKey:v44];
+                    defaultWidgetsIconsRestoringRecord3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                    v38 = [defaultWidgetsIconsRestoringRecord3 objectForKey:v44];
 
-                    v46 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                    v47 = [v46 allKeys];
-                    v48 = [v47 containsObject:v38];
+                    defaultWidgetsIconsRestoringRecord4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                    allKeys2 = [defaultWidgetsIconsRestoringRecord4 allKeys];
+                    v48 = [allKeys2 containsObject:v38];
 
                     v42 = v43;
                   }
@@ -26677,8 +26677,8 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
                   v43 = v35;
                 }
 
-                v49 = [MEMORY[0x1E695DFB0] null];
-                v50 = [v38 isEqual:v49];
+                null = [MEMORY[0x1E695DFB0] null];
+                v50 = [v38 isEqual:null];
 
                 if (v50)
                 {
@@ -26687,20 +26687,20 @@ uint64_t __157__SBHIconManager_swapApplicationIconsInProminentPositionsWithBundl
 
                 if (v38)
                 {
-                  v51 = [(SBHIconManager *)self rootFolder];
-                  v53 = [v51 insertIcon:v35 afterIcon:v38 options:0 listGridCellInfoOptions:0];
+                  rootFolder4 = [(SBHIconManager *)self rootFolder];
+                  v53 = [rootFolder4 insertIcon:v35 afterIcon:v38 options:0 listGridCellInfoOptions:0];
                   goto LABEL_36;
                 }
 
 LABEL_37:
-                v54 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                [v54 removeObjectForKey:v35];
+                defaultWidgetsIconsRestoringRecord5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                [defaultWidgetsIconsRestoringRecord5 removeObjectForKey:v35];
 
-                v55 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-                [v55 removeObjectAtIndex:0];
+                defaultWidgetsBumpedIconUsageRanking4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+                [defaultWidgetsBumpedIconUsageRanking4 removeObjectAtIndex:0];
 
-                v56 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
-                [v56 removeObjectAtIndex:0];
+                defaultWidgetsIconsRestoringRecordOriginalIndex2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecordOriginalIndex];
+                [defaultWidgetsIconsRestoringRecordOriginalIndex2 removeObjectAtIndex:0];
 
                 if (++v32 == v87)
                 {
@@ -26708,42 +26708,42 @@ LABEL_37:
                 }
               }
 
-              v51 = [(SBHIconManager *)self rootFolder];
-              v52 = [v51 prependIcon:v35 options:0];
+              rootFolder4 = [(SBHIconManager *)self rootFolder];
+              v52 = [rootFolder4 prependIcon:v35 options:0];
 LABEL_36:
 
               goto LABEL_37;
             }
 
 LABEL_38:
-            v57 = [(SBHIconManager *)self rootFolder];
-            v58 = [(SBHIconManager *)self rootFolder];
-            v59 = [v57 nextVisibleListIndexAfterIndex:{objc_msgSend(v58, "firstVisibleListIndex")}];
+            rootFolder5 = [(SBHIconManager *)self rootFolder];
+            rootFolder6 = [(SBHIconManager *)self rootFolder];
+            v59 = [rootFolder5 nextVisibleListIndexAfterIndex:{objc_msgSend(rootFolder6, "firstVisibleListIndex")}];
 
             v60 = [MEMORY[0x1E696AC88] indexPathWithIconIndex:v21 listIndex:v59];
-            v61 = [(SBHIconManager *)self rootFolder];
-            [v61 _swapRestoreIconCount:v87 toLocation:v60];
+            rootFolder7 = [(SBHIconManager *)self rootFolder];
+            [rootFolder7 _swapRestoreIconCount:v87 toLocation:v60];
 
             [(SBHIconManager *)self removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:0];
             v9 = v81;
-            v7 = v82;
+            allObjects = v82;
             v10 = v79;
-            v62 = v83;
-            v63 = v84;
+            defaultWidgetsBumpedIconUsageRanking6 = v83;
+            v63 = gridSizeClass;
 LABEL_51:
 
             v11 = v85;
             goto LABEL_52;
           }
 
-          v64 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-          v65 = [v64 containsObject:v12];
+          defaultWidgetsBumpedIconUsageRanking5 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+          v65 = [defaultWidgetsBumpedIconUsageRanking5 containsObject:v12];
 
           if (v65)
           {
-            v66 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-            v67 = [v66 allValues];
-            v68 = [v67 containsObject:v12];
+            defaultWidgetsIconsRestoringRecord6 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+            allValues = [defaultWidgetsIconsRestoringRecord6 allValues];
+            v68 = [allValues containsObject:v12];
 
             if (v68)
             {
@@ -26751,11 +26751,11 @@ LABEL_51:
               v91 = 0u;
               v88 = 0u;
               v89 = 0u;
-              v69 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-              v70 = [v69 allKeys];
+              defaultWidgetsIconsRestoringRecord7 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+              allKeys3 = [defaultWidgetsIconsRestoringRecord7 allKeys];
 
-              obj = v70;
-              v71 = [v70 countByEnumeratingWithState:&v88 objects:v100 count:16];
+              obj = allKeys3;
+              v71 = [allKeys3 countByEnumeratingWithState:&v88 objects:v100 count:16];
               if (v71)
               {
                 v72 = v71;
@@ -26771,17 +26771,17 @@ LABEL_51:
                     }
 
                     v75 = *(*(&v88 + 1) + 8 * j);
-                    v76 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                    v63 = [v76 objectForKey:v75];
+                    defaultWidgetsIconsRestoringRecord8 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                    v63 = [defaultWidgetsIconsRestoringRecord8 objectForKey:v75];
 
                     if ([v63 isEqual:v12])
                     {
-                      v77 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-                      [v77 removeObjectForKey:v75];
+                      defaultWidgetsIconsRestoringRecord9 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+                      [defaultWidgetsIconsRestoringRecord9 removeObjectForKey:v75];
 
-                      v62 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
-                      [v62 removeObject:v75];
-                      v7 = v82;
+                      defaultWidgetsBumpedIconUsageRanking6 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsBumpedIconUsageRanking];
+                      [defaultWidgetsBumpedIconUsageRanking6 removeObject:v75];
+                      allObjects = v82;
                       goto LABEL_51;
                     }
                   }
@@ -26796,7 +26796,7 @@ LABEL_51:
                 }
 
                 v11 = v85;
-                v7 = v82;
+                allObjects = v82;
               }
 
 LABEL_52:
@@ -26807,32 +26807,32 @@ LABEL_52:
         }
 
         while (v11 != v9);
-        v9 = [v7 countByEnumeratingWithState:&v96 objects:v102 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v96 objects:v102 count:16];
       }
 
       while (v9);
     }
 
     [(SBHIconManager *)self endStopUpdatingDefaultWidgetsBumpedIconRecord];
-    v6 = v78;
+    removedIconsCopy = v78;
   }
 }
 
-- (void)folder:(id)a3 didReplaceIcon:(id)a4 withIcon:(id)a5
+- (void)folder:(id)folder didReplaceIcon:(id)icon withIcon:(id)withIcon
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  iconCopy = icon;
   [(SBHIconManager *)self noteRootFolderDidMutate];
   if (![(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem stopUpdatingDefaultWidgetsBumpedIconRecord])
   {
-    if ([v6 isWidgetIcon] && -[SBHIconManager widgetIconIsOnboardingWidget:](self, "widgetIconIsOnboardingWidget:", v6))
+    if ([iconCopy isWidgetIcon] && -[SBHIconManager widgetIconIsOnboardingWidget:](self, "widgetIconIsOnboardingWidget:", iconCopy))
     {
       [(SBHIconManager *)self removeWidgetDiscoverabilityContainerViewsAndPopoverWhenNeeded:0];
     }
 
-    v7 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-    v8 = [v7 allValues];
-    v9 = [v8 containsObject:v6];
+    defaultWidgetsIconsRestoringRecord = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+    allValues = [defaultWidgetsIconsRestoringRecord allValues];
+    v9 = [allValues containsObject:iconCopy];
 
     if (v9)
     {
@@ -26840,10 +26840,10 @@ LABEL_52:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-      v11 = [v10 allKeys];
+      defaultWidgetsIconsRestoringRecord2 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+      allKeys = [defaultWidgetsIconsRestoringRecord2 allKeys];
 
-      v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v12)
       {
         v13 = v12;
@@ -26854,23 +26854,23 @@ LABEL_52:
           {
             if (*v21 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allKeys);
             }
 
             v16 = *(*(&v20 + 1) + 8 * i);
-            v17 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-            v18 = [v17 objectForKey:v16];
+            defaultWidgetsIconsRestoringRecord3 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+            v18 = [defaultWidgetsIconsRestoringRecord3 objectForKey:v16];
 
-            if ([v18 isEqual:v6])
+            if ([v18 isEqual:iconCopy])
             {
-              v19 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
-              [v19 setObject:v6 forKey:v16];
+              defaultWidgetsIconsRestoringRecord4 = [(SBHWidgetIntroductionFeatureIntroductionItem *)self->_widgetIntroductionItem defaultWidgetsIconsRestoringRecord];
+              [defaultWidgetsIconsRestoringRecord4 setObject:iconCopy forKey:v16];
 
               goto LABEL_16;
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v13 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v13)
           {
             continue;
@@ -26885,28 +26885,28 @@ LABEL_16:
   }
 }
 
-- (void)folder:(id)a3 listHiddenDidChange:(id)a4
+- (void)folder:(id)folder listHiddenDidChange:(id)change
 {
-  v8 = a4;
+  changeCopy = change;
   [(SBHIconManager *)self noteRootFolderDidMutate];
-  v5 = [(SBHIconManager *)self rootFolder];
-  v6 = [v5 firstVisibleListIndex];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  firstVisibleListIndex = [rootFolder firstVisibleListIndex];
+  if (firstVisibleListIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v5 listAtIndex:v6];
-    if ([v7 isEqual:v8])
+    v7 = [rootFolder listAtIndex:firstVisibleListIndex];
+    if ([v7 isEqual:changeCopy])
     {
-      -[SBHWidgetIntroductionFeatureIntroductionItem setStopUpdatingDefaultWidgetsBumpedIconRecord:](self->_widgetIntroductionItem, "setStopUpdatingDefaultWidgetsBumpedIconRecord:", [v8 isHidden]);
+      -[SBHWidgetIntroductionFeatureIntroductionItem setStopUpdatingDefaultWidgetsBumpedIconRecord:](self->_widgetIntroductionItem, "setStopUpdatingDefaultWidgetsBumpedIconRecord:", [changeCopy isHidden]);
     }
   }
 }
 
-- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)a3
+- (id)addWidgetSheetViewControllerForAddWidgetSheetConfigurationManager:(id)manager
 {
-  v4 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 addWidgetSheetViewControllerForIconManager:self];
+    [delegate addWidgetSheetViewControllerForIconManager:self];
   }
 
   else
@@ -26918,69 +26918,69 @@ LABEL_16:
   return v5;
 }
 
-- (id)addWidgetSheetConfigurationManager:(id)a3 vendorNameForAppWithBundleIdentifier:(id)a4
+- (id)addWidgetSheetConfigurationManager:(id)manager vendorNameForAppWithBundleIdentifier:(id)identifier
 {
-  v4 = [(SBHIconManager *)self applicationWithBundleIdentifier:a4];
+  v4 = [(SBHIconManager *)self applicationWithBundleIdentifier:identifier];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 vendorName];
+    vendorName = [v4 vendorName];
   }
 
   else
   {
-    v5 = 0;
+    vendorName = 0;
   }
 
-  if (!-[__CFString length](v5, "length") && (objc_opt_respondsToSelector() & 1) != 0 && [v4 isAppleApplication])
+  if (!-[__CFString length](vendorName, "length") && (objc_opt_respondsToSelector() & 1) != 0 && [v4 isAppleApplication])
   {
 
-    v5 = @"Apple";
+    vendorName = @"Apple";
   }
 
-  return v5;
+  return vendorName;
 }
 
-- (id)addWidgetSheetConfigurationManager:(id)a3 containerBundleIdentiferForDescriptor:(id)a4
+- (id)addWidgetSheetConfigurationManager:(id)manager containerBundleIdentiferForDescriptor:(id)descriptor
 {
-  v5 = a4;
-  v6 = [v5 extensionIdentity];
-  v7 = [v6 containerBundleIdentifier];
+  descriptorCopy = descriptor;
+  extensionIdentity = [descriptorCopy extensionIdentity];
+  containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-  v8 = [(SBHIconManager *)self delegate];
+  delegate = [(SBHIconManager *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 iconManager:self containerBundleIdentifierForDescriptor:v5];
+    v9 = [delegate iconManager:self containerBundleIdentifierForDescriptor:descriptorCopy];
 
-    v7 = v9;
+    containerBundleIdentifier = v9;
   }
 
-  return v7;
+  return containerBundleIdentifier;
 }
 
-- (id)beginHidingIconsFromLayout:(id)a3 reason:(id)a4 options:(unint64_t)a5
+- (id)beginHidingIconsFromLayout:(id)layout reason:(id)reason options:(unint64_t)options
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [[SBHIconLayoutHidingCompoundAssertion alloc] initWithInvalidationHandler:0 icons:v8 reason:v9 options:a5];
-  v11 = [(SBHIconManager *)self rootFolderController];
-  [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:v11];
+  layoutCopy = layout;
+  reasonCopy = reason;
+  v10 = [[SBHIconLayoutHidingCompoundAssertion alloc] initWithInvalidationHandler:0 icons:layoutCopy reason:reasonCopy options:options];
+  rootFolderController = [(SBHIconManager *)self rootFolderController];
+  [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:rootFolderController];
 
-  v12 = [(SBHIconManager *)self folderIconImageCache];
-  [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:v12];
+  folderIconImageCache = [(SBHIconManager *)self folderIconImageCache];
+  [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:folderIconImageCache];
 
-  v13 = [(SBHIconManager *)self floatingDockListView];
-  if (v13)
+  floatingDockListView = [(SBHIconManager *)self floatingDockListView];
+  if (floatingDockListView)
   {
-    [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:v13];
+    [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:floatingDockListView];
   }
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(SBHIconManager *)self todayViewControllers];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  todayViewControllers = [(SBHIconManager *)self todayViewControllers];
+  v15 = [todayViewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -26991,14 +26991,14 @@ LABEL_16:
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(todayViewControllers);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * i) listView];
-        [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:v19];
+        listView = [*(*(&v21 + 1) + 8 * i) listView];
+        [(SBHIconLayoutHidingCompoundAssertion *)v10 addAssertionFromChild:listView];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [todayViewControllers countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -27007,39 +27007,39 @@ LABEL_16:
   return v10;
 }
 
-- (void)setIconStylePickerVisible:(BOOL)a3
+- (void)setIconStylePickerVisible:(BOOL)visible
 {
-  if (self->_iconStylePickerVisible == a3)
+  if (self->_iconStylePickerVisible == visible)
   {
     return;
   }
 
-  self->_iconStylePickerVisible = a3;
-  v14 = [(SBHIconManager *)self currentStylePickerViewController];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  v7 = v6;
-  if (a3)
+  self->_iconStylePickerVisible = visible;
+  currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v7 = defaultCenter;
+  if (visible)
   {
-    [v6 postNotificationName:@"SBHIconManagerWillPresentStyleEditingSheetNotification" object:0];
+    [defaultCenter postNotificationName:@"SBHIconManagerWillPresentStyleEditingSheetNotification" object:0];
 
 LABEL_6:
-    v8 = v14;
+    v8 = currentStylePickerViewController;
     goto LABEL_7;
   }
 
-  [v6 postNotificationName:@"SBHIconManagerDidDismissStyleEditingSheetNotification" object:0];
+  [defaultCenter postNotificationName:@"SBHIconManagerDidDismissStyleEditingSheetNotification" object:0];
 
-  v8 = v14;
-  if (v14)
+  v8 = currentStylePickerViewController;
+  if (currentStylePickerViewController)
   {
-    v9 = [v14 navigationController];
-    v10 = [v9 sheetPresentationController];
-    v11 = [v10 sourceView];
-    [v11 removeFromSuperview];
+    navigationController = [currentStylePickerViewController navigationController];
+    sheetPresentationController = [navigationController sheetPresentationController];
+    sourceView = [sheetPresentationController sourceView];
+    [sourceView removeFromSuperview];
 
-    v12 = [v14 navigationController];
-    v13 = [v12 presentingViewController];
-    [v13 dismissViewControllerAnimated:1 completion:0];
+    navigationController2 = [currentStylePickerViewController navigationController];
+    presentingViewController = [navigationController2 presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     [(SBHIconManager *)self setCurrentStylePickerViewController:0];
     goto LABEL_6;
@@ -27050,71 +27050,71 @@ LABEL_7:
 
 - (void)_dismissStylePickerViewControllerImmediately
 {
-  v5 = [(SBHIconManager *)self currentStylePickerViewController];
-  v3 = [v5 navigationController];
-  v4 = [v3 presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
+  navigationController = [currentStylePickerViewController navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   [(SBHIconManager *)self setCurrentStylePickerViewController:0];
   [(SBHIconManager *)self setIconStylePickerVisible:0];
 }
 
-- (void)stylePickerViewController:(id)a3 didUpdateHomeScreenConfiguration:(id)a4
+- (void)stylePickerViewController:(id)controller didUpdateHomeScreenConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v15 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:v6];
-  v8 = [(SBHIconManager *)self stylePreviewManager];
-  [v8 setImageStyleConfiguration:v15];
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  v15 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:configurationCopy];
+  stylePreviewManager = [(SBHIconManager *)self stylePreviewManager];
+  [stylePreviewManager setImageStyleConfiguration:v15];
   [(SBHIconManager *)self setDidChangeIconStyleWithColorPicker:1];
-  objc_setAssociatedObject(v7, &SBHLastHomeScreenConfigurationKey, v6, 1);
-  [(SBHIconManager *)self _applyBarButtonItemsToStylePicker:v7 forHomeScreenConfiguration:v6];
+  objc_setAssociatedObject(controllerCopy, &SBHLastHomeScreenConfigurationKey, configurationCopy, 1);
+  [(SBHIconManager *)self _applyBarButtonItemsToStylePicker:controllerCopy forHomeScreenConfiguration:configurationCopy];
 
-  v9 = [v6 styleType];
-  v10 = [v6 styleVariant];
+  styleType = [configurationCopy styleType];
+  styleVariant = [configurationCopy styleVariant];
 
-  v11 = [(SBHIconManager *)self currentHomeScreenWallpaperDimState];
-  if (v9 == 5 && (v10 & 0xFFFFFFFFFFFFFFFDLL) == 0 && v11 || (v9 == 5 ? (v12 = v10 == 1) : (v12 = 0), !v12 ? (v13 = (v9 - 5) >= 0xFFFFFFFFFFFFFFFELL) : (v13 = 1), v13 ? (v14 = 0) : (v14 = 1), ((v14 | v11) & 1) == 0))
+  currentHomeScreenWallpaperDimState = [(SBHIconManager *)self currentHomeScreenWallpaperDimState];
+  if (styleType == 5 && (styleVariant & 0xFFFFFFFFFFFFFFFDLL) == 0 && currentHomeScreenWallpaperDimState || (styleType == 5 ? (v12 = styleVariant == 1) : (v12 = 0), !v12 ? (v13 = (styleType - 5) >= 0xFFFFFFFFFFFFFFFELL) : (v13 = 1), v13 ? (v14 = 0) : (v14 = 1), ((v14 | currentHomeScreenWallpaperDimState) & 1) == 0))
   {
     [(SBHIconManager *)self toggleHomeScreenWallpaperDim:0];
   }
 }
 
-- (void)stylePickerViewControllerDidFinish:(id)a3
+- (void)stylePickerViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   [(SBHIconManager *)self setCurrentStylePickerViewController:0];
   [(SBHIconManager *)self setIconStylePickerVisible:0];
-  v5 = [(SBHIconManager *)self usageMonitor];
-  [v5 noteIconStylePickerDidDismiss];
+  usageMonitor = [(SBHIconManager *)self usageMonitor];
+  [usageMonitor noteIconStylePickerDidDismiss];
 
-  v9 = [(SBHIconManager *)self stylePreviewManager];
-  v6 = objc_getAssociatedObject(v4, &SBHLastHomeScreenConfigurationKey);
+  stylePreviewManager = [(SBHIconManager *)self stylePreviewManager];
+  v6 = objc_getAssociatedObject(finishCopy, &SBHLastHomeScreenConfigurationKey);
 
   if (v6)
   {
     v7 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:v6];
-    [v9 setImageStyleConfiguration:v7];
+    [stylePreviewManager setImageStyleConfiguration:v7];
     [(SBHIconManager *)self _updateStyleConfiguration:v6];
   }
 
   v8 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:v6];
   [(SBHIconManager *)self _precacheImagesForRootIconsForStyleConfiguration:v8];
-  [v9 invalidate];
+  [stylePreviewManager invalidate];
   [(SBHIconManager *)self setStylePreviewManager:0];
 }
 
-- (void)stylePickerViewController:(id)a3 didUpdateDesiredDetent:(double)a4
+- (void)stylePickerViewController:(id)controller didUpdateDesiredDetent:(double)detent
 {
-  v4 = [a3 navigationController];
-  v5 = [v4 sheetPresentationController];
+  navigationController = [controller navigationController];
+  sheetPresentationController = [navigationController sheetPresentationController];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__SBHIconManager_stylePickerViewController_didUpdateDesiredDetent___block_invoke;
   v7[3] = &unk_1E8088C90;
-  v8 = v5;
-  v6 = v5;
+  v8 = sheetPresentationController;
+  v6 = sheetPresentationController;
   [v6 animateChanges:v7];
 }
 
@@ -27167,11 +27167,11 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
   [*(a1 + 32) _presentStylePickerViewControllerForStylePickerConfiguration:v6];
 }
 
-- (void)_applyBarButtonItemsToStylePicker:(id)a3 forHomeScreenConfiguration:(id)a4
+- (void)_applyBarButtonItemsToStylePicker:(id)picker forHomeScreenConfiguration:(id)configuration
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pickerCopy = picker;
+  configurationCopy = configuration;
   if (!self->_eyeDropperControl)
   {
     v8 = [SBHStyleTintButton alloc];
@@ -27199,8 +27199,8 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
   dimBarButtonItem = self->_dimBarButtonItem;
   if (dimBarButtonItem)
   {
-    v16 = [(UIBarButtonItem *)dimBarButtonItem customView];
-    [v16 setSelected:-[SBHIconManager currentHomeScreenWallpaperDimState](self animated:{"currentHomeScreenWallpaperDimState"), 1}];
+    customView = [(UIBarButtonItem *)dimBarButtonItem customView];
+    [customView setSelected:-[SBHIconManager currentHomeScreenWallpaperDimState](self animated:{"currentHomeScreenWallpaperDimState"), 1}];
   }
 
   else
@@ -27215,7 +27215,7 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
 
   v28[0] = self->_dimBarButtonItem;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-  [v6 setLeadingBarButtonItems:v19];
+  [pickerCopy setLeadingBarButtonItems:v19];
 
   v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (!self->_iconSizeButton)
@@ -27233,8 +27233,8 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
   iconSizeBarButtonItem = self->_iconSizeBarButtonItem;
   if (iconSizeBarButtonItem)
   {
-    v25 = [(UIBarButtonItem *)iconSizeBarButtonItem customView];
-    [v25 setSelected:-[SBHIconManager _shouldUseHomeScreenLargeIconSize](self animated:{"_shouldUseHomeScreenLargeIconSize"), 1}];
+    customView2 = [(UIBarButtonItem *)iconSizeBarButtonItem customView];
+    [customView2 setSelected:-[SBHIconManager _shouldUseHomeScreenLargeIconSize](self animated:{"_shouldUseHomeScreenLargeIconSize"), 1}];
   }
 
   else
@@ -27248,52 +27248,52 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
   }
 
   [v20 addObject:self->_iconSizeBarButtonItem];
-  [v6 setTrailingBarButtonItems:v20];
+  [pickerCopy setTrailingBarButtonItems:v20];
 }
 
-- (void)_presentStylePickerViewControllerForStylePickerConfiguration:(id)a3
+- (void)_presentStylePickerViewControllerForStylePickerConfiguration:(id)configuration
 {
   v63[1] = *MEMORY[0x1E69E9840];
-  v58 = a3;
-  v4 = [(SBHIconManager *)self currentStylePickerViewController];
+  configurationCopy = configuration;
+  currentStylePickerViewController = [(SBHIconManager *)self currentStylePickerViewController];
 
-  if (!v4)
+  if (!currentStylePickerViewController)
   {
-    object = [objc_alloc(getPUIStylePickerViewControllerClass()) initWithStylePickerConfiguration:v58];
+    object = [objc_alloc(getPUIStylePickerViewControllerClass()) initWithStylePickerConfiguration:configurationCopy];
     v5 = SBHBundle();
     v6 = [v5 localizedStringForKey:@"STYLE_PICKER_TITLE" value:&stru_1F3D472A8 table:@"SpringBoardHome"];
     [object setTitle:v6];
 
     [object setDelegate:self];
     [(SBHIconManager *)self setCurrentStylePickerViewController:object];
-    v7 = [v58 homeScreenConfiguration];
-    objc_setAssociatedObject(object, &SBHLastHomeScreenConfigurationKey, v7, 1);
+    homeScreenConfiguration = [configurationCopy homeScreenConfiguration];
+    objc_setAssociatedObject(object, &SBHLastHomeScreenConfigurationKey, homeScreenConfiguration, 1);
 
     v57 = [[SBHNavigationController alloc] initWithRootViewController:object];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(SBHNavigationController *)v57 setModalPresentedBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SBHNavigationController *)v57 setModalPresentedBackgroundColor:clearColor];
 
     [(SBHNavigationController *)v57 setModalPresentationStyle:2];
     objc_initWeak(&location, self);
-    v9 = [v58 homeScreenConfiguration];
-    [(SBHIconManager *)self _applyBarButtonItemsToStylePicker:object forHomeScreenConfiguration:v9];
+    homeScreenConfiguration2 = [configurationCopy homeScreenConfiguration];
+    [(SBHIconManager *)self _applyBarButtonItemsToStylePicker:object forHomeScreenConfiguration:homeScreenConfiguration2];
 
-    v10 = [(SBHIconManager *)self rootFolderController];
-    v55 = [v10 contentView];
+    rootFolderController = [(SBHIconManager *)self rootFolderController];
+    contentView = [rootFolderController contentView];
 
-    v59 = [(SBHNavigationController *)v57 sheetPresentationController];
-    v11 = [MEMORY[0x1E69DC938] currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    sheetPresentationController = [(SBHNavigationController *)v57 sheetPresentationController];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v12 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [v55 bounds];
+      [contentView bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [v55 _screen];
-      [v21 scale];
+      _screen = [contentView _screen];
+      [_screen scale];
       v52 = v22;
       UIRectCenteredXInRectScale();
       v24 = v23;
@@ -27305,43 +27305,43 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
       v64.size.width = v18;
       v64.size.height = v20;
       MaxY = CGRectGetMaxY(v64);
-      v30 = [v55 viewWithTag:{748373893, v52}];
+      v30 = [contentView viewWithTag:{748373893, v52}];
       if (!v30)
       {
         v30 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v24, MaxY + -20.0, v26, v28}];
         [v30 setAutoresizingMask:18];
         [v30 setTag:748373893];
         [v30 setUserInteractionEnabled:0];
-        v31 = [MEMORY[0x1E69DC888] clearColor];
-        [v30 setBackgroundColor:v31];
+        clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+        [v30 setBackgroundColor:clearColor2];
 
-        [v55 addSubview:v30];
+        [contentView addSubview:v30];
       }
 
-      [v59 setSourceView:v30];
+      [sheetPresentationController setSourceView:v30];
       [object desiredDetent];
       v33 = v32;
       [(SBHNavigationController *)v57 setPreferredContentSize:500.0, v32];
       [object setPreferredContentSize:{500.0, v33}];
-      v34 = [v59 traitOverrides];
-      [v34 setVerticalSizeClass:1];
+      traitOverrides = [sheetPresentationController traitOverrides];
+      [traitOverrides setVerticalSizeClass:1];
 
-      v35 = [v59 traitOverrides];
-      [v35 setHorizontalSizeClass:1];
+      traitOverrides2 = [sheetPresentationController traitOverrides];
+      [traitOverrides2 setHorizontalSizeClass:1];
 
-      v36 = [(SBHNavigationController *)v57 traitOverrides];
-      [v36 setVerticalSizeClass:1];
+      traitOverrides3 = [(SBHNavigationController *)v57 traitOverrides];
+      [traitOverrides3 setVerticalSizeClass:1];
 
-      v37 = [(SBHNavigationController *)v57 traitOverrides];
-      [v37 setHorizontalSizeClass:1];
+      traitOverrides4 = [(SBHNavigationController *)v57 traitOverrides];
+      [traitOverrides4 setHorizontalSizeClass:1];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v59 _setPrefersSymmetricCorners:1];
+      [sheetPresentationController _setPrefersSymmetricCorners:1];
     }
 
-    [v59 _setShouldDismissWhenTappedOutside:1];
+    [sheetPresentationController _setShouldDismissWhenTappedOutside:1];
     v38 = MEMORY[0x1E69DCF58];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
@@ -27351,47 +27351,47 @@ void __51__SBHIconManager__presentStylePickerViewController__block_invoke_2(uint
     v53 = [v38 customDetentWithIdentifier:@"stylePickerViewControllerDetent" resolver:v60];
     v63[0] = v53;
     v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:1];
-    [v59 setDetents:v54];
+    [sheetPresentationController setDetents:v54];
     [(SBHIconManager *)self setIconStylePickerVisible:1];
     v39 = [objc_alloc(MEMORY[0x1E69DD818]) initWithVariant:8 size:1];
     [v39 setSubvariant:@"customizeSheet"];
-    [v59 _setNonLargeBackground:v39];
-    [v59 _setLargeBackground:v39];
-    v40 = [(SBHNavigationController *)v57 navigationBar];
-    v41 = [v40 traitOverrides];
-    [v41 setUserInterfaceStyle:2];
+    [sheetPresentationController _setNonLargeBackground:v39];
+    [sheetPresentationController _setLargeBackground:v39];
+    navigationBar = [(SBHNavigationController *)v57 navigationBar];
+    traitOverrides5 = [navigationBar traitOverrides];
+    [traitOverrides5 setUserInterfaceStyle:2];
 
-    v42 = [(SBHIconManager *)self listViewsToUpdateDuringColorPicking];
-    v43 = [(SBHIconManager *)self additionalIconViewsToUpdateDuringColorPicking];
+    listViewsToUpdateDuringColorPicking = [(SBHIconManager *)self listViewsToUpdateDuringColorPicking];
+    additionalIconViewsToUpdateDuringColorPicking = [(SBHIconManager *)self additionalIconViewsToUpdateDuringColorPicking];
     v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v45 = [(SBHIconManager *)self rootFolderController];
-    if (v45)
+    rootFolderController2 = [(SBHIconManager *)self rootFolderController];
+    if (rootFolderController2)
     {
-      [v44 addObject:v45];
+      [v44 addObject:rootFolderController2];
     }
 
-    v46 = [(SBHIconManager *)self floatingDockViewController];
-    if (v46)
+    floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+    if (floatingDockViewController)
     {
-      [v44 addObject:v46];
+      [v44 addObject:floatingDockViewController];
     }
 
-    v47 = [[SBHIconStylePreviewManager alloc] initWithTraitOverridableObjects:v44 iconListViews:v42 additionalIconViews:v43];
+    v47 = [[SBHIconStylePreviewManager alloc] initWithTraitOverridableObjects:v44 iconListViews:listViewsToUpdateDuringColorPicking additionalIconViews:additionalIconViewsToUpdateDuringColorPicking];
     [(SBHIconManager *)self setStylePreviewManager:v47];
-    v48 = [MEMORY[0x1E69DC938] currentDevice];
-    v49 = [v48 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if ((v49 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v50 = [(SBHIconManager *)self floatingDockViewController];
-      v51 = [v50 parentViewController];
-      [v51 presentViewController:v57 animated:1 completion:0];
+      floatingDockViewController2 = [(SBHIconManager *)self floatingDockViewController];
+      parentViewController = [floatingDockViewController2 parentViewController];
+      [parentViewController presentViewController:v57 animated:1 completion:0];
     }
 
     else
     {
-      v50 = [(SBHIconManager *)self rootFolderController];
-      [v50 presentViewController:v57 animated:1 completion:0];
+      floatingDockViewController2 = [(SBHIconManager *)self rootFolderController];
+      [floatingDockViewController2 presentViewController:v57 animated:1 completion:0];
     }
 
     [(SBHIconManager *)self setEditing:0];
@@ -27421,16 +27421,16 @@ double __79__SBHIconManager__presentStylePickerViewControllerForStylePickerConfi
   return v5;
 }
 
-- (void)_fetchWallpaperProminentColor:(id)a3
+- (void)_fetchWallpaperProminentColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
-    v10 = v4;
+    v10 = colorCopy;
     if (os_variant_has_internal_content())
     {
-      v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v5 stringForKey:@"KEYNOTE_OVERRIDE_PROMINENT_COLOR"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults stringForKey:@"KEYNOTE_OVERRIDE_PROMINENT_COLOR"];
       if (v6)
       {
         v7 = [MEMORY[0x1E69DC888] sbh_colorWithHexString:v6];
@@ -27440,22 +27440,22 @@ double __79__SBHIconManager__presentStylePickerViewControllerForStylePickerConfi
           v10[2](v10, v7);
 
 LABEL_10:
-          v4 = v10;
+          colorCopy = v10;
           goto LABEL_11;
         }
       }
     }
 
-    v5 = [(SBHIconManager *)self delegate];
+    standardUserDefaults = [(SBHIconManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v5 iconManagerPreferredProminentPosterColor:self handler:v10];
+      [standardUserDefaults iconManagerPreferredProminentPosterColor:self handler:v10];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] orangeColor];
-      v10[2](v10, v9);
+      orangeColor = [MEMORY[0x1E69DC888] orangeColor];
+      v10[2](v10, orangeColor);
     }
 
     goto LABEL_10;
@@ -27467,34 +27467,34 @@ LABEL_11:
 - (id)listViewsToUpdateDuringColorPicking
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(SBHIconManager *)self currentRootIconList];
-  if (v4)
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  if (currentRootIconList)
   {
-    [v3 addObject:v4];
+    [v3 addObject:currentRootIconList];
   }
 
-  v5 = [(SBHIconManager *)self dockListView];
-  if (v5)
+  dockListView = [(SBHIconManager *)self dockListView];
+  if (dockListView)
   {
-    [v3 addObject:v5];
+    [v3 addObject:dockListView];
   }
 
-  v6 = [(SBHIconManager *)self floatingDockViewController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke;
   v15[3] = &unk_1E80908B0;
   v7 = v3;
   v16 = v7;
-  [v6 enumerateIconListsUsingBlock:v15];
-  v8 = [(SBHIconManager *)self todayViewControllers];
+  [floatingDockViewController enumerateIconListsUsingBlock:v15];
+  todayViewControllers = [(SBHIconManager *)self todayViewControllers];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2;
   v13[3] = &unk_1E80908D8;
   v9 = v7;
   v14 = v9;
-  [v8 enumerateObjectsUsingBlock:v13];
+  [todayViewControllers enumerateObjectsUsingBlock:v13];
 
   v10 = v14;
   v11 = v9;
@@ -27517,10 +27517,10 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-  v5 = [v4 objectEnumerator];
+  _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+  objectEnumerator = [_effectiveAppPredictionViewControllersForUniqueIdentifier objectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27531,7 +27531,7 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -27546,69 +27546,69 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(SBHIconManager *)self floatingDockViewController];
-  v12 = [v11 libraryPodIconViewIfLoaded];
-  if (v12)
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
+  libraryPodIconViewIfLoaded = [floatingDockViewController libraryPodIconViewIfLoaded];
+  if (libraryPodIconViewIfLoaded)
   {
-    [v3 addObject:v12];
+    [v3 addObject:libraryPodIconViewIfLoaded];
   }
 
   return v3;
 }
 
-- (void)enumerateViewsToUpdateDuringColorPickingUsingListViewBlock:(id)a3 iconViewBlock:(id)a4
+- (void)enumerateViewsToUpdateDuringColorPickingUsingListViewBlock:(id)block iconViewBlock:(id)viewBlock
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBHIconManager *)self currentRootIconList];
-  if (v8)
+  blockCopy = block;
+  viewBlockCopy = viewBlock;
+  currentRootIconList = [(SBHIconManager *)self currentRootIconList];
+  if (currentRootIconList)
   {
-    v6[2](v6, v8);
-    if (v7)
+    blockCopy[2](blockCopy, currentRootIconList);
+    if (viewBlockCopy)
     {
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewBlock_iconViewBlock___block_invoke;
       v39[3] = &unk_1E8090008;
-      v40 = v7;
-      [v8 enumerateDisplayedIconViewsUsingBlock:v39];
+      v40 = viewBlockCopy;
+      [currentRootIconList enumerateDisplayedIconViewsUsingBlock:v39];
     }
   }
 
-  v24 = v8;
-  v9 = [(SBHIconManager *)self dockListView];
-  if (v9)
+  v24 = currentRootIconList;
+  dockListView = [(SBHIconManager *)self dockListView];
+  if (dockListView)
   {
-    v6[2](v6, v9);
-    if (v7)
+    blockCopy[2](blockCopy, dockListView);
+    if (viewBlockCopy)
     {
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewBlock_iconViewBlock___block_invoke_2;
       v37[3] = &unk_1E8090008;
-      v38 = v7;
-      [v9 enumerateDisplayedIconViewsUsingBlock:v37];
+      v38 = viewBlockCopy;
+      [dockListView enumerateDisplayedIconViewsUsingBlock:v37];
     }
   }
 
-  v10 = [(SBHIconManager *)self floatingDockViewController];
+  floatingDockViewController = [(SBHIconManager *)self floatingDockViewController];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewBlock_iconViewBlock___block_invoke_3;
   v34[3] = &unk_1E8090900;
-  v11 = v6;
+  v11 = blockCopy;
   v35 = v11;
-  v12 = v7;
+  v12 = viewBlockCopy;
   v36 = v12;
-  [v10 enumerateIconListsUsingBlock:v34];
-  v13 = [(SBHIconManager *)self todayViewControllers];
+  [floatingDockViewController enumerateIconListsUsingBlock:v34];
+  todayViewControllers = [(SBHIconManager *)self todayViewControllers];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewBlock_iconViewBlock___block_invoke_5;
@@ -27617,16 +27617,16 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
   v32 = v23;
   v14 = v12;
   v33 = v14;
-  [v13 enumerateObjectsUsingBlock:v31];
+  [todayViewControllers enumerateObjectsUsingBlock:v31];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
-  v16 = [v15 objectEnumerator];
+  _effectiveAppPredictionViewControllersForUniqueIdentifier = [(SBHIconManager *)self _effectiveAppPredictionViewControllersForUniqueIdentifier];
+  objectEnumerator = [_effectiveAppPredictionViewControllersForUniqueIdentifier objectEnumerator];
 
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v41 count:16];
+  v17 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -27637,7 +27637,7 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v21 = *(*(&v27 + 1) + 8 * i);
@@ -27652,7 +27652,7 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v41 count:16];
+      v18 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v41 count:16];
     }
 
     while (v18);
@@ -27660,10 +27660,10 @@ void __53__SBHIconManager_listViewsToUpdateDuringColorPicking__block_invoke_2(ui
 
   if (v14)
   {
-    v22 = [v10 libraryPodIconViewIfLoaded];
-    if (v22)
+    libraryPodIconViewIfLoaded = [floatingDockViewController libraryPodIconViewIfLoaded];
+    if (libraryPodIconViewIfLoaded)
     {
-      (*(v14 + 2))(v14, v22);
+      (*(v14 + 2))(v14, libraryPodIconViewIfLoaded);
     }
   }
 }
@@ -27705,25 +27705,25 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
 
 - (id)persistedHomeScreenColorConfiguration
 {
-  v3 = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
-  if (!v3)
+  _fetchCurrentStyleConfiguration = [(SBHIconManager *)self _fetchCurrentStyleConfiguration];
+  if (!_fetchCurrentStyleConfiguration)
   {
     getPUIMutableStylePickerHomeScreenConfigurationClass();
     v4 = objc_opt_new();
-    v5 = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
+    iconTintColor = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
 
-    if (v5)
+    if (iconTintColor)
     {
-      v6 = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
-      [v4 setAccentColor:v6];
+      iconTintColor2 = [(SBHomeScreenDefaults *)self->_homeScreenDefaults iconTintColor];
+      [v4 setAccentColor:iconTintColor2];
 
       [v4 setStyleType:3];
     }
 
-    v3 = [v4 copy];
+    _fetchCurrentStyleConfiguration = [v4 copy];
   }
 
-  v7 = [(SBHIconManager *)self interfaceOrientation];
+  interfaceOrientation = [(SBHIconManager *)self interfaceOrientation];
   v8 = [[SBHDefaultIconListLayoutProvider alloc] initWithLayoutOptions:0];
   v9 = [(SBHDefaultIconListLayoutProvider *)v8 layoutForIconLocation:@"SBIconLocationRoot"];
   [v9 iconImageInfo];
@@ -27731,39 +27731,39 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
   v13 = v12;
   [v9 iconImageInfo];
   v42 = v14;
-  v15 = SBHIconListLayoutListIconSpacing(v9, v7);
+  v15 = SBHIconListLayoutListIconSpacing(v9, interfaceOrientation);
   v17 = v16;
-  [v9 layoutInsetsForOrientation:v7];
+  [v9 layoutInsetsForOrientation:interfaceOrientation];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  [v3 layoutInsets];
+  [_fetchCurrentStyleConfiguration layoutInsets];
   v32 = v29 == v21 && v26 == v19 && v28 == v25 && v27 == v23;
-  if (!v32 || (([v3 iconSpacing], v34 == v15) ? (v35 = v33 == v17) : (v35 = 0), !v35 || ((objc_msgSend(v3, "iconSize"), v37 == v11) ? (v38 = v36 == v13) : (v38 = 0), !v38 || (objc_msgSend(v3, "iconContinuousCornerRadius"), (BSFloatEqualToFloat() & 1) == 0))))
+  if (!v32 || (([_fetchCurrentStyleConfiguration iconSpacing], v34 == v15) ? (v35 = v33 == v17) : (v35 = 0), !v35 || ((objc_msgSend(_fetchCurrentStyleConfiguration, "iconSize"), v37 == v11) ? (v38 = v36 == v13) : (v38 = 0), !v38 || (objc_msgSend(_fetchCurrentStyleConfiguration, "iconContinuousCornerRadius"), (BSFloatEqualToFloat() & 1) == 0))))
   {
-    v39 = [v3 mutableCopy];
+    v39 = [_fetchCurrentStyleConfiguration mutableCopy];
     [v39 setIconSize:{v11, v13}];
     [v39 setIconContinuousCornerRadius:v42];
     [v39 setLayoutInsets:{v19, v21, v23, v25}];
     [v39 setIconSpacing:{v15, v17}];
     v40 = [v39 copy];
 
-    v3 = v40;
+    _fetchCurrentStyleConfiguration = v40;
   }
 
-  return v3;
+  return _fetchCurrentStyleConfiguration;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [(SBHIconManager *)self homeScreenSettings];
+  settingsCopy = settings;
+  keyCopy = key;
+  homeScreenSettings = [(SBHIconManager *)self homeScreenSettings];
 
-  if (v7 == v20)
+  if (homeScreenSettings == settingsCopy)
   {
-    if ([v6 isEqualToString:@"usesMinimumViableHomeScreen"])
+    if ([keyCopy isEqualToString:@"usesMinimumViableHomeScreen"])
     {
       [(SBHIconManager *)self tearDownAndResetRootIconLists];
     }
@@ -27771,16 +27771,16 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
 
   else
   {
-    v8 = [(SBHIconManager *)self rootFolderSettings];
+    rootFolderSettings = [(SBHIconManager *)self rootFolderSettings];
 
-    if (v8 == v20)
+    if (rootFolderSettings == settingsCopy)
     {
-      v12 = [(SBHIconManager *)self rootFolderSettings];
-      if ([v6 isEqualToString:@"adjustableLayoutEnabled"])
+      rootFolderSettings2 = [(SBHIconManager *)self rootFolderSettings];
+      if ([keyCopy isEqualToString:@"adjustableLayoutEnabled"])
       {
-        v13 = [v12 isAdjustableLayoutEnabled];
+        isAdjustableLayoutEnabled = [rootFolderSettings2 isAdjustableLayoutEnabled];
         v14 = off_1E8086BC0;
-        if (!v13)
+        if (!isAdjustableLayoutEnabled)
         {
           v14 = off_1E8086CC8;
         }
@@ -27789,7 +27789,7 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
         [(SBHIconManager *)self setListLayoutProvider:v15];
       }
 
-      else if ([v12 shouldRebuildLayoutOnChangesToValueForKey:v6] && objc_msgSend(v12, "isAdjustableLayoutEnabled"))
+      else if ([rootFolderSettings2 shouldRebuildLayoutOnChangesToValueForKey:keyCopy] && objc_msgSend(rootFolderSettings2, "isAdjustableLayoutEnabled"))
       {
         [(SBHIconManager *)self tearDownAndResetRootIconLists];
       }
@@ -27797,28 +27797,28 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
 
     else
     {
-      v9 = [(SBHIconManager *)self badgeParallaxSettings];
+      badgeParallaxSettings = [(SBHIconManager *)self badgeParallaxSettings];
 
-      if (v9 == v20)
+      if (badgeParallaxSettings == settingsCopy)
       {
         [(SBHIconManager *)self enumerateKnownIconViewsUsingBlock:&__block_literal_global_1168];
       }
 
       else
       {
-        v10 = [(SBHIconManager *)self widgetIntroductionSettings];
+        widgetIntroductionSettings = [(SBHIconManager *)self widgetIntroductionSettings];
 
-        if (v10 == v20)
+        if (widgetIntroductionSettings == settingsCopy)
         {
-          if ([v6 isEqualToString:@"showWidgetIntroConvenienceControl"])
+          if ([keyCopy isEqualToString:@"showWidgetIntroConvenienceControl"])
           {
             if ([(SBHIconManager *)self prototypeSettingShowWidgetIntroduction])
             {
-              v16 = [(SBHIconManager *)self homeScreenDefaults];
-              [v16 setShouldAddDefaultWidgetsToHomeScreen:1];
+              homeScreenDefaults = [(SBHIconManager *)self homeScreenDefaults];
+              [homeScreenDefaults setShouldAddDefaultWidgetsToHomeScreen:1];
 
-              v17 = [(SBHIconManager *)self homeScreenDefaults];
-              [v17 setShouldShowWidgetIntroductionPopover:1];
+              homeScreenDefaults2 = [(SBHIconManager *)self homeScreenDefaults];
+              [homeScreenDefaults2 setShouldShowWidgetIntroductionPopover:1];
 
               if (![(SBHIconManager *)self rootFolderContainsWidgets])
               {
@@ -27826,11 +27826,11 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
                 [(SBHIconManager *)self addDefaultSecondPageWidgetsToHomeScreen:0];
               }
 
-              v18 = [(SBHIconManager *)self homeScreenDefaults];
-              [v18 setShouldAddDefaultWidgetsToHomeScreen:0];
+              homeScreenDefaults3 = [(SBHIconManager *)self homeScreenDefaults];
+              [homeScreenDefaults3 setShouldAddDefaultWidgetsToHomeScreen:0];
 
-              v19 = [(SBHIconManager *)self homeScreenDefaults];
-              [v19 setShouldShowWidgetIntroductionPopover:0];
+              homeScreenDefaults4 = [(SBHIconManager *)self homeScreenDefaults];
+              [homeScreenDefaults4 setShouldShowWidgetIntroductionPopover:0];
             }
 
             else
@@ -27839,7 +27839,7 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
             }
           }
 
-          else if ([v6 isEqualToString:@"showXLTVWidget"])
+          else if ([keyCopy isEqualToString:@"showXLTVWidget"])
           {
             if ([(SBHIconManager *)self prototypeSettingShowExtraLargeTVWidget])
             {
@@ -27855,9 +27855,9 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
 
         else
         {
-          v11 = [(SBHIconManager *)self legibilityLabelSettings];
+          legibilityLabelSettings = [(SBHIconManager *)self legibilityLabelSettings];
 
-          if (v11 == v20)
+          if (legibilityLabelSettings == settingsCopy)
           {
             [(SBIconLabelImageCache *)self->_labelImageCache removeAllObjects];
             [(SBHIconManager *)self _updateLegibilitySettings];
@@ -27868,26 +27868,26 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v5 = [v4 appendBool:-[SBHIconManager isEditing](self withName:{"isEditing"), @"isEditing"}];
-  v6 = [(SBHIconManager *)self iconModel];
-  v7 = [v4 appendObject:v6 withName:@"model"];
+  iconModel = [(SBHIconManager *)self iconModel];
+  v7 = [v4 appendObject:iconModel withName:@"model"];
 
-  v8 = [(SBHIconManager *)self listLayoutProvider];
-  v9 = [v4 appendObject:v8 withName:@"listLayoutProvider"];
+  listLayoutProvider = [(SBHIconManager *)self listLayoutProvider];
+  v9 = [v4 appendObject:listLayoutProvider withName:@"listLayoutProvider"];
 
-  v10 = [(SBHIconManager *)self rootViewController];
-  v11 = [v4 appendObject:v10 withName:@"rootViewController"];
+  rootViewController = [(SBHIconManager *)self rootViewController];
+  v11 = [v4 appendObject:rootViewController withName:@"rootViewController"];
 
   v12 = [v4 appendObject:self->_touchedIconViews withName:@"touchedIconViews" skipIfNil:1];
   v13 = [v4 appendBool:-[SBHIconManager isIconDragging](self withName:"isIconDragging") ifEqualTo:{@"isIconDragging", 1}];
@@ -27902,10 +27902,10 @@ void __91__SBHIconManager_enumerateViewsToUpdateDuringColorPickingUsingListViewB
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)_setupStateCaptureHandleIfNeeded
@@ -27945,14 +27945,14 @@ id __50__SBHIconManager__setupStateCaptureHandleIfNeeded__block_invoke(uint64_t 
 {
   v20 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(SBHIconManager *)self rootFolder];
-  [v3 bs_safeAddObject:v4];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  [v3 bs_safeAddObject:rootFolder];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(SBHIconManager *)self _libraryViewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _libraryViewControllers = [(SBHIconManager *)self _libraryViewControllers];
+  v6 = [_libraryViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -27963,14 +27963,14 @@ id __50__SBHIconManager__setupStateCaptureHandleIfNeeded__block_invoke(uint64_t 
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_libraryViewControllers);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) categoriesRootFolder];
-        [v3 bs_safeAddObject:v10];
+        categoriesRootFolder = [*(*(&v15 + 1) + 8 * i) categoriesRootFolder];
+        [v3 bs_safeAddObject:categoriesRootFolder];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [_libraryViewControllers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -27987,18 +27987,18 @@ id __50__SBHIconManager__setupStateCaptureHandleIfNeeded__block_invoke(uint64_t 
   return v12;
 }
 
-- (id)_dumpRootFolderForStateCapture:(id)a3
+- (id)_dumpRootFolderForStateCapture:(id)capture
 {
-  v4 = a3;
-  v5 = [v4 badgeBehaviorProvider];
+  captureCopy = capture;
+  badgeBehaviorProvider = [captureCopy badgeBehaviorProvider];
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), v5];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>", objc_opt_class(), badgeBehaviorProvider];
   [v6 setObject:v7 forKeyedSubscript:@"delegate"];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v5 != 0];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:badgeBehaviorProvider != 0];
   [v6 setObject:v8 forKeyedSubscript:@"delegate supports badge checking"];
 
-  if (v5)
+  if (badgeBehaviorProvider)
   {
     v9 = objc_opt_new();
     v14[0] = MEMORY[0x1E69E9820];
@@ -28008,12 +28008,12 @@ id __50__SBHIconManager__setupStateCaptureHandleIfNeeded__block_invoke(uint64_t 
     v14[4] = self;
     v15 = v9;
     v10 = v9;
-    [v4 enumerateAllIconsWithOptions:1 usingBlock:v14];
+    [captureCopy enumerateAllIconsWithOptions:1 usingBlock:v14];
     v11 = [v10 copy];
     [v6 setObject:v11 forKeyedSubscript:@"icons supporting badges"];
   }
 
-  v12 = [v4 description];
+  v12 = [captureCopy description];
   [v6 setObject:v12 forKeyedSubscript:@"description"];
 
   return v6;
@@ -28033,8 +28033,8 @@ void __49__SBHIconManager__dumpRootFolderForStateCapture___block_invoke(uint64_t
 - (void)updateIconViewAccessoryVisibility
 {
   [(SBHIconManager *)self refreshAppPredictionBadges];
-  v3 = [(SBHIconManager *)self rootFolder];
-  [v3 enumerateAllIconsWithOptions:1 usingBlock:&__block_literal_global_1221];
+  rootFolder = [(SBHIconManager *)self rootFolder];
+  [rootFolder enumerateAllIconsWithOptions:1 usingBlock:&__block_literal_global_1221];
 }
 
 void __51__SBHIconManager_updateIconViewAccessoryVisibility__block_invoke(uint64_t a1, void *a2)
@@ -28046,84 +28046,84 @@ void __51__SBHIconManager_updateIconViewAccessoryVisibility__block_invoke(uint64
   }
 }
 
-- (void)resizeGestureHandler:(id)a3 didFinishWithGridSizeClass:(id)a4
+- (void)resizeGestureHandler:(id)handler didFinishWithGridSizeClass:(id)class
 {
-  v9 = a4;
-  v6 = [a3 iconView];
-  v7 = [v6 icon];
-  v8 = [v7 gridSizeClass];
-  if ([v7 isWidgetIcon] && v8 != v9 && (objc_msgSend(v8, "isEqualToString:", v9) & 1) == 0)
+  classCopy = class;
+  iconView = [handler iconView];
+  icon = [iconView icon];
+  gridSizeClass = [icon gridSizeClass];
+  if ([icon isWidgetIcon] && gridSizeClass != classCopy && (objc_msgSend(gridSizeClass, "isEqualToString:", classCopy) & 1) == 0)
   {
-    [(SBHIconManager *)self changeSizeOfWidgetIcon:v7 toSizeClass:v9 animated:0 completionHandler:0];
+    [(SBHIconManager *)self changeSizeOfWidgetIcon:icon toSizeClass:classCopy animated:0 completionHandler:0];
   }
 
   [(SBHIconManager *)self _removeReasonToNotResetEndEditingTimer:@"widget resize"];
 }
 
-- (id)resizeGestureHandler:(id)a3 intentForWidget:(id)a4
+- (id)resizeGestureHandler:(id)handler intentForWidget:(id)widget
 {
-  v6 = a4;
-  v7 = [a3 iconView];
-  v8 = [v7 icon];
+  widgetCopy = widget;
+  iconView = [handler iconView];
+  icon = [iconView icon];
 
   v9 = 0;
-  if ([v8 isWidgetIcon] && v8)
+  if ([icon isWidgetIcon] && icon)
   {
-    v9 = [(SBHIconManager *)self _intentForWidget:v6 ofIcon:v8 creatingIfNecessary:1];
+    v9 = [(SBHIconManager *)self _intentForWidget:widgetCopy ofIcon:icon creatingIfNecessary:1];
   }
 
   return v9;
 }
 
-- (id)resizeGestureHandler:(id)a3 viewControllerForIconDataSource:(id)a4 icon:(id)a5 gridSizeClass:(id)a6
+- (id)resizeGestureHandler:(id)handler viewControllerForIconDataSource:(id)source icon:(id)icon gridSizeClass:(id)class
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 iconView];
-  v14 = [v13 location];
-  v15 = [(SBHIconManager *)self _customViewControllerForResizingIcon:v11 gridSizeClass:v10 dataSource:v12 location:v14];
+  classCopy = class;
+  iconCopy = icon;
+  sourceCopy = source;
+  iconView = [handler iconView];
+  location = [iconView location];
+  v15 = [(SBHIconManager *)self _customViewControllerForResizingIcon:iconCopy gridSizeClass:classCopy dataSource:sourceCopy location:location];
 
   return v15;
 }
 
-- (id)iconSizeChangeAnimator:(id)a3 intentForWidget:(id)a4
+- (id)iconSizeChangeAnimator:(id)animator intentForWidget:(id)widget
 {
-  v6 = a4;
-  v7 = [a3 iconView];
-  v8 = [v7 icon];
+  widgetCopy = widget;
+  iconView = [animator iconView];
+  icon = [iconView icon];
 
   v9 = 0;
-  if ([v8 isWidgetIcon] && v8)
+  if ([icon isWidgetIcon] && icon)
   {
-    v9 = [(SBHIconManager *)self _intentForWidget:v6 ofIcon:v8 creatingIfNecessary:1];
+    v9 = [(SBHIconManager *)self _intentForWidget:widgetCopy ofIcon:icon creatingIfNecessary:1];
   }
 
   return v9;
 }
 
-- (id)iconSizeChangeAnimator:(id)a3 viewControllerForIconDataSource:(id)a4 icon:(id)a5 gridSizeClass:(id)a6
+- (id)iconSizeChangeAnimator:(id)animator viewControllerForIconDataSource:(id)source icon:(id)icon gridSizeClass:(id)class
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 iconView];
-  v14 = [v13 location];
-  v15 = [(SBHIconManager *)self _customViewControllerForResizingIcon:v11 gridSizeClass:v10 dataSource:v12 location:v14];
+  classCopy = class;
+  iconCopy = icon;
+  sourceCopy = source;
+  iconView = [animator iconView];
+  location = [iconView location];
+  v15 = [(SBHIconManager *)self _customViewControllerForResizingIcon:iconCopy gridSizeClass:classCopy dataSource:sourceCopy location:location];
 
   return v15;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v5 = a4;
+  subscriptionCopy = subscription;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__SBHIconManager_appProtectionSubjectsChanged_forSubscription___block_invoke;
   v7[3] = &unk_1E8088F18;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = subscriptionCopy;
+  selfCopy = self;
+  v6 = subscriptionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -28200,7 +28200,7 @@ void __63__SBHIconManager_appProtectionSubjectsChanged_forSubscription___block_i
 - (void)folderIconImageCache
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 134217984;
   v4 = v2;
   _os_log_debug_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_DEBUG, "Creating new SBFolderIconImageCache: %p", &v3, 0xCu);

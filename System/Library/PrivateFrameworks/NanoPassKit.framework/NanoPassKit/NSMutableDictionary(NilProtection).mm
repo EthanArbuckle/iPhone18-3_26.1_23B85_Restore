@@ -10,12 +10,12 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
   else
   {
-    return [a1 removeObjectForKey:a4];
+    return [self removeObjectForKey:a4];
   }
 }
 
@@ -43,11 +43,11 @@
 + (id)npkDictionaryWithObjectsAndKeys:()NilProtection
 {
   v10 = a3;
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = v10;
   v20 = &a10;
   v13 = a9;
-  if ([MEMORY[0x277CBEB38] _processArgumentWithMutableDictionary:v11 object:v12 key:v13])
+  if ([MEMORY[0x277CBEB38] _processArgumentWithMutableDictionary:dictionary object:v12 key:v13])
   {
     v14 = v12;
     do
@@ -62,7 +62,7 @@
       v13 = v17;
     }
 
-    while (([MEMORY[0x277CBEB38] _processArgumentWithMutableDictionary:v11 object:v15 key:v17] & 1) != 0);
+    while (([MEMORY[0x277CBEB38] _processArgumentWithMutableDictionary:dictionary object:v15 key:v17] & 1) != 0);
   }
 
   else
@@ -71,7 +71,7 @@
     v15 = v12;
   }
 
-  v18 = v11;
+  v18 = dictionary;
 
   return v18;
 }

@@ -1,25 +1,25 @@
 @interface BWPocketDetectionFFTProcessor
 + (int)prewarmShaders;
-- (BWPocketDetectionFFTProcessor)initWithMetalCommandQueue:(id)a3;
-- (int)_loadKernel:(id *)a3 name:(id)a4;
-- (int)_processFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5;
-- (int)_processMetalOptimizedFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5;
+- (BWPocketDetectionFFTProcessor)initWithMetalCommandQueue:(id)queue;
+- (int)_loadKernel:(id *)kernel name:(id)name;
+- (int)_processFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out;
+- (int)_processMetalOptimizedFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out;
 - (int)_setupPipelines;
 - (int)allocateResources;
-- (int)processFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5;
+- (int)processFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out;
 - (void)cleanupResources;
 - (void)dealloc;
 @end
 
 @implementation BWPocketDetectionFFTProcessor
 
-- (BWPocketDetectionFFTProcessor)initWithMetalCommandQueue:(id)a3
+- (BWPocketDetectionFFTProcessor)initWithMetalCommandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = BWPocketDetectionFFTProcessor;
   v4 = [(BWPocketDetectionFFTProcessor *)&v8 init];
   v5 = v4;
-  if (!a3)
+  if (!queue)
   {
     [BWPocketDetectionFFTProcessor initWithMetalCommandQueue:];
     goto LABEL_8;
@@ -27,7 +27,7 @@
 
   if (v4)
   {
-    v4->_metalCommandQueue = a3;
+    v4->_metalCommandQueue = queue;
     v6 = [objc_alloc(MEMORY[0x1E6991778]) initWithbundle:objc_msgSend(MEMORY[0x1E696AAE8] andOptionalCommandQueue:{"bundleForClass:", objc_opt_class()), v5->_metalCommandQueue}];
     v5->_metalContext = v6;
     if (v6)
@@ -76,10 +76,10 @@ LABEL_8:
 
   if (self->_useMetalForScalingAndResultAccumulation)
   {
-    v6 = [(BWPocketDetectionFFTProcessor *)self _setupPipelines];
-    if (v6)
+    _setupPipelines = [(BWPocketDetectionFFTProcessor *)self _setupPipelines];
+    if (_setupPipelines)
     {
-      v12 = v6;
+      v12 = _setupPipelines;
       [BWPocketDetectionFFTProcessor allocateResources];
       return v12;
     }
@@ -192,11 +192,11 @@ LABEL_8:
 
 + (int)prewarmShaders
 {
-  v2 = [MEMORY[0x1E6991778] metalDevice];
-  if (!v2)
+  metalDevice = [MEMORY[0x1E6991778] metalDevice];
+  if (!metalDevice)
   {
     +[BWPocketDetectionFFTProcessor prewarmShaders];
-    v3 = 0;
+    newCommandQueue = 0;
 LABEL_8:
     v5 = 0;
 LABEL_10:
@@ -204,14 +204,14 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v3 = [v2 newCommandQueue];
-  if (!v3)
+  newCommandQueue = [metalDevice newCommandQueue];
+  if (!newCommandQueue)
   {
     +[BWPocketDetectionFFTProcessor prewarmShaders];
     goto LABEL_8;
   }
 
-  v4 = [[BWPocketDetectionFFTProcessor alloc] initWithMetalCommandQueue:v3];
+  v4 = [[BWPocketDetectionFFTProcessor alloc] initWithMetalCommandQueue:newCommandQueue];
   v5 = v4;
   if (!v4)
   {
@@ -227,28 +227,28 @@ LABEL_5:
   return v6;
 }
 
-- (int)processFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5
+- (int)processFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out
 {
   if (self->_useMetalForScalingAndResultAccumulation)
   {
-    [(BWPocketDetectionFFTProcessor *)self _processMetalOptimizedFFTOnInputPixelBuffer:a3 usingSourceRect:a5 cumulativeScoreOut:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(BWPocketDetectionFFTProcessor *)self _processMetalOptimizedFFTOnInputPixelBuffer:buffer usingSourceRect:out cumulativeScoreOut:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 
   else
   {
-    [(BWPocketDetectionFFTProcessor *)self _processFFTOnInputPixelBuffer:a3 usingSourceRect:a5 cumulativeScoreOut:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+    [(BWPocketDetectionFFTProcessor *)self _processFFTOnInputPixelBuffer:buffer usingSourceRect:out cumulativeScoreOut:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 
   return 0;
 }
 
-- (int)_processMetalOptimizedFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5
+- (int)_processMetalOptimizedFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
   v13 = -12780;
   v14 = 10;
   if (PixelFormatType > 796423727)
@@ -376,25 +376,25 @@ LABEL_33:
   }
 
 LABEL_36:
-  v17 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:a3 pixelFormat:v14 usage:17 plane:0];
+  v17 = [(FigMetalContext *)self->_metalContext bindPixelBufferToMTL2DTexture:buffer pixelFormat:v14 usage:17 plane:0];
   fftMetalTexture = self->_fftMetalTexture;
-  v19 = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
-  if (!v19)
+  commandBuffer = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
+  if (!commandBuffer)
   {
     [BWPocketDetectionFFTProcessor _processMetalOptimizedFFTOnInputPixelBuffer:? usingSourceRect:? cumulativeScoreOut:?];
     return v39;
   }
 
-  v20 = v19;
-  v21 = [v19 computeCommandEncoder];
-  if (!v21)
+  v20 = commandBuffer;
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     [BWPocketDetectionFFTProcessor _processMetalOptimizedFFTOnInputPixelBuffer:? usingSourceRect:? cumulativeScoreOut:?];
     return v39;
   }
 
-  v22 = v21;
-  [v21 setComputePipelineState:self->_computePipelines[0]];
+  v22 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[0]];
   [v22 setTexture:v17 atIndex:0];
   [v22 setTexture:fftMetalTexture atIndex:1];
   if (height >= width)
@@ -424,13 +424,13 @@ LABEL_36:
   v41 = vcvts_n_f32_s32(v24, 0xAuLL);
   [v22 setBytes:&v42 length:8 atIndex:0];
   [v22 setBytes:&v41 length:4 atIndex:1];
-  v27 = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
-  v28 = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup];
-  *&v39 = (v27 + 2047) / v27;
-  *(&v39 + 1) = (v28 / v27 + 1023) / (v28 / v27);
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_computePipelines[0] threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_computePipelines[0] maxTotalThreadsPerThreadgroup];
+  *&v39 = (threadExecutionWidth + 2047) / threadExecutionWidth;
+  *(&v39 + 1) = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + 1023) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
   v40 = 1;
-  v37.i64[0] = v27;
-  v37.i64[1] = v28 / v27;
+  v37.i64[0] = threadExecutionWidth;
+  v37.i64[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   v38 = 1;
   [v22 dispatchThreadgroups:&v39 threadsPerThreadgroup:&v37];
   [v22 endEncoding];
@@ -442,18 +442,18 @@ LABEL_36:
 
   else
   {
-    v29 = [v20 computeCommandEncoder];
-    [v29 setComputePipelineState:self->_computePipelines[1]];
-    [v29 setTexture:self->_fftMetalTexture atIndex:0];
-    [v29 setTexture:self->_fftResultAccumulationMetalTexture atIndex:1];
+    computeCommandEncoder2 = [v20 computeCommandEncoder];
+    [computeCommandEncoder2 setComputePipelineState:self->_computePipelines[1]];
+    [computeCommandEncoder2 setTexture:self->_fftMetalTexture atIndex:0];
+    [computeCommandEncoder2 setTexture:self->_fftResultAccumulationMetalTexture atIndex:1];
     v36 = 1024;
-    [v29 setBytes:&v36 length:4 atIndex:0];
+    [computeCommandEncoder2 setBytes:&v36 length:4 atIndex:0];
     v39 = xmmword_1ACF06140;
     v40 = 1;
     v37 = vdupq_n_s64(0x20uLL);
     v38 = 1;
-    [v29 dispatchThreadgroups:&v39 threadsPerThreadgroup:&v37];
-    [v29 endEncoding];
+    [computeCommandEncoder2 dispatchThreadgroups:&v39 threadsPerThreadgroup:&v37];
+    [computeCommandEncoder2 endEncoding];
     [v20 commit];
     [v20 waitUntilCompleted];
     v30 = [-[MTLTexture buffer](self->_fftResultAccumulationMetalTexture "buffer")];
@@ -471,19 +471,19 @@ LABEL_36:
     }
 
     while (v31 != 16);
-    *a5 = v32;
+    *out = v32;
   }
 
   return v13;
 }
 
-- (int)_processFFTOnInputPixelBuffer:(__CVBuffer *)a3 usingSourceRect:(CGRect)a4 cumulativeScoreOut:(float *)a5
+- (int)_processFFTOnInputPixelBuffer:(__CVBuffer *)buffer usingSourceRect:(CGRect)rect cumulativeScoreOut:(float *)out
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = [(BWPixelBufferPool *)self->_fftBufferPool newPixelBuffer];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  newPixelBuffer = [(BWPixelBufferPool *)self->_fftBufferPool newPixelBuffer];
   v36.origin.x = x;
   v36.origin.y = y;
   v36.size.width = width;
@@ -494,8 +494,8 @@ LABEL_36:
   v37.size.width = width;
   v37.size.height = height;
   CGRectGetMidY(v37);
-  CVPixelBufferGetWidth(v11);
-  CVPixelBufferGetHeight(v11);
+  CVPixelBufferGetWidth(newPixelBuffer);
+  CVPixelBufferGetHeight(newPixelBuffer);
   v12 = VTPixelRotationSessionRotateSubImage();
   if (v12)
   {
@@ -505,11 +505,11 @@ LABEL_36:
 
   else
   {
-    v13 = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
-    if (v13)
+    commandBuffer = [(MTLCommandQueue *)self->_metalCommandQueue commandBuffer];
+    if (commandBuffer)
     {
-      v14 = v13;
-      v15 = CVPixelBufferLockBaseAddress(v11, 1uLL);
+      v14 = commandBuffer;
+      v15 = CVPixelBufferLockBaseAddress(newPixelBuffer, 1uLL);
       if (v15)
       {
         v24 = v15;
@@ -518,11 +518,11 @@ LABEL_36:
 
       else
       {
-        v16 = [(MTLBuffer *)self->_fftMetalBuffer contents];
-        BaseAddress = CVPixelBufferGetBaseAddress(v11);
-        BytesPerRow = CVPixelBufferGetBytesPerRow(v11);
+        contents = [(MTLBuffer *)self->_fftMetalBuffer contents];
+        BaseAddress = CVPixelBufferGetBaseAddress(newPixelBuffer);
+        BytesPerRow = CVPixelBufferGetBytesPerRow(newPixelBuffer);
         v20 = 0;
-        v21 = (v16 + 4);
+        v21 = (contents + 4);
         do
         {
           v22 = 0;
@@ -544,7 +544,7 @@ LABEL_36:
         }
 
         while (v20 != 1024);
-        CVPixelBufferUnlockBaseAddress(v11, 1uLL);
+        CVPixelBufferUnlockBaseAddress(newPixelBuffer, 1uLL);
         v24 = [(CMIFFTTransform *)self->_fftTransform encodeToCommandBuffer:v14 inputBuffer:self->_fftMetalBuffer direction:1];
         if (v24)
         {
@@ -556,8 +556,8 @@ LABEL_36:
           [v14 commit];
           [v14 waitUntilCompleted];
           v25 = 0;
-          v26 = (v16 + 8188);
-          v27 = (v16 + 4);
+          v26 = (contents + 8188);
+          v27 = (contents + 4);
           v28 = 0.0;
           do
           {
@@ -590,7 +590,7 @@ LABEL_36:
           }
 
           while (v25 != 512);
-          *a5 = v28;
+          *out = v28;
         }
       }
     }
@@ -602,7 +602,7 @@ LABEL_36:
     }
   }
 
-  CVPixelBufferRelease(v11);
+  CVPixelBufferRelease(newPixelBuffer);
   return v24;
 }
 
@@ -630,7 +630,7 @@ LABEL_36:
   return v7;
 }
 
-- (int)_loadKernel:(id *)a3 name:(id)a4
+- (int)_loadKernel:(id *)kernel name:(id)name
 {
   v6 = [-[FigMetalContext library](self->_metalContext "library")];
   if (v6)
@@ -640,7 +640,7 @@ LABEL_36:
     {
       v8 = v7;
       result = 0;
-      *a3 = v8;
+      *kernel = v8;
       return result;
     }
 

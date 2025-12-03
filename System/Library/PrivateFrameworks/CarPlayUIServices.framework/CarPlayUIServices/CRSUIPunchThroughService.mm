@@ -1,28 +1,28 @@
 @interface CRSUIPunchThroughService
-- (CRSUIPunchThroughService)initWithDelegate:(id)a3;
+- (CRSUIPunchThroughService)initWithDelegate:(id)delegate;
 - (CRSUIPunchThroughServiceDelegate)delegate;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)clientRequestDismissalForPunchThroughIdentifier:(id)a3 completion:(id)a4;
-- (void)clientRequestPresentationForPunchThroughIdentifier:(id)a3 completion:(id)a4;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)clientRequestDismissalForPunchThroughIdentifier:(id)identifier completion:(id)completion;
+- (void)clientRequestPresentationForPunchThroughIdentifier:(id)identifier completion:(id)completion;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)punchThroughIdentifierDidDismiss:(id)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)punchThroughIdentifierDidDismiss:(id)dismiss;
 @end
 
 @implementation CRSUIPunchThroughService
 
-- (CRSUIPunchThroughService)initWithDelegate:(id)a3
+- (CRSUIPunchThroughService)initWithDelegate:(id)delegate
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = CRSUIPunchThroughService;
   v5 = [(CRSUIPunchThroughService *)&v23 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_lock._os_unfair_lock_opaque = 0;
     Serial = BSDispatchQueueCreateSerial();
     connectionQueue = v6->_connectionQueue;
@@ -32,9 +32,9 @@
     connections = v6->_connections;
     v6->_connections = v9;
 
-    v11 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     connectionToPunchThroughIdentifierMap = v6->_connectionToPunchThroughIdentifierMap;
-    v6->_connectionToPunchThroughIdentifierMap = v11;
+    v6->_connectionToPunchThroughIdentifierMap = strongToStrongObjectsMapTable;
 
     v13 = MEMORY[0x277CF32A0];
     v21[0] = MEMORY[0x277D85DD0];
@@ -73,10 +73,10 @@ void __45__CRSUIPunchThroughService_initWithDelegate___block_invoke(uint64_t a1,
   [v4 setDelegate:*(a1 + 32)];
 }
 
-- (void)punchThroughIdentifierDidDismiss:(id)a3
+- (void)punchThroughIdentifierDidDismiss:(id)dismiss
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dismissCopy = dismiss;
   os_unfair_lock_lock(&self->_lock);
   v16 = 0u;
   v17 = 0u;
@@ -98,7 +98,7 @@ void __45__CRSUIPunchThroughService_initWithDelegate___block_invoke(uint64_t a1,
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [(NSMapTable *)self->_connectionToPunchThroughIdentifierMap objectForKey:v9, v14];
-        if ([v10 isEqual:v4])
+        if ([v10 isEqual:dismissCopy])
         {
           v6 = v9;
 
@@ -125,14 +125,14 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v19 = v4;
+      v19 = dismissCopy;
       v20 = 2114;
       v21 = v6;
       _os_log_impl(&dword_243218000, v11, OS_LOG_TYPE_DEFAULT, "Punch through %{public}@ dismissed by server, informing client %{public}@", buf, 0x16u);
     }
 
-    v12 = [v6 remoteTarget];
-    [v12 serverDismissedPunchThroughIdentifier:v4];
+    remoteTarget = [v6 remoteTarget];
+    [remoteTarget serverDismissedPunchThroughIdentifier:dismissCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -147,26 +147,26 @@ LABEL_11:
     _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating service", v5, 2u);
   }
 
-  v4 = [(CRSUIPunchThroughService *)self listener];
-  [v4 invalidate];
+  listener = [(CRSUIPunchThroughService *)self listener];
+  [listener invalidate];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = CRSUILogForCategory(5uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v29 = v9;
+    v29 = connectionCopy;
     _os_log_impl(&dword_243218000, v11, OS_LOG_TYPE_INFO, "Received connection! %@", buf, 0xCu);
   }
 
-  v12 = [v9 remoteProcess];
-  v13 = [v12 hasEntitlement:@"com.apple.private.CarPlayUIServices.punch-through"];
+  remoteProcess = [connectionCopy remoteProcess];
+  v13 = [remoteProcess hasEntitlement:@"com.apple.private.CarPlayUIServices.punch-through"];
 
   if (v13)
   {
@@ -176,24 +176,24 @@ LABEL_11:
     v25[2] = __70__CRSUIPunchThroughService_listener_didReceiveConnection_withContext___block_invoke;
     v25[3] = &unk_278DA0CF0;
     objc_copyWeak(&v26, &location);
-    [v9 configureConnection:v25];
+    [connectionCopy configureConnection:v25];
     v14 = CRSUILogForCategory(5uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v9;
+      v29 = connectionCopy;
       _os_log_impl(&dword_243218000, v14, OS_LOG_TYPE_DEFAULT, "Activating connection... %@", buf, 0xCu);
     }
 
-    v15 = [(CRSUIPunchThroughService *)self connectionQueue];
+    connectionQueue = [(CRSUIPunchThroughService *)self connectionQueue];
     v19 = MEMORY[0x277D85DD0];
     v20 = 3221225472;
     v21 = __70__CRSUIPunchThroughService_listener_didReceiveConnection_withContext___block_invoke_13;
     v22 = &unk_278DA0D18;
-    v23 = self;
-    v16 = v9;
+    selfCopy = self;
+    v16 = connectionCopy;
     v24 = v16;
-    dispatch_async(v15, &v19);
+    dispatch_async(connectionQueue, &v19);
 
     [v16 activate];
     objc_destroyWeak(&v26);
@@ -205,10 +205,10 @@ LABEL_11:
     v17 = CRSUILogForCategory(5uLL);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CRSUIPunchThroughService listener:v9 didReceiveConnection:v17 withContext:?];
+      [CRSUIPunchThroughService listener:connectionCopy didReceiveConnection:v17 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -252,17 +252,17 @@ void __70__CRSUIPunchThroughService_listener_didReceiveConnection_withContext___
   [WeakRetained _connectionQueue_removeConnection:v3];
 }
 
-- (void)clientRequestPresentationForPunchThroughIdentifier:(id)a3 completion:(id)a4
+- (void)clientRequestPresentationForPunchThroughIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSUIPunchThroughService *)self connectionQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  connectionQueue = [(CRSUIPunchThroughService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [MEMORY[0x277CF3280] currentContext];
-  v10 = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
-  [v10 setObject:v6 forKey:v9];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  connectionToPunchThroughIdentifierMap = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
+  [connectionToPunchThroughIdentifierMap setObject:identifierCopy forKey:currentContext];
 
   os_unfair_lock_unlock(&self->_lock);
   v12[0] = MEMORY[0x277D85DD0];
@@ -270,10 +270,10 @@ void __70__CRSUIPunchThroughService_listener_didReceiveConnection_withContext___
   v12[2] = __90__CRSUIPunchThroughService_clientRequestPresentationForPunchThroughIdentifier_completion___block_invoke;
   v12[3] = &unk_278DA0D18;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = identifierCopy;
+  v11 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 void __90__CRSUIPunchThroughService_clientRequestPresentationForPunchThroughIdentifier_completion___block_invoke(uint64_t a1)
@@ -282,17 +282,17 @@ void __90__CRSUIPunchThroughService_clientRequestPresentationForPunchThroughIden
   [v2 punchThroughService:*(a1 + 32) presentPunchThroughWithIdentifier:*(a1 + 40)];
 }
 
-- (void)clientRequestDismissalForPunchThroughIdentifier:(id)a3 completion:(id)a4
+- (void)clientRequestDismissalForPunchThroughIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRSUIPunchThroughService *)self connectionQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  connectionQueue = [(CRSUIPunchThroughService *)self connectionQueue];
   BSDispatchQueueAssert();
 
   os_unfair_lock_lock(&self->_lock);
-  v9 = [MEMORY[0x277CF3280] currentContext];
-  v10 = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
-  [v10 removeObjectForKey:v9];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  connectionToPunchThroughIdentifierMap = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
+  [connectionToPunchThroughIdentifierMap removeObjectForKey:currentContext];
 
   os_unfair_lock_unlock(&self->_lock);
   v12[0] = MEMORY[0x277D85DD0];
@@ -300,10 +300,10 @@ void __90__CRSUIPunchThroughService_clientRequestPresentationForPunchThroughIden
   v12[2] = __87__CRSUIPunchThroughService_clientRequestDismissalForPunchThroughIdentifier_completion___block_invoke;
   v12[3] = &unk_278DA0D18;
   v12[4] = self;
-  v13 = v6;
-  v11 = v6;
+  v13 = identifierCopy;
+  v11 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v12);
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 void __87__CRSUIPunchThroughService_clientRequestDismissalForPunchThroughIdentifier_completion___block_invoke(uint64_t a1)
@@ -312,23 +312,23 @@ void __87__CRSUIPunchThroughService_clientRequestDismissalForPunchThroughIdentif
   [v2 punchThroughService:*(a1 + 32) dismissPunchThroughWithIdentifier:*(a1 + 40)];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSUIPunchThroughService *)self connections];
-  [v5 addObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSUIPunchThroughService *)self connections];
+  [connections addObject:connectionCopy];
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSUIPunchThroughService *)self connections];
-  [v5 removeObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSUIPunchThroughService *)self connections];
+  [connections removeObject:connectionCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  v6 = [MEMORY[0x277CF3280] currentContext];
-  v7 = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
-  v8 = [v7 objectForKey:v6];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  connectionToPunchThroughIdentifierMap = [(CRSUIPunchThroughService *)self connectionToPunchThroughIdentifierMap];
+  v8 = [connectionToPunchThroughIdentifierMap objectForKey:currentContext];
 
   if (v8)
   {

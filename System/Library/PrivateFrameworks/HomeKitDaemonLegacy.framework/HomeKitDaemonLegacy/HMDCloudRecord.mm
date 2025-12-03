@@ -1,11 +1,11 @@
 @interface HMDCloudRecord
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)encodeObjectChange:(id)a3;
+- (BOOL)encodeObjectChange:(id)change;
 - (CKRecord)record;
 - (CKRecordID)recordID;
 - (HMDCloudRecord)init;
-- (HMDCloudRecord)initWithObjectID:(id)a3 recordName:(id)a4 cloudZone:(id)a5;
+- (HMDCloudRecord)initWithObjectID:(id)d recordName:(id)name cloudZone:(id)zone;
 - (HMDCloudZone)cloudZone;
 - (id)description;
 - (id)extractObjectChange;
@@ -24,11 +24,11 @@
 
 - (void)clearData
 {
-  v3 = [(HMDCloudRecord *)self record];
-  [v3 setObject:0 forKeyedSubscript:@"k00"];
+  record = [(HMDCloudRecord *)self record];
+  [record setObject:0 forKeyedSubscript:@"k00"];
 
-  v4 = [(HMDCloudRecord *)self record];
-  [v4 setObject:0 forKeyedSubscript:@"k01"];
+  record2 = [(HMDCloudRecord *)self record];
+  [record2 setObject:0 forKeyedSubscript:@"k01"];
 }
 
 - (CKRecord)record
@@ -38,28 +38,28 @@
   if (!record)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HMDCloudRecord *)v5 recordType];
+      recordType = [(HMDCloudRecord *)selfCopy recordType];
       v16 = 138543618;
       v17 = v7;
       v18 = 2112;
-      v19 = v8;
+      v19 = recordType;
       _os_log_impl(&dword_2531F8000, v6, OS_LOG_TYPE_INFO, "%{public}@Allocating new %@ record since we don't have one", &v16, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
     v9 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v10 = [(HMDCloudRecord *)v5 recordType];
-    v11 = [(HMDCloudRecord *)v5 recordID];
-    v12 = [v9 initWithRecordType:v10 recordID:v11];
+    recordType2 = [(HMDCloudRecord *)selfCopy recordType];
+    recordID = [(HMDCloudRecord *)selfCopy recordID];
+    v12 = [v9 initWithRecordType:recordType2 recordID:recordID];
     v13 = self->_record;
     self->_record = v12;
 
-    v5->_recordCreated = 1;
+    selfCopy->_recordCreated = 1;
     record = self->_record;
   }
 
@@ -73,14 +73,14 @@
   recordID = self->_recordID;
   if (!recordID)
   {
-    v4 = [(HMDCloudRecord *)self cloudZone];
-    if (v4)
+    cloudZone = [(HMDCloudRecord *)self cloudZone];
+    if (cloudZone)
     {
       v5 = objc_alloc(MEMORY[0x277CBC5D0]);
-      v6 = [(HMDCloudRecord *)self recordName];
-      v7 = [v4 zone];
-      v8 = [v7 zoneID];
-      v9 = [v5 initWithRecordName:v6 zoneID:v8];
+      recordName = [(HMDCloudRecord *)self recordName];
+      v7 = [cloudZone zone];
+      zoneID = [v7 zoneID];
+      v9 = [v5 initWithRecordName:recordName zoneID:zoneID];
       v10 = self->_recordID;
       self->_recordID = v9;
     }
@@ -91,14 +91,14 @@
   return recordID;
 }
 
-- (BOOL)encodeObjectChange:(id)a3
+- (BOOL)encodeObjectChange:(id)change
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  changeCopy = change;
+  v5 = changeCopy;
   if (self)
   {
-    v6 = v4;
+    v6 = changeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,17 +114,17 @@
 
     if (v8)
     {
-      v9 = [v8 downloadSize];
-      if (v9)
+      downloadSize = [v8 downloadSize];
+      if (downloadSize)
       {
-        v10 = v9;
-        v11 = [v8 downloadSize];
-        v12 = [v11 isEqual:&unk_286629D10];
+        v10 = downloadSize;
+        downloadSize2 = [v8 downloadSize];
+        v12 = [downloadSize2 isEqual:&unk_286629D10];
 
         if (v12)
         {
           v13 = objc_autoreleasePoolPush();
-          v14 = self;
+          selfCopy = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
@@ -138,7 +138,7 @@
 
           objc_autoreleasePoolPop(v13);
           v17 = objc_autoreleasePoolPush();
-          v18 = v14;
+          v18 = selfCopy;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -167,7 +167,7 @@ LABEL_18:
   if (v22)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy2 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -183,11 +183,11 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v28 = [(HMDCloudRecord *)self cachedData];
-  v29 = [v28 hmd_compressedData];
+  cachedData = [(HMDCloudRecord *)self cachedData];
+  hmd_compressedData = [cachedData hmd_compressedData];
 
   v49 = 0;
-  v30 = [HMDPersistentStore encryptDataWithControllerKey:v29 error:&v49];
+  v30 = [HMDPersistentStore encryptDataWithControllerKey:hmd_compressedData error:&v49];
   v31 = v49;
   v27 = v30 != 0;
   if (v30)
@@ -202,14 +202,14 @@ LABEL_18:
       v54[0] = v33;
       v34 = +[HMDBackingStore currentDevice];
       [v34 identifier];
-      v48 = v29;
+      v48 = hmd_compressedData;
       v36 = v35 = v31;
-      v37 = [v36 UUIDString];
-      v54[1] = v37;
+      uUIDString = [v36 UUIDString];
+      v54[1] = uUIDString;
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:v53 count:2];
 
       v31 = v35;
-      v29 = v48;
+      hmd_compressedData = v48;
     }
 
     else
@@ -223,17 +223,17 @@ LABEL_18:
     }
 
     v43 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v38 requiringSecureCoding:1 error:0];
-    v44 = [(HMDCloudRecord *)self record];
-    [v44 setObject:v43 forKeyedSubscript:@"k00"];
+    record = [(HMDCloudRecord *)self record];
+    [record setObject:v43 forKeyedSubscript:@"k00"];
 
-    v45 = [(HMDCloudRecord *)self record];
-    [v45 setObject:v30 forKeyedSubscript:@"k01"];
+    record2 = [(HMDCloudRecord *)self record];
+    [record2 setObject:v30 forKeyedSubscript:@"k01"];
   }
 
   else
   {
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy3 = self;
     v41 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -246,7 +246,7 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v39);
-    [(HMDCloudRecord *)v40 setEncryptionFailed:1];
+    [(HMDCloudRecord *)selfCopy3 setEncryptionFailed:1];
   }
 
 LABEL_28:
@@ -257,8 +257,8 @@ LABEL_28:
 - (id)extractObjectChange
 {
   v82[3] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCloudRecord *)self cachedData];
-  if (v3)
+  cachedData = [(HMDCloudRecord *)self cachedData];
+  if (cachedData)
   {
 
 LABEL_17:
@@ -278,8 +278,8 @@ LABEL_17:
   v82[2] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:3];
   v7 = [v5 setWithArray:v6];
-  v8 = [(HMDCloudRecord *)self record];
-  v9 = [v8 objectForKeyedSubscript:@"k00"];
+  record = [(HMDCloudRecord *)self record];
+  v9 = [record objectForKeyedSubscript:@"k00"];
   v71 = 0;
   v10 = [v4 unarchivedObjectOfClasses:v7 fromData:v9 error:&v71];
   v11 = v71;
@@ -287,7 +287,7 @@ LABEL_17:
   if (!v10)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -316,13 +316,13 @@ LABEL_17:
 
   v18 = v17;
 
-  v19 = [(HMDCloudRecord *)self record];
-  v20 = [v19 objectForKeyedSubscript:@"k01"];
+  record2 = [(HMDCloudRecord *)self record];
+  v20 = [record2 objectForKeyedSubscript:@"k01"];
 
   if (!v20 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v54 = objc_autoreleasePoolPush();
-    v55 = self;
+    selfCopy2 = self;
     v56 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
     {
@@ -337,7 +337,7 @@ LABEL_17:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = self;
+  selfCopy3 = self;
   v23 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
@@ -356,20 +356,20 @@ LABEL_17:
   v27 = v70;
   if (v26)
   {
-    v28 = [v26 hmd_uncompressedData];
-    [(HMDCloudRecord *)v22 setCachedData:v28];
+    hmd_uncompressedData = [v26 hmd_uncompressedData];
+    [(HMDCloudRecord *)selfCopy3 setCachedData:hmd_uncompressedData];
 
-    v29 = [(HMDCloudRecord *)v22 record];
-    [v29 setObject:0 forKeyedSubscript:@"k00"];
+    record3 = [(HMDCloudRecord *)selfCopy3 record];
+    [record3 setObject:0 forKeyedSubscript:@"k00"];
 
-    v30 = [(HMDCloudRecord *)v22 record];
-    [v30 setObject:0 forKeyedSubscript:@"k01"];
+    record4 = [(HMDCloudRecord *)selfCopy3 record];
+    [record4 setObject:0 forKeyedSubscript:@"k01"];
   }
 
   else
   {
     v60 = objc_autoreleasePoolPush();
-    v61 = v22;
+    v61 = selfCopy3;
     v62 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
     {
@@ -399,12 +399,12 @@ LABEL_38:
   }
 
 LABEL_18:
-  v31 = [(HMDCloudRecord *)self cachedData];
+  cachedData2 = [(HMDCloudRecord *)self cachedData];
 
-  if (!v31)
+  if (!cachedData2)
   {
     v41 = objc_autoreleasePoolPush();
-    v42 = self;
+    selfCopy4 = self;
     v43 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
@@ -418,13 +418,13 @@ LABEL_18:
     goto LABEL_38;
   }
 
-  v32 = [(HMDCloudRecord *)self cachedData];
+  cachedData3 = [(HMDCloudRecord *)self cachedData];
   v69 = 0;
-  v33 = [HMDBackingStoreModelObject objectFromData:v32 encoding:1 error:&v69];
+  v33 = [HMDBackingStoreModelObject objectFromData:cachedData3 encoding:1 error:&v69];
   v34 = v69;
 
   v35 = objc_autoreleasePoolPush();
-  v36 = self;
+  selfCopy5 = self;
   v37 = HMFGetOSLogHandle();
   v38 = v37;
   if (v34)
@@ -449,10 +449,10 @@ LABEL_18:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       v45 = HMFGetLogIdentifier();
-      v65 = [(HMDCloudRecord *)v36 record];
-      v46 = [v65 size];
-      v47 = [(HMDCloudRecord *)v36 record];
-      v48 = [v47 recordID];
+      record5 = [(HMDCloudRecord *)selfCopy5 record];
+      v46 = [record5 size];
+      record6 = [(HMDCloudRecord *)selfCopy5 record];
+      recordID = [record6 recordID];
       v49 = [v67 hmf_stringForKey:@"HM.device"];
       v50 = v49;
       *buf = 138544386;
@@ -466,7 +466,7 @@ LABEL_18:
       v74 = 2048;
       v75 = v46;
       v76 = 2112;
-      v77 = v48;
+      v77 = recordID;
       v78 = 2112;
       v79 = v33;
       v80 = 2112;
@@ -477,12 +477,12 @@ LABEL_18:
     objc_autoreleasePoolPop(v35);
     if (v33)
     {
-      v52 = [v33 uuid];
+      uuid = [v33 uuid];
 
-      if (v52)
+      if (uuid)
       {
-        v53 = [v33 uuid];
-        [(HMDCloudRecord *)v36 setObjectID:v53];
+        uuid2 = [v33 uuid];
+        [(HMDCloudRecord *)selfCopy5 setObjectID:uuid2];
       }
     }
 
@@ -499,8 +499,8 @@ LABEL_39:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDCloudRecord *)self shortDescription];
-  v4 = [v2 stringWithFormat:@"<%@>", v3];
+  shortDescription = [(HMDCloudRecord *)self shortDescription];
+  v4 = [v2 stringWithFormat:@"<%@>", shortDescription];
 
   return v4;
 }
@@ -508,46 +508,46 @@ LABEL_39:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDCloudRecord *)self objectID];
-  v6 = [v5 UUIDString];
-  v7 = [(HMDCloudRecord *)self recordName];
-  v8 = [v3 stringWithFormat:@"%@ %@ %@", v4, v6, v7];
+  shortDescription = [objc_opt_class() shortDescription];
+  objectID = [(HMDCloudRecord *)self objectID];
+  uUIDString = [objectID UUIDString];
+  recordName = [(HMDCloudRecord *)self recordName];
+  v8 = [v3 stringWithFormat:@"%@ %@ %@", shortDescription, uUIDString, recordName];
 
   return v8;
 }
 
-- (HMDCloudRecord)initWithObjectID:(id)a3 recordName:(id)a4 cloudZone:(id)a5
+- (HMDCloudRecord)initWithObjectID:(id)d recordName:(id)name cloudZone:(id)zone
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  nameCopy = name;
+  zoneCopy = zone;
   v15.receiver = self;
   v15.super_class = HMDCloudRecord;
   v11 = [(HMDCloudRecord *)&v15 init];
   if (v11)
   {
-    v12 = v8;
-    if (!v8)
+    uUID = dCopy;
+    if (!dCopy)
     {
-      v12 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
     }
 
-    objc_storeStrong(&v11->_objectID, v12);
-    if (!v8)
+    objc_storeStrong(&v11->_objectID, uUID);
+    if (!dCopy)
     {
     }
 
-    objc_storeWeak(&v11->_cloudZone, v10);
-    v13 = v9;
-    if (!v9)
+    objc_storeWeak(&v11->_cloudZone, zoneCopy);
+    uUIDString = nameCopy;
+    if (!nameCopy)
     {
-      v12 = [MEMORY[0x277CCAD78] UUID];
-      v13 = [v12 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v11->_recordName, v13);
-    if (!v9)
+    objc_storeStrong(&v11->_recordName, uUIDString);
+    if (!nameCopy)
     {
     }
   }

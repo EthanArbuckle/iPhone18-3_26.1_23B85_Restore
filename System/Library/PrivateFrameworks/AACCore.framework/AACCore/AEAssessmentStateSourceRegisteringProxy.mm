@@ -1,77 +1,77 @@
 @interface AEAssessmentStateSourceRegisteringProxy
-+ (id)daemonProxyWithQueue:(id)a3;
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4;
-+ (id)proxyWithOrigin:(void *)a3 queue:;
-- (id)initWithXPCProxy:(void *)a3 queue:;
-- (void)_registerPublisherWithLifetimeEndpoint:(void *)a3 completion:;
-- (void)registerPublisherWithLifetimeEndpoint:(id)a3 completion:(id)a4;
++ (id)daemonProxyWithQueue:(id)queue;
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue;
++ (id)proxyWithOrigin:(void *)origin queue:;
+- (id)initWithXPCProxy:(void *)proxy queue:;
+- (void)_registerPublisherWithLifetimeEndpoint:(void *)endpoint completion:;
+- (void)registerPublisherWithLifetimeEndpoint:(id)endpoint completion:(id)completion;
 @end
 
 @implementation AEAssessmentStateSourceRegisteringProxy
 
-- (void)registerPublisherWithLifetimeEndpoint:(id)a3 completion:(id)a4
+- (void)registerPublisherWithLifetimeEndpoint:(id)endpoint completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92__AEAssessmentStateSourceRegisteringProxy_registerPublisherWithLifetimeEndpoint_completion___block_invoke;
   v8[3] = &unk_278BB7158;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(AEAssessmentStateSourceRegisteringProxy *)self _registerPublisherWithLifetimeEndpoint:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(AEAssessmentStateSourceRegisteringProxy *)self _registerPublisherWithLifetimeEndpoint:endpoint completion:v8];
 }
 
-- (id)initWithXPCProxy:(void *)a3 queue:
+- (id)initWithXPCProxy:(void *)proxy queue:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  proxyCopy = proxy;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = AEAssessmentStateSourceRegisteringProxy;
     v8 = objc_msgSendSuper2(&v10, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, proxy);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)proxyWithOrigin:(void *)a3 queue:
++ (id)proxyWithOrigin:(void *)origin queue:
 {
-  v4 = a3;
+  originCopy = origin;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
-  v7 = [v6 makeInterface];
+  makeInterface = [v6 makeInterface];
 
-  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:v7];
-  v9 = [[AEAssessmentStateSourceRegisteringProxy alloc] initWithXPCProxy:v8 queue:v4];
+  v8 = [[AEXPCProxy alloc] initWithOrigin:v5 interface:makeInterface];
+  v9 = [[AEAssessmentStateSourceRegisteringProxy alloc] initWithXPCProxy:v8 queue:originCopy];
 
   return v9;
 }
 
-+ (id)daemonProxyWithQueue:(id)a3
++ (id)daemonProxyWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [[AEMachServiceXPCConnectionOrigin alloc] initWithMachServiceName:4096 options:?];
-  v6 = [(AEAssessmentStateSourceRegisteringProxy *)a1 proxyWithOrigin:v5 queue:v4];
+  v6 = [(AEAssessmentStateSourceRegisteringProxy *)self proxyWithOrigin:v5 queue:queueCopy];
 
   return v6;
 }
 
-+ (id)proxyWithEndpoint:(id)a3 queue:(id)a4
++ (id)proxyWithEndpoint:(id)endpoint queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:v7];
+  queueCopy = queue;
+  endpointCopy = endpoint;
+  v8 = [[AEAnonymousXPCConnectionOrigin alloc] initWithEndpoint:endpointCopy];
 
-  v9 = [(AEAssessmentStateSourceRegisteringProxy *)a1 proxyWithOrigin:v8 queue:v6];
+  v9 = [(AEAssessmentStateSourceRegisteringProxy *)self proxyWithOrigin:v8 queue:queueCopy];
 
   return v9;
 }
@@ -104,17 +104,17 @@ void __92__AEAssessmentStateSourceRegisteringProxy_registerPublisherWithLifetime
   dispatch_async(v8, block);
 }
 
-- (void)_registerPublisherWithLifetimeEndpoint:(void *)a3 completion:
+- (void)_registerPublisherWithLifetimeEndpoint:(void *)endpoint completion:
 {
-  v5 = a3;
-  if (a1)
+  endpointCopy = endpoint;
+  if (self)
   {
-    v6 = *(a1 + 8);
+    v6 = *(self + 8);
     OUTLINED_FUNCTION_0();
     v11 = 3221225472;
     v12 = __93__AEAssessmentStateSourceRegisteringProxy__registerPublisherWithLifetimeEndpoint_completion___block_invoke;
     v13 = &unk_278BB6D68;
-    v7 = v5;
+    v7 = endpointCopy;
     v14 = v7;
     v8 = a2;
     v9 = [(AEXPCProxy *)v6 remoteObjectProxyWithErrorHandler:v10];

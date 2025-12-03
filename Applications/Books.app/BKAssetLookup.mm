@@ -1,61 +1,61 @@
 @interface BKAssetLookup
-+ (BKAssetLookup)assetLookupWithID:(id)a3 options:(id)a4 completion:(id)a5;
-+ (BKAssetLookup)assetLookupWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-+ (void)validateAssetAuthorization:(id)a3 completion:(id)a4;
-- (BKAssetLookup)initWithID:(id)a3 options:(id)a4 completion:(id)a5;
-- (BKAssetLookup)initWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-- (BOOL)_isProperlyInstalledAssetURL:(id)a3;
-- (void)_completeWithAssetViewController:(id)a3 helper:(id)a4 error:(id)a5;
++ (BKAssetLookup)assetLookupWithID:(id)d options:(id)options completion:(id)completion;
++ (BKAssetLookup)assetLookupWithIdentifier:(id)identifier options:(id)options completion:(id)completion;
++ (void)validateAssetAuthorization:(id)authorization completion:(id)completion;
+- (BKAssetLookup)initWithID:(id)d options:(id)options completion:(id)completion;
+- (BKAssetLookup)initWithIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (BOOL)_isProperlyInstalledAssetURL:(id)l;
+- (void)_completeWithAssetViewController:(id)controller helper:(id)helper error:(id)error;
 - (void)_load;
 - (void)cancel;
 @end
 
 @implementation BKAssetLookup
 
-+ (BKAssetLookup)assetLookupWithID:(id)a3 options:(id)a4 completion:(id)a5
++ (BKAssetLookup)assetLookupWithID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithID:v10 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  dCopy = d;
+  v11 = [[self alloc] initWithID:dCopy options:optionsCopy completion:completionCopy];
 
   return v11;
 }
 
-+ (BKAssetLookup)assetLookupWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5
++ (BKAssetLookup)assetLookupWithIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithIdentifier:v10 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithIdentifier:identifierCopy options:optionsCopy completion:completionCopy];
 
   return v11;
 }
 
-- (BKAssetLookup)initWithID:(id)a3 options:(id)a4 completion:(id)a5
+- (BKAssetLookup)initWithID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [BKAssetID identifierWithAssetID:a3];
-  v11 = [(BKAssetLookup *)self initWithIdentifier:v10 options:v9 completion:v8];
+  completionCopy = completion;
+  optionsCopy = options;
+  v10 = [BKAssetID identifierWithAssetID:d];
+  v11 = [(BKAssetLookup *)self initWithIdentifier:v10 options:optionsCopy completion:completionCopy];
 
   return v11;
 }
 
-- (BKAssetLookup)initWithIdentifier:(id)a3 options:(id)a4 completion:(id)a5
+- (BKAssetLookup)initWithIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = BKAssetLookup;
   v11 = [(BKAssetLookup *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(BKAssetLookup *)v11 setAssetIdentifier:v8];
-    [(BKAssetLookup *)v12 setCompletion:v10];
-    [(BKAssetLookup *)v12 setOptions:v9];
+    [(BKAssetLookup *)v11 setAssetIdentifier:identifierCopy];
+    [(BKAssetLookup *)v12 setCompletion:completionCopy];
+    [(BKAssetLookup *)v12 setOptions:optionsCopy];
     v13 = dispatch_queue_create("BKAssetLookup", 0);
     [(BKAssetLookup *)v12 setSync:v13];
 
@@ -65,31 +65,31 @@
   return v12;
 }
 
-- (void)_completeWithAssetViewController:(id)a3 helper:(id)a4 error:(id)a5
+- (void)_completeWithAssetViewController:(id)controller helper:(id)helper error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  helperCopy = helper;
+  errorCopy = error;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = sub_1000273A4;
   v19 = sub_100027618;
   v20 = 0;
-  v11 = [(BKAssetLookup *)self sync];
+  sync = [(BKAssetLookup *)self sync];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000FEC04;
   v14[3] = &unk_100A036C0;
   v14[4] = self;
   v14[5] = &v15;
-  dispatch_sync(v11, v14);
+  dispatch_sync(sync, v14);
 
   v12 = objc_retainBlock(v16[5]);
   v13 = v12;
   if (v12)
   {
-    (*(v12 + 2))(v12, v8, v9, v10);
+    (*(v12 + 2))(v12, controllerCopy, helperCopy, errorCopy);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -114,13 +114,13 @@
   }
 }
 
-- (BOOL)_isProperlyInstalledAssetURL:(id)a3
+- (BOOL)_isProperlyInstalledAssetURL:(id)l
 {
-  v3 = a3;
-  if ([v3 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = [v3 pathExtension];
-    if ([v4 caseInsensitiveCompare:@"epub"] && objc_msgSend(v4, "caseInsensitiveCompare:", @"ibooks"))
+    pathExtension = [lCopy pathExtension];
+    if ([pathExtension caseInsensitiveCompare:@"epub"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"ibooks"))
     {
       v5 = 1;
     }
@@ -128,8 +128,8 @@
     else
     {
       v6 = objc_alloc_init(NSFileManager);
-      v7 = [v3 path];
-      v8 = [v6 attributesOfItemAtPath:v7 error:0];
+      path = [lCopy path];
+      v8 = [v6 attributesOfItemAtPath:path error:0];
 
       if (v8)
       {
@@ -158,19 +158,19 @@
   [(BKAssetLookup *)self _completeWithAssetViewController:0 helper:0 error:v3];
 }
 
-+ (void)validateAssetAuthorization:(id)a3 completion:(id)a4
++ (void)validateAssetAuthorization:(id)authorization completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (authorizationCopy)
   {
     v8 = +[AEPluginRegistry sharedInstance];
-    v9 = [v8 pluginForURL:v5];
+    v9 = [v8 pluginForURL:authorizationCopy];
 
     if (v9)
     {
-      v10 = [NSFileAccessIntent readingIntentWithURL:v5 options:1];
+      v10 = [NSFileAccessIntent readingIntentWithURL:authorizationCopy options:1];
       v11 = objc_opt_new();
       v23 = v10;
       v12 = [NSArray arrayWithObjects:&v23 count:1];
@@ -179,7 +179,7 @@
       v18[1] = 3221225472;
       v18[2] = sub_1000FF7C4;
       v18[3] = &unk_100A07458;
-      v19 = v5;
+      v19 = authorizationCopy;
       v22 = v7;
       v20 = v9;
       v21 = v10;
@@ -200,7 +200,7 @@
 
   else
   {
-    v15 = objc_retainBlock(v6);
+    v15 = objc_retainBlock(completionCopy);
     v9 = v15;
     if (v15)
     {

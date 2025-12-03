@@ -1,19 +1,19 @@
 @interface WGPlatterHeaderContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureUtilityButton;
 @end
 
 @implementation WGPlatterHeaderContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WGPlatterHeaderContentView" isKindOfClass:@"PLPlatterHeaderContentView"];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_utilityButton" withType:"UIButton"];
-  [v3 validateClass:@"WGWidgetPlatterView"];
-  [v3 validateClass:@"WGWidgetPlatterView" hasInstanceMethod:@"isShowingMoreContent" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureUtilityButton" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WGPlatterHeaderContentView" isKindOfClass:@"PLPlatterHeaderContentView"];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_utilityButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"WGWidgetPlatterView"];
+  [validationsCopy validateClass:@"WGWidgetPlatterView" hasInstanceMethod:@"isShowingMoreContent" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceMethod:@"_configureUtilityButton" withFullSignature:{"v", 0}];
 }
 
 - (void)_configureUtilityButton

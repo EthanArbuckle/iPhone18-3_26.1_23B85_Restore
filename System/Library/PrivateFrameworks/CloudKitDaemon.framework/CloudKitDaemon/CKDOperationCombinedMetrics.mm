@@ -1,28 +1,28 @@
 @interface CKDOperationCombinedMetrics
-- (CKDOperationCombinedMetrics)initWithCloudKitMetrics:(id)a3 andMMCSMetrics:(id)a4;
-- (CKDOperationCombinedMetrics)initWithCoder:(id)a3;
+- (CKDOperationCombinedMetrics)initWithCloudKitMetrics:(id)metrics andMMCSMetrics:(id)sMetrics;
+- (CKDOperationCombinedMetrics)initWithCoder:(id)coder;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKDOperationCombinedMetrics
 
-- (CKDOperationCombinedMetrics)initWithCloudKitMetrics:(id)a3 andMMCSMetrics:(id)a4
+- (CKDOperationCombinedMetrics)initWithCloudKitMetrics:(id)metrics andMMCSMetrics:(id)sMetrics
 {
-  v6 = a3;
-  v7 = a4;
+  metricsCopy = metrics;
+  sMetricsCopy = sMetrics;
   v19.receiver = self;
   v19.super_class = CKDOperationCombinedMetrics;
   v8 = [(CKDOperationCombinedMetrics *)&v19 init];
   if (v8)
   {
     v9 = objc_autoreleasePoolPush();
-    v12 = objc_msgSend_copy(v6, v10, v11);
+    v12 = objc_msgSend_copy(metricsCopy, v10, v11);
     cloudKitMetrics = v8->_cloudKitMetrics;
     v8->_cloudKitMetrics = v12;
 
-    v16 = objc_msgSend_copy(v7, v14, v15);
+    v16 = objc_msgSend_copy(sMetricsCopy, v14, v15);
     MMCSMetrics = v8->_MMCSMetrics;
     v8->_MMCSMetrics = v16;
 
@@ -32,34 +32,34 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_MMCSMetrics(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v13, v8, v7, @"MMCSMetrics");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"MMCSMetrics");
 
   v11 = objc_msgSend_cloudKitMetrics(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v13, v12, v11, @"CloudKitMetrics");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"CloudKitMetrics");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKDOperationCombinedMetrics)initWithCoder:(id)a3
+- (CKDOperationCombinedMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CKDOperationCombinedMetrics;
   v5 = [(CKDOperationCombinedMetrics *)&v15 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"MMCSMetrics");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"MMCSMetrics");
     MMCSMetrics = v5->_MMCSMetrics;
     v5->_MMCSMetrics = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"CloudKitMetrics");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"CloudKitMetrics");
     cloudKitMetrics = v5->_cloudKitMetrics;
     v5->_cloudKitMetrics = v12;
   }
@@ -67,7 +67,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKDOperationCombinedMetrics);
   v7 = objc_msgSend_cloudKitMetrics(self, v5, v6);

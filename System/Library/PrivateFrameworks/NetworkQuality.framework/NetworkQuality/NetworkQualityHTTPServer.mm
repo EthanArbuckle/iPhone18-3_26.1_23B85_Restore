@@ -1,14 +1,14 @@
 @interface NetworkQualityHTTPServer
-- (NetworkQualityHTTPServer)initWithConfiguration:(id)a3;
+- (NetworkQualityHTTPServer)initWithConfiguration:(id)configuration;
 - (NetworkQualityHTTPServer)initWithLaunchd;
-- (NetworkQualityHTTPServer)initWithPort:(unsigned int)a3 tlsEnabled:(BOOL)a4 httpVersion:(int)a5 bonjourEnabled:(BOOL)a6;
+- (NetworkQualityHTTPServer)initWithPort:(unsigned int)port tlsEnabled:(BOOL)enabled httpVersion:(int)version bonjourEnabled:(BOOL)bonjourEnabled;
 - (id)HTTP2ParametersForServer;
 - (id)HTTP3ParametersForServer;
-- (id)urlForType:(id)a3 withAddress:(id)a4 mirrorIP:(BOOL)a5;
-- (id)urlFormatAddress:(id)a3;
-- (void)receiveLoop:(id)a3;
-- (void)setCommmonParameters:(id)a3;
-- (void)start:(id)a3;
+- (id)urlForType:(id)type withAddress:(id)address mirrorIP:(BOOL)p;
+- (id)urlFormatAddress:(id)address;
+- (void)receiveLoop:(id)loop;
+- (void)setCommmonParameters:(id)parameters;
+- (void)start:(id)start;
 - (void)stop;
 @end
 
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (NetworkQualityHTTPServer)initWithPort:(unsigned int)a3 tlsEnabled:(BOOL)a4 httpVersion:(int)a5 bonjourEnabled:(BOOL)a6
+- (NetworkQualityHTTPServer)initWithPort:(unsigned int)port tlsEnabled:(BOOL)enabled httpVersion:(int)version bonjourEnabled:(BOOL)bonjourEnabled
 {
   v20.receiver = self;
   v20.super_class = NetworkQualityHTTPServer;
@@ -36,12 +36,12 @@
   }
 
   v11 = +[NetworkQualityServerConfiguration defaultIdleTimeout];
-  v10->port = a3;
+  v10->port = port;
   v10->idleTimeoutSeconds = v11;
   v10->hasStarted = 0;
-  v10->tlsEnabled = a4;
-  v10->bonjourEnabled = a6;
-  v10->httpVersion = a5;
+  v10->tlsEnabled = enabled;
+  v10->bonjourEnabled = bonjourEnabled;
+  v10->httpVersion = version;
   v10->l4sEnabled = 0;
   v12 = dispatch_data_create("X", 1uLL, 0, 0);
   small_response_data = v10->small_response_data;
@@ -74,10 +74,10 @@ LABEL_8:
   return v17;
 }
 
-- (NetworkQualityHTTPServer)initWithConfiguration:(id)a3
+- (NetworkQualityHTTPServer)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if ([v4 httpProtocol] == 1)
+  configurationCopy = configuration;
+  if ([configurationCopy httpProtocol] == 1)
   {
     v5 = 5;
   }
@@ -87,21 +87,21 @@ LABEL_8:
     v5 = 4;
   }
 
-  v6 = -[NetworkQualityHTTPServer initWithPort:tlsEnabled:httpVersion:bonjourEnabled:](self, "initWithPort:tlsEnabled:httpVersion:bonjourEnabled:", [v4 listenPort], objc_msgSend(v4, "tlsEnabled"), v5, objc_msgSend(v4, "bonjourEnabled"));
+  v6 = -[NetworkQualityHTTPServer initWithPort:tlsEnabled:httpVersion:bonjourEnabled:](self, "initWithPort:tlsEnabled:httpVersion:bonjourEnabled:", [configurationCopy listenPort], objc_msgSend(configurationCopy, "tlsEnabled"), v5, objc_msgSend(configurationCopy, "bonjourEnabled"));
   if (v6)
   {
-    v6->idleTimeoutSeconds = [v4 idleTimeoutSeconds];
-    v6->mirrorIP = [v4 mirrorServerIP];
-    v6->l4sEnabled = [v4 l4sEnabled];
-    v7 = [v4 networkServiceType];
-    if ((v7 - 2) > 9)
+    v6->idleTimeoutSeconds = [configurationCopy idleTimeoutSeconds];
+    v6->mirrorIP = [configurationCopy mirrorServerIP];
+    v6->l4sEnabled = [configurationCopy l4sEnabled];
+    networkServiceType = [configurationCopy networkServiceType];
+    if ((networkServiceType - 2) > 9)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = dword_25B97E950[v7 - 2];
+      v8 = dword_25B97E950[networkServiceType - 2];
     }
 
     v6->networkTrafficClass = v8;
@@ -110,9 +110,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)setCommmonParameters:(id)a3
+- (void)setCommmonParameters:(id)parameters
 {
-  parameters = a3;
+  parameters = parameters;
   nw_parameters_set_data_mode();
   nw_parameters_set_server_mode();
   nw_parameters_set_reuse_local_address(parameters, 1);
@@ -237,10 +237,10 @@ void __52__NetworkQualityHTTPServer_HTTP3ParametersForServer__block_invoke_2(uin
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  startCopy = start;
   v5 = dispatch_queue_create("networkQuality", MEMORY[0x277D85CD8]);
   queue = self->queue;
   self->queue = v5;
@@ -412,7 +412,7 @@ LABEL_10:
     }
 
     v38 = [(NetworkQualityHTTPServer *)self urlForType:@".well-known/nq" withAddress:self->name mirrorIP:0];
-    v4[2](v4, v38, 0);
+    startCopy[2](startCopy, v38, 0);
   }
 
   else
@@ -428,7 +428,7 @@ LABEL_10:
     v54[0] = @"Could not create listener for server";
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v54 forKeys:&v53 count:1];
     v33 = [v32 errorWithDomain:@"NetworkQualityErrorDomain" code:1007 userInfo:v18];
-    (v4)[2](v4, 0, v33);
+    (startCopy)[2](startCopy, 0, v33);
   }
 
   v39 = *MEMORY[0x277D85DE8];
@@ -513,16 +513,16 @@ void __34__NetworkQualityHTTPServer_start___block_invoke_3(uint64_t a1, int a2)
   self->listener = 0;
 }
 
-- (void)receiveLoop:(id)a3
+- (void)receiveLoop:(id)loop
 {
-  v4 = a3;
+  loopCopy = loop;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__NetworkQualityHTTPServer_receiveLoop___block_invoke;
   v6[3] = &unk_279969868;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = loopCopy;
+  v5 = loopCopy;
   nw_connection_receive(v5, 0, 0xFFFFFFFF, v6);
 }
 
@@ -763,12 +763,12 @@ void __40__NetworkQualityHTTPServer_receiveLoop___block_invoke_62(uint64_t a1)
   }
 }
 
-- (id)urlFormatAddress:(id)a3
+- (id)urlFormatAddress:(id)address
 {
-  v3 = a3;
-  address = nw_endpoint_get_address(v3);
-  v5 = nw_endpoint_copy_address_string(v3);
-  port = nw_endpoint_get_port(v3);
+  addressCopy = address;
+  address = nw_endpoint_get_address(addressCopy);
+  v5 = nw_endpoint_copy_address_string(addressCopy);
+  port = nw_endpoint_get_port(addressCopy);
 
   sa_family = address->sa_family;
   if (sa_family == 30)
@@ -783,33 +783,33 @@ void __40__NetworkQualityHTTPServer_receiveLoop___block_invoke_62(uint64_t a1)
       v9 = v11;
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]:%d", v9, port];
+    port = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]:%d", v9, port];
   }
 
   else if (sa_family == 2)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", v5, port];
+    port = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", v5, port];
   }
 
   else
   {
-    v8 = 0;
+    port = 0;
   }
 
   free(v5);
 
-  return v8;
+  return port;
 }
 
-- (id)urlForType:(id)a3 withAddress:(id)a4 mirrorIP:(BOOL)a5
+- (id)urlForType:(id)type withAddress:(id)address mirrorIP:(BOOL)p
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v5)
+  pCopy = p;
+  typeCopy = type;
+  addressCopy = address;
+  v10 = addressCopy;
+  if (pCopy)
   {
-    v11 = v9;
+    v11 = addressCopy;
     if (self->tlsEnabled)
     {
       v12 = @"https";
@@ -821,14 +821,14 @@ void __40__NetworkQualityHTTPServer_receiveLoop___block_invoke_62(uint64_t a1)
     }
 
     v13 = v12;
-    if ([v8 isEqualToString:@"config"])
+    if ([typeCopy isEqualToString:@"config"])
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@", v13, v11, v17, v18];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@/%@", v13, v11, v8, v18];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@/%@", v13, v11, typeCopy, v18];
     }
   }
 
@@ -846,14 +846,14 @@ void __40__NetworkQualityHTTPServer_receiveLoop___block_invoke_62(uint64_t a1)
     }
 
     v13 = v14;
-    if ([v8 isEqualToString:@"config"])
+    if ([typeCopy isEqualToString:@"config"])
     {
       [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@:%d", v13, v11, self->port, v18];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@:%d/%@", v13, v11, self->port, v8];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"%@://%@:%d/%@", v13, v11, self->port, typeCopy];
     }
   }
   v15 = ;

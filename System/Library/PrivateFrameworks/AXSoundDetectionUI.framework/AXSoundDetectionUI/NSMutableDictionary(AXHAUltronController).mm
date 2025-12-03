@@ -10,14 +10,14 @@
   v6 = a4;
   if (v6)
   {
-    v7 = v8;
+    null = v8;
     if (!v8)
     {
-      v7 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v8 = v7;
-    [a1 setObject:v7 forKey:v6];
+    v8 = null;
+    [self setObject:null forKey:v6];
   }
 }
 

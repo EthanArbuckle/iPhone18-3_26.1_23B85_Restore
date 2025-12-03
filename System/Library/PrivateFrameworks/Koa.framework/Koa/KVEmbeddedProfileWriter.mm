@@ -1,8 +1,8 @@
 @interface KVEmbeddedProfileWriter
-- (BOOL)addItem:(id)a3 error:(id *)a4;
-- (BOOL)finishDataset:(id *)a3;
-- (BOOL)finishProfile:(id *)a3;
-- (KVEmbeddedProfileWriter)initWithOutputStream:(id)a3;
+- (BOOL)addItem:(id)item error:(id *)error;
+- (BOOL)finishDataset:(id *)dataset;
+- (BOOL)finishProfile:(id *)profile;
+- (KVEmbeddedProfileWriter)initWithOutputStream:(id)stream;
 - (id).cxx_construct;
 @end
 
@@ -25,7 +25,7 @@
   return self;
 }
 
-- (BOOL)finishProfile:(id *)a3
+- (BOOL)finishProfile:(id *)profile
 {
   begin = self->_datasets.__begin_;
   end = self->_datasets.__end_;
@@ -63,15 +63,15 @@
   if (v18 != v40)
   {
     v41 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v36, @"profile: %@", v37, v38, v39, v12);
-    sub_2559C6434(a3, v41, self->_stream, 1);
+    sub_2559C6434(profile, v41, self->_stream, 1);
   }
 
   return v18 == v40;
 }
 
-- (BOOL)finishDataset:(id *)a3
+- (BOOL)finishDataset:(id *)dataset
 {
-  v7 = objc_msgSend_buffer(self->_datasetInfo, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_buffer(self->_datasetInfo, a2, dataset, v3, v4, v5);
   v8 = v7;
   v14 = objc_msgSend_bytes(v8, v9, v10, v11, v12, v13);
   v15 = v7;
@@ -212,10 +212,10 @@
   return 1;
 }
 
-- (BOOL)addItem:(id)a3 error:(id *)a4
+- (BOOL)addItem:(id)item error:(id *)error
 {
-  v5 = a3;
-  v11 = objc_msgSend_buffer(v5, v6, v7, v8, v9, v10);
+  itemCopy = item;
+  v11 = objc_msgSend_buffer(itemCopy, v6, v7, v8, v9, v10);
   v12 = v11;
   v18 = objc_msgSend_bytes(v12, v13, v14, v15, v16, v17);
   v19 = v11;
@@ -314,16 +314,16 @@
   return 1;
 }
 
-- (KVEmbeddedProfileWriter)initWithOutputStream:(id)a3
+- (KVEmbeddedProfileWriter)initWithOutputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = KVEmbeddedProfileWriter;
   v6 = [(KVEmbeddedProfileWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;

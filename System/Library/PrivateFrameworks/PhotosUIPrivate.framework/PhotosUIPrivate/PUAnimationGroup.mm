@@ -1,20 +1,20 @@
 @interface PUAnimationGroup
-+ (id)animationGroupWithAnimations:(id)a3;
-+ (void)popAnimationGroup:(id)a3;
-+ (void)pushAnimationGroup:(id)a3;
++ (id)animationGroupWithAnimations:(id)animations;
++ (void)popAnimationGroup:(id)group;
++ (void)pushAnimationGroup:(id)group;
 - (BOOL)isReadyToComplete;
 - (PUAnimationGroup)superAnimationGroup;
 - (double)elapsedTime;
 - (id)description;
-- (void)addSubAnimationGroup:(id)a3;
+- (void)addSubAnimationGroup:(id)group;
 - (void)complete;
 - (void)completeIfNeeded;
 - (void)dealloc;
 - (void)finishImmediately;
-- (void)setCompletionHandler:(id)a3;
-- (void)setElapsedTime:(double)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setSuperAnimationGroup:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setElapsedTime:(double)time;
+- (void)setPaused:(BOOL)paused;
+- (void)setSuperAnimationGroup:(id)group;
 @end
 
 @implementation PUAnimationGroup
@@ -102,8 +102,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(PUAnimationGroup *)self subAnimationGroups];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+  v3 = [subAnimationGroups countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -115,14 +115,14 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) finishImmediately];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [subAnimationGroups countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -131,28 +131,28 @@
 
 - (void)complete
 {
-  v3 = [(PUAnimationGroup *)self completionHandler];
-  if (v3)
+  completionHandler = [(PUAnimationGroup *)self completionHandler];
+  if (completionHandler)
   {
-    v4 = v3;
+    v4 = completionHandler;
     [(PUAnimationGroup *)self setCompletionHandler:0];
     v4[2](v4);
-    v3 = v4;
+    completionHandler = v4;
   }
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __41__PUAnimationGroup_setCompletionHandler___block_invoke;
     v9[3] = &unk_1E7B80B48;
     v9[4] = self;
-    v10 = v4;
+    v10 = handlerCopy;
     v6 = [v9 copy];
     completionHandler = self->_completionHandler;
     self->_completionHandler = v6;
@@ -170,11 +170,11 @@
 - (void)completeIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAnimationGroup *)self superAnimationGroup];
-  v4 = v3;
-  if (v3)
+  superAnimationGroup = [(PUAnimationGroup *)self superAnimationGroup];
+  v4 = superAnimationGroup;
+  if (superAnimationGroup)
   {
-    [v3 completeIfNeeded];
+    [superAnimationGroup completeIfNeeded];
   }
 
   else if ([(PUAnimationGroup *)self isReadyToComplete])
@@ -184,8 +184,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(PUAnimationGroup *)self subAnimationGroups];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+    v6 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -196,13 +196,13 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subAnimationGroups);
           }
 
           [*(*(&v10 + 1) + 8 * i) complete];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -213,19 +213,19 @@
 - (BOOL)isReadyToComplete
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAnimationGroup *)self isPaused];
-  if (v3)
+  isPaused = [(PUAnimationGroup *)self isPaused];
+  if (isPaused)
   {
     return 0;
   }
 
-  v5 = v3;
+  v5 = isPaused;
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(PUAnimationGroup *)self subAnimationGroups];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+  v7 = [subAnimationGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -237,7 +237,7 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
         if (![*(*(&v12 + 1) + 8 * i) isReadyToComplete])
@@ -247,7 +247,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [subAnimationGroups countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;
@@ -267,9 +267,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)setSuperAnimationGroup:(id)a3
+- (void)setSuperAnimationGroup:(id)group
 {
-  obj = a3;
+  obj = group;
   WeakRetained = objc_loadWeakRetained(&self->_superAnimationGroup);
 
   v5 = obj;
@@ -286,38 +286,38 @@ LABEL_14:
   }
 }
 
-- (void)addSubAnimationGroup:(id)a3
+- (void)addSubAnimationGroup:(id)group
 {
-  v10 = a3;
+  groupCopy = group;
   if ([(PUAnimationGroup *)self isPaused])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"![self isPaused]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:102 description:{@"Invalid parameter not satisfying: %@", @"![self isPaused]"}];
   }
 
-  v5 = [(PUAnimationGroup *)self subAnimationGroups];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
 
-  if (!v5)
+  if (!subAnimationGroups)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     subAnimationGroups = self->_subAnimationGroups;
-    self->_subAnimationGroups = v6;
+    self->_subAnimationGroups = array;
   }
 
-  v8 = [(PUAnimationGroup *)self subAnimationGroups];
-  [v8 addObject:v10];
+  subAnimationGroups2 = [(PUAnimationGroup *)self subAnimationGroups];
+  [subAnimationGroups2 addObject:groupCopy];
 
-  [v10 setSuperAnimationGroup:self];
+  [groupCopy setSuperAnimationGroup:self];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v3 = a3;
-    self->_paused = a3;
-    if (a3)
+    pausedCopy = paused;
+    self->_paused = paused;
+    if (paused)
     {
       [(PUAnimationGroup *)self pauseAnimations];
     }
@@ -331,8 +331,8 @@ LABEL_14:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(PUAnimationGroup *)self subAnimationGroups];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+    v6 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -344,14 +344,14 @@ LABEL_14:
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subAnimationGroups);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setPaused:v3];
+          [*(*(&v10 + 1) + 8 * v9++) setPaused:pausedCopy];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [subAnimationGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -359,15 +359,15 @@ LABEL_14:
   }
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PUAnimationGroup *)self subAnimationGroups];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+  v5 = [subAnimationGroups countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -379,14 +379,14 @@ LABEL_14:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subAnimationGroups);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setElapsedTime:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setElapsedTime:time];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [subAnimationGroups countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -395,12 +395,12 @@ LABEL_14:
 
 - (double)elapsedTime
 {
-  v2 = [(PUAnimationGroup *)self subAnimationGroups];
-  v3 = [v2 firstObject];
+  subAnimationGroups = [(PUAnimationGroup *)self subAnimationGroups];
+  firstObject = [subAnimationGroups firstObject];
 
-  if (v3)
+  if (firstObject)
   {
-    [v3 elapsedTime];
+    [firstObject elapsedTime];
     v5 = v4;
   }
 
@@ -464,36 +464,36 @@ void __27__PUAnimationGroup_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)popAnimationGroup:(id)a3
++ (void)popAnimationGroup:(id)group
 {
-  v10 = a3;
-  if (__currentAnimationGroup != v10)
+  groupCopy = group;
+  if (__currentAnimationGroup != groupCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"__currentAnimationGroup == animationGroup"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"__currentAnimationGroup == animationGroup"}];
   }
 
-  v5 = [v10 superAnimationGroup];
+  superAnimationGroup = [groupCopy superAnimationGroup];
   v6 = __currentAnimationGroup;
-  __currentAnimationGroup = v5;
+  __currentAnimationGroup = superAnimationGroup;
 
-  v7 = v10;
+  v7 = groupCopy;
   v8 = __rootAnimationGroup;
-  if (__rootAnimationGroup == v10)
+  if (__rootAnimationGroup == groupCopy)
   {
     __rootAnimationGroup = 0;
 
-    v7 = v10;
+    v7 = groupCopy;
   }
 }
 
-+ (void)pushAnimationGroup:(id)a3
++ (void)pushAnimationGroup:(id)group
 {
-  v6 = a3;
-  if (!v6)
+  groupCopy = group;
+  if (!groupCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"animationGroup != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"animationGroup != nil"}];
   }
 
   if (__rootAnimationGroup)
@@ -501,36 +501,36 @@ void __27__PUAnimationGroup_dealloc__block_invoke(uint64_t a1)
     v7 = __currentAnimationGroup;
     if (!__currentAnimationGroup)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"__currentAnimationGroup != nil"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"__currentAnimationGroup != nil"}];
 
       v7 = __currentAnimationGroup;
     }
 
-    [v7 addSubAnimationGroup:v6];
+    [v7 addSubAnimationGroup:groupCopy];
   }
 
   else
   {
-    objc_storeStrong(&__rootAnimationGroup, a3);
+    objc_storeStrong(&__rootAnimationGroup, group);
   }
 
   v8 = __currentAnimationGroup;
-  __currentAnimationGroup = v6;
+  __currentAnimationGroup = groupCopy;
 }
 
-+ (id)animationGroupWithAnimations:(id)a3
++ (id)animationGroupWithAnimations:(id)animations
 {
-  v5 = a3;
-  if (!v5)
+  animationsCopy = animations;
+  if (!animationsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PUAnimationGroup.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"animations != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAnimationGroup.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"animations != NULL"}];
   }
 
   v6 = objc_alloc_init(PUAnimationGroup);
   [PUAnimationGroup pushAnimationGroup:v6];
-  v5[2](v5);
+  animationsCopy[2](animationsCopy);
   [PUAnimationGroup popAnimationGroup:v6];
 
   return v6;

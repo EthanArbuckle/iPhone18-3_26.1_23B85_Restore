@@ -1,90 +1,90 @@
 @interface PKPaymentProvisioningRequest
 - (BOOL)isDeviceProvisioningDataExpected;
-- (PKPaymentProvisioningRequest)initWithCoder:(id)a3;
-- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)a3 addRequestConfiguration:(id)a4 addRequest:(id)a5;
-- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)a3 style:(int64_t)a4;
+- (PKPaymentProvisioningRequest)initWithCoder:(id)coder;
+- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)response addRequestConfiguration:(id)configuration addRequest:(id)request;
+- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)response style:(int64_t)style;
 - (id)_secureParameters;
-- (void)_deviceScoreWithCompletion:(id)a3;
-- (void)_requestBodyWithBuilder:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6;
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_deviceScoreWithCompletion:(id)completion;
+- (void)_requestBodyWithBuilder:(id)builder request:(id)request completion:(id)completion;
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion;
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion;
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentProvisioningRequest
 
-- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)a3 style:(int64_t)a4
+- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)response style:(int64_t)style
 {
-  v7 = a3;
+  responseCopy = response;
   v11.receiver = self;
   v11.super_class = PKPaymentProvisioningRequest;
   v8 = [(PKOverlayableWebServiceRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_style = a4;
-    objc_storeStrong(&v8->_eligibilityResponse, a3);
+    v8->_style = style;
+    objc_storeStrong(&v8->_eligibilityResponse, response);
   }
 
   return v9;
 }
 
-- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)a3 addRequestConfiguration:(id)a4 addRequest:(id)a5
+- (PKPaymentProvisioningRequest)initWithEligibilityResponse:(id)response addRequestConfiguration:(id)configuration addRequest:(id)request
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a4 style];
-  if (v10 <= 1)
+  responseCopy = response;
+  requestCopy = request;
+  style = [configuration style];
+  if (style <= 1)
   {
-    self = [(PKPaymentProvisioningRequest *)self initWithEligibilityResponse:v8 style:v10];
+    self = [(PKPaymentProvisioningRequest *)self initWithEligibilityResponse:responseCopy style:style];
   }
 
   if (self)
   {
-    v11 = [v9 activationData];
-    [(PKPaymentProvisioningRequest *)self setActivationData:v11];
+    activationData = [requestCopy activationData];
+    [(PKPaymentProvisioningRequest *)self setActivationData:activationData];
   }
 
   return self;
 }
 
-- (PKPaymentProvisioningRequest)initWithCoder:(id)a3
+- (PKPaymentProvisioningRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v95.receiver = self;
   v95.super_class = PKPaymentProvisioningRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v95 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v95 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityResponse"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eligibilityResponse"];
     eligibilityResponse = v5->_eligibilityResponse;
     v5->_eligibilityResponse = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nonce"];
     nonce = v5->_nonce;
     v5->_nonce = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
-    v11 = [v10 pk_zString];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
+    pk_zString = [v10 pk_zString];
     cardholderName = v5->_cardholderName;
-    v5->_cardholderName = v11;
+    v5->_cardholderName = pk_zString;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardSecurityCode"];
-    v14 = [v13 pk_zString];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardSecurityCode"];
+    pk_zString2 = [v13 pk_zString];
     cardSecurityCode = v5->_cardSecurityCode;
-    v5->_cardSecurityCode = v14;
+    v5->_cardSecurityCode = pk_zString2;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationData"];
     activationData = v5->_activationData;
     v5->_activationData = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerIdentifier"];
     referrerIdentifier = v5->_referrerIdentifier;
     v5->_referrerIdentifier = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"odiAssessment"];
     odiAssessment = v5->_odiAssessment;
     v5->_odiAssessment = v20;
 
@@ -93,108 +93,108 @@
     v24 = objc_opt_class();
     v25 = objc_opt_class();
     v26 = [v22 initWithObjects:{v23, v24, v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"dynamicFieldParameters"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"dynamicFieldParameters"];
     dynamicFieldParameters = v5->_dynamicFieldParameters;
     v5->_dynamicFieldParameters = v27;
 
-    v29 = [v4 decodeObjectOfClasses:v26 forKey:@"encryptedDynamicFieldParameters"];
+    v29 = [coderCopy decodeObjectOfClasses:v26 forKey:@"encryptedDynamicFieldParameters"];
     encryptedDynamicFieldParameters = v5->_encryptedDynamicFieldParameters;
     v5->_encryptedDynamicFieldParameters = v29;
 
     v31 = MEMORY[0x1E695DFD8];
     v32 = objc_opt_class();
     v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-    v34 = [v4 decodeObjectOfClasses:v33 forKey:@"externalDestinationDevices"];
+    v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"externalDestinationDevices"];
     externalDestinationDevices = v5->_externalDestinationDevices;
     v5->_externalDestinationDevices = v34;
 
-    v5->_includeExternalDestinationDevices = [v4 decodeBoolForKey:@"includeExternalDestinationDevices"];
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferFromDevice"];
+    v5->_includeExternalDestinationDevices = [coderCopy decodeBoolForKey:@"includeExternalDestinationDevices"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferFromDevice"];
     transferFromDevice = v5->_transferFromDevice;
     v5->_transferFromDevice = v36;
 
-    v5->_removeFromSourceDevice = [v4 decodeBoolForKey:@"removeFromSourceDevice"];
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v5->_removeFromSourceDevice = [coderCopy decodeBoolForKey:@"removeFromSourceDevice"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoAttestation"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoAttestation"];
     fidoAttestation = v5->_fidoAttestation;
     v5->_fidoAttestation = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoKey"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoKey"];
     fidoKey = v5->_fidoKey;
     v5->_fidoKey = v42;
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fidoSignedChallenge"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fidoSignedChallenge"];
     fidoSignedChallenge = v5->_fidoSignedChallenge;
     v5->_fidoSignedChallenge = v44;
 
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seBlobDeviceEncryptionCertificate"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seBlobDeviceEncryptionCertificate"];
     seBlobDeviceEncryptionCertificate = v5->_seBlobDeviceEncryptionCertificate;
     v5->_seBlobDeviceEncryptionCertificate = v46;
 
     v48 = MEMORY[0x1E695DFD8];
     v49 = objc_opt_class();
     v50 = [v48 setWithObjects:{v49, objc_opt_class(), 0}];
-    v51 = [v4 decodeObjectOfClasses:v50 forKey:@"transactionKeyCertificateChain"];
+    v51 = [coderCopy decodeObjectOfClasses:v50 forKey:@"transactionKeyCertificateChain"];
     transactionKeyCertificateChain = v5->_transactionKeyCertificateChain;
     v5->_transactionKeyCertificateChain = v51;
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"longTermPrivacyKey"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"longTermPrivacyKey"];
     longTermPrivacyKey = v5->_longTermPrivacyKey;
     v5->_longTermPrivacyKey = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKey"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKey"];
     transactionKey = v5->_transactionKey;
     v5->_transactionKey = v55;
 
     v57 = MEMORY[0x1E695DFD8];
     v58 = objc_opt_class();
     v59 = [v57 setWithObjects:{v58, objc_opt_class(), 0}];
-    v60 = [v4 decodeObjectOfClasses:v59 forKey:@"isoDeviceEncryptionAttestation"];
+    v60 = [coderCopy decodeObjectOfClasses:v59 forKey:@"isoDeviceEncryptionAttestation"];
     isoDeviceEncryptionAttestation = v5->_isoDeviceEncryptionAttestation;
     v5->_isoDeviceEncryptionAttestation = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isoDeviceEncryptionAuthorization"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isoDeviceEncryptionAuthorization"];
     isoDeviceEncryptionAuthorization = v5->_isoDeviceEncryptionAuthorization;
     v5->_isoDeviceEncryptionAuthorization = v62;
 
-    v64 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCredentialIdentifier"];
+    v64 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCredentialIdentifier"];
     subCredentialIdentifier = v5->_subCredentialIdentifier;
     v5->_subCredentialIdentifier = v64;
 
     v66 = MEMORY[0x1E695DFD8];
     v67 = objc_opt_class();
     v68 = [v66 setWithObjects:{v67, objc_opt_class(), 0}];
-    v69 = [v4 decodeObjectOfClasses:v68 forKey:@"authorizationKeyAttestation"];
+    v69 = [coderCopy decodeObjectOfClasses:v68 forKey:@"authorizationKeyAttestation"];
     authorizationKeyAttestation = v5->_authorizationKeyAttestation;
     v5->_authorizationKeyAttestation = v69;
 
-    v71 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAttestation"];
+    v71 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAttestation"];
     transactionKeyAttestation = v5->_transactionKeyAttestation;
     v5->_transactionKeyAttestation = v71;
 
-    v73 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeySignature"];
+    v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeySignature"];
     transactionKeySignature = v5->_transactionKeySignature;
     v5->_transactionKeySignature = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAuthorization"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKeyAuthorization"];
     transactionKeyAuthorization = v5->_transactionKeyAuthorization;
     v5->_transactionKeyAuthorization = v75;
 
-    v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"progenitorKeyAttestation"];
+    v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"progenitorKeyAttestation"];
     progenitorKeyCASDAttestation = v5->_progenitorKeyCASDAttestation;
     v5->_progenitorKeyCASDAttestation = v77;
 
     v79 = MEMORY[0x1E695DFD8];
     v80 = objc_opt_class();
     v81 = [v79 setWithObjects:{v80, objc_opt_class(), 0}];
-    v82 = [v4 decodeObjectOfClasses:v81 forKey:@"transactionKeyData"];
+    v82 = [coderCopy decodeObjectOfClasses:v81 forKey:@"transactionKeyData"];
     transactionKeys = v5->_transactionKeys;
     v5->_transactionKeys = v82;
 
-    v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverAttestedProvisioningData"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverAttestedProvisioningData"];
     serverAttestedProvisioningData = v5->_serverAttestedProvisioningData;
     v5->_serverAttestedProvisioningData = v84;
 
@@ -202,11 +202,11 @@
     v87 = objc_opt_class();
     v88 = objc_opt_class();
     v89 = [v86 setWithObjects:{v87, v88, objc_opt_class(), 0}];
-    v90 = [v4 decodeObjectOfClasses:v89 forKey:@"auxiliaryCapabilities"];
+    v90 = [coderCopy decodeObjectOfClasses:v89 forKey:@"auxiliaryCapabilities"];
     auxiliaryCapabilities = v5->_auxiliaryCapabilities;
     v5->_auxiliaryCapabilities = v90;
 
-    v92 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tapToProvisionData"];
+    v92 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tapToProvisionData"];
     tapToProvisionData = v5->_tapToProvisionData;
     v5->_tapToProvisionData = v92;
   }
@@ -214,54 +214,54 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPaymentProvisioningRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_eligibilityResponse forKey:@"eligibilityResponse"];
-  [v4 encodeObject:self->_nonce forKey:@"nonce"];
-  [v4 encodeObject:self->_cardholderName forKey:@"cardholderName"];
-  [v4 encodeObject:self->_cardSecurityCode forKey:@"cardSecurityCode"];
-  [v4 encodeObject:self->_activationData forKey:@"activationData"];
-  [v4 encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
-  [v4 encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
-  [v4 encodeObject:self->_dynamicFieldParameters forKey:@"dynamicFieldParameters"];
-  [v4 encodeObject:self->_encryptedDynamicFieldParameters forKey:@"encryptedDynamicFieldParameters"];
-  [v4 encodeObject:self->_externalDestinationDevices forKey:@"externalDestinationDevices"];
-  [v4 encodeBool:self->_includeExternalDestinationDevices forKey:@"includeExternalDestinationDevices"];
-  [v4 encodeObject:self->_transferFromDevice forKey:@"transferFromDevice"];
-  [v4 encodeBool:self->_removeFromSourceDevice forKey:@"removeFromSourceDevice"];
-  [v4 encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
-  [v4 encodeObject:self->_fidoAttestation forKey:@"fidoAttestation"];
-  [v4 encodeObject:self->_fidoKey forKey:@"fidoKey"];
-  [v4 encodeObject:self->_fidoSignedChallenge forKey:@"fidoSignedChallenge"];
-  [v4 encodeObject:self->_seBlobDeviceEncryptionCertificate forKey:@"seBlobDeviceEncryptionCertificate"];
-  [v4 encodeObject:self->_transactionKeyCertificateChain forKey:@"transactionKeyCertificateChain"];
-  [v4 encodeObject:self->_longTermPrivacyKey forKey:@"longTermPrivacyKey"];
-  [v4 encodeObject:self->_transactionKey forKey:@"transactionKey"];
-  [v4 encodeObject:self->_isoDeviceEncryptionAttestation forKey:@"isoDeviceEncryptionAttestation"];
-  [v4 encodeObject:self->_isoDeviceEncryptionAuthorization forKey:@"isoDeviceEncryptionAuthorization"];
-  [v4 encodeObject:self->_subCredentialIdentifier forKey:@"subCredentialIdentifier"];
-  [v4 encodeObject:self->_authorizationKeyAttestation forKey:@"authorizationKeyAttestation"];
-  [v4 encodeObject:self->_transactionKeyAttestation forKey:@"transactionKeyAttestation"];
-  [v4 encodeObject:self->_transactionKeySignature forKey:@"transactionKeySignature"];
-  [v4 encodeObject:self->_transactionKeyAuthorization forKey:@"transactionKeyAuthorization"];
-  [v4 encodeObject:self->_progenitorKeyCASDAttestation forKey:@"progenitorKeyAttestation"];
-  [v4 encodeObject:self->_transactionKeys forKey:@"transactionKeyData"];
-  [v4 encodeObject:self->_serverAttestedProvisioningData forKey:@"serverAttestedProvisioningData"];
-  [v4 encodeObject:self->_auxiliaryCapabilities forKey:@"auxiliaryCapabilities"];
-  [v4 encodeObject:self->_tapToProvisionData forKey:@"tapToProvisionData"];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:{@"style", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_eligibilityResponse forKey:@"eligibilityResponse"];
+  [coderCopy encodeObject:self->_nonce forKey:@"nonce"];
+  [coderCopy encodeObject:self->_cardholderName forKey:@"cardholderName"];
+  [coderCopy encodeObject:self->_cardSecurityCode forKey:@"cardSecurityCode"];
+  [coderCopy encodeObject:self->_activationData forKey:@"activationData"];
+  [coderCopy encodeObject:self->_referrerIdentifier forKey:@"referrerIdentifier"];
+  [coderCopy encodeObject:self->_odiAssessment forKey:@"odiAssessment"];
+  [coderCopy encodeObject:self->_dynamicFieldParameters forKey:@"dynamicFieldParameters"];
+  [coderCopy encodeObject:self->_encryptedDynamicFieldParameters forKey:@"encryptedDynamicFieldParameters"];
+  [coderCopy encodeObject:self->_externalDestinationDevices forKey:@"externalDestinationDevices"];
+  [coderCopy encodeBool:self->_includeExternalDestinationDevices forKey:@"includeExternalDestinationDevices"];
+  [coderCopy encodeObject:self->_transferFromDevice forKey:@"transferFromDevice"];
+  [coderCopy encodeBool:self->_removeFromSourceDevice forKey:@"removeFromSourceDevice"];
+  [coderCopy encodeObject:self->_applicationIdentifier forKey:@"applicationIdentifier"];
+  [coderCopy encodeObject:self->_fidoAttestation forKey:@"fidoAttestation"];
+  [coderCopy encodeObject:self->_fidoKey forKey:@"fidoKey"];
+  [coderCopy encodeObject:self->_fidoSignedChallenge forKey:@"fidoSignedChallenge"];
+  [coderCopy encodeObject:self->_seBlobDeviceEncryptionCertificate forKey:@"seBlobDeviceEncryptionCertificate"];
+  [coderCopy encodeObject:self->_transactionKeyCertificateChain forKey:@"transactionKeyCertificateChain"];
+  [coderCopy encodeObject:self->_longTermPrivacyKey forKey:@"longTermPrivacyKey"];
+  [coderCopy encodeObject:self->_transactionKey forKey:@"transactionKey"];
+  [coderCopy encodeObject:self->_isoDeviceEncryptionAttestation forKey:@"isoDeviceEncryptionAttestation"];
+  [coderCopy encodeObject:self->_isoDeviceEncryptionAuthorization forKey:@"isoDeviceEncryptionAuthorization"];
+  [coderCopy encodeObject:self->_subCredentialIdentifier forKey:@"subCredentialIdentifier"];
+  [coderCopy encodeObject:self->_authorizationKeyAttestation forKey:@"authorizationKeyAttestation"];
+  [coderCopy encodeObject:self->_transactionKeyAttestation forKey:@"transactionKeyAttestation"];
+  [coderCopy encodeObject:self->_transactionKeySignature forKey:@"transactionKeySignature"];
+  [coderCopy encodeObject:self->_transactionKeyAuthorization forKey:@"transactionKeyAuthorization"];
+  [coderCopy encodeObject:self->_progenitorKeyCASDAttestation forKey:@"progenitorKeyAttestation"];
+  [coderCopy encodeObject:self->_transactionKeys forKey:@"transactionKeyData"];
+  [coderCopy encodeObject:self->_serverAttestedProvisioningData forKey:@"serverAttestedProvisioningData"];
+  [coderCopy encodeObject:self->_auxiliaryCapabilities forKey:@"auxiliaryCapabilities"];
+  [coderCopy encodeObject:self->_tapToProvisionData forKey:@"tapToProvisionData"];
 }
 
 - (BOOL)isDeviceProvisioningDataExpected
 {
-  v3 = [(PKPaymentProvisioningRequest *)self eligibilityResponse];
-  v4 = [v3 cardType];
+  eligibilityResponse = [(PKPaymentProvisioningRequest *)self eligibilityResponse];
+  cardType = [eligibilityResponse cardType];
 
-  if (v4 == 107 || self->_style == 1)
+  if (cardType == 107 || self->_style == 1)
   {
     v5 = 1;
   }
@@ -271,36 +271,36 @@
     v5 = PKProvisioningForceAccessStyle();
   }
 
-  v6 = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse deviceProvisioningDataExpected];
-  v7 = v6 == 1 && v5 == 0;
-  if (v7 || v6 == 1 && ((v5 ^ 1) & 1) == 0 && self->_sendReducedDeviceData)
+  deviceProvisioningDataExpected = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse deviceProvisioningDataExpected];
+  v7 = deviceProvisioningDataExpected == 1 && v5 == 0;
+  if (v7 || deviceProvisioningDataExpected == 1 && ((v5 ^ 1) & 1) == 0 && self->_sendReducedDeviceData)
   {
     return 1;
   }
 
   else
   {
-    return (v6 == 0) & (v5 ^ 1);
+    return (deviceProvisioningDataExpected == 0) & (v5 ^ 1);
   }
 }
 
-- (void)_urlRequestWithBuilder:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)_urlRequestWithBuilder:(id)builder webService:(id)service completion:(id)completion
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 brokerURL];
+  builderCopy = builder;
+  serviceCopy = service;
+  completionCopy = completion;
+  brokerURL = [builderCopy brokerURL];
   v25[0] = @"devices";
-  v12 = [v8 deviceID];
-  v25[1] = v12;
+  deviceID = [builderCopy deviceID];
+  v25[1] = deviceID;
   v25[2] = @"cards";
-  v13 = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse identifier];
-  v25[3] = v13;
+  identifier = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse identifier];
+  v25[3] = identifier;
   v25[4] = @"enable";
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:5];
-  v15 = [v8 appleAccountInformation];
-  v16 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v11 endpointComponents:v14 queryParameters:0 appleAccountInformation:v15];
+  appleAccountInformation = [builderCopy appleAccountInformation];
+  v16 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:brokerURL endpointComponents:v14 queryParameters:0 appleAccountInformation:appleAccountInformation];
 
   [v16 setHTTPMethod:@"POST"];
   [v16 setValue:@"application/binary" forHTTPHeaderField:@"Content-Type"];
@@ -316,12 +316,12 @@
   v21[3] = &unk_1E79C4EF0;
   v21[4] = self;
   v22 = v16;
-  v23 = v9;
-  v24 = v10;
-  v18 = v10;
-  v19 = v9;
+  v23 = serviceCopy;
+  v24 = completionCopy;
+  v18 = completionCopy;
+  v19 = serviceCopy;
   v20 = v16;
-  [(PKPaymentProvisioningRequest *)self _requestBodyWithBuilder:v8 request:v20 completion:v21];
+  [(PKPaymentProvisioningRequest *)self _requestBodyWithBuilder:builderCopy request:v20 completion:v21];
 }
 
 void __77__PKPaymentProvisioningRequest__urlRequestWithBuilder_webService_completion___block_invoke(uint64_t a1)
@@ -344,12 +344,12 @@ void __77__PKPaymentProvisioningRequest__urlRequestWithBuilder_webService_comple
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_updateRequestForRetry:(id)a3 retryFields:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRetry:(id)retry retryFields:(id)fields webService:(id)service withCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a4 PKStringForKey:@"nonce"];
+  completionCopy = completion;
+  serviceCopy = service;
+  retryCopy = retry;
+  v13 = [fields PKStringForKey:@"nonce"];
   if (v13)
   {
     objc_storeStrong(&self->_nonce, v13);
@@ -367,17 +367,17 @@ void __77__PKPaymentProvisioningRequest__urlRequestWithBuilder_webService_comple
   }
 
   v15 = objc_opt_class();
-  v16 = [(PKOverlayableWebServiceRequest *)self overlayParameters];
-  v17 = [v15 _HTTPBodyWithDictionary:v16];
-  [v12 setHTTPBody:v17];
+  overlayParameters = [(PKOverlayableWebServiceRequest *)self overlayParameters];
+  v17 = [v15 _HTTPBodyWithDictionary:overlayParameters];
+  [retryCopy setHTTPBody:v17];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __93__PKPaymentProvisioningRequest__updateRequestForRetry_retryFields_webService_withCompletion___block_invoke;
   v19[3] = &unk_1E79DAF50;
-  v20 = v10;
-  v18 = v10;
-  [(PKPaymentWebServiceRequest *)self _signRequest:v12 webService:v11 completion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [(PKPaymentWebServiceRequest *)self _signRequest:retryCopy webService:serviceCopy completion:v19];
 }
 
 uint64_t __93__PKPaymentProvisioningRequest__updateRequestForRetry_retryFields_webService_withCompletion___block_invoke(uint64_t a1)
@@ -391,22 +391,22 @@ uint64_t __93__PKPaymentProvisioningRequest__updateRequestForRetry_retryFields_w
   return result;
 }
 
-- (void)_updateRequestForRedirect:(id)a3 overrides:(id)a4 webService:(id)a5 withCompletion:(id)a6
+- (void)_updateRequestForRedirect:(id)redirect overrides:(id)overrides webService:(id)service withCompletion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  serviceCopy = service;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_webService_withCompletion___block_invoke;
   v15[3] = &unk_1E79DAFC8;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
+  v16 = serviceCopy;
+  v17 = completionCopy;
   v14.receiver = self;
   v14.super_class = PKPaymentProvisioningRequest;
-  v12 = v11;
-  v13 = v10;
-  [(PKOverlayableWebServiceRequest *)&v14 _updateRequestForRedirect:a3 overrides:a4 webService:v13 withCompletion:v15];
+  v12 = completionCopy;
+  v13 = serviceCopy;
+  [(PKOverlayableWebServiceRequest *)&v14 _updateRequestForRedirect:redirect overrides:overrides webService:v13 withCompletion:v15];
 }
 
 void __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_webService_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -432,12 +432,12 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
   return result;
 }
 
-- (void)_requestBodyWithBuilder:(id)a3 request:(id)a4 completion:(id)a5
+- (void)_requestBodyWithBuilder:(id)builder request:(id)request completion:(id)completion
 {
   v51 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v27 = a4;
-  v29 = a5;
+  builderCopy = builder;
+  requestCopy = request;
+  completionCopy = completion;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -451,15 +451,15 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
 
   if ([(PKPaymentProvisioningRequest *)self isDeviceProvisioningDataExpected])
   {
-    [v31 insertFraudDeviceForField:96 dictionary:v45[5]];
+    [builderCopy insertFraudDeviceForField:96 dictionary:v45[5]];
     if (!self->_sendReducedDeviceData)
     {
-      [v31 insertFraudDeviceForField:144 dictionary:v45[5]];
+      [builderCopy insertFraudDeviceForField:144 dictionary:v45[5]];
     }
   }
 
-  v7 = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse termsID];
-  [v45[5] setObject:v7 forKeyedSubscript:@"termsID"];
+  termsID = [(PKPaymentEligibilityResponse *)self->_eligibilityResponse termsID];
+  [v45[5] setObject:termsID forKeyedSubscript:@"termsID"];
 
   [v45[5] setObject:self->_nonce forKeyedSubscript:@"nonce"];
   v8 = [(NSData *)self->_activationData base64EncodedStringWithOptions:0];
@@ -475,8 +475,8 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_includeExternalDestinationDevices];
   [v45[5] setObject:v11 forKeyedSubscript:@"includeExternalDestinationDevices"];
 
-  v12 = [(PKPaymentTapToProvisionData *)self->_tapToProvisionData dictionaryRepresentation];
-  [v45[5] setObject:v12 forKeyedSubscript:@"tapToProvisionCardData"];
+  dictionaryRepresentation = [(PKPaymentTapToProvisionData *)self->_tapToProvisionData dictionaryRepresentation];
+  [v45[5] setObject:dictionaryRepresentation forKeyedSubscript:@"tapToProvisionCardData"];
 
   if (self->_encryptedPerFieldDynamicFieldParameters)
   {
@@ -485,7 +485,7 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v14 = self;
+    selfCopy2 = self;
     obj = self->_encryptedPerFieldDynamicFieldParameters;
     v15 = [(NSDictionary *)obj countByEnumeratingWithState:&v40 objects:v50 count:16];
     if (v15)
@@ -501,14 +501,14 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
           }
 
           v18 = *(*(&v40 + 1) + 8 * i);
-          v19 = [(NSDictionary *)v14->_encryptedPerFieldDynamicFieldParameters objectForKeyedSubscript:v18];
-          v20 = [v19 dataRepresentation];
-          v21 = [v19 encryptionScheme];
-          v22 = [v19 encryptionCertificates];
-          v23 = [v31 createEncryptedDictionaryWithData:v20 encryptedContentKey:@"encryptedData" scheme:v21 certificates:v22];
+          v19 = [(NSDictionary *)selfCopy2->_encryptedPerFieldDynamicFieldParameters objectForKeyedSubscript:v18];
+          dataRepresentation = [v19 dataRepresentation];
+          encryptionScheme = [v19 encryptionScheme];
+          encryptionCertificates = [v19 encryptionCertificates];
+          v23 = [builderCopy createEncryptedDictionaryWithData:dataRepresentation encryptedContentKey:@"encryptedData" scheme:encryptionScheme certificates:encryptionCertificates];
           [v13 setObject:v23 forKeyedSubscript:v18];
 
-          v14 = self;
+          selfCopy2 = self;
         }
 
         v15 = [(NSDictionary *)obj countByEnumeratingWithState:&v40 objects:v50 count:16];
@@ -520,15 +520,15 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
     [v45[5] setObject:v13 forKeyedSubscript:@"encryptedPinFields"];
   }
 
-  v24 = [(PKPaymentProvisioningRequest *)self _secureParameters];
-  v25 = v24;
+  _secureParameters = [(PKPaymentProvisioningRequest *)self _secureParameters];
+  v25 = _secureParameters;
   style = self->_style;
   if (style)
   {
     if (style == 1)
     {
-      [v31 configureOverlayRequest:self urlRequest:v28 secureDictionary:v24 dictionary:v45[5]];
-      v29[2]();
+      [builderCopy configureOverlayRequest:self urlRequest:v28 secureDictionary:_secureParameters dictionary:v45[5]];
+      completionCopy[2]();
     }
   }
 
@@ -539,11 +539,11 @@ uint64_t __94__PKPaymentProvisioningRequest__updateRequestForRedirect_overrides_
     v33[2] = __75__PKPaymentProvisioningRequest__requestBodyWithBuilder_request_completion___block_invoke;
     v33[3] = &unk_1E79DB068;
     v39 = &v44;
-    v34 = v24;
-    v35 = self;
-    v36 = v31;
+    v34 = _secureParameters;
+    selfCopy3 = self;
+    v36 = builderCopy;
     v37 = v28;
-    v38 = v29;
+    v38 = completionCopy;
     [(PKPaymentProvisioningRequest *)self _deviceScoreWithCompletion:v33];
   }
 
@@ -741,32 +741,32 @@ void __75__PKPaymentProvisioningRequest__requestBodyWithBuilder_request_completi
     v54 = v4;
     v36 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v38 = [(NSMapTable *)self->_auxiliaryCapabilities keyEnumerator];
-    v39 = [v38 nextObject];
-    if (v39)
+    keyEnumerator = [(NSMapTable *)self->_auxiliaryCapabilities keyEnumerator];
+    nextObject = [keyEnumerator nextObject];
+    if (nextObject)
     {
-      v40 = v39;
+      v40 = nextObject;
       while (1)
       {
         v41 = [(NSMapTable *)self->_auxiliaryCapabilities objectForKey:v40];
-        v42 = [v40 role];
+        role = [v40 role];
         v43 = v36;
-        if (v42 == 1)
+        if (role == 1)
         {
           goto LABEL_45;
         }
 
-        if (v42 == 2)
+        if (role == 2)
         {
           break;
         }
 
 LABEL_47:
 
-        v50 = [v38 nextObject];
+        nextObject2 = [keyEnumerator nextObject];
 
-        v40 = v50;
-        if (!v50)
+        v40 = nextObject2;
+        if (!nextObject2)
         {
           goto LABEL_48;
         }
@@ -778,11 +778,11 @@ LABEL_45:
       if (v44)
       {
         v45 = v44;
-        v46 = [v41 dictionaryRepresentation];
-        v47 = [v46 mutableCopy];
+        dictionaryRepresentation = [v41 dictionaryRepresentation];
+        v47 = [dictionaryRepresentation mutableCopy];
 
-        v48 = [v40 dictionaryRepresentation];
-        [v47 setObject:v48 forKeyedSubscript:@"requirement"];
+        dictionaryRepresentation2 = [v40 dictionaryRepresentation];
+        [v47 setObject:dictionaryRepresentation2 forKeyedSubscript:@"requirement"];
 
         v49 = [v47 copy];
         [v45 addObject:v49];
@@ -827,12 +827,12 @@ id __49__PKPaymentProvisioningRequest__secureParameters__block_invoke_2(uint64_t
   return v7;
 }
 
-- (void)_deviceScoreWithCompletion:(id)a3
+- (void)_deviceScoreWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = v4;
+    v6 = completionCopy;
     if (+[PKDeviceScorer deviceScoringSupported]&& [(PKPaymentProvisioningRequest *)self isDeviceProvisioningDataExpected]&& !self->_disableDeviceScore)
     {
       v5 = *(v6 + 2);
@@ -844,7 +844,7 @@ id __49__PKPaymentProvisioningRequest__secureParameters__block_invoke_2(uint64_t
     }
 
     v5();
-    v4 = v6;
+    completionCopy = v6;
   }
 }
 

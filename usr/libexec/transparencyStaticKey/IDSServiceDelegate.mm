@@ -1,20 +1,20 @@
 @interface IDSServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)selfAccountKey:(id *)a3;
-- (void)deleteKTSession:(id)a3 complete:(id)a4;
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4;
-- (void)getKTSessionByID:(id)a3 complete:(id)a4;
-- (void)listKTSession:(id)a3;
-- (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5 complete:(id)a6;
-- (void)setupKTSession:(id)a3 complete:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)selfAccountKey:(id *)key;
+- (void)deleteKTSession:(id)session complete:(id)complete;
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete;
+- (void)getKTSessionByID:(id)d complete:(id)complete;
+- (void)listKTSession:(id)session;
+- (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token complete:(id)complete;
+- (void)setupKTSession:(id)session complete:(id)complete;
 @end
 
 @implementation IDSServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.transparency.kt"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.transparency.kt"];
   if ([v6 BOOLValue])
   {
 
@@ -31,27 +31,27 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Accepting new connection", v17, 2u);
     }
 
-    v10 = [(IDSServiceDelegate *)self xpcQueue];
-    [v5 _setQueue:v10];
+    xpcQueue = [(IDSServiceDelegate *)self xpcQueue];
+    [connectionCopy _setQueue:xpcQueue];
 
     v11 = +[TransparencyXPCIDSInterface interface];
-    [v5 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v12 = 1;
     goto LABEL_14;
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.transparency.transparencyd"];
-  v8 = [v7 BOOLValue];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.transparency.transparencyd"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     goto LABEL_4;
   }
 
-  v13 = [v5 valueForEntitlement:@"application-identifier"];
+  v13 = [connectionCopy valueForEntitlement:@"application-identifier"];
   if (qword_1000AEC70 != -1)
   {
     sub_10006D56C();
@@ -62,7 +62,7 @@ LABEL_4:
   {
     v15 = v14;
     v17[0] = 67109378;
-    v17[1] = [v5 processIdentifier];
+    v17[1] = [connectionCopy processIdentifier];
     v18 = 2114;
     v19 = v13;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "ids rejecting client %d/[%{public}@] due to lack of entitlement", v17, 0x12u);
@@ -74,7 +74,7 @@ LABEL_14:
   return v12;
 }
 
-- (id)selfAccountKey:(id *)a3
+- (id)selfAccountKey:(id *)key
 {
   v35 = 0;
   v36 = &v35;
@@ -124,14 +124,14 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Timed out to get account public key: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (key)
     {
       v10 = v36[5];
       if (v10)
       {
 LABEL_8:
         v11 = 0;
-        *a3 = v10;
+        *key = v10;
         goto LABEL_20;
       }
     }
@@ -156,7 +156,7 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to get account public key: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (key)
     {
       v10 = v36[5];
       if (v10)
@@ -195,12 +195,12 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed to convert public key: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (key)
     {
       v20 = v36[5];
       if (v20)
       {
-        *a3 = v20;
+        *key = v20;
       }
     }
   }
@@ -213,10 +213,10 @@ LABEL_20:
   return v11;
 }
 
-- (void)setupKTSession:(id)a3 complete:(id)a4
+- (void)setupKTSession:(id)session complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  completeCopy = complete;
   if (qword_1000AEC70 != -1)
   {
     sub_10006D60C();
@@ -226,18 +226,18 @@ LABEL_20:
   if (os_log_type_enabled(qword_1000AEC78, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v6 peer];
-    v11 = [v6 lastUsedAddressOfMe];
+    peer = [sessionCopy peer];
+    lastUsedAddressOfMe = [sessionCopy lastUsedAddressOfMe];
     *buf = 138412546;
-    v25 = v10;
+    v25 = peer;
     v26 = 2112;
-    v27 = v11;
+    v27 = lastUsedAddressOfMe;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "setupKTSession to peer: %{mark.hash}@ from: %{mark.hash}@", buf, 0x16u);
   }
 
-  v12 = [(IDSServiceDelegate *)self idsTransport];
+  idsTransport = [(IDSServiceDelegate *)self idsTransport];
 
-  if (v12)
+  if (idsTransport)
   {
     v23 = 0;
     v13 = [(IDSServiceDelegate *)self selfAccountKey:&v23];
@@ -257,15 +257,15 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "setupKTSession got account key: %{public}@", buf, 0xCu);
       }
 
-      v16 = [v13 publicKeyInfo];
-      v17 = [(IDSServiceDelegate *)self idsTransport];
-      v18 = [v17 setupMailbox:v6 publicInfo:v16];
+      publicKeyInfo = [v13 publicKeyInfo];
+      idsTransport2 = [(IDSServiceDelegate *)self idsTransport];
+      v18 = [idsTransport2 setupMailbox:sessionCopy publicInfo:publicKeyInfo];
 
       [v18 setStateUpdate:&stru_100094D80];
-      v19 = [(IDSServiceDelegate *)self idsTransport];
-      [v19 startSession:v18];
+      idsTransport3 = [(IDSServiceDelegate *)self idsTransport];
+      [idsTransport3 startSession:v18];
 
-      v20 = [v18 mapMailbox];
+      mapMailbox = [v18 mapMailbox];
       if (qword_1000AEC70 != -1)
       {
         sub_10006D648();
@@ -275,11 +275,11 @@ LABEL_20:
       if (os_log_type_enabled(qword_1000AEC78, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v25 = v20;
+        v25 = mapMailbox;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "setupKTSession setup complete: %{public}@", buf, 0xCu);
       }
 
-      v7[2](v7, v20, 0);
+      completeCopy[2](completeCopy, mapMailbox, 0);
     }
 
     else
@@ -297,53 +297,53 @@ LABEL_20:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to convert public key: %{public}@", buf, 0xCu);
       }
 
-      (v7)[2](v7, 0, v14);
+      (completeCopy)[2](completeCopy, 0, v14);
     }
   }
 
   else
   {
     v14 = [(IDSServiceDelegate *)self staticKeyFeatureNotEnabled:@"IDS protocol"];
-    (v7)[2](v7, 0, v14);
+    (completeCopy)[2](completeCopy, 0, v14);
   }
 }
 
-- (void)listKTSession:(id)a3
+- (void)listKTSession:(id)session
 {
-  v5 = a3;
-  v7 = [(IDSServiceDelegate *)self idsTransport];
-  v6 = [v7 listSessions];
-  (*(a3 + 2))(v5, v6);
+  sessionCopy = session;
+  idsTransport = [(IDSServiceDelegate *)self idsTransport];
+  listSessions = [idsTransport listSessions];
+  (*(session + 2))(sessionCopy, listSessions);
 }
 
-- (void)deleteKTSession:(id)a3 complete:(id)a4
+- (void)deleteKTSession:(id)session complete:(id)complete
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = [(IDSServiceDelegate *)self idsTransport];
-  v9 = [v10 deleteSessionByID:v8];
+  completeCopy = complete;
+  sessionCopy = session;
+  idsTransport = [(IDSServiceDelegate *)self idsTransport];
+  v9 = [idsTransport deleteSessionByID:sessionCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(complete + 2))(completeCopy, v9);
 }
 
-- (void)getKTSessionByHandle:(id)a3 complete:(id)a4
+- (void)getKTSessionByHandle:(id)handle complete:(id)complete
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(IDSServiceDelegate *)self idsTransport];
-  v10 = [v9 findSessionByHandle:v8];
+  completeCopy = complete;
+  handleCopy = handle;
+  idsTransport = [(IDSServiceDelegate *)self idsTransport];
+  v10 = [idsTransport findSessionByHandle:handleCopy];
 
   v12 = v10;
   v11 = [NSArray arrayWithObjects:&v12 count:1];
-  (*(a4 + 2))(v7, v11);
+  (*(complete + 2))(completeCopy, v11);
 }
 
-- (void)getKTSessionByID:(id)a3 complete:(id)a4
+- (void)getKTSessionByID:(id)d complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSServiceDelegate *)self idsTransport];
-  v9 = [v8 findSessionByID:v6];
+  dCopy = d;
+  completeCopy = complete;
+  idsTransport = [(IDSServiceDelegate *)self idsTransport];
+  v9 = [idsTransport findSessionByID:dCopy];
 
   if (qword_1000AEC70 != -1)
   {
@@ -354,28 +354,28 @@ LABEL_20:
   if (os_log_type_enabled(qword_1000AEC78, OS_LOG_TYPE_DEBUG))
   {
     v11 = 138543618;
-    v12 = v6;
+    v12 = dCopy;
     v13 = 2114;
     v14 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "getKTSessionByID: %{public}@ found %{public}@", &v11, 0x16u);
   }
 
-  v7[2](v7, v9);
+  completeCopy[2](completeCopy, v9);
 }
 
-- (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5 complete:(id)a6
+- (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token complete:(id)complete
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  rCopy = r;
+  handleCopy = handle;
+  tokenCopy = token;
+  completeCopy = complete;
   if (+[TransparencyAnalytics hasInternalDiagnostics])
   {
-    v13 = [(IDSServiceDelegate *)self idsTransport];
-    [v13 sasTTR:v14 toHandle:v10 pushToken:v11];
+    idsTransport = [(IDSServiceDelegate *)self idsTransport];
+    [idsTransport sasTTR:rCopy toHandle:handleCopy pushToken:tokenCopy];
   }
 
-  v12[2](v12, 0);
+  completeCopy[2](completeCopy, 0);
 }
 
 @end

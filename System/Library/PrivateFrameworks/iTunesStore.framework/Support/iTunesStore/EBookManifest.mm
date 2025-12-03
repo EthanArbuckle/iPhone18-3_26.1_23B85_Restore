@@ -2,27 +2,27 @@
 + (id)purchasedBookManifest;
 + (id)sharedPurchasedBookManifest;
 + (id)syncedBookManifest;
-- (EBookManifest)initWithManifestPath:(id)a3;
+- (EBookManifest)initWithManifestPath:(id)path;
 - (NSString)manifestPath;
 - (id)_entries;
 - (id)_manifest;
-- (id)bookPathForAdamID:(id)a3 withPublicationVersion:(id)a4;
-- (id)bookPathPermalink:(id)a3;
-- (id)manifestEntriesWithProperty:(id)a3 equalToValue:(id)a4 limitCount:(int64_t)a5;
+- (id)bookPathForAdamID:(id)d withPublicationVersion:(id)version;
+- (id)bookPathPermalink:(id)permalink;
+- (id)manifestEntriesWithProperty:(id)property equalToValue:(id)value limitCount:(int64_t)count;
 - (void)_invalidateAfterExternalChange;
-- (void)addManifestEntries:(id)a3;
-- (void)addManifestEntry:(id)a3;
+- (void)addManifestEntries:(id)entries;
+- (void)addManifestEntry:(id)entry;
 - (void)dealloc;
-- (void)removeManifestEntryWithDownloadPermalink:(id)a3;
-- (void)removeManifestEntryWithStoreItemID:(id)a3;
+- (void)removeManifestEntryWithDownloadPermalink:(id)permalink;
+- (void)removeManifestEntryWithStoreItemID:(id)d;
 - (void)synchronizeData;
 @end
 
 @implementation EBookManifest
 
-- (EBookManifest)initWithManifestPath:(id)a3
+- (EBookManifest)initWithManifestPath:(id)path
 {
-  if (![a3 length])
+  if (![path length])
   {
     sub_100272478(a2, self);
   }
@@ -33,7 +33,7 @@
   if (v6)
   {
     v6->_dispatchQueue = dispatch_queue_create("com.apple.itunesstored.EBookManifest", 0);
-    v6->_manifestPath = [a3 copy];
+    v6->_manifestPath = [path copy];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v6, sub_10018E5E0, @"com.apple.books.plist.changed", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
@@ -82,13 +82,13 @@
   return qword_100383FD8;
 }
 
-- (void)addManifestEntry:(id)a3
+- (void)addManifestEntry:(id)entry
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{entry, 0}];
   [(EBookManifest *)self addManifestEntries:v4];
 }
 
-- (void)addManifestEntries:(id)a3
+- (void)addManifestEntries:(id)entries
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -96,18 +96,18 @@
   v4[2] = sub_10018E944;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = entries;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (id)bookPathPermalink:(id)a3
+- (id)bookPathPermalink:(id)permalink
 {
-  if (!a3)
+  if (!permalink)
   {
     return 0;
   }
 
-  v3 = [(EBookManifest *)self manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:a3 limitCount:1];
+  v3 = [(EBookManifest *)self manifestEntriesWithProperty:@"iTunesU Permlink" equalToValue:permalink limitCount:1];
   if ([v3 count] != 1)
   {
     return 0;
@@ -122,14 +122,14 @@
   return [v4 objectForKey:@"Path"];
 }
 
-- (id)bookPathForAdamID:(id)a3 withPublicationVersion:(id)a4
+- (id)bookPathForAdamID:(id)d withPublicationVersion:(id)version
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
-  v5 = [(EBookManifest *)self manifestEntriesWithProperty:@"s" equalToValue:a3 limitCount:1];
+  v5 = [(EBookManifest *)self manifestEntriesWithProperty:@"s" equalToValue:d limitCount:1];
   if ([v5 count] != 1)
   {
     return 0;
@@ -142,7 +142,7 @@
   }
 
   v7 = v6;
-  if (![objc_msgSend(v6 objectForKey:{@"Publication Version", "isEqualToNumber:", a4}])
+  if (![objc_msgSend(v6 objectForKey:{@"Publication Version", "isEqualToNumber:", version}])
   {
     return 0;
   }
@@ -150,7 +150,7 @@
   return [v7 objectForKey:@"Path"];
 }
 
-- (id)manifestEntriesWithProperty:(id)a3 equalToValue:(id)a4 limitCount:(int64_t)a5
+- (id)manifestEntriesWithProperty:(id)property equalToValue:(id)value limitCount:(int64_t)count
 {
   v9 = +[NSMutableArray array];
   dispatchQueue = self->_dispatchQueue;
@@ -159,10 +159,10 @@
   block[2] = sub_10018EC94;
   block[3] = &unk_100327F60;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = property;
+  block[6] = value;
   block[7] = v9;
-  block[8] = a5;
+  block[8] = count;
   dispatch_sync(dispatchQueue, block);
   return v9;
 }
@@ -174,7 +174,7 @@
   return v2;
 }
 
-- (void)removeManifestEntryWithStoreItemID:(id)a3
+- (void)removeManifestEntryWithStoreItemID:(id)d
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -182,11 +182,11 @@
   v4[2] = sub_10018EE5C;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_sync(dispatchQueue, v4);
 }
 
-- (void)removeManifestEntryWithDownloadPermalink:(id)a3
+- (void)removeManifestEntryWithDownloadPermalink:(id)permalink
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -194,7 +194,7 @@
   v4[2] = sub_10018F0A0;
   v4[3] = &unk_100327350;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = permalink;
   dispatch_sync(dispatchQueue, v4);
 }
 
@@ -211,12 +211,12 @@
 
 - (id)_entries
 {
-  v2 = [(EBookManifest *)self _manifest];
-  result = [v2 objectForKey:@"Books"];
+  _manifest = [(EBookManifest *)self _manifest];
+  result = [_manifest objectForKey:@"Books"];
   if (!result)
   {
 
-    return [v2 objectForKey:@"Purchases"];
+    return [_manifest objectForKey:@"Purchases"];
   }
 
   return result;
@@ -230,15 +230,15 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
   if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -297,15 +297,15 @@
             v8 = +[SSLogConfig sharedConfig];
           }
 
-          v9 = [v8 shouldLog];
+          shouldLog = [v8 shouldLog];
           if ([v8 shouldLogToDisk])
           {
-            v10 = v9 | 2;
+            v10 = shouldLog | 2;
           }
 
           else
           {
-            v10 = v9;
+            v10 = shouldLog;
           }
 
           if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -343,15 +343,15 @@
         v14 = +[SSLogConfig sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
+      shouldLog2 = [v14 shouldLog];
       if ([v14 shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog2 | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))

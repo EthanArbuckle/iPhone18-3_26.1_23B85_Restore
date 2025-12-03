@@ -1,11 +1,11 @@
 @interface SUScriptPopOver
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)_isViewControllerVisible;
 - (BOOL)isVisible;
-- (BOOL)showFromElement:(id)a3;
-- (BOOL)showFromNavigationItem:(id)a3;
+- (BOOL)showFromElement:(id)element;
+- (BOOL)showFromNavigationItem:(id)item;
 - (SUScriptPopOver)init;
 - (SUScriptViewController)presentingViewController;
 - (SUScriptViewController)viewController;
@@ -18,14 +18,14 @@
 - (id)_presentablePopoverController;
 - (id)scriptAttributeKeys;
 - (int64_t)backgroundStyle;
-- (void)_dismissAnimated:(BOOL)a3;
-- (void)_setNativeViewController:(id)a3;
+- (void)_dismissAnimated:(BOOL)animated;
+- (void)_setNativeViewController:(id)controller;
 - (void)_showAsModalViewController;
-- (void)_viewControllerDidDismiss:(id)a3;
+- (void)_viewControllerDidDismiss:(id)dismiss;
 - (void)dealloc;
-- (void)dismissAnimated:(id)a3;
-- (void)setNativePopoverController:(id)a3;
-- (void)setViewController:(id)a3;
+- (void)dismissAnimated:(id)animated;
+- (void)setNativePopoverController:(id)controller;
+- (void)setViewController:(id)controller;
 - (void)tearDownUserInterface;
 @end
 
@@ -38,9 +38,9 @@
   v2 = [(SUScriptObject *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__overlayWillShowNotification_ name:@"SUOverlayWillShowNotification" object:0];
-    [v3 addObserver:v2 selector:sel__viewControllerDidDismiss_ name:@"SUViewControllerDidDisappearNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__overlayWillShowNotification_ name:@"SUOverlayWillShowNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__viewControllerDidDismiss_ name:@"SUViewControllerDidDisappearNotification" object:0];
   }
 
   return v2;
@@ -48,9 +48,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"SUOverlayWillShowNotification" object:0];
-  [v3 removeObserver:self name:@"SUViewControllerDidDisappearNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUOverlayWillShowNotification" object:0];
+  [defaultCenter removeObserver:self name:@"SUViewControllerDidDisappearNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = SUScriptPopOver;
@@ -59,17 +59,17 @@
 
 - (UIViewController)activeViewController
 {
-  v2 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [(UIViewController *)v2 contentViewController];
+    object = [(UIViewController *)object contentViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return object;
   }
 
   else
@@ -80,11 +80,11 @@
 
 - (UIPopoverController)nativePopoverController
 {
-  v2 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return object;
   }
 
   else
@@ -93,18 +93,18 @@
   }
 }
 
-- (void)setNativePopoverController:(id)a3
+- (void)setNativePopoverController:(id)controller
 {
-  v5 = [(SUScriptObject *)self parentViewController];
-  v6 = v5;
-  if (a3)
+  parentViewController = [(SUScriptObject *)self parentViewController];
+  v6 = parentViewController;
+  if (controller)
   {
-    if (v5)
+    if (parentViewController)
     {
-      objc_setAssociatedObject(a3, "SUScriptPopOverPresentingViewController", [MEMORY[0x1E69D4A30] weakReferenceWithObject:v5], 1);
+      objc_setAssociatedObject(controller, "SUScriptPopOverPresentingViewController", [MEMORY[0x1E69D4A30] weakReferenceWithObject:parentViewController], 1);
     }
 
-    v7 = [(SUScriptNativeObject *)SUScriptPopOverNativeObject objectWithNativeObject:a3];
+    v7 = [(SUScriptNativeObject *)SUScriptPopOverNativeObject objectWithNativeObject:controller];
   }
 
   else
@@ -123,14 +123,14 @@
 
 - (BOOL)isVisible
 {
-  v2 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [v2 isPopoverVisible];
+  return [object isPopoverVisible];
 }
 
 - (void)tearDownUserInterface
@@ -145,7 +145,7 @@
   [(SUScriptObject *)&v3 tearDownUserInterface];
 }
 
-- (void)dismissAnimated:(id)a3
+- (void)dismissAnimated:(id)animated
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -157,13 +157,13 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (v5 = a3, (objc_opt_respondsToSelector() & 1) != 0))
+  if (!animated || (isKindOfClass & 1) != 0 || (v5 = animated, (objc_opt_respondsToSelector() & 1) != 0))
   {
 LABEL_3:
-    v6 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
-    v7 = [v5 BOOLValue];
+    webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+    bOOLValue = [v5 BOOLValue];
 
-    [v6 _dismissAnimated:v7];
+    [webThreadMainThreadBatchProxy _dismissAnimated:bOOLValue];
     return;
   }
 
@@ -188,9 +188,9 @@ uint64_t __51__SUScriptPopOver_setContentWidth_height_animated___block_invoke(ui
   return result;
 }
 
-- (BOOL)showFromElement:(id)a3
+- (BOOL)showFromElement:(id)element
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (element && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     WebThreadRunOnMainThread();
     return 1;
@@ -296,9 +296,9 @@ uint64_t __35__SUScriptPopOver_showFromElement___block_invoke_29(uint64_t a1)
   return [v7 detachFromScrollView];
 }
 
-- (BOOL)showFromNavigationItem:(id)a3
+- (BOOL)showFromNavigationItem:(id)item
 {
-  if (a3 && ([a3 conformsToProtocol:&unk_1F422F898] & 1) != 0)
+  if (item && ([item conformsToProtocol:&unk_1F422F898] & 1) != 0)
   {
     WebThreadRunOnMainThread();
     return 1;
@@ -537,9 +537,9 @@ uint64_t __35__SUScriptPopOver_setContentWidth___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (controller && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = MEMORY[0x1E69E2F88];
 
@@ -598,20 +598,20 @@ uint64_t __37__SUScriptPopOver_setViewController___block_invoke(uint64_t a1)
   v8 = 3221225472;
   v9 = __33__SUScriptPopOver_viewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptPopOver_viewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __33__SUScriptPopOver_viewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -635,10 +635,10 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_viewControllerDidDismiss:(id)a3
+- (void)_viewControllerDidDismiss:(id)dismiss
 {
-  v4 = [a3 object];
-  if (v4 == [(SUScriptPopOver *)self activeViewController])
+  object = [dismiss object];
+  if (object == [(SUScriptPopOver *)self activeViewController])
   {
     if (!self->_ignoreDismiss)
     {
@@ -656,18 +656,18 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_dismissAnimated:(BOOL)a3
+- (void)_dismissAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(SUScriptPopOver *)self _shouldDisplayAsPopover])
   {
-    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptPopOver _popOverController](self, "_popOverController")), "dismissPopoverAnimated:", v3}];
+    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptPopOver _popOverController](self, "_popOverController")), "dismissPopoverAnimated:", animatedCopy}];
   }
 
   else
   {
-    v5 = [(UIViewController *)[(SUScriptPopOver *)self activeViewController] parentViewController];
-    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{v5), "dismissViewControllerAnimated:completion:", v3, 0}];
+    parentViewController = [(UIViewController *)[(SUScriptPopOver *)self activeViewController] parentViewController];
+    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{parentViewController), "dismissViewControllerAnimated:completion:", animatedCopy, 0}];
   }
 
   [(SUScriptObject *)self setNativeObject:0];
@@ -677,11 +677,11 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
 
 - (id)_nativeViewController
 {
-  v2 = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
+  object = [(SUScriptNativeObject *)[(SUScriptObject *)self nativeObject] object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return object;
   }
 
   else
@@ -694,36 +694,36 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
 {
   if ([(SUScriptPopOver *)self nativePopoverController])
   {
-    v3 = [(SUScriptPopOver *)self nativePopoverController];
+    nativePopoverController = [(SUScriptPopOver *)self nativePopoverController];
 
-    LOBYTE(v4) = [(UIPopoverController *)v3 isPopoverVisible];
+    LOBYTE(_nativeViewController) = [(UIPopoverController *)nativePopoverController isPopoverVisible];
   }
 
   else
   {
-    v4 = [(SUScriptPopOver *)self _nativeViewController];
-    if (v4)
+    _nativeViewController = [(SUScriptPopOver *)self _nativeViewController];
+    if (_nativeViewController)
     {
-      LOBYTE(v4) = [-[SUScriptPopOver _nativeViewController](self "_nativeViewController")] != 0;
+      LOBYTE(_nativeViewController) = [-[SUScriptPopOver _nativeViewController](self "_nativeViewController")] != 0;
     }
   }
 
-  return v4;
+  return _nativeViewController;
 }
 
 - (id)_popOverController
 {
-  v3 = [(SUScriptPopOver *)self nativePopoverController];
-  if (!v3)
+  nativePopoverController = [(SUScriptPopOver *)self nativePopoverController];
+  if (!nativePopoverController)
   {
     if ([(SUScriptPopOver *)self _shouldDisplayAsPopover])
     {
       v4 = objc_alloc_init(MEMORY[0x1E69DD258]);
       [v4 setPreferredContentSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-      v3 = [objc_alloc(MEMORY[0x1E69DCDD8]) initWithContentViewController:v4];
-      [(UIPopoverController *)v3 _setPopoverBackgroundStyle:3];
-      [(SUScriptPopOver *)self setNativePopoverController:v3];
-      v5 = v3;
+      nativePopoverController = [objc_alloc(MEMORY[0x1E69DCDD8]) initWithContentViewController:v4];
+      [(UIPopoverController *)nativePopoverController _setPopoverBackgroundStyle:3];
+      [(SUScriptPopOver *)self setNativePopoverController:nativePopoverController];
+      v5 = nativePopoverController;
     }
 
     else
@@ -732,14 +732,14 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
     }
   }
 
-  return v3;
+  return nativePopoverController;
 }
 
 - (id)_presentablePopoverController
 {
-  v3 = [(SUScriptPopOver *)self _popOverController];
-  v4 = v3;
-  if (!self->_contentViewController || [v3 contentViewController] == self->_contentViewController)
+  _popOverController = [(SUScriptPopOver *)self _popOverController];
+  v4 = _popOverController;
+  if (!self->_contentViewController || [_popOverController contentViewController] == self->_contentViewController)
   {
     return v4;
   }
@@ -753,63 +753,63 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_setNativeViewController:(id)a3
+- (void)_setNativeViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    a3 = [(SUScriptNativeObject *)SUScriptViewControllerNativeObject objectWithNativeObject:?];
+    controller = [(SUScriptNativeObject *)SUScriptViewControllerNativeObject objectWithNativeObject:?];
   }
 
-  [(SUScriptObject *)self setNativeObject:a3];
+  [(SUScriptObject *)self setNativeObject:controller];
 }
 
 - (void)_showAsModalViewController
 {
-  v3 = [(SUScriptObject *)self parentViewController];
-  v4 = [(SUScriptPopOver *)self _nativeViewController];
-  if (v3)
+  parentViewController = [(SUScriptObject *)self parentViewController];
+  _nativeViewController = [(SUScriptPopOver *)self _nativeViewController];
+  if (parentViewController)
   {
-    v5 = v4;
-    if (v4)
+    v5 = _nativeViewController;
+    if (_nativeViewController)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
 
-        [v3 presentViewController:v5 animated:1 completion:0];
+        [parentViewController presentViewController:v5 animated:1 completion:0];
       }
 
       else
       {
         v6 = [[SUNavigationController alloc] initWithRootViewController:v5];
         [(SUNavigationController *)v6 setClientInterface:[(SUScriptObject *)self clientInterface]];
-        [v3 presentViewController:v6 animated:1 completion:0];
+        [parentViewController presentViewController:v6 animated:1 completion:0];
       }
     }
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_7 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptPopOver;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_5, 4);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_5, 4);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptPopOver;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -819,14 +819,14 @@ uint64_t __33__SUScriptPopOver_viewController__block_invoke(uint64_t a1)
 {
   v4.receiver = self;
   v4.super_class = SUScriptPopOver;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_7 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_7 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_5 = sel_dismissAnimated_;
     *algn_1EBF3A858 = @"dismiss";

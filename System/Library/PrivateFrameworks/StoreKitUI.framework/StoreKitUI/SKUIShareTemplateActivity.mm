@@ -1,5 +1,5 @@
 @interface SKUIShareTemplateActivity
-- (SKUIShareTemplateActivity)initWithActivityViewElement:(id)a3 clientContext:(id)a4;
+- (SKUIShareTemplateActivity)initWithActivityViewElement:(id)element clientContext:(id)context;
 - (id)activityImage;
 - (id)activityTitle;
 - (id)activityType;
@@ -8,10 +8,10 @@
 
 @implementation SKUIShareTemplateActivity
 
-- (SKUIShareTemplateActivity)initWithActivityViewElement:(id)a3 clientContext:(id)a4
+- (SKUIShareTemplateActivity)initWithActivityViewElement:(id)element clientContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIShareTemplateActivity initWithActivityViewElement:clientContext:];
@@ -23,8 +23,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a4);
-    objc_storeStrong(&v10->_viewElement, a3);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_viewElement, element);
   }
 
   return v10;
@@ -32,8 +32,8 @@
 
 - (id)activityImage
 {
-  v2 = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if ([v2 isEqualToString:@"gift"])
+  activityType = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if ([activityType isEqualToString:@"gift"])
   {
     v3 = @"ShareSheetGift";
 LABEL_5:
@@ -43,7 +43,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v2 isEqualToString:@"wishlist"])
+  if ([activityType isEqualToString:@"wishlist"])
   {
     v3 = @"ShareSheetWishList";
     goto LABEL_5;
@@ -57,10 +57,10 @@ LABEL_7:
 
 - (id)activityTitle
 {
-  v3 = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if (![v3 isEqualToString:@"gift"])
+  activityType = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if (![activityType isEqualToString:@"gift"])
   {
-    if (![v3 isEqualToString:@"wishlist"])
+    if (![activityType isEqualToString:@"wishlist"])
     {
       v7 = 0;
       goto LABEL_13;
@@ -98,13 +98,13 @@ LABEL_13:
 
 - (id)activityType
 {
-  v2 = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
-  if ([v2 isEqualToString:@"gift"])
+  activityType = [(SKUIShareSheetActivityViewElement *)self->_viewElement activityType];
+  if ([activityType isEqualToString:@"gift"])
   {
     v3 = @"SKUIActivityTypeGift";
   }
 
-  else if ([v2 isEqualToString:@"wishlist"])
+  else if ([activityType isEqualToString:@"wishlist"])
   {
     v3 = @"SKUIActivityTypeWishlist";
   }
@@ -126,7 +126,7 @@ LABEL_13:
   v6[2] = __44__SKUIShareTemplateActivity_performActivity__block_invoke;
   v6[3] = &unk_2781F80C8;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_after(v4, MEMORY[0x277D85CD0], v6);
 }

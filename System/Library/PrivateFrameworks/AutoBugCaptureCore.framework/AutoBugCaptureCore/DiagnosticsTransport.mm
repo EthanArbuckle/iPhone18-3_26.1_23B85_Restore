@@ -1,6 +1,6 @@
 @interface DiagnosticsTransport
 - (DiagnosticsTransport)init;
-- (void)setListeningPort:(const char *)a3;
+- (void)setListeningPort:(const char *)port;
 - (void)shutdown;
 @end
 
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (void)setListeningPort:(const char *)a3
+- (void)setListeningPort:(const char *)port
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v21 = a3;
+    portCopy = port;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagnosticsTransport started for service %s", buf, 0xCu);
   }
 
@@ -42,7 +42,7 @@
     {
       listener = self->listener;
       *buf = 134217984;
-      v21 = listener;
+      portCopy = listener;
       _os_log_impl(&dword_241804000, v6, OS_LOG_TYPE_ERROR, "DiagnosticsTransport: already initialized: %p", buf, 0xCu);
     }
   }
@@ -50,7 +50,7 @@
   else
   {
     v8 = objc_alloc(MEMORY[0x277CCAE98]);
-    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:port];
     v10 = [v8 initWithMachServiceName:v9];
     v11 = self->listener;
     self->listener = v10;
@@ -70,7 +70,7 @@
       v19[2] = __41__DiagnosticsTransport_setListeningPort___block_invoke;
       v19[3] = &unk_278CF0220;
       v19[4] = self;
-      v19[5] = a3;
+      v19[5] = port;
       dispatch_after(v15, transport_queue, v19);
     }
 

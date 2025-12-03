@@ -1,6 +1,6 @@
 @interface NCNotificationSectionMuteAssertion
 + (id)sectionMuteAssertion;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_init;
 @end
 
@@ -8,9 +8,9 @@
 
 + (id)sectionMuteAssertion
 {
-  v2 = [[NCNotificationSectionMuteAssertion alloc] _init];
+  _init = [[NCNotificationSectionMuteAssertion alloc] _init];
 
-  return v2;
+  return _init;
 }
 
 - (id)_init
@@ -20,9 +20,9 @@
   return [(NCNotificationSectionMuteAssertion *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

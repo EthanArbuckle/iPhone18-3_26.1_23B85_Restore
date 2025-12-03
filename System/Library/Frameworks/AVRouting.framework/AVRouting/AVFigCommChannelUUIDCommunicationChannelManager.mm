@@ -1,10 +1,10 @@
 @interface AVFigCommChannelUUIDCommunicationChannelManager
-- (AVFigCommChannelUUIDCommunicationChannelManager)initWithRoutingContext:(OpaqueFigRoutingContext *)a3;
+- (AVFigCommChannelUUIDCommunicationChannelManager)initWithRoutingContext:(OpaqueFigRoutingContext *)context;
 - (AVOutputContextCommunicationChannel)outgoingCommunicationChannel;
-- (id)openCommunicationChannelWithOptions:(id)a3 error:(id *)a4;
-- (void)_didReceiveData:(__CFData *)a3 fromCommChannelUUID:(__CFString *)a4;
+- (id)openCommunicationChannelWithOptions:(id)options error:(id *)error;
+- (void)_didReceiveData:(__CFData *)data fromCommChannelUUID:(__CFString *)d;
 - (void)dealloc;
-- (void)didCloseCommChannelUUID:(__CFString *)a3;
+- (void)didCloseCommChannelUUID:(__CFString *)d;
 @end
 
 @implementation AVFigCommChannelUUIDCommunicationChannelManager
@@ -167,13 +167,13 @@ void __79__AVFigCommChannelUUIDCommunicationChannelManager_outgoingCommunication
   }
 }
 
-- (id)openCommunicationChannelWithOptions:(id)a3 error:(id *)a4
+- (id)openCommunicationChannelWithOptions:(id)options error:(id *)error
 {
   cf[22] = *MEMORY[0x1E69E9840];
   cf[0] = 0;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E528], MEMORY[0x1E695E9E8]);
   v8 = *MEMORY[0x1E6961760];
-  v9 = [a3 objectForKeyedSubscript:@"AVOutputContextCommunicationChannelOptionControlType"];
+  v9 = [options objectForKeyedSubscript:@"AVOutputContextCommunicationChannelOptionControlType"];
   v10 = v9;
   if (v9)
   {
@@ -237,7 +237,7 @@ LABEL_15:
     block[4] = self;
     av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
     v20 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_19;
     }
@@ -249,7 +249,7 @@ LABEL_15:
 LABEL_16:
   v17 = 0;
   v18 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_19;
   }
@@ -257,7 +257,7 @@ LABEL_16:
 LABEL_17:
   if (!v18)
   {
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_19:
@@ -300,7 +300,7 @@ void __93__AVFigCommChannelUUIDCommunicationChannelManager_openCommunicationChan
   }
 }
 
-- (void)_didReceiveData:(__CFData *)a3 fromCommChannelUUID:(__CFString *)a4
+- (void)_didReceiveData:(__CFData *)data fromCommChannelUUID:(__CFString *)d
 {
   v10 = 0;
   v11 = &v10;
@@ -308,7 +308,7 @@ void __93__AVFigCommChannelUUIDCommunicationChannelManager_openCommunicationChan
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  if (a4)
+  if (d)
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -317,10 +317,10 @@ void __93__AVFigCommChannelUUIDCommunicationChannelManager_openCommunicationChan
     block[3] = &unk_1E794EA40;
     block[4] = self;
     block[5] = &v10;
-    block[6] = a4;
+    block[6] = d;
     av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
-    v7 = [(AVFigCommChannelUUIDCommunicationChannelManager *)self parentOutputContextImpl];
-    [(AVFigRoutingContextOutputContextImpl *)v7 communicationChannelManager:self didReceiveData:a3 fromCommunicationChannel:v11[5]];
+    parentOutputContextImpl = [(AVFigCommChannelUUIDCommunicationChannelManager *)self parentOutputContextImpl];
+    [(AVFigRoutingContextOutputContextImpl *)parentOutputContextImpl communicationChannelManager:self didReceiveData:data fromCommunicationChannel:v11[5]];
     v8 = v11[5];
   }
 
@@ -361,7 +361,7 @@ void __87__AVFigCommChannelUUIDCommunicationChannelManager__didReceiveData_fromC
   }
 }
 
-- (void)didCloseCommChannelUUID:(__CFString *)a3
+- (void)didCloseCommChannelUUID:(__CFString *)d
 {
   v8 = 0;
   v9 = &v8;
@@ -369,7 +369,7 @@ void __87__AVFigCommChannelUUIDCommunicationChannelManager__didReceiveData_fromC
   v11 = __Block_byref_object_copy__1;
   v12 = __Block_byref_object_dispose__1;
   v13 = 0;
-  if (a3)
+  if (d)
   {
     ivarAccessQueue = self->_ivarAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -378,10 +378,10 @@ void __87__AVFigCommChannelUUIDCommunicationChannelManager__didReceiveData_fromC
     block[3] = &unk_1E794EA40;
     block[4] = self;
     block[5] = &v8;
-    block[6] = a3;
+    block[6] = d;
     av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
-    v5 = [(AVFigCommChannelUUIDCommunicationChannelManager *)self parentOutputContextImpl];
-    [(AVFigRoutingContextOutputContextImpl *)v5 communicationChannelManager:self didCloseCommunicationChannel:v9[5]];
+    parentOutputContextImpl = [(AVFigCommChannelUUIDCommunicationChannelManager *)self parentOutputContextImpl];
+    [(AVFigRoutingContextOutputContextImpl *)parentOutputContextImpl communicationChannelManager:self didCloseCommunicationChannel:v9[5]];
     v6 = v9[5];
   }
 
@@ -435,7 +435,7 @@ void __75__AVFigCommChannelUUIDCommunicationChannelManager_didCloseCommChannelUU
   }
 }
 
-- (AVFigCommChannelUUIDCommunicationChannelManager)initWithRoutingContext:(OpaqueFigRoutingContext *)a3
+- (AVFigCommChannelUUIDCommunicationChannelManager)initWithRoutingContext:(OpaqueFigRoutingContext *)context
 {
   OUTLINED_FUNCTION_5();
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];

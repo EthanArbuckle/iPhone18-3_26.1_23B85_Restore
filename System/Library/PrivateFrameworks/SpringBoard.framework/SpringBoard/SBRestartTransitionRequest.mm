@@ -1,24 +1,24 @@
 @interface SBRestartTransitionRequest
-- (SBRestartTransitionRequest)initWithRequester:(id)a3 reason:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBRestartTransitionRequest)initWithRequester:(id)requester reason:(id)reason;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)setCustomOverlayDescriptor:(id)a3;
-- (void)setWantsPersistentSnapshot:(BOOL)a3;
+- (void)setCustomOverlayDescriptor:(id)descriptor;
+- (void)setWantsPersistentSnapshot:(BOOL)snapshot;
 @end
 
 @implementation SBRestartTransitionRequest
 
-- (SBRestartTransitionRequest)initWithRequester:(id)a3 reason:(id)a4
+- (SBRestartTransitionRequest)initWithRequester:(id)requester reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requesterCopy = requester;
+  reasonCopy = reason;
+  v9 = reasonCopy;
+  if (requesterCopy)
   {
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
@@ -40,7 +40,7 @@ LABEL_3:
   v10 = [(SBRestartTransitionRequest *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [requesterCopy copy];
     requester = v10->_requester;
     v10->_requester = v11;
 
@@ -52,12 +52,12 @@ LABEL_3:
   return v10;
 }
 
-- (void)setWantsPersistentSnapshot:(BOOL)a3
+- (void)setWantsPersistentSnapshot:(BOOL)snapshot
 {
-  if (self->_wantsPersistentSnapshot != a3)
+  if (self->_wantsPersistentSnapshot != snapshot)
   {
-    self->_wantsPersistentSnapshot = a3;
-    if (a3)
+    self->_wantsPersistentSnapshot = snapshot;
+    if (snapshot)
     {
       customOverlayDescriptor = self->_customOverlayDescriptor;
       self->_customOverlayDescriptor = 0;
@@ -65,19 +65,19 @@ LABEL_3:
   }
 }
 
-- (void)setCustomOverlayDescriptor:(id)a3
+- (void)setCustomOverlayDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (self->_customOverlayDescriptor != v5)
+  descriptorCopy = descriptor;
+  if (self->_customOverlayDescriptor != descriptorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_customOverlayDescriptor, a3);
-    v5 = v6;
+    v6 = descriptorCopy;
+    objc_storeStrong(&self->_customOverlayDescriptor, descriptor);
+    descriptorCopy = v6;
     self->_wantsPersistentSnapshot = 0;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SBRestartTransitionRequest alloc] initWithRequester:self->_requester reason:self->_reason];
   v4->_restartType = self->_restartType;
@@ -90,10 +90,10 @@ LABEL_3:
 
 - (id)succinctDescription
 {
-  v2 = [(SBRestartTransitionRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBRestartTransitionRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -112,28 +112,28 @@ LABEL_3:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBRestartTransitionRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBRestartTransitionRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBRestartTransitionRequest *)self succinctDescriptionBuilder];
-  v6 = v5;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBRestartTransitionRequest *)self succinctDescriptionBuilder];
+  v6 = succinctDescriptionBuilder;
   if (self->_wantsPersistentSnapshot || self->_applicationLaunchURL || self->_customOverlayDescriptor)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __68__SBRestartTransitionRequest_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_2783A92D8;
-    v9 = v5;
-    v10 = self;
-    [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+    v9 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
   }
 
   return v6;

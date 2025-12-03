@@ -1,112 +1,112 @@
 @interface _INPBGetCarPowerLevelStatusIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsActiveConnector:(id)a3;
+- (int)StringAsActiveConnector:(id)connector;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActiveConnector:(int)a3;
-- (void)setCarIdentifier:(id)a3;
-- (void)setHasCharging:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActiveConnector:(int)connector;
+- (void)setCarIdentifier:(id)identifier;
+- (void)setHasCharging:(BOOL)charging;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBGetCarPowerLevelStatusIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector])
   {
-    v4 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self activeConnector];
-    if ((v4 - 2) >= 0xA)
+    activeConnector = [(_INPBGetCarPowerLevelStatusIntentResponse *)self activeConnector];
+    if ((activeConnector - 2) >= 0xA)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", activeConnector];
     }
 
     else
     {
-      v5 = off_1E727ED88[(v4 - 2)];
+      v5 = off_1E727ED88[(activeConnector - 2)];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"activeConnector"];
+    [dictionary setObject:v5 forKeyedSubscript:@"activeConnector"];
   }
 
   if (self->_carIdentifier)
   {
-    v6 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"carIdentifier"];
+    carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+    v7 = [carIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"carIdentifier"];
   }
 
-  v8 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"chargePercentRemaining"];
+  chargePercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+  dictionaryRepresentation = [chargePercentRemaining dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"chargePercentRemaining"];
 
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasCharging])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBGetCarPowerLevelStatusIntentResponse charging](self, "charging")}];
-    [v3 setObject:v10 forKeyedSubscript:@"charging"];
+    [dictionary setObject:v10 forKeyedSubscript:@"charging"];
   }
 
-  v11 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"chargingFormulaArguments"];
+  chargingFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+  dictionaryRepresentation2 = [chargingFormulaArguments dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"chargingFormulaArguments"];
 
-  v13 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"consumptionFormulaArguments"];
+  consumptionFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+  dictionaryRepresentation3 = [consumptionFormulaArguments dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"consumptionFormulaArguments"];
 
-  v15 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"currentBatteryCapacity"];
+  currentBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+  dictionaryRepresentation4 = [currentBatteryCapacity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"currentBatteryCapacity"];
 
-  v17 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"dateOfLastStateUpdate"];
+  dateOfLastStateUpdate = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+  dictionaryRepresentation5 = [dateOfLastStateUpdate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"dateOfLastStateUpdate"];
 
-  v19 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"distanceRemaining"];
+  distanceRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+  dictionaryRepresentation6 = [distanceRemaining dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"distanceRemaining"];
 
-  v21 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"distanceRemainingElectric"];
+  distanceRemainingElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+  dictionaryRepresentation7 = [distanceRemainingElectric dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"distanceRemainingElectric"];
 
-  v23 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
-  v24 = [v23 dictionaryRepresentation];
-  [v3 setObject:v24 forKeyedSubscript:@"distanceRemainingFuel"];
+  distanceRemainingFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+  dictionaryRepresentation8 = [distanceRemainingFuel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"distanceRemainingFuel"];
 
-  v25 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
-  v26 = [v25 dictionaryRepresentation];
-  [v3 setObject:v26 forKeyedSubscript:@"fuelPercentRemaining"];
+  fuelPercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+  dictionaryRepresentation9 = [fuelPercentRemaining dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"fuelPercentRemaining"];
 
-  v27 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
-  v28 = [v27 dictionaryRepresentation];
-  [v3 setObject:v28 forKeyedSubscript:@"maximumBatteryCapacity"];
+  maximumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+  dictionaryRepresentation10 = [maximumBatteryCapacity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"maximumBatteryCapacity"];
 
-  v29 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
-  v30 = [v29 dictionaryRepresentation];
-  [v3 setObject:v30 forKeyedSubscript:@"maximumDistance"];
+  maximumDistance = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+  dictionaryRepresentation11 = [maximumDistance dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"maximumDistance"];
 
-  v31 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
-  v32 = [v31 dictionaryRepresentation];
-  [v3 setObject:v32 forKeyedSubscript:@"maximumDistanceElectric"];
+  maximumDistanceElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+  dictionaryRepresentation12 = [maximumDistanceElectric dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"maximumDistanceElectric"];
 
-  v33 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
-  v34 = [v33 dictionaryRepresentation];
-  [v3 setObject:v34 forKeyedSubscript:@"maximumDistanceFuel"];
+  maximumDistanceFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+  dictionaryRepresentation13 = [maximumDistanceFuel dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"maximumDistanceFuel"];
 
-  v35 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
-  v36 = [v35 dictionaryRepresentation];
-  [v3 setObject:v36 forKeyedSubscript:@"minimumBatteryCapacity"];
+  minimumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+  dictionaryRepresentation14 = [minimumBatteryCapacity dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"minimumBatteryCapacity"];
 
-  v37 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
-  v38 = [v37 dictionaryRepresentation];
-  [v3 setObject:v38 forKeyedSubscript:@"minutesToFull"];
+  minutesToFull = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+  dictionaryRepresentation15 = [minutesToFull dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"minutesToFull"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -150,46 +150,46 @@
   return v19 ^ v20 ^ [(_INPBInteger *)self->_minutesToFull hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_90;
   }
 
-  v5 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector];
-  if (v5 != [v4 hasActiveConnector])
+  hasActiveConnector = [(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector];
+  if (hasActiveConnector != [equalCopy hasActiveConnector])
   {
     goto LABEL_90;
   }
 
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector])
   {
-    if ([v4 hasActiveConnector])
+    if ([equalCopy hasActiveConnector])
     {
       activeConnector = self->_activeConnector;
-      if (activeConnector != [v4 activeConnector])
+      if (activeConnector != [equalCopy activeConnector])
       {
         goto LABEL_90;
       }
     }
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
-  v8 = [v4 carIdentifier];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+  carIdentifier2 = [equalCopy carIdentifier];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v9 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
-  if (v9)
+  carIdentifier3 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+  if (carIdentifier3)
   {
-    v10 = v9;
-    v11 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
-    v12 = [v4 carIdentifier];
-    v13 = [v11 isEqual:v12];
+    v10 = carIdentifier3;
+    carIdentifier4 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+    carIdentifier5 = [equalCopy carIdentifier];
+    v13 = [carIdentifier4 isEqual:carIdentifier5];
 
     if (!v13)
     {
@@ -201,20 +201,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
-  v8 = [v4 chargePercentRemaining];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+  carIdentifier2 = [equalCopy chargePercentRemaining];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v14 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
-  if (v14)
+  chargePercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+  if (chargePercentRemaining)
   {
-    v15 = v14;
-    v16 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
-    v17 = [v4 chargePercentRemaining];
-    v18 = [v16 isEqual:v17];
+    v15 = chargePercentRemaining;
+    chargePercentRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+    chargePercentRemaining3 = [equalCopy chargePercentRemaining];
+    v18 = [chargePercentRemaining2 isEqual:chargePercentRemaining3];
 
     if (!v18)
     {
@@ -226,38 +226,38 @@
   {
   }
 
-  v19 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self hasCharging];
-  if (v19 != [v4 hasCharging])
+  hasCharging = [(_INPBGetCarPowerLevelStatusIntentResponse *)self hasCharging];
+  if (hasCharging != [equalCopy hasCharging])
   {
     goto LABEL_90;
   }
 
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasCharging])
   {
-    if ([v4 hasCharging])
+    if ([equalCopy hasCharging])
     {
       charging = self->_charging;
-      if (charging != [v4 charging])
+      if (charging != [equalCopy charging])
       {
         goto LABEL_90;
       }
     }
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
-  v8 = [v4 chargingFormulaArguments];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+  carIdentifier2 = [equalCopy chargingFormulaArguments];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v21 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
-  if (v21)
+  chargingFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+  if (chargingFormulaArguments)
   {
-    v22 = v21;
-    v23 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
-    v24 = [v4 chargingFormulaArguments];
-    v25 = [v23 isEqual:v24];
+    v22 = chargingFormulaArguments;
+    chargingFormulaArguments2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+    chargingFormulaArguments3 = [equalCopy chargingFormulaArguments];
+    v25 = [chargingFormulaArguments2 isEqual:chargingFormulaArguments3];
 
     if (!v25)
     {
@@ -269,20 +269,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
-  v8 = [v4 consumptionFormulaArguments];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+  carIdentifier2 = [equalCopy consumptionFormulaArguments];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v26 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
-  if (v26)
+  consumptionFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+  if (consumptionFormulaArguments)
   {
-    v27 = v26;
-    v28 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
-    v29 = [v4 consumptionFormulaArguments];
-    v30 = [v28 isEqual:v29];
+    v27 = consumptionFormulaArguments;
+    consumptionFormulaArguments2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+    consumptionFormulaArguments3 = [equalCopy consumptionFormulaArguments];
+    v30 = [consumptionFormulaArguments2 isEqual:consumptionFormulaArguments3];
 
     if (!v30)
     {
@@ -294,20 +294,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
-  v8 = [v4 currentBatteryCapacity];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+  carIdentifier2 = [equalCopy currentBatteryCapacity];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v31 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
-  if (v31)
+  currentBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+  if (currentBatteryCapacity)
   {
-    v32 = v31;
-    v33 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
-    v34 = [v4 currentBatteryCapacity];
-    v35 = [v33 isEqual:v34];
+    v32 = currentBatteryCapacity;
+    currentBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+    currentBatteryCapacity3 = [equalCopy currentBatteryCapacity];
+    v35 = [currentBatteryCapacity2 isEqual:currentBatteryCapacity3];
 
     if (!v35)
     {
@@ -319,20 +319,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
-  v8 = [v4 dateOfLastStateUpdate];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+  carIdentifier2 = [equalCopy dateOfLastStateUpdate];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v36 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
-  if (v36)
+  dateOfLastStateUpdate = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+  if (dateOfLastStateUpdate)
   {
-    v37 = v36;
-    v38 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
-    v39 = [v4 dateOfLastStateUpdate];
-    v40 = [v38 isEqual:v39];
+    v37 = dateOfLastStateUpdate;
+    dateOfLastStateUpdate2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+    dateOfLastStateUpdate3 = [equalCopy dateOfLastStateUpdate];
+    v40 = [dateOfLastStateUpdate2 isEqual:dateOfLastStateUpdate3];
 
     if (!v40)
     {
@@ -344,20 +344,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
-  v8 = [v4 distanceRemaining];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+  carIdentifier2 = [equalCopy distanceRemaining];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v41 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
-  if (v41)
+  distanceRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+  if (distanceRemaining)
   {
-    v42 = v41;
-    v43 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
-    v44 = [v4 distanceRemaining];
-    v45 = [v43 isEqual:v44];
+    v42 = distanceRemaining;
+    distanceRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+    distanceRemaining3 = [equalCopy distanceRemaining];
+    v45 = [distanceRemaining2 isEqual:distanceRemaining3];
 
     if (!v45)
     {
@@ -369,20 +369,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
-  v8 = [v4 distanceRemainingElectric];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+  carIdentifier2 = [equalCopy distanceRemainingElectric];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v46 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
-  if (v46)
+  distanceRemainingElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+  if (distanceRemainingElectric)
   {
-    v47 = v46;
-    v48 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
-    v49 = [v4 distanceRemainingElectric];
-    v50 = [v48 isEqual:v49];
+    v47 = distanceRemainingElectric;
+    distanceRemainingElectric2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+    distanceRemainingElectric3 = [equalCopy distanceRemainingElectric];
+    v50 = [distanceRemainingElectric2 isEqual:distanceRemainingElectric3];
 
     if (!v50)
     {
@@ -394,20 +394,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
-  v8 = [v4 distanceRemainingFuel];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+  carIdentifier2 = [equalCopy distanceRemainingFuel];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v51 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
-  if (v51)
+  distanceRemainingFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+  if (distanceRemainingFuel)
   {
-    v52 = v51;
-    v53 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
-    v54 = [v4 distanceRemainingFuel];
-    v55 = [v53 isEqual:v54];
+    v52 = distanceRemainingFuel;
+    distanceRemainingFuel2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+    distanceRemainingFuel3 = [equalCopy distanceRemainingFuel];
+    v55 = [distanceRemainingFuel2 isEqual:distanceRemainingFuel3];
 
     if (!v55)
     {
@@ -419,20 +419,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
-  v8 = [v4 fuelPercentRemaining];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+  carIdentifier2 = [equalCopy fuelPercentRemaining];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v56 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
-  if (v56)
+  fuelPercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+  if (fuelPercentRemaining)
   {
-    v57 = v56;
-    v58 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
-    v59 = [v4 fuelPercentRemaining];
-    v60 = [v58 isEqual:v59];
+    v57 = fuelPercentRemaining;
+    fuelPercentRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+    fuelPercentRemaining3 = [equalCopy fuelPercentRemaining];
+    v60 = [fuelPercentRemaining2 isEqual:fuelPercentRemaining3];
 
     if (!v60)
     {
@@ -444,20 +444,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
-  v8 = [v4 maximumBatteryCapacity];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+  carIdentifier2 = [equalCopy maximumBatteryCapacity];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v61 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
-  if (v61)
+  maximumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+  if (maximumBatteryCapacity)
   {
-    v62 = v61;
-    v63 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
-    v64 = [v4 maximumBatteryCapacity];
-    v65 = [v63 isEqual:v64];
+    v62 = maximumBatteryCapacity;
+    maximumBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+    maximumBatteryCapacity3 = [equalCopy maximumBatteryCapacity];
+    v65 = [maximumBatteryCapacity2 isEqual:maximumBatteryCapacity3];
 
     if (!v65)
     {
@@ -469,20 +469,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
-  v8 = [v4 maximumDistance];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+  carIdentifier2 = [equalCopy maximumDistance];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v66 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
-  if (v66)
+  maximumDistance = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+  if (maximumDistance)
   {
-    v67 = v66;
-    v68 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
-    v69 = [v4 maximumDistance];
-    v70 = [v68 isEqual:v69];
+    v67 = maximumDistance;
+    maximumDistance2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+    maximumDistance3 = [equalCopy maximumDistance];
+    v70 = [maximumDistance2 isEqual:maximumDistance3];
 
     if (!v70)
     {
@@ -494,20 +494,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
-  v8 = [v4 maximumDistanceElectric];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+  carIdentifier2 = [equalCopy maximumDistanceElectric];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v71 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
-  if (v71)
+  maximumDistanceElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+  if (maximumDistanceElectric)
   {
-    v72 = v71;
-    v73 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
-    v74 = [v4 maximumDistanceElectric];
-    v75 = [v73 isEqual:v74];
+    v72 = maximumDistanceElectric;
+    maximumDistanceElectric2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+    maximumDistanceElectric3 = [equalCopy maximumDistanceElectric];
+    v75 = [maximumDistanceElectric2 isEqual:maximumDistanceElectric3];
 
     if (!v75)
     {
@@ -519,20 +519,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
-  v8 = [v4 maximumDistanceFuel];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+  carIdentifier2 = [equalCopy maximumDistanceFuel];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v76 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
-  if (v76)
+  maximumDistanceFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+  if (maximumDistanceFuel)
   {
-    v77 = v76;
-    v78 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
-    v79 = [v4 maximumDistanceFuel];
-    v80 = [v78 isEqual:v79];
+    v77 = maximumDistanceFuel;
+    maximumDistanceFuel2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+    maximumDistanceFuel3 = [equalCopy maximumDistanceFuel];
+    v80 = [maximumDistanceFuel2 isEqual:maximumDistanceFuel3];
 
     if (!v80)
     {
@@ -544,20 +544,20 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
-  v8 = [v4 minimumBatteryCapacity];
-  if ((v7 != 0) == (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+  carIdentifier2 = [equalCopy minimumBatteryCapacity];
+  if ((carIdentifier != 0) == (carIdentifier2 == 0))
   {
     goto LABEL_89;
   }
 
-  v81 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
-  if (v81)
+  minimumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+  if (minimumBatteryCapacity)
   {
-    v82 = v81;
-    v83 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
-    v84 = [v4 minimumBatteryCapacity];
-    v85 = [v83 isEqual:v84];
+    v82 = minimumBatteryCapacity;
+    minimumBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+    minimumBatteryCapacity3 = [equalCopy minimumBatteryCapacity];
+    v85 = [minimumBatteryCapacity2 isEqual:minimumBatteryCapacity3];
 
     if (!v85)
     {
@@ -569,12 +569,12 @@
   {
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
-  v8 = [v4 minutesToFull];
-  if ((v7 != 0) != (v8 == 0))
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+  carIdentifier2 = [equalCopy minutesToFull];
+  if ((carIdentifier != 0) != (carIdentifier2 == 0))
   {
-    v86 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
-    if (!v86)
+    minutesToFull = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+    if (!minutesToFull)
     {
 
 LABEL_93:
@@ -582,10 +582,10 @@ LABEL_93:
       goto LABEL_91;
     }
 
-    v87 = v86;
-    v88 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
-    v89 = [v4 minutesToFull];
-    v90 = [v88 isEqual:v89];
+    v87 = minutesToFull;
+    minutesToFull2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+    minutesToFull3 = [equalCopy minutesToFull];
+    v90 = [minutesToFull2 isEqual:minutesToFull3];
 
     if (v90)
     {
@@ -605,7 +605,7 @@ LABEL_91:
   return v91;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBGetCarPowerLevelStatusIntentResponse allocWithZone:](_INPBGetCarPowerLevelStatusIntentResponse init];
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector])
@@ -613,10 +613,10 @@ LABEL_91:
     [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setActiveConnector:[(_INPBGetCarPowerLevelStatusIntentResponse *)self activeConnector]];
   }
 
-  v6 = [(NSString *)self->_carIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_carIdentifier copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setCarIdentifier:v6];
 
-  v7 = [(_INPBDouble *)self->_chargePercentRemaining copyWithZone:a3];
+  v7 = [(_INPBDouble *)self->_chargePercentRemaining copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setChargePercentRemaining:v7];
 
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasCharging])
@@ -624,97 +624,97 @@ LABEL_91:
     [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setCharging:[(_INPBGetCarPowerLevelStatusIntentResponse *)self charging]];
   }
 
-  v8 = [(_INPBJSONDictionary *)self->_chargingFormulaArguments copyWithZone:a3];
+  v8 = [(_INPBJSONDictionary *)self->_chargingFormulaArguments copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setChargingFormulaArguments:v8];
 
-  v9 = [(_INPBJSONDictionary *)self->_consumptionFormulaArguments copyWithZone:a3];
+  v9 = [(_INPBJSONDictionary *)self->_consumptionFormulaArguments copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setConsumptionFormulaArguments:v9];
 
-  v10 = [(_INPBEnergy *)self->_currentBatteryCapacity copyWithZone:a3];
+  v10 = [(_INPBEnergy *)self->_currentBatteryCapacity copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setCurrentBatteryCapacity:v10];
 
-  v11 = [(_INPBDateTime *)self->_dateOfLastStateUpdate copyWithZone:a3];
+  v11 = [(_INPBDateTime *)self->_dateOfLastStateUpdate copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setDateOfLastStateUpdate:v11];
 
-  v12 = [(_INPBDistance *)self->_distanceRemaining copyWithZone:a3];
+  v12 = [(_INPBDistance *)self->_distanceRemaining copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setDistanceRemaining:v12];
 
-  v13 = [(_INPBDistance *)self->_distanceRemainingElectric copyWithZone:a3];
+  v13 = [(_INPBDistance *)self->_distanceRemainingElectric copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setDistanceRemainingElectric:v13];
 
-  v14 = [(_INPBDistance *)self->_distanceRemainingFuel copyWithZone:a3];
+  v14 = [(_INPBDistance *)self->_distanceRemainingFuel copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setDistanceRemainingFuel:v14];
 
-  v15 = [(_INPBDouble *)self->_fuelPercentRemaining copyWithZone:a3];
+  v15 = [(_INPBDouble *)self->_fuelPercentRemaining copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setFuelPercentRemaining:v15];
 
-  v16 = [(_INPBEnergy *)self->_maximumBatteryCapacity copyWithZone:a3];
+  v16 = [(_INPBEnergy *)self->_maximumBatteryCapacity copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMaximumBatteryCapacity:v16];
 
-  v17 = [(_INPBDistance *)self->_maximumDistance copyWithZone:a3];
+  v17 = [(_INPBDistance *)self->_maximumDistance copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMaximumDistance:v17];
 
-  v18 = [(_INPBDistance *)self->_maximumDistanceElectric copyWithZone:a3];
+  v18 = [(_INPBDistance *)self->_maximumDistanceElectric copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMaximumDistanceElectric:v18];
 
-  v19 = [(_INPBDistance *)self->_maximumDistanceFuel copyWithZone:a3];
+  v19 = [(_INPBDistance *)self->_maximumDistanceFuel copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMaximumDistanceFuel:v19];
 
-  v20 = [(_INPBEnergy *)self->_minimumBatteryCapacity copyWithZone:a3];
+  v20 = [(_INPBEnergy *)self->_minimumBatteryCapacity copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMinimumBatteryCapacity:v20];
 
-  v21 = [(_INPBInteger *)self->_minutesToFull copyWithZone:a3];
+  v21 = [(_INPBInteger *)self->_minutesToFull copyWithZone:zone];
   [(_INPBGetCarPowerLevelStatusIntentResponse *)v5 setMinutesToFull:v21];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBGetCarPowerLevelStatusIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)a3
+- (_INPBGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBGetCarPowerLevelStatusIntentResponse *)self initWithData:v6];
+    self = [(_INPBGetCarPowerLevelStatusIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v39 = a3;
+  toCopy = to;
   if ([(_INPBGetCarPowerLevelStatusIntentResponse *)self hasActiveConnector])
   {
     activeConnector = self->_activeConnector;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+  carIdentifier = [(_INPBGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
 
-  if (v5)
+  if (carIdentifier)
   {
     carIdentifier = self->_carIdentifier;
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+  chargePercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
 
-  if (v7)
+  if (chargePercentRemaining)
   {
-    v8 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+    chargePercentRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
     PBDataWriterWriteSubmessage();
   }
 
@@ -724,125 +724,125 @@ LABEL_91:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+  chargingFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
 
-  if (v10)
+  if (chargingFormulaArguments)
   {
-    v11 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+    chargingFormulaArguments2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+  consumptionFormulaArguments = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
 
-  if (v12)
+  if (consumptionFormulaArguments)
   {
-    v13 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+    consumptionFormulaArguments2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+  currentBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
 
-  if (v14)
+  if (currentBatteryCapacity)
   {
-    v15 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+    currentBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+  dateOfLastStateUpdate = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
 
-  if (v16)
+  if (dateOfLastStateUpdate)
   {
-    v17 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+    dateOfLastStateUpdate2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+  distanceRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
 
-  if (v18)
+  if (distanceRemaining)
   {
-    v19 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+    distanceRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+  distanceRemainingElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
 
-  if (v20)
+  if (distanceRemainingElectric)
   {
-    v21 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+    distanceRemainingElectric2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+  distanceRemainingFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
 
-  if (v22)
+  if (distanceRemainingFuel)
   {
-    v23 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+    distanceRemainingFuel2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+  fuelPercentRemaining = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
 
-  if (v24)
+  if (fuelPercentRemaining)
   {
-    v25 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+    fuelPercentRemaining2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+  maximumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
 
-  if (v26)
+  if (maximumBatteryCapacity)
   {
-    v27 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+    maximumBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+  maximumDistance = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
 
-  if (v28)
+  if (maximumDistance)
   {
-    v29 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+    maximumDistance2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+  maximumDistanceElectric = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
 
-  if (v30)
+  if (maximumDistanceElectric)
   {
-    v31 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+    maximumDistanceElectric2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+  maximumDistanceFuel = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
 
-  if (v32)
+  if (maximumDistanceFuel)
   {
-    v33 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+    maximumDistanceFuel2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+  minimumBatteryCapacity = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
 
-  if (v34)
+  if (minimumBatteryCapacity)
   {
-    v35 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+    minimumBatteryCapacity2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+  minutesToFull = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
 
-  v37 = v39;
-  if (v36)
+  v37 = toCopy;
+  if (minutesToFull)
   {
-    v38 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+    minutesToFull2 = [(_INPBGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
     PBDataWriterWriteSubmessage();
 
-    v37 = v39;
+    v37 = toCopy;
   }
 }
 
-- (void)setHasCharging:(BOOL)a3
+- (void)setHasCharging:(BOOL)charging
 {
-  if (a3)
+  if (charging)
   {
     v3 = 2;
   }
@@ -855,64 +855,64 @@ LABEL_91:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setCarIdentifier:(id)a3
+- (void)setCarIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   carIdentifier = self->_carIdentifier;
   self->_carIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, carIdentifier);
 }
 
-- (int)StringAsActiveConnector:(id)a3
+- (int)StringAsActiveConnector:(id)connector
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"J1772"])
+  connectorCopy = connector;
+  if ([connectorCopy isEqualToString:@"J1772"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"C_C_S1"])
+  else if ([connectorCopy isEqualToString:@"C_C_S1"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"C_C_S2"])
+  else if ([connectorCopy isEqualToString:@"C_C_S2"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CHAdeMO"])
+  else if ([connectorCopy isEqualToString:@"CHAdeMO"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"G_B_T_A_C"])
+  else if ([connectorCopy isEqualToString:@"G_B_T_A_C"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"G_B_T_D_C"])
+  else if ([connectorCopy isEqualToString:@"G_B_T_D_C"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Tesla"])
+  else if ([connectorCopy isEqualToString:@"Tesla"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Mennekes"])
+  else if ([connectorCopy isEqualToString:@"Mennekes"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"N_A_C_S_D_C"])
+  else if ([connectorCopy isEqualToString:@"N_A_C_S_D_C"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"N_A_C_S_A_C"])
+  else if ([connectorCopy isEqualToString:@"N_A_C_S_A_C"])
   {
     v4 = 11;
   }
@@ -925,10 +925,10 @@ LABEL_91:
   return v4;
 }
 
-- (void)setActiveConnector:(int)a3
+- (void)setActiveConnector:(int)connector
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (connector == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -936,7 +936,7 @@ LABEL_91:
   else
   {
     *&self->_has = has | 1;
-    self->_activeConnector = a3;
+    self->_activeConnector = connector;
   }
 }
 

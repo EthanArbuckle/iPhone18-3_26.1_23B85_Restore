@@ -1,9 +1,9 @@
 @interface NUMaskSourceDefinition
 - ($0AC6E346AE4835514AAA8AC86D8F4844)scale;
 - ($41299696D20B6C925B74A5D5E4D5CC87)croppedExtent;
-- (NUMaskSourceDefinition)initWithCIImage:(id)a3 croppedExtent:(id *)a4 scale:(id)a5 orientation:(int64_t)a6;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
-- (void)setCroppedExtent:(id *)a3;
+- (NUMaskSourceDefinition)initWithCIImage:(id)image croppedExtent:(id *)extent scale:(id)scale orientation:(int64_t)orientation;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
+- (void)setCroppedExtent:(id *)extent;
 @end
 
 @implementation NUMaskSourceDefinition
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setCroppedExtent:(id *)a3
+- (void)setCroppedExtent:(id *)extent
 {
-  var1 = a3->var1;
-  self->_croppedExtent.origin = a3->var0;
+  var1 = extent->var1;
+  self->_croppedExtent.origin = extent->var0;
   self->_croppedExtent.size = var1;
 }
 
@@ -33,30 +33,30 @@
   return self;
 }
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [NUMaskSourceNode alloc];
-  v7 = [(NUCIImageSourceDefinition *)self image];
+  image = [(NUCIImageSourceDefinition *)self image];
   [(NUMaskSourceDefinition *)self croppedExtent];
-  v8 = [(NUMaskSourceDefinition *)self scale];
-  v10 = [(NUMaskSourceNode *)v6 initWithImage:v7 croppedExtent:&v13 scale:v8 identifier:v9 orientation:v5, [(NUCIImageSourceDefinition *)self orientation]];
+  scale = [(NUMaskSourceDefinition *)self scale];
+  v10 = [(NUMaskSourceNode *)v6 initWithImage:image croppedExtent:&v13 scale:scale identifier:v9 orientation:identifierCopy, [(NUCIImageSourceDefinition *)self orientation]];
 
-  v11 = [(NUSingleSourceDefinition *)self sourceDerivation];
-  [(NUSourceNode *)v10 setSourceDerivation:v11];
+  sourceDerivation = [(NUSingleSourceDefinition *)self sourceDerivation];
+  [(NUSourceNode *)v10 setSourceDerivation:sourceDerivation];
 
   return v10;
 }
 
-- (NUMaskSourceDefinition)initWithCIImage:(id)a3 croppedExtent:(id *)a4 scale:(id)a5 orientation:(int64_t)a6
+- (NUMaskSourceDefinition)initWithCIImage:(id)image croppedExtent:(id *)extent scale:(id)scale orientation:(int64_t)orientation
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = scale.var1;
+  var0 = scale.var0;
   v11.receiver = self;
   v11.super_class = NUMaskSourceDefinition;
-  result = [(NUCIImageSourceDefinition *)&v11 initWithCIImage:a3 orientation:a6];
-  v10 = a4->var1;
-  result->_croppedExtent.origin = a4->var0;
+  result = [(NUCIImageSourceDefinition *)&v11 initWithCIImage:image orientation:orientation];
+  v10 = extent->var1;
+  result->_croppedExtent.origin = extent->var0;
   result->_croppedExtent.size = v10;
   result->_scale.numerator = var0;
   result->_scale.denominator = var1;

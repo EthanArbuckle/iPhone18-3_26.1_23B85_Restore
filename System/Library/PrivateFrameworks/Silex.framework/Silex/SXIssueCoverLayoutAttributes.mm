@@ -1,16 +1,16 @@
 @interface SXIssueCoverLayoutAttributes
 - (CGRect)frame;
-- (SXIssueCoverLayoutAttributes)initWithFrame:(CGRect)a3;
+- (SXIssueCoverLayoutAttributes)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SXIssueCoverLayoutAttributes
 
-- (SXIssueCoverLayoutAttributes)initWithFrame:(CGRect)a3
+- (SXIssueCoverLayoutAttributes)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = SXIssueCoverLayoutAttributes;
   result = [(SXIssueCoverLayoutAttributes *)&v8 init];

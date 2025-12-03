@@ -1,55 +1,55 @@
 @interface CAMVideoCaptureResponse
-- (CAMVideoCaptureResponse)initWithUUID:(id)a3 captureMode:(int64_t)a4 captureSession:(unsigned __int16)a5 url:(id)a6 captureDate:(id)a7 duration:(id *)a8 stillPersistenceUUID:(id)a9 stillDisplayTime:(id *)a10 reason:(int64_t)a11 videoZoomFactor:(double)a12 finalExpectedPixelSize:(CGSize)a13 imageWellImage:(id)a14 previewImage:(id)a15 coordinationInfo:(id)a16 slowWriterFrameDrops:(BOOL)a17;
+- (CAMVideoCaptureResponse)initWithUUID:(id)d captureMode:(int64_t)mode captureSession:(unsigned __int16)session url:(id)url captureDate:(id)date duration:(id *)duration stillPersistenceUUID:(id)iD stillDisplayTime:(id *)self0 reason:(int64_t)self1 videoZoomFactor:(double)self2 finalExpectedPixelSize:(CGSize)self3 imageWellImage:(id)self4 previewImage:(id)self5 coordinationInfo:(id)self6 slowWriterFrameDrops:(BOOL)self7;
 - (CGSize)finalExpectedPixelSize;
 - (NSString)description;
 @end
 
 @implementation CAMVideoCaptureResponse
 
-- (CAMVideoCaptureResponse)initWithUUID:(id)a3 captureMode:(int64_t)a4 captureSession:(unsigned __int16)a5 url:(id)a6 captureDate:(id)a7 duration:(id *)a8 stillPersistenceUUID:(id)a9 stillDisplayTime:(id *)a10 reason:(int64_t)a11 videoZoomFactor:(double)a12 finalExpectedPixelSize:(CGSize)a13 imageWellImage:(id)a14 previewImage:(id)a15 coordinationInfo:(id)a16 slowWriterFrameDrops:(BOOL)a17
+- (CAMVideoCaptureResponse)initWithUUID:(id)d captureMode:(int64_t)mode captureSession:(unsigned __int16)session url:(id)url captureDate:(id)date duration:(id *)duration stillPersistenceUUID:(id)iD stillDisplayTime:(id *)self0 reason:(int64_t)self1 videoZoomFactor:(double)self2 finalExpectedPixelSize:(CGSize)self3 imageWellImage:(id)self4 previewImage:(id)self5 coordinationInfo:(id)self6 slowWriterFrameDrops:(BOOL)self7
 {
-  height = a13.height;
-  width = a13.width;
-  v23 = a5;
-  v43 = a3;
-  v26 = a6;
-  v42 = a7;
-  v27 = a9;
-  v41 = a14;
-  v40 = a15;
+  height = size.height;
+  width = size.width;
+  sessionCopy = session;
+  dCopy = d;
+  urlCopy = url;
+  dateCopy = date;
+  iDCopy = iD;
+  imageCopy = image;
+  previewImageCopy = previewImage;
   v44.receiver = self;
   v44.super_class = CAMVideoCaptureResponse;
-  v28 = [(CAMCaptureResponse *)&v44 initWithType:1 captureSession:v23 coordinationInfo:a16];
+  v28 = [(CAMCaptureResponse *)&v44 initWithType:1 captureSession:sessionCopy coordinationInfo:info];
   v29 = v28;
   if (v28)
   {
-    v28->_captureMode = a4;
-    v30 = [v43 copy];
+    v28->_captureMode = mode;
+    v30 = [dCopy copy];
     persistenceUUID = v29->_persistenceUUID;
     v29->_persistenceUUID = v30;
 
-    v32 = [v26 copy];
+    v32 = [urlCopy copy];
     localPersistenceURL = v29->_localPersistenceURL;
     v29->_localPersistenceURL = v32;
 
-    objc_storeStrong(&v29->_captureDate, a7);
-    var3 = a8->var3;
-    *&v29->_duration.value = *&a8->var0;
+    objc_storeStrong(&v29->_captureDate, date);
+    var3 = duration->var3;
+    *&v29->_duration.value = *&duration->var0;
     v29->_duration.epoch = var3;
-    v35 = [v27 copy];
+    v35 = [iDCopy copy];
     stillPersistenceUUID = v29->_stillPersistenceUUID;
     v29->_stillPersistenceUUID = v35;
 
-    v37 = a10->var3;
-    *&v29->_stillDisplayTime.value = *&a10->var0;
+    v37 = time->var3;
+    *&v29->_stillDisplayTime.value = *&time->var0;
     v29->_stillDisplayTime.epoch = v37;
-    v29->_reason = a11;
-    v29->_videoZoomFactor = a12;
+    v29->_reason = reason;
+    v29->_videoZoomFactor = factor;
     v29->_finalExpectedPixelSize.width = width;
     v29->_finalExpectedPixelSize.height = height;
-    objc_storeStrong(&v29->_imageWellImage, a14);
-    objc_storeStrong(&v29->_previewImage, a15);
-    v29->_slowWriterFrameDrops = a17;
+    objc_storeStrong(&v29->_imageWellImage, image);
+    objc_storeStrong(&v29->_previewImage, previewImage);
+    v29->_slowWriterFrameDrops = drops;
     v38 = v29;
   }
 
@@ -60,14 +60,14 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CAMVideoCaptureResponse *)self persistenceUUID];
-  v6 = [(CAMCaptureResponse *)self sessionIdentifier];
-  v7 = [(CAMVideoCaptureResponse *)self captureDate];
-  v8 = [(CAMVideoCaptureResponse *)self captureDate];
-  [v8 timeIntervalSince1970];
+  persistenceUUID = [(CAMVideoCaptureResponse *)self persistenceUUID];
+  sessionIdentifier = [(CAMCaptureResponse *)self sessionIdentifier];
+  captureDate = [(CAMVideoCaptureResponse *)self captureDate];
+  captureDate2 = [(CAMVideoCaptureResponse *)self captureDate];
+  [captureDate2 timeIntervalSince1970];
   v10 = v9;
-  v11 = [(CAMVideoCaptureResponse *)self localPersistenceURL];
-  v12 = [v3 stringWithFormat:@"<%@ persistenceUUID:%@ sessionIdentifier:%d, captureDate:%@ (%.3f), localPersistenceURL:%@>", v4, v5, v6, v7, v10, v11];
+  localPersistenceURL = [(CAMVideoCaptureResponse *)self localPersistenceURL];
+  v12 = [v3 stringWithFormat:@"<%@ persistenceUUID:%@ sessionIdentifier:%d, captureDate:%@ (%.3f), localPersistenceURL:%@>", v4, persistenceUUID, sessionIdentifier, captureDate, v10, localPersistenceURL];
 
   return v12;
 }

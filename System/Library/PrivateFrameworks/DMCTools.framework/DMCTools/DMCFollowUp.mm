@@ -1,10 +1,10 @@
 @interface DMCFollowUp
-+ (BOOL)clearWithClientID:(id)a3 error:(id *)a4;
-+ (BOOL)clearWithID:(id)a3 clientID:(id)a4 error:(id *)a5;
-- (BOOL)clearAndReturnError:(id *)a3;
-- (BOOL)presentAndReturnError:(id *)a3;
++ (BOOL)clearWithClientID:(id)d error:(id *)error;
++ (BOOL)clearWithID:(id)d clientID:(id)iD error:(id *)error;
+- (BOOL)clearAndReturnError:(id *)error;
+- (BOOL)presentAndReturnError:(id *)error;
 - (DMCFollowUp)init;
-- (DMCFollowUp)initWithStyle:(unint64_t)a3 identifier:(id)a4 clientID:(id)a5 userInfo:(id)a6 title:(id)a7 message:(id)a8 notificationTitle:(id)a9 notificationMessage:(id)a10 actionTitle:(id)a11 actionURL:(id)a12 dismissTitle:(id)a13 dismissURL:(id)a14;
+- (DMCFollowUp)initWithStyle:(unint64_t)style identifier:(id)identifier clientID:(id)d userInfo:(id)info title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)self0 actionTitle:(id)self1 actionURL:(id)self2 dismissTitle:(id)self3 dismissURL:(id)self4;
 - (NSDictionary)userInfo;
 @end
 
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (DMCFollowUp)initWithStyle:(unint64_t)a3 identifier:(id)a4 clientID:(id)a5 userInfo:(id)a6 title:(id)a7 message:(id)a8 notificationTitle:(id)a9 notificationMessage:(id)a10 actionTitle:(id)a11 actionURL:(id)a12 dismissTitle:(id)a13 dismissURL:(id)a14
+- (DMCFollowUp)initWithStyle:(unint64_t)style identifier:(id)identifier clientID:(id)d userInfo:(id)info title:(id)title message:(id)message notificationTitle:(id)notificationTitle notificationMessage:(id)self0 actionTitle:(id)self1 actionURL:(id)self2 dismissTitle:(id)self3 dismissURL:(id)self4
 {
-  v60 = a3;
-  v61 = self;
-  v48 = a11;
-  v49 = a12;
+  styleCopy = style;
+  selfCopy = self;
+  actionTitleCopy = actionTitle;
+  lCopy = l;
   v14 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EE7ED30, &qword_247F25660);
   v15 = *(*(v14 - 8) + 64);
   MEMORY[0x28223BE20](v14 - 8);
@@ -47,14 +47,14 @@
   v28 = sub_247F23F3C();
   v50 = v29;
   v51 = v28;
-  if (a9)
+  if (notificationTitle)
   {
     v30 = sub_247F23F3C();
     v46 = v31;
     v47 = v30;
-    v32 = a13;
-    v33 = a14;
-    if (a10)
+    dismissTitleCopy2 = dismissTitle;
+    rLCopy2 = rL;
+    if (notificationMessage)
     {
 LABEL_3:
       v45 = sub_247F23F3C();
@@ -67,9 +67,9 @@ LABEL_3:
   {
     v46 = 0;
     v47 = 0;
-    v32 = a13;
-    v33 = a14;
-    if (a10)
+    dismissTitleCopy2 = dismissTitle;
+    rLCopy2 = rL;
+    if (notificationMessage)
     {
       goto LABEL_3;
     }
@@ -81,10 +81,10 @@ LABEL_6:
   v36 = sub_247F23F3C();
   v38 = v37;
   sub_247F23CFC();
-  if (!v32)
+  if (!dismissTitleCopy2)
   {
     v39 = 0;
-    v41 = v33;
+    v41 = rLCopy2;
     if (v41)
     {
       goto LABEL_8;
@@ -96,8 +96,8 @@ LABEL_10:
   }
 
   v39 = sub_247F23F3C();
-  v32 = v40;
-  v41 = v33;
+  dismissTitleCopy2 = v40;
+  v41 = rLCopy2;
   if (!v41)
   {
     goto LABEL_10;
@@ -110,23 +110,23 @@ LABEL_8:
   v43 = 0;
 LABEL_11:
   (*(v18 + 56))(v17, v43, 1, v59);
-  DMCFollowUp.init(style:identifier:clientID:userInfo:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismiss:)(v60, v58, v57, v56, v55, v54, v53, v52, v51, v50, v47, v46, v45, v35, v36, v38, v21, v39, v32, v17);
+  DMCFollowUp.init(style:identifier:clientID:userInfo:title:message:notificationTitle:notificationMessage:actionTitle:actionURL:dismissTitle:dismiss:)(styleCopy, v58, v57, v56, v55, v54, v53, v52, v51, v50, v47, v46, v45, v35, v36, v38, v21, v39, dismissTitleCopy2, v17);
   return result;
 }
 
-- (BOOL)presentAndReturnError:(id *)a3
+- (BOOL)presentAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   DMCFollowUp.present()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = sub_247F23C8C();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -137,16 +137,16 @@ LABEL_11:
   return v5 == 0;
 }
 
-- (BOOL)clearAndReturnError:(id *)a3
+- (BOOL)clearAndReturnError:(id *)error
 {
-  v3 = self;
-  v4 = [(DMCFollowUp *)v3 controller];
-  sub_247F0F93C(v4);
+  selfCopy = self;
+  controller = [(DMCFollowUp *)selfCopy controller];
+  sub_247F0F93C(controller);
 
   return 1;
 }
 
-+ (BOOL)clearWithClientID:(id)a3 error:(id *)a4
++ (BOOL)clearWithClientID:(id)d error:(id *)error
 {
   v4 = sub_247F23F3C();
   sub_247F0F9E0(v4, v5);
@@ -154,7 +154,7 @@ LABEL_11:
   return 1;
 }
 
-+ (BOOL)clearWithID:(id)a3 clientID:(id)a4 error:(id *)a5
++ (BOOL)clearWithID:(id)d clientID:(id)iD error:(id *)error
 {
   v5 = sub_247F23F3C();
   v7 = v6;

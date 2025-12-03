@@ -1,12 +1,12 @@
 @interface SharingIssueImageActivityItemSource
 - (_TtC8NewsFeed35SharingIssueImageActivityItemSource)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation SharingIssueImageActivityItemSource
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   SharingIssueImageActivityItemSource.activityViewControllerPlaceholderItem(_:)(v5);
   __swift_project_boxed_opaque_existential_1(v5, v5[3]);
@@ -16,12 +16,12 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SharingIssueImageActivityItemSource.activityViewController(_:itemForActivityType:)(a4, v17);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  SharingIssueImageActivityItemSource.activityViewController(_:itemForActivityType:)(type, v17);
 
   v9 = v18;
   if (v18)

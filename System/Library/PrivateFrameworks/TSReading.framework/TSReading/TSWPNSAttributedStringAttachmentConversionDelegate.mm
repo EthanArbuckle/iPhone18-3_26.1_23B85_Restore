@@ -1,38 +1,38 @@
 @interface TSWPNSAttributedStringAttachmentConversionDelegate
-- (TSWPNSAttributedStringAttachmentConversionDelegate)initWithConvertHyperlinks:(BOOL)a3 convertGraphicalAttachments:(BOOL)a4;
-- (id)urlForHyperlinkField:(id)a3;
+- (TSWPNSAttributedStringAttachmentConversionDelegate)initWithConvertHyperlinks:(BOOL)hyperlinks convertGraphicalAttachments:(BOOL)attachments;
+- (id)urlForHyperlinkField:(id)field;
 @end
 
 @implementation TSWPNSAttributedStringAttachmentConversionDelegate
 
-- (TSWPNSAttributedStringAttachmentConversionDelegate)initWithConvertHyperlinks:(BOOL)a3 convertGraphicalAttachments:(BOOL)a4
+- (TSWPNSAttributedStringAttachmentConversionDelegate)initWithConvertHyperlinks:(BOOL)hyperlinks convertGraphicalAttachments:(BOOL)attachments
 {
   v7.receiver = self;
   v7.super_class = TSWPNSAttributedStringAttachmentConversionDelegate;
   result = [(TSWPNSAttributedStringAttachmentConversionDelegate *)&v7 init];
   if (result)
   {
-    result->mConvertHyperlinks = a3;
-    result->mConvertAttachments = a4;
+    result->mConvertHyperlinks = hyperlinks;
+    result->mConvertAttachments = attachments;
   }
 
   return result;
 }
 
-- (id)urlForHyperlinkField:(id)a3
+- (id)urlForHyperlinkField:(id)field
 {
   if (!self->mConvertHyperlinks)
   {
     return 0;
   }
 
-  v4 = [a3 canonicalRepresentationURL];
-  if ([a3 scheme] > 2)
+  canonicalRepresentationURL = [field canonicalRepresentationURL];
+  if ([field scheme] > 2)
   {
-    return v4;
+    return canonicalRepresentationURL;
   }
 
-  return [a3 url];
+  return [field url];
 }
 
 @end

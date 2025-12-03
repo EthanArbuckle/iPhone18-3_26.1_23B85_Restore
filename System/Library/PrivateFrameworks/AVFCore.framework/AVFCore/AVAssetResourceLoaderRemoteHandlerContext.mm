@@ -1,13 +1,13 @@
 @interface AVAssetResourceLoaderRemoteHandlerContext
-- (AVAssetResourceLoaderRemoteHandlerContext)initWithCoder:(id)a3;
-- (AVAssetResourceLoaderRemoteHandlerContext)initWithEndpoint:(id)a3 customURLHandlerObjectID:(unint64_t)a4 authHandlerObjectID:(unint64_t)a5 contentKeySessionHandlerObjectID:(unint64_t)a6;
+- (AVAssetResourceLoaderRemoteHandlerContext)initWithCoder:(id)coder;
+- (AVAssetResourceLoaderRemoteHandlerContext)initWithEndpoint:(id)endpoint customURLHandlerObjectID:(unint64_t)d authHandlerObjectID:(unint64_t)iD contentKeySessionHandlerObjectID:(unint64_t)objectID;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAssetResourceLoaderRemoteHandlerContext
 
-- (AVAssetResourceLoaderRemoteHandlerContext)initWithEndpoint:(id)a3 customURLHandlerObjectID:(unint64_t)a4 authHandlerObjectID:(unint64_t)a5 contentKeySessionHandlerObjectID:(unint64_t)a6
+- (AVAssetResourceLoaderRemoteHandlerContext)initWithEndpoint:(id)endpoint customURLHandlerObjectID:(unint64_t)d authHandlerObjectID:(unint64_t)iD contentKeySessionHandlerObjectID:(unint64_t)objectID
 {
   v11.receiver = self;
   v11.super_class = AVAssetResourceLoaderRemoteHandlerContext;
@@ -15,15 +15,15 @@
   if (v9)
   {
     v9->_endpoint = FigXPCRetain();
-    v9->_customURLHandlerObjectID = a4;
-    v9->_authHandlerObjectID = a5;
-    v9->_contentKeySessionHandlerObjectID = a6;
+    v9->_customURLHandlerObjectID = d;
+    v9->_authHandlerObjectID = iD;
+    v9->_contentKeySessionHandlerObjectID = objectID;
   }
 
   return v9;
 }
 
-- (AVAssetResourceLoaderRemoteHandlerContext)initWithCoder:(id)a3
+- (AVAssetResourceLoaderRemoteHandlerContext)initWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -40,10 +40,10 @@
   v6 = [(AVAssetResourceLoaderRemoteHandlerContext *)&v19 init];
   if (v6)
   {
-    v7 = [a3 decodeXPCObjectForKey:@"endpoint"];
+    v7 = [coder decodeXPCObjectForKey:@"endpoint"];
     if (v7)
     {
-      -[AVAssetResourceLoaderRemoteHandlerContext initWithEndpoint:customURLHandlerObjectID:authHandlerObjectID:contentKeySessionHandlerObjectID:](v6, "initWithEndpoint:customURLHandlerObjectID:authHandlerObjectID:contentKeySessionHandlerObjectID:", v7, [a3 decodeInt64ForKey:@"customURLHandlerObjectID"], objc_msgSend(a3, "decodeInt64ForKey:", @"authHandlerObjectID"), objc_msgSend(a3, "decodeInt64ForKey:", @"contentKeySessionHandlerObjectID"));
+      -[AVAssetResourceLoaderRemoteHandlerContext initWithEndpoint:customURLHandlerObjectID:authHandlerObjectID:contentKeySessionHandlerObjectID:](v6, "initWithEndpoint:customURLHandlerObjectID:authHandlerObjectID:contentKeySessionHandlerObjectID:", v7, [coder decodeInt64ForKey:@"customURLHandlerObjectID"], objc_msgSend(coder, "decodeInt64ForKey:", @"authHandlerObjectID"), objc_msgSend(coder, "decodeInt64ForKey:", @"contentKeySessionHandlerObjectID"));
       return v6;
     }
 
@@ -67,7 +67,7 @@ LABEL_8:
   [(AVAssetResourceLoaderRemoteHandlerContext *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -79,12 +79,12 @@ LABEL_8:
     objc_exception_throw(v15);
   }
 
-  [a3 encodeXPCObject:self->_endpoint forKey:@"endpoint"];
-  [a3 encodeInt64:self->_customURLHandlerObjectID forKey:@"customURLHandlerObjectID"];
-  [a3 encodeInt64:self->_authHandlerObjectID forKey:@"authHandlerObjectID"];
+  [coder encodeXPCObject:self->_endpoint forKey:@"endpoint"];
+  [coder encodeInt64:self->_customURLHandlerObjectID forKey:@"customURLHandlerObjectID"];
+  [coder encodeInt64:self->_authHandlerObjectID forKey:@"authHandlerObjectID"];
   contentKeySessionHandlerObjectID = self->_contentKeySessionHandlerObjectID;
 
-  [a3 encodeInt64:contentKeySessionHandlerObjectID forKey:@"contentKeySessionHandlerObjectID"];
+  [coder encodeInt64:contentKeySessionHandlerObjectID forKey:@"contentKeySessionHandlerObjectID"];
 }
 
 @end

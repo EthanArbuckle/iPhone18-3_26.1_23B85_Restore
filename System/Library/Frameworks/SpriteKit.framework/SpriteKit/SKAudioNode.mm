@@ -1,15 +1,15 @@
 @interface SKAudioNode
-+ (id)_audioURLWithName:(id)a3 bundle:(id)a4;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)_audioURLWithName:(id)name bundle:(id)bundle;
+- (BOOL)isEqualToNode:(id)node;
 - (SKAudioNode)initWithAVAudioNode:(AVAudioNode *)node;
 - (SKAudioNode)initWithCoder:(NSCoder *)aDecoder;
 - (SKAudioNode)initWithFileNamed:(NSString *)name;
-- (SKAudioNode)initWithFileNamed:(id)a3 bundle:(id)a4;
+- (SKAudioNode)initWithFileNamed:(id)named bundle:(id)bundle;
 - (SKAudioNode)initWithURL:(NSURL *)url;
-- (void)_connectToScene:(id)a3;
+- (void)_connectToScene:(id)scene;
 - (void)_playLooped;
-- (void)_setAudioName:(id)a3 bundle:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAudioName:(id)name bundle:(id)bundle;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKAudioNode
@@ -49,27 +49,27 @@
     v8 = [(NSCoder *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"_audioURL"];
     [(SKAudioNode *)v6 setAudioURL:v8];
 
-    v9 = [(SKAudioNode *)v6 audioFileName];
+    audioFileName = [(SKAudioNode *)v6 audioFileName];
 
-    if (v9)
+    if (audioFileName)
     {
-      v10 = [(SKAudioNode *)v6 audioFileName];
+      audioFileName2 = [(SKAudioNode *)v6 audioFileName];
       v11 = SKGetResourceBundle();
-      [(SKAudioNode *)v6 _setAudioName:v10 bundle:v11];
+      [(SKAudioNode *)v6 _setAudioName:audioFileName2 bundle:v11];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v12 = [(SKAudioNode *)v6 audioURL];
+    audioURL = [(SKAudioNode *)v6 audioURL];
 
-    if (v12)
+    if (audioURL)
     {
       v13 = objc_alloc(MEMORY[0x277CB8398]);
-      v14 = [(SKAudioNode *)v6 audioURL];
+      audioURL2 = [(SKAudioNode *)v6 audioURL];
       v19 = 0;
-      v15 = [v13 initForReading:v14 error:&v19];
-      v10 = v19;
+      v15 = [v13 initForReading:audioURL2 error:&v19];
+      audioFileName2 = v19;
       skcAudioNode = v6->_skcAudioNode;
       v17 = skcAudioNode[70];
       skcAudioNode[70] = v15;
@@ -85,24 +85,24 @@ LABEL_7:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKAudioNode;
-  [(SKNode *)&v7 encodeWithCoder:v4];
-  [v4 encodeBool:-[SKAudioNode autoplayLooped](self forKey:{"autoplayLooped"), @"_autoplayLooped"}];
-  v5 = [(SKAudioNode *)self audioFileName];
-  [v4 encodeObject:v5 forKey:@"_audioName"];
+  [(SKNode *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[SKAudioNode autoplayLooped](self forKey:{"autoplayLooped"), @"_autoplayLooped"}];
+  audioFileName = [(SKAudioNode *)self audioFileName];
+  [coderCopy encodeObject:audioFileName forKey:@"_audioName"];
 
-  v6 = [(SKAudioNode *)self audioURL];
-  [v4 encodeObject:v6 forKey:@"_audioURL"];
+  audioURL = [(SKAudioNode *)self audioURL];
+  [coderCopy encodeObject:audioURL forKey:@"_audioURL"];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  if (self == v4)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v7 = 1;
   }
@@ -112,7 +112,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = nodeCopy;
       v18.receiver = self;
       v18.super_class = SKAudioNode;
       if (![(SKNode *)&v18 isEqualToNode:v5]|| self->_autoplayLooped != v5[144])
@@ -120,28 +120,28 @@ LABEL_7:
         goto LABEL_16;
       }
 
-      v6 = [(SKAudioNode *)self audioFileName];
-      if (v6)
+      audioFileName = [(SKAudioNode *)self audioFileName];
+      if (audioFileName)
       {
       }
 
       else
       {
-        v8 = [v5 audioFileName];
+        audioFileName2 = [v5 audioFileName];
 
-        if (!v8)
+        if (!audioFileName2)
         {
 LABEL_11:
-          v12 = [(SKAudioNode *)self audioURL];
-          if (v12)
+          audioURL = [(SKAudioNode *)self audioURL];
+          if (audioURL)
           {
           }
 
           else
           {
-            v13 = [v5 audioURL];
+            audioURL2 = [v5 audioURL];
 
-            if (!v13)
+            if (!audioURL2)
             {
 LABEL_15:
               v7 = 1;
@@ -151,9 +151,9 @@ LABEL_17:
             }
           }
 
-          v14 = [(SKAudioNode *)self audioURL];
-          v15 = [v5 audioURL];
-          v16 = [v14 isEqual:v15];
+          audioURL3 = [(SKAudioNode *)self audioURL];
+          audioURL4 = [v5 audioURL];
+          v16 = [audioURL3 isEqual:audioURL4];
 
           if (v16)
           {
@@ -166,9 +166,9 @@ LABEL_16:
         }
       }
 
-      v9 = [(SKAudioNode *)self audioFileName];
-      v10 = [v5 audioFileName];
-      v11 = [v9 isEqualToString:v10];
+      audioFileName3 = [(SKAudioNode *)self audioFileName];
+      audioFileName4 = [v5 audioFileName];
+      v11 = [audioFileName3 isEqualToString:audioFileName4];
 
       if ((v11 & 1) == 0)
       {
@@ -186,11 +186,11 @@ LABEL_18:
   return v7;
 }
 
-- (SKAudioNode)initWithFileNamed:(id)a3 bundle:(id)a4
+- (SKAudioNode)initWithFileNamed:(id)named bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _audioURLWithName:v6 bundle:v7];
+  namedCopy = named;
+  bundleCopy = bundle;
+  v8 = [objc_opt_class() _audioURLWithName:namedCopy bundle:bundleCopy];
   if (v8)
   {
     v14 = 0;
@@ -208,7 +208,7 @@ LABEL_18:
   if (v11)
   {
     objc_storeStrong(v11->_skcAudioNode + 70, v9);
-    [(SKAudioNode *)v12 setAudioFileName:v6];
+    [(SKAudioNode *)v12 setAudioFileName:namedCopy];
   }
 
   return v12;
@@ -253,11 +253,11 @@ LABEL_18:
 {
   objc_initWeak(&location, self);
   v3 = *(self->_skcAudioNode + 70);
-  v4 = [(SKAudioNode *)self avAudioNode];
-  v5 = v4;
+  avAudioNode = [(SKAudioNode *)self avAudioNode];
+  v5 = avAudioNode;
   if (v3)
   {
-    v6 = v4 == 0;
+    v6 = avAudioNode == 0;
   }
 
   else
@@ -268,9 +268,9 @@ LABEL_18:
   if (!v6)
   {
     v7 = objc_loadWeakRetained(&location);
-    v8 = [v7 scene];
+    scene = [v7 scene];
 
-    if (v8)
+    if (scene)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -302,26 +302,26 @@ void __26__SKAudioNode__playLooped__block_invoke_2(uint64_t a1)
   [WeakRetained _playLooped];
 }
 
-+ (id)_audioURLWithName:(id)a3 bundle:(id)a4
++ (id)_audioURLWithName:(id)name bundle:(id)bundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 URLForResource:v5 withExtension:0];
+  nameCopy = name;
+  bundleCopy = bundle;
+  v7 = [bundleCopy URLForResource:nameCopy withExtension:0];
   if (!v7)
   {
-    v7 = [v6 URLForResource:v5 withExtension:@"caf"];
+    v7 = [bundleCopy URLForResource:nameCopy withExtension:@"caf"];
     if (!v7)
     {
-      v7 = [v6 URLForResource:v5 withExtension:@"wav"];
+      v7 = [bundleCopy URLForResource:nameCopy withExtension:@"wav"];
       if (!v7)
       {
-        v7 = [v6 URLForResource:v5 withExtension:@"caff"];
+        v7 = [bundleCopy URLForResource:nameCopy withExtension:@"caff"];
         if (!v7)
         {
-          v7 = [v6 URLForResource:v5 withExtension:@"aiff"];
+          v7 = [bundleCopy URLForResource:nameCopy withExtension:@"aiff"];
           if (!v7)
           {
-            v7 = [v6 URLForResource:v5 withExtension:@"mp3"];
+            v7 = [bundleCopy URLForResource:nameCopy withExtension:@"mp3"];
           }
         }
       }
@@ -331,14 +331,14 @@ void __26__SKAudioNode__playLooped__block_invoke_2(uint64_t a1)
   return v7;
 }
 
-- (void)_setAudioName:(id)a3 bundle:(id)a4
+- (void)_setAudioName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  [(SKAudioNode *)self setAudioFileName:v6];
-  if (v6)
+  nameCopy = name;
+  bundleCopy = bundle;
+  [(SKAudioNode *)self setAudioFileName:nameCopy];
+  if (nameCopy)
   {
-    v8 = [objc_opt_class() _audioURLWithName:v6 bundle:v7];
+    v8 = [objc_opt_class() _audioURLWithName:nameCopy bundle:bundleCopy];
     if (v8)
     {
       v21 = 0;
@@ -350,8 +350,8 @@ void __26__SKAudioNode__playLooped__block_invoke_2(uint64_t a1)
     }
 
     v13 = self->_skcAudioNode;
-    v14 = v13[73];
-    if (v14 || !v13[70])
+    parent2 = v13[73];
+    if (parent2 || !v13[70])
     {
       v13[73] = 0;
     }
@@ -363,60 +363,60 @@ void __26__SKAudioNode__playLooped__block_invoke_2(uint64_t a1)
       v17 = v16[73];
       v16[73] = v15;
 
-      v18 = [(SKNode *)self parent];
-      v19 = [v18 scene];
+      parent = [(SKNode *)self parent];
+      scene = [parent scene];
 
-      if (!v19)
+      if (!scene)
       {
         goto LABEL_7;
       }
 
-      v14 = [(SKNode *)self parent];
-      v20 = [v14 scene];
-      [(SKAudioNode *)self _connectToScene:v20];
+      parent2 = [(SKNode *)self parent];
+      scene2 = [parent2 scene];
+      [(SKAudioNode *)self _connectToScene:scene2];
     }
 
 LABEL_7:
   }
 }
 
-- (void)_connectToScene:(id)a3
+- (void)_connectToScene:(id)scene
 {
-  v14 = a3;
-  v4 = [(SKAudioNode *)self audioFile];
-  v5 = [(SKAudioNode *)self avAudioNode];
-  v6 = v5;
-  if (v5)
+  sceneCopy = scene;
+  audioFile = [(SKAudioNode *)self audioFile];
+  avAudioNode = [(SKAudioNode *)self avAudioNode];
+  v6 = avAudioNode;
+  if (avAudioNode)
   {
-    v7 = [v5 engine];
-    v8 = v7;
-    if (v7)
+    engine = [avAudioNode engine];
+    v8 = engine;
+    if (engine)
     {
-      [v7 detachNode:v6];
+      [engine detachNode:v6];
     }
 
-    v9 = [v14 audioEngine];
-    if (v9)
+    audioEngine = [sceneCopy audioEngine];
+    if (audioEngine)
     {
       [v6 setRenderingAlgorithm:1];
-      [v9 attachNode:v6];
-      v10 = [v4 processingFormat];
-      if ([v10 channelCount] >= 2)
+      [audioEngine attachNode:v6];
+      processingFormat = [audioFile processingFormat];
+      if ([processingFormat channelCount] >= 2)
       {
         v11 = objc_alloc(MEMORY[0x277CB83A8]);
-        [v10 sampleRate];
+        [processingFormat sampleRate];
         v12 = [v11 initStandardFormatWithSampleRate:1 channels:?];
 
-        v10 = v12;
+        processingFormat = v12;
       }
 
-      v13 = [v14 avAudioEnvironmentNode];
-      [v9 connect:v6 to:v13 format:v10];
+      avAudioEnvironmentNode = [sceneCopy avAudioEnvironmentNode];
+      [audioEngine connect:v6 to:avAudioEnvironmentNode format:processingFormat];
 
       if (self->_autoplayLooped)
       {
         [(SKAudioNode *)self _playLooped];
-        if ([v9 isRunning])
+        if ([audioEngine isRunning])
         {
           [v6 play];
         }

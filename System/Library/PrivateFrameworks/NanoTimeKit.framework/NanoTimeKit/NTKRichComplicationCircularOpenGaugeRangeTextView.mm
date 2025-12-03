@@ -1,14 +1,14 @@
 @interface NTKRichComplicationCircularOpenGaugeRangeTextView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationCircularOpenGaugeRangeTextView)init;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 @end
 
 @implementation NTKRichComplicationCircularOpenGaugeRangeTextView
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -22,25 +22,25 @@
   return [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)&v3 initWithFamily:10];
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 gaugeProvider];
-  v7 = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self progressView];
-  [v7 setGaugeProvider:v6];
+  templateCopy = template;
+  gaugeProvider = [templateCopy gaugeProvider];
+  progressView = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self progressView];
+  [progressView setGaugeProvider:gaugeProvider];
 
-  v8 = [v5 leadingTextProvider];
-  v9 = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self leadingSmallLabel];
-  [v9 setTextProvider:v8];
+  leadingTextProvider = [templateCopy leadingTextProvider];
+  leadingSmallLabel = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self leadingSmallLabel];
+  [leadingSmallLabel setTextProvider:leadingTextProvider];
 
-  v10 = [v5 trailingTextProvider];
-  v11 = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self trailingSmallLabel];
-  [v11 setTextProvider:v10];
+  trailingTextProvider = [templateCopy trailingTextProvider];
+  trailingSmallLabel = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self trailingSmallLabel];
+  [trailingSmallLabel setTextProvider:trailingTextProvider];
 
-  v13 = [v5 centerTextProvider];
+  centerTextProvider = [templateCopy centerTextProvider];
 
-  v12 = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self centerLabel];
-  [v12 setTextProvider:v13];
+  centerLabel = [(NTKRichComplicationBaseCircularOpenGaugeRangeTextView *)self centerLabel];
+  [centerLabel setTextProvider:centerTextProvider];
 }
 
 @end

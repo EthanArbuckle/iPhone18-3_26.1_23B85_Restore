@@ -1,8 +1,8 @@
 @interface PKPaymentSetupListItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PKPaymentSetupListItem)init;
-- (PKPaymentSetupListItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentSetupListItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -16,51 +16,51 @@
   if (v2)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (PKPaymentSetupListItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (PKPaymentSetupListItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  iconCopy = icon;
   v12 = [(PKPaymentSetupListItem *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_subtitle, a4);
-    objc_storeStrong(&v13->_icon, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_subtitle, subtitle);
+    objc_storeStrong(&v13->_icon, icon);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_badgeText copyWithZone:a3];
+  v12 = [(NSString *)self->_badgeText copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_labelText copyWithZone:a3];
+  v14 = [(NSString *)self->_labelText copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -97,11 +97,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && self->_selected == v4[11] && self->_loadingIndicatorVisible == v4[10] && self->_displayChevron == v4[9] && self->_displayInfo == v4[8] && self->_reserverSpaceForSelectedAccessory == v4[13] && self->_useMultiSelectAccessory == v4[12];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && self->_selected == equalCopy[11] && self->_loadingIndicatorVisible == equalCopy[10] && self->_displayChevron == equalCopy[9] && self->_displayInfo == equalCopy[8] && self->_reserverSpaceForSelectedAccessory == equalCopy[13] && self->_useMultiSelectAccessory == equalCopy[12];
 
   return v5;
 }

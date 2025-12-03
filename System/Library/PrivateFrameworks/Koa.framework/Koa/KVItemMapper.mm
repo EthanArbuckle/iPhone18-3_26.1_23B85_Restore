@@ -1,11 +1,11 @@
 @interface KVItemMapper
 - (KVItemMapper)init;
-- (KVItemMapper)initWithObjectClass:(Class)a3 error:(id *)a4;
+- (KVItemMapper)initWithObjectClass:(Class)class error:(id *)error;
 @end
 
 @implementation KVItemMapper
 
-- (KVItemMapper)initWithObjectClass:(Class)a3 error:(id *)a4
+- (KVItemMapper)initWithObjectClass:(Class)class error:(id *)error
 {
   v17.receiver = self;
   v17.super_class = KVItemMapper;
@@ -34,7 +34,7 @@
   v8 = v7;
   _Block_object_dispose(&v19, 8);
   v9 = [v7 alloc];
-  v13 = objc_msgSend_initWithObjectClass_error_(v9, v10, a3, a4, v11, v12);
+  v13 = objc_msgSend_initWithObjectClass_error_(v9, v10, class, error, v11, v12);
   mapper = v6->_mapper;
   v6->_mapper = v13;
 

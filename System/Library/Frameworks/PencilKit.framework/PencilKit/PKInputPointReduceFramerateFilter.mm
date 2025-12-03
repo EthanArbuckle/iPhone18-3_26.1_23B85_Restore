@@ -1,10 +1,10 @@
 @interface PKInputPointReduceFramerateFilter
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 @end
 
 @implementation PKInputPointReduceFramerateFilter
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -20,7 +20,7 @@
       }
     }
 
-    memmove(&self->super._filteredPoint, a3, 0x88uLL);
+    memmove(&self->super._filteredPoint, point, 0x88uLL);
   }
 
   self->_coalescingCounter = 0;

@@ -1,21 +1,21 @@
 @interface DeviceResolutionService
-- (void)homeManagerDidUpdateDataSyncInProgress:(id)a3;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateDataSyncInProgress:(id)progress;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation DeviceResolutionService
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
+  homesCopy = homes;
+  selfCopy = self;
   sub_2698F55EC();
 }
 
-- (void)homeManagerDidUpdateDataSyncInProgress:(id)a3
+- (void)homeManagerDidUpdateDataSyncInProgress:(id)progress
 {
-  v4 = a3;
-  v5 = self;
+  progressCopy = progress;
+  selfCopy = self;
   sub_2698F57C0();
 }
 

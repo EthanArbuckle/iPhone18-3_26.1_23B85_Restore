@@ -1,34 +1,34 @@
 @interface PFStoryConcreteRecipeDisplayAsset
-+ (BOOL)decomposeURL:(id)a3 usingBlock:(id)a4;
-+ (id)URLWithScheme:(id)a3 cloudIdentifier:(id)a4;
-- (BOOL)isEqualToAsset:(id)a3;
-- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)a3 category:(int64_t)a4 scheme:(id)a5 cloudIdentifier:(id)a6;
-- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)a3 kind:(int64_t)a4 url:(id)a5;
++ (BOOL)decomposeURL:(id)l usingBlock:(id)block;
++ (id)URLWithScheme:(id)scheme cloudIdentifier:(id)identifier;
+- (BOOL)isEqualToAsset:(id)asset;
+- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)identifier category:(int64_t)category scheme:(id)scheme cloudIdentifier:(id)cloudIdentifier;
+- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)identifier kind:(int64_t)kind url:(id)url;
 @end
 
 @implementation PFStoryConcreteRecipeDisplayAsset
 
-- (BOOL)isEqualToAsset:(id)a3
+- (BOOL)isEqualToAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = PFStoryConcreteRecipeDisplayAsset;
-  if (-[PFStoryConcreteRecipeAsset isEqualToAsset:](&v12, sel_isEqualToAsset_, v4) && (v5 = -[PFStoryConcreteRecipeDisplayAsset category](self, "category"), v5 == [v4 category]))
+  if (-[PFStoryConcreteRecipeAsset isEqualToAsset:](&v12, sel_isEqualToAsset_, assetCopy) && (v5 = -[PFStoryConcreteRecipeDisplayAsset category](self, "category"), v5 == [assetCopy category]))
   {
-    v6 = [(PFStoryConcreteRecipeDisplayAsset *)self scheme];
-    v7 = [v4 scheme];
-    if (v6 == v7 || [v6 isEqual:v7])
+    scheme = [(PFStoryConcreteRecipeDisplayAsset *)self scheme];
+    scheme2 = [assetCopy scheme];
+    if (scheme == scheme2 || [scheme isEqual:scheme2])
     {
-      v8 = [(PFStoryConcreteRecipeDisplayAsset *)self cloudIdentifier];
-      v9 = [v4 cloudIdentifier];
-      if (v8 == v9)
+      cloudIdentifier = [(PFStoryConcreteRecipeDisplayAsset *)self cloudIdentifier];
+      cloudIdentifier2 = [assetCopy cloudIdentifier];
+      if (cloudIdentifier == cloudIdentifier2)
       {
         v10 = 1;
       }
 
       else
       {
-        v10 = [v8 isEqual:v9];
+        v10 = [cloudIdentifier isEqual:cloudIdentifier2];
       }
     }
 
@@ -46,32 +46,32 @@
   return v10;
 }
 
-- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)a3 kind:(int64_t)a4 url:(id)a5
+- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)identifier kind:(int64_t)kind url:(id)url
 {
-  v6 = a3;
-  v7 = a5;
+  identifierCopy = identifier;
+  urlCopy = url;
   v8 = _PFAssertFailHandler();
   return [(PFStoryConcreteRecipeDisplayAsset *)v8 initWithIdentifier:v9 category:v10 scheme:v11 cloudIdentifier:v12, v13];
 }
 
-- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)a3 category:(int64_t)a4 scheme:(id)a5 cloudIdentifier:(id)a6
+- (PFStoryConcreteRecipeDisplayAsset)initWithIdentifier:(id)identifier category:(int64_t)category scheme:(id)scheme cloudIdentifier:(id)cloudIdentifier
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [PFStoryConcreteRecipeDisplayAsset URLWithScheme:v10 cloudIdentifier:v11];
+  schemeCopy = scheme;
+  cloudIdentifierCopy = cloudIdentifier;
+  identifierCopy = identifier;
+  v13 = [PFStoryConcreteRecipeDisplayAsset URLWithScheme:schemeCopy cloudIdentifier:cloudIdentifierCopy];
   v20.receiver = self;
   v20.super_class = PFStoryConcreteRecipeDisplayAsset;
-  v14 = [(PFStoryConcreteRecipeAsset *)&v20 initWithIdentifier:v12 kind:1 url:v13];
+  v14 = [(PFStoryConcreteRecipeAsset *)&v20 initWithIdentifier:identifierCopy kind:1 url:v13];
 
   if (v14)
   {
-    v14->_category = a4;
-    v15 = [v10 copy];
+    v14->_category = category;
+    v15 = [schemeCopy copy];
     scheme = v14->_scheme;
     v14->_scheme = v15;
 
-    v17 = [v11 copy];
+    v17 = [cloudIdentifierCopy copy];
     cloudIdentifier = v14->_cloudIdentifier;
     v14->_cloudIdentifier = v17;
   }
@@ -79,27 +79,27 @@
   return v14;
 }
 
-+ (BOOL)decomposeURL:(id)a3 usingBlock:(id)a4
++ (BOOL)decomposeURL:(id)l usingBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:v5 resolvingAgainstBaseURL:1];
-  v8 = [v7 scheme];
-  if (!v8)
+  lCopy = l;
+  blockCopy = block;
+  v7 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:lCopy resolvingAgainstBaseURL:1];
+  scheme = [v7 scheme];
+  if (!scheme)
   {
     goto LABEL_16;
   }
 
-  v9 = [v7 host];
-  if (([v9 isEqualToString:@"asset"] & 1) == 0)
+  host = [v7 host];
+  if (([host isEqualToString:@"asset"] & 1) == 0)
   {
 
     goto LABEL_16;
   }
 
-  v10 = [v7 queryItems];
-  v11 = [v10 count];
+  queryItems = [v7 queryItems];
+  v11 = [queryItems count];
 
   if (v11 != 1)
   {
@@ -112,16 +112,16 @@ LABEL_16:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [v7 queryItems];
-  v13 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  queryItems2 = [v7 queryItems];
+  v13 = [queryItems2 countByEnumeratingWithState:&v28 objects:v32 count:16];
   v14 = v13 != 0;
   if (v13)
   {
     v15 = v13;
     v24 = v13 != 0;
-    v25 = v8;
-    v26 = v6;
-    v27 = v5;
+    v25 = scheme;
+    v26 = blockCopy;
+    v27 = lCopy;
     v16 = 0;
     v17 = *v29;
     do
@@ -130,22 +130,22 @@ LABEL_16:
       {
         if (*v29 != v17)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(queryItems2);
         }
 
         v19 = *(*(&v28 + 1) + 8 * i);
-        v20 = [v19 name];
-        v21 = [v20 isEqualToString:@"cloudIdentifier"];
+        name = [v19 name];
+        v21 = [name isEqualToString:@"cloudIdentifier"];
 
         if (v21)
         {
-          v22 = [v19 value];
+          value = [v19 value];
 
-          v16 = v22;
+          v16 = value;
         }
       }
 
-      v15 = [v12 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v15 = [queryItems2 countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v15);
@@ -153,39 +153,39 @@ LABEL_16:
     if (!v16)
     {
       v14 = 0;
-      v6 = v26;
-      v5 = v27;
-      v8 = v25;
+      blockCopy = v26;
+      lCopy = v27;
+      scheme = v25;
       goto LABEL_17;
     }
 
-    v8 = v25;
-    v6 = v26;
+    scheme = v25;
+    blockCopy = v26;
     (*(v26 + 2))(v26, v25, v16);
-    v5 = v27;
+    lCopy = v27;
     v14 = v24;
   }
 
   else
   {
-    v16 = v12;
+    v16 = queryItems2;
   }
 
 LABEL_17:
   return v14;
 }
 
-+ (id)URLWithScheme:(id)a3 cloudIdentifier:(id)a4
++ (id)URLWithScheme:(id)scheme cloudIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AF20];
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  schemeCopy = scheme;
   v8 = objc_alloc_init(v5);
-  [v8 setScheme:v7];
+  [v8 setScheme:schemeCopy];
 
   [v8 setHost:@"asset"];
-  v9 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"cloudIdentifier" value:v6];
+  v9 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"cloudIdentifier" value:identifierCopy];
 
   v13[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];

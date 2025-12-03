@@ -1,108 +1,108 @@
 @interface CRXFPrescriptionRecord
-- (CRXFPrescriptionRecord)initWithACCPayload:(id)a3 enrollmentName:(id)a4 enrollmentDate:(id)a5 leftEyeRX:(id)a6 rightEyeRX:(id)a7;
-- (CRXFPrescriptionRecord)initWithCoder:(id)a3;
-- (void)addLeftCalibrationData:(id)a3 rightCalibrationData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (CRXFPrescriptionRecord)initWithACCPayload:(id)payload enrollmentName:(id)name enrollmentDate:(id)date leftEyeRX:(id)x rightEyeRX:(id)rX;
+- (CRXFPrescriptionRecord)initWithCoder:(id)coder;
+- (void)addLeftCalibrationData:(id)data rightCalibrationData:(id)calibrationData;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXFPrescriptionRecord
 
-- (CRXFPrescriptionRecord)initWithACCPayload:(id)a3 enrollmentName:(id)a4 enrollmentDate:(id)a5 leftEyeRX:(id)a6 rightEyeRX:(id)a7
+- (CRXFPrescriptionRecord)initWithACCPayload:(id)payload enrollmentName:(id)name enrollmentDate:(id)date leftEyeRX:(id)x rightEyeRX:(id)rX
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  payloadCopy = payload;
+  nameCopy = name;
+  dateCopy = date;
+  xCopy = x;
+  rXCopy = rX;
   v23.receiver = self;
   v23.super_class = CRXFPrescriptionRecord;
   v18 = [(CRXFPrescriptionRecord *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accPayload, a3);
-    objc_storeStrong(&v19->_enrollmentName, a4);
-    if (v15)
+    objc_storeStrong(&v18->_accPayload, payload);
+    objc_storeStrong(&v19->_enrollmentName, name);
+    if (dateCopy)
     {
-      v20 = v15;
+      date = dateCopy;
     }
 
     else
     {
-      v20 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     enrollmentDate = v19->_enrollmentDate;
-    v19->_enrollmentDate = v20;
+    v19->_enrollmentDate = date;
 
-    objc_storeStrong(&v19->_leftEyeRX, a6);
-    objc_storeStrong(&v19->_rightEyeRX, a7);
+    objc_storeStrong(&v19->_leftEyeRX, x);
+    objc_storeStrong(&v19->_rightEyeRX, rX);
   }
 
   return v19;
 }
 
-- (void)addLeftCalibrationData:(id)a3 rightCalibrationData:(id)a4
+- (void)addLeftCalibrationData:(id)data rightCalibrationData:(id)calibrationData
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  calibrationDataCopy = calibrationData;
   leftCalibrationData = self->_leftCalibrationData;
-  self->_leftCalibrationData = v6;
-  v10 = v6;
+  self->_leftCalibrationData = dataCopy;
+  v10 = dataCopy;
 
   rightCalibrationData = self->_rightCalibrationData;
-  self->_rightCalibrationData = v7;
+  self->_rightCalibrationData = calibrationDataCopy;
 }
 
-- (CRXFPrescriptionRecord)initWithCoder:(id)a3
+- (CRXFPrescriptionRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acc"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ek"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ed"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lc"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rc"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lrx"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rrx"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acc"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ek"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ed"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lc"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rc"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lrx"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rrx"];
 
   if (v5)
   {
     self = [(CRXFPrescriptionRecord *)self initWithACCPayload:v5 enrollmentName:v6 enrollmentDate:v7 leftEyeRX:v10 rightEyeRX:v11];
     [(CRXFPrescriptionRecord *)self addLeftCalibrationData:v8 rightCalibrationData:v9];
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRXFPrescriptionRecord *)self accPayload];
-  [v4 encodeObject:v5 forKey:@"acc"];
+  coderCopy = coder;
+  accPayload = [(CRXFPrescriptionRecord *)self accPayload];
+  [coderCopy encodeObject:accPayload forKey:@"acc"];
 
-  v6 = [(CRXFPrescriptionRecord *)self enrollmentName];
-  [v4 encodeObject:v6 forKey:@"ek"];
+  enrollmentName = [(CRXFPrescriptionRecord *)self enrollmentName];
+  [coderCopy encodeObject:enrollmentName forKey:@"ek"];
 
-  v7 = [(CRXFPrescriptionRecord *)self enrollmentDate];
-  [v4 encodeObject:v7 forKey:@"ed"];
+  enrollmentDate = [(CRXFPrescriptionRecord *)self enrollmentDate];
+  [coderCopy encodeObject:enrollmentDate forKey:@"ed"];
 
-  v8 = [(CRXFPrescriptionRecord *)self leftCalibrationData];
-  [v4 encodeObject:v8 forKey:@"lc"];
+  leftCalibrationData = [(CRXFPrescriptionRecord *)self leftCalibrationData];
+  [coderCopy encodeObject:leftCalibrationData forKey:@"lc"];
 
-  v9 = [(CRXFPrescriptionRecord *)self rightCalibrationData];
-  [v4 encodeObject:v9 forKey:@"rc"];
+  rightCalibrationData = [(CRXFPrescriptionRecord *)self rightCalibrationData];
+  [coderCopy encodeObject:rightCalibrationData forKey:@"rc"];
 
-  v10 = [(CRXFPrescriptionRecord *)self leftEyeRX];
-  [v4 encodeObject:v10 forKey:@"lrx"];
+  leftEyeRX = [(CRXFPrescriptionRecord *)self leftEyeRX];
+  [coderCopy encodeObject:leftEyeRX forKey:@"lrx"];
 
-  v11 = [(CRXFPrescriptionRecord *)self rightEyeRX];
-  [v4 encodeObject:v11 forKey:@"rrx"];
+  rightEyeRX = [(CRXFPrescriptionRecord *)self rightEyeRX];
+  [coderCopy encodeObject:rightEyeRX forKey:@"rrx"];
 }
 
 @end

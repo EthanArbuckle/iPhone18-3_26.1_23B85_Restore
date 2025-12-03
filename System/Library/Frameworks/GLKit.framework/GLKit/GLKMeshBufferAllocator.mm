@@ -1,12 +1,12 @@
 @interface GLKMeshBufferAllocator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (GLKMeshBufferAllocator)init;
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4;
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5;
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5;
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4;
-- (id)newZone:(unint64_t)a3;
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4;
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type;
+- (id)newBufferWithData:(id)data type:(unint64_t)type;
+- (id)newZone:(unint64_t)zone;
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type;
 @end
 
 @implementation GLKMeshBufferAllocator
@@ -21,13 +21,13 @@
     goto LABEL_4;
   }
 
-  v3 = [MEMORY[0x277CD9388] currentContext];
-  v4 = v3;
-  if (v3)
+  currentContext = [MEMORY[0x277CD9388] currentContext];
+  v4 = currentContext;
+  if (currentContext)
   {
-    v5 = [(GLKMeshBufferAllocator *)v3 sharegroup];
+    sharegroup = [(GLKMeshBufferAllocator *)currentContext sharegroup];
     sharegroup = v2->_sharegroup;
-    v2->_sharegroup = v5;
+    v2->_sharegroup = sharegroup;
 
 LABEL_4:
     v4 = v2;
@@ -36,42 +36,42 @@ LABEL_4:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_sharegroup == v4[1];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_sharegroup == equalCopy[1];
 
   return v5;
 }
 
-- (id)newZone:(unint64_t)a3
+- (id)newZone:(unint64_t)zone
 {
   v5 = [GLKMeshBufferZone alloc];
 
-  return [(GLKMeshBufferZone *)v5 initWithCapacity:a3 allocator:self];
+  return [(GLKMeshBufferZone *)v5 initWithCapacity:zone allocator:self];
 }
 
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  if (v8 == [v7 count])
+  sizeCopy = size;
+  typeCopy = type;
+  v8 = [sizeCopy count];
+  if (v8 == [typeCopy count])
   {
-    if ([v6 count])
+    if ([sizeCopy count])
     {
       v9 = 0;
       v10 = 0;
       do
       {
-        v11 = [v6 objectAtIndexedSubscript:v9];
+        v11 = [sizeCopy objectAtIndexedSubscript:v9];
         v12 = [v11 unsignedIntegerValue] + v10;
 
-        v13 = [v7 objectAtIndexedSubscript:v9];
-        v14 = [v13 unsignedIntegerValue];
+        v13 = [typeCopy objectAtIndexedSubscript:v9];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-        if (v14 == 1)
+        if (unsignedIntegerValue == 1)
         {
           v10 = v12 + 255;
         }
@@ -84,7 +84,7 @@ LABEL_4:
         ++v9;
       }
 
-      while (v9 < [v6 count]);
+      while (v9 < [sizeCopy count]);
     }
 
     else
@@ -103,29 +103,29 @@ LABEL_4:
   return v15;
 }
 
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type
 {
   v7 = [GLKMeshBuffer alloc];
 
-  return [(GLKMeshBuffer *)v7 _initWithLength:a3 allocator:self type:a4];
+  return [(GLKMeshBuffer *)v7 _initWithLength:buffer allocator:self type:type];
 }
 
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4
+- (id)newBufferWithData:(id)data type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = [[GLKMeshBuffer alloc] _initWithData:v6 allocator:self type:a4];
+  dataCopy = data;
+  v7 = [[GLKMeshBuffer alloc] _initWithData:dataCopy allocator:self type:type];
 
   return v7;
 }
 
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8)
+  zoneCopy = zone;
+  v9 = zoneCopy;
+  if (zoneCopy)
   {
-    v10 = [v8 allocator];
-    v11 = [v10 isEqual:self];
+    allocator = [zoneCopy allocator];
+    v11 = [allocator isEqual:self];
 
     if (!v11)
     {
@@ -133,12 +133,12 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v12 = [v9 newBufferWithLength:a4 type:a5];
+    v12 = [v9 newBufferWithLength:length type:type];
   }
 
   else
   {
-    v12 = [(GLKMeshBufferAllocator *)self newBuffer:a4 type:a5];
+    v12 = [(GLKMeshBufferAllocator *)self newBuffer:length type:type];
   }
 
   v13 = v12;
@@ -147,16 +147,16 @@ LABEL_7:
   return v13;
 }
 
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = -[GLKMeshBufferAllocator newBufferFromZone:length:type:](self, "newBufferFromZone:length:type:", v9, [v8 length], a5);
+  dataCopy = data;
+  zoneCopy = zone;
+  v10 = -[GLKMeshBufferAllocator newBufferFromZone:length:type:](self, "newBufferFromZone:length:type:", zoneCopy, [dataCopy length], type);
 
   if (v10)
   {
     v11 = [v10 map];
-    memcpy([v11 bytes], objc_msgSend(v8, "bytes"), objc_msgSend(v8, "length"));
+    memcpy([v11 bytes], objc_msgSend(dataCopy, "bytes"), objc_msgSend(dataCopy, "length"));
   }
 
   return v10;

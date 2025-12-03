@@ -1,7 +1,7 @@
 @interface CCAppIntentsExtractedEntityAppointment
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppIntentsExtractedEntityAppointment)initWithEventName:(id)a3 startLocationName:(id)a4 startLocationAddress:(id)a5 startLocationTelephone:(id)a6 startDate:(id)a7 startDateTimeZone:(id)a8 endDate:(id)a9 endDateTimeZone:(id)a10 duration:(id)a11 cost:(id)a12 costCode:(id)a13 eventSubType:(id)a14 error:(id *)a15;
-- (CCAppIntentsExtractedEntityAppointment)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppIntentsExtractedEntityAppointment)initWithEventName:(id)name startLocationName:(id)locationName startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)date startDateTimeZone:(id)zone endDate:(id)endDate endDateTimeZone:(id)self0 duration:(id)self1 cost:(id)self2 costCode:(id)self3 eventSubType:(id)self4 error:(id *)self5;
+- (CCAppIntentsExtractedEntityAppointment)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSString)cost;
 - (NSString)costCode;
 - (NSString)endDate;
@@ -14,33 +14,33 @@
 - (NSString)startLocationName;
 - (NSString)startLocationTelephone;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppIntentsExtractedEntityAppointment
 
-- (CCAppIntentsExtractedEntityAppointment)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppIntentsExtractedEntityAppointment)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v23 = [v6 objectForKeyedSubscript:@"eventName"];
-    v21 = [v6 objectForKeyedSubscript:@"startLocationName"];
-    v18 = [v6 objectForKeyedSubscript:@"startLocationAddress"];
-    v9 = [v6 objectForKeyedSubscript:@"startLocationTelephone"];
-    v20 = [v6 objectForKeyedSubscript:@"startDate"];
-    v19 = [v6 objectForKeyedSubscript:@"startDateTimeZone"];
-    v17 = [v6 objectForKeyedSubscript:@"endDate"];
-    [v6 objectForKeyedSubscript:@"endDateTimeZone"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"eventName"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"startLocationName"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"startLocationAddress"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"startLocationTelephone"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"startDateTimeZone"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
+    [dictionaryCopy objectForKeyedSubscript:@"endDateTimeZone"];
     v16 = v22 = self;
-    v15 = [v6 objectForKeyedSubscript:@"duration"];
-    v10 = [v6 objectForKeyedSubscript:@"cost"];
-    v11 = [v6 objectForKeyedSubscript:@"costCode"];
-    v12 = [v6 objectForKeyedSubscript:@"eventSubType"];
-    v13 = [[CCAppIntentsExtractedEntityAppointment alloc] initWithEventName:v23 startLocationName:v21 startLocationAddress:v18 startLocationTelephone:v9 startDate:v20 startDateTimeZone:v19 endDate:v17 endDateTimeZone:v16 duration:v15 cost:v10 costCode:v11 eventSubType:v12 error:a4];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"duration"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cost"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"costCode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"eventSubType"];
+    v13 = [[CCAppIntentsExtractedEntityAppointment alloc] initWithEventName:v23 startLocationName:v21 startLocationAddress:v18 startLocationTelephone:v9 startDate:v20 startDateTimeZone:v19 endDate:v17 endDateTimeZone:v16 duration:v15 cost:v10 costCode:v11 eventSubType:v12 error:error];
 
     self = v22;
   }
@@ -59,50 +59,50 @@
   v3 = objc_opt_new();
   if (self->_eventName)
   {
-    v4 = [(CCAppIntentsExtractedEntityAppointment *)self eventName];
-    [v3 setObject:v4 forKeyedSubscript:@"eventName"];
+    eventName = [(CCAppIntentsExtractedEntityAppointment *)self eventName];
+    [v3 setObject:eventName forKeyedSubscript:@"eventName"];
   }
 
   if (self->_startLocationName)
   {
-    v5 = [(CCAppIntentsExtractedEntityAppointment *)self startLocationName];
-    [v3 setObject:v5 forKeyedSubscript:@"startLocationName"];
+    startLocationName = [(CCAppIntentsExtractedEntityAppointment *)self startLocationName];
+    [v3 setObject:startLocationName forKeyedSubscript:@"startLocationName"];
   }
 
   if (self->_startLocationAddress)
   {
-    v6 = [(CCAppIntentsExtractedEntityAppointment *)self startLocationAddress];
-    [v3 setObject:v6 forKeyedSubscript:@"startLocationAddress"];
+    startLocationAddress = [(CCAppIntentsExtractedEntityAppointment *)self startLocationAddress];
+    [v3 setObject:startLocationAddress forKeyedSubscript:@"startLocationAddress"];
   }
 
   if (self->_startLocationTelephone)
   {
-    v7 = [(CCAppIntentsExtractedEntityAppointment *)self startLocationTelephone];
-    [v3 setObject:v7 forKeyedSubscript:@"startLocationTelephone"];
+    startLocationTelephone = [(CCAppIntentsExtractedEntityAppointment *)self startLocationTelephone];
+    [v3 setObject:startLocationTelephone forKeyedSubscript:@"startLocationTelephone"];
   }
 
   if (self->_startDate)
   {
-    v8 = [(CCAppIntentsExtractedEntityAppointment *)self startDate];
-    [v3 setObject:v8 forKeyedSubscript:@"startDate"];
+    startDate = [(CCAppIntentsExtractedEntityAppointment *)self startDate];
+    [v3 setObject:startDate forKeyedSubscript:@"startDate"];
   }
 
   if (self->_startDateTimeZone)
   {
-    v9 = [(CCAppIntentsExtractedEntityAppointment *)self startDateTimeZone];
-    [v3 setObject:v9 forKeyedSubscript:@"startDateTimeZone"];
+    startDateTimeZone = [(CCAppIntentsExtractedEntityAppointment *)self startDateTimeZone];
+    [v3 setObject:startDateTimeZone forKeyedSubscript:@"startDateTimeZone"];
   }
 
   if (self->_endDate)
   {
-    v10 = [(CCAppIntentsExtractedEntityAppointment *)self endDate];
-    [v3 setObject:v10 forKeyedSubscript:@"endDate"];
+    endDate = [(CCAppIntentsExtractedEntityAppointment *)self endDate];
+    [v3 setObject:endDate forKeyedSubscript:@"endDate"];
   }
 
   if (self->_endDateTimeZone)
   {
-    v11 = [(CCAppIntentsExtractedEntityAppointment *)self endDateTimeZone];
-    [v3 setObject:v11 forKeyedSubscript:@"endDateTimeZone"];
+    endDateTimeZone = [(CCAppIntentsExtractedEntityAppointment *)self endDateTimeZone];
+    [v3 setObject:endDateTimeZone forKeyedSubscript:@"endDateTimeZone"];
   }
 
   if (self->_hasDuration)
@@ -115,20 +115,20 @@
 
   if (self->_cost)
   {
-    v14 = [(CCAppIntentsExtractedEntityAppointment *)self cost];
-    [v3 setObject:v14 forKeyedSubscript:@"cost"];
+    cost = [(CCAppIntentsExtractedEntityAppointment *)self cost];
+    [v3 setObject:cost forKeyedSubscript:@"cost"];
   }
 
   if (self->_costCode)
   {
-    v15 = [(CCAppIntentsExtractedEntityAppointment *)self costCode];
-    [v3 setObject:v15 forKeyedSubscript:@"costCode"];
+    costCode = [(CCAppIntentsExtractedEntityAppointment *)self costCode];
+    [v3 setObject:costCode forKeyedSubscript:@"costCode"];
   }
 
   if (self->_eventSubType)
   {
-    v16 = [(CCAppIntentsExtractedEntityAppointment *)self eventSubType];
-    [v3 setObject:v16 forKeyedSubscript:@"eventSubType"];
+    eventSubType = [(CCAppIntentsExtractedEntityAppointment *)self eventSubType];
+    [v3 setObject:eventSubType forKeyedSubscript:@"eventSubType"];
   }
 
   v17 = [v3 copy];
@@ -136,82 +136,82 @@
   return v17;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v18 = a3;
+  blockCopy = block;
   if (self->_eventName)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27446 stringValue:self->_eventName];
-    v18[2](v18, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_startLocationName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27447 stringValue:self->_startLocationName];
-    v18[2](v18, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_startLocationAddress)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27448 stringValue:self->_startLocationAddress];
-    v18[2](v18, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_startLocationTelephone)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27449 stringValue:self->_startLocationTelephone];
-    v18[2](v18, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_startDate)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27450 stringValue:self->_startDate];
-    v18[2](v18, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_startDateTimeZone)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27451 stringValue:self->_startDateTimeZone];
-    v18[2](v18, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_endDate)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27452 stringValue:self->_endDate];
-    v18[2](v18, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_endDateTimeZone)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27453 stringValue:self->_endDateTimeZone];
-    v18[2](v18, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_hasDuration)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27454 doubleValue:self->_duration];
-    v18[2](v18, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_cost)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27455 stringValue:self->_cost];
-    v18[2](v18, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_costCode)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27456 stringValue:self->_costCode];
-    v18[2](v18, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
-  v16 = v18;
+  v16 = blockCopy;
   if (self->_eventSubType)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:27457 stringValue:self->_eventSubType];
-    v18[2](v18, v17);
+    blockCopy[2](blockCopy, v17);
 
-    v16 = v18;
+    v16 = blockCopy;
   }
 }
 
@@ -292,10 +292,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -483,13 +483,13 @@ LABEL_51:
 
       v32 = objc_opt_class();
       NSStringFromClass(v32);
-      v41 = v6;
-      v34 = v33 = a4;
+      v41 = dataCopy;
+      v34 = v33 = error;
       v35 = *&v7[*v10];
       v11 = CCSkipFieldErrorForMessage();
 
-      a4 = v33;
-      v6 = v41;
+      error = v33;
+      dataCopy = v41;
 LABEL_52:
       if (*&v7[*v8] < *&v7[*v9])
       {
@@ -527,27 +527,27 @@ LABEL_64:
   return v39;
 }
 
-- (CCAppIntentsExtractedEntityAppointment)initWithEventName:(id)a3 startLocationName:(id)a4 startLocationAddress:(id)a5 startLocationTelephone:(id)a6 startDate:(id)a7 startDateTimeZone:(id)a8 endDate:(id)a9 endDateTimeZone:(id)a10 duration:(id)a11 cost:(id)a12 costCode:(id)a13 eventSubType:(id)a14 error:(id *)a15
+- (CCAppIntentsExtractedEntityAppointment)initWithEventName:(id)name startLocationName:(id)locationName startLocationAddress:(id)address startLocationTelephone:(id)telephone startDate:(id)date startDateTimeZone:(id)zone endDate:(id)endDate endDateTimeZone:(id)self0 duration:(id)self1 cost:(id)self2 costCode:(id)self3 eventSubType:(id)self4 error:(id *)self5
 {
-  v20 = a3;
-  v72 = a4;
-  v71 = a5;
-  v65 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v70 = a11;
-  v25 = a12;
-  v67 = a13;
-  v66 = a14;
+  nameCopy = name;
+  locationNameCopy = locationName;
+  addressCopy = address;
+  telephoneCopy = telephone;
+  dateCopy = date;
+  zoneCopy = zone;
+  endDateCopy = endDate;
+  timeZoneCopy = timeZone;
+  durationCopy = duration;
+  costCopy = cost;
+  codeCopy = code;
+  typeCopy = type;
   v26 = objc_opt_new();
   v27 = 0x1E696A000uLL;
-  v69 = v25;
-  if (!v20)
+  v69 = costCopy;
+  if (!nameCopy)
   {
     v29 = 0;
-    if (!v72)
+    if (!locationNameCopy)
     {
       goto LABEL_4;
     }
@@ -562,7 +562,7 @@ LABEL_64:
   {
     CCPBDataWriterWriteStringField();
     v27 = 0x1E696A000;
-    if (!v72)
+    if (!locationNameCopy)
     {
 LABEL_4:
       v30 = v29;
@@ -570,7 +570,7 @@ LABEL_4:
     }
 
 LABEL_6:
-    v31 = v20;
+    v31 = nameCopy;
     v32 = *(v27 + 3776);
     objc_opt_class();
     v33 = CCValidateIsInstanceOfExpectedClass();
@@ -581,24 +581,24 @@ LABEL_6:
       CCSetError();
       v45 = 0;
       v29 = v30;
-      v20 = v31;
-      v34 = v22;
-      v37 = v21;
+      nameCopy = v31;
+      v34 = zoneCopy;
+      v37 = dateCopy;
       goto LABEL_36;
     }
 
     CCPBDataWriterWriteStringField();
-    v20 = v31;
+    nameCopy = v31;
     v27 = 0x1E696A000uLL;
 LABEL_8:
-    v64 = v20;
-    v34 = v22;
-    if (!v71)
+    v64 = nameCopy;
+    v34 = zoneCopy;
+    if (!addressCopy)
     {
       v29 = v30;
-      v37 = v21;
-      v38 = v65;
-      if (!v65)
+      v37 = dateCopy;
+      v38 = telephoneCopy;
+      if (!telephoneCopy)
       {
 LABEL_11:
         v39 = v29;
@@ -642,7 +642,7 @@ LABEL_12:
         {
 LABEL_14:
           v39 = v29;
-          if (v23)
+          if (endDateCopy)
           {
             goto LABEL_15;
           }
@@ -663,7 +663,7 @@ LABEL_24:
 
         CCPBDataWriterWriteStringField();
         v27 = 0x1E696A000uLL;
-        if (v23)
+        if (endDateCopy)
         {
 LABEL_15:
           v42 = *(v27 + 3776);
@@ -677,9 +677,9 @@ LABEL_15:
           }
 
           CCPBDataWriterWriteStringField();
-          v44 = self;
+          selfCopy4 = self;
           v27 = 0x1E696A000;
-          if (!v24)
+          if (!timeZoneCopy)
           {
             goto LABEL_29;
           }
@@ -701,7 +701,7 @@ LABEL_27:
           v27 = 0x1E696A000;
           v29 = v52;
 LABEL_29:
-          if (!v70)
+          if (!durationCopy)
           {
 LABEL_32:
             if (!v69)
@@ -720,7 +720,7 @@ LABEL_32:
               CCPBDataWriterWriteStringField();
               v27 = 0x1E696A000;
 LABEL_41:
-              if (!v67)
+              if (!codeCopy)
               {
                 v29 = v39;
                 goto LABEL_46;
@@ -736,13 +736,13 @@ LABEL_41:
                 CCPBDataWriterWriteStringField();
                 v27 = 0x1E696A000;
 LABEL_46:
-                if (!v66)
+                if (!typeCopy)
                 {
 LABEL_49:
-                  v62 = [v26 immutableData];
-                  v44 = [(CCItemMessage *)self initWithData:v62 error:a15];
+                  immutableData = [v26 immutableData];
+                  selfCopy4 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-                  v45 = v44;
+                  v45 = selfCopy4;
                   goto LABEL_50;
                 }
 
@@ -765,7 +765,7 @@ LABEL_44:
               CCSetError();
               v45 = 0;
 LABEL_52:
-              v20 = v64;
+              nameCopy = v64;
               goto LABEL_53;
             }
 
@@ -784,7 +784,7 @@ LABEL_51:
 
           if (v53)
           {
-            [v70 doubleValue];
+            [durationCopy doubleValue];
             CCPBDataWriterWriteDoubleField();
             v27 = 0x1E696A000uLL;
             goto LABEL_32;
@@ -794,14 +794,14 @@ LABEL_51:
 LABEL_39:
           v45 = 0;
 LABEL_50:
-          v20 = v64;
+          nameCopy = v64;
           goto LABEL_54;
         }
 
 LABEL_26:
         v29 = v39;
-        v44 = self;
-        if (!v24)
+        selfCopy4 = self;
+        if (!timeZoneCopy)
         {
           goto LABEL_29;
         }
@@ -824,13 +824,13 @@ LABEL_23:
     v36 = CCValidateIsInstanceOfExpectedClass();
     v29 = v30;
 
-    v37 = v21;
+    v37 = dateCopy;
     if (v36)
     {
       CCPBDataWriterWriteStringField();
-      v38 = v65;
+      v38 = telephoneCopy;
       v27 = 0x1E696A000uLL;
-      if (!v65)
+      if (!telephoneCopy)
       {
         goto LABEL_11;
       }
@@ -840,20 +840,20 @@ LABEL_23:
 
     CCSetError();
     v45 = 0;
-    v20 = v64;
+    nameCopy = v64;
 LABEL_36:
-    v38 = v65;
+    v38 = telephoneCopy;
 LABEL_53:
-    v44 = self;
+    selfCopy4 = self;
     goto LABEL_54;
   }
 
   CCSetError();
   v45 = 0;
-  v44 = self;
-  v34 = v22;
-  v37 = v21;
-  v38 = v65;
+  selfCopy4 = self;
+  v34 = zoneCopy;
+  v37 = dateCopy;
+  v38 = telephoneCopy;
 LABEL_54:
 
   return v45;

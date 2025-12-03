@@ -9,45 +9,45 @@
 - (id)identifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ATXCandidate *)self biomeStoreData];
-  v5 = [v4 bundleId];
-  v6 = [(ATXCandidate *)self biomeStoreData];
-  v7 = [v6 actionType];
+  biomeStoreData = [(ATXCandidate *)self biomeStoreData];
+  bundleId = [biomeStoreData bundleId];
+  biomeStoreData2 = [(ATXCandidate *)self biomeStoreData];
+  actionType = [biomeStoreData2 actionType];
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(ATXCandidate *)self biomeStoreData];
-  v10 = [v8 numberWithLongLong:{objc_msgSend(v9, "paramHash")}];
-  v11 = [v3 stringWithFormat:@"%@:%@:%lld", v5, v7, objc_msgSend(v10, "longLongValue")];
+  biomeStoreData3 = [(ATXCandidate *)self biomeStoreData];
+  v10 = [v8 numberWithLongLong:{objc_msgSend(biomeStoreData3, "paramHash")}];
+  v11 = [v3 stringWithFormat:@"%@:%@:%lld", bundleId, actionType, objc_msgSend(v10, "longLongValue")];
 
   return v11;
 }
 
 - (id)description
 {
-  v2 = [(ATXCandidate *)self biomeStoreData];
-  v3 = [v2 actionFromDatastoreLookup];
+  biomeStoreData = [(ATXCandidate *)self biomeStoreData];
+  actionFromDatastoreLookup = [biomeStoreData actionFromDatastoreLookup];
 
   v4 = MEMORY[0x277CCACA8];
-  v5 = [v3 actionTitle];
-  v6 = [v3 actionSubtitle];
-  v7 = v6;
+  actionTitle = [actionFromDatastoreLookup actionTitle];
+  actionSubtitle = [actionFromDatastoreLookup actionSubtitle];
+  v7 = actionSubtitle;
   v8 = @"<no subtitle>";
-  if (v6)
+  if (actionSubtitle)
   {
-    v8 = v6;
+    v8 = actionSubtitle;
   }
 
-  v9 = [v4 stringWithFormat:@"%@ | %@", v5, v8];
+  v9 = [v4 stringWithFormat:@"%@ | %@", actionTitle, v8];
 
   return v9;
 }
 
 - (id)detailedDescription
 {
-  v2 = [(ATXCandidate *)self biomeStoreData];
-  v3 = [v2 actionFromDatastoreLookup];
-  v4 = [v3 actionDescription];
+  biomeStoreData = [(ATXCandidate *)self biomeStoreData];
+  actionFromDatastoreLookup = [biomeStoreData actionFromDatastoreLookup];
+  actionDescription = [actionFromDatastoreLookup actionDescription];
 
-  return v4;
+  return actionDescription;
 }
 
 @end

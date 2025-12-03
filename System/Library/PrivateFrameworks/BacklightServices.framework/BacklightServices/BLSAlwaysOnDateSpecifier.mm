@@ -1,44 +1,44 @@
 @interface BLSAlwaysOnDateSpecifier
-- (BLSAlwaysOnDateSpecifier)initWithCoder:(id)a3;
-- (BLSAlwaysOnDateSpecifier)initWithDate:(id)a3 fidelity:(int64_t)a4 userObject:(id)a5;
-- (BLSAlwaysOnDateSpecifier)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLSAlwaysOnDateSpecifier)initWithCoder:(id)coder;
+- (BLSAlwaysOnDateSpecifier)initWithDate:(id)date fidelity:(int64_t)fidelity userObject:(id)object;
+- (BLSAlwaysOnDateSpecifier)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)bls_shortLoggingString;
-- (id)newSpecifierWithMaxFidelity:(int64_t)a3;
-- (int64_t)compare:(id)a3;
+- (id)newSpecifierWithMaxFidelity:(int64_t)fidelity;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BLSAlwaysOnDateSpecifier
 
-- (BLSAlwaysOnDateSpecifier)initWithDate:(id)a3 fidelity:(int64_t)a4 userObject:(id)a5
+- (BLSAlwaysOnDateSpecifier)initWithDate:(id)date fidelity:(int64_t)fidelity userObject:(id)object
 {
-  v9 = a3;
-  v10 = a5;
+  dateCopy = date;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = BLSAlwaysOnDateSpecifier;
   v11 = [(BLSAlwaysOnDateSpecifier *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_date, a3);
-    v12->_fidelity = a4;
-    objc_storeStrong(&v12->_userObject, a5);
+    objc_storeStrong(&v11->_date, date);
+    v12->_fidelity = fidelity;
+    objc_storeStrong(&v12->_userObject, object);
   }
 
   return v12;
 }
 
-- (id)newSpecifierWithMaxFidelity:(int64_t)a3
+- (id)newSpecifierWithMaxFidelity:(int64_t)fidelity
 {
   v5 = [BLSAlwaysOnDateSpecifier alloc];
   date = self->_date;
-  if (self->_fidelity >= a3)
+  if (self->_fidelity >= fidelity)
   {
-    fidelity = a3;
+    fidelity = fidelity;
   }
 
   else
@@ -57,7 +57,7 @@
   v9 = __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke;
   v10 = &unk_278428688;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendProem:0 block:&v7];
   v5 = [v4 description];
@@ -87,8 +87,8 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDate *)self->_date bls_shortLoggingString];
-  [v3 appendString:v4 withName:@"date"];
+  bls_shortLoggingString = [(NSDate *)self->_date bls_shortLoggingString];
+  [v3 appendString:bls_shortLoggingString withName:@"date"];
 
   v5 = NSStringFromBLSUpdateFidelity(self->_fidelity);
   [v3 appendString:v5 withName:@"fidelity"];
@@ -100,31 +100,31 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
     [v3 appendString:v7 withName:@"userObject"];
   }
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_date];
-  v5 = [v3 appendInteger:self->_fidelity];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_date];
+  v5 = [builder appendInteger:self->_fidelity];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   date = self->_date;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __36__BLSAlwaysOnDateSpecifier_isEqual___block_invoke;
   v18[3] = &unk_278428B00;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendObject:date counterpart:v18];
   fidelity = self->_fidelity;
@@ -140,20 +140,20 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
   return fidelity;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   date = self->_date;
-  v4 = [a3 date];
-  v5 = [(NSDate *)date compare:v4];
+  date = [compare date];
+  v5 = [(NSDate *)date compare:date];
 
   return v5;
 }
 
-- (BLSAlwaysOnDateSpecifier)initWithXPCDictionary:(id)a3
+- (BLSAlwaysOnDateSpecifier)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_double(v4, [@"date" UTF8String]);
-  int64 = xpc_dictionary_get_int64(v4, [@"fidelity" UTF8String]);
+  dictionaryCopy = dictionary;
+  v5 = xpc_dictionary_get_double(dictionaryCopy, [@"date" UTF8String]);
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, [@"fidelity" UTF8String]);
 
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v5];
   v8 = [(BLSAlwaysOnDateSpecifier *)self initWithDate:v7 fidelity:int64];
@@ -161,12 +161,12 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
   return v8;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
-  v5 = [@"date" UTF8String];
+  xdict = dictionary;
+  uTF8String = [@"date" UTF8String];
   [(NSDate *)self->_date timeIntervalSinceReferenceDate];
-  xpc_dictionary_set_double(xdict, v5, v6);
+  xpc_dictionary_set_double(xdict, uTF8String, v6);
   xpc_dictionary_set_int64(xdict, [@"fidelity" UTF8String], self->_fidelity);
   userObject = self->_userObject;
   if (userObject)
@@ -175,14 +175,14 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
   }
 }
 
-- (BLSAlwaysOnDateSpecifier)initWithCoder:(id)a3
+- (BLSAlwaysOnDateSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
   if (v5)
   {
-    self = -[BLSAlwaysOnDateSpecifier initWithDate:fidelity:](self, "initWithDate:fidelity:", v5, [v4 decodeIntForKey:@"fidelity"]);
-    v6 = self;
+    self = -[BLSAlwaysOnDateSpecifier initWithDate:fidelity:](self, "initWithDate:fidelity:", v5, [coderCopy decodeIntForKey:@"fidelity"]);
+    selfCopy = self;
   }
 
   else
@@ -190,20 +190,20 @@ void __50__BLSAlwaysOnDateSpecifier_bls_shortLoggingString__block_invoke(uint64_
     v7 = bls_backlight_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(BLSAlwaysOnDateSpecifier *)v4 initWithCoder:v7];
+      [(BLSAlwaysOnDateSpecifier *)coderCopy initWithCoder:v7];
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_date forKey:@"date"];
-  [v6 encodeInteger:self->_fidelity forKey:@"fidelity"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_date forKey:@"date"];
+  [coderCopy encodeInteger:self->_fidelity forKey:@"fidelity"];
   userObject = self->_userObject;
   if (userObject)
   {

@@ -15,8 +15,8 @@
   v14[2] = self;
   v14[1] = a2;
   v15[0] = @"ExtensionAlertKeyHumanReadableUpdateName";
-  v11 = [(SUSUIBaseRollbackAlertItem *)self updateName];
-  v16[0] = v11;
+  updateName = [(SUSUIBaseRollbackAlertItem *)self updateName];
+  v16[0] = updateName;
   v15[1] = @"ExtensionAlertKeySingularText";
   v10 = sub_422E4();
   v9 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ROLLBACK_ALERT_COUNTDOWN_ALERT_BODY_SINGULAR"];
@@ -57,15 +57,15 @@
 
 - (id)buttons
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = +[NSMutableArray array];
   v3 = v8[0];
-  v4 = [(SUSUIRollbackCountdownAlertItem *)v9 _rebootNowButton];
+  _rebootNowButton = [(SUSUIRollbackCountdownAlertItem *)selfCopy _rebootNowButton];
   [v3 addObject:?];
 
   v5 = v8[0];
-  v6 = [(SUSUIRollbackCountdownAlertItem *)v9 _cancelButton];
+  _cancelButton = [(SUSUIRollbackCountdownAlertItem *)selfCopy _cancelButton];
   [v5 addObject:?];
 
   v7 = [v8[0] copy];
@@ -79,14 +79,14 @@
   v14[2] = self;
   v14[1] = a2;
   v14[0] = 0;
-  v13 = self;
+  selfCopy = self;
   v2 = objc_opt_class();
   v12 = NSStringFromClass(v2);
   v6 = [SUSUIAlertButtonDefinition alloc];
   v8 = sub_422E4();
   v7 = [v8 localizedStringForKey:@"ROLLBACK_ALERT_COUNTDOWN_ALERT_BUTTON_REBOOT_NOW" value:&stru_62DF0 table:@"ui_alerts"];
   v10 = v12;
-  v11 = v13;
+  v11 = selfCopy;
   v3 = [(SUSUIAlertButtonDefinition *)v6 initWithLabel:v7 presentationStyle:0 isPreferredButton:1 handler:?];
   v4 = v14[0];
   v14[0] = v3;
@@ -95,7 +95,7 @@
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   objc_storeStrong(v14, 0);
 
   return v9;
@@ -106,14 +106,14 @@
   v14[2] = self;
   v14[1] = a2;
   v14[0] = 0;
-  v13 = self;
+  selfCopy = self;
   v2 = objc_opt_class();
   v12 = NSStringFromClass(v2);
   v6 = [SUSUIAlertButtonDefinition alloc];
   v8 = sub_422E4();
   v7 = [v8 localizedStringForKey:@"CANCEL" value:&stru_62DF0 table:@"ui_alerts"];
   v10 = v12;
-  v11 = v13;
+  v11 = selfCopy;
   v3 = [(SUSUIAlertButtonDefinition *)v6 initWithLabel:v7 presentationStyle:2 isPreferredButton:0 handler:?];
   v4 = v14[0];
   v14[0] = v3;
@@ -122,7 +122,7 @@
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v12, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   objc_storeStrong(v14, 0);
 
   return v9;
@@ -130,15 +130,15 @@
 
 - (void)reboot
 {
-  v3 = [(SUSUIBaseRollbackAlertItem *)self softwareUpdateController];
-  v2 = [(SUSUIBaseRollbackAlertItem *)self rollbackDescriptor];
-  [(SUSUISoftwareUpdateController *)v3 rollbackCompleted:?];
+  softwareUpdateController = [(SUSUIBaseRollbackAlertItem *)self softwareUpdateController];
+  rollbackDescriptor = [(SUSUIBaseRollbackAlertItem *)self rollbackDescriptor];
+  [(SUSUISoftwareUpdateController *)softwareUpdateController rollbackCompleted:?];
 }
 
 - (void)cancel
 {
-  v2 = [(SUSUIBaseRollbackAlertItem *)self softwareUpdateController];
-  [(SUSUISoftwareUpdateController *)v2 cancelRollback];
+  softwareUpdateController = [(SUSUIBaseRollbackAlertItem *)self softwareUpdateController];
+  [(SUSUISoftwareUpdateController *)softwareUpdateController cancelRollback];
 }
 
 @end

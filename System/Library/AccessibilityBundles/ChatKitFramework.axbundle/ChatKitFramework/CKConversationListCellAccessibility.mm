@@ -1,48 +1,48 @@
 @interface CKConversationListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsVerified;
 - (id)_accessibilityCustomActionGroupIdentifier;
 - (id)_axFromString;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)updateContentsForConversation:(id)a3;
+- (void)updateContentsForConversation:(id)conversation;
 @end
 
 @implementation CKConversationListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKConversationListCell" hasInstanceVariable:@"_fromLabel" withType:"CKLabel"];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceVariable:@"_dateLabel" withType:"CKDateLabel"];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceVariable:@"_summaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCell" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"shouldShowVerifiedCheckmark" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation"];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"hasUnreadMessages" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"wantsLabelForDSDS" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"IMCTSubscriptionUtilities"];
-  [v3 validateClass:@"IMCTSubscriptionUtilities" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMCTSubscriptionUtilities" hasInstanceMethod:@"ctSubscriptionInfo" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMCTXPCServiceSubscriptionInfo" hasInstanceMethod:@"subscriptions" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CTXPCServiceSubscriptionContext" hasInstanceMethod:@"labelID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CTXPCServiceSubscriptionContext" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMChat" hasInstanceMethod:@"lastAddressedSIMID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMChat" hasInstanceMethod:@"chatSummary" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceVariable:@"_fromLabel" withType:"CKLabel"];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceVariable:@"_dateLabel" withType:"CKDateLabel"];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceVariable:@"_summaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceMethod:@"avatarView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCell" hasInstanceMethod:@"conversation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"shouldShowVerifiedCheckmark" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation"];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"hasUnreadMessages" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"wantsLabelForDSDS" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"IMCTSubscriptionUtilities"];
+  [validationsCopy validateClass:@"IMCTSubscriptionUtilities" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMCTSubscriptionUtilities" hasInstanceMethod:@"ctSubscriptionInfo" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMCTXPCServiceSubscriptionInfo" hasInstanceMethod:@"subscriptions" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CTXPCServiceSubscriptionContext" hasInstanceMethod:@"labelID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CTXPCServiceSubscriptionContext" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMChat" hasInstanceMethod:@"lastAddressedSIMID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversation" hasInstanceMethod:@"chat" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMChat" hasInstanceMethod:@"chatSummary" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(CKConversationListCellAccessibility *)self safeValueForKey:@"conversation"];
-  v4 = [(CKConversationListCellAccessibility *)self _axFromString];
+  _axFromString = [(CKConversationListCellAccessibility *)self _axFromString];
   if ([(CKConversationListCellAccessibility *)self _axIsVerified])
   {
     v5 = accessibilityLocalizedString(@"conversation.verified");
@@ -54,14 +54,14 @@
   }
 
   v6 = [(CKConversationListCellAccessibility *)self safeValueForKey:@"_dateLabel"];
-  v7 = [v6 accessibilityLabel];
+  accessibilityLabel = [v6 accessibilityLabel];
 
   v8 = [(CKConversationListCellAccessibility *)self safeValueForKey:@"_summaryLabel"];
   v9 = [v8 safeStringForKey:@"text"];
 
   if ([v3 safeBoolForKey:@"wantsLabelForDSDS"])
   {
-    v27 = v4;
+    v27 = _axFromString;
     v10 = [v3 safeValueForKeyPath:@"chat.lastAddressedSIMID"];
     v30 = 0;
     objc_opt_class();
@@ -80,7 +80,7 @@
     v17 = [v14 safeStringForKey:@"label"];
     v18 = [v15 stringWithFormat:v16, v17];
 
-    v4 = v27;
+    _axFromString = v27;
   }
 
   else
@@ -162,24 +162,24 @@ uint64_t __57__CKConversationListCellAccessibility_accessibilityLabel__block_inv
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(CKConversationListCellAccessibility *)self _axFromString];
+  _axFromString = [(CKConversationListCellAccessibility *)self _axFromString];
   v3 = MEMORY[0x29C2D0360]();
 
   return v3;
 }
 
-- (void)updateContentsForConversation:(id)a3
+- (void)updateContentsForConversation:(id)conversation
 {
   v4.receiver = self;
   v4.super_class = CKConversationListCellAccessibility;
-  [(CKConversationListCellAccessibility *)&v4 updateContentsForConversation:a3];
+  [(CKConversationListCellAccessibility *)&v4 updateContentsForConversation:conversation];
   [(CKConversationListCellAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
 - (id)_axFromString
 {
   v2 = [(CKConversationListCellAccessibility *)self safeValueForKey:@"_fromLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
   v4 = UIAXApplyPhoneContextTokenToString();
 

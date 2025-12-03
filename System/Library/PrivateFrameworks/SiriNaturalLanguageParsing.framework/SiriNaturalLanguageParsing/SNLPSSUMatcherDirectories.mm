@@ -1,45 +1,45 @@
 @interface SNLPSSUMatcherDirectories
-+ (id)directoriesWithCacheDirectoryURL:(id)a3 modelAssetsDirectoryURL:(id)a4 datasetAssetsDirectoryURL:(id)a5 error:(id *)a6;
-- (SNLPSSUMatcherDirectories)initWithCacheDirectoryURL:(id)a3 modelAssetsDirectoryURL:(id)a4 datasetAssetsDirectoryURL:(id)a5;
++ (id)directoriesWithCacheDirectoryURL:(id)l modelAssetsDirectoryURL:(id)rL datasetAssetsDirectoryURL:(id)uRL error:(id *)error;
+- (SNLPSSUMatcherDirectories)initWithCacheDirectoryURL:(id)l modelAssetsDirectoryURL:(id)rL datasetAssetsDirectoryURL:(id)uRL;
 @end
 
 @implementation SNLPSSUMatcherDirectories
 
-- (SNLPSSUMatcherDirectories)initWithCacheDirectoryURL:(id)a3 modelAssetsDirectoryURL:(id)a4 datasetAssetsDirectoryURL:(id)a5
+- (SNLPSSUMatcherDirectories)initWithCacheDirectoryURL:(id)l modelAssetsDirectoryURL:(id)rL datasetAssetsDirectoryURL:(id)uRL
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v18.receiver = self;
   v18.super_class = SNLPSSUMatcherDirectories;
   v11 = [(SNLPSSUMatcherDirectories *)&v18 init];
   cacheDirectoryURL = v11->_cacheDirectoryURL;
-  v11->_cacheDirectoryURL = v8;
-  v13 = v8;
+  v11->_cacheDirectoryURL = lCopy;
+  v13 = lCopy;
 
   modelAssetsDirectoryURL = v11->_modelAssetsDirectoryURL;
-  v11->_modelAssetsDirectoryURL = v9;
-  v15 = v9;
+  v11->_modelAssetsDirectoryURL = rLCopy;
+  v15 = rLCopy;
 
   datasetAssetsDirectoryURL = v11->_datasetAssetsDirectoryURL;
-  v11->_datasetAssetsDirectoryURL = v10;
+  v11->_datasetAssetsDirectoryURL = uRLCopy;
 
   return v11;
 }
 
-+ (id)directoriesWithCacheDirectoryURL:(id)a3 modelAssetsDirectoryURL:(id)a4 datasetAssetsDirectoryURL:(id)a5 error:(id *)a6
++ (id)directoriesWithCacheDirectoryURL:(id)l modelAssetsDirectoryURL:(id)rL datasetAssetsDirectoryURL:(id)uRL error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v31[0] = v10;
-  v31[1] = v11;
-  v31[2] = v12;
+  v31[0] = lCopy;
+  v31[1] = rLCopy;
+  v31[2] = uRLCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
   v14 = [v13 countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v14)
@@ -58,7 +58,7 @@
         v18 = *(*(&v25 + 1) + 8 * i);
         if (([v18 isFileURL] & 1) == 0)
         {
-          if (a6)
+          if (error)
           {
             v20 = *MEMORY[0x277CCA470];
             v29[0] = *MEMORY[0x277CCA450];
@@ -68,7 +68,7 @@
             v30[1] = v21;
             v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
 
-            *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:1 userInfo:v22];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"SNLPSSUErrorDomain" code:1 userInfo:v22];
           }
 
           v19 = 0;
@@ -86,7 +86,7 @@
     }
   }
 
-  v19 = [[a1 alloc] initWithCacheDirectoryURL:v10 modelAssetsDirectoryURL:v11 datasetAssetsDirectoryURL:v12];
+  v19 = [[self alloc] initWithCacheDirectoryURL:lCopy modelAssetsDirectoryURL:rLCopy datasetAssetsDirectoryURL:uRLCopy];
 LABEL_13:
 
   v23 = *MEMORY[0x277D85DE8];

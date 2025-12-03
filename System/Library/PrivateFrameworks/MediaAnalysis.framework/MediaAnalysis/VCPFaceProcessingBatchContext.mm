@@ -1,18 +1,18 @@
 @interface VCPFaceProcessingBatchContext
-+ (id)batchContextWithPhotoLibrary:(id)a3 context:(id)a4;
++ (id)batchContextWithPhotoLibrary:(id)library context:(id)context;
 - (BOOL)downloadTimedout;
-- (VCPFaceProcessingBatchContext)initWithPhotoLibrary:(id)a3 context:(id)a4;
-- (id)resourceForLocalIdentifier:(id)a3;
-- (void)storeResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7 forLocalIdentifier:(id)a8;
+- (VCPFaceProcessingBatchContext)initWithPhotoLibrary:(id)library context:(id)context;
+- (id)resourceForLocalIdentifier:(id)identifier;
+- (void)storeResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status forLocalIdentifier:(id)identifier;
 - (void)updateLastestDownloadTimestamp;
 @end
 
 @implementation VCPFaceProcessingBatchContext
 
-- (VCPFaceProcessingBatchContext)initWithPhotoLibrary:(id)a3 context:(id)a4
+- (VCPFaceProcessingBatchContext)initWithPhotoLibrary:(id)library context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  contextCopy = context;
   v27.receiver = self;
   v27.super_class = VCPFaceProcessingBatchContext;
   v8 = [(VCPFaceProcessingBatchContext *)&v27 init];
@@ -42,7 +42,7 @@
     processingStatusMap = v8->_processingStatusMap;
     v8->_processingStatusMap = v19;
 
-    v21 = [VCPFaceProcessingChangeBatch batchForPhotoLibrary:v6 context:v7];
+    v21 = [VCPFaceProcessingChangeBatch batchForPhotoLibrary:libraryCopy context:contextCopy];
     changeBatch = v8->_changeBatch;
     v8->_changeBatch = v21;
 
@@ -57,18 +57,18 @@
   return v8;
 }
 
-+ (id)batchContextWithPhotoLibrary:(id)a3 context:(id)a4
++ (id)batchContextWithPhotoLibrary:(id)library context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[VCPFaceProcessingBatchContext alloc] initWithPhotoLibrary:v5 context:v6];
+  libraryCopy = library;
+  contextCopy = context;
+  v7 = [[VCPFaceProcessingBatchContext alloc] initWithPhotoLibrary:libraryCopy context:contextCopy];
 
   return v7;
 }
 
-- (id)resourceForLocalIdentifier:(id)a3
+- (id)resourceForLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -80,10 +80,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000E5904;
   block[3] = &unk_100283798;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(managementQueue, block);
   v7 = v13[5];
 
@@ -92,13 +92,13 @@
   return v7;
 }
 
-- (void)storeResource:(id)a3 resourceURL:(id)a4 isBestResource:(BOOL)a5 requestDownload:(BOOL)a6 downloadStatus:(int)a7 forLocalIdentifier:(id)a8
+- (void)storeResource:(id)resource resourceURL:(id)l isBestResource:(BOOL)bestResource requestDownload:(BOOL)download downloadStatus:(int)status forLocalIdentifier:(id)identifier
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
-  v17 = v16;
-  if (v16)
+  resourceCopy = resource;
+  lCopy = l;
+  identifierCopy = identifier;
+  v17 = identifierCopy;
+  if (identifierCopy)
   {
     managementQueue = self->_managementQueue;
     block[0] = _NSConcreteStackBlock;
@@ -106,12 +106,12 @@
     block[2] = sub_1000E5B1C;
     block[3] = &unk_100286058;
     block[4] = self;
-    v21 = v16;
-    v22 = v14;
-    v23 = v15;
-    v25 = a5;
-    v26 = a6;
-    v24 = a7;
+    v21 = identifierCopy;
+    v22 = resourceCopy;
+    v23 = lCopy;
+    bestResourceCopy = bestResource;
+    downloadCopy = download;
+    statusCopy = status;
     dispatch_sync(managementQueue, block);
   }
 

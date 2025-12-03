@@ -1,7 +1,7 @@
 @interface MTCollectionViewFlowLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)naturalRect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -18,13 +18,13 @@
   return self->_showsSeperator - v5 + 32 * v5 + 923521;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v23.receiver = self, v23.super_class = MTCollectionViewFlowLayoutAttributes, -[MTCollectionViewFlowLayoutAttributes isEqual:](&v23, "isEqual:", v4)) && (v5 = [v4 isFloating], v5 == -[MTCollectionViewFlowLayoutAttributes isFloating](self, "isFloating")) && (v6 = objc_msgSend(v4, "isPartiallyOffTheTop"), v6 == -[MTCollectionViewFlowLayoutAttributes isPartiallyOffTheTop](self, "isPartiallyOffTheTop")) && (v7 = objc_msgSend(v4, "isOpen"), v7 == -[MTCollectionViewFlowLayoutAttributes isOpen](self, "isOpen")) && (v8 = objc_msgSend(v4, "showsSeperator"), v8 == -[MTCollectionViewFlowLayoutAttributes showsSeperator](self, "showsSeperator")))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v23.receiver = self, v23.super_class = MTCollectionViewFlowLayoutAttributes, -[MTCollectionViewFlowLayoutAttributes isEqual:](&v23, "isEqual:", equalCopy)) && (v5 = [equalCopy isFloating], v5 == -[MTCollectionViewFlowLayoutAttributes isFloating](self, "isFloating")) && (v6 = objc_msgSend(equalCopy, "isPartiallyOffTheTop"), v6 == -[MTCollectionViewFlowLayoutAttributes isPartiallyOffTheTop](self, "isPartiallyOffTheTop")) && (v7 = objc_msgSend(equalCopy, "isOpen"), v7 == -[MTCollectionViewFlowLayoutAttributes isOpen](self, "isOpen")) && (v8 = objc_msgSend(equalCopy, "showsSeperator"), v8 == -[MTCollectionViewFlowLayoutAttributes showsSeperator](self, "showsSeperator")))
   {
-    [v4 naturalRect];
+    [equalCopy naturalRect];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -49,11 +49,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTCollectionViewFlowLayoutAttributes;
-  v4 = [(MTCollectionViewFlowLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(MTCollectionViewFlowLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setFloating:{-[MTCollectionViewFlowLayoutAttributes isFloating](self, "isFloating")}];
   [v4 setOpen:{-[MTCollectionViewFlowLayoutAttributes isOpen](self, "isOpen")}];
   [v4 setShowsSeperator:{-[MTCollectionViewFlowLayoutAttributes showsSeperator](self, "showsSeperator")}];

@@ -1,13 +1,13 @@
 @interface ICSEffectPickerView
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (ICSEffectPickerView)init;
 - (ICSEffectPickerViewDataSource)dataSource;
 - (ICSEffectPickerViewDelegate)delegate;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setDataSource:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation ICSEffectPickerView
@@ -37,21 +37,21 @@
     v8 = +[ICSEffectPickerViewCell reuseIdentifier];
     [(UICollectionView *)v6 registerClass:v7 forCellWithReuseIdentifier:v8];
 
-    v9 = [(UICollectionView *)v2->_collectionView topAnchor];
-    v10 = [(ICSEffectPickerView *)v2 topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(UICollectionView *)v2->_collectionView topAnchor];
+    topAnchor2 = [(ICSEffectPickerView *)v2 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-    v12 = [(UICollectionView *)v2->_collectionView bottomAnchor];
-    v13 = [(ICSEffectPickerView *)v2 bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    bottomAnchor = [(UICollectionView *)v2->_collectionView bottomAnchor];
+    bottomAnchor2 = [(ICSEffectPickerView *)v2 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-    v15 = [(UICollectionView *)v2->_collectionView leftAnchor];
-    v16 = [(ICSEffectPickerView *)v2 leftAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    leftAnchor = [(UICollectionView *)v2->_collectionView leftAnchor];
+    leftAnchor2 = [(ICSEffectPickerView *)v2 leftAnchor];
+    v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-    v18 = [(UICollectionView *)v2->_collectionView rightAnchor];
-    v19 = [(ICSEffectPickerView *)v2 rightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    rightAnchor = [(UICollectionView *)v2->_collectionView rightAnchor];
+    rightAnchor2 = [(ICSEffectPickerView *)v2 rightAnchor];
+    v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
     v29[0] = v11;
     v29[1] = v14;
@@ -70,66 +70,66 @@
     [(UICollectionView *)v2->_collectionView setBackgroundColor:v24];
 
     [(UICollectionView *)v2->_collectionView setAllowsMultipleSelection:1];
-    v25 = [(ICSEffectPickerView *)v2 layer];
-    [v25 setMasksToBounds:1];
+    layer = [(ICSEffectPickerView *)v2 layer];
+    [layer setMasksToBounds:1];
 
-    v26 = [(ICSEffectPickerView *)v2 layer];
-    [v26 setCornerRadius:10.0];
+    layer2 = [(ICSEffectPickerView *)v2 layer];
+    [layer2 setCornerRadius:10.0];
   }
 
   return v2;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  v8 = a3;
-  v4 = objc_storeWeak(&self->_dataSource, v8);
-  v5 = [v8 videoEffectsForEffectPickerView:self];
+  sourceCopy = source;
+  v4 = objc_storeWeak(&self->_dataSource, sourceCopy);
+  v5 = [sourceCopy videoEffectsForEffectPickerView:self];
 
   effects = self->_effects;
   self->_effects = v5;
 
-  v7 = [(ICSEffectPickerView *)self collectionView];
-  [v7 reloadData];
+  collectionView = [(ICSEffectPickerView *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v8 = +[ICSEffectPickerViewCell reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v7];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(ICSEffectPickerView *)self effects];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  effects = [(ICSEffectPickerView *)self effects];
+  v11 = [effects objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   [v9 setVideoEffect:v11];
 
-  v12 = [v6 indexPathsForSelectedItems];
-  [v9 setSelected:{objc_msgSend(v12, "containsObject:", v7)}];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  [v9 setSelected:{objc_msgSend(indexPathsForSelectedItems, "containsObject:", pathCopy)}];
 
   if ([v9 isSelected])
   {
-    [v6 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+    [viewCopy selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
   }
 
   return v9;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICSEffectPickerView *)self delegate];
-  v9 = [(ICSEffectPickerView *)self effects];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
-  [v8 effectPickerView:self didSelectVideoEffect:v10];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(ICSEffectPickerView *)self delegate];
+  effects = [(ICSEffectPickerView *)self effects];
+  v10 = [effects objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+  [delegate effectPickerView:self didSelectVideoEffect:v10];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [v6 indexPathsForSelectedItems];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
+  v12 = [indexPathsForSelectedItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -140,47 +140,47 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
-        v17 = [v6 cellForItemAtIndexPath:v16];
+        v17 = [viewCopy cellForItemAtIndexPath:v16];
         [v17 setSelected:0];
 
-        [v6 deselectItemAtIndexPath:v16 animated:0];
+        [viewCopy deselectItemAtIndexPath:v16 animated:0];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [indexPathsForSelectedItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 
-  [v6 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+  [viewCopy selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(ICSEffectPickerView *)self delegate];
-  v6 = [(ICSEffectPickerView *)self effects];
-  v7 = [v5 row];
+  pathCopy = path;
+  delegate = [(ICSEffectPickerView *)self delegate];
+  effects = [(ICSEffectPickerView *)self effects];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 effectPickerView:self didDeselectVideoEffect:v8];
+  v8 = [effects objectAtIndexedSubscript:v7];
+  [delegate effectPickerView:self didDeselectVideoEffect:v8];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(ICSEffectPickerView *)self effects:a3];
+  v4 = [(ICSEffectPickerView *)self effects:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [(ICSEffectPickerView *)self bounds:a3];
+  [(ICSEffectPickerView *)self bounds:view];
   v6 = (v5 + -10.0);
   v7 = v6;
   result.height = v7;

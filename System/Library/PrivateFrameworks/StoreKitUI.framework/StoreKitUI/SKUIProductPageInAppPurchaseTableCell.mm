@@ -4,13 +4,13 @@
 - (NSString)productName;
 - (UIEdgeInsets)contentInsets;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setIndexString:(id)a3;
-- (void)setPriceString:(id)a3;
-- (void)setProductName:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setIndexString:(id)string;
+- (void)setPriceString:(id)string;
+- (void)setProductName:(id)name;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation SKUIProductPageInAppPurchaseTableCell
@@ -29,9 +29,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_indexLabel text];
+  text = [(UILabel *)self->_indexLabel text];
 
-  return v11;
+  return text;
 }
 
 - (NSString)priceString
@@ -48,9 +48,9 @@
     }
   }
 
-  v11 = [(UILabel *)self->_priceLabel text];
+  text = [(UILabel *)self->_priceLabel text];
 
-  return v11;
+  return text;
 }
 
 - (NSString)productName
@@ -67,14 +67,14 @@
     }
   }
 
-  v11 = [(UILabel *)self->_nameLabel text];
+  text = [(UILabel *)self->_nameLabel text];
 
-  return v11;
+  return text;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -87,14 +87,14 @@
     }
   }
 
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    objc_storeStrong(&self->_colorScheme, a3);
+    objc_storeStrong(&self->_colorScheme, scheme);
     indexLabel = self->_indexLabel;
-    v15 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v15)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)indexLabel setTextColor:v15];
+      [(UILabel *)indexLabel setTextColor:secondaryTextColor];
     }
 
     else
@@ -104,10 +104,10 @@
     }
 
     priceLabel = self->_priceLabel;
-    v18 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v18)
+    secondaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UILabel *)priceLabel setTextColor:v18];
+      [(UILabel *)priceLabel setTextColor:secondaryTextColor2];
     }
 
     else
@@ -117,23 +117,23 @@
     }
 
     nameLabel = self->_nameLabel;
-    v21 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v21)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UILabel *)nameLabel setTextColor:v21];
+      [(UILabel *)nameLabel setTextColor:primaryTextColor];
     }
 
     else
     {
-      v22 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)nameLabel setTextColor:v22];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)nameLabel setTextColor:blackColor];
     }
   }
 }
 
-- (void)setIndexString:(id)a3
+- (void)setIndexString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -146,11 +146,11 @@
     }
   }
 
-  v13 = [(SKUIProductPageInAppPurchaseTableCell *)self indexString];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  indexString = [(SKUIProductPageInAppPurchaseTableCell *)self indexString];
+  v14 = indexString;
+  if (indexString != stringCopy && ([indexString isEqualToString:stringCopy] & 1) == 0)
   {
-    v15 = [v4 length];
+    v15 = [stringCopy length];
     indexLabel = self->_indexLabel;
     if (v15)
     {
@@ -161,8 +161,8 @@
         self->_indexLabel = v17;
 
         v19 = self->_indexLabel;
-        v20 = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v19 setBackgroundColor:v20];
+        backgroundColor = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v19 setBackgroundColor:backgroundColor];
 
         v21 = self->_indexLabel;
         v22 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -170,10 +170,10 @@
 
         [(UILabel *)self->_indexLabel setTextAlignment:1];
         v23 = self->_indexLabel;
-        v24 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v24)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v23 setTextColor:v24];
+          [(UILabel *)v23 setTextColor:secondaryTextColor];
         }
 
         else
@@ -182,13 +182,13 @@
           [(UILabel *)v23 setTextColor:v26];
         }
 
-        v27 = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v27 addSubview:self->_indexLabel];
+        contentView = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_indexLabel];
 
         indexLabel = self->_indexLabel;
       }
 
-      [(UILabel *)indexLabel setText:v4];
+      [(UILabel *)indexLabel setText:stringCopy];
     }
 
     else
@@ -202,9 +202,9 @@
   }
 }
 
-- (void)setPriceString:(id)a3
+- (void)setPriceString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -217,11 +217,11 @@
     }
   }
 
-  v13 = [(SKUIProductPageInAppPurchaseTableCell *)self priceString];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  priceString = [(SKUIProductPageInAppPurchaseTableCell *)self priceString];
+  v14 = priceString;
+  if (priceString != stringCopy && ([priceString isEqualToString:stringCopy] & 1) == 0)
   {
-    v15 = [v4 length];
+    v15 = [stringCopy length];
     priceLabel = self->_priceLabel;
     if (v15)
     {
@@ -232,18 +232,18 @@
         self->_priceLabel = v17;
 
         v19 = self->_priceLabel;
-        v20 = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v19 setBackgroundColor:v20];
+        backgroundColor = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v19 setBackgroundColor:backgroundColor];
 
         v21 = self->_priceLabel;
         v22 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
         [(UILabel *)v21 setFont:v22];
 
         v23 = self->_priceLabel;
-        v24 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-        if (v24)
+        secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+        if (secondaryTextColor)
         {
-          [(UILabel *)v23 setTextColor:v24];
+          [(UILabel *)v23 setTextColor:secondaryTextColor];
         }
 
         else
@@ -252,13 +252,13 @@
           [(UILabel *)v23 setTextColor:v26];
         }
 
-        v27 = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v27 addSubview:self->_priceLabel];
+        contentView = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_priceLabel];
 
         priceLabel = self->_priceLabel;
       }
 
-      [(UILabel *)priceLabel setText:v4];
+      [(UILabel *)priceLabel setText:stringCopy];
       [(UILabel *)self->_priceLabel sizeToFit];
     }
 
@@ -273,9 +273,9 @@
   }
 }
 
-- (void)setProductName:(id)a3
+- (void)setProductName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -288,11 +288,11 @@
     }
   }
 
-  v13 = [(SKUIProductPageInAppPurchaseTableCell *)self productName];
-  v14 = v13;
-  if (v13 != v4 && ([v13 isEqualToString:v4] & 1) == 0)
+  productName = [(SKUIProductPageInAppPurchaseTableCell *)self productName];
+  v14 = productName;
+  if (productName != nameCopy && ([productName isEqualToString:nameCopy] & 1) == 0)
   {
-    v15 = [v4 length];
+    v15 = [nameCopy length];
     nameLabel = self->_nameLabel;
     if (v15)
     {
@@ -303,33 +303,33 @@
         self->_nameLabel = v17;
 
         v19 = self->_nameLabel;
-        v20 = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
-        [(UILabel *)v19 setBackgroundColor:v20];
+        backgroundColor = [(SKUIProductPageInAppPurchaseTableCell *)self backgroundColor];
+        [(UILabel *)v19 setBackgroundColor:backgroundColor];
 
         v21 = self->_nameLabel;
         v22 = [MEMORY[0x277D74300] boldSystemFontOfSize:14.0];
         [(UILabel *)v21 setFont:v22];
 
         v23 = self->_nameLabel;
-        v24 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-        if (v24)
+        primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+        if (primaryTextColor)
         {
-          [(UILabel *)v23 setTextColor:v24];
+          [(UILabel *)v23 setTextColor:primaryTextColor];
         }
 
         else
         {
-          v26 = [MEMORY[0x277D75348] blackColor];
-          [(UILabel *)v23 setTextColor:v26];
+          blackColor = [MEMORY[0x277D75348] blackColor];
+          [(UILabel *)v23 setTextColor:blackColor];
         }
 
-        v27 = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
-        [v27 addSubview:self->_nameLabel];
+        contentView = [(SKUIProductPageInAppPurchaseTableCell *)self contentView];
+        [contentView addSubview:self->_nameLabel];
 
         nameLabel = self->_nameLabel;
       }
 
-      [(UILabel *)nameLabel setText:v4];
+      [(UILabel *)nameLabel setText:nameCopy];
     }
 
     else
@@ -409,9 +409,9 @@
   [(SKUITableViewCell *)&v32 layoutSubviews];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -424,15 +424,15 @@
     }
   }
 
-  [(UILabel *)self->_indexLabel setBackgroundColor:v4];
-  [(UILabel *)self->_nameLabel setBackgroundColor:v4];
-  [(UILabel *)self->_priceLabel setBackgroundColor:v4];
+  [(UILabel *)self->_indexLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_nameLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_priceLabel setBackgroundColor:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIProductPageInAppPurchaseTableCell;
-  [(SKUIProductPageInAppPurchaseTableCell *)&v13 setBackgroundColor:v4];
+  [(SKUIProductPageInAppPurchaseTableCell *)&v13 setBackgroundColor:colorCopy];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -444,7 +444,7 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

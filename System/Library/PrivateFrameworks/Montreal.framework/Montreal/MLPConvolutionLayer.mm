@@ -1,44 +1,44 @@
 @interface MLPConvolutionLayer
-- (MLPConvolutionLayer)initWithName:(id)a3 inputLength:(unint64_t)a4 inputChannels:(unint64_t)a5 kernelWidth:(unint64_t)a6 kernelHeight:(unint64_t)a7 kernelStride:(unint64_t)a8 outputChannels:(unint64_t)a9 neuronType:(int)a10 neuronParams:(id)a11;
-- (MLPConvolutionLayer)initWithName:(id)a3 parameters:(id *)a4;
-- (MLPConvolutionLayer)initWithName:(id)a3 previousLayer:(id)a4 kernelWidth:(unint64_t)a5 kernelHeight:(unint64_t)a6 kernelStride:(unint64_t)a7 outputChannels:(unint64_t)a8 neuronType:(int)a9 neuronParams:(id)a10;
-- (id)backward:(id)a3 inputGradient:(id)a4;
-- (id)forward:(id)a3 input:(id)a4 labels:(id)a5 runInference:(BOOL)a6;
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5;
+- (MLPConvolutionLayer)initWithName:(id)name inputLength:(unint64_t)length inputChannels:(unint64_t)channels kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height kernelStride:(unint64_t)stride outputChannels:(unint64_t)outputChannels neuronType:(int)self0 neuronParams:(id)self1;
+- (MLPConvolutionLayer)initWithName:(id)name parameters:(id *)parameters;
+- (MLPConvolutionLayer)initWithName:(id)name previousLayer:(id)layer kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height kernelStride:(unint64_t)stride outputChannels:(unint64_t)channels neuronType:(int)type neuronParams:(id)self0;
+- (id)backward:(id)backward inputGradient:(id)gradient;
+- (id)forward:(id)forward input:(id)input labels:(id)labels runInference:(BOOL)inference;
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter;
 - (void)createKernel;
-- (void)updatePrimaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5;
+- (void)updatePrimaryCurrentState:(id)state index:(id)index inference:(BOOL)inference;
 @end
 
 @implementation MLPConvolutionLayer
 
-- (MLPConvolutionLayer)initWithName:(id)a3 previousLayer:(id)a4 kernelWidth:(unint64_t)a5 kernelHeight:(unint64_t)a6 kernelStride:(unint64_t)a7 outputChannels:(unint64_t)a8 neuronType:(int)a9 neuronParams:(id)a10
+- (MLPConvolutionLayer)initWithName:(id)name previousLayer:(id)layer kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height kernelStride:(unint64_t)stride outputChannels:(unint64_t)channels neuronType:(int)type neuronParams:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a10;
-  v22 = objc_msgSend_outputLength(v17, v19, v20, v21);
-  v26 = objc_msgSend_outputChannels(v17, v23, v24, v25);
-  v28 = objc_msgSend_initWithName_inputLength_inputChannels_kernelWidth_kernelHeight_kernelStride_outputChannels_neuronType_neuronParams_(self, v27, v16, v22, v26, a5, a6, a7, a8, a9, v18);
+  nameCopy = name;
+  layerCopy = layer;
+  paramsCopy = params;
+  v22 = objc_msgSend_outputLength(layerCopy, v19, v20, v21);
+  v26 = objc_msgSend_outputChannels(layerCopy, v23, v24, v25);
+  v28 = objc_msgSend_initWithName_inputLength_inputChannels_kernelWidth_kernelHeight_kernelStride_outputChannels_neuronType_neuronParams_(self, v27, nameCopy, v22, v26, width, height, stride, channels, type, paramsCopy);
 
   return v28;
 }
 
-- (MLPConvolutionLayer)initWithName:(id)a3 inputLength:(unint64_t)a4 inputChannels:(unint64_t)a5 kernelWidth:(unint64_t)a6 kernelHeight:(unint64_t)a7 kernelStride:(unint64_t)a8 outputChannels:(unint64_t)a9 neuronType:(int)a10 neuronParams:(id)a11
+- (MLPConvolutionLayer)initWithName:(id)name inputLength:(unint64_t)length inputChannels:(unint64_t)channels kernelWidth:(unint64_t)width kernelHeight:(unint64_t)height kernelStride:(unint64_t)stride outputChannels:(unint64_t)outputChannels neuronType:(int)self0 neuronParams:(id)self1
 {
-  v17 = a3;
-  v18 = a11;
+  nameCopy = name;
+  paramsCopy = params;
   v50.receiver = self;
   v50.super_class = MLPConvolutionLayer;
-  v19 = [(MLPImageLayer *)&v50 initWithLayerType:3 name:v17 neuronType:a10 neuronParams:v18];
+  v19 = [(MLPImageLayer *)&v50 initWithLayerType:3 name:nameCopy neuronType:type neuronParams:paramsCopy];
   v22 = v19;
   if (v19)
   {
-    objc_msgSend_setInputLength_(v19, v20, a4, v21);
-    objc_msgSend_setInputChannels_(v22, v23, a5, v24);
-    objc_msgSend_setKernelWidth_(v22, v25, a6, v26);
-    objc_msgSend_setKernelHeight_(v22, v27, a7, v28);
-    objc_msgSend_setKernelStride_(v22, v29, a8, v30);
-    objc_msgSend_setOutputChannels_(v22, v31, a9, v32);
+    objc_msgSend_setInputLength_(v19, v20, length, v21);
+    objc_msgSend_setInputChannels_(v22, v23, channels, v24);
+    objc_msgSend_setKernelWidth_(v22, v25, width, v26);
+    objc_msgSend_setKernelHeight_(v22, v27, height, v28);
+    objc_msgSend_setKernelStride_(v22, v29, stride, v30);
+    objc_msgSend_setOutputChannels_(v22, v31, outputChannels, v32);
     v36 = objc_msgSend_inputLength(v22, v33, v34, v35);
     v40 = objc_msgSend_kernelWidth(v22, v37, v38, v39);
     v44 = objc_msgSend_kernelStride(v22, v41, v42, v43);
@@ -49,38 +49,38 @@
   return v22;
 }
 
-- (MLPConvolutionLayer)initWithName:(id)a3 parameters:(id *)a4
+- (MLPConvolutionLayer)initWithName:(id)name parameters:(id *)parameters
 {
-  v6 = a3;
+  nameCopy = name;
   v42.receiver = self;
   v42.super_class = MLPConvolutionLayer;
-  v7 = [(MLPImageLayer *)&v42 initWithLayerType:3 name:v6 parameters:a4];
+  v7 = [(MLPImageLayer *)&v42 initWithLayerType:3 name:nameCopy parameters:parameters];
   v10 = v7;
   if (v7)
   {
-    objc_msgSend_setInputLength_(v7, v8, a4->var9[0][0], v9);
-    objc_msgSend_setInputChannels_(v10, v11, a4->var9[0][2], v12);
-    objc_msgSend_setKernelWidth_(v10, v13, a4->var11[0], v14);
-    objc_msgSend_setKernelHeight_(v10, v15, a4->var11[1], v16);
-    objc_msgSend_setKernelStride_(v10, v17, a4->var11[2], v18);
-    objc_msgSend_setOutputChannels_(v10, v19, a4->var10[0][0], v20);
+    objc_msgSend_setInputLength_(v7, v8, parameters->var9[0][0], v9);
+    objc_msgSend_setInputChannels_(v10, v11, parameters->var9[0][2], v12);
+    objc_msgSend_setKernelWidth_(v10, v13, parameters->var11[0], v14);
+    objc_msgSend_setKernelHeight_(v10, v15, parameters->var11[1], v16);
+    objc_msgSend_setKernelStride_(v10, v17, parameters->var11[2], v18);
+    objc_msgSend_setOutputChannels_(v10, v19, parameters->var10[0][0], v20);
     v24 = objc_msgSend_inputLength(v10, v21, v22, v23);
     v28 = objc_msgSend_kernelWidth(v10, v25, v26, v27);
     v32 = objc_msgSend_kernelStride(v10, v29, v30, v31);
     v34 = objc_msgSend_computeOutputLengthWithInputLength_kernelWidth_kernelStride_(v10, v33, v24, v28, v32);
     objc_msgSend_setOutputLength_(v10, v35, v34, v36);
-    objc_msgSend_setInitialWeights_(v10, v37, a4->var13[0], v38);
-    objc_msgSend_setInitialBias_(v10, v39, a4->var14[0], v40);
+    objc_msgSend_setInitialWeights_(v10, v37, parameters->var13[0], v38);
+    objc_msgSend_setInitialBias_(v10, v39, parameters->var14[0], v40);
   }
 
   return v10;
 }
 
-- (void)updatePrimaryCurrentState:(id)a3 index:(id)a4 inference:(BOOL)a5
+- (void)updatePrimaryCurrentState:(id)state index:(id)index inference:(BOOL)inference
 {
-  batch = a3;
-  v8 = a4;
-  if (a5)
+  batch = state;
+  indexCopy = index;
+  if (inference)
   {
     MPSStateBatchIncrementReadCount(batch, -1);
   }
@@ -89,7 +89,7 @@
   {
     MPSStateBatchIncrementReadCount(batch, 1);
     v12 = objc_msgSend_primaryCurrentStates(self, v9, v10, v11);
-    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, v8);
+    objc_msgSend_setObject_forKeyedSubscript_(v12, v13, batch, indexCopy);
   }
 }
 
@@ -157,29 +157,29 @@
   }
 }
 
-- (id)forward:(id)a3 input:(id)a4 labels:(id)a5 runInference:(BOOL)a6
+- (id)forward:(id)forward input:(id)input labels:(id)labels runInference:(BOOL)inference
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  inferenceCopy = inference;
+  forwardCopy = forward;
+  inputCopy = input;
   v14 = objc_msgSend_forwardKernel(self, v11, v12, v13);
   v18 = objc_msgSend_secondaryForwardKernel(self, v15, v16, v17);
-  objc_msgSend_updateInputToFirstKernel_inference_(self, v19, v10, v6);
+  objc_msgSend_updateInputToFirstKernel_inference_(self, v19, inputCopy, inferenceCopy);
   v33 = 0;
-  v21 = objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationStates_destinationStateIsTemporary_(v14, v20, v9, v10, &v33, 1);
+  v21 = objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationStates_destinationStateIsTemporary_(v14, v20, forwardCopy, inputCopy, &v33, 1);
   v22 = v33;
-  objc_msgSend_updatePrimaryCurrentState_inference_(self, v23, v22, v6);
+  objc_msgSend_updatePrimaryCurrentState_inference_(self, v23, v22, inferenceCopy);
   v24 = v21;
 
   v26 = v24;
   if (v18)
   {
     v31 = v14;
-    objc_msgSend_updateInputToSecondKernel_inference_(self, v25, v24, v6);
+    objc_msgSend_updateInputToSecondKernel_inference_(self, v25, v24, inferenceCopy);
     v32 = 0;
-    v26 = objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationStates_destinationStateIsTemporary_(v18, v27, v9, v24, &v32, 1);
+    v26 = objc_msgSend_encodeBatchToCommandBuffer_sourceImages_destinationStates_destinationStateIsTemporary_(v18, v27, forwardCopy, v24, &v32, 1);
     v28 = v32;
-    objc_msgSend_updateSecondaryCurrentState_inference_(self, v29, v28, v6);
+    objc_msgSend_updateSecondaryCurrentState_inference_(self, v29, v28, inferenceCopy);
 
     v14 = v31;
   }
@@ -187,45 +187,45 @@
   return v26;
 }
 
-- (id)backward:(id)a3 inputGradient:(id)a4
+- (id)backward:(id)backward inputGradient:(id)gradient
 {
-  v6 = a3;
-  v7 = a4;
+  backwardCopy = backward;
+  gradientCopy = gradient;
   v14 = objc_msgSend_secondaryGradientKernel(self, v8, v9, v10);
-  v15 = v7;
+  v15 = gradientCopy;
   if (v14)
   {
     v16 = objc_msgSend_inputToSecondKernel(self, v11, v12, v13);
     v20 = objc_msgSend_secondaryCurrentState(self, v17, v18, v19);
-    v15 = objc_msgSend_encodeBatchToCommandBuffer_sourceGradients_sourceImages_gradientStates_(v14, v21, v6, v7, v16, v20);
+    v15 = objc_msgSend_encodeBatchToCommandBuffer_sourceGradients_sourceImages_gradientStates_(v14, v21, backwardCopy, gradientCopy, v16, v20);
   }
 
   v22 = objc_msgSend_forwardKernel(self, v11, v12, v13);
   v26 = objc_msgSend_primaryGradientKernel(self, v23, v24, v25);
   v30 = objc_msgSend_inputToFirstKernel(self, v27, v28, v29);
   v34 = objc_msgSend_primaryCurrentState(self, v31, v32, v33);
-  v68 = objc_msgSend_encodeBatchToCommandBuffer_sourceGradients_sourceImages_gradientStates_(v26, v35, v6, v15, v30, v34);
+  v68 = objc_msgSend_encodeBatchToCommandBuffer_sourceGradients_sourceImages_gradientStates_(v26, v35, backwardCopy, v15, v30, v34);
 
   v39 = objc_msgSend_primaryCurrentState(self, v36, v37, v38);
   v42 = objc_msgSend_objectAtIndex_(v39, v40, 0, v41);
   v46 = objc_msgSend_dataSource(self, v43, v44, v45);
-  v48 = objc_msgSend_updateWithCommandBuffer_gradientState_(v46, v47, v6, v42);
+  v48 = objc_msgSend_updateWithCommandBuffer_gradientState_(v46, v47, backwardCopy, v42);
 
   v52 = objc_msgSend_dataSource(self, v49, v50, v51);
   v56 = objc_msgSend_state(v52, v53, v54, v55);
-  objc_msgSend_reloadWeightsAndBiasesWithCommandBuffer_state_(v22, v57, v6, v56);
+  objc_msgSend_reloadWeightsAndBiasesWithCommandBuffer_state_(v22, v57, backwardCopy, v56);
 
   v61 = objc_msgSend_dataSource(self, v58, v59, v60);
   v65 = objc_msgSend_state(v61, v62, v63, v64);
-  objc_msgSend_reloadWeightsAndBiasesWithCommandBuffer_state_(v26, v66, v6, v65);
+  objc_msgSend_reloadWeightsAndBiasesWithCommandBuffer_state_(v26, v66, backwardCopy, v65);
 
   return v68;
 }
 
-- (id)generateNode:(id)a3 model:(id)a4 weightIter:(unint64_t *)a5
+- (id)generateNode:(id)node model:(id)model weightIter:(unint64_t *)iter
 {
-  v8 = a3;
-  v9 = a4;
+  nodeCopy = node;
+  modelCopy = model;
   bzero(v95, 0x2C0uLL);
   v96 = 0;
   v95[4] = 0;
@@ -283,7 +283,7 @@ LABEL_6:
   v102 = objc_msgSend_kernelHeight(self, v86, v87, v88);
   v103 = objc_msgSend_kernelStride(self, v89, v90, v91);
   v104 = 1;
-  v93 = objc_msgSend_generateNode_model_weightIter_params_(self, v92, v8, v9, a5, v95);
+  v93 = objc_msgSend_generateNode_model_weightIter_params_(self, v92, nodeCopy, modelCopy, iter, v95);
 
   return v93;
 }

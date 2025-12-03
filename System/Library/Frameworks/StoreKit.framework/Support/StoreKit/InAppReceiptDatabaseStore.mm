@@ -1,7 +1,7 @@
 @interface InAppReceiptDatabaseStore
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3;
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema;
 + (id)storeDescriptor;
-- (void)clearTransactionsForBundleID:(id)a3;
+- (void)clearTransactionsForBundleID:(id)d;
 @end
 
 @implementation InAppReceiptDatabaseStore
@@ -16,38 +16,38 @@
   return v2;
 }
 
-+ (BOOL)createOrMigrateStoreUsingSchema:(id)a3
++ (BOOL)createOrMigrateStoreUsingSchema:(id)schema
 {
-  v3 = a3;
+  schemaCopy = schema;
   *&v4 = 138543874;
   v19 = v4;
   do
   {
-    v5 = [v3 currentSchemaVersion];
-    if (v5 > 18401)
+    currentSchemaVersion = [schemaCopy currentSchemaVersion];
+    if (currentSchemaVersion > 18401)
     {
       break;
     }
 
-    v6 = [v3 currentSchemaVersion];
-    v7 = v6;
-    if (v6 <= 15399)
+    currentSchemaVersion2 = [schemaCopy currentSchemaVersion];
+    v7 = currentSchemaVersion2;
+    if (currentSchemaVersion2 <= 15399)
     {
-      if ((v6 - 15000) >= 5 && v6)
+      if ((currentSchemaVersion2 - 15000) >= 5 && currentSchemaVersion2)
       {
-        if (v6 != 15005)
+        if (currentSchemaVersion2 != 15005)
         {
           goto LABEL_36;
         }
 
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 15400;
         v10 = &stru_100381E70;
       }
 
       else
       {
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 16200;
         v10 = &stru_100381E50;
       }
@@ -55,45 +55,45 @@
       goto LABEL_11;
     }
 
-    if (v6 <= 17999)
+    if (currentSchemaVersion2 <= 17999)
     {
-      if (v6 > 16000)
+      if (currentSchemaVersion2 > 16000)
       {
-        if (v6 == 16001)
+        if (currentSchemaVersion2 == 16001)
         {
-          v8 = v3;
+          v8 = schemaCopy;
           v9 = 16200;
           v10 = &stru_100381F10;
         }
 
         else
         {
-          if (v6 != 16200)
+          if (currentSchemaVersion2 != 16200)
           {
             goto LABEL_36;
           }
 
-          v8 = v3;
+          v8 = schemaCopy;
           v9 = 18000;
           v10 = &stru_100381F30;
         }
       }
 
-      else if (v6 == 15400)
+      else if (currentSchemaVersion2 == 15400)
       {
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 16000;
         v10 = &stru_100381ED0;
       }
 
       else
       {
-        if (v6 != 16000)
+        if (currentSchemaVersion2 != 16000)
         {
           goto LABEL_36;
         }
 
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 16001;
         v10 = &stru_100381EF0;
       }
@@ -101,23 +101,23 @@
       goto LABEL_11;
     }
 
-    if (v6 <= 18400)
+    if (currentSchemaVersion2 <= 18400)
     {
-      if (v6 == 18000)
+      if (currentSchemaVersion2 == 18000)
       {
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 18401;
         v10 = &stru_100381F50;
       }
 
       else
       {
-        if (v6 != 18400)
+        if (currentSchemaVersion2 != 18400)
         {
           goto LABEL_36;
         }
 
-        v8 = v3;
+        v8 = schemaCopy;
         v9 = 18401;
         v10 = &stru_100381F70;
       }
@@ -125,9 +125,9 @@
       goto LABEL_11;
     }
 
-    if (v6 == 18401)
+    if (currentSchemaVersion2 == 18401)
     {
-      v8 = v3;
+      v8 = schemaCopy;
       v9 = 18402;
       v10 = &stru_100381F90;
 LABEL_11:
@@ -135,7 +135,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    if (v6 != 18402)
+    if (currentSchemaVersion2 != 18402)
     {
 LABEL_36:
       if (qword_1003D42E0 != -1)
@@ -147,7 +147,7 @@ LABEL_36:
       if (os_log_type_enabled(qword_1003D4298, OS_LOG_TYPE_ERROR))
       {
         *buf = v19;
-        v22 = a1;
+        selfCopy2 = self;
         v23 = 2048;
         v24 = v7;
         v25 = 2048;
@@ -180,7 +180,7 @@ LABEL_12:
     if (os_log_type_enabled(qword_1003D4298, v13))
     {
       v14 = v12;
-      v15 = [v3 currentSchemaVersion];
+      currentSchemaVersion3 = [schemaCopy currentSchemaVersion];
       *buf = 138544130;
       v16 = @"FAIL";
       if (v11)
@@ -188,11 +188,11 @@ LABEL_12:
         v16 = @"SUCCESS";
       }
 
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2048;
       v24 = v7;
       v25 = 2048;
-      v26 = v15;
+      v26 = currentSchemaVersion3;
       v27 = 2114;
       v28 = v16;
       _os_log_impl(&_mh_execute_header, v14, v13, "[%{public}@]: Transaction database migration from %li => %li %{public}@", buf, 0x2Au);
@@ -201,12 +201,12 @@ LABEL_12:
 
   while ((v11 & 1) != 0);
 
-  return v5 > 18401;
+  return currentSchemaVersion > 18401;
 }
 
-- (void)clearTransactionsForBundleID:(id)a3
+- (void)clearTransactionsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D42E0 != -1)
   {
     sub_1002CDA78();
@@ -219,7 +219,7 @@ LABEL_12:
     *buf = 138543618;
     v12 = objc_opt_class();
     v13 = 2114;
-    v14 = v4;
+    v14 = dCopy;
     v7 = v12;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Clearing transactions for %{public}@", buf, 0x16u);
   }
@@ -228,8 +228,8 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = sub_10004BF1C;
   v9[3] = &unk_100381FB8;
-  v10 = v4;
-  v8 = v4;
+  v10 = dCopy;
+  v8 = dCopy;
   [(SQLiteDatabaseStore *)self modifyUsingTransaction:v9];
 }
 

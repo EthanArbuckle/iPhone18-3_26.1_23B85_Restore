@@ -1,60 +1,60 @@
 @interface PCNativeRepresentation
-- (id)initWithAdData:(id)a3 placementType:(int64_t)a4 maxSize:(id)a5 nativeLayout:(id)a6 error:(id *)a7;
+- (id)initWithAdData:(id)data placementType:(int64_t)type maxSize:(id)size nativeLayout:(id)layout error:(id *)error;
 @end
 
 @implementation PCNativeRepresentation
 
-- (id)initWithAdData:(id)a3 placementType:(int64_t)a4 maxSize:(id)a5 nativeLayout:(id)a6 error:(id *)a7
+- (id)initWithAdData:(id)data placementType:(int64_t)type maxSize:(id)size nativeLayout:(id)layout error:(id *)error
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
-  v13 = a3;
-  v14 = a6;
+  var1 = size.var1;
+  var0 = size.var0;
+  dataCopy = data;
+  layoutCopy = layout;
   v52.receiver = self;
   v52.super_class = PCNativeRepresentation;
-  v15 = [(PCNativeRepresentation *)&v52 initWithAdData:v13 placementType:a4 maxSize:0 mediaAsset:a7 error:var0, var1];
-  v16 = v15;
-  if (v13 && v15)
+  var1 = [(PCNativeRepresentation *)&v52 initWithAdData:dataCopy placementType:type maxSize:0 mediaAsset:error error:var0, var1];
+  v16 = var1;
+  if (dataCopy && var1)
   {
-    v17 = [v14 localeIdentifier];
-    [(PCNativeRepresentation *)v16 setLocaleIdentifier:v17];
+    localeIdentifier = [layoutCopy localeIdentifier];
+    [(PCNativeRepresentation *)v16 setLocaleIdentifier:localeIdentifier];
 
-    v51 = v14;
-    v18 = [v14 adLayoutDetails];
-    -[PCNativeRepresentation setAdType:](v16, "setAdType:", [v18 type]);
-    v19 = [v18 headline];
-    [(PCNativeRepresentation *)v16 setHeadline:v19];
+    v51 = layoutCopy;
+    adLayoutDetails = [layoutCopy adLayoutDetails];
+    -[PCNativeRepresentation setAdType:](v16, "setAdType:", [adLayoutDetails type]);
+    headline = [adLayoutDetails headline];
+    [(PCNativeRepresentation *)v16 setHeadline:headline];
 
-    v20 = [v18 accessHeadline];
-    [(PCNativeRepresentation *)v16 setAccessibleHeadline:v20];
+    accessHeadline = [adLayoutDetails accessHeadline];
+    [(PCNativeRepresentation *)v16 setAccessibleHeadline:accessHeadline];
 
-    v21 = [v18 adCopy];
-    [(PCNativeRepresentation *)v16 setAdCopy:v21];
+    adCopy = [adLayoutDetails adCopy];
+    [(PCNativeRepresentation *)v16 setAdCopy:adCopy];
 
-    v22 = [v18 accessAdCopy];
-    [(PCNativeRepresentation *)v16 setAccessibleAdCopy:v22];
+    accessAdCopy = [adLayoutDetails accessAdCopy];
+    [(PCNativeRepresentation *)v16 setAccessibleAdCopy:accessAdCopy];
 
-    v23 = [v18 sponsoredBy];
-    [(PCNativeRepresentation *)v16 setSponsor:v23];
+    sponsoredBy = [adLayoutDetails sponsoredBy];
+    [(PCNativeRepresentation *)v16 setSponsor:sponsoredBy];
 
-    -[PCNativeRepresentation setAdFormatType:](v16, "setAdFormatType:", [v18 adFormatType]);
-    v24 = [v18 sponsoredByAssetURL];
-    v25 = [NSURL URLWithString:v24];
+    -[PCNativeRepresentation setAdFormatType:](v16, "setAdFormatType:", [adLayoutDetails adFormatType]);
+    sponsoredByAssetURL = [adLayoutDetails sponsoredByAssetURL];
+    v25 = [NSURL URLWithString:sponsoredByAssetURL];
     [(PCNativeRepresentation *)v16 setSponsoredByAssetURL:v25];
 
-    v26 = [v18 sponsoredByAssetURLForDarkMode];
-    v27 = [NSURL URLWithString:v26];
+    sponsoredByAssetURLForDarkMode = [adLayoutDetails sponsoredByAssetURLForDarkMode];
+    v27 = [NSURL URLWithString:sponsoredByAssetURLForDarkMode];
     [(PCNativeRepresentation *)v16 setSponsoredByAssetURLForDarkMode:v27];
 
     v28 = +[NSMutableArray array];
-    if ([v18 localizedHeadlinesCount])
+    if ([adLayoutDetails localizedHeadlinesCount])
     {
       v29 = 0;
       do
       {
         v30 = [PCNativeLocalizedHeadline alloc];
-        v31 = [v18 localizedHeadlines];
-        v32 = [v31 objectAtIndexedSubscript:v29];
+        localizedHeadlines = [adLayoutDetails localizedHeadlines];
+        v32 = [localizedHeadlines objectAtIndexedSubscript:v29];
         v33 = [v30 initWithLocalizedStringEntry:v32];
 
         if (v33)
@@ -65,31 +65,31 @@
         ++v29;
       }
 
-      while (v29 < [v18 localizedHeadlinesCount]);
+      while (v29 < [adLayoutDetails localizedHeadlinesCount]);
     }
 
     v34 = [v28 copy];
     [(PCNativeRepresentation *)v16 setLocalizedHeadlines:v34];
 
     v35 = [PCNativeButton alloc];
-    v36 = [v18 ctaButton];
-    v37 = [v35 initWithButton:v36];
+    ctaButton = [adLayoutDetails ctaButton];
+    v37 = [v35 initWithButton:ctaButton];
     [(PCNativeRepresentation *)v16 setButton:v37];
 
-    v38 = [v18 actionURL];
-    v39 = [NSURL URLWithString:v38];
+    actionURL = [adLayoutDetails actionURL];
+    v39 = [NSURL URLWithString:actionURL];
     [(PCNativeRepresentation *)v16 setActionURL:v39];
 
     v40 = +[NSMutableArray array];
-    if ([v18 elementsCount])
+    if ([adLayoutDetails elementsCount])
     {
       v41 = 0;
       do
       {
         v42 = [PCNativeElement alloc];
-        v43 = [v18 elements];
-        v44 = [v43 objectAtIndexedSubscript:v41];
-        v45 = [v42 initWithAdData:v13 element:v44 elementIndex:v41 error:a7];
+        elements = [adLayoutDetails elements];
+        v44 = [elements objectAtIndexedSubscript:v41];
+        v45 = [v42 initWithAdData:dataCopy element:v44 elementIndex:v41 error:error];
 
         if (v45)
         {
@@ -99,19 +99,19 @@
         ++v41;
       }
 
-      while (v41 < [v18 elementsCount]);
+      while (v41 < [adLayoutDetails elementsCount]);
     }
 
     v46 = [v40 copy];
     [(PCNativeRepresentation *)v16 setElements:v46];
 
     v47 = [PCNativeStyle alloc];
-    v48 = [v18 style];
-    v49 = [v47 initWithStyle:v48];
+    style = [adLayoutDetails style];
+    v49 = [v47 initWithStyle:style];
     [(PCNativeRepresentation *)v16 setDefaultStyle:v49];
 
     [(PCNativeRepresentation *)v16 setSize:var0, var1];
-    v14 = v51;
+    layoutCopy = v51;
   }
 
   return v16;

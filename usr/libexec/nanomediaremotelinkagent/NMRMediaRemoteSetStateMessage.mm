@@ -1,21 +1,21 @@
 @interface NMRMediaRemoteSetStateMessage
-+ (id)messageWithNowPlayingInfo:(id)a3 applicationInfo:(id)a4 supportedCommands:(id)a5 playbackQueue:(id)a6 originIdentifier:(id)a7;
-- (NMRMediaRemoteSetStateMessage)initWithProtobufData:(id)a3;
++ (id)messageWithNowPlayingInfo:(id)info applicationInfo:(id)applicationInfo supportedCommands:(id)commands playbackQueue:(id)queue originIdentifier:(id)identifier;
+- (NMRMediaRemoteSetStateMessage)initWithProtobufData:(id)data;
 - (NSDate)serializationDate;
 - (NSNumber)originIdentifier;
-- (id)_initWithNowPlayingInfo:(id)a3 applicationInfo:(id)a4 supportedCommands:(id)a5 playbackQueue:(id)a6 originIdentifier:(id)a7;
+- (id)_initWithNowPlayingInfo:(id)info applicationInfo:(id)applicationInfo supportedCommands:(id)commands playbackQueue:(id)queue originIdentifier:(id)identifier;
 - (id)protobufData;
 @end
 
 @implementation NMRMediaRemoteSetStateMessage
 
-- (id)_initWithNowPlayingInfo:(id)a3 applicationInfo:(id)a4 supportedCommands:(id)a5 playbackQueue:(id)a6 originIdentifier:(id)a7
+- (id)_initWithNowPlayingInfo:(id)info applicationInfo:(id)applicationInfo supportedCommands:(id)commands playbackQueue:(id)queue originIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  infoCopy = info;
+  applicationInfoCopy = applicationInfo;
+  commandsCopy = commands;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = NMRMediaRemoteSetStateMessage;
   v17 = [(NMRMediaRemoteSetStateMessage *)&v21 init];
@@ -25,24 +25,24 @@
     protobuf = v17->_protobuf;
     v17->_protobuf = v18;
 
-    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setNowPlayingInfo:v12];
-    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setApplicationInfo:v13];
-    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setSupportedCommands:v14];
-    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setPlaybackQueue:v15];
-    -[_NMRMediaRemoteSetStateMessageProfobuf setOriginIdentifier:](v17->_protobuf, "setOriginIdentifier:", [v16 intValue]);
+    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setNowPlayingInfo:infoCopy];
+    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setApplicationInfo:applicationInfoCopy];
+    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setSupportedCommands:commandsCopy];
+    [(_NMRMediaRemoteSetStateMessageProfobuf *)v17->_protobuf setPlaybackQueue:queueCopy];
+    -[_NMRMediaRemoteSetStateMessageProfobuf setOriginIdentifier:](v17->_protobuf, "setOriginIdentifier:", [identifierCopy intValue]);
   }
 
   return v17;
 }
 
-+ (id)messageWithNowPlayingInfo:(id)a3 applicationInfo:(id)a4 supportedCommands:(id)a5 playbackQueue:(id)a6 originIdentifier:(id)a7
++ (id)messageWithNowPlayingInfo:(id)info applicationInfo:(id)applicationInfo supportedCommands:(id)commands playbackQueue:(id)queue originIdentifier:(id)identifier
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] _initWithNowPlayingInfo:v16 applicationInfo:v15 supportedCommands:v14 playbackQueue:v13 originIdentifier:v12];
+  identifierCopy = identifier;
+  queueCopy = queue;
+  commandsCopy = commands;
+  applicationInfoCopy = applicationInfo;
+  infoCopy = info;
+  v17 = [[self alloc] _initWithNowPlayingInfo:infoCopy applicationInfo:applicationInfoCopy supportedCommands:commandsCopy playbackQueue:queueCopy originIdentifier:identifierCopy];
 
   return v17;
 }
@@ -78,15 +78,15 @@
   return v3;
 }
 
-- (NMRMediaRemoteSetStateMessage)initWithProtobufData:(id)a3
+- (NMRMediaRemoteSetStateMessage)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = NMRMediaRemoteSetStateMessage;
   v5 = [(NMRMediaRemoteSetStateMessage *)&v10 init];
   if (v5)
   {
-    v6 = [[_NMRMediaRemoteSetStateMessageProfobuf alloc] initWithData:v4];
+    v6 = [[_NMRMediaRemoteSetStateMessageProfobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
 

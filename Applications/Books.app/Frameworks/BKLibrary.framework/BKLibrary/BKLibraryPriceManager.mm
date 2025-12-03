@@ -1,33 +1,33 @@
 @interface BKLibraryPriceManager
 - (BKLibraryManager)libraryManager;
-- (BKLibraryPriceManager)initWithLibraryManager:(id)a3;
-- (void)_callCompletionHandlers:(id)a3;
+- (BKLibraryPriceManager)initWithLibraryManager:(id)manager;
+- (void)_callCompletionHandlers:(id)handlers;
 - (void)_fetchPricesForStoreAssetIDs;
-- (void)_fetchPricesForStoreAssets:(id)a3 forGeneration:(unint64_t)a4;
-- (void)_invalidate:(id)a3;
-- (void)_notifyListeners:(id)a3;
-- (void)addListener:(id)a3;
-- (void)cancelForAssetID:(id)a3;
-- (void)collectPricesForSeriesStoreIDs:(id)a3 isAudiobookSeries:(BOOL)a4;
+- (void)_fetchPricesForStoreAssets:(id)assets forGeneration:(unint64_t)generation;
+- (void)_invalidate:(id)_invalidate;
+- (void)_notifyListeners:(id)listeners;
+- (void)addListener:(id)listener;
+- (void)cancelForAssetID:(id)d;
+- (void)collectPricesForSeriesStoreIDs:(id)ds isAudiobookSeries:(BOOL)series;
 - (void)dealloc;
-- (void)fetchPriceForAssetID:(id)a3 completion:(id)a4;
-- (void)invalidate:(id)a3;
-- (void)removeListener:(id)a3;
-- (void)testPriceForStoreID:(id)a3 completion:(id)a4;
+- (void)fetchPriceForAssetID:(id)d completion:(id)completion;
+- (void)invalidate:(id)invalidate;
+- (void)removeListener:(id)listener;
+- (void)testPriceForStoreID:(id)d completion:(id)completion;
 @end
 
 @implementation BKLibraryPriceManager
 
-- (BKLibraryPriceManager)initWithLibraryManager:(id)a3
+- (BKLibraryPriceManager)initWithLibraryManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v25.receiver = self;
   v25.super_class = BKLibraryPriceManager;
   v5 = [(BKLibraryPriceManager *)&v25 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_libraryManager, v4);
+    objc_storeWeak(&v5->_libraryManager, managerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_attr_make_with_qos_class(v7, QOS_CLASS_BACKGROUND, 0);
 
@@ -76,16 +76,16 @@
   [(BKLibraryPriceManager *)&v5 dealloc];
 }
 
-- (void)collectPricesForSeriesStoreIDs:(id)a3 isAudiobookSeries:(BOOL)a4
+- (void)collectPricesForSeriesStoreIDs:(id)ds isAudiobookSeries:(BOOL)series
 {
-  v4 = a4;
-  v6 = a3;
+  seriesCopy = series;
+  dsCopy = ds;
   v7 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = dsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -103,7 +103,7 @@
 
         v13 = *(*(&v20 + 1) + 8 * v12);
         v14 = [BKLibraryPriceManagerAsset alloc];
-        v15 = [(BKLibraryPriceManagerAsset *)v14 initWithType:v4 storeID:v13, v20];
+        v15 = [(BKLibraryPriceManagerAsset *)v14 initWithType:seriesCopy storeID:v13, v20];
         [v7 setObject:v15 forKeyedSubscript:v13];
 
         v12 = v12 + 1;
@@ -119,133 +119,133 @@
   v16 = [v7 copy];
   [(BKLibraryPriceManager *)self setSeriesAssets:v16];
 
-  v17 = [(BKLibraryPriceManager *)self allStoreAssets];
-  v18 = [(BKLibraryPriceManager *)self seriesAssets];
-  [v17 addEntriesFromDictionary:v18];
+  allStoreAssets = [(BKLibraryPriceManager *)self allStoreAssets];
+  seriesAssets = [(BKLibraryPriceManager *)self seriesAssets];
+  [allStoreAssets addEntriesFromDictionary:seriesAssets];
 
-  v19 = [(BKLibraryPriceManager *)self seriesAssets];
-  [(BKLibraryPriceManager *)self _fetchPricesForStoreAssets:v19 forGeneration:[(BKLibraryPriceManager *)self generationCount]];
+  seriesAssets2 = [(BKLibraryPriceManager *)self seriesAssets];
+  [(BKLibraryPriceManager *)self _fetchPricesForStoreAssets:seriesAssets2 forGeneration:[(BKLibraryPriceManager *)self generationCount]];
 }
 
-- (void)fetchPriceForAssetID:(id)a3 completion:(id)a4
+- (void)fetchPriceForAssetID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKLibraryPriceManager *)self dispatchQueue];
+  dCopy = d;
+  completionCopy = completion;
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_5D488;
   block[3] = &unk_D62F8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)cancelForAssetID:(id)a3
+- (void)cancelForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self dispatchQueue];
+  dCopy = d;
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5D880;
   v7[3] = &unk_D5420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  selfCopy = self;
+  v6 = dCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self dispatchQueue];
+  listenerCopy = listener;
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5D9A4;
   v7[3] = &unk_D5420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = listenerCopy;
+  selfCopy = self;
+  v6 = listenerCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self dispatchQueue];
+  listenerCopy = listener;
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5DAD0;
   v7[3] = &unk_D5420;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = listenerCopy;
+  selfCopy = self;
+  v6 = listenerCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self dispatchQueue];
+  invalidateCopy = invalidate;
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5DC84;
   v7[3] = &unk_D5550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_invalidate:(id)a3
+- (void)_invalidate:(id)_invalidate
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self prices];
-  [v5 removeAllObjects];
+  _invalidateCopy = _invalidate;
+  prices = [(BKLibraryPriceManager *)self prices];
+  [prices removeAllObjects];
 
-  v6 = [(BKLibraryPriceManager *)self allStoreAssets];
-  [v6 removeAllObjects];
+  allStoreAssets = [(BKLibraryPriceManager *)self allStoreAssets];
+  [allStoreAssets removeAllObjects];
 
   [(BKLibraryPriceManager *)self _callCompletionHandlers:0];
-  v7 = [(BKLibraryPriceManager *)self dispatchQueue];
-  dispatch_suspend(v7);
+  dispatchQueue = [(BKLibraryPriceManager *)self dispatchQueue];
+  dispatch_suspend(dispatchQueue);
 
-  v8 = [(BKLibraryPriceManager *)self libraryManager];
+  libraryManager = [(BKLibraryPriceManager *)self libraryManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_5DD98;
   v10[3] = &unk_D71D8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 allUnownedStoreAssetIDs:v10];
+  v11 = _invalidateCopy;
+  v9 = _invalidateCopy;
+  [libraryManager allUnownedStoreAssetIDs:v10];
 }
 
 - (void)_fetchPricesForStoreAssetIDs
 {
-  v3 = [(BKLibraryPriceManager *)self generationFetched];
-  if (v3 != [(BKLibraryPriceManager *)self generationCount])
+  generationFetched = [(BKLibraryPriceManager *)self generationFetched];
+  if (generationFetched != [(BKLibraryPriceManager *)self generationCount])
   {
     [(BKLibraryPriceManager *)self setGenerationFetched:[(BKLibraryPriceManager *)self generationCount]];
-    v4 = [(BKLibraryPriceManager *)self allStoreAssets];
-    [(BKLibraryPriceManager *)self _fetchPricesForStoreAssets:v4 forGeneration:[(BKLibraryPriceManager *)self generationCount]];
+    allStoreAssets = [(BKLibraryPriceManager *)self allStoreAssets];
+    [(BKLibraryPriceManager *)self _fetchPricesForStoreAssets:allStoreAssets forGeneration:[(BKLibraryPriceManager *)self generationCount]];
   }
 }
 
-- (void)_fetchPricesForStoreAssets:(id)a3 forGeneration:(unint64_t)a4
+- (void)_fetchPricesForStoreAssets:(id)assets forGeneration:(unint64_t)generation
 {
-  v5 = a3;
+  assetsCopy = assets;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = [v5 allValues];
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allValues = [assetsCopy allValues];
+  v9 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -256,13 +256,13 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 type];
-        v15 = [v13 storeID];
-        if (v14)
+        type = [v13 type];
+        storeID = [v13 storeID];
+        if (type)
         {
           v16 = v7;
         }
@@ -272,10 +272,10 @@
           v16 = v6;
         }
 
-        [v16 addObject:v15];
+        [v16 addObject:storeID];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
@@ -290,15 +290,15 @@
   v22[2] = sub_5E3FC;
   v22[3] = &unk_D7200;
   v22[4] = self;
-  v22[5] = a4;
+  v22[5] = generation;
   [v17 fetchMixedAssetsWithBookIds:v6 audiobookIds:v7 relationships:0 views:0 additionalParameters:0 batchSize:0 metadata:v20 completionHandler:v22];
 }
 
-- (void)_notifyListeners:(id)a3
+- (void)_notifyListeners:(id)listeners
 {
-  v4 = a3;
-  v5 = [(BKLibraryPriceManager *)self listeners];
-  v6 = [v5 copy];
+  listenersCopy = listeners;
+  listeners = [(BKLibraryPriceManager *)self listeners];
+  v6 = [listeners copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -320,10 +320,10 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v13 + 1) + 8 * v11) nonretainedObjectValue];
+        nonretainedObjectValue = [*(*(&v13 + 1) + 8 * v11) nonretainedObjectValue];
         if (objc_opt_respondsToSelector())
         {
-          [v12 priceManager:self updatedPrices:v4];
+          [nonretainedObjectValue priceManager:self updatedPrices:listenersCopy];
         }
 
         v11 = v11 + 1;
@@ -337,12 +337,12 @@
   }
 }
 
-- (void)_callCompletionHandlers:(id)a3
+- (void)_callCompletionHandlers:(id)handlers
 {
-  v23 = a3;
-  v21 = self;
-  v4 = [(BKLibraryPriceManager *)self completionHandlers];
-  v5 = [v4 copy];
+  handlersCopy = handlers;
+  selfCopy = self;
+  completionHandlers = [(BKLibraryPriceManager *)self completionHandlers];
+  v5 = [completionHandlers copy];
 
   v30 = 0u;
   v31 = 0u;
@@ -365,7 +365,7 @@
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v23 objectForKeyedSubscript:v10];
+        v11 = [handlersCopy objectForKeyedSubscript:v10];
         v12 = [v22 objectForKeyedSubscript:v10];
         v24 = 0u;
         v25 = 0u;
@@ -399,8 +399,8 @@
           while (v14);
         }
 
-        v19 = [(BKLibraryPriceManager *)v21 completionHandlers];
-        [v19 removeObjectForKey:v10];
+        completionHandlers2 = [(BKLibraryPriceManager *)selfCopy completionHandlers];
+        [completionHandlers2 removeObjectForKey:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -410,23 +410,23 @@
   }
 }
 
-- (void)testPriceForStoreID:(id)a3 completion:(id)a4
+- (void)testPriceForStoreID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(BKLibraryPriceManager *)self testQueue];
+  testQueue = [(BKLibraryPriceManager *)self testQueue];
   v9 = dispatch_time(0, 15000000000);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_5ECCC;
   v12[3] = &unk_D5DF0;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_after(v9, v8, v12);
+  v13 = dCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
+  dispatch_after(v9, testQueue, v12);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);

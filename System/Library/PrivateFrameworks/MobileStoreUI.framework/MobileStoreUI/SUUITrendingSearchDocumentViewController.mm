@@ -1,37 +1,37 @@
 @interface SUUITrendingSearchDocumentViewController
-- (SUUITrendingSearchDocumentViewController)initWithTemplateElement:(id)a3;
+- (SUUITrendingSearchDocumentViewController)initWithTemplateElement:(id)element;
 - (SUUITrendingSearchView)resultsView;
 - (UIEdgeInsets)_resultsViewContentInset;
 - (void)_reloadResultsView;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 - (void)loadView;
-- (void)resultsViewTapRecognized:(id)a3;
-- (void)searchResultButtonTapped:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)resultsViewTapRecognized:(id)recognized;
+- (void)searchResultButtonTapped:(id)tapped;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SUUITrendingSearchDocumentViewController
 
-- (SUUITrendingSearchDocumentViewController)initWithTemplateElement:(id)a3
+- (SUUITrendingSearchDocumentViewController)initWithTemplateElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUITrendingSearchDocumentViewController;
   v5 = [(SUUITrendingSearchDocumentViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SUUITrendingSearchDocumentViewController *)v5 setTemplate:v4];
+    [(SUUITrendingSearchDocumentViewController *)v5 setTemplate:elementCopy];
   }
 
   return v6;
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = [a3 templateElement];
-  [(SUUITrendingSearchDocumentViewController *)self setTemplate:v4];
+  templateElement = [update templateElement];
+  [(SUUITrendingSearchDocumentViewController *)self setTemplate:templateElement];
 
   [(SUUITrendingSearchDocumentViewController *)self _reloadResultsView];
 }
@@ -39,22 +39,22 @@
 - (void)loadView
 {
   [(SUUITrendingSearchDocumentViewController *)self _reloadResultsView];
-  v3 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
-  [(SUUITrendingSearchDocumentViewController *)self setView:v3];
+  resultsView = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  [(SUUITrendingSearchDocumentViewController *)self setView:resultsView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SUUITrendingSearchDocumentViewController;
-  [(SUUITrendingSearchDocumentViewController *)&v3 viewDidAppear:a3];
+  [(SUUITrendingSearchDocumentViewController *)&v3 viewDidAppear:appear];
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  resultsView = [(SUUITrendingSearchDocumentViewController *)self resultsView];
   [(SUUITrendingSearchDocumentViewController *)self _resultsViewContentInset];
-  [v3 setLayoutMargins:?];
+  [resultsView setLayoutMargins:?];
 
   v4.receiver = self;
   v4.super_class = SUUITrendingSearchDocumentViewController;
@@ -76,8 +76,8 @@
     self->_resultsView = v5;
 
     v7 = self->_resultsView;
-    v8 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SUUITrendingSearchView *)v7 setBackgroundColor:v8];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SUUITrendingSearchView *)v7 setBackgroundColor:systemBackgroundColor];
 
     v9 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_resultsViewTapRecognized_];
     [(SUUITrendingSearchView *)self->_resultsView addGestureRecognizer:v9];
@@ -87,25 +87,25 @@
   return v3;
 }
 
-- (void)resultsViewTapRecognized:(id)a3
+- (void)resultsViewTapRecognized:(id)recognized
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  [v3 sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] sendAction:sel_resignFirstResponder to:0 from:0 forEvent:0];
 }
 
-- (void)searchResultButtonTapped:(id)a3
+- (void)searchResultButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(SUUITrendingSearchDocumentViewController *)self template];
-  v10 = [v5 buttons];
+  tappedCopy = tapped;
+  template = [(SUUITrendingSearchDocumentViewController *)self template];
+  buttons = [template buttons];
 
-  v6 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
-  v7 = [v6 trendingSearchViews];
-  v8 = [v7 indexOfObjectIdenticalTo:v4];
+  resultsView = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  trendingSearchViews = [resultsView trendingSearchViews];
+  v8 = [trendingSearchViews indexOfObjectIdenticalTo:tappedCopy];
 
-  if (v8 < [v10 count])
+  if (v8 < [buttons count])
   {
-    v9 = [v10 objectAtIndex:v8];
+    v9 = [buttons objectAtIndex:v8];
     [v9 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
   }
 }
@@ -113,23 +113,23 @@
 - (void)_reloadResultsView
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUITrendingSearchDocumentViewController *)self template];
-  v4 = [v3 titleLabel];
+  template = [(SUUITrendingSearchDocumentViewController *)self template];
+  titleLabel = [template titleLabel];
 
-  v18 = v4;
-  v5 = [MEMORY[0x277D756B8] SUUITrending_titleLabelWithElement:v4];
-  v6 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
-  [v6 setTrendingTitleView:v5];
+  v18 = titleLabel;
+  v5 = [MEMORY[0x277D756B8] SUUITrending_titleLabelWithElement:titleLabel];
+  resultsView = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  [resultsView setTrendingTitleView:v5];
 
-  v7 = [(SUUITrendingSearchDocumentViewController *)self template];
-  v8 = [v7 buttons];
+  template2 = [(SUUITrendingSearchDocumentViewController *)self template];
+  buttons = [template2 buttons];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = buttons;
   v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
@@ -155,12 +155,12 @@
     while (v12);
   }
 
-  v16 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
-  [v16 setTrendingSearchViews:v9];
+  resultsView2 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  [resultsView2 setTrendingSearchViews:v9];
 
-  v17 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
+  resultsView3 = [(SUUITrendingSearchDocumentViewController *)self resultsView];
   [(SUUITrendingSearchDocumentViewController *)self _resultsViewContentInset];
-  [v17 setLayoutMargins:?];
+  [resultsView3 setLayoutMargins:?];
 }
 
 - (UIEdgeInsets)_resultsViewContentInset

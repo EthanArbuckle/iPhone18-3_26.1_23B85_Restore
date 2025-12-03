@@ -1,28 +1,28 @@
 @interface AFSiriHomeAutomationRequestInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFSiriHomeAutomationRequestInfo)initWithCoder:(id)a3;
-- (AFSiriHomeAutomationRequestInfo)initWithContext:(id)a3;
-- (AFSiriHomeAutomationRequestInfo)initWithIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSiriHomeAutomationRequestInfo)initWithCoder:(id)coder;
+- (AFSiriHomeAutomationRequestInfo)initWithContext:(id)context;
+- (AFSiriHomeAutomationRequestInfo)initWithIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 @end
 
 @implementation AFSiriHomeAutomationRequestInfo
 
-- (AFSiriHomeAutomationRequestInfo)initWithCoder:(id)a3
+- (AFSiriHomeAutomationRequestInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriHomeAutomationRequestInfo::context"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriHomeAutomationRequestInfo::context"];
 
   v6 = [(AFSiriHomeAutomationRequestInfo *)self initWithContext:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -32,9 +32,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AFSiriHomeAutomationRequestInfo *)v4 context];
+      context = [(AFSiriHomeAutomationRequestInfo *)equalCopy context];
       context = self->_context;
-      v7 = context == v5 || [(NSData *)context isEqual:v5];
+      v7 = context == context || [(NSData *)context isEqual:context];
     }
 
     else
@@ -46,7 +46,7 @@
   return v7;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -57,15 +57,15 @@
   return v6;
 }
 
-- (AFSiriHomeAutomationRequestInfo)initWithContext:(id)a3
+- (AFSiriHomeAutomationRequestInfo)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AFSiriHomeAutomationRequestInfo;
   v5 = [(AFSiriHomeAutomationRequestInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contextCopy copy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -73,13 +73,13 @@
   return v5;
 }
 
-- (AFSiriHomeAutomationRequestInfo)initWithIdentifier:(id)a3
+- (AFSiriHomeAutomationRequestInfo)initWithIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11 = @"identifier";
-  v12[0] = a3;
+  v12[0] = identifier;
   v4 = MEMORY[0x1E695DF20];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6];
 
@@ -88,36 +88,36 @@
   return v8;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSiriHomeAutomationRequestInfoMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_AFSiriHomeAutomationRequestInfoMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_AFSiriHomeAutomationRequestInfoMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(AFSiriHomeAutomationRequestInfo *)self copy];
+    generate = [(AFSiriHomeAutomationRequestInfo *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_AFSiriHomeAutomationRequestInfoMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_AFSiriHomeAutomationRequestInfoMutation *)v4 generate];
+  generate = [(_AFSiriHomeAutomationRequestInfoMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

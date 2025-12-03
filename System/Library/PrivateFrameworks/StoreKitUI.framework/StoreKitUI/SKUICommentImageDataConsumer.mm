@@ -1,13 +1,13 @@
 @interface SKUICommentImageDataConsumer
-- (id)_scaledImageWithBounds:(CGSize)a3 contentRect:(CGRect)a4 drawBlock:(id)a5;
-- (id)imageForImage:(id)a3;
+- (id)_scaledImageWithBounds:(CGSize)bounds contentRect:(CGRect)rect drawBlock:(id)block;
+- (id)imageForImage:(id)image;
 @end
 
 @implementation SKUICommentImageDataConsumer
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -31,7 +31,7 @@
   v26[1] = 3221225472;
   v26[2] = __46__SKUICommentImageDataConsumer_imageForImage___block_invoke;
   v26[3] = &unk_2781FCE28;
-  v21 = v4;
+  v21 = imageCopy;
   v27 = v21;
   v22 = [(SKUICommentImageDataConsumer *)self _scaledImageWithBounds:v26 contentRect:v14 drawBlock:v16, 0.0, 0.0, v18, v20];
   v23 = [v22 imageWithRenderingMode:1];
@@ -45,24 +45,24 @@
   return v23;
 }
 
-- (id)_scaledImageWithBounds:(CGSize)a3 contentRect:(CGRect)a4 drawBlock:(id)a5
+- (id)_scaledImageWithBounds:(CGSize)bounds contentRect:(CGRect)rect drawBlock:(id)block
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3.height;
-  v10 = a3.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.height;
+  v10 = bounds.width;
   v11 = MEMORY[0x277D759A0];
-  v12 = a5;
-  v13 = [v11 mainScreen];
-  [v13 scale];
+  blockCopy = block;
+  mainScreen = [v11 mainScreen];
+  [mainScreen scale];
   v15 = v14;
   v19.width = v10;
   v19.height = v9;
   UIGraphicsBeginImageContextWithOptions(v19, 1, v15);
 
-  v12[2](v12, x, y, width, height);
+  blockCopy[2](blockCopy, x, y, width, height);
   v16 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
 

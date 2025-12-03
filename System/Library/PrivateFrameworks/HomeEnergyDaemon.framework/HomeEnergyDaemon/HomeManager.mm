@@ -1,7 +1,7 @@
 @interface HomeManager
 - (_TtC16HomeEnergyDaemon11HomeManager)init;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeManager
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B2481F4(v4, &unk_283EFD1D8, sub_22B2485FC, &block_descriptor_37_0);
+  homesCopy = homes;
+  selfCopy = self;
+  sub_22B2481F4(homesCopy, &unk_283EFD1D8, sub_22B2485FC, &block_descriptor_37_0);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22B2481F4(v7, &unk_283EFD160, sub_22B2484E0, &block_descriptor_19);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  sub_22B2481F4(homeCopy, &unk_283EFD160, sub_22B2484E0, &block_descriptor_19);
 }
 
 @end

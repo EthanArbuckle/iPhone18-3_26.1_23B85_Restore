@@ -1,12 +1,12 @@
 @interface PreferencesAssistantSetGuidedAccess
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetGuidedAccess
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (([(PreferencesAssistantSetGuidedAccess *)self toggle]& 1) != 0 || [(PreferencesAssistantSetGuidedAccess *)self value])
   {
     v5 = +[PSGuidedAccessSettingsDetail guidedAccessAvailability];
@@ -83,9 +83,9 @@ LABEL_18:
   v10 = PALogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(PreferencesAssistantSetGuidedAccess *)self dryRun];
+    dryRun = [(PreferencesAssistantSetGuidedAccess *)self dryRun];
     v12 = @"Set";
-    if (v11)
+    if (dryRun)
     {
       v12 = @"Dry Run";
     }
@@ -120,8 +120,8 @@ LABEL_18:
     [v15 setSetting:v16];
   }
 
-  v18 = [v15 dictionary];
-  v4[2](v4, v18);
+  dictionary = [v15 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

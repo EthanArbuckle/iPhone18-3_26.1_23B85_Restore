@@ -1,22 +1,22 @@
 @interface SHAssetUtilities
-+ (BOOL)buffersFromAudioFile:(id)a3 format:(id)a4 accumulator:(id)a5 error:(id *)a6;
-+ (id)pcmBufferFromAudioFile:(id)a3 outputFormat:(id)a4 durationToRead:(double)a5 error:(id *)a6;
-+ (id)pcmBufferFromAudioFile:(id)a3 outputFormat:(id)a4 error:(id *)a5;
-+ (void)mixedTracksFromAsset:(id)a3 format:(id)a4 accumulator:(id)a5 completionHandler:(id)a6;
++ (BOOL)buffersFromAudioFile:(id)file format:(id)format accumulator:(id)accumulator error:(id *)error;
++ (id)pcmBufferFromAudioFile:(id)file outputFormat:(id)format durationToRead:(double)read error:(id *)error;
++ (id)pcmBufferFromAudioFile:(id)file outputFormat:(id)format error:(id *)error;
++ (void)mixedTracksFromAsset:(id)asset format:(id)format accumulator:(id)accumulator completionHandler:(id)handler;
 @end
 
 @implementation SHAssetUtilities
 
-+ (void)mixedTracksFromAsset:(id)a3 format:(id)a4 accumulator:(id)a5 completionHandler:(id)a6
++ (void)mixedTracksFromAsset:(id)asset format:(id)format accumulator:(id)accumulator completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  assetCopy = asset;
+  formatCopy = format;
+  accumulatorCopy = accumulator;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v21 = 0;
-    v13 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:v9 error:&v21];
+    v13 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:assetCopy error:&v21];
     v14 = v21;
     if (v13)
     {
@@ -25,16 +25,16 @@
       v16[1] = 3221225472;
       v16[2] = __78__SHAssetUtilities_mixedTracksFromAsset_format_accumulator_completionHandler___block_invoke;
       v16[3] = &unk_2788F8118;
-      v19 = v12;
-      v17 = v10;
+      v19 = handlerCopy;
+      v17 = formatCopy;
       v18 = v13;
-      v20 = v11;
-      [v9 loadTracksWithMediaType:v15 completionHandler:v16];
+      v20 = accumulatorCopy;
+      [assetCopy loadTracksWithMediaType:v15 completionHandler:v16];
     }
 
     else
     {
-      (*(v12 + 2))(v12, v14);
+      (*(handlerCopy + 2))(handlerCopy, v14);
     }
   }
 }
@@ -147,29 +147,29 @@ LABEL_21:
 LABEL_22:
 }
 
-+ (BOOL)buffersFromAudioFile:(id)a3 format:(id)a4 accumulator:(id)a5 error:(id *)a6
++ (BOOL)buffersFromAudioFile:(id)file format:(id)format accumulator:(id)accumulator error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 processingFormat];
-  v12 = 0x10000u / *([v11 streamDescription] + 24);
+  fileCopy = file;
+  formatCopy = format;
+  accumulatorCopy = accumulator;
+  processingFormat = [fileCopy processingFormat];
+  v12 = 0x10000u / *([processingFormat streamDescription] + 24);
 
   v13 = objc_alloc(MEMORY[0x277CB83C8]);
-  v14 = [v8 processingFormat];
-  v31 = [v13 initWithPCMFormat:v14 frameCapacity:v12];
+  processingFormat2 = [fileCopy processingFormat];
+  v31 = [v13 initWithPCMFormat:processingFormat2 frameCapacity:v12];
 
-  [v9 sampleRate];
+  [formatCopy sampleRate];
   v16 = v15;
-  v17 = [v8 processingFormat];
-  [v17 sampleRate];
+  processingFormat3 = [fileCopy processingFormat];
+  [processingFormat3 sampleRate];
   LODWORD(v12) = vcvtad_u64_f64(v16 / v18 * v12);
 
-  v19 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v9 frameCapacity:v12];
+  v19 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:formatCopy frameCapacity:v12];
   v20 = objc_alloc(MEMORY[0x277CB8380]);
-  v21 = [v8 processingFormat];
-  v30 = v9;
-  v22 = [v20 initFromFormat:v21 toFormat:v9];
+  processingFormat4 = [fileCopy processingFormat];
+  v30 = formatCopy;
+  v22 = [v20 initFromFormat:processingFormat4 toFormat:formatCopy];
 
   v23 = MEMORY[0x277D85DD0];
   while (1)
@@ -178,11 +178,11 @@ LABEL_22:
     v33[1] = 3221225472;
     v33[2] = __66__SHAssetUtilities_buffersFromAudioFile_format_accumulator_error___block_invoke;
     v33[3] = &unk_2788F8140;
-    v24 = v8;
+    v24 = fileCopy;
     v34 = v24;
     v25 = v31;
     v35 = v25;
-    v26 = [v22 convertToBuffer:v19 error:a6 withInputFromBlock:v33];
+    v26 = [v22 convertToBuffer:v19 error:error withInputFromBlock:v33];
     if (v26 == 2)
     {
       break;
@@ -195,7 +195,7 @@ LABEL_22:
       goto LABEL_8;
     }
 
-    v28 = v10[2](v10, v19);
+    v28 = accumulatorCopy[2](accumulatorCopy, v19);
     if (v27)
     {
       goto LABEL_8;
@@ -240,41 +240,41 @@ id __66__SHAssetUtilities_buffersFromAudioFile_format_accumulator_error___block_
   return v5;
 }
 
-+ (id)pcmBufferFromAudioFile:(id)a3 outputFormat:(id)a4 durationToRead:(double)a5 error:(id *)a6
++ (id)pcmBufferFromAudioFile:(id)file outputFormat:(id)format durationToRead:(double)read error:(id *)error
 {
-  v7 = [a1 pcmBufferFromAudioFile:a3 outputFormat:a4 error:a6];
+  v7 = [self pcmBufferFromAudioFile:file outputFormat:format error:error];
   v8 = v7;
   if (v7)
   {
-    if (a5 <= 0.0)
+    if (read <= 0.0)
     {
-      v9 = [v7 frameLength];
-      v10 = [v8 format];
-      [v10 sampleRate];
-      a5 = v9 / v11;
+      frameLength = [v7 frameLength];
+      format = [v8 format];
+      [format sampleRate];
+      read = frameLength / v11;
     }
 
-    v12 = [SHAudioUtilities splitBuffer:v8 fromStartPosition:0 intoDurationsOfSize:a5];
-    v13 = [v12 firstObject];
+    v12 = [SHAudioUtilities splitBuffer:v8 fromStartPosition:0 intoDurationsOfSize:read];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
-+ (id)pcmBufferFromAudioFile:(id)a3 outputFormat:(id)a4 error:(id *)a5
++ (id)pcmBufferFromAudioFile:(id)file outputFormat:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 length];
-  [v9 sampleRate];
+  fileCopy = file;
+  formatCopy = format;
+  v10 = [fileCopy length];
+  [formatCopy sampleRate];
   v12 = v11;
-  v13 = [v8 processingFormat];
-  [v13 sampleRate];
+  processingFormat = [fileCopy processingFormat];
+  [processingFormat sampleRate];
   LODWORD(v5) = vcvtad_u64_f64(v12 / v14 * v10);
 
   v18 = 0;
@@ -282,13 +282,13 @@ id __66__SHAssetUtilities_buffersFromAudioFile_format_accumulator_error___block_
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__0;
   v22 = __Block_byref_object_dispose__0;
-  v23 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:v9 frameCapacity:v5];
+  v23 = [objc_alloc(MEMORY[0x277CB83C8]) initWithPCMFormat:formatCopy frameCapacity:v5];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __62__SHAssetUtilities_pcmBufferFromAudioFile_outputFormat_error___block_invoke;
   v17[3] = &unk_2788F8168;
   v17[4] = &v18;
-  if ([SHAssetUtilities buffersFromAudioFile:v8 format:v9 accumulator:v17 error:a5])
+  if ([SHAssetUtilities buffersFromAudioFile:fileCopy format:formatCopy accumulator:v17 error:error])
   {
     v15 = v19[5];
   }

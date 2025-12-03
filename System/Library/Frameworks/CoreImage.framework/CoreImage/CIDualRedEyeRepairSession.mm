@@ -1,21 +1,21 @@
 @interface CIDualRedEyeRepairSession
 + (id)_contextRGBAh;
-- (BOOL)_repairPrimaryWithSecondary:(__CVBuffer *)a3 to:(__CVBuffer *)a4;
+- (BOOL)_repairPrimaryWithSecondary:(__CVBuffer *)secondary to:(__CVBuffer *)to;
 - (BOOL)prepareRepair;
-- (BOOL)prepareRepairWithTuningParametersByPortType:(id)a3;
+- (BOOL)prepareRepairWithTuningParametersByPortType:(id)type;
 - (BOOL)prewarm;
-- (BOOL)repairFace:(id)a3 filter:(id)a4;
-- (BOOL)setPrimary:(__CVBuffer *)a3 observations:(id)a4 metadata:(id)a5;
+- (BOOL)repairFace:(id)face filter:(id)filter;
+- (BOOL)setPrimary:(__CVBuffer *)primary observations:(id)observations metadata:(id)metadata;
 - (BOOL)validateRenderState;
 - (CIDualRedEyeRepairSession)init;
-- (id)redEyeFaceFromObservation:(id)a3 exifOrientation:(int)a4;
+- (id)redEyeFaceFromObservation:(id)observation exifOrientation:(int)orientation;
 - (int)validateRepair;
 - (int)validateSetPrimary;
 - (void)cleanupState;
-- (void)customizeRepairFilter:(id)a3 forFace:(id)a4;
+- (void)customizeRepairFilter:(id)filter forFace:(id)face;
 - (void)dealloc;
 - (void)dumpInputs;
-- (void)dumpObservation:(id)a3 index:(int)a4;
+- (void)dumpObservation:(id)observation index:(int)index;
 - (void)dumpSecondary;
 - (void)prewarm;
 - (void)validateRepair;
@@ -100,7 +100,7 @@ LABEL_2:
       v11 = v10;
       v12 = 0x1E75C0000uLL;
       v13 = *v94;
-      v80 = self;
+      selfCopy = self;
       v76 = *v94;
       v77 = v9;
       while (2)
@@ -203,8 +203,8 @@ LABEL_12:
               [v51 setRoiRenderSize:v34];
               [v51 setPupilLeft:v38];
               [v51 setPupilRight:v42];
-              [(CIDualRedEyeRepairSession *)v80 customizeRepairFilter:v83 forFace:v51];
-              v52 = [(CIFilter *)v83 outputImage];
+              [(CIDualRedEyeRepairSession *)selfCopy customizeRepairFilter:v83 forFace:v51];
+              outputImage = [(CIFilter *)v83 outputImage];
               [objc_msgSend(v51 "roiRenderOriginLeft")];
               v54 = v53;
               [objc_msgSend(v51 "roiRenderOriginLeft")];
@@ -233,7 +233,7 @@ LABEL_12:
               y = v108.origin.y;
               width = v108.size.width;
               height = v108.size.height;
-              if (![(CIDualRedEyeRepairSession *)v80 context])
+              if (![(CIDualRedEyeRepairSession *)selfCopy context])
               {
                 v3 = CI_LOG_DUALRED();
                 if (v3)
@@ -250,7 +250,7 @@ LABEL_12:
                 return v3;
               }
 
-              [(CIContext *)[(CIDualRedEyeRepairSession *)v80 context] prepareRender:v52 fromRect:v87 toDestination:&v97 atPoint:x error:y, width, height, x, y];
+              [(CIContext *)[(CIDualRedEyeRepairSession *)selfCopy context] prepareRender:outputImage fromRect:v87 toDestination:&v97 atPoint:x error:y, width, height, x, y];
               if (v97)
               {
                 break;
@@ -331,16 +331,16 @@ LABEL_31:
   return 1;
 }
 
-- (BOOL)prepareRepairWithTuningParametersByPortType:(id)a3
+- (BOOL)prepareRepairWithTuningParametersByPortType:(id)type
 {
-  [(CIDualRedEyeRepairSession *)self setTuningParametersByPortType:a3];
+  [(CIDualRedEyeRepairSession *)self setTuningParametersByPortType:type];
 
   return [(CIDualRedEyeRepairSession *)self prepareRepair];
 }
 
 - (void)dumpInputs
 {
-  [objc_msgSend(a1 "primaryImage")];
+  [objc_msgSend(self "primaryImage")];
   CVBufferGetAttachments(*a2, kCVAttachmentMode_ShouldPropagate);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_1_1();
@@ -349,9 +349,9 @@ LABEL_31:
 
 - (BOOL)validateRenderState
 {
-  v3 = [(CIDualRedEyeRepairSession *)self renderUsingPixelBuffers];
-  v4 = [(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue];
-  if (v4 && v3)
+  renderUsingPixelBuffers = [(CIDualRedEyeRepairSession *)self renderUsingPixelBuffers];
+  renderUsingProvidedCommandQueue = [(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue];
+  if (renderUsingProvidedCommandQueue && renderUsingPixelBuffers)
   {
     v5 = CI_LOG_DUALRED();
     if (v5)
@@ -367,7 +367,7 @@ LABEL_12:
     }
   }
 
-  else if (v4 || v3)
+  else if (renderUsingProvidedCommandQueue || renderUsingPixelBuffers)
   {
     LOBYTE(v5) = 1;
   }
@@ -398,7 +398,7 @@ LABEL_12:
   }
 
   primary = self->_primary;
-  v4 = [(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue];
+  renderUsingProvidedCommandQueue = [(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue];
   if (primary && !self->_primary)
   {
     if (CI_LOG_DUALRED())
@@ -413,7 +413,7 @@ LABEL_12:
     return 3;
   }
 
-  if (!v4)
+  if (!renderUsingProvidedCommandQueue)
   {
     Width = *MEMORY[0x1E695F060];
     Height = *(MEMORY[0x1E695F060] + 8);
@@ -534,10 +534,10 @@ LABEL_10:
 
   if ([(CIDualRedEyeRepairSession *)self faces]&& [(NSArray *)[(CIDualRedEyeRepairSession *)self faces] count])
   {
-    v3 = [(CIDualRedEyeRepairSession *)self renderUsingPixelBuffers];
+    renderUsingPixelBuffers = [(CIDualRedEyeRepairSession *)self renderUsingPixelBuffers];
     if (![(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue]|| [(CIDualRedEyeRepairSession *)self primaryTexture]&& [(CIDualRedEyeRepairSession *)self secondaryTexture]&& [(CIDualRedEyeRepairSession *)self outputTexture])
     {
-      if (!v3 || self->_primary && self->_secondary)
+      if (!renderUsingPixelBuffers || self->_primary && self->_secondary)
       {
         if ([(CIDualRedEyeRepairSession *)self context])
         {
@@ -606,12 +606,12 @@ LABEL_10:
   return 1;
 }
 
-- (id)redEyeFaceFromObservation:(id)a3 exifOrientation:(int)a4
+- (id)redEyeFaceFromObservation:(id)observation exifOrientation:(int)orientation
 {
-  v4 = *&a4;
+  v4 = *&orientation;
   v213 = *MEMORY[0x1E69E9840];
-  v7 = [a3 landmarks];
-  if (!v7)
+  landmarks = [observation landmarks];
+  if (!landmarks)
   {
     if (CI_LOG_DUALRED())
     {
@@ -625,8 +625,8 @@ LABEL_10:
     return 0;
   }
 
-  v8 = v7;
-  if (![v7 leftEye] || !objc_msgSend(v8, "rightEye"))
+  v8 = landmarks;
+  if (![landmarks leftEye] || !objc_msgSend(v8, "rightEye"))
   {
     if (CI_LOG_DUALRED())
     {
@@ -640,7 +640,7 @@ LABEL_10:
     return 0;
   }
 
-  [a3 boundingBox];
+  [observation boundingBox];
   CIVNRectInOrientedImage([(CIDualRedEyeRepairSession *)self primaryImage], v9, v10, v11, v12);
   v215 = CGRectIntegral(v214);
   v13 = [CIVector vectorWithCGRect:v215.origin.x, v215.origin.y, v215.size.width, v215.size.height];
@@ -744,9 +744,9 @@ LABEL_10:
 
   [v8 confidence];
   v38 = v37;
-  [a3 faceJunkinessIndex];
+  [observation faceJunkinessIndex];
   v40 = v39;
-  [a3 faceOrientationIndex];
+  [observation faceOrientationIndex];
   v42 = v41;
   if (CI_LOG_DUALRED())
   {
@@ -919,7 +919,7 @@ LABEL_10:
     v107 = [-[NSDictionary objectForKey:](-[CIDualRedEyeRepairTuning sessionTuning](-[CIDualRedEyeRepairSession tuning](self "tuning")];
     if ((v105 & 1) != 0 || (v106 & 1) != 0 || v107)
     {
-      if (![a3 faceSegments])
+      if (![observation faceSegments])
       {
         if (CI_LOG_DUALRED())
         {
@@ -933,7 +933,7 @@ LABEL_10:
         return 0;
       }
 
-      v122 = probabilitiesForSegment([a3 faceSegments], 482, v4);
+      v122 = probabilitiesForSegment([observation faceSegments], 482, v4);
       if (!v122)
       {
         if (CI_LOG_DUALRED())
@@ -989,7 +989,7 @@ LABEL_10:
       v185 = RRmaximumRh(v130, v128);
       v175 = v129;
       v131 = RRmaximumRh(v176, v129);
-      [objc_msgSend(a3 "faceSegments")];
+      [objc_msgSend(observation "faceSegments")];
       CIVNRectInOrientedImage([(CIDualRedEyeRepairSession *)self primaryImage], v132, v133, v134, v135);
       v137 = v136;
       v139 = v138;
@@ -1050,11 +1050,11 @@ LABEL_10:
       {
 LABEL_76:
         v174 = v108;
-        v110 = constellationRectInSegmentationRect(-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), [v8 rightEye], objc_msgSend(a3, "faceSegments"), 0x100uLL);
+        v110 = constellationRectInSegmentationRect(-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), [v8 rightEye], objc_msgSend(observation, "faceSegments"), 0x100uLL);
         rect_16 = v112;
         rect_24a = v111;
         rect_8 = v113;
-        rect = constellationRectInSegmentationRect(-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), [v8 leftEye], objc_msgSend(a3, "faceSegments"), 0x100uLL);
+        rect = constellationRectInSegmentationRect(-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), [v8 leftEye], objc_msgSend(observation, "faceSegments"), 0x100uLL);
         v177 = v104;
         v115 = v114;
         v117 = v116;
@@ -1072,7 +1072,7 @@ LABEL_76:
         v219 = CGRectInset(v218, -12.8000002, -12.8000002);
         CGRectIntegral(v219);
         v104 = v177;
-        v120 = semanticPupils([(CIDualRedEyeRepairSession *)self primaryImage], a3, v4, v109, v174, v190, v188);
+        v120 = semanticPupils([(CIDualRedEyeRepairSession *)self primaryImage], observation, v4, v109, v174, v190, v188);
         v191 = [v120 objectAtIndexedSubscript:0];
         v189 = [v120 objectAtIndexedSubscript:1];
         goto LABEL_102;
@@ -1177,7 +1177,7 @@ LABEL_102:
     v23 = objc_opt_new();
     [v23 setImageOrientation:v4];
     [v23 setLandmarks:v8];
-    [v23 setObservation:a3];
+    [v23 setObservation:observation];
     [v23 setSegmentationSkin:v186];
     [v23 setSegmentationSclera:v184];
     [v23 setSegmentationIris:v183];
@@ -1210,72 +1210,72 @@ LABEL_102:
   return 0;
 }
 
-- (void)customizeRepairFilter:(id)a3 forFace:(id)a4
+- (void)customizeRepairFilter:(id)filter forFace:(id)face
 {
   v14[10] = *MEMORY[0x1E69E9840];
   v13[0] = @"inputOriginLeft";
-  [objc_msgSend(a4 "roiRenderOriginLeft")];
+  [objc_msgSend(face "roiRenderOriginLeft")];
   v7 = v6;
-  [objc_msgSend(a4 "roiRenderOriginLeft")];
+  [objc_msgSend(face "roiRenderOriginLeft")];
   v14[0] = [CIVector vectorWithX:v7 Y:v8];
   v13[1] = @"inputOriginRight";
-  [objc_msgSend(a4 "roiRenderOriginRight")];
+  [objc_msgSend(face "roiRenderOriginRight")];
   v10 = v9;
-  [objc_msgSend(a4 "roiRenderOriginRight")];
+  [objc_msgSend(face "roiRenderOriginRight")];
   v14[1] = [CIVector vectorWithX:v10 Y:v11];
   v13[2] = @"inputSize";
-  v14[2] = [a4 roiRenderSize];
+  v14[2] = [face roiRenderSize];
   v13[3] = @"inputOrientationHint";
   v12 = MEMORY[0x1E696AD98];
-  [a4 faceOrientation];
+  [face faceOrientation];
   v14[3] = [v12 numberWithFloat:?];
   v13[4] = @"inputAxisLongLeft";
-  v14[4] = [objc_msgSend(a4 "uvLeft")];
+  v14[4] = [objc_msgSend(face "uvLeft")];
   v13[5] = @"inputAxisLongRight";
-  v14[5] = [objc_msgSend(a4 "uvRight")];
+  v14[5] = [objc_msgSend(face "uvRight")];
   v13[6] = @"inputAxisShortLeft";
-  v14[6] = [objc_msgSend(a4 "uvLeft")];
+  v14[6] = [objc_msgSend(face "uvLeft")];
   v13[7] = @"inputAxisShortRight";
-  v14[7] = [objc_msgSend(a4 "uvRight")];
+  v14[7] = [objc_msgSend(face "uvRight")];
   v13[8] = @"inputPupilCenterLeft";
-  v14[8] = [a4 pupilLeft];
+  v14[8] = [face pupilLeft];
   v13[9] = @"inputPupilCenterRight";
-  v14[9] = [a4 pupilRight];
-  [a3 setValuesForKeysWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, v13, 10)}];
-  if ([a4 segmentationSkin])
+  v14[9] = [face pupilRight];
+  [filter setValuesForKeysWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v14, v13, 10)}];
+  if ([face segmentationSkin])
   {
-    [a3 setValue:objc_msgSend(a4 forKey:{"segmentationSkin"), @"inputSkinMask"}];
+    [filter setValue:objc_msgSend(face forKey:{"segmentationSkin"), @"inputSkinMask"}];
   }
 
-  if ([a4 segmentationSclera])
+  if ([face segmentationSclera])
   {
-    [a3 setValue:objc_msgSend(a4 forKey:{"segmentationSclera"), @"inputScleraMask"}];
+    [filter setValue:objc_msgSend(face forKey:{"segmentationSclera"), @"inputScleraMask"}];
   }
 
-  if ([a4 segmentationSkin])
+  if ([face segmentationSkin])
   {
-    [a3 setValue:objc_msgSend(a4 forKey:{"segmentationIris"), @"inputIrisMask"}];
+    [filter setValue:objc_msgSend(face forKey:{"segmentationIris"), @"inputIrisMask"}];
   }
 }
 
-- (BOOL)repairFace:(id)a3 filter:(id)a4
+- (BOOL)repairFace:(id)face filter:(id)filter
 {
   v64 = *MEMORY[0x1E69E9840];
-  [objc_msgSend(a3 "roiRenderOriginLeft")];
+  [objc_msgSend(face "roiRenderOriginLeft")];
   v8 = v7;
-  [objc_msgSend(a3 "roiRenderOriginLeft")];
+  [objc_msgSend(face "roiRenderOriginLeft")];
   v10 = v9;
-  [objc_msgSend(a3 "roiRenderSize")];
+  [objc_msgSend(face "roiRenderSize")];
   v12 = v11;
-  [objc_msgSend(a3 "roiRenderSize")];
+  [objc_msgSend(face "roiRenderSize")];
   v14 = v13;
-  [objc_msgSend(a3 "roiRenderOriginRight")];
+  [objc_msgSend(face "roiRenderOriginRight")];
   v16 = v15;
-  [objc_msgSend(a3 "roiRenderOriginRight")];
+  [objc_msgSend(face "roiRenderOriginRight")];
   v18 = v17;
-  [objc_msgSend(a3 "roiRenderSize")];
+  [objc_msgSend(face "roiRenderSize")];
   v20 = v19;
-  [objc_msgSend(a3 "roiRenderSize")];
+  [objc_msgSend(face "roiRenderSize")];
   v69.size.height = v21;
   v65.origin.x = v8;
   v65.origin.y = v10;
@@ -1312,9 +1312,9 @@ LABEL_102:
     }
   }
 
-  [(CIDualRedEyeRepairSession *)self customizeRepairFilter:a4 forFace:a3, *&height, *&v49, *&v51, *&v53];
+  [(CIDualRedEyeRepairSession *)self customizeRepairFilter:filter forFace:face, *&height, *&v49, *&v51, *&v53];
   CFAbsoluteTimeGetCurrent();
-  v27 = [a4 outputImage];
+  outputImage = [filter outputImage];
   if (CI_LOG_DUALRED())
   {
     v28 = ci_logger_api();
@@ -1338,7 +1338,7 @@ LABEL_102:
     v70.size.height = v48;
     v70.size.width = v50;
     v68 = CGRectUnion(v67, v70);
-    v31 = -[CIContext startTaskToRender:fromRect:toDestination:atPoint:error:](self->context, "startTaskToRender:fromRect:toDestination:atPoint:error:", [v27 imageByCompositingOverImage:{-[CIImage imageByInsertingIntermediate:](-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), "imageByInsertingIntermediate:", 0)}], -[CIDualRedEyeRepairSession destination](self, "destination"), buf, v68.origin.x, v68.origin.y, v68.size.width, v68.size.height, v68.origin.x, v68.origin.y);
+    v31 = -[CIContext startTaskToRender:fromRect:toDestination:atPoint:error:](self->context, "startTaskToRender:fromRect:toDestination:atPoint:error:", [outputImage imageByCompositingOverImage:{-[CIImage imageByInsertingIntermediate:](-[CIDualRedEyeRepairSession primaryImage](self, "primaryImage"), "imageByInsertingIntermediate:", 0)}], -[CIDualRedEyeRepairSession destination](self, "destination"), buf, v68.origin.x, v68.origin.y, v68.size.width, v68.size.height, v68.origin.x, v68.origin.y);
     if (*buf)
     {
       v32 = CI_LOG_DUALRED();
@@ -1422,7 +1422,7 @@ LABEL_45:
     return v32;
   }
 
-  v34 = [(CIContext *)self->context startTaskToRender:v27 fromRect:[(CIDualRedEyeRepairSession *)self destination] toDestination:buf atPoint:v8 error:v10, v12, v14, v8, v10];
+  v34 = [(CIContext *)self->context startTaskToRender:outputImage fromRect:[(CIDualRedEyeRepairSession *)self destination] toDestination:buf atPoint:v8 error:v10, v12, v14, v8, v10];
   if (![(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue])
   {
     [(CIRenderTask *)v34 waitUntilCompletedAndReturnError:buf];
@@ -1439,7 +1439,7 @@ LABEL_45:
 
   if (!*buf)
   {
-    v39 = [(CIContext *)self->context startTaskToRender:v27 fromRect:[(CIDualRedEyeRepairSession *)self destination] toDestination:buf atPoint:v54 error:v52, v50, v48, v54, v52];
+    v39 = [(CIContext *)self->context startTaskToRender:outputImage fromRect:[(CIDualRedEyeRepairSession *)self destination] toDestination:buf atPoint:v54 error:v52, v50, v48, v54, v52];
     if ([(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue])
     {
       [(MTLCommandBuffer *)[(CIDualRedEyeRepairSession *)self commandBuffer] commit];
@@ -1495,14 +1495,14 @@ LABEL_45:
   return v32;
 }
 
-- (BOOL)setPrimary:(__CVBuffer *)a3 observations:(id)a4 metadata:(id)a5
+- (BOOL)setPrimary:(__CVBuffer *)primary observations:(id)observations metadata:(id)metadata
 {
   v70 = *MEMORY[0x1E69E9840];
   CFAbsoluteTimeGetCurrent();
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
-  v52 = 2 * [a4 count];
+  v52 = 2 * [observations count];
   v9 = ci_signpost_log_dualredeye();
   if (&self->super.isa + 1 >= 2)
   {
@@ -1528,7 +1528,7 @@ LABEL_45:
     v11 = ci_logger_api();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      -[CIDualRedEyeRepairSession setPrimary:observations:metadata:].cold.1([a4 count], v69);
+      -[CIDualRedEyeRepairSession setPrimary:observations:metadata:].cold.1([observations count], v69);
     }
   }
 
@@ -1543,10 +1543,10 @@ LABEL_45:
 
   [(CIDualRedEyeRepairSession *)self cleanupState];
   -[CIDualRedEyeRepairSession setTimestamp:](self, "setTimestamp:", [MEMORY[0x1E695DF00] date]);
-  [(CIDualRedEyeRepairSession *)self setMetadata:a5];
-  [(CIDualRedEyeRepairSession *)self setObservations:a4];
-  self->_primary = a3;
-  [(CIDualRedEyeRepairTuning *)[(CIDualRedEyeRepairSession *)self tuning] setTuningParametersByPortType:[(CIDualRedEyeRepairSession *)self tuningParametersByPortType] withCameraMetadata:a5];
+  [(CIDualRedEyeRepairSession *)self setMetadata:metadata];
+  [(CIDualRedEyeRepairSession *)self setObservations:observations];
+  self->_primary = primary;
+  [(CIDualRedEyeRepairTuning *)[(CIDualRedEyeRepairSession *)self tuning] setTuningParametersByPortType:[(CIDualRedEyeRepairSession *)self tuningParametersByPortType] withCameraMetadata:metadata];
   if (CI_LOG_DUALRED())
   {
     v13 = ci_logger_api();
@@ -1566,9 +1566,9 @@ LABEL_45:
   }
 
   [(CIDualRedEyeRepairSession *)self setImageProperties:0];
-  if (a5 && [a5 objectForKeyedSubscript:@"ExifOrientation"])
+  if (metadata && [metadata objectForKeyedSubscript:@"ExifOrientation"])
   {
-    v15 = [a5 objectForKeyedSubscript:@"ExifOrientation"];
+    v15 = [metadata objectForKeyedSubscript:@"ExifOrientation"];
     v64 = v15;
     v65 = @"CIImageProperties";
     v63 = *MEMORY[0x1E696DE78];
@@ -1609,14 +1609,14 @@ LABEL_23:
         v20 = ci_logger_api();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v41 = [v17 intValue];
+          intValue = [v17 intValue];
           [(CIImage *)[(CIDualRedEyeRepairSession *)self primaryImage] extent];
           v43 = v42;
           [(CIImage *)[(CIDualRedEyeRepairSession *)self primaryImage] extent];
           *buf = 136446978;
           v56 = "[CIDualRedEyeRepairSession setPrimary:observations:metadata:]";
           v57 = 1024;
-          *v58 = v41;
+          *v58 = intValue;
           *&v58[4] = 2048;
           *&v58[6] = v43;
           *&v58[14] = 2048;
@@ -1644,15 +1644,15 @@ LABEL_37:
     goto LABEL_64;
   }
 
-  v23 = [MEMORY[0x1E695DF70] array];
-  for (i = 0; [a4 count] > i; ++i)
+  array = [MEMORY[0x1E695DF70] array];
+  for (i = 0; [observations count] > i; ++i)
   {
     if (CI_LOG_DUALRED())
     {
       v25 = ci_logger_api();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v30 = [a4 count];
+        v30 = [observations count];
         *buf = 136446722;
         v56 = "[CIDualRedEyeRepairSession setPrimary:observations:metadata:]";
         v57 = 1024;
@@ -1663,7 +1663,7 @@ LABEL_37:
       }
     }
 
-    v26 = [a4 objectAtIndexedSubscript:i];
+    v26 = [observations objectAtIndexedSubscript:i];
     if (CI_LOG_DUALRED() >= 2)
     {
       [(CIDualRedEyeRepairSession *)self dumpObservation:v26 index:i];
@@ -1678,29 +1678,29 @@ LABEL_37:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
           v46 = v10;
-          v45 = [v27 roiRenderSize];
-          v31 = [v27 roiRenderOriginLeft];
-          v32 = [v27 uvLeft];
-          v33 = [v27 roiRenderOriginRight];
-          v34 = [v27 uvRight];
+          roiRenderSize = [v27 roiRenderSize];
+          roiRenderOriginLeft = [v27 roiRenderOriginLeft];
+          uvLeft = [v27 uvLeft];
+          roiRenderOriginRight = [v27 roiRenderOriginRight];
+          uvRight = [v27 uvRight];
           *buf = 136447490;
           v56 = "[CIDualRedEyeRepairSession setPrimary:observations:metadata:]";
           v57 = 2112;
-          *v58 = v45;
+          *v58 = roiRenderSize;
           *&v58[8] = 2112;
-          *&v58[10] = v31;
+          *&v58[10] = roiRenderOriginLeft;
           *&v58[18] = 2112;
-          *&v58[20] = v32;
+          *&v58[20] = uvLeft;
           v59 = 2112;
-          v60 = v33;
+          v60 = roiRenderOriginRight;
           v61 = 2112;
-          v62 = v34;
+          v62 = uvRight;
           _os_log_error_impl(&dword_19CC36000, v28, OS_LOG_TYPE_ERROR, "%{public}s Good face: size %@ | left %@ axes %@ | right %@ axes %@ ", buf, 0x3Eu);
           v10 = v46;
         }
       }
 
-      [v23 addObject:v27];
+      [array addObject:v27];
     }
 
     else if (CI_LOG_DUALRED())
@@ -1713,7 +1713,7 @@ LABEL_37:
     }
   }
 
-  if (![v23 count])
+  if (![array count])
   {
     if (CI_LOG_DUALRED())
     {
@@ -1728,13 +1728,13 @@ LABEL_37:
   }
 
   v35 = [-[NSDictionary objectForKeyedSubscript:](-[CIDualRedEyeRepairTuning sessionTuning](-[CIDualRedEyeRepairSession tuning](self "tuning")];
-  if ([v23 count] > v35)
+  if ([array count] > v35)
   {
-    [v23 sortUsingComparator:&__block_literal_global_262];
-    v23 = [v23 subarrayWithRange:{0, v35}];
+    [array sortUsingComparator:&__block_literal_global_262];
+    array = [array subarrayWithRange:{0, v35}];
   }
 
-  [(CIDualRedEyeRepairSession *)self setFaces:v23];
+  [(CIDualRedEyeRepairSession *)self setFaces:array];
   CFAbsoluteTimeGetCurrent();
   if (CI_LOG_DUALRED())
   {
@@ -1793,7 +1793,7 @@ uint64_t __62__CIDualRedEyeRepairSession_setPrimary_observations_metadata___bloc
   return [v7 compare:v5];
 }
 
-- (BOOL)_repairPrimaryWithSecondary:(__CVBuffer *)a3 to:(__CVBuffer *)a4
+- (BOOL)_repairPrimaryWithSecondary:(__CVBuffer *)secondary to:(__CVBuffer *)to
 {
   v71 = *MEMORY[0x1E69E9840];
   v7 = [(NSArray *)[(CIDualRedEyeRepairSession *)self faces] count];
@@ -1813,7 +1813,7 @@ uint64_t __62__CIDualRedEyeRepairSession_setPrimary_observations_metadata___bloc
   v52[1] = 3221225472;
   v53 = __60__CIDualRedEyeRepairSession__repairPrimaryWithSecondary_to___block_invoke;
   v54 = &__block_descriptor_44_e5_v8__0l;
-  v55 = self;
+  selfCopy = self;
   v56 = v7;
   if (CI_LOG_DUALRED())
   {
@@ -1858,10 +1858,10 @@ uint64_t __62__CIDualRedEyeRepairSession_setPrimary_observations_metadata___bloc
 
   if ([(CIDualRedEyeRepairSession *)self renderUsingPixelBuffers])
   {
-    [(CIDualRedEyeRepairSession *)self setDestination:[[CIRenderDestination alloc] initWithPixelBuffer:a4]];
-    self->_secondary = a3;
-    self->_output = a4;
-    [(CIDualRedEyeRepairSession *)self setSecondaryImage:[CIImage imageWithCVPixelBuffer:a3 options:[(CIDualRedEyeRepairSession *)self imageProperties]]];
+    [(CIDualRedEyeRepairSession *)self setDestination:[[CIRenderDestination alloc] initWithPixelBuffer:to]];
+    self->_secondary = secondary;
+    self->_output = to;
+    [(CIDualRedEyeRepairSession *)self setSecondaryImage:[CIImage imageWithCVPixelBuffer:secondary options:[(CIDualRedEyeRepairSession *)self imageProperties]]];
   }
 
   if ([(CIDualRedEyeRepairSession *)self renderUsingProvidedCommandQueue])
@@ -1914,9 +1914,9 @@ uint64_t __62__CIDualRedEyeRepairSession_setPrimary_observations_metadata___bloc
     v28 = [CIFilter filterWithName:@"CIRedEyeRaw"];
     [(CIFilter *)v28 setValuesForKeysWithDictionary:[(CIDualRedEyeRepairTuning *)[(CIDualRedEyeRepairSession *)self tuning] repairTuning]];
     v65[0] = @"inputPrimary";
-    v29 = [(CIDualRedEyeRepairSession *)self primaryImage];
+    primaryImage = [(CIDualRedEyeRepairSession *)self primaryImage];
     v65[1] = @"inputSecondary";
-    v66[0] = v29;
+    v66[0] = primaryImage;
     v66[1] = [(CIDualRedEyeRepairSession *)self secondaryImage];
     -[CIFilter setValuesForKeysWithDictionary:](v28, "setValuesForKeysWithDictionary:", [MEMORY[0x1E695DF20] dictionaryWithObjects:v66 forKeys:v65 count:2]);
     [(CIFilter *)v28 setValue:[(NSDictionary *)[(CIDualRedEyeRepairTuning *)[(CIDualRedEyeRepairSession *)self tuning] sessionTuning] objectForKeyedSubscript:@"kUseFaceSegmentationMask"] forKey:@"inputUseFaceSegmentationMask"];
@@ -1948,7 +1948,7 @@ uint64_t __62__CIDualRedEyeRepairSession_setPrimary_observations_metadata___bloc
       v47[1] = 3221225472;
       v48 = __60__CIDualRedEyeRepairSession__repairPrimaryWithSecondary_to___block_invoke_264;
       v49 = &__block_descriptor_44_e5_v8__0l;
-      v50 = self;
+      selfCopy2 = self;
       v51 = v32;
       if (CI_LOG_DUALRED())
       {
@@ -2064,18 +2064,18 @@ void __60__CIDualRedEyeRepairSession__repairPrimaryWithSecondary_to___block_invo
 
 - (void)dumpSecondary
 {
-  [-[CVBufferRef primaryImage](a1 "primaryImage")];
-  CVBufferGetAttachments(a1[1], kCVAttachmentMode_ShouldPropagate);
+  [-[CVBufferRef primaryImage](self "primaryImage")];
+  CVBufferGetAttachments(self[1], kCVAttachmentMode_ShouldPropagate);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x20u);
 }
 
-- (void)dumpObservation:(id)a3 index:(int)a4
+- (void)dumpObservation:(id)observation index:(int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   v8 = 0;
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v8];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:observation requiringSecureCoding:1 error:&v8];
   if (v8)
   {
     if (CI_LOG_DUALRED())

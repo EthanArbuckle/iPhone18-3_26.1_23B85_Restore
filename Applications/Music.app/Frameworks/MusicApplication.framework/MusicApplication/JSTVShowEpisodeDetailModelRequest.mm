@@ -1,8 +1,8 @@
 @interface JSTVShowEpisodeDetailModelRequest
 - (_TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest)init;
-- (_TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (_TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation JSTVShowEpisodeDetailModelRequest
@@ -15,7 +15,7 @@
   return [(JSTVShowEpisodeDetailModelRequest *)&v3 init];
 }
 
-- (_TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest)initWithCoder:(id)a3
+- (_TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest)initWithCoder:(id)coder
 {
   *&self->MPModelRequest_opaque[OBJC_IVAR____TtC16MusicApplication33JSTVShowEpisodeDetailModelRequest_tvShowEpisodeDetail] = 0;
   type metadata accessor for JSTVShowEpisodeDetailModelRequest();
@@ -23,10 +23,10 @@
   return 0;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_21DC54(a3, v7);
+  selfCopy = self;
+  sub_21DC54(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_ABB3A0();
@@ -34,12 +34,12 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   v7 = JSViewModelRequestCoordinator.sharedCoordinator.unsafeMutableAddressor();
   v8 = *v7;
   v9 = *(**v7 + 144);
@@ -52,7 +52,7 @@
   *(v12 + 5) = v5;
   v13 = type metadata accessor for JSTVShowEpisodeDetailModelRequestOperation();
   v14 = objc_allocWithZone(v13);
-  [(JSTVShowEpisodeDetailModelRequest *)v6 copy];
+  [(JSTVShowEpisodeDetailModelRequest *)selfCopy copy];
   sub_ABAB50();
   type metadata accessor for JSTVShowEpisodeDetailModelRequest();
   swift_dynamicCast();

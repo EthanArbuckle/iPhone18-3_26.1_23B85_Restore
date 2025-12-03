@@ -1,30 +1,30 @@
 @interface CSSegmentedValue
-- (CSSegmentedValue)initWithThresholds:(id)a3 value:(unint64_t)a4;
+- (CSSegmentedValue)initWithThresholds:(id)thresholds value:(unint64_t)value;
 - (void)updateSegmentAndProgress;
 @end
 
 @implementation CSSegmentedValue
 
-- (CSSegmentedValue)initWithThresholds:(id)a3 value:(unint64_t)a4
+- (CSSegmentedValue)initWithThresholds:(id)thresholds value:(unint64_t)value
 {
-  v6 = a3;
+  thresholdsCopy = thresholds;
   v7 = 0;
   do
   {
     ++v7;
   }
 
-  while (v7 < [v6 count]);
+  while (v7 < [thresholdsCopy count]);
   v12.receiver = self;
   v12.super_class = CSSegmentedValue;
   v8 = [(CSSegmentedValue *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [thresholdsCopy copy];
     thresholds = v8->_thresholds;
     v8->_thresholds = v9;
 
-    v8->_value = a4;
+    v8->_value = value;
     [(CSSegmentedValue *)v8 updateSegmentAndProgress];
   }
 
@@ -35,18 +35,18 @@
 {
   value = self->_value;
   v4 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:0];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (value <= v5)
+  if (value <= unsignedIntegerValue)
   {
     self->_segment = 0;
   }
 
   v6 = self->_value;
   v7 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:[(NSArray *)self->_thresholds count]- 2];
-  v8 = [v7 unsignedIntValue];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  if (v6 >= v8)
+  if (v6 >= unsignedIntValue)
   {
     segment = [(NSArray *)self->_thresholds count]- 2;
 LABEL_12:
@@ -65,13 +65,13 @@ LABEL_12:
       }
 
       v11 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:v9 + 1];
-      v12 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
       v13 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:v9 + 2];
-      v14 = [v13 unsignedIntValue];
+      unsignedIntValue2 = [v13 unsignedIntValue];
 
       v15 = self->_value;
-      v16 = v12 >= v15 || v15 > v14;
+      v16 = unsignedIntegerValue2 >= v15 || v15 > unsignedIntValue2;
       v9 = segment;
       if (!v16)
       {
@@ -83,12 +83,12 @@ LABEL_12:
   }
 
   v17 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:segment];
-  v18 = [v17 unsignedIntValue];
+  unsignedIntValue3 = [v17 unsignedIntValue];
 
   v19 = [(NSArray *)self->_thresholds objectAtIndexedSubscript:self->_segment + 1];
-  v20 = [v19 unsignedIntValue];
+  unsignedIntValue4 = [v19 unsignedIntValue];
 
-  self->_progressWithinSegment = fmax(fmin((self->_value - v18) / (v20 - v18), 1.0), 0.0);
+  self->_progressWithinSegment = fmax(fmin((self->_value - unsignedIntValue3) / (unsignedIntValue4 - unsignedIntValue3), 1.0), 0.0);
 }
 
 @end

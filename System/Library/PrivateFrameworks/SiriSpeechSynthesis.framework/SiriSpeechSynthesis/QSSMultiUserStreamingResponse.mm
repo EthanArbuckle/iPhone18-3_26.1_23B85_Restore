@@ -1,10 +1,10 @@
 @interface QSSMultiUserStreamingResponse
-- (Offset<siri::speech::qss_fb::MultiUserStreamingResponse>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::MultiUserStreamingResponse>)addObjectToBuffer:(void *)buffer;
 - (QSSAudioLimitExceeded)contentAsQSSAudioLimitExceeded;
 - (QSSClientSetupInfo)contentAsQSSClientSetupInfo;
 - (QSSFinalBlazarResponse)contentAsQSSFinalBlazarResponse;
 - (QSSFinalSpeechRecognitionResponse)contentAsQSSFinalSpeechRecognitionResponse;
-- (QSSMultiUserStreamingResponse)initWithFlatbuffData:(id)a3 root:(const MultiUserStreamingResponse *)a4 verify:(BOOL)a5;
+- (QSSMultiUserStreamingResponse)initWithFlatbuffData:(id)data root:(const MultiUserStreamingResponse *)root verify:(BOOL)verify;
 - (QSSPartialSpeechRecognitionResponse)contentAsQSSPartialSpeechRecognitionResponse;
 - (QSSRecognitionCandidate)contentAsQSSRecognitionCandidate;
 - (QSSRecognitionProgress)contentAsQSSRecognitionProgress;
@@ -45,13 +45,13 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
   return result;
 }
 
-- (Offset<siri::speech::qss_fb::MultiUserStreamingResponse>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::MultiUserStreamingResponse>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSMultiUserStreamingResponse *)self content_type];
+  content_type = [(QSSMultiUserStreamingResponse *)self content_type];
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 1)
   {
-    v6 = [(QSSMultiUserStreamingResponse *)self contentAsQSSFinalSpeechRecognitionResponse];
-    v7 = [v6 addObjectToBuffer:a3];
+    contentAsQSSFinalSpeechRecognitionResponse = [(QSSMultiUserStreamingResponse *)self contentAsQSSFinalSpeechRecognitionResponse];
+    v7 = [contentAsQSSFinalSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v8 = v7;
   }
@@ -63,8 +63,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 2)
   {
-    v9 = [(QSSMultiUserStreamingResponse *)self contentAsQSSPartialSpeechRecognitionResponse];
-    v10 = [v9 addObjectToBuffer:a3];
+    contentAsQSSPartialSpeechRecognitionResponse = [(QSSMultiUserStreamingResponse *)self contentAsQSSPartialSpeechRecognitionResponse];
+    v10 = [contentAsQSSPartialSpeechRecognitionResponse addObjectToBuffer:buffer];
 
     v11 = v10;
   }
@@ -76,8 +76,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 3)
   {
-    v12 = [(QSSMultiUserStreamingResponse *)self contentAsQSSRecognitionProgress];
-    v13 = [v12 addObjectToBuffer:a3];
+    contentAsQSSRecognitionProgress = [(QSSMultiUserStreamingResponse *)self contentAsQSSRecognitionProgress];
+    v13 = [contentAsQSSRecognitionProgress addObjectToBuffer:buffer];
 
     v14 = v13;
   }
@@ -89,8 +89,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 4)
   {
-    v15 = [(QSSMultiUserStreamingResponse *)self contentAsQSSRecognitionCandidate];
-    v16 = [v15 addObjectToBuffer:a3];
+    contentAsQSSRecognitionCandidate = [(QSSMultiUserStreamingResponse *)self contentAsQSSRecognitionCandidate];
+    v16 = [contentAsQSSRecognitionCandidate addObjectToBuffer:buffer];
 
     v17 = v16;
   }
@@ -102,8 +102,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 5)
   {
-    v18 = [(QSSMultiUserStreamingResponse *)self contentAsQSSRequestStatsResponse];
-    v19 = [v18 addObjectToBuffer:a3];
+    contentAsQSSRequestStatsResponse = [(QSSMultiUserStreamingResponse *)self contentAsQSSRequestStatsResponse];
+    v19 = [contentAsQSSRequestStatsResponse addObjectToBuffer:buffer];
 
     v20 = v19;
   }
@@ -115,8 +115,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 6)
   {
-    v21 = [(QSSMultiUserStreamingResponse *)self contentAsQSSServerEndpointFeatures];
-    v22 = [v21 addObjectToBuffer:a3];
+    contentAsQSSServerEndpointFeatures = [(QSSMultiUserStreamingResponse *)self contentAsQSSServerEndpointFeatures];
+    v22 = [contentAsQSSServerEndpointFeatures addObjectToBuffer:buffer];
 
     v38 = v22;
   }
@@ -128,8 +128,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 7)
   {
-    v23 = [(QSSMultiUserStreamingResponse *)self contentAsQSSClientSetupInfo];
-    v24 = [v23 addObjectToBuffer:a3];
+    contentAsQSSClientSetupInfo = [(QSSMultiUserStreamingResponse *)self contentAsQSSClientSetupInfo];
+    v24 = [contentAsQSSClientSetupInfo addObjectToBuffer:buffer];
 
     v37 = v24;
   }
@@ -141,8 +141,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 8)
   {
-    v25 = [(QSSMultiUserStreamingResponse *)self contentAsQSSAudioLimitExceeded];
-    v26 = [v25 addObjectToBuffer:a3];
+    contentAsQSSAudioLimitExceeded = [(QSSMultiUserStreamingResponse *)self contentAsQSSAudioLimitExceeded];
+    v26 = [contentAsQSSAudioLimitExceeded addObjectToBuffer:buffer];
 
     v35 = v26;
   }
@@ -155,8 +155,8 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
   v36 = v20;
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 9)
   {
-    v27 = [(QSSMultiUserStreamingResponse *)self contentAsQSSFinalBlazarResponse];
-    v28 = [v27 addObjectToBuffer:a3];
+    contentAsQSSFinalBlazarResponse = [(QSSMultiUserStreamingResponse *)self contentAsQSSFinalBlazarResponse];
+    v28 = [contentAsQSSFinalBlazarResponse addObjectToBuffer:buffer];
     v29 = v14;
 
     v34 = v28;
@@ -168,58 +168,58 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
     v34 = 0;
   }
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v31 = *(a3 + 5);
-  v30 = *(a3 + 6);
-  v32 = *(a3 + 4);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v31 = *(buffer + 5);
+  v30 = *(buffer + 6);
+  v32 = *(buffer + 4);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, content_type);
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 1)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v8);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v8);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 2)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v11);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v11);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 3)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v29);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v29);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 4)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v17);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v17);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 5)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v36);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v36);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 6)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v38);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v38);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 7)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v37);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v37);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 8)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v35);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v35);
   }
 
   if ([(QSSMultiUserStreamingResponse *)self content_type]== 9)
   {
-    flatbuffers::FlatBufferBuilder::AddOffset<void>(a3, v34);
+    flatbuffers::FlatBufferBuilder::AddOffset<void>(buffer, v34);
   }
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v32 - v30 + v31);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v32 - v30 + v31);
 }
 
 - (QSSFinalBlazarResponse)contentAsQSSFinalBlazarResponse
@@ -534,10 +534,10 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
   }
 }
 
-- (QSSMultiUserStreamingResponse)initWithFlatbuffData:(id)a3 root:(const MultiUserStreamingResponse *)a4 verify:(BOOL)a5
+- (QSSMultiUserStreamingResponse)initWithFlatbuffData:(id)data root:(const MultiUserStreamingResponse *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v33.receiver = self;
   v33.super_class = QSSMultiUserStreamingResponse;
   v10 = [(QSSMultiUserStreamingResponse *)&v33 init];
@@ -547,32 +547,32 @@ flatbuffers::DetachedBuffer *__45__QSSMultiUserStreamingResponse_flatbuffData__b
     goto LABEL_64;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_65;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v12 = [(NSData *)v10->_data bytes];
-    a4 = v12 + *v12;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (v5)
+  v10->_root = root;
+  if (verifyCopy)
   {
-    v13 = [(NSData *)v10->_data bytes];
+    bytes2 = [(NSData *)v10->_data bytes];
     v14 = [(NSData *)v10->_data length];
     root = v10->_root;
-    if (root < v13 || root > v13 + v14)
+    if (root < bytes2 || root > bytes2 + v14)
     {
       goto LABEL_65;
     }
 
-    v17 = [(NSData *)v10->_data bytes];
+    bytes3 = [(NSData *)v10->_data bytes];
     v18 = [(NSData *)v10->_data length];
-    v28 = v17;
+    v28 = bytes3;
     v29 = v18;
     v30 = xmmword_26914CD70;
     v31 = 0;
@@ -698,9 +698,9 @@ LABEL_65:
   }
 
 LABEL_63:
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   storage = v11->_storage;
-  v11->_storage = v24;
+  v11->_storage = dictionary;
 
 LABEL_64:
   v26 = v11;

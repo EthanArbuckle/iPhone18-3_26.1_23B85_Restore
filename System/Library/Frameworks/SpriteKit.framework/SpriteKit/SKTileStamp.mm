@@ -1,13 +1,13 @@
 @interface SKTileStamp
-+ (id)tileStampWithWidth:(unint64_t)a3 height:(unint64_t)a4 tileData:(unsigned int *)a5;
-- (BOOL)isEqualToNode:(id)a3;
++ (id)tileStampWithWidth:(unint64_t)width height:(unint64_t)height tileData:(unsigned int *)data;
+- (BOOL)isEqualToNode:(id)node;
 - (SKTileStamp)init;
-- (SKTileStamp)initWithCoder:(id)a3;
-- (SKTileStamp)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 tileData:(unsigned int *)a5;
-- (id)tileDefinitionsForTileMap:(id)a3;
+- (SKTileStamp)initWithCoder:(id)coder;
+- (SKTileStamp)initWithWidth:(unint64_t)width height:(unint64_t)height tileData:(unsigned int *)data;
+- (id)tileDefinitionsForTileMap:(id)map;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTileData:(unsigned int *)a3 size:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTileData:(unsigned int *)data size:(unint64_t)size;
 @end
 
 @implementation SKTileStamp
@@ -35,43 +35,43 @@
   return result;
 }
 
-- (SKTileStamp)initWithWidth:(unint64_t)a3 height:(unint64_t)a4 tileData:(unsigned int *)a5
+- (SKTileStamp)initWithWidth:(unint64_t)width height:(unint64_t)height tileData:(unsigned int *)data
 {
-  v6 = a4;
-  v7 = a3;
+  heightCopy = height;
+  widthCopy = width;
   v11.receiver = self;
   v11.super_class = SKTileStamp;
   v8 = [(SKTileStamp *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_columns = v7;
-    v8->_rows = v6;
-    [(SKTileStamp *)v8 setTileData:a5 size:4 * v7 * v6];
+    v8->_columns = widthCopy;
+    v8->_rows = heightCopy;
+    [(SKTileStamp *)v8 setTileData:data size:4 * widthCopy * heightCopy];
   }
 
   return v9;
 }
 
-+ (id)tileStampWithWidth:(unint64_t)a3 height:(unint64_t)a4 tileData:(unsigned int *)a5
++ (id)tileStampWithWidth:(unint64_t)width height:(unint64_t)height tileData:(unsigned int *)data
 {
-  v5 = [[SKTileStamp alloc] initWithWidth:a3 height:a4 tileData:a5];
+  v5 = [[SKTileStamp alloc] initWithWidth:width height:height tileData:data];
 
   return v5;
 }
 
-- (SKTileStamp)initWithCoder:(id)a3
+- (SKTileStamp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKTileStamp;
   v5 = [(SKTileStamp *)&v9 init];
   if (v5)
   {
-    v5->_columns = [v4 decodeIntegerForKey:@"_columns"];
-    v5->_rows = [v4 decodeIntegerForKey:@"_rows"];
+    v5->_columns = [coderCopy decodeIntegerForKey:@"_columns"];
+    v5->_rows = [coderCopy decodeIntegerForKey:@"_rows"];
     v8 = 0;
-    v6 = [v4 decodeBytesForKey:@"_tileData" returnedLength:&v8];
+    v6 = [coderCopy decodeBytesForKey:@"_tileData" returnedLength:&v8];
     if (v8 == 4 * v5->_rows * v5->_columns)
     {
       [(SKTileStamp *)v5 setTileData:v6 size:?];
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_columns forKey:@"_columns"];
-  [v5 encodeInteger:self->_rows forKey:@"_rows"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_columns forKey:@"_columns"];
+  [coderCopy encodeInteger:self->_rows forKey:@"_rows"];
   tileData = self->_tileData;
   if (tileData)
   {
-    [v5 encodeBytes:tileData length:4 * self->_columns * self->_rows forKey:@"_tileData"];
+    [coderCopy encodeBytes:tileData length:4 * self->_columns * self->_rows forKey:@"_tileData"];
   }
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (self == nodeCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = nodeCopy;
     v7 = v6;
     columns = self->_columns;
     v10 = columns == v6->_columns && (rows = self->_rows, rows == v6->_rows) && memcmp(self->_tileData, v6->_tileData, rows * columns) == 0;
@@ -113,19 +113,19 @@
   return v10;
 }
 
-- (void)setTileData:(unsigned int *)a3 size:(unint64_t)a4
+- (void)setTileData:(unsigned int *)data size:(unint64_t)size
 {
   free(self->_tileData);
-  v7 = malloc_type_malloc(a4, 0x100004052888210uLL);
+  v7 = malloc_type_malloc(size, 0x100004052888210uLL);
   self->_tileData = v7;
 
-  memcpy(v7, a3, a4);
+  memcpy(v7, data, size);
 }
 
-- (id)tileDefinitionsForTileMap:(id)a3
+- (id)tileDefinitionsForTileMap:(id)map
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  mapCopy = map;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = self->_rows * self->_columns;
   v7 = objc_alloc_init(SKTileDefinition);
   if (v6)
@@ -134,7 +134,7 @@
     v9 = 4 * v6;
     do
     {
-      v10 = [v4 tileDefinitionForTileID:self->_tileData[v8 / 4]];
+      v10 = [mapCopy tileDefinitionForTileID:self->_tileData[v8 / 4]];
       if (v10)
       {
         v11 = v10;
@@ -145,7 +145,7 @@
         v11 = v7;
       }
 
-      [v5 addObject:v11];
+      [array addObject:v11];
 
       v8 += 4;
     }
@@ -153,7 +153,7 @@
     while (v9 != v8);
   }
 
-  return v5;
+  return array;
 }
 
 @end

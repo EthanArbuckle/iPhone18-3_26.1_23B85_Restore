@@ -1,28 +1,28 @@
 @interface CMPedometerBin
-- (BOOL)isEqual:(id)a3;
-- (CMPedometerBin)initWithCoder:(id)a3;
-- (CMPedometerBin)initWithValueOut:(double)a3 begin:(double)a4 end:(double)a5 state:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (CMPedometerBin)initWithCoder:(id)coder;
+- (CMPedometerBin)initWithValueOut:(double)out begin:(double)begin end:(double)end state:(int64_t)state;
 - (double)center;
 - (double)lowerQuartile;
 - (double)upperQuartile;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMPedometerBin
 
-- (CMPedometerBin)initWithValueOut:(double)a3 begin:(double)a4 end:(double)a5 state:(int64_t)a6
+- (CMPedometerBin)initWithValueOut:(double)out begin:(double)begin end:(double)end state:(int64_t)state
 {
   v11.receiver = self;
   v11.super_class = CMPedometerBin;
   result = [(CMPedometerBin *)&v11 init];
   if (result)
   {
-    result->_valueOut = a3;
-    result->_begin = a4;
-    result->_end = a5;
-    result->_state = a6;
+    result->_valueOut = out;
+    result->_begin = begin;
+    result->_end = end;
+    result->_state = state;
   }
 
   return result;
@@ -35,33 +35,33 @@
   [(CMPedometerBin *)&v2 dealloc];
 }
 
-- (CMPedometerBin)initWithCoder:(id)a3
+- (CMPedometerBin)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = CMPedometerBin;
   v5 = [(CMPedometerBin *)&v13 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kCMPedometerBinCodingKeyValueOut");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kCMPedometerBinCodingKeyValueOut");
     v5->_valueOut = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMPedometerBinCodingKeyBegin");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMPedometerBinCodingKeyBegin");
     v5->_begin = v8;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMPedometerBinCodingKeyEnd");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMPedometerBinCodingKeyEnd");
     v5->_end = v10;
-    v5->_state = objc_msgSend_decodeIntegerForKey_(a3, v11, @"kCMPedometerBinCodingKeyState");
+    v5->_state = objc_msgSend_decodeIntegerForKey_(coder, v11, @"kCMPedometerBinCodingKeyState");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kCMPedometerBinCodingKeyValueOut", self->_valueOut);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCMPedometerBinCodingKeyBegin", self->_begin);
-  objc_msgSend_encodeDouble_forKey_(a3, v6, @"kCMPedometerBinCodingKeyEnd", self->_end);
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kCMPedometerBinCodingKeyValueOut", self->_valueOut);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCMPedometerBinCodingKeyBegin", self->_begin);
+  objc_msgSend_encodeDouble_forKey_(coder, v6, @"kCMPedometerBinCodingKeyEnd", self->_end);
   state = self->_state;
 
-  objc_msgSend_encodeInteger_forKey_(a3, v7, state, @"kCMPedometerBinCodingKeyState");
+  objc_msgSend_encodeInteger_forKey_(coder, v7, state, @"kCMPedometerBinCodingKeyState");
 }
 
 - (id)description
@@ -106,30 +106,30 @@
   return v5 + (v9 - v12) * -0.25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   state = self->_state;
-  if (state != objc_msgSend_state(a3, a2, a3))
+  if (state != objc_msgSend_state(equal, a2, equal))
   {
     return 0;
   }
 
   valueOut = self->_valueOut;
-  objc_msgSend_valueOut(a3, v6, v7);
+  objc_msgSend_valueOut(equal, v6, v7);
   if (valueOut != v11)
   {
     return 0;
   }
 
   begin = self->_begin;
-  objc_msgSend_begin(a3, v9, v10);
+  objc_msgSend_begin(equal, v9, v10);
   if (begin != v15)
   {
     return 0;
   }
 
   end = self->_end;
-  objc_msgSend_end(a3, v13, v14);
+  objc_msgSend_end(equal, v13, v14);
   return end == v17;
 }
 

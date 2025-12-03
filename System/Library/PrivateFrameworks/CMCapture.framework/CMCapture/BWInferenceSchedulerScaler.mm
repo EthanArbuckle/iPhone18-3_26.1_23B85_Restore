@@ -1,30 +1,30 @@
 @interface BWInferenceSchedulerScaler
 - (BWInferenceExecutable)executable;
 - (BWInferencePropagatable)propagatable;
-- (BWInferenceSchedulerScaler)initWithInputRequirement:(id)a3 derivedFromRequirement:(id)a4 outputRequirements:(id)a5 scalerConfiguration:(id)a6;
+- (BWInferenceSchedulerScaler)initWithInputRequirement:(id)requirement derivedFromRequirement:(id)fromRequirement outputRequirements:(id)requirements scalerConfiguration:(id)configuration;
 - (BWInferenceSubmittable)submittable;
 - (NSString)description;
-- (id)_newProviderForWithScalerConfiguration:(id)a3 inputDerivedFromRequirement:(id)a4;
-- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)a3 executionTime:(id *)a4;
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6;
+- (id)_newProviderForWithScalerConfiguration:(id)configuration inputDerivedFromRequirement:(id)requirement;
+- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)buffer executionTime:(id *)time;
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler;
 - (int)prepareForExecution;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceSchedulerScaler
 
-- (BWInferenceSchedulerScaler)initWithInputRequirement:(id)a3 derivedFromRequirement:(id)a4 outputRequirements:(id)a5 scalerConfiguration:(id)a6
+- (BWInferenceSchedulerScaler)initWithInputRequirement:(id)requirement derivedFromRequirement:(id)fromRequirement outputRequirements:(id)requirements scalerConfiguration:(id)configuration
 {
   v12.receiver = self;
   v12.super_class = BWInferenceSchedulerScaler;
   v10 = [(BWInferenceSchedulerScaler *)&v12 init];
   if (v10)
   {
-    v10->_inputRequirement = a3;
-    v10->_outputRequirements = a5;
-    v10->_provider = [(BWInferenceSchedulerScaler *)v10 _newProviderForWithScalerConfiguration:a6 inputDerivedFromRequirement:a4];
+    v10->_inputRequirement = requirement;
+    v10->_outputRequirements = requirements;
+    v10->_provider = [(BWInferenceSchedulerScaler *)v10 _newProviderForWithScalerConfiguration:configuration inputDerivedFromRequirement:fromRequirement];
   }
 
   return v10;
@@ -39,20 +39,20 @@
 
 - (NSString)description
 {
-  v3 = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
+  videoFormat = [(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat];
   v4 = [-[NSArray firstObject](self->_outputRequirements "firstObject")];
   v19.receiver = self;
   v19.super_class = BWInferenceSchedulerScaler;
   v18 = [(BWInferenceSchedulerScaler *)&v19 description];
-  v17 = [(BWInferenceMediaRequirement *)self->_inputRequirement attachedMediaKey];
-  v16 = [v4 width];
-  v5 = [v4 height];
+  attachedMediaKey = [(BWInferenceMediaRequirement *)self->_inputRequirement attachedMediaKey];
+  width = [v4 width];
+  height = [v4 height];
   v6 = [v4 pixelFormat] >> 24;
   v7 = ([v4 pixelFormat] >> 16);
   v8 = ([v4 pixelFormat] >> 8);
-  v9 = [v4 pixelFormat];
-  v10 = [(BWInferenceVideoFormat *)v3 includesInvalidContent];
-  if (v10 != [v4 includesInvalidContent])
+  pixelFormat = [v4 pixelFormat];
+  includesInvalidContent = [(BWInferenceVideoFormat *)videoFormat includesInvalidContent];
+  if (includesInvalidContent != [v4 includesInvalidContent])
   {
     v11 = @", removing invalid region";
   }
@@ -62,18 +62,18 @@
     v11 = &stru_1F216A3D0;
   }
 
-  v12 = [(BWInferenceVideoFormat *)v3 cropDescriptor];
-  v13 = [v4 cropDescriptor];
+  cropDescriptor = [(BWInferenceVideoFormat *)videoFormat cropDescriptor];
+  cropDescriptor2 = [v4 cropDescriptor];
   v14 = @", applying custom crop";
-  if (v12 == v13)
+  if (cropDescriptor == cropDescriptor2)
   {
     v14 = &stru_1F216A3D0;
   }
 
-  return [(NSString *)v18 stringByAppendingFormat:@" mediaKey: %@ output:%zux%zu (%c%c%c%c%@%@) provider:%p", v17, v16, v5, v6, v7, v8, v9, v11, v14, self->_provider];
+  return [(NSString *)v18 stringByAppendingFormat:@" mediaKey: %@ output:%zux%zu (%c%c%c%c%@%@) provider:%p", attachedMediaKey, width, height, v6, v7, v8, pixelFormat, v11, v14, self->_provider];
 }
 
-- (id)_newProviderForWithScalerConfiguration:(id)a3 inputDerivedFromRequirement:(id)a4
+- (id)_newProviderForWithScalerConfiguration:(id)configuration inputDerivedFromRequirement:(id)requirement
 {
   if (FigDepthBytesPerPixelForDepthFormat([(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_inputRequirement videoFormat] pixelFormat]))
   {
@@ -84,13 +84,13 @@
 
   else
   {
-    v9 = [a3 options];
+    options = [configuration options];
     v10 = [BWInferenceVideoScalingProvider alloc];
     inputRequirement = self->_inputRequirement;
     outputRequirements = self->_outputRequirements;
-    v13 = [a3 filterType];
+    filterType = [configuration filterType];
 
-    return [(BWInferenceVideoScalingProvider *)v10 initWithInputRequirement:inputRequirement derivedFromRequirement:a4 outputRequirements:outputRequirements enableFencing:v9 & 1 filterType:v13];
+    return [(BWInferenceVideoScalingProvider *)v10 initWithInputRequirement:inputRequirement derivedFromRequirement:requirement outputRequirements:outputRequirements enableFencing:options & 1 filterType:filterType];
   }
 }
 
@@ -133,7 +133,7 @@
   }
 }
 
-- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)a3 executionTime:(id *)a4
+- (id)preventionReasonWithSampleBuffer:(opaqueCMSampleBuffer *)buffer executionTime:(id *)time
 {
   if (![(BWInferenceProvider *)self->_provider conformsToProtocol:&unk_1F2257088])
   {
@@ -141,33 +141,33 @@
   }
 
   provider = self->_provider;
-  v9 = *&a4->var0;
-  var3 = a4->var3;
-  return [(BWInferenceProvider *)provider preventionReasonWithSampleBuffer:a3 executionTime:&v9];
+  v9 = *&time->var0;
+  var3 = time->var3;
+  return [(BWInferenceProvider *)provider preventionReasonWithSampleBuffer:buffer executionTime:&v9];
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
-  v4 = [(BWInferenceProvider *)self->_provider submittable];
+  submittable = [(BWInferenceProvider *)self->_provider submittable];
 
-  return [v4 prepareForSubmissionWithWorkQueue:a3];
+  return [submittable prepareForSubmissionWithWorkQueue:queue];
 }
 
 - (int)prepareForExecution
 {
-  v2 = [(BWInferenceProvider *)self->_provider executable];
+  executable = [(BWInferenceProvider *)self->_provider executable];
 
-  return [v2 prepareForExecution];
+  return [executable prepareForExecution];
 }
 
-- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withExecutionTime:(id *)a5 completionHandler:(id)a6
+- (int)executeOnSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withExecutionTime:(id *)time completionHandler:(id)handler
 {
   provider = self->_provider;
-  v8 = *a5;
-  return [(BWInferenceProvider *)provider executeOnSampleBuffer:a3 usingStorage:a4 withExecutionTime:&v8 completionHandler:a6];
+  v8 = *time;
+  return [(BWInferenceProvider *)provider executeOnSampleBuffer:buffer usingStorage:storage withExecutionTime:&v8 completionHandler:handler];
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   provider = self->_provider;
   if (!provider)
@@ -175,8 +175,8 @@
     return -31701;
   }
 
-  v9 = *a5;
-  return [(BWInferenceProvider *)provider submitForSampleBuffer:a3 usingStorage:a4 withSubmissionTime:&v9 workQueue:a6 completionHandler:a7];
+  v9 = *time;
+  return [(BWInferenceProvider *)provider submitForSampleBuffer:buffer usingStorage:storage withSubmissionTime:&v9 workQueue:queue completionHandler:handler];
 }
 
 @end

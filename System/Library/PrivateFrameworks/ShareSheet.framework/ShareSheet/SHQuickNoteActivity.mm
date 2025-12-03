@@ -1,13 +1,13 @@
 @interface SHQuickNoteActivity
 + (unint64_t)_xpcAttributes;
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (SHQuickNoteActivity)init;
 - (id)activityTitle;
-- (void)_configureQuickNotePresentationDelegateWithPresenterViewController:(id)a3;
-- (void)prepareWithActivityItems:(id)a3;
-- (void)systemPaperDidFinishWithError:(id)a3;
+- (void)_configureQuickNotePresentationDelegateWithPresenterViewController:(id)controller;
+- (void)prepareWithActivityItems:(id)items;
+- (void)systemPaperDidFinishWithError:(id)error;
 @end
 
 @implementation SHQuickNoteActivity
@@ -103,9 +103,9 @@ void __27__SHQuickNoteActivity_init__block_invoke(uint64_t a1)
     v9 = v3;
     v17 = v9;
     dispatch_async(v8, block);
-    v10 = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
-    v9->__hasUserActivityCurrent = v10 != 0;
-    if (v10)
+    _currentUserActivityUUID = [MEMORY[0x1E69636A8] _currentUserActivityUUID];
+    v9->__hasUserActivityCurrent = _currentUserActivityUUID != 0;
+    if (_currentUserActivityUUID)
     {
       objc_initWeak(&location, v9);
       v11 = MEMORY[0x1E69636A8];
@@ -114,7 +114,7 @@ void __27__SHQuickNoteActivity_init__block_invoke(uint64_t a1)
       v13[2] = __27__SHQuickNoteActivity_init__block_invoke_2;
       v13[3] = &unk_1E71FA9B0;
       objc_copyWeak(&v14, &location);
-      [v11 _fetchUserActivityWithUUID:v10 completionHandler:v13];
+      [v11 _fetchUserActivityWithUUID:_currentUserActivityUUID completionHandler:v13];
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
     }
@@ -227,11 +227,11 @@ void __27__SHQuickNoteActivity_init__block_invoke_3(uint64_t a1)
   return v7;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     goto LABEL_22;
   }
@@ -240,7 +240,7 @@ void __27__SHQuickNoteActivity_init__block_invoke_3(uint64_t a1)
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v6)
   {
@@ -286,22 +286,22 @@ void __27__SHQuickNoteActivity_init__block_invoke_3(uint64_t a1)
     goto LABEL_22;
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v13 = _os_feature_enabled_impl();
-  v14 = [MEMORY[0x1E696AAE8] mainBundle];
-  v15 = [v14 bundleIdentifier];
-  v16 = [v15 lowercaseString];
-  v17 = [v16 isEqualToString:@"com.apple.mobilesafari"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  lowercaseString = [bundleIdentifier lowercaseString];
+  v17 = [lowercaseString isEqualToString:@"com.apple.mobilesafari"];
 
-  v18 = [MEMORY[0x1E696AAE8] mainBundle];
-  v19 = [v18 bundleIdentifier];
-  v20 = [v19 lowercaseString];
-  v21 = [v20 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+  lowercaseString2 = [bundleIdentifier2 lowercaseString];
+  v21 = [lowercaseString2 isEqualToString:@"com.apple.mobilenotes"];
 
   v22 = 0;
-  if (!v12 && v13)
+  if (!userInterfaceIdiom && v13)
   {
     if (!(v17 & 1 | ![(SHQuickNoteActivity *)self isQuickNoteExtensionInstalled]| v21 & 1))
     {
@@ -323,22 +323,22 @@ LABEL_23:
   return v22;
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = _UIActivityItemsGetWebURLs(v4, 0);
+  itemsCopy = items;
+  v5 = _UIActivityItemsGetWebURLs(itemsCopy, 0);
   [(SHQuickNoteActivity *)self set_urls:v5];
 
-  v6 = _UIActivityItemsGetImages(v4, 0, 0);
+  v6 = _UIActivityItemsGetImages(itemsCopy, 0, 0);
   [(SHQuickNoteActivity *)self set_images:v6];
 
-  v19 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -375,7 +375,7 @@ LABEL_23:
           v18 = v17;
           if (v17 && UTTypeConformsTo(v17, v11))
           {
-            [v19 addObject:v13];
+            [array addObject:v13];
           }
         }
       }
@@ -386,15 +386,15 @@ LABEL_23:
     while (v9);
   }
 
-  [(SHQuickNoteActivity *)self set_imageFileURLs:v19];
+  [(SHQuickNoteActivity *)self set_imageFileURLs:array];
 }
 
-- (BOOL)_presentActivityOnViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_presentActivityOnViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(SHQuickNoteActivity *)self isQuickNoteExtensionInstalled];
+  controllerCopy = controller;
+  completionCopy = completion;
+  isQuickNoteExtensionInstalled = [(SHQuickNoteActivity *)self isQuickNoteExtensionInstalled];
   v45 = 0;
   v46 = &v45;
   v47 = 0x2050000000;
@@ -415,19 +415,19 @@ LABEL_23:
   _Block_object_dispose(&v45, 8);
   v12 = objc_alloc_init(v10);
   [v12 setShouldAutoInsertLinkToCurrentActivity:{-[SHQuickNoteActivity _hasUserActivityCurrent](self, "_hasUserActivityCurrent")}];
-  if (v9)
+  if (isQuickNoteExtensionInstalled)
   {
-    v13 = [(SHQuickNoteActivity *)self _urls];
-    v14 = [v13 count] == 0;
+    _urls = [(SHQuickNoteActivity *)self _urls];
+    v14 = [_urls count] == 0;
 
     if (!v14)
     {
-      v15 = [(SHQuickNoteActivity *)self _urls];
-      [v12 addURLs:v15];
+      _urls2 = [(SHQuickNoteActivity *)self _urls];
+      [v12 addURLs:_urls2];
     }
 
-    v16 = [(SHQuickNoteActivity *)self _images];
-    v17 = [v16 count] == 0;
+    _images = [(SHQuickNoteActivity *)self _images];
+    v17 = [_images count] == 0;
 
     if (!v17)
     {
@@ -435,8 +435,8 @@ LABEL_23:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v18 = [(SHQuickNoteActivity *)self _images];
-      v19 = [v18 countByEnumeratingWithState:&v36 objects:v49 count:16];
+      _images2 = [(SHQuickNoteActivity *)self _images];
+      v19 = [_images2 countByEnumeratingWithState:&v36 objects:v49 count:16];
       if (v19)
       {
         v20 = *v37;
@@ -446,7 +446,7 @@ LABEL_23:
           {
             if (*v37 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(_images2);
             }
 
             v22 = *(*(&v36 + 1) + 8 * i);
@@ -466,20 +466,20 @@ LABEL_23:
             }
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v36 objects:v49 count:16];
+          v19 = [_images2 countByEnumeratingWithState:&v36 objects:v49 count:16];
         }
 
         while (v19);
       }
     }
 
-    v24 = [(SHQuickNoteActivity *)self _imageFileURLs];
-    v25 = [v24 count] == 0;
+    _imageFileURLs = [(SHQuickNoteActivity *)self _imageFileURLs];
+    v25 = [_imageFileURLs count] == 0;
 
     if (!v25)
     {
-      v26 = [(SHQuickNoteActivity *)self _imageFileURLs];
-      [v12 addImageFileURLs:v26];
+      _imageFileURLs2 = [(SHQuickNoteActivity *)self _imageFileURLs];
+      [v12 addImageFileURLs:_imageFileURLs2];
     }
   }
 
@@ -508,10 +508,10 @@ LABEL_23:
   v33[2] = __76__SHQuickNoteActivity__presentActivityOnViewController_animated_completion___block_invoke;
   v33[3] = &unk_1E71FA9D8;
   v33[4] = self;
-  v34 = v7;
-  v35 = v8;
-  v30 = v8;
-  v31 = v7;
+  v34 = controllerCopy;
+  v35 = completionCopy;
+  v30 = completionCopy;
+  v31 = controllerCopy;
   [v29 activateWithCompletion:v33];
 
   return 1;
@@ -548,12 +548,12 @@ uint64_t __76__SHQuickNoteActivity__presentActivityOnViewController_animated_com
   return v2();
 }
 
-- (void)_configureQuickNotePresentationDelegateWithPresenterViewController:(id)a3
+- (void)_configureQuickNotePresentationDelegateWithPresenterViewController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = v4;
+    v5 = controllerCopy;
     while (1)
     {
       NSClassFromString(&cfstr_Icsystempapere.isa);
@@ -562,10 +562,10 @@ uint64_t __76__SHQuickNoteActivity__presentActivityOnViewController_animated_com
         break;
       }
 
-      v6 = [v5 presentedViewController];
+      presentedViewController = [v5 presentedViewController];
 
-      v5 = v6;
-      if (!v6)
+      v5 = presentedViewController;
+      if (!presentedViewController)
       {
         goto LABEL_7;
       }
@@ -575,11 +575,11 @@ uint64_t __76__SHQuickNoteActivity__presentActivityOnViewController_animated_com
   }
 
 LABEL_7:
-  v7 = [(SHQuickNoteActivity *)self systemPaperViewController];
-  if (v7 && (v8 = v7, -[SHQuickNoteActivity systemPaperViewController](self, "systemPaperViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isBeingDismissed], v9, v8, (v10 & 1) == 0))
+  systemPaperViewController = [(SHQuickNoteActivity *)self systemPaperViewController];
+  if (systemPaperViewController && (v8 = systemPaperViewController, -[SHQuickNoteActivity systemPaperViewController](self, "systemPaperViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isBeingDismissed], v9, v8, (v10 & 1) == 0))
   {
-    v11 = [(SHQuickNoteActivity *)self systemPaperViewController];
-    [v11 setPresentationDelegate:self];
+    systemPaperViewController2 = [(SHQuickNoteActivity *)self systemPaperViewController];
+    [systemPaperViewController2 setPresentationDelegate:self];
   }
 
   else
@@ -589,22 +589,22 @@ LABEL_7:
   }
 }
 
-- (BOOL)_dismissActivityFromViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (BOOL)_dismissActivityFromViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __78__SHQuickNoteActivity__dismissActivityFromViewController_animated_completion___block_invoke;
   v18 = &unk_1E71FA0F0;
-  v19 = self;
-  v20 = v8;
-  v9 = v8;
+  selfCopy = self;
+  v20 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x18CFF58E0](&v15);
-  if (v7)
+  if (controllerCopy)
   {
     v11 = 1;
-    [v7 dismissViewControllerAnimated:1 completion:{v10, v15, v16, v17, v18, v19, v20}];
+    [controllerCopy dismissViewControllerAnimated:1 completion:{v10, v15, v16, v17, v18, selfCopy, v20}];
   }
 
   else
@@ -613,9 +613,9 @@ LABEL_7:
 
     if (v12)
     {
-      v13 = [(SHQuickNoteActivity *)self systemPaperViewController];
+      systemPaperViewController = [(SHQuickNoteActivity *)self systemPaperViewController];
       v11 = 1;
-      [v13 dismissViewControllerAnimated:1 completion:v10];
+      [systemPaperViewController dismissViewControllerAnimated:1 completion:v10];
     }
 
     else
@@ -642,16 +642,16 @@ uint64_t __78__SHQuickNoteActivity__dismissActivityFromViewController_animated_c
   return result;
 }
 
-- (void)systemPaperDidFinishWithError:(id)a3
+- (void)systemPaperDidFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = v5;
-  if (v5 == *MEMORY[0x1E696A250])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = domain;
+  if (domain == *MEMORY[0x1E696A250])
   {
-    v7 = [v4 code];
+    code = [errorCopy code];
 
-    if (v7 == 3072)
+    if (code == 3072)
     {
       v8 = SHQuickNoteLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -667,18 +667,18 @@ uint64_t __78__SHQuickNoteActivity__dismissActivityFromViewController_animated_c
   {
   }
 
-  if (v4)
+  if (errorCopy)
   {
     v8 = SHQuickNoteLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(SHQuickNoteActivity *)v4 systemPaperDidFinishWithError:v8];
+      [(SHQuickNoteActivity *)errorCopy systemPaperDidFinishWithError:v8];
     }
 
 LABEL_9:
   }
 
-  [(UIActivity *)self activityDidFinish:v4 == 0];
+  [(UIActivity *)self activityDidFinish:errorCopy == 0];
 }
 
 void __27__SHQuickNoteActivity_init__block_invoke_3_cold_2(uint64_t *a1, NSObject *a2)

@@ -33,7 +33,7 @@
   }
 
   v19 = 1.0 / v5;
-  v20 = [(CISpotLight *)self _CISpotLight];
+  _CISpotLight = [(CISpotLight *)self _CISpotLight];
   [(CIImage *)self->inputImage extent];
   v22 = v21;
   v24 = v23;
@@ -50,7 +50,7 @@
   [(CIColor *)self->inputColor blue];
   v37[3] = [CIVector vectorWithX:v31 Y:v33 Z:v34 * v36 W:1.0];
   v37[4] = [CIVector vectorWithX:v19 Y:0.0];
-  return [v20 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v37, 5), v22, v24, v26, v28}];
+  return [_CISpotLight applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v37, 5), v22, v24, v26, v28}];
 }
 
 + (id)customAttributes

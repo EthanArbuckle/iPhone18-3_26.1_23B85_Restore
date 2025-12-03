@@ -1,22 +1,22 @@
 @interface AMSMutableLazyPromise
-- (AMSMutableLazyPromise)initWithBlock:(id)a3;
-- (AMSMutableLazyPromise)initWithTimeout:(double)a3 block:(id)a4;
+- (AMSMutableLazyPromise)initWithBlock:(id)block;
+- (AMSMutableLazyPromise)initWithTimeout:(double)timeout block:(id)block;
 @end
 
 @implementation AMSMutableLazyPromise
 
-- (AMSMutableLazyPromise)initWithBlock:(id)a3
+- (AMSMutableLazyPromise)initWithBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = AMSMutableLazyPromise;
-  return [(AMSLazyPromise *)&v4 initWithBlock:a3];
+  return [(AMSLazyPromise *)&v4 initWithBlock:block];
 }
 
-- (AMSMutableLazyPromise)initWithTimeout:(double)a3 block:(id)a4
+- (AMSMutableLazyPromise)initWithTimeout:(double)timeout block:(id)block
 {
   v5.receiver = self;
   v5.super_class = AMSMutableLazyPromise;
-  return [(AMSLazyPromise *)&v5 initWithTimeout:a4 block:a3];
+  return [(AMSLazyPromise *)&v5 initWithTimeout:block block:timeout];
 }
 
 @end

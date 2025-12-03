@@ -10,9 +10,9 @@
   v6 = [MEMORY[0x1E69CDA18] interactionControllerWithURL:a3];
   if (v6)
   {
-    v7 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    v8 = [v5 safari_URLByNormalizingBlobURL];
-    [v6 setSourceIsManaged:{objc_msgSend(v7, "isURLManaged:", v8)}];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    safari_URLByNormalizingBlobURL = [v5 safari_URLByNormalizingBlobURL];
+    [v6 setSourceIsManaged:{objc_msgSend(mEMORY[0x1E69ADFB8], "isURLManaged:", safari_URLByNormalizingBlobURL)}];
 
     v9 = v6;
   }

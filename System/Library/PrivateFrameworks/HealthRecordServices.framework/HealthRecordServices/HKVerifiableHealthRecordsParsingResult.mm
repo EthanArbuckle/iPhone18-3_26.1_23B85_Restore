@@ -1,9 +1,9 @@
 @interface HKVerifiableHealthRecordsParsingResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKVerifiableHealthRecordsParsingResult)init;
-- (HKVerifiableHealthRecordsParsingResult)initWithCoder:(id)a3;
-- (HKVerifiableHealthRecordsParsingResult)initWithOptions:(unint64_t)a3 localizedTypeDisplayNames:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKVerifiableHealthRecordsParsingResult)initWithCoder:(id)coder;
+- (HKVerifiableHealthRecordsParsingResult)initWithOptions:(unint64_t)options localizedTypeDisplayNames:(id)names;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKVerifiableHealthRecordsParsingResult
@@ -18,17 +18,17 @@
   return 0;
 }
 
-- (HKVerifiableHealthRecordsParsingResult)initWithOptions:(unint64_t)a3 localizedTypeDisplayNames:(id)a4
+- (HKVerifiableHealthRecordsParsingResult)initWithOptions:(unint64_t)options localizedTypeDisplayNames:(id)names
 {
-  v6 = a4;
+  namesCopy = names;
   v12.receiver = self;
   v12.super_class = HKVerifiableHealthRecordsParsingResult;
   v7 = [(HKVerifiableHealthRecordsParsingResult *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_options = a3;
-    v9 = [v6 copy];
+    v7->_options = options;
+    v9 = [namesCopy copy];
     localizedTypeDisplayNames = v8->_localizedTypeDisplayNames;
     v8->_localizedTypeDisplayNames = v9;
   }
@@ -36,36 +36,36 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (options = self->_options, options == [(HKVerifiableHealthRecordsParsingResult *)v6 options]))
     {
       localizedTypeDisplayNames = self->_localizedTypeDisplayNames;
-      v9 = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
-      if (localizedTypeDisplayNames == v9)
+      localizedTypeDisplayNames = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
+      if (localizedTypeDisplayNames == localizedTypeDisplayNames)
       {
         v13 = 1;
       }
 
       else
       {
-        v10 = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
-        if (v10)
+        localizedTypeDisplayNames2 = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
+        if (localizedTypeDisplayNames2)
         {
           v11 = self->_localizedTypeDisplayNames;
-          v12 = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
-          v13 = [(NSArray *)v11 isEqualToArray:v12];
+          localizedTypeDisplayNames3 = [(HKVerifiableHealthRecordsParsingResult *)v6 localizedTypeDisplayNames];
+          v13 = [(NSArray *)v11 isEqualToArray:localizedTypeDisplayNames3];
         }
 
         else
@@ -84,28 +84,28 @@
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   options = self->_options;
-  v5 = a3;
-  [v5 encodeInteger:options forKey:@"options"];
-  [v5 encodeObject:self->_localizedTypeDisplayNames forKey:@"localizedTypeDisplayNames"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:options forKey:@"options"];
+  [coderCopy encodeObject:self->_localizedTypeDisplayNames forKey:@"localizedTypeDisplayNames"];
 }
 
-- (HKVerifiableHealthRecordsParsingResult)initWithCoder:(id)a3
+- (HKVerifiableHealthRecordsParsingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"options"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"options"])
   {
-    v5 = [v4 decodeIntegerForKey:@"options"];
+    v5 = [coderCopy decodeIntegerForKey:@"options"];
     v6 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"localizedTypeDisplayNames"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"localizedTypeDisplayNames"];
     v8 = [[HKVerifiableHealthRecordsParsingResult alloc] initWithOptions:v5 localizedTypeDisplayNames:v7];
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
     v8 = 0;
   }
 

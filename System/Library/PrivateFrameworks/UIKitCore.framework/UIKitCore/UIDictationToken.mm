@@ -1,72 +1,72 @@
 @interface UIDictationToken
-- (BOOL)isEqual:(id)a3;
-- (UIDictationToken)initWithCoder:(id)a3;
-- (UIDictationToken)initWithText:(id)a3 removeSpaceBefore:(BOOL)a4 removeSpaceAfter:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (UIDictationToken)initWithCoder:(id)coder;
+- (UIDictationToken)initWithText:(id)text removeSpaceBefore:(BOOL)before removeSpaceAfter:(BOOL)after;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIDictationToken
 
-- (UIDictationToken)initWithText:(id)a3 removeSpaceBefore:(BOOL)a4 removeSpaceAfter:(BOOL)a5
+- (UIDictationToken)initWithText:(id)text removeSpaceBefore:(BOOL)before removeSpaceAfter:(BOOL)after
 {
-  v9 = a3;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = UIDictationToken;
   v10 = [(UIDictationToken *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_text, a3);
-    v11->_removeSpaceBefore = a4;
-    v11->_removeSpaceAfter = a5;
+    objc_storeStrong(&v10->_text, text);
+    v11->_removeSpaceBefore = before;
+    v11->_removeSpaceAfter = after;
     v12 = v11;
   }
 
   return v11;
 }
 
-- (UIDictationToken)initWithCoder:(id)a3
+- (UIDictationToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIDictationToken;
   v5 = [(UIDictationToken *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v5->_removeSpaceBefore = [v4 decodeBoolForKey:@"removeSpaceBefore"];
-    v5->_removeSpaceAfter = [v4 decodeBoolForKey:@"removeSpaceAfter"];
+    v5->_removeSpaceBefore = [coderCopy decodeBoolForKey:@"removeSpaceBefore"];
+    v5->_removeSpaceAfter = [coderCopy decodeBoolForKey:@"removeSpaceAfter"];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeBool:self->_removeSpaceBefore forKey:@"removeSpaceBefore"];
-  [v5 encodeBool:self->_removeSpaceAfter forKey:@"removeSpaceAfter"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeBool:self->_removeSpaceBefore forKey:@"removeSpaceBefore"];
+  [coderCopy encodeBool:self->_removeSpaceAfter forKey:@"removeSpaceAfter"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     text = self->_text;
-    v6 = [v4 text];
-    if (-[NSString isEqualToString:](text, "isEqualToString:", v6) && (removeSpaceBefore = self->_removeSpaceBefore, removeSpaceBefore == [v4 removeSpaceBefore]))
+    text = [equalCopy text];
+    if (-[NSString isEqualToString:](text, "isEqualToString:", text) && (removeSpaceBefore = self->_removeSpaceBefore, removeSpaceBefore == [equalCopy removeSpaceBefore]))
     {
       removeSpaceAfter = self->_removeSpaceAfter;
-      v9 = removeSpaceAfter == [v4 removeSpaceAfter];
+      v9 = removeSpaceAfter == [equalCopy removeSpaceAfter];
     }
 
     else
@@ -109,8 +109,8 @@
     v8 = "NO";
   }
 
-  v9 = [(UIDictationToken *)self _descriptionExtra];
-  v10 = [v3 stringWithFormat:@"<%@ token=%@, removeSpaceBefore/After=%s/%s%@>", v5, text, v7, v8, v9];
+  _descriptionExtra = [(UIDictationToken *)self _descriptionExtra];
+  v10 = [v3 stringWithFormat:@"<%@ token=%@, removeSpaceBefore/After=%s/%s%@>", v5, text, v7, v8, _descriptionExtra];
 
   return v10;
 }

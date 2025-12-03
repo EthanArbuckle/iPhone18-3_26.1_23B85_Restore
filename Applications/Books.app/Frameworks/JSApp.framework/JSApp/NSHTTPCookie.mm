@@ -1,69 +1,69 @@
 @interface NSHTTPCookie
-- (id)jsa_initWithScriptingCookie:(id)a3;
-- (id)jsa_validBooleanValueForProperty:(id)a3;
-- (id)jsa_validIntegerValueForProperty:(id)a3;
-- (id)jsa_validURLValueForProperty:(id)a3;
+- (id)jsa_initWithScriptingCookie:(id)cookie;
+- (id)jsa_validBooleanValueForProperty:(id)property;
+- (id)jsa_validIntegerValueForProperty:(id)property;
+- (id)jsa_validURLValueForProperty:(id)property;
 @end
 
 @implementation NSHTTPCookie
 
-- (id)jsa_initWithScriptingCookie:(id)a3
+- (id)jsa_initWithScriptingCookie:(id)cookie
 {
-  v4 = a3;
+  cookieCopy = cookie;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 name];
+  name = [cookieCopy name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [v4 name];
-    [v5 setObject:v7 forKeyedSubscript:NSHTTPCookieName];
+    name2 = [cookieCopy name];
+    [v5 setObject:name2 forKeyedSubscript:NSHTTPCookieName];
   }
 
-  v8 = [v4 value];
+  value = [cookieCopy value];
 
-  if (v8)
+  if (value)
   {
-    v9 = [v4 value];
-    [v5 setObject:v9 forKeyedSubscript:NSHTTPCookieValue];
+    value2 = [cookieCopy value];
+    [v5 setObject:value2 forKeyedSubscript:NSHTTPCookieValue];
   }
 
-  v10 = [v4 originURL];
+  originURL = [cookieCopy originURL];
 
-  if (v10)
+  if (originURL)
   {
-    v11 = [v4 originURL];
-    v12 = [NSURL URLWithString:v11];
+    originURL2 = [cookieCopy originURL];
+    v12 = [NSURL URLWithString:originURL2];
     [v5 setObject:v12 forKeyedSubscript:NSHTTPCookieOriginURL];
   }
 
-  v13 = [v4 version];
+  version = [cookieCopy version];
 
-  if (v13)
+  if (version)
   {
-    v14 = [v4 version];
-    v15 = [v14 stringValue];
-    [v5 setObject:v15 forKeyedSubscript:NSHTTPCookieVersion];
+    version2 = [cookieCopy version];
+    stringValue = [version2 stringValue];
+    [v5 setObject:stringValue forKeyedSubscript:NSHTTPCookieVersion];
   }
 
-  v16 = [v4 domain];
+  domain = [cookieCopy domain];
 
-  if (v16)
+  if (domain)
   {
-    v17 = [v4 domain];
-    [v5 setObject:v17 forKeyedSubscript:NSHTTPCookieDomain];
+    domain2 = [cookieCopy domain];
+    [v5 setObject:domain2 forKeyedSubscript:NSHTTPCookieDomain];
   }
 
-  v18 = [v4 path];
+  path = [cookieCopy path];
 
-  if (v18)
+  if (path)
   {
-    v19 = [v4 path];
-    [v5 setObject:v19 forKeyedSubscript:NSHTTPCookiePath];
+    path2 = [cookieCopy path];
+    [v5 setObject:path2 forKeyedSubscript:NSHTTPCookiePath];
   }
 
-  if ([v4 isSecure])
+  if ([cookieCopy isSecure])
   {
-    if ([v4 isSecure])
+    if ([cookieCopy isSecure])
     {
       v20 = @"TRUE";
     }
@@ -76,26 +76,26 @@
     [v5 setObject:v20 forKeyedSubscript:NSHTTPCookieSecure];
   }
 
-  v21 = [v4 comment];
+  comment = [cookieCopy comment];
 
-  if (v21)
+  if (comment)
   {
-    v22 = [v4 comment];
-    [v5 setObject:v22 forKeyedSubscript:NSHTTPCookieComment];
+    comment2 = [cookieCopy comment];
+    [v5 setObject:comment2 forKeyedSubscript:NSHTTPCookieComment];
   }
 
-  v23 = [v4 commentURL];
+  commentURL = [cookieCopy commentURL];
 
-  if (v23)
+  if (commentURL)
   {
-    v24 = [v4 commentURL];
-    v25 = [NSURL URLWithString:v24];
+    commentURL2 = [cookieCopy commentURL];
+    v25 = [NSURL URLWithString:commentURL2];
     [v5 setObject:v25 forKeyedSubscript:NSHTTPCookieCommentURL];
   }
 
-  if ([v4 isSessionOnly])
+  if ([cookieCopy isSessionOnly])
   {
-    if ([v4 isSessionOnly])
+    if ([cookieCopy isSessionOnly])
     {
       v26 = @"TRUE";
     }
@@ -108,30 +108,30 @@
     [v5 setObject:v26 forKeyedSubscript:NSHTTPCookieDiscard];
   }
 
-  v27 = [v4 maximumAge];
+  maximumAge = [cookieCopy maximumAge];
 
-  if (v27)
+  if (maximumAge)
   {
-    v28 = [v4 maximumAge];
-    v29 = [v28 stringValue];
-    [v5 setObject:v29 forKeyedSubscript:NSHTTPCookieMaximumAge];
+    maximumAge2 = [cookieCopy maximumAge];
+    stringValue2 = [maximumAge2 stringValue];
+    [v5 setObject:stringValue2 forKeyedSubscript:NSHTTPCookieMaximumAge];
   }
 
-  v30 = [v4 portList];
+  portList = [cookieCopy portList];
 
-  if (v30)
+  if (portList)
   {
-    v31 = [v4 portList];
-    v32 = [v31 componentsJoinedByString:{@", "}];
+    portList2 = [cookieCopy portList];
+    v32 = [portList2 componentsJoinedByString:{@", "}];
     [v5 setObject:v32 forKeyedSubscript:NSHTTPCookiePort];
   }
 
-  v33 = [v4 expirationDate];
+  expirationDate = [cookieCopy expirationDate];
 
-  if (v33)
+  if (expirationDate)
   {
-    v34 = [v4 expirationDate];
-    [v5 setObject:v34 forKeyedSubscript:NSHTTPCookieExpires];
+    expirationDate2 = [cookieCopy expirationDate];
+    [v5 setObject:expirationDate2 forKeyedSubscript:NSHTTPCookieExpires];
   }
 
   v35 = [(NSHTTPCookie *)self initWithProperties:v5];
@@ -139,11 +139,11 @@
   return v35;
 }
 
-- (id)jsa_validURLValueForProperty:(id)a3
+- (id)jsa_validURLValueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(NSHTTPCookie *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  properties = [(NSHTTPCookie *)self properties];
+  v6 = [properties objectForKeyedSubscript:propertyCopy];
 
   objc_opt_class();
   v7 = BUDynamicCast();
@@ -157,18 +157,18 @@
   return v6;
 }
 
-- (id)jsa_validIntegerValueForProperty:(id)a3
+- (id)jsa_validIntegerValueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(NSHTTPCookie *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  properties = [(NSHTTPCookie *)self properties];
+  v6 = [properties objectForKeyedSubscript:propertyCopy];
 
   objc_opt_class();
   v7 = BUDynamicCast();
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
@@ -178,42 +178,42 @@
     v11 = v10;
     if (v10)
     {
-      v9 = [v10 integerValue];
+      integerValue = [v10 integerValue];
     }
 
     else
     {
-      v9 = 0x7FFFFFFFFFFFFFFFLL;
+      integerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+  if (integerValue == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [NSNumber numberWithInteger:v9];
+    v12 = [NSNumber numberWithInteger:integerValue];
   }
 
   return v12;
 }
 
-- (id)jsa_validBooleanValueForProperty:(id)a3
+- (id)jsa_validBooleanValueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(NSHTTPCookie *)self properties];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  properties = [(NSHTTPCookie *)self properties];
+  v6 = [properties objectForKeyedSubscript:propertyCopy];
 
   objc_opt_class();
   v7 = BUDynamicCast();
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 LABEL_5:
-    v12 = [NSNumber numberWithInteger:v9];
+    v12 = [NSNumber numberWithInteger:bOOLValue];
     goto LABEL_6;
   }
 
@@ -222,7 +222,7 @@ LABEL_5:
   if (v10)
   {
     v11 = v10;
-    v9 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
 
     goto LABEL_5;
   }

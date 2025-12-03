@@ -1,52 +1,52 @@
 @interface AppTelemetryFPFSMigrationInvestigation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBouncedItemsCount:(BOOL)a3;
-- (void)setHasBouncedItemsMatrix:(BOOL)a3;
-- (void)setHasBusyDateNotMigratedCount:(BOOL)a3;
-- (void)setHasChildItemsNotMigratedCount:(BOOL)a3;
-- (void)setHasDurationBetweenDbCreationAndMigrationStart:(BOOL)a3;
-- (void)setHasIgnoredFromSyncItemsNotMigratedCount:(BOOL)a3;
-- (void)setHasImportTime:(BOOL)a3;
-- (void)setHasIsAccountDataSeparated:(BOOL)a3;
-- (void)setHasIsStreamResetRunning:(BOOL)a3;
-- (void)setHasIsSuccessful:(BOOL)a3;
-- (void)setHasItemsMigratedWithoutAlreadyMayExistFlag:(BOOL)a3;
-- (void)setHasItemsNotFoundInDB:(BOOL)a3;
-- (void)setHasItemsNotMigratedCount:(BOOL)a3;
-- (void)setHasItemsNotMigratedDelta:(BOOL)a3;
-- (void)setHasItemsReconciledInFileProvider:(BOOL)a3;
-- (void)setHasItemsReconciledInFileProviderDelta:(BOOL)a3;
-- (void)setHasNumberOfItemsPendingReconciliation:(BOOL)a3;
-- (void)setHasNumberOfItemsPendingScanningDisk:(BOOL)a3;
-- (void)setHasNumberOfItemsPendingScanningProvider:(BOOL)a3;
-- (void)setHasNumberOfItemsPendingSelection:(BOOL)a3;
-- (void)setHasStateOfDownloadJobs:(BOOL)a3;
-- (void)setHasStateOfOtherJobs:(BOOL)a3;
-- (void)setHasStateOfUploadJobs:(BOOL)a3;
-- (void)setHasTotalItemCount:(BOOL)a3;
-- (void)setHasTypesOfMigratedItemsMask:(BOOL)a3;
-- (void)setHasTypesOfNonMigratedItemsMask:(BOOL)a3;
-- (void)setHasXpcActivityDasdContext:(BOOL)a3;
-- (void)setHasXpcActivityIsActive:(BOOL)a3;
-- (void)setHasXpcActivityRegisteredWithDuet:(BOOL)a3;
-- (void)setHasXpcActivityTimeSinceLastAbleToRun:(BOOL)a3;
-- (void)setHasXpcActivityTimeSinceLastActivation:(BOOL)a3;
-- (void)setHasXpcActivityTimeSinceLastRegistration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBouncedItemsCount:(BOOL)count;
+- (void)setHasBouncedItemsMatrix:(BOOL)matrix;
+- (void)setHasBusyDateNotMigratedCount:(BOOL)count;
+- (void)setHasChildItemsNotMigratedCount:(BOOL)count;
+- (void)setHasDurationBetweenDbCreationAndMigrationStart:(BOOL)start;
+- (void)setHasIgnoredFromSyncItemsNotMigratedCount:(BOOL)count;
+- (void)setHasImportTime:(BOOL)time;
+- (void)setHasIsAccountDataSeparated:(BOOL)separated;
+- (void)setHasIsStreamResetRunning:(BOOL)running;
+- (void)setHasIsSuccessful:(BOOL)successful;
+- (void)setHasItemsMigratedWithoutAlreadyMayExistFlag:(BOOL)flag;
+- (void)setHasItemsNotFoundInDB:(BOOL)b;
+- (void)setHasItemsNotMigratedCount:(BOOL)count;
+- (void)setHasItemsNotMigratedDelta:(BOOL)delta;
+- (void)setHasItemsReconciledInFileProvider:(BOOL)provider;
+- (void)setHasItemsReconciledInFileProviderDelta:(BOOL)delta;
+- (void)setHasNumberOfItemsPendingReconciliation:(BOOL)reconciliation;
+- (void)setHasNumberOfItemsPendingScanningDisk:(BOOL)disk;
+- (void)setHasNumberOfItemsPendingScanningProvider:(BOOL)provider;
+- (void)setHasNumberOfItemsPendingSelection:(BOOL)selection;
+- (void)setHasStateOfDownloadJobs:(BOOL)jobs;
+- (void)setHasStateOfOtherJobs:(BOOL)jobs;
+- (void)setHasStateOfUploadJobs:(BOOL)jobs;
+- (void)setHasTotalItemCount:(BOOL)count;
+- (void)setHasTypesOfMigratedItemsMask:(BOOL)mask;
+- (void)setHasTypesOfNonMigratedItemsMask:(BOOL)mask;
+- (void)setHasXpcActivityDasdContext:(BOOL)context;
+- (void)setHasXpcActivityIsActive:(BOOL)active;
+- (void)setHasXpcActivityRegisteredWithDuet:(BOOL)duet;
+- (void)setHasXpcActivityTimeSinceLastAbleToRun:(BOOL)run;
+- (void)setHasXpcActivityTimeSinceLastActivation:(BOOL)activation;
+- (void)setHasXpcActivityTimeSinceLastRegistration:(BOOL)registration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryFPFSMigrationInvestigation
 
-- (void)setHasIsSuccessful:(BOOL)a3
+- (void)setHasIsSuccessful:(BOOL)successful
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!successful)
   {
     v3 = 0;
   }
@@ -54,10 +54,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasItemsNotMigratedCount:(BOOL)a3
+- (void)setHasItemsNotMigratedCount:(BOOL)count
 {
   v3 = 1024;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -65,10 +65,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasTotalItemCount:(BOOL)a3
+- (void)setHasTotalItemCount:(BOOL)count
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -76,10 +76,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasIsAccountDataSeparated:(BOOL)a3
+- (void)setHasIsAccountDataSeparated:(BOOL)separated
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!separated)
   {
     v3 = 0;
   }
@@ -87,10 +87,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasImportTime:(BOOL)a3
+- (void)setHasImportTime:(BOOL)time
 {
   v3 = 128;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -98,10 +98,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasTypesOfMigratedItemsMask:(BOOL)a3
+- (void)setHasTypesOfMigratedItemsMask:(BOOL)mask
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!mask)
   {
     v3 = 0;
   }
@@ -109,10 +109,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasTypesOfNonMigratedItemsMask:(BOOL)a3
+- (void)setHasTypesOfNonMigratedItemsMask:(BOOL)mask
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!mask)
   {
     v3 = 0;
   }
@@ -120,10 +120,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasItemsNotFoundInDB:(BOOL)a3
+- (void)setHasItemsNotFoundInDB:(BOOL)b
 {
   v3 = 512;
-  if (!a3)
+  if (!b)
   {
     v3 = 0;
   }
@@ -131,10 +131,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasBouncedItemsCount:(BOOL)a3
+- (void)setHasBouncedItemsCount:(BOOL)count
 {
   v3 = 2;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -142,10 +142,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasBouncedItemsMatrix:(BOOL)a3
+- (void)setHasBouncedItemsMatrix:(BOOL)matrix
 {
   v3 = 4;
-  if (!a3)
+  if (!matrix)
   {
     v3 = 0;
   }
@@ -153,10 +153,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasBusyDateNotMigratedCount:(BOOL)a3
+- (void)setHasBusyDateNotMigratedCount:(BOOL)count
 {
   v3 = 8;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -164,10 +164,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasChildItemsNotMigratedCount:(BOOL)a3
+- (void)setHasChildItemsNotMigratedCount:(BOOL)count
 {
   v3 = 16;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -175,10 +175,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasIgnoredFromSyncItemsNotMigratedCount:(BOOL)a3
+- (void)setHasIgnoredFromSyncItemsNotMigratedCount:(BOOL)count
 {
   v3 = 64;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -186,10 +186,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasItemsReconciledInFileProvider:(BOOL)a3
+- (void)setHasItemsReconciledInFileProvider:(BOOL)provider
 {
   v3 = 4096;
-  if (!a3)
+  if (!provider)
   {
     v3 = 0;
   }
@@ -197,10 +197,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasItemsMigratedWithoutAlreadyMayExistFlag:(BOOL)a3
+- (void)setHasItemsMigratedWithoutAlreadyMayExistFlag:(BOOL)flag
 {
   v3 = 256;
-  if (!a3)
+  if (!flag)
   {
     v3 = 0;
   }
@@ -208,10 +208,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasDurationBetweenDbCreationAndMigrationStart:(BOOL)a3
+- (void)setHasDurationBetweenDbCreationAndMigrationStart:(BOOL)start
 {
   v3 = 32;
-  if (!a3)
+  if (!start)
   {
     v3 = 0;
   }
@@ -219,10 +219,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasIsStreamResetRunning:(BOOL)a3
+- (void)setHasIsStreamResetRunning:(BOOL)running
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!running)
   {
     v3 = 0;
   }
@@ -230,10 +230,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasStateOfDownloadJobs:(BOOL)a3
+- (void)setHasStateOfDownloadJobs:(BOOL)jobs
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!jobs)
   {
     v3 = 0;
   }
@@ -241,10 +241,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasStateOfUploadJobs:(BOOL)a3
+- (void)setHasStateOfUploadJobs:(BOOL)jobs
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!jobs)
   {
     v3 = 0;
   }
@@ -252,10 +252,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasStateOfOtherJobs:(BOOL)a3
+- (void)setHasStateOfOtherJobs:(BOOL)jobs
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!jobs)
   {
     v3 = 0;
   }
@@ -263,10 +263,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)setHasNumberOfItemsPendingReconciliation:(BOOL)a3
+- (void)setHasNumberOfItemsPendingReconciliation:(BOOL)reconciliation
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!reconciliation)
   {
     v3 = 0;
   }
@@ -274,10 +274,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasNumberOfItemsPendingSelection:(BOOL)a3
+- (void)setHasNumberOfItemsPendingSelection:(BOOL)selection
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!selection)
   {
     v3 = 0;
   }
@@ -285,10 +285,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasNumberOfItemsPendingScanningDisk:(BOOL)a3
+- (void)setHasNumberOfItemsPendingScanningDisk:(BOOL)disk
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!disk)
   {
     v3 = 0;
   }
@@ -296,10 +296,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasNumberOfItemsPendingScanningProvider:(BOOL)a3
+- (void)setHasNumberOfItemsPendingScanningProvider:(BOOL)provider
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!provider)
   {
     v3 = 0;
   }
@@ -307,10 +307,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (void)setHasXpcActivityRegisteredWithDuet:(BOOL)a3
+- (void)setHasXpcActivityRegisteredWithDuet:(BOOL)duet
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!duet)
   {
     v3 = 0;
   }
@@ -318,10 +318,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasXpcActivityTimeSinceLastRegistration:(BOOL)a3
+- (void)setHasXpcActivityTimeSinceLastRegistration:(BOOL)registration
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!registration)
   {
     v3 = 0;
   }
@@ -329,10 +329,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasXpcActivityIsActive:(BOOL)a3
+- (void)setHasXpcActivityIsActive:(BOOL)active
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!active)
   {
     v3 = 0;
   }
@@ -340,10 +340,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3);
 }
 
-- (void)setHasXpcActivityTimeSinceLastActivation:(BOOL)a3
+- (void)setHasXpcActivityTimeSinceLastActivation:(BOOL)activation
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!activation)
   {
     v3 = 0;
   }
@@ -351,10 +351,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasXpcActivityDasdContext:(BOOL)a3
+- (void)setHasXpcActivityDasdContext:(BOOL)context
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
@@ -362,10 +362,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasItemsNotMigratedDelta:(BOOL)a3
+- (void)setHasItemsNotMigratedDelta:(BOOL)delta
 {
   v3 = 2048;
-  if (!a3)
+  if (!delta)
   {
     v3 = 0;
   }
@@ -373,10 +373,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasItemsReconciledInFileProviderDelta:(BOOL)a3
+- (void)setHasItemsReconciledInFileProviderDelta:(BOOL)delta
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!delta)
   {
     v3 = 0;
   }
@@ -384,10 +384,10 @@
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasXpcActivityTimeSinceLastAbleToRun:(BOOL)a3
+- (void)setHasXpcActivityTimeSinceLastAbleToRun:(BOOL)run
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!run)
   {
     v3 = 0;
   }
@@ -401,20 +401,20 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryFPFSMigrationInvestigation;
   v4 = [(AppTelemetryFPFSMigrationInvestigation *)&v8 description];
-  v5 = [(AppTelemetryFPFSMigrationInvestigation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryFPFSMigrationInvestigation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x40000000) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSuccessful];
-    [v3 setObject:v13 forKey:@"isSuccessful"];
+    [dictionary setObject:v13 forKey:@"isSuccessful"];
 
     has = self->_has;
     if ((*&has & 0x400) == 0)
@@ -435,7 +435,7 @@ LABEL_3:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsNotMigratedCount];
-  [v3 setObject:v14 forKey:@"itemsNotMigratedCount"];
+  [dictionary setObject:v14 forKey:@"itemsNotMigratedCount"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -451,7 +451,7 @@ LABEL_4:
 
 LABEL_45:
   v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_totalItemCount];
-  [v3 setObject:v15 forKey:@"totalItemCount"];
+  [dictionary setObject:v15 forKey:@"totalItemCount"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -467,7 +467,7 @@ LABEL_5:
 
 LABEL_46:
   v16 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_accountQuotaUsage];
-  [v3 setObject:v16 forKey:@"accountQuotaUsage"];
+  [dictionary setObject:v16 forKey:@"accountQuotaUsage"];
 
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
@@ -483,7 +483,7 @@ LABEL_6:
 
 LABEL_47:
   v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAccountDataSeparated];
-  [v3 setObject:v17 forKey:@"isAccountDataSeparated"];
+  [dictionary setObject:v17 forKey:@"isAccountDataSeparated"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -499,7 +499,7 @@ LABEL_7:
 
 LABEL_48:
   v18 = [MEMORY[0x277CCABB0] numberWithDouble:self->_importTime];
-  [v3 setObject:v18 forKey:@"importTime"];
+  [dictionary setObject:v18 forKey:@"importTime"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -515,7 +515,7 @@ LABEL_8:
 
 LABEL_49:
   v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_typesOfMigratedItemsMask];
-  [v3 setObject:v19 forKey:@"typesOfMigratedItemsMask"];
+  [dictionary setObject:v19 forKey:@"typesOfMigratedItemsMask"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -531,7 +531,7 @@ LABEL_9:
 
 LABEL_50:
   v20 = [MEMORY[0x277CCABB0] numberWithInt:self->_typesOfNonMigratedItemsMask];
-  [v3 setObject:v20 forKey:@"typesOfNonMigratedItemsMask"];
+  [dictionary setObject:v20 forKey:@"typesOfNonMigratedItemsMask"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -547,7 +547,7 @@ LABEL_10:
 
 LABEL_51:
   v21 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsNotFoundInDB];
-  [v3 setObject:v21 forKey:@"itemsNotFoundInDB"];
+  [dictionary setObject:v21 forKey:@"itemsNotFoundInDB"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -563,39 +563,39 @@ LABEL_11:
 
 LABEL_52:
   v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_bouncedItemsCount];
-  [v3 setObject:v22 forKey:@"bouncedItemsCount"];
+  [dictionary setObject:v22 forKey:@"bouncedItemsCount"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     v5 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_bouncedItemsMatrix];
-    [v3 setObject:v5 forKey:@"bouncedItemsMatrix"];
+    [dictionary setObject:v5 forKey:@"bouncedItemsMatrix"];
   }
 
 LABEL_13:
   treatmentId = self->_treatmentId;
   if (treatmentId)
   {
-    [v3 setObject:treatmentId forKey:@"treatmentId"];
+    [dictionary setObject:treatmentId forKey:@"treatmentId"];
   }
 
   experimentId = self->_experimentId;
   if (experimentId)
   {
-    [v3 setObject:experimentId forKey:@"experimentId"];
+    [dictionary setObject:experimentId forKey:@"experimentId"];
   }
 
   rampId = self->_rampId;
   if (rampId)
   {
-    [v3 setObject:rampId forKey:@"rampId"];
+    [dictionary setObject:rampId forKey:@"rampId"];
   }
 
   v9 = self->_has;
   if ((*&v9 & 8) != 0)
   {
     v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_busyDateNotMigratedCount];
-    [v3 setObject:v23 forKey:@"busyDateNotMigratedCount"];
+    [dictionary setObject:v23 forKey:@"busyDateNotMigratedCount"];
 
     v9 = self->_has;
     if ((*&v9 & 0x10) == 0)
@@ -616,7 +616,7 @@ LABEL_21:
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_childItemsNotMigratedCount];
-  [v3 setObject:v24 forKey:@"childItemsNotMigratedCount"];
+  [dictionary setObject:v24 forKey:@"childItemsNotMigratedCount"];
 
   v9 = self->_has;
   if ((*&v9 & 0x40) == 0)
@@ -632,7 +632,7 @@ LABEL_22:
 
 LABEL_56:
   v25 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_ignoredFromSyncItemsNotMigratedCount];
-  [v3 setObject:v25 forKey:@"ignoredFromSyncItemsNotMigratedCount"];
+  [dictionary setObject:v25 forKey:@"ignoredFromSyncItemsNotMigratedCount"];
 
   v9 = self->_has;
   if ((*&v9 & 0x1000) == 0)
@@ -648,7 +648,7 @@ LABEL_23:
 
 LABEL_57:
   v26 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsReconciledInFileProvider];
-  [v3 setObject:v26 forKey:@"itemsReconciledInFileProvider"];
+  [dictionary setObject:v26 forKey:@"itemsReconciledInFileProvider"];
 
   v9 = self->_has;
   if ((*&v9 & 0x100) == 0)
@@ -664,7 +664,7 @@ LABEL_24:
 
 LABEL_58:
   v27 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsMigratedWithoutAlreadyMayExistFlag];
-  [v3 setObject:v27 forKey:@"itemsMigratedWithoutAlreadyMayExistFlag"];
+  [dictionary setObject:v27 forKey:@"itemsMigratedWithoutAlreadyMayExistFlag"];
 
   v9 = self->_has;
   if ((*&v9 & 0x20) == 0)
@@ -680,7 +680,7 @@ LABEL_25:
 
 LABEL_59:
   v28 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_durationBetweenDbCreationAndMigrationStart];
-  [v3 setObject:v28 forKey:@"durationBetweenDbCreationAndMigrationStart"];
+  [dictionary setObject:v28 forKey:@"durationBetweenDbCreationAndMigrationStart"];
 
   v9 = self->_has;
   if ((*&v9 & 0x20000000) == 0)
@@ -696,7 +696,7 @@ LABEL_26:
 
 LABEL_60:
   v29 = [MEMORY[0x277CCABB0] numberWithBool:self->_isStreamResetRunning];
-  [v3 setObject:v29 forKey:@"isStreamResetRunning"];
+  [dictionary setObject:v29 forKey:@"isStreamResetRunning"];
 
   v9 = self->_has;
   if ((*&v9 & 0x40000) == 0)
@@ -712,7 +712,7 @@ LABEL_27:
 
 LABEL_61:
   v30 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stateOfDownloadJobs];
-  [v3 setObject:v30 forKey:@"stateOfDownloadJobs"];
+  [dictionary setObject:v30 forKey:@"stateOfDownloadJobs"];
 
   v9 = self->_has;
   if ((*&v9 & 0x100000) == 0)
@@ -728,7 +728,7 @@ LABEL_28:
 
 LABEL_62:
   v31 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stateOfUploadJobs];
-  [v3 setObject:v31 forKey:@"stateOfUploadJobs"];
+  [dictionary setObject:v31 forKey:@"stateOfUploadJobs"];
 
   v9 = self->_has;
   if ((*&v9 & 0x80000) == 0)
@@ -744,7 +744,7 @@ LABEL_29:
 
 LABEL_63:
   v32 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stateOfOtherJobs];
-  [v3 setObject:v32 forKey:@"stateOfOtherJobs"];
+  [dictionary setObject:v32 forKey:@"stateOfOtherJobs"];
 
   v9 = self->_has;
   if ((*&v9 & 0x4000) == 0)
@@ -760,7 +760,7 @@ LABEL_30:
 
 LABEL_64:
   v33 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numberOfItemsPendingReconciliation];
-  [v3 setObject:v33 forKey:@"numberOfItemsPendingReconciliation"];
+  [dictionary setObject:v33 forKey:@"numberOfItemsPendingReconciliation"];
 
   v9 = self->_has;
   if ((*&v9 & 0x20000) == 0)
@@ -776,7 +776,7 @@ LABEL_31:
 
 LABEL_65:
   v34 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numberOfItemsPendingSelection];
-  [v3 setObject:v34 forKey:@"numberOfItemsPendingSelection"];
+  [dictionary setObject:v34 forKey:@"numberOfItemsPendingSelection"];
 
   v9 = self->_has;
   if ((*&v9 & 0x8000) == 0)
@@ -792,7 +792,7 @@ LABEL_32:
 
 LABEL_66:
   v35 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numberOfItemsPendingScanningDisk];
-  [v3 setObject:v35 forKey:@"numberOfItemsPendingScanningDisk"];
+  [dictionary setObject:v35 forKey:@"numberOfItemsPendingScanningDisk"];
 
   v9 = self->_has;
   if ((*&v9 & 0x10000) == 0)
@@ -808,7 +808,7 @@ LABEL_33:
 
 LABEL_67:
   v36 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_numberOfItemsPendingScanningProvider];
-  [v3 setObject:v36 forKey:@"numberOfItemsPendingScanningProvider"];
+  [dictionary setObject:v36 forKey:@"numberOfItemsPendingScanningProvider"];
 
   v9 = self->_has;
   if ((*&v9 & 0x100000000) == 0)
@@ -824,7 +824,7 @@ LABEL_34:
 
 LABEL_68:
   v37 = [MEMORY[0x277CCABB0] numberWithBool:self->_xpcActivityRegisteredWithDuet];
-  [v3 setObject:v37 forKey:@"xpcActivityRegisteredWithDuet"];
+  [dictionary setObject:v37 forKey:@"xpcActivityRegisteredWithDuet"];
 
   v9 = self->_has;
   if ((*&v9 & 0x2000000) == 0)
@@ -840,7 +840,7 @@ LABEL_35:
 
 LABEL_69:
   v38 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_xpcActivityTimeSinceLastRegistration];
-  [v3 setObject:v38 forKey:@"xpcActivityTimeSinceLastRegistration"];
+  [dictionary setObject:v38 forKey:@"xpcActivityTimeSinceLastRegistration"];
 
   v9 = self->_has;
   if ((*&v9 & 0x80000000) == 0)
@@ -856,7 +856,7 @@ LABEL_36:
 
 LABEL_70:
   v39 = [MEMORY[0x277CCABB0] numberWithBool:self->_xpcActivityIsActive];
-  [v3 setObject:v39 forKey:@"xpcActivityIsActive"];
+  [dictionary setObject:v39 forKey:@"xpcActivityIsActive"];
 
   v9 = self->_has;
   if ((*&v9 & 0x1000000) == 0)
@@ -872,7 +872,7 @@ LABEL_37:
 
 LABEL_71:
   v40 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_xpcActivityTimeSinceLastActivation];
-  [v3 setObject:v40 forKey:@"xpcActivityTimeSinceLastActivation"];
+  [dictionary setObject:v40 forKey:@"xpcActivityTimeSinceLastActivation"];
 
   v9 = self->_has;
   if ((*&v9 & 0x400000) == 0)
@@ -888,7 +888,7 @@ LABEL_38:
 
 LABEL_72:
   v41 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_xpcActivityDasdContext];
-  [v3 setObject:v41 forKey:@"xpcActivityDasdContext"];
+  [dictionary setObject:v41 forKey:@"xpcActivityDasdContext"];
 
   v9 = self->_has;
   if ((*&v9 & 0x800) == 0)
@@ -901,7 +901,7 @@ LABEL_39:
 
 LABEL_74:
     v43 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsReconciledInFileProviderDelta];
-    [v3 setObject:v43 forKey:@"itemsReconciledInFileProviderDelta"];
+    [dictionary setObject:v43 forKey:@"itemsReconciledInFileProviderDelta"];
 
     if ((*&self->_has & 0x800000) == 0)
     {
@@ -913,7 +913,7 @@ LABEL_74:
 
 LABEL_73:
   v42 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemsNotMigratedDelta];
-  [v3 setObject:v42 forKey:@"itemsNotMigratedDelta"];
+  [dictionary setObject:v42 forKey:@"itemsNotMigratedDelta"];
 
   v9 = self->_has;
   if ((*&v9 & 0x2000) != 0)
@@ -926,18 +926,18 @@ LABEL_40:
   {
 LABEL_41:
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_xpcActivityTimeSinceLastAbleToRun];
-    [v3 setObject:v10 forKey:@"xpcActivityTimeSinceLastAbleToRun"];
+    [dictionary setObject:v10 forKey:@"xpcActivityTimeSinceLastAbleToRun"];
   }
 
 LABEL_42:
-  v11 = v3;
+  v11 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v39 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40000000) != 0)
   {
@@ -1426,14 +1426,14 @@ LABEL_41:
 LABEL_42:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x40000000) != 0)
   {
-    v4[250] = self->_isSuccessful;
-    *(v4 + 32) |= 0x40000000uLL;
+    toCopy[250] = self->_isSuccessful;
+    *(toCopy + 32) |= 0x40000000uLL;
     has = self->_has;
     if ((*&has & 0x400) == 0)
     {
@@ -1452,8 +1452,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 11) = self->_itemsNotMigratedCount;
-  *(v4 + 32) |= 0x400uLL;
+  *(toCopy + 11) = self->_itemsNotMigratedCount;
+  *(toCopy + 32) |= 0x400uLL;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1467,8 +1467,8 @@ LABEL_4:
   }
 
 LABEL_47:
-  *(v4 + 22) = self->_totalItemCount;
-  *(v4 + 32) |= 0x200000uLL;
+  *(toCopy + 22) = self->_totalItemCount;
+  *(toCopy + 32) |= 0x200000uLL;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1482,8 +1482,8 @@ LABEL_5:
   }
 
 LABEL_48:
-  *(v4 + 1) = self->_accountQuotaUsage;
-  *(v4 + 32) |= 1uLL;
+  *(toCopy + 1) = self->_accountQuotaUsage;
+  *(toCopy + 32) |= 1uLL;
   has = self->_has;
   if ((*&has & 0x10000000) == 0)
   {
@@ -1497,8 +1497,8 @@ LABEL_6:
   }
 
 LABEL_49:
-  v4[248] = self->_isAccountDataSeparated;
-  *(v4 + 32) |= 0x10000000uLL;
+  toCopy[248] = self->_isAccountDataSeparated;
+  *(toCopy + 32) |= 0x10000000uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1512,8 +1512,8 @@ LABEL_7:
   }
 
 LABEL_50:
-  *(v4 + 8) = *&self->_importTime;
-  *(v4 + 32) |= 0x80uLL;
+  *(toCopy + 8) = *&self->_importTime;
+  *(toCopy + 32) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1527,8 +1527,8 @@ LABEL_8:
   }
 
 LABEL_51:
-  *(v4 + 60) = self->_typesOfMigratedItemsMask;
-  *(v4 + 32) |= 0x4000000uLL;
+  *(toCopy + 60) = self->_typesOfMigratedItemsMask;
+  *(toCopy + 32) |= 0x4000000uLL;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1542,8 +1542,8 @@ LABEL_9:
   }
 
 LABEL_52:
-  *(v4 + 61) = self->_typesOfNonMigratedItemsMask;
-  *(v4 + 32) |= 0x8000000uLL;
+  *(toCopy + 61) = self->_typesOfNonMigratedItemsMask;
+  *(toCopy + 32) |= 0x8000000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1557,8 +1557,8 @@ LABEL_10:
   }
 
 LABEL_53:
-  *(v4 + 10) = self->_itemsNotFoundInDB;
-  *(v4 + 32) |= 0x200uLL;
+  *(toCopy + 10) = self->_itemsNotFoundInDB;
+  *(toCopy + 32) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -1572,40 +1572,40 @@ LABEL_11:
   }
 
 LABEL_54:
-  *(v4 + 2) = self->_bouncedItemsCount;
-  *(v4 + 32) |= 2uLL;
+  *(toCopy + 2) = self->_bouncedItemsCount;
+  *(toCopy + 32) |= 2uLL;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    *(v4 + 3) = self->_bouncedItemsMatrix;
-    *(v4 + 32) |= 4uLL;
+    *(toCopy + 3) = self->_bouncedItemsMatrix;
+    *(toCopy + 32) |= 4uLL;
   }
 
 LABEL_13:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_treatmentId)
   {
-    [v4 setTreatmentId:?];
-    v4 = v7;
+    [toCopy setTreatmentId:?];
+    toCopy = v7;
   }
 
   if (self->_experimentId)
   {
     [v7 setExperimentId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_rampId)
   {
     [v7 setRampId:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((*&v6 & 8) != 0)
   {
-    *(v4 + 4) = self->_busyDateNotMigratedCount;
-    *(v4 + 32) |= 8uLL;
+    *(toCopy + 4) = self->_busyDateNotMigratedCount;
+    *(toCopy + 32) |= 8uLL;
     v6 = self->_has;
     if ((*&v6 & 0x10) == 0)
     {
@@ -1624,8 +1624,8 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  *(v4 + 5) = self->_childItemsNotMigratedCount;
-  *(v4 + 32) |= 0x10uLL;
+  *(toCopy + 5) = self->_childItemsNotMigratedCount;
+  *(toCopy + 32) |= 0x10uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40) == 0)
   {
@@ -1639,8 +1639,8 @@ LABEL_22:
   }
 
 LABEL_58:
-  *(v4 + 7) = self->_ignoredFromSyncItemsNotMigratedCount;
-  *(v4 + 32) |= 0x40uLL;
+  *(toCopy + 7) = self->_ignoredFromSyncItemsNotMigratedCount;
+  *(toCopy + 32) |= 0x40uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000) == 0)
   {
@@ -1654,8 +1654,8 @@ LABEL_23:
   }
 
 LABEL_59:
-  *(v4 + 13) = self->_itemsReconciledInFileProvider;
-  *(v4 + 32) |= 0x1000uLL;
+  *(toCopy + 13) = self->_itemsReconciledInFileProvider;
+  *(toCopy + 32) |= 0x1000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100) == 0)
   {
@@ -1669,8 +1669,8 @@ LABEL_24:
   }
 
 LABEL_60:
-  *(v4 + 9) = self->_itemsMigratedWithoutAlreadyMayExistFlag;
-  *(v4 + 32) |= 0x100uLL;
+  *(toCopy + 9) = self->_itemsMigratedWithoutAlreadyMayExistFlag;
+  *(toCopy + 32) |= 0x100uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20) == 0)
   {
@@ -1684,8 +1684,8 @@ LABEL_25:
   }
 
 LABEL_61:
-  *(v4 + 6) = self->_durationBetweenDbCreationAndMigrationStart;
-  *(v4 + 32) |= 0x20uLL;
+  *(toCopy + 6) = self->_durationBetweenDbCreationAndMigrationStart;
+  *(toCopy + 32) |= 0x20uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20000000) == 0)
   {
@@ -1699,8 +1699,8 @@ LABEL_26:
   }
 
 LABEL_62:
-  v4[249] = self->_isStreamResetRunning;
-  *(v4 + 32) |= 0x20000000uLL;
+  toCopy[249] = self->_isStreamResetRunning;
+  *(toCopy + 32) |= 0x20000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x40000) == 0)
   {
@@ -1714,8 +1714,8 @@ LABEL_27:
   }
 
 LABEL_63:
-  *(v4 + 19) = self->_stateOfDownloadJobs;
-  *(v4 + 32) |= 0x40000uLL;
+  *(toCopy + 19) = self->_stateOfDownloadJobs;
+  *(toCopy + 32) |= 0x40000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000) == 0)
   {
@@ -1729,8 +1729,8 @@ LABEL_28:
   }
 
 LABEL_64:
-  *(v4 + 21) = self->_stateOfUploadJobs;
-  *(v4 + 32) |= 0x100000uLL;
+  *(toCopy + 21) = self->_stateOfUploadJobs;
+  *(toCopy + 32) |= 0x100000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000) == 0)
   {
@@ -1744,8 +1744,8 @@ LABEL_29:
   }
 
 LABEL_65:
-  *(v4 + 20) = self->_stateOfOtherJobs;
-  *(v4 + 32) |= 0x80000uLL;
+  *(toCopy + 20) = self->_stateOfOtherJobs;
+  *(toCopy + 32) |= 0x80000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x4000) == 0)
   {
@@ -1759,8 +1759,8 @@ LABEL_30:
   }
 
 LABEL_66:
-  *(v4 + 15) = self->_numberOfItemsPendingReconciliation;
-  *(v4 + 32) |= 0x4000uLL;
+  *(toCopy + 15) = self->_numberOfItemsPendingReconciliation;
+  *(toCopy + 32) |= 0x4000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x20000) == 0)
   {
@@ -1774,8 +1774,8 @@ LABEL_31:
   }
 
 LABEL_67:
-  *(v4 + 18) = self->_numberOfItemsPendingSelection;
-  *(v4 + 32) |= 0x20000uLL;
+  *(toCopy + 18) = self->_numberOfItemsPendingSelection;
+  *(toCopy + 32) |= 0x20000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x8000) == 0)
   {
@@ -1789,8 +1789,8 @@ LABEL_32:
   }
 
 LABEL_68:
-  *(v4 + 16) = self->_numberOfItemsPendingScanningDisk;
-  *(v4 + 32) |= 0x8000uLL;
+  *(toCopy + 16) = self->_numberOfItemsPendingScanningDisk;
+  *(toCopy + 32) |= 0x8000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x10000) == 0)
   {
@@ -1804,8 +1804,8 @@ LABEL_33:
   }
 
 LABEL_69:
-  *(v4 + 17) = self->_numberOfItemsPendingScanningProvider;
-  *(v4 + 32) |= 0x10000uLL;
+  *(toCopy + 17) = self->_numberOfItemsPendingScanningProvider;
+  *(toCopy + 32) |= 0x10000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x100000000) == 0)
   {
@@ -1819,8 +1819,8 @@ LABEL_34:
   }
 
 LABEL_70:
-  v4[252] = self->_xpcActivityRegisteredWithDuet;
-  *(v4 + 32) |= 0x100000000uLL;
+  toCopy[252] = self->_xpcActivityRegisteredWithDuet;
+  *(toCopy + 32) |= 0x100000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000000) == 0)
   {
@@ -1834,8 +1834,8 @@ LABEL_35:
   }
 
 LABEL_71:
-  *(v4 + 26) = self->_xpcActivityTimeSinceLastRegistration;
-  *(v4 + 32) |= 0x2000000uLL;
+  *(toCopy + 26) = self->_xpcActivityTimeSinceLastRegistration;
+  *(toCopy + 32) |= 0x2000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x80000000) == 0)
   {
@@ -1849,8 +1849,8 @@ LABEL_36:
   }
 
 LABEL_72:
-  v4[251] = self->_xpcActivityIsActive;
-  *(v4 + 32) |= 0x80000000uLL;
+  toCopy[251] = self->_xpcActivityIsActive;
+  *(toCopy + 32) |= 0x80000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x1000000) == 0)
   {
@@ -1864,8 +1864,8 @@ LABEL_37:
   }
 
 LABEL_73:
-  *(v4 + 25) = self->_xpcActivityTimeSinceLastActivation;
-  *(v4 + 32) |= 0x1000000uLL;
+  *(toCopy + 25) = self->_xpcActivityTimeSinceLastActivation;
+  *(toCopy + 32) |= 0x1000000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x400000) == 0)
   {
@@ -1879,8 +1879,8 @@ LABEL_38:
   }
 
 LABEL_74:
-  *(v4 + 23) = self->_xpcActivityDasdContext;
-  *(v4 + 32) |= 0x400000uLL;
+  *(toCopy + 23) = self->_xpcActivityDasdContext;
+  *(toCopy + 32) |= 0x400000uLL;
   v6 = self->_has;
   if ((*&v6 & 0x800) == 0)
   {
@@ -1894,8 +1894,8 @@ LABEL_39:
   }
 
 LABEL_75:
-  *(v4 + 12) = self->_itemsNotMigratedDelta;
-  *(v4 + 32) |= 0x800uLL;
+  *(toCopy + 12) = self->_itemsNotMigratedDelta;
+  *(toCopy + 32) |= 0x800uLL;
   v6 = self->_has;
   if ((*&v6 & 0x2000) == 0)
   {
@@ -1909,21 +1909,21 @@ LABEL_40:
   }
 
 LABEL_76:
-  *(v4 + 14) = self->_itemsReconciledInFileProviderDelta;
-  *(v4 + 32) |= 0x2000uLL;
+  *(toCopy + 14) = self->_itemsReconciledInFileProviderDelta;
+  *(toCopy + 32) |= 0x2000uLL;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_41:
-    *(v4 + 24) = self->_xpcActivityTimeSinceLastAbleToRun;
-    *(v4 + 32) |= 0x800000uLL;
+    *(toCopy + 24) = self->_xpcActivityTimeSinceLastAbleToRun;
+    *(toCopy + 32) |= 0x800000uLL;
   }
 
 LABEL_42:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((*&has & 0x40000000) != 0)
@@ -2078,15 +2078,15 @@ LABEL_12:
   }
 
 LABEL_13:
-  v8 = [(NSString *)self->_treatmentId copyWithZone:a3];
+  v8 = [(NSString *)self->_treatmentId copyWithZone:zone];
   v9 = *(v6 + 232);
   *(v6 + 232) = v8;
 
-  v10 = [(NSString *)self->_experimentId copyWithZone:a3];
+  v10 = [(NSString *)self->_experimentId copyWithZone:zone];
   v11 = *(v6 + 216);
   *(v6 + 216) = v10;
 
-  v12 = [(NSString *)self->_rampId copyWithZone:a3];
+  v12 = [(NSString *)self->_rampId copyWithZone:zone];
   v13 = *(v6 + 224);
   *(v6 + 224) = v12;
 
@@ -2413,16 +2413,16 @@ LABEL_36:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_188;
   }
 
   has = self->_has;
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if ((*&has & 0x40000000) != 0)
   {
     if ((v6 & 0x40000000) == 0)
@@ -2430,16 +2430,16 @@ LABEL_36:
       goto LABEL_188;
     }
 
-    v7 = *(v4 + 250);
+    v7 = *(equalCopy + 250);
     if (self->_isSuccessful)
     {
-      if ((*(v4 + 250) & 1) == 0)
+      if ((*(equalCopy + 250) & 1) == 0)
       {
         goto LABEL_188;
       }
     }
 
-    else if (*(v4 + 250))
+    else if (*(equalCopy + 250))
     {
       goto LABEL_188;
     }
@@ -2452,7 +2452,7 @@ LABEL_36:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_itemsNotMigratedCount != *(v4 + 11))
+    if ((v6 & 0x400) == 0 || self->_itemsNotMigratedCount != *(equalCopy + 11))
     {
       goto LABEL_188;
     }
@@ -2465,7 +2465,7 @@ LABEL_36:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_totalItemCount != *(v4 + 22))
+    if ((v6 & 0x200000) == 0 || self->_totalItemCount != *(equalCopy + 22))
     {
       goto LABEL_188;
     }
@@ -2478,7 +2478,7 @@ LABEL_36:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_accountQuotaUsage != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_accountQuotaUsage != *(equalCopy + 1))
     {
       goto LABEL_188;
     }
@@ -2496,16 +2496,16 @@ LABEL_36:
       goto LABEL_188;
     }
 
-    v8 = *(v4 + 248);
+    v8 = *(equalCopy + 248);
     if (self->_isAccountDataSeparated)
     {
-      if ((*(v4 + 248) & 1) == 0)
+      if ((*(equalCopy + 248) & 1) == 0)
       {
         goto LABEL_188;
       }
     }
 
-    else if (*(v4 + 248))
+    else if (*(equalCopy + 248))
     {
       goto LABEL_188;
     }
@@ -2518,7 +2518,7 @@ LABEL_36:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_importTime != *(v4 + 8))
+    if ((v6 & 0x80) == 0 || self->_importTime != *(equalCopy + 8))
     {
       goto LABEL_188;
     }
@@ -2531,7 +2531,7 @@ LABEL_36:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_typesOfMigratedItemsMask != *(v4 + 60))
+    if ((v6 & 0x4000000) == 0 || self->_typesOfMigratedItemsMask != *(equalCopy + 60))
     {
       goto LABEL_188;
     }
@@ -2544,7 +2544,7 @@ LABEL_36:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_typesOfNonMigratedItemsMask != *(v4 + 61))
+    if ((v6 & 0x8000000) == 0 || self->_typesOfNonMigratedItemsMask != *(equalCopy + 61))
     {
       goto LABEL_188;
     }
@@ -2557,7 +2557,7 @@ LABEL_36:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_itemsNotFoundInDB != *(v4 + 10))
+    if ((v6 & 0x200) == 0 || self->_itemsNotFoundInDB != *(equalCopy + 10))
     {
       goto LABEL_188;
     }
@@ -2570,7 +2570,7 @@ LABEL_36:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_bouncedItemsCount != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_bouncedItemsCount != *(equalCopy + 2))
     {
       goto LABEL_188;
     }
@@ -2583,7 +2583,7 @@ LABEL_36:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_bouncedItemsMatrix != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_bouncedItemsMatrix != *(equalCopy + 3))
     {
       goto LABEL_188;
     }
@@ -2595,13 +2595,13 @@ LABEL_36:
   }
 
   treatmentId = self->_treatmentId;
-  if (treatmentId | *(v4 + 29) && ![(NSString *)treatmentId isEqual:?])
+  if (treatmentId | *(equalCopy + 29) && ![(NSString *)treatmentId isEqual:?])
   {
     goto LABEL_188;
   }
 
   experimentId = self->_experimentId;
-  if (experimentId | *(v4 + 27))
+  if (experimentId | *(equalCopy + 27))
   {
     if (![(NSString *)experimentId isEqual:?])
     {
@@ -2610,7 +2610,7 @@ LABEL_36:
   }
 
   rampId = self->_rampId;
-  if (rampId | *(v4 + 28))
+  if (rampId | *(equalCopy + 28))
   {
     if (![(NSString *)rampId isEqual:?])
     {
@@ -2619,10 +2619,10 @@ LABEL_36:
   }
 
   v12 = self->_has;
-  v13 = *(v4 + 32);
+  v13 = *(equalCopy + 32);
   if ((*&v12 & 8) != 0)
   {
-    if ((v13 & 8) == 0 || self->_busyDateNotMigratedCount != *(v4 + 4))
+    if ((v13 & 8) == 0 || self->_busyDateNotMigratedCount != *(equalCopy + 4))
     {
       goto LABEL_188;
     }
@@ -2635,7 +2635,7 @@ LABEL_36:
 
   if ((*&v12 & 0x10) != 0)
   {
-    if ((v13 & 0x10) == 0 || self->_childItemsNotMigratedCount != *(v4 + 5))
+    if ((v13 & 0x10) == 0 || self->_childItemsNotMigratedCount != *(equalCopy + 5))
     {
       goto LABEL_188;
     }
@@ -2648,7 +2648,7 @@ LABEL_36:
 
   if ((*&v12 & 0x40) != 0)
   {
-    if ((v13 & 0x40) == 0 || self->_ignoredFromSyncItemsNotMigratedCount != *(v4 + 7))
+    if ((v13 & 0x40) == 0 || self->_ignoredFromSyncItemsNotMigratedCount != *(equalCopy + 7))
     {
       goto LABEL_188;
     }
@@ -2661,7 +2661,7 @@ LABEL_36:
 
   if ((*&v12 & 0x1000) != 0)
   {
-    if ((v13 & 0x1000) == 0 || self->_itemsReconciledInFileProvider != *(v4 + 13))
+    if ((v13 & 0x1000) == 0 || self->_itemsReconciledInFileProvider != *(equalCopy + 13))
     {
       goto LABEL_188;
     }
@@ -2674,7 +2674,7 @@ LABEL_36:
 
   if ((*&v12 & 0x100) != 0)
   {
-    if ((v13 & 0x100) == 0 || self->_itemsMigratedWithoutAlreadyMayExistFlag != *(v4 + 9))
+    if ((v13 & 0x100) == 0 || self->_itemsMigratedWithoutAlreadyMayExistFlag != *(equalCopy + 9))
     {
       goto LABEL_188;
     }
@@ -2687,7 +2687,7 @@ LABEL_36:
 
   if ((*&v12 & 0x20) != 0)
   {
-    if ((v13 & 0x20) == 0 || self->_durationBetweenDbCreationAndMigrationStart != *(v4 + 6))
+    if ((v13 & 0x20) == 0 || self->_durationBetweenDbCreationAndMigrationStart != *(equalCopy + 6))
     {
       goto LABEL_188;
     }
@@ -2705,16 +2705,16 @@ LABEL_36:
       goto LABEL_188;
     }
 
-    v14 = *(v4 + 249);
+    v14 = *(equalCopy + 249);
     if (self->_isStreamResetRunning)
     {
-      if ((*(v4 + 249) & 1) == 0)
+      if ((*(equalCopy + 249) & 1) == 0)
       {
         goto LABEL_188;
       }
     }
 
-    else if (*(v4 + 249))
+    else if (*(equalCopy + 249))
     {
       goto LABEL_188;
     }
@@ -2727,7 +2727,7 @@ LABEL_36:
 
   if ((*&v12 & 0x40000) != 0)
   {
-    if ((v13 & 0x40000) == 0 || self->_stateOfDownloadJobs != *(v4 + 19))
+    if ((v13 & 0x40000) == 0 || self->_stateOfDownloadJobs != *(equalCopy + 19))
     {
       goto LABEL_188;
     }
@@ -2740,7 +2740,7 @@ LABEL_36:
 
   if ((*&v12 & 0x100000) != 0)
   {
-    if ((v13 & 0x100000) == 0 || self->_stateOfUploadJobs != *(v4 + 21))
+    if ((v13 & 0x100000) == 0 || self->_stateOfUploadJobs != *(equalCopy + 21))
     {
       goto LABEL_188;
     }
@@ -2753,7 +2753,7 @@ LABEL_36:
 
   if ((*&v12 & 0x80000) != 0)
   {
-    if ((v13 & 0x80000) == 0 || self->_stateOfOtherJobs != *(v4 + 20))
+    if ((v13 & 0x80000) == 0 || self->_stateOfOtherJobs != *(equalCopy + 20))
     {
       goto LABEL_188;
     }
@@ -2766,7 +2766,7 @@ LABEL_36:
 
   if ((*&v12 & 0x4000) != 0)
   {
-    if ((v13 & 0x4000) == 0 || self->_numberOfItemsPendingReconciliation != *(v4 + 15))
+    if ((v13 & 0x4000) == 0 || self->_numberOfItemsPendingReconciliation != *(equalCopy + 15))
     {
       goto LABEL_188;
     }
@@ -2779,7 +2779,7 @@ LABEL_36:
 
   if ((*&v12 & 0x20000) != 0)
   {
-    if ((v13 & 0x20000) == 0 || self->_numberOfItemsPendingSelection != *(v4 + 18))
+    if ((v13 & 0x20000) == 0 || self->_numberOfItemsPendingSelection != *(equalCopy + 18))
     {
       goto LABEL_188;
     }
@@ -2792,7 +2792,7 @@ LABEL_36:
 
   if ((*&v12 & 0x8000) != 0)
   {
-    if ((v13 & 0x8000) == 0 || self->_numberOfItemsPendingScanningDisk != *(v4 + 16))
+    if ((v13 & 0x8000) == 0 || self->_numberOfItemsPendingScanningDisk != *(equalCopy + 16))
     {
       goto LABEL_188;
     }
@@ -2805,7 +2805,7 @@ LABEL_36:
 
   if ((*&v12 & 0x10000) != 0)
   {
-    if ((v13 & 0x10000) == 0 || self->_numberOfItemsPendingScanningProvider != *(v4 + 17))
+    if ((v13 & 0x10000) == 0 || self->_numberOfItemsPendingScanningProvider != *(equalCopy + 17))
     {
       goto LABEL_188;
     }
@@ -2823,16 +2823,16 @@ LABEL_36:
       goto LABEL_188;
     }
 
-    v15 = *(v4 + 252);
+    v15 = *(equalCopy + 252);
     if (self->_xpcActivityRegisteredWithDuet)
     {
-      if ((*(v4 + 252) & 1) == 0)
+      if ((*(equalCopy + 252) & 1) == 0)
       {
         goto LABEL_188;
       }
     }
 
-    else if (*(v4 + 252))
+    else if (*(equalCopy + 252))
     {
       goto LABEL_188;
     }
@@ -2845,7 +2845,7 @@ LABEL_36:
 
   if ((*&v12 & 0x2000000) != 0)
   {
-    if ((v13 & 0x2000000) == 0 || self->_xpcActivityTimeSinceLastRegistration != *(v4 + 26))
+    if ((v13 & 0x2000000) == 0 || self->_xpcActivityTimeSinceLastRegistration != *(equalCopy + 26))
     {
       goto LABEL_188;
     }
@@ -2873,16 +2873,16 @@ LABEL_188:
     goto LABEL_188;
   }
 
-  v16 = *(v4 + 251);
+  v16 = *(equalCopy + 251);
   if (self->_xpcActivityIsActive)
   {
-    if ((*(v4 + 251) & 1) == 0)
+    if ((*(equalCopy + 251) & 1) == 0)
     {
       goto LABEL_188;
     }
   }
 
-  else if (*(v4 + 251))
+  else if (*(equalCopy + 251))
   {
     goto LABEL_188;
   }
@@ -2890,7 +2890,7 @@ LABEL_188:
 LABEL_155:
   if ((*&v12 & 0x1000000) != 0)
   {
-    if ((v13 & 0x1000000) == 0 || self->_xpcActivityTimeSinceLastActivation != *(v4 + 25))
+    if ((v13 & 0x1000000) == 0 || self->_xpcActivityTimeSinceLastActivation != *(equalCopy + 25))
     {
       goto LABEL_188;
     }
@@ -2903,7 +2903,7 @@ LABEL_155:
 
   if ((*&v12 & 0x400000) != 0)
   {
-    if ((v13 & 0x400000) == 0 || self->_xpcActivityDasdContext != *(v4 + 23))
+    if ((v13 & 0x400000) == 0 || self->_xpcActivityDasdContext != *(equalCopy + 23))
     {
       goto LABEL_188;
     }
@@ -2916,7 +2916,7 @@ LABEL_155:
 
   if ((*&v12 & 0x800) != 0)
   {
-    if ((v13 & 0x800) == 0 || self->_itemsNotMigratedDelta != *(v4 + 12))
+    if ((v13 & 0x800) == 0 || self->_itemsNotMigratedDelta != *(equalCopy + 12))
     {
       goto LABEL_188;
     }
@@ -2929,7 +2929,7 @@ LABEL_155:
 
   if ((*&v12 & 0x2000) != 0)
   {
-    if ((v13 & 0x2000) == 0 || self->_itemsReconciledInFileProviderDelta != *(v4 + 14))
+    if ((v13 & 0x2000) == 0 || self->_itemsReconciledInFileProviderDelta != *(equalCopy + 14))
     {
       goto LABEL_188;
     }
@@ -2942,7 +2942,7 @@ LABEL_155:
 
   if ((*&v12 & 0x800000) != 0)
   {
-    if ((v13 & 0x800000) == 0 || self->_xpcActivityTimeSinceLastAbleToRun != *(v4 + 24))
+    if ((v13 & 0x800000) == 0 || self->_xpcActivityTimeSinceLastAbleToRun != *(equalCopy + 24))
     {
       goto LABEL_188;
     }
@@ -3437,15 +3437,15 @@ LABEL_50:
   return v46 ^ v47 ^ v45 ^ v44 ^ v43 ^ v9 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v11 ^ v12 ^ v13 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29 ^ v30 ^ v31 ^ v32 ^ v33 ^ v34 ^ v35 ^ v36;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x40000000) != 0)
   {
-    self->_isSuccessful = *(v4 + 250);
+    self->_isSuccessful = *(fromCopy + 250);
     *&self->_has |= 0x40000000uLL;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x400) == 0)
     {
 LABEL_3:
@@ -3463,9 +3463,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_itemsNotMigratedCount = *(v4 + 11);
+  self->_itemsNotMigratedCount = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_4:
@@ -3478,9 +3478,9 @@ LABEL_4:
   }
 
 LABEL_47:
-  self->_totalItemCount = *(v4 + 22);
+  self->_totalItemCount = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -3493,9 +3493,9 @@ LABEL_5:
   }
 
 LABEL_48:
-  self->_accountQuotaUsage = *(v4 + 1);
+  self->_accountQuotaUsage = *(fromCopy + 1);
   *&self->_has |= 1uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x10000000) == 0)
   {
 LABEL_6:
@@ -3508,9 +3508,9 @@ LABEL_6:
   }
 
 LABEL_49:
-  self->_isAccountDataSeparated = *(v4 + 248);
+  self->_isAccountDataSeparated = *(fromCopy + 248);
   *&self->_has |= 0x10000000uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x80) == 0)
   {
 LABEL_7:
@@ -3523,9 +3523,9 @@ LABEL_7:
   }
 
 LABEL_50:
-  self->_importTime = *(v4 + 8);
+  self->_importTime = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_8:
@@ -3538,9 +3538,9 @@ LABEL_8:
   }
 
 LABEL_51:
-  self->_typesOfMigratedItemsMask = *(v4 + 60);
+  self->_typesOfMigratedItemsMask = *(fromCopy + 60);
   *&self->_has |= 0x4000000uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_9:
@@ -3553,9 +3553,9 @@ LABEL_9:
   }
 
 LABEL_52:
-  self->_typesOfNonMigratedItemsMask = *(v4 + 61);
+  self->_typesOfNonMigratedItemsMask = *(fromCopy + 61);
   *&self->_has |= 0x8000000uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 0x200) == 0)
   {
 LABEL_10:
@@ -3568,9 +3568,9 @@ LABEL_10:
   }
 
 LABEL_53:
-  self->_itemsNotFoundInDB = *(v4 + 10);
+  self->_itemsNotFoundInDB = *(fromCopy + 10);
   *&self->_has |= 0x200uLL;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_11:
@@ -3583,41 +3583,41 @@ LABEL_11:
   }
 
 LABEL_54:
-  self->_bouncedItemsCount = *(v4 + 2);
+  self->_bouncedItemsCount = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
 LABEL_12:
-    self->_bouncedItemsMatrix = *(v4 + 3);
+    self->_bouncedItemsMatrix = *(fromCopy + 3);
     *&self->_has |= 4uLL;
   }
 
 LABEL_13:
-  v7 = v4;
-  if (*(v4 + 29))
+  v7 = fromCopy;
+  if (*(fromCopy + 29))
   {
     [(AppTelemetryFPFSMigrationInvestigation *)self setTreatmentId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 27))
+  if (*(fromCopy + 27))
   {
     [(AppTelemetryFPFSMigrationInvestigation *)self setExperimentId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
     [(AppTelemetryFPFSMigrationInvestigation *)self setRampId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 8) != 0)
   {
-    self->_busyDateNotMigratedCount = *(v4 + 4);
+    self->_busyDateNotMigratedCount = *(fromCopy + 4);
     *&self->_has |= 8uLL;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
     if ((v6 & 0x10) == 0)
     {
 LABEL_21:
@@ -3635,9 +3635,9 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  self->_childItemsNotMigratedCount = *(v4 + 5);
+  self->_childItemsNotMigratedCount = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x40) == 0)
   {
 LABEL_22:
@@ -3650,9 +3650,9 @@ LABEL_22:
   }
 
 LABEL_58:
-  self->_ignoredFromSyncItemsNotMigratedCount = *(v4 + 7);
+  self->_ignoredFromSyncItemsNotMigratedCount = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x1000) == 0)
   {
 LABEL_23:
@@ -3665,9 +3665,9 @@ LABEL_23:
   }
 
 LABEL_59:
-  self->_itemsReconciledInFileProvider = *(v4 + 13);
+  self->_itemsReconciledInFileProvider = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x100) == 0)
   {
 LABEL_24:
@@ -3680,9 +3680,9 @@ LABEL_24:
   }
 
 LABEL_60:
-  self->_itemsMigratedWithoutAlreadyMayExistFlag = *(v4 + 9);
+  self->_itemsMigratedWithoutAlreadyMayExistFlag = *(fromCopy + 9);
   *&self->_has |= 0x100uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x20) == 0)
   {
 LABEL_25:
@@ -3695,9 +3695,9 @@ LABEL_25:
   }
 
 LABEL_61:
-  self->_durationBetweenDbCreationAndMigrationStart = *(v4 + 6);
+  self->_durationBetweenDbCreationAndMigrationStart = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x20000000) == 0)
   {
 LABEL_26:
@@ -3710,9 +3710,9 @@ LABEL_26:
   }
 
 LABEL_62:
-  self->_isStreamResetRunning = *(v4 + 249);
+  self->_isStreamResetRunning = *(fromCopy + 249);
   *&self->_has |= 0x20000000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x40000) == 0)
   {
 LABEL_27:
@@ -3725,9 +3725,9 @@ LABEL_27:
   }
 
 LABEL_63:
-  self->_stateOfDownloadJobs = *(v4 + 19);
+  self->_stateOfDownloadJobs = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x100000) == 0)
   {
 LABEL_28:
@@ -3740,9 +3740,9 @@ LABEL_28:
   }
 
 LABEL_64:
-  self->_stateOfUploadJobs = *(v4 + 21);
+  self->_stateOfUploadJobs = *(fromCopy + 21);
   *&self->_has |= 0x100000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x80000) == 0)
   {
 LABEL_29:
@@ -3755,9 +3755,9 @@ LABEL_29:
   }
 
 LABEL_65:
-  self->_stateOfOtherJobs = *(v4 + 20);
+  self->_stateOfOtherJobs = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_30:
@@ -3770,9 +3770,9 @@ LABEL_30:
   }
 
 LABEL_66:
-  self->_numberOfItemsPendingReconciliation = *(v4 + 15);
+  self->_numberOfItemsPendingReconciliation = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x20000) == 0)
   {
 LABEL_31:
@@ -3785,9 +3785,9 @@ LABEL_31:
   }
 
 LABEL_67:
-  self->_numberOfItemsPendingSelection = *(v4 + 18);
+  self->_numberOfItemsPendingSelection = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_32:
@@ -3800,9 +3800,9 @@ LABEL_32:
   }
 
 LABEL_68:
-  self->_numberOfItemsPendingScanningDisk = *(v4 + 16);
+  self->_numberOfItemsPendingScanningDisk = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x10000) == 0)
   {
 LABEL_33:
@@ -3815,9 +3815,9 @@ LABEL_33:
   }
 
 LABEL_69:
-  self->_numberOfItemsPendingScanningProvider = *(v4 + 17);
+  self->_numberOfItemsPendingScanningProvider = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x100000000) == 0)
   {
 LABEL_34:
@@ -3830,9 +3830,9 @@ LABEL_34:
   }
 
 LABEL_70:
-  self->_xpcActivityRegisteredWithDuet = *(v4 + 252);
+  self->_xpcActivityRegisteredWithDuet = *(fromCopy + 252);
   *&self->_has |= 0x100000000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x2000000) == 0)
   {
 LABEL_35:
@@ -3845,9 +3845,9 @@ LABEL_35:
   }
 
 LABEL_71:
-  self->_xpcActivityTimeSinceLastRegistration = *(v4 + 26);
+  self->_xpcActivityTimeSinceLastRegistration = *(fromCopy + 26);
   *&self->_has |= 0x2000000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x80000000) == 0)
   {
 LABEL_36:
@@ -3860,9 +3860,9 @@ LABEL_36:
   }
 
 LABEL_72:
-  self->_xpcActivityIsActive = *(v4 + 251);
+  self->_xpcActivityIsActive = *(fromCopy + 251);
   *&self->_has |= 0x80000000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x1000000) == 0)
   {
 LABEL_37:
@@ -3875,9 +3875,9 @@ LABEL_37:
   }
 
 LABEL_73:
-  self->_xpcActivityTimeSinceLastActivation = *(v4 + 25);
+  self->_xpcActivityTimeSinceLastActivation = *(fromCopy + 25);
   *&self->_has |= 0x1000000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x400000) == 0)
   {
 LABEL_38:
@@ -3890,9 +3890,9 @@ LABEL_38:
   }
 
 LABEL_74:
-  self->_xpcActivityDasdContext = *(v4 + 23);
+  self->_xpcActivityDasdContext = *(fromCopy + 23);
   *&self->_has |= 0x400000uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x800) == 0)
   {
 LABEL_39:
@@ -3905,9 +3905,9 @@ LABEL_39:
   }
 
 LABEL_75:
-  self->_itemsNotMigratedDelta = *(v4 + 12);
+  self->_itemsNotMigratedDelta = *(fromCopy + 12);
   *&self->_has |= 0x800uLL;
-  v6 = *(v4 + 32);
+  v6 = *(fromCopy + 32);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_40:
@@ -3920,12 +3920,12 @@ LABEL_40:
   }
 
 LABEL_76:
-  self->_itemsReconciledInFileProviderDelta = *(v4 + 14);
+  self->_itemsReconciledInFileProviderDelta = *(fromCopy + 14);
   *&self->_has |= 0x2000uLL;
-  if ((*(v4 + 32) & 0x800000) != 0)
+  if ((*(fromCopy + 32) & 0x800000) != 0)
   {
 LABEL_41:
-    self->_xpcActivityTimeSinceLastAbleToRun = *(v4 + 24);
+    self->_xpcActivityTimeSinceLastAbleToRun = *(fromCopy + 24);
     *&self->_has |= 0x800000uLL;
   }
 

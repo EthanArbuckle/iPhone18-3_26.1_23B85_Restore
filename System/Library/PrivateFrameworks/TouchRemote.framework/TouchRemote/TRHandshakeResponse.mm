@@ -1,29 +1,29 @@
 @interface TRHandshakeResponse
-- (TRHandshakeResponse)initWithCoder:(id)a3;
+- (TRHandshakeResponse)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRHandshakeResponse
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TRHandshakeResponse;
-  v4 = a3;
-  [(TRMessage *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_protocolVersion forKey:{@"TRHandshakeMessages_pV", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TRMessage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_protocolVersion forKey:{@"TRHandshakeMessages_pV", v5.receiver, v5.super_class}];
 }
 
-- (TRHandshakeResponse)initWithCoder:(id)a3
+- (TRHandshakeResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = TRHandshakeResponse;
-  v5 = [(TRMessage *)&v7 initWithCoder:v4];
+  v5 = [(TRMessage *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_protocolVersion = [v4 decodeIntegerForKey:@"TRHandshakeMessages_pV"];
+    v5->_protocolVersion = [coderCopy decodeIntegerForKey:@"TRHandshakeMessages_pV"];
   }
 
   return v5;

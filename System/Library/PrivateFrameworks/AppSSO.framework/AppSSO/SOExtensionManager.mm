@@ -1,22 +1,22 @@
 @interface SOExtensionManager
-+ (BOOL)_isMatchedExtension:(id)a3 forBundleIdentifier:(id)a4;
-+ (BOOL)isAppleConnectExtensionBundleIdentifier:(id)a3;
-+ (BOOL)isInternalExtensionBundleIdentifier:(id)a3;
++ (BOOL)_isMatchedExtension:(id)extension forBundleIdentifier:(id)identifier;
++ (BOOL)isAppleConnectExtensionBundleIdentifier:(id)identifier;
++ (BOOL)isInternalExtensionBundleIdentifier:(id)identifier;
 + (id)sharedInstance;
-+ (void)_sendNotificationsLoadedExtensions:(id)a3 new:(id)a4 removed:(id)a5;
-- (BOOL)isLoadedExtensionWithBundleIdentifier:(id)a3;
++ (void)_sendNotificationsLoadedExtensions:(id)extensions new:(id)new removed:(id)removed;
+- (BOOL)isLoadedExtensionWithBundleIdentifier:(id)identifier;
 - (SOExtensionManager)init;
 - (id)_doLoadExtensions;
-- (id)loadExtensionWithBundleIdentifier:(id)a3;
+- (id)loadExtensionWithBundleIdentifier:(id)identifier;
 - (id)loadInternalExtension;
-- (id)loadedExtensionWithBundleIdentifier:(id)a3;
+- (id)loadedExtensionWithBundleIdentifier:(id)identifier;
 - (id)loadedInternalExtension;
 - (void)_doBeginMatchingExtensions;
 - (void)_doEndMatchingExtensions;
 - (void)beginMatchingExtensions;
 - (void)dealloc;
 - (void)endMatchingExtensions;
-- (void)loadExtensionWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)loadExtensionWithBundleIdentifier:(id)identifier completion:(id)completion;
 - (void)loadExtensions;
 - (void)unloadExtensions;
 @end
@@ -69,20 +69,20 @@ uint64_t __36__SOExtensionManager_sharedInstance__block_invoke()
   [(SOExtensionManager *)&v3 dealloc];
 }
 
-- (void)loadExtensionWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)loadExtensionWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[SOExtensionManager loadExtensionWithBundleIdentifier:completion:]";
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v8, OS_LOG_TYPE_DEFAULT, "%s bundleIdentifier: %{public}@ on %@", buf, 0x20u);
   }
 
@@ -91,11 +91,11 @@ uint64_t __36__SOExtensionManager_sharedInstance__block_invoke()
   v13[1] = 3221225472;
   v13[2] = __67__SOExtensionManager_loadExtensionWithBundleIdentifier_completion___block_invoke;
   v13[3] = &unk_1E813E8E8;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v13[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = identifierCopy;
+  v11 = completionCopy;
   [(SOExtensionFinder *)extensionFinder findExtensionWithBundleIdentifier:v10 completion:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -146,26 +146,26 @@ void __67__SOExtensionManager_loadExtensionWithBundleIdentifier_completion___blo
   }
 }
 
-- (id)loadExtensionWithBundleIdentifier:(id)a3
+- (id)loadExtensionWithBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[SOExtensionManager loadExtensionWithBundleIdentifier:]";
     *&buf[12] = 2114;
-    *&buf[14] = v4;
+    *&buf[14] = identifierCopy;
     *&buf[22] = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v5, OS_LOG_TYPE_DEFAULT, "%s bundleIdentifier: %{public}@ on %@", buf, 0x20u);
   }
 
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
-  v14 = __Block_byref_object_copy__1;
+  selfCopy = __Block_byref_object_copy__1;
   v15 = __Block_byref_object_dispose__1;
   v16 = 0;
   v10[0] = MEMORY[0x1E69E9820];
@@ -173,7 +173,7 @@ void __67__SOExtensionManager_loadExtensionWithBundleIdentifier_completion___blo
   v10[2] = __56__SOExtensionManager_loadExtensionWithBundleIdentifier___block_invoke;
   v10[3] = &unk_1E813E910;
   v12 = buf;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   [(SOExtensionManager *)self loadExtensionWithBundleIdentifier:v6 completion:v10];
   v7 = *(*&buf[8] + 40);
@@ -212,12 +212,12 @@ void __56__SOExtensionManager_loadExtensionWithBundleIdentifier___block_invoke(u
     v8 = 136315394;
     v9 = "[SOExtensionManager loadInternalExtension]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
-  v4 = [objc_opt_class() internalExtensionBundleIdentifier];
-  v5 = [(SOExtensionManager *)self loadExtensionWithBundleIdentifier:v4];
+  internalExtensionBundleIdentifier = [objc_opt_class() internalExtensionBundleIdentifier];
+  v5 = [(SOExtensionManager *)self loadExtensionWithBundleIdentifier:internalExtensionBundleIdentifier];
 
   v6 = *MEMORY[0x1E69E9840];
 
@@ -233,7 +233,7 @@ void __56__SOExtensionManager_loadExtensionWithBundleIdentifier___block_invoke(u
     v5 = 136315394;
     v6 = "[SOExtensionManager beginMatchingExtensions]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -250,7 +250,7 @@ void __56__SOExtensionManager_loadExtensionWithBundleIdentifier___block_invoke(u
     v5 = 136315394;
     v6 = "[SOExtensionManager endMatchingExtensions]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -267,17 +267,17 @@ void __56__SOExtensionManager_loadExtensionWithBundleIdentifier___block_invoke(u
     v8 = 136315394;
     v9 = "[SOExtensionManager loadExtensions]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(SOExtensionManager *)v4 _doLoadExtensions];
-  loadedExtensions = v4->_loadedExtensions;
-  v4->_loadedExtensions = v5;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  _doLoadExtensions = [(SOExtensionManager *)selfCopy2 _doLoadExtensions];
+  loadedExtensions = selfCopy2->_loadedExtensions;
+  selfCopy2->_loadedExtensions = _doLoadExtensions;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
   v7 = *MEMORY[0x1E69E9840];
 }
 
@@ -322,17 +322,17 @@ void __39__SOExtensionManager__doLoadExtensions__block_invoke(uint64_t a1, void 
     *buf = 136315394;
     v17 = "[SOExtensionManager unloadExtensions]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v4->_loadedExtensions;
+  v5 = selfCopy2->_loadedExtensions;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -357,30 +357,30 @@ void __39__SOExtensionManager__doLoadExtensions__block_invoke(uint64_t a1, void 
     while (v6);
   }
 
-  loadedExtensions = v4->_loadedExtensions;
-  v4->_loadedExtensions = 0;
+  loadedExtensions = selfCopy2->_loadedExtensions;
+  selfCopy2->_loadedExtensions = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy2);
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)loadedExtensionWithBundleIdentifier:(id)a3
+- (id)loadedExtensionWithBundleIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOExtensionManager loadedExtensionWithBundleIdentifier:];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v6->_loadedExtensions;
+  v7 = selfCopy->_loadedExtensions;
   v8 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v27 count:16];
   if (v8)
   {
@@ -395,7 +395,7 @@ void __39__SOExtensionManager__doLoadExtensions__block_invoke(uint64_t a1, void 
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([objc_opt_class() _isMatchedExtension:v11 forBundleIdentifier:{v4, v15}])
+        if ([objc_opt_class() _isMatchedExtension:v11 forBundleIdentifier:{identifierCopy, v15}])
         {
           v8 = v11;
           goto LABEL_13;
@@ -414,18 +414,18 @@ void __39__SOExtensionManager__doLoadExtensions__block_invoke(uint64_t a1, void 
 
 LABEL_13:
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v12 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v20 = "[SOExtensionManager loadedExtensionWithBundleIdentifier:]";
     v21 = 2114;
-    v22 = v4;
+    v22 = identifierCopy;
     v23 = 2114;
     v24 = v8;
     v25 = 2112;
-    v26 = v6;
+    v26 = selfCopy;
     _os_log_impl(&dword_1C1317000, v12, OS_LOG_TYPE_DEFAULT, "%s %{public}@ => %{public}@ on %@", buf, 0x2Au);
   }
 
@@ -443,28 +443,28 @@ LABEL_13:
     v8 = 136315394;
     v9 = "[SOExtensionManager loadedInternalExtension]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v8, 0x16u);
   }
 
-  v4 = [objc_opt_class() internalExtensionBundleIdentifier];
-  v5 = [(SOExtensionManager *)self loadedExtensionWithBundleIdentifier:v4];
+  internalExtensionBundleIdentifier = [objc_opt_class() internalExtensionBundleIdentifier];
+  v5 = [(SOExtensionManager *)self loadedExtensionWithBundleIdentifier:internalExtensionBundleIdentifier];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (BOOL)isLoadedExtensionWithBundleIdentifier:(id)a3
+- (BOOL)isLoadedExtensionWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [SOExtensionManager isLoadedExtensionWithBundleIdentifier:];
   }
 
-  v6 = [(SOExtensionManager *)self loadedExtensionWithBundleIdentifier:v4];
+  v6 = [(SOExtensionManager *)self loadedExtensionWithBundleIdentifier:identifierCopy];
   v7 = v6 != 0;
 
   return v7;
@@ -597,7 +597,7 @@ uint64_t __48__SOExtensionManager__doBeginMatchingExtensions__block_invoke_3(uin
     v5 = 136315394;
     v6 = "[SOExtensionManager _doEndMatchingExtensions]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -605,31 +605,31 @@ uint64_t __48__SOExtensionManager__doBeginMatchingExtensions__block_invoke_3(uin
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_sendNotificationsLoadedExtensions:(id)a3 new:(id)a4 removed:(id)a5
++ (void)_sendNotificationsLoadedExtensions:(id)extensions new:(id)new removed:(id)removed
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionsCopy = extensions;
+  newCopy = new;
+  removedCopy = removed;
   v11 = SO_LOG_SOExtensionManager();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316162;
     v25 = "+[SOExtensionManager _sendNotificationsLoadedExtensions:new:removed:]";
     v26 = 2114;
-    v27 = v8;
+    v27 = extensionsCopy;
     v28 = 2114;
-    v29 = v9;
+    v29 = newCopy;
     v30 = 2114;
-    v31 = v10;
+    v31 = removedCopy;
     v32 = 2112;
-    v33 = a1;
+    selfCopy = self;
     _os_log_impl(&dword_1C1317000, v11, OS_LOG_TYPE_DEFAULT, "%s extensions: %{public}@, new: %{public}@, removed: %{public}@ on %@", buf, 0x34u);
   }
 
-  if (v8)
+  if (extensionsCopy)
   {
-    v12 = v8;
+    v12 = extensionsCopy;
   }
 
   else
@@ -639,9 +639,9 @@ uint64_t __48__SOExtensionManager__doBeginMatchingExtensions__block_invoke_3(uin
 
   v18 = @"extensions";
   v19 = @"new";
-  if (v9)
+  if (newCopy)
   {
-    v13 = v9;
+    v13 = newCopy;
   }
 
   else
@@ -652,9 +652,9 @@ uint64_t __48__SOExtensionManager__doBeginMatchingExtensions__block_invoke_3(uin
   v21 = v12;
   v22 = v13;
   v20 = @"removed";
-  if (v10)
+  if (removedCopy)
   {
-    v14 = v10;
+    v14 = removedCopy;
   }
 
   else
@@ -664,41 +664,41 @@ uint64_t __48__SOExtensionManager__doBeginMatchingExtensions__block_invoke_3(uin
 
   v23 = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v21 forKeys:&v18 count:3];
-  v16 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v16 postNotificationName:@"com.apple.AppSSO.SOExtensionManager.ExtensionsChanged" object:a1 userInfo:v15];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.AppSSO.SOExtensionManager.ExtensionsChanged" object:self userInfo:v15];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)_isMatchedExtension:(id)a3 forBundleIdentifier:(id)a4
++ (BOOL)_isMatchedExtension:(id)extension forBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [a3 extensionBundleIdentifier];
-  v7 = [v6 isEqualToString:v5];
+  identifierCopy = identifier;
+  extensionBundleIdentifier = [extension extensionBundleIdentifier];
+  v7 = [extensionBundleIdentifier isEqualToString:identifierCopy];
 
   return v7;
 }
 
-+ (BOOL)isInternalExtensionBundleIdentifier:(id)a3
++ (BOOL)isInternalExtensionBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 internalExtensionsBundleIdentifiers];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  internalExtensionsBundleIdentifiers = [self internalExtensionsBundleIdentifiers];
+  v6 = [internalExtensionsBundleIdentifiers containsObject:identifierCopy];
 
   return v6;
 }
 
-+ (BOOL)isAppleConnectExtensionBundleIdentifier:(id)a3
++ (BOOL)isAppleConnectExtensionBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.ist.ds.appleconnect2.AppSSOExtension"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.ist.AppleConnect.App-SSO"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.ist.ds.appleconnect2.AppSSOExtension"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.ist.AppleConnect.App-SSO"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.ist.AppleConnect.mini.App-SSO"];
+    v4 = [identifierCopy isEqualToString:@"com.apple.ist.AppleConnect.mini.App-SSO"];
   }
 
   return v4;

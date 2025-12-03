@@ -25,7 +25,7 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
 
   v29 = [MEMORY[0x1E69C6638] sectionWithRows:v6];
-  v30.receiver = a1;
+  v30.receiver = self;
   v7 = MEMORY[0x1E69C6638];
   v30.super_class = &OBJC_METACLASS___SBHCenterZoomSettings;
   v8 = objc_msgSendSuper2(&v30, sel_settingsControllerModule);

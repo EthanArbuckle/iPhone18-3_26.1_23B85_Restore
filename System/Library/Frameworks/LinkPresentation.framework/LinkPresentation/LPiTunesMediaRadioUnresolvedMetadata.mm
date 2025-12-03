@@ -12,8 +12,8 @@
   [(LPiTunesMediaRadioMetadata *)v3 setStoreIdentifier:self->_storeIdentifier];
   [(LPiTunesMediaRadioMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaRadioMetadata *)v3 setCurator:self->_curator];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaRadioMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaRadioMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }

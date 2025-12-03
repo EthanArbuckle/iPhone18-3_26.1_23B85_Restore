@@ -1,8 +1,8 @@
 @interface WBSContactStoreManager
 + (WBSContactStoreManager)sharedContactStoreManager;
 - (WBSContactStoreManager)init;
-- (id)contactForHandle:(id)a3 error:(id *)a4;
-- (id)temporaryContactForIdentity:(id)a3;
+- (id)contactForHandle:(id)handle error:(id *)error;
+- (id)temporaryContactForIdentity:(id)identity;
 @end
 
 @implementation WBSContactStoreManager
@@ -43,31 +43,31 @@ void __51__WBSContactStoreManager_sharedContactStoreManager__block_invoke()
   return v2;
 }
 
-- (id)contactForHandle:(id)a3 error:(id *)a4
+- (id)contactForHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  handleCopy = handle;
+  if ([handleCopy length])
   {
-    v7 = [MEMORY[0x1E695CD58] safari_imageViewDescriptors];
-    v8 = [v7 mutableCopy];
+    safari_imageViewDescriptors = [MEMORY[0x1E695CD58] safari_imageViewDescriptors];
+    v8 = [safari_imageViewDescriptors mutableCopy];
 
     v9 = [MEMORY[0x1E695CD80] descriptorForRequiredKeysForStyle:0];
     [v8 addObject:v9];
 
-    v10 = [v6 containsString:@"@"];
+    v10 = [handleCopy containsString:@"@"];
     v11 = MEMORY[0x1E695CD58];
     if (v10)
     {
-      v12 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:v6];
+      v12 = [MEMORY[0x1E695CD58] predicateForContactsMatchingEmailAddress:handleCopy];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v6];
+      v14 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:handleCopy];
       v12 = [v11 predicateForContactsMatchingPhoneNumber:v14];
     }
 
-    v15 = [(CNContactStore *)self->_contactStore unifiedContactsMatchingPredicate:v12 keysToFetch:v8 error:a4];
+    v15 = [(CNContactStore *)self->_contactStore unifiedContactsMatchingPredicate:v12 keysToFetch:v8 error:error];
     v13 = [v15 safari_firstObjectPassingTest:&__block_literal_global_8];
   }
 
@@ -87,41 +87,41 @@ BOOL __49__WBSContactStoreManager_contactForHandle_error___block_invoke(uint64_t
   return v3;
 }
 
-- (id)temporaryContactForIdentity:(id)a3
+- (id)temporaryContactForIdentity:(id)identity
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   if (!self->_temporaryContacts)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     temporaryContacts = self->_temporaryContacts;
-    self->_temporaryContacts = v5;
+    self->_temporaryContacts = dictionary;
   }
 
-  v7 = [v4 userRecordID];
+  userRecordID = [identityCopy userRecordID];
 
-  if (!v7 || (v8 = self->_temporaryContacts, [v4 userRecordID], v9 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](v8, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
+  if (!userRecordID || (v8 = self->_temporaryContacts, [identityCopy userRecordID], v9 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](v8, "objectForKeyedSubscript:", v9), v10 = objc_claimAutoreleasedReturnValue(), v9, !v10))
   {
     v11 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v12 = [v4 nameComponents];
-    [v12 overrideComponentsInContact:v11];
+    nameComponents = [identityCopy nameComponents];
+    [nameComponents overrideComponentsInContact:v11];
 
-    v13 = [v4 lookupInfo];
-    v14 = [v13 emailAddress];
-    if (v14)
+    lookupInfo = [identityCopy lookupInfo];
+    emailAddress = [lookupInfo emailAddress];
+    if (emailAddress)
     {
-      v15 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB60] value:v14];
+      v15 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:*MEMORY[0x1E695CB60] value:emailAddress];
       v28[0] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
       [v11 setEmailAddresses:v16];
     }
 
-    v17 = [v13 phoneNumber];
-    if (v17)
+    phoneNumber = [lookupInfo phoneNumber];
+    if (phoneNumber)
     {
       v18 = MEMORY[0x1E695CEE0];
       v19 = *MEMORY[0x1E695CBC0];
-      v20 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v17];
+      v20 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:phoneNumber];
       v21 = [v18 labeledValueWithLabel:v19 value:v20];
       v27 = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
@@ -129,13 +129,13 @@ BOOL __49__WBSContactStoreManager_contactForHandle_error___block_invoke(uint64_t
     }
 
     v10 = [v11 copy];
-    v23 = [v4 userRecordID];
+    userRecordID2 = [identityCopy userRecordID];
 
-    if (v23)
+    if (userRecordID2)
     {
       v24 = self->_temporaryContacts;
-      v25 = [v4 userRecordID];
-      [(NSMutableDictionary *)v24 setObject:v10 forKeyedSubscript:v25];
+      userRecordID3 = [identityCopy userRecordID];
+      [(NSMutableDictionary *)v24 setObject:v10 forKeyedSubscript:userRecordID3];
     }
   }
 

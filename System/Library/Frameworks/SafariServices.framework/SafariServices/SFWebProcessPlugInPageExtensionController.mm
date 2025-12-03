@@ -1,26 +1,26 @@
 @interface SFWebProcessPlugInPageExtensionController
-- (SFWebProcessPlugInPageExtensionController)initWithBrowserContextController:(id)a3;
+- (SFWebProcessPlugInPageExtensionController)initWithBrowserContextController:(id)controller;
 - (void)_clearExtensionControllerInterface;
 - (void)_setUpExtensionControllerInterface;
 - (void)clearExtensionScriptWorlds;
 - (void)dealloc;
-- (void)evaluateJavaScriptForSharingExtension:(id)a3 extraArguments:(id)a4 completionHandler:(id)a5;
-- (void)finalizeJavaScriptForSharingExtension:(id)a3 arguments:(id)a4;
-- (void)prepareJavaScriptWorldForSharingExtension:(id)a3 javaScript:(id)a4;
+- (void)evaluateJavaScriptForSharingExtension:(id)extension extraArguments:(id)arguments completionHandler:(id)handler;
+- (void)finalizeJavaScriptForSharingExtension:(id)extension arguments:(id)arguments;
+- (void)prepareJavaScriptWorldForSharingExtension:(id)extension javaScript:(id)script;
 @end
 
 @implementation SFWebProcessPlugInPageExtensionController
 
-- (SFWebProcessPlugInPageExtensionController)initWithBrowserContextController:(id)a3
+- (SFWebProcessPlugInPageExtensionController)initWithBrowserContextController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SFWebProcessPlugInPageExtensionController;
   v5 = [(SFWebProcessPlugInPageExtensionController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserContextController, v4);
+    objc_storeWeak(&v5->_browserContextController, controllerCopy);
     [(SFWebProcessPlugInPageExtensionController *)v6 _setUpExtensionControllerInterface];
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
     extensionToScriptWorldMap = v6->_extensionToScriptWorldMap;
@@ -48,8 +48,8 @@
   self->_extensionControllerInterface = v3;
 
   WeakRetained = objc_loadWeakRetained(&self->_browserContextController);
-  v5 = [WeakRetained _remoteObjectRegistry];
-  [v5 registerExportedObject:self interface:self->_extensionControllerInterface];
+  _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
+  [_remoteObjectRegistry registerExportedObject:self interface:self->_extensionControllerInterface];
 }
 
 - (void)_clearExtensionControllerInterface
@@ -57,36 +57,36 @@
   if (self->_extensionControllerInterface)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserContextController);
-    v5 = [WeakRetained _remoteObjectRegistry];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
 
-    [v5 unregisterExportedObject:self interface:self->_extensionControllerInterface];
+    [_remoteObjectRegistry unregisterExportedObject:self interface:self->_extensionControllerInterface];
     extensionControllerInterface = self->_extensionControllerInterface;
     self->_extensionControllerInterface = 0;
   }
 }
 
-- (void)prepareJavaScriptWorldForSharingExtension:(id)a3 javaScript:(id)a4
+- (void)prepareJavaScriptWorldForSharingExtension:(id)extension javaScript:(id)script
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  scriptCopy = script;
   v8 = WBS_LOG_CHANNEL_PREFIXExtensions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [SFWebProcessPlugInPageExtensionController prepareJavaScriptWorldForSharingExtension:v8 javaScript:?];
   }
 
-  v9 = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:v6];
-  if (!v9)
+  world = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:extensionCopy];
+  if (!world)
   {
-    v9 = [MEMORY[0x1E6985398] world];
-    [(NSMutableDictionary *)self->_extensionToScriptWorldMap setObject:v9 forKey:v6];
+    world = [MEMORY[0x1E6985398] world];
+    [(NSMutableDictionary *)self->_extensionToScriptWorldMap setObject:world forKey:extensionCopy];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_browserContextController);
-  v11 = [WeakRetained mainFrame];
-  v12 = [v11 jsContextForWorld:v9];
+  mainFrame = [WeakRetained mainFrame];
+  v12 = [mainFrame jsContextForWorld:world];
 
-  v13 = [v12 evaluateScript:v7];
+  v13 = [v12 evaluateScript:scriptCopy];
   v14 = WBS_LOG_CHANNEL_PREFIXExtensions();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -95,31 +95,31 @@
   }
 }
 
-- (void)evaluateJavaScriptForSharingExtension:(id)a3 extraArguments:(id)a4 completionHandler:(id)a5
+- (void)evaluateJavaScriptForSharingExtension:(id)extension extraArguments:(id)arguments completionHandler:(id)handler
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  extensionCopy = extension;
+  argumentsCopy = arguments;
+  handlerCopy = handler;
   v11 = WBS_LOG_CHANNEL_PREFIXExtensions();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     [SFWebProcessPlugInPageExtensionController evaluateJavaScriptForSharingExtension:v11 extraArguments:? completionHandler:?];
   }
 
-  v12 = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:v8];
+  v12 = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:extensionCopy];
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserContextController);
-    v14 = [WeakRetained mainFrame];
-    v15 = [v14 jsContextForWorld:v12];
+    mainFrame = [WeakRetained mainFrame];
+    v15 = [mainFrame jsContextForWorld:v12];
 
-    v16 = [v15 globalObject];
-    v17 = [v16 valueForProperty:@"ExtensionPreprocessingJS"];
+    globalObject = [v15 globalObject];
+    v17 = [globalObject valueForProperty:@"ExtensionPreprocessingJS"];
 
     if (([v17 isUndefined] & 1) != 0 || (objc_msgSend(v17, "valueForProperty:", @"run"), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isUndefined"), v18, v19))
     {
-      v10[2](v10, MEMORY[0x1E695E0F8]);
+      handlerCopy[2](handlerCopy, MEMORY[0x1E695E0F8]);
     }
 
     else
@@ -128,20 +128,20 @@
       aBlock[1] = 3221225472;
       aBlock[2] = __116__SFWebProcessPlugInPageExtensionController_evaluateJavaScriptForSharingExtension_extraArguments_completionHandler___block_invoke;
       aBlock[3] = &unk_1E8493868;
-      v32 = v10;
+      v32 = handlerCopy;
       v29 = _Block_copy(aBlock);
       v21 = objc_alloc(MEMORY[0x1E695DF90]);
       v34[0] = @"extensionName";
       v34[1] = @"completionFunction";
-      v35[0] = v8;
+      v35[0] = extensionCopy;
       v22 = _Block_copy(v29);
       v35[1] = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
       v24 = [v21 initWithDictionary:v23];
 
-      if (v9)
+      if (argumentsCopy)
       {
-        [v24 setObject:v9 forKey:@"extraArguments"];
+        [v24 setObject:argumentsCopy forKey:@"extraArguments"];
       }
 
       v25 = [v24 copy];
@@ -166,7 +166,7 @@
       [SFWebProcessPlugInPageExtensionController evaluateJavaScriptForSharingExtension:v20 extraArguments:? completionHandler:?];
     }
 
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -186,35 +186,35 @@ void __116__SFWebProcessPlugInPageExtensionController_evaluateJavaScriptForShari
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)finalizeJavaScriptForSharingExtension:(id)a3 arguments:(id)a4
+- (void)finalizeJavaScriptForSharingExtension:(id)extension arguments:(id)arguments
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:v6];
+  extensionCopy = extension;
+  argumentsCopy = arguments;
+  v8 = [(NSMutableDictionary *)self->_extensionToScriptWorldMap objectForKey:extensionCopy];
   if (v8)
   {
-    [(NSMutableDictionary *)self->_extensionToScriptWorldMap removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_extensionToScriptWorldMap removeObjectForKey:extensionCopy];
     WeakRetained = objc_loadWeakRetained(&self->_browserContextController);
-    v10 = [WeakRetained mainFrame];
-    v11 = [v10 jsContextForWorld:v8];
+    mainFrame = [WeakRetained mainFrame];
+    v11 = [mainFrame jsContextForWorld:v8];
 
-    v12 = [v11 globalObject];
-    v13 = [v12 valueForProperty:@"ExtensionPreprocessingJS"];
+    globalObject = [v11 globalObject];
+    v13 = [globalObject valueForProperty:@"ExtensionPreprocessingJS"];
 
     if (([v13 isUndefined] & 1) == 0)
     {
       v14 = [v13 valueForProperty:@"finalize"];
-      v15 = [v14 isUndefined];
+      isUndefined = [v14 isUndefined];
 
-      if ((v15 & 1) == 0)
+      if ((isUndefined & 1) == 0)
       {
-        v19[0] = v7;
+        v19[0] = argumentsCopy;
         v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
         v17 = [v13 invokeMethod:@"finalize" withArguments:v16];
 
-        v18 = [v11 globalObject];
-        [v18 deleteProperty:@"ExtensionPreprocessingJS"];
+        globalObject2 = [v11 globalObject];
+        [globalObject2 deleteProperty:@"ExtensionPreprocessingJS"];
       }
     }
 

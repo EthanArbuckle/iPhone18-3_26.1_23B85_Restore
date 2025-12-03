@@ -1,43 +1,43 @@
 @interface PUBrillianceAdjustmentCustomBehavior
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 modifyValue:(double)a5;
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 setEnabled:(BOOL)a5 completionHandler:(id)a6;
-- (void)populateSmartToneStatisticsForDataSource:(id)a3 adjustmentInfo:(id)a4 completionHandler:(id)a5;
+- (void)dataSource:(id)source adjustmentInfo:(id)info modifyValue:(double)value;
+- (void)dataSource:(id)source adjustmentInfo:(id)info setEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)populateSmartToneStatisticsForDataSource:(id)source adjustmentInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation PUBrillianceAdjustmentCustomBehavior
 
-- (void)populateSmartToneStatisticsForDataSource:(id)a3 adjustmentInfo:(id)a4 completionHandler:(id)a5
+- (void)populateSmartToneStatisticsForDataSource:(id)source adjustmentInfo:(id)info completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 compositionController];
-  v10 = [v9 smartToneAdjustmentController];
-  v11 = v10;
-  if (v10 && ([v10 statistics], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+  sourceCopy = source;
+  handlerCopy = handler;
+  compositionController = [sourceCopy compositionController];
+  smartToneAdjustmentController = [compositionController smartToneAdjustmentController];
+  v11 = smartToneAdjustmentController;
+  if (smartToneAdjustmentController && ([smartToneAdjustmentController statistics], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else if (![(PUBrillianceAdjustmentCustomBehavior *)self calculatingStatistics])
   {
     [(PUBrillianceAdjustmentCustomBehavior *)self setCalculatingStatistics:1];
-    v13 = [v7 autoEnhanceController];
-    v14 = [v7 compositionController];
-    v15 = [v7 valuesCalculator];
+    autoEnhanceController = [sourceCopy autoEnhanceController];
+    compositionController2 = [sourceCopy compositionController];
+    valuesCalculator = [sourceCopy valuesCalculator];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __114__PUBrillianceAdjustmentCustomBehavior_populateSmartToneStatisticsForDataSource_adjustmentInfo_completionHandler___block_invoke;
     v16[3] = &unk_1E7B80CB0;
-    v17 = v7;
-    v18 = self;
-    v19 = v8;
-    [v13 calculateStatisticsForCompositionController:v14 valuesCalculator:v15 completionHandler:v16];
+    v17 = sourceCopy;
+    selfCopy = self;
+    v19 = handlerCopy;
+    [autoEnhanceController calculateStatisticsForCompositionController:compositionController2 valuesCalculator:valuesCalculator completionHandler:v16];
 
     goto LABEL_8;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_8:
@@ -78,40 +78,40 @@ uint64_t __114__PUBrillianceAdjustmentCustomBehavior_populateSmartToneStatistics
   return [v7 setCalculatingStatistics:0];
 }
 
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 modifyValue:(double)a5
+- (void)dataSource:(id)source adjustmentInfo:(id)info modifyValue:(double)value
 {
-  v8 = a3;
-  v9 = a4;
-  [v9 setCurrentLevel:a5];
+  sourceCopy = source;
+  infoCopy = info;
+  [infoCopy setCurrentLevel:value];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __78__PUBrillianceAdjustmentCustomBehavior_dataSource_adjustmentInfo_modifyValue___block_invoke;
   v12[3] = &unk_1E7B80C38;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = sourceCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = sourceCopy;
   [(PUBrillianceAdjustmentCustomBehavior *)self populateSmartToneStatisticsForDataSource:v11 adjustmentInfo:v10 completionHandler:v12];
 }
 
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 setEnabled:(BOOL)a5 completionHandler:(id)a6
+- (void)dataSource:(id)source adjustmentInfo:(id)info setEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 delegate];
-  [v12 willModifyAdjustment];
+  sourceCopy = source;
+  infoCopy = info;
+  handlerCopy = handler;
+  delegate = [sourceCopy delegate];
+  [delegate willModifyAdjustment];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__PUBrillianceAdjustmentCustomBehavior_dataSource_adjustmentInfo_setEnabled_completionHandler___block_invoke;
   v16[3] = &unk_1E7B80CB0;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = sourceCopy;
+  v18 = infoCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = infoCopy;
+  v15 = sourceCopy;
   [(PUBrillianceAdjustmentCustomBehavior *)self populateSmartToneStatisticsForDataSource:v15 adjustmentInfo:v14 completionHandler:v16];
 }
 

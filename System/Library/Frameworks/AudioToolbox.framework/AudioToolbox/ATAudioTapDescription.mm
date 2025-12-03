@@ -1,86 +1,86 @@
 @interface ATAudioTapDescription
-- (ATAudioTapDescription)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setProcessIdentifiersChecked:(id)a3;
+- (ATAudioTapDescription)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setProcessIdentifiersChecked:(id)checked;
 - (id)description;
-- (id)initBaseTapInternalWithFormat:(id)a3;
-- (id)initPreSpatialSessionTypeTapWithFormat:(id)a3 sessionType:(unsigned int)a4;
-- (id)initPreSpatialTapInternalWithFormat:(id)a3 PIDs:(id)a4 sessionID:(unsigned int)a5 sessionType:(unsigned int)a6 sceneID:(id)a7;
-- (id)initProcessTapWithFormat:(id)a3 PID:(int)a4 deviceUID:(id)a5;
-- (id)initScreenSharingTapWithFormat:(id)a3;
-- (id)initSystemTapWithFormat:(id)a3;
-- (id)initSystemTapWithFormat:(id)a3 excludePIDs:(id)a4;
-- (id)initTapInternalWithFormat:(id)a3 PIDs:(id)a4;
+- (id)initBaseTapInternalWithFormat:(id)format;
+- (id)initPreSpatialSessionTypeTapWithFormat:(id)format sessionType:(unsigned int)type;
+- (id)initPreSpatialTapInternalWithFormat:(id)format PIDs:(id)ds sessionID:(unsigned int)d sessionType:(unsigned int)type sceneID:(id)iD;
+- (id)initProcessTapWithFormat:(id)format PID:(int)d deviceUID:(id)iD;
+- (id)initScreenSharingTapWithFormat:(id)format;
+- (id)initSystemTapWithFormat:(id)format;
+- (id)initSystemTapWithFormat:(id)format excludePIDs:(id)ds;
+- (id)initTapInternalWithFormat:(id)format PIDs:(id)ds;
 - (int)processIdentifier;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProcessIdentifiers:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProcessIdentifiers:(id)identifiers;
 @end
 
 @implementation ATAudioTapDescription
 
 - (id)description
 {
-  v3 = [(ATAudioTapDescription *)self tapType];
+  tapType = [(ATAudioTapDescription *)self tapType];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3 > 2)
+  if (tapType > 2)
   {
-    if (v3 == 3)
+    if (tapType == 3)
     {
-      v8 = [(ATAudioTapDescription *)self sceneIdentifier];
-      v9 = [(ATAudioTapDescription *)self name];
-      v10 = [(ATAudioTapDescription *)self UUID];
-      v11 = [(ATAudioTapDescription *)self format];
-      v14 = [(ATAudioTapDescription *)self excludedPIDs];
-      v15 = [v4 stringWithFormat:@"<%@@%p: scene identifier tap - sceneID:%@, name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, v8, v9, v10, v11, v14];
+      sceneIdentifier = [(ATAudioTapDescription *)self sceneIdentifier];
+      name = [(ATAudioTapDescription *)self name];
+      uUID = [(ATAudioTapDescription *)self UUID];
+      format = [(ATAudioTapDescription *)self format];
+      excludedPIDs = [(ATAudioTapDescription *)self excludedPIDs];
+      v15 = [v4 stringWithFormat:@"<%@@%p: scene identifier tap - sceneID:%@, name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, sceneIdentifier, name, uUID, format, excludedPIDs];
       goto LABEL_12;
     }
 
-    if (v3 == 4)
+    if (tapType == 4)
     {
-      v13 = [(ATAudioTapDescription *)self sessionType];
-      v8 = [(ATAudioTapDescription *)self name];
-      v9 = [(ATAudioTapDescription *)self UUID];
-      v10 = [(ATAudioTapDescription *)self format];
-      v11 = [(ATAudioTapDescription *)self excludedPIDs];
-      v12 = [v4 stringWithFormat:@"<%@@%p: session type tap - session type:%u, name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, v13, v8, v9, v10, v11];
+      sessionType = [(ATAudioTapDescription *)self sessionType];
+      sceneIdentifier = [(ATAudioTapDescription *)self name];
+      name = [(ATAudioTapDescription *)self UUID];
+      uUID = [(ATAudioTapDescription *)self format];
+      format = [(ATAudioTapDescription *)self excludedPIDs];
+      v12 = [v4 stringWithFormat:@"<%@@%p: session type tap - session type:%u, name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, sessionType, sceneIdentifier, name, uUID, format];
       goto LABEL_10;
     }
   }
 
   else
   {
-    if (v3 == 1)
+    if (tapType == 1)
     {
-      v8 = [(ATAudioTapDescription *)self name];
-      v9 = [(ATAudioTapDescription *)self UUID];
-      v10 = [(ATAudioTapDescription *)self format];
-      v11 = [(ATAudioTapDescription *)self excludedPIDs];
-      v12 = [v4 stringWithFormat:@"<%@@%p: system tap - name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, v8, v9, v10, v11];
+      sceneIdentifier = [(ATAudioTapDescription *)self name];
+      name = [(ATAudioTapDescription *)self UUID];
+      uUID = [(ATAudioTapDescription *)self format];
+      format = [(ATAudioTapDescription *)self excludedPIDs];
+      v12 = [v4 stringWithFormat:@"<%@@%p: system tap - name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, sceneIdentifier, name, uUID, format];
       goto LABEL_10;
     }
 
-    if (v3 == 2)
+    if (tapType == 2)
     {
-      v7 = [(ATAudioTapDescription *)self audioSessionID];
-      v8 = [(ATAudioTapDescription *)self name];
-      v9 = [(ATAudioTapDescription *)self UUID];
-      v10 = [(ATAudioTapDescription *)self format];
-      v11 = [(ATAudioTapDescription *)self excludedPIDs];
-      v12 = [v4 stringWithFormat:@"<%@@%p: audio session tap - sessionID:0x%x name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, v7, v8, v9, v10, v11];
+      audioSessionID = [(ATAudioTapDescription *)self audioSessionID];
+      sceneIdentifier = [(ATAudioTapDescription *)self name];
+      name = [(ATAudioTapDescription *)self UUID];
+      uUID = [(ATAudioTapDescription *)self format];
+      format = [(ATAudioTapDescription *)self excludedPIDs];
+      v12 = [v4 stringWithFormat:@"<%@@%p: audio session tap - sessionID:0x%x name:%@, UUID:%@, format:%@, excluded pids:%@>", v6, self, audioSessionID, sceneIdentifier, name, uUID, format];
 LABEL_10:
       v16 = v12;
       goto LABEL_13;
     }
   }
 
-  v8 = [(ATAudioTapDescription *)self processIdentifiers];
-  v9 = [(ATAudioTapDescription *)self name];
-  v10 = [(ATAudioTapDescription *)self UUID];
-  v11 = [(ATAudioTapDescription *)self format];
-  v14 = [(ATAudioTapDescription *)self excludedPIDs];
-  v15 = [v4 stringWithFormat:@"<%@@%p: process tap - pids:%@, name:%@, UUID:%@, format:%@, excluded pids:%@", v6, self, v8, v9, v10, v11, v14];
+  sceneIdentifier = [(ATAudioTapDescription *)self processIdentifiers];
+  name = [(ATAudioTapDescription *)self name];
+  uUID = [(ATAudioTapDescription *)self UUID];
+  format = [(ATAudioTapDescription *)self format];
+  excludedPIDs = [(ATAudioTapDescription *)self excludedPIDs];
+  v15 = [v4 stringWithFormat:@"<%@@%p: process tap - pids:%@, name:%@, UUID:%@, format:%@, excluded pids:%@", v6, self, sceneIdentifier, name, uUID, format, excludedPIDs];
 LABEL_12:
   v16 = v15;
 
@@ -89,10 +89,10 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
@@ -102,21 +102,21 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = MEMORY[0x1E695DFD8];
-      v7 = [(ATAudioTapDescription *)v5 processIdentifiers];
-      v8 = [v6 setWithArray:v7];
+      processIdentifiers = [(ATAudioTapDescription *)v5 processIdentifiers];
+      v8 = [v6 setWithArray:processIdentifiers];
 
       v9 = MEMORY[0x1E695DFD8];
-      v10 = [(ATAudioTapDescription *)self processIdentifiers];
-      v11 = [v9 setWithArray:v10];
+      processIdentifiers2 = [(ATAudioTapDescription *)self processIdentifiers];
+      v11 = [v9 setWithArray:processIdentifiers2];
 
-      v12 = [(ATAudioTapDescription *)v5 tapType];
-      if (v12 == -[ATAudioTapDescription tapType](self, "tapType") && [v8 isEqual:v11])
+      tapType = [(ATAudioTapDescription *)v5 tapType];
+      if (tapType == -[ATAudioTapDescription tapType](self, "tapType") && [v8 isEqual:v11])
       {
-        v13 = [(ATAudioTapDescription *)v5 name];
-        v14 = [(ATAudioTapDescription *)self name];
-        if (![v13 isEqual:v14])
+        name = [(ATAudioTapDescription *)v5 name];
+        name2 = [(ATAudioTapDescription *)self name];
+        if (![name isEqual:name2])
         {
 LABEL_13:
           v19 = 0;
@@ -126,49 +126,49 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v35 = [(ATAudioTapDescription *)v5 UUID];
-        v15 = [(ATAudioTapDescription *)self UUID];
-        if (![v35 isEqual:v15])
+        uUID = [(ATAudioTapDescription *)v5 UUID];
+        uUID2 = [(ATAudioTapDescription *)self UUID];
+        if (![uUID isEqual:uUID2])
         {
 LABEL_12:
 
           goto LABEL_13;
         }
 
-        v34 = [(ATAudioTapDescription *)v5 format];
-        v33 = [(ATAudioTapDescription *)self format];
-        if (![v34 isEqual:?] || (v16 = -[ATAudioTapDescription audioSessionID](v5, "audioSessionID"), v16 != -[ATAudioTapDescription audioSessionID](self, "audioSessionID")) || (v17 = -[ATAudioTapDescription sessionType](v5, "sessionType"), v17 != -[ATAudioTapDescription sessionType](self, "sessionType")) || (v18 = -[ATAudioTapDescription isPreSpatial](v5, "isPreSpatial"), v18 != -[ATAudioTapDescription isPreSpatial](self, "isPreSpatial")))
+        format = [(ATAudioTapDescription *)v5 format];
+        format2 = [(ATAudioTapDescription *)self format];
+        if (![format isEqual:?] || (v16 = -[ATAudioTapDescription audioSessionID](v5, "audioSessionID"), v16 != -[ATAudioTapDescription audioSessionID](self, "audioSessionID")) || (v17 = -[ATAudioTapDescription sessionType](v5, "sessionType"), v17 != -[ATAudioTapDescription sessionType](self, "sessionType")) || (v18 = -[ATAudioTapDescription isPreSpatial](v5, "isPreSpatial"), v18 != -[ATAudioTapDescription isPreSpatial](self, "isPreSpatial")))
         {
 
           goto LABEL_12;
         }
 
-        v20 = [(ATAudioTapDescription *)v5 sceneIdentifier];
-        v21 = [(ATAudioTapDescription *)self sceneIdentifier];
-        v32 = (v20 != 0) ^ (v21 != 0);
+        sceneIdentifier = [(ATAudioTapDescription *)v5 sceneIdentifier];
+        sceneIdentifier2 = [(ATAudioTapDescription *)self sceneIdentifier];
+        v32 = (sceneIdentifier != 0) ^ (sceneIdentifier2 != 0);
 
         if ((v32 & 1) == 0)
         {
-          v23 = [(ATAudioTapDescription *)v5 sceneIdentifier];
-          if (!v23)
+          sceneIdentifier3 = [(ATAudioTapDescription *)v5 sceneIdentifier];
+          if (!sceneIdentifier3)
           {
             goto LABEL_24;
           }
 
-          v24 = [(ATAudioTapDescription *)self sceneIdentifier];
+          sceneIdentifier4 = [(ATAudioTapDescription *)self sceneIdentifier];
 
-          if (!v24 || (-[ATAudioTapDescription sceneIdentifier](v5, "sceneIdentifier"), v25 = objc_claimAutoreleasedReturnValue(), -[ATAudioTapDescription sceneIdentifier](self, "sceneIdentifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v25 isEqual:v26], v26, v25, (v27 & 1) != 0))
+          if (!sceneIdentifier4 || (-[ATAudioTapDescription sceneIdentifier](v5, "sceneIdentifier"), v25 = objc_claimAutoreleasedReturnValue(), -[ATAudioTapDescription sceneIdentifier](self, "sceneIdentifier"), v26 = objc_claimAutoreleasedReturnValue(), v27 = [v25 isEqual:v26], v26, v25, (v27 & 1) != 0))
           {
 LABEL_24:
             v28 = MEMORY[0x1E695DFD8];
-            v29 = [(ATAudioTapDescription *)v5 excludedPIDs];
-            v13 = [v28 setWithArray:v29];
+            excludedPIDs = [(ATAudioTapDescription *)v5 excludedPIDs];
+            name = [v28 setWithArray:excludedPIDs];
 
             v30 = MEMORY[0x1E695DFD8];
-            v31 = [(ATAudioTapDescription *)self excludedPIDs];
-            v14 = [v30 setWithArray:v31];
+            excludedPIDs2 = [(ATAudioTapDescription *)self excludedPIDs];
+            name2 = [v30 setWithArray:excludedPIDs2];
 
-            v19 = [v13 isEqual:v14];
+            v19 = [name isEqual:name2];
             goto LABEL_14;
           }
         }
@@ -186,35 +186,35 @@ LABEL_20:
   return v19;
 }
 
-- (ATAudioTapDescription)initWithCoder:(id)a3
+- (ATAudioTapDescription)initWithCoder:(id)coder
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ATAudioTapDescription;
   v5 = [(ATAudioTapDescription *)&v25 init];
   if (v5)
   {
-    v5->_tapType = [v4 decodeIntForKey:@"tapType"];
+    v5->_tapType = [coderCopy decodeIntForKey:@"tapType"];
     v6 = MEMORY[0x1E695DFD8];
     v31[0] = objc_opt_class();
     v31[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"processIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"processIdentifiers"];
     processIdentifiers = v5->_processIdentifiers;
     v5->_processIdentifiers = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"excludedPIDs"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"excludedPIDs"];
     excludedPIDs = v5->_excludedPIDs;
     v5->_excludedPIDs = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v15;
 
@@ -236,45 +236,45 @@ LABEL_20:
 
     v18 = v17;
     _Block_object_dispose(&v27, 8);
-    v19 = [v4 decodeObjectOfClass:v17 forKey:@"format"];
+    v19 = [coderCopy decodeObjectOfClass:v17 forKey:@"format"];
     format = v5->_format;
     v5->_format = v19;
 
-    v5->_audioSessionID = [v4 decodeInt32ForKey:@"audioSessionID"];
-    v5->_sessionType = [v4 decodeInt32ForKey:@"sessionType"];
-    v5->_preSpatial = [v4 decodeBoolForKey:@"preSpatial"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
+    v5->_audioSessionID = [coderCopy decodeInt32ForKey:@"audioSessionID"];
+    v5->_sessionType = [coderCopy decodeInt32ForKey:@"sessionType"];
+    v5->_preSpatial = [coderCopy decodeBoolForKey:@"preSpatial"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sceneIdentifier"];
     sceneIdentifier = v5->_sceneIdentifier;
     v5->_sceneIdentifier = v21;
 
-    v5->_muteBehavior = [v4 decodeInt32ForKey:@"muteBehavior"];
+    v5->_muteBehavior = [coderCopy decodeInt32ForKey:@"muteBehavior"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:LODWORD(self->_tapType) forKey:@"tapType"];
-  [v4 encodeObject:self->_processIdentifiers forKey:@"processIdentifiers"];
-  [v4 encodeObject:self->_excludedPIDs forKey:@"excludedPIDs"];
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_UUID forKey:@"UUID"];
-  [v4 encodeObject:self->_format forKey:@"format"];
-  [v4 encodeInt32:self->_audioSessionID forKey:@"audioSessionID"];
-  [v4 encodeInt32:self->_sessionType forKey:@"sessionType"];
-  [v4 encodeBool:self->_preSpatial forKey:@"preSpatial"];
-  [v4 encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
-  [v4 encodeInt32:LODWORD(self->_muteBehavior) forKey:@"muteBehavior"];
+  coderCopy = coder;
+  [coderCopy encodeInt:LODWORD(self->_tapType) forKey:@"tapType"];
+  [coderCopy encodeObject:self->_processIdentifiers forKey:@"processIdentifiers"];
+  [coderCopy encodeObject:self->_excludedPIDs forKey:@"excludedPIDs"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_format forKey:@"format"];
+  [coderCopy encodeInt32:self->_audioSessionID forKey:@"audioSessionID"];
+  [coderCopy encodeInt32:self->_sessionType forKey:@"sessionType"];
+  [coderCopy encodeBool:self->_preSpatial forKey:@"preSpatial"];
+  [coderCopy encodeObject:self->_sceneIdentifier forKey:@"sceneIdentifier"];
+  [coderCopy encodeInt32:LODWORD(self->_muteBehavior) forKey:@"muteBehavior"];
 }
 
-- (void)setProcessIdentifiers:(id)a3
+- (void)setProcessIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(ATAudioTapDescription *)self setProcessIdentifiersChecked:v4])
+  identifiersCopy = identifiers;
+  if (![(ATAudioTapDescription *)self setProcessIdentifiersChecked:identifiersCopy])
   {
     v5 = gATAudioTapLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -284,7 +284,7 @@ LABEL_20:
       v9 = 1024;
       v10 = 275;
       v11 = 2112;
-      v12 = v4;
+      v12 = identifiersCopy;
       _os_log_impl(&dword_1B9A08000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Error setting processIdentifiers: %@", &v7, 0x1Cu);
     }
   }
@@ -299,15 +299,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(NSArray *)self->_processIdentifiers firstObject];
-  v4 = [v3 intValue];
+  firstObject = [(NSArray *)self->_processIdentifiers firstObject];
+  intValue = [firstObject intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (id)initScreenSharingTapWithFormat:(id)a3
+- (id)initScreenSharingTapWithFormat:(id)format
 {
-  result = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:a3];
+  result = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:format];
   if (result)
   {
     *(result + 3) = 5;
@@ -317,51 +317,51 @@ LABEL_20:
   return result;
 }
 
-- (id)initPreSpatialSessionTypeTapWithFormat:(id)a3 sessionType:(unsigned int)a4
+- (id)initPreSpatialSessionTypeTapWithFormat:(id)format sessionType:(unsigned int)type
 {
-  v6 = a3;
-  if (a4 == 1)
+  formatCopy = format;
+  if (type == 1)
   {
-    self = [(ATAudioTapDescription *)self initPreSpatialTapInternalWithFormat:v6 PIDs:0 sessionID:0 sessionType:1 sceneID:0];
-    v7 = self;
+    self = [(ATAudioTapDescription *)self initPreSpatialTapInternalWithFormat:formatCopy PIDs:0 sessionID:0 sessionType:1 sceneID:0];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)initPreSpatialTapInternalWithFormat:(id)a3 PIDs:(id)a4 sessionID:(unsigned int)a5 sessionType:(unsigned int)a6 sceneID:(id)a7
+- (id)initPreSpatialTapInternalWithFormat:(id)format PIDs:(id)ds sessionID:(unsigned int)d sessionType:(unsigned int)type sceneID:(id)iD
 {
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:v12];
+  formatCopy = format;
+  dsCopy = ds;
+  iDCopy = iD;
+  v15 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:formatCopy];
   if (v15)
   {
-    if (v13)
+    if (dsCopy)
     {
-      if (ValidatePIDs(v13))
+      if (ValidatePIDs(dsCopy))
       {
-        v16 = [(NSArray *)v13 firstObject];
-        v17 = [v16 intValue];
+        firstObject = [(NSArray *)dsCopy firstObject];
+        intValue = [firstObject intValue];
 
-        if (v17 != -1)
+        if (intValue != -1)
         {
-          v18 = [(NSArray *)v13 copy];
+          v18 = [(NSArray *)dsCopy copy];
           v19 = *(v15 + 4);
           *(v15 + 4) = v18;
 
           v20 = 0;
 LABEL_20:
           *(v15 + 3) = v20;
-          *(v15 + 3) = a5;
-          *(v15 + 4) = a6;
-          objc_storeStrong(v15 + 9, a7);
+          *(v15 + 3) = d;
+          *(v15 + 4) = type;
+          objc_storeStrong(v15 + 9, iD);
           *(v15 + 8) = 1;
           goto LABEL_23;
         }
@@ -384,19 +384,19 @@ LABEL_22:
 
     else
     {
-      if (!(a6 | a5) && v14)
+      if (!(type | d) && iDCopy)
       {
         v20 = 3;
         goto LABEL_20;
       }
 
-      if (a5 - 1 <= 0xFFFFFFFD && !a6 && !v14)
+      if (d - 1 <= 0xFFFFFFFD && !type && !iDCopy)
       {
         v20 = 2;
         goto LABEL_20;
       }
 
-      if (!a5 && a6 && !v14)
+      if (!d && type && !iDCopy)
       {
         v20 = 4;
         goto LABEL_20;
@@ -412,22 +412,22 @@ LABEL_23:
   return v15;
 }
 
-- (id)initSystemTapWithFormat:(id)a3 excludePIDs:(id)a4
+- (id)initSystemTapWithFormat:(id)format excludePIDs:(id)ds
 {
-  v7 = a4;
-  v8 = [(ATAudioTapDescription *)self initSystemTapWithFormat:a3];
+  dsCopy = ds;
+  v8 = [(ATAudioTapDescription *)self initSystemTapWithFormat:format];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 5, a4);
+    objc_storeStrong(v8 + 5, ds);
   }
 
   return v9;
 }
 
-- (id)initSystemTapWithFormat:(id)a3
+- (id)initSystemTapWithFormat:(id)format
 {
-  v3 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:a3];
+  v3 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:format];
   v4 = v3;
   if (v3)
   {
@@ -439,13 +439,13 @@ LABEL_23:
   return v4;
 }
 
-- (id)initTapInternalWithFormat:(id)a3 PIDs:(id)a4
+- (id)initTapInternalWithFormat:(id)format PIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:v6];
+  formatCopy = format;
+  dsCopy = ds;
+  v8 = [(ATAudioTapDescription *)self initBaseTapInternalWithFormat:formatCopy];
   v9 = v8;
-  if (v8 && ([v8 setProcessIdentifiersChecked:v7] & 1) == 0)
+  if (v8 && ([v8 setProcessIdentifiersChecked:dsCopy] & 1) == 0)
   {
 
     v9 = 0;
@@ -454,17 +454,17 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)setProcessIdentifiersChecked:(id)a3
+- (BOOL)setProcessIdentifiersChecked:(id)checked
 {
-  v4 = a3;
-  v5 = ValidatePIDs(v4);
+  checkedCopy = checked;
+  v5 = ValidatePIDs(checkedCopy);
   if (v5)
   {
-    v6 = [(NSArray *)v4 firstObject];
-    v7 = [v6 intValue] == -1;
+    firstObject = [(NSArray *)checkedCopy firstObject];
+    v7 = [firstObject intValue] == -1;
 
     self->_tapType = v7;
-    v8 = [(NSArray *)v4 copy];
+    v8 = [(NSArray *)checkedCopy copy];
     processIdentifiers = self->_processIdentifiers;
     self->_processIdentifiers = v8;
   }
@@ -472,9 +472,9 @@ LABEL_23:
   return v5;
 }
 
-- (id)initBaseTapInternalWithFormat:(id)a3
+- (id)initBaseTapInternalWithFormat:(id)format
 {
-  v5 = a3;
+  formatCopy = format;
   v16.receiver = self;
   v16.super_class = ATAudioTapDescription;
   v6 = [(ATAudioTapDescription *)&v16 init];
@@ -486,14 +486,14 @@ LABEL_23:
     v6->_tapType = 0;
     v6->_processIdentifiers = v9;
 
-    objc_storeStrong(&v7->_format, a3);
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v7->_format, format);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v7->_UUID;
-    v7->_UUID = v10;
+    v7->_UUID = uUID;
 
-    v12 = [(NSUUID *)v7->_UUID UUIDString];
+    uUIDString = [(NSUUID *)v7->_UUID UUIDString];
     name = v7->_name;
-    v7->_name = v12;
+    v7->_name = uUIDString;
 
     v7->_audioSessionID = 0;
     v7->_sessionType = 0;
@@ -507,7 +507,7 @@ LABEL_23:
   return v7;
 }
 
-- (id)initProcessTapWithFormat:(id)a3 PID:(int)a4 deviceUID:(id)a5
+- (id)initProcessTapWithFormat:(id)format PID:(int)d deviceUID:(id)iD
 {
   v13 = *MEMORY[0x1E69E9840];
   v6 = gATAudioTapLog();

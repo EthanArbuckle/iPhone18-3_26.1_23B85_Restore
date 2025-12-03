@@ -7,19 +7,19 @@
 
 - (id)date
 {
-  v2 = [(MockDateProvider *)self overrideDate];
-  v3 = v2;
-  if (v2)
+  overrideDate = [(MockDateProvider *)self overrideDate];
+  v3 = overrideDate;
+  if (overrideDate)
   {
-    v4 = v2;
+    mockDate = overrideDate;
   }
 
   else
   {
-    v4 = [objc_opt_class() mockDate];
+    mockDate = [objc_opt_class() mockDate];
   }
 
-  v5 = v4;
+  v5 = mockDate;
 
   return v5;
 }
@@ -30,8 +30,8 @@
   [v2 setYear:2023];
   [v2 setMonth:9];
   [v2 setDay:20];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [v3 dateFromComponents:v2];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v4 = [currentCalendar dateFromComponents:v2];
 
   return v4;
 }

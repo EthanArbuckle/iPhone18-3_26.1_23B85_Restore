@@ -1,24 +1,24 @@
 @interface CXServiceDomain
 + (id)callKitServiceDomain;
-- (CXServiceDomain)initWithName:(id)a3 machName:(id)a4;
+- (CXServiceDomain)initWithName:(id)name machName:(id)machName;
 @end
 
 @implementation CXServiceDomain
 
-- (CXServiceDomain)initWithName:(id)a3 machName:(id)a4
+- (CXServiceDomain)initWithName:(id)name machName:(id)machName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  machNameCopy = machName;
   v14.receiver = self;
   v14.super_class = CXServiceDomain;
   v8 = [(CXServiceDomain *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    v11 = [v7 copy];
+    v11 = [machNameCopy copy];
     machName = v8->_machName;
     v8->_machName = v11;
   }

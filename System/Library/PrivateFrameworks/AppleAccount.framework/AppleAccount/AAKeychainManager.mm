@@ -1,8 +1,8 @@
 @interface AAKeychainManager
-+ (id)passwordForServiceName:(id)a3 username:(id)a4 accessGroup:(id)a5;
++ (id)passwordForServiceName:(id)name username:(id)username accessGroup:(id)group;
 + (void)initialize;
-+ (void)removePasswordForService:(id)a3 username:(id)a4 accessGroup:(id)a5;
-+ (void)setPassword:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6;
++ (void)removePasswordForService:(id)service username:(id)username accessGroup:(id)group;
++ (void)setPassword:(id)password forServiceName:(id)name username:(id)username accessGroup:(id)group;
 @end
 
 @implementation AAKeychainManager
@@ -14,13 +14,13 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)passwordForServiceName:(id)a3 username:(id)a4 accessGroup:(id)a5
++ (id)passwordForServiceName:(id)name username:(id)username accessGroup:(id)group
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v7 length] || !objc_msgSend(v8, "length"))
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
+  if (![nameCopy length] || !objc_msgSend(usernameCopy, "length"))
   {
     v18 = 0;
     goto LABEL_23;
@@ -28,12 +28,12 @@
 
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v8);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], usernameCopy);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], nameCopy);
   CFDictionaryAddValue(Mutable, *MEMORY[0x1E697B318], *MEMORY[0x1E695E4D0]);
-  if (v9)
+  if (groupCopy)
   {
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], v9);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], groupCopy);
   }
 
   result = 0;
@@ -74,9 +74,9 @@ LABEL_20:
         *buf = 67109634;
         v25 = v13;
         v26 = 2112;
-        v27 = v7;
+        v27 = nameCopy;
         v28 = 2112;
-        v29 = v8;
+        v29 = usernameCopy;
         v16 = "SecItemCopyMatching result: %d - keychain item %@ - username %@";
         v19 = v14;
         v20 = 28;
@@ -107,28 +107,28 @@ LABEL_23:
   return v18;
 }
 
-+ (void)setPassword:(id)a3 forServiceName:(id)a4 username:(id)a5 accessGroup:(id)a6
++ (void)setPassword:(id)password forServiceName:(id)name username:(id)username accessGroup:(id)group
 {
   result[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  passwordCopy = password;
+  nameCopy = name;
+  usernameCopy = username;
+  groupCopy = group;
   [_aa_keychainLock lock];
-  if ([v10 length] && objc_msgSend(v9, "length") && objc_msgSend(v11, "length"))
+  if ([nameCopy length] && objc_msgSend(passwordCopy, "length") && objc_msgSend(usernameCopy, "length"))
   {
-    v13 = [v9 dataUsingEncoding:4];
+    v13 = [passwordCopy dataUsingEncoding:4];
     v14 = *MEMORY[0x1E695E480];
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v11);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], v10);
-    if (v12)
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], usernameCopy);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], nameCopy);
+    if (groupCopy)
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], v12);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], groupCopy);
     }
 
-    v16 = [objc_opt_class() passwordForServiceName:v10 username:v11 accessGroup:v12];
+    v16 = [objc_opt_class() passwordForServiceName:nameCopy username:usernameCopy accessGroup:groupCopy];
     if (!v16)
     {
       CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD8], *MEMORY[0x1E697ABE0]);
@@ -156,7 +156,7 @@ LABEL_18:
       v13 = v24;
     }
 
-    if (([v16 isEqualToString:v9] & 1) == 0)
+    if (([v16 isEqualToString:passwordCopy] & 1) == 0)
     {
       v20 = CFDictionaryCreateMutable(v14, 0, 0, 0);
       CFDictionaryAddValue(v20, *MEMORY[0x1E697B3C0], v13);
@@ -188,21 +188,21 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removePasswordForService:(id)a3 username:(id)a4 accessGroup:(id)a5
++ (void)removePasswordForService:(id)service username:(id)username accessGroup:(id)group
 {
-  value = a3;
-  v7 = a4;
-  v8 = a5;
+  value = service;
+  usernameCopy = username;
+  groupCopy = group;
   [_aa_keychainLock lock];
-  if ([value length] && objc_msgSend(v7, "length"))
+  if ([value length] && objc_msgSend(usernameCopy, "length"))
   {
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, 0, 0);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AFF8], *MEMORY[0x1E697B008]);
-    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], v7);
+    CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AC30], usernameCopy);
     CFDictionaryAddValue(Mutable, *MEMORY[0x1E697AE88], value);
-    if (v8)
+    if (groupCopy)
     {
-      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], v8);
+      CFDictionaryAddValue(Mutable, *MEMORY[0x1E697ABD0], groupCopy);
     }
 
     SecItemDelete(Mutable);

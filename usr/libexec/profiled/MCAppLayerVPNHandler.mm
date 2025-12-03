@@ -1,49 +1,49 @@
 @interface MCAppLayerVPNHandler
-- (id)installService:(id)a3;
+- (id)installService:(id)service;
 @end
 
 @implementation MCAppLayerVPNHandler
 
-- (id)installService:(id)a3
+- (id)installService:(id)service
 {
-  v4 = a3;
-  v5 = [(MCNewPayloadHandler *)self payload];
-  v6 = v4;
-  v7 = [v5 VPNUUID];
-  v8 = [v5 SafariDomains];
-  v9 = [v6 setPerAppUUID:v7 andSafariDomains:v8];
+  serviceCopy = service;
+  payload = [(MCNewPayloadHandler *)self payload];
+  v6 = serviceCopy;
+  vPNUUID = [payload VPNUUID];
+  safariDomains = [payload SafariDomains];
+  v9 = [v6 setPerAppUUID:vPNUUID andSafariDomains:safariDomains];
 
   if (v9)
   {
-    v10 = [v5 SMBDomains];
-    v11 = [v6 setSMBDomains:v10];
+    sMBDomains = [payload SMBDomains];
+    v11 = [v6 setSMBDomains:sMBDomains];
 
     if (v11)
     {
-      v12 = [v5 mailDomains];
-      v13 = [v6 setMailDomains:v12];
+      mailDomains = [payload mailDomains];
+      v13 = [v6 setMailDomains:mailDomains];
 
       if (v13)
       {
-        v14 = [v5 calendarDomains];
-        v15 = [v6 setCalendarDomains:v14];
+        calendarDomains = [payload calendarDomains];
+        v15 = [v6 setCalendarDomains:calendarDomains];
 
         if (v15)
         {
-          v16 = [v5 contactsDomains];
-          v17 = [v6 setContactsDomains:v16];
+          contactsDomains = [payload contactsDomains];
+          v17 = [v6 setContactsDomains:contactsDomains];
 
           if (v17)
           {
-            if ([v6 setRestrictDomains:{objc_msgSend(v5, "restrictDomains")}])
+            if ([v6 setRestrictDomains:{objc_msgSend(payload, "restrictDomains")}])
             {
-              v18 = [v5 associatedDomains];
-              v19 = [v6 setAssociatedDomains:v18];
+              associatedDomains = [payload associatedDomains];
+              v19 = [v6 setAssociatedDomains:associatedDomains];
 
               if (v19)
               {
-                v20 = [v5 excludedDomains];
-                v21 = [v6 setExcludedDomains:v20];
+                excludedDomains = [payload excludedDomains];
+                v21 = [v6 setExcludedDomains:excludedDomains];
 
                 if (v21)
                 {
@@ -136,10 +136,10 @@
   }
 
   v31 = MCVPNErrorDomain;
-  v32 = [(MCNewPayloadHandler *)self payload];
-  v33 = [v32 displayName];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  displayName = [payload2 displayName];
   v34 = MCErrorArray();
-  v22 = [NSError MCErrorWithDomain:v31 code:15000 descriptionArray:v34 errorType:MCErrorTypeFatal, v33, 0];
+  v22 = [NSError MCErrorWithDomain:v31 code:15000 descriptionArray:v34 errorType:MCErrorTypeFatal, displayName, 0];
 
 LABEL_34:
 

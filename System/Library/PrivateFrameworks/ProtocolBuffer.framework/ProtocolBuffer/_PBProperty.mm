@@ -1,10 +1,10 @@
 @interface _PBProperty
-+ (id)getValidPropertiesForType:(void *)a3 withCache:;
-- (id)_parseStructDefinition:(uint64_t)a1;
++ (id)getValidPropertiesForType:(void *)type withCache:;
+- (id)_parseStructDefinition:(uint64_t)definition;
 - (id)description;
-- (uint64_t)getCountOfRepeatedValuesFromInstance:(uint64_t)a1;
+- (uint64_t)getCountOfRepeatedValuesFromInstance:(uint64_t)instance;
 - (void)dealloc;
-- (void)setNumberValue:(uint64_t)a3 onInstance:;
+- (void)setNumberValue:(uint64_t)value onInstance:;
 @end
 
 @implementation _PBProperty
@@ -345,7 +345,7 @@ LABEL_89:
   [(_PBProperty *)&v3 dealloc];
 }
 
-- (id)_parseStructDefinition:(uint64_t)a1
+- (id)_parseStructDefinition:(uint64_t)definition
 {
   v34 = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(a2, "length")}];
@@ -395,7 +395,7 @@ LABEL_89:
           }
 
           while (v6 < [a2 length]);
-          if (*(a1 + 104))
+          if (*(definition + 104))
           {
             v14 = 1;
           }
@@ -407,7 +407,7 @@ LABEL_89:
 
           if (!v14)
           {
-            *(a1 + 104) = [a2 substringWithRange:{v13, v6 - v13}];
+            *(definition + 104) = [a2 substringWithRange:{v13, v6 - v13}];
           }
         }
 
@@ -424,7 +424,7 @@ LABEL_23:
             goto LABEL_29;
           }
 
-          v9 = a1;
+          definitionCopy = definition;
           v10 = objc_alloc_init(MEMORY[0x1E696AD60]);
           for (i = v6 + 1; i < [a2 length]; ++i)
           {
@@ -438,10 +438,10 @@ LABEL_23:
             [v10 appendFormat:@"%C", v12];
           }
 
-          v15 = [v10 intValue];
-          v27 += v15;
-          a1 = v9;
-          if (!v15)
+          intValue = [v10 intValue];
+          v27 += intValue;
+          definition = definitionCopy;
+          if (!intValue)
           {
             goto LABEL_12;
           }
@@ -537,9 +537,9 @@ LABEL_42:
     NSGetSizeAndAlignment([v16 UTF8String], &sizep, 0);
     v23 = [v4 copy];
     v24 = sizep;
-    *(a1 + 112) = v23;
-    *(a1 + 120) = v24;
-    if (*(a1 + 32) == 94)
+    *(definition + 112) = v23;
+    *(definition + 120) = v24;
+    if (*(definition + 32) == 94)
     {
       [v16 insertString:@"^" atIndex:0];
     }
@@ -554,12 +554,12 @@ LABEL_42:
   return v16;
 }
 
-- (uint64_t)getCountOfRepeatedValuesFromInstance:(uint64_t)a1
+- (uint64_t)getCountOfRepeatedValuesFromInstance:(uint64_t)instance
 {
-  v2 = *(a1 + 64);
+  v2 = *(instance + 64);
   if (v2)
   {
-    v4 = [objc_msgSend(*(a1 + 64) "methodSignature")];
+    v4 = [objc_msgSend(*(instance + 64) "methodSignature")];
     v5 = 0;
     v6 = *v4;
     if (v6 <= 98)
@@ -685,15 +685,15 @@ LABEL_42:
   return [v5 unsignedIntegerValue];
 }
 
-- (void)setNumberValue:(uint64_t)a3 onInstance:
+- (void)setNumberValue:(uint64_t)value onInstance:
 {
   v18 = a2;
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 32);
+    v5 = *(self + 32);
     if (v5 == 94)
     {
-      v5 = *(a1 + 33);
+      v5 = *(self + 33);
     }
 
     if (v5 <= 98)
@@ -704,42 +704,42 @@ LABEL_42:
         {
           case 'L':
             v17 = 0;
-            v6 = *(a1 + 80);
+            v6 = *(self + 80);
             if (!v6)
             {
-              v7 = [a2 unsignedLongValue];
+              unsignedLongValue = [a2 unsignedLongValue];
               goto LABEL_57;
             }
 
             break;
           case 'Q':
             v17 = 0;
-            v6 = *(a1 + 80);
+            v6 = *(self + 80);
             if (!v6)
             {
-              v7 = [a2 unsignedLongLongValue];
+              unsignedLongValue = [a2 unsignedLongLongValue];
               goto LABEL_57;
             }
 
             break;
           case 'S':
             LOWORD(v17) = 0;
-            v11 = *(a1 + 80);
+            v11 = *(self + 80);
             if (v11)
             {
 LABEL_30:
               [v11 setArgument:&v18 atIndex:{2, v17}];
-              [*(a1 + 80) invokeWithTarget:a3];
-              [*(a1 + 80) getReturnValue:&v17];
+              [*(self + 80) invokeWithTarget:value];
+              [*(self + 80) getReturnValue:&v17];
 LABEL_52:
               v16 = malloc_type_calloc(1uLL, 2uLL, 0x1000040BDFB0063uLL);
               *v16 = v17;
               goto LABEL_59;
             }
 
-            v12 = [a2 unsignedShortValue];
+            unsignedShortValue = [a2 unsignedShortValue];
 LABEL_51:
-            LOWORD(v17) = v12;
+            LOWORD(v17) = unsignedShortValue;
             goto LABEL_52;
           default:
             return;
@@ -752,37 +752,37 @@ LABEL_51:
       {
         case 'B':
           LOBYTE(v17) = 0;
-          v13 = *(a1 + 80);
+          v13 = *(self + 80);
           if (!v13)
           {
-            v14 = [a2 BOOLValue];
+            bOOLValue = [a2 BOOLValue];
             goto LABEL_54;
           }
 
           break;
         case 'C':
           LOBYTE(v17) = 0;
-          v13 = *(a1 + 80);
+          v13 = *(self + 80);
           if (!v13)
           {
-            v14 = [a2 unsignedCharValue];
+            bOOLValue = [a2 unsignedCharValue];
             goto LABEL_54;
           }
 
           break;
         case 'I':
           LODWORD(v17) = 0;
-          v8 = *(a1 + 80);
+          v8 = *(self + 80);
           if (!v8)
           {
-            v9 = [a2 unsignedIntValue];
+            unsignedIntValue = [a2 unsignedIntValue];
             goto LABEL_48;
           }
 
 LABEL_32:
           [v8 setArgument:&v18 atIndex:{2, v17}];
-          [*(a1 + 80) invokeWithTarget:a3];
-          [*(a1 + 80) getReturnValue:&v17];
+          [*(self + 80) invokeWithTarget:value];
+          [*(self + 80) getReturnValue:&v17];
           goto LABEL_49;
         default:
           return;
@@ -803,12 +803,12 @@ LABEL_32:
             }
 
             v17 = 0;
-            v6 = *(a1 + 80);
+            v6 = *(self + 80);
             if (!v6)
             {
-              v7 = [a2 longValue];
+              unsignedLongValue = [a2 longValue];
 LABEL_57:
-              v17 = v7;
+              v17 = unsignedLongValue;
               goto LABEL_58;
             }
 
@@ -816,25 +816,25 @@ LABEL_57:
           }
 
           LODWORD(v17) = 0;
-          v8 = *(a1 + 80);
+          v8 = *(self + 80);
           if (v8)
           {
             goto LABEL_32;
           }
 
-          v9 = [a2 intValue];
+          unsignedIntValue = [a2 intValue];
 LABEL_48:
-          LODWORD(v17) = v9;
+          LODWORD(v17) = unsignedIntValue;
           goto LABEL_49;
         }
 
         if (v5 == 113)
         {
           v17 = 0;
-          v6 = *(a1 + 80);
+          v6 = *(self + 80);
           if (!v6)
           {
-            v7 = [a2 longLongValue];
+            unsignedLongValue = [a2 longLongValue];
             goto LABEL_57;
           }
 
@@ -847,13 +847,13 @@ LABEL_48:
         }
 
         LOWORD(v17) = 0;
-        v11 = *(a1 + 80);
+        v11 = *(self + 80);
         if (v11)
         {
           goto LABEL_30;
         }
 
-        v12 = [a2 shortValue];
+        unsignedShortValue = [a2 shortValue];
         goto LABEL_51;
       }
 
@@ -867,7 +867,7 @@ LABEL_48:
           }
 
           LODWORD(v17) = 0;
-          v8 = *(a1 + 80);
+          v8 = *(self + 80);
           if (!v8)
           {
             [a2 floatValue];
@@ -876,8 +876,8 @@ LABEL_49:
             v16 = malloc_type_calloc(1uLL, 4uLL, 0x100004052888210uLL);
             *v16 = v17;
 LABEL_59:
-            [*(a1 + 40) setArgument:v16 atIndex:{2, v17}];
-            [*(a1 + 40) invokeWithTarget:a3];
+            [*(self + 40) setArgument:v16 atIndex:{2, v17}];
+            [*(self + 40) invokeWithTarget:value];
             free(v16);
             return;
           }
@@ -886,7 +886,7 @@ LABEL_59:
         }
 
         v17 = 0;
-        v6 = *(a1 + 80);
+        v6 = *(self + 80);
         if (!v6)
         {
           [a2 doubleValue];
@@ -899,25 +899,25 @@ LABEL_58:
 
 LABEL_46:
         [v6 setArgument:&v18 atIndex:{2, v17}];
-        [*(a1 + 80) invokeWithTarget:a3];
-        [*(a1 + 80) getReturnValue:&v17];
+        [*(self + 80) invokeWithTarget:value];
+        [*(self + 80) getReturnValue:&v17];
         goto LABEL_58;
       }
 
       LOBYTE(v17) = 0;
-      v13 = *(a1 + 80);
+      v13 = *(self + 80);
       if (!v13)
       {
-        v14 = [a2 charValue];
+        bOOLValue = [a2 charValue];
 LABEL_54:
-        LOBYTE(v17) = v14;
+        LOBYTE(v17) = bOOLValue;
         goto LABEL_55;
       }
     }
 
     [v13 setArgument:&v18 atIndex:{2, v17}];
-    [*(a1 + 80) invokeWithTarget:a3];
-    [*(a1 + 80) getReturnValue:&v17];
+    [*(self + 80) invokeWithTarget:value];
+    [*(self + 80) getReturnValue:&v17];
 LABEL_55:
     v16 = malloc_type_calloc(1uLL, 1uLL, 0x100004077774924uLL);
     *v16 = v17;
@@ -925,19 +925,19 @@ LABEL_55:
   }
 }
 
-+ (id)getValidPropertiesForType:(void *)a3 withCache:
++ (id)getValidPropertiesForType:(void *)type withCache:
 {
   v126 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v5 = NSStringFromClass(a2);
-  v6 = [a3 objectForKeyedSubscript:v5];
+  v6 = [type objectForKeyedSubscript:v5];
   if (v6)
   {
     goto LABEL_152;
   }
 
   v105 = v5;
-  v106 = a3;
+  typeCopy = type;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   outCount = 0;
   v8 = class_copyProtocolList(a2, &outCount);
@@ -1453,10 +1453,10 @@ LABEL_115:
         v86 = 0;
       }
 
-      v87 = [v86 lowercaseString];
-      if ([v87 hasPrefix:@"has"])
+      lowercaseString = [v86 lowercaseString];
+      if ([lowercaseString hasPrefix:@"has"])
       {
-        v88 = [v87 substringFromIndex:3];
+        v88 = [lowercaseString substringFromIndex:3];
         v89 = [v79 objectForKeyedSubscript:v88];
         if (v89)
         {
@@ -1487,12 +1487,12 @@ LABEL_129:
         {
           [v80 addObject:v85];
           v91 = v79;
-          v92 = v87;
+          v92 = lowercaseString;
           goto LABEL_129;
         }
       }
 
-      [v79 setObject:v85 forKeyedSubscript:v87];
+      [v79 setObject:v85 forKeyedSubscript:lowercaseString];
 LABEL_131:
       ++v84;
     }
@@ -1552,7 +1552,7 @@ LABEL_136:
     while (v101);
   }
 
-  [v106 setObject:v6 forKeyedSubscript:v105];
+  [typeCopy setObject:v6 forKeyedSubscript:v105];
 LABEL_152:
   v102 = *MEMORY[0x1E69E9840];
   return v6;

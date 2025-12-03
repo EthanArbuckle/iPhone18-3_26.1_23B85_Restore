@@ -1,32 +1,32 @@
 @interface PXAspectFitLayoutGenerator
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXAspectFitLayoutGenerator)initWithMetrics:(id)a3;
-- (_PXLayoutGeometry)_geometryForItemAtIndex:(SEL)a3 atPosition:(unint64_t)a4 withHorizontalGap:(CGPoint)a5;
+- (PXAspectFitLayoutGenerator)initWithMetrics:(id)metrics;
+- (_PXLayoutGeometry)_geometryForItemAtIndex:(SEL)index atPosition:(unint64_t)position withHorizontalGap:(CGPoint)gap;
 - (_PXLayoutGeometry)_lastGeometry;
-- (double)_rowHeightForItemsInRange:(_NSRange)a3;
+- (double)_rowHeightForItemsInRange:(_NSRange)range;
 - (void)_computeGeometriesIfNeeded;
-- (void)_fillRowFromIndex:(int64_t *)a3 withCount:(int64_t)a4;
-- (void)_prepareGeometriesForCount:(unint64_t)a3;
+- (void)_fillRowFromIndex:(int64_t *)index withCount:(int64_t)count;
+- (void)_prepareGeometriesForCount:(unint64_t)count;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
 @end
 
 @implementation PXAspectFitLayoutGenerator
 
-- (_PXLayoutGeometry)_geometryForItemAtIndex:(SEL)a3 atPosition:(unint64_t)a4 withHorizontalGap:(CGPoint)a5
+- (_PXLayoutGeometry)_geometryForItemAtIndex:(SEL)index atPosition:(unint64_t)position withHorizontalGap:(CGPoint)gap
 {
-  y = a5.y;
-  x = a5.x;
-  v12 = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
-  v21 = v12[2](v12, a4);
+  y = gap.y;
+  x = gap.x;
+  itemLayoutInfoBlock = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
+  v21 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, position);
 
   [v21 size];
   PXSizeGetAspectRatio(v13, v14);
   v16 = v15 * self->_currentRowUnmodifiedHeight;
   currentRowFinalHeight = self->_currentRowFinalHeight;
-  retstr->var0 = a4;
+  retstr->var0 = position;
   retstr->var1.x = x + a6 + v16 * 0.5;
   retstr->var1.y = y + currentRowFinalHeight * 0.5;
   retstr->var2.width = v16;
@@ -45,19 +45,19 @@
   return result;
 }
 
-- (double)_rowHeightForItemsInRange:(_NSRange)a3
+- (double)_rowHeightForItemsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(PXLayoutGenerator *)self metrics];
+  length = range.length;
+  location = range.location;
+  metrics = [(PXLayoutGenerator *)self metrics];
   v7 = 0.0;
   if (location < location + length)
   {
     v8 = length;
     do
     {
-      v9 = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
-      v10 = v9[2](v9, location);
+      itemLayoutInfoBlock = [(PXLayoutGenerator *)self itemLayoutInfoBlock];
+      v10 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, location);
 
       [v10 size];
       PXSizeGetAspectRatio(v11, v12);
@@ -70,40 +70,40 @@
     while (v8);
   }
 
-  [v6 interTileSpacing];
+  [metrics interTileSpacing];
   v15 = v14;
-  [v6 contentInsets];
+  [metrics contentInsets];
   v17 = v16 + (length + -1.0) * v15;
-  [v6 contentInsets];
+  [metrics contentInsets];
   v19 = v17 + v18;
-  [v6 referenceSize];
+  [metrics referenceSize];
   v21 = (v20 - v19) / v7;
 
   return v21;
 }
 
-- (void)_fillRowFromIndex:(int64_t *)a3 withCount:(int64_t)a4
+- (void)_fillRowFromIndex:(int64_t *)index withCount:(int64_t)count
 {
-  v7 = [(PXLayoutGenerator *)self metrics];
+  metrics = [(PXLayoutGenerator *)self metrics];
   [(PXAspectFitLayoutGenerator *)self _lastGeometry];
-  v8 = *a3;
-  if (*a3 < 1)
+  v8 = *index;
+  if (*index < 1)
   {
-    [v7 contentInsets];
+    [metrics contentInsets];
   }
 
   else
   {
-    [v7 interTileSpacing];
+    [metrics interTileSpacing];
   }
 
   v10 = v9;
-  [(PXAspectFitLayoutGenerator *)self _rowHeightForItemsInRange:v8, a4];
+  [(PXAspectFitLayoutGenerator *)self _rowHeightForItemsInRange:v8, count];
   v12 = v11;
   self->_currentRowUnmodifiedHeight = v11;
-  [v7 referenceSize];
+  [metrics referenceSize];
   v14 = v13;
-  [v7 minRowAspectRatio];
+  [metrics minRowAspectRatio];
   v16 = v14 / v15;
   if (v12 < v16)
   {
@@ -111,7 +111,7 @@
   }
 
   self->_currentRowFinalHeight = v16;
-  if (a4 < 1)
+  if (count < 1)
   {
     v28 = 0;
 LABEL_16:
@@ -120,13 +120,13 @@ LABEL_16:
       v28 = 1;
     }
 
-    *a3 = (v8 + v28 - 1) & ~((v8 + v28 - 1) >> 63);
+    *index = (v8 + v28 - 1) & ~((v8 + v28 - 1) >> 63);
   }
 
   else
   {
     v17 = 0;
-    v18 = v8 + a4;
+    v18 = v8 + count;
     v19 = v10 + 0.0 * 0.5 + 0.0;
     v20 = v8;
     v21 = 0.0;
@@ -135,13 +135,13 @@ LABEL_16:
     {
       if (v17)
       {
-        [v7 interTileSpacing];
+        [metrics interTileSpacing];
         v24 = v23;
       }
 
       else
       {
-        [v7 contentInsets];
+        [metrics contentInsets];
         v24 = v25;
       }
 
@@ -158,7 +158,7 @@ LABEL_16:
       *&v26->var6.size.height = v37;
       *&v26->var5 = v35;
       v21 = *(&v29 + 1) + *(&v30 + 1) * -0.5 + *(&v30 + 1);
-      [v7 referenceSize];
+      [metrics referenceSize];
       if (v17)
       {
         if (v21 + -1.0 > v27)
@@ -178,7 +178,7 @@ LABEL_16:
       }
     }
 
-    [(PXAspectFitLayoutGenerator *)self _fillRowFromIndex:a3 withCount:v22];
+    [(PXAspectFitLayoutGenerator *)self _fillRowFromIndex:index withCount:v22];
   }
 }
 
@@ -187,30 +187,30 @@ LABEL_16:
   if (!self->_geometries || [(PXLayoutGenerator *)self itemCount]> self->_geometriesCount)
   {
     [(PXAspectFitLayoutGenerator *)self _prepareGeometriesForCount:[(PXLayoutGenerator *)self itemCount]];
-    v3 = [(PXLayoutGenerator *)self metrics];
+    metrics = [(PXLayoutGenerator *)self metrics];
     self->_lastGeometryIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v4 = [v3 minTilesPerRow];
+    minTilesPerRow = [metrics minTilesPerRow];
     *&v17 = 0;
     geometriesCount = self->_geometriesCount;
     if (geometriesCount)
     {
-      v6 = v4;
+      v6 = minTilesPerRow;
       v7 = 0;
       do
       {
         v8 = geometriesCount - v7;
-        v9 = [v3 maxTilesPerRow];
-        if (v9 >= v8)
+        maxTilesPerRow = [metrics maxTilesPerRow];
+        if (maxTilesPerRow >= v8)
         {
           v10 = v8;
         }
 
         else
         {
-          v10 = v9;
+          v10 = maxTilesPerRow;
         }
 
-        if (v9 < v8)
+        if (maxTilesPerRow < v8)
         {
           v11 = v8 - v6;
           if (v6 > v8 - v6)
@@ -245,11 +245,11 @@ LABEL_16:
     v18 = 0u;
     v19 = 0u;
     [(PXAspectFitLayoutGenerator *)self _lastGeometry:0];
-    [v3 referenceSize];
+    [metrics referenceSize];
     p_contentSize = &self->_contentSize;
     p_contentSize->width = v14;
     v15 = *&v18 + *&v19 * 0.5;
-    [v3 contentInsets];
+    [metrics contentInsets];
     p_contentSize->height = v15 + v16;
   }
 }
@@ -269,16 +269,16 @@ LABEL_16:
   c = self->var3.c;
   if (c != NAN)
   {
-    v5 = self;
+    selfCopy = self;
     if (*&c >= *&self->var3.b)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a3 object:v5 file:@"PXAspectFitLayoutGenerator.m" lineNumber:121 description:{@"last Geometry index is out of bounds %ld >= %ld", *&v5->var3.c, *&v5->var3.b}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a3 object:selfCopy file:@"PXAspectFitLayoutGenerator.m" lineNumber:121 description:{@"last Geometry index is out of bounds %ld >= %ld", *&selfCopy->var3.c, *&selfCopy->var3.b}];
 
-      c = v5->var3.c;
+      c = selfCopy->var3.c;
     }
 
-    v6 = *&v5->var3.a + 152 * *&c;
+    v6 = *&selfCopy->var3.a + 152 * *&c;
     v7 = *(v6 + 112);
     *&retstr->var5 = *(v6 + 96);
     *&retstr->var6.origin.y = v7;
@@ -298,50 +298,50 @@ LABEL_16:
   return self;
 }
 
-- (void)_prepareGeometriesForCount:(unint64_t)a3
+- (void)_prepareGeometriesForCount:(unint64_t)count
 {
-  if (self->_geometriesCount < a3)
+  if (self->_geometriesCount < count)
   {
-    self->_geometries = malloc_type_realloc(self->_geometries, 152 * a3, 0x100004050011849uLL);
-    self->_geometriesCount = a3;
+    self->_geometries = malloc_type_realloc(self->_geometries, 152 * count, 0x100004050011849uLL);
+    self->_geometriesCount = count;
   }
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (a4.length && !a5)
+  if (range.length && !kind)
   {
-    length = a4.length;
-    location = a4.location;
-    v27 = [(PXLayoutGenerator *)self metrics];
-    [v27 referenceSize];
+    length = range.length;
+    location = range.location;
+    metrics = [(PXLayoutGenerator *)self metrics];
+    [metrics referenceSize];
     if (v10 <= 0.0)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:96 description:&stru_1F2B87EE0];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:96 description:&stru_1F2B87EE0];
     }
 
     if (![(PXLayoutGenerator *)self itemCount])
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v25 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:97 description:&stru_1F2B87EE0];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:97 description:&stru_1F2B87EE0];
     }
 
     v11 = length + location - 1;
     if (v11 < 0 || v11 >= [(PXLayoutGenerator *)self itemCount])
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v29.location = location;
       v29.length = length;
       v23 = NSStringFromRange(v29);
-      [v22 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:99 description:{@"range %@ out of bounds %ld", v23, -[PXLayoutGenerator itemCount](self, "itemCount")}];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:99 description:{@"range %@ out of bounds %ld", v23, -[PXLayoutGenerator itemCount](self, "itemCount")}];
     }
 
     [(PXAspectFitLayoutGenerator *)self _computeGeometriesIfNeeded];
     if ([(PXLayoutGenerator *)self itemCount]!= self->_geometriesCount)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:103 description:@"The number of geometries should be the "];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXAspectFitLayoutGenerator.m" lineNumber:103 description:@"The number of geometries should be the "];
     }
 
     if (location <= v11)
@@ -349,7 +349,7 @@ LABEL_16:
       v12 = location;
       do
       {
-        v13 = &a3[v12];
+        v13 = &geometries[v12];
         v14 = &self->_geometries[v12];
         v16 = *&v14->var6.origin.y;
         v15 = *&v14->var6.size.height;
@@ -390,21 +390,21 @@ LABEL_16:
 
 - (CGSize)estimatedSize
 {
-  v3 = [(PXLayoutGenerator *)self metrics];
+  metrics = [(PXLayoutGenerator *)self metrics];
   if ([(PXLayoutGenerator *)self itemCount])
   {
-    v4 = [(PXLayoutGenerator *)self itemCount];
+    itemCount = [(PXLayoutGenerator *)self itemCount];
   }
 
   else
   {
-    v4 = 10;
+    itemCount = 10;
   }
 
-  [v3 referenceSize];
+  [metrics referenceSize];
   v6 = v5;
-  v7 = v4 / [v3 maxTilesPerRow];
-  [v3 minRowAspectRatio];
+  v7 = itemCount / [metrics maxTilesPerRow];
+  [metrics minRowAspectRatio];
   v9 = v6 / v8 * v7;
 
   v10 = v6;
@@ -436,11 +436,11 @@ LABEL_16:
   [(PXAspectFitLayoutGenerator *)&v4 dealloc];
 }
 
-- (PXAspectFitLayoutGenerator)initWithMetrics:(id)a3
+- (PXAspectFitLayoutGenerator)initWithMetrics:(id)metrics
 {
   v4.receiver = self;
   v4.super_class = PXAspectFitLayoutGenerator;
-  result = [(PXLayoutGenerator *)&v4 initWithMetrics:a3];
+  result = [(PXLayoutGenerator *)&v4 initWithMetrics:metrics];
   if (result)
   {
     result->_geometries = 0;

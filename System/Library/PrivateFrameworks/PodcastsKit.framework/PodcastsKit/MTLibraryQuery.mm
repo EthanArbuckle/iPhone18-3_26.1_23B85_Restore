@@ -1,8 +1,8 @@
 @interface MTLibraryQuery
 - (MTLibraryQuery)init;
 - (void)runQuery;
-- (void)runQueryInContext:(id)a3;
-- (void)runQueryWithPodcastPredicate:(id)a3 episodePredicate:(id)a4 channelPredicate:(id)a5 categoryPredicate:(id)a6;
+- (void)runQueryInContext:(id)context;
+- (void)runQueryWithPodcastPredicate:(id)predicate episodePredicate:(id)episodePredicate channelPredicate:(id)channelPredicate categoryPredicate:(id)categoryPredicate;
 @end
 
 @implementation MTLibraryQuery
@@ -23,31 +23,31 @@
   return v3;
 }
 
-- (void)runQueryWithPodcastPredicate:(id)a3 episodePredicate:(id)a4 channelPredicate:(id)a5 categoryPredicate:(id)a6
+- (void)runQueryWithPodcastPredicate:(id)predicate episodePredicate:(id)episodePredicate channelPredicate:(id)channelPredicate categoryPredicate:(id)categoryPredicate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  [(MTLibraryQuery *)self setPodcastPredicate:a3];
-  [(MTLibraryQuery *)self setEpisodePredicate:v12];
+  categoryPredicateCopy = categoryPredicate;
+  channelPredicateCopy = channelPredicate;
+  episodePredicateCopy = episodePredicate;
+  [(MTLibraryQuery *)self setPodcastPredicate:predicate];
+  [(MTLibraryQuery *)self setEpisodePredicate:episodePredicateCopy];
 
-  [(MTLibraryQuery *)self setChannelPredicate:v11];
-  [(MTLibraryQuery *)self setCategoryPredicate:v10];
+  [(MTLibraryQuery *)self setChannelPredicate:channelPredicateCopy];
+  [(MTLibraryQuery *)self setCategoryPredicate:categoryPredicateCopy];
 
   [(MTLibraryQuery *)self runQuery];
 }
 
 - (void)runQuery
 {
-  v3 = [MEMORY[0x277D3DAE8] sharedInstance];
-  v4 = [v3 mainOrPrivateContext];
+  mEMORY[0x277D3DAE8] = [MEMORY[0x277D3DAE8] sharedInstance];
+  mainOrPrivateContext = [mEMORY[0x277D3DAE8] mainOrPrivateContext];
 
-  [(MTLibraryQuery *)self runQueryInContext:v4];
+  [(MTLibraryQuery *)self runQueryInContext:mainOrPrivateContext];
 }
 
-- (void)runQueryInContext:(id)a3
+- (void)runQueryInContext:(id)context
 {
-  v22 = a3;
+  contextCopy = context;
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
@@ -65,7 +65,7 @@
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__4;
   v48 = __Block_byref_object_dispose__4;
-  v49 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -88,9 +88,9 @@
   v24 = v12;
   v13 = v5;
   v25 = v13;
-  v26 = self;
+  selfCopy = self;
   v34 = &v50;
-  v14 = v22;
+  v14 = contextCopy;
   v27 = v14;
   v35 = &v44;
   v15 = v9;

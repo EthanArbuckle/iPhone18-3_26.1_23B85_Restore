@@ -123,9 +123,9 @@
     return 0;
   }
 
-  v3 = [(CIToneCurve *)self _isIdentity];
+  _isIdentity = [(CIToneCurve *)self _isIdentity];
   inputImage = self->inputImage;
-  if (v3)
+  if (_isIdentity)
   {
     v5 = inputImage;
 
@@ -134,7 +134,7 @@
 
   else
   {
-    v7 = [[(CIImage *)inputImage imageByApplyingFilter:@"CILinearToSRGBToneCurve"] imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [[(CIImage *)inputImage imageByApplyingFilter:@"CILinearToSRGBToneCurve"] imageByUnpremultiplyingAlpha];
     v8 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_toneCurve];
     [(CIVector *)self->inputPoint0 X];
     v10 = v9;
@@ -292,7 +292,7 @@
     v73 = v72;
     v75 = v74;
     v77 = v76;
-    v90[0] = v7;
+    v90[0] = imageByUnpremultiplyingAlpha;
     v90[1] = [MEMORY[0x1E696AD98] numberWithDouble:v52];
     v90[2] = v64;
     v90[3] = [MEMORY[0x1E696AD98] numberWithDouble:v87];

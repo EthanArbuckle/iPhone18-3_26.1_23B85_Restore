@@ -1,42 +1,42 @@
 @interface MOEventPeopleDiscovery
-- (MOEventPeopleDiscovery)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventPeopleDiscovery)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventPeopleDiscovery
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   isGComplete = self->_isGComplete;
-  v5 = a3;
-  [v5 encodeBool:isGComplete forKey:@"isGComplete"];
-  [v5 encodeInteger:self->_gaPR forKey:@"gPRelationship"];
-  [v5 encodeObject:self->_pCount forKey:@"pC"];
-  [v5 encodeObject:self->_densityScore forKey:@"densityScore"];
-  [v5 encodeObject:self->_densityScanDuration forKey:@"densityScanDuration"];
+  coderCopy = coder;
+  [coderCopy encodeBool:isGComplete forKey:@"isGComplete"];
+  [coderCopy encodeInteger:self->_gaPR forKey:@"gPRelationship"];
+  [coderCopy encodeObject:self->_pCount forKey:@"pC"];
+  [coderCopy encodeObject:self->_densityScore forKey:@"densityScore"];
+  [coderCopy encodeObject:self->_densityScanDuration forKey:@"densityScanDuration"];
 }
 
-- (MOEventPeopleDiscovery)initWithCoder:(id)a3
+- (MOEventPeopleDiscovery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MOEventPeopleDiscovery;
   v5 = [(MOEventPeopleDiscovery *)&v13 init];
   if (v5)
   {
-    v5->_isGComplete = [v4 decodeBoolForKey:@"isGComplete"];
-    v5->_gaPR = [v4 decodeIntegerForKey:@"gPRelationship"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pC"];
+    v5->_isGComplete = [coderCopy decodeBoolForKey:@"isGComplete"];
+    v5->_gaPR = [coderCopy decodeIntegerForKey:@"gPRelationship"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pC"];
     pCount = v5->_pCount;
     v5->_pCount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"densityScore"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"densityScore"];
     densityScore = v5->_densityScore;
     v5->_densityScore = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"densityScanDuration"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"densityScanDuration"];
     densityScanDuration = v5->_densityScanDuration;
     v5->_densityScanDuration = v10;
   }
@@ -44,7 +44,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventPeopleDiscovery);
   v4->_isGComplete = self->_isGComplete;

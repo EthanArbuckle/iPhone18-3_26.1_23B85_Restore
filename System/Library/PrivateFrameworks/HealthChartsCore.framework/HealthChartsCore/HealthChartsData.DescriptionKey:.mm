@@ -20,13 +20,13 @@
 
 - (uint64_t)Double
 {
-  result = *a1;
+  result = *self;
   if (!result)
   {
     type metadata accessor for [HealthChartsData.DescriptionKey : Double]();
     a2();
     result = swift_getWitnessTable();
-    atomic_store(result, a1);
+    atomic_store(result, self);
   }
 
   return result;

@@ -1,13 +1,13 @@
 @interface NSInPredicateOperator
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSInPredicateOperator)initWithCoder:(id)a3;
-- (NSInPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSInPredicateOperator)initWithCoder:(id)coder;
+- (NSInPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringVersion;
 - (id)symbol;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSInPredicateOperator
@@ -24,17 +24,17 @@
 
 - (id)symbol
 {
-  v3 = [(NSPredicateOperator *)self operatorType];
-  if (v3 == 10)
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType == 10)
   {
     v4 = @"IN";
   }
 
   else
   {
-    if (v3 != 99)
+    if (operatorType != 99)
     {
-      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"In operator with invalid type %lu", v3), 0}]);
+      objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"In operator with invalid type %lu", operatorType), 0}]);
     }
 
     v4 = @"CONTAINS";
@@ -137,31 +137,31 @@ LABEL_12:
   return self->_stringVersion;
 }
 
-- (NSInPredicateOperator)initWithOperatorType:(unint64_t)a3 modifier:(unint64_t)a4 options:(unint64_t)a5
+- (NSInPredicateOperator)initWithOperatorType:(unint64_t)type modifier:(unint64_t)modifier options:(unint64_t)options
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSInPredicateOperator;
-  v6 = [(NSPredicateOperator *)&v9 initWithOperatorType:a3 modifier:a4];
+  v6 = [(NSPredicateOperator *)&v9 initWithOperatorType:type modifier:modifier];
   v7 = v6;
   if (v6)
   {
-    [(NSInPredicateOperator *)v6 _setOptions:a5];
+    [(NSInPredicateOperator *)v6 _setOptions:options];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = NSInPredicateOperator;
   [(NSPredicateOperator *)&v5 encodeWithCoder:?];
-  [a3 encodeInteger:self->_flags forKey:@"NSFlags"];
+  [coder encodeInteger:self->_flags forKey:@"NSFlags"];
 }
 
-- (NSInPredicateOperator)initWithCoder:(id)a3
+- (NSInPredicateOperator)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -169,62 +169,62 @@ LABEL_12:
   v4 = [(NSPredicateOperator *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_flags = [a3 decodeIntegerForKey:@"NSFlags"];
+    v4->_flags = [coder decodeIntegerForKey:@"NSFlags"];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  if (v6 != [a3 modifier])
+  modifier = [(NSPredicateOperator *)self modifier];
+  if (modifier != [equal modifier])
   {
     return 0;
   }
 
-  v7 = [(NSInPredicateOperator *)self flags];
-  return v7 == [a3 flags];
+  flags = [(NSInPredicateOperator *)self flags];
+  return flags == [equal flags];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(NSPredicateOperator *)self operatorType];
-  v6 = [(NSPredicateOperator *)self modifier];
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  modifier = [(NSPredicateOperator *)self modifier];
   flags = self->_flags;
 
-  return [v4 _newOperatorWithType:v5 modifier:v6 options:flags];
+  return [v4 _newOperatorWithType:operatorType modifier:modifier options:flags];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
-  v7 = [(NSPredicateOperator *)self operatorType];
-  if (v7 == 10)
+  operatorType = [(NSPredicateOperator *)self operatorType];
+  if (operatorType == 10)
   {
-    v8 = a4;
-    a4 = a3;
+    objectCopy = andObject;
+    andObject = object;
   }
 
   else
   {
-    v8 = a3;
-    if (v7 != 99)
+    objectCopy = object;
+    if (operatorType != 99)
     {
       v9 = MEMORY[0x1E695DF30];
       v10 = *MEMORY[0x1E695D930];
-      v11 = [NSString stringWithFormat:@"In operator with invalid type %lu", v7];
+      objectCopy = [NSString stringWithFormat:@"In operator with invalid type %lu", operatorType];
       v12 = v9;
       v13 = v10;
       goto LABEL_24;
@@ -232,9 +232,9 @@ LABEL_12:
   }
 
   result = 0;
-  if (v8 && a4)
+  if (objectCopy && andObject)
   {
-    if (v8 == [MEMORY[0x1E695DFB0] null])
+    if (objectCopy == [MEMORY[0x1E695DFB0] null])
     {
       return 0;
     }
@@ -243,36 +243,36 @@ LABEL_12:
     {
       if (_NSIsNSString())
       {
-        v15 = [(NSInPredicateOperator *)self stringVersion];
+        stringVersion = [(NSInPredicateOperator *)self stringVersion];
 
-        return [v15 performPrimitiveOperationUsingObject:v8 andObject:a4];
+        return [stringVersion performPrimitiveOperationUsingObject:objectCopy andObject:andObject];
       }
 
       v16 = MEMORY[0x1E695DF30];
       v17 = *MEMORY[0x1E695D940];
-      v11 = [NSString stringWithFormat:@"Can't look for value (%@) in string (%@); value is not a string ", a4, v8];
+      objectCopy = [NSString stringWithFormat:@"Can't look for value (%@) in string (%@); value is not a string ", andObject, objectCopy];
       v12 = v16;
       v13 = v17;
 LABEL_24:
-      objc_exception_throw([v12 exceptionWithName:v13 reason:v11 userInfo:0]);
+      objc_exception_throw([v12 exceptionWithName:v13 reason:objectCopy userInfo:0]);
     }
 
     if ((_NSIsNSArray() & 1) == 0 && (_NSIsNSSet() & 1) == 0 && !_NSIsNSOrderedSet())
     {
       if (_NSIsNSDictionary())
       {
-        return [objc_msgSend(v8 allKeysForObject:{a4), "count"}] != 0;
+        return [objc_msgSend(objectCopy allKeysForObject:{andObject), "count"}] != 0;
       }
 
       v18 = MEMORY[0x1E695DF30];
       v19 = *MEMORY[0x1E695D940];
-      v11 = [NSString stringWithFormat:@"Can't use in/contains operator with collection %@ (not a collection)", v8];
+      objectCopy = [NSString stringWithFormat:@"Can't use in/contains operator with collection %@ (not a collection)", objectCopy];
       v12 = v18;
       v13 = v19;
       goto LABEL_24;
     }
 
-    return [v8 containsObject:a4];
+    return [objectCopy containsObject:andObject];
   }
 
   return result;

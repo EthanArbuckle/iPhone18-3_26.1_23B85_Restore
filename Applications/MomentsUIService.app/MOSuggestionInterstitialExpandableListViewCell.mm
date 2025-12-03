@@ -8,19 +8,19 @@
 
 - (void)didTapCheckmark
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionInterstitialExpandableListViewCell.didTapCheckmark()();
 }
 
 - (void)handleTraitChange
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionInterstitialExpandableListViewCell.handleTraitChange()();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionInterstitialExpandableListViewCell.prepareForReuse()();
 }
 

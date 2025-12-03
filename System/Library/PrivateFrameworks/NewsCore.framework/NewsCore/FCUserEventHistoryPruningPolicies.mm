@@ -1,7 +1,7 @@
 @interface FCUserEventHistoryPruningPolicies
 + (id)defaultPolicy;
-- (FCUserEventHistoryPruningPolicies)initWithDictionary:(id)a3;
-- (FCUserEventHistoryPruningPolicies)initWithPolicies:(id)a3;
+- (FCUserEventHistoryPruningPolicies)initWithDictionary:(id)dictionary;
+- (FCUserEventHistoryPruningPolicies)initWithPolicies:(id)policies;
 - (id)description;
 @end
 
@@ -23,40 +23,40 @@
   return v2;
 }
 
-- (FCUserEventHistoryPruningPolicies)initWithPolicies:(id)a3
+- (FCUserEventHistoryPruningPolicies)initWithPolicies:(id)policies
 {
-  v4 = a3;
+  policiesCopy = policies;
   v8.receiver = self;
   v8.super_class = FCUserEventHistoryPruningPolicies;
   v5 = [(FCUserEventHistoryPruningPolicies *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FCUserEventHistoryPruningPolicies *)v5 setPolicies:v4];
+    [(FCUserEventHistoryPruningPolicies *)v5 setPolicies:policiesCopy];
   }
 
   return v6;
 }
 
-- (FCUserEventHistoryPruningPolicies)initWithDictionary:(id)a3
+- (FCUserEventHistoryPruningPolicies)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
-  v6 = FCAppConfigurationNumberValue(v4, @"maxSizeOnDisk", 0);
+  v6 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxSizeOnDisk", 0);
   if (v6)
   {
     v7 = -[FCUserEventHistoryPruningPolicy initWithType:value:]([FCUserEventHistoryPruningPolicy alloc], "initWithType:value:", 1, [v6 unsignedIntegerValue]);
     [v5 addObject:v7];
   }
 
-  v8 = FCAppConfigurationNumberValue(v4, @"maxSessionAge", 0);
+  v8 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxSessionAge", 0);
   if (v8)
   {
     v9 = -[FCUserEventHistoryPruningPolicy initWithType:value:]([FCUserEventHistoryPruningPolicy alloc], "initWithType:value:", 3, [v8 unsignedIntegerValue]);
     [v5 addObject:v9];
   }
 
-  v10 = FCAppConfigurationNumberValue(v4, @"maxSessionCount", 0);
+  v10 = FCAppConfigurationNumberValue(dictionaryCopy, @"maxSessionCount", 0);
   if (v10)
   {
     v11 = -[FCUserEventHistoryPruningPolicy initWithType:value:]([FCUserEventHistoryPruningPolicy alloc], "initWithType:value:", 2, [v10 unsignedIntegerValue]);
@@ -83,8 +83,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCUserEventHistoryPruningPolicies *)self policies];
-  [v3 appendFormat:@"; policies: %@", v4];
+  policies = [(FCUserEventHistoryPruningPolicies *)self policies];
+  [v3 appendFormat:@"; policies: %@", policies];
 
   [v3 appendString:@">"];
 

@@ -13,8 +13,8 @@
   if (v2)
   {
     [(MKFeaturePayload *)v2 setState:@"?"];
-    v4 = [MEMORY[0x277CCA980] zero];
-    [(MKFeaturePayload *)v3 setImportElapsedTime:v4];
+    zero = [MEMORY[0x277CCA980] zero];
+    [(MKFeaturePayload *)v3 setImportElapsedTime:zero];
   }
 
   return v3;

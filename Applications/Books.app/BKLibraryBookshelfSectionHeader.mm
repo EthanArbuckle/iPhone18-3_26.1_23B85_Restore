@@ -1,18 +1,18 @@
 @interface BKLibraryBookshelfSectionHeader
-- (BKLibraryBookshelfSectionHeader)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (BKLibraryBookshelfSectionHeader)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSectionName:(id)a3;
+- (void)setSectionName:(id)name;
 @end
 
 @implementation BKLibraryBookshelfSectionHeader
 
-- (BKLibraryBookshelfSectionHeader)initWithFrame:(CGRect)a3
+- (BKLibraryBookshelfSectionHeader)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = BKLibraryBookshelfSectionHeader;
-  v3 = [(BKLibraryBookshelfSectionHeader *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKLibraryBookshelfSectionHeader *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -20,8 +20,8 @@
     v3->_sectionNameLabel = v4;
 
     v6 = v3->_sectionNameLabel;
-    v7 = [(UILabel *)v6 accessibilityTraits];
-    [(UILabel *)v6 setAccessibilityTraits:UIAccessibilityTraitHeader | v7];
+    accessibilityTraits = [(UILabel *)v6 accessibilityTraits];
+    [(UILabel *)v6 setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
     v8 = +[CAShapeLayer layer];
     separatorLine = v3->_separatorLine;
     v3->_separatorLine = v8;
@@ -32,8 +32,8 @@
 
     [(CAShapeLayer *)v3->_separatorLine setHidden:1];
     [(BKLibraryBookshelfSectionHeader *)v3 addSubview:v3->_sectionNameLabel];
-    v12 = [(BKLibraryBookshelfSectionHeader *)v3 layer];
-    [v12 addSublayer:v3->_separatorLine];
+    layer = [(BKLibraryBookshelfSectionHeader *)v3 layer];
+    [layer addSublayer:v3->_separatorLine];
   }
 
   return v3;
@@ -84,8 +84,8 @@
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  sectionNameLabel = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
+  [sectionNameLabel setFrame:{v18, v20, v22, v24}];
 
   v26 = +[UIBezierPath bezierPath];
   [(BKLibraryBookshelfSectionHeader *)self isRTL];
@@ -94,11 +94,11 @@
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v35 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
-  [v35 lineWidth];
+  separatorLine = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
+  [separatorLine lineWidth];
   v43 = v36 * 0.5;
 
-  LOBYTE(v35) = [(BKLibraryBookshelfSectionHeader *)self bottomSeparator];
+  LOBYTE(separatorLine) = [(BKLibraryBookshelfSectionHeader *)self bottomSeparator];
   v44 = v28;
   v51.origin.x = v28;
   v51.origin.y = v30;
@@ -107,7 +107,7 @@
   v51.size.height = v34;
   MinX = CGRectGetMinX(v51);
   v38 = MinX;
-  if (v35)
+  if (separatorLine)
   {
     v52.origin.x = x;
     v52.origin.y = y;
@@ -138,14 +138,14 @@
   }
 
   [v26 addLineToPoint:{MaxX, v40}];
-  v41 = [v26 CGPath];
-  v42 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
-  [v42 setPath:v41];
+  cGPath = [v26 CGPath];
+  separatorLine2 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
+  [separatorLine2 setPath:cGPath];
 }
 
-- (void)setSectionName:(id)a3
+- (void)setSectionName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   sectionName = self->_sectionName;
   self->_sectionName = v4;
 
@@ -176,32 +176,32 @@ LABEL_6:
     self->_sectionName = v9;
   }
 
-  v11 = [(BKLibraryBookshelfSectionHeader *)self useAllCaps];
+  useAllCaps = [(BKLibraryBookshelfSectionHeader *)self useAllCaps];
   v12 = self->_sectionName;
-  if (v11)
+  if (useAllCaps)
   {
-    v13 = [(NSString *)v12 localizedUppercaseString];
+    localizedUppercaseString = [(NSString *)v12 localizedUppercaseString];
   }
 
   else
   {
-    v13 = v12;
+    localizedUppercaseString = v12;
   }
 
-  v18 = v13;
+  v18 = localizedUppercaseString;
   v14 = [NSAttributedString alloc];
-  v15 = [(BKLibraryBookshelfSectionHeader *)self fontAttrs];
-  v16 = [v14 initWithString:v18 attributes:v15];
-  v17 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
-  [v17 setAttributedText:v16];
+  fontAttrs = [(BKLibraryBookshelfSectionHeader *)self fontAttrs];
+  v16 = [v14 initWithString:v18 attributes:fontAttrs];
+  sectionNameLabel = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
+  [sectionNameLabel setAttributedText:v16];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v36.receiver = self;
   v36.super_class = BKLibraryBookshelfSectionHeader;
-  v4 = a3;
-  [(BKLibraryBookshelfSectionHeader *)&v36 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(BKLibraryBookshelfSectionHeader *)&v36 applyLayoutAttributes:attributesCopy];
   [(BKLibraryBookshelfSectionHeader *)self setIsRTL:[(BKLibraryBookshelfSectionHeader *)self effectiveUserInterfaceLayoutDirection:v36.receiver]== 1];
   objc_opt_class();
   v5 = BUDynamicCast();
@@ -210,82 +210,82 @@ LABEL_6:
   {
     v6 = +[UIColor redColor];
     v7 = [v6 colorWithAlphaComponent:0.2];
-    v8 = [v7 CGColor];
-    v9 = [(BKLibraryBookshelfSectionHeader *)self layer];
-    [v9 setBorderColor:v8];
+    cGColor = [v7 CGColor];
+    layer = [(BKLibraryBookshelfSectionHeader *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v10 = [(BKLibraryBookshelfSectionHeader *)self layer];
+    layer2 = [(BKLibraryBookshelfSectionHeader *)self layer];
     v11 = 0.5;
-    [v10 setBorderWidth:0.5];
+    [layer2 setBorderWidth:0.5];
 
-    v12 = +[UIColor redColor];
-    v13 = [v12 colorWithAlphaComponent:0.2];
-    v14 = [v13 CGColor];
-    v15 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
-    v16 = [v15 layer];
-    [v16 setBorderColor:v14];
+    layer4 = +[UIColor redColor];
+    v13 = [layer4 colorWithAlphaComponent:0.2];
+    cGColor2 = [v13 CGColor];
+    sectionNameLabel = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
+    layer3 = [sectionNameLabel layer];
+    [layer3 setBorderColor:cGColor2];
   }
 
   else
   {
-    v12 = [(BKLibraryBookshelfSectionHeader *)self layer];
+    layer4 = [(BKLibraryBookshelfSectionHeader *)self layer];
     v11 = 0.0;
-    [v12 setBorderWidth:0.0];
+    [layer4 setBorderWidth:0.0];
   }
 
-  v17 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
-  v18 = [v17 layer];
-  [v18 setBorderWidth:v11];
+  sectionNameLabel2 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
+  layer5 = [sectionNameLabel2 layer];
+  [layer5 setBorderWidth:v11];
 
-  v19 = [v5 fontAttrs];
-  [(BKLibraryBookshelfSectionHeader *)self setFontAttrs:v19];
+  fontAttrs = [v5 fontAttrs];
+  [(BKLibraryBookshelfSectionHeader *)self setFontAttrs:fontAttrs];
 
   -[BKLibraryBookshelfSectionHeader setUseAllCaps:](self, "setUseAllCaps:", [v5 useAllCaps]);
-  v20 = [v5 columnMetrics];
-  [v20 margins];
+  columnMetrics = [v5 columnMetrics];
+  [columnMetrics margins];
   [(BKLibraryBookshelfSectionHeader *)self setMargins:?];
 
-  v21 = [(BKLibraryBookshelfSectionHeader *)self useAllCaps];
+  useAllCaps = [(BKLibraryBookshelfSectionHeader *)self useAllCaps];
   sectionName = self->_sectionName;
-  if (v21)
+  if (useAllCaps)
   {
-    v23 = [(NSString *)sectionName localizedUppercaseString];
+    localizedUppercaseString = [(NSString *)sectionName localizedUppercaseString];
   }
 
   else
   {
-    v23 = sectionName;
+    localizedUppercaseString = sectionName;
   }
 
-  v24 = v23;
-  if (v23)
+  v24 = localizedUppercaseString;
+  if (localizedUppercaseString)
   {
     v25 = [NSAttributedString alloc];
-    v26 = [(BKLibraryBookshelfSectionHeader *)self fontAttrs];
-    v27 = [v25 initWithString:v24 attributes:v26];
-    v28 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
-    [v28 setAttributedText:v27];
+    fontAttrs2 = [(BKLibraryBookshelfSectionHeader *)self fontAttrs];
+    v27 = [v25 initWithString:v24 attributes:fontAttrs2];
+    sectionNameLabel3 = [(BKLibraryBookshelfSectionHeader *)self sectionNameLabel];
+    [sectionNameLabel3 setAttributedText:v27];
   }
 
-  v29 = [v5 mainHeaderMetrics];
-  v30 = [v29 separatorLineColor];
-  v31 = [v30 CGColor];
-  v32 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
-  [v32 setStrokeColor:v31];
+  mainHeaderMetrics = [v5 mainHeaderMetrics];
+  separatorLineColor = [mainHeaderMetrics separatorLineColor];
+  cGColor3 = [separatorLineColor CGColor];
+  separatorLine = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
+  [separatorLine setStrokeColor:cGColor3];
 
-  v33 = [v5 mainHeaderMetrics];
-  if (v33)
+  mainHeaderMetrics2 = [v5 mainHeaderMetrics];
+  if (mainHeaderMetrics2)
   {
-    v34 = [v5 firstItem];
+    firstItem = [v5 firstItem];
   }
 
   else
   {
-    v34 = 1;
+    firstItem = 1;
   }
 
-  v35 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
-  [v35 setHidden:v34];
+  separatorLine2 = [(BKLibraryBookshelfSectionHeader *)self separatorLine];
+  [separatorLine2 setHidden:firstItem];
 }
 
 @end

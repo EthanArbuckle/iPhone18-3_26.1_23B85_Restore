@@ -1,69 +1,69 @@
 @interface NIInternalUtils
-+ (BOOL)nearbyObjectUpdateRate:(int64_t)a3 isGreaterThan:(int64_t)a4;
-+ (const)AntennaDiversityOverrideToString:(int64_t)a3;
-+ (const)NINearbyObjectDiscoveryPriorityToString:(int64_t)a3;
-+ (const)NINearbyObjectUpdateRateToShortString:(int64_t)a3;
-+ (const)NINearbyObjectUpdateRateToString:(int64_t)a3;
-+ (const)NINearbyPeerUseCaseToString:(int64_t)a3;
-+ (const)NIRelationshipSpecifierToString:(unint64_t)a3;
-+ (const)NISessionBackgroundModeToString:(int64_t)a3;
-+ (id)NISystemPassiveAccessIntentToString:(unsigned int)a3;
-+ (id)NISystemResourceAvailabilityToString:(unint64_t)a3;
++ (BOOL)nearbyObjectUpdateRate:(int64_t)rate isGreaterThan:(int64_t)than;
++ (const)AntennaDiversityOverrideToString:(int64_t)string;
++ (const)NINearbyObjectDiscoveryPriorityToString:(int64_t)string;
++ (const)NINearbyObjectUpdateRateToShortString:(int64_t)string;
++ (const)NINearbyObjectUpdateRateToString:(int64_t)string;
++ (const)NINearbyPeerUseCaseToString:(int64_t)string;
++ (const)NIRelationshipSpecifierToString:(unint64_t)string;
++ (const)NISessionBackgroundModeToString:(int64_t)string;
++ (id)NISystemPassiveAccessIntentToString:(unsigned int)string;
++ (id)NISystemResourceAvailabilityToString:(unint64_t)string;
 @end
 
 @implementation NIInternalUtils
 
-+ (const)NIRelationshipSpecifierToString:(unint64_t)a3
++ (const)NIRelationshipSpecifierToString:(unint64_t)string
 {
-  if (a3 > 0xF)
+  if (string > 0xF)
   {
     return "N/A";
   }
 
   else
   {
-    return off_10099CDE8[a3];
+    return off_10099CDE8[string];
   }
 }
 
-+ (const)AntennaDiversityOverrideToString:(int64_t)a3
++ (const)AntennaDiversityOverrideToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return "N/A";
   }
 
   else
   {
-    return off_10099CE68[a3];
+    return off_10099CE68[string];
   }
 }
 
-+ (BOOL)nearbyObjectUpdateRate:(int64_t)a3 isGreaterThan:(int64_t)a4
++ (BOOL)nearbyObjectUpdateRate:(int64_t)rate isGreaterThan:(int64_t)than
 {
-  v4 = 9u >> (a4 & 0xF);
-  if (a4 >= 4)
+  v4 = 9u >> (than & 0xF);
+  if (than >= 4)
   {
     LOBYTE(v4) = 0;
   }
 
-  v5 = 8u >> (a4 & 0xF);
-  if (a4 >= 4)
+  v5 = 8u >> (than & 0xF);
+  if (than >= 4)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3)
+  if (rate)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3 == 1)
+  if (rate == 1)
   {
     LOBYTE(v5) = v4;
   }
 
-  if (a3 == 2)
+  if (rate == 2)
   {
     v6 = 1;
   }
@@ -73,7 +73,7 @@
     v6 = v5;
   }
 
-  if (a3 == a4)
+  if (rate == than)
   {
     v6 = 0;
   }
@@ -81,24 +81,24 @@
   return v6 & 1;
 }
 
-+ (const)NISessionBackgroundModeToString:(int64_t)a3
++ (const)NISessionBackgroundModeToString:(int64_t)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
     sub_1004A72B8();
   }
 
-  return off_10099CE80[a3];
+  return off_10099CE80[string];
 }
 
-+ (const)NINearbyPeerUseCaseToString:(int64_t)a3
++ (const)NINearbyPeerUseCaseToString:(int64_t)string
 {
-  if (!a3)
+  if (!string)
   {
     return "Generic";
   }
 
-  if (a3 != 1)
+  if (string != 1)
   {
     sub_1004A72E4();
   }
@@ -106,34 +106,34 @@
   return "[Redacted]";
 }
 
-+ (const)NINearbyObjectUpdateRateToString:(int64_t)a3
++ (const)NINearbyObjectUpdateRateToString:(int64_t)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
     sub_1004A7310();
   }
 
-  return off_10099CE98[a3];
+  return off_10099CE98[string];
 }
 
-+ (const)NINearbyObjectUpdateRateToShortString:(int64_t)a3
++ (const)NINearbyObjectUpdateRateToShortString:(int64_t)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
     sub_1004A733C();
   }
 
-  return off_10099CEB8[a3];
+  return off_10099CEB8[string];
 }
 
-+ (const)NINearbyObjectDiscoveryPriorityToString:(int64_t)a3
++ (const)NINearbyObjectDiscoveryPriorityToString:(int64_t)string
 {
-  if (!a3)
+  if (!string)
   {
     return "Default";
   }
 
-  if (a3 != 1)
+  if (string != 1)
   {
     sub_1004A7368();
   }
@@ -141,34 +141,34 @@
   return "Low";
 }
 
-+ (id)NISystemResourceAvailabilityToString:(unint64_t)a3
++ (id)NISystemResourceAvailabilityToString:(unint64_t)string
 {
   v4 = objc_autoreleasePoolPush();
-  if (a3)
+  if (string)
   {
     v5 = [NSMutableString stringWithString:@"Unavailable:"];
     v6 = v5;
-    if (a3)
+    if (string)
     {
       [v5 appendString:@"AirplaneMode|"];
     }
 
-    if ((a3 & 2) != 0)
+    if ((string & 2) != 0)
     {
       [v6 appendString:@"GeographicalRegion|"];
     }
 
-    if ((a3 & 4) != 0)
+    if ((string & 4) != 0)
     {
       [v6 appendString:@"RecoveringFromError|"];
     }
 
-    if ((a3 & 8) != 0)
+    if ((string & 8) != 0)
     {
       [v6 appendString:@"NotReady|"];
     }
 
-    if ((a3 & 0x10) != 0)
+    if ((string & 0x10) != 0)
     {
       [v6 appendString:@"Unsupported|"];
     }
@@ -186,24 +186,24 @@
   return v7;
 }
 
-+ (id)NISystemPassiveAccessIntentToString:(unsigned int)a3
++ (id)NISystemPassiveAccessIntentToString:(unsigned int)string
 {
   v4 = objc_autoreleasePoolPush();
-  if (a3)
+  if (string)
   {
     v5 = [NSMutableString stringWithString:@"Intent:"];
     v6 = v5;
-    if (a3)
+    if (string)
     {
       [v5 appendString:@"WristRaise|"];
     }
 
-    if ((a3 & 2) != 0)
+    if ((string & 2) != 0)
     {
       [v6 appendString:@"GeofenceEntry|"];
     }
 
-    if ((a3 & 4) != 0)
+    if ((string & 4) != 0)
     {
       [v6 appendString:@"WalletInteraction|"];
     }

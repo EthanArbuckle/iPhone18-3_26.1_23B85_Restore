@@ -1,11 +1,11 @@
 @interface ControlHandleView
-- (_TtC8PaperKit17ControlHandleView)initWithCoder:(id)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (_TtC8PaperKit17ControlHandleView)initWithCoder:(id)coder;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation ControlHandleView
 
-- (_TtC8PaperKit17ControlHandleView)initWithCoder:(id)a3
+- (_TtC8PaperKit17ControlHandleView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -13,12 +13,12 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = specialized ControlHandleView.pointerInteraction(_:styleFor:)(v6);
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
+  v9 = specialized ControlHandleView.pointerInteraction(_:styleFor:)(interactionCopy);
 
   return v9;
 }

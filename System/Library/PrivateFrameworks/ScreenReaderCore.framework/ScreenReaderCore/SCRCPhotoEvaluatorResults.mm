@@ -1,23 +1,23 @@
 @interface SCRCPhotoEvaluatorResults
-- (SCRCPhotoEvaluatorResults)initWithBlurResult:(id)a3 colorResult:(id)a4 luminanceResult:(id)a5;
+- (SCRCPhotoEvaluatorResults)initWithBlurResult:(id)result colorResult:(id)colorResult luminanceResult:(id)luminanceResult;
 @end
 
 @implementation SCRCPhotoEvaluatorResults
 
-- (SCRCPhotoEvaluatorResults)initWithBlurResult:(id)a3 colorResult:(id)a4 luminanceResult:(id)a5
+- (SCRCPhotoEvaluatorResults)initWithBlurResult:(id)result colorResult:(id)colorResult luminanceResult:(id)luminanceResult
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  resultCopy = result;
+  colorResultCopy = colorResult;
+  luminanceResultCopy = luminanceResult;
   v16.receiver = self;
   v16.super_class = SCRCPhotoEvaluatorResults;
   v12 = [(SCRCPhotoEvaluatorResults *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_blurResult, a3);
-    objc_storeStrong(&v13->_colorResult, a4);
-    objc_storeStrong(&v13->_luminanceResult, a5);
+    objc_storeStrong(&v12->_blurResult, result);
+    objc_storeStrong(&v13->_colorResult, colorResult);
+    objc_storeStrong(&v13->_luminanceResult, luminanceResult);
     v14 = v13;
   }
 

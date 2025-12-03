@@ -3,28 +3,28 @@
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)hasText;
 - (BOOL)resignFirstResponder;
-- (DevicePINPane)initWithFrame:(CGRect)a3;
+- (DevicePINPane)initWithFrame:(CGRect)frame;
 - (id)specifierLabel;
-- (void)_setKeypadState:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setPlaysKeyboardClicks:(BOOL)a3;
+- (void)_setKeypadState:(BOOL)state animated:(BOOL)animated;
+- (void)_setPlaysKeyboardClicks:(BOOL)clicks;
 - (void)activateKeypadView;
 - (void)deactivateKeypadView;
 - (void)dealloc;
-- (void)delayForTextEntryAnimationsWithCompletion:(id)a3;
+- (void)delayForTextEntryAnimationsWithCompletion:(id)completion;
 - (void)dismissKeypad;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 - (void)layoutSubviews;
-- (void)pinView:(id)a3 pinEntered:(id)a4;
-- (void)pinView:(id)a3 pinValueChanged:(id)a4;
-- (void)setKeyboardIsNumeric:(BOOL)a3;
-- (void)setKeyboardUserInteractionEnabled:(BOOL)a3;
-- (void)setPINPolicyString:(id)a3 visible:(BOOL)a4;
-- (void)setSimplePIN:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 showsOptions:(BOOL)a6;
-- (void)setTitle:(id)a3;
-- (void)showError:(id)a3 error:(id)a4 isBlocked:(BOOL)a5 animate:(BOOL)a6;
-- (void)slideToNewPasscodeField:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 transition:(int)a6 showsOptionsButton:(BOOL)a7;
-- (void)transitionToSimplePIN:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 showsOptions:(BOOL)a6;
-- (void)transitionViewDidComplete:(id)a3;
+- (void)pinView:(id)view pinEntered:(id)entered;
+- (void)pinView:(id)view pinValueChanged:(id)changed;
+- (void)setKeyboardIsNumeric:(BOOL)numeric;
+- (void)setKeyboardUserInteractionEnabled:(BOOL)enabled;
+- (void)setPINPolicyString:(id)string visible:(BOOL)visible;
+- (void)setSimplePIN:(BOOL)n requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only showsOptions:(BOOL)options;
+- (void)setTitle:(id)title;
+- (void)showError:(id)error error:(id)a4 isBlocked:(BOOL)blocked animate:(BOOL)animate;
+- (void)slideToNewPasscodeField:(BOOL)field requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only transition:(int)transition showsOptionsButton:(BOOL)button;
+- (void)transitionToSimplePIN:(BOOL)n requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only showsOptions:(BOOL)options;
+- (void)transitionViewDidComplete:(id)complete;
 @end
 
 @implementation DevicePINPane
@@ -32,24 +32,24 @@
 - (id)specifierLabel
 {
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v3 = [WeakRetained pinInstructionsPrompt];
+  pinInstructionsPrompt = [WeakRetained pinInstructionsPrompt];
 
-  return v3;
+  return pinInstructionsPrompt;
 }
 
-- (void)_setPlaysKeyboardClicks:(BOOL)a3
+- (void)_setPlaysKeyboardClicks:(BOOL)clicks
 {
-  inPropertyData = a3;
+  inPropertyData = clicks;
   inSpecifier = 1104;
   AudioServicesSetProperty(0x61637421u, 4u, &inSpecifier, 4u, &inPropertyData);
 }
 
-- (DevicePINPane)initWithFrame:(CGRect)a3
+- (DevicePINPane)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v16.receiver = self;
   v16.super_class = DevicePINPane;
   v7 = [(PSEditingPane *)&v16 initWithFrame:?];
@@ -57,7 +57,7 @@
   if (v7)
   {
     [(DevicePINPane *)v7 setAutocapitalizationType:0];
-    v9 = 1;
+    bOOLValue = 1;
     [(DevicePINPane *)v8 setAutocorrectionType:1];
     [(DevicePINPane *)v8 setAutoresizingMask:0];
     v10 = [objc_alloc(MEMORY[0x1E69DD228]) initWithFrame:{x, y, width, height}];
@@ -71,8 +71,8 @@
     v13 = v12;
     if (v12)
     {
-      v9 = [v12 BOOLValue];
-      v8->_playSound = v9;
+      bOOLValue = [v12 BOOLValue];
+      v8->_playSound = bOOLValue;
     }
 
     else
@@ -80,9 +80,9 @@
       v8->_playSound = 1;
     }
 
-    [(DevicePINPane *)v8 _setPlaysKeyboardClicks:v9];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v8 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
+    [(DevicePINPane *)v8 _setPlaysKeyboardClicks:bOOLValue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_keyboardWillChangeFrame_ name:*MEMORY[0x1E69DE068] object:0];
   }
 
   return v8;
@@ -93,25 +93,25 @@
   [(PINEntryView *)self->_pinView setDelegate:0];
   [(DevicePINPane *)self _setPlaysKeyboardClicks:0];
   [(DevicePINPane *)self dismissKeypad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DevicePINPane;
   [(DevicePINPane *)&v4 dealloc];
 }
 
-- (void)setKeyboardIsNumeric:(BOOL)a3
+- (void)setKeyboardIsNumeric:(BOOL)numeric
 {
-  if (self->_numericKeyboard != a3)
+  if (self->_numericKeyboard != numeric)
   {
-    v3 = a3;
-    self->_numericKeyboard = a3;
+    numericCopy = numeric;
+    self->_numericKeyboard = numeric;
     v5 = +[PSListController appearance];
-    v6 = [v5 usesDarkTheme];
+    usesDarkTheme = [v5 usesDarkTheme];
 
-    v7 = v6;
-    if (v3)
+    v7 = usesDarkTheme;
+    if (numericCopy)
     {
       v8 = 127;
       if (PSUsePadStylePIN())
@@ -129,11 +129,11 @@
     [(DevicePINPane *)self setKeyboardAppearance:v7];
     if ([(DevicePINPane *)self requiresKeyboard])
     {
-      v9 = [(DevicePINPane *)self pinView];
-      [v9 setTextFieldKeyboardType:v8];
+      pinView = [(DevicePINPane *)self pinView];
+      [pinView setTextFieldKeyboardType:v8];
 
-      v10 = [(DevicePINPane *)self pinView];
-      [v10 setTextFieldKeyboardAppearance:v7];
+      pinView2 = [(DevicePINPane *)self pinView];
+      [pinView2 setTextFieldKeyboardAppearance:v7];
     }
   }
 }
@@ -157,9 +157,9 @@
     [(UIKeyboard *)self->_keypad activate];
     [(PINEntryView *)self->_pinView setBlocked:1];
     self->_keypadActive = 1;
-    v8 = [(DevicePINKeypadContainerView *)self->_keypadContainerView superview];
+    superview = [(DevicePINKeypadContainerView *)self->_keypadContainerView superview];
 
-    if (!v8)
+    if (!superview)
     {
       v9 = self->_keypadContainerView;
 
@@ -178,10 +178,10 @@
   }
 }
 
-- (void)transitionToSimplePIN:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 showsOptions:(BOOL)a6
+- (void)transitionToSimplePIN:(BOOL)n requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only showsOptions:(BOOL)options
 {
-  v6 = a6;
-  v7 = a5;
+  optionsCopy = options;
+  onlyCopy = only;
   pinView = self->_pinView;
   if (pinView)
   {
@@ -191,13 +191,13 @@
     self->_pinView = 0;
   }
 
-  self->_simplePIN = a3;
-  *(&self->super + 424) = *(&self->super + 424) & 0xFE | a4;
+  self->_simplePIN = n;
+  *(&self->super + 424) = *(&self->super + 424) & 0xFE | keyboard;
   if (!self->_simplePIN)
   {
     v18 = objc_alloc_init(PSTextFieldPINView);
-    [(PSTextFieldPINView *)v18 setUsesNumericKeyboard:v7];
-    if (!v6)
+    [(PSTextFieldPINView *)v18 setUsesNumericKeyboard:onlyCopy];
+    if (!optionsCopy)
     {
       goto LABEL_8;
     }
@@ -206,48 +206,48 @@
   }
 
   v13 = [PSBulletedPINView alloc];
-  v14 = [(DevicePINPane *)self PINLength];
-  v18 = [(PSBulletedPINView *)v13 initWithFrame:v14 numberOfFields:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  if (v6)
+  pINLength = [(DevicePINPane *)self PINLength];
+  v18 = [(PSBulletedPINView *)v13 initWithFrame:pINLength numberOfFields:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  if (optionsCopy)
   {
 LABEL_7:
-    v15 = [(DevicePINPane *)self passcodeOptionsTitle];
-    [(PINView *)v18 setOptionsButtonTitle:v15];
+    passcodeOptionsTitle = [(DevicePINPane *)self passcodeOptionsTitle];
+    [(PINView *)v18 setOptionsButtonTitle:passcodeOptionsTitle];
 
-    v16 = [(DevicePINPane *)self passcodeOptionsHandler];
-    [(PINView *)v18 setPasscodeOptionsHandler:v16];
+    passcodeOptionsHandler = [(DevicePINPane *)self passcodeOptionsHandler];
+    [(PINView *)v18 setPasscodeOptionsHandler:passcodeOptionsHandler];
   }
 
 LABEL_8:
   [(DevicePINPane *)self setPinView:v18];
-  v17 = [(DevicePINPane *)self specifierLabel];
-  [(DevicePINPane *)self setTitle:v17];
+  specifierLabel = [(DevicePINPane *)self specifierLabel];
+  [(DevicePINPane *)self setTitle:specifierLabel];
 
-  [(DevicePINPane *)self setKeyboardIsNumeric:v7];
+  [(DevicePINPane *)self setKeyboardIsNumeric:onlyCopy];
   [(DevicePINPane *)self _setKeypadState:(*(&self->super + 424) & 1) == 0 animated:1];
   [(PINEntryView *)self->_pinView setDelegate:self];
   [(UITransitionView *)self->_transitionView addSubview:self->_pinView];
   [(DevicePINPane *)self setNeedsLayout];
 }
 
-- (void)setSimplePIN:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 showsOptions:(BOOL)a6
+- (void)setSimplePIN:(BOOL)n requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only showsOptions:(BOOL)options
 {
   if (!self->_pinView)
   {
-    [(DevicePINPane *)self transitionToSimplePIN:a3 requiresKeyboard:a4 numericOnly:a5 showsOptions:a6];
+    [(DevicePINPane *)self transitionToSimplePIN:n requiresKeyboard:keyboard numericOnly:only showsOptions:options];
   }
 }
 
-- (void)_setKeypadState:(BOOL)a3 animated:(BOOL)a4
+- (void)_setKeypadState:(BOOL)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3)
+  animatedCopy = animated;
+  stateCopy = state;
+  if (state)
   {
     [(DevicePINPane *)self activateKeypadView];
     if (UIKeyboardAutomaticIsOnScreen())
     {
-      if (v4)
+      if (animatedCopy)
       {
         UIKeyboardOrderOutAutomatic();
       }
@@ -272,7 +272,7 @@ LABEL_8:
   *(&v28 + 1) = v10;
   if ((PSUsePadStylePIN() & 1) != 0 || !self->_keypadActive)
   {
-    if (v5)
+    if (stateCopy)
     {
       goto LABEL_25;
     }
@@ -280,7 +280,7 @@ LABEL_8:
 
   else
   {
-    if (v5)
+    if (stateCopy)
     {
       v11 = v24[4];
       v24[5] = v24[5] - v24[7];
@@ -294,7 +294,7 @@ LABEL_8:
       aBlock[4] = &v23;
       v12 = _Block_copy(aBlock);
       v13 = v12;
-      if (v4)
+      if (animatedCopy)
       {
         v14 = MEMORY[0x1E69DD250];
         [MEMORY[0x1E69DD228] defaultDurationForTransition:7];
@@ -320,7 +320,7 @@ LABEL_8:
     v18[4] = &v23;
     v15 = _Block_copy(v18);
     v16 = v15;
-    if (v4)
+    if (animatedCopy)
     {
       v17 = MEMORY[0x1E69DD250];
       [MEMORY[0x1E69DD228] defaultDurationForTransition:7];
@@ -338,7 +338,7 @@ LABEL_8:
 
   if (UIKeyboardAutomaticIsOffScreen())
   {
-    if (v4)
+    if (animatedCopy)
     {
       UIKeyboardOrderInAutomatic();
     }
@@ -420,14 +420,14 @@ void __42__DevicePINPane__setKeypadState_animated___block_invoke_2(uint64_t a1)
     UIKeyboardDisableAutomaticAppearance();
     v6.receiver = self;
     v6.super_class = DevicePINPane;
-    v3 = [(DevicePINPane *)&v6 becomeFirstResponder];
-    if (!v3)
+    becomeFirstResponder = [(DevicePINPane *)&v6 becomeFirstResponder];
+    if (!becomeFirstResponder)
     {
       UIKeyboardEnableAutomaticAppearance();
     }
 
     [(DevicePINKeypadContainerView *)self->_keypadContainerView setNeedsLayout];
-    return v3;
+    return becomeFirstResponder;
   }
 }
 
@@ -452,41 +452,41 @@ void __42__DevicePINPane__setKeypadState_animated___block_invoke_2(uint64_t a1)
 
   else
   {
-    v3 = [(PINEntryView *)self->_pinView resignFirstResponder];
+    resignFirstResponder = [(PINEntryView *)self->_pinView resignFirstResponder];
     if (UIKeyboardAutomaticIsOnScreen())
     {
       UIKeyboardOrderOutAutomatic();
     }
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)setKeyboardUserInteractionEnabled:(BOOL)a3
+- (void)setKeyboardUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(DevicePINPane *)self requiresKeyboard])
   {
-    v6 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v6 setUserInteractionEnabled:v3];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard setUserInteractionEnabled:enabledCopy];
   }
 
   else
   {
     keypad = self->_keypad;
 
-    [(UIKeyboard *)keypad setUserInteractionEnabled:v3];
+    [(UIKeyboard *)keypad setUserInteractionEnabled:enabledCopy];
   }
 }
 
-- (void)showError:(id)a3 error:(id)a4 isBlocked:(BOOL)a5 animate:(BOOL)a6
+- (void)showError:(id)error error:(id)a4 isBlocked:(BOOL)blocked animate:(BOOL)animate
 {
-  v6 = a6;
-  v7 = a5;
-  v12 = a3;
+  animateCopy = animate;
+  blockedCopy = blocked;
+  errorCopy = error;
   v10 = a4;
   isBlocked = self->_isBlocked;
-  if (isBlocked == v7)
+  if (isBlocked == blockedCopy)
   {
     if ((isBlocked & 1) == 0)
     {
@@ -494,12 +494,12 @@ void __42__DevicePINPane__setKeypadState_animated___block_invoke_2(uint64_t a1)
     }
 
 LABEL_5:
-    [(PINEntryView *)self->_pinView showError:v10 animate:v6];
+    [(PINEntryView *)self->_pinView showError:v10 animate:animateCopy];
     goto LABEL_6;
   }
 
-  self->_isBlocked = v7;
-  [(DevicePINPane *)self setKeyboardUserInteractionEnabled:v7 ^ 1u];
+  self->_isBlocked = blockedCopy;
+  [(DevicePINPane *)self setKeyboardUserInteractionEnabled:blockedCopy ^ 1u];
   [(PINEntryView *)self->_pinView setBlocked:self->_isBlocked];
   if (self->_isBlocked)
   {
@@ -510,31 +510,31 @@ LABEL_6:
   [(PINEntryView *)self->_pinView setStringValue:&stru_1EFE45030];
 }
 
-- (void)setPINPolicyString:(id)a3 visible:(BOOL)a4
+- (void)setPINPolicyString:(id)string visible:(BOOL)visible
 {
-  [(PINEntryView *)self->_pinView setPINPolicyString:a3 visible:a4];
+  [(PINEntryView *)self->_pinView setPINPolicyString:string visible:visible];
   pinView = self->_pinView;
 
   [(PINEntryView *)pinView setStringValue:&stru_1EFE45030];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   pinView = self->_pinView;
-  v5 = a3;
+  titleCopy = title;
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v6 = [WeakRetained pinInstructionsPromptFont];
-  [(PINEntryView *)pinView setTitle:v5 font:v6];
+  pinInstructionsPromptFont = [WeakRetained pinInstructionsPromptFont];
+  [(PINEntryView *)pinView setTitle:titleCopy font:pinInstructionsPromptFont];
 }
 
-- (void)slideToNewPasscodeField:(BOOL)a3 requiresKeyboard:(BOOL)a4 numericOnly:(BOOL)a5 transition:(int)a6 showsOptionsButton:(BOOL)a7
+- (void)slideToNewPasscodeField:(BOOL)field requiresKeyboard:(BOOL)keyboard numericOnly:(BOOL)only transition:(int)transition showsOptionsButton:(BOOL)button
 {
-  v7 = a7;
-  v8 = a5;
-  *(&self->super + 424) = *(&self->super + 424) & 0xFE | a4;
-  self->_simplePIN = a3;
-  v32 = [(DevicePINPane *)self pinView];
-  [v32 getCurrentTitleFontSize];
+  buttonCopy = button;
+  onlyCopy = only;
+  *(&self->super + 424) = *(&self->super + 424) & 0xFE | keyboard;
+  self->_simplePIN = field;
+  pinView = [(DevicePINPane *)self pinView];
+  [pinView getCurrentTitleFontSize];
   v11 = v10;
   if ([(DevicePINPane *)self requiresKeyboard])
   {
@@ -543,57 +543,57 @@ LABEL_6:
 
   v12 = objc_alloc_init(MEMORY[0x1E69DCF70]);
   [(UITransitionView *)self->_transitionView addSubview:v12];
-  [v32 frame];
+  [pinView frame];
   [v12 setFrame:?];
-  [v12 captureSnapshotOfView:v32 withSnapshotType:1];
-  [v32 removeFromSuperview];
+  [v12 captureSnapshotOfView:pinView withSnapshotType:1];
+  [pinView removeFromSuperview];
   [(DevicePINPane *)self hideFailedAttempts];
   [(DevicePINPane *)self setPINPolicyString:0 visible:0];
   self->_transitioning = 1;
   [(UITransitionView *)self->_transitionView setDelegate:self];
-  v13 = [(DevicePINPane *)self pinView];
-  [v13 setDelegate:0];
+  pinView2 = [(DevicePINPane *)self pinView];
+  [pinView2 setDelegate:0];
 
-  v31 = v8;
+  v31 = onlyCopy;
   if (self->_simplePIN)
   {
     v14 = [PSBulletedPINView alloc];
-    [v32 frame];
+    [pinView frame];
     v19 = [(PSBulletedPINView *)v14 initWithFrame:[(DevicePINPane *)self PINLength] numberOfFields:v15, v16, v17, v18];
   }
 
   else
   {
     v20 = [PSTextFieldPINView alloc];
-    [v32 frame];
+    [pinView frame];
     v19 = [(PSTextFieldPINView *)v20 initWithFrame:?];
-    [(PSBulletedPINView *)v19 setUsesNumericKeyboard:v8];
+    [(PSBulletedPINView *)v19 setUsesNumericKeyboard:onlyCopy];
   }
 
   [(PINView *)v19 setDelegate:self];
   [(PSBulletedPINView *)v19 setBlocked:(*(&self->super + 424) & 1) == 0];
   v21 = MEMORY[0x1E69DB878];
   WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-  v23 = [WeakRetained pinInstructionsPromptFont];
-  v24 = [v23 fontDescriptor];
-  v25 = [v21 fontWithDescriptor:v24 size:v11];
+  pinInstructionsPromptFont = [WeakRetained pinInstructionsPromptFont];
+  fontDescriptor = [pinInstructionsPromptFont fontDescriptor];
+  v25 = [v21 fontWithDescriptor:fontDescriptor size:v11];
 
-  v26 = [(DevicePINPane *)self specifierLabel];
-  [(PINView *)v19 setTitle:v26 font:v25];
+  specifierLabel = [(DevicePINPane *)self specifierLabel];
+  [(PINView *)v19 setTitle:specifierLabel font:v25];
 
-  [(PINView *)v19 setShowsOptionsButton:v7];
-  if (v7)
+  [(PINView *)v19 setShowsOptionsButton:buttonCopy];
+  if (buttonCopy)
   {
-    v27 = [(DevicePINPane *)self passcodeOptionsTitle];
-    [(PINView *)v19 setOptionsButtonTitle:v27];
+    passcodeOptionsTitle = [(DevicePINPane *)self passcodeOptionsTitle];
+    [(PINView *)v19 setOptionsButtonTitle:passcodeOptionsTitle];
 
-    v28 = [(DevicePINPane *)self passcodeOptionsHandler];
-    [(PINView *)v19 setPasscodeOptionsHandler:v28];
+    passcodeOptionsHandler = [(DevicePINPane *)self passcodeOptionsHandler];
+    [(PINView *)v19 setPasscodeOptionsHandler:passcodeOptionsHandler];
   }
 
   [(PSBulletedPINView *)v19 layoutIfNeeded];
   [(DevicePINPane *)self setPinView:v19];
-  [(UITransitionView *)self->_transitionView transition:a6 fromView:v12 toView:v19];
+  [(UITransitionView *)self->_transitionView transition:transition fromView:v12 toView:v19];
   [(DevicePINPane *)self setKeyboardIsNumeric:v31];
   v29 = PSUsePadStylePIN();
   [(DevicePINPane *)self _setKeypadState:(*(&self->super + 424) & 1) == 0 animated:v29];
@@ -605,7 +605,7 @@ LABEL_6:
   [(DevicePINPane *)self setNeedsLayout];
 }
 
-- (void)transitionViewDidComplete:(id)a3
+- (void)transitionViewDidComplete:(id)complete
 {
   self->_transitioning = 0;
   if ([(DevicePINPane *)self requiresKeyboard])
@@ -613,10 +613,10 @@ LABEL_6:
     UIKeyboardEnableAutomaticAppearance();
   }
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 sf_isiPhone];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
-  if (v5)
+  if (sf_isiPhone)
   {
 
     [(DevicePINPane *)self becomeFirstResponder];
@@ -625,25 +625,25 @@ LABEL_6:
 
 - (BOOL)hasText
 {
-  v2 = [(PINEntryView *)self->_pinView stringValue];
-  v3 = [v2 length] != 0;
+  stringValue = [(PINEntryView *)self->_pinView stringValue];
+  v3 = [stringValue length] != 0;
 
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if (!self->_isBlocked)
   {
-    v8 = v4;
-    v5 = [(PINEntryView *)self->_pinView stringValue];
-    v6 = [v5 length];
+    v8 = textCopy;
+    stringValue = [(PINEntryView *)self->_pinView stringValue];
+    v6 = [stringValue length];
     if (v6 >= [(DevicePINPane *)self PINLength])
     {
       simplePIN = self->_simplePIN;
 
-      v4 = v8;
+      textCopy = v8;
       if (simplePIN)
       {
         goto LABEL_6;
@@ -656,15 +656,15 @@ LABEL_6:
 
     [(PINEntryView *)self->_pinView hideError];
     [(PINEntryView *)self->_pinView appendString:v8];
-    v4 = v8;
+    textCopy = v8;
   }
 
 LABEL_6:
 }
 
-- (void)delayForTextEntryAnimationsWithCompletion:(id)a3
+- (void)delayForTextEntryAnimationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PINEntryView *)self->_pinView recursivelyForceDisplayIfNeeded];
   [MEMORY[0x1E6979518] flush];
   [(DevicePINPane *)self setKeyboardUserInteractionEnabled:0];
@@ -674,8 +674,8 @@ LABEL_6:
   v7[2] = __59__DevicePINPane_delayForTextEntryAnimationsWithCompletion___block_invoke;
   v7[3] = &unk_1E71DD4D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_after(v5, MEMORY[0x1E69E96A0], v7);
 }
 
@@ -693,33 +693,33 @@ uint64_t __59__DevicePINPane_delayForTextEntryAnimationsWithCompletion___block_i
   return result;
 }
 
-- (void)pinView:(id)a3 pinValueChanged:(id)a4
+- (void)pinView:(id)view pinValueChanged:(id)changed
 {
   if (!self->_simplePIN)
   {
-    v6 = a4;
+    changedCopy = changed;
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
-    v7 = [v6 length];
+    v7 = [changedCopy length];
 
     [WeakRetained adjustButtonsForPasswordLength:v7];
   }
 }
 
-- (void)pinView:(id)a3 pinEntered:(id)a4
+- (void)pinView:(id)view pinEntered:(id)entered
 {
-  v5 = a4;
+  enteredCopy = entered;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __36__DevicePINPane_pinView_pinEntered___block_invoke;
   v12 = &unk_1E71DC570;
-  v13 = self;
-  v14 = v5;
-  v6 = v5;
+  selfCopy = self;
+  v14 = enteredCopy;
+  v6 = enteredCopy;
   v7 = _Block_copy(&v9);
   v8 = v7;
   if (self->_simplePIN)
   {
-    [(DevicePINPane *)self delayForTextEntryAnimationsWithCompletion:v7, v9, v10, v11, v12, v13, v14];
+    [(DevicePINPane *)self delayForTextEntryAnimationsWithCompletion:v7, v9, v10, v11, v12, selfCopy, v14];
   }
 
   else
@@ -744,10 +744,10 @@ void __36__DevicePINPane_pinView_pinEntered___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PSEditingPane *)self viewController];
-  v12 = [v11 view];
-  v13 = [v12 safeAreaLayoutGuide];
-  [v13 layoutFrame];
+  viewController = [(PSEditingPane *)self viewController];
+  view = [viewController view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v15 = v14;
 
   v16 = v6 + v15;
@@ -800,8 +800,8 @@ LABEL_3:
   if ([(DevicePINPane *)self requiresKeyboard]&& (PSUsePadStylePIN() & 1) == 0)
   {
     v40 = MEMORY[0x1E69DCBB8];
-    v41 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v40 sizeForInterfaceOrientation:{objc_msgSend(v41, "statusBarOrientation")}];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [v40 sizeForInterfaceOrientation:{objc_msgSend(mEMORY[0x1E69DC668], "statusBarOrientation")}];
     v43 = v42;
 
     v38 = v39 - v43;

@@ -1,11 +1,11 @@
 @interface AppleMusicAPITokenIDSService
 + (AppleMusicAPITokenIDSService)sharedService;
 - (id)_init;
-- (void)_performTokenRequest:(id)a3 completionHandler:(id)a4;
+- (void)_performTokenRequest:(id)request completionHandler:(id)handler;
 - (void)_start;
 - (void)_stop;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
 - (void)start;
 - (void)stop;
 @end
@@ -21,7 +21,7 @@
   {
     serviceName = self->_serviceName;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2114;
     v8 = serviceName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ Stopped IDS service with name %{public}@.", &v5, 0x16u);
@@ -37,58 +37,58 @@
   {
     serviceName = self->_serviceName;
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2114;
     v8 = serviceName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%{public}@ Started IDS service with name %{public}@.", &v5, 0x16u);
   }
 }
 
-- (void)_performTokenRequest:(id)a3 completionHandler:(id)a4
+- (void)_performTokenRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = MRMediaRemoteCopyLocalDeviceSystemMediaApplicationDisplayID();
-  v9 = [v6 clientIdentifier];
-  v10 = [v6 clientVersion];
-  if (v9 | v10)
+  clientIdentifier = [requestCopy clientIdentifier];
+  clientVersion = [requestCopy clientVersion];
+  if (clientIdentifier | clientVersion)
   {
-    v11 = v10;
+    clientVersion2 = clientVersion;
   }
 
   else
   {
     v12 = [ICClientInfo _clientInfoForCloudDaemonOriginatedMusicKitRequestWithRequestingBundleIdentifier:v8];
-    v9 = [v12 clientIdentifier];
-    v11 = [v12 clientVersion];
+    clientIdentifier = [v12 clientIdentifier];
+    clientVersion2 = [v12 clientVersion];
     v13 = os_log_create("com.apple.amp.itunescloudd", "Connections");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2114;
-      v36 = v9;
+      v36 = clientIdentifier;
       v37 = 2114;
-      v38 = v11;
+      v38 = clientVersion2;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%{public}@ No client identifier or version was specified in the ICAppleMusicAPITokenRequest instance. Falling back to default client identifier for daemon: %{public}@/%{public}@.", buf, 0x20u);
     }
   }
 
-  v14 = [ICMutableClientInfo clientInfoForMusicKitRequestWithClientIdentifier:v9 clientVersion:v11 bundleIdentifier:v8];
-  v15 = [v6 bagProfile];
-  [v14 setBagProfile:v15];
+  v14 = [ICMutableClientInfo clientInfoForMusicKitRequestWithClientIdentifier:clientIdentifier clientVersion:clientVersion2 bundleIdentifier:v8];
+  bagProfile = [requestCopy bagProfile];
+  [v14 setBagProfile:bagProfile];
 
-  v16 = [v6 bagProfileVersion];
-  [v14 setBagProfileVersion:v16];
+  bagProfileVersion = [requestCopy bagProfileVersion];
+  [v14 setBagProfileVersion:bagProfileVersion];
 
   v17 = [v14 copy];
   v18 = os_log_create("com.apple.amp.itunescloudd", "Connections");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138543874;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2114;
-    v36 = v6;
+    v36 = requestCopy;
     v37 = 2114;
     v38 = v17;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%{public}@ Performing token request %{public}@ and %{public}@.", buf, 0x20u);
@@ -99,10 +99,10 @@
   v30[2] = sub_10011C7E8;
   v30[3] = &unk_1001DEC70;
   v30[4] = self;
-  v19 = v6;
+  v19 = requestCopy;
   v31 = v19;
-  v32 = v7;
-  v20 = v7;
+  v32 = handlerCopy;
+  v20 = handlerCopy;
   v21 = objc_retainBlock(v30);
   v22 = [[ICDeveloperTokenFetchRequest alloc] initWithClientInfo:v17 options:{objc_msgSend(v19, "shouldIgnoreDeveloperTokenCache")}];
   [v22 setClientType:0];
@@ -142,37 +142,37 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v9 = a5;
-  v10 = a6;
+  protobufCopy = protobuf;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v11 = [v9 type];
+  type = [protobufCopy type];
   v12 = os_log_create("com.apple.amp.itunescloudd", "Connections");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138544130;
     v13 = "requestTokens";
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2048;
-    if (v11 != 1000)
+    if (type != 1000)
     {
       v13 = 0;
     }
 
-    v21 = v11;
+    v21 = type;
     v22 = 2082;
     v23 = v13;
     v24 = 2114;
-    v25 = v10;
+    v25 = dCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@ Received IDS message %lu:'%{public}s' from ID %{public}@", buf, 0x2Au);
   }
 
-  if (v11 == 1000)
+  if (type == 1000)
   {
     v14 = [ICAppleMusicAPITokenRequest alloc];
-    v15 = [v9 data];
-    v16 = [(ICAppleMusicAPITokenRequest *)v14 initWithData:v15];
+    data = [protobufCopy data];
+    v16 = [(ICAppleMusicAPITokenRequest *)v14 initWithData:data];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -188,13 +188,13 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138544130;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2048;
-      v21 = v11;
+      v21 = type;
       v22 = 2082;
       v23 = 0;
       v24 = 2114;
-      v25 = v10;
+      v25 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}@ Received IDS message of unknown type %lu:'%{public}s' from ID %{public}@", buf, 0x2Au);
     }
   }

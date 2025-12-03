@@ -1,54 +1,54 @@
 @interface PHSearchIndex
-+ (BOOL)_ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:(id)a3;
++ (BOOL)_ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:(id)library;
 - (BOOL)isCheckingIfTheSearchIndexIsReady;
 - (PHSearchIndex)init;
-- (PHSearchIndex)initWithPhotoLibrary:(id)a3;
+- (PHSearchIndex)initWithPhotoLibrary:(id)library;
 - (PLSearchIndexSceneTaxonomyProvider)sceneTaxonomyProvider;
 - (PSIDatabase)_psiSearchIndex;
 - (PSIDatabase)psiSearchIndex;
 - (PSIDatabase)unverifiedPsiSearchIndex;
-- (void)_openQueryConnectionToSearchIndexForPhotoLibrary:(id)a3 completion:(id)a4;
-- (void)_spotlightIndexStateForLibraryWithCompletionHandler:(id)a3;
+- (void)_openQueryConnectionToSearchIndexForPhotoLibrary:(id)library completion:(id)completion;
+- (void)_spotlightIndexStateForLibraryWithCompletionHandler:(id)handler;
 - (void)acquireSpotlightSandboxExtensionIfNeeded;
 - (void)dealloc;
-- (void)preWarmSearchIndexSynchronously:(BOOL)a3 completion:(id)a4;
-- (void)setIsCheckingIfTheSearchIndexIsReady:(BOOL)a3;
-- (void)set_psiSearchIndex:(id)a3;
+- (void)preWarmSearchIndexSynchronously:(BOOL)synchronously completion:(id)completion;
+- (void)setIsCheckingIfTheSearchIndexIsReady:(BOOL)ready;
+- (void)set_psiSearchIndex:(id)index;
 - (void)startIndexingAndMonitoringSearchIndexStatus;
 - (void)stopIndexingAndMonitoringSearchIndexStatus;
-- (void)validateSpotlightIndexForLibraryExistsWithCompletionHandler:(id)a3;
+- (void)validateSpotlightIndexForLibraryExistsWithCompletionHandler:(id)handler;
 @end
 
 @implementation PHSearchIndex
 
 - (PSIDatabase)unverifiedPsiSearchIndex
 {
-  v3 = [(PHSearchIndex *)self _psiSearchIndex];
-  v4 = v3;
-  if (v3)
+  _psiSearchIndex = [(PHSearchIndex *)self _psiSearchIndex];
+  v4 = _psiSearchIndex;
+  if (_psiSearchIndex)
   {
-    v5 = v3;
+    v5 = _psiSearchIndex;
   }
 
   else
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    unverifiedPsiSearchIndex = v6->_unverifiedPsiSearchIndex;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    unverifiedPsiSearchIndex = selfCopy->_unverifiedPsiSearchIndex;
     if (!unverifiedPsiSearchIndex)
     {
       v8 = objc_alloc(MEMORY[0x1E69BE8A0]);
-      v9 = [(PHSearchIndex *)v6 photoLibrary];
-      v10 = [v9 pathManager];
-      v11 = [v8 initWithPathManager:v10 options:1];
-      v12 = v6->_unverifiedPsiSearchIndex;
-      v6->_unverifiedPsiSearchIndex = v11;
+      photoLibrary = [(PHSearchIndex *)selfCopy photoLibrary];
+      pathManager = [photoLibrary pathManager];
+      v11 = [v8 initWithPathManager:pathManager options:1];
+      v12 = selfCopy->_unverifiedPsiSearchIndex;
+      selfCopy->_unverifiedPsiSearchIndex = v11;
 
-      unverifiedPsiSearchIndex = v6->_unverifiedPsiSearchIndex;
+      unverifiedPsiSearchIndex = selfCopy->_unverifiedPsiSearchIndex;
     }
 
     v5 = unverifiedPsiSearchIndex;
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   return v5;
@@ -56,35 +56,35 @@
 
 - (PSIDatabase)_psiSearchIndex
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->__psiSearchIndex;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->__psiSearchIndex;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_spotlightIndexStateForLibraryWithCompletionHandler:(id)a3
+- (void)_spotlightIndexStateForLibraryWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary wellKnownPhotoLibraryIdentifier];
-  v6 = [MEMORY[0x1E69BE810] domainIdentifierForPhotoLibraryIdentifier:v5];
-  if ([MEMORY[0x1E69BE810] shouldUseSpotlightPrivateIndexForLibraryIdentifier:v5])
+  handlerCopy = handler;
+  wellKnownPhotoLibraryIdentifier = [(PHPhotoLibrary *)self->_photoLibrary wellKnownPhotoLibraryIdentifier];
+  v6 = [MEMORY[0x1E69BE810] domainIdentifierForPhotoLibraryIdentifier:wellKnownPhotoLibraryIdentifier];
+  if ([MEMORY[0x1E69BE810] shouldUseSpotlightPrivateIndexForLibraryIdentifier:wellKnownPhotoLibraryIdentifier])
   {
     [(PHSearchIndex *)self acquireSpotlightSandboxExtensionIfNeeded];
-    v7 = [(PHPhotoLibrary *)self->_photoLibrary pathManager];
-    v8 = [v7 spotlightSearchIndexPath];
+    pathManager = [(PHPhotoLibrary *)self->_photoLibrary pathManager];
+    spotlightSearchIndexPath = [pathManager spotlightSearchIndexPath];
 
     v9 = PLSearchBackendDonationsGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v8;
+      v21 = spotlightSearchIndexPath;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEFAULT, "Retrieving Spotlight Private Index at path: %@", buf, 0xCu);
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E6964E38]) initWithName:v6 protectionClass:0 path:v8];
+    v10 = [objc_alloc(MEMORY[0x1E6964E38]) initWithName:v6 protectionClass:0 path:spotlightSearchIndexPath];
     if (v10)
     {
       goto LABEL_5;
@@ -98,7 +98,7 @@ LABEL_7:
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v12 = [v13 errorWithDomain:v14 code:46502 userInfo:v15];
 
-    v4[2](v4, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
     goto LABEL_8;
   }
 
@@ -109,27 +109,27 @@ LABEL_7:
   }
 
 LABEL_5:
-  v11 = [MEMORY[0x1E69BE810] photosBundleIdentifier];
+  photosBundleIdentifier = [MEMORY[0x1E69BE810] photosBundleIdentifier];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__PHSearchIndex__spotlightIndexStateForLibraryWithCompletionHandler___block_invoke;
   v16[3] = &unk_1E75A60B0;
-  v17 = v4;
-  [v10 fetchLastClientStateWithProtectionClass:0 forBundleID:v11 clientStateName:v6 options:32 completionHandler:v16];
+  v17 = handlerCopy;
+  [v10 fetchLastClientStateWithProtectionClass:0 forBundleID:photosBundleIdentifier clientStateName:v6 options:32 completionHandler:v16];
 
   v12 = v17;
 LABEL_8:
 }
 
-- (void)validateSpotlightIndexForLibraryExistsWithCompletionHandler:(id)a3
+- (void)validateSpotlightIndexForLibraryExistsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __77__PHSearchIndex_validateSpotlightIndexForLibraryExistsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E75A60B0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PHSearchIndex *)self _spotlightIndexStateForLibraryWithCompletionHandler:v6];
 }
 
@@ -143,7 +143,7 @@ LABEL_8:
     v5 = 3221225472;
     v6 = __24__PHSearchIndex_dealloc__block_invoke;
     v7 = &unk_1E75AB270;
-    v8 = self;
+    selfCopy = self;
     PLRunWithUnfairLock();
   }
 
@@ -183,16 +183,16 @@ void __57__PHSearchIndex_acquireSpotlightSandboxExtensionIfNeeded__block_invoke(
 - (void)stopIndexingAndMonitoringSearchIndexStatus
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PHSearchIndex *)self photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 assetsdClient];
-  v6 = [v5 libraryInternalClient];
+  photoLibrary = [(PHSearchIndex *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  assetsdClient = [v3PhotoLibrary assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
 
-  [v6 pauseSearchIndexingWithCompletionHandler:&__block_literal_global_54];
-  v7 = [(PHSearchIndex *)self searchIndexStatusTimer];
+  [libraryInternalClient pauseSearchIndexingWithCompletionHandler:&__block_literal_global_54];
+  searchIndexStatusTimer = [(PHSearchIndex *)self searchIndexStatusTimer];
   v8 = PLSearchUIQueryGetLog();
   v9 = v8;
-  if (v7)
+  if (searchIndexStatusTimer)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -200,7 +200,7 @@ void __57__PHSearchIndex_acquireSpotlightSandboxExtensionIfNeeded__block_invoke(
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_INFO, "Photos Search Index Manager: Will stop monitoring the search indexing status", &v11, 2u);
     }
 
-    [v7 invalidate];
+    [searchIndexStatusTimer invalidate];
     [(PHSearchIndex *)self setSearchIndexStatusTimer:0];
   }
 
@@ -208,9 +208,9 @@ void __57__PHSearchIndex_acquireSpotlightSandboxExtensionIfNeeded__block_invoke(
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PHSearchIndex *)self _psiSearchIndex];
+      _psiSearchIndex = [(PHSearchIndex *)self _psiSearchIndex];
       v11 = 138412290;
-      v12 = v10;
+      v12 = _psiSearchIndex;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_ERROR, "Photos Search Index Manager: Requested to stop monitoring indexing status for a search index that is not being monitored %@", &v11, 0xCu);
     }
   }
@@ -218,23 +218,23 @@ void __57__PHSearchIndex_acquireSpotlightSandboxExtensionIfNeeded__block_invoke(
 
 - (void)startIndexingAndMonitoringSearchIndexStatus
 {
-  v3 = [(PHSearchIndex *)self photoLibrary];
-  v4 = [v3 photoLibrary];
-  v5 = [v4 assetsdClient];
-  v6 = [v5 libraryInternalClient];
+  photoLibrary = [(PHSearchIndex *)self photoLibrary];
+  v3PhotoLibrary = [photoLibrary photoLibrary];
+  assetsdClient = [v3PhotoLibrary assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
 
   v7 = dispatch_get_global_queue(9, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PHSearchIndex_startIndexingAndMonitoringSearchIndexStatus__block_invoke;
   block[3] = &unk_1E75AB270;
-  v8 = v6;
+  v8 = libraryInternalClient;
   v18 = v8;
   dispatch_async(v7, block);
 
-  v9 = [(PHSearchIndex *)self searchIndexStatusTimer];
+  searchIndexStatusTimer = [(PHSearchIndex *)self searchIndexStatusTimer];
 
-  if (!v9)
+  if (!searchIndexStatusTimer)
   {
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E695DFF0];
@@ -244,7 +244,7 @@ void __57__PHSearchIndex_acquireSpotlightSandboxExtensionIfNeeded__block_invoke(
     v12[3] = &unk_1E75A6088;
     v13 = v8;
     objc_copyWeak(&v15, &location);
-    v14 = self;
+    selfCopy = self;
     v11 = [v10 scheduledTimerWithTimeInterval:1 repeats:v12 block:10.0];
     [(PHSearchIndex *)self setSearchIndexStatusTimer:v11];
     [v11 fire];
@@ -301,46 +301,46 @@ void __60__PHSearchIndex_startIndexingAndMonitoringSearchIndexStatus__block_invo
   }
 }
 
-- (void)preWarmSearchIndexSynchronously:(BOOL)a3 completion:(id)a4
+- (void)preWarmSearchIndexSynchronously:(BOOL)synchronously completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PHSearchIndex *)self _psiSearchIndex];
-  if (v7)
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
+  _psiSearchIndex = [(PHSearchIndex *)self _psiSearchIndex];
+  if (_psiSearchIndex)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, v7);
+      completionCopy[2](completionCopy, _psiSearchIndex);
     }
   }
 
-  else if (v4)
+  else if (synchronouslyCopy)
   {
     v8 = objc_opt_class();
-    v9 = [(PHSearchIndex *)self photoLibrary];
-    LODWORD(v8) = [v8 _ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:v9];
+    photoLibrary = [(PHSearchIndex *)self photoLibrary];
+    LODWORD(v8) = [v8 _ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:photoLibrary];
 
     if (v8)
     {
-      v10 = [(PHSearchIndex *)self unverifiedPsiSearchIndex];
-      v11 = v10;
-      if (v10)
+      unverifiedPsiSearchIndex = [(PHSearchIndex *)self unverifiedPsiSearchIndex];
+      v11 = unverifiedPsiSearchIndex;
+      if (unverifiedPsiSearchIndex)
       {
-        v12 = v10;
+        v12 = unverifiedPsiSearchIndex;
       }
 
       else
       {
         v15 = objc_alloc(MEMORY[0x1E69BE8A0]);
-        v16 = [(PHSearchIndex *)self photoLibrary];
-        v17 = [v16 pathManager];
-        v12 = [v15 initWithPathManager:v17 options:1];
+        photoLibrary2 = [(PHSearchIndex *)self photoLibrary];
+        pathManager = [photoLibrary2 pathManager];
+        v12 = [v15 initWithPathManager:pathManager options:1];
       }
 
       [(PHSearchIndex *)self set_psiSearchIndex:v12];
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, v12);
+        completionCopy[2](completionCopy, v12);
       }
     }
 
@@ -353,32 +353,32 @@ void __60__PHSearchIndex_startIndexingAndMonitoringSearchIndexStatus__block_invo
         _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_INFO, "Unable to establish query connection to PSIDatabase", v18, 2u);
       }
 
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
   }
 
   else
   {
-    v13 = [(PHSearchIndex *)self photoLibrary];
-    [(PHSearchIndex *)self _openQueryConnectionToSearchIndexForPhotoLibrary:v13 completion:v6];
+    photoLibrary3 = [(PHSearchIndex *)self photoLibrary];
+    [(PHSearchIndex *)self _openQueryConnectionToSearchIndexForPhotoLibrary:photoLibrary3 completion:completionCopy];
   }
 }
 
-- (void)_openQueryConnectionToSearchIndexForPhotoLibrary:(id)a3 completion:(id)a4
+- (void)_openQueryConnectionToSearchIndexForPhotoLibrary:(id)library completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHSearchIndex *)self _psiSearchIndex];
+  libraryCopy = library;
+  completionCopy = completion;
+  _psiSearchIndex = [(PHSearchIndex *)self _psiSearchIndex];
 
-  if (v8)
+  if (_psiSearchIndex)
   {
-    if (v7)
+    if (completionCopy)
     {
-      v9 = [(PHSearchIndex *)self _psiSearchIndex];
-      v7[2](v7, v9);
+      _psiSearchIndex2 = [(PHSearchIndex *)self _psiSearchIndex];
+      completionCopy[2](completionCopy, _psiSearchIndex2);
     }
   }
 
@@ -391,9 +391,9 @@ void __60__PHSearchIndex_startIndexingAndMonitoringSearchIndexStatus__block_invo
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_INFO, "Already trying to open search index, subsequent request ignored", buf, 2u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -407,8 +407,8 @@ void __60__PHSearchIndex_startIndexingAndMonitoringSearchIndexStatus__block_invo
     block[2] = __77__PHSearchIndex__openQueryConnectionToSearchIndexForPhotoLibrary_completion___block_invoke;
     block[3] = &unk_1E75A9A40;
     objc_copyWeak(&v15, buf);
-    v13 = v6;
-    v14 = v7;
+    v13 = libraryCopy;
+    v14 = completionCopy;
     dispatch_async(v11, block);
 
     objc_destroyWeak(&v15);
@@ -470,43 +470,43 @@ void __77__PHSearchIndex__openQueryConnectionToSearchIndexForPhotoLibrary_comple
 
 - (PSIDatabase)psiSearchIndex
 {
-  v3 = [(PHSearchIndex *)self _psiSearchIndex];
+  _psiSearchIndex = [(PHSearchIndex *)self _psiSearchIndex];
 
-  if (!v3)
+  if (!_psiSearchIndex)
   {
-    v4 = [(PHSearchIndex *)self photoLibrary];
-    [(PHSearchIndex *)self _openQueryConnectionToSearchIndexForPhotoLibrary:v4 completion:0];
+    photoLibrary = [(PHSearchIndex *)self photoLibrary];
+    [(PHSearchIndex *)self _openQueryConnectionToSearchIndexForPhotoLibrary:photoLibrary completion:0];
   }
 
   return [(PHSearchIndex *)self _psiSearchIndex];
 }
 
-- (void)set_psiSearchIndex:(id)a3
+- (void)set_psiSearchIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   obj = self;
   objc_sync_enter(obj);
   psiSearchIndex = obj->__psiSearchIndex;
-  obj->__psiSearchIndex = v4;
+  obj->__psiSearchIndex = indexCopy;
 
   objc_sync_exit(obj);
 }
 
 - (BOOL)isCheckingIfTheSearchIndexIsReady
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCheckingIfTheSearchIndexIsReady = v2->_isCheckingIfTheSearchIndexIsReady;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCheckingIfTheSearchIndexIsReady = selfCopy->_isCheckingIfTheSearchIndexIsReady;
+  objc_sync_exit(selfCopy);
 
   return isCheckingIfTheSearchIndexIsReady;
 }
 
-- (void)setIsCheckingIfTheSearchIndexIsReady:(BOOL)a3
+- (void)setIsCheckingIfTheSearchIndexIsReady:(BOOL)ready
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isCheckingIfTheSearchIndexIsReady = a3;
+  obj->_isCheckingIfTheSearchIndexIsReady = ready;
   objc_sync_exit(obj);
 }
 
@@ -525,13 +525,13 @@ void __77__PHSearchIndex__openQueryConnectionToSearchIndexForPhotoLibrary_comple
   return sceneTaxonomyProvider;
 }
 
-- (PHSearchIndex)initWithPhotoLibrary:(id)a3
+- (PHSearchIndex)initWithPhotoLibrary:(id)library
 {
-  v6 = a3;
-  if (!v6)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHSearchIndex.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchIndex.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v11.receiver = self;
@@ -540,7 +540,7 @@ void __77__PHSearchIndex__openQueryConnectionToSearchIndexForPhotoLibrary_comple
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_photoLibrary, a3);
+    objc_storeStrong(&v7->_photoLibrary, library);
     v8->_queryLock._os_unfair_lock_opaque = 0;
   }
 
@@ -559,15 +559,15 @@ void __77__PHSearchIndex__openQueryConnectionToSearchIndexForPhotoLibrary_comple
   return 0;
 }
 
-+ (BOOL)_ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:(id)a3
++ (BOOL)_ensureSearchIndexIsReadyToBeQueriedForPhotoLibrary:(id)library
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 photoLibrary];
-  v4 = [v3 assetsdClient];
-  v5 = [v4 libraryInternalClient];
+  photoLibrary = [library photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
+  libraryInternalClient = [assetsdClient libraryInternalClient];
 
   v15 = 0;
-  v6 = [v5 waitForSearchIndexExistenceWithError:&v15];
+  v6 = [libraryInternalClient waitForSearchIndexExistenceWithError:&v15];
   v7 = v15;
   v8 = PLSearchUIQueryGetLog();
   v9 = v8;

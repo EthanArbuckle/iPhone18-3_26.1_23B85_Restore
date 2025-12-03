@@ -1,13 +1,13 @@
 @interface NLGuidedFeaturedActivityPickerItem
 + (id)guidedRunCanonical;
 + (id)guidedWalkCanonical;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NLGuidedFeaturedActivityPickerItem)init;
 - (NSString)description;
 - (NSString)recencyTag;
 - (NSString)symbolName;
 - (_TtC11WorkoutCore26CompoundActivityPickerItem)compoundItem;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -43,7 +43,7 @@
   *&v6[OBJC_IVAR____TtC11WorkoutCore26CompoundActivityPickerItem_value] = v4;
   v11.receiver = v6;
   v11.super_class = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = v3;
   v9 = [(NLGuidedFeaturedActivityPickerItem *)&v11 init];
 
@@ -57,9 +57,9 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   GuidedFeaturedActivityPickerItem.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -100,7 +100,7 @@ LABEL_7:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GuidedFeaturedActivityPickerItem.description.getter();
   v5 = v4;
 
@@ -111,17 +111,17 @@ LABEL_7:
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GuidedFeaturedActivityPickerItem.hash.getter();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -130,7 +130,7 @@ LABEL_7:
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   outlined init with copy of Artwork?(v11, v9, &_sypSgMd, &_sypSgMR);

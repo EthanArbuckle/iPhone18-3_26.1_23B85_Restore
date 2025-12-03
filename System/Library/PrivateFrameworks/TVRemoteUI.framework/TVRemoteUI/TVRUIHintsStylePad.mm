@@ -21,8 +21,8 @@
 
 - (id)primaryTintColor
 {
-  v2 = [MEMORY[0x277D75348] blackColor];
-  v3 = [v2 colorWithAlphaComponent:0.5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v3 = [blackColor colorWithAlphaComponent:0.5];
 
   return v3;
 }
@@ -91,8 +91,8 @@
 
 - (double)siriHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePad *)self siriImage];
-  [v3 size];
+  siriImage = [(TVRUIHintsStylePad *)self siriImage];
+  [siriImage size];
   v5 = v4;
   [(TVRUIHintsStylePad *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -102,8 +102,8 @@
 
 - (double)volumeHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePad *)self volumeImage];
-  [v3 size];
+  volumeImage = [(TVRUIHintsStylePad *)self volumeImage];
+  [volumeImage size];
   v5 = v4;
   [(TVRUIHintsStylePad *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -113,8 +113,8 @@
 
 - (double)micVolumeHintContainerWidth
 {
-  v3 = [(TVRUIHintsStylePad *)self micVolumeImage];
-  [v3 size];
+  micVolumeImage = [(TVRUIHintsStylePad *)self micVolumeImage];
+  [micVolumeImage size];
   v5 = v4;
   [(TVRUIHintsStylePad *)self buttonOutlineWidth];
   v7 = v5 + v6;
@@ -126,9 +126,9 @@
 {
   v4.receiver = self;
   v4.super_class = TVRUIHintsStylePad;
-  v2 = [(TVRUIHintsStyle *)&v4 siriHintTipContext];
+  siriHintTipContext = [(TVRUIHintsStyle *)&v4 siriHintTipContext];
 
-  return v2;
+  return siriHintTipContext;
 }
 
 - (int64_t)userInterfaceStyle
@@ -151,9 +151,9 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:@"Pad" withName:@"idiom"];
   v4 = [v3 appendBool:-[TVRUIHintsStyle hasHomeButton](self withName:{"hasHomeButton"), @"hasHomeButton"}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

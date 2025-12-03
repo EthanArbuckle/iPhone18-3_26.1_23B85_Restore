@@ -1,16 +1,16 @@
 @interface ATXActionCacheClientReader
-- (ATXActionCacheClientReader)initWithChunks:(id)a3;
-- (ATXActionCacheClientReader)initWithData:(id)a3;
-- (id)_getLockScreenPredictionIndices:(id)a3;
-- (id)_predicateForInstalledAndNonEngagedPredictions:(id)a3;
-- (id)actionsWithConsumerSubType:(unsigned __int8)a3 limit:(int64_t)a4;
-- (id)actionsWithLimit:(int64_t)a3 shouldFilterRestrictedAppsAndRecentEngagements:(BOOL)a4;
-- (id)lockscreenPredictionIndicesUpToLimit:(int64_t)a3;
+- (ATXActionCacheClientReader)initWithChunks:(id)chunks;
+- (ATXActionCacheClientReader)initWithData:(id)data;
+- (id)_getLockScreenPredictionIndices:(id)indices;
+- (id)_predicateForInstalledAndNonEngagedPredictions:(id)predictions;
+- (id)actionsWithConsumerSubType:(unsigned __int8)type limit:(int64_t)limit;
+- (id)actionsWithLimit:(int64_t)limit shouldFilterRestrictedAppsAndRecentEngagements:(BOOL)engagements;
+- (id)lockscreenPredictionIndicesUpToLimit:(int64_t)limit;
 @end
 
 @implementation ATXActionCacheClientReader
 
-- (ATXActionCacheClientReader)initWithData:(id)a3
+- (ATXActionCacheClientReader)initWithData:(id)data
 {
   v4 = ATXCacheFileSplitChunks();
   v5 = [(ATXActionCacheClientReader *)self initWithChunks:v4];
@@ -18,23 +18,23 @@
   return v5;
 }
 
-- (ATXActionCacheClientReader)initWithChunks:(id)a3
+- (ATXActionCacheClientReader)initWithChunks:(id)chunks
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  chunksCopy = chunks;
   v13.receiver = self;
   v13.super_class = ATXActionCacheClientReader;
   v5 = [(ATXActionCacheClientReader *)&v13 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [chunksCopy count];
     if (v6 == [(ATXActionCacheClientReader *)v5 chunkCount])
     {
-      v7 = [v4 objectAtIndexedSubscript:0];
+      v7 = [chunksCopy objectAtIndexedSubscript:0];
       scoredActionsChunk = v5->_scoredActionsChunk;
       v5->_scoredActionsChunk = v7;
 
-      v9 = [(ATXActionCacheClientReader *)v5 _getLockScreenPredictionIndices:v4];
+      v9 = [(ATXActionCacheClientReader *)v5 _getLockScreenPredictionIndices:chunksCopy];
       p_super = &v5->_lockscreenPredictionIndices->super;
       v5->_lockscreenPredictionIndices = v9;
     }
@@ -44,7 +44,7 @@
       p_super = __atxlog_handle_default();
       if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v4 count];
+        v11 = [chunksCopy count];
         *buf = 134218240;
         v15 = v11;
         v16 = 1024;
@@ -57,18 +57,18 @@
   return v5;
 }
 
-- (id)actionsWithConsumerSubType:(unsigned __int8)a3 limit:(int64_t)a4
+- (id)actionsWithConsumerSubType:(unsigned __int8)type limit:(int64_t)limit
 {
   if (self->_lockscreenPredictionIndices)
   {
-    if (a3 == 22)
+    if (type == 22)
     {
-      v5 = [(ATXActionCacheClientReader *)self lockscreenPredictionIndicesUpToLimit:a4];
+      v5 = [(ATXActionCacheClientReader *)self lockscreenPredictionIndicesUpToLimit:limit];
       if ([v5 count])
       {
         v6 = -[ATXActionCacheClientReader actionsWithLimit:shouldFilterRestrictedAppsAndRecentEngagements:](self, "actionsWithLimit:shouldFilterRestrictedAppsAndRecentEngagements:", [v5 lastIndex] + 1, 0);
-        v7 = [v5 lastIndex];
-        if (v7 >= [v6 count])
+        lastIndex = [v5 lastIndex];
+        if (lastIndex >= [v6 count])
         {
           v9 = __atxlog_handle_default();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@
 
     else
     {
-      v8 = [(ATXActionCacheClientReader *)self actionsWithLimit:a4 shouldFilterRestrictedAppsAndRecentEngagements:1];
+      v8 = [(ATXActionCacheClientReader *)self actionsWithLimit:limit shouldFilterRestrictedAppsAndRecentEngagements:1];
     }
   }
 
@@ -105,10 +105,10 @@
   return v8;
 }
 
-- (id)lockscreenPredictionIndicesUpToLimit:(int64_t)a3
+- (id)lockscreenPredictionIndicesUpToLimit:(int64_t)limit
 {
   v5 = self->_lockscreenPredictionIndices;
-  if ([(NSIndexSet *)self->_lockscreenPredictionIndices count]> a3)
+  if ([(NSIndexSet *)self->_lockscreenPredictionIndices count]> limit)
   {
     v6 = objc_opt_new();
     lockscreenPredictionIndices = self->_lockscreenPredictionIndices;
@@ -118,7 +118,7 @@
     v11[3] = &unk_1E80C14E0;
     v8 = v6;
     v12 = v8;
-    v13 = a3;
+    limitCopy = limit;
     [(NSIndexSet *)lockscreenPredictionIndices enumerateIndexesUsingBlock:v11];
     v9 = v8;
 
@@ -146,16 +146,16 @@ unint64_t __67__ATXActionCacheClientReader_lockscreenPredictionIndicesUpToLimit_
   return result;
 }
 
-- (id)_predicateForInstalledAndNonEngagedPredictions:(id)a3
+- (id)_predicateForInstalledAndNonEngagedPredictions:(id)predictions
 {
-  v3 = a3;
+  predictionsCopy = predictions;
   v4 = MEMORY[0x1E696AE18];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77__ATXActionCacheClientReader__predicateForInstalledAndNonEngagedPredictions___block_invoke;
   v8[3] = &unk_1E80C1508;
-  v9 = v3;
-  v5 = v3;
+  v9 = predictionsCopy;
+  v5 = predictionsCopy;
   v6 = [v4 predicateWithBlock:v8];
 
   return v6;
@@ -178,17 +178,17 @@ BOOL __77__ATXActionCacheClientReader__predicateForInstalledAndNonEngagedPredict
   return v4;
 }
 
-- (id)actionsWithLimit:(int64_t)a3 shouldFilterRestrictedAppsAndRecentEngagements:(BOOL)a4
+- (id)actionsWithLimit:(int64_t)limit shouldFilterRestrictedAppsAndRecentEngagements:(BOOL)engagements
 {
   if (self->_scoredActionsChunk)
   {
-    v5 = a4;
+    engagementsCopy = engagements;
     v7 = [ATXPredictionSetReader actionReader:?];
-    if (v5)
+    if (engagementsCopy)
     {
       v8 = objc_opt_new();
-      v9 = [v8 recentActions];
-      v10 = [(ATXActionCacheClientReader *)self _predicateForInstalledAndNonEngagedPredictions:v9];
+      recentActions = [v8 recentActions];
+      v10 = [(ATXActionCacheClientReader *)self _predicateForInstalledAndNonEngagedPredictions:recentActions];
     }
 
     else
@@ -196,7 +196,7 @@ BOOL __77__ATXActionCacheClientReader__predicateForInstalledAndNonEngagedPredict
       v10 = 0;
     }
 
-    v11 = [v7 readScoredPredictionsWithLimit:a3 filterPredicate:v10];
+    v11 = [v7 readScoredPredictionsWithLimit:limit filterPredicate:v10];
   }
 
   else
@@ -207,25 +207,25 @@ BOOL __77__ATXActionCacheClientReader__predicateForInstalledAndNonEngagedPredict
   return v11;
 }
 
-- (id)_getLockScreenPredictionIndices:(id)a3
+- (id)_getLockScreenPredictionIndices:(id)indices
 {
-  v5 = a3;
-  if ([v5 count] <= 1)
+  indicesCopy = indices;
+  if ([indicesCopy count] <= 1)
   {
     [(ATXActionCacheClientReader *)a2 _getLockScreenPredictionIndices:?];
   }
 
-  v6 = [v5 objectAtIndexedSubscript:1];
-  v12 = [v6 bytes];
-  v7 = [v6 bytes];
+  v6 = [indicesCopy objectAtIndexedSubscript:1];
+  bytes = [v6 bytes];
+  bytes2 = [v6 bytes];
   v8 = [v6 length];
-  Integer = ATXCacheReadInteger(&v12, v7 + v8);
+  Integer = ATXCacheReadInteger(&bytes, bytes2 + v8);
   v10 = objc_opt_new();
   if (Integer >= 1)
   {
     do
     {
-      [v10 addIndex:{ATXCacheReadInteger(&v12, v7 + v8)}];
+      [v10 addIndex:{ATXCacheReadInteger(&bytes, bytes2 + v8)}];
       Integer = (Integer - 1);
     }
 

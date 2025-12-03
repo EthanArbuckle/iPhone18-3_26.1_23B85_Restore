@@ -1,36 +1,36 @@
 @interface IMSuggestedReplyMessagePartChatItem
-- (BOOL)isEqual:(id)a3;
-- (IMSuggestedReplyMessagePartChatItem)initWithItem:(id)a3 suggestedReply:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (IMSuggestedReplyMessagePartChatItem)initWithItem:(id)item suggestedReply:(id)reply;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IMSuggestedReplyMessagePartChatItem
 
-- (IMSuggestedReplyMessagePartChatItem)initWithItem:(id)a3 suggestedReply:(id)a4
+- (IMSuggestedReplyMessagePartChatItem)initWithItem:(id)item suggestedReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  replyCopy = reply;
   v14.receiver = self;
   v14.super_class = IMSuggestedReplyMessagePartChatItem;
-  v10 = [(IMChatItem *)&v14 _initWithItem:v6];
+  v10 = [(IMChatItem *)&v14 _initWithItem:itemCopy];
   if (v10)
   {
-    v11 = objc_msgSend_guid(v6, v8, v9);
+    v11 = objc_msgSend_guid(itemCopy, v8, v9);
     objc_msgSend__setGUID_(v10, v12, v11);
 
-    objc_storeStrong(&v10->_suggestedReply, a4);
+    objc_storeStrong(&v10->_suggestedReply, reply);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_guid(self, v6, v7);
     v11 = objc_msgSend_guid(v5, v9, v10);
     if (objc_msgSend_isEqualToString_(v8, v12, v11))
@@ -54,7 +54,7 @@
   return isEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend_messageItem(self, v5, v6);

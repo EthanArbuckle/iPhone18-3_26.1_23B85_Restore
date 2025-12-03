@@ -1,7 +1,7 @@
 @interface PLCameraAppWatcher
 - (BOOL)isCameraRunning;
 - (PLCameraAppWatcher)init;
-- (void)_cameraForegroundStateDidChangeTo:(BOOL)a3;
+- (void)_cameraForegroundStateDidChangeTo:(BOOL)to;
 - (void)dealloc;
 @end
 
@@ -15,10 +15,10 @@
   return isCameraRunning;
 }
 
-- (void)_cameraForegroundStateDidChangeTo:(BOOL)a3
+- (void)_cameraForegroundStateDidChangeTo:(BOOL)to
 {
   os_unfair_lock_lock(&self->_isCameraRunningLock);
-  self->_isCameraRunning = a3;
+  self->_isCameraRunning = to;
 
   os_unfair_lock_unlock(&self->_isCameraRunningLock);
 }

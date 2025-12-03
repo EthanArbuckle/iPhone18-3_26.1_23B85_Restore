@@ -1,13 +1,13 @@
 @interface VUIAccessViewController
-+ (BOOL)_grantAccessToBundleIDs:(id)a3;
-+ (BOOL)_grantAccessToChannelIDs:(id)a3 isReconsent:(BOOL)a4;
++ (BOOL)_grantAccessToBundleIDs:(id)ds;
++ (BOOL)_grantAccessToChannelIDs:(id)ds isReconsent:(BOOL)reconsent;
 + (BOOL)isHostedInRemoteViewService;
 + (id)eligibleBundleIDs;
-+ (void)_handleConfigurationResponseHelper:(id)a3 config:(id)a4 error:(id)a5 completionHandler:(id)a6;
++ (void)_handleConfigurationResponseHelper:(id)helper config:(id)config error:(id)error completionHandler:(id)handler;
 + (void)optInUser;
-+ (void)resolveBundleIDs:(id)a3 completionHandler:(id)a4;
-- (VUIAccessViewController)initWithBundleIDs:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (VUIAccessViewController)initWithChannels:(id)a3 options:(id)a4 consentCancelButtonType:(unint64_t)a5 completionHandler:(id)a6;
++ (void)resolveBundleIDs:(id)ds completionHandler:(id)handler;
+- (VUIAccessViewController)initWithBundleIDs:(id)ds options:(id)options completionHandler:(id)handler;
+- (VUIAccessViewController)initWithChannels:(id)channels options:(id)options consentCancelButtonType:(unint64_t)type completionHandler:(id)handler;
 - (unint64_t)supportedInterfaceOrientations;
 @end
 
@@ -353,59 +353,59 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
   cappedTraitCollection_cappedSizes = v2;
 }
 
-- (VUIAccessViewController)initWithBundleIDs:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (VUIAccessViewController)initWithBundleIDs:(id)ds options:(id)options completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  optionsCopy = options;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = VUIAccessViewController;
   v11 = [(VUIAccessViewController *)&v16 init];
   if (v11)
   {
-    v12 = [[_VUIAccessViewController alloc] initWithBundleIDs:v8 channels:0 consentCancelButtonType:0 options:v9 completionHandler:v10];
+    v12 = [[_VUIAccessViewController alloc] initWithBundleIDs:dsCopy channels:0 consentCancelButtonType:0 options:optionsCopy completionHandler:handlerCopy];
     v17[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [(VUIAccessViewController *)v11 setViewControllers:v13];
 
-    v14 = [(VUIAccessViewController *)v11 navigationBar];
-    [v14 _setHidesShadow:1];
-    [v14 _setDisableBlurTinting:1];
+    navigationBar = [(VUIAccessViewController *)v11 navigationBar];
+    [navigationBar _setHidesShadow:1];
+    [navigationBar _setDisableBlurTinting:1];
   }
 
   return v11;
 }
 
-- (VUIAccessViewController)initWithChannels:(id)a3 options:(id)a4 consentCancelButtonType:(unint64_t)a5 completionHandler:(id)a6
+- (VUIAccessViewController)initWithChannels:(id)channels options:(id)options consentCancelButtonType:(unint64_t)type completionHandler:(id)handler
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  channelsCopy = channels;
+  optionsCopy = options;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = VUIAccessViewController;
   v13 = [(VUIAccessViewController *)&v18 init];
   if (v13)
   {
-    v14 = [[_VUIAccessViewController alloc] initWithBundleIDs:0 channels:v10 consentCancelButtonType:a5 options:v11 completionHandler:v12];
+    v14 = [[_VUIAccessViewController alloc] initWithBundleIDs:0 channels:channelsCopy consentCancelButtonType:type options:optionsCopy completionHandler:handlerCopy];
     v19[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     [(VUIAccessViewController *)v13 setViewControllers:v15];
 
-    v16 = [(VUIAccessViewController *)v13 navigationBar];
-    [v16 _setHidesShadow:1];
-    [v16 _setDisableBlurTinting:1];
+    navigationBar = [(VUIAccessViewController *)v13 navigationBar];
+    [navigationBar _setHidesShadow:1];
+    [navigationBar _setDisableBlurTinting:1];
   }
 
   return v13;
 }
 
-+ (BOOL)_grantAccessToBundleIDs:(id)a3
++ (BOOL)_grantAccessToBundleIDs:(id)ds
 {
   v52 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v28 = [MEMORY[0x1E69E15D0] sharedSettings];
+  dsCopy = ds;
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -416,12 +416,12 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v3 = v27;
-    v4 = [v3 countByEnumeratingWithState:&v39 objects:v51 count:16];
+    mEMORY[0x1E69E15D0]2 = dsCopy;
+    v4 = [mEMORY[0x1E69E15D0]2 countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (v4)
     {
       v31 = *v40;
-      obj = v3;
+      obj = mEMORY[0x1E69E15D0]2;
       do
       {
         for (i = 0; i != v4; ++i)
@@ -433,13 +433,13 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
 
           v6 = *(*(&v39 + 1) + 8 * i);
           v7 = dispatch_semaphore_create(0);
-          v8 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
           v9 = [_VUIAccessViewController _getChannelIDForBundleIDSynchronously:v6];
-          [v8 setObject:v9 forKeyedSubscript:@"id"];
+          [dictionary setObject:v9 forKeyedSubscript:@"id"];
 
-          [v8 setObject:@"Connect" forKeyedSubscript:@"action"];
+          [dictionary setObject:@"Connect" forKeyedSubscript:@"action"];
           v49 = @"brandConsentSettings";
-          v10 = [v8 copy];
+          v10 = [dictionary copy];
           v48 = v10;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
           v50 = v11;
@@ -457,7 +457,7 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
           dispatch_semaphore_wait(v13, v14);
         }
 
-        v3 = obj;
+        mEMORY[0x1E69E15D0]2 = obj;
         v4 = [obj countByEnumeratingWithState:&v39 objects:v51 count:16];
       }
 
@@ -475,12 +475,12 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
       goto LABEL_24;
     }
 
-    [v28 beginIgnoringChanges];
+    [mEMORY[0x1E69E15D0] beginIgnoringChanges];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v16 = v27;
+    v16 = dsCopy;
     v17 = [v16 countByEnumeratingWithState:&v32 objects:v47 count:16];
     if (v17)
     {
@@ -503,12 +503,12 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
 
           else
           {
-            v22 = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
-            v21 = [v22 channelIDForBundleID:v20];
+            mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstanceFiltered];
+            v21 = [mEMORY[0x1E69E1500] channelIDForBundleID:v20];
           }
 
           v23 = WLKSubscriptionIdentifierForBundleID();
-          [v28 setStatus:1 forChannelID:v21 externalID:v23];
+          [mEMORY[0x1E69E15D0] setStatus:1 forChannelID:v21 externalID:v23];
         }
 
         v17 = [v16 countByEnumeratingWithState:&v32 objects:v47 count:16];
@@ -517,10 +517,10 @@ void __49___VUIAccessViewController_cappedTraitCollection__block_invoke()
       while (v17);
     }
 
-    [a1 optInUser];
-    [v28 endIgnoringChanges];
-    v3 = [MEMORY[0x1E69E15D0] sharedSettings];
-    v24 = [v3 synchronize:0];
+    [self optInUser];
+    [mEMORY[0x1E69E15D0] endIgnoringChanges];
+    mEMORY[0x1E69E15D0]2 = [MEMORY[0x1E69E15D0] sharedSettings];
+    v24 = [mEMORY[0x1E69E15D0]2 synchronize:0];
     *(v44 + 24) = v24;
   }
 
@@ -531,12 +531,12 @@ LABEL_24:
   return v25 & 1;
 }
 
-+ (BOOL)_grantAccessToChannelIDs:(id)a3 isReconsent:(BOOL)a4
++ (BOOL)_grantAccessToChannelIDs:(id)ds isReconsent:(BOOL)reconsent
 {
-  v4 = a4;
+  reconsentCopy = reconsent;
   v60 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v30 = [MEMORY[0x1E69E15D0] sharedSettings];
+  dsCopy = ds;
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -547,7 +547,7 @@ LABEL_24:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    obj = v29;
+    obj = dsCopy;
     v6 = [obj countByEnumeratingWithState:&v47 objects:v59 count:16];
     if (v6)
     {
@@ -563,11 +563,11 @@ LABEL_24:
 
           v8 = *(*(&v47 + 1) + 8 * i);
           v9 = dispatch_semaphore_create(0);
-          v10 = [MEMORY[0x1E695DF90] dictionary];
-          [v10 setObject:v8 forKeyedSubscript:@"id"];
-          [v10 setObject:@"Connect" forKeyedSubscript:@"action"];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary setObject:v8 forKeyedSubscript:@"id"];
+          [dictionary setObject:@"Connect" forKeyedSubscript:@"action"];
           v57 = @"brandConsentSettings";
-          v11 = [v10 copy];
+          v11 = [dictionary copy];
           v56 = v11;
           v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v56 count:1];
           v58 = v12;
@@ -598,12 +598,12 @@ LABEL_24:
     *(v52 + 24) = v16;
     if (v16)
     {
-      [v30 beginIgnoringChanges];
+      [mEMORY[0x1E69E15D0] beginIgnoringChanges];
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v17 = v29;
+      v17 = dsCopy;
       v18 = [v17 countByEnumeratingWithState:&v40 objects:v55 count:16];
       if (v18)
       {
@@ -619,7 +619,7 @@ LABEL_24:
 
             v21 = *(*(&v40 + 1) + 8 * j);
             NSLog(&cfstr_Vuiaccessviewc_9.isa, v21);
-            [v30 setStatus:1 forChannelID:v21 externalID:0];
+            [mEMORY[0x1E69E15D0] setStatus:1 forChannelID:v21 externalID:0];
           }
 
           v18 = [v17 countByEnumeratingWithState:&v40 objects:v55 count:16];
@@ -628,13 +628,13 @@ LABEL_24:
         while (v18);
       }
 
-      [a1 optInUser];
-      [v30 endIgnoringChanges];
-      v22 = [MEMORY[0x1E69E15D0] sharedSettings];
-      v23 = [v22 synchronize:0];
+      [self optInUser];
+      [mEMORY[0x1E69E15D0] endIgnoringChanges];
+      mEMORY[0x1E69E15D0]2 = [MEMORY[0x1E69E15D0] sharedSettings];
+      v23 = [mEMORY[0x1E69E15D0]2 synchronize:0];
       *(v52 + 24) = v23;
 
-      if (*(v52 + 24) == 1 && v4)
+      if (*(v52 + 24) == 1 && reconsentCopy)
       {
         NSLog(&cfstr_Vuiaccessviewc_10.isa);
         v36 = 0;
@@ -642,7 +642,7 @@ LABEL_24:
         v38 = 0x2020000000;
         v39 = 0;
         v24 = dispatch_semaphore_create(0);
-        v25 = [MEMORY[0x1E69E15D0] sharedSettings];
+        mEMORY[0x1E69E15D0]3 = [MEMORY[0x1E69E15D0] sharedSettings];
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __64__VUIAccessViewController__grantAccessToChannelIDs_isReconsent___block_invoke_2;
@@ -650,7 +650,7 @@ LABEL_24:
         v35 = &v36;
         v26 = v24;
         v34 = v26;
-        [v25 forceUpdateWithCompletion:v33];
+        [mEMORY[0x1E69E15D0]3 forceUpdateWithCompletion:v33];
 
         dispatch_semaphore_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
         *(v52 + 24) = *(v37 + 24);
@@ -673,40 +673,40 @@ LABEL_24:
 
 + (void)optInUser
 {
-  v3 = [MEMORY[0x1E69E15D0] sharedSettings];
-  if (([v3 optedIn] & 1) == 0)
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  if (([mEMORY[0x1E69E15D0] optedIn] & 1) == 0)
   {
     NSLog(&cfstr_Vuiaccessviewc_11.isa);
-    [v3 setOptedIn:1];
-    v2 = [MEMORY[0x1E695DF00] date];
-    [v3 setLastSyncDate:v2];
+    [mEMORY[0x1E69E15D0] setOptedIn:1];
+    date = [MEMORY[0x1E695DF00] date];
+    [mEMORY[0x1E69E15D0] setLastSyncDate:date];
   }
 }
 
 + (id)eligibleBundleIDs
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69E14D0] defaultAppLibrary];
-  v3 = [v2 subscribedAppBundleIdentifiers];
+  defaultAppLibrary = [MEMORY[0x1E69E14D0] defaultAppLibrary];
+  subscribedAppBundleIdentifiers = [defaultAppLibrary subscribedAppBundleIdentifiers];
 
   if (_os_feature_enabled_impl())
   {
-    v4 = +[_VUIAccessViewController getOrderedChannelsSynchronously];
+    orderedChannels = +[_VUIAccessViewController getOrderedChannelsSynchronously];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69E1500] sharedInstance];
-    v4 = [v5 orderedChannels];
+    mEMORY[0x1E69E1500] = [MEMORY[0x1E69E1500] sharedInstance];
+    orderedChannels = [mEMORY[0x1E69E1500] orderedChannels];
   }
 
-  v6 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v19 = [MEMORY[0x1E695DF70] array];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v4;
+  v7 = orderedChannels;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -724,18 +724,18 @@ LABEL_24:
         v12 = *(*(&v20 + 1) + 8 * i);
         if ([v12 isWatchListEnabled] && (objc_msgSend(v12, "isFirstParty") & 1) == 0)
         {
-          v13 = [v12 appBundleIDs];
-          v14 = [v13 firstObject];
+          appBundleIDs = [v12 appBundleIDs];
+          firstObject = [appBundleIDs firstObject];
 
-          if ([v3 containsObject:v14])
+          if ([subscribedAppBundleIdentifiers containsObject:firstObject])
           {
             v15 = WLKSubscriptionIdentifierForBundleID();
-            v16 = [v12 channelID];
-            v17 = [v6 settingsForChannelID:v16 externalID:v15];
+            channelID = [v12 channelID];
+            v17 = [mEMORY[0x1E69E15D0] settingsForChannelID:channelID externalID:v15];
 
             if (!v17 || ![v17 accessStatus])
             {
-              [v19 addObject:v14];
+              [array addObject:firstObject];
             }
           }
         }
@@ -747,14 +747,14 @@ LABEL_24:
     while (v9);
   }
 
-  return v19;
+  return array;
 }
 
-+ (void)resolveBundleIDs:(id)a3 completionHandler:(id)a4
++ (void)resolveBundleIDs:(id)ds completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  NSLog(&cfstr_Vuiaccessviewc_12.isa, v5);
+  dsCopy = ds;
+  handlerCopy = handler;
+  NSLog(&cfstr_Vuiaccessviewc_12.isa, dsCopy);
   if (_os_feature_enabled_impl())
   {
     v17[0] = MEMORY[0x1E69E9820];
@@ -763,27 +763,27 @@ LABEL_24:
     v17[3] = &unk_1E8737B98;
     v7 = &v18;
     v8 = &v19;
-    v18 = v5;
-    v19 = v6;
-    v9 = v6;
-    v10 = v5;
+    v18 = dsCopy;
+    v19 = handlerCopy;
+    v9 = handlerCopy;
+    v10 = dsCopy;
     [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:0 completion:v17];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __62__VUIAccessViewController_resolveBundleIDs_completionHandler___block_invoke_2;
     v14[3] = &unk_1E8737BC0;
     v7 = &v15;
     v8 = &v16;
-    v15 = v5;
-    v16 = v6;
-    v12 = v6;
-    v13 = v5;
-    [v11 fetchConfigurationWithCompletionHandler:v14];
+    v15 = dsCopy;
+    v16 = handlerCopy;
+    v12 = handlerCopy;
+    v13 = dsCopy;
+    [mEMORY[0x1E69E1508] fetchConfigurationWithCompletionHandler:v14];
   }
 }
 
@@ -804,38 +804,38 @@ void __62__VUIAccessViewController_resolveBundleIDs_completionHandler___block_in
   [VUIAccessViewController _handleConfigurationResponseHelper:*(a1 + 32) config:v9 error:v5 completionHandler:*(a1 + 40)];
 }
 
-+ (void)_handleConfigurationResponseHelper:(id)a3 config:(id)a4 error:(id)a5 completionHandler:(id)a6
++ (void)_handleConfigurationResponseHelper:(id)helper config:(id)config error:(id)error completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  helperCopy = helper;
+  configCopy = config;
+  errorCopy = error;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __93__VUIAccessViewController__handleConfigurationResponseHelper_config_error_completionHandler___block_invoke;
   aBlock[3] = &unk_1E8732000;
-  v13 = v12;
+  v13 = handlerCopy;
   v24 = v13;
   v14 = _Block_copy(aBlock);
   v15 = v14;
-  if (v10)
+  if (configCopy)
   {
     v16 = dispatch_get_global_queue(0, 0);
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __93__VUIAccessViewController__handleConfigurationResponseHelper_config_error_completionHandler___block_invoke_2;
     v17[3] = &unk_1E8737C10;
-    v18 = v10;
+    v18 = configCopy;
     v21 = v13;
-    v19 = v11;
+    v19 = errorCopy;
     v22 = v15;
-    v20 = v9;
+    v20 = helperCopy;
     dispatch_async(v16, v17);
   }
 
   else
   {
-    (*(v14 + 2))(v14, v11);
+    (*(v14 + 2))(v14, errorCopy);
   }
 }
 
@@ -1045,19 +1045,19 @@ void __93__VUIAccessViewController__handleConfigurationResponseHelper_config_err
 
 + (BOOL)isHostedInRemoteViewService
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.TVAccessViewService"];
-  return v2;
+  LOBYTE(mainBundle) = [bundleIdentifier isEqualToString:@"com.apple.TVAccessViewService"];
+  return mainBundle;
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     return 2;
   }

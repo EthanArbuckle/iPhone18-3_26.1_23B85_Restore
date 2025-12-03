@@ -1,6 +1,6 @@
 @interface NSTextBlockLayoutHelper
-- (char)initWithTextBlock:(uint64_t)a3 charRange:(uint64_t)a4 glyphRange:(uint64_t)a5 layoutRect:(uint64_t)a6 boundsRect:(int)a7 containerWidth:(int)a8 allowMargins:(double)a9 collapseBorders:(double)a10 allowPadding:(double)a11;
-- (char)initWithTextBlock:(uint64_t)a3 charRange:(uint64_t)a4 text:(double)a5 layoutManager:(uint64_t)a6 containerWidth:(void *)a7 collapseBorders:(int)a8;
+- (char)initWithTextBlock:(uint64_t)block charRange:(uint64_t)range glyphRange:(uint64_t)glyphRange layoutRect:(uint64_t)rect boundsRect:(int)boundsRect containerWidth:(int)width allowMargins:(double)margins collapseBorders:(double)self0 allowPadding:(double)self1;
+- (char)initWithTextBlock:(uint64_t)block charRange:(uint64_t)range text:(double)text layoutManager:(uint64_t)manager containerWidth:(void *)width collapseBorders:(int)borders;
 - (id)description;
 - (void)dealloc;
 @end
@@ -24,32 +24,32 @@
   [(NSTextBlockLayoutHelper *)&v3 dealloc];
 }
 
-- (char)initWithTextBlock:(uint64_t)a3 charRange:(uint64_t)a4 glyphRange:(uint64_t)a5 layoutRect:(uint64_t)a6 boundsRect:(int)a7 containerWidth:(int)a8 allowMargins:(double)a9 collapseBorders:(double)a10 allowPadding:(double)a11
+- (char)initWithTextBlock:(uint64_t)block charRange:(uint64_t)range glyphRange:(uint64_t)glyphRange layoutRect:(uint64_t)rect boundsRect:(int)boundsRect containerWidth:(int)width allowMargins:(double)margins collapseBorders:(double)self0 allowPadding:(double)self1
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v84.receiver = a1;
+  v84.receiver = self;
   v84.super_class = NSTextBlockLayoutHelper;
   v33 = objc_msgSendSuper2(&v84, sel_init);
   v34 = a2;
   *(v33 + 1) = v34;
-  *(v33 + 2) = a3;
-  *(v33 + 3) = a4;
-  *(v33 + 4) = a5;
-  *(v33 + 5) = a6;
-  *(v33 + 6) = a9;
-  *(v33 + 7) = a10;
-  *(v33 + 8) = a11;
+  *(v33 + 2) = block;
+  *(v33 + 3) = range;
+  *(v33 + 4) = glyphRange;
+  *(v33 + 5) = rect;
+  *(v33 + 6) = margins;
+  *(v33 + 7) = borders;
+  *(v33 + 8) = padding;
   *(v33 + 9) = a12;
   *(v33 + 10) = a13;
   *(v33 + 11) = a14;
   v35 = 0;
   *(v33 + 12) = a15;
   *(v33 + 13) = a16;
-  if (a7)
+  if (boundsRect)
   {
     [v34 widthForLayer:1 edge:0];
     v34 = *(v33 + 1);
@@ -72,7 +72,7 @@
   *(v33 + 16) = v35;
   v39 = 0;
   v40 = 0;
-  if (a7)
+  if (boundsRect)
   {
     [OUTLINED_FUNCTION_4_1() widthForLayer:? edge:?];
   }
@@ -101,7 +101,7 @@
   *(v33 + 22) = v46;
   [OUTLINED_FUNCTION_2_4() widthForLayer:? edge:?];
   *(v33 + 23) = v47;
-  if (a7)
+  if (boundsRect)
   {
     [OUTLINED_FUNCTION_4_1() widthForLayer:? edge:?];
     v45 = v48;
@@ -118,7 +118,7 @@
   *(v33 + 25) = v50;
   [OUTLINED_FUNCTION_2_4() widthForLayer:? edge:?];
   *(v33 + 26) = v51;
-  if (a7)
+  if (boundsRect)
   {
     [OUTLINED_FUNCTION_4_1() widthForLayer:? edge:?];
     v49 = v52;
@@ -396,7 +396,7 @@
   v82 = ceil(*(v33 + 26));
   *(v33 + 26) = v82;
   *(v33 + 27) = ceil(v75);
-  if (a8)
+  if (width)
   {
     *(v33 + 15) = vmuld_lane_f64(0.5, v76, 1);
     *(v33 + 18) = 0.5 * v78.f64[0];
@@ -407,15 +407,15 @@
   return v33;
 }
 
-- (char)initWithTextBlock:(uint64_t)a3 charRange:(uint64_t)a4 text:(double)a5 layoutManager:(uint64_t)a6 containerWidth:(void *)a7 collapseBorders:(int)a8
+- (char)initWithTextBlock:(uint64_t)block charRange:(uint64_t)range text:(double)text layoutManager:(uint64_t)manager containerWidth:(void *)width collapseBorders:(int)borders
 {
   if (result)
   {
     v13 = result;
-    if (a7)
+    if (width)
     {
-      v23 = [a7 glyphRangeForCharacterRange:a3 actualCharacterRange:{a4, 0}];
-      v22 = v24;
+      blockCopy = [width glyphRangeForCharacterRange:block actualCharacterRange:{range, 0}];
+      rangeCopy = v24;
       OUTLINED_FUNCTION_10_2();
       [v25 layoutRectForTextBlock:? atIndex:? effectiveRange:?];
       v21 = v26;
@@ -440,11 +440,11 @@
       v19 = *(MEMORY[0x1E696AA80] + 8);
       v20 = v19;
       v21 = *MEMORY[0x1E696AA80];
-      v22 = a4;
-      v23 = a3;
+      rangeCopy = range;
+      blockCopy = block;
     }
 
-    return [(NSTextBlockLayoutHelper *)v13 initWithTextBlock:a2 charRange:a3 glyphRange:a4 layoutRect:v23 boundsRect:v22 containerWidth:a8 ^ 1u allowMargins:a8 collapseBorders:v21 allowPadding:v20, v17, v16, v18, v19, v14, v15, a5, 1];
+    return [(NSTextBlockLayoutHelper *)v13 initWithTextBlock:a2 charRange:block glyphRange:range layoutRect:blockCopy boundsRect:rangeCopy containerWidth:borders ^ 1u allowMargins:borders collapseBorders:v21 allowPadding:v20, v17, v16, v18, v19, v14, v15, text, 1];
   }
 
   return result;

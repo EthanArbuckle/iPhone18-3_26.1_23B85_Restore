@@ -1,11 +1,11 @@
 @interface _ICLLPlaybackControlSettings
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (void)clearOneofValuesForTrackGenerationSource;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLPlaybackControlSettings
@@ -54,23 +54,23 @@ LABEL_8:
   return v8 ^ [(_ICLLNoGenerationSource *)self->_noGeneration hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_trackGenerationSource != *(v4 + 12))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_trackGenerationSource != *(equalCopy + 12))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
 LABEL_25:
     v9 = 0;
@@ -79,38 +79,38 @@ LABEL_25:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_shuffleMode != *(v4 + 11))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_shuffleMode != *(equalCopy + 11))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_repeatMode != *(v4 + 10))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_repeatMode != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_25;
   }
 
   availability = self->_availability;
-  if (availability | *(v4 + 2) && ![(_ICLLAvailability *)availability isEqual:?])
+  if (availability | *(equalCopy + 2) && ![(_ICLLAvailability *)availability isEqual:?])
   {
     goto LABEL_25;
   }
 
   autoPlay = self->_autoPlay;
-  if (autoPlay | *(v4 + 1))
+  if (autoPlay | *(equalCopy + 1))
   {
     if (![(_ICLLAutoPlaySource *)autoPlay isEqual:?])
     {
@@ -119,7 +119,7 @@ LABEL_25:
   }
 
   radio = self->_radio;
-  if (radio | *(v4 + 4))
+  if (radio | *(equalCopy + 4))
   {
     if (![(_ICLLRadioSource *)radio isEqual:?])
     {
@@ -128,7 +128,7 @@ LABEL_25:
   }
 
   noGeneration = self->_noGeneration;
-  if (noGeneration | *(v4 + 3))
+  if (noGeneration | *(equalCopy + 3))
   {
     v9 = [(_ICLLNoGenerationSource *)noGeneration isEqual:?];
   }
@@ -143,9 +143,9 @@ LABEL_26:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) == 0)
@@ -183,93 +183,93 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(_ICLLAvailability *)self->_availability copyWithZone:a3];
+  v8 = [(_ICLLAvailability *)self->_availability copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
-  v10 = [(_ICLLAutoPlaySource *)self->_autoPlay copyWithZone:a3];
+  v10 = [(_ICLLAutoPlaySource *)self->_autoPlay copyWithZone:zone];
   v11 = v6[1];
   v6[1] = v10;
 
-  v12 = [(_ICLLRadioSource *)self->_radio copyWithZone:a3];
+  v12 = [(_ICLLRadioSource *)self->_radio copyWithZone:zone];
   v13 = v6[4];
   v6[4] = v12;
 
-  v14 = [(_ICLLNoGenerationSource *)self->_noGeneration copyWithZone:a3];
+  v14 = [(_ICLLNoGenerationSource *)self->_noGeneration copyWithZone:zone];
   v15 = v6[3];
   v6[3] = v14;
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_availability)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_autoPlay)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_radio)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_noGeneration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (void)clearOneofValuesForTrackGenerationSource
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 52) &= ~4u;
-    *(a1 + 48) = 0;
-    v2 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    *(self + 52) &= ~4u;
+    *(self + 48) = 0;
+    v2 = *(self + 8);
+    *(self + 8) = 0;
 
-    v3 = *(a1 + 32);
-    *(a1 + 32) = 0;
+    v3 = *(self + 32);
+    *(self + 32) = 0;
 
-    v4 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    v4 = *(self + 24);
+    *(self + 24) = 0;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_shuffleMode];
-    [v3 setObject:v5 forKey:@"shuffleMode"];
+    [dictionary setObject:v5 forKey:@"shuffleMode"];
 
     has = self->_has;
   }
@@ -277,44 +277,44 @@ LABEL_5:
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_repeatMode];
-    [v3 setObject:v6 forKey:@"repeatMode"];
+    [dictionary setObject:v6 forKey:@"repeatMode"];
   }
 
   availability = self->_availability;
   if (availability)
   {
-    v8 = [(_ICLLAvailability *)availability dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"availability"];
+    dictionaryRepresentation = [(_ICLLAvailability *)availability dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"availability"];
   }
 
   autoPlay = self->_autoPlay;
   if (autoPlay)
   {
-    v10 = [(_ICLLAutoPlaySource *)autoPlay dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"autoPlay"];
+    dictionaryRepresentation2 = [(_ICLLAutoPlaySource *)autoPlay dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"autoPlay"];
   }
 
   radio = self->_radio;
   if (radio)
   {
-    v12 = [(_ICLLRadioSource *)radio dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"radio"];
+    dictionaryRepresentation3 = [(_ICLLRadioSource *)radio dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"radio"];
   }
 
   noGeneration = self->_noGeneration;
   if (noGeneration)
   {
-    v14 = [(_ICLLNoGenerationSource *)noGeneration dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"noGeneration"];
+    dictionaryRepresentation4 = [(_ICLLNoGenerationSource *)noGeneration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"noGeneration"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:self->_trackGenerationSource];
-    [v3 setObject:v15 forKey:@"trackGenerationSource"];
+    [dictionary setObject:v15 forKey:@"trackGenerationSource"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -323,8 +323,8 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = _ICLLPlaybackControlSettings;
   v4 = [(_ICLLPlaybackControlSettings *)&v8 description];
-  v5 = [(_ICLLPlaybackControlSettings *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLPlaybackControlSettings *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface LDAPSearchSettings
-- (BOOL)hasSameScopeAndBaseAsOther:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (LDAPSearchSettings)initWithSettingsDict:(id)a3;
+- (BOOL)hasSameScopeAndBaseAsOther:(id)other;
+- (BOOL)isEqual:(id)equal;
+- (LDAPSearchSettings)initWithSettingsDict:(id)dict;
 - (id)description;
 - (id)settingsDict;
 - (unint64_t)hash;
@@ -9,23 +9,23 @@
 
 @implementation LDAPSearchSettings
 
-- (LDAPSearchSettings)initWithSettingsDict:(id)a3
+- (LDAPSearchSettings)initWithSettingsDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v12.receiver = self;
   v12.super_class = LDAPSearchSettings;
   v5 = [(LDAPSearchSettings *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"LDAPAccountSearchDescription"];
+    v6 = [dictCopy objectForKeyedSubscript:@"LDAPAccountSearchDescription"];
     searchDescription = v5->_searchDescription;
     v5->_searchDescription = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"LDAPAccountSearchBase"];
+    v8 = [dictCopy objectForKeyedSubscript:@"LDAPAccountSearchBase"];
     searchBase = v5->_searchBase;
     v5->_searchBase = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"LDAPAccountScope"];
+    v10 = [dictCopy objectForKeyedSubscript:@"LDAPAccountScope"];
     v5->_scope = [v10 intValue];
   }
 
@@ -35,20 +35,20 @@
 - (id)settingsDict
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-  v4 = [(LDAPSearchSettings *)self searchDescription];
+  searchDescription = [(LDAPSearchSettings *)self searchDescription];
 
-  if (v4)
+  if (searchDescription)
   {
-    v5 = [(LDAPSearchSettings *)self searchDescription];
-    [v3 setObject:v5 forKeyedSubscript:@"LDAPAccountSearchDescription"];
+    searchDescription2 = [(LDAPSearchSettings *)self searchDescription];
+    [v3 setObject:searchDescription2 forKeyedSubscript:@"LDAPAccountSearchDescription"];
   }
 
-  v6 = [(LDAPSearchSettings *)self searchBase];
+  searchBase = [(LDAPSearchSettings *)self searchBase];
 
-  if (v6)
+  if (searchBase)
   {
-    v7 = [(LDAPSearchSettings *)self searchBase];
-    [v3 setObject:v7 forKeyedSubscript:@"LDAPAccountSearchBase"];
+    searchBase2 = [(LDAPSearchSettings *)self searchBase];
+    [v3 setObject:searchBase2 forKeyedSubscript:@"LDAPAccountSearchBase"];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[LDAPSearchSettings scope](self, "scope")}];
@@ -57,15 +57,15 @@
   return v3;
 }
 
-- (BOOL)hasSameScopeAndBaseAsOther:(id)a3
+- (BOOL)hasSameScopeAndBaseAsOther:(id)other
 {
-  v5 = a3;
+  otherCopy = other;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [v6 scope];
-    if (v7 != [(LDAPSearchSettings *)self scope])
+    v6 = otherCopy;
+    scope = [v6 scope];
+    if (scope != [(LDAPSearchSettings *)self scope])
     {
       v12 = 0;
 LABEL_12:
@@ -73,13 +73,13 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v8 = [v6 searchBase];
-    v9 = [v8 length];
+    searchBase = [v6 searchBase];
+    v9 = [searchBase length];
     if (v9 || (-[LDAPSearchSettings searchBase](self, "searchBase"), v3 = objc_claimAutoreleasedReturnValue(), [v3 length]))
     {
-      v10 = [v6 searchBase];
-      v11 = [(LDAPSearchSettings *)self searchBase];
-      v12 = [v10 isEqualToString:v11];
+      searchBase2 = [v6 searchBase];
+      searchBase3 = [(LDAPSearchSettings *)self searchBase];
+      v12 = [searchBase2 isEqualToString:searchBase3];
 
       if (v9)
       {
@@ -105,26 +105,26 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(LDAPSearchSettings *)self searchBase];
-  v4 = [v3 hash];
-  v5 = [(LDAPSearchSettings *)self scope];
+  searchBase = [(LDAPSearchSettings *)self searchBase];
+  v4 = [searchBase hash];
+  scope = [(LDAPSearchSettings *)self scope];
 
-  return v5 + v4;
+  return scope + v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if ([(LDAPSearchSettings *)self hasSameScopeAndBaseAsOther:v5])
+  equalCopy = equal;
+  if ([(LDAPSearchSettings *)self hasSameScopeAndBaseAsOther:equalCopy])
   {
-    v6 = v5;
-    v7 = [v6 searchDescription];
-    v8 = [v7 length];
+    v6 = equalCopy;
+    searchDescription = [v6 searchDescription];
+    v8 = [searchDescription length];
     if (v8 || (-[LDAPSearchSettings searchDescription](self, "searchDescription"), v3 = objc_claimAutoreleasedReturnValue(), [v3 length]))
     {
-      v9 = [v6 searchDescription];
-      v10 = [(LDAPSearchSettings *)self searchDescription];
-      v11 = [v9 isEqualToString:v10];
+      searchDescription2 = [v6 searchDescription];
+      searchDescription3 = [(LDAPSearchSettings *)self searchDescription];
+      v11 = [searchDescription2 isEqualToString:searchDescription3];
 
       if (v8)
       {
@@ -154,9 +154,9 @@ LABEL_10:
   v9.receiver = self;
   v9.super_class = LDAPSearchSettings;
   v4 = [(LDAPSearchSettings *)&v9 description];
-  v5 = [(LDAPSearchSettings *)self searchDescription];
-  v6 = [(LDAPSearchSettings *)self searchBase];
-  v7 = [v3 stringWithFormat:@"%@: SearchDescription %@ SearchBase %@ Scope %ld", v4, v5, v6, -[LDAPSearchSettings scope](self, "scope")];
+  searchDescription = [(LDAPSearchSettings *)self searchDescription];
+  searchBase = [(LDAPSearchSettings *)self searchBase];
+  v7 = [v3 stringWithFormat:@"%@: SearchDescription %@ SearchBase %@ Scope %ld", v4, searchDescription, searchBase, -[LDAPSearchSettings scope](self, "scope")];
 
   return v7;
 }

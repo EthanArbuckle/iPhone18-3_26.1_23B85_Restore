@@ -1,14 +1,14 @@
 @interface HMDBulletinNotificationRegistrationSource
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HMDBulletinNotificationRegistrationSource)initWithCoder:(id)a3;
-- (HMDBulletinNotificationRegistrationSource)initWithDictionary:(id)a3;
-- (HMDBulletinNotificationRegistrationSource)initWithUserUUID:(id)a3 deviceAddress:(id)a4;
++ (BOOL)doesTypeMatch:(id)match against:(id)against;
+- (BOOL)isEqual:(id)equal;
+- (HMDBulletinNotificationRegistrationSource)initWithCoder:(id)coder;
+- (HMDBulletinNotificationRegistrationSource)initWithDictionary:(id)dictionary;
+- (HMDBulletinNotificationRegistrationSource)initWithUserUUID:(id)d deviceAddress:(id)address;
 - (HMDDevice)device;
 - (id)attributeDescriptions;
 - (id)serializedRegistrationForRemoteMessage;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDBulletinNotificationRegistrationSource
@@ -17,12 +17,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
-  v5 = [v3 initWithName:@"userUUID" value:v4];
+  userUUID = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
+  v5 = [v3 initWithName:@"userUUID" value:userUUID];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v8 = [v6 initWithName:@"deviceAddress" value:v7];
+  deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  v8 = [v6 initWithName:@"deviceAddress" value:deviceAddress];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -31,18 +31,18 @@
   return v9;
 }
 
-- (HMDBulletinNotificationRegistrationSource)initWithCoder:(id)a3
+- (HMDBulletinNotificationRegistrationSource)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.dii"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.did"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.uu"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.dii"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.did"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDBNRS.ck.uu"];
   v8 = v7;
   if (!v5)
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -64,7 +64,7 @@ LABEL_11:
   if (!v6)
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -83,7 +83,7 @@ LABEL_11:
   if (!v7)
   {
     v12 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -104,45 +104,45 @@ LABEL_12:
   }
 
   v9 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v5 idsDestination:v6];
-  v10 = [(HMDBulletinNotificationRegistrationSource *)self initWithUserUUID:v8 deviceAddress:v9];
+  selfCopy3 = [(HMDBulletinNotificationRegistrationSource *)self initWithUserUUID:v8 deviceAddress:v9];
 
-  v11 = v10;
+  v11 = selfCopy3;
 LABEL_13:
 
   v16 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v6 = [v5 idsIdentifier];
-  [v4 encodeObject:v6 forKey:@"HMDBNRS.ck.dii"];
+  coderCopy = coder;
+  deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  idsIdentifier = [deviceAddress idsIdentifier];
+  [coderCopy encodeObject:idsIdentifier forKey:@"HMDBNRS.ck.dii"];
 
-  v7 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v8 = [v7 idsDestination];
-  [v4 encodeObject:v8 forKey:@"HMDBNRS.ck.did"];
+  deviceAddress2 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  idsDestination = [deviceAddress2 idsDestination];
+  [coderCopy encodeObject:idsDestination forKey:@"HMDBNRS.ck.did"];
 
-  v9 = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
-  [v4 encodeObject:v9 forKey:@"HMDBNRS.ck.uu"];
+  userUUID = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
+  [coderCopy encodeObject:userUUID forKey:@"HMDBNRS.ck.uu"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v3 = [v2 hash];
+  deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  v3 = [deviceAddress hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -153,13 +153,13 @@ LABEL_13:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-    v8 = [v6 deviceAddress];
-    if ([v7 isEqual:v8])
+    deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+    deviceAddress2 = [v6 deviceAddress];
+    if ([deviceAddress isEqual:deviceAddress2])
     {
-      v9 = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
-      v10 = [v6 userUUID];
-      v11 = [v9 isEqual:v10];
+      userUUID = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
+      userUUID2 = [v6 userUUID];
+      v11 = [userUUID isEqual:userUUID2];
     }
 
     else
@@ -180,21 +180,21 @@ LABEL_13:
 {
   v16[4] = *MEMORY[0x277D85DE8];
   v15[0] = @"HMDBNRS.reg.type";
-  v3 = [objc_opt_class() type];
-  v16[0] = v3;
+  type = [objc_opt_class() type];
+  v16[0] = type;
   v15[1] = @"HMDBNRS.ck.dii";
-  v4 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v5 = [v4 idsIdentifier];
-  v6 = [v5 UUIDString];
-  v16[1] = v6;
+  deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  idsIdentifier = [deviceAddress idsIdentifier];
+  uUIDString = [idsIdentifier UUIDString];
+  v16[1] = uUIDString;
   v15[2] = @"HMDBNRS.ck.did";
-  v7 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v8 = [v7 idsDestination];
-  v16[2] = v8;
+  deviceAddress2 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  idsDestination = [deviceAddress2 idsDestination];
+  v16[2] = idsDestination;
   v15[3] = @"HMDBNRS.ck.uu";
-  v9 = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
-  v10 = [v9 UUIDString];
-  v16[3] = v10;
+  userUUID = [(HMDBulletinNotificationRegistrationSource *)self userUUID];
+  uUIDString2 = [userUUID UUIDString];
+  v16[3] = uUIDString2;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v12 = [v11 mutableCopy];
 
@@ -203,11 +203,11 @@ LABEL_13:
   return v12;
 }
 
-- (HMDBulletinNotificationRegistrationSource)initWithDictionary:(id)a3
+- (HMDBulletinNotificationRegistrationSource)initWithDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"HMDBNRS.ck.dii"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"HMDBNRS.ck.dii"];
   if (!v5)
   {
     _HMFPreconditionFailure();
@@ -218,11 +218,11 @@ LABEL_13:
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v5];
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:@"HMDBNRS.ck.did"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"HMDBNRS.ck.did"];
     if (!v8)
     {
       v18 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy3 = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -239,7 +239,7 @@ LABEL_13:
       goto LABEL_17;
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"HMDBNRS.ck.uu"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"HMDBNRS.ck.uu"];
     if (v9)
     {
       v10 = v9;
@@ -247,15 +247,15 @@ LABEL_13:
       if (v11)
       {
         v12 = [[HMDDeviceAddress alloc] initWithIDSIdentifier:v7 idsDestination:v8];
-        v13 = [(HMDBulletinNotificationRegistrationSource *)self initWithUserUUID:v11 deviceAddress:v12];
+        selfCopy3 = [(HMDBulletinNotificationRegistrationSource *)self initWithUserUUID:v11 deviceAddress:v12];
 
-        v14 = v13;
+        v14 = selfCopy3;
       }
 
       else
       {
         v21 = objc_autoreleasePoolPush();
-        v13 = self;
+        selfCopy3 = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
@@ -280,7 +280,7 @@ LABEL_20:
   }
 
   v15 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy3 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -303,24 +303,24 @@ LABEL_18:
 - (HMDDevice)device
 {
   v3 = [HMDDevice alloc];
-  v4 = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
-  v5 = [(HMDDevice *)v3 initWithDeviceAddress:v4];
+  deviceAddress = [(HMDBulletinNotificationRegistrationSource *)self deviceAddress];
+  v5 = [(HMDDevice *)v3 initWithDeviceAddress:deviceAddress];
 
   return v5;
 }
 
-- (HMDBulletinNotificationRegistrationSource)initWithUserUUID:(id)a3 deviceAddress:(id)a4
+- (HMDBulletinNotificationRegistrationSource)initWithUserUUID:(id)d deviceAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  addressCopy = address;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = addressCopy;
+  if (!addressCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -332,7 +332,7 @@ LABEL_7:
   v9 = [(HMDBulletinNotificationRegistrationSource *)&v19 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [dCopy copy];
     userUUID = v9->_userUUID;
     v9->_userUUID = v10;
 
@@ -344,11 +344,11 @@ LABEL_7:
   return v9;
 }
 
-+ (BOOL)doesTypeMatch:(id)a3 against:(id)a4
++ (BOOL)doesTypeMatch:(id)match against:(id)against
 {
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"HMDBNRS.reg.type"];
-  v7 = [v6 isEqualToString:v5];
+  againstCopy = against;
+  v6 = [match objectForKeyedSubscript:@"HMDBNRS.reg.type"];
+  v7 = [v6 isEqualToString:againstCopy];
 
   return v7;
 }

@@ -1,25 +1,25 @@
 @interface HDSecondaryDevicePairingAgentTaskServer
-- (HDSecondaryDevicePairingAgentTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSecondaryDevicePairingAgentTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_cancelTaskTimeout;
-- (void)_finishWithSuccess:(void *)a3 error:;
+- (void)_finishWithSuccess:(void *)success error:;
 - (void)_removePrivacyAlerts;
-- (void)_scheduleTaskTimeout:(double)a3 timeoutHandler:;
-- (void)remote_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4;
-- (void)remote_fetchSharingStatusWithPairedGuardianWithCompletion:(id)a3;
-- (void)remote_performEndToEndCloudSyncWithNRDeviceUUID:(id)a3 syncParticipantFirst:(BOOL)a4 completion:(id)a5;
-- (void)remote_requestTinkerSharingOptInWithGuardianDisplayName:(id)a3 NRDeviceUUID:(id)a4 completion:(id)a5;
-- (void)remote_setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)a3 completion:(id)a4;
-- (void)remote_tearDownHealthSharingWithPairedGuardianWithCompletion:(id)a3;
-- (void)remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)a3 completion:(id)a4;
+- (void)_scheduleTaskTimeout:(double)timeout timeoutHandler:;
+- (void)remote_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion;
+- (void)remote_fetchSharingStatusWithPairedGuardianWithCompletion:(id)completion;
+- (void)remote_performEndToEndCloudSyncWithNRDeviceUUID:(id)d syncParticipantFirst:(BOOL)first completion:(id)completion;
+- (void)remote_requestTinkerSharingOptInWithGuardianDisplayName:(id)name NRDeviceUUID:(id)d completion:(id)completion;
+- (void)remote_setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)configuration completion:(id)completion;
+- (void)remote_tearDownHealthSharingWithPairedGuardianWithCompletion:(id)completion;
+- (void)remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)d completion:(id)completion;
 @end
 
 @implementation HDSecondaryDevicePairingAgentTaskServer
 
-- (HDSecondaryDevicePairingAgentTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSecondaryDevicePairingAgentTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = HDSecondaryDevicePairingAgentTaskServer;
-  result = [(HDStandardTaskServer *)&v7 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  result = [(HDStandardTaskServer *)&v7 initWithUUID:d configuration:configuration client:client delegate:delegate];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -29,22 +29,22 @@
   return result;
 }
 
-- (void)_finishWithSuccess:(void *)a3 error:
+- (void)_finishWithSuccess:(void *)success error:
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (a1)
+  successCopy = success;
+  if (self)
   {
-    [(HDSecondaryDevicePairingAgentTaskServer *)a1 _cancelTaskTimeout];
-    os_unfair_lock_lock((a1 + 40));
-    v6 = *(a1 + 64);
+    [(HDSecondaryDevicePairingAgentTaskServer *)self _cancelTaskTimeout];
+    os_unfair_lock_lock((self + 40));
+    v6 = *(self + 64);
     if (v6)
     {
       v7 = v6;
-      v8 = *(a1 + 64);
-      *(a1 + 64) = 0;
+      v8 = *(self + 64);
+      *(self + 64) = 0;
 
-      os_unfair_lock_unlock((a1 + 40));
+      os_unfair_lock_unlock((self + 40));
       _HKInitializeLogging();
       v9 = *MEMORY[0x277CCC328];
       v10 = *MEMORY[0x277CCC328];
@@ -56,19 +56,19 @@
           v12 = objc_opt_class();
           v13 = *(v7 + 7);
           v14 = v12;
-          v15 = [v13 profileIdentifier];
+          profileIdentifier = [v13 profileIdentifier];
           *buf = 138543618;
           v45 = v12;
           v46 = 2114;
-          *v47 = v15;
+          *v47 = profileIdentifier;
           _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@: Finish successfully, profile: %{public}@ (#t0)", buf, 0x16u);
         }
 
-        v16 = [a1 profile];
-        v17 = [v16 daemon];
-        v18 = [v17 analyticsSubmissionCoordinator];
+        profile = [self profile];
+        daemon = [profile daemon];
+        analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
         v19 = *(v7 + 4);
-        [v18 tinker_pairingDidFinishForConfiguration:v19 duration:CFAbsoluteTimeGetCurrent() - *(v7 + 2)];
+        [analyticsSubmissionCoordinator tinker_pairingDidFinishForConfiguration:v19 duration:CFAbsoluteTimeGetCurrent() - *(v7 + 2)];
         goto LABEL_19;
       }
 
@@ -78,7 +78,7 @@
         *buf = 138543618;
         v45 = objc_opt_class();
         v46 = 2114;
-        *v47 = v5;
+        *v47 = successCopy;
         v41 = v45;
         _os_log_error_impl(&dword_228986000, v40, OS_LOG_TYPE_ERROR, "[sharing-setup] %{public}@: Failed to successfully setup pairing: %{public}@ (#t0)", buf, 0x16u);
       }
@@ -86,14 +86,14 @@
       if (!*(v7 + 7))
       {
 LABEL_18:
-        v16 = [a1 profile];
-        v17 = [v16 daemon];
-        v18 = [v17 analyticsSubmissionCoordinator];
+        profile = [self profile];
+        daemon = [profile daemon];
+        analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
         v19 = *(v7 + 4);
-        [v18 tinker_pairingDidFailWithError:v5 configuration:v19 duration:*(v7 + 6) stage:CFAbsoluteTimeGetCurrent() - *(v7 + 2)];
+        [analyticsSubmissionCoordinator tinker_pairingDidFailWithError:successCopy configuration:v19 duration:*(v7 + 6) stage:CFAbsoluteTimeGetCurrent() - *(v7 + 2)];
 LABEL_19:
 
-        v36 = v5;
+        v36 = successCopy;
         os_unfair_lock_lock(v7 + 2);
         v37 = _Block_copy(*(v7 + 5));
         v38 = *(v7 + 5);
@@ -106,13 +106,13 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v22 = [a1 profile];
-      v23 = [v22 daemon];
-      v24 = [v23 profileManager];
+      profile2 = [self profile];
+      daemon2 = [profile2 daemon];
+      profileManager = [daemon2 profileManager];
       v25 = *(v7 + 7);
-      v26 = [v25 profileIdentifier];
+      profileIdentifier2 = [v25 profileIdentifier];
       v43 = 0;
-      v27 = [v24 deleteProfile:v26 error:&v43];
+      v27 = [profileManager deleteProfile:profileIdentifier2 error:&v43];
       v28 = v43;
 
       _HKInitializeLogging();
@@ -132,11 +132,11 @@ LABEL_17:
         v32 = objc_opt_class();
         v33 = *(v7 + 7);
         v34 = v32;
-        v35 = [v33 profileIdentifier];
+        profileIdentifier3 = [v33 profileIdentifier];
         *buf = 138543618;
         v45 = v32;
         v46 = 2114;
-        *v47 = v35;
+        *v47 = profileIdentifier3;
         _os_log_impl(&dword_228986000, v31, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@: Completed profile teardown after pairing failure for %{public}@ (#t0)", buf, 0x16u);
       }
 
@@ -151,11 +151,11 @@ LABEL_17:
         v42 = objc_opt_class();
         v33 = *(v7 + 7);
         v34 = v42;
-        v35 = [v33 profileIdentifier];
+        profileIdentifier3 = [v33 profileIdentifier];
         *buf = 138543874;
         v45 = v42;
         v46 = 2114;
-        *v47 = v35;
+        *v47 = profileIdentifier3;
         *&v47[8] = 2114;
         *&v47[10] = v28;
         _os_log_error_impl(&dword_228986000, v31, OS_LOG_TYPE_ERROR, "[sharing-setup] %{public}@: Failed to tear down profile %{public}@ after pairing failure: %{public}@ (#t0)", buf, 0x20u);
@@ -164,7 +164,7 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    os_unfair_lock_unlock((a1 + 40));
+    os_unfair_lock_unlock((self + 40));
     _HKInitializeLogging();
     v20 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -175,7 +175,7 @@ LABEL_17:
       v46 = 1024;
       *v47 = a2;
       *&v47[4] = 2114;
-      *&v47[6] = v5;
+      *&v47[6] = successCopy;
       v21 = v45;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@: Attempting to finish with no active request (success: %{BOOL}d, %{public}@)", buf, 0x1Cu);
 
@@ -188,25 +188,25 @@ LABEL_20:
 
 - (void)_cancelTaskTimeout
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 56) = 0;
-    v2 = *(a1 + 48);
+    *(self + 56) = 0;
+    v2 = *(self + 48);
     if (v2)
     {
       dispatch_source_cancel(v2);
-      v3 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      v3 = *(self + 48);
+      *(self + 48) = 0;
     }
   }
 }
 
-- (void)remote_requestTinkerSharingOptInWithGuardianDisplayName:(id)a3 NRDeviceUUID:(id)a4 completion:(id)a5
+- (void)remote_requestTinkerSharingOptInWithGuardianDisplayName:(id)name NRDeviceUUID:(id)d completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  nameCopy = name;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -219,23 +219,23 @@ LABEL_20:
   }
 
   v14 = objc_alloc_init(HDCodableTinkerOptInRequest);
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
-  [(HDCodableTinkerOptInRequest *)v14 setRequestIdentifier:v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(HDCodableTinkerOptInRequest *)v14 setRequestIdentifier:uUIDString];
 
-  [(HDCodableTinkerOptInRequest *)v14 setGuardianDisplayName:v10];
+  [(HDCodableTinkerOptInRequest *)v14 setGuardianDisplayName:nameCopy];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingOptInWithGuardianDisplayName_NRDeviceUUID_completion___block_invoke;
   v26[3] = &unk_278614E28;
   v26[4] = self;
-  v17 = v8;
+  v17 = completionCopy;
   v27 = v17;
   [(HDSecondaryDevicePairingAgentTaskServer *)self _scheduleTaskTimeout:v26 timeoutHandler:60.0];
-  v18 = [(HDStandardTaskServer *)self profile];
-  v19 = [v18 daemon];
-  v20 = [v19 primaryProfile];
-  v21 = [v20 nanoSyncManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  primaryProfile = [daemon primaryProfile];
+  nanoSyncManager = [primaryProfile nanoSyncManager];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingOptInWithGuardianDisplayName_NRDeviceUUID_completion___block_invoke_299;
@@ -243,7 +243,7 @@ LABEL_20:
   v24[4] = self;
   v25 = v17;
   v22 = v17;
-  [v21 sendTinkerSharingOptInRequest:v14 forNRDeviceUUID:v9 completion:v24];
+  [nanoSyncManager sendTinkerSharingOptInRequest:v14 forNRDeviceUUID:dCopy completion:v24];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -269,21 +269,21 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleTaskTimeout:(double)a3 timeoutHandler:
+- (void)_scheduleTaskTimeout:(double)timeout timeoutHandler:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    [(HDSecondaryDevicePairingAgentTaskServer *)a1 _cancelTaskTimeout];
+    [(HDSecondaryDevicePairingAgentTaskServer *)self _cancelTaskTimeout];
     v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
-    v7 = a1[6];
-    a1[6] = v6;
+    v7 = self[6];
+    self[6] = v6;
 
-    v8 = a1[6];
-    v9 = dispatch_time(0, (a3 * 1000000000.0));
+    v8 = self[6];
+    v9 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
-    objc_initWeak(&location, a1);
-    v10 = a1[6];
+    objc_initWeak(&location, self);
+    v10 = self[6];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __79__HDSecondaryDevicePairingAgentTaskServer__scheduleTaskTimeout_timeoutHandler___block_invoke;
@@ -291,7 +291,7 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
     objc_copyWeak(&v13, &location);
     v12 = v5;
     dispatch_source_set_event_handler(v10, handler);
-    dispatch_resume(a1[6]);
+    dispatch_resume(self[6]);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -309,11 +309,11 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
   }
 }
 
-- (void)remote_setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)a3 completion:(id)a4
+- (void)remote_setupHealthSharingForSecondaryPairedDeviceWithConfiguration:(id)configuration completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   _HKInitializeLogging();
   v10 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -330,14 +330,14 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
   {
     os_unfair_lock_unlock(&self->_lock);
     v13 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"A secondary device setup request is already in progress."];
-    v9[2](v9, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 
   else
   {
     v14 = [HDSecondaryDevicePairingRequest alloc];
-    v15 = v8;
-    v16 = v9;
+    v15 = configurationCopy;
+    v16 = completionCopy;
     if (v14)
     {
       buf.receiver = v14;
@@ -347,7 +347,7 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
       if (v17)
       {
         LODWORD(v17->super._taskUUID) = 0;
-        objc_storeStrong(&v17->super._delegate, a3);
+        objc_storeStrong(&v17->super._delegate, configuration);
         v18 = [v16 copy];
         completion = v14->_completion;
         v14->_completion = v18;
@@ -380,16 +380,16 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_requestTinkerSharingO
       v25->_stage = 2;
     }
 
-    v27 = [(HDStandardTaskServer *)self profile];
-    v28 = [v27 cloudSyncManager];
+    profile = [(HDStandardTaskServer *)self profile];
+    cloudSyncManager = [profile cloudSyncManager];
     buf.receiver = MEMORY[0x277D85DD0];
     buf.super_class = 3221225472;
     v33 = __80__HDSecondaryDevicePairingAgentTaskServer__prepareGuardianForSharingForRequest___block_invoke;
     v34 = &unk_278616020;
-    v35 = self;
+    selfCopy = self;
     v13 = v26;
     v36 = v13;
-    v29 = [v28 prepareForSharingWithCompletion:&buf];
+    v29 = [cloudSyncManager prepareForSharingWithCompletion:&buf];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -416,17 +416,17 @@ void __121__HDSecondaryDevicePairingAgentTaskServer_remote_setupHealthSharingFor
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_performEndToEndCloudSyncWithNRDeviceUUID:(id)a3 syncParticipantFirst:(BOOL)a4 completion:(id)a5
+- (void)remote_performEndToEndCloudSyncWithNRDeviceUUID:(id)d syncParticipantFirst:(BOOL)first completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  firstCopy = first;
+  dCopy = d;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __123__HDSecondaryDevicePairingAgentTaskServer_remote_performEndToEndCloudSyncWithNRDeviceUUID_syncParticipantFirst_completion___block_invoke;
   aBlock[3] = &unk_27861B280;
   aBlock[4] = self;
-  v11 = v9;
+  v11 = dCopy;
   v28 = v11;
   v12 = _Block_copy(aBlock);
   v24[0] = MEMORY[0x277D85DD0];
@@ -439,7 +439,7 @@ void __121__HDSecondaryDevicePairingAgentTaskServer_remote_setupHealthSharingFor
   v26 = a2;
   v14 = _Block_copy(v24);
   v15 = v14;
-  if (v6)
+  if (firstCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -448,7 +448,7 @@ void __121__HDSecondaryDevicePairingAgentTaskServer_remote_setupHealthSharingFor
     v16 = &v22;
     v22 = v12;
     v17 = &v23;
-    v23 = v10;
+    v23 = completionCopy;
     (v15)[2](v15, 2, v21);
   }
 
@@ -461,7 +461,7 @@ void __121__HDSecondaryDevicePairingAgentTaskServer_remote_setupHealthSharingFor
     v16 = &v19;
     v19 = v14;
     v17 = &v20;
-    v20 = v10;
+    v20 = completionCopy;
     (*(v12 + 2))(v12, v18);
   }
 }
@@ -608,10 +608,10 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_performEndToEndCloudS
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_tearDownHealthSharingWithPairedGuardianWithCompletion:(id)a3
+- (void)remote_tearDownHealthSharingWithPairedGuardianWithCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v6 = MEMORY[0x277CCC328];
   v7 = *MEMORY[0x277CCC328];
@@ -628,42 +628,42 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_performEndToEndCloudS
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called (#t0)", buf, 0x16u);
   }
 
-  v12 = [(HDStandardTaskServer *)self profile];
-  v13 = [v12 daemon];
-  v14 = [v13 behavior];
-  v15 = [v14 isAppleWatch];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v15 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v31 = NSStringFromSelector(a2);
-    [v30 handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:257 description:{@"%@ must be called from a watch.", v31}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:257 description:{@"%@ must be called from a watch.", v31}];
   }
 
-  v16 = [(HDStandardTaskServer *)self profile];
+  profile2 = [(HDStandardTaskServer *)self profile];
   v34 = 0;
-  v17 = [v16 pairedGuardianParticipantWithError:&v34];
+  v17 = [profile2 pairedGuardianParticipantWithError:&v34];
   v18 = v34;
 
   if (v18)
   {
-    v5[2](v5, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 
   else if (v17)
   {
-    v19 = [(HDStandardTaskServer *)self profile];
-    v20 = [v19 daemon];
-    v21 = [v20 primaryProfile];
-    v22 = [v21 cloudSyncManager];
+    profile3 = [(HDStandardTaskServer *)self profile];
+    daemon2 = [profile3 daemon];
+    primaryProfile = [daemon2 primaryProfile];
+    cloudSyncManager = [primaryProfile cloudSyncManager];
     v23 = [MEMORY[0x277CBEB98] setWithObject:v17];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharingWithPairedGuardianWithCompletion___block_invoke;
     v32[3] = &unk_2786173C8;
     v32[4] = self;
-    v33 = v5;
-    v24 = [v22 removeParticipants:v23 fromSharesWithCompletion:v32];
+    v33 = completionCopy;
+    v24 = [cloudSyncManager removeParticipants:v23 fromSharesWithCompletion:v32];
   }
 
   else
@@ -681,7 +681,7 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_performEndToEndCloudS
     }
 
     [(HDSecondaryDevicePairingAgentTaskServer *)self _removePrivacyAlerts];
-    v5[2](v5, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -690,14 +690,14 @@ void __123__HDSecondaryDevicePairingAgentTaskServer_remote_performEndToEndCloudS
 - (void)_removePrivacyAlerts
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = [a1 profile];
-    v2 = [v1 daemon];
-    v3 = [v2 primaryProfile];
-    v4 = [v3 tinkerPrivacyAlertCoordinator];
+    profile = [self profile];
+    daemon = [profile daemon];
+    primaryProfile = [daemon primaryProfile];
+    tinkerPrivacyAlertCoordinator = [primaryProfile tinkerPrivacyAlertCoordinator];
     v12 = 0;
-    v5 = [v4 removeAllEventsWithError:&v12];
+    v5 = [tinkerPrivacyAlertCoordinator removeAllEventsWithError:&v12];
     v6 = v12;
 
     if ((v5 & 1) == 0)
@@ -750,11 +750,11 @@ void __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
   (*(v12 + 16))(v12, a2, v13);
 }
 
-- (void)remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)a3 completion:(id)a4
+- (void)remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID:(id)d completion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = MEMORY[0x277CCC328];
   v10 = *MEMORY[0x277CCC328];
@@ -765,40 +765,40 @@ void __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
     v13 = v12;
     v14 = NSStringFromSelector(a2);
     *buf = 138543874;
-    v53 = v12;
+    selfCopy = v12;
     v54 = 2114;
     v55 = v14;
     v56 = 2114;
-    v57 = v7;
+    v57 = dCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "[sharing-setup] %{public}@ %{public}@ called with NR UUID %{public}@ (#t0)", buf, 0x20u);
   }
 
-  v15 = [(HDStandardTaskServer *)self profile];
-  v16 = [v15 daemon];
-  v17 = [v16 behavior];
-  v18 = [v17 isAppleWatch];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if (v18)
+  if (isAppleWatch)
   {
-    v45 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v46 = NSStringFromSelector(a2);
-    [v45 handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:303 description:{@"%@ must be called from a phone.", v46}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:303 description:{@"%@ must be called from a phone.", v46}];
   }
 
-  v19 = [(HDStandardTaskServer *)self profile];
-  v20 = [v19 profileType];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  profileType = [profile2 profileType];
 
-  if (v20 == 1)
+  if (profileType == 1)
   {
-    v21 = [(HDStandardTaskServer *)self profile];
-    v22 = [v21 daemon];
-    v23 = [v22 profileManager];
-    v24 = [v23 profileAssociatedWithNRDeviceUUID:v7];
+    profile3 = [(HDStandardTaskServer *)self profile];
+    daemon2 = [profile3 daemon];
+    profileManager = [daemon2 profileManager];
+    v24 = [profileManager profileAssociatedWithNRDeviceUUID:dCopy];
 
-    v25 = [(HDStandardTaskServer *)self profile];
-    v26 = [v25 daemon];
-    v27 = [v26 profileManager];
-    v28 = [v27 profileForIdentifier:v24];
+    profile4 = [(HDStandardTaskServer *)self profile];
+    daemon3 = [profile4 daemon];
+    profileManager2 = [daemon3 profileManager];
+    v28 = [profileManager2 profileForIdentifier:v24];
 
     if ([v28 profileType] == 1)
     {
@@ -809,16 +809,16 @@ void __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
         v39 = v29;
         v40 = objc_opt_class();
         *buf = 138543874;
-        v53 = v40;
+        selfCopy = v40;
         v54 = 2114;
         v55 = v28;
         v56 = 2114;
-        v57 = v7;
+        v57 = dCopy;
         v41 = v40;
         _os_log_error_impl(&dword_228986000, v39, OS_LOG_TYPE_ERROR, "[sharing-setup] %{public}@ Profile %{public}@ associated with NRDeviceUUID:%{public}@ is primary profile. Abort sharing tear down flow (#t0)", buf, 0x20u);
       }
 
-      [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Profile associated with NRDeviceUUID: %@ is primary profile.", v7}];
+      [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Profile associated with NRDeviceUUID: %@ is primary profile.", dCopy}];
     }
 
     else
@@ -830,10 +830,10 @@ void __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
         v50[2] = __109__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID_completion___block_invoke;
         v50[3] = &unk_278614E28;
         v50[4] = self;
-        v31 = v8;
+        v31 = completionCopy;
         v51 = v31;
         [(HDSecondaryDevicePairingAgentTaskServer *)self _scheduleTaskTimeout:v50 timeoutHandler:60.0];
-        v32 = [v28 cloudSyncManager];
+        cloudSyncManager = [v28 cloudSyncManager];
         v47[0] = MEMORY[0x277D85DD0];
         v47[1] = 3221225472;
         v47[2] = __109__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharingWithTinkerDeviceWithNRUUID_completion___block_invoke_338;
@@ -841,7 +841,7 @@ void __104__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
         v47[4] = self;
         v48 = v28;
         v49 = v31;
-        v33 = [v32 leaveSharesWithCompletion:v47];
+        v33 = [cloudSyncManager leaveSharesWithCompletion:v47];
 
 LABEL_19:
         goto LABEL_20;
@@ -854,17 +854,17 @@ LABEL_19:
         v42 = v34;
         v43 = objc_opt_class();
         *buf = 138543618;
-        v53 = v43;
+        selfCopy = v43;
         v54 = 2114;
-        v55 = v7;
+        v55 = dCopy;
         v44 = v43;
         _os_log_error_impl(&dword_228986000, v42, OS_LOG_TYPE_ERROR, "[sharing-setup] %{public}@ Unable to find secondary profile associated with NRDeviceUUID: %{public}@ (#t0)", buf, 0x16u);
       }
 
-      [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Unable to find secondary profile associated with NRDeviceUUID: %@", v7}];
+      [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Unable to find secondary profile associated with NRDeviceUUID: %@", dCopy}];
     }
     v35 = ;
-    (*(v8 + 2))(v8, 0, v35);
+    (*(completionCopy + 2))(completionCopy, 0, v35);
 
     goto LABEL_19;
   }
@@ -876,14 +876,14 @@ LABEL_19:
     v37 = v30;
     v38 = NSStringFromSelector(a2);
     *buf = 138543618;
-    v53 = self;
+    selfCopy = self;
     v54 = 2114;
     v55 = v38;
     _os_log_error_impl(&dword_228986000, v37, OS_LOG_TYPE_ERROR, "%{public}@ %{public}@ Health sharing pairing agent must be intialized with primary profile health store.", buf, 0x16u);
   }
 
   v24 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Tear down health sharing pairing agent not initialized with primary profile health store."];
-  (*(v8 + 2))(v8, 0, v24);
+  (*(completionCopy + 2))(completionCopy, 0, v24);
 LABEL_20:
 
   v36 = *MEMORY[0x277D85DE8];
@@ -937,31 +937,31 @@ void __109__HDSecondaryDevicePairingAgentTaskServer_remote_tearDownHealthSharing
   }
 }
 
-- (void)remote_fetchSharingStatusWithPairedGuardianWithCompletion:(id)a3
+- (void)remote_fetchSharingStatusWithPairedGuardianWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(HDStandardTaskServer *)self profile];
-  v7 = [v6 daemon];
-  v8 = [v7 behavior];
-  v9 = [v8 isAppleWatch];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  isAppleWatch = [behavior isAppleWatch];
 
-  if ((v9 & 1) == 0)
+  if ((isAppleWatch & 1) == 0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v15 = NSStringFromSelector(a2);
-    [v14 handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:360 description:{@"%@ must be called from a watch.", v15}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSecondaryDevicePairingAgentTaskServer.m" lineNumber:360 description:{@"%@ must be called from a watch.", v15}];
   }
 
-  v10 = [(HDStandardTaskServer *)self profile];
-  v11 = [v10 cloudSyncManager];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile2 cloudSyncManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __101__HDSecondaryDevicePairingAgentTaskServer_remote_fetchSharingStatusWithPairedGuardianWithCompletion___block_invoke;
   v16[3] = &unk_27861B2F8;
   v16[4] = self;
-  v17 = v5;
-  v12 = v5;
-  v13 = [v11 fetchShareParticipantsForSharingType:1 completion:v16];
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = [cloudSyncManager fetchShareParticipantsForSharingType:1 completion:v16];
 }
 
 void __101__HDSecondaryDevicePairingAgentTaskServer_remote_fetchSharingStatusWithPairedGuardianWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1026,19 +1026,19 @@ void __101__HDSecondaryDevicePairingAgentTaskServer_remote_fetchSharingStatusWit
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)a3 completion:(id)a4
+- (void)remote_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 cloudSyncManager];
+  addressCopy = address;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __118__HDSecondaryDevicePairingAgentTaskServer_remote_fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress_completion___block_invoke;
   v12[3] = &unk_2786130D8;
-  v13 = v7;
-  v10 = v7;
-  v11 = [v9 fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:v6 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = [cloudSyncManager fetchSharingStatusForCurrentAppleIDWithOwnerEmailAddress:addressCopy completion:v12];
 }
 
 void __79__HDSecondaryDevicePairingAgentTaskServer__scheduleTaskTimeout_timeoutHandler___block_invoke(uint64_t a1)

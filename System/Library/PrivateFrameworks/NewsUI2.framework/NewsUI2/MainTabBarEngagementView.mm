@@ -1,12 +1,12 @@
 @interface MainTabBarEngagementView
 - (CGSize)intrinsicContentSize;
-- (_TtC7NewsUI224MainTabBarEngagementView)initWithCoder:(id)a3;
-- (_TtC7NewsUI224MainTabBarEngagementView)initWithFrame:(CGRect)a3;
+- (_TtC7NewsUI224MainTabBarEngagementView)initWithCoder:(id)coder;
+- (_TtC7NewsUI224MainTabBarEngagementView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MainTabBarEngagementView
 
-- (_TtC7NewsUI224MainTabBarEngagementView)initWithCoder:(id)a3
+- (_TtC7NewsUI224MainTabBarEngagementView)initWithCoder:(id)coder
 {
   result = sub_219BF7514();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_218C25FD0();
   v5 = v4;
 
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC7NewsUI224MainTabBarEngagementView)initWithFrame:(CGRect)a3
+- (_TtC7NewsUI224MainTabBarEngagementView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

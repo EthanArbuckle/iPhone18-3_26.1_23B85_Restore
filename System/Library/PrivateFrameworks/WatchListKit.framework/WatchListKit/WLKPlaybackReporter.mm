@@ -2,8 +2,8 @@
 - (WLKPlaybackReporter)init;
 - (id)_connection;
 - (void)_invalidationHandler;
-- (void)endPlaybackSession:(id)a3;
-- (void)reportPlayback:(id)a3 sessionID:(id)a4 completion:(id)a5;
+- (void)endPlaybackSession:(id)session;
+- (void)reportPlayback:(id)playback sessionID:(id)d completion:(id)completion;
 @end
 
 @implementation WLKPlaybackReporter
@@ -21,39 +21,39 @@
   return result;
 }
 
-- (void)reportPlayback:(id)a3 sessionID:(id)a4 completion:(id)a5
+- (void)reportPlayback:(id)playback sessionID:(id)d completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playbackCopy = playback;
+  dCopy = d;
+  completionCopy = completion;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __59__WLKPlaybackReporter_reportPlayback_sessionID_completion___block_invoke;
   v23[3] = &unk_279E5EA68;
-  v24 = v10;
-  v11 = v10;
+  v24 = completionCopy;
+  v11 = completionCopy;
   v12 = MEMORY[0x2743D2DF0](v23);
-  v13 = [(WLKPlaybackReporter *)self _connection];
+  _connection = [(WLKPlaybackReporter *)self _connection];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __59__WLKPlaybackReporter_reportPlayback_sessionID_completion___block_invoke_2;
   v21 = &unk_279E5EB38;
   v22 = v12;
   v14 = v12;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:&v18];
+  v15 = [_connection remoteObjectProxyWithErrorHandler:&v18];
 
   v16 = WLKPlaybackTrackingLogObject();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v9;
+    v26 = dCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = playbackCopy;
     _os_log_impl(&dword_272A0F000, v16, OS_LOG_TYPE_DEFAULT, "WLKPlaybackReporter - Requesting playback report [%@] %@", buf, 0x16u);
   }
 
-  [v15 reportPlayback:v8 sessionID:v9 completion:{v14, v18, v19, v20, v21}];
+  [v15 reportPlayback:playbackCopy sessionID:dCopy completion:{v14, v18, v19, v20, v21}];
   v17 = *MEMORY[0x277D85DE8];
 }
 
@@ -84,22 +84,22 @@ void __59__WLKPlaybackReporter_reportPlayback_sessionID_completion___block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endPlaybackSession:(id)a3
+- (void)endPlaybackSession:(id)session
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WLKPlaybackReporter *)self _connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
+  sessionCopy = session;
+  _connection = [(WLKPlaybackReporter *)self _connection];
+  v6 = [_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_30];
 
   v7 = WLKPlaybackTrackingLogObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = sessionCopy;
     _os_log_impl(&dword_272A0F000, v7, OS_LOG_TYPE_DEFAULT, "WLKPlaybackReporter - Requesting endPlaybackSession [%@]", &v9, 0xCu);
   }
 
-  [v6 endPlaybackSession:v4];
+  [v6 endPlaybackSession:sessionCopy];
   v8 = *MEMORY[0x277D85DE8];
 }
 

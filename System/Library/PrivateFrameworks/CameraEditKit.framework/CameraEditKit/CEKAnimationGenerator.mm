@@ -1,12 +1,12 @@
 @interface CEKAnimationGenerator
 - (BOOL)isAnimating;
-- (BOOL)isAnimatingForIdentifier:(id)a3;
+- (BOOL)isAnimatingForIdentifier:(id)identifier;
 - (CEKAnimationGenerator)init;
-- (void)_handleDisplayLinkFired:(id)a3;
-- (void)_stopAnimationForIdentifier:(id)a3 didComplete:(BOOL)a4;
-- (void)_updateAnimationForIdentifer:(id)a3 timestamp:(double)a4;
+- (void)_handleDisplayLinkFired:(id)fired;
+- (void)_stopAnimationForIdentifier:(id)identifier didComplete:(BOOL)complete;
+- (void)_updateAnimationForIdentifer:(id)identifer timestamp:(double)timestamp;
 - (void)dealloc;
-- (void)startAnimationForIdentifier:(id)a3 duration:(double)a4 updateHandler:(id)a5 completionHandler:(id)a6;
+- (void)startAnimationForIdentifier:(id)identifier duration:(double)duration updateHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)stopAllAnimations;
 @end
 
@@ -41,15 +41,15 @@
   [(CEKAnimationGenerator *)&v4 dealloc];
 }
 
-- (void)startAnimationForIdentifier:(id)a3 duration:(double)a4 updateHandler:(id)a5 completionHandler:(id)a6
+- (void)startAnimationForIdentifier:(id)identifier duration:(double)duration updateHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  [(CEKAnimationGenerator *)self stopAnimationForIdentifier:v12];
-  v17 = [[CEKAnimationGeneratorAnimation alloc] initWithStartTime:v11 duration:v10 updateHandler:CACurrentMediaTime() completionHandler:a4];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  [(CEKAnimationGenerator *)self stopAnimationForIdentifier:identifierCopy];
+  v17 = [[CEKAnimationGeneratorAnimation alloc] initWithStartTime:handlerCopy duration:completionHandlerCopy updateHandler:CACurrentMediaTime() completionHandler:duration];
 
-  [(NSMutableDictionary *)self->__animations setObject:v17 forKeyedSubscript:v12];
+  [(NSMutableDictionary *)self->__animations setObject:v17 forKeyedSubscript:identifierCopy];
   if (!self->__displayLink)
   {
     v13 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel__handleDisplayLinkFired_];
@@ -57,26 +57,26 @@
     self->__displayLink = v13;
 
     v15 = self->__displayLink;
-    v16 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v15 addToRunLoop:v16 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v15 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     [(CADisplayLink *)self->__displayLink setPaused:0];
   }
 }
 
-- (void)_stopAnimationForIdentifier:(id)a3 didComplete:(BOOL)a4
+- (void)_stopAnimationForIdentifier:(id)identifier didComplete:(BOOL)complete
 {
-  v4 = a4;
+  completeCopy = complete;
   animations = self->__animations;
-  v7 = a3;
-  v11 = [(NSMutableDictionary *)animations objectForKeyedSubscript:v7];
-  [(NSMutableDictionary *)self->__animations removeObjectForKey:v7];
+  identifierCopy = identifier;
+  v11 = [(NSMutableDictionary *)animations objectForKeyedSubscript:identifierCopy];
+  [(NSMutableDictionary *)self->__animations removeObjectForKey:identifierCopy];
 
-  v8 = [v11 completionHandler];
-  v9 = v8;
-  if (v8)
+  completionHandler = [v11 completionHandler];
+  v9 = completionHandler;
+  if (completionHandler)
   {
-    (*(v8 + 16))(v8, v4);
+    (*(completionHandler + 16))(completionHandler, completeCopy);
   }
 
   if (self->__displayLink && ![(NSMutableDictionary *)self->__animations count])
@@ -90,44 +90,44 @@
 
 - (void)stopAllAnimations
 {
-  v3 = [(NSMutableDictionary *)self->__animations allKeys];
+  allKeys = [(NSMutableDictionary *)self->__animations allKeys];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __42__CEKAnimationGenerator_stopAllAnimations__block_invoke;
   v4[3] = &unk_1E7CC6E98;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allKeys enumerateObjectsUsingBlock:v4];
 }
 
 - (BOOL)isAnimating
 {
-  v2 = [(CEKAnimationGenerator *)self _animations];
-  v3 = [v2 count] != 0;
+  _animations = [(CEKAnimationGenerator *)self _animations];
+  v3 = [_animations count] != 0;
 
   return v3;
 }
 
-- (BOOL)isAnimatingForIdentifier:(id)a3
+- (BOOL)isAnimatingForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CEKAnimationGenerator *)self _animations];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _animations = [(CEKAnimationGenerator *)self _animations];
+  v6 = [_animations objectForKeyedSubscript:identifierCopy];
 
   return v6 != 0;
 }
 
-- (void)_handleDisplayLinkFired:(id)a3
+- (void)_handleDisplayLinkFired:(id)fired
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->__animations allKeys];
+  firedCopy = fired;
+  allKeys = [(NSMutableDictionary *)self->__animations allKeys];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CEKAnimationGenerator__handleDisplayLinkFired___block_invoke;
   v7[3] = &unk_1E7CC6EC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = firedCopy;
+  v6 = firedCopy;
+  [allKeys enumerateObjectsUsingBlock:v7];
 }
 
 void __49__CEKAnimationGenerator__handleDisplayLinkFired___block_invoke(uint64_t a1, void *a2)
@@ -139,17 +139,17 @@ void __49__CEKAnimationGenerator__handleDisplayLinkFired___block_invoke(uint64_t
   [v2 _updateAnimationForIdentifer:v4 timestamp:?];
 }
 
-- (void)_updateAnimationForIdentifer:(id)a3 timestamp:(double)a4
+- (void)_updateAnimationForIdentifer:(id)identifer timestamp:(double)timestamp
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->__animations objectForKeyedSubscript:v6];
+  identiferCopy = identifer;
+  v7 = [(NSMutableDictionary *)self->__animations objectForKeyedSubscript:identiferCopy];
   [v7 startTime];
   v9 = v8;
   [v7 duration];
   v11 = v10;
-  v12 = [v7 updateHandler];
-  v13 = v12;
-  v14 = (a4 - v9) / v11;
+  updateHandler = [v7 updateHandler];
+  v13 = updateHandler;
+  v14 = (timestamp - v9) / v11;
   v15 = 0.0;
   if (v14 >= 0.0)
   {
@@ -161,9 +161,9 @@ void __49__CEKAnimationGenerator__handleDisplayLinkFired___block_invoke(uint64_t
   }
 
   v17 = 0;
-  if (v12)
+  if (updateHandler)
   {
-    (*(v12 + 16))(v12, &v17, v15);
+    (*(updateHandler + 16))(updateHandler, &v17, v15);
     v16 = v17;
   }
 
@@ -174,7 +174,7 @@ void __49__CEKAnimationGenerator__handleDisplayLinkFired___block_invoke(uint64_t
 
   if (v15 >= 1.0 || (v16 & 1) != 0)
   {
-    [(CEKAnimationGenerator *)self _stopAnimationForIdentifier:v6 didComplete:v15 >= 1.0];
+    [(CEKAnimationGenerator *)self _stopAnimationForIdentifier:identiferCopy didComplete:v15 >= 1.0];
   }
 }
 

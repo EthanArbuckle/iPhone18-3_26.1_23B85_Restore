@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet
-- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet)initWithOrgApacheLuceneSearchDocIdSet:(id)a3;
+- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet)initWithOrgApacheLuceneSearchDocIdSet:(id)set;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet
 
-- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet)initWithOrgApacheLuceneSearchDocIdSet:(id)a3
+- (OrgApacheLuceneSearchMultiTermQueryConstantScoreWrapper_WeightOrDocIdSet)initWithOrgApacheLuceneSearchDocIdSet:(id)set
 {
-  JreStrongAssign(&self->set_, a3);
+  JreStrongAssign(&self->set_, set);
   JreStrongAssign(&self->weight_, 0);
   return self;
 }

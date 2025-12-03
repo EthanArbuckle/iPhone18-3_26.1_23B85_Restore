@@ -3,10 +3,10 @@
 - (AVLayoutItemAttributes)init;
 - (AVLayoutItemAttributes)nextAttributesInPriorityOrder;
 - (BOOL)isCollapsedOrExcluded;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)maximumSize;
 - (CGSize)minimumSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
 @end
@@ -52,7 +52,7 @@
   v3 = [(AVLayoutItemAttributes *)&v10 debugDescription];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVLayoutItemAttributes *)self accessibilityIdentifier];
+  accessibilityIdentifier = [(AVLayoutItemAttributes *)self accessibilityIdentifier];
   [(AVLayoutItemAttributes *)self minimumSize];
   v6 = NSStringFromSize(v12);
   v7 = @"NO";
@@ -71,37 +71,37 @@
     v7 = @"YES";
   }
 
-  [v4 appendFormat:@"{accessibilityID: %@ minSize: %@ isCollapsed: %@ isIncluded: %@ displayPriority: %ld}", v5, v6, v8, v7, -[AVLayoutItemAttributes displayPriority](self, "displayPriority")];
+  [v4 appendFormat:@"{accessibilityID: %@ minSize: %@ isCollapsed: %@ isIncluded: %@ displayPriority: %ld}", accessibilityIdentifier, v6, v8, v7, -[AVLayoutItemAttributes displayPriority](self, "displayPriority")];
 
   return v4;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(AVLayoutItemAttributes *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(AVLayoutItemAttributes *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = AVLayoutItemAttributes;
-  v5 = [(AVLayoutItemAttributes *)&v9 isEqual:v4];
+  v5 = [(AVLayoutItemAttributes *)&v9 isEqual:equalCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 uniqueIdentifier];
-    v7 = [(AVLayoutItemAttributes *)self uniqueIdentifier];
-    v5 = [v6 isEqualToString:v7];
+    uniqueIdentifier = [equalCopy uniqueIdentifier];
+    uniqueIdentifier2 = [(AVLayoutItemAttributes *)self uniqueIdentifier];
+    v5 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVLayoutItemAttributes allocWithZone:?]];
   [(AVLayoutItemAttributes *)self minimumSize];
@@ -112,23 +112,23 @@
   [(AVLayoutItemAttributes *)v4 setTrailingInterItemSpace:?];
   [(AVLayoutItemAttributes *)v4 setCollapsed:[(AVLayoutItemAttributes *)self isCollapsed]];
   [(AVLayoutItemAttributes *)v4 setIncluded:[(AVLayoutItemAttributes *)self isIncluded]];
-  v5 = [(AVLayoutItemAttributes *)self uniqueIdentifier];
-  [(AVLayoutItemAttributes *)v4 setUniqueIdentifier:v5];
+  uniqueIdentifier = [(AVLayoutItemAttributes *)self uniqueIdentifier];
+  [(AVLayoutItemAttributes *)v4 setUniqueIdentifier:uniqueIdentifier];
 
   [(AVLayoutItemAttributes *)v4 setHasFlexibleContentSize:[(AVLayoutItemAttributes *)self hasFlexibleContentSize]];
   [(AVLayoutItemAttributes *)v4 setDisplayPriority:[(AVLayoutItemAttributes *)self displayPriority]];
-  v6 = [(AVLayoutItemAttributes *)self accessibilityIdentifier];
-  [(AVLayoutItemAttributes *)v4 setAccessibilityIdentifier:v6];
+  accessibilityIdentifier = [(AVLayoutItemAttributes *)self accessibilityIdentifier];
+  [(AVLayoutItemAttributes *)v4 setAccessibilityIdentifier:accessibilityIdentifier];
 
   [(AVLayoutItemAttributes *)v4 setPrefersSecondaryMaterialOverlay:[(AVLayoutItemAttributes *)self prefersSecondaryMaterialOverlay]];
-  v7 = [(AVLayoutItemAttributes *)self displayPartnerAttributes];
-  [(AVLayoutItemAttributes *)v4 setDisplayPartnerAttributes:v7];
+  displayPartnerAttributes = [(AVLayoutItemAttributes *)self displayPartnerAttributes];
+  [(AVLayoutItemAttributes *)v4 setDisplayPartnerAttributes:displayPartnerAttributes];
 
-  v8 = [(AVLayoutItemAttributes *)self nextAttributesInLayoutOrder];
-  [(AVLayoutItemAttributes *)v4 setNextAttributesInLayoutOrder:v8];
+  nextAttributesInLayoutOrder = [(AVLayoutItemAttributes *)self nextAttributesInLayoutOrder];
+  [(AVLayoutItemAttributes *)v4 setNextAttributesInLayoutOrder:nextAttributesInLayoutOrder];
 
-  v9 = [(AVLayoutItemAttributes *)self nextAttributesInPriorityOrder];
-  [(AVLayoutItemAttributes *)v4 setNextAttributesInPriorityOrder:v9];
+  nextAttributesInPriorityOrder = [(AVLayoutItemAttributes *)self nextAttributesInPriorityOrder];
+  [(AVLayoutItemAttributes *)v4 setNextAttributesInPriorityOrder:nextAttributesInPriorityOrder];
 
   [(AVLayoutItemAttributes *)v4 setCanOverflowToAuxiliaryMenu:[(AVLayoutItemAttributes *)self canOverflowToAuxiliaryMenu]];
   [(AVLayoutItemAttributes *)v4 setCanSubstituteOtherAttributes:[(AVLayoutItemAttributes *)self canSubstituteOtherAttributes]];
@@ -161,10 +161,10 @@
     *(v2 + 88) = v4;
     *(v2 + 4) = 0;
     *(v2 + 13) = 256;
-    v5 = [MEMORY[0x1E696AE30] processInfo];
-    v6 = [v5 globallyUniqueString];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    globallyUniqueString = [processInfo globallyUniqueString];
     uniqueIdentifier = v3->_uniqueIdentifier;
-    v3->_uniqueIdentifier = v6;
+    v3->_uniqueIdentifier = globallyUniqueString;
 
     v3->_hasFlexibleContentSize = 0;
     v3->_displayPriority = 0;

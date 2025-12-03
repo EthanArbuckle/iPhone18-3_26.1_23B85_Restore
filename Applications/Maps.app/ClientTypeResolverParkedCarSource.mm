@@ -1,65 +1,65 @@
 @interface ClientTypeResolverParkedCarSource
-- (BOOL)hasObjectWithType:(int)a3;
-- (ClientTypeResolverParkedCarSource)initWithParkedCarManager:(id)a3;
+- (BOOL)hasObjectWithType:(int)type;
+- (ClientTypeResolverParkedCarSource)initWithParkedCarManager:(id)manager;
 - (id)cachedObject;
-- (void)objectWithCompletion:(id)a3;
+- (void)objectWithCompletion:(id)completion;
 @end
 
 @implementation ClientTypeResolverParkedCarSource
 
 - (id)cachedObject
 {
-  v2 = [(ClientTypeResolverParkedCarSource *)self parkedCarManager];
-  v3 = [v2 parkedCar];
+  parkedCarManager = [(ClientTypeResolverParkedCarSource *)self parkedCarManager];
+  parkedCar = [parkedCarManager parkedCar];
 
-  return v3;
+  return parkedCar;
 }
 
-- (void)objectWithCompletion:(id)a3
+- (void)objectWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v4;
-    v5 = [(ClientTypeResolverParkedCarSource *)self cachedObject];
-    if (v5)
+    v7 = completionCopy;
+    cachedObject = [(ClientTypeResolverParkedCarSource *)self cachedObject];
+    if (cachedObject)
     {
-      v7[2](v7, v5);
+      v7[2](v7, cachedObject);
     }
 
     else
     {
-      v6 = [(ClientTypeResolverParkedCarSource *)self parkedCarManager];
-      [v6 fetchParkedCar:v7];
+      parkedCarManager = [(ClientTypeResolverParkedCarSource *)self parkedCarManager];
+      [parkedCarManager fetchParkedCar:v7];
     }
 
-    v4 = v7;
+    completionCopy = v7;
   }
 }
 
-- (BOOL)hasObjectWithType:(int)a3
+- (BOOL)hasObjectWithType:(int)type
 {
-  if (![(ClientTypeResolverSource *)self typeIsValid:*&a3])
+  if (![(ClientTypeResolverSource *)self typeIsValid:*&type])
   {
     return 0;
   }
 
-  v4 = [(ClientTypeResolverParkedCarSource *)self cachedObject];
-  v5 = v4 != 0;
+  cachedObject = [(ClientTypeResolverParkedCarSource *)self cachedObject];
+  v5 = cachedObject != 0;
 
   return v5;
 }
 
-- (ClientTypeResolverParkedCarSource)initWithParkedCarManager:(id)a3
+- (ClientTypeResolverParkedCarSource)initWithParkedCarManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ClientTypeResolverParkedCarSource;
   v6 = [(ClientTypeResolverParkedCarSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parkedCarManager, a3);
+    objc_storeStrong(&v6->_parkedCarManager, manager);
   }
 
   return v7;

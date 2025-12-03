@@ -1,13 +1,13 @@
 @interface HKFeatureAvailabilityHealthDataRequirement
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation HKFeatureAvailabilityHealthDataRequirement
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v6 = [a3 healthDataRequirementDataSource];
-  v7 = [v6 isRequirementSatisfied:self error:a4];
+  healthDataRequirementDataSource = [source healthDataRequirementDataSource];
+  v7 = [healthDataRequirementDataSource isRequirementSatisfied:self error:error];
 
   return v7;
 }

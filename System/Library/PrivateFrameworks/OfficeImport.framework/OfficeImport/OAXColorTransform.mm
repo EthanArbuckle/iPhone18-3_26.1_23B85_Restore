@@ -1,7 +1,7 @@
 @interface OAXColorTransform
 + (id)colorTransformTypeEnumMap;
-+ (id)readColorTransformsFromXmlNode:(_xmlNode *)a3;
-+ (void)write:(id)a3 to:(id)a4;
++ (id)readColorTransformsFromXmlNode:(_xmlNode *)node;
++ (void)write:(id)write to:(id)to;
 @end
 
 @implementation OAXColorTransform
@@ -18,16 +18,16 @@
   return v3;
 }
 
-+ (id)readColorTransformsFromXmlNode:(_xmlNode *)a3
++ (id)readColorTransformsFromXmlNode:(_xmlNode *)node
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  for (i = OCXFirstChild(node); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE && i->name)
     {
       v7 = [MEMORY[0x277CCACA8] tc_stringWithXmlString:?];
-      v8 = [a1 colorTransformTypeEnumMap];
-      v9 = [v8 valueForString:v7];
+      colorTransformTypeEnumMap = [self colorTransformTypeEnumMap];
+      v9 = [colorTransformTypeEnumMap valueForString:v7];
 
       p_super = 0;
       if (v9 <= 0x1C)
@@ -77,16 +77,16 @@ LABEL_10:
   return v5;
 }
 
-+ (void)write:(id)a3 to:(id)a4
++ (void)write:(id)write to:(id)to
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  writeCopy = write;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v6;
+  obj = writeCopy;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
@@ -101,11 +101,11 @@ LABEL_10:
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [v11 type];
-        v13 = [a1 colorTransformTypeEnumMap];
-        v14 = [v13 stringForValue:v12];
+        type = [v11 type];
+        colorTransformTypeEnumMap = [self colorTransformTypeEnumMap];
+        v14 = [colorTransformTypeEnumMap stringForValue:type];
 
-        [v7 startOAElement:v14];
+        [toCopy startOAElement:v14];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         v16 = 0.0;
@@ -120,20 +120,20 @@ LABEL_10:
           v17 = v20;
         }
 
-        if ((v12 - 4) <= 0x16)
+        if ((type - 4) <= 0x16)
         {
-          v16 = dbl_25D6FB638[(v12 - 4)];
+          v16 = dbl_25D6FB638[(type - 4)];
         }
 
         v21 = v17 * v16;
         *&v21 = v21;
         v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
-        v23 = [v22 longValue];
+        longValue = [v22 longValue];
 
-        v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", v23];
-        [v7 writeOAAttribute:@"val" content:v24];
+        v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", longValue];
+        [toCopy writeOAAttribute:@"val" content:v24];
 
-        [v7 endElement];
+        [toCopy endElement];
       }
 
       v8 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];

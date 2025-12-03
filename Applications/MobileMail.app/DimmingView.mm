@@ -1,18 +1,18 @@
 @interface DimmingView
 - (BOOL)transparent;
-- (DimmingView)initWithFrame:(CGRect)a3;
+- (DimmingView)initWithFrame:(CGRect)frame;
 - (DimmingViewDelegate)delegate;
-- (void)setTransparent:(BOOL)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setTransparent:(BOOL)transparent;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation DimmingView
 
-- (DimmingView)initWithFrame:(CGRect)a3
+- (DimmingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DimmingView;
-  v3 = [(DimmingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DimmingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIColor colorWithRed:0.0274509806 green:0.0431372561 blue:0.0666666701 alpha:0.5];
@@ -22,24 +22,24 @@
   return v3;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [(DimmingView *)self delegate:a3];
+  v5 = [(DimmingView *)self delegate:ended];
   [v5 dimmingViewWasTapped:self];
 }
 
 - (BOOL)transparent
 {
-  v2 = [(DimmingView *)self backgroundColor];
+  backgroundColor = [(DimmingView *)self backgroundColor];
   v3 = +[UIColor clearColor];
-  v4 = [v2 isEqual:v3];
+  v4 = [backgroundColor isEqual:v3];
 
   return v4;
 }
 
-- (void)setTransparent:(BOOL)a3
+- (void)setTransparent:(BOOL)transparent
 {
-  if (a3)
+  if (transparent)
   {
     +[UIColor clearColor];
   }

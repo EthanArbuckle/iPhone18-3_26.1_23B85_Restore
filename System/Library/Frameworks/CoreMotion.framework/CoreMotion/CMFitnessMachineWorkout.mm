@@ -1,12 +1,12 @@
 @interface CMFitnessMachineWorkout
 + (BOOL)isAvailable;
-+ (id)fitnessMachineWorkoutInstance:(id)a3;
-- (CMFitnessMachineWorkout)initWithCoder:(id)a3;
-- (CMFitnessMachineWorkout)initWithSessionId:(id)a3 workoutType:(int64_t)a4 manufacturerName:(id)a5 model:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)fitnessMachineWorkoutInstance:(id)instance;
+- (CMFitnessMachineWorkout)initWithCoder:(id)coder;
+- (CMFitnessMachineWorkout)initWithSessionId:(id)id workoutType:(int64_t)type manufacturerName:(id)name model:(id)model;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMFitnessMachineWorkout
@@ -21,21 +21,21 @@
   return objc_msgSend_isAvailable(CMWorkout, v2, v3);
 }
 
-- (CMFitnessMachineWorkout)initWithSessionId:(id)a3 workoutType:(int64_t)a4 manufacturerName:(id)a5 model:(id)a6
+- (CMFitnessMachineWorkout)initWithSessionId:(id)id workoutType:(int64_t)type manufacturerName:(id)name model:(id)model
 {
-  if (a4 > 0x12 || ((1 << a4) & 0x51A20) == 0)
+  if (type > 0x12 || ((1 << type) & 0x51A20) == 0)
   {
-    v18 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v18 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, id);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v18, v19, a2, self, @"CMWorkout.mm", 1167, @"Invalid parameter not satisfying: %@", @"workoutType == kCMWorkoutTypeIndoorRunning || workoutType == kCMWorkoutTypeIndoorWalking || workoutType == kCMWorkoutTypeIndoorCycling || workoutType == kCMWorkoutTypeElliptical || workoutType == kCMWorkoutTypeStairClimbing || workoutType == kCMWorkoutTypeRowing");
   }
 
   v20.receiver = self;
   v20.super_class = CMFitnessMachineWorkout;
-  v14 = [(CMWorkout *)&v20 initWithSessionId:a3 type:a4];
+  v14 = [(CMWorkout *)&v20 initWithSessionId:id type:type];
   if (v14)
   {
-    v14->fManufacturerName = objc_msgSend_copy(a5, v12, v13);
-    v14->fModel = objc_msgSend_copy(a6, v15, v16);
+    v14->fManufacturerName = objc_msgSend_copy(name, v12, v13);
+    v14->fModel = objc_msgSend_copy(model, v15, v16);
   }
 
   return v14;
@@ -48,7 +48,7 @@
   [(CMWorkout *)&v3 dealloc];
 }
 
-- (CMFitnessMachineWorkout)initWithCoder:(id)a3
+- (CMFitnessMachineWorkout)initWithCoder:(id)coder
 {
   v16.receiver = self;
   v16.super_class = CMFitnessMachineWorkout;
@@ -56,20 +56,20 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMWorkoutDataCodingKeyFitnessMachineManufacturerName");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMWorkoutDataCodingKeyFitnessMachineManufacturerName");
     v4->fManufacturerName = objc_msgSend_copy(v7, v8, v9);
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"kCMFitnessMachineWorkoutDataCodingKeyModel");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"kCMFitnessMachineWorkoutDataCodingKeyModel");
     v4->fModel = objc_msgSend_copy(v12, v13, v14);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_sessionId(self, v8, v9);
   v13 = objc_msgSend_type(self, v11, v12);
   v15 = objc_msgSend_initWithSessionId_workoutType_manufacturerName_model_(v7, v14, v10, v13, self->fManufacturerName, self->fModel);
@@ -78,13 +78,13 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CMFitnessMachineWorkout;
   [(CMWorkout *)&v7 encodeWithCoder:?];
-  objc_msgSend_encodeObject_forKey_(a3, v5, self->fManufacturerName, @"kCMWorkoutDataCodingKeyFitnessMachineManufacturerName");
-  objc_msgSend_encodeObject_forKey_(a3, v6, self->fModel, @"kCMFitnessMachineWorkoutDataCodingKeyModel");
+  objc_msgSend_encodeObject_forKey_(coder, v5, self->fManufacturerName, @"kCMWorkoutDataCodingKeyFitnessMachineManufacturerName");
+  objc_msgSend_encodeObject_forKey_(coder, v6, self->fModel, @"kCMFitnessMachineWorkoutDataCodingKeyModel");
 }
 
 - (id)description
@@ -100,12 +100,12 @@
   return objc_msgSend_stringWithFormat_(v3, v20, @"%@, <sessionId %@, type, %@, manufacturerName, %@, model, %@>", v5, v8, v13, v16, v19);
 }
 
-+ (id)fitnessMachineWorkoutInstance:(id)a3
++ (id)fitnessMachineWorkoutInstance:(id)instance
 {
   v4 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(a3, v5, v4))
+  if (objc_msgSend_isMemberOfClass_(instance, v5, v4))
   {
-    return a3;
+    return instance;
   }
 
   else

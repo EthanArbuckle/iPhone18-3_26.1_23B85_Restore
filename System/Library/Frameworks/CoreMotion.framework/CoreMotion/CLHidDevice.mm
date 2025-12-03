@@ -1,21 +1,21 @@
 @interface CLHidDevice
-- (BOOL)setReport:(int64_t)a3 payload:(char *)a4 length:(int64_t)a5;
-- (CLHidDevice)initWithHidDevice:(id)a3 matchingDict:(id)a4;
+- (BOOL)setReport:(int64_t)report payload:(char *)payload length:(int64_t)length;
+- (CLHidDevice)initWithHidDevice:(id)device matchingDict:(id)dict;
 - (void)dealloc;
-- (void)setHidDevice:(id)a3;
+- (void)setHidDevice:(id)device;
 @end
 
 @implementation CLHidDevice
 
-- (CLHidDevice)initWithHidDevice:(id)a3 matchingDict:(id)a4
+- (CLHidDevice)initWithHidDevice:(id)device matchingDict:(id)dict
 {
   v8.receiver = self;
   v8.super_class = CLHidDevice;
   v6 = [(CLHidDevice *)&v8 init];
   if (v6)
   {
-    v6->_hidDevice = a3;
-    v6->_matching = a4;
+    v6->_hidDevice = device;
+    v6->_matching = dict;
   }
 
   return v6;
@@ -31,29 +31,29 @@
   [(CLHidDevice *)&v6 dealloc];
 }
 
-- (void)setHidDevice:(id)a3
+- (void)setHidDevice:(id)device
 {
   hidDevice = self->_hidDevice;
-  if (hidDevice != a3)
+  if (hidDevice != device)
   {
-    objc_msgSend_cancel(hidDevice, a2, a3);
+    objc_msgSend_cancel(hidDevice, a2, device);
     objc_msgSend_close(self->_hidDevice, v6, v7);
 
-    self->_hidDevice = a3;
+    self->_hidDevice = device;
   }
 }
 
-- (BOOL)setReport:(int64_t)a3 payload:(char *)a4 length:(int64_t)a5
+- (BOOL)setReport:(int64_t)report payload:(char *)payload length:(int64_t)length
 {
   v26 = *MEMORY[0x1E69E9840];
   v17 = 0;
-  v8 = objc_msgSend_hidDevice(self, a2, a3);
+  v8 = objc_msgSend_hidDevice(self, a2, report);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_19B6ED854;
   v16[3] = &unk_1E7534FC8;
-  v16[4] = a3;
-  v10 = objc_msgSend_setReport_reportLength_withIdentifier_forType_error_timeout_callback_(v8, v9, a4, a5, a3, 2, &v17, 0, v16);
+  v16[4] = report;
+  v10 = objc_msgSend_setReport_reportLength_withIdentifier_forType_error_timeout_callback_(v8, v9, payload, length, report, 2, &v17, 0, v16);
   if ((v10 & 1) == 0)
   {
     if (qword_1ED71C830 != -1)
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(off_1ED71C838, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v23 = a3;
+      reportCopy = report;
       v24 = 2112;
       v25 = v17;
       _os_log_impl(&dword_19B41C000, v11, OS_LOG_TYPE_ERROR, "[CLHidManager] setReport: id=0x%lx, failed=%@", buf, 0x16u);
@@ -81,7 +81,7 @@
       }
 
       v18 = 134218242;
-      v19 = a3;
+      reportCopy2 = report;
       v20 = 2112;
       v21 = v17;
       v13 = _os_log_send_and_compose_impl();

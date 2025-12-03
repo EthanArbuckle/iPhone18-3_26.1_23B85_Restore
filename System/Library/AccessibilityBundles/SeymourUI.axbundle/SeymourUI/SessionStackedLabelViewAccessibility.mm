@@ -1,26 +1,26 @@
 @interface SessionStackedLabelViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SessionStackedLabelViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"noDataIndicator" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SeymourUI.SessionStackedLabelView" hasInstanceMethod:@"noDataIndicator" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SessionStackedLabelViewAccessibility *)self safeValueForKey:@"primaryLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(SessionStackedLabelViewAccessibility *)self safeValueForKey:@"secondaryLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
   v7 = [(SessionStackedLabelViewAccessibility *)self safeStringForKey:@"noDataIndicator"];
   if (v7)
@@ -33,28 +33,28 @@
     v8 = @"--";
   }
 
-  if ([v6 containsString:v8])
+  if ([accessibilityLabel2 containsString:v8])
   {
     v9 = accessibilityLocalizedString(@"no.data");
 
-    v6 = v9;
+    accessibilityLabel2 = v9;
   }
 
-  if (v6)
+  if (accessibilityLabel2)
   {
-    if ([v6 containsString:@":"])
+    if ([accessibilityLabel2 containsString:@":"])
     {
       AXDurationForDurationString();
       if (v10 > 0.0)
       {
         v11 = AXDurationStringForDuration();
 
-        v6 = v11;
+        accessibilityLabel2 = v11;
       }
     }
   }
 
-  v12 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, v4, v6}];
+  v12 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{2, accessibilityLabel, accessibilityLabel2}];
   v13 = AXLabelForElements();
   v15 = _accessibilityReplaceStylsticBulletsForSpeaking(v13, v14);
 

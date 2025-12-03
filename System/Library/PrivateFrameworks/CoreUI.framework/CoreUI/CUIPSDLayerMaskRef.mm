@@ -3,37 +3,37 @@
 - (BOOL)isInvertedWhenBlending;
 - (BOOL)isLinked;
 - (CGImage)createCGImageMask;
-- (CGPath)newBezierPathAtScale:(double)a3;
+- (CGPath)newBezierPathAtScale:(double)scale;
 - (CGRect)bounds;
-- (id)initLayerMaskWithLayerRef:(id)a3;
-- (id)initVectorMaskWithLayerRef:(id)a3;
+- (id)initLayerMaskWithLayerRef:(id)ref;
+- (id)initVectorMaskWithLayerRef:(id)ref;
 - (void)dealloc;
 @end
 
 @implementation CUIPSDLayerMaskRef
 
-- (id)initLayerMaskWithLayerRef:(id)a3
+- (id)initLayerMaskWithLayerRef:(id)ref
 {
   v6.receiver = self;
   v6.super_class = CUIPSDLayerMaskRef;
   v4 = [(CUIPSDLayerMaskRef *)&v6 init];
   if (v4)
   {
-    v4->_layerRef = a3;
+    v4->_layerRef = ref;
     v4->_isVectorMask = 0;
   }
 
   return v4;
 }
 
-- (id)initVectorMaskWithLayerRef:(id)a3
+- (id)initVectorMaskWithLayerRef:(id)ref
 {
   v6.receiver = self;
   v6.super_class = CUIPSDLayerMaskRef;
   v4 = [(CUIPSDLayerMaskRef *)&v6 init];
   if (v4)
   {
-    v4->_layerRef = a3;
+    v4->_layerRef = ref;
     v4->_isVectorMask = 1;
   }
 
@@ -49,29 +49,29 @@
 
 - (BOOL)isLinked
 {
-  v2 = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
-  CPSDLayerMaskData::GetMaskCount((v2 + 80));
-  return v2[117] & 1;
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
+  CPSDLayerMaskData::GetMaskCount((_psdLayerRecord + 80));
+  return _psdLayerRecord[117] & 1;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
-  CPSDLayerMaskData::GetMaskCount((v2 + 80));
-  return (v2[117] & 2) == 0;
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
+  CPSDLayerMaskData::GetMaskCount((_psdLayerRecord + 80));
+  return (_psdLayerRecord[117] & 2) == 0;
 }
 
 - (BOOL)isInvertedWhenBlending
 {
-  v2 = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
-  CPSDLayerMaskData::GetMaskCount((v2 + 80));
-  return (v2[117] & 3) == 1;
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
+  CPSDLayerMaskData::GetMaskCount((_psdLayerRecord + 80));
+  return (_psdLayerRecord[117] & 3) == 1;
 }
 
 - (CGRect)bounds
 {
-  v3 = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
-  if (CPSDLayerMaskData::GetMaskCount((v3 + 80)) == 2 && !self->_isVectorMask)
+  _psdLayerRecord = [(CUIPSDLayerBaseRef *)self->_layerRef _psdLayerRecord];
+  if (CPSDLayerMaskData::GetMaskCount((_psdLayerRecord + 80)) == 2 && !self->_isVectorMask)
   {
     v4 = 132;
     v5 = 128;
@@ -87,12 +87,12 @@
     v7 = 100;
   }
 
-  v8 = *&v3[v6];
-  v9 = *&v3[v7];
+  v8 = *&_psdLayerRecord[v6];
+  v9 = *&_psdLayerRecord[v7];
   v10 = v8;
   v11 = v9;
-  v12 = (*&v3[v4] - v8);
-  v13 = (*&v3[v5] - v9);
+  v12 = (*&_psdLayerRecord[v4] - v8);
+  v13 = (*&_psdLayerRecord[v5] - v9);
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -100,7 +100,7 @@
   return result;
 }
 
-- (CGPath)newBezierPathAtScale:(double)a3
+- (CGPath)newBezierPathAtScale:(double)scale
 {
   if (!self->_isVectorMask)
   {
@@ -113,8 +113,8 @@
   if (v9)
   {
     v12 = 0;
-    v13 = v10 * a3;
-    v14 = v11 * a3;
+    v13 = v10 * scale;
+    v14 = v11 * scale;
     do
     {
       Subpath = CPSDPathsResourceItem::GetSubpath((FirstItemOfTypeID + 7), v12);
@@ -174,9 +174,9 @@
   }
 
   layerRef = self->_layerRef;
-  v5 = [(CUIPSDLayerBaseRef *)layerRef hasVectorMask];
+  hasVectorMask = [(CUIPSDLayerBaseRef *)layerRef hasVectorMask];
 
-  return [(CUIPSDLayerBaseRef *)layerRef _createMaskFromAlphaChannel:v5];
+  return [(CUIPSDLayerBaseRef *)layerRef _createMaskFromAlphaChannel:hasVectorMask];
 }
 
 @end

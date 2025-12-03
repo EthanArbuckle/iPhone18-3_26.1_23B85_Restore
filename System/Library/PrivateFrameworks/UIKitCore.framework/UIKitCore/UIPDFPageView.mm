@@ -1,54 +1,54 @@
 @interface UIPDFPageView
 - (BOOL)hasSearchHighlights;
-- (BOOL)willDoSomethingWithTap:(CGPoint)a3;
+- (BOOL)willDoSomethingWithTap:(CGPoint)tap;
 - (CALayer)effectsLayer;
 - (CGColor)highLightColor;
-- (CGPDFDictionary)_annotForPoint:(CGPoint)a3 rect:(CGRect *)a4;
-- (CGPoint)convertPointFromPDFPageSpace:(CGPoint)a3;
-- (CGPoint)convertPointToPDFPageSpace:(CGPoint)a3;
-- (CGRect)convertRectFromPDFPageSpace:(CGRect)a3;
-- (CGRect)convertRectToPDFPageSpace:(CGRect)a3;
-- (CGRect)fitRect:(CGRect)a3;
-- (CGRect)fitWidth:(CGRect)a3 atVertical:(double)a4;
-- (CGRect)rectangleOfInterestAt:(CGPoint)a3 kind:(int *)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGPDFDictionary)_annotForPoint:(CGPoint)point rect:(CGRect *)rect;
+- (CGPoint)convertPointFromPDFPageSpace:(CGPoint)space;
+- (CGPoint)convertPointToPDFPageSpace:(CGPoint)space;
+- (CGRect)convertRectFromPDFPageSpace:(CGRect)space;
+- (CGRect)convertRectToPDFPageSpace:(CGRect)space;
+- (CGRect)fitRect:(CGRect)rect;
+- (CGRect)fitWidth:(CGRect)width atVertical:(double)vertical;
+- (CGRect)rectangleOfInterestAt:(CGPoint)at kind:(int *)kind;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIImage)backgroundImage;
 - (UIPDFDocument)document;
 - (UIPDFPageView)init;
-- (UIPDFPageView)initWithPage:(id)a3;
-- (UIPDFPageView)initWithPage:(id)a3 tiledContent:(BOOL)a4;
-- (UIPDFPageView)initWithPageLimitedMemory:(id)a3;
+- (UIPDFPageView)initWithPage:(id)page;
+- (UIPDFPageView)initWithPage:(id)page tiledContent:(BOOL)content;
+- (UIPDFPageView)initWithPageLimitedMemory:(id)memory;
 - (id)createBackingLayer;
-- (id)receiveBackgroundImage:(id)a3 info:(id)a4;
+- (id)receiveBackgroundImage:(id)image info:(id)info;
 - (unint64_t)pageIndex;
-- (void)addLayers:(BOOL)a3;
-- (void)addPage:(id)a3;
+- (void)addLayers:(BOOL)layers;
+- (void)addPage:(id)page;
 - (void)addWidgetToSelection;
 - (void)dealloc;
-- (void)didReceiveMemoryWarning:(id)a3;
-- (void)didScroll:(id)a3;
-- (void)doubleTapAt:(CGPoint)a3;
-- (void)drawAnnotations:(CGContext *)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
+- (void)didScroll:(id)scroll;
+- (void)doubleTapAt:(CGPoint)at;
+- (void)drawAnnotations:(CGContext *)annotations;
 - (void)enableLightMemoryFootprint;
 - (void)hideSelection;
-- (void)ignoreTouches:(BOOL)a3;
+- (void)ignoreTouches:(BOOL)touches;
 - (void)layoutSubviews;
 - (void)scheduleBackgroundImage;
-- (void)setBackgroundImage:(id)a3;
-- (void)setBackingLayerColor:(id)a3;
-- (void)setDrawingSurfaceLayer:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setBackingLayerColor:(id)color;
+- (void)setDrawingSurfaceLayer:(id)layer;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsDisplay;
-- (void)setPage:(id)a3;
-- (void)setShowActivityIndicator:(BOOL)a3;
+- (void)setPage:(id)page;
+- (void)setShowActivityIndicator:(BOOL)indicator;
 - (void)setTransforms;
 - (void)showContent;
 - (void)showSelection;
-- (void)singleTapAt:(CGPoint)a3;
+- (void)singleTapAt:(CGPoint)at;
 - (void)stopActivityIndicator;
 - (void)suspendInstantTouchHighlighting;
-- (void)twoFingerDoubleTapAt:(CGPoint)a3;
-- (void)viewDidZoom:(id)a3;
+- (void)twoFingerDoubleTapAt:(CGPoint)at;
+- (void)viewDidZoom:(id)zoom;
 @end
 
 @implementation UIPDFPageView
@@ -91,21 +91,21 @@
   return v3;
 }
 
-- (void)setBackingLayerColor:(id)a3
+- (void)setBackingLayerColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
 
-  self->_backingLayerColor = a3;
+  self->_backingLayerColor = color;
   activityIndicator = self->_activityIndicator;
-  v7 = UIActivityIndicatorViewStyleForBackingColor(a3);
+  v7 = UIActivityIndicatorViewStyleForBackingColor(color);
 
   [(UIActivityIndicatorView *)activityIndicator setActivityIndicatorViewStyle:v7];
 }
 
-- (void)addLayers:(BOOL)a3
+- (void)addLayers:(BOOL)layers
 {
   v4 = off_1E70EA2E8;
-  if (!a3)
+  if (!layers)
   {
     v4 = off_1E70EA2E0;
   }
@@ -116,19 +116,19 @@
   [(CALayer *)self->_contentLayer setDelegate:v5];
   [(UIPDFPageContentDelegate *)self->_contentDelegate setOwner:self->_contentLayer];
   [(UIPDFPageContentDelegate *)self->_contentDelegate setView:self];
-  v6 = [(UIPDFPageView *)self highLightColor];
+  highLightColor = [(UIPDFPageView *)self highLightColor];
   contentDelegate = self->_contentDelegate;
 
-  [(UIPDFPageContentDelegate *)contentDelegate setHighlightColor:v6];
+  [(UIPDFPageContentDelegate *)contentDelegate setHighlightColor:highLightColor];
 }
 
-- (UIPDFPageView)initWithPage:(id)a3
+- (UIPDFPageView)initWithPage:(id)page
 {
-  if (a3)
+  if (page)
   {
     v4 = [(UIPDFPageView *)self init];
     [(UIPDFPageView *)v4 addLayers:1];
-    [(UIPDFPageView *)v4 addPage:a3];
+    [(UIPDFPageView *)v4 addPage:page];
   }
 
   else
@@ -140,14 +140,14 @@
   return v4;
 }
 
-- (UIPDFPageView)initWithPage:(id)a3 tiledContent:(BOOL)a4
+- (UIPDFPageView)initWithPage:(id)page tiledContent:(BOOL)content
 {
-  if (a3)
+  if (page)
   {
-    v4 = a4;
+    contentCopy = content;
     v6 = [(UIPDFPageView *)self init];
-    [(UIPDFPageView *)v6 addLayers:v4];
-    [(UIPDFPageView *)v6 addPage:a3];
+    [(UIPDFPageView *)v6 addLayers:contentCopy];
+    [(UIPDFPageView *)v6 addPage:page];
   }
 
   else
@@ -159,13 +159,13 @@
   return v6;
 }
 
-- (UIPDFPageView)initWithPageLimitedMemory:(id)a3
+- (UIPDFPageView)initWithPageLimitedMemory:(id)memory
 {
-  if (a3)
+  if (memory)
   {
     v4 = [(UIPDFPageView *)self init];
     [(UIPDFPageView *)v4 addLayers:1];
-    [(UIPDFPageView *)v4 addPage:a3];
+    [(UIPDFPageView *)v4 addPage:memory];
     [(UIPDFPageView *)v4 enableLightMemoryFootprint];
   }
 
@@ -213,7 +213,7 @@
   [(UIView *)&v3 dealloc];
 }
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   os_unfair_lock_lock(&self->_lock);
   contentDelegate = self->_contentDelegate;
@@ -227,11 +227,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setDrawingSurfaceLayer:(id)a3
+- (void)setDrawingSurfaceLayer:(id)layer
 {
-  v4 = [(UIPDFPageView *)self annotationController];
+  annotationController = [(UIPDFPageView *)self annotationController];
 
-  [(UIPDFAnnotationController *)v4 setDrawingSurface:a3];
+  [(UIPDFAnnotationController *)annotationController setDrawingSurface:layer];
 }
 
 - (unint64_t)pageIndex
@@ -297,18 +297,18 @@
   return v3;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
   os_unfair_lock_lock(&self->_lock);
   backgroundImage = self->_backgroundImage;
   os_unfair_lock_unlock(&self->_lock);
-  if (backgroundImage != a3)
+  if (backgroundImage != image)
   {
     [(UIPDFPageView *)self willChangeValueForKey:@"backgroundImage"];
-    v6 = a3;
+    imageCopy = image;
     os_unfair_lock_lock(&self->_lock);
 
-    self->_backgroundImage = a3;
+    self->_backgroundImage = image;
     os_unfair_lock_unlock(&self->_lock);
 
     [(UIPDFPageView *)self didChangeValueForKey:@"backgroundImage"];
@@ -345,7 +345,7 @@
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v12 = [(UIPDFDocument *)self->_document pageImageCache];
+  pageImageCache = [(UIPDFDocument *)self->_document pageImageCache];
   pageIndex = self->_pageIndex;
   backgroundIsFullResolution = self->_backgroundIsFullResolution;
   v27 = self->_backgroundIsFullResolution;
@@ -374,7 +374,7 @@
     goto LABEL_10;
   }
 
-  [(UIPDFPageImageCache *)v12 deliverImageOfPage:pageIndex + 1 maxSize:&v27 quality:self receiver:sel_receiveBackgroundImage_info_ selector:0 info:v4 * v6, v4 * v8];
+  [(UIPDFPageImageCache *)pageImageCache deliverImageOfPage:pageIndex + 1 maxSize:&v27 quality:self receiver:sel_receiveBackgroundImage_info_ selector:0 info:v4 * v6, v4 * v8];
   if (v27)
   {
 LABEL_10:
@@ -384,11 +384,11 @@ LABEL_10:
   }
 }
 
-- (void)didScroll:(id)a3
+- (void)didScroll:(id)scroll
 {
-  v4 = [a3 object];
+  object = [scroll object];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(UIView *)self isDescendantOfView:v4])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ![(UIView *)self isDescendantOfView:object])
   {
     return;
   }
@@ -414,15 +414,15 @@ LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)viewDidZoom:(id)a3
+- (void)viewDidZoom:(id)zoom
 {
-  v4 = [(UIView *)self superview];
-  if (v4)
+  superview = [(UIView *)self superview];
+  if (superview)
   {
-    v5 = [(UIView *)v4 layer];
-    if (v5)
+    layer = [(UIView *)superview layer];
+    if (layer)
     {
-      [(CALayer *)v5 transform];
+      [(CALayer *)layer transform];
       self->_cachedScale = v6;
     }
   }
@@ -500,11 +500,11 @@ LABEL_13:
   }
 }
 
-- (void)setShowActivityIndicator:(BOOL)a3
+- (void)setShowActivityIndicator:(BOOL)indicator
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self->_activityIndicator];
   [(UIActivityIndicatorView *)self->_activityIndicator stopAnimating];
-  self->_showActivityIndicator = a3;
+  self->_showActivityIndicator = indicator;
 }
 
 - (void)stopActivityIndicator
@@ -588,7 +588,7 @@ LABEL_13:
   }
 }
 
-- (id)receiveBackgroundImage:(id)a3 info:(id)a4
+- (id)receiveBackgroundImage:(id)image info:(id)info
 {
   if (self->_showActivityIndicator)
   {
@@ -596,7 +596,7 @@ LABEL_13:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (!a3)
+  if (!image)
   {
     os_unfair_lock_unlock(&self->_lock);
     goto LABEL_8;
@@ -608,7 +608,7 @@ LABEL_13:
     [(UIImage *)backgroundImage size];
     v8 = v7;
     v10 = v9;
-    [a3 size];
+    [image size];
     v13 = v11 * v12;
     os_unfair_lock_unlock(&self->_lock);
     if (v13 > v8 * v10)
@@ -625,14 +625,14 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 LABEL_10:
   [(UIPDFPageView *)self willChangeValueForKey:@"backgroundImage"];
-  v15 = a3;
+  imageCopy = image;
   os_unfair_lock_lock(&self->_lock);
 
-  self->_backgroundImage = a3;
+  self->_backgroundImage = image;
   [MEMORY[0x1E6979518] begin];
   v14 = 1;
   [MEMORY[0x1E6979518] setDisableActions:1];
-  -[CALayer setContents:](self->_backingLayer, "setContents:", [a3 CGImage]);
+  -[CALayer setContents:](self->_backingLayer, "setContents:", [image CGImage]);
   [MEMORY[0x1E6979518] commit];
 LABEL_11:
   v16 = self->_backgroundScheduleCount - 1;
@@ -657,12 +657,12 @@ LABEL_11:
   return 0;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -724,14 +724,14 @@ LABEL_11:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIPDFPageView *)self page];
-  if (v5)
+  height = fits.height;
+  width = fits.width;
+  page = [(UIPDFPageView *)self page];
+  if (page)
   {
-    [(UIPDFPage *)v5 cropBoxAccountForRotation];
+    [(UIPDFPage *)page cropBoxAccountForRotation];
     x = v19.origin.x;
     y = v19.origin.y;
     v8 = v19.size.width;
@@ -759,9 +759,9 @@ LABEL_11:
   return result;
 }
 
-- (void)addPage:(id)a3
+- (void)addPage:(id)page
 {
-  [a3 cropBoxAccountForRotation];
+  [page cropBoxAccountForRotation];
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;
@@ -772,31 +772,31 @@ LABEL_11:
   v11.size.width = width;
   v11.size.height = height;
   [(UIPDFPageView *)self setFrame:0.0, 0.0, v9, CGRectGetHeight(v11)];
-  [(UIPDFPageView *)self setPage:a3];
+  [(UIPDFPageView *)self setPage:page];
   self->_scalePageOnDraw = 0;
 }
 
-- (void)setPage:(id)a3
+- (void)setPage:(id)page
 {
-  if (self->_page != a3)
+  if (self->_page != page)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [a3 document];
-    if (self->_document != v5)
+    document = [page document];
+    if (self->_document != document)
     {
-      self->_document = v5;
+      self->_document = document;
     }
 
-    self->_pageIndex = [a3 pageIndex];
+    self->_pageIndex = [page pageIndex];
     [(UIPDFPageContentDelegate *)self->_contentDelegate setDocument:self->_document];
     [(UIPDFPageContentDelegate *)self->_contentDelegate setPageIndex:self->_pageIndex];
-    [a3 cropBox];
+    [page cropBox];
     self->_cropBox.origin.x = v6;
     self->_cropBox.origin.y = v7;
     self->_cropBox.size.width = v8;
     self->_cropBox.size.height = v9;
-    -[UIPDFPageContentDelegate setPageRotation:](self->_contentDelegate, "setPageRotation:", [a3 rotation]);
-    [a3 cropBoxAccountForRotation];
+    -[UIPDFPageContentDelegate setPageRotation:](self->_contentDelegate, "setPageRotation:", [page rotation]);
+    [page cropBoxAccountForRotation];
     [(UIPDFPageContentDelegate *)self->_contentDelegate setBox:?];
     [(CALayer *)self->_contentLayer setOpaque:1];
     objc_opt_class();
@@ -827,13 +827,13 @@ LABEL_11:
     self->_annotationController = [[UIPDFAnnotationController alloc] initWithPageView:self];
     [(UIPDFViewTouchHandler *)self->_touchHandler setFirstTouch];
 
-    self->_page = a3;
+    self->_page = page;
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)drawAnnotations:(CGContext *)a3
+- (void)drawAnnotations:(CGContext *)annotations
 {
   if ([(UIPDFPageView *)self showAnnotations]|| [(UIPDFPageView *)self allowHighlighting])
   {
@@ -841,15 +841,15 @@ LABEL_11:
     if (annotationController)
     {
 
-      [(UIPDFAnnotationController *)annotationController drawAnnotations:a3];
+      [(UIPDFAnnotationController *)annotationController drawAnnotations:annotations];
     }
   }
 }
 
-- (void)ignoreTouches:(BOOL)a3
+- (void)ignoreTouches:(BOOL)touches
 {
   touchHandler = self->_touchHandler;
-  if (a3)
+  if (touches)
   {
     [(UIPDFViewTouchHandler *)touchHandler disableRecognizers];
   }
@@ -860,13 +860,13 @@ LABEL_11:
   }
 }
 
-- (void)doubleTapAt:(CGPoint)a3
+- (void)doubleTapAt:(CGPoint)at
 {
   v10 = 0;
   if (self->_delegate)
   {
-    y = a3.y;
-    x = a3.x;
+    y = at.y;
+    x = at.x;
     if (objc_opt_respondsToSelector())
     {
       [(UIPDFPageView *)self rectangleOfInterestAt:&v10 kind:x, y];
@@ -890,7 +890,7 @@ LABEL_11:
   }
 }
 
-- (void)twoFingerDoubleTapAt:(CGPoint)a3
+- (void)twoFingerDoubleTapAt:(CGPoint)at
 {
   v4 = *(MEMORY[0x1E695F058] + 16);
   self->zoomRect.origin = *MEMORY[0x1E695F058];
@@ -903,24 +903,24 @@ LABEL_11:
   }
 }
 
-- (void)singleTapAt:(CGPoint)a3
+- (void)singleTapAt:(CGPoint)at
 {
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   [(UIPDFSelectionController *)self->_selectionController clearSelection];
   [(UIPDFPageView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(UIPDFPageView *)self delegate];
+    delegate = [(UIPDFPageView *)self delegate];
 
-    [v6 didTap:self atPoint:x, y];
+    [delegate didTap:self atPoint:x, y];
   }
 }
 
-- (BOOL)willDoSomethingWithTap:(CGPoint)a3
+- (BOOL)willDoSomethingWithTap:(CGPoint)tap
 {
-  y = a3.y;
-  x = a3.x;
+  y = tap.y;
+  x = tap.x;
   if ([[(UIPDFPageView *)self page] selection]|| [(UIPDFAnnotationController *)[(UIPDFPageView *)self annotationController] willDoSomethingWithTap:x, y])
   {
     return 1;
@@ -932,9 +932,9 @@ LABEL_11:
     return 0;
   }
 
-  v7 = [(UIPDFPageView *)self delegate];
+  delegate = [(UIPDFPageView *)self delegate];
 
-  return [v7 shouldRecognizeTapIn:self atPoint:x, y];
+  return [delegate shouldRecognizeTapIn:self atPoint:x, y];
 }
 
 - (void)setTransforms
@@ -988,48 +988,48 @@ LABEL_11:
   }
 }
 
-- (CGPoint)convertPointToPDFPageSpace:(CGPoint)a3
+- (CGPoint)convertPointToPDFPageSpace:(CGPoint)space
 {
-  v3 = vaddq_f64(*&self->_viewToPageTransform.tx, vaddq_f64(vmulq_n_f64(*&self->_viewToPageTransform.a, a3.x), vmulq_n_f64(*&self->_viewToPageTransform.c, a3.y)));
+  v3 = vaddq_f64(*&self->_viewToPageTransform.tx, vaddq_f64(vmulq_n_f64(*&self->_viewToPageTransform.a, space.x), vmulq_n_f64(*&self->_viewToPageTransform.c, space.y)));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (CGPoint)convertPointFromPDFPageSpace:(CGPoint)a3
+- (CGPoint)convertPointFromPDFPageSpace:(CGPoint)space
 {
-  v3 = vaddq_f64(*&self->_pageToViewTransform.tx, vaddq_f64(vmulq_n_f64(*&self->_pageToViewTransform.a, a3.x), vmulq_n_f64(*&self->_pageToViewTransform.c, a3.y)));
+  v3 = vaddq_f64(*&self->_pageToViewTransform.tx, vaddq_f64(vmulq_n_f64(*&self->_pageToViewTransform.a, space.x), vmulq_n_f64(*&self->_pageToViewTransform.c, space.y)));
   v4 = v3.f64[1];
   result.x = v3.f64[0];
   result.y = v4;
   return result;
 }
 
-- (CGRect)convertRectToPDFPageSpace:(CGRect)a3
+- (CGRect)convertRectToPDFPageSpace:(CGRect)space
 {
   v3 = *&self->_viewToPageTransform.c;
   *&v4.a = *&self->_viewToPageTransform.a;
   *&v4.c = v3;
   *&v4.tx = *&self->_viewToPageTransform.tx;
-  return CGRectApplyAffineTransform(a3, &v4);
+  return CGRectApplyAffineTransform(space, &v4);
 }
 
-- (CGRect)convertRectFromPDFPageSpace:(CGRect)a3
+- (CGRect)convertRectFromPDFPageSpace:(CGRect)space
 {
   v3 = *&self->_pageToViewTransform.c;
   *&v4.a = *&self->_pageToViewTransform.a;
   *&v4.c = v3;
   *&v4.tx = *&self->_pageToViewTransform.tx;
-  return CGRectApplyAffineTransform(a3, &v4);
+  return CGRectApplyAffineTransform(space, &v4);
 }
 
-- (CGRect)fitWidth:(CGRect)a3 atVertical:(double)a4
+- (CGRect)fitWidth:(CGRect)width atVertical:(double)vertical
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = width.size.height;
+  width = width.size.width;
+  y = width.origin.y;
+  x = width.origin.x;
   [(UIView *)self bounds];
   if (v9 <= 0.0)
   {
@@ -1039,7 +1039,7 @@ LABEL_11:
 
   v11 = width * v10;
   v12 = width * v10 / v9;
-  v13 = a4 + v12 * -0.5;
+  v13 = vertical + v12 * -0.5;
   if (v11 <= height * v9)
   {
     if (v13 < y)
@@ -1062,7 +1062,7 @@ LABEL_11:
     if (v12 + v13 >= y + height)
     {
 LABEL_5:
-      y = a4 + v12 * -0.5;
+      y = vertical + v12 * -0.5;
       goto LABEL_7;
     }
 
@@ -1073,20 +1073,20 @@ LABEL_10:
 LABEL_7:
   v15 = x;
   v16 = y;
-  v17 = width;
+  widthCopy = width;
   result.size.height = v12;
-  result.size.width = v17;
+  result.size.width = widthCopy;
   result.origin.y = v16;
   result.origin.x = v15;
   return result;
 }
 
-- (CGRect)fitRect:(CGRect)a3
+- (CGRect)fitRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UIView *)self bounds];
   v9 = height * v7;
   if (width * v8 <= height * v7)
@@ -1115,10 +1115,10 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)rectangleOfInterestAt:(CGPoint)a3 kind:(int *)a4
+- (CGRect)rectangleOfInterestAt:(CGPoint)at kind:(int *)kind
 {
-  y = a3.y;
-  [(UIPDFPageView *)self convertPointToPDFPageSpace:a3.x];
+  y = at.y;
+  [(UIPDFPageView *)self convertPointToPDFPageSpace:at.x];
   v8 = v7;
   v10 = v9;
   [(UIView *)self bounds];
@@ -1141,7 +1141,7 @@ LABEL_7:
   if (CGPDFSelectionCreateAtPointWithOptions())
   {
     IsStandaloneGraphic = CGPDFSelectionIsStandaloneGraphic();
-    if (a4)
+    if (kind)
     {
       if (IsStandaloneGraphic)
       {
@@ -1153,7 +1153,7 @@ LABEL_7:
         v20 = 2;
       }
 
-      *a4 = v20;
+      *kind = v20;
     }
 
     ContentRect = CGPDFSelectionGetContentRect();
@@ -1327,9 +1327,9 @@ LABEL_7:
 - (void)addWidgetToSelection
 {
   selectionController = self->_selectionController;
-  v3 = [[(UIPDFPageView *)self page] selection];
+  selection = [[(UIPDFPageView *)self page] selection];
 
-  [(UIPDFSelectionController *)selectionController addSelectionWidget:v3];
+  [(UIPDFSelectionController *)selectionController addSelectionWidget:selection];
 }
 
 - (void)suspendInstantTouchHighlighting
@@ -1342,16 +1342,16 @@ LABEL_7:
   [(UIPDFPageView *)self setNeedsDisplay];
 }
 
-- (CGPDFDictionary)_annotForPoint:(CGPoint)a3 rect:(CGRect *)a4
+- (CGPDFDictionary)_annotForPoint:(CGPoint)point rect:(CGRect *)rect
 {
-  if (a4)
+  if (rect)
   {
     v6 = *(MEMORY[0x1E695F050] + 16);
-    a4->origin = *MEMORY[0x1E695F050];
-    a4->size = v6;
+    rect->origin = *MEMORY[0x1E695F050];
+    rect->size = v6;
   }
 
-  [(UIPDFPageView *)self convertPointToPDFPageSpace:a3.x, a3.y];
+  [(UIPDFPageView *)self convertPointToPDFPageSpace:point.x, point.y];
   v8 = v7;
   v10 = v9;
   result = CGPDFPageGetDictionary([[(UIPDFPageView *)self page] CGPage]);
@@ -1425,12 +1425,12 @@ LABEL_7:
           }
         }
 
-        if (a4)
+        if (rect)
         {
-          a4->origin.x = v21;
-          a4->origin.y = v20;
-          a4->size.width = v19;
-          a4->size.height = v18;
+          rect->origin.x = v21;
+          rect->origin.y = v20;
+          rect->size.width = v19;
+          rect->size.height = v18;
         }
 
         return dict;

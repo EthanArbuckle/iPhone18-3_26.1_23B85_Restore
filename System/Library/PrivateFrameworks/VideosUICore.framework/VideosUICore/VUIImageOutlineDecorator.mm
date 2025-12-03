@@ -1,41 +1,41 @@
 @interface VUIImageOutlineDecorator
-+ (id)decoratorWithOutlineColor:(id)a3 outlineWidths:(UIEdgeInsets)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)decoratorWithOutlineColor:(id)color outlineWidths:(UIEdgeInsets)widths;
+- (BOOL)isEqual:(id)equal;
 - (UIEdgeInsets)outlineWidths;
-- (VUIImageOutlineDecorator)initWithOutlineColor:(id)a3 outlineWidths:(UIEdgeInsets)a4;
+- (VUIImageOutlineDecorator)initWithOutlineColor:(id)color outlineWidths:(UIEdgeInsets)widths;
 - (id)decoratorIdentifier;
 - (unint64_t)hash;
-- (void)drawInContext:(id)a3 imageRect:(CGRect)a4;
+- (void)drawInContext:(id)context imageRect:(CGRect)rect;
 @end
 
 @implementation VUIImageOutlineDecorator
 
-+ (id)decoratorWithOutlineColor:(id)a3 outlineWidths:(UIEdgeInsets)a4
++ (id)decoratorWithOutlineColor:(id)color outlineWidths:(UIEdgeInsets)widths
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v8 = a3;
-  v9 = [[VUIImageOutlineDecorator alloc] initWithOutlineColor:v8 outlineWidths:top, left, bottom, right];
+  right = widths.right;
+  bottom = widths.bottom;
+  left = widths.left;
+  top = widths.top;
+  colorCopy = color;
+  right = [[VUIImageOutlineDecorator alloc] initWithOutlineColor:colorCopy outlineWidths:top, left, bottom, right];
 
-  return v9;
+  return right;
 }
 
-- (VUIImageOutlineDecorator)initWithOutlineColor:(id)a3 outlineWidths:(UIEdgeInsets)a4
+- (VUIImageOutlineDecorator)initWithOutlineColor:(id)color outlineWidths:(UIEdgeInsets)widths
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
+  right = widths.right;
+  bottom = widths.bottom;
+  left = widths.left;
+  top = widths.top;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = VUIImageOutlineDecorator;
   v11 = [(VUIImageScaleDecorator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_outlineColor, a3);
+    objc_storeStrong(&v11->_outlineColor, color);
     v12->_outlineWidths.top = top;
     v12->_outlineWidths.left = left;
     v12->_outlineWidths.bottom = bottom;
@@ -45,23 +45,23 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v22.receiver = self;
   v22.super_class = VUIImageOutlineDecorator;
-  if ([(VUIImageScaleDecorator *)&v22 isEqual:v4])
+  if ([(VUIImageScaleDecorator *)&v22 isEqual:equalCopy])
   {
-    v5 = [(VUIImageOutlineDecorator *)self outlineColor];
-    v6 = [v4 outlineColor];
-    if ([v5 isEqual:v6])
+    outlineColor = [(VUIImageOutlineDecorator *)self outlineColor];
+    outlineColor2 = [equalCopy outlineColor];
+    if ([outlineColor isEqual:outlineColor2])
     {
       [(VUIImageOutlineDecorator *)self outlineWidths];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
-      [v4 outlineWidths];
+      [equalCopy outlineWidths];
       v18 = v10 == v17;
       if (v8 != v19)
       {
@@ -102,11 +102,11 @@
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v15.receiver = self;
   v15.super_class = VUIImageOutlineDecorator;
-  v4 = [(VUIImageScaleDecorator *)&v15 decoratorIdentifier];
-  v5 = v4;
-  if (v4)
+  decoratorIdentifier = [(VUIImageScaleDecorator *)&v15 decoratorIdentifier];
+  v5 = decoratorIdentifier;
+  if (decoratorIdentifier)
   {
-    [v3 appendFormat:@"%@_", v4];
+    [v3 appendFormat:@"%@_", decoratorIdentifier];
   }
 
   top = self->_outlineWidths.top;
@@ -124,12 +124,12 @@
   return v3;
 }
 
-- (void)drawInContext:(id)a3 imageRect:(CGRect)a4
+- (void)drawInContext:(id)context imageRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  y = rect.origin.y;
   [(VUIImageOutlineDecorator *)self outlineWidths];
   v6 = v5;
   v8 = v7;

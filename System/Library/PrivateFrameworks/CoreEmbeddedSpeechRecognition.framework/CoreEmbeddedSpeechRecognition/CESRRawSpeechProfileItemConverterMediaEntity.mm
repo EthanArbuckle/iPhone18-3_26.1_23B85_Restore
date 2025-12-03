@@ -1,20 +1,20 @@
 @interface CESRRawSpeechProfileItemConverterMediaEntity
 - (CESRRawSpeechProfileItemConverterMediaEntity)init;
-- (id)vocabularyItemFromSpeechWords:(id)a3 speechNamespace:(id)a4 error:(id *)a5;
+- (id)vocabularyItemFromSpeechWords:(id)words speechNamespace:(id)namespace error:(id *)error;
 @end
 
 @implementation CESRRawSpeechProfileItemConverterMediaEntity
 
-- (id)vocabularyItemFromSpeechWords:(id)a3 speechNamespace:(id)a4 error:(id *)a5
+- (id)vocabularyItemFromSpeechWords:(id)words speechNamespace:(id)namespace error:(id *)error
 {
   v48[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8 && [v8 count])
+  wordsCopy = words;
+  namespaceCopy = namespace;
+  if (wordsCopy && [wordsCopy count])
   {
-    if ([v8 count] == 1)
+    if ([wordsCopy count] == 1)
     {
-      v10 = v9;
+      v10 = namespaceCopy;
       if ([v10 isEqualToString:@"artist"])
       {
         v11 = 202;
@@ -26,17 +26,17 @@
         v11 = 216;
 LABEL_16:
 
-        v13 = [CESRRawSpeechProfileTools placeholderItemIdWithCategoryName:v10];
+        namespaceCopy = [CESRRawSpeechProfileTools placeholderItemIdWithCategoryName:v10];
         builder = self->_builder;
         v40 = 0;
-        v23 = [(KVItemBuilder *)builder setItemType:5 itemId:v13 error:&v40];
+        v23 = [(KVItemBuilder *)builder setItemType:5 itemId:namespaceCopy error:&v40];
         v24 = v40;
-        v25 = [v8 firstObject];
-        v26 = [v25 orthography];
+        firstObject = [wordsCopy firstObject];
+        orthography = [firstObject orthography];
 
         v27 = self->_builder;
         v39 = v24;
-        v28 = [(KVItemBuilder *)v27 addFieldWithType:v11 value:v26 error:&v39];
+        v28 = [(KVItemBuilder *)v27 addFieldWithType:v11 value:orthography error:&v39];
         v15 = v39;
 
         if (!v28)
@@ -55,16 +55,16 @@ LABEL_16:
 LABEL_18:
           v31 = MEMORY[0x277CCA9B8];
           v41[0] = *MEMORY[0x277CCA068];
-          v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to process word: %@ due to builder error.", v26];
+          v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to process word: %@ due to builder error.", orthography];
           v41[1] = *MEMORY[0x277CCA7E8];
           v42[0] = v32;
           v42[1] = v15;
           v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v42 forKeys:v41 count:2];
           v34 = [v31 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:6 userInfo:v33];
-          if (a5 && v34)
+          if (error && v34)
           {
             v34 = v34;
-            *a5 = v34;
+            *error = v34;
           }
 
           v16 = 0;
@@ -75,8 +75,8 @@ LABEL_18:
 
       v37 = MEMORY[0x277CCA9B8];
       v43 = *MEMORY[0x277CCA068];
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected namespace: %@ for category: %@", v10, @"com.apple.media.entities"];
-      v44 = v13;
+      namespaceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected namespace: %@ for category: %@", v10, @"com.apple.media.entities"];
+      v44 = namespaceCopy;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
       v19 = v37;
       v20 = 3;
@@ -86,18 +86,18 @@ LABEL_18:
     {
       v18 = MEMORY[0x277CCA9B8];
       v45 = *MEMORY[0x277CCA068];
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"rawSpeechProfile contains a MediaEntity item with an unexpected number of speech words (expected only 1): %@ namespace: %@", v8, v9];
-      v46 = v13;
+      namespaceCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"rawSpeechProfile contains a MediaEntity item with an unexpected number of speech words (expected only 1): %@ namespace: %@", wordsCopy, namespaceCopy];
+      v46 = namespaceCopy;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
       v19 = v18;
       v20 = 1;
     }
 
     v21 = [v19 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:v20 userInfo:v15];
-    if (a5 && v21)
+    if (error && v21)
     {
       v21 = v21;
-      *a5 = v21;
+      *error = v21;
     }
 
     v16 = 0;
@@ -108,15 +108,15 @@ LABEL_18:
     v12 = MEMORY[0x277CCA9B8];
     v47 = *MEMORY[0x277CCA068];
     v48[0] = @"rawSpeechProfile contains a MediaEntity item missing speech words.";
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
-    v14 = [v12 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:v13];
+    namespaceCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:&v47 count:1];
+    v14 = [v12 errorWithDomain:@"com.apple.siri.speech-profile.tools" code:1 userInfo:namespaceCopy];
     v15 = v14;
     v16 = 0;
-    if (a5 && v14)
+    if (error && v14)
     {
       v17 = v14;
       v16 = 0;
-      *a5 = v15;
+      *error = v15;
     }
   }
 

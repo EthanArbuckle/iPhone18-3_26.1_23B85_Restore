@@ -1,22 +1,22 @@
 @interface FRArticleNotificationPersonalizerResult
-- (FRArticleNotificationPersonalizerResult)initWithItems:(id)a3 baselineClickThroughRate:(double)a4 todayData:(id)a5;
+- (FRArticleNotificationPersonalizerResult)initWithItems:(id)items baselineClickThroughRate:(double)rate todayData:(id)data;
 @end
 
 @implementation FRArticleNotificationPersonalizerResult
 
-- (FRArticleNotificationPersonalizerResult)initWithItems:(id)a3 baselineClickThroughRate:(double)a4 todayData:(id)a5
+- (FRArticleNotificationPersonalizerResult)initWithItems:(id)items baselineClickThroughRate:(double)rate todayData:(id)data
 {
-  v9 = a3;
-  v10 = a5;
+  itemsCopy = items;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = FRArticleNotificationPersonalizerResult;
   v11 = [(FRArticleNotificationPersonalizerResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_items, a3);
-    v12->_baselineClickThroughRate = a4;
-    objc_storeStrong(&v12->_todayData, a5);
+    objc_storeStrong(&v11->_items, items);
+    v12->_baselineClickThroughRate = rate;
+    objc_storeStrong(&v12->_todayData, data);
   }
 
   return v12;

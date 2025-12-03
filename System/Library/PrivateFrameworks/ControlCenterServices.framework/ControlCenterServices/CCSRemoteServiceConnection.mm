@@ -1,15 +1,15 @@
 @interface CCSRemoteServiceConnection
 - (CCSRemoteServiceConnection)init;
-- (void)getEnabledStateOfModuleWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)handleControlCenterOperationType:(int64_t)a3 completionHandler:(id)a4;
-- (void)handleIconElementRequest:(id)a3 completionHandler:(id)a4;
-- (void)presentModuleWithIdentifier:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)requestAvailableModuleIdentifiersWithCompletionHandler:(id)a3;
-- (void)requestDisableModuleWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestEnableModuleWithIdentifier:(id)a3 force:(BOOL)a4 completionHandler:(id)a5;
-- (void)requestIconElementState:(id)a3 completionHandler:(id)a4;
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3;
-- (void)setVisibility:(BOOL)a3 forModuleWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)getEnabledStateOfModuleWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)handleControlCenterOperationType:(int64_t)type completionHandler:(id)handler;
+- (void)handleIconElementRequest:(id)request completionHandler:(id)handler;
+- (void)presentModuleWithIdentifier:(id)identifier options:(id)options completionHandler:(id)handler;
+- (void)requestAvailableModuleIdentifiersWithCompletionHandler:(id)handler;
+- (void)requestDisableModuleWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestEnableModuleWithIdentifier:(id)identifier force:(BOOL)force completionHandler:(id)handler;
+- (void)requestIconElementState:(id)state completionHandler:(id)handler;
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler;
+- (void)setVisibility:(BOOL)visibility forModuleWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation CCSRemoteServiceConnection
@@ -89,14 +89,14 @@ void __34__CCSRemoteServiceConnection_init__block_invoke_4(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEnabledStateOfModuleWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)getEnabledStateOfModuleWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![identifierCopy length])
   {
     [CCSRemoteServiceConnection getEnabledStateOfModuleWithIdentifier:completionHandler:];
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -106,7 +106,7 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -118,10 +118,10 @@ LABEL_3:
   block[2] = __86__CCSRemoteServiceConnection_getEnabledStateOfModuleWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278E0F318;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   os_activity_apply(v8, block);
 }
 
@@ -185,10 +185,10 @@ void __86__CCSRemoteServiceConnection_getEnabledStateOfModuleWithIdentifier_comp
   dispatch_async(v3, v4);
 }
 
-- (void)requestAvailableModuleIdentifiersWithCompletionHandler:(id)a3
+- (void)requestAvailableModuleIdentifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [CCSRemoteServiceConnection requestAvailableModuleIdentifiersWithCompletionHandler:];
   }
@@ -199,8 +199,8 @@ void __86__CCSRemoteServiceConnection_getEnabledStateOfModuleWithIdentifier_comp
   v7[2] = __85__CCSRemoteServiceConnection_requestAvailableModuleIdentifiersWithCompletionHandler___block_invoke;
   v7[3] = &unk_278E0F3B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -274,11 +274,11 @@ void __85__CCSRemoteServiceConnection_requestAvailableModuleIdentifiersWithCompl
   dispatch_async(v7, block);
 }
 
-- (void)requestEnableModuleWithIdentifier:(id)a3 force:(BOOL)a4 completionHandler:(id)a5
+- (void)requestEnableModuleWithIdentifier:(id)identifier force:(BOOL)force completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (![v8 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![identifierCopy length])
   {
     [CCSRemoteServiceConnection requestEnableModuleWithIdentifier:force:completionHandler:];
   }
@@ -289,11 +289,11 @@ void __85__CCSRemoteServiceConnection_requestAvailableModuleIdentifiersWithCompl
   v13[2] = __88__CCSRemoteServiceConnection_requestEnableModuleWithIdentifier_force_completionHandler___block_invoke;
   v13[3] = &unk_278E0F458;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  forceCopy = force;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
   os_activity_apply(v10, v13);
 }
 
@@ -381,11 +381,11 @@ uint64_t __88__CCSRemoteServiceConnection_requestEnableModuleWithIdentifier_forc
   return result;
 }
 
-- (void)requestDisableModuleWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)requestDisableModuleWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![identifierCopy length])
   {
     [CCSRemoteServiceConnection requestDisableModuleWithIdentifier:completionHandler:];
   }
@@ -396,10 +396,10 @@ uint64_t __88__CCSRemoteServiceConnection_requestEnableModuleWithIdentifier_forc
   block[2] = __83__CCSRemoteServiceConnection_requestDisableModuleWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278E0F318;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
   os_activity_apply(v8, block);
 }
 
@@ -484,11 +484,11 @@ uint64_t __83__CCSRemoteServiceConnection_requestDisableModuleWithIdentifier_com
   return result;
 }
 
-- (void)setVisibility:(BOOL)a3 forModuleWithIdentifier:(id)a4 completionHandler:(id)a5
+- (void)setVisibility:(BOOL)visibility forModuleWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  if (![v8 length])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (![identifierCopy length])
   {
     [CCSRemoteServiceConnection setVisibility:forModuleWithIdentifier:completionHandler:];
   }
@@ -499,11 +499,11 @@ uint64_t __83__CCSRemoteServiceConnection_requestDisableModuleWithIdentifier_com
   v13[2] = __86__CCSRemoteServiceConnection_setVisibility_forModuleWithIdentifier_completionHandler___block_invoke;
   v13[3] = &unk_278E0F458;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  visibilityCopy = visibility;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
   os_activity_apply(v10, v13);
 }
 
@@ -589,23 +589,23 @@ uint64_t __86__CCSRemoteServiceConnection_setVisibility_forModuleWithIdentifier_
   return result;
 }
 
-- (void)presentModuleWithIdentifier:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)presentModuleWithIdentifier:(id)identifier options:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  handlerCopy = handler;
   v11 = _os_activity_create(&dword_24427F000, "com.apple.ControlCenter.RemoteServiceConnection.presentModuleWithIdentifier", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__CCSRemoteServiceConnection_presentModuleWithIdentifier_options_completionHandler___block_invoke;
   v15[3] = &unk_278E0F4F8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = optionsCopy;
+  v14 = identifierCopy;
   os_activity_apply(v11, v15);
 }
 
@@ -695,20 +695,20 @@ uint64_t __84__CCSRemoteServiceConnection_presentModuleWithIdentifier_options_co
   return result;
 }
 
-- (void)handleIconElementRequest:(id)a3 completionHandler:(id)a4
+- (void)handleIconElementRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_24427F000, "com.apple.ControlCenter.RemoteServiceConnection.handleIconElementRequest", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__CCSRemoteServiceConnection_handleIconElementRequest_completionHandler___block_invoke;
   block[3] = &unk_278E0F318;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   os_activity_apply(v8, block);
 }
 
@@ -778,18 +778,18 @@ void __73__CCSRemoteServiceConnection_handleIconElementRequest_completionHandler
   dispatch_async(v6, block);
 }
 
-- (void)handleControlCenterOperationType:(int64_t)a3 completionHandler:(id)a4
+- (void)handleControlCenterOperationType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = _os_activity_create(&dword_24427F000, "com.apple.ControlCenter.RemoteServiceConnection.handleControlCenterOperationType", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__CCSRemoteServiceConnection_handleControlCenterOperationType_completionHandler___block_invoke;
   block[3] = &unk_278E0F548;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  typeCopy = type;
+  v8 = handlerCopy;
   os_activity_apply(v7, block);
 }
 
@@ -857,20 +857,20 @@ void __81__CCSRemoteServiceConnection_handleControlCenterOperationType_completio
   dispatch_async(v6, block);
 }
 
-- (void)requestIconElementState:(id)a3 completionHandler:(id)a4
+- (void)requestIconElementState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_24427F000, "com.apple.ControlCenter.RemoteServiceConnection.requestIconElementState", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__CCSRemoteServiceConnection_requestIconElementState_completionHandler___block_invoke;
   block[3] = &unk_278E0F5C0;
-  v12 = v6;
-  v13 = v7;
+  v12 = stateCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = stateCopy;
+  v10 = handlerCopy;
   os_activity_apply(v8, block);
 }
 
@@ -935,17 +935,17 @@ void __72__CCSRemoteServiceConnection_requestIconElementState_completionHandler_
   dispatch_async(v6, block);
 }
 
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_24427F000, "com.apple.ControlCenter.RemoteServiceConnection.resetToDefaultLayout", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CCSRemoteServiceConnection_resetToDefaultLayoutWithCompletionHandler___block_invoke;
   v7[3] = &unk_278E0F3B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   os_activity_apply(v5, v7);
 }
 

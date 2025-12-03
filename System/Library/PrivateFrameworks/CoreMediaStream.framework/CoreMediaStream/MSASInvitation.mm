@@ -1,40 +1,40 @@
 @interface MSASInvitation
-+ (id)MSASPInvitationFromProtocolDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)MSASPInvitationFromProtocolDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MSASInvitation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MSASInvitation);
-  v5 = [(MSASSharingRelationship *)self GUID];
-  [(MSASSharingRelationship *)v4 setGUID:v5];
+  gUID = [(MSASSharingRelationship *)self GUID];
+  [(MSASSharingRelationship *)v4 setGUID:gUID];
 
-  v6 = [(MSASSharingRelationship *)self albumGUID];
-  [(MSASSharingRelationship *)v4 setAlbumGUID:v6];
+  albumGUID = [(MSASSharingRelationship *)self albumGUID];
+  [(MSASSharingRelationship *)v4 setAlbumGUID:albumGUID];
 
-  v7 = [(MSASSharingRelationship *)self email];
-  [(MSASSharingRelationship *)v4 setEmail:v7];
+  email = [(MSASSharingRelationship *)self email];
+  [(MSASSharingRelationship *)v4 setEmail:email];
 
-  v8 = [(MSASSharingRelationship *)self firstName];
-  [(MSASSharingRelationship *)v4 setFirstName:v8];
+  firstName = [(MSASSharingRelationship *)self firstName];
+  [(MSASSharingRelationship *)v4 setFirstName:firstName];
 
-  v9 = [(MSASSharingRelationship *)self lastName];
-  [(MSASSharingRelationship *)v4 setLastName:v9];
+  lastName = [(MSASSharingRelationship *)self lastName];
+  [(MSASSharingRelationship *)v4 setLastName:lastName];
 
-  v10 = [(MSASSharingRelationship *)self personID];
-  [(MSASSharingRelationship *)v4 setPersonID:v10];
+  personID = [(MSASSharingRelationship *)self personID];
+  [(MSASSharingRelationship *)v4 setPersonID:personID];
 
   [(MSASSharingRelationship *)v4 setState:[(MSASSharingRelationship *)self state]];
   return v4;
 }
 
-+ (id)MSASPInvitationFromProtocolDictionary:(id)a3
++ (id)MSASPInvitationFromProtocolDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MSASInvitation);
-  v5 = _setFieldsInSharingRelationship(v4, v3);
+  v5 = _setFieldsInSharingRelationship(v4, dictionaryCopy);
 
   if (v5)
   {

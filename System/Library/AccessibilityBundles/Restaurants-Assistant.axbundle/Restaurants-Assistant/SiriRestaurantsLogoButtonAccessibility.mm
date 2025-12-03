@@ -1,15 +1,15 @@
 @interface SiriRestaurantsLogoButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SiriRestaurantsLogoButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriRestaurantsLogoButton" hasInstanceMethod:@"punchOut" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SAUIAppPunchOut" hasInstanceMethod:@"appDisplayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriRestaurantsLogoButton" hasInstanceMethod:@"punchOut" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SAUIAppPunchOut" hasInstanceMethod:@"appDisplayName" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

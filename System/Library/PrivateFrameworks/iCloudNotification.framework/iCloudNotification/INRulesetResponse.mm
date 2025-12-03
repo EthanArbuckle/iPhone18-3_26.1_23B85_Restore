@@ -1,18 +1,18 @@
 @interface INRulesetResponse
-- (INRulesetResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (INRulesetResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation INRulesetResponse
 
-- (INRulesetResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INRulesetResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a3;
+  responseCopy = response;
   v12.receiver = self;
   v12.super_class = INRulesetResponse;
-  v7 = [(INRulesetResponse *)&v12 initWithHTTPResponse:v6 data:a4 bodyIsPlist:0];
+  v7 = [(INRulesetResponse *)&v12 initWithHTTPResponse:responseCopy data:data bodyIsPlist:0];
   if (v7)
   {
-    if ([v6 statusCode] == 200)
+    if ([responseCopy statusCode] == 200)
     {
       v8 = [CERuleConfiguration alloc];
       v9 = [v8 initWithDictionary:*&v7->AAResponse_opaque[OBJC_IVAR___AAResponse__responseDictionary]];
@@ -25,7 +25,7 @@
       ruleConfiguration = _INLogSystem();
       if (os_log_type_enabled(ruleConfiguration, OS_LOG_TYPE_ERROR))
       {
-        sub_1000339EC(v7, v6, ruleConfiguration);
+        sub_1000339EC(v7, responseCopy, ruleConfiguration);
       }
     }
   }

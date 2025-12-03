@@ -1,5 +1,5 @@
 @interface MapViewModeGridButtonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,28 +7,28 @@
 
 @implementation MapViewModeGridButtonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MapViewModeGridButtonView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"MapViewModeGridButtonView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MapViewModeGridButtonViewModel" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MapViewModeGridButtonViewModel" hasInstanceMethod:@"overflowMenu" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MapViewModeGridButtonView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"MapViewModeGridButtonView" hasInstanceMethod:@"viewModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MapViewModeGridButtonViewModel" hasInstanceMethod:@"selected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MapViewModeGridButtonViewModel" hasInstanceMethod:@"overflowMenu" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MapViewModeGridButtonViewAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
-  v3 = [(MapViewModeGridButtonViewAccessibility *)self _accessibilityViewModel];
-  v4 = [v3 safeBoolForKey:@"selected"];
+  _accessibilityViewModel = [(MapViewModeGridButtonViewAccessibility *)self _accessibilityViewModel];
+  v4 = [_accessibilityViewModel safeBoolForKey:@"selected"];
 
   v5 = *MEMORY[0x29EDC7FC0];
   if (!v4)
@@ -43,8 +43,8 @@
 {
   v17[1] = *MEMORY[0x29EDCA608];
   objc_initWeak(&location, self);
-  v3 = [(MapViewModeGridButtonViewAccessibility *)self _accessibilityViewModel];
-  v4 = [v3 safeValueForKey:@"overflowMenu"];
+  _accessibilityViewModel = [(MapViewModeGridButtonViewAccessibility *)self _accessibilityViewModel];
+  v4 = [_accessibilityViewModel safeValueForKey:@"overflowMenu"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);

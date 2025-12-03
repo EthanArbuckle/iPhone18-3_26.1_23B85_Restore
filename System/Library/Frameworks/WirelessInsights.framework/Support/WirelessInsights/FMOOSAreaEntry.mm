@@ -1,32 +1,32 @@
 @interface FMOOSAreaEntry
-- (id)init:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 entryLocation:(id)a6 prevCells:(id)a7 registrationState:(id)a8 batteryLevel:(double)a9 clientPrediction:(id)a10;
+- (id)init:(id)init prevVisit:(id)visit curVisit:(id)curVisit entryLocation:(id)location prevCells:(id)cells registrationState:(id)state batteryLevel:(double)level clientPrediction:(id)self0;
 @end
 
 @implementation FMOOSAreaEntry
 
-- (id)init:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 entryLocation:(id)a6 prevCells:(id)a7 registrationState:(id)a8 batteryLevel:(double)a9 clientPrediction:(id)a10
+- (id)init:(id)init prevVisit:(id)visit curVisit:(id)curVisit entryLocation:(id)location prevCells:(id)cells registrationState:(id)state batteryLevel:(double)level clientPrediction:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v18 = a8;
-  v19 = a10;
+  initCopy = init;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  locationCopy = location;
+  cellsCopy = cells;
+  stateCopy = state;
+  predictionCopy = prediction;
   v29.receiver = self;
   v29.super_class = FMOOSAreaEntry;
   v20 = [(FMOOSAreaEntry *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_timestamp, a3);
-    objc_storeStrong(&v21->_prevVisit, a4);
-    objc_storeStrong(&v21->_curVisit, a5);
-    objc_storeStrong(&v21->_entryLocation, a6);
-    objc_storeStrong(&v21->_prevCells, a7);
-    objc_storeStrong(&v21->_registrationState, a8);
-    v21->_batteryLevel = a9;
-    objc_storeStrong(&v21->_clientPrediction, a10);
+    objc_storeStrong(&v20->_timestamp, init);
+    objc_storeStrong(&v21->_prevVisit, visit);
+    objc_storeStrong(&v21->_curVisit, curVisit);
+    objc_storeStrong(&v21->_entryLocation, location);
+    objc_storeStrong(&v21->_prevCells, cells);
+    objc_storeStrong(&v21->_registrationState, state);
+    v21->_batteryLevel = level;
+    objc_storeStrong(&v21->_clientPrediction, prediction);
     v22 = v21;
   }
 

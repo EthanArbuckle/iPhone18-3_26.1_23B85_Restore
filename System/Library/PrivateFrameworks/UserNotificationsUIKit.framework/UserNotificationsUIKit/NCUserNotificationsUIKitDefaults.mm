@@ -1,14 +1,14 @@
 @interface NCUserNotificationsUIKitDefaults
 + (id)standardDefaults;
-- (BOOL)_activeDefault:(id)a3;
+- (BOOL)_activeDefault:(id)default;
 - (CGRect)listDebugHUDFrame;
 - (id)configurationActions;
-- (id)observeDefault:(id)a3 onQueue:(id)a4 withBlock:(id)a5;
-- (id)observeDefaults:(id)a3 onQueue:(id)a4 withBlock:(id)a5;
-- (void)_bind:(id)a3 key:(id)a4 defaultValue:(BOOL)a5 onlyIf:(BOOL)a6;
-- (void)_bind:(id)a3 key:(id)a4 value:(id)a5 options:(unint64_t)a6 onlyIf:(BOOL)a7;
+- (id)observeDefault:(id)default onQueue:(id)queue withBlock:(id)block;
+- (id)observeDefaults:(id)defaults onQueue:(id)queue withBlock:(id)block;
+- (void)_bind:(id)_bind key:(id)key defaultValue:(BOOL)value onlyIf:(BOOL)if;
+- (void)_bind:(id)_bind key:(id)key value:(id)value options:(unint64_t)options onlyIf:(BOOL)if;
 - (void)_bindAndRegisterDefaults;
-- (void)setListDebugHUDFrame:(CGRect)a3;
+- (void)setListDebugHUDFrame:(CGRect)frame;
 @end
 
 @implementation NCUserNotificationsUIKitDefaults
@@ -78,11 +78,11 @@ void __56__NCUserNotificationsUIKitDefaults_configurationActions__block_invoke_2
 
 - (CGRect)listDebugHUDFrame
 {
-  v2 = [(NCUserNotificationsUIKitDefaults *)self listDebugHUDRectString];
-  v3 = v2;
-  if (v2)
+  listDebugHUDRectString = [(NCUserNotificationsUIKitDefaults *)self listDebugHUDRectString];
+  v3 = listDebugHUDRectString;
+  if (listDebugHUDRectString)
   {
-    v12 = CGRectFromString(v2);
+    v12 = CGRectFromString(listDebugHUDRectString);
     x = v12.origin.x;
     y = v12.origin.y;
     width = v12.size.width;
@@ -108,9 +108,9 @@ void __56__NCUserNotificationsUIKitDefaults_configurationActions__block_invoke_2
   return result;
 }
 
-- (void)setListDebugHUDFrame:(CGRect)a3
+- (void)setListDebugHUDFrame:(CGRect)frame
 {
-  v4 = NSStringFromCGRect(a3);
+  v4 = NSStringFromCGRect(frame);
   [(NCUserNotificationsUIKitDefaults *)self setListDebugHUDRectString:v4];
 }
 
@@ -139,16 +139,16 @@ void __56__NCUserNotificationsUIKitDefaults_configurationActions__block_invoke_2
   [(BSAbstractDefaultDomain *)self _bindProperty:v10 withDefaultKey:@"NCListDebugHUDRectString" toDefaultValue:0 options:4];
 }
 
-- (id)observeDefault:(id)a3 onQueue:(id)a4 withBlock:(id)a5
+- (id)observeDefault:(id)default onQueue:(id)queue withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(NCUserNotificationsUIKitDefaults *)self _activeDefault:v8])
+  defaultCopy = default;
+  queueCopy = queue;
+  blockCopy = block;
+  if ([(NCUserNotificationsUIKitDefaults *)self _activeDefault:defaultCopy])
   {
     v13.receiver = self;
     v13.super_class = NCUserNotificationsUIKitDefaults;
-    v11 = [(BSAbstractDefaultDomain *)&v13 observeDefault:v8 onQueue:v9 withBlock:v10];
+    v11 = [(BSAbstractDefaultDomain *)&v13 observeDefault:defaultCopy onQueue:queueCopy withBlock:blockCopy];
   }
 
   else
@@ -159,19 +159,19 @@ void __56__NCUserNotificationsUIKitDefaults_configurationActions__block_invoke_2
   return v11;
 }
 
-- (id)observeDefaults:(id)a3 onQueue:(id)a4 withBlock:(id)a5
+- (id)observeDefaults:(id)defaults onQueue:(id)queue withBlock:(id)block
 {
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __70__NCUserNotificationsUIKitDefaults_observeDefaults_onQueue_withBlock___block_invoke;
   v14[3] = &unk_278371B18;
   v14[4] = self;
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 bs_compactMap:v14];
+  blockCopy = block;
+  queueCopy = queue;
+  v10 = [defaults bs_compactMap:v14];
   v13.receiver = self;
   v13.super_class = NCUserNotificationsUIKitDefaults;
-  v11 = [(BSAbstractDefaultDomain *)&v13 observeDefaults:v10 onQueue:v9 withBlock:v8];
+  v11 = [(BSAbstractDefaultDomain *)&v13 observeDefaults:v10 onQueue:queueCopy withBlock:blockCopy];
 
   return v11;
 }
@@ -195,25 +195,25 @@ void *__70__NCUserNotificationsUIKitDefaults_observeDefaults_onQueue_withBlock__
   return v4;
 }
 
-- (void)_bind:(id)a3 key:(id)a4 defaultValue:(BOOL)a5 onlyIf:(BOOL)a6
+- (void)_bind:(id)_bind key:(id)key defaultValue:(BOOL)value onlyIf:(BOOL)if
 {
-  v6 = a6;
-  v7 = a5;
+  ifCopy = if;
+  valueCopy = value;
   v10 = MEMORY[0x277CCABB0];
-  v11 = a4;
-  v12 = a3;
-  v13 = [v10 numberWithBool:v7];
-  [(NCUserNotificationsUIKitDefaults *)self _bind:v12 key:v11 value:v13 options:4 onlyIf:v6];
+  keyCopy = key;
+  _bindCopy = _bind;
+  v13 = [v10 numberWithBool:valueCopy];
+  [(NCUserNotificationsUIKitDefaults *)self _bind:_bindCopy key:keyCopy value:v13 options:4 onlyIf:ifCopy];
 }
 
-- (void)_bind:(id)a3 key:(id)a4 value:(id)a5 options:(unint64_t)a6 onlyIf:(BOOL)a7
+- (void)_bind:(id)_bind key:(id)key value:(id)value options:(unint64_t)options onlyIf:(BOOL)if
 {
-  v7 = a7;
-  v11 = a3;
+  ifCopy = if;
+  _bindCopy = _bind;
   [BSAbstractDefaultDomain _bindProperty:"_bindProperty:withDefaultKey:toDefaultValue:options:" withDefaultKey:? toDefaultValue:? options:?];
   if (self->_configurationMenuProperties)
   {
-    if (!v7)
+    if (!ifCopy)
     {
       goto LABEL_4;
     }
@@ -225,25 +225,25 @@ void *__70__NCUserNotificationsUIKitDefaults_observeDefaults_onQueue_withBlock__
   configurationMenuProperties = self->_configurationMenuProperties;
   self->_configurationMenuProperties = v9;
 
-  if (v7)
+  if (ifCopy)
   {
 LABEL_3:
-    [(NSMutableArray *)self->_configurationMenuProperties addObject:v11];
+    [(NSMutableArray *)self->_configurationMenuProperties addObject:_bindCopy];
   }
 
 LABEL_4:
 }
 
-- (BOOL)_activeDefault:(id)a3
+- (BOOL)_activeDefault:(id)default
 {
-  v4 = a3;
+  defaultCopy = default;
   configurationMenuProperties = self->_configurationMenuProperties;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__NCUserNotificationsUIKitDefaults__activeDefault___block_invoke;
   v8[3] = &unk_278371B40;
-  v9 = v4;
-  v6 = v4;
+  v9 = defaultCopy;
+  v6 = defaultCopy;
   LOBYTE(configurationMenuProperties) = [(NSMutableArray *)configurationMenuProperties bs_containsObjectPassingTest:v8];
 
   return configurationMenuProperties;

@@ -1,46 +1,46 @@
 @interface IMCTSMSUtilitiesManager
 + (id)sharedManager;
-- (BOOL)isEagerUploadEnabledForPhoneNumber:(id)a3 simID:(id)a4;
+- (BOOL)isEagerUploadEnabledForPhoneNumber:(id)number simID:(id)d;
 - (BOOL)isMessagesTheDefaultTextApp;
 - (BOOL)messagesFilteringSettingForPreferedSubscription;
-- (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsEnabledForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsGroupTextReplicationSupportedForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsRestrictedModeEnabledForPhoneNumber:(id)a3 simID:(id)a4 reset:(BOOL)a5;
-- (BOOL)mmsSupportedAndConfiguredForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)mmsSupportsH264VideoForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)readMMSUserOverrideForPhoneNumber:(id)a3 simID:(id)a4;
-- (BOOL)shouldShowMMSEmailAddress:(id)a3 simID:(id)a4;
-- (BOOL)shouldUploadToMMCS:(id)a3;
-- (BOOL)smsAllowCaseSensitiveSenderIDForPhoneNumber:(id)a3;
+- (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsEnabledForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsGroupTextReplicationSupportedForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsRestrictedModeEnabledForPhoneNumber:(id)number simID:(id)d reset:(BOOL)reset;
+- (BOOL)mmsSupportedAndConfiguredForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)mmsSupportsH264VideoForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)readMMSUserOverrideForPhoneNumber:(id)number simID:(id)d;
+- (BOOL)shouldShowMMSEmailAddress:(id)address simID:(id)d;
+- (BOOL)shouldUploadToMMCS:(id)s;
+- (BOOL)smsAllowCaseSensitiveSenderIDForPhoneNumber:(id)number;
 - (IMCTSMSUtilitiesManager)init;
-- (double)mmsMaximumAudioDurationForPhoneNumber:(id)a3 simID:(id)a4;
-- (double)mmsMaximumDurationWithPreset:(id)a3 phoneNumber:(id)a4 simID:(id)a5;
-- (double)mmsMaximumVideoDurationForPhoneNumber:(id)a3 simID:(id)a4;
-- (id)carrierBundleValueForKeyHierarchy:(id)a3 phoneNumber:(id)a4 simID:(id)a5;
-- (id)carrierNameForPhoneNumber:(id)a3;
-- (id)countryCodeForPhoneNumber:(id)a3 simID:(id)a4;
-- (id)countryCodeForSimSlot:(int64_t)a3;
-- (id)mmsEmailAddressToMatchForPhoneNumber:(id)a3 simID:(id)a4;
+- (double)mmsMaximumAudioDurationForPhoneNumber:(id)number simID:(id)d;
+- (double)mmsMaximumDurationWithPreset:(id)preset phoneNumber:(id)number simID:(id)d;
+- (double)mmsMaximumVideoDurationForPhoneNumber:(id)number simID:(id)d;
+- (id)carrierBundleValueForKeyHierarchy:(id)hierarchy phoneNumber:(id)number simID:(id)d;
+- (id)carrierNameForPhoneNumber:(id)number;
+- (id)countryCodeForPhoneNumber:(id)number simID:(id)d;
+- (id)countryCodeForSimSlot:(int64_t)slot;
+- (id)mmsEmailAddressToMatchForPhoneNumber:(id)number simID:(id)d;
 - (id)myCTPhoneNumber;
 - (id)phoneNumbersEnabledForMultipleSubscriptionDevice;
-- (id)uniqueIdentifierForPhoneNumber:(id)a3 simID:(id)a4;
-- (int)mmsMaxImageDimensionForPhoneNumber:(id)a3 simID:(id)a4;
-- (int)mmsMaxRecipientsForPhoneNumber:(id)a3 simID:(id)a4;
-- (int)mmsMaximumMessageByteCountForPhoneNumber:(id)a3 simID:(id)a4;
-- (int)mmsMaximumSlideCountForPhoneNumber:(id)a3 simID:(id)a4;
-- (unint64_t)iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
-- (unint64_t)iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
-- (unint64_t)readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)a3 simID:(id)a4;
-- (void)iMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7;
+- (id)uniqueIdentifierForPhoneNumber:(id)number simID:(id)d;
+- (int)mmsMaxImageDimensionForPhoneNumber:(id)number simID:(id)d;
+- (int)mmsMaxRecipientsForPhoneNumber:(id)number simID:(id)d;
+- (int)mmsMaximumMessageByteCountForPhoneNumber:(id)number simID:(id)d;
+- (int)mmsMaximumSlideCountForPhoneNumber:(id)number simID:(id)d;
+- (unint64_t)iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
+- (unint64_t)iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
+- (unint64_t)readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)number simID:(id)d;
+- (void)iMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d;
 - (void)registerServiceCapabilityNotifications;
-- (void)synchronizeMMSCapabilityToWatch:(BOOL)a3;
+- (void)synchronizeMMSCapabilityToWatch:(BOOL)watch;
 - (void)synchronizePreferredSubscriptionMMSCapabilityToWatch;
 @end
 
@@ -52,7 +52,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A8603820;
   block[3] = &unk_1E7826200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED8CA118 != -1)
   {
     dispatch_once(&qword_1ED8CA118, block);
@@ -91,9 +91,9 @@
 {
   v30 = *MEMORY[0x1E69E9840];
   v2 = +[IMFeatureFlags sharedFeatureFlags];
-  v3 = [v2 isTextAccessFor3rdPartyEnabled];
+  isTextAccessFor3rdPartyEnabled = [v2 isTextAccessFor3rdPartyEnabled];
 
-  if (!v3)
+  if (!isTextAccessFor3rdPartyEnabled)
   {
     LOBYTE(v11) = 1;
     return v11;
@@ -109,25 +109,25 @@
     }
   }
 
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (!v6 || (+[IMDefaults sharedInstance](IMDefaults, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageDefaultTextAppState"], v7, (v8 & 1) == 0) && (+[IMDefaults sharedInstance](IMDefaults, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "getBoolFromDomain:forKey:", @"com.apple.MobileSMS", @"Force.MessageIsDefaultApp"), v9, !v10))
+  if (!isInternalInstall || (+[IMDefaults sharedInstance](IMDefaults, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 getBoolFromDomain:@"com.apple.MobileSMS" forKey:@"Force.MessageDefaultTextAppState"], v7, (v8 & 1) == 0) && (+[IMDefaults sharedInstance](IMDefaults, "sharedInstance"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "getBoolFromDomain:forKey:", @"com.apple.MobileSMS", @"Force.MessageIsDefaultApp"), v9, !v10))
   {
-    v12 = [MEMORY[0x1E6963608] defaultWorkspace];
-    v13 = v12;
-    if (v12)
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    v13 = defaultWorkspace;
+    if (defaultWorkspace)
     {
-      if ([v12 canChangeDefaultAppForCategory:10])
+      if ([defaultWorkspace canChangeDefaultAppForCategory:10])
       {
         v25 = 0;
         v14 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:@"com.apple.MobileSMS" allowPlaceholder:0 error:&v25];
         v15 = v25;
         if (v14)
         {
-          v16 = [MEMORY[0x1E6963608] defaultWorkspace];
+          defaultWorkspace2 = [MEMORY[0x1E6963608] defaultWorkspace];
           v24 = v15;
-          v17 = [v16 defaultApplicationForCategory:10 error:&v24];
+          v17 = [defaultWorkspace2 defaultApplicationForCategory:10 error:&v24];
           v18 = v24;
 
           v11 = [v17 isEqual:v14];
@@ -193,18 +193,18 @@ LABEL_32:
   return v11;
 }
 
-- (id)uniqueIdentifierForPhoneNumber:(id)a3 simID:(id)a4
+- (id)uniqueIdentifierForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v6 length])
+  dCopy = d;
+  numberCopy = number;
+  if ([numberCopy length])
   {
-    v7 = v6;
+    v7 = numberCopy;
   }
 
   else
   {
-    v7 = v5;
+    v7 = dCopy;
   }
 
   v8 = v7;
@@ -212,16 +212,16 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)readMMSUserOverrideForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)readMMSUserOverrideForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  [(IMCTSMSUtilitiesManager *)self mmsDefaultEnabledForPhoneNumber:v6 simID:v7];
+  numberCopy = number;
+  dCopy = d;
+  [(IMCTSMSUtilitiesManager *)self mmsDefaultEnabledForPhoneNumber:numberCopy simID:dCopy];
   v8 = @"MMSEnabled";
   v9 = IMGetCachedDomainBoolForKeyWithDefaultValue();
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v10 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:v6 simID:v7];
+    v10 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:numberCopy simID:dCopy];
     if ([v10 length])
     {
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", @"MMSEnabled-", v10];
@@ -232,37 +232,37 @@ LABEL_32:
   return v9;
 }
 
-- (BOOL)mmsDefaultEnabledForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsDefaultEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   v7 = +[IMFeatureFlags sharedFeatureFlags];
-  v8 = [v7 isReadMMSDefaultFromCBEnabled];
+  isReadMMSDefaultFromCBEnabled = [v7 isReadMMSDefaultFromCBEnabled];
 
-  if (v8)
+  if (isReadMMSDefaultFromCBEnabled)
   {
     v9 = +[IMCTSubscriptionUtilities sharedInstance];
-    v10 = [v9 ctSubscriptionInfo];
-    v11 = [v10 __im_subscriptionContextForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v9 ctSubscriptionInfo];
+    firstObject = [ctSubscriptionInfo __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
 
-    if (!v11)
+    if (!firstObject)
     {
       if (IMSharedHelperDeviceHasMultipleActiveSubscriptions())
       {
-        v11 = 0;
+        firstObject = 0;
       }
 
       else
       {
         v13 = +[IMCTSubscriptionUtilities sharedInstance];
-        v14 = [v13 ctSubscriptionInfo];
-        v15 = [v14 subscriptions];
-        v11 = [v15 firstObject];
+        ctSubscriptionInfo2 = [v13 ctSubscriptionInfo];
+        subscriptions = [ctSubscriptionInfo2 subscriptions];
+        firstObject = [subscriptions firstObject];
       }
     }
 
     v16 = +[IMCTSubscriptionUtilities sharedInstance];
-    v17 = [v16 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_1F1BFAE98 defaultValue:0 valueIfError:0];
+    v17 = [v16 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_1F1BFAE98 defaultValue:0 valueIfError:0];
 
     if (v17)
     {
@@ -270,43 +270,43 @@ LABEL_32:
       v19 = v18;
       if (v18)
       {
-        v12 = [v18 BOOLValue];
+        bOOLValue = [v18 BOOLValue];
       }
 
       else
       {
-        v12 = 1;
+        bOOLValue = 1;
       }
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v12 = 1;
+    bOOLValue = 1;
   }
 
-  return v12;
+  return bOOLValue;
 }
 
 - (id)phoneNumbersEnabledForMultipleSubscriptionDevice
 {
   v2 = +[IMCTSubscriptionUtilities sharedInstance];
-  v3 = [v2 ctSubscriptionInfo];
-  v4 = [v3 phoneNumbersOfActiveSubscriptions];
+  ctSubscriptionInfo = [v2 ctSubscriptionInfo];
+  phoneNumbersOfActiveSubscriptions = [ctSubscriptionInfo phoneNumbersOfActiveSubscriptions];
 
-  return v4;
+  return phoneNumbersOfActiveSubscriptions;
 }
 
-- (BOOL)mmsEnabledForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsEnabledForPhoneNumber:(id)number simID:(id)d
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (!IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     LOBYTE(v17) = IMMMSEnabled();
@@ -314,8 +314,8 @@ LABEL_32:
   }
 
   v8 = +[IMCTSubscriptionUtilities sharedInstance];
-  v9 = [v8 ctSubscriptionInfo];
-  v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+  ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+  v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
   if (!v10)
   {
@@ -333,9 +333,9 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v11 = [v10 phoneNumber];
-  v12 = [v10 labelID];
-  v13 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:v11 simID:v12];
+  phoneNumber = [v10 phoneNumber];
+  labelID = [v10 labelID];
+  v13 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:phoneNumber simID:labelID];
   if (!qword_1EB30A9D0)
   {
 LABEL_13:
@@ -344,8 +344,8 @@ LABEL_13:
     qword_1EB30A9D0 = v19;
 
 LABEL_14:
-    v21 = [(IMCTSMSUtilitiesManager *)self mmsSupportedAndConfiguredForPhoneNumber:v11 simID:v12];
-    v22 = [(IMCTSMSUtilitiesManager *)self readMMSUserOverrideForPhoneNumber:v11 simID:v12];
+    v21 = [(IMCTSMSUtilitiesManager *)self mmsSupportedAndConfiguredForPhoneNumber:phoneNumber simID:labelID];
+    v22 = [(IMCTSMSUtilitiesManager *)self readMMSUserOverrideForPhoneNumber:phoneNumber simID:labelID];
     v23 = v22;
     v17 = v21 & v22;
     if ([v13 length])
@@ -357,7 +357,7 @@ LABEL_14:
         {
           v25 = @"NO";
           *v32 = 138413826;
-          *&v32[4] = v7;
+          *&v32[4] = dCopy;
           if (v21)
           {
             v26 = @"YES";
@@ -384,11 +384,11 @@ LABEL_14:
           }
 
           *&v32[12] = 2112;
-          *&v32[14] = v12;
+          *&v32[14] = labelID;
           v33 = 2112;
-          v34 = v6;
+          v34 = numberCopy;
           v35 = 2112;
-          v36 = v11;
+          v36 = phoneNumber;
           v37 = 2112;
           v38 = v26;
           v39 = 2112;
@@ -418,8 +418,8 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  v14 = [qword_1EB30A9D0 allKeys];
-  v15 = [v14 containsObject:v13];
+  allKeys = [qword_1EB30A9D0 allKeys];
+  v15 = [allKeys containsObject:v13];
 
   if (!v15)
   {
@@ -445,33 +445,33 @@ LABEL_35:
   return v17;
 }
 
-- (BOOL)readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)readEnablePreviewTranscodingQualityCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v7 = +[IMCTSubscriptionUtilities sharedInstance];
-    v8 = [v7 ctSubscriptionInfo];
-    v9 = [v8 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v7 ctSubscriptionInfo];
+    v9 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
     if (v9)
     {
       v10 = +[IMCTSubscriptionUtilities sharedInstance];
       v11 = [v10 copyOperatorBundleValueForSubscriptionContext:v9 keyHierarchy:&unk_1F1BFAEB0 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v12 = IMGetCachedDomainBoolForKeyWithDefaultValue();
+    bOOLValue = IMGetCachedDomainBoolForKeyWithDefaultValue();
   }
 
   if (IMOSLoggingEnabled())
@@ -481,50 +481,50 @@ LABEL_35:
     {
       v14 = @"NO";
       v16 = 138412802;
-      if (v12)
+      if (bOOLValue)
       {
         v14 = @"YES";
       }
 
       v17 = v14;
       v18 = 2112;
-      v19 = v5;
+      v19 = numberCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Operator/EnablePreviewTranscodingQuality: %@ for phone number %@ simID %@", &v16, 0x20u);
     }
   }
 
-  return v12;
+  return bOOLValue;
 }
 
-- (BOOL)readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)readDisablePreviewTranscodingQualityOnWiFiCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v7 = +[IMCTSubscriptionUtilities sharedInstance];
-    v8 = [v7 ctSubscriptionInfo];
-    v9 = [v8 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v7 ctSubscriptionInfo];
+    v9 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
     if (v9)
     {
       v10 = +[IMCTSubscriptionUtilities sharedInstance];
       v11 = [v10 copyOperatorBundleValueForSubscriptionContext:v9 keyHierarchy:&unk_1F1BFAEC8 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v12 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v12 = IMGetCachedDomainBoolForKeyWithDefaultValue();
+    bOOLValue = IMGetCachedDomainBoolForKeyWithDefaultValue();
   }
 
   if (IMOSLoggingEnabled())
@@ -534,50 +534,50 @@ LABEL_35:
     {
       v14 = @"NO";
       v16 = 138412802;
-      if (v12)
+      if (bOOLValue)
       {
         v14 = @"YES";
       }
 
       v17 = v14;
       v18 = 2112;
-      v19 = v5;
+      v19 = numberCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Operator/DisablePreviewTranscodingQualityOnWiFi: %@ for phone number %@ simID %@", &v16, 0x20u);
     }
   }
 
-  return v12;
+  return bOOLValue;
 }
 
-- (BOOL)readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)readDisablePreviewTranscodingQualityOnWRMCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v7 = +[IMCTSubscriptionUtilities sharedInstance];
-    v8 = [v7 ctSubscriptionInfo];
-    v9 = [v8 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v7 ctSubscriptionInfo];
+    v9 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
     if (v9)
     {
       v10 = +[IMCTSubscriptionUtilities sharedInstance];
       v11 = [v10 copyOperatorBundleValueForSubscriptionContext:v9 keyHierarchy:&unk_1F1BFAEE0 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E118]];
-      v12 = [v11 BOOLValue];
+      bOOLValue = [v11 BOOLValue];
     }
 
     else
     {
-      v12 = 1;
+      bOOLValue = 1;
     }
   }
 
   else
   {
-    v12 = IMGetCachedDomainBoolForKeyWithDefaultValue();
+    bOOLValue = IMGetCachedDomainBoolForKeyWithDefaultValue();
   }
 
   if (IMOSLoggingEnabled())
@@ -587,50 +587,50 @@ LABEL_35:
     {
       v14 = @"NO";
       v16 = 138412802;
-      if (v12)
+      if (bOOLValue)
       {
         v14 = @"YES";
       }
 
       v17 = v14;
       v18 = 2112;
-      v19 = v5;
+      v19 = numberCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Operator/DisablePreviewTranscodingQualityOnWRMRecommendation: %@ for phone number %@ simID %@", &v16, 0x20u);
     }
   }
 
-  return v12;
+  return bOOLValue;
 }
 
-- (unint64_t)readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)a3 simID:(id)a4
+- (unint64_t)readAttachmentPreviewTranscodingQualitySizeCarrierValueForPhoneNumber:(id)number simID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v7 = +[IMCTSubscriptionUtilities sharedInstance];
-    v8 = [v7 ctSubscriptionInfo];
-    v9 = [v8 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v7 ctSubscriptionInfo];
+    v9 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
     if (v9)
     {
       v10 = +[IMCTSubscriptionUtilities sharedInstance];
       v11 = [v10 copyOperatorBundleValueForSubscriptionContext:v9 keyHierarchy:&unk_1F1BFAEF8 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-      v12 = [v11 intValue];
+      intValue = [v11 intValue];
     }
 
     else
     {
-      v12 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v12 = IMGetCachedDomainIntForKeyWithDefaultValue();
+    intValue = IMGetCachedDomainIntForKeyWithDefaultValue();
   }
 
   if (IMOSLoggingEnabled())
@@ -638,25 +638,25 @@ LABEL_35:
     v13 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:intValue];
       v16 = 138412802;
       v17 = v14;
       v18 = 2112;
-      v19 = v5;
+      v19 = numberCopy;
       v20 = 2112;
-      v21 = v6;
+      v21 = dCopy;
       _os_log_impl(&dword_1A85E5000, v13, OS_LOG_TYPE_INFO, "Operator/AttachmentPreviewTranscodingQualitySize: %@ for phone number %@ simID %@", &v16, 0x20u);
     }
   }
 
-  return v12;
+  return intValue;
 }
 
-- (BOOL)mmsSupportedAndConfiguredForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsSupportedAndConfiguredForPhoneNumber:(id)number simID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperDeviceIsAltAccount() & 1) != 0 || ([MEMORY[0x1E699BE70] sharedInstance], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "supportsMMS"), v7, (v8))
   {
     if (qword_1ED8CA318 != -1)
@@ -668,16 +668,16 @@ LABEL_35:
     if (IMSharedHelperRetrieveSimDetailsFromTelephony())
     {
       v9 = +[IMCTSubscriptionUtilities sharedInstance];
-      v20 = [v9 ctSubscriptionInfo];
+      ctSubscriptionInfo = [v9 ctSubscriptionInfo];
 
-      v10 = [v20 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
       if (v10)
       {
         v11 = 3;
         do
         {
-          v12 = [qword_1EB30A9D8 sharedMessageCenter];
-          v13 = [v12 isMmsEnabledForSub:v10 enabled:&v21];
+          sharedMessageCenter = [qword_1EB30A9D8 sharedMessageCenter];
+          v13 = [sharedMessageCenter isMmsEnabledForSub:v10 enabled:&v21];
 
           if (!v13)
           {
@@ -713,7 +713,7 @@ LABEL_35:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v23 = v5;
+            v23 = numberCopy;
             _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "Could not find whether MMS was enabled because no context was found for phone number %@. Returning NO", buf, 0xCu);
           }
         }
@@ -721,13 +721,13 @@ LABEL_35:
         v21 = 0;
       }
 
-      v16 = v21;
+      isMmsConfigured = v21;
     }
 
     else
     {
-      v15 = [qword_1EB30A9D8 sharedMessageCenter];
-      v16 = [v15 isMmsConfigured];
+      sharedMessageCenter2 = [qword_1EB30A9D8 sharedMessageCenter];
+      isMmsConfigured = [sharedMessageCenter2 isMmsConfigured];
     }
   }
 
@@ -743,29 +743,29 @@ LABEL_35:
       }
     }
 
-    v16 = 0;
+    isMmsConfigured = 0;
   }
 
-  return v16 & 1;
+  return isMmsConfigured & 1;
 }
 
-- (int)mmsMaximumSlideCountForPhoneNumber:(id)a3 simID:(id)a4
+- (int)mmsMaximumSlideCountForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10)
       {
         v11 = +[IMCTSubscriptionUtilities sharedInstance];
         v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAF10 defaultValue:&unk_1F1BFA730 valueIfError:&unk_1F1BFA748];
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
       }
 
       else
@@ -780,36 +780,36 @@ LABEL_35:
           }
         }
 
-        v13 = 0;
+        intValue = 0;
       }
     }
 
     else
     {
-      v13 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v13 = IMMMSMaximumSlideCount();
+    intValue = IMMMSMaximumSlideCount();
   }
 
-  return v13;
+  return intValue;
 }
 
-- (int)mmsMaximumMessageByteCountForPhoneNumber:(id)a3 simID:(id)a4
+- (int)mmsMaximumMessageByteCountForPhoneNumber:(id)number simID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (!IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v16 = IMMMSMaximumMessageByteCount();
     goto LABEL_28;
   }
 
-  if (![(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+  if (![(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
   {
     if (IMOSLoggingEnabled())
     {
@@ -817,9 +817,9 @@ LABEL_35:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v21 = 138412546;
-        *v22 = v6;
+        *v22 = numberCopy;
         *&v22[8] = 2112;
-        *&v22[10] = v7;
+        *&v22[10] = dCopy;
         _os_log_impl(&dword_1A85E5000, v18, OS_LOG_TYPE_INFO, "MMS is not configured for phone number %@ simID %@", &v21, 0x16u);
       }
 
@@ -831,10 +831,10 @@ LABEL_21:
     goto LABEL_28;
   }
 
-  v8 = [MEMORY[0x1E699BE70] sharedInstance];
-  v9 = [v8 deviceType];
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-  if (v9 != 2)
+  if (deviceType != 2)
   {
     if (IMOSLoggingEnabled())
     {
@@ -855,23 +855,23 @@ LABEL_20:
   }
 
   v10 = +[IMCTSubscriptionUtilities sharedInstance];
-  v11 = [v10 ctSubscriptionInfo];
-  v12 = [v11 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+  ctSubscriptionInfo = [v10 ctSubscriptionInfo];
+  v12 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
   if (v12)
   {
     v13 = +[IMCTSubscriptionUtilities sharedInstance];
     v14 = [v13 copyCarrierBundleValueForSubscriptionContext:v12 keyHierarchy:&unk_1F1BFAF28 defaultValue:&unk_1F1BFA760 valueIfError:&unk_1F1BFA748];
-    v15 = [v14 intValue];
+    intValue = [v14 intValue];
 
-    if (v15 <= 0)
+    if (intValue <= 0)
     {
       v16 = 0x100000;
     }
 
     else
     {
-      v16 = v15;
+      v16 = intValue;
     }
 
     if (IMOSLoggingEnabled())
@@ -882,9 +882,9 @@ LABEL_20:
         v21 = 67109634;
         *v22 = v16;
         *&v22[4] = 2112;
-        *&v22[6] = v6;
+        *&v22[6] = numberCopy;
         *&v22[14] = 2112;
-        *&v22[16] = v7;
+        *&v22[16] = dCopy;
         _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "Settng MaxMessageSize to:%d for phone number: %@ simID %@", &v21, 0x1Cu);
       }
     }
@@ -900,9 +900,9 @@ LABEL_20:
         v21 = 67109634;
         *v22 = 0x100000;
         *&v22[4] = 2112;
-        *&v22[6] = v6;
+        *&v22[6] = numberCopy;
         *&v22[14] = 2112;
-        *&v22[16] = v7;
+        *&v22[16] = dCopy;
         _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "No context found, returning %d for MaxMessageSize for phone number: %@ simID %@", &v21, 0x1Cu);
       }
     }
@@ -914,28 +914,28 @@ LABEL_28:
   return v16;
 }
 
-- (BOOL)mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:(id)number simID:(id)d
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
-      v8 = [MEMORY[0x1E699BE70] sharedInstance];
-      [v8 deviceType];
+      mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+      [mEMORY[0x1E699BE70] deviceType];
 
       v9 = +[IMCTSubscriptionUtilities sharedInstance];
-      v10 = [v9 ctSubscriptionInfo];
-      v11 = [v10 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v9 ctSubscriptionInfo];
+      v11 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v11)
       {
         CFPreferencesSynchronize(@"com.apple.MobileSMS", *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E898]);
         v12 = +[IMCTSubscriptionUtilities sharedInstance];
         v13 = [v12 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_1F1BFAF40 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E118]];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
         if (IMOSLoggingEnabled())
         {
@@ -943,7 +943,7 @@ LABEL_28:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
           {
             v16 = @"NO";
-            if (v14)
+            if (bOOLValue)
             {
               v16 = @"YES";
             }
@@ -954,11 +954,11 @@ LABEL_28:
           }
         }
 
-        if ((v14 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v17 = +[IMCTSubscriptionUtilities sharedInstance];
           v18 = [v17 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_1F1BFAF58 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-          v19 = [v18 BOOLValue];
+          bOOLValue2 = [v18 BOOLValue];
 
           if (IMOSLoggingEnabled())
           {
@@ -966,7 +966,7 @@ LABEL_28:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               v21 = @"NO";
-              if (v19)
+              if (bOOLValue2)
               {
                 v21 = @"YES";
               }
@@ -987,16 +987,16 @@ LABEL_28:
         if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
         {
           v25 = 138412802;
-          v26 = v6;
+          v26 = numberCopy;
           v27 = 2112;
-          v28 = v7;
+          v28 = dCopy;
           v29 = 2112;
           v30 = @"YES";
           _os_log_impl(&dword_1A85E5000, v23, OS_LOG_TYPE_INFO, "Could not find group mode enabled value because no context was found for phone number %@ simID %@. Defaulting to %@", &v25, 0x20u);
         }
       }
 
-      LOBYTE(v19) = 1;
+      LOBYTE(bOOLValue2) = 1;
 LABEL_28:
 
       goto LABEL_29;
@@ -1008,44 +1008,44 @@ LABEL_28:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v25 = 138412546;
-        v26 = v6;
+        v26 = numberCopy;
         v27 = 2112;
-        v28 = v7;
+        v28 = dCopy;
         _os_log_impl(&dword_1A85E5000, v22, OS_LOG_TYPE_INFO, "MMS is not configured for phone number %@ simID %@", &v25, 0x16u);
       }
     }
 
-    LOBYTE(v19) = 0;
+    LOBYTE(bOOLValue2) = 0;
   }
 
   else
   {
-    LOBYTE(v19) = 1;
+    LOBYTE(bOOLValue2) = 1;
   }
 
 LABEL_29:
 
-  return v19;
+  return bOOLValue2;
 }
 
-- (BOOL)mmsGroupTextReplicationSupportedForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsGroupTextReplicationSupportedForPhoneNumber:(id)number simID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(IMCTSMSUtilitiesManager *)self mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:v6 simID:v7])
+  numberCopy = number;
+  dCopy = d;
+  if ([(IMCTSMSUtilitiesManager *)self mmsGroupTextOnlyMessagesSendAsMMSForPhoneNumber:numberCopy simID:dCopy])
   {
     if (IMSharedHelperRetrieveSimDetailsFromTelephony())
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10)
       {
         v11 = +[IMCTSubscriptionUtilities sharedInstance];
         v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAF70 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E118]];
-        v13 = [v12 BOOLValue];
+        bOOLValue = [v12 BOOLValue];
 
         if (IMOSLoggingEnabled())
         {
@@ -1054,14 +1054,14 @@ LABEL_29:
           {
             v15 = @"NO";
             v19 = 138412802;
-            v20 = v6;
+            v20 = numberCopy;
             v21 = 2112;
-            if (v13)
+            if (bOOLValue)
             {
               v15 = @"YES";
             }
 
-            v22 = v7;
+            v22 = dCopy;
             v23 = 2112;
             v24 = v15;
             _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Hybrid groups enabled by carrier for %@ %@: %@", &v19, 0x20u);
@@ -1077,22 +1077,22 @@ LABEL_29:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             v19 = 138412802;
-            v20 = v6;
+            v20 = numberCopy;
             v21 = 2112;
-            v22 = v7;
+            v22 = dCopy;
             v23 = 2112;
             v24 = @"YES";
             _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "Could not find group replication enabled value because no context was found for phone number %@ simID %@. Defaulting to %@", &v19, 0x20u);
           }
         }
 
-        LOBYTE(v13) = 1;
+        LOBYTE(bOOLValue) = 1;
       }
     }
 
     else
     {
-      LOBYTE(v13) = 1;
+      LOBYTE(bOOLValue) = 1;
     }
   }
 
@@ -1109,17 +1109,17 @@ LABEL_29:
       }
     }
 
-    LOBYTE(v13) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsGroupTextReplicationSupportsSMILContentLocationForPhoneNumber:(id)number simID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   v7 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:1];
   v8 = [v7 objectForKey:@"disable-hybrid-smil-content-location"];
   v9 = v8;
@@ -1135,20 +1135,20 @@ LABEL_29:
       }
     }
 
-    LOBYTE(v11) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   else if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v12 = +[IMCTSubscriptionUtilities sharedInstance];
-    v13 = [v12 ctSubscriptionInfo];
-    v14 = [v13 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    ctSubscriptionInfo = [v12 ctSubscriptionInfo];
+    v14 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
     if (v14)
     {
       v15 = +[IMCTSubscriptionUtilities sharedInstance];
       v16 = [v15 copyCarrierBundleValueForSubscriptionContext:v14 keyHierarchy:&unk_1F1BFAF88 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E118]];
-      v11 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
 
       if (IMOSLoggingEnabled())
       {
@@ -1157,14 +1157,14 @@ LABEL_29:
         {
           v18 = @"NO";
           v21 = 138412802;
-          v22 = v5;
+          v22 = numberCopy;
           v23 = 2112;
-          if (v11)
+          if (bOOLValue)
           {
             v18 = @"YES";
           }
 
-          v24 = v6;
+          v24 = dCopy;
           v25 = 2112;
           v26 = v18;
           _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "SMIL content location supports Apple message identifier for %@ %@: %@", &v21, 0x20u);
@@ -1180,56 +1180,56 @@ LABEL_29:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           v21 = 138412802;
-          v22 = v5;
+          v22 = numberCopy;
           v23 = 2112;
-          v24 = v6;
+          v24 = dCopy;
           v25 = 2112;
           v26 = @"YES";
           _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Could not find whether SMIL content location supports Apple message identifiers because no context was found for phone number %@ simID %@. Defaulting to %@", &v21, 0x20u);
         }
       }
 
-      LOBYTE(v11) = 1;
+      LOBYTE(bOOLValue) = 1;
     }
   }
 
   else
   {
-    LOBYTE(v11) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
-  return v11;
+  return bOOLValue;
 }
 
-- (int)mmsMaxRecipientsForPhoneNumber:(id)a3 simID:(id)a4
+- (int)mmsMaxRecipientsForPhoneNumber:(id)number simID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10)
       {
         v11 = +[IMCTSubscriptionUtilities sharedInstance];
         v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAFA0 defaultValue:&unk_1F1BFA730 valueIfError:&unk_1F1BFA730];
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
 
-        if (v13 >= 1)
+        if (intValue >= 1)
         {
-          if (v13 <= 0xA)
+          if (intValue <= 0xA)
           {
             v14 = 10;
           }
 
           else
           {
-            v14 = v13;
+            v14 = intValue;
           }
 
           if (IMOSLoggingEnabled())
@@ -1240,7 +1240,7 @@ LABEL_29:
               v18[0] = 67109376;
               v18[1] = v14;
               v19 = 1024;
-              v20 = v13;
+              v20 = intValue;
               _os_log_impl(&dword_1A85E5000, v15, OS_LOG_TYPE_INFO, "Setting  maxNumberOfRecipents to %d, maxValue from Dictionary was %d", v18, 0xEu);
             }
           }
@@ -1278,24 +1278,24 @@ LABEL_20:
   return v14;
 }
 
-- (int)mmsMaxImageDimensionForPhoneNumber:(id)a3 simID:(id)a4
+- (int)mmsMaxImageDimensionForPhoneNumber:(id)number simID:(id)d
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10)
       {
         v11 = +[IMCTSubscriptionUtilities sharedInstance];
         v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAFB8 defaultValue:&unk_1F1BFA730 valueIfError:&unk_1F1BFA730];
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
 
         if (IMOSLoggingEnabled())
         {
@@ -1303,11 +1303,11 @@ LABEL_20:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             v17 = 67109634;
-            v18 = v13;
+            v18 = intValue;
             v19 = 2112;
-            v20 = v6;
+            v20 = numberCopy;
             v21 = 2112;
-            v22 = v7;
+            v22 = dCopy;
             _os_log_impl(&dword_1A85E5000, v14, OS_LOG_TYPE_INFO, "Setting MaxImageDimension to %d, for phone number %@ simID %@", &v17, 0x1Cu);
           }
         }
@@ -1326,43 +1326,43 @@ LABEL_20:
           }
         }
 
-        v13 = 0x7FFFFFFF;
+        intValue = 0x7FFFFFFF;
       }
     }
 
     else
     {
-      v13 = 0x7FFFFFFF;
+      intValue = 0x7FFFFFFF;
     }
   }
 
   else
   {
-    v13 = IMMMSMaxImageDimension();
+    intValue = IMMMSMaxImageDimension();
   }
 
-  return v13;
+  return intValue;
 }
 
-- (BOOL)mmsSupportsH264VideoForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsSupportsH264VideoForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10)
       {
         v11 = +[IMCTSubscriptionUtilities sharedInstance];
         v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAFD0 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-        v13 = [v12 intValue];
+        intValue = [v12 intValue];
 
-        v14 = v13 > 0;
+        v14 = intValue > 0;
       }
 
       else
@@ -1395,10 +1395,10 @@ LABEL_20:
   return v14;
 }
 
-- (double)mmsMaximumAudioDurationForPhoneNumber:(id)a3 simID:(id)a4
+- (double)mmsMaximumAudioDurationForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     if (qword_1EB30B498 != -1)
@@ -1406,7 +1406,7 @@ LABEL_20:
       sub_1A88C5304();
     }
 
-    [(IMCTSMSUtilitiesManager *)self mmsMaximumDurationWithPreset:qword_1EB30B4A0 phoneNumber:v6 simID:v7];
+    [(IMCTSMSUtilitiesManager *)self mmsMaximumDurationWithPreset:qword_1EB30B4A0 phoneNumber:numberCopy simID:dCopy];
   }
 
   else
@@ -1424,10 +1424,10 @@ LABEL_20:
   return v9;
 }
 
-- (double)mmsMaximumVideoDurationForPhoneNumber:(id)a3 simID:(id)a4
+- (double)mmsMaximumVideoDurationForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     if (qword_1EB30B4B8 != -1)
@@ -1435,7 +1435,7 @@ LABEL_20:
       sub_1A88C5354();
     }
 
-    [(IMCTSMSUtilitiesManager *)self mmsMaximumDurationWithPreset:qword_1EB30B4C0 phoneNumber:v6 simID:v7];
+    [(IMCTSMSUtilitiesManager *)self mmsMaximumDurationWithPreset:qword_1EB30B4C0 phoneNumber:numberCopy simID:dCopy];
   }
 
   else
@@ -1453,12 +1453,12 @@ LABEL_20:
   return v9;
 }
 
-- (double)mmsMaximumDurationWithPreset:(id)a3 phoneNumber:(id)a4 simID:(id)a5
+- (double)mmsMaximumDurationWithPreset:(id)preset phoneNumber:(id)number simID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  presetCopy = preset;
+  numberCopy = number;
+  dCopy = d;
+  if (presetCopy)
   {
     if (qword_1EB30B4E0 != -1)
     {
@@ -1470,13 +1470,13 @@ LABEL_20:
       sub_1A88C537C();
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:{-[IMCTSMSUtilitiesManager mmsMaximumMessageByteCountForPhoneNumber:simID:](self, "mmsMaximumMessageByteCountForPhoneNumber:simID:", v9, v10)}];
+    v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:{-[IMCTSMSUtilitiesManager mmsMaximumMessageByteCountForPhoneNumber:simID:](self, "mmsMaximumMessageByteCountForPhoneNumber:simID:", numberCopy, dCopy)}];
     v12 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v11, @"fileLengthLimit", 0}];
     v17 = 0uLL;
     v18 = 0;
     if (qword_1EB30B4D8)
     {
-      [qword_1EB30B4D8 maximumDurationForPreset:v8 properties:v12];
+      [qword_1EB30B4D8 maximumDurationForPreset:presetCopy properties:v12];
     }
 
     v15 = v17;
@@ -1492,28 +1492,28 @@ LABEL_20:
   return v13;
 }
 
-- (void)iMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
+- (void)iMessageMaxTransferFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
   v27 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  bagCopy = bag;
+  phoneNumberCopy = phoneNumber;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v15 = [v12 objectForKey:@"att-wifi-max-file-size"];
-    v16 = [v15 unsignedIntegerValue];
+    v15 = [bagCopy objectForKey:@"att-wifi-max-file-size"];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    v17 = [v12 objectForKey:@"att-cellular-max-file-size"];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [bagCopy objectForKey:@"att-cellular-max-file-size"];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-    if (!v16)
+    if (!unsignedIntegerValue)
     {
-      v16 = 10485760;
+      unsignedIntegerValue = 10485760;
     }
 
-    if (v18)
+    if (unsignedIntegerValue2)
     {
-      v19 = v18;
+      v19 = unsignedIntegerValue2;
     }
 
     else
@@ -1521,24 +1521,24 @@ LABEL_20:
       v19 = 0x400000;
     }
 
-    if (a3)
+    if (number)
     {
-      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v13 simID:v14])
+      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:phoneNumberCopy simID:dCopy])
       {
-        v20 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:v13 simID:v14];
-        if (v16 <= v20)
+        v20 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:phoneNumberCopy simID:dCopy];
+        if (unsignedIntegerValue <= v20)
         {
-          v16 = v20;
+          unsignedIntegerValue = v20;
         }
       }
 
-      *a3 = v16;
+      *number = unsignedIntegerValue;
       if (IMOSLoggingEnabled())
       {
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
-          v22 = *a3;
+          v22 = *number;
           v25 = 134217984;
           v26 = v22;
           _os_log_impl(&dword_1A85E5000, v21, OS_LOG_TYPE_INFO, "Returning carrier bundle value %tu for key IMiMessageMaxTransferFileSizeForWifiForPhoneNumber", &v25, 0xCu);
@@ -1556,22 +1556,22 @@ LABEL_20:
       }
     }
 
-    if (a4)
+    if (size)
     {
-      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v13 simID:v14])
+      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:phoneNumberCopy simID:dCopy])
       {
-        v24 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:v13 simID:v14];
+        v24 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:phoneNumberCopy simID:dCopy];
         if (v19 > v24)
         {
           v24 = v19;
         }
 
-        *a4 = v24;
+        *size = v24;
       }
 
       else
       {
-        *a4 = v19;
+        *size = v19;
       }
     }
   }
@@ -1582,39 +1582,39 @@ LABEL_20:
   }
 }
 
-- (unint64_t)iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
+- (unint64_t)iMessageMaxTransferAudioFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  bagCopy = bag;
+  phoneNumberCopy = phoneNumber;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v15 = [v12 objectForKey:@"att-wifi-audio-max-file-size"];
-    v16 = [v15 unsignedIntegerValue];
+    v15 = [bagCopy objectForKey:@"att-wifi-audio-max-file-size"];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    v17 = [v12 objectForKey:@"att-wifi-audio-cellular-file-size"];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [bagCopy objectForKey:@"att-wifi-audio-cellular-file-size"];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-    if (!v16)
+    if (!unsignedIntegerValue)
     {
-      v16 = 10485760;
+      unsignedIntegerValue = 10485760;
     }
 
-    if (!v18)
+    if (!unsignedIntegerValue2)
     {
-      v18 = 0x400000;
+      unsignedIntegerValue2 = 0x400000;
     }
 
-    if (a3)
+    if (number)
     {
-      *a3 = v16;
+      *number = unsignedIntegerValue;
       if (IMOSLoggingEnabled())
       {
         v19 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = *a3;
+          v20 = *number;
           v24 = 134217984;
           v25 = v20;
           _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Returning carrier bundle value %tu for key IMiMessageMaxTransferAudioFileSizeForWifiForPhoneNumber", &v24, 0xCu);
@@ -1632,67 +1632,67 @@ LABEL_20:
       }
     }
 
-    if (a4)
+    if (size)
     {
-      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v13 simID:v14])
+      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:phoneNumberCopy simID:dCopy])
       {
-        v22 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:v13 simID:v14];
-        if (v18 > v22)
+        v22 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:phoneNumberCopy simID:dCopy];
+        if (unsignedIntegerValue2 > v22)
         {
-          v22 = v18;
+          v22 = unsignedIntegerValue2;
         }
 
-        *a4 = v22;
+        *size = v22;
       }
 
       else
       {
-        *a4 = v18;
+        *size = unsignedIntegerValue2;
       }
     }
   }
 
   else
   {
-    v16 = IMiMessageMaxTransferAudioFileSizeForWifi();
+    unsignedIntegerValue = IMiMessageMaxTransferAudioFileSizeForWifi();
   }
 
-  return v16;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)a3 cellSize:(unint64_t *)a4 serverConfigurationBag:(id)a5 phoneNumber:(id)a6 simID:(id)a7
+- (unint64_t)iMessageMaxTransferVideoFileSizeForWifiForPhoneNumber:(unint64_t *)number cellSize:(unint64_t *)size serverConfigurationBag:(id)bag phoneNumber:(id)phoneNumber simID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  bagCopy = bag;
+  phoneNumberCopy = phoneNumber;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v15 = [v12 objectForKey:@"att-wifi-video-max-file-size"];
-    v16 = [v15 unsignedIntegerValue];
+    v15 = [bagCopy objectForKey:@"att-wifi-video-max-file-size"];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
 
-    v17 = [v12 objectForKey:@"att-wifi-video-cellular-file-size"];
-    v18 = [v17 unsignedIntegerValue];
+    v17 = [bagCopy objectForKey:@"att-wifi-video-cellular-file-size"];
+    unsignedIntegerValue2 = [v17 unsignedIntegerValue];
 
-    if (!v16)
+    if (!unsignedIntegerValue)
     {
-      v16 = 10485760;
+      unsignedIntegerValue = 10485760;
     }
 
-    if (!v18)
+    if (!unsignedIntegerValue2)
     {
-      v18 = 0x400000;
+      unsignedIntegerValue2 = 0x400000;
     }
 
-    if (a3)
+    if (number)
     {
-      *a3 = v16;
+      *number = unsignedIntegerValue;
       if (IMOSLoggingEnabled())
       {
         v19 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = *a3;
+          v20 = *number;
           v24 = 134217984;
           v25 = v20;
           _os_log_impl(&dword_1A85E5000, v19, OS_LOG_TYPE_INFO, "Returning carrier bundle value %tu for key IMiMessageMaxTransferVideoFileSizeForWifiForPhoneNumber", &v24, 0xCu);
@@ -1710,45 +1710,45 @@ LABEL_20:
       }
     }
 
-    if (a4)
+    if (size)
     {
-      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v13 simID:v14])
+      if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:phoneNumberCopy simID:dCopy])
       {
-        v22 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:v13 simID:v14];
-        if (v18 > v22)
+        v22 = [(IMCTSMSUtilitiesManager *)self mmsMaximumMessageByteCountForPhoneNumber:phoneNumberCopy simID:dCopy];
+        if (unsignedIntegerValue2 > v22)
         {
-          v22 = v18;
+          v22 = unsignedIntegerValue2;
         }
 
-        *a4 = v22;
+        *size = v22;
       }
 
       else
       {
-        *a4 = v18;
+        *size = unsignedIntegerValue2;
       }
     }
   }
 
   else
   {
-    v16 = IMiMessageMaxTransferAudioFileSizeForWifi();
+    unsignedIntegerValue = IMiMessageMaxTransferAudioFileSizeForWifi();
   }
 
-  return v16;
+  return unsignedIntegerValue;
 }
 
-- (id)mmsEmailAddressToMatchForPhoneNumber:(id)a3 simID:(id)a4
+- (id)mmsEmailAddressToMatchForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:v6 simID:v7])
+    if ([(IMCTSMSUtilitiesManager *)self mmsEnabledForPhoneNumber:numberCopy simID:dCopy])
     {
       v8 = +[IMCTSubscriptionUtilities sharedInstance];
-      v9 = [v8 ctSubscriptionInfo];
-      v10 = [v9 __im_subscriptionContextOrDefaultForForSimID:v7 phoneNumber:v6];
+      ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+      v10 = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
 
       if (v10 && (+[IMCTSubscriptionUtilities sharedInstance](IMCTSubscriptionUtilities, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 copyCarrierBundleValueForSubscriptionContext:v10 keyHierarchy:&unk_1F1BFAFE8 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]], v13 = objc_msgSend(v12, "BOOLValue"), v12, v11, v13))
       {
@@ -1779,49 +1779,49 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)shouldShowMMSEmailAddress:(id)a3 simID:(id)a4
+- (BOOL)shouldShowMMSEmailAddress:(id)address simID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  addressCopy = address;
+  dCopy = d;
   SimDetailsFromTelephony = IMSharedHelperRetrieveSimDetailsFromTelephony();
   v8 = +[IMCTSubscriptionUtilities sharedInstance];
-  v9 = [v8 ctSubscriptionInfo];
-  v10 = v9;
+  ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+  ctSubscriptionInfo2 = ctSubscriptionInfo;
   if (SimDetailsFromTelephony)
   {
-    v11 = [v9 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    firstObject = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:addressCopy];
   }
 
   else
   {
-    v12 = [v9 subscriptions];
-    v13 = [v12 count];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    v13 = [subscriptions count];
 
     if (v13 != 1)
     {
-      v11 = 0;
+      firstObject = 0;
       goto LABEL_8;
     }
 
     v8 = +[IMCTSubscriptionUtilities sharedInstance];
-    v10 = [v8 ctSubscriptionInfo];
-    v14 = [v10 subscriptions];
-    v11 = [v14 firstObject];
+    ctSubscriptionInfo2 = [v8 ctSubscriptionInfo];
+    subscriptions2 = [ctSubscriptionInfo2 subscriptions];
+    firstObject = [subscriptions2 firstObject];
   }
 
-  if (v11)
+  if (firstObject)
   {
     v15 = +[IMCTSubscriptionUtilities sharedInstance];
-    v16 = [v15 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_1F1BFB000 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-    v17 = [v16 BOOLValue];
+    v16 = [v15 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_1F1BFB000 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
+    bOOLValue = [v16 BOOLValue];
 
     v18 = @"YES";
     goto LABEL_9;
   }
 
 LABEL_8:
-  v17 = 0;
+  bOOLValue = 0;
   v18 = @"NO";
 LABEL_9:
   if (IMOSLoggingEnabled())
@@ -1830,7 +1830,7 @@ LABEL_9:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = @"NO";
-      if (v17)
+      if (bOOLValue)
       {
         v20 = @"YES";
       }
@@ -1843,13 +1843,13 @@ LABEL_9:
     }
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-- (BOOL)isEagerUploadEnabledForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)isEagerUploadEnabledForPhoneNumber:(id)number simID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  dCopy = d;
   v8 = [MEMORY[0x1E69A53F0] sharedInstanceForBagType:1];
   v9 = [v8 objectForKey:@"disable-eager-upload"];
   v10 = v9;
@@ -1874,10 +1874,10 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v14 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v15 = [v14 isInternalInstall];
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v15 && (IMGetCachedDomainBoolForKeyWithDefaultValue() & 1) == 0)
+  if (isInternalInstall && (IMGetCachedDomainBoolForKeyWithDefaultValue() & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -1898,7 +1898,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v16 = [(IMCTSMSUtilitiesManager *)self mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:v6 simID:v7];
+  v16 = [(IMCTSMSUtilitiesManager *)self mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:numberCopy simID:dCopy];
   if (v16 && IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
@@ -1915,49 +1915,49 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)a3 simID:(id)a4
+- (BOOL)mmsEagerUploadDisabledInCarrierBundleForPhoneNumber:(id)number simID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   SimDetailsFromTelephony = IMSharedHelperRetrieveSimDetailsFromTelephony();
   v8 = +[IMCTSubscriptionUtilities sharedInstance];
-  v9 = [v8 ctSubscriptionInfo];
-  v10 = v9;
+  ctSubscriptionInfo = [v8 ctSubscriptionInfo];
+  ctSubscriptionInfo2 = ctSubscriptionInfo;
   if (SimDetailsFromTelephony)
   {
-    v11 = [v9 __im_subscriptionContextOrDefaultForForSimID:v6 phoneNumber:v5];
+    firstObject = [ctSubscriptionInfo __im_subscriptionContextOrDefaultForForSimID:dCopy phoneNumber:numberCopy];
   }
 
   else
   {
-    v12 = [v9 subscriptions];
-    v13 = [v12 count];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    v13 = [subscriptions count];
 
     if (v13 != 1)
     {
-      v11 = 0;
+      firstObject = 0;
       goto LABEL_8;
     }
 
     v8 = +[IMCTSubscriptionUtilities sharedInstance];
-    v10 = [v8 ctSubscriptionInfo];
-    v14 = [v10 subscriptions];
-    v11 = [v14 firstObject];
+    ctSubscriptionInfo2 = [v8 ctSubscriptionInfo];
+    subscriptions2 = [ctSubscriptionInfo2 subscriptions];
+    firstObject = [subscriptions2 firstObject];
   }
 
-  if (v11)
+  if (firstObject)
   {
     v15 = +[IMCTSubscriptionUtilities sharedInstance];
-    v16 = [v15 copyCarrierBundleValueForSubscriptionContext:v11 keyHierarchy:&unk_1F1BFB018 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
-    v17 = [v16 BOOLValue];
+    v16 = [v15 copyCarrierBundleValueForSubscriptionContext:firstObject keyHierarchy:&unk_1F1BFB018 defaultValue:MEMORY[0x1E695E110] valueIfError:MEMORY[0x1E695E110]];
+    bOOLValue = [v16 BOOLValue];
 
     v18 = @"NO";
     goto LABEL_9;
   }
 
 LABEL_8:
-  v17 = 0;
+  bOOLValue = 0;
   v18 = @"YES";
 LABEL_9:
   if (IMOSLoggingEnabled())
@@ -1966,7 +1966,7 @@ LABEL_9:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = @"NO";
-      if (v17)
+      if (bOOLValue)
       {
         v20 = @"YES";
       }
@@ -1979,17 +1979,17 @@ LABEL_9:
     }
   }
 
-  return v17;
+  return bOOLValue;
 }
 
-- (BOOL)mmsRestrictedModeEnabledForPhoneNumber:(id)a3 simID:(id)a4 reset:(BOOL)a5
+- (BOOL)mmsRestrictedModeEnabledForPhoneNumber:(id)number simID:(id)d reset:(BOOL)reset
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  resetCopy = reset;
+  numberCopy = number;
+  dCopy = d;
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
-    v10 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:v8 simID:v9];
+    v10 = [(IMCTSMSUtilitiesManager *)self uniqueIdentifierForPhoneNumber:numberCopy simID:dCopy];
     if (v10)
     {
       keyExistsAndHasValidFormat = 0;
@@ -1998,7 +1998,7 @@ LABEL_9:
       v13 = AppBooleanValue != 0;
       if (AppBooleanValue)
       {
-        v14 = !v5;
+        v14 = !resetCopy;
       }
 
       else
@@ -2038,11 +2038,11 @@ LABEL_9:
   return v13;
 }
 
-- (void)synchronizeMMSCapabilityToWatch:(BOOL)a3
+- (void)synchronizeMMSCapabilityToWatch:(BOOL)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   v24 = *MEMORY[0x1E69E9840];
-  if (qword_1ED8C9948 && ([MEMORY[0x1E695DF00] date], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "timeIntervalSinceDate:", qword_1ED8C9948), v6 = v5, v4, v6 <= 300.0) && (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MMSRelayEnabled", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat), keyExistsAndHasValidFormat == 1) && (AppBooleanValue != 0) == v3)
+  if (qword_1ED8C9948 && ([MEMORY[0x1E695DF00] date], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "timeIntervalSinceDate:", qword_1ED8C9948), v6 = v5, v4, v6 <= 300.0) && (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MMSRelayEnabled", @"com.apple.MobileSMS", &keyExistsAndHasValidFormat), keyExistsAndHasValidFormat == 1) && (AppBooleanValue != 0) == watchCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2060,7 +2060,7 @@ LABEL_9:
           v10 = @"NO";
         }
 
-        if (v3)
+        if (watchCopy)
         {
           v9 = @"YES";
         }
@@ -2080,14 +2080,14 @@ LABEL_9:
     if (v11)
     {
       v12 = objc_alloc_init(v11);
-      CFPreferencesSetAppValue(@"MMSRelayEnabled", [MEMORY[0x1E696AD98] numberWithBool:v3], @"com.apple.MobileSMS");
+      CFPreferencesSetAppValue(@"MMSRelayEnabled", [MEMORY[0x1E696AD98] numberWithBool:watchCopy], @"com.apple.MobileSMS");
       if (IMOSLoggingEnabled())
       {
         v13 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           v14 = @"NO";
-          if (v3)
+          if (watchCopy)
           {
             v14 = @"YES";
           }
@@ -2102,9 +2102,9 @@ LABEL_9:
       v15 = [MEMORY[0x1E695DFD8] setWithObject:@"MMSRelayEnabled"];
       [v12 synchronizeUserDefaultsDomain:@"com.apple.MobileSMS" keys:v15];
 
-      v16 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       v17 = qword_1ED8C9948;
-      qword_1ED8C9948 = v16;
+      qword_1ED8C9948 = date;
     }
 
     else if (IMOSLoggingEnabled())
@@ -2132,12 +2132,12 @@ LABEL_9:
   notify_post("kMMSEnabledDidChange");
 }
 
-- (id)countryCodeForSimSlot:(int64_t)a3
+- (id)countryCodeForSimSlot:(int64_t)slot
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = +[IMCTSubscriptionUtilities sharedInstance];
-  v5 = [v4 ctSubscriptionInfo];
-  v6 = [v5 __im_subscriptionContextForForSlotID:a3];
+  ctSubscriptionInfo = [v4 ctSubscriptionInfo];
+  v6 = [ctSubscriptionInfo __im_subscriptionContextForForSlotID:slot];
 
   if (v6)
   {
@@ -2153,7 +2153,7 @@ LABEL_9:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v11 = 134217984;
-        v12 = a3;
+        slotCopy = slot;
         _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Could not find subscription context for slot %ld", &v11, 0xCu);
       }
     }
@@ -2164,14 +2164,14 @@ LABEL_9:
   return v8;
 }
 
-- (id)countryCodeForPhoneNumber:(id)a3 simID:(id)a4
+- (id)countryCodeForPhoneNumber:(id)number simID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  numberCopy = number;
+  dCopy = d;
   v7 = +[IMCTSubscriptionUtilities sharedInstance];
-  v8 = [v7 ctSubscriptionInfo];
-  v9 = [v8 __im_subscriptionContextForForSimID:v6 phoneNumber:v5];
+  ctSubscriptionInfo = [v7 ctSubscriptionInfo];
+  v9 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
 
   if (v9)
   {
@@ -2187,9 +2187,9 @@ LABEL_9:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v14 = 138412546;
-        v15 = v5;
+        v15 = numberCopy;
         v16 = 2112;
-        v17 = v6;
+        v17 = dCopy;
         _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_INFO, "Could not find subscription context for phone number %@ and sim ID %@", &v14, 0x16u);
       }
     }
@@ -2205,34 +2205,34 @@ LABEL_9:
   v21 = *MEMORY[0x1E69E9840];
   SimDetailsFromTelephony = IMSharedHelperRetrieveSimDetailsFromTelephony();
   v3 = +[IMCTSubscriptionUtilities sharedInstance];
-  v4 = [v3 ctSubscriptionInfo];
-  v5 = v4;
+  ctSubscriptionInfo = [v3 ctSubscriptionInfo];
+  ctSubscriptionInfo2 = ctSubscriptionInfo;
   if (SimDetailsFromTelephony)
   {
-    v6 = [v4 preferredOrDefaultSubscriptionContext];
+    preferredOrDefaultSubscriptionContext = [ctSubscriptionInfo preferredOrDefaultSubscriptionContext];
   }
 
   else
   {
-    v7 = [v4 subscriptions];
-    v8 = [v7 count];
+    subscriptions = [ctSubscriptionInfo subscriptions];
+    v8 = [subscriptions count];
 
     if (v8 != 1)
     {
-      v6 = 0;
+      preferredOrDefaultSubscriptionContext = 0;
       goto LABEL_8;
     }
 
     v3 = +[IMCTSubscriptionUtilities sharedInstance];
-    v5 = [v3 ctSubscriptionInfo];
-    v9 = [v5 subscriptions];
-    v6 = [v9 firstObject];
+    ctSubscriptionInfo2 = [v3 ctSubscriptionInfo];
+    subscriptions2 = [ctSubscriptionInfo2 subscriptions];
+    preferredOrDefaultSubscriptionContext = [subscriptions2 firstObject];
   }
 
-  if (v6)
+  if (preferredOrDefaultSubscriptionContext)
   {
     v10 = +[IMCTSubscriptionUtilities sharedInstance];
-    v11 = [v10 copyCarrierBundleValueForSubscriptionContext:v6 keyHierarchy:&unk_1F1BFB030 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E110]];
+    v11 = [v10 copyCarrierBundleValueForSubscriptionContext:preferredOrDefaultSubscriptionContext keyHierarchy:&unk_1F1BFB030 defaultValue:MEMORY[0x1E695E118] valueIfError:MEMORY[0x1E695E110]];
     v12 = [v11 intValue] != 0;
 
     v13 = @"YES";
@@ -2265,28 +2265,28 @@ LABEL_9:
   return v12;
 }
 
-- (id)carrierBundleValueForKeyHierarchy:(id)a3 phoneNumber:(id)a4 simID:(id)a5
+- (id)carrierBundleValueForKeyHierarchy:(id)hierarchy phoneNumber:(id)number simID:(id)d
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  dCopy = d;
+  numberCopy = number;
+  hierarchyCopy = hierarchy;
   v10 = +[IMCTSubscriptionUtilities sharedInstance];
-  v11 = [v10 ctSubscriptionInfo];
-  v12 = [v11 __im_subscriptionContextForForSimID:v7 phoneNumber:v8];
+  ctSubscriptionInfo = [v10 ctSubscriptionInfo];
+  v12 = [ctSubscriptionInfo __im_subscriptionContextForForSimID:dCopy phoneNumber:numberCopy];
 
   v13 = +[IMCTSubscriptionUtilities sharedInstance];
-  v14 = [v13 copyCarrierBundleValueForSubscriptionContext:v12 keyHierarchy:v9 defaultValue:0 valueIfError:0];
+  v14 = [v13 copyCarrierBundleValueForSubscriptionContext:v12 keyHierarchy:hierarchyCopy defaultValue:0 valueIfError:0];
 
   return v14;
 }
 
-- (id)carrierNameForPhoneNumber:(id)a3
+- (id)carrierNameForPhoneNumber:(id)number
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  numberCopy = number;
   if (MEMORY[0x1AC570A50]())
   {
-    v5 = [(IMCTSMSUtilitiesManager *)self carrierBundleValueForKeyHierarchy:&unk_1F1BFB048 phoneNumber:v4 simID:0];
+    v5 = [(IMCTSMSUtilitiesManager *)self carrierBundleValueForKeyHierarchy:&unk_1F1BFB048 phoneNumber:numberCopy simID:0];
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (IMOSLoggingEnabled())
@@ -2295,7 +2295,7 @@ LABEL_9:
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v8 = 138412546;
-          v9 = v4;
+          v9 = numberCopy;
           v10 = 2112;
           v11 = v5;
           _os_log_impl(&dword_1A85E5000, v6, OS_LOG_TYPE_INFO, "Error getting carrier name for phone number - %@. Carrier Bundle Object -> %@", &v8, 0x16u);
@@ -2312,11 +2312,11 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)smsAllowCaseSensitiveSenderIDForPhoneNumber:(id)a3
+- (BOOL)smsAllowCaseSensitiveSenderIDForPhoneNumber:(id)number
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IMCTSMSUtilitiesManager *)self carrierBundleValueForKeyHierarchy:&unk_1F1BFB060 phoneNumber:v4 simID:0];
+  numberCopy = number;
+  v5 = [(IMCTSMSUtilitiesManager *)self carrierBundleValueForKeyHierarchy:&unk_1F1BFB060 phoneNumber:numberCopy simID:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2324,12 +2324,12 @@ LABEL_9:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
     }
 
     else
     {
-      v8 = 1;
+      bOOLValue = 1;
     }
 
     if (IMOSLoggingEnabled())
@@ -2338,7 +2338,7 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = @"NO";
-        if (v8)
+        if (bOOLValue)
         {
           v11 = @"YES";
         }
@@ -2365,16 +2365,16 @@ LABEL_9:
       }
     }
 
-    LOBYTE(v8) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)shouldUploadToMMCS:(id)a3
+- (BOOL)shouldUploadToMMCS:(id)s
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sCopy = s;
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -2389,8 +2389,8 @@ LABEL_9:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v20 = v3;
-  v5 = [v3 objectForKey:@"k"];
+  v20 = sCopy;
+  v5 = [sCopy objectForKey:@"k"];
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (!v6)
   {
@@ -2483,7 +2483,7 @@ LABEL_29:
   if (IMSharedHelperRetrieveSimDetailsFromTelephony())
   {
     v2 = +[IMCTSubscriptionUtilities sharedInstance];
-    v3 = [v2 ctPhoneNumber];
+    ctPhoneNumber = [v2 ctPhoneNumber];
 
     if (!IMOSLoggingEnabled())
     {
@@ -2494,25 +2494,25 @@ LABEL_29:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = ctPhoneNumber;
       _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "My CT Phone Number from subscription context is: %@", &v10, 0xCu);
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x1E699BE70] sharedInstance];
-    v6 = [v5 telephoneNumber];
+    mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+    telephoneNumber = [mEMORY[0x1E699BE70] telephoneNumber];
 
-    if (v6)
+    if (telephoneNumber)
     {
-      v7 = [MEMORY[0x1E699BE70] sharedInstance];
-      v3 = [v7 telephoneNumber];
+      mEMORY[0x1E699BE70]2 = [MEMORY[0x1E699BE70] sharedInstance];
+      ctPhoneNumber = [mEMORY[0x1E699BE70]2 telephoneNumber];
     }
 
     else
     {
-      v3 = 0;
+      ctPhoneNumber = 0;
     }
 
     if (!IMOSLoggingEnabled())
@@ -2524,13 +2524,13 @@ LABEL_29:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v3;
+      v11 = ctPhoneNumber;
       _os_log_impl(&dword_1A85E5000, v4, OS_LOG_TYPE_INFO, "My CT Phone Number from FTDevice is: %@", &v10, 0xCu);
     }
   }
 
 LABEL_13:
-  v8 = IMNormalizePhoneNumber(v3);
+  v8 = IMNormalizePhoneNumber(ctPhoneNumber);
 
   return v8;
 }

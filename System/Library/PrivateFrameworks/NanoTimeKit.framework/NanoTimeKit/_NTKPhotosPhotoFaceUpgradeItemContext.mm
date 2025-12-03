@@ -1,21 +1,21 @@
 @interface _NTKPhotosPhotoFaceUpgradeItemContext
 - (CGRect)originalCrop;
-- (_NTKPhotosPhotoFaceUpgradeItemContext)initWithPhoto:(id)a3 timeAlignment:(int64_t)a4;
+- (_NTKPhotosPhotoFaceUpgradeItemContext)initWithPhoto:(id)photo timeAlignment:(int64_t)alignment;
 @end
 
 @implementation _NTKPhotosPhotoFaceUpgradeItemContext
 
-- (_NTKPhotosPhotoFaceUpgradeItemContext)initWithPhoto:(id)a3 timeAlignment:(int64_t)a4
+- (_NTKPhotosPhotoFaceUpgradeItemContext)initWithPhoto:(id)photo timeAlignment:(int64_t)alignment
 {
-  v7 = a3;
+  photoCopy = photo;
   v11.receiver = self;
   v11.super_class = _NTKPhotosPhotoFaceUpgradeItemContext;
   v8 = [(_NTKPhotosPhotoFaceUpgradeItemContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_photo, a3);
-    v9->_timeAlignment = a4;
+    objc_storeStrong(&v8->_photo, photo);
+    v9->_timeAlignment = alignment;
   }
 
   return v9;

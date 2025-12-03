@@ -1,18 +1,18 @@
 @interface HKOrganDonationAddressEntryItem
-- (HKOrganDonationAddressEntryItem)initWithRegistrant:(id)a3;
+- (HKOrganDonationAddressEntryItem)initWithRegistrant:(id)registrant;
 - (id)cell;
 - (id)formattedKeyAndValue;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)textFieldDidChangeValue:(id)a3 forCell:(id)a4;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)textFieldDidChangeValue:(id)value forCell:(id)cell;
 - (void)updateCellDisplay;
 @end
 
 @implementation HKOrganDonationAddressEntryItem
 
-- (HKOrganDonationAddressEntryItem)initWithRegistrant:(id)a3
+- (HKOrganDonationAddressEntryItem)initWithRegistrant:(id)registrant
 {
-  v4 = a3;
+  registrantCopy = registrant;
   v27.receiver = self;
   v27.super_class = HKOrganDonationAddressEntryItem;
   v5 = [(HKOrganDonationAddressEntryItem *)&v27 init];
@@ -26,31 +26,31 @@
     v5->_statesDict = v9;
 
     v11 = [&unk_1F4381048 mutableCopy];
-    v12 = [(NSDictionary *)v5->_statesDict allKeys];
-    v13 = [v12 sortedArrayUsingSelector:sel_localizedCompare_];
+    allKeys = [(NSDictionary *)v5->_statesDict allKeys];
+    v13 = [allKeys sortedArrayUsingSelector:sel_localizedCompare_];
     [(NSArray *)v11 addObjectsFromArray:v13];
 
     sortedStateKeys = v5->_sortedStateKeys;
     v5->_sortedStateKeys = v11;
     v15 = v11;
 
-    v16 = [v4 address1];
+    address1 = [registrantCopy address1];
     address1 = v5->_address1;
-    v5->_address1 = v16;
+    v5->_address1 = address1;
 
-    v18 = [v4 address2];
+    address2 = [registrantCopy address2];
     address2 = v5->_address2;
-    v5->_address2 = v18;
+    v5->_address2 = address2;
 
-    v20 = [v4 city];
+    city = [registrantCopy city];
     city = v5->_city;
-    v5->_city = v20;
+    v5->_city = city;
 
-    v22 = [v4 state];
+    state = [registrantCopy state];
     state = v5->_state;
-    v5->_state = v22;
+    v5->_state = state;
 
-    v24 = [v4 zip];
+    v24 = [registrantCopy zip];
     zipcode = v5->_zipcode;
     v5->_zipcode = v24;
   }
@@ -68,20 +68,20 @@
     self->_cell = v4;
 
     [(HKOrganDonationAddressCell *)self->_cell setDelegate:self];
-    v6 = [(HKOrganDonationAddressCell *)self->_cell streetOneTextField];
-    [v6 setText:self->_address1];
+    streetOneTextField = [(HKOrganDonationAddressCell *)self->_cell streetOneTextField];
+    [streetOneTextField setText:self->_address1];
 
-    v7 = [(HKOrganDonationAddressCell *)self->_cell streetTwoTextField];
-    [v7 setText:self->_address2];
+    streetTwoTextField = [(HKOrganDonationAddressCell *)self->_cell streetTwoTextField];
+    [streetTwoTextField setText:self->_address2];
 
-    v8 = [(HKOrganDonationAddressCell *)self->_cell cityTextField];
-    [v8 setText:self->_city];
+    cityTextField = [(HKOrganDonationAddressCell *)self->_cell cityTextField];
+    [cityTextField setText:self->_city];
 
-    v9 = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
-    [v9 setText:self->_state];
+    stateTextField = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
+    [stateTextField setText:self->_state];
 
-    v10 = [(HKOrganDonationAddressCell *)self->_cell zipCodeTextField];
-    [v10 setText:self->_zipcode];
+    zipCodeTextField = [(HKOrganDonationAddressCell *)self->_cell zipCodeTextField];
+    [zipCodeTextField setText:self->_zipcode];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DCD78]);
     statePicker = self->_statePicker;
@@ -92,14 +92,14 @@
     if (self->_state)
     {
       v13 = [(NSDictionary *)self->_statesDict allKeysForObject:?];
-      v14 = [v13 firstObject];
+      firstObject = [v13 firstObject];
 
-      [(UIPickerView *)self->_statePicker selectRow:[(NSArray *)self->_sortedStateKeys indexOfObject:v14] inComponent:0 animated:0];
+      [(UIPickerView *)self->_statePicker selectRow:[(NSArray *)self->_sortedStateKeys indexOfObject:firstObject] inComponent:0 animated:0];
     }
 
     v15 = [HKHostingAreaLayoutView viewHostingView:self->_statePicker];
-    v16 = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
-    [v16 setInputView:v15];
+    stateTextField2 = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
+    [stateTextField2 setInputView:v15];
 
     cell = self->_cell;
   }
@@ -172,13 +172,13 @@
 
 - (void)updateCellDisplay
 {
-  v3 = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
-  [v3 setText:self->_state];
+  stateTextField = [(HKOrganDonationAddressCell *)self->_cell stateTextField];
+  [stateTextField setText:self->_state];
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v6 = [(NSArray *)self->_sortedStateKeys objectAtIndexedSubscript:a4];
+  v6 = [(NSArray *)self->_sortedStateKeys objectAtIndexedSubscript:row];
   v7 = [(NSDictionary *)self->_statesDict objectForKeyedSubscript:v6];
   if (v7)
   {
@@ -193,53 +193,53 @@
   return v8;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   statesDict = self->_statesDict;
-  v7 = [(NSArray *)self->_sortedStateKeys objectAtIndexedSubscript:a4];
+  v7 = [(NSArray *)self->_sortedStateKeys objectAtIndexedSubscript:row];
   v8 = [(NSDictionary *)statesDict objectForKey:v7];
   state = self->_state;
   self->_state = v8;
 
   [(HKOrganDonationAddressEntryItem *)self updateCellDisplay];
-  v10 = [(HKSimpleDataEntryItem *)self delegate];
-  [v10 dataEntryItemDidUpdateValue:self];
+  delegate = [(HKSimpleDataEntryItem *)self delegate];
+  [delegate dataEntryItemDidUpdateValue:self];
 }
 
-- (void)textFieldDidChangeValue:(id)a3 forCell:(id)a4
+- (void)textFieldDidChangeValue:(id)value forCell:(id)cell
 {
-  v15 = a3;
-  v5 = [(HKOrganDonationAddressCell *)self->_cell streetOneTextField];
+  valueCopy = value;
+  streetOneTextField = [(HKOrganDonationAddressCell *)self->_cell streetOneTextField];
 
-  if (v5 == v15)
+  if (streetOneTextField == valueCopy)
   {
     v10 = &OBJC_IVAR___HKOrganDonationAddressEntryItem__address1;
   }
 
   else
   {
-    v6 = [(HKOrganDonationAddressCell *)self->_cell streetTwoTextField];
+    streetTwoTextField = [(HKOrganDonationAddressCell *)self->_cell streetTwoTextField];
 
-    if (v6 == v15)
+    if (streetTwoTextField == valueCopy)
     {
       v10 = &OBJC_IVAR___HKOrganDonationAddressEntryItem__address2;
     }
 
     else
     {
-      v7 = [(HKOrganDonationAddressCell *)self->_cell cityTextField];
+      cityTextField = [(HKOrganDonationAddressCell *)self->_cell cityTextField];
 
-      if (v7 == v15)
+      if (cityTextField == valueCopy)
       {
         v10 = &OBJC_IVAR___HKOrganDonationAddressEntryItem__city;
       }
 
       else
       {
-        v8 = [(HKOrganDonationAddressCell *)self->_cell zipCodeTextField];
+        zipCodeTextField = [(HKOrganDonationAddressCell *)self->_cell zipCodeTextField];
 
-        v9 = v15;
-        if (v8 != v15)
+        v9 = valueCopy;
+        if (zipCodeTextField != valueCopy)
         {
           goto LABEL_10;
         }
@@ -249,15 +249,15 @@
     }
   }
 
-  v11 = [v15 text];
+  text = [valueCopy text];
   v12 = *v10;
   v13 = *(&self->super.super.isa + v12);
-  *(&self->super.super.isa + v12) = v11;
+  *(&self->super.super.isa + v12) = text;
 
-  v14 = [(HKSimpleDataEntryItem *)self delegate];
-  [v14 dataEntryItemDidUpdateValue:self];
+  delegate = [(HKSimpleDataEntryItem *)self delegate];
+  [delegate dataEntryItemDidUpdateValue:self];
 
-  v9 = v15;
+  v9 = valueCopy;
 LABEL_10:
 }
 

@@ -1,21 +1,21 @@
 @interface MapsLocationProviderUpdater
-- (MapsLocationProviderUpdater)initWithLocationManager:(id)a3;
+- (MapsLocationProviderUpdater)initWithLocationManager:(id)manager;
 - (void)_updateLocationProviderType;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)setLocationProviderType:(unint64_t)a3;
-- (void)setObservedNavigationSession:(id)a3;
-- (void)setObservedRoutePlanningSession:(id)a3;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)setLocationProviderType:(unint64_t)type;
+- (void)setObservedNavigationSession:(id)session;
+- (void)setObservedRoutePlanningSession:(id)session;
 @end
 
 @implementation MapsLocationProviderUpdater
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -26,7 +26,7 @@
   v8 = v7;
   [(MapsLocationProviderUpdater *)self setObservedNavigationSession:v8];
 
-  v11 = v6;
+  v11 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -44,22 +44,22 @@
   [(MapsLocationProviderUpdater *)self _updateLocationProviderType];
 }
 
-- (void)setLocationProviderType:(unint64_t)a3
+- (void)setLocationProviderType:(unint64_t)type
 {
-  if (self->_locationProviderType != a3)
+  if (self->_locationProviderType != type)
   {
-    self->_locationProviderType = a3;
+    self->_locationProviderType = type;
     v5 = sub_1005D031C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 2)
+      if (type > 2)
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = off_1016230A0[a3];
+        v6 = off_1016230A0[type];
       }
 
       v15 = 138543362;
@@ -67,9 +67,9 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Updating location provider type: %{public}@", &v15, 0xCu);
     }
 
-    if (a3 - 1 >= 2)
+    if (type - 1 >= 2)
     {
-      if (a3)
+      if (type)
       {
         return;
       }
@@ -81,11 +81,11 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "provider:nil, corrector:nil, continuesWhileInactive:0", &v15, 2u);
       }
 
-      v13 = [(MapsLocationProviderUpdater *)self locationManager];
-      [v13 setLocationCorrector:0];
+      locationManager = [(MapsLocationProviderUpdater *)self locationManager];
+      [locationManager setLocationCorrector:0];
 
-      v10 = [(MapsLocationProviderUpdater *)self locationManager];
-      [v10 setLocationProvider:0];
+      locationManager2 = [(MapsLocationProviderUpdater *)self locationManager];
+      [locationManager2 setLocationProvider:0];
       v11 = 0;
     }
 
@@ -99,37 +99,37 @@
       }
 
       v8 = objc_alloc_init(NavigationLocationProvider);
-      v9 = [(MapsLocationProviderUpdater *)self locationManager];
-      [v9 setLocationProvider:v8];
+      locationManager3 = [(MapsLocationProviderUpdater *)self locationManager];
+      [locationManager3 setLocationProvider:v8];
 
-      v10 = [(MapsLocationProviderUpdater *)self locationManager];
-      [v10 setLocationCorrector:&stru_101623060];
+      locationManager2 = [(MapsLocationProviderUpdater *)self locationManager];
+      [locationManager2 setLocationCorrector:&stru_101623060];
       v11 = 1;
     }
 
-    v14 = [(MapsLocationProviderUpdater *)self locationManager];
-    [v14 setContinuesWhileInactive:v11];
+    locationManager4 = [(MapsLocationProviderUpdater *)self locationManager];
+    [locationManager4 setContinuesWhileInactive:v11];
   }
 }
 
 - (void)_updateLocationProviderType
 {
-  v3 = [(MapsLocationProviderUpdater *)self observedNavigationSession];
+  observedNavigationSession = [(MapsLocationProviderUpdater *)self observedNavigationSession];
 
-  if (!v3)
+  if (!observedNavigationSession)
   {
-    v8 = [(MapsLocationProviderUpdater *)self observedRoutePlanningSession];
+    observedRoutePlanningSession = [(MapsLocationProviderUpdater *)self observedRoutePlanningSession];
 
-    if (!v8)
+    if (!observedRoutePlanningSession)
     {
       goto LABEL_12;
     }
 
-    v9 = [(MapsLocationProviderUpdater *)self observedRoutePlanningSession];
-    v10 = [v9 configuration];
-    v11 = [v10 isNavigationTracePlayback];
+    observedRoutePlanningSession2 = [(MapsLocationProviderUpdater *)self observedRoutePlanningSession];
+    configuration = [observedRoutePlanningSession2 configuration];
+    isNavigationTracePlayback = [configuration isNavigationTracePlayback];
 
-    if (!v11)
+    if (!isNavigationTracePlayback)
     {
       goto LABEL_12;
     }
@@ -148,10 +148,10 @@
     goto LABEL_15;
   }
 
-  v4 = [(MapsLocationProviderUpdater *)self observedNavigationSession];
-  v5 = [v4 sessionState];
+  observedNavigationSession2 = [(MapsLocationProviderUpdater *)self observedNavigationSession];
+  sessionState = [observedNavigationSession2 sessionState];
 
-  if (v5 == 2)
+  if (sessionState == 2)
   {
 LABEL_5:
     v6 = sub_1005D031C();
@@ -165,7 +165,7 @@ LABEL_5:
     goto LABEL_17;
   }
 
-  if (v5 == 1)
+  if (sessionState == 1)
   {
     v6 = sub_1005D031C();
     v7 = 1;
@@ -185,7 +185,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  if (!v5)
+  if (!sessionState)
   {
     goto LABEL_5;
   }
@@ -196,15 +196,15 @@ LABEL_18:
   [(MapsLocationProviderUpdater *)self setLocationProviderType:v7, v14];
 }
 
-- (void)setObservedRoutePlanningSession:(id)a3
+- (void)setObservedRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedRoutePlanningSession = self->_observedRoutePlanningSession;
-  if (observedRoutePlanningSession != v5)
+  if (observedRoutePlanningSession != sessionCopy)
   {
     [observedRoutePlanningSession unregisterObserver:self];
     v7 = self->_observedRoutePlanningSession;
-    v8 = v5;
+    v8 = sessionCopy;
     if (!(v8 | v7))
     {
       goto LABEL_23;
@@ -224,7 +224,7 @@ LABEL_18:
 LABEL_22:
 
 LABEL_23:
-      objc_storeStrong(&self->_observedRoutePlanningSession, a3);
+      objc_storeStrong(&self->_observedRoutePlanningSession, session);
       [self->_observedRoutePlanningSession registerObserver:self];
       goto LABEL_24;
     }
@@ -296,15 +296,15 @@ LABEL_11:
 LABEL_24:
 }
 
-- (void)setObservedNavigationSession:(id)a3
+- (void)setObservedNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   observedNavigationSession = self->_observedNavigationSession;
-  if (observedNavigationSession != v5)
+  if (observedNavigationSession != sessionCopy)
   {
     [observedNavigationSession unregisterObserver:self];
     v7 = self->_observedNavigationSession;
-    v8 = v5;
+    v8 = sessionCopy;
     if (!(v8 | v7))
     {
       goto LABEL_23;
@@ -324,7 +324,7 @@ LABEL_24:
 LABEL_22:
 
 LABEL_23:
-      objc_storeStrong(&self->_observedNavigationSession, a3);
+      objc_storeStrong(&self->_observedNavigationSession, session);
       [self->_observedNavigationSession registerObserver:self];
       goto LABEL_24;
     }
@@ -396,16 +396,16 @@ LABEL_11:
 LABEL_24:
 }
 
-- (MapsLocationProviderUpdater)initWithLocationManager:(id)a3
+- (MapsLocationProviderUpdater)initWithLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = MapsLocationProviderUpdater;
   v6 = [(MapsLocationProviderUpdater *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_locationManager, a3);
+    objc_storeStrong(&v6->_locationManager, manager);
   }
 
   return v7;

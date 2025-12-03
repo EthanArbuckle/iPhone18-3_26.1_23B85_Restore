@@ -1,18 +1,18 @@
 @interface RedownloadRecoveryTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation RedownloadRecoveryTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_100236BB4;
   v18 = &unk_10051B8A8;
-  v19 = self;
-  v20 = a3;
-  v4 = v20;
+  selfCopy = self;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   v5 = &v15;
   if (self)
   {
@@ -25,18 +25,18 @@
     v24 = 0;
     v8 = sub_10021CA38();
     v9 = sub_10021CDA0(v8, v6, &v24);
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
-    if (v10)
+    if (firstObject)
     {
-      v11 = [v10 redownloadParams];
-      if (v11)
+      redownloadParams = [firstObject redownloadParams];
+      if (redownloadParams)
       {
-        v12 = [*(&self->_accountID + 2) asUpToDateBag];
-        if (v12)
+        asUpToDateBag = [*(&self->_accountID + 2) asUpToDateBag];
+        if (asUpToDateBag)
         {
-          v13 = v12;
-          sub_100236CF8(self, v11, v12, v5);
+          v13 = asUpToDateBag;
+          sub_100236CF8(self, redownloadParams, asUpToDateBag, v5);
         }
 
         else
@@ -47,7 +47,7 @@
           v21[2] = sub_100237070;
           v21[3] = &unk_10051E108;
           v21[4] = self;
-          v22 = v11;
+          v22 = redownloadParams;
           v23 = v5;
           [v14 upToDateBagWithCompletionHandler:v21];
 

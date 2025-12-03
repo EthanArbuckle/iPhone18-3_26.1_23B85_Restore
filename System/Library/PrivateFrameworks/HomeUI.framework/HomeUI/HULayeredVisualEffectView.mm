@@ -1,26 +1,26 @@
 @interface HULayeredVisualEffectView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (HULayeredVisualEffectView)initWithContentEffect:(id)a3 backgroundEffect:(id)a4;
-- (HULayeredVisualEffectView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (HULayeredVisualEffectView)initWithContentEffect:(id)effect backgroundEffect:(id)backgroundEffect;
+- (HULayeredVisualEffectView)initWithFrame:(CGRect)frame;
 - (UIView)contentView;
 - (void)_applyCornerRadius;
 - (void)_updateBackgroundEffects;
 - (void)_updateContentEffects;
 - (void)_updateSubviewOrder;
-- (void)setBackgroundEffect:(id)a3;
-- (void)setBackgroundEffectAlpha:(double)a3;
-- (void)setContentEffect:(id)a3;
-- (void)setContentEffectAlpha:(double)a3;
-- (void)setCornerRadius:(double)a3;
+- (void)setBackgroundEffect:(id)effect;
+- (void)setBackgroundEffectAlpha:(double)alpha;
+- (void)setContentEffect:(id)effect;
+- (void)setContentEffectAlpha:(double)alpha;
+- (void)setCornerRadius:(double)radius;
 @end
 
 @implementation HULayeredVisualEffectView
 
-- (HULayeredVisualEffectView)initWithFrame:(CGRect)a3
+- (HULayeredVisualEffectView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HULayeredVisualEffectView;
-  v3 = [(HULayeredVisualEffectView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HULayeredVisualEffectView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D68]);
@@ -40,18 +40,18 @@
   return v3;
 }
 
-- (HULayeredVisualEffectView)initWithContentEffect:(id)a3 backgroundEffect:(id)a4
+- (HULayeredVisualEffectView)initWithContentEffect:(id)effect backgroundEffect:(id)backgroundEffect
 {
-  v7 = a3;
-  v8 = a4;
+  effectCopy = effect;
+  backgroundEffectCopy = backgroundEffect;
   v12.receiver = self;
   v12.super_class = HULayeredVisualEffectView;
   v9 = [(HULayeredVisualEffectView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentEffect, a3);
-    objc_storeStrong(&v10->_backgroundEffect, a4);
+    objc_storeStrong(&v9->_contentEffect, effect);
+    objc_storeStrong(&v10->_backgroundEffect, backgroundEffect);
     v10->_contentEffectAlpha = 1.0;
     v10->_backgroundEffectAlpha = 1.0;
     [(HULayeredVisualEffectView *)v10 _updateContentEffects];
@@ -61,46 +61,46 @@
   return v10;
 }
 
-- (void)setContentEffect:(id)a3
+- (void)setContentEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_contentEffect != v5)
+  effectCopy = effect;
+  if (self->_contentEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_contentEffect, effect);
     [(HULayeredVisualEffectView *)self _updateContentEffects];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
-- (void)setBackgroundEffect:(id)a3
+- (void)setBackgroundEffect:(id)effect
 {
-  v5 = a3;
-  if (self->_backgroundEffect != v5)
+  effectCopy = effect;
+  if (self->_backgroundEffect != effectCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundEffect, a3);
+    v6 = effectCopy;
+    objc_storeStrong(&self->_backgroundEffect, effect);
     [(HULayeredVisualEffectView *)self _updateBackgroundEffects];
-    v5 = v6;
+    effectCopy = v6;
   }
 }
 
 - (UIView)contentView
 {
-  v2 = [(HULayeredVisualEffectView *)self contentEffectView];
-  v3 = [v2 contentView];
+  contentEffectView = [(HULayeredVisualEffectView *)self contentEffectView];
+  contentView = [contentEffectView contentView];
 
-  return v3;
+  return contentView;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = [(HULayeredVisualEffectView *)self contentView];
-  *&v10 = a4;
-  *&v11 = a5;
-  [v9 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
+  height = size.height;
+  width = size.width;
+  contentView = [(HULayeredVisualEffectView *)self contentView];
+  *&v10 = priority;
+  *&v11 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -111,61 +111,61 @@
   return result;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(HULayeredVisualEffectView *)self _applyCornerRadius];
   }
 }
 
-- (void)setContentEffectAlpha:(double)a3
+- (void)setContentEffectAlpha:(double)alpha
 {
-  if (self->_contentEffectAlpha != a3)
+  if (self->_contentEffectAlpha != alpha)
   {
-    self->_contentEffectAlpha = a3;
+    self->_contentEffectAlpha = alpha;
     [(HULayeredVisualEffectView *)self _updateContentEffects];
   }
 }
 
-- (void)setBackgroundEffectAlpha:(double)a3
+- (void)setBackgroundEffectAlpha:(double)alpha
 {
-  if (self->_backgroundEffectAlpha != a3)
+  if (self->_backgroundEffectAlpha != alpha)
   {
-    self->_backgroundEffectAlpha = a3;
+    self->_backgroundEffectAlpha = alpha;
     [(HULayeredVisualEffectView *)self _updateBackgroundEffects];
   }
 }
 
 - (void)_updateContentEffects
 {
-  v3 = [(HULayeredVisualEffectView *)self contentEffect];
-  v4 = [v3 vibrancyEffect];
-  v5 = [(HULayeredVisualEffectView *)self contentEffectView];
-  [v5 setEffect:v4];
+  contentEffect = [(HULayeredVisualEffectView *)self contentEffect];
+  vibrancyEffect = [contentEffect vibrancyEffect];
+  contentEffectView = [(HULayeredVisualEffectView *)self contentEffectView];
+  [contentEffectView setEffect:vibrancyEffect];
 
-  v6 = [(HULayeredVisualEffectView *)self contentEffect];
-  v7 = [v6 tintColor];
-  v8 = [(HULayeredVisualEffectView *)self contentEffectView];
-  [v8 setTintColor:v7];
+  contentEffect2 = [(HULayeredVisualEffectView *)self contentEffect];
+  tintColor = [contentEffect2 tintColor];
+  contentEffectView2 = [(HULayeredVisualEffectView *)self contentEffectView];
+  [contentEffectView2 setTintColor:tintColor];
 
   [(HULayeredVisualEffectView *)self contentEffectAlpha];
   v10 = v9;
-  v11 = [(HULayeredVisualEffectView *)self contentEffectView];
-  [v11 setAlpha:v10];
+  contentEffectView3 = [(HULayeredVisualEffectView *)self contentEffectView];
+  [contentEffectView3 setAlpha:v10];
 }
 
 - (void)_updateBackgroundEffects
 {
-  v3 = [(HULayeredVisualEffectView *)self backgroundEffect];
-  v4 = [v3 blurEffect];
-  if (v4)
+  backgroundEffect = [(HULayeredVisualEffectView *)self backgroundEffect];
+  blurEffect = [backgroundEffect blurEffect];
+  if (blurEffect)
   {
-    v5 = v4;
-    v6 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+    v5 = blurEffect;
+    backgroundEffectView = [(HULayeredVisualEffectView *)self backgroundEffectView];
 
-    if (v6)
+    if (backgroundEffectView)
     {
       goto LABEL_5;
     }
@@ -175,27 +175,27 @@
     v8 = [v7 initWithFrame:?];
     [(HULayeredVisualEffectView *)self setBackgroundEffectView:v8];
 
-    v9 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-    [v9 setAutoresizingMask:18];
+    backgroundEffectView2 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+    [backgroundEffectView2 setAutoresizingMask:18];
 
-    v3 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-    [(HULayeredVisualEffectView *)self insertSubview:v3 atIndex:0];
+    backgroundEffect = [(HULayeredVisualEffectView *)self backgroundEffectView];
+    [(HULayeredVisualEffectView *)self insertSubview:backgroundEffect atIndex:0];
   }
 
 LABEL_5:
-  v10 = [(HULayeredVisualEffectView *)self backgroundEffect];
-  v11 = [v10 blurEffect];
-  v12 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-  [v12 setEffect:v11];
+  backgroundEffect2 = [(HULayeredVisualEffectView *)self backgroundEffect];
+  blurEffect2 = [backgroundEffect2 blurEffect];
+  backgroundEffectView3 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+  [backgroundEffectView3 setEffect:blurEffect2];
 
-  v13 = [(HULayeredVisualEffectView *)self backgroundEffect];
-  v14 = [v13 fillColor];
-  if (v14)
+  backgroundEffect3 = [(HULayeredVisualEffectView *)self backgroundEffect];
+  fillColor = [backgroundEffect3 fillColor];
+  if (fillColor)
   {
-    v15 = v14;
-    v16 = [(HULayeredVisualEffectView *)self backgroundFillView];
+    v15 = fillColor;
+    backgroundFillView = [(HULayeredVisualEffectView *)self backgroundFillView];
 
-    if (v16)
+    if (backgroundFillView)
     {
       goto LABEL_9;
     }
@@ -205,22 +205,22 @@ LABEL_5:
     v18 = [v17 initWithFrame:?];
     [(HULayeredVisualEffectView *)self setBackgroundFillView:v18];
 
-    v19 = [(HULayeredVisualEffectView *)self backgroundFillView];
-    [v19 setAutoresizingMask:18];
+    backgroundFillView2 = [(HULayeredVisualEffectView *)self backgroundFillView];
+    [backgroundFillView2 setAutoresizingMask:18];
 
-    v13 = [(HULayeredVisualEffectView *)self backgroundFillView];
-    [(HULayeredVisualEffectView *)self insertSubview:v13 atIndex:0];
+    backgroundEffect3 = [(HULayeredVisualEffectView *)self backgroundFillView];
+    [(HULayeredVisualEffectView *)self insertSubview:backgroundEffect3 atIndex:0];
   }
 
 LABEL_9:
-  v20 = [(HULayeredVisualEffectView *)self backgroundEffect];
-  v21 = [v20 fillColor];
-  v22 = [(HULayeredVisualEffectView *)self backgroundFillView];
-  [v22 setBackgroundColor:v21];
+  backgroundEffect4 = [(HULayeredVisualEffectView *)self backgroundEffect];
+  fillColor2 = [backgroundEffect4 fillColor];
+  backgroundFillView3 = [(HULayeredVisualEffectView *)self backgroundFillView];
+  [backgroundFillView3 setBackgroundColor:fillColor2];
 
-  v23 = [(HULayeredVisualEffectView *)self backgroundEffect];
-  v24 = [v23 fillColor];
-  if (v24)
+  backgroundEffect5 = [(HULayeredVisualEffectView *)self backgroundEffect];
+  fillColor3 = [backgroundEffect5 fillColor];
+  if (fillColor3)
   {
     v25 = 1.0;
   }
@@ -230,13 +230,13 @@ LABEL_9:
     v25 = 0.0;
   }
 
-  v26 = [(HULayeredVisualEffectView *)self backgroundFillView];
-  [v26 setAlpha:v25];
+  backgroundFillView4 = [(HULayeredVisualEffectView *)self backgroundFillView];
+  [backgroundFillView4 setAlpha:v25];
 
   [(HULayeredVisualEffectView *)self backgroundEffectAlpha];
   v28 = v27;
-  v29 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-  [v29 setAlpha:v28];
+  backgroundEffectView4 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+  [backgroundEffectView4 setAlpha:v28];
 
   [(HULayeredVisualEffectView *)self _updateSubviewOrder];
 
@@ -245,20 +245,20 @@ LABEL_9:
 
 - (void)_updateSubviewOrder
 {
-  v3 = [(HULayeredVisualEffectView *)self backgroundFillView];
+  backgroundFillView = [(HULayeredVisualEffectView *)self backgroundFillView];
 
-  if (v3)
+  if (backgroundFillView)
   {
-    v4 = [(HULayeredVisualEffectView *)self backgroundFillView];
-    [(HULayeredVisualEffectView *)self sendSubviewToBack:v4];
+    backgroundFillView2 = [(HULayeredVisualEffectView *)self backgroundFillView];
+    [(HULayeredVisualEffectView *)self sendSubviewToBack:backgroundFillView2];
   }
 
-  v5 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+  backgroundEffectView = [(HULayeredVisualEffectView *)self backgroundEffectView];
 
-  if (v5)
+  if (backgroundEffectView)
   {
-    v6 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-    [(HULayeredVisualEffectView *)self sendSubviewToBack:v6];
+    backgroundEffectView2 = [(HULayeredVisualEffectView *)self backgroundEffectView];
+    [(HULayeredVisualEffectView *)self sendSubviewToBack:backgroundEffectView2];
   }
 }
 
@@ -266,13 +266,13 @@ LABEL_9:
 {
   [(HULayeredVisualEffectView *)self cornerRadius];
   v4 = v3;
-  v5 = [(HULayeredVisualEffectView *)self backgroundEffectView];
-  [v5 _setCornerRadius:v4];
+  backgroundEffectView = [(HULayeredVisualEffectView *)self backgroundEffectView];
+  [backgroundEffectView _setCornerRadius:v4];
 
   [(HULayeredVisualEffectView *)self cornerRadius];
   v7 = v6;
-  v8 = [(HULayeredVisualEffectView *)self backgroundFillView];
-  [v8 _setCornerRadius:v7];
+  backgroundFillView = [(HULayeredVisualEffectView *)self backgroundFillView];
+  [backgroundFillView _setCornerRadius:v7];
 }
 
 @end

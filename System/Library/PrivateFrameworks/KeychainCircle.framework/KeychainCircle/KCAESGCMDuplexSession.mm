@@ -1,13 +1,13 @@
 @interface KCAESGCMDuplexSession
-+ (id)sessionAsReceiver:(id)a3 context:(unint64_t)a4;
-+ (id)sessionAsSender:(id)a3 context:(unint64_t)a4;
-- (BOOL)GCM:(const ccmode_gcm *)a3 context:(id *)a4 iv:(id)a5 size:(unint64_t)a6 data:(const char *)a7 processed:(char *)a8 tag:(char *)a9 error:(id *)a10;
-- (KCAESGCMDuplexSession)initWithCoder:(id)a3;
-- (id)decryptAndVerify:(id)a3 error:(id *)a4;
-- (id)encrypt:(id)a3 error:(id *)a4;
-- (unint64_t)encryptCapsuleSize:(id)a3 IV:(id)a4;
++ (id)sessionAsReceiver:(id)receiver context:(unint64_t)context;
++ (id)sessionAsSender:(id)sender context:(unint64_t)context;
+- (BOOL)GCM:(const ccmode_gcm *)m context:(id *)context iv:(id)iv size:(unint64_t)size data:(const char *)data processed:(char *)processed tag:(char *)tag error:(id *)self0;
+- (KCAESGCMDuplexSession)initWithCoder:(id)coder;
+- (id)decryptAndVerify:(id)verify error:(id *)error;
+- (id)encrypt:(id)encrypt error:(id *)error;
+- (unint64_t)encryptCapsuleSize:(id)size IV:(id)v;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCAESGCMDuplexSession
@@ -37,26 +37,26 @@
   [(KCAESGCMDuplexSession *)&v3 dealloc];
 }
 
-- (id)decryptAndVerify:(id)a3 error:(id *)a4
+- (id)decryptAndVerify:(id)verify error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a3;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
+  verifyCopy = verify;
+  verifyCopy2 = verify;
+  bytes = [verifyCopy2 bytes];
+  v10 = [verifyCopy2 length];
 
-  v11 = v9 + v10;
+  v11 = bytes + v10;
   v38 = 0;
   v12 = ccder_decode_constructed_tl();
   if (!v12 || v38 != v11)
   {
-    KCJoiningErrorCreate(1, a4, @"decode failed", v13, v14, v15, v16, v17, v36);
+    KCJoiningErrorCreate(1, error, @"decode failed", v13, v14, v15, v16, v17, v36);
     v29 = 0;
     goto LABEL_18;
   }
 
   v37 = 0;
-  v18 = kcder_decode_data_internal(&v37, 1, a4, v12, v11);
+  v18 = kcder_decode_data_internal(&v37, 1, error, v12, v11);
   v19 = v37;
   v39 = v18;
   if (v18)
@@ -74,7 +74,7 @@
           v31 = v21 - v20;
           v32 = [MEMORY[0x277CBEB28] dataWithLength:v21 - v20];
           v40 = *v30;
-          if (-[KCAESGCMDuplexSession GCM:context:iv:size:data:processed:tag:error:](self, "GCM:context:iv:size:data:processed:tag:error:", ccaes_gcm_decrypt_mode(), -[KCAESGCMDuplexSession receive](self, "receive"), v19, v31, v20, [v32 mutableBytes], &v40, a4))
+          if (-[KCAESGCMDuplexSession GCM:context:iv:size:data:processed:tag:error:](self, "GCM:context:iv:size:data:processed:tag:error:", ccaes_gcm_decrypt_mode(), -[KCAESGCMDuplexSession receive](self, "receive"), v19, v31, v20, [v32 mutableBytes], &v40, error))
           {
             v33 = v32;
           }
@@ -104,7 +104,7 @@
       v28 = @"Decode failure";
     }
 
-    KCJoiningErrorCreate(1, a4, v28, v23, v24, v25, v26, v27, v36);
+    KCJoiningErrorCreate(1, error, v28, v23, v24, v25, v26, v27, v36);
   }
 
   v29 = 0;
@@ -116,27 +116,27 @@ LABEL_18:
   return v29;
 }
 
-- (id)encrypt:(id)a3 error:(id *)a4
+- (id)encrypt:(id)encrypt error:(id *)error
 {
-  v6 = a3;
+  encryptCopy = encrypt;
   v7 = [MEMORY[0x277CBEB28] dataWithRandomBytes:16];
-  v8 = [MEMORY[0x277CBEB28] dataWithLength:{-[KCAESGCMDuplexSession encryptCapsuleSize:IV:](self, "encryptCapsuleSize:IV:", v6, v7)}];
+  v8 = [MEMORY[0x277CBEB28] dataWithLength:{-[KCAESGCMDuplexSession encryptCapsuleSize:IV:](self, "encryptCapsuleSize:IV:", encryptCopy, v7)}];
   [v8 mutableBytes];
   [v8 length];
-  v9 = [v8 bytes];
+  bytes = [v8 bytes];
   v24 = 0;
   v25 = 0;
-  v10 = [v6 length];
+  v10 = [encryptCopy length];
   kcder_encode_raw_octet_space(16, &v25);
   kcder_encode_raw_octet_space(v10, &v24);
   kcder_encode_data(v7);
-  if (ccder_encode_constructed_tl() == v9)
+  if (ccder_encode_constructed_tl() == bytes)
   {
     v17 = ccaes_gcm_encrypt_mode();
-    v18 = [(KCAESGCMDuplexSession *)self send];
-    v19 = [v6 length];
-    v20 = [v6 bytes];
-    if ([(KCAESGCMDuplexSession *)self GCM:v17 context:v18 iv:v7 size:v19 data:v20 processed:v24 tag:v25 error:a4])
+    send = [(KCAESGCMDuplexSession *)self send];
+    v19 = [encryptCopy length];
+    bytes2 = [encryptCopy bytes];
+    if ([(KCAESGCMDuplexSession *)self GCM:v17 context:send iv:v7 size:v19 data:bytes2 processed:v24 tag:v25 error:error])
     {
       v21 = v8;
     }
@@ -151,21 +151,21 @@ LABEL_18:
 
   else
   {
-    KCJoiningErrorCreate(0, a4, @"Failed to allocate space for der", v11, v12, v13, v14, v15, v23);
+    KCJoiningErrorCreate(0, error, @"Failed to allocate space for der", v11, v12, v13, v14, v15, v23);
     v16 = 0;
   }
 
   return v16;
 }
 
-- (BOOL)GCM:(const ccmode_gcm *)a3 context:(id *)a4 iv:(id)a5 size:(unint64_t)a6 data:(const char *)a7 processed:(char *)a8 tag:(char *)a9 error:(id *)a10
+- (BOOL)GCM:(const ccmode_gcm *)m context:(id *)context iv:(id)iv size:(unint64_t)size data:(const char *)data processed:(char *)processed tag:(char *)tag error:(id *)self0
 {
-  v10 = a5;
+  ivCopy = iv;
   v11 = ccgcm_reset();
-  if (CoreCryptoError(v11, a10, @"ccgcm_reset failed: %d", v12, v13, v14, v15, v16, v11) && ([v10 length], objc_msgSend(v10, "bytes"), v17 = ccgcm_set_iv(), CoreCryptoError(v17, a10, @"ccgcm_set_iv failed: %d", v18, v19, v20, v21, v22, v17)) && (v23 = ccgcm_update(), CoreCryptoError(v23, a10, @"ccgcm_update failed: %d", v24, v25, v26, v27, v28, v23)))
+  if (CoreCryptoError(v11, error, @"ccgcm_reset failed: %d", v12, v13, v14, v15, v16, v11) && ([ivCopy length], objc_msgSend(ivCopy, "bytes"), v17 = ccgcm_set_iv(), CoreCryptoError(v17, error, @"ccgcm_set_iv failed: %d", v18, v19, v20, v21, v22, v17)) && (v23 = ccgcm_update(), CoreCryptoError(v23, error, @"ccgcm_update failed: %d", v24, v25, v26, v27, v28, v23)))
   {
     v29 = ccgcm_finalize();
-    v35 = CoreCryptoError(v29, a10, @"ccgcm_finalize failed: %d", v30, v31, v32, v33, v34, v29);
+    v35 = CoreCryptoError(v29, error, @"ccgcm_finalize failed: %d", v30, v31, v32, v33, v34, v29);
   }
 
   else
@@ -176,14 +176,14 @@ LABEL_18:
   return v35;
 }
 
-- (unint64_t)encryptCapsuleSize:(id)a3 IV:(id)a4
+- (unint64_t)encryptCapsuleSize:(id)size IV:(id)v
 {
-  v5 = a3;
-  [a4 length];
+  sizeCopy = size;
+  [v length];
   v6 = ccder_sizeof_raw_octet_string();
   if (v6)
   {
-    [v5 length];
+    [sizeCopy length];
     if (ccder_sizeof_raw_octet_string() && ([MEMORY[0x277CBEB28] dataWithLength:16], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "length"), v8 = ccder_sizeof_raw_octet_string(), v7, v8))
     {
       v6 = ccder_sizeof();
@@ -209,51 +209,51 @@ uint64_t __97__KCAESGCMDuplexSession_initWithSecret_context_as_altDSID_pairingUU
   return MEMORY[0x2821F96F8]();
 }
 
-- (KCAESGCMDuplexSession)initWithCoder:(id)a3
+- (KCAESGCMDuplexSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"asSender"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secret"];
-  v7 = [v4 decodeInt64ForKey:@"context"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
-  v10 = [v4 decodeInt64ForKey:@"piggy"];
-  v11 = [v4 decodeInt64ForKey:@"epoch"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"asSender"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secret"];
+  v7 = [coderCopy decodeInt64ForKey:@"context"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v10 = [coderCopy decodeInt64ForKey:@"piggy"];
+  v11 = [coderCopy decodeInt64ForKey:@"epoch"];
 
   v12 = [(KCAESGCMDuplexSession *)self initWithSecret:v6 context:v7 as:v5 altDSID:v8 pairingUUID:v9 piggybackingVersion:v10 epoch:v11];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:-[KCAESGCMDuplexSession asSender](self forKey:{"asSender"), @"asSender"}];
-  v4 = [(KCAESGCMDuplexSession *)self secret];
-  [v7 encodeObject:v4 forKey:@"secret"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[KCAESGCMDuplexSession asSender](self forKey:{"asSender"), @"asSender"}];
+  secret = [(KCAESGCMDuplexSession *)self secret];
+  [coderCopy encodeObject:secret forKey:@"secret"];
 
-  [v7 encodeInt64:-[KCAESGCMDuplexSession context](self forKey:{"context"), @"context"}];
-  v5 = [(KCAESGCMDuplexSession *)self altDSID];
-  [v7 encodeObject:v5 forKey:@"altDSID"];
+  [coderCopy encodeInt64:-[KCAESGCMDuplexSession context](self forKey:{"context"), @"context"}];
+  altDSID = [(KCAESGCMDuplexSession *)self altDSID];
+  [coderCopy encodeObject:altDSID forKey:@"altDSID"];
 
-  v6 = [(KCAESGCMDuplexSession *)self pairingUUID];
-  [v7 encodeObject:v6 forKey:@"uuid"];
+  pairingUUID = [(KCAESGCMDuplexSession *)self pairingUUID];
+  [coderCopy encodeObject:pairingUUID forKey:@"uuid"];
 
-  [v7 encodeInt64:-[KCAESGCMDuplexSession piggybackingVersion](self forKey:{"piggybackingVersion"), @"piggy"}];
-  [v7 encodeInt64:-[KCAESGCMDuplexSession epoch](self forKey:{"epoch"), @"epoch"}];
+  [coderCopy encodeInt64:-[KCAESGCMDuplexSession piggybackingVersion](self forKey:{"piggybackingVersion"), @"piggy"}];
+  [coderCopy encodeInt64:-[KCAESGCMDuplexSession epoch](self forKey:{"epoch"), @"epoch"}];
 }
 
-+ (id)sessionAsReceiver:(id)a3 context:(unint64_t)a4
++ (id)sessionAsReceiver:(id)receiver context:(unint64_t)context
 {
-  v5 = a3;
-  v6 = [[KCAESGCMDuplexSession alloc] initAsReceiver:v5 context:a4];
+  receiverCopy = receiver;
+  v6 = [[KCAESGCMDuplexSession alloc] initAsReceiver:receiverCopy context:context];
 
   return v6;
 }
 
-+ (id)sessionAsSender:(id)a3 context:(unint64_t)a4
++ (id)sessionAsSender:(id)sender context:(unint64_t)context
 {
-  v5 = a3;
-  v6 = [[KCAESGCMDuplexSession alloc] initAsSender:v5 context:a4];
+  senderCopy = sender;
+  v6 = [[KCAESGCMDuplexSession alloc] initAsSender:senderCopy context:context];
 
   return v6;
 }

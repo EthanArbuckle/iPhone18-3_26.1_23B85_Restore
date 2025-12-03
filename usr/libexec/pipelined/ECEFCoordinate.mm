@@ -1,63 +1,63 @@
 @interface ECEFCoordinate
-+ (id)fromLatLon:(id)a3;
-- (id)initFromLatLon:(id)a3;
-- (point_xy<double,)toBoostEnuWithLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 usingENU:(id)a5;
-- (void)setFromLatLon:(id)a3;
-- (void)setFromX:(double)a3 y:(double)a4 z:(double)a5;
++ (id)fromLatLon:(id)lon;
+- (id)initFromLatLon:(id)lon;
+- (point_xy<double,)toBoostEnuWithLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin usingENU:(id)u;
+- (void)setFromLatLon:(id)lon;
+- (void)setFromX:(double)x y:(double)y z:(double)z;
 @end
 
 @implementation ECEFCoordinate
 
-- (void)setFromX:(double)a3 y:(double)a4 z:(double)a5
+- (void)setFromX:(double)x y:(double)y z:(double)z
 {
-  self->_x = a3;
-  self->_y = a4;
-  self->_z = a5;
+  self->_x = x;
+  self->_y = y;
+  self->_z = z;
 }
 
-- (id)initFromLatLon:(id)a3
+- (id)initFromLatLon:(id)lon
 {
-  v4 = [ECEFCoordinate fromLatLon:a3];
+  v4 = [ECEFCoordinate fromLatLon:lon];
 
   return v4;
 }
 
-+ (id)fromLatLon:(id)a3
++ (id)fromLatLon:(id)lon
 {
-  v3 = a3;
+  lonCopy = lon;
   v4 = objc_alloc_init(ECEFCoordinate);
-  [(ECEFCoordinate *)v4 setFromLatLon:v3];
+  [(ECEFCoordinate *)v4 setFromLatLon:lonCopy];
 
   return v4;
 }
 
-- (void)setFromLatLon:(id)a3
+- (void)setFromLatLon:(id)lon
 {
-  v16 = a3;
-  [v16 latitude];
+  lonCopy = lon;
+  [lonCopy latitude];
   v5 = cos(v4 * 0.0174532925);
-  [v16 latitude];
+  [lonCopy latitude];
   v7 = sin(v6 * 0.0174532925);
-  [v16 longitude];
+  [lonCopy longitude];
   v9 = cos(v8 * 0.0174532925);
-  [v16 longitude];
+  [lonCopy longitude];
   v11 = sin(v10 * 0.0174532925);
-  [v16 altitude];
+  [lonCopy altitude];
   v12 = 6378137.0 / sqrt(v7 * -0.00669437999 * v7 + 1.0);
   self->_x = v9 * (v5 * (v12 + v13));
-  [v16 altitude];
+  [lonCopy altitude];
   self->_y = v11 * (v5 * (v12 + v14));
-  [v16 altitude];
+  [lonCopy altitude];
   self->_z = v7 * (v15 + v12 * 0.99330562);
 }
 
-- (point_xy<double,)toBoostEnuWithLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 usingENU:(id)a5
+- (point_xy<double,)toBoostEnuWithLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin usingENU:(id)u
 {
-  v8 = a5;
-  [v8 setFromLatLonOrigin:a3 andEcefOrigin:a4 andEcefPoint:self];
-  [v8 east];
+  uCopy = u;
+  [uCopy setFromLatLonOrigin:origin andEcefOrigin:ecefOrigin andEcefPoint:self];
+  [uCopy east];
   v10 = v9;
-  [v8 north];
+  [uCopy north];
   v12 = v11;
 
   v13 = v10;

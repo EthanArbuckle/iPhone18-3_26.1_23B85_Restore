@@ -1,24 +1,24 @@
 @interface _BPSInnerFutureConduit
-- (_BPSInnerFutureConduit)initWithParent:(id)a3 downstream:(id)a4;
+- (_BPSInnerFutureConduit)initWithParent:(id)parent downstream:(id)downstream;
 - (void)cancel;
-- (void)fulfill:(id)a3;
-- (void)requestDemand:(int64_t)a3;
+- (void)fulfill:(id)fulfill;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation _BPSInnerFutureConduit
 
-- (_BPSInnerFutureConduit)initWithParent:(id)a3 downstream:(id)a4
+- (_BPSInnerFutureConduit)initWithParent:(id)parent downstream:(id)downstream
 {
-  v7 = a3;
-  v8 = a4;
+  parentCopy = parent;
+  downstreamCopy = downstream;
   v12.receiver = self;
   v12.super_class = _BPSInnerFutureConduit;
   v9 = [(_BPSInnerFutureConduit *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parent, a3);
-    objc_storeStrong(&v10->_downstream, a4);
+    objc_storeStrong(&v9->_parent, parent);
+    objc_storeStrong(&v10->_downstream, downstream);
     v10->_hasAnyDemand = 0;
     v10->_released = 0;
     v10->_lock._os_unfair_lock_opaque = 0;
@@ -28,17 +28,17 @@
   return v10;
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v5 = self;
-  v13 = v5;
-  if (a3 <= 0)
+  selfCopy = self;
+  v13 = selfCopy;
+  if (demand <= 0)
   {
-    [(_BPSInnerFutureConduit *)a2 requestDemand:v5];
-    v5 = v13;
+    [(_BPSInnerFutureConduit *)a2 requestDemand:selfCopy];
+    selfCopy = v13;
   }
 
-  os_unfair_lock_lock(&v5->_lock);
+  os_unfair_lock_lock(&selfCopy->_lock);
   if ([(os_unfair_lock_s *)v13 released])
   {
     os_unfair_lock_unlock(v13 + 2);
@@ -46,26 +46,26 @@
   }
 
   [(os_unfair_lock_s *)v13 setHasAnyDemand:1];
-  v6 = [(os_unfair_lock_s *)v13 parent];
-  v7 = [v6 result];
+  parent = [(os_unfair_lock_s *)v13 parent];
+  result = [parent result];
 
-  if (v7)
+  if (result)
   {
-    v8 = [(os_unfair_lock_s *)v13 downstream];
+    downstream = [(os_unfair_lock_s *)v13 downstream];
     [(os_unfair_lock_s *)v13 setReleased:1];
     os_unfair_lock_unlock(v13 + 2);
     os_unfair_recursive_lock_lock_with_options();
-    v9 = [v7 state];
-    if (v9 == 1)
+    state = [result state];
+    if (state == 1)
     {
-      v11 = [v7 error];
-      v12 = [BPSCompletion failureWithError:v11];
-      [v8 receiveCompletion:v12];
+      error = [result error];
+      v12 = [BPSCompletion failureWithError:error];
+      [downstream receiveCompletion:v12];
     }
 
     else
     {
-      if (v9)
+      if (state)
       {
 LABEL_12:
         os_unfair_recursive_lock_unlock();
@@ -73,11 +73,11 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v10 = [v7 value];
-      [v8 receiveInput:v10];
+      value = [result value];
+      [downstream receiveInput:value];
 
-      v11 = +[BPSCompletion success];
-      [v8 receiveCompletion:v11];
+      error = +[BPSCompletion success];
+      [downstream receiveCompletion:error];
     }
 
     goto LABEL_12;
@@ -89,9 +89,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)fulfill:(id)a3
+- (void)fulfill:(id)fulfill
 {
-  v9 = a3;
+  fulfillCopy = fulfill;
   os_unfair_lock_lock(&self->_lock);
   if ([(_BPSInnerFutureConduit *)self released]|| ![(_BPSInnerFutureConduit *)self hasAnyDemand])
   {
@@ -99,27 +99,27 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  v4 = [(_BPSInnerFutureConduit *)self downstream];
+  downstream = [(_BPSInnerFutureConduit *)self downstream];
   [(_BPSInnerFutureConduit *)self setReleased:1];
   os_unfair_lock_unlock(&self->_lock);
   os_unfair_recursive_lock_lock_with_options();
-  v5 = [v9 state];
-  if (v5 == 1)
+  state = [fulfillCopy state];
+  if (state == 1)
   {
-    v7 = [v9 error];
-    v8 = [BPSCompletion failureWithError:v7];
-    [v4 receiveCompletion:v8];
+    error = [fulfillCopy error];
+    v8 = [BPSCompletion failureWithError:error];
+    [downstream receiveCompletion:v8];
 
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!state)
   {
-    v6 = [v9 value];
-    [v4 receiveInput:v6];
+    value = [fulfillCopy value];
+    [downstream receiveInput:value];
 
-    v7 = +[BPSCompletion success];
-    [v4 receiveCompletion:v7];
+    error = +[BPSCompletion success];
+    [downstream receiveCompletion:error];
 LABEL_8:
   }
 
@@ -130,16 +130,16 @@ LABEL_10:
 
 - (void)cancel
 {
-  v3 = self;
-  os_unfair_lock_lock(&v3->_lock);
-  if (![(_BPSInnerFutureConduit *)v3 released])
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  if (![(_BPSInnerFutureConduit *)selfCopy released])
   {
-    [(_BPSInnerFutureConduit *)v3 setReleased:1];
-    v2 = [(_BPSInnerFutureConduit *)v3 parent];
-    [v2 disassociate:{-[_BPSInnerFutureConduit identifity](v3, "identifity")}];
+    [(_BPSInnerFutureConduit *)selfCopy setReleased:1];
+    parent = [(_BPSInnerFutureConduit *)selfCopy parent];
+    [parent disassociate:{-[_BPSInnerFutureConduit identifity](selfCopy, "identifity")}];
   }
 
-  os_unfair_lock_unlock(&v3->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
 - (void)requestDemand:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

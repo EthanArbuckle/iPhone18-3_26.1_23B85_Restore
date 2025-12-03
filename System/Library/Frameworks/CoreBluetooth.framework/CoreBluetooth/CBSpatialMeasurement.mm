@@ -1,19 +1,19 @@
 @interface CBSpatialMeasurement
-- (CBSpatialMeasurement)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBSpatialMeasurement)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBSpatialMeasurement
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   distanceMeters = self->_distanceMeters;
   if (distanceMeters != 0.0)
   {
-    xpc_dictionary_set_double(v4, "dM", distanceMeters);
+    xpc_dictionary_set_double(objectCopy, "dM", distanceMeters);
   }
 
   distanceError = self->_distanceError;
@@ -47,10 +47,10 @@
 
   identifier = self->_identifier;
   xdict = v5;
-  v12 = [(NSString *)identifier UTF8String];
-  if (v12)
+  uTF8String = [(NSString *)identifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "id", v12);
+    xpc_dictionary_set_string(xdict, "id", uTF8String);
   }
 
   verticalAngle = self->_verticalAngle;
@@ -109,18 +109,18 @@
   return v3;
 }
 
-- (CBSpatialMeasurement)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBSpatialMeasurement)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v13 = [(CBSpatialMeasurement *)self init];
   if (!v13)
   {
-    if (a4)
+    if (error)
     {
       v20 = "init failed";
 LABEL_25:
       CBErrorF(-6756, v20, v7, v8, v9, v10, v11, v12, v21);
-      *a4 = v18 = 0;
+      *error = v18 = 0;
       goto LABEL_19;
     }
 
@@ -129,9 +129,9 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  if (MEMORY[0x1C68DFDD0](v6) != MEMORY[0x1E69E9E80])
+  if (MEMORY[0x1C68DFDD0](objectCopy) != MEMORY[0x1E69E9E80])
   {
-    if (a4)
+    if (error)
     {
       v20 = "XPC non-dict";
       goto LABEL_25;

@@ -46,9 +46,9 @@
   v3 = MEMORY[0x277D755B8];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [v4 path];
+  path = [v4 path];
 
-  v7 = [v5 initWithContentsOfFile:v6];
+  v7 = [v5 initWithContentsOfFile:path];
 
   return v7;
 }
@@ -60,10 +60,10 @@
   v5 = [[v3 alloc] _initWithData:v4 preserveScale:1 cache:1];
 
   v6 = MEMORY[0x277D755B8];
-  v7 = [v5 CGImage];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
-  v10 = [v6 imageWithCGImage:v7 scale:objc_msgSend(v5 orientation:{"imageOrientation"), v9}];
+  cGImage = [v5 CGImage];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v10 = [v6 imageWithCGImage:cGImage scale:objc_msgSend(v5 orientation:{"imageOrientation"), v9}];
 
   return v10;
 }
@@ -84,7 +84,7 @@
   v9 = MEMORY[0x277D755B8];
   v10 = a6;
   v11 = [v9 imageNamed:a5];
-  v12 = [v11 itk_imageWithTint:v10 size:{a1, a2}];
+  v12 = [v11 itk_imageWithTint:v10 size:{self, a2}];
 
   return v12;
 }
@@ -92,12 +92,12 @@
 - (id)itk_imageWithTint:()ITKUtilities size:
 {
   v8 = a5;
-  v9 = [MEMORY[0x277D75568] defaultFormat];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
-  [v9 setScale:?];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  [defaultFormat setScale:?];
 
-  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v9 format:{a2, a3}];
+  v11 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{a2, a3}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __48__UIImage_ITKUtilities__itk_imageWithTint_size___block_invoke;
@@ -109,7 +109,7 @@
   v22 = a2;
   v23 = a3;
   v16 = v8;
-  v17 = a1;
+  selfCopy = self;
   v12 = v8;
   v13 = [v11 imageWithActions:v15];
 
@@ -119,17 +119,17 @@
 - (id)itk_imageView
 {
   v2 = objc_alloc(MEMORY[0x277D755E8]);
-  [a1 size];
+  [self size];
   ITKRectWithSize();
   v3 = [v2 initWithFrame:?];
-  [v3 setImage:a1];
+  [v3 setImage:self];
 
   return v3;
 }
 
 - (uint64_t)itk_scaledImageMinDimension:()ITKUtilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v7;
@@ -144,12 +144,12 @@
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 itk_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self itk_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (uint64_t)itk_scaledImageMaxDimension:()ITKUtilities scale:
 {
-  [a1 size];
+  [self size];
   if (v6 >= v7)
   {
     v8 = v6;
@@ -164,19 +164,19 @@
   v10 = round(v6 * v9);
   v11 = round(v7 * v9);
 
-  return [a1 itk_scaledImageWithSize:v10 scale:{v11, a3}];
+  return [self itk_scaledImageWithSize:v10 scale:{v11, a3}];
 }
 
 - (id)itk_scaledImageWithSize:()ITKUtilities scale:
 {
-  v8 = [a1 imageRendererFormat];
-  [v8 setScale:a4];
-  v9 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v8 format:{a2, a3}];
+  imageRendererFormat = [self imageRendererFormat];
+  [imageRendererFormat setScale:a4];
+  v9 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:imageRendererFormat format:{a2, a3}];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__UIImage_ITKUtilities__itk_scaledImageWithSize_scale___block_invoke;
   v12[3] = &unk_2797B0450;
-  v12[4] = a1;
+  v12[4] = self;
   *&v12[5] = a2;
   *&v12[6] = a3;
   v10 = [v9 imageWithActions:v12];
@@ -186,41 +186,41 @@
 
 - (id)itk_imageFromSubrect:()ITKUtilities
 {
-  [a1 scale];
+  [self scale];
   if (v10 > 1.0)
   {
-    [a1 scale];
+    [self scale];
     a2 = a2 * v11;
-    [a1 scale];
+    [self scale];
     a3 = a3 * v12;
-    [a1 scale];
+    [self scale];
     a4 = a4 * v13;
-    [a1 scale];
+    [self scale];
     a5 = a5 * v14;
   }
 
-  if ([a1 CGImage])
+  if ([self CGImage])
   {
-    v15 = [a1 itk_cgImage];
+    itk_cgImage = [self itk_cgImage];
     v25.origin.x = a2;
     v25.origin.y = a3;
     v25.size.width = a4;
     v25.size.height = a5;
-    v16 = CGImageCreateWithImageInRect(v15, v25);
+    v16 = CGImageCreateWithImageInRect(itk_cgImage, v25);
     v17 = MEMORY[0x277D755B8];
-    [a1 scale];
-    v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(a1 orientation:{"imageOrientation"), v18}];
+    [self scale];
+    v19 = [v17 imageWithCGImage:v16 scale:objc_msgSend(self orientation:{"imageOrientation"), v18}];
     CGImageRelease(v16);
   }
 
   else
   {
-    v20 = [a1 CIImage];
+    cIImage = [self CIImage];
 
-    if (v20)
+    if (cIImage)
     {
-      v21 = [a1 CIImage];
-      v22 = [v21 imageByCroppingToRect:{a2, a3, a4, a5}];
+      cIImage2 = [self CIImage];
+      v22 = [cIImage2 imageByCroppingToRect:{a2, a3, a4, a5}];
       v19 = [objc_alloc(MEMORY[0x277D755B8]) initWithCIImage:v22];
     }
 
@@ -235,7 +235,7 @@
 
 - (uint64_t)itk_squareStickerImageWithEdgeLength:()ITKUtilities
 {
-  [a1 size];
+  [self size];
   ITKRectWithSize();
   ITKFitOrFillSizeInRect();
   v5 = v4;
@@ -247,12 +247,12 @@
   v14 = CGBitmapContextCreate(0, a2, a2, 8uLL, AlignedBytesPerRow, DeviceRGB, 0x2002u);
   CGColorSpaceRelease(DeviceRGB);
   CGContextSetInterpolationQuality(v14, kCGInterpolationHigh);
-  v15 = [a1 itk_cgImageGeneratingIfNecessary];
+  itk_cgImageGeneratingIfNecessary = [self itk_cgImageGeneratingIfNecessary];
   v20.origin.x = v5;
   v20.origin.y = v7;
   v20.size.width = v9;
   v20.size.height = v11;
-  CGContextDrawImage(v14, v20, v15);
+  CGContextDrawImage(v14, v20, itk_cgImageGeneratingIfNecessary);
   Image = CGBitmapContextCreateImage(v14);
   CGContextRelease(v14);
   v17 = MEMORY[0x277D755B8];
@@ -313,20 +313,20 @@
 
 + (id)itk_orientedImageFromImage:()ITKUtilities fromOrientation:
 {
-  v5 = [a3 itk_cgImage];
+  itk_cgImage = [a3 itk_cgImage];
   memset(&v10, 0, sizeof(v10));
   itk_transformToImageOrientation(a4, &v10);
   v8 = v10;
   CGAffineTransformInvert(&v9, &v8);
   v10 = v9;
-  v6 = [MEMORY[0x277D755B8] itk_orientedImageFromCGImage:v5 scale:&v9 transform:1.0];
+  v6 = [MEMORY[0x277D755B8] itk_orientedImageFromCGImage:itk_cgImage scale:&v9 transform:1.0];
 
   return v6;
 }
 
 + (id)itk_orientedImageFromImage:()ITKUtilities toOrientation:
 {
-  v5 = [a3 itk_cgImage];
+  itk_cgImage = [a3 itk_cgImage];
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
@@ -334,7 +334,7 @@
   v8[0] = v9;
   v8[1] = v10;
   v8[2] = v11;
-  v6 = [MEMORY[0x277D755B8] itk_orientedImageFromCGImage:v5 scale:v8 transform:1.0];
+  v6 = [MEMORY[0x277D755B8] itk_orientedImageFromCGImage:itk_cgImage scale:v8 transform:1.0];
 
   return v6;
 }
@@ -350,29 +350,29 @@
 
 - (uint64_t)itk_cgImage
 {
-  v1 = a1;
+  selfCopy = self;
 
-  return [v1 CGImage];
+  return [selfCopy CGImage];
 }
 
 - (uint64_t)itk_cgImageGeneratingIfNecessary
 {
-  v2 = [a1 itk_cgImage];
-  if (!v2)
+  itk_cgImage = [self itk_cgImage];
+  if (!itk_cgImage)
   {
-    v3 = [a1 itk_ciImage];
-    if (v3)
+    itk_ciImage = [self itk_ciImage];
+    if (itk_ciImage)
     {
-      v4 = v3;
+      v4 = itk_ciImage;
       v5 = [objc_alloc(MEMORY[0x277CBF740]) initWithOptions:0];
       [v4 extent];
       v6 = [v5 createCGImage:v4 fromRect:?];
       if (v6)
       {
-        v2 = v6;
+        itk_cgImage = v6;
         CFAutorelease(v6);
 
-        return v2;
+        return itk_cgImage;
       }
     }
 
@@ -384,16 +384,16 @@
     return 0;
   }
 
-  return v2;
+  return itk_cgImage;
 }
 
 - (uint64_t)itk_horizontallyMirroredImage
 {
   v2 = MEMORY[0x277D755B8];
-  v3 = [a1 itk_cgImage];
-  [a1 scale];
+  itk_cgImage = [self itk_cgImage];
+  [self scale];
 
-  return [v2 imageWithCGImage:v3 scale:4 orientation:?];
+  return [v2 imageWithCGImage:itk_cgImage scale:4 orientation:?];
 }
 
 + (id)itk_imageWithCVPixelBuffer:()ITKUtilities
@@ -402,7 +402,7 @@
   VTCreateCGImageFromCVPixelBuffer(pixelBuffer, 0, &imageOut);
   if (imageOut)
   {
-    v4 = [a1 itk_imageWithCGImage:?];
+    v4 = [self itk_imageWithCGImage:?];
   }
 
   else
@@ -415,9 +415,9 @@
 
 - (uint64_t)itk_cgImagePropertyOrientation
 {
-  v1 = [a1 itk_imageOrientation];
+  itk_imageOrientation = [self itk_imageOrientation];
 
-  return itk_cgImagePropertyOrientationFromITKOrientation(v1);
+  return itk_cgImagePropertyOrientationFromITKOrientation(itk_imageOrientation);
 }
 
 + (id)itk_orientationMetadataFromImageOrientation:()ITKUtilities
@@ -443,42 +443,42 @@
 
 - (uint64_t)itk_JPEGData
 {
-  v2 = [a1 itk_imageOrientation];
+  itk_imageOrientation = [self itk_imageOrientation];
 
-  return [a1 itk_JPEGDataWithOrientation:v2];
+  return [self itk_JPEGDataWithOrientation:itk_imageOrientation];
 }
 
 - (id)itk_JPEGDataWithOrientation:()ITKUtilities
 {
-  v5 = [*MEMORY[0x277CE1DC0] identifier];
+  identifier = [*MEMORY[0x277CE1DC0] identifier];
   v6 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:a3];
-  v7 = [a1 itk_imageDataWithUTType:v5 metadata:v6];
+  v7 = [self itk_imageDataWithUTType:identifier metadata:v6];
 
   return v7;
 }
 
 - (id)itk_PNGData
 {
-  v2 = [*MEMORY[0x277CE1E10] identifier];
-  v3 = [a1 itk_imageDataWithUTType:v2 metadata:0];
+  identifier = [*MEMORY[0x277CE1E10] identifier];
+  v3 = [self itk_imageDataWithUTType:identifier metadata:0];
 
   return v3;
 }
 
 - (id)itk_PNGDataWithOrientation:()ITKUtilities
 {
-  v5 = [*MEMORY[0x277CE1E10] identifier];
+  identifier = [*MEMORY[0x277CE1E10] identifier];
   v6 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:a3];
-  v7 = [a1 itk_imageDataWithUTType:v5 metadata:v6];
+  v7 = [self itk_imageDataWithUTType:identifier metadata:v6];
 
   return v7;
 }
 
 - (uint64_t)itk_HEICDataWithCompressionQuality:()ITKUtilities
 {
-  v4 = [a1 itk_imageOrientation];
+  itk_imageOrientation = [self itk_imageOrientation];
 
-  return [a1 itk_HEICDataWithCompressionQuality:v4 orientation:a2];
+  return [self itk_HEICDataWithCompressionQuality:itk_imageOrientation orientation:a2];
 }
 
 - (id)itk_HEICDataWithCompressionQuality:()ITKUtilities orientation:
@@ -489,8 +489,8 @@
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:a2];
   [v7 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD2D48]];
 
-  v9 = [*MEMORY[0x277CE1D90] identifier];
-  v10 = [a1 itk_imageDataWithUTType:v9 metadata:v7];
+  identifier = [*MEMORY[0x277CE1D90] identifier];
+  v10 = [self itk_imageDataWithUTType:identifier metadata:v7];
 
   return v10;
 }
@@ -498,12 +498,12 @@
 - (id)itk_imageDataWithUTType:()ITKUtilities
 {
   v4 = a3;
-  v5 = [*MEMORY[0x277CE1DC0] identifier];
-  v6 = [v4 isEqualToString:v5];
+  identifier = [*MEMORY[0x277CE1DC0] identifier];
+  v6 = [v4 isEqualToString:identifier];
 
   if (v6)
   {
-    v7 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:{objc_msgSend(a1, "itk_imageOrientation")}];
+    v7 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:{objc_msgSend(self, "itk_imageOrientation")}];
   }
 
   else
@@ -511,7 +511,7 @@
     v7 = 0;
   }
 
-  v8 = [a1 itk_imageDataWithUTType:v4 metadata:v7];
+  v8 = [self itk_imageDataWithUTType:v4 metadata:v7];
 
   return v8;
 }
@@ -520,7 +520,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = itk_dataFromCGImage([a1 itk_cgImage], v7, v6);
+  v8 = itk_dataFromCGImage([self itk_cgImage], v7, v6);
 
   return v8;
 }
@@ -539,7 +539,7 @@
   v7[2] = __55__UIImage_ITKUtilities__itk_imageDataWithRequirements___block_invoke;
   v7[3] = &unk_2797B0478;
   v7[4] = &v8;
-  [a1 itk_imageDataWithRequirements:v4 completion:v7];
+  [self itk_imageDataWithRequirements:v4 completion:v7];
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
 
@@ -552,16 +552,16 @@
   v37 = a3;
   v36 = a4;
   v6 = [v37 uti];
-  v7 = [*MEMORY[0x277CE1D90] identifier];
-  if (![v6 isEqual:v7])
+  identifier = [*MEMORY[0x277CE1D90] identifier];
+  if (![v6 isEqual:identifier])
   {
     v8 = [v37 uti];
-    v9 = [*MEMORY[0x277CE1DC0] identifier];
-    if (([v8 isEqual:v9] & 1) == 0)
+    identifier2 = [*MEMORY[0x277CE1DC0] identifier];
+    if (([v8 isEqual:identifier2] & 1) == 0)
     {
       v33 = [v37 uti];
-      v34 = [*MEMORY[0x277CE1E10] identifier];
-      v35 = [v33 isEqual:v34];
+      identifier3 = [*MEMORY[0x277CE1E10] identifier];
+      v35 = [v33 isEqual:identifier3];
 
       if ((v35 & 1) == 0)
       {
@@ -588,18 +588,18 @@ LABEL_5:
     [MEMORY[0x277D1C0E8] handleFailedAssertWithCondition:"requirements.maxDataLength > 0" functionName:"-[UIImage(ITKUtilities) itk_imageDataWithRequirements:completion:]" simulateCrash:0 showAlert:0 format:@"The max data length requirement should be greater than zero."];
   }
 
-  v10 = [v37 maxLength];
-  if (v10 <= [v37 minLength])
+  maxLength = [v37 maxLength];
+  if (maxLength <= [v37 minLength])
   {
     [MEMORY[0x277D1C0E8] handleFailedAssertWithCondition:"requirements.maxLength > requirements.minLength" functionName:"-[UIImage(ITKUtilities) itk_imageDataWithRequirements:completion:]" simulateCrash:0 showAlert:0 format:@"The max length requirement should not be less than the min length requirement."];
   }
 
-  v11 = [a1 itk_cgImage];
-  v12 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:{objc_msgSend(a1, "itk_imageOrientation")}];
+  itk_cgImage = [self itk_cgImage];
+  v12 = [objc_opt_class() itk_orientationMetadataFromImageOrientation:{objc_msgSend(self, "itk_imageOrientation")}];
   v13 = [v12 mutableCopy];
 
-  Width = CGImageGetWidth(v11);
-  Height = CGImageGetHeight(v11);
+  Width = CGImageGetWidth(itk_cgImage);
+  Height = CGImageGetHeight(itk_cgImage);
   [v37 maxLength];
   ITKClampSizeToMaxLength();
   v38[0] = v16;
@@ -621,7 +621,7 @@ LABEL_5:
     v24 = &v38[2 * v20];
     v25 = *v24;
     v26 = v24[1];
-    ResizedCGImage = itk_createResizedCGImage(v11, *v24, v26);
+    ResizedCGImage = itk_createResizedCGImage(itk_cgImage, *v24, v26);
     v28 = 0;
     while (1)
     {
@@ -675,7 +675,7 @@ LABEL_21:
   v7 = [MEMORY[0x277CC1EB8] documentProxyForURL:a5 isContentManaged:0 sourceAuditToken:0];
   v8 = [MEMORY[0x277D755B8] _iconForResourceProxy:v7 format:3];
   v9 = v8;
-  if (!v8 || ([v8 size], v10 < a1) || (objc_msgSend(v9, "size"), v11 < a2))
+  if (!v8 || ([v8 size], v10 < self) || (objc_msgSend(v9, "size"), v11 < a2))
   {
     v12 = [MEMORY[0x277D755B8] _iconForResourceProxy:v7 format:6];
     if (v12)
@@ -697,7 +697,7 @@ LABEL_21:
   }
 
   [v9 size];
-  if (v21 >= a1)
+  if (v21 >= self)
   {
     [v9 size];
     if (v22 >= a2)
@@ -741,7 +741,7 @@ LABEL_26:
 
 LABEL_22:
   [v9 size];
-  if (v32 < a1 || ([v9 size], v33 < a2))
+  if (v32 < self || ([v9 size], v33 < a2))
   {
     v34 = 0;
     goto LABEL_26;
@@ -770,26 +770,26 @@ LABEL_33:
   v11 = 3221225472;
   v12 = __50__UIImage_ITKUtilities__itk_decodeWithCompletion___block_invoke_2;
   v13 = &unk_2797B04E8;
-  v14 = a1;
+  selfCopy = self;
   v15 = v6;
   v8 = v6;
   v9 = [v7 blockOperationWithBlock:&v10];
-  [itk_decodeWithCompletion__drawingDecodingOperationQueue addOperation:{v9, v10, v11, v12, v13, v14}];
+  [itk_decodeWithCompletion__drawingDecodingOperationQueue addOperation:{v9, v10, v11, v12, v13, selfCopy}];
 }
 
 - (id)itk_decodeInBackground
 {
-  v2 = [a1 imageRendererFormat];
-  [a1 scale];
-  [v2 setScale:?];
+  imageRendererFormat = [self imageRendererFormat];
+  [self scale];
+  [imageRendererFormat setScale:?];
   v3 = objc_alloc(MEMORY[0x277D75560]);
-  [a1 size];
-  v4 = [v3 initWithSize:v2 format:?];
+  [self size];
+  v4 = [v3 initWithSize:imageRendererFormat format:?];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__UIImage_ITKUtilities__itk_decodeInBackground__block_invoke;
   v7[3] = &unk_2797B0510;
-  v7[4] = a1;
+  v7[4] = self;
   v5 = [v4 imageWithActions:v7];
 
   return v5;
@@ -798,16 +798,16 @@ LABEL_33:
 + (id)itk_imageWithColor:()ITKUtilities size:
 {
   v7 = a5;
-  v13.width = a1;
+  v13.width = self;
   v13.height = a2;
   UIGraphicsBeginImageContext(v13);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [v7 CGColor];
+  cGColor = [v7 CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v9);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v14.origin.x = 0.0;
   v14.origin.y = 0.0;
-  v14.size.width = a1;
+  v14.size.width = self;
   v14.size.height = a2;
   CGContextFillRect(CurrentContext, v14);
   v10 = UIGraphicsGetImageFromCurrentImageContext();
@@ -838,23 +838,23 @@ LABEL_33:
   v21.size.width = a3;
   v21.size.height = a4;
   CGRectGetHeight(v21);
-  return a1 + v17;
+  return self + v17;
 }
 
 - (void)itk_cropRectZeroAlpha
 {
-  v2 = [a1 itk_cgImage];
-  v3 = itk_newARGB8BitmapContextFromImage(v2);
+  itk_cgImage = [self itk_cgImage];
+  v3 = itk_newARGB8BitmapContextFromImage(itk_cgImage);
   if (v3)
   {
     v4 = v3;
-    Width = CGImageGetWidth(v2);
-    Height = CGImageGetHeight(v2);
+    Width = CGImageGetWidth(itk_cgImage);
+    Height = CGImageGetHeight(itk_cgImage);
     v21.size.height = Height;
     v21.origin.x = 0.0;
     v21.origin.y = 0.0;
     v21.size.width = Width;
-    CGContextDrawImage(v4, v21, v2);
+    CGContextDrawImage(v4, v21, itk_cgImage);
     Data = CGBitmapContextGetData(v4);
     if (Data)
     {
@@ -938,7 +938,7 @@ LABEL_33:
       }
 
       CGContextRelease(v4);
-      [a1 scale];
+      [self scale];
     }
 
     else

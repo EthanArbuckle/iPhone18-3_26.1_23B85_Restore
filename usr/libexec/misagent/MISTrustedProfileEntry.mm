@@ -1,24 +1,24 @@
 @interface MISTrustedProfileEntry
-- (BOOL)isEqual:(id)a3;
-- (MISTrustedProfileEntry)initWithUUID:(id)a3 trustedTeamIDEntry:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MISTrustedProfileEntry)initWithUUID:(id)d trustedTeamIDEntry:(id)entry;
 - (id)redactedDescription;
 - (unint64_t)hash;
 @end
 
 @implementation MISTrustedProfileEntry
 
-- (MISTrustedProfileEntry)initWithUUID:(id)a3 trustedTeamIDEntry:(id)a4
+- (MISTrustedProfileEntry)initWithUUID:(id)d trustedTeamIDEntry:(id)entry
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  entryCopy = entry;
   v12.receiver = self;
   v12.super_class = MISTrustedProfileEntry;
   v9 = [(MISTrustedProfileEntry *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeStrong(&v10->_trustedTeamIDEntry, a4);
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeStrong(&v10->_trustedTeamIDEntry, entry);
   }
 
   return v10;
@@ -27,26 +27,26 @@
 - (id)redactedDescription
 {
   uuid = self->_uuid;
-  v4 = [(MISTrustedTeamIDEntry *)self->_trustedTeamIDEntry teamID];
-  v5 = [(MISTrustedTeamIDEntry *)self->_trustedTeamIDEntry signature];
-  v6 = [NSString stringWithFormat:@"MISTrustedProfileEntry(%@, %@, %@)", uuid, v4, v5];
+  teamID = [(MISTrustedTeamIDEntry *)self->_trustedTeamIDEntry teamID];
+  signature = [(MISTrustedTeamIDEntry *)self->_trustedTeamIDEntry signature];
+  v6 = [NSString stringWithFormat:@"MISTrustedProfileEntry(%@, %@, %@)", uuid, teamID, signature];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [(MISTrustedProfileEntry *)self uuid];
-    v7 = [v5 uuid];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    uuid = [(MISTrustedProfileEntry *)self uuid];
+    uuid2 = [v5 uuid];
+    if ([uuid isEqual:uuid2])
     {
-      v8 = [(MISTrustedProfileEntry *)self trustedTeamIDEntry];
-      v9 = [v5 trustedTeamIDEntry];
-      v10 = [v8 isEqual:v9];
+      trustedTeamIDEntry = [(MISTrustedProfileEntry *)self trustedTeamIDEntry];
+      trustedTeamIDEntry2 = [v5 trustedTeamIDEntry];
+      v10 = [trustedTeamIDEntry isEqual:trustedTeamIDEntry2];
     }
 
     else
@@ -65,10 +65,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MISTrustedProfileEntry *)self uuid];
-  v4 = [v3 hash];
-  v5 = [(MISTrustedProfileEntry *)self trustedTeamIDEntry];
-  v6 = [v5 hash];
+  uuid = [(MISTrustedProfileEntry *)self uuid];
+  v4 = [uuid hash];
+  trustedTeamIDEntry = [(MISTrustedProfileEntry *)self trustedTeamIDEntry];
+  v6 = [trustedTeamIDEntry hash];
 
   return v6 ^ v4;
 }

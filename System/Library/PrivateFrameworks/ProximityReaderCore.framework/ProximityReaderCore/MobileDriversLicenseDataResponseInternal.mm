@@ -1,6 +1,6 @@
 @interface MobileDriversLicenseDataResponseInternal
 - (_TtC19ProximityReaderCore40MobileDriversLicenseDataResponseInternal)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MobileDriversLicenseDataResponseInternal
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MobileDriversLicenseDataResponseInternal.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MobileDriversLicenseDataResponseInternal.encode(with:)(coderCopy);
 }
 
 @end

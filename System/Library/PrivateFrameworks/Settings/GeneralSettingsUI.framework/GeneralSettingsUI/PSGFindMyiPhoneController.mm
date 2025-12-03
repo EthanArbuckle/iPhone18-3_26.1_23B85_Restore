@@ -5,9 +5,9 @@
 - (PSGFindMyiPhoneController)init;
 - (id)preferredFindMyiPhoneAccount;
 - (void)dealloc;
-- (void)disablePhoneLocatorWithMessageString:(id)a3 buttonTitle:(id)a4 presentingViewController:(id)a5 completion:(id)a6;
-- (void)enablePhoneLocatorWithCompletion:(id)a3;
-- (void)locatorStateDidChange:(id)a3;
+- (void)disablePhoneLocatorWithMessageString:(id)string buttonTitle:(id)title presentingViewController:(id)controller completion:(id)completion;
+- (void)enablePhoneLocatorWithCompletion:(id)completion;
+- (void)locatorStateDidChange:(id)change;
 @end
 
 @implementation PSGFindMyiPhoneController
@@ -34,8 +34,8 @@
   v2 = [(PSGFindMyiPhoneController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_locatorStateDidChange_ name:*MEMORY[0x277CEC9A0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_locatorStateDidChange_ name:*MEMORY[0x277CEC9A0] object:0];
   }
 
   return v2;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSGFindMyiPhoneController;
@@ -58,10 +58,10 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [MEMORY[0x277CEC748] sharedManager];
-  v3 = [v2 accounts];
+  mEMORY[0x277CEC748] = [MEMORY[0x277CEC748] sharedManager];
+  accounts = [mEMORY[0x277CEC748] accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -73,7 +73,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) isProvisionedForDataclass:v7])
@@ -83,7 +83,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -106,14 +106,14 @@ LABEL_11:
   stateChangeSem = self->_stateChangeSem;
   self->_stateChangeSem = v3;
 
-  v5 = [MEMORY[0x277CECA38] sharedInstance];
-  v6 = [v5 isChangingState];
+  mEMORY[0x277CECA38] = [MEMORY[0x277CECA38] sharedInstance];
+  isChangingState = [mEMORY[0x277CECA38] isChangingState];
 
-  if (v6)
+  if (isChangingState)
   {
     dispatch_semaphore_wait(self->_stateChangeSem, 0xFFFFFFFFFFFFFFFFLL);
-    v7 = [MEMORY[0x277CECA38] sharedInstance];
-    if ([v7 isChangingState])
+    mEMORY[0x277CECA38]2 = [MEMORY[0x277CECA38] sharedInstance];
+    if ([mEMORY[0x277CECA38]2 isChangingState])
     {
       [PSGFindMyiPhoneController isFindMyiPhoneEnabled];
     }
@@ -122,26 +122,26 @@ LABEL_11:
   v8 = self->_stateChangeSem;
   self->_stateChangeSem = 0;
 
-  v9 = [MEMORY[0x277CECA38] sharedInstance];
-  v10 = [v9 isEnabled];
+  mEMORY[0x277CECA38]3 = [MEMORY[0x277CECA38] sharedInstance];
+  isEnabled = [mEMORY[0x277CECA38]3 isEnabled];
 
-  return v10;
+  return isEnabled;
 }
 
-- (void)locatorStateDidChange:(id)a3
+- (void)locatorStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (self->_stateChangeSem)
   {
-    v7 = v4;
-    v5 = [MEMORY[0x277CECA38] sharedInstance];
-    v6 = [v5 isChangingState];
+    v7 = changeCopy;
+    mEMORY[0x277CECA38] = [MEMORY[0x277CECA38] sharedInstance];
+    isChangingState = [mEMORY[0x277CECA38] isChangingState];
 
-    v4 = v7;
-    if ((v6 & 1) == 0)
+    changeCopy = v7;
+    if ((isChangingState & 1) == 0)
     {
       dispatch_semaphore_signal(self->_stateChangeSem);
-      v4 = v7;
+      changeCopy = v7;
     }
   }
 }
@@ -153,10 +153,10 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [MEMORY[0x277CEC748] sharedManager];
-  v3 = [v2 accounts];
+  mEMORY[0x277CEC748] = [MEMORY[0x277CEC748] sharedManager];
+  accounts = [mEMORY[0x277CEC748] accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -169,7 +169,7 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
@@ -189,7 +189,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [accounts countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -205,12 +205,12 @@ LABEL_11:
   return v6;
 }
 
-- (void)enablePhoneLocatorWithCompletion:(id)a3
+- (void)enablePhoneLocatorWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PSGFindMyiPhoneController *)self isFindMyiPhoneEnabled])
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -220,7 +220,7 @@ LABEL_11:
     v6[1] = 3221225472;
     v6[2] = __62__PSGFindMyiPhoneController_enablePhoneLocatorWithCompletion___block_invoke;
     v6[3] = &unk_278325110;
-    v7 = v4;
+    v7 = completionCopy;
     [v5 showEnableAlertWithCompletion:v6];
   }
 }
@@ -235,13 +235,13 @@ uint64_t __62__PSGFindMyiPhoneController_enablePhoneLocatorWithCompletion___bloc
   return result;
 }
 
-- (void)disablePhoneLocatorWithMessageString:(id)a3 buttonTitle:(id)a4 presentingViewController:(id)a5 completion:(id)a6
+- (void)disablePhoneLocatorWithMessageString:(id)string buttonTitle:(id)title presentingViewController:(id)controller completion:(id)completion
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  stringCopy = string;
+  titleCopy = title;
+  controllerCopy = controller;
+  completionCopy = completion;
   v14 = objc_alloc_init(MEMORY[0x277CD4790]);
   v26 = &unk_282E8FE18;
   v27[0] = MEMORY[0x277CBEC38];
@@ -250,15 +250,15 @@ uint64_t __62__PSGFindMyiPhoneController_enablePhoneLocatorWithCompletion___bloc
   v21[1] = 3221225472;
   v21[2] = __114__PSGFindMyiPhoneController_disablePhoneLocatorWithMessageString_buttonTitle_presentingViewController_completion___block_invoke;
   v21[3] = &unk_278325160;
-  v24 = v12;
-  v25 = v13;
+  v24 = controllerCopy;
+  v25 = completionCopy;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  v19 = v13;
+  v22 = stringCopy;
+  v23 = titleCopy;
+  v16 = controllerCopy;
+  v17 = titleCopy;
+  v18 = stringCopy;
+  v19 = completionCopy;
   [v14 evaluatePolicy:1025 options:v15 reply:v21];
 
   v20 = *MEMORY[0x277D85DE8];

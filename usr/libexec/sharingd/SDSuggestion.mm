@@ -1,33 +1,33 @@
 @interface SDSuggestion
 + (id)placeholderSuggestion;
-- (SDSuggestion)initWithSuggestion:(id)a3;
-- (id)_caseSensitiveBundleIDFromBundleID:(id)a3;
+- (SDSuggestion)initWithSuggestion:(id)suggestion;
+- (id)_caseSensitiveBundleIDFromBundleID:(id)d;
 - (id)createPeopleSuggestion;
 - (void)_configure;
-- (void)_requestSandboxExtensionForDonatedImage:(id)a3;
+- (void)_requestSandboxExtensionForDonatedImage:(id)image;
 @end
 
 @implementation SDSuggestion
 
 + (id)placeholderSuggestion
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setIsPlaceholder:1];
   [v2 setTransportBundleIdentifier:@"SDSuggestionTransportIdentifierPlaceholder"];
 
   return v2;
 }
 
-- (SDSuggestion)initWithSuggestion:(id)a3
+- (SDSuggestion)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v9.receiver = self;
   v9.super_class = SDSuggestion;
   v6 = [(SDSuggestion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestion, a3);
+    objc_storeStrong(&v6->_suggestion, suggestion);
     [(SDSuggestion *)v7 _configure];
   }
 
@@ -36,34 +36,34 @@
 
 - (void)_configure
 {
-  v3 = self;
-  v4 = [(SDSuggestion *)self suggestion];
-  if (!v4)
+  selfCopy = self;
+  suggestion = [(SDSuggestion *)self suggestion];
+  if (!suggestion)
   {
-    sub_100063538(a2, v3);
+    sub_100063538(a2, selfCopy);
   }
 
-  v5 = [v4 groupName];
+  groupName = [suggestion groupName];
   v6 = objc_alloc_init(NSMutableArray);
   v7 = +[NSMutableArray array];
   v71 = +[NSMutableArray array];
   v72 = +[NSMutableArray array];
-  if ([v5 length])
+  if ([groupName length])
   {
     v8 = +[NSNull null];
     v9 = [NSPredicate predicateWithFormat:@"SELF != %@", v8];
 
-    v10 = [v4 recipients];
-    v11 = [v10 valueForKey:@"handle"];
+    recipients = [suggestion recipients];
+    v11 = [recipients valueForKey:@"handle"];
 
     v12 = [v11 filteredArrayUsingPredicate:v9];
     v13 = v6;
     v14 = [v12 mutableCopy];
 
     v15 = v14;
-    v16 = v5;
-    v17 = [v4 recipients];
-    v18 = [v17 valueForKey:@"contact"];
+    v16 = groupName;
+    recipients2 = [suggestion recipients];
+    v18 = [recipients2 valueForKey:@"contact"];
 
     v19 = [v18 filteredArrayUsingPredicate:v9];
     v20 = [v19 mutableCopy];
@@ -75,19 +75,19 @@
 
   v69 = v6;
   v70 = v7;
-  v63 = v3;
-  v64 = v5;
-  v23 = [v4 recipients];
-  v24 = [v23 count];
+  v63 = selfCopy;
+  v64 = groupName;
+  recipients3 = [suggestion recipients];
+  v24 = [recipients3 count];
 
   v78 = 0u;
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v66 = v4;
-  obj = [v4 recipients];
+  v66 = suggestion;
+  obj = [suggestion recipients];
   v75 = [obj countByEnumeratingWithState:&v76 objects:v80 count:16];
-  v25 = 0;
+  handle3 = 0;
   v26 = 0;
   if (!v75)
   {
@@ -121,41 +121,41 @@
       }
 
       v30 = *(*(&v76 + 1) + 8 * v29);
-      v31 = [v30 displayName];
-      v32 = [v30 contact];
-      v33 = [v30 handle];
-      v34 = v33;
-      if (v32)
+      displayName = [v30 displayName];
+      contact = [v30 contact];
+      handle = [v30 handle];
+      v34 = handle;
+      if (contact)
       {
-        [v72 addObject:v32];
+        [v72 addObject:contact];
       }
 
-      else if (v33)
+      else if (handle)
       {
-        v35 = [[CNMutableContact alloc] initWithIdentifier:v33];
+        v35 = [[CNMutableContact alloc] initWithIdentifier:handle];
         [v72 addObject:v35];
         ++v67;
       }
 
-      v36 = [v32 identifier];
-      if (v36)
+      identifier = [contact identifier];
+      if (identifier)
       {
-        [v71 addObject:v36];
+        [v71 addObject:identifier];
       }
 
-      if ([v31 length])
+      if ([displayName length])
       {
         goto LABEL_23;
       }
 
-      if ([v32 isKeyAvailable:CNContactNicknameKey])
+      if ([contact isKeyAvailable:CNContactNicknameKey])
       {
-        v37 = [v32 nickname];
+        nickname = [contact nickname];
 
-        v31 = v37;
+        displayName = nickname;
       }
 
-      if ([v31 length])
+      if ([displayName length])
       {
 LABEL_23:
         if (!v34)
@@ -166,20 +166,20 @@ LABEL_23:
 
       else
       {
-        v44 = [v32 mutableCopy];
+        v44 = [contact mutableCopy];
         [v44 setMiddleName:&stru_1008EFBD0];
         v45 = [CNContactFormatter stringFromContact:v44 style:v65];
 
-        v31 = v45;
+        displayName = v45;
         if (!v34)
         {
           goto LABEL_29;
         }
       }
 
-      if (v31 && ([v66 bundleID], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqualToString:", @"com.apple.mobilemail"), v38, v39))
+      if (displayName && ([v66 bundleID], v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqualToString:", @"com.apple.mobilemail"), v38, v39))
       {
-        v40 = [NSString stringWithFormat:@"%@ <%@>", v31, v34];
+        v40 = [NSString stringWithFormat:@"%@ <%@>", displayName, v34];
         [v69 addObject:v40];
       }
 
@@ -192,7 +192,7 @@ LABEL_23:
 LABEL_29:
       if ((v27 & 1) == 0)
       {
-        if (v31)
+        if (displayName)
         {
           if (v26)
           {
@@ -201,48 +201,48 @@ LABEL_29:
 
           else
           {
-            v41 = v25;
+            v41 = handle3;
           }
 
           v42 = v41;
 
-          v43 = v31;
+          handle2 = displayName;
           v27 = 1;
-          v25 = v42;
+          handle3 = v42;
         }
 
         else
         {
-          v43 = [v30 handle];
+          handle2 = [v30 handle];
           if (v26)
           {
 
             v27 = 0;
-            v25 = v43;
+            handle3 = handle2;
             goto LABEL_49;
           }
 
           v27 = 0;
         }
 
-        v26 = v43;
+        v26 = handle2;
         goto LABEL_49;
       }
 
       if ((v73 & 1) == 0)
       {
-        if (v25 || !v31)
+        if (handle3 || !displayName)
         {
-          if (!(v25 | v31))
+          if (!(handle3 | displayName))
           {
-            v25 = [v30 handle];
+            handle3 = [v30 handle];
           }
 
           v73 = 0;
           goto LABEL_48;
         }
 
-        v25 = v31;
+        handle3 = displayName;
       }
 
       v73 = 1;
@@ -264,7 +264,7 @@ LABEL_55:
   v16 = v64;
   if ([v64 length])
   {
-    v4 = v66;
+    suggestion = v66;
     v21 = v67;
     v20 = v72;
     v22 = v69;
@@ -272,9 +272,9 @@ LABEL_55:
 
   else
   {
-    v4 = v66;
-    v47 = [v66 recipients];
-    v48 = [v47 count];
+    suggestion = v66;
+    recipients4 = [v66 recipients];
+    v48 = [recipients4 count];
 
     v20 = v72;
     v22 = v69;
@@ -285,19 +285,19 @@ LABEL_55:
 
     else
     {
-      v50 = [v66 recipients];
-      v51 = [v50 count];
+      recipients5 = [v66 recipients];
+      v51 = [recipients5 count];
 
       SFLocalizedStringForKey();
       if (v51 == 2)
         v52 = {;
-        v49 = [NSString localizedStringWithFormat:v52, v26, v25];
+        v49 = [NSString localizedStringWithFormat:v52, v26, handle3];
       }
 
       else
         v52 = {;
-        v53 = [v66 recipients];
-        v49 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v52, v26, v25, [v53 count] - 2);
+        recipients6 = [v66 recipients];
+        v49 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", v52, v26, handle3, [recipients6 count] - 2);
       }
 
       v16 = v52;
@@ -308,52 +308,52 @@ LABEL_55:
     v16 = v49;
   }
 
-  v3 = v63;
+  selfCopy = v63;
   v15 = v70;
 LABEL_65:
-  [(SDSuggestion *)v3 setDisplayName:v16];
-  [(SDSuggestion *)v3 setFormattedHandles:v22];
-  [(SDSuggestion *)v3 setHandles:v15];
-  [(SDSuggestion *)v3 setContactsIdentifiers:v71];
-  [(SDSuggestion *)v3 setContacts:v20];
-  [(SDSuggestion *)v3 setTransientContactsCount:v21];
-  v54 = [v4 bundleID];
-  v55 = [(SDSuggestion *)v3 _caseSensitiveBundleIDFromBundleID:v54];
-  [(SDSuggestion *)v3 setTransportBundleIdentifier:v55];
+  [(SDSuggestion *)selfCopy setDisplayName:v16];
+  [(SDSuggestion *)selfCopy setFormattedHandles:v22];
+  [(SDSuggestion *)selfCopy setHandles:v15];
+  [(SDSuggestion *)selfCopy setContactsIdentifiers:v71];
+  [(SDSuggestion *)selfCopy setContacts:v20];
+  [(SDSuggestion *)selfCopy setTransientContactsCount:v21];
+  bundleID = [suggestion bundleID];
+  v55 = [(SDSuggestion *)selfCopy _caseSensitiveBundleIDFromBundleID:bundleID];
+  [(SDSuggestion *)selfCopy setTransportBundleIdentifier:v55];
 
-  v56 = [v4 recipients];
-  [(SDSuggestion *)v3 setRecipients:v56];
+  recipients7 = [suggestion recipients];
+  [(SDSuggestion *)selfCopy setRecipients:recipients7];
 
-  v57 = [v4 conversationIdentifier];
-  [(SDSuggestion *)v3 setConversationIdentifier:v57];
+  conversationIdentifier = [suggestion conversationIdentifier];
+  [(SDSuggestion *)selfCopy setConversationIdentifier:conversationIdentifier];
 
-  v58 = [v4 derivedIntentIdentifier];
-  [(SDSuggestion *)v3 setDerivedIntentIdentifier:v58];
+  derivedIntentIdentifier = [suggestion derivedIntentIdentifier];
+  [(SDSuggestion *)selfCopy setDerivedIntentIdentifier:derivedIntentIdentifier];
 
-  v59 = [v4 groupName];
-  [(SDSuggestion *)v3 setGroupName:v59];
+  groupName2 = [suggestion groupName];
+  [(SDSuggestion *)selfCopy setGroupName:groupName2];
 
-  v60 = [v4 image];
-  [(SDSuggestion *)v3 setImage:v60];
+  image = [suggestion image];
+  [(SDSuggestion *)selfCopy setImage:image];
 
-  v61 = [v4 reason];
-  if (v61)
+  reason = [suggestion reason];
+  if (reason)
   {
-    [(SDSuggestion *)v3 setReason:v61];
+    [(SDSuggestion *)selfCopy setReason:reason];
   }
 
   else
   {
-    v62 = [v4 reasonType];
-    [(SDSuggestion *)v3 setReason:v62];
+    reasonType = [suggestion reasonType];
+    [(SDSuggestion *)selfCopy setReason:reasonType];
   }
 }
 
-- (id)_caseSensitiveBundleIDFromBundleID:(id)a3
+- (id)_caseSensitiveBundleIDFromBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"com.apple.mobilesms"];
+  dCopy = d;
+  lowercaseString = [dCopy lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"com.apple.mobilesms"];
 
   if (v5)
   {
@@ -362,7 +362,7 @@ LABEL_65:
 
   else
   {
-    v6 = v3;
+    v6 = dCopy;
   }
 
   return v6;
@@ -370,54 +370,54 @@ LABEL_65:
 
 - (id)createPeopleSuggestion
 {
-  v3 = [(SDSuggestion *)self conversationIdentifier];
-  v4 = v3;
-  if (v3)
+  conversationIdentifier = [(SDSuggestion *)self conversationIdentifier];
+  v4 = conversationIdentifier;
+  if (conversationIdentifier)
   {
-    v5 = v3;
+    lowercaseString = conversationIdentifier;
   }
 
   else
   {
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
-    v8 = [v7 substringWithRange:{24, 12}];
-    v5 = [v8 lowercaseString];
+    uUIDString = [v6 UUIDString];
+    v8 = [uUIDString substringWithRange:{24, 12}];
+    lowercaseString = [v8 lowercaseString];
   }
 
-  v9 = [(SDSuggestion *)self image];
+  image = [(SDSuggestion *)self image];
   v10 = [SFPeopleSuggestion alloc];
-  v11 = [(SDSuggestion *)self displayName];
-  v12 = [(SDSuggestion *)self transportBundleIdentifier];
-  v13 = [(SDSuggestion *)self contacts];
-  v14 = [(SDSuggestion *)self formattedHandles];
+  displayName = [(SDSuggestion *)self displayName];
+  transportBundleIdentifier = [(SDSuggestion *)self transportBundleIdentifier];
+  contacts = [(SDSuggestion *)self contacts];
+  formattedHandles = [(SDSuggestion *)self formattedHandles];
   LOBYTE(v17) = [(SDSuggestion *)self isPlaceholder];
-  v15 = [v10 initWithIdentifier:v5 displayName:v11 transportBundleIdentifier:v12 contacts:v13 formattedHandles:v14 donatedImage:v9 placeholder:v17];
+  v15 = [v10 initWithIdentifier:lowercaseString displayName:displayName transportBundleIdentifier:transportBundleIdentifier contacts:contacts formattedHandles:formattedHandles donatedImage:image placeholder:v17];
 
-  if (v9)
+  if (image)
   {
-    [(SDSuggestion *)self _requestSandboxExtensionForDonatedImage:v9];
+    [(SDSuggestion *)self _requestSandboxExtensionForDonatedImage:image];
   }
 
   return v15;
 }
 
-- (void)_requestSandboxExtensionForDonatedImage:(id)a3
+- (void)_requestSandboxExtensionForDonatedImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 _imageData];
+  imageCopy = image;
+  _imageData = [imageCopy _imageData];
 
-  if (!v4)
+  if (!_imageData)
   {
-    v5 = [v3 _uri];
-    if ([v5 isFileURL])
+    _uri = [imageCopy _uri];
+    if ([_uri isFileURL])
     {
-      [v5 fileSystemRepresentation];
+      [_uri fileSystemRepresentation];
       v6 = sandbox_extension_issue_file();
       if (v6)
       {
         v7 = [NSData dataWithBytesNoCopy:v6 length:strlen(v6) + 1 freeWhenDone:1];
-        [v3 _setSandboxExtensionData:v7];
+        [imageCopy _setSandboxExtensionData:v7];
       }
 
       else
@@ -425,7 +425,7 @@ LABEL_65:
         v7 = share_sheet_log();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
         {
-          sub_1000635AC(v5, v7);
+          sub_1000635AC(_uri, v7);
         }
       }
     }

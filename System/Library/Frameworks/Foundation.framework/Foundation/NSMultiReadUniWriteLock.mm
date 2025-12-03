@@ -6,7 +6,7 @@
 - (void)lock;
 - (void)lockForReading;
 - (void)lockForWriting;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 - (void)unlock;
 @end
 
@@ -41,12 +41,12 @@
 
 - (NSMultiReadUniWriteLock)init
 {
-  v2 = self;
+  selfCopy = self;
   v6 = *MEMORY[0x1E69E9840];
   IndexedIvars = object_getIndexedIvars(self);
   if (pthread_rwlock_init(IndexedIvars, 0))
   {
-    v5.receiver = v2;
+    v5.receiver = selfCopy;
     v5.super_class = NSMultiReadUniWriteLock;
     [(NSMultiReadUniWriteLock *)&v5 dealloc];
     return 0;
@@ -58,7 +58,7 @@
     *IndexedIvars[1].__opaque = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -121,15 +121,15 @@
   return [NSString stringWithFormat:@"%@{locked for writing = %s, writer thread = %p, name = %s%@%s}", v4, v9, *(IndexedIvars + 25), v6, v8, v6];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   IndexedIvars = object_getIndexedIvars(self);
   v5 = IndexedIvars[26];
-  if (v5 != a3)
+  if (v5 != name)
   {
     v6 = IndexedIvars;
 
-    v6[26] = [a3 copy];
+    v6[26] = [name copy];
   }
 }
 

@@ -1,63 +1,63 @@
 @interface CNUIContactStoreSaveExecutor
-- (BOOL)handleContainerContextForSaveConfiguration:(id)a3 contactToSave:(id)a4 saveDelegate:(id)a5 issuedRequestIdentifiers:(id)a6 additionalLinkedContacts:(id)a7;
-- (BOOL)performSaveForMutableContact:(id)a3 group:(id)a4 container:(id)a5 saveConfiguration:(id)a6 issuedRequestIdentifiers:(id)a7;
-- (BOOL)saveShadowContactForSaveConfiguration:(id)a3;
-- (id)executeSaveWithConfiguration:(id)a3 saveDelegate:(id)a4;
-- (id)saveLinkedContactsWithSaveConfiguration:(id)a3 contactToSave:(id)a4 additionalLinkedContacts:(id)a5 issuedRequestIdentifiers:(id)a6 saveDelegate:(id)a7;
-- (id)validatedContactForSaveConfiguration:(id)a3 preservingIdentifier:(BOOL)a4;
-- (void)handleDeleteAcceptedContactsWithSaveConfiguration:(id)a3 contactToSave:(id)a4;
-- (void)handleGroupContextForSaveConfiguration:(id)a3 contactToSave:(id)a4 issuedRequestIdentifiers:(id)a5 saveDelegate:(id)a6;
+- (BOOL)handleContainerContextForSaveConfiguration:(id)configuration contactToSave:(id)save saveDelegate:(id)delegate issuedRequestIdentifiers:(id)identifiers additionalLinkedContacts:(id)contacts;
+- (BOOL)performSaveForMutableContact:(id)contact group:(id)group container:(id)container saveConfiguration:(id)configuration issuedRequestIdentifiers:(id)identifiers;
+- (BOOL)saveShadowContactForSaveConfiguration:(id)configuration;
+- (id)executeSaveWithConfiguration:(id)configuration saveDelegate:(id)delegate;
+- (id)saveLinkedContactsWithSaveConfiguration:(id)configuration contactToSave:(id)save additionalLinkedContacts:(id)contacts issuedRequestIdentifiers:(id)identifiers saveDelegate:(id)delegate;
+- (id)validatedContactForSaveConfiguration:(id)configuration preservingIdentifier:(BOOL)identifier;
+- (void)handleDeleteAcceptedContactsWithSaveConfiguration:(id)configuration contactToSave:(id)save;
+- (void)handleGroupContextForSaveConfiguration:(id)configuration contactToSave:(id)save issuedRequestIdentifiers:(id)identifiers saveDelegate:(id)delegate;
 @end
 
 @implementation CNUIContactStoreSaveExecutor
 
-- (BOOL)performSaveForMutableContact:(id)a3 group:(id)a4 container:(id)a5 saveConfiguration:(id)a6 issuedRequestIdentifiers:(id)a7
+- (BOOL)performSaveForMutableContact:(id)contact group:(id)group container:(id)container saveConfiguration:(id)configuration issuedRequestIdentifiers:(id)identifiers
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  configurationCopy = configuration;
+  identifiersCopy = identifiers;
+  containerCopy = container;
+  groupCopy = group;
+  contactCopy = contact;
   v16 = objc_alloc_init(CNUIContactStoreSaveDelegate);
   v17 = objc_alloc_init(MEMORY[0x1E695CF88]);
-  if ([v11 ignoresParentalRestrictions])
+  if ([configurationCopy ignoresParentalRestrictions])
   {
-    v18 = 1;
+    saveWasAuthorized = 1;
   }
 
   else
   {
-    v18 = [v11 saveWasAuthorized];
+    saveWasAuthorized = [configurationCopy saveWasAuthorized];
   }
 
-  [v17 setIgnoresGuardianRestrictions:v18];
+  [v17 setIgnoresGuardianRestrictions:saveWasAuthorized];
   [v17 setDelegate:v16];
-  v19 = [v17 saveRequestIdentifier];
-  [v12 addObject:v19];
+  saveRequestIdentifier = [v17 saveRequestIdentifier];
+  [identifiersCopy addObject:saveRequestIdentifier];
 
-  v20 = [v11 contactStore];
-  LOBYTE(v19) = [v15 saveContactInStore:v20 group:v14 container:v13 request:v17];
+  contactStore = [configurationCopy contactStore];
+  LOBYTE(saveRequestIdentifier) = [contactCopy saveContactInStore:contactStore group:groupCopy container:containerCopy request:v17];
 
-  return v19;
+  return saveRequestIdentifier;
 }
 
-- (void)handleDeleteAcceptedContactsWithSaveConfiguration:(id)a3 contactToSave:(id)a4
+- (void)handleDeleteAcceptedContactsWithSaveConfiguration:(id)configuration contactToSave:(id)save
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (([a4 isCoreRecentsAccepted] & 1) == 0)
+  configurationCopy = configuration;
+  if (([save isCoreRecentsAccepted] & 1) == 0)
   {
-    v7 = [v6 originalContacts];
-    v8 = [v7 _cn_filter:&__block_literal_global_53794];
+    originalContacts = [configurationCopy originalContacts];
+    v8 = [originalContacts _cn_filter:&__block_literal_global_53794];
 
-    v9 = [v8 firstObject];
-    if (v9)
+    firstObject = [v8 firstObject];
+    if (firstObject)
     {
       v10 = objc_alloc_init(MEMORY[0x1E695CE60]);
-      [v10 deleteRecentContact:v9];
-      v11 = [v6 contactStore];
+      [v10 deleteRecentContact:firstObject];
+      contactStore = [configurationCopy contactStore];
       v15 = 0;
-      [v11 executeSaveRequest:v10 error:&v15];
+      [contactStore executeSaveRequest:v10 error:&v15];
       v12 = v15;
 
       v13 = CNUILogContactCard();
@@ -67,7 +67,7 @@
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 134349314;
-          v17 = self;
+          selfCopy2 = self;
           v18 = 2112;
           v19 = v12;
           _os_log_error_impl(&dword_199A75000, v14, OS_LOG_TYPE_ERROR, "[CNUIContactStoreExecutor] %{public}p Could not delete CoreRecents accepted contact. Error: %@", buf, 0x16u);
@@ -77,116 +77,116 @@
       else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349056;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "[CNUIContactStoreExecutor] %{public}p deleted original accepted contact for saved contact.", buf, 0xCu);
       }
     }
   }
 }
 
-- (id)saveLinkedContactsWithSaveConfiguration:(id)a3 contactToSave:(id)a4 additionalLinkedContacts:(id)a5 issuedRequestIdentifiers:(id)a6 saveDelegate:(id)a7
+- (id)saveLinkedContactsWithSaveConfiguration:(id)configuration contactToSave:(id)save additionalLinkedContacts:(id)contacts issuedRequestIdentifiers:(id)identifiers saveDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  configurationCopy = configuration;
+  saveCopy = save;
+  contactsCopy = contacts;
+  identifiersCopy = identifiers;
+  delegateCopy = delegate;
   v16 = *MEMORY[0x1E6996530];
-  if ((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v13) && ([v11 editingLinkedContacts], v17 = objc_claimAutoreleasedReturnValue(), v18 = (*(v16 + 16))(v16, v17), v17, v18))
+  if ((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], contactsCopy) && ([configurationCopy editingLinkedContacts], v17 = objc_claimAutoreleasedReturnValue(), v18 = (*(v16 + 16))(v16, v17), v17, v18))
   {
-    v19 = [v12 copy];
+    v19 = [saveCopy copy];
   }
 
   else
   {
-    v20 = v11;
-    if ([v13 count])
+    v20 = configurationCopy;
+    if ([contactsCopy count])
     {
-      v21 = [v20 editingLinkedContacts];
-      [v13 addObjectsFromArray:v21];
+      editingLinkedContacts = [v20 editingLinkedContacts];
+      [contactsCopy addObjectsFromArray:editingLinkedContacts];
 
-      v22 = [v20 copyWithEditingLinkedContacts:v13];
+      v22 = [v20 copyWithEditingLinkedContacts:contactsCopy];
       v20 = v22;
     }
 
     v23 = objc_alloc_init(CNUIContactStoreLinkedContactSaveExecutor);
-    v24 = [(CNUIContactStoreLinkedContactSaveExecutor *)v23 executeSaveWithConfiguration:v20 saveDelegate:v15];
-    v25 = [v24 identifiersOfIssuedSaveRequests];
-    [v14 addObjectsFromArray:v25];
+    v24 = [(CNUIContactStoreLinkedContactSaveExecutor *)v23 executeSaveWithConfiguration:v20 saveDelegate:delegateCopy];
+    identifiersOfIssuedSaveRequests = [v24 identifiersOfIssuedSaveRequests];
+    [identifiersCopy addObjectsFromArray:identifiersOfIssuedSaveRequests];
 
-    v26 = [v24 contact];
+    contact = [v24 contact];
 
-    if (v26)
+    if (contact)
     {
-      v27 = [v24 contact];
+      contact2 = [v24 contact];
     }
 
     else
     {
-      v27 = [v12 copy];
+      contact2 = [saveCopy copy];
     }
 
-    v19 = v27;
+    v19 = contact2;
   }
 
   return v19;
 }
 
-- (void)handleGroupContextForSaveConfiguration:(id)a3 contactToSave:(id)a4 issuedRequestIdentifiers:(id)a5 saveDelegate:(id)a6
+- (void)handleGroupContextForSaveConfiguration:(id)configuration contactToSave:(id)save issuedRequestIdentifiers:(id)identifiers saveDelegate:(id)delegate
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 groupContext];
+  configurationCopy = configuration;
+  saveCopy = save;
+  identifiersCopy = identifiers;
+  delegateCopy = delegate;
+  groupContext = [configurationCopy groupContext];
 
-  if (v13)
+  if (groupContext)
   {
-    if ([v9 ignoresParentalRestrictions])
+    if ([configurationCopy ignoresParentalRestrictions])
     {
-      v14 = 1;
+      saveWasAuthorized = 1;
     }
 
     else
     {
-      v14 = [v9 saveWasAuthorized];
+      saveWasAuthorized = [configurationCopy saveWasAuthorized];
     }
 
     v15 = [CNUIGroupsAndContainersSaveManager alloc];
-    v16 = [v9 contactStore];
-    v17 = [v12 contactViewCache];
-    v18 = [(CNUIGroupsAndContainersSaveManager *)v15 initWithContactStore:v16 contactViewCache:v17];
+    contactStore = [configurationCopy contactStore];
+    contactViewCache = [delegateCopy contactViewCache];
+    v18 = [(CNUIGroupsAndContainersSaveManager *)v15 initWithContactStore:contactStore contactViewCache:contactViewCache];
 
-    v22[0] = v10;
+    v22[0] = saveCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
-    v20 = [v9 groupContext];
-    v21 = [(CNUIGroupsAndContainersSaveManager *)v18 updateContacts:v19 forGroupContext:v20 ignoresGuardianRestrictions:v14 issuedRequestIdentifiers:v11];
+    groupContext2 = [configurationCopy groupContext];
+    v21 = [(CNUIGroupsAndContainersSaveManager *)v18 updateContacts:v19 forGroupContext:groupContext2 ignoresGuardianRestrictions:saveWasAuthorized issuedRequestIdentifiers:identifiersCopy];
   }
 }
 
-- (BOOL)handleContainerContextForSaveConfiguration:(id)a3 contactToSave:(id)a4 saveDelegate:(id)a5 issuedRequestIdentifiers:(id)a6 additionalLinkedContacts:(id)a7
+- (BOOL)handleContainerContextForSaveConfiguration:(id)configuration contactToSave:(id)save saveDelegate:(id)delegate issuedRequestIdentifiers:(id)identifiers additionalLinkedContacts:(id)contacts
 {
   v50 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v44 = a5;
-  v13 = a6;
-  v14 = a7;
+  configurationCopy = configuration;
+  saveCopy = save;
+  delegateCopy = delegate;
+  identifiersCopy = identifiers;
+  contactsCopy = contacts;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v15 = [v11 containerContext];
-  v16 = [v15 addedContainers];
+  containerContext = [configurationCopy containerContext];
+  addedContainers = [containerContext addedContainers];
 
-  obj = v16;
-  v17 = [v16 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  obj = addedContainers;
+  v17 = [addedContainers countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v17)
   {
     v18 = v17;
-    v41 = v14;
-    v42 = v12;
+    v41 = contactsCopy;
+    v42 = saveCopy;
     v40 = *v46;
     do
     {
@@ -198,42 +198,42 @@
         }
 
         v20 = *(*(&v45 + 1) + 8 * i);
-        v21 = [v44 contactViewCache];
-        v22 = [v21 policyForContainer:v20];
+        contactViewCache = [delegateCopy contactViewCache];
+        v22 = [contactViewCache policyForContainer:v20];
 
-        v23 = [v20 identifier];
-        v24 = [v11 parentContainer];
-        v25 = [v24 identifier];
-        v26 = [v23 isEqualToString:v25];
+        identifier = [v20 identifier];
+        parentContainer = [configurationCopy parentContainer];
+        identifier2 = [parentContainer identifier];
+        v26 = [identifier isEqualToString:identifier2];
 
         if (v26)
         {
           v27 = v42;
-          v28 = [v11 parentGroup];
+          parentGroup = [configurationCopy parentGroup];
         }
 
         else
         {
           v27 = [MEMORY[0x1E695CDC8] contactFromContact:v42 conformingToPolicy:v22 options:5];
-          v28 = 0;
+          parentGroup = 0;
         }
 
         v29 = objc_alloc_init(MEMORY[0x1E695CF88]);
-        if ([v11 ignoresParentalRestrictions])
+        if ([configurationCopy ignoresParentalRestrictions])
         {
-          v30 = 1;
+          saveWasAuthorized = 1;
         }
 
         else
         {
-          v30 = [v11 saveWasAuthorized];
+          saveWasAuthorized = [configurationCopy saveWasAuthorized];
         }
 
-        [v29 setIgnoresGuardianRestrictions:v30];
-        v31 = [v29 saveRequestIdentifier];
-        [v13 addObject:v31];
+        [v29 setIgnoresGuardianRestrictions:saveWasAuthorized];
+        saveRequestIdentifier = [v29 saveRequestIdentifier];
+        [identifiersCopy addObject:saveRequestIdentifier];
 
-        v32 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:v27 group:v28 container:v20 saveConfiguration:v11 issuedRequestIdentifiers:v13];
+        v32 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:v27 group:parentGroup container:v20 saveConfiguration:configurationCopy issuedRequestIdentifiers:identifiersCopy];
         [v41 addObject:v27];
       }
 
@@ -241,8 +241,8 @@
     }
 
     while (v18);
-    v14 = v41;
-    v12 = v42;
+    contactsCopy = v41;
+    saveCopy = v42;
   }
 
   else
@@ -250,47 +250,47 @@
     v32 = 0;
   }
 
-  v33 = [v11 containerContext];
-  v34 = [v33 originalContainers];
-  v35 = [v34 count];
+  containerContext2 = [configurationCopy containerContext];
+  originalContainers = [containerContext2 originalContainers];
+  v35 = [originalContainers count];
 
   if (v35)
   {
-    v36 = [v11 parentGroup];
-    v37 = [v11 parentContainer];
-    v32 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:v12 group:v36 container:v37 saveConfiguration:v11 issuedRequestIdentifiers:v13];
+    parentGroup2 = [configurationCopy parentGroup];
+    parentContainer2 = [configurationCopy parentContainer];
+    v32 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:saveCopy group:parentGroup2 container:parentContainer2 saveConfiguration:configurationCopy issuedRequestIdentifiers:identifiersCopy];
 
-    [v14 addObject:v12];
+    [contactsCopy addObject:saveCopy];
   }
 
   return v32;
 }
 
-- (id)validatedContactForSaveConfiguration:(id)a3 preservingIdentifier:(BOOL)a4
+- (id)validatedContactForSaveConfiguration:(id)configuration preservingIdentifier:(BOOL)identifier
 {
-  v4 = a4;
+  identifierCopy = identifier;
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 mutableContact];
+  configurationCopy = configuration;
+  mutableContact = [configurationCopy mutableContact];
   v7 = objc_alloc_init(MEMORY[0x1E695CF58]);
-  v8 = [v5 parentContainer];
-  v9 = [v8 identifier];
-  [v7 setContainerIdentifier:v9];
+  parentContainer = [configurationCopy parentContainer];
+  identifier = [parentContainer identifier];
+  [v7 setContainerIdentifier:identifier];
 
-  if ([v5 ignoresParentalRestrictions])
+  if ([configurationCopy ignoresParentalRestrictions])
   {
-    v10 = 1;
+    saveWasAuthorized = 1;
   }
 
   else
   {
-    v10 = [v5 saveWasAuthorized];
+    saveWasAuthorized = [configurationCopy saveWasAuthorized];
   }
 
-  [v7 setIgnoresGuardianRestrictions:v10];
-  v11 = [v5 contactStore];
+  [v7 setIgnoresGuardianRestrictions:saveWasAuthorized];
+  contactStore = [configurationCopy contactStore];
   v22 = 0;
-  v12 = [v11 policyWithDescription:v7 error:&v22];
+  v12 = [contactStore policyWithDescription:v7 error:&v22];
   v13 = v22;
 
   if (v13)
@@ -298,19 +298,19 @@
     v14 = CNUILogContactCard();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v21 = [v5 parentContainer];
+      parentContainer2 = [configurationCopy parentContainer];
       *buf = 138543362;
-      v24 = v21;
+      v24 = parentContainer2;
       _os_log_error_impl(&dword_199A75000, v14, OS_LOG_TYPE_ERROR, "[CNUIContactStoreExecutor] failed to get policy for container %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    [v6 updateContactTypeWithPolicy:v12];
-    if (![v6 hasBeenPersisted])
+    [mutableContact updateContactTypeWithPolicy:v12];
+    if (![mutableContact hasBeenPersisted])
     {
-      if (v4)
+      if (identifierCopy)
       {
         v17 = 13;
       }
@@ -320,7 +320,7 @@
         v17 = 5;
       }
 
-      v18 = [MEMORY[0x1E695CDC8] contactFromContact:v6 conformingToPolicy:v12 options:v17];
+      v18 = [MEMORY[0x1E695CDC8] contactFromContact:mutableContact conformingToPolicy:v12 options:v17];
       v19 = v18;
       if (v18)
       {
@@ -329,7 +329,7 @@
 
       else
       {
-        v20 = v6;
+        v20 = mutableContact;
       }
 
       v15 = v20;
@@ -338,24 +338,24 @@
     }
   }
 
-  v15 = v6;
+  v15 = mutableContact;
 LABEL_10:
 
   return v15;
 }
 
-- (BOOL)saveShadowContactForSaveConfiguration:(id)a3
+- (BOOL)saveShadowContactForSaveConfiguration:(id)configuration
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 shadowCopyOfReadonlyContact];
+  configurationCopy = configuration;
+  shadowCopyOfReadonlyContact = [configurationCopy shadowCopyOfReadonlyContact];
 
-  if (v4)
+  if (shadowCopyOfReadonlyContact)
   {
-    v5 = [v3 contactStore];
-    v6 = [v5 defaultContainerIdentifier];
+    contactStore = [configurationCopy contactStore];
+    defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
 
-    if (!v6)
+    if (!defaultContainerIdentifier)
     {
       v12 = CNUILogContactCard();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -369,15 +369,15 @@ LABEL_10:
     }
 
     v7 = MEMORY[0x1E695CE48];
-    v25[0] = v6;
+    v25[0] = defaultContainerIdentifier;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     v9 = [v7 predicateForContainersWithIdentifiers:v8];
 
-    v10 = [v3 contactStore];
+    contactStore2 = [configurationCopy contactStore];
     v22 = 0;
-    v11 = [v10 containersMatchingPredicate:v9 error:&v22];
+    v11 = [contactStore2 containersMatchingPredicate:v9 error:&v22];
     v12 = v22;
-    v13 = [v11 firstObject];
+    firstObject = [v11 firstObject];
 
     v14 = v12 != 0;
     if (v12)
@@ -395,10 +395,10 @@ LABEL_14:
 
     else
     {
-      v17 = [v3 shadowCopyOfReadonlyContact];
-      v18 = [v3 contactStore];
-      v19 = [v3 parentGroup];
-      v20 = [v17 saveContactInStore:v18 group:v19 container:v13];
+      shadowCopyOfReadonlyContact2 = [configurationCopy shadowCopyOfReadonlyContact];
+      contactStore3 = [configurationCopy contactStore];
+      parentGroup = [configurationCopy parentGroup];
+      v20 = [shadowCopyOfReadonlyContact2 saveContactInStore:contactStore3 group:parentGroup container:firstObject];
 
       if (v20)
       {
@@ -428,41 +428,41 @@ LABEL_18:
   return v14;
 }
 
-- (id)executeSaveWithConfiguration:(id)a3 saveDelegate:(id)a4
+- (id)executeSaveWithConfiguration:(id)configuration saveDelegate:(id)delegate
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v8 = CNUILogContactCard();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 134349056;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_DEFAULT, "[CNUIContactStoreExecutor] %{public}p will execute save…", &v29, 0xCu);
   }
 
-  if (![(CNUIContactStoreSaveExecutor *)self saveShadowContactForSaveConfiguration:v6])
+  if (![(CNUIContactStoreSaveExecutor *)self saveShadowContactForSaveConfiguration:configurationCopy])
   {
     v17 = [CNUIContactSaveResult alloc];
-    v9 = [v6 mutableContact];
-    v18 = [(CNUIContactSaveResult *)v17 initWithSuccess:0 contact:v9 identifiersOfIssuedSaveRequests:MEMORY[0x1E695E0F0]];
+    mutableContact = [configurationCopy mutableContact];
+    v18 = [(CNUIContactSaveResult *)v17 initWithSuccess:0 contact:mutableContact identifiersOfIssuedSaveRequests:MEMORY[0x1E695E0F0]];
     goto LABEL_19;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [(CNUIContactStoreSaveExecutor *)self validatedContactForSaveConfiguration:v6 preservingIdentifier:1];
+  mutableContact = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  v11 = [(CNUIContactStoreSaveExecutor *)self validatedContactForSaveConfiguration:configurationCopy preservingIdentifier:1];
   if (![(CNUIContactStoreSaveExecutor *)v11 isSuggestedMe])
   {
-    v19 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v20 = [v19 featureFlags];
-    if ([v20 isFeatureEnabled:13])
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags = [currentEnvironment featureFlags];
+    if ([featureFlags isFeatureEnabled:13])
     {
-      v21 = [v6 containerContext];
+      containerContext = [configurationCopy containerContext];
 
-      if (v21)
+      if (containerContext)
       {
-        if ([(CNUIContactStoreSaveExecutor *)self handleContainerContextForSaveConfiguration:v6 contactToSave:v11 saveDelegate:v7 issuedRequestIdentifiers:v9 additionalLinkedContacts:v10])
+        if ([(CNUIContactStoreSaveExecutor *)self handleContainerContextForSaveConfiguration:configurationCopy contactToSave:v11 saveDelegate:delegateCopy issuedRequestIdentifiers:mutableContact additionalLinkedContacts:array])
         {
           goto LABEL_17;
         }
@@ -475,9 +475,9 @@ LABEL_18:
     {
     }
 
-    v23 = [v6 parentGroup];
-    v24 = [v6 parentContainer];
-    v25 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:v11 group:v23 container:v24 saveConfiguration:v6 issuedRequestIdentifiers:v9];
+    parentGroup = [configurationCopy parentGroup];
+    parentContainer = [configurationCopy parentContainer];
+    v25 = [(CNUIContactStoreSaveExecutor *)self performSaveForMutableContact:v11 group:parentGroup container:parentContainer saveConfiguration:configurationCopy issuedRequestIdentifiers:mutableContact];
 
     if (v25)
     {
@@ -497,21 +497,21 @@ LABEL_13:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v29 = 134349056;
-    v30 = v13;
+    selfCopy = v13;
     _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "[CNUIContactStoreExecutor] creating new me contact %{public}p", &v29, 0xCu);
   }
 
-  v15 = [v6 contactStore];
-  v16 = [CNDonatedMeCardPersistenceHelper createNewMeContact:v13 inStore:v15];
+  contactStore = [configurationCopy contactStore];
+  v16 = [CNDonatedMeCardPersistenceHelper createNewMeContact:v13 inStore:contactStore];
 
   if (v16)
   {
     v11 = v13;
 LABEL_17:
-    v13 = [(CNUIContactStoreSaveExecutor *)self saveLinkedContactsWithSaveConfiguration:v6 contactToSave:v11 additionalLinkedContacts:v10 issuedRequestIdentifiers:v9 saveDelegate:v7];
+    v13 = [(CNUIContactStoreSaveExecutor *)self saveLinkedContactsWithSaveConfiguration:configurationCopy contactToSave:v11 additionalLinkedContacts:array issuedRequestIdentifiers:mutableContact saveDelegate:delegateCopy];
 
-    [(CNUIContactStoreSaveExecutor *)self handleGroupContextForSaveConfiguration:v6 contactToSave:v13 issuedRequestIdentifiers:v9 saveDelegate:v7];
-    [(CNUIContactStoreSaveExecutor *)self handleDeleteAcceptedContactsWithSaveConfiguration:v6 contactToSave:v13];
+    [(CNUIContactStoreSaveExecutor *)self handleGroupContextForSaveConfiguration:configurationCopy contactToSave:v13 issuedRequestIdentifiers:mutableContact saveDelegate:delegateCopy];
+    [(CNUIContactStoreSaveExecutor *)self handleDeleteAcceptedContactsWithSaveConfiguration:configurationCopy contactToSave:v13];
     v22 = 1;
     goto LABEL_18;
   }
@@ -519,7 +519,7 @@ LABEL_17:
   v22 = 0;
 LABEL_18:
   v26 = [CNUIContactSaveResult alloc];
-  v27 = [v9 copy];
+  v27 = [mutableContact copy];
   v18 = [(CNUIContactSaveResult *)v26 initWithSuccess:v22 contact:v13 identifiersOfIssuedSaveRequests:v27];
 
 LABEL_19:

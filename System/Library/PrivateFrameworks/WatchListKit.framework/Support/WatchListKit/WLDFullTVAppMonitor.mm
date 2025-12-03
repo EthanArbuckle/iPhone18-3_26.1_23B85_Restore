@@ -1,7 +1,7 @@
 @interface WLDFullTVAppMonitor
 + (id)sharedInstance;
 - (WLDFullTVAppMonitor)init;
-- (void)_activeAccountChangedNotification:(id)a3;
+- (void)_activeAccountChangedNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -72,7 +72,7 @@ void __27__WLDFullTVAppMonitor_init__block_invoke(id a1, BOOL a2)
   [(WLDFullTVAppMonitor *)&v4 dealloc];
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
   v3 = dispatch_time(0, 5000000000);
 

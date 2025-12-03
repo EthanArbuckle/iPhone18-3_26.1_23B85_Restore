@@ -1,20 +1,20 @@
 @interface FBSystemShellInitializationContext
-- (id)_initWithOptions:(id)a3;
+- (id)_initWithOptions:(id)options;
 - (unint64_t)lastExitReason;
 @end
 
 @implementation FBSystemShellInitializationContext
 
-- (id)_initWithOptions:(id)a3
+- (id)_initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v10.receiver = self;
   v10.super_class = FBSystemShellInitializationContext;
   v6 = [(FBSystemShellInitializationContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
     v8 = objc_alloc_init(_FBDarkBootHelper);
     v7->_bootedDark = [(_FBDarkBootHelper *)v8 isBootingDark];
   }
@@ -24,21 +24,21 @@
 
 - (unint64_t)lastExitReason
 {
-  v2 = [MEMORY[0x1E69C75D0] currentProcess];
-  v3 = [v2 lastExitContext];
+  currentProcess = [MEMORY[0x1E69C75D0] currentProcess];
+  lastExitContext = [currentProcess lastExitContext];
 
-  if (v3)
+  if (lastExitContext)
   {
-    v4 = [[FBProcessExitContext alloc] initWithUnderlyingContext:v3];
-    v5 = [(FBProcessExitContext *)v4 exitReason];
+    v4 = [[FBProcessExitContext alloc] initWithUnderlyingContext:lastExitContext];
+    exitReason = [(FBProcessExitContext *)v4 exitReason];
   }
 
   else
   {
-    v5 = 0;
+    exitReason = 0;
   }
 
-  return v5;
+  return exitReason;
 }
 
 @end

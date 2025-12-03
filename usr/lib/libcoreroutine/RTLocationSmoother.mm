@@ -1,66 +1,66 @@
 @interface RTLocationSmoother
-+ (int)_inferLocationType:(id)a3;
-- (double)getRefAlt:(id)a3;
-- (id)estimateLocationFromFallbackModelWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5;
-- (id)estimateLocationWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5 meta:(id)a6;
-- (id)estimateVehicleLocationWithLocations:(id)a3 parkingTimestamp:(double)a4;
-- (id)inflateHorizontalAccuracyWithLocation:(id)a3 speed:(double)a4 timestamp:(double)a5;
-- (id)interpolateLocation1:(id)a3 location2:(id)a4 weigth:(double)a5 speed:(double)a6 timestamp:(double)a7;
-- (id)smoothLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5;
-- (id)snapToBestLocationWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5;
++ (int)_inferLocationType:(id)type;
+- (double)getRefAlt:(id)alt;
+- (id)estimateLocationFromFallbackModelWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters;
+- (id)estimateLocationWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters meta:(id)meta;
+- (id)estimateVehicleLocationWithLocations:(id)locations parkingTimestamp:(double)timestamp;
+- (id)inflateHorizontalAccuracyWithLocation:(id)location speed:(double)speed timestamp:(double)timestamp;
+- (id)interpolateLocation1:(id)location1 location2:(id)location2 weigth:(double)weigth speed:(double)speed timestamp:(double)timestamp;
+- (id)smoothLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters;
+- (id)snapToBestLocationWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters;
 @end
 
 @implementation RTLocationSmoother
 
-- (double)getRefAlt:(id)a3
+- (double)getRefAlt:(id)alt
 {
-  v3 = a3;
-  [v3 verticalAccuracy];
+  altCopy = alt;
+  [altCopy verticalAccuracy];
   v4 = 0.0;
   if (v5 > 0.0)
   {
-    [v3 altitude];
+    [altCopy altitude];
     v4 = v6;
   }
 
   return v4;
 }
 
-- (id)estimateLocationWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5 meta:(id)a6
+- (id)estimateLocationWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters meta:(id)meta
 {
   v88[1] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  parametersCopy = parameters;
+  metaCopy = meta;
+  locationsCopy = locations;
   v13 = MEMORY[0x277CBEC28];
-  v14 = [v10 objectForKey:@"kRTLocationSmootherPreciseLocationOnlyMode" defaultObject:MEMORY[0x277CBEC28]];
-  v15 = [v14 BOOLValue];
+  v14 = [parametersCopy objectForKey:@"kRTLocationSmootherPreciseLocationOnlyMode" defaultObject:MEMORY[0x277CBEC28]];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = [v10 objectForKey:@"kRTLocationSmootherEnableFallbackModel" defaultObject:v13];
-  v68 = [v16 BOOLValue];
+  v16 = [parametersCopy objectForKey:@"kRTLocationSmootherEnableFallbackModel" defaultObject:v13];
+  bOOLValue2 = [v16 BOOLValue];
 
-  v17 = [v10 objectForKey:@"kRTLocationSmootherInterpolateTime" defaultObject:MEMORY[0x277CBEC38]];
-  v18 = [v17 BOOLValue];
+  v17 = [parametersCopy objectForKey:@"kRTLocationSmootherInterpolateTime" defaultObject:MEMORY[0x277CBEC38]];
+  bOOLValue3 = [v17 BOOLValue];
 
-  v19 = [v10 objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
+  v19 = [parametersCopy objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
   [v19 doubleValue];
   v21 = v20;
 
   v70 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:1];
   v88[0] = v70;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:1];
-  v23 = [v12 sortedArrayUsingDescriptors:v22];
+  v23 = [locationsCopy sortedArrayUsingDescriptors:v22];
 
-  v67 = self;
+  selfCopy = self;
   v69 = v23;
-  if (v15)
+  if (bOOLValue)
   {
     v71 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type IN %@", &unk_2845A0B30];
     v65 = [v23 filteredArrayUsingPredicate:?];
-    v24 = [RTLocationSmoother smoothLocations:"smoothLocations:timestamp:parameters:" timestamp:a4 parameters:?];
+    v24 = [RTLocationSmoother smoothLocations:"smoothLocations:timestamp:parameters:" timestamp:timestamp parameters:?];
     v25 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type IN %@", &unk_2845A0B48];
     v26 = [v23 filteredArrayUsingPredicate:v25];
-    [(RTLocationSmoother *)self snapToBestLocationWithLocations:v26 timestamp:v10 parameters:a4];
+    [(RTLocationSmoother *)self snapToBestLocationWithLocations:v26 timestamp:parametersCopy parameters:timestamp];
     *&v27 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     v28 = v24;
     v29 = v28;
@@ -70,11 +70,11 @@
       if (!v28)
       {
         *&v30 = COERCE_DOUBLE(v27);
-        if (v11)
+        if (metaCopy)
         {
 LABEL_7:
-          v64 = v11;
-          v63 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a4];
+          v64 = metaCopy;
+          v63 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:timestamp];
           v34 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@", @"timestamp", v63];
           v35 = [v65 filteredArrayUsingPredicate:v34];
           v36 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v35, "count")}];
@@ -106,7 +106,7 @@ LABEL_7:
             }
           }
 
-          v11 = v64;
+          metaCopy = v64;
         }
 
 LABEL_13:
@@ -119,7 +119,7 @@ LABEL_13:
             *buf = 138740483;
             v75 = *&v29;
             v76 = 2117;
-            v77 = *&v27;
+            timestampCopy = *&v27;
             v78 = 2117;
             v79 = *&v30;
             _os_log_debug_impl(&dword_2304B3000, v43, OS_LOG_TYPE_DEBUG, "RTLocationSmoother, preciseLocationMode, gpsEstimatedLocation, %{sensitive}@, wifiEstimatedLocation, %{sensitive}@, interpolatedLocation, %{sensitive}@", buf, 0x20u);
@@ -146,7 +146,7 @@ LABEL_41:
       }
     }
 
-    if (v11)
+    if (metaCopy)
     {
       goto LABEL_7;
     }
@@ -155,27 +155,27 @@ LABEL_41:
   }
 
   v26 = v23;
-  v71 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:a4];
+  v71 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:timestamp];
   v44 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K > %@", @"timestamp", v71];
   v45 = [MEMORY[0x277CCA920] notPredicateWithSubpredicate:v44];
   v29 = [v26 filteredArrayUsingPredicate:v45];
 
-  v46 = [v29 lastObject];
-  v47 = [v46 timestamp];
-  [v47 timeIntervalSinceReferenceDate];
+  lastObject = [v29 lastObject];
+  timestamp = [lastObject timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v49 = v48;
 
-  v25 = [(RTLocationSmoother *)self smoothLocations:v26 timestamp:v10 parameters:v49 + -0.00000001];
+  v25 = [(RTLocationSmoother *)self smoothLocations:v26 timestamp:parametersCopy parameters:v49 + -0.00000001];
   if (!v25)
   {
     *&v30 = 0.0;
     goto LABEL_42;
   }
 
-  if (!v18)
+  if (!bOOLValue3)
   {
 LABEL_38:
-    [(RTLocationSmoother *)v67 inflateHorizontalAccuracyWithLocation:v25 speed:v21 timestamp:a4];
+    [(RTLocationSmoother *)selfCopy inflateHorizontalAccuracyWithLocation:v25 speed:v21 timestamp:timestamp];
     *&v30 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -189,7 +189,7 @@ LABEL_38:
       *buf = 138412547;
       v75 = *&v25;
       v76 = 2117;
-      v77 = *&v30;
+      timestampCopy = *&v30;
       _os_log_debug_impl(&dword_2304B3000, v27, OS_LOG_TYPE_DEBUG, "RTLocationSmoother, allLocationMode, locationT1, %@, estimatedLocation, %{sensitive}@", buf, 0x16u);
     }
 
@@ -205,7 +205,7 @@ LABEL_38:
       *buf = 138412546;
       v75 = *&v71;
       v76 = 2048;
-      v77 = COERCE_DOUBLE([v50 count]);
+      timestampCopy = COERCE_DOUBLE([v50 count]);
       _os_log_debug_impl(&dword_2304B3000, v51, OS_LOG_TYPE_DEBUG, "RTLocationSmoother, interpolation, referenceDate, %@, post locations, %lu", buf, 0x16u);
     }
   }
@@ -217,12 +217,12 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v52 = [v50 firstObject];
-  v53 = [v52 timestamp];
-  [v53 timeIntervalSinceReferenceDate];
+  firstObject = [v50 firstObject];
+  timestamp2 = [firstObject timestamp];
+  [timestamp2 timeIntervalSinceReferenceDate];
   v55 = v54;
 
-  v56 = [(RTLocationSmoother *)v67 smoothLocations:v26 timestamp:v10 parameters:v55];
+  v56 = [(RTLocationSmoother *)selfCopy smoothLocations:v26 timestamp:parametersCopy parameters:v55];
   v57 = v56;
   if (!v56 || v49 == v55)
   {
@@ -231,7 +231,7 @@ LABEL_37:
   }
 
   v66 = v50;
-  [(RTLocationSmoother *)v67 interpolateLocation1:v25 location2:v56 weigth:1.0 - (a4 - v49) / (v55 - v49) speed:v21 timestamp:a4];
+  [(RTLocationSmoother *)selfCopy interpolateLocation1:v25 location2:v56 weigth:1.0 - (timestamp - v49) / (v55 - v49) speed:v21 timestamp:timestamp];
   *&v30 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -241,11 +241,11 @@ LABEL_37:
       *buf = 134219523;
       v75 = v49;
       v76 = 2048;
-      v77 = a4;
+      timestampCopy = timestamp;
       v78 = 2048;
       v79 = v55;
       v80 = 2048;
-      v81 = 1.0 - (a4 - v49) / (v55 - v49);
+      v81 = 1.0 - (timestamp - v49) / (v55 - v49);
       v82 = 2112;
       v83 = v25;
       v84 = 2112;
@@ -263,7 +263,7 @@ LABEL_37:
 
 LABEL_42:
 
-  if (((v30 == 0) & v68) == 1)
+  if (((v30 == 0) & bOOLValue2) == 1)
   {
     v59 = v69;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -276,7 +276,7 @@ LABEL_42:
       }
     }
 
-    v61 = [(RTLocationSmoother *)v67 estimateLocationFromFallbackModelWithLocations:v69 timestamp:v10 parameters:a4];
+    v61 = [(RTLocationSmoother *)selfCopy estimateLocationFromFallbackModelWithLocations:v69 timestamp:parametersCopy parameters:timestamp];
   }
 
   else
@@ -310,21 +310,21 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   }
 }
 
-- (id)interpolateLocation1:(id)a3 location2:(id)a4 weigth:(double)a5 speed:(double)a6 timestamp:(double)a7
+- (id)interpolateLocation1:(id)location1 location2:(id)location2 weigth:(double)weigth speed:(double)speed timestamp:(double)timestamp
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = [v11 timestamp];
-  [v13 timeIntervalSinceReferenceDate];
+  location1Copy = location1;
+  location2Copy = location2;
+  timestamp = [location1Copy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   v15 = v14;
 
-  v16 = [v12 timestamp];
-  [v16 timeIntervalSinceReferenceDate];
+  timestamp2 = [location2Copy timestamp];
+  [timestamp2 timeIntervalSinceReferenceDate];
   v18 = v17;
 
-  [v11 horizontalAccuracy];
+  [location1Copy horizontalAccuracy];
   v20 = v19;
-  [v12 horizontalAccuracy];
+  [location2Copy horizontalAccuracy];
   v22 = v21;
   v43 = 0u;
   memset(v44, 0, 28);
@@ -333,25 +333,25 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   memset(v41, 0, sizeof(v41));
   v39 = 0u;
   memset(&v38[2], 0, 32);
-  if (v11)
+  if (location1Copy)
   {
-    [v11 clientLocation];
+    [location1Copy clientLocation];
   }
 
-  v23 = a7 - v15;
-  if (a7 - v15 < 0.0)
+  v23 = timestamp - v15;
+  if (timestamp - v15 < 0.0)
   {
-    v23 = -(a7 - v15);
+    v23 = -(timestamp - v15);
   }
 
-  v24 = v20 + a6 * v23;
-  v25 = v18 - a7;
-  if (v18 - a7 < 0.0)
+  v24 = v20 + speed * v23;
+  v25 = v18 - timestamp;
+  if (v18 - timestamp < 0.0)
   {
-    v25 = -(v18 - a7);
+    v25 = -(v18 - timestamp);
   }
 
-  v26 = v22 + a6 * v25;
+  v26 = v22 + speed * v25;
   if (v24 >= v26)
   {
     v27 = v26;
@@ -362,16 +362,16 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
     v27 = v24;
   }
 
-  [v11 coordinate];
+  [location1Copy coordinate];
   v29 = v28;
-  [v12 coordinate];
-  *(&v38[2] + 4) = (1.0 - a5) * v30 + v29 * a5;
-  [v11 coordinate];
+  [location2Copy coordinate];
+  *(&v38[2] + 4) = (1.0 - weigth) * v30 + v29 * weigth;
+  [location1Copy coordinate];
   v32 = v31;
-  [v12 coordinate];
-  *(&v38[2] + 12) = (1.0 - a5) * v33 + v32 * a5;
+  [location2Copy coordinate];
+  *(&v38[2] + 12) = (1.0 - weigth) * v33 + v32 * weigth;
   *(&v38[3] + 4) = v27;
-  *(v41 + 12) = a7;
+  *(v41 + 12) = timestamp;
   v34 = objc_alloc(MEMORY[0x277CE41F8]);
   v37[6] = v42;
   v37[7] = v43;
@@ -388,27 +388,27 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   return v35;
 }
 
-- (id)inflateHorizontalAccuracyWithLocation:(id)a3 speed:(double)a4 timestamp:(double)a5
+- (id)inflateHorizontalAccuracyWithLocation:(id)location speed:(double)speed timestamp:(double)timestamp
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 timestamp];
-  [v8 timeIntervalSinceReferenceDate];
-  v10 = a5 - v9;
+  locationCopy = location;
+  timestamp = [locationCopy timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
+  v10 = timestamp - v9;
 
   if (v10 < 0.0)
   {
     v10 = -v10;
   }
 
-  [v7 horizontalAccuracy];
-  v12 = v11 + a4 * v10;
+  [locationCopy horizontalAccuracy];
+  v12 = v11 + speed * v10;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityLocation);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [v7 horizontalAccuracy];
+      [locationCopy horizontalAccuracy];
       *buf = 134218496;
       *&buf[4] = v10;
       *&buf[12] = 2048;
@@ -426,13 +426,13 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   memset(v23, 0, sizeof(v23));
   v21 = 0u;
   memset(buf, 0, sizeof(buf));
-  if (v7)
+  if (locationCopy)
   {
-    [v7 clientLocation];
+    [locationCopy clientLocation];
   }
 
   *&buf[20] = v12;
-  *(v23 + 12) = a5;
+  *(v23 + 12) = timestamp;
   v14 = objc_alloc(MEMORY[0x277CE41F8]);
   v18[6] = v24;
   v18[7] = v25;
@@ -449,12 +449,12 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   return v15;
 }
 
-- (id)snapToBestLocationWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5
+- (id)snapToBestLocationWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters
 {
   v48 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
+  locationsCopy = locations;
+  parametersCopy = parameters;
+  v9 = [parametersCopy objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
   [v9 doubleValue];
   v11 = v10;
 
@@ -487,11 +487,11 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v14 = v7;
+  v14 = locationsCopy;
   v15 = [v14 countByEnumeratingWithState:&v36 objects:v47 count:16];
   if (v15)
   {
-    v16 = 0;
+    timestamp2 = 0;
     v17 = *v37;
     v18 = -1.0;
     while (1)
@@ -504,13 +504,13 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
         }
 
         v20 = *(*(&v36 + 1) + 8 * i);
-        if (v16)
+        if (timestamp2)
         {
           [*(*(&v36 + 1) + 8 * i) horizontalAccuracy];
           v22 = v21;
-          v23 = [v20 timestamp];
-          [v23 timeIntervalSinceReferenceDate];
-          v25 = v22 + v11 * vabdd_f64(a4, v24);
+          timestamp = [v20 timestamp];
+          [timestamp timeIntervalSinceReferenceDate];
+          v25 = v22 + v11 * vabdd_f64(timestamp, v24);
 
           if (v25 >= v18)
           {
@@ -525,20 +525,20 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
           v26 = v20;
           [v26 horizontalAccuracy];
           v28 = v27;
-          v16 = [v26 timestamp];
-          [v16 timeIntervalSinceReferenceDate];
-          v25 = v28 + v11 * vabdd_f64(a4, v29);
+          timestamp2 = [v26 timestamp];
+          [timestamp2 timeIntervalSinceReferenceDate];
+          v25 = v28 + v11 * vabdd_f64(timestamp, v29);
         }
 
         v18 = v25;
-        v16 = v26;
+        timestamp2 = v26;
       }
 
       v15 = [v14 countByEnumeratingWithState:&v36 objects:v47 count:16];
       if (!v15)
       {
 
-        if (v16 && (*(v43 + 12) = a4, LODWORD(v44) = 4, *(&v40[1] + 4) = v18, [v16 coordinate], *(v40 + 4) = v30, objc_msgSend(v16, "coordinate"), *(v40 + 12) = v31, *(&v40[1] + 4) > 0.0))
+        if (timestamp2 && (*(v43 + 12) = timestamp, LODWORD(v44) = 4, *(&v40[1] + 4) = v18, [timestamp2 coordinate], *(v40 + 4) = v30, objc_msgSend(timestamp2, "coordinate"), *(v40 + 12) = v31, *(&v40[1] + 4) > 0.0))
         {
           v32 = objc_alloc(MEMORY[0x277CE41F8]);
           v34[6] = v44;
@@ -564,17 +564,17 @@ void __78__RTLocationSmoother_estimateLocationWithLocations_timestamp_parameters
     }
   }
 
-  v16 = 0;
+  timestamp2 = 0;
 LABEL_21:
 
   return v15;
 }
 
-+ (int)_inferLocationType:(id)a3
++ (int)_inferLocationType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type IN %@", &unk_2845A0B60];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [typeCopy filteredArrayUsingPredicate:v4];
   v6 = [v5 count];
 
   if (v6)
@@ -585,7 +585,7 @@ LABEL_21:
   else
   {
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"type IN %@", &unk_2845A0B78];
-    v9 = [v3 filteredArrayUsingPredicate:v8];
+    v9 = [typeCopy filteredArrayUsingPredicate:v8];
     v10 = [v9 count];
 
     if (v10)
@@ -602,31 +602,31 @@ LABEL_21:
   return v7;
 }
 
-- (id)smoothLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5
+- (id)smoothLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters
 {
   v169 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if (v7 && [v7 count])
+  locationsCopy = locations;
+  parametersCopy = parameters;
+  if (locationsCopy && [locationsCopy count])
   {
-    v9 = [v8 objectForKey:@"kRTLocationSmootherPk_pre" defaultObject:&unk_2845A1978];
+    v9 = [parametersCopy objectForKey:@"kRTLocationSmootherPk_pre" defaultObject:&unk_2845A1978];
     [v9 doubleValue];
     v11 = v10;
 
-    v12 = [v8 objectForKey:@"kRTLocationSmootherDeltaQk" defaultObject:&unk_2845A1988];
-    v13 = [v12 BOOLValue];
+    v12 = [parametersCopy objectForKey:@"kRTLocationSmootherDeltaQk" defaultObject:&unk_2845A1988];
+    bOOLValue = [v12 BOOLValue];
 
-    v14 = [v8 objectForKey:@"kRTLocationSmootherDynamicQk" defaultObject:&unk_2845A1998];
-    v15 = [v14 BOOLValue];
+    v14 = [parametersCopy objectForKey:@"kRTLocationSmootherDynamicQk" defaultObject:&unk_2845A1998];
+    bOOLValue2 = [v14 BOOLValue];
 
-    v16 = [v8 objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
+    v16 = [parametersCopy objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
     [v16 doubleValue];
     v18 = v17;
 
     v19 = 10.0;
-    if (v15)
+    if (bOOLValue2)
     {
-      v20 = [v8 objectForKey:@"kRTLocationSmootherQkCoefficient" defaultObject:&unk_2845A19A8];
+      v20 = [parametersCopy objectForKey:@"kRTLocationSmootherQkCoefficient" defaultObject:&unk_2845A19A8];
       [v20 doubleValue];
       v22 = v21;
 
@@ -636,7 +636,7 @@ LABEL_21:
         v23 = _rt_log_facility_get_os_log(RTLogFacilityLocation);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v118 = [v8 description];
+          v118 = [parametersCopy description];
           *buf = 134218498;
           *&buf[4] = v18;
           *&buf[12] = 2048;
@@ -649,7 +649,7 @@ LABEL_21:
     }
 
     v24 = [MEMORY[0x277CCABB0] numberWithDouble:v19];
-    v25 = [v8 objectForKey:@"kRTLocationSmootherQk" defaultObject:v24];
+    v25 = [parametersCopy objectForKey:@"kRTLocationSmootherQk" defaultObject:v24];
     [v25 doubleValue];
     v27 = v26;
 
@@ -667,10 +667,10 @@ LABEL_21:
     v153 = 0.0;
     v154 = 0.0;
     v152 = 0;
-    if ([v7 count])
+    if ([locationsCopy count])
     {
       v126 = v18;
-      v127 = v8;
+      v127 = parametersCopy;
       v29 = 0;
       v30 = 1;
       v140 = -1.0;
@@ -690,10 +690,10 @@ LABEL_21:
       v34 = 1;
       v144 = sqrt(v27);
       v136 = v27;
-      v130 = a4;
+      timestampCopy = timestamp;
       while (1)
       {
-        v35 = [v7 objectAtIndexedSubscript:v29];
+        v35 = [locationsCopy objectAtIndexedSubscript:v29];
         v36 = v35;
         if (v30 == 1)
         {
@@ -702,16 +702,16 @@ LABEL_21:
 
         else
         {
-          v37 = v13;
+          v37 = bOOLValue;
         }
 
         v38 = v27;
         if (v37 == 1)
         {
-          v39 = [v35 timestamp];
-          v40 = [v7 objectAtIndexedSubscript:v30 - 2];
-          v41 = [v40 timestamp];
-          [v39 timeIntervalSinceDate:v41];
+          timestamp = [v35 timestamp];
+          v40 = [locationsCopy objectAtIndexedSubscript:v30 - 2];
+          timestamp2 = [v40 timestamp];
+          [timestamp timeIntervalSinceDate:timestamp2];
           v43 = v42;
 
           if (v144 * v43 * (v144 * v43) >= 10.0)
@@ -742,13 +742,13 @@ LABEL_21:
             v87 = v86;
             [v36 course];
             v89 = v88;
-            v90 = [v36 timestamp];
-            v91 = [v90 stringFromDate];
+            timestamp3 = [v36 timestamp];
+            stringFromDate = [timestamp3 stringFromDate];
             v122 = v89;
             v121 = v85;
             v31 = v83;
             v11 = v132;
-            v92 = [v80 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2fm (speed %.2f mps / course %.2f) @ %@, type %u", v135, v129, v121, v87, v122, v91, objc_msgSend(v36, "type")];
+            v92 = [v80 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2fm (speed %.2f mps / course %.2f) @ %@, type %u", v135, v129, v121, v87, v122, stringFromDate, objc_msgSend(v36, "type")];
             *buf = 138740483;
             *&buf[4] = v92;
             *&buf[12] = 2048;
@@ -802,11 +802,11 @@ LABEL_21:
 
           else
           {
-            v51 = [v36 timestamp];
-            [v51 timeIntervalSinceReferenceDate];
+            timestamp4 = [v36 timestamp];
+            [timestamp4 timeIntervalSinceReferenceDate];
             v53 = v52;
 
-            if (v53 < a4)
+            if (v53 < timestamp)
             {
               if (v147 + v50 == 0.0)
               {
@@ -814,7 +814,7 @@ LABEL_21:
                 if (!os_log_type_enabled(v115, OS_LOG_TYPE_ERROR))
                 {
 LABEL_78:
-                  v8 = v127;
+                  parametersCopy = v127;
 
                   v100 = 0;
                   goto LABEL_79;
@@ -862,13 +862,13 @@ LABEL_84:
                 [v36 horizontalAccuracy];
                 v61 = v31;
                 v63 = v62;
-                v133 = [v36 timestamp];
-                v64 = [v133 stringFromDate];
+                timestamp5 = [v36 timestamp];
+                stringFromDate2 = [timestamp5 stringFromDate];
                 v119 = v60;
                 v120 = v63;
                 v31 = v61;
                 v11 = v132;
-                v65 = [v57 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2f @ %@", v128, v119, v120, v64];
+                v65 = [v57 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2f @ %@", v128, v119, v120, stringFromDate2];
                 *buf = 138743043;
                 *&buf[4] = v65;
                 *&buf[12] = 2048;
@@ -902,16 +902,16 @@ LABEL_84:
             }
           }
 
-          v66 = [v36 timestamp];
-          [v66 timeIntervalSinceReferenceDate];
+          timestamp6 = [v36 timestamp];
+          [timestamp6 timeIntervalSinceReferenceDate];
           v68 = v67;
 
-          if (v68 >= a4)
+          if (v68 >= timestamp)
           {
             if (v34)
             {
-              v69 = [v36 timestamp];
-              [v69 timeIntervalSinceReferenceDate];
+              timestamp7 = [v36 timestamp];
+              [timestamp7 timeIntervalSinceReferenceDate];
               v131 = v70;
 
               v141 = v145;
@@ -950,7 +950,7 @@ LABEL_84:
             if (!os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
             {
               v34 = 0;
-              a4 = v130;
+              timestamp = timestampCopy;
               v11 = v132;
               v31 = v134;
 LABEL_54:
@@ -968,9 +968,9 @@ LABEL_54:
               v124 = v95;
               [v36 horizontalAccuracy];
               v123 = v96;
-              v97 = [v36 timestamp];
-              v98 = [v97 stringFromDate];
-              v99 = [v93 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2f @ %@", v125, v124, v123, v98];
+              timestamp8 = [v36 timestamp];
+              stringFromDate3 = [timestamp8 stringFromDate];
+              v99 = [v93 stringWithFormat:@"<%+.8f, %+.8f> +/- %.2f @ %@", v125, v124, v123, stringFromDate3];
               *buf = 138745091;
               *&buf[4] = v99;
               *&buf[12] = 2048;
@@ -1017,7 +1017,7 @@ LABEL_54:
             }
 
             v34 = 0;
-            a4 = v130;
+            timestamp = timestampCopy;
             v11 = v132;
             v31 = v134;
 LABEL_50:
@@ -1029,19 +1029,19 @@ LABEL_51:
 LABEL_55:
 
         v29 = v30;
-        if ([v7 count] <= v30++)
+        if ([locationsCopy count] <= v30++)
         {
           if (v34)
           {
             v11 = v33;
-            v8 = v127;
+            parametersCopy = v127;
             v18 = v126;
             v101 = v147;
             goto LABEL_61;
           }
 
           v106 = v139 + v140;
-          v8 = v127;
+          parametersCopy = v127;
           v18 = v126;
           v105 = v131;
           goto LABEL_63;
@@ -1051,15 +1051,15 @@ LABEL_55:
 
     v101 = v11;
 LABEL_61:
-    v102 = [v7 lastObject];
-    v103 = [v102 timestamp];
-    [v103 timeIntervalSinceReferenceDate];
+    lastObject = [locationsCopy lastObject];
+    timestamp9 = [lastObject timestamp];
+    [timestamp9 timeIntervalSinceReferenceDate];
     v105 = v104;
 
     v106 = v11 + v101;
 LABEL_63:
     v107 = sqrt(v106);
-    v36 = [v7 valueForKeyPath:@"@min.horizontalAccuracy"];
+    v36 = [locationsCopy valueForKeyPath:@"@min.horizontalAccuracy"];
     [v36 doubleValue];
     if (v107 < v108)
     {
@@ -1070,7 +1070,7 @@ LABEL_63:
     v150 = 0;
     v151 = 0;
     RTCommonConvertLocalFrameToGeodetic();
-    v110 = v107 + v18 * vabdd_f64(a4, v105);
+    v110 = v107 + v18 * vabdd_f64(timestamp, v105);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v111 = _rt_log_facility_get_os_log(RTLogFacilityLocation);
@@ -1101,9 +1101,9 @@ LABEL_63:
       memset(buf, 0, sizeof(buf));
     }
 
-    *(v157 + 12) = a4;
+    *(v157 + 12) = timestamp;
     v100 = 0;
-    LODWORD(v157[2]) = [RTLocationSmoother _inferLocationType:v7];
+    LODWORD(v157[2]) = [RTLocationSmoother _inferLocationType:locationsCopy];
     *&buf[20] = v110;
     *&buf[4] = v151;
     *&buf[12] = v150;
@@ -1134,12 +1134,12 @@ LABEL_79:
   return v100;
 }
 
-- (id)estimateLocationFromFallbackModelWithLocations:(id)a3 timestamp:(double)a4 parameters:(id)a5
+- (id)estimateLocationFromFallbackModelWithLocations:(id)locations timestamp:(double)timestamp parameters:(id)parameters
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
+  locationsCopy = locations;
+  parametersCopy = parameters;
+  v9 = [parametersCopy objectForKey:@"kRTLocationSmootherAverageMovingSpeed" defaultObject:&unk_2845A1968];
   [v9 doubleValue];
   v11 = v10;
 
@@ -1147,7 +1147,7 @@ LABEL_79:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = v7;
+  v12 = locationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (!v13)
   {
@@ -1168,9 +1168,9 @@ LABEL_79:
       }
 
       v18 = *(*(&v36 + 1) + 8 * i);
-      v19 = [v18 timestamp];
-      [v19 timeIntervalSinceReferenceDate];
-      v21 = v20 - a4;
+      timestamp = [v18 timestamp];
+      [timestamp timeIntervalSinceReferenceDate];
+      v21 = v20 - timestamp;
 
       if (v21 < 0.0)
       {
@@ -1227,12 +1227,12 @@ LABEL_17:
   return v13;
 }
 
-- (id)estimateVehicleLocationWithLocations:(id)a3 parkingTimestamp:(double)a4
+- (id)estimateVehicleLocationWithLocations:(id)locations parkingTimestamp:(double)timestamp
 {
   v24[5] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionary];
+  locationsCopy = locations;
+  dictionary = [v6 dictionary];
   v23[0] = @"kRTLocationSmootherQk";
   v23[1] = @"kRTLocationSmootherPk_pre";
   v24[0] = &unk_2845A22C8;
@@ -1248,14 +1248,14 @@ LABEL_17:
   v20[1] = 3221225472;
   v20[2] = __102__RTLocationSmoother_VehicleLocationEstimator__estimateVehicleLocationWithLocations_parkingTimestamp___block_invoke;
   v20[3] = &__block_descriptor_40_e37_B24__0__CLLocation_8__NSDictionary_16l;
-  *&v20[4] = a4;
+  *&v20[4] = timestamp;
   v10 = [MEMORY[0x277CCAC30] predicateWithBlock:v20];
-  v11 = [v7 filteredArrayUsingPredicate:v10];
+  v11 = [locationsCopy filteredArrayUsingPredicate:v10];
 
-  v12 = [(RTLocationSmoother *)self estimateLocationWithLocations:v11 timestamp:v9 parameters:v8 meta:a4];
-  v13 = [v8 objectForKeyedSubscript:@"kRTLocationSmootherSpeedEstimationAfterDate"];
+  v12 = [(RTLocationSmoother *)self estimateLocationWithLocations:v11 timestamp:v9 parameters:dictionary meta:timestamp];
+  v13 = [dictionary objectForKeyedSubscript:@"kRTLocationSmootherSpeedEstimationAfterDate"];
 
-  if (v13 && ([v8 objectForKeyedSubscript:@"kRTLocationSmootherSpeedEstimationAfterDate"], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "doubleValue"), v16 = v15, v14, v16 > 9.0))
+  if (v13 && ([dictionary objectForKeyedSubscript:@"kRTLocationSmootherSpeedEstimationAfterDate"], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "doubleValue"), v16 = v15, v14, v16 > 9.0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {

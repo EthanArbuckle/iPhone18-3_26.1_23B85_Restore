@@ -1,6 +1,6 @@
 @interface GDPerson
-- (GDPerson)initWithTriplesIterator:(id)a3;
-- (id)dateComponentsFromJSONString:(id)a3;
+- (GDPerson)initWithTriplesIterator:(id)iterator;
+- (id)dateComponentsFromJSONString:(id)string;
 - (id)description;
 @end
 
@@ -9,12 +9,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GDPerson *)self entityIdentifier];
-  v5 = [(GDPerson *)self nameComponents];
-  v6 = v5;
-  if (v5)
+  entityIdentifier = [(GDPerson *)self entityIdentifier];
+  nameComponents = [(GDPerson *)self nameComponents];
+  v6 = nameComponents;
+  if (nameComponents)
   {
-    v7 = v5;
+    v7 = nameComponents;
   }
 
   else
@@ -22,11 +22,11 @@
     v7 = &stru_1F20A2CD8;
   }
 
-  v8 = [(GDPerson *)self dateOfBirth];
-  v9 = v8;
-  if (v8)
+  dateOfBirth = [(GDPerson *)self dateOfBirth];
+  v9 = dateOfBirth;
+  if (dateOfBirth)
   {
-    v10 = v8;
+    v10 = dateOfBirth;
   }
 
   else
@@ -34,18 +34,18 @@
     v10 = &stru_1F20A2CD8;
   }
 
-  v11 = [(GDPerson *)self names];
-  v12 = [v11 componentsJoinedByString:@"|"];
-  v13 = [v3 stringWithFormat:@"<GDPerson %@, %@, dob:%@, ns:%@, f:%d, t:%td>", v4, v7, v10, v12, -[GDPerson isFavorite](self, "isFavorite"), -[GDPerson type](self, "type")];
+  names = [(GDPerson *)self names];
+  v12 = [names componentsJoinedByString:@"|"];
+  v13 = [v3 stringWithFormat:@"<GDPerson %@, %@, dob:%@, ns:%@, f:%d, t:%td>", entityIdentifier, v7, v10, v12, -[GDPerson isFavorite](self, "isFavorite"), -[GDPerson type](self, "type")];
 
   return v13;
 }
 
-- (id)dateComponentsFromJSONString:(id)a3
+- (id)dateComponentsFromJSONString:(id)string
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 dataUsingEncoding:4];
+  stringCopy = string;
+  v4 = [stringCopy dataUsingEncoding:4];
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
@@ -128,7 +128,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v30 = v3;
+        v30 = stringCopy;
         _os_log_error_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_ERROR, "GDPerson: failed to decode date components string %@", buf, 0xCu);
       }
 
@@ -142,7 +142,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v30 = v3;
+      v30 = stringCopy;
       _os_log_error_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_ERROR, "GDPerson: failed to decode date components string %@", buf, 0xCu);
     }
 
@@ -154,10 +154,10 @@
   return v12;
 }
 
-- (GDPerson)initWithTriplesIterator:(id)a3
+- (GDPerson)initWithTriplesIterator:(id)iterator
 {
   v106 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  iteratorCopy = iterator;
   v104.receiver = self;
   v104.super_class = GDPerson;
   v5 = [(GDPerson *)&v104 init];
@@ -181,8 +181,8 @@
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v88 = v4;
-  obj = v4;
+  v88 = iteratorCopy;
+  obj = iteratorCopy;
   v98 = [obj countByEnumeratingWithState:&v100 objects:v105 count:16];
   if (!v98)
   {
@@ -207,32 +207,32 @@
       if (!v5->_entityIdentifier)
       {
         v14 = [GDEntityIdentifier alloc];
-        v15 = [v13 subject];
-        v16 = [(GDEntityIdentifier *)v14 initWithString:v15];
+        subject = [v13 subject];
+        v16 = [(GDEntityIdentifier *)v14 initWithString:subject];
         entityIdentifier = v5->_entityIdentifier;
         v5->_entityIdentifier = v16;
       }
 
-      v18 = [v13 predicate];
-      if ([v18 isEqual:@"PS225"])
+      predicate = [v13 predicate];
+      if ([predicate isEqual:@"PS225"])
       {
-        v19 = [v13 relationshipPredicate];
-        if ([v19 isEqual:@"PS1"])
+        relationshipPredicate = [v13 relationshipPredicate];
+        if ([relationshipPredicate isEqual:@"PS1"])
         {
-          v20 = [v13 object];
-          v21 = [v20 isEqual:@"CS29"];
+          object = [v13 object];
+          v21 = [object isEqual:@"CS29"];
 
           if (v21)
           {
             v22 = [GDLocationLink alloc];
-            v23 = [obj relationshipIdIterator];
-            v24 = [(GDLocationLink *)v22 initWithRelationshipIdTriplesIterator:v23];
+            relationshipIdIterator = [obj relationshipIdIterator];
+            prefixes = [(GDLocationLink *)v22 initWithRelationshipIdTriplesIterator:relationshipIdIterator];
 
-            if (v24)
+            if (prefixes)
             {
               v25 = v96;
 LABEL_26:
-              [v25 addObject:v24];
+              [v25 addObject:prefixes];
               goto LABEL_27;
             }
 
@@ -245,21 +245,21 @@ LABEL_26:
         }
       }
 
-      if ([v18 isEqual:@"nm_hasSoftware"])
+      if ([predicate isEqual:@"nm_hasSoftware"])
       {
-        v26 = [v13 relationshipPredicate];
-        if ([v26 isEqual:@"PS1"])
+        relationshipPredicate2 = [v13 relationshipPredicate];
+        if ([relationshipPredicate2 isEqual:@"PS1"])
         {
-          v27 = [v13 object];
-          v28 = [v27 isEqual:@"nm_softwareRelationshipType"];
+          object2 = [v13 object];
+          v28 = [object2 isEqual:@"nm_softwareRelationshipType"];
 
           if (v28)
           {
             v29 = [GDSoftwareLink alloc];
-            v30 = [obj relationshipIdIterator];
-            v24 = [(GDSoftwareLink *)v29 initWithRelationshipIdTriplesIterator:v30];
+            relationshipIdIterator2 = [obj relationshipIdIterator];
+            prefixes = [(GDSoftwareLink *)v29 initWithRelationshipIdTriplesIterator:relationshipIdIterator2];
 
-            if (v24)
+            if (prefixes)
             {
               v25 = v95;
               goto LABEL_26;
@@ -278,21 +278,21 @@ LABEL_41:
         }
       }
 
-      if ([v18 isEqual:@"PS598"])
+      if ([predicate isEqual:@"PS598"])
       {
-        v31 = [v13 relationshipPredicate];
-        if ([v31 isEqual:@"PS1"])
+        relationshipPredicate3 = [v13 relationshipPredicate];
+        if ([relationshipPredicate3 isEqual:@"PS1"])
         {
-          v32 = [v13 object];
-          v33 = [v32 isEqual:@"CS168"];
+          object3 = [v13 object];
+          v33 = [object3 isEqual:@"CS168"];
 
           if (v33)
           {
             v34 = [GDPersonLink alloc];
-            v35 = [obj relationshipIdIterator];
-            v24 = [(GDPersonLink *)v34 initWithRelationshipIdTriplesIterator:v35];
+            relationshipIdIterator3 = [obj relationshipIdIterator];
+            prefixes = [(GDPersonLink *)v34 initWithRelationshipIdTriplesIterator:relationshipIdIterator3];
 
-            if (v24)
+            if (prefixes)
             {
               v25 = v94;
               goto LABEL_26;
@@ -307,31 +307,31 @@ LABEL_41:
         }
       }
 
-      if ([v18 isEqual:@"PS72"])
+      if ([predicate isEqual:@"PS72"])
       {
-        v36 = [v13 relationshipPredicate];
-        if ([v36 isEqual:@"PS1"])
+        relationshipPredicate4 = [v13 relationshipPredicate];
+        if ([relationshipPredicate4 isEqual:@"PS1"])
         {
-          v37 = [v13 object];
-          v38 = [v37 isEqual:@"CS22"];
+          object4 = [v13 object];
+          v38 = [object4 isEqual:@"CS22"];
 
           if (v38)
           {
             v39 = [GDPersonIdentifier alloc];
-            v40 = [obj relationshipIdIterator];
-            v24 = [(GDPersonIdentifier *)v39 initWithRelationshipIdTriplesIterator:v40];
+            relationshipIdIterator4 = [obj relationshipIdIterator];
+            prefixes = [(GDPersonIdentifier *)v39 initWithRelationshipIdTriplesIterator:relationshipIdIterator4];
 
-            if (v24)
+            if (prefixes)
             {
-              v41 = [(GDLocationLink *)v24 type];
-              v42 = [v41 isEqual:@"CNContact"];
+              type = [(GDLocationLink *)prefixes type];
+              v42 = [type isEqual:@"CNContact"];
 
               v43 = v93;
               v6 = v12;
-              if ((v42 & 1) != 0 || (-[GDLocationLink type](v24, "type"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 isEqual:@"INPerson"], v44, v43 = v92, v45))
+              if ((v42 & 1) != 0 || (-[GDLocationLink type](prefixes, "type"), v44 = objc_claimAutoreleasedReturnValue(), v45 = [v44 isEqual:@"INPerson"], v44, v43 = v92, v45))
               {
-                v46 = [(GDLocationLink *)v24 identifier];
-                [v43 addObject:v46];
+                identifier = [(GDLocationLink *)prefixes identifier];
+                [v43 addObject:identifier];
               }
 
               goto LABEL_41;
@@ -346,17 +346,17 @@ LABEL_41:
         }
       }
 
-      if ([v18 isEqual:@"nm_hasVisualIdentifier"])
+      if ([predicate isEqual:@"nm_hasVisualIdentifier"])
       {
         v47 = [GDVisualIdentifier alloc];
-        v48 = [obj relationshipIdIterator];
-        v24 = [(GDVisualIdentifier *)v47 initWithRelationshipIdTriplesIterator:v48];
+        relationshipIdIterator5 = [obj relationshipIdIterator];
+        prefixes = [(GDVisualIdentifier *)v47 initWithRelationshipIdTriplesIterator:relationshipIdIterator5];
 
         v6 = v12;
-        if (v24)
+        if (prefixes)
         {
-          v49 = [(GDLocationLink *)v24 visualIdentifier];
-          [v12 addObject:v49];
+          visualIdentifier = [(GDLocationLink *)prefixes visualIdentifier];
+          [v12 addObject:visualIdentifier];
 
           v7 = v10;
           v50 = v10;
@@ -368,63 +368,63 @@ LABEL_41:
 
       v6 = v12;
       v8 = v11;
-      if ([v18 isEqual:@"PS545"])
+      if ([predicate isEqual:@"PS545"])
       {
-        v24 = [v11 prefixes];
-        v51 = [v13 object];
-        [(GDLocationLink *)v24 addObject:v51];
+        prefixes = [v11 prefixes];
+        object5 = [v13 object];
+        [(GDLocationLink *)prefixes addObject:object5];
 
         v7 = v10;
         goto LABEL_43;
       }
 
       v7 = v10;
-      if ([v18 isEqual:@"PS312"])
+      if ([predicate isEqual:@"PS312"])
       {
-        v52 = [v11 givenNames];
+        givenNames = [v11 givenNames];
 LABEL_58:
-        v24 = v52;
-        v53 = [v13 object];
-        [(GDLocationLink *)v24 addObject:v53];
+        prefixes = givenNames;
+        object6 = [v13 object];
+        [(GDLocationLink *)prefixes addObject:object6];
 
         goto LABEL_43;
       }
 
-      if ([v18 isEqual:@"PS546"])
+      if ([predicate isEqual:@"PS546"])
       {
-        v52 = [v11 middleNames];
+        givenNames = [v11 middleNames];
         goto LABEL_58;
       }
 
-      if ([v18 isEqual:@"PS441"])
+      if ([predicate isEqual:@"PS441"])
       {
-        v52 = [v11 familyNames];
+        givenNames = [v11 familyNames];
         goto LABEL_58;
       }
 
-      if ([v18 isEqual:@"PS547"])
+      if ([predicate isEqual:@"PS547"])
       {
-        v52 = [v11 suffixes];
+        givenNames = [v11 suffixes];
         goto LABEL_58;
       }
 
-      if ([v18 isEqual:@"PS89"])
+      if ([predicate isEqual:@"PS89"])
       {
-        v52 = [v11 nicknames];
+        givenNames = [v11 nicknames];
         goto LABEL_58;
       }
 
-      if ([v18 isEqual:@"PS33"])
+      if ([predicate isEqual:@"PS33"])
       {
-        v24 = [v13 object];
-        [v91 addObject:v24];
+        prefixes = [v13 object];
+        [v91 addObject:prefixes];
         goto LABEL_43;
       }
 
-      if ([v18 isEqual:@"PS37"])
+      if ([predicate isEqual:@"PS37"])
       {
-        v24 = [v13 object];
-        v54 = [(GDPerson *)v5 dateComponentsFromJSONString:v24];
+        prefixes = [v13 object];
+        v54 = [(GDPerson *)v5 dateComponentsFromJSONString:prefixes];
         dateOfBirth = v5->_dateOfBirth;
         v5->_dateOfBirth = v54;
 LABEL_67:
@@ -432,37 +432,37 @@ LABEL_67:
         goto LABEL_43;
       }
 
-      if ([v18 isEqual:@"nm_nonGregorianBirthday"])
+      if ([predicate isEqual:@"nm_nonGregorianBirthday"])
       {
-        v24 = [v13 object];
-        v56 = [(GDPerson *)v5 dateComponentsFromJSONString:v24];
+        prefixes = [v13 object];
+        v56 = [(GDPerson *)v5 dateComponentsFromJSONString:prefixes];
         dateOfBirth = v5->_nonGregorianDateOfBirth;
         v5->_nonGregorianDateOfBirth = v56;
         goto LABEL_67;
       }
 
-      if ([v18 isEqual:@"nm_anniversary"])
+      if ([predicate isEqual:@"nm_anniversary"])
       {
-        v24 = [v13 object];
-        v57 = [(GDPerson *)v5 dateComponentsFromJSONString:v24];
+        prefixes = [v13 object];
+        v57 = [(GDPerson *)v5 dateComponentsFromJSONString:prefixes];
         dateOfBirth = v5->_anniversary;
         v5->_anniversary = v57;
         goto LABEL_67;
       }
 
-      if (([v18 isEqual:@"PS407"] & 1) != 0 || (objc_msgSend(v13, "relationshipPredicate"), v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqual:", @"PS407"), v58, v59))
+      if (([predicate isEqual:@"PS407"] & 1) != 0 || (objc_msgSend(v13, "relationshipPredicate"), v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_msgSend(v58, "isEqual:", @"PS407"), v58, v59))
       {
-        v24 = [v13 object];
+        prefixes = [v13 object];
         v50 = v90;
         goto LABEL_40;
       }
 
-      if (([v18 isEqual:@"PS406"] & 1) != 0 || (objc_msgSend(v13, "relationshipPredicate"), v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "isEqual:", @"PS406"), v60, v61))
+      if (([predicate isEqual:@"PS406"] & 1) != 0 || (objc_msgSend(v13, "relationshipPredicate"), v60 = objc_claimAutoreleasedReturnValue(), v61 = objc_msgSend(v60, "isEqual:", @"PS406"), v60, v61))
       {
-        v24 = [v13 object];
+        prefixes = [v13 object];
         v50 = v89;
 LABEL_40:
-        [v50 addObject:v24];
+        [v50 addObject:prefixes];
 LABEL_42:
         v8 = v11;
 LABEL_43:
@@ -470,18 +470,18 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      if ([v18 isEqual:@"nm_personType"])
+      if ([predicate isEqual:@"nm_personType"])
       {
-        v24 = [v13 object];
-        v5->_type = [(GDLocationLink *)v24 integerValue];
+        prefixes = [v13 object];
+        v5->_type = [(GDLocationLink *)prefixes integerValue];
         goto LABEL_42;
       }
 
       v8 = v11;
-      if ([v18 isEqual:@"nm_isFavorite"])
+      if ([predicate isEqual:@"nm_isFavorite"])
       {
-        v24 = [v13 object];
-        v5->_isFavorite = [(GDLocationLink *)v24 integerValue]!= 0;
+        prefixes = [v13 object];
+        v5->_isFavorite = [(GDLocationLink *)prefixes integerValue]!= 0;
         goto LABEL_43;
       }
 
@@ -546,7 +546,7 @@ LABEL_79:
     v5->_visualIdentifierObjects = v84;
   }
 
-  v4 = v88;
+  iteratorCopy = v88;
   if (v63)
   {
 LABEL_82:

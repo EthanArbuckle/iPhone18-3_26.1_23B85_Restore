@@ -1,5 +1,5 @@
 @interface ASUITurnOnTransportsViewController
-- (_TtC16AccessorySetupUI34ASUITurnOnTransportsViewController)initWithContentView:(id)a3;
+- (_TtC16AccessorySetupUI34ASUITurnOnTransportsViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (_TtC16AccessorySetupUI34ASUITurnOnTransportsViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI34ASUITurnOnTransportsViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI34ASUITurnOnTransportsViewController_type] = 0;
@@ -30,7 +30,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI34ASUITurnOnTransportsViewController_capabilities] = 0;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUITurnOnTransportsViewController *)&v8 initWithContentView:a3];
+  return [(ASUITurnOnTransportsViewController *)&v8 initWithContentView:view];
 }
 
 @end

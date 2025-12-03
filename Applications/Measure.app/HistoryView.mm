@@ -1,11 +1,11 @@
 @interface HistoryView
-- (_TtC7Measure11HistoryView)initWithCoder:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7Measure11HistoryView)initWithCoder:(id)coder;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation HistoryView
 
-- (_TtC7Measure11HistoryView)initWithCoder:(id)a3
+- (_TtC7Measure11HistoryView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC7Measure11HistoryView_tableView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UITableView) init];
@@ -15,13 +15,13 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_1000A75F4(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_1000A75F4(event, x, y);
 
   return v10;
 }

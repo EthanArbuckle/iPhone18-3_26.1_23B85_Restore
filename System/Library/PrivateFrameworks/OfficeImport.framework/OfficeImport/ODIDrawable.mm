@@ -1,26 +1,26 @@
 @interface ODIDrawable
-+ (CGSize)sizeOfDiagram:(id)a3;
-+ (id)addShapeWithBounds:(CGRect)a3 rotation:(float)a4 geometry:(id)a5 state:(id)a6;
-+ (id)presentationWithName:(id)a3 point:(id)a4;
-+ (id)shapeGeometryForBezierPath:(id)a3 gSpace:(CGRect)a4;
-+ (id)shapeGeometryForDoubleArrowWithControlPoint:(CGPoint)a3;
++ (CGSize)sizeOfDiagram:(id)diagram;
++ (id)addShapeWithBounds:(CGRect)bounds rotation:(float)rotation geometry:(id)geometry state:(id)state;
++ (id)presentationWithName:(id)name point:(id)point;
++ (id)shapeGeometryForBezierPath:(id)path gSpace:(CGRect)space;
++ (id)shapeGeometryForDoubleArrowWithControlPoint:(CGPoint)point;
 + (id)shapeGeometryForEllipse;
 + (id)shapeGeometryForRectangle;
-+ (id)shapeGeometryForRightArrowWithControlPoint:(CGPoint)a3;
-+ (id)shapeGeometryForRoundedRectangleWithRadius:(float)a3;
-+ (id)shapeGeometryWithShapeType:(int)a3 adjustValues:(const int *)a4;
-+ (id)styleForLabelName:(id)a3 styleCount:(int)a4 styleIndex:(int)a5 state:(id)a6;
-+ (id)styleForPresentation:(id)a3 point:(id)a4 state:(id)a5;
-+ (void)addArrowHeadToShapeProperties:(id)a3;
-+ (void)map1dArrowStyleFromPoint:(id)a3 shape:(id)a4 state:(id)a5;
-+ (void)map1dArrowStyleToShape:(id)a3 state:(id)a4;
-+ (void)mapShapeProperties:(id)a3 shape:(id)a4 state:(id)a5;
-+ (void)mapShapeProperties:(id)a3 shapeStyle:(id)a4 shape:(id)a5 state:(id)a6;
-+ (void)mapStyleAndTextFromPoint:(id)a3 shape:(id)a4 state:(id)a5;
-+ (void)mapStyleForLabelName:(id)a3 point:(id)a4 shape:(id)a5 state:(id)a6;
-+ (void)mapStyleForLabelName:(id)a3 shape:(id)a4 state:(id)a5;
-+ (void)mapStyleForPresentationName:(id)a3 point:(id)a4 shape:(id)a5 state:(id)a6;
-+ (void)mapStyleFromPoint:(id)a3 shape:(id)a4 state:(id)a5;
++ (id)shapeGeometryForRightArrowWithControlPoint:(CGPoint)point;
++ (id)shapeGeometryForRoundedRectangleWithRadius:(float)radius;
++ (id)shapeGeometryWithShapeType:(int)type adjustValues:(const int *)values;
++ (id)styleForLabelName:(id)name styleCount:(int)count styleIndex:(int)index state:(id)state;
++ (id)styleForPresentation:(id)presentation point:(id)point state:(id)state;
++ (void)addArrowHeadToShapeProperties:(id)properties;
++ (void)map1dArrowStyleFromPoint:(id)point shape:(id)shape state:(id)state;
++ (void)map1dArrowStyleToShape:(id)shape state:(id)state;
++ (void)mapShapeProperties:(id)properties shape:(id)shape state:(id)state;
++ (void)mapShapeProperties:(id)properties shapeStyle:(id)style shape:(id)shape state:(id)state;
++ (void)mapStyleAndTextFromPoint:(id)point shape:(id)shape state:(id)state;
++ (void)mapStyleForLabelName:(id)name point:(id)point shape:(id)shape state:(id)state;
++ (void)mapStyleForLabelName:(id)name shape:(id)shape state:(id)state;
++ (void)mapStyleForPresentationName:(id)name point:(id)point shape:(id)shape state:(id)state;
++ (void)mapStyleFromPoint:(id)point shape:(id)shape state:(id)state;
 @end
 
 @implementation ODIDrawable
@@ -41,20 +41,20 @@
   return v2;
 }
 
-+ (id)shapeGeometryForRoundedRectangleWithRadius:(float)a3
++ (id)shapeGeometryForRoundedRectangleWithRadius:(float)radius
 {
   v4 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADPresetShapeGeometry *)v4 setType:2];
   [(OADShapeGeometry *)v4 setIsEscher:1];
-  [(OADShapeGeometry *)v4 setAdjustValue:(a3 * 21600.0) atIndex:0];
+  [(OADShapeGeometry *)v4 setAdjustValue:(radius * 21600.0) atIndex:0];
 
   return v4;
 }
 
-+ (id)shapeGeometryForRightArrowWithControlPoint:(CGPoint)a3
++ (id)shapeGeometryForRightArrowWithControlPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADPresetShapeGeometry *)v5 setType:13];
   [(OADShapeGeometry *)v5 setIsEscher:1];
@@ -64,10 +64,10 @@
   return v5;
 }
 
-+ (id)shapeGeometryForDoubleArrowWithControlPoint:(CGPoint)a3
++ (id)shapeGeometryForDoubleArrowWithControlPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADPresetShapeGeometry *)v5 setType:69];
   [(OADShapeGeometry *)v5 setIsEscher:1];
@@ -77,16 +77,16 @@
   return v5;
 }
 
-+ (id)shapeGeometryWithShapeType:(int)a3 adjustValues:(const int *)a4
++ (id)shapeGeometryWithShapeType:(int)type adjustValues:(const int *)values
 {
-  v5 = *&a3;
+  v5 = *&type;
   v6 = objc_alloc_init(OADPresetShapeGeometry);
   [(OADPresetShapeGeometry *)v6 setType:v5];
-  if (a4)
+  if (values)
   {
     for (i = 0; ; ++i)
     {
-      v8 = a4[i];
+      v8 = values[i];
       if (v8 != -559038738)
       {
         if (v8 == -559038737)
@@ -102,14 +102,14 @@
   return v6;
 }
 
-+ (id)shapeGeometryForBezierPath:(id)a3 gSpace:(CGRect)a4
++ (id)shapeGeometryForBezierPath:(id)path gSpace:(CGRect)space
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  pathCopy = path;
   if (width >= height)
   {
     v9 = width;
@@ -152,8 +152,8 @@
   [(OADCustomShapeGeometry *)v10 setGeometryCoordSpace:v31];
   [(OADShapeGeometry *)v10 setIsEscher:1];
   v18 = 0;
-  v19 = [v8 elementCount];
-  if (v19)
+  elementCount = [pathCopy elementCount];
+  if (elementCount)
   {
     v20 = 0;
     while (1)
@@ -164,7 +164,7 @@
         [(OADCustomShapeGeometry *)v10 addPath:v18];
       }
 
-      v21 = [v8 elementAtIndex:v20 associatedPoints:{&v32, *&v28, *&v29}];
+      v21 = [pathCopy elementAtIndex:v20 associatedPoints:{&v32, *&v28, *&v29}];
       v22 = 0;
       v23 = vshlq_n_s64(vcvtq_s64_f64(vmulq_n_f64(v32, v30)), 0x20uLL);
       if (v21 > 1)
@@ -195,7 +195,7 @@ LABEL_18:
 
 LABEL_20:
 
-      if (v19 == ++v20)
+      if (elementCount == ++v20)
       {
         goto LABEL_21;
       }
@@ -226,9 +226,9 @@ LABEL_21:
   return v10;
 }
 
-+ (CGSize)sizeOfDiagram:(id)a3
++ (CGSize)sizeOfDiagram:(id)diagram
 {
-  v3 = [OAITOrientedBounds relativeOrientedBoundsOfDrawable:a3];
+  v3 = [OAITOrientedBounds relativeOrientedBoundsOfDrawable:diagram];
   [v3 bounds];
   v5 = v4;
   v7 = v6;
@@ -240,174 +240,174 @@ LABEL_21:
   return result;
 }
 
-+ (id)addShapeWithBounds:(CGRect)a3 rotation:(float)a4 geometry:(id)a5 state:(id)a6
++ (id)addShapeWithBounds:(CGRect)bounds rotation:(float)rotation geometry:(id)geometry state:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
-  v13 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  geometryCopy = geometry;
+  stateCopy = state;
   v14 = objc_alloc_init(OADShape);
-  v15 = [v13 group];
-  [v15 addChild:v14];
+  group = [stateCopy group];
+  [group addChild:v14];
 
-  [v13 scale];
+  [stateCopy scale];
   v17 = v16;
   v18 = [OADOrientedBounds alloc];
-  *&v19 = a4;
+  *&v19 = rotation;
   v20 = [(OADOrientedBounds *)v18 initWithBounds:0 rotation:0 flipX:x * v17 flipY:y * v17, width * v17, height * v17, v19];
-  v21 = [(OADDrawable *)v14 drawableProperties];
-  [v21 setOrientedBounds:v20];
+  drawableProperties = [(OADDrawable *)v14 drawableProperties];
+  [drawableProperties setOrientedBounds:v20];
 
-  [(OADShape *)v14 setGeometry:v12];
+  [(OADShape *)v14 setGeometry:geometryCopy];
 
   return v14;
 }
 
-+ (void)mapStyleFromPoint:(id)a3 shape:(id)a4 state:(id)a5
++ (void)mapStyleFromPoint:(id)point shape:(id)shape state:(id)state
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 presentationNameForPointType:{objc_msgSend(v17, "type")}];
-  v11 = [a1 presentationWithName:v10 point:v17];
-  v12 = [a1 styleForPresentation:v11 point:v17 state:v9];
-  [v9 setTextStyle:v12];
-  v13 = [v17 shapeProperties];
-  v14 = [v9 drawingTheme];
-  v15 = [v14 styleMatrix];
+  pointCopy = point;
+  shapeCopy = shape;
+  stateCopy = state;
+  v10 = [stateCopy presentationNameForPointType:{objc_msgSend(pointCopy, "type")}];
+  v11 = [self presentationWithName:v10 point:pointCopy];
+  v12 = [self styleForPresentation:v11 point:pointCopy state:stateCopy];
+  [stateCopy setTextStyle:v12];
+  shapeProperties = [pointCopy shapeProperties];
+  drawingTheme = [stateCopy drawingTheme];
+  styleMatrix = [drawingTheme styleMatrix];
 
   if (v11)
   {
-    v16 = [v11 shapeProperties];
-    [v12 applyToGraphicProperties:v16 styleMatrix:v15];
-    [v13 setParent:v16];
+    shapeProperties2 = [v11 shapeProperties];
+    [v12 applyToGraphicProperties:shapeProperties2 styleMatrix:styleMatrix];
+    [shapeProperties setParent:shapeProperties2];
   }
 
   else
   {
-    [v12 applyToGraphicProperties:v13 styleMatrix:v15];
+    [v12 applyToGraphicProperties:shapeProperties styleMatrix:styleMatrix];
   }
 
-  [a1 mapShapeProperties:v13 shape:v8 state:v9];
+  [self mapShapeProperties:shapeProperties shape:shapeCopy state:stateCopy];
 }
 
-+ (void)mapStyleForPresentationName:(id)a3 point:(id)a4 shape:(id)a5 state:(id)a6
++ (void)mapStyleForPresentationName:(id)name point:(id)point shape:(id)shape state:(id)state
 {
-  v16 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 presentationWithName:a3 point:v16];
-  v13 = [a1 styleForPresentation:v12 point:v16 state:v11];
+  pointCopy = point;
+  shapeCopy = shape;
+  stateCopy = state;
+  v12 = [self presentationWithName:name point:pointCopy];
+  v13 = [self styleForPresentation:v12 point:pointCopy state:stateCopy];
   if (v12)
   {
-    v14 = [v12 shapeProperties];
+    shapeProperties = [v12 shapeProperties];
   }
 
   else
   {
-    v14 = objc_alloc_init(OADShapeProperties);
+    shapeProperties = objc_alloc_init(OADShapeProperties);
   }
 
-  v15 = v14;
-  [a1 mapShapeProperties:v14 shapeStyle:v13 shape:v10 state:v11];
+  v15 = shapeProperties;
+  [self mapShapeProperties:shapeProperties shapeStyle:v13 shape:shapeCopy state:stateCopy];
 }
 
-+ (void)mapStyleForLabelName:(id)a3 shape:(id)a4 state:(id)a5
++ (void)mapStyleForLabelName:(id)name shape:(id)shape state:(id)state
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  shapeCopy = shape;
+  stateCopy = state;
   v10 = objc_alloc_init(OADShapeProperties);
-  v11 = [a1 styleForLabelName:v12 styleCount:objc_msgSend(v9 styleIndex:"pointCount") state:{objc_msgSend(v9, "pointIndex"), v9}];
-  [a1 mapShapeProperties:v10 shapeStyle:v11 shape:v8 state:v9];
+  v11 = [self styleForLabelName:nameCopy styleCount:objc_msgSend(stateCopy styleIndex:"pointCount") state:{objc_msgSend(stateCopy, "pointIndex"), stateCopy}];
+  [self mapShapeProperties:v10 shapeStyle:v11 shape:shapeCopy state:stateCopy];
 }
 
-+ (void)mapStyleForLabelName:(id)a3 point:(id)a4 shape:(id)a5 state:(id)a6
++ (void)mapStyleForLabelName:(id)name point:(id)point shape:(id)shape state:(id)state
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 styleForLabelName:v15 styleCount:objc_msgSend(v12 styleIndex:"pointCount") state:{objc_msgSend(v12, "pointIndex"), v12}];
-  [v12 setTextStyle:v13];
-  v14 = [v10 shapeProperties];
-  [a1 mapShapeProperties:v14 shapeStyle:v13 shape:v11 state:v12];
+  nameCopy = name;
+  pointCopy = point;
+  shapeCopy = shape;
+  stateCopy = state;
+  v13 = [self styleForLabelName:nameCopy styleCount:objc_msgSend(stateCopy styleIndex:"pointCount") state:{objc_msgSend(stateCopy, "pointIndex"), stateCopy}];
+  [stateCopy setTextStyle:v13];
+  shapeProperties = [pointCopy shapeProperties];
+  [self mapShapeProperties:shapeProperties shapeStyle:v13 shape:shapeCopy state:stateCopy];
 }
 
-+ (void)map1dArrowStyleFromPoint:(id)a3 shape:(id)a4 state:(id)a5
++ (void)map1dArrowStyleFromPoint:(id)point shape:(id)shape state:(id)state
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 presentationNameForPointType:{objc_msgSend(v16, "type")}];
-  v11 = [a1 presentationWithName:v10 point:v16];
-  v12 = [a1 styleForPresentation:v11 point:v16 state:v9];
-  v13 = [v16 shapeProperties];
-  v14 = [v9 drawingTheme];
-  v15 = [v14 styleMatrix];
-  [v12 applyToGraphicProperties:v13 styleMatrix:v15];
+  pointCopy = point;
+  shapeCopy = shape;
+  stateCopy = state;
+  v10 = [stateCopy presentationNameForPointType:{objc_msgSend(pointCopy, "type")}];
+  v11 = [self presentationWithName:v10 point:pointCopy];
+  v12 = [self styleForPresentation:v11 point:pointCopy state:stateCopy];
+  shapeProperties = [pointCopy shapeProperties];
+  drawingTheme = [stateCopy drawingTheme];
+  styleMatrix = [drawingTheme styleMatrix];
+  [v12 applyToGraphicProperties:shapeProperties styleMatrix:styleMatrix];
 
-  [a1 addArrowHeadToShapeProperties:v13];
-  [v9 setTextStyle:v12];
-  [a1 mapShapeProperties:v13 shape:v8 state:v9];
+  [self addArrowHeadToShapeProperties:shapeProperties];
+  [stateCopy setTextStyle:v12];
+  [self mapShapeProperties:shapeProperties shape:shapeCopy state:stateCopy];
 }
 
-+ (void)map1dArrowStyleToShape:(id)a3 state:(id)a4
++ (void)map1dArrowStyleToShape:(id)shape state:(id)state
 {
-  v11 = a3;
-  v6 = a4;
+  shapeCopy = shape;
+  stateCopy = state;
   v7 = objc_alloc_init(OADShapeProperties);
-  v8 = [a1 styleForLabelName:@"sibTrans1D1" styleCount:objc_msgSend(v6 styleIndex:"pointCount") state:{objc_msgSend(v6, "pointIndex"), v6}];
-  v9 = [v6 drawingTheme];
-  v10 = [v9 styleMatrix];
-  [v8 applyToGraphicProperties:v7 styleMatrix:v10];
+  v8 = [self styleForLabelName:@"sibTrans1D1" styleCount:objc_msgSend(stateCopy styleIndex:"pointCount") state:{objc_msgSend(stateCopy, "pointIndex"), stateCopy}];
+  drawingTheme = [stateCopy drawingTheme];
+  styleMatrix = [drawingTheme styleMatrix];
+  [v8 applyToGraphicProperties:v7 styleMatrix:styleMatrix];
 
-  [a1 addArrowHeadToShapeProperties:v7];
-  [a1 mapShapeProperties:v7 shape:v11 state:v6];
+  [self addArrowHeadToShapeProperties:v7];
+  [self mapShapeProperties:v7 shape:shapeCopy state:stateCopy];
 }
 
-+ (void)mapStyleAndTextFromPoint:(id)a3 shape:(id)a4 state:(id)a5
++ (void)mapStyleAndTextFromPoint:(id)point shape:(id)shape state:(id)state
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  [a1 mapStyleFromPoint:v11 shape:v8 state:v9];
+  pointCopy = point;
+  shapeCopy = shape;
+  stateCopy = state;
+  [self mapStyleFromPoint:pointCopy shape:shapeCopy state:stateCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v11 text];
+    text = [pointCopy text];
 
-    if (v10)
+    if (text)
     {
-      [ODIText mapTextFromPoint:v11 toShape:v8 isCentered:1 includeChildren:1 state:v9];
+      [ODIText mapTextFromPoint:pointCopy toShape:shapeCopy isCentered:1 includeChildren:1 state:stateCopy];
     }
   }
 }
 
-+ (id)presentationWithName:(id)a3 point:(id)a4
++ (id)presentationWithName:(id)name point:(id)point
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 presentations];
-  v8 = v7;
-  if (v5)
+  nameCopy = name;
+  pointCopy = point;
+  presentations = [pointCopy presentations];
+  v8 = presentations;
+  if (nameCopy)
   {
-    v9 = [v7 objectEnumerator];
+    objectEnumerator = [presentations objectEnumerator];
     while (1)
     {
-      v10 = [v9 nextObject];
-      v11 = v10;
-      if (!v10)
+      nextObject = [objectEnumerator nextObject];
+      v11 = nextObject;
+      if (!nextObject)
       {
 
         goto LABEL_7;
       }
 
-      v12 = [v10 propertySet];
-      v13 = [v12 presentationName];
-      v14 = [v5 isEqualToString:v13];
+      propertySet = [nextObject propertySet];
+      presentationName = [propertySet presentationName];
+      v14 = [nameCopy isEqualToString:presentationName];
 
       if (v14)
       {
@@ -433,89 +433,89 @@ LABEL_7:
   return v11;
 }
 
-+ (id)styleForPresentation:(id)a3 point:(id)a4 state:(id)a5
++ (id)styleForPresentation:(id)presentation point:(id)point state:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || ([v8 propertySet], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "presentationStyleLabel"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "presentationStyleCount"), v14 = objc_msgSend(v11, "presentationStyleIndex"), v11, !v12))
+  presentationCopy = presentation;
+  pointCopy = point;
+  stateCopy = state;
+  if (!presentationCopy || ([presentationCopy propertySet], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "presentationStyleLabel"), v12 = objc_claimAutoreleasedReturnValue(), pointCount = objc_msgSend(v11, "presentationStyleCount"), pointIndex = objc_msgSend(v11, "presentationStyleIndex"), v11, !v12))
   {
-    v15 = [v10 defaultStyleLabelNameForPointType:{objc_msgSend(v9, "type")}];
-    v13 = [v10 pointCount];
-    v14 = [v10 pointIndex];
+    v15 = [stateCopy defaultStyleLabelNameForPointType:{objc_msgSend(pointCopy, "type")}];
+    pointCount = [stateCopy pointCount];
+    pointIndex = [stateCopy pointIndex];
     v12 = v15;
   }
 
-  v16 = [a1 styleForLabelName:v12 styleCount:v13 styleIndex:v14 state:v10];
+  v16 = [self styleForLabelName:v12 styleCount:pointCount styleIndex:pointIndex state:stateCopy];
 
   return v16;
 }
 
-+ (id)styleForLabelName:(id)a3 styleCount:(int)a4 styleIndex:(int)a5 state:(id)a6
++ (id)styleForLabelName:(id)name styleCount:(int)count styleIndex:(int)index state:(id)state
 {
-  v7 = *&a5;
-  v8 = *&a4;
-  v9 = a3;
-  v10 = a6;
-  v11 = [v10 diagram];
-  v12 = [v11 styleDefinition];
-  v13 = [v12 labelForName:v9];
-  v14 = [v13 shapeStyle];
+  v7 = *&index;
+  v8 = *&count;
+  nameCopy = name;
+  stateCopy = state;
+  diagram = [stateCopy diagram];
+  styleDefinition = [diagram styleDefinition];
+  v13 = [styleDefinition labelForName:nameCopy];
+  shapeStyle = [v13 shapeStyle];
 
-  if (v14)
+  if (shapeStyle)
   {
-    v15 = [v11 colorTransform];
-    v16 = [v15 labelForName:v9];
+    colorTransform = [diagram colorTransform];
+    v16 = [colorTransform labelForName:nameCopy];
 
     if (v16)
     {
-      v17 = [v14 copy];
+      v17 = [shapeStyle copy];
 
-      v14 = v17;
-      [v16 applyToShapeStyle:v17 index:v7 count:v8 state:v10];
+      shapeStyle = v17;
+      [v16 applyToShapeStyle:v17 index:v7 count:v8 state:stateCopy];
     }
   }
 
-  return v14;
+  return shapeStyle;
 }
 
-+ (void)mapShapeProperties:(id)a3 shapeStyle:(id)a4 shape:(id)a5 state:(id)a6
++ (void)mapShapeProperties:(id)properties shapeStyle:(id)style shape:(id)shape state:(id)state
 {
-  v15 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 drawingTheme];
-  v14 = [v13 styleMatrix];
-  [v10 applyToGraphicProperties:v15 styleMatrix:v14];
+  propertiesCopy = properties;
+  styleCopy = style;
+  shapeCopy = shape;
+  stateCopy = state;
+  drawingTheme = [stateCopy drawingTheme];
+  styleMatrix = [drawingTheme styleMatrix];
+  [styleCopy applyToGraphicProperties:propertiesCopy styleMatrix:styleMatrix];
 
-  [a1 mapShapeProperties:v15 shape:v11 state:v12];
+  [self mapShapeProperties:propertiesCopy shape:shapeCopy state:stateCopy];
 }
 
-+ (void)mapShapeProperties:(id)a3 shape:(id)a4 state:(id)a5
++ (void)mapShapeProperties:(id)properties shape:(id)shape state:(id)state
 {
-  v10 = a3;
-  v6 = [a4 shapeProperties];
-  if (v6 != v10)
+  propertiesCopy = properties;
+  shapeProperties = [shape shapeProperties];
+  if (shapeProperties != propertiesCopy)
   {
-    v7 = [v10 fill];
-    [v6 setFill:v7];
+    fill = [propertiesCopy fill];
+    [shapeProperties setFill:fill];
 
-    v8 = [v10 stroke];
-    [v6 setStroke:v8];
+    stroke = [propertiesCopy stroke];
+    [shapeProperties setStroke:stroke];
 
-    v9 = [v10 effects];
-    [v6 setEffects:v9];
+    effects = [propertiesCopy effects];
+    [shapeProperties setEffects:effects];
   }
 }
 
-+ (void)addArrowHeadToShapeProperties:(id)a3
++ (void)addArrowHeadToShapeProperties:(id)properties
 {
-  v6 = a3;
-  v3 = [v6 stroke];
-  v4 = [v3 copy];
+  propertiesCopy = properties;
+  stroke = [propertiesCopy stroke];
+  v4 = [stroke copy];
 
-  [v6 setStroke:v4];
+  [propertiesCopy setStroke:v4];
   v5 = [[OADLineEnd alloc] initWithType:1 width:1 length:1];
   [v4 setHead:v5];
 }

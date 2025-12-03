@@ -1,25 +1,25 @@
 @interface TUNearbyDeviceHandleCapabilities
-- (TUNearbyDeviceHandleCapabilities)initWithAVLessCapable:(BOOL)a3 lagunaCapable:(BOOL)a4 audioCallCapable:(BOOL)a5 telephonyRelayCapable:(BOOL)a6 greenTea:(BOOL)a7;
-- (TUNearbyDeviceHandleCapabilities)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUNearbyDeviceHandleCapabilities)initWithAVLessCapable:(BOOL)capable lagunaCapable:(BOOL)lagunaCapable audioCallCapable:(BOOL)callCapable telephonyRelayCapable:(BOOL)relayCapable greenTea:(BOOL)tea;
+- (TUNearbyDeviceHandleCapabilities)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNearbyDeviceHandleCapabilities
 
-- (TUNearbyDeviceHandleCapabilities)initWithAVLessCapable:(BOOL)a3 lagunaCapable:(BOOL)a4 audioCallCapable:(BOOL)a5 telephonyRelayCapable:(BOOL)a6 greenTea:(BOOL)a7
+- (TUNearbyDeviceHandleCapabilities)initWithAVLessCapable:(BOOL)capable lagunaCapable:(BOOL)lagunaCapable audioCallCapable:(BOOL)callCapable telephonyRelayCapable:(BOOL)relayCapable greenTea:(BOOL)tea
 {
   v13.receiver = self;
   v13.super_class = TUNearbyDeviceHandleCapabilities;
   result = [(TUNearbyDeviceHandleCapabilities *)&v13 init];
   if (result)
   {
-    result->_avLessCapable = a3;
-    result->_lagunaCapable = a4;
-    result->_audioCallCapable = a5;
-    result->_telephonyRelayCapable = a6;
-    result->_greenTea = a7;
+    result->_avLessCapable = capable;
+    result->_lagunaCapable = lagunaCapable;
+    result->_audioCallCapable = callCapable;
+    result->_telephonyRelayCapable = relayCapable;
+    result->_greenTea = tea;
   }
 
   return result;
@@ -43,61 +43,61 @@
   return v7;
 }
 
-- (TUNearbyDeviceHandleCapabilities)initWithCoder:(id)a3
+- (TUNearbyDeviceHandleCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_isAVLessCapable);
-  v6 = [v4 decodeBoolForKey:v5];
+  v6 = [coderCopy decodeBoolForKey:v5];
 
   v7 = NSStringFromSelector(sel_isLagunaCapable);
-  v8 = [v4 decodeBoolForKey:v7];
+  v8 = [coderCopy decodeBoolForKey:v7];
 
   v9 = NSStringFromSelector(sel_isAudioCallCapable);
-  v10 = [v4 decodeBoolForKey:v9];
+  v10 = [coderCopy decodeBoolForKey:v9];
 
   v11 = NSStringFromSelector(sel_isTelephonyRelayCapable);
-  v12 = [v4 decodeBoolForKey:v11];
+  v12 = [coderCopy decodeBoolForKey:v11];
 
   v13 = NSStringFromSelector(sel_isGreenTea);
-  v14 = [v4 decodeBoolForKey:v13];
+  v14 = [coderCopy decodeBoolForKey:v13];
 
   return [(TUNearbyDeviceHandleCapabilities *)self initWithAVLessCapable:v6 lagunaCapable:v8 audioCallCapable:v10 telephonyRelayCapable:v12 greenTea:v14];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUNearbyDeviceHandleCapabilities *)self isAVLessCapable];
+  coderCopy = coder;
+  isAVLessCapable = [(TUNearbyDeviceHandleCapabilities *)self isAVLessCapable];
   v6 = NSStringFromSelector(sel_isAVLessCapable);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:isAVLessCapable forKey:v6];
 
-  v7 = [(TUNearbyDeviceHandleCapabilities *)self isLagunaCapable];
+  isLagunaCapable = [(TUNearbyDeviceHandleCapabilities *)self isLagunaCapable];
   v8 = NSStringFromSelector(sel_isLagunaCapable);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isLagunaCapable forKey:v8];
 
-  v9 = [(TUNearbyDeviceHandleCapabilities *)self isAudioCallCapable];
+  isAudioCallCapable = [(TUNearbyDeviceHandleCapabilities *)self isAudioCallCapable];
   v10 = NSStringFromSelector(sel_isAudioCallCapable);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:isAudioCallCapable forKey:v10];
 
-  v11 = [(TUNearbyDeviceHandleCapabilities *)self isTelephonyRelayCapable];
+  isTelephonyRelayCapable = [(TUNearbyDeviceHandleCapabilities *)self isTelephonyRelayCapable];
   v12 = NSStringFromSelector(sel_isTelephonyRelayCapable);
-  [v4 encodeBool:v11 forKey:v12];
+  [coderCopy encodeBool:isTelephonyRelayCapable forKey:v12];
 
-  v13 = [(TUNearbyDeviceHandleCapabilities *)self isGreenTea];
+  isGreenTea = [(TUNearbyDeviceHandleCapabilities *)self isGreenTea];
   v14 = NSStringFromSelector(sel_isGreenTea);
-  [v4 encodeBool:v13 forKey:v14];
+  [coderCopy encodeBool:isGreenTea forKey:v14];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUNearbyDeviceHandleCapabilities *)self isAVLessCapable];
-  v6 = [(TUNearbyDeviceHandleCapabilities *)self isLagunaCapable];
-  v7 = [(TUNearbyDeviceHandleCapabilities *)self isAudioCallCapable];
-  v8 = [(TUNearbyDeviceHandleCapabilities *)self isTelephonyRelayCapable];
-  v9 = [(TUNearbyDeviceHandleCapabilities *)self isGreenTea];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  isAVLessCapable = [(TUNearbyDeviceHandleCapabilities *)self isAVLessCapable];
+  isLagunaCapable = [(TUNearbyDeviceHandleCapabilities *)self isLagunaCapable];
+  isAudioCallCapable = [(TUNearbyDeviceHandleCapabilities *)self isAudioCallCapable];
+  isTelephonyRelayCapable = [(TUNearbyDeviceHandleCapabilities *)self isTelephonyRelayCapable];
+  isGreenTea = [(TUNearbyDeviceHandleCapabilities *)self isGreenTea];
 
-  return [v4 initWithAVLessCapable:v5 lagunaCapable:v6 audioCallCapable:v7 telephonyRelayCapable:v8 greenTea:v9];
+  return [v4 initWithAVLessCapable:isAVLessCapable lagunaCapable:isLagunaCapable audioCallCapable:isAudioCallCapable telephonyRelayCapable:isTelephonyRelayCapable greenTea:isGreenTea];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface NIAcwgM3Msg
 - (AcwgM3MsgStruct)toStruct;
-- (NIAcwgM3Msg)initWithCoder:(id)a3;
-- (NIAcwgM3Msg)initWithSelectedRanMultiplier:(unsigned __int8)a3 selectedNumChapsPerSlot:(unsigned __int8)a4 numResponders:(unsigned __int8)a5 numSlotsPerRound:(unsigned __int8)a6 supportedSyncCodeIndexBitmask:(unsigned int)a7 selectedHoppingConfigBitmask:(unsigned __int8)a8 macMode:(unsigned __int8)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NIAcwgM3Msg)initWithCoder:(id)coder;
+- (NIAcwgM3Msg)initWithSelectedRanMultiplier:(unsigned __int8)multiplier selectedNumChapsPerSlot:(unsigned __int8)slot numResponders:(unsigned __int8)responders numSlotsPerRound:(unsigned __int8)round supportedSyncCodeIndexBitmask:(unsigned int)bitmask selectedHoppingConfigBitmask:(unsigned __int8)configBitmask macMode:(unsigned __int8)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIAcwgM3Msg
 
-- (NIAcwgM3Msg)initWithSelectedRanMultiplier:(unsigned __int8)a3 selectedNumChapsPerSlot:(unsigned __int8)a4 numResponders:(unsigned __int8)a5 numSlotsPerRound:(unsigned __int8)a6 supportedSyncCodeIndexBitmask:(unsigned int)a7 selectedHoppingConfigBitmask:(unsigned __int8)a8 macMode:(unsigned __int8)a9
+- (NIAcwgM3Msg)initWithSelectedRanMultiplier:(unsigned __int8)multiplier selectedNumChapsPerSlot:(unsigned __int8)slot numResponders:(unsigned __int8)responders numSlotsPerRound:(unsigned __int8)round supportedSyncCodeIndexBitmask:(unsigned int)bitmask selectedHoppingConfigBitmask:(unsigned __int8)configBitmask macMode:(unsigned __int8)mode
 {
   v16.receiver = self;
   v16.super_class = NIAcwgM3Msg;
   result = [(NIAcwgM3Msg *)&v16 init];
   if (result)
   {
-    result->_selectedRanMultiplier = a3;
-    result->_selectedNumChapsPerSlot = a4;
-    result->_numResponders = a5;
-    result->_numSlotsPerRound = a6;
-    result->_supportedSyncCodeIndexBitmask = a7;
-    result->_selectedHoppingConfigBitmask = a8;
-    result->_macMode = a9;
+    result->_selectedRanMultiplier = multiplier;
+    result->_selectedNumChapsPerSlot = slot;
+    result->_numResponders = responders;
+    result->_numSlotsPerRound = round;
+    result->_supportedSyncCodeIndexBitmask = bitmask;
+    result->_selectedHoppingConfigBitmask = configBitmask;
+    result->_macMode = mode;
   }
 
   return result;
@@ -59,32 +59,32 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v6) = self->_macMode;
   return [v4 initWithSelectedRanMultiplier:self->_selectedRanMultiplier selectedNumChapsPerSlot:self->_selectedNumChapsPerSlot numResponders:self->_numResponders numSlotsPerRound:self->_numSlotsPerRound supportedSyncCodeIndexBitmask:self->_supportedSyncCodeIndexBitmask selectedHoppingConfigBitmask:self->_selectedHoppingConfigBitmask macMode:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_selectedRanMultiplier forKey:@"selectedRanMultiplier"];
-  [v4 encodeInt:self->_selectedNumChapsPerSlot forKey:@"selectedNumChapsPerSlot"];
-  [v4 encodeInt:self->_numResponders forKey:@"numResponders"];
-  [v4 encodeInt:self->_numSlotsPerRound forKey:@"numSlotsPerRound"];
-  [v4 encodeInt64:self->_supportedSyncCodeIndexBitmask forKey:@"supportedSyncCodeIndexBitmask"];
-  [v4 encodeInt:self->_selectedHoppingConfigBitmask forKey:@"selectedHoppingConfigBitmask"];
-  [v4 encodeInt:self->_macMode forKey:@"macMode"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_selectedRanMultiplier forKey:@"selectedRanMultiplier"];
+  [coderCopy encodeInt:self->_selectedNumChapsPerSlot forKey:@"selectedNumChapsPerSlot"];
+  [coderCopy encodeInt:self->_numResponders forKey:@"numResponders"];
+  [coderCopy encodeInt:self->_numSlotsPerRound forKey:@"numSlotsPerRound"];
+  [coderCopy encodeInt64:self->_supportedSyncCodeIndexBitmask forKey:@"supportedSyncCodeIndexBitmask"];
+  [coderCopy encodeInt:self->_selectedHoppingConfigBitmask forKey:@"selectedHoppingConfigBitmask"];
+  [coderCopy encodeInt:self->_macMode forKey:@"macMode"];
 }
 
-- (NIAcwgM3Msg)initWithCoder:(id)a3
+- (NIAcwgM3Msg)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
-    self->_selectedRanMultiplier = [v4 decodeIntForKey:@"selectedRanMultiplier"];
+    self->_selectedRanMultiplier = [coderCopy decodeIntForKey:@"selectedRanMultiplier"];
     self->_selectedNumChapsPerSlot = [v5 decodeIntForKey:@"selectedNumChapsPerSlot"];
     self->_numResponders = [v5 decodeIntForKey:@"numResponders"];
     self->_numSlotsPerRound = [v5 decodeIntForKey:@"numSlotsPerRound"];

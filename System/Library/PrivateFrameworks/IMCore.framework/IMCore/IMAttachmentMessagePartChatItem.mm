@@ -1,35 +1,35 @@
 @interface IMAttachmentMessagePartChatItem
-- (BOOL)_wantsAttachmentContiguousForType:(id)a3;
-- (BOOL)isAttachmentContiguousWithChatItem:(id)a3;
+- (BOOL)_wantsAttachmentContiguousForType:(id)type;
+- (BOOL)isAttachmentContiguousWithChatItem:(id)item;
 - (BOOL)parentChatIsSpam;
 - (BOOL)supportsSuggestedActionsMenu;
-- (id)_initWithItem:(id)a3 text:(id)a4 index:(int64_t)a5 messagePartRange:(_NSRange)a6 transferGUID:(id)a7 chatContext:(id)a8 visibleAssociatedMessageChatItems:(id)a9;
+- (id)_initWithItem:(id)item text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)d chatContext:(id)context visibleAssociatedMessageChatItems:(id)items;
 - (id)commSafetyMessageGUID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)layoutGroupIdentifier;
 - (id)messageSummaryInfo;
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4;
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context;
 - (int64_t)syndicationBehavior;
 - (unsigned)contentType;
 @end
 
 @implementation IMAttachmentMessagePartChatItem
 
-- (id)replyContextPreviewChatItemForReply:(id)a3 chatContext:(id)a4
+- (id)replyContextPreviewChatItemForReply:(id)reply chatContext:(id)context
 {
-  v5 = a3;
+  replyCopy = reply;
   v34 = [IMReplyContextAttachmentMessagePartChatItem alloc];
   v8 = objc_msgSend__item(self, v6, v7);
-  v11 = objc_msgSend_guid(v5, v9, v10);
-  v14 = objc_msgSend_isFromMe(v5, v12, v13);
+  v11 = objc_msgSend_guid(replyCopy, v9, v10);
+  v14 = objc_msgSend_isFromMe(replyCopy, v12, v13);
   v17 = objc_msgSend_text(self, v15, v16);
   v20 = objc_msgSend_index(self, v18, v19);
   v23 = objc_msgSend_messagePartRange(self, v21, v22);
   v25 = v24;
   v27 = objc_msgSend_transferGUID(self, v24, v26);
   v30 = objc_msgSend_chatContext(self, v28, v29);
-  v32 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_text_index_messagePartRange_transferGUID_chatContext_(v34, v31, v8, v5, v11, v14, v17, v20, v23, v25, v27, v30);
+  v32 = objc_msgSend__initWithItem_parentItem_replyMessageGUID_replyIsFromMe_text_index_messagePartRange_transferGUID_chatContext_(v34, v31, v8, replyCopy, v11, v14, v17, v20, v23, v25, v27, v30);
 
   return v32;
 }
@@ -67,9 +67,9 @@
 {
   v4.receiver = self;
   v4.super_class = IMAttachmentMessagePartChatItem;
-  v2 = [(IMTranscriptChatItem *)&v4 layoutGroupIdentifier];
+  layoutGroupIdentifier = [(IMTranscriptChatItem *)&v4 layoutGroupIdentifier];
 
-  return v2;
+  return layoutGroupIdentifier;
 }
 
 - (BOOL)parentChatIsSpam
@@ -113,7 +113,7 @@
   return v23;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -129,10 +129,10 @@
   return v26;
 }
 
-- (BOOL)isAttachmentContiguousWithChatItem:(id)a3
+- (BOOL)isAttachmentContiguousWithChatItem:(id)item
 {
-  v4 = a3;
-  if (objc_msgSend_isContiguousWithChatItem_(self, v5, v4))
+  itemCopy = item;
+  if (objc_msgSend_isContiguousWithChatItem_(self, v5, itemCopy))
   {
     v8 = objc_msgSend_sharedInstance(IMFileTransferCenter, v6, v7);
     v11 = objc_msgSend_transferGUID(self, v9, v10);
@@ -158,7 +158,7 @@
     {
       if (self->_wantsAttachmentContiguous && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v21 = v4[184];
+        v21 = itemCopy[184];
       }
 
       else
@@ -176,55 +176,55 @@
   return v21 & 1;
 }
 
-- (id)_initWithItem:(id)a3 text:(id)a4 index:(int64_t)a5 messagePartRange:(_NSRange)a6 transferGUID:(id)a7 chatContext:(id)a8 visibleAssociatedMessageChatItems:(id)a9
+- (id)_initWithItem:(id)item text:(id)text index:(int64_t)index messagePartRange:(_NSRange)range transferGUID:(id)d chatContext:(id)context visibleAssociatedMessageChatItems:(id)items
 {
-  length = a6.length;
-  location = a6.location;
-  v15 = a7;
-  v16 = a8;
+  length = range.length;
+  location = range.location;
+  dCopy = d;
+  contextCopy = context;
   v41.receiver = self;
   v41.super_class = IMAttachmentMessagePartChatItem;
-  v19 = [(IMMessagePartChatItem *)&v41 _initWithItem:a3 text:a4 index:a5 messagePartRange:location visibleAssociatedMessageChatItems:length, a9];
-  if (v19)
+  items = [(IMMessagePartChatItem *)&v41 _initWithItem:item text:text index:index messagePartRange:location visibleAssociatedMessageChatItems:length, items];
+  if (items)
   {
-    v20 = objc_msgSend_copy(v15, v17, v18);
-    v21 = v19[24];
-    v19[24] = v20;
+    v20 = objc_msgSend_copy(dCopy, v17, v18);
+    v21 = items[24];
+    items[24] = v20;
 
-    v24 = objc_msgSend_copy(v16, v22, v23);
-    objc_msgSend_setChatContext_(v19, v25, v24);
+    v24 = objc_msgSend_copy(contextCopy, v22, v23);
+    objc_msgSend_setChatContext_(items, v25, v24);
 
     v28 = objc_msgSend_sharedInstance(IMFileTransferCenter, v26, v27);
-    v30 = objc_msgSend_transferForGUID_(v28, v29, v15);
+    v30 = objc_msgSend_transferForGUID_(v28, v29, dCopy);
 
     v33 = objc_msgSend_type(v30, v31, v32);
     v36 = objc_msgSend_lowercaseString(v33, v34, v35);
 
-    *(v19 + 184) = objc_msgSend__wantsAttachmentContiguousForType_(v19, v37, v36);
-    if (!v19[24])
+    *(items + 184) = objc_msgSend__wantsAttachmentContiguousForType_(items, v37, v36);
+    if (!items[24])
     {
       v38 = IMLogHandleForCategory();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_FAULT))
       {
-        sub_1A84DFE9C(v19, v38, v39);
+        sub_1A84DFE9C(items, v38, v39);
       }
     }
   }
 
-  return v19;
+  return items;
 }
 
-- (BOOL)_wantsAttachmentContiguousForType:(id)a3
+- (BOOL)_wantsAttachmentContiguousForType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_hasSuffix_(v3, v4, @".gif"))
+  typeCopy = type;
+  if (objc_msgSend_hasSuffix_(typeCopy, v4, @".gif"))
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = objc_msgSend_hasSuffix_(v3, v5, @".apng") ^ 1;
+    v6 = objc_msgSend_hasSuffix_(typeCopy, v5, @".apng") ^ 1;
   }
 
   return v6;

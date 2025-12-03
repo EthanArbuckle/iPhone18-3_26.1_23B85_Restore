@@ -1,78 +1,78 @@
 @interface UARPAssetManagerServiceInstanceMobileAsset
-- (BOOL)isSubscriptionSupported:(id)a3;
-- (UARPAssetManagerServiceInstanceMobileAsset)initWithServiceName:(id)a3 delegate:(id)a4;
-- (id)checkCacheForPersonality:(id)a3;
+- (BOOL)isSubscriptionSupported:(id)supported;
+- (UARPAssetManagerServiceInstanceMobileAsset)initWithServiceName:(id)name delegate:(id)delegate;
+- (id)checkCacheForPersonality:(id)personality;
 - (id)encodedClasses;
-- (void)assetAvailabilityUpdateForPersonality:(id)a3 assetVersion:(id)a4 creationDate:(id)a5 status:(int64_t)a6;
-- (void)assetAvailabilityUpdateForSubscription:(id)a3 cacheRecord:(id)a4 asyncUpdate:(BOOL)a5;
-- (void)settingsChangedForSerialNumber:(id)a3;
-- (void)subscribeForPersonality:(id)a3;
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4;
-- (void)updateSettingsForPersonality:(id)a3;
+- (void)assetAvailabilityUpdateForPersonality:(id)personality assetVersion:(id)version creationDate:(id)date status:(int64_t)status;
+- (void)assetAvailabilityUpdateForSubscription:(id)subscription cacheRecord:(id)record asyncUpdate:(BOOL)update;
+- (void)settingsChangedForSerialNumber:(id)number;
+- (void)subscribeForPersonality:(id)personality;
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable;
+- (void)updateSettingsForPersonality:(id)personality;
 @end
 
 @implementation UARPAssetManagerServiceInstanceMobileAsset
 
-- (UARPAssetManagerServiceInstanceMobileAsset)initWithServiceName:(id)a3 delegate:(id)a4
+- (UARPAssetManagerServiceInstanceMobileAsset)initWithServiceName:(id)name delegate:(id)delegate
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v4 = v13;
-  v13 = 0;
+  objc_storeStrong(&v11, delegate);
+  v4 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v4;
   v10.super_class = UARPAssetManagerServiceInstanceMobileAsset;
-  v13 = [(UARPAssetManagerServiceInstance *)&v10 initWithServiceName:location[0] delegate:v11];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(UARPAssetManagerServiceInstance *)&v10 initWithServiceName:location[0] delegate:v11];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v5 = os_log_create("com.apple.uarpassetmanager.uarp", "uarpAssetManager");
-    log = v13->_log;
-    v13->_log = v5;
+    log = selfCopy->_log;
+    selfCopy->_log = v5;
   }
 
-  v8 = v13;
+  v8 = selfCopy;
   objc_storeStrong(&v11, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (BOOL)isSubscriptionSupported:(id)a3
+- (BOOL)isSubscriptionSupported:(id)supported
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, supported);
   objc_opt_class();
   v5 = (objc_opt_isKindOfClass() & 1) == 1;
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (void)subscribeForPersonality:(id)a3
+- (void)subscribeForPersonality:(id)personality
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v30 = location[0];
-    v11 = [v30 serialNumber];
-    v10 = [v30 identifier];
-    v9 = [v30 hwFusing];
-    v8 = [v30 partnerSerialNumbers];
-    v12 = isOTAUpdateDisabledForAccessory(v11, v10, v9, v8);
+    serialNumber = [v30 serialNumber];
+    identifier = [v30 identifier];
+    hwFusing = [v30 hwFusing];
+    partnerSerialNumbers = [v30 partnerSerialNumbers];
+    v12 = isOTAUpdateDisabledForAccessory(serialNumber, identifier, hwFusing, partnerSerialNumbers);
 
     v29 = v12;
     if ((v12 & 1) == 1)
     {
-      v28 = v33->_log;
+      v28 = selfCopy->_log;
       v27 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -81,16 +81,16 @@
       }
 
       objc_storeStrong(&v28, 0);
-      v7 = [(UARPAssetManagerServiceInstance *)v33 delegate];
-      [(UARPAssetManagerServiceDelegate *)v7 assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:4];
+      delegate = [(UARPAssetManagerServiceInstance *)selfCopy delegate];
+      [(UARPAssetManagerServiceDelegate *)delegate assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:4];
 
       v31 = 1;
     }
 
     else
     {
-      v5 = [v30 hwFusing];
-      v6 = [v5 length];
+      hwFusing2 = [v30 hwFusing];
+      v6 = [hwFusing2 length];
 
       if (v6)
       {
@@ -98,7 +98,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = v33->_log;
+          v21 = selfCopy->_log;
           v20 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
@@ -107,14 +107,14 @@
           }
 
           objc_storeStrong(&v21, 0);
-          v19.receiver = v33;
+          v19.receiver = selfCopy;
           v19.super_class = UARPAssetManagerServiceInstanceMobileAsset;
           [(UARPAssetManagerServiceInstance *)&v19 registerForSubscription:v24];
           v18 = createSubscriptionForPersonality(location[0], 0, 1);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = v33->_log;
+            v15 = selfCopy->_log;
             v14 = OS_LOG_TYPE_INFO;
             if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
             {
@@ -123,7 +123,7 @@
             }
 
             objc_storeStrong(&v15, 0);
-            v13.receiver = v33;
+            v13.receiver = selfCopy;
             v13.super_class = UARPAssetManagerServiceInstanceMobileAsset;
             [(UARPAssetManagerServiceInstance *)&v13 registerForSubscription:v18];
             v31 = 0;
@@ -131,7 +131,7 @@
 
           else
           {
-            oslog = v33->_log;
+            oslog = selfCopy->_log;
             v16 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
             {
@@ -140,8 +140,8 @@
             }
 
             objc_storeStrong(&oslog, 0);
-            v3 = [(UARPAssetManagerServiceInstance *)v33 delegate];
-            [(UARPAssetManagerServiceDelegate *)v3 assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:3];
+            delegate2 = [(UARPAssetManagerServiceInstance *)selfCopy delegate];
+            [(UARPAssetManagerServiceDelegate *)delegate2 assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:3];
 
             v31 = 1;
           }
@@ -151,7 +151,7 @@
 
         else
         {
-          v23 = v33->_log;
+          v23 = selfCopy->_log;
           v22 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
@@ -160,8 +160,8 @@
           }
 
           objc_storeStrong(&v23, 0);
-          v4 = [(UARPAssetManagerServiceInstance *)v33 delegate];
-          [(UARPAssetManagerServiceDelegate *)v4 assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:3];
+          delegate3 = [(UARPAssetManagerServiceInstance *)selfCopy delegate];
+          [(UARPAssetManagerServiceDelegate *)delegate3 assetAvailabilityUpdateForPersonality:v30 assetVersion:0 creationDate:0 status:3];
 
           v31 = 1;
         }
@@ -171,7 +171,7 @@
 
       else
       {
-        v26 = v33->_log;
+        v26 = selfCopy->_log;
         v25 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
@@ -195,26 +195,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)checkCacheForPersonality:(id)a3
+- (id)checkCacheForPersonality:(id)personality
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v44 = location[0];
-    v23 = [v44 serialNumber];
-    v22 = [v44 identifier];
-    v21 = [v44 hwFusing];
-    v20 = [v44 partnerSerialNumbers];
-    v24 = isOTAUpdateDisabledForAccessory(v23, v22, v21, v20);
+    serialNumber = [v44 serialNumber];
+    identifier = [v44 identifier];
+    hwFusing = [v44 hwFusing];
+    partnerSerialNumbers = [v44 partnerSerialNumbers];
+    v24 = isOTAUpdateDisabledForAccessory(serialNumber, identifier, hwFusing, partnerSerialNumbers);
 
     v43 = v24;
     if ((v24 & 1) == 1)
     {
-      v42 = v47->_log;
+      v42 = selfCopy->_log;
       v41 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -229,16 +229,16 @@
 
     else
     {
-      v18 = [v44 hwFusing];
-      v19 = [v18 length];
+      hwFusing2 = [v44 hwFusing];
+      v19 = [hwFusing2 length];
 
       if (v19)
       {
-        v16 = [v44 serialNumber];
-        v15 = [v44 identifier];
-        v14 = [v44 hwFusing];
-        v13 = [v44 partnerSerialNumbers];
-        v17 = isPallasEnabledForAccessory(v16, v15, v14, v13);
+        serialNumber2 = [v44 serialNumber];
+        identifier2 = [v44 identifier];
+        hwFusing3 = [v44 hwFusing];
+        partnerSerialNumbers2 = [v44 partnerSerialNumbers];
+        v17 = isPallasEnabledForAccessory(serialNumber2, identifier2, hwFusing3, partnerSerialNumbers2);
 
         v38 = v17;
         if ((v17 & 1) != 1)
@@ -250,7 +250,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v34 = [(UARPAssetManagerServiceInstance *)v47 checkCacheForSubscription:v37];
+          v34 = [(UARPAssetManagerServiceInstance *)selfCopy checkCacheForSubscription:v37];
           if (v34)
           {
             v48 = v34;
@@ -267,7 +267,7 @@
 
         else
         {
-          oslog = v47->_log;
+          oslog = selfCopy->_log;
           v35 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
           {
@@ -288,7 +288,7 @@ LABEL_21:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v30 = [(UARPAssetManagerServiceInstance *)v47 checkCacheForSubscription:v33];
+            v30 = [(UARPAssetManagerServiceInstance *)selfCopy checkCacheForSubscription:v33];
             if (v30)
             {
               v48 = v30;
@@ -298,9 +298,9 @@ LABEL_21:
             else
             {
               v29 = v33;
-              v11 = [v29 assetURL];
-              v10 = [v11 absoluteString];
-              v12 = assetLocationTypeFromBasePath(v10);
+              assetURL = [v29 assetURL];
+              absoluteString = [assetURL absoluteString];
+              v12 = assetLocationTypeFromBasePath(absoluteString);
 
               v28 = v12;
               if (v12 == 8 || v28 == 3)
@@ -315,7 +315,7 @@ LABEL_21:
                 v9 = [NSURL URLWithString:v26];
                 [v29 setAssetURL:?];
 
-                v25 = v47->_log;
+                v25 = selfCopy->_log;
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
                   __os_log_helper_16_2_2_8_32_8_66(v49, "[UARPAssetManagerServiceInstanceMobileAsset checkCacheForPersonality:]", v29);
@@ -323,7 +323,7 @@ LABEL_21:
                 }
 
                 objc_storeStrong(&v25, 0);
-                v3 = [(UARPAssetManagerServiceInstance *)v47 checkCacheForSubscription:v33];
+                v3 = [(UARPAssetManagerServiceInstance *)selfCopy checkCacheForSubscription:v33];
                 v4 = v30;
                 v30 = v3;
 
@@ -347,7 +347,7 @@ LABEL_21:
 
           else
           {
-            v32 = v47->_log;
+            v32 = selfCopy->_log;
             v31 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
@@ -366,7 +366,7 @@ LABEL_21:
 
       else
       {
-        v40 = v47->_log;
+        v40 = selfCopy->_log;
         v39 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -395,36 +395,36 @@ LABEL_21:
   return v5;
 }
 
-- (void)assetAvailabilityUpdateForSubscription:(id)a3 cacheRecord:(id)a4 asyncUpdate:(BOOL)a5
+- (void)assetAvailabilityUpdateForSubscription:(id)subscription cacheRecord:(id)record asyncUpdate:(BOOL)update
 {
-  v45 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, subscription);
   v43 = 0;
-  objc_storeStrong(&v43, a4);
-  v42 = a5;
+  objc_storeStrong(&v43, record);
+  updateCopy = update;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = [v43 deploymentRules];
-    v22 = isDeploymentAllowed(v21);
+    deploymentRules = [v43 deploymentRules];
+    v22 = isDeploymentAllowed(deploymentRules);
 
     v40 = v22;
     if (v22)
     {
-      v37.receiver = v45;
+      v37.receiver = selfCopy;
       v37.super_class = UARPAssetManagerServiceInstanceMobileAsset;
-      [(UARPAssetManagerServiceInstance *)&v37 assetAvailabilityUpdateForSubscription:location[0] cacheRecord:v43 asyncUpdate:v42];
+      [(UARPAssetManagerServiceInstance *)&v37 assetAvailabilityUpdateForSubscription:location[0] cacheRecord:v43 asyncUpdate:updateCopy];
       if (v43)
       {
         goto LABEL_15;
       }
 
       v36 = location[0];
-      v18 = [v36 assetURL];
-      v17 = [v18 absoluteString];
-      v19 = assetLocationTypeFromBasePath(v17);
+      assetURL = [v36 assetURL];
+      absoluteString = [assetURL absoluteString];
+      v19 = assetLocationTypeFromBasePath(absoluteString);
 
       v35 = v19;
       if (v19 == 8 || v35 == 3)
@@ -439,7 +439,7 @@ LABEL_21:
         v16 = [NSURL URLWithString:v33];
         [v36 setAssetURL:?];
 
-        v32 = v45->_log;
+        v32 = selfCopy->_log;
         v31 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
@@ -448,7 +448,7 @@ LABEL_21:
         }
 
         objc_storeStrong(&v32, 0);
-        [(UARPAssetManagerServiceInstance *)v45 registerForSubscription:v36];
+        [(UARPAssetManagerServiceInstance *)selfCopy registerForSubscription:v36];
         v41 = 1;
         objc_storeStrong(&v33, 0);
         objc_storeStrong(&v34, 0);
@@ -456,7 +456,7 @@ LABEL_21:
 
       else
       {
-        v41 = v42;
+        v41 = updateCopy;
       }
 
       objc_storeStrong(&v36, 0);
@@ -465,14 +465,14 @@ LABEL_21:
 LABEL_15:
         v30 = 3;
         v29 = 0;
-        v13 = [v43 assetURL];
+        assetURL2 = [v43 assetURL];
 
-        if (v13)
+        if (assetURL2)
         {
           v30 = 2;
           v12 = +[NSFileManager defaultManager];
-          v11 = [v43 assetURL];
-          v10 = [v11 path];
+          assetURL3 = [v43 assetURL];
+          path = [assetURL3 path];
           v28 = [NSFileManager attributesOfItemAtPath:v12 error:"attributesOfItemAtPath:error:"];
 
           v5 = [(NSDictionary *)v28 objectForKey:NSFileCreationDate];
@@ -487,11 +487,11 @@ LABEL_15:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v27 appleModelNumber];
+          appleModelNumber = [v27 appleModelNumber];
           [v26 setMobileAssetAppleModelNumber:?];
 
-          v8 = v45;
-          v9 = [v43 assetVersion];
+          v8 = selfCopy;
+          assetVersion = [v43 assetVersion];
           [UARPAssetManagerServiceInstanceMobileAsset assetAvailabilityUpdateForPersonality:v8 assetVersion:"assetAvailabilityUpdateForPersonality:assetVersion:creationDate:status:" creationDate:v26 status:?];
 
           v41 = 0;
@@ -499,7 +499,7 @@ LABEL_15:
 
         else
         {
-          oslog = v45->_log;
+          oslog = selfCopy->_log;
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
           {
             __os_log_helper_16_2_2_8_32_8_66(v46, "[UARPAssetManagerServiceInstanceMobileAsset assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:]", location[0]);
@@ -518,12 +518,12 @@ LABEL_15:
 
     else
     {
-      v39 = v45->_log;
+      v39 = selfCopy->_log;
       v38 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v43 deploymentRules];
-        __os_log_helper_16_2_2_8_32_8_64(v48, "[UARPAssetManagerServiceInstanceMobileAsset assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:]", v20);
+        deploymentRules2 = [v43 deploymentRules];
+        __os_log_helper_16_2_2_8_32_8_64(v48, "[UARPAssetManagerServiceInstanceMobileAsset assetAvailabilityUpdateForSubscription:cacheRecord:asyncUpdate:]", deploymentRules2);
         _os_log_error_impl(&_mh_execute_header, v39, v38, "%s Not sending notification, deployment not allowed at this time for %@", v48, 0x16u);
       }
 
@@ -541,31 +541,31 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)updateReachabilityForPersonality:(id)a3 reachable:(BOOL)a4
+- (void)updateReachabilityForPersonality:(id)personality reachable:(BOOL)reachable
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, personality);
+  reachableCopy = reachable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = location[0];
-    v9 = [v13 hwFusing];
-    v10 = [v9 length];
+    hwFusing = [v13 hwFusing];
+    v10 = [hwFusing length];
 
     if (v10)
     {
-      v8 = [v13 serialNumber];
+      serialNumber = [v13 serialNumber];
 
-      if (v8)
+      if (serialNumber)
       {
-        v7 = [v13 serialNumber];
-        v6 = [v13 identifier];
-        v5 = [v13 hwFusing];
-        v4 = [v13 partnerSerialNumbers];
-        updateReachabilityForAccessory(v7, v6, v5, v4, v15);
+        serialNumber2 = [v13 serialNumber];
+        identifier = [v13 identifier];
+        hwFusing2 = [v13 hwFusing];
+        partnerSerialNumbers = [v13 partnerSerialNumbers];
+        updateReachabilityForAccessory(serialNumber2, identifier, hwFusing2, partnerSerialNumbers, reachableCopy);
       }
 
       v14 = 0;
@@ -573,7 +573,7 @@ LABEL_15:
 
     else
     {
-      v12 = v17->_log;
+      v12 = selfCopy->_log;
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         __os_log_helper_16_2_1_8_66(v18, v13);
@@ -595,19 +595,19 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)updateSettingsForPersonality:(id)a3
+- (void)updateSettingsForPersonality:(id)personality
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = createSubscriptionForPersonality(location[0], 0, 1);
     if (!v4)
     {
-      oslog = v7->_log;
+      oslog = selfCopy->_log;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         __os_log_helper_16_2_2_8_32_8_66(v8, "[UARPAssetManagerServiceInstanceMobileAsset updateSettingsForPersonality:]", location[0]);
@@ -629,12 +629,12 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)settingsChangedForSerialNumber:(id)a3
+- (void)settingsChangedForSerialNumber:(id)number
 {
-  v55 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v29 = +[AUDeveloperSettingsDatabase sharedDatabase];
   v53 = [v29 copyAccessoryWithSerialNumber:location[0]];
 
@@ -642,9 +642,9 @@ LABEL_15:
   {
     v49 = +[NSMutableArray array];
     v48 = +[NSMutableArray array];
-    v47 = [(UARPAssetManagerServiceInstance *)v55 copySubscriptions];
+    copySubscriptions = [(UARPAssetManagerServiceInstance *)selfCopy copySubscriptions];
     memset(__b, 0, sizeof(__b));
-    obj = v47;
+    obj = copySubscriptions;
     v28 = [obj countByEnumeratingWithState:__b objects:v60 count:16];
     if (v28)
     {
@@ -664,32 +664,32 @@ LABEL_15:
         if (objc_opt_isKindOfClass())
         {
           v44 = v46;
-          v43 = v55->_log;
+          v43 = selfCopy->_log;
           v42 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
           {
             v19 = v43;
             v18 = v44;
-            v22 = [v53 modelNumber];
-            v21 = [v53 mobileAssetModelNumber];
-            v20 = [v53 hwFusing];
-            __os_log_helper_16_2_4_8_66_8_66_8_66_8_66(v59, v18, v22, v21, v20);
+            modelNumber = [v53 modelNumber];
+            mobileAssetModelNumber = [v53 mobileAssetModelNumber];
+            hwFusing = [v53 hwFusing];
+            __os_log_helper_16_2_4_8_66_8_66_8_66_8_66(v59, v18, modelNumber, mobileAssetModelNumber, hwFusing);
             _os_log_impl(&_mh_execute_header, v19, v42, "Checking subscription: %{public}@ against settings accessory model: %{public}@ / %{public}@ fusing: %{public}@", v59, 0x2Au);
           }
 
           objc_storeStrong(&v43, 0);
-          v15 = [v44 appleModelNumber];
-          v16 = [v53 mobileAssetModelNumber];
+          appleModelNumber = [v44 appleModelNumber];
+          mobileAssetModelNumber2 = [v53 mobileAssetModelNumber];
           v40 = 0;
           v38 = 0;
           v17 = 0;
-          if (![v15 isEqualToString:?])
+          if (![appleModelNumber isEqualToString:?])
           {
-            v41 = [v44 appleModelNumber];
+            appleModelNumber2 = [v44 appleModelNumber];
             v40 = 1;
-            v39 = [v53 modelNumber];
+            modelNumber2 = [v53 modelNumber];
             v38 = 1;
-            v17 = [v41 isEqualToString:?] == 0;
+            v17 = [appleModelNumber2 isEqualToString:?] == 0;
           }
 
           if (v38)
@@ -707,9 +707,9 @@ LABEL_15:
 
           else
           {
-            v13 = [v44 hwFusing];
-            v12 = [v53 hwFusing];
-            v14 = [v13 caseInsensitiveCompare:?];
+            hwFusing2 = [v44 hwFusing];
+            hwFusing3 = [v53 hwFusing];
+            v14 = [hwFusing2 caseInsensitiveCompare:?];
 
             if (v14)
             {
@@ -762,12 +762,12 @@ LABEL_15:
           v32 = *(v31[1] + 8 * v8);
           v4 = v32;
           v3 = location[0];
-          v5 = [v53 modelNumber];
-          v30 = createPersonalityForSubscription(v4, v3, v5);
+          modelNumber3 = [v53 modelNumber];
+          v30 = createPersonalityForSubscription(v4, v3, modelNumber3);
 
           if (![v33 containsObject:v30])
           {
-            [(UARPAssetManagerServiceInstanceMobileAsset *)v55 subscribeForPersonality:v30];
+            [(UARPAssetManagerServiceInstanceMobileAsset *)selfCopy subscribeForPersonality:v30];
             [v33 addObject:v30];
           }
 
@@ -793,7 +793,7 @@ LABEL_15:
     {
       if ([v48 count])
       {
-        v35 = v55->_log;
+        v35 = selfCopy->_log;
         v34 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -806,7 +806,7 @@ LABEL_15:
 
       else
       {
-        v37 = v55->_log;
+        v37 = selfCopy->_log;
         v36 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -820,14 +820,14 @@ LABEL_15:
       v50 = 1;
     }
 
-    objc_storeStrong(&v47, 0);
+    objc_storeStrong(&copySubscriptions, 0);
     objc_storeStrong(&v48, 0);
     objc_storeStrong(&v49, 0);
   }
 
   else
   {
-    oslog = v55->_log;
+    oslog = selfCopy->_log;
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
@@ -843,18 +843,18 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)assetAvailabilityUpdateForPersonality:(id)a3 assetVersion:(id)a4 creationDate:(id)a5 status:(int64_t)a6
+- (void)assetAvailabilityUpdateForPersonality:(id)personality assetVersion:(id)version creationDate:(id)date status:(int64_t)status
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, personality);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, version);
   v10 = 0;
-  objc_storeStrong(&v10, a5);
-  v9 = [(UARPAssetManagerServiceInstance *)v13 delegate];
-  [(UARPAssetManagerServiceDelegate *)v9 assetAvailabilityUpdateForPersonality:location[0] assetVersion:v11 creationDate:v10 status:a6];
+  objc_storeStrong(&v10, date);
+  delegate = [(UARPAssetManagerServiceInstance *)selfCopy delegate];
+  [(UARPAssetManagerServiceDelegate *)delegate assetAvailabilityUpdateForPersonality:location[0] assetVersion:v11 creationDate:v10 status:status];
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);

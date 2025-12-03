@@ -1,9 +1,9 @@
 @interface APIDAccount
-- (APIDAccount)initWithCoder:(id)a3;
-- (APIDAccount)initWithIDAccountsRecord:(id)a3 storefront:(id)a4 monthlyIDResetCount:(id)a5;
+- (APIDAccount)initWithCoder:(id)coder;
+- (APIDAccount)initWithIDAccountsRecord:(id)record storefront:(id)storefront monthlyIDResetCount:(id)count;
 - (id)_fakeID;
 - (id)_getAccountToken;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation APIDAccount
@@ -12,9 +12,9 @@
 {
   v3 = [NSUserDefaults alloc];
   v4 = [v3 initWithSuiteName:APDefaultsBundleID];
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 allKeys];
-  v7 = [v6 containsObject:@"AccountStateUUID"];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
+  v7 = [allKeys containsObject:@"AccountStateUUID"];
 
   if (v7)
   {
@@ -37,129 +37,129 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  [v14 encodeBool:-[APIDAccount ageUnknown](self forKey:{"ageUnknown"), @"ageUnknown"}];
-  v4 = [(APIDAccount *)self deviceNewsPlusSubscriberID];
-  [v14 encodeObject:v4 forKey:@"deviceNewsPlusSubscriberID"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[APIDAccount ageUnknown](self forKey:{"ageUnknown"), @"ageUnknown"}];
+  deviceNewsPlusSubscriberID = [(APIDAccount *)self deviceNewsPlusSubscriberID];
+  [coderCopy encodeObject:deviceNewsPlusSubscriberID forKey:@"deviceNewsPlusSubscriberID"];
 
-  v5 = [(APIDAccount *)self anonymousDemandID];
-  [v14 encodeObject:v5 forKey:@"anonymousDemandID"];
+  anonymousDemandID = [(APIDAccount *)self anonymousDemandID];
+  [coderCopy encodeObject:anonymousDemandID forKey:@"anonymousDemandID"];
 
-  v6 = [(APIDAccount *)self contentID];
-  [v14 encodeObject:v6 forKey:@"contentID"];
+  contentID = [(APIDAccount *)self contentID];
+  [coderCopy encodeObject:contentID forKey:@"contentID"];
 
-  v7 = [(APIDAccount *)self DPID];
-  [v14 encodeObject:v7 forKey:@"DPID"];
+  dPID = [(APIDAccount *)self DPID];
+  [coderCopy encodeObject:dPID forKey:@"DPID"];
 
-  v8 = [(APIDAccount *)self iAdID];
-  [v14 encodeObject:v8 forKey:@"iAdID"];
+  iAdID = [(APIDAccount *)self iAdID];
+  [coderCopy encodeObject:iAdID forKey:@"iAdID"];
 
-  [v14 encodeBool:-[APIDAccount isAdolescent](self forKey:{"isAdolescent"), @"isAdolescent"}];
-  [v14 encodeBool:-[APIDAccount isAdult](self forKey:{"isAdult"), @"isAdult"}];
-  [v14 encodeBool:-[APIDAccount isChild](self forKey:{"isChild"), @"isChild"}];
-  [v14 encodeBool:-[APIDAccount sensitiveContentEligible](self forKey:{"sensitiveContentEligible"), @"sensitiveContentEligible"}];
-  [v14 encodeBool:-[APIDAccount isiCloudLoggedIn](self forKey:{"isiCloudLoggedIn"), @"isiCloudLoggedIn"}];
-  [v14 encodeBool:-[APIDAccount isiCloudSameAsiTunes](self forKey:{"isiCloudSameAsiTunes"), @"isiCloudSameAsiTunes"}];
-  [v14 encodeBool:-[APIDAccount isiTunesLoggedIn](self forKey:{"isiTunesLoggedIn"), @"isiTunesLoggedIn"}];
-  [v14 encodeBool:-[APIDAccount isManagedAccount](self forKey:{"isManagedAccount"), @"isManagedAccount"}];
-  v9 = [(APIDAccount *)self iTunesDSID];
-  [v14 encodeObject:v9 forKey:@"iTunesDSID"];
+  [coderCopy encodeBool:-[APIDAccount isAdolescent](self forKey:{"isAdolescent"), @"isAdolescent"}];
+  [coderCopy encodeBool:-[APIDAccount isAdult](self forKey:{"isAdult"), @"isAdult"}];
+  [coderCopy encodeBool:-[APIDAccount isChild](self forKey:{"isChild"), @"isChild"}];
+  [coderCopy encodeBool:-[APIDAccount sensitiveContentEligible](self forKey:{"sensitiveContentEligible"), @"sensitiveContentEligible"}];
+  [coderCopy encodeBool:-[APIDAccount isiCloudLoggedIn](self forKey:{"isiCloudLoggedIn"), @"isiCloudLoggedIn"}];
+  [coderCopy encodeBool:-[APIDAccount isiCloudSameAsiTunes](self forKey:{"isiCloudSameAsiTunes"), @"isiCloudSameAsiTunes"}];
+  [coderCopy encodeBool:-[APIDAccount isiTunesLoggedIn](self forKey:{"isiTunesLoggedIn"), @"isiTunesLoggedIn"}];
+  [coderCopy encodeBool:-[APIDAccount isManagedAccount](self forKey:{"isManagedAccount"), @"isManagedAccount"}];
+  iTunesDSID = [(APIDAccount *)self iTunesDSID];
+  [coderCopy encodeObject:iTunesDSID forKey:@"iTunesDSID"];
 
-  v10 = [(APIDAccount *)self monthlyIDResetCount];
-  [v14 encodeObject:v10 forKey:@"monthlyIDResetCount"];
+  monthlyIDResetCount = [(APIDAccount *)self monthlyIDResetCount];
+  [coderCopy encodeObject:monthlyIDResetCount forKey:@"monthlyIDResetCount"];
 
-  v11 = [(APIDAccount *)self storefront];
-  [v14 encodeObject:v11 forKey:@"storefront"];
+  storefront = [(APIDAccount *)self storefront];
+  [coderCopy encodeObject:storefront forKey:@"storefront"];
 
-  v12 = [(APIDAccount *)self toroID];
-  [v14 encodeObject:v12 forKey:@"toroID"];
+  toroID = [(APIDAccount *)self toroID];
+  [coderCopy encodeObject:toroID forKey:@"toroID"];
 
-  [v14 encodeBool:-[APIDAccount isNoServicesRegion](self forKey:{"isNoServicesRegion"), @"isNoServicesRegion"}];
-  [v14 encodeBool:-[APIDAccount isProtoU13](self forKey:{"isProtoU13"), @"isProtoU13"}];
-  v13 = [(APIDAccount *)self accountToken];
-  [v14 encodeObject:v13 forKey:@"accountToken"];
+  [coderCopy encodeBool:-[APIDAccount isNoServicesRegion](self forKey:{"isNoServicesRegion"), @"isNoServicesRegion"}];
+  [coderCopy encodeBool:-[APIDAccount isProtoU13](self forKey:{"isProtoU13"), @"isProtoU13"}];
+  accountToken = [(APIDAccount *)self accountToken];
+  [coderCopy encodeObject:accountToken forKey:@"accountToken"];
 
-  [v14 encodeInteger:-[APIDAccount effectiveBirthYear](self forKey:{"effectiveBirthYear"), @"effectiveBirthYear"}];
+  [coderCopy encodeInteger:-[APIDAccount effectiveBirthYear](self forKey:{"effectiveBirthYear"), @"effectiveBirthYear"}];
 }
 
-- (APIDAccount)initWithCoder:(id)a3
+- (APIDAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(APIDAccount *)self init];
   if (v5)
   {
-    v5->_ageUnknown = [v4 decodeBoolForKey:@"ageUnknown"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceNewsPlusSubscriberID"];
+    v5->_ageUnknown = [coderCopy decodeBoolForKey:@"ageUnknown"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceNewsPlusSubscriberID"];
     deviceNewsPlusSubscriberID = v5->_deviceNewsPlusSubscriberID;
     v5->_deviceNewsPlusSubscriberID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anonymousDemandID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anonymousDemandID"];
     anonymousDemandID = v5->_anonymousDemandID;
     v5->_anonymousDemandID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentID"];
     contentID = v5->_contentID;
     v5->_contentID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DPID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DPID"];
     DPID = v5->_DPID;
     v5->_DPID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iAdID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iAdID"];
     iAdID = v5->_iAdID;
     v5->_iAdID = v14;
 
-    v5->_isAdolescent = [v4 decodeBoolForKey:@"isAdolescent"];
-    v5->_isAdult = [v4 decodeBoolForKey:@"isAdult"];
-    v5->_isChild = [v4 decodeBoolForKey:@"isChild"];
-    v5->_sensitiveContentEligible = [v4 decodeBoolForKey:@"sensitiveContentEligible"];
-    v5->_isiCloudLoggedIn = [v4 decodeBoolForKey:@"isiCloudLoggedIn"];
-    v5->_isiCloudSameAsiTunes = [v4 decodeBoolForKey:@"isiCloudSameAsiTunes"];
-    v5->_isiTunesLoggedIn = [v4 decodeBoolForKey:@"isiTunesLoggedIn"];
-    v5->_isManagedAccount = [v4 decodeBoolForKey:@"isManagedAccount"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iTunesDSID"];
+    v5->_isAdolescent = [coderCopy decodeBoolForKey:@"isAdolescent"];
+    v5->_isAdult = [coderCopy decodeBoolForKey:@"isAdult"];
+    v5->_isChild = [coderCopy decodeBoolForKey:@"isChild"];
+    v5->_sensitiveContentEligible = [coderCopy decodeBoolForKey:@"sensitiveContentEligible"];
+    v5->_isiCloudLoggedIn = [coderCopy decodeBoolForKey:@"isiCloudLoggedIn"];
+    v5->_isiCloudSameAsiTunes = [coderCopy decodeBoolForKey:@"isiCloudSameAsiTunes"];
+    v5->_isiTunesLoggedIn = [coderCopy decodeBoolForKey:@"isiTunesLoggedIn"];
+    v5->_isManagedAccount = [coderCopy decodeBoolForKey:@"isManagedAccount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iTunesDSID"];
     iTunesDSID = v5->_iTunesDSID;
     v5->_iTunesDSID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monthlyIDResetCount"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monthlyIDResetCount"];
     monthlyIDResetCount = v5->_monthlyIDResetCount;
     v5->_monthlyIDResetCount = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
     storefront = v5->_storefront;
     v5->_storefront = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"toroID"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"toroID"];
     toroID = v5->_toroID;
     v5->_toroID = v22;
 
-    v5->_isNoServicesRegion = [v4 decodeBoolForKey:@"isNoServicesRegion"];
-    v5->_isProtoU13 = [v4 decodeBoolForKey:@"isProtoU13"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountToken"];
+    v5->_isNoServicesRegion = [coderCopy decodeBoolForKey:@"isNoServicesRegion"];
+    v5->_isProtoU13 = [coderCopy decodeBoolForKey:@"isProtoU13"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountToken"];
     accountToken = v5->_accountToken;
     v5->_accountToken = v24;
 
-    v5->_effectiveBirthYear = [v4 decodeIntegerForKey:@"effectiveBirthYear"];
+    v5->_effectiveBirthYear = [coderCopy decodeIntegerForKey:@"effectiveBirthYear"];
   }
 
   return v5;
 }
 
-- (APIDAccount)initWithIDAccountsRecord:(id)a3 storefront:(id)a4 monthlyIDResetCount:(id)a5
+- (APIDAccount)initWithIDAccountsRecord:(id)record storefront:(id)storefront monthlyIDResetCount:(id)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  storefrontCopy = storefront;
+  countCopy = count;
   v11 = [(APIDAccount *)self init];
   if (v11)
   {
-    obj = a5;
-    v77 = v10;
-    v78 = v9;
+    obj = count;
+    v77 = countCopy;
+    v78 = storefrontCopy;
     v12 = +[APSystemInternal isAppleInternalInstall];
-    v75 = [v8 objectForKeyedSubscript:@"iTunesDSID"];
+    v75 = [recordCopy objectForKeyedSubscript:@"iTunesDSID"];
     v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v75 integerValue]);
     iTunesDSID = v11->_iTunesDSID;
     v11->_iTunesDSID = v13;
@@ -171,32 +171,32 @@
 
     else
     {
-      v18 = [v8 objectForKeyedSubscript:@"isChild"];
+      v18 = [recordCopy objectForKeyedSubscript:@"isChild"];
       v11->_isChild = [v18 BOOLValue];
     }
 
-    v19 = [v8 objectForKeyedSubscript:@"isAdolescent"];
+    v19 = [recordCopy objectForKeyedSubscript:@"isAdolescent"];
     v11->_isAdolescent = [v19 BOOLValue];
 
-    v20 = [v8 objectForKeyedSubscript:@"isAdult"];
+    v20 = [recordCopy objectForKeyedSubscript:@"isAdult"];
     v11->_isAdult = [v20 BOOLValue];
 
-    v21 = [v8 objectForKeyedSubscript:@"ageUnknown"];
+    v21 = [recordCopy objectForKeyedSubscript:@"ageUnknown"];
     v11->_ageUnknown = [v21 BOOLValue];
 
-    v22 = [v8 objectForKeyedSubscript:@"sensitiveContentEligible"];
+    v22 = [recordCopy objectForKeyedSubscript:@"sensitiveContentEligible"];
     v11->_sensitiveContentEligible = [v22 BOOLValue];
 
-    v23 = [v8 objectForKeyedSubscript:@"isManagedAccount"];
+    v23 = [recordCopy objectForKeyedSubscript:@"isManagedAccount"];
     v11->_isManagedAccount = [v23 BOOLValue];
 
-    v24 = [v8 objectForKeyedSubscript:@"isiCloudLoggedIn"];
+    v24 = [recordCopy objectForKeyedSubscript:@"isiCloudLoggedIn"];
     v11->_isiCloudLoggedIn = [v24 BOOLValue];
 
-    v25 = [v8 objectForKeyedSubscript:@"isiTunesLoggedIn"];
+    v25 = [recordCopy objectForKeyedSubscript:@"isiTunesLoggedIn"];
     v11->_isiTunesLoggedIn = [v25 BOOLValue];
 
-    v26 = [v8 objectForKeyedSubscript:@"isiCloudSameAsiTunes"];
+    v26 = [recordCopy objectForKeyedSubscript:@"isiCloudSameAsiTunes"];
     v11->_isiCloudSameAsiTunes = [v26 BOOLValue];
 
     if (v12 && (+[APIDAccountsDefaultsSettings settings](APIDAccountsDefaultsSettings, "settings"), v27 = objc_claimAutoreleasedReturnValue(), [v27 isNoServicesRegion], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "isEqualToNumber:", &off_100492190), v28, v27, v29))
@@ -206,21 +206,21 @@
 
     else
     {
-      v30 = [v8 objectForKeyedSubscript:@"isNoServicesRegion"];
+      v30 = [recordCopy objectForKeyedSubscript:@"isNoServicesRegion"];
       v11->_isNoServicesRegion = [v30 BOOLValue];
     }
 
-    v31 = [v8 objectForKeyedSubscript:@"effectiveBirthYear"];
+    v31 = [recordCopy objectForKeyedSubscript:@"effectiveBirthYear"];
     v11->_effectiveBirthYear = [v31 integerValue];
 
-    v32 = [v8 objectForKeyedSubscript:@"isProtoU13"];
+    v32 = [recordCopy objectForKeyedSubscript:@"isProtoU13"];
     v11->_isProtoU13 = [v32 BOOLValue];
 
-    v33 = [v8 objectForKeyedSubscript:@"deviceNewsPlusSubscriberID"];
-    v34 = [v8 objectForKeyedSubscript:@"anonymousDemandID"];
-    v35 = [v8 objectForKeyedSubscript:@"contentID"];
-    v36 = [v8 objectForKeyedSubscript:@"toroID"];
-    v37 = [v8 objectForKeyedSubscript:@"iAdID"];
+    v33 = [recordCopy objectForKeyedSubscript:@"deviceNewsPlusSubscriberID"];
+    v34 = [recordCopy objectForKeyedSubscript:@"anonymousDemandID"];
+    v35 = [recordCopy objectForKeyedSubscript:@"contentID"];
+    v36 = [recordCopy objectForKeyedSubscript:@"toroID"];
+    v37 = [recordCopy objectForKeyedSubscript:@"iAdID"];
     v38 = [NSUUID alloc];
     v39 = v38;
     if (v34 && v35 && v36 && v37)
@@ -258,26 +258,26 @@
 
     else
     {
-      v49 = [(APIDAccount *)v11 _fakeID];
-      v50 = [v39 initWithUUIDString:v49];
+      _fakeID = [(APIDAccount *)v11 _fakeID];
+      v50 = [v39 initWithUUIDString:_fakeID];
       v51 = v11->_anonymousDemandID;
       v11->_anonymousDemandID = v50;
 
       v52 = [NSUUID alloc];
-      v53 = [(APIDAccount *)v11 _fakeID];
-      v54 = [v52 initWithUUIDString:v53];
+      _fakeID2 = [(APIDAccount *)v11 _fakeID];
+      v54 = [v52 initWithUUIDString:_fakeID2];
       v55 = v11->_contentID;
       v11->_contentID = v54;
 
       v56 = [NSUUID alloc];
-      v57 = [(APIDAccount *)v11 _fakeID];
-      v58 = [v56 initWithUUIDString:v57];
+      _fakeID3 = [(APIDAccount *)v11 _fakeID];
+      v58 = [v56 initWithUUIDString:_fakeID3];
       v59 = v11->_toroID;
       v11->_toroID = v58;
 
       v60 = [NSUUID alloc];
-      v61 = [(APIDAccount *)v11 _fakeID];
-      v62 = [v60 initWithUUIDString:v61];
+      _fakeID4 = [(APIDAccount *)v11 _fakeID];
+      v62 = [v60 initWithUUIDString:_fakeID4];
       v63 = v11->_iAdID;
       v11->_iAdID = v62;
 
@@ -301,18 +301,18 @@
       v11->_deviceNewsPlusSubscriberID = v68;
     }
 
-    v70 = [v8 objectForKeyedSubscript:@"DPID"];
+    v70 = [recordCopy objectForKeyedSubscript:@"DPID"];
     DPID = v11->_DPID;
     v11->_DPID = v70;
 
-    objc_storeStrong(&v11->_storefront, a4);
+    objc_storeStrong(&v11->_storefront, storefront);
     objc_storeStrong(&v11->_monthlyIDResetCount, obj);
-    v72 = [(APIDAccount *)v11 _getAccountToken];
+    _getAccountToken = [(APIDAccount *)v11 _getAccountToken];
     accountToken = v11->_accountToken;
-    v11->_accountToken = v72;
+    v11->_accountToken = _getAccountToken;
 
-    v10 = v77;
-    v9 = v78;
+    countCopy = v77;
+    storefrontCopy = v78;
   }
 
   return v11;
@@ -322,8 +322,8 @@
 {
   v2 = [@"BAAAAAAD" length];
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v4 stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
+  uUIDString = [v3 UUIDString];
+  v5 = [uUIDString stringByReplacingCharactersInRange:0 withString:{v2, @"BAAAAAAD"}];
 
   if (!v5)
   {

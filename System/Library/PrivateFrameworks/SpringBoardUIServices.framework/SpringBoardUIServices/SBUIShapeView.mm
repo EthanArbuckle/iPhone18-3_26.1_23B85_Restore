@@ -1,56 +1,56 @@
 @interface SBUIShapeView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setFillRule:(int64_t)a3;
-- (void)setPath:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (void)setFillColor:(id)color;
+- (void)setFillRule:(int64_t)rule;
+- (void)setPath:(id)path;
 @end
 
 @implementation SBUIShapeView
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  v4 = a3;
-  v6 = [(SBUIShapeView *)self _shapeLayer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  _shapeLayer = [(SBUIShapeView *)self _shapeLayer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setPath:v5];
+  [_shapeLayer setPath:cGPath];
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(SBUIShapeView *)self _shapeLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  _shapeLayer = [(SBUIShapeView *)self _shapeLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [_shapeLayer setFillColor:cGColor];
 }
 
-- (void)setFillRule:(int64_t)a3
+- (void)setFillRule:(int64_t)rule
 {
-  v4 = [(SBUIShapeView *)self _shapeLayer];
-  v6 = v4;
+  _shapeLayer = [(SBUIShapeView *)self _shapeLayer];
+  v6 = _shapeLayer;
   v5 = MEMORY[0x1E69797F8];
-  if (a3 != 1)
+  if (rule != 1)
   {
     v5 = MEMORY[0x1E6979800];
   }
 
-  [v4 setFillRule:*v5];
+  [_shapeLayer setFillRule:*v5];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = SBUIShapeView;
-  if ([(SBUIShapeView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(SBUIShapeView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"path"];
+    v5 = [keyCopy isEqualToString:@"path"];
   }
 
   return v5;

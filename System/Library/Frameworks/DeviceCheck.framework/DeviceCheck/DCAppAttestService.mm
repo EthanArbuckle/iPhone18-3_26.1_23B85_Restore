@@ -30,10 +30,10 @@ uint64_t __35__DCAppAttestService_sharedService__block_invoke()
 
 - (BOOL)isSupported
 {
-  v2 = [(DCAppAttestService *)self appAttestController];
-  v3 = [v2 isSupported];
+  appAttestController = [(DCAppAttestService *)self appAttestController];
+  isSupported = [appAttestController isSupported];
 
-  return v3;
+  return isSupported;
 }
 
 - (DCAppAttestController)appAttestController
@@ -54,8 +54,8 @@ uint64_t __35__DCAppAttestService_sharedService__block_invoke()
 - (void)generateKeyWithCompletionHandler:(void *)completionHandler
 {
   v4 = completionHandler;
-  v5 = [(DCAppAttestService *)self appAttestController];
-  [v5 generateKeyWithTeamIdentifier:0 completion:v4];
+  appAttestController = [(DCAppAttestService *)self appAttestController];
+  [appAttestController generateKeyWithTeamIdentifier:0 completion:v4];
 }
 
 - (void)attestKey:(NSString *)keyId clientDataHash:(NSData *)clientDataHash completionHandler:(void *)completionHandler
@@ -63,8 +63,8 @@ uint64_t __35__DCAppAttestService_sharedService__block_invoke()
   v8 = completionHandler;
   v9 = clientDataHash;
   v10 = keyId;
-  v11 = [(DCAppAttestService *)self appAttestController];
-  [v11 attestKey:v10 teamIdentifier:0 clientDataHash:v9 completionHandler:v8];
+  appAttestController = [(DCAppAttestService *)self appAttestController];
+  [appAttestController attestKey:v10 teamIdentifier:0 clientDataHash:v9 completionHandler:v8];
 }
 
 - (void)generateAssertion:(NSString *)keyId clientDataHash:(NSData *)clientDataHash completionHandler:(void *)completionHandler
@@ -72,8 +72,8 @@ uint64_t __35__DCAppAttestService_sharedService__block_invoke()
   v8 = completionHandler;
   v9 = clientDataHash;
   v10 = keyId;
-  v11 = [(DCAppAttestService *)self appAttestController];
-  [v11 generateAssertion:v10 teamIdentifier:0 clientDataHash:v9 completionHandler:v8];
+  appAttestController = [(DCAppAttestService *)self appAttestController];
+  [appAttestController generateAssertion:v10 teamIdentifier:0 clientDataHash:v9 completionHandler:v8];
 }
 
 @end

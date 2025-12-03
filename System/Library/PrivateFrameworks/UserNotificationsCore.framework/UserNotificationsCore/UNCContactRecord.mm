@@ -1,6 +1,6 @@
 @interface UNCContactRecord
-- (BOOL)isEqual:(id)a3;
-- (UNCContactRecord)initWithDictionaryRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNCContactRecord)initWithDictionaryRepresentation:(id)representation;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -8,39 +8,39 @@
 
 @implementation UNCContactRecord
 
-- (UNCContactRecord)initWithDictionaryRepresentation:(id)a3
+- (UNCContactRecord)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v16.receiver = self;
   v16.super_class = UNCContactRecord;
   v5 = [(UNCContactRecord *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"handle"];
+    v6 = [representationCopy objectForKey:@"handle"];
     [(UNCContactRecord *)v5 setHandle:v6];
 
-    v7 = [v4 objectForKey:@"handleType"];
+    v7 = [representationCopy objectForKey:@"handleType"];
     -[UNCContactRecord setHandleType:](v5, "setHandleType:", [v7 unsignedIntegerValue]);
 
-    v8 = [v4 objectForKey:@"serviceName"];
+    v8 = [representationCopy objectForKey:@"serviceName"];
     [(UNCContactRecord *)v5 setServiceName:v8];
 
-    v9 = [v4 objectForKey:@"displayName"];
+    v9 = [representationCopy objectForKey:@"displayName"];
     [(UNCContactRecord *)v5 setDisplayName:v9];
 
-    v10 = [v4 objectForKey:@"displayNameSuggested"];
+    v10 = [representationCopy objectForKey:@"displayNameSuggested"];
     -[UNCContactRecord setDisplayNameSuggested:](v5, "setDisplayNameSuggested:", [v10 BOOLValue]);
 
-    v11 = [v4 objectForKey:@"customIdentifier"];
+    v11 = [representationCopy objectForKey:@"customIdentifier"];
     [(UNCContactRecord *)v5 setCustomIdentifier:v11];
 
-    v12 = [v4 objectForKey:@"cnContactIdentifier"];
+    v12 = [representationCopy objectForKey:@"cnContactIdentifier"];
     [(UNCContactRecord *)v5 setCnContactIdentifier:v12];
 
-    v13 = [v4 objectForKey:@"cnContactFullName"];
+    v13 = [representationCopy objectForKey:@"cnContactFullName"];
     [(UNCContactRecord *)v5 setCnContactFullname:v13];
 
-    v14 = [v4 objectForKey:@"cnContactIdentifierSuggested"];
+    v14 = [representationCopy objectForKey:@"cnContactIdentifierSuggested"];
     -[UNCContactRecord setCnContactIdentifierSuggested:](v5, "setCnContactIdentifierSuggested:", [v14 BOOLValue]);
   }
 
@@ -49,73 +49,73 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(UNCContactRecord *)self handle];
-  [v3 bs_setSafeObject:v4 forKey:@"handle"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  handle = [(UNCContactRecord *)self handle];
+  [dictionary bs_setSafeObject:handle forKey:@"handle"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[UNCContactRecord handleType](self, "handleType")}];
-  [v3 bs_setSafeObject:v5 forKey:@"handleType"];
+  [dictionary bs_setSafeObject:v5 forKey:@"handleType"];
 
-  v6 = [(UNCContactRecord *)self serviceName];
-  [v3 bs_setSafeObject:v6 forKey:@"serviceName"];
+  serviceName = [(UNCContactRecord *)self serviceName];
+  [dictionary bs_setSafeObject:serviceName forKey:@"serviceName"];
 
-  v7 = [(UNCContactRecord *)self displayName];
-  [v3 bs_setSafeObject:v7 forKey:@"displayName"];
+  displayName = [(UNCContactRecord *)self displayName];
+  [dictionary bs_setSafeObject:displayName forKey:@"displayName"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[UNCContactRecord isDisplayNameSuggested](self, "isDisplayNameSuggested")}];
-  [v3 bs_setSafeObject:v8 forKey:@"displayNameSuggested"];
+  [dictionary bs_setSafeObject:v8 forKey:@"displayNameSuggested"];
 
-  v9 = [(UNCContactRecord *)self customIdentifier];
-  [v3 bs_setSafeObject:v9 forKey:@"customIdentifier"];
+  customIdentifier = [(UNCContactRecord *)self customIdentifier];
+  [dictionary bs_setSafeObject:customIdentifier forKey:@"customIdentifier"];
 
-  v10 = [(UNCContactRecord *)self cnContactIdentifier];
-  [v3 bs_setSafeObject:v10 forKey:@"cnContactIdentifier"];
+  cnContactIdentifier = [(UNCContactRecord *)self cnContactIdentifier];
+  [dictionary bs_setSafeObject:cnContactIdentifier forKey:@"cnContactIdentifier"];
 
-  v11 = [(UNCContactRecord *)self cnContactFullname];
-  [v3 bs_setSafeObject:v11 forKey:@"cnContactFullName"];
+  cnContactFullname = [(UNCContactRecord *)self cnContactFullname];
+  [dictionary bs_setSafeObject:cnContactFullname forKey:@"cnContactFullName"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[UNCContactRecord isCNContactIdentifierSuggested](self, "isCNContactIdentifierSuggested")}];
-  [v3 bs_setSafeObject:v12 forKey:@"cnContactIdentifierSuggested"];
+  [dictionary bs_setSafeObject:v12 forKey:@"cnContactIdentifierSuggested"];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(UNCContactRecord *)self handle];
-  v5 = [v4 un_logDigest];
-  v6 = [v3 appendObject:v5 withName:@"handle"];
+  handle = [(UNCContactRecord *)self handle];
+  un_logDigest = [handle un_logDigest];
+  v6 = [v3 appendObject:un_logDigest withName:@"handle"];
 
   v7 = [v3 appendUnsignedInteger:-[UNCContactRecord handleType](self withName:{"handleType"), @"handleType"}];
-  v8 = [(UNCContactRecord *)self serviceName];
-  v9 = [v3 appendObject:v8 withName:@"serviceName"];
+  serviceName = [(UNCContactRecord *)self serviceName];
+  v9 = [v3 appendObject:serviceName withName:@"serviceName"];
 
-  v10 = [(UNCContactRecord *)self displayName];
-  v11 = [v10 un_logDigest];
-  v12 = [v3 appendObject:v11 withName:@"displayName"];
+  displayName = [(UNCContactRecord *)self displayName];
+  un_logDigest2 = [displayName un_logDigest];
+  v12 = [v3 appendObject:un_logDigest2 withName:@"displayName"];
 
   v13 = [v3 appendBool:-[UNCContactRecord isDisplayNameSuggested](self withName:{"isDisplayNameSuggested"), @"displayNameSuggested"}];
-  v14 = [(UNCContactRecord *)self customIdentifier];
-  v15 = [v14 un_logDigest];
-  v16 = [v3 appendObject:v15 withName:@"customIdentifier"];
+  customIdentifier = [(UNCContactRecord *)self customIdentifier];
+  un_logDigest3 = [customIdentifier un_logDigest];
+  v16 = [v3 appendObject:un_logDigest3 withName:@"customIdentifier"];
 
-  v17 = [(UNCContactRecord *)self cnContactIdentifier];
-  v18 = [v3 appendObject:v17 withName:@"cnContactIdentifier"];
+  cnContactIdentifier = [(UNCContactRecord *)self cnContactIdentifier];
+  v18 = [v3 appendObject:cnContactIdentifier withName:@"cnContactIdentifier"];
 
-  v19 = [(UNCContactRecord *)self cnContactFullname];
-  v20 = [v19 un_logDigest];
-  v21 = [v3 appendObject:v20 withName:@"cnContactFullname"];
+  cnContactFullname = [(UNCContactRecord *)self cnContactFullname];
+  un_logDigest4 = [cnContactFullname un_logDigest];
+  v21 = [v3 appendObject:un_logDigest4 withName:@"cnContactFullname"];
 
   v22 = [v3 appendBool:-[UNCContactRecord isCNContactIdentifierSuggested](self withName:{"isCNContactIdentifierSuggested"), @"cnContactIdentifierSuggested"}];
-  v23 = [v3 build];
+  build = [v3 build];
 
-  return v23;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -129,14 +129,14 @@ LABEL_14:
     }
   }
 
-  v5 = v4;
+  v5 = equalCopy;
   if (!v5)
   {
     goto LABEL_14;
   }
 
-  v6 = [(UNCContactRecord *)self handle];
-  v7 = [v5 handle];
+  handle = [(UNCContactRecord *)self handle];
+  handle2 = [v5 handle];
   v8 = UNEqualStrings();
 
   if (!v8)
@@ -144,14 +144,14 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9 = [(UNCContactRecord *)self handleType];
-  if (v9 != [v5 handleType])
+  handleType = [(UNCContactRecord *)self handleType];
+  if (handleType != [v5 handleType])
   {
     goto LABEL_14;
   }
 
-  v10 = [(UNCContactRecord *)self serviceName];
-  v11 = [v5 serviceName];
+  serviceName = [(UNCContactRecord *)self serviceName];
+  serviceName2 = [v5 serviceName];
   v12 = UNEqualStrings();
 
   if (!v12)
@@ -159,8 +159,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v13 = [(UNCContactRecord *)self displayName];
-  v14 = [v5 displayName];
+  displayName = [(UNCContactRecord *)self displayName];
+  displayName2 = [v5 displayName];
   v15 = UNEqualStrings();
 
   if (!v15)
@@ -168,14 +168,14 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v16 = [(UNCContactRecord *)self isDisplayNameSuggested];
-  if (v16 != [v5 isDisplayNameSuggested])
+  isDisplayNameSuggested = [(UNCContactRecord *)self isDisplayNameSuggested];
+  if (isDisplayNameSuggested != [v5 isDisplayNameSuggested])
   {
     goto LABEL_14;
   }
 
-  v17 = [(UNCContactRecord *)self customIdentifier];
-  v18 = [v5 customIdentifier];
+  customIdentifier = [(UNCContactRecord *)self customIdentifier];
+  customIdentifier2 = [v5 customIdentifier];
   v19 = UNEqualStrings();
 
   if (!v19)
@@ -183,8 +183,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v20 = [(UNCContactRecord *)self cnContactIdentifier];
-  v21 = [v5 cnContactIdentifier];
+  cnContactIdentifier = [(UNCContactRecord *)self cnContactIdentifier];
+  cnContactIdentifier2 = [v5 cnContactIdentifier];
   v22 = UNEqualStrings();
 
   if (!v22)
@@ -192,8 +192,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v23 = [(UNCContactRecord *)self cnContactFullname];
-  v24 = [v5 cnContactFullname];
+  cnContactFullname = [(UNCContactRecord *)self cnContactFullname];
+  cnContactFullname2 = [v5 cnContactFullname];
   v25 = UNEqualStrings();
 
   if (!v25)
@@ -201,8 +201,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v26 = [(UNCContactRecord *)self isCNContactIdentifierSuggested];
-  v27 = v26 ^ [v5 isCNContactIdentifierSuggested] ^ 1;
+  isCNContactIdentifierSuggested = [(UNCContactRecord *)self isCNContactIdentifierSuggested];
+  v27 = isCNContactIdentifierSuggested ^ [v5 isCNContactIdentifierSuggested] ^ 1;
 LABEL_15:
 
   return v27;

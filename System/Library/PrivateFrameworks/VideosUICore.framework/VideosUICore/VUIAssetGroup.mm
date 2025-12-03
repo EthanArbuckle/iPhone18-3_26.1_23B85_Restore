@@ -1,17 +1,17 @@
 @interface VUIAssetGroup
-+ (id)_humanReadableStringForGroupType:(int64_t)a3;
-- (VUIAssetGroup)initWithGroupType:(int64_t)a3 baseCachePath:(id)a4 folderName:(id)a5 maxCacheSize:(unint64_t)a6 purgeOnLoad:(BOOL)a7;
++ (id)_humanReadableStringForGroupType:(int64_t)type;
+- (VUIAssetGroup)initWithGroupType:(int64_t)type baseCachePath:(id)path folderName:(id)name maxCacheSize:(unint64_t)size purgeOnLoad:(BOOL)load;
 - (id)_manifestFilePath;
-- (id)assetInfoForKey:(id)a3 queue:(id)a4;
+- (id)assetInfoForKey:(id)key queue:(id)queue;
 - (id)description;
-- (id)infoForAllAssetsWithQueue:(id)a3;
-- (id)infoForAllAssetsWithTags:(id)a3 queue:(id)a4;
-- (void)_removeAssetInfoForKey:(id)a3 removeFile:(BOOL)a4;
+- (id)infoForAllAssetsWithQueue:(id)queue;
+- (id)infoForAllAssetsWithTags:(id)tags queue:(id)queue;
+- (void)_removeAssetInfoForKey:(id)key removeFile:(BOOL)file;
 - (void)_saveManifest;
-- (void)_updateManifestWithChange:(id)a3;
-- (void)removeAllAssetsWithQueue:(id)a3;
-- (void)removeAssetInfoForKey:(id)a3 queue:(id)a4;
-- (void)setAssetInfo:(id)a3 forKey:(id)a4 queue:(id)a5;
+- (void)_updateManifestWithChange:(id)change;
+- (void)removeAllAssetsWithQueue:(id)queue;
+- (void)removeAssetInfoForKey:(id)key queue:(id)queue;
+- (void)setAssetInfo:(id)info forKey:(id)key queue:(id)queue;
 - (void)updateAssetsFromFiles;
 @end
 
@@ -21,14 +21,14 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_270E6E000, a2, OS_LOG_TYPE_ERROR, "Couldn't read manifest: %{public}@", &v2, 0xCu);
 }
 
 - (id)_manifestFilePath
 {
-  v2 = [(VUIAssetGroup *)self cachePath];
-  v3 = [v2 stringByAppendingPathComponent:@"manifest"];
+  cachePath = [(VUIAssetGroup *)self cachePath];
+  v3 = [cachePath stringByAppendingPathComponent:@"manifest"];
 
   return v3;
 }
@@ -78,24 +78,24 @@ id __38__VUIAssetGroup_updateAssetsFromFiles__block_invoke(uint64_t a1, void *a2
   return v15;
 }
 
-- (VUIAssetGroup)initWithGroupType:(int64_t)a3 baseCachePath:(id)a4 folderName:(id)a5 maxCacheSize:(unint64_t)a6 purgeOnLoad:(BOOL)a7
+- (VUIAssetGroup)initWithGroupType:(int64_t)type baseCachePath:(id)path folderName:(id)name maxCacheSize:(unint64_t)size purgeOnLoad:(BOOL)load
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
+  pathCopy = path;
+  nameCopy = name;
   v38.receiver = self;
   v38.super_class = VUIAssetGroup;
   v14 = [(VUIAssetGroup *)&v38 init];
   v15 = v14;
   if (v14)
   {
-    v14->_groupType = a3;
-    v16 = [v12 stringByAppendingPathComponent:v13];
+    v14->_groupType = type;
+    v16 = [pathCopy stringByAppendingPathComponent:nameCopy];
     cachePath = v15->_cachePath;
     v15->_cachePath = v16;
 
-    v18 = a6 << 20;
-    if (!a6)
+    v18 = size << 20;
+    if (!size)
     {
       v18 = 10485760;
     }
@@ -111,15 +111,15 @@ id __38__VUIAssetGroup_updateAssetsFromFiles__block_invoke(uint64_t a1, void *a2
     assetKeysByTag = v15->_assetKeysByTag;
     v15->_assetKeysByTag = v21;
 
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v37 = 0;
-    [v23 fileExistsAtPath:v15->_cachePath isDirectory:&v37];
-    v24 = a7 | v37 ^ 1;
+    [defaultManager fileExistsAtPath:v15->_cachePath isDirectory:&v37];
+    v24 = load | v37 ^ 1;
     if (v24)
     {
       v25 = v15->_cachePath;
       v36 = 0;
-      [v23 removeItemAtPath:v25 error:&v36];
+      [defaultManager removeItemAtPath:v25 error:&v36];
       v26 = v36;
       if (v26)
       {
@@ -134,7 +134,7 @@ id __38__VUIAssetGroup_updateAssetsFromFiles__block_invoke(uint64_t a1, void *a2
 
     v29 = v15->_cachePath;
     v35 = 0;
-    [v23 createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:&v35];
+    [defaultManager createDirectoryAtPath:v29 withIntermediateDirectories:1 attributes:0 error:&v35];
     v30 = v35;
     if (v30)
     {
@@ -163,23 +163,23 @@ id __38__VUIAssetGroup_updateAssetsFromFiles__block_invoke(uint64_t a1, void *a2
   return v15;
 }
 
-- (void)setAssetInfo:(id)a3 forKey:(id)a4 queue:(id)a5
+- (void)setAssetInfo:(id)info forKey:(id)key queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  keyCopy = key;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__VUIAssetGroup_setAssetInfo_forKey_queue___block_invoke;
   block[3] = &unk_279E21B58;
   objc_copyWeak(&v17, &location);
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  dispatch_barrier_sync(v10, block);
+  v14 = keyCopy;
+  selfCopy = self;
+  v16 = infoCopy;
+  v11 = infoCopy;
+  v12 = keyCopy;
+  dispatch_barrier_sync(queueCopy, block);
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -361,10 +361,10 @@ uint64_t __43__VUIAssetGroup_setAssetInfo_forKey_queue___block_invoke_19(uint64_
   return v11;
 }
 
-- (id)assetInfoForKey:(id)a3 queue:(id)a4
+- (id)assetInfoForKey:(id)key queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  queueCopy = queue;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -378,14 +378,14 @@ uint64_t __43__VUIAssetGroup_setAssetInfo_forKey_queue___block_invoke_19(uint64_
   block[3] = &unk_279E21B80;
   objc_copyWeak(&v25, &location);
   v24 = &v27;
-  v8 = v6;
+  v8 = keyCopy;
   v23 = v8;
-  dispatch_sync(v7, block);
+  dispatch_sync(queueCopy, block);
   v9 = [v28[5] objectForKey:@"VUIVAssetExpiryDate"];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEAA8] date];
-    v11 = [v9 compare:v10];
+    date = [MEMORY[0x277CBEAA8] date];
+    v11 = [v9 compare:date];
 
     if (v11 == -1)
     {
@@ -398,7 +398,7 @@ uint64_t __43__VUIAssetGroup_setAssetInfo_forKey_queue___block_invoke_19(uint64_
       v19[3] = &unk_279E21BA8;
       objc_copyWeak(&v21, &location);
       v20 = v8;
-      dispatch_barrier_async(v7, v19);
+      dispatch_barrier_async(queueCopy, v19);
 
       objc_destroyWeak(&v21);
     }
@@ -413,7 +413,7 @@ uint64_t __43__VUIAssetGroup_setAssetInfo_forKey_queue___block_invoke_19(uint64_
     v16[3] = &unk_279E21BA8;
     objc_copyWeak(&v18, &location);
     v17 = v8;
-    dispatch_barrier_async(v7, v16);
+    dispatch_barrier_async(queueCopy, v16);
 
     objc_destroyWeak(&v18);
     v13 = v28[5];
@@ -473,19 +473,19 @@ void __39__VUIAssetGroup_assetInfoForKey_queue___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)removeAssetInfoForKey:(id)a3 queue:(id)a4
+- (void)removeAssetInfoForKey:(id)key queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__VUIAssetGroup_removeAssetInfoForKey_queue___block_invoke;
   block[3] = &unk_279E21BA8;
   objc_copyWeak(&v11, &location);
-  v10 = v6;
-  v8 = v6;
-  dispatch_barrier_sync(v7, block);
+  v10 = keyCopy;
+  v8 = keyCopy;
+  dispatch_barrier_sync(queueCopy, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -497,16 +497,16 @@ void __45__VUIAssetGroup_removeAssetInfoForKey_queue___block_invoke(uint64_t a1)
   [WeakRetained _removeAssetInfoForKey:*(a1 + 32)];
 }
 
-- (void)removeAllAssetsWithQueue:(id)a3
+- (void)removeAllAssetsWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__VUIAssetGroup_removeAllAssetsWithQueue___block_invoke;
   v5[3] = &unk_279E217C0;
   objc_copyWeak(&v6, &location);
-  dispatch_barrier_sync(v4, v5);
+  dispatch_barrier_sync(queueCopy, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -551,7 +551,7 @@ void __42__VUIAssetGroup_removeAllAssetsWithQueue___block_invoke(uint64_t a1)
   }
 }
 
-- (id)infoForAllAssetsWithQueue:(id)a3
+- (id)infoForAllAssetsWithQueue:(id)queue
 {
   v10 = 0;
   v11 = &v10;
@@ -559,7 +559,7 @@ void __42__VUIAssetGroup_removeAllAssetsWithQueue___block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -567,7 +567,7 @@ void __42__VUIAssetGroup_removeAllAssetsWithQueue___block_invoke(uint64_t a1)
   block[3] = &unk_279E21BD0;
   objc_copyWeak(&v8, &location);
   block[4] = &v10;
-  dispatch_sync(v4, block);
+  dispatch_sync(queueCopy, block);
 
   v5 = v11[5];
   objc_destroyWeak(&v8);
@@ -592,26 +592,26 @@ void __43__VUIAssetGroup_infoForAllAssetsWithQueue___block_invoke(uint64_t a1)
   }
 }
 
-- (id)infoForAllAssetsWithTags:(id)a3 queue:(id)a4
+- (id)infoForAllAssetsWithTags:(id)tags queue:(id)queue
 {
-  v6 = a3;
+  tagsCopy = tags;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  v7 = a4;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__VUIAssetGroup_infoForAllAssetsWithTags_queue___block_invoke;
   v11[3] = &unk_279E21BF8;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
+  v12 = tagsCopy;
   v13 = &v16;
-  v8 = v6;
-  dispatch_sync(v7, v11);
+  v8 = tagsCopy;
+  dispatch_sync(queueCopy, v11);
 
   v9 = v17[5];
   objc_destroyWeak(&v14);
@@ -731,12 +731,12 @@ LABEL_18:
   }
 }
 
-- (void)_removeAssetInfoForKey:(id)a3 removeFile:(BOOL)a4
+- (void)_removeAssetInfoForKey:(id)key removeFile:(BOOL)file
 {
-  v4 = a4;
+  fileCopy = file;
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_cacheRecords objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_cacheRecords objectForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
@@ -746,14 +746,14 @@ LABEL_18:
     if (v10)
     {
       v11 = [v8 objectForKey:@"VUIAssetSize"];
-      v12 = [v11 unsignedLongLongValue];
+      unsignedLongLongValue = [v11 unsignedLongLongValue];
 
-      self->_currentCacheSize -= v12;
+      self->_currentCacheSize -= unsignedLongLongValue;
     }
 
     if ([v9 length])
     {
-      v13 = !v4;
+      v13 = !fileCopy;
     }
 
     else
@@ -763,9 +763,9 @@ LABEL_18:
 
     if (!v13)
     {
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v31 = 0;
-      v15 = [v14 removeItemAtPath:v9 error:&v31];
+      v15 = [defaultManager removeItemAtPath:v9 error:&v31];
       v16 = v31;
 
       if ((v15 & 1) == 0)
@@ -778,7 +778,7 @@ LABEL_18:
       }
     }
 
-    [(NSMutableDictionary *)self->_cacheRecords removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_cacheRecords removeObjectForKey:keyCopy];
     v18 = [v8 objectForKeyedSubscript:@"VUIAssetTags"];
     v27 = 0u;
     v28 = 0u;
@@ -800,7 +800,7 @@ LABEL_18:
 
           v23 = *(*(&v27 + 1) + 8 * i);
           v24 = [(NSMutableDictionary *)self->_assetKeysByTag objectForKeyedSubscript:v23];
-          [v24 removeObject:v6];
+          [v24 removeObject:keyCopy];
           if (![v24 count])
           {
             [(NSMutableDictionary *)self->_assetKeysByTag removeObjectForKey:v23];
@@ -818,7 +818,7 @@ LABEL_18:
     v25[2] = __51__VUIAssetGroup__removeAssetInfoForKey_removeFile___block_invoke;
     v25[3] = &unk_279E218C8;
     v25[4] = self;
-    v26 = v6;
+    v26 = keyCopy;
     [(VUIAssetGroup *)self _updateManifestWithChange:v25];
   }
 }
@@ -841,27 +841,27 @@ void __51__VUIAssetGroup__removeAssetInfoForKey_removeFile___block_invoke(uint64
   return v6;
 }
 
-- (void)_updateManifestWithChange:(id)a3
+- (void)_updateManifestWithChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(VUIAssetGroup *)v5 manifest];
+  changeCopy = change;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  manifest = [(VUIAssetGroup *)selfCopy manifest];
 
-  if (!v6)
+  if (!manifest)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [(VUIAssetGroup *)v5 setManifest:v7];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(VUIAssetGroup *)selfCopy setManifest:dictionary];
   }
 
-  v4[2](v4);
-  v8 = [(VUIAssetGroup *)v5 isManifestDirty];
-  [(VUIAssetGroup *)v5 setManifestDirty:1];
-  objc_sync_exit(v5);
+  changeCopy[2](changeCopy);
+  isManifestDirty = [(VUIAssetGroup *)selfCopy isManifestDirty];
+  [(VUIAssetGroup *)selfCopy setManifestDirty:1];
+  objc_sync_exit(selfCopy);
 
-  if (!v8)
+  if (!isManifestDirty)
   {
-    objc_initWeak(&location, v5);
+    objc_initWeak(&location, selfCopy);
     v9 = dispatch_time(0, 60000000000);
     v10 = dispatch_get_global_queue(-32768, 0);
     v11[0] = MEMORY[0x277D85DD0];
@@ -891,20 +891,20 @@ void __43__VUIAssetGroup__updateManifestWithChange___block_invoke(uint64_t a1)
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_270E6E000, a2, OS_LOG_TYPE_ERROR, "Couldn't save manifest: %{public}@", &v2, 0xCu);
 }
 
-+ (id)_humanReadableStringForGroupType:(int64_t)a3
++ (id)_humanReadableStringForGroupType:(int64_t)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279E21C40[a3];
+    return off_279E21C40[type];
   }
 }
 

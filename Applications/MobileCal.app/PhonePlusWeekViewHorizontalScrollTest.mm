@@ -21,14 +21,14 @@
 
 - (void)navigateToScrollView
 {
-  v3 = [(ApplicationTest *)self application];
-  v4 = [v3 rootNavigationController];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  v8 = [v7 interfaceOrientation];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  view = [rootNavigationController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if ((v8 - 3) > 1)
+  if ((interfaceOrientation - 3) > 1)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -47,17 +47,17 @@
 
 - (void)_setupWeekView
 {
-  v8 = [(ApplicationTest *)self extractInitialDateOption];
-  v3 = [(ApplicationTest *)self model];
-  [v3 setSelectedDate:v8];
+  extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+  model = [(ApplicationTest *)self model];
+  [model setSelectedDate:extractInitialDateOption];
 
-  v4 = [(ApplicationTest *)self application];
-  v5 = [v4 rootNavigationController];
-  v6 = [v5 resetToWeekView];
+  application = [(ApplicationTest *)self application];
+  rootNavigationController = [application rootNavigationController];
+  resetToWeekView = [rootNavigationController resetToWeekView];
   controller = self->_controller;
-  self->_controller = v6;
+  self->_controller = resetToWeekView;
 
-  [(WeekViewController *)self->_controller setDisplayedDate:v8 animated:0];
+  [(WeekViewController *)self->_controller setDisplayedDate:extractInitialDateOption animated:0];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface ATXModeDrivingFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
 - (id)_fetchMostRecentDNDWDEvent;
-- (id)_provideFeaturesWithLastDNDWDEvent:(id)a3;
+- (id)_provideFeaturesWithLastDNDWDEvent:(id)event;
 - (void)_beginListeningForDNDWDEvents;
-- (void)_processNewDNDWDEvent:(id)a3;
+- (void)_processNewDNDWDEvent:(id)event;
 - (void)beginListening;
 - (void)stopListening;
 @end
 
 @implementation ATXModeDrivingFeaturizer
 
-- (id)_provideFeaturesWithLastDNDWDEvent:(id)a3
+- (id)_provideFeaturesWithLastDNDWDEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (!eventCopy)
   {
-    v8 = [(ATXModeDrivingFeaturizer *)self _fetchMostRecentDNDWDEvent];
-    v9 = [v8 starting];
+    _fetchMostRecentDNDWDEvent = [(ATXModeDrivingFeaturizer *)self _fetchMostRecentDNDWDEvent];
+    starting = [_fetchMostRecentDNDWDEvent starting];
 
-    if (v9)
+    if (starting)
     {
       goto LABEL_3;
     }
@@ -29,7 +29,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (![v4 starting])
+  if (![eventCopy starting])
   {
     goto LABEL_7;
   }
@@ -50,11 +50,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)_processNewDNDWDEvent:(id)a3
+- (void)_processNewDNDWDEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ATXModeDrivingFeaturizer *)self _provideFeaturesWithLastDNDWDEvent:v4];
+  v5 = [(ATXModeDrivingFeaturizer *)self _provideFeaturesWithLastDNDWDEvent:eventCopy];
 
   [WeakRetained featurizer:self didUpdateFeatures:v5];
 }
@@ -68,9 +68,9 @@ LABEL_8:
   v14 = __Block_byref_object_dispose__13;
   v15 = 0;
   v2 = BiomeLibrary();
-  v3 = [v2 UserFocus];
-  v4 = [v3 DoNotDisturbWhileDriving];
-  v5 = [v4 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C868 lastN:&unk_28733C868 reversed:0];
+  userFocus = [v2 UserFocus];
+  doNotDisturbWhileDriving = [userFocus DoNotDisturbWhileDriving];
+  v5 = [doNotDisturbWhileDriving atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C868 lastN:&unk_28733C868 reversed:0];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -124,10 +124,10 @@ uint64_t __54__ATXModeDrivingFeaturizer__fetchMostRecentDNDWDEvent__block_invoke
 
   objc_initWeak(&location, self);
   v5 = BiomeLibrary();
-  v6 = [v5 UserFocus];
-  v7 = [v6 DoNotDisturbWhileDriving];
-  v8 = [v7 atx_DSLPublisher];
-  v9 = [v8 subscribeOn:self->_DNDWDScheduler];
+  userFocus = [v5 UserFocus];
+  doNotDisturbWhileDriving = [userFocus DoNotDisturbWhileDriving];
+  atx_DSLPublisher = [doNotDisturbWhileDriving atx_DSLPublisher];
+  v9 = [atx_DSLPublisher subscribeOn:self->_DNDWDScheduler];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__ATXModeDrivingFeaturizer__beginListeningForDNDWDEvents__block_invoke_20;

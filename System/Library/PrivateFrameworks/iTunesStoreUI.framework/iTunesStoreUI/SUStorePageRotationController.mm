@@ -1,9 +1,9 @@
 @interface SUStorePageRotationController
 - (id)_childRotationController;
-- (void)animateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)animateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 - (void)dealloc;
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3;
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3;
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation;
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SUStorePageRotationController
@@ -19,7 +19,7 @@
   [(SURotationController *)&v4 dealloc];
 }
 
-- (void)animateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)animateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   [(SUViewController *)self->super._viewController tabBarController];
   objc_opt_class();
@@ -28,12 +28,12 @@
     [objc_msgSend(-[SUViewController view](self->super._viewController "view")];
   }
 
-  v7 = [(SUStorePageRotationController *)self _childRotationController];
+  _childRotationController = [(SUStorePageRotationController *)self _childRotationController];
 
-  [v7 animateRotationToInterfaceOrientation:a3 duration:a4];
+  [_childRotationController animateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation
 {
   [(SUViewController *)self->super._viewController tabBarController];
   objc_opt_class();
@@ -48,16 +48,16 @@
   self->_childRotationController = 0;
 }
 
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(SUStorePageRotationController *)self _childRotationController];
+  _childRotationController = [(SUStorePageRotationController *)self _childRotationController];
 
-  [v4 prepareToRotateToInterfaceOrientation:a3];
+  [_childRotationController prepareToRotateToInterfaceOrientation:orientation];
 }
 
 - (id)_childRotationController
 {
-  v3 = [(SUViewController *)self->super._viewController _activeChildViewController];
+  _activeChildViewController = [(SUViewController *)self->super._viewController _activeChildViewController];
   childRotationController = self->_childRotationController;
   if (!childRotationController)
   {
@@ -65,13 +65,13 @@
     goto LABEL_5;
   }
 
-  if ([(SURotationController *)childRotationController viewController]!= v3)
+  if ([(SURotationController *)childRotationController viewController]!= _activeChildViewController)
   {
     v5 = self->_childRotationController;
 LABEL_5:
 
-    self->_childRotationController = [v3 newRotationController];
-    self->_childViewController = v3;
+    self->_childRotationController = [_activeChildViewController newRotationController];
+    self->_childViewController = _activeChildViewController;
   }
 
   return self->_childRotationController;

@@ -1,15 +1,15 @@
 @interface MetaAction
-- (BOOL)shouldCancelAction:(id)a3;
-- (BOOL)shouldWaitForAction:(id)a3;
+- (BOOL)shouldCancelAction:(id)action;
+- (BOOL)shouldWaitForAction:(id)action;
 - (MetaAction)init;
-- (MetaAction)initWithAction:(id)a3 id:(id)a4;
+- (MetaAction)initWithAction:(id)action id:(id)id;
 - (NSString)description;
 - (id)_actionStateString;
 - (id)actionType;
 - (void)dealloc;
 - (void)main;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)runWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)runWithCompletion:(id)completion;
 @end
 
 @implementation MetaAction
@@ -27,8 +27,8 @@
     [(MetaAction *)self runWithCompletion:&v4];
     if (([(MetaAction *)self isCancelled:v4]& 1) == 0)
     {
-      v3 = [(MetaAction *)self synchronizer];
-      [v3 wait];
+      synchronizer = [(MetaAction *)self synchronizer];
+      [synchronizer wait];
     }
 
     objc_destroyWeak(&v8);
@@ -52,18 +52,18 @@
   [(MetaAction *)&v3 dealloc];
 }
 
-- (MetaAction)initWithAction:(id)a3 id:(id)a4
+- (MetaAction)initWithAction:(id)action id:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  idCopy = id;
   v14.receiver = self;
   v14.super_class = MetaAction;
   v8 = [(MetaAction *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(MetaAction *)v8 setActionId:v7];
-    [(MetaAction *)v9 setEmbeddedAction:v6];
+    [(MetaAction *)v8 setActionId:idCopy];
+    [(MetaAction *)v9 setEmbeddedAction:actionCopy];
     v10 = [FMSynchronizer alloc];
     v11 = [(MetaAction *)v9 description];
     v12 = [v10 initWithDescription:v11 andTimeout:-1.0];
@@ -75,37 +75,37 @@
   return v9;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a5;
-  if ([a3 isEqualToString:@"isCancelled"])
+  changeCopy = change;
+  if ([path isEqualToString:@"isCancelled"])
   {
-    v8 = [v14 valueForKey:NSKeyValueChangeNewKey];
-    v9 = [v8 BOOLValue];
+    v8 = [changeCopy valueForKey:NSKeyValueChangeNewKey];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = [(MetaAction *)self embeddedAction];
+      embeddedAction = [(MetaAction *)self embeddedAction];
       v11 = objc_opt_respondsToSelector();
 
       if (v11)
       {
-        v12 = [(MetaAction *)self embeddedAction];
-        [v12 willCancelAction];
+        embeddedAction2 = [(MetaAction *)self embeddedAction];
+        [embeddedAction2 willCancelAction];
       }
 
-      v13 = [(MetaAction *)self synchronizer];
-      [v13 signal];
+      synchronizer = [(MetaAction *)self synchronizer];
+      [synchronizer signal];
     }
   }
 }
 
 - (NSString)description
 {
-  v3 = [(MetaAction *)self actionId];
-  v4 = [(MetaAction *)self _actionStateString];
-  v5 = [(MetaAction *)self embeddedAction];
-  v6 = [NSString stringWithFormat:@"#%@-%@-%@", v3, v4, v5];
+  actionId = [(MetaAction *)self actionId];
+  _actionStateString = [(MetaAction *)self _actionStateString];
+  embeddedAction = [(MetaAction *)self embeddedAction];
+  v6 = [NSString stringWithFormat:@"#%@-%@-%@", actionId, _actionStateString, embeddedAction];
 
   return v6;
 }
@@ -135,31 +135,31 @@
   return @"Wait";
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MetaAction *)self embeddedAction];
-  [v5 runWithCompletion:v4];
+  completionCopy = completion;
+  embeddedAction = [(MetaAction *)self embeddedAction];
+  [embeddedAction runWithCompletion:completionCopy];
 }
 
 - (id)actionType
 {
-  v2 = [(MetaAction *)self embeddedAction];
-  v3 = [v2 actionType];
+  embeddedAction = [(MetaAction *)self embeddedAction];
+  actionType = [embeddedAction actionType];
 
-  return v3;
+  return actionType;
 }
 
-- (BOOL)shouldCancelAction:(id)a3
+- (BOOL)shouldCancelAction:(id)action
 {
-  v4 = a3;
-  v5 = [(MetaAction *)self embeddedAction];
+  actionCopy = action;
+  embeddedAction = [(MetaAction *)self embeddedAction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MetaAction *)self embeddedAction];
-    v8 = [v7 shouldCancelAction:v4];
+    embeddedAction2 = [(MetaAction *)self embeddedAction];
+    v8 = [embeddedAction2 shouldCancelAction:actionCopy];
   }
 
   else
@@ -170,16 +170,16 @@
   return v8;
 }
 
-- (BOOL)shouldWaitForAction:(id)a3
+- (BOOL)shouldWaitForAction:(id)action
 {
-  v4 = a3;
-  v5 = [(MetaAction *)self embeddedAction];
+  actionCopy = action;
+  embeddedAction = [(MetaAction *)self embeddedAction];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(MetaAction *)self embeddedAction];
-    v8 = [v7 shouldWaitForAction:v4];
+    embeddedAction2 = [(MetaAction *)self embeddedAction];
+    v8 = [embeddedAction2 shouldWaitForAction:actionCopy];
   }
 
   else

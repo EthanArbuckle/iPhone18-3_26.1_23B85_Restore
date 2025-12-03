@@ -1,12 +1,12 @@
 @interface MNNavigationState
 - (BOOL)requiresLocationAccess;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (MNNavigationState)initWithStateManager:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (MNNavigationState)initWithStateManager:(id)manager;
 - (MNNavigationStateManager)stateManager;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (unint64_t)type;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation MNNavigationState
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   if ([(MNNavigationState *)self _isSelectorValidForForwarding:?])
   {
@@ -27,36 +27,36 @@
 
   v6.receiver = self;
   v6.super_class = MNNavigationState;
-  return [(MNNavigationState *)&v6 respondsToSelector:a3];
+  return [(MNNavigationState *)&v6 respondsToSelector:selector];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   if ([(MNNavigationState *)self _isSelectorValidForForwarding:?])
   {
-    v5 = [MEMORY[0x1E695DF68] _navigation_methodSignatureForEmptyMethod];
+    _navigation_methodSignatureForEmptyMethod = [MEMORY[0x1E695DF68] _navigation_methodSignatureForEmptyMethod];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MNNavigationState;
-    v5 = [(MNNavigationState *)&v7 methodSignatureForSelector:a3];
+    _navigation_methodSignatureForEmptyMethod = [(MNNavigationState *)&v7 methodSignatureForSelector:selector];
   }
 
-  return v5;
+  return _navigation_methodSignatureForEmptyMethod;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 selector];
-  if ([(MNNavigationState *)self _isSelectorValidForForwarding:v4])
+  selector = [invocation selector];
+  if ([(MNNavigationState *)self _isSelectorValidForForwarding:selector])
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = NSStringFromSelector(v4);
+      v6 = NSStringFromSelector(selector);
       v9 = 138412546;
       v10 = v6;
       v11 = 2112;
@@ -71,7 +71,7 @@
   {
     v8 = *MEMORY[0x1E69E9840];
 
-    [(MNNavigationState *)self doesNotRecognizeSelector:v4];
+    [(MNNavigationState *)self doesNotRecognizeSelector:selector];
   }
 }
 
@@ -88,9 +88,9 @@
   [(MNNavigationState *)&v4 dealloc];
 }
 
-- (MNNavigationState)initWithStateManager:(id)a3
+- (MNNavigationState)initWithStateManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = MNNavigationState;
   v5 = [(MNNavigationState *)&v10 init];
@@ -98,7 +98,7 @@
   if (v5)
   {
     *(v5 + 8) = xmmword_1D328D390;
-    objc_storeWeak(v5 + 3, v4);
+    objc_storeWeak(v5 + 3, managerCopy);
     if ([(MNNavigationState *)v6 requiresHighMemoryThreshold])
     {
       v7 = +[MNXPCTransactionManager sharedInstance];
@@ -113,13 +113,13 @@
 
 - (BOOL)requiresLocationAccess
 {
-  v3 = [(MNNavigationState *)self desiredLocationProviderType];
-  if (v3 != 1)
+  desiredLocationProviderType = [(MNNavigationState *)self desiredLocationProviderType];
+  if (desiredLocationProviderType != 1)
   {
-    LOBYTE(v3) = [(MNNavigationState *)self desiredLocationProviderType]== 2;
+    LOBYTE(desiredLocationProviderType) = [(MNNavigationState *)self desiredLocationProviderType]== 2;
   }
 
-  return v3;
+  return desiredLocationProviderType;
 }
 
 - (unint64_t)type

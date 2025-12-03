@@ -1,54 +1,54 @@
 @interface IOThreadXPCSemaphoreTransporter
-+ (id)semaphores:(const ClientIOThreadSynchronizerSemaphores *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)semaphores:(const ClientIOThreadSynchronizerSemaphores *)semaphores;
+- (BOOL)isEqual:(id)equal;
 - (ClientIOThreadSynchronizerSemaphores)getSemaphores;
-- (IOThreadXPCSemaphoreTransporter)initWithCoder:(id)a3;
-- (IOThreadXPCSemaphoreTransporter)initWithSemaphores:(id)a3 :(id)a4;
+- (IOThreadXPCSemaphoreTransporter)initWithCoder:(id)coder;
+- (IOThreadXPCSemaphoreTransporter)initWithSemaphores:(id)semaphores :(id)a4;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IOThreadXPCSemaphoreTransporter
 
 - (ClientIOThreadSynchronizerSemaphores)getSemaphores
 {
-  v3 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
+  clientPingableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
   v4 = xpc_mach_send_copy_right();
 
-  v5 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
+  clientListenableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
   v6 = xpc_mach_send_copy_right();
 
   return (v4 | (v6 << 32));
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
-    if (v6)
+    v5 = equalCopy;
+    clientPingableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
+    if (clientPingableSemaphore)
     {
     }
 
     else
     {
-      v8 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
+      clientListenableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
 
-      if (!v8)
+      if (!clientListenableSemaphore)
       {
-        v9 = [v5 clientPingableSemaphore];
-        if (v9)
+        clientPingableSemaphore2 = [v5 clientPingableSemaphore];
+        if (clientPingableSemaphore2)
         {
           v7 = 0;
           goto LABEL_10;
         }
 
-        v10 = [v5 clientListenableSemaphore];
-        v9 = 0;
-        v7 = v10 == 0;
+        clientListenableSemaphore2 = [v5 clientListenableSemaphore];
+        clientPingableSemaphore2 = 0;
+        v7 = clientListenableSemaphore2 == 0;
 LABEL_9:
 
 LABEL_10:
@@ -56,13 +56,13 @@ LABEL_10:
       }
     }
 
-    v9 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
-    v10 = [v5 clientPingableSemaphore];
-    if (xpc_equal(v9, v10))
+    clientPingableSemaphore2 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
+    clientListenableSemaphore2 = [v5 clientPingableSemaphore];
+    if (xpc_equal(clientPingableSemaphore2, clientListenableSemaphore2))
     {
-      v11 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
-      v12 = [v5 clientListenableSemaphore];
-      v7 = xpc_equal(v11, v12);
+      clientListenableSemaphore3 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
+      clientListenableSemaphore4 = [v5 clientListenableSemaphore];
+      v7 = xpc_equal(clientListenableSemaphore3, clientListenableSemaphore4);
     }
 
     else
@@ -79,43 +79,43 @@ LABEL_11:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"This object may only be decoded by an NSXPCCoder."];
   }
 
-  v9 = v4;
-  v5 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
+  v9 = coderCopy;
+  clientPingableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
 
-  if (v5)
+  if (clientPingableSemaphore)
   {
-    v6 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
+    clientPingableSemaphore2 = [(IOThreadXPCSemaphoreTransporter *)self clientPingableSemaphore];
   }
 
   else
   {
-    v6 = xpc_null_create();
+    clientPingableSemaphore2 = xpc_null_create();
   }
 
-  [v9 encodeXPCObject:v6 forKey:@"IOThreadXPCSemaphoreTransporterClientPingable"];
+  [v9 encodeXPCObject:clientPingableSemaphore2 forKey:@"IOThreadXPCSemaphoreTransporterClientPingable"];
 
-  v7 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
+  clientListenableSemaphore = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
 
-  if (v7)
+  if (clientListenableSemaphore)
   {
-    v8 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
+    clientListenableSemaphore2 = [(IOThreadXPCSemaphoreTransporter *)self clientListenableSemaphore];
   }
 
   else
   {
-    v8 = xpc_null_create();
+    clientListenableSemaphore2 = xpc_null_create();
   }
 
-  [v9 encodeXPCObject:v8 forKey:@"IOThreadXPCSemaphoreTransporterClientListenable"];
+  [v9 encodeXPCObject:clientListenableSemaphore2 forKey:@"IOThreadXPCSemaphoreTransporterClientListenable"];
 }
 
 - (void)dealloc
@@ -131,9 +131,9 @@ LABEL_11:
   [(IOThreadXPCSemaphoreTransporter *)&v5 dealloc];
 }
 
-- (IOThreadXPCSemaphoreTransporter)initWithCoder:(id)a3
+- (IOThreadXPCSemaphoreTransporter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -145,7 +145,7 @@ LABEL_11:
   v5 = [(IOThreadXPCSemaphoreTransporter *)&v17 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     v7 = [v6 decodeXPCObjectForKey:@"IOThreadXPCSemaphoreTransporterClientPingable"];
     clientPingableSemaphore = v5->_clientPingableSemaphore;
     v5->_clientPingableSemaphore = v7;
@@ -188,9 +188,9 @@ LABEL_13:
   return v15;
 }
 
-- (IOThreadXPCSemaphoreTransporter)initWithSemaphores:(id)a3 :(id)a4
+- (IOThreadXPCSemaphoreTransporter)initWithSemaphores:(id)semaphores :(id)a4
 {
-  v7 = a3;
+  semaphoresCopy = semaphores;
   v8 = a4;
   v12.receiver = self;
   v12.super_class = IOThreadXPCSemaphoreTransporter;
@@ -199,17 +199,17 @@ LABEL_13:
   if (v9)
   {
     objc_storeStrong(&v9->_clientPingableSemaphore, a4);
-    objc_storeStrong(&v10->_clientListenableSemaphore, a3);
+    objc_storeStrong(&v10->_clientListenableSemaphore, semaphores);
   }
 
   return v10;
 }
 
-+ (id)semaphores:(const ClientIOThreadSynchronizerSemaphores *)a3
++ (id)semaphores:(const ClientIOThreadSynchronizerSemaphores *)semaphores
 {
-  var1 = a3->var1;
+  var1 = semaphores->var1;
   v5 = xpc_mach_send_create();
-  var0 = a3->var0;
+  var0 = semaphores->var0;
   v7 = xpc_mach_send_create();
   v8 = [[IOThreadXPCSemaphoreTransporter alloc] initWithSemaphores:v5];
 

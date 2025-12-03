@@ -1,14 +1,14 @@
 @interface ATXClientModelCacheManager
 - (ATXClientModelCacheManager)init;
-- (double)cacheAgeForClientModel:(id)a3;
-- (id)cacheFileHandlerForClientModel:(id)a3 guardedData:(id)a4;
+- (double)cacheAgeForClientModel:(id)model;
+- (id)cacheFileHandlerForClientModel:(id)model guardedData:(id)data;
 - (id)cachedSuggestionsForAllClientModels;
-- (id)cachedSuggestionsForClientModel:(id)a3;
-- (id)lastCacheUpdateDateForClientModel:(id)a3;
+- (id)cachedSuggestionsForClientModel:(id)model;
+- (id)lastCacheUpdateDateForClientModel:(id)model;
 - (void)addCacheHandlersForExistingClientModelCaches;
-- (void)addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:(id)a3 clientModelId:(id)a4;
+- (void)addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:(id)data clientModelId:(id)id;
 - (void)initGuardedData;
-- (void)updateCachedSuggestions:(id)a3;
+- (void)updateCachedSuggestions:(id)suggestions;
 @end
 
 @implementation ATXClientModelCacheManager
@@ -108,9 +108,9 @@ void __65__ATXClientModelCacheManager_cachedSuggestionsForAllClientModels__block
 - (void)addCacheHandlersForExistingClientModelCaches
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(ATXClientModelCacheManager *)self cacheDirectory];
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cacheDirectory = [(ATXClientModelCacheManager *)self cacheDirectory];
+  v5 = [defaultManager contentsOfDirectoryAtPath:cacheDirectory error:0];
 
   if (v5)
   {
@@ -175,9 +175,9 @@ void __74__ATXClientModelCacheManager_addCacheHandlersForExistingClientModelCach
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)cachedSuggestionsForClientModel:(id)a3
+- (id)cachedSuggestionsForClientModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -190,7 +190,7 @@ void __74__ATXClientModelCacheManager_addCacheHandlersForExistingClientModelCach
   v9[2] = __62__ATXClientModelCacheManager_cachedSuggestionsForClientModel___block_invoke;
   v9[3] = &unk_1E86A3F68;
   v9[4] = self;
-  v6 = v4;
+  v6 = modelCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)clientModelCacheHandlersLock runWithLockAcquired:v9];
@@ -214,9 +214,9 @@ void __62__ATXClientModelCacheManager_cachedSuggestionsForClientModel___block_in
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)lastCacheUpdateDateForClientModel:(id)a3
+- (id)lastCacheUpdateDateForClientModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -229,7 +229,7 @@ void __62__ATXClientModelCacheManager_cachedSuggestionsForClientModel___block_in
   v9[2] = __64__ATXClientModelCacheManager_lastCacheUpdateDateForClientModel___block_invoke;
   v9[3] = &unk_1E86A3F68;
   v9[4] = self;
-  v6 = v4;
+  v6 = modelCopy;
   v10 = v6;
   v11 = &v12;
   [(_PASLock *)clientModelCacheHandlersLock runWithLockAcquired:v9];
@@ -286,9 +286,9 @@ void __64__ATXClientModelCacheManager_lastCacheUpdateDateForClientModel___block_
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (double)cacheAgeForClientModel:(id)a3
+- (double)cacheAgeForClientModel:(id)model
 {
-  v3 = [(ATXClientModelCacheManager *)self lastCacheUpdateDateForClientModel:a3];
+  v3 = [(ATXClientModelCacheManager *)self lastCacheUpdateDateForClientModel:model];
   v4 = v3;
   if (v3)
   {
@@ -304,17 +304,17 @@ void __64__ATXClientModelCacheManager_lastCacheUpdateDateForClientModel___block_
   return v6;
 }
 
-- (void)updateCachedSuggestions:(id)a3
+- (void)updateCachedSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   clientModelCacheHandlersLock = self->_clientModelCacheHandlersLock;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__ATXClientModelCacheManager_updateCachedSuggestions___block_invoke;
   v7[3] = &unk_1E86A3F18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = suggestionsCopy;
+  selfCopy = self;
+  v6 = suggestionsCopy;
   [(_PASLock *)clientModelCacheHandlersLock runWithLockAcquired:v7];
 }
 
@@ -336,28 +336,28 @@ void __54__ATXClientModelCacheManager_updateCachedSuggestions___block_invoke(uin
   }
 }
 
-- (id)cacheFileHandlerForClientModel:(id)a3 guardedData:(id)a4
+- (id)cacheFileHandlerForClientModel:(id)model guardedData:(id)data
 {
-  v7 = *(a4 + 1);
-  v8 = a3;
-  [(ATXClientModelCacheManager *)self addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:a4 clientModelId:v8];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v7 = *(data + 1);
+  modelCopy = model;
+  [(ATXClientModelCacheManager *)self addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:data clientModelId:modelCopy];
+  v9 = [v7 objectForKeyedSubscript:modelCopy];
 
   return v9;
 }
 
-- (void)addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:(id)a3 clientModelId:(id)a4
+- (void)addNewCacheHandlerIfNeededGivenExistingCacheHandlersInGuardedData:(id)data clientModelId:(id)id
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11[1] objectForKeyedSubscript:v6];
+  dataCopy = data;
+  idCopy = id;
+  v7 = [dataCopy[1] objectForKeyedSubscript:idCopy];
 
   if (!v7)
   {
     v8 = [ATXClientModelCacheFileHandler alloc];
-    v9 = [(ATXClientModelCacheManager *)self cacheDirectory];
-    v10 = [(ATXClientModelCacheFileHandler *)v8 initWithCacheFileBasePath:v9 clientModelId:v6];
-    [v11[1] setObject:v10 forKeyedSubscript:v6];
+    cacheDirectory = [(ATXClientModelCacheManager *)self cacheDirectory];
+    v10 = [(ATXClientModelCacheFileHandler *)v8 initWithCacheFileBasePath:cacheDirectory clientModelId:idCopy];
+    [dataCopy[1] setObject:v10 forKeyedSubscript:idCopy];
   }
 }
 

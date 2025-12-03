@@ -2,11 +2,11 @@
 + (UIHoverStyle)automaticStyle;
 + (UIHoverStyle)styleWithEffect:(id)effect shape:(UIShape *)shape;
 + (UIHoverStyle)styleWithShape:(UIShape *)shape;
-- (BOOL)isEqual:(id)a3;
-- (UIHoverStyle)styleWithEffect:(id)a3 shape:(id)a4;
-- (UIHoverStyle)styleWithShape:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UIHoverStyle)styleWithEffect:(id)effect shape:(id)shape;
+- (UIHoverStyle)styleWithShape:(id)shape;
 - (UIShape)shape;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (id)effect;
 - (void)_invalidateAutomaticHoverEffect;
 - (void)_invalidateAutomaticHoverShape;
@@ -19,13 +19,13 @@
 
 - (void)_invalidateAutomaticHoverShape
 {
-  v2 = self;
+  selfCopy = self;
   sub_188BE0090(0, sub_188BE0A88, 0);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_188CB0470(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);
@@ -39,8 +39,8 @@
   v4 = OBJC_IVAR___UIHoverStyle__isEnabled;
   v5 = *(&self->super.isa + OBJC_IVAR___UIHoverStyle__isEnabled);
   *(&self->super.isa + OBJC_IVAR___UIHoverStyle__isEnabled) = enabled;
-  v8 = self;
-  if (v5 != [(UIHoverStyle *)v8 isEnabled])
+  selfCopy = self;
+  if (v5 != [(UIHoverStyle *)selfCopy isEnabled])
   {
     v6 = *(&self->super.isa + v4);
     v7 = swift_allocObject();
@@ -51,13 +51,13 @@
 
 - (void)_invalidateAutomaticHoverEffect
 {
-  v2 = self;
+  selfCopy = self;
   sub_188BE0090(0, sub_188CF8B40, 0);
 }
 
 - (id)effect
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1892168A4();
 
   return v3;
@@ -66,13 +66,13 @@
 - (void)setEffect:(id)effect
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_1892169DC(effect);
 }
 
 - (UIShape)shape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_189216CD4();
 
   return v3;
@@ -81,18 +81,18 @@
 - (void)setShape:(UIShape *)shape
 {
   v5 = shape;
-  v6 = self;
+  selfCopy = self;
   sub_189216E84(shape);
 }
 
-- (UIHoverStyle)styleWithEffect:(id)a3 shape:(id)a4
+- (UIHoverStyle)styleWithEffect:(id)effect shape:(id)shape
 {
   v6 = objc_allocWithZone(swift_getObjCClassFromObject());
   swift_unknownObjectRetain();
-  v7 = a4;
+  shapeCopy = shape;
   v8 = [v6 init];
-  [(UIHoverStyle *)v8 setEffect:a3];
-  [(UIHoverStyle *)v8 setShape:v7];
+  [(UIHoverStyle *)v8 setEffect:effect];
+  [(UIHoverStyle *)v8 setShape:shapeCopy];
   swift_unknownObjectRelease();
 
   swift_getObjectType();
@@ -100,12 +100,12 @@
   return v8;
 }
 
-- (UIHoverStyle)styleWithShape:(id)a3
+- (UIHoverStyle)styleWithShape:(id)shape
 {
   v4 = objc_allocWithZone(swift_getObjCClassFromObject());
-  v5 = a3;
+  shapeCopy = shape;
   v6 = [v4 init];
-  [(UIHoverStyle *)v6 setShape:v5];
+  [(UIHoverStyle *)v6 setShape:shapeCopy];
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
@@ -143,11 +143,11 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18A4A7DE8();
     swift_unknownObjectRelease();
@@ -156,7 +156,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = UIHoverStyle.isEqual(_:)(v8);

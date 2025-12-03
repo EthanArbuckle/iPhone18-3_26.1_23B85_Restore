@@ -6,8 +6,8 @@
 
 - (BOOL)_isFullyInitialized
 {
-  v2 = [(SGDSpotlightReceiver *)self suggestManager];
-  v3 = v2 != 0;
+  suggestManager = [(SGDSpotlightReceiver *)self suggestManager];
+  v3 = suggestManager != 0;
 
   return v3;
 }

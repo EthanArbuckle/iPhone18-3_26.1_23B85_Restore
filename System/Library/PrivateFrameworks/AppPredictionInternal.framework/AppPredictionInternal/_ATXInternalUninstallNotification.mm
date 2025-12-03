@@ -1,5 +1,5 @@
 @interface _ATXInternalUninstallNotification
-+ (void)postNotificationWithUninstallSet:(id)a3 histogramBundleIdTable:(id)a4;
++ (void)postNotificationWithUninstallSet:(id)set histogramBundleIdTable:(id)table;
 - (_ATXInternalUninstallNotification)init;
 @end
 
@@ -20,17 +20,17 @@
   return v2;
 }
 
-+ (void)postNotificationWithUninstallSet:(id)a3 histogramBundleIdTable:(id)a4
++ (void)postNotificationWithUninstallSet:(id)set histogramBundleIdTable:(id)table
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [_ATXInternalNotification postData:v5 forNotificationNamed:@"com.apple.duetexpertd._ATXInternalUninstallNotification.appUninstalled"];
+  setCopy = set;
+  tableCopy = table;
+  [_ATXInternalNotification postData:setCopy forNotificationNamed:@"com.apple.duetexpertd._ATXInternalUninstallNotification.appUninstalled"];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v5;
+  v7 = setCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -46,7 +46,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [v6 remove:{*(*(&v13 + 1) + 8 * v11++), v13}];
+        [tableCopy remove:{*(*(&v13 + 1) + 8 * v11++), v13}];
       }
 
       while (v9 != v11);

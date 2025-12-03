@@ -2,10 +2,10 @@
 + (BOOL)personasAreSupported;
 + (id)invalidPersona;
 + (id)nullPersona;
-+ (id)personaWithUserPersonaAttributes:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersona:(id)a3;
-- (PKDPersona)initWithPersonaID:(id)a3 enterprise:(BOOL)a4;
++ (id)personaWithUserPersonaAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersona:(id)persona;
+- (PKDPersona)initWithPersonaID:(id)d enterprise:(BOOL)enterprise;
 - (id)description;
 @end
 
@@ -25,27 +25,27 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(PKDPersona *)self personaID];
-  v6 = [(PKDPersona *)self isEnterprise];
+  personaID = [(PKDPersona *)self personaID];
+  isEnterprise = [(PKDPersona *)self isEnterprise];
   v7 = "NO";
-  if (v6)
+  if (isEnterprise)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 initWithFormat:@"%@: personaID: %@, isEnterprise: %s", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"%@: personaID: %@, isEnterprise: %s", v4, personaID, v7];
 
   return v8;
 }
 
-+ (id)personaWithUserPersonaAttributes:(id)a3
++ (id)personaWithUserPersonaAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 userPersona_id]);
-  v6 = [a1 alloc];
-  v7 = [v4 isEnterprisePersona];
+  attributesCopy = attributes;
+  v5 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [attributesCopy userPersona_id]);
+  v6 = [self alloc];
+  isEnterprisePersona = [attributesCopy isEnterprisePersona];
 
-  v8 = [v6 initWithPersonaID:v5 enterprise:v7];
+  v8 = [v6 initWithPersonaID:v5 enterprise:isEnterprisePersona];
 
   return v8;
 }
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __38__PKDPersona_Personas__invalidPersona__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (invalidPersona_onceToken != -1)
   {
     dispatch_once(&invalidPersona_onceToken, block);
@@ -80,7 +80,7 @@ uint64_t __38__PKDPersona_Personas__invalidPersona__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__PKDPersona_Personas__nullPersona__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (nullPersona_onceToken != -1)
   {
     dispatch_once(&nullPersona_onceToken, block);
@@ -98,17 +98,17 @@ uint64_t __35__PKDPersona_Personas__nullPersona__block_invoke(uint64_t a1)
   return _objc_release_x1();
 }
 
-- (PKDPersona)initWithPersonaID:(id)a3 enterprise:(BOOL)a4
+- (PKDPersona)initWithPersonaID:(id)d enterprise:(BOOL)enterprise
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PKDPersona;
   v8 = [(PKDPersona *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_personaID, a3);
-    v9->_enterprise = a4;
+    objc_storeStrong(&v8->_personaID, d);
+    v9->_enterprise = enterprise;
   }
 
   return v9;
@@ -177,12 +177,12 @@ LABEL_8:
   }
 }
 
-- (BOOL)isEqualToPersona:(id)a3
+- (BOOL)isEqualToPersona:(id)persona
 {
-  v4 = a3;
-  if ([(NSNumber *)self->_personaID isEqual:v4[2]])
+  personaCopy = persona;
+  if ([(NSNumber *)self->_personaID isEqual:personaCopy[2]])
   {
-    v5 = self->_enterprise == *(v4 + 8);
+    v5 = self->_enterprise == *(personaCopy + 8);
   }
 
   else
@@ -193,14 +193,14 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKDPersona *)self isEqualToPersona:v4];
+    v5 = [(PKDPersona *)self isEqualToPersona:equalCopy];
   }
 
   return v5;

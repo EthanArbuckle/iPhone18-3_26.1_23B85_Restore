@@ -37,8 +37,8 @@ void __36__NTKCTinCanSettings_sharedInstance__block_invoke()
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _NTKCTinCanSettings_HandleSettingsChanged, *MEMORY[0x277D71528], v2, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel__handlePrefsChanged name:*MEMORY[0x277D37C08] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handlePrefsChanged name:*MEMORY[0x277D37C08] object:0];
 
     [(NTKCTinCanSettings *)v2 _readValue];
   }
@@ -50,8 +50,8 @@ void __36__NTKCTinCanSettings_sharedInstance__block_invoke()
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D71528], self);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D37C08] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D37C08] object:0];
 
   v5.receiver = self;
   v5.super_class = NTKCTinCanSettings;
@@ -60,14 +60,14 @@ void __36__NTKCTinCanSettings_sharedInstance__block_invoke()
 
 - (void)_readValue
 {
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 isPaired];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isPaired = [currentDevice isPaired];
 
-  if (v4)
+  if (isPaired)
   {
     v5 = objc_alloc(MEMORY[0x277D2BA58]);
     v6 = [v5 initWithDomain:*MEMORY[0x277D71538]];
-    v7 = [v6 synchronize];
+    synchronize = [v6 synchronize];
     v9 = 0;
     v8 = [v6 BOOLForKey:*MEMORY[0x277D71530] keyExistsAndHasValidFormat:&v9];
     self->_tinCanEnabled = v8 & 1 | ((v9 & 1) == 0);
@@ -88,8 +88,8 @@ void __36__NTKCTinCanSettings_sharedInstance__block_invoke()
 
 - (void)_notifyClientsOfChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"NTKCTinCanSettingsChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"NTKCTinCanSettingsChangedNotification" object:self];
 }
 
 @end

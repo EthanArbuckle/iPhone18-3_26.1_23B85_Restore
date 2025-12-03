@@ -1,14 +1,14 @@
 @interface SKLastPartitions
-+ (unint64_t)hfsMinimalSizeForDisk:(id)a3 currentSize:(unint64_t *)a4;
-+ (unint64_t)secondaryPartitionTableSizeWithDiskType:(id)a3;
-- (SKLastPartitions)initWithDisk:(id)a3;
++ (unint64_t)hfsMinimalSizeForDisk:(id)disk currentSize:(unint64_t *)size;
++ (unint64_t)secondaryPartitionTableSizeWithDiskType:(id)type;
+- (SKLastPartitions)initWithDisk:(id)disk;
 @end
 
 @implementation SKLastPartitions
 
-- (SKLastPartitions)initWithDisk:(id)a3
+- (SKLastPartitions)initWithDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v26.receiver = self;
   v26.super_class = SKLastPartitions;
   v5 = [(SKLastPartitions *)&v26 init];
@@ -17,20 +17,20 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 children];
-  v7 = v6;
-  if (v6 && [v6 count])
+  children = [diskCopy children];
+  v7 = children;
+  if (children && [children count])
   {
-    v8 = [v7 lastObject];
-    objc_storeStrong(&v5->_resizablePart, v8);
+    lastObject = [v7 lastObject];
+    objc_storeStrong(&v5->_resizablePart, lastObject);
     if ([v7 count] >= 2)
     {
-      v9 = [v8 ioContent];
-      v10 = [v9 isEqualToString:@"Apple_APFS_Recovery"];
+      ioContent = [lastObject ioContent];
+      v10 = [ioContent isEqualToString:@"Apple_APFS_Recovery"];
 
       if (v10)
       {
-        v11 = v8;
+        v11 = lastObject;
         recoveryPart = v5->_recoveryPart;
         v5->_recoveryPart = v11;
       }
@@ -43,20 +43,20 @@
           goto LABEL_19;
         }
 
-        v19 = [v8 container];
-        recoveryPart = v19;
-        if (v19)
+        container = [lastObject container];
+        recoveryPart = container;
+        if (container)
         {
-          v20 = [(SKDisk *)v19 volumes];
-          if ([v20 count] == 1)
+          volumes = [(SKDisk *)container volumes];
+          if ([volumes count] == 1)
           {
-            v21 = [v20 objectAtIndexedSubscript:0];
-            v22 = [v21 getAPFSVolumeRole];
-            v23 = [v22 isEqualToString:SKAPFSVolumeRoleRecovery];
+            v21 = [volumes objectAtIndexedSubscript:0];
+            getAPFSVolumeRole = [v21 getAPFSVolumeRole];
+            v23 = [getAPFSVolumeRole isEqualToString:SKAPFSVolumeRoleRecovery];
 
             if (v23)
             {
-              objc_storeStrong(&v5->_recoveryPart, v8);
+              objc_storeStrong(&v5->_recoveryPart, lastObject);
             }
           }
         }
@@ -74,15 +74,15 @@ LABEL_19:
 
   else
   {
-    v13 = v4;
-    v8 = v5->_resizablePart;
+    v13 = diskCopy;
+    lastObject = v5->_resizablePart;
     v5->_resizablePart = v13;
   }
 
-  v14 = [(SKDisk *)v5->_resizablePart startLocation];
+  startLocation = [(SKDisk *)v5->_resizablePart startLocation];
   v15 = objc_opt_class();
-  v16 = [v4 type];
-  v5->_nonResizableSize = v14 + [v15 secondaryPartitionTableSizeWithDiskType:v16];
+  type = [diskCopy type];
+  v5->_nonResizableSize = startLocation + [v15 secondaryPartitionTableSizeWithDiskType:type];
 
   v17 = v5->_recoveryPart;
   if (v17)
@@ -94,9 +94,9 @@ LABEL_11:
   return v5;
 }
 
-+ (unint64_t)secondaryPartitionTableSizeWithDiskType:(id)a3
++ (unint64_t)secondaryPartitionTableSizeWithDiskType:(id)type
 {
-  if ([a3 isEqualToString:kSKDiskTypeGPTWholeDisk])
+  if ([type isEqualToString:kSKDiskTypeGPTWholeDisk])
   {
     return 20480;
   }
@@ -107,18 +107,18 @@ LABEL_11:
   }
 }
 
-+ (unint64_t)hfsMinimalSizeForDisk:(id)a3 currentSize:(unint64_t *)a4
++ (unint64_t)hfsMinimalSizeForDisk:(id)disk currentSize:(unint64_t *)size
 {
-  v5 = a3;
-  v6 = [v5 type];
-  v7 = [v6 isEqualToString:kSKDiskTypeHFS];
+  diskCopy = disk;
+  type = [diskCopy type];
+  v7 = [type isEqualToString:kSKDiskTypeHFS];
 
   if (v7)
   {
     v19 = 0u;
     v20 = 0u;
     v18 = 0;
-    v8 = [SKPartitionTable createMediaRefWithDisk:v5 error:&v18];
+    v8 = [SKPartitionTable createMediaRefWithDisk:diskCopy error:&v18];
     v9 = v18;
     if (v8)
     {
@@ -126,13 +126,13 @@ LABEL_11:
       CFRelease(v8);
       if (!v10)
       {
-        v16 = [v5 getSectorSize];
-        if (a4)
+        getSectorSize = [diskCopy getSectorSize];
+        if (size)
         {
-          *a4 = v19 * v16;
+          *size = v19 * getSectorSize;
         }
 
-        v15 = v20 * v16;
+        totalSpace = v20 * getSectorSize;
         goto LABEL_14;
       }
 
@@ -142,7 +142,7 @@ LABEL_11:
         *buf = 136315650;
         v22 = "+[SKLastPartitions hfsMinimalSizeForDisk:currentSize:]";
         v23 = 2112;
-        v24 = v5;
+        v24 = diskCopy;
         v25 = 1024;
         LODWORD(v26) = v10;
         v12 = "%s: Failed to get size from %@, %d";
@@ -161,7 +161,7 @@ LABEL_9:
         *buf = 136315650;
         v22 = "+[SKLastPartitions hfsMinimalSizeForDisk:currentSize:]";
         v23 = 2112;
-        v24 = v5;
+        v24 = diskCopy;
         v25 = 2112;
         v26 = v9;
         v12 = "%s: Failed to read media from %@, %@";
@@ -171,16 +171,16 @@ LABEL_9:
       }
     }
 
-    v15 = [v5 totalSpace];
+    totalSpace = [diskCopy totalSpace];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v15 = [v5 totalSpace];
+  totalSpace = [diskCopy totalSpace];
 LABEL_15:
 
-  return v15;
+  return totalSpace;
 }
 
 @end

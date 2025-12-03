@@ -2,9 +2,9 @@
 + (id)components;
 - (BOOL)uiControllerLoaded;
 - (id)createAppleConnectImpl;
-- (id)createAppleConnectImplWithMasterObject:(id)a3;
+- (id)createAppleConnectImplWithMasterObject:(id)object;
 - (id)createAuthenticationRequest;
-- (id)createHandlerWithClass:(Class)a3 context:(id)a4;
+- (id)createHandlerWithClass:(Class)class context:(id)context;
 - (id)preferences;
 - (id)twoSVController;
 - (id)uiController;
@@ -15,7 +15,7 @@
 
 + (id)components
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ACMExternalAppleConnectImplComponents;
   return objc_msgSendSuper2(&v3, sel_components);
 }
@@ -94,26 +94,26 @@
   return v2;
 }
 
-- (id)createAppleConnectImplWithMasterObject:(id)a3
+- (id)createAppleConnectImplWithMasterObject:(id)object
 {
-  v3 = [[ACMExternalAppleConnectImpl alloc] initWithMasterObject:a3];
+  v3 = [[ACMExternalAppleConnectImpl alloc] initWithMasterObject:object];
 
   return v3;
 }
 
-- (id)createHandlerWithClass:(Class)a3 context:(id)a4
+- (id)createHandlerWithClass:(Class)class context:(id)context
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
 
-    return [(ACCHTTPHandler *)ACMHTTPExternalAuthenticationHandler handlerWithContext:a4];
+    return [(ACCHTTPHandler *)ACMHTTPExternalAuthenticationHandler handlerWithContext:context];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ACMExternalAppleConnectImplComponents;
-    return [(ACMAppleConnectImplComponents *)&v8 createHandlerWithClass:a3 context:a4];
+    return [(ACMAppleConnectImplComponents *)&v8 createHandlerWithClass:class context:context];
   }
 }
 

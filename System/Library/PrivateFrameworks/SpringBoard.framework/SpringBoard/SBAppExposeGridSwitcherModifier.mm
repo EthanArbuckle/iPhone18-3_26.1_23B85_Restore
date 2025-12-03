@@ -1,35 +1,35 @@
 @interface SBAppExposeGridSwitcherModifier
 - (CGSize)floatingCardSize;
 - (CGSize)fullScreenCardSize;
-- (SBAppExposeGridSwitcherModifier)initWithBundleIdentifier:(id)a3 fullScreenCardSize:(CGSize)a4 floatingCardSize:(CGSize)a5;
+- (SBAppExposeGridSwitcherModifier)initWithBundleIdentifier:(id)identifier fullScreenCardSize:(CGSize)size floatingCardSize:(CGSize)cardSize;
 - (double)reopenClosedWindowsButtonAlpha;
 - (double)reopenClosedWindowsButtonScale;
 - (id)_updateReopenClosedWindowsButtonPresence;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
 - (id)appLayoutToScrollToBeforeReopeningClosedWindows;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)handleInsertionEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)handleInsertionEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBAppExposeGridSwitcherModifier
 
-- (SBAppExposeGridSwitcherModifier)initWithBundleIdentifier:(id)a3 fullScreenCardSize:(CGSize)a4 floatingCardSize:(CGSize)a5
+- (SBAppExposeGridSwitcherModifier)initWithBundleIdentifier:(id)identifier fullScreenCardSize:(CGSize)size floatingCardSize:(CGSize)cardSize
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4.height;
-  v8 = a4.width;
-  v10 = a3;
+  height = cardSize.height;
+  width = cardSize.width;
+  v7 = size.height;
+  v8 = size.width;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = SBAppExposeGridSwitcherModifier;
   v11 = [(SBSwitcherModifier *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
@@ -43,12 +43,12 @@
   return v11;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v7.receiver = self;
   v7.super_class = SBAppExposeGridSwitcherModifier;
   [(SBChainableModifier *)&v7 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (!self->_mixedGridModifier)
     {
@@ -64,11 +64,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SBAppExposeGridSwitcherModifier;
-  v4 = [(SBChainableModifier *)&v8 copyWithZone:a3];
+  v4 = [(SBChainableModifier *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_bundleIdentifier copy];
   v6 = *(v4 + 22);
   *(v4 + 22) = v5;
@@ -79,33 +79,33 @@
   return v4;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SBAppExposeGridSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v11 handleTransitionEvent:v4];
-  if ([v4 toEnvironmentMode] == 2 && objc_msgSend(v4, "fromEnvironmentMode") != 2)
+  v5 = [(SBSwitcherModifier *)&v11 handleTransitionEvent:eventCopy];
+  if ([eventCopy toEnvironmentMode] == 2 && objc_msgSend(eventCopy, "fromEnvironmentMode") != 2)
   {
     self->_previousContentOffset = SBInvalidPoint;
     self->_isScrollingForward = 1;
   }
 
-  v6 = [v4 fromAppExposeBundleID];
-  if (v6)
+  fromAppExposeBundleID = [eventCopy fromAppExposeBundleID];
+  if (fromAppExposeBundleID)
   {
-    v7 = v6;
+    v7 = fromAppExposeBundleID;
   }
 
   else
   {
-    if ([v4 phase] != 2)
+    if ([eventCopy phase] != 2)
     {
       goto LABEL_9;
     }
 
-    v8 = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
-    v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v8 toResponse:v5];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
+    v9 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:_updateReopenClosedWindowsButtonPresence toResponse:v5];
 
     v7 = objc_alloc_init(SBInvalidateReopenButtonTextSwitcherEventResponse);
     v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v9];
@@ -116,18 +116,18 @@ LABEL_9:
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SBAppExposeGridSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v11 handleRemovalEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v11 handleRemovalEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 2)
+  if (phase == 2)
   {
-    v7 = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
-    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v5];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
+    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:_updateReopenClosedWindowsButtonPresence toResponse:v5];
 
     v9 = objc_alloc_init(SBInvalidateReopenButtonTextSwitcherEventResponse);
     v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:v8];
@@ -136,18 +136,18 @@ LABEL_9:
   return v5;
 }
 
-- (id)handleInsertionEvent:(id)a3
+- (id)handleInsertionEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBAppExposeGridSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleInsertionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleInsertionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 == 2)
+  if (phase == 2)
   {
-    v7 = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
-    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v5];
+    _updateReopenClosedWindowsButtonPresence = [(SBAppExposeGridSwitcherModifier *)self _updateReopenClosedWindowsButtonPresence];
+    v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:_updateReopenClosedWindowsButtonPresence toResponse:v5];
 
     v5 = v8;
   }
@@ -155,16 +155,16 @@ LABEL_9:
   return v5;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBAppExposeGridSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"kSBAppExposeModifierShowReopenButtonReason"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"kSBAppExposeModifierShowReopenButtonReason"];
+  if (eventCopy)
   {
     self->_isShowingReopenClosedWindowsButton = 1;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:8 updateMode:3];
@@ -176,12 +176,12 @@ LABEL_9:
   return v5;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutsCopy = layouts;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SBMixedGridSwitcherModifier *)self->_mixedGridModifier adjustedAppLayoutsForAppLayouts:v4];
+  v6 = [(SBMixedGridSwitcherModifier *)self->_mixedGridModifier adjustedAppLayoutsForAppLayouts:layoutsCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -235,9 +235,9 @@ LABEL_9:
     return 1.0;
   }
 
-  v3 = [(SBAppExposeGridSwitcherModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
-  [v4 reopenButtonInitialScale];
+  switcherSettings = [(SBAppExposeGridSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  [animationSettings reopenButtonInitialScale];
   v6 = v5;
 
   return v6;
@@ -245,29 +245,29 @@ LABEL_9:
 
 - (id)appLayoutToScrollToBeforeReopeningClosedWindows
 {
-  v3 = [(SBAppExposeGridSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBAppExposeGridSwitcherModifier *)self appLayouts];
   if ([(SBMixedGridSwitcherModifier *)self->_mixedGridModifier numberOfFloatingAppLayouts])
   {
-    v4 = [(SBMixedGridSwitcherModifier *)self->_mixedGridModifier indexOfFirstMainAppLayoutFromAppLayouts:v3];
+    v4 = [(SBMixedGridSwitcherModifier *)self->_mixedGridModifier indexOfFirstMainAppLayoutFromAppLayouts:appLayouts];
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v3 lastObject];
+      [appLayouts lastObject];
     }
 
     else
     {
-      [v3 objectAtIndex:v4 - 1];
+      [appLayouts objectAtIndex:v4 - 1];
     }
-    v5 = ;
+    firstObject = ;
   }
 
   else
   {
-    v5 = [v3 firstObject];
+    firstObject = [appLayouts firstObject];
   }
 
-  v6 = v5;
-  if (v5 && -[SBMixedGridSwitcherModifier isIndexVisible:](self->_mixedGridModifier, "isIndexVisible:", [v3 indexOfObject:v5]))
+  v6 = firstObject;
+  if (firstObject && -[SBMixedGridSwitcherModifier isIndexVisible:](self->_mixedGridModifier, "isIndexVisible:", [appLayouts indexOfObject:firstObject]))
   {
 
     v6 = 0;
@@ -278,15 +278,15 @@ LABEL_9:
 
 - (id)_updateReopenClosedWindowsButtonPresence
 {
-  v3 = [(SBAppExposeGridSwitcherModifier *)self _canShowReopenClosedWindowsButton];
+  _canShowReopenClosedWindowsButton = [(SBAppExposeGridSwitcherModifier *)self _canShowReopenClosedWindowsButton];
   self->_numberOfHiddenAppLayouts = [(SBAppExposeGridSwitcherModifier *)self numberOfHiddenAppLayoutsForBundleIdentifier:self->_bundleIdentifier];
   v4 = 0;
-  if ([(SBAppExposeGridSwitcherModifier *)self _canShowReopenClosedWindowsButton]&& !v3)
+  if ([(SBAppExposeGridSwitcherModifier *)self _canShowReopenClosedWindowsButton]&& !_canShowReopenClosedWindowsButton)
   {
     self->_isShowingReopenClosedWindowsButton = 0;
-    v5 = [(SBAppExposeGridSwitcherModifier *)self switcherSettings];
-    v6 = [v5 animationSettings];
-    [v6 reopenButtonFadeInDelay];
+    switcherSettings = [(SBAppExposeGridSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings reopenButtonFadeInDelay];
     v8 = v7;
 
     objc_initWeak(&location, self);

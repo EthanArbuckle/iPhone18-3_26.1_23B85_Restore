@@ -1,11 +1,11 @@
 @interface VehicleBatteryView
-+ (id)colorForBatteryLevel:(unint64_t)a3;
-- (VehicleBatteryView)initWithVehicle:(id)a3 configuration:(int64_t)a4 batteryChargeTextAtEdge:(unint64_t)a5;
++ (id)colorForBatteryLevel:(unint64_t)level;
+- (VehicleBatteryView)initWithVehicle:(id)vehicle configuration:(int64_t)configuration batteryChargeTextAtEdge:(unint64_t)edge;
 - (void)_setupConstraints;
 - (void)_setupStyling;
 - (void)refreshState;
-- (void)setReloading:(BOOL)a3;
-- (void)setVehicle:(id)a3;
+- (void)setReloading:(BOOL)reloading;
+- (void)setVehicle:(id)vehicle;
 @end
 
 @implementation VehicleBatteryView
@@ -17,62 +17,62 @@
     [(VehicleBatteryView *)self setReloading:1];
     objc_initWeak(&location, self);
     v5 = +[VGVirtualGarageService sharedService];
-    v6 = [(VGVehicle *)self->_vehicle identifier];
+    identifier = [(VGVehicle *)self->_vehicle identifier];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100E587B8;
     v7[3] = &unk_101656398;
     objc_copyWeak(&v8, &location);
-    [v5 virtualGarageGetLatestStateOfVehicleWithIdentifier:v6 syncAcrossDevices:1 withReply:v7];
+    [v5 virtualGarageGetLatestStateOfVehicleWithIdentifier:identifier syncAcrossDevices:1 withReply:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)setReloading:(BOOL)a3
+- (void)setReloading:(BOOL)reloading
 {
-  if (self->_reloading != a3)
+  if (self->_reloading != reloading)
   {
-    self->_reloading = a3;
+    self->_reloading = reloading;
     batteryStateAgeView = self->_batteryStateAgeView;
-    if (a3)
+    if (reloading)
     {
       [(BatteryStateAgeView *)batteryStateAgeView startAnimating];
-      v6 = [(VGVehicle *)self->_vehicle identifier];
+      identifier = [(VGVehicle *)self->_vehicle identifier];
     }
 
     else
     {
       [(BatteryStateAgeView *)batteryStateAgeView stopAnimating];
-      v6 = 0;
+      identifier = 0;
     }
 
     identifierOfCurrentlyLoadingVehicle = self->_identifierOfCurrentlyLoadingVehicle;
-    self->_identifierOfCurrentlyLoadingVehicle = v6;
+    self->_identifierOfCurrentlyLoadingVehicle = identifier;
   }
 }
 
-- (void)setVehicle:(id)a3
+- (void)setVehicle:(id)vehicle
 {
-  v5 = a3;
-  if (self->_vehicle != v5)
+  vehicleCopy = vehicle;
+  if (self->_vehicle != vehicleCopy)
   {
-    v14 = v5;
-    objc_storeStrong(&self->_vehicle, a3);
+    v14 = vehicleCopy;
+    objc_storeStrong(&self->_vehicle, vehicle);
     BOOL = GEOConfigGetBOOL();
     if (v14)
     {
-      v7 = [(VGVehicle *)v14 displayedBatteryPercentage];
-      [(BatteryIconView *)self->_batteryView setLevel:v7];
+      displayedBatteryPercentage = [(VGVehicle *)v14 displayedBatteryPercentage];
+      [(BatteryIconView *)self->_batteryView setLevel:displayedBatteryPercentage];
       if (BOOL)
       {
         v8 = +[NSBundle mainBundle];
         v9 = [v8 localizedStringForKey:@"%lu%%" value:@"localized string not found" table:0];
-        v10 = [NSString localizedStringWithFormat:v9, v7];
+        v10 = [NSString localizedStringWithFormat:v9, displayedBatteryPercentage];
         [(UILabel *)self->_percentLabel setText:v10];
 
-        percentLabel = [VehicleBatteryView colorForBatteryLevel:v7];
+        percentLabel = [VehicleBatteryView colorForBatteryLevel:displayedBatteryPercentage];
         [(UILabel *)self->_percentLabel setTextColor:percentLabel];
       }
 
@@ -82,9 +82,9 @@
         self->_percentLabel = 0;
       }
 
-      v12 = [(VGVehicle *)self->_vehicle currentVehicleState];
-      v13 = [v12 dateOfUpdate];
-      [(BatteryStateAgeView *)self->_batteryStateAgeView setDateOfLastSync:v13];
+      currentVehicleState = [(VGVehicle *)self->_vehicle currentVehicleState];
+      dateOfUpdate = [currentVehicleState dateOfUpdate];
+      [(BatteryStateAgeView *)self->_batteryStateAgeView setDateOfLastSync:dateOfUpdate];
 
       [(BatteryStateAgeView *)self->_batteryStateAgeView setShouldShowSeparator:BOOL];
     }
@@ -95,7 +95,7 @@
       [(BatteryStateAgeView *)self->_batteryStateAgeView setDateOfLastSync:0];
     }
 
-    v5 = v14;
+    vehicleCopy = v14;
   }
 }
 
@@ -105,10 +105,10 @@
   if (self->_batteryChargeTextAtEdge == 8)
   {
     p_batteryView = &self->_batteryView;
-    v4 = [(BatteryIconView *)self->_batteryView leadingAnchor];
-    v5 = [(VehicleBatteryView *)self leadingAnchor];
-    v48 = v4;
-    v6 = [v4 constraintEqualToAnchor:v5];
+    leadingAnchor = [(BatteryIconView *)self->_batteryView leadingAnchor];
+    leadingAnchor2 = [(VehicleBatteryView *)self leadingAnchor];
+    v48 = leadingAnchor;
+    v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v55 = v6;
     v7 = 32;
     v8 = &v55;
@@ -117,46 +117,46 @@
   else
   {
     p_batteryView = &self->_percentLabel;
-    v9 = [(UILabel *)self->_percentLabel leadingAnchor];
-    v5 = [(VehicleBatteryView *)self leadingAnchor];
-    v48 = v9;
-    v6 = [v9 constraintEqualToAnchor:v5];
+    leadingAnchor3 = [(UILabel *)self->_percentLabel leadingAnchor];
+    leadingAnchor2 = [(VehicleBatteryView *)self leadingAnchor];
+    v48 = leadingAnchor3;
+    v6 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor2];
     v54 = v6;
     v7 = 24;
     v8 = &v54;
   }
 
-  v10 = [*(&self->super.super.super.isa + v7) leadingAnchor];
-  v11 = [*p_batteryView trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+  leadingAnchor4 = [*(&self->super.super.super.isa + v7) leadingAnchor];
+  trailingAnchor = [*p_batteryView trailingAnchor];
+  v12 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor constant:4.0];
   v8[1] = v12;
   v13 = [NSArray arrayWithObjects:v8 count:2];
   [v50 addObjectsFromArray:v13];
 
   v49 = *(&self->super.super.super.isa + v7);
-  v47 = [(BatteryIconView *)self->_batteryView centerYAnchor];
-  v46 = [(VehicleBatteryView *)self centerYAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerYAnchor = [(BatteryIconView *)self->_batteryView centerYAnchor];
+  centerYAnchor2 = [(VehicleBatteryView *)self centerYAnchor];
+  v45 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v53[0] = v45;
-  v44 = [(UILabel *)self->_percentLabel topAnchor];
-  v43 = [(VehicleBatteryView *)self topAnchor];
-  v42 = [v44 constraintGreaterThanOrEqualToAnchor:v43];
+  topAnchor = [(UILabel *)self->_percentLabel topAnchor];
+  topAnchor2 = [(VehicleBatteryView *)self topAnchor];
+  v42 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v53[1] = v42;
-  v41 = [(VehicleBatteryView *)self bottomAnchor];
-  v40 = [(UILabel *)self->_percentLabel bottomAnchor];
-  v39 = [v41 constraintGreaterThanOrEqualToAnchor:v40];
+  bottomAnchor = [(VehicleBatteryView *)self bottomAnchor];
+  bottomAnchor2 = [(UILabel *)self->_percentLabel bottomAnchor];
+  v39 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
   v53[2] = v39;
-  v38 = [(UILabel *)self->_percentLabel centerYAnchor];
-  v14 = [(BatteryIconView *)self->_batteryView centerYAnchor];
-  v15 = [v38 constraintEqualToAnchor:v14];
+  centerYAnchor3 = [(UILabel *)self->_percentLabel centerYAnchor];
+  centerYAnchor4 = [(BatteryIconView *)self->_batteryView centerYAnchor];
+  v15 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v53[3] = v15;
-  v16 = [(BatteryStateAgeView *)self->_batteryStateAgeView topAnchor];
-  v17 = [(VehicleBatteryView *)self topAnchor];
-  v18 = [v16 constraintGreaterThanOrEqualToAnchor:v17];
+  topAnchor3 = [(BatteryStateAgeView *)self->_batteryStateAgeView topAnchor];
+  topAnchor4 = [(VehicleBatteryView *)self topAnchor];
+  v18 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v53[4] = v18;
-  v19 = [(VehicleBatteryView *)self bottomAnchor];
-  v20 = [(BatteryStateAgeView *)self->_batteryStateAgeView bottomAnchor];
-  v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20];
+  bottomAnchor3 = [(VehicleBatteryView *)self bottomAnchor];
+  bottomAnchor4 = [(BatteryStateAgeView *)self->_batteryStateAgeView bottomAnchor];
+  v21 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
   v53[5] = v21;
   v22 = [NSArray arrayWithObjects:v53 count:6];
   [NSLayoutConstraint activateConstraints:v22];
@@ -169,30 +169,30 @@
 
   else
   {
-    v23 = [(VehicleBatteryView *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(VehicleBatteryView *)self effectiveUserInterfaceLayoutDirection];
     batteryStateAgeView = self->_batteryStateAgeView;
-    if (v23 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      v25 = [(BatteryStateAgeView *)batteryStateAgeView rightAnchor];
-      v26 = [(BatteryStateAgeView *)v49 leftAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26 constant:-4.0];
+      rightAnchor = [(BatteryStateAgeView *)batteryStateAgeView rightAnchor];
+      leftAnchor = [(BatteryStateAgeView *)v49 leftAnchor];
+      v27 = [rightAnchor constraintEqualToAnchor:leftAnchor constant:-4.0];
       v52 = v27;
       v28 = &v52;
     }
 
     else
     {
-      v25 = [(BatteryStateAgeView *)batteryStateAgeView leftAnchor];
-      v26 = [(BatteryStateAgeView *)v49 rightAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      rightAnchor = [(BatteryStateAgeView *)batteryStateAgeView leftAnchor];
+      leftAnchor = [(BatteryStateAgeView *)v49 rightAnchor];
+      v27 = [rightAnchor constraintEqualToAnchor:leftAnchor];
       v51 = v27;
       v28 = &v51;
     }
 
     v30 = v50;
-    v31 = [(BatteryStateAgeView *)self->_batteryStateAgeView centerYAnchor];
-    v32 = [(BatteryIconView *)self->_batteryView centerYAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    centerYAnchor5 = [(BatteryStateAgeView *)self->_batteryStateAgeView centerYAnchor];
+    centerYAnchor6 = [(BatteryIconView *)self->_batteryView centerYAnchor];
+    v33 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
     v28[1] = v33;
     v34 = [NSArray arrayWithObjects:v28 count:2];
     [v50 addObjectsFromArray:v34];
@@ -200,9 +200,9 @@
     v29 = self->_batteryStateAgeView;
   }
 
-  v35 = [(VehicleBatteryView *)self trailingAnchor];
-  v36 = [(BatteryStateAgeView *)v29 trailingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  trailingAnchor2 = [(VehicleBatteryView *)self trailingAnchor];
+  trailingAnchor3 = [(BatteryStateAgeView *)v29 trailingAnchor];
+  v37 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v30 addObject:v37];
 
   [NSLayoutConstraint activateConstraints:v30];
@@ -217,81 +217,81 @@
   [(UILabel *)self->_percentLabel setTextColor:v4];
 }
 
-- (VehicleBatteryView)initWithVehicle:(id)a3 configuration:(int64_t)a4 batteryChargeTextAtEdge:(unint64_t)a5
+- (VehicleBatteryView)initWithVehicle:(id)vehicle configuration:(int64_t)configuration batteryChargeTextAtEdge:(unint64_t)edge
 {
   v29.receiver = self;
   v29.super_class = VehicleBatteryView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v10 = [(VehicleBatteryView *)&v29 initWithFrame:a3, CGRectZero.origin.x, y, width, height];
-  if (v10)
+  height = [(VehicleBatteryView *)&v29 initWithFrame:vehicle, CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [(VehicleBatteryView *)v10 setAccessibilityIdentifier:v12];
+    [(VehicleBatteryView *)height setAccessibilityIdentifier:v12];
 
-    v10->_configuration = a4;
-    v10->_batteryChargeTextAtEdge = a5;
-    v13 = [[BatteryIconView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    batteryView = v10->_batteryView;
-    v10->_batteryView = v13;
+    height->_configuration = configuration;
+    height->_batteryChargeTextAtEdge = edge;
+    height2 = [[BatteryIconView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    batteryView = height->_batteryView;
+    height->_batteryView = height2;
 
-    [(BatteryIconView *)v10->_batteryView setAccessibilityIdentifier:@"BatteryIconView"];
-    [(BatteryIconView *)v10->_batteryView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(BatteryIconView *)height->_batteryView setAccessibilityIdentifier:@"BatteryIconView"];
+    [(BatteryIconView *)height->_batteryView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v15) = 1148846080;
-    [(BatteryIconView *)v10->_batteryView setContentCompressionResistancePriority:0 forAxis:v15];
+    [(BatteryIconView *)height->_batteryView setContentCompressionResistancePriority:0 forAxis:v15];
     LODWORD(v16) = 1148846080;
-    [(BatteryIconView *)v10->_batteryView setContentCompressionResistancePriority:1 forAxis:v16];
-    [(VehicleBatteryView *)v10 addSubview:v10->_batteryView];
+    [(BatteryIconView *)height->_batteryView setContentCompressionResistancePriority:1 forAxis:v16];
+    [(VehicleBatteryView *)height addSubview:height->_batteryView];
     v17 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    percentLabel = v10->_percentLabel;
-    v10->_percentLabel = v17;
+    percentLabel = height->_percentLabel;
+    height->_percentLabel = v17;
 
-    [(UILabel *)v10->_percentLabel setAccessibilityIdentifier:@"PercentLabel"];
-    [(UILabel *)v10->_percentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v10->_percentLabel setAdjustsFontForContentSizeCategory:1];
+    [(UILabel *)height->_percentLabel setAccessibilityIdentifier:@"PercentLabel"];
+    [(UILabel *)height->_percentLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UILabel *)height->_percentLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v19) = 1148829696;
-    [(UILabel *)v10->_percentLabel setContentCompressionResistancePriority:0 forAxis:v19];
+    [(UILabel *)height->_percentLabel setContentCompressionResistancePriority:0 forAxis:v19];
     LODWORD(v20) = 1148846080;
-    [(UILabel *)v10->_percentLabel setContentHuggingPriority:0 forAxis:v20];
+    [(UILabel *)height->_percentLabel setContentHuggingPriority:0 forAxis:v20];
     LODWORD(v21) = 1144750080;
-    [(UILabel *)v10->_percentLabel setContentHuggingPriority:1 forAxis:v21];
-    [(VehicleBatteryView *)v10 addSubview:v10->_percentLabel];
-    configuration = v10->_configuration;
+    [(UILabel *)height->_percentLabel setContentHuggingPriority:1 forAxis:v21];
+    [(VehicleBatteryView *)height addSubview:height->_percentLabel];
+    configuration = height->_configuration;
     if ((configuration - 1) <= 1)
     {
       v23 = [[BatteryStateAgeView alloc] initWithConfiguration:configuration == 2];
-      batteryStateAgeView = v10->_batteryStateAgeView;
-      v10->_batteryStateAgeView = v23;
+      batteryStateAgeView = height->_batteryStateAgeView;
+      height->_batteryStateAgeView = v23;
 
-      [(BatteryStateAgeView *)v10->_batteryStateAgeView setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(BatteryStateAgeView *)height->_batteryStateAgeView setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v25) = 1144750080;
-      [(BatteryStateAgeView *)v10->_batteryStateAgeView setContentHuggingPriority:0 forAxis:v25];
+      [(BatteryStateAgeView *)height->_batteryStateAgeView setContentHuggingPriority:0 forAxis:v25];
       LODWORD(v26) = 1144750080;
-      [(BatteryStateAgeView *)v10->_batteryStateAgeView setContentHuggingPriority:1 forAxis:v26];
+      [(BatteryStateAgeView *)height->_batteryStateAgeView setContentHuggingPriority:1 forAxis:v26];
       LODWORD(v27) = 1148846080;
-      [(BatteryStateAgeView *)v10->_batteryStateAgeView setContentCompressionResistancePriority:1 forAxis:v27];
-      [(VehicleBatteryView *)v10 addSubview:v10->_batteryStateAgeView];
+      [(BatteryStateAgeView *)height->_batteryStateAgeView setContentCompressionResistancePriority:1 forAxis:v27];
+      [(VehicleBatteryView *)height addSubview:height->_batteryStateAgeView];
     }
 
-    [(VehicleBatteryView *)v10 _setupStyling];
-    [(VehicleBatteryView *)v10 _setupConstraints];
+    [(VehicleBatteryView *)height _setupStyling];
+    [(VehicleBatteryView *)height _setupConstraints];
   }
 
-  return v10;
+  return height;
 }
 
-+ (id)colorForBatteryLevel:(unint64_t)a3
++ (id)colorForBatteryLevel:(unint64_t)level
 {
-  if (GEOConfigGetUInteger() >= a3)
+  if (GEOConfigGetUInteger() >= level)
   {
     v4 = +[UIColor systemRedColor];
   }
 
   else
   {
-    if (GEOConfigGetUInteger() >= a3)
+    if (GEOConfigGetUInteger() >= level)
     {
       +[UIColor systemYellowColor];
     }

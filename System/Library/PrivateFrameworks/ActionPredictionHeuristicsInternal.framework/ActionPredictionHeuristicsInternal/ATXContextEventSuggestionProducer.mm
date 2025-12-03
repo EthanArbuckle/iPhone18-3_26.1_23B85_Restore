@@ -1,51 +1,51 @@
 @interface ATXContextEventSuggestionProducer
-- (ATXContextEventSuggestionProducer)initWithEvent:(id)a3 validFromStartDate:(id)a4 validToEndDate:(id)a5 environment:(id)a6;
-- (BOOL)_isStringValidEmail:(id)a3;
-- (double)scoreWithEventParticipantStatusPenalty:(double)a3;
+- (ATXContextEventSuggestionProducer)initWithEvent:(id)event validFromStartDate:(id)date validToEndDate:(id)endDate environment:(id)environment;
+- (BOOL)_isStringValidEmail:(id)email;
+- (double)scoreWithEventParticipantStatusPenalty:(double)penalty;
 - (id)_dateInterval;
-- (id)_spotlightActionWithParticipant:(id)a3 subtitle:(id)a4;
-- (id)_stringsWithPredictionReasons:(unint64_t)a3;
-- (id)suggestionForConferenceWithScore:(double)a3 predictionReasons:(unint64_t)a4;
-- (id)suggestionForDNDWithScore:(double)a3 predictionReasons:(unint64_t)a4;
-- (id)suggestionForEventOrganizerWithScore:(double)a3 predictionReasons:(unint64_t)a4;
-- (id)suggestionForEventParticipantWithScore:(double)a3 predictionReasons:(unint64_t)a4;
+- (id)_spotlightActionWithParticipant:(id)participant subtitle:(id)subtitle;
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons;
+- (id)suggestionForConferenceWithScore:(double)score predictionReasons:(unint64_t)reasons;
+- (id)suggestionForDNDWithScore:(double)score predictionReasons:(unint64_t)reasons;
+- (id)suggestionForEventOrganizerWithScore:(double)score predictionReasons:(unint64_t)reasons;
+- (id)suggestionForEventParticipantWithScore:(double)score predictionReasons:(unint64_t)reasons;
 @end
 
 @implementation ATXContextEventSuggestionProducer
 
-- (ATXContextEventSuggestionProducer)initWithEvent:(id)a3 validFromStartDate:(id)a4 validToEndDate:(id)a5 environment:(id)a6
+- (ATXContextEventSuggestionProducer)initWithEvent:(id)event validFromStartDate:(id)date validToEndDate:(id)endDate environment:(id)environment
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  eventCopy = event;
+  dateCopy = date;
+  endDateCopy = endDate;
+  environmentCopy = environment;
   v22.receiver = self;
   v22.super_class = ATXContextEventSuggestionProducer;
   v15 = [(ATXContextEventSuggestionProducer *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_event, a3);
-    v17 = [v11 title];
-    v18 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v19 = [v17 stringByTrimmingCharactersInSet:v18];
+    objc_storeStrong(&v15->_event, event);
+    title = [eventCopy title];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v19 = [title stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     eventTitle = v16->_eventTitle;
     v16->_eventTitle = v19;
 
-    objc_storeStrong(&v16->_validFromStartDate, a4);
-    objc_storeStrong(&v16->_validToEndDate, a5);
-    objc_storeStrong(&v16->_environment, a6);
+    objc_storeStrong(&v16->_validFromStartDate, date);
+    objc_storeStrong(&v16->_validToEndDate, endDate);
+    objc_storeStrong(&v16->_environment, environment);
   }
 
   return v16;
 }
 
-- (id)suggestionForEventOrganizerWithScore:(double)a3 predictionReasons:(unint64_t)a4
+- (id)suggestionForEventOrganizerWithScore:(double)score predictionReasons:(unint64_t)reasons
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = [(EKEvent *)self->_event organizer];
+  organizer = [(EKEvent *)self->_event organizer];
 
-  if (!v7)
+  if (!organizer)
   {
     v10 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -61,10 +61,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [(EKEvent *)self->_event organizer];
-  v9 = [v8 isCurrentUser];
+  organizer2 = [(EKEvent *)self->_event organizer];
+  isCurrentUser = [organizer2 isCurrentUser];
 
-  if (v9)
+  if (isCurrentUser)
   {
     v10 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -80,21 +80,21 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [(EKEvent *)self->_event organizer];
-  v16 = [v15 name];
-  v17 = [(ATXContextEventSuggestionProducer *)self _isStringValidEmail:v16];
+  organizer3 = [(EKEvent *)self->_event organizer];
+  name = [organizer3 name];
+  v17 = [(ATXContextEventSuggestionProducer *)self _isStringValidEmail:name];
 
   if (v17)
   {
     v10 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(EKEvent *)self->_event organizer];
-      v19 = [v18 name];
+      organizer4 = [(EKEvent *)self->_event organizer];
+      name2 = [organizer4 name];
       v28 = 136446466;
       v29 = "[ATXContextEventSuggestionProducer suggestionForEventOrganizerWithScore:predictionReasons:]";
       v30 = 2112;
-      v31 = v19;
+      v31 = name2;
       _os_log_impl(&dword_23E3EA000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s event organizer name (%@) is an email address: No suggestion", &v28, 0x16u);
     }
 
@@ -103,16 +103,16 @@ LABEL_7:
 
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v20 = [v10 localizedStringForKey:@"SUGGESTION_EVENT_ORGANIZER_SUBTITLE" value:&stru_2850AD368 table:0];
-  v21 = [(EKEvent *)self->_event organizer];
-  v22 = [(ATXContextEventSuggestionProducer *)self _spotlightActionWithParticipant:v21 subtitle:v20];
+  organizer5 = [(EKEvent *)self->_event organizer];
+  v22 = [(ATXContextEventSuggestionProducer *)self _spotlightActionWithParticipant:organizer5 subtitle:v20];
 
   if (v22)
   {
     v23 = self->_eventTitle;
-    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:a3];
+    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:score];
     v25 = v24;
-    v26 = [(ATXContextEventSuggestionProducer *)self _dateInterval];
-    v12 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v22 predictionReasons:a4 localizedReason:v23 score:v26 dateInterval:v25];
+    _dateInterval = [(ATXContextEventSuggestionProducer *)self _dateInterval];
+    v12 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v22 predictionReasons:reasons localizedReason:v23 score:_dateInterval dateInterval:v25];
   }
 
   else
@@ -133,15 +133,15 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)_isStringValidEmail:(id)a3
+- (BOOL)_isStringValidEmail:(id)email
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (email)
   {
     v3 = MEMORY[0x277CCA948];
-    v4 = a3;
+    emailCopy = email;
     v5 = [v3 dataDetectorWithTypes:32 error:0];
-    v6 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v6 = [v5 matchesInString:emailCopy options:0 range:{0, objc_msgSend(emailCopy, "length")}];
 
     memset(v17, 0, sizeof(v17));
     if (![v6 countByEnumeratingWithState:v17 objects:v18 count:16])
@@ -151,15 +151,15 @@ LABEL_9:
 
     v7 = **(&v17[0] + 1);
     v8 = [**(&v17[0] + 1) URL];
-    v9 = [v8 scheme];
-    v10 = [v9 lowercaseString];
-    v11 = [v10 isEqualToString:@"mailto"];
+    scheme = [v8 scheme];
+    lowercaseString = [scheme lowercaseString];
+    v11 = [lowercaseString isEqualToString:@"mailto"];
 
     if (v11)
     {
       v12 = [v7 URL];
-      v13 = [v12 resourceSpecifier];
-      v14 = [v13 length] != 0;
+      resourceSpecifier = [v12 resourceSpecifier];
+      v14 = [resourceSpecifier length] != 0;
     }
 
     else
@@ -178,22 +178,22 @@ LABEL_5:
   return v14;
 }
 
-- (id)suggestionForEventParticipantWithScore:(double)a3 predictionReasons:(unint64_t)a4
+- (id)suggestionForEventParticipantWithScore:(double)score predictionReasons:(unint64_t)reasons
 {
   v40 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  v8 = [(EKEvent *)self->_event organizer];
-  v9 = [v8 isCurrentUser];
+  organizer = [(EKEvent *)self->_event organizer];
+  isCurrentUser = [organizer isCurrentUser];
 
-  if ((v9 & 1) == 0)
+  if ((isCurrentUser & 1) == 0)
   {
-    v16 = __atxlog_handle_context_heuristic();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    firstObject = __atxlog_handle_context_heuristic();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136446210;
       v36 = "[ATXContextEventSuggestionProducer suggestionForEventParticipantWithScore:predictionReasons:]";
       v25 = "%{public}s You are not the organizer: No suggestion";
-      v26 = v16;
+      v26 = firstObject;
       v27 = 12;
 LABEL_19:
       _os_log_impl(&dword_23E3EA000, v26, OS_LOG_TYPE_DEFAULT, v25, buf, v27);
@@ -208,8 +208,8 @@ LABEL_20:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v10 = [(EKEvent *)self->_event attendees];
-  v11 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+  attendees = [(EKEvent *)self->_event attendees];
+  v11 = [attendees countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v11)
   {
     v12 = v11;
@@ -220,7 +220,7 @@ LABEL_20:
       {
         if (*v32 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(attendees);
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
@@ -230,7 +230,7 @@ LABEL_20:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      v12 = [attendees countByEnumeratingWithState:&v31 objects:v39 count:16];
     }
 
     while (v12);
@@ -238,8 +238,8 @@ LABEL_20:
 
   if ([v7 count] != 1)
   {
-    v16 = __atxlog_handle_context_heuristic();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    firstObject = __atxlog_handle_context_heuristic();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       v28 = [v7 count];
       *buf = 136446466;
@@ -247,7 +247,7 @@ LABEL_20:
       v37 = 2048;
       v38 = v28;
       v25 = "%{public}s %lu other participants: No suggestion";
-      v26 = v16;
+      v26 = firstObject;
       v27 = 22;
       goto LABEL_19;
     }
@@ -255,26 +255,26 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v16 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v18 = [v17 localizedStringForKey:@"SUGGESTION_EVENT_PARTICIPANT_SUBTITLE" value:&stru_2850AD368 table:0];
-  v19 = [(ATXContextEventSuggestionProducer *)self _spotlightActionWithParticipant:v16 subtitle:v18];
+  v19 = [(ATXContextEventSuggestionProducer *)self _spotlightActionWithParticipant:firstObject subtitle:v18];
   if (v19)
   {
     v20 = self->_eventTitle;
-    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:a3];
+    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:score];
     v22 = v21;
-    v23 = [(ATXContextEventSuggestionProducer *)self _dateInterval];
-    v24 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v19 predictionReasons:a4 localizedReason:v20 score:v23 dateInterval:v22];
+    _dateInterval = [(ATXContextEventSuggestionProducer *)self _dateInterval];
+    v24 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v19 predictionReasons:reasons localizedReason:v20 score:_dateInterval dateInterval:v22];
   }
 
   else
   {
-    v23 = __atxlog_handle_context_heuristic();
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    _dateInterval = __atxlog_handle_context_heuristic();
+    if (os_log_type_enabled(_dateInterval, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23E3EA000, v23, OS_LOG_TYPE_DEFAULT, "_actionWithParticipant returned nil", buf, 2u);
+      _os_log_impl(&dword_23E3EA000, _dateInterval, OS_LOG_TYPE_DEFAULT, "_actionWithParticipant returned nil", buf, 2u);
     }
 
     v24 = 0;
@@ -286,47 +286,47 @@ LABEL_25:
   return v24;
 }
 
-- (id)_spotlightActionWithParticipant:(id)a3 subtitle:(id)a4
+- (id)_spotlightActionWithParticipant:(id)participant subtitle:(id)subtitle
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 name];
+  participantCopy = participant;
+  subtitleCopy = subtitle;
+  name = [participantCopy name];
 
-  if (v8)
+  if (name)
   {
-    v9 = [(ATXContextHeuristicsEnvironment *)self->_environment heuristicDevice];
-    v10 = [v9 contactForParticipant:v6];
+    heuristicDevice = [(ATXContextHeuristicsEnvironment *)self->_environment heuristicDevice];
+    v10 = [heuristicDevice contactForParticipant:participantCopy];
 
-    v8 = [v10 identifier];
+    name = [v10 identifier];
   }
 
-  v11 = [v6 name];
-  v12 = [v6 emailAddress];
+  name2 = [participantCopy name];
+  emailAddress = [participantCopy emailAddress];
   v13 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136446978;
     v20 = "[ATXContextEventSuggestionProducer _spotlightActionWithParticipant:subtitle:]";
     v21 = 2112;
-    v22 = v8;
+    v22 = name;
     v23 = 2112;
-    v24 = v11;
+    v24 = name2;
     v25 = 2112;
-    v26 = v12;
+    v26 = emailAddress;
     _os_log_impl(&dword_23E3EA000, v13, OS_LOG_TYPE_DEFAULT, "%{public}s participantID:%@ participantName:%@, participantEmail:%@", &v19, 0x2Au);
   }
 
   v14 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:self->_validFromStartDate endDate:self->_validToEndDate lockScreenEligible:0 predicate:0];
-  if (v11 && v8)
+  if (name2 && name)
   {
-    v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:v11 contactIdentifier:v8 subtitle:v7 criteria:v14];
+    v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:name2 contactIdentifier:name subtitle:subtitleCopy criteria:v14];
     goto LABEL_16;
   }
 
-  if (v11 && v12)
+  if (name2 && emailAddress)
   {
-    v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:v11 contactEmail:v12 subtitle:v7 criteria:v14];
+    v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithContactName:name2 contactEmail:emailAddress subtitle:subtitleCopy criteria:v14];
     if (v15)
     {
       goto LABEL_16;
@@ -357,7 +357,7 @@ LABEL_16:
   return v15;
 }
 
-- (id)_stringsWithPredictionReasons:(unint64_t)a3
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons
 {
   v5 = 0;
   v6 = &v5;
@@ -378,61 +378,61 @@ void __67__ATXContextEventSuggestionProducer__stringsWithPredictionReasons___blo
   [*(*(*(a1 + 32) + 8) + 40) addObject:v2];
 }
 
-- (id)suggestionForDNDWithScore:(double)a3 predictionReasons:(unint64_t)a4
+- (id)suggestionForDNDWithScore:(double)score predictionReasons:(unint64_t)reasons
 {
-  v6 = [(EKEvent *)self->_event endDate];
-  v7 = [(EKEvent *)self->_event startDate];
-  v8 = [v7 dateByAddingTimeInterval:-900.0];
+  endDate = [(EKEvent *)self->_event endDate];
+  startDate = [(EKEvent *)self->_event startDate];
+  v8 = [startDate dateByAddingTimeInterval:-900.0];
 
   eventTitle = self->_eventTitle;
-  v10 = [(EKEvent *)self->_event UUID];
-  v11 = [(EKEvent *)self->_event calendarItemIdentifier];
-  [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:a3];
+  uUID = [(EKEvent *)self->_event UUID];
+  calendarItemIdentifier = [(EKEvent *)self->_event calendarItemIdentifier];
+  [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:score];
   v13 = v12;
   v14 = self->_eventTitle;
   v15 = [(NSDate *)self->_validFromStartDate laterDate:v8];
   validToEndDate = self->_validToEndDate;
-  v17 = [(ATXContextEventSuggestionProducer *)self _dateInterval];
-  v18 = [ATXContextHeuristicSuggestionProducer suggestionForDNDWithTitle:eventTitle eventUniqueID:v10 identifier:v11 until:v6 score:a4 predictionReasons:v14 localizedReason:v13 validFromStartDate:v15 validToEndDate:validToEndDate dateInterval:v17];
+  _dateInterval = [(ATXContextEventSuggestionProducer *)self _dateInterval];
+  v18 = [ATXContextHeuristicSuggestionProducer suggestionForDNDWithTitle:eventTitle eventUniqueID:uUID identifier:calendarItemIdentifier until:endDate score:reasons predictionReasons:v14 localizedReason:v13 validFromStartDate:v15 validToEndDate:validToEndDate dateInterval:_dateInterval];
 
   return v18;
 }
 
-- (id)suggestionForConferenceWithScore:(double)a3 predictionReasons:(unint64_t)a4
+- (id)suggestionForConferenceWithScore:(double)score predictionReasons:(unint64_t)reasons
 {
   v36 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
-  v8 = [(EKEvent *)self->_event virtualConference];
-  v9 = [v8 joinMethods];
-  v10 = [v9 firstObject];
-  v11 = [v10 URL];
+  virtualConference = [(EKEvent *)self->_event virtualConference];
+  joinMethods = [virtualConference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v11 = [firstObject URL];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    conferenceURLForDisplay = v11;
   }
 
   else
   {
-    v13 = [(EKEvent *)self->_event conferenceURLForDisplay];
+    conferenceURLForDisplay = [(EKEvent *)self->_event conferenceURLForDisplay];
   }
 
-  v14 = v13;
+  v14 = conferenceURLForDisplay;
 
   objc_autoreleasePoolPop(v7);
   v15 = __atxlog_handle_context_heuristic();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(EKEvent *)self->_event eventIdentifier];
-    v17 = [(EKEvent *)self->_event title];
-    v18 = [v17 hash];
-    v19 = [(EKEvent *)self->_event startDate];
+    eventIdentifier = [(EKEvent *)self->_event eventIdentifier];
+    title = [(EKEvent *)self->_event title];
+    v18 = [title hash];
+    startDate = [(EKEvent *)self->_event startDate];
     v28 = 138413058;
-    v29 = v16;
+    v29 = eventIdentifier;
     v30 = 2048;
     v31 = v18;
     v32 = 2112;
-    v33 = v19;
+    v33 = startDate;
     v34 = 1024;
     v35 = v14 != 0;
     _os_log_impl(&dword_23E3EA000, v15, OS_LOG_TYPE_DEFAULT, "Event id: %@ title.hash: %lu start:%@ has conferenceURL:%{BOOL}i", &v28, 0x26u);
@@ -441,11 +441,11 @@ void __67__ATXContextEventSuggestionProducer__stringsWithPredictionReasons___blo
   if (v14)
   {
     v20 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:self->_validFromStartDate endDate:self->_validToEndDate lockScreenEligible:0 predicate:0];
-    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:a3];
+    [(ATXContextEventSuggestionProducer *)self scoreWithEventParticipantStatusPenalty:score];
     v22 = v21;
     eventTitle = self->_eventTitle;
-    v24 = [(ATXContextEventSuggestionProducer *)self _dateInterval];
-    v25 = [ATXContextHeuristicSuggestionProducer suggestionForConferenceWithURL:v14 score:a4 predictionReasons:eventTitle localizedReason:v20 criteria:v24 dateInterval:v22];
+    _dateInterval = [(ATXContextEventSuggestionProducer *)self _dateInterval];
+    v25 = [ATXContextHeuristicSuggestionProducer suggestionForConferenceWithURL:v14 score:reasons predictionReasons:eventTitle localizedReason:v20 criteria:_dateInterval dateInterval:v22];
   }
 
   else
@@ -458,15 +458,15 @@ void __67__ATXContextEventSuggestionProducer__stringsWithPredictionReasons___blo
   return v25;
 }
 
-- (double)scoreWithEventParticipantStatusPenalty:(double)a3
+- (double)scoreWithEventParticipantStatusPenalty:(double)penalty
 {
   p_event = &self->_event;
-  v6 = [(EKEvent *)self->_event participationStatus];
-  if (v6 != 2)
+  participationStatus = [(EKEvent *)self->_event participationStatus];
+  if (participationStatus != 2)
   {
-    if (v6 == 4)
+    if (participationStatus == 4)
     {
-      return a3 * 0.5;
+      return penalty * 0.5;
     }
 
     else
@@ -479,15 +479,15 @@ void __67__ATXContextEventSuggestionProducer__stringsWithPredictionReasons___blo
     }
   }
 
-  return a3;
+  return penalty;
 }
 
 - (id)_dateInterval
 {
   v3 = objc_alloc(MEMORY[0x277CCA970]);
-  v4 = [(EKEvent *)self->_event startDate];
-  v5 = [(EKEvent *)self->_event endDate];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  startDate = [(EKEvent *)self->_event startDate];
+  endDate = [(EKEvent *)self->_event endDate];
+  v6 = [v3 initWithStartDate:startDate endDate:endDate];
 
   return v6;
 }

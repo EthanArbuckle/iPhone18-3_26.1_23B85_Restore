@@ -1,21 +1,21 @@
 @interface SFVibrantCellSelectionBackgroundView
-- (SFVibrantCellSelectionBackgroundView)initWithFrame:(CGRect)a3;
+- (SFVibrantCellSelectionBackgroundView)initWithFrame:(CGRect)frame;
 - (void)updateSelectionEffect;
 @end
 
 @implementation SFVibrantCellSelectionBackgroundView
 
-- (SFVibrantCellSelectionBackgroundView)initWithFrame:(CGRect)a3
+- (SFVibrantCellSelectionBackgroundView)initWithFrame:(CGRect)frame
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = SFVibrantCellSelectionBackgroundView;
-  v3 = [(SFVibrantCellSelectionBackgroundView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFVibrantCellSelectionBackgroundView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
-    v5 = [(SFVibrantCellSelectionBackgroundView *)v3 contentView];
-    [v5 setBackgroundColor:v4];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    contentView = [(SFVibrantCellSelectionBackgroundView *)v3 contentView];
+    [contentView setBackgroundColor:blackColor];
 
     v6 = objc_opt_self();
     v12[0] = v6;
@@ -31,20 +31,20 @@
 
 - (void)updateSelectionEffect
 {
-  v3 = [(SFVibrantCellSelectionBackgroundView *)self traitCollection];
-  v4 = [v3 sf_backgroundBlurEffect];
-  v5 = v4;
-  if (v4)
+  traitCollection = [(SFVibrantCellSelectionBackgroundView *)self traitCollection];
+  sf_backgroundBlurEffect = [traitCollection sf_backgroundBlurEffect];
+  v5 = sf_backgroundBlurEffect;
+  if (sf_backgroundBlurEffect)
   {
-    v6 = v4;
+    _sf_defaultPopoverBackgroundEffect = sf_backgroundBlurEffect;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC730] _sf_defaultPopoverBackgroundEffect];
+    _sf_defaultPopoverBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultPopoverBackgroundEffect];
   }
 
-  v8 = v6;
+  v8 = _sf_defaultPopoverBackgroundEffect;
 
   v7 = [MEMORY[0x1E69DD248] effectForBlurEffect:v8 style:6];
   [(SFVibrantCellSelectionBackgroundView *)self setEffect:v7];

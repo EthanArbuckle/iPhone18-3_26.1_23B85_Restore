@@ -5,7 +5,7 @@
 - (id)description;
 - (void)_associate;
 - (void)_dissociate;
-- (void)_setFrequency:(double)a3;
+- (void)_setFrequency:(double)frequency;
 - (void)setSnapPoint:(CGPoint)snapPoint;
 @end
 
@@ -41,11 +41,11 @@
   return v9;
 }
 
-- (void)_setFrequency:(double)a3
+- (void)_setFrequency:(double)frequency
 {
-  if (self->_frequency != a3)
+  if (self->_frequency != frequency)
   {
-    self->_frequency = a3;
+    self->_frequency = frequency;
     [(UIDynamicBehavior *)self _changedParameterForBody:0];
   }
 }
@@ -57,10 +57,10 @@
     self->_anchorPoint = snapPoint;
     [(PKPhysicsBody *)self->_anchorBody setPosition:?];
     [(UIDynamicBehavior *)self _changedParameterForBody:self->_anchorBody];
-    v6 = [(UIDynamicBehavior *)self _context];
-    v7 = [(UIDynamicBehavior *)self _items];
-    v8 = [v7 firstObject];
-    v9 = [v6 _bodyForItem:v8];
+    _context = [(UIDynamicBehavior *)self _context];
+    _items = [(UIDynamicBehavior *)self _items];
+    firstObject = [_items firstObject];
+    v9 = [_context _bodyForItem:firstObject];
 
     [v9 setResting:0];
   }
@@ -77,20 +77,20 @@
 
 - (void)_associate
 {
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v3 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [_items objectAtIndex:0];
 
-  v5 = [(UIDynamicBehavior *)self _context];
-  v6 = [v5 _registerBodyForItem:v4];
+  _context = [(UIDynamicBehavior *)self _context];
+  v6 = [_context _registerBodyForItem:v4];
 
   [v4 bounds];
   v9 = [PKExtendedPhysicsBody bodyWithRectangleOfSize:v7, v8];
   [v9 setPosition:{self->_anchorPoint.x, self->_anchorPoint.y}];
   [v9 setDynamic:0];
-  v10 = [(UIDynamicBehavior *)self _context];
-  v11 = [v10 _world];
+  _context2 = [(UIDynamicBehavior *)self _context];
+  _world = [_context2 _world];
 
-  [v11 addBody:v9];
+  [_world addBody:v9];
   frequency = self->_frequency;
   distance = self->_distance;
   [v4 bounds];
@@ -106,10 +106,10 @@
   v28 = v16 * 0.5;
   v29 = distance;
   v30 = frequency;
-  v24 = self;
+  selfCopy = self;
   v25 = v4;
-  v26 = v11;
-  v17 = v11;
+  v26 = _world;
+  v17 = _world;
   v18 = v4;
   v19 = v9;
   v20 = v6;
@@ -185,8 +185,8 @@ uint64_t __28__UISnapBehavior__associate__block_invoke_2(uint64_t a1)
 - (void)_dissociate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self _context];
-  v4 = [v3 _world];
+  _context = [(UIDynamicBehavior *)self _context];
+  _world = [_context _world];
 
   v17 = 0u;
   v18 = 0u;
@@ -208,7 +208,7 @@ uint64_t __28__UISnapBehavior__associate__block_invoke_2(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        [v4 removeJoint:{*(*(&v15 + 1) + 8 * v9++), v15}];
+        [_world removeJoint:{*(*(&v15 + 1) + 8 * v9++), v15}];
       }
 
       while (v7 != v9);
@@ -218,12 +218,12 @@ uint64_t __28__UISnapBehavior__associate__block_invoke_2(uint64_t a1)
     while (v7);
   }
 
-  [v4 removeBody:self->_anchorBody];
-  v10 = [(UIDynamicBehavior *)self _items];
-  v11 = [v10 objectAtIndex:0];
+  [_world removeBody:self->_anchorBody];
+  _items = [(UIDynamicBehavior *)self _items];
+  v11 = [_items objectAtIndex:0];
 
-  v12 = [(UIDynamicBehavior *)self _context];
-  [v12 _unregisterBodyForItem:v11 action:0];
+  _context2 = [(UIDynamicBehavior *)self _context];
+  [_context2 _unregisterBodyForItem:v11 action:0];
 
   anchorBody = self->_anchorBody;
   self->_anchorBody = 0;
@@ -240,8 +240,8 @@ uint64_t __28__UISnapBehavior__associate__block_invoke_2(uint64_t a1)
   v4 = [(UIDynamicBehavior *)&v10 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(UIDynamicBehavior *)self _items];
-  v7 = [v6 objectAtIndex:0];
+  _items = [(UIDynamicBehavior *)self _items];
+  v7 = [_items objectAtIndex:0];
 
   [v5 appendFormat:@" %@ <-", v7];
   if ((*&self->_stateFlags & 2) != 0)

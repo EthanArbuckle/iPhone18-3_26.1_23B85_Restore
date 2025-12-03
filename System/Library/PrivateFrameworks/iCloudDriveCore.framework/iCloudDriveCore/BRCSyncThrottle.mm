@@ -1,28 +1,28 @@
 @interface BRCSyncThrottle
-- (BOOL)_validateThrottleParams:(id)a3;
-- (BOOL)matchesItem:(id)a3 nsecsToRetry:(unint64_t *)a4 now:(unint64_t)a5;
-- (BRCSyncThrottle)initWithName:(id)a3 andParameters:(id)a4;
+- (BOOL)_validateThrottleParams:(id)params;
+- (BOOL)matchesItem:(id)item nsecsToRetry:(unint64_t *)retry now:(unint64_t)now;
+- (BRCSyncThrottle)initWithName:(id)name andParameters:(id)parameters;
 @end
 
 @implementation BRCSyncThrottle
 
-- (BOOL)matchesItem:(id)a3 nsecsToRetry:(unint64_t *)a4 now:(unint64_t)a5
+- (BOOL)matchesItem:(id)item nsecsToRetry:(unint64_t *)retry now:(unint64_t)now
 {
-  v8 = a3;
-  v9 = [(NSPredicate *)self->_predicate evaluateWithObject:v8];
+  itemCopy = item;
+  v9 = [(NSPredicate *)self->_predicate evaluateWithObject:itemCopy];
   if (v9)
   {
-    v10 = [v8 clientZone];
-    v11 = [v8 itemID];
-    *a4 = -[BRCThrottle nsecsToNextRetry:now:increment:](self, "nsecsToNextRetry:now:increment:", [v10 throttleHashWithItemID:v11], a5, 1);
+    clientZone = [itemCopy clientZone];
+    itemID = [itemCopy itemID];
+    *retry = -[BRCThrottle nsecsToNextRetry:now:increment:](self, "nsecsToNextRetry:now:increment:", [clientZone throttleHashWithItemID:itemID], now, 1);
   }
 
   return v9;
 }
 
-- (BOOL)_validateThrottleParams:(id)a3
+- (BOOL)_validateThrottleParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -36,7 +36,7 @@
     goto LABEL_12;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"platforms"];
+  v4 = [paramsCopy objectForKeyedSubscript:@"platforms"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -59,7 +59,7 @@
     v9 = brc_default_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(BRCSyncThrottle *)v3 _validateThrottleParams:v8, v9];
+      [(BRCSyncThrottle *)paramsCopy _validateThrottleParams:v8, v9];
     }
 
 LABEL_11:
@@ -75,18 +75,18 @@ LABEL_13:
   return v7;
 }
 
-- (BRCSyncThrottle)initWithName:(id)a3 andParameters:(id)a4
+- (BRCSyncThrottle)initWithName:(id)name andParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(BRCSyncThrottle *)self _validateThrottleParams:v7])
+  nameCopy = name;
+  parametersCopy = parameters;
+  if ([(BRCSyncThrottle *)self _validateThrottleParams:parametersCopy])
   {
     v14.receiver = self;
     v14.super_class = BRCSyncThrottle;
-    v8 = [(BRCThrottle *)&v14 initWithName:v6 andParameters:v7];
+    v8 = [(BRCThrottle *)&v14 initWithName:nameCopy andParameters:parametersCopy];
     if (v8)
     {
-      v9 = [v7 objectForKeyedSubscript:@"predicate"];
+      v9 = [parametersCopy objectForKeyedSubscript:@"predicate"];
       if (v9)
       {
         v10 = [MEMORY[0x277CCAC30] predicateWithFormat:v9];
@@ -96,15 +96,15 @@ LABEL_13:
     }
 
     self = v8;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)_validateThrottleParams:.cold.1()

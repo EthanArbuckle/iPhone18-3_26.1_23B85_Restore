@@ -1,7 +1,7 @@
 @interface _SYMultiSuspendableQueue
 - (NSString)name;
 - (PBCodable)stateForLogging;
-- (_SYMultiSuspendableQueue)initWithName:(id)a3 qosClass:(unsigned int)a4 serial:(BOOL)a5 target:(id)a6;
+- (_SYMultiSuspendableQueue)initWithName:(id)name qosClass:(unsigned int)class serial:(BOOL)serial target:(id)target;
 - (void)dealloc;
 - (void)resume;
 - (void)suspend;
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (_SYMultiSuspendableQueue)initWithName:(id)a3 qosClass:(unsigned int)a4 serial:(BOOL)a5 target:(id)a6
+- (_SYMultiSuspendableQueue)initWithName:(id)name qosClass:(unsigned int)class serial:(BOOL)serial target:(id)target
 {
-  v10 = a3;
-  v11 = a6;
+  nameCopy = name;
+  targetCopy = target;
   v31.receiver = self;
   v31.super_class = _SYMultiSuspendableQueue;
   v12 = [(_SYMultiSuspendableQueue *)&v31 init];
   if (v12)
   {
-    if (a5)
+    if (serial)
     {
       v13 = 0;
     }
@@ -52,19 +52,19 @@
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(v13, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = v14;
-    if (a4)
+    if (class)
     {
-      v16 = dispatch_queue_attr_make_with_qos_class(v14, a4, 0);
+      v16 = dispatch_queue_attr_make_with_qos_class(v14, class, 0);
 
       v15 = v16;
     }
 
-    v17 = dispatch_queue_create_with_target_V2([v10 UTF8String], v15, v11);
+    v17 = dispatch_queue_create_with_target_V2([nameCopy UTF8String], v15, targetCopy);
     v18 = *(v12 + 1);
     *(v12 + 1) = v17;
 
-    *(v12 + 2) = v11;
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s.%p", objc_msgSend(v10, "UTF8String"), v12];
+    *(v12 + 2) = targetCopy;
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s.%p", objc_msgSend(nameCopy, "UTF8String"), v12];
     v20 = *(v12 + 5);
     *(v12 + 5) = v19;
 
@@ -104,7 +104,7 @@
 - (void)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
   v4 = 138543362;
   v5 = v2;
   _os_log_error_impl(&dword_1DF835000, a2, 0x90u, "Queue %{public}@ deallocated while suspended", &v4, 0xCu);
@@ -158,16 +158,16 @@
     _os_log_impl(&dword_1DF835000, v5, OS_LOG_TYPE_INFO, "%{public}@ resume count: %d", &v11, 0x12u);
   }
 
-  v8 = [MEMORY[0x1E696AF00] callStackSymbols];
-  v9 = self;
-  objc_sync_enter(v9);
-  [(NSMutableArray *)v9->_latestSuspendBacktraces addObject:v8];
-  if ([(NSMutableArray *)v9->_latestSuspendBacktraces count]>= 4)
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_latestSuspendBacktraces addObject:callStackSymbols];
+  if ([(NSMutableArray *)selfCopy->_latestSuspendBacktraces count]>= 4)
   {
-    [(NSMutableArray *)v9->_latestSuspendBacktraces removeObjectAtIndex:0];
+    [(NSMutableArray *)selfCopy->_latestSuspendBacktraces removeObjectAtIndex:0];
   }
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -176,7 +176,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1DF835000, a2, 0x90u, "Over-resume detected for queue %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

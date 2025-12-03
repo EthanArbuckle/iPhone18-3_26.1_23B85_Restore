@@ -1,22 +1,22 @@
 @interface PKAddressTextField
-- (PKAddressTextField)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (PKAddressTextField)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (PKAddressTextFieldDelegate)addressDelegate;
-- (void)insertTextSuggestion:(id)a3;
-- (void)setIsInvalid:(BOOL)a3 showErrorGlyph:(BOOL)a4;
+- (void)insertTextSuggestion:(id)suggestion;
+- (void)setIsInvalid:(BOOL)invalid showErrorGlyph:(BOOL)glyph;
 @end
 
 @implementation PKAddressTextField
 
-- (PKAddressTextField)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (PKAddressTextField)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v17.receiver = self;
   v17.super_class = PKAddressTextField;
-  v5 = [(PKAddressTextField *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PKAddressTextField *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
-    if (a4 == 2)
+    v5->_style = style;
+    if (style == 2)
     {
       PKBridgeTextColor();
     }
@@ -28,9 +28,9 @@
     v7 = ;
     objc_storeStrong(&v6->_defaultColor, v7);
 
-    v8 = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
+    pkui_osloErrorColor = [MEMORY[0x1E69DC888] pkui_osloErrorColor];
     invalidColor = v6->_invalidColor;
-    v6->_invalidColor = v8;
+    v6->_invalidColor = pkui_osloErrorColor;
 
     v10 = PKUISmallExclamationMarkImage();
     v11 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
@@ -51,25 +51,25 @@
   return v6;
 }
 
-- (void)insertTextSuggestion:(id)a3
+- (void)insertTextSuggestion:(id)suggestion
 {
-  v5 = [a3 inputText];
+  inputText = [suggestion inputText];
   [(PKAddressTextField *)self setText:?];
   WeakRetained = objc_loadWeakRetained(&self->_addressDelegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained addressTextField:self textDidChange:v5];
+    [WeakRetained addressTextField:self textDidChange:inputText];
   }
 }
 
-- (void)setIsInvalid:(BOOL)a3 showErrorGlyph:(BOOL)a4
+- (void)setIsInvalid:(BOOL)invalid showErrorGlyph:(BOOL)glyph
 {
-  v4 = a4;
-  if (self->_isInvalid != a3)
+  glyphCopy = glyph;
+  if (self->_isInvalid != invalid)
   {
-    self->_isInvalid = a3;
+    self->_isInvalid = invalid;
     v6 = 1;
-    if (a3)
+    if (invalid)
     {
       v6 = 2;
     }
@@ -77,7 +77,7 @@
     [(PKAddressTextField *)self setTextColor:*(&self->super.super.super.super.super.isa + OBJC_IVAR___PKAddressTextField__style[v6])];
   }
 
-  if (v4)
+  if (glyphCopy)
   {
     v7 = 3;
   }

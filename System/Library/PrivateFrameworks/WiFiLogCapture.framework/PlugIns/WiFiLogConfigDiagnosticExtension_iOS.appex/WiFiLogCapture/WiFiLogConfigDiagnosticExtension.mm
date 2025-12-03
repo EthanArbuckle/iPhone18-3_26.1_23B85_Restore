@@ -1,14 +1,14 @@
 @interface WiFiLogConfigDiagnosticExtension
-- (BOOL)applyOrRemoveManagedDomain:(BOOL)a3 fileURL:(id)a4;
-- (BOOL)postValuesChangedInDomains:(id)a3;
-- (id)__attachmentsForTimberlorryWithParameters:(id)a3;
+- (BOOL)applyOrRemoveManagedDomain:(BOOL)domain fileURL:(id)l;
+- (BOOL)postValuesChangedInDomains:(id)domains;
+- (id)__attachmentsForTimberlorryWithParameters:(id)parameters;
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
-- (unint64_t)attachmentSizes:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (unint64_t)attachmentSizes:(id)sizes;
 - (void)clearTimers;
 - (void)removeAndApplyNoLoggingToCoreCapture;
-- (void)setupWithParameters:(id)a3;
-- (void)teardownWithParameters:(id)a3;
+- (void)setupWithParameters:(id)parameters;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation WiFiLogConfigDiagnosticExtension
@@ -28,9 +28,9 @@
   return &__NSArray0__struct;
 }
 
-- (id)__attachmentsForTimberlorryWithParameters:(id)a3
+- (id)__attachmentsForTimberlorryWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = +[NSMutableArray array];
   v22 = 0;
   v23 = &v22;
@@ -50,8 +50,8 @@
 
   v6 = v5;
   _Block_object_dispose(&v22, 8);
-  v7 = [v5 sharedClient];
-  if (v7)
+  sharedClient = [v5 sharedClient];
+  if (sharedClient)
   {
     v22 = 0;
     v23 = &v22;
@@ -75,7 +75,7 @@
     v26 = v10;
     v11 = [NSArray arrayWithObjects:&v26 count:1];
     v16 = 0;
-    v12 = [v7 collectLogs:v11 configuration:&off_1000085B8 update:0 receipts:0 error:&v16];
+    v12 = [sharedClient collectLogs:v11 configuration:&off_1000085B8 update:0 receipts:0 error:&v16];
     v13 = v16;
 
     if (v12)
@@ -88,14 +88,14 @@
   return v4;
 }
 
-- (unint64_t)attachmentSizes:(id)a3
+- (unint64_t)attachmentSizes:(id)sizes
 {
-  v3 = a3;
+  sizesCopy = sizes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [sizesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -107,14 +107,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sizesCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) filesize];
-        v6 += [v9 unsignedIntValue];
+        filesize = [*(*(&v11 + 1) + 8 * i) filesize];
+        v6 += [filesize unsignedIntValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [sizesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -128,9 +128,9 @@
   return v6;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   self->_attachmentsForParametersStartTime = CFAbsoluteTimeGetCurrent();
   v5 = +[NSMutableArray array];
   v6 = MegaWiFiDELog();
@@ -141,19 +141,19 @@
     v15 = 1024;
     v16 = 123;
     v17 = 2112;
-    v18 = v4;
+    v18 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: attachmentsForParameters called with parameters: %@", &v13, 0x1Cu);
   }
 
-  if (v4)
+  if (parametersCopy)
   {
-    if ([v4 count])
+    if ([parametersCopy count])
     {
-      v7 = [v4 objectForKey:@"hostAppString"];
+      v7 = [parametersCopy objectForKey:@"hostAppString"];
 
       if (v7)
       {
-        v8 = [v4 objectForKey:@"hostAppString"];
+        v8 = [parametersCopy objectForKey:@"hostAppString"];
         if ([v8 isEqualToString:@"Timberlorry"])
         {
           v9 = MegaWiFiDELog();
@@ -166,7 +166,7 @@
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: calling __attachmentsForTimberlorryWithParameters", &v13, 0x12u);
           }
 
-          v10 = [(WiFiLogConfigDiagnosticExtension *)self __attachmentsForTimberlorryWithParameters:v4];
+          v10 = [(WiFiLogConfigDiagnosticExtension *)self __attachmentsForTimberlorryWithParameters:parametersCopy];
           [v5 addObjectsFromArray:v10];
         }
       }
@@ -195,15 +195,15 @@
 - (void)removeAndApplyNoLoggingToCoreCapture
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
-  v5 = [v4 URLByAppendingPathComponent:@"WiFiLogConfigDiagnosticExtension/NoLogging_ManagedDefaultFiles/"];
+  v5 = [bundleURL URLByAppendingPathComponent:@"WiFiLogConfigDiagnosticExtension/NoLogging_ManagedDefaultFiles/"];
   v6 = MegaWiFiDELog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = getuid();
     v8 = [NSBundle bundleForClass:objc_opt_class()];
-    v9 = [v8 bundleURL];
+    bundleURL2 = [v8 bundleURL];
     *buf = 136447234;
     v45 = "[WiFiLogConfigDiagnosticExtension removeAndApplyNoLoggingToCoreCapture]";
     v46 = 1024;
@@ -211,9 +211,9 @@
     v48 = 1024;
     v49 = v7;
     v50 = 2112;
-    v51 = v4;
+    v51 = bundleURL;
     v52 = 2112;
-    v53 = v9;
+    v53 = bundleURL2;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: uid num %d mainBundleURL %@ bundleForClass.bundleURL %@", buf, 0x2Cu);
   }
 
@@ -234,7 +234,7 @@
   {
     v32 = v10;
     v33 = v5;
-    v34 = v4;
+    v34 = bundleURL;
     v13 = +[NSMutableArray array];
     v38 = 0u;
     v39 = 0u;
@@ -261,12 +261,12 @@
           }
 
           v19 = *(*(&v38 + 1) + 8 * v18);
-          v20 = [v19 lastPathComponent];
-          v21 = [v20 stringByDeletingPathExtension];
-          if ([v21 containsString:v16])
+          lastPathComponent = [v19 lastPathComponent];
+          stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+          if ([stringByDeletingPathExtension containsString:v16])
           {
             v22 = v16;
-            [v13 addObject:v21];
+            [v13 addObject:stringByDeletingPathExtension];
             v23 = MegaWiFiDELog();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
@@ -353,30 +353,30 @@
     }
 
     v5 = v33;
-    v4 = v34;
+    bundleURL = v34;
     v11 = v31;
     v10 = v32;
     v12 = 0;
   }
 }
 
-- (BOOL)applyOrRemoveManagedDomain:(BOOL)a3 fileURL:(id)a4
+- (BOOL)applyOrRemoveManagedDomain:(BOOL)domain fileURL:(id)l
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = [v5 lastPathComponent];
-  v7 = [v6 stringByDeletingPathExtension];
-  v8 = [v5 pathExtension];
-  v9 = [v8 isEqualToString:@"plist"];
+  domainCopy = domain;
+  lCopy = l;
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  pathExtension = [lCopy pathExtension];
+  v9 = [pathExtension isEqualToString:@"plist"];
 
   if (v9)
   {
-    v10 = [NSData dataWithContentsOfURL:v5];
+    v10 = [NSData dataWithContentsOfURL:lCopy];
     if (v10)
     {
-      if (v7)
+      if (stringByDeletingPathExtension)
       {
-        if (!v4)
+        if (!domainCopy)
         {
           v12 = +[NSDictionary dictionary];
           v16 = _CFPreferencesWriteManagedDomain();
@@ -391,7 +391,7 @@
             v24 = 1024;
             v25 = v16 != 0;
             v26 = 2112;
-            v27 = v5;
+            v27 = lCopy;
             v28 = 2112;
             v29 = v12;
             _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: applyOrRemoveManagedDomain Removed Managed Default success %d, %@ plist: %@", buf, 0x2Cu);
@@ -420,7 +420,7 @@
               v24 = 1024;
               v25 = v13 != 0;
               v26 = 2112;
-              v27 = v5;
+              v27 = lCopy;
               v28 = 2112;
               v29 = v11;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: applyOrRemoveManagedDomain Applied Managed Default success %d, %@ plist: %@", buf, 0x2Cu);
@@ -475,10 +475,10 @@ LABEL_25:
   return v14;
 }
 
-- (BOOL)postValuesChangedInDomains:(id)a3
+- (BOOL)postValuesChangedInDomains:(id)domains
 {
-  v3 = a3;
-  v4 = [v3 count];
+  domainsCopy = domains;
+  v4 = [domainsCopy count];
   if (v4)
   {
     v5 = MegaWiFiDELog();
@@ -489,7 +489,7 @@ LABEL_25:
       v10 = 1024;
       v11 = 282;
       v12 = 2112;
-      v13 = v3;
+      v13 = domainsCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: postValuesChangedInDomains Updating Domains with changes %@", &v8, 0x1Cu);
     }
 
@@ -509,9 +509,9 @@ LABEL_25:
   return v4 != 0;
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = MegaWiFiDELog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -520,19 +520,19 @@ LABEL_25:
     v16 = 1024;
     v17 = 347;
     v18 = 2112;
-    v19 = v4;
+    v19 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: setupWithParameters called with parameters: %@", &v14, 0x1Cu);
   }
 
   [(WiFiLogConfigDiagnosticExtension *)self clearTimers];
   self->_setupWithParametersStartTime = CFAbsoluteTimeGetCurrent();
-  if (v4 && [v4 count])
+  if (parametersCopy && [parametersCopy count])
   {
-    v6 = [v4 objectForKey:@"hostAppString"];
+    v6 = [parametersCopy objectForKey:@"hostAppString"];
 
     if (v6)
     {
-      v7 = [v4 objectForKey:@"hostAppString"];
+      v7 = [parametersCopy objectForKey:@"hostAppString"];
       if ([v7 isEqualToString:@"Timberlorry"])
       {
         v8 = MegaWiFiDELog();
@@ -549,11 +549,11 @@ LABEL_25:
       }
     }
 
-    v9 = [v4 objectForKey:@"Action"];
+    v9 = [parametersCopy objectForKey:@"Action"];
 
     if (v9)
     {
-      v10 = [v4 objectForKey:@"Action"];
+      v10 = [parametersCopy objectForKey:@"Action"];
       if ([v10 isEqualToString:@"Apply"])
       {
         v11 = MegaWiFiDELog();
@@ -604,9 +604,9 @@ LABEL_25:
   self->_setupWithParametersEndTime = CFAbsoluteTimeGetCurrent();
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = MegaWiFiDELog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -615,20 +615,20 @@ LABEL_25:
     v13 = 1024;
     v14 = 383;
     v15 = 2112;
-    v16 = v4;
+    v16 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d: teardownWithParameters called with parameters: %@", buf, 0x1Cu);
   }
 
   self->_teardownWithParametersStartTime = CFAbsoluteTimeGetCurrent();
-  if (v4)
+  if (parametersCopy)
   {
-    if ([v4 count])
+    if ([parametersCopy count])
     {
-      v6 = [v4 objectForKey:@"hostAppString"];
+      v6 = [parametersCopy objectForKey:@"hostAppString"];
 
       if (v6)
       {
-        v7 = [v4 objectForKey:@"hostAppString"];
+        v7 = [parametersCopy objectForKey:@"hostAppString"];
         if ([v7 isEqualToString:@"Timberlorry"])
         {
           v8 = MegaWiFiDELog();
@@ -648,8 +648,8 @@ LABEL_25:
   }
 
   self->_teardownWithParametersEndTime = CFAbsoluteTimeGetCurrent();
-  v10 = v4;
-  v9 = v4;
+  v10 = parametersCopy;
+  v9 = parametersCopy;
   AnalyticsSendEventLazy();
   [(WiFiLogConfigDiagnosticExtension *)self clearTimers:_NSConcreteStackBlock];
 }

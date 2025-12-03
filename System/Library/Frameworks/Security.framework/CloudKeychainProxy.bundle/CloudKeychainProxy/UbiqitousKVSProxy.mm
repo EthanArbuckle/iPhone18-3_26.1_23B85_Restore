@@ -1,76 +1,76 @@
 @interface UbiqitousKVSProxy
-+ (id)withAccount:(id)a3 store:(id)a4 lockMonitor:(id)a5 persistence:(id)a6;
-- (BOOL)hasPendingKey:(id)a3;
++ (id)withAccount:(id)account store:(id)store lockMonitor:(id)monitor persistence:(id)persistence;
+- (BOOL)hasPendingKey:(id)key;
 - (BOOL)hasPendingNonShadowSyncIDs;
 - (BOOL)hasPendingShadowSyncIDs;
 - (BOOL)hasPendingSyncIDs;
-- (BOOL)hasSyncPendingFor:(id)a3;
+- (BOOL)hasSyncPendingFor:(id)for;
 - (NSDictionary)persistentData;
-- (UbiqitousKVSProxy)initWithAccount:(id)a3 store:(id)a4 lockMonitor:(id)a5 persistence:(id)a6;
+- (UbiqitousKVSProxy)initWithAccount:(id)account store:(id)store lockMonitor:(id)monitor persistence:(id)persistence;
 - (id)copyAllKeyInterests;
 - (id)copyAsDictionary;
-- (id)copyValues:(id)a3;
+- (id)copyValues:(id)values;
 - (id)keysForCurrentLockState;
-- (id)objectForKey:(id)a3;
-- (id)pendKeysAndGetNewlyPended:(id)a3;
-- (id)pendKeysAndGetPendingForCurrentLockState:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)pendKeysAndGetNewlyPended:(id)pended;
+- (id)pendKeysAndGetPendingForCurrentLockState:(id)state;
 - (id)pendingKeysForCurrentLockState;
-- (void)_queue_handleNotification:(const char *)a3;
+- (void)_queue_handleNotification:(const char *)notification;
 - (void)_queue_kvsStoreChange;
 - (void)_queue_locked;
 - (void)_queue_processAllItems;
 - (void)_queue_storeAccountChanged;
-- (void)_queue_storeKeysChanged:(id)a3 initial:(BOOL)a4;
+- (void)_queue_storeKeysChanged:(id)changed initial:(BOOL)initial;
 - (void)_queue_unlocked;
-- (void)calloutWith:(id)a3;
+- (void)calloutWith:(id)with;
 - (void)clearStore;
 - (void)dealloc;
-- (void)doAfterFlush:(id)a3;
+- (void)doAfterFlush:(id)flush;
 - (void)doEnsurePeerRegistration;
 - (void)doSyncWithAllPeers;
 - (void)doSyncWithPendingPeers;
-- (void)handleNotification:(const char *)a3;
-- (void)handlePendingEnsurePeerRegistrationRequests:(BOOL)a3;
-- (void)intersectWithCurrentLockState:(id)a3;
+- (void)handleNotification:(const char *)notification;
+- (void)handlePendingEnsurePeerRegistrationRequests:(BOOL)requests;
+- (void)intersectWithCurrentLockState:(id)state;
 - (void)locked;
-- (void)perfCounters:(id)a3;
+- (void)perfCounters:(id)counters;
 - (void)persistState;
-- (void)processKeyChangedEvent:(id)a3;
+- (void)processKeyChangedEvent:(id)event;
 - (void)processPendingKeysForCurrentLockState;
-- (void)registerAtTimeKeys:(id)a3;
-- (void)registerKeys:(id)a3 forAccount:(id)a4;
-- (void)removeKeys:(id)a3 forAccount:(id)a4;
+- (void)registerAtTimeKeys:(id)keys;
+- (void)registerKeys:(id)keys forAccount:(id)account;
+- (void)removeKeys:(id)keys forAccount:(id)account;
 - (void)requestEnsurePeerRegistration;
-- (void)requestSyncWithPeerIDs:(id)a3 backupPeerIDs:(id)a4;
-- (void)sendKeysCallout:(id)a3;
-- (void)setPersistentData:(id)a3;
-- (void)setStoreObjectsFromDictionary:(id)a3;
+- (void)requestSyncWithPeerIDs:(id)ds backupPeerIDs:(id)iDs;
+- (void)sendKeysCallout:(id)callout;
+- (void)setPersistentData:(id)data;
+- (void)setStoreObjectsFromDictionary:(id)dictionary;
 - (void)storeAccountChanged;
-- (void)storeKeysChanged:(id)a3 initial:(BOOL)a4;
+- (void)storeKeysChanged:(id)changed initial:(BOOL)initial;
 - (void)synchronizeStore;
 - (void)unlocked;
-- (void)waitForSyncDone:(BOOL)a3 error:(id)a4;
-- (void)waitForSynchronization:(id)a3;
+- (void)waitForSyncDone:(BOOL)done error:(id)error;
+- (void)waitForSynchronization:(id)synchronization;
 @end
 
 @implementation UbiqitousKVSProxy
 
 - (void)processPendingKeysForCurrentLockState
 {
-  v4 = [(UbiqitousKVSProxy *)self pendingKeysForCurrentLockState];
-  v3 = [(UbiqitousKVSProxy *)self copyValues:v4];
+  pendingKeysForCurrentLockState = [(UbiqitousKVSProxy *)self pendingKeysForCurrentLockState];
+  v3 = [(UbiqitousKVSProxy *)self copyValues:pendingKeysForCurrentLockState];
   [(UbiqitousKVSProxy *)self processKeyChangedEvent:v3];
 }
 
-- (void)processKeyChangedEvent:(id)a3
+- (void)processKeyChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSMutableDictionary dictionary];
   v6 = sub_10000AE54("processKeyChangedEvent");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    selfCopy = eventCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "changedValues:%@", buf, 0xCu);
   }
 
@@ -82,7 +82,7 @@
   v18 = v7;
   v8 = v5;
   v19 = v8;
-  [(UbiqitousKVSProxy *)v4 enumerateKeysAndObjectsUsingBlock:v17];
+  [(UbiqitousKVSProxy *)eventCopy enumerateKeysAndObjectsUsingBlock:v17];
   if ([v7 count])
   {
     pendingKeys = self->_pendingKeys;
@@ -107,10 +107,10 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = [v7 componentsJoinedByString:@" "];
-      v13 = [(NSMutableSet *)self->_pendingKeys allObjects];
-      v14 = [v13 componentsJoinedByString:@" "];
+      allObjects = [(NSMutableSet *)self->_pendingKeys allObjects];
+      v14 = [allObjects componentsJoinedByString:@" "];
       *buf = 138412802;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v12;
       v24 = 2112;
@@ -120,19 +120,19 @@
   }
 }
 
-- (id)copyValues:(id)a3
+- (id)copyValues:(id)values
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self store];
+  valuesCopy = values;
+  store = [(UbiqitousKVSProxy *)self store];
   [NSMutableDictionary dictionaryWithCapacity:0];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000024B4;
   v11[3] = &unk_100018A58;
-  v6 = v12 = v5;
+  v6 = v12 = store;
   v13 = v6;
-  v7 = v5;
-  [v4 enumerateObjectsUsingBlock:v11];
+  v7 = store;
+  [valuesCopy enumerateObjectsUsingBlock:v11];
 
   v8 = v13;
   v9 = v6;
@@ -140,9 +140,9 @@
   return v9;
 }
 
-- (id)pendKeysAndGetPendingForCurrentLockState:(id)a3
+- (id)pendKeysAndGetPendingForCurrentLockState:(id)state
 {
-  v4 = [(UbiqitousKVSProxy *)self pendKeysAndGetNewlyPended:a3];
+  v4 = [(UbiqitousKVSProxy *)self pendKeysAndGetNewlyPended:state];
 
   return [(UbiqitousKVSProxy *)self pendingKeysForCurrentLockState];
 }
@@ -155,27 +155,27 @@
   return v3;
 }
 
-- (void)intersectWithCurrentLockState:(id)a3
+- (void)intersectWithCurrentLockState:(id)state
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self keysForCurrentLockState];
-  [v4 intersectSet:v5];
+  stateCopy = state;
+  keysForCurrentLockState = [(UbiqitousKVSProxy *)self keysForCurrentLockState];
+  [stateCopy intersectSet:keysForCurrentLockState];
 }
 
-- (id)pendKeysAndGetNewlyPended:(id)a3
+- (id)pendKeysAndGetNewlyPended:(id)pended
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
-  [v5 intersectSet:v4];
+  pendedCopy = pended;
+  copyAllKeyInterests = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
+  [copyAllKeyInterests intersectSet:pendedCopy];
 
-  v6 = [v5 mutableCopy];
+  v6 = [copyAllKeyInterests mutableCopy];
   [v6 minusSet:self->_pendingKeys];
   if (!self->_shadowPendingKeys || ([v6 minusSet:?], (pendingKeys = self->_shadowPendingKeys) == 0))
   {
     pendingKeys = self->_pendingKeys;
   }
 
-  [(NSMutableSet *)pendingKeys unionSet:v5];
+  [(NSMutableSet *)pendingKeys unionSet:copyAllKeyInterests];
 
   return v6;
 }
@@ -183,18 +183,18 @@
 - (id)keysForCurrentLockState
 {
   v3 = [NSMutableSet setWithSet:self->_alwaysKeys];
-  v4 = [(UbiqitousKVSProxy *)self lockMonitor];
-  v5 = [v4 unlockedSinceBoot];
+  lockMonitor = [(UbiqitousKVSProxy *)self lockMonitor];
+  unlockedSinceBoot = [lockMonitor unlockedSinceBoot];
 
-  if (v5)
+  if (unlockedSinceBoot)
   {
     [v3 unionSet:self->_firstUnlockKeys];
   }
 
-  v6 = [(UbiqitousKVSProxy *)self lockMonitor];
-  v7 = [v6 locked];
+  lockMonitor2 = [(UbiqitousKVSProxy *)self lockMonitor];
+  locked = [lockMonitor2 locked];
 
-  if ((v7 & 1) == 0)
+  if ((locked & 1) == 0)
   {
     [v3 unionSet:self->_unlockedKeys];
   }
@@ -235,22 +235,22 @@
   dispatch_sync(ckdkvsproxy_queue, block);
 }
 
-- (void)storeKeysChanged:(id)a3 initial:(BOOL)a4
+- (void)storeKeysChanged:(id)changed initial:(BOOL)initial
 {
-  v6 = a3;
+  changedCopy = changed;
   ckdkvsproxy_queue = self->_ckdkvsproxy_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100002988;
   block[3] = &unk_1000188A0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = changedCopy;
+  initialCopy = initial;
+  v8 = changedCopy;
   dispatch_sync(ckdkvsproxy_queue, block);
 }
 
-- (void)handleNotification:(const char *)a3
+- (void)handleNotification:(const char *)notification
 {
   ckdkvsproxy_queue = self->_ckdkvsproxy_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -258,7 +258,7 @@
   v4[2] = sub_100002A0C;
   v4[3] = &unk_100018A30;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notification;
   dispatch_sync(ckdkvsproxy_queue, v4);
 }
 
@@ -280,7 +280,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Unlocked", &v4, 0xCu);
   }
 
@@ -299,7 +299,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ Locked", &v4, 0xCu);
   }
 }
@@ -320,19 +320,19 @@
   }
 }
 
-- (BOOL)hasPendingKey:(id)a3
+- (BOOL)hasPendingKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self pendingKeys];
-  if ([v5 containsObject:v4])
+  keyCopy = key;
+  pendingKeys = [(UbiqitousKVSProxy *)self pendingKeys];
+  if ([pendingKeys containsObject:keyCopy])
   {
     v6 = 1;
   }
 
   else if (self->_shadowPendingKeys)
   {
-    v7 = [(UbiqitousKVSProxy *)self shadowPendingKeys];
-    v6 = [v7 containsObject:v4];
+    shadowPendingKeys = [(UbiqitousKVSProxy *)self shadowPendingKeys];
+    v6 = [shadowPendingKeys containsObject:keyCopy];
   }
 
   else
@@ -343,10 +343,10 @@
   return v6;
 }
 
-- (BOOL)hasSyncPendingFor:(id)a3
+- (BOOL)hasSyncPendingFor:(id)for
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_pendingSyncPeerIDs containsObject:v4]& 1) != 0)
+  forCopy = for;
+  if (([(NSMutableSet *)self->_pendingSyncPeerIDs containsObject:forCopy]& 1) != 0)
   {
     v5 = 1;
   }
@@ -356,7 +356,7 @@
     shadowPendingSyncPeerIDs = self->_shadowPendingSyncPeerIDs;
     if (shadowPendingSyncPeerIDs)
     {
-      v5 = [(NSMutableSet *)shadowPendingSyncPeerIDs containsObject:v4];
+      v5 = [(NSMutableSet *)shadowPendingSyncPeerIDs containsObject:forCopy];
     }
 
     else
@@ -368,14 +368,14 @@
   return v5;
 }
 
-- (void)requestSyncWithPeerIDs:(id)a3 backupPeerIDs:(id)a4
+- (void)requestSyncWithPeerIDs:(id)ds backupPeerIDs:(id)iDs
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 count] || objc_msgSend(v6, "count"))
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if ([dsCopy count] || objc_msgSend(iDsCopy, "count"))
   {
-    v7 = [NSSet setWithArray:v11];
-    v8 = [NSSet setWithArray:v6];
+    v7 = [NSSet setWithArray:dsCopy];
+    v8 = [NSSet setWithArray:iDsCopy];
     [(NSMutableSet *)self->_pendingSyncPeerIDs unionSet:v7];
     [(NSMutableSet *)self->_pendingSyncBackupPeerIDs unionSet:v8];
     if (self->_inCallout)
@@ -390,10 +390,10 @@
     {
       if (!self->_inCallout)
       {
-        v9 = [(UbiqitousKVSProxy *)self lockMonitor];
-        v10 = [v9 locked];
+        lockMonitor = [(UbiqitousKVSProxy *)self lockMonitor];
+        locked = [lockMonitor locked];
 
-        if ((v10 & 1) == 0)
+        if ((locked & 1) == 0)
         {
           [(UbiqitousKVSProxy *)self doSyncWithPendingPeers];
         }
@@ -404,13 +404,13 @@
 
 - (BOOL)hasPendingSyncIDs
 {
-  v3 = [(UbiqitousKVSProxy *)self hasPendingNonShadowSyncIDs];
+  hasPendingNonShadowSyncIDs = [(UbiqitousKVSProxy *)self hasPendingNonShadowSyncIDs];
   if (self->_inCallout)
   {
-    v3 |= [(UbiqitousKVSProxy *)self hasPendingShadowSyncIDs];
+    hasPendingNonShadowSyncIDs |= [(UbiqitousKVSProxy *)self hasPendingShadowSyncIDs];
   }
 
-  return v3;
+  return hasPendingNonShadowSyncIDs;
 }
 
 - (BOOL)hasPendingShadowSyncIDs
@@ -471,19 +471,19 @@
 
 - (void)doEnsurePeerRegistration
 {
-  v3 = [(UbiqitousKVSProxy *)self account];
+  account = [(UbiqitousKVSProxy *)self account];
   [(UbiqitousKVSProxy *)self setEnsurePeerRegistrationEnqueuedButNotStarted:1];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000037AC;
   v5[3] = &unk_1000189B8;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = account;
+  v4 = account;
   [(UbiqitousKVSProxy *)self calloutWith:v5];
 }
 
-- (void)handlePendingEnsurePeerRegistrationRequests:(BOOL)a3
+- (void)handlePendingEnsurePeerRegistrationRequests:(BOOL)requests
 {
   calloutQueue = self->_calloutQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -491,25 +491,25 @@
   v4[2] = sub_100003A34;
   v4[3] = &unk_100018968;
   v4[4] = self;
-  v5 = a3;
+  requestsCopy = requests;
   dispatch_async(calloutQueue, v4);
 }
 
-- (void)sendKeysCallout:(id)a3
+- (void)sendKeysCallout:(id)callout
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100003C04;
   v4[3] = &unk_100018940;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(UbiqitousKVSProxy *)v5 calloutWith:v4];
+  selfCopy = self;
+  calloutCopy = callout;
+  v3 = calloutCopy;
+  [(UbiqitousKVSProxy *)selfCopy calloutWith:v4];
 }
 
-- (void)calloutWith:(id)a3
+- (void)calloutWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   xpc_transaction_begin();
   calloutQueue = self->_calloutQueue;
   v7[0] = _NSConcreteStackBlock;
@@ -517,16 +517,16 @@
   v7[2] = sub_100003F38;
   v7[3] = &unk_100018DB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = withCopy;
+  v6 = withCopy;
   dispatch_async(calloutQueue, v7);
 }
 
-- (void)doAfterFlush:(id)a3
+- (void)doAfterFlush:(id)flush
 {
   if (self->_inCallout)
   {
-    v4 = objc_retainBlock(a3);
+    v4 = objc_retainBlock(flush);
     shadowFlushBlock = self->_shadowFlushBlock;
     self->_shadowFlushBlock = v4;
 
@@ -537,7 +537,7 @@
   {
     calloutQueue = self->_calloutQueue;
 
-    dispatch_async(calloutQueue, a3);
+    dispatch_async(calloutQueue, flush);
   }
 }
 
@@ -548,7 +548,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
   }
 
@@ -559,17 +559,17 @@
   [(UbiqitousKVSProxy *)self processKeyChangedEvent:v4];
 }
 
-- (void)_queue_storeKeysChanged:(id)a3 initial:(BOOL)a4
+- (void)_queue_storeKeysChanged:(id)changed initial:(BOOL)initial
 {
-  v4 = a4;
-  v6 = a3;
+  initialCopy = initial;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_ckdkvsproxy_queue);
   self->_seenKVSStoreChange = 1;
-  [(NSMutableSet *)self->_pendingKeys minusSet:v6];
-  v7 = [(UbiqitousKVSProxy *)self pendKeysAndGetPendingForCurrentLockState:v6];
+  [(NSMutableSet *)self->_pendingKeys minusSet:changedCopy];
+  v7 = [(UbiqitousKVSProxy *)self pendKeysAndGetPendingForCurrentLockState:changedCopy];
   v8 = [(UbiqitousKVSProxy *)self copyValues:v7];
   v9 = v8;
-  if (v4)
+  if (initialCopy)
   {
     [v8 setObject:@"true" forKeyedSubscript:kSOSKVSInitialSyncKey];
   }
@@ -577,18 +577,18 @@
   v10 = sub_10000AE54("event");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 allObjects];
-    v12 = [v11 componentsJoinedByString:@" "];
-    v13 = [v9 allKeys];
-    v14 = [v13 componentsJoinedByString:@" "];
+    allObjects = [changedCopy allObjects];
+    v12 = [allObjects componentsJoinedByString:@" "];
+    allKeys = [v9 allKeys];
+    v14 = [allKeys componentsJoinedByString:@" "];
     v15 = 138413058;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v12;
     v19 = 2112;
     v20 = v14;
     v21 = 1024;
-    v22 = v4;
+    v22 = initialCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ keysChangedInCloud: %@ keysOfInterest: %@ initial: %{BOOL}d", &v15, 0x26u);
   }
 
@@ -598,60 +598,60 @@
   }
 }
 
-- (void)_queue_handleNotification:(const char *)a3
+- (void)_queue_handleNotification:(const char *)notification
 {
   dispatch_assert_queue_V2(self->_ckdkvsproxy_queue);
-  if (!strcmp(a3, "com.apple.security.cloudkeychain.forceupdate"))
+  if (!strcmp(notification, "com.apple.security.cloudkeychain.forceupdate"))
   {
 
     [(UbiqitousKVSProxy *)self _queue_processAllItems];
   }
 
-  else if (!strcmp(a3, "com.apple.security.cloudkeychainproxy.kvstorechange3"))
+  else if (!strcmp(notification, "com.apple.security.cloudkeychainproxy.kvstorechange3"))
   {
 
     [(UbiqitousKVSProxy *)self _queue_kvsStoreChange];
   }
 }
 
-- (void)registerKeys:(id)a3 forAccount:(id)a4
+- (void)registerKeys:(id)keys forAccount:(id)account
 {
-  v28 = a3;
-  v6 = a4;
-  if (v6)
+  keysCopy = keys;
+  accountCopy = account;
+  if (accountCopy)
   {
-    v7 = [(UbiqitousKVSProxy *)self accountUUID];
-    if (v7)
+    accountUUID = [(UbiqitousKVSProxy *)self accountUUID];
+    if (accountUUID)
     {
-      v8 = v7;
-      v9 = [(UbiqitousKVSProxy *)self accountUUID];
-      v10 = [v6 isEqualToString:v9];
+      v8 = accountUUID;
+      accountUUID2 = [(UbiqitousKVSProxy *)self accountUUID];
+      v10 = [accountCopy isEqualToString:accountUUID2];
 
-      [(UbiqitousKVSProxy *)self setAccountUUID:v6];
+      [(UbiqitousKVSProxy *)self setAccountUUID:accountCopy];
       if (!v10)
       {
-        v11 = +[NSMutableSet set];
+        copyAllKeyInterests = +[NSMutableSet set];
         goto LABEL_7;
       }
     }
 
     else
     {
-      [(UbiqitousKVSProxy *)self setAccountUUID:v6];
+      [(UbiqitousKVSProxy *)self setAccountUUID:accountCopy];
     }
   }
 
-  v11 = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
+  copyAllKeyInterests = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
 LABEL_7:
-  v12 = v11;
+  v12 = copyAllKeyInterests;
   v13 = [NSString stringWithUTF8String:"KeyParameter"];
-  v14 = [v28 valueForKey:v13];
+  v14 = [keysCopy valueForKey:v13];
 
   v15 = [NSString stringWithUTF8String:"Circle"];
-  v16 = [v28 valueForKey:v15];
+  v16 = [keysCopy valueForKey:v15];
 
   v17 = [NSString stringWithUTF8String:"Message"];
-  v18 = [v28 valueForKey:v17];
+  v18 = [keysCopy valueForKey:v17];
 
   v19 = +[NSMutableSet set];
   alwaysKeys = self->_alwaysKeys;
@@ -668,16 +668,16 @@ LABEL_7:
   [(UbiqitousKVSProxy *)self registerAtTimeKeys:v14];
   [(UbiqitousKVSProxy *)self registerAtTimeKeys:v16];
   [(UbiqitousKVSProxy *)self registerAtTimeKeys:v18];
-  v25 = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
-  [(NSMutableSet *)self->_pendingKeys intersectSet:v25];
+  copyAllKeyInterests2 = [(UbiqitousKVSProxy *)self copyAllKeyInterests];
+  [(NSMutableSet *)self->_pendingKeys intersectSet:copyAllKeyInterests2];
   shadowPendingKeys = self->_shadowPendingKeys;
   if (shadowPendingKeys)
   {
-    [(NSMutableSet *)shadowPendingKeys intersectSet:v25];
+    [(NSMutableSet *)shadowPendingKeys intersectSet:copyAllKeyInterests2];
   }
 
-  [v25 minusSet:v12];
-  v27 = [(UbiqitousKVSProxy *)self pendKeysAndGetNewlyPended:v25];
+  [copyAllKeyInterests2 minusSet:v12];
+  v27 = [(UbiqitousKVSProxy *)self pendKeysAndGetNewlyPended:copyAllKeyInterests2];
   [(UbiqitousKVSProxy *)self persistState];
   [(UbiqitousKVSProxy *)self intersectWithCurrentLockState:v27];
   if ([v27 count])
@@ -686,24 +686,24 @@ LABEL_7:
   }
 }
 
-- (void)removeKeys:(id)a3 forAccount:(id)a4
+- (void)removeKeys:(id)keys forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  keysCopy = keys;
+  accountCopy = account;
+  if (!accountCopy)
   {
     goto LABEL_4;
   }
 
-  v8 = [(UbiqitousKVSProxy *)self accountUUID];
-  if (!v8)
+  accountUUID = [(UbiqitousKVSProxy *)self accountUUID];
+  if (!accountUUID)
   {
     goto LABEL_4;
   }
 
-  v9 = v8;
-  v10 = [(UbiqitousKVSProxy *)self accountUUID];
-  v11 = [v7 isEqualToString:v10];
+  v9 = accountUUID;
+  accountUUID2 = [(UbiqitousKVSProxy *)self accountUUID];
+  v11 = [accountCopy isEqualToString:accountUUID2];
 
   if ((v11 & 1) == 0)
   {
@@ -723,18 +723,18 @@ LABEL_4:
     v13[2] = sub_100005190;
     v13[3] = &unk_100018CF0;
     v13[4] = self;
-    [v6 enumerateObjectsUsingBlock:v13];
+    [keysCopy enumerateObjectsUsingBlock:v13];
   }
 }
 
-- (void)registerAtTimeKeys:(id)a3
+- (void)registerAtTimeKeys:(id)keys
 {
-  if (a3)
+  if (keys)
   {
-    v4 = a3;
-    v13 = [v4 valueForKey:@"AlwaysKeys"];
-    v5 = [v4 valueForKey:@"FirstUnlockKeys"];
-    v6 = [v4 valueForKey:@"UnlockedKeys"];
+    keysCopy = keys;
+    v13 = [keysCopy valueForKey:@"AlwaysKeys"];
+    v5 = [keysCopy valueForKey:@"FirstUnlockKeys"];
+    v6 = [keysCopy valueForKey:@"UnlockedKeys"];
 
     if (v13)
     {
@@ -767,11 +767,11 @@ LABEL_4:
   return v3;
 }
 
-- (void)waitForSyncDone:(BOOL)a3 error:(id)a4
+- (void)waitForSyncDone:(BOOL)done error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  if (v4)
+  doneCopy = done;
+  errorCopy = error;
+  if (doneCopy)
   {
     self->_nextFreshnessTime = dispatch_time(0, 5000000000);
   }
@@ -789,16 +789,16 @@ LABEL_4:
   v11 = 3221225472;
   v12 = sub_100005550;
   v13 = &unk_1000188C8;
-  v15 = v4;
-  v14 = v6;
-  v9 = v6;
+  v15 = doneCopy;
+  v14 = errorCopy;
+  v9 = errorCopy;
   [(NSMutableArray *)freshnessCompletions enumerateObjectsUsingBlock:&v10];
   [(NSMutableArray *)self->_freshnessCompletions removeAllObjects:v10];
 }
 
-- (void)waitForSynchronization:(id)a3
+- (void)waitForSynchronization:(id)synchronization
 {
-  v4 = a3;
+  synchronizationCopy = synchronization;
   v5 = sub_10000AE54("fresh");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -812,13 +812,13 @@ LABEL_4:
   v14[1] = 3221225472;
   v14[2] = sub_100005744;
   v14[3] = &unk_100018878;
-  v7 = v4;
+  v7 = synchronizationCopy;
   v15 = v7;
   v8 = objc_retainBlock(v14);
   [(NSMutableArray *)freshnessCompletions addObject:v8];
 
-  v9 = [(UbiqitousKVSProxy *)self freshnessCompletions];
-  v10 = [v9 count];
+  freshnessCompletions = [(UbiqitousKVSProxy *)self freshnessCompletions];
+  v10 = [freshnessCompletions count];
 
   if (v10 == 1)
   {
@@ -833,13 +833,13 @@ LABEL_4:
   }
 }
 
-- (void)setStoreObjectsFromDictionary:(id)a3
+- (void)setStoreObjectsFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [(UbiqitousKVSProxy *)v4 mutableCopy];
+    v6 = [(UbiqitousKVSProxy *)dictionaryCopy mutableCopy];
     v7 = [v6 extractObjectForKey:kSOSKVSOfficialDSIDKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -887,18 +887,18 @@ LABEL_4:
           {
             v23 = *p_dsid;
             *buf = 138412546;
-            v26 = v23;
+            selfCopy = v23;
             v27 = 2112;
             v28 = v13;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Account DSIDs do not match, cloud keychain proxy: %@, securityd: %@", buf, 0x16u);
           }
 
-          v19 = sub_10000AE54("SecError");
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          store = sub_10000AE54("SecError");
+          if (os_log_type_enabled(store, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v26 = v5;
-            _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Not going to write these: %@ into KVS!", buf, 0xCu);
+            selfCopy = v5;
+            _os_log_impl(&_mh_execute_header, store, OS_LOG_TYPE_DEFAULT, "Not going to write these: %@ into KVS!", buf, 0xCu);
           }
 
           goto LABEL_17;
@@ -921,10 +921,10 @@ LABEL_4:
     v16 = sub_10000AE54("keytrace");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 allKeys];
-      v18 = [v17 componentsJoinedByString:@" "];
+      allKeys = [v6 allKeys];
+      v18 = [allKeys componentsJoinedByString:@" "];
       *buf = 138412546;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v18;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ sending: %@", buf, 0x16u);
@@ -936,82 +936,82 @@ LABEL_4:
     v24[3] = &unk_100018C38;
     v24[4] = self;
     [v6 enumerateKeysAndObjectsUsingBlock:v24];
-    v19 = [(UbiqitousKVSProxy *)self store];
-    v20 = [v6 allKeys];
-    [v19 pushWrites:v20 requiresForceSync:0];
+    store = [(UbiqitousKVSProxy *)self store];
+    allKeys2 = [v6 allKeys];
+    [store pushWrites:allKeys2 requiresForceSync:0];
 
 LABEL_17:
   }
 }
 
-- (void)perfCounters:(id)a3
+- (void)perfCounters:(id)counters
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self store];
-  [v5 perfCounters:v4];
+  countersCopy = counters;
+  store = [(UbiqitousKVSProxy *)self store];
+  [store perfCounters:countersCopy];
 }
 
 - (void)persistState
 {
-  v3 = [(UbiqitousKVSProxy *)self persistentData];
-  v4 = [(UbiqitousKVSProxy *)self persistenceURL];
-  v5 = [v4 writePlist:v3];
+  persistentData = [(UbiqitousKVSProxy *)self persistentData];
+  persistenceURL = [(UbiqitousKVSProxy *)self persistenceURL];
+  v5 = [persistenceURL writePlist:persistentData];
 
   if ((v5 & 1) == 0)
   {
     v6 = sub_10000AE54("SecError");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(UbiqitousKVSProxy *)self persistenceURL];
+      persistenceURL2 = [(UbiqitousKVSProxy *)self persistenceURL];
       v8 = 138412290;
-      v9 = v7;
+      v9 = persistenceURL2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Failed to write persistence data to %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)setPersistentData:(id)a3
+- (void)setPersistentData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"AlwaysKeys"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"AlwaysKeys"];
   v6 = [NSMutableSet setWithArray:v5];
   alwaysKeys = self->_alwaysKeys;
   self->_alwaysKeys = v6;
 
   [(NSMutableSet *)self->_alwaysKeys addObject:kSOSKVSKeyParametersKey];
-  v8 = [v4 objectForKeyedSubscript:@"FirstUnlockKeys"];
+  v8 = [dataCopy objectForKeyedSubscript:@"FirstUnlockKeys"];
   v9 = [NSMutableSet setWithArray:v8];
   firstUnlockKeys = self->_firstUnlockKeys;
   self->_firstUnlockKeys = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"UnlockedKeys"];
+  v11 = [dataCopy objectForKeyedSubscript:@"UnlockedKeys"];
   v12 = [NSMutableSet setWithArray:v11];
   unlockedKeys = self->_unlockedKeys;
   self->_unlockedKeys = v12;
 
-  v14 = [v4 objectForKeyedSubscript:@"PendingKeys"];
+  v14 = [dataCopy objectForKeyedSubscript:@"PendingKeys"];
   v15 = [NSMutableSet setWithArray:v14];
   pendingKeys = self->_pendingKeys;
   self->_pendingKeys = v15;
 
-  v17 = [v4 objectForKeyedSubscript:@"SyncPeerIDs"];
+  v17 = [dataCopy objectForKeyedSubscript:@"SyncPeerIDs"];
   v18 = [NSMutableSet setWithArray:v17];
   pendingSyncPeerIDs = self->_pendingSyncPeerIDs;
   self->_pendingSyncPeerIDs = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"SyncBackupPeerIDs"];
+  v20 = [dataCopy objectForKeyedSubscript:@"SyncBackupPeerIDs"];
   v21 = [NSMutableSet setWithArray:v20];
   pendingSyncBackupPeerIDs = self->_pendingSyncBackupPeerIDs;
   self->_pendingSyncBackupPeerIDs = v21;
 
-  v23 = [v4 objectForKeyedSubscript:@"EnsurePeerRegistration"];
+  v23 = [dataCopy objectForKeyedSubscript:@"EnsurePeerRegistration"];
   self->_ensurePeerRegistration = [v23 BOOLValue];
 
-  v24 = [v4 objectForKeyedSubscript:@"DSID"];
+  v24 = [dataCopy objectForKeyedSubscript:@"DSID"];
   dsid = self->_dsid;
   self->_dsid = v24;
 
-  v26 = [v4 objectForKeyedSubscript:@"KeyAccountUUID"];
+  v26 = [dataCopy objectForKeyedSubscript:@"KeyAccountUUID"];
 
   accountUUID = self->_accountUUID;
   self->_accountUUID = v26;
@@ -1020,23 +1020,23 @@ LABEL_17:
 - (NSDictionary)persistentData
 {
   v14[0] = @"AlwaysKeys";
-  v3 = [(NSMutableSet *)self->_alwaysKeys allObjects];
-  v15[0] = v3;
+  allObjects = [(NSMutableSet *)self->_alwaysKeys allObjects];
+  v15[0] = allObjects;
   v14[1] = @"FirstUnlockKeys";
-  v4 = [(NSMutableSet *)self->_firstUnlockKeys allObjects];
-  v15[1] = v4;
+  allObjects2 = [(NSMutableSet *)self->_firstUnlockKeys allObjects];
+  v15[1] = allObjects2;
   v14[2] = @"UnlockedKeys";
-  v5 = [(NSMutableSet *)self->_unlockedKeys allObjects];
-  v15[2] = v5;
+  allObjects3 = [(NSMutableSet *)self->_unlockedKeys allObjects];
+  v15[2] = allObjects3;
   v14[3] = @"PendingKeys";
-  v6 = [(NSMutableSet *)self->_pendingKeys allObjects];
-  v15[3] = v6;
+  allObjects4 = [(NSMutableSet *)self->_pendingKeys allObjects];
+  v15[3] = allObjects4;
   v14[4] = @"SyncPeerIDs";
-  v7 = [(NSMutableSet *)self->_pendingSyncPeerIDs allObjects];
-  v15[4] = v7;
+  allObjects5 = [(NSMutableSet *)self->_pendingSyncPeerIDs allObjects];
+  v15[4] = allObjects5;
   v14[5] = @"SyncBackupPeerIDs";
-  v8 = [(NSMutableSet *)self->_pendingSyncBackupPeerIDs allObjects];
-  v15[5] = v8;
+  allObjects6 = [(NSMutableSet *)self->_pendingSyncBackupPeerIDs allObjects];
+  v15[5] = allObjects6;
   v14[6] = @"EnsurePeerRegistration";
   v9 = [NSNumber numberWithBool:self->_ensurePeerRegistration];
   dsid = self->_dsid;
@@ -1067,64 +1067,64 @@ LABEL_17:
 - (void)_queue_processAllItems
 {
   dispatch_assert_queue_V2(self->_ckdkvsproxy_queue);
-  v3 = [(UbiqitousKVSProxy *)self store];
-  v4 = [v3 copyAsDictionary];
+  store = [(UbiqitousKVSProxy *)self store];
+  copyAsDictionary = [store copyAsDictionary];
 
-  if (v4)
+  if (copyAsDictionary)
   {
     v5 = sub_10000AE54("event");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 allKeys];
-      v7 = [v6 componentsJoinedByString:@" "];
+      allKeys = [copyAsDictionary allKeys];
+      v7 = [allKeys componentsJoinedByString:@" "];
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ sending: %@", &v8, 0x16u);
     }
 
-    [(UbiqitousKVSProxy *)self processKeyChangedEvent:v4];
+    [(UbiqitousKVSProxy *)self processKeyChangedEvent:copyAsDictionary];
   }
 }
 
 - (id)copyAsDictionary
 {
-  v2 = [(UbiqitousKVSProxy *)self store];
-  v3 = [v2 copyAsDictionary];
+  store = [(UbiqitousKVSProxy *)self store];
+  copyAsDictionary = [store copyAsDictionary];
 
-  return v3;
+  return copyAsDictionary;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(UbiqitousKVSProxy *)self store];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  store = [(UbiqitousKVSProxy *)self store];
+  v6 = [store objectForKey:keyCopy];
 
   return v6;
 }
 
 - (void)synchronizeStore
 {
-  v3 = [(UbiqitousKVSProxy *)self store];
+  store = [(UbiqitousKVSProxy *)self store];
   v2 = +[NSArray array];
-  [v3 pushWrites:v2 requiresForceSync:1];
+  [store pushWrites:v2 requiresForceSync:1];
 }
 
 - (void)clearStore
 {
-  v2 = [(UbiqitousKVSProxy *)self store];
-  [v2 removeAllObjects];
+  store = [(UbiqitousKVSProxy *)self store];
+  [store removeAllObjects];
 }
 
-- (UbiqitousKVSProxy)initWithAccount:(id)a3 store:(id)a4 lockMonitor:(id)a5 persistence:(id)a6
+- (UbiqitousKVSProxy)initWithAccount:(id)account store:(id)store lockMonitor:(id)monitor persistence:(id)persistence
 {
-  v9 = a3;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  accountCopy2 = account;
+  storeCopy = store;
+  monitorCopy = monitor;
+  persistenceCopy = persistence;
   v50.receiver = self;
   v50.super_class = UbiqitousKVSProxy;
   v15 = [(UbiqitousKVSProxy *)&v50 init];
@@ -1136,28 +1136,28 @@ LABEL_17:
   v16 = sub_10000AE54("event");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = a6;
-    v17 = v9;
-    v18 = a4;
-    v19 = a5;
-    v20 = v14;
-    v21 = v13;
-    v22 = v12;
-    v23 = v11;
+    persistenceCopy2 = persistence;
+    v17 = accountCopy;
+    storeCopy2 = store;
+    monitorCopy2 = monitor;
+    v20 = persistenceCopy;
+    v21 = monitorCopy;
+    v22 = storeCopy;
+    v23 = accountCopy2;
     v24 = getuid();
     v25 = geteuid();
     *buf = 138412802;
     v52 = v15;
     v53 = 1024;
     v54 = v24;
-    v11 = v23;
-    v12 = v22;
-    v13 = v21;
-    v14 = v20;
-    a5 = v19;
-    a4 = v18;
-    v9 = v17;
-    a6 = v49;
+    accountCopy2 = v23;
+    storeCopy = v22;
+    monitorCopy = v21;
+    persistenceCopy = v20;
+    monitor = monitorCopy2;
+    store = storeCopy2;
+    accountCopy = v17;
+    persistence = persistenceCopy2;
     v55 = 1024;
     v56 = v25;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ start UID=%u EUID=%u", buf, 0x18u);
@@ -1166,7 +1166,7 @@ LABEL_17:
   if (OctagonPlatformSupportsSOS())
   {
     v15->_ensurePeerRegistration = 0;
-    v26 = v11;
+    v26 = accountCopy2;
     v27 = +[NSMutableSet set];
     pendingSyncPeerIDs = v15->_pendingSyncPeerIDs;
     v15->_pendingSyncPeerIDs = v27;
@@ -1181,10 +1181,10 @@ LABEL_17:
     shadowPendingSyncBackupPeerIDs = v15->_shadowPendingSyncBackupPeerIDs;
     v15->_shadowPendingSyncBackupPeerIDs = 0;
 
-    objc_storeStrong(&v15->_persistenceURL, a6);
-    objc_storeStrong(&v15->_account, v9);
-    objc_storeStrong(&v15->_store, a4);
-    objc_storeStrong(&v15->_lockMonitor, a5);
+    objc_storeStrong(&v15->_persistenceURL, persistence);
+    objc_storeStrong(&v15->_account, accountCopy);
+    objc_storeStrong(&v15->_store, store);
+    objc_storeStrong(&v15->_lockMonitor, monitor);
     v33 = dispatch_queue_create("CKDCallout", 0);
     calloutQueue = v15->_calloutQueue;
     v15->_calloutQueue = v33;
@@ -1200,9 +1200,9 @@ LABEL_17:
     v39 = +[XPCNotificationDispatcher dispatcher];
     [v39 addListener:v15];
 
-    v40 = [(UbiqitousKVSProxy *)v15 persistenceURL];
-    v41 = [v40 readPlist];
-    [(UbiqitousKVSProxy *)v15 setPersistentData:v41];
+    persistenceURL = [(UbiqitousKVSProxy *)v15 persistenceURL];
+    readPlist = [persistenceURL readPlist];
+    [(UbiqitousKVSProxy *)v15 setPersistentData:readPlist];
 
     dsid = v15->_dsid;
     v15->_dsid = &stru_100019140;
@@ -1210,13 +1210,13 @@ LABEL_17:
     accountUUID = v15->_accountUUID;
     v15->_accountUUID = &stru_100019140;
 
-    v44 = [(UbiqitousKVSProxy *)v15 store];
-    [v44 connectToProxy:v15];
+    store = [(UbiqitousKVSProxy *)v15 store];
+    [store connectToProxy:v15];
 
-    v45 = [(UbiqitousKVSProxy *)v15 lockMonitor];
-    [v45 connectTo:v15];
+    lockMonitor = [(UbiqitousKVSProxy *)v15 lockMonitor];
+    [lockMonitor connectTo:v15];
 
-    v11 = v26;
+    accountCopy2 = v26;
 LABEL_6:
     v46 = v15;
     goto LABEL_10;
@@ -1235,13 +1235,13 @@ LABEL_10:
   return v46;
 }
 
-+ (id)withAccount:(id)a3 store:(id)a4 lockMonitor:(id)a5 persistence:(id)a6
++ (id)withAccount:(id)account store:(id)store lockMonitor:(id)monitor persistence:(id)persistence
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithAccount:v13 store:v12 lockMonitor:v11 persistence:v10];
+  persistenceCopy = persistence;
+  monitorCopy = monitor;
+  storeCopy = store;
+  accountCopy = account;
+  v14 = [[self alloc] initWithAccount:accountCopy store:storeCopy lockMonitor:monitorCopy persistence:persistenceCopy];
 
   return v14;
 }

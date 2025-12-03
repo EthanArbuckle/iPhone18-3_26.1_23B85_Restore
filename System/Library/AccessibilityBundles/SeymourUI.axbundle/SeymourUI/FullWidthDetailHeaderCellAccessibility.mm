@@ -10,8 +10,8 @@
   v5.super_class = FullWidthDetailHeaderCellAccessibility;
   [(FullWidthDetailHeaderCellAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(FullWidthDetailHeaderCellAccessibility *)self _accessibilityDescendantOfType:objc_opt_class()];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
 }
 
 @end

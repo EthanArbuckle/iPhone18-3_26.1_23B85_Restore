@@ -1,15 +1,15 @@
 @interface TSPFileDataStorage
-- (id)AVAssetWithOptions:(id)a3 forData:(id)a4;
+- (id)AVAssetWithOptions:(id)options forData:(id)data;
 - (unint64_t)encodedLength;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performReadWithAccessor:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performReadWithAccessor:(id)accessor;
 @end
 
 @implementation TSPFileDataStorage
 
-- (void)performReadWithAccessor:(id)a3
+- (void)performReadWithAccessor:(id)accessor
 {
-  v3 = a3;
+  accessorCopy = accessor;
   v4 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSPFileDataStorage performReadWithAccessor:]");
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPFileDataStorage.mm");
@@ -29,28 +29,28 @@
   objc_exception_throw(v21);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A15040;
   v7[3] = &unk_27A6E2ED0;
-  v8 = v4;
-  v5 = v4;
+  v8 = accessorCopy;
+  v5 = accessorCopy;
   objc_msgSend_performReadWithAccessor_(self, v6, v7);
 }
 
-- (id)AVAssetWithOptions:(id)a3 forData:(id)a4
+- (id)AVAssetWithOptions:(id)options forData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  dataCopy = data;
   v10 = objc_msgSend_decryptionInfo(self, v8, v9);
   if (v10)
   {
     v24.receiver = self;
     v24.super_class = TSPFileDataStorage;
-    v11 = [(TSPStreamDataStorage *)&v24 AVAssetWithOptions:v6 usingResourceLoaderForData:v7];
+    v11 = [(TSPStreamDataStorage *)&v24 AVAssetWithOptions:optionsCopy usingResourceLoaderForData:dataCopy];
   }
 
   else
@@ -66,8 +66,8 @@
     v14[2] = sub_276A152C4;
     v14[3] = &unk_27A6E3390;
     v17 = &v18;
-    v15 = v6;
-    v16 = self;
+    v15 = optionsCopy;
+    selfCopy = self;
     objc_msgSend_performReadWithAccessor_(self, v12, v14);
     v11 = v19[5];
 

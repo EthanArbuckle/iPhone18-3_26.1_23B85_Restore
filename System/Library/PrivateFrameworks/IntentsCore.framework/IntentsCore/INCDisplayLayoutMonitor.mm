@@ -8,26 +8,26 @@
 - (id)lock_currentDisplayLayouts;
 - (id)lock_layoutMonitorsByIdentity;
 - (void)dealloc;
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4;
-- (void)executeBlockWithLock:(id)a3;
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity;
+- (void)executeBlockWithLock:(id)lock;
 - (void)lock_invalidate;
 - (void)lock_resume;
-- (void)lock_startLayoutMonitorForDisplay:(id)a3;
-- (void)setLayoutMonitorsByIdentity:(id)a3;
+- (void)lock_startLayoutMonitorForDisplay:(id)display;
+- (void)setLayoutMonitorsByIdentity:(id)identity;
 @end
 
 @implementation INCDisplayLayoutMonitor
 
-- (void)displayMonitor:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayMonitor:(id)monitor willDisconnectIdentity:(id)identity
 {
-  v5 = a4;
+  identityCopy = identity;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__INCDisplayLayoutMonitor_displayMonitor_willDisconnectIdentity___block_invoke;
   v7[3] = &unk_2797E7820;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identityCopy;
+  v6 = identityCopy;
   [(INCDisplayLayoutMonitor *)self executeBlockWithLock:v7];
 }
 
@@ -45,11 +45,11 @@ void __65__INCDisplayLayoutMonitor_displayMonitor_willDisconnectIdentity___block
   [v3 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)executeBlockWithLock:(id)a3
+- (void)executeBlockWithLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -57,26 +57,26 @@ void __65__INCDisplayLayoutMonitor_displayMonitor_willDisconnectIdentity___block
 - (id)lock_layoutMonitorsByIdentity
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(INCDisplayLayoutMonitor *)self layoutMonitorsByIdentity];
+  layoutMonitorsByIdentity = [(INCDisplayLayoutMonitor *)self layoutMonitorsByIdentity];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return layoutMonitorsByIdentity;
 }
 
 - (BOOL)lock_alive
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(INCDisplayLayoutMonitor *)self alive];
+  alive = [(INCDisplayLayoutMonitor *)self alive];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return alive;
 }
 
-- (void)setLayoutMonitorsByIdentity:(id)a3
+- (void)setLayoutMonitorsByIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   os_unfair_lock_assert_owner(&self->_lock);
   layoutMonitorsByIdentity = self->_layoutMonitorsByIdentity;
-  self->_layoutMonitorsByIdentity = v4;
+  self->_layoutMonitorsByIdentity = identityCopy;
 }
 
 - (NSMutableDictionary)layoutMonitorsByIdentity
@@ -87,18 +87,18 @@ void __65__INCDisplayLayoutMonitor_displayMonitor_willDisconnectIdentity___block
   return layoutMonitorsByIdentity;
 }
 
-- (void)lock_startLayoutMonitorForDisplay:(id)a3
+- (void)lock_startLayoutMonitorForDisplay:(id)display
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isMainDisplay])
+  displayCopy = display;
+  if ([displayCopy isMainDisplay])
   {
-    v5 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
   }
 
   else
   {
-    if ([v4 isExternal])
+    if ([displayCopy isExternal])
     {
       v7 = MEMORY[0x277D0AD20];
       v8 = SBSCreateLayoutServiceEndpointForExternalDisplay();
@@ -117,7 +117,7 @@ LABEL_7:
       v17[2] = __61__INCDisplayLayoutMonitor_lock_startLayoutMonitorForDisplay___block_invoke;
       v17[3] = &unk_2797E7708;
       objc_copyWeak(&v19, location);
-      v9 = v4;
+      v9 = displayCopy;
       v18 = v9;
       [v6 setTransitionHandler:v17];
       v10 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v6];
@@ -137,26 +137,26 @@ LABEL_7:
       goto LABEL_14;
     }
 
-    if ([v4 isCarDisplay])
+    if ([displayCopy isCarDisplay])
     {
       CarPlayServicesLibrary();
-      v5 = [MEMORY[0x277D0AD20] configurationForCarDisplayMonitor];
+      configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForCarDisplayMonitor];
     }
 
     else
     {
-      if (![v4 isCarInstrumentsDisplay])
+      if (![displayCopy isCarInstrumentsDisplay])
       {
         goto LABEL_12;
       }
 
       CarPlayServicesLibrary();
-      v5 = [MEMORY[0x277D0AD20] configurationForCarInstrumentsDisplayMonitor];
+      configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForCarInstrumentsDisplayMonitor];
     }
   }
 
-  v6 = v5;
-  if (v5)
+  v6 = configurationForDefaultMainDisplayMonitor;
+  if (configurationForDefaultMainDisplayMonitor)
   {
     goto LABEL_7;
   }
@@ -168,7 +168,7 @@ LABEL_12:
     *location = 136315394;
     *&location[4] = "[INCDisplayLayoutMonitor lock_startLayoutMonitorForDisplay:]";
     v21 = 2112;
-    v22 = v4;
+    v22 = displayCopy;
     _os_log_error_impl(&dword_255503000, v12, OS_LOG_TYPE_ERROR, "%s Unable to start layout monitoring for display because there wasn't a suitable configuration available: %@", location, 0x16u);
   }
 
@@ -224,26 +224,26 @@ void __61__INCDisplayLayoutMonitor_lock_startLayoutMonitorForDisplay___block_inv
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if ([(INCDisplayLayoutMonitor *)self shouldObserveMultipleDisplays])
   {
-    v3 = [(INCDisplayLayoutMonitor *)self lock_layoutMonitorsByIdentity];
+    lock_layoutMonitorsByIdentity = [(INCDisplayLayoutMonitor *)self lock_layoutMonitorsByIdentity];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53__INCDisplayLayoutMonitor_lock_currentDisplayLayouts__block_invoke;
     v9[3] = &unk_2797E76E0;
     v9[4] = &v10;
-    [v3 enumerateKeysAndObjectsUsingBlock:v9];
+    [lock_layoutMonitorsByIdentity enumerateKeysAndObjectsUsingBlock:v9];
   }
 
   else
   {
-    v4 = [(INCDisplayLayoutMonitor *)self singleDisplayLayoutMonitor];
-    v3 = [v4 currentLayout];
+    singleDisplayLayoutMonitor = [(INCDisplayLayoutMonitor *)self singleDisplayLayoutMonitor];
+    lock_layoutMonitorsByIdentity = [singleDisplayLayoutMonitor currentLayout];
 
-    v5 = [v3 displayConfiguration];
-    v6 = [v5 identity];
+    displayConfiguration = [lock_layoutMonitorsByIdentity displayConfiguration];
+    identity = [displayConfiguration identity];
 
-    if (v3 && v6)
+    if (lock_layoutMonitorsByIdentity && identity)
     {
-      [v11[5] setObject:v3 forKey:v6];
+      [v11[5] setObject:lock_layoutMonitorsByIdentity forKey:identity];
     }
   }
 
@@ -344,17 +344,17 @@ void __42__INCDisplayLayoutMonitor_lock_invalidate__block_invoke(uint64_t a1)
   [(INCDisplayLayoutMonitor *)self executeBlockWithLock:v22];
   if ([(INCDisplayLayoutMonitor *)self shouldObserveMultipleDisplays])
   {
-    v3 = [(INCDisplayLayoutMonitor *)self displayMonitor];
-    [v3 addObserver:self];
+    displayMonitor = [(INCDisplayLayoutMonitor *)self displayMonitor];
+    [displayMonitor addObserver:self];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(INCDisplayLayoutMonitor *)self displayMonitor];
-    v5 = [v4 connectedIdentities];
+    displayMonitor2 = [(INCDisplayLayoutMonitor *)self displayMonitor];
+    connectedIdentities = [displayMonitor2 connectedIdentities];
 
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    v6 = [connectedIdentities countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v6)
     {
       v7 = *v19;
@@ -364,13 +364,13 @@ void __42__INCDisplayLayoutMonitor_lock_invalidate__block_invoke(uint64_t a1)
         {
           if (*v19 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(connectedIdentities);
           }
 
           [(INCDisplayLayoutMonitor *)self lock_startLayoutMonitorForDisplay:*(*(&v18 + 1) + 8 * i)];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v6 = [connectedIdentities countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v6);
@@ -379,16 +379,16 @@ void __42__INCDisplayLayoutMonitor_lock_invalidate__block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
-    [v5 setNeedsUserInteractivePriority:1];
+    connectedIdentities = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+    [connectedIdentities setNeedsUserInteractivePriority:1];
     objc_initWeak(&location, self);
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __38__INCDisplayLayoutMonitor_lock_resume__block_invoke_2;
     v15 = &unk_2797E7938;
     objc_copyWeak(&v16, &location);
-    [v5 setTransitionHandler:&v12];
-    v9 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v5, v12, v13, v14, v15}];
+    [connectedIdentities setTransitionHandler:&v12];
+    v9 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{connectedIdentities, v12, v13, v14, v15}];
     singleDisplayLayoutMonitor = self->_singleDisplayLayoutMonitor;
     self->_singleDisplayLayoutMonitor = v9;
 
@@ -425,14 +425,14 @@ void __38__INCDisplayLayoutMonitor_lock_resume__block_invoke_2(uint64_t a1, void
 
 - (BOOL)shouldObserveMultipleDisplays
 {
-  v3 = [(INCDisplayLayoutMonitor *)self hasRenderServerAccess];
-  if (v3)
+  hasRenderServerAccess = [(INCDisplayLayoutMonitor *)self hasRenderServerAccess];
+  if (hasRenderServerAccess)
   {
 
-    LOBYTE(v3) = [(INCDisplayLayoutMonitor *)self platformSupportsMultipleDisplays];
+    LOBYTE(hasRenderServerAccess) = [(INCDisplayLayoutMonitor *)self platformSupportsMultipleDisplays];
   }
 
-  return v3;
+  return hasRenderServerAccess;
 }
 
 - (void)dealloc
@@ -485,7 +485,7 @@ void __38__INCDisplayLayoutMonitor_lock_resume__block_invoke_2(uint64_t a1, void
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     INLogInitIfNeeded();

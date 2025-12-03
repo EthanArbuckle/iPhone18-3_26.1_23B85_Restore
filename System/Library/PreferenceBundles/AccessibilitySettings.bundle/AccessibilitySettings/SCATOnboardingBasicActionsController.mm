@@ -1,13 +1,13 @@
 @interface SCATOnboardingBasicActionsController
-- (SCATOnboardingBasicActionsController)initWithCompletion:(id)a3;
+- (SCATOnboardingBasicActionsController)initWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation SCATOnboardingBasicActionsController
 
-- (SCATOnboardingBasicActionsController)initWithCompletion:(id)a3
+- (SCATOnboardingBasicActionsController)initWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AXLocStringKeyForModel();
   v6 = AXParameterizedLocalizedString();
 
@@ -18,7 +18,7 @@
 
   if (v8)
   {
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(completionCopy);
     completionHandler = v8->_completionHandler;
     v8->_completionHandler = v9;
   }
@@ -36,8 +36,8 @@
   [v3 setTitle:v4 forState:0];
 
   [v3 addTarget:self action:"_didTapNextButton" forControlEvents:0x2000];
-  v5 = [(SCATOnboardingBasicActionsController *)self buttonTray];
-  [v5 addButton:v3];
+  buttonTray = [(SCATOnboardingBasicActionsController *)self buttonTray];
+  [buttonTray addButton:v3];
 
   v6 = AXParameterizedLocalizedString();
   v7 = AXParameterizedLocalizedString();

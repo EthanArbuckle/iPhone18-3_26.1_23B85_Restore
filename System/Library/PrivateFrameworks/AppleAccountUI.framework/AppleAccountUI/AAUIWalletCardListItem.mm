@@ -1,13 +1,13 @@
 @interface AAUIWalletCardListItem
-- (AAUIWalletCardListItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5 uniqueIdentifier:(id)a6;
+- (AAUIWalletCardListItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon uniqueIdentifier:(id)identifier;
 - (NSString)subtitle;
 - (NSString)title;
 - (NSString)uniqueIdentifier;
 - (UIImage)icon;
-- (void)setIcon:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUniqueIdentifier:(id)a3;
+- (void)setIcon:(id)icon;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUniqueIdentifier:(id)identifier;
 @end
 
 @implementation AAUIWalletCardListItem
@@ -34,16 +34,16 @@
   return v6;
 }
 
-- (void)setUniqueIdentifier:(id)a3
+- (void)setUniqueIdentifier:(id)identifier
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](identifier);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](identifier);
     v6 = v4;
     v7 = v5;
   }
@@ -68,12 +68,12 @@
   return v5;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](icon);
   MEMORY[0x1E69E5928](self);
-  AAUIWalletCardListItem.icon.setter(a3);
+  AAUIWalletCardListItem.icon.setter(icon);
   MEMORY[0x1E69E5920](self);
 }
 
@@ -99,16 +99,16 @@
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](title);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (title)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](title);
     v6 = v4;
     v7 = v5;
   }
@@ -145,16 +145,16 @@
   return v6;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
+  MEMORY[0x1E69E5928](subtitle);
   MEMORY[0x1E69E5928](self);
-  if (a3)
+  if (subtitle)
   {
     v4 = sub_1C5596574();
     v5 = v3;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](subtitle);
     v6 = v4;
     v7 = v5;
   }
@@ -169,18 +169,18 @@
   MEMORY[0x1E69E5920](self);
 }
 
-- (AAUIWalletCardListItem)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5 uniqueIdentifier:(id)a6
+- (AAUIWalletCardListItem)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon uniqueIdentifier:(id)identifier
 {
   swift_getObjectType();
-  MEMORY[0x1E69E5928](a3);
-  MEMORY[0x1E69E5928](a4);
-  MEMORY[0x1E69E5928](a5);
-  MEMORY[0x1E69E5928](a6);
-  if (a3)
+  MEMORY[0x1E69E5928](title);
+  MEMORY[0x1E69E5928](subtitle);
+  MEMORY[0x1E69E5928](icon);
+  MEMORY[0x1E69E5928](identifier);
+  if (title)
   {
     v18 = sub_1C5596574();
     v19 = v6;
-    MEMORY[0x1E69E5920](a3);
+    MEMORY[0x1E69E5920](title);
     v20 = v18;
     v21 = v19;
   }
@@ -191,11 +191,11 @@
     v21 = 0;
   }
 
-  if (a4)
+  if (subtitle)
   {
     v14 = sub_1C5596574();
     v15 = v7;
-    MEMORY[0x1E69E5920](a4);
+    MEMORY[0x1E69E5920](subtitle);
     v16 = v14;
     v17 = v15;
   }
@@ -206,11 +206,11 @@
     v17 = 0;
   }
 
-  if (a6)
+  if (identifier)
   {
     v10 = sub_1C5596574();
     v11 = v8;
-    MEMORY[0x1E69E5920](a6);
+    MEMORY[0x1E69E5920](identifier);
     v12 = v10;
     v13 = v11;
   }
@@ -221,7 +221,7 @@
     v13 = 0;
   }
 
-  return AAUIWalletCardListItem.init(title:subtitle:icon:uniqueIdentifier:)(v20, v21, v16, v17, a5, v12, v13);
+  return AAUIWalletCardListItem.init(title:subtitle:icon:uniqueIdentifier:)(v20, v21, v16, v17, icon, v12, v13);
 }
 
 @end

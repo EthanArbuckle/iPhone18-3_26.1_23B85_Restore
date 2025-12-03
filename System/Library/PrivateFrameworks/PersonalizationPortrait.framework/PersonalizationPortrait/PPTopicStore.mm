@@ -1,34 +1,34 @@
 @interface PPTopicStore
-+ (double)decayValue:(double)a3 withDecayRate:(double)a4 forTimeElapsed:(double)a5;
++ (double)decayValue:(double)value withDecayRate:(double)rate forTimeElapsed:(double)elapsed;
 + (id)defaultStore;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 exactMatchesInSourceText:(id)a8 error:(id *)a9;
-- (BOOL)iterRankedTopicsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
-- (BOOL)iterScoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5 block:(id)a6;
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error;
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)error;
+- (BOOL)iterRankedTopicsWithQuery:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterScoresForTopicMapping:(id)mapping query:(id)query error:(id *)error block:(id)block;
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block;
 - (PPTopicStore)init;
 - (id)_initFromSubclass;
 - (id)cachedTopicScores;
-- (id)rankedTopicsWithQuery:(id)a3 error:(id *)a4;
-- (id)scoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5;
-- (id)topicExtractionsFromText:(id)a3 error:(id *)a4;
-- (id)topicRecordsWithQuery:(id)a3 error:(id *)a4;
-- (id)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 error:(id *)a5;
-- (void)registerFeedback:(id)a3 completion:(id)a4;
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4;
+- (id)rankedTopicsWithQuery:(id)query error:(id *)error;
+- (id)scoresForTopicMapping:(id)mapping query:(id)query error:(id *)error;
+- (id)topicExtractionsFromText:(id)text error:(id *)error;
+- (id)topicRecordsWithQuery:(id)query error:(id *)error;
+- (id)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier error:(id *)error;
+- (void)registerFeedback:(id)feedback completion:(id)completion;
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion;
 @end
 
 @implementation PPTopicStore
 
 - (PPTopicStore)init
 {
-  v3 = [[PPXPCTopicStore alloc] _init];
+  _init = [[PPXPCTopicStore alloc] _init];
 
-  return v3;
+  return _init;
 }
 
 - (id)_initFromSubclass
@@ -38,17 +38,17 @@
   return [(PPTopicStore *)&v3 init];
 }
 
-- (void)registerUniversalSearchSpotlightFeedback:(id)a3 completion:(id)a4
+- (void)registerUniversalSearchSpotlightFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   __break(1u);
 }
 
-- (void)registerFeedback:(id)a3 completion:(id)a4
+- (void)registerFeedback:(id)feedback completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  feedbackCopy = feedback;
+  completionCopy = completion;
   __break(1u);
 }
 
@@ -81,125 +81,125 @@
   return v4;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThan:(id)a5 deletedCount:(unint64_t *)a6 error:(id *)a7
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThan:(id)than deletedCount:(unint64_t *)count error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  idCopy = id;
+  groupIdCopy = groupId;
+  thanCopy = than;
   __break(1u);
-  return v11;
+  return thanCopy;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v5 = a3;
+  idCopy = id;
   __break(1u);
-  return v5;
+  return idCopy;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id groupIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  idsCopy = ids;
   __break(1u);
-  return v8;
+  return idsCopy;
 }
 
-- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 deletedCount:(unint64_t *)a5 error:(id *)a6
+- (BOOL)deleteAllTopicsFromSourcesWithBundleId:(id)id documentIds:(id)ids deletedCount:(unint64_t *)count error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  idsCopy = ids;
   __break(1u);
-  return v8;
+  return idsCopy;
 }
 
-- (BOOL)deleteAllTopicsWithTopicId:(id)a3 deletedCount:(unint64_t *)a4 error:(id *)a5
+- (BOOL)deleteAllTopicsWithTopicId:(id)id deletedCount:(unint64_t *)count error:(id *)error
 {
-  v5 = a3;
+  idCopy = id;
   __break(1u);
-  return v5;
+  return idCopy;
 }
 
-- (BOOL)donateTopics:(id)a3 source:(id)a4 algorithm:(unint64_t)a5 cloudSync:(BOOL)a6 sentimentScore:(double)a7 exactMatchesInSourceText:(id)a8 error:(id *)a9
+- (BOOL)donateTopics:(id)topics source:(id)source algorithm:(unint64_t)algorithm cloudSync:(BOOL)sync sentimentScore:(double)score exactMatchesInSourceText:(id)text error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a8;
+  topicsCopy = topics;
+  sourceCopy = source;
+  textCopy = text;
   __break(1u);
-  return v13;
+  return textCopy;
 }
 
-- (id)topicExtractionsFromText:(id)a3 error:(id *)a4
+- (id)topicExtractionsFromText:(id)text error:(id *)error
 {
-  result = a3;
-  __break(1u);
-  return result;
-}
-
-- (id)topicRecordsWithQuery:(id)a3 error:(id *)a4
-{
-  result = a3;
+  result = text;
   __break(1u);
   return result;
 }
 
-- (BOOL)iterTopicRecordsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (id)topicRecordsWithQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  v7 = a5;
-  __break(1u);
-  return v7;
-}
-
-- (id)unmapMappedTopicIdentifier:(id)a3 mappingIdentifier:(id)a4 error:(id *)a5
-{
-  v6 = a3;
-  result = a4;
+  result = query;
   __break(1u);
   return result;
 }
 
-- (id)scoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5
+- (BOOL)iterTopicRecordsWithQuery:(id)query error:(id *)error block:(id)block
 {
-  v6 = a3;
-  result = a4;
+  queryCopy = query;
+  blockCopy = block;
+  __break(1u);
+  return blockCopy;
+}
+
+- (id)unmapMappedTopicIdentifier:(id)identifier mappingIdentifier:(id)mappingIdentifier error:(id *)error
+{
+  identifierCopy = identifier;
+  result = mappingIdentifier;
   __break(1u);
   return result;
 }
 
-- (BOOL)iterScoresForTopicMapping:(id)a3 query:(id)a4 error:(id *)a5 block:(id)a6
+- (id)scoresForTopicMapping:(id)mapping query:(id)query error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  __break(1u);
-  return v10;
-}
-
-- (id)rankedTopicsWithQuery:(id)a3 error:(id *)a4
-{
-  result = a3;
+  mappingCopy = mapping;
+  result = query;
   __break(1u);
   return result;
 }
 
-- (BOOL)iterRankedTopicsWithQuery:(id)a3 error:(id *)a4 block:(id)a5
+- (BOOL)iterScoresForTopicMapping:(id)mapping query:(id)query error:(id *)error block:(id)block
 {
-  v6 = a3;
-  v7 = a5;
+  mappingCopy = mapping;
+  queryCopy = query;
+  blockCopy = block;
   __break(1u);
-  return v7;
+  return blockCopy;
 }
 
-+ (double)decayValue:(double)a3 withDecayRate:(double)a4 forTimeElapsed:(double)a5
+- (id)rankedTopicsWithQuery:(id)query error:(id *)error
 {
-  v5 = a3;
-  if (a5 >= 0.0)
+  result = query;
+  __break(1u);
+  return result;
+}
+
+- (BOOL)iterRankedTopicsWithQuery:(id)query error:(id *)error block:(id)block
+{
+  queryCopy = query;
+  blockCopy = block;
+  __break(1u);
+  return blockCopy;
+}
+
++ (double)decayValue:(double)value withDecayRate:(double)rate forTimeElapsed:(double)elapsed
+{
+  valueCopy = value;
+  if (elapsed >= 0.0)
   {
-    return exp(-(a4 * a5)) * a3;
+    return exp(-(rate * elapsed)) * value;
   }
 
-  return v5;
+  return valueCopy;
 }
 
 + (id)defaultStore
@@ -208,7 +208,7 @@
   block[1] = 3221225472;
   block[2] = __28__PPTopicStore_defaultStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultStore__pasOnceToken12 != -1)
   {
     dispatch_once(&defaultStore__pasOnceToken12, block);

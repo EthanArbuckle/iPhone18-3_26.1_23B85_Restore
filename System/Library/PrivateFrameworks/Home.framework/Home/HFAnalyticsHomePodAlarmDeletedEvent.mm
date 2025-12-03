@@ -1,38 +1,38 @@
 @interface HFAnalyticsHomePodAlarmDeletedEvent
-- (HFAnalyticsHomePodAlarmDeletedEvent)initWithData:(id)a3;
+- (HFAnalyticsHomePodAlarmDeletedEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsHomePodAlarmDeletedEvent
 
-- (HFAnalyticsHomePodAlarmDeletedEvent)initWithData:(id)a3
+- (HFAnalyticsHomePodAlarmDeletedEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"homePodAlarmID"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"homePodAlarmID"];
   if (!v5)
   {
     NSLog(&cfstr_Hfanalyticshom.isa);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"alarmDeletedSuccessfully"];
+  v6 = [dataCopy objectForKeyedSubscript:@"alarmDeletedSuccessfully"];
   if (!v6)
   {
     NSLog(&cfstr_Hfanalyticshom_0.isa);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"isMusicAlarm"];
+  v7 = [dataCopy objectForKeyedSubscript:@"isMusicAlarm"];
   if (!v7)
   {
     NSLog(&cfstr_Hfanalyticshom_1.isa);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"hasCustomVolume"];
+  v8 = [dataCopy objectForKeyedSubscript:@"hasCustomVolume"];
   if (!v8)
   {
     NSLog(&cfstr_Hfanalyticshom_2.isa);
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"customVolumeLevel"];
+  v9 = [dataCopy objectForKeyedSubscript:@"customVolumeLevel"];
   if (!v9)
   {
     NSLog(&cfstr_Hfanalyticshom_3.isa);
@@ -50,10 +50,10 @@
     v11->_hasCustomVolume = [v8 BOOLValue];
     [v9 floatValue];
     v11->_customVolumeLevel = v12;
-    v13 = [MEMORY[0x277CCAC38] processInfo];
-    v14 = [v13 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
     processName = v11->_processName;
-    v11->_processName = v14;
+    v11->_processName = processName;
   }
 
   return v11;
@@ -63,11 +63,11 @@
 {
   v13.receiver = self;
   v13.super_class = HFAnalyticsHomePodAlarmDeletedEvent;
-  v3 = [(HFAnalyticsEvent *)&v13 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v13 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsHomePodAlarmDeletedEvent *)self homePodAlarmID];
-  [v4 setObject:v5 forKeyedSubscript:@"homePodAlarmID"];
+  homePodAlarmID = [(HFAnalyticsHomePodAlarmDeletedEvent *)self homePodAlarmID];
+  [v4 setObject:homePodAlarmID forKeyedSubscript:@"homePodAlarmID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsHomePodAlarmDeletedEvent alarmDeletedSuccessfully](self, "alarmDeletedSuccessfully")}];
   [v4 setObject:v6 forKeyedSubscript:@"homePodAlarmDeletedSuccessfully"];
@@ -83,8 +83,8 @@
   v10 = [v9 numberWithFloat:?];
   [v4 setObject:v10 forKeyedSubscript:@"homePodMusicAlarmCustomVolumeLevel"];
 
-  v11 = [(HFAnalyticsHomePodAlarmDeletedEvent *)self processName];
-  [v4 setObject:v11 forKeyedSubscript:@"processName"];
+  processName = [(HFAnalyticsHomePodAlarmDeletedEvent *)self processName];
+  [v4 setObject:processName forKeyedSubscript:@"processName"];
 
   return v4;
 }

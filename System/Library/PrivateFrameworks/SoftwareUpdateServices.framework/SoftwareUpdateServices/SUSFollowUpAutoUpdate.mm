@@ -1,16 +1,16 @@
 @interface SUSFollowUpAutoUpdate
 + (id)actions;
-+ (id)informativeTextWithDescriptor:(id)a3;
++ (id)informativeTextWithDescriptor:(id)descriptor;
 + (id)notificationInstallLater;
 + (id)notificationInstallNowAction;
 + (id)notificationOptions;
-+ (id)notificationWithDescriptor:(id)a3;
-+ (id)titleWithDescriptor:(id)a3;
++ (id)notificationWithDescriptor:(id)descriptor;
++ (id)titleWithDescriptor:(id)descriptor;
 @end
 
 @implementation SUSFollowUpAutoUpdate
 
-+ (id)titleWithDescriptor:(id)a3
++ (id)titleWithDescriptor:(id)descriptor
 {
   v3 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateServices.framework"];
   v4 = [v3 localizedStringForKey:@"AUTO_SU_FOLLOW_UP_TEXT_SU_TONIGHT" value:&stru_287B45B60 table:@"SoftwareUpdateServices"];
@@ -18,16 +18,16 @@
   return v4;
 }
 
-+ (id)informativeTextWithDescriptor:(id)a3
++ (id)informativeTextWithDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v11 = [v3 humanReadableUpdateName];
-  if (v11)
+  descriptorCopy = descriptor;
+  humanReadableUpdateName = [descriptorCopy humanReadableUpdateName];
+  if (humanReadableUpdateName)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/SoftwareUpdateServices.framework"];
     v14 = [v13 localizedStringForKey:@"AUTO_SU_READY_TO_INSTALL" value:&stru_287B45B60 table:@"SoftwareUpdateServices"];
-    v15 = [v12 stringWithFormat:v14, v11];
+    v15 = [v12 stringWithFormat:v14, humanReadableUpdateName];
   }
 
   else
@@ -70,28 +70,28 @@
   return v8;
 }
 
-+ (id)notificationWithDescriptor:(id)a3
++ (id)notificationWithDescriptor:(id)descriptor
 {
-  v3 = a3;
+  descriptorCopy = descriptor;
   v4 = objc_alloc_init(MEMORY[0x277CFE510]);
   if (v4)
   {
-    v5 = [objc_opt_class() notificationTitleWithDescriptor:v3];
+    v5 = [objc_opt_class() notificationTitleWithDescriptor:descriptorCopy];
     [v4 setTitle:v5];
 
-    v6 = [objc_opt_class() notificationInformativeTextWithDescriptor:v3];
+    v6 = [objc_opt_class() notificationInformativeTextWithDescriptor:descriptorCopy];
     [v4 setInformativeText:v6];
 
-    v7 = [objc_opt_class() notificationInstallNowAction];
-    [v4 setActivateAction:v7];
+    notificationInstallNowAction = [objc_opt_class() notificationInstallNowAction];
+    [v4 setActivateAction:notificationInstallNowAction];
 
-    v8 = [objc_opt_class() notificationInstallLater];
-    [v4 setClearAction:v8];
+    notificationInstallLater = [objc_opt_class() notificationInstallLater];
+    [v4 setClearAction:notificationInstallLater];
 
     [objc_opt_class() notificationFrequency];
     [v4 setFrequency:?];
-    v9 = [objc_opt_class() notificationOptions];
-    [v4 setOptions:v9];
+    notificationOptions = [objc_opt_class() notificationOptions];
+    [v4 setOptions:notificationOptions];
   }
 
   return v4;
@@ -134,13 +134,13 @@
 + (id)notificationOptions
 {
   v8[3] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CFE510] defaultOptions];
+  defaultOptions = [MEMORY[0x277CFE510] defaultOptions];
   v3 = *MEMORY[0x277CFE478];
   v8[0] = *MEMORY[0x277CFE470];
   v8[1] = v3;
   v8[2] = *MEMORY[0x277CFE490];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:3];
-  v5 = [v2 setByAddingObjectsFromArray:v4];
+  v5 = [defaultOptions setByAddingObjectsFromArray:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 

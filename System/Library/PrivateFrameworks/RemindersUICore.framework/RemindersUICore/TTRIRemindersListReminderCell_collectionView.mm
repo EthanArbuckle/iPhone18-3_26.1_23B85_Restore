@@ -9,23 +9,23 @@
 - (id)_accessibilityBriefLabel;
 - (id)_accessibilityInternalTextLinks;
 - (unint64_t)accessibilityTraits;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
 - (void)prepareForReuse;
-- (void)setAccessibilityIdentifier:(id)a3;
+- (void)setAccessibilityIdentifier:(id)identifier;
 @end
 
 @implementation TTRIRemindersListReminderCell_collectionView
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_21DBF87CC();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21DBF879C();
-  v8 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCell_collectionView.updateConfiguration(using:)(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -43,7 +43,7 @@
 
 - (NSString)accessibilityIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCell_collectionView.accessibilityIdentifier.getter();
   v4 = v3;
 
@@ -60,29 +60,29 @@
   return v5;
 }
 
-- (void)setAccessibilityIdentifier:(id)a3
+- (void)setAccessibilityIdentifier:(id)identifier
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (identifier)
   {
     sub_21DBFA16C();
-    v6 = self;
-    a3 = sub_21DBFA12C();
+    selfCopy = self;
+    identifier = sub_21DBFA12C();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  [(TTRIRemindersListReminderCell_collectionView *)&v8 setAccessibilityIdentifier:a3];
+  [(TTRIRemindersListReminderCell_collectionView *)&v8 setAccessibilityIdentifier:identifier];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCell_collectionView.isAccessibilityElement.getter();
 
   return v3;
@@ -96,11 +96,11 @@
   v5 = *(&self->super.super.super.super.super.super.super.super.isa + v4);
   if (v5)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = v5;
-    v8 = TTRIRemindersListReminderCellAccessibilityElement.accessibilityAttributedLabel.getter();
+    accessibilityAttributedLabel = TTRIRemindersListReminderCellAccessibilityElement.accessibilityAttributedLabel.getter();
 
-    if (v8)
+    if (accessibilityAttributedLabel)
     {
 
       goto LABEL_6;
@@ -109,21 +109,21 @@
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
   }
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v8 = [(TTRIRemindersListReminderCell_collectionView *)&v11 accessibilityAttributedLabel];
+  accessibilityAttributedLabel = [(TTRIRemindersListReminderCell_collectionView *)&v11 accessibilityAttributedLabel];
 
 LABEL_6:
 
-  return v8;
+  return accessibilityAttributedLabel;
 }
 
 - (id)_accessibilityBriefLabel
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCell_collectionView._accessibilityBriefLabel()();
 
   v3 = sub_21DBFA12C();
@@ -133,7 +133,7 @@ LABEL_6:
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCell_collectionView.accessibilityElements.getter();
 
   if (v3)
@@ -151,7 +151,7 @@ LABEL_6:
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCell_collectionView.accessibilityActivate()();
 
   return v3;
@@ -159,7 +159,7 @@ LABEL_6:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCell_collectionView.accessibilityActivationPoint.getter();
   v4 = v3;
   v6 = v5;
@@ -176,12 +176,12 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v2 = v7.receiver;
-  v3 = [(TTRIRemindersListReminderCell_collectionView *)&v7 accessibilityTraits];
+  accessibilityTraits = [(TTRIRemindersListReminderCell_collectionView *)&v7 accessibilityTraits];
   if ([v2 isSelected])
   {
     v4 = *MEMORY[0x277D76598];
 
-    if ((v4 & ~v3) != 0)
+    if ((v4 & ~accessibilityTraits) != 0)
     {
       v5 = v4;
     }
@@ -191,19 +191,19 @@ LABEL_6:
       v5 = 0;
     }
 
-    v3 |= v5;
+    accessibilityTraits |= v5;
   }
 
   else
   {
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TTRIRemindersListReminderCell_collectionView.accessibilityPerformEscape()();
 
   return v3;
@@ -211,7 +211,7 @@ LABEL_6:
 
 - (id)_accessibilityInternalTextLinks
 {
-  v2 = self;
+  selfCopy = self;
   TTRIRemindersListReminderCell_collectionView._accessibilityInternalTextLinks()();
 
   sub_21D0D8CF0(0, &unk_27CE5F130);
@@ -220,7 +220,7 @@ LABEL_6:
   return v3;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
   v5 = self + OBJC_IVAR____TtC15RemindersUICore44TTRIRemindersListReminderCell_collectionView_delegate;
   swift_beginAccess();
@@ -229,13 +229,13 @@ LABEL_6:
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 192);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }
 }
 
-- (void)_scribbleInteraction:(id)a3 didFinishWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction didFinishWritingInElement:(id)element
 {
   v5 = self + OBJC_IVAR____TtC15RemindersUICore44TTRIRemindersListReminderCell_collectionView_delegate;
   swift_beginAccess();
@@ -244,7 +244,7 @@ LABEL_6:
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 200);
-    v8 = self;
+    selfCopy = self;
     v7();
     swift_unknownObjectRelease();
   }

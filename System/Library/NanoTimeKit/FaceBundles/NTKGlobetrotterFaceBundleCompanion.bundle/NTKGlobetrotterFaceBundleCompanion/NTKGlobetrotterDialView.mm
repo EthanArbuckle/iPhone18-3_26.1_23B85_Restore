@@ -1,45 +1,45 @@
 @interface NTKGlobetrotterDialView
-- (NTKGlobetrotterDialView)initWithFrame:(CGRect)a3 timeZoneHourOffset:(int64_t)a4 device:(id)a5;
-- (id)_dialMarkerAttributedStringForHour:(unint64_t)a3;
+- (NTKGlobetrotterDialView)initWithFrame:(CGRect)frame timeZoneHourOffset:(int64_t)offset device:(id)device;
+- (id)_dialMarkerAttributedStringForHour:(unint64_t)hour;
 - (id)_hourMarkerFont;
-- (id)_imageViewWithSymbolName:(id)a3 font:(id)a4;
-- (id)_newCityLabelWithCityIndex:(unint64_t)a3;
+- (id)_imageViewWithSymbolName:(id)name font:(id)font;
+- (id)_newCityLabelWithCityIndex:(unint64_t)index;
 - (id)_newHourMarkerLabel;
 - (void)_rotateHourMarkerDialToCurrentTime;
 - (void)_updateCityDialColor;
-- (void)_updateColor:(id)a3 forObject:(id)a4;
+- (void)_updateColor:(id)color forObject:(id)object;
 - (void)_updateEditingImageColor;
 - (void)_updateHourDialMarkers;
 - (void)_updateHourMarkerDial;
 - (void)_updateSunriseSunsetInfo;
-- (void)applyTransitionFraction:(double)a3 fromNumeralOption:(id)a4 toNumeralOption:(id)a5;
+- (void)applyTransitionFraction:(double)fraction fromNumeralOption:(id)option toNumeralOption:(id)numeralOption;
 - (void)cleanupAfterEditing;
 - (void)layoutSubviews;
 - (void)prepareForEditing;
-- (void)setAlphaForNonHourMarkerSubviews:(double)a3;
-- (void)setNumberSystem:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setPalette:(id)a3;
-- (void)setTimeZoneHourOffset:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlphaForNonHourMarkerSubviews:(double)subviews;
+- (void)setNumberSystem:(unint64_t)system;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setPalette:(id)palette;
+- (void)setTimeZoneHourOffset:(int64_t)offset;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation NTKGlobetrotterDialView
 
-- (NTKGlobetrotterDialView)initWithFrame:(CGRect)a3 timeZoneHourOffset:(int64_t)a4 device:(id)a5
+- (NTKGlobetrotterDialView)initWithFrame:(CGRect)frame timeZoneHourOffset:(int64_t)offset device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v67.receiver = self;
   v67.super_class = NTKGlobetrotterDialView;
-  v12 = [(NTKGlobetrotterDialView *)&v67 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(NTKGlobetrotterDialView *)&v67 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    objc_storeStrong(&v12->_device, a5);
+    objc_storeStrong(&height->_device, device);
     v66 = 0;
     v64 = 0u;
     v65 = 0u;
@@ -48,7 +48,7 @@
     v60 = 0u;
     v61 = 0u;
     v59 = 0u;
-    sub_8C1C(v11, &v59);
+    sub_8C1C(deviceCopy, &v59);
     v13->_numberSystem = -1;
     device = v13->_device;
     if (NTKShowIndicScriptNumerals())
@@ -215,26 +215,26 @@ LABEL_8:
   v25.size.width = v8;
   v25.size.height = v10;
   MidX = CGRectGetMidX(v25);
-  v16 = [(NTKGlobetrotterDialView *)self layer];
-  [v16 setCornerRadius:MidX];
+  layer = [(NTKGlobetrotterDialView *)self layer];
+  [layer setCornerRadius:MidX];
 
   [(NTKDialView *)self->_hourMarkerDialView bounds];
   v17 = CGRectGetMidX(v26);
-  v18 = [(NTKDialView *)self->_hourMarkerDialView layer];
-  [v18 setCornerRadius:v17];
+  layer2 = [(NTKDialView *)self->_hourMarkerDialView layer];
+  [layer2 setCornerRadius:v17];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = NTKGlobetrotterDialView;
-  v4 = a3;
-  [(NTKGlobetrotterDialView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKGlobetrotterDialView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(NTKGlobetrotterDialView *)self traitCollection:v8.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     [(NTKDialView *)self->_outerCityDialView reloadMarkers];
     [(NTKDialView *)self->_innerCityDialView reloadMarkers];
@@ -276,12 +276,12 @@ LABEL_8:
   self->_editingImageView = 0;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v5 = a3;
-  objc_storeStrong(&self->_palette, a3);
-  v6 = [v5 dialBackground];
-  [(NTKGlobetrotterDialView *)self setBackgroundColor:v6];
+  paletteCopy = palette;
+  objc_storeStrong(&self->_palette, palette);
+  dialBackground = [paletteCopy dialBackground];
+  [(NTKGlobetrotterDialView *)self setBackgroundColor:dialBackground];
 
   if (self->_editingImageView)
   {
@@ -293,20 +293,20 @@ LABEL_8:
     [(NTKGlobetrotterDialView *)self _updateCityDialColor];
   }
 
-  v7 = [v5 hourMarkerLabel];
-  [(UIImageView *)self->_sunriseImageView setTintColor:v7];
-  [(UIImageView *)self->_sunsetImageView setTintColor:v7];
+  hourMarkerLabel = [paletteCopy hourMarkerLabel];
+  [(UIImageView *)self->_sunriseImageView setTintColor:hourMarkerLabel];
+  [(UIImageView *)self->_sunsetImageView setTintColor:hourMarkerLabel];
   cityDialDotsView = self->_cityDialDotsView;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_7104;
   v15[3] = &unk_105F0;
   v15[4] = self;
-  v16 = v5;
-  v9 = v5;
+  v16 = paletteCopy;
+  v9 = paletteCopy;
   [(NTKDialView *)cityDialDotsView enumerateMarkers:v15];
-  v10 = [v9 hourMarkerDialBackground];
-  [(NTKDialView *)self->_hourMarkerDialView setBackgroundColor:v10];
+  hourMarkerDialBackground = [v9 hourMarkerDialBackground];
+  [(NTKDialView *)self->_hourMarkerDialView setBackgroundColor:hourMarkerDialBackground];
 
   hourMarkerDialView = self->_hourMarkerDialView;
   v13[0] = _NSConcreteStackBlock;
@@ -314,35 +314,35 @@ LABEL_8:
   v13[2] = sub_7190;
   v13[3] = &unk_105F0;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = hourMarkerLabel;
+  v12 = hourMarkerLabel;
   [(NTKDialView *)hourMarkerDialView enumerateMarkers:v13];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_overrideDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     [(NTKGlobetrotterDialView *)self _rotateHourMarkerDialToCurrentTime];
   }
 }
 
-- (void)setAlphaForNonHourMarkerSubviews:(double)a3
+- (void)setAlphaForNonHourMarkerSubviews:(double)subviews
 {
-  [(UIView *)self->_nonHourMarkerOverlayView setAlpha:1.0 - a3];
+  [(UIView *)self->_nonHourMarkerOverlayView setAlpha:1.0 - subviews];
   editingImageView = self->_editingImageView;
 
-  [(UIImageView *)editingImageView setAlpha:a3];
+  [(UIImageView *)editingImageView setAlpha:subviews];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromNumeralOption:(id)a4 toNumeralOption:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromNumeralOption:(id)option toNumeralOption:(id)numeralOption
 {
-  v8 = a5;
-  [a4 numeralOption];
+  numeralOptionCopy = numeralOption;
+  [option numeralOption];
   v9 = CLKLocaleNumberSystemFromNumeralOption();
-  [v8 numeralOption];
+  [numeralOptionCopy numeralOption];
 
   v10 = CLKLocaleNumberSystemFromNumeralOption();
   if (v9 == v10)
@@ -353,7 +353,7 @@ LABEL_8:
 
   else
   {
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
       v13 = v10;
       CLKMapFractionIntoRange();
@@ -368,19 +368,19 @@ LABEL_8:
     }
 
     [(NTKGlobetrotterDialView *)self setNumberSystem:v9];
-    v15 = [(NTKDialView *)self->_hourMarkerDialView markerContainerView];
-    [v15 setAlpha:v12];
+    markerContainerView = [(NTKDialView *)self->_hourMarkerDialView markerContainerView];
+    [markerContainerView setAlpha:v12];
   }
 }
 
 - (void)_rotateHourMarkerDialToCurrentTime
 {
-  v8 = [(NTKGlobetrotterDialView *)self _currentDate];
+  _currentDate = [(NTKGlobetrotterDialView *)self _currentDate];
   v3 = NTKDateHourIn24HourTime();
-  v4 = [(NTKGlobetrotterDialView *)self _localTimeZone];
-  if ([v4 isDaylightSavingTimeForDate:v8])
+  _localTimeZone = [(NTKGlobetrotterDialView *)self _localTimeZone];
+  if ([_localTimeZone isDaylightSavingTimeForDate:_currentDate])
   {
-    [v4 daylightSavingTimeOffsetForDate:v8];
+    [_localTimeZone daylightSavingTimeOffsetForDate:_currentDate];
     v6 = v3 + v5 / -3600.0;
     if (v6)
     {
@@ -404,7 +404,7 @@ LABEL_8:
   v4 = llround(v3 / 15.0);
   [(NTKDialView *)self->_outerCityDialView angleOffset];
   v6 = (v5 / 15.0);
-  v7 = [(NTKGlobetrotterDialView *)self _currentDate];
+  _currentDate = [(NTKGlobetrotterDialView *)self _currentDate];
   v32 = 0;
   v30 = 0u;
   v31 = 0u;
@@ -422,7 +422,7 @@ LABEL_8:
   v14 = v4;
   v15 = v6;
   v12[4] = self;
-  v13 = v7;
+  v13 = _currentDate;
   v16 = xmmword_C590;
   v21 = v29;
   v22 = v30;
@@ -432,7 +432,7 @@ LABEL_8:
   v18 = v26;
   v19 = v27;
   v20 = v28;
-  v9 = v7;
+  v9 = _currentDate;
   [(NTKDialView *)hourMarkerDialView enumerateMarkers:v12];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -443,45 +443,45 @@ LABEL_8:
   [(NTKDialView *)self->_hourMarkerDialView setMarkerRotationProvider:v10];
 }
 
-- (id)_dialMarkerAttributedStringForHour:(unint64_t)a3
+- (id)_dialMarkerAttributedStringForHour:(unint64_t)hour
 {
   numberSystem = self->_numberSystem;
   v6 = CLKLocaleNumberSystemIdentifier();
   v7 = [NSString stringWithFormat:@"en_US@numbers=%@", v6];
   v8 = [[NSLocale alloc] initWithLocaleIdentifier:v7];
   v9 = [NSString alloc];
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v10 = [NSNumber numberWithUnsignedInteger:hour];
   v11 = [v9 initWithFormat:@"%@" locale:v8, v10];
 
   v12 = self->_numberSystem;
   v13 = CLKLocaleRenderingHintLanguageIdentifierForNumberingSystem();
-  v14 = [(NTKGlobetrotterDialView *)self _hourMarkerFont];
+  _hourMarkerFont = [(NTKGlobetrotterDialView *)self _hourMarkerFont];
   v15 = [NSAttributedString alloc];
   v19[0] = NSLanguageIdentifierAttributeName;
   v19[1] = NSFontAttributeName;
   v20[0] = v13;
-  v20[1] = v14;
+  v20[1] = _hourMarkerFont;
   v16 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
   v17 = [v15 initWithString:v11 attributes:v16];
 
   return v17;
 }
 
-- (void)setTimeZoneHourOffset:(int64_t)a3
+- (void)setTimeZoneHourOffset:(int64_t)offset
 {
-  self->_timeZoneHourOffset = a3;
-  v5 = a3;
-  v6 = a3 * 15.0;
+  self->_timeZoneHourOffset = offset;
+  offsetCopy = offset;
+  v6 = offset * 15.0;
   [(NTKDialView *)self->_outerCityDialView setAngleOffset:v6];
   [(NTKDialView *)self->_innerCityDialView setAngleOffset:v6 + 15.0];
-  if (a3 < 0)
+  if (offset < 0)
   {
-    v7 = -(-a3 >> 1);
+    v7 = -(-offset >> 1);
   }
 
-  else if (a3)
+  else if (offset)
   {
-    v7 = llround(v5 * 0.5);
+    v7 = llround(offsetCopy * 0.5);
   }
 
   else
@@ -514,11 +514,11 @@ LABEL_8:
   v35 = v43;
   v31 = v39;
   [(NTKDialView *)outerCityDialView enumerateMarkers:v26];
-  if (a3 < 1)
+  if (offset < 1)
   {
-    if (a3 < 0)
+    if (offset < 0)
     {
-      v9 = llround(v5 * 0.5);
+      v9 = llround(offsetCopy * 0.5);
     }
 
     else
@@ -529,7 +529,7 @@ LABEL_8:
 
   else
   {
-    v9 = a3 >> 1;
+    v9 = offset >> 1;
   }
 
   innerCityDialView = self->_innerCityDialView;
@@ -565,11 +565,11 @@ LABEL_8:
   [(NTKGlobetrotterDialView *)self _updateHourMarkerDial];
 }
 
-- (void)setNumberSystem:(unint64_t)a3
+- (void)setNumberSystem:(unint64_t)system
 {
-  if (self->_numberSystem != a3)
+  if (self->_numberSystem != system)
   {
-    self->_numberSystem = a3;
+    self->_numberSystem = system;
     [(NTKGlobetrotterDialView *)self _updateHourDialMarkers];
     hourMarkerDialView = self->_hourMarkerDialView;
 
@@ -591,7 +591,7 @@ LABEL_8:
   v5 = v4;
   v7 = v6;
 
-  v8 = [(NTKGlobetrotterDialView *)self _currentDate];
+  _currentDate = [(NTKGlobetrotterDialView *)self _currentDate];
   objc_initWeak(&location, self);
   v9 = dispatch_get_global_queue(25, 0);
   v11[0] = _NSConcreteStackBlock;
@@ -601,9 +601,9 @@ LABEL_8:
   objc_copyWeak(v14, &location);
   v14[1] = v5;
   v14[2] = v7;
-  v12 = v8;
-  v13 = self;
-  v10 = v8;
+  v12 = _currentDate;
+  selfCopy = self;
+  v10 = _currentDate;
   dispatch_async(v9, v11);
 
   objc_destroyWeak(v14);
@@ -618,12 +618,12 @@ LABEL_8:
   memset(v7, 0, sizeof(v7));
   sub_8C1C(self->_device, v7);
   v3 = objc_alloc_init(CLKUICurvedColoringLabel);
-  v4 = [(NTKGlobetrotterDialView *)self _hourMarkerFont];
-  [v3 setFont:v4];
+  _hourMarkerFont = [(NTKGlobetrotterDialView *)self _hourMarkerFont];
+  [v3 setFont:_hourMarkerFont];
 
   [v3 setTracking:*&v8];
-  v5 = [(UIImageView *)self->_sunriseImageView tintColor];
-  [v3 setTextColor:v5];
+  tintColor = [(UIImageView *)self->_sunriseImageView tintColor];
+  [v3 setTextColor:tintColor];
 
   return v3;
 }
@@ -652,10 +652,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)_newCityLabelWithCityIndex:(unint64_t)a3
+- (id)_newCityLabelWithCityIndex:(unint64_t)index
 {
   v5 = +[NTKGlobetrotterCityManager sharedInstance];
-  v6 = [v5 displayNameForCityAtIndex:a3];
+  v6 = [v5 displayNameForCityAtIndex:index];
 
   v16 = 0;
   v14 = 0u;
@@ -676,11 +676,11 @@ LABEL_8:
   return v7;
 }
 
-- (id)_imageViewWithSymbolName:(id)a3 font:(id)a4
+- (id)_imageViewWithSymbolName:(id)name font:(id)font
 {
-  v5 = a3;
-  v6 = [UIImageSymbolConfiguration configurationWithFont:a4];
-  v7 = [UIImage systemImageNamed:v5 withConfiguration:v6];
+  nameCopy = name;
+  v6 = [UIImageSymbolConfiguration configurationWithFont:font];
+  v7 = [UIImage systemImageNamed:nameCopy withConfiguration:v6];
 
   v8 = [v7 imageWithRenderingMode:2];
 
@@ -689,14 +689,14 @@ LABEL_8:
   return v9;
 }
 
-- (void)_updateColor:(id)a3 forObject:(id)a4
+- (void)_updateColor:(id)color forObject:(id)object
 {
-  v6 = a3;
-  v5 = a4;
+  colorCopy = color;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setTextColor:v6];
+    [objectCopy setTextColor:colorCopy];
   }
 
   else
@@ -704,7 +704,7 @@ LABEL_8:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 setTintColor:v6];
+      [objectCopy setTintColor:colorCopy];
     }
 
     else
@@ -712,7 +712,7 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v5 setBackgroundColor:{objc_msgSend(v6, "CGColor")}];
+        [objectCopy setBackgroundColor:{objc_msgSend(colorCopy, "CGColor")}];
       }
     }
   }
@@ -738,8 +738,8 @@ LABEL_8:
 
 - (void)_updateEditingImageColor
 {
-  v3 = [(NTKGlobetrotterColorPalette *)self->_palette cityDialLabel];
-  [(NTKGlobetrotterDialView *)self _updateColor:v3 forObject:self->_editingImageView];
+  cityDialLabel = [(NTKGlobetrotterColorPalette *)self->_palette cityDialLabel];
+  [(NTKGlobetrotterDialView *)self _updateColor:cityDialLabel forObject:self->_editingImageView];
 }
 
 @end

@@ -2,11 +2,11 @@
 - (Class)devicesExpectedToBeMigratableAfterRestore;
 - (NSString)lastMigrationRequestPhoneName;
 - (PDRMigrator_Impl)init;
-- (id)devicesFromMigrationConsentRequestData:(id)a3;
+- (id)devicesFromMigrationConsentRequestData:(id)data;
 - (id)migrationConsentRequestData;
-- (id)migrationDataPreRestoreForConsentedDevices:(id)a3;
-- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3;
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4;
+- (id)migrationDataPreRestoreForConsentedDevices:(id)devices;
+- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices;
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion;
 @end
 
 @implementation PDRMigrator_Impl
@@ -26,9 +26,9 @@
   return v2.super.isa;
 }
 
-- (id)devicesFromMigrationConsentRequestData:(id)a3
+- (id)devicesFromMigrationConsentRequestData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   outlined consume of Data._Representation(v4, v5);
 
@@ -38,16 +38,16 @@
   return v6.super.isa;
 }
 
-- (id)migrationDataPreRestoreForConsentedDevices:(id)a3
+- (id)migrationDataPreRestoreForConsentedDevices:(id)devices
 {
   v3.super.isa = Data._bridgeToObjectiveC()().super.isa;
 
   return v3.super.isa;
 }
 
-- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)a3
+- (void)ingestPostRestoreMigrationDataForConsentedDevices:(id)devices
 {
-  v5 = a3;
+  devicesCopy = devices;
   v3 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   outlined consume of Data._Representation(v3, v4);
 }
@@ -59,9 +59,9 @@
   return v2;
 }
 
-- (void)isPhoneReadyToMigrateDevice:(id)a3 withCompletion:(id)a4
+- (void)isPhoneReadyToMigrateDevice:(id)device withCompletion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   (*(v4 + 2))(v4, 0, 0);
 
   _Block_release(v4);

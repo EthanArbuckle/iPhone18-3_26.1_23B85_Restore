@@ -1,5 +1,5 @@
 @interface TSAApplicationPropertiesProvider
-- (BOOL)isReadableDocumentType:(id)a3;
+- (BOOL)isReadableDocumentType:(id)type;
 - (NSArray)importableDocumentTypes;
 - (NSArray)nativeDocumentTypes;
 - (NSArray)readableDocumentTypes;
@@ -12,7 +12,7 @@
 - (id)appTextDefaults;
 - (id)iWorkTextDefaultsPassphraseVerifier;
 - (uint64_t)supportsWebVideos;
-- (void)setAppTextDefaults:(id)a3 passphraseVerifier:(id)a4;
+- (void)setAppTextDefaults:(id)defaults passphraseVerifier:(id)verifier;
 @end
 
 @implementation TSAApplicationPropertiesProvider
@@ -161,10 +161,10 @@
   objc_exception_throw(v23);
 }
 
-- (BOOL)isReadableDocumentType:(id)a3
+- (BOOL)isReadableDocumentType:(id)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   objc_msgSend_readableDocumentTypes(self, v5, v6, v7);
   v16 = 0u;
   v17 = 0u;
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        if (objc_msgSend_tsu_conformsToUTI_(v4, v10, *(*(&v16 + 1) + 8 * i), v11, v16))
+        if (objc_msgSend_tsu_conformsToUTI_(typeCopy, v10, *(*(&v16 + 1) + 8 * i), v11, v16))
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
@@ -231,16 +231,16 @@ LABEL_11:
   return v7;
 }
 
-- (void)setAppTextDefaults:(id)a3 passphraseVerifier:(id)a4
+- (void)setAppTextDefaults:(id)defaults passphraseVerifier:(id)verifier
 {
   v6 = MEMORY[0x277CCAD80];
-  v7 = a4;
-  v8 = a3;
+  verifierCopy = verifier;
+  defaultsCopy = defaults;
   v21 = objc_msgSend_defaultStore(v6, v9, v10, v11);
   v15 = objc_msgSend_appTextDefaultsKey(self, v12, v13, v14);
-  objc_msgSend_setObject_forKey_(v21, v16, v8, v15);
+  objc_msgSend_setObject_forKey_(v21, v16, defaultsCopy, v15);
 
-  objc_msgSend_setData_forKey_(v21, v17, v7, @"TSAICloudTextDefaultsPassphraseVerifierKey");
+  objc_msgSend_setData_forKey_(v21, v17, verifierCopy, @"TSAICloudTextDefaultsPassphraseVerifierKey");
   objc_msgSend_tsk_coalescedSynchronizeForDefaultStore(MEMORY[0x277CCAD80], v18, v19, v20);
 }
 

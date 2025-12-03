@@ -1,6 +1,6 @@
 @interface RedoSearchContainerViewController
-- (_TtC4Maps33RedoSearchContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)redoSearchButtonClicked:(id)a3;
+- (_TtC4Maps33RedoSearchContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)redoSearchButtonClicked:(id)clicked;
 - (void)viewDidLoad;
 @end
 
@@ -8,21 +8,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000371C4();
 }
 
-- (_TtC4Maps33RedoSearchContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps33RedoSearchContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)redoSearchButtonClicked:(id)a3
+- (void)redoSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
+  clickedCopy = clicked;
+  selfCopy = self;
   sub_100541094();
 }
 

@@ -1,20 +1,20 @@
 @interface PLModelMigrationAction_ResetSyndicationAssetSyncToken
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetSyndicationAssetSyncToken
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:0];
-  v8 = [[PLGlobalValues alloc] initWithManagedObjectContext:v6];
+  v8 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
   [(PLGlobalValues *)v8 setLastAttachmentSyndicationSyncDate:0];
   [(PLGlobalValues *)v8 setInProgressFullIndexSyndicationSyncDate:0];
   [(PLGlobalValues *)v8 setSyndicationStartDate:0];
   v33 = 0;
-  v9 = [v6 save:&v33];
+  v9 = [contextCopy save:&v33];
 
   v10 = v33;
   if (v9)
@@ -25,9 +25,9 @@
 
     if (v12)
     {
-      v13 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v13)
+      if (logger)
       {
         v67 = 0u;
         v68 = 0u;
@@ -97,9 +97,9 @@
 
     if (v18)
     {
-      v19 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v19)
+      if (logger2)
       {
         v67 = 0u;
         v68 = 0u;
@@ -169,10 +169,10 @@
     }
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
-    if (a4)
+    if (error)
     {
       v30 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v26 = 3;

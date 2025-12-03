@@ -1,7 +1,7 @@
 @interface IDSServiceWrapper
 - (_TtC17SessionSyncEngine17IDSServiceWrapper)init;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation IDSServiceWrapper
@@ -13,17 +13,17 @@
   return result;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v8 = a6;
-  if (a5)
+  dCopy = d;
+  if (message)
   {
     v12 = sub_2657F2454();
-    if (v8)
+    if (dCopy)
     {
 LABEL_3:
       v13 = sub_2657F2484();
-      v8 = v14;
+      dCopy = v14;
       goto LABEL_6;
     }
   }
@@ -31,7 +31,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (a6)
+    if (d)
     {
       goto LABEL_3;
     }
@@ -39,16 +39,16 @@ LABEL_3:
 
   v13 = 0;
 LABEL_6:
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = self;
-  sub_2657D0180(a3, v12, v13, v8);
+  serviceCopy = service;
+  accountCopy = account;
+  contextCopy = context;
+  selfCopy = self;
+  sub_2657D0180(service, v12, v13, dCopy);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  if (a5)
+  if (identifier)
   {
     v11 = sub_2657F2484();
     v13 = v12;
@@ -60,11 +60,11 @@ LABEL_6:
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = self;
-  sub_2657D0ABC(v11, v13, a7);
+  serviceCopy = service;
+  accountCopy = account;
+  errorCopy = error;
+  selfCopy = self;
+  sub_2657D0ABC(v11, v13, error);
 }
 
 @end

@@ -6,18 +6,18 @@
 
 - (BOOL)mf_needsToAdjustContentOffset
 {
-  [a1 bounds];
+  [self bounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  [a1 contentOffset];
+  [self contentOffset];
   v11 = v10;
   v30 = v12;
-  [a1 contentSize];
+  [self contentSize];
   v14 = v13;
   v16 = v15;
-  [a1 _effectiveContentInset];
+  [self _effectiveContentInset];
   v21 = round(-v20);
   if (v7 < round(v19 + v14 + v20) && v3 >= v21)
   {
@@ -44,7 +44,7 @@
     }
   }
 
-  [a1 contentOffset];
+  [self contentOffset];
   return v28 != v24 || v27 != v21;
 }
 

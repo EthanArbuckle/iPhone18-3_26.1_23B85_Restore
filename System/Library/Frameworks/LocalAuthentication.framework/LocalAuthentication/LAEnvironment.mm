@@ -3,14 +3,14 @@
 - (LAEnvironment)init;
 - (LAEnvironmentState)state;
 - (void)_handleDarwinNotification;
-- (void)_notifyObserversAboutUpdateFrom:(id)a3;
+- (void)_notifyObserversAboutUpdateFrom:(id)from;
 - (void)_registerDarwinNotification;
 - (void)_unregisterDarwinNotification;
 - (void)_updateState;
-- (void)_updateStateWithSynchronousProxyToEnvironmentService:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_updateStateWithSynchronousProxyToEnvironmentService:(id)service;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation LAEnvironment
@@ -53,9 +53,9 @@ uint64_t __28__LAEnvironment_currentUser__block_invoke()
     observerQueue = v2->_observerQueue;
     v2->_observerQueue = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v9;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_stateLock._os_unfair_lock_opaque = 0;
     v11 = objc_alloc_init(LAEnvironmentServiceXPCClient);
@@ -74,7 +74,7 @@ uint64_t __28__LAEnvironment_currentUser__block_invoke()
   v3 = 136446466;
   v4 = "com.apple.LocalAuthentication.environment.StateDidChange";
   v5 = 1024;
-  v6 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_1A784E000, a2, OS_LOG_TYPE_FAULT, "Failed to register %{public}s: %u", &v3, 0x12u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -179,10 +179,10 @@ void __42__LAEnvironment__handleDarwinNotification__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateStateWithSynchronousProxyToEnvironmentService:(id)a3
+- (void)_updateStateWithSynchronousProxyToEnvironmentService:(id)service
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -202,7 +202,7 @@ void __42__LAEnvironment__handleDarwinNotification__block_invoke(uint64_t a1)
   v15[3] = &unk_1E77CB248;
   v15[4] = &v22;
   v15[5] = &v16;
-  [v4 environmentStateForUser:v5 completion:v15];
+  [serviceCopy environmentStateForUser:v5 completion:v15];
 
   if (v23[5])
   {
@@ -264,37 +264,37 @@ void __70__LAEnvironment__updateStateWithSynchronousProxyToEnvironmentService___
   *(v9 + 40) = v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v6 = a3;
-  v4 = [(LAEnvironment *)self state];
+  observerCopy = observer;
+  state = [(LAEnvironment *)self state];
   v5 = self->_observers;
   objc_sync_enter(v5);
-  [(NSHashTable *)self->_observers addObject:v6];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v5);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_notifyObserversAboutUpdateFrom:(id)a3
+- (void)_notifyObserversAboutUpdateFrom:(id)from
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   os_unfair_lock_assert_owner(&self->_stateLock);
-  if (![(LAEnvironmentState *)self->_state isEqual:v4])
+  if (![(LAEnvironmentState *)self->_state isEqual:fromCopy])
   {
     v5 = self->_observers;
     objc_sync_enter(v5);
     v6 = MEMORY[0x1E695DEC8];
-    v7 = [(NSHashTable *)self->_observers allObjects];
-    v8 = [v6 arrayWithArray:v7];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v8 = [v6 arrayWithArray:allObjects];
 
     objc_sync_exit(v5);
     v23 = 0u;
@@ -318,16 +318,16 @@ void __70__LAEnvironment__updateStateWithSynchronousProxyToEnvironmentService___
           v12 = *(*(&v21 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v13 = self;
+            selfCopy = self;
             observerQueue = self->_observerQueue;
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __49__LAEnvironment__notifyObserversAboutUpdateFrom___block_invoke;
             block[3] = &unk_1E77CB270;
             block[4] = v12;
-            v19 = v13;
-            v20 = v4;
-            v15 = v13;
+            v19 = selfCopy;
+            v20 = fromCopy;
+            v15 = selfCopy;
             dispatch_async(observerQueue, block);
           }
         }

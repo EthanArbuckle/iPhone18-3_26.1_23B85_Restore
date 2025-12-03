@@ -1,21 +1,21 @@
 @interface DMFFetchApplicationsResultObject
-- (DMFFetchApplicationsResultObject)initWithApplicationsByIdentifier:(id)a3;
-- (DMFFetchApplicationsResultObject)initWithCoder:(id)a3;
+- (DMFFetchApplicationsResultObject)initWithApplicationsByIdentifier:(id)identifier;
+- (DMFFetchApplicationsResultObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFFetchApplicationsResultObject
 
-- (DMFFetchApplicationsResultObject)initWithApplicationsByIdentifier:(id)a3
+- (DMFFetchApplicationsResultObject)initWithApplicationsByIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = DMFFetchApplicationsResultObject;
   v5 = [(CATTaskResultObject *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     applicationsByIdentifier = v5->_applicationsByIdentifier;
     v5->_applicationsByIdentifier = v6;
   }
@@ -23,19 +23,19 @@
   return v5;
 }
 
-- (DMFFetchApplicationsResultObject)initWithCoder:(id)a3
+- (DMFFetchApplicationsResultObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = DMFFetchApplicationsResultObject;
-  v5 = [(CATTaskResultObject *)&v13 initWithCoder:v4];
+  v5 = [(CATTaskResultObject *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"applicationsByIdentifier"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"applicationsByIdentifier"];
     applicationsByIdentifier = v5->_applicationsByIdentifier;
     v5->_applicationsByIdentifier = v10;
   }
@@ -43,22 +43,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DMFFetchApplicationsResultObject;
-  v4 = a3;
-  [(CATTaskResultObject *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskResultObject *)&v6 encodeWithCoder:coderCopy];
   v5 = [(DMFFetchApplicationsResultObject *)self applicationsByIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"applicationsByIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"applicationsByIdentifier"];
 }
 
 - (id)description
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = [(DMFFetchApplicationsResultObject *)self applicationsByIdentifier];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_8];
+  applicationsByIdentifier = [(DMFFetchApplicationsResultObject *)self applicationsByIdentifier];
+  allValues = [applicationsByIdentifier allValues];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_8];
 
   v5 = [MEMORY[0x1E696AD60] stringWithString:@"["];
   v14 = 0u;

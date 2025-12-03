@@ -1,27 +1,27 @@
 @interface VSAppInstallCell
 + (PSSpecifier)specifier;
 - (BOOL)isAccessibilityElement;
-- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)a3;
+- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)installs;
 - (BOOL)shouldDisplayPrivacySwitch;
-- (VSAppInstallCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (VSAppInstallCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)accessibilityElements;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)cachedRequest;
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4;
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer;
 - (id)viewModel;
-- (void)_updateSubviewsWithPrivacyState:(int64_t)a3;
+- (void)_updateSubviewsWithPrivacyState:(int64_t)state;
 - (void)activateConstraints;
 - (void)createConstraints;
 - (void)dealloc;
 - (void)displayPrivacySwitchIfNeeded;
 - (void)layoutSubviews;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupViewDidFinishRequest:(id)request;
 - (void)prepareForReuse;
-- (void)setCellHeight:(double)a3;
-- (void)setDisplayPrivacySwitch:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setCellHeight:(double)height;
+- (void)setDisplayPrivacySwitch:(BOOL)switch;
+- (void)setSpecifier:(id)specifier;
 - (void)updateCellHeight;
 - (void)updateConstraints;
 @end
@@ -38,18 +38,18 @@
   return v2;
 }
 
-- (VSAppInstallCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (VSAppInstallCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v19.receiver = self;
   v19.super_class = VSAppInstallCell;
-  v9 = [(VSAppInstallCell *)&v19 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(VSAppInstallCell *)&v19 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   if (v9)
   {
     v10 = [[ASCLockupView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v10 setDelegate:v9];
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [v8 propertyForKey:@"VSAppInstallCellLockupGroupKey"];
+    v11 = [specifierCopy propertyForKey:@"VSAppInstallCellLockupGroupKey"];
     [v10 setGroup:v11];
     lockupView = v9->_lockupView;
     v9->_lockupView = v10;
@@ -60,8 +60,8 @@
     v9->_privacySwitch = v14;
     v16 = v14;
 
-    v17 = [(VSAppInstallCell *)v9 contentView];
-    [v17 addSubview:v9->_lockupView];
+    contentView = [(VSAppInstallCell *)v9 contentView];
+    [contentView addSubview:v9->_lockupView];
 
     [(VSAppInstallCell *)v9 setNeedsUpdateConstraints];
     [(VSAppInstallCell *)v9 updateConstraintsIfNeeded];
@@ -77,8 +77,8 @@
   v4.receiver = self;
   v4.super_class = VSAppInstallCell;
   [(VSAppInstallCell *)&v4 prepareForReuse];
-  v3 = [(VSAppInstallCell *)self lockupView];
-  [v3 setLockup:0];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  [lockupView setLockup:0];
 }
 
 - (void)dealloc
@@ -89,98 +89,98 @@
   [(VSAppInstallCell *)&v3 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = VSAppInstallCell;
-  [(VSAppInstallCell *)&v9 setSpecifier:a3];
-  v4 = [(VSAppInstallCell *)self viewModel];
-  v5 = [(VSAppInstallCell *)self privacySwitch];
-  if (v4)
+  [(VSAppInstallCell *)&v9 setSpecifier:specifier];
+  viewModel = [(VSAppInstallCell *)self viewModel];
+  privacySwitch = [(VSAppInstallCell *)self privacySwitch];
+  if (viewModel)
   {
     v6 = VSMainConcurrencyBindingOptions();
-    [(VSAppInstallCell *)self vs_bind:@"privacyState" toObject:v4 withKeyPath:@"privacyState" options:v6];
+    [(VSAppInstallCell *)self vs_bind:@"privacyState" toObject:viewModel withKeyPath:@"privacyState" options:v6];
 
     v7 = VSMainConcurrencyBindingOptions();
-    [v5 vs_bind:@"enabled" toObject:v4 withKeyPath:@"canChangePrivacyAccess" options:v7];
+    [privacySwitch vs_bind:@"enabled" toObject:viewModel withKeyPath:@"canChangePrivacyAccess" options:v7];
 
     v8 = VSMainConcurrencyBindingOptions();
-    [v5 vs_bind:@"on" toObject:v4 withKeyPath:@"accessGranted" options:v8];
+    [privacySwitch vs_bind:@"on" toObject:viewModel withKeyPath:@"accessGranted" options:v8];
   }
 
   else
   {
     [(VSAppInstallCell *)self vs_unbind:@"privacyState"];
-    [v5 vs_unbind:@"enabled"];
-    [v5 vs_unbind:@"on"];
+    [privacySwitch vs_unbind:@"enabled"];
+    [privacySwitch vs_unbind:@"on"];
   }
 }
 
 - (id)viewModel
 {
-  v2 = [(VSAppInstallCell *)self specifier];
-  v3 = [v2 propertyForKey:@"VSAppSettingsViewModel"];
+  specifier = [(VSAppInstallCell *)self specifier];
+  v3 = [specifier propertyForKey:@"VSAppSettingsViewModel"];
 
   return v3;
 }
 
 - (id)cachedRequest
 {
-  v2 = [(VSAppInstallCell *)self specifier];
-  v3 = [v2 propertyForKey:@"VSAppInstallCellCachedRequestKey"];
+  specifier = [(VSAppInstallCell *)self specifier];
+  v3 = [specifier propertyForKey:@"VSAppInstallCellCachedRequestKey"];
 
   return v3;
 }
 
-- (void)_updateSubviewsWithPrivacyState:(int64_t)a3
+- (void)_updateSubviewsWithPrivacyState:(int64_t)state
 {
-  v16 = [(VSAppInstallCell *)self lockupView];
-  v4 = [(VSAppInstallCell *)self viewModel];
-  v5 = v4;
-  if (v4)
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  viewModel = [(VSAppInstallCell *)self viewModel];
+  v5 = viewModel;
+  if (viewModel)
   {
-    if ([v4 isDecided])
+    if ([viewModel isDecided])
     {
       v6 = [ASCArtwork alloc];
-      v7 = [v5 icon];
-      v8 = [v6 initWithImage:v7 decoration:ASCArtworkDecorationRoundedRect];
+      icon = [v5 icon];
+      cachedRequest = [v6 initWithImage:icon decoration:ASCArtworkDecorationRoundedRect];
 
       v9 = [[ASCAdamID alloc] initWithInt64:-1];
       v10 = [ASCLockup alloc];
       v11 = ASCLockupKindApp;
-      v12 = [v5 displayName];
-      v13 = [v5 decidedLockupSubtitle];
-      v14 = [v10 initWithID:v9 kind:v11 metrics:0 icon:v8 heading:0 title:v12 subtitle:v13 ageRating:0 offer:0];
+      displayName = [v5 displayName];
+      decidedLockupSubtitle = [v5 decidedLockupSubtitle];
+      v14 = [v10 initWithID:v9 kind:v11 metrics:0 icon:cachedRequest heading:0 title:displayName subtitle:decidedLockupSubtitle ageRating:0 offer:0];
 
-      [v16 setAutomaticallyPresentsProductDetails:0];
-      [v16 setLockup:v14];
+      [lockupView setAutomaticallyPresentsProductDetails:0];
+      [lockupView setLockup:v14];
       [(VSAppInstallCell *)self displayPrivacySwitchIfNeeded];
     }
 
     else
     {
-      v8 = [(VSAppInstallCell *)self cachedRequest];
-      if (!v8)
+      cachedRequest = [(VSAppInstallCell *)self cachedRequest];
+      if (!cachedRequest)
       {
-        v15 = [v5 adamID];
-        v8 = [ASCLockupRequest tvProviderLockupRequestWithAdamID:v15];
+        adamID = [v5 adamID];
+        cachedRequest = [ASCLockupRequest tvProviderLockupRequestWithAdamID:adamID];
       }
 
-      [v16 setRequest:v8];
+      [lockupView setRequest:cachedRequest];
     }
   }
 
   [(VSAppInstallCell *)self updateCellHeight];
 }
 
-- (void)setDisplayPrivacySwitch:(BOOL)a3
+- (void)setDisplayPrivacySwitch:(BOOL)switch
 {
-  v3 = a3;
-  v5 = [(VSAppInstallCell *)self privacySwitch];
-  v14 = v5;
-  if (v3)
+  switchCopy = switch;
+  privacySwitch = [(VSAppInstallCell *)self privacySwitch];
+  v14 = privacySwitch;
+  if (switchCopy)
   {
-    v6 = v5;
+    v6 = privacySwitch;
   }
 
   else
@@ -191,14 +191,14 @@
   v7 = v6;
   [(VSAppInstallCell *)self setAccessoryView:v7];
   [(VSAppInstallCell *)self setNeedsUpdateConstraints];
-  v8 = [(VSAppInstallCell *)self lockupView];
-  [v8 setAutomaticallyPresentsProductDetails:!v3];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  [lockupView setAutomaticallyPresentsProductDetails:!switchCopy];
   v9 = +[NSBundle vs_frameworkBundle];
   v10 = [v9 localizedStringForKey:@"ACCOUNT_ACCESS_FOR_APP_FORMAT" value:0 table:0];
 
-  v11 = [v8 lockup];
-  v12 = [v11 title];
-  v13 = [NSString stringWithFormat:v10, v12];
+  lockup = [lockupView lockup];
+  title = [lockup title];
+  v13 = [NSString stringWithFormat:v10, title];
   [v14 setAccessibilityHint:v13];
 }
 
@@ -215,8 +215,8 @@
   v4.receiver = self;
   v4.super_class = VSAppInstallCell;
   [(VSAppInstallCell *)&v4 updateConstraints];
-  v3 = [(VSAppInstallCell *)self trailingMargin];
-  [v3 setActive:0];
+  trailingMargin = [(VSAppInstallCell *)self trailingMargin];
+  [trailingMargin setActive:0];
 
   [(VSAppInstallCell *)self createConstraints];
   [(VSAppInstallCell *)self activateConstraints];
@@ -224,12 +224,12 @@
 
 - (void)createConstraints
 {
-  v14 = [(VSAppInstallCell *)self lockupView];
-  v3 = [(VSAppInstallCell *)self accessoryView];
-  v4 = [v3 superview];
-  if (v4)
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  accessoryView = [(VSAppInstallCell *)self accessoryView];
+  superview = [accessoryView superview];
+  if (superview)
   {
-    [v3 leadingAnchor];
+    [accessoryView leadingAnchor];
   }
 
   else
@@ -238,50 +238,50 @@
   }
   v5 = ;
 
-  v6 = [v14 leadingAnchor];
-  v7 = [(VSAppInstallCell *)self leadingAnchor];
-  v8 = [v6 constraintEqualToSystemSpacingAfterAnchor:v7 multiplier:1.0];
+  leadingAnchor = [lockupView leadingAnchor];
+  leadingAnchor2 = [(VSAppInstallCell *)self leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:1.0];
 
   [(VSAppInstallCell *)self setLeadingMargin:v8];
-  v9 = [v14 topAnchor];
-  v10 = [(VSAppInstallCell *)self topAnchor];
-  v11 = [v9 constraintEqualToSystemSpacingBelowAnchor:v10 multiplier:1.0];
+  topAnchor = [lockupView topAnchor];
+  topAnchor2 = [(VSAppInstallCell *)self topAnchor];
+  v11 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
 
   [(VSAppInstallCell *)self setTopMargin:v11];
-  v12 = [v14 trailingAnchor];
-  v13 = [v5 constraintEqualToSystemSpacingAfterAnchor:v12 multiplier:1.0];
+  trailingAnchor = [lockupView trailingAnchor];
+  v13 = [v5 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor multiplier:1.0];
 
   [(VSAppInstallCell *)self setTrailingMargin:v13];
 }
 
 - (void)activateConstraints
 {
-  v3 = [(VSAppInstallCell *)self leadingMargin];
-  v4 = [(VSAppInstallCell *)self topMargin];
-  v7[1] = v4;
-  v5 = [(VSAppInstallCell *)self trailingMargin];
-  v7[2] = v5;
+  leadingMargin = [(VSAppInstallCell *)self leadingMargin];
+  topMargin = [(VSAppInstallCell *)self topMargin];
+  v7[1] = topMargin;
+  trailingMargin = [(VSAppInstallCell *)self trailingMargin];
+  v7[2] = trailingMargin;
   v6 = [NSArray arrayWithObjects:v7 count:3];
   [NSLayoutConstraint activateConstraints:v6];
 }
 
-- (void)setCellHeight:(double)a3
+- (void)setCellHeight:(double)height
 {
-  v5 = [(VSAppInstallCell *)self specifier];
-  v4 = [NSNumber numberWithDouble:a3];
-  [v5 setProperty:v4 forKey:PSTableCellHeightKey];
+  specifier = [(VSAppInstallCell *)self specifier];
+  v4 = [NSNumber numberWithDouble:height];
+  [specifier setProperty:v4 forKey:PSTableCellHeightKey];
 }
 
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer
 {
   v5 = ASCAppStateDownloadable;
-  v6 = [NSNull null:a3];
+  v6 = [NSNull null:view];
   v7 = [NSSet setWithObjects:v5, v6, 0];
 
   v8 = [NSSet setWithObjects:ASCAppStateOpenable, 0];
   v9 = [NSSet setWithObjects:ASCAppStateUpdatable, 0];
-  v10 = [(VSAppInstallCell *)self appState];
-  if (v10)
+  appState = [(VSAppInstallCell *)self appState];
+  if (appState)
   {
     [(VSAppInstallCell *)self appState];
   }
@@ -343,26 +343,26 @@ LABEL_18:
 
 - (BOOL)shouldDisplayPrivacySwitch
 {
-  v3 = [(VSAppInstallCell *)self privacyState];
+  privacyState = [(VSAppInstallCell *)self privacyState];
 
-  return [(VSAppInstallCell *)self shouldDisplayPrivacySwitch:v3];
+  return [(VSAppInstallCell *)self shouldDisplayPrivacySwitch:privacyState];
 }
 
 - (void)displayPrivacySwitchIfNeeded
 {
-  v3 = [(VSAppInstallCell *)self shouldDisplayPrivacySwitch];
+  shouldDisplayPrivacySwitch = [(VSAppInstallCell *)self shouldDisplayPrivacySwitch];
 
-  [(VSAppInstallCell *)self setDisplayPrivacySwitch:v3];
+  [(VSAppInstallCell *)self setDisplayPrivacySwitch:shouldDisplayPrivacySwitch];
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v6 = a3;
+  requestCopy = request;
   if ([(VSAppInstallCell *)self shouldDisplayPrivacySwitch])
   {
-    v4 = [v6 lockup];
-    v5 = [v4 lockupWithOffer:0];
-    [v6 setLockup:v5];
+    lockup = [requestCopy lockup];
+    v5 = [lockup lockupWithOffer:0];
+    [requestCopy setLockup:v5];
   }
 
   [(VSAppInstallCell *)self displayPrivacySwitchIfNeeded];
@@ -370,43 +370,43 @@ LABEL_18:
 
 - (void)updateCellHeight
 {
-  v7 = [(VSAppInstallCell *)self lockupView];
-  [v7 intrinsicContentSize];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  [lockupView intrinsicContentSize];
   v4 = v3;
-  v5 = [(VSAppInstallCell *)self topMargin];
-  [v5 constant];
+  topMargin = [(VSAppInstallCell *)self topMargin];
+  [topMargin constant];
   [(VSAppInstallCell *)self setCellHeight:v4 + v6 * 2.0];
 }
 
-- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)a3
+- (BOOL)lockupViewShouldSupportDSIDLessInstalls:(id)installs
 {
-  v3 = [(VSAppInstallCell *)self viewModel];
-  v4 = [v3 forceDSIDlessInstall];
+  viewModel = [(VSAppInstallCell *)self viewModel];
+  forceDSIDlessInstall = [viewModel forceDSIDlessInstall];
 
-  return v4;
+  return forceDSIDlessInstall;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(VSAppInstallCell *)self privacyState];
+  privacyState = [(VSAppInstallCell *)self privacyState];
 
-  return [(VSAppInstallCell *)self shouldDisplayPrivacySwitch:v3];
+  return [(VSAppInstallCell *)self shouldDisplayPrivacySwitch:privacyState];
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(VSAppInstallCell *)self lockupView];
-  v3 = [v2 accessibilityLabel];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  accessibilityLabel = [lockupView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(VSAppInstallCell *)self lockupView];
-  v3 = [v2 accessibilityValue];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  accessibilityValue = [lockupView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
@@ -414,38 +414,38 @@ LABEL_18:
   if ([(VSAppInstallCell *)self shouldDisplayPrivacySwitch:[(VSAppInstallCell *)self privacyState]])
   {
     v3 = +[NSBundle vs_frameworkBundle];
-    v4 = [v3 localizedStringForKey:@"ACCOUNT_ACCESS_FOR_APP_FORMAT" value:0 table:0];
+    lockupView3 = [v3 localizedStringForKey:@"ACCOUNT_ACCESS_FOR_APP_FORMAT" value:0 table:0];
 
-    v5 = [(VSAppInstallCell *)self lockupView];
-    v6 = [v5 lockup];
-    v7 = [v6 title];
+    lockupView = [(VSAppInstallCell *)self lockupView];
+    lockup = [lockupView lockup];
+    title = [lockup title];
 
-    if (v7)
+    if (title)
     {
-      v8 = [NSString stringWithFormat:v4, v7];
+      accessibilityHint = [NSString stringWithFormat:lockupView3, title];
     }
 
     else
     {
-      v9 = [(VSAppInstallCell *)self lockupView];
-      v8 = [v9 accessibilityHint];
+      lockupView2 = [(VSAppInstallCell *)self lockupView];
+      accessibilityHint = [lockupView2 accessibilityHint];
     }
   }
 
   else
   {
-    v4 = [(VSAppInstallCell *)self lockupView];
-    v8 = [v4 accessibilityHint];
+    lockupView3 = [(VSAppInstallCell *)self lockupView];
+    accessibilityHint = [lockupView3 accessibilityHint];
   }
 
-  return v8;
+  return accessibilityHint;
 }
 
 - (id)accessibilityElements
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VSAppInstallCell *)self lockupView];
-  [v3 addObject:v4];
+  lockupView = [(VSAppInstallCell *)self lockupView];
+  [v3 addObject:lockupView];
 
   v5 = [v3 copy];
 

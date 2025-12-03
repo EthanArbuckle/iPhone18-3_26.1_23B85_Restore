@@ -1,27 +1,27 @@
 @interface CKMessageEditingBalloonTextView
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 isSingleLine:(BOOL *)a5;
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line;
 - (CKBalloonTextViewInteractionDelegate)interactionDelegate;
 @end
 
 @implementation CKMessageEditingBalloonTextView
 
-- (CGSize)sizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4 isSingleLine:(BOOL *)a5
+- (CGSize)sizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets isSingleLine:(BOOL *)line
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = [(CKMessageEditingBalloonTextView *)self attributedText];
-  if (![v10 length])
+  height = fits.height;
+  width = fits.width;
+  attributedText = [(CKMessageEditingBalloonTextView *)self attributedText];
+  if (![attributedText length])
   {
     v11 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v12 = [(CKMessageEditingBalloonTextView *)self typingAttributes];
-    v13 = [v11 initWithString:@"A" attributes:v12];
+    typingAttributes = [(CKMessageEditingBalloonTextView *)self typingAttributes];
+    v13 = [v11 initWithString:@"A" attributes:typingAttributes];
 
-    v10 = v13;
+    attributedText = v13;
   }
 
-  v14 = [(CKMessageEditingBalloonTextView *)self textContainer];
+  textContainer = [(CKMessageEditingBalloonTextView *)self textContainer];
   [(CKMessageEditingBalloonTextView *)self textContainerInset];
-  +[CKBalloonTextView sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:](CKBalloonTextView, "sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:", v10, [v14 maximumNumberOfLines], objc_msgSend(v14, "lineBreakMode"), a4, a5, width, height, v15, v16, v17, v18);
+  +[CKBalloonTextView sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:](CKBalloonTextView, "sizeThatFits:attributedText:maximumNumberOfLines:lineBreakMode:textContainerInsets:outTextAlignmentInsets:outIsSingleLine:", attributedText, [textContainer maximumNumberOfLines], objc_msgSend(textContainer, "lineBreakMode"), insets, line, width, height, v15, v16, v17, v18);
   v20 = v19;
   v22 = v21;
 

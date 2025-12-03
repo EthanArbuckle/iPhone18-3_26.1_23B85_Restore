@@ -1,21 +1,21 @@
 @interface RMModelConfigurationBase
 + (BOOL)usesKeychainAssets;
 + (id)assetTypes;
-+ (id)combineArrayAppend:(id)a3 other:(id)a4;
-+ (id)combineBooleanAnd:(id)a3 other:(id)a4;
-+ (id)combineBooleanOr:(id)a3 other:(id)a4;
-+ (id)combineDictionary:(id)a3 other:(id)a4;
-+ (id)combineEnumFirst:(id)a3 other:(id)a4 enums:(id)a5;
-+ (id)combineEnumLast:(id)a3 other:(id)a4 enums:(id)a5;
-+ (id)combineFirst:(id)a3 other:(id)a4;
-+ (id)combineMergeDictionary:(id)a3 other:(id)a4;
-+ (id)combineNumberMax:(id)a3 other:(id)a4;
-+ (id)combineNumberMin:(id)a3 other:(id)a4;
-+ (id)combineSetIntersection:(id)a3 other:(id)a4;
-+ (id)combineSetUnion:(id)a3 other:(id)a4;
-- (id)assetReferencesFromKeyPaths:(id)a3 payloadObject:(id)a4;
-- (void)_addAssetReference:(id)a3 identifier:(id)a4 keyPath:(id)a5 result:(id)a6 processedIdentifiers:(id)a7;
-- (void)_walkObject:(id)a3 keyPath:(id)a4 assetReference:(id)a5 result:(id)a6 processedIdentifiers:(id)a7;
++ (id)combineArrayAppend:(id)append other:(id)other;
++ (id)combineBooleanAnd:(id)and other:(id)other;
++ (id)combineBooleanOr:(id)or other:(id)other;
++ (id)combineDictionary:(id)dictionary other:(id)other;
++ (id)combineEnumFirst:(id)first other:(id)other enums:(id)enums;
++ (id)combineEnumLast:(id)last other:(id)other enums:(id)enums;
++ (id)combineFirst:(id)first other:(id)other;
++ (id)combineMergeDictionary:(id)dictionary other:(id)other;
++ (id)combineNumberMax:(id)max other:(id)other;
++ (id)combineNumberMin:(id)min other:(id)other;
++ (id)combineSetIntersection:(id)intersection other:(id)other;
++ (id)combineSetUnion:(id)union other:(id)other;
+- (id)assetReferencesFromKeyPaths:(id)paths payloadObject:(id)object;
+- (void)_addAssetReference:(id)reference identifier:(id)identifier keyPath:(id)path result:(id)result processedIdentifiers:(id)identifiers;
+- (void)_walkObject:(id)object keyPath:(id)path assetReference:(id)reference result:(id)result processedIdentifiers:(id)identifiers;
 @end
 
 @implementation RMModelConfigurationBase
@@ -28,8 +28,8 @@
   }
 
   v3 = usesKeychainAssets_keychainTypes;
-  v4 = [a1 assetTypes];
-  LOBYTE(v3) = [v3 intersectsSet:v4];
+  assetTypes = [self assetTypes];
+  LOBYTE(v3) = [v3 intersectsSet:assetTypes];
 
   return v3;
 }
@@ -48,19 +48,19 @@ uint64_t __46__RMModelConfigurationBase_usesKeychainAssets__block_invoke()
   return v2;
 }
 
-- (id)assetReferencesFromKeyPaths:(id)a3 payloadObject:(id)a4
+- (id)assetReferencesFromKeyPaths:(id)paths payloadObject:(id)object
 {
-  v20 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v23 = a4;
+  pathsCopy = paths;
+  objectCopy = object;
   v22 = objc_opt_new();
   v21 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v5;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -76,16 +76,16 @@ uint64_t __46__RMModelConfigurationBase_usesKeychainAssets__block_invoke()
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v11 keyPath];
-        v13 = [v12 componentsSeparatedByString:@"."];
+        keyPath = [v11 keyPath];
+        v13 = [keyPath componentsSeparatedByString:@"."];
 
-        v14 = [v13 firstObject];
-        v15 = [v14 isEqualToString:@"$"];
+        firstObject = [v13 firstObject];
+        v15 = [firstObject isEqualToString:@"$"];
 
         if (v15)
         {
           v16 = [v13 subarrayWithRange:{1, objc_msgSend(v13, "count") - 1}];
-          [(RMModelConfigurationBase *)v20 _walkObject:v23 keyPath:v16 assetReference:v11 result:v22 processedIdentifiers:v21];
+          [(RMModelConfigurationBase *)selfCopy _walkObject:objectCopy keyPath:v16 assetReference:v11 result:v22 processedIdentifiers:v21];
         }
       }
 
@@ -101,32 +101,32 @@ uint64_t __46__RMModelConfigurationBase_usesKeychainAssets__block_invoke()
   return v17;
 }
 
-- (void)_walkObject:(id)a3 keyPath:(id)a4 assetReference:(id)a5 result:(id)a6 processedIdentifiers:(id)a7
+- (void)_walkObject:(id)object keyPath:(id)path assetReference:(id)reference result:(id)result processedIdentifiers:(id)identifiers
 {
   v70 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v49 = a5;
-  v14 = a6;
-  v15 = a7;
+  objectCopy = object;
+  pathCopy = path;
+  referenceCopy = reference;
+  resultCopy = result;
+  identifiersCopy = identifiers;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v13 firstObject];
-    v17 = [v16 isEqualToString:@"*"];
+    firstObject = [pathCopy firstObject];
+    v17 = [firstObject isEqualToString:@"*"];
 
     if (v17)
     {
-      if ([v13 count] == 1)
+      if ([pathCopy count] == 1)
       {
-        v18 = v13;
+        v18 = pathCopy;
         v64 = 0u;
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v48 = v12;
-        v19 = [v12 allValues];
-        v20 = [v19 countByEnumeratingWithState:&v62 objects:v69 count:16];
+        v48 = objectCopy;
+        allValues = [objectCopy allValues];
+        v20 = [allValues countByEnumeratingWithState:&v62 objects:v69 count:16];
         if (v20)
         {
           v21 = v20;
@@ -137,15 +137,15 @@ uint64_t __46__RMModelConfigurationBase_usesKeychainAssets__block_invoke()
             {
               if (*v63 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(allValues);
               }
 
               v24 = *(*(&v62 + 1) + 8 * i);
               v25 = [v18 objectAtIndexedSubscript:0];
-              [(RMModelConfigurationBase *)self _addAssetReference:v49 identifier:v24 keyPath:v25 result:v14 processedIdentifiers:v15];
+              [(RMModelConfigurationBase *)self _addAssetReference:referenceCopy identifier:v24 keyPath:v25 result:resultCopy processedIdentifiers:identifiersCopy];
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v62 objects:v69 count:16];
+            v21 = [allValues countByEnumeratingWithState:&v62 objects:v69 count:16];
           }
 
           while (v21);
@@ -153,20 +153,20 @@ uint64_t __46__RMModelConfigurationBase_usesKeychainAssets__block_invoke()
 
 LABEL_11:
 
-        v12 = v48;
+        objectCopy = v48;
 LABEL_42:
-        v13 = v18;
+        pathCopy = v18;
         goto LABEL_43;
       }
 
-      v18 = v13;
-      v37 = [v13 subarrayWithRange:{1, objc_msgSend(v13, "count") - 1}];
+      v18 = pathCopy;
+      v37 = [pathCopy subarrayWithRange:{1, objc_msgSend(pathCopy, "count") - 1}];
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v38 = [v12 allValues];
-      v39 = [v38 countByEnumeratingWithState:&v58 objects:v68 count:16];
+      allValues2 = [objectCopy allValues];
+      v39 = [allValues2 countByEnumeratingWithState:&v58 objects:v68 count:16];
       if (v39)
       {
         v40 = v39;
@@ -177,13 +177,13 @@ LABEL_42:
           {
             if (*v59 != v41)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(allValues2);
             }
 
-            [(RMModelConfigurationBase *)self _walkObject:*(*(&v58 + 1) + 8 * j) keyPath:v37 assetReference:v49 result:v14 processedIdentifiers:v15];
+            [(RMModelConfigurationBase *)self _walkObject:*(*(&v58 + 1) + 8 * j) keyPath:v37 assetReference:referenceCopy result:resultCopy processedIdentifiers:identifiersCopy];
           }
 
-          v40 = [v38 countByEnumeratingWithState:&v58 objects:v68 count:16];
+          v40 = [allValues2 countByEnumeratingWithState:&v58 objects:v68 count:16];
         }
 
         while (v40);
@@ -196,23 +196,23 @@ LABEL_42:
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v26 = [v13 firstObject];
-    v27 = [v12 valueForKey:v26];
+    firstObject2 = [pathCopy firstObject];
+    v27 = [objectCopy valueForKey:firstObject2];
 
-    if ([v13 count] == 1)
+    if ([pathCopy count] == 1)
     {
       if (v27)
       {
-        v28 = [v13 objectAtIndexedSubscript:0];
-        [(RMModelConfigurationBase *)self _addAssetReference:v49 identifier:v27 keyPath:v28 result:v14 processedIdentifiers:v15];
+        v28 = [pathCopy objectAtIndexedSubscript:0];
+        [(RMModelConfigurationBase *)self _addAssetReference:referenceCopy identifier:v27 keyPath:v28 result:resultCopy processedIdentifiers:identifiersCopy];
 LABEL_19:
       }
     }
 
     else if (v27)
     {
-      v28 = [v13 subarrayWithRange:{1, objc_msgSend(v13, "count") - 1}];
-      [(RMModelConfigurationBase *)self _walkObject:v27 keyPath:v28 assetReference:v49 result:v14 processedIdentifiers:v15];
+      v28 = [pathCopy subarrayWithRange:{1, objc_msgSend(pathCopy, "count") - 1}];
+      [(RMModelConfigurationBase *)self _walkObject:v27 keyPath:v28 assetReference:referenceCopy result:resultCopy processedIdentifiers:identifiersCopy];
       goto LABEL_19;
     }
 
@@ -222,21 +222,21 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = [v13 firstObject];
-    v30 = [v29 isEqualToString:@"*"];
+    firstObject3 = [pathCopy firstObject];
+    v30 = [firstObject3 isEqualToString:@"*"];
 
     if (v30)
     {
-      if ([v13 count] == 1)
+      if ([pathCopy count] == 1)
       {
-        v18 = v13;
+        v18 = pathCopy;
         v56 = 0u;
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v48 = v12;
-        v19 = v12;
-        v31 = [v19 countByEnumeratingWithState:&v54 objects:v67 count:16];
+        v48 = objectCopy;
+        allValues = objectCopy;
+        v31 = [allValues countByEnumeratingWithState:&v54 objects:v67 count:16];
         if (v31)
         {
           v32 = v31;
@@ -247,15 +247,15 @@ LABEL_19:
             {
               if (*v55 != v33)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(allValues);
               }
 
               v35 = *(*(&v54 + 1) + 8 * k);
               v36 = [v18 objectAtIndexedSubscript:{0, v48}];
-              [(RMModelConfigurationBase *)self _addAssetReference:v49 identifier:v35 keyPath:v36 result:v14 processedIdentifiers:v15];
+              [(RMModelConfigurationBase *)self _addAssetReference:referenceCopy identifier:v35 keyPath:v36 result:resultCopy processedIdentifiers:identifiersCopy];
             }
 
-            v32 = [v19 countByEnumeratingWithState:&v54 objects:v67 count:16];
+            v32 = [allValues countByEnumeratingWithState:&v54 objects:v67 count:16];
           }
 
           while (v32);
@@ -264,14 +264,14 @@ LABEL_19:
         goto LABEL_11;
       }
 
-      v18 = v13;
-      v37 = [v13 subarrayWithRange:{1, objc_msgSend(v13, "count") - 1}];
+      v18 = pathCopy;
+      v37 = [pathCopy subarrayWithRange:{1, objc_msgSend(pathCopy, "count") - 1}];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v38 = v12;
-      v44 = [v38 countByEnumeratingWithState:&v50 objects:v66 count:16];
+      allValues2 = objectCopy;
+      v44 = [allValues2 countByEnumeratingWithState:&v50 objects:v66 count:16];
       if (v44)
       {
         v45 = v44;
@@ -282,13 +282,13 @@ LABEL_19:
           {
             if (*v51 != v46)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(allValues2);
             }
 
-            [(RMModelConfigurationBase *)self _walkObject:*(*(&v50 + 1) + 8 * m) keyPath:v37 assetReference:v49 result:v14 processedIdentifiers:v15];
+            [(RMModelConfigurationBase *)self _walkObject:*(*(&v50 + 1) + 8 * m) keyPath:v37 assetReference:referenceCopy result:resultCopy processedIdentifiers:identifiersCopy];
           }
 
-          v45 = [v38 countByEnumeratingWithState:&v50 objects:v66 count:16];
+          v45 = [allValues2 countByEnumeratingWithState:&v50 objects:v66 count:16];
         }
 
         while (v45);
@@ -302,7 +302,7 @@ LABEL_41:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [RMModelConfigurationBase _walkObject:v49 keyPath:? assetReference:? result:? processedIdentifiers:?];
+    [RMModelConfigurationBase _walkObject:referenceCopy keyPath:? assetReference:? result:? processedIdentifiers:?];
   }
 
 LABEL_43:
@@ -310,65 +310,65 @@ LABEL_43:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAssetReference:(id)a3 identifier:(id)a4 keyPath:(id)a5 result:(id)a6 processedIdentifiers:(id)a7
+- (void)_addAssetReference:(id)reference identifier:(id)identifier keyPath:(id)path result:(id)result processedIdentifiers:(id)identifiers
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  referenceCopy = reference;
+  identifierCopy = identifier;
+  pathCopy = path;
+  resultCopy = result;
+  identifiersCopy = identifiers;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([v15 containsObject:v12] & 1) == 0)
+    if (([identifiersCopy containsObject:identifierCopy] & 1) == 0)
     {
       v16 = [RMModelAssetReference alloc];
-      v17 = [v11 assetTypes];
-      v18 = [(RMModelAssetReference *)v16 initWithIdentifier:v12 assetTypes:v17];
-      [v14 addObject:v18];
+      assetTypes = [referenceCopy assetTypes];
+      v18 = [(RMModelAssetReference *)v16 initWithIdentifier:identifierCopy assetTypes:assetTypes];
+      [resultCopy addObject:v18];
 
-      [v15 addObject:v12];
+      [identifiersCopy addObject:identifierCopy];
     }
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [RMModelConfigurationBase _addAssetReference:v11 identifier:? keyPath:? result:? processedIdentifiers:?];
+    [RMModelConfigurationBase _addAssetReference:referenceCopy identifier:? keyPath:? result:? processedIdentifiers:?];
   }
 }
 
-+ (id)combineBooleanOr:(id)a3 other:(id)a4
++ (id)combineBooleanOr:(id)or other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  orCopy = or;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (orCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
       v8 = MEMORY[0x277CCABB0];
-      if ([v5 BOOLValue])
+      if ([orCopy BOOLValue])
       {
-        v9 = 1;
+        bOOLValue = 1;
       }
 
       else
       {
-        v9 = [v7 BOOLValue];
+        bOOLValue = [v7 BOOLValue];
       }
 
-      v10 = [v8 numberWithBool:v9];
+      v10 = [v8 numberWithBool:bOOLValue];
     }
 
     else
     {
-      v10 = v5;
+      v10 = orCopy;
     }
   }
 
   else
   {
-    v10 = v6;
+    v10 = otherCopy;
   }
 
   v11 = v10;
@@ -376,38 +376,38 @@ LABEL_43:
   return v11;
 }
 
-+ (id)combineBooleanAnd:(id)a3 other:(id)a4
++ (id)combineBooleanAnd:(id)and other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  andCopy = and;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (andCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
       v8 = MEMORY[0x277CCABB0];
-      if ([v5 BOOLValue])
+      if ([andCopy BOOLValue])
       {
-        v9 = [v7 BOOLValue];
+        bOOLValue = [v7 BOOLValue];
       }
 
       else
       {
-        v9 = 0;
+        bOOLValue = 0;
       }
 
-      v10 = [v8 numberWithBool:v9];
+      v10 = [v8 numberWithBool:bOOLValue];
     }
 
     else
     {
-      v10 = v5;
+      v10 = andCopy;
     }
   }
 
   else
   {
-    v10 = v6;
+    v10 = otherCopy;
   }
 
   v11 = v10;
@@ -415,20 +415,20 @@ LABEL_43:
   return v11;
 }
 
-+ (id)combineNumberMin:(id)a3 other:(id)a4
++ (id)combineNumberMin:(id)min other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if (v5)
+  minCopy = min;
+  otherCopy = other;
+  v7 = otherCopy;
+  v8 = otherCopy;
+  if (minCopy)
   {
-    v8 = v5;
-    if (v6)
+    v8 = minCopy;
+    if (otherCopy)
     {
-      if ([v5 compare:v6] == -1)
+      if ([minCopy compare:otherCopy] == -1)
       {
-        v8 = v5;
+        v8 = minCopy;
       }
 
       else
@@ -443,20 +443,20 @@ LABEL_43:
   return v9;
 }
 
-+ (id)combineNumberMax:(id)a3 other:(id)a4
++ (id)combineNumberMax:(id)max other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  v8 = v6;
-  if (v5)
+  maxCopy = max;
+  otherCopy = other;
+  v7 = otherCopy;
+  v8 = otherCopy;
+  if (maxCopy)
   {
-    v8 = v5;
-    if (v6)
+    v8 = maxCopy;
+    if (otherCopy)
     {
-      if ([v5 compare:v6] == 1)
+      if ([maxCopy compare:otherCopy] == 1)
       {
-        v8 = v5;
+        v8 = maxCopy;
       }
 
       else
@@ -471,17 +471,17 @@ LABEL_43:
   return v9;
 }
 
-+ (id)combineEnumFirst:(id)a3 other:(id)a4 enums:(id)a5
++ (id)combineEnumFirst:(id)first other:(id)other enums:(id)enums
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  firstCopy = first;
+  otherCopy = other;
+  enumsCopy = enums;
+  v10 = enumsCopy;
+  if (firstCopy)
   {
-    if (!v8 || (v11 = [v9 indexOfObject:v7], v12 = objc_msgSend(v10, "indexOfObject:", v8), v12 == 0x7FFFFFFFFFFFFFFFLL))
+    if (!otherCopy || (v11 = [enumsCopy indexOfObject:firstCopy], v12 = objc_msgSend(v10, "indexOfObject:", otherCopy), v12 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v13 = v7;
+      v13 = firstCopy;
       goto LABEL_7;
     }
 
@@ -502,24 +502,24 @@ LABEL_43:
     }
   }
 
-  v13 = v8;
+  v13 = otherCopy;
 LABEL_7:
   v14 = v13;
 
   return v14;
 }
 
-+ (id)combineEnumLast:(id)a3 other:(id)a4 enums:(id)a5
++ (id)combineEnumLast:(id)last other:(id)other enums:(id)enums
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v7)
+  lastCopy = last;
+  otherCopy = other;
+  enumsCopy = enums;
+  v10 = enumsCopy;
+  if (lastCopy)
   {
-    if (!v8 || (v11 = [v9 indexOfObject:v7], v12 = objc_msgSend(v10, "indexOfObject:", v8), v12 == 0x7FFFFFFFFFFFFFFFLL))
+    if (!otherCopy || (v11 = [enumsCopy indexOfObject:lastCopy], v12 = objc_msgSend(v10, "indexOfObject:", otherCopy), v12 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v13 = v7;
+      v13 = lastCopy;
       goto LABEL_7;
     }
 
@@ -540,47 +540,47 @@ LABEL_7:
     }
   }
 
-  v13 = v8;
+  v13 = otherCopy;
 LABEL_7:
   v14 = v13;
 
   return v14;
 }
 
-+ (id)combineFirst:(id)a3 other:(id)a4
++ (id)combineFirst:(id)first other:(id)other
 {
-  if (a3)
+  if (first)
   {
-    return a3;
+    return first;
   }
 
   else
   {
-    return a4;
+    return other;
   }
 }
 
-+ (id)combineArrayAppend:(id)a3 other:(id)a4
++ (id)combineArrayAppend:(id)append other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  appendCopy = append;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (appendCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
-      v8 = [v5 arrayByAddingObjectsFromArray:v6];
+      v8 = [appendCopy arrayByAddingObjectsFromArray:otherCopy];
     }
 
     else
     {
-      v8 = v5;
+      v8 = appendCopy;
     }
   }
 
   else
   {
-    v8 = v6;
+    v8 = otherCopy;
   }
 
   v9 = v8;
@@ -588,86 +588,86 @@ LABEL_7:
   return v9;
 }
 
-+ (id)combineSetUnion:(id)a3 other:(id)a4
++ (id)combineSetUnion:(id)union other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  unionCopy = union;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (unionCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
-      v8 = [MEMORY[0x277CBEB58] setWithArray:v5];
+      v8 = [MEMORY[0x277CBEB58] setWithArray:unionCopy];
       v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
       [v8 unionSet:v9];
-      v10 = [v8 allObjects];
+      allObjects = [v8 allObjects];
 
       goto LABEL_7;
     }
 
-    v11 = v5;
+    v11 = unionCopy;
   }
 
   else
   {
-    v11 = v6;
+    v11 = otherCopy;
   }
 
-  v10 = v11;
+  allObjects = v11;
 LABEL_7:
 
-  return v10;
+  return allObjects;
 }
 
-+ (id)combineSetIntersection:(id)a3 other:(id)a4
++ (id)combineSetIntersection:(id)intersection other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  intersectionCopy = intersection;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (intersectionCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
-      v8 = [MEMORY[0x277CBEB58] setWithArray:v5];
+      v8 = [MEMORY[0x277CBEB58] setWithArray:intersectionCopy];
       v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
       [v8 intersectSet:v9];
-      v10 = [v8 allObjects];
+      allObjects = [v8 allObjects];
 
       goto LABEL_7;
     }
 
-    v11 = v5;
+    v11 = intersectionCopy;
   }
 
   else
   {
-    v11 = v6;
+    v11 = otherCopy;
   }
 
-  v10 = v11;
+  allObjects = v11;
 LABEL_7:
 
-  return v10;
+  return allObjects;
 }
 
-+ (id)combineDictionary:(id)a3 other:(id)a4
++ (id)combineDictionary:(id)dictionary other:(id)other
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dictionaryCopy = dictionary;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (dictionaryCopy)
   {
-    if (v6)
+    if (otherCopy)
     {
-      [v5 combineWithOther:v6];
+      [dictionaryCopy combineWithOther:otherCopy];
     }
 
-    v8 = v5;
+    v8 = dictionaryCopy;
   }
 
   else
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [otherCopy copyWithZone:0];
   }
 
   v9 = v8;
@@ -675,28 +675,28 @@ LABEL_7:
   return v9;
 }
 
-+ (id)combineMergeDictionary:(id)a3 other:(id)a4
++ (id)combineMergeDictionary:(id)dictionary other:(id)other
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  otherCopy = other;
+  v7 = otherCopy;
+  if (!dictionaryCopy)
   {
-    v19 = [v6 copyWithZone:0];
+    v19 = [otherCopy copyWithZone:0];
 LABEL_19:
     v18 = v19;
     goto LABEL_20;
   }
 
-  if (!v6)
+  if (!otherCopy)
   {
-    v19 = v5;
+    v19 = dictionaryCopy;
     goto LABEL_19;
   }
 
-  v23 = v5;
-  v8 = [v5 mutableCopy];
+  v23 = dictionaryCopy;
+  v8 = [dictionaryCopy mutableCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -743,7 +743,7 @@ LABEL_19:
 
   v18 = [v8 copy];
   v7 = v22;
-  v5 = v23;
+  dictionaryCopy = v23;
 LABEL_20:
 
   v20 = *MEMORY[0x277D85DE8];

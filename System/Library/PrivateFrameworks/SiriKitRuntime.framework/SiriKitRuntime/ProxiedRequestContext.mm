@@ -1,15 +1,15 @@
 @interface ProxiedRequestContext
 - (_TtC14SiriKitRuntime21ProxiedRequestContext)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ProxiedRequestContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ProxiedRequestContext.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ProxiedRequestContext.encode(with:)(coderCopy);
 }
 
 - (_TtC14SiriKitRuntime21ProxiedRequestContext)init

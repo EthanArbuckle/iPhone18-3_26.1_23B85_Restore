@@ -1,20 +1,20 @@
 @interface RTTUIAbbreviationViewContainer
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation RTTUIAbbreviationViewContainer
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v4 = [MEMORY[0x277D75678] activeInstance];
-  [v4 frame];
+  height = fits.height;
+  activeInstance = [MEMORY[0x277D75678] activeInstance];
+  [activeInstance frame];
   v6 = v5;
 
   if (v6 == 0.0)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v8;
   }
 

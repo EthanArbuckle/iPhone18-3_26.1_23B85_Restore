@@ -1,25 +1,25 @@
 @interface CRKASMCertificateUserIdentifierExtractor
-+ (id)allUserIdentifiersFromCertificate:(id)a3;
-+ (id)pickIdentifierFromIdentifiers:(id)a3;
-+ (id)userIdentifierFromCertificate:(id)a3;
++ (id)allUserIdentifiersFromCertificate:(id)certificate;
++ (id)pickIdentifierFromIdentifiers:(id)identifiers;
++ (id)userIdentifierFromCertificate:(id)certificate;
 @end
 
 @implementation CRKASMCertificateUserIdentifierExtractor
 
-+ (id)userIdentifierFromCertificate:(id)a3
++ (id)userIdentifierFromCertificate:(id)certificate
 {
-  v4 = [a1 allUserIdentifiersFromCertificate:a3];
-  v5 = [a1 pickIdentifierFromIdentifiers:v4];
+  v4 = [self allUserIdentifiersFromCertificate:certificate];
+  v5 = [self pickIdentifierFromIdentifiers:v4];
 
   return v5;
 }
 
-+ (id)pickIdentifierFromIdentifiers:(id)a3
++ (id)pickIdentifierFromIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if ([v3 count] >= 2)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] >= 2)
   {
-    v4 = [v3 componentsJoinedByString:{@", "}];
+    v4 = [identifiersCopy componentsJoinedByString:{@", "}];
     if (_CRKLogASM_onceToken_10 != -1)
     {
       +[CRKASMCertificateUserIdentifierExtractor pickIdentifierFromIdentifiers:];
@@ -32,22 +32,22 @@
     }
   }
 
-  v6 = [v3 firstObject];
+  firstObject = [identifiersCopy firstObject];
 
-  return v6;
+  return firstObject;
 }
 
-+ (id)allUserIdentifiersFromCertificate:(id)a3
++ (id)allUserIdentifiersFromCertificate:(id)certificate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  certificateCopy = certificate;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 commonNames];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  commonNames = [certificateCopy commonNames];
+  v6 = [commonNames countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -58,22 +58,22 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(commonNames);
         }
 
         v10 = [CRKASMCertificateCommonName commonNameWithString:*(*(&v15 + 1) + 8 * i)];
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 userIdentifier];
-          if (v12)
+          userIdentifier = [v10 userIdentifier];
+          if (userIdentifier)
           {
-            [v4 addObject:v12];
+            [v4 addObject:userIdentifier];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [commonNames countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

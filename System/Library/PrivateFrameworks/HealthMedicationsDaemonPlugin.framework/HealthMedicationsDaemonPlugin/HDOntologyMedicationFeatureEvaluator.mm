@@ -1,10 +1,10 @@
 @interface HDOntologyMedicationFeatureEvaluator
-- (BOOL)canRequireShardWithError:(id *)a3;
+- (BOOL)canRequireShardWithError:(id *)error;
 - (HDDaemon)daemon;
 - (HDOntologyMedicationFeatureEvaluator)init;
-- (HDOntologyMedicationFeatureEvaluator)initWithDaemon:(id)a3;
+- (HDOntologyMedicationFeatureEvaluator)initWithDaemon:(id)daemon;
 - (NSString)featureIdentifier;
-- (void)triggerShardEvaluatorWithReason:(id)a3;
+- (void)triggerShardEvaluatorWithReason:(id)reason;
 @end
 
 @implementation HDOntologyMedicationFeatureEvaluator
@@ -19,41 +19,41 @@
   return 0;
 }
 
-- (HDOntologyMedicationFeatureEvaluator)initWithDaemon:(id)a3
+- (HDOntologyMedicationFeatureEvaluator)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v8.receiver = self;
   v8.super_class = HDOntologyMedicationFeatureEvaluator;
   v5 = [(HDOntologyMedicationFeatureEvaluator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
   }
 
   return v6;
 }
 
-- (BOOL)canRequireShardWithError:(id *)a3
+- (BOOL)canRequireShardWithError:(id *)error
 {
-  v5 = [MEMORY[0x277D11538] supportsOntologyBackedMedications];
-  if ((v5 & 1) == 0)
+  supportsOntologyBackedMedications = [MEMORY[0x277D11538] supportsOntologyBackedMedications];
+  if ((supportsOntologyBackedMedications & 1) == 0)
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = [(HDOntologyMedicationFeatureEvaluator *)self featureIdentifier];
-    [v6 hk_assignError:a3 code:111 format:{@"Cannot require %@ shard because device configuration does not support ontology backed medications", v7}];
+    featureIdentifier = [(HDOntologyMedicationFeatureEvaluator *)self featureIdentifier];
+    [v6 hk_assignError:error code:111 format:{@"Cannot require %@ shard because device configuration does not support ontology backed medications", featureIdentifier}];
   }
 
-  return v5;
+  return supportsOntologyBackedMedications;
 }
 
-- (void)triggerShardEvaluatorWithReason:(id)a3
+- (void)triggerShardEvaluatorWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v5 = [WeakRetained ontologyUpdateCoordinator];
-  v6 = [v5 featureCoordinator];
-  [v6 evaluteRequiredShardsForEvalulator:self reason:v4];
+  ontologyUpdateCoordinator = [WeakRetained ontologyUpdateCoordinator];
+  featureCoordinator = [ontologyUpdateCoordinator featureCoordinator];
+  [featureCoordinator evaluteRequiredShardsForEvalulator:self reason:reasonCopy];
 }
 
 - (HDDaemon)daemon

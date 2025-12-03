@@ -1,19 +1,19 @@
 @interface PREditingColorItemsViewController
-- (PREditingColorItemsViewController)initWithDataSource:(id)a3 configuration:(id)a4 variationStore:(id)a5;
+- (PREditingColorItemsViewController)initWithDataSource:(id)source configuration:(id)configuration variationStore:(id)store;
 - (PREditingColorItemsViewControllerDelegate)delegate;
 - (double)estimatedHeight;
-- (id)selectedColorItemForColor:(id)a3 fromDataSource:(id)a4 withVariationStore:(id)a5 contextIdentifier:(id)a6 isDataLayerPicker:(BOOL)a7;
-- (id)selectedColorItemForColor:(id)a3 fromVariationStore:(id)a4 inDataSource:(id)a5 contextIdentifier:(id)a6 isDataLayerPicker:(BOOL)a7;
-- (void)colorWellDidUpdateColor:(id)a3;
+- (id)selectedColorItemForColor:(id)color fromDataSource:(id)source withVariationStore:(id)store contextIdentifier:(id)identifier isDataLayerPicker:(BOOL)picker;
+- (id)selectedColorItemForColor:(id)color fromVariationStore:(id)store inDataSource:(id)source contextIdentifier:(id)identifier isDataLayerPicker:(BOOL)picker;
+- (void)colorWellDidUpdateColor:(id)color;
 - (void)deselectSelectedColor;
-- (void)didSelectColorItem:(id)a3;
-- (void)didTapColorItem:(id)a3;
-- (void)didTapToResetColorItem:(id)a3;
-- (void)layoutWithItemViews:(id)a3;
-- (void)setContentsLuminance:(double)a3;
-- (void)setSelectedColorItem:(id)a3;
+- (void)didSelectColorItem:(id)item;
+- (void)didTapColorItem:(id)item;
+- (void)didTapToResetColorItem:(id)item;
+- (void)layoutWithItemViews:(id)views;
+- (void)setContentsLuminance:(double)luminance;
+- (void)setSelectedColorItem:(id)item;
 - (void)setupItemViews;
-- (void)sliderDidChangeForColorItem:(id)a3;
+- (void)sliderDidChangeForColorItem:(id)item;
 - (void)updateLayoutForCurrentSize;
 - (void)updateVibrantMaterialItemForLuminance;
 - (void)viewDidLayoutSubviews;
@@ -22,29 +22,29 @@
 
 @implementation PREditingColorItemsViewController
 
-- (PREditingColorItemsViewController)initWithDataSource:(id)a3 configuration:(id)a4 variationStore:(id)a5
+- (PREditingColorItemsViewController)initWithDataSource:(id)source configuration:(id)configuration variationStore:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  storeCopy = store;
   v24.receiver = self;
   v24.super_class = PREditingColorItemsViewController;
   v12 = [(PREditingColorItemsViewController *)&v24 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataSource, a3);
-    objc_storeStrong(&v13->_configuration, a4);
-    objc_storeStrong(&v13->_variationStore, a5);
-    v14 = [v10 selectedColor];
-    if (v14)
+    objc_storeStrong(&v12->_dataSource, source);
+    objc_storeStrong(&v13->_configuration, configuration);
+    objc_storeStrong(&v13->_variationStore, store);
+    selectedColor = [configurationCopy selectedColor];
+    if (selectedColor)
     {
-      v15 = [v10 identifier];
-      v16 = [v10 context];
-      v17 = [(PREditingColorItemsViewController *)v13 selectedColorItemForColor:v14 fromVariationStore:v11 inDataSource:v9 contextIdentifier:v15 isDataLayerPicker:v16 == 1];
+      identifier = [configurationCopy identifier];
+      context = [configurationCopy context];
+      v17 = [(PREditingColorItemsViewController *)v13 selectedColorItemForColor:selectedColor fromVariationStore:storeCopy inDataSource:sourceCopy contextIdentifier:identifier isDataLayerPicker:context == 1];
       if (!v17)
       {
-        v17 = [(PREditingColorItemsViewController *)v13 selectedColorItemForColor:v14 fromDataSource:v9 withVariationStore:v11 contextIdentifier:v15 isDataLayerPicker:v16 == 1];
+        v17 = [(PREditingColorItemsViewController *)v13 selectedColorItemForColor:selectedColor fromDataSource:sourceCopy withVariationStore:storeCopy contextIdentifier:identifier isDataLayerPicker:context == 1];
       }
 
       if (v17)
@@ -66,12 +66,12 @@ LABEL_14:
       }
     }
 
-    if ([v10 context] == 1)
+    if ([configurationCopy context] == 1)
     {
-      v18 = [v14 preferredStyle];
+      preferredStyle = [selectedColor preferredStyle];
       v19 = [PREditorColorPickerVibrantColor alloc];
       v20 = 0.0;
-      if (v18 == 1)
+      if (preferredStyle == 1)
       {
         v20 = 1.0;
       }
@@ -83,7 +83,7 @@ LABEL_14:
       v20 = 0.0;
     }
 
-    v21 = [(PREditorColorPickerVibrantColor *)v19 initWithColor:v14 initialVariation:v20];
+    v21 = [(PREditorColorPickerVibrantColor *)v19 initWithColor:selectedColor initialVariation:v20];
     v17 = [[PREditingColorItem alloc] initWithPickerColor:v21 variation:[(PREditorColorPickerConfiguration *)v13->_configuration context] context:0.0];
     [(PREditingColorItem *)v17 setFromUIKitColorPicker:1];
 
@@ -95,15 +95,15 @@ LABEL_15:
   return v13;
 }
 
-- (id)selectedColorItemForColor:(id)a3 fromVariationStore:(id)a4 inDataSource:(id)a5 contextIdentifier:(id)a6 isDataLayerPicker:(BOOL)a7
+- (id)selectedColorItemForColor:(id)color fromVariationStore:(id)store inDataSource:(id)source contextIdentifier:(id)identifier isDataLayerPicker:(BOOL)picker
 {
-  v7 = a7;
-  v12 = a5;
+  pickerCopy = picker;
+  sourceCopy = source;
   v27 = 0.0;
-  v13 = a6;
-  v14 = a4;
-  v15 = [a3 color];
-  v16 = [v14 baseColorForVariedColor:v15 forContextIdentifier:v13 variation:&v27 forDataLayerPicker:v7];
+  identifierCopy = identifier;
+  storeCopy = store;
+  color = [color color];
+  v16 = [storeCopy baseColorForVariedColor:color forContextIdentifier:identifierCopy variation:&v27 forDataLayerPicker:pickerCopy];
 
   if (v16)
   {
@@ -123,7 +123,7 @@ LABEL_15:
     v22 = [PREditingColorItem alloc];
     [v21 initialVariation];
     v19 = [(PREditingColorItem *)v22 initWithPickerColor:v21 variation:[(PREditorColorPickerConfiguration *)self->_configuration context] context:v23];
-    v24 = [v12 indexForItem:v19];
+    v24 = [sourceCopy indexForItem:v19];
     if (v24 == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(PREditingColorItem *)v19 setFromUIKitColorPicker:1];
@@ -131,7 +131,7 @@ LABEL_15:
 
     else
     {
-      v25 = [v12 colorItemForIndex:v24];
+      v25 = [sourceCopy colorItemForIndex:v24];
       -[PREditingColorItem setShowsSlider:](v19, "setShowsSlider:", [v25 shouldShowSlider]);
     }
   }
@@ -144,23 +144,23 @@ LABEL_15:
   return v19;
 }
 
-- (id)selectedColorItemForColor:(id)a3 fromDataSource:(id)a4 withVariationStore:(id)a5 contextIdentifier:(id)a6 isDataLayerPicker:(BOOL)a7
+- (id)selectedColorItemForColor:(id)color fromDataSource:(id)source withVariationStore:(id)store contextIdentifier:(id)identifier isDataLayerPicker:(BOOL)picker
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  colorCopy = color;
+  sourceCopy = source;
+  storeCopy = store;
+  identifierCopy = identifier;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __133__PREditingColorItemsViewController_selectedColorItemForColor_fromDataSource_withVariationStore_contextIdentifier_isDataLayerPicker___block_invoke;
   v30[3] = &unk_1E78444A8;
-  v14 = v12;
+  v14 = storeCopy;
   v31 = v14;
-  v15 = v13;
+  v15 = identifierCopy;
   v32 = v15;
-  v16 = v10;
+  v16 = colorCopy;
   v33 = v16;
-  v17 = [v11 firstColorItemPassingTest:v30];
+  v17 = [sourceCopy firstColorItemPassingTest:v30];
   if (!v17)
   {
     v28[0] = MEMORY[0x1E69E9820];
@@ -169,29 +169,29 @@ LABEL_15:
     v28[3] = &unk_1E78444D0;
     v18 = v16;
     v29 = v18;
-    v19 = [v11 firstColorItemPassingTest:v28];
+    v19 = [sourceCopy firstColorItemPassingTest:v28];
     if (v19)
     {
       v20 = v19;
-      v21 = [v19 pickerColor];
-      if ([v21 isVibrantColor])
+      pickerColor = [v19 pickerColor];
+      if ([pickerColor isVibrantColor])
       {
-        v22 = [v18 color];
+        color = [v18 color];
         v27 = 1.0;
-        [v22 getWhite:0 alpha:&v27];
-        [v21 variationForAlpha:v27];
+        [color getWhite:0 alpha:&v27];
+        [pickerColor variationForAlpha:v27];
       }
 
       else
       {
-        v22 = [v18 hslValues];
-        [v22 luminance];
-        [v21 variationForLuminance:?];
+        color = [v18 hslValues];
+        [color luminance];
+        [pickerColor variationForLuminance:?];
       }
 
       v24 = v23;
 
-      v25 = [[PREditingColorItem alloc] initWithPickerColor:v21 variation:0 context:v24];
+      v25 = [[PREditingColorItem alloc] initWithPickerColor:pickerColor variation:0 context:v24];
     }
   }
 
@@ -288,10 +288,10 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
 
 - (void)setupItemViews
 {
-  v18 = [(PREditingColorItemsViewController *)self selectedColorItem];
-  v3 = [(PREditingColorItemsDataSource *)self->_dataSource numberOfItems];
-  v19 = [MEMORY[0x1E695DF70] array];
-  if (v3 >= 1)
+  selectedColorItem = [(PREditingColorItemsViewController *)self selectedColorItem];
+  numberOfItems = [(PREditingColorItemsDataSource *)self->_dataSource numberOfItems];
+  array = [MEMORY[0x1E695DF70] array];
+  if (numberOfItems >= 1)
   {
     v4 = 0;
     do
@@ -300,40 +300,40 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
       v6 = [[PREditingColorItemView alloc] initWithColorItem:v5];
       v7 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapColorItem_];
       [(PREditingColorItemView *)v6 addGestureRecognizer:v7];
-      if ([v5 isEqual:v18])
+      if ([v5 isEqual:selectedColorItem])
       {
         [(PRSelectableEditingItemView *)v6 setSelected:1];
         [(PREditingColorItemsViewController *)self setSelectedColorItemView:v6];
       }
 
       [(PREditingColorItemView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v19 addObject:v6];
+      [array addObject:v6];
       ++v4;
     }
 
-    while (v3 != v4);
+    while (numberOfItems != v4);
   }
 
-  v8 = [v19 copy];
+  v8 = [array copy];
   allItemViews = self->_allItemViews;
   self->_allItemViews = v8;
 
   [(PREditingColorItemsViewController *)self updateVibrantMaterialItemForLuminance];
-  v10 = [MEMORY[0x1E695DF70] arrayWithArray:v19];
+  v10 = [MEMORY[0x1E695DF70] arrayWithArray:array];
   if ([(PREditorColorPickerConfiguration *)self->_configuration colorWellDisplayMode]== 1)
   {
     v11 = objc_alloc(MEMORY[0x1E69C5548]);
     v12 = [v11 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v13 = [v12 colorWell];
-    [v13 addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    colorWell = [v12 colorWell];
+    [colorWell addTarget:self action:sel_colorWellDidUpdateColor_ forControlEvents:4096];
+    [colorWell setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NSArray *)v10 addObject:v12];
-    objc_storeStrong(&self->_colorWell, v13);
+    objc_storeStrong(&self->_colorWell, colorWell);
     if ([(PREditingColorItem *)self->_selectedColorItem isFromUIKitColorPicker])
     {
-      v14 = [(PREditingColorItem *)self->_selectedColorItem displayColor];
-      v15 = [v14 color];
-      [v13 setSelectedColor:v15];
+      displayColor = [(PREditingColorItem *)self->_selectedColorItem displayColor];
+      color = [displayColor color];
+      [colorWell setSelectedColor:color];
     }
   }
 
@@ -344,34 +344,34 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
   [(PREditingColorItemsViewController *)self layoutWithItemViews:v17];
 }
 
-- (void)didTapColorItem:(id)a3
+- (void)didTapColorItem:(id)item
 {
-  v6 = [a3 view];
-  v4 = [v6 colorItem];
-  if ([v6 isSelected])
+  view = [item view];
+  colorItem = [view colorItem];
+  if ([view isSelected])
   {
-    v5 = [v4 pickerColor];
-    [v5 initialVariation];
-    [v4 setVariation:?];
+    pickerColor = [colorItem pickerColor];
+    [pickerColor initialVariation];
+    [colorItem setVariation:?];
 
-    [v6 updateForChangedColor];
-    [(PREditingColorItemsViewController *)self didTapToResetColorItem:v4];
+    [view updateForChangedColor];
+    [(PREditingColorItemsViewController *)self didTapToResetColorItem:colorItem];
   }
 
   else
   {
-    [(PREditingColorItemsViewController *)self setSelectedColorItem:v4];
-    [(PREditingColorItemsViewController *)self didSelectColorItem:v4];
+    [(PREditingColorItemsViewController *)self setSelectedColorItem:colorItem];
+    [(PREditingColorItemsViewController *)self didSelectColorItem:colorItem];
   }
 }
 
-- (void)layoutWithItemViews:(id)a3
+- (void)layoutWithItemViews:(id)views
 {
   v45[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [v3 count] / 6uLL;
-  if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [v3 count], 1) <= 0x2AAAAAAAAAAAAAAAuLL)
+  viewsCopy = views;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [viewsCopy count] / 6uLL;
+  if (__ROR8__(0xAAAAAAAAAAAAAAABLL * [viewsCopy count], 1) <= 0x2AAAAAAAAAAAAAAAuLL)
   {
     v6 = v5;
   }
@@ -381,45 +381,45 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
     v6 = v5 + 1;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v6)
   {
     v8 = 0;
     for (i = 0; i != v6; ++i)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v11 = v8;
       v12 = 6;
       do
       {
-        if ([v3 count] <= v11)
+        if ([viewsCopy count] <= v11)
         {
           break;
         }
 
-        v13 = [v3 objectAtIndexedSubscript:v11];
-        [v10 addObject:v13];
+        v13 = [viewsCopy objectAtIndexedSubscript:v11];
+        [array3 addObject:v13];
 
         ++v11;
         --v12;
       }
 
       while (v12);
-      v14 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v10];
+      v14 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array3];
       [v14 setAxis:0];
       [v14 setDistribution:3];
       [v14 setAlignment:1];
       [v14 setSpacing:14.0];
       [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v7 addObject:v14];
-      [v4 addObject:v14];
+      [array2 addObject:v14];
+      [array addObject:v14];
 
       v8 += 6;
     }
   }
 
-  v43 = v7;
-  v15 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:v7];
+  v43 = array2;
+  v15 = [objc_alloc(MEMORY[0x1E69DCF90]) initWithArrangedSubviews:array2];
   [(UIStackView *)v15 setAxis:1];
   [(UIStackView *)v15 setDistribution:3];
   [(UIStackView *)v15 setAlignment:3];
@@ -429,27 +429,27 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
   self->_stackView = v15;
   v17 = v15;
 
-  v42 = v4;
-  v18 = [v4 copy];
+  v42 = array;
+  v18 = [array copy];
   horizontalStackViews = self->_horizontalStackViews;
   self->_horizontalStackViews = v18;
 
-  v20 = [(PREditingColorItemsViewController *)self view];
-  [v20 addSubview:v17];
+  view = [(PREditingColorItemsViewController *)self view];
+  [view addSubview:v17];
 
-  v21 = [(UIStackView *)v17 leadingAnchor];
-  v22 = [(PREditingColorItemsViewController *)self view];
-  v23 = [v22 leadingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:31.0];
+  leadingAnchor = [(UIStackView *)v17 leadingAnchor];
+  view2 = [(PREditingColorItemsViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:31.0];
 
   stackViewLeadingConstraint = self->_stackViewLeadingConstraint;
   self->_stackViewLeadingConstraint = v24;
   v41 = v24;
 
-  v26 = [(UIStackView *)v17 trailingAnchor];
-  v27 = [(PREditingColorItemsViewController *)self view];
-  v28 = [v27 trailingAnchor];
-  v29 = [v26 constraintEqualToAnchor:v28 constant:-31.0];
+  trailingAnchor = [(UIStackView *)v17 trailingAnchor];
+  view3 = [(PREditingColorItemsViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-31.0];
 
   stackViewTrailingConstraint = self->_stackViewTrailingConstraint;
   self->_stackViewTrailingConstraint = v29;
@@ -457,15 +457,15 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
 
   v45[0] = v41;
   v45[1] = v40;
-  v38 = [(UIStackView *)v17 bottomAnchor];
-  v39 = [(PREditingColorItemsViewController *)self view];
-  v31 = [v39 bottomAnchor];
-  v32 = [v38 constraintEqualToAnchor:v31];
+  bottomAnchor = [(UIStackView *)v17 bottomAnchor];
+  view4 = [(PREditingColorItemsViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[2] = v32;
-  v33 = [(UIStackView *)v17 topAnchor];
-  v34 = [(PREditingColorItemsViewController *)self view];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  topAnchor = [(UIStackView *)v17 topAnchor];
+  view5 = [(PREditingColorItemsViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[3] = v36;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:4];
 
@@ -476,8 +476,8 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
 - (void)updateLayoutForCurrentSize
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PREditingColorItemsViewController *)self view];
-  [v3 bounds];
+  view = [(PREditingColorItemsViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   v6 = (v5 + -326.0) / 5.0;
@@ -516,17 +516,17 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
       while (v9);
     }
 
-    v13 = [(PREditingColorItemsViewController *)self delegate];
-    [v13 colorItemsViewControllerDidUpdateEstimatedSize:self];
+    delegate = [(PREditingColorItemsViewController *)self delegate];
+    [delegate colorItemsViewControllerDidUpdateEstimatedSize:self];
   }
 
   if (v5 != self->_configuredViewWidth)
   {
-    v14 = [(PREditingColorItemsViewController *)self stackViewLeadingConstraint];
-    [v14 constant];
+    stackViewLeadingConstraint = [(PREditingColorItemsViewController *)self stackViewLeadingConstraint];
+    [stackViewLeadingConstraint constant];
     v16 = v15;
-    v17 = [(PREditingColorItemsViewController *)self stackViewTrailingConstraint];
-    [v17 constant];
+    stackViewTrailingConstraint = [(PREditingColorItemsViewController *)self stackViewTrailingConstraint];
+    [stackViewTrailingConstraint constant];
     v19 = v16 - v18;
 
     if (v5 + -264.0 >= v19)
@@ -539,8 +539,8 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
       v20 = (v5 + -264.0) * 0.5;
     }
 
-    v21 = [(PREditingColorItemsViewController *)self stackViewLeadingConstraint];
-    v22 = v21;
+    stackViewLeadingConstraint2 = [(PREditingColorItemsViewController *)self stackViewLeadingConstraint];
+    v22 = stackViewLeadingConstraint2;
     if (v20 >= 0.0)
     {
       v23 = v20;
@@ -551,10 +551,10 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
       v23 = 0.0;
     }
 
-    [v21 setConstant:v23];
+    [stackViewLeadingConstraint2 setConstant:v23];
 
-    v24 = [(PREditingColorItemsViewController *)self stackViewTrailingConstraint];
-    [v24 setConstant:{fmin(-v20, 0.0)}];
+    stackViewTrailingConstraint2 = [(PREditingColorItemsViewController *)self stackViewTrailingConstraint];
+    [stackViewTrailingConstraint2 setConstant:{fmin(-v20, 0.0)}];
 
     self->_configuredViewWidth = v5;
   }
@@ -562,15 +562,15 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
 
 - (double)estimatedHeight
 {
-  v3 = [(PREditingColorItemsDataSource *)self->_dataSource numberOfItems];
+  numberOfItems = [(PREditingColorItemsDataSource *)self->_dataSource numberOfItems];
   if ([(PREditorColorPickerConfiguration *)self->_configuration colorWellDisplayMode]== 1)
   {
-    v4 = v3 + 1;
+    v4 = numberOfItems + 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = numberOfItems;
   }
 
   if (v4 % 6)
@@ -586,9 +586,9 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
   return self->_interitemSpacing * (v5 - 1) + v5 * 44.0;
 }
 
-- (void)setContentsLuminance:(double)a3
+- (void)setContentsLuminance:(double)luminance
 {
-  self->_contentsLuminance = a3;
+  self->_contentsLuminance = luminance;
   if ([(PREditingColorItemsViewController *)self isViewLoaded])
   {
 
@@ -602,8 +602,8 @@ BOOL __133__PREditingColorItemsViewController_selectedColorItemForColor_fromData
   if (v3)
   {
     v6 = v3;
-    v4 = [v3 pickerColor];
-    [v4 setContentsLuminance:self->_contentsLuminance];
+    pickerColor = [v3 pickerColor];
+    [pickerColor setContentsLuminance:self->_contentsLuminance];
     v5 = [(NSArray *)self->_allItemViews objectAtIndex:[(PREditingColorItemsDataSource *)self->_dataSource indexForItem:v6]];
     [v5 updateForChangedColor];
 
@@ -619,18 +619,18 @@ uint64_t __74__PREditingColorItemsViewController_updateVibrantMaterialItemForLum
   return v3;
 }
 
-- (void)didSelectColorItem:(id)a3
+- (void)didSelectColorItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PREditingColorItemsViewController *)self delegate];
-  [v5 colorItemsViewController:self didSelectColorItem:v4];
+  itemCopy = item;
+  delegate = [(PREditingColorItemsViewController *)self delegate];
+  [delegate colorItemsViewController:self didSelectColorItem:itemCopy];
 }
 
-- (void)didTapToResetColorItem:(id)a3
+- (void)didTapToResetColorItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PREditingColorItemsViewController *)self delegate];
-  [v5 colorItemsViewController:self didTapToResetColorItem:v4];
+  itemCopy = item;
+  delegate = [(PREditingColorItemsViewController *)self delegate];
+  [delegate colorItemsViewController:self didTapToResetColorItem:itemCopy];
 }
 
 - (void)deselectSelectedColor
@@ -649,22 +649,22 @@ uint64_t __74__PREditingColorItemsViewController_updateVibrantMaterialItemForLum
   [(PUIColorWellView *)colorWellView setNeedsLayout];
 }
 
-- (void)setSelectedColorItem:(id)a3
+- (void)setSelectedColorItem:(id)item
 {
-  v5 = a3;
-  v16 = v5;
-  if (!v5)
+  itemCopy = item;
+  v16 = itemCopy;
+  if (!itemCopy)
   {
     goto LABEL_5;
   }
 
-  if ([v5 isFromUIKitColorPicker])
+  if ([itemCopy isFromUIKitColorPicker])
   {
     [(PRSelectableEditingItemView *)self->_selectedColorItemView setSelected:0];
     selectedColorItemView = self->_selectedColorItemView;
     self->_selectedColorItemView = 0;
 
-    objc_storeStrong(&self->_selectedColorItem, a3);
+    objc_storeStrong(&self->_selectedColorItem, item);
     goto LABEL_11;
   }
 
@@ -672,19 +672,19 @@ uint64_t __74__PREditingColorItemsViewController_updateVibrantMaterialItemForLum
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [(NSArray *)self->_allItemViews objectAtIndexedSubscript:v7];
-    objc_storeStrong(&self->_selectedColorItem, a3);
-    v9 = [(PREditingColorItemsViewController *)self configuration];
-    v10 = [v9 identifier];
+    objc_storeStrong(&self->_selectedColorItem, item);
+    configuration = [(PREditingColorItemsViewController *)self configuration];
+    identifier = [configuration identifier];
 
-    v11 = [v16 pickerColor];
-    if (v11)
+    pickerColor = [v16 pickerColor];
+    if (pickerColor)
     {
-      v12 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:v11 forContextIdentifier:v10];
+      v12 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:pickerColor forContextIdentifier:identifier];
       if (!v12)
       {
         variationStore = self->_variationStore;
-        [v11 initialVariation];
-        [(PREditingColorVariationStore *)variationStore setVariation:v11 forPickerColor:v10 forContextIdentifier:?];
+        [pickerColor initialVariation];
+        [(PREditingColorVariationStore *)variationStore setVariation:pickerColor forPickerColor:identifier forContextIdentifier:?];
       }
     }
 
@@ -705,26 +705,26 @@ LABEL_5:
 LABEL_11:
 }
 
-- (void)colorWellDidUpdateColor:(id)a3
+- (void)colorWellDidUpdateColor:(id)color
 {
   selectedColorItemView = self->_selectedColorItemView;
-  v5 = a3;
+  colorCopy = color;
   [(PRSelectableEditingItemView *)selectedColorItemView setSelected:0];
   v6 = self->_selectedColorItemView;
   self->_selectedColorItemView = 0;
 
-  v7 = [(PREditingColorItemsViewController *)self colorWell];
-  [v7 invalidateIntrinsicContentSize];
+  colorWell = [(PREditingColorItemsViewController *)self colorWell];
+  [colorWell invalidateIntrinsicContentSize];
 
-  v8 = [(PREditingColorItemsViewController *)self colorWellView];
-  [v8 setNeedsLayout];
+  colorWellView = [(PREditingColorItemsViewController *)self colorWellView];
+  [colorWellView setNeedsLayout];
 
   v9 = [PRPosterColor alloc];
-  v10 = [v5 selectedColor];
+  selectedColor = [colorCopy selectedColor];
 
-  v11 = [(PRPosterColor *)v9 initWithColor:v10];
-  v12 = [(PREditorColorPickerConfiguration *)self->_configuration context];
-  if (v12 == 1)
+  v11 = [(PRPosterColor *)v9 initWithColor:selectedColor];
+  context = [(PREditorColorPickerConfiguration *)self->_configuration context];
+  if (context == 1)
   {
     v13 = 1.0;
   }
@@ -735,7 +735,7 @@ LABEL_11:
   }
 
   v14 = off_1E7841A50;
-  if (v12 != 1)
+  if (context != 1)
   {
     v14 = off_1E7841A48;
   }
@@ -746,33 +746,33 @@ LABEL_11:
   v17 = [(PREditingColorItem *)v15 initWithPickerColor:v22 variation:[(PREditorColorPickerConfiguration *)self->_configuration context] context:v16];
   [(PREditingColorItem *)v17 setFromUIKitColorPicker:1];
   objc_storeStrong(&self->_selectedColorItem, v17);
-  v18 = [(PREditingColorItemsViewController *)self configuration];
-  v19 = [v18 identifier];
+  configuration = [(PREditingColorItemsViewController *)self configuration];
+  identifier = [configuration identifier];
 
-  v20 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:v22 forContextIdentifier:v19];
+  v20 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:v22 forContextIdentifier:identifier];
   if (!v20)
   {
     variationStore = self->_variationStore;
     [v22 initialVariation];
-    [(PREditingColorVariationStore *)variationStore setVariation:v22 forPickerColor:v19 forContextIdentifier:?];
+    [(PREditingColorVariationStore *)variationStore setVariation:v22 forPickerColor:identifier forContextIdentifier:?];
   }
 
   [(PREditingColorItemsViewController *)self didSelectColorItem:v17];
 }
 
-- (void)sliderDidChangeForColorItem:(id)a3
+- (void)sliderDidChangeForColorItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    v10 = v4;
-    if (self->_colorWell && (v4 = [v4 isFromUIKitColorPicker], v5 = v10, v4))
+    v10 = itemCopy;
+    if (self->_colorWell && (itemCopy = [itemCopy isFromUIKitColorPicker], v5 = v10, itemCopy))
     {
       colorWell = self->_colorWell;
-      v7 = [v10 color];
-      v8 = [v7 color];
-      [(PUIColorWell *)colorWell setSelectedColor:v8];
+      color = [v10 color];
+      v7Color = [color color];
+      [(PUIColorWell *)colorWell setSelectedColor:v7Color];
     }
 
     else
@@ -782,19 +782,19 @@ LABEL_11:
         goto LABEL_11;
       }
 
-      v7 = [v5 baseColor];
-      v8 = [(PREditingColorItem *)self->_selectedColorItem baseColor];
-      if ([v7 isEqual:v8])
+      color = [v5 baseColor];
+      v7Color = [(PREditingColorItem *)self->_selectedColorItem baseColor];
+      if ([color isEqual:v7Color])
       {
-        v9 = [v10 itemView];
+        itemView = [v10 itemView];
 
         v5 = v10;
-        if (v9)
+        if (itemView)
         {
           goto LABEL_11;
         }
 
-        v4 = [(PREditingColorItemView *)self->_selectedColorItemView updateForChangedColor];
+        itemCopy = [(PREditingColorItemView *)self->_selectedColorItemView updateForChangedColor];
         goto LABEL_10;
       }
     }
@@ -805,7 +805,7 @@ LABEL_10:
 
 LABEL_11:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](itemCopy, v5);
 }
 
 - (PREditingColorItemsViewControllerDelegate)delegate

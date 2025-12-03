@@ -1,14 +1,14 @@
 @interface UIWebSelectSinglePicker
-- (UIWebSelectSinglePicker)initWithDOMHTMLSelectElement:(id)a3 allItems:(id)a4;
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5;
+- (UIWebSelectSinglePicker)initWithDOMHTMLSelectElement:(id)element allItems:(id)items;
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component;
 - (void)controlEndEditing;
 - (void)dealloc;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation UIWebSelectSinglePicker
 
-- (UIWebSelectSinglePicker)initWithDOMHTMLSelectElement:(id)a3 allItems:(id)a4
+- (UIWebSelectSinglePicker)initWithDOMHTMLSelectElement:(id)element allItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -20,8 +20,8 @@
     [(UIPickerView *)v6 setDelegate:v6];
     [(UIPickerView *)v7 setDataSource:v7];
     [(UIView *)v7 setAutoresizingMask:18];
-    v7->_selectNode = a3;
-    v7->_optionItems = a4;
+    v7->_selectNode = element;
+    v7->_optionItems = items;
     v7->_selectedOptionItem = 0;
     v7->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     v7->_optionToSelectWhenDone = 0;
@@ -106,10 +106,10 @@ LABEL_14:
   }
 }
 
-- (id)pickerView:(id)a3 attributedTitleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view attributedTitleForRow:(int64_t)row forComponent:(int64_t)component
 {
   WebThreadLock();
-  v7 = [-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{a4), "node"}];
+  v7 = [-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{row), "node"}];
   v8 = [objc_msgSend(v7 "text")];
   v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v8];
   if ([v7 disabled])
@@ -120,29 +120,29 @@ LABEL_14:
   return v9;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   WebThreadLock();
-  if ([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{a4), "node"), "disabled"}])
+  if ([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{row), "node"), "disabled"}])
   {
-    v7 = a4;
-    while (v7 > 0)
+    rowCopy2 = row;
+    while (rowCopy2 > 0)
     {
-      if (([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{--v7), "node"), "disabled"}] & 1) == 0)
+      if (([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{--rowCopy2), "node"), "disabled"}] & 1) == 0)
       {
 LABEL_10:
-        [(UIPickerView *)self selectRow:v7 inComponent:0 animated:1];
-        a4 = v7;
+        [(UIPickerView *)self selectRow:rowCopy2 inComponent:0 animated:1];
+        row = rowCopy2;
         goto LABEL_11;
       }
     }
 
-    v7 = a4;
-    while (++v7 < [(NSArray *)self->_optionItems count])
+    rowCopy2 = row;
+    while (++rowCopy2 < [(NSArray *)self->_optionItems count])
     {
-      if (([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{v7), "node"), "disabled"}] & 1) == 0)
+      if (([objc_msgSend(-[NSArray objectAtIndex:](self->_optionItems objectAtIndex:{rowCopy2), "node"), "disabled"}] & 1) == 0)
       {
-        if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+        if (rowCopy2 == 0x7FFFFFFFFFFFFFFFLL)
         {
           return;
         }
@@ -155,8 +155,8 @@ LABEL_10:
   else
   {
 LABEL_11:
-    self->_indexToSelectWhenDone = a4;
-    self->_optionToSelectWhenDone = [(NSArray *)self->_optionItems objectAtIndex:a4];
+    self->_indexToSelectWhenDone = row;
+    self->_optionToSelectWhenDone = [(NSArray *)self->_optionItems objectAtIndex:row];
   }
 }
 

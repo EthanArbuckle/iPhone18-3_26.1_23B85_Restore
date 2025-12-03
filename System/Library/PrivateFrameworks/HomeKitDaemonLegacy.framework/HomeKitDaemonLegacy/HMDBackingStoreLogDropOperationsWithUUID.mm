@@ -1,5 +1,5 @@
 @interface HMDBackingStoreLogDropOperationsWithUUID
-- (HMDBackingStoreLogDropOperationsWithUUID)initWithUUID:(id)a3 pushingTo:(unint64_t)a4 resultBlock:(id)a5;
+- (HMDBackingStoreLogDropOperationsWithUUID)initWithUUID:(id)d pushingTo:(unint64_t)to resultBlock:(id)block;
 - (id)mainReturningError;
 @end
 
@@ -8,28 +8,28 @@
 - (id)mainReturningError
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__133678;
   v43 = __Block_byref_object_dispose__133679;
   v44 = 0;
-  v4 = [(HMDBackingStoreOperation *)self store];
-  v5 = [v4 local];
-  v6 = [(HMDBackingStoreOperation *)self store];
-  v7 = [v6 root];
-  v8 = [(HMDBackingStoreLogDropOperationsWithUUID *)self maskValue];
-  v9 = [(HMDBackingStoreLogDropOperationsWithUUID *)self compareValue];
+  store = [(HMDBackingStoreOperation *)self store];
+  local = [store local];
+  store2 = [(HMDBackingStoreOperation *)self store];
+  root = [store2 root];
+  maskValue = [(HMDBackingStoreLogDropOperationsWithUUID *)self maskValue];
+  compareValue = [(HMDBackingStoreLogDropOperationsWithUUID *)self compareValue];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __62__HMDBackingStoreLogDropOperationsWithUUID_mainReturningError__block_invoke;
   v36[3] = &unk_27972D138;
   v38 = &v39;
   v36[4] = self;
-  v10 = v3;
+  v10 = array;
   v37 = v10;
-  [v5 _selectLogWithRoot:v7 after:0 mask:v8 compare:v9 callback:v36];
+  [local _selectLogWithRoot:root after:0 mask:maskValue compare:compareValue callback:v36];
 
   v11 = v40[5];
   if (v11)
@@ -37,17 +37,17 @@
     goto LABEL_3;
   }
 
-  v12 = [(HMDBackingStoreOperation *)self store];
-  v13 = [v12 local];
-  v14 = [v13 _begin];
+  store3 = [(HMDBackingStoreOperation *)self store];
+  local2 = [store3 local];
+  _begin = [local2 _begin];
   v15 = v40[5];
-  v40[5] = v14;
+  v40[5] = _begin;
 
   v11 = v40[5];
   if (v11)
   {
 LABEL_3:
-    v16 = v11;
+    _commit = v11;
   }
 
   else
@@ -71,19 +71,19 @@ LABEL_3:
           }
 
           v23 = *(*(&v32 + 1) + 8 * i);
-          v24 = [(HMDBackingStoreOperation *)self store];
-          v25 = [v24 local];
-          v26 = [v25 _deleteLog:{objc_msgSend(v23, "unsignedIntegerValue")}];
+          store4 = [(HMDBackingStoreOperation *)self store];
+          local3 = [store4 local];
+          v26 = [local3 _deleteLog:{objc_msgSend(v23, "unsignedIntegerValue")}];
           v27 = v40[5];
           v40[5] = v26;
 
           if (v40[5])
           {
-            v30 = [(HMDBackingStoreOperation *)self store];
-            v31 = [v30 local];
-            [v31 _rollback];
+            store5 = [(HMDBackingStoreOperation *)self store];
+            local4 = [store5 local];
+            [local4 _rollback];
 
-            v16 = v40[5];
+            _commit = v40[5];
             goto LABEL_4;
           }
         }
@@ -98,9 +98,9 @@ LABEL_3:
       }
     }
 
-    v28 = [(HMDBackingStoreOperation *)self store];
-    v29 = [v28 local];
-    v16 = [v29 _commit];
+    store6 = [(HMDBackingStoreOperation *)self store];
+    local5 = [store6 local];
+    _commit = [local5 _commit];
   }
 
 LABEL_4:
@@ -108,7 +108,7 @@ LABEL_4:
   _Block_object_dispose(&v39, 8);
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return _commit;
 }
 
 BOOL __62__HMDBackingStoreLogDropOperationsWithUUID_mainReturningError__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, void *a8)
@@ -136,18 +136,18 @@ BOOL __62__HMDBackingStoreLogDropOperationsWithUUID_mainReturningError__block_in
   return v14 != 0;
 }
 
-- (HMDBackingStoreLogDropOperationsWithUUID)initWithUUID:(id)a3 pushingTo:(unint64_t)a4 resultBlock:(id)a5
+- (HMDBackingStoreLogDropOperationsWithUUID)initWithUUID:(id)d pushingTo:(unint64_t)to resultBlock:(id)block
 {
-  v9 = a3;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = HMDBackingStoreLogDropOperationsWithUUID;
-  v10 = [(HMDBackingStoreOperation *)&v14 initWithResultBlock:a5];
+  v10 = [(HMDBackingStoreOperation *)&v14 initWithResultBlock:block];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_uuid, a3);
-    v11->_maskValue = a4;
-    v11->_compareValue = a4;
+    objc_storeStrong(&v10->_uuid, d);
+    v11->_maskValue = to;
+    v11->_compareValue = to;
     v12 = v11;
   }
 

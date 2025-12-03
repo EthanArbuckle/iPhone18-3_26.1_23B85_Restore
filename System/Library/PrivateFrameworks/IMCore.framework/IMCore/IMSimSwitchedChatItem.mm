@@ -1,19 +1,19 @@
 @interface IMSimSwitchedChatItem
-- (id)_initWithItem:(id)a3 senderHandle:(id)a4;
+- (id)_initWithItem:(id)item senderHandle:(id)handle;
 @end
 
 @implementation IMSimSwitchedChatItem
 
-- (id)_initWithItem:(id)a3 senderHandle:(id)a4
+- (id)_initWithItem:(id)item senderHandle:(id)handle
 {
-  v7 = a4;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = IMSimSwitchedChatItem;
-  v8 = [(IMChatItem *)&v11 _initWithItem:a3];
+  v8 = [(IMChatItem *)&v11 _initWithItem:item];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 7, a4);
+    objc_storeStrong(v8 + 7, handle);
   }
 
   return v9;

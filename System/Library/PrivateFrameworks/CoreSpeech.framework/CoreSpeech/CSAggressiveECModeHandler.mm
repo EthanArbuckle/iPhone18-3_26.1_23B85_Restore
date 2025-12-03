@@ -1,8 +1,8 @@
 @interface CSAggressiveECModeHandler
 - (CSAggressiveECModeHandler)init;
-- (void)notifySiriSessionStateTTSOngoing:(BOOL)a3;
-- (void)setAttendingState:(BOOL)a3;
-- (void)setAudioSessionState:(id)a3;
+- (void)notifySiriSessionStateTTSOngoing:(BOOL)ongoing;
+- (void)setAttendingState:(BOOL)state;
+- (void)setAudioSessionState:(id)state;
 - (void)siriDismissed;
 @end
 
@@ -19,40 +19,40 @@
   dispatch_async(queue, block);
 }
 
-- (void)notifySiriSessionStateTTSOngoing:(BOOL)a3
+- (void)notifySiriSessionStateTTSOngoing:(BOOL)ongoing
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10011A1D0;
   v4[3] = &unk_100253BF8;
-  v5 = a3;
+  ongoingCopy = ongoing;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
 
-- (void)setAudioSessionState:(id)a3
+- (void)setAudioSessionState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011A348;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = stateCopy;
+  selfCopy = self;
+  v6 = stateCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)setAttendingState:(BOOL)a3
+- (void)setAttendingState:(BOOL)state
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10011A7C8;
   v4[3] = &unk_100253BF8;
-  v5 = a3;
+  stateCopy = state;
   v4[4] = self;
   dispatch_async(queue, v4);
 }

@@ -1,15 +1,15 @@
 @interface RBSProcessPredicateTypeApplication
-- (BOOL)matchesProcess:(id)a3;
+- (BOOL)matchesProcess:(id)process;
 @end
 
 @implementation RBSProcessPredicateTypeApplication
 
-- (BOOL)matchesProcess:(id)a3
+- (BOOL)matchesProcess:(id)process
 {
-  v3 = [a3 identity];
-  v4 = [v3 isApplication];
+  identity = [process identity];
+  isApplication = [identity isApplication];
 
-  return v4;
+  return isApplication;
 }
 
 @end

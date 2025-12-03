@@ -1,6 +1,6 @@
 @interface VKLabelSelectionQuery
 - (VKLabelMarker)labelMarker;
-- (VKLabelSelectionQuery)initWithLabelMarker:(shared_ptr<md:(unsigned int)a4 :StandardLabelMarker>)a3 selectionFilterStamp:;
+- (VKLabelSelectionQuery)initWithLabelMarker:(shared_ptr<md:(unsigned int)marker :StandardLabelMarker>)a3 selectionFilterStamp:;
 - (id).cxx_construct;
 - (shared_ptr<md::StandardLabelMarker>)standardLabelMarker;
 @end
@@ -48,7 +48,7 @@
   return v3;
 }
 
-- (VKLabelSelectionQuery)initWithLabelMarker:(shared_ptr<md:(unsigned int)a4 :StandardLabelMarker>)a3 selectionFilterStamp:
+- (VKLabelSelectionQuery)initWithLabelMarker:(shared_ptr<md:(unsigned int)marker :StandardLabelMarker>)a3 selectionFilterStamp:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;

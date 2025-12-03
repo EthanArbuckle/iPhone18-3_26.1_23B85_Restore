@@ -1,15 +1,15 @@
 @interface _TVRUIShortcutInternalHeaderView
-- (_TVRUIShortcutInternalHeaderView)initWithFrame:(CGRect)a3;
+- (_TVRUIShortcutInternalHeaderView)initWithFrame:(CGRect)frame;
 - (void)_configureHierarchy;
 @end
 
 @implementation _TVRUIShortcutInternalHeaderView
 
-- (_TVRUIShortcutInternalHeaderView)initWithFrame:(CGRect)a3
+- (_TVRUIShortcutInternalHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUIShortcutInternalHeaderView;
-  v3 = [(_TVRUIShortcutInternalHeaderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUIShortcutInternalHeaderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -23,34 +23,34 @@
 {
   v21[4] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D756B8];
-  v3 = self;
+  selfCopy = self;
   v4 = objc_alloc_init(v2);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   [v4 setFont:v5];
 
-  v6 = [MEMORY[0x277D75348] lightTextColor];
-  [v4 setTextColor:v6];
+  lightTextColor = [MEMORY[0x277D75348] lightTextColor];
+  [v4 setTextColor:lightTextColor];
 
   [v4 setText:@" Internal"];
-  [(_TVRUIShortcutInternalHeaderView *)v3 addSubview:v4];
+  [(_TVRUIShortcutInternalHeaderView *)selfCopy addSubview:v4];
   v16 = MEMORY[0x277CCAAD0];
-  v20 = [v4 leadingAnchor];
-  v19 = [(_TVRUIShortcutInternalHeaderView *)v3 leadingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19 constant:10.0];
+  leadingAnchor = [v4 leadingAnchor];
+  leadingAnchor2 = [(_TVRUIShortcutInternalHeaderView *)selfCopy leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v21[0] = v18;
-  v17 = [v4 trailingAnchor];
-  v7 = [(_TVRUIShortcutInternalHeaderView *)v3 trailingAnchor];
-  v8 = [v17 constraintEqualToAnchor:v7 constant:-10.0];
+  trailingAnchor = [v4 trailingAnchor];
+  trailingAnchor2 = [(_TVRUIShortcutInternalHeaderView *)selfCopy trailingAnchor];
+  v8 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v21[1] = v8;
-  v9 = [v4 topAnchor];
-  v10 = [(_TVRUIShortcutInternalHeaderView *)v3 topAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  topAnchor = [v4 topAnchor];
+  topAnchor2 = [(_TVRUIShortcutInternalHeaderView *)selfCopy topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v21[2] = v11;
-  v12 = [v4 bottomAnchor];
-  v13 = [(_TVRUIShortcutInternalHeaderView *)v3 bottomAnchor];
+  bottomAnchor = [v4 bottomAnchor];
+  bottomAnchor2 = [(_TVRUIShortcutInternalHeaderView *)selfCopy bottomAnchor];
 
-  v14 = [v12 constraintEqualToAnchor:v13];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v21[3] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
   [v16 activateConstraints:v15];

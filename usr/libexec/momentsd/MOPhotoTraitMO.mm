@@ -1,46 +1,46 @@
 @interface MOPhotoTraitMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
-- (id)clonedObjectWithContext:(id)a3;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
+- (id)clonedObjectWithContext:(id)context;
 @end
 
 @implementation MOPhotoTraitMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOPhotoTraitMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOPhotoTraitMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 identifier];
-  [(MOPhotoTraitMO *)v7 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [(MOPhotoTraitMO *)v7 setIdentifier:identifier];
 
-  v9 = [v6 name];
-  [(MOPhotoTraitMO *)v7 setName:v9];
+  name = [objectCopy name];
+  [(MOPhotoTraitMO *)v7 setName:name];
 
-  v10 = [v6 labelType];
-  [(MOPhotoTraitMO *)v7 setLabelType:v10];
+  labelType = [objectCopy labelType];
+  [(MOPhotoTraitMO *)v7 setLabelType:labelType];
 
-  v11 = [v6 holidayIdentifier];
-  [(MOPhotoTraitMO *)v7 setHolidayIdentifier:v11];
+  holidayIdentifier = [objectCopy holidayIdentifier];
+  [(MOPhotoTraitMO *)v7 setHolidayIdentifier:holidayIdentifier];
 
-  v12 = [v6 meaningIdentifier];
-  [(MOPhotoTraitMO *)v7 setMeaningIdentifier:v12];
+  meaningIdentifier = [objectCopy meaningIdentifier];
+  [(MOPhotoTraitMO *)v7 setMeaningIdentifier:meaningIdentifier];
 
-  v13 = [v6 relevantAssetUUIDs];
-  [(MOPhotoTraitMO *)v7 setRelevantAssetUUIDs:v13];
+  relevantAssetUUIDs = [objectCopy relevantAssetUUIDs];
+  [(MOPhotoTraitMO *)v7 setRelevantAssetUUIDs:relevantAssetUUIDs];
 
-  v14 = [v6 associatedPersonLocalIdentifiers];
+  associatedPersonLocalIdentifiers = [objectCopy associatedPersonLocalIdentifiers];
 
-  [(MOPhotoTraitMO *)v7 setAssociatedPersonLocalIdentifiers:v14];
+  [(MOPhotoTraitMO *)v7 setAssociatedPersonLocalIdentifiers:associatedPersonLocalIdentifiers];
 
   return v7;
 }
 
-- (id)clonedObjectWithContext:(id)a3
+- (id)clonedObjectWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[MOPhotoTrait alloc] initWithPhotoTraitMO:self];
-  v6 = [MOPhotoTraitMO managedObjectWithObject:v5 inManagedObjectContext:v4];
+  v6 = [MOPhotoTraitMO managedObjectWithObject:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }

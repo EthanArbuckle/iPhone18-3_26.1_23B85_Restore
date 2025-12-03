@@ -1,10 +1,10 @@
 @interface NRPBPingResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBPingResponse
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBPingResponse;
   v3 = [(NRPBPingResponse *)&v7 description];
-  v4 = [(NRPBPingResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBPingResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -35,11 +35,11 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   responseDate = self->_responseDate;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteDoubleField();
   if (self->_payload)
   {
@@ -47,24 +47,24 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = *&self->_responseDate;
-  v6 = [(NSData *)self->_payload copyWithZone:a3];
+  v6 = [(NSData *)self->_payload copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_responseDate == *(v4 + 1))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_responseDate == *(equalCopy + 1))
   {
     payload = self->_payload;
-    if (payload | v4[2])
+    if (payload | equalCopy[2])
     {
       v6 = [(NSData *)payload isEqual:?];
     }

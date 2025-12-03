@@ -6,20 +6,20 @@
 
 - (CALayer)currentLayer
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 presentationLayer];
+  layer = [(UIView *)self layer];
+  presentationLayer = [layer presentationLayer];
 
-  if (v4)
+  if (presentationLayer)
   {
-    v5 = v4;
+    layer2 = presentationLayer;
   }
 
   else
   {
-    v5 = [(UIView *)self layer];
+    layer2 = [(UIView *)self layer];
   }
 
-  v6 = v5;
+  v6 = layer2;
 
   return v6;
 }

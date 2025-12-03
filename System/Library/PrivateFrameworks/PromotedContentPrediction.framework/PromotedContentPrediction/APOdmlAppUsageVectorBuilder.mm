@@ -1,15 +1,15 @@
 @interface APOdmlAppUsageVectorBuilder
-- (id)eventsBetween:(id)a3 and:(id)a4;
+- (id)eventsBetween:(id)between and:(id)and;
 @end
 
 @implementation APOdmlAppUsageVectorBuilder
 
-- (id)eventsBetween:(id)a3 and:(id)a4
+- (id)eventsBetween:(id)between and:(id)and
 {
-  v5 = a4;
-  v6 = a3;
+  andCopy = and;
+  betweenCopy = between;
   v7 = objc_alloc_init(APOdmlBiomeSQLQuery);
-  v9 = objc_msgSend_query_startDate_endDate_(v7, v8, @"App.InFocus", v6, v5);
+  v9 = objc_msgSend_query_startDate_endDate_(v7, v8, @"App.InFocus", betweenCopy, andCopy);
 
   return v9;
 }

@@ -1,38 +1,38 @@
 @interface VCPFaceMerger
-- (VCPFaceMerger)initWithThreshold:(double)a3;
-- (id)_alignFaceObservations:(id)a3 withRequestHandler:(id)a4 error:(id *)a5;
-- (id)_faceObservationsWithBoundingBoxFromFaces:(id)a3 withFaceHashMapping:(id)a4;
-- (id)_sortedViableFaceMergePairsFromQueryFaces:(id)a3 andCandidateFaces:(id)a4;
-- (id)mergeExistingFaces:(id)a3 andDetectedFaces:(id)a4 withRequestHandler:(id)a5 orientedWidth:(unint64_t)a6 orientedHeight:(unint64_t)a7 assetWidth:(unint64_t)a8 assetHeight:(unint64_t)a9;
-- (void)_alignBoundingBoxOfFaces:(id)a3 withRequestHandler:(id)a4 orientedWidth:(unint64_t)a5 orientedHeight:(unint64_t)a6;
+- (VCPFaceMerger)initWithThreshold:(double)threshold;
+- (id)_alignFaceObservations:(id)observations withRequestHandler:(id)handler error:(id *)error;
+- (id)_faceObservationsWithBoundingBoxFromFaces:(id)faces withFaceHashMapping:(id)mapping;
+- (id)_sortedViableFaceMergePairsFromQueryFaces:(id)faces andCandidateFaces:(id)candidateFaces;
+- (id)mergeExistingFaces:(id)faces andDetectedFaces:(id)detectedFaces withRequestHandler:(id)handler orientedWidth:(unint64_t)width orientedHeight:(unint64_t)height assetWidth:(unint64_t)assetWidth assetHeight:(unint64_t)assetHeight;
+- (void)_alignBoundingBoxOfFaces:(id)faces withRequestHandler:(id)handler orientedWidth:(unint64_t)width orientedHeight:(unint64_t)height;
 @end
 
 @implementation VCPFaceMerger
 
-- (VCPFaceMerger)initWithThreshold:(double)a3
+- (VCPFaceMerger)initWithThreshold:(double)threshold
 {
   v5.receiver = self;
   v5.super_class = VCPFaceMerger;
   result = [(VCPFaceMerger *)&v5 init];
   if (result)
   {
-    result->_mergeDistanceThreshold = a3;
+    result->_mergeDistanceThreshold = threshold;
   }
 
   return result;
 }
 
-- (id)_faceObservationsWithBoundingBoxFromFaces:(id)a3 withFaceHashMapping:(id)a4
+- (id)_faceObservationsWithBoundingBoxFromFaces:(id)faces withFaceHashMapping:(id)mapping
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  facesCopy = faces;
+  mappingCopy = mapping;
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v5;
+  v8 = facesCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
@@ -52,16 +52,16 @@
         {
           [v13 size];
           v15 = v14;
-          v16 = [v13 sourceWidth];
-          v17 = [v13 sourceHeight];
-          if (v16 <= v17)
+          sourceWidth = [v13 sourceWidth];
+          sourceHeight = [v13 sourceHeight];
+          if (sourceWidth <= sourceHeight)
           {
-            v18 = v17;
+            v18 = sourceHeight;
           }
 
           else
           {
-            v18 = v16;
+            v18 = sourceWidth;
           }
 
           v19 = v15 * v18;
@@ -71,13 +71,13 @@
           v23 = v22 - v20 * 0.5;
           [v13 centerY];
           v25 = [MEMORY[0x1E6984518] observationWithBoundingBox:{v23, v24 - v21 * 0.5, v20, v21}];
-          [v7 addObject:v25];
-          v26 = [v13 localIdentifier];
-          v27 = [v26 hash];
+          [array addObject:v25];
+          localIdentifier = [v13 localIdentifier];
+          v27 = [localIdentifier hash];
 
           [v25 setFaceId:v27];
           v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
-          [v6 setObject:v13 forKey:v28];
+          [mappingCopy setObject:v13 forKey:v28];
         }
       }
 
@@ -87,16 +87,16 @@
     while (v10);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)_alignFaceObservations:(id)a3 withRequestHandler:(id)a4 error:(id *)a5
+- (id)_alignFaceObservations:(id)observations withRequestHandler:(id)handler error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69843F8];
-  v9 = a3;
-  v10 = [[v8 alloc] initWithFaceObservations:v9];
+  observationsCopy = observations;
+  v10 = [[v8 alloc] initWithFaceObservations:observationsCopy];
 
   if (v10)
   {
@@ -105,19 +105,19 @@
     [v10 setPreferBackgroundProcessing:1];
     if (DeviceHasANE() && [objc_opt_class() _allowANE])
     {
-      v11 = [MEMORY[0x1E6984608] defaultANEDevice];
-      [v10 setProcessingDevice:v11];
+      defaultANEDevice = [MEMORY[0x1E6984608] defaultANEDevice];
+      [v10 setProcessingDevice:defaultANEDevice];
     }
 
     v26 = v10;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
     v23 = 0;
-    v13 = [v7 performRequests:v12 error:&v23];
+    v13 = [handlerCopy performRequests:v12 error:&v23];
     v14 = v23;
 
     if (v13)
     {
-      v15 = [v10 results];
+      results = [v10 results];
       goto LABEL_10;
     }
 
@@ -127,7 +127,7 @@
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to exercise Vision request - %@", v14];
     v25 = v18;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    *a5 = [v19 errorWithDomain:v20 code:-18 userInfo:v21];
+    *error = [v19 errorWithDomain:v20 code:-18 userInfo:v21];
   }
 
   else
@@ -138,26 +138,26 @@
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create VNAlignFaceRectangleRequest"];
     v28[0] = v14;
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-    *a5 = [v16 errorWithDomain:v17 code:-18 userInfo:v18];
+    *error = [v16 errorWithDomain:v17 code:-18 userInfo:v18];
   }
 
-  v15 = 0;
+  results = 0;
 LABEL_10:
 
-  return v15;
+  return results;
 }
 
-- (void)_alignBoundingBoxOfFaces:(id)a3 withRequestHandler:(id)a4 orientedWidth:(unint64_t)a5 orientedHeight:(unint64_t)a6
+- (void)_alignBoundingBoxOfFaces:(id)faces withRequestHandler:(id)handler orientedWidth:(unint64_t)width orientedHeight:(unint64_t)height
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [(VCPFaceMerger *)self _faceObservationsWithBoundingBoxFromFaces:v10 withFaceHashMapping:v12];
+  facesCopy = faces;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v13 = [(VCPFaceMerger *)self _faceObservationsWithBoundingBoxFromFaces:facesCopy withFaceHashMapping:dictionary];
   if ([v13 count])
   {
     v45 = 0;
-    v14 = [(VCPFaceMerger *)self _alignFaceObservations:v13 withRequestHandler:v11 error:&v45];
+    v14 = [(VCPFaceMerger *)self _alignFaceObservations:v13 withRequestHandler:handlerCopy error:&v45];
     v15 = v45;
     v16 = v15;
     if (v14)
@@ -165,7 +165,7 @@ LABEL_10:
       v37 = v15;
       v38 = v14;
       v39 = v13;
-      v40 = v10;
+      v40 = facesCopy;
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
@@ -179,19 +179,19 @@ LABEL_10:
 
       v19 = v18;
       v20 = *v42;
-      v21 = a5;
-      v22 = a6;
-      if (a5 <= a6)
+      widthCopy = width;
+      heightCopy = height;
+      if (width <= height)
       {
-        v23 = a6;
+        widthCopy2 = height;
       }
 
       else
       {
-        v23 = a5;
+        widthCopy2 = width;
       }
 
-      v24 = v23;
+      v24 = widthCopy2;
       while (1)
       {
         for (i = 0; i != v19; ++i)
@@ -203,7 +203,7 @@ LABEL_10:
 
           v26 = *(*(&v41 + 1) + 8 * i);
           v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v26, "faceId")}];
-          v28 = [v12 objectForKeyedSubscript:v27];
+          v28 = [dictionary objectForKeyedSubscript:v27];
 
           if (v28)
           {
@@ -237,10 +237,10 @@ LABEL_19:
               v52.size.width = width;
               v52.size.height = height;
               [v28 setCenterY:CGRectGetMidY(v52)];
-              v36 = width * v21;
-              if (width * v21 < height * v22)
+              v36 = width * widthCopy;
+              if (width * widthCopy < height * heightCopy)
               {
-                v36 = height * v22;
+                v36 = height * heightCopy;
               }
 
               [v28 setSize:v36 / v24];
@@ -263,7 +263,7 @@ LABEL_19:
         {
 LABEL_25:
 
-          v10 = v40;
+          facesCopy = v40;
           v14 = v38;
           v13 = v39;
           v16 = v37;
@@ -283,22 +283,22 @@ LABEL_29:
   }
 }
 
-- (id)_sortedViableFaceMergePairsFromQueryFaces:(id)a3 andCandidateFaces:(id)a4
+- (id)_sortedViableFaceMergePairsFromQueryFaces:(id)faces andCandidateFaces:(id)candidateFaces
 {
   v77 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && [v6 count])
+  facesCopy = faces;
+  candidateFacesCopy = candidateFaces;
+  v7 = candidateFacesCopy;
+  if (facesCopy && [candidateFacesCopy count])
   {
-    v52 = [MEMORY[0x1E695DF70] array];
-    v51 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v44 = v5;
-    obj = v5;
+    v44 = facesCopy;
+    obj = facesCopy;
     v48 = [obj countByEnumeratingWithState:&v63 objects:v76 count:16];
     if (!v48)
     {
@@ -342,19 +342,19 @@ LABEL_29:
               }
 
               v15 = *(*(&v59 + 1) + 8 * i);
-              v16 = [v15 imageprintWrapper];
-              if (v16 && (v17 = [v15 algorithmVersion], v17 == objc_msgSend(v11, "algorithmVersion")))
+              imageprintWrapper = [v15 imageprintWrapper];
+              if (imageprintWrapper && (v17 = [v15 algorithmVersion], v17 == objc_msgSend(v11, "algorithmVersion")))
               {
-                v18 = [v15 detectionType];
-                v19 = [v11 detectionType];
+                detectionType = [v15 detectionType];
+                detectionType2 = [v11 detectionType];
 
-                if (v18 == v19)
+                if (detectionType == detectionType2)
                 {
                   v58 = 1.0;
-                  v20 = [v11 imageprintWrapper];
-                  v21 = [v15 imageprintWrapper];
+                  imageprintWrapper2 = [v11 imageprintWrapper];
+                  imageprintWrapper3 = [v15 imageprintWrapper];
                   v57 = 0;
-                  v22 = [v20 calculateDistance:&v58 toWrapper:v21 andError:&v57];
+                  v22 = [imageprintWrapper2 calculateDistance:&v58 toWrapper:imageprintWrapper3 andError:&v57];
                   v23 = v57;
 
                   if (v22)
@@ -365,9 +365,9 @@ LABEL_29:
                       if (v24)
                       {
                         v25 = [MEMORY[0x1E696AD98] numberWithDouble:self->_mergeDistanceThreshold];
-                        v26 = [v51 indexOfObject:v25 inSortedRange:0 options:objc_msgSend(v51 usingComparator:{"count"), 1024, &__block_literal_global_87}];
-                        [v51 insertObject:v25 atIndex:v26];
-                        [v52 insertObject:v24 atIndex:v26];
+                        v26 = [array2 indexOfObject:v25 inSortedRange:0 options:objc_msgSend(array2 usingComparator:{"count"), 1024, &__block_literal_global_87}];
+                        [array2 insertObject:v25 atIndex:v26];
+                        [array insertObject:v24 atIndex:v26];
                       }
 
                       goto LABEL_34;
@@ -375,10 +375,10 @@ LABEL_29:
 
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v8, v9))
                     {
-                      v37 = [v15 localIdentifier];
+                      localIdentifier = [v15 localIdentifier];
                       mergeDistanceThreshold = self->_mergeDistanceThreshold;
                       *buf = 138412802;
-                      v68 = v37;
+                      v68 = localIdentifier;
                       v69 = 2048;
                       *v70 = v58;
                       *&v70[8] = 2048;
@@ -394,9 +394,9 @@ LABEL_33:
 
                   else if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
                   {
-                    v37 = [v15 localIdentifier];
+                    localIdentifier = [v15 localIdentifier];
                     *buf = 138412546;
-                    v68 = v37;
+                    v68 = localIdentifier;
                     v69 = 2112;
                     *v70 = v23;
                     v38 = v8;
@@ -419,33 +419,33 @@ LABEL_34:
 
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v8, v9))
               {
-                v55 = [v11 algorithmVersion];
-                v27 = [v11 detectionType];
-                v28 = [v15 localIdentifier];
-                v29 = [v15 algorithmVersion];
+                algorithmVersion = [v11 algorithmVersion];
+                detectionType3 = [v11 detectionType];
+                localIdentifier2 = [v15 localIdentifier];
+                algorithmVersion2 = [v15 algorithmVersion];
                 v30 = v11;
                 v31 = v12;
                 v32 = v9;
                 v33 = v8;
-                v34 = [v15 detectionType];
-                v35 = [v15 imageprintWrapper];
+                detectionType4 = [v15 detectionType];
+                imageprintWrapper4 = [v15 imageprintWrapper];
                 *buf = 134219266;
                 v36 = "has";
-                if (!v35)
+                if (!imageprintWrapper4)
                 {
                   v36 = "no";
                 }
 
-                v68 = v55;
+                v68 = algorithmVersion;
                 v69 = 1024;
-                *v70 = v27;
+                *v70 = detectionType3;
                 *&v70[4] = 2112;
-                *&v70[6] = v28;
+                *&v70[6] = localIdentifier2;
                 *&v70[14] = 2048;
-                *&v70[16] = v29;
+                *&v70[16] = algorithmVersion2;
                 v13 = v54;
                 v71 = 1024;
-                v72 = v34;
+                v72 = detectionType4;
                 v8 = v33;
                 v9 = v32;
                 v12 = v31;
@@ -473,41 +473,41 @@ LABEL_34:
       {
 LABEL_39:
 
-        v5 = v44;
+        facesCopy = v44;
         goto LABEL_41;
       }
     }
   }
 
-  v52 = 0;
+  array = 0;
 LABEL_41:
 
-  return v52;
+  return array;
 }
 
-- (id)mergeExistingFaces:(id)a3 andDetectedFaces:(id)a4 withRequestHandler:(id)a5 orientedWidth:(unint64_t)a6 orientedHeight:(unint64_t)a7 assetWidth:(unint64_t)a8 assetHeight:(unint64_t)a9
+- (id)mergeExistingFaces:(id)faces andDetectedFaces:(id)detectedFaces withRequestHandler:(id)handler orientedWidth:(unint64_t)width orientedHeight:(unint64_t)height assetWidth:(unint64_t)assetWidth assetHeight:(unint64_t)assetHeight
 {
   v106 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a5;
-  v16 = [MEMORY[0x1E695DF70] arrayWithArray:a4];
-  v17 = [MEMORY[0x1E695DF70] array];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v76 = [MEMORY[0x1E695DF70] array];
-  v74 = v18;
-  v69 = v15;
-  v70 = v14;
+  facesCopy = faces;
+  handlerCopy = handler;
+  v16 = [MEMORY[0x1E695DF70] arrayWithArray:detectedFaces];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  v74 = array2;
+  v69 = handlerCopy;
+  v70 = facesCopy;
   v71 = v16;
-  v72 = v17;
-  if ([v14 count])
+  v72 = array;
+  if ([facesCopy count])
   {
-    [(VCPFaceMerger *)self _alignBoundingBoxOfFaces:v14 withRequestHandler:v15 orientedWidth:a6 orientedHeight:a7];
-    [v18 addObjectsFromArray:v14];
+    [(VCPFaceMerger *)self _alignBoundingBoxOfFaces:facesCopy withRequestHandler:handlerCopy orientedWidth:width orientedHeight:height];
+    [array2 addObjectsFromArray:facesCopy];
     v96 = 0u;
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v19 = v18;
+    v19 = array2;
     v20 = [v19 countByEnumeratingWithState:&v94 objects:v105 count:16];
     if (v20)
     {
@@ -523,12 +523,12 @@ LABEL_41:
           }
 
           v24 = *(*(&v94 + 1) + 8 * i);
-          v25 = [v24 imageprintWrapper];
+          imageprintWrapper = [v24 imageprintWrapper];
 
-          if (v25)
+          if (imageprintWrapper)
           {
-            v26 = [v24 imageprintWrapper];
-            [v76 addObject:v26];
+            imageprintWrapper2 = [v24 imageprintWrapper];
+            [array3 addObject:imageprintWrapper2];
           }
         }
 
@@ -546,7 +546,7 @@ LABEL_41:
     v90 = v27;
     v28 = v19;
     v91 = v28;
-    v92 = v76;
+    v92 = array3;
     v67 = v72;
     v93 = v67;
     v29 = _Block_copy(aBlock);
@@ -554,9 +554,9 @@ LABEL_41:
     v30 = [(VCPFaceMerger *)self _sortedViableFaceMergePairsFromQueryFaces:v27 andCandidateFaces:v28];
     v68 = v29;
     (*(v29 + 2))(v29, v30);
-    v31 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
 
-    v82 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
@@ -607,25 +607,25 @@ LABEL_41:
               v42 = [p_superclass + 119 pairWithFace:v34 andFace:v40 distance:?];
               if (v42)
               {
-                if ([v31 count])
+                if ([array4 count])
                 {
                   v43 = v38;
                   v44 = v34;
                   v45 = p_superclass;
-                  v46 = [v82 indexOfObject:v41 inSortedRange:0 options:objc_msgSend(v82 usingComparator:{"count"), 1024, &__block_literal_global_397_0}];
-                  [v82 insertObject:v41 atIndex:v46];
+                  v46 = [array5 indexOfObject:v41 inSortedRange:0 options:objc_msgSend(array5 usingComparator:{"count"), 1024, &__block_literal_global_397_0}];
+                  [array5 insertObject:v41 atIndex:v46];
                   v47 = v46;
                   p_superclass = v45;
                   v34 = v44;
                   v38 = v43;
                   v37 = v81;
-                  [v31 insertObject:v42 atIndex:v47];
+                  [array4 insertObject:v42 atIndex:v47];
                 }
 
                 else
                 {
-                  [v31 addObject:v42];
-                  [v82 addObject:v41];
+                  [array4 addObject:v42];
+                  [array5 addObject:v41];
                 }
               }
 
@@ -645,7 +645,7 @@ LABEL_41:
       while (v79);
     }
 
-    (v68)[2](v68, v31);
+    (v68)[2](v68, array4);
     [v67 addObjectsFromArray:obj];
 
     v48 = v74;
@@ -653,8 +653,8 @@ LABEL_41:
 
   else
   {
-    [v17 addObjectsFromArray:v16];
-    v48 = v18;
+    [array addObjectsFromArray:v16];
+    v48 = array2;
   }
 
   v49 = [v48 count];
@@ -674,17 +674,17 @@ LABEL_41:
 
       if ([v54 manual])
       {
-        if ([v54 sourceWidth] != a8 || objc_msgSend(v54, "sourceHeight") != a9)
+        if ([v54 sourceWidth] != assetWidth || objc_msgSend(v54, "sourceHeight") != assetHeight)
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v56 = [v54 gist];
+            gist = [v54 gist];
             *buf = 138412802;
-            v99 = v56;
+            v99 = gist;
             v100 = 2048;
-            v101 = a8;
+            assetWidthCopy = assetWidth;
             v102 = 2048;
-            v103 = a9;
+            assetHeightCopy = assetHeight;
             _os_log_impl(v52, v51, OS_LOG_TYPE_DEFAULT, v53, buf, 0x20u);
           }
 
@@ -693,9 +693,9 @@ LABEL_41:
 
         if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
         {
-          v55 = [v54 localIdentifier];
+          localIdentifier = [v54 localIdentifier];
           *buf = 138412290;
-          v99 = v55;
+          v99 = localIdentifier;
           _os_log_impl(v52, v51, OS_LOG_TYPE_DEBUG, "[VCPFaceMerger] Manual face %@; skip deletion", buf, 0xCu);
         }
 
@@ -716,13 +716,13 @@ LABEL_54:
       goto LABEL_54;
     }
 
-    v57 = [v54 personLocalIdentifier];
-    if (!v57)
+    personLocalIdentifier = [v54 personLocalIdentifier];
+    if (!personLocalIdentifier)
     {
       goto LABEL_54;
     }
 
-    v58 = v57;
+    v58 = personLocalIdentifier;
     if ([v54 nameSource] == 1)
     {
     }
@@ -731,9 +731,9 @@ LABEL_54:
     {
       v59 = v52;
       v60 = v53;
-      v61 = [v54 nameSource];
+      nameSource = [v54 nameSource];
 
-      v62 = v61 == 3;
+      v62 = nameSource == 3;
       v53 = v60;
       v52 = v59;
       if (!v62)
@@ -744,9 +744,9 @@ LABEL_54:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
     {
-      v63 = [v54 localIdentifier];
+      localIdentifier2 = [v54 localIdentifier];
       *buf = 138412290;
-      v99 = v63;
+      v99 = localIdentifier2;
       _os_log_impl(v52, v51, OS_LOG_TYPE_DEBUG, "[VCPFaceMerger] Face %@ with valid personIdentifier; reinstate as manual face", buf, 0xCu);
     }
 
@@ -757,11 +757,11 @@ LABEL_54:
   }
 
 LABEL_55:
-  v64 = [MEMORY[0x1E695DF90] dictionary];
-  v65 = v64;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v65 = dictionary;
   if (v72)
   {
-    [v64 setObject:v72 forKeyedSubscript:@"FacesToPersist"];
+    [dictionary setObject:v72 forKeyedSubscript:@"FacesToPersist"];
   }
 
   if (v74)

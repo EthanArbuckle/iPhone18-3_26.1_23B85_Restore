@@ -1,23 +1,23 @@
 @interface SBLockScreenEmergencyDialerController
 - (SBLockScreenEmergencyDialerDelegate)delegate;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)deactivate;
-- (void)dismissEmergencyCallViewController:(id)a3;
-- (void)emergencyCallViewController:(id)a3 didExitWithError:(id)a4;
+- (void)dismissEmergencyCallViewController:(id)controller;
+- (void)emergencyCallViewController:(id)controller didExitWithError:(id)error;
 @end
 
 @implementation SBLockScreenEmergencyDialerController
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SBLockScreenEmergencyDialerController_activateWithCompletion___block_invoke;
   v6[3] = &unk_2783C4048;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(SBUIEmergencyCallHostViewController *)SBLockScreenEmergencyCallViewController requestEmergencyCallControllerWithCompletion:v6];
 }
 
@@ -57,7 +57,7 @@ void __64__SBLockScreenEmergencyDialerController_activateWithCompletion___block_
   }
 }
 
-- (void)dismissEmergencyCallViewController:(id)a3
+- (void)dismissEmergencyCallViewController:(id)controller
 {
   if (self->_active)
   {
@@ -66,13 +66,13 @@ void __64__SBLockScreenEmergencyDialerController_activateWithCompletion___block_
   }
 }
 
-- (void)emergencyCallViewController:(id)a3 didExitWithError:(id)a4
+- (void)emergencyCallViewController:(id)controller didExitWithError:(id)error
 {
   if (self->_active)
   {
-    v6 = a4;
+    errorCopy = error;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained emergencyDialer:self willDeactivateWithError:v6];
+    [WeakRetained emergencyDialer:self willDeactivateWithError:errorCopy];
   }
 }
 

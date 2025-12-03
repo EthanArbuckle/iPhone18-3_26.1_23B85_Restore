@@ -1,29 +1,29 @@
 @interface HUCameraCloudStorageSettingsModule
-- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)a3;
-- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)updater;
+- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (id)removeAllCameraRecordings;
 @end
 
 @implementation HUCameraCloudStorageSettingsModule
 
-- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)a3 cameraProfiles:(id)a4
+- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)updater cameraProfiles:(id)profiles
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v8 count])
+  updaterCopy = updater;
+  profilesCopy = profiles;
+  if (![profilesCopy count])
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageSettingsModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageSettingsModule.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"cameraProfiles.count > 0"}];
   }
 
   v14.receiver = self;
   v14.super_class = HUCameraCloudStorageSettingsModule;
-  v9 = [(HFItemModule *)&v14 initWithItemUpdater:v7];
+  v9 = [(HFItemModule *)&v14 initWithItemUpdater:updaterCopy];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [profilesCopy copy];
     cameraProfiles = v9->_cameraProfiles;
     v9->_cameraProfiles = v10;
   }
@@ -31,11 +31,11 @@
   return v9;
 }
 
-- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)a3
+- (HUCameraCloudStorageSettingsModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_cameraProfiles_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageSettingsModule.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUCameraCloudStorageSettingsModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraCloudStorageSettingsModule.m" lineNumber:34 description:{@"%s is unavailable; use %@ instead", "-[HUCameraCloudStorageSettingsModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -48,8 +48,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(HUCameraCloudStorageSettingsModule *)self cameraProfiles];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  cameraProfiles = [(HUCameraCloudStorageSettingsModule *)self cameraProfiles];
+  v5 = [cameraProfiles countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,7 +60,7 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(cameraProfiles);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -73,7 +73,7 @@
         [v3 addObject:v10];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [cameraProfiles countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v6);
@@ -153,9 +153,9 @@ void __63__HUCameraCloudStorageSettingsModule_removeAllCameraRecordings__block_i
   if (!itemProviders)
   {
     v4 = [HUCameraCloudStorageItemProvider alloc];
-    v5 = [(HUCameraCloudStorageSettingsModule *)self cameraProfiles];
-    v6 = [v5 anyObject];
-    v7 = [(HUCameraCloudStorageItemProvider *)v4 initWithCameraProfile:v6];
+    cameraProfiles = [(HUCameraCloudStorageSettingsModule *)self cameraProfiles];
+    anyObject = [cameraProfiles anyObject];
+    v7 = [(HUCameraCloudStorageItemProvider *)v4 initWithCameraProfile:anyObject];
     cloudStorageSectionSettingsItemProvider = self->_cloudStorageSectionSettingsItemProvider;
     self->_cloudStorageSectionSettingsItemProvider = v7;
 
@@ -171,31 +171,31 @@ void __63__HUCameraCloudStorageSettingsModule_removeAllCameraRecordings__block_i
   return v11;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HUCameraCloudStorageSettingsModule *)self itemProviders];
+  itemsCopy = items;
+  itemProviders = [(HUCameraCloudStorageSettingsModule *)self itemProviders];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __70__HUCameraCloudStorageSettingsModule_buildSectionsWithDisplayedItems___block_invoke;
   v23[3] = &unk_277DBF990;
-  v24 = v4;
-  v6 = v4;
-  v7 = [v5 na_flatMap:v23];
+  v24 = itemsCopy;
+  v6 = itemsCopy;
+  v7 = [itemProviders na_flatMap:v23];
 
-  v8 = [(HUCameraCloudStorageSettingsModule *)self cloudStorageSectionSettingsItemProvider];
+  cloudStorageSectionSettingsItemProvider = [(HUCameraCloudStorageSettingsModule *)self cloudStorageSectionSettingsItemProvider];
   v9 = objc_opt_new();
   v10 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"iCloudStorageSection"];
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __70__HUCameraCloudStorageSettingsModule_buildSectionsWithDisplayedItems___block_invoke_2;
   v21 = &unk_277DB85D8;
-  v22 = v8;
-  v11 = v8;
+  v22 = cloudStorageSectionSettingsItemProvider;
+  v11 = cloudStorageSectionSettingsItemProvider;
   v12 = [v7 na_filter:&v18];
-  v13 = [v12 allObjects];
-  v14 = [MEMORY[0x277D14778] itemResultManualSortComparator];
-  v15 = [v13 sortedArrayUsingComparator:v14];
+  allObjects = [v12 allObjects];
+  itemResultManualSortComparator = [MEMORY[0x277D14778] itemResultManualSortComparator];
+  v15 = [allObjects sortedArrayUsingComparator:itemResultManualSortComparator];
   [v10 setItems:v15];
 
   v16 = _HULocalizedStringWithDefaultValue(@"HUCameraEraseFooterString", @"HUCameraEraseFooterString", 1);

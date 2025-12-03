@@ -1,118 +1,118 @@
 @interface TypistKeyboard
-+ (void)typeStringOnHardwareKeyboard:(id)a3 withLanguage:(id)a4;
-- (BOOL)_isPlaneControlKey:(id)a3;
++ (void)typeStringOnHardwareKeyboard:(id)keyboard withLanguage:(id)language;
+- (BOOL)_isPlaneControlKey:(id)key;
 - (BOOL)dictationSupported;
-- (BOOL)hasCandidate:(id)a3;
-- (BOOL)hasCandidate:(id)a3 inRange:(_NSRange)a4;
-- (BOOL)hasCandidates:(id)a3;
-- (BOOL)hasCandidates:(id)a3 inRange:(_NSRange)a4;
-- (BOOL)isAutoshiftedToCapitalPlane:(id)a3;
-- (BOOL)isAvailableFlickOnCurrentPlane:(id)a3 withDirection:(id)a4;
-- (BOOL)isAvailableGestureOnCurrentPlane:(id)a3 withDirection:(id)a4;
-- (BOOL)isAvailableKeyOnCurrentPlane:(id)a3;
-- (BOOL)isAvailablePopoverOnCurrentPlane:(id)a3;
-- (BOOL)isSwitchedToCapitalPlane:(id)a3 previous:(id)a4 currentPlane:(id)a5 context:(id)a6;
-- (CGAffineTransform)_determineTransformationInFrame:(SEL)a3 segmentStart:(CGRect)a4 totalSegmentWidth:(double)a5 scale:(unint64_t)a6 characterHeight:(double)a7 characterWidth:(double)a8 dimensions:(double)a9 isLatex:(id)a10;
-- (CGPoint)_determinePointBetween:(CGPoint)a3 nextPoint:(CGPoint)a4;
-- (CGPoint)_guardAgainstOffScreenPoint:(CGPoint)a3;
-- (CGPoint)calculateCoordinatesForFlickGesture:(CGPoint)a3 direction:(id)a4 offset:(float)a5;
-- (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4;
+- (BOOL)hasCandidate:(id)candidate;
+- (BOOL)hasCandidate:(id)candidate inRange:(_NSRange)range;
+- (BOOL)hasCandidates:(id)candidates;
+- (BOOL)hasCandidates:(id)candidates inRange:(_NSRange)range;
+- (BOOL)isAutoshiftedToCapitalPlane:(id)plane;
+- (BOOL)isAvailableFlickOnCurrentPlane:(id)plane withDirection:(id)direction;
+- (BOOL)isAvailableGestureOnCurrentPlane:(id)plane withDirection:(id)direction;
+- (BOOL)isAvailableKeyOnCurrentPlane:(id)plane;
+- (BOOL)isAvailablePopoverOnCurrentPlane:(id)plane;
+- (BOOL)isSwitchedToCapitalPlane:(id)plane previous:(id)previous currentPlane:(id)currentPlane context:(id)context;
+- (CGAffineTransform)_determineTransformationInFrame:(SEL)frame segmentStart:(CGRect)start totalSegmentWidth:(double)width scale:(unint64_t)scale characterHeight:(double)height characterWidth:(double)characterWidth dimensions:(double)dimensions isLatex:(id)self0;
+- (CGPoint)_determinePointBetween:(CGPoint)between nextPoint:(CGPoint)point;
+- (CGPoint)_guardAgainstOffScreenPoint:(CGPoint)point;
+- (CGPoint)calculateCoordinatesForFlickGesture:(CGPoint)gesture direction:(id)direction offset:(float)offset;
+- (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset;
 - (CGRect)_determineHandwritingBound;
-- (TypistKeyboard)initWithCoder:(id)a3;
-- (TypistKeyboard)initWithHardwareKeyboard:(id)a3;
-- (double)_getScaleInFrame:(CGRect)a3 isPencil:(BOOL)a4 dimensions:(id)a5;
-- (id)_character_set_pattern_from_string:(id)a3;
-- (id)_constructSwitchPath:(id)a3 toPlane:(id)a4 fromPlane:(id)a5;
-- (id)_convertCollationCharacters:(id)a3;
-- (id)_dimensionsForLatex:(id)a3 formula:(id)a4 withPathMap:(id)a5 regionCode:(id)a6 isCursive:(BOOL)a7 cumulativeWidth:(unint64_t)a8 totalWidth:(unint64_t)a9 primaryTextDirection:(unint64_t)a10 rotationBias:(double)a11 characterByCharacterPaths:(id)a12;
-- (id)_dimensionsForText:(id)a3 withPathMap:(id)a4 regionCode:(id)a5 isCursive:(BOOL)a6 cumulativeWidth:(unint64_t *)a7 totalWidth:(unint64_t)a8 segmentTextDirection:(unint64_t)a9 primaryTextDirection:(unint64_t)a10 rotationBias:(double)a11 characterByCharacterPaths:(id)a12;
-- (id)_generateArgumentList:(id)a3;
-- (id)_sanitizedStringForAutoShiftCheck:(id)a3;
+- (TypistKeyboard)initWithCoder:(id)coder;
+- (TypistKeyboard)initWithHardwareKeyboard:(id)keyboard;
+- (double)_getScaleInFrame:(CGRect)frame isPencil:(BOOL)pencil dimensions:(id)dimensions;
+- (id)_character_set_pattern_from_string:(id)_character_set_pattern_from_string;
+- (id)_constructSwitchPath:(id)path toPlane:(id)plane fromPlane:(id)fromPlane;
+- (id)_convertCollationCharacters:(id)characters;
+- (id)_dimensionsForLatex:(id)latex formula:(id)formula withPathMap:(id)map regionCode:(id)code isCursive:(BOOL)cursive cumulativeWidth:(unint64_t)width totalWidth:(unint64_t)totalWidth primaryTextDirection:(unint64_t)self0 rotationBias:(double)self1 characterByCharacterPaths:(id)self2;
+- (id)_dimensionsForText:(id)text withPathMap:(id)map regionCode:(id)code isCursive:(BOOL)cursive cumulativeWidth:(unint64_t *)width totalWidth:(unint64_t)totalWidth segmentTextDirection:(unint64_t)direction primaryTextDirection:(unint64_t)self0 rotationBias:(double)self1 characterByCharacterPaths:(id)self2;
+- (id)_generateArgumentList:(id)list;
+- (id)_sanitizedStringForAutoShiftCheck:(id)check;
 - (id)_setupAutoShiftRegex;
-- (id)addKeyboardPopupKeys:(id)a3 inPlane:(id)a4 addTo:(id)a5 keyplaneKeycaps:(id)a6;
-- (id)attemptToFindKeystrokeAsSecondaryDisplay:(id)a3;
-- (id)changeKeyNameToGenericCharacter:(id)a3;
-- (id)createAutoshiftRegularExpressionWithDelimitingCharacters:(id)a3 sentenceTrailingCharacters:(id)a4 sentencePrefixingCharacters:(id)a5;
-- (id)findKey:(id)a3 inPlane:(id)a4;
-- (id)findKeyInOtherPlanes:(id)a3 currentPlane:(id)a4;
-- (id)findKeyOnAnyPlane:(id)a3;
-- (id)findKeyOnCurrentPlane:(id)a3;
-- (id)generateKeyplaneSwitchTable:(id)a3;
-- (id)generateKeyplaneSwitchTableFor10Key:(id)a3;
-- (id)generateKeystrokeStream:(id)a3;
-- (id)generatePencilGestureStream:(int)a3 gestureStyle:(int)a4 inFrame:(CGRect)a5;
-- (id)generateSwipeStream:(id)a3;
-- (id)getActionForKeystroke:(id)a3 fromKeyPlane:(id)a4;
+- (id)addKeyboardPopupKeys:(id)keys inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps;
+- (id)attemptToFindKeystrokeAsSecondaryDisplay:(id)display;
+- (id)changeKeyNameToGenericCharacter:(id)character;
+- (id)createAutoshiftRegularExpressionWithDelimitingCharacters:(id)characters sentenceTrailingCharacters:(id)trailingCharacters sentencePrefixingCharacters:(id)prefixingCharacters;
+- (id)findKey:(id)key inPlane:(id)plane;
+- (id)findKeyInOtherPlanes:(id)planes currentPlane:(id)plane;
+- (id)findKeyOnAnyPlane:(id)plane;
+- (id)findKeyOnCurrentPlane:(id)plane;
+- (id)generateKeyplaneSwitchTable:(id)table;
+- (id)generateKeyplaneSwitchTableFor10Key:(id)key;
+- (id)generateKeystrokeStream:(id)stream;
+- (id)generatePencilGestureStream:(int)stream gestureStyle:(int)style inFrame:(CGRect)frame;
+- (id)generateSwipeStream:(id)stream;
+- (id)getActionForKeystroke:(id)keystroke fromKeyPlane:(id)plane;
 - (id)getAllCandidates;
 - (id)getAlternatePlanesForDefaultPlane;
-- (id)getAlternativeKeyPlaneName:(id)a3;
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4;
+- (id)getAlternativeKeyPlaneName:(id)name;
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane;
 - (id)getShiftPlaneForAlternatePlane;
 - (id)getShiftPlaneForDefaultPlane;
-- (id)getShiftedKeyPlaneName:(id)a3;
+- (id)getShiftedKeyPlaneName:(id)name;
 - (id)getVisibleCandidates;
-- (id)init:(id)a3 options:(id)a4;
-- (id)init:(id)a3 options:(id)a4 locale:(id)a5;
-- (id)keysDataForInputMode:(id)a3 andFileName:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
-- (id)splitKeystrokeStreamByWord:(id)a3 originalText:(id)a4;
-- (id)switchToPlane:(id)a3 fromPlane:(id)a4;
-- (int64_t)commitCandidate:(id)a3;
-- (int64_t)commitCandidateAtIndex:(int64_t)a3;
-- (void)_bailWithError:(id)a3 completion:(id)a4;
-- (void)_setKeyboardUserPreferences:(id)a3;
-- (void)activateWithKeyboardList:(id)a3 appendKeyboard:(BOOL)a4;
-- (void)attachHardwareKeyboard:(id)a3;
-- (void)attachHardwareKeyboardWithCountryCode:(id)a3;
+- (id)init:(id)init options:(id)options;
+- (id)init:(id)init options:(id)options locale:(id)locale;
+- (id)keysDataForInputMode:(id)mode andFileName:(id)name;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
+- (id)splitKeystrokeStreamByWord:(id)word originalText:(id)text;
+- (id)switchToPlane:(id)plane fromPlane:(id)fromPlane;
+- (int64_t)commitCandidate:(id)candidate;
+- (int64_t)commitCandidateAtIndex:(int64_t)index;
+- (void)_bailWithError:(id)error completion:(id)completion;
+- (void)_setKeyboardUserPreferences:(id)preferences;
+- (void)activateWithKeyboardList:(id)list appendKeyboard:(BOOL)keyboard;
+- (void)attachHardwareKeyboard:(id)keyboard;
+- (void)attachHardwareKeyboardWithCountryCode:(id)code;
 - (void)dealloc;
 - (void)detachHardwareKeyboard;
-- (void)dragFromKey:(id)a3 toKey:(id)a4 completion:(id)a5;
-- (void)dragPopoverKey:(id)a3 completion:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)flickKey:(id)a3 withDirection:(id)a4 completion:(id)a5;
-- (void)moveFloatingKeyboardToPosition:(CGPoint)a3;
+- (void)dragFromKey:(id)key toKey:(id)toKey completion:(id)completion;
+- (void)dragPopoverKey:(id)key completion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)flickKey:(id)key withDirection:(id)direction completion:(id)completion;
+- (void)moveFloatingKeyboardToPosition:(CGPoint)position;
 - (void)preprocessing;
-- (void)pressAndHoldHardwareKeys:(id)a3 forDuration:(double)a4 withValidation:(id)a5 validateAfter:(double)a6;
-- (void)setOneHandedPosition:(id)a3;
-- (void)setPressDuration:(id)a3;
-- (void)setTapStyleNoise:(id)a3;
-- (void)setTargetApplicationBundleIdentifier:(id)a3;
-- (void)setTouchMajorRadius:(id)a3;
-- (void)setTypeInterval:(id)a3;
+- (void)pressAndHoldHardwareKeys:(id)keys forDuration:(double)duration withValidation:(id)validation validateAfter:(double)after;
+- (void)setOneHandedPosition:(id)position;
+- (void)setPressDuration:(id)duration;
+- (void)setTapStyleNoise:(id)noise;
+- (void)setTargetApplicationBundleIdentifier:(id)identifier;
+- (void)setTouchMajorRadius:(id)radius;
+- (void)setTypeInterval:(id)interval;
 - (void)setupSentenceBoundryStrings;
-- (void)swipeGestureKey:(id)a3 withDirection:(id)a4 completion:(id)a5;
-- (void)swipeGestureOrFlickKey:(id)a3 withDirection:(id)a4 completion:(id)a5;
-- (void)swipeString:(id)a3;
-- (void)switchKeyPlaneOnActiveKeyboard:(id)a3;
+- (void)swipeGestureKey:(id)key withDirection:(id)direction completion:(id)completion;
+- (void)swipeGestureOrFlickKey:(id)key withDirection:(id)direction completion:(id)completion;
+- (void)swipeString:(id)string;
+- (void)switchKeyPlaneOnActiveKeyboard:(id)keyboard;
 - (void)tapGlobeKey;
-- (void)tapKey:(id)a3 tapCount:(unint64_t)a4 completion:(id)a5;
-- (void)tapKey:(id)a3 tapCount:(unint64_t)a4 overriddenTypeInterval:(id)a5 completion:(id)a6;
+- (void)tapKey:(id)key tapCount:(unint64_t)count completion:(id)completion;
+- (void)tapKey:(id)key tapCount:(unint64_t)count overriddenTypeInterval:(id)interval completion:(id)completion;
 - (void)tapMoreKey;
 - (void)toggleCapsLock;
-- (void)typeKeystrokeStream:(id)a3;
-- (void)typeKeystrokeStream:(id)a3 completion:(id)a4;
-- (void)typeKeystrokeStreamWithPredictive:(id)a3 originalText:(id)a4 completion:(id)a5;
-- (void)typeString:(id)a3;
-- (void)typeString:(id)a3 completion:(id)a4;
-- (void)typeString:(id)a3 withCommit:(id)a4;
-- (void)typeStringWithHardwareKeyboard:(id)a3;
-- (void)typeWordKeystrokeWithPredictive:(id)a3 atIndex:(int64_t)a4 completion:(id)a5;
-- (void)typeWordKeystrokes:(id)a3 expectedWord:(id)a4 atIndex:(int64_t)a5 completion:(id)a6;
+- (void)typeKeystrokeStream:(id)stream;
+- (void)typeKeystrokeStream:(id)stream completion:(id)completion;
+- (void)typeKeystrokeStreamWithPredictive:(id)predictive originalText:(id)text completion:(id)completion;
+- (void)typeString:(id)string;
+- (void)typeString:(id)string completion:(id)completion;
+- (void)typeString:(id)string withCommit:(id)commit;
+- (void)typeStringWithHardwareKeyboard:(id)keyboard;
+- (void)typeWordKeystrokeWithPredictive:(id)predictive atIndex:(int64_t)index completion:(id)completion;
+- (void)typeWordKeystrokes:(id)keystrokes expectedWord:(id)word atIndex:(int64_t)index completion:(id)completion;
 @end
 
 @implementation TypistKeyboard
 
-- (void)setPressDuration:(id)a3
+- (void)setPressDuration:(id)duration
 {
-  v24 = a3;
-  if (!v24 || [v24 compare:&unk_288029510] == -1)
+  durationCopy = duration;
+  if (!durationCopy || [durationCopy compare:&unk_288029510] == -1)
   {
-    v9 = [(TypistKeyboard *)self pressDuration];
+    pressDuration = [(TypistKeyboard *)self pressDuration];
 
-    if (v9)
+    if (pressDuration)
     {
-      v23 = [(TypistKeyboard *)self pressDuration];
-      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid pressDuration was provided: %@. The existing value of (%@) will continue to be used!", v10, v11, v12, v13, v14, v15, v24);
+      pressDuration2 = [(TypistKeyboard *)self pressDuration];
+      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid pressDuration was provided: %@. The existing value of (%@) will continue to be used!", v10, v11, v12, v13, v14, v15, durationCopy);
     }
 
     else
@@ -120,37 +120,37 @@
       pressDuration = self->_pressDuration;
       self->_pressDuration = &unk_288029520;
 
-      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid pressDuration was provided: %@. The default value of %@ will be used instead.", v17, v18, v19, v20, v21, v22, v24);
+      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid pressDuration was provided: %@. The default value of %@ will be used instead.", v17, v18, v19, v20, v21, v22, durationCopy);
     }
   }
 
   else
   {
-    v5 = [(TypistKeyboard *)self hardwareKeyboard];
+    hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-    if (v5)
+    if (hardwareKeyboard)
     {
-      [v24 doubleValue];
+      [durationCopy doubleValue];
       v7 = v6;
-      v8 = [(TypistKeyboard *)self hardwareKeyboard];
-      [v8 setPressDuration:v7];
+      hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+      [hardwareKeyboard2 setPressDuration:v7];
     }
 
-    objc_storeStrong(&self->_pressDuration, a3);
+    objc_storeStrong(&self->_pressDuration, duration);
   }
 }
 
-- (void)setTypeInterval:(id)a3
+- (void)setTypeInterval:(id)interval
 {
-  v24 = a3;
-  if (!v24 || [v24 compare:&unk_288029510] == -1)
+  intervalCopy = interval;
+  if (!intervalCopy || [intervalCopy compare:&unk_288029510] == -1)
   {
-    v9 = [(TypistKeyboard *)self typeInterval];
+    typeInterval = [(TypistKeyboard *)self typeInterval];
 
-    if (v9)
+    if (typeInterval)
     {
-      v23 = [(TypistKeyboard *)self typeInterval];
-      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid typeInterval was provided: %@. The existing value of (%@) will continue to be used!", v10, v11, v12, v13, v14, v15, v24);
+      typeInterval2 = [(TypistKeyboard *)self typeInterval];
+      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid typeInterval was provided: %@. The existing value of (%@) will continue to be used!", v10, v11, v12, v13, v14, v15, intervalCopy);
     }
 
     else
@@ -158,39 +158,39 @@
       typeInterval = self->_typeInterval;
       self->_typeInterval = &unk_288029520;
 
-      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid typeInterval was provided: %@. The default value of %@ will be used instead.", v17, v18, v19, v20, v21, v22, v24);
+      TYLogl(OS_LOG_TYPE_ERROR, @"Invalid typeInterval was provided: %@. The default value of %@ will be used instead.", v17, v18, v19, v20, v21, v22, intervalCopy);
     }
   }
 
   else
   {
-    v5 = [(TypistKeyboard *)self hardwareKeyboard];
+    hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-    if (v5)
+    if (hardwareKeyboard)
     {
-      [v24 doubleValue];
+      [intervalCopy doubleValue];
       v7 = v6;
-      v8 = [(TypistKeyboard *)self hardwareKeyboard];
-      [v8 setTypeInterval:v7];
+      hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+      [hardwareKeyboard2 setTypeInterval:v7];
     }
 
-    objc_storeStrong(&self->_typeInterval, a3);
+    objc_storeStrong(&self->_typeInterval, interval);
   }
 }
 
-- (void)setTouchMajorRadius:(id)a3
+- (void)setTouchMajorRadius:(id)radius
 {
-  v12 = a3;
-  [v12 doubleValue];
+  radiusCopy = radius;
+  [radiusCopy doubleValue];
   if (v11 <= 0.0)
   {
-    TYLogl(OS_LOG_TYPE_ERROR, @"Invalid touch radius was provided: %@. Ignoring.", v5, v6, v7, v8, v9, v10, v12);
+    TYLogl(OS_LOG_TYPE_ERROR, @"Invalid touch radius was provided: %@. Ignoring.", v5, v6, v7, v8, v9, v10, radiusCopy);
   }
 
   else
   {
-    objc_storeStrong(&self->_touchMajorRadius, a3);
-    [TypistKeyboardUtilities setTapTouchRadius:v12];
+    objc_storeStrong(&self->_touchMajorRadius, radius);
+    [TypistKeyboardUtilities setTapTouchRadius:radiusCopy];
   }
 }
 
@@ -203,132 +203,132 @@
   [(TypistKeyboard *)&v3 dealloc];
 }
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasPrefix:@"fr"])
+  initCopy = init;
+  optionsCopy = options;
+  if ([initCopy hasPrefix:@"fr"])
   {
     v8 = TypistKeyboardFrench;
   }
 
-  else if ([v6 hasPrefix:@"fa"])
+  else if ([initCopy hasPrefix:@"fa"])
   {
     v8 = TypistKeyboardFarsi;
   }
 
-  else if ([v6 hasPrefix:@"ja_JP"])
+  else if ([initCopy hasPrefix:@"ja_JP"])
   {
     v8 = TypistKeyboardJapanese;
   }
 
-  else if (([v6 hasPrefix:@"zh_Han"] & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"yue_Hant"))
+  else if (([initCopy hasPrefix:@"zh_Han"] & 1) != 0 || objc_msgSend(initCopy, "hasPrefix:", @"yue_Hant"))
   {
     v8 = TypistKeyboardChinese;
   }
 
-  else if ([v6 hasPrefix:@"ko_KR"])
+  else if ([initCopy hasPrefix:@"ko_KR"])
   {
     v8 = TypistKeyboardKorean;
   }
 
-  else if ([v6 hasPrefix:@"chr"])
+  else if ([initCopy hasPrefix:@"chr"])
   {
     v8 = TypistKeyboardCherokee;
   }
 
-  else if ([v6 hasPrefix:@"cs_CZ"])
+  else if ([initCopy hasPrefix:@"cs_CZ"])
   {
     v8 = TypistKeyboardCzech;
   }
 
-  else if ([v6 hasPrefix:@"haw"])
+  else if ([initCopy hasPrefix:@"haw"])
   {
     v8 = TypistKeyboardHawaiian;
   }
 
-  else if ([v6 hasPrefix:@"el_GR"])
+  else if ([initCopy hasPrefix:@"el_GR"])
   {
     v8 = TypistKeyboardGreek;
   }
 
-  else if ([v6 hasPrefix:@"lut"])
+  else if ([initCopy hasPrefix:@"lut"])
   {
     v8 = TypistKeyboardLushootseed;
   }
 
-  else if ([v6 hasPrefix:@"isc"])
+  else if ([initCopy hasPrefix:@"isc"])
   {
     v8 = TypistKeyboardIskonawa;
   }
 
-  else if ([v6 hasPrefix:@"shp"])
+  else if ([initCopy hasPrefix:@"shp"])
   {
     v8 = TypistKeyboardShipiboKonibo;
   }
 
-  else if (([v6 hasPrefix:@"bo"] & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"dz"))
+  else if (([initCopy hasPrefix:@"bo"] & 1) != 0 || objc_msgSend(initCopy, "hasPrefix:", @"dz"))
   {
     v8 = TypistKeyboardTibetan;
   }
 
-  else if ([v6 hasPrefix:@"ta"] && (objc_msgSend(v6, "hasPrefix:", @"ta@sw=Tamil-QWERTY") & 1) == 0)
+  else if ([initCopy hasPrefix:@"ta"] && (objc_msgSend(initCopy, "hasPrefix:", @"ta@sw=Tamil-QWERTY") & 1) == 0)
   {
     v8 = TypistKeyboardTamil;
   }
 
-  else if ([v6 hasPrefix:@"pa@sw=Punjabi-Phonetic"])
+  else if ([initCopy hasPrefix:@"pa@sw=Punjabi-Phonetic"])
   {
     v8 = TypistKeyboardPunjabi;
   }
 
-  else if ([v6 hasPrefix:@"si"])
+  else if ([initCopy hasPrefix:@"si"])
   {
     v8 = TypistKeyboardSinhala;
   }
 
-  else if ([v6 hasPrefix:@"ug"])
+  else if ([initCopy hasPrefix:@"ug"])
   {
     v8 = TypistKeyboardUyghur;
   }
 
-  else if ([v6 hasPrefix:@"am"])
+  else if ([initCopy hasPrefix:@"am"])
   {
     v8 = TypistKeyboardAmharic;
   }
 
-  else if ([v6 hasPrefix:@"my@sw=Burmese"])
+  else if ([initCopy hasPrefix:@"my@sw=Burmese"])
   {
     v8 = TypistKeyboardBurmese;
   }
 
-  else if ([v6 hasPrefix:@"th_TH"])
+  else if ([initCopy hasPrefix:@"th_TH"])
   {
     v8 = TypistKeyboardThai;
   }
 
   else
   {
-    if (![v6 containsString:@"emoji"])
+    if (![initCopy containsString:@"emoji"])
     {
-      v9 = [[TypistKeyboard alloc] init:v6 options:v7 locale:0];
+      v9 = [[TypistKeyboard alloc] init:initCopy options:optionsCopy locale:0];
       goto LABEL_11;
     }
 
     v8 = TypistKeyboardEmoji;
   }
 
-  v9 = [[v8 alloc] init:v6 options:v7];
+  v9 = [[v8 alloc] init:initCopy options:optionsCopy];
 LABEL_11:
   v10 = v9;
 
   return v10;
 }
 
-- (id)init:(id)a3 options:(id)a4 locale:(id)a5
+- (id)init:(id)init options:(id)options locale:(id)locale
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  optionsCopy = options;
   v42.receiver = self;
   v42.super_class = TypistKeyboard;
   v9 = [(TypistKeyboard *)&v42 init];
@@ -344,10 +344,10 @@ LABEL_11:
     v11 = NSStringFromClass(v10);
     TYLog(@"Initializing TypistKeyboard: [%@]", v12, v13, v14, v15, v16, v17, v18, v11);
 
-    v19 = [v8 objectForKeyedSubscript:@"forceInProcessDataClient"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"forceInProcessDataClient"];
     if (v19)
     {
-      v20 = [v8 objectForKeyedSubscript:@"forceInProcessDataClient"];
+      v20 = [optionsCopy objectForKeyedSubscript:@"forceInProcessDataClient"];
       v21 = [v20 BOOLValue] ^ 1;
     }
 
@@ -356,15 +356,15 @@ LABEL_11:
       v21 = 1;
     }
 
-    v22 = [v8 objectForKeyedSubscript:@"targetApplication"];
+    v22 = [optionsCopy objectForKeyedSubscript:@"targetApplication"];
     v23 = v22;
     if (v21)
     {
       if (v22)
       {
         [(TypistKeyboard *)v9 setTargetApplicationBundleIdentifier:v22];
-        v41 = [(TypistKeyboard *)v9 getTargetApplicationBundleIdentifier];
-        TYLog(@"Setting keyboard %@ of target application: %@", v24, v25, v26, v27, v28, v29, v30, v7);
+        getTargetApplicationBundleIdentifier = [(TypistKeyboard *)v9 getTargetApplicationBundleIdentifier];
+        TYLog(@"Setting keyboard %@ of target application: %@", v24, v25, v26, v27, v28, v29, v30, initCopy);
       }
     }
 
@@ -374,7 +374,7 @@ LABEL_11:
     }
   }
 
-  v31 = [(TypistKeyboard *)v9 setupKeyboardInfo:v7 options:v8];
+  v31 = [(TypistKeyboard *)v9 setupKeyboardInfo:initCopy options:optionsCopy];
   if (v31)
   {
     v38 = v31;
@@ -394,34 +394,34 @@ LABEL_13:
 
 - (void)setupSentenceBoundryStrings
 {
-  v6 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getSentenceBoundaryStrings];
-  v3 = [v6 objectForKeyedSubscript:@"sentenceTrailingCharacters"];
+  getSentenceBoundaryStrings = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getSentenceBoundaryStrings];
+  v3 = [getSentenceBoundaryStrings objectForKeyedSubscript:@"sentenceTrailingCharacters"];
   [(TypistKeyboard *)self setSentenceTrailingCharacters:v3];
 
-  v4 = [v6 objectForKeyedSubscript:@"sentenceDelimitingCharacters"];
+  v4 = [getSentenceBoundaryStrings objectForKeyedSubscript:@"sentenceDelimitingCharacters"];
   [(TypistKeyboard *)self setSentenceDelimitingCharacters:v4];
 
-  v5 = [v6 objectForKeyedSubscript:@"sentencePrefixingCharacters"];
+  v5 = [getSentenceBoundaryStrings objectForKeyedSubscript:@"sentencePrefixingCharacters"];
   [(TypistKeyboard *)self setSentencePrefixingCharacters:v5];
 }
 
 - (id)_setupAutoShiftRegex
 {
-  v3 = [(TypistKeyboard *)self sentenceDelimitingCharacters];
-  v4 = [(TypistKeyboard *)self sentenceTrailingCharacters];
-  v5 = [(TypistKeyboard *)self sentencePrefixingCharacters];
-  v6 = [(TypistKeyboard *)self createAutoshiftRegularExpressionWithDelimitingCharacters:v3 sentenceTrailingCharacters:v4 sentencePrefixingCharacters:v5];
+  sentenceDelimitingCharacters = [(TypistKeyboard *)self sentenceDelimitingCharacters];
+  sentenceTrailingCharacters = [(TypistKeyboard *)self sentenceTrailingCharacters];
+  sentencePrefixingCharacters = [(TypistKeyboard *)self sentencePrefixingCharacters];
+  v6 = [(TypistKeyboard *)self createAutoshiftRegularExpressionWithDelimitingCharacters:sentenceDelimitingCharacters sentenceTrailingCharacters:sentenceTrailingCharacters sentencePrefixingCharacters:sentencePrefixingCharacters];
 
   return v6;
 }
 
-- (void)setTapStyleNoise:(id)a3
+- (void)setTapStyleNoise:(id)noise
 {
-  v4 = a3;
-  if (v4)
+  noiseCopy = noise;
+  if (noiseCopy)
   {
-    v6 = v4;
-    if ([v4 caseInsensitiveCompare:@"anyInRect"])
+    v6 = noiseCopy;
+    if ([noiseCopy caseInsensitiveCompare:@"anyInRect"])
     {
       if ([v6 caseInsensitiveCompare:@"normal"])
       {
@@ -460,14 +460,14 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_setKeyboardUserPreferences:(id)a3
+- (void)_setKeyboardUserPreferences:(id)preferences
 {
-  v53 = a3;
-  v4 = [v53 objectForKeyedSubscript:@"typeInterval"];
+  preferencesCopy = preferences;
+  v4 = [preferencesCopy objectForKeyedSubscript:@"typeInterval"];
 
   if (v4)
   {
-    v5 = [v53 objectForKeyedSubscript:@"typeInterval"];
+    v5 = [preferencesCopy objectForKeyedSubscript:@"typeInterval"];
     [(TypistKeyboard *)self setTypeInterval:v5];
   }
 
@@ -476,19 +476,19 @@ LABEL_11:
     [(TypistKeyboard *)self setTypeInterval:&unk_288029520];
   }
 
-  v6 = [v53 objectForKeyedSubscript:@"touchMajorRadius"];
+  v6 = [preferencesCopy objectForKeyedSubscript:@"touchMajorRadius"];
 
   if (v6)
   {
-    v7 = [v53 objectForKeyedSubscript:@"touchMajorRadius"];
+    v7 = [preferencesCopy objectForKeyedSubscript:@"touchMajorRadius"];
     [(TypistKeyboard *)self setTouchMajorRadius:v7];
   }
 
-  v8 = [v53 objectForKeyedSubscript:@"pressDuration"];
+  v8 = [preferencesCopy objectForKeyedSubscript:@"pressDuration"];
 
   if (v8)
   {
-    v9 = [v53 objectForKeyedSubscript:@"pressDuration"];
+    v9 = [preferencesCopy objectForKeyedSubscript:@"pressDuration"];
     [(TypistKeyboard *)self setPressDuration:v9];
   }
 
@@ -497,10 +497,10 @@ LABEL_11:
     [(TypistKeyboard *)self setPressDuration:&unk_288029520];
   }
 
-  v10 = [v53 objectForKeyedSubscript:@"fastTyping"];
+  v10 = [preferencesCopy objectForKeyedSubscript:@"fastTyping"];
   if (v10)
   {
-    v11 = [v53 objectForKeyedSubscript:@"fastTyping"];
+    v11 = [preferencesCopy objectForKeyedSubscript:@"fastTyping"];
     -[TypistKeyboard setFastTyping:](self, "setFastTyping:", [v11 BOOLValue]);
   }
 
@@ -509,10 +509,10 @@ LABEL_11:
     [(TypistKeyboard *)self setFastTyping:0];
   }
 
-  v12 = [v53 objectForKeyedSubscript:@"flickTyping"];
+  v12 = [preferencesCopy objectForKeyedSubscript:@"flickTyping"];
   if (v12)
   {
-    v13 = [v53 objectForKeyedSubscript:@"flickTyping"];
+    v13 = [preferencesCopy objectForKeyedSubscript:@"flickTyping"];
     -[TypistKeyboard setFlickTyping:](self, "setFlickTyping:", [v13 BOOLValue]);
   }
 
@@ -521,10 +521,10 @@ LABEL_11:
     [(TypistKeyboard *)self setFlickTyping:0];
   }
 
-  v14 = [v53 objectForKeyedSubscript:@"usePredictionBar"];
+  v14 = [preferencesCopy objectForKeyedSubscript:@"usePredictionBar"];
   if (v14)
   {
-    v15 = [v53 objectForKeyedSubscript:@"usePredictionBar"];
+    v15 = [preferencesCopy objectForKeyedSubscript:@"usePredictionBar"];
     -[TypistKeyboard setUsePredictionBar:](self, "setUsePredictionBar:", [v15 BOOLValue]);
   }
 
@@ -533,10 +533,10 @@ LABEL_11:
     [(TypistKeyboard *)self setUsePredictionBar:0];
   }
 
-  v16 = [v53 objectForKeyedSubscript:@"prefersPopoverKeys"];
+  v16 = [preferencesCopy objectForKeyedSubscript:@"prefersPopoverKeys"];
   if (v16)
   {
-    v17 = [v53 objectForKeyedSubscript:@"prefersPopoverKeys"];
+    v17 = [preferencesCopy objectForKeyedSubscript:@"prefersPopoverKeys"];
     -[TypistKeyboard setPrefersPopoverKeys:](self, "setPrefersPopoverKeys:", [v17 BOOLValue]);
   }
 
@@ -545,10 +545,10 @@ LABEL_11:
     [(TypistKeyboard *)self setPrefersPopoverKeys:1];
   }
 
-  v18 = [v53 objectForKeyedSubscript:@"FORCE_SPACE"];
+  v18 = [preferencesCopy objectForKeyedSubscript:@"FORCE_SPACE"];
   if (v18)
   {
-    v19 = [v53 objectForKeyedSubscript:@"FORCE_SPACE"];
+    v19 = [preferencesCopy objectForKeyedSubscript:@"FORCE_SPACE"];
     -[TypistKeyboard setSwipeForceSpace:](self, "setSwipeForceSpace:", [v19 BOOLValue]);
   }
 
@@ -557,10 +557,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeForceSpace:0];
   }
 
-  v20 = [v53 objectForKeyedSubscript:@"ALPHA"];
+  v20 = [preferencesCopy objectForKeyedSubscript:@"ALPHA"];
   if (v20)
   {
-    v21 = [v53 objectForKeyedSubscript:@"ALPHA"];
+    v21 = [preferencesCopy objectForKeyedSubscript:@"ALPHA"];
     v22 = [TypistKeyboardUtilities validateProbability:v21];
     [(TypistKeyboard *)self setSwipeAlpha:v22];
   }
@@ -570,10 +570,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeAlpha:&unk_288029530];
   }
 
-  v23 = [v53 objectForKeyedSubscript:@"SIGMA"];
+  v23 = [preferencesCopy objectForKeyedSubscript:@"SIGMA"];
   if (v23)
   {
-    v24 = [v53 objectForKeyedSubscript:@"SIGMA"];
+    v24 = [preferencesCopy objectForKeyedSubscript:@"SIGMA"];
     [v24 doubleValue];
     if (v25 <= 0.0)
     {
@@ -582,7 +582,7 @@ LABEL_11:
 
     else
     {
-      v26 = [v53 objectForKeyedSubscript:@"SIGMA"];
+      v26 = [preferencesCopy objectForKeyedSubscript:@"SIGMA"];
       [(TypistKeyboard *)self setSwipeSigma:v26];
     }
   }
@@ -592,10 +592,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeSigma:&unk_2880299A0];
   }
 
-  v27 = [v53 objectForKeyedSubscript:@"P_PIVOT"];
+  v27 = [preferencesCopy objectForKeyedSubscript:@"P_PIVOT"];
   if (v27)
   {
-    v28 = [v53 objectForKeyedSubscript:@"P_PIVOT"];
+    v28 = [preferencesCopy objectForKeyedSubscript:@"P_PIVOT"];
     v29 = [TypistKeyboardUtilities validateProbability:v28];
     [(TypistKeyboard *)self setSwipePivotProbability:v29];
   }
@@ -605,10 +605,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipePivotProbability:&unk_2880299A0];
   }
 
-  v30 = [v53 objectForKeyedSubscript:@"tapNoiseStyle"];
+  v30 = [preferencesCopy objectForKeyedSubscript:@"tapNoiseStyle"];
   [(TypistKeyboard *)self setTapStyleNoise:v30];
 
-  v31 = [v53 objectForKeyedSubscript:@"tapNoiseSigma"];
+  v31 = [preferencesCopy objectForKeyedSubscript:@"tapNoiseSigma"];
   v32 = v31;
   if (v31 && ([v31 doubleValue], v33 > 0.0))
   {
@@ -621,7 +621,7 @@ LABEL_11:
   }
 
   [(TypistKeyboard *)self setTapSigma:v34];
-  v35 = [v53 objectForKeyedSubscript:@"tapNoiseBounds"];
+  v35 = [preferencesCopy objectForKeyedSubscript:@"tapNoiseBounds"];
   v36 = v35;
   if (v35 && ([v35 doubleValue], v37 > 0.0))
   {
@@ -634,10 +634,10 @@ LABEL_11:
   }
 
   [(TypistKeyboard *)self setTapBounds:v38];
-  v39 = [v53 objectForKeyedSubscript:@"P_ERRANT"];
+  v39 = [preferencesCopy objectForKeyedSubscript:@"P_ERRANT"];
   if (v39)
   {
-    v40 = [v53 objectForKeyedSubscript:@"P_ERRANT"];
+    v40 = [preferencesCopy objectForKeyedSubscript:@"P_ERRANT"];
     v41 = [TypistKeyboardUtilities validateProbability:v40];
     [(TypistKeyboard *)self setSwipeErrantProbability:v41];
   }
@@ -647,10 +647,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeErrantProbability:&unk_2880299A0];
   }
 
-  v42 = [v53 objectForKeyedSubscript:@"SIGMA_PIVOT"];
+  v42 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_PIVOT"];
   if (v42)
   {
-    v43 = [v53 objectForKeyedSubscript:@"SIGMA_PIVOT"];
+    v43 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_PIVOT"];
     [v43 doubleValue];
     if (v44 <= 0.0)
     {
@@ -659,7 +659,7 @@ LABEL_11:
 
     else
     {
-      v45 = [v53 objectForKeyedSubscript:@"SIGMA_PIVOT"];
+      v45 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_PIVOT"];
       [(TypistKeyboard *)self setSwipeErrantSigma:v45];
     }
   }
@@ -669,10 +669,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeErrantSigma:&unk_2880299A0];
   }
 
-  v46 = [v53 objectForKeyedSubscript:@"P_CONVEX"];
+  v46 = [preferencesCopy objectForKeyedSubscript:@"P_CONVEX"];
   if (v46)
   {
-    v47 = [v53 objectForKeyedSubscript:@"P_CONVEX"];
+    v47 = [preferencesCopy objectForKeyedSubscript:@"P_CONVEX"];
     v48 = [TypistKeyboardUtilities validateProbability:v47];
     [(TypistKeyboard *)self setSwipeConvexProbability:v48];
   }
@@ -682,10 +682,10 @@ LABEL_11:
     [(TypistKeyboard *)self setSwipeConvexProbability:&unk_2880299A0];
   }
 
-  v49 = [v53 objectForKeyedSubscript:@"SIGMA_CONVEX"];
+  v49 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_CONVEX"];
   if (v49)
   {
-    v50 = [v53 objectForKeyedSubscript:@"SIGMA_CONVEX"];
+    v50 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_CONVEX"];
     [v50 doubleValue];
     if (v51 <= 0.0)
     {
@@ -694,7 +694,7 @@ LABEL_11:
 
     else
     {
-      v52 = [v53 objectForKeyedSubscript:@"SIGMA_CONVEX"];
+      v52 = [preferencesCopy objectForKeyedSubscript:@"SIGMA_CONVEX"];
       [(TypistKeyboard *)self setSwipeConvexSigma:v52];
     }
   }
@@ -705,12 +705,12 @@ LABEL_11:
   }
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
   v214[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  infoCopy = info;
+  optionsCopy = options;
+  v8 = infoCopy;
   v9 = [v8 rangeOfString:@";ml="];
   v10 = v8;
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -750,11 +750,11 @@ LABEL_11:
     v21 = [v19 objectAtIndexedSubscript:0];
     [(TypistKeyboard *)self setLayoutName:v21];
 
-    v22 = [(TypistKeyboard *)self layoutName];
-    v203 = [v22 containsString:@"_"];
+    layoutName = [(TypistKeyboard *)self layoutName];
+    v203 = [layoutName containsString:@"_"];
 
-    v23 = [(TypistKeyboard *)self layoutName];
-    [v23 componentsSeparatedByString:@"_"];
+    layoutName2 = [(TypistKeyboard *)self layoutName];
+    [layoutName2 componentsSeparatedByString:@"_"];
     v25 = v24 = v20;
     [v25 objectAtIndexedSubscript:0];
     v27 = v26 = self;
@@ -763,14 +763,14 @@ LABEL_11:
     self = v26;
     v20 = v24;
 
-    v28 = [(TypistKeyboard *)v26 layoutName];
-    v29 = [v28 componentsSeparatedByString:@"_"];
+    layoutName3 = [(TypistKeyboard *)v26 layoutName];
+    v29 = [layoutName3 componentsSeparatedByString:@"_"];
     v30 = [v29 objectAtIndexedSubscript:v203];
     [(TypistKeyboard *)self setRegionCode:v30];
   }
 
-  v31 = [(TypistKeyboard *)self keyboardID];
-  v32 = [v31 componentsSeparatedByString:@"sw="];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  v32 = [keyboardID componentsSeparatedByString:@"sw="];
   v33 = [v32 objectAtIndexedSubscript:1];
 
   v132 = v33;
@@ -778,20 +778,20 @@ LABEL_11:
   v35 = [v34 objectAtIndexedSubscript:0];
   [(TypistKeyboard *)self setKeyboardSW:v35];
 
-  v36 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setTIPreferences:"setTIPreferences:", v7];
-  v191 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setKeyboardUISettings:"setKeyboardUISettings:", v7];
-  [(TypistKeyboard *)self _setKeyboardUserPreferences:v7];
+  optionsCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setTIPreferences:"setTIPreferences:", optionsCopy];
+  optionsCopy2 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData setKeyboardUISettings:"setKeyboardUISettings:", optionsCopy];
+  [(TypistKeyboard *)self _setKeyboardUserPreferences:optionsCopy];
   v37 = *MEMORY[0x277D6F928];
-  v192 = v36;
-  v38 = [v36 objectForKeyedSubscript:*MEMORY[0x277D6F928]];
-  LODWORD(v36) = [v38 BOOLValue];
+  v192 = optionsCopy;
+  v38 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x277D6F928]];
+  LODWORD(optionsCopy) = [v38 BOOLValue];
 
   v193 = v8;
   v135 = v11;
   v134 = v12;
   v133 = v20;
-  v137 = self;
-  if (v36)
+  selfCopy = self;
+  if (optionsCopy)
   {
     v39 = [TypistCandidateBar initWithTypistKeyboard:self];
     [(TypistKeyboard *)self setCandidatebar:v39];
@@ -802,59 +802,59 @@ LABEL_11:
     [(TypistKeyboard *)self setCandidatebar:0];
   }
 
-  v187 = [v7 objectForKeyedSubscript:@"keyboardList"];
-  v185 = [v7 objectForKeyedSubscript:@"targetApplication"];
-  v189 = [v7 objectForKeyedSubscript:@"appendKeyboard"];
-  v180 = [v7 objectForKeyedSubscript:@"perfConditions"];
-  v178 = [v7 objectForKeyedSubscript:@"preprocessing"];
+  v187 = [optionsCopy objectForKeyedSubscript:@"keyboardList"];
+  v185 = [optionsCopy objectForKeyedSubscript:@"targetApplication"];
+  v189 = [optionsCopy objectForKeyedSubscript:@"appendKeyboard"];
+  v180 = [optionsCopy objectForKeyedSubscript:@"perfConditions"];
+  v178 = [optionsCopy objectForKeyedSubscript:@"preprocessing"];
   v131 = *MEMORY[0x277D6F7C8];
-  v176 = [v7 objectForKeyedSubscript:?];
-  v174 = [v7 objectForKeyedSubscript:@"typeInterval"];
-  v172 = [v7 objectForKeyedSubscript:@"touchMajorRadius"];
-  v170 = [v7 objectForKeyedSubscript:@"fastTyping"];
+  v176 = [optionsCopy objectForKeyedSubscript:?];
+  v174 = [optionsCopy objectForKeyedSubscript:@"typeInterval"];
+  v172 = [optionsCopy objectForKeyedSubscript:@"touchMajorRadius"];
+  v170 = [optionsCopy objectForKeyedSubscript:@"fastTyping"];
   v130 = *MEMORY[0x277D6FA70];
-  v168 = [v7 objectForKeyedSubscript:?];
+  v168 = [optionsCopy objectForKeyedSubscript:?];
   v129 = *MEMORY[0x277D6FD18];
-  v166 = [v7 objectForKeyedSubscript:?];
-  v164 = [v7 objectForKeyedSubscript:@"flickTyping"];
-  v158 = [v7 objectForKeyedSubscript:@"prefersPopoverKeys"];
+  v166 = [optionsCopy objectForKeyedSubscript:?];
+  v164 = [optionsCopy objectForKeyedSubscript:@"flickTyping"];
+  v158 = [optionsCopy objectForKeyedSubscript:@"prefersPopoverKeys"];
   v198 = *MEMORY[0x277D6F7B8];
-  v156 = [v7 objectForKeyedSubscript:?];
+  v156 = [optionsCopy objectForKeyedSubscript:?];
   v197 = *MEMORY[0x277D6F7C0];
-  v162 = [v7 objectForKeyedSubscript:?];
+  v162 = [optionsCopy objectForKeyedSubscript:?];
   v196 = *MEMORY[0x277D6F820];
-  v154 = [v7 objectForKeyedSubscript:?];
+  v154 = [optionsCopy objectForKeyedSubscript:?];
   v195 = *MEMORY[0x277D6F920];
-  v152 = [v7 objectForKeyedSubscript:?];
+  v152 = [optionsCopy objectForKeyedSubscript:?];
   v194 = *MEMORY[0x277D6F818];
-  v150 = [v7 objectForKeyedSubscript:?];
-  v148 = [v7 objectForKeyedSubscript:v37];
+  v150 = [optionsCopy objectForKeyedSubscript:?];
+  v148 = [optionsCopy objectForKeyedSubscript:v37];
   v204 = *MEMORY[0x277D6F630];
-  v146 = [v7 objectForKeyedSubscript:?];
+  v146 = [optionsCopy objectForKeyedSubscript:?];
   v201 = *MEMORY[0x277D6FA88];
-  v160 = [v7 objectForKeyedSubscript:?];
+  v160 = [optionsCopy objectForKeyedSubscript:?];
   v199 = *MEMORY[0x277D6FA78];
-  v142 = [v7 objectForKeyedSubscript:?];
+  v142 = [optionsCopy objectForKeyedSubscript:?];
   v200 = *MEMORY[0x277D76AA8];
-  v140 = [v7 objectForKeyedSubscript:?];
+  v140 = [optionsCopy objectForKeyedSubscript:?];
   v182 = *MEMORY[0x277D6F7A0];
-  v144 = [v7 objectForKeyedSubscript:?];
-  v128 = [v7 objectForKeyedSubscript:@"LowerCaseKeyboard"];
-  v127 = [v7 objectForKeyedSubscript:@"usePredictionBar"];
-  v126 = [v7 objectForKeyedSubscript:@"dictation"];
+  v144 = [optionsCopy objectForKeyedSubscript:?];
+  v128 = [optionsCopy objectForKeyedSubscript:@"LowerCaseKeyboard"];
+  v127 = [optionsCopy objectForKeyedSubscript:@"usePredictionBar"];
+  v126 = [optionsCopy objectForKeyedSubscript:@"dictation"];
   v183 = *MEMORY[0x277D6FA80];
-  v139 = [v7 objectForKeyedSubscript:?];
+  v139 = [optionsCopy objectForKeyedSubscript:?];
   v184 = *MEMORY[0x277D6F640];
-  v125 = [v7 objectForKeyedSubscript:?];
-  v138 = [v7 objectForKeyedSubscript:@"tapNoiseStyle"];
-  v124 = [v7 objectForKeyedSubscript:@"FORCE_SPACE"];
-  v123 = [v7 objectForKeyedSubscript:@"ALPHA"];
-  v122 = [v7 objectForKeyedSubscript:@"SIGMA"];
-  v120 = [v7 objectForKeyedSubscript:@"P_PIVOT"];
-  v119 = [v7 objectForKeyedSubscript:@"P_ERRANT"];
-  v118 = [v7 objectForKeyedSubscript:@"SIGMA_PIVOT"];
-  v121 = [v7 objectForKeyedSubscript:@"P_CONVEX"];
-  v117 = [v7 objectForKeyedSubscript:@"SIGMA_CONVEX"];
+  v125 = [optionsCopy objectForKeyedSubscript:?];
+  v138 = [optionsCopy objectForKeyedSubscript:@"tapNoiseStyle"];
+  v124 = [optionsCopy objectForKeyedSubscript:@"FORCE_SPACE"];
+  v123 = [optionsCopy objectForKeyedSubscript:@"ALPHA"];
+  v122 = [optionsCopy objectForKeyedSubscript:@"SIGMA"];
+  v120 = [optionsCopy objectForKeyedSubscript:@"P_PIVOT"];
+  v119 = [optionsCopy objectForKeyedSubscript:@"P_ERRANT"];
+  v118 = [optionsCopy objectForKeyedSubscript:@"SIGMA_PIVOT"];
+  v121 = [optionsCopy objectForKeyedSubscript:@"P_CONVEX"];
+  v117 = [optionsCopy objectForKeyedSubscript:@"SIGMA_CONVEX"];
   v116 = v144;
   v115 = v140;
   v114 = v142;
@@ -870,49 +870,49 @@ LABEL_11:
   TYLog(@"######## SPECIFIED KEYBOARD OPTIONS FOR %@\n%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@;%@=%@", v47, v48, v49, v50, v51, v52, v53, v8);
 
   v190 = [v192 objectForKeyedSubscript:v198];
-  v177 = [v190 BOOLValue];
+  bOOLValue = [v190 BOOLValue];
   v188 = [v192 objectForKeyedSubscript:v197];
-  v173 = [v188 BOOLValue];
+  bOOLValue2 = [v188 BOOLValue];
   v186 = [v192 objectForKeyedSubscript:v196];
-  v169 = [v186 BOOLValue];
+  bOOLValue3 = [v186 BOOLValue];
   v181 = [v192 objectForKeyedSubscript:v195];
-  v165 = [v181 BOOLValue];
+  bOOLValue4 = [v181 BOOLValue];
   v179 = [v192 objectForKeyedSubscript:v194];
-  v161 = [v179 BOOLValue];
+  bOOLValue5 = [v179 BOOLValue];
   v175 = [v192 objectForKeyedSubscript:v37];
-  v157 = [v175 BOOLValue];
+  bOOLValue6 = [v175 BOOLValue];
   v171 = [v192 objectForKeyedSubscript:v204];
-  v153 = [v171 BOOLValue];
+  bOOLValue7 = [v171 BOOLValue];
   v167 = [v192 objectForKeyedSubscript:v201];
-  v149 = [v167 BOOLValue];
+  bOOLValue8 = [v167 BOOLValue];
   v163 = [v192 objectForKeyedSubscript:v199];
-  v145 = [v163 BOOLValue];
-  v159 = [v191 objectForKeyedSubscript:v200];
-  v143 = [v159 BOOLValue];
+  bOOLValue9 = [v163 BOOLValue];
+  v159 = [optionsCopy2 objectForKeyedSubscript:v200];
+  bOOLValue10 = [v159 BOOLValue];
   v155 = [v192 objectForKeyedSubscript:v182];
-  v141 = [v155 BOOLValue];
-  v151 = [v191 objectForKeyedSubscript:@"LowerCaseKeyboard"];
-  v54 = [v151 BOOLValue];
-  v147 = [v191 objectForKeyedSubscript:@"dictation"];
-  v55 = [v147 BOOLValue];
+  bOOLValue11 = [v155 BOOLValue];
+  v151 = [optionsCopy2 objectForKeyedSubscript:@"LowerCaseKeyboard"];
+  bOOLValue12 = [v151 BOOLValue];
+  v147 = [optionsCopy2 objectForKeyedSubscript:@"dictation"];
+  bOOLValue13 = [v147 BOOLValue];
   v56 = [v192 objectForKeyedSubscript:v183];
-  v57 = [v56 BOOLValue];
+  bOOLValue14 = [v56 BOOLValue];
   v58 = [v192 objectForKeyedSubscript:v184];
-  v104 = [v58 BOOLValue];
-  v103 = v57;
-  v102 = v55;
-  v101 = v54;
+  bOOLValue15 = [v58 BOOLValue];
+  v103 = bOOLValue14;
+  v102 = bOOLValue13;
+  v101 = bOOLValue12;
   v100 = v201;
   TYLog(@"######## ACTUAL KEYBOARD AND ACCESSIBILITY SETTINGS ON SYSTEM\n%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d;%@=%d; \n########", v59, v60, v61, v62, v63, v64, v65, v198);
 
-  v66 = [v7 objectForKeyedSubscript:@"appendKeyboard"];
-  v67 = [v66 BOOLValue];
+  v66 = [optionsCopy objectForKeyedSubscript:@"appendKeyboard"];
+  bOOLValue16 = [v66 BOOLValue];
 
-  v68 = [(TypistKeyboard *)self keyboardID];
-  v212 = v68;
+  keyboardID2 = [(TypistKeyboard *)self keyboardID];
+  v212 = keyboardID2;
   v69 = [MEMORY[0x277CBEA60] arrayWithObjects:&v212 count:1];
 
-  v70 = [v7 objectForKeyedSubscript:@"keyboardList"];
+  v70 = [optionsCopy objectForKeyedSubscript:@"keyboardList"];
   if (!v70)
   {
     v78 = v69;
@@ -922,7 +922,7 @@ LABEL_11:
   }
 
   v71 = v70;
-  v72 = [v7 objectForKeyedSubscript:@"keyboardList"];
+  v72 = [optionsCopy objectForKeyedSubscript:@"keyboardList"];
   v73 = [v72 count];
 
   if (!v73)
@@ -930,15 +930,15 @@ LABEL_11:
     v78 = v69;
     v8 = v193;
     v11 = v135;
-    self = v137;
+    self = selfCopy;
 LABEL_28:
-    [(TypistKeyboard *)self activateWithKeyboardList:v78 appendKeyboard:v67];
+    [(TypistKeyboard *)self activateWithKeyboardList:v78 appendKeyboard:bOOLValue16];
     [(TypistKeyboard *)self setupSentenceBoundryStrings];
-    v87 = [(TypistKeyboard *)self _setupAutoShiftRegex];
-    [(TypistKeyboard *)self setAutoshiftRegex:v87];
+    _setupAutoShiftRegex = [(TypistKeyboard *)self _setupAutoShiftRegex];
+    [(TypistKeyboard *)self setAutoshiftRegex:_setupAutoShiftRegex];
 
-    v88 = [v7 objectForKeyedSubscript:@"preprocessing"];
-    if (!v88 || (v89 = v88, [v7 objectForKeyedSubscript:@"preprocessing"], v90 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend(v90, "BOOLValue"), v90, v89, v91))
+    v88 = [optionsCopy objectForKeyedSubscript:@"preprocessing"];
+    if (!v88 || (v89 = v88, [optionsCopy objectForKeyedSubscript:@"preprocessing"], v90 = objc_claimAutoreleasedReturnValue(), v91 = objc_msgSend(v90, "BOOLValue"), v90, v89, v91))
     {
       [(TypistKeyboard *)self preprocessing];
     }
@@ -947,10 +947,10 @@ LABEL_28:
     goto LABEL_32;
   }
 
-  v202 = v67;
-  v74 = [v7 objectForKeyedSubscript:@"keyboardList"];
-  v75 = [(TypistKeyboard *)v137 keyboardID];
-  v76 = [v74 arrayByAddingObject:v75];
+  v202 = bOOLValue16;
+  v74 = [optionsCopy objectForKeyedSubscript:@"keyboardList"];
+  keyboardID3 = [(TypistKeyboard *)selfCopy keyboardID];
+  v76 = [v74 arrayByAddingObject:keyboardID3];
 
   v77 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v76, "count")}];
   v205 = 0u;
@@ -1004,14 +1004,14 @@ LABEL_28:
     v8 = v193;
     v11 = v135;
     v12 = v134;
-    self = v137;
-    v67 = v202;
+    self = selfCopy;
+    bOOLValue16 = v202;
     goto LABEL_28;
   }
 
   v94 = MEMORY[0x277CCACA8];
   v95 = [TypistKeyboardUtilities getMobileGestalt:@"HWModelStr"];
-  v96 = [v94 stringWithFormat:@"CRITICAL WARNING: Some keyboards specified are not valid on this device (%@)", v95, v177, v197, v173, v196, v169, v195, v165, v194, v161, v109, v157, v204, v153, v100, v149, v199, v145, v200, v143, v182, v141, @"LowerCaseKeyboard", v101, @"dictation", v102, v183, v103, v184, v104, v105, v196, v106, v195, v107, v194, v108, v109, v110, v204, v111, v112, v113, v199, v114, v200, v115, v182, v116, @"LowerCaseKeyboard", v128, @"usePredictionBar", v127, @"dictation", v126, v183, v139, v184, v125, @"tapNoiseStyle"];
+  v96 = [v94 stringWithFormat:@"CRITICAL WARNING: Some keyboards specified are not valid on this device (%@)", v95, bOOLValue, v197, bOOLValue2, v196, bOOLValue3, v195, bOOLValue4, v194, bOOLValue5, v109, bOOLValue6, v204, bOOLValue7, v100, bOOLValue8, v199, bOOLValue9, v200, bOOLValue10, v182, bOOLValue11, @"LowerCaseKeyboard", v101, @"dictation", v102, v183, v103, v184, bOOLValue15, v105, v196, v106, v195, v107, v194, v108, v109, v110, v204, v111, v112, v113, v199, v114, v200, v115, v182, v116, @"LowerCaseKeyboard", v128, @"usePredictionBar", v127, @"dictation", v126, v183, v139, v184, v125, @"tapNoiseStyle"];
 
   v97 = MEMORY[0x277CCA9B8];
   v209 = *MEMORY[0x277CCA470];
@@ -1036,10 +1036,10 @@ LABEL_33:
   return v46;
 }
 
-- (id)_character_set_pattern_from_string:(id)a3
+- (id)_character_set_pattern_from_string:(id)_character_set_pattern_from_string
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAC68] escapedPatternForString:a3];
+  v4 = [MEMORY[0x277CCAC68] escapedPatternForString:_character_set_pattern_from_string];
   v5 = [v3 stringWithFormat:@"[%@]", v4];
 
   v6 = [v5 stringByReplacingOccurrencesOfString:@"-" withString:@"\\-"];
@@ -1047,21 +1047,21 @@ LABEL_33:
   return v6;
 }
 
-- (id)createAutoshiftRegularExpressionWithDelimitingCharacters:(id)a3 sentenceTrailingCharacters:(id)a4 sentencePrefixingCharacters:(id)a5
+- (id)createAutoshiftRegularExpressionWithDelimitingCharacters:(id)characters sentenceTrailingCharacters:(id)trailingCharacters sentencePrefixingCharacters:(id)prefixingCharacters
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  prefixingCharactersCopy = prefixingCharacters;
+  trailingCharactersCopy = trailingCharacters;
+  charactersCopy = characters;
   v11 = [(TypistKeyboard *)self _character_set_pattern_from_string:@"  "];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(TypistKeyboard *)self _character_set_pattern_from_string:v10];
+  v13 = [(TypistKeyboard *)self _character_set_pattern_from_string:charactersCopy];
 
-  v14 = [(TypistKeyboard *)self _character_set_pattern_from_string:v9];
+  v14 = [(TypistKeyboard *)self _character_set_pattern_from_string:trailingCharactersCopy];
 
   v15 = [v12 stringWithFormat:@"\\A|\\n|(?:%@){3}|((?:\\b\\w++(?:\\.\\w++)*)?(?:%@))(?:%@)*(?:%@)", v11, v13, v14, v11];
 
   v16 = MEMORY[0x277CCACA8];
-  v17 = [(TypistKeyboard *)self _character_set_pattern_from_string:v8];
+  v17 = [(TypistKeyboard *)self _character_set_pattern_from_string:prefixingCharactersCopy];
 
   v18 = [v16 stringWithFormat:@"(?:%@)(?:%@)*(?:%@)*\\Z", v15, v11, v17];
 
@@ -1077,58 +1077,58 @@ LABEL_33:
   return v19;
 }
 
-- (void)activateWithKeyboardList:(id)a3 appendKeyboard:(BOOL)a4
+- (void)activateWithKeyboardList:(id)list appendKeyboard:(BOOL)keyboard
 {
-  v4 = a4;
-  v19 = a3;
+  keyboardCopy = keyboard;
+  listCopy = list;
   v6 = +[TypistKeyboardData keyboardData];
-  if (v4)
+  if (keyboardCopy)
   {
-    v7 = [(objc_class *)v6 addKeyboards:v19];
+    v7 = [(objc_class *)v6 addKeyboards:listCopy];
   }
 
   else
   {
-    v8 = [(objc_class *)v6 setKeyboards:v19];
+    v8 = [(objc_class *)v6 setKeyboards:listCopy];
   }
 
-  v9 = [(TypistKeyboard *)self keyboardID];
-  TYLog(@"Switching keyboard to %@", v10, v11, v12, v13, v14, v15, v16, v9);
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  TYLog(@"Switching keyboard to %@", v10, v11, v12, v13, v14, v15, v16, keyboardID);
 
   v17 = +[TypistKeyboardData keyboardData];
-  v18 = [(TypistKeyboard *)self keyboardID];
-  [(objc_class *)v17 switchToKeyboard:v18];
+  keyboardID2 = [(TypistKeyboard *)self keyboardID];
+  [(objc_class *)v17 switchToKeyboard:keyboardID2];
 }
 
-- (id)generateKeyplaneSwitchTable:(id)a3
+- (id)generateKeyplaneSwitchTable:(id)table
 {
-  v3 = a3;
-  v4 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData generateKeyplaneSwitchTable:"generateKeyplaneSwitchTable:", v3];
+  tableCopy = table;
+  tableCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData generateKeyplaneSwitchTable:"generateKeyplaneSwitchTable:", tableCopy];
 
-  return v4;
+  return tableCopy;
 }
 
-- (id)generateKeyplaneSwitchTableFor10Key:(id)a3
+- (id)generateKeyplaneSwitchTableFor10Key:(id)key
 {
-  v3 = a3;
-  v4 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData generateKeyplaneSwitchTableFor10Key:"generateKeyplaneSwitchTableFor10Key:", v3];
+  keyCopy = key;
+  keyCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData generateKeyplaneSwitchTableFor10Key:"generateKeyplaneSwitchTableFor10Key:", keyCopy];
 
-  return v4;
+  return keyCopy;
 }
 
-- (void)setOneHandedPosition:(id)a3
+- (void)setOneHandedPosition:(id)position
 {
-  v26 = a3;
+  positionCopy = position;
   TYLog(@"######## SETTING ONE HANDED (REACHABLE) KEYBOARD", v4, v5, v6, v7, v8, v9, v10, v24);
   v11 = +[TypistKeyboardUtilities getUIInterfaceOrientation];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  if ([v12 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     goto LABEL_6;
   }
 
-  v13 = [MEMORY[0x277D759A0] mainScreen];
-  [v13 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   if (v14 <= 320.0)
   {
 
@@ -1139,7 +1139,7 @@ LABEL_6:
   if (v11 == 1)
   {
     v21 = +[TypistKeyboardData keyboardData];
-    v22 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v26 forKey:*MEMORY[0x277D6F7C8]];
+    v22 = [MEMORY[0x277CBEAC0] dictionaryWithObject:positionCopy forKey:*MEMORY[0x277D6F7C8]];
     v23 = [(objc_class *)v21 setKeyboardUISettings:v22];
 
     [(TypistKeyboard *)self preprocessing];
@@ -1151,10 +1151,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)moveFloatingKeyboardToPosition:(CGPoint)a3
+- (void)moveFloatingKeyboardToPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v34[2] = *MEMORY[0x277D85DE8];
   if ([(TypistKeyboard *)self isFloating])
   {
@@ -1189,8 +1189,8 @@ LABEL_8:
     v25 = [TypistKeyboardUtilities convertRecapCommandsFromListOfActions:v24];
     [TypistKeyboardUtilities launchRecap:v25];
 
-    v26 = [(TypistKeyboard *)self typeInterval];
-    [v26 doubleValue];
+    typeInterval = [(TypistKeyboard *)self typeInterval];
+    [typeInterval doubleValue];
     [TypistKeyboardUtilities waitFor:?];
 
     [(TypistKeyboard *)self preprocessing];
@@ -1205,14 +1205,14 @@ LABEL_8:
   }
 }
 
-- (id)keysDataForInputMode:(id)a3 andFileName:(id)a4
+- (id)keysDataForInputMode:(id)mode andFileName:(id)name
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 stringWithFormat:@"%@/System/Library/TextInput/TextInput_%@.bundle/%@", GSSystemRootDirectory(), v7, v6];
+  nameCopy = name;
+  modeCopy = mode;
+  nameCopy = [v5 stringWithFormat:@"%@/System/Library/TextInput/TextInput_%@.bundle/%@", GSSystemRootDirectory(), modeCopy, nameCopy];
 
-  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v8 options:1 error:0];
+  v9 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:nameCopy options:1 error:0];
   v10 = [MEMORY[0x277CCAC58] propertyListWithData:v9 options:0 format:0 error:0];
 
   return v10;
@@ -1220,36 +1220,36 @@ LABEL_8:
 
 - (BOOL)dictationSupported
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [TypistKeyboardUtilities isDictationSupported:v2];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  v3 = [TypistKeyboardUtilities isDictationSupported:keyboardID];
 
   return v3;
 }
 
-- (void)setTargetApplicationBundleIdentifier:(id)a3
+- (void)setTargetApplicationBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(TypistKeyboard *)self getTargetApplicationBundleIdentifier];
+  identifierCopy = identifier;
+  getTargetApplicationBundleIdentifier = [(TypistKeyboard *)self getTargetApplicationBundleIdentifier];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = identifierCopy;
+  if (getTargetApplicationBundleIdentifier != identifierCopy)
   {
-    [TypistKeyboardData setTargetApplicationBundleID:v6];
-    v5 = v6;
+    [TypistKeyboardData setTargetApplicationBundleID:identifierCopy];
+    v5 = identifierCopy;
   }
 }
 
 - (id)getShiftPlaneForDefaultPlane
 {
-  v3 = [(TypistKeyboard *)self planeSwitchTable];
-  v4 = [(TypistKeyboard *)self defaultPlaneName];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+  defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+  v5 = [planeSwitchTable objectForKeyedSubscript:defaultPlaneName];
   v6 = [v5 allKeysForObject:@"⇧"];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    v8 = v7;
+    v8 = lastObject;
   }
 
   else
@@ -1264,28 +1264,28 @@ LABEL_8:
 
 - (id)getShiftPlaneForAlternatePlane
 {
-  v3 = [(TypistKeyboard *)self planeSwitchTable];
-  v4 = [(TypistKeyboard *)self defaultPlaneName];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+  defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+  v5 = [planeSwitchTable objectForKeyedSubscript:defaultPlaneName];
   v6 = [v5 allKeysForObject:@"🔤"];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  if (v7)
+  if (lastObject)
   {
-    v8 = [(TypistKeyboard *)self planeSwitchTable];
-    v9 = [v8 objectForKeyedSubscript:v7];
+    planeSwitchTable2 = [(TypistKeyboard *)self planeSwitchTable];
+    v9 = [planeSwitchTable2 objectForKeyedSubscript:lastObject];
     v10 = [v9 allKeysForObject:@"⇧"];
-    v11 = [v10 lastObject];
+    lastObject2 = [v10 lastObject];
   }
 
   else
   {
-    v11 = 0;
+    lastObject2 = 0;
   }
 
-  if (v11)
+  if (lastObject2)
   {
-    v12 = v11;
+    v12 = lastObject2;
   }
 
   else
@@ -1301,23 +1301,23 @@ LABEL_8:
 - (id)getAlternatePlanesForDefaultPlane
 {
   v3 = objc_opt_new();
-  v4 = [(TypistKeyboard *)self planeSwitchTable];
-  v5 = [(TypistKeyboard *)self defaultPlaneName];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+  defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+  v6 = [planeSwitchTable objectForKeyedSubscript:defaultPlaneName];
   v7 = [v6 allKeysForObject:@"🔤"];
-  v8 = [v7 lastObject];
+  lastObject = [v7 lastObject];
 
-  if (v8)
+  if (lastObject)
   {
-    [v3 addObject:v8];
-    v9 = [(TypistKeyboard *)self planeSwitchTable];
-    v10 = [v9 objectForKeyedSubscript:v8];
+    [v3 addObject:lastObject];
+    planeSwitchTable2 = [(TypistKeyboard *)self planeSwitchTable];
+    v10 = [planeSwitchTable2 objectForKeyedSubscript:lastObject];
     v11 = [v10 allKeysForObject:@"⇧"];
-    v12 = [v11 lastObject];
+    lastObject2 = [v11 lastObject];
 
-    if (v12)
+    if (lastObject2)
     {
-      [v3 addObject:v12];
+      [v3 addObject:lastObject2];
     }
 
     v13 = v3;
@@ -1352,17 +1352,17 @@ LABEL_8:
   }
 
   v8 = +[TypistKeyboardData keyboardData];
-  v9 = [(TypistKeyboard *)self defaultPlaneName];
-  [(objc_class *)v8 switchToPlane:v9];
+  defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+  [(objc_class *)v8 switchToPlane:defaultPlaneName];
 
   [TypistKeyboardUtilities waitFor:0.2];
 }
 
-- (id)changeKeyNameToGenericCharacter:(id)a3
+- (id)changeKeyNameToGenericCharacter:(id)character
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [v4 containsString:@"space-key"];
+  characterCopy = character;
+  lowercaseString = [characterCopy lowercaseString];
+  v5 = [lowercaseString containsString:@"space-key"];
 
   if (v5)
   {
@@ -1371,8 +1371,8 @@ LABEL_8:
 
   else
   {
-    v7 = [v3 lowercaseString];
-    v8 = [v7 containsString:@"return-key"];
+    lowercaseString2 = [characterCopy lowercaseString];
+    v8 = [lowercaseString2 containsString:@"return-key"];
 
     if (v8)
     {
@@ -1381,8 +1381,8 @@ LABEL_8:
 
     else
     {
-      v9 = [v3 lowercaseString];
-      v10 = [v9 containsString:@"delete"];
+      lowercaseString3 = [characterCopy lowercaseString];
+      v10 = [lowercaseString3 containsString:@"delete"];
 
       if (v10)
       {
@@ -1391,8 +1391,8 @@ LABEL_8:
 
       else
       {
-        v11 = [v3 lowercaseString];
-        v12 = [v11 containsString:@"international"];
+        lowercaseString4 = [characterCopy lowercaseString];
+        v12 = [lowercaseString4 containsString:@"international"];
 
         if (v12)
         {
@@ -1401,8 +1401,8 @@ LABEL_8:
 
         else
         {
-          v13 = [v3 lowercaseString];
-          v14 = [v13 containsString:@"writeboard-key"];
+          lowercaseString5 = [characterCopy lowercaseString];
+          v14 = [lowercaseString5 containsString:@"writeboard-key"];
 
           if (v14)
           {
@@ -1411,8 +1411,8 @@ LABEL_8:
 
           else
           {
-            v15 = [v3 lowercaseString];
-            v16 = [v15 containsString:@"shift"];
+            lowercaseString6 = [characterCopy lowercaseString];
+            v16 = [lowercaseString6 containsString:@"shift"];
 
             if (v16)
             {
@@ -1421,8 +1421,8 @@ LABEL_8:
 
             else
             {
-              v17 = [v3 lowercaseString];
-              v18 = [v17 containsString:@"tab-key"];
+              lowercaseString7 = [characterCopy lowercaseString];
+              v18 = [lowercaseString7 containsString:@"tab-key"];
 
               if (v18)
               {
@@ -1431,8 +1431,8 @@ LABEL_8:
 
               else
               {
-                v19 = [v3 lowercaseString];
-                v20 = [v19 containsString:@"more-key"];
+                lowercaseString8 = [characterCopy lowercaseString];
+                v20 = [lowercaseString8 containsString:@"more-key"];
 
                 if (v20)
                 {
@@ -1441,8 +1441,8 @@ LABEL_8:
 
                 else
                 {
-                  v21 = [v3 lowercaseString];
-                  v22 = [v21 containsString:@"dictation"];
+                  lowercaseString9 = [characterCopy lowercaseString];
+                  v22 = [lowercaseString9 containsString:@"dictation"];
 
                   if (v22)
                   {
@@ -1451,8 +1451,8 @@ LABEL_8:
 
                   else
                   {
-                    v23 = [v3 lowercaseString];
-                    v24 = [v23 containsString:@"undo"];
+                    lowercaseString10 = [characterCopy lowercaseString];
+                    v24 = [lowercaseString10 containsString:@"undo"];
 
                     if (v24)
                     {
@@ -1461,8 +1461,8 @@ LABEL_8:
 
                     else
                     {
-                      v25 = [v3 lowercaseString];
-                      v26 = [v25 containsString:@"redo"];
+                      lowercaseString11 = [characterCopy lowercaseString];
+                      v26 = [lowercaseString11 containsString:@"redo"];
 
                       if (v26)
                       {
@@ -1487,11 +1487,11 @@ LABEL_8:
   return v6;
 }
 
-- (CGPoint)calculateCoordinatesForFlickGesture:(CGPoint)a3 direction:(id)a4 offset:(float)a5
+- (CGPoint)calculateCoordinatesForFlickGesture:(CGPoint)gesture direction:(id)direction offset:(float)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = gesture.y;
+  x = gesture.x;
+  directionCopy = direction;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
@@ -1502,8 +1502,8 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __71__TypistKeyboard_calculateCoordinatesForFlickGesture_direction_offset___block_invoke;
   v14[3] = &unk_279DF47C8;
-  v9 = v8;
-  v17 = a5;
+  v9 = directionCopy;
+  offsetCopy = offset;
   v15 = v9;
   v16 = &v18;
   [TypistKeyboardUtilities runOnMainThread:v14];
@@ -1589,37 +1589,37 @@ LABEL_15:
   *(v10 + 40) = v11;
 }
 
-- (id)addKeyboardPopupKeys:(id)a3 inPlane:(id)a4 addTo:(id)a5 keyplaneKeycaps:(id)a6
+- (id)addKeyboardPopupKeys:(id)keys inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData addKeyboardPopupKeys:"addKeyboardPopupKeys:keys:inPlane:addTo:keyplaneKeycaps:" keys:self inPlane:v13 addTo:v12 keyplaneKeycaps:v11, v10];
+  keycapsCopy = keycaps;
+  toCopy = to;
+  planeCopy = plane;
+  keysCopy = keys;
+  keycapsCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData addKeyboardPopupKeys:"addKeyboardPopupKeys:keys:inPlane:addTo:keyplaneKeycaps:" keys:self inPlane:keysCopy addTo:planeCopy keyplaneKeycaps:toCopy, keycapsCopy];
 
-  return v14;
+  return keycapsCopy;
 }
 
-- (BOOL)_isPlaneControlKey:(id)a3
+- (BOOL)_isPlaneControlKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"⇧"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @" ") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"⌫") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"🔤") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"🌐") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"⇪"))
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"⇧"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @" ") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"⌫") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"🔤") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"🌐") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"⇪"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"⏎"];
+    v4 = [keyCopy isEqualToString:@"⏎"];
   }
 
   return v4;
 }
 
-- (CGPoint)_guardAgainstOffScreenPoint:(CGPoint)a3
+- (CGPoint)_guardAgainstOffScreenPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   GSMainScreenPointSize();
   v7 = 0.0;
   if (x >= 0.0)
@@ -1652,13 +1652,13 @@ LABEL_15:
   return result;
 }
 
-- (CGPoint)_determinePointBetween:(CGPoint)a3 nextPoint:(CGPoint)a4
+- (CGPoint)_determinePointBetween:(CGPoint)between nextPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  [TypistKeyboardUtilities generateGaussianPointWithMean:a3.x andSigma:a3.y, 5.0];
+  y = point.y;
+  x = point.x;
+  v6 = between.y;
+  v7 = between.x;
+  [TypistKeyboardUtilities generateGaussianPointWithMean:between.x andSigma:between.y, 5.0];
   v10 = x - v7;
   if (v10 >= 0.0)
   {
@@ -1708,41 +1708,41 @@ LABEL_12:
   return result;
 }
 
-- (id)_generateArgumentList:(id)a3
+- (id)_generateArgumentList:(id)list
 {
   v96[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self swipeAlpha];
-  [v5 doubleValue];
+  listCopy = list;
+  swipeAlpha = [(TypistKeyboard *)self swipeAlpha];
+  [swipeAlpha doubleValue];
   v83 = v6;
 
-  v7 = [(TypistKeyboard *)self swipeSigma];
-  [v7 doubleValue];
+  swipeSigma = [(TypistKeyboard *)self swipeSigma];
+  [swipeSigma doubleValue];
   v9 = v8;
 
-  v10 = [(TypistKeyboard *)self swipePivotProbability];
-  [v10 doubleValue];
+  swipePivotProbability = [(TypistKeyboard *)self swipePivotProbability];
+  [swipePivotProbability doubleValue];
   v88 = v11;
 
-  v12 = [(TypistKeyboard *)self swipeErrantProbability];
-  [v12 doubleValue];
+  swipeErrantProbability = [(TypistKeyboard *)self swipeErrantProbability];
+  [swipeErrantProbability doubleValue];
   v87 = v13;
 
-  v14 = [(TypistKeyboard *)self swipeErrantSigma];
-  [v14 doubleValue];
+  swipeErrantSigma = [(TypistKeyboard *)self swipeErrantSigma];
+  [swipeErrantSigma doubleValue];
   v86 = v15;
 
-  v16 = [(TypistKeyboard *)self swipeConvexProbability];
-  [v16 doubleValue];
+  swipeConvexProbability = [(TypistKeyboard *)self swipeConvexProbability];
+  [swipeConvexProbability doubleValue];
   v89 = v17;
 
-  v18 = [(TypistKeyboard *)self swipeConvexSigma];
-  [v18 doubleValue];
+  swipeConvexSigma = [(TypistKeyboard *)self swipeConvexSigma];
+  [swipeConvexSigma doubleValue];
   v85 = v19;
 
   v20 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:&stru_288014100];
   v21 = objc_opt_new();
-  if ([v4 count])
+  if ([listCopy count])
   {
     v22 = 0;
     v82 = 0.333333333;
@@ -1751,11 +1751,11 @@ LABEL_12:
     v79 = 0.333333333;
     do
     {
-      v23 = [v4 objectAtIndexedSubscript:{v22, *&v79, *&v80, *&v81, *&v82}];
+      v23 = [listCopy objectAtIndexedSubscript:{v22, *&v79, *&v80, *&v81, *&v82}];
       [v23 floatValue];
       v25 = v24;
 
-      v26 = [v4 objectAtIndexedSubscript:v22 + 1];
+      v26 = [listCopy objectAtIndexedSubscript:v22 + 1];
       [v26 floatValue];
       v28 = v27;
 
@@ -1774,7 +1774,7 @@ LABEL_12:
       v34 = [MEMORY[0x277CCAE60] valueWithCGPoint:?];
       [v21 addObject:v34];
 
-      if (v22 <= [v4 count] - 4 && objc_msgSend(v4, "count") >= 3)
+      if (v22 <= [listCopy count] - 4 && objc_msgSend(listCopy, "count") >= 3)
       {
         if (arc4random() / 4294967300.0 <= v87)
         {
@@ -1788,10 +1788,10 @@ LABEL_12:
 
         if (arc4random() / 4294967300.0 <= v88 && v22 != 0)
         {
-          v39 = [v4 objectAtIndexedSubscript:v22 + 2];
+          v39 = [listCopy objectAtIndexedSubscript:v22 + 2];
           [v39 floatValue];
           v41 = v40;
-          v42 = [v4 objectAtIndexedSubscript:v22 + 3];
+          v42 = [listCopy objectAtIndexedSubscript:v22 + 3];
           [v42 floatValue];
           v44 = v43;
 
@@ -1805,10 +1805,10 @@ LABEL_12:
 
         if (arc4random() / 4294967300.0 <= v89)
         {
-          v48 = [v4 objectAtIndexedSubscript:v22 + 2];
+          v48 = [listCopy objectAtIndexedSubscript:v22 + 2];
           [v48 floatValue];
           v50 = v49;
-          v51 = [v4 objectAtIndexedSubscript:v22 + 3];
+          v51 = [listCopy objectAtIndexedSubscript:v22 + 3];
           [v51 floatValue];
           v53 = v52;
 
@@ -1839,7 +1839,7 @@ LABEL_12:
         }
       }
 
-      if (v22 == [v4 count] - 2)
+      if (v22 == [listCopy count] - 2)
       {
         [TypistKeyboardUtilities generateGaussianPointWithMean:v25 andSigma:v28, v9];
         [(TypistKeyboard *)self _guardAgainstOffScreenPoint:?];
@@ -1850,7 +1850,7 @@ LABEL_12:
       v22 += 2;
     }
 
-    while (v22 < [v4 count]);
+    while (v22 < [listCopy count]);
   }
 
   v66 = 1.0 / +[TypistKeyboardUtilities touchScanRate];
@@ -1881,9 +1881,9 @@ LABEL_12:
   v90[0] = @"action";
   v90[1] = @"time";
   v91[0] = @"wait";
-  v73 = [(TypistKeyboard *)self typeInterval];
-  v74 = [v73 stringValue];
-  v91[1] = v74;
+  typeInterval = [(TypistKeyboard *)self typeInterval];
+  stringValue = [typeInterval stringValue];
+  v91[1] = stringValue;
   v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:2];
   v94[1] = v75;
   v76 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
@@ -1893,33 +1893,33 @@ LABEL_12:
   return v76;
 }
 
-- (id)generateSwipeStream:(id)a3
+- (id)generateSwipeStream:(id)stream
 {
   v219[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  streamCopy = stream;
+  v11 = streamCopy;
+  if (streamCopy)
   {
-    TYLogl(OS_LOG_TYPE_DEBUG, @"Generating swipe stream for input: [%@]", v5, v6, v7, v8, v9, v10, v4);
+    TYLogl(OS_LOG_TYPE_DEBUG, @"Generating swipe stream for input: [%@]", v5, v6, v7, v8, v9, v10, streamCopy);
     [TypistKeyboardUtilities waitFor:0.1];
     v194 = +[TypistKeyboardUtilities formattedKeyplaneName];
     v12 = objc_opt_new();
     v218[0] = @"action";
     v218[1] = @"time";
     v219[0] = @"wait";
-    v13 = [(TypistKeyboard *)self typeInterval];
-    v14 = [v13 stringValue];
-    v219[1] = v14;
+    typeInterval = [(TypistKeyboard *)self typeInterval];
+    stringValue = [typeInterval stringValue];
+    v219[1] = stringValue;
     v187 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v219 forKeys:v218 count:2];
 
-    v176 = [(TypistKeyboard *)self swipeForceSpace];
+    swipeForceSpace = [(TypistKeyboard *)self swipeForceSpace];
     v15 = objc_opt_new();
     if ([v11 length])
     {
       v16 = 0;
       v190 = 1;
       v192 = v12;
-      v182 = self;
+      selfCopy = self;
       v186 = v15;
       while (1)
       {
@@ -1992,11 +1992,11 @@ LABEL_12:
         {
           v34 = v21 - 1;
           v35 = v32;
-          self = v182;
+          self = selfCopy;
           v12 = v192;
           while (1)
           {
-            v36 = [(TypistKeyboard *)v182 findKeyOnAnyPlane:v35];
+            v36 = [(TypistKeyboard *)selfCopy findKeyOnAnyPlane:v35];
 
             if (v36)
             {
@@ -2022,7 +2022,7 @@ LABEL_12:
         else
         {
           v37 = v32;
-          self = v182;
+          self = selfCopy;
           v12 = v192;
         }
 
@@ -2056,8 +2056,8 @@ LABEL_26:
         v42 = [(TypistKeyboard *)self getPostfixKey:v33];
 
         v43 = v42;
-        v44 = [(TypistKeyboard *)self keyPlanes];
-        v45 = [v44 objectForKeyedSubscript:v194];
+        keyPlanes = [(TypistKeyboard *)self keyPlanes];
+        v45 = [keyPlanes objectForKeyedSubscript:v194];
         v46 = [v45 objectForKeyedSubscript:v43];
         v47 = [v46 mutableCopy];
 
@@ -2148,14 +2148,14 @@ LABEL_98:
           v15 = v186;
           if (v113)
           {
-            v114 = [(TypistKeyboard *)self defaultPlaneName];
-            [(TypistKeyboard *)self getShiftedKeyPlaneName:v114];
+            defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+            [(TypistKeyboard *)self getShiftedKeyPlaneName:defaultPlaneName];
           }
 
           else
           {
-            v114 = [v48 objectForKeyedSubscript:@"plane"];
-            [(TypistKeyboard *)self getExpectedPlaneNameForKey:v43 currentPlane:v114];
+            defaultPlaneName = [v48 objectForKeyedSubscript:@"plane"];
+            [(TypistKeyboard *)self getExpectedPlaneNameForKey:v43 currentPlane:defaultPlaneName];
           }
           v178 = ;
 
@@ -2186,9 +2186,9 @@ LABEL_98:
             if (v134)
             {
               v135 = MEMORY[0x277CBEB38];
-              v136 = [(TypistKeyboard *)self keyPlanes];
+              keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
               v137 = [v48 objectForKeyedSubscript:@"plane"];
-              [v136 objectForKeyedSubscript:v137];
+              [keyPlanes2 objectForKeyedSubscript:v137];
               v139 = v138 = v38;
               v140 = [v189 objectForKeyedSubscript:@"basekey"];
               v141 = [v139 objectForKeyedSubscript:v140];
@@ -2229,7 +2229,7 @@ LABEL_98:
               v152 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v206 forKeys:v205 count:2];
               v153 = [v179 arrayByAddingObject:v152];
               v208 = v153;
-              v176 = 1;
+              swipeForceSpace = 1;
               v154 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v208 forKeys:&v207 count:1];
               [v192 addObject:v154];
 
@@ -2239,7 +2239,7 @@ LABEL_98:
 
             else
             {
-              v176 |= [(TypistKeyboard *)self swipeForceSpace];
+              swipeForceSpace |= [(TypistKeyboard *)self swipeForceSpace];
             }
 
             if (v195 == [v11 length] - 1)
@@ -2252,7 +2252,7 @@ LABEL_98:
               [v192 addObject:v165];
 
               [v15 removeAllObjects];
-              v176 = [(TypistKeyboard *)self swipeForceSpace];
+              swipeForceSpace = [(TypistKeyboard *)self swipeForceSpace];
               v190 = 0;
               v51 = v189;
             }
@@ -2283,9 +2283,9 @@ LABEL_98:
 
               if (v126)
               {
-                v127 = [(TypistKeyboard *)self keyPlanes];
+                keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
                 v128 = [v48 objectForKeyedSubscript:@"plane"];
-                v129 = [v127 objectForKeyedSubscript:v128];
+                v129 = [keyPlanes3 objectForKeyedSubscript:v128];
                 v130 = [v48 objectForKeyedSubscript:@"basekey"];
                 v131 = [v129 objectForKeyedSubscript:v130];
 
@@ -2305,9 +2305,9 @@ LABEL_98:
                 if (v156)
                 {
                   v157 = MEMORY[0x277CBEB38];
-                  v158 = [(TypistKeyboard *)self keyPlanes];
+                  keyPlanes4 = [(TypistKeyboard *)self keyPlanes];
                   v159 = [v48 objectForKeyedSubscript:@"plane"];
-                  v160 = [v158 objectForKeyedSubscript:v159];
+                  v160 = [keyPlanes4 objectForKeyedSubscript:v159];
                   v161 = [v189 objectForKeyedSubscript:@"basekey"];
                   v162 = [v160 objectForKeyedSubscript:v161];
                   v163 = [v157 dictionaryWithDictionary:v162];
@@ -2321,9 +2321,9 @@ LABEL_98:
 
                 else
                 {
-                  v166 = [(TypistKeyboard *)self keyPlanes];
+                  keyPlanes5 = [(TypistKeyboard *)self keyPlanes];
                   v167 = [v48 objectForKeyedSubscript:@"plane"];
-                  v168 = [v166 objectForKeyedSubscript:v167];
+                  v168 = [keyPlanes5 objectForKeyedSubscript:v167];
                   v169 = [v48 objectForKeyedSubscript:@"basekey"];
                   v170 = [v168 objectForKeyedSubscript:v169];
 
@@ -2348,7 +2348,7 @@ LABEL_98:
             [v192 addObject:v171];
 
             [v15 removeAllObjects];
-            v176 = 1;
+            swipeForceSpace = 1;
             v190 = 1;
           }
 
@@ -2361,9 +2361,9 @@ LABEL_131:
           goto LABEL_132;
         }
 
-        v50 = [(TypistKeyboard *)self swipeForceSpace];
+        swipeForceSpace2 = [(TypistKeyboard *)self swipeForceSpace];
 
-        if (v50)
+        if (swipeForceSpace2)
         {
           goto LABEL_40;
         }
@@ -2382,13 +2382,13 @@ LABEL_131:
 
         v54 = 0;
         v190 = 1;
-        if (v176)
+        if (swipeForceSpace)
         {
           v179 = 0;
           goto LABEL_48;
         }
 
-        v176 = 0;
+        swipeForceSpace = 0;
         v15 = v186;
 LABEL_132:
 
@@ -2403,8 +2403,8 @@ LABEL_133:
       }
 
       v55 = [@"⊎" stringByAppendingString:v43];
-      v56 = [(TypistKeyboard *)self keyPlanes];
-      v57 = [v56 objectForKeyedSubscript:v194];
+      keyPlanes6 = [(TypistKeyboard *)self keyPlanes];
+      v57 = [keyPlanes6 objectForKeyedSubscript:v194];
       v184 = v55;
       v58 = [v57 objectForKeyedSubscript:v55];
       v59 = [v58 mutableCopy];
@@ -2443,15 +2443,15 @@ LABEL_97:
 
         if (v78)
         {
-          v79 = [v193 lowercaseString];
+          lowercaseString = [v193 lowercaseString];
 
-          v188 = [(TypistKeyboard *)self keyPlanes];
-          v177 = [v188 objectForKeyedSubscript:v194];
-          v80 = [v177 objectForKeyedSubscript:v79];
+          keyPlanes7 = [(TypistKeyboard *)self keyPlanes];
+          v177 = [keyPlanes7 objectForKeyedSubscript:v194];
+          v80 = [v177 objectForKeyedSubscript:lowercaseString];
           v48 = [v80 mutableCopy];
 
           v81 = 0;
-          v43 = v79;
+          v43 = lowercaseString;
           v60 = v184;
 LABEL_96:
           v179 = v81;
@@ -2460,7 +2460,7 @@ LABEL_96:
         }
       }
 
-      v188 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", v194];
+      keyPlanes7 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", v194];
       v82 = +[TypistKeyboardData keyboardData];
       v83 = [v51 objectForKeyedSubscript:@"plane"];
       if ([v83 isEqualToString:&stru_288014100])
@@ -2476,15 +2476,15 @@ LABEL_96:
 
       v48 = v51;
       v177 = v84;
-      if ([v188 isAlphabeticPlane] && objc_msgSend(v188, "isShiftKeyplane") && objc_msgSend(v84, "isAlphabeticPlane") && (objc_msgSend(v84, "isShiftKeyplane") & 1) == 0 && (!objc_msgSend(v188, "isAlphabeticPlane") || !objc_msgSend(v188, "isShiftKeyplane") || !objc_msgSend(v84, "isAlphabeticPlane") || objc_msgSend(v84, "isShiftKeyplane")))
+      if ([keyPlanes7 isAlphabeticPlane] && objc_msgSend(keyPlanes7, "isShiftKeyplane") && objc_msgSend(v84, "isAlphabeticPlane") && (objc_msgSend(v84, "isShiftKeyplane") & 1) == 0 && (!objc_msgSend(keyPlanes7, "isAlphabeticPlane") || !objc_msgSend(keyPlanes7, "isShiftKeyplane") || !objc_msgSend(v84, "isAlphabeticPlane") || objc_msgSend(v84, "isShiftKeyplane")))
       {
-        if (![v188 isAlphabeticPlane])
+        if (![keyPlanes7 isAlphabeticPlane])
         {
           goto LABEL_87;
         }
 
         v60 = v184;
-        if (([v188 isShiftKeyplane] & 1) != 0 || !objc_msgSend(v84, "isAlphabeticPlane"))
+        if (([keyPlanes7 isShiftKeyplane] & 1) != 0 || !objc_msgSend(v84, "isAlphabeticPlane"))
         {
           v81 = 0;
           v190 = 1;
@@ -2542,8 +2542,8 @@ LABEL_92:
         goto LABEL_96;
       }
 
-      v191 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-      if ([v191 characterIsMember:{objc_msgSend(v11, "characterAtIndex:", v195)}])
+      uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+      if ([uppercaseLetterCharacterSet characterIsMember:{objc_msgSend(v11, "characterAtIndex:", v195)}])
       {
         v180 = v81;
         v91 = [v11 substringToIndex:v195];
@@ -2554,8 +2554,8 @@ LABEL_92:
         {
           v94 = v180;
           v95 = [v180 count];
-          v96 = [v180 lastObject];
-          v97 = [v96 objectForKeyedSubscript:@"plane"];
+          lastObject = [v180 lastObject];
+          v97 = [lastObject objectForKeyedSubscript:@"plane"];
           v98 = [v97 containsString:@"small-letter"];
 
           if (v98)
@@ -2579,8 +2579,8 @@ LABEL_72:
           if (v95 >= 2)
           {
             v94 = v180;
-            v191 = [v180 lastObject];
-            v102 = [v191 objectForKeyedSubscript:@"action"];
+            uppercaseLetterCharacterSet = [v180 lastObject];
+            v102 = [uppercaseLetterCharacterSet objectForKeyedSubscript:@"action"];
             if ([v102 isEqualToString:@"wait"])
             {
               v103 = [v180 objectAtIndexedSubscript:v101];
@@ -2602,7 +2602,7 @@ LABEL_72:
 LABEL_71:
             v43 = v193;
             v60 = v184;
-            v100 = v191;
+            v100 = uppercaseLetterCharacterSet;
             goto LABEL_72;
           }
         }
@@ -2635,12 +2635,12 @@ LABEL_134:
   return v12;
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
   v227 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isEqualToString:&stru_288014100] & 1) != 0)
+  streamCopy = stream;
+  v5 = streamCopy;
+  if (!streamCopy || ([streamCopy isEqualToString:&stru_288014100] & 1) != 0)
   {
     v188 = 0;
     goto LABEL_155;
@@ -2654,7 +2654,7 @@ LABEL_134:
     v205 = 0;
     v12 = 0;
     v186 = &stru_288014100;
-    v208 = self;
+    selfCopy = self;
     while (1)
     {
       v13 = [v5 substringWithRange:{v12, 1}];
@@ -2696,7 +2696,7 @@ LABEL_11:
 
       v20 = v16 - v18;
       v21 = [v5 substringWithRange:{v19, v16 - v18}];
-      v22 = [(TypistKeyboard *)v208 _multiCharacterTrailForGrapheme:v21];
+      v22 = [(TypistKeyboard *)selfCopy _multiCharacterTrailForGrapheme:v21];
       obj = v22;
       if (v22)
       {
@@ -2745,10 +2745,10 @@ LABEL_11:
       {
         v33 = v20 - 1;
         v34 = v31;
-        v35 = v208;
+        v35 = selfCopy;
         while (1)
         {
-          v36 = [(TypistKeyboard *)v208 findKeyOnAnyPlane:v34];
+          v36 = [(TypistKeyboard *)selfCopy findKeyOnAnyPlane:v34];
 
           if (v36)
           {
@@ -2774,7 +2774,7 @@ LABEL_11:
       else
       {
         v37 = v31;
-        v35 = v208;
+        v35 = selfCopy;
       }
 
 LABEL_33:
@@ -2790,8 +2790,8 @@ LABEL_33:
       {
         if ([(__CFString *)v32 isEqualToString:@"⇪"])
         {
-          v40 = [(TypistKeyboard *)v35 keyPlanes];
-          v41 = [v40 objectForKeyedSubscript:v203];
+          keyPlanes = [(TypistKeyboard *)v35 keyPlanes];
+          v41 = [keyPlanes objectForKeyedSubscript:v203];
           v42 = [v41 objectForKeyedSubscript:v32];
 
           if (v42)
@@ -2858,12 +2858,12 @@ LABEL_35:
           goto LABEL_68;
         }
 
-        v52 = [(__CFString *)v198 lowercaseString];
+        lowercaseString = [(__CFString *)v198 lowercaseString];
 
-        v199 = [(TypistKeyboard *)v35 keyPlanes];
-        v53 = [v199 objectForKeyedSubscript:v203];
-        v54 = v52;
-        v55 = [v53 objectForKeyedSubscript:v52];
+        keyPlanes2 = [(TypistKeyboard *)v35 keyPlanes];
+        v53 = [keyPlanes2 objectForKeyedSubscript:v203];
+        v54 = lowercaseString;
+        v55 = [v53 objectForKeyedSubscript:lowercaseString];
         v56 = [v55 mutableCopy];
 
         v43 = v54;
@@ -2956,8 +2956,8 @@ LABEL_68:
           goto LABEL_83;
         }
 
-        v182 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-        if ([v182 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v46)}])
+        uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+        if ([uppercaseLetterCharacterSet characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v46)}])
         {
           v191 = v66;
           v67 = [v5 substringToIndex:v46];
@@ -2970,8 +2970,8 @@ LABEL_68:
           }
 
           v183 = [v191 count];
-          v70 = [v191 lastObject];
-          v71 = [v70 objectForKeyedSubscript:@"plane"];
+          lastObject = [v191 lastObject];
+          v71 = [lastObject objectForKeyedSubscript:@"plane"];
           v72 = [v71 containsString:@"small-letter"];
 
           if (v72)
@@ -2991,8 +2991,8 @@ LABEL_93:
           }
 
           v66 = v191;
-          v81 = [v191 lastObject];
-          v184 = [v81 objectForKeyedSubscript:@"action"];
+          lastObject2 = [v191 lastObject];
+          v184 = [lastObject2 objectForKeyedSubscript:@"action"];
           if ([v184 isEqualToString:@"wait"])
           {
             v84 = [v191 objectAtIndexedSubscript:v83];
@@ -3011,7 +3011,7 @@ LABEL_82:
               if (!v66)
               {
 LABEL_83:
-                v35 = v208;
+                v35 = selfCopy;
                 goto LABEL_96;
               }
 
@@ -3026,8 +3026,8 @@ LABEL_94:
               v88 = [*(v39 + 2752) dictionaryWithObjects:v225 forKeys:v224 count:2];
               [(__CFString *)v197 addObject:v88];
 
-              v35 = v208;
-              [(TypistKeyboard *)v208 setIsCapsLockedState:0];
+              v35 = selfCopy;
+              [(TypistKeyboard *)selfCopy setIsCapsLockedState:0];
               v64 = v193;
 LABEL_95:
 
@@ -3063,8 +3063,8 @@ LABEL_96:
               if (v93)
               {
                 v94 = v43;
-                v95 = [(TypistKeyboard *)v35 defaultPlaneName];
-                v192 = [(TypistKeyboard *)v35 getShiftedKeyPlaneName:v95];
+                defaultPlaneName = [(TypistKeyboard *)v35 defaultPlaneName];
+                v192 = [(TypistKeyboard *)v35 getShiftedKeyPlaneName:defaultPlaneName];
                 v96 = v207;
               }
 
@@ -3082,8 +3082,8 @@ LABEL_96:
                 }
 
                 v96 = v207;
-                v95 = [v207 objectForKeyedSubscript:@"plane"];
-                v192 = [(TypistKeyboard *)v35 getExpectedPlaneNameForKey:v97 currentPlane:v95];
+                defaultPlaneName = [v207 objectForKeyedSubscript:@"plane"];
+                v192 = [(TypistKeyboard *)v35 getExpectedPlaneNameForKey:v97 currentPlane:defaultPlaneName];
               }
 
               v98 = +[TypistKeyboardData keyboardData];
@@ -3128,8 +3128,8 @@ LABEL_96:
 
                       if ([(TypistKeyboard *)v35 tapStyle]== 2)
                       {
-                        v146 = [(TypistKeyboard *)v35 tapBounds];
-                        [v146 doubleValue];
+                        tapBounds = [(TypistKeyboard *)v35 tapBounds];
+                        [tapBounds doubleValue];
                         v148 = v147;
 
                         [TypistKeyboardUtilities generateUniformPointWithMean:v106 andBounds:v108, v148, v148];
@@ -3138,8 +3138,8 @@ LABEL_96:
 
                       if ([(TypistKeyboard *)v35 tapStyle]== 3)
                       {
-                        v151 = [(TypistKeyboard *)v35 tapSigma];
-                        [v151 doubleValue];
+                        tapSigma = [(TypistKeyboard *)v35 tapSigma];
+                        [tapSigma doubleValue];
                         v153 = v152;
 
                         [TypistKeyboardUtilities generateGaussianPointWithMean:v106 andSigma:v108, v153];
@@ -3165,7 +3165,7 @@ LABEL_125:
                   [(__CFString *)v197 addObject:v96];
                 }
 
-                v129 = v208;
+                v129 = selfCopy;
               }
 
               else
@@ -3175,9 +3175,9 @@ LABEL_125:
 
                 if (v122)
                 {
-                  v123 = [(TypistKeyboard *)v35 keyPlanes];
+                  keyPlanes3 = [(TypistKeyboard *)v35 keyPlanes];
                   v124 = [v96 objectForKeyedSubscript:@"plane"];
-                  [v123 objectForKeyedSubscript:v124];
+                  [keyPlanes3 objectForKeyedSubscript:v124];
                   v126 = v125 = v96;
                   v127 = [v125 objectForKeyedSubscript:@"basekey"];
                   v128 = [v126 objectForKeyedSubscript:v127];
@@ -3198,9 +3198,9 @@ LABEL_125:
                   if (v132)
                   {
                     v133 = MEMORY[0x277CBEB38];
-                    v185 = [(TypistKeyboard *)v35 keyPlanes];
+                    keyPlanes4 = [(TypistKeyboard *)v35 keyPlanes];
                     v134 = [v96 objectForKeyedSubscript:@"plane"];
-                    [v185 objectForKeyedSubscript:v134];
+                    [keyPlanes4 objectForKeyedSubscript:v134];
                     v136 = v135 = v96;
                     v137 = [v135 objectForKeyedSubscript:@"basekey"];
                     v138 = [v136 objectForKeyedSubscript:v137];
@@ -3214,9 +3214,9 @@ LABEL_125:
 
                   else
                   {
-                    v140 = [(TypistKeyboard *)v35 keyPlanes];
+                    keyPlanes5 = [(TypistKeyboard *)v35 keyPlanes];
                     v141 = [v96 objectForKeyedSubscript:@"plane"];
-                    v142 = [v140 objectForKeyedSubscript:v141];
+                    v142 = [keyPlanes5 objectForKeyedSubscript:v141];
                     [v96 objectForKeyedSubscript:@"basekey"];
                     v144 = v143 = v96;
                     v145 = [v142 objectForKeyedSubscript:v144];
@@ -3238,21 +3238,21 @@ LABEL_125:
                   v222[0] = @"action";
                   v222[1] = @"time";
                   v223[0] = @"wait";
-                  v159 = [(TypistKeyboard *)v208 typeInterval];
-                  v160 = [v159 stringValue];
-                  v223[1] = v160;
+                  typeInterval = [(TypistKeyboard *)selfCopy typeInterval];
+                  stringValue = [typeInterval stringValue];
+                  v223[1] = stringValue;
                   v161 = [*(v39 + 2752) dictionaryWithObjects:v223 forKeys:v222 count:2];
                   [(__CFString *)v197 addObject:v161];
 
                   v162 = [v157 objectAtIndexedSubscript:v158];
                   v163 = [v162 objectForKeyedSubscript:@"type"];
-                  LODWORD(v160) = [v163 isEqualToString:@"gesture"];
+                  LODWORD(stringValue) = [v163 isEqualToString:@"gesture"];
 
-                  if (v160)
+                  if (stringValue)
                   {
-                    v164 = [(TypistKeyboard *)v208 keyPlanes];
+                    keyPlanes6 = [(TypistKeyboard *)selfCopy keyPlanes];
                     v165 = [v162 objectForKeyedSubscript:@"plane"];
-                    v166 = [v164 objectForKeyedSubscript:v165];
+                    v166 = [keyPlanes6 objectForKeyedSubscript:v165];
                     v167 = [v162 objectForKeyedSubscript:@"basekey"];
                     v168 = [v166 objectForKeyedSubscript:v167];
 
@@ -3269,19 +3269,19 @@ LABEL_125:
               }
 
               v80 = v207;
-              if ([(TypistKeyboard *)v208 fastTyping]|| ([(__CFString *)v202 isEqualToString:@"🔤"]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@"⇧"]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@" "]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@"⏎"]& 1) != 0)
+              if ([(TypistKeyboard *)selfCopy fastTyping]|| ([(__CFString *)v202 isEqualToString:@"🔤"]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@"⇧"]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@" "]& 1) != 0 || ([(__CFString *)v202 isEqualToString:@"⏎"]& 1) != 0)
               {
 LABEL_140:
                 v46 = v196;
-                if ((v194 | -[TypistKeyboard fastTyping](v208, "fastTyping")) & 1) != 0 || ([v207 objectForKeyedSubscript:@"plane"], v169 = objc_claimAutoreleasedReturnValue(), v170 = objc_msgSend(v192, "isEqualToString:", v169), v169, (v170))
+                if ((v194 | -[TypistKeyboard fastTyping](selfCopy, "fastTyping")) & 1) != 0 || ([v207 objectForKeyedSubscript:@"plane"], v169 = objc_claimAutoreleasedReturnValue(), v170 = objc_msgSend(v192, "isEqualToString:", v169), v169, (v170))
                 {
 LABEL_142:
                   v216[0] = @"action";
                   v216[1] = @"time";
                   v217[0] = @"wait";
-                  v171 = [(TypistKeyboard *)v208 typeInterval];
-                  v172 = [v171 stringValue];
-                  v217[1] = v172;
+                  typeInterval2 = [(TypistKeyboard *)selfCopy typeInterval];
+                  stringValue2 = [typeInterval2 stringValue];
+                  v217[1] = stringValue2;
                   v173 = [*(v39 + 2752) dictionaryWithObjects:v217 forKeys:v216 count:2];
                 }
 
@@ -3299,14 +3299,14 @@ LABEL_142:
               {
                 if (v194)
                 {
-                  [(TypistKeyboard *)v208 fastTyping];
+                  [(TypistKeyboard *)selfCopy fastTyping];
                   v46 = v196;
                   goto LABEL_142;
                 }
 
                 v175 = [v207 objectForKeyedSubscript:@"plane"];
-                v176 = [(TypistKeyboard *)v208 getShiftPlaneForDefaultPlane];
-                v177 = [v175 isEqualToString:v176];
+                getShiftPlaneForDefaultPlane = [(TypistKeyboard *)selfCopy getShiftPlaneForDefaultPlane];
+                v177 = [v175 isEqualToString:getShiftPlaneForDefaultPlane];
 
                 if (!v177)
                 {
@@ -3316,8 +3316,8 @@ LABEL_142:
                 v220[1] = @"plane";
                 v221[0] = @"waitfor";
                 v220[0] = @"action";
-                v178 = [(TypistKeyboard *)v208 defaultPlaneName];
-                v221[1] = v178;
+                defaultPlaneName2 = [(TypistKeyboard *)selfCopy defaultPlaneName];
+                v221[1] = defaultPlaneName2;
                 v173 = [*(v39 + 2752) dictionaryWithObjects:v221 forKeys:v220 count:2];
 
                 v46 = v196;
@@ -3355,7 +3355,7 @@ LABEL_92:
         else
         {
           v45 = v206;
-          v81 = v182;
+          lastObject2 = uppercaseLetterCharacterSet;
         }
 
         goto LABEL_94;
@@ -3386,29 +3386,29 @@ LABEL_155:
   return v188;
 }
 
-- (CGAffineTransform)_determineTransformationInFrame:(SEL)a3 segmentStart:(CGRect)a4 totalSegmentWidth:(double)a5 scale:(unint64_t)a6 characterHeight:(double)a7 characterWidth:(double)a8 dimensions:(double)a9 isLatex:(id)a10
+- (CGAffineTransform)_determineTransformationInFrame:(SEL)frame segmentStart:(CGRect)start totalSegmentWidth:(double)width scale:(unint64_t)scale characterHeight:(double)height characterWidth:(double)characterWidth dimensions:(double)dimensions isLatex:(id)self0
 {
   v11 = a11;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v21 = a10;
-  [v21 rotationBias];
+  height = start.size.height;
+  width = start.size.width;
+  y = start.origin.y;
+  x = start.origin.x;
+  latexCopy = latex;
+  [latexCopy rotationBias];
   if (v22 == 0.0)
   {
     v22 = 0.0;
   }
 
   v49 = v22;
-  v23 = [v21 primaryWritingDirection];
-  v24 = [v21 segmentWritingDirection];
+  primaryWritingDirection = [latexCopy primaryWritingDirection];
+  segmentWritingDirection = [latexCopy segmentWritingDirection];
   v25 = MEMORY[0x277CBF2C0];
   v26 = *(MEMORY[0x277CBF2C0] + 16);
   *&retstr->a = *MEMORY[0x277CBF2C0];
   *&retstr->c = v26;
   *&retstr->tx = *(v25 + 32);
-  if (v23 == 2)
+  if (primaryWritingDirection == 2)
   {
     v27 = width + x;
   }
@@ -3433,49 +3433,49 @@ LABEL_155:
   if (v30)
   {
     [TypistKeyboardUtilities findKeyBoundsInKeyboard:@"Candidate-Selection"];
-    if (v23 == 2)
+    if (primaryWritingDirection == 2)
     {
-      v31 = width;
+      widthCopy = width;
     }
 
-    v27 = x + v31;
+    v27 = x + widthCopy;
   }
 
-  [v21 writingOriginOffsetX];
+  [latexCopy writingOriginOffsetX];
   v33 = v32;
-  [v21 writingOriginOffsetY];
-  v35 = y + v34 * a7;
-  if (v23 == 2 && v24 == 2)
+  [latexCopy writingOriginOffsetY];
+  v35 = y + v34 * height;
+  if (primaryWritingDirection == 2 && segmentWritingDirection == 2)
   {
-    v36 = v27 - v33 * a7;
+    v36 = v27 - v33 * height;
   }
 
   else
   {
     y = v35;
-    v36 = v27 + v33 * a7;
+    v36 = v27 + v33 * height;
   }
 
-  v37 = -(height + -a8 * a7);
-  if (height - a8 * a7 >= 0.0)
+  v37 = -(height + -characterWidth * height);
+  if (height - characterWidth * height >= 0.0)
   {
-    v37 = height - a8 * a7;
+    v37 = height - characterWidth * height;
   }
 
-  v38 = v36 + a5;
-  if (v24 == 2)
+  v38 = v36 + width;
+  if (segmentWritingDirection == 2)
   {
-    v38 = v36 + a5 + a6;
+    v38 = v36 + width + scale;
   }
 
-  v39 = v36 - a5;
-  if (v24 != 2)
+  v39 = v36 - width;
+  if (segmentWritingDirection != 2)
   {
-    v39 = v39 - a6;
+    v39 = v39 - scale;
   }
 
   v40 = v37 * 0.5;
-  if (v23 == 2)
+  if (primaryWritingDirection == 2)
   {
     v41 = v39;
   }
@@ -3522,10 +3522,10 @@ LABEL_155:
   v47 = v49 + v46;
 LABEL_37:
   CGAffineTransformMakeRotation(&t1, v47 * 3.14159265 / 180.0);
-  t2.a = a7;
+  t2.a = height;
   t2.b = 0.0;
   t2.c = 0.0;
-  t2.d = a7;
+  t2.d = height;
   t2.tx = v42;
   t2.ty = v41;
   CGAffineTransformConcat(retstr, &t1, &t2);
@@ -3546,42 +3546,42 @@ LABEL_37:
   return result;
 }
 
-- (id)_convertCollationCharacters:(id)a3
+- (id)_convertCollationCharacters:(id)characters
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
-  v5 = [v3 stringWithFormat:@"%C", 65010];
-  v6 = [v4 stringByReplacingOccurrencesOfString:@"الله" withString:v5];
+  charactersCopy = characters;
+  65010 = [v3 stringWithFormat:@"%C", 65010];
+  v6 = [charactersCopy stringByReplacingOccurrencesOfString:@"الله" withString:65010];
 
   return v6;
 }
 
-- (id)_dimensionsForLatex:(id)a3 formula:(id)a4 withPathMap:(id)a5 regionCode:(id)a6 isCursive:(BOOL)a7 cumulativeWidth:(unint64_t)a8 totalWidth:(unint64_t)a9 primaryTextDirection:(unint64_t)a10 rotationBias:(double)a11 characterByCharacterPaths:(id)a12
+- (id)_dimensionsForLatex:(id)latex formula:(id)formula withPathMap:(id)map regionCode:(id)code isCursive:(BOOL)cursive cumulativeWidth:(unint64_t)width totalWidth:(unint64_t)totalWidth primaryTextDirection:(unint64_t)self0 rotationBias:(double)self1 characterByCharacterPaths:(id)self2
 {
   v65 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a12;
+  latexCopy = latex;
+  formulaCopy = formula;
+  mapCopy = map;
+  pathsCopy = paths;
   v21 = objc_opt_new();
-  [v17 offsetY];
+  [latexCopy offsetY];
   v23 = v22;
-  v24 = [v18 allKeys];
-  if ([v24 count])
+  allKeys = [formulaCopy allKeys];
+  if ([allKeys count])
   {
-    v25 = a8;
-    v26 = [MEMORY[0x277CCA900] charactersRequiringExtentionCharacterSet];
-    v27 = [v24 objectAtIndex:0];
-    v58 = [v26 characterIsMember:{objc_msgSend(v27, "characterAtIndex:", 0)}];
+    widthCopy = width;
+    charactersRequiringExtentionCharacterSet = [MEMORY[0x277CCA900] charactersRequiringExtentionCharacterSet];
+    v27 = [allKeys objectAtIndex:0];
+    v58 = [charactersRequiringExtentionCharacterSet characterIsMember:{objc_msgSend(v27, "characterAtIndex:", 0)}];
 
-    v28 = [v24 objectAtIndex:0];
-    v57 = [v18 objectForKey:v28];
+    v28 = [allKeys objectAtIndex:0];
+    v57 = [formulaCopy objectForKey:v28];
 
-    v59 = v24;
-    [v24 objectAtIndex:0];
-    if (a7)
+    v59 = allKeys;
+    [allKeys objectAtIndex:0];
+    if (cursive)
       v29 = {;
-      [TypistPathUtilities getTextClustersFrom:v19 forCharacters:v29];
+      [TypistPathUtilities getTextClustersFrom:mapCopy forCharacters:v29];
     }
 
     else
@@ -3599,8 +3599,8 @@ LABEL_37:
     if (v35)
     {
       v36 = v35;
-      v55 = v18;
-      v56 = v17;
+      v55 = formulaCopy;
+      v56 = latexCopy;
       v37 = 0;
       v38 = *v61;
       do
@@ -3613,20 +3613,20 @@ LABEL_37:
           }
 
           v40 = *(*(&v60 + 1) + 8 * i);
-          v47 = [v19 objectForKeyedSubscript:v40];
+          v47 = [mapCopy objectForKeyedSubscript:v40];
           if (v47)
           {
-            [v20 addObject:v47];
+            [pathsCopy addObject:v47];
             if ([v47 width] >= 1)
             {
               [v47 perCharacterScale];
               if (v48 > 0.0)
               {
-                v49 = [v47 width];
+                width = [v47 width];
                 [v47 perCharacterScale];
-                v51 = llround(v50 * v49);
+                v51 = llround(v50 * width);
                 v37 += v51;
-                v25 += v51;
+                widthCopy += v51;
               }
             }
           }
@@ -3642,8 +3642,8 @@ LABEL_37:
 
       while (v36);
       v31 = v37;
-      v18 = v55;
-      v17 = v56;
+      formulaCopy = v55;
+      latexCopy = v56;
     }
 
     else
@@ -3651,11 +3651,11 @@ LABEL_37:
       v31 = 0.0;
     }
 
-    v32 = a10;
+    directionCopy2 = direction;
 
     v21 = v57;
-    v24 = v59;
-    a8 = v25;
+    allKeys = v59;
+    width = widthCopy;
     v30 = v58;
   }
 
@@ -3663,20 +3663,20 @@ LABEL_37:
   {
     v30 = 0;
     v31 = 0.0;
-    v32 = a10;
+    directionCopy2 = direction;
   }
 
   v52 = objc_alloc_init(TYHandwritingDimensions);
   [(TYHandwritingDimensions *)v52 setWritingOriginOffsetX:0.0];
   [(TYHandwritingDimensions *)v52 setWritingOriginOffsetY:0.0];
-  [(TYHandwritingDimensions *)v52 setTotalWidth:a9];
-  [(TYHandwritingDimensions *)v52 setCumulativeWidth:a8];
+  [(TYHandwritingDimensions *)v52 setTotalWidth:totalWidth];
+  [(TYHandwritingDimensions *)v52 setCumulativeWidth:width];
   [(TYHandwritingDimensions *)v52 setSegmentWidth:v31];
   [(TYHandwritingDimensions *)v52 setFixedScaleHeight:1024.0];
-  [(TYHandwritingDimensions *)v52 setRotationBias:a11];
+  [(TYHandwritingDimensions *)v52 setRotationBias:bias];
   [v21 rectValue];
   [(TYHandwritingDimensions *)v52 setRect:?];
-  [(TYHandwritingDimensions *)v52 setPrimaryWritingDirection:v32];
+  [(TYHandwritingDimensions *)v52 setPrimaryWritingDirection:directionCopy2];
   [(TYHandwritingDimensions *)v52 setSegmentWritingDirection:1];
   [(TYHandwritingDimensions *)v52 setOffsetY:v23];
   [(TYHandwritingDimensions *)v52 setRequiresExtension:v30];
@@ -3686,24 +3686,24 @@ LABEL_37:
   return v52;
 }
 
-- (id)_dimensionsForText:(id)a3 withPathMap:(id)a4 regionCode:(id)a5 isCursive:(BOOL)a6 cumulativeWidth:(unint64_t *)a7 totalWidth:(unint64_t)a8 segmentTextDirection:(unint64_t)a9 primaryTextDirection:(unint64_t)a10 rotationBias:(double)a11 characterByCharacterPaths:(id)a12
+- (id)_dimensionsForText:(id)text withPathMap:(id)map regionCode:(id)code isCursive:(BOOL)cursive cumulativeWidth:(unint64_t *)width totalWidth:(unint64_t)totalWidth segmentTextDirection:(unint64_t)direction primaryTextDirection:(unint64_t)self0 rotationBias:(double)self1 characterByCharacterPaths:(id)self2
 {
-  v18 = a9;
+  directionCopy2 = direction;
   v55 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a12;
-  v49 = v21;
-  v48 = a8;
-  if (a6)
+  textCopy = text;
+  mapCopy = map;
+  codeCopy = code;
+  pathsCopy = paths;
+  v49 = codeCopy;
+  totalWidthCopy = totalWidth;
+  if (cursive)
   {
-    [TypistPathUtilities getTextClustersFrom:v19 withRegion:v21];
+    [TypistPathUtilities getTextClustersFrom:textCopy withRegion:codeCopy];
   }
 
   else
   {
-    [v19 graphemeArray];
+    [textCopy graphemeArray];
   }
 
   v52 = 0u;
@@ -3716,7 +3716,7 @@ LABEL_37:
   if (v24)
   {
     v27 = v24;
-    v47 = v19;
+    v47 = textCopy;
     v28 = 0;
     v29 = *v51;
     do
@@ -3729,19 +3729,19 @@ LABEL_37:
         }
 
         v31 = *(*(&v50 + 1) + 8 * i);
-        v38 = [v20 objectForKeyedSubscript:v31];
+        v38 = [mapCopy objectForKeyedSubscript:v31];
         if (v38)
         {
-          [v22 addObject:v38];
+          [pathsCopy addObject:v38];
           if ([v38 width] >= 1)
           {
             [v38 perCharacterScale];
             if (v39 > 0.0)
             {
-              v40 = [v38 width];
+              width = [v38 width];
               [v38 perCharacterScale];
-              v42 = llround(v41 * v40);
-              *a7 += v42;
+              v42 = llround(v41 * width);
+              *width += v42;
               v28 += v42;
             }
           }
@@ -3758,38 +3758,38 @@ LABEL_37:
 
     while (v27);
     v26 = v28;
-    v18 = a9;
-    v19 = v47;
+    directionCopy2 = direction;
+    textCopy = v47;
   }
 
-  if (v18 == 2)
+  if (directionCopy2 == 2)
   {
-    [TypistPathUtilities getWidthOfFirstCharacterInString:v19];
+    [TypistPathUtilities getWidthOfFirstCharacterInString:textCopy];
     v25 = v43;
   }
 
   v44 = objc_alloc_init(TYHandwritingDimensions);
   [(TYHandwritingDimensions *)v44 setWritingOriginOffsetX:v25];
   [(TYHandwritingDimensions *)v44 setWritingOriginOffsetY:0.0];
-  [(TYHandwritingDimensions *)v44 setTotalWidth:v48];
-  [(TYHandwritingDimensions *)v44 setCumulativeWidth:*a7];
+  [(TYHandwritingDimensions *)v44 setTotalWidth:totalWidthCopy];
+  [(TYHandwritingDimensions *)v44 setCumulativeWidth:*width];
   [(TYHandwritingDimensions *)v44 setSegmentWidth:v26];
   [(TYHandwritingDimensions *)v44 setFixedScaleHeight:1024.0];
-  [(TYHandwritingDimensions *)v44 setRotationBias:a11];
-  [(TYHandwritingDimensions *)v44 setPrimaryWritingDirection:a10];
-  [(TYHandwritingDimensions *)v44 setSegmentWritingDirection:v18];
+  [(TYHandwritingDimensions *)v44 setRotationBias:bias];
+  [(TYHandwritingDimensions *)v44 setPrimaryWritingDirection:textDirection];
+  [(TYHandwritingDimensions *)v44 setSegmentWritingDirection:directionCopy2];
 
   v45 = *MEMORY[0x277D85DE8];
 
   return v44;
 }
 
-- (double)_getScaleInFrame:(CGRect)a3 isPencil:(BOOL)a4 dimensions:(id)a5
+- (double)_getScaleInFrame:(CGRect)frame isPencil:(BOOL)pencil dimensions:(id)dimensions
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  v9 = a5;
+  pencilCopy = pencil;
+  height = frame.size.height;
+  width = frame.size.width;
+  dimensionsCopy = dimensions;
   [TypistKeyboardUtilities findKeyBoundsInKeyboard:@"Candidate-Selection"];
   v11 = v10;
   v13 = v12;
@@ -3823,14 +3823,14 @@ LABEL_7:
   }
 
 LABEL_8:
-  [v9 totalWidth];
+  [dimensionsCopy totalWidth];
   v18 = v17;
-  if ([(TypistKeyboard *)self isHandwriting]&& !v5)
+  if ([(TypistKeyboard *)self isHandwriting]&& !pencilCopy)
   {
     height = height - v13;
   }
 
-  [v9 fixedScaleHeight];
+  [dimensionsCopy fixedScaleHeight];
   v20 = height / v19;
   if (width / v18 >= v20)
   {
@@ -3845,19 +3845,19 @@ LABEL_8:
   return v21;
 }
 
-- (id)generatePencilGestureStream:(int)a3 gestureStyle:(int)a4 inFrame:(CGRect)a5
+- (id)generatePencilGestureStream:(int)stream gestureStyle:(int)style inFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v70[2] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CCABB0];
   v13 = 1.0 / +[TypistKeyboardUtilities touchScanRate]* 3.0;
   *&v13 = v13;
   v21 = [v12 numberWithFloat:v13];
   v22 = y + height * 0.5;
-  if (a3 == 3 && !a4)
+  if (stream == 3 && !style)
   {
     v23 = x + width;
     v24 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v23, v22}];
@@ -3897,9 +3897,9 @@ LABEL_17:
     v58[0] = @"action";
     v58[1] = @"time";
     v59[0] = @"wait";
-    v51 = [(TypistKeyboard *)self typeInterval];
-    v52 = [v51 stringValue];
-    v59[1] = v52;
+    typeInterval = [(TypistKeyboard *)self typeInterval];
+    stringValue = [typeInterval stringValue];
+    v59[1] = stringValue;
     v53 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v59 forKeys:v58 count:2];
     v62[1] = v53;
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:2];
@@ -3910,7 +3910,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 == 1 && !a4)
+  if (stream == 1 && !style)
   {
     [TypistKeyboardUtilities generateGaussianPointWithMean:x + width andSigma:v22, height * 0.25];
     v32 = v31;
@@ -3932,13 +3932,13 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 == 1 && a4 == 1)
+  if (stream == 1 && style == 1)
   {
     v26 = [TypistPathUtilities convertCurveDeleteTouchPoints:10 endPoint:x curveHeight:v22 curveDensity:x + width tilt:v22, height, -1.5];
     goto LABEL_17;
   }
 
-  if (!(a4 | a3))
+  if (!(style | stream))
   {
     v39 = [MEMORY[0x277CCAE60] valueWithCGPoint:{x, v22}];
     v68[0] = v39;
@@ -3949,7 +3949,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (a3 == 2 && !a4)
+  if (stream == 2 && !style)
   {
     v43 = x + width;
     v39 = [MEMORY[0x277CCAE60] valueWithCGPoint:v43];
@@ -3963,7 +3963,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  TYLog(@"Gesture %u is not supported", v14, v15, v16, v17, v18, v19, v20, a3);
+  TYLog(@"Gesture %u is not supported", v14, v15, v16, v17, v18, v19, v20, stream);
   v49 = 0;
 LABEL_18:
 
@@ -3972,13 +3972,13 @@ LABEL_18:
   return v49;
 }
 
-- (id)getActionForKeystroke:(id)a3 fromKeyPlane:(id)a4
+- (id)getActionForKeystroke:(id)keystroke fromKeyPlane:(id)plane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistKeyboard *)self keyPlanes];
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  keystrokeCopy = keystroke;
+  planeCopy = plane;
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  v9 = [keyPlanes objectForKeyedSubscript:planeCopy];
+  v10 = [v9 objectForKeyedSubscript:keystrokeCopy];
 
   if ([(TypistKeyboard *)self prefersPopoverKeys])
   {
@@ -3998,7 +3998,7 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v13 = [(TypistKeyboard *)self findKeyInOtherPlanes:v6 currentPlane:v7];
+  v13 = [(TypistKeyboard *)self findKeyInOtherPlanes:keystrokeCopy currentPlane:planeCopy];
   if (!v13)
   {
     goto LABEL_7;
@@ -4022,18 +4022,18 @@ LABEL_7:
   return v17;
 }
 
-- (id)findKeyOnAnyPlane:(id)a3
+- (id)findKeyOnAnyPlane:(id)plane
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  planeCopy = plane;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(TypistKeyboard *)self keyPlanes];
-  v6 = [v5 allKeys];
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  allKeys = [keyPlanes allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
     v8 = v7;
@@ -4044,25 +4044,25 @@ LABEL_7:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [(TypistKeyboard *)self keyPlanes];
-        v13 = [v12 objectForKeyedSubscript:v11];
-        v14 = [v13 objectForKeyedSubscript:v4];
+        keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+        v13 = [keyPlanes2 objectForKeyedSubscript:v11];
+        v14 = [v13 objectForKeyedSubscript:planeCopy];
 
         if (v14)
         {
-          v16 = [(TypistKeyboard *)self keyPlanes];
-          v17 = [v16 objectForKeyedSubscript:v11];
-          v15 = [v17 objectForKeyedSubscript:v4];
+          keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+          v17 = [keyPlanes3 objectForKeyedSubscript:v11];
+          v15 = [v17 objectForKeyedSubscript:planeCopy];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v8)
       {
         continue;
@@ -4072,7 +4072,7 @@ LABEL_7:
     }
   }
 
-  v15 = [(TypistKeyboard *)self attemptToFindKeystrokeAsSecondaryDisplay:v4];
+  v15 = [(TypistKeyboard *)self attemptToFindKeystrokeAsSecondaryDisplay:planeCopy];
 LABEL_11:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -4080,46 +4080,46 @@ LABEL_11:
   return v15;
 }
 
-- (id)findKey:(id)a3 inPlane:(id)a4
+- (id)findKey:(id)key inPlane:(id)plane
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TypistKeyboard *)self keyPlanes];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  planeCopy = plane;
+  keyCopy = key;
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  v9 = [keyPlanes objectForKeyedSubscript:planeCopy];
 
-  v10 = [v9 objectForKeyedSubscript:v7];
+  v10 = [v9 objectForKeyedSubscript:keyCopy];
 
   return v10;
 }
 
-- (id)findKeyOnCurrentPlane:(id)a3
+- (id)findKeyOnCurrentPlane:(id)plane
 {
-  v4 = a3;
+  planeCopy = plane;
   v5 = +[TypistKeyboardUtilities formattedKeyplaneName];
-  v6 = [(TypistKeyboard *)self findKey:v4 inPlane:v5];
+  v6 = [(TypistKeyboard *)self findKey:planeCopy inPlane:v5];
 
   return v6;
 }
 
-- (id)attemptToFindKeystrokeAsSecondaryDisplay:(id)a3
+- (id)attemptToFindKeystrokeAsSecondaryDisplay:(id)display
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  displayCopy = display;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [MEMORY[0x277D75418] currentDevice];
-    if ([v7 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
 
       goto LABEL_17;
     }
 
-    v8 = [(TypistKeyboard *)self isFloating];
+    isFloating = [(TypistKeyboard *)self isFloating];
 
-    if (v8)
+    if (isFloating)
     {
 LABEL_17:
       v22 = 0;
@@ -4134,22 +4134,22 @@ LABEL_17:
     v9 = @"⊎";
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v9, v4];
-  if (!v10)
+  displayCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v9, displayCopy];
+  if (!displayCopy)
   {
     goto LABEL_17;
   }
 
-  v11 = v10;
-  v27 = v4;
+  v11 = displayCopy;
+  v27 = displayCopy;
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = [(TypistKeyboard *)self keyPlanes];
-  v13 = [v12 allKeys];
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  allKeys = [keyPlanes allKeys];
 
-  v14 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v14 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v14)
   {
     v15 = v14;
@@ -4160,25 +4160,25 @@ LABEL_17:
       {
         if (*v29 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v28 + 1) + 8 * i);
-        v19 = [(TypistKeyboard *)self keyPlanes];
-        v20 = [v19 objectForKeyedSubscript:v18];
+        keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+        v20 = [keyPlanes2 objectForKeyedSubscript:v18];
         v21 = [v20 objectForKeyedSubscript:v11];
 
         if (v21)
         {
-          v23 = [(TypistKeyboard *)self keyPlanes];
-          v24 = [v23 objectForKeyedSubscript:v18];
+          keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+          v24 = [keyPlanes3 objectForKeyedSubscript:v18];
           v22 = [v24 objectForKeyedSubscript:v11];
 
           goto LABEL_19;
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v15)
       {
         continue;
@@ -4190,7 +4190,7 @@ LABEL_17:
 
   v22 = 0;
 LABEL_19:
-  v4 = v27;
+  displayCopy = v27;
 LABEL_20:
 
   v25 = *MEMORY[0x277D85DE8];
@@ -4198,20 +4198,20 @@ LABEL_20:
   return v22;
 }
 
-- (id)findKeyInOtherPlanes:(id)a3 currentPlane:(id)a4
+- (id)findKeyInOtherPlanes:(id)planes currentPlane:(id)plane
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  planesCopy = planes;
+  planeCopy = plane;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(TypistKeyboard *)self keyPlanes];
-  v9 = [v8 allKeys];
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  allKeys = [keyPlanes allKeys];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  obj = allKeys;
+  v10 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4228,32 +4228,32 @@ LABEL_20:
         }
 
         v14 = *(*(&v32 + 1) + 8 * v13);
-        if (([v14 isEqualToString:v7] & 1) == 0)
+        if (([v14 isEqualToString:planeCopy] & 1) == 0)
         {
-          v15 = [(TypistKeyboard *)self keyPlanes];
-          v16 = [v15 objectForKeyedSubscript:v14];
-          v17 = [v16 objectForKeyedSubscript:v6];
+          keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+          v16 = [keyPlanes2 objectForKeyedSubscript:v14];
+          v17 = [v16 objectForKeyedSubscript:planesCopy];
           if (v17)
           {
             v18 = v17;
-            [(TypistKeyboard *)self switchToPlane:v14 fromPlane:v7];
+            [(TypistKeyboard *)self switchToPlane:v14 fromPlane:planeCopy];
             v19 = v12;
-            v20 = self;
-            v21 = v7;
-            v23 = v22 = v6;
+            selfCopy = self;
+            v21 = planeCopy;
+            v23 = v22 = planesCopy;
             v31 = [v23 count];
 
-            v6 = v22;
-            v7 = v21;
-            self = v20;
+            planesCopy = v22;
+            planeCopy = v21;
+            self = selfCopy;
             v12 = v19;
             v11 = v29;
 
             if (v31)
             {
-              v24 = [(TypistKeyboard *)self keyPlanes];
-              v25 = [v24 objectForKeyedSubscript:v14];
-              v26 = [v25 objectForKeyedSubscript:v6];
+              keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+              v25 = [keyPlanes3 objectForKeyedSubscript:v14];
+              v26 = [v25 objectForKeyedSubscript:planesCopy];
 
               goto LABEL_14;
             }
@@ -4282,27 +4282,27 @@ LABEL_14:
   return v26;
 }
 
-- (id)_constructSwitchPath:(id)a3 toPlane:(id)a4 fromPlane:(id)a5
+- (id)_constructSwitchPath:(id)path toPlane:(id)plane fromPlane:(id)fromPlane
 {
   v56[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  planeCopy = plane;
   v48 = objc_opt_new();
-  v9 = v8;
-  v53 = [v7 allKeys];
+  v9 = planeCopy;
+  allKeys = [pathCopy allKeys];
   v47 = v9;
-  if ([v53 containsObject:v9])
+  if ([allKeys containsObject:v9])
   {
-    v49 = v7;
-    v52 = self;
+    v49 = pathCopy;
+    selfCopy = self;
     while (1)
     {
       v10 = v9;
       v11 = [v9 copy];
-      v9 = [v7 objectForKeyedSubscript:v9];
+      v9 = [pathCopy objectForKeyedSubscript:v9];
 
-      v12 = [(TypistKeyboard *)self planeSwitchTable];
-      v13 = [v12 objectForKeyedSubscript:v9];
+      planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+      v13 = [planeSwitchTable objectForKeyedSubscript:v9];
       v14 = [v13 objectForKeyedSubscript:v11];
       if (!v14)
       {
@@ -4310,24 +4310,24 @@ LABEL_14:
       }
 
       v15 = v14;
-      v16 = [(TypistKeyboard *)self keyPlanes];
-      v17 = [v16 objectForKeyedSubscript:v9];
+      keyPlanes = [(TypistKeyboard *)self keyPlanes];
+      v17 = [keyPlanes objectForKeyedSubscript:v9];
       if (!v17)
       {
         break;
       }
 
-      v51 = [(TypistKeyboard *)self keyPlanes];
-      [v51 objectForKeyedSubscript:v9];
+      keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+      [keyPlanes2 objectForKeyedSubscript:v9];
       v18 = v54 = v11;
-      v19 = [(TypistKeyboard *)self planeSwitchTable];
-      v20 = [v19 objectForKeyedSubscript:v9];
+      planeSwitchTable2 = [(TypistKeyboard *)self planeSwitchTable];
+      v20 = [planeSwitchTable2 objectForKeyedSubscript:v9];
       [v20 objectForKeyedSubscript:v54];
-      v21 = v50 = v16;
+      v21 = v50 = keyPlanes;
       v22 = [v18 objectForKeyedSubscript:v21];
 
-      v7 = v49;
-      self = v52;
+      pathCopy = v49;
+      self = selfCopy;
 
       v11 = v54;
       if (!v22)
@@ -4335,10 +4335,10 @@ LABEL_14:
         goto LABEL_9;
       }
 
-      v23 = [(TypistKeyboard *)v52 keyPlanes];
-      v24 = [v23 objectForKeyedSubscript:v9];
-      v25 = [(TypistKeyboard *)v52 planeSwitchTable];
-      v26 = [v25 objectForKeyedSubscript:v9];
+      keyPlanes3 = [(TypistKeyboard *)selfCopy keyPlanes];
+      v24 = [keyPlanes3 objectForKeyedSubscript:v9];
+      planeSwitchTable3 = [(TypistKeyboard *)selfCopy planeSwitchTable];
+      v26 = [planeSwitchTable3 objectForKeyedSubscript:v9];
       v27 = [v26 objectForKeyedSubscript:v54];
       v28 = [v24 objectForKeyedSubscript:v27];
       [v48 insertObject:v28 atIndex:0];
@@ -4347,16 +4347,16 @@ LABEL_14:
       v55[0] = @"action";
       v55[1] = @"time";
       v56[0] = @"wait";
-      v29 = [(TypistKeyboard *)v52 typeInterval];
-      v30 = [v29 stringValue];
-      v56[1] = v30;
+      typeInterval = [(TypistKeyboard *)selfCopy typeInterval];
+      stringValue = [typeInterval stringValue];
+      v56[1] = stringValue;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:2];
       [v48 insertObject:v31 atIndex:1];
 
-      self = v52;
+      self = selfCopy;
 LABEL_10:
 
-      if (([v53 containsObject:v9] & 1) == 0)
+      if (([allKeys containsObject:v9] & 1) == 0)
       {
         goto LABEL_11;
       }
@@ -4364,8 +4364,8 @@ LABEL_10:
 
 LABEL_8:
 LABEL_9:
-    v32 = [(TypistKeyboard *)self keyboardID];
-    TYLogl(OS_LOG_TYPE_ERROR, @"%@: !!! Unable to find a valid switch path !!!", v33, v34, v35, v36, v37, v38, v32);
+    keyboardID = [(TypistKeyboard *)self keyboardID];
+    TYLogl(OS_LOG_TYPE_ERROR, @"%@: !!! Unable to find a valid switch path !!!", v33, v34, v35, v36, v37, v38, keyboardID);
 
     TYLogl(OS_LOG_TYPE_ERROR, @"self.keyPlanes[%@][self.planeSwitchTable[%@][%@]]", v39, v40, v41, v42, v43, v44, v9);
     goto LABEL_10;
@@ -4378,44 +4378,44 @@ LABEL_11:
   return v48;
 }
 
-- (id)switchToPlane:(id)a3 fromPlane:(id)a4
+- (id)switchToPlane:(id)plane fromPlane:(id)fromPlane
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  planeCopy = plane;
+  fromPlaneCopy = fromPlane;
+  if (planeCopy)
   {
-    v8 = [v6 isEqualToString:&stru_288014100];
+    v8 = [planeCopy isEqualToString:&stru_288014100];
     v9 = MEMORY[0x277CBEBF8];
-    if (v7 && (v8 & 1) == 0 && ([v7 isEqualToString:&stru_288014100] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", v6) & 1) == 0)
+    if (fromPlaneCopy && (v8 & 1) == 0 && ([fromPlaneCopy isEqualToString:&stru_288014100] & 1) == 0 && (objc_msgSend(fromPlaneCopy, "isEqualToString:", planeCopy) & 1) == 0)
     {
       v10 = objc_opt_new();
       v11 = objc_opt_new();
-      [v11 addObject:v7];
+      [v11 addObject:fromPlaneCopy];
       v12 = objc_opt_new();
       if ([v11 count])
       {
-        v25 = v7;
-        v26 = self;
+        v25 = fromPlaneCopy;
+        selfCopy = self;
         while (1)
         {
           v13 = [v11 objectAtIndex:{0, v25}];
-          if ([v13 isEqualToString:v6])
+          if ([v13 isEqualToString:planeCopy])
           {
             break;
           }
 
           [v11 removeObjectAtIndex:0];
           [v10 addObject:v13];
-          v14 = [(TypistKeyboard *)self planeSwitchTable];
-          v15 = [v14 objectForKeyedSubscript:v13];
-          v16 = [v15 allKeys];
+          planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+          v15 = [planeSwitchTable objectForKeyedSubscript:v13];
+          allKeys = [v15 allKeys];
 
           v29 = 0u;
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v17 = v16;
+          v17 = allKeys;
           v18 = [v17 countByEnumeratingWithState:&v27 objects:v31 count:16];
           if (v18)
           {
@@ -4444,17 +4444,17 @@ LABEL_11:
             while (v19);
           }
 
-          self = v26;
+          self = selfCopy;
           if (![v11 count])
           {
             v9 = 0;
-            v7 = v25;
+            fromPlaneCopy = v25;
             goto LABEL_26;
           }
         }
 
-        v7 = v25;
-        v9 = [(TypistKeyboard *)self _constructSwitchPath:v12 toPlane:v6 fromPlane:v25];
+        fromPlaneCopy = v25;
+        v9 = [(TypistKeyboard *)self _constructSwitchPath:v12 toPlane:planeCopy fromPlane:v25];
       }
 
       else
@@ -4476,9 +4476,9 @@ LABEL_26:
   return v9;
 }
 
-- (id)_sanitizedStringForAutoShiftCheck:(id)a3
+- (id)_sanitizedStringForAutoShiftCheck:(id)check
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"🔤" withString:&stru_288014100];
+  v3 = [check stringByReplacingOccurrencesOfString:@"🔤" withString:&stru_288014100];
   v4 = [v3 stringByReplacingOccurrencesOfString:@"⇧" withString:&stru_288014100];
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"⇪" withString:&stru_288014100];
@@ -4486,21 +4486,21 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)isSwitchedToCapitalPlane:(id)a3 previous:(id)a4 currentPlane:(id)a5 context:(id)a6
+- (BOOL)isSwitchedToCapitalPlane:(id)plane previous:(id)previous currentPlane:(id)currentPlane context:(id)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v13 objectForKeyedSubscript:@"key"];
-  v15 = [v13 objectForKeyedSubscript:@"more-after"];
+  previousCopy = previous;
+  currentPlaneCopy = currentPlane;
+  contextCopy = context;
+  planeCopy = plane;
+  v14 = [planeCopy objectForKeyedSubscript:@"key"];
+  v15 = [planeCopy objectForKeyedSubscript:@"more-after"];
 
-  if (v10 | v15 || ([v14 isEqualToString:@" "] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"⏎"))
+  if (previousCopy | v15 || ([v14 isEqualToString:@" "] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"⏎"))
   {
-    v16 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", v11];
-    v17 = [v16 usesAutoShift];
-    v18 = [v16 isAlphabeticPlane];
-    if (v18 && !v17 || !+[TypistKeyboardUtilities getAutoCapitalizationPrefSetting])
+    currentPlaneCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", currentPlaneCopy];
+    usesAutoShift = [currentPlaneCopy usesAutoShift];
+    isAlphabeticPlane = [currentPlaneCopy isAlphabeticPlane];
+    if (isAlphabeticPlane && !usesAutoShift || !+[TypistKeyboardUtilities getAutoCapitalizationPrefSetting])
     {
       v23 = 0;
 LABEL_42:
@@ -4509,8 +4509,8 @@ LABEL_42:
     }
 
     v19 = [&stru_288014100 stringByPaddingToLength:2 withString:@" " startingAtIndex:0];
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
     Height = CGRectGetHeight(v39);
     v38 = v19;
     if (Height <= 1194.0)
@@ -4520,18 +4520,18 @@ LABEL_42:
 
     else
     {
-      v37 = [MEMORY[0x277D759A0] mainScreen];
-      [v37 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
       if (CGRectGetHeight(v40) > 1194.0 && [(TypistKeyboard *)self isFloating])
       {
         v22 = 0;
         goto LABEL_14;
       }
 
-      v25 = [MEMORY[0x277D759A0] mainScreen];
-      [v25 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
       v26 = CGRectGetHeight(v41);
-      v27 = v18 ^ 1;
+      v27 = isAlphabeticPlane ^ 1;
       if (v26 <= 1194.0)
       {
         v27 = 1;
@@ -4542,7 +4542,7 @@ LABEL_42:
 LABEL_25:
 
 LABEL_36:
-        if ((v18 & [v14 isEqualToString:@" "]) != 1 || (-[TypistKeyboard defaultPlaneName](self, "defaultPlaneName"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqualToString:", v11), v29, v30))
+        if ((isAlphabeticPlane & [v14 isEqualToString:@" "]) != 1 || (-[TypistKeyboard defaultPlaneName](self, "defaultPlaneName"), v29 = objc_claimAutoreleasedReturnValue(), v30 = objc_msgSend(v29, "isEqualToString:", currentPlaneCopy), v29, v30))
         {
           v31 = v38;
           if ([v14 isEqualToString:@"⏎"])
@@ -4555,10 +4555,10 @@ LABEL_41:
 
           if ([v14 isEqualToString:@"🔤"])
           {
-            if ((v18 & 1) == 0)
+            if ((isAlphabeticPlane & 1) == 0)
             {
 LABEL_46:
-              v33 = [(TypistKeyboard *)self _sanitizedStringForAutoShiftCheck:v12];
+              v33 = [(TypistKeyboard *)self _sanitizedStringForAutoShiftCheck:contextCopy];
               if ([v33 length])
               {
                 v23 = [(TypistKeyboard *)self isAutoshiftedToCapitalPlane:v33];
@@ -4573,7 +4573,7 @@ LABEL_46:
             }
           }
 
-          else if (((v18 | [v14 isEqualToString:@" "] ^ 1) & 1) == 0)
+          else if (((isAlphabeticPlane | [v14 isEqualToString:@" "] ^ 1) & 1) == 0)
           {
             goto LABEL_46;
           }
@@ -4588,29 +4588,29 @@ LABEL_40:
         goto LABEL_41;
       }
 
-      v36 = [(TypistKeyboard *)self defaultPlaneName];
-      if (![v36 isEqualToString:v11] || -[TypistKeyboard isCapsLockedState](self, "isCapsLockedState"))
+      defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+      if (![defaultPlaneName isEqualToString:currentPlaneCopy] || -[TypistKeyboard isCapsLockedState](self, "isCapsLockedState"))
       {
 
         goto LABEL_25;
       }
 
-      v35 = v25;
+      v35 = mainScreen3;
       v22 = 1;
     }
 
 LABEL_14:
     if ([v14 isEqualToString:@" "])
     {
-      if ([v10 isEqualToString:@"."] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"!") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"?"))
+      if ([previousCopy isEqualToString:@"."] & 1) != 0 || (objc_msgSend(previousCopy, "isEqualToString:", @"!") & 1) != 0 || (objc_msgSend(previousCopy, "isEqualToString:", @"?"))
       {
         v24 = 1;
         goto LABEL_31;
       }
 
-      if ([v12 length] > 1)
+      if ([contextCopy length] > 1)
       {
-        v34 = [v12 substringFromIndex:{objc_msgSend(v12, "length") - 2}];
+        v34 = [contextCopy substringFromIndex:{objc_msgSend(contextCopy, "length") - 2}];
         v24 = [v34 isEqualToString:v19];
 
         if ((v22 & 1) == 0)
@@ -4618,7 +4618,7 @@ LABEL_14:
           goto LABEL_33;
         }
 
-        v28 = v36;
+        v28 = defaultPlaneName;
 LABEL_32:
 
 LABEL_33:
@@ -4637,7 +4637,7 @@ LABEL_33:
 
     v24 = 0;
 LABEL_31:
-    v28 = v36;
+    v28 = defaultPlaneName;
     if ((v22 & 1) == 0)
     {
       goto LABEL_33;
@@ -4652,15 +4652,15 @@ LABEL_43:
   return v23;
 }
 
-- (BOOL)isAutoshiftedToCapitalPlane:(id)a3
+- (BOOL)isAutoshiftedToCapitalPlane:(id)plane
 {
-  v4 = a3;
-  if (v4 && +[TypistKeyboardUtilities getAutoCapitalizationPrefSetting])
+  planeCopy = plane;
+  if (planeCopy && +[TypistKeyboardUtilities getAutoCapitalizationPrefSetting])
   {
     v5 = MEMORY[0x277CCA900];
-    v6 = [(TypistKeyboard *)self sentenceDelimitingCharacters];
-    v7 = [v5 characterSetWithCharactersInString:v6];
-    v8 = [v4 rangeOfCharacterFromSet:v7 options:4];
+    sentenceDelimitingCharacters = [(TypistKeyboard *)self sentenceDelimitingCharacters];
+    v7 = [v5 characterSetWithCharactersInString:sentenceDelimitingCharacters];
+    v8 = [planeCopy rangeOfCharacterFromSet:v7 options:4];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -4672,8 +4672,8 @@ LABEL_43:
       v9 = v8 + 1;
     }
 
-    v10 = [(TypistKeyboard *)self autoshiftRegex];
-    v11 = [v10 firstMatchInString:v4 options:0 range:{v9, objc_msgSend(v4, "length") - v9}];
+    autoshiftRegex = [(TypistKeyboard *)self autoshiftRegex];
+    v11 = [autoshiftRegex firstMatchInString:planeCopy options:0 range:{v9, objc_msgSend(planeCopy, "length") - v9}];
 
     v12 = v11 != 0;
   }
@@ -4686,34 +4686,34 @@ LABEL_43:
   return v12;
 }
 
-- (id)getShiftedKeyPlaneName:(id)a3
+- (id)getShiftedKeyPlaneName:(id)name
 {
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self planeSwitchTable];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+  v6 = [planeSwitchTable objectForKeyedSubscript:nameCopy];
 
   v7 = [v6 allKeysForObject:@"⇧"];
 
   if (v7 && [v7 count])
   {
-    v8 = [v7 objectAtIndexedSubscript:0];
+    defaultPlaneName = [v7 objectAtIndexedSubscript:0];
   }
 
   else
   {
-    v8 = [(TypistKeyboard *)self defaultPlaneName];
+    defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
   }
 
-  v9 = v8;
+  v9 = defaultPlaneName;
 
   return v9;
 }
 
-- (id)getAlternativeKeyPlaneName:(id)a3
+- (id)getAlternativeKeyPlaneName:(id)name
 {
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self planeSwitchTable];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  planeSwitchTable = [(TypistKeyboard *)self planeSwitchTable];
+  v6 = [planeSwitchTable objectForKeyedSubscript:nameCopy];
 
   v7 = [v6 allKeysForObject:@"🔤"];
 
@@ -4730,28 +4730,28 @@ LABEL_43:
   return v8;
 }
 
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 isEqualToString:@"⇧"])
+  keyCopy = key;
+  planeCopy = plane;
+  if (![keyCopy isEqualToString:@"⇧"])
   {
-    if ([v7 isEqualToString:@"🔤"])
+    if ([keyCopy isEqualToString:@"🔤"])
     {
       [(TypistKeyboard *)self setIsCapsLockedState:0];
-      v13 = [(TypistKeyboard *)self getAlternativeKeyPlaneName:v8];
+      defaultPlaneName2 = [(TypistKeyboard *)self getAlternativeKeyPlaneName:planeCopy];
 LABEL_34:
-      v9 = v13;
+      v9 = defaultPlaneName2;
       goto LABEL_35;
     }
 
-    v14 = [(TypistKeyboard *)self defaultPlaneName];
-    v15 = [(TypistKeyboard *)self getShiftedKeyPlaneName:v14];
-    if ([v15 isEqualToString:v8])
+    defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+    v15 = [(TypistKeyboard *)self getShiftedKeyPlaneName:defaultPlaneName];
+    if ([v15 isEqualToString:planeCopy])
     {
-      v16 = [(TypistKeyboard *)self isCapsLockedState];
+      isCapsLockedState = [(TypistKeyboard *)self isCapsLockedState];
 
-      if (!v16)
+      if (!isCapsLockedState)
       {
         goto LABEL_32;
       }
@@ -4761,34 +4761,34 @@ LABEL_34:
     {
     }
 
-    v17 = [(TypistKeyboard *)self getAlternatePlanesForDefaultPlane];
-    v18 = [v17 containsObject:v8];
+    getAlternatePlanesForDefaultPlane = [(TypistKeyboard *)self getAlternatePlanesForDefaultPlane];
+    v18 = [getAlternatePlanesForDefaultPlane containsObject:planeCopy];
     if ((v18 & 1) == 0)
     {
-      v19 = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", v8];
-      if (([v19 ignoresShiftState] & 1) == 0)
+      planeCopy = [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData getKeyplaneDescription:"getKeyplaneDescription:", planeCopy];
+      if (([planeCopy ignoresShiftState] & 1) == 0)
       {
 
 LABEL_32:
-        v13 = [(TypistKeyboard *)self defaultPlaneName];
+        defaultPlaneName2 = [(TypistKeyboard *)self defaultPlaneName];
         goto LABEL_34;
       }
 
-      v52 = v19;
+      v52 = planeCopy;
     }
 
-    v20 = [v7 isEqualToString:@" "];
+    v20 = [keyCopy isEqualToString:@" "];
     if (v20)
     {
-      v4 = [(TypistKeyboard *)self keyPlanes];
-      v55 = [(TypistKeyboard *)self defaultPlaneName];
-      v54 = [v4 objectForKeyedSubscript:?];
+      keyPlanes = [(TypistKeyboard *)self keyPlanes];
+      defaultPlaneName3 = [(TypistKeyboard *)self defaultPlaneName];
+      v54 = [keyPlanes objectForKeyedSubscript:?];
       v21 = [v54 objectForKeyedSubscript:@" "];
       if (v21)
       {
         v53 = v21;
-        v22 = [MEMORY[0x277D759A0] mainScreen];
-        [v22 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
         if (CGRectGetHeight(v57) <= 1194.0)
         {
 LABEL_21:
@@ -4797,16 +4797,16 @@ LABEL_21:
           goto LABEL_28;
         }
 
-        v23 = [MEMORY[0x277D759A0] mainScreen];
-        [v23 _referenceBounds];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 _referenceBounds];
         if (CGRectGetHeight(v58) > 1194.0 && [(TypistKeyboard *)self isFloating])
         {
 
           goto LABEL_21;
         }
 
-        v47 = v23;
-        v48 = v22;
+        v47 = mainScreen2;
+        v48 = mainScreen;
         v25 = 1;
       }
 
@@ -4822,7 +4822,7 @@ LABEL_21:
       v25 = 0;
     }
 
-    if ([v7 isEqualToString:@"⏎"])
+    if ([keyCopy isEqualToString:@"⏎"])
     {
       v24 = 1;
       if ((v25 & 1) == 0)
@@ -4833,41 +4833,41 @@ LABEL_21:
 
     else
     {
-      v51 = v4;
-      v50 = [(TypistKeyboard *)self keyPlanes];
-      v49 = [v50 objectForKeyedSubscript:v8];
-      v27 = [v49 objectForKeyedSubscript:v7];
+      v51 = keyPlanes;
+      keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+      v49 = [keyPlanes2 objectForKeyedSubscript:planeCopy];
+      v27 = [v49 objectForKeyedSubscript:keyCopy];
       v28 = [v27 objectForKeyedSubscript:@"more-after"];
-      if ([v28 BOOLValue] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"'"))
+      if ([v28 BOOLValue] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"'"))
       {
         v24 = 1;
       }
 
       else
       {
-        v46 = [(TypistKeyboard *)self keyPlanes];
-        v45 = [v46 objectForKeyedSubscript:v8];
-        v44 = [v45 objectForKeyedSubscript:v7];
+        keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+        v45 = [keyPlanes3 objectForKeyedSubscript:planeCopy];
+        v44 = [v45 objectForKeyedSubscript:keyCopy];
         v29 = [v44 objectForKeyedSubscript:@"type"];
         if (v29)
         {
           v43 = v29;
-          v42 = [(TypistKeyboard *)self keyPlanes];
-          v41 = [v42 objectForKeyedSubscript:v8];
-          v40 = [v41 objectForKeyedSubscript:v7];
+          keyPlanes4 = [(TypistKeyboard *)self keyPlanes];
+          v41 = [keyPlanes4 objectForKeyedSubscript:planeCopy];
+          v40 = [v41 objectForKeyedSubscript:keyCopy];
           v30 = [v40 objectForKeyedSubscript:@"basekey"];
           if (v30)
           {
             v39 = v30;
-            v38 = [(TypistKeyboard *)self keyPlanes];
-            v37 = [v38 objectForKeyedSubscript:v8];
-            v36 = [v37 objectForKeyedSubscript:v7];
+            keyPlanes5 = [(TypistKeyboard *)self keyPlanes];
+            v37 = [keyPlanes5 objectForKeyedSubscript:planeCopy];
+            v36 = [v37 objectForKeyedSubscript:keyCopy];
             v35 = [v36 objectForKeyedSubscript:@"type"];
             if ([v35 isEqualToString:@"popover"])
             {
-              v34 = [(TypistKeyboard *)self keyPlanes];
-              v33 = [v34 objectForKeyedSubscript:v8];
-              v32 = [v33 objectForKeyedSubscript:v7];
+              keyPlanes6 = [(TypistKeyboard *)self keyPlanes];
+              v33 = [keyPlanes6 objectForKeyedSubscript:planeCopy];
+              v32 = [v33 objectForKeyedSubscript:keyCopy];
               v31 = [v32 objectForKeyedSubscript:@"basekey"];
               v24 = [v31 isEqualToString:@"'"];
             }
@@ -4894,7 +4894,7 @@ LABEL_21:
         }
       }
 
-      v4 = v51;
+      keyPlanes = v51;
       if ((v25 & 1) == 0)
       {
 LABEL_27:
@@ -4916,7 +4916,7 @@ LABEL_29:
 
       if ((v24 & 1) == 0)
       {
-        v13 = v8;
+        defaultPlaneName2 = planeCopy;
         goto LABEL_34;
       }
 
@@ -4928,17 +4928,17 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v9 = [(TypistKeyboard *)self getShiftedKeyPlaneName:v8];
+  v9 = [(TypistKeyboard *)self getShiftedKeyPlaneName:planeCopy];
   if ([(TypistKeyboard *)self isCapsLockedState])
   {
-    v10 = [(TypistKeyboard *)self defaultPlaneName];
-    v11 = [v8 isEqualToString:v10];
+    defaultPlaneName4 = [(TypistKeyboard *)self defaultPlaneName];
+    v11 = [planeCopy isEqualToString:defaultPlaneName4];
 
     if (v11)
     {
-      v12 = [(TypistKeyboard *)self defaultPlaneName];
+      defaultPlaneName5 = [(TypistKeyboard *)self defaultPlaneName];
 
-      v9 = v12;
+      v9 = defaultPlaneName5;
     }
   }
 
@@ -4948,24 +4948,24 @@ LABEL_35:
   return v9;
 }
 
-- (void)typeKeystrokeStream:(id)a3 completion:(id)a4
+- (void)typeKeystrokeStream:(id)stream completion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
-  if (v7 && [v7 count])
+  streamCopy = stream;
+  completionCopy = completion;
+  if (streamCopy && [streamCopy count])
   {
-    v6 = [TypistKeyboardUtilities convertRecapCommands:v7];
-    [TypistKeyboardUtilities launchRecap:v6 completion:v5];
+    v6 = [TypistKeyboardUtilities convertRecapCommands:streamCopy];
+    [TypistKeyboardUtilities launchRecap:v6 completion:completionCopy];
   }
 }
 
-- (void)typeKeystrokeStream:(id)a3
+- (void)typeKeystrokeStream:(id)stream
 {
-  v3 = a3;
-  if (v3)
+  streamCopy = stream;
+  if (streamCopy)
   {
-    v5 = v3;
-    if ([v3 count])
+    v5 = streamCopy;
+    if ([streamCopy count])
     {
       v4 = [TypistKeyboardUtilities convertRecapCommands:v5];
       [TypistKeyboardUtilities launchRecap:v4];
@@ -4975,37 +4975,37 @@ LABEL_35:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)typeString:(id)a3 completion:(id)a4
+- (void)typeString:(id)string completion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 length])
+  stringCopy = string;
+  completionCopy = completion;
+  if ([stringCopy length])
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"⇧", @"⇧"];
-    v8 = [v10 stringByReplacingOccurrencesOfString:v7 withString:@"⇪"];
+    v8 = [stringCopy stringByReplacingOccurrencesOfString:v7 withString:@"⇪"];
     if ([(TypistKeyboard *)self usePredictionBar]&& +[TypistKeyboardUtilities getPredictivePrefSetting]&& ![(TypistKeyboard *)self usesMecabraCandidateBar])
     {
       v9 = [(TypistKeyboard *)self generateKeystrokeStream:v8];
-      [(TypistKeyboard *)self typeKeystrokeStreamWithPredictive:v9 originalText:v8 completion:v6];
+      [(TypistKeyboard *)self typeKeystrokeStreamWithPredictive:v9 originalText:v8 completion:completionCopy];
     }
 
     else
     {
       v9 = [(TypistKeyboard *)self generateKeystrokeStream:v8];
-      [(TypistKeyboard *)self typeKeystrokeStream:v9 completion:v6];
+      [(TypistKeyboard *)self typeKeystrokeStream:v9 completion:completionCopy];
     }
   }
 }
 
-- (void)typeString:(id)a3
+- (void)typeString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
-    v6 = [(TypistKeyboard *)self hardwareKeyboard];
+    hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-    if (v6)
+    if (hardwareKeyboard)
     {
       [(TypistKeyboard *)self typeStringWithHardwareKeyboard:v5];
     }
@@ -5039,12 +5039,12 @@ uint64_t __29__TypistKeyboard_typeString___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)typeString:(id)a3 withCommit:(id)a4
+- (void)typeString:(id)string withCommit:(id)commit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistKeyboard *)self candidatebar];
-  if (v8 && (v15 = v8, v16 = [(TypistKeyboard *)self usesMecabraCandidateBar], v15, v16))
+  stringCopy = string;
+  commitCopy = commit;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
+  if (candidatebar && (v15 = candidatebar, v16 = [(TypistKeyboard *)self usesMecabraCandidateBar], v15, v16))
   {
     v17 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     v27[0] = 0;
@@ -5062,12 +5062,12 @@ uint64_t __29__TypistKeyboard_typeString___block_invoke(uint64_t a1)
     v22[2] = __40__TypistKeyboard_typeString_withCommit___block_invoke_2;
     v22[3] = &unk_279DF47F0;
     v22[4] = self;
-    v23 = v7;
+    v23 = commitCopy;
     v19 = v17;
     v24 = v19;
     v25 = v27;
     v20 = MEMORY[0x274398FD0](v22);
-    [(TypistKeyboard *)self typeString:v6 completion:v20];
+    [(TypistKeyboard *)self typeString:stringCopy completion:v20];
     v18[2](v18);
 
     _Block_object_dispose(v27, 8);
@@ -5110,13 +5110,13 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (void)swipeString:(id)a3
+- (void)swipeString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v8 = v4;
-    if ([v4 length])
+    v8 = stringCopy;
+    if ([stringCopy length])
     {
       v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", @"⇧", @"⇧"];
       v6 = [v8 stringByReplacingOccurrencesOfString:v5 withString:@"⇪"];
@@ -5130,49 +5130,49 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
 
 - (id)getAllCandidates
 {
-  v3 = [(TypistKeyboard *)self candidatebar];
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v3)
+  if (candidatebar)
   {
-    v4 = [(TypistKeyboard *)self candidatebar];
-    v5 = [v4 getAllCandidates];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    getAllCandidates = [candidatebar2 getAllCandidates];
   }
 
   else
   {
-    v5 = 0;
+    getAllCandidates = 0;
   }
 
-  return v5;
+  return getAllCandidates;
 }
 
 - (id)getVisibleCandidates
 {
-  v3 = [(TypistKeyboard *)self candidatebar];
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v3)
+  if (candidatebar)
   {
-    v4 = [(TypistKeyboard *)self candidatebar];
-    v5 = [v4 getVisibleCandidates];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    getVisibleCandidates = [candidatebar2 getVisibleCandidates];
   }
 
   else
   {
-    v5 = 0;
+    getVisibleCandidates = 0;
   }
 
-  return v5;
+  return getVisibleCandidates;
 }
 
-- (int64_t)commitCandidate:(id)a3
+- (int64_t)commitCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self candidatebar];
+  candidateCopy = candidate;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v5)
+  if (candidatebar)
   {
-    v6 = [(TypistKeyboard *)self candidatebar];
-    v7 = [v6 selectCandidate:v4];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    v7 = [candidatebar2 selectCandidate:candidateCopy];
   }
 
   else
@@ -5183,30 +5183,30 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (int64_t)commitCandidateAtIndex:(int64_t)a3
+- (int64_t)commitCandidateAtIndex:(int64_t)index
 {
-  v5 = [(TypistKeyboard *)self candidatebar];
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (!v5)
+  if (!candidatebar)
   {
     return -1;
   }
 
-  v6 = [(TypistKeyboard *)self candidatebar];
-  v7 = [v6 selectCandidateAtIndex:a3];
+  candidatebar2 = [(TypistKeyboard *)self candidatebar];
+  v7 = [candidatebar2 selectCandidateAtIndex:index];
 
   return v7;
 }
 
-- (BOOL)hasCandidate:(id)a3
+- (BOOL)hasCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self candidatebar];
+  candidateCopy = candidate;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v5)
+  if (candidatebar)
   {
-    v6 = [(TypistKeyboard *)self candidatebar];
-    v7 = [v6 hasCandidate:v4];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    v7 = [candidatebar2 hasCandidate:candidateCopy];
   }
 
   else
@@ -5217,17 +5217,17 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (BOOL)hasCandidate:(id)a3 inRange:(_NSRange)a4
+- (BOOL)hasCandidate:(id)candidate inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(TypistKeyboard *)self candidatebar];
+  length = range.length;
+  location = range.location;
+  candidateCopy = candidate;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v8)
+  if (candidatebar)
   {
-    v9 = [(TypistKeyboard *)self candidatebar];
-    v10 = [v9 hasCandidate:v7 inRange:{location, length}];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    v10 = [candidatebar2 hasCandidate:candidateCopy inRange:{location, length}];
   }
 
   else
@@ -5238,15 +5238,15 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   return v10;
 }
 
-- (BOOL)hasCandidates:(id)a3
+- (BOOL)hasCandidates:(id)candidates
 {
-  v4 = a3;
-  v5 = [(TypistKeyboard *)self candidatebar];
+  candidatesCopy = candidates;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v5)
+  if (candidatebar)
   {
-    v6 = [(TypistKeyboard *)self candidatebar];
-    v7 = [v6 hasCandidates:v4];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    v7 = [candidatebar2 hasCandidates:candidatesCopy];
   }
 
   else
@@ -5257,36 +5257,36 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (BOOL)hasCandidates:(id)a3 inRange:(_NSRange)a4
+- (BOOL)hasCandidates:(id)candidates inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(TypistKeyboard *)self candidatebar];
+  length = range.length;
+  location = range.location;
+  candidatesCopy = candidates;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
 
-  if (v8)
+  if (candidatebar)
   {
-    v9 = [(TypistKeyboard *)self candidatebar];
-    [v9 hasCandidates:v7 inRange:{location, length}];
+    candidatebar2 = [(TypistKeyboard *)self candidatebar];
+    [candidatebar2 hasCandidates:candidatesCopy inRange:{location, length}];
   }
 
   return 0;
 }
 
-- (id)splitKeystrokeStreamByWord:(id)a3 originalText:(id)a4
+- (id)splitKeystrokeStreamByWord:(id)word originalText:(id)text
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v38 = [MEMORY[0x277CBEB18] array];
-  v37 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
-  v9 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-  [v8 formUnionWithCharacterSet:v9];
+  wordCopy = word;
+  textCopy = text;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  string = [MEMORY[0x277CCAB68] string];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCAB50] whitespaceAndNewlineCharacterSet];
+  punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+  [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-  v34 = v6;
-  v10 = [v6 componentsSeparatedByCharactersInSet:v8];
+  v34 = textCopy;
+  v10 = [textCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
   v11 = [v10 mutableCopy];
 
   v36 = v11;
@@ -5295,7 +5295,7 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v5;
+  obj = wordCopy;
   v12 = 0x277CCA000;
   v13 = 0x277CBE000;
   v40 = [obj countByEnumeratingWithState:&v41 objects:v51 count:16];
@@ -5314,18 +5314,18 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
 
         v16 = *(*(&v41 + 1) + 8 * i);
         v17 = [v16 objectForKeyedSubscript:@"keystroke"];
-        if ([v17 rangeOfCharacterFromSet:v8] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([v17 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v18 = [v17 substringFromIndex:{objc_msgSend(v17, "length") - 1}];
-          [v7 appendString:v18];
+          [string appendString:v18];
 
-          [v37 addObject:v16];
+          [array2 addObject:v16];
           v13 = v15;
         }
 
         else
         {
-          if ([v7 length])
+          if ([string length])
           {
             v50[0] = @"word";
             v49[0] = @"type";
@@ -5335,26 +5335,26 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
             v21 = [v19 stringWithString:v20];
             v50[1] = v21;
             v49[2] = @"keystrokeStream";
-            v22 = [MEMORY[0x277CBEA60] arrayWithArray:v37];
+            v22 = [MEMORY[0x277CBEA60] arrayWithArray:array2];
             v50[2] = v22;
             v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:3];
-            [v38 addObject:v23];
+            [array addObject:v23];
 
-            [v7 setString:&stru_288014100];
-            [v37 removeAllObjects];
+            [string setString:&stru_288014100];
+            [array2 removeAllObjects];
             [v36 removeObjectAtIndex:0];
           }
 
           v48[0] = @"separator";
           v47[0] = @"type";
           v47[1] = @"text";
-          v24 = [MEMORY[0x277CCACA8] stringWithString:v7];
+          v24 = [MEMORY[0x277CCACA8] stringWithString:string];
           v48[1] = v24;
           v47[2] = @"keystrokeStream";
           v25 = [MEMORY[0x277CBEA60] arrayWithObject:v16];
           v48[2] = v25;
           v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:3];
-          [v38 addObject:v26];
+          [array addObject:v26];
 
           v13 = 0x277CBE000uLL;
         }
@@ -5368,7 +5368,7 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
     while (v40);
   }
 
-  if ([v7 length] && objc_msgSend(v36, "count"))
+  if ([string length] && objc_msgSend(v36, "count"))
   {
     v46[0] = @"separator";
     v45[0] = @"type";
@@ -5378,36 +5378,36 @@ uint64_t __40__TypistKeyboard_typeString_withCommit___block_invoke_2(uint64_t a1
     v29 = [v27 stringWithString:v28];
     v46[1] = v29;
     v45[2] = @"keystrokeStream";
-    v30 = [MEMORY[0x277CBEA60] arrayWithArray:v37];
+    v30 = [MEMORY[0x277CBEA60] arrayWithArray:array2];
     v46[2] = v30;
     v31 = [*(v13 + 2752) dictionaryWithObjects:v46 forKeys:v45 count:3];
-    [v38 addObject:v31];
+    [array addObject:v31];
   }
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v38;
+  return array;
 }
 
-- (void)typeKeystrokeStreamWithPredictive:(id)a3 originalText:(id)a4 completion:(id)a5
+- (void)typeKeystrokeStreamWithPredictive:(id)predictive originalText:(id)text completion:(id)completion
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TypistKeyboard *)self candidatebar];
-  if (!v10)
+  predictiveCopy = predictive;
+  textCopy = text;
+  completionCopy = completion;
+  candidatebar = [(TypistKeyboard *)self candidatebar];
+  if (!candidatebar)
   {
     goto LABEL_4;
   }
 
-  v17 = v10;
-  v18 = [(TypistKeyboard *)self candidatebar];
-  if (v18)
+  v17 = candidatebar;
+  candidatebar2 = [(TypistKeyboard *)self candidatebar];
+  if (candidatebar2)
   {
-    v19 = v18;
-    v20 = [(TypistKeyboard *)self usesMecabraCandidateBar];
+    v19 = candidatebar2;
+    usesMecabraCandidateBar = [(TypistKeyboard *)self usesMecabraCandidateBar];
 
-    if (v20)
+    if (usesMecabraCandidateBar)
     {
 LABEL_4:
       TYLogl(OS_LOG_TYPE_ERROR, @"ERROR: Predictive setting or QuickType bar is not enabled with the keyboard. Aborting.", v11, v12, v13, v14, v15, v16, v22);
@@ -5419,19 +5419,19 @@ LABEL_4:
   {
   }
 
-  v21 = [(TypistKeyboard *)self splitKeystrokeStreamByWord:v23 originalText:v8];
-  [(TypistKeyboard *)self typeWordKeystrokeWithPredictive:v21 atIndex:0 completion:v9];
+  v21 = [(TypistKeyboard *)self splitKeystrokeStreamByWord:predictiveCopy originalText:textCopy];
+  [(TypistKeyboard *)self typeWordKeystrokeWithPredictive:v21 atIndex:0 completion:completionCopy];
 
 LABEL_7:
 }
 
-- (void)typeWordKeystrokeWithPredictive:(id)a3 atIndex:(int64_t)a4 completion:(id)a5
+- (void)typeWordKeystrokeWithPredictive:(id)predictive atIndex:(int64_t)index completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count] && objc_msgSend(v8, "count") > a4)
+  predictiveCopy = predictive;
+  completionCopy = completion;
+  if ([predictiveCopy count] && objc_msgSend(predictiveCopy, "count") > index)
   {
-    v10 = [v8 objectAtIndexedSubscript:a4];
+    v10 = [predictiveCopy objectAtIndexedSubscript:index];
     v11 = [v10 objectForKeyedSubscript:@"type"];
     v12 = [v11 isEqualToString:@"separator"];
 
@@ -5443,9 +5443,9 @@ LABEL_7:
       v25[2] = __69__TypistKeyboard_typeWordKeystrokeWithPredictive_atIndex_completion___block_invoke;
       v25[3] = &unk_279DF4818;
       v25[4] = self;
-      v26 = v8;
-      v28 = a4;
-      v27 = v9;
+      v26 = predictiveCopy;
+      indexCopy = index;
+      v27 = completionCopy;
       [(TypistKeyboard *)self typeKeystrokeStream:v13 completion:v25];
 
       v14 = v26;
@@ -5455,16 +5455,16 @@ LABEL_7:
     {
       if ([(TypistKeyboard *)self usePredictionBar])
       {
-        v15 = [(TypistKeyboard *)self candidatebar];
+        candidatebar = [(TypistKeyboard *)self candidatebar];
         v16 = [v10 objectForKeyedSubscript:@"text"];
-        v17 = [v15 getIndexOfCandidate:v16];
+        v17 = [candidatebar getIndexOfCandidate:v16];
 
         if ((v17 & 0x8000000000000000) == 0)
         {
-          v18 = [(TypistKeyboard *)self candidatebar];
-          [v18 selectCandidateAtIndex:v17];
+          candidatebar2 = [(TypistKeyboard *)self candidatebar];
+          [candidatebar2 selectCandidateAtIndex:v17];
 
-          [(TypistKeyboard *)self typeWordKeystrokeWithPredictive:v8 atIndex:a4 + 1 completion:v9];
+          [(TypistKeyboard *)self typeWordKeystrokeWithPredictive:predictiveCopy atIndex:index + 1 completion:completionCopy];
 LABEL_12:
 
           goto LABEL_13;
@@ -5478,9 +5478,9 @@ LABEL_12:
       v21[2] = __69__TypistKeyboard_typeWordKeystrokeWithPredictive_atIndex_completion___block_invoke_2;
       v21[3] = &unk_279DF4818;
       v21[4] = self;
-      v22 = v8;
-      v24 = a4;
-      v23 = v9;
+      v22 = predictiveCopy;
+      indexCopy2 = index;
+      v23 = completionCopy;
       [(TypistKeyboard *)self typeWordKeystrokes:v19 expectedWord:v20 atIndex:0 completion:v21];
 
       v14 = v22;
@@ -5489,23 +5489,23 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_13:
 }
 
-- (void)typeWordKeystrokes:(id)a3 expectedWord:(id)a4 atIndex:(int64_t)a5 completion:(id)a6
+- (void)typeWordKeystrokes:(id)keystrokes expectedWord:(id)word atIndex:(int64_t)index completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 count] && objc_msgSend(v10, "count") > a5)
+  keystrokesCopy = keystrokes;
+  wordCopy = word;
+  completionCopy = completion;
+  if ([keystrokesCopy count] && objc_msgSend(keystrokesCopy, "count") > index)
   {
-    v13 = [v10 objectAtIndexedSubscript:a5];
+    v13 = [keystrokesCopy objectAtIndexedSubscript:index];
     v21[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
     v16[0] = MEMORY[0x277D85DD0];
@@ -5513,16 +5513,16 @@ LABEL_13:
     v16[2] = __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion___block_invoke;
     v16[3] = &unk_279DF4840;
     v16[4] = self;
-    v17 = v11;
-    v18 = v10;
-    v19 = v12;
-    v20 = a5;
+    v17 = wordCopy;
+    v18 = keystrokesCopy;
+    v19 = completionCopy;
+    indexCopy = index;
     [(TypistKeyboard *)self typeKeystrokeStream:v14 completion:v16];
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12);
+    completionCopy[2](completionCopy);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -5557,18 +5557,18 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return [v10 typeWordKeystrokes:v11 expectedWord:v12 atIndex:v8 completion:v9];
 }
 
-- (void)switchKeyPlaneOnActiveKeyboard:(id)a3
+- (void)switchKeyPlaneOnActiveKeyboard:(id)keyboard
 {
-  v3 = a3;
-  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData switchToPlane:"switchToPlane:", v3];
+  keyboardCopy = keyboard;
+  [(objc_class *)+[TypistKeyboardData keyboardData](TypistKeyboardData switchToPlane:"switchToPlane:", keyboardCopy];
 }
 
-- (CGPoint)centerOfKey:(CGPoint)a3 withOffset:(CGPoint)a4
+- (CGPoint)centerOfKey:(CGPoint)key withOffset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = offset.y;
+  x = offset.x;
+  v6 = key.y;
+  v7 = key.x;
   v8 = +[TypistKeyboardData keyboardData];
 
   [(objc_class *)v8 centerOfKey:v7 withOffset:v6, x, y];
@@ -5577,9 +5577,9 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return result;
 }
 
-- (TypistKeyboard)initWithHardwareKeyboard:(id)a3
+- (TypistKeyboard)initWithHardwareKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   v10.receiver = self;
   v10.super_class = TypistKeyboard;
   v5 = [(TypistKeyboard *)&v10 init];
@@ -5592,43 +5592,43 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     pressDuration = v6->_pressDuration;
     v6->_pressDuration = &unk_288029520;
 
-    [(TypistKeyboard *)v6 attachHardwareKeyboard:v4];
+    [(TypistKeyboard *)v6 attachHardwareKeyboard:keyboardCopy];
   }
 
   return v6;
 }
 
-+ (void)typeStringOnHardwareKeyboard:(id)a3 withLanguage:(id)a4
++ (void)typeStringOnHardwareKeyboard:(id)keyboard withLanguage:(id)language
 {
-  v13 = a3;
-  v5 = a4;
-  if (v13 && v5)
+  keyboardCopy = keyboard;
+  languageCopy = language;
+  if (keyboardCopy && languageCopy)
   {
-    v12 = [[TypistHWKeyboard alloc] initWithLanguage:v5];
+    v12 = [[TypistHWKeyboard alloc] initWithLanguage:languageCopy];
     if (v12)
     {
       [&unk_288029520 doubleValue];
       [(TypistHWKeyboard *)v12 setTypeInterval:?];
-      [(TypistHWKeyboard *)v12 typeString:v13];
+      [(TypistHWKeyboard *)v12 typeString:keyboardCopy];
       [(TypistHWKeyboard *)v12 detach];
     }
 
     else
     {
-      TYLogl(OS_LOG_TYPE_ERROR, @"Unable to attach hardware keyboard with language %@", v6, v7, v8, v9, v10, v11, v5);
+      TYLogl(OS_LOG_TYPE_ERROR, @"Unable to attach hardware keyboard with language %@", v6, v7, v8, v9, v10, v11, languageCopy);
     }
   }
 }
 
-- (void)attachHardwareKeyboard:(id)a3
+- (void)attachHardwareKeyboard:(id)keyboard
 {
-  v5 = a3;
-  if (v5)
+  keyboardCopy = keyboard;
+  if (keyboardCopy)
   {
-    v23 = v5;
-    v6 = [(TypistKeyboard *)self hardwareKeyboard];
+    v23 = keyboardCopy;
+    hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-    if (v6)
+    if (hardwareKeyboard)
     {
       TYLog(@"An existing hardware keyboard was found to be attached. Detaching prior to attaching new keyboard (%@)...", v7, v8, v9, v10, v11, v12, v13, v23);
       [(TypistKeyboard *)self detachHardwareKeyboard];
@@ -5637,11 +5637,11 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     v14 = [[TypistHWKeyboard alloc] initWithLanguage:v23];
     [(TypistKeyboard *)self setHardwareKeyboard:v14];
 
-    v15 = [(TypistKeyboard *)self pressDuration];
-    if (v15)
+    pressDuration = [(TypistKeyboard *)self pressDuration];
+    if (pressDuration)
     {
-      v3 = [(TypistKeyboard *)self pressDuration];
-      [v3 doubleValue];
+      pressDuration2 = [(TypistKeyboard *)self pressDuration];
+      [pressDuration2 doubleValue];
     }
 
     else
@@ -5650,18 +5650,18 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     }
 
     v17 = v16;
-    v18 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v18 setPressDuration:v17];
+    hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard2 setPressDuration:v17];
 
-    if (v15)
+    if (pressDuration)
     {
     }
 
-    v19 = [(TypistKeyboard *)self typeInterval];
-    if (v19)
+    typeInterval = [(TypistKeyboard *)self typeInterval];
+    if (typeInterval)
     {
-      v3 = [(TypistKeyboard *)self typeInterval];
-      [v3 doubleValue];
+      pressDuration2 = [(TypistKeyboard *)self typeInterval];
+      [pressDuration2 doubleValue];
     }
 
     else
@@ -5670,22 +5670,22 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     }
 
     v21 = v20;
-    v22 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v22 setTypeInterval:v21];
+    hardwareKeyboard3 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard3 setTypeInterval:v21];
 
-    if (v19)
+    if (typeInterval)
     {
     }
 
-    v5 = v23;
+    keyboardCopy = v23;
   }
 }
 
-- (void)attachHardwareKeyboardWithCountryCode:(id)a3
+- (void)attachHardwareKeyboardWithCountryCode:(id)code
 {
-  if (a3)
+  if (code)
   {
-    v6 = +[TypistHWKeyboard convertHIDCountryCodeToLanguage:](TypistHWKeyboard, "convertHIDCountryCodeToLanguage:", [a3 integerValue]);
+    v6 = +[TypistHWKeyboard convertHIDCountryCodeToLanguage:](TypistHWKeyboard, "convertHIDCountryCodeToLanguage:", [code integerValue]);
     typeInterval = self->_typeInterval;
     self->_typeInterval = &unk_288029520;
 
@@ -5698,26 +5698,26 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
 
 - (void)detachHardwareKeyboard
 {
-  v3 = [(TypistKeyboard *)self hardwareKeyboard];
+  hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-  if (v3)
+  if (hardwareKeyboard)
   {
-    v4 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v4 detach];
+    hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard2 detach];
 
     [(TypistKeyboard *)self setHardwareKeyboard:0];
   }
 }
 
-- (void)typeStringWithHardwareKeyboard:(id)a3
+- (void)typeStringWithHardwareKeyboard:(id)keyboard
 {
-  v13 = a3;
-  v4 = [(TypistKeyboard *)self hardwareKeyboard];
+  keyboardCopy = keyboard;
+  hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-  if (v4)
+  if (hardwareKeyboard)
   {
-    v11 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v11 typeString:v13];
+    hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard2 typeString:keyboardCopy];
   }
 
   else
@@ -5726,30 +5726,30 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   }
 }
 
-- (void)pressAndHoldHardwareKeys:(id)a3 forDuration:(double)a4 withValidation:(id)a5 validateAfter:(double)a6
+- (void)pressAndHoldHardwareKeys:(id)keys forDuration:(double)duration withValidation:(id)validation validateAfter:(double)after
 {
-  v13 = a3;
-  v10 = a5;
-  if (v13)
+  keysCopy = keys;
+  validationCopy = validation;
+  if (keysCopy)
   {
-    v11 = [(TypistKeyboard *)self hardwareKeyboard];
+    hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-    if (v11)
+    if (hardwareKeyboard)
     {
-      v12 = [(TypistKeyboard *)self hardwareKeyboard];
-      [v12 pressAndHoldKeys:v13 forDuration:v10 withValidation:a4 after:a6];
+      hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+      [hardwareKeyboard2 pressAndHoldKeys:keysCopy forDuration:validationCopy withValidation:duration after:after];
     }
   }
 }
 
 - (void)toggleCapsLock
 {
-  v3 = [(TypistKeyboard *)self hardwareKeyboard];
+  hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-  if (v3)
+  if (hardwareKeyboard)
   {
-    v4 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v4 typeString:@"⇪"];
+    hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard2 typeString:@"⇪"];
   }
 
   else
@@ -5761,12 +5761,12 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
 
 - (void)tapGlobeKey
 {
-  v3 = [(TypistKeyboard *)self hardwareKeyboard];
+  hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-  if (v3)
+  if (hardwareKeyboard)
   {
-    v4 = [(TypistKeyboard *)self hardwareKeyboard];
-    [v4 typeString:@"⌨"];
+    hardwareKeyboard2 = [(TypistKeyboard *)self hardwareKeyboard];
+    [hardwareKeyboard2 typeString:@"⌨"];
   }
 
   else
@@ -5778,9 +5778,9 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
 
 - (void)tapMoreKey
 {
-  v3 = [(TypistKeyboard *)self hardwareKeyboard];
+  hardwareKeyboard = [(TypistKeyboard *)self hardwareKeyboard];
 
-  if (v3)
+  if (hardwareKeyboard)
   {
     TYLog(@"%@ is not an understood action in the context of hardware keyboards. Aborting...", v4, v5, v6, v7, v8, v9, v10, @"🔤");
   }
@@ -5792,85 +5792,85 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   }
 }
 
-- (TypistKeyboard)initWithCoder:(id)a3
+- (TypistKeyboard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = TypistKeyboard;
   v5 = [(TypistKeyboard *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardID"];
     keyboardID = v5->_keyboardID;
     v5->_keyboardID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"typeInterval"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"typeInterval"];
     typeInterval = v5->_typeInterval;
     v5->_typeInterval = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hardwareKeyboard"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hardwareKeyboard"];
     hardwareKeyboard = v5->_hardwareKeyboard;
     v5->_hardwareKeyboard = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidatebar"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidatebar"];
     candidatebar = v5->_candidatebar;
     v5->_candidatebar = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutName"];
     layoutName = v5->_layoutName;
     v5->_layoutName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"languageID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"languageID"];
     languageID = v5->_languageID;
     v5->_languageID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
     regionCode = v5->_regionCode;
     v5->_regionCode = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardSW"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardSW"];
     keyboardSW = v5->_keyboardSW;
     v5->_keyboardSW = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardType"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardType"];
     keyboardType = v5->_keyboardType;
     v5->_keyboardType = v22;
 
-    v5->_usePopupKeys = [v4 decodeBoolForKey:@"usePopupKeys"];
-    v5->_usePredictionBar = [v4 decodeBoolForKey:@"usePredictionBar"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyPlanes"];
+    v5->_usePopupKeys = [coderCopy decodeBoolForKey:@"usePopupKeys"];
+    v5->_usePredictionBar = [coderCopy decodeBoolForKey:@"usePredictionBar"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyPlanes"];
     keyPlanes = v5->_keyPlanes;
     v5->_keyPlanes = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"defaultPlaneName"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"defaultPlaneName"];
     defaultPlaneName = v5->_defaultPlaneName;
     v5->_defaultPlaneName = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"planeSwitchTable"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"planeSwitchTable"];
     planeSwitchTable = v5->_planeSwitchTable;
     v5->_planeSwitchTable = v28;
 
-    v5->_dictationSupported = [v4 decodeBoolForKey:@"dictationSupported"];
-    v5->_shouldShowDictationKey = [v4 decodeBoolForKey:@"shouldShowDictationKey"];
-    v5->_shouldShowGlobeKey = [v4 decodeBoolForKey:@"shouldShowGlobeKey"];
-    v5->_isTenKey = [v4 decodeBoolForKey:@"isTenKey"];
-    v5->_isKana = [v4 decodeBoolForKey:@"isKana"];
-    v5->_isHandwriting = [v4 decodeBoolForKey:@"isHandwriting"];
-    v5->_fastTyping = [v4 decodeBoolForKey:@"fastTyping"];
-    v5->_hasCandidatesToCommit = [v4 decodeBoolForKey:@"hasCandidatesToCommit"];
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sentenceDelimitingCharacters"];
+    v5->_dictationSupported = [coderCopy decodeBoolForKey:@"dictationSupported"];
+    v5->_shouldShowDictationKey = [coderCopy decodeBoolForKey:@"shouldShowDictationKey"];
+    v5->_shouldShowGlobeKey = [coderCopy decodeBoolForKey:@"shouldShowGlobeKey"];
+    v5->_isTenKey = [coderCopy decodeBoolForKey:@"isTenKey"];
+    v5->_isKana = [coderCopy decodeBoolForKey:@"isKana"];
+    v5->_isHandwriting = [coderCopy decodeBoolForKey:@"isHandwriting"];
+    v5->_fastTyping = [coderCopy decodeBoolForKey:@"fastTyping"];
+    v5->_hasCandidatesToCommit = [coderCopy decodeBoolForKey:@"hasCandidatesToCommit"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sentenceDelimitingCharacters"];
     sentenceDelimitingCharacters = v5->_sentenceDelimitingCharacters;
     v5->_sentenceDelimitingCharacters = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sentenceTrailingCharacters"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sentenceTrailingCharacters"];
     sentenceTrailingCharacters = v5->_sentenceTrailingCharacters;
     v5->_sentenceTrailingCharacters = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sentencePrefixingCharacters"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sentencePrefixingCharacters"];
     sentencePrefixingCharacters = v5->_sentencePrefixingCharacters;
     v5->_sentencePrefixingCharacters = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoshiftRegex"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoshiftRegex"];
     autoshiftRegex = v5->_autoshiftRegex;
     v5->_autoshiftRegex = v36;
   }
@@ -5878,74 +5878,74 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   keyboardID = self->_keyboardID;
-  v22 = v4;
+  v22 = coderCopy;
   if (keyboardID)
   {
-    [v4 encodeObject:keyboardID forKey:@"keyboardID"];
-    v4 = v22;
+    [coderCopy encodeObject:keyboardID forKey:@"keyboardID"];
+    coderCopy = v22;
   }
 
   typeInterval = self->_typeInterval;
   if (typeInterval)
   {
     [v22 encodeObject:typeInterval forKey:@"typeInterval"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   candidatebar = self->_candidatebar;
   if (candidatebar)
   {
     [v22 encodeObject:candidatebar forKey:@"candidatebar"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   hardwareKeyboard = self->_hardwareKeyboard;
   if (hardwareKeyboard)
   {
     [v22 encodeObject:hardwareKeyboard forKey:@"hardwareKeyboard"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   layoutName = self->_layoutName;
   if (layoutName)
   {
     [v22 encodeObject:layoutName forKey:@"layoutName"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   languageID = self->_languageID;
   if (languageID)
   {
     [v22 encodeObject:languageID forKey:@"languageID"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   regionCode = self->_regionCode;
   if (regionCode)
   {
     [v22 encodeObject:regionCode forKey:@"regionCode"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   keyboardSW = self->_keyboardSW;
   if (keyboardSW)
   {
     [v22 encodeObject:keyboardSW forKey:@"keyboardSW"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
   keyboardType = self->_keyboardType;
   if (keyboardType)
   {
     [v22 encodeObject:keyboardType forKey:@"keyboardType"];
-    v4 = v22;
+    coderCopy = v22;
   }
 
-  [v4 encodeBool:self->_usePopupKeys forKey:@"usePopupKeys"];
+  [coderCopy encodeBool:self->_usePopupKeys forKey:@"usePopupKeys"];
   [v22 encodeBool:self->_usePredictionBar forKey:@"usePredictionBar"];
   keyPlanes = self->_keyPlanes;
   if (keyPlanes)
@@ -5997,17 +5997,17 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   }
 }
 
-- (void)_bailWithError:(id)a3 completion:(id)a4
+- (void)_bailWithError:(id)error completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, a3);
+    (*(completion + 2))(completion, error);
   }
 }
 
-- (BOOL)isAvailableKeyOnCurrentPlane:(id)a3
+- (BOOL)isAvailableKeyOnCurrentPlane:(id)plane
 {
-  v3 = [(TypistKeyboard *)self findKeyOnCurrentPlane:a3];
+  v3 = [(TypistKeyboard *)self findKeyOnCurrentPlane:plane];
   v4 = v3;
   if (v3)
   {
@@ -6023,9 +6023,9 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return v6;
 }
 
-- (BOOL)isAvailablePopoverOnCurrentPlane:(id)a3
+- (BOOL)isAvailablePopoverOnCurrentPlane:(id)plane
 {
-  v3 = [(TypistKeyboard *)self findKeyOnCurrentPlane:a3];
+  v3 = [(TypistKeyboard *)self findKeyOnCurrentPlane:plane];
   v4 = v3;
   if (v3)
   {
@@ -6041,13 +6041,13 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return v6;
 }
 
-- (BOOL)isAvailableFlickOnCurrentPlane:(id)a3 withDirection:(id)a4
+- (BOOL)isAvailableFlickOnCurrentPlane:(id)plane withDirection:(id)direction
 {
-  v6 = a3;
-  v7 = a4;
+  planeCopy = plane;
+  directionCopy = direction;
   if ([(TypistKeyboard *)self isTenKey])
   {
-    v8 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v6];
+    v8 = [(TypistKeyboard *)self findKeyOnCurrentPlane:planeCopy];
     v9 = v8;
     if (v8)
     {
@@ -6055,7 +6055,7 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
       if ([v10 isEqualToString:@"gesture"])
       {
         v11 = [v9 objectForKeyedSubscript:@"direction"];
-        v12 = [v11 isEqualToString:v7];
+        v12 = [v11 isEqualToString:directionCopy];
       }
 
       else
@@ -6078,10 +6078,10 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return v12;
 }
 
-- (BOOL)isAvailableGestureOnCurrentPlane:(id)a3 withDirection:(id)a4
+- (BOOL)isAvailableGestureOnCurrentPlane:(id)plane withDirection:(id)direction
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", a4, a3];
-  v6 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v5];
+  plane = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", direction, plane];
+  v6 = [(TypistKeyboard *)self findKeyOnCurrentPlane:plane];
   v7 = v6;
   if (v6)
   {
@@ -6097,53 +6097,53 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   return v9;
 }
 
-- (void)tapKey:(id)a3 tapCount:(unint64_t)a4 completion:(id)a5
+- (void)tapKey:(id)key tapCount:(unint64_t)count completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(TypistKeyboard *)self typeInterval];
-  [(TypistKeyboard *)self tapKey:v9 tapCount:a4 overriddenTypeInterval:v10 completion:v8];
+  completionCopy = completion;
+  keyCopy = key;
+  typeInterval = [(TypistKeyboard *)self typeInterval];
+  [(TypistKeyboard *)self tapKey:keyCopy tapCount:count overriddenTypeInterval:typeInterval completion:completionCopy];
 }
 
-- (void)tapKey:(id)a3 tapCount:(unint64_t)a4 overriddenTypeInterval:(id)a5 completion:(id)a6
+- (void)tapKey:(id)key tapCount:(unint64_t)count overriddenTypeInterval:(id)interval completion:(id)completion
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v26 = a5;
-  v11 = a6;
-  v12 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v10];
+  keyCopy = key;
+  intervalCopy = interval;
+  completionCopy = completion;
+  v12 = [(TypistKeyboard *)self findKeyOnCurrentPlane:keyCopy];
   v13 = v12;
   if (v12 && ([v12 objectForKeyedSubscript:@"type"], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", @"basekey"), v14, v15))
   {
     v25 = objc_opt_new();
-    for (i = objc_opt_new(); a4; --a4)
+    for (i = objc_opt_new(); count; --count)
     {
-      if (a4 == 1)
+      if (count == 1)
       {
-        v17 = [(TypistKeyboard *)self typeInterval];
-        v18 = [v17 stringValue];
+        typeInterval = [(TypistKeyboard *)self typeInterval];
+        stringValue = [typeInterval stringValue];
       }
 
       else
       {
-        v18 = [v26 stringValue];
+        stringValue = [intervalCopy stringValue];
       }
 
       [i addObject:v13];
       v31[0] = @"action";
       v31[1] = @"time";
       v32[0] = @"wait";
-      v32[1] = v18;
+      v32[1] = stringValue;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
       [i addObject:v19];
     }
 
     v29[0] = @"keystroke";
     v29[1] = @"actions";
-    v30[0] = v10;
+    v30[0] = keyCopy;
     v30[1] = i;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
-    v21 = v25;
+    keyCopy = v25;
     [v25 addObject:v20];
 
     [(TypistKeyboard *)self typeKeystrokeStream:v25];
@@ -6154,32 +6154,32 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   {
     v23 = MEMORY[0x277CCA9B8];
     v27 = *MEMORY[0x277CCA470];
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"No tap information was found for %@", v10];
-    v28 = v21;
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No tap information was found for %@", keyCopy];
+    v28 = keyCopy;
     i = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v22 = [v23 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:i];
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v11[2](v11, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dragFromKey:(id)a3 toKey:(id)a4 completion:(id)a5
+- (void)dragFromKey:(id)key toKey:(id)toKey completion:(id)completion
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v8];
+  keyCopy = key;
+  toKeyCopy = toKey;
+  completionCopy = completion;
+  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:keyCopy];
   if (v11)
   {
     v12 = +[TypistKeyboardUtilities formattedKeyplaneName];
-    v39 = [(TypistKeyboard *)self getExpectedPlaneNameForKey:v8 currentPlane:v12];
-    v13 = [(TypistKeyboard *)self findKey:v9 inPlane:?];
+    v39 = [(TypistKeyboard *)self getExpectedPlaneNameForKey:keyCopy currentPlane:v12];
+    v13 = [(TypistKeyboard *)self findKey:toKeyCopy inPlane:?];
     if (v13)
     {
       v38 = v12;
@@ -6216,9 +6216,9 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
       [v14 addObject:v29];
 
       [(TypistKeyboard *)self typeKeystrokeStream:v14];
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 0);
+        completionCopy[2](completionCopy, 0);
       }
 
       v30 = 0;
@@ -6229,12 +6229,12 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     {
       v34 = MEMORY[0x277CCA9B8];
       v42 = *MEMORY[0x277CCA470];
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@", v9];
-      v43 = v35;
+      toKeyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@", toKeyCopy];
+      v43 = toKeyCopy;
       v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       v30 = [v34 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:v36];
 
-      [(TypistKeyboard *)self _bailWithError:v30 completion:v10];
+      [(TypistKeyboard *)self _bailWithError:v30 completion:completionCopy];
     }
   }
 
@@ -6242,32 +6242,32 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   {
     v31 = MEMORY[0x277CCA9B8];
     v44 = *MEMORY[0x277CCA470];
-    v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@", v8];
-    v45[0] = v32;
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@", keyCopy];
+    v45[0] = keyCopy;
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v45 forKeys:&v44 count:1];
     v30 = [v31 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:v33];
 
-    [(TypistKeyboard *)self _bailWithError:v30 completion:v10];
+    [(TypistKeyboard *)self _bailWithError:v30 completion:completionCopy];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dragPopoverKey:(id)a3 completion:(id)a4
+- (void)dragPopoverKey:(id)key completion:(id)completion
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v6];
+  keyCopy = key;
+  completionCopy = completion;
+  v8 = [(TypistKeyboard *)self findKeyOnCurrentPlane:keyCopy];
   v9 = v8;
   if (v8 && ([v8 objectForKeyedSubscript:@"type"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", @"popover"), v10, v11))
   {
-    v12 = objc_opt_new();
+    keyCopy = objc_opt_new();
     v13 = objc_opt_new();
     v22 = MEMORY[0x277CBEB38];
-    v24 = [(TypistKeyboard *)self keyPlanes];
+    keyPlanes = [(TypistKeyboard *)self keyPlanes];
     v14 = [v9 objectForKeyedSubscript:@"plane"];
-    v15 = [v24 objectForKeyedSubscript:v14];
+    v15 = [keyPlanes objectForKeyedSubscript:v14];
     v16 = [v9 objectForKeyedSubscript:@"basekey"];
     v17 = [v15 objectForKeyedSubscript:v16];
     v23 = [v22 dictionaryWithDictionary:v17];
@@ -6277,12 +6277,12 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
     [v13 addObject:v9];
     v27[0] = @"keystroke";
     v27[1] = @"actions";
-    v28[0] = v6;
+    v28[0] = keyCopy;
     v28[1] = v13;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
-    [v12 addObject:v18];
+    [keyCopy addObject:v18];
 
-    [(TypistKeyboard *)self typeKeystrokeStream:v12];
+    [(TypistKeyboard *)self typeKeystrokeStream:keyCopy];
     v19 = 0;
   }
 
@@ -6290,38 +6290,38 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   {
     v20 = MEMORY[0x277CCA9B8];
     v25 = *MEMORY[0x277CCA470];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"No popover information was found for %@", v6];
-    v26 = v12;
+    keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No popover information was found for %@", keyCopy];
+    v26 = keyCopy;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v19 = [v20 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:v13];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)flickKey:(id)a3 withDirection:(id)a4 completion:(id)a5
+- (void)flickKey:(id)key withDirection:(id)direction completion:(id)completion
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  directionCopy = direction;
+  completionCopy = completion;
   if (![(TypistKeyboard *)self isTenKey])
   {
     v23 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277CCA470];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"The current keyboard is not a ten key implementation or is not a ten key implementation known to this version of Typist. Please file a radar."];
     v29 = v12;
-    v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v22 = [v23 errorWithDomain:@"TypistKeyboardNotTenKeyError" code:1 userInfo:v16];
+    directionCopy = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+    v22 = [v23 errorWithDomain:@"TypistKeyboardNotTenKeyError" code:1 userInfo:directionCopy];
     goto LABEL_10;
   }
 
-  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v8];
+  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:keyCopy];
   v12 = v11;
   if (!v11)
   {
@@ -6336,25 +6336,25 @@ uint64_t __69__TypistKeyboard_typeWordKeystrokes_expectedWord_atIndex_completion
   }
 
   v14 = [v12 objectForKeyedSubscript:@"direction"];
-  v15 = [v14 isEqualToString:v9];
+  v15 = [v14 isEqualToString:directionCopy];
 
   if (!v15)
   {
 LABEL_8:
     v24 = MEMORY[0x277CCA9B8];
     v30 = *MEMORY[0x277CCA470];
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@ with direction %@", v8, v9];
-    v31 = v16;
+    directionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No key information was found for %@ with direction %@", keyCopy, directionCopy];
+    v31 = directionCopy;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v22 = [v24 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:v17];
     goto LABEL_9;
   }
 
-  v16 = objc_opt_new();
+  directionCopy = objc_opt_new();
   v17 = objc_opt_new();
-  v27 = [(TypistKeyboard *)self keyPlanes];
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
   v18 = [v12 objectForKeyedSubscript:@"plane"];
-  v19 = [v27 objectForKeyedSubscript:v18];
+  v19 = [keyPlanes objectForKeyedSubscript:v18];
   v20 = [v12 objectForKeyedSubscript:@"basekey"];
   v26 = [v19 objectForKeyedSubscript:v20];
 
@@ -6362,45 +6362,45 @@ LABEL_8:
   [v17 addObject:v12];
   v32[0] = @"keystroke";
   v32[1] = @"actions";
-  v33[0] = v8;
+  v33[0] = keyCopy;
   v33[1] = v17;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
-  [v16 addObject:v21];
+  [directionCopy addObject:v21];
 
-  [(TypistKeyboard *)self typeKeystrokeStream:v16];
+  [(TypistKeyboard *)self typeKeystrokeStream:directionCopy];
   v22 = 0;
 LABEL_9:
 
 LABEL_10:
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v22);
+    completionCopy[2](completionCopy, v22);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)swipeGestureKey:(id)a3 withDirection:(id)a4 completion:(id)a5
+- (void)swipeGestureKey:(id)key withDirection:(id)direction completion:(id)completion
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", a4, v8];
-  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:v10];
+  keyCopy = key;
+  completionCopy = completion;
+  keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", direction, keyCopy];
+  v11 = [(TypistKeyboard *)self findKeyOnCurrentPlane:keyCopy];
   v12 = v11;
   if (v11 && ([v11 objectForKeyedSubscript:@"type"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToString:", @"gesture"), v13, v14))
   {
     v15 = objc_opt_new();
     v16 = objc_opt_new();
     [(TypistKeyboard *)self keyPlanes];
-    v17 = v27 = v8;
+    v17 = v27 = keyCopy;
     v18 = [v12 objectForKeyedSubscript:@"plane"];
     v19 = [v17 objectForKeyedSubscript:v18];
     v20 = [v12 objectForKeyedSubscript:@"basekey"];
     [v19 objectForKeyedSubscript:v20];
     v21 = v26 = self;
 
-    v8 = v27;
+    keyCopy = v27;
     [v16 addObject:v21];
     [v16 addObject:v12];
     v30[0] = @"keystroke";
@@ -6418,46 +6418,46 @@ LABEL_10:
   {
     v24 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277CCA470];
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"No gesture information was found for %@", v10];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"No gesture information was found for %@", keyCopy];
     v29 = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v23 = [v24 errorWithDomain:@"TypistKeyNotFoundError" code:1 userInfo:v16];
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v23);
+    completionCopy[2](completionCopy, v23);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)swipeGestureOrFlickKey:(id)a3 withDirection:(id)a4 completion:(id)a5
+- (void)swipeGestureOrFlickKey:(id)key withDirection:(id)direction completion:(id)completion
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(TypistKeyboard *)self isAvailableFlickOnCurrentPlane:v8 withDirection:v9])
+  keyCopy = key;
+  directionCopy = direction;
+  completionCopy = completion;
+  if ([(TypistKeyboard *)self isAvailableFlickOnCurrentPlane:keyCopy withDirection:directionCopy])
   {
-    [(TypistKeyboard *)self flickKey:v8 withDirection:v9 completion:v10];
+    [(TypistKeyboard *)self flickKey:keyCopy withDirection:directionCopy completion:completionCopy];
   }
 
-  else if ([(TypistKeyboard *)self isAvailableGestureOnCurrentPlane:v8 withDirection:v9])
+  else if ([(TypistKeyboard *)self isAvailableGestureOnCurrentPlane:keyCopy withDirection:directionCopy])
   {
-    [(TypistKeyboard *)self swipeGestureKey:v8 withDirection:v9 completion:v10];
+    [(TypistKeyboard *)self swipeGestureKey:keyCopy withDirection:directionCopy completion:completionCopy];
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v11 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277CCA470];
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"No gesture or flick information was found for %@ in direction %@ ", v8, v9];
-    v17[0] = v12;
+    directionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"No gesture or flick information was found for %@ in direction %@ ", keyCopy, directionCopy];
+    v17[0] = directionCopy;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v14 = [v11 errorWithDomain:@"TypistKeyNotFoundInSpecifiedDirectionError" code:1 userInfo:v13];
 
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];

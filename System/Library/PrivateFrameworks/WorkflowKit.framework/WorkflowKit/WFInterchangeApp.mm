@@ -1,6 +1,6 @@
 @interface WFInterchangeApp
 - (BOOL)isCurrentlyInstalled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
 - (BOOL)isRestricted;
 - (INAppInfo)appInfo;
@@ -16,29 +16,29 @@
 - (NSString)localizedName;
 - (NSString)localizedShortName;
 - (WFImage)icon;
-- (WFInterchangeApp)initWithIdentifier:(id)a3 definition:(id)a4;
+- (WFInterchangeApp)initWithIdentifier:(id)identifier definition:(id)definition;
 - (id)bundleIdentifiersByIdiom;
 - (id)description;
-- (id)identifierFromDictionaryForCurrentIdiom:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
-- (id)schemeNamed:(id)a3;
+- (id)identifierFromDictionaryForCurrentIdiom:(id)idiom;
+- (id)localizedNameWithContext:(id)context;
+- (id)schemeNamed:(id)named;
 - (unint64_t)hash;
-- (void)openFile:(id)a3 withAnnotation:(id)a4 completionHandler:(id)a5;
+- (void)openFile:(id)file withAnnotation:(id)annotation completionHandler:(id)handler;
 - (void)resetInstalledStatus;
-- (void)setIcon:(id)a3;
+- (void)setIcon:(id)icon;
 - (void)updateInstalledStatus;
 @end
 
 @implementation WFInterchangeApp
 
-- (id)identifierFromDictionaryForCurrentIdiom:(id)a3
+- (id)identifierFromDictionaryForCurrentIdiom:(id)idiom
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"Phone"];
-  v5 = [v3 objectForKey:@"Pad"];
+  idiomCopy = idiom;
+  v4 = [idiomCopy objectForKey:@"Phone"];
+  v5 = [idiomCopy objectForKey:@"Pad"];
 
-  v6 = [MEMORY[0x1E69E0A90] currentDevice];
-  v7 = [v6 idiom];
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  idiom = [currentDevice idiom];
 
   if (v5)
   {
@@ -50,7 +50,7 @@
     v8 = v4;
   }
 
-  if (v7 == 1)
+  if (idiom == 1)
   {
     v9 = v8;
   }
@@ -65,33 +65,33 @@
   return v9;
 }
 
-- (void)openFile:(id)a3 withAnnotation:(id)a4 completionHandler:(id)a5
+- (void)openFile:(id)file withAnnotation:(id)annotation completionHandler:(id)handler
 {
-  v8 = a5;
-  v10 = [DCDocument documentWithURL:a3 annotation:a4];
-  v9 = [(WFInterchangeApp *)self bundleIdentifier];
-  [v10 openWithAppBundleIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  v10 = [DCDocument documentWithURL:file annotation:annotation];
+  bundleIdentifier = [(WFInterchangeApp *)self bundleIdentifier];
+  [v10 openWithAppBundleIdentifier:bundleIdentifier completionHandler:handlerCopy];
 }
 
 - (BOOL)isInstalled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(WFInterchangeApp *)self stateAccessQueue];
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __31__WFInterchangeApp_isInstalled__block_invoke;
   v5[3] = &unk_1E837F898;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(stateAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 _BYTE *__31__WFInterchangeApp_isInstalled__block_invoke(uint64_t a1)
@@ -110,13 +110,13 @@ _BYTE *__31__WFInterchangeApp_isInstalled__block_invoke(uint64_t a1)
 
 - (void)updateInstalledStatus
 {
-  v3 = [(WFInterchangeApp *)self stateAccessQueue];
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__WFInterchangeApp_updateInstalledStatus__block_invoke;
   block[3] = &unk_1E837FA70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateAccessQueue, block);
 }
 
 uint64_t __41__WFInterchangeApp_updateInstalledStatus__block_invoke(uint64_t a1)
@@ -129,24 +129,24 @@ uint64_t __41__WFInterchangeApp_updateInstalledStatus__block_invoke(uint64_t a1)
 
 - (void)resetInstalledStatus
 {
-  v3 = [(WFInterchangeApp *)self stateAccessQueue];
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__WFInterchangeApp_resetInstalledStatus__block_invoke;
   block[3] = &unk_1E837FA70;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(stateAccessQueue, block);
 }
 
 - (BOOL)isCurrentlyInstalled
 {
   v2 = MEMORY[0x1E69635E0];
-  v3 = [(WFInterchangeApp *)self bundleIdentifier];
-  v4 = [v2 applicationProxyForIdentifier:v3];
-  v5 = [v4 appState];
-  v6 = [v5 isInstalled];
+  bundleIdentifier = [(WFInterchangeApp *)self bundleIdentifier];
+  v4 = [v2 applicationProxyForIdentifier:bundleIdentifier];
+  appState = [v4 appState];
+  isInstalled = [appState isInstalled];
 
-  return v6;
+  return isInstalled;
 }
 
 - (INAppInfo)appInfo
@@ -159,9 +159,9 @@ uint64_t __41__WFInterchangeApp_updateInstalledStatus__block_invoke(uint64_t a1)
   }
 
   v5 = objc_alloc(MEMORY[0x1E69635F8]);
-  v6 = [(WFInterchangeApp *)self bundleIdentifier];
+  bundleIdentifier = [(WFInterchangeApp *)self bundleIdentifier];
   v15 = 0;
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v15];
+  v7 = [v5 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v15];
   v8 = v15;
 
   if (!v8)
@@ -179,11 +179,11 @@ LABEL_2:
   v9 = getWFInterchangeLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(WFInterchangeApp *)self bundleIdentifier];
+    bundleIdentifier2 = [(WFInterchangeApp *)self bundleIdentifier];
     *buf = 136315650;
     v17 = "[WFInterchangeApp appInfo]";
     v18 = 2114;
-    v19 = v10;
+    v19 = bundleIdentifier2;
     v20 = 2114;
     v21 = v8;
     _os_log_impl(&dword_1CA256000, v9, OS_LOG_TYPE_ERROR, "%s Unable to get app record for %{public}@, %{public}@", buf, 0x20u);
@@ -200,51 +200,51 @@ LABEL_7:
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69635F8]);
-  v4 = [(WFInterchangeApp *)self bundleIdentifier];
+  bundleIdentifier = [(WFInterchangeApp *)self bundleIdentifier];
   v12 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v12];
+  v5 = [v3 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v12];
   v6 = v12;
 
   if (v6)
   {
-    v7 = getWFInterchangeLogObject();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    applicationState = getWFInterchangeLogObject();
+    if (os_log_type_enabled(applicationState, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(WFInterchangeApp *)self bundleIdentifier];
+      bundleIdentifier2 = [(WFInterchangeApp *)self bundleIdentifier];
       *buf = 136315650;
       v14 = "[WFInterchangeApp isRestricted]";
       v15 = 2114;
-      v16 = v8;
+      v16 = bundleIdentifier2;
       v17 = 2114;
       v18 = v6;
-      _os_log_impl(&dword_1CA256000, v7, OS_LOG_TYPE_ERROR, "%s Unable to get app record for %{public}@, %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1CA256000, applicationState, OS_LOG_TYPE_ERROR, "%s Unable to get app record for %{public}@, %{public}@", buf, 0x20u);
     }
 
-    v9 = 0;
+    isRestricted = 0;
   }
 
   else
   {
-    v7 = [v5 applicationState];
-    v9 = [v7 isRestricted];
+    applicationState = [v5 applicationState];
+    isRestricted = [applicationState isRestricted];
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v9;
+  return isRestricted;
 }
 
 - (NSString)iconName
 {
-  v2 = [(WFInterchangeApp *)self definition];
-  v3 = [v2 objectForKey:@"Icon"];
+  definition = [(WFInterchangeApp *)self definition];
+  v3 = [definition objectForKey:@"Icon"];
 
   return v3;
 }
 
 - (NSArray)metadata
 {
-  v2 = [(WFInterchangeApp *)self definition];
-  v3 = [v2 objectForKey:@"Metadata"];
+  definition = [(WFInterchangeApp *)self definition];
+  v3 = [definition objectForKey:@"Metadata"];
   v4 = v3;
   if (v3)
   {
@@ -263,8 +263,8 @@ LABEL_7:
 
 - (NSArray)documentActions
 {
-  v3 = [(WFInterchangeApp *)self definition];
-  v4 = [v3 objectForKey:@"DocumentActions"];
+  definition = [(WFInterchangeApp *)self definition];
+  v4 = [definition objectForKey:@"DocumentActions"];
 
   if (v4)
   {
@@ -301,8 +301,8 @@ id __35__WFInterchangeApp_documentActions__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)documentTypes
 {
-  v2 = [(WFInterchangeApp *)self definition];
-  v3 = [v2 objectForKey:@"DocumentTypes"];
+  definition = [(WFInterchangeApp *)self definition];
+  v3 = [definition objectForKey:@"DocumentTypes"];
 
   if (v3)
   {
@@ -343,18 +343,18 @@ id __33__WFInterchangeApp_documentTypes__block_invoke(uint64_t a1, void *a2)
 - (NSArray)exportedFileTypes
 {
   v2 = MEMORY[0x1E69E0AF8];
-  v3 = [(WFInterchangeApp *)self definition];
-  v4 = [v3 objectForKey:@"ExportedTypes"];
+  definition = [(WFInterchangeApp *)self definition];
+  v4 = [definition objectForKey:@"ExportedTypes"];
   v5 = [v2 typesFromStrings:v4];
 
   return v5;
 }
 
-- (id)schemeNamed:(id)a3
+- (id)schemeNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(WFInterchangeApp *)self schemes];
-  v6 = [v5 objectMatchingKey:@"scheme" value:v4];
+  namedCopy = named;
+  schemes = [(WFInterchangeApp *)self schemes];
+  v6 = [schemes objectMatchingKey:@"scheme" value:namedCopy];
 
   return v6;
 }
@@ -367,14 +367,14 @@ id __33__WFInterchangeApp_documentTypes__block_invoke(uint64_t a1, void *a2)
   v10 = __Block_byref_object_copy__10748;
   v11 = __Block_byref_object_dispose__10749;
   v12 = 0;
-  v3 = [(WFInterchangeApp *)self stateAccessQueue];
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__WFInterchangeApp_schemes__block_invoke;
   v6[3] = &unk_1E837F898;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -454,18 +454,18 @@ LABEL_16:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [(WFInterchangeApp *)self stateAccessQueue];
+  iconCopy = icon;
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__WFInterchangeApp_setIcon___block_invoke;
   v7[3] = &unk_1E837F870;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = iconCopy;
+  v6 = iconCopy;
+  dispatch_async(stateAccessQueue, v7);
 }
 
 - (WFImage)icon
@@ -476,14 +476,14 @@ LABEL_16:
   v10 = __Block_byref_object_copy__10748;
   v11 = __Block_byref_object_dispose__10749;
   v12 = 0;
-  v3 = [(WFInterchangeApp *)self stateAccessQueue];
+  stateAccessQueue = [(WFInterchangeApp *)self stateAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __24__WFInterchangeApp_icon__block_invoke;
   v6[3] = &unk_1E837F898;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(stateAccessQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -536,8 +536,8 @@ void __24__WFInterchangeApp_icon__block_invoke(uint64_t a1)
 
 - (NSString)iTunesIdentifier
 {
-  v3 = [(WFInterchangeApp *)self definition];
-  v4 = [v3 objectForKey:@"iTunesIdentifiers"];
+  definition = [(WFInterchangeApp *)self definition];
+  v4 = [definition objectForKey:@"iTunesIdentifiers"];
 
   if (v4)
   {
@@ -546,8 +546,8 @@ void __24__WFInterchangeApp_icon__block_invoke(uint64_t a1)
 
   else
   {
-    v6 = [(WFInterchangeApp *)self definition];
-    v5 = [v6 objectForKey:@"iTunesIdentifier"];
+    definition2 = [(WFInterchangeApp *)self definition];
+    v5 = [definition2 objectForKey:@"iTunesIdentifier"];
   }
 
   return v5;
@@ -555,8 +555,8 @@ void __24__WFInterchangeApp_icon__block_invoke(uint64_t a1)
 
 - (NSString)localizedShortName
 {
-  v3 = [(WFInterchangeApp *)self definition];
-  v4 = [v3 objectForKey:@"ShortName"];
+  definition = [(WFInterchangeApp *)self definition];
+  v4 = [definition objectForKey:@"ShortName"];
 
   if (v4)
   {
@@ -572,11 +572,11 @@ void __24__WFInterchangeApp_icon__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFInterchangeApp *)self definition];
-  v6 = [v5 objectForKey:@"Name"];
+  contextCopy = context;
+  definition = [(WFInterchangeApp *)self definition];
+  v6 = [definition objectForKey:@"Name"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -590,7 +590,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 localize:v6];
+    v7 = [contextCopy localize:v6];
     goto LABEL_5;
   }
 
@@ -602,63 +602,63 @@ LABEL_7:
 
 - (NSString)localizedName
 {
-  v3 = [MEMORY[0x1E69E0BE0] defaultContext];
-  v4 = [(WFInterchangeApp *)self localizedNameWithContext:v3];
+  defaultContext = [MEMORY[0x1E69E0BE0] defaultContext];
+  v4 = [(WFInterchangeApp *)self localizedNameWithContext:defaultContext];
 
   return v4;
 }
 
 - (NSString)bundleIdentifier
 {
-  v3 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
-  v4 = [v3 allValues];
-  v5 = [v4 count];
+  bundleIdentifiersByIdiom = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
+  allValues = [bundleIdentifiersByIdiom allValues];
+  v5 = [allValues count];
 
   if (v5)
   {
-    v6 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
-    v7 = [(WFInterchangeApp *)self identifierFromDictionaryForCurrentIdiom:v6];
+    bundleIdentifiersByIdiom2 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
+    v7 = [(WFInterchangeApp *)self identifierFromDictionaryForCurrentIdiom:bundleIdentifiersByIdiom2];
     v8 = v7;
     if (v7)
     {
-      v9 = v7;
+      identifier = v7;
     }
 
     else
     {
-      v9 = [(WFInterchangeApp *)self identifier];
+      identifier = [(WFInterchangeApp *)self identifier];
     }
 
-    v10 = v9;
+    identifier2 = identifier;
   }
 
   else
   {
-    v10 = [(WFInterchangeApp *)self identifier];
+    identifier2 = [(WFInterchangeApp *)self identifier];
   }
 
-  return v10;
+  return identifier2;
 }
 
 - (NSArray)allBundleIdentifiers
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
-  v4 = [v3 allValues];
-  if ([v4 count])
+  bundleIdentifiersByIdiom = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
+  allValues = [bundleIdentifiersByIdiom allValues];
+  if ([allValues count])
   {
-    v5 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
-    v6 = [v5 allValues];
+    bundleIdentifiersByIdiom2 = [(WFInterchangeApp *)self bundleIdentifiersByIdiom];
+    allValues2 = [bundleIdentifiersByIdiom2 allValues];
   }
 
   else
   {
-    v5 = [(WFInterchangeApp *)self identifier];
-    v10[0] = v5;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+    bundleIdentifiersByIdiom2 = [(WFInterchangeApp *)self identifier];
+    v10[0] = bundleIdentifiersByIdiom2;
+    allValues2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   }
 
-  v7 = v6;
+  v7 = allValues2;
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -667,8 +667,8 @@ LABEL_7:
 
 - (id)bundleIdentifiersByIdiom
 {
-  v2 = [(WFInterchangeApp *)self definition];
-  v3 = [v2 objectForKey:@"BundleIdentifiers"];
+  definition = [(WFInterchangeApp *)self definition];
+  v3 = [definition objectForKey:@"BundleIdentifiers"];
 
   return v3;
 }
@@ -679,9 +679,9 @@ LABEL_7:
   v11.receiver = self;
   v11.super_class = WFInterchangeApp;
   v4 = [(WFInterchangeApp *)&v11 description];
-  v5 = [(WFInterchangeApp *)self localizedName];
-  v6 = [(WFInterchangeApp *)self identifier];
-  v7 = v6;
+  localizedName = [(WFInterchangeApp *)self localizedName];
+  identifier = [(WFInterchangeApp *)self identifier];
+  v7 = identifier;
   if (self->_checkedInstallStatus)
   {
     if (self->_installed)
@@ -700,25 +700,25 @@ LABEL_7:
     v8 = @"Undetermined Install Status";
   }
 
-  v9 = [v3 stringWithFormat:@"%@: %@ [%@] (%@)", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"%@: %@ [%@] (%@)", v4, localizedName, identifier, v8];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(WFInterchangeApp *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(WFInterchangeApp *)self definition];
-  v6 = [v5 hash];
+  identifier = [(WFInterchangeApp *)self identifier];
+  v4 = [identifier hash];
+  definition = [(WFInterchangeApp *)self definition];
+  v6 = [definition hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -728,14 +728,14 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFInterchangeApp *)self identifier];
-      v6 = [(WFInterchangeApp *)v4 identifier];
-      if ([v5 isEqualToString:v6])
+      identifier = [(WFInterchangeApp *)self identifier];
+      identifier2 = [(WFInterchangeApp *)equalCopy identifier];
+      if ([identifier isEqualToString:identifier2])
       {
-        v7 = [(WFInterchangeApp *)self definition];
-        v8 = [(WFInterchangeApp *)v4 definition];
-        v9 = v7;
-        v10 = v8;
+        definition = [(WFInterchangeApp *)self definition];
+        definition2 = [(WFInterchangeApp *)equalCopy definition];
+        v9 = definition;
+        v10 = definition2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -767,24 +767,24 @@ LABEL_7:
   return v12;
 }
 
-- (WFInterchangeApp)initWithIdentifier:(id)a3 definition:(id)a4
+- (WFInterchangeApp)initWithIdentifier:(id)identifier definition:(id)definition
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  definitionCopy = definition;
+  if (!identifierCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFInterchangeApp.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFInterchangeApp.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v9 = [(WFInterchangeApp *)self init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    v12 = [v8 copy];
+    v12 = [definitionCopy copy];
     definition = v9->_definition;
     v9->_definition = v12;
 

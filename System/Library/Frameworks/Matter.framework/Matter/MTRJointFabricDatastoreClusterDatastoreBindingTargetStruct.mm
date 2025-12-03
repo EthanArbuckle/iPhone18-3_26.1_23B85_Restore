@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct
 - (MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self node];
-  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setNode:v5];
+  node = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self node];
+  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setNode:node];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self group];
-  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setGroup:v6];
+  group = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self group];
+  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setGroup:group];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self endpoint];
-  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setEndpoint:v7];
+  endpoint = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self endpoint];
+  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setEndpoint:endpoint];
 
-  v8 = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self cluster];
-  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setCluster:v8];
+  cluster = [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)self cluster];
+  [(MTRJointFabricDatastoreClusterDatastoreBindingTargetStruct *)v4 setCluster:cluster];
 
   return v4;
 }

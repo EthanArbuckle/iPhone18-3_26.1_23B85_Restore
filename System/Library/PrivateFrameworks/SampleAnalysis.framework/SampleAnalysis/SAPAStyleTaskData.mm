@@ -1,20 +1,20 @@
 @interface SAPAStyleTaskData
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleTaskData
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleTaskData" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleTaskData" userInfo:0];
   objc_exception_throw(v3);
@@ -26,15 +26,15 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v5 = @"NULL serializedTask_v2";
     goto LABEL_8;
   }
 
-  if (*a3 >> 1 != 143727010)
+  if (*buffer >> 1 != 143727010)
   {
     v5 = @"Bad SAPAStyleTaskData magic";
 LABEL_8:
@@ -45,24 +45,24 @@ LABEL_8:
   return objc_alloc_init(SAPAStyleTaskData);
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v88 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a5 || !a6)
+  if (!buffer || !dictionary || !bufferDictionary)
   {
     v68 = @"Invalid args";
     goto LABEL_79;
   }
 
-  v9 = *(a3 + 1);
-  if (v9 > 0xFFFFFFFFFFFFFFFDLL || *(a3 + 2) == -2)
+  v9 = *(buffer + 1);
+  if (v9 > 0xFFFFFFFFFFFFFFFDLL || *(buffer + 2) == -2)
   {
     v68 = @"Invalid index found";
     goto LABEL_79;
   }
 
   v11 = objc_opt_class();
-  v12 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v9, a5, a6, v11, 0);
+  v12 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v9, dictionary, bufferDictionary, v11, 0);
   if (!v12)
   {
     v68 = @"Could not get time insensitive instance";
@@ -70,12 +70,12 @@ LABEL_8:
   }
 
   v13 = v12;
-  v14 = *(a3 + 2);
+  v14 = *(buffer + 2);
   v15 = objc_opt_class();
-  v73 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, a5, a6, v15, 0);
-  if (*a3 != 287454020)
+  v73 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, dictionary, bufferDictionary, v15, 0);
+  if (*buffer != 287454020)
   {
-    if (*a3 == 287454021)
+    if (*buffer == 287454021)
     {
       v16 = 36;
       goto LABEL_11;
@@ -89,10 +89,10 @@ LABEL_79:
 
   v16 = 32;
 LABEL_11:
-  v17 = a3 + v16;
-  v18 = *(a3 + 3);
+  v17 = buffer + v16;
+  v18 = *(buffer + 3);
   v19 = objc_opt_class();
-  v20 = SASerializableNewMutableArrayFromIndexList(v17, v18, a5, a6, v19);
+  v20 = SASerializableNewMutableArrayFromIndexList(v17, v18, dictionary, bufferDictionary, v19);
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
@@ -151,11 +151,11 @@ LABEL_11:
     while (v23);
   }
 
-  if (*a3 >= 0x11223345uLL && *(a3 + 8))
+  if (*buffer >= 0x11223345uLL && *(buffer + 8))
   {
-    v30 = *(a3 + 3);
-    v31 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:*(a3 + 8)];
-    if (*(a3 + 8))
+    v30 = *(buffer + 3);
+    v31 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:*(buffer + 8)];
+    if (*(buffer + 8))
     {
       v32 = 0;
       v33 = &v17[8 * v30];
@@ -167,7 +167,7 @@ LABEL_11:
         ++v32;
       }
 
-      while (v32 < *(a3 + 8));
+      while (v32 < *(buffer + 8));
     }
   }
 
@@ -189,7 +189,7 @@ LABEL_11:
     [v35[1] count];
   }
 
-  v72 = self;
+  selfCopy = self;
   v38 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v20, "count")}];
   v39 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v78 = 0u;
@@ -214,7 +214,7 @@ LABEL_11:
         }
 
         v42 = *(*(&v78 + 1) + 8 * v41);
-        v43 = [v35 threads];
+        threads = [v35 threads];
         if (v42)
         {
           v44 = v42[3];
@@ -226,7 +226,7 @@ LABEL_11:
         }
 
         v45 = [*(v40 + 3480) numberWithUnsignedLongLong:v44];
-        v46 = [v43 objectForKeyedSubscript:v45];
+        v46 = [threads objectForKeyedSubscript:v45];
 
         if (!v46)
         {
@@ -256,10 +256,10 @@ LABEL_11:
 
         v50 = v49;
         [v38 addObject:v50];
-        v51 = [v46 threadStates];
-        v52 = [v51 lastObject];
+        threadStates = [v46 threadStates];
+        lastObject = [threadStates lastObject];
 
-        if (v52 != v50)
+        if (lastObject != v50)
         {
           if (v46)
           {
@@ -283,9 +283,9 @@ LABEL_11:
           if (v42[4])
           {
             v54 = v38;
-            v55 = [v35 dispatchQueues];
+            dispatchQueues = [v35 dispatchQueues];
             v56 = [*(v40 + 3480) numberWithUnsignedLongLong:v42[4]];
-            v57 = [v55 objectForKeyedSubscript:v56];
+            v57 = [dispatchQueues objectForKeyedSubscript:v56];
 
             if (!v57)
             {
@@ -314,22 +314,22 @@ LABEL_11:
 LABEL_60:
         if ([v50 hasDispatchQueue])
         {
-          v59 = [v50 dispatchQueue];
+          dispatchQueue = [v50 dispatchQueue];
           v60 = v40;
-          v61 = [*(v40 + 3480) numberWithUnsignedLongLong:{objc_msgSend(v59, "identifier")}];
+          v61 = [*(v40 + 3480) numberWithUnsignedLongLong:{objc_msgSend(dispatchQueue, "identifier")}];
           v62 = [v39 containsObject:v61];
 
           if (v62)
           {
-            if (v59)
+            if (dispatchQueue)
             {
-              v59[24] = 1;
+              dispatchQueue[24] = 1;
             }
           }
 
           else
           {
-            v63 = [*(v60 + 3480) numberWithUnsignedLongLong:{objc_msgSend(v59, "identifier")}];
+            v63 = [*(v60 + 3480) numberWithUnsignedLongLong:{objc_msgSend(dispatchQueue, "identifier")}];
             [v39 addObject:v63];
           }
 
@@ -348,8 +348,8 @@ LABEL_60:
   }
 
   v65 = [v38 copy];
-  threadStates = v72->_threadStates;
-  v72->_threadStates = v65;
+  threadStates = selfCopy->_threadStates;
+  selfCopy->_threadStates = v65;
 
   v67 = *MEMORY[0x1E69E9840];
 }

@@ -1,11 +1,11 @@
 @interface TSPCryptoReadChannel
 - (TSPCryptoReadChannel)init;
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 blockInfos:(id)a5;
-- (void)_readBlocksWithHandler:(id)a3;
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key blockInfos:(id)infos;
+- (void)_readBlocksWithHandler:(id)handler;
 - (void)_resetCryptor;
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSPCryptoReadChannel
@@ -26,11 +26,11 @@
   objc_exception_throw(v13);
 }
 
-- (TSPCryptoReadChannel)initWithReadChannel:(id)a3 decryptionKey:(id)a4 blockInfos:(id)a5
+- (TSPCryptoReadChannel)initWithReadChannel:(id)channel decryptionKey:(id)key blockInfos:(id)infos
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  channelCopy = channel;
+  keyCopy = key;
+  infosCopy = infos;
   v49.receiver = self;
   v49.super_class = TSPCryptoReadChannel;
   v13 = [(TSPCryptoReadChannel *)&v49 init];
@@ -40,7 +40,7 @@
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!channelCopy)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPCryptoReadChannel initWithReadChannel:decryptionKey:blockInfos:]");
@@ -50,8 +50,8 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
 
-  objc_storeStrong(&v13->_readChannel, a3);
-  if (!v10)
+  objc_storeStrong(&v13->_readChannel, channel);
+  if (!keyCopy)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v22, "[TSPCryptoReadChannel initWithReadChannel:decryptionKey:blockInfos:]");
@@ -61,8 +61,8 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29);
   }
 
-  objc_storeStrong(&v13->_decryptionKey, a4);
-  v32 = objc_msgSend_copy(v11, v30, v31);
+  objc_storeStrong(&v13->_decryptionKey, key);
+  v32 = objc_msgSend_copy(infosCopy, v30, v31);
   blockInfos = v13->_blockInfos;
   v13->_blockInfos = v32;
 
@@ -133,22 +133,22 @@ LABEL_15:
   self->_readChannel = 0;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276AFED98;
   v7[3] = &unk_27A6E76C0;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = handlerCopy;
+  v5 = handlerCopy;
   objc_msgSend__readBlocksWithHandler_(self, v6, v7);
 }
 
-- (void)_readBlocksWithHandler:(id)a3
+- (void)_readBlocksWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   readChannel = self->_readChannel;
   if (!readChannel)
   {
@@ -170,7 +170,7 @@ LABEL_15:
   v16[2] = sub_276AFFC9C;
   v16[3] = &unk_27A6E76E8;
   v18 = v19;
-  v14 = v5;
+  v14 = handlerCopy;
   v16[4] = self;
   v17 = v14;
   objc_msgSend_readWithHandler_(readChannel, v15, v16);

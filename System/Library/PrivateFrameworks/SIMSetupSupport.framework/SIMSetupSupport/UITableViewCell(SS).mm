@@ -6,13 +6,13 @@
 
 - (id)defaultConfig
 {
-  [a1 setSelectionStyle:0];
-  v2 = [a1 defaultContentConfiguration];
-  v3 = [MEMORY[0x277D75348] lightGrayColor];
-  v4 = [v2 secondaryTextProperties];
-  [v4 setColor:v3];
+  [self setSelectionStyle:0];
+  defaultContentConfiguration = [self defaultContentConfiguration];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  secondaryTextProperties = [defaultContentConfiguration secondaryTextProperties];
+  [secondaryTextProperties setColor:lightGrayColor];
 
-  return v2;
+  return defaultContentConfiguration;
 }
 
 @end

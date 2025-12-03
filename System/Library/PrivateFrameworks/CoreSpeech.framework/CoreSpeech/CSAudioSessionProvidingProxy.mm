@@ -1,30 +1,30 @@
 @interface CSAudioSessionProvidingProxy
-- (CSAudioSessionProvidingProxy)initWithXPCConnection:(id)a3;
+- (CSAudioSessionProvidingProxy)initWithXPCConnection:(id)connection;
 - (CSClientXPCConnection)xpcConnection;
-- (void)CSClientXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeActivateMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeDeactivateMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeDuckAudioDevice:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeEnableMiniDucking:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_handleSessionProvidingRequestTypePrewarmMessage:(id)a3 client:(id)a4;
-- (void)_handleSessionProvidingRequestTypeSetDuckOthersOption:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_sendDelegateMessageToClient:(id)a3;
-- (void)_sendReplyMessageWithResult:(BOOL)a3 error:(id)a4 event:(id)a5 client:(id)a6;
-- (void)audioSessionProvider:(id)a3 didChangeContext:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4;
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4;
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4;
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4;
-- (void)audioSessionProvider:(id)a3 didSetAudioSessionActive:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 providerInvalidated:(BOOL)a4;
-- (void)audioSessionProvider:(id)a3 willSetAudioSessionActive:(BOOL)a4;
-- (void)audioSessionProviderBeginInterruption:(id)a3;
-- (void)audioSessionProviderBeginInterruption:(id)a3 withContext:(id)a4;
-- (void)audioSessionProviderEndInterruption:(id)a3;
+- (void)CSClientXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client;
+- (void)_handleSessionProvidingRequestTypeActivateMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypeDeactivateMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypeDuckAudioDevice:(id)device messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:(id)device messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypeEnableMiniDucking:(id)ducking messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:(id)consideration messageBody:(id)body client:(id)client;
+- (void)_handleSessionProvidingRequestTypePrewarmMessage:(id)message client:(id)client;
+- (void)_handleSessionProvidingRequestTypeSetDuckOthersOption:(id)option messageBody:(id)body client:(id)client;
+- (void)_sendDelegateMessageToClient:(id)client;
+- (void)_sendReplyMessageWithResult:(BOOL)result error:(id)error event:(id)event client:(id)client;
+- (void)audioSessionProvider:(id)provider didChangeContext:(BOOL)context;
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info;
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info;
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info;
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info;
+- (void)audioSessionProvider:(id)provider didSetAudioSessionActive:(BOOL)active;
+- (void)audioSessionProvider:(id)provider providerInvalidated:(BOOL)invalidated;
+- (void)audioSessionProvider:(id)provider willSetAudioSessionActive:(BOOL)active;
+- (void)audioSessionProviderBeginInterruption:(id)interruption;
+- (void)audioSessionProviderBeginInterruption:(id)interruption withContext:(id)context;
+- (void)audioSessionProviderEndInterruption:(id)interruption;
 - (void)dealloc;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
 @end
 
 @implementation CSAudioSessionProvidingProxy
@@ -36,32 +36,32 @@
   return WeakRetained;
 }
 
-- (void)_sendDelegateMessageToClient:(id)a3
+- (void)_sendDelegateMessageToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   *keys = *off_100252E40;
   v9[0] = xpc_int64_create(3);
-  v5 = v4;
+  v5 = clientCopy;
   v9[1] = v5;
   v6 = xpc_dictionary_create(keys, v9, 2uLL);
-  v7 = [(CSAudioSessionProvidingProxy *)self xpcConnection];
-  [v7 sendMessageToClient:v6];
+  xpcConnection = [(CSAudioSessionProvidingProxy *)self xpcConnection];
+  [xpcConnection sendMessageToClient:v6];
 
   for (i = 1; i != -1; --i)
   {
   }
 }
 
-- (void)audioSessionProvider:(id)a3 didChangeContext:(BOOL)a4
+- (void)audioSessionProvider:(id)provider didChangeContext:(BOOL)context
 {
   keys = "type";
   values = xpc_int64_create(11);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  xpc_dictionary_set_BOOL(v6, "didChangeContextFlag", a4);
+  xpc_dictionary_set_BOOL(v6, "didChangeContextFlag", context);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProvider:(id)a3 providerInvalidated:(BOOL)a4
+- (void)audioSessionProvider:(id)provider providerInvalidated:(BOOL)invalidated
 {
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -74,64 +74,64 @@
   *buf = "type";
   values = xpc_int64_create(10);
   v7 = xpc_dictionary_create(buf, &values, 1uLL);
-  xpc_dictionary_set_BOOL(v7, "streamHandleIdInvalidationflag", a4);
+  xpc_dictionary_set_BOOL(v7, "streamHandleIdInvalidationflag", invalidated);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v7];
 }
 
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(9);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(8);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(7);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4
+- (void)audioSessionProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(6);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProvider:(id)a3 didSetAudioSessionActive:(BOOL)a4
+- (void)audioSessionProvider:(id)provider didSetAudioSessionActive:(BOOL)active
 {
-  v6 = a3;
+  providerCopy = provider;
   *keys = *&off_100252BC8;
   v9[0] = xpc_int64_create(5);
-  v9[1] = xpc_BOOL_create(a4);
+  v9[1] = xpc_BOOL_create(active);
   v7 = xpc_dictionary_create(keys, v9, 2uLL);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v7, v9[0]];
 
@@ -140,12 +140,12 @@
   }
 }
 
-- (void)audioSessionProvider:(id)a3 willSetAudioSessionActive:(BOOL)a4
+- (void)audioSessionProvider:(id)provider willSetAudioSessionActive:(BOOL)active
 {
-  v6 = a3;
+  providerCopy = provider;
   *keys = *&off_100252BB8;
   v9[0] = xpc_int64_create(1);
-  v9[1] = xpc_BOOL_create(a4);
+  v9[1] = xpc_BOOL_create(active);
   v7 = xpc_dictionary_create(keys, v9, 2uLL);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v7, v9[0]];
 
@@ -154,7 +154,7 @@
   }
 }
 
-- (void)audioSessionProviderEndInterruption:(id)a3
+- (void)audioSessionProviderEndInterruption:(id)interruption
 {
   keys = "type";
   values = xpc_int64_create(4);
@@ -162,19 +162,19 @@
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v4];
 }
 
-- (void)audioSessionProviderBeginInterruption:(id)a3 withContext:(id)a4
+- (void)audioSessionProviderBeginInterruption:(id)interruption withContext:(id)context
 {
   keys = "type";
-  v5 = a4;
+  contextCopy = context;
   values = xpc_int64_create(3);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [contextCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "interruptionContext", v7);
+  xpc_dictionary_set_value(v6, "interruptionContext", _cs_xpcObject);
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionProviderBeginInterruption:(id)a3
+- (void)audioSessionProviderBeginInterruption:(id)interruption
 {
   keys = "type";
   values = xpc_int64_create(2);
@@ -182,26 +182,26 @@
   [(CSAudioSessionProvidingProxy *)self _sendDelegateMessageToClient:v4];
 }
 
-- (void)_sendReplyMessageWithResult:(BOOL)a3 error:(id)a4 event:(id)a5 client:(id)a6
+- (void)_sendReplyMessageWithResult:(BOOL)result error:(id)error event:(id)event client:(id)client
 {
-  v12 = a4;
-  v9 = a6;
-  reply = xpc_dictionary_create_reply(a5);
-  xpc_dictionary_set_BOOL(reply, "result", a3);
-  if (v12)
+  errorCopy = error;
+  clientCopy = client;
+  reply = xpc_dictionary_create_reply(event);
+  xpc_dictionary_set_BOOL(reply, "result", result);
+  if (errorCopy)
   {
-    v11 = [v12 domain];
-    xpc_dictionary_set_string(reply, "resultErrorDomain", [v11 UTF8String]);
+    domain = [errorCopy domain];
+    xpc_dictionary_set_string(reply, "resultErrorDomain", [domain UTF8String]);
 
-    xpc_dictionary_set_int64(reply, "resultErrorCode", [v12 code]);
+    xpc_dictionary_set_int64(reply, "resultErrorCode", [errorCopy code]);
   }
 
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)_handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:(id)consideration messageBody:(id)body client:(id)client
 {
-  v6 = xpc_dictionary_get_BOOL(a4, "enableSmartRoutingConsideration");
+  v6 = xpc_dictionary_get_BOOL(body, "enableSmartRoutingConsideration");
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -236,9 +236,9 @@
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeEnableMiniDucking:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeEnableMiniDucking:(id)ducking messageBody:(id)body client:(id)client
 {
-  v6 = xpc_dictionary_get_BOOL(a4, "enableMiniDucking");
+  v6 = xpc_dictionary_get_BOOL(body, "enableMiniDucking");
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -273,15 +273,15 @@
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:(id)device messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  bodyCopy = body;
+  clientCopy = client;
   if (self->_manualDuckingHandler)
   {
-    v11 = xpc_dictionary_get_double(v9, "duckLevel");
-    v12 = xpc_dictionary_get_double(v9, "rampDuration");
+    v11 = xpc_dictionary_get_double(bodyCopy, "duckLevel");
+    v12 = xpc_dictionary_get_double(bodyCopy, "rampDuration");
     *&v13 = v12;
     *&v12 = v11;
     [(CSManualDuckingHandler *)self->_manualDuckingHandler duckDefaultOutputAudioDeviceWithDuckedLevel:v12 rampDuration:v13];
@@ -299,16 +299,16 @@
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeDuckAudioDevice:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeDuckAudioDevice:(id)device messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  bodyCopy = body;
+  clientCopy = client;
   if (self->_manualDuckingHandler)
   {
-    uint64 = xpc_dictionary_get_uint64(v9, "audioDeviceID");
-    v12 = xpc_dictionary_get_double(v9, "duckLevel");
-    v13 = xpc_dictionary_get_double(v9, "rampDuration");
+    uint64 = xpc_dictionary_get_uint64(bodyCopy, "audioDeviceID");
+    v12 = xpc_dictionary_get_double(bodyCopy, "duckLevel");
+    v13 = xpc_dictionary_get_double(bodyCopy, "rampDuration");
     *&v14 = v13;
     *&v13 = v12;
     [(CSManualDuckingHandler *)self->_manualDuckingHandler duckAudioDeviceWithDeviceID:uint64 duckedLevel:v13 rampDuration:v14];
@@ -326,9 +326,9 @@
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeSetDuckOthersOption:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeSetDuckOthersOption:(id)option messageBody:(id)body client:(id)client
 {
-  v6 = xpc_dictionary_get_BOOL(a4, "setDuckOthersOption");
+  v6 = xpc_dictionary_get_BOOL(body, "setDuckOthersOption");
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -357,11 +357,11 @@
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeDeactivateMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeDeactivateMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  int64 = xpc_dictionary_get_int64(a4, "deactivateOption");
+  messageCopy = message;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(body, "deactivateOption");
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -384,16 +384,16 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v17 = v15;
-        v18 = [v14 localizedDescription];
+        localizedDescription = [v14 localizedDescription];
         *buf = 136315394;
         v21 = "[CSAudioSessionProvidingProxy _handleSessionProvidingRequestTypeDeactivateMessage:messageBody:client:]";
         v22 = 2114;
-        v23 = v18;
+        v23 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Failed to deactivate audio session, error : %{public}@", buf, 0x16u);
       }
     }
 
-    [(CSAudioSessionProvidingProxy *)self _sendReplyMessageWithResult:v13 error:v14 event:v8 client:v9];
+    [(CSAudioSessionProvidingProxy *)self _sendReplyMessageWithResult:v13 error:v14 event:messageCopy client:clientCopy];
     v16 = +[CSSiriClientBehaviorMonitor sharedInstance];
     [v16 notifyReleaseAudioSession];
   }
@@ -401,18 +401,18 @@
   else
   {
     v14 = [NSError errorWithDomain:CSErrorDomain code:1351 userInfo:0];
-    [(CSAudioSessionProvidingProxy *)self _sendReplyMessageWithResult:0 error:v14 event:v8 client:v9];
+    [(CSAudioSessionProvidingProxy *)self _sendReplyMessageWithResult:0 error:v14 event:messageCopy client:clientCopy];
   }
 }
 
-- (void)_handleSessionProvidingRequestTypeActivateMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionProvidingRequestTypeActivateMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  int64 = xpc_dictionary_get_int64(v10, "activateReason");
-  v12 = xpc_dictionary_get_int64(v10, "dynamicAttribute");
-  string = xpc_dictionary_get_string(v10, "dictationRequestBundleId");
+  messageCopy = message;
+  clientCopy = client;
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "activateReason");
+  v12 = xpc_dictionary_get_int64(bodyCopy, "dynamicAttribute");
+  string = xpc_dictionary_get_string(bodyCopy, "dictationRequestBundleId");
 
   if (string)
   {
@@ -451,33 +451,33 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v22 = v21;
-        v23 = [v17 localizedDescription];
+        localizedDescription = [v17 localizedDescription];
         *buf = 136315394;
         v26 = "[CSAudioSessionProvidingProxy _handleSessionProvidingRequestTypeActivateMessage:messageBody:client:]";
         v27 = 2114;
-        *v28 = v23;
+        *v28 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s Failed to activate audio session, error : %{public}@", buf, 0x16u);
       }
     }
 
-    v19 = self;
+    selfCopy2 = self;
     v20 = v16;
   }
 
   else
   {
     v17 = [NSError errorWithDomain:CSErrorDomain code:1351 userInfo:0];
-    v19 = self;
+    selfCopy2 = self;
     v20 = 0;
   }
 
-  [(CSAudioSessionProvidingProxy *)v19 _sendReplyMessageWithResult:v20 error:v17 event:v8 client:v9];
+  [(CSAudioSessionProvidingProxy *)selfCopy2 _sendReplyMessageWithResult:v20 error:v17 event:messageCopy client:clientCopy];
 }
 
-- (void)_handleSessionProvidingRequestTypePrewarmMessage:(id)a3 client:(id)a4
+- (void)_handleSessionProvidingRequestTypePrewarmMessage:(id)message client:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   audioSessionProvider = self->_audioSessionProvider;
   if (audioSessionProvider)
   {
@@ -490,35 +490,35 @@
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v14 = v11;
-        v15 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 136315394;
         v18 = "[CSAudioSessionProvidingProxy _handleSessionProvidingRequestTypePrewarmMessage:client:]";
         v19 = 2114;
-        v20 = v15;
+        v20 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Failed to prewarm audio session, error : %{public}@", buf, 0x16u);
       }
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = v9;
   }
 
   else
   {
     v10 = [NSError errorWithDomain:CSErrorDomain code:1351 userInfo:0];
-    v12 = self;
+    selfCopy2 = self;
     v13 = 0;
   }
 
-  [(CSAudioSessionProvidingProxy *)v12 _sendReplyMessageWithResult:v13 error:v10 event:v6 client:v7];
+  [(CSAudioSessionProvidingProxy *)selfCopy2 _sendReplyMessageWithResult:v13 error:v10 event:messageCopy client:clientCopy];
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v12 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -535,12 +535,12 @@
     {
       if (int64 == 6)
       {
-        [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeEnableMiniDucking:v8 messageBody:v9 client:v10];
+        [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeEnableMiniDucking:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       else
       {
-        [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDuckAudioDevice:v8 messageBody:v9 client:v10];
+        [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDuckAudioDevice:messageCopy messageBody:bodyCopy client:clientCopy];
       }
 
       goto LABEL_23;
@@ -548,13 +548,13 @@
 
     if (int64 == 8)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:v8 messageBody:v9 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDuckDefaultOutputAudioDevice:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_23;
     }
 
     if (int64 == 9)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:v8 messageBody:v9 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeEnableSmartRoutingConsideration:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_23;
     }
   }
@@ -563,13 +563,13 @@
   {
     if (int64 == 3)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDeactivateMessage:v8 messageBody:v9 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeDeactivateMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_23;
     }
 
     if (int64 == 5)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeSetDuckOthersOption:v8 messageBody:v9 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeSetDuckOthersOption:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_23;
     }
   }
@@ -578,13 +578,13 @@
   {
     if (int64 == 1)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypePrewarmMessage:v8 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypePrewarmMessage:messageCopy client:clientCopy];
       goto LABEL_23;
     }
 
     if (int64 == 2)
     {
-      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeActivateMessage:v8 messageBody:v9 client:v10];
+      [(CSAudioSessionProvidingProxy *)self _handleSessionProvidingRequestTypeActivateMessage:messageCopy messageBody:bodyCopy client:clientCopy];
       goto LABEL_23;
     }
   }
@@ -617,11 +617,11 @@ LABEL_23:
   [(CSAudioSessionProvidingProxy *)&v4 dealloc];
 }
 
-- (void)CSClientXPCConnectionReceivedClientError:(id)a3 clientError:(id)a4 client:(id)a5
+- (void)CSClientXPCConnectionReceivedClientError:(id)error clientError:(id)clientError client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  errorCopy = error;
+  clientErrorCopy = clientError;
+  clientCopy = client;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -661,16 +661,16 @@ LABEL_23:
   self->_audioSessionProvider = 0;
 }
 
-- (CSAudioSessionProvidingProxy)initWithXPCConnection:(id)a3
+- (CSAudioSessionProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSAudioSessionProvidingProxy;
   v5 = [(CSAudioSessionProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSAudioSessionProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSAudioSessionProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

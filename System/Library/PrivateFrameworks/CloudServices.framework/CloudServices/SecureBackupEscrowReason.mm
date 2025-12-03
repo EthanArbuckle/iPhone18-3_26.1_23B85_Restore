@@ -1,15 +1,15 @@
 @interface SecureBackupEscrowReason
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)reasonAsString:(int)a3;
-- (int)StringAsReason:(id)a3;
+- (id)reasonAsString:(int)string;
+- (int)StringAsReason:(id)reason;
 - (int)reason;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SecureBackupEscrowReason
@@ -27,18 +27,18 @@
   }
 }
 
-- (id)reasonAsString:(int)a3
+- (id)reasonAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"FEDERATION_MOVE";
     }
 
     else
     {
-      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+      v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
     }
   }
 
@@ -50,17 +50,17 @@
   return v4;
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"UNKNOWN"))
+  reasonCopy = reason;
+  if (objc_msgSend_isEqualToString_(reasonCopy, v4, @"UNKNOWN"))
   {
     isEqualToString = 0;
   }
 
   else
   {
-    isEqualToString = objc_msgSend_isEqualToString_(v3, v5, @"FEDERATION_MOVE");
+    isEqualToString = objc_msgSend_isEqualToString_(reasonCopy, v5, @"FEDERATION_MOVE");
   }
 
   return isEqualToString;
@@ -115,46 +115,46 @@
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     reason = self->_reason;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_expectedFederationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_reason;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_reason;
+    *(toCopy + 20) |= 1u;
   }
 
   expectedFederationID = self->_expectedFederationID;
   if (expectedFederationID)
   {
-    v7 = v4;
-    objc_msgSend_setExpectedFederationID_(v4, v5, expectedFederationID);
-    v4 = v7;
+    v7 = toCopy;
+    objc_msgSend_setExpectedFederationID_(toCopy, v5, expectedFederationID);
+    toCopy = v7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -163,32 +163,32 @@
     *(v10 + 20) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_expectedFederationID, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_expectedFederationID, v11, zone);
   v14 = v12[1];
   v12[1] = v13;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_9;
   }
 
-  v8 = *(v4 + 20);
+  v8 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_reason != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_reason != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     isEqual = 0;
@@ -196,7 +196,7 @@ LABEL_9:
   }
 
   expectedFederationID = self->_expectedFederationID;
-  v10 = v4[1];
+  v10 = equalCopy[1];
   if (expectedFederationID | v10)
   {
     isEqual = objc_msgSend_isEqual_(expectedFederationID, v7, v10);
@@ -227,21 +227,21 @@ LABEL_10:
   return objc_msgSend_hash(self->_expectedFederationID, a2, v2) ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 20))
+  fromCopy = from;
+  if (*(fromCopy + 20))
   {
-    self->_reason = *(v4 + 4);
+    self->_reason = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (v6)
   {
-    v7 = v4;
+    v7 = fromCopy;
     objc_msgSend_setExpectedFederationID_(self, v5, v6);
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

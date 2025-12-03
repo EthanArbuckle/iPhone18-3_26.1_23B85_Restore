@@ -1,6 +1,6 @@
 @interface SXExperimentationStoreItems
-+ (id)deserialize:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deserialize:(id)deserialize;
+- (BOOL)isEqual:(id)equal;
 - (SXExperimentationStoreItems)init;
 - (id)serialize;
 @end
@@ -14,25 +14,25 @@
   v2 = [(SXExperimentationStoreItems *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     items = v2->_items;
-    v2->_items = v3;
+    v2->_items = array;
   }
 
   return v2;
 }
 
-+ (id)deserialize:(id)a3
++ (id)deserialize:(id)deserialize
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:0];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:deserialize options:0 error:0];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [v3 objectForKey:SXExperimentationStoreItemsKey];
     if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v28 = v3;
-      v30 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -91,7 +91,7 @@
               v8 = v21;
               v9 = v29;
               v6 = v31;
-              [v30 addObject:v12];
+              [array addObject:v12];
             }
 
             ++v10;
@@ -105,7 +105,7 @@
       }
 
       v25 = objc_alloc_init(SXExperimentationStoreItems);
-      [(SXExperimentationStoreItems *)v25 setItems:v30];
+      [(SXExperimentationStoreItems *)v25 setItems:array];
 
       v4 = v27;
       v3 = v28;
@@ -128,7 +128,7 @@
 - (id)serialize
 {
   v31 = *MEMORY[0x1E69E9840];
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -150,26 +150,26 @@
 
         v6 = *(*(&v22 + 1) + 8 * i);
         v28[0] = SXExperimentationStoreItemExperimentIdentifierKey;
-        v7 = [v6 experimentIdentifier];
-        v29[0] = v7;
+        experimentIdentifier = [v6 experimentIdentifier];
+        v29[0] = experimentIdentifier;
         v28[1] = SXExperimentationStoreItemTreatmentGroupKey;
-        v8 = [v6 treatmentGroup];
-        v29[1] = v8;
+        treatmentGroup = [v6 treatmentGroup];
+        v29[1] = treatmentGroup;
         v28[2] = SXExperimentationStoreItemStartDateKey;
         v9 = MEMORY[0x1E696AD98];
-        v10 = [v6 startDate];
-        [v10 timeIntervalSince1970];
+        startDate = [v6 startDate];
+        [startDate timeIntervalSince1970];
         v11 = [v9 numberWithDouble:?];
         v29[2] = v11;
         v28[3] = SXExperimentationStoreItemExpiryDateKey;
         v12 = MEMORY[0x1E696AD98];
-        v13 = [v6 expiryDate];
-        [v13 timeIntervalSince1970];
+        expiryDate = [v6 expiryDate];
+        [expiryDate timeIntervalSince1970];
         v14 = [v12 numberWithDouble:?];
         v29[3] = v14;
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:4];
 
-        [v21 addObject:v15];
+        [array addObject:v15];
       }
 
       v4 = [obj countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -179,24 +179,24 @@
   }
 
   v26 = SXExperimentationStoreItemsKey;
-  v27 = v21;
+  v27 = array;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   v17 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v16 options:0 error:0];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(SXExperimentationStoreItems *)self items];
-    v7 = [v5 items];
+    v5 = equalCopy;
+    items = [(SXExperimentationStoreItems *)self items];
+    items2 = [v5 items];
 
-    v8 = [v6 isEqualToArray:v7];
+    v8 = [items isEqualToArray:items2];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface MKMapViewInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MKMapViewInvertColorsAccessibility
@@ -28,21 +28,21 @@
 
   _Block_object_dispose(&v12, 8);
   v7 = _MKMapTypeForCartographicConfiguration() - 1;
-  v8 = [(MKMapViewInvertColorsAccessibility *)self traitCollection];
-  v9 = [v8 userInterfaceStyle];
+  traitCollection = [(MKMapViewInvertColorsAccessibility *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v11 = v7 < 4 || v9 == &dword_0 + 2;
+  v11 = v7 < 4 || userInterfaceStyle == &dword_0 + 2;
   if (v11 != [(MKMapViewInvertColorsAccessibility *)self accessibilityIgnoresInvertColors])
   {
     [(MKMapViewInvertColorsAccessibility *)self setAccessibilityIgnoresInvertColors:v11];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = MKMapViewInvertColorsAccessibility;
-  [(MKMapViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:a3];
+  [(MKMapViewInvertColorsAccessibility *)&v4 traitCollectionDidChange:change];
   [AXInvertColorsAppHelper toggleInvertColors:self];
 }
 

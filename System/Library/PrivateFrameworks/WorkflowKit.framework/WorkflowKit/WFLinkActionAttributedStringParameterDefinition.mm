@@ -1,23 +1,23 @@
 @interface WFLinkActionAttributedStringParameterDefinition
-- (WFLinkActionAttributedStringParameterDefinition)initWithParameterMetadata:(id)a3;
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4;
-- (id)localizedTitleForLinkValue:(id)a3;
+- (WFLinkActionAttributedStringParameterDefinition)initWithParameterMetadata:(id)metadata;
+- (id)linkValueFromParameterState:(id)state action:(id)action;
+- (id)localizedTitleForLinkValue:(id)value;
 - (id)parameterDefinitionDictionary;
-- (id)parameterStateFromLinkValue:(id)a3;
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9;
+- (id)parameterStateFromLinkValue:(id)value;
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation WFLinkActionAttributedStringParameterDefinition
 
-- (id)localizedTitleForLinkValue:(id)a3
+- (id)localizedTitleForLinkValue:(id)value
 {
-  v3 = [a3 value];
-  if (v3)
+  value = [value value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = value;
     }
 
     else
@@ -33,20 +33,20 @@
 
   v5 = v4;
 
-  v6 = [v5 string];
+  string = [v5 string];
 
-  return v6;
+  return string;
 }
 
-- (void)getLinkValueFromProcessedParameterValue:(id)a3 parameterState:(id)a4 permissionRequestor:(id)a5 runningFromToolKit:(BOOL)a6 action:(id)a7 parameterKey:(id)a8 completionHandler:(id)a9
+- (void)getLinkValueFromProcessedParameterValue:(id)value parameterState:(id)state permissionRequestor:(id)requestor runningFromToolKit:(BOOL)kit action:(id)action parameterKey:(id)key completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = v14;
+  valueCopy = value;
+  stateCopy = state;
+  requestorCopy = requestor;
+  actionCopy = action;
+  keyCopy = key;
+  handlerCopy = handler;
+  v20 = valueCopy;
   if (!v20)
   {
     goto LABEL_9;
@@ -62,7 +62,7 @@
     {
       v23 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v22];
       v24 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v23];
-      v19[2](v19, v24, 0);
+      handlerCopy[2](handlerCopy, v24, 0);
 
 LABEL_8:
       goto LABEL_10;
@@ -77,7 +77,7 @@ LABEL_8:
       v25[2] = __183__WFLinkActionAttributedStringParameterDefinition_getLinkValueFromProcessedParameterValue_parameterState_permissionRequestor_runningFromToolKit_action_parameterKey_completionHandler___block_invoke;
       v25[3] = &unk_1E837D748;
       v25[4] = self;
-      v26 = v19;
+      v26 = handlerCopy;
       [v22 getRichTextRepresentation:v25];
 
       goto LABEL_8;
@@ -85,12 +85,12 @@ LABEL_8:
 
 LABEL_9:
 
-    v19[2](v19, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
     goto LABEL_10;
   }
 
   v21 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v20];
-  v19[2](v19, v21, 0);
+  handlerCopy[2](handlerCopy, v21, 0);
 
 LABEL_10:
 }
@@ -114,17 +114,17 @@ void __183__WFLinkActionAttributedStringParameterDefinition_getLinkValueFromProc
   }
 }
 
-- (id)linkValueFromParameterState:(id)a3 action:(id)a4
+- (id)linkValueFromParameterState:(id)state action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  stateCopy = state;
+  actionCopy = action;
+  v8 = stateCopy;
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [v8 variableString];
-    v10 = [v9 stringByRemovingVariables];
+    variableString = [v8 variableString];
+    stringByRemovingVariables = [variableString stringByRemovingVariables];
 
-    v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v10];
+    v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringByRemovingVariables];
     v12 = [(WFLinkActionParameterDefinition *)self linkValueWithValue:v11];
   }
 
@@ -136,38 +136,38 @@ void __183__WFLinkActionAttributedStringParameterDefinition_getLinkValueFromProc
   return v12;
 }
 
-- (id)parameterStateFromLinkValue:(id)a3
+- (id)parameterStateFromLinkValue:(id)value
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = [a3 value];
-  if (!v4)
+  value = [value value];
+  if (!value)
   {
 LABEL_12:
     v11 = 0;
     goto LABEL_13;
   }
 
-  v5 = [(WFLinkActionParameterDefinition *)self valueType];
-  v6 = [v5 objectIsMemberOfType:v4];
+  valueType = [(WFLinkActionParameterDefinition *)self valueType];
+  v6 = [valueType objectIsMemberOfType:value];
 
   if ((v6 & 1) == 0)
   {
     v15 = getWFAppIntentsLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(WFLinkActionParameterDefinition *)self valueType];
+      valueType2 = [(WFLinkActionParameterDefinition *)self valueType];
       v19 = 136315650;
       v20 = "[WFLinkActionAttributedStringParameterDefinition parameterStateFromLinkValue:]";
       v21 = 2114;
-      v22 = v4;
+      v22 = value;
       v23 = 2114;
-      v24 = v16;
+      v24 = valueType2;
     }
 
     goto LABEL_12;
   }
 
-  v7 = v4;
+  v7 = value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -186,8 +186,8 @@ LABEL_12:
   if (isKindOfClass)
   {
     v12 = [WFVariableString alloc];
-    v13 = [v7 string];
-    v14 = [(WFVariableString *)v12 initWithString:v13];
+    string = [v7 string];
+    v14 = [(WFVariableString *)v12 initWithString:string];
 
     v11 = [[WFVariableStringParameterState alloc] initWithVariableString:v14];
   }
@@ -203,7 +203,7 @@ LABEL_13:
   v10[4] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = WFLinkActionAttributedStringParameterDefinition;
-  v2 = [(WFLinkActionParameterDefinition *)&v8 parameterDefinitionDictionary];
+  parameterDefinitionDictionary = [(WFLinkActionParameterDefinition *)&v8 parameterDefinitionDictionary];
   v3 = *MEMORY[0x1E69E12D0];
   v9[0] = @"TextAlignment";
   v9[1] = @"Multiline";
@@ -214,21 +214,21 @@ LABEL_13:
   v10[2] = MEMORY[0x1E695E118];
   v10[3] = MEMORY[0x1E695E118];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:4];
-  v5 = [v2 definitionByAddingEntriesInDictionary:v4];
+  v5 = [parameterDefinitionDictionary definitionByAddingEntriesInDictionary:v4];
 
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-- (WFLinkActionAttributedStringParameterDefinition)initWithParameterMetadata:(id)a3
+- (WFLinkActionAttributedStringParameterDefinition)initWithParameterMetadata:(id)metadata
 {
   v4 = MEMORY[0x1E69AC938];
-  v5 = a3;
-  v6 = [v4 attributedStringValueType];
+  metadataCopy = metadata;
+  attributedStringValueType = [v4 attributedStringValueType];
   v9.receiver = self;
   v9.super_class = WFLinkActionAttributedStringParameterDefinition;
-  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:v6 parameterMetadata:v5];
+  v7 = [(WFLinkActionParameterDefinition *)&v9 initWithValueType:attributedStringValueType parameterMetadata:metadataCopy];
 
   return v7;
 }

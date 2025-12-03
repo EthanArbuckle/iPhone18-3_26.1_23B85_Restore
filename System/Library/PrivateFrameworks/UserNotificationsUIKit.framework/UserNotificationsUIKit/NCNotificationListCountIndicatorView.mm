@@ -1,32 +1,32 @@
 @interface NCNotificationListCountIndicatorView
 - (BOOL)adjustForContentSizeCategoryChange;
 - (CGRect)_insetBounds;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (NCNotificationListCountIndicatorView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (NCNotificationListCountIndicatorView)initWithFrame:(CGRect)frame;
 - (NCNotificationListCountIndicatorViewDelegate)delegate;
 - (NSString)preferredContentSizeCategory;
 - (double)_availableWidth;
 - (id)_fontProvider;
-- (id)_newIndicatorButtonWithTitle:(id)a3 symbolName:(id)a4 font:(id)a5;
+- (id)_newIndicatorButtonWithTitle:(id)title symbolName:(id)name font:(id)font;
 - (id)_subtitleLabelFont;
 - (id)_titleLabelFont;
 - (void)_configureContainerViewIfNecessary;
 - (void)_configureSubtitleLabelIfNecessary;
 - (void)_configureTitleLabelIfNecessary;
-- (void)_invalidateButton:(id)a3 animated:(BOOL)a4;
-- (void)_invalidateSubtitleLabelAnimated:(BOOL)a3;
-- (void)_invalidateTitleLabelAnimated:(BOOL)a3;
+- (void)_invalidateButton:(id)button animated:(BOOL)animated;
+- (void)_invalidateSubtitleLabelAnimated:(BOOL)animated;
+- (void)_invalidateTitleLabelAnimated:(BOOL)animated;
 - (void)_layoutVerticallyCenter;
-- (void)_performLayout:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_performLayout:(id)layout animated:(BOOL)animated completion:(id)completion;
 - (void)_sizeToFitSubtitleLabelIfNecessary;
 - (void)_sizeToFitTitleLabelIfNecessary;
 - (void)_updateTitleLabelNumberOfLines;
-- (void)adjustForLegibilitySettingsChange:(id)a3;
-- (void)buttonWasLongPressed:(id)a3;
-- (void)buttonWasTapped:(id)a3;
+- (void)adjustForLegibilitySettingsChange:(id)change;
+- (void)buttonWasLongPressed:(id)pressed;
+- (void)buttonWasTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)updateCount:(unint64_t)a3 title:(id)a4 symbolImageName:(id)a5 contentHidden:(BOOL)a6;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)updateCount:(unint64_t)count title:(id)title symbolImageName:(id)name contentHidden:(BOOL)hidden;
 @end
 
 @implementation NCNotificationListCountIndicatorView
@@ -55,8 +55,8 @@
     if (titleString)
     {
       titleSymbol = self->_titleSymbol;
-      v5 = [(NCNotificationListCountIndicatorView *)self _titleLabelFont];
-      v6 = [(NCNotificationListCountIndicatorView *)self _newIndicatorButtonWithTitle:titleString symbolName:titleSymbol font:v5];
+      _titleLabelFont = [(NCNotificationListCountIndicatorView *)self _titleLabelFont];
+      v6 = [(NCNotificationListCountIndicatorView *)self _newIndicatorButtonWithTitle:titleString symbolName:titleSymbol font:_titleLabelFont];
       titleLabel = self->_titleLabel;
       self->_titleLabel = v6;
 
@@ -76,8 +76,8 @@
     subtitleString = self->_subtitleString;
     if (subtitleString)
     {
-      v4 = [(NCNotificationListCountIndicatorView *)self _subtitleLabelFont];
-      v5 = [(NCNotificationListCountIndicatorView *)self _newIndicatorButtonWithTitle:subtitleString symbolName:0 font:v4];
+      _subtitleLabelFont = [(NCNotificationListCountIndicatorView *)self _subtitleLabelFont];
+      v5 = [(NCNotificationListCountIndicatorView *)self _newIndicatorButtonWithTitle:subtitleString symbolName:0 font:_subtitleLabelFont];
       subtitleLabel = self->_subtitleLabel;
       self->_subtitleLabel = v5;
 
@@ -268,56 +268,56 @@ uint64_t __54__NCNotificationListCountIndicatorView_layoutSubviews__block_invoke
   return result;
 }
 
-- (NCNotificationListCountIndicatorView)initWithFrame:(CGRect)a3
+- (NCNotificationListCountIndicatorView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NCNotificationListCountIndicatorView;
-  v3 = [(NCNotificationListCountIndicatorView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationListCountIndicatorView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NCNotificationListCountIndicatorView *)v3 setMaximumContentSizeCategory:*MEMORY[0x277D76818]];
     v4->_animateLayoutForContentTransition = 0;
     v4->_titleLabelRepresentsNotificationCount = 0;
-    v5 = [(NCNotificationListCountIndicatorView *)v4 layer];
-    [v5 setAnchorPoint:{0.5, 0.5}];
+    layer = [(NCNotificationListCountIndicatorView *)v4 layer];
+    [layer setAnchorPoint:{0.5, 0.5}];
   }
 
   return v4;
 }
 
-- (void)updateCount:(unint64_t)a3 title:(id)a4 symbolImageName:(id)a5 contentHidden:(BOOL)a6
+- (void)updateCount:(unint64_t)count title:(id)title symbolImageName:(id)name contentHidden:(BOOL)hidden
 {
-  v6 = a6;
+  hiddenCopy = hidden;
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = v10;
-  v13 = v11;
+  titleCopy = title;
+  nameCopy = name;
+  v12 = titleCopy;
+  v13 = nameCopy;
   v33 = v12;
   v34 = v13;
-  if (a3)
+  if (count)
   {
     v14 = MEMORY[0x277CCACA8];
     v15 = NCUserNotificationsUIKitFrameworkBundle();
     v16 = [v15 localizedStringForKey:@"NOTIFICATION_STRING_STATE_COUNT_TEXT" value:&stru_282FE84F8 table:0];
-    a3 = [v14 localizedStringWithFormat:v16, a3, 0];
+    count = [v14 localizedStringWithFormat:v16, count, 0];
 
-    if (a3)
+    if (count)
     {
-      v17 = a3;
-      v18 = v17;
+      countCopy = count;
+      v18 = countCopy;
       if (v12)
       {
         v19 = 0;
-        a3 = v17;
+        count = countCopy;
         v20 = v34;
       }
 
       else
       {
 
-        a3 = 0;
+        count = 0;
         v19 = 1;
         v12 = v18;
         v20 = @"circlebadge.fill";
@@ -350,11 +350,11 @@ uint64_t __54__NCNotificationListCountIndicatorView_layoutSubviews__block_invoke
     v21 = 1;
   }
 
-  v32 = a3;
+  countCopy2 = count;
   v22 = BSEqualStrings();
   contentHidden = self->_contentHidden;
   v24 = v22 ^ 1;
-  v30 = contentHidden != v6;
+  v30 = contentHidden != hiddenCopy;
   v25 = *MEMORY[0x277D77DD0];
   if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
   {
@@ -363,20 +363,20 @@ uint64_t __54__NCNotificationListCountIndicatorView_layoutSubviews__block_invoke
     v41 = 1024;
     v42 = v24;
     v43 = 1024;
-    v44 = contentHidden != v6;
+    v44 = contentHidden != hiddenCopy;
     _os_log_impl(&dword_21E77E000, v25, OS_LOG_TYPE_DEFAULT, "CountIndicatorView updating count; titleChanged %{BOOL}d; subtitleChanged %{BOOL}d; contentHiddenChanged %{BOOL}d", &buf, 0x14u);
   }
 
-  if ((v21 & 1) != 0 || (v24 & 1) != 0 || contentHidden != v6)
+  if ((v21 & 1) != 0 || (v24 & 1) != 0 || contentHidden != hiddenCopy)
   {
     objc_storeStrong(&self->_titleString, v12);
     objc_storeStrong(&self->_titleSymbol, v20);
-    objc_storeStrong(&self->_subtitleString, v32);
-    self->_contentHidden = v6;
+    objc_storeStrong(&self->_subtitleString, countCopy2);
+    self->_contentHidden = hiddenCopy;
     objc_initWeak(&buf, self);
-    v26 = [(NCNotificationListCountIndicatorView *)self window];
-    v27 = [v26 windowScene];
-    v28 = [v27 _FBSScene];
+    window = [(NCNotificationListCountIndicatorView *)self window];
+    windowScene = [window windowScene];
+    _FBSScene = [windowScene _FBSScene];
 
     v29 = +[NCBacklightAssertionManager sharedManager];
     v35[0] = MEMORY[0x277D85DD0];
@@ -388,7 +388,7 @@ uint64_t __54__NCNotificationListCountIndicatorView_layoutSubviews__block_invoke
     v38 = v24;
     v39 = v30;
     v35[4] = self;
-    [v29 queue_acquireAssertionWithReason:0 onScene:v28 completion:v35];
+    [v29 queue_acquireAssertionWithReason:0 onScene:_FBSScene completion:v35];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&buf);
@@ -531,9 +531,9 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
   [v0 queue_releaseAssertionWithReason:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   [(NCNotificationListCountIndicatorView *)self _configureTitleLabelIfNecessary];
   [(NCNotificationListCountIndicatorView *)self _configureSubtitleLabelIfNecessary];
   [(NCNotificationListCountIndicatorView *)self _availableWidth];
@@ -545,13 +545,13 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
   }
 
   [(NCNotificationListCountIndicatorButton *)self->_titleLabel sizeThatFits:v6, height];
-  v8 = [(NCNotificationListCountIndicatorView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(NCNotificationListCountIndicatorView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   v10 = v9;
 
-  v11 = [(NCNotificationListCountIndicatorView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection2 = [(NCNotificationListCountIndicatorView *)self traitCollection];
+  [traitCollection2 displayScale];
   UICeilToScale();
   v13 = v12;
 
@@ -562,10 +562,10 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
   return result;
 }
 
-- (void)adjustForLegibilitySettingsChange:(id)a3
+- (void)adjustForLegibilitySettingsChange:(id)change
 {
-  v5 = a3;
-  if (!v5)
+  changeCopy = change;
+  if (!changeCopy)
   {
     v6 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
@@ -574,21 +574,21 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
     }
   }
 
-  if (([v5 isEqual:self->_legibilitySettings] & 1) == 0)
+  if (([changeCopy isEqual:self->_legibilitySettings] & 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
-    [(NCNotificationListCountIndicatorButton *)self->_titleLabel setLegibilitySettings:v5];
-    [(NCNotificationListCountIndicatorButton *)self->_subtitleLabel setLegibilitySettings:v5];
+    objc_storeStrong(&self->_legibilitySettings, change);
+    [(NCNotificationListCountIndicatorButton *)self->_titleLabel setLegibilitySettings:changeCopy];
+    [(NCNotificationListCountIndicatorButton *)self->_subtitleLabel setLegibilitySettings:changeCopy];
     [(NCNotificationListCountIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
-    if (a3)
+    self->_adjustsFontForContentSizeCategory = category;
+    if (category)
     {
       [(NCNotificationListCountIndicatorView *)self adjustForContentSizeCategoryChange];
     }
@@ -609,15 +609,15 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  if (-[NCNotificationListCountIndicatorView adjustsFontForContentSizeCategory](self, "adjustsFontForContentSizeCategory") && (-[NCNotificationListCountIndicatorView preferredContentSizeCategory](self, "preferredContentSizeCategory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 isEqualToString:v5], v5, (v6 & 1) == 0))
+  if (-[NCNotificationListCountIndicatorView adjustsFontForContentSizeCategory](self, "adjustsFontForContentSizeCategory") && (-[NCNotificationListCountIndicatorView preferredContentSizeCategory](self, "preferredContentSizeCategory"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [preferredContentSizeCategory isEqualToString:v5], v5, (v6 & 1) == 0))
   {
     fontProvider = self->_fontProvider;
     self->_fontProvider = 0;
 
-    [(NCNotificationListCountIndicatorView *)self setPreferredContentSizeCategory:v4];
+    [(NCNotificationListCountIndicatorView *)self setPreferredContentSizeCategory:preferredContentSizeCategory];
     [(NCNotificationListCountIndicatorView *)self _invalidateTitleLabelAnimated:0];
     [(NCNotificationListCountIndicatorView *)self _invalidateSubtitleLabelAnimated:0];
     [(NCNotificationListCountIndicatorView *)self setNeedsLayout];
@@ -632,17 +632,17 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
   return v7;
 }
 
-- (id)_newIndicatorButtonWithTitle:(id)a3 symbolName:(id)a4 font:(id)a5
+- (id)_newIndicatorButtonWithTitle:(id)title symbolName:(id)name font:(id)font
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  fontCopy = font;
+  nameCopy = name;
+  titleCopy = title;
   [(NCNotificationListCountIndicatorView *)self _configureContainerViewIfNecessary];
-  v11 = [[NCNotificationListCountIndicatorButton alloc] initWithTitle:v10 symbolName:v9 withFont:v8 legibilitySettings:self->_legibilitySettings];
+  v11 = [[NCNotificationListCountIndicatorButton alloc] initWithTitle:titleCopy symbolName:nameCopy withFont:fontCopy legibilitySettings:self->_legibilitySettings];
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"focus-container-%@", v10];
+  titleCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"focus-container-%@", titleCopy];
 
-  [(NCNotificationListCountIndicatorButton *)v11 setAccessibilityIdentifier:v12];
+  [(NCNotificationListCountIndicatorButton *)v11 setAccessibilityIdentifier:titleCopy];
   [(NCNotificationListCountIndicatorButton *)v11 setDelegate:self];
   [(UIView *)self->_containerView addSubview:v11];
   [(UIView *)self->_containerView bringSubviewToFront:v11];
@@ -664,63 +664,63 @@ void __88__NCNotificationListCountIndicatorView_updateCount_title_symbolImageNam
   }
 }
 
-- (void)_invalidateTitleLabelAnimated:(BOOL)a3
+- (void)_invalidateTitleLabelAnimated:(BOOL)animated
 {
-  [(NCNotificationListCountIndicatorView *)self _invalidateButton:self->_titleLabel animated:a3];
+  [(NCNotificationListCountIndicatorView *)self _invalidateButton:self->_titleLabel animated:animated];
   titleLabel = self->_titleLabel;
   self->_titleLabel = 0;
 }
 
-- (void)_invalidateSubtitleLabelAnimated:(BOOL)a3
+- (void)_invalidateSubtitleLabelAnimated:(BOOL)animated
 {
-  [(NCNotificationListCountIndicatorView *)self _invalidateButton:self->_subtitleLabel animated:a3];
+  [(NCNotificationListCountIndicatorView *)self _invalidateButton:self->_subtitleLabel animated:animated];
   subtitleLabel = self->_subtitleLabel;
   self->_subtitleLabel = 0;
 }
 
-- (void)_invalidateButton:(id)a3 animated:(BOOL)a4
+- (void)_invalidateButton:(id)button animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  buttonCopy = button;
+  v7 = buttonCopy;
+  if (buttonCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__NCNotificationListCountIndicatorView__invalidateButton_animated___block_invoke;
     v8[3] = &unk_27836F6A8;
-    v9 = v6;
-    [v9 hideContentAnimated:v4 completion:v8];
+    v9 = buttonCopy;
+    [v9 hideContentAnimated:animatedCopy completion:v8];
     [(NCNotificationListCountIndicatorView *)self setNeedsLayout];
   }
 }
 
-- (void)_performLayout:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_performLayout:(id)layout animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  layoutCopy = layout;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__NCNotificationListCountIndicatorView__performLayout_animated_completion___block_invoke;
   aBlock[3] = &unk_27836F8E8;
-  v9 = v8;
+  v9 = completionCopy;
   v15 = v9;
   v10 = _Block_copy(aBlock);
-  if (v6)
+  if (animatedCopy)
   {
     v11 = MEMORY[0x277D75D18];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __75__NCNotificationListCountIndicatorView__performLayout_animated_completion___block_invoke_2;
     v12[3] = &unk_27836F910;
-    v13 = v7;
+    v13 = layoutCopy;
     [v11 _animateUsingSpringWithDampingRatio:0 response:v12 tracking:v10 dampingRatioSmoothing:0.845 responseSmoothing:0.531 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
   }
 
   else
   {
-    v7[2](v7);
+    layoutCopy[2](layoutCopy);
     v10[2](v10, 1, 0);
   }
 }
@@ -738,16 +738,16 @@ uint64_t __75__NCNotificationListCountIndicatorView__performLayout_animated_comp
   return result;
 }
 
-- (void)buttonWasTapped:(id)a3
+- (void)buttonWasTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained notificationListCountIndicatorViewTapped:self];
 }
 
-- (void)buttonWasLongPressed:(id)a3
+- (void)buttonWasLongPressed:(id)pressed
 {
   titleLabel = self->_titleLabel;
-  if (titleLabel == a3)
+  if (titleLabel == pressed)
   {
     if (!self->_titleLabelRepresentsNotificationCount)
     {
@@ -785,16 +785,16 @@ uint64_t __75__NCNotificationListCountIndicatorView__performLayout_animated_comp
 
 - (id)_titleLabelFont
 {
-  v2 = [(NCNotificationListCountIndicatorView *)self _fontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:1];
+  _fontProvider = [(NCNotificationListCountIndicatorView *)self _fontProvider];
+  v3 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D769D0] hiFontStyle:1];
 
   return v3;
 }
 
 - (id)_subtitleLabelFont
 {
-  v2 = [(NCNotificationListCountIndicatorView *)self _fontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
+  _fontProvider = [(NCNotificationListCountIndicatorView *)self _fontProvider];
+  v3 = [_fontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
 
   return v3;
 }

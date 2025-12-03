@@ -1,10 +1,10 @@
 @interface IXSLimitedConcurrencyQueue
 + (id)launchServicesQueue;
 + (id)uninstallConcurrencyQueue;
-- (IXSLimitedConcurrencyQueue)initWithWidth:(unint64_t)a3;
+- (IXSLimitedConcurrencyQueue)initWithWidth:(unint64_t)width;
 - (void)_onQueue_deQueueIfNeeded;
-- (void)_onQueue_runAsyncForIdentity:(id)a3 description:(id)a4 operation:(id)a5;
-- (void)runAsyncForIdentity:(id)a3 description:(id)a4 operation:(id)a5;
+- (void)_onQueue_runAsyncForIdentity:(id)identity description:(id)description operation:(id)operation;
+- (void)runAsyncForIdentity:(id)identity description:(id)description operation:(id)operation;
 @end
 
 @implementation IXSLimitedConcurrencyQueue
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_100012E4C;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121CA0 != -1)
   {
     dispatch_once(&qword_100121CA0, block);
@@ -32,7 +32,7 @@
   block[1] = 3221225472;
   block[2] = sub_100012F30;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121CB0 != -1)
   {
     dispatch_once(&qword_100121CB0, block);
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (IXSLimitedConcurrencyQueue)initWithWidth:(unint64_t)a3
+- (IXSLimitedConcurrencyQueue)initWithWidth:(unint64_t)width
 {
   v16.receiver = self;
   v16.super_class = IXSLimitedConcurrencyQueue;
@@ -51,7 +51,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_width = a3;
+    v4->_width = width;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.installcoordinationd.LimitedConcurrencyQueue", v6);
     internalQueue = v5->_internalQueue;
@@ -73,41 +73,41 @@
   return v5;
 }
 
-- (void)runAsyncForIdentity:(id)a3 description:(id)a4 operation:(id)a5
+- (void)runAsyncForIdentity:(id)identity description:(id)description operation:(id)operation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSLimitedConcurrencyQueue *)self internalQueue];
+  identityCopy = identity;
+  descriptionCopy = description;
+  operationCopy = operation;
+  internalQueue = [(IXSLimitedConcurrencyQueue *)self internalQueue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10001315C;
   v15[3] = &unk_1001010C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  sub_100071134(v11, v15);
+  v16 = identityCopy;
+  v17 = descriptionCopy;
+  v18 = operationCopy;
+  v12 = operationCopy;
+  v13 = descriptionCopy;
+  v14 = identityCopy;
+  sub_100071134(internalQueue, v15);
 }
 
 - (void)_onQueue_deQueueIfNeeded
 {
-  v3 = [(IXSLimitedConcurrencyQueue *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(IXSLimitedConcurrencyQueue *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
-  v4 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
-  v5 = [v4 count];
+  waitingOperations = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
+  v5 = [waitingOperations count];
 
   if (v5)
   {
-    v6 = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
-    v7 = [v6 count];
-    v8 = [(IXSLimitedConcurrencyQueue *)self width];
+    activeIdentities = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
+    v7 = [activeIdentities count];
+    width = [(IXSLimitedConcurrencyQueue *)self width];
 
-    if (v7 >= v8)
+    if (v7 >= width)
     {
       v19 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -122,8 +122,8 @@
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v9 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-      v10 = [v9 countByEnumeratingWithState:&v39 objects:v47 count:16];
+      identityQueue = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+      v10 = [identityQueue countByEnumeratingWithState:&v39 objects:v47 count:16];
       if (v10)
       {
         v12 = v10;
@@ -136,12 +136,12 @@ LABEL_5:
         {
           if (*v40 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(identityQueue);
           }
 
           v15 = *(*(&v39 + 1) + 8 * v14);
-          v16 = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
-          v17 = [v16 containsObject:v15];
+          activeIdentities2 = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
+          v17 = [activeIdentities2 containsObject:v15];
 
           if (!v17)
           {
@@ -160,7 +160,7 @@ LABEL_5:
 
           if (v12 == ++v14)
           {
-            v12 = [v9 countByEnumeratingWithState:&v39 objects:v47 count:16];
+            v12 = [identityQueue countByEnumeratingWithState:&v39 objects:v47 count:16];
             if (v12)
             {
               goto LABEL_5;
@@ -177,8 +177,8 @@ LABEL_5:
           goto LABEL_26;
         }
 
-        v20 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
-        v21 = [v20 objectForKeyedSubscript:v19];
+        waitingOperations2 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
+        v21 = [waitingOperations2 objectForKeyedSubscript:v19];
 
         if (!v21)
         {
@@ -206,8 +206,8 @@ LABEL_5:
         [v21 removeObjectAtIndex:0];
         if ([v21 count])
         {
-          v23 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-          v24 = [v23 count];
+          identityQueue2 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+          v24 = [identityQueue2 count];
 
           if (v24 == 1)
           {
@@ -218,8 +218,8 @@ LABEL_36:
               sub_10009918C(v19, v22);
             }
 
-            v32 = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
-            [v32 addObject:v19];
+            activeIdentities3 = [(IXSLimitedConcurrencyQueue *)self activeIdentities];
+            [activeIdentities3 addObject:v19];
 
             v33 = sub_10007124C();
             v35[0] = _NSConcreteStackBlock;
@@ -227,7 +227,7 @@ LABEL_36:
             v35[2] = sub_1000136AC;
             v35[3] = &unk_100101300;
             v36 = v22;
-            v37 = self;
+            selfCopy = self;
             v38 = v19;
             v28 = v22;
             sub_100071134(v33, v35);
@@ -242,11 +242,11 @@ LABEL_39:
             sub_100099094();
           }
 
-          v26 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-          [v26 removeObject:v19];
+          identityQueue3 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+          [identityQueue3 removeObject:v19];
 
-          v27 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-          [v27 addObject:v19];
+          identityQueue4 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+          [identityQueue4 addObject:v19];
         }
 
         else
@@ -257,11 +257,11 @@ LABEL_39:
             sub_100099110();
           }
 
-          v30 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
-          [v30 removeObjectForKey:v19];
+          waitingOperations3 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
+          [waitingOperations3 removeObjectForKey:v19];
 
-          v27 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-          [v27 removeObject:v19];
+          identityQueue4 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+          [identityQueue4 removeObject:v19];
         }
 
         goto LABEL_36;
@@ -290,13 +290,13 @@ LABEL_26:
 LABEL_40:
 }
 
-- (void)_onQueue_runAsyncForIdentity:(id)a3 description:(id)a4 operation:(id)a5
+- (void)_onQueue_runAsyncForIdentity:(id)identity description:(id)description operation:(id)operation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSLimitedConcurrencyQueue *)self internalQueue];
-  dispatch_assert_queue_V2(v11);
+  identityCopy = identity;
+  descriptionCopy = description;
+  operationCopy = operation;
+  internalQueue = [(IXSLimitedConcurrencyQueue *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v12 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -304,26 +304,26 @@ LABEL_40:
     sub_1000994F0();
   }
 
-  v13 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
-  v14 = [v13 objectForKeyedSubscript:v8];
+  waitingOperations = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
+  v14 = [waitingOperations objectForKeyedSubscript:identityCopy];
 
   if (!v14)
   {
     v14 = [NSMutableArray arrayWithCapacity:1];
-    v15 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
-    [v15 setObject:v14 forKeyedSubscript:v8];
+    waitingOperations2 = [(IXSLimitedConcurrencyQueue *)self waitingOperations];
+    [waitingOperations2 setObject:v14 forKeyedSubscript:identityCopy];
   }
 
-  v16 = [[IXSLimitedConcurrencyOperation alloc] initWithBlock:v10 description:v9];
+  v16 = [[IXSLimitedConcurrencyOperation alloc] initWithBlock:operationCopy description:descriptionCopy];
 
   [v14 addObject:v16];
-  v17 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-  v18 = [v17 containsObject:v8];
+  identityQueue = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+  v18 = [identityQueue containsObject:identityCopy];
 
   if ((v18 & 1) == 0)
   {
-    v19 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
-    [v19 addObject:v8];
+    identityQueue2 = [(IXSLimitedConcurrencyQueue *)self identityQueue];
+    [identityQueue2 addObject:identityCopy];
   }
 
   [(IXSLimitedConcurrencyQueue *)self _onQueue_deQueueIfNeeded];

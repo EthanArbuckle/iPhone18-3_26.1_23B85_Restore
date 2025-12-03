@@ -1,156 +1,156 @@
 @interface _SFInjectedJavaScriptFormAutoFiller
 - (WKWebView)webView;
 - (_SFFormAutoFillController)formAutoFillController;
-- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)a3 formAutoFillController:(id)a4;
-- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)a3 formAutoFillController:(id)a4 injectionController:(id)a5;
-- (id)_dictionaryOfFramesToFormsMetadataWithParallelArraysOfFrames:(id)a3 andFormsMetadata:(id)a4;
-- (void)annotateForm:(int64_t)a3 inFrame:(id)a4 withValues:(id)a5;
-- (void)autoFillForm:(int64_t)a3 inFrame:(id)a4 withGeneratedPassword:(id)a5;
-- (void)autoFillFormAsynchronouslyInFrame:(id)a3 withValues:(id)a4 setAutoFilled:(BOOL)a5 focusFieldAfterFilling:(BOOL)a6 fieldToFocus:(id)a7 fieldsToObscure:(id)a8 submitForm:(BOOL)a9 completionHandler:(id)a10;
-- (void)autoFillOneTimeCodeFieldsInFrame:(id)a3 withValue:(id)a4 shouldSubmit:(BOOL)a5 completionHandler:(id)a6;
-- (void)automaticPasswordSheetDimissedInFrame:(id)a3 focusedPasswordControlUniqueID:(id)a4;
+- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)view formAutoFillController:(id)controller;
+- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)view formAutoFillController:(id)controller injectionController:(id)injectionController;
+- (id)_dictionaryOfFramesToFormsMetadataWithParallelArraysOfFrames:(id)frames andFormsMetadata:(id)metadata;
+- (void)annotateForm:(int64_t)form inFrame:(id)frame withValues:(id)values;
+- (void)autoFillForm:(int64_t)form inFrame:(id)frame withGeneratedPassword:(id)password;
+- (void)autoFillFormAsynchronouslyInFrame:(id)frame withValues:(id)values setAutoFilled:(BOOL)filled focusFieldAfterFilling:(BOOL)filling fieldToFocus:(id)focus fieldsToObscure:(id)obscure submitForm:(BOOL)form completionHandler:(id)self0;
+- (void)autoFillOneTimeCodeFieldsInFrame:(id)frame withValue:(id)value shouldSubmit:(BOOL)submit completionHandler:(id)handler;
+- (void)automaticPasswordSheetDimissedInFrame:(id)frame focusedPasswordControlUniqueID:(id)d;
 - (void)clearAutoFillMetadata;
-- (void)clearFieldsAndSetFormControlsToNotAutoFilled:(id)a3 inFrame:(id)a4 completionHandler:(id)a5;
-- (void)collectAllFormsMetadataWithRequestType:(unint64_t)a3 completionHandler:(id)a4;
-- (void)collectFormMetadataForPageLevelAutoFillAtURL:(id)a3;
-- (void)collectFormMetadataForPrefillingAtURL:(id)a3;
-- (void)collectFormMetadataForTestingAtURL:(id)a3;
-- (void)collectURLsForPrefillingAtURL:(id)a3;
-- (void)focusControlForStreamlinedLogin:(id)a3 inFrame:(id)a4;
-- (void)getMetadataForTextField:(id)a3 inFrame:(id)a4 atURL:(id)a5 completionHandler:(id)a6;
-- (void)setAutoFillSpinnerVisibility:(BOOL)a3 textFieldMetadata:(id)a4 frame:(id)a5;
-- (void)setFormControls:(id)a3 areAutoFilled:(BOOL)a4 andClearField:(id)a5 inFrame:(id)a6;
-- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)a3 frame:(id)a4 passwordControlUniqueIDs:(id)a5;
-- (void)substitutePasswordElementsWithAutomaticPasswordElementsInFrame:(id)a3 formID:(int64_t)a4 focusedPasswordControlUniqueID:(id)a5 passwordControlUniqueIDs:(id)a6 automaticPassword:(id)a7 blurAfterSubstitution:(BOOL)a8 completionHandler:(id)a9;
+- (void)clearFieldsAndSetFormControlsToNotAutoFilled:(id)filled inFrame:(id)frame completionHandler:(id)handler;
+- (void)collectAllFormsMetadataWithRequestType:(unint64_t)type completionHandler:(id)handler;
+- (void)collectFormMetadataForPageLevelAutoFillAtURL:(id)l;
+- (void)collectFormMetadataForPrefillingAtURL:(id)l;
+- (void)collectFormMetadataForTestingAtURL:(id)l;
+- (void)collectURLsForPrefillingAtURL:(id)l;
+- (void)focusControlForStreamlinedLogin:(id)login inFrame:(id)frame;
+- (void)getMetadataForTextField:(id)field inFrame:(id)frame atURL:(id)l completionHandler:(id)handler;
+- (void)setAutoFillSpinnerVisibility:(BOOL)visibility textFieldMetadata:(id)metadata frame:(id)frame;
+- (void)setFormControls:(id)controls areAutoFilled:(BOOL)filled andClearField:(id)field inFrame:(id)frame;
+- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)appropriate frame:(id)frame passwordControlUniqueIDs:(id)ds;
+- (void)substitutePasswordElementsWithAutomaticPasswordElementsInFrame:(id)frame formID:(int64_t)d focusedPasswordControlUniqueID:(id)iD passwordControlUniqueIDs:(id)ds automaticPassword:(id)password blurAfterSubstitution:(BOOL)substitution completionHandler:(id)handler;
 @end
 
 @implementation _SFInjectedJavaScriptFormAutoFiller
 
-- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)a3 formAutoFillController:(id)a4
+- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)view formAutoFillController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69C9768] sharedController];
-  v9 = [(_SFInjectedJavaScriptFormAutoFiller *)self initWithWebView:v6 formAutoFillController:v7 injectionController:v8];
+  viewCopy = view;
+  controllerCopy = controller;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
+  v9 = [(_SFInjectedJavaScriptFormAutoFiller *)self initWithWebView:viewCopy formAutoFillController:controllerCopy injectionController:mEMORY[0x1E69C9768]];
 
   return v9;
 }
 
-- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)a3 formAutoFillController:(id)a4 injectionController:(id)a5
+- (_SFInjectedJavaScriptFormAutoFiller)initWithWebView:(id)view formAutoFillController:(id)controller injectionController:(id)injectionController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  controllerCopy = controller;
+  injectionControllerCopy = injectionController;
   v15.receiver = self;
   v15.super_class = _SFInjectedJavaScriptFormAutoFiller;
   v11 = [(_SFInjectedJavaScriptFormAutoFiller *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_webView, v8);
-    objc_storeWeak(&v12->_formAutoFillController, v9);
-    objc_storeStrong(&v12->_injectionController, a5);
+    objc_storeWeak(&v11->_webView, viewCopy);
+    objc_storeWeak(&v12->_formAutoFillController, controllerCopy);
+    objc_storeStrong(&v12->_injectionController, injectionController);
     v13 = v12;
   }
 
   return v12;
 }
 
-- (void)annotateForm:(int64_t)a3 inFrame:(id)a4 withValues:(id)a5
+- (void)annotateForm:(int64_t)form inFrame:(id)frame withValues:(id)values
 {
-  v8 = a4;
-  v9 = a5;
+  frameCopy = frame;
+  valuesCopy = values;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v11 = [v8 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __71___SFInjectedJavaScriptFormAutoFiller_annotateForm_inFrame_withValues___block_invoke;
   v13[3] = &unk_1E84918C0;
   v13[4] = self;
-  v15 = a3;
-  v12 = v9;
+  formCopy = form;
+  v12 = valuesCopy;
   v14 = v12;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v11 completionHandler:v13];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v13];
 }
 
-- (void)autoFillForm:(int64_t)a3 inFrame:(id)a4 withGeneratedPassword:(id)a5
+- (void)autoFillForm:(int64_t)form inFrame:(id)frame withGeneratedPassword:(id)password
 {
-  v8 = a4;
-  v9 = a5;
+  frameCopy = frame;
+  passwordCopy = password;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v11 = [v8 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82___SFInjectedJavaScriptFormAutoFiller_autoFillForm_inFrame_withGeneratedPassword___block_invoke;
   v13[3] = &unk_1E84918C0;
   v13[4] = self;
-  v15 = a3;
-  v12 = v9;
+  formCopy = form;
+  v12 = passwordCopy;
   v14 = v12;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v11 completionHandler:v13];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v13];
 }
 
-- (void)autoFillFormAsynchronouslyInFrame:(id)a3 withValues:(id)a4 setAutoFilled:(BOOL)a5 focusFieldAfterFilling:(BOOL)a6 fieldToFocus:(id)a7 fieldsToObscure:(id)a8 submitForm:(BOOL)a9 completionHandler:(id)a10
+- (void)autoFillFormAsynchronouslyInFrame:(id)frame withValues:(id)values setAutoFilled:(BOOL)filled focusFieldAfterFilling:(BOOL)filling fieldToFocus:(id)focus fieldsToObscure:(id)obscure submitForm:(BOOL)form completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
+  frameCopy = frame;
+  valuesCopy = values;
+  focusCopy = focus;
+  obscureCopy = obscure;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v21 = [v15 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __179___SFInjectedJavaScriptFormAutoFiller_autoFillFormAsynchronouslyInFrame_withValues_setAutoFilled_focusFieldAfterFilling_fieldToFocus_fieldsToObscure_submitForm_completionHandler___block_invoke;
   v26[3] = &unk_1E8491910;
   v26[4] = self;
-  v22 = v16;
+  v22 = valuesCopy;
   v27 = v22;
-  v31 = a6;
-  v23 = v17;
+  fillingCopy = filling;
+  v23 = focusCopy;
   v28 = v23;
-  v24 = v18;
+  v24 = obscureCopy;
   v29 = v24;
-  v32 = a9;
-  v25 = v19;
+  formCopy = form;
+  v25 = handlerCopy;
   v30 = v25;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v21 completionHandler:v26];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v26];
 }
 
-- (void)autoFillOneTimeCodeFieldsInFrame:(id)a3 withValue:(id)a4 shouldSubmit:(BOOL)a5 completionHandler:(id)a6
+- (void)autoFillOneTimeCodeFieldsInFrame:(id)frame withValue:(id)value shouldSubmit:(BOOL)submit completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  frameCopy = frame;
+  valueCopy = value;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v14 = [v10 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __113___SFInjectedJavaScriptFormAutoFiller_autoFillOneTimeCodeFieldsInFrame_withValue_shouldSubmit_completionHandler___block_invoke;
   v17[3] = &unk_1E8491960;
   v17[4] = self;
-  v15 = v11;
+  v15 = valueCopy;
   v18 = v15;
-  v20 = a5;
-  v16 = v12;
+  submitCopy = submit;
+  v16 = handlerCopy;
   v19 = v16;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v14 completionHandler:v17];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v17];
 }
 
-- (void)automaticPasswordSheetDimissedInFrame:(id)a3 focusedPasswordControlUniqueID:(id)a4
+- (void)automaticPasswordSheetDimissedInFrame:(id)frame focusedPasswordControlUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  frameCopy = frame;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v9 = [v6 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __108___SFInjectedJavaScriptFormAutoFiller_automaticPasswordSheetDimissedInFrame_focusedPasswordControlUniqueID___block_invoke;
   v11[3] = &unk_1E8491988;
   v11[4] = self;
-  v10 = v7;
+  v10 = dCopy;
   v12 = v10;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v9 completionHandler:v11];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v11];
 }
 
 - (void)clearAutoFillMetadata
@@ -160,219 +160,219 @@
   [WBSAutoFillJavaScriptInjectionController resetMetadataCachesInAllFramesInWebView:"resetMetadataCachesInAllFramesInWebView:completionHandler:" completionHandler:?];
 }
 
-- (void)clearFieldsAndSetFormControlsToNotAutoFilled:(id)a3 inFrame:(id)a4 completionHandler:(id)a5
+- (void)clearFieldsAndSetFormControlsToNotAutoFilled:(id)filled inFrame:(id)frame completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  filledCopy = filled;
+  frameCopy = frame;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v10 = [v8 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __110___SFInjectedJavaScriptFormAutoFiller_clearFieldsAndSetFormControlsToNotAutoFilled_inFrame_completionHandler___block_invoke;
   v12[3] = &unk_1E8491988;
   v12[4] = self;
-  v11 = v7;
+  v11 = filledCopy;
   v13 = v11;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v10 completionHandler:v12];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v12];
 }
 
-- (void)collectAllFormsMetadataWithRequestType:(unint64_t)a3 completionHandler:(id)a4
+- (void)collectAllFormsMetadataWithRequestType:(unint64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E69C9768] sharedController];
+  handlerCopy = handler;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96___SFInjectedJavaScriptFormAutoFiller_collectAllFormsMetadataWithRequestType_completionHandler___block_invoke;
   v10[3] = &unk_1E84919B0;
-  v9 = v6;
+  v9 = handlerCopy;
   v10[4] = self;
   v11 = v9;
-  [v7 metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:a3 completionHandler:v10];
+  [mEMORY[0x1E69C9768] metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:type completionHandler:v10];
 }
 
-- (void)collectFormMetadataForPageLevelAutoFillAtURL:(id)a3
+- (void)collectFormMetadataForPageLevelAutoFillAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C9768] sharedController];
+  lCopy = l;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __84___SFInjectedJavaScriptFormAutoFiller_collectFormMetadataForPageLevelAutoFillAtURL___block_invoke;
   v8[3] = &unk_1E84919D8;
   v8[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
-  [v5 metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:0 completionHandler:v8];
+  [mEMORY[0x1E69C9768] metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:0 completionHandler:v8];
 }
 
-- (void)collectFormMetadataForPrefillingAtURL:(id)a3
+- (void)collectFormMetadataForPrefillingAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C9768] sharedController];
+  lCopy = l;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __77___SFInjectedJavaScriptFormAutoFiller_collectFormMetadataForPrefillingAtURL___block_invoke;
   v8[3] = &unk_1E84919D8;
   v8[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
-  [v5 metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:1 completionHandler:v8];
+  [mEMORY[0x1E69C9768] metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:1 completionHandler:v8];
 }
 
-- (void)collectFormMetadataForTestingAtURL:(id)a3
+- (void)collectFormMetadataForTestingAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C9768] sharedController];
+  lCopy = l;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74___SFInjectedJavaScriptFormAutoFiller_collectFormMetadataForTestingAtURL___block_invoke;
   v8[3] = &unk_1E84919D8;
   v8[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
-  [v5 metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:2 completionHandler:v8];
+  [mEMORY[0x1E69C9768] metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:2 completionHandler:v8];
 }
 
-- (void)collectURLsForPrefillingAtURL:(id)a3
+- (void)collectURLsForPrefillingAtURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69C9768] sharedController];
+  lCopy = l;
+  mEMORY[0x1E69C9768] = [MEMORY[0x1E69C9768] sharedController];
   WeakRetained = objc_loadWeakRetained(&self->_webView);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69___SFInjectedJavaScriptFormAutoFiller_collectURLsForPrefillingAtURL___block_invoke;
   v8[3] = &unk_1E84919D8;
   v8[4] = self;
-  v7 = v4;
+  v7 = lCopy;
   v9 = v7;
-  [v5 metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:1 completionHandler:v8];
+  [mEMORY[0x1E69C9768] metadataForAllFormsInAllFramesOfWebView:WeakRetained requestType:1 completionHandler:v8];
 }
 
-- (void)focusControlForStreamlinedLogin:(id)a3 inFrame:(id)a4
+- (void)focusControlForStreamlinedLogin:(id)login inFrame:(id)frame
 {
-  v6 = a3;
-  v7 = a4;
+  loginCopy = login;
+  frameCopy = frame;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v9 = [v7 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79___SFInjectedJavaScriptFormAutoFiller_focusControlForStreamlinedLogin_inFrame___block_invoke;
   v11[3] = &unk_1E8491988;
-  v10 = v6;
+  v10 = loginCopy;
   v12 = v10;
-  v13 = self;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v9 completionHandler:v11];
+  selfCopy = self;
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v11];
 }
 
-- (void)getMetadataForTextField:(id)a3 inFrame:(id)a4 atURL:(id)a5 completionHandler:(id)a6
+- (void)getMetadataForTextField:(id)field inFrame:(id)frame atURL:(id)l completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  fieldCopy = field;
+  frameCopy = frame;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v13 = [v10 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95___SFInjectedJavaScriptFormAutoFiller_getMetadataForTextField_inFrame_atURL_completionHandler___block_invoke;
   v16[3] = &unk_1E8491A28;
-  v14 = v9;
+  v14 = fieldCopy;
   v17 = v14;
-  v18 = self;
-  v15 = v11;
+  selfCopy = self;
+  v15 = handlerCopy;
   v19 = v15;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v13 completionHandler:v16];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v16];
 }
 
-- (void)setAutoFillSpinnerVisibility:(BOOL)a3 textFieldMetadata:(id)a4 frame:(id)a5
+- (void)setAutoFillSpinnerVisibility:(BOOL)visibility textFieldMetadata:(id)metadata frame:(id)frame
 {
-  v7 = a4;
-  v8 = a5;
+  metadataCopy = metadata;
+  frameCopy = frame;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v10 = [v8 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __92___SFInjectedJavaScriptFormAutoFiller_setAutoFillSpinnerVisibility_textFieldMetadata_frame___block_invoke;
   v12[3] = &unk_1E8491988;
   v12[4] = self;
-  v11 = v7;
+  v11 = metadataCopy;
   v13 = v11;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v10 completionHandler:v12];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v12];
 }
 
-- (void)setFormControls:(id)a3 areAutoFilled:(BOOL)a4 andClearField:(id)a5 inFrame:(id)a6
+- (void)setFormControls:(id)controls areAutoFilled:(BOOL)filled andClearField:(id)field inFrame:(id)frame
 {
-  v9 = a3;
-  v10 = a6;
+  controlsCopy = controls;
+  frameCopy = frame;
   objc_initWeak(&location, self->_injectionController);
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v12 = [v10 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __91___SFInjectedJavaScriptFormAutoFiller_setFormControls_areAutoFilled_andClearField_inFrame___block_invoke;
   v14[3] = &unk_1E8491A78;
   objc_copyWeak(&v17, &location);
-  v13 = v9;
-  v18 = a4;
+  v13 = controlsCopy;
+  filledCopy = filled;
   v15 = v13;
-  v16 = self;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v12 completionHandler:v14];
+  selfCopy = self;
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)a3 frame:(id)a4 passwordControlUniqueIDs:(id)a5
+- (void)setStrongPasswordElementViewableIfAppropriate:(BOOL)appropriate frame:(id)frame passwordControlUniqueIDs:(id)ds
 {
-  v8 = a4;
-  v9 = a5;
+  frameCopy = frame;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v11 = [v8 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __116___SFInjectedJavaScriptFormAutoFiller_setStrongPasswordElementViewableIfAppropriate_frame_passwordControlUniqueIDs___block_invoke;
   v13[3] = &unk_1E8491AA0;
-  v12 = v9;
-  v16 = a3;
+  v12 = dsCopy;
+  appropriateCopy = appropriate;
   v14 = v12;
-  v15 = self;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v11 completionHandler:v13];
+  selfCopy = self;
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v13];
 }
 
-- (void)substitutePasswordElementsWithAutomaticPasswordElementsInFrame:(id)a3 formID:(int64_t)a4 focusedPasswordControlUniqueID:(id)a5 passwordControlUniqueIDs:(id)a6 automaticPassword:(id)a7 blurAfterSubstitution:(BOOL)a8 completionHandler:(id)a9
+- (void)substitutePasswordElementsWithAutomaticPasswordElementsInFrame:(id)frame formID:(int64_t)d focusedPasswordControlUniqueID:(id)iD passwordControlUniqueIDs:(id)ds automaticPassword:(id)password blurAfterSubstitution:(BOOL)substitution completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  frameCopy = frame;
+  iDCopy = iD;
+  passwordCopy = password;
   WeakRetained = objc_loadWeakRetained(&self->_webView);
-  v17 = [v13 frameHandle];
+  frameHandle = [frameCopy frameHandle];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __223___SFInjectedJavaScriptFormAutoFiller_substitutePasswordElementsWithAutomaticPasswordElementsInFrame_formID_focusedPasswordControlUniqueID_passwordControlUniqueIDs_automaticPassword_blurAfterSubstitution_completionHandler___block_invoke;
   v20[3] = &unk_1E8491AC8;
   v20[4] = self;
-  v23 = a4;
-  v18 = v15;
+  dCopy = d;
+  v18 = passwordCopy;
   v21 = v18;
-  v19 = v14;
+  v19 = iDCopy;
   v22 = v19;
-  [WeakRetained safari_getFrameInfoForFrameWithHandle:v17 completionHandler:v20];
+  [WeakRetained safari_getFrameInfoForFrameWithHandle:frameHandle completionHandler:v20];
 }
 
-- (id)_dictionaryOfFramesToFormsMetadataWithParallelArraysOfFrames:(id)a3 andFormsMetadata:(id)a4
+- (id)_dictionaryOfFramesToFormsMetadataWithParallelArraysOfFrames:(id)frames andFormsMetadata:(id)metadata
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  framesCopy = frames;
+  metadataCopy = metadata;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __117___SFInjectedJavaScriptFormAutoFiller__dictionaryOfFramesToFormsMetadataWithParallelArraysOfFrames_andFormsMetadata___block_invoke;
   v10[3] = &unk_1E8491AF0;
-  v8 = v7;
+  v8 = dictionary;
   v11 = v8;
-  [v5 safari_enumerateZippedValuesWithArray:v6 withBlock:v10];
+  [framesCopy safari_enumerateZippedValuesWithArray:metadataCopy withBlock:v10];
 
   return v8;
 }

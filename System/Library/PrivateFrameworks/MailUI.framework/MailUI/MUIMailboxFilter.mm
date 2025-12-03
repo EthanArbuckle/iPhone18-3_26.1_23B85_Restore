@@ -1,16 +1,16 @@
 @interface MUIMailboxFilter
-+ (id)iconNameForMailboxType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFilter:(id)a3;
-- (BOOL)isEquivalentToPredicate:(id)a3;
-- (MUIMailboxFilter)initWithAccount:(id)a3 iconFromSmartMailbox:(id)a4;
-- (MUIMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 iconImageName:(id)a6 iconTintColor:(id)a7 predicate:(id)a8 hasMailboxPredicate:(BOOL)a9;
++ (id)iconNameForMailboxType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFilter:(id)filter;
+- (BOOL)isEquivalentToPredicate:(id)predicate;
+- (MUIMailboxFilter)initWithAccount:(id)account iconFromSmartMailbox:(id)mailbox;
+- (MUIMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description iconImageName:(id)imageName iconTintColor:(id)color predicate:(id)predicate hasMailboxPredicate:(BOOL)mailboxPredicate;
 - (NSString)debugDescription;
 - (id)initForCCMeMessages;
 - (id)initForFlaggedMessages;
 - (id)initForMessagesWithAttachments;
-- (id)initForSender:(id)a3;
-- (id)initForSmartMailboxType:(int64_t)a3;
+- (id)initForSender:(id)sender;
+- (id)initForSmartMailboxType:(int64_t)type;
 - (id)initForToMeMessages;
 - (id)initForTodayMessages;
 - (id)initForTouchedByCleanupMessages;
@@ -21,14 +21,14 @@
 
 @implementation MUIMailboxFilter
 
-- (MUIMailboxFilter)initWithType:(int64_t)a3 name:(id)a4 description:(id)a5 iconImageName:(id)a6 iconTintColor:(id)a7 predicate:(id)a8 hasMailboxPredicate:(BOOL)a9
+- (MUIMailboxFilter)initWithType:(int64_t)type name:(id)name description:(id)description iconImageName:(id)imageName iconTintColor:(id)color predicate:(id)predicate hasMailboxPredicate:(BOOL)mailboxPredicate
 {
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (!v16)
+  nameCopy = name;
+  descriptionCopy = description;
+  imageNameCopy = imageName;
+  colorCopy = color;
+  predicateCopy = predicate;
+  if (!nameCopy)
   {
     [MUIMailboxFilter initWithType:a2 name:self description:? iconImageName:? iconTintColor:? predicate:? hasMailboxPredicate:?];
   }
@@ -39,64 +39,64 @@
   v22 = v21;
   if (v21)
   {
-    v21->_type = a3;
-    v23 = [v16 copy];
+    v21->_type = type;
+    v23 = [nameCopy copy];
     name = v22->_name;
     v22->_name = v23;
 
-    if (v17)
+    if (descriptionCopy)
     {
-      v25 = v17;
+      v25 = descriptionCopy;
     }
 
     else
     {
-      v25 = v16;
+      v25 = nameCopy;
     }
 
     v26 = [v25 copy];
     filterDescription = v22->_filterDescription;
     v22->_filterDescription = v26;
 
-    v28 = [v18 copy];
+    v28 = [imageNameCopy copy];
     iconImageName = v22->_iconImageName;
     v22->_iconImageName = v28;
 
-    objc_storeStrong(&v22->_iconTintColor, a7);
-    objc_storeStrong(&v22->_predicate, a8);
-    v22->_hasMailboxPredicate = a9;
+    objc_storeStrong(&v22->_iconTintColor, color);
+    objc_storeStrong(&v22->_predicate, predicate);
+    v22->_hasMailboxPredicate = mailboxPredicate;
   }
 
   return v22;
 }
 
-- (BOOL)isEquivalentToPredicate:(id)a3
+- (BOOL)isEquivalentToPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(MUIMailboxFilter *)self predicate];
-  v6 = [v5 isEqual:v4];
+  predicateCopy = predicate;
+  predicate = [(MUIMailboxFilter *)self predicate];
+  v6 = [predicate isEqual:predicateCopy];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(MUIMailboxFilter *)self predicate];
-  v4 = [v3 hash];
+  predicate = [(MUIMailboxFilter *)self predicate];
+  v4 = [predicate hash];
 
-  v5 = [(MUIMailboxFilter *)self name];
-  v6 = 33 * (33 * v4 + [v5 hash]);
+  name = [(MUIMailboxFilter *)self name];
+  v6 = 33 * (33 * v4 + [name hash]);
 
-  v7 = [(MUIMailboxFilter *)self filterDescription];
-  v8 = [v7 hash] + 193376997;
+  filterDescription = [(MUIMailboxFilter *)self filterDescription];
+  v8 = [filterDescription hash] + 193376997;
 
   return v6 + v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -104,23 +104,23 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MUIMailboxFilter *)self isEqualToFilter:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(MUIMailboxFilter *)self isEqualToFilter:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFilter:(id)a3
+- (BOOL)isEqualToFilter:(id)filter
 {
-  v4 = a3;
-  if (v4)
+  filterCopy = filter;
+  if (filterCopy)
   {
-    v5 = [(MUIMailboxFilter *)self predicate];
+    predicate = [(MUIMailboxFilter *)self predicate];
 
-    if (v5)
+    if (predicate)
     {
-      v6 = [(MUIMailboxFilter *)self predicate];
-      v7 = [v4 isEquivalentToPredicate:v6];
+      predicate2 = [(MUIMailboxFilter *)self predicate];
+      v7 = [filterCopy isEquivalentToPredicate:predicate2];
     }
 
     else
@@ -128,13 +128,13 @@
       v7 = 0;
     }
 
-    v9 = [(MUIMailboxFilter *)self name];
-    v10 = [v4 name];
-    if ([v9 isEqualToString:v10])
+    name = [(MUIMailboxFilter *)self name];
+    name2 = [filterCopy name];
+    if ([name isEqualToString:name2])
     {
-      v11 = [(MUIMailboxFilter *)self filterDescription];
-      v12 = [v4 filterDescription];
-      v8 = [v11 isEqualToString:v12] & v7;
+      filterDescription = [(MUIMailboxFilter *)self filterDescription];
+      filterDescription2 = [filterCopy filterDescription];
+      v8 = [filterDescription isEqualToString:filterDescription2] & v7;
     }
 
     else
@@ -156,78 +156,78 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MUIMailboxFilter *)self name];
-  v7 = [(MUIMailboxFilter *)self filterDescription];
-  v8 = [(MUIMailboxFilter *)self predicate];
-  v9 = [v3 stringWithFormat:@"<%@: %p\nName: %@\nDescription:  %@\nPredicate: \n%@", v5, self, v6, v7, v8];
+  name = [(MUIMailboxFilter *)self name];
+  filterDescription = [(MUIMailboxFilter *)self filterDescription];
+  predicate = [(MUIMailboxFilter *)self predicate];
+  v9 = [v3 stringWithFormat:@"<%@: %p\nName: %@\nDescription:  %@\nPredicate: \n%@", v5, self, name, filterDescription, predicate];
 
   return v9;
 }
 
 - (id)initForFlaggedMessages
 {
-  v3 = [MEMORY[0x277D06E08] predicateForFlaggedMessages];
+  predicateForFlaggedMessages = [MEMORY[0x277D06E08] predicateForFlaggedMessages];
   v4 = _EFLocalizedString();
-  v5 = [MEMORY[0x277D75348] systemOrangeColor];
+  systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
   LOBYTE(v8) = 0;
-  v6 = [(MUIMailboxFilter *)self initWithType:0 name:v4 description:v4 iconImageName:@"flag.fill" iconTintColor:v5 predicate:v3 hasMailboxPredicate:v8];
+  v6 = [(MUIMailboxFilter *)self initWithType:0 name:v4 description:v4 iconImageName:@"flag.fill" iconTintColor:systemOrangeColor predicate:predicateForFlaggedMessages hasMailboxPredicate:v8];
 
   return v6;
 }
 
 - (id)initForUnreadMessages
 {
-  v3 = [MEMORY[0x277D06E08] predicateForUnreadMessages];
+  predicateForUnreadMessages = [MEMORY[0x277D06E08] predicateForUnreadMessages];
   v4 = _EFLocalizedString();
-  v5 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   LOBYTE(v8) = 0;
-  v6 = [(MUIMailboxFilter *)self initWithType:1 name:v4 description:v4 iconImageName:@"envelope.badge" iconTintColor:v5 predicate:v3 hasMailboxPredicate:v8];
+  v6 = [(MUIMailboxFilter *)self initWithType:1 name:v4 description:v4 iconImageName:@"envelope.badge" iconTintColor:systemBlueColor predicate:predicateForUnreadMessages hasMailboxPredicate:v8];
 
   return v6;
 }
 
 - (id)initForToMeMessages
 {
-  v3 = [MEMORY[0x277D06E08] predicateForToMeMessages];
+  predicateForToMeMessages = [MEMORY[0x277D06E08] predicateForToMeMessages];
   v4 = _EFLocalizedString();
-  v5 = [MEMORY[0x277D75348] mailTransparentLightGrayColor];
+  mailTransparentLightGrayColor = [MEMORY[0x277D75348] mailTransparentLightGrayColor];
   LOBYTE(v8) = 0;
-  v6 = [(MUIMailboxFilter *)self initWithType:2 name:v4 description:0 iconImageName:0 iconTintColor:v5 predicate:v3 hasMailboxPredicate:v8];
+  v6 = [(MUIMailboxFilter *)self initWithType:2 name:v4 description:0 iconImageName:0 iconTintColor:mailTransparentLightGrayColor predicate:predicateForToMeMessages hasMailboxPredicate:v8];
 
   return v6;
 }
 
 - (id)initForCCMeMessages
 {
-  v3 = [MEMORY[0x277D06E08] predicateForCCMeMessages];
+  predicateForCCMeMessages = [MEMORY[0x277D06E08] predicateForCCMeMessages];
   v4 = _EFLocalizedString();
-  v5 = [MEMORY[0x277D75348] mailTransparentLightGrayColor];
+  mailTransparentLightGrayColor = [MEMORY[0x277D75348] mailTransparentLightGrayColor];
   LOBYTE(v8) = 0;
-  v6 = [(MUIMailboxFilter *)self initWithType:3 name:v4 description:0 iconImageName:0 iconTintColor:v5 predicate:v3 hasMailboxPredicate:v8];
+  v6 = [(MUIMailboxFilter *)self initWithType:3 name:v4 description:0 iconImageName:0 iconTintColor:mailTransparentLightGrayColor predicate:predicateForCCMeMessages hasMailboxPredicate:v8];
 
   return v6;
 }
 
 - (id)initForTodayMessages
 {
-  v3 = [MEMORY[0x277D06E08] predicateForTodayMessages];
+  predicateForTodayMessages = [MEMORY[0x277D06E08] predicateForTodayMessages];
   v4 = _EFLocalizedString();
   v5 = _EFLocalizedString();
-  v6 = [MEMORY[0x277D75348] mailTodayFilterColor];
+  mailTodayFilterColor = [MEMORY[0x277D75348] mailTodayFilterColor];
   LOBYTE(v9) = 0;
-  v7 = [(MUIMailboxFilter *)self initWithType:5 name:v4 description:v5 iconImageName:@"calendar" iconTintColor:v6 predicate:v3 hasMailboxPredicate:v9];
+  v7 = [(MUIMailboxFilter *)self initWithType:5 name:v4 description:v5 iconImageName:@"calendar" iconTintColor:mailTodayFilterColor predicate:predicateForTodayMessages hasMailboxPredicate:v9];
 
   return v7;
 }
 
 - (id)initForMessagesWithAttachments
 {
-  v3 = [MEMORY[0x277D06E08] predicateForMessagesWithAttachments];
+  predicateForMessagesWithAttachments = [MEMORY[0x277D06E08] predicateForMessagesWithAttachments];
   v4 = _EFLocalizedString();
   v5 = _EFLocalizedString();
-  v6 = [MEMORY[0x277D75348] mailAttachmentsFilterColor];
+  mailAttachmentsFilterColor = [MEMORY[0x277D75348] mailAttachmentsFilterColor];
   LOBYTE(v9) = 0;
-  v7 = [(MUIMailboxFilter *)self initWithType:6 name:v4 description:v5 iconImageName:@"paperclip" iconTintColor:v6 predicate:v3 hasMailboxPredicate:v9];
+  v7 = [(MUIMailboxFilter *)self initWithType:6 name:v4 description:v5 iconImageName:@"paperclip" iconTintColor:mailAttachmentsFilterColor predicate:predicateForMessagesWithAttachments hasMailboxPredicate:v9];
 
   return v7;
 }
@@ -237,9 +237,9 @@
   v3 = _EFLocalizedString();
   v4 = _EFLocalizedString();
   v5 = [MEMORY[0x277D06E08] predicateForIsVIP:1];
-  v6 = [MEMORY[0x277D75348] mailVIPFilterColor];
+  mailVIPFilterColor = [MEMORY[0x277D75348] mailVIPFilterColor];
   LOBYTE(v9) = 0;
-  v7 = [(MUIMailboxFilter *)self initWithType:8 name:v3 description:v4 iconImageName:@"star.fill" iconTintColor:v6 predicate:v5 hasMailboxPredicate:v9];
+  v7 = [(MUIMailboxFilter *)self initWithType:8 name:v3 description:v4 iconImageName:@"star.fill" iconTintColor:mailVIPFilterColor predicate:v5 hasMailboxPredicate:v9];
 
   return v7;
 }
@@ -248,23 +248,23 @@
 {
   v3 = +[MUILocalizedBocceBallStrings iCloudMailCleanupFilterName];
   v4 = +[MUILocalizedBocceBallStrings iCloudMailCleanupFilterName];
-  v5 = [MEMORY[0x277D06E08] predicateForTouchedByCleanupMessages];
-  v6 = [MEMORY[0x277D75348] mailiCloudCleanupFilterColor];
+  predicateForTouchedByCleanupMessages = [MEMORY[0x277D06E08] predicateForTouchedByCleanupMessages];
+  mailiCloudCleanupFilterColor = [MEMORY[0x277D75348] mailiCloudCleanupFilterColor];
   LOBYTE(v9) = 0;
-  v7 = [(MUIMailboxFilter *)self initWithType:18 name:v3 description:v4 iconImageName:0 iconTintColor:v6 predicate:v5 hasMailboxPredicate:v9];
+  v7 = [(MUIMailboxFilter *)self initWithType:18 name:v3 description:v4 iconImageName:0 iconTintColor:mailiCloudCleanupFilterColor predicate:predicateForTouchedByCleanupMessages hasMailboxPredicate:v9];
 
   return v7;
 }
 
-- (MUIMailboxFilter)initWithAccount:(id)a3 iconFromSmartMailbox:(id)a4
+- (MUIMailboxFilter)initWithAccount:(id)account iconFromSmartMailbox:(id)mailbox
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D06E08] predicateForAccount:v6];
+  accountCopy = account;
+  mailboxCopy = mailbox;
+  v8 = [MEMORY[0x277D06E08] predicateForAccount:accountCopy];
   v9 = 0;
   v10 = -1;
   v11 = 8;
-  switch([v7 smartMailboxType])
+  switch([mailboxCopy smartMailboxType])
   {
     case 0:
       goto LABEL_12;
@@ -296,7 +296,7 @@ LABEL_12:
       v10 = 9;
       break;
     case 8:
-      v9 = +[MUIMailboxFilter iconNameForMailboxType:](MUIMailboxFilter, "iconNameForMailboxType:", [v7 type]);
+      v9 = +[MUIMailboxFilter iconNameForMailboxType:](MUIMailboxFilter, "iconNameForMailboxType:", [mailboxCopy type]);
       v10 = 11;
       break;
     case 9:
@@ -323,20 +323,20 @@ LABEL_12:
       break;
   }
 
-  v12 = [v6 name];
+  name = [accountCopy name];
   LOBYTE(v15) = 1;
-  v13 = [(MUIMailboxFilter *)self initWithType:v10 name:v12 description:0 iconImageName:v9 iconTintColor:0 predicate:v8 hasMailboxPredicate:v15];
+  v13 = [(MUIMailboxFilter *)self initWithType:v10 name:name description:0 iconImageName:v9 iconTintColor:0 predicate:v8 hasMailboxPredicate:v15];
 
   return v13;
 }
 
-- (id)initForSmartMailboxType:(int64_t)a3
+- (id)initForSmartMailboxType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
 
         return [(MUIMailboxFilter *)self initForFlaggedMessages];
@@ -344,7 +344,7 @@ LABEL_12:
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_22;
         }
@@ -360,9 +360,9 @@ LABEL_12:
     }
   }
 
-  else if (a3 > 5)
+  else if (type > 5)
   {
-    if (a3 == 6)
+    if (type == 6)
     {
 
       return [(MUIMailboxFilter *)self initForTodayMessages];
@@ -370,7 +370,7 @@ LABEL_12:
 
     else
     {
-      if (a3 != 14)
+      if (type != 14)
       {
         goto LABEL_22;
       }
@@ -381,9 +381,9 @@ LABEL_12:
 
   else
   {
-    if (a3 != 3)
+    if (type != 3)
     {
-      if (a3 == 4)
+      if (type == 4)
       {
 
         return [(MUIMailboxFilter *)self initForMessagesWithAttachments];
@@ -398,37 +398,37 @@ LABEL_22:
   }
 }
 
-- (id)initForSender:(id)a3
+- (id)initForSender:(id)sender
 {
-  v5 = a3;
-  if (!v5)
+  senderCopy = sender;
+  if (!senderCopy)
   {
     [(MUIMailboxFilter *)a2 initForSender:?];
   }
 
   v6 = MEMORY[0x277D06E08];
-  v7 = [v5 senderList];
-  v8 = [v6 predicateForMessagesWithSenders:v7];
+  senderList = [senderCopy senderList];
+  v8 = [v6 predicateForMessagesWithSenders:senderList];
 
   v9 = _EFLocalizedString();
   v10 = _EFLocalizedString();
-  v11 = [MEMORY[0x277D75348] mailSenderFilterColor];
+  mailSenderFilterColor = [MEMORY[0x277D75348] mailSenderFilterColor];
   LOBYTE(v14) = 0;
-  v12 = [(MUIMailboxFilter *)self initWithType:17 name:v9 description:v10 iconImageName:@"person.crop.circle" iconTintColor:v11 predicate:v8 hasMailboxPredicate:v14];
+  v12 = [(MUIMailboxFilter *)self initWithType:17 name:v9 description:v10 iconImageName:@"person.crop.circle" iconTintColor:mailSenderFilterColor predicate:v8 hasMailboxPredicate:v14];
 
   return v12;
 }
 
-+ (id)iconNameForMailboxType:(int64_t)a3
++ (id)iconNameForMailboxType:(int64_t)type
 {
-  if ((a3 - 1) > 6)
+  if ((type - 1) > 6)
   {
     v3 = MFImageGlyphFilterGenericMailbox;
   }
 
   else
   {
-    v3 = off_27818A7E8[a3 - 1];
+    v3 = off_27818A7E8[type - 1];
   }
 
   return *v3;

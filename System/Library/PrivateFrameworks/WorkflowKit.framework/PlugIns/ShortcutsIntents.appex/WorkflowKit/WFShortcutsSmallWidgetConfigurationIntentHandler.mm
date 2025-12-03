@@ -1,21 +1,21 @@
 @interface WFShortcutsSmallWidgetConfigurationIntentHandler
 - (WFShortcutsSmallWidgetConfigurationIntentHandler)init;
-- (id)defaultShortcutForShortcutsSmallWidgetConfiguration:(id)a3;
-- (id)shortcutFromWorkflowReference:(id)a3;
-- (void)provideShortcutOptionsCollectionForShortcutsSmallWidgetConfiguration:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5;
+- (id)defaultShortcutForShortcutsSmallWidgetConfiguration:(id)configuration;
+- (id)shortcutFromWorkflowReference:(id)reference;
+- (void)provideShortcutOptionsCollectionForShortcutsSmallWidgetConfiguration:(id)configuration searchTerm:(id)term withCompletion:(id)completion;
 @end
 
 @implementation WFShortcutsSmallWidgetConfigurationIntentHandler
 
-- (void)provideShortcutOptionsCollectionForShortcutsSmallWidgetConfiguration:(id)a3 searchTerm:(id)a4 withCompletion:(id)a5
+- (void)provideShortcutOptionsCollectionForShortcutsSmallWidgetConfiguration:(id)configuration searchTerm:(id)term withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  termCopy = term;
+  completionCopy = completion;
   v9 = +[WFDatabase defaultDatabase];
   v10 = v9;
-  if (v7)
+  if (termCopy)
   {
-    [v9 sortedVisibleWorkflowsNameContains:v7 limit:300];
+    [v9 sortedVisibleWorkflowsNameContains:termCopy limit:300];
   }
 
   else
@@ -24,63 +24,63 @@
   }
   v11 = ;
 
-  v12 = [v11 descriptors];
+  descriptors = [v11 descriptors];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100003034;
   v15[3] = &unk_1000084A0;
   v15[4] = self;
-  v13 = [v12 if_map:v15];
+  v13 = [descriptors if_map:v15];
 
   v14 = [[INObjectCollection alloc] initWithItems:v13];
-  v8[2](v8, v14, 0);
+  completionCopy[2](completionCopy, v14, 0);
 }
 
-- (id)defaultShortcutForShortcutsSmallWidgetConfiguration:(id)a3
+- (id)defaultShortcutForShortcutsSmallWidgetConfiguration:(id)configuration
 {
   v4 = [[WFWorkflowQuery alloc] initWithLocation:0];
   [v4 setResultsLimit:1];
   v5 = +[WFDatabase defaultDatabase];
   v6 = [v5 sortedWorkflowsWithQuery:v4];
-  v7 = [v6 descriptors];
-  v8 = [v7 firstObject];
+  descriptors = [v6 descriptors];
+  firstObject = [descriptors firstObject];
 
-  v9 = [(WFShortcutsSmallWidgetConfigurationIntentHandler *)self shortcutFromWorkflowReference:v8];
+  v9 = [(WFShortcutsSmallWidgetConfigurationIntentHandler *)self shortcutFromWorkflowReference:firstObject];
 
   return v9;
 }
 
-- (id)shortcutFromWorkflowReference:(id)a3
+- (id)shortcutFromWorkflowReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = [WFShortcut alloc];
-  v5 = [v3 identifier];
-  v6 = [v3 name];
-  v7 = [(WFShortcut *)v4 initWithIdentifier:v5 displayString:v6];
+  identifier = [referenceCopy identifier];
+  name = [referenceCopy name];
+  v7 = [(WFShortcut *)v4 initWithIdentifier:identifier displayString:name];
 
-  v8 = [v3 icon];
-  v9 = [v8 backgroundColorValue];
+  icon = [referenceCopy icon];
+  backgroundColorValue = [icon backgroundColorValue];
 
-  if (v9)
+  if (backgroundColorValue)
   {
-    v10 = [NSNumber numberWithInteger:v9];
+    v10 = [NSNumber numberWithInteger:backgroundColorValue];
     v39 = v10;
-    v9 = [NSArray arrayWithObjects:&v39 count:1];
+    backgroundColorValue = [NSArray arrayWithObjects:&v39 count:1];
   }
 
   v11 = +[VCVoiceShortcutClient standardClient];
-  v12 = [v3 icon];
-  v13 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v12 glyphCharacter]);
+  icon2 = [referenceCopy icon];
+  v13 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [icon2 glyphCharacter]);
   v38 = v13;
   v14 = [NSArray arrayWithObjects:&v38 count:1];
-  v15 = [v11 drawGlyphs:v14 atSize:v9 withBackgroundColorValues:0 error:{30.0, 30.0}];
+  v15 = [v11 drawGlyphs:v14 atSize:backgroundColorValue withBackgroundColorValues:0 error:{30.0, 30.0}];
 
   if ([v15 count])
   {
-    v16 = [v15 firstObject];
+    firstObject = [v15 firstObject];
 
     Mutable = CFDataCreateMutable(0, 0);
-    v18 = [UTTypePNG identifier];
+    identifier2 = [UTTypePNG identifier];
     v34 = 0;
     v35 = &v34;
     v36 = 0x2020000000;
@@ -97,7 +97,7 @@
     _Block_object_dispose(&v34, 8);
     if (v19)
     {
-      v21 = v19(Mutable, v18, 1, 0);
+      v21 = v19(Mutable, identifier2, 1, 0);
 
       v34 = 0;
       v35 = &v34;
@@ -115,7 +115,7 @@
       _Block_object_dispose(&v34, 8);
       if (v22)
       {
-        v22(v21, v16, 0);
+        v22(v21, firstObject, 0);
         v34 = 0;
         v35 = &v34;
         v36 = 0x2020000000;

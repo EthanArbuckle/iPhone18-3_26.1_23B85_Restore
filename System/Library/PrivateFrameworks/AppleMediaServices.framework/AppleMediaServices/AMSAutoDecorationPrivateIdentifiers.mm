@@ -1,6 +1,6 @@
 @interface AMSAutoDecorationPrivateIdentifiers
-+ (id)autoDecorationDictionaryForEvent:(id)a3 privateIdentifiers:(id)a4;
-- (AMSAutoDecorationPrivateIdentifiers)initWithBeginDate:(id)a3 identifiers:(id)a4;
++ (id)autoDecorationDictionaryForEvent:(id)event privateIdentifiers:(id)identifiers;
+- (AMSAutoDecorationPrivateIdentifiers)initWithBeginDate:(id)date identifiers:(id)identifiers;
 - (NSDate)beginDate;
 @end
 
@@ -12,7 +12,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3, v5);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
+  selfCopy = self;
   sub_192BE9778();
 
   v9 = sub_192F95C4C();
@@ -21,7 +21,7 @@
   return v9;
 }
 
-- (AMSAutoDecorationPrivateIdentifiers)initWithBeginDate:(id)a3 identifiers:(id)a4
+- (AMSAutoDecorationPrivateIdentifiers)initWithBeginDate:(id)date identifiers:(id)identifiers
 {
   v4 = sub_192F95CFC();
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
@@ -31,12 +31,12 @@
   return sub_192BE9788(v7, v8);
 }
 
-+ (id)autoDecorationDictionaryForEvent:(id)a3 privateIdentifiers:(id)a4
++ (id)autoDecorationDictionaryForEvent:(id)event privateIdentifiers:(id)identifiers
 {
-  type metadata accessor for AMSAutoDecorationPrivateIdentifiers(a1);
+  type metadata accessor for AMSAutoDecorationPrivateIdentifiers(self);
   v5 = sub_192F96B0C();
-  v6 = a3;
-  v7 = sub_192BE98E0(v6, v5);
+  eventCopy = event;
+  v7 = sub_192BE98E0(eventCopy, v5);
 
   if (v7)
   {

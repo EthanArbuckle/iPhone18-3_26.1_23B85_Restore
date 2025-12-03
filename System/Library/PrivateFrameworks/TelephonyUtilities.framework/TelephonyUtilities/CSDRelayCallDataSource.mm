@@ -1,35 +1,35 @@
 @interface CSDRelayCallDataSource
-- (CSDRelayCallDataSource)initWithCallStateController:(id)a3 queue:(id)a4;
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileDisconnectingActiveCalls:(id)a5;
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileDisconnectingHeldCalls:(id)a5 andHoldingCalls:(id)a6;
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileHoldingActiveCalls:(id)a5;
+- (CSDRelayCallDataSource)initWithCallStateController:(id)controller queue:(id)queue;
+- (void)answerCall:(id)call withRequest:(id)request whileDisconnectingActiveCalls:(id)calls;
+- (void)answerCall:(id)call withRequest:(id)request whileDisconnectingHeldCalls:(id)calls andHoldingCalls:(id)holdingCalls;
+- (void)answerCall:(id)call withRequest:(id)request whileHoldingActiveCalls:(id)calls;
 - (void)dealloc;
-- (void)disconnectAllCalls:(id)a3 withReason:(int)a4;
-- (void)disconnectCall:(id)a3 whileUngroupingCall:(id)a4;
-- (void)disconnectCalls:(id)a3 whileHoldingCalls:(id)a4 andUnholdingCalls:(id)a5 andUngroupingCalls:(id)a6;
-- (void)groupCalls:(id)a3 withCalls:(id)a4;
-- (void)handleLocalFrequencyChanged:(id)a3;
-- (void)handleLocalMeterLevelChanged:(id)a3;
-- (void)handleMutedChanged:(id)a3;
-- (void)handleRemoteFrequencyChanged:(id)a3;
-- (void)handleRemoteMeterLevelChanged:(id)a3;
-- (void)handleSendingAudioChanged:(id)a3;
-- (void)holdCalls:(id)a3 whileUnholdingCalls:(id)a4;
-- (void)ungroupCall:(id)a3 fromOtherCallsInGroup:(id)a4;
+- (void)disconnectAllCalls:(id)calls withReason:(int)reason;
+- (void)disconnectCall:(id)call whileUngroupingCall:(id)ungroupingCall;
+- (void)disconnectCalls:(id)calls whileHoldingCalls:(id)holdingCalls andUnholdingCalls:(id)unholdingCalls andUngroupingCalls:(id)ungroupingCalls;
+- (void)groupCalls:(id)calls withCalls:(id)withCalls;
+- (void)handleLocalFrequencyChanged:(id)changed;
+- (void)handleLocalMeterLevelChanged:(id)changed;
+- (void)handleMutedChanged:(id)changed;
+- (void)handleRemoteFrequencyChanged:(id)changed;
+- (void)handleRemoteMeterLevelChanged:(id)changed;
+- (void)handleSendingAudioChanged:(id)changed;
+- (void)holdCalls:(id)calls whileUnholdingCalls:(id)unholdingCalls;
+- (void)ungroupCall:(id)call fromOtherCallsInGroup:(id)group;
 @end
 
 @implementation CSDRelayCallDataSource
 
-- (CSDRelayCallDataSource)initWithCallStateController:(id)a3 queue:(id)a4
+- (CSDRelayCallDataSource)initWithCallStateController:(id)controller queue:(id)queue
 {
-  v6 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CSDRelayCallDataSource;
-  v7 = [(CSDCallDataSource *)&v17 initWithCallStateController:v6 queue:a4];
+  v7 = [(CSDCallDataSource *)&v17 initWithCallStateController:controllerCopy queue:queue];
   if (v7)
   {
-    v8 = [v6 queue];
-    v9 = [CSDRelayConferenceInterface sharedInstanceWithQueue:v8];
+    queue = [controllerCopy queue];
+    v9 = [CSDRelayConferenceInterface sharedInstanceWithQueue:queue];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v7 selector:"handleLocalFrequencyChanged:" name:@"CSDRelayConferenceLocalFrequencyChangedNotification" object:0];
@@ -63,79 +63,79 @@
   [(CSDRelayCallDataSource *)&v4 dealloc];
 }
 
-- (void)holdCalls:(id)a3 whileUnholdingCalls:(id)a4
+- (void)holdCalls:(id)calls whileUnholdingCalls:(id)unholdingCalls
 {
-  v6 = a3;
-  v7 = a4;
+  callsCopy = calls;
+  unholdingCallsCopy = unholdingCalls;
   v8 = sub_100004778();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = callsCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = unholdingCallsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked to hold relay calls %@ while unholding relay calls %@", &v11, 0x16u);
   }
 
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  if ([callsCopy count] && objc_msgSend(unholdingCallsCopy, "count"))
   {
-    v9 = [(CSDCallDataSource *)self callStateController];
-    v10 = [v9 relayMessagingController];
-    [v10 sendSwapCallsMessageToHost];
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    relayMessagingController = [callStateController relayMessagingController];
+    [relayMessagingController sendSwapCallsMessageToHost];
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v6 count])
+  if ([callsCopy count])
   {
-    v9 = [v6 firstObject];
-    [v9 hold];
+    callStateController = [callsCopy firstObject];
+    [callStateController hold];
     goto LABEL_10;
   }
 
-  if ([v7 count])
+  if ([unholdingCallsCopy count])
   {
-    v9 = [v7 firstObject];
-    [v9 unhold];
+    callStateController = [unholdingCallsCopy firstObject];
+    [callStateController unhold];
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileDisconnectingActiveCalls:(id)a5
+- (void)answerCall:(id)call withRequest:(id)request whileDisconnectingActiveCalls:(id)calls
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  callCopy = call;
+  requestCopy = request;
+  callsCopy = calls;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v47 = v8;
+    v47 = callCopy;
     v48 = 2112;
-    v49 = v10;
+    v49 = callsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Asked to answer relay call %@ while disconnecting active relay calls %@", buf, 0x16u);
   }
 
-  if ([v8 canBeAnsweredWithRequest:v9])
+  if ([callCopy canBeAnsweredWithRequest:requestCopy])
   {
-    v12 = [(CSDCallDataSource *)self callStateController];
-    v13 = [v12 callController];
-    if ([v10 count])
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    callController = [callStateController callController];
+    if ([callsCopy count])
     {
-      v14 = [v12 relayMessagingController];
-      [v14 sendEndActiveAndAnswerCallMessageToHostForCall:v8];
+      relayMessagingController = [callStateController relayMessagingController];
+      [relayMessagingController sendEndActiveAndAnswerCallMessageToHostForCall:callCopy];
 
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v15 = [v13 callContainer];
-      v16 = [v15 callsHostedElsewhere];
+      callContainer = [callController callContainer];
+      callsHostedElsewhere = [callContainer callsHostedElsewhere];
 
-      v17 = [v16 countByEnumeratingWithState:&v39 objects:v45 count:16];
+      v17 = [callsHostedElsewhere countByEnumeratingWithState:&v39 objects:v45 count:16];
       if (v17)
       {
         v18 = v17;
@@ -146,7 +146,7 @@ LABEL_11:
           {
             if (*v40 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(callsHostedElsewhere);
             }
 
             if ([*(*(&v39 + 1) + 8 * i) isOnHold])
@@ -156,7 +156,7 @@ LABEL_11:
               v38 = 0u;
               v35 = 0u;
               v36 = 0u;
-              v26 = v10;
+              v26 = callsCopy;
               v27 = [v26 countByEnumeratingWithState:&v35 objects:v44 count:16];
               if (v27)
               {
@@ -180,12 +180,12 @@ LABEL_11:
                 while (v28);
               }
 
-              [v8 answerWithRequest:v9];
+              [callCopy answerWithRequest:requestCopy];
               goto LABEL_33;
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v39 objects:v45 count:16];
+          v18 = [callsHostedElsewhere countByEnumeratingWithState:&v39 objects:v45 count:16];
           if (v18)
           {
             continue;
@@ -195,13 +195,13 @@ LABEL_11:
         }
       }
 
-      [v8 answerWithRequest:v9];
+      [callCopy answerWithRequest:requestCopy];
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v21 = v10;
-      v22 = [v21 countByEnumeratingWithState:&v31 objects:v43 count:16];
+      relayMessagingController2 = callsCopy;
+      v22 = [relayMessagingController2 countByEnumeratingWithState:&v31 objects:v43 count:16];
       if (v22)
       {
         v23 = v22;
@@ -212,13 +212,13 @@ LABEL_11:
           {
             if (*v32 != v24)
             {
-              objc_enumerationMutation(v21);
+              objc_enumerationMutation(relayMessagingController2);
             }
 
             [*(*(&v31 + 1) + 8 * k) setLocallyDisconnectedWithReasonIfNone:{0, v31}];
           }
 
-          v23 = [v21 countByEnumeratingWithState:&v31 objects:v43 count:16];
+          v23 = [relayMessagingController2 countByEnumeratingWithState:&v31 objects:v43 count:16];
         }
 
         while (v23);
@@ -227,9 +227,9 @@ LABEL_11:
 
     else
     {
-      [v8 answerWithRequest:v9];
-      v21 = [v12 relayMessagingController];
-      [v21 sendAnswerCallMessageToHostForCall:v8];
+      [callCopy answerWithRequest:requestCopy];
+      relayMessagingController2 = [callStateController relayMessagingController];
+      [relayMessagingController2 sendAnswerCallMessageToHostForCall:callCopy];
     }
 
 LABEL_33:
@@ -237,41 +237,41 @@ LABEL_33:
 
   else
   {
-    v12 = sub_100004778();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    callStateController = sub_100004778();
+    if (os_log_type_enabled(callStateController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v8;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
+      v47 = callCopy;
+      _os_log_impl(&_mh_execute_header, callStateController, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileDisconnectingHeldCalls:(id)a5 andHoldingCalls:(id)a6
+- (void)answerCall:(id)call withRequest:(id)request whileDisconnectingHeldCalls:(id)calls andHoldingCalls:(id)holdingCalls
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  callCopy = call;
+  requestCopy = request;
+  callsCopy = calls;
+  holdingCallsCopy = holdingCalls;
   v14 = sub_100004778();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v28 = v10;
+    v28 = callCopy;
     v29 = 2112;
-    v30 = v12;
+    v30 = callsCopy;
     v31 = 2112;
-    v32 = v13;
+    v32 = holdingCallsCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Asked to answer relay call %@ while disconnecting held relay calls %@ and holding relay calls %@", buf, 0x20u);
   }
 
-  if ([v10 canBeAnsweredWithRequest:v11])
+  if ([callCopy canBeAnsweredWithRequest:requestCopy])
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v12;
+    v15 = callsCopy;
     v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v16)
     {
@@ -298,46 +298,46 @@ LABEL_33:
       while (v17);
     }
 
-    [v10 answerWithRequest:v11];
-    v20 = [(CSDCallDataSource *)self callStateController];
-    v21 = [v20 relayMessagingController];
-    [v21 sendEndHeldAndAnswerCallMessageToHostForCall:v10];
+    [callCopy answerWithRequest:requestCopy];
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    relayMessagingController = [callStateController relayMessagingController];
+    [relayMessagingController sendEndHeldAndAnswerCallMessageToHostForCall:callCopy];
   }
 
   else
   {
-    v20 = sub_100004778();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    callStateController = sub_100004778();
+    if (os_log_type_enabled(callStateController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v10;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
+      v28 = callCopy;
+      _os_log_impl(&_mh_execute_header, callStateController, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)answerCall:(id)a3 withRequest:(id)a4 whileHoldingActiveCalls:(id)a5
+- (void)answerCall:(id)call withRequest:(id)request whileHoldingActiveCalls:(id)calls
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  callCopy = call;
+  requestCopy = request;
+  callsCopy = calls;
   v11 = sub_100004778();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v25 = v8;
+    v25 = callCopy;
     v26 = 2112;
-    v27 = v10;
+    v27 = callsCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Asked to answer relay call %@ while holding relay calls %@", buf, 0x16u);
   }
 
-  if ([v8 canBeAnsweredWithRequest:v9])
+  if ([callCopy canBeAnsweredWithRequest:requestCopy])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = v10;
+    v12 = callsCopy;
     v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
@@ -364,47 +364,47 @@ LABEL_33:
       while (v14);
     }
 
-    [v8 answerWithRequest:v9];
-    v17 = [(CSDCallDataSource *)self callStateController];
-    v18 = [v17 relayMessagingController];
-    [v18 sendHoldActiveAndAnswerCallMessageToHostForCall:v8];
+    [callCopy answerWithRequest:requestCopy];
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    relayMessagingController = [callStateController relayMessagingController];
+    [relayMessagingController sendHoldActiveAndAnswerCallMessageToHostForCall:callCopy];
   }
 
   else
   {
-    v17 = sub_100004778();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    callStateController = sub_100004778();
+    if (os_log_type_enabled(callStateController, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v25 = v8;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
+      v25 = callCopy;
+      _os_log_impl(&_mh_execute_header, callStateController, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to answer call because canBeAnswered is NO: %@", buf, 0xCu);
     }
   }
 }
 
-- (void)groupCalls:(id)a3 withCalls:(id)a4
+- (void)groupCalls:(id)calls withCalls:(id)withCalls
 {
-  v5 = a3;
-  v6 = a4;
+  callsCopy = calls;
+  withCallsCopy = withCalls;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v5;
+    v31 = callsCopy;
     v32 = 2112;
-    v33 = v6;
+    v33 = withCallsCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Asked to group relay calls %@ with relay calls %@", buf, 0x16u);
   }
 
-  v8 = [v5 firstObject];
-  v9 = [v6 firstObject];
-  [v8 groupWithOtherCall:v9];
+  firstObject = [callsCopy firstObject];
+  firstObject2 = [withCallsCopy firstObject];
+  [firstObject groupWithOtherCall:firstObject2];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v5;
+  v10 = callsCopy;
   v11 = [v10 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v11)
   {
@@ -435,7 +435,7 @@ LABEL_33:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v15 = v6;
+  v15 = withCallsCopy;
   v16 = [v15 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v16)
   {
@@ -463,33 +463,33 @@ LABEL_33:
   }
 }
 
-- (void)ungroupCall:(id)a3 fromOtherCallsInGroup:(id)a4
+- (void)ungroupCall:(id)call fromOtherCallsInGroup:(id)group
 {
-  v5 = a3;
-  v6 = a4;
+  callCopy = call;
+  groupCopy = group;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v5;
+    v20 = callCopy;
     v21 = 2112;
-    v22 = v6;
+    v22 = groupCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Asked to ungroup relay call %@ from other relay calls in group %@", buf, 0x16u);
   }
 
-  [v5 ungroup];
-  [v5 setCallStatus:1];
-  if ([v6 count] == 1)
+  [callCopy ungroup];
+  [callCopy setCallStatus:1];
+  if ([groupCopy count] == 1)
   {
-    v8 = [v6 firstObject];
-    [v8 setCallGroupUUID:0];
+    firstObject = [groupCopy firstObject];
+    [firstObject setCallGroupUUID:0];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v9 = v6;
+  v9 = groupCopy;
   v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v10)
   {
@@ -517,32 +517,32 @@ LABEL_33:
   }
 }
 
-- (void)disconnectCall:(id)a3 whileUngroupingCall:(id)a4
+- (void)disconnectCall:(id)call whileUngroupingCall:(id)ungroupingCall
 {
-  v5 = a3;
-  v6 = a4;
+  callCopy = call;
+  ungroupingCallCopy = ungroupingCall;
   v7 = sub_100004778();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = callCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = ungroupingCallCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Asked to disconnect relay call %@ while ungrouping relay call %@", &v8, 0x16u);
   }
 
-  [v5 disconnect];
-  [v6 setCallGroupUUID:0];
+  [callCopy disconnect];
+  [ungroupingCallCopy setCallGroupUUID:0];
 }
 
-- (void)disconnectAllCalls:(id)a3 withReason:(int)a4
+- (void)disconnectAllCalls:(id)calls withReason:(int)reason
 {
-  v5 = a3;
+  callsCopy = calls;
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = callsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Asked to disconnect relay calls %@", buf, 0xCu);
   }
 
@@ -550,7 +550,7 @@ LABEL_33:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = v5;
+  v7 = callsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -579,30 +579,30 @@ LABEL_33:
 
   if ([v7 count])
   {
-    v12 = [(CSDCallDataSource *)self callStateController];
-    v13 = [v12 relayMessagingController];
-    v14 = [v7 firstObject];
-    [v13 sendDisconnectAllCallsMessageToHostForDisconnectedCall:v14];
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    relayMessagingController = [callStateController relayMessagingController];
+    firstObject = [v7 firstObject];
+    [relayMessagingController sendDisconnectAllCallsMessageToHostForDisconnectedCall:firstObject];
   }
 }
 
-- (void)disconnectCalls:(id)a3 whileHoldingCalls:(id)a4 andUnholdingCalls:(id)a5 andUngroupingCalls:(id)a6
+- (void)disconnectCalls:(id)calls whileHoldingCalls:(id)holdingCalls andUnholdingCalls:(id)unholdingCalls andUngroupingCalls:(id)ungroupingCalls
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  callsCopy = calls;
+  holdingCallsCopy = holdingCalls;
+  unholdingCallsCopy = unholdingCalls;
+  ungroupingCallsCopy = ungroupingCalls;
   v14 = sub_100004778();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v60 = v10;
+    v60 = callsCopy;
     v61 = 2112;
-    v62 = v11;
+    v62 = holdingCallsCopy;
     v63 = 2112;
-    v64 = v12;
+    v64 = unholdingCallsCopy;
     v65 = 2112;
-    v66 = v13;
+    v66 = ungroupingCallsCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Asked to disconnect relay calls %@ while holding relay calls %@ and unholding relay calls %@ and ungrouping calls %@", buf, 0x2Au);
   }
 
@@ -610,7 +610,7 @@ LABEL_33:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v15 = v10;
+  v15 = callsCopy;
   v16 = [v15 countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v16)
   {
@@ -641,7 +641,7 @@ LABEL_33:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v20 = v11;
+  v20 = holdingCallsCopy;
   v21 = [v20 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v21)
   {
@@ -672,7 +672,7 @@ LABEL_33:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v25 = v12;
+  v25 = unholdingCallsCopy;
   v26 = [v25 countByEnumeratingWithState:&v43 objects:v56 count:16];
   if (v26)
   {
@@ -703,7 +703,7 @@ LABEL_33:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v30 = v13;
+  v30 = ungroupingCallsCopy;
   v31 = [v30 countByEnumeratingWithState:&v39 objects:v55 count:16];
   if (v31)
   {
@@ -733,90 +733,90 @@ LABEL_33:
   v35 = [v25 count];
   if ([v15 count])
   {
-    v36 = [(CSDCallDataSource *)self callStateController];
-    v37 = [v36 relayMessagingController];
-    v38 = [v15 firstObject];
-    [v37 sendDisconnectCurrentCallMessageToHostForDisconnectedCall:v38 activateHeld:v35 != 0];
+    callStateController = [(CSDCallDataSource *)self callStateController];
+    relayMessagingController = [callStateController relayMessagingController];
+    firstObject = [v15 firstObject];
+    [relayMessagingController sendDisconnectCurrentCallMessageToHostForDisconnectedCall:firstObject activateHeld:v35 != 0];
   }
 }
 
-- (void)handleLocalFrequencyChanged:(id)a3
+- (void)handleLocalFrequencyChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [v4 object];
+  object = [changedCopy object];
 
-  v6 = [(CSDCallDataSource *)self callStateController];
-  v7 = [v6 callController];
-  v8 = [v7 callContainer];
-  v9 = [v8 callsHostedElsewhere];
-  [(CSDCallDataSource *)self handleFrequencyDataChanged:v10 inDirection:2 forCalls:v9];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
+  [(CSDCallDataSource *)self handleFrequencyDataChanged:object inDirection:2 forCalls:callsHostedElsewhere];
 }
 
-- (void)handleRemoteFrequencyChanged:(id)a3
+- (void)handleRemoteFrequencyChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [v4 object];
+  object = [changedCopy object];
 
-  v6 = [(CSDCallDataSource *)self callStateController];
-  v7 = [v6 callController];
-  v8 = [v7 callContainer];
-  v9 = [v8 callsHostedElsewhere];
-  [(CSDCallDataSource *)self handleFrequencyDataChanged:v10 inDirection:1 forCalls:v9];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
+  [(CSDCallDataSource *)self handleFrequencyDataChanged:object inDirection:1 forCalls:callsHostedElsewhere];
 }
 
-- (void)handleLocalMeterLevelChanged:(id)a3
+- (void)handleLocalMeterLevelChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v13 = [v4 object];
+  object = [changedCopy object];
 
-  [v13 floatValue];
+  [object floatValue];
   v7 = v6;
-  v8 = [(CSDCallDataSource *)self callStateController];
-  v9 = [v8 callController];
-  v10 = [v9 callContainer];
-  v11 = [v10 callsHostedElsewhere];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
   LODWORD(v12) = v7;
-  [(CSDCallDataSource *)self handleMeterLevelChanged:2 inDirection:v11 forCalls:v12];
+  [(CSDCallDataSource *)self handleMeterLevelChanged:2 inDirection:callsHostedElsewhere forCalls:v12];
 }
 
-- (void)handleRemoteMeterLevelChanged:(id)a3
+- (void)handleRemoteMeterLevelChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v13 = [v4 object];
+  object = [changedCopy object];
 
-  [v13 floatValue];
+  [object floatValue];
   v7 = v6;
-  v8 = [(CSDCallDataSource *)self callStateController];
-  v9 = [v8 callController];
-  v10 = [v9 callContainer];
-  v11 = [v10 callsHostedElsewhere];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
   LODWORD(v12) = v7;
-  [(CSDCallDataSource *)self handleMeterLevelChanged:1 inDirection:v11 forCalls:v12];
+  [(CSDCallDataSource *)self handleMeterLevelChanged:1 inDirection:callsHostedElsewhere forCalls:v12];
 }
 
-- (void)handleMutedChanged:(id)a3
+- (void)handleMutedChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received notification: %@", buf, 0xCu);
   }
 
@@ -824,12 +824,12 @@ LABEL_33:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CSDCallDataSource *)self callStateController];
-  v8 = [v7 callController];
-  v9 = [v8 callContainer];
-  v10 = [v9 callsHostedElsewhere];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
 
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v11 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -841,7 +841,7 @@ LABEL_33:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(callsHostedElsewhere);
         }
 
         [*(*(&v15 + 1) + 8 * v14) propertiesChanged];
@@ -849,24 +849,24 @@ LABEL_33:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)handleSendingAudioChanged:(id)a3
+- (void)handleSendingAudioChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDCallDataSource *)self queue];
-  dispatch_assert_queue_V2(v5);
+  changedCopy = changed;
+  queue = [(CSDCallDataSource *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = sub_100004778();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = changedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received notification: %@", buf, 0xCu);
   }
 
@@ -874,12 +874,12 @@ LABEL_33:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(CSDCallDataSource *)self callStateController];
-  v8 = [v7 callController];
-  v9 = [v8 callContainer];
-  v10 = [v9 callsHostedElsewhere];
+  callStateController = [(CSDCallDataSource *)self callStateController];
+  callController = [callStateController callController];
+  callContainer = [callController callContainer];
+  callsHostedElsewhere = [callContainer callsHostedElsewhere];
 
-  v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v11 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v11)
   {
     v12 = v11;
@@ -891,7 +891,7 @@ LABEL_33:
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(callsHostedElsewhere);
         }
 
         [*(*(&v15 + 1) + 8 * v14) propertiesChanged];
@@ -899,7 +899,7 @@ LABEL_33:
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [callsHostedElsewhere countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);

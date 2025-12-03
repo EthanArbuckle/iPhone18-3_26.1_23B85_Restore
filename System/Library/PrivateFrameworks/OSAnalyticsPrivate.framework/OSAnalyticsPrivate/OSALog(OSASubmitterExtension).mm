@@ -6,10 +6,10 @@
 
 - (id)getFilenames
 {
-  v1 = [a1 filepath];
-  v2 = [v1 lastPathComponent];
+  filepath = [self filepath];
+  lastPathComponent = [filepath lastPathComponent];
 
-  return v2;
+  return lastPathComponent;
 }
 
 @end

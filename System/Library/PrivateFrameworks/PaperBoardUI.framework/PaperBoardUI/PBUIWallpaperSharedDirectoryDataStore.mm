@@ -1,16 +1,16 @@
 @interface PBUIWallpaperSharedDirectoryDataStore
-- (PBUIWallpaperSharedDirectoryDataStore)initWithDirectoryURL:(id)a3;
+- (PBUIWallpaperSharedDirectoryDataStore)initWithDirectoryURL:(id)l;
 - (id)directoryCreationAttributes;
-- (void)didWriteFileToURL:(id)a3;
+- (void)didWriteFileToURL:(id)l;
 @end
 
 @implementation PBUIWallpaperSharedDirectoryDataStore
 
-- (PBUIWallpaperSharedDirectoryDataStore)initWithDirectoryURL:(id)a3
+- (PBUIWallpaperSharedDirectoryDataStore)initWithDirectoryURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = PBUIWallpaperSharedDirectoryDataStore;
-  v3 = [(PBUIWallpaperDirectoryDataStore *)&v6 initWithDirectoryURL:a3];
+  v3 = [(PBUIWallpaperDirectoryDataStore *)&v6 initWithDirectoryURL:l];
   v4 = v3;
   if (v3)
   {
@@ -31,22 +31,22 @@
   return v3;
 }
 
-- (void)didWriteFileToURL:(id)a3
+- (void)didWriteFileToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = PBUIWallpaperSharedDirectoryDataStore;
-  [(PBUIWallpaperDirectoryDataStore *)&v14 didWriteFileToURL:v4];
+  [(PBUIWallpaperDirectoryDataStore *)&v14 didWriteFileToURL:lCopy];
   v13 = 0;
   v5 = *MEMORY[0x277CBE830];
-  v6 = [v4 getResourceValue:&v13 forKey:*MEMORY[0x277CBE830] error:0];
+  v6 = [lCopy getResourceValue:&v13 forKey:*MEMORY[0x277CBE830] error:0];
   v7 = v13;
   v8 = v7;
   if (v6)
   {
     CFFileSecuritySetMode(v7, 0x1B6u);
     v12 = 0;
-    v9 = [v4 setResourceValue:v8 forKey:v5 error:&v12];
+    v9 = [lCopy setResourceValue:v8 forKey:v5 error:&v12];
     v10 = v12;
     if ((v9 & 1) == 0)
     {

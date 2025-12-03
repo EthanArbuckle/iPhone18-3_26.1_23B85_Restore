@@ -1,42 +1,42 @@
 @interface UIOpenURLContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)URLOptionsDictionary;
-- (UIOpenURLContext)initWithURL:(id)a3 options:(id)a4;
+- (UIOpenURLContext)initWithURL:(id)l options:(id)options;
 - (id)optionsDictionary;
 @end
 
 @implementation UIOpenURLContext
 
-- (UIOpenURLContext)initWithURL:(id)a3 options:(id)a4
+- (UIOpenURLContext)initWithURL:(id)l options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = UIOpenURLContext;
   v8 = [(UIOpenURLContext *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     URL = v8->_URL;
     v8->_URL = v9;
 
-    objc_storeStrong(&v8->_options, a4);
+    objc_storeStrong(&v8->_options, options);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
     goto LABEL_13;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   v7 = objc_opt_class();
   if (![v7 isEqual:objc_opt_class()])
   {
@@ -81,16 +81,16 @@ LABEL_13:
 
 - (NSDictionary)URLOptionsDictionary
 {
-  v2 = [(UIOpenURLContext *)self options];
-  v3 = _dictionaryFromUISceneOpenURLOptions(v2);
+  options = [(UIOpenURLContext *)self options];
+  v3 = _dictionaryFromUISceneOpenURLOptions(options);
 
   return v3;
 }
 
 - (id)optionsDictionary
 {
-  v2 = [(UIOpenURLContext *)self options];
-  v3 = _dictionaryFromUISceneOpenURLOptions(v2);
+  options = [(UIOpenURLContext *)self options];
+  v3 = _dictionaryFromUISceneOpenURLOptions(options);
 
   return v3;
 }

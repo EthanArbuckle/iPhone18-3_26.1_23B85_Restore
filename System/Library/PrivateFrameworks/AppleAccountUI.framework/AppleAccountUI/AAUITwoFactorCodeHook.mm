@@ -1,28 +1,28 @@
 @interface AAUITwoFactorCodeHook
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (void)_generateLoginCode:(id)a3;
-- (void)generateLoginCodeWithPresenter:(id)a3 completion:(id)a4;
+- (void)_generateLoginCode:(id)code;
+- (void)generateLoginCodeWithPresenter:(id)presenter completion:(id)completion;
 @end
 
 @implementation AAUITwoFactorCodeHook
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"code:generate"];
+  name = [element name];
+  v4 = [name isEqualToString:@"code:generate"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -37,18 +37,18 @@
   return v7;
 }
 
-- (void)_generateLoginCode:(id)a3
+- (void)_generateLoginCode:(id)code
 {
-  v4 = a3;
-  v6 = [(AAUITwoFactorCodeHook *)self delegate];
-  v5 = [v6 presentationContextForHook:self];
-  [(AAUITwoFactorCodeHook *)self generateLoginCodeWithPresenter:v5 completion:v4];
+  codeCopy = code;
+  delegate = [(AAUITwoFactorCodeHook *)self delegate];
+  v5 = [delegate presentationContextForHook:self];
+  [(AAUITwoFactorCodeHook *)self generateLoginCodeWithPresenter:v5 completion:codeCopy];
 }
 
-- (void)generateLoginCodeWithPresenter:(id)a3 completion:(id)a4
+- (void)generateLoginCodeWithPresenter:(id)presenter completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -62,10 +62,10 @@
   v12[2] = __67__AAUITwoFactorCodeHook_generateLoginCodeWithPresenter_completion___block_invoke;
   v12[3] = &unk_1E820CED8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = presenterCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = presenterCopy;
   [v9 generateLoginCodeWithCompletion:v12];
 }
 

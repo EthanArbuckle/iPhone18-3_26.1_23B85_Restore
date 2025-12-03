@@ -7,8 +7,8 @@
 
 - (id)contentsImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 untintedImageNamed:@"Home"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v3 = [foregroundStyle untintedImageNamed:@"Home"];
   v4 = [_UILegibilityImageSet imageFromImage:v3 withShadowImage:0];
 
   return v4;
@@ -16,8 +16,8 @@
 
 - (id)highlightImage
 {
-  v2 = [(UIStatusBarItemView *)self foregroundStyle];
-  v3 = [v2 untintedImageNamed:@"Home_Highlight"];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v3 = [foregroundStyle untintedImageNamed:@"Home_Highlight"];
   v4 = [_UILegibilityImageSet imageFromImage:v3 withShadowImage:0];
 
   return v4;

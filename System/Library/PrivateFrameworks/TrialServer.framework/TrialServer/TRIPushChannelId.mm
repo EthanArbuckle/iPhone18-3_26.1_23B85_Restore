@@ -1,21 +1,21 @@
 @interface TRIPushChannelId
-+ (BOOL)_writeToByte:(char *)a3 fromHexByteString:(id)a4;
-+ (id)_base64ChannelIdForIdentifier:(id)a3 populationType:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPushChannelId:(id)a3;
++ (BOOL)_writeToByte:(char *)byte fromHexByteString:(id)string;
++ (id)_base64ChannelIdForIdentifier:(id)identifier populationType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPushChannelId:(id)id;
 - (NSString)identifier;
-- (TRIPushChannelId)initWithIdentifier:(id)a3 type:(unint64_t)a4;
-- (TRIPushChannelId)initWithRolloutDeployment:(id)a3;
+- (TRIPushChannelId)initWithIdentifier:(id)identifier type:(unint64_t)type;
+- (TRIPushChannelId)initWithRolloutDeployment:(id)deployment;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIPushChannelId
 
-- (TRIPushChannelId)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (TRIPushChannelId)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = TRIPushChannelId;
   v7 = [(TRIPushChannelId *)&v17 init];
@@ -24,25 +24,25 @@
     goto LABEL_10;
   }
 
-  if ([v6 hasPrefix:@"TRI-TEST-"])
+  if ([identifierCopy hasPrefix:@"TRI-TEST-"])
   {
     v8 = TRILogCategory_Server();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = identifierCopy;
       _os_log_impl(&dword_26F567000, v8, OS_LOG_TYPE_DEFAULT, "Channel generation being skipped for test identifier: %@", buf, 0xCu);
     }
 
     goto LABEL_6;
   }
 
-  v10 = [v6 copy];
+  v10 = [identifierCopy copy];
   rawIdentifier = v7->_rawIdentifier;
   v7->_rawIdentifier = v10;
 
-  v7->_type = a4;
-  if (a4 != 1)
+  v7->_type = type;
+  if (type != 1)
   {
 LABEL_10:
     v9 = v7;
@@ -69,10 +69,10 @@ LABEL_11:
   return v9;
 }
 
-- (TRIPushChannelId)initWithRolloutDeployment:(id)a3
+- (TRIPushChannelId)initWithRolloutDeployment:(id)deployment
 {
-  v4 = [a3 rolloutId];
-  v5 = [(TRIPushChannelId *)self initWithIdentifier:v4 type:1];
+  rolloutId = [deployment rolloutId];
+  v5 = [(TRIPushChannelId *)self initWithIdentifier:rolloutId type:1];
 
   return v5;
 }
@@ -88,26 +88,26 @@ LABEL_11:
   return *(&self->super.isa + v2);
 }
 
-+ (id)_base64ChannelIdForIdentifier:(id)a3 populationType:(int)a4
++ (id)_base64ChannelIdForIdentifier:(id)identifier populationType:(int)type
 {
-  v4 = a4;
+  typeCopy = type;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  if (!v7)
+  identifierCopy = identifier;
+  uTF8String = [identifierCopy UTF8String];
+  if (!uTF8String)
   {
     v14 = 0;
     goto LABEL_17;
   }
 
-  v8 = strlen(v7);
+  v8 = strlen(uTF8String);
   if (v8)
   {
     v9 = TRILogCategory_Server();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v19 = v6;
+      v19 = identifierCopy;
       _os_log_error_impl(&dword_26F567000, v9, OS_LOG_TYPE_ERROR, "Received an unexpected odd length identifier: %{public}@", buf, 0xCu);
     }
   }
@@ -120,7 +120,7 @@ LABEL_11:
       if (v8 < 2)
       {
 LABEL_8:
-        v17 = v4;
+        v17 = typeCopy;
         [v9 appendBytes:&v17 length:1];
         if ([v9 length]< 0x11)
         {
@@ -132,7 +132,7 @@ LABEL_8:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v19 = v6;
+          v19 = identifierCopy;
           _os_log_error_impl(&dword_26F567000, v13, OS_LOG_TYPE_ERROR, "Unexpectedly long channel id for identifier %{public}@", buf, 0xCu);
         }
       }
@@ -142,9 +142,9 @@ LABEL_8:
         v10 = 0;
         while (1)
         {
-          v11 = [v6 substringWithRange:{v10, 2}];
+          v11 = [identifierCopy substringWithRange:{v10, 2}];
           buf[0] = 0;
-          if (![a1 _writeToByte:buf fromHexByteString:v11])
+          if (![self _writeToByte:buf fromHexByteString:v11])
           {
             break;
           }
@@ -171,19 +171,19 @@ LABEL_17:
   return v14;
 }
 
-+ (BOOL)_writeToByte:(char *)a3 fromHexByteString:(id)a4
++ (BOOL)_writeToByte:(char *)byte fromHexByteString:(id)string
 {
-  v7 = a4;
-  if ([v7 length] != 2)
+  stringCopy = string;
+  if ([stringCopy length] != 2)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"TRIPushChannelId.m" lineNumber:117 description:@"Unexpected byte string length"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPushChannelId.m" lineNumber:117 description:@"Unexpected byte string length"];
   }
 
   v11 = 0;
-  if ([MEMORY[0x277D73748] convertFromString:v7 usingBase:16 toI64:&v11] && v11 <= 0xFF)
+  if ([MEMORY[0x277D73748] convertFromString:stringCopy usingBase:16 toI64:&v11] && v11 <= 0xFF)
   {
-    *a3 = v11;
+    *byte = v11;
     v8 = 1;
   }
 
@@ -202,32 +202,32 @@ LABEL_17:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIPushChannelId *)self isEqualToPushChannelId:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIPushChannelId *)self isEqualToPushChannelId:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPushChannelId:(id)a3
+- (BOOL)isEqualToPushChannelId:(id)id
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(TRIPushChannelId *)self type])
+  idCopy = id;
+  type = [idCopy type];
+  if (type == [(TRIPushChannelId *)self type])
   {
-    v6 = [v4 identifier];
-    v7 = [(TRIPushChannelId *)self identifier];
-    v8 = [v6 isEqual:v7];
+    identifier = [idCopy identifier];
+    identifier2 = [(TRIPushChannelId *)self identifier];
+    v8 = [identifier isEqual:identifier2];
   }
 
   else
@@ -240,8 +240,8 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v2 = [(TRIPushChannelId *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(TRIPushChannelId *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }

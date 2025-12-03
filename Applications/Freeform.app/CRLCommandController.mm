@@ -13,54 +13,54 @@
 - (int64_t)redoCount;
 - (int64_t)undoCount;
 - (void)_stepWatermarkContextIfNecessary;
-- (void)closeGroupWithSelectionBehavior:(id)a3;
+- (void)closeGroupWithSelectionBehavior:(id)behavior;
 - (void)destroyOutermostCommandGroupOnClose;
 - (void)enableProgressiveEnqueuingInCurrentGroup;
 - (void)enableRealTimeSyncProgressiveEnqueuingInCurrentGroup;
 - (void)enableRealTimeSyncProgressiveEnqueuingWithSimultaneousRealtimeIncomingInCurrentGroup;
-- (void)enqueueCommand:(id)a3 withSelectionBehavior:(id)a4;
-- (void)openGroupWithSelectionBehavior:(id)a3;
-- (void)performBlockOnMainThreadWhenSafeToEnqueueCommands:(id)a3;
+- (void)enqueueCommand:(id)command withSelectionBehavior:(id)behavior;
+- (void)openGroupWithSelectionBehavior:(id)behavior;
+- (void)performBlockOnMainThreadWhenSafeToEnqueueCommands:(id)commands;
 - (void)redo;
-- (void)setCurrentGroupActionString:(id)a3;
+- (void)setCurrentGroupActionString:(id)string;
 - (void)undo;
 @end
 
 @implementation CRLCommandController
 
-- (void)enqueueCommand:(id)a3 withSelectionBehavior:(id)a4
+- (void)enqueueCommand:(id)command withSelectionBehavior:(id)behavior
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100888700(v6, 0, a4, 4, 0);
+  commandCopy = command;
+  behaviorCopy = behavior;
+  selfCopy = self;
+  sub_100888700(commandCopy, 0, behavior, 4, 0);
 }
 
-- (void)performBlockOnMainThreadWhenSafeToEnqueueCommands:(id)a3
+- (void)performBlockOnMainThreadWhenSafeToEnqueueCommands:(id)commands
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(commands);
   _Block_copy(v4);
-  v5 = self;
-  sub_100896574(v5, v4);
+  selfCopy = self;
+  sub_100896574(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)undo
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088BDDC();
 }
 
 - (void)redo
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088C914();
 }
 
 - (BOOL)canUndo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10088D480();
 
   return v3;
@@ -68,7 +68,7 @@
 
 - (BOOL)canRedo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10088D5AC();
 
   return v3;
@@ -76,7 +76,7 @@
 
 - (int64_t)undoCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10088D6DC();
 
   return v3;
@@ -84,7 +84,7 @@
 
 - (int64_t)redoCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10088D800();
 
   return v3;
@@ -112,7 +112,7 @@
 
 - (NSString)currentGroupActionString
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088DC9C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -120,11 +120,11 @@
   return v3;
 }
 
-- (void)setCurrentGroupActionString:(id)a3
+- (void)setCurrentGroupActionString:(id)string
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_10088DE20(v4, v6);
 }
 
@@ -162,35 +162,35 @@
   return v5 > 0;
 }
 
-- (void)openGroupWithSelectionBehavior:(id)a3
+- (void)openGroupWithSelectionBehavior:(id)behavior
 {
-  v5 = a3;
-  v6 = self;
-  sub_10088E3FC(a3);
+  behaviorCopy = behavior;
+  selfCopy = self;
+  sub_10088E3FC(behavior);
 }
 
-- (void)closeGroupWithSelectionBehavior:(id)a3
+- (void)closeGroupWithSelectionBehavior:(id)behavior
 {
-  v5 = a3;
-  v6 = self;
-  sub_10088E600(a3);
+  behaviorCopy = behavior;
+  selfCopy = self;
+  sub_10088E600(behavior);
 }
 
 - (void)destroyOutermostCommandGroupOnClose
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088ECA0();
 }
 
 - (void)enableProgressiveEnqueuingInCurrentGroup
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088F490();
 }
 
 - (BOOL)isProgressiveEnqueuingInCurrentGroupEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10088FA60();
 
   return v3 & 1;
@@ -198,19 +198,19 @@
 
 - (void)enableRealTimeSyncProgressiveEnqueuingInCurrentGroup
 {
-  v2 = self;
+  selfCopy = self;
   sub_10088FB4C();
 }
 
 - (void)enableRealTimeSyncProgressiveEnqueuingWithSimultaneousRealtimeIncomingInCurrentGroup
 {
-  v2 = self;
+  selfCopy = self;
   sub_100890138();
 }
 
 - (BOOL)isRealTimeSyncProgressiveEnqueuingInCurrentGroupEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100890754();
 
   return v3 & 1;
@@ -218,7 +218,7 @@
 
 - (BOOL)isRealTimeSyncProgressiveWithSimultaneousRealtimeIncomingInCurrentGroupEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100890874();
 
   return v3 & 1;
@@ -226,7 +226,7 @@
 
 - (void)_stepWatermarkContextIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   sub_10089095C();
 }
 

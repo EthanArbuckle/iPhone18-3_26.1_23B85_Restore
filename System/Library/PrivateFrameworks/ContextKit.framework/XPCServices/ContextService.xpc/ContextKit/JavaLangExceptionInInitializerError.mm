@@ -1,7 +1,7 @@
 @interface JavaLangExceptionInInitializerError
 - (JavaLangExceptionInInitializerError)init;
-- (JavaLangExceptionInInitializerError)initWithJavaLangThrowable:(id)a3;
-- (JavaLangExceptionInInitializerError)initWithNSString:(id)a3;
+- (JavaLangExceptionInInitializerError)initWithJavaLangThrowable:(id)throwable;
+- (JavaLangExceptionInInitializerError)initWithNSString:(id)string;
 - (void)dealloc;
 @end
 
@@ -14,18 +14,18 @@
   return self;
 }
 
-- (JavaLangExceptionInInitializerError)initWithNSString:(id)a3
+- (JavaLangExceptionInInitializerError)initWithNSString:(id)string
 {
-  JavaLangLinkageError_initWithNSString_(self, a3);
+  JavaLangLinkageError_initWithNSString_(self, string);
   [(JavaLangThrowable *)self initCauseWithJavaLangThrowable:0];
   return self;
 }
 
-- (JavaLangExceptionInInitializerError)initWithJavaLangThrowable:(id)a3
+- (JavaLangExceptionInInitializerError)initWithJavaLangThrowable:(id)throwable
 {
   JavaLangLinkageError_init(self, a2);
-  JreStrongAssign(&self->exception_, a3);
-  [(JavaLangThrowable *)self initCauseWithJavaLangThrowable:a3];
+  JreStrongAssign(&self->exception_, throwable);
+  [(JavaLangThrowable *)self initCauseWithJavaLangThrowable:throwable];
   return self;
 }
 

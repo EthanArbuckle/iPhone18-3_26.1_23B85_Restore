@@ -1,19 +1,19 @@
 @interface GKMultiplayerStepperViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)accessibilityUpdateStepperWithValue:(int64_t)a3;
+- (void)accessibilityUpdateStepperWithValue:(int64_t)value;
 - (void)layoutSubviews;
 @end
 
 @implementation GKMultiplayerStepperViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityDownButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityUpButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityUpdateStepperWithValue:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityDownButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityUpButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"accessibilityUpdateStepperWithValue:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerStepperView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
 }
 
 - (void)layoutSubviews
@@ -37,13 +37,13 @@
   [v4 _setAccessibilityAdditionalTraitsBlock:&__block_literal_global_317];
 }
 
-- (void)accessibilityUpdateStepperWithValue:(int64_t)a3
+- (void)accessibilityUpdateStepperWithValue:(int64_t)value
 {
   v4 = MEMORY[0x29EDBD7E8];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = AXGameCenterUIFrameworkLocString(@"PLAYER_COUNT");
-  v7 = [v5 localizedStringWithFormat:v6, a3];
-  v8 = [v4 axAttributedStringWithString:v7];
+  value = [v5 localizedStringWithFormat:v6, value];
+  v8 = [v4 axAttributedStringWithString:value];
 
   [v8 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD978]];
   v9 = v8;

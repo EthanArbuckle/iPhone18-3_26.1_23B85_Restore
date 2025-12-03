@@ -1,71 +1,71 @@
 @interface HMSetupAccessoryPayload
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresMatterCustomCommissioningFlow;
 - (HMAccessoryCategory)category;
-- (HMSetupAccessoryPayload)initWithCoder:(id)a3;
-- (HMSetupAccessoryPayload)initWithHAPSetupPayloadURL:(id)a3 error:(id *)a4;
-- (HMSetupAccessoryPayload)initWithSetupCode:(id)a3 communicationProtocol:(int64_t)a4;
+- (HMSetupAccessoryPayload)initWithCoder:(id)coder;
+- (HMSetupAccessoryPayload)initWithHAPSetupPayloadURL:(id)l error:(id *)error;
+- (HMSetupAccessoryPayload)initWithSetupCode:(id)code communicationProtocol:(int64_t)protocol;
 - (NSArray)attributeDescriptions;
 - (NSNumber)matterDeviceTypeID;
 - (NSString)shortDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMSetupAccessoryPayload
 
 - (NSArray)attributeDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
   v5 = HMStringFromAccessoryCommunicationProtocol([(HMSetupAccessoryPayload *)self communicationProtocol]);
   v6 = [v4 initWithName:@"Communication Protocol" value:v5];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
-  v7 = [(HMSetupAccessoryPayload *)self setupCode];
+  setupCode = [(HMSetupAccessoryPayload *)self setupCode];
 
-  if (v7)
+  if (setupCode)
   {
     v8 = [objc_alloc(MEMORY[0x1E69A29C8]) initWithName:@"Setup Code" value:@"<not nil>"];
-    [v3 addObject:v8];
+    [array addObject:v8];
   }
 
-  v9 = [(HMSetupAccessoryPayload *)self setupPayloadURL];
+  setupPayloadURL = [(HMSetupAccessoryPayload *)self setupPayloadURL];
 
-  if (v9)
+  if (setupPayloadURL)
   {
     v10 = [objc_alloc(MEMORY[0x1E69A29C8]) initWithName:@"Setup Payload URL" value:@"<not nil>"];
-    [v3 addObject:v10];
+    [array addObject:v10];
   }
 
-  v11 = [(HMSetupAccessoryPayload *)self setupID];
+  setupID = [(HMSetupAccessoryPayload *)self setupID];
 
-  if (v11)
+  if (setupID)
   {
     v12 = [objc_alloc(MEMORY[0x1E69A29C8]) initWithName:@"Setup ID" value:@"<not nil>"];
-    [v3 addObject:v12];
+    [array addObject:v12];
   }
 
-  v13 = [(HMSetupAccessoryPayload *)self categoryNumber];
+  categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
 
-  if (v13)
+  if (categoryNumber)
   {
     v14 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v15 = [(HMSetupAccessoryPayload *)self categoryNumber];
-    v16 = [v14 initWithName:@"Category Number" value:v15];
-    [v3 addObject:v16];
+    categoryNumber2 = [(HMSetupAccessoryPayload *)self categoryNumber];
+    v16 = [v14 initWithName:@"Category Number" value:categoryNumber2];
+    [array addObject:v16];
   }
 
-  v17 = [(HMSetupAccessoryPayload *)self productNumber];
+  productNumber = [(HMSetupAccessoryPayload *)self productNumber];
 
-  if (v17)
+  if (productNumber)
   {
     v18 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v19 = [(HMSetupAccessoryPayload *)self productNumber];
-    v20 = [v18 initWithName:@"Product Number" value:v19];
-    [v3 addObject:v20];
+    productNumber2 = [(HMSetupAccessoryPayload *)self productNumber];
+    v20 = [v18 initWithName:@"Product Number" value:productNumber2];
+    [array addObject:v20];
   }
 
   if ([(HMSetupAccessoryPayload *)self supportsIP])
@@ -74,7 +74,7 @@
     [(HMSetupAccessoryPayload *)self supportsIP];
     v22 = HMFBooleanToString();
     v23 = [v21 initWithName:@"Supports IP" value:v22];
-    [v3 addObject:v23];
+    [array addObject:v23];
   }
 
   if ([(HMSetupAccessoryPayload *)self supportsWAC])
@@ -83,7 +83,7 @@
     [(HMSetupAccessoryPayload *)self supportsWAC];
     v25 = HMFBooleanToString();
     v26 = [v24 initWithName:@"Supports WAC" value:v25];
-    [v3 addObject:v26];
+    [array addObject:v26];
   }
 
   if ([(HMSetupAccessoryPayload *)self supportsBTLE])
@@ -92,7 +92,7 @@
     [(HMSetupAccessoryPayload *)self supportsBTLE];
     v28 = HMFBooleanToString();
     v29 = [v27 initWithName:@"Supports BTLE" value:v28];
-    [v3 addObject:v29];
+    [array addObject:v29];
   }
 
   if ([(HMSetupAccessoryPayload *)self isPaired])
@@ -101,30 +101,30 @@
     [(HMSetupAccessoryPayload *)self isPaired];
     v31 = HMFBooleanToString();
     v32 = [v30 initWithName:@"Is Paired" value:v31];
-    [v3 addObject:v32];
+    [array addObject:v32];
   }
 
-  v33 = [(HMSetupAccessoryPayload *)self threadIdentifier];
+  threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
 
-  if (v33)
+  if (threadIdentifier)
   {
     v34 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v35 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-    v36 = [v34 initWithName:@"Thread Identifier" value:v35];
-    [v3 addObject:v36];
+    threadIdentifier2 = [(HMSetupAccessoryPayload *)self threadIdentifier];
+    v36 = [v34 initWithName:@"Thread Identifier" value:threadIdentifier2];
+    [array addObject:v36];
   }
 
-  v37 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
 
-  if (v37)
+  if (chipAccessorySetupPayload)
   {
     v38 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v39 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-    v40 = [v38 initWithName:@"CHIP Setup Payload" value:v39];
-    [v3 addObject:v40];
+    chipAccessorySetupPayload2 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+    v40 = [v38 initWithName:@"CHIP Setup Payload" value:chipAccessorySetupPayload2];
+    [array addObject:v40];
   }
 
-  v41 = [v3 copy];
+  v41 = [array copy];
 
   return v41;
 }
@@ -138,22 +138,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMSetupAccessoryPayload *)self setupCode];
-  v4 = [v3 hash];
+  setupCode = [(HMSetupAccessoryPayload *)self setupCode];
+  v4 = [setupCode hash];
 
-  v5 = [(HMSetupAccessoryPayload *)self setupID];
-  v6 = [v5 hash] ^ v4;
+  setupID = [(HMSetupAccessoryPayload *)self setupID];
+  v6 = [setupID hash] ^ v4;
 
-  v7 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-  v8 = [v7 hash];
+  threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
+  v8 = [threadIdentifier hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v31 = 1;
   }
@@ -163,7 +163,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -174,21 +174,21 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSetupAccessoryPayload *)self setupCode];
-      v8 = [(HMSetupAccessoryPayload *)v6 setupCode];
-      if (![v7 isEqualToString:v8])
+      setupCode = [(HMSetupAccessoryPayload *)self setupCode];
+      setupCode2 = [(HMSetupAccessoryPayload *)v6 setupCode];
+      if (![setupCode isEqualToString:setupCode2])
       {
         goto LABEL_18;
       }
 
-      v9 = [(HMSetupAccessoryPayload *)self communicationProtocol];
-      if (v9 != [(HMSetupAccessoryPayload *)v6 communicationProtocol])
+      communicationProtocol = [(HMSetupAccessoryPayload *)self communicationProtocol];
+      if (communicationProtocol != [(HMSetupAccessoryPayload *)v6 communicationProtocol])
       {
         goto LABEL_18;
       }
 
-      v10 = [(HMSetupAccessoryPayload *)self setupPayloadURL];
-      v11 = [(HMSetupAccessoryPayload *)v6 setupPayloadURL];
+      setupPayloadURL = [(HMSetupAccessoryPayload *)self setupPayloadURL];
+      setupPayloadURL2 = [(HMSetupAccessoryPayload *)v6 setupPayloadURL];
       v12 = HMFEqualObjects();
 
       if (!v12)
@@ -196,8 +196,8 @@
         goto LABEL_18;
       }
 
-      v13 = [(HMSetupAccessoryPayload *)self setupID];
-      v14 = [(HMSetupAccessoryPayload *)v6 setupID];
+      setupID = [(HMSetupAccessoryPayload *)self setupID];
+      setupID2 = [(HMSetupAccessoryPayload *)v6 setupID];
       v15 = HMFEqualObjects();
 
       if (!v15)
@@ -205,8 +205,8 @@
         goto LABEL_18;
       }
 
-      v16 = [(HMSetupAccessoryPayload *)self categoryNumber];
-      v17 = [(HMSetupAccessoryPayload *)v6 categoryNumber];
+      categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
+      categoryNumber2 = [(HMSetupAccessoryPayload *)v6 categoryNumber];
       v18 = HMFEqualObjects();
 
       if (!v18)
@@ -214,8 +214,8 @@
         goto LABEL_18;
       }
 
-      v19 = [(HMSetupAccessoryPayload *)self productNumber];
-      v20 = [(HMSetupAccessoryPayload *)v6 productNumber];
+      productNumber = [(HMSetupAccessoryPayload *)self productNumber];
+      productNumber2 = [(HMSetupAccessoryPayload *)v6 productNumber];
       v21 = HMFEqualObjects();
 
       if (!v21)
@@ -223,38 +223,38 @@
         goto LABEL_18;
       }
 
-      v22 = [(HMSetupAccessoryPayload *)self supportsIP];
-      if (v22 != [(HMSetupAccessoryPayload *)v6 supportsIP])
+      supportsIP = [(HMSetupAccessoryPayload *)self supportsIP];
+      if (supportsIP != [(HMSetupAccessoryPayload *)v6 supportsIP])
       {
         goto LABEL_18;
       }
 
-      v23 = [(HMSetupAccessoryPayload *)self supportsWAC];
-      if (v23 != [(HMSetupAccessoryPayload *)v6 supportsWAC])
+      supportsWAC = [(HMSetupAccessoryPayload *)self supportsWAC];
+      if (supportsWAC != [(HMSetupAccessoryPayload *)v6 supportsWAC])
       {
         goto LABEL_18;
       }
 
-      v24 = [(HMSetupAccessoryPayload *)self supportsBTLE];
-      if (v24 != [(HMSetupAccessoryPayload *)v6 supportsBTLE])
+      supportsBTLE = [(HMSetupAccessoryPayload *)self supportsBTLE];
+      if (supportsBTLE != [(HMSetupAccessoryPayload *)v6 supportsBTLE])
       {
         goto LABEL_18;
       }
 
-      v25 = [(HMSetupAccessoryPayload *)self isPaired];
-      if (v25 != [(HMSetupAccessoryPayload *)v6 isPaired])
+      isPaired = [(HMSetupAccessoryPayload *)self isPaired];
+      if (isPaired != [(HMSetupAccessoryPayload *)v6 isPaired])
       {
         goto LABEL_18;
       }
 
-      v26 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-      v27 = [(HMSetupAccessoryPayload *)v6 threadIdentifier];
+      threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
+      threadIdentifier2 = [(HMSetupAccessoryPayload *)v6 threadIdentifier];
       v28 = HMFEqualObjects();
 
       if (v28)
       {
-        v29 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-        v30 = [(HMSetupAccessoryPayload *)v6 chipAccessorySetupPayload];
+        chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+        chipAccessorySetupPayload2 = [(HMSetupAccessoryPayload *)v6 chipAccessorySetupPayload];
         v31 = HMFEqualObjects();
       }
 
@@ -274,33 +274,33 @@ LABEL_18:
   return v31;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableSetupAccessoryPayload allocWithZone:a3];
-  v5 = [(HMSetupAccessoryPayload *)self setupCode];
-  v6 = [(HMSetupAccessoryPayload *)v4 initWithSetupCode:v5 communicationProtocol:[(HMSetupAccessoryPayload *)self communicationProtocol]];
+  v4 = [HMMutableSetupAccessoryPayload allocWithZone:zone];
+  setupCode = [(HMSetupAccessoryPayload *)self setupCode];
+  v6 = [(HMSetupAccessoryPayload *)v4 initWithSetupCode:setupCode communicationProtocol:[(HMSetupAccessoryPayload *)self communicationProtocol]];
 
-  v7 = [(HMSetupAccessoryPayload *)self setupPayloadURL];
-  [(HMSetupAccessoryPayload *)v6 setSetupPayloadURL:v7];
+  setupPayloadURL = [(HMSetupAccessoryPayload *)self setupPayloadURL];
+  [(HMSetupAccessoryPayload *)v6 setSetupPayloadURL:setupPayloadURL];
 
-  v8 = [(HMSetupAccessoryPayload *)self setupID];
-  [(HMSetupAccessoryPayload *)v6 setSetupID:v8];
+  setupID = [(HMSetupAccessoryPayload *)self setupID];
+  [(HMSetupAccessoryPayload *)v6 setSetupID:setupID];
 
-  v9 = [(HMSetupAccessoryPayload *)self categoryNumber];
-  [(HMSetupAccessoryPayload *)v6 setCategoryNumber:v9];
+  categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
+  [(HMSetupAccessoryPayload *)v6 setCategoryNumber:categoryNumber];
 
-  v10 = [(HMSetupAccessoryPayload *)self productNumber];
-  [(HMSetupAccessoryPayload *)v6 setProductNumber:v10];
+  productNumber = [(HMSetupAccessoryPayload *)self productNumber];
+  [(HMSetupAccessoryPayload *)v6 setProductNumber:productNumber];
 
   [(HMSetupAccessoryPayload *)v6 setSupportsIP:[(HMSetupAccessoryPayload *)self supportsIP]];
   [(HMSetupAccessoryPayload *)v6 setSupportsWAC:[(HMSetupAccessoryPayload *)self supportsWAC]];
   [(HMSetupAccessoryPayload *)v6 setSupportsBTLE:[(HMSetupAccessoryPayload *)self supportsBTLE]];
   [(HMSetupAccessoryPayload *)v6 setPaired:[(HMSetupAccessoryPayload *)self isPaired]];
-  v11 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-  [(HMSetupAccessoryPayload *)v6 setThreadIdentifier:v11];
+  threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
+  [(HMSetupAccessoryPayload *)v6 setThreadIdentifier:threadIdentifier];
 
-  v12 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-  [(HMSetupAccessoryPayload *)v6 setChipAccessorySetupPayload:v12];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  [(HMSetupAccessoryPayload *)v6 setChipAccessorySetupPayload:chipAccessorySetupPayload];
 
   return v6;
 }
@@ -312,74 +312,74 @@ LABEL_18:
   return NSStringFromClass(v2);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMSetupAccessoryPayload *)self setupCode];
-  [v4 encodeObject:v5 forKey:@"setupCode"];
+  coderCopy = coder;
+  setupCode = [(HMSetupAccessoryPayload *)self setupCode];
+  [coderCopy encodeObject:setupCode forKey:@"setupCode"];
 
-  [v4 encodeInteger:-[HMSetupAccessoryPayload communicationProtocol](self forKey:{"communicationProtocol"), @"communicationProtocol"}];
-  v6 = [(HMSetupAccessoryPayload *)self setupPayloadURL];
-  [v4 encodeObject:v6 forKey:@"setupPayload"];
+  [coderCopy encodeInteger:-[HMSetupAccessoryPayload communicationProtocol](self forKey:{"communicationProtocol"), @"communicationProtocol"}];
+  setupPayloadURL = [(HMSetupAccessoryPayload *)self setupPayloadURL];
+  [coderCopy encodeObject:setupPayloadURL forKey:@"setupPayload"];
 
-  v7 = [(HMSetupAccessoryPayload *)self setupID];
-  [v4 encodeObject:v7 forKey:@"setupID"];
+  setupID = [(HMSetupAccessoryPayload *)self setupID];
+  [coderCopy encodeObject:setupID forKey:@"setupID"];
 
-  v8 = [(HMSetupAccessoryPayload *)self categoryNumber];
-  [v4 encodeObject:v8 forKey:@"categoryNumber"];
+  categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
+  [coderCopy encodeObject:categoryNumber forKey:@"categoryNumber"];
 
-  v9 = [(HMSetupAccessoryPayload *)self productNumber];
-  [v4 encodeObject:v9 forKey:@"productNumber"];
+  productNumber = [(HMSetupAccessoryPayload *)self productNumber];
+  [coderCopy encodeObject:productNumber forKey:@"productNumber"];
 
-  [v4 encodeBool:-[HMSetupAccessoryPayload supportsIP](self forKey:{"supportsIP"), @"supportsIP"}];
-  [v4 encodeBool:-[HMSetupAccessoryPayload supportsWAC](self forKey:{"supportsWAC"), @"supportsWAC"}];
-  [v4 encodeBool:-[HMSetupAccessoryPayload supportsBTLE](self forKey:{"supportsBTLE"), @"supportsBTLE"}];
-  [v4 encodeBool:-[HMSetupAccessoryPayload isPaired](self forKey:{"isPaired"), @"isPaired"}];
-  v10 = [(HMSetupAccessoryPayload *)self threadIdentifier];
-  [v4 encodeObject:v10 forKey:@"threadIdentifier"];
+  [coderCopy encodeBool:-[HMSetupAccessoryPayload supportsIP](self forKey:{"supportsIP"), @"supportsIP"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryPayload supportsWAC](self forKey:{"supportsWAC"), @"supportsWAC"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryPayload supportsBTLE](self forKey:{"supportsBTLE"), @"supportsBTLE"}];
+  [coderCopy encodeBool:-[HMSetupAccessoryPayload isPaired](self forKey:{"isPaired"), @"isPaired"}];
+  threadIdentifier = [(HMSetupAccessoryPayload *)self threadIdentifier];
+  [coderCopy encodeObject:threadIdentifier forKey:@"threadIdentifier"];
 
-  v11 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-  [v4 encodeObject:v11 forKey:@"chipAccessorySetupPayload"];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  [coderCopy encodeObject:chipAccessorySetupPayload forKey:@"chipAccessorySetupPayload"];
 }
 
-- (HMSetupAccessoryPayload)initWithCoder:(id)a3
+- (HMSetupAccessoryPayload)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupCode"];
-  v6 = [v4 decodeIntegerForKey:@"communicationProtocol"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupCode"];
+  v6 = [coderCopy decodeIntegerForKey:@"communicationProtocol"];
   if (v5)
   {
-    v7 = [(HMSetupAccessoryPayload *)self initWithSetupCode:v5 communicationProtocol:v6];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupPayload"];
-    [(HMSetupAccessoryPayload *)v7 setSetupPayloadURL:v8];
+    selfCopy = [(HMSetupAccessoryPayload *)self initWithSetupCode:v5 communicationProtocol:v6];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupPayload"];
+    [(HMSetupAccessoryPayload *)selfCopy setSetupPayloadURL:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setupID"];
-    [(HMSetupAccessoryPayload *)v7 setSetupID:v9];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setupID"];
+    [(HMSetupAccessoryPayload *)selfCopy setSetupID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryNumber"];
-    [(HMSetupAccessoryPayload *)v7 setCategoryNumber:v10];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryNumber"];
+    [(HMSetupAccessoryPayload *)selfCopy setCategoryNumber:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productNumber"];
-    [(HMSetupAccessoryPayload *)v7 setProductNumber:v11];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productNumber"];
+    [(HMSetupAccessoryPayload *)selfCopy setProductNumber:v11];
 
-    -[HMSetupAccessoryPayload setSupportsIP:](v7, "setSupportsIP:", [v4 decodeBoolForKey:@"supportsIP"]);
-    -[HMSetupAccessoryPayload setSupportsWAC:](v7, "setSupportsWAC:", [v4 decodeBoolForKey:@"supportsWAC"]);
-    -[HMSetupAccessoryPayload setSupportsBTLE:](v7, "setSupportsBTLE:", [v4 decodeBoolForKey:@"supportsBTLE"]);
-    -[HMSetupAccessoryPayload setPaired:](v7, "setPaired:", [v4 decodeBoolForKey:@"isPaired"]);
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
-    [(HMSetupAccessoryPayload *)v7 setThreadIdentifier:v12];
+    -[HMSetupAccessoryPayload setSupportsIP:](selfCopy, "setSupportsIP:", [coderCopy decodeBoolForKey:@"supportsIP"]);
+    -[HMSetupAccessoryPayload setSupportsWAC:](selfCopy, "setSupportsWAC:", [coderCopy decodeBoolForKey:@"supportsWAC"]);
+    -[HMSetupAccessoryPayload setSupportsBTLE:](selfCopy, "setSupportsBTLE:", [coderCopy decodeBoolForKey:@"supportsBTLE"]);
+    -[HMSetupAccessoryPayload setPaired:](selfCopy, "setPaired:", [coderCopy decodeBoolForKey:@"isPaired"]);
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+    [(HMSetupAccessoryPayload *)selfCopy setThreadIdentifier:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"chipAccessorySetupPayload"];
-    [(HMSetupAccessoryPayload *)v7 setChipAccessorySetupPayload:v13];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"chipAccessorySetupPayload"];
+    [(HMSetupAccessoryPayload *)selfCopy setChipAccessorySetupPayload:v13];
 
-    v14 = v7;
+    v14 = selfCopy;
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -401,46 +401,46 @@ LABEL_18:
 
 - (NSNumber)matterDeviceTypeID
 {
-  v2 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-  v3 = [v2 deviceTypeID];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  deviceTypeID = [chipAccessorySetupPayload deviceTypeID];
 
-  return v3;
+  return deviceTypeID;
 }
 
 - (BOOL)requiresMatterCustomCommissioningFlow
 {
-  v2 = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
-  v3 = [v2 requiresCustomFlow];
+  chipAccessorySetupPayload = [(HMSetupAccessoryPayload *)self chipAccessorySetupPayload];
+  requiresCustomFlow = [chipAccessorySetupPayload requiresCustomFlow];
 
-  return v3;
+  return requiresCustomFlow;
 }
 
 - (HMAccessoryCategory)category
 {
   v3 = +[HMHAPMetadata getSharedInstance];
-  v4 = [(HMSetupAccessoryPayload *)self categoryNumber];
-  v5 = [v3 categoryForIdentifier:v4];
+  categoryNumber = [(HMSetupAccessoryPayload *)self categoryNumber];
+  v5 = [v3 categoryForIdentifier:categoryNumber];
 
   return v5;
 }
 
-- (HMSetupAccessoryPayload)initWithSetupCode:(id)a3 communicationProtocol:(int64_t)a4
+- (HMSetupAccessoryPayload)initWithSetupCode:(id)code communicationProtocol:(int64_t)protocol
 {
-  v6 = a3;
-  if (!v6)
+  codeCopy = code;
+  if (!codeCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!protocol)
   {
 LABEL_7:
     v12 = _HMFPreconditionFailure();
     return [(HMSetupAccessoryPayload *)v12 initWithSetupCode:v13, v14];
   }
 
-  v7 = v6;
+  v7 = codeCopy;
   v15.receiver = self;
   v15.super_class = HMSetupAccessoryPayload;
   v8 = [(HMSetupAccessoryPayload *)&v15 init];
@@ -450,21 +450,21 @@ LABEL_7:
     setupCode = v8->_setupCode;
     v8->_setupCode = v9;
 
-    v8->_communicationProtocol = a4;
+    v8->_communicationProtocol = protocol;
   }
 
   return v8;
 }
 
-- (HMSetupAccessoryPayload)initWithHAPSetupPayloadURL:(id)a3 error:(id *)a4
+- (HMSetupAccessoryPayload)initWithHAPSetupPayloadURL:(id)l error:(id *)error
 {
   v114 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 host];
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  host = [lCopy host];
+  v8 = host;
+  if (host)
   {
-    v9 = [v7 dataUsingEncoding:4];
+    v9 = [host dataUsingEncoding:4];
     v10 = [v9 length];
     v11 = v10;
     if (v10 <= 0xC)
@@ -481,16 +481,16 @@ LABEL_7:
         v110 = 2048;
         v111 = 13;
         v112 = 2112;
-        v113 = v6;
+        v113 = lCopy;
         _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@SetupPayload: setup payload length '%lu' is less than minimum length '%lu' for setupPayloadURL '%@'", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v12);
-      if (a4)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
         v15 = 0;
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -528,11 +528,11 @@ LABEL_7:
       }
 
       objc_autoreleasePoolPop(v27);
-      if (a4)
+      if (error)
       {
         v31 = v15;
         v16 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -560,10 +560,10 @@ LABEL_7:
 
       objc_autoreleasePoolPop(v24);
       v15 = v101;
-      if (a4)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] hmErrorWithCode:2004];
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -580,7 +580,7 @@ LABEL_7:
     {
       if (v11 != 13)
       {
-        v32 = self;
+        selfCopy = self;
         v33 = objc_autoreleasePoolPush();
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -598,12 +598,12 @@ LABEL_7:
         }
 
         objc_autoreleasePoolPop(v33);
-        self = v32;
+        self = selfCopy;
       }
 
       if (((v21 >> 39) & 0xF) != 0)
       {
-        v37 = self;
+        selfCopy2 = self;
         v38 = objc_autoreleasePoolPush();
         v39 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -621,14 +621,14 @@ LABEL_7:
         }
 
         objc_autoreleasePoolPop(v38);
-        self = v37;
+        self = selfCopy2;
       }
     }
 
     v96 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%03llu-%02llu-%03llu", (175921861 * (v21 & 0x7FFFFFF)) >> 44, ((v21 & 0x7FFFFFF) - 100000 * (((175921861 * (v21 & 0x7FFFFFF)) >> 32) >> 12)) / 0x3E8, (v21 & 0x7FFFFFF) - 1000 * (((68719477 * (v21 & 0x7FFFFFF)) >> 32) >> 4)];
     v42 = [HMSetupAccessoryPayload initWithSetupCode:"initWithSetupCode:communicationProtocol:" communicationProtocol:?];
     v43 = [(HMSetupAccessoryPayload *)v42 mutableCopy];
-    [v43 setSetupPayloadURL:v6];
+    [v43 setSetupPayloadURL:lCopy];
     v44 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:(v21 >> 31)];
     [v43 setCategoryNumber:v44];
 
@@ -683,13 +683,13 @@ LABEL_36:
             *buf = 138543618;
             v107 = v49;
             v108 = 2112;
-            v109 = v6;
+            v109 = lCopy;
             _os_log_impl(&dword_19BB39000, v48, OS_LOG_TYPE_DEFAULT, "%{public}@SetupPayload: too short for new style with extra info '%@'", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v47);
           v15 = v101;
-          if (!a4)
+          if (!error)
           {
             goto LABEL_58;
           }
@@ -714,18 +714,18 @@ LABEL_36:
             *buf = 138543874;
             v107 = v61;
             v108 = 2112;
-            v109 = v6;
+            v109 = lCopy;
             v110 = 2112;
             v111 = v15;
             _os_log_impl(&dword_19BB39000, v60, OS_LOG_TYPE_ERROR, "%{public}@SetupPayload: failed to decode eui64 and product number '%@': %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v59);
-          if (a4)
+          if (error)
           {
             v62 = v15;
             v16 = 0;
-            *a4 = v15;
+            *error = v15;
           }
 
           else
@@ -828,12 +828,12 @@ LABEL_91:
             *buf = 138543618;
             v107 = v53;
             v108 = 2112;
-            v109 = v6;
+            v109 = lCopy;
             _os_log_impl(&dword_19BB39000, v51, OS_LOG_TYPE_DEFAULT, "%{public}@SetupPayload: too short for new style with product number '%@'", buf, 0x16u);
           }
 
           objc_autoreleasePoolPop(v50);
-          if (!a4)
+          if (!error)
           {
 LABEL_58:
             v16 = 0;
@@ -842,7 +842,7 @@ LABEL_58:
 
 LABEL_53:
           [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-          *a4 = v16 = 0;
+          *error = v16 = 0;
 LABEL_59:
           v54 = v99;
 LABEL_95:
@@ -869,18 +869,18 @@ LABEL_96:
             *buf = 138543874;
             v107 = v70;
             v108 = 2112;
-            v109 = v6;
+            v109 = lCopy;
             v110 = 2112;
             v111 = v67;
             _os_log_impl(&dword_19BB39000, v69, OS_LOG_TYPE_ERROR, "%{public}@SetupPayload: failed to decode product number '%@': %@", buf, 0x20u);
           }
 
           objc_autoreleasePoolPop(v68);
-          if (a4)
+          if (error)
           {
             v71 = v67;
             v16 = 0;
-            *a4 = v67;
+            *error = v67;
           }
 
           else
@@ -935,15 +935,15 @@ LABEL_35:
     *buf = 138543618;
     v107 = v19;
     v108 = 2112;
-    v109 = v6;
+    v109 = lCopy;
     _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@SetupPayload: setup payload URL host is nil in setupPayloadURL '%@'", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v17);
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else

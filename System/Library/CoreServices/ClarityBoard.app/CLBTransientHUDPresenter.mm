@@ -1,17 +1,17 @@
 @interface CLBTransientHUDPresenter
 - (CLBTransientHUDPresenter)init;
-- (CLBTransientHUDPresenter)initWithWindow:(id)a3;
+- (CLBTransientHUDPresenter)initWithWindow:(id)window;
 @end
 
 @implementation CLBTransientHUDPresenter
 
-- (CLBTransientHUDPresenter)initWithWindow:(id)a3
+- (CLBTransientHUDPresenter)initWithWindow:(id)window
 {
   *(&self->super.isa + OBJC_IVAR___CLBTransientHUDPresenter_dismissTask) = 0;
-  *(&self->super.isa + OBJC_IVAR___CLBTransientHUDPresenter_window) = a3;
+  *(&self->super.isa + OBJC_IVAR___CLBTransientHUDPresenter_window) = window;
   v6.receiver = self;
   v6.super_class = type metadata accessor for TransientHUDPresenter();
-  v4 = a3;
+  windowCopy = window;
   return [(CLBTransientHUDPresenter *)&v6 init];
 }
 

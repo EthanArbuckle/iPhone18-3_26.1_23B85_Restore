@@ -1,38 +1,38 @@
 @interface CAMStartPanoramaCommand
-- (CAMStartPanoramaCommand)initWithCoder:(id)a3;
-- (CAMStartPanoramaCommand)initWithRequest:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMStartPanoramaCommand)initWithCoder:(id)coder;
+- (CAMStartPanoramaCommand)initWithRequest:(id)request;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMStartPanoramaCommand
 
-- (CAMStartPanoramaCommand)initWithRequest:(id)a3
+- (CAMStartPanoramaCommand)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = CAMStartPanoramaCommand;
   v6 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__request, a3);
+    objc_storeStrong(&v6->__request, request);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (CAMStartPanoramaCommand)initWithCoder:(id)a3
+- (CAMStartPanoramaCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CAMStartPanoramaCommand;
-  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:v4];
+  v5 = [(CAMCaptureCommand *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"CAMPanoramaCaptureCommandRequest"];
+    v6 = [coderCopy decodeObjectForKey:@"CAMPanoramaCaptureCommandRequest"];
     request = v5->__request;
     v5->__request = v6;
 
@@ -42,31 +42,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CAMStartPanoramaCommand *)self _request];
-  [v4 encodeObject:v5 forKey:@"CAMPanoramaCaptureCommandRequest"];
+  coderCopy = coder;
+  _request = [(CAMStartPanoramaCommand *)self _request];
+  [coderCopy encodeObject:_request forKey:@"CAMPanoramaCaptureCommandRequest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CAMStartPanoramaCommand;
-  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:a3];
-  v5 = [(CAMStartPanoramaCommand *)self _request];
-  v6 = [v5 copy];
+  v4 = [(CAMCaptureCommand *)&v9 copyWithZone:zone];
+  _request = [(CAMStartPanoramaCommand *)self _request];
+  v6 = [_request copy];
   v7 = v4[3];
   v4[3] = v6;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CAMStartPanoramaCommand *)self _request];
-  [v4 startPanoramaCaptureWithRequest:v5];
+  contextCopy = context;
+  _request = [(CAMStartPanoramaCommand *)self _request];
+  [contextCopy startPanoramaCaptureWithRequest:_request];
 }
 
 @end

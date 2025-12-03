@@ -1,17 +1,17 @@
 @interface AFMediaPlaybackStateSnapshot
-+ (id)newWithBuilder:(id)a3;
-- (AFMediaPlaybackStateSnapshot)initWithBuilder:(id)a3;
-- (AFMediaPlaybackStateSnapshot)initWithCoder:(id)a3;
-- (AFMediaPlaybackStateSnapshot)initWithDictionaryRepresentation:(id)a3;
-- (AFMediaPlaybackStateSnapshot)initWithPlaybackState:(int64_t)a3 nowPlayingTimestamp:(id)a4 mediaType:(id)a5 groupIdentifier:(id)a6 isProxyGroupPlayer:(BOOL)a7;
-- (AFMediaPlaybackStateSnapshot)initWithSerializedBackingStore:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFMediaPlaybackStateSnapshot)initWithBuilder:(id)builder;
+- (AFMediaPlaybackStateSnapshot)initWithCoder:(id)coder;
+- (AFMediaPlaybackStateSnapshot)initWithDictionaryRepresentation:(id)representation;
+- (AFMediaPlaybackStateSnapshot)initWithPlaybackState:(int64_t)state nowPlayingTimestamp:(id)timestamp mediaType:(id)type groupIdentifier:(id)identifier isProxyGroupPlayer:(BOOL)player;
+- (AFMediaPlaybackStateSnapshot)initWithSerializedBackingStore:(id)store;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)ad_shortDescription;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFMediaPlaybackStateSnapshot
@@ -19,42 +19,42 @@
 - (id)ad_shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AFMediaPlaybackStateSnapshot *)self playbackState];
-  if (v4 > 5)
+  playbackState = [(AFMediaPlaybackStateSnapshot *)self playbackState];
+  if (playbackState > 5)
   {
     v5 = @"(unknown)";
   }
 
   else
   {
-    v5 = *(&off_1E7346000 + v4);
+    v5 = *(&off_1E7346000 + playbackState);
   }
 
   v6 = v5;
-  v7 = [(AFMediaPlaybackStateSnapshot *)self nowPlayingTimestamp];
-  v8 = [(AFMediaPlaybackStateSnapshot *)self mediaType];
-  v9 = [(AFMediaPlaybackStateSnapshot *)self groupIdentifier];
-  v10 = [v3 stringWithFormat:@"(playstate: %@, time: %@, mediaType: %@, group: %@)", v6, v7, v8, v9];
+  nowPlayingTimestamp = [(AFMediaPlaybackStateSnapshot *)self nowPlayingTimestamp];
+  mediaType = [(AFMediaPlaybackStateSnapshot *)self mediaType];
+  groupIdentifier = [(AFMediaPlaybackStateSnapshot *)self groupIdentifier];
+  v10 = [v3 stringWithFormat:@"(playstate: %@, time: %@, mediaType: %@, group: %@)", v6, nowPlayingTimestamp, mediaType, groupIdentifier];
 
   return v10;
 }
 
-- (AFMediaPlaybackStateSnapshot)initWithSerializedBackingStore:(id)a3
+- (AFMediaPlaybackStateSnapshot)initWithSerializedBackingStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(AFMediaPlaybackStateSnapshot *)self initWithDictionaryRepresentation:v4];
-    v5 = self;
+    self = [(AFMediaPlaybackStateSnapshot *)self initWithDictionaryRepresentation:storeCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)buildDictionaryRepresentation
@@ -100,13 +100,13 @@
   return v11;
 }
 
-- (AFMediaPlaybackStateSnapshot)initWithDictionaryRepresentation:(id)a3
+- (AFMediaPlaybackStateSnapshot)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"playbackState"];
+    v6 = [representationCopy objectForKey:@"playbackState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,56 +166,56 @@
       v16 = 0;
     }
 
-    v17 = [v16 BOOLValue];
-    self = [(AFMediaPlaybackStateSnapshot *)self initWithPlaybackState:v7 nowPlayingTimestamp:v10 mediaType:v12 groupIdentifier:v14 isProxyGroupPlayer:v17];
+    bOOLValue = [v16 BOOLValue];
+    self = [(AFMediaPlaybackStateSnapshot *)self initWithPlaybackState:v7 nowPlayingTimestamp:v10 mediaType:v12 groupIdentifier:v14 isProxyGroupPlayer:bOOLValue];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   playbackState = self->_playbackState;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithInteger:playbackState];
-  [v6 encodeObject:v7 forKey:@"AFMediaPlaybackStateSnapshot::playbackState"];
+  [coderCopy encodeObject:v7 forKey:@"AFMediaPlaybackStateSnapshot::playbackState"];
 
-  [v6 encodeObject:self->_nowPlayingTimestamp forKey:@"AFMediaPlaybackStateSnapshot::nowPlayingTimestamp"];
-  [v6 encodeObject:self->_mediaType forKey:@"AFMediaPlaybackStateSnapshot::mediaType"];
-  [v6 encodeObject:self->_groupIdentifier forKey:@"AFMediaPlaybackStateSnapshot::groupIdentifier"];
+  [coderCopy encodeObject:self->_nowPlayingTimestamp forKey:@"AFMediaPlaybackStateSnapshot::nowPlayingTimestamp"];
+  [coderCopy encodeObject:self->_mediaType forKey:@"AFMediaPlaybackStateSnapshot::mediaType"];
+  [coderCopy encodeObject:self->_groupIdentifier forKey:@"AFMediaPlaybackStateSnapshot::groupIdentifier"];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isProxyGroupPlayer];
-  [v6 encodeObject:v8 forKey:@"AFMediaPlaybackStateSnapshot::isProxyGroupPlayer"];
+  [coderCopy encodeObject:v8 forKey:@"AFMediaPlaybackStateSnapshot::isProxyGroupPlayer"];
 }
 
-- (AFMediaPlaybackStateSnapshot)initWithCoder:(id)a3
+- (AFMediaPlaybackStateSnapshot)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::playbackState"];
-  v6 = [v5 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::playbackState"];
+  integerValue = [v5 integerValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::nowPlayingTimestamp"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::mediaType"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::groupIdentifier"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::isProxyGroupPlayer"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::nowPlayingTimestamp"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::mediaType"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::groupIdentifier"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMediaPlaybackStateSnapshot::isProxyGroupPlayer"];
 
-  v11 = [v10 BOOLValue];
-  v12 = [(AFMediaPlaybackStateSnapshot *)self initWithPlaybackState:v6 nowPlayingTimestamp:v7 mediaType:v8 groupIdentifier:v9 isProxyGroupPlayer:v11];
+  bOOLValue = [v10 BOOLValue];
+  v12 = [(AFMediaPlaybackStateSnapshot *)self initWithPlaybackState:integerValue nowPlayingTimestamp:v7 mediaType:v8 groupIdentifier:v9 isProxyGroupPlayer:bOOLValue];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -225,21 +225,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       playbackState = self->_playbackState;
       if (playbackState == [(AFMediaPlaybackStateSnapshot *)v5 playbackState]&& (isProxyGroupPlayer = self->_isProxyGroupPlayer, isProxyGroupPlayer == [(AFMediaPlaybackStateSnapshot *)v5 isProxyGroupPlayer]))
       {
-        v8 = [(AFMediaPlaybackStateSnapshot *)v5 nowPlayingTimestamp];
+        nowPlayingTimestamp = [(AFMediaPlaybackStateSnapshot *)v5 nowPlayingTimestamp];
         nowPlayingTimestamp = self->_nowPlayingTimestamp;
-        if (nowPlayingTimestamp == v8 || [(NSDate *)nowPlayingTimestamp isEqual:v8])
+        if (nowPlayingTimestamp == nowPlayingTimestamp || [(NSDate *)nowPlayingTimestamp isEqual:nowPlayingTimestamp])
         {
-          v10 = [(AFMediaPlaybackStateSnapshot *)v5 mediaType];
+          mediaType = [(AFMediaPlaybackStateSnapshot *)v5 mediaType];
           mediaType = self->_mediaType;
-          if (mediaType == v10 || [(NSString *)mediaType isEqual:v10])
+          if (mediaType == mediaType || [(NSString *)mediaType isEqual:mediaType])
           {
-            v12 = [(AFMediaPlaybackStateSnapshot *)v5 groupIdentifier];
+            groupIdentifier = [(AFMediaPlaybackStateSnapshot *)v5 groupIdentifier];
             groupIdentifier = self->_groupIdentifier;
-            v14 = groupIdentifier == v12 || [(NSString *)groupIdentifier isEqual:v12];
+            v14 = groupIdentifier == groupIdentifier || [(NSString *)groupIdentifier isEqual:groupIdentifier];
           }
 
           else
@@ -282,7 +282,7 @@
   return v7 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14.receiver = self;
@@ -317,23 +317,23 @@
   return v12;
 }
 
-- (AFMediaPlaybackStateSnapshot)initWithPlaybackState:(int64_t)a3 nowPlayingTimestamp:(id)a4 mediaType:(id)a5 groupIdentifier:(id)a6 isProxyGroupPlayer:(BOOL)a7
+- (AFMediaPlaybackStateSnapshot)initWithPlaybackState:(int64_t)state nowPlayingTimestamp:(id)timestamp mediaType:(id)type groupIdentifier:(id)identifier isProxyGroupPlayer:(BOOL)player
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  timestampCopy = timestamp;
+  typeCopy = type;
+  identifierCopy = identifier;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __119__AFMediaPlaybackStateSnapshot_initWithPlaybackState_nowPlayingTimestamp_mediaType_groupIdentifier_isProxyGroupPlayer___block_invoke;
   v20[3] = &unk_1E73492B0;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v24 = a3;
-  v25 = a7;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  v21 = timestampCopy;
+  v22 = typeCopy;
+  v23 = identifierCopy;
+  stateCopy = state;
+  playerCopy = player;
+  v15 = identifierCopy;
+  v16 = typeCopy;
+  v17 = timestampCopy;
   v18 = [(AFMediaPlaybackStateSnapshot *)self initWithBuilder:v20];
 
   return v18;
@@ -350,32 +350,32 @@ void __119__AFMediaPlaybackStateSnapshot_initWithPlaybackState_nowPlayingTimesta
   [v4 setIsProxyGroupPlayer:*(a1 + 64)];
 }
 
-- (AFMediaPlaybackStateSnapshot)initWithBuilder:(id)a3
+- (AFMediaPlaybackStateSnapshot)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = AFMediaPlaybackStateSnapshot;
   v5 = [(AFMediaPlaybackStateSnapshot *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFMediaPlaybackStateSnapshotMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFMediaPlaybackStateSnapshotMutation *)v7 isDirty])
     {
       v6->_playbackState = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getPlaybackState];
-      v8 = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getNowPlayingTimestamp];
-      v9 = [v8 copy];
+      getNowPlayingTimestamp = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getNowPlayingTimestamp];
+      v9 = [getNowPlayingTimestamp copy];
       nowPlayingTimestamp = v6->_nowPlayingTimestamp;
       v6->_nowPlayingTimestamp = v9;
 
-      v11 = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getMediaType];
-      v12 = [v11 copy];
+      getMediaType = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getMediaType];
+      v12 = [getMediaType copy];
       mediaType = v6->_mediaType;
       v6->_mediaType = v12;
 
-      v14 = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getGroupIdentifier];
-      v15 = [v14 copy];
+      getGroupIdentifier = [(_AFMediaPlaybackStateSnapshotMutation *)v7 getGroupIdentifier];
+      v15 = [getGroupIdentifier copy];
       groupIdentifier = v6->_groupIdentifier;
       v6->_groupIdentifier = v15;
 
@@ -386,37 +386,37 @@ void __119__AFMediaPlaybackStateSnapshot_initWithPlaybackState_nowPlayingTimesta
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFMediaPlaybackStateSnapshotMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFMediaPlaybackStateSnapshotMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFMediaPlaybackStateSnapshot);
       v6->_playbackState = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getPlaybackState];
-      v7 = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getNowPlayingTimestamp];
-      v8 = [v7 copy];
+      getNowPlayingTimestamp = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getNowPlayingTimestamp];
+      v8 = [getNowPlayingTimestamp copy];
       nowPlayingTimestamp = v6->_nowPlayingTimestamp;
       v6->_nowPlayingTimestamp = v8;
 
-      v10 = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getMediaType];
-      v11 = [v10 copy];
+      getMediaType = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getMediaType];
+      v11 = [getMediaType copy];
       mediaType = v6->_mediaType;
       v6->_mediaType = v11;
 
-      v13 = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getGroupIdentifier];
-      v14 = [v13 copy];
+      getGroupIdentifier = [(_AFMediaPlaybackStateSnapshotMutation *)v5 getGroupIdentifier];
+      v14 = [getGroupIdentifier copy];
       groupIdentifier = v6->_groupIdentifier;
       v6->_groupIdentifier = v14;
 

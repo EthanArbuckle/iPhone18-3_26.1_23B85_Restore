@@ -1,16 +1,16 @@
 @interface D2DSetupFlowViewController
-- (_TtC18SharingViewService26D2DSetupFlowViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC18SharingViewService26D2DSetupFlowViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation D2DSetupFlowViewController
 
-- (_TtC18SharingViewService26D2DSetupFlowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService26D2DSetupFlowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -22,40 +22,40 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_10009B1EC(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_10009B1EC(v5, v7, bundle);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_10006709C;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_10009B5F8(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10009B5F8(context, v6);
   sub_100012050(v6);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10009C6CC(a3);
+  selfCopy = self;
+  sub_10009C6CC(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10009C8A8(a3);
+  selfCopy = self;
+  sub_10009C8A8(disappear);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_1000122EC(0, &qword_1001BC220);
     sub_1000670A4();
@@ -69,7 +69,7 @@
 
   if (*(&self->super + OBJC_IVAR____TtC18SharingViewService26D2DSetupFlowViewController_router))
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1000963C8(v4);
     swift_unknownObjectRelease();

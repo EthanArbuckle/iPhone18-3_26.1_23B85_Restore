@@ -1,15 +1,15 @@
 @interface _UIPreviewInteractionSimulatingTouchForceProvider
-- (CGPoint)locationInCoordinateSpace:(id)a3;
-- (_UIPreviewInteractionSimulatingTouchForceProvider)initWithTouchForce:(double)a3 location:(CGPoint)a4 coordinateSpace:(id)a5;
+- (CGPoint)locationInCoordinateSpace:(id)space;
+- (_UIPreviewInteractionSimulatingTouchForceProvider)initWithTouchForce:(double)force location:(CGPoint)location coordinateSpace:(id)space;
 @end
 
 @implementation _UIPreviewInteractionSimulatingTouchForceProvider
 
-- (_UIPreviewInteractionSimulatingTouchForceProvider)initWithTouchForce:(double)a3 location:(CGPoint)a4 coordinateSpace:(id)a5
+- (_UIPreviewInteractionSimulatingTouchForceProvider)initWithTouchForce:(double)force location:(CGPoint)location coordinateSpace:(id)space
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
   v14.receiver = self;
   v14.super_class = _UIPreviewInteractionSimulatingTouchForceProvider;
   v10 = [(_UIPreviewInteractionSimulatingTouchForceProvider *)&v14 init];
@@ -17,21 +17,21 @@
   if (v10)
   {
     v10->_active = 1;
-    v10->_targetTouchForce = a3;
+    v10->_targetTouchForce = force;
     v10->_location.x = x;
     v10->_location.y = y;
-    objc_storeWeak(&v10->_coordinateSpace, v9);
+    objc_storeWeak(&v10->_coordinateSpace, spaceCopy);
     v12 = v11;
   }
 
   return v11;
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   WeakRetained = objc_loadWeakRetained(&self->_coordinateSpace);
-  [WeakRetained convertPoint:v4 toCoordinateSpace:{self->_location.x, self->_location.y}];
+  [WeakRetained convertPoint:spaceCopy toCoordinateSpace:{self->_location.x, self->_location.y}];
   v7 = v6;
   v9 = v8;
 

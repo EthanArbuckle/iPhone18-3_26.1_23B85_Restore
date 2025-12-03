@@ -1,52 +1,52 @@
 @interface CKDPZoneRetrieveResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAnonymousZoneInfo:(id)a3;
-- (void)addZoneSummary:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAnonymousZoneInfo:(id)info;
+- (void)addZoneSummary:(id)summary;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneRetrieveResponse
 
-- (void)addZoneSummary:(id)a3
+- (void)addZoneSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   zoneSummarys = self->_zoneSummarys;
-  v8 = v4;
+  v8 = summaryCopy;
   if (!zoneSummarys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_zoneSummarys;
     self->_zoneSummarys = v6;
 
-    v4 = v8;
+    summaryCopy = v8;
     zoneSummarys = self->_zoneSummarys;
   }
 
-  objc_msgSend_addObject_(zoneSummarys, v4, v4);
+  objc_msgSend_addObject_(zoneSummarys, summaryCopy, summaryCopy);
 }
 
-- (void)addAnonymousZoneInfo:(id)a3
+- (void)addAnonymousZoneInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   anonymousZoneInfos = self->_anonymousZoneInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!anonymousZoneInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_anonymousZoneInfos;
     self->_anonymousZoneInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     anonymousZoneInfos = self->_anonymousZoneInfos;
   }
 
-  objc_msgSend_addObject_(anonymousZoneInfos, v4, v4);
+  objc_msgSend_addObject_(anonymousZoneInfos, infoCopy, infoCopy);
 }
 
 - (id)description
@@ -150,10 +150,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -226,12 +226,12 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   if (objc_msgSend_zoneSummarysCount(self, v4, v5))
   {
-    objc_msgSend_clearZoneSummarys(v26, v6, v7);
+    objc_msgSend_clearZoneSummarys(toCopy, v6, v7);
     v10 = objc_msgSend_zoneSummarysCount(self, v8, v9);
     if (v10)
     {
@@ -239,7 +239,7 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_zoneSummaryAtIndex_(self, v6, i);
-        objc_msgSend_addZoneSummary_(v26, v14, v13);
+        objc_msgSend_addZoneSummary_(toCopy, v14, v13);
       }
     }
   }
@@ -247,12 +247,12 @@
   continuationMarker = self->_continuationMarker;
   if (continuationMarker)
   {
-    objc_msgSend_setContinuationMarker_(v26, v6, continuationMarker);
+    objc_msgSend_setContinuationMarker_(toCopy, v6, continuationMarker);
   }
 
   if (objc_msgSend_anonymousZoneInfosCount(self, v6, continuationMarker))
   {
-    objc_msgSend_clearAnonymousZoneInfos(v26, v16, v17);
+    objc_msgSend_clearAnonymousZoneInfos(toCopy, v16, v17);
     v20 = objc_msgSend_anonymousZoneInfosCount(self, v18, v19);
     if (v20)
     {
@@ -260,17 +260,17 @@
       for (j = 0; j != v22; ++j)
       {
         v24 = objc_msgSend_anonymousZoneInfoAtIndex_(self, v21, j);
-        objc_msgSend_addAnonymousZoneInfo_(v26, v25, v24);
+        objc_msgSend_addAnonymousZoneInfo_(toCopy, v25, v24);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v44 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v38 = 0u;
   v39 = 0u;
@@ -292,7 +292,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v38 + 1) + 8 * v17), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v38 + 1) + 8 * v17), v14, zone);
         objc_msgSend_addZoneSummary_(v10, v19, v18);
 
         ++v17;
@@ -305,7 +305,7 @@
     while (v15);
   }
 
-  v21 = objc_msgSend_copyWithZone_(self->_continuationMarker, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_continuationMarker, v20, zone);
   v22 = v10[2];
   v10[2] = v21;
 
@@ -329,7 +329,7 @@
           objc_enumerationMutation(v23);
         }
 
-        v30 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v29), v26, a3, v34);
+        v30 = objc_msgSend_copyWithZone_(*(*(&v34 + 1) + 8 * v29), v26, zone, v34);
         objc_msgSend_addAnonymousZoneInfo_(v10, v31, v30);
 
         ++v29;
@@ -346,14 +346,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((zoneSummarys = self->_zoneSummarys, v9 = v4[3], !(zoneSummarys | v9)) || objc_msgSend_isEqual_(zoneSummarys, v7, v9)) && ((continuationMarker = self->_continuationMarker, v11 = v4[2], !(continuationMarker | v11)) || objc_msgSend_isEqual_(continuationMarker, v7, v11)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((zoneSummarys = self->_zoneSummarys, v9 = equalCopy[3], !(zoneSummarys | v9)) || objc_msgSend_isEqual_(zoneSummarys, v7, v9)) && ((continuationMarker = self->_continuationMarker, v11 = equalCopy[2], !(continuationMarker | v11)) || objc_msgSend_isEqual_(continuationMarker, v7, v11)))
   {
     anonymousZoneInfos = self->_anonymousZoneInfos;
-    v13 = v4[1];
+    v13 = equalCopy[1];
     if (anonymousZoneInfos | v13)
     {
       isEqual = objc_msgSend_isEqual_(anonymousZoneInfos, v7, v13);
@@ -380,15 +380,15 @@
   return v7 ^ objc_msgSend_hash(self->_anonymousZoneInfos, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v26, v31, 16);
   if (v7)
   {
@@ -412,7 +412,7 @@
     while (v9);
   }
 
-  v13 = *(v4 + 2);
+  v13 = *(fromCopy + 2);
   if (v13)
   {
     objc_msgSend_setContinuationMarker_(self, v12, v13);
@@ -422,7 +422,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = *(v4 + 1);
+  v14 = *(fromCopy + 1);
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v15, &v22, v30, 16);
   if (v16)
   {

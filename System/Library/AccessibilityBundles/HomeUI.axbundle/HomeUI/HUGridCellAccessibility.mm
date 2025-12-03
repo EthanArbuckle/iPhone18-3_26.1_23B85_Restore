@@ -1,5 +1,5 @@
 @interface HUGridCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsActiveGridCell;
 - (id)_accessibilitySupportGesturesAttributes;
 - (id)_axServiceStateString;
@@ -13,28 +13,28 @@
 
 @implementation HUGridCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUGridCell" hasInstanceMethod:@"primaryState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"HUGridCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUGridCell" hasInstanceVariable:@"_rearranging" withType:"BOOL"];
-  [v3 validateClass:@"HUGridStatusCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HUGridCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"HFAbstractControlStatusItem"];
-  [v3 validateClass:@"HUGridServicePlaceholderCell"];
-  [v3 validateClass:@"HUGridHomeCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUGridCell" hasInstanceMethod:@"primaryState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"HUGridCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUGridCell" hasInstanceVariable:@"_rearranging" withType:"BOOL"];
+  [validationsCopy validateClass:@"HUGridStatusCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HUGridCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"HFAbstractControlStatusItem"];
+  [validationsCopy validateClass:@"HUGridServicePlaceholderCell"];
+  [validationsCopy validateClass:@"HUGridHomeCell"];
 }
 
 - (id)accessibilityLabel
 {
   v7.receiver = self;
   v7.super_class = HUGridCellAccessibility;
-  v2 = [(HUGridCellAccessibility *)&v7 accessibilityLabel];
-  v3 = v2;
-  if (v2)
+  accessibilityLabel = [(HUGridCellAccessibility *)&v7 accessibilityLabel];
+  v3 = accessibilityLabel;
+  if (accessibilityLabel)
   {
-    v4 = v2;
+    v4 = accessibilityLabel;
   }
 
   else
@@ -51,17 +51,17 @@
 {
   if ([(HUGridCellAccessibility *)self _axIsActiveGridCell])
   {
-    v3 = [(HUGridCellAccessibility *)self _axServiceStateString];
+    _axServiceStateString = [(HUGridCellAccessibility *)self _axServiceStateString];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = HUGridCellAccessibility;
-    v3 = [(HUGridCellAccessibility *)&v5 accessibilityValue];
+    _axServiceStateString = [(HUGridCellAccessibility *)&v5 accessibilityValue];
   }
 
-  return v3;
+  return _axServiceStateString;
 }
 
 - (id)_axServiceStateString
@@ -97,26 +97,26 @@ LABEL_7:
     v5 = [v3 initWithName:v4 target:self selector:sel__axOpenQuickControls];
 
     v10[0] = v5;
-    v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
+    accessibilityCustomActions = [MEMORY[0x29EDB8D80] arrayWithObjects:v10 count:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = HUGridCellAccessibility;
-    v6 = [(HUGridCellAccessibility *)&v9 accessibilityCustomActions];
+    accessibilityCustomActions = [(HUGridCellAccessibility *)&v9 accessibilityCustomActions];
   }
 
   v7 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return accessibilityCustomActions;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v7.receiver = self;
   v7.super_class = HUGridCellAccessibility;
-  v3 = [(HUGridCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(HUGridCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(HUGridCellAccessibility *)self safeBoolForKey:@"_rearranging"];
   v5 = *MEMORY[0x29EDC7528];
   if (!v4)
@@ -124,30 +124,30 @@ LABEL_7:
     v5 = *MEMORY[0x29EDC7F70];
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityHint
 {
   if ([(HUGridCellAccessibility *)self safeBoolForKey:@"_rearranging"])
   {
-    v3 = accessibilityHomeUILocalizedString(@"grid.cell.reorder.hint");
+    accessibilityHint = accessibilityHomeUILocalizedString(@"grid.cell.reorder.hint");
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = HUGridCellAccessibility;
-    v3 = [(HUGridCellAccessibility *)&v5 accessibilityHint];
+    accessibilityHint = [(HUGridCellAccessibility *)&v5 accessibilityHint];
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (void)_axOpenQuickControls
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:AXOpenControlsNotification object:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:AXOpenControlsNotification object:self];
 }
 
 - (id)_accessibilitySupportGesturesAttributes
@@ -170,9 +170,9 @@ LABEL_7:
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 contentView];
-  v5 = [v4 gestureRecognizers];
-  v6 = [v5 ax_containsObjectUsingBlock:&__block_literal_global_6];
+  contentView = [v3 contentView];
+  gestureRecognizers = [contentView gestureRecognizers];
+  v6 = [gestureRecognizers ax_containsObjectUsingBlock:&__block_literal_global_6];
 
   MEMORY[0x29C2DA460](@"HUGridStatusCell");
   if (objc_opt_isKindOfClass())

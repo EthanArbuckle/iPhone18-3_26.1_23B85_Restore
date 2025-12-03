@@ -1,17 +1,17 @@
 @interface NewFeaturesFlowManager
 - (BOOL)needsToRun;
 - (_TtC13BuddyMigrator22NewFeaturesFlowManager)init;
-- (_TtC13BuddyMigrator22NewFeaturesFlowManager)initWithChronicle:(id)a3 featureFlags:(id)a4;
-- (void)updatePresentedKey:(BOOL)a3;
+- (_TtC13BuddyMigrator22NewFeaturesFlowManager)initWithChronicle:(id)chronicle featureFlags:(id)flags;
+- (void)updatePresentedKey:(BOOL)key;
 @end
 
 @implementation NewFeaturesFlowManager
 
-- (_TtC13BuddyMigrator22NewFeaturesFlowManager)initWithChronicle:(id)a3 featureFlags:(id)a4
+- (_TtC13BuddyMigrator22NewFeaturesFlowManager)initWithChronicle:(id)chronicle featureFlags:(id)flags
 {
-  v5 = a3;
+  chronicleCopy = chronicle;
   swift_unknownObjectRetain();
-  v6 = sub_15C50(v5, a4);
+  v6 = sub_15C50(chronicleCopy, flags);
 
   return v6;
 }
@@ -19,12 +19,12 @@
 - (BOOL)needsToRun
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC13BuddyMigrator22NewFeaturesFlowManager_featureFlags);
-  v3 = self;
+  selfCopy = self;
   if ([v2 isSolariumEnabled])
   {
-    v4 = [*(&v3->super.isa + OBJC_IVAR____TtC13BuddyMigrator22NewFeaturesFlowManager_chronicle) entryForFeature:7];
+    v4 = [*(&selfCopy->super.isa + OBJC_IVAR____TtC13BuddyMigrator22NewFeaturesFlowManager_chronicle) entryForFeature:7];
 
-    v3 = v4;
+    selfCopy = v4;
     if (!v4)
     {
       return 1;
@@ -34,10 +34,10 @@
   return 0;
 }
 
-- (void)updatePresentedKey:(BOOL)a3
+- (void)updatePresentedKey:(BOOL)key
 {
-  v4 = self;
-  sub_15A34(a3);
+  selfCopy = self;
+  sub_15A34(key);
 }
 
 - (_TtC13BuddyMigrator22NewFeaturesFlowManager)init

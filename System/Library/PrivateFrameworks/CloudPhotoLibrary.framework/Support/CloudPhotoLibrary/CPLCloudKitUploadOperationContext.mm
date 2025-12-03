@@ -1,17 +1,17 @@
 @interface CPLCloudKitUploadOperationContext
 - (id)extendedStatusDescriptionStrings;
-- (void)addRecord:(id)a3 forRecordID:(id)a4 ignoreResources:(BOOL)a5;
-- (void)recordCompletionForRecordID:(id)a3 withError:(id)a4;
-- (void)updateProgress:(double)a3 forRecordID:(id)a4;
+- (void)addRecord:(id)record forRecordID:(id)d ignoreResources:(BOOL)resources;
+- (void)recordCompletionForRecordID:(id)d withError:(id)error;
+- (void)updateProgress:(double)progress forRecordID:(id)d;
 @end
 
 @implementation CPLCloudKitUploadOperationContext
 
-- (void)addRecord:(id)a3 forRecordID:(id)a4 ignoreResources:(BOOL)a5
+- (void)addRecord:(id)record forRecordID:(id)d ignoreResources:(BOOL)resources
 {
-  v5 = a5;
-  v17 = a3;
-  v8 = a4;
+  resourcesCopy = resources;
+  recordCopy = record;
+  dCopy = d;
   recordIDToProgressMap = self->_recordIDToProgressMap;
   if (!recordIDToProgressMap)
   {
@@ -26,9 +26,9 @@
     recordIDToProgressMap = self->_recordIDToProgressMap;
   }
 
-  [(NSMutableDictionary *)recordIDToProgressMap setObject:&off_10028EC80 forKey:v8];
-  [(NSMutableDictionary *)self->_recordIDToCPLRecordMap setObject:v17 forKey:v8];
-  if (v5)
+  [(NSMutableDictionary *)recordIDToProgressMap setObject:&off_10028EC80 forKey:dCopy];
+  [(NSMutableDictionary *)self->_recordIDToCPLRecordMap setObject:recordCopy forKey:dCopy];
+  if (resourcesCopy)
   {
     ignoreResourcesForRecordIDs = self->_ignoreResourcesForRecordIDs;
     if (!ignoreResourcesForRecordIDs)
@@ -40,30 +40,30 @@
       ignoreResourcesForRecordIDs = self->_ignoreResourcesForRecordIDs;
     }
 
-    [(NSMutableSet *)ignoreResourcesForRecordIDs addObject:v8];
+    [(NSMutableSet *)ignoreResourcesForRecordIDs addObject:dCopy];
   }
 }
 
-- (void)updateProgress:(double)a3 forRecordID:(id)a4
+- (void)updateProgress:(double)progress forRecordID:(id)d
 {
-  v8 = a4;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)self->_recordIDToProgressMap objectForKey:?];
 
   if (v6)
   {
-    v7 = [NSNumber numberWithInteger:(a3 * 100.0)];
-    [(NSMutableDictionary *)self->_recordIDToProgressMap setObject:v7 forKey:v8];
+    v7 = [NSNumber numberWithInteger:(progress * 100.0)];
+    [(NSMutableDictionary *)self->_recordIDToProgressMap setObject:v7 forKey:dCopy];
   }
 }
 
-- (void)recordCompletionForRecordID:(id)a3 withError:(id)a4
+- (void)recordCompletionForRecordID:(id)d withError:(id)error
 {
-  v8 = a3;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)self->_recordIDToProgressMap objectForKey:?];
 
   if (v6)
   {
-    if (a4)
+    if (error)
     {
       v7 = &off_10028EC98;
     }
@@ -73,7 +73,7 @@
       v7 = &off_10028ECB0;
     }
 
-    [(NSMutableDictionary *)self->_recordIDToProgressMap setObject:v7 forKey:v8];
+    [(NSMutableDictionary *)self->_recordIDToProgressMap setObject:v7 forKey:dCopy];
   }
 }
 
@@ -103,7 +103,7 @@
     v17 = 3221225472;
     v18 = sub_10003D0D0;
     v19 = &unk_100273D60;
-    v20 = self;
+    selfCopy = self;
     v22 = &v26;
     v25 = v6 ^ 1;
     v8 = v3;
@@ -116,9 +116,9 @@
       v9 = [NSString alloc];
       v10 = v31[3];
       v11 = [NSByteCountFormatter stringFromByteCount:v35[3] countStyle:3];
-      v12 = [v9 initWithFormat:@"\tTotal for %lu resources in operation: %@", v10, v11, v16, v17, v18, v19, v20];
+      selfCopy = [v9 initWithFormat:@"\tTotal for %lu resources in operation: %@", v10, v11, v16, v17, v18, v19, selfCopy];
 
-      [v8 addObject:v12];
+      [v8 addObject:selfCopy];
     }
 
     if (v27[3])

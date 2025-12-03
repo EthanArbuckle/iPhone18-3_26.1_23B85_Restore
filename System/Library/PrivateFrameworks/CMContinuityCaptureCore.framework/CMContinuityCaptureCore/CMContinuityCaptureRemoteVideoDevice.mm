@@ -1,24 +1,24 @@
 @interface CMContinuityCaptureRemoteVideoDevice
 - (BOOL)_companionConnectionsRequired;
-- (BOOL)_deviceFormat:(id)a3 isCompatibleWithConfiguration:(id)a4 requiringMultiCamSupport:(BOOL)a5 minFrameRate:(unsigned int)a6 maxFrameRate:(unsigned int)a7;
+- (BOOL)_deviceFormat:(id)format isCompatibleWithConfiguration:(id)configuration requiringMultiCamSupport:(BOOL)support minFrameRate:(unsigned int)rate maxFrameRate:(unsigned int)frameRate;
 - (BOOL)_isUltraWideCameraSupported;
 - (BOOL)_shouldOnlyDisableVideoConnection;
 - (BOOL)configureConnections;
 - (BOOL)isStreamingOnSuperWide;
-- (BOOL)startAVConferenceStack:(unint64_t)a3;
-- (BOOL)startCameraCaptureStack:(unint64_t)a3;
+- (BOOL)startAVConferenceStack:(unint64_t)stack;
+- (BOOL)startCameraCaptureStack:(unint64_t)stack;
 - (BOOL)stopAVConferenceStack;
-- (BOOL)stopCameraCaptureStack:(unint64_t)a3;
+- (BOOL)stopCameraCaptureStack:(unint64_t)stack;
 - (BOOL)suppressVideoEffects;
 - (CMContinuityCaptureRemoteVideoDevice)companionDevice;
-- (CMContinuityCaptureRemoteVideoDevice)initWithCapabilities:(id)a3 compositeDelegate:(id)a4 captureSession:(id)a5;
+- (CMContinuityCaptureRemoteVideoDevice)initWithCapabilities:(id)capabilities compositeDelegate:(id)delegate captureSession:(id)session;
 - (NSDictionary)centerStageRectOfInterest;
-- (id)_avfDeviceTypeForManualFramingDeviceType:(int64_t)a3;
-- (id)_selectVideoDeviceForConfiguration:(id)a3;
-- (id)compatibleDeviceFormatForMaxFrameRate:(unsigned int)a3 minFrameRate:(unsigned int)a4;
-- (id)connectionsForConfiguration:(id)a3;
+- (id)_avfDeviceTypeForManualFramingDeviceType:(int64_t)type;
+- (id)_selectVideoDeviceForConfiguration:(id)configuration;
+- (id)compatibleDeviceFormatForMaxFrameRate:(unsigned int)rate minFrameRate:(unsigned int)frameRate;
+- (id)connectionsForConfiguration:(id)configuration;
 - (id)createAVCVideoStream;
-- (id)newVideoStreamCurrentConfiguration:(int64_t)a3;
+- (id)newVideoStreamCurrentConfiguration:(int64_t)configuration;
 - (int64_t)centerStageFramingMode;
 - (unsigned)maxFrameRate;
 - (unsigned)minFrameRate;
@@ -29,62 +29,62 @@
 - (void)_enableCenterStage;
 - (void)_enableManualFraming;
 - (void)_forcefullyEnableCenterStageOnSuperWide;
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)_registerDockKitNotification;
-- (void)_restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:(BOOL)a3;
-- (void)_stopCameraCaptureStackRemoveCaptureSessionConnectionsWithOption:(unint64_t)a3;
+- (void)_restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:(BOOL)stack;
+- (void)_stopCameraCaptureStackRemoveCaptureSessionConnectionsWithOption:(unint64_t)option;
 - (void)_toggleBetweenCenterStageAndManualFraming;
 - (void)_updateControlStatus;
-- (void)_updateManualFramingDeviceType:(int64_t)a3;
+- (void)_updateManualFramingDeviceType:(int64_t)type;
 - (void)_updatePhotoOutputConfigs;
 - (void)addVideoDeviceKVOs;
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureStillImage:(id)a3 entity:(int64_t)a4 completion:(id)a5;
-- (void)didStartStreamInput:(id)a3;
-- (void)didStopStreamInput:(id)a3;
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5;
-- (void)enqueueReactionEffect:(id)a3 entity:(int64_t)a4;
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureStillImage:(id)image entity:(int64_t)entity completion:(id)completion;
+- (void)didStartStreamInput:(id)input;
+- (void)didStopStreamInput:(id)input;
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion;
+- (void)enqueueReactionEffect:(id)effect entity:(int64_t)entity;
 - (void)invalidate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)postAVCStreamInterruption;
-- (void)postActionCompletionForEventName:(id)a3 eventData:(id)a4 error:(id)a5;
-- (void)postActionOfType:(unint64_t)a3 forEvent:(id)a4 option:(unint64_t)a5;
+- (void)postActionCompletionForEventName:(id)name eventData:(id)data error:(id)error;
+- (void)postActionOfType:(unint64_t)type forEvent:(id)event option:(unint64_t)option;
 - (void)removeVideoDeviceKVOs;
 - (void)serverDidDie;
-- (void)setBackgroundReplacementPixelBuffer:(__CVBuffer *)a3;
-- (void)setCenterStageEnabled:(BOOL)a3;
-- (void)setCenterStageFramingMode:(int64_t)a3;
-- (void)setCenterStageRectOfInterest:(id)a3;
-- (void)setDeskViewCameraMode:(int64_t)a3;
-- (void)setFormat:(id)a3;
+- (void)setBackgroundReplacementPixelBuffer:(__CVBuffer *)buffer;
+- (void)setCenterStageEnabled:(BOOL)enabled;
+- (void)setCenterStageFramingMode:(int64_t)mode;
+- (void)setCenterStageRectOfInterest:(id)interest;
+- (void)setDeskViewCameraMode:(int64_t)mode;
+- (void)setFormat:(id)format;
 - (void)setMinFrameDurationOverrideIfApplicable;
-- (void)setPortraitEffectAperture:(float)a3;
-- (void)setReactionEffectGesturesEnabled:(float)a3;
-- (void)setReactionEffectSuppressedGesturesEnabled:(float)a3;
-- (void)setStudioLightingIntensity:(float)a3;
-- (void)setValueForControl:(id)a3 completion:(id)a4;
-- (void)setVideoDevice:(id)a3;
-- (void)setVideoZoomFactor:(double)a3;
+- (void)setPortraitEffectAperture:(float)aperture;
+- (void)setReactionEffectGesturesEnabled:(float)enabled;
+- (void)setReactionEffectSuppressedGesturesEnabled:(float)enabled;
+- (void)setStudioLightingIntensity:(float)intensity;
+- (void)setValueForControl:(id)control completion:(id)completion;
+- (void)setVideoDevice:(id)device;
+- (void)setVideoZoomFactor:(double)factor;
 - (void)setupControls;
-- (void)stopCaptureStack:(unint64_t)a3 completion:(id)a4;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidRTPTimeOut:(id)a3;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
-- (void)tearDownConnectionsWithVideoDataConnectionDisabled:(BOOL)a3;
-- (void)terminateComplete:(id)a3;
+- (void)stopCaptureStack:(unint64_t)stack completion:(id)completion;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidRTPTimeOut:(id)out;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
+- (void)tearDownConnectionsWithVideoDataConnectionDisabled:(BOOL)disabled;
+- (void)terminateComplete:(id)complete;
 - (void)updateControlStatus;
 @end
 
 @implementation CMContinuityCaptureRemoteVideoDevice
 
-- (void)terminateComplete:(id)a3
+- (void)terminateComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   dockKitNotificationAgent = self->_dockKitNotificationAgent;
   if (dockKitNotificationAgent)
   {
@@ -93,7 +93,7 @@
 
   v6.receiver = self;
   v6.super_class = CMContinuityCaptureRemoteVideoDevice;
-  [(CMContinuityCaptureDeviceBase *)&v6 terminateComplete:v4];
+  [(CMContinuityCaptureDeviceBase *)&v6 terminateComplete:completeCopy];
 }
 
 - (void)setupControls
@@ -132,11 +132,11 @@
 
         v9 = *(*(&v30 + 1) + 8 * v7);
         v10 = [CMContinuityCaptureControl alloc];
-        v11 = [(CMContinuityCaptureDeviceBase *)self entity];
+        entity = [(CMContinuityCaptureDeviceBase *)self entity];
         v28[0] = 1;
         v28[1] = 0;
         v28[2] = 0;
-        v5 = [(CMContinuityCaptureControl *)v10 initWithName:v9 attributes:0 entity:v11 minimumSupportedVersion:v28 value:&unk_2854EC860];
+        v5 = [(CMContinuityCaptureControl *)v10 initWithName:v9 attributes:0 entity:entity minimumSupportedVersion:v28 value:&unk_2854EC860];
 
         [(NSMutableDictionary *)self->_cmControlByName setObject:v5 forKeyedSubscript:v9];
         ++v7;
@@ -150,14 +150,14 @@
     while (v4);
   }
 
-  v12 = [(CMContinuityCaptureDeviceBase *)self capabilities];
-  v13 = [v12 controls];
+  capabilities = [(CMContinuityCaptureDeviceBase *)self capabilities];
+  controls = [capabilities controls];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v13;
+  v14 = controls;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v15)
   {
@@ -174,8 +174,8 @@
 
         v19 = *(*(&v24 + 1) + 8 * i);
         cmControlByName = self->_cmControlByName;
-        v21 = [v19 name];
-        [(NSMutableDictionary *)cmControlByName setObject:v19 forKeyedSubscript:v21];
+        name = [v19 name];
+        [(NSMutableDictionary *)cmControlByName setObject:v19 forKeyedSubscript:name];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v24 objects:v23 count:16];
@@ -185,16 +185,16 @@
   }
 }
 
-- (void)setVideoDevice:(id)a3
+- (void)setVideoDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (self->_videoDevice)
   {
     [(CMContinuityCaptureRemoteVideoDevice *)self removeVideoDeviceKVOs];
   }
 
   videoDevice = self->_videoDevice;
-  self->_videoDevice = v4;
+  self->_videoDevice = deviceCopy;
 
   if (self->_videoDevice)
   {
@@ -203,19 +203,19 @@
   }
 }
 
-- (void)setDeskViewCameraMode:(int64_t)a3
+- (void)setDeskViewCameraMode:(int64_t)mode
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDevice = self->_videoDevice;
-  if (videoDevice && ([(AVCaptureDevice *)videoDevice isOverheadCameraModeSupported:a3]& 1) != 0)
+  if (videoDevice && ([(AVCaptureDevice *)videoDevice isOverheadCameraModeSupported:mode]& 1) != 0)
   {
     [(AVCaptureDevice *)self->_videoDevice lockForConfiguration:0];
-    [(AVCaptureDevice *)self->_videoDevice setDeskViewCameraMode:a3];
+    [(AVCaptureDevice *)self->_videoDevice setDeskViewCameraMode:mode];
     [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
-    v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v7 setDeskViewCameraMode:a3];
+    activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration setDeskViewCameraMode:mode];
 
     [(CMContinuityCaptureRemoteVideoDevice *)self updateControlStatus];
   }
@@ -226,16 +226,16 @@
   }
 }
 
-- (void)setFormat:(id)a3
+- (void)setFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = formatCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ setFormat %{public}@", &v7, 0x16u);
   }
 
@@ -243,7 +243,7 @@
   if (videoDevice)
   {
     [(AVCaptureDevice *)videoDevice lockForConfiguration:0];
-    [(AVCaptureDevice *)self->_videoDevice setActiveFormat:v4];
+    [(AVCaptureDevice *)self->_videoDevice setActiveFormat:formatCopy];
     [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
   }
 
@@ -253,15 +253,15 @@
   }
 }
 
-- (void)setVideoZoomFactor:(double)a3
+- (void)setVideoZoomFactor:(double)factor
 {
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2048;
-    v27 = a3;
+    factorCopy2 = factor;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ zoomFactor: %.2f", buf, 0x16u);
   }
 
@@ -277,13 +277,13 @@
   else
   {
     [(AVCaptureDevice *)self->_videoDevice minAvailableVideoZoomFactor];
-    if (v6 <= a3)
+    if (v6 <= factor)
     {
-      v7 = [(AVCaptureDevice *)self->_videoDevice activeFormat];
-      [v7 videoMaxZoomFactor];
+      activeFormat = [(AVCaptureDevice *)self->_videoDevice activeFormat];
+      [activeFormat videoMaxZoomFactor];
       v9 = v8;
 
-      if (v9 >= a3)
+      if (v9 >= factor)
       {
         videoDevice = self->_videoDevice;
         v23 = 0;
@@ -291,18 +291,18 @@
         v12 = v23;
         if (v11)
         {
-          [(AVCaptureDevice *)self->_videoDevice setVideoZoomFactor:a3];
+          [(AVCaptureDevice *)self->_videoDevice setVideoZoomFactor:factor];
           [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
-          v13 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-          if (v13)
+          companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+          if (companionDevice)
           {
-            v14 = v13;
-            v15 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-            if ([v15 streaming])
+            v14 = companionDevice;
+            companionDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+            if ([companionDevice2 streaming])
             {
-              v16 = [(CMContinuityCaptureDeviceBase *)self streaming];
+              streaming = [(CMContinuityCaptureDeviceBase *)self streaming];
 
-              if (!v16)
+              if (!streaming)
               {
                 [CMContinuityCaptureRemoteVideoDevice setVideoZoomFactor:];
                 goto LABEL_17;
@@ -314,23 +314,23 @@
             }
           }
 
-          v17 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-          [v17 setVideoZoomFactor:a3];
+          activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+          [activeConfiguration setVideoZoomFactor:factor];
         }
 
         else
         {
-          v17 = CMContinuityCaptureLog(2);
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          activeConfiguration = CMContinuityCaptureLog(2);
+          if (os_log_type_enabled(activeConfiguration, OS_LOG_TYPE_ERROR))
           {
             v18 = self->_videoDevice;
             *buf = 138543874;
-            v25 = self;
+            selfCopy3 = self;
             v26 = 2112;
-            v27 = *&v18;
+            factorCopy2 = *&v18;
             v28 = 2112;
             v29 = v12;
-            _os_log_error_impl(&dword_242545000, v17, OS_LOG_TYPE_ERROR, "%{public}@ Error locking %@ for configuration: %@", buf, 0x20u);
+            _os_log_error_impl(&dword_242545000, activeConfiguration, OS_LOG_TYPE_ERROR, "%{public}@ Error locking %@ for configuration: %@", buf, 0x20u);
           }
         }
 
@@ -344,12 +344,12 @@
     {
       [(AVCaptureDevice *)self->_videoDevice minAvailableVideoZoomFactor];
       v20 = v19;
-      v21 = [(AVCaptureDevice *)self->_videoDevice activeFormat];
-      [v21 videoMaxZoomFactor];
+      activeFormat2 = [(AVCaptureDevice *)self->_videoDevice activeFormat];
+      [activeFormat2 videoMaxZoomFactor];
       *buf = 138544130;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2048;
-      v27 = a3;
+      factorCopy2 = factor;
       v28 = 2048;
       v29 = v20;
       v30 = 2048;
@@ -363,37 +363,37 @@ LABEL_17:
 
 - (unsigned)maxFrameRate
 {
-  v2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v3 = [v2 maxFrameRate];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  maxFrameRate = [activeConfiguration maxFrameRate];
 
-  return v3;
+  return maxFrameRate;
 }
 
 - (unsigned)minFrameRate
 {
-  v2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v3 = [v2 minFrameRate];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  minFrameRate = [activeConfiguration minFrameRate];
 
-  return v3;
+  return minFrameRate;
 }
 
-- (void)setCenterStageEnabled:(BOOL)a3
+- (void)setCenterStageEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  enabledCopy = enabled;
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "No";
-    if (v3)
+    if (enabledCopy)
     {
       v7 = "Yes";
     }
 
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = v7;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ CenterStageEnabled: %s", &v10, 0x16u);
@@ -402,11 +402,11 @@ LABEL_17:
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v9 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v9)
+    if (activeFormat)
     {
-      if (v3)
+      if (enabledCopy)
       {
         if (self->_manualFramingFeatureFlagEnabled)
         {
@@ -445,7 +445,7 @@ LABEL_17:
   if (OUTLINED_FUNCTION_42(v3))
   {
     v5 = 138543618;
-    v6 = a1;
+    selfCopy = self;
     v7 = 2080;
     v8 = "[CMContinuityCaptureRemoteVideoDevice _enableManualFraming]";
     OUTLINED_FUNCTION_11_0(&dword_242545000, v1, v4, "%{public}@ %s Attempted to enable Manual Framing while Center Stage is active. Please disable Center Stage first", &v5);
@@ -455,8 +455,8 @@ LABEL_17:
 - (void)_disableManualFraming
 {
   OUTLINED_FUNCTION_29();
-  v1 = [v0 videoDevice];
-  v2 = [v1 localizedName];
+  videoDevice = [v0 videoDevice];
+  localizedName = [videoDevice localizedName];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_2();
@@ -466,8 +466,8 @@ LABEL_17:
 - (void)_enableCenterStage
 {
   OUTLINED_FUNCTION_29();
-  v1 = [v0 videoDevice];
-  v2 = [v1 localizedName];
+  videoDevice = [v0 videoDevice];
+  localizedName = [videoDevice localizedName];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_1_2();
@@ -476,8 +476,8 @@ LABEL_17:
 
 - (void)_disableCenterStage
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [MEMORY[0x277CE5AC8] setCenterStageControlMode:1];
   [MEMORY[0x277CE5AC8] setCenterStageEnabled:0];
@@ -485,9 +485,9 @@ LABEL_17:
   [(CMContinuityCaptureRemoteVideoDevice *)self _updateControlStatus];
 }
 
-- (void)setCenterStageRectOfInterest:(id)a3
+- (void)setCenterStageRectOfInterest:(id)interest
 {
-  v4 = a3;
+  interestCopy = interest;
   v5 = *(MEMORY[0x277CBF398] + 16);
   rect.origin = *MEMORY[0x277CBF398];
   rect.size = v5;
@@ -495,13 +495,13 @@ LABEL_17:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = interestCopy;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ centerStageRectOfInterest: %@", &v12, 0x16u);
   }
 
-  if (self->_videoDevice && [(CMContinuityCaptureRemoteVideoDevice *)self centerStageEnabled]&& CGRectMakeWithDictionaryRepresentation(v4, &rect))
+  if (self->_videoDevice && [(CMContinuityCaptureRemoteVideoDevice *)self centerStageEnabled]&& CGRectMakeWithDictionaryRepresentation(interestCopy, &rect))
   {
     videoDevice = self->_videoDevice;
     v18 = 0;
@@ -520,7 +520,7 @@ LABEL_17:
       {
         v11 = self->_videoDevice;
         v12 = 138543874;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2112;
         v15 = v11;
         v16 = 2112;
@@ -542,61 +542,61 @@ LABEL_17:
 
 - (int64_t)centerStageFramingMode
 {
-  v2 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = MEMORY[0x277CE5AC8];
 
   return [v3 centerStageFramingMode];
 }
 
-- (void)setCenterStageFramingMode:(int64_t)a3
+- (void)setCenterStageFramingMode:(int64_t)mode
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  [MEMORY[0x277CE5AC8] setCenterStageFramingMode:a3];
+  [MEMORY[0x277CE5AC8] setCenterStageFramingMode:mode];
   v6 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ centerStageFramingMode: %d", &v7, 0x12u);
   }
 }
 
 - (BOOL)suppressVideoEffects
 {
-  v2 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-  v3 = [v2 captureSession];
-  v4 = [v3 suppressVideoEffects];
+  captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+  v2CaptureSession = [captureSession captureSession];
+  suppressVideoEffects = [v2CaptureSession suppressVideoEffects];
 
-  return v4;
+  return suppressVideoEffects;
 }
 
-- (void)setPortraitEffectAperture:(float)a3
+- (void)setPortraitEffectAperture:(float)aperture
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543618;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2048;
-    v20 = a3;
+    apertureCopy = aperture;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ portraitEffectAperture: %f", &v17, 0x16u);
   }
 
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v8 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v8)
+    if (activeFormat)
     {
       v9 = self->_videoDevice;
       v23 = 0;
@@ -604,11 +604,11 @@ LABEL_17:
       v11 = v23;
       if (v10)
       {
-        *&v12 = a3;
+        *&v12 = aperture;
         [MEMORY[0x277CE5AC8] setBackgroundBlurAperture:v12];
-        v13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        *&v14 = a3;
-        [v13 setPortraitEffectAperture:v14];
+        activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        *&v14 = aperture;
+        [activeConfiguration setPortraitEffectAperture:v14];
 
         [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
       }
@@ -620,9 +620,9 @@ LABEL_17:
         {
           v16 = self->_videoDevice;
           v17 = 138543874;
-          v18 = self;
+          selfCopy2 = self;
           v19 = 2112;
-          v20 = *&v16;
+          apertureCopy = *&v16;
           v21 = 2112;
           v22 = v11;
           _os_log_error_impl(&dword_242545000, v15, OS_LOG_TYPE_ERROR, "%{public}@ Error locking %@ for configuration: %@", &v17, 0x20u);
@@ -650,17 +650,17 @@ LABEL_17:
   }
 }
 
-- (void)setStudioLightingIntensity:(float)a3
+- (void)setStudioLightingIntensity:(float)intensity
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v7 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v7)
+    if (activeFormat)
     {
       v8 = self->_videoDevice;
       v22 = 0;
@@ -668,11 +668,11 @@ LABEL_17:
       v10 = v22;
       if (v9)
       {
-        *&v11 = a3;
+        *&v11 = intensity;
         [MEMORY[0x277CE5AC8] setStudioLightingIntensity:v11];
-        v12 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        *&v13 = a3;
-        [v12 setStudioLightingIntensity:v13];
+        activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        *&v13 = intensity;
+        [activeConfiguration setStudioLightingIntensity:v13];
 
         [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
       }
@@ -684,7 +684,7 @@ LABEL_17:
         {
           v15 = self->_videoDevice;
           v16 = 138543874;
-          v17 = self;
+          selfCopy = self;
           v18 = 2112;
           v19 = v15;
           v20 = 2112;
@@ -714,17 +714,17 @@ LABEL_17:
   }
 }
 
-- (void)setReactionEffectGesturesEnabled:(float)a3
+- (void)setReactionEffectGesturesEnabled:(float)enabled
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v7 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v7)
+    if (activeFormat)
     {
       v8 = self->_videoDevice;
       v20 = 0;
@@ -732,9 +732,9 @@ LABEL_17:
       v10 = v20;
       if (v9)
       {
-        [MEMORY[0x277CE5AC8] setReactionEffectGesturesEnabled:a3 != 0.0];
-        v11 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        [v11 setReactionEffectGesturesEnabled:a3 != 0.0];
+        [MEMORY[0x277CE5AC8] setReactionEffectGesturesEnabled:enabled != 0.0];
+        activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        [activeConfiguration setReactionEffectGesturesEnabled:enabled != 0.0];
 
         [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
       }
@@ -746,7 +746,7 @@ LABEL_17:
         {
           v13 = self->_videoDevice;
           v14 = 138543874;
-          v15 = self;
+          selfCopy = self;
           v16 = 2112;
           v17 = v13;
           v18 = 2112;
@@ -776,17 +776,17 @@ LABEL_17:
   }
 }
 
-- (void)setReactionEffectSuppressedGesturesEnabled:(float)a3
+- (void)setReactionEffectSuppressedGesturesEnabled:(float)enabled
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v7 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v7)
+    if (activeFormat)
     {
       v8 = self->_videoDevice;
       v20 = 0;
@@ -794,9 +794,9 @@ LABEL_17:
       v10 = v20;
       if (v9)
       {
-        [MEMORY[0x277CE5AC8] setReactionEffectSuppressedGesturesEnabled:a3 != 0.0];
-        v11 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        [v11 setReactionEffectSuppressedGesturesEnabled:a3 != 0.0];
+        [MEMORY[0x277CE5AC8] setReactionEffectSuppressedGesturesEnabled:enabled != 0.0];
+        activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        [activeConfiguration setReactionEffectSuppressedGesturesEnabled:enabled != 0.0];
 
         [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
       }
@@ -808,7 +808,7 @@ LABEL_17:
         {
           v13 = self->_videoDevice;
           v14 = 138543874;
-          v15 = self;
+          selfCopy = self;
           v16 = 2112;
           v17 = v13;
           v18 = 2112;
@@ -838,17 +838,17 @@ LABEL_17:
   }
 }
 
-- (void)setBackgroundReplacementPixelBuffer:(__CVBuffer *)a3
+- (void)setBackgroundReplacementPixelBuffer:(__CVBuffer *)buffer
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   videoDevice = self->_videoDevice;
   if (videoDevice)
   {
-    v7 = [(AVCaptureDevice *)videoDevice activeFormat];
+    activeFormat = [(AVCaptureDevice *)videoDevice activeFormat];
 
-    if (v7)
+    if (activeFormat)
     {
       v8 = self->_videoDevice;
       v20 = 0;
@@ -856,9 +856,9 @@ LABEL_17:
       v10 = v20;
       if (v9)
       {
-        [MEMORY[0x277CE5AC8] setBackgroundReplacementPixelBuffer:a3];
-        v11 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        [v11 setBackgroundReplacementPixelBuffer:a3];
+        [MEMORY[0x277CE5AC8] setBackgroundReplacementPixelBuffer:buffer];
+        activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        [activeConfiguration setBackgroundReplacementPixelBuffer:buffer];
 
         [(AVCaptureDevice *)self->_videoDevice unlockForConfiguration];
       }
@@ -870,7 +870,7 @@ LABEL_17:
         {
           v13 = self->_videoDevice;
           v14 = 138543874;
-          v15 = self;
+          selfCopy = self;
           v16 = 2112;
           v17 = v13;
           v18 = 2112;
@@ -907,15 +907,15 @@ LABEL_17:
   _os_log_error_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (id)_avfDeviceTypeForManualFramingDeviceType:(int64_t)a3
+- (id)_avfDeviceTypeForManualFramingDeviceType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = MEMORY[0x277CE5870];
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = MEMORY[0x277CE5878];
 LABEL_5:
@@ -943,15 +943,15 @@ LABEL_9:
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v8 count:1];
   v5 = [v3 discoverySessionWithDeviceTypes:v4 mediaType:*MEMORY[0x277CE5EA8] position:v2];
 
-  v6 = [v5 devices];
-  LOBYTE(v4) = [v6 count] != 0;
+  devices = [v5 devices];
+  LOBYTE(v4) = [devices count] != 0;
 
   return v4;
 }
 
-- (id)_selectVideoDeviceForConfiguration:(id)a3
+- (id)_selectVideoDeviceForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ([(CMContinuityCaptureRemoteVideoDevice *)self _dockKitNotificationAgentIsTracking])
   {
     v29 = *MEMORY[0x277CE5878];
@@ -959,13 +959,13 @@ LABEL_9:
     v6 = &v29;
   }
 
-  else if (([v4 centerStageEnabled] & 1) != 0 || objc_msgSend(v4, "isCenterStageForcefullyEnabled"))
+  else if (([configurationCopy centerStageEnabled] & 1) != 0 || objc_msgSend(configurationCopy, "isCenterStageForcefullyEnabled"))
   {
     if (self->_manualFramingFeatureFlagEnabled)
     {
       if (self->_isUltraWideCameraSupported)
       {
-        if ([v4 centerStageFieldOfViewRestrictedToWide])
+        if ([configurationCopy centerStageFieldOfViewRestrictedToWide])
         {
           v28 = *MEMORY[0x277CE5878];
           v5 = MEMORY[0x277CBEA60];
@@ -1005,9 +1005,9 @@ LABEL_9:
 
   else if (self->_manualFramingFeatureFlagEnabled)
   {
-    if ([v4 manualFramingDeviceType])
+    if ([configurationCopy manualFramingDeviceType])
     {
-      v12 = -[CMContinuityCaptureRemoteVideoDevice _avfDeviceTypeForManualFramingDeviceType:](self, "_avfDeviceTypeForManualFramingDeviceType:", [v4 manualFramingDeviceType]);
+      v12 = -[CMContinuityCaptureRemoteVideoDevice _avfDeviceTypeForManualFramingDeviceType:](self, "_avfDeviceTypeForManualFramingDeviceType:", [configurationCopy manualFramingDeviceType]);
       v13 = v12;
       if (v12)
       {
@@ -1030,7 +1030,7 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v19 = self;
+      selfCopy = self;
       v20 = 2080;
       v21 = "[CMContinuityCaptureRemoteVideoDevice _selectVideoDeviceForConfiguration:]";
       _os_log_impl(&dword_242545000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ %s Host side doesn't support Manual Framing", buf, 0x16u);
@@ -1051,54 +1051,54 @@ LABEL_9:
   v7 = [v5 arrayWithObjects:v6 count:{1, v16, v17}];
 LABEL_4:
   v8 = [MEMORY[0x277CE5AD0] discoverySessionWithDeviceTypes:v7 mediaType:*MEMORY[0x277CE5EA8] position:CMContinuityCaptureDevicePosition()];
-  v9 = [v8 devices];
-  v10 = [v9 firstObject];
+  devices = [v8 devices];
+  firstObject = [devices firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)connectionsForConfiguration:(id)a3
+- (id)connectionsForConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v67 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    v9 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    companionDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
     *buf = 138544130;
-    v74 = self;
+    selfCopy4 = self;
     v75 = 2114;
-    v76 = v5;
+    v76 = configurationCopy;
     v77 = 2112;
-    *v78 = v8;
+    *v78 = companionDevice;
     *&v78[8] = 1024;
-    LODWORD(v79) = [v9 streaming];
+    LODWORD(v79) = [companionDevice2 streaming];
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ connections for configuration %{public}@ companionDevice %@ streaming %d", buf, 0x26u);
   }
 
-  v10 = [(CMContinuityCaptureRemoteVideoDevice *)self _selectVideoDeviceForConfiguration:v5];
+  v10 = [(CMContinuityCaptureRemoteVideoDevice *)self _selectVideoDeviceForConfiguration:configurationCopy];
   [(CMContinuityCaptureRemoteVideoDevice *)self setVideoDevice:v10];
 
   v11 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-    v13 = [v12 localizedName];
-    v14 = [(CMContinuityCaptureRemoteVideoDevice *)self isGazeSelectionEnabled];
+    videoDevice = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+    localizedName = [videoDevice localizedName];
+    isGazeSelectionEnabled = [(CMContinuityCaptureRemoteVideoDevice *)self isGazeSelectionEnabled];
     *buf = 138544386;
-    v74 = self;
+    selfCopy4 = self;
     v75 = 2080;
     v76 = "[CMContinuityCaptureRemoteVideoDevice connectionsForConfiguration:]";
     v77 = 2112;
-    *v78 = v13;
+    *v78 = localizedName;
     *&v78[8] = 2112;
-    v79 = v5;
+    v79 = configurationCopy;
     v80 = 1024;
-    v81 = v14;
+    v81 = isGazeSelectionEnabled;
     _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ %s Selected device %@ for configuration %@ with gazeSelectionEnabled %d", buf, 0x30u);
   }
 
@@ -1110,16 +1110,16 @@ LABEL_4:
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
       v59 = [(AVCaptureDevice *)self->_videoDevice deviceType:v65];
-      v60 = [v5 centerStageEnabled];
-      v61 = [v5 isCenterStageForcefullyEnabled];
+      centerStageEnabled = [configurationCopy centerStageEnabled];
+      isCenterStageForcefullyEnabled = [configurationCopy isCenterStageForcefullyEnabled];
       *buf = 138544130;
-      v74 = self;
+      selfCopy4 = self;
       v75 = 2112;
       v76 = v59;
       v77 = 1024;
-      *v78 = v60;
+      *v78 = centerStageEnabled;
       *&v78[4] = 1024;
-      *&v78[6] = v61;
+      *&v78[6] = isCenterStageForcefullyEnabled;
       _os_log_error_impl(&dword_242545000, p_super, OS_LOG_TYPE_ERROR, "%{public}@ Could not find back camera with device type: %@, enableCenterStage: %d isCenterStageForcefullyEnabled: %d ", buf, 0x22u);
     }
 
@@ -1130,31 +1130,31 @@ LABEL_4:
     goto LABEL_29;
   }
 
-  v15 = [(CMContinuityCaptureRemoteVideoDevice *)self isGazeSelectionEnabled];
-  v16 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-  [v16 setGazeSelectionEnabled:v15];
+  isGazeSelectionEnabled2 = [(CMContinuityCaptureRemoteVideoDevice *)self isGazeSelectionEnabled];
+  videoDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+  [videoDevice2 setGazeSelectionEnabled:isGazeSelectionEnabled2];
 
-  v17 = [(AVCaptureDevice *)self->_videoDevice deviceType];
-  if ([v17 isEqualToString:*MEMORY[0x277CE5870]])
+  deviceType = [(AVCaptureDevice *)self->_videoDevice deviceType];
+  if ([deviceType isEqualToString:*MEMORY[0x277CE5870]])
   {
-    v18 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    if ([v18 streaming])
+    companionDevice3 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    if ([companionDevice3 streaming])
     {
     }
 
     else
     {
-      v19 = [v5 isCenterStageForcefullyEnabled];
+      isCenterStageForcefullyEnabled2 = [configurationCopy isCenterStageForcefullyEnabled];
 
-      if (!v19)
+      if (!isCenterStageForcefullyEnabled2)
       {
         goto LABEL_12;
       }
     }
 
     [(CMContinuityCaptureRemoteVideoDevice *)self setFaceDrivenAFActive:0];
-    v17 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    -[CMContinuityCaptureRemoteVideoDevice setDeskViewCameraMode:](self, "setDeskViewCameraMode:", [v17 deskViewCameraMode]);
+    deviceType = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    -[CMContinuityCaptureRemoteVideoDevice setDeskViewCameraMode:](self, "setDeskViewCameraMode:", [deviceType deskViewCameraMode]);
   }
 
 LABEL_12:
@@ -1182,27 +1182,27 @@ LABEL_29:
     goto LABEL_21;
   }
 
-  v68 = v5;
+  v68 = configurationCopy;
   v24 = objc_alloc_init(MEMORY[0x277CE5B60]);
   videoDataOutput = self->_videoDataOutput;
   self->_videoDataOutput = v24;
 
   v26 = self->_videoDataOutput;
-  v27 = [(CMContinuityCaptureDeviceBase *)self queue];
-  [(AVCaptureVideoDataOutput *)v26 setSampleBufferDelegate:self queue:v27];
+  queue2 = [(CMContinuityCaptureDeviceBase *)self queue];
+  [(AVCaptureVideoDataOutput *)v26 setSampleBufferDelegate:self queue:queue2];
 
   v28 = CMContinuityCaptureDevicePosition();
   v29 = self->_videoDataInput;
   v30 = *MEMORY[0x277CE5EA8];
-  v31 = [(AVCaptureDevice *)self->_videoDevice deviceType];
-  v32 = [(AVCaptureDeviceInput *)v29 portsWithMediaType:v30 sourceDeviceType:v31 sourceDevicePosition:v28];
+  deviceType2 = [(AVCaptureDevice *)self->_videoDevice deviceType];
+  v32 = [(AVCaptureDeviceInput *)v29 portsWithMediaType:v30 sourceDeviceType:deviceType2 sourceDevicePosition:v28];
 
   v66 = v32;
   if ([v32 count])
   {
     v33 = MEMORY[0x277CE5AB0];
-    v34 = [v32 firstObject];
-    v71 = v34;
+    firstObject = [v32 firstObject];
+    v71 = firstObject;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v71 count:1];
     v36 = [v33 connectionWithInputPorts:v35 output:self->_videoDataOutput];
 
@@ -1211,26 +1211,26 @@ LABEL_29:
     v37 = v32;
     v38 = v67;
     [v67 addObject:v36];
-    if ([v5 asyncStillCaptureEnabled])
+    if ([configurationCopy asyncStillCaptureEnabled])
     {
       v39 = objc_alloc_init(MEMORY[0x277CE5B28]);
       photoOutput = self->_photoOutput;
       self->_photoOutput = v39;
 
       v41 = MEMORY[0x277CE5AB0];
-      v42 = [v37 firstObject];
-      v70 = v42;
+      firstObject2 = [v37 firstObject];
+      v70 = firstObject2;
       v43 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
       v38 = v67;
       v44 = [v41 connectionWithInputPorts:v43 output:self->_photoOutput];
 
-      v5 = v68;
+      configurationCopy = v68;
       [v44 setVideoDeviceOrientationCorrectionEnabled:{-[AVCaptureConnection isVideoDeviceOrientationCorrectionEnabled](self->_videoDataConnection, "isVideoDeviceOrientationCorrectionEnabled")}];
       [v67 addObject:v44];
       v36 = v44;
     }
 
-    if (([v5 faceDetectionEnabled] & 1) != 0 || (objc_msgSend(v5, "humanBodyDetectionEnabled") & 1) != 0 || objc_msgSend(v5, "humanFullBodyDetectionEnabled"))
+    if (([configurationCopy faceDetectionEnabled] & 1) != 0 || (objc_msgSend(configurationCopy, "humanBodyDetectionEnabled") & 1) != 0 || objc_msgSend(configurationCopy, "humanFullBodyDetectionEnabled"))
     {
       v45 = objc_alloc_init(MEMORY[0x277CE5B00]);
       metadataOutput = self->_metadataOutput;
@@ -1238,16 +1238,16 @@ LABEL_29:
 
       v47 = self->_videoDataInput;
       v48 = *MEMORY[0x277CE5E78];
-      v49 = [(AVCaptureDevice *)self->_videoDevice deviceType];
-      v50 = [(AVCaptureDeviceInput *)v47 portsWithMediaType:v48 sourceDeviceType:v49 sourceDevicePosition:v28];
+      deviceType3 = [(AVCaptureDevice *)self->_videoDevice deviceType];
+      v50 = [(AVCaptureDeviceInput *)v47 portsWithMediaType:v48 sourceDeviceType:deviceType3 sourceDevicePosition:v28];
 
       v51 = MEMORY[0x277CE5AB0];
-      v52 = [v50 firstObject];
-      v69 = v52;
+      firstObject3 = [v50 firstObject];
+      v69 = firstObject3;
       v53 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
       v54 = [v51 connectionWithInputPorts:v53 output:self->_metadataOutput];
 
-      v5 = v68;
+      configurationCopy = v68;
       [v38 addObject:v54];
       v36 = v54;
     }
@@ -1271,14 +1271,14 @@ LABEL_29:
     {
       v62 = v22;
       v63 = self->_videoDataInput;
-      v64 = [(AVCaptureDevice *)self->_videoDevice deviceType];
+      deviceType4 = [(AVCaptureDevice *)self->_videoDevice deviceType];
       *buf = 138543874;
-      v74 = self;
+      selfCopy4 = self;
       v75 = 2112;
       v76 = v63;
       v22 = v62;
       v77 = 2112;
-      *v78 = v64;
+      *v78 = deviceType4;
       _os_log_error_impl(&dword_242545000, p_super, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get video input ports for input %@ and device type %@", buf, 0x20u);
     }
 
@@ -1295,10 +1295,10 @@ LABEL_21:
 
 - (unsigned)throttledMaxFrameRate
 {
-  v2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v3 = [v2 maxFrameRate];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  maxFrameRate = [activeConfiguration maxFrameRate];
 
-  return v3;
+  return maxFrameRate;
 }
 
 - (void)setMinFrameDurationOverrideIfApplicable
@@ -1306,55 +1306,55 @@ LABEL_21:
   v3 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CMContinuityCaptureDeviceBase *)self streaming];
-    v5 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
-    v6 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-    v7 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    v8 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    streaming = [(CMContinuityCaptureDeviceBase *)self streaming];
+    videoDataInput = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
+    videoDevice = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+    companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    companionDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
     LODWORD(buf.value) = 138544898;
     *(&buf.value + 4) = self;
     LOWORD(buf.flags) = 2080;
     *(&buf.flags + 2) = "[CMContinuityCaptureRemoteVideoDevice setMinFrameDurationOverrideIfApplicable]";
     HIWORD(buf.epoch) = 1024;
-    v27 = v4;
+    v27 = streaming;
     v28 = 2112;
-    v29 = v5;
+    v29 = videoDataInput;
     v30 = 2112;
-    v31 = v6;
+    v31 = videoDevice;
     v32 = 2114;
-    v33 = v7;
+    v33 = companionDevice;
     v34 = 1024;
-    v35 = [v8 streaming];
+    streaming2 = [companionDevice2 streaming];
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ streaming %s streaming %d %@ %@ companionDevice %{public}@ streaming %d", &buf, 0x40u);
   }
 
-  v9 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
-  if (v10)
+  videoDataInput2 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
+  if (videoDataInput2)
   {
-    v11 = v10;
-    v12 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-    if (v12)
+    videoDataInput4 = videoDataInput2;
+    videoDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+    if (videoDevice2)
     {
-      v13 = v12;
-      v14 = [(CMContinuityCaptureDeviceBase *)self streaming];
+      v13 = videoDevice2;
+      streaming3 = [(CMContinuityCaptureDeviceBase *)self streaming];
 
-      if (!v14)
+      if (!streaming3)
       {
         return;
       }
 
-      v15 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-      v16 = [v15 deviceType];
-      v17 = v16;
-      if (v16 == *MEMORY[0x277CE5878])
+      videoDevice3 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+      deviceType = [videoDevice3 deviceType];
+      v17 = deviceType;
+      if (deviceType == *MEMORY[0x277CE5878])
       {
-        v18 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-        v19 = [v18 streaming];
+        companionDevice3 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+        streaming4 = [companionDevice3 streaming];
 
-        if (v19)
+        if (streaming4)
         {
           v20 = CMContinuityCaptureLog(2);
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1364,15 +1364,15 @@ LABEL_21:
             _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting videoMinFrameDurationOverride", &buf, 0xCu);
           }
 
-          v21 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-          v22 = [v21 frameRateManager];
-          v11 = [v22 allowedFrameRateRangeForDevice:self];
+          compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+          frameRateManager = [compositeDelegate frameRateManager];
+          videoDataInput4 = [frameRateManager allowedFrameRateRangeForDevice:self];
 
-          v23 = [v11 maxFrameRate];
-          CMTimeMake(&v25, 1, [v23 unsignedIntValue]);
-          v24 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
+          maxFrameRate = [videoDataInput4 maxFrameRate];
+          CMTimeMake(&v25, 1, [maxFrameRate unsignedIntValue]);
+          videoDataInput3 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
           buf = v25;
-          [v24 setVideoMinFrameDurationOverride:&buf];
+          [videoDataInput3 setVideoMinFrameDurationOverride:&buf];
 
           goto LABEL_13;
         }
@@ -1382,34 +1382,34 @@ LABEL_21:
       {
       }
 
-      v11 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
+      videoDataInput4 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataInput];
       buf = **&MEMORY[0x277CC0898];
-      [v11 setVideoMinFrameDurationOverride:&buf];
+      [videoDataInput4 setVideoMinFrameDurationOverride:&buf];
     }
 
 LABEL_13:
   }
 }
 
-- (id)compatibleDeviceFormatForMaxFrameRate:(unsigned int)a3 minFrameRate:(unsigned int)a4
+- (id)compatibleDeviceFormatForMaxFrameRate:(unsigned int)rate minFrameRate:(unsigned int)frameRate
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__CMContinuityCaptureRemoteVideoDevice_compatibleDeviceFormatForMaxFrameRate_minFrameRate___block_invoke;
   v12[3] = &unk_278D5CCA0;
   v12[4] = self;
-  v13 = a4;
-  v14 = a3;
+  frameRateCopy = frameRate;
+  rateCopy = rate;
   v5 = [MEMORY[0x277CCAC30] predicateWithBlock:v12];
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
-  v7 = [(AVCaptureDevice *)self->_videoDevice formats];
-  v8 = [v7 filteredArrayUsingPredicate:v5];
+  formats = [(AVCaptureDevice *)self->_videoDevice formats];
+  v8 = [formats filteredArrayUsingPredicate:v5];
   v9 = [v6 initWithArray:v8];
 
   [v9 sortUsingComparator:&__block_literal_global_5];
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 uint64_t __91__CMContinuityCaptureRemoteVideoDevice_compatibleDeviceFormatForMaxFrameRate_minFrameRate___block_invoke(uint64_t a1, void *a2)
@@ -1457,41 +1457,41 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_deviceFormat:(id)a3 isCompatibleWithConfiguration:(id)a4 requiringMultiCamSupport:(BOOL)a5 minFrameRate:(unsigned int)a6 maxFrameRate:(unsigned int)a7
+- (BOOL)_deviceFormat:(id)format isCompatibleWithConfiguration:(id)configuration requiringMultiCamSupport:(BOOL)support minFrameRate:(unsigned int)rate maxFrameRate:(unsigned int)frameRate
 {
-  v8 = a5;
-  v11 = a3;
-  v12 = a4;
+  supportCopy = support;
+  formatCopy = format;
+  configurationCopy = configuration;
   if (CMContinityCaptureDebugLogEnabled())
   {
     v13 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [CMContinuityCaptureRemoteVideoDevice _deviceFormat:v11 isCompatibleWithConfiguration:? requiringMultiCamSupport:? minFrameRate:? maxFrameRate:?];
+      [CMContinuityCaptureRemoteVideoDevice _deviceFormat:formatCopy isCompatibleWithConfiguration:? requiringMultiCamSupport:? minFrameRate:? maxFrameRate:?];
     }
   }
 
-  Dimensions = CMVideoFormatDescriptionGetDimensions([v11 formatDescription]);
-  v15 = [v12 format];
-  if ([v15 width] == Dimensions)
+  Dimensions = CMVideoFormatDescriptionGetDimensions([formatCopy formatDescription]);
+  format = [configurationCopy format];
+  if ([format width] == Dimensions)
   {
-    v16 = [v12 format];
-    v17 = [v16 height];
+    format2 = [configurationCopy format];
+    height = [format2 height];
 
-    if (v17 == Dimensions >> 32)
+    if (height == Dimensions >> 32)
     {
-      MediaSubType = CMFormatDescriptionGetMediaSubType([v11 formatDescription]);
-      v19 = [v12 format];
-      v20 = [v19 pixelFormat];
+      MediaSubType = CMFormatDescriptionGetMediaSubType([formatCopy formatDescription]);
+      format3 = [configurationCopy format];
+      pixelFormat = [format3 pixelFormat];
 
-      if (MediaSubType == v20)
+      if (MediaSubType == pixelFormat)
       {
-        v21 = [v11 videoSupportedFrameRateRanges];
-        v22 = [v21 firstObject];
-        [v22 maxFrameRate];
+        videoSupportedFrameRateRanges = [formatCopy videoSupportedFrameRateRanges];
+        firstObject = [videoSupportedFrameRateRanges firstObject];
+        [firstObject maxFrameRate];
         v24 = v23;
 
-        if (v24 >= a7 && (([v12 centerStageEnabled] & 1) == 0 && (!objc_msgSend(v12, "isCenterStageForcefullyEnabled") || -[CMContinuityCaptureDeviceBase entity](self, "entity") == 2) || objc_msgSend(v11, "isCenterStageSupported")) && (!objc_msgSend(v12, "manualFramingDeviceType") || objc_msgSend(v11, "isManualFramingSupported")) && (!objc_msgSend(v12, "studioLightingEnabled") || objc_msgSend(v11, "isStudioLightSupported")) && (!objc_msgSend(v12, "reactionEffectsEnabled") || objc_msgSend(v11, "reactionEffectsSupported")) && (!objc_msgSend(v12, "backgroundReplacementEnabled") || objc_msgSend(v11, "isBackgroundReplacementSupported")) && (!v8 || objc_msgSend(v11, "isMultiCamSupported")))
+        if (v24 >= frameRate && (([configurationCopy centerStageEnabled] & 1) == 0 && (!objc_msgSend(configurationCopy, "isCenterStageForcefullyEnabled") || -[CMContinuityCaptureDeviceBase entity](self, "entity") == 2) || objc_msgSend(formatCopy, "isCenterStageSupported")) && (!objc_msgSend(configurationCopy, "manualFramingDeviceType") || objc_msgSend(formatCopy, "isManualFramingSupported")) && (!objc_msgSend(configurationCopy, "studioLightingEnabled") || objc_msgSend(formatCopy, "isStudioLightSupported")) && (!objc_msgSend(configurationCopy, "reactionEffectsEnabled") || objc_msgSend(formatCopy, "reactionEffectsSupported")) && (!objc_msgSend(configurationCopy, "backgroundReplacementEnabled") || objc_msgSend(formatCopy, "isBackgroundReplacementSupported")) && (!supportCopy || objc_msgSend(formatCopy, "isMultiCamSupported")))
         {
           v25 = 1;
           goto LABEL_14;
@@ -1512,28 +1512,28 @@ LABEL_14:
 
 - (void)_toggleBetweenCenterStageAndManualFraming
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_manualFramingFeatureFlagEnabled)
   {
-    v4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    if ([v4 manualFramingDeviceType] == 1)
+    activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    if ([activeConfiguration manualFramingDeviceType] == 1)
     {
-      v5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v6 = [v5 centerStageFieldOfViewRestrictedToWide];
+      activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      centerStageFieldOfViewRestrictedToWide = [activeConfiguration2 centerStageFieldOfViewRestrictedToWide];
     }
 
     else
     {
-      v6 = 0;
+      centerStageFieldOfViewRestrictedToWide = 0;
     }
 
-    v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    if ([v7 manualFramingDeviceType] == 2)
+    activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    if ([activeConfiguration3 manualFramingDeviceType] == 2)
     {
-      v8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v9 = [v8 centerStageFieldOfViewRestrictedToWide] ^ 1;
+      activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      v9 = [activeConfiguration4 centerStageFieldOfViewRestrictedToWide] ^ 1;
     }
 
     else
@@ -1541,14 +1541,14 @@ LABEL_14:
       v9 = 0;
     }
 
-    v10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    if ([v10 centerStageEnabled])
+    activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    if ([activeConfiguration5 centerStageEnabled])
     {
 
-      if ((v6 | v9))
+      if ((centerStageFieldOfViewRestrictedToWide | v9))
       {
-        v11 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-        [v11 willConfigure];
+        captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+        [captureSession willConfigure];
 
         goto LABEL_16;
       }
@@ -1556,15 +1556,15 @@ LABEL_14:
 
     else
     {
-      v12 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v13 = [v12 isCenterStageForcefullyEnabled];
+      activeConfiguration6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      isCenterStageForcefullyEnabled = [activeConfiguration6 isCenterStageForcefullyEnabled];
 
-      if ((v6 | v9))
+      if ((centerStageFieldOfViewRestrictedToWide | v9))
       {
-        v14 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-        [v14 willConfigure];
+        captureSession2 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+        [captureSession2 willConfigure];
 
-        if ((v13 & 1) == 0)
+        if ((isCenterStageForcefullyEnabled & 1) == 0)
         {
           [(CMContinuityCaptureRemoteVideoDevice *)self _disableCenterStage];
           if (self->_manualFramingFeatureFlagEnabled)
@@ -1578,17 +1578,17 @@ LABEL_14:
             goto LABEL_28;
           }
 
-          v16 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-          v17 = [v16 deviceType];
+          videoDevice = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+          deviceType = [videoDevice deviceType];
           [(AVCaptureDevice *)self->_videoDevice manualFramingPanningAngleX];
           v23 = v22;
           [(AVCaptureDevice *)self->_videoDevice manualFramingPanningAngleY];
           v25 = v24;
           [(CMContinuityCaptureRemoteVideoDevice *)self videoZoomFactor];
           *buf = 138544386;
-          v32 = self;
+          selfCopy2 = self;
           v33 = 2112;
-          v34 = v17;
+          v34 = deviceType;
           v35 = 2048;
           v36 = v23;
           v37 = 2048;
@@ -1612,15 +1612,15 @@ LABEL_16:
           goto LABEL_28;
         }
 
-        v16 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
-        v17 = [v16 deviceType];
+        videoDevice = [(CMContinuityCaptureRemoteVideoDevice *)self videoDevice];
+        deviceType = [videoDevice deviceType];
         [(CMContinuityCaptureRemoteVideoDevice *)self centerStageRectOfInterest];
         v18 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         [(CMContinuityCaptureRemoteVideoDevice *)self videoZoomFactor];
         *buf = 138544130;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2112;
-        v34 = v17;
+        v34 = deviceType;
         v35 = 2112;
         v36 = v18;
         v37 = 2048;
@@ -1630,16 +1630,16 @@ LABEL_16:
 LABEL_27:
 LABEL_28:
 
-        v27 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-        [v27 didConfigure];
+        captureSession3 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+        [captureSession3 didConfigure];
 
-        v28 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-        [v28 start];
+        captureSession4 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+        [captureSession4 start];
 
         return;
       }
 
-      if (!v13)
+      if (!isCenterStageForcefullyEnabled)
       {
         v20 = CMContinuityCaptureLog(2);
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1651,8 +1651,8 @@ LABEL_28:
 
 LABEL_32:
 
-        v29 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-        [v29 postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
+        compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+        [compositeDelegate postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
 
         return;
       }
@@ -1671,55 +1671,55 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v30 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  [v30 postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
+  compositeDelegate2 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  [compositeDelegate2 postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
 }
 
-- (void)_updateManualFramingDeviceType:(int64_t)a3
+- (void)_updateManualFramingDeviceType:(int64_t)type
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v6 setManualFramingDeviceType:a3];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration setManualFramingDeviceType:type];
 
   v7 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[CMContinuityCaptureRemoteVideoDevice _updateManualFramingDeviceType:]";
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %s Resetting Manual Framing states due to device type change", &v12, 0x16u);
   }
 
-  v8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v8 setPanningAngleX:0.0];
+  activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration2 setPanningAngleX:0.0];
 
-  v9 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v9 setPanningAngleY:0.0];
+  activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration3 setPanningAngleY:0.0];
 
-  v10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v10 setVideoZoomFactor:1.0];
+  activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration4 setVideoZoomFactor:1.0];
 
-  v11 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  [v11 postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  [compositeDelegate postEvent:@"kCMContinuityCaptureEventForceRestartStream" entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), 0}];
 }
 
-- (void)tearDownConnectionsWithVideoDataConnectionDisabled:(BOOL)a3
+- (void)tearDownConnectionsWithVideoDataConnectionDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 1024;
-    v15 = v3;
+    v15 = disabledCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ tearDownConnectionsWithVideoDataConnectionDisabled %d", &v12, 0x12u);
   }
 
-  if (!v3)
+  if (!disabledCopy)
   {
     photoOutput = self->_photoOutput;
     self->_photoOutput = 0;
@@ -1745,15 +1745,15 @@ LABEL_31:
 
 - (void)_forcefullyEnableCenterStageOnSuperWide
 {
-  v3 = [(CMContinuityCaptureRemoteVideoDevice *)self isDockedTrackingEnabled];
-  v4 = CMContinuityCaptureLog(2);
-  v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  isDockedTrackingEnabled = [(CMContinuityCaptureRemoteVideoDevice *)self isDockedTrackingEnabled];
+  activeConfiguration4 = CMContinuityCaptureLog(2);
+  v5 = os_log_type_enabled(activeConfiguration4, OS_LOG_TYPE_DEFAULT);
+  if (isDockedTrackingEnabled)
   {
     if (v5)
     {
       LOWORD(v17) = 0;
-      _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "Docked tracking is enabled, do not forcefully enable Center Stage as requested", &v17, 2u);
+      _os_log_impl(&dword_242545000, activeConfiguration4, OS_LOG_TYPE_DEFAULT, "Docked tracking is enabled, do not forcefully enable Center Stage as requested", &v17, 2u);
     }
 
     goto LABEL_15;
@@ -1762,28 +1762,28 @@ LABEL_31:
   if (v5)
   {
     v17 = 138543618;
-    v18 = self;
+    selfCopy4 = self;
     v19 = 2080;
     v20 = "[CMContinuityCaptureRemoteVideoDevice _forcefullyEnableCenterStageOnSuperWide]";
-    _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s [forceful CS enablement] Forcefully enable Center Stage on the default video camera as requested", &v17, 0x16u);
+    _os_log_impl(&dword_242545000, activeConfiguration4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s [forceful CS enablement] Forcefully enable Center Stage on the default video camera as requested", &v17, 0x16u);
   }
 
-  v6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v7 = [v6 forcefulCenterStageEnablementType];
-  v8 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-  v9 = [v8 activeConfiguration];
-  [v9 setForcefulCenterStageEnablementType:v7];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  forcefulCenterStageEnablementType = [activeConfiguration forcefulCenterStageEnablementType];
+  companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+  activeConfiguration2 = [companionDevice activeConfiguration];
+  [activeConfiguration2 setForcefulCenterStageEnablementType:forcefulCenterStageEnablementType];
 
-  v10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v11 = [v10 forcefulCenterStageEnablementType];
+  activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  forcefulCenterStageEnablementType2 = [activeConfiguration3 forcefulCenterStageEnablementType];
 
-  if (v11 == 2)
+  if (forcefulCenterStageEnablementType2 == 2)
   {
     v15 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2080;
       v20 = "[CMContinuityCaptureRemoteVideoDevice _forcefullyEnableCenterStageOnSuperWide]";
       v16 = "%{public}@ %s [forceful CS enablement] Already running Center Stage on the wide, switching to the super wide";
@@ -1793,35 +1793,35 @@ LABEL_31:
 LABEL_14:
 
     [(CMContinuityCaptureRemoteVideoDevice *)self setShouldRestoreCenterStageOnWideCamera:1];
-    v4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v4 setCenterStageFieldOfViewRestrictedToWide:0];
+    activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration4 setCenterStageFieldOfViewRestrictedToWide:0];
 LABEL_15:
 
     return;
   }
 
-  if (v11 == 1)
+  if (forcefulCenterStageEnablementType2 == 1)
   {
     v12 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543618;
-      v18 = self;
+      selfCopy4 = self;
       v19 = 2080;
       v20 = "[CMContinuityCaptureRemoteVideoDevice _forcefullyEnableCenterStageOnSuperWide]";
       _os_log_impl(&dword_242545000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ %s [forceful CS enablement] Switching from Manual Framing to Center Stage", &v17, 0x16u);
     }
 
-    v13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v14 = [v13 centerStageFieldOfViewRestrictedToWide];
+    activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    centerStageFieldOfViewRestrictedToWide = [activeConfiguration5 centerStageFieldOfViewRestrictedToWide];
 
-    if (v14)
+    if (centerStageFieldOfViewRestrictedToWide)
     {
       v15 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138543618;
-        v18 = self;
+        selfCopy4 = self;
         v19 = 2080;
         v20 = "[CMContinuityCaptureRemoteVideoDevice _forcefullyEnableCenterStageOnSuperWide]";
         v16 = "%{public}@ %s [forceful CS enablement] Switching to the super wide";
@@ -1835,10 +1835,10 @@ LABEL_13:
   }
 }
 
-- (BOOL)stopCameraCaptureStack:(unint64_t)a3
+- (BOOL)stopCameraCaptureStack:(unint64_t)stack
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1846,17 +1846,17 @@ LABEL_13:
     *v9 = 138544130;
     *&v9[4] = self;
     v10 = 2048;
-    v11 = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
+    currentSessionID = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
     v12 = 2080;
     v13 = "[CMContinuityCaptureRemoteVideoDevice stopCameraCaptureStack:]";
     v14 = 2048;
-    v15 = a3;
+    stackCopy = stack;
     _os_log_impl(&dword_242545000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ [sessionID:%llx] %s option: %lu", v9, 0x2Au);
   }
 
   if (self->_captureStackActive)
   {
-    if ((a3 & 0x10) != 0)
+    if ((stack & 0x10) != 0)
     {
       v7 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1864,17 +1864,17 @@ LABEL_13:
         *v9 = 138543618;
         *&v9[4] = self;
         v10 = 2080;
-        v11 = "[CMContinuityCaptureRemoteVideoDevice stopCameraCaptureStack:]";
+        currentSessionID = "[CMContinuityCaptureRemoteVideoDevice stopCameraCaptureStack:]";
         _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %s skip anticipating reconnect", v9, 0x16u);
       }
 
       goto LABEL_7;
     }
 
-    [(CMContinuityCaptureRemoteVideoDevice *)self stopCameraCaptureStack:a3, &self->_captureStackActive];
+    [(CMContinuityCaptureRemoteVideoDevice *)self stopCameraCaptureStack:stack, &self->_captureStackActive];
   }
 
-  if (([(CMContinuityCaptureRemoteVideoDevice *)a3 stopCameraCaptureStack:v9]& 1) != 0)
+  if (([(CMContinuityCaptureRemoteVideoDevice *)stack stopCameraCaptureStack:v9]& 1) != 0)
   {
     return 1;
   }
@@ -1896,17 +1896,17 @@ LABEL_7:
 - (void)addVideoDeviceKVOs
 {
   videoDevice = self->_videoDevice;
-  v4 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  [(AVCaptureDevice *)videoDevice addObserver:v4 forKeyPath:@"systemPressureState" options:3 context:0];
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  [(AVCaptureDevice *)videoDevice addObserver:compositeDelegate forKeyPath:@"systemPressureState" options:3 context:0];
 
   [(AVCaptureDevice *)self->_videoDevice addObserver:self forKeyPath:@"activeVideoMinFrameDuration" options:3 context:0];
   [(AVCaptureDevice *)self->_videoDevice addObserver:self forKeyPath:@"activeVideoMaxFrameDuration" options:3 context:0];
   [(AVCaptureDevice *)self->_videoDevice addObserver:self forKeyPath:@"reactionEffectsInProgress" options:3 context:0];
   [MEMORY[0x277CE5AC8] addObserver:self forKeyPath:@"reactionEffectSuppressedGesturesEnabled" options:3 context:0];
   [MEMORY[0x277CE5AC8] addObserver:self forKeyPath:@"reactionEffectSuppressedGesture" options:3 context:0];
-  v5 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v6 = [v5 frameRateManager];
-  [v6 addObserver:self forKeyPath:@"throttled" options:3 context:0];
+  compositeDelegate2 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  frameRateManager = [compositeDelegate2 frameRateManager];
+  [frameRateManager addObserver:self forKeyPath:@"throttled" options:3 context:0];
 
   [(CMContinuityCaptureRemoteVideoDevice *)self addObserver:self forKeyPath:@"activeConfiguration" options:3 context:0];
   self->_videoDeviceKVOsActive = 1;
@@ -1915,7 +1915,7 @@ LABEL_7:
   {
     v8 = self->_videoDevice;
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = v8;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ KVOs are active on %{public}@", &v9, 0x16u);
@@ -1927,17 +1927,17 @@ LABEL_7:
   if (self->_videoDeviceKVOsActive)
   {
     videoDevice = self->_videoDevice;
-    v4 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-    [(AVCaptureDevice *)videoDevice removeObserver:v4 forKeyPath:@"systemPressureState" context:0];
+    compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+    [(AVCaptureDevice *)videoDevice removeObserver:compositeDelegate forKeyPath:@"systemPressureState" context:0];
 
     [(AVCaptureDevice *)self->_videoDevice removeObserver:self forKeyPath:@"activeVideoMinFrameDuration" context:0];
     [(AVCaptureDevice *)self->_videoDevice removeObserver:self forKeyPath:@"activeVideoMaxFrameDuration" context:0];
     [(AVCaptureDevice *)self->_videoDevice removeObserver:self forKeyPath:@"reactionEffectsInProgress" context:0];
     [MEMORY[0x277CE5AC8] removeObserver:self forKeyPath:@"reactionEffectSuppressedGesturesEnabled" context:0];
     [MEMORY[0x277CE5AC8] removeObserver:self forKeyPath:@"reactionEffectSuppressedGesture" context:0];
-    v5 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-    v6 = [v5 frameRateManager];
-    [v6 removeObserver:self forKeyPath:@"throttled" context:0];
+    compositeDelegate2 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+    frameRateManager = [compositeDelegate2 frameRateManager];
+    [frameRateManager removeObserver:self forKeyPath:@"throttled" context:0];
 
     [(CMContinuityCaptureRemoteVideoDevice *)self removeObserver:self forKeyPath:@"activeConfiguration" context:0];
     self->_videoDeviceKVOsActive = 0;
@@ -1946,7 +1946,7 @@ LABEL_7:
     {
       v8 = self->_videoDevice;
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v8;
       v9 = "%{public}@ KVOs removed on %@{public}@";
@@ -1962,7 +1962,7 @@ LABEL_6:
     {
       v10 = self->_videoDevice;
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v10;
       v9 = "%{public}@ KVOs for _videoDevice %{public}@ are inactive";
@@ -1971,43 +1971,43 @@ LABEL_6:
   }
 }
 
-- (void)didStartStreamInput:(id)a3
+- (void)didStartStreamInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138544130;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
+    currentSessionID = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
     v11 = 2080;
     v12 = "[CMContinuityCaptureRemoteVideoDevice didStartStreamInput:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = inputCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ [sessionID:%llx] AVCInput setup complete %s %@", &v7, 0x2Au);
   }
 
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v6);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_avcStreamInputActive = 1;
 }
 
-- (void)didStopStreamInput:(id)a3
+- (void)didStopStreamInput:(id)input
 {
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CMContinuityCaptureRemoteVideoDevice didStopStreamInput:]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v6, 0x16u);
   }
 
-  v5 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   self->_avcStreamInputActive = 0;
 }
@@ -2018,52 +2018,52 @@ LABEL_6:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543618;
-    v5 = self;
+    selfCopy = self;
     v6 = 2080;
     v7 = "[CMContinuityCaptureRemoteVideoDevice serverDidDie]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", &v4, 0x16u);
   }
 }
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543874;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[CMContinuityCaptureRemoteVideoDevice stream:didStart:error:]";
     v12 = 2112;
-    v13 = v6;
+    v13 = streamCopy;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ %s %@", &v8, 0x20u);
   }
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CMContinuityCaptureRemoteVideoDevice streamDidStop:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = stopCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s %@", buf, 0x20u);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__CMContinuityCaptureRemoteVideoDevice_streamDidStop___block_invoke;
   block[3] = &unk_278D5C080;
   objc_copyWeak(&v8, buf);
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -2095,27 +2095,27 @@ uint64_t __54__CMContinuityCaptureRemoteVideoDevice_streamDidStop___block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
-  v4 = a3;
+  dieCopy = die;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CMContinuityCaptureRemoteVideoDevice streamDidServerDie:]";
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__CMContinuityCaptureRemoteVideoDevice_streamDidServerDie___block_invoke;
   block[3] = &unk_278D5C080;
   objc_copyWeak(&v8, buf);
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -2151,20 +2151,20 @@ void __59__CMContinuityCaptureRemoteVideoDevice_streamDidServerDie___block_invok
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CMContinuityCaptureRemoteVideoDevice postAVCStreamInterruption]";
     _os_log_impl(&dword_242545000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v4 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__CMContinuityCaptureRemoteVideoDevice_postAVCStreamInterruption__block_invoke;
   block[3] = &unk_278D5C080;
   objc_copyWeak(&v6, buf);
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
@@ -2187,45 +2187,45 @@ void __65__CMContinuityCaptureRemoteVideoDevice_postAVCStreamInterruption__block
   }
 }
 
-- (void)streamDidRTPTimeOut:(id)a3
+- (void)streamDidRTPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543874;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CMContinuityCaptureRemoteVideoDevice streamDidRTPTimeOut:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = outCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_INFO, "%{public}@ %s %@", &v6, 0x20u);
   }
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   objc_initWeak(&location, self);
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CMContinuityCaptureRemoteVideoDevice streamDidRTCPTimeOut:]";
     v13 = 2112;
-    v14 = v4;
+    v14 = outCopy;
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_INFO, "%@ %s %@", buf, 0x20u);
   }
 
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_invoke;
   block[3] = &unk_278D5C080;
   objc_copyWeak(&v8, &location);
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -2242,14 +2242,14 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
   }
 }
 
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion
 {
-  v7 = a5;
-  v8 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = *MEMORY[0x277CF3FC8];
-  v10 = CMGetAttachment(a3, *MEMORY[0x277CF3FC8], 0);
+  v10 = CMGetAttachment(frame, *MEMORY[0x277CF3FC8], 0);
   v11 = v10;
   if (v10)
   {
@@ -2273,12 +2273,12 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
       }
 
       v15 = point.x;
-      v16 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v16 setPanningAngleX:v15];
+      activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration setPanningAngleX:v15];
 
       v17 = point.y;
-      v18 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v18 setPanningAngleY:v17];
+      activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration2 setPanningAngleY:v17];
     }
 
     v19 = [v11 objectForKeyedSubscript:*MEMORY[0x277CF6978]];
@@ -2295,12 +2295,12 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
 
       [v19 floatValue];
       v23 = v22;
-      v24 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v24 setVideoZoomFactor:v23];
+      activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration3 setVideoZoomFactor:v23];
     }
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(frame);
   if (ImageBuffer)
   {
     v26 = CMGetAttachment(ImageBuffer, @"ReactionEffectComplexity", 0);
@@ -2332,7 +2332,7 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
         v31 = [objc_alloc(MEMORY[0x277CBEB38]) initWithObjectsAndKeys:{v29, v27, 0}];
       }
 
-      CMSetAttachment(a3, v9, v31, 1u);
+      CMSetAttachment(frame, v9, v31, 1u);
     }
   }
 
@@ -2341,7 +2341,7 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
     HostTimeInNanoSec = CMContinuityCaptureGetHostTimeInNanoSec();
     avcStreamInput = self->_avcStreamInput;
     v39 = 0;
-    v34 = [(AVCStreamInput *)avcStreamInput pushSampleBuffer:a3 error:&v39];
+    v34 = [(AVCStreamInput *)avcStreamInput pushSampleBuffer:frame error:&v39];
     v35 = v39;
     if (v34)
     {
@@ -2357,12 +2357,12 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
 
       if (v36 >= 0xF4241)
       {
-        CMSetAttachment(a3, @"HighLatencyFrame", *MEMORY[0x277CBED28], 0);
+        CMSetAttachment(frame, @"HighLatencyFrame", *MEMORY[0x277CBED28], 0);
       }
 
       v38.receiver = self;
       v38.super_class = CMContinuityCaptureRemoteVideoDevice;
-      [(CMContinuityCaptureDeviceBase *)&v38 dispatchFrame:a3 entity:[(CMContinuityCaptureDeviceBase *)self entity] completion:&__block_literal_global_75];
+      [(CMContinuityCaptureDeviceBase *)&v38 dispatchFrame:frame entity:[(CMContinuityCaptureDeviceBase *)self entity] completion:&__block_literal_global_75];
     }
 
     else
@@ -2377,32 +2377,32 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
     v35 = *buf;
   }
 
-  v7[2](v7, v35);
+  completionCopy[2](completionCopy, v35);
 }
 
-- (id)newVideoStreamCurrentConfiguration:(int64_t)a3
+- (id)newVideoStreamCurrentConfiguration:(int64_t)configuration
 {
-  v5 = [(CMContinuityCaptureDeviceBase *)self transportStream];
-  v6 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v7 = v6;
-  if (v6)
+  transportStream = [(CMContinuityCaptureDeviceBase *)self transportStream];
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  v7 = compositeDelegate;
+  if (compositeDelegate)
   {
-    v8 = [v6 server];
-    v9 = v8;
+    server = [compositeDelegate server];
+    v9 = server;
     v10 = 0;
     v11 = 0;
     v12 = 0;
-    if (v5 && v8)
+    if (transportStream && server)
     {
-      v13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v14 = [v13 sessionID];
-      v10 = [v5 cipherKeyforSessionID:v14];
+      activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      sessionID = [activeConfiguration sessionID];
+      v10 = [transportStream cipherKeyforSessionID:sessionID];
 
       if (v10)
       {
-        v15 = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
+        avcStreamNegotiator = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
         v57 = 0;
-        v12 = [v15 generateMediaStreamConfigurationWithError:&v57];
+        v12 = [avcStreamNegotiator generateMediaStreamConfigurationWithError:&v57];
         v11 = v57;
 
         if (v12)
@@ -2410,9 +2410,9 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
           v44 = v11;
           [v12 setRtcpSendInterval:1.0];
           [v12 setRtcpTimeOutEnabled:1];
-          v16 = [v9 currentTransport];
+          currentTransport = [v9 currentTransport];
           v17 = 12.0;
-          if (v16 == 2)
+          if (currentTransport == 2)
           {
             v17 = 8.0;
           }
@@ -2422,60 +2422,60 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
           [v12 setSRTCPCipherSuite:5];
           [v12 setSendMediaKey:v10];
           [v12 setReceiveMediaKey:v10];
-          [v12 setStreamInputID:a3];
-          v18 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-          v19 = [v18 format];
-          AVCVideoResolutionForFormat = CMContinuityCaptureGetAVCVideoResolutionForFormat(v19);
-          v21 = [v12 video];
-          [v21 setVideoResolution:AVCVideoResolutionForFormat];
+          [v12 setStreamInputID:configuration];
+          activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+          format = [activeConfiguration2 format];
+          AVCVideoResolutionForFormat = CMContinuityCaptureGetAVCVideoResolutionForFormat(format);
+          video = [v12 video];
+          [video setVideoResolution:AVCVideoResolutionForFormat];
 
-          v22 = [v12 video];
-          v23 = [v22 videoResolution];
+          video2 = [v12 video];
+          videoResolution = [video2 videoResolution];
 
-          if (v23 == 12)
+          if (videoResolution == 12)
           {
-            v24 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-            v25 = [v24 format];
-            v26 = [v25 width];
-            v27 = [v12 video];
-            [v27 setCustomWidth:v26];
+            activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+            format2 = [activeConfiguration3 format];
+            width = [format2 width];
+            video3 = [v12 video];
+            [video3 setCustomWidth:width];
 
-            v28 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-            v29 = [v28 format];
-            v30 = [v29 height];
-            v31 = [v12 video];
-            [v31 setCustomHeight:v30];
+            activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+            format3 = [activeConfiguration4 format];
+            height = [format3 height];
+            video4 = [v12 video];
+            [video4 setCustomHeight:height];
           }
 
-          v32 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-          v33 = [v32 maxFrameRate];
-          v34 = [v12 video];
-          [v34 setFramerate:v33];
+          activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+          maxFrameRate = [activeConfiguration5 maxFrameRate];
+          video5 = [v12 video];
+          [video5 setFramerate:maxFrameRate];
 
-          v35 = [v12 video];
-          [v35 setLatencySensitiveModeEnabled:1];
+          video6 = [v12 video];
+          [video6 setLatencySensitiveModeEnabled:1];
 
           v36 = CMContinuityCaptureLog(2);
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v41 = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
-            v42 = [v12 video];
+            currentSessionID = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
+            video7 = [v12 video];
             v43 = v9;
-            v37 = [v42 videoResolution];
-            v38 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+            videoResolution2 = [video7 videoResolution];
+            activeConfiguration6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
             *buf = 138413570;
-            v46 = self;
+            selfCopy = self;
             v47 = 2048;
-            v48 = v41;
+            v48 = currentSessionID;
             v49 = 1024;
-            v50 = v37;
+            v50 = videoResolution2;
             v9 = v43;
             v51 = 1024;
-            v52 = [v38 maxFrameRate];
+            maxFrameRate2 = [activeConfiguration6 maxFrameRate];
             v53 = 1024;
-            v54 = [v12 localSSRC];
+            localSSRC = [v12 localSSRC];
             v55 = 1024;
-            v56 = [v12 remoteSSRC];
+            remoteSSRC = [v12 remoteSSRC];
             _os_log_impl(&dword_242545000, v36, OS_LOG_TYPE_DEFAULT, "%@ [sessionID:%llx] Stream Resolution %u at frameRate %u localSSRC %x remoteSSRC %x", buf, 0x2Eu);
           }
 
@@ -2512,11 +2512,11 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
   return v39;
 }
 
-- (void)stopCaptureStack:(unint64_t)a3 completion:(id)a4
+- (void)stopCaptureStack:(unint64_t)stack completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v7);
+  completionCopy = completion;
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (self->_stopCompletionBlock)
   {
@@ -2524,13 +2524,13 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy3 = self;
       v27 = 2080;
       v28 = "[CMContinuityCaptureRemoteVideoDevice stopCaptureStack:completion:]";
       _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ %s already in progress", buf, 0x16u);
     }
 
-    if ((a3 & 4) != 0)
+    if ((stack & 4) != 0)
     {
       avcVideoStream = self->_avcVideoStream;
       self->_avcVideoStream = 0;
@@ -2539,15 +2539,15 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ clear AVCVideo reference", buf, 0xCu);
       }
     }
 
-    if (v6)
+    if (completionCopy)
     {
       v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ContinuityCapture" code:3 userInfo:0];
-      v6[2](v6, v11);
+      completionCopy[2](completionCopy, v11);
     }
   }
 
@@ -2555,27 +2555,27 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
   {
     if (self->_avcStreamInputActive)
     {
-      v12 = MEMORY[0x245D12020](v6);
+      v12 = MEMORY[0x245D12020](completionCopy);
       stopCompletionBlock = self->_stopCompletionBlock;
       self->_stopCompletionBlock = v12;
 
       objc_initWeak(buf, self);
       v14 = dispatch_time(0, 5000000000);
-      v15 = [(CMContinuityCaptureDeviceBase *)self queue];
+      queue2 = [(CMContinuityCaptureDeviceBase *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __68__CMContinuityCaptureRemoteVideoDevice_stopCaptureStack_completion___block_invoke;
       block[3] = &unk_278D5C080;
       objc_copyWeak(&v24, buf);
-      dispatch_after(v14, v15, block);
+      dispatch_after(v14, queue2, block);
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(buf);
     }
 
-    v16 = [(CMContinuityCaptureRemoteVideoDevice *)self stopAVConferenceStack];
-    [(CMContinuityCaptureRemoteVideoDevice *)self stopCameraCaptureStack:a3];
-    if ((a3 & 4) != 0)
+    stopAVConferenceStack = [(CMContinuityCaptureRemoteVideoDevice *)self stopAVConferenceStack];
+    [(CMContinuityCaptureRemoteVideoDevice *)self stopCameraCaptureStack:stack];
+    if ((stack & 4) != 0)
     {
       v17 = self->_avcVideoStream;
       if (v17)
@@ -2594,20 +2594,20 @@ void __61__CMContinuityCaptureRemoteVideoDevice_streamDidRTCPTimeOut___block_inv
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ clear AVCVideo reference", buf, 0xCu);
       }
     }
 
     v22.receiver = self;
     v22.super_class = CMContinuityCaptureRemoteVideoDevice;
-    [(CMContinuityCaptureDeviceBase *)&v22 stopCaptureStack:a3 completion:&__block_literal_global_84];
-    if (!v16 || !self->_avcStreamInputActive)
+    [(CMContinuityCaptureDeviceBase *)&v22 stopCaptureStack:stack completion:&__block_literal_global_84];
+    if (!stopAVConferenceStack || !self->_avcStreamInputActive)
     {
       v21 = self->_stopCompletionBlock;
       self->_stopCompletionBlock = 0;
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -2631,20 +2631,20 @@ uint64_t __68__CMContinuityCaptureRemoteVideoDevice_stopCaptureStack_completion_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)postActionOfType:(unint64_t)a3 forEvent:(id)a4 option:(unint64_t)a5
+- (void)postActionOfType:(unint64_t)type forEvent:(id)event option:(unint64_t)option
 {
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 3)
+  eventCopy = event;
+  v9 = eventCopy;
+  if (type == 3)
   {
-    v10 = [v8 name];
-    v11 = [v10 isEqualToString:@"kCMContinuityCaptureEventStreamInterrupted"];
+    name = [eventCopy name];
+    v11 = [name isEqualToString:@"kCMContinuityCaptureEventStreamInterrupted"];
 
     if (v11)
     {
-      v15 = self;
+      selfCopy = self;
       v16 = CMContinuityCaptureRemoteVideoDevice;
-      v12 = &v15;
+      v12 = &selfCopy;
     }
 
     else
@@ -2656,50 +2656,50 @@ uint64_t __68__CMContinuityCaptureRemoteVideoDevice_stopCaptureStack_completion_
       v12 = &v14;
     }
 
-    [(objc_super *)v12 postActionOfType:13 forEvent:v9 option:a5, v13.receiver, v13.super_class, v14.receiver, v14.super_class, v15, v16];
+    [(objc_super *)v12 postActionOfType:13 forEvent:v9 option:option, v13.receiver, v13.super_class, v14.receiver, v14.super_class, selfCopy, v16];
   }
 
   else
   {
-    [(CMContinuityCaptureDeviceBase *)&v13 postActionOfType:a3 forEvent:v8 option:a5, self, CMContinuityCaptureRemoteVideoDevice, v14.receiver, v14.super_class, v15, v16];
+    [(CMContinuityCaptureDeviceBase *)&v13 postActionOfType:type forEvent:eventCopy option:option, self, CMContinuityCaptureRemoteVideoDevice, v14.receiver, v14.super_class, selfCopy, v16];
   }
 }
 
-- (void)postActionCompletionForEventName:(id)a3 eventData:(id)a4 error:(id)a5
+- (void)postActionCompletionForEventName:(id)name eventData:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dataCopy = data;
+  errorCopy = error;
   v11 = CMContinuityCaptureRemoteEventToBeRelayedList();
   v12 = CMContinuityCaptureRemoteEventToBeRelayedListEvenWhenDropped();
-  if ([v11 containsObject:v8] && (!v10 || objc_msgSend(v10, "code") != 1 && (objc_msgSend(v10, "code") != 2 || objc_msgSend(v12, "containsObject:", v8))))
+  if ([v11 containsObject:nameCopy] && (!errorCopy || objc_msgSend(errorCopy, "code") != 1 && (objc_msgSend(errorCopy, "code") != 2 || objc_msgSend(v12, "containsObject:", nameCopy))))
   {
-    v13 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-    [v13 postEvent:v8 entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), v9}];
+    transportDevice = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+    [transportDevice postEvent:nameCopy entity:-[CMContinuityCaptureDeviceBase entity](self data:{"entity"), dataCopy}];
   }
 
   v14.receiver = self;
   v14.super_class = CMContinuityCaptureRemoteVideoDevice;
-  [(CMContinuityCaptureDeviceBase *)&v14 postActionCompletionForEventName:v8 eventData:v9 error:v10];
+  [(CMContinuityCaptureDeviceBase *)&v14 postActionCompletionForEventName:nameCopy eventData:dataCopy error:errorCopy];
 }
 
-- (void)captureStillImage:(id)a3 entity:(int64_t)a4 completion:(id)a5
+- (void)captureStillImage:(id)image entity:(int64_t)entity completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  imageCopy = image;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v9 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__CMContinuityCaptureRemoteVideoDevice_captureStillImage_entity_completion___block_invoke;
   block[3] = &unk_278D5CCE8;
   objc_copyWeak(&v16, &location);
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = imageCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = imageCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
@@ -2831,19 +2831,19 @@ void __76__CMContinuityCaptureRemoteVideoDevice_captureStillImage_entity_complet
   }
 }
 
-- (void)enqueueReactionEffect:(id)a3 entity:(int64_t)a4
+- (void)enqueueReactionEffect:(id)effect entity:(int64_t)entity
 {
-  v5 = a3;
+  effectCopy = effect;
   objc_initWeak(&location, self);
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__CMContinuityCaptureRemoteVideoDevice_enqueueReactionEffect_entity___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v10, &location);
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v9 = effectCopy;
+  v7 = effectCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -2876,26 +2876,26 @@ void __69__CMContinuityCaptureRemoteVideoDevice_enqueueReactionEffect_entity___b
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_initWeak(&location, self);
-  v13 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __87__CMContinuityCaptureRemoteVideoDevice_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v17[3] = &unk_278D5C1C0;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21[1] = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = pathCopy;
+  v19 = objectCopy;
+  v20 = changeCopy;
+  v21[1] = context;
+  v14 = changeCopy;
+  v15 = objectCopy;
+  v16 = pathCopy;
+  dispatch_async(queue, v17);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -2912,16 +2912,16 @@ void __87__CMContinuityCaptureRemoteVideoDevice_observeValueForKeyPath_ofObject_
   }
 }
 
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v10);
+  pathCopy = path;
+  changeCopy = change;
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v8 isEqualToString:@"activeVideoMinFrameDuration"])
+  if ([pathCopy isEqualToString:@"activeVideoMinFrameDuration"])
   {
-    v11 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v12 = v11;
     if (v11 && ([v11 CMTimeValue], *buf))
     {
@@ -2934,9 +2934,9 @@ void __87__CMContinuityCaptureRemoteVideoDevice_observeValueForKeyPath_ofObject_
       v14 = &unk_2854ECCD8;
     }
 
-    v17 = [v14 unsignedIntValue];
-    v18 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v18 setMaxFrameRate:v17];
+    unsignedIntValue = [v14 unsignedIntValue];
+    activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration setMaxFrameRate:unsignedIntValue];
 
 LABEL_33:
     [(CMContinuityCaptureRemoteVideoDevice *)self updateControlStatus];
@@ -2945,9 +2945,9 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"activeVideoMaxFrameDuration"])
+  if ([pathCopy isEqualToString:@"activeVideoMaxFrameDuration"])
   {
-    v15 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v12 = v15;
     if (v15 && ([v15 CMTimeValue], *buf))
     {
@@ -2960,9 +2960,9 @@ LABEL_34:
       v14 = &unk_2854ECCD8;
     }
 
-    v39 = [v14 unsignedIntValue];
-    v40 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v40 setMinFrameRate:v39];
+    unsignedIntValue2 = [v14 unsignedIntValue];
+    activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration2 setMinFrameRate:unsignedIntValue2];
 
     v41 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
     [v41 setValue:v14];
@@ -2970,11 +2970,11 @@ LABEL_34:
     goto LABEL_33;
   }
 
-  if ([v8 isEqualToString:@"reactionEffectsInProgress"])
+  if ([pathCopy isEqualToString:@"reactionEffectsInProgress"])
   {
-    v19 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v63 = v9;
-    v20 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v19 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    v63 = changeCopy;
+    v20 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     v21 = [MEMORY[0x277CBEB98] setWithArray:v19];
     v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v20, "count") + objc_msgSend(v19, "count")}];
     v75 = 0u;
@@ -2996,8 +2996,8 @@ LABEL_34:
             objc_enumerationMutation(v23);
           }
 
-          v28 = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
-          [v22 addObject:v28];
+          dictionaryRepresentation = [*(*(&v75 + 1) + 8 * i) dictionaryRepresentation];
+          [v22 addObject:dictionaryRepresentation];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v75 objects:v74 count:16];
@@ -3028,8 +3028,8 @@ LABEL_34:
           v34 = *(*(&v70 + 1) + 8 * j);
           if (([v21 containsObject:v34] & 1) == 0)
           {
-            v35 = [v34 dictionaryRepresentation];
-            [v22 addObject:v35];
+            dictionaryRepresentation2 = [v34 dictionaryRepresentation];
+            [v22 addObject:dictionaryRepresentation2];
           }
         }
 
@@ -3051,23 +3051,23 @@ LABEL_34:
       _os_log_impl(&dword_242545000, v37, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
     }
 
-    v38 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-    [v38 setValueForControl:v36 completion:0];
+    transportDevice = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+    [transportDevice setValueForControl:v36 completion:0];
 
-    v9 = v63;
+    changeCopy = v63;
     goto LABEL_35;
   }
 
-  if ([v8 isEqualToString:@"reactionEffectSuppressedGesturesEnabled"])
+  if ([pathCopy isEqualToString:@"reactionEffectSuppressedGesturesEnabled"])
   {
     v12 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"SuppressedGesturesEnabled"];
-    v42 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v42 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     [v12 setValue:v42];
 
-    v43 = [v12 value];
-    v44 = [v43 BOOLValue];
-    v45 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v45 setReactionEffectSuppressedGesturesEnabled:v44];
+    value = [v12 value];
+    bOOLValue = [value BOOLValue];
+    activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration3 setReactionEffectSuppressedGesturesEnabled:bOOLValue];
 
     v46 = CMContinuityCaptureLog(2);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
@@ -3078,10 +3078,10 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  if ([v8 isEqualToString:@"reactionEffectSuppressedGesture"])
+  if ([pathCopy isEqualToString:@"reactionEffectSuppressedGesture"])
   {
     v12 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"SuppressedGesture"];
-    v47 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v47 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     [v12 setValue:v47];
 
     v46 = CMContinuityCaptureLog(2);
@@ -3097,35 +3097,35 @@ LABEL_41:
 
 LABEL_42:
 
-    v48 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-    [v48 setValueForControl:v12 completion:0];
+    transportDevice2 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+    [transportDevice2 setValueForControl:v12 completion:0];
 
     goto LABEL_34;
   }
 
-  if ([v8 isEqualToString:@"active"])
+  if ([pathCopy isEqualToString:@"active"])
   {
     v49 = *MEMORY[0x277CCA2F0];
-    v50 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v50 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     if ([v50 BOOLValue])
     {
 
       goto LABEL_54;
     }
 
-    v58 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-    v59 = [v58 BOOLValue];
+    v58 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    bOOLValue2 = [v58 BOOLValue];
 
-    if (!v59)
+    if (!bOOLValue2)
     {
 LABEL_54:
-      v12 = [v9 objectForKeyedSubscript:v49];
+      v12 = [changeCopy objectForKeyedSubscript:v49];
       if (([v12 BOOLValue]& 1) != 0)
       {
-        v61 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-        v62 = [v61 BOOLValue];
+        v61 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+        bOOLValue3 = [v61 BOOLValue];
 
-        if (v62)
+        if (bOOLValue3)
         {
           goto LABEL_35;
         }
@@ -3155,20 +3155,20 @@ LABEL_54:
 
   else
   {
-    if ([v8 isEqualToString:@"throttled"])
+    if ([pathCopy isEqualToString:@"throttled"])
     {
-      v51 = [v9 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v52 = [v51 BOOLValue];
+      v51 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      bOOLValue4 = [v51 BOOLValue];
 
-      v53 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-      v54 = [v53 frameRateManager];
-      v12 = [v54 allowedFrameRateRangeForDevice:self];
+      compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+      frameRateManager = [compositeDelegate frameRateManager];
+      v12 = [frameRateManager allowedFrameRateRangeForDevice:self];
 
-      v55 = [v12 maxFrameRate];
-      -[CMContinuityCaptureRemoteVideoDevice setMaxFrameRate:](self, "setMaxFrameRate:", [v55 unsignedIntValue]);
+      maxFrameRate = [v12 maxFrameRate];
+      -[CMContinuityCaptureRemoteVideoDevice setMaxFrameRate:](self, "setMaxFrameRate:", [maxFrameRate unsignedIntValue]);
 
-      v56 = [v12 minFrameRate];
-      -[CMContinuityCaptureRemoteVideoDevice setMinFrameRate:](self, "setMinFrameRate:", [v56 unsignedIntValue]);
+      minFrameRate = [v12 minFrameRate];
+      -[CMContinuityCaptureRemoteVideoDevice setMinFrameRate:](self, "setMinFrameRate:", [minFrameRate unsignedIntValue]);
 
       v57 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
@@ -3180,14 +3180,14 @@ LABEL_54:
         *&v66[4] = 1024;
         *&v66[6] = [(CMContinuityCaptureRemoteVideoDevice *)self minFrameRate];
         v67 = 1024;
-        v68 = v52;
+        v68 = bOOLValue4;
         _os_log_impl(&dword_242545000, v57, OS_LOG_TYPE_DEFAULT, "%{public}@ Updated maxFrameRate: %u minFrameRate: %u, throttled state: %d", buf, 0x1Eu);
       }
 
       goto LABEL_34;
     }
 
-    if ([v8 isEqualToString:@"activeConfiguration"])
+    if ([pathCopy isEqualToString:@"activeConfiguration"])
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3204,13 +3204,13 @@ LABEL_35:
 - (void)updateControlStatus
 {
   objc_initWeak(&location, self);
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invoke;
   v4[3] = &unk_278D5C080;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3229,14 +3229,14 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
 - (void)_updateControlStatus
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v122 = self;
+    selfCopy12 = self;
     v123 = 2080;
     v124 = "[CMContinuityCaptureRemoteVideoDevice _updateControlStatus]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -3245,47 +3245,47 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
   v5 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"4cc_cfac_glob_0000"];
   if (v5)
   {
-    v6 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
-    if ([v6 isCenterStageActive])
+    device = [(AVCaptureDeviceInput *)self->_videoDataInput device];
+    if ([device isCenterStageActive])
     {
-      v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      if ([v7 isCenterStageForcefullyEnabled])
+      activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      if ([activeConfiguration isCenterStageForcefullyEnabled])
       {
-        v8 = 1;
+        centerStageEnabled = 1;
       }
 
       else
       {
-        v9 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-        v8 = [v9 centerStageEnabled];
+        activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+        centerStageEnabled = [activeConfiguration2 centerStageEnabled];
       }
     }
 
     else
     {
-      v8 = 0;
+      centerStageEnabled = 0;
     }
 
-    v10 = [v5 value];
-    v11 = [v10 BOOLValue];
+    value = [v5 value];
+    bOOLValue = [value BOOLValue];
 
-    if (v8 != v11)
+    if (centerStageEnabled != bOOLValue)
     {
-      v12 = [MEMORY[0x277CCABB0] numberWithBool:v8];
+      v12 = [MEMORY[0x277CCABB0] numberWithBool:centerStageEnabled];
       [v5 setValue:v12];
 
       v13 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v5;
         _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v14 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v14 setValueForControl:v5 completion:0];
+      transportDevice = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice setValueForControl:v5 completion:0];
     }
   }
 
@@ -3293,29 +3293,29 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v15)
   {
-    v16 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v17 = [v16 deskViewCameraMode];
+    activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    deskViewCameraMode = [activeConfiguration3 deskViewCameraMode];
 
-    v18 = [v15 value];
-    v19 = [v18 intValue];
+    value2 = [v15 value];
+    intValue = [value2 intValue];
 
-    if (v17 != v19)
+    if (deskViewCameraMode != intValue)
     {
-      v20 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
+      v20 = [MEMORY[0x277CCABB0] numberWithInteger:deskViewCameraMode];
       [v15 setValue:v20];
 
       v21 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v15;
         _os_log_impl(&dword_242545000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v22 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v22 setValueForControl:v15 completion:0];
+      transportDevice2 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice2 setValueForControl:v15 completion:0];
     }
   }
 
@@ -3323,38 +3323,38 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v23)
   {
-    v24 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    if ([v24 centerStageEnabled])
+    activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    if ([activeConfiguration4 centerStageEnabled])
     {
-      v25 = 1;
+      isCenterStageForcefullyEnabled = 1;
     }
 
     else
     {
-      v26 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v25 = [v26 isCenterStageForcefullyEnabled];
+      activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      isCenterStageForcefullyEnabled = [activeConfiguration5 isCenterStageForcefullyEnabled];
     }
 
-    v27 = [v23 value];
-    v28 = [v27 BOOLValue];
+    value3 = [v23 value];
+    bOOLValue2 = [value3 BOOLValue];
 
-    if (v25 != v28)
+    if (isCenterStageForcefullyEnabled != bOOLValue2)
     {
-      v29 = [MEMORY[0x277CCABB0] numberWithBool:v25];
+      v29 = [MEMORY[0x277CCABB0] numberWithBool:isCenterStageForcefullyEnabled];
       [v23 setValue:v29];
 
       v30 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v23;
         _os_log_impl(&dword_242545000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v31 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v31 setValueForControl:v23 completion:0];
+      transportDevice3 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice3 setValueForControl:v23 completion:0];
     }
   }
 
@@ -3362,31 +3362,31 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v32)
   {
-    v33 = [v32 value];
-    if (v33)
+    value4 = [v32 value];
+    if (value4)
     {
-      v34 = v33;
-      v35 = [(CMContinuityCaptureRemoteVideoDevice *)self centerStageRectOfInterest];
-      v36 = [v32 value];
-      v37 = [v35 isEqualToDictionary:v36];
+      v34 = value4;
+      centerStageRectOfInterest = [(CMContinuityCaptureRemoteVideoDevice *)self centerStageRectOfInterest];
+      value5 = [v32 value];
+      v37 = [centerStageRectOfInterest isEqualToDictionary:value5];
 
       if ((v37 & 1) == 0)
       {
-        v38 = [(CMContinuityCaptureRemoteVideoDevice *)self centerStageRectOfInterest];
-        [v32 setValue:v38];
+        centerStageRectOfInterest2 = [(CMContinuityCaptureRemoteVideoDevice *)self centerStageRectOfInterest];
+        [v32 setValue:centerStageRectOfInterest2];
 
         v39 = CMContinuityCaptureLog(2);
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v122 = self;
+          selfCopy12 = self;
           v123 = 2114;
           v124 = v32;
           _os_log_impl(&dword_242545000, v39, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
         }
 
-        v40 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-        [v40 setValueForControl:v32 completion:0];
+        transportDevice4 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+        [transportDevice4 setValueForControl:v32 completion:0];
       }
     }
   }
@@ -3395,29 +3395,29 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v41)
   {
-    v42 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v43 = [v42 centerStageFramingMode];
+    activeConfiguration6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    centerStageFramingMode = [activeConfiguration6 centerStageFramingMode];
 
-    v44 = [v41 value];
-    v45 = [v44 intValue];
+    value6 = [v41 value];
+    intValue2 = [value6 intValue];
 
-    if (v43 != v45)
+    if (centerStageFramingMode != intValue2)
     {
-      v46 = [MEMORY[0x277CCABB0] numberWithInteger:v43];
+      v46 = [MEMORY[0x277CCABB0] numberWithInteger:centerStageFramingMode];
       [v41 setValue:v46];
 
       v47 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v41;
         _os_log_impl(&dword_242545000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v48 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v48 setValueForControl:v41 completion:0];
+      transportDevice5 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice5 setValueForControl:v41 completion:0];
     }
   }
 
@@ -3425,38 +3425,38 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v49)
   {
-    v50 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
-    if ([v50 isPortraitEffectActive])
+    device2 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
+    if ([device2 isPortraitEffectActive])
     {
-      v51 = 1;
+      portraitEffectEnabled = 1;
     }
 
     else
     {
-      v52 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v51 = [v52 portraitEffectEnabled];
+      activeConfiguration7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      portraitEffectEnabled = [activeConfiguration7 portraitEffectEnabled];
     }
 
-    v53 = [v49 value];
-    v54 = [v53 BOOLValue];
+    value7 = [v49 value];
+    bOOLValue3 = [value7 BOOLValue];
 
-    if (v51 != v54)
+    if (portraitEffectEnabled != bOOLValue3)
     {
-      v55 = [MEMORY[0x277CCABB0] numberWithBool:v51];
+      v55 = [MEMORY[0x277CCABB0] numberWithBool:portraitEffectEnabled];
       [v49 setValue:v55];
 
       v56 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v49;
         _os_log_impl(&dword_242545000, v56, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v57 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v57 setValueForControl:v49 completion:0];
+      transportDevice6 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice6 setValueForControl:v49 completion:0];
     }
   }
 
@@ -3464,38 +3464,38 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v58)
   {
-    v59 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
-    if ([v59 isStudioLightActive])
+    device3 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
+    if ([device3 isStudioLightActive])
     {
-      v60 = 1;
+      studioLightingEnabled = 1;
     }
 
     else
     {
-      v61 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v60 = [v61 studioLightingEnabled];
+      activeConfiguration8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      studioLightingEnabled = [activeConfiguration8 studioLightingEnabled];
     }
 
-    v62 = [v58 value];
-    v63 = [v62 BOOLValue];
+    value8 = [v58 value];
+    bOOLValue4 = [value8 BOOLValue];
 
-    if (v60 != v63)
+    if (studioLightingEnabled != bOOLValue4)
     {
-      v64 = [MEMORY[0x277CCABB0] numberWithBool:v60];
+      v64 = [MEMORY[0x277CCABB0] numberWithBool:studioLightingEnabled];
       [v58 setValue:v64];
 
       v65 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v58;
         _os_log_impl(&dword_242545000, v65, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v66 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v66 setValueForControl:v58 completion:0];
+      transportDevice7 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice7 setValueForControl:v58 completion:0];
     }
   }
 
@@ -3503,38 +3503,38 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v67)
   {
-    v68 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
-    if ([v68 canPerformReactionEffects])
+    device4 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
+    if ([device4 canPerformReactionEffects])
     {
-      v69 = 1;
+      reactionEffectsEnabled = 1;
     }
 
     else
     {
-      v70 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v69 = [v70 reactionEffectsEnabled];
+      activeConfiguration9 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      reactionEffectsEnabled = [activeConfiguration9 reactionEffectsEnabled];
     }
 
-    v71 = [v67 value];
-    v72 = [v71 BOOLValue];
+    value9 = [v67 value];
+    bOOLValue5 = [value9 BOOLValue];
 
-    if (v69 != v72)
+    if (reactionEffectsEnabled != bOOLValue5)
     {
-      v73 = [MEMORY[0x277CCABB0] numberWithBool:v69];
+      v73 = [MEMORY[0x277CCABB0] numberWithBool:reactionEffectsEnabled];
       [v67 setValue:v73];
 
       v74 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v67;
         _os_log_impl(&dword_242545000, v74, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v75 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v75 setValueForControl:v67 completion:0];
+      transportDevice8 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice8 setValueForControl:v67 completion:0];
     }
   }
 
@@ -3542,38 +3542,38 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
 
   if (v76)
   {
-    v77 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
-    if ([v77 isBackgroundReplacementActive])
+    device5 = [(AVCaptureDeviceInput *)self->_videoDataInput device];
+    if ([device5 isBackgroundReplacementActive])
     {
-      v78 = 1;
+      backgroundReplacementEnabled = 1;
     }
 
     else
     {
-      v79 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v78 = [v79 backgroundReplacementEnabled];
+      activeConfiguration10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      backgroundReplacementEnabled = [activeConfiguration10 backgroundReplacementEnabled];
     }
 
-    v80 = [v76 value];
-    v81 = [v80 BOOLValue];
+    value10 = [v76 value];
+    bOOLValue6 = [value10 BOOLValue];
 
-    if (v78 != v81)
+    if (backgroundReplacementEnabled != bOOLValue6)
     {
-      v82 = [MEMORY[0x277CCABB0] numberWithBool:v78];
+      v82 = [MEMORY[0x277CCABB0] numberWithBool:backgroundReplacementEnabled];
       [v76 setValue:v82];
 
       v83 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v122 = self;
+        selfCopy12 = self;
         v123 = 2114;
         v124 = v76;
         _os_log_impl(&dword_242545000, v83, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
       }
 
-      v84 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-      [v84 setValueForControl:v76 completion:0];
+      transportDevice9 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+      [transportDevice9 setValueForControl:v76 completion:0];
     }
   }
 
@@ -3609,8 +3609,8 @@ void __59__CMContinuityCaptureRemoteVideoDevice_updateControlStatus__block_invok
         v90 = 0.0;
 LABEL_79:
         v91 = v89 / v90;
-        v92 = [v85 value];
-        [v92 doubleValue];
+        value11 = [v85 value];
+        [value11 doubleValue];
         v94 = v93;
 
         if (v94 != v91)
@@ -3622,14 +3622,14 @@ LABEL_79:
           if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v122 = self;
+            selfCopy12 = self;
             v123 = 2114;
             v124 = v85;
             _os_log_impl(&dword_242545000, v96, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
           }
 
-          v97 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-          [v97 setValueForControl:v85 completion:0];
+          transportDevice10 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+          [transportDevice10 setValueForControl:v85 completion:0];
         }
       }
     }
@@ -3682,8 +3682,8 @@ LABEL_79:
   v113 = 0;
 LABEL_92:
   v104 = v102 / v103;
-  v105 = [v98 value];
-  [v105 doubleValue];
+  value12 = [v98 value];
+  [value12 doubleValue];
   v107 = v106;
 
   if (v107 != v104)
@@ -3695,34 +3695,34 @@ LABEL_92:
     if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v122 = self;
+      selfCopy12 = self;
       v123 = 2114;
       v124 = v98;
       _os_log_impl(&dword_242545000, v109, OS_LOG_TYPE_DEFAULT, "%{public}@ updated %{public}@", buf, 0x16u);
     }
 
-    v110 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
-    [v110 setValueForControl:v98 completion:0];
+    transportDevice11 = [(CMContinuityCaptureDeviceBase *)self transportDevice];
+    [transportDevice11 setValueForControl:v98 completion:0];
   }
 
 LABEL_96:
 }
 
-- (void)setValueForControl:(id)a3 completion:(id)a4
+- (void)setValueForControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(CMContinuityCaptureDeviceBase *)self queue];
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__CMContinuityCaptureRemoteVideoDevice_setValueForControl_completion___block_invoke;
   v10[3] = &unk_278D5C120;
   objc_copyWeak(&v13, &location);
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
-  dispatch_async(v8, v10);
+  v11 = controlCopy;
+  selfCopy = self;
+  v9 = controlCopy;
+  dispatch_async(queue, v10);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -5009,39 +5009,39 @@ LABEL_62:
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhoto:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishProcessingPhoto:(id)photo error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v12 = v11;
-  if (v11)
+  outputCopy = output;
+  photoCopy = photo;
+  errorCopy = error;
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  v12 = compositeDelegate;
+  if (compositeDelegate)
   {
-    v13 = [v11 server];
-    v14 = self;
-    objc_sync_enter(v14);
-    photoRequests = v14->_photoRequests;
+    server = [compositeDelegate server];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    photoRequests = selfCopy->_photoRequests;
     v16 = MEMORY[0x277CCABB0];
-    v17 = [v9 resolvedSettings];
-    v18 = [v16 numberWithLongLong:{objc_msgSend(v17, "uniqueID")}];
+    resolvedSettings = [photoCopy resolvedSettings];
+    v18 = [v16 numberWithLongLong:{objc_msgSend(resolvedSettings, "uniqueID")}];
     v19 = [(NSMutableDictionary *)photoRequests objectForKeyedSubscript:v18];
     v20 = [v19 copy];
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy);
     if (v20)
     {
-      v38 = v8;
-      [v20 setCaptureComplete:v10 == 0];
-      [v20 setError:v10];
-      v21 = [v9 fileDataRepresentation];
-      [v20 setImageFileData:v21];
+      v38 = outputCopy;
+      [v20 setCaptureComplete:errorCopy == 0];
+      [v20 setError:errorCopy];
+      fileDataRepresentation = [photoCopy fileDataRepresentation];
+      [v20 setImageFileData:fileDataRepresentation];
 
-      v22 = [v9 resolvedSettings];
-      v23 = [v22 photoDimensions];
+      resolvedSettings2 = [photoCopy resolvedSettings];
+      photoDimensions = [resolvedSettings2 photoDimensions];
 
-      v24 = [v20 compressedFormat];
-      v25 = [v24 isEqualToString:*MEMORY[0x277CE6300]];
+      compressedFormat = [v20 compressedFormat];
+      v25 = [compressedFormat isEqualToString:*MEMORY[0x277CE6300]];
 
       if (v25)
       {
@@ -5054,21 +5054,21 @@ LABEL_62:
       }
 
       [v20 setImageCodecType:v26];
-      [v20 setImageWidth:v23];
-      [v20 setImageHeight:HIDWORD(v23)];
-      v27 = v13;
-      v28 = [v13 timeSyncClock];
+      [v20 setImageWidth:photoDimensions];
+      [v20 setImageHeight:HIDWORD(photoDimensions)];
+      v27 = server;
+      timeSyncClock = [server timeSyncClock];
 
-      if (v28)
+      if (timeSyncClock)
       {
         HostTimeClock = CMClockGetHostTimeClock();
-        v30 = [(CMContinuityCaptureRemoteVideoDevice *)v14 captureSession];
-        v31 = [v30 synchronizationClock];
+        captureSession = [(CMContinuityCaptureRemoteVideoDevice *)selfCopy captureSession];
+        synchronizationClock = [captureSession synchronizationClock];
 
         memset(&buf, 170, sizeof(buf));
-        if (v9)
+        if (photoCopy)
         {
-          [v9 timestamp];
+          [photoCopy timestamp];
         }
 
         else
@@ -5078,11 +5078,11 @@ LABEL_62:
 
         time = buf;
         memset(&v42, 170, sizeof(v42));
-        CMSyncConvertTime(&v42, &time, v31, HostTimeClock);
-        v27 = v13;
-        v32 = [v13 timeSyncClock];
+        CMSyncConvertTime(&v42, &time, synchronizationClock, HostTimeClock);
+        v27 = server;
+        timeSyncClock2 = [server timeSyncClock];
         time = v42;
-        v33 = [v32 domainTimeForMachAbsoluteTime:CMClockConvertHostTimeToSystemUnits(&time)];
+        v33 = [timeSyncClock2 domainTimeForMachAbsoluteTime:CMClockConvertHostTimeToSystemUnits(&time)];
 
         if (v33 != *MEMORY[0x277D714E8])
         {
@@ -5092,107 +5092,107 @@ LABEL_62:
       }
 
       v35 = CMContinuityCaptureLog(2);
-      v8 = v38;
+      outputCopy = v38;
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(CMContinuityCaptureDeviceBase *)v14 entity];
+        entity = [(CMContinuityCaptureDeviceBase *)selfCopy entity];
         LODWORD(buf.value) = 138543874;
-        *(&buf.value + 4) = v14;
+        *(&buf.value + 4) = selfCopy;
         LOWORD(buf.flags) = 2112;
         *(&buf.flags + 2) = v20;
         HIWORD(buf.epoch) = 2048;
-        v40 = v36;
+        v40 = entity;
         _os_log_impl(&dword_242545000, v35, OS_LOG_TYPE_DEFAULT, "%{public}@ Captured photo for %@, entity:%ld", &buf, 0x20u);
       }
 
-      v37 = [(CMContinuityCaptureDeviceBase *)v14 transportDevice];
-      [v37 didCaptureStillImage:v20 entity:[(CMContinuityCaptureDeviceBase *)v14 entity]];
+      transportDevice = [(CMContinuityCaptureDeviceBase *)selfCopy transportDevice];
+      [transportDevice didCaptureStillImage:v20 entity:[(CMContinuityCaptureDeviceBase *)selfCopy entity]];
     }
 
     else
     {
-      v37 = CMContinuityCaptureLog(2);
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      transportDevice = CMContinuityCaptureLog(2);
+      if (os_log_type_enabled(transportDevice, OS_LOG_TYPE_ERROR))
       {
         [CMContinuityCaptureRemoteVideoDevice captureOutput:didFinishProcessingPhoto:error:];
       }
 
-      v27 = v13;
+      v27 = server;
     }
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 uniqueID];
-  v12 = self;
-  objc_sync_enter(v12);
-  photoRequests = v12->_photoRequests;
-  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+  outputCopy = output;
+  settingsCopy = settings;
+  errorCopy = error;
+  uniqueID = [settingsCopy uniqueID];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  photoRequests = selfCopy->_photoRequests;
+  v14 = [MEMORY[0x277CCABB0] numberWithLongLong:uniqueID];
   v15 = [(NSMutableDictionary *)photoRequests objectForKeyedSubscript:v14];
   v16 = [v15 copy];
 
-  v17 = v12->_photoRequests;
-  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:v11];
+  v17 = selfCopy->_photoRequests;
+  v18 = [MEMORY[0x277CCABB0] numberWithLongLong:uniqueID];
   [(NSMutableDictionary *)v17 setObject:0 forKeyedSubscript:v18];
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
   v19 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138543874;
-    v21 = v12;
+    v21 = selfCopy;
     v22 = 2048;
-    v23 = v11;
+    v23 = uniqueID;
     v24 = 2112;
     v25 = v16;
     _os_log_impl(&dword_242545000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ DidFinishCapture for captureID:%lld. Removed %@ from photoRequests", &v20, 0x20u);
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = [(CMContinuityCaptureDeviceBase *)self queue:a3];
+  v7 = [(CMContinuityCaptureDeviceBase *)self queue:output];
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v9 = v8;
-  if (v8)
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  v9 = compositeDelegate;
+  if (compositeDelegate)
   {
-    v10 = [v8 server];
+    server = [compositeDelegate server];
     v11 = *MEMORY[0x277CF3FC8];
-    v12 = CMGetAttachment(a4, *MEMORY[0x277CF3FC8], 0);
-    if (!v12)
+    dictionary = CMGetAttachment(buffer, *MEMORY[0x277CF3FC8], 0);
+    if (!dictionary)
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
-      CMSetAttachment(a4, v11, v12, 1u);
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      CMSetAttachment(buffer, v11, dictionary, 1u);
     }
 
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v10, "currentSessionID")}];
-    [v12 setObject:v13 forKeyedSubscript:@"ContinuityCaptureRemoteSessionID"];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(server, "currentSessionID")}];
+    [dictionary setObject:v13 forKeyedSubscript:@"ContinuityCaptureRemoteSessionID"];
 
-    v14 = [v10 timeSyncClock];
+    timeSyncClock = [server timeSyncClock];
 
-    if (v14)
+    if (timeSyncClock)
     {
       HostTimeClock = CMClockGetHostTimeClock();
-      v16 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-      v17 = [v16 synchronizationClock];
+      captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+      synchronizationClock = [captureSession synchronizationClock];
 
       memset(&v42, 170, sizeof(v42));
-      CMSampleBufferGetPresentationTimeStamp(&v42, a4);
+      CMSampleBufferGetPresentationTimeStamp(&v42, buffer);
       memset(&v41, 170, sizeof(v41));
       v39 = v42;
-      CMSyncConvertTime(&v41, &v39, v17, HostTimeClock);
-      v18 = [v10 timeSyncClock];
+      CMSyncConvertTime(&v41, &v39, synchronizationClock, HostTimeClock);
+      timeSyncClock2 = [server timeSyncClock];
       v39 = v41;
-      v19 = [v18 domainTimeForMachAbsoluteTime:CMClockConvertHostTimeToSystemUnits(&v39)];
+      v19 = [timeSyncClock2 domainTimeForMachAbsoluteTime:CMClockConvertHostTimeToSystemUnits(&v39)];
 
-      v20 = [v10 timeSyncClock];
-      v21 = [v20 grandMasterIdentifier];
+      timeSyncClock3 = [server timeSyncClock];
+      grandMasterIdentifier = [timeSyncClock3 grandMasterIdentifier];
 
       if (v19 != *MEMORY[0x277D714E8])
       {
@@ -5206,76 +5206,76 @@ LABEL_62:
             LOWORD(v39.flags) = 2048;
             *(&v39.flags + 2) = v19;
             HIWORD(v39.epoch) = 2048;
-            v40 = v21;
+            v40 = grandMasterIdentifier;
             _os_log_debug_impl(&dword_242545000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ networkTime %llx identity %llx", &v39, 0x20u);
           }
         }
 
         v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
-        [v12 setObject:v23 forKeyedSubscript:@"NetworkTime"];
+        [dictionary setObject:v23 forKeyedSubscript:@"NetworkTime"];
 
-        v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v21];
-        [v12 setObject:v24 forKeyedSubscript:@"NetworkTimeClockIdentity"];
+        v24 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:grandMasterIdentifier];
+        [dictionary setObject:v24 forKeyedSubscript:@"NetworkTimeClockIdentity"];
       }
     }
 
     if (self->_metadataOutput)
     {
-      v25 = CMGetAttachment(a4, *MEMORY[0x277CF3F48], 0);
+      v25 = CMGetAttachment(buffer, *MEMORY[0x277CF3F48], 0);
       if (v25)
       {
-        v26 = [MEMORY[0x277CBEB38] dictionary];
-        v27 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
-        v28 = [v27 containsObject:*MEMORY[0x277CE5A50]];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        availableMetadataObjectTypes = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+        v28 = [availableMetadataObjectTypes containsObject:*MEMORY[0x277CE5A50]];
 
         if (v28)
         {
           v29 = *MEMORY[0x277CF4408];
           v30 = [v25 objectForKeyedSubscript:*MEMORY[0x277CF4408]];
-          [v26 setObject:v30 forKeyedSubscript:v29];
+          [dictionary2 setObject:v30 forKeyedSubscript:v29];
         }
 
-        v31 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
-        v32 = [v31 containsObject:*MEMORY[0x277CE5A58]];
+        availableMetadataObjectTypes2 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+        v32 = [availableMetadataObjectTypes2 containsObject:*MEMORY[0x277CE5A58]];
 
         if (v32)
         {
           v33 = *MEMORY[0x277CF4400];
           v34 = [v25 objectForKeyedSubscript:*MEMORY[0x277CF4400]];
-          [v26 setObject:v34 forKeyedSubscript:v33];
+          [dictionary2 setObject:v34 forKeyedSubscript:v33];
         }
 
-        v35 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
-        v36 = [v35 containsObject:*MEMORY[0x277CE5A60]];
+        availableMetadataObjectTypes3 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+        v36 = [availableMetadataObjectTypes3 containsObject:*MEMORY[0x277CE5A60]];
 
         if (v36)
         {
           v37 = *MEMORY[0x277CF4410];
           v38 = [v25 objectForKeyedSubscript:*MEMORY[0x277CF4410]];
-          [v26 setObject:v38 forKeyedSubscript:v37];
+          [dictionary2 setObject:v38 forKeyedSubscript:v37];
         }
 
-        [v12 setObject:v26 forKeyedSubscript:*MEMORY[0x277CF4BD0]];
-        [v12 setObject:&unk_2854EC878 forKeyedSubscript:*MEMORY[0x277CF4BD8]];
+        [dictionary setObject:dictionary2 forKeyedSubscript:*MEMORY[0x277CF4BD0]];
+        [dictionary setObject:&unk_2854EC878 forKeyedSubscript:*MEMORY[0x277CF4BD8]];
       }
 
-      CMGetAttachment(a4, *MEMORY[0x277CF3F60], 0);
+      CMGetAttachment(buffer, *MEMORY[0x277CF3F60], 0);
     }
 
     if (self->_captureStackActive && self->_propagateCaptureSessionRestartedAttachment)
     {
       self->_propagateCaptureSessionRestartedAttachment = 0;
-      [v12 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"CaptureSessionRestarted"];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"CaptureSessionRestarted"];
     }
 
-    [(CMContinuityCaptureRemoteVideoDevice *)self dispatchFrame:a4 entity:[(CMContinuityCaptureDeviceBase *)self entity] completion:&__block_literal_global_109];
+    [(CMContinuityCaptureRemoteVideoDevice *)self dispatchFrame:buffer entity:[(CMContinuityCaptureDeviceBase *)self entity] completion:&__block_literal_global_109];
   }
 }
 
-- (void)captureOutput:(id)a3 didDropSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didDropSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   ++self->_videoBufferDropCounter;
-  v6 = [(CMContinuityCaptureDeviceBase *)self queue:a3];
+  v6 = [(CMContinuityCaptureDeviceBase *)self queue:output];
   dispatch_assert_queue_V2(v6);
 
   if ([(CMContinuityCaptureRemoteVideoDevice *)self _shouldPrintDroppedSampleBufferLog:self->_videoBufferDropCounter])
@@ -5297,7 +5297,7 @@ LABEL_62:
     _os_log_error_impl(v4, v5, v6, v7, v8, 2u);
   }
 
-  *a1 = v1;
+  *self = v1;
 }
 
 void __68__CMContinuityCaptureRemoteVideoDevice__registerDockKitNotification__block_invoke(uint64_t a1, int a2)
@@ -5331,27 +5331,27 @@ void __68__CMContinuityCaptureRemoteVideoDevice__registerDockKitNotification__bl
   return WeakRetained;
 }
 
-- (CMContinuityCaptureRemoteVideoDevice)initWithCapabilities:(id)a3 compositeDelegate:(id)a4 captureSession:(id)a5
+- (CMContinuityCaptureRemoteVideoDevice)initWithCapabilities:(id)capabilities compositeDelegate:(id)delegate captureSession:(id)session
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [OUTLINED_FUNCTION_25() server];
-  v13 = v12;
-  if (!v12)
+  capabilitiesCopy = capabilities;
+  delegateCopy = delegate;
+  sessionCopy = session;
+  server = [OUTLINED_FUNCTION_25() server];
+  v13 = server;
+  if (!server)
   {
     goto LABEL_8;
   }
 
-  v14 = [v12 localDevice];
-  v15 = [v5 queue];
+  localDevice = [server localDevice];
+  queue = [v5 queue];
   v30.receiver = self;
   v30.super_class = CMContinuityCaptureRemoteVideoDevice;
-  self = [(CMContinuityCaptureDeviceBase *)&v30 initWithCapabilities:v9 compositeDelegate:v10 transportDevice:v14 queue:v15];
+  self = [(CMContinuityCaptureDeviceBase *)&v30 initWithCapabilities:capabilitiesCopy compositeDelegate:delegateCopy transportDevice:localDevice queue:queue];
 
   if (self)
   {
-    objc_storeStrong(&self->_captureSession, a5);
+    objc_storeStrong(&self->_captureSession, session);
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
     cmControlByName = self->_cmControlByName;
     self->_cmControlByName = v16;
@@ -5367,11 +5367,11 @@ void __68__CMContinuityCaptureRemoteVideoDevice__registerDockKitNotification__bl
     {
       gazeSelectionEnabled = self->_gazeSelectionEnabled;
       v24 = 138412802;
-      v25 = self;
+      selfCopy = self;
       v26 = 1024;
       v27 = gazeSelectionEnabled;
       v28 = 2048;
-      v29 = [v13 clientDeviceModel];
+      clientDeviceModel = [v13 clientDeviceModel];
       _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, "%@ gazeSelectionEnabled %d, clientDeviceModel %ld", &v24, 0x1Cu);
     }
 
@@ -5383,16 +5383,16 @@ void __68__CMContinuityCaptureRemoteVideoDevice__registerDockKitNotification__bl
     self->_manualFramingFeatureFlagEnabled = _os_feature_enabled_impl();
     [(CMContinuityCaptureRemoteVideoDevice *)self setupControls];
     self = self;
-    v22 = self;
+    selfCopy2 = self;
   }
 
   else
   {
 LABEL_8:
-    v22 = 0;
+    selfCopy2 = 0;
   }
 
-  return v22;
+  return selfCopy2;
 }
 
 - (BOOL)isStreamingOnSuperWide
@@ -5403,26 +5403,26 @@ LABEL_8:
     return v7;
   }
 
-  v3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  if ([v3 centerStageEnabled])
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  if ([activeConfiguration centerStageEnabled])
   {
   }
 
   else
   {
-    v4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v5 = [v4 isCenterStageForcefullyEnabled];
+    activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    isCenterStageForcefullyEnabled = [activeConfiguration2 isCenterStageForcefullyEnabled];
 
-    if (!v5)
+    if (!isCenterStageForcefullyEnabled)
     {
-      v6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      LOBYTE(v7) = [v6 manualFramingDeviceType] == 2;
+      activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      LOBYTE(v7) = [activeConfiguration3 manualFramingDeviceType] == 2;
       goto LABEL_7;
     }
   }
 
-  v6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v7 = [v6 centerStageFieldOfViewRestrictedToWide] ^ 1;
+  activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  v7 = [activeConfiguration3 centerStageFieldOfViewRestrictedToWide] ^ 1;
 LABEL_7:
 
   return v7;
@@ -5445,15 +5445,15 @@ LABEL_7:
 
 - (BOOL)configureConnections
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v5 = [v4 format];
-  v6 = [v5 maxFrameRate];
-  v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v8 = [v7 format];
-  v9 = -[CMContinuityCaptureRemoteVideoDevice compatibleDeviceFormatForMaxFrameRate:minFrameRate:](self, "compatibleDeviceFormatForMaxFrameRate:minFrameRate:", v6, [v8 minFrameRate]);
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  format = [activeConfiguration format];
+  maxFrameRate = [format maxFrameRate];
+  activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  format2 = [activeConfiguration2 format];
+  v9 = -[CMContinuityCaptureRemoteVideoDevice compatibleDeviceFormatForMaxFrameRate:minFrameRate:](self, "compatibleDeviceFormatForMaxFrameRate:minFrameRate:", maxFrameRate, [format2 minFrameRate]);
 
   v10 = CMContinuityCaptureLog(2);
   v11 = v10;
@@ -5462,63 +5462,63 @@ LABEL_7:
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(AVCaptureDevice *)self->_videoDevice localizedName];
-      v114 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v107 = [v114 maxFrameRate];
-      v113 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v105 = [v113 minFrameRate];
-      v112 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v104 = [v112 suppressVideoEffects];
-      v111 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v102 = [v111 portraitEffectEnabled];
-      v110 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v101 = [v110 centerStageEnabled];
-      v109 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v100 = [v109 studioLightingEnabled];
-      v108 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v99 = [v108 reactionEffectsEnabled];
-      v106 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v98 = [v106 backgroundReplacementEnabled];
-      v103 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v14 = [v103 isCenterStageForcefullyEnabled];
-      v15 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v15 portraitEffectAperture];
+      localizedName = [(AVCaptureDevice *)self->_videoDevice localizedName];
+      activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      maxFrameRate2 = [activeConfiguration3 maxFrameRate];
+      activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      minFrameRate = [activeConfiguration4 minFrameRate];
+      activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      suppressVideoEffects = [activeConfiguration5 suppressVideoEffects];
+      activeConfiguration6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      portraitEffectEnabled = [activeConfiguration6 portraitEffectEnabled];
+      activeConfiguration7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      centerStageEnabled = [activeConfiguration7 centerStageEnabled];
+      activeConfiguration8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      studioLightingEnabled = [activeConfiguration8 studioLightingEnabled];
+      activeConfiguration9 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      reactionEffectsEnabled = [activeConfiguration9 reactionEffectsEnabled];
+      activeConfiguration10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      backgroundReplacementEnabled = [activeConfiguration10 backgroundReplacementEnabled];
+      activeConfiguration11 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      isCenterStageForcefullyEnabled = [activeConfiguration11 isCenterStageForcefullyEnabled];
+      activeConfiguration12 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration12 portraitEffectAperture];
       v17 = v16;
-      v18 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v18 studioLightingIntensity];
+      activeConfiguration13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration13 studioLightingIntensity];
       v20 = v19;
-      v21 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v22 = [v21 reactionEffectGesturesEnabled];
-      v23 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v23 reactionEffectSuppressedGesturesEnabled];
+      activeConfiguration14 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      reactionEffectGesturesEnabled = [activeConfiguration14 reactionEffectGesturesEnabled];
+      activeConfiguration15 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration15 reactionEffectSuppressedGesturesEnabled];
       OUTLINED_FUNCTION_10_1();
-      *v117 = v13;
+      *v117 = localizedName;
       *&v117[8] = v24;
       v118 = v9;
       v119 = 1024;
-      v120 = v107;
+      v120 = maxFrameRate2;
       v121 = 1024;
-      v122 = v105;
+      v122 = minFrameRate;
       v123 = 1024;
-      v124 = v104;
+      v124 = suppressVideoEffects;
       v125 = 1024;
-      v126 = v102;
+      v126 = portraitEffectEnabled;
       v127 = 1024;
-      v128 = v101;
+      v128 = centerStageEnabled;
       v129 = 1024;
-      v130 = v100;
+      v130 = studioLightingEnabled;
       v131 = 1024;
-      v132 = v99;
+      v132 = reactionEffectsEnabled;
       v133 = 1024;
-      v134 = v98;
+      v134 = backgroundReplacementEnabled;
       v135 = 1024;
-      v136 = v14;
+      v136 = isCenterStageForcefullyEnabled;
       v137 = 2048;
       v138 = v17;
       v139 = 2048;
       v140 = v20;
       v141 = 1024;
-      v142 = v22;
+      v142 = reactionEffectGesturesEnabled;
       v143 = 1024;
       v144 = v25;
       _os_log_impl(&dword_242545000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Setting format for %@: %@ FR: %d MnFR: %d SVE %d PE %d CS %d SL %d RE %d BR %d FCS %d BBA: %f SLI: %f REG: %d RESG: %d", buf, 0x76u);
@@ -5533,10 +5533,10 @@ LABEL_7:
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v80 = [(AVCaptureDevice *)self->_videoDevice localizedName];
-      v81 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      localizedName2 = [(AVCaptureDevice *)self->_videoDevice localizedName];
+      activeConfiguration16 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
       OUTLINED_FUNCTION_10_1();
-      *v117 = v80;
+      *v117 = localizedName2;
       *&v117[8] = v82;
       v118 = v83;
       _os_log_error_impl(&dword_242545000, v11, OS_LOG_TYPE_ERROR, " %@ Unable to find compatible device format for %@ configuration %@", buf, 0x20u);
@@ -5544,28 +5544,28 @@ LABEL_7:
 
     v26 = MEMORY[0x277CBEAD8];
     v27 = *MEMORY[0x277CBE658];
-    v28 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v26 raise:v27 format:{@"%@ ContinuityCapture error : Invalid format for configuration %@", self, v28}];
+    activeConfiguration17 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [v26 raise:v27 format:{@"%@ ContinuityCapture error : Invalid format for configuration %@", self, activeConfiguration17}];
   }
 
-  v29 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v30 = [v29 frameRateManager];
-  v31 = [v30 allowedFrameRateRangeForDevice:self];
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  frameRateManager = [compositeDelegate frameRateManager];
+  v31 = [frameRateManager allowedFrameRateRangeForDevice:self];
 
-  v32 = [v31 maxFrameRate];
-  -[CMContinuityCaptureRemoteVideoDevice setMaxFrameRate:](self, "setMaxFrameRate:", [v32 unsignedIntValue]);
+  maxFrameRate3 = [v31 maxFrameRate];
+  -[CMContinuityCaptureRemoteVideoDevice setMaxFrameRate:](self, "setMaxFrameRate:", [maxFrameRate3 unsignedIntValue]);
 
-  v33 = [v31 maxFrameRate];
-  -[CMContinuityCaptureRemoteVideoDevice setMinFrameRate:](self, "setMinFrameRate:", [v33 unsignedIntValue]);
+  maxFrameRate4 = [v31 maxFrameRate];
+  -[CMContinuityCaptureRemoteVideoDevice setMinFrameRate:](self, "setMinFrameRate:", [maxFrameRate4 unsignedIntValue]);
 
   v34 = CMContinuityCaptureLog(2);
   if (OUTLINED_FUNCTION_43(v34))
   {
-    v35 = [(CMContinuityCaptureRemoteVideoDevice *)self maxFrameRate];
+    maxFrameRate5 = [(CMContinuityCaptureRemoteVideoDevice *)self maxFrameRate];
     [(CMContinuityCaptureRemoteVideoDevice *)self minFrameRate];
     OUTLINED_FUNCTION_19_0();
     v116 = 1024;
-    *v117 = v35;
+    *v117 = maxFrameRate5;
     *&v117[4] = 1024;
     *&v117[6] = v36;
     OUTLINED_FUNCTION_36();
@@ -5575,16 +5575,16 @@ LABEL_7:
   [(CMContinuityCaptureRemoteVideoDevice *)self setMinFrameDurationOverrideIfApplicable];
   if ([(CMContinuityCaptureRemoteVideoDevice *)self _dockKitNotificationAgentIsTracking])
   {
-    v41 = *(v12 + 2216);
-    [*(&self->super.super.isa + v41) lockForConfiguration:0];
-    [*(&self->super.super.isa + v41) setVideoZoomFactor:1.0];
-    [*(&self->super.super.isa + v41) unlockForConfiguration];
+    activeConfiguration18 = *(v12 + 2216);
+    [*(&self->super.super.isa + activeConfiguration18) lockForConfiguration:0];
+    [*(&self->super.super.isa + activeConfiguration18) setVideoZoomFactor:1.0];
+    [*(&self->super.super.isa + activeConfiguration18) unlockForConfiguration];
   }
 
   else
   {
-    v41 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v41 videoZoomFactor];
+    activeConfiguration18 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration18 videoZoomFactor];
     [(CMContinuityCaptureRemoteVideoDevice *)self setVideoZoomFactor:?];
   }
 
@@ -5611,24 +5611,24 @@ LABEL_7:
       }
     }
 
-    v47 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v48 = [v47 asyncStillCaptureEnabled];
+    activeConfiguration19 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    asyncStillCaptureEnabled = [activeConfiguration19 asyncStillCaptureEnabled];
 
-    if (v48)
+    if (asyncStillCaptureEnabled)
     {
       [(CMContinuityCaptureRemoteVideoDevice *)self _updatePhotoOutputConfigs];
       v49 = *(v12 + 2216);
-      v50 = [*(&self->super.super.isa + v49) activeFormat];
-      v51 = [v50 supportedMaxPhotoDimensions];
-      v52 = [v51 count];
+      activeFormat = [*(&self->super.super.isa + v49) activeFormat];
+      supportedMaxPhotoDimensions = [activeFormat supportedMaxPhotoDimensions];
+      v52 = [supportedMaxPhotoDimensions count];
 
       if (v52)
       {
         *buf = 0xAAAAAAAAAAAAAAAALL;
-        v53 = [*(&self->super.super.isa + v49) activeFormat];
-        v54 = [v53 supportedMaxPhotoDimensions];
-        v55 = [v54 lastObject];
-        [v55 getValue:buf];
+        activeFormat2 = [*(&self->super.super.isa + v49) activeFormat];
+        supportedMaxPhotoDimensions2 = [activeFormat2 supportedMaxPhotoDimensions];
+        lastObject = [supportedMaxPhotoDimensions2 lastObject];
+        [lastObject getValue:buf];
 
         [(AVCapturePhotoOutput *)self->_photoOutput setMaxPhotoDimensions:*buf];
       }
@@ -5638,7 +5638,7 @@ LABEL_7:
         v57 = CMContinuityCaptureLog(2);
         if (OUTLINED_FUNCTION_24(v57))
         {
-          v84 = [*(&self->super.super.isa + v49) activeFormat];
+          activeFormat3 = [*(&self->super.super.isa + v49) activeFormat];
           OUTLINED_FUNCTION_10_1();
           *v117 = v85;
           OUTLINED_FUNCTION_36();
@@ -5667,14 +5667,14 @@ LABEL_7:
       v58 = 0;
     }
 
-    v59 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v60 = [v59 faceDetectionEnabled];
+    activeConfiguration20 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    faceDetectionEnabled = [activeConfiguration20 faceDetectionEnabled];
 
-    if (v60)
+    if (faceDetectionEnabled)
     {
-      v61 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+      availableMetadataObjectTypes = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
       v62 = *MEMORY[0x277CE5A50];
-      v63 = [v61 containsObject:*MEMORY[0x277CE5A50]];
+      v63 = [availableMetadataObjectTypes containsObject:*MEMORY[0x277CE5A50]];
 
       if ((v63 & 1) == 0)
       {
@@ -5690,14 +5690,14 @@ LABEL_7:
       [v58 addObject:v62];
     }
 
-    v64 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v65 = [v64 humanBodyDetectionEnabled];
+    activeConfiguration21 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    humanBodyDetectionEnabled = [activeConfiguration21 humanBodyDetectionEnabled];
 
-    if (v65)
+    if (humanBodyDetectionEnabled)
     {
-      v66 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+      availableMetadataObjectTypes2 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
       v62 = *MEMORY[0x277CE5A58];
-      v67 = [v66 containsObject:*MEMORY[0x277CE5A58]];
+      v67 = [availableMetadataObjectTypes2 containsObject:*MEMORY[0x277CE5A58]];
 
       if ((v67 & 1) == 0)
       {
@@ -5713,10 +5713,10 @@ LABEL_7:
       [v58 addObject:v62];
     }
 
-    v68 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v69 = [v68 humanFullBodyDetectionEnabled];
+    activeConfiguration22 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    humanFullBodyDetectionEnabled = [activeConfiguration22 humanFullBodyDetectionEnabled];
 
-    if (!v69)
+    if (!humanFullBodyDetectionEnabled)
     {
 LABEL_40:
       metadataOutput = self->_metadataOutput;
@@ -5733,9 +5733,9 @@ LABEL_40:
       goto LABEL_43;
     }
 
-    v70 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
+    availableMetadataObjectTypes3 = [(AVCaptureMetadataOutput *)self->_metadataOutput availableMetadataObjectTypes];
     v62 = *MEMORY[0x277CE5A60];
-    v71 = [v70 containsObject:*MEMORY[0x277CE5A60]];
+    v71 = [availableMetadataObjectTypes3 containsObject:*MEMORY[0x277CE5A60]];
 
     if (v71)
     {
@@ -5766,83 +5766,83 @@ LABEL_44:
 
 - (BOOL)_companionConnectionsRequired
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CMContinuityCaptureDeviceBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-  v5 = v4;
-  if (!v4 || ([v4 streaming] & 1) != 0)
+  companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+  v5 = companionDevice;
+  if (!companionDevice || ([companionDevice streaming] & 1) != 0)
   {
-    v9 = 0;
+    isCenterStageForcefullyEnabled = 0;
     goto LABEL_13;
   }
 
   manualFramingFeatureFlagEnabled = self->_manualFramingFeatureFlagEnabled;
-  v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v8 = [v7 centerStageEnabled];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  centerStageEnabled = [activeConfiguration centerStageEnabled];
   if (!manualFramingFeatureFlagEnabled)
   {
-    if (v8)
+    if (centerStageEnabled)
     {
-      v9 = 1;
+      isCenterStageForcefullyEnabled = 1;
     }
 
     else
     {
-      v13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v9 = [v13 isCenterStageForcefullyEnabled];
+      activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      isCenterStageForcefullyEnabled = [activeConfiguration2 isCenterStageForcefullyEnabled];
     }
 
     goto LABEL_12;
   }
 
-  if (v8)
+  if (centerStageEnabled)
   {
 
 LABEL_9:
-    v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v12 = [v7 centerStageFieldOfViewRestrictedToWide];
+    activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    centerStageFieldOfViewRestrictedToWide = [activeConfiguration centerStageFieldOfViewRestrictedToWide];
     goto LABEL_10;
   }
 
-  v10 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v11 = [v10 isCenterStageForcefullyEnabled];
+  activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  isCenterStageForcefullyEnabled2 = [activeConfiguration3 isCenterStageForcefullyEnabled];
 
-  if (v11)
+  if (isCenterStageForcefullyEnabled2)
   {
     goto LABEL_9;
   }
 
-  v7 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  if ([v7 manualFramingDeviceType] != 2)
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  if ([activeConfiguration manualFramingDeviceType] != 2)
   {
-    v9 = 0;
+    isCenterStageForcefullyEnabled = 0;
     goto LABEL_12;
   }
 
-  v12 = [(CMContinuityCaptureRemoteVideoDevice *)self _dockKitNotificationAgentIsTracking];
+  centerStageFieldOfViewRestrictedToWide = [(CMContinuityCaptureRemoteVideoDevice *)self _dockKitNotificationAgentIsTracking];
 LABEL_10:
-  v9 = v12 ^ 1;
+  isCenterStageForcefullyEnabled = centerStageFieldOfViewRestrictedToWide ^ 1;
 LABEL_12:
 
 LABEL_13:
-  return v9;
+  return isCenterStageForcefullyEnabled;
 }
 
-- (BOOL)startCameraCaptureStack:(unint64_t)a3
+- (BOOL)startCameraCaptureStack:(unint64_t)stack
 {
   if (self->_dockedTrackingSupported)
   {
-    v3 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-    v6 = [v3 controlWithName:@"kCMContinuityCaptureControlDockedTrackingActive"];
+    compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+    v6 = [compositeDelegate controlWithName:@"kCMContinuityCaptureControlDockedTrackingActive"];
 
     if (v6)
     {
       v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CMContinuityCaptureRemoteVideoDevice _dockKitNotificationAgentIsTracking](self, "_dockKitNotificationAgentIsTracking")}];
       [v6 setValue:v7];
 
-      v3 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-      [v3 setValueForControl:v6 completion:0];
+      compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+      [compositeDelegate setValueForControl:v6 completion:0];
     }
   }
 
@@ -5860,17 +5860,17 @@ LABEL_13:
   v11 = CMContinuityCaptureLog(2);
   if (OUTLINED_FUNCTION_16(v11))
   {
-    v12 = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
+    currentSessionID = [(CMContinuityCaptureDeviceBase *)self currentSessionID];
     v13 = self->_cameraCaptureStreamSessionID;
     [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
     *buf = 138544642;
-    v73 = self;
+    selfCopy3 = self;
     v74 = 2048;
-    v75 = v12;
+    v75 = currentSessionID;
     v76 = 2080;
     v77 = "[CMContinuityCaptureRemoteVideoDevice startCameraCaptureStack:]";
     v78 = 1024;
-    v79 = a3;
+    stackCopy = stack;
     v80 = 2114;
     v81 = v13;
     v83 = v82 = 2114;
@@ -5880,29 +5880,29 @@ LABEL_13:
 
   +[CMContinuityCaptureMSNExceptionMonitor sharedMonitor];
   objc_claimAutoreleasedReturnValue();
-  v19 = [OUTLINED_FUNCTION_20_0() activeConfiguration];
-  [v3 incrementExceptionCountForEntity:{objc_msgSend(v19, "entity")}];
+  activeConfiguration = [OUTLINED_FUNCTION_20_0() activeConfiguration];
+  [compositeDelegate incrementExceptionCountForEntity:{objc_msgSend(activeConfiguration, "entity")}];
 
-  v20 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-  [v20 willConfigure];
+  captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+  [captureSession willConfigure];
 
-  v21 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  LODWORD(v19) = [v21 isCenterStageForcefullyEnabled];
+  activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  LODWORD(activeConfiguration) = [activeConfiguration2 isCenterStageForcefullyEnabled];
 
-  if (v19)
+  if (activeConfiguration)
   {
     [(CMContinuityCaptureRemoteVideoDevice *)self _forcefullyEnableCenterStageOnSuperWide];
   }
 
   [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
   objc_claimAutoreleasedReturnValue();
-  v22 = [v21 hasConnectionsForEntity:{objc_msgSend(OUTLINED_FUNCTION_20_0(), "entity")}];
+  v22 = [activeConfiguration2 hasConnectionsForEntity:{objc_msgSend(OUTLINED_FUNCTION_20_0(), "entity")}];
 
   if ((v22 & 1) == 0)
   {
     [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
     objc_claimAutoreleasedReturnValue();
-    v23 = [OUTLINED_FUNCTION_20_0() connectionsForConfiguration:v21];
+    v23 = [OUTLINED_FUNCTION_20_0() connectionsForConfiguration:activeConfiguration2];
     [v8 addObjectsFromArray:v23];
 
     v24 = CMContinuityCaptureLog(2);
@@ -5926,9 +5926,9 @@ LABEL_40:
       }
 
       *buf = 138543362;
-      v73 = self;
+      selfCopy3 = self;
 LABEL_42:
-      _os_log_error_impl(&dword_242545000, a3, OS_LOG_TYPE_ERROR, "%{public}@ Invalid connections", buf, 0xCu);
+      _os_log_error_impl(&dword_242545000, stack, OS_LOG_TYPE_ERROR, "%{public}@ Invalid connections", buf, 0xCu);
       goto LABEL_39;
     }
   }
@@ -5937,8 +5937,8 @@ LABEL_42:
   {
     [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
     objc_claimAutoreleasedReturnValue();
-    v30 = [OUTLINED_FUNCTION_20_0() activeConfiguration];
-    v31 = [v21 connectionsForConfiguration:v30];
+    activeConfiguration3 = [OUTLINED_FUNCTION_20_0() activeConfiguration];
+    v31 = [activeConfiguration2 connectionsForConfiguration:activeConfiguration3];
     [v8 addObjectsFromArray:v31];
 
     v32 = CMContinuityCaptureLog(2);
@@ -5958,15 +5958,15 @@ LABEL_42:
       }
 
       *buf = 138543362;
-      v73 = self;
+      selfCopy3 = self;
       goto LABEL_42;
     }
   }
 
   if ([v8 count])
   {
-    v21 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-    [v21 addConnections:v8];
+    activeConfiguration2 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+    [activeConfiguration2 addConnections:v8];
   }
 
   else
@@ -5980,13 +5980,13 @@ LABEL_42:
     }
   }
 
-  v44 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
-  v45 = [v44 isEnabled];
+  videoDataConnection = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
+  isEnabled = [videoDataConnection isEnabled];
 
-  if ((v45 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
-    v46 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
-    [v46 setEnabled:1];
+    videoDataConnection2 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
+    [videoDataConnection2 setEnabled:1];
 
     v47 = CMContinuityCaptureLog(2);
     if (OUTLINED_FUNCTION_16(v47))
@@ -5997,16 +5997,16 @@ LABEL_42:
     }
   }
 
-  v53 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v54 = [v53 frameRateManager];
-  [v54 reportStreamStatus:1 forDevice:self];
+  compositeDelegate2 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  frameRateManager = [compositeDelegate2 frameRateManager];
+  [frameRateManager reportStreamStatus:1 forDevice:self];
 
   [(CMContinuityCaptureRemoteVideoDevice *)self configureConnections];
-  v55 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-  [v55 didConfigure];
+  captureSession2 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+  [captureSession2 didConfigure];
 
-  v56 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-  [v56 start];
+  captureSession3 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+  [captureSession3 start];
 
   [(CMContinuityCaptureRemoteVideoDevice *)self updateControlStatus];
   self->_captureStackActive = 1;
@@ -6014,8 +6014,8 @@ LABEL_42:
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v57 = [(NSMutableDictionary *)self->_cmControlByNameWithPendingUpdates allValues];
-  v58 = [v57 countByEnumeratingWithState:&v68 objects:v67 count:16];
+  allValues = [(NSMutableDictionary *)self->_cmControlByNameWithPendingUpdates allValues];
+  v58 = [allValues countByEnumeratingWithState:&v68 objects:v67 count:16];
   if (v58)
   {
     v59 = v58;
@@ -6026,13 +6026,13 @@ LABEL_42:
       {
         if (*v69 != v60)
         {
-          objc_enumerationMutation(v57);
+          objc_enumerationMutation(allValues);
         }
 
         [(CMContinuityCaptureRemoteVideoDevice *)self setValueForControl:*(*(&v68 + 1) + 8 * i) completion:&__block_literal_global_42_0];
       }
 
-      v59 = [v57 countByEnumeratingWithState:&v68 objects:v67 count:16];
+      v59 = [allValues countByEnumeratingWithState:&v68 objects:v67 count:16];
     }
 
     while (v59);
@@ -6040,7 +6040,7 @@ LABEL_42:
 
   v66.receiver = self;
   v66.super_class = CMContinuityCaptureRemoteVideoDevice;
-  v62 = [(CMContinuityCaptureDeviceBase *)&v66 startCameraCaptureStack:a3];
+  v62 = [(CMContinuityCaptureDeviceBase *)&v66 startCameraCaptureStack:stack];
 LABEL_35:
 
   return v62;
@@ -6048,64 +6048,64 @@ LABEL_35:
 
 - (BOOL)_shouldOnlyDisableVideoConnection
 {
-  v3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  if ([v3 centerStageEnabled])
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  if ([activeConfiguration centerStageEnabled])
   {
-    v4 = 1;
+    isCenterStageForcefullyEnabled = 1;
   }
 
   else
   {
-    v5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v4 = [v5 isCenterStageForcefullyEnabled];
+    activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    isCenterStageForcefullyEnabled = [activeConfiguration2 isCenterStageForcefullyEnabled];
   }
 
-  v6 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-  v7 = [v6 streaming];
+  companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+  streaming = [companionDevice streaming];
 
-  if (v7)
+  if (streaming)
   {
     if (self->_manualFramingFeatureFlagEnabled)
     {
-      v8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      v9 = v8;
-      if (v4)
+      activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      v9 = activeConfiguration3;
+      if (isCenterStageForcefullyEnabled)
       {
-        v4 = [v8 centerStageFieldOfViewRestrictedToWide] ^ 1;
+        isCenterStageForcefullyEnabled = [activeConfiguration3 centerStageFieldOfViewRestrictedToWide] ^ 1;
       }
 
       else
       {
-        v4 = [v8 manualFramingDeviceType] == 2;
+        isCenterStageForcefullyEnabled = [activeConfiguration3 manualFramingDeviceType] == 2;
       }
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(isCenterStageForcefullyEnabled) = 0;
   }
 
-  return v4;
+  return isCenterStageForcefullyEnabled;
 }
 
-- (void)_stopCameraCaptureStackRemoveCaptureSessionConnectionsWithOption:(unint64_t)a3
+- (void)_stopCameraCaptureStackRemoveCaptureSessionConnectionsWithOption:(unint64_t)option
 {
-  v4 = (a3 & 0x600) == 0 && [(CMContinuityCaptureRemoteVideoDevice *)self _shouldOnlyDisableVideoConnection];
-  v5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v6 = [v5 isCenterStageForcefullyEnabled];
+  v4 = (option & 0x600) == 0 && [(CMContinuityCaptureRemoteVideoDevice *)self _shouldOnlyDisableVideoConnection];
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  isCenterStageForcefullyEnabled = [activeConfiguration isCenterStageForcefullyEnabled];
 
-  if (v6)
+  if (isCenterStageForcefullyEnabled)
   {
     [(CMContinuityCaptureRemoteVideoDevice *)self _restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:1];
-    v5 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    [v5 _restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:1];
+    activeConfiguration = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    [activeConfiguration _restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:1];
   }
 
   if (v4)
   {
-    v5 = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
-    [v5 setEnabled:0];
+    activeConfiguration = [(CMContinuityCaptureRemoteVideoDevice *)self videoDataConnection];
+    [activeConfiguration setEnabled:0];
 
     v7 = CMContinuityCaptureLog(2);
     if (!OUTLINED_FUNCTION_28(v7))
@@ -6120,8 +6120,8 @@ LABEL_35:
   {
     [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
     objc_claimAutoreleasedReturnValue();
-    v8 = [OUTLINED_FUNCTION_30() connections];
-    OUTLINED_FUNCTION_33(v8);
+    connections = [OUTLINED_FUNCTION_30() connections];
+    OUTLINED_FUNCTION_33(connections);
 
     v9 = CMContinuityCaptureLog(2);
     if (!OUTLINED_FUNCTION_28(v9))
@@ -6138,51 +6138,51 @@ LABEL_35:
 LABEL_12:
 
   [(CMContinuityCaptureRemoteVideoDevice *)self tearDownConnectionsWithVideoDataConnectionDisabled:v4];
-  v15 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+  companionDevice = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
 
-  if (!v15)
+  if (!companionDevice)
   {
     return;
   }
 
-  v16 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-  [v16 connections];
+  companionDevice2 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+  [companionDevice2 connections];
   if (objc_claimAutoreleasedReturnValue())
   {
-    v17 = [OUTLINED_FUNCTION_30() companionDevice];
-    v18 = [v17 streaming];
+    companionDevice3 = [OUTLINED_FUNCTION_30() companionDevice];
+    streaming = [companionDevice3 streaming];
 
-    if (v18)
+    if (streaming)
     {
       return;
     }
 
-    v19 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
-    v20 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    [v20 connections];
+    captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+    companionDevice4 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    [companionDevice4 connections];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_20_0() removeConnections:v17];
+    [OUTLINED_FUNCTION_20_0() removeConnections:companionDevice3];
 
-    v21 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
-    [v21 tearDownConnectionsWithVideoDataConnectionDisabled:0];
+    companionDevice5 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+    [companionDevice5 tearDownConnectionsWithVideoDataConnectionDisabled:0];
 
-    v16 = CMContinuityCaptureLog(2);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    companionDevice2 = CMContinuityCaptureLog(2);
+    if (os_log_type_enabled(companionDevice2, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
+      companionDevice6 = [(CMContinuityCaptureRemoteVideoDevice *)self companionDevice];
       OUTLINED_FUNCTION_4_0();
       OUTLINED_FUNCTION_23(&dword_242545000, v23, v24, "Companion %{public}@ connections removed by %{public}@", v25, v26, v27, v28, v29);
     }
   }
 }
 
-- (void)_restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:(BOOL)a3
+- (void)_restoreStatesAfterForcefulCenterStageEnablementAndShouldReconfigureCaptureStack:(BOOL)stack
 {
-  v3 = a3;
-  v5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v6 = [v5 isCenterStageForcefullyEnabled];
+  stackCopy = stack;
+  activeConfiguration = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  isCenterStageForcefullyEnabled = [activeConfiguration isCenterStageForcefullyEnabled];
 
-  if (!v6)
+  if (!isCenterStageForcefullyEnabled)
   {
     return;
   }
@@ -6195,13 +6195,13 @@ LABEL_12:
     _os_log_impl(v8, v9, v10, v11, v12, 0x16u);
   }
 
-  v13 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  v14 = [v13 forcefulCenterStageEnablementType];
+  activeConfiguration2 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  forcefulCenterStageEnablementType = [activeConfiguration2 forcefulCenterStageEnablementType];
 
-  v15 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v15 setForcefulCenterStageEnablementType:0];
+  activeConfiguration3 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration3 setForcefulCenterStageEnablementType:0];
 
-  if (v14 == 1)
+  if (forcefulCenterStageEnablementType == 1)
   {
     v25 = CMContinuityCaptureLog(2);
     if (OUTLINED_FUNCTION_28(v25))
@@ -6211,26 +6211,26 @@ LABEL_12:
       _os_log_impl(v26, v27, v28, v29, v30, 0x16u);
     }
 
-    if (v3)
+    if (stackCopy)
     {
       [OUTLINED_FUNCTION_35() setCenterStageEnabled:?];
     }
 
-    v31 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    [v31 setCenterStageEnabled:0];
+    activeConfiguration4 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    [activeConfiguration4 setCenterStageEnabled:0];
 
     if ([(CMContinuityCaptureRemoteVideoDevice *)self shouldRestoreCenterStageOnWideCamera])
     {
-      v32 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-      [v32 setCenterStageFieldOfViewRestrictedToWide:1];
+      activeConfiguration5 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+      [activeConfiguration5 setCenterStageFieldOfViewRestrictedToWide:1];
 
       [OUTLINED_FUNCTION_35() setShouldRestoreCenterStageOnWideCamera:?];
     }
 
-    v33 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-    v34 = [v33 manualFramingDeviceType];
+    activeConfiguration6 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+    manualFramingDeviceType = [activeConfiguration6 manualFramingDeviceType];
 
-    if (v34 == 1 && v3)
+    if (manualFramingDeviceType == 1 && stackCopy)
     {
       v35 = CMContinuityCaptureLog(2);
       if (OUTLINED_FUNCTION_28(v35))
@@ -6242,18 +6242,18 @@ LABEL_12:
 
       [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
       objc_claimAutoreleasedReturnValue();
-      v41 = [OUTLINED_FUNCTION_30() connections];
-      OUTLINED_FUNCTION_33(v41);
+      connections = [OUTLINED_FUNCTION_30() connections];
+      OUTLINED_FUNCTION_33(connections);
 
       [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
       objc_claimAutoreleasedReturnValue();
-      v42 = [OUTLINED_FUNCTION_30() activeConfiguration];
-      v43 = [(CMContinuityCaptureRemoteVideoDevice *)self connectionsForConfiguration:v42];
-      [v33 addConnections:v43];
+      activeConfiguration7 = [OUTLINED_FUNCTION_30() activeConfiguration];
+      v43 = [(CMContinuityCaptureRemoteVideoDevice *)self connectionsForConfiguration:activeConfiguration7];
+      [activeConfiguration6 addConnections:v43];
     }
 
 LABEL_21:
-    if (!v3)
+    if (!stackCopy)
     {
       return;
     }
@@ -6261,7 +6261,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v14 != 2)
+  if (forcefulCenterStageEnablementType != 2)
   {
     goto LABEL_21;
   }
@@ -6274,23 +6274,23 @@ LABEL_21:
     _os_log_impl(v17, v18, v19, v20, v21, 0x16u);
   }
 
-  v22 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
-  [v22 setCenterStageFieldOfViewRestrictedToWide:1];
+  activeConfiguration8 = [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
+  [activeConfiguration8 setCenterStageFieldOfViewRestrictedToWide:1];
 
   [OUTLINED_FUNCTION_35() setShouldRestoreCenterStageOnWideCamera:?];
-  if (v3)
+  if (stackCopy)
   {
-    v23 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+    captureSession = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
     [(CMContinuityCaptureRemoteVideoDevice *)self connections];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_25() removeConnections:v22];
+    [OUTLINED_FUNCTION_25() removeConnections:activeConfiguration8];
 
-    v24 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
+    captureSession2 = [(CMContinuityCaptureRemoteVideoDevice *)self captureSession];
     [(CMContinuityCaptureDeviceBase *)self activeConfiguration];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_30() connectionsForConfiguration:v22];
+    [OUTLINED_FUNCTION_30() connectionsForConfiguration:activeConfiguration8];
     objc_claimAutoreleasedReturnValue();
-    [OUTLINED_FUNCTION_20_0() addConnections:v15];
+    [OUTLINED_FUNCTION_20_0() addConnections:activeConfiguration3];
 
 LABEL_22:
     [(CMContinuityCaptureRemoteVideoDevice *)self updateControlStatus];
@@ -6301,24 +6301,24 @@ LABEL_22:
 {
   v28[0] = 0xAAAAAAAAAAAAAAAALL;
   v28[1] = 0xAAAAAAAAAAAAAAAALL;
-  v3 = [(CMContinuityCaptureDeviceBase *)self transportStream];
-  v4 = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
-  v5 = [v4 server];
+  transportStream = [(CMContinuityCaptureDeviceBase *)self transportStream];
+  compositeDelegate = [(CMContinuityCaptureDeviceBase *)self compositeDelegate];
+  server = [compositeDelegate server];
 
-  if (!v3)
+  if (!transportStream)
   {
-    v12 = 0;
-    v6 = 0;
+    dictionary = 0;
+    streamUUID = 0;
 LABEL_21:
     v15 = 0;
     v16 = 0;
     goto LABEL_16;
   }
 
-  v6 = [v3 streamUUID];
-  if (!v6)
+  streamUUID = [transportStream streamUUID];
+  if (!streamUUID)
   {
-    v12 = 0;
+    dictionary = 0;
     goto LABEL_21;
   }
 
@@ -6328,14 +6328,14 @@ LABEL_21:
     [(CMContinuityCaptureDeviceBase *)self currentSessionID];
     OUTLINED_FUNCTION_31();
     v26 = 2112;
-    v27 = v6;
+    v27 = streamUUID;
     _os_log_impl(&dword_242545000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ [sessionID:%llx] createAVCVideoStream for StreamUUID %@", buf, 0x20u);
   }
 
-  [v6 getUUIDBytes:v28];
-  v8 = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
+  [streamUUID getUUIDBytes:v28];
+  avcStreamNegotiator = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
 
-  if (!v8)
+  if (!avcStreamNegotiator)
   {
     v11 = 0;
 LABEL_9:
@@ -6347,28 +6347,28 @@ LABEL_9:
       _os_log_impl(&dword_242545000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalid avcStreamInitOptions, error %@", buf, 0x16u);
     }
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v11 = 0;
     goto LABEL_12;
   }
 
-  v9 = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
+  avcStreamNegotiator2 = [(CMContinuityCaptureDeviceBase *)self avcStreamNegotiator];
   v23 = 0;
-  v10 = [v9 generateMediaStreamInitOptionsWithError:&v23];
+  v10 = [avcStreamNegotiator2 generateMediaStreamInitOptionsWithError:&v23];
   v11 = v23;
-  v12 = [v10 mutableCopy];
+  dictionary = [v10 mutableCopy];
 
-  if (!v12)
+  if (!dictionary)
   {
     goto LABEL_9;
   }
 
 LABEL_12:
-  v14 = [v5 sessionUUID];
-  [v12 setObject:v14 forKeyedSubscript:*MEMORY[0x277CE57D8]];
+  sessionUUID = [server sessionUUID];
+  [dictionary setObject:sessionUUID forKeyedSubscript:*MEMORY[0x277CE57D8]];
 
   v22 = v11;
-  v15 = [objc_alloc(MEMORY[0x277CE5758]) initWithNWConnectionClientID:v28 options:v12 error:&v22];
+  v15 = [objc_alloc(MEMORY[0x277CE5758]) initWithNWConnectionClientID:v28 options:dictionary error:&v22];
   v16 = v22;
 
   if (v15)
@@ -6404,7 +6404,7 @@ LABEL_16:
   return v19;
 }
 
-- (BOOL)startAVConferenceStack:(unint64_t)a3
+- (BOOL)startAVConferenceStack:(unint64_t)stack
 {
   stopCompletionBlock = self->_stopCompletionBlock;
   self->_stopCompletionBlock = 0;
@@ -6412,9 +6412,9 @@ LABEL_16:
   self->_avcStreamInputActive = 0;
   if (!self->_avcVideoStream)
   {
-    v8 = [(CMContinuityCaptureRemoteVideoDevice *)self createAVCVideoStream];
+    createAVCVideoStream = [(CMContinuityCaptureRemoteVideoDevice *)self createAVCVideoStream];
     avcVideoStream = self->_avcVideoStream;
-    self->_avcVideoStream = v8;
+    self->_avcVideoStream = createAVCVideoStream;
 
     if (!self->_avcVideoStream)
     {
@@ -6427,10 +6427,10 @@ LABEL_16:
   v10 = objc_alloc(MEMORY[0x277CE5748]);
   [OUTLINED_FUNCTION_20_0() queue];
   objc_claimAutoreleasedReturnValue();
-  v11 = [OUTLINED_FUNCTION_25() activeConfiguration];
-  v12 = [v11 format];
+  activeConfiguration = [OUTLINED_FUNCTION_25() activeConfiguration];
+  format = [activeConfiguration format];
   v38 = 0;
-  v13 = [v4 initWithDelegate:self delegateQueue:v3 format:objc_msgSend(v12 options:"formatDescription") error:{0, &v38}];
+  v13 = [v4 initWithDelegate:self delegateQueue:v3 format:objc_msgSend(format options:"formatDescription") error:{0, &v38}];
   v14 = v38;
   avcStreamInput = self->_avcStreamInput;
   self->_avcStreamInput = v13;
@@ -6445,7 +6445,7 @@ LABEL_16:
     }
 
     *buf = 138543618;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v14;
     v25 = "%{public}@ AVCVideoInput Error %@";
@@ -6504,7 +6504,7 @@ LABEL_7:
 LABEL_8:
   v30.receiver = self;
   v30.super_class = CMContinuityCaptureRemoteVideoDevice;
-  [(CMContinuityCaptureDeviceBase *)&v30 startAVConferenceStack:a3];
+  [(CMContinuityCaptureDeviceBase *)&v30 startAVConferenceStack:stack];
 
   return v21;
 }

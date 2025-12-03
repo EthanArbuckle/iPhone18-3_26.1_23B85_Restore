@@ -6,15 +6,15 @@
 - (void)computeLumens;
 - (void)generateCubemapFromLight:(NSUInteger)textureSize;
 - (void)generateSphericalHarmonicsFromLight:(NSUInteger)sphericalHarmonicsLevel;
-- (void)setSphericalHarmonicsCoefficients:(id)a3;
+- (void)setSphericalHarmonicsCoefficients:(id)coefficients;
 @end
 
 @implementation MDLPhotometricLight
 
-- (void)setSphericalHarmonicsCoefficients:(id)a3
+- (void)setSphericalHarmonicsCoefficients:(id)coefficients
 {
-  v7 = a3;
-  v5 = objc_msgSend_dataWithData_(MEMORY[0x277CBEB28], v4, v7);
+  coefficientsCopy = coefficients;
+  v5 = objc_msgSend_dataWithData_(MEMORY[0x277CBEB28], v4, coefficientsCopy);
   sphericalHarmonicsCoefficients = self->_sphericalHarmonicsCoefficients;
   self->_sphericalHarmonicsCoefficients = v5;
 }

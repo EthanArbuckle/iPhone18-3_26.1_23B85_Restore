@@ -1,6 +1,6 @@
 @interface BuyButtonUIView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10031ACB4();
 }
 
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books15BuyButtonUIView_button);
-  v3 = self;
+  selfCopy = self;
   [v2 intrinsicContentSize];
   [v2 alignmentRectForFrame:{0.0, 0.0, v4, v5}];
   v7 = v6;
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = OBJC_IVAR____TtC5Books15BuyButtonUIView_button;
   v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Books15BuyButtonUIView_button);
-  v8 = self;
+  selfCopy = self;
   [v7 sizeThatFits:{width, height}];
   [*(&self->super.super.super.isa + v6) alignmentRectForFrame:{0.0, 0.0, v9, v10}];
   v12 = v11;

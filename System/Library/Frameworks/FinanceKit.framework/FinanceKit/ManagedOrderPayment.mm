@@ -1,15 +1,15 @@
 @interface ManagedOrderPayment
-- (_TtC10FinanceKit19ManagedOrderPayment)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit19ManagedOrderPayment)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void).cxx_construct;
 @end
 
 @implementation ManagedOrderPayment
 
-- (_TtC10FinanceKit19ManagedOrderPayment)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit19ManagedOrderPayment)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedOrderPayment *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedOrderPayment *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct

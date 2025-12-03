@@ -1,17 +1,17 @@
 @interface C2SessionTask
-+ (double)captureMetricDurationBetweenStart:(double)a3 andEnd:(double)a4;
-+ (double)captureMetricsForTimingData:(id)a3 withKey:(id)a4;
++ (double)captureMetricDurationBetweenStart:(double)start andEnd:(double)end;
++ (double)captureMetricsForTimingData:(id)data withKey:(id)key;
 + (void)initialize;
 - (BOOL)callbackHung;
-- (C2SessionTask)initWithOptions:(id)a3 delegate:(id)a4 sessionTaskDelegate:(id)a5;
+- (C2SessionTask)initWithOptions:(id)options delegate:(id)delegate sessionTaskDelegate:(id)taskDelegate;
 - (id)taskDescription;
 - (id)taskIdentifier;
-- (void)C2Session:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)captureMetricsWithError:(id)a3 eventType:(int64_t)a4;
+- (void)C2Session:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)captureMetricsWithError:(id)error eventType:(int64_t)type;
 - (void)dealloc;
-- (void)handleCallbackForTask:(id)a3 callback:(id)a4;
+- (void)handleCallbackForTask:(id)task callback:(id)callback;
 - (void)invalidate;
-- (void)setTask:(id)a3;
+- (void)setTask:(id)task;
 - (void)testBehavior_triggerCallbackHang;
 @end
 
@@ -19,50 +19,50 @@
 
 - (id)taskDescription
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  task = v3->_task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  task = selfCopy->_task;
   if (!task)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:v3 file:@"C2SessionTask.m" lineNumber:115 description:@"task must not be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:115 description:@"task must not be nil"];
 
-    task = v3->_task;
+    task = selfCopy->_task;
   }
 
-  v5 = [(NSURLSessionDataTask *)task taskDescription];
-  if (!v5)
+  taskDescription = [(NSURLSessionDataTask *)task taskDescription];
+  if (!taskDescription)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:v3 file:@"C2SessionTask.m" lineNumber:117 description:@"task description must not be nil"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:117 description:@"task description must not be nil"];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return taskDescription;
 }
 
 - (id)taskIdentifier
 {
-  v3 = self;
-  objc_sync_enter(v3);
-  task = v3->_task;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  task = selfCopy->_task;
   if (!task)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:v3 file:@"C2SessionTask.m" lineNumber:125 description:@"task must not be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:125 description:@"task must not be nil"];
 
-    task = v3->_task;
+    task = selfCopy->_task;
   }
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSURLSessionDataTask taskIdentifier](task, "taskIdentifier")}];
   if (!v5)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:v3 file:@"C2SessionTask.m" lineNumber:127 description:@"task identifier must not be nil"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:127 description:@"task identifier must not be nil"];
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -74,8 +74,8 @@
   v3 = obj;
   if (obj->_isComplete)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:obj file:@"C2SessionTask.m" lineNumber:134 description:@"received duplicate callbacks"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:obj file:@"C2SessionTask.m" lineNumber:134 description:@"received duplicate callbacks"];
 
     v3 = obj;
   }
@@ -92,8 +92,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"C2SessionTask.m" lineNumber:157 description:@"should be complete"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"C2SessionTask.m" lineNumber:157 description:@"should be complete"];
 }
 
 + (void)initialize
@@ -107,14 +107,14 @@
   }
 }
 
-- (C2SessionTask)initWithOptions:(id)a3 delegate:(id)a4 sessionTaskDelegate:(id)a5
+- (C2SessionTask)initWithOptions:(id)options delegate:(id)delegate sessionTaskDelegate:(id)taskDelegate
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9 && v10 && v11)
+  optionsCopy = options;
+  delegateCopy = delegate;
+  taskDelegateCopy = taskDelegate;
+  v12 = taskDelegateCopy;
+  if (optionsCopy && delegateCopy && taskDelegateCopy)
   {
     v27.receiver = self;
     v27.super_class = C2SessionTask;
@@ -125,9 +125,9 @@
       task = v13->_task;
       v13->_task = 0;
 
-      objc_storeStrong(&v14->_options, a3);
-      objc_storeStrong(&v14->_delegate, a4);
-      objc_storeStrong(&v14->_sessionTaskDelegate, a5);
+      objc_storeStrong(&v14->_options, options);
+      objc_storeStrong(&v14->_delegate, delegate);
+      objc_storeStrong(&v14->_sessionTaskDelegate, taskDelegate);
       v16 = _os_activity_create(&dword_242158000, "c2-request-task", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
       activity = v14->_activity;
       v14->_activity = v16;
@@ -145,7 +145,7 @@
 LABEL_23:
 
         self = v14;
-        v22 = self;
+        selfCopy = self;
         goto LABEL_24;
       }
 
@@ -198,19 +198,19 @@ LABEL_23:
   if (os_log_type_enabled(C2_DEFAULT_LOG_INTERNAL_4, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v29 = v9;
+    v29 = optionsCopy;
     v30 = 2114;
-    v31 = v10;
+    v31 = delegateCopy;
     v32 = 2114;
     v33 = v12;
     _os_log_impl(&dword_242158000, v21, OS_LOG_TYPE_ERROR, "missing required arguments - [C2SessionTask initWithOptions:%{public}@ delegate:%{public}@ sessionTaskDelegate:%{public}@]", buf, 0x20u);
   }
 
-  v22 = 0;
+  selfCopy = 0;
 LABEL_24:
 
   v25 = *MEMORY[0x277D85DE8];
-  return v22;
+  return selfCopy;
 }
 
 uint64_t __62__C2SessionTask_initWithOptions_delegate_sessionTaskDelegate___block_invoke()
@@ -234,53 +234,53 @@ uint64_t __62__C2SessionTask_initWithOptions_delegate_sessionTaskDelegate___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleCallbackForTask:(id)a3 callback:(id)a4
+- (void)handleCallbackForTask:(id)task callback:(id)callback
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  callbackCopy = callback;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &state);
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v9->_isComplete)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_isComplete)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v9->_delegate;
+    v10 = selfCopy->_delegate;
     if (v10)
     {
-      task = v9->_task;
+      task = selfCopy->_task;
       if (!task)
       {
-        v19 = [MEMORY[0x277CCA890] currentHandler];
-        [v19 handleFailureInMethod:a2 object:v9 file:@"C2SessionTask.m" lineNumber:84 description:@"task must not be nil"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:84 description:@"task must not be nil"];
 
-        task = v9->_task;
+        task = selfCopy->_task;
       }
 
-      v12 = [(NSURLSessionDataTask *)task taskIdentifier];
-      if (v12 != [v7 taskIdentifier])
+      taskIdentifier = [(NSURLSessionDataTask *)task taskIdentifier];
+      if (taskIdentifier != [taskCopy taskIdentifier])
       {
-        v20 = [MEMORY[0x277CCA890] currentHandler];
-        [v20 handleFailureInMethod:a2 object:v9 file:@"C2SessionTask.m" lineNumber:85 description:{@"taskIdentifier (%llu) found but expected (%llu).", -[NSURLSessionDataTask taskIdentifier](v9->_task, "taskIdentifier"), objc_msgSend(v7, "taskIdentifier")}];
+        currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"C2SessionTask.m" lineNumber:85 description:{@"taskIdentifier (%llu) found but expected (%llu).", -[NSURLSessionDataTask taskIdentifier](selfCopy->_task, "taskIdentifier"), objc_msgSend(taskCopy, "taskIdentifier")}];
       }
     }
   }
 
   v13 = objc_alloc_init(C2SessionCallbackMetrics);
   [(C2SessionCallbackMetrics *)v13 setStartTime:mach_absolute_time()];
-  [(NSMutableSet *)v9->_outstandingCallbacks addObject:v13];
-  objc_sync_exit(v9);
+  [(NSMutableSet *)selfCopy->_outstandingCallbacks addObject:v13];
+  objc_sync_exit(selfCopy);
 
-  v8[2](v8, v9, v10);
-  v14 = v9;
+  callbackCopy[2](callbackCopy, selfCopy, v10);
+  v14 = selfCopy;
   objc_sync_enter(v14);
-  [(NSMutableSet *)v9->_outstandingCallbacks removeObject:v13];
+  [(NSMutableSet *)selfCopy->_outstandingCallbacks removeObject:v13];
   objc_sync_exit(v14);
 
   mach_absolute_time();
@@ -314,10 +314,10 @@ uint64_t __48__C2SessionTask_handleCallbackForTask_callback___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setTask:(id)a3
+- (void)setTask:(id)task
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  taskCopy = task;
   if (C2_DEFAULT_LOG_BLOCK_4 != -1)
   {
     [C2SessionTask setTask:];
@@ -327,24 +327,24 @@ uint64_t __48__C2SessionTask_handleCallbackForTask_callback___block_invoke()
   if (os_log_type_enabled(C2_DEFAULT_LOG_INTERNAL_4, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v5;
+    v14 = taskCopy;
     _os_log_impl(&dword_242158000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@ setTask:%{public}@]", &v11, 0x16u);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_task)
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (selfCopy2->_task)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:v7 file:@"C2SessionTask.m" lineNumber:107 description:@"task must be nil"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy2 file:@"C2SessionTask.m" lineNumber:107 description:@"task must be nil"];
   }
 
-  task = v7->_task;
-  v7->_task = v5;
+  task = selfCopy2->_task;
+  selfCopy2->_task = taskCopy;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
   v9 = *MEMORY[0x277D85DE8];
 }
 
@@ -358,16 +358,16 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
 - (BOOL)callbackHung
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableSet *)v2->_outstandingCallbacks count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableSet *)selfCopy->_outstandingCallbacks count])
   {
     mach_absolute_time();
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = v2->_outstandingCallbacks;
+    v3 = selfCopy->_outstandingCallbacks;
     v4 = 0;
     v5 = [(NSMutableSet *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
@@ -385,7 +385,7 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
           [*(*(&v13 + 1) + 8 * i) startTime];
           TMConvertTicksToSeconds();
           v9 = v8;
-          [(C2RequestOptions *)v2->_options taskCallbackConsideredHangInSeconds];
+          [(C2RequestOptions *)selfCopy->_options taskCallbackConsideredHangInSeconds];
           v4 |= v9 > v10;
         }
 
@@ -401,7 +401,7 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
   return v4 & 1;
@@ -410,13 +410,13 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
 - (void)testBehavior_triggerCallbackHang
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = v2->_outstandingCallbacks;
+  v3 = selfCopy->_outstandingCallbacks;
   v4 = [(NSMutableSet *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -435,7 +435,7 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
         v8 = mach_absolute_time();
         TMConvertTicksToSeconds();
         v10 = v9;
-        [(C2RequestOptions *)v2->_options taskCallbackConsideredHangInSeconds];
+        [(C2RequestOptions *)selfCopy->_options taskCallbackConsideredHangInSeconds];
         [v7 setStartTime:(v8 - (v8 / v10) * (v11 + v11))];
         ++v6;
       }
@@ -447,17 +447,17 @@ uint64_t __25__C2SessionTask_setTask___block_invoke()
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (double)captureMetricsForTimingData:(id)a3 withKey:(id)a4
++ (double)captureMetricsForTimingData:(id)data withKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  keyCopy = key;
+  if (dataCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:v6];
+    v7 = [dataCopy objectForKeyedSubscript:keyCopy];
     if (v7)
     {
       objc_opt_class();
@@ -487,10 +487,10 @@ LABEL_7:
   return v9;
 }
 
-+ (double)captureMetricDurationBetweenStart:(double)a3 andEnd:(double)a4
++ (double)captureMetricDurationBetweenStart:(double)start andEnd:(double)end
 {
-  v4 = a4 == -1.0 || a3 == -1.0;
-  result = a4 - a3;
+  v4 = end == -1.0 || start == -1.0;
+  result = end - start;
   if (v4)
   {
     return -1.0;
@@ -499,35 +499,35 @@ LABEL_7:
   return result;
 }
 
-- (void)captureMetricsWithError:(id)a3 eventType:(int64_t)a4
+- (void)captureMetricsWithError:(id)error eventType:(int64_t)type
 {
   v357 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSURLSessionDataTask *)self->_task _timingData];
-  v8 = [(NSURLSessionTaskMetrics *)self->_taskMetrics transactionMetrics];
-  v9 = [v8 lastObject];
+  errorCopy = error;
+  _timingData = [(NSURLSessionDataTask *)self->_task _timingData];
+  transactionMetrics = [(NSURLSessionTaskMetrics *)self->_taskMetrics transactionMetrics];
+  lastObject = [transactionMetrics lastObject];
 
-  v10 = [v9 _dataTransferReport];
-  v11 = [(NSURLSessionDataTask *)self->_task currentRequest];
-  v12 = [v11 URL];
+  _dataTransferReport = [lastObject _dataTransferReport];
+  currentRequest = [(NSURLSessionDataTask *)self->_task currentRequest];
+  v12 = [currentRequest URL];
   v261 = qos_class_self();
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataDomainLookupStart"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataDomainLookupStart"];
   v14 = v13;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataDomainLookupEnd"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataDomainLookupEnd"];
   v16 = v15;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataConnectStart"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataConnectStart"];
   v18 = v17;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataConnectEnd"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataConnectEnd"];
   v267 = v19;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataSecureConnectionStart"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataSecureConnectionStart"];
   v21 = v20;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataRequestStart"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataRequestStart"];
   v23 = v22;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataRequestEnd"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataRequestEnd"];
   v25 = v24;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataResponseStart"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataResponseStart"];
   v27 = v26;
-  [C2SessionTask captureMetricsForTimingData:v7 withKey:@"_kCFNTimingDataResponseEnd"];
+  [C2SessionTask captureMetricsForTimingData:_timingData withKey:@"_kCFNTimingDataResponseEnd"];
   v29 = v28;
   if (C2_DEFAULT_LOG_BLOCK_4 != -1)
   {
@@ -535,18 +535,18 @@ LABEL_7:
   }
 
   v30 = C2_DEFAULT_LOG_INTERNAL_4;
-  v273 = a4;
-  v270 = v6;
-  report = v10;
+  typeCopy = type;
+  v270 = errorCopy;
+  report = _dataTransferReport;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v263 = v11;
-    v31 = [(NSURLSessionDataTask *)self->_task taskDescription];
+    v263 = currentRequest;
+    taskDescription = [(NSURLSessionDataTask *)self->_task taskDescription];
     v32 = &stru_28546BCE0;
-    v251 = v31;
-    if (v31)
+    v251 = taskDescription;
+    if (taskDescription)
     {
-      v33 = v31;
+      v33 = taskDescription;
     }
 
     else
@@ -555,11 +555,11 @@ LABEL_7:
     }
 
     v247 = v33;
-    v34 = [v12 host];
-    v250 = v34;
-    if (v34)
+    host = [v12 host];
+    v250 = host;
+    if (host)
     {
-      v35 = v34;
+      v35 = host;
     }
 
     else
@@ -568,9 +568,9 @@ LABEL_7:
     }
 
     v246 = v35;
-    if (v7)
+    if (_timingData)
     {
-      v36 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataRemoteAddressAndPort"];
+      v36 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataRemoteAddressAndPort"];
       v217 = v36;
       if (v36)
       {
@@ -583,7 +583,7 @@ LABEL_7:
       }
 
       v245 = v37;
-      v38 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataLocalAddressAndPort"];
+      v38 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataLocalAddressAndPort"];
       v216 = v38;
       if (v38)
       {
@@ -596,7 +596,7 @@ LABEL_7:
       }
 
       v244 = v39;
-      v40 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionUUID"];
+      v40 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionUUID"];
       v215 = v40;
       if (v40)
       {
@@ -631,9 +631,9 @@ LABEL_7:
     }
 
     v242 = v43;
-    if (v7)
+    if (_timingData)
     {
-      v44 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionReused"];
+      v44 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionReused"];
       v214 = v44;
       if (v44)
       {
@@ -646,7 +646,7 @@ LABEL_7:
       }
 
       v241 = v45;
-      v46 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
+      v46 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
       v213 = v46;
       if (v46)
       {
@@ -667,12 +667,12 @@ LABEL_7:
       v241 = &stru_28546BCE0;
     }
 
-    v248 = [v9 c2_NegotiatedTLSProtocolVersionString];
-    v265 = v9;
+    c2_NegotiatedTLSProtocolVersionString = [lastObject c2_NegotiatedTLSProtocolVersionString];
+    v265 = lastObject;
     log = v30;
-    if (v7)
+    if (_timingData)
     {
-      v48 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataNetworkProtocolName"];
+      v48 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataNetworkProtocolName"];
       v212 = v48;
       if (v48)
       {
@@ -685,7 +685,7 @@ LABEL_7:
       }
 
       v238 = v49;
-      v50 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataRequestHeaderSize"];
+      v50 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataRequestHeaderSize"];
       v211 = v50;
       if (v50)
       {
@@ -698,8 +698,8 @@ LABEL_7:
       }
 
       v236 = v51;
-      v237 = [(NSURLSessionDataTask *)self->_task countOfBytesSent];
-      v52 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataResponseHeaderSize"];
+      countOfBytesSent = [(NSURLSessionDataTask *)self->_task countOfBytesSent];
+      v52 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataResponseHeaderSize"];
       v210 = v52;
       if (v52)
       {
@@ -712,7 +712,7 @@ LABEL_7:
       }
 
       v235 = v53;
-      v54 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
+      v54 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
       v209 = v54;
       if (v54)
       {
@@ -729,14 +729,14 @@ LABEL_7:
 
     else
     {
-      v237 = [(NSURLSessionDataTask *)self->_task countOfBytesSent];
+      countOfBytesSent = [(NSURLSessionDataTask *)self->_task countOfBytesSent];
       v238 = &stru_28546BCE0;
       v235 = &stru_28546BCE0;
       v236 = &stru_28546BCE0;
       v233 = &stru_28546BCE0;
     }
 
-    if (v6)
+    if (errorCopy)
     {
       v56 = @"T";
     }
@@ -818,11 +818,11 @@ LABEL_7:
     }
 
     v223 = v76;
-    v77 = [(C2RequestOptions *)self->_options _sourceApplicationBundleIdentifier];
-    v232 = v77;
-    if (v77)
+    _sourceApplicationBundleIdentifier = [(C2RequestOptions *)self->_options _sourceApplicationBundleIdentifier];
+    v232 = _sourceApplicationBundleIdentifier;
+    if (_sourceApplicationBundleIdentifier)
     {
-      v78 = v77;
+      v78 = _sourceApplicationBundleIdentifier;
     }
 
     else
@@ -831,11 +831,11 @@ LABEL_7:
     }
 
     v222 = v78;
-    v79 = [(C2RequestOptions *)self->_options _sourceApplicationSecondaryIdentifier];
-    v230 = v79;
-    if (v79)
+    _sourceApplicationSecondaryIdentifier = [(C2RequestOptions *)self->_options _sourceApplicationSecondaryIdentifier];
+    v230 = _sourceApplicationSecondaryIdentifier;
+    if (_sourceApplicationSecondaryIdentifier)
     {
-      v80 = v79;
+      v80 = _sourceApplicationSecondaryIdentifier;
     }
 
     else
@@ -844,11 +844,11 @@ LABEL_7:
     }
 
     v221 = v80;
-    v81 = [(C2RequestOptions *)self->_options outOfProcessPoolName];
-    v227 = v81;
-    if (v81)
+    outOfProcessPoolName = [(C2RequestOptions *)self->_options outOfProcessPoolName];
+    v227 = outOfProcessPoolName;
+    if (outOfProcessPoolName)
     {
-      v82 = v81;
+      v82 = outOfProcessPoolName;
     }
 
     else
@@ -886,16 +886,16 @@ LABEL_7:
     v89 = v88;
     [(C2RequestOptions *)v85->_options _timeoutIntervalForResource];
     v91 = v90;
-    v92 = [(C2RequestOptions *)v85->_options _appleIDContextSessionIdentifier];
-    v93 = v92;
-    if (v92)
+    _appleIDContextSessionIdentifier = [(C2RequestOptions *)v85->_options _appleIDContextSessionIdentifier];
+    v93 = _appleIDContextSessionIdentifier;
+    if (_appleIDContextSessionIdentifier)
     {
-      v32 = v92;
+      v32 = _appleIDContextSessionIdentifier;
     }
 
-    v94 = [(C2RequestOptions *)v85->_options metricRequest];
+    metricRequest = [(C2RequestOptions *)v85->_options metricRequest];
     v278 = v247;
-    if (v94)
+    if (metricRequest)
     {
       v95 = @"T";
     }
@@ -916,7 +916,7 @@ LABEL_7:
     v292 = v240;
     v296 = v238;
     v298 = v236;
-    v300 = v237;
+    v300 = countOfBytesSent;
     v302 = v235;
     v304 = v233;
     v305 = 2112;
@@ -980,32 +980,32 @@ LABEL_7:
     v353 = 2114;
     v355 = 2114;
     *buf = 138553347;
-    v294 = v248;
+    v294 = c2_NegotiatedTLSProtocolVersionString;
     v314 = v239;
     v322 = v234;
     v346 = v86;
     _os_log_impl(&dword_242158000, log, OS_LOG_TYPE_DEFAULT, "captureMetricsForTask=%{public}@:host=%{public}@:remoteAddress=%{private}@:localAddress=%{private}@:connectionUUID=%{public}@:qualityOfService=%{public}@:reuse=%{public}@:i=%{public}@:tlsVersion=%{public}@:protocol=%{public}@:requestHeaderBytes=%{public}@:requestBodyBytes=%llu:responseHeaderBytes=%{public}@:responseBodyBytes=%{public}@:err=%@:dnsDuration=%.3f:tcpStartDelay=%.3f:tcpDuration=%.3f:sslStartDelay=%.3f:sslDuration=%.3f:requestStartDelay=%.3f:requestDuration=%.3f:responseStartDelay=%.3f:responseDuration=%.3f:transactionDuration=%.3f:outOfProcess=%{public}@:allowCellular=%{public}@:allowExpensive=%{public}@:powerNap=%{public}@:app=%{public}@:2app=%{public}@:pool=%{public}@:tlsPinning=%{public}@:retryNetworkFailures=%{public}@:disc=%{public}@:duet=%{public}@:reqTimeout=%.2f:resTimeout=%.2f:appleIdSessionId=%{public}@:metricRequest=%{public}@", buf, 0x192u);
 
     v96 = v87;
-    if (v7)
+    if (_timingData)
     {
 
-      v97 = v248;
-      v11 = v263;
+      v97 = c2_NegotiatedTLSProtocolVersionString;
+      currentRequest = v263;
       v98 = v216;
       v99 = v217;
     }
 
     else
     {
-      v98 = v248;
+      v98 = c2_NegotiatedTLSProtocolVersionString;
       v99 = v249;
-      v97 = v248;
-      v11 = v263;
+      v97 = c2_NegotiatedTLSProtocolVersionString;
+      currentRequest = v263;
     }
 
-    v6 = v270;
-    v9 = v265;
+    errorCopy = v270;
+    lastObject = v265;
     v27 = v256;
     v29 = v257;
     v25 = v255;
@@ -1017,10 +1017,10 @@ LABEL_7:
     self = v85;
   }
 
-  if (v6)
+  if (errorCopy)
   {
     v100 = @"RetryableNetworkingError";
-    if (a4 == 1)
+    if (type == 1)
     {
       v100 = @"NetworkingError";
     }
@@ -1032,28 +1032,28 @@ LABEL_7:
     }
 
     v102 = C2_DEFAULT_LOG_INTERNAL_4;
-    [C2Logging printToLog:v102 withDescription:v101 object:v6];
+    [C2Logging printToLog:v102 withDescription:v101 object:errorCopy];
 
-    a4 = v273;
+    type = typeCopy;
   }
 
-  v103 = [(C2RequestOptions *)self->_options metricOptions];
-  if (v103)
+  metricOptions = [(C2RequestOptions *)self->_options metricOptions];
+  if (metricOptions)
   {
-    v104 = v103;
+    v104 = metricOptions;
     v105 = +[C2RequestOptions triesteMetricsEnabled];
 
     if (v105)
     {
-      v264 = v11;
-      v266 = v9;
+      v264 = currentRequest;
+      v266 = lastObject;
       v106 = objc_opt_new();
       v107 = objc_opt_new();
       [v106 setObject:v107 forKeyedSubscript:@"client"];
-      v108 = [(NSURLSessionDataTask *)self->_task taskDescription];
-      [v107 setObject:v108 forKeyedSubscript:@"taskDescription"];
+      taskDescription2 = [(NSURLSessionDataTask *)self->_task taskDescription];
+      [v107 setObject:taskDescription2 forKeyedSubscript:@"taskDescription"];
 
-      if (v6)
+      if (errorCopy)
       {
         v109 = @"T";
       }
@@ -1115,7 +1115,7 @@ LABEL_7:
         [v110 setObject:v118 forKeyedSubscript:@"resStart"];
       }
 
-      v268 = v7;
+      v268 = _timingData;
       if (v29 != -1.0)
       {
         v119 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{+[C2Time convertTimeIntervalToServerTime:](C2Time, "convertTimeIntervalToServerTime:", v29)}];
@@ -1125,16 +1125,16 @@ LABEL_7:
       v120 = objc_opt_new();
       [v106 setObject:v120 forKeyedSubscript:@"request"];
       v121 = MEMORY[0x277CCACA8];
-      v122 = [v12 scheme];
+      scheme = [v12 scheme];
       [v12 host];
       v124 = v123 = v12;
-      v125 = [v123 port];
+      port = [v123 port];
       v262 = v123;
-      v126 = [v123 path];
-      v127 = [v121 stringWithFormat:@"%@://%@:%@/%@", v122, v124, v125, v126];
-      [v120 setObject:v127 forKeyedSubscript:@"urlWithoutQuery"];
+      path = [v123 path];
+      v126 = [v121 stringWithFormat:@"%@://%@:%@/%@", scheme, v124, port, path];
+      [v120 setObject:v126 forKeyedSubscript:@"urlWithoutQuery"];
 
-      v7 = v268;
+      _timingData = v268;
       if (v268)
       {
         v128 = [v268 objectForKeyedSubscript:@"_kCFNTimingDataRequestHeaderSize"];
@@ -1157,8 +1157,8 @@ LABEL_7:
         [v120 setObject:&stru_28546BCE0 forKeyedSubscript:@"headerBytes"];
       }
 
-      v131 = [(NSURLSessionDataTask *)self->_task currentRequest];
-      v132 = [v131 valueForHTTPHeaderField:@"X-Apple-Request-UUID"];
+      currentRequest2 = [(NSURLSessionDataTask *)self->_task currentRequest];
+      v132 = [currentRequest2 valueForHTTPHeaderField:@"X-Apple-Request-UUID"];
       [v120 setObject:v132 forKeyedSubscript:@"uuid"];
 
       v133 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[NSURLSessionDataTask countOfBytesSent](self->_task, "countOfBytesSent")}];
@@ -1188,28 +1188,28 @@ LABEL_7:
         [v134 setObject:&stru_28546BCE0 forKeyedSubscript:@"headerBytes"];
       }
 
-      v138 = [(NSURLSessionDataTask *)self->_task response];
+      response = [(NSURLSessionDataTask *)self->_task response];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
         v140 = MEMORY[0x277CCABB0];
-        v141 = [(NSURLSessionDataTask *)self->_task response];
-        v142 = [v140 numberWithUnsignedLongLong:{objc_msgSend(v141, "statusCode")}];
+        response2 = [(NSURLSessionDataTask *)self->_task response];
+        v142 = [v140 numberWithUnsignedLongLong:{objc_msgSend(response2, "statusCode")}];
         [v134 setObject:v142 forKeyedSubscript:@"statusCode"];
 
-        v143 = [(NSURLSessionDataTask *)self->_task response];
-        v144 = [v143 allHeaderFields];
-        v145 = [v144 objectForKeyedSubscript:@"X-Apple-Request-UUID"];
+        response3 = [(NSURLSessionDataTask *)self->_task response];
+        allHeaderFields = [response3 allHeaderFields];
+        v145 = [allHeaderFields objectForKeyedSubscript:@"X-Apple-Request-UUID"];
         [v134 setObject:v145 forKeyedSubscript:@"uuid"];
 
-        v7 = v268;
+        _timingData = v268;
       }
 
-      if (v7)
+      if (_timingData)
       {
-        v146 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
+        v146 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
         v147 = v146;
         if (v146)
         {
@@ -1241,7 +1241,7 @@ LABEL_7:
         [C2SessionTask captureMetricsWithError:eventType:];
       }
 
-      v11 = v264;
+      currentRequest = v264;
       v153 = C2_TRIESTE_LOG_INTERNAL;
       if (os_log_type_enabled(v153, OS_LOG_TYPE_DEFAULT))
       {
@@ -1250,19 +1250,19 @@ LABEL_7:
         _os_log_impl(&dword_242158000, v153, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
       }
 
-      v6 = v270;
-      v9 = v266;
-      v10 = report;
+      errorCopy = v270;
+      lastObject = v266;
+      _dataTransferReport = report;
       v12 = v262;
-      a4 = v273;
+      type = typeCopy;
     }
   }
 
-  v154 = [(C2RequestOptions *)self->_options metricOptions];
-  if (!v154 || [(C2RequestOptions *)self->_options metricRequest])
+  metricOptions2 = [(C2RequestOptions *)self->_options metricOptions];
+  if (!metricOptions2 || [(C2RequestOptions *)self->_options metricRequest])
   {
 
-    if (a4 == 2)
+    if (type == 2)
     {
       goto LABEL_150;
     }
@@ -1270,7 +1270,7 @@ LABEL_7:
     goto LABEL_151;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
 LABEL_150:
     ++self->_attemptCount;
@@ -1278,17 +1278,17 @@ LABEL_150:
     goto LABEL_151;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v155 = [(NSURLSessionDataTask *)self->_task response];
+    response4 = [(NSURLSessionDataTask *)self->_task response];
     objc_opt_class();
     v156 = objc_opt_isKindOfClass();
 
     if (v156)
     {
-      v157 = [(NSURLSessionDataTask *)self->_task response];
-      v158 = [v157 allHeaderFields];
-      v159 = [v158 objectForKey:@"x-apple-report-metrics"];
+      response5 = [(NSURLSessionDataTask *)self->_task response];
+      allHeaderFields2 = [response5 allHeaderFields];
+      v159 = [allHeaderFields2 objectForKey:@"x-apple-report-metrics"];
       v160 = v159 != 0;
     }
 
@@ -1297,8 +1297,8 @@ LABEL_150:
       v160 = 0;
     }
 
-    v162 = [(C2RequestOptions *)self->_options metricOptions];
-    v163 = [v162 generateTriggerWithResponseHeader:v160];
+    metricOptions3 = [(C2RequestOptions *)self->_options metricOptions];
+    v163 = [metricOptions3 generateTriggerWithResponseHeader:v160];
 
     v164 = objc_alloc_init(C2MPNetworkEvent);
     v165 = v164;
@@ -1306,16 +1306,16 @@ LABEL_150:
     {
       v274 = v163;
       [(C2MPNetworkEvent *)v164 setTriggers:v163];
-      v166 = [(C2RequestOptions *)self->_options metricOptions];
-      -[C2MPNetworkEvent setReportFrequency:](v165, "setReportFrequency:", [v166 reportFrequency]);
+      metricOptions4 = [(C2RequestOptions *)self->_options metricOptions];
+      -[C2MPNetworkEvent setReportFrequency:](v165, "setReportFrequency:", [metricOptions4 reportFrequency]);
 
-      v167 = [(C2RequestOptions *)self->_options metricOptions];
-      -[C2MPNetworkEvent setReportFrequencyBase:](v165, "setReportFrequencyBase:", [v167 reportFrequencyBase]);
+      metricOptions5 = [(C2RequestOptions *)self->_options metricOptions];
+      -[C2MPNetworkEvent setReportFrequencyBase:](v165, "setReportFrequencyBase:", [metricOptions5 reportFrequencyBase]);
 
-      v168 = [(NSURLSessionDataTask *)self->_task taskDescription];
-      [(C2MPNetworkEvent *)v165 setNetworkTaskDescription:v168];
+      taskDescription3 = [(NSURLSessionDataTask *)self->_task taskDescription];
+      [(C2MPNetworkEvent *)v165 setNetworkTaskDescription:taskDescription3];
 
-      if (-[C2RequestOptions redactRemoteEndpointFromNetworkMetrics](self->_options, "redactRemoteEndpointFromNetworkMetrics") || [v9 isProxyConnection])
+      if (-[C2RequestOptions redactRemoteEndpointFromNetworkMetrics](self->_options, "redactRemoteEndpointFromNetworkMetrics") || [lastObject isProxyConnection])
       {
         [(C2MPNetworkEvent *)v165 setNetworkHostname:@"redacted"];
         [(C2MPNetworkEvent *)v165 setNetworkRemoteAddresssAndPort:@"redacted"];
@@ -1323,36 +1323,36 @@ LABEL_150:
 
       else
       {
-        v169 = [v12 host];
-        [(C2MPNetworkEvent *)v165 setNetworkHostname:v169];
+        host2 = [v12 host];
+        [(C2MPNetworkEvent *)v165 setNetworkHostname:host2];
 
-        v170 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataRemoteAddressAndPort"];
+        v170 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataRemoteAddressAndPort"];
         [(C2MPNetworkEvent *)v165 setNetworkRemoteAddresssAndPort:v170];
       }
 
-      v171 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionUUID"];
+      v171 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionUUID"];
       [(C2MPNetworkEvent *)v165 setNetworkConnectionUuid:v171];
 
-      v172 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionReused"];
+      v172 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionReused"];
       -[C2MPNetworkEvent setNetworkConnectionReused:](v165, "setNetworkConnectionReused:", [v172 BOOLValue]);
 
-      v173 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
+      v173 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataConnectionInterfaceIdentifier"];
       [(C2MPNetworkEvent *)v165 setNetworkInterfaceIdentifier:v173];
 
-      v174 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataNetworkProtocolName"];
+      v174 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataNetworkProtocolName"];
       [(C2MPNetworkEvent *)v165 setNetworkProtocolName:v174];
 
-      v175 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataRequestHeaderSize"];
+      v175 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataRequestHeaderSize"];
       -[C2MPNetworkEvent setNetworkRequestHeaderSize:](v165, "setNetworkRequestHeaderSize:", [v175 intValue]);
 
       [(C2MPNetworkEvent *)v165 setNetworkRequestBodyBytesSent:[(NSURLSessionDataTask *)self->_task countOfBytesSent]];
-      v176 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataResponseHeaderSize"];
+      v176 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataResponseHeaderSize"];
       -[C2MPNetworkEvent setNetworkResponseHeaderSize:](v165, "setNetworkResponseHeaderSize:", [v176 intValue]);
 
-      v177 = [v7 objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
+      v177 = [_timingData objectForKeyedSubscript:@"_kCFNTimingDataResponseBodyBytesReceived"];
       -[C2MPNetworkEvent setNetworkResponseBodyBytesReceived:](v165, "setNetworkResponseBodyBytesReceived:", [v177 longLongValue]);
 
-      v178 = [v7 objectForKeyedSubscript:@"_kCFNBackgroundMetricsIsDiscretionary"];
+      v178 = [_timingData objectForKeyedSubscript:@"_kCFNBackgroundMetricsIsDiscretionary"];
       v179 = v178;
       if (v178)
       {
@@ -1360,10 +1360,10 @@ LABEL_150:
       }
 
       logb = v179;
-      v180 = [(NSURLSessionTaskMetrics *)self->_taskMetrics transactionMetrics];
-      v181 = [v180 lastObject];
-      v182 = [v181 c2_NegotiatedTLSProtocolVersionString];
-      [(C2MPNetworkEvent *)v165 setNetworkNegotiatedTlsProtocolVersion:v182];
+      transactionMetrics2 = [(NSURLSessionTaskMetrics *)self->_taskMetrics transactionMetrics];
+      lastObject2 = [transactionMetrics2 lastObject];
+      c2_NegotiatedTLSProtocolVersionString2 = [lastObject2 c2_NegotiatedTLSProtocolVersionString];
+      [(C2MPNetworkEvent *)v165 setNetworkNegotiatedTlsProtocolVersion:c2_NegotiatedTLSProtocolVersionString2];
 
       [(C2MPNetworkEvent *)v165 setNetworkPreviousAttemptCount:self->_attemptCount];
       if (v270)
@@ -1372,14 +1372,14 @@ LABEL_150:
         [(C2MPNetworkEvent *)v165 setNetworkFatalError:v183];
       }
 
-      v184 = [(NSURLSessionDataTask *)self->_task response];
+      response6 = [(NSURLSessionDataTask *)self->_task response];
       objc_opt_class();
       v185 = objc_opt_isKindOfClass();
 
       if (v185)
       {
-        v186 = [(NSURLSessionDataTask *)self->_task response];
-        -[C2MPNetworkEvent setNetworkStatusCode:](v165, "setNetworkStatusCode:", [v186 statusCode]);
+        response7 = [(NSURLSessionDataTask *)self->_task response];
+        -[C2MPNetworkEvent setNetworkStatusCode:](v165, "setNetworkStatusCode:", [response7 statusCode]);
       }
 
       v187 = report;
@@ -1390,10 +1390,10 @@ LABEL_150:
 
       else
       {
-        v188 = [(NSURLSessionDataTask *)self->_task currentRequest];
-        v189 = [v188 URL];
-        v190 = [v189 path];
-        [(C2MPNetworkEvent *)v165 setNetworkRequestUri:v190];
+        currentRequest3 = [(NSURLSessionDataTask *)self->_task currentRequest];
+        v189 = [currentRequest3 URL];
+        path2 = [v189 path];
+        [(C2MPNetworkEvent *)v165 setNetworkRequestUri:path2];
       }
 
       [(C2MPNetworkEvent *)v165 setTimestampC2Init:[C2Time convertTimeIntervalToServerTime:self->_initTime]];
@@ -1439,7 +1439,7 @@ LABEL_150:
         [(C2MPNetworkEvent *)v165 setTimestampResponseStart:[C2Time convertTimeIntervalToServerTime:v27]];
       }
 
-      v269 = v7;
+      v269 = _timingData;
       if (v29 != -1.0)
       {
         [(C2MPNetworkEvent *)v165 setTimestampResponseEnd:[C2Time convertTimeIntervalToServerTime:v29]];
@@ -1457,14 +1457,14 @@ LABEL_150:
       [(C2MPNetworkEvent *)v165 setOptionsTimeoutIntervalForRequest:v192];
       [(C2RequestOptions *)self->_options _timeoutIntervalForResource];
       [(C2MPNetworkEvent *)v165 setOptionsTimeoutIntervalForResource:v193];
-      v194 = [(C2RequestOptions *)self->_options _sourceApplicationBundleIdentifier];
-      [(C2MPNetworkEvent *)v165 setOptionsSourceApplicationBundleIdentifier:v194];
+      _sourceApplicationBundleIdentifier2 = [(C2RequestOptions *)self->_options _sourceApplicationBundleIdentifier];
+      [(C2MPNetworkEvent *)v165 setOptionsSourceApplicationBundleIdentifier:_sourceApplicationBundleIdentifier2];
 
-      v195 = [(C2RequestOptions *)self->_options _sourceApplicationSecondaryIdentifier];
-      [(C2MPNetworkEvent *)v165 setOptionsSourceApplicationSecondaryIdentifier:v195];
+      _sourceApplicationSecondaryIdentifier2 = [(C2RequestOptions *)self->_options _sourceApplicationSecondaryIdentifier];
+      [(C2MPNetworkEvent *)v165 setOptionsSourceApplicationSecondaryIdentifier:_sourceApplicationSecondaryIdentifier2];
 
-      v196 = [(C2RequestOptions *)self->_options _appleIDContextSessionIdentifier];
-      [(C2MPNetworkEvent *)v165 setOptionsAppleIdContext:v196 != 0];
+      _appleIDContextSessionIdentifier2 = [(C2RequestOptions *)self->_options _appleIDContextSessionIdentifier];
+      [(C2MPNetworkEvent *)v165 setOptionsAppleIdContext:_appleIDContextSessionIdentifier2 != 0];
 
       [(C2MPNetworkEvent *)v165 setOptionsTlsPinningRequired:[(C2RequestOptions *)self->_options tlsPinning]];
       v197 = [C2RequestOptions stringForDiscretionaryNetworkBehavior:[(C2RequestOptions *)self->_options discretionaryNetworkBehavior]];
@@ -1530,11 +1530,11 @@ LABEL_197:
 
       [C2ReportMetrics reportNetworkEvent:v165 triggers:v274 originalSessionTask:self];
 
-      v7 = v269;
+      _timingData = v269;
     }
 
-    v6 = v270;
-    v10 = report;
+    errorCopy = v270;
+    _dataTransferReport = report;
   }
 
 LABEL_151:
@@ -1563,15 +1563,15 @@ uint64_t __51__C2SessionTask_captureMetricsWithError_eventType___block_invoke_2(
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)C2Session:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)C2Session:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   v11.opaque[0] = 0;
   v11.opaque[1] = 0;
   os_activity_scope_enter(self->_activity, &v11);
-  [(C2SessionTaskDelegate *)self->_sessionTaskDelegate C2Session:v8 task:v9 didCompleteWithError:v10];
+  [(C2SessionTaskDelegate *)self->_sessionTaskDelegate C2Session:sessionCopy task:taskCopy didCompleteWithError:errorCopy];
   [(C2SessionTask *)self invalidate];
   os_activity_scope_leave(&v11);
 }

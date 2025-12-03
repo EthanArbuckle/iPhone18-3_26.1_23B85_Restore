@@ -1,7 +1,7 @@
 @interface AVLayerUIView
 + (Class)layerClass;
-- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithCoder:(id)a3;
-- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithFrame:(CGRect)a3;
+- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithCoder:(id)coder;
+- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AVLayerUIView
@@ -13,12 +13,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithFrame:(CGRect)a3
+- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView_looper) = 0;
   v8 = OBJC_IVAR____TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView_url;
   v9 = sub_2440D05F0();
@@ -28,7 +28,7 @@
   return [(AVLayerUIView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithCoder:(id)a3
+- (_TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView_looper) = 0;
   v5 = OBJC_IVAR____TtC19ContactlessReaderUIP33_E63B02286265C8C01E0EDA7D0DF4AC0413AVLayerUIView_url;
@@ -36,8 +36,8 @@
   (*(*(v6 - 8) + 56))(self + v5, 1, 1, v6);
   v10.receiver = self;
   v10.super_class = type metadata accessor for AVLayerUIView(0);
-  v7 = a3;
-  v8 = [(AVLayerUIView *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(AVLayerUIView *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

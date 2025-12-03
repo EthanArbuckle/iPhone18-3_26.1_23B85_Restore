@@ -1,6 +1,6 @@
 @interface MailIntentHandler
 + (OS_os_log)log;
-- (id)handlerForIntent:(id)a3;
+- (id)handlerForIntent:(id)intent;
 @end
 
 @implementation MailIntentHandler
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004948;
   block[3] = &unk_10000C3A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100011EF0 != -1)
   {
     dispatch_once(&qword_100011EF0, block);
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (id)handlerForIntent:(id)a3
+- (id)handlerForIntent:(id)intent
 {
-  v3 = a3;
+  intentCopy = intent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

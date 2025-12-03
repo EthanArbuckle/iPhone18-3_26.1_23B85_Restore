@@ -1,96 +1,96 @@
 @interface ICNoteResultsViewControllerCollectionViewDelegate
 - (ICNoteResultsViewController)noteResultsViewController;
-- (ICNoteResultsViewControllerCollectionViewDelegate)initWithNoteResultsViewController:(id)a3;
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForDismissingToItemAtIndexPath:(id)a5;
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForHighlightingItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (ICNoteResultsViewControllerCollectionViewDelegate)initWithNoteResultsViewController:(id)controller;
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForDismissingToItemAtIndexPath:(id)path;
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForHighlightingItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation ICNoteResultsViewControllerCollectionViewDelegate
 
-- (ICNoteResultsViewControllerCollectionViewDelegate)initWithNoteResultsViewController:(id)a3
+- (ICNoteResultsViewControllerCollectionViewDelegate)initWithNoteResultsViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = ICNoteResultsViewControllerCollectionViewDelegate;
   v5 = [(ICNoteResultsViewControllerCollectionViewDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_noteResultsViewController, v4);
+    objc_storeWeak(&v5->_noteResultsViewController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v24 = a4;
-  v7 = a5;
-  v8 = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
-  v9 = [v8 viewControllerManager];
+  cellCopy = cell;
+  pathCopy = path;
+  noteResultsViewController = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
+  viewControllerManager = [noteResultsViewController viewControllerManager];
 
-  v10 = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
-  v11 = [v10 dataSource];
-  v12 = [v11 collectionViewDiffableDataSource];
-  v13 = [v12 itemIdentifierForIndexPath:v7];
+  noteResultsViewController2 = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
+  dataSource = [noteResultsViewController2 dataSource];
+  collectionViewDiffableDataSource = [dataSource collectionViewDiffableDataSource];
+  v13 = [collectionViewDiffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  if (![v9 isAutomaticallySelectingNotes])
+  if (![viewControllerManager isAutomaticallySelectingNotes])
   {
-    if (![v9 isTagSelected])
+    if (![viewControllerManager isTagSelected])
     {
       goto LABEL_31;
     }
 
-    v14 = [v9 tagSelection];
+    tagSelection = [viewControllerManager tagSelection];
     objc_opt_class();
     v17 = ICDynamicCast();
-    v18 = [v14 mode];
-    if (v18 == 1 && (+[ICTagAllTagsItemIdentifier sharedItemIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v13 == v10))
+    mode = [tagSelection mode];
+    if (mode == 1 && (+[ICTagAllTagsItemIdentifier sharedItemIdentifier], noteResultsViewController2 = objc_claimAutoreleasedReturnValue(), v13 == noteResultsViewController2))
     {
       [v17 setSelected:1];
     }
 
     else
     {
-      if ([v14 mode])
+      if ([tagSelection mode])
       {
         [v17 setSelected:0];
       }
 
       else
       {
-        v19 = [v14 includedObjectIDs];
-        [v17 setSelected:{objc_msgSend(v19, "containsObject:", v13)}];
+        includedObjectIDs = [tagSelection includedObjectIDs];
+        [v17 setSelected:{objc_msgSend(includedObjectIDs, "containsObject:", v13)}];
       }
 
-      if (v18 != 1)
+      if (mode != 1)
       {
 LABEL_20:
-        v22 = [v14 mode];
-        if (v22 == 2 && (+[ICTagAllTagsItemIdentifier sharedItemIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v13 == v10))
+        mode2 = [tagSelection mode];
+        if (mode2 == 2 && (+[ICTagAllTagsItemIdentifier sharedItemIdentifier], noteResultsViewController2 = objc_claimAutoreleasedReturnValue(), v13 == noteResultsViewController2))
         {
           [v17 setIsExcluded:1];
         }
 
         else
         {
-          if ([v14 mode])
+          if ([tagSelection mode])
           {
             [v17 setIsExcluded:0];
           }
 
           else
           {
-            v23 = [v14 excludedObjectIDs];
-            [v17 setIsExcluded:{objc_msgSend(v23, "containsObject:", v13)}];
+            excludedObjectIDs = [tagSelection excludedObjectIDs];
+            [v17 setIsExcluded:{objc_msgSend(excludedObjectIDs, "containsObject:", v13)}];
           }
 
-          if (v22 != 2)
+          if (mode2 != 2)
           {
             goto LABEL_29;
           }
@@ -104,33 +104,33 @@ LABEL_29:
     goto LABEL_20;
   }
 
-  v14 = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
-  if ([v14 isEditing])
+  tagSelection = [(ICNoteResultsViewControllerCollectionViewDelegate *)self noteResultsViewController];
+  if ([tagSelection isEditing])
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v15 = [v9 selectedNoteObjectID];
-  if ([v13 isEqual:v15])
+  selectedNoteObjectID = [viewControllerManager selectedNoteObjectID];
+  if ([v13 isEqual:selectedNoteObjectID])
   {
 LABEL_6:
 
 LABEL_7:
-    [v24 setSelected:1];
+    [cellCopy setSelected:1];
     goto LABEL_31;
   }
 
-  v16 = [v9 selectedInvitationObjectID];
-  if ([v13 isEqual:v16])
+  selectedInvitationObjectID = [viewControllerManager selectedInvitationObjectID];
+  if ([v13 isEqual:selectedInvitationObjectID])
   {
 
     goto LABEL_6;
   }
 
-  v20 = [v9 selectedSearchResult];
-  v21 = [v13 isEqual:v20];
+  selectedSearchResult = [viewControllerManager selectedSearchResult];
+  v21 = [v13 isEqual:selectedSearchResult];
 
   if (v21)
   {
@@ -140,75 +140,75 @@ LABEL_7:
 LABEL_31:
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v6 = a4;
-  v7 = a3;
+  pathsCopy = paths;
+  viewCopy = view;
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  v9 = [v8 contextMenuConfigurationForItemsAtIndexPaths:v6];
+  v9 = [v8 contextMenuConfigurationForItemsAtIndexPaths:pathsCopy];
 
   return v9;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 highlightPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration highlightPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  v11 = [v10 contextMenuPreviewForHighlightingMenuWithConfiguration:v8 indexPath:v7];
+  v11 = [v10 contextMenuPreviewForHighlightingMenuWithConfiguration:configurationCopy indexPath:pathCopy];
 
   return v11;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  pathCopy = path;
+  configurationCopy = configuration;
+  viewCopy = view;
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  v11 = [v10 contextMenuPreviewForDismissingContextMenuWithConfiguration:v8 indexPath:v7];
+  v11 = [v10 contextMenuPreviewForDismissingContextMenuWithConfiguration:configurationCopy indexPath:pathCopy];
 
   return v11;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  animatorCopy = animator;
+  configurationCopy = configuration;
+  viewCopy = view;
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  [v10 contextMenuWillPerformPreviewActionForMenuWithConfiguration:v8 animator:v7];
+  [v10 contextMenuWillPerformPreviewActionForMenuWithConfiguration:configurationCopy animator:animatorCopy];
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForHighlightingItemAtIndexPath:(id)a5
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForHighlightingItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  v9 = [v8 multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:v6];
+  v9 = [v8 multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:pathCopy];
 
   return v9;
 }
 
-- (id)_dci_collectionView:(id)a3 contextMenuConfiguration:(id)a4 previewForDismissingToItemAtIndexPath:(id)a5
+- (id)_dci_collectionView:(id)view contextMenuConfiguration:(id)configuration previewForDismissingToItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
   v8 = ICDynamicCast();
 
-  v9 = [v8 multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:v6];
+  v9 = [v8 multiSelectionContextMenuPreviewForHighlightingItemAtIndexPath:pathCopy];
 
   return v9;
 }

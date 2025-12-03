@@ -1,22 +1,22 @@
 @interface SBCoverSheetToAppsWorkspaceTransaction
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (SBCoverSheetToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3 forSecureAppTransition:(BOOL)a4;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (SBCoverSheetToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request forSecureAppTransition:(BOOL)transition;
 - (id)_setupAnimation;
 - (unint64_t)_dismissOverlaysOptions;
 - (void)_autoPIPIfNeeded;
 - (void)_begin;
 - (void)_didComplete;
 - (void)_dismissOverlaysIfNeeded;
-- (void)_logForInterruptAttemptReason:(id)a3;
+- (void)_logForInterruptAttemptReason:(id)reason;
 - (void)dealloc;
 @end
 
 @implementation SBCoverSheetToAppsWorkspaceTransaction
 
-- (SBCoverSheetToAppsWorkspaceTransaction)initWithTransitionRequest:(id)a3 forSecureAppTransition:(BOOL)a4
+- (SBCoverSheetToAppsWorkspaceTransaction)initWithTransitionRequest:(id)request forSecureAppTransition:(BOOL)transition
 {
-  v7 = a3;
-  if (!v7)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [SBCoverSheetToAppsWorkspaceTransaction initWithTransitionRequest:a2 forSecureAppTransition:self];
   }
@@ -25,24 +25,24 @@
   v26[1] = 3221225472;
   v26[2] = __91__SBCoverSheetToAppsWorkspaceTransaction_initWithTransitionRequest_forSecureAppTransition___block_invoke;
   v26[3] = &__block_descriptor_33_e54_v16__0__SBWorkspaceApplicationSceneTransitionContext_8l;
-  v27 = a4;
-  [v7 modifyApplicationContext:v26];
+  transitionCopy = transition;
+  [requestCopy modifyApplicationContext:v26];
   v25.receiver = self;
   v25.super_class = SBCoverSheetToAppsWorkspaceTransaction;
-  v8 = [(SBToAppsWorkspaceTransaction *)&v25 initWithTransitionRequest:v7];
+  v8 = [(SBToAppsWorkspaceTransaction *)&v25 initWithTransitionRequest:requestCopy];
   if (v8)
   {
-    if (SBMainWorkspaceTransitionSourceIsUserEventDriven([v7 source]))
+    if (SBMainWorkspaceTransitionSourceIsUserEventDriven([requestCopy source]))
     {
-      v9 = [(SBToAppsWorkspaceTransaction *)v8 layoutTransaction];
-      v10 = [v9 options];
+      layoutTransaction = [(SBToAppsWorkspaceTransaction *)v8 layoutTransaction];
+      options = [layoutTransaction options];
 
-      v11 = [(SBToAppsWorkspaceTransaction *)v8 layoutTransaction];
-      [v11 setOptions:v10 | 2];
+      layoutTransaction2 = [(SBToAppsWorkspaceTransaction *)v8 layoutTransaction];
+      [layoutTransaction2 setOptions:options | 2];
     }
 
     v12 = +[SBWorkspace mainWorkspace];
-    v13 = [v12 transientOverlayPresentationManager];
+    transientOverlayPresentationManager = [v12 transientOverlayPresentationManager];
 
     v14 = +[SBWorkspace mainWorkspace];
     v15 = [v14 createRequestWithOptions:0];
@@ -51,7 +51,7 @@
     v21 = 3221225472;
     v22 = __91__SBCoverSheetToAppsWorkspaceTransaction_initWithTransitionRequest_forSecureAppTransition___block_invoke_2;
     v23 = &unk_2783AC2E0;
-    v16 = v13;
+    v16 = transientOverlayPresentationManager;
     v24 = v16;
     [v15 modifyTransientOverlayContext:&v20];
     if ([SBTransientOverlayDismissAllWorkspaceTransaction isValidForTransitionRequest:v15, v20, v21, v22, v23])
@@ -98,7 +98,7 @@ void __91__SBCoverSheetToAppsWorkspaceTransaction_initWithTransitionRequest_forS
 - (void)_begin
 {
   v3 = +[SBLockStateAggregator sharedInstance];
-  v4 = [v3 lockState];
+  lockState = [v3 lockState];
 
   transientOverlayTransaction = self->_transientOverlayTransaction;
   if (transientOverlayTransaction)
@@ -108,7 +108,7 @@ void __91__SBCoverSheetToAppsWorkspaceTransaction_initWithTransitionRequest_forS
 
   v6 = +[SBCoverSheetPresentationManager sharedInstance];
   v7 = v6;
-  if ((v4 & 2) == 0 && [v6 isVisible] && (objc_msgSend(v7, "isAnyGestureActivelyRecognized") & 1) == 0)
+  if ((lockState & 2) == 0 && [v6 isVisible] && (objc_msgSend(v7, "isAnyGestureActivelyRecognized") & 1) == 0)
   {
     v8 = +[SBCoverSheetPresentationManager sharedInstance];
     [v8 setCoverSheetPresented:0 animated:transientOverlayTransaction == 0 options:2 withCompletion:0];
@@ -132,37 +132,37 @@ void __91__SBCoverSheetToAppsWorkspaceTransaction_initWithTransitionRequest_forS
 
 - (id)_setupAnimation
 {
-  v3 = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
-  v4 = [(SBWorkspaceTransaction *)self windowScene];
-  v5 = [v4 homeScreenController];
-  v6 = [v5 homeScreenViewController];
+  _transitionContext = [(SBToAppsWorkspaceTransaction *)self _transitionContext];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  homeScreenController = [windowScene homeScreenController];
+  homeScreenViewController = [homeScreenController homeScreenViewController];
 
   if ([(SBToAppsWorkspaceTransaction *)self isGoingToLauncher]|| [(SBToAppsWorkspaceTransaction *)self isGoingToMainSwitcher])
   {
-    [v6 setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
-    [SBApp updateNativeOrientationWithOrientation:objc_msgSend(v3 logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
+    [homeScreenViewController setHomeScreenAutorotatesEvenWhenIconIsDragging:1];
+    [SBApp updateNativeOrientationWithOrientation:objc_msgSend(_transitionContext logMessage:{"interfaceOrientationOrPreferredOrientation"), @"AppToApp setting up animation to launcher / switcher"}];
   }
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 setAllowIconRotation:0 forReason:v8];
+  [homeScreenViewController setAllowIconRotation:0 forReason:v8];
 
-  v9 = [v4 switcherController];
-  v10 = [v9 switcherCoordinator];
+  switcherController = [windowScene switcherController];
+  switcherCoordinator = [switcherController switcherCoordinator];
 
-  v11 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v12 = [(SBToAppsWorkspaceTransaction *)self ancillaryTransitionRequests];
-  v13 = [v10 animationControllerForTransitionRequest:v11 ancillaryTransitionRequests:v12];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  ancillaryTransitionRequests = [(SBToAppsWorkspaceTransaction *)self ancillaryTransitionRequests];
+  v13 = [switcherCoordinator animationControllerForTransitionRequest:transitionRequest ancillaryTransitionRequests:ancillaryTransitionRequests];
 
-  v14 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v15 = [v13 transitionCoordinator];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  transitionCoordinator = [v13 transitionCoordinator];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke;
   v18[3] = &unk_2783BE428;
-  v19 = v14;
-  v16 = v14;
-  [v15 animateAlongsideTransition:v18 completion:0];
+  v19 = transitionRequest2;
+  v16 = transitionRequest2;
+  [transitionCoordinator animateAlongsideTransition:v18 completion:0];
 
   return v13;
 }
@@ -174,13 +174,13 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
   [v4 updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:*(a1 + 32) animationTransitionContext:v3];
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v6 = [v5 applicationContext];
+  requestCopy = request;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
 
-  if (([v6 waitsForSceneUpdates] & 1) == 0 && objc_msgSend(v6, "animationDisabled") && (objc_msgSend(v4, "applicationContext"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "coverSheetFlyInContext"), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
+  if (([applicationContext waitsForSceneUpdates] & 1) == 0 && objc_msgSend(applicationContext, "animationDisabled") && (objc_msgSend(requestCopy, "applicationContext"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "coverSheetFlyInContext"), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
@@ -191,7 +191,7 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
 
   else
   {
-    v11 = [objc_opt_class() canInterruptTransaction:self forTransitionRequest:v4];
+    v11 = [objc_opt_class() canInterruptTransaction:self forTransitionRequest:requestCopy];
   }
 
   return v11;
@@ -200,17 +200,17 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
 - (void)_dismissOverlaysIfNeeded
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SBCoverSheetToAppsWorkspaceTransaction *)self _dismissOverlaysOptions];
-  v11 = [(SBWorkspaceTransaction *)self windowScene];
-  if ([SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:v3 windowScene:?])
+  _dismissOverlaysOptions = [(SBCoverSheetToAppsWorkspaceTransaction *)self _dismissOverlaysOptions];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  if ([SBDismissOverlaysAnimationController willDismissOverlaysForDismissOptions:_dismissOverlaysOptions windowScene:?])
   {
     dismissOverlaysAnimationController = self->_dismissOverlaysAnimationController;
 
     if (!dismissOverlaysAnimationController)
     {
       v5 = [SBDismissOverlaysAnimationController alloc];
-      v6 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v7 = [(SBDismissOverlaysAnimationController *)v5 initWithTransitionContextProvider:v6 options:v3];
+      transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+      v7 = [(SBDismissOverlaysAnimationController *)v5 initWithTransitionContextProvider:transitionRequest options:_dismissOverlaysOptions];
       v8 = self->_dismissOverlaysAnimationController;
       self->_dismissOverlaysAnimationController = v7;
 
@@ -246,7 +246,7 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
 
 - (void)_autoPIPIfNeeded
 {
-  v8 = [(SBWorkspaceTransaction *)self transitionRequest];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
   if ([SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:"shouldAutoPIPEnteringBackgroundForRequest:reason:" reason:?])
   {
     [(SBAutoPIPWorkspaceTransaction *)self->_autoPIPTransaction setCompletionBlock:0];
@@ -259,11 +259,11 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
     self->_autoPIPTransaction = 0;
 
     v4 = [SBAutoPIPWorkspaceTransaction alloc];
-    v5 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v6 = [(SBAutoPIPWorkspaceTransaction *)v4 initWithTransitionRequest:v5];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    v6 = [(SBAutoPIPWorkspaceTransaction *)v4 initWithTransitionRequest:transitionRequest2];
 
-    v7 = [(SBAutoPIPWorkspaceTransaction *)v6 entityToPIP];
-    if (v7)
+    entityToPIP = [(SBAutoPIPWorkspaceTransaction *)v6 entityToPIP];
+    if (entityToPIP)
     {
       objc_storeStrong(&self->_autoPIPTransaction, v6);
       [(SBCoverSheetToAppsWorkspaceTransaction *)self addChildTransaction:self->_autoPIPTransaction withSchedulingPolicy:0];
@@ -271,11 +271,11 @@ void __57__SBCoverSheetToAppsWorkspaceTransaction__setupAnimation__block_invoke(
   }
 }
 
-- (void)_logForInterruptAttemptReason:(id)a3
+- (void)_logForInterruptAttemptReason:(id)reason
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  reasonCopy = reason;
+  v6 = [[v4 alloc] initWithFormat:reasonCopy arguments:&v7];
 
   if ([(SBCoverSheetToAppsWorkspaceTransaction *)self isAuditHistoryEnabled])
   {

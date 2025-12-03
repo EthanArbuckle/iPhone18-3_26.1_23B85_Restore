@@ -1,14 +1,14 @@
 @interface CKDPFetchArchivedRecordsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNewestFirst:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNewestFirst:(BOOL)first;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPFetchArchivedRecordsRequest
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setHasNewestFirst:(BOOL)a3
+- (void)setHasNewestFirst:(BOOL)first
 {
-  if (a3)
+  if (first)
   {
     v3 = 2;
   }
@@ -93,20 +93,20 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_archiveContinuationToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -114,7 +114,7 @@
   {
     newestFirst = self->_newestFirst;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -122,66 +122,66 @@
   {
     limit = self->_limit;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_assetsToDownload)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
-  v10 = v4;
+  v10 = toCopy;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v4, v5, zoneIdentifier);
-    v4 = v10;
+    objc_msgSend_setZoneIdentifier_(toCopy, v5, zoneIdentifier);
+    toCopy = v10;
   }
 
   archiveContinuationToken = self->_archiveContinuationToken;
   if (archiveContinuationToken)
   {
     objc_msgSend_setArchiveContinuationToken_(v10, v5, archiveContinuationToken);
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 40) = self->_newestFirst;
-    *(v4 + 44) |= 2u;
+    *(toCopy + 40) = self->_newestFirst;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 6) = self->_limit;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 6) = self->_limit;
+    *(toCopy + 44) |= 1u;
   }
 
   assetsToDownload = self->_assetsToDownload;
   if (assetsToDownload)
   {
     objc_msgSend_setAssetsToDownload_(v10, v5, assetsToDownload);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = *(v10 + 32);
   *(v10 + 32) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_archiveContinuationToken, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_archiveContinuationToken, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
@@ -199,24 +199,24 @@
     *(v10 + 44) |= 1u;
   }
 
-  v19 = objc_msgSend_copyWithZone_(self->_assetsToDownload, v17, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_assetsToDownload, v17, zone);
   v20 = *(v10 + 16);
   *(v10 + 16) = v19;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_20;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -226,7 +226,7 @@
   }
 
   archiveContinuationToken = self->_archiveContinuationToken;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (archiveContinuationToken | v11)
   {
     if (!objc_msgSend_isEqual_(archiveContinuationToken, v7, v11))
@@ -235,10 +235,10 @@
     }
   }
 
-  v12 = *(v4 + 44);
+  v12 = *(equalCopy + 44);
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_8;
     }
@@ -248,21 +248,21 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((*(v4 + 44) & 2) == 0)
+  if ((*(equalCopy + 44) & 2) == 0)
   {
     goto LABEL_20;
   }
 
-  v13 = *(v4 + 40);
+  v13 = *(equalCopy + 40);
   if (self->_newestFirst)
   {
-    if ((v4[5] & 1) == 0)
+    if ((equalCopy[5] & 1) == 0)
     {
       goto LABEL_20;
     }
   }
 
-  else if (v4[5])
+  else if (equalCopy[5])
   {
     goto LABEL_20;
   }
@@ -270,19 +270,19 @@ LABEL_20:
 LABEL_8:
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_limit != *(v4 + 6))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_limit != *(equalCopy + 6))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_20;
   }
 
   assetsToDownload = self->_assetsToDownload;
-  v15 = v4[2];
+  v15 = equalCopy[2];
   if (assetsToDownload | v15)
   {
     isEqual = objc_msgSend_isEqual_(assetsToDownload, v7, v15);
@@ -326,12 +326,12 @@ LABEL_3:
   return v7 ^ v4 ^ v10 ^ v11 ^ objc_msgSend_hash(self->_assetsToDownload, v8, v9);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v6 = *(v4 + 4);
-  v11 = v4;
+  v6 = *(fromCopy + 4);
+  v11 = fromCopy;
   if (zoneIdentifier)
   {
     if (!v6)
@@ -339,7 +339,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(zoneIdentifier, v4, v6);
+    objc_msgSend_mergeFrom_(zoneIdentifier, fromCopy, v6);
   }
 
   else
@@ -349,45 +349,45 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_setZoneIdentifier_(self, v4, v6);
+    objc_msgSend_setZoneIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
-    objc_msgSend_setArchiveContinuationToken_(self, v4, v7);
-    v4 = v11;
+    objc_msgSend_setArchiveContinuationToken_(self, fromCopy, v7);
+    fromCopy = v11;
   }
 
-  v8 = *(v4 + 44);
+  v8 = *(fromCopy + 44);
   if ((v8 & 2) != 0)
   {
-    self->_newestFirst = *(v4 + 40);
+    self->_newestFirst = *(fromCopy + 40);
     *&self->_has |= 2u;
-    v8 = *(v4 + 44);
+    v8 = *(fromCopy + 44);
   }
 
   if (v8)
   {
-    self->_limit = *(v4 + 6);
+    self->_limit = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
   assetsToDownload = self->_assetsToDownload;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   if (assetsToDownload)
   {
     if (v10)
     {
-      objc_msgSend_mergeFrom_(assetsToDownload, v4, v10);
+      objc_msgSend_mergeFrom_(assetsToDownload, fromCopy, v10);
     }
   }
 
   else if (v10)
   {
-    objc_msgSend_setAssetsToDownload_(self, v4, v10);
+    objc_msgSend_setAssetsToDownload_(self, fromCopy, v10);
   }
 
   MEMORY[0x2821F96F8]();

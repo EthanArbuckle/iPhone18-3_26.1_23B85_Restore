@@ -1,12 +1,12 @@
 @interface SBPPTBlockOperation
-+ (id)operationWithBlock:(id)a3;
-+ (id)operationWithName:(id)a3 block:(id)a4;
-- (SBPPTBlockOperation)initWithBlock:(id)a3;
-- (SBPPTBlockOperation)initWithName:(id)a3 block:(id)a4;
++ (id)operationWithBlock:(id)block;
++ (id)operationWithName:(id)name block:(id)block;
+- (SBPPTBlockOperation)initWithBlock:(id)block;
+- (SBPPTBlockOperation)initWithName:(id)name block:(id)block;
 - (id)description;
 - (id)timeoutBlock;
 - (void)cancel;
-- (void)cancelAndFailTestWithReason:(id)a3;
+- (void)cancelAndFailTestWithReason:(id)reason;
 - (void)finish;
 - (void)main;
 - (void)start;
@@ -14,26 +14,26 @@
 
 @implementation SBPPTBlockOperation
 
-+ (id)operationWithBlock:(id)a3
++ (id)operationWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBlock:v4];
+  blockCopy = block;
+  v5 = [[self alloc] initWithBlock:blockCopy];
 
   return v5;
 }
 
-+ (id)operationWithName:(id)a3 block:(id)a4
++ (id)operationWithName:(id)name block:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithName:v7 block:v6];
+  blockCopy = block;
+  nameCopy = name;
+  v8 = [[self alloc] initWithName:nameCopy block:blockCopy];
 
   return v8;
 }
 
-- (SBPPTBlockOperation)initWithBlock:(id)a3
+- (SBPPTBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = SBPPTBlockOperation;
   v5 = [(SBPPTOperation *)&v10 init];
@@ -42,7 +42,7 @@
   {
     v5->_timeoutInterval = 15.0;
     v5->_state = 0;
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     block = v6->_block;
     v6->_block = v7;
   }
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (SBPPTBlockOperation)initWithName:(id)a3 block:(id)a4
+- (SBPPTBlockOperation)initWithName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = [(SBPPTBlockOperation *)self initWithBlock:a4];
+  nameCopy = name;
+  v7 = [(SBPPTBlockOperation *)self initWithBlock:block];
   v8 = v7;
   if (v7)
   {
-    [(SBPPTOperation *)v7 setOperationName:v6];
+    [(SBPPTOperation *)v7 setOperationName:nameCopy];
   }
 
   return v8;
@@ -66,14 +66,14 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBPPTBlockOperation *)self state];
+  state = [(SBPPTBlockOperation *)self state];
   v5 = @"Pending";
-  if (v4 == 2)
+  if (state == 2)
   {
     v5 = @"Finished";
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     v6 = @"Executing";
   }
@@ -85,12 +85,12 @@
 
   [v3 appendString:v6 withName:@"state"];
   v7 = [v3 appendFloat:@"timeoutInterval" withName:self->_timeoutInterval];
-  v8 = [(SBPPTOperation *)self operationName];
-  [v3 appendString:v8 withName:@"operationName"];
+  operationName = [(SBPPTOperation *)self operationName];
+  [v3 appendString:operationName withName:@"operationName"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 __CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
@@ -135,14 +135,14 @@ __CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
   [(SBPPTBlockOperation *)self finish];
 }
 
-- (void)cancelAndFailTestWithReason:(id)a3
+- (void)cancelAndFailTestWithReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[SBApplicationTestingManager sharedInstance];
-  v6 = [v5 currentTestName];
+  currentTestName = [v5 currentTestName];
 
-  [*MEMORY[0x277D76620] failedTest:v6 withFailure:v4];
+  [*MEMORY[0x277D76620] failedTest:currentTestName withFailure:reasonCopy];
   v11.receiver = self;
   v11.super_class = SBPPTBlockOperation;
   [(SBPPTBlockOperation *)&v11 cancel];
@@ -150,22 +150,22 @@ __CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
   v7 = SBLogPPT();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SBPPTOperation *)self operationName];
-    v9 = v8;
-    if (v8)
+    operationName = [(SBPPTOperation *)self operationName];
+    v9 = operationName;
+    if (operationName)
     {
-      v10 = v8;
+      selfCopy = operationName;
     }
 
     else
     {
-      v10 = self;
+      selfCopy = self;
     }
 
     *buf = 138412546;
-    v13 = v10;
+    v13 = selfCopy;
     v14 = 2112;
-    v15 = v4;
+    v15 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "PPT Operation '%@' cancelled for reason: %@", buf, 0x16u);
   }
 
@@ -174,7 +174,7 @@ __CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
 
 - (void)start
 {
-  v1 = [a1 operationName];
+  operationName = [self operationName];
   OUTLINED_FUNCTION_7(&dword_21ED4E000, v2, v3, "Skipping '%@' because it's already executing", v4, v5, v6, v7, 2u);
 }
 
@@ -193,8 +193,8 @@ __CFString *__34__SBPPTBlockOperation_description__block_invoke(uint64_t a1)
   v6 = dispatch_time(0, (v4 * 1000000000.0));
   dispatch_after(v6, MEMORY[0x277D85CD0], v5);
   [(SBPPTOperation *)self operationWillStart];
-  v7 = [(SBPPTBlockOperation *)self block];
-  (v7)[2](v7, self);
+  block = [(SBPPTBlockOperation *)self block];
+  (block)[2](block, self);
 }
 
 void __27__SBPPTBlockOperation_main__block_invoke(uint64_t a1)

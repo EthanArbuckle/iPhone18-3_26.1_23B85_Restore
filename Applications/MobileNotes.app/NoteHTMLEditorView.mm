@@ -1,21 +1,21 @@
 @interface NoteHTMLEditorView
-- (BOOL)performActionForDataDetectedInURL:(id)a3;
+- (BOOL)performActionForDataDetectedInURL:(id)l;
 @end
 
 @implementation NoteHTMLEditorView
 
-- (BOOL)performActionForDataDetectedInURL:(id)a3
+- (BOOL)performActionForDataDetectedInURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[DDDetectionController sharedController];
-  v6 = [(NoteHTMLEditorView *)self webView];
-  v7 = [v6 _dataDetectionResults];
-  v8 = [v5 defaultActionForURL:v4 results:v7 context:0];
+  webView = [(NoteHTMLEditorView *)self webView];
+  _dataDetectionResults = [webView _dataDetectionResults];
+  v8 = [v5 defaultActionForURL:lCopy results:_dataDetectionResults context:0];
 
   if (v8)
   {
-    v9 = [(NoteHTMLEditorView *)self webView];
-    [v5 performAction:v8 inView:v9 interactionDelegate:0];
+    webView2 = [(NoteHTMLEditorView *)self webView];
+    [v5 performAction:v8 inView:webView2 interactionDelegate:0];
   }
 
   return v8 != 0;

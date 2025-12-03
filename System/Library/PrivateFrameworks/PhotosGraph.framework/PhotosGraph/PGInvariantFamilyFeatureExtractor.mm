@@ -1,10 +1,10 @@
 @interface PGInvariantFamilyFeatureExtractor
-- (PGInvariantFamilyFeatureExtractor)initWithError:(id *)a3;
+- (PGInvariantFamilyFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGInvariantFamilyFeatureExtractor
 
-- (PGInvariantFamilyFeatureExtractor)initWithError:(id *)a3
+- (PGInvariantFamilyFeatureExtractor)initWithError:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v18[0] = *MEMORY[0x277D275B0];
@@ -16,8 +16,8 @@
   v8 = +[PGGraphPersonNode familyOfPerson];
   v17[1] = v8;
   v9 = +[PGGraphMeNode filter];
-  v10 = [v9 relation];
-  v17[2] = v10;
+  relation = [v9 relation];
+  v17[2] = relation;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
   v12 = [v6 chain:v11];
 

@@ -5,18 +5,18 @@
 - (BOOL)hasRegularHeightRegularWidthTraitCollection;
 - (BOOL)isInDarkContainer;
 - (CGSize)contentSize;
-- (CRLiOSPresetCollectionContext)initWithContextType:(unint64_t)a3 contentSize:(CGSize)a4 editingCoordinator:(id)a5 isSearching:(BOOL)a6 pageIndex:(unint64_t)a7 subpageIndex:(unint64_t)a8 traitCollection:(id)a9;
+- (CRLiOSPresetCollectionContext)initWithContextType:(unint64_t)type contentSize:(CGSize)size editingCoordinator:(id)coordinator isSearching:(BOOL)searching pageIndex:(unint64_t)index subpageIndex:(unint64_t)subpageIndex traitCollection:(id)collection;
 - (id)description;
 @end
 
 @implementation CRLiOSPresetCollectionContext
 
-- (CRLiOSPresetCollectionContext)initWithContextType:(unint64_t)a3 contentSize:(CGSize)a4 editingCoordinator:(id)a5 isSearching:(BOOL)a6 pageIndex:(unint64_t)a7 subpageIndex:(unint64_t)a8 traitCollection:(id)a9
+- (CRLiOSPresetCollectionContext)initWithContextType:(unint64_t)type contentSize:(CGSize)size editingCoordinator:(id)coordinator isSearching:(BOOL)searching pageIndex:(unint64_t)index subpageIndex:(unint64_t)subpageIndex traitCollection:(id)collection
 {
-  height = a4.height;
-  width = a4.width;
-  v18 = a5;
-  v19 = a9;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
   v23.receiver = self;
   v23.super_class = CRLiOSPresetCollectionContext;
   v20 = [(CRLiOSPresetCollectionContext *)&v23 init];
@@ -25,12 +25,12 @@
   {
     v20->_contentSize.width = width;
     v20->_contentSize.height = height;
-    v20->_contextType = a3;
-    objc_storeStrong(&v20->_editingCoordinator, a5);
-    v21->_isSearching = a6;
-    v21->_pageIndex = a7;
-    v21->_subpageIndex = a8;
-    objc_storeStrong(&v21->_traitCollection, a9);
+    v20->_contextType = type;
+    objc_storeStrong(&v20->_editingCoordinator, coordinator);
+    v21->_isSearching = searching;
+    v21->_pageIndex = index;
+    v21->_subpageIndex = subpageIndex;
+    objc_storeStrong(&v21->_traitCollection, collection);
   }
 
   return v21;
@@ -38,11 +38,11 @@
 
 - (BOOL)hasCompactHeightRegularWidthTraitCollection
 {
-  v3 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
-    v4 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 2;
+    traitCollection2 = [(CRLiOSPresetCollectionContext *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == 2;
   }
 
   else
@@ -55,11 +55,11 @@
 
 - (BOOL)hasRegularHeightCompactWidthTraitCollection
 {
-  v3 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  if ([v3 verticalSizeClass] == 2)
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 2)
   {
-    v4 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 1;
+    traitCollection2 = [(CRLiOSPresetCollectionContext *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == 1;
   }
 
   else
@@ -72,11 +72,11 @@
 
 - (BOOL)hasRegularHeightRegularWidthTraitCollection
 {
-  v3 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  if ([v3 verticalSizeClass] == 2)
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 2)
   {
-    v4 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 2;
+    traitCollection2 = [(CRLiOSPresetCollectionContext *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == 2;
   }
 
   else
@@ -89,11 +89,11 @@
 
 - (BOOL)hasCompactHeightCompactWidthTraitCollection
 {
-  v3 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  if ([v3 verticalSizeClass] == 1)
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  if ([traitCollection verticalSizeClass] == 1)
   {
-    v4 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-    v5 = [v4 horizontalSizeClass] == 1;
+    traitCollection2 = [(CRLiOSPresetCollectionContext *)self traitCollection];
+    v5 = [traitCollection2 horizontalSizeClass] == 1;
   }
 
   else
@@ -106,10 +106,10 @@
 
 - (BOOL)isInDarkContainer
 {
-  v2 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  v3 = [v2 crl_isUserInterfaceStyleDark];
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  crl_isUserInterfaceStyleDark = [traitCollection crl_isUserInterfaceStyleDark];
 
-  return v3;
+  return crl_isUserInterfaceStyleDark;
 }
 
 - (id)description
@@ -120,13 +120,13 @@
   v6 = v5;
   [(CRLiOSPresetCollectionContext *)self contentSize];
   v8 = v7;
-  v9 = [(CRLiOSPresetCollectionContext *)self contextType];
-  v10 = [(CRLiOSPresetCollectionContext *)self editingCoordinator];
-  v11 = [(CRLiOSPresetCollectionContext *)self isSearching];
-  v12 = [(CRLiOSPresetCollectionContext *)self pageIndex];
-  v13 = [(CRLiOSPresetCollectionContext *)self subpageIndex];
-  v14 = [(CRLiOSPresetCollectionContext *)self traitCollection];
-  v15 = [NSString stringWithFormat:@"<%@ %p contentSize.width=%f, contentSize.height=%f, contextType=%lu, editingCoordinator=%@, isSearching: %d, pageIndex=%lu, subpageIndex=%lu, traitCollection=%@>", v4, self, v6, v8, v9, v10, v11, v12, v13, v14];;
+  contextType = [(CRLiOSPresetCollectionContext *)self contextType];
+  editingCoordinator = [(CRLiOSPresetCollectionContext *)self editingCoordinator];
+  isSearching = [(CRLiOSPresetCollectionContext *)self isSearching];
+  pageIndex = [(CRLiOSPresetCollectionContext *)self pageIndex];
+  subpageIndex = [(CRLiOSPresetCollectionContext *)self subpageIndex];
+  traitCollection = [(CRLiOSPresetCollectionContext *)self traitCollection];
+  v15 = [NSString stringWithFormat:@"<%@ %p contentSize.width=%f, contentSize.height=%f, contextType=%lu, editingCoordinator=%@, isSearching: %d, pageIndex=%lu, subpageIndex=%lu, traitCollection=%@>", v4, self, v6, v8, contextType, editingCoordinator, isSearching, pageIndex, subpageIndex, traitCollection];;
 
   return v15;
 }

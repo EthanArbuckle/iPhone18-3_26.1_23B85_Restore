@@ -22,34 +22,34 @@
   pipe = self->_pipe;
   if (pipe)
   {
-    v5 = [(CBScalablePipe *)pipe input];
-    if (v5)
+    input = [(CBScalablePipe *)pipe input];
+    if (input)
     {
-      v6 = v5;
-      v7 = [(CBScalablePipe *)self->_pipe output];
+      v6 = input;
+      output = [(CBScalablePipe *)self->_pipe output];
 
-      if (v7)
+      if (output)
       {
-        v8 = [(CBScalablePipe *)self->_pipe input];
-        v9 = [MEMORY[0x277CBEB88] currentRunLoop];
+        input2 = [(CBScalablePipe *)self->_pipe input];
+        currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
         v10 = *MEMORY[0x277CBE640];
-        [v8 removeFromRunLoop:v9 forMode:*MEMORY[0x277CBE640]];
+        [input2 removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
-        v11 = [(CBScalablePipe *)self->_pipe output];
-        v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-        [v11 removeFromRunLoop:v12 forMode:v10];
+        output2 = [(CBScalablePipe *)self->_pipe output];
+        currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+        [output2 removeFromRunLoop:currentRunLoop2 forMode:v10];
 
-        v13 = [(CBScalablePipe *)self->_pipe input];
-        [v13 setDelegate:0];
+        input3 = [(CBScalablePipe *)self->_pipe input];
+        [input3 setDelegate:0];
 
-        v14 = [(CBScalablePipe *)self->_pipe output];
-        [v14 setDelegate:0];
+        output3 = [(CBScalablePipe *)self->_pipe output];
+        [output3 setDelegate:0];
 
-        v15 = [(CBScalablePipe *)self->_pipe input];
-        [v15 close];
+        input4 = [(CBScalablePipe *)self->_pipe input];
+        [input4 close];
 
-        v16 = [(CBScalablePipe *)self->_pipe output];
-        [v16 close];
+        output4 = [(CBScalablePipe *)self->_pipe output];
+        [output4 close];
       }
     }
   }
@@ -84,8 +84,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CBScalablePipe *)self->_pipe name];
-  v5 = v4;
+  name = [(CBScalablePipe *)self->_pipe name];
+  v5 = name;
   v6 = @"YES";
   if (self->_qosOverride)
   {
@@ -102,7 +102,7 @@
     v6 = @"NO";
   }
 
-  v8 = [v3 stringWithFormat:@"PipeInfo: pipe %@, voucher %@, newProtocol %d, vSent %d, vReceived %d, connSent %d, connPDU %d, QOS override %@, socket QOS override %@", v4, self->_voucher, self->_newProtocol, self->_versionInfoSent, self->_versionInfoReceived, self->_pipeDidConnectSent, self->_useConnectStatusPDU, v7, v6];
+  v8 = [v3 stringWithFormat:@"PipeInfo: pipe %@, voucher %@, newProtocol %d, vSent %d, vReceived %d, connSent %d, connPDU %d, QOS override %@, socket QOS override %@", name, self->_voucher, self->_newProtocol, self->_versionInfoSent, self->_versionInfoReceived, self->_pipeDidConnectSent, self->_useConnectStatusPDU, v7, v6];
 
   return v8;
 }

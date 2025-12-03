@@ -3,7 +3,7 @@
 + (id)sharedSQLStorage;
 - (BOOL)mergePreUnlockDBFiles;
 - (PPSCoreStorage)init;
-- (id)storageClassForKey:(id)a3;
+- (id)storageClassForKey:(id)key;
 - (void)setupEntryObjects;
 - (void)setupMetadataStorage;
 - (void)setupStorage;
@@ -16,11 +16,11 @@
 + (id)sharedSQLStorage
 {
   v2 = +[PowerlogCore sharedCore];
-  v3 = [v2 coreStorage];
+  coreStorage = [v2 coreStorage];
 
-  v4 = [v3 sqlStorage];
+  sqlStorage = [coreStorage sqlStorage];
 
-  return v4;
+  return sqlStorage;
 }
 
 - (PPSCoreStorage)init
@@ -29,7 +29,7 @@
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
 LABEL_3:
-    v3 = 0;
+    selfCopy = 0;
     goto LABEL_4;
   }
 
@@ -54,10 +54,10 @@ LABEL_3:
     }
 
     v9 = +[PowerlogCore sharedCore];
-    v10 = [v9 storage];
-    v11 = [v10 storageLocked];
+    storage = [v9 storage];
+    storageLocked = [storage storageLocked];
 
-    if (v11)
+    if (storageLocked)
     {
       goto LABEL_3;
     }
@@ -79,11 +79,11 @@ LABEL_3:
     [(PPSCoreStorage *)v12 setSqlStorage:v14];
 
     v15 = +[PowerlogCore sharedCore];
-    v16 = [v15 storage];
-    v17 = [v16 storageLocked];
+    storage2 = [v15 storage];
+    storageLocked2 = [storage2 storageLocked];
 
     sqlStorage = v12->_sqlStorage;
-    if (v17)
+    if (storageLocked2)
     {
       v28 = &unk_1F540A290;
       v29[0] = sqlStorage;
@@ -116,11 +116,11 @@ LABEL_3:
   }
 
   self = v12;
-  v3 = self;
+  selfCopy = self;
 LABEL_4:
 
   v4 = *MEMORY[0x1E69E9840];
-  return v3;
+  return selfCopy;
 }
 
 - (void)startStorage
@@ -141,17 +141,17 @@ LABEL_4:
 
 - (void)startAllStorage
 {
-  v3 = [(PPSCoreStorage *)self storageMap];
-  v2 = [v3 allValues];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_54];
+  storageMap = [(PPSCoreStorage *)self storageMap];
+  allValues = [storageMap allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_54];
 }
 
 - (void)setupEntryObjects
 {
   v2 = +[PPSCoreUtilities getAllowlist];
-  v3 = [v2 allKeys];
+  allKeys = [v2 allKeys];
 
-  [v3 enumerateObjectsUsingBlock:&__block_literal_global_30_1];
+  [allKeys enumerateObjectsUsingBlock:&__block_literal_global_30_1];
 }
 
 void __35__PPSCoreStorage_setupEntryObjects__block_invoke(uint64_t a1, void *a2)
@@ -188,9 +188,9 @@ void __35__PPSCoreStorage_setupEntryObjects__block_invoke_2(uint64_t a1, void *a
 
 - (void)setupMetadataStorage
 {
-  v3 = [(PPSCoreStorage *)self storageMap];
-  v2 = [v3 allValues];
-  [v2 enumerateObjectsUsingBlock:&__block_literal_global_38_0];
+  storageMap = [(PPSCoreStorage *)self storageMap];
+  allValues = [storageMap allValues];
+  [allValues enumerateObjectsUsingBlock:&__block_literal_global_38_0];
 }
 
 - (void)setupStorage
@@ -214,11 +214,11 @@ void __30__PPSCoreStorage_setupStorage__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)mergePreUnlockDBFiles
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = +[PPSFileUtilities containerPath];
   v5 = [v4 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
   v6 = [v5 stringByAppendingString:@"PreUnlock/"];
-  v7 = [v3 contentsOfDirectoryAtPath:v6 error:0];
+  v7 = [defaultManager contentsOfDirectoryAtPath:v6 error:0];
   v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_49];
 
   v9 = [v8 count];
@@ -232,8 +232,8 @@ void __30__PPSCoreStorage_setupStorage__block_invoke(uint64_t a1, void *a2)
       _os_log_impl(&dword_1D8611000, v10, OS_LOG_TYPE_INFO, "Merging pre-unlock DBs...", buf, 2u);
     }
 
-    v12 = [(PPSCoreStorage *)self sqlStorage];
-    v13 = [v12 EPSQLConnection];
+    sqlStorage = [(PPSCoreStorage *)self sqlStorage];
+    ePSQLConnection = [sqlStorage EPSQLConnection];
 
     *buf = 0;
     v20 = buf;
@@ -244,7 +244,7 @@ void __30__PPSCoreStorage_setupStorage__block_invoke(uint64_t a1, void *a2)
     v16[2] = __39__PPSCoreStorage_mergePreUnlockDBFiles__block_invoke_50;
     v16[3] = &unk_1E851B498;
     v18 = buf;
-    v10 = v13;
+    v10 = ePSQLConnection;
     v17 = v10;
     [v8 enumerateObjectsUsingBlock:v16];
     v14 = v20[24];
@@ -331,9 +331,9 @@ void __39__PPSCoreStorage_mergePreUnlockDBFiles__block_invoke_50(uint64_t a1, vo
   }
 }
 
-- (id)storageClassForKey:(id)a3
+- (id)storageClassForKey:(id)key
 {
-  v4 = [PPSEntryKey storageForEntryKey:a3];
+  v4 = [PPSEntryKey storageForEntryKey:key];
 
   return [(PPSCoreStorage *)self storageClassForType:v4];
 }
@@ -341,11 +341,11 @@ void __39__PPSCoreStorage_mergePreUnlockDBFiles__block_invoke_50(uint64_t a1, vo
 + (id)sharedFlatStorage
 {
   v2 = +[PowerlogCore sharedCore];
-  v3 = [v2 coreStorage];
+  coreStorage = [v2 coreStorage];
 
-  v4 = [v3 flatStorage];
+  flatStorage = [coreStorage flatStorage];
 
-  return v4;
+  return flatStorage;
 }
 
 void __35__PPSCoreStorage_setupEntryObjects__block_invoke_2_cold_1(uint64_t *a1, uint64_t a2, os_log_t log)

@@ -1,23 +1,23 @@
 @interface BRProcessMonitor
-- (BOOL)_isProcessForeground:(id)a3 bundleID:(id)a4;
+- (BOOL)_isProcessForeground:(id)foreground bundleID:(id)d;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BRProcessMonitor
 
-- (BOOL)_isProcessForeground:(id)a3 bundleID:(id)a4
+- (BOOL)_isProcessForeground:(id)foreground bundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  foregroundCopy = foreground;
+  dCopy = d;
   if (_isProcessForeground_bundleID__onceToken != -1)
   {
     [BRProcessMonitor _isProcessForeground:bundleID:];
   }
 
-  v7 = [_isProcessForeground_bundleID__EXTENSION_BUNDLE_IDS containsObject:v6];
-  v8 = [v5 taskState];
-  if (v8 == 4)
+  v7 = [_isProcessForeground_bundleID__EXTENSION_BUNDLE_IDS containsObject:dCopy];
+  taskState = [foregroundCopy taskState];
+  if (taskState == 4)
   {
     v9 = v7;
   }
@@ -27,10 +27,10 @@
     v9 = 0;
   }
 
-  if ((v7 & 1) == 0 && v8 == 4)
+  if ((v7 & 1) == 0 && taskState == 4)
   {
-    v10 = [v5 endowmentNamespaces];
-    v9 = [v10 containsObject:@"com.apple.frontboard.visibility"];
+    endowmentNamespaces = [foregroundCopy endowmentNamespaces];
+    v9 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
   }
 
   return v9;

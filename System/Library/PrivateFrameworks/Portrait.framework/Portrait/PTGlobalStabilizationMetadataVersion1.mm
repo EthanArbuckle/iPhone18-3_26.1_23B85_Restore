@@ -1,9 +1,9 @@
 @interface PTGlobalStabilizationMetadataVersion1
 - ($2825F4736939C4A6D3AD43837233062D)originalVideoDimensions;
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
-- (PTGlobalStabilizationMetadataVersion1)initWithData:(id)a3;
-- (PTGlobalStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
-- (unsigned)sizeOfSerializedObjectWithOptions:(id)a3;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
+- (PTGlobalStabilizationMetadataVersion1)initWithData:(id)data;
+- (PTGlobalStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)version;
+- (unsigned)sizeOfSerializedObjectWithOptions:(id)options;
 @end
 
 @implementation PTGlobalStabilizationMetadataVersion1
@@ -19,11 +19,11 @@
   return self->_originalVideoDimensions;
 }
 
-- (PTGlobalStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTGlobalStabilizationMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v7.receiver = self;
   v7.super_class = PTGlobalStabilizationMetadataVersion1;
-  v3 = [(PTGlobalStabilizationMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTGlobalStabilizationMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&version];
   v4 = v3;
   if (v3)
   {
@@ -33,7 +33,7 @@
   return v4;
 }
 
-- (unsigned)sizeOfSerializedObjectWithOptions:(id)a3
+- (unsigned)sizeOfSerializedObjectWithOptions:(id)options
 {
   if (self->_hasOriginalVideoDimensions)
   {
@@ -46,20 +46,20 @@
   }
 }
 
-- (PTGlobalStabilizationMetadataVersion1)initWithData:(id)a3
+- (PTGlobalStabilizationMetadataVersion1)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = bswap32(v5[3]);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = bswap32(bytes[3]);
   v15.receiver = self;
   v15.super_class = PTGlobalStabilizationMetadataVersion1;
   v7 = [(PTGlobalStabilizationMetadata *)&v15 initWithMajorVersion:1 minorVersion:v6];
-  if (v7 && (v8 = bswap32(*v5), [v4 length] == v8) && (v8 & 7) == 0 && -[PTGlobalStabilizationMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalStabilizationMetadata majorVersion](v7, "majorVersion") == bswap32(v5[2]))
+  if (v7 && (v8 = bswap32(*bytes), [dataCopy length] == v8) && (v8 & 7) == 0 && -[PTGlobalStabilizationMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalStabilizationMetadata majorVersion](v7, "majorVersion") == bswap32(bytes[2]))
   {
     v9 = (v8 + 0x7FFFFFFF0) >> 3;
     v14 = 0;
-    v10 = [PTParameterPairSerialization getUIntParameter:1 fromPairs:v5 + 4 numPairs:v9 didFindValue:&v14 + 1];
-    v11 = [PTParameterPairSerialization getUIntParameter:2 fromPairs:v5 + 4 numPairs:v9 didFindValue:&v14];
+    v10 = [PTParameterPairSerialization getUIntParameter:1 fromPairs:bytes + 4 numPairs:v9 didFindValue:&v14 + 1];
+    v11 = [PTParameterPairSerialization getUIntParameter:2 fromPairs:bytes + 4 numPairs:v9 didFindValue:&v14];
     if (HIBYTE(v14) == 1 && v14 == 1)
     {
       v7->_hasOriginalVideoDimensions = 1;
@@ -78,19 +78,19 @@
   return v12;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] >= v8 && -[PTGlobalStabilizationMetadata majorVersion](self, "majorVersion") == 1)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] >= v8 && -[PTGlobalStabilizationMetadata majorVersion](self, "majorVersion") == 1)
   {
-    v9 = [v6 mutableBytes];
-    *v9 = bswap32([(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7]);
-    v9[1] = 1650553971;
-    v9[2] = bswap32([(PTGlobalStabilizationMetadata *)self majorVersion]);
-    v9[3] = bswap32([(PTGlobalStabilizationMetadata *)self minorVersion]);
-    v10 = v9 + 4;
+    mutableBytes = [dataCopy mutableBytes];
+    *mutableBytes = bswap32([(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+    mutableBytes[1] = 1650553971;
+    mutableBytes[2] = bswap32([(PTGlobalStabilizationMetadata *)self majorVersion]);
+    mutableBytes[3] = bswap32([(PTGlobalStabilizationMetadata *)self minorVersion]);
+    v10 = mutableBytes + 4;
     v14 = v10;
     if (self->_hasOriginalVideoDimensions)
     {
@@ -99,8 +99,8 @@
       v10 = v14;
     }
 
-    v11 = v10 - [v6 bytes];
-    v12 = v11 == [(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
+    v11 = v10 - [dataCopy bytes];
+    v12 = v11 == [(PTGlobalStabilizationMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
   }
 
   else

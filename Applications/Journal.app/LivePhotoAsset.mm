@@ -8,14 +8,14 @@
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC7Journal14LivePhotoAsset_pendingLivePhotoRequest + 4))
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     v4 = *(&self->super.super.isa + OBJC_IVAR____TtC7Journal14LivePhotoAsset_pendingLivePhotoRequest);
     v5 = objc_opt_self();
-    v6 = self;
+    selfCopy2 = self;
     [v5 cancelLivePhotoRequestWithRequestID:v4];
   }
 

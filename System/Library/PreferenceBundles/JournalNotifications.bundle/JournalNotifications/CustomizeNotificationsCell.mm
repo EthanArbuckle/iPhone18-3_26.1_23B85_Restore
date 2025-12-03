@@ -1,22 +1,22 @@
 @interface CustomizeNotificationsCell
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithCoder:(id)a3;
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithCoder:(id)coder;
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation CustomizeNotificationsCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
   sub_A85E8();
 }
 
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_C5484();
     v9 = v8;
@@ -28,13 +28,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_A6CB8(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_A6CB8(style, v7, v9, specifier);
 }
 
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_C5484();
     v6 = sub_C5444();
@@ -47,17 +47,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for CustomizeNotificationsCell();
-  v7 = [(CustomizeNotificationsCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(CustomizeNotificationsCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithCoder:(id)a3
+- (_TtC20JournalNotifications26CustomizeNotificationsCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CustomizeNotificationsCell();
-  v4 = a3;
-  v5 = [(CustomizeNotificationsCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CustomizeNotificationsCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

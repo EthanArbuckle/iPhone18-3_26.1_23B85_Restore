@@ -1,15 +1,15 @@
 @interface WLWelcomeController
 - (WLImportViewController)importViewController;
 - (WLTransferringViewController)transferringViewController;
-- (WLWelcomeController)initWithWelcomeViewController:(id)a3 forceUITestMode:(BOOL)a4 forceUITestModeDownloadError:(BOOL)a5;
-- (void)_completeWithSuccess:(BOOL)a3;
-- (void)_configureWelcomeViewController:(id)a3;
-- (void)_didPairWithSourceDevice:(id)a3;
+- (WLWelcomeController)initWithWelcomeViewController:(id)controller forceUITestMode:(BOOL)mode forceUITestModeDownloadError:(BOOL)error;
+- (void)_completeWithSuccess:(BOOL)success;
+- (void)_configureWelcomeViewController:(id)controller;
+- (void)_didPairWithSourceDevice:(id)device;
 - (void)_importLocalContent;
-- (void)_pushViewController:(id)a3 andRemovePreviousTopmostViewControllerWithCompletion:(id)a4;
-- (void)_showCompleted:(id)a3;
-- (void)_showPairingCode:(id)a3 wifiPSK:(id)a4 ssid:(id)a5;
-- (void)_showPreparation:(id)a3;
+- (void)_pushViewController:(id)controller andRemovePreviousTopmostViewControllerWithCompletion:(id)completion;
+- (void)_showCompleted:(id)completed;
+- (void)_showPairingCode:(id)code wifiPSK:(id)k ssid:(id)ssid;
+- (void)_showPreparation:(id)preparation;
 - (void)_showRetry;
 - (void)_showTransferring;
 - (void)_showWaitingForDataTypeSelection;
@@ -19,62 +19,62 @@
 - (void)_updateTransferringForImport;
 - (void)authenticate;
 - (void)cancel;
-- (void)change:(int64_t)a3 context:(id)a4;
-- (void)complete:(id)a3;
+- (void)change:(int64_t)change context:(id)context;
+- (void)complete:(id)complete;
 - (void)controllerDidGetInterrupted;
-- (void)daemon:(id)a3 didChangeState:(int64_t)a4 withContext:(id)a5;
-- (void)daemon:(id)a3 didImportWithContext:(id)a4;
-- (void)daemon:(id)a3 didReceiveClient:(id)a4 brand:(id)a5 model:(id)a6 name:(id)a7;
-- (void)daemon:(id)a3 didUpdateProgress:(float)a4 remainingTime:(unint64_t)a5 completedOperationCount:(unint64_t)a6 totalOperationCount:(unint64_t)a7;
-- (void)daemonDidAuthenticateClient:(id)a3;
+- (void)daemon:(id)daemon didChangeState:(int64_t)state withContext:(id)context;
+- (void)daemon:(id)daemon didImportWithContext:(id)context;
+- (void)daemon:(id)daemon didReceiveClient:(id)client brand:(id)brand model:(id)model name:(id)name;
+- (void)daemon:(id)daemon didUpdateProgress:(float)progress remainingTime:(unint64_t)time completedOperationCount:(unint64_t)count totalOperationCount:(unint64_t)operationCount;
+- (void)daemonDidAuthenticateClient:(id)client;
 - (void)daemonDidGetInterrupted;
-- (void)daemonDidRejectClient:(id)a3;
-- (void)daemonWillImport:(id)a3;
-- (void)dataMigrator:(id)a3 didFailWithError:(id)a4;
-- (void)dataMigrator:(id)a3 didUpdateMigrationState:(unint64_t)a4;
-- (void)dataMigrator:(id)a3 didUpdateProgressPercentage:(float)a4;
-- (void)dataMigrator:(id)a3 didUpdateRemainingDownloadTime:(double)a4;
-- (void)dataMigratorDidBecomeRestartable:(id)a3;
+- (void)daemonDidRejectClient:(id)client;
+- (void)daemonWillImport:(id)import;
+- (void)dataMigrator:(id)migrator didFailWithError:(id)error;
+- (void)dataMigrator:(id)migrator didUpdateMigrationState:(unint64_t)state;
+- (void)dataMigrator:(id)migrator didUpdateProgressPercentage:(float)percentage;
+- (void)dataMigrator:(id)migrator didUpdateRemainingDownloadTime:(double)time;
+- (void)dataMigratorDidBecomeRestartable:(id)restartable;
 - (void)dataMigratorDidGetInterrupted;
 - (void)dealloc;
 - (void)deleteMessages;
-- (void)didDiscoverCandidate:(id)a3;
-- (void)didStartWiFiAndDeviceDiscoveryWithCode:(id)a3 ssid:(id)a4 passphrase:(id)a5 started:(BOOL)a6;
+- (void)didDiscoverCandidate:(id)candidate;
+- (void)didStartWiFiAndDeviceDiscoveryWithCode:(id)code ssid:(id)ssid passphrase:(id)passphrase started:(BOOL)started;
 - (void)downloadTips;
 - (void)downloadTipsInBackground;
 - (void)import;
-- (void)lookupAppDataContainer:(id)a3;
+- (void)lookupAppDataContainer:(id)container;
 - (void)reject;
 - (void)reset;
 - (void)run;
-- (void)setClient:(id)a3 brand:(id)a4 model:(id)a5 name:(id)a6;
-- (void)showCancellation:(id)a3;
-- (void)showCancellationAlert:(id)a3;
-- (void)showFailure:(id)a3;
+- (void)setClient:(id)client brand:(id)brand model:(id)model name:(id)name;
+- (void)showCancellation:(id)cancellation;
+- (void)showCancellationAlert:(id)alert;
+- (void)showFailure:(id)failure;
 - (void)showImport;
 - (void)showReject;
-- (void)sourceDeviceController:(id)a3 didDiscoverCandidate:(id)a4;
-- (void)sourceDeviceController:(id)a3 didDiscoverDevice:(id)a4;
+- (void)sourceDeviceController:(id)controller didDiscoverCandidate:(id)candidate;
+- (void)sourceDeviceController:(id)controller didDiscoverDevice:(id)device;
 - (void)stop;
 - (void)stopAP;
 - (void)testAMSPurchase;
-- (void)updateProgress:(float)a3 remainingTime:(unint64_t)a4 completedOperationCount:(unint64_t)a5 totalOperationCount:(unint64_t)a6;
+- (void)updateProgress:(float)progress remainingTime:(unint64_t)time completedOperationCount:(unint64_t)count totalOperationCount:(unint64_t)operationCount;
 - (void)wifiAndDeviceDiscoveryDidGetInterrupted;
 @end
 
 @implementation WLWelcomeController
 
-- (WLWelcomeController)initWithWelcomeViewController:(id)a3 forceUITestMode:(BOOL)a4 forceUITestModeDownloadError:(BOOL)a5
+- (WLWelcomeController)initWithWelcomeViewController:(id)controller forceUITestMode:(BOOL)mode forceUITestModeDownloadError:(BOOL)error
 {
-  v8 = a3;
+  controllerCopy = controller;
   v16.receiver = self;
   v16.super_class = WLWelcomeController;
   v9 = [(WLWelcomeController *)&v16 init];
   if (v9)
   {
-    v10 = a4 || [MEMORY[0x277D7B8B0] BOOLForKey:@"UITest"] == 1;
+    v10 = mode || [MEMORY[0x277D7B8B0] BOOLForKey:@"UITest"] == 1;
     v9->_uiTestMode = v10;
-    v11 = a5 || [MEMORY[0x277D7B8B0] BOOLForKey:@"ForceDownloadError"] == 1;
+    v11 = error || [MEMORY[0x277D7B8B0] BOOLForKey:@"ForceDownloadError"] == 1;
     v9->_forceUITestModeDownloadError = v11;
     v9->_migrateUsingRetryPolicies = 0;
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
@@ -82,7 +82,7 @@
     migrationControllerDelegateQueueTargetedAtMainQueue = v9->_migrationControllerDelegateQueueTargetedAtMainQueue;
     v9->_migrationControllerDelegateQueueTargetedAtMainQueue = v13;
 
-    [(WLWelcomeController *)v9 _configureWelcomeViewController:v8];
+    [(WLWelcomeController *)v9 _configureWelcomeViewController:controllerCopy];
     [(WLWelcomeController *)v9 run];
     [(WLWelcomeController *)v9 downloadTips];
   }
@@ -98,16 +98,16 @@
   [(WLWelcomeController *)&v4 dealloc];
 }
 
-- (void)_configureWelcomeViewController:(id)a3
+- (void)_configureWelcomeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__WLWelcomeController__configureWelcomeViewController___block_invoke;
   v5[3] = &unk_279EB8E18;
   objc_copyWeak(&v6, &location);
-  [v4 setContinueHandler:v5];
+  [controllerCopy setContinueHandler:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -143,9 +143,9 @@ void __55__WLWelcomeController__configureWelcomeViewController___block_invoke(ui
       [WLWelcomeController _startPairing];
     }
 
-    v4 = [(BFFNavigationController *)navigationController view];
-    v5 = [v4 window];
-    [v5 setUserInteractionEnabled:0];
+    view = [(BFFNavigationController *)navigationController view];
+    window = [view window];
+    [window setUserInteractionEnabled:0];
 
     v6 = 0x277D7B8C8;
     if (!self->_uiTestMode)
@@ -206,19 +206,19 @@ void __36__WLWelcomeController__startPairing__block_invoke_2(uint64_t a1)
   [WeakRetained didStartWiFiAndDeviceDiscoveryWithCode:*(a1 + 32) ssid:*(a1 + 40) passphrase:*(a1 + 48) started:*(a1 + 64)];
 }
 
-- (void)didStartWiFiAndDeviceDiscoveryWithCode:(id)a3 ssid:(id)a4 passphrase:(id)a5 started:(BOOL)a6
+- (void)didStartWiFiAndDeviceDiscoveryWithCode:(id)code ssid:(id)ssid passphrase:(id)passphrase started:(BOOL)started
 {
-  v6 = a6;
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(BFFNavigationController *)self->_navigationController view];
-  v13 = [v12 window];
-  [v13 setUserInteractionEnabled:1];
+  startedCopy = started;
+  codeCopy = code;
+  ssidCopy = ssid;
+  passphraseCopy = passphrase;
+  view = [(BFFNavigationController *)self->_navigationController view];
+  window = [view window];
+  [window setUserInteractionEnabled:1];
 
-  if (v6)
+  if (startedCopy)
   {
-    [(WLWelcomeController *)self _showPairingCode:v14 wifiPSK:v11 ssid:v10];
+    [(WLWelcomeController *)self _showPairingCode:codeCopy wifiPSK:passphraseCopy ssid:ssidCopy];
   }
 
   else
@@ -227,10 +227,10 @@ void __36__WLWelcomeController__startPairing__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)sourceDeviceController:(id)a3 didDiscoverCandidate:(id)a4
+- (void)sourceDeviceController:(id)controller didDiscoverCandidate:(id)candidate
 {
-  v5 = a4;
-  if (v5)
+  candidateCopy = candidate;
+  if (candidateCopy)
   {
     objc_initWeak(&location, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -238,7 +238,7 @@ void __36__WLWelcomeController__startPairing__block_invoke_2(uint64_t a1)
     block[2] = __67__WLWelcomeController_sourceDeviceController_didDiscoverCandidate___block_invoke;
     block[3] = &unk_279EB8EB8;
     objc_copyWeak(&v8, &location);
-    v7 = v5;
+    v7 = candidateCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v8);
@@ -252,12 +252,12 @@ void __67__WLWelcomeController_sourceDeviceController_didDiscoverCandidate___blo
   [WeakRetained didDiscoverCandidate:*(a1 + 32)];
 }
 
-- (void)didDiscoverCandidate:(id)a3
+- (void)didDiscoverCandidate:(id)candidate
 {
-  v5 = a3;
+  candidateCopy = candidate;
   self->_dismissAfterSourceDevicePairingTimeout = 0;
-  v7 = v5;
-  if ([v5 useMigrationKit])
+  v7 = candidateCopy;
+  if ([candidateCopy useMigrationKit])
   {
     _WLLog();
     [(WLWelcomeController *)self setUseMigrationKitInAP:1, self];
@@ -265,19 +265,19 @@ void __67__WLWelcomeController_sourceDeviceController_didDiscoverCandidate___blo
 
   else
   {
-    objc_storeStrong(&self->_sourceDevice, a3);
+    objc_storeStrong(&self->_sourceDevice, candidate);
     v6 = [[WLWaitingForDataTypeSelectionViewController alloc] initWithWelcomeController:self];
     [(WLWelcomeController *)self _pushViewController:v6 andRemovePreviousTopmostViewControllerWithCompletion:0];
   }
 }
 
-- (void)sourceDeviceController:(id)a3 didDiscoverDevice:(id)a4
+- (void)sourceDeviceController:(id)controller didDiscoverDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   _WLLog();
-  if (v5)
+  if (deviceCopy)
   {
-    if ([v5 useMigrationKit])
+    if ([deviceCopy useMigrationKit])
     {
       objc_initWeak(&location, self);
       block[0] = MEMORY[0x277D85DD0];
@@ -305,7 +305,7 @@ void __67__WLWelcomeController_sourceDeviceController_didDiscoverCandidate___blo
       v7[2] = __64__WLWelcomeController_sourceDeviceController_didDiscoverDevice___block_invoke_3;
       v7[3] = &unk_279EB8F08;
       v7[4] = self;
-      v8 = v5;
+      v8 = deviceCopy;
       dispatch_async(MEMORY[0x277D85CD0], v7);
     }
   }
@@ -350,13 +350,13 @@ uint64_t __64__WLWelcomeController_sourceDeviceController_didDiscoverDevice___bl
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_showPairingCode:(id)a3 wifiPSK:(id)a4 ssid:(id)a5
+- (void)_showPairingCode:(id)code wifiPSK:(id)k ssid:(id)ssid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  kCopy = k;
+  ssidCopy = ssid;
   self->_isPairingCanceled = 0;
-  v11 = [[WLPairingCodeViewController alloc] initWithPairingCode:v8 wifiPSK:v9 ssid:v10 welcomeController:self];
+  v11 = [[WLPairingCodeViewController alloc] initWithPairingCode:codeCopy wifiPSK:kCopy ssid:ssidCopy welcomeController:self];
   [(WLPairingCodeViewController *)v11 setGetLocalImportOptionsHandler:&__block_literal_global];
   objc_initWeak(location, self);
   v25[0] = MEMORY[0x277D85DD0];
@@ -539,8 +539,8 @@ void __53__WLWelcomeController__showPairingCode_wifiPSK_ssid___block_invoke_10(u
 
   if (self->_dismissAfterSourceDevicePairingTimeout)
   {
-    v3 = [MEMORY[0x277D7B8D0] sharedInstance];
-    [v3 deviceDidFailWithTimeout];
+    mEMORY[0x277D7B8D0] = [MEMORY[0x277D7B8D0] sharedInstance];
+    [mEMORY[0x277D7B8D0] deviceDidFailWithTimeout];
 
     [(WLWelcomeController *)self _completeWithSuccess:0];
   }
@@ -570,12 +570,12 @@ void __42__WLWelcomeController__importLocalContent__block_invoke(uint64_t a1, ui
   [v8 importLocalContent];
 }
 
-- (void)_didPairWithSourceDevice:(id)a3
+- (void)_didPairWithSourceDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   if (!self->_isPairingCanceled)
   {
-    objc_storeStrong(&self->_sourceDevice, a3);
+    objc_storeStrong(&self->_sourceDevice, device);
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -594,9 +594,9 @@ void __48__WLWelcomeController__didPairWithSourceDevice___block_invoke(uint64_t 
   [WeakRetained _startMigration];
 }
 
-- (void)_showPreparation:(id)a3
+- (void)_showPreparation:(id)preparation
 {
-  v4 = a3;
+  preparationCopy = preparation;
   if (!self->_isPairingCanceled)
   {
     v5 = [[WLPreparationViewController alloc] initWithWelcomeController:self];
@@ -622,7 +622,7 @@ void __48__WLWelcomeController__didPairWithSourceDevice___block_invoke(uint64_t 
       objc_destroyWeak(&location);
     }
 
-    [(WLWelcomeController *)self _pushViewController:v6 andRemovePreviousTopmostViewControllerWithCompletion:v4];
+    [(WLWelcomeController *)self _pushViewController:v6 andRemovePreviousTopmostViewControllerWithCompletion:preparationCopy];
   }
 }
 
@@ -710,7 +710,7 @@ void __52__WLWelcomeController_dataMigratorDidGetInterrupted__block_invoke(uint6
   }
 }
 
-- (void)dataMigratorDidBecomeRestartable:(id)a3
+- (void)dataMigratorDidBecomeRestartable:(id)restartable
 {
   _WLLog();
   migrationControllerDelegateQueueTargetedAtMainQueue = self->_migrationControllerDelegateQueueTargetedAtMainQueue;
@@ -764,9 +764,9 @@ void __70__WLWelcomeController_dataMigratorDidFinish_withImportErrors_context___
   }
 }
 
-- (void)dataMigrator:(id)a3 didFailWithError:(id)a4
+- (void)dataMigrator:(id)migrator didFailWithError:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   _WLLog();
   migrationControllerDelegateQueueTargetedAtMainQueue = self->_migrationControllerDelegateQueueTargetedAtMainQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -774,8 +774,8 @@ void __70__WLWelcomeController_dataMigratorDidFinish_withImportErrors_context___
   block[2] = __53__WLWelcomeController_dataMigrator_didFailWithError___block_invoke;
   block[3] = &unk_279EB8F08;
   block[4] = self;
-  v9 = v7;
-  v6 = v7;
+  v9 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(migrationControllerDelegateQueueTargetedAtMainQueue, block);
 }
 
@@ -842,11 +842,11 @@ uint64_t __53__WLWelcomeController_dataMigrator_didFailWithError___block_invoke_
   return [v2 _didCompleteMigrationWithSuccess:0 retry:0 context:0];
 }
 
-- (void)dataMigrator:(id)a3 didUpdateMigrationState:(unint64_t)a4
+- (void)dataMigrator:(id)migrator didUpdateMigrationState:(unint64_t)state
 {
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v9 = [v6 numberWithUnsignedInteger:a4];
+  migratorCopy = migrator;
+  v9 = [v6 numberWithUnsignedInteger:state];
   _WLLog();
 
   migrationControllerDelegateQueueTargetedAtMainQueue = self->_migrationControllerDelegateQueueTargetedAtMainQueue;
@@ -855,7 +855,7 @@ uint64_t __53__WLWelcomeController_dataMigrator_didFailWithError___block_invoke_
   block[2] = __60__WLWelcomeController_dataMigrator_didUpdateMigrationState___block_invoke;
   block[3] = &unk_279EB9040;
   block[4] = self;
-  block[5] = a4;
+  block[5] = state;
   dispatch_async(migrationControllerDelegateQueueTargetedAtMainQueue, block);
 }
 
@@ -876,7 +876,7 @@ uint64_t __60__WLWelcomeController_dataMigrator_didUpdateMigrationState___block_
   return result;
 }
 
-- (void)dataMigrator:(id)a3 didUpdateProgressPercentage:(float)a4
+- (void)dataMigrator:(id)migrator didUpdateProgressPercentage:(float)percentage
 {
   _WLLog();
   migrationControllerDelegateQueueTargetedAtMainQueue = self->_migrationControllerDelegateQueueTargetedAtMainQueue;
@@ -885,7 +885,7 @@ uint64_t __60__WLWelcomeController_dataMigrator_didUpdateMigrationState___block_
   block[2] = __64__WLWelcomeController_dataMigrator_didUpdateProgressPercentage___block_invoke;
   block[3] = &unk_279EB9068;
   block[4] = self;
-  v8 = a4;
+  percentageCopy = percentage;
   dispatch_async(migrationControllerDelegateQueueTargetedAtMainQueue, block);
 }
 
@@ -902,7 +902,7 @@ void __64__WLWelcomeController_dataMigrator_didUpdateProgressPercentage___block_
   }
 }
 
-- (void)dataMigrator:(id)a3 didUpdateRemainingDownloadTime:(double)a4
+- (void)dataMigrator:(id)migrator didUpdateRemainingDownloadTime:(double)time
 {
   _WLLog();
   migrationControllerDelegateQueueTargetedAtMainQueue = self->_migrationControllerDelegateQueueTargetedAtMainQueue;
@@ -911,7 +911,7 @@ void __64__WLWelcomeController_dataMigrator_didUpdateProgressPercentage___block_
   block[2] = __67__WLWelcomeController_dataMigrator_didUpdateRemainingDownloadTime___block_invoke;
   block[3] = &unk_279EB9040;
   block[4] = self;
-  *&block[5] = a4;
+  *&block[5] = time;
   dispatch_async(migrationControllerDelegateQueueTargetedAtMainQueue, block);
 }
 
@@ -936,8 +936,8 @@ void __67__WLWelcomeController_dataMigrator_didUpdateRemainingDownloadTime___blo
   {
     v5 = objc_alloc_init(MEMORY[0x277D7B8B8]);
 
-    v6 = [(WLUIClient *)self->_client name];
-    [v5 setName:v6];
+    name = [(WLUIClient *)self->_client name];
+    [v5 setName:name];
 
     v3 = v5;
   }
@@ -989,22 +989,22 @@ void __55__WLWelcomeController__showWaitingForDataTypeSelection__block_invoke_2(
   {
     v5 = objc_alloc_init(MEMORY[0x277D7B8B8]);
 
-    v6 = [(WLUIClient *)self->_client name];
-    [v5 setName:v6];
+    name = [(WLUIClient *)self->_client name];
+    [v5 setName:name];
 
     v3 = v5;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = v7->_hasTips && v7->_useMigrationKit;
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = selfCopy->_hasTips && selfCopy->_useMigrationKit;
+  objc_sync_exit(selfCopy);
 
-  v9 = [[WLTransferringViewController alloc] initWithSourceDevice:v3 welcomeController:v7 showsTips:v8];
+  v9 = [[WLTransferringViewController alloc] initWithSourceDevice:v3 welcomeController:selfCopy showsTips:v8];
   [(WLTransferringViewController *)v9 setShowCancelButton:client != 0];
   if (client)
   {
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, selfCopy);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __40__WLWelcomeController__showTransferring__block_invoke;
@@ -1022,8 +1022,8 @@ void __55__WLWelcomeController__showWaitingForDataTypeSelection__block_invoke_2(
     objc_destroyWeak(&location);
   }
 
-  [(WLWelcomeController *)v7 setTransferringViewController:v9];
-  [(WLWelcomeController *)v7 _pushViewController:v9 andRemovePreviousTopmostViewControllerWithCompletion:0];
+  [(WLWelcomeController *)selfCopy setTransferringViewController:v9];
+  [(WLWelcomeController *)selfCopy _pushViewController:v9 andRemovePreviousTopmostViewControllerWithCompletion:0];
 }
 
 void __40__WLWelcomeController__showTransferring__block_invoke(uint64_t a1, void *a2)
@@ -1042,8 +1042,8 @@ void __40__WLWelcomeController__showTransferring__block_invoke_2(uint64_t a1)
 
 - (void)_updateTransferringForImport
 {
-  v2 = [(BFFNavigationController *)self->_navigationController topViewController];
-  if (!v2)
+  topViewController = [(BFFNavigationController *)self->_navigationController topViewController];
+  if (!topViewController)
   {
     [WLWelcomeController _updateTransferringForImport];
   }
@@ -1054,7 +1054,7 @@ void __40__WLWelcomeController__showTransferring__block_invoke_2(uint64_t a1)
     [WLWelcomeController _updateTransferringForImport];
   }
 
-  [v2 setIsImporting:1];
+  [topViewController setIsImporting:1];
 }
 
 - (void)_showRetry
@@ -1090,13 +1090,13 @@ void __33__WLWelcomeController__showRetry__block_invoke_2(uint64_t a1)
   [WeakRetained run];
 }
 
-- (void)_showCompleted:(id)a3
+- (void)_showCompleted:(id)completed
 {
-  v4 = a3;
+  completedCopy = completed;
   WeakRetained = objc_loadWeakRetained(&self->_importViewController);
   v6 = WeakRetained != 0;
 
-  v7 = [[WLCompletedViewController alloc] initWithWelcomeController:self context:v4 imported:v6];
+  v7 = [[WLCompletedViewController alloc] initWithWelcomeController:self context:completedCopy imported:v6];
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
@@ -1121,12 +1121,12 @@ void __38__WLWelcomeController__showCompleted___block_invoke(uint64_t a1)
   [WeakRetained _completeWithSuccess:1];
 }
 
-- (void)_completeWithSuccess:(BOOL)a3
+- (void)_completeWithSuccess:(BOOL)success
 {
   v6 = [MEMORY[0x277CCABB0] numberWithBool:?];
   _WLLog();
 
-  if (!a3)
+  if (!success)
   {
     v5 = [(BFFNavigationController *)self->_navigationController popViewControllerAnimated:1, self, v6];
   }
@@ -1140,18 +1140,18 @@ void __38__WLWelcomeController__showCompleted___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_pushViewController:(id)a3 andRemovePreviousTopmostViewControllerWithCompletion:(id)a4
+- (void)_pushViewController:(id)controller andRemovePreviousTopmostViewControllerWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   dispatch_suspend(self->_migrationControllerDelegateQueueTargetedAtMainQueue);
-  v8 = [(BFFNavigationController *)self->_navigationController topViewController];
+  topViewController = [(BFFNavigationController *)self->_navigationController topViewController];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v20 = v6;
+    v20 = controllerCopy;
     WeakRetained = objc_loadWeakRetained(&self->_transferringViewController);
     [WeakRetained removeProgressBar];
 
@@ -1159,8 +1159,8 @@ void __38__WLWelcomeController__showCompleted___block_invoke(uint64_t a1)
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [(BFFNavigationController *)self->_navigationController viewControllers];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    viewControllers = [(BFFNavigationController *)self->_navigationController viewControllers];
+    v12 = [viewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1171,7 +1171,7 @@ LABEL_5:
       {
         if (*v25 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(viewControllers);
         }
 
         [v9 addObject:{*(*(&v24 + 1) + 8 * v15), v20}];
@@ -1183,7 +1183,7 @@ LABEL_5:
 
         if (v13 == ++v15)
         {
-          v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v13 = [viewControllers countByEnumeratingWithState:&v24 objects:v28 count:16];
           if (v13)
           {
             goto LABEL_5;
@@ -1194,12 +1194,12 @@ LABEL_5:
       }
     }
 
-    v6 = v20;
+    controllerCopy = v20;
   }
 
   else
   {
-    [v9 addObject:v8];
+    [v9 addObject:topViewController];
   }
 
   navigationController = self->_navigationController;
@@ -1209,10 +1209,10 @@ LABEL_5:
   v21[3] = &unk_279EB9090;
   v21[4] = self;
   v22 = v9;
-  v23 = v7;
-  v17 = v7;
+  v23 = completionCopy;
+  v17 = completionCopy;
   v18 = v9;
-  [(BFFNavigationController *)navigationController pushViewController:v6 completion:v21];
+  [(BFFNavigationController *)navigationController pushViewController:controllerCopy completion:v21];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -1238,12 +1238,12 @@ void __96__WLWelcomeController__pushViewController_andRemovePreviousTopmostViewC
   [v2 deleteMessages];
 }
 
-- (void)lookupAppDataContainer:(id)a3
+- (void)lookupAppDataContainer:(id)container
 {
   v3 = MEMORY[0x277D7B878];
-  v4 = a3;
+  containerCopy = container;
   v5 = objc_alloc_init(v3);
-  [v5 lookupAppDataContainer:v4];
+  [v5 lookupAppDataContainer:containerCopy];
 }
 
 - (void)testAMSPurchase
@@ -1293,9 +1293,9 @@ void __96__WLWelcomeController__pushViewController_andRemovePreviousTopmostViewC
   [(WLSourceDevicesController *)sourceDevicesController stopWiFiAndDeviceDiscoveryWithCompletion:0];
 }
 
-- (void)showCancellationAlert:(id)a3
+- (void)showCancellationAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   objc_initWeak(&location, self);
   v5 = WLLocalizedString();
   v6 = [MEMORY[0x277D75418] modelSpecificLocalizedStringKeyForKey:@"ALERT_CANCELLATION_MESSAGE"];
@@ -1313,14 +1313,14 @@ void __96__WLWelcomeController__pushViewController_andRemovePreviousTopmostViewC
   v17[1] = 3221225472;
   v17[2] = __45__WLWelcomeController_showCancellationAlert___block_invoke_2;
   v17[3] = &unk_279EB90D8;
-  v14 = v4;
+  v14 = alertCopy;
   v18 = v14;
   objc_copyWeak(&v19, &location);
   v15 = [v12 actionWithTitle:v13 style:0 handler:v17];
   [v8 addAction:v15];
 
-  v16 = [(BFFNavigationController *)self->_navigationController topViewController];
-  [v16 presentViewController:v8 animated:1 completion:0];
+  topViewController = [(BFFNavigationController *)self->_navigationController topViewController];
+  [topViewController presentViewController:v8 animated:1 completion:0];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -1360,15 +1360,15 @@ void __45__WLWelcomeController_showCancellationAlert___block_invoke_2(uint64_t a
   [WeakRetained cancel];
 }
 
-- (void)showCancellation:(id)a3
+- (void)showCancellation:(id)cancellation
 {
-  v4 = a3;
+  cancellationCopy = cancellation;
   objc_initWeak(&location, self);
   migrationState = self->_migrationState;
   if (migrationState == 8)
   {
     +[WLRecord startRecording];
-    v6 = [(WLTransferCancellationViewController *)[WLImportCancellationViewController alloc] initWithWelcomeController:self context:v4];
+    v6 = [(WLTransferCancellationViewController *)[WLImportCancellationViewController alloc] initWithWelcomeController:self context:cancellationCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __40__WLWelcomeController_showCancellation___block_invoke_2;
@@ -1381,7 +1381,7 @@ void __45__WLWelcomeController_showCancellationAlert___block_invoke_2(uint64_t a
   else if (migrationState == 7)
   {
     +[WLRecord startRecording];
-    v6 = [[WLTransferCancellationViewController alloc] initWithWelcomeController:self context:v4];
+    v6 = [[WLTransferCancellationViewController alloc] initWithWelcomeController:self context:cancellationCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __40__WLWelcomeController_showCancellation___block_invoke;
@@ -1451,11 +1451,11 @@ void __40__WLWelcomeController_showCancellation___block_invoke_5(uint64_t a1)
   [WeakRetained run];
 }
 
-- (void)showFailure:(id)a3
+- (void)showFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   +[WLRecord startRecording];
-  v5 = [[WLFailureViewController alloc] initWithWelcomeController:self context:v4];
+  v5 = [[WLFailureViewController alloc] initWithWelcomeController:self context:failureCopy];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -1564,25 +1564,25 @@ void __33__WLWelcomeController_showReject__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setClient:(id)a3 brand:(id)a4 model:(id)a5 name:(id)a6
+- (void)setClient:(id)client brand:(id)brand model:(id)model name:(id)name
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  nameCopy = name;
+  modelCopy = model;
+  brandCopy = brand;
+  clientCopy = client;
   _WLLog();
   +[WLRecord startRecording];
-  v14 = [[WLUIClient alloc] initWithHostname:v13 brand:v12 model:v11 name:v10];
+  v14 = [[WLUIClient alloc] initWithHostname:clientCopy brand:brandCopy model:modelCopy name:nameCopy];
 
   [(WLWelcomeController *)self setClient:v14];
 
   [(WLWelcomeController *)self _showWaitingForDataTypeSelection];
 }
 
-- (void)updateProgress:(float)a3 remainingTime:(unint64_t)a4 completedOperationCount:(unint64_t)a5 totalOperationCount:(unint64_t)a6
+- (void)updateProgress:(float)progress remainingTime:(unint64_t)time completedOperationCount:(unint64_t)count totalOperationCount:(unint64_t)operationCount
 {
-  v11 = a3;
-  v20 = a3;
+  progressCopy = progress;
+  progressCopy2 = progress;
   _WLLog();
   migrationState = self->_migrationState;
   if (migrationState == 5)
@@ -1590,26 +1590,26 @@ void __33__WLWelcomeController_showReject__block_invoke_2(uint64_t a1)
     return;
   }
 
-  if (a3 >= 1.0)
+  if (progress >= 1.0)
   {
     self->_migrationState = 5;
     [(WLWelcomeController *)self cancel:self];
-    v13 = self;
+    selfCopy2 = self;
     v14 = 1;
     v15 = 0;
     goto LABEL_7;
   }
 
-  if (a3 < 0.0)
+  if (progress < 0.0)
   {
     self->_migrationState = 10;
     [(WLWelcomeController *)self cancel:self];
-    v13 = self;
+    selfCopy2 = self;
     v14 = 0;
     v15 = 1;
 LABEL_7:
 
-    [(WLWelcomeController *)v13 _didCompleteMigrationWithSuccess:v14 retry:v15 context:0];
+    [(WLWelcomeController *)selfCopy2 _didCompleteMigrationWithSuccess:v14 retry:v15 context:0];
     return;
   }
 
@@ -1618,31 +1618,31 @@ LABEL_7:
     self->_migrationState = 3;
     [(WLWelcomeController *)self _showTransferring:self];
     WeakRetained = objc_loadWeakRetained(&self->_transferringViewController);
-    [WeakRetained setProgress:v11];
+    [WeakRetained setProgress:progressCopy];
 
-    if (a3 <= 0.0 || !a4)
+    if (progress <= 0.0 || !time)
     {
       return;
     }
 
     v24 = objc_loadWeakRetained(&self->_transferringViewController);
-    [v24 setRemainingDownloadTime:a4];
+    [v24 setRemainingDownloadTime:time];
     goto LABEL_19;
   }
 
   v16 = objc_loadWeakRetained(&self->_transferringViewController);
-  [v16 setProgress:{v11, self, *&v20, a4, a5, a6}];
+  [v16 setProgress:{progressCopy, self, *&progressCopy2, time, count, operationCount}];
 
-  if (a3 > 0.0 && a4)
+  if (progress > 0.0 && time)
   {
     v17 = objc_loadWeakRetained(&self->_transferringViewController);
-    [v17 setRemainingDownloadTime:a4];
+    [v17 setRemainingDownloadTime:time];
   }
 
-  if (a5)
+  if (count)
   {
     v24 = objc_loadWeakRetained(&self->_transferringViewController);
-    [v24 setCompletedOperationCount:a5 totalOperationCount:a6];
+    [v24 setCompletedOperationCount:count totalOperationCount:operationCount];
 LABEL_19:
   }
 }
@@ -1677,35 +1677,35 @@ LABEL_19:
   [(WLWelcomeController *)self showImport];
 }
 
-- (void)complete:(id)a3
+- (void)complete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   _WLLog();
   if (self->_migrationState != 5)
   {
     self->_migrationState = 5;
     [(WLWelcomeController *)self cancel:self];
-    [(WLWelcomeController *)self _didCompleteMigrationWithSuccess:1 retry:0 context:v4];
+    [(WLWelcomeController *)self _didCompleteMigrationWithSuccess:1 retry:0 context:completeCopy];
   }
 }
 
-- (void)change:(int64_t)a3 context:(id)a4
+- (void)change:(int64_t)change context:(id)context
 {
-  v6 = a4;
-  if (a3 == 3)
+  contextCopy = context;
+  if (change == 3)
   {
     if (self->_migrationState - 3 >= 2)
     {
 
-      v6 = 0;
+      contextCopy = 0;
     }
 
-    v9 = v6;
+    v9 = contextCopy;
     v8 = 10;
     goto LABEL_10;
   }
 
-  if (a3 != 2)
+  if (change != 2)
   {
     goto LABEL_13;
   }
@@ -1715,7 +1715,7 @@ LABEL_19:
   {
     if (migrationState == 4)
     {
-      v9 = v6;
+      v9 = contextCopy;
       v8 = 8;
     }
 
@@ -1729,7 +1729,7 @@ LABEL_19:
         goto LABEL_11;
       }
 
-      v9 = v6;
+      v9 = contextCopy;
       v8 = 7;
     }
 
@@ -1737,12 +1737,12 @@ LABEL_10:
     self->_migrationState = v8;
 LABEL_11:
     [(WLWelcomeController *)self cancel];
-    v6 = v9;
+    contextCopy = v9;
   }
 
-  v10 = v6;
-  [(WLWelcomeController *)self _didCompleteMigrationWithSuccess:0 retry:1 context:v6];
-  v6 = v10;
+  v10 = contextCopy;
+  [(WLWelcomeController *)self _didCompleteMigrationWithSuccess:0 retry:1 context:contextCopy];
+  contextCopy = v10;
 LABEL_13:
 }
 
@@ -1762,7 +1762,7 @@ LABEL_13:
   }
 }
 
-- (void)daemonDidAuthenticateClient:(id)a3
+- (void)daemonDidAuthenticateClient:(id)client
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -1781,7 +1781,7 @@ void __51__WLWelcomeController_daemonDidAuthenticateClient___block_invoke(uint64
   [WeakRetained authenticate];
 }
 
-- (void)daemonDidRejectClient:(id)a3
+- (void)daemonDidRejectClient:(id)client
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -1800,26 +1800,26 @@ void __45__WLWelcomeController_daemonDidRejectClient___block_invoke(uint64_t a1)
   [WeakRetained reject];
 }
 
-- (void)daemon:(id)a3 didReceiveClient:(id)a4 brand:(id)a5 model:(id)a6 name:(id)a7
+- (void)daemon:(id)daemon didReceiveClient:(id)client brand:(id)brand model:(id)model name:(id)name
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  clientCopy = client;
+  brandCopy = brand;
+  modelCopy = model;
+  nameCopy = name;
   objc_initWeak(&location, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __64__WLWelcomeController_daemon_didReceiveClient_brand_model_name___block_invoke;
   v19[3] = &unk_279EB9100;
   objc_copyWeak(&v24, &location);
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v20 = clientCopy;
+  v21 = brandCopy;
+  v22 = modelCopy;
+  v23 = nameCopy;
+  v15 = nameCopy;
+  v16 = modelCopy;
+  v17 = brandCopy;
+  v18 = clientCopy;
   dispatch_async(MEMORY[0x277D85CD0], v19);
 
   objc_destroyWeak(&v24);
@@ -1832,7 +1832,7 @@ void __64__WLWelcomeController_daemon_didReceiveClient_brand_model_name___block_
   [WeakRetained setClient:*(a1 + 32) brand:*(a1 + 40) model:*(a1 + 48) name:*(a1 + 56)];
 }
 
-- (void)daemon:(id)a3 didUpdateProgress:(float)a4 remainingTime:(unint64_t)a5 completedOperationCount:(unint64_t)a6 totalOperationCount:(unint64_t)a7
+- (void)daemon:(id)daemon didUpdateProgress:(float)progress remainingTime:(unint64_t)time completedOperationCount:(unint64_t)count totalOperationCount:(unint64_t)operationCount
 {
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -1840,10 +1840,10 @@ void __64__WLWelcomeController_daemon_didReceiveClient_brand_model_name___block_
   v11[2] = __106__WLWelcomeController_daemon_didUpdateProgress_remainingTime_completedOperationCount_totalOperationCount___block_invoke;
   v11[3] = &unk_279EB9128;
   objc_copyWeak(v12, &location);
-  v13 = a4;
-  v12[1] = a5;
-  v12[2] = a6;
-  v12[3] = a7;
+  progressCopy = progress;
+  v12[1] = time;
+  v12[2] = count;
+  v12[3] = operationCount;
   dispatch_async(MEMORY[0x277D85CD0], v11);
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -1856,7 +1856,7 @@ void __106__WLWelcomeController_daemon_didUpdateProgress_remainingTime_completed
   [WeakRetained updateProgress:*(a1 + 40) remainingTime:*(a1 + 48) completedOperationCount:*(a1 + 56) totalOperationCount:v2];
 }
 
-- (void)daemonWillImport:(id)a3
+- (void)daemonWillImport:(id)import
 {
   objc_initWeak(&location, self);
   v3[0] = MEMORY[0x277D85DD0];
@@ -1875,17 +1875,17 @@ void __40__WLWelcomeController_daemonWillImport___block_invoke(uint64_t a1)
   [WeakRetained import];
 }
 
-- (void)daemon:(id)a3 didImportWithContext:(id)a4
+- (void)daemon:(id)daemon didImportWithContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__WLWelcomeController_daemon_didImportWithContext___block_invoke;
   block[3] = &unk_279EB8EB8;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   objc_destroyWeak(&v9);
@@ -1898,18 +1898,18 @@ void __51__WLWelcomeController_daemon_didImportWithContext___block_invoke(uint64
   [WeakRetained complete:*(a1 + 32)];
 }
 
-- (void)daemon:(id)a3 didChangeState:(int64_t)a4 withContext:(id)a5
+- (void)daemon:(id)daemon didChangeState:(int64_t)state withContext:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__WLWelcomeController_daemon_didChangeState_withContext___block_invoke;
   v9[3] = &unk_279EB9150;
   objc_copyWeak(v11, &location);
-  v11[1] = a4;
-  v10 = v7;
-  v8 = v7;
+  v11[1] = state;
+  v10 = contextCopy;
+  v8 = contextCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 
   objc_destroyWeak(v11);
@@ -1930,8 +1930,8 @@ void __57__WLWelcomeController_daemon_didChangeState_withContext___block_invoke(
   if (!v4 && v5 != 0)
   {
     [(WLWelcomeController *)self change:3 context:0];
-    v7 = [MEMORY[0x277D7B8D0] sharedInstance];
-    [v7 daemonDidGetInterrupted];
+    mEMORY[0x277D7B8D0] = [MEMORY[0x277D7B8D0] sharedInstance];
+    [mEMORY[0x277D7B8D0] daemonDidGetInterrupted];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface PXFlexMusicPathfinder
 - (PXFlexMusicPathfinder)init;
-- (PXFlexMusicPathfinder)initWithSong:(id)a3;
+- (PXFlexMusicPathfinder)initWithSong:(id)song;
 - (void)_loadRenditionsIfNeeded;
-- (void)findPathFromCurrentTime:(id *)a3 inRendition:(id)a4 withTargetRemainder:(id *)a5 tolerance:(id *)a6 result:(id)a7;
+- (void)findPathFromCurrentTime:(id *)time inRendition:(id)rendition withTargetRemainder:(id *)remainder tolerance:(id *)tolerance result:(id)result;
 @end
 
 @implementation PXFlexMusicPathfinder
@@ -13,18 +13,18 @@
   {
     v18 = v2;
     v19 = v3;
-    v5 = [(PXFlexMusicPathfinder *)self song];
-    v6 = [v5 idealDurations];
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    song = [(PXFlexMusicPathfinder *)self song];
+    idealDurations = [song idealDurations];
+    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(idealDurations, "count")}];
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = __48__PXFlexMusicPathfinder__loadRenditionsIfNeeded__block_invoke;
     v15 = &unk_1E773C328;
-    v16 = v5;
+    v16 = song;
     v17 = v7;
     v8 = v7;
-    v9 = v5;
-    [v6 enumerateObjectsUsingBlock:&v12];
+    v9 = song;
+    [idealDurations enumerateObjectsUsingBlock:&v12];
     v10 = [v8 copy];
     renditions = self->_renditions;
     self->_renditions = v10;
@@ -47,36 +47,36 @@ void __48__PXFlexMusicPathfinder__loadRenditionsIfNeeded__block_invoke(uint64_t 
   [*(a1 + 40) addObject:v4];
 }
 
-- (void)findPathFromCurrentTime:(id *)a3 inRendition:(id)a4 withTargetRemainder:(id *)a5 tolerance:(id *)a6 result:(id)a7
+- (void)findPathFromCurrentTime:(id *)time inRendition:(id)rendition withTargetRemainder:(id *)remainder tolerance:(id *)tolerance result:(id)result
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a7;
+  renditionCopy = rendition;
+  resultCopy = result;
   [(PXFlexMusicPathfinder *)self _loadRenditionsIfNeeded];
-  v12 = [(PXFlexMusicPathfinder *)self song];
-  v13 = [v10 trackA];
-  v14 = [v10 trackB];
+  song = [(PXFlexMusicPathfinder *)self song];
+  trackA = [renditionCopy trackA];
+  trackB = [renditionCopy trackB];
   v15 = objc_alloc(MEMORY[0x1E695DF70]);
-  v16 = [v13 clips];
-  v17 = [v16 count];
-  v18 = [v14 clips];
-  v19 = [v15 initWithCapacity:{objc_msgSend(v18, "count") + v17}];
+  clips = [trackA clips];
+  v17 = [clips count];
+  clips2 = [trackB clips];
+  v19 = [v15 initWithCapacity:{objc_msgSend(clips2, "count") + v17}];
 
-  v20 = [v13 clips];
-  [v19 addObjectsFromArray:v20];
+  clips3 = [trackA clips];
+  [v19 addObjectsFromArray:clips3];
 
-  v21 = [v14 clips];
-  [v19 addObjectsFromArray:v21];
+  clips4 = [trackB clips];
+  [v19 addObjectsFromArray:clips4];
 
   v22 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"position" ascending:1];
   v28[0] = v22;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   [v19 sortUsingDescriptors:v23];
 
-  v24 = [v12 sampleRate];
+  sampleRate = [song sampleRate];
   memset(&v26, 0, sizeof(v26));
-  time = *a3;
-  CMTimeConvertScale(&v26, &time, v24, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
+  time = *time;
+  CMTimeConvertScale(&v26, &time, sampleRate, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
   [v19 count];
   v25 = v19;
   PXLastIndexInSortedRangePassingTest();
@@ -245,22 +245,22 @@ void __98__PXFlexMusicPathfinder_findPathFromCurrentTime_inRendition_withTargetR
 
 - (PXFlexMusicPathfinder)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFlexMusicPathfinder.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXFlexMusicPathfinder init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFlexMusicPathfinder.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXFlexMusicPathfinder init]"}];
 
   abort();
 }
 
-- (PXFlexMusicPathfinder)initWithSong:(id)a3
+- (PXFlexMusicPathfinder)initWithSong:(id)song
 {
-  v5 = a3;
+  songCopy = song;
   v9.receiver = self;
   v9.super_class = PXFlexMusicPathfinder;
   v6 = [(PXFlexMusicPathfinder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_song, a3);
+    objc_storeStrong(&v6->_song, song);
   }
 
   return v7;

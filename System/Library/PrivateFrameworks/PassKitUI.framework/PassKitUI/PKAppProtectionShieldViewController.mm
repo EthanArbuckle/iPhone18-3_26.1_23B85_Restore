@@ -1,13 +1,13 @@
 @interface PKAppProtectionShieldViewController
-+ (id)createShieldViewControllerWithConfiguration:(id)a3;
++ (id)createShieldViewControllerWithConfiguration:(id)configuration;
 @end
 
 @implementation PKAppProtectionShieldViewController
 
-+ (id)createShieldViewControllerWithConfiguration:(id)a3
++ (id)createShieldViewControllerWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [[_PKAppProtectionShieldViewController alloc] initWithConfiguration:v3];
+  configurationCopy = configuration;
+  v4 = [[_PKAppProtectionShieldViewController alloc] initWithConfiguration:configurationCopy];
 
   return v4;
 }

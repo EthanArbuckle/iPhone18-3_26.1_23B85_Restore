@@ -1,6 +1,6 @@
 @interface WFMultilineBackgroundFadingButton
 - (CGSize)intrinsicContentSize;
-- (WFMultilineBackgroundFadingButton)initWithFrame:(CGRect)a3;
+- (WFMultilineBackgroundFadingButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -14,8 +14,8 @@
   v6 = v4 - v5;
   [(WFMultilineBackgroundFadingButton *)self contentEdgeInsets];
   v8 = v6 - v7;
-  v9 = [(WFMultilineBackgroundFadingButton *)self titleLabel];
-  [v9 setPreferredMaxLayoutWidth:v8];
+  titleLabel = [(WFMultilineBackgroundFadingButton *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:v8];
 
   v10.receiver = self;
   v10.super_class = WFMultilineBackgroundFadingButton;
@@ -24,8 +24,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(WFMultilineBackgroundFadingButton *)self titleLabel];
-  [v3 intrinsicContentSize];
+  titleLabel = [(WFMultilineBackgroundFadingButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -38,22 +38,22 @@
   return result;
 }
 
-- (WFMultilineBackgroundFadingButton)initWithFrame:(CGRect)a3
+- (WFMultilineBackgroundFadingButton)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = WFMultilineBackgroundFadingButton;
-  v3 = [(WFMultilineBackgroundFadingButton *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFMultilineBackgroundFadingButton *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(WFMultilineBackgroundFadingButton *)v3 titleLabel];
-    [v5 setLineBreakMode:0];
+    titleLabel = [(WFMultilineBackgroundFadingButton *)v3 titleLabel];
+    [titleLabel setLineBreakMode:0];
 
-    v6 = [(WFMultilineBackgroundFadingButton *)v4 titleLabel];
-    [v6 setTextAlignment:1];
+    titleLabel2 = [(WFMultilineBackgroundFadingButton *)v4 titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
-    v7 = [(WFMultilineBackgroundFadingButton *)v4 titleLabel];
-    [v7 setNumberOfLines:0];
+    titleLabel3 = [(WFMultilineBackgroundFadingButton *)v4 titleLabel];
+    [titleLabel3 setNumberOfLines:0];
 
     v8 = v4;
   }

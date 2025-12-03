@@ -7,9 +7,9 @@
 + (id)resetWidgetBudgets
 {
   v2 = +[_DASScheduler sharedScheduler];
-  v3 = [v2 _resetWidgetBudgets];
+  _resetWidgetBudgets = [v2 _resetWidgetBudgets];
 
-  return v3;
+  return _resetWidgetBudgets;
 }
 
 @end

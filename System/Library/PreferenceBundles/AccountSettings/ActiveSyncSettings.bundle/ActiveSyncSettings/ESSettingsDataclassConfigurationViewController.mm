@@ -6,9 +6,9 @@
 - (id)accountFromSpecifier;
 - (id)otherSpecifiers;
 - (id)specifiers;
-- (void)_accountsChanged:(id)a3;
+- (void)_accountsChanged:(id)changed;
 - (void)_listenForAccountsChangedNotifications;
-- (void)cancelButtonClicked:(id)a3;
+- (void)cancelButtonClicked:(id)clicked;
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadAccount;
@@ -29,33 +29,33 @@
 
 - (id)accountDescriptionForFirstTimeSetup
 {
-  v2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  v3 = [v2 accountDescription];
+  daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  accountDescription = [daAccount accountDescription];
 
-  return v3;
+  return accountDescription;
 }
 
 - (id)_navTitle
 {
   if ([(ESSettingsDataclassConfigurationViewController *)self isFirstTimeSetup])
   {
-    v3 = [(ESSettingsDataclassConfigurationViewController *)self accountDescriptionForFirstTimeSetup];
+    accountDescriptionForFirstTimeSetup = [(ESSettingsDataclassConfigurationViewController *)self accountDescriptionForFirstTimeSetup];
   }
 
   else
   {
-    v4 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-    v3 = [v4 accountDescription];
+    daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+    accountDescriptionForFirstTimeSetup = [daAccount accountDescription];
   }
 
-  return v3;
+  return accountDescriptionForFirstTimeSetup;
 }
 
 - (void)loadView
 {
-  v3 = [(ESSettingsDataclassConfigurationViewController *)self navigationItem];
-  v4 = [(ESSettingsDataclassConfigurationViewController *)self _navTitle];
-  [v3 setTitle:v4];
+  navigationItem = [(ESSettingsDataclassConfigurationViewController *)self navigationItem];
+  _navTitle = [(ESSettingsDataclassConfigurationViewController *)self _navTitle];
+  [navigationItem setTitle:_navTitle];
 
   v5.receiver = self;
   v5.super_class = ESSettingsDataclassConfigurationViewController;
@@ -67,9 +67,9 @@
   v5.receiver = self;
   v5.super_class = ESSettingsDataclassConfigurationViewController;
   [(ESSettingsDataclassConfigurationViewController *)&v5 viewDidLoad];
-  v3 = [(ESSettingsDataclassConfigurationViewController *)self navigationItem];
-  v4 = [(ESSettingsDataclassConfigurationViewController *)self _navTitle];
-  [v3 setTitle:v4];
+  navigationItem = [(ESSettingsDataclassConfigurationViewController *)self navigationItem];
+  _navTitle = [(ESSettingsDataclassConfigurationViewController *)self _navTitle];
+  [navigationItem setTitle:_navTitle];
 }
 
 - (void)_listenForAccountsChangedNotifications
@@ -87,9 +87,9 @@
   daAccount = self->_daAccount;
   if (!daAccount)
   {
-    v4 = [(ESSettingsDataclassConfigurationViewController *)self accountFromSpecifier];
+    accountFromSpecifier = [(ESSettingsDataclassConfigurationViewController *)self accountFromSpecifier];
     v5 = self->_daAccount;
-    self->_daAccount = v4;
+    self->_daAccount = accountFromSpecifier;
 
     daAccount = self->_daAccount;
   }
@@ -99,19 +99,19 @@
 
 - (void)reloadAccount
 {
-  v3 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  [v3 reload];
+  daAccount = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  [daAccount reload];
 
-  v5 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
-  v4 = [v5 backingAccountInfo];
-  [v4 setAuthenticated:1];
+  daAccount2 = [(ESSettingsDataclassConfigurationViewController *)self daAccount];
+  backingAccountInfo = [daAccount2 backingAccountInfo];
+  [backingAccountInfo setAuthenticated:1];
 }
 
 - (id)accountFromSpecifier
 {
-  v2 = [(ESSettingsDataclassConfigurationViewController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:ACUIAccountKey];
+  specifier = [(ESSettingsDataclassConfigurationViewController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:ACUIAccountKey];
 
   if (v4)
   {
@@ -138,7 +138,7 @@
   return v11;
 }
 
-- (void)_accountsChanged:(id)a3
+- (void)_accountsChanged:(id)changed
 {
   [(ESSettingsDataclassConfigurationViewController *)self reloadAccount];
 
@@ -150,23 +150,23 @@
   [(ESSettingsDataclassConfigurationViewController *)self _listenForAccountsChangedNotifications];
   v5.receiver = self;
   v5.super_class = ESSettingsDataclassConfigurationViewController;
-  v3 = [(ESSettingsDataclassConfigurationViewController *)&v5 specifiers];
+  specifiers = [(ESSettingsDataclassConfigurationViewController *)&v5 specifiers];
 
-  return v3;
+  return specifiers;
 }
 
 - (id)otherSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [(ESSettingsDataclassConfigurationViewController *)self account];
-  v5 = [v4 mcBackingProfile];
+  account = [(ESSettingsDataclassConfigurationViewController *)self account];
+  mcBackingProfile = [account mcBackingProfile];
 
-  if (v5)
+  if (mcBackingProfile)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"PROFILE_ACCOUNT_DESCRIPTION" value:&stru_30C98 table:@"Localizable"];
-    v8 = [v5 friendlyName];
-    v9 = [NSString stringWithFormat:v7, v8];
+    friendlyName = [mcBackingProfile friendlyName];
+    v9 = [NSString stringWithFormat:v7, friendlyName];
 
     [(ESSettingsDataclassConfigurationViewController *)self setShouldShowDeleteAccountButton:0];
     v10 = +[PSSpecifier emptyGroupSpecifier];
@@ -187,12 +187,12 @@
   return 0;
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
-  v3 = [(ESSettingsDataclassConfigurationViewController *)self rootController];
+  rootController = [(ESSettingsDataclassConfigurationViewController *)self rootController];
   if (objc_opt_respondsToSelector())
   {
-    [v3 dismiss];
+    [rootController dismiss];
   }
 }
 

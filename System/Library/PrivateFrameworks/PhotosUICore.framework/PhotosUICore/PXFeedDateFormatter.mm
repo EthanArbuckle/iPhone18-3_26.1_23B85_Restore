@@ -1,11 +1,11 @@
 @interface PXFeedDateFormatter
 + (id)defaultFeedSectionDateFormatter;
-- (BOOL)_canSubstitueDateStringsWithLocale:(id)a3;
-- (BOOL)isDateInFuture:(id)a3;
-- (BOOL)isDateInToday:(id)a3;
-- (PXFeedDateFormatter)initWithLocale:(id)a3 ignoreWhitelist:(BOOL)a4;
-- (id)_completeRelativeStringForDate:(id)a3 dateFormatter:(id)a4;
-- (id)stringFromDate:(id)a3;
+- (BOOL)_canSubstitueDateStringsWithLocale:(id)locale;
+- (BOOL)isDateInFuture:(id)future;
+- (BOOL)isDateInToday:(id)today;
+- (PXFeedDateFormatter)initWithLocale:(id)locale ignoreWhitelist:(BOOL)whitelist;
+- (id)_completeRelativeStringForDate:(id)date dateFormatter:(id)formatter;
+- (id)stringFromDate:(id)date;
 - (void)_invalidate;
 - (void)_prepare;
 - (void)dealloc;
@@ -13,9 +13,9 @@
 
 @implementation PXFeedDateFormatter
 
-- (BOOL)_canSubstitueDateStringsWithLocale:(id)a3
+- (BOOL)_canSubstitueDateStringsWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   if (self->_ignoreWhitelist)
   {
     goto LABEL_5;
@@ -27,8 +27,8 @@
   }
 
   v5 = _canSubstitueDateStringsWithLocale__whitelistedLanguageCodes;
-  v6 = [v4 languageCode];
-  LOBYTE(v5) = [v5 containsObject:v6];
+  languageCode = [localeCopy languageCode];
+  LOBYTE(v5) = [v5 containsObject:languageCode];
 
   if (v5)
   {
@@ -39,8 +39,8 @@ LABEL_5:
   else
   {
     v8 = _canSubstitueDateStringsWithLocale__whitelistedLocaleIdentifiers;
-    v9 = [v4 localeIdentifier];
-    v7 = [v8 containsObject:v9];
+    localeIdentifier = [localeCopy localeIdentifier];
+    v7 = [v8 containsObject:localeIdentifier];
   }
 
   return v7;
@@ -57,30 +57,30 @@ void __58__PXFeedDateFormatter__canSubstitueDateStringsWithLocale___block_invoke
   _canSubstitueDateStringsWithLocale__whitelistedLocaleIdentifiers = v2;
 }
 
-- (id)_completeRelativeStringForDate:(id)a3 dateFormatter:(id)a4
+- (id)_completeRelativeStringForDate:(id)date dateFormatter:(id)formatter
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 stringFromDate:v6];
-  v9 = [v7 locale];
+  dateCopy = date;
+  formatterCopy = formatter;
+  v8 = [formatterCopy stringFromDate:dateCopy];
+  locale = [formatterCopy locale];
 
   v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  [v10 setLocale:v9];
+  [v10 setLocale:locale];
   [v10 setDateStyle:4];
   v11 = [v10 copy];
   [v11 setDoesRelativeDateFormatting:1];
-  v12 = [v11 stringFromDate:v6];
-  v13 = [v10 stringFromDate:v6];
+  v12 = [v11 stringFromDate:dateCopy];
+  v13 = [v10 stringFromDate:dateCopy];
   if (([v12 isEqualToString:v13] & 1) == 0)
   {
-    if ([(PXFeedDateFormatter *)self _canSubstitueDateStringsWithLocale:v9])
+    if ([(PXFeedDateFormatter *)self _canSubstitueDateStringsWithLocale:locale])
     {
       v14 = objc_alloc_init(MEMORY[0x1E696AB78]);
-      [v14 setLocale:v9];
-      v15 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"EEEE" options:0 locale:v9];
+      [v14 setLocale:locale];
+      v15 = [MEMORY[0x1E696AB78] dateFormatFromTemplate:@"EEEE" options:0 locale:locale];
       [v14 setDateFormat:v15];
 
-      v16 = [v14 stringFromDate:v6];
+      v16 = [v14 stringFromDate:dateCopy];
       v17 = [v8 rangeOfString:v16 options:1];
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -115,13 +115,13 @@ void __58__PXFeedDateFormatter__canSubstitueDateStringsWithLocale___block_invoke
   if (!obj->_prepared)
   {
     obj->_prepared = 1;
-    v3 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     calendar = obj->_calendar;
-    obj->_calendar = v3;
+    obj->_calendar = currentCalendar;
 
-    v5 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     today = obj->_today;
-    obj->_today = v5;
+    obj->_today = date;
 
     v7 = objc_alloc_init(MEMORY[0x1E695DF10]);
     [v7 setDay:-1];
@@ -132,15 +132,15 @@ void __58__PXFeedDateFormatter__canSubstitueDateStringsWithLocale___block_invoke
     locale = obj->_locale;
     if (locale)
     {
-      v11 = locale;
+      currentLocale = locale;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DF58] currentLocale];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     }
 
-    v12 = v11;
+    v12 = currentLocale;
     v13 = objc_alloc_init(MEMORY[0x1E696AB78]);
     dateFormatterForCurrentYear = obj->_dateFormatterForCurrentYear;
     obj->_dateFormatterForCurrentYear = v13;
@@ -172,10 +172,10 @@ void __58__PXFeedDateFormatter__canSubstitueDateStringsWithLocale___block_invoke
 
 - (void)_invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_prepared = 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_prepared = 0;
+  objc_sync_exit(selfCopy);
 
   px_dispatch_on_main_queue();
 }
@@ -186,29 +186,29 @@ void __34__PXFeedDateFormatter__invalidate__block_invoke(uint64_t a1)
   [v2 postNotificationName:@"PXFeedDateFormatterChangedNotification" object:*(a1 + 32)];
 }
 
-- (BOOL)isDateInFuture:(id)a3
+- (BOOL)isDateInFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   [(PXFeedDateFormatter *)self _prepare];
-  v5 = [(NSCalendar *)self->_calendar compareDate:self->_today toDate:v4 toUnitGranularity:16];
+  v5 = [(NSCalendar *)self->_calendar compareDate:self->_today toDate:futureCopy toUnitGranularity:16];
 
   return v5 == NSOrderedAscending;
 }
 
-- (BOOL)isDateInToday:(id)a3
+- (BOOL)isDateInToday:(id)today
 {
-  v4 = a3;
+  todayCopy = today;
   [(PXFeedDateFormatter *)self _prepare];
-  LOBYTE(self) = [(NSCalendar *)self->_calendar isDate:v4 inSameDayAsDate:self->_today];
+  LOBYTE(self) = [(NSCalendar *)self->_calendar isDate:todayCopy inSameDayAsDate:self->_today];
 
   return self;
 }
 
-- (id)stringFromDate:(id)a3
+- (id)stringFromDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(PXFeedDateFormatter *)self _prepare];
-  if ([(NSCalendar *)self->_calendar isDate:v4 inSameDayAsDate:self->_today])
+  if ([(NSCalendar *)self->_calendar isDate:dateCopy inSameDayAsDate:self->_today])
   {
     todayString = self->_todayString;
 LABEL_5:
@@ -216,20 +216,20 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([(NSCalendar *)self->_calendar isDate:v4 inSameDayAsDate:self->_yesterday])
+  if ([(NSCalendar *)self->_calendar isDate:dateCopy inSameDayAsDate:self->_yesterday])
   {
     todayString = self->_yesterdayString;
     goto LABEL_5;
   }
 
-  v7 = [(NSCalendar *)self->_calendar isDate:v4 equalToDate:self->_today toUnitGranularity:4];
+  v7 = [(NSCalendar *)self->_calendar isDate:dateCopy equalToDate:self->_today toUnitGranularity:4];
   v8 = 80;
   if (v7)
   {
     v8 = 72;
   }
 
-  v9 = [*(&self->super.isa + v8) stringFromDate:v4];
+  v9 = [*(&self->super.isa + v8) stringFromDate:dateCopy];
   v6 = [v9 px_stringByApplyingCapitalization:3];
 
 LABEL_9:
@@ -239,32 +239,32 @@ LABEL_9:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PXFeedDateFormatter;
   [(PXFeedDateFormatter *)&v4 dealloc];
 }
 
-- (PXFeedDateFormatter)initWithLocale:(id)a3 ignoreWhitelist:(BOOL)a4
+- (PXFeedDateFormatter)initWithLocale:(id)locale ignoreWhitelist:(BOOL)whitelist
 {
-  v7 = a3;
+  localeCopy = locale;
   v13.receiver = self;
   v13.super_class = PXFeedDateFormatter;
   v8 = [(PXFeedDateFormatter *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locale, a3);
-    v9->_ignoreWhitelist = a4;
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v9 selector:sel__calendarDayChanged_ name:*MEMORY[0x1E695D810] object:0];
+    objc_storeStrong(&v8->_locale, locale);
+    v9->_ignoreWhitelist = whitelist;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__calendarDayChanged_ name:*MEMORY[0x1E695D810] object:0];
 
     if (!v9->_locale)
     {
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v11 addObserver:v9 selector:sel__currentLocaleChanged_ name:*MEMORY[0x1E695D8F0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:v9 selector:sel__currentLocaleChanged_ name:*MEMORY[0x1E695D8F0] object:0];
     }
   }
 

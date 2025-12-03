@@ -11,13 +11,13 @@
   v2 = [(_HFCharacteristicReadAndWriteTransactions *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     transactionsReading = v2->_transactionsReading;
-    v2->_transactionsReading = v3;
+    v2->_transactionsReading = orderedSet;
 
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     transactionsWriting = v2->_transactionsWriting;
-    v2->_transactionsWriting = v5;
+    v2->_transactionsWriting = orderedSet2;
   }
 
   return v2;

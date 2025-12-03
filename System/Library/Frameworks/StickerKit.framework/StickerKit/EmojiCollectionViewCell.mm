@@ -1,12 +1,12 @@
 @interface EmojiCollectionViewCell
-- (_TtC10StickerKit23EmojiCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC10StickerKit23EmojiCollectionViewCell)initWithCoder:(id)coder;
 - (void)handleTap;
 - (void)layoutSubviews;
 @end
 
 @implementation EmojiCollectionViewCell
 
-- (_TtC10StickerKit23EmojiCollectionViewCell)initWithCoder:(id)a3
+- (_TtC10StickerKit23EmojiCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super._responderFlags + OBJC_IVAR____TtC10StickerKit23EmojiCollectionViewCell_delegate) = 0;
   swift_unknownObjectWeakInit();
@@ -30,12 +30,12 @@
   v2 = v5.receiver;
   [(BaseEmojiAndStickerCollectionViewCell *)&v5 layoutSubviews];
   v3 = sub_19A79AFA0();
-  v4 = [v3 view];
+  view = [v3 view];
 
-  if (v4)
+  if (view)
   {
     [v2 bounds];
-    [v4 setFrame_];
+    [view setFrame_];
 
     sub_19A79B59C();
   }
@@ -48,7 +48,7 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A79B838();
 }
 

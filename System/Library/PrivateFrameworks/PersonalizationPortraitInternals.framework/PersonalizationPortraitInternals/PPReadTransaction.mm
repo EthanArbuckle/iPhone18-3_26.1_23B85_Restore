@@ -1,19 +1,19 @@
 @interface PPReadTransaction
-- (PPReadTransaction)initWithHandle:(id)a3;
+- (PPReadTransaction)initWithHandle:(id)handle;
 @end
 
 @implementation PPReadTransaction
 
-- (PPReadTransaction)initWithHandle:(id)a3
+- (PPReadTransaction)initWithHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = PPReadTransaction;
   v6 = [(PPReadTransaction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_db, a3);
+    objc_storeStrong(&v6->_db, handle);
   }
 
   return v7;

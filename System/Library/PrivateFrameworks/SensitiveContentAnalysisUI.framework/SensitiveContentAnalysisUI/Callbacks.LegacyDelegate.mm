@@ -1,17 +1,17 @@
 @interface Callbacks.LegacyDelegate
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (_TtCV26SensitiveContentAnalysisUI9Callbacks14LegacyDelegate)init;
-- (void)didBypassInterventionWithUpdatedAnalyses:(id)a3 container:(id)a4;
+- (void)didBypassInterventionWithUpdatedAnalyses:(id)analyses container:(id)container;
 @end
 
 @implementation Callbacks.LegacyDelegate
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1BC717E34(a3);
+  selfCopy = self;
+  LOBYTE(selector) = sub_1BC717E34(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
 - (_TtCV26SensitiveContentAnalysisUI9Callbacks14LegacyDelegate)init
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (void)didBypassInterventionWithUpdatedAnalyses:(id)a3 container:(id)a4
+- (void)didBypassInterventionWithUpdatedAnalyses:(id)analyses container:(id)container
 {
   sub_1BC75BDE0();
-  v7[2] = a4;
+  v7[2] = container;
   v7[3] = self;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1BC7182DC(sub_1BC71CC98, v7);
   swift_unknownObjectRelease();
 }

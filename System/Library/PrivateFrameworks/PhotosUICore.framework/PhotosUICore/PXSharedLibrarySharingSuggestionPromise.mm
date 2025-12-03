@@ -1,12 +1,12 @@
 @interface PXSharedLibrarySharingSuggestionPromise
-+ (BOOL)isNewWithSuggestedDate:(id)a3 considerNewAfterDate:(id)a4;
++ (BOOL)isNewWithSuggestedDate:(id)date considerNewAfterDate:(id)afterDate;
 - (NSString)identifier;
 - (PHAssetCollection)containerCollection;
 - (PXDisplayCollection)displayCollection;
 - (PXSharedLibrarySharingSuggestionPromise)init;
-- (PXSharedLibrarySharingSuggestionPromise)initWithContainer:(id)a3 considerNewAfterDate:(id)a4 lightweightPlaceholder:(BOOL)a5;
-- (PXSharedLibrarySharingSuggestionPromise)initWithPromise:(id)a3 considerNewAfterDate:(id)a4;
-- (id)copyIfNeededWithUpdatedConsiderNewAfterDate:(id)a3;
+- (PXSharedLibrarySharingSuggestionPromise)initWithContainer:(id)container considerNewAfterDate:(id)date lightweightPlaceholder:(BOOL)placeholder;
+- (PXSharedLibrarySharingSuggestionPromise)initWithPromise:(id)promise considerNewAfterDate:(id)date;
+- (id)copyIfNeededWithUpdatedConsiderNewAfterDate:(id)date;
 - (id)fetchAssetCollections;
 - (void)_fulfill;
 - (void)_loadLightweightProperties;
@@ -18,43 +18,43 @@
 
 - (void)markAsRead
 {
-  v2 = [(PXSharedLibrarySharingSuggestionPromise *)self containerCollection];
-  v4 = [v2 photoLibrary];
+  containerCollection = [(PXSharedLibrarySharingSuggestionPromise *)self containerCollection];
+  photoLibrary = [containerCollection photoLibrary];
 
-  v3 = [v4 px_sharedLibrarySharingSuggestionsCountsManager];
-  [v3 markAnyNotificationsAsRead];
-  [v3 markAllSuggestionsAsRead];
+  px_sharedLibrarySharingSuggestionsCountsManager = [photoLibrary px_sharedLibrarySharingSuggestionsCountsManager];
+  [px_sharedLibrarySharingSuggestionsCountsManager markAnyNotificationsAsRead];
+  [px_sharedLibrarySharingSuggestionsCountsManager markAllSuggestionsAsRead];
 }
 
 - (PXDisplayCollection)displayCollection
 {
-  v2 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
-  v3 = [v2 px_sl_containerCollection];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  px_sl_containerCollection = [container px_sl_containerCollection];
 
-  return v3;
+  return px_sl_containerCollection;
 }
 
 - (PHAssetCollection)containerCollection
 {
-  v2 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
-  v3 = [v2 px_sl_containerCollection];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  px_sl_containerCollection = [container px_sl_containerCollection];
 
-  return v3;
+  return px_sl_containerCollection;
 }
 
 - (id)fetchAssetCollections
 {
-  v2 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
-  v3 = [v2 px_sl_fetchAssetCollections];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  px_sl_fetchAssetCollections = [container px_sl_fetchAssetCollections];
 
-  return v3;
+  return px_sl_fetchAssetCollections;
 }
 
-- (id)copyIfNeededWithUpdatedConsiderNewAfterDate:(id)a3
+- (id)copyIfNeededWithUpdatedConsiderNewAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(PXSharedLibrarySharingSuggestionPromise *)self suggestedDate];
-  v6 = [PXSharedLibrarySharingSuggestionPromise isNewWithSuggestedDate:v5 considerNewAfterDate:v4];
+  dateCopy = date;
+  suggestedDate = [(PXSharedLibrarySharingSuggestionPromise *)self suggestedDate];
+  v6 = [PXSharedLibrarySharingSuggestionPromise isNewWithSuggestedDate:suggestedDate considerNewAfterDate:dateCopy];
 
   if (v6 == [(PXSharedLibrarySharingSuggestionPromise *)self isNew])
   {
@@ -63,7 +63,7 @@
 
   else
   {
-    v7 = [[PXSharedLibrarySharingSuggestionPromise alloc] initWithPromise:self considerNewAfterDate:v4];
+    v7 = [[PXSharedLibrarySharingSuggestionPromise alloc] initWithPromise:self considerNewAfterDate:dateCopy];
   }
 
   return v7;
@@ -71,9 +71,9 @@
 
 - (void)_updateIsNew
 {
-  v4 = [(PXSharedLibrarySharingSuggestionPromise *)self suggestedDate];
-  v3 = [(PXSharedLibrarySharingSuggestionPromise *)self considerNewAfterDate];
-  self->_isNew = [PXSharedLibrarySharingSuggestionPromise isNewWithSuggestedDate:v4 considerNewAfterDate:v3];
+  suggestedDate = [(PXSharedLibrarySharingSuggestionPromise *)self suggestedDate];
+  considerNewAfterDate = [(PXSharedLibrarySharingSuggestionPromise *)self considerNewAfterDate];
+  self->_isNew = [PXSharedLibrarySharingSuggestionPromise isNewWithSuggestedDate:suggestedDate considerNewAfterDate:considerNewAfterDate];
 }
 
 - (void)_fulfill
@@ -92,11 +92,11 @@
     }
   }
 
-  v6 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
   v17 = 0;
   v18 = 0;
   v16 = 0;
-  [v6 px_sl_getKeyAsset:&v18 suggestedDate:&v17 locations:&v16];
+  [container px_sl_getKeyAsset:&v18 suggestedDate:&v17 locations:&v16];
   v7 = v18;
   v8 = v18;
   v9 = v17;
@@ -124,50 +124,50 @@
 
 - (void)_loadLightweightProperties
 {
-  v5 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
-  v3 = [v5 px_sl_title];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  px_sl_title = [container px_sl_title];
   title = self->_title;
-  self->_title = v3;
+  self->_title = px_sl_title;
 }
 
 - (NSString)identifier
 {
-  v2 = [(PXSharedLibrarySharingSuggestionPromise *)self container];
-  v3 = [v2 px_sl_identifier];
+  container = [(PXSharedLibrarySharingSuggestionPromise *)self container];
+  px_sl_identifier = [container px_sl_identifier];
 
-  return v3;
+  return px_sl_identifier;
 }
 
-- (PXSharedLibrarySharingSuggestionPromise)initWithPromise:(id)a3 considerNewAfterDate:(id)a4
+- (PXSharedLibrarySharingSuggestionPromise)initWithPromise:(id)promise considerNewAfterDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  promiseCopy = promise;
+  dateCopy = date;
   v20.receiver = self;
   v20.super_class = PXSharedLibrarySharingSuggestionPromise;
   v8 = [(PXSharedLibrarySharingSuggestionPromise *)&v20 init];
   if (v8)
   {
-    v9 = [v6 container];
+    container = [promiseCopy container];
     container = v8->_container;
-    v8->_container = v9;
+    v8->_container = container;
 
-    objc_storeStrong(&v8->_considerNewAfterDate, a4);
-    v8->_isPlaceholder = [v6 isPlaceholder];
-    v11 = [v6 title];
+    objc_storeStrong(&v8->_considerNewAfterDate, date);
+    v8->_isPlaceholder = [promiseCopy isPlaceholder];
+    title = [promiseCopy title];
     title = v8->_title;
-    v8->_title = v11;
+    v8->_title = title;
 
-    v13 = [v6 keyAsset];
+    keyAsset = [promiseCopy keyAsset];
     keyAsset = v8->_keyAsset;
-    v8->_keyAsset = v13;
+    v8->_keyAsset = keyAsset;
 
-    v15 = [v6 suggestedDate];
+    suggestedDate = [promiseCopy suggestedDate];
     suggestedDate = v8->_suggestedDate;
-    v8->_suggestedDate = v15;
+    v8->_suggestedDate = suggestedDate;
 
-    v17 = [v6 locations];
+    locations = [promiseCopy locations];
     locations = v8->_locations;
-    v8->_locations = v17;
+    v8->_locations = locations;
 
     [(PXSharedLibrarySharingSuggestionPromise *)v8 _updateIsNew];
   }
@@ -175,21 +175,21 @@
   return v8;
 }
 
-- (PXSharedLibrarySharingSuggestionPromise)initWithContainer:(id)a3 considerNewAfterDate:(id)a4 lightweightPlaceholder:(BOOL)a5
+- (PXSharedLibrarySharingSuggestionPromise)initWithContainer:(id)container considerNewAfterDate:(id)date lightweightPlaceholder:(BOOL)placeholder
 {
-  v9 = a3;
-  v10 = a4;
+  containerCopy = container;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = PXSharedLibrarySharingSuggestionPromise;
   v11 = [(PXSharedLibrarySharingSuggestionPromise *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_container, a3);
-    objc_storeStrong(&v12->_considerNewAfterDate, a4);
-    v12->_isPlaceholder = a5;
+    objc_storeStrong(&v11->_container, container);
+    objc_storeStrong(&v12->_considerNewAfterDate, date);
+    v12->_isPlaceholder = placeholder;
     [(PXSharedLibrarySharingSuggestionPromise *)v12 _loadLightweightProperties];
-    if (!a5)
+    if (!placeholder)
     {
       [(PXSharedLibrarySharingSuggestionPromise *)v12 _fulfill];
     }
@@ -200,20 +200,20 @@
 
 - (PXSharedLibrarySharingSuggestionPromise)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsDataSourceManager.m" lineNumber:443 description:{@"%s is not available as initializer", "-[PXSharedLibrarySharingSuggestionPromise init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibrarySharingSuggestionsDataSourceManager.m" lineNumber:443 description:{@"%s is not available as initializer", "-[PXSharedLibrarySharingSuggestionPromise init]"}];
 
   abort();
 }
 
-+ (BOOL)isNewWithSuggestedDate:(id)a3 considerNewAfterDate:(id)a4
++ (BOOL)isNewWithSuggestedDate:(id)date considerNewAfterDate:(id)afterDate
 {
   result = 0;
-  if (a3)
+  if (date)
   {
-    if (a4)
+    if (afterDate)
     {
-      return [a4 compare:?] == -1;
+      return [afterDate compare:?] == -1;
     }
   }
 

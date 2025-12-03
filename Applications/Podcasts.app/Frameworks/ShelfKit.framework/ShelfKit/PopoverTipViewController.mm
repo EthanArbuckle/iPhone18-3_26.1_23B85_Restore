@@ -1,17 +1,17 @@
 @interface PopoverTipViewController
-- (_TtC8ShelfKit24PopoverTipViewController)initWithCoder:(id)a3;
-- (_TtC8ShelfKit24PopoverTipViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)a3;
-- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8ShelfKit24PopoverTipViewController)initWithCoder:(id)coder;
+- (_TtC8ShelfKit24PopoverTipViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)request;
+- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)request bag:(id)bag account:(id)account;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PopoverTipViewController
 
-- (_TtC8ShelfKit24PopoverTipViewController)initWithCoder:(id)a3
+- (_TtC8ShelfKit24PopoverTipViewController)initWithCoder:(id)coder
 {
   v3 = &self->AMSUIBubbleTipViewController_opaque[OBJC_IVAR____TtC8ShelfKit24PopoverTipViewController_onAppear];
   *v3 = 0;
@@ -24,53 +24,53 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  PopoverTipViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  PopoverTipViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  PopoverTipViewController.viewDidDisappear(_:)(a3);
+  selfCopy = self;
+  PopoverTipViewController.viewDidDisappear(_:)(disappear);
 }
 
-- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)a3
+- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)request
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (_TtC8ShelfKit24PopoverTipViewController)initWithRequest:(id)request bag:(id)bag account:(id)account
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC8ShelfKit24PopoverTipViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8ShelfKit24PopoverTipViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PopoverTipViewController.messageViewController(_:didSelectActionWith:)(v6, v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  PopoverTipViewController.messageViewController(_:didSelectActionWith:)(controllerCopy, resultCopy);
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_33C1F8(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_33C1F8(error);
 }
 
 @end

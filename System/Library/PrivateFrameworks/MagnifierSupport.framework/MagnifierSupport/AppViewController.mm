@@ -1,50 +1,50 @@
 @interface AppViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_TtC16MagnifierSupport17AppViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_TtC16MagnifierSupport17AppViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_dismissActivityCustomizationPane;
 - (void)_dismissActivityCustomizationPaneWithText;
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5;
-- (void)applicationDidRemoveDeactivationReasonWithNotification:(id)a3;
-- (void)applicationWillAddDeactivationReasonWithNotification:(id)a3;
-- (void)deviceOrientationDidChange:(id)a3;
-- (void)didLongPressToFocus:(id)a3;
-- (void)didPanPreviewView:(id)a3;
-- (void)didPinchToZoom:(id)a3;
-- (void)didTapCloseImageWellButton:(id)a3;
-- (void)didTapToChangeFocus:(id)a3;
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions;
+- (void)applicationDidRemoveDeactivationReasonWithNotification:(id)notification;
+- (void)applicationWillAddDeactivationReasonWithNotification:(id)notification;
+- (void)deviceOrientationDidChange:(id)change;
+- (void)didLongPressToFocus:(id)focus;
+- (void)didPanPreviewView:(id)view;
+- (void)didPinchToZoom:(id)zoom;
+- (void)didTapCloseImageWellButton:(id)button;
+- (void)didTapToChangeFocus:(id)focus;
 - (void)loadView;
-- (void)openDetectionSettings:(id)a3;
+- (void)openDetectionSettings:(id)settings;
 - (void)stopSpeechForVoiceOverFocusChange;
-- (void)toggleAVTorchForApplicationDeactivation:(BOOL)a3;
-- (void)updateAppearanceForReduceTransparency:(id)a3;
-- (void)userDidEndMutliShotMode:(id)a3;
-- (void)userDidExitDetectionMode:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)toggleAVTorchForApplicationDeactivation:(BOOL)deactivation;
+- (void)updateAppearanceForReduceTransparency:(id)transparency;
+- (void)userDidEndMutliShotMode:(id)mode;
+- (void)userDidExitDetectionMode:(id)mode;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AppViewController
 
-- (void)toggleAVTorchForApplicationDeactivation:(BOOL)a3
+- (void)toggleAVTorchForApplicationDeactivation:(BOOL)deactivation
 {
-  v4 = self;
-  sub_257BD9C78(a3);
+  selfCopy = self;
+  sub_257BD9C78(deactivation);
 }
 
 - (void)stopSpeechForVoiceOverFocusChange
 {
-  v2 = self;
+  selfCopy = self;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     sub_257CC1318();
   }
 }
 
-- (void)userDidExitDetectionMode:(id)a3
+- (void)userDidExitDetectionMode:(id)mode
 {
   if (qword_281544FE0 != -1)
   {
@@ -58,80 +58,80 @@
   sub_257ECDD70();
 }
 
-- (void)openDetectionSettings:(id)a3
+- (void)openDetectionSettings:(id)settings
 {
-  v3 = self;
+  selfCopy = self;
   sub_257D3A8DC();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = swift_allocObject();
   swift_unknownObjectWeakInit();
-  v6 = self;
+  selfCopy = self;
   sub_257ECC3F0();
   sub_257DB0FF4(sub_257D46F1C, v5);
 
-  v7.receiver = v6;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for AppViewController();
-  [(AppViewController *)&v7 viewWillDisappear:v3];
+  [(AppViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
 - (void)_dismissActivityCustomizationPaneWithText
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DF6D30();
 }
 
 - (void)_dismissActivityCustomizationPane
 {
-  v2 = self;
+  selfCopy = self;
   sub_257DF7144();
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_257E01458();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257E01ACC();
 }
 
-- (void)didTapCloseImageWellButton:(id)a3
+- (void)didTapCloseImageWellButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_257E2B234();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257E07834();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257E07D5C(a3);
+  selfCopy = self;
+  sub_257E07D5C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257E088B8(a3);
+  selfCopy = self;
+  sub_257E088B8(appear);
 }
 
-- (void)userDidEndMutliShotMode:(id)a3
+- (void)userDidEndMutliShotMode:(id)mode
 {
   v4 = qword_281544FE0;
-  v5 = a3;
-  v6 = self;
+  modeCopy = mode;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -148,12 +148,12 @@
   sub_257C77614();
 }
 
-- (void)updateAppearanceForReduceTransparency:(id)a3
+- (void)updateAppearanceForReduceTransparency:(id)transparency
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F8F9E30);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (transparency)
   {
     sub_257ECC7E0();
     v8 = sub_257ECC810();
@@ -166,93 +166,93 @@
     (*(*(v9 - 8) + 56))(v7, 1, 1, v9);
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_257E1A15C();
 
   sub_257BE4084(v7, &qword_27F8F9E30);
 }
 
-- (void)deviceOrientationDidChange:(id)a3
+- (void)deviceOrientationDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_257E2AE58();
 }
 
-- (void)didPanPreviewView:(id)a3
+- (void)didPanPreviewView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E1CC7C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257E1CC7C(viewCopy);
 }
 
-- (void)didTapToChangeFocus:(id)a3
+- (void)didTapToChangeFocus:(id)focus
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E1D534(v4);
+  focusCopy = focus;
+  selfCopy = self;
+  sub_257E1D534(focusCopy);
 }
 
-- (void)didLongPressToFocus:(id)a3
+- (void)didLongPressToFocus:(id)focus
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E1DE0C(v4);
+  focusCopy = focus;
+  selfCopy = self;
+  sub_257E1DE0C(focusCopy);
 }
 
-- (void)didPinchToZoom:(id)a3
+- (void)didPinchToZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E1E2F8(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  sub_257E1E2F8(zoomCopy);
 }
 
-- (_TtC16MagnifierSupport17AppViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport17AppViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_257E22208(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_257E22208(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_257E224B8(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_257E224B8(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (void)applicationWillAddDeactivationReasonWithNotification:(id)a3
+- (void)applicationWillAddDeactivationReasonWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E23118(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_257E23118(notificationCopy);
 }
 
-- (void)applicationDidRemoveDeactivationReasonWithNotification:(id)a3
+- (void)applicationDidRemoveDeactivationReasonWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_257E24164(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_257E24164(notificationCopy);
 }
 
-- (void)_physicalButtonInteraction:(id)a3 handleAction:(id)a4 withActiveActions:(id)a5
+- (void)_physicalButtonInteraction:(id)interaction handleAction:(id)action withActiveActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_257E2B8D8(v8);
+  interactionCopy = interaction;
+  actionCopy = action;
+  selfCopy = self;
+  sub_257E2B8D8(actionCopy);
 }
 
 @end

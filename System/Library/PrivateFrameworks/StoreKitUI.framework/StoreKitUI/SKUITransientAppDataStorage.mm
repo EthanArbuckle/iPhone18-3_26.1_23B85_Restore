@@ -1,12 +1,12 @@
 @interface SKUITransientAppDataStorage
 - (SKUITransientAppDataStorage)init;
-- (id)getDataForKey:(id)a3;
-- (id)keyAtIndex:(unint64_t)a3;
+- (id)getDataForKey:(id)key;
+- (id)keyAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (unint64_t)setData:(id)a3 forKey:(id)a4;
+- (unint64_t)setData:(id)data forKey:(id)key;
 - (void)clear;
 - (void)init;
-- (void)removeDataForKey:(id)a3;
+- (void)removeDataForKey:(id)key;
 @end
 
 @implementation SKUITransientAppDataStorage
@@ -39,14 +39,14 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(SKUITransientAppDataStorage *)self accessQueue];
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__SKUITransientAppDataStorage_count__block_invoke;
   v6[3] = &unk_2781F8608;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -59,7 +59,7 @@ void __36__SKUITransientAppDataStorage_count__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)keyAtIndex:(unint64_t)a3
+- (id)keyAtIndex:(unint64_t)index
 {
   v9 = 0;
   v10 = &v9;
@@ -67,15 +67,15 @@ void __36__SKUITransientAppDataStorage_count__block_invoke(uint64_t a1)
   v12 = __Block_byref_object_copy__0;
   v13 = __Block_byref_object_dispose__0;
   v14 = 0;
-  v5 = [(SKUITransientAppDataStorage *)self accessQueue];
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SKUITransientAppDataStorage_keyAtIndex___block_invoke;
   block[3] = &unk_2781F8630;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = index;
+  dispatch_sync(accessQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -93,25 +93,25 @@ void __42__SKUITransientAppDataStorage_keyAtIndex___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (id)getDataForKey:(id)a3
+- (id)getDataForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(SKUITransientAppDataStorage *)self accessQueue];
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SKUITransientAppDataStorage_getDataForKey___block_invoke;
   block[3] = &unk_2781F8658;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = keyCopy;
+  dispatch_sync(accessQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -128,21 +128,21 @@ void __45__SKUITransientAppDataStorage_getDataForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (unint64_t)setData:(id)a3 forKey:(id)a4
+- (unint64_t)setData:(id)data forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKUITransientAppDataStorage *)self accessQueue];
+  dataCopy = data;
+  keyCopy = key;
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__SKUITransientAppDataStorage_setData_forKey___block_invoke;
   block[3] = &unk_2781F8680;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_barrier_sync(v8, block);
+  v13 = dataCopy;
+  selfCopy = self;
+  v15 = keyCopy;
+  v9 = keyCopy;
+  v10 = dataCopy;
+  dispatch_barrier_sync(accessQueue, block);
 
   return 0;
 }
@@ -164,18 +164,18 @@ void __46__SKUITransientAppDataStorage_setData_forKey___block_invoke(uint64_t a1
   }
 }
 
-- (void)removeDataForKey:(id)a3
+- (void)removeDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SKUITransientAppDataStorage *)self accessQueue];
+  keyCopy = key;
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SKUITransientAppDataStorage_removeDataForKey___block_invoke;
   v7[3] = &unk_2781F80C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_barrier_sync(accessQueue, v7);
 }
 
 void __48__SKUITransientAppDataStorage_removeDataForKey___block_invoke(uint64_t a1)
@@ -186,13 +186,13 @@ void __48__SKUITransientAppDataStorage_removeDataForKey___block_invoke(uint64_t 
 
 - (void)clear
 {
-  v3 = [(SKUITransientAppDataStorage *)self accessQueue];
+  accessQueue = [(SKUITransientAppDataStorage *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__SKUITransientAppDataStorage_clear__block_invoke;
   block[3] = &unk_2781F80F0;
   block[4] = self;
-  dispatch_barrier_sync(v3, block);
+  dispatch_barrier_sync(accessQueue, block);
 }
 
 void __36__SKUITransientAppDataStorage_clear__block_invoke(uint64_t a1)

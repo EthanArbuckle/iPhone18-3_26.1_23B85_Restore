@@ -1,35 +1,35 @@
 @interface FTTextToSpeechFeature
-- (FTTextToSpeechFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechFeature *)a4 verify:(BOOL)a5;
+- (FTTextToSpeechFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechFeature *)root verify:(BOOL)verify;
 - (NSArray)neural_phoneme_sequence;
 - (NSArray)normalized_text;
 - (NSArray)phoneme_sequence;
 - (NSArray)prompts;
 - (NSArray)replacement;
-- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
-- (id)neural_phoneme_sequence_objectAtIndex:(unint64_t)a3;
-- (id)normalized_text_objectAtIndex:(unint64_t)a3;
-- (id)phoneme_sequence_objectAtIndex:(unint64_t)a3;
-- (id)prompts_objectAtIndex:(unint64_t)a3;
-- (id)replacement_objectAtIndex:(unint64_t)a3;
+- (id)neural_phoneme_sequence_objectAtIndex:(unint64_t)index;
+- (id)normalized_text_objectAtIndex:(unint64_t)index;
+- (id)phoneme_sequence_objectAtIndex:(unint64_t)index;
+- (id)prompts_objectAtIndex:(unint64_t)index;
+- (id)replacement_objectAtIndex:(unint64_t)index;
 - (unint64_t)neural_phoneme_sequence_count;
 - (unint64_t)normalized_text_count;
 - (unint64_t)phoneme_sequence_count;
 - (unint64_t)prompts_count;
 - (unint64_t)replacement_count;
-- (void)neural_phoneme_sequence_enumerateObjectsUsingBlock:(id)a3;
-- (void)normalized_text_enumerateObjectsUsingBlock:(id)a3;
-- (void)phoneme_sequence_enumerateObjectsUsingBlock:(id)a3;
-- (void)prompts_enumerateObjectsUsingBlock:(id)a3;
-- (void)replacement_enumerateObjectsUsingBlock:(id)a3;
+- (void)neural_phoneme_sequence_enumerateObjectsUsingBlock:(id)block;
+- (void)normalized_text_enumerateObjectsUsingBlock:(id)block;
+- (void)phoneme_sequence_enumerateObjectsUsingBlock:(id)block;
+- (void)prompts_enumerateObjectsUsingBlock:(id)block;
+- (void)replacement_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTTextToSpeechFeature
 
-- (FTTextToSpeechFeature)initWithFlatbuffData:(id)a3 root:(const TextToSpeechFeature *)a4 verify:(BOOL)a5
+- (FTTextToSpeechFeature)initWithFlatbuffData:(id)data root:(const TextToSpeechFeature *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTTextToSpeechFeature;
   v10 = [(FTTextToSpeechFeature *)&v25 init];
@@ -38,35 +38,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -97,12 +97,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"normalized_text"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__FTTextToSpeechFeature_normalized_text__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechFeature *)self normalized_text_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"normalized_text"];
@@ -111,13 +111,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)normalized_text_objectAtIndex:(unint64_t)a3
+- (id)normalized_text_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"normalized_text"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -130,7 +130,7 @@ LABEL_3:
     v11 = *v10[4].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTTSNormalizedText alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -169,14 +169,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)normalized_text_enumerateObjectsUsingBlock:(id)a3
+- (void)normalized_text_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"normalized_text"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -199,7 +199,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTTSNormalizedText alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -225,12 +225,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phoneme_sequence"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __41__FTTextToSpeechFeature_phoneme_sequence__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechFeature *)self phoneme_sequence_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"phoneme_sequence"];
@@ -239,13 +239,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)phoneme_sequence_objectAtIndex:(unint64_t)a3
+- (id)phoneme_sequence_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phoneme_sequence"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -258,7 +258,7 @@ LABEL_3:
     v11 = *v10[6].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTTSPhonemeSequence alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -297,14 +297,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)phoneme_sequence_enumerateObjectsUsingBlock:(id)a3
+- (void)phoneme_sequence_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"phoneme_sequence"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -327,7 +327,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTTSPhonemeSequence alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -353,12 +353,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __32__FTTextToSpeechFeature_prompts__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechFeature *)self prompts_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"prompts"];
@@ -367,13 +367,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)prompts_objectAtIndex:(unint64_t)a3
+- (id)prompts_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -386,7 +386,7 @@ LABEL_3:
     v11 = *v10[8].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTTSPrompts alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -425,14 +425,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)prompts_enumerateObjectsUsingBlock:(id)a3
+- (void)prompts_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"prompts"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -455,7 +455,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTTSPrompts alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -481,12 +481,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"replacement"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __36__FTTextToSpeechFeature_replacement__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechFeature *)self replacement_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"replacement"];
@@ -495,13 +495,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)replacement_objectAtIndex:(unint64_t)a3
+- (id)replacement_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"replacement"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -514,7 +514,7 @@ LABEL_3:
     v11 = *v10[10].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTTSReplacement alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -553,14 +553,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)replacement_enumerateObjectsUsingBlock:(id)a3
+- (void)replacement_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"replacement"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -583,7 +583,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTTSReplacement alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -609,12 +609,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"neural_phoneme_sequence"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __48__FTTextToSpeechFeature_neural_phoneme_sequence__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTTextToSpeechFeature *)self neural_phoneme_sequence_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"neural_phoneme_sequence"];
@@ -623,13 +623,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)neural_phoneme_sequence_objectAtIndex:(unint64_t)a3
+- (id)neural_phoneme_sequence_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"neural_phoneme_sequence"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -642,7 +642,7 @@ LABEL_3:
     v11 = *v10[12].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTTTSNeuralPhonemeSequence alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -681,14 +681,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)neural_phoneme_sequence_enumerateObjectsUsingBlock:(id)a3
+- (void)neural_phoneme_sequence_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"neural_phoneme_sequence"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -711,7 +711,7 @@ LABEL_8:
           do
           {
             v15 = [[FTTTSNeuralPhonemeSequence alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -732,19 +732,19 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::TextToSpeechFeature>)addObjectToBuffer:(void *)buffer
 {
   v127 = *MEMORY[0x277D85DE8];
   memset(&v121, 0, sizeof(v121));
-  v4 = [(FTTextToSpeechFeature *)self normalized_text];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v121, [v4 count]);
+  normalized_text = [(FTTextToSpeechFeature *)self normalized_text];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v121, [normalized_text count]);
 
   v119 = 0u;
   v120 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v5 = [(FTTextToSpeechFeature *)self normalized_text];
-  v6 = [v5 countByEnumeratingWithState:&v117 objects:v126 count:16];
+  normalized_text2 = [(FTTextToSpeechFeature *)self normalized_text];
+  v6 = [normalized_text2 countByEnumeratingWithState:&v117 objects:v126 count:16];
   if (v6)
   {
     v7 = *v118;
@@ -754,10 +754,10 @@ LABEL_8:
       {
         if (*v118 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(normalized_text2);
         }
 
-        v9 = [*(*(&v117 + 1) + 8 * i) addObjectToBuffer:a3];
+        v9 = [*(*(&v117 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v121.__end_;
         if (v121.__end_ >= v121.__end_cap_.__value_)
         {
@@ -813,7 +813,7 @@ LABEL_8:
         v121.__end_ = v11;
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v117 objects:v126 count:16];
+      v6 = [normalized_text2 countByEnumeratingWithState:&v117 objects:v126 count:16];
     }
 
     while (v6);
@@ -829,17 +829,17 @@ LABEL_8:
     v19 = v121.__begin_;
   }
 
-  v94 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v19, v121.__end_ - v121.__begin_);
+  v94 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v19, v121.__end_ - v121.__begin_);
   memset(&v116, 0, sizeof(v116));
-  v20 = [(FTTextToSpeechFeature *)self phoneme_sequence];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v116, [v20 count]);
+  phoneme_sequence = [(FTTextToSpeechFeature *)self phoneme_sequence];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v116, [phoneme_sequence count]);
 
   v114 = 0u;
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v21 = [(FTTextToSpeechFeature *)self phoneme_sequence];
-  v22 = [v21 countByEnumeratingWithState:&v112 objects:v125 count:16];
+  phoneme_sequence2 = [(FTTextToSpeechFeature *)self phoneme_sequence];
+  v22 = [phoneme_sequence2 countByEnumeratingWithState:&v112 objects:v125 count:16];
   if (v22)
   {
     v23 = *v113;
@@ -849,10 +849,10 @@ LABEL_8:
       {
         if (*v113 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(phoneme_sequence2);
         }
 
-        v25 = [*(*(&v112 + 1) + 8 * j) addObjectToBuffer:a3];
+        v25 = [*(*(&v112 + 1) + 8 * j) addObjectToBuffer:buffer];
         v26 = v116.__end_;
         if (v116.__end_ >= v116.__end_cap_.__value_)
         {
@@ -908,7 +908,7 @@ LABEL_8:
         v116.__end_ = v27;
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v112 objects:v125 count:16];
+      v22 = [phoneme_sequence2 countByEnumeratingWithState:&v112 objects:v125 count:16];
     }
 
     while (v22);
@@ -924,17 +924,17 @@ LABEL_8:
     v35 = v116.__begin_;
   }
 
-  v93 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v35, v116.__end_ - v116.__begin_);
+  v93 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v35, v116.__end_ - v116.__begin_);
   memset(&v111, 0, sizeof(v111));
-  v36 = [(FTTextToSpeechFeature *)self prompts];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v111, [v36 count]);
+  prompts = [(FTTextToSpeechFeature *)self prompts];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v111, [prompts count]);
 
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  v37 = [(FTTextToSpeechFeature *)self prompts];
-  v38 = [v37 countByEnumeratingWithState:&v107 objects:v124 count:16];
+  prompts2 = [(FTTextToSpeechFeature *)self prompts];
+  v38 = [prompts2 countByEnumeratingWithState:&v107 objects:v124 count:16];
   if (v38)
   {
     v39 = *v108;
@@ -944,10 +944,10 @@ LABEL_8:
       {
         if (*v108 != v39)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(prompts2);
         }
 
-        v41 = [*(*(&v107 + 1) + 8 * k) addObjectToBuffer:a3];
+        v41 = [*(*(&v107 + 1) + 8 * k) addObjectToBuffer:buffer];
         v42 = v111.__end_;
         if (v111.__end_ >= v111.__end_cap_.__value_)
         {
@@ -1003,7 +1003,7 @@ LABEL_8:
         v111.__end_ = v43;
       }
 
-      v38 = [v37 countByEnumeratingWithState:&v107 objects:v124 count:16];
+      v38 = [prompts2 countByEnumeratingWithState:&v107 objects:v124 count:16];
     }
 
     while (v38);
@@ -1019,17 +1019,17 @@ LABEL_8:
     v51 = v111.__begin_;
   }
 
-  v92 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v51, v111.__end_ - v111.__begin_);
+  v92 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v51, v111.__end_ - v111.__begin_);
   memset(&v106, 0, sizeof(v106));
-  v52 = [(FTTextToSpeechFeature *)self replacement];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v106, [v52 count]);
+  replacement = [(FTTextToSpeechFeature *)self replacement];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v106, [replacement count]);
 
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v53 = [(FTTextToSpeechFeature *)self replacement];
-  v54 = [v53 countByEnumeratingWithState:&v102 objects:v123 count:16];
+  replacement2 = [(FTTextToSpeechFeature *)self replacement];
+  v54 = [replacement2 countByEnumeratingWithState:&v102 objects:v123 count:16];
   if (v54)
   {
     v55 = *v103;
@@ -1039,10 +1039,10 @@ LABEL_8:
       {
         if (*v103 != v55)
         {
-          objc_enumerationMutation(v53);
+          objc_enumerationMutation(replacement2);
         }
 
-        v57 = [*(*(&v102 + 1) + 8 * m) addObjectToBuffer:a3];
+        v57 = [*(*(&v102 + 1) + 8 * m) addObjectToBuffer:buffer];
         v58 = v106.__end_;
         if (v106.__end_ >= v106.__end_cap_.__value_)
         {
@@ -1098,7 +1098,7 @@ LABEL_8:
         v106.__end_ = v59;
       }
 
-      v54 = [v53 countByEnumeratingWithState:&v102 objects:v123 count:16];
+      v54 = [replacement2 countByEnumeratingWithState:&v102 objects:v123 count:16];
     }
 
     while (v54);
@@ -1114,18 +1114,18 @@ LABEL_8:
     v67 = v106.__begin_;
   }
 
-  v68 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v67, v106.__end_ - v106.__begin_);
+  v68 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v67, v106.__end_ - v106.__begin_);
   memset(&v101, 0, sizeof(v101));
-  v69 = [(FTTextToSpeechFeature *)self neural_phoneme_sequence];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v101, [v69 count]);
+  neural_phoneme_sequence = [(FTTextToSpeechFeature *)self neural_phoneme_sequence];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v101, [neural_phoneme_sequence count]);
 
   v99 = 0u;
   v100 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v70 = [(FTTextToSpeechFeature *)self neural_phoneme_sequence];
+  neural_phoneme_sequence2 = [(FTTextToSpeechFeature *)self neural_phoneme_sequence];
   v96 = v68;
-  v71 = [v70 countByEnumeratingWithState:&v97 objects:v122 count:16];
+  v71 = [neural_phoneme_sequence2 countByEnumeratingWithState:&v97 objects:v122 count:16];
   if (v71)
   {
     v72 = *v98;
@@ -1135,10 +1135,10 @@ LABEL_8:
       {
         if (*v98 != v72)
         {
-          objc_enumerationMutation(v70);
+          objc_enumerationMutation(neural_phoneme_sequence2);
         }
 
-        v74 = [*(*(&v97 + 1) + 8 * n) addObjectToBuffer:a3];
+        v74 = [*(*(&v97 + 1) + 8 * n) addObjectToBuffer:buffer];
         v75 = v101.__end_;
         if (v101.__end_ >= v101.__end_cap_.__value_)
         {
@@ -1194,7 +1194,7 @@ LABEL_8:
         v101.__end_ = v76;
       }
 
-      v71 = [v70 countByEnumeratingWithState:&v97 objects:v122 count:16];
+      v71 = [neural_phoneme_sequence2 countByEnumeratingWithState:&v97 objects:v122 count:16];
     }
 
     while (v71);
@@ -1210,17 +1210,17 @@ LABEL_8:
     v84 = v101.__begin_;
   }
 
-  v85 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v84, v101.__end_ - v101.__begin_);
-  *(a3 + 70) = 1;
-  v86 = *(a3 + 8);
-  v87 = *(a3 + 12);
-  v88 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v94);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v93);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 8, v92);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 10, v96);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v85);
-  v89.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v86 - v87 + v88);
+  v85 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v84, v101.__end_ - v101.__begin_);
+  *(buffer + 70) = 1;
+  v86 = *(buffer + 8);
+  v87 = *(buffer + 12);
+  v88 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v94);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v93);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 8, v92);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 10, v96);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v85);
+  v89.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v86 - v87 + v88);
   if (v101.__begin_)
   {
     v101.__end_ = v101.__begin_;

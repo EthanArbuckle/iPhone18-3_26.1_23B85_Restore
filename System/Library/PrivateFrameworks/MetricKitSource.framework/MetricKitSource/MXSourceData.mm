@@ -1,6 +1,6 @@
 @interface MXSourceData
 - (MXSourceData)init;
-- (MXSourceData)initWithCoder:(id)a3;
+- (MXSourceData)initWithCoder:(id)coder;
 @end
 
 @implementation MXSourceData
@@ -12,7 +12,7 @@
   return [(MXSourceData *)&v3 init];
 }
 
-- (MXSourceData)initWithCoder:(id)a3
+- (MXSourceData)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = MXSourceData;

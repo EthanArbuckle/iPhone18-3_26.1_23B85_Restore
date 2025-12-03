@@ -1,28 +1,28 @@
 @interface MSHistorySearchItem
 + (Class)managedClass;
-- (MSHistorySearchItem)initWithGeoMapRegion:(id)a3 language:(id)a4 locationDisplay:(id)a5 query:(id)a6;
-- (MSHistorySearchItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSHistorySearchItem)initWithStore:(id)a3 geoMapRegion:(id)a4 language:(id)a5 locationDisplay:(id)a6 query:(id)a7;
+- (MSHistorySearchItem)initWithGeoMapRegion:(id)region language:(id)language locationDisplay:(id)display query:(id)query;
+- (MSHistorySearchItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSHistorySearchItem)initWithStore:(id)store geoMapRegion:(id)region language:(id)language locationDisplay:(id)display query:(id)query;
 - (NSData)geoMapRegion;
-- (void)setGeoMapRegion:(id)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
+- (void)setGeoMapRegion:(id)region;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
 @end
 
 @implementation MSHistorySearchItem
 
-- (MSHistorySearchItem)initWithGeoMapRegion:(id)a3 language:(id)a4 locationDisplay:(id)a5 query:(id)a6
+- (MSHistorySearchItem)initWithGeoMapRegion:(id)region language:(id)language locationDisplay:(id)display query:(id)query
 {
-  v9 = a3;
-  if (a3)
+  regionCopy = region;
+  if (region)
   {
-    v10 = a4;
-    v11 = a5;
-    v12 = a6;
-    v13 = v9;
-    v9 = sub_1B63BE924();
+    languageCopy = language;
+    displayCopy = display;
+    queryCopy = query;
+    v13 = regionCopy;
+    regionCopy = sub_1B63BE924();
     v15 = v14;
 
-    if (a4)
+    if (language)
     {
       goto LABEL_3;
     }
@@ -30,17 +30,17 @@
 
   else
   {
-    v25 = a4;
-    v26 = a5;
-    v27 = a6;
+    languageCopy2 = language;
+    displayCopy2 = display;
+    queryCopy2 = query;
     v15 = 0xF000000000000000;
-    if (a4)
+    if (language)
     {
 LABEL_3:
       v16 = sub_1B63BEBD4();
       v18 = v17;
 
-      if (a5)
+      if (display)
       {
         goto LABEL_4;
       }
@@ -48,7 +48,7 @@ LABEL_3:
 LABEL_8:
       v19 = 0;
       v21 = 0;
-      if (a6)
+      if (query)
       {
         goto LABEL_5;
       }
@@ -56,13 +56,13 @@ LABEL_8:
 LABEL_9:
       v22 = 0;
       v24 = 0;
-      return HistorySearchItem.init(geoMapRegion:language:locationDisplay:query:)(v9, v15, v16, v18, v19, v21, v22, v24);
+      return HistorySearchItem.init(geoMapRegion:language:locationDisplay:query:)(regionCopy, v15, v16, v18, v19, v21, v22, v24);
     }
   }
 
   v16 = 0;
   v18 = 0;
-  if (!a5)
+  if (!display)
   {
     goto LABEL_8;
   }
@@ -71,7 +71,7 @@ LABEL_4:
   v19 = sub_1B63BEBD4();
   v21 = v20;
 
-  if (!a6)
+  if (!query)
   {
     goto LABEL_9;
   }
@@ -80,23 +80,23 @@ LABEL_5:
   v22 = sub_1B63BEBD4();
   v24 = v23;
 
-  return HistorySearchItem.init(geoMapRegion:language:locationDisplay:query:)(v9, v15, v16, v18, v19, v21, v22, v24);
+  return HistorySearchItem.init(geoMapRegion:language:locationDisplay:query:)(regionCopy, v15, v16, v18, v19, v21, v22, v24);
 }
 
-- (MSHistorySearchItem)initWithStore:(id)a3 geoMapRegion:(id)a4 language:(id)a5 locationDisplay:(id)a6 query:(id)a7
+- (MSHistorySearchItem)initWithStore:(id)store geoMapRegion:(id)region language:(id)language locationDisplay:(id)display query:(id)query
 {
-  v10 = a4;
-  if (a4)
+  regionCopy = region;
+  if (region)
   {
-    v12 = a3;
-    v13 = a5;
-    v14 = a6;
-    v15 = a7;
-    v16 = v10;
-    v10 = sub_1B63BE924();
+    storeCopy = store;
+    languageCopy = language;
+    displayCopy = display;
+    queryCopy = query;
+    v16 = regionCopy;
+    regionCopy = sub_1B63BE924();
     v18 = v17;
 
-    if (a5)
+    if (language)
     {
       goto LABEL_3;
     }
@@ -104,18 +104,18 @@ LABEL_5:
 
   else
   {
-    v28 = a3;
-    v29 = a5;
-    v30 = a6;
-    v31 = a7;
+    storeCopy2 = store;
+    languageCopy2 = language;
+    displayCopy2 = display;
+    queryCopy2 = query;
     v18 = 0xF000000000000000;
-    if (a5)
+    if (language)
     {
 LABEL_3:
       v19 = sub_1B63BEBD4();
       v21 = v20;
 
-      if (a6)
+      if (display)
       {
         goto LABEL_4;
       }
@@ -123,7 +123,7 @@ LABEL_3:
 LABEL_8:
       v22 = 0;
       v24 = 0;
-      if (a7)
+      if (query)
       {
         goto LABEL_5;
       }
@@ -131,13 +131,13 @@ LABEL_8:
 LABEL_9:
       v25 = 0;
       v27 = 0;
-      return HistorySearchItem.init(store:geoMapRegion:language:locationDisplay:query:)(a3, v10, v18, v19, v21, v22, v24, v25, v27);
+      return HistorySearchItem.init(store:geoMapRegion:language:locationDisplay:query:)(store, regionCopy, v18, v19, v21, v22, v24, v25, v27);
     }
   }
 
   v19 = 0;
   v21 = 0;
-  if (!a6)
+  if (!display)
   {
     goto LABEL_8;
   }
@@ -146,7 +146,7 @@ LABEL_4:
   v22 = sub_1B63BEBD4();
   v24 = v23;
 
-  if (!a7)
+  if (!query)
   {
     goto LABEL_9;
   }
@@ -155,7 +155,7 @@ LABEL_5:
   v25 = sub_1B63BEBD4();
   v27 = v26;
 
-  return HistorySearchItem.init(store:geoMapRegion:language:locationDisplay:query:)(a3, v10, v18, v19, v21, v22, v24, v25, v27);
+  return HistorySearchItem.init(store:geoMapRegion:language:locationDisplay:query:)(store, regionCopy, v18, v19, v21, v22, v24, v25, v27);
 }
 
 + (Class)managedClass
@@ -165,16 +165,16 @@ LABEL_5:
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B630586C(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B630586C(objectCopy, load);
 }
 
 - (NSData)geoMapRegion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B6303940();
   v5 = v4;
 
@@ -193,31 +193,31 @@ LABEL_5:
   return v6;
 }
 
-- (void)setGeoMapRegion:(id)a3
+- (void)setGeoMapRegion:(id)region
 {
-  v3 = a3;
-  if (a3)
+  regionCopy = region;
+  if (region)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1B63BE924();
+    selfCopy = self;
+    v5 = regionCopy;
+    regionCopy = sub_1B63BE924();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1B6305AF8(v3, v7);
-  sub_1B6284F64(v3, v7);
+  sub_1B6305AF8(regionCopy, v7);
+  sub_1B6284F64(regionCopy, v7);
 }
 
-- (MSHistorySearchItem)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSHistorySearchItem)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
+  parentCopy = parent;
+  loadCopy = load;
   *(&self->super.super.super.isa + OBJC_IVAR___MSHistorySearchItem__geoMapRegion) = xmmword_1B63C3E40;
   v10 = (&self->super.super.super.isa + OBJC_IVAR___MSHistorySearchItem__language);
   *v10 = 0;
@@ -228,8 +228,8 @@ LABEL_5:
   v12 = (&self->super.super.super.isa + OBJC_IVAR___MSHistorySearchItem__query);
   *v12 = 0;
   v12[1] = 0;
-  v13 = a3;
-  return sub_1B62F0450(a3, a4, v7, v6);
+  objectCopy = object;
+  return sub_1B62F0450(object, store, loadCopy, parentCopy);
 }
 
 @end

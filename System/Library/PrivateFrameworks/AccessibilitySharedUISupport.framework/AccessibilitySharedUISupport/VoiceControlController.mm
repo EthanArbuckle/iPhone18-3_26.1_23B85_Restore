@@ -1,12 +1,12 @@
 @interface VoiceControlController
-- (void)_updateSettingsWithNotification:(id)a3;
+- (void)_updateSettingsWithNotification:(id)notification;
 @end
 
 @implementation VoiceControlController
 
-- (void)_updateSettingsWithNotification:(id)a3
+- (void)_updateSettingsWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_23DAA8DC8();
 }

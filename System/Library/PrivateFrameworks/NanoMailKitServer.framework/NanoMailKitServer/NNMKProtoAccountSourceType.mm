@@ -1,20 +1,20 @@
 @interface NNMKProtoAccountSourceType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSourceType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSourceType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoAccountSourceType
 
-- (void)setHasSourceType:(BOOL)a3
+- (void)setHasSourceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoAccountSourceType;
   v4 = [(NNMKProtoAccountSourceType *)&v8 description];
-  v5 = [(NNMKProtoAccountSourceType *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoAccountSourceType *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   accountId = self->_accountId;
   if (accountId)
   {
-    [v3 setObject:accountId forKey:@"accountId"];
+    [dictionary setObject:accountId forKey:@"accountId"];
   }
 
   has = self->_has;
@@ -67,14 +67,14 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_accountId)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -82,7 +82,7 @@
   {
     fullSyncVersion = self->_fullSyncVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -90,39 +90,39 @@
   {
     sourceType = self->_sourceType;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_accountId)
   {
-    v6 = v4;
-    [v4 setAccountId:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAccountId:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 4) = self->_fullSyncVersion;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 4) = self->_fullSyncVersion;
+    *(toCopy + 24) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_sourceType;
-    *(v4 + 24) |= 2u;
+    *(toCopy + 5) = self->_sourceType;
+    *(toCopy + 24) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountId copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -143,16 +143,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   accountId = self->_accountId;
-  if (accountId | *(v4 + 1))
+  if (accountId | *(equalCopy + 1))
   {
     if (![(NSString *)accountId isEqual:?])
     {
@@ -162,23 +162,23 @@
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_fullSyncVersion != *(v4 + 4))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 24) & 2) == 0;
+  v6 = (*(equalCopy + 24) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_sourceType != *(v4 + 5))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_sourceType != *(equalCopy + 5))
     {
       goto LABEL_13;
     }
@@ -218,27 +218,27 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(NNMKProtoAccountSourceType *)self setAccountId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if (v5)
   {
-    self->_fullSyncVersion = v4[4];
+    self->_fullSyncVersion = fromCopy[4];
     *&self->_has |= 1u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_sourceType = v4[5];
+    self->_sourceType = fromCopy[5];
     *&self->_has |= 2u;
   }
 }

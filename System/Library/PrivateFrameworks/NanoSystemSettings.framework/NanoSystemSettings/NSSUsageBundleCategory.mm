@@ -1,31 +1,31 @@
 @interface NSSUsageBundleCategory
-- (NSSUsageBundleCategory)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NSSUsageBundleCategory)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSUsageBundleCategory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeInt64:self->_size forKey:@"size"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeInt64:self->_size forKey:@"size"];
 }
 
-- (NSSUsageBundleCategory)initWithCoder:(id)a3
+- (NSSUsageBundleCategory)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = NSSUsageBundleCategory;
   v5 = [(NSSUsageBundleCategory *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_size = [v4 decodeInt64ForKey:@"size"];
+    v5->_size = [coderCopy decodeInt64ForKey:@"size"];
   }
 
   return v5;

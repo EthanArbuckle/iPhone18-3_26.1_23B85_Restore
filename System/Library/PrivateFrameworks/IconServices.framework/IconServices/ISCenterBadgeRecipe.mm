@@ -1,6 +1,6 @@
 @interface ISCenterBadgeRecipe
 - (id)hintedBadgeRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISCenterBadgeRecipe
@@ -28,17 +28,17 @@ uint64_t __38__ISCenterBadgeRecipe_hintedBadgeRect__block_invoke()
   return [v2 addHintedRect:73.0 forSize:{135.0, 366.0, 190.0, 512.0, 512.0}];
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"layer"];
   v8 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v8 setName:@"Center badge"];
-  v9 = [(ISCenterBadgeRecipe *)self hintedBadgeRect];
-  [v9 hintedRectForSize:{width, height}];
+  hintedBadgeRect = [(ISCenterBadgeRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v8 setFrame:?];
 
   [(ISContentLayer *)v8 setContent:@"kISPrimaryResourceKey"];

@@ -1,19 +1,19 @@
 @interface FMDBLEBeacon
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FMDBLEBeacon)init;
-- (FMDBLEBeacon)initWithCoder:(id)a3;
-- (FMDBLEBeacon)initWithConfiguration:(id)a3;
-- (FMDBLEBeacon)initWithDictionary:(id)a3;
+- (FMDBLEBeacon)initWithCoder:(id)coder;
+- (FMDBLEBeacon)initWithConfiguration:(id)configuration;
+- (FMDBLEBeacon)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDBLEBeacon
 
-- (FMDBLEBeacon)initWithConfiguration:(id)a3
+- (FMDBLEBeacon)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = FMDBLEBeacon;
   v5 = [(FMDBLEBeacon *)&v13 init];
@@ -22,37 +22,37 @@
     v6 = +[NSDate date];
     [(FMDBLEBeacon *)v5 setUpdateDate:v6];
 
-    v7 = [v4 name];
-    [(FMDBLEBeacon *)v5 setName:v7];
+    name = [configurationCopy name];
+    [(FMDBLEBeacon *)v5 setName:name];
 
-    v8 = [v4 rssi];
-    [(FMDBLEBeacon *)v5 setRssi:v8];
+    rssi = [configurationCopy rssi];
+    [(FMDBLEBeacon *)v5 setRssi:rssi];
 
-    v9 = [v4 beaconIdentifier];
-    [(FMDBLEBeacon *)v5 setIdentifier:v9];
+    beaconIdentifier = [configurationCopy beaconIdentifier];
+    [(FMDBLEBeacon *)v5 setIdentifier:beaconIdentifier];
 
-    v10 = [v4 colorCode];
-    [(FMDBLEBeacon *)v5 setColorCode:v10];
+    colorCode = [configurationCopy colorCode];
+    [(FMDBLEBeacon *)v5 setColorCode:colorCode];
 
-    -[FMDBLEBeacon setPrimary:](v5, "setPrimary:", [v4 primary]);
-    -[FMDBLEBeacon setUtpConnected:](v5, "setUtpConnected:", [v4 utpConnected]);
-    v11 = [v4 styleDescriptor];
-    [(FMDBLEBeacon *)v5 setStyleDescriptor:v11];
+    -[FMDBLEBeacon setPrimary:](v5, "setPrimary:", [configurationCopy primary]);
+    -[FMDBLEBeacon setUtpConnected:](v5, "setUtpConnected:", [configurationCopy utpConnected]);
+    styleDescriptor = [configurationCopy styleDescriptor];
+    [(FMDBLEBeacon *)v5 setStyleDescriptor:styleDescriptor];
   }
 
   return v5;
 }
 
-- (FMDBLEBeacon)initWithDictionary:(id)a3
+- (FMDBLEBeacon)initWithDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = FMDBLEBeacon;
   return [(FMDBLEBeacon *)&v4 init];
 }
 
-- (FMDBLEBeacon)initWithCoder:(id)a3
+- (FMDBLEBeacon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = FMDBLEBeacon;
   v5 = [(FMDBLEBeacon *)&v24 init];
@@ -60,33 +60,33 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("rssi");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(FMDBLEBeacon *)v5 setRssi:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector("updateDate");
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     [(FMDBLEBeacon *)v5 setUpdateDate:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
     [(FMDBLEBeacon *)v5 setIdentifier:v12];
 
     v13 = objc_opt_class();
     v14 = NSStringFromSelector("name");
-    v15 = [v4 decodeObjectOfClass:v13 forKey:v14];
+    v15 = [coderCopy decodeObjectOfClass:v13 forKey:v14];
     [(FMDBLEBeacon *)v5 setName:v15];
 
     v16 = objc_opt_class();
     v17 = NSStringFromSelector("colorCode");
-    v18 = [v4 decodeObjectOfClass:v16 forKey:v17];
+    v18 = [coderCopy decodeObjectOfClass:v16 forKey:v17];
     [(FMDBLEBeacon *)v5 setColorCode:v18];
 
     v19 = objc_opt_class();
     v20 = NSStringFromSelector("primary");
-    v21 = [v4 decodeObjectOfClass:v19 forKey:v20];
+    v21 = [coderCopy decodeObjectOfClass:v19 forKey:v20];
     -[FMDBLEBeacon setPrimary:](v5, "setPrimary:", [v21 BOOLValue]);
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"styleDescriptor"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"styleDescriptor"];
     [(FMDBLEBeacon *)v5 setStyleDescriptor:v22];
   }
 
@@ -111,17 +111,17 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(FMDBLEBeacon *)self rssi];
-  [v3 fm_safeSetObject:v4 forKey:@"rssi"];
+  rssi = [(FMDBLEBeacon *)self rssi];
+  [v3 fm_safeSetObject:rssi forKey:@"rssi"];
 
-  v5 = [(FMDBLEBeacon *)self name];
-  [v3 fm_safeSetObject:v5 forKey:@"name"];
+  name = [(FMDBLEBeacon *)self name];
+  [v3 fm_safeSetObject:name forKey:@"name"];
 
-  v6 = [(FMDBLEBeacon *)self updateDate];
-  if (v6)
+  updateDate = [(FMDBLEBeacon *)self updateDate];
+  if (updateDate)
   {
-    v7 = [(FMDBLEBeacon *)self updateDate];
-    v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v7 fm_epoch]);
+    updateDate2 = [(FMDBLEBeacon *)self updateDate];
+    v8 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [updateDate2 fm_epoch]);
     [v3 fm_safeSetObject:v8 forKey:@"updateTimestamp"];
   }
 
@@ -133,41 +133,41 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDBLEBeacon *)self rssi];
+  coderCopy = coder;
+  rssi = [(FMDBLEBeacon *)self rssi];
   v6 = NSStringFromSelector("rssi");
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:rssi forKey:v6];
 
-  v7 = [(FMDBLEBeacon *)self updateDate];
+  updateDate = [(FMDBLEBeacon *)self updateDate];
   v8 = NSStringFromSelector("updateDate");
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:updateDate forKey:v8];
 
-  v9 = [(FMDBLEBeacon *)self identifier];
-  [v4 encodeObject:v9 forKey:@"beaconIdentifier"];
+  identifier = [(FMDBLEBeacon *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"beaconIdentifier"];
 
-  v10 = [(FMDBLEBeacon *)self name];
+  name = [(FMDBLEBeacon *)self name];
   v11 = NSStringFromSelector("name");
-  [v4 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:name forKey:v11];
 
-  v12 = [(FMDBLEBeacon *)self colorCode];
+  colorCode = [(FMDBLEBeacon *)self colorCode];
   v13 = NSStringFromSelector("colorCode");
-  [v4 encodeObject:v12 forKey:v13];
+  [coderCopy encodeObject:colorCode forKey:v13];
 
   v14 = [NSNumber numberWithBool:[(FMDBLEBeacon *)self primary]];
   v15 = NSStringFromSelector("primary");
-  [v4 encodeObject:v14 forKey:v15];
+  [coderCopy encodeObject:v14 forKey:v15];
 
-  v17 = [(FMDBLEBeacon *)self styleDescriptor];
+  styleDescriptor = [(FMDBLEBeacon *)self styleDescriptor];
   v16 = NSStringFromSelector("styleDescriptor");
-  [v4 encodeObject:v17 forKey:v16];
+  [coderCopy encodeObject:styleDescriptor forKey:v16];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -177,7 +177,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FMDBLEBeacon *)v4 hash];
+      v5 = [(FMDBLEBeacon *)equalCopy hash];
       v6 = v5 == [(FMDBLEBeacon *)self hash];
     }
 
@@ -192,9 +192,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(FMDBLEBeacon *)self identifier];
-  v3 = [v2 stringValue];
-  v4 = [v3 hash];
+  identifier = [(FMDBLEBeacon *)self identifier];
+  stringValue = [identifier stringValue];
+  v4 = [stringValue hash];
 
   return v4;
 }

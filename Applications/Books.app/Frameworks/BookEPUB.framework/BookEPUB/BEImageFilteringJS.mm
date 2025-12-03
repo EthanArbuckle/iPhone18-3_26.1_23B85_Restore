@@ -1,13 +1,13 @@
 @interface BEImageFilteringJS
-- (id)anyFrameJavascript:(int64_t)a3;
-- (id)anyFrameJavascriptURL:(int64_t)a3;
+- (id)anyFrameJavascript:(int64_t)javascript;
+- (id)anyFrameJavascriptURL:(int64_t)l;
 @end
 
 @implementation BEImageFilteringJS
 
-- (id)anyFrameJavascript:(int64_t)a3
+- (id)anyFrameJavascript:(int64_t)javascript
 {
-  if (a3)
+  if (javascript)
   {
     v5 = 0;
   }
@@ -20,9 +20,9 @@
   return v5;
 }
 
-- (id)anyFrameJavascriptURL:(int64_t)a3
+- (id)anyFrameJavascriptURL:(int64_t)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0;
   }

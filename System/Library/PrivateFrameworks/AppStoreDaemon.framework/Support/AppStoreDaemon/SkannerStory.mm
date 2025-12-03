@@ -1,7 +1,7 @@
 @interface SkannerStory
 + (Class)databaseEntityClass;
 + (id)defaultProperties;
-- (_TtC9appstored12SkannerStory)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5;
+- (_TtC9appstored12SkannerStory)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues;
 @end
 
 @implementation SkannerStory
@@ -21,7 +21,7 @@
   return v2.super.isa;
 }
 
-- (_TtC9appstored12SkannerStory)initWithDatabaseID:(int64_t)a3 propertyValues:(id)a4 externalPropertyValues:(id)a5
+- (_TtC9appstored12SkannerStory)initWithDatabaseID:(int64_t)d propertyValues:(id)values externalPropertyValues:(id)propertyValues
 {
   ObjectType = swift_getObjectType();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -32,7 +32,7 @@
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(SQLiteMemoryEntity *)&v12 initWithDatabaseID:a3 propertyValues:isa externalPropertyValues:v9];
+  v10 = [(SQLiteMemoryEntity *)&v12 initWithDatabaseID:d propertyValues:isa externalPropertyValues:v9];
 
   return v10;
 }

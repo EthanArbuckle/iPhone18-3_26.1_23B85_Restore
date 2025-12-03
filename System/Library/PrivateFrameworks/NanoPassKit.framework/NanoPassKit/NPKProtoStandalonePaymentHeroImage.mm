@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentHeroImage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentHeroImage
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentHeroImage;
   v4 = [(NPKProtoStandalonePaymentHeroImage *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentHeroImage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentHeroImage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   imageHash = self->_imageHash;
@@ -54,15 +54,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     [NPKProtoStandalonePaymentHeroImage writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_imageHash)
   {
@@ -82,57 +82,57 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setIdentifier:self->_identifier];
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
   if (self->_imageHash)
   {
-    [v5 setImageHash:?];
+    [toCopy setImageHash:?];
   }
 
   if (self->_imageData)
   {
-    [v5 setImageData:?];
+    [toCopy setImageData:?];
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_imageURL)
   {
-    [v5 setImageURL:?];
-    v4 = v5;
+    [toCopy setImageURL:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_imageHash copyWithZone:a3];
+  v8 = [(NSString *)self->_imageHash copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSData *)self->_imageData copyWithZone:a3];
+  v10 = [(NSData *)self->_imageData copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSString *)self->_imageURL copyWithZone:a3];
+  v12 = [(NSString *)self->_imageURL copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[1])) || -[NSString isEqual:](identifier, "isEqual:")) && ((imageHash = self->_imageHash, !(imageHash | v4[3])) || -[NSString isEqual:](imageHash, "isEqual:")) && ((imageData = self->_imageData, !(imageData | v4[2])) || -[NSData isEqual:](imageData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[1])) || -[NSString isEqual:](identifier, "isEqual:")) && ((imageHash = self->_imageHash, !(imageHash | equalCopy[3])) || -[NSString isEqual:](imageHash, "isEqual:")) && ((imageData = self->_imageData, !(imageData | equalCopy[2])) || -[NSData isEqual:](imageData, "isEqual:")))
   {
     imageURL = self->_imageURL;
-    if (imageURL | v4[4])
+    if (imageURL | equalCopy[4])
     {
       v9 = [(NSString *)imageURL isEqual:?];
     }
@@ -159,25 +159,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_imageURL hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(NPKProtoStandalonePaymentHeroImage *)self setIdentifier:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoStandalonePaymentHeroImage *)self setImageHash:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoStandalonePaymentHeroImage *)self setImageData:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(NPKProtoStandalonePaymentHeroImage *)self setImageURL:?];
   }

@@ -1,23 +1,23 @@
 @interface WFAskLLMModelParameterSummaryEditor
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4;
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4;
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style;
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor;
 @end
 
 @implementation WFAskLLMModelParameterSummaryEditor
 
-- (void)beginEditingSlotWithIdentifier:(id)a3 presentationAnchor:(id)a4
+- (void)beginEditingSlotWithIdentifier:(id)identifier presentationAnchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_27440DCAC(v8, v7);
+  identifierCopy = identifier;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_27440DCAC(selfCopy, anchorCopy);
 }
 
-- (id)customMenuElementsForSlotWithIdentifier:(id)a3 style:(unint64_t)a4
+- (id)customMenuElementsForSlotWithIdentifier:(id)identifier style:(unint64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_27440E234(v6, a4);
+  identifierCopy = identifier;
+  selfCopy = self;
+  v8 = sub_27440E234(identifierCopy, style);
 
   if (v8)
   {

@@ -2,11 +2,11 @@
 + (id)searchableIndex;
 + (id)sharedReindexer;
 - (ICCDCSIReindexer)init;
-- (void)_reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)registerCoreDataCoreSpotlightDelegate:(id)a3;
+- (void)_reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)registerCoreDataCoreSpotlightDelegate:(id)delegate;
 - (void)stopIndexing;
-- (void)unregisterCoreDataCoreSpotlightDelegate:(id)a3;
+- (void)unregisterCoreDataCoreSpotlightDelegate:(id)delegate;
 @end
 
 @implementation ICCDCSIReindexer
@@ -52,18 +52,18 @@ uint64_t __35__ICCDCSIReindexer_sharedReindexer__block_invoke()
   return v2;
 }
 
-- (void)registerCoreDataCoreSpotlightDelegate:(id)a3
+- (void)registerCoreDataCoreSpotlightDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ICCDCSIReindexer *)self registeredDelegates];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  registeredDelegates = [(ICCDCSIReindexer *)self registeredDelegates];
+  [registeredDelegates addObject:delegateCopy];
 }
 
-- (void)unregisterCoreDataCoreSpotlightDelegate:(id)a3
+- (void)unregisterCoreDataCoreSpotlightDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ICCDCSIReindexer *)self registeredDelegates];
-  [v5 removeObject:v4];
+  delegateCopy = delegate;
+  registeredDelegates = [(ICCDCSIReindexer *)self registeredDelegates];
+  [registeredDelegates removeObject:delegateCopy];
 }
 
 - (void)stopIndexing
@@ -73,8 +73,8 @@ uint64_t __35__ICCDCSIReindexer_sharedReindexer__block_invoke()
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ICCDCSIReindexer *)self registeredDelegates];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  registeredDelegates = [(ICCDCSIReindexer *)self registeredDelegates];
+  v3 = [registeredDelegates countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -86,14 +86,14 @@ uint64_t __35__ICCDCSIReindexer_sharedReindexer__block_invoke()
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(registeredDelegates);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) stopSpotlightIndexing];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [registeredDelegates countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -119,23 +119,23 @@ uint64_t __35__ICCDCSIReindexer_searchableIndex__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [ICCDCSIReindexer deleteAllSearchableItemsWithCompletionHandler:];
   }
 
-  v5 = [objc_opt_class() searchableIndex];
+  searchableIndex = [objc_opt_class() searchableIndex];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8484A20;
-  v8 = v3;
-  v6 = v3;
-  [v5 deleteAllSearchableItemsWithCompletionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [searchableIndex deleteAllSearchableItemsWithCompletionHandler:v7];
 }
 
 void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -163,16 +163,16 @@ void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___bloc
   }
 }
 
-- (void)_reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)_reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v35[0] = 0;
   v35[1] = v35;
   v35[2] = 0x2020000000;
-  v8 = [(ICCDCSIReindexer *)self registeredDelegates];
-  v9 = [v8 count];
+  registeredDelegates = [(ICCDCSIReindexer *)self registeredDelegates];
+  v9 = [registeredDelegates count];
 
   v35[3] = v9;
   v34[0] = 0;
@@ -181,7 +181,7 @@ void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___bloc
   v34[3] = 0;
   v10 = os_log_create("com.apple.notes", "SearchIndexer");
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (identifiersCopy)
   {
     if (v11)
     {
@@ -194,8 +194,8 @@ void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___bloc
     [ICCDCSIReindexer _reindexSearchableItemsWithIdentifiers:completionHandler:];
   }
 
-  v12 = [(ICCDCSIReindexer *)self registeredDelegates];
-  v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_10];
+  registeredDelegates2 = [(ICCDCSIReindexer *)self registeredDelegates];
+  v13 = [registeredDelegates2 sortedArrayUsingComparator:&__block_literal_global_10];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -203,7 +203,7 @@ void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___bloc
   aBlock[3] = &unk_1E8484A68;
   v32 = v34;
   v33 = v35;
-  v24 = v7;
+  v24 = handlerCopy;
   v31 = v24;
   v14 = _Block_copy(aBlock);
   v28 = 0u;
@@ -235,20 +235,20 @@ void __66__ICCDCSIReindexer_deleteAllSearchableItemsWithCompletionHandler___bloc
         }
 
         v20 = objc_opt_class();
-        v21 = [objc_opt_class() searchableIndex];
-        v22 = ICDynamicCast(v20, v21);
+        searchableIndex = [objc_opt_class() searchableIndex];
+        v22 = ICDynamicCast(v20, searchableIndex);
 
         if (v22)
         {
-          v23 = [v22 searchableIndex];
-          if (v6)
+          searchableIndex2 = [v22 searchableIndex];
+          if (identifiersCopy)
           {
-            [v18 searchableIndex:v23 reindexSearchableItemsWithIdentifiers:v6 acknowledgementHandler:v14];
+            [v18 searchableIndex:searchableIndex2 reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:v14];
           }
 
           else
           {
-            [v18 searchableIndex:v23 reindexAllSearchableItemsWithAcknowledgementHandler:v14];
+            [v18 searchableIndex:searchableIndex2 reindexAllSearchableItemsWithAcknowledgementHandler:v14];
           }
         }
 

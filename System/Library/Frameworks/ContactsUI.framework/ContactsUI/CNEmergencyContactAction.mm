@@ -1,53 +1,53 @@
 @interface CNEmergencyContactAction
 + (id)log;
-- (CNEmergencyContactAction)initWithContact:(id)a3 healthStoreManager:(id)a4 propertyItems:(id)a5;
+- (CNEmergencyContactAction)initWithContact:(id)contact healthStoreManager:(id)manager propertyItems:(id)items;
 - (NSArray)navigationListItems;
-- (void)createMedicalIDWithEmergencyContact:(id)a3;
+- (void)createMedicalIDWithEmergencyContact:(id)contact;
 - (void)dismissMedicalID;
-- (void)navigationListController:(id)a3 didSelectItem:(id)a4;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
-- (void)performActionWithContactProperty:(id)a3 relationship:(id)a4;
-- (void)performActionWithSender:(id)a3;
-- (void)picker:(id)a3 didPickItem:(id)a4;
-- (void)pickerDidCancel:(id)a3;
-- (void)presentDisambiguationAlertWithSender:(id)a3;
-- (void)showConfirmRemoveAlertWithSender:(id)a3 completion:(id)a4;
-- (void)showMedicalIDViewControllerForMedicalID:(id)a3;
-- (void)showRelationshipPickerForContactProperty:(id)a3 sender:(id)a4;
+- (void)navigationListController:(id)controller didSelectItem:(id)item;
+- (void)performActionForItem:(id)item sender:(id)sender;
+- (void)performActionWithContactProperty:(id)property relationship:(id)relationship;
+- (void)performActionWithSender:(id)sender;
+- (void)picker:(id)picker didPickItem:(id)item;
+- (void)pickerDidCancel:(id)cancel;
+- (void)presentDisambiguationAlertWithSender:(id)sender;
+- (void)showConfirmRemoveAlertWithSender:(id)sender completion:(id)completion;
+- (void)showMedicalIDViewControllerForMedicalID:(id)d;
+- (void)showRelationshipPickerForContactProperty:(id)property sender:(id)sender;
 @end
 
 @implementation CNEmergencyContactAction
 
 - (void)dismissMedicalID
 {
-  v3 = [(CNContactAction *)self delegate];
-  [v3 actionDidFinish:self];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionDidFinish:self];
 
-  v4 = [(CNContactAction *)self delegate];
-  v5 = [(CNEmergencyContactAction *)self medicalIDNavigationController];
-  [v4 action:self dismissViewController:v5 sender:self];
+  delegate2 = [(CNContactAction *)self delegate];
+  medicalIDNavigationController = [(CNEmergencyContactAction *)self medicalIDNavigationController];
+  [delegate2 action:self dismissViewController:medicalIDNavigationController sender:self];
 
   [(CNEmergencyContactAction *)self setMedicalIDNavigationController:0];
 }
 
-- (void)pickerDidCancel:(id)a3
+- (void)pickerDidCancel:(id)cancel
 {
-  [a3 dismissViewControllerAnimated:1 completion:0];
-  v4 = [(CNContactAction *)self delegate];
-  [v4 actionWasCanceled:self];
+  [cancel dismissViewControllerAnimated:1 completion:0];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate actionWasCanceled:self];
 }
 
-- (void)picker:(id)a3 didPickItem:(id)a4
+- (void)picker:(id)picker didPickItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__CNEmergencyContactAction_picker_didPickItem___block_invoke;
   v8[3] = &unk_1E74E77C0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 dismissViewControllerAnimated:1 completion:v8];
+  v9 = itemCopy;
+  v7 = itemCopy;
+  [picker dismissViewControllerAnimated:1 completion:v8];
 }
 
 void __47__CNEmergencyContactAction_picker_didPickItem___block_invoke(uint64_t a1)
@@ -57,20 +57,20 @@ void __47__CNEmergencyContactAction_picker_didPickItem___block_invoke(uint64_t a
   [v2 performActionWithContactProperty:v3 relationship:*(a1 + 40)];
 }
 
-- (void)navigationListController:(id)a3 didSelectItem:(id)a4
+- (void)navigationListController:(id)controller didSelectItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   objc_initWeak(&location, self);
-  v8 = [(CNEmergencyContactAction *)self alertController];
+  alertController = [(CNEmergencyContactAction *)self alertController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__CNEmergencyContactAction_navigationListController_didSelectItem___block_invoke;
   v10[3] = &unk_1E74E6D30;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = itemCopy;
   v11 = v9;
-  [v8 dismissViewControllerAnimated:1 completion:v10];
+  [alertController dismissViewControllerAnimated:1 completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -103,14 +103,14 @@ void __67__CNEmergencyContactAction_navigationListController_didSelectItem___blo
 
 - (NSArray)navigationListItems
 {
-  v3 = [(CNPropertyAction *)self propertyItems];
-  v4 = [v3 count];
+  propertyItems = [(CNPropertyAction *)self propertyItems];
+  v4 = [propertyItems count];
 
   if (v4 >= 2)
   {
     v6 = MEMORY[0x1E695DEC8];
-    v7 = [(CNPropertyAction *)self propertyItems];
-    v8 = [v7 _cn_map:&__block_literal_global_358];
+    propertyItems2 = [(CNPropertyAction *)self propertyItems];
+    v8 = [propertyItems2 _cn_map:&__block_literal_global_358];
     v5 = [v6 arrayWithArray:v8];
   }
 
@@ -130,20 +130,20 @@ id __47__CNEmergencyContactAction_navigationListItems__block_invoke(uint64_t a1,
   return v3;
 }
 
-- (void)showRelationshipPickerForContactProperty:(id)a3 sender:(id)a4
+- (void)showRelationshipPickerForContactProperty:(id)property sender:(id)sender
 {
   v6 = *MEMORY[0x1E695C3A8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 contact];
-  v20 = [CNCardPropertyGroup groupForProperty:v6 contact:v9 store:0 policy:0 linkedPolicies:0];
+  senderCopy = sender;
+  propertyCopy = property;
+  contact = [propertyCopy contact];
+  v20 = [CNCardPropertyGroup groupForProperty:v6 contact:contact store:0 policy:0 linkedPolicies:0];
 
   v10 = MEMORY[0x1E695CEE0];
-  v11 = [v8 value];
-  v12 = [v10 labeledValueWithLabel:0 value:v11];
+  value = [propertyCopy value];
+  v12 = [v10 labeledValueWithLabel:0 value:value];
 
-  v13 = [v8 contact];
-  v14 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:v12 group:v20 contact:v13];
+  contact2 = [propertyCopy contact];
+  v14 = [CNPropertyGroupItem propertyGroupItemWithLabeledValue:v12 group:v20 contact:contact2];
 
   v15 = [[CNLabelPickerController alloc] initForPropertyItem:v14];
   [v15 setDelegate:self];
@@ -153,28 +153,28 @@ id __47__CNEmergencyContactAction_navigationListItems__block_invoke(uint64_t a1,
   v18 = [v17 localizedStringForKey:@"CARD_ACTION_EMERGENCY_RELATIONSHIP_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
   [v15 setTitle:v18];
 
-  [(CNEmergencyContactAction *)self setContactProperty:v8];
-  v19 = [(CNContactAction *)self delegate];
-  [v19 action:self presentViewController:v16 sender:v7];
+  [(CNEmergencyContactAction *)self setContactProperty:propertyCopy];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v16 sender:senderCopy];
 }
 
-- (void)showConfirmRemoveAlertWithSender:(id)a3 completion:(id)a4
+- (void)showConfirmRemoveAlertWithSender:(id)sender completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  senderCopy = sender;
+  completionCopy = completion;
   v8 = MEMORY[0x1E695CD80];
-  v9 = [(CNEmergencyContactAction *)self contactProperty];
-  v10 = [v9 contact];
-  v11 = [v8 stringFromContact:v10 style:0];
+  contactProperty = [(CNEmergencyContactAction *)self contactProperty];
+  contact = [contactProperty contact];
+  v11 = [v8 stringFromContact:contact style:0];
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v12 = [(CNEmergencyContactAction *)self contactProperty];
-    v13 = [v12 value];
+    contactProperty2 = [(CNEmergencyContactAction *)self contactProperty];
+    value = [contactProperty2 value];
 
-    v14 = [v13 formattedStringValue];
+    formattedStringValue = [value formattedStringValue];
 
-    v11 = v14;
+    v11 = formattedStringValue;
   }
 
   v15 = MEMORY[0x1E69DC650];
@@ -191,7 +191,7 @@ id __47__CNEmergencyContactAction_navigationListItems__block_invoke(uint64_t a1,
   v34[1] = 3221225472;
   v34[2] = __72__CNEmergencyContactAction_showConfirmRemoveAlertWithSender_completion___block_invoke;
   v34[3] = &unk_1E74E5C98;
-  v24 = v7;
+  v24 = completionCopy;
   v35 = v24;
   v25 = [v21 actionWithTitle:v23 style:2 handler:v34];
   [v20 addAction:v25];
@@ -208,8 +208,8 @@ id __47__CNEmergencyContactAction_navigationListItems__block_invoke(uint64_t a1,
   v29 = [v26 actionWithTitle:v28 style:1 handler:v31];
   [v20 addAction:v29];
 
-  v30 = [(CNContactAction *)self delegate];
-  [v30 action:self presentViewController:v20 sender:v6];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v20 sender:senderCopy];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&location);
@@ -222,24 +222,24 @@ void __72__CNEmergencyContactAction_showConfirmRemoveAlertWithSender_completion_
   [v1 actionWasCanceled:WeakRetained];
 }
 
-- (void)presentDisambiguationAlertWithSender:(id)a3
+- (void)presentDisambiguationAlertWithSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   v5 = objc_alloc_init(CNUINavigationListViewController);
   [(CNEmergencyContactAction *)self setListController:v5];
 
-  v6 = [(CNEmergencyContactAction *)self listController];
-  [v6 setDelegate:self];
+  listController = [(CNEmergencyContactAction *)self listController];
+  [listController setDelegate:self];
 
-  v7 = [(CNEmergencyContactAction *)self listController];
-  [v7 setContentAlignment:1];
+  listController2 = [(CNEmergencyContactAction *)self listController];
+  [listController2 setContentAlignment:1];
 
-  v8 = [(CNEmergencyContactAction *)self listController];
-  [v8 setShowFirstSectionTopSeparator:1];
+  listController3 = [(CNEmergencyContactAction *)self listController];
+  [listController3 setShowFirstSectionTopSeparator:1];
 
-  v9 = [(CNEmergencyContactAction *)self navigationListItems];
-  v10 = [(CNEmergencyContactAction *)self listController];
-  [v10 setItems:v9];
+  navigationListItems = [(CNEmergencyContactAction *)self navigationListItems];
+  listController4 = [(CNEmergencyContactAction *)self listController];
+  [listController4 setItems:navigationListItems];
 
   v11 = MEMORY[0x1E69DC650];
   v12 = CNContactsUIBundle();
@@ -247,12 +247,12 @@ void __72__CNEmergencyContactAction_showConfirmRemoveAlertWithSender_completion_
   v14 = [v11 alertControllerWithTitle:0 message:v13 preferredStyle:0];
   [(CNEmergencyContactAction *)self setAlertController:v14];
 
-  v15 = [(CNEmergencyContactAction *)self listController];
-  v16 = [(CNEmergencyContactAction *)self alertController];
-  [v16 setContentViewController:v15];
+  listController5 = [(CNEmergencyContactAction *)self listController];
+  alertController = [(CNEmergencyContactAction *)self alertController];
+  [alertController setContentViewController:listController5];
 
   objc_initWeak(&location, self);
-  v17 = [(CNEmergencyContactAction *)self alertController];
+  alertController2 = [(CNEmergencyContactAction *)self alertController];
   v18 = MEMORY[0x1E69DC648];
   v19 = CNContactsUIBundle();
   v20 = [v19 localizedStringForKey:@"CANCEL" value:&stru_1F0CE7398 table:@"Localized"];
@@ -262,11 +262,11 @@ void __72__CNEmergencyContactAction_showConfirmRemoveAlertWithSender_completion_
   v27 = &unk_1E74E4B28;
   objc_copyWeak(&v28, &location);
   v21 = [v18 actionWithTitle:v20 style:1 handler:&v24];
-  [v17 addAction:{v21, v24, v25, v26, v27}];
+  [alertController2 addAction:{v21, v24, v25, v26, v27}];
 
-  v22 = [(CNContactAction *)self delegate];
-  v23 = [(CNEmergencyContactAction *)self alertController];
-  [v22 action:self presentViewController:v23 sender:v4];
+  delegate = [(CNContactAction *)self delegate];
+  alertController3 = [(CNEmergencyContactAction *)self alertController];
+  [delegate action:self presentViewController:alertController3 sender:senderCopy];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&location);
@@ -281,70 +281,70 @@ void __65__CNEmergencyContactAction_presentDisambiguationAlertWithSender___block
   [WeakRetained setAlertController:0];
 }
 
-- (void)createMedicalIDWithEmergencyContact:(id)a3
+- (void)createMedicalIDWithEmergencyContact:(id)contact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNEmergencyContactAction *)self contactStore];
+  contactCopy = contact;
+  contactStore = [(CNEmergencyContactAction *)self contactStore];
   v6 = +[CNHealthStoreManager descriptorForRequiredKeys];
   v15[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v13 = 0;
-  v8 = [v5 _crossPlatformUnifiedMeContactWithKeysToFetch:v7 error:&v13];
+  v8 = [contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v7 error:&v13];
   v9 = v13;
 
-  v10 = [(CNEmergencyContactAction *)self healthStoreManager];
-  v11 = [v10 createMedicalIDFromContact:v8];
+  healthStoreManager = [(CNEmergencyContactAction *)self healthStoreManager];
+  v11 = [healthStoreManager createMedicalIDFromContact:v8];
 
-  v14 = v4;
+  v14 = contactCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
 
   [v11 setEmergencyContacts:v12];
   [(CNEmergencyContactAction *)self showMedicalIDViewControllerForMedicalID:v11];
 }
 
-- (void)showMedicalIDViewControllerForMedicalID:(id)a3
+- (void)showMedicalIDViewControllerForMedicalID:(id)d
 {
   v4 = getMIUIDisplayConfigurationClass_41771;
-  v5 = a3;
-  v15 = [(objc_class *)v4() standardConfiguration];
-  [v15 setEntryPoint:1];
+  dCopy = d;
+  standardConfiguration = [(objc_class *)v4() standardConfiguration];
+  [standardConfiguration setEntryPoint:1];
   v6 = objc_alloc(getMIUIMedicalIDViewControllerClass_41772());
-  v7 = [(CNEmergencyContactAction *)self healthStoreManager];
-  v8 = [v7 healthStore];
-  v9 = [v6 initWithHealthStore:v8 medicalIDData:v5 displayConfiguration:v15];
+  healthStoreManager = [(CNEmergencyContactAction *)self healthStoreManager];
+  healthStore = [healthStoreManager healthStore];
+  v9 = [v6 initWithHealthStore:healthStore medicalIDData:dCopy displayConfiguration:standardConfiguration];
 
   v10 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v9];
   [(CNEmergencyContactAction *)self setMedicalIDNavigationController:v10];
 
   v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_dismissMedicalID];
-  v12 = [v9 navigationItem];
-  [v12 setRightBarButtonItem:v11];
+  navigationItem = [v9 navigationItem];
+  [navigationItem setRightBarButtonItem:v11];
 
-  v13 = [(CNContactAction *)self delegate];
-  v14 = [(CNEmergencyContactAction *)self medicalIDNavigationController];
-  [v13 action:self presentViewController:v14 sender:0];
+  delegate = [(CNContactAction *)self delegate];
+  medicalIDNavigationController = [(CNEmergencyContactAction *)self medicalIDNavigationController];
+  [delegate action:self presentViewController:medicalIDNavigationController sender:0];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v7 = a3;
+  senderCopy = sender;
   if (-[CNEmergencyContactAction addingToEmergency](self, "addingToEmergency") && (-[CNPropertyAction propertyItems](self, "propertyItems"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, v5 != 1))
   {
-    [(CNEmergencyContactAction *)self presentDisambiguationAlertWithSender:v7];
+    [(CNEmergencyContactAction *)self presentDisambiguationAlertWithSender:senderCopy];
   }
 
   else
   {
-    v6 = [(CNPropertyAction *)self propertyItem];
-    [(CNEmergencyContactAction *)self performActionForItem:v6 sender:v7];
+    propertyItem = [(CNPropertyAction *)self propertyItem];
+    [(CNEmergencyContactAction *)self performActionForItem:propertyItem sender:senderCopy];
   }
 }
 
-- (void)performActionWithContactProperty:(id)a3 relationship:(id)a4
+- (void)performActionWithContactProperty:(id)property relationship:(id)relationship
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  relationshipCopy = relationship;
   if ([(CNEmergencyContactAction *)self addingToEmergency])
   {
     v20 = 0;
@@ -365,11 +365,11 @@ void __65__CNEmergencyContactAction_presentDisambiguationAlertWithSender___block
 
     v9 = v8;
     _Block_object_dispose(&v20, 8);
-    v10 = [v6 contact];
-    v11 = [v8 emergencyContactWithContact:v10 property:v6];
+    contact = [propertyCopy contact];
+    v11 = [v8 emergencyContactWithContact:contact property:propertyCopy];
 
-    [v11 setRelationship:v7];
-    v12 = [(CNEmergencyContactAction *)self workQueue];
+    [v11 setRelationship:relationshipCopy];
+    workQueue = [(CNEmergencyContactAction *)self workQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __74__CNEmergencyContactAction_performActionWithContactProperty_relationship___block_invoke;
@@ -377,18 +377,18 @@ void __65__CNEmergencyContactAction_presentDisambiguationAlertWithSender___block
     v17[4] = self;
     v18 = v11;
     v13 = v11;
-    [v12 performBlock:v17];
+    [workQueue performBlock:v17];
   }
 
   else
   {
-    v14 = [(CNEmergencyContactAction *)self healthStoreManager];
+    healthStoreManager = [(CNEmergencyContactAction *)self healthStoreManager];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__CNEmergencyContactAction_performActionWithContactProperty_relationship___block_invoke_3_324;
     v16[3] = &unk_1E74E4B00;
     v16[4] = self;
-    v15 = [v14 registerMedicalIDDataHandler:v16];
+    v15 = [healthStoreManager registerMedicalIDDataHandler:v16];
   }
 }
 
@@ -604,17 +604,17 @@ void __74__CNEmergencyContactAction_performActionWithContactProperty_relationshi
   [v4 action:v2 presentViewController:v3 sender:*(a1 + 32)];
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactProperty];
-  [(CNEmergencyContactAction *)self setContactProperty:v8];
+  itemCopy = item;
+  senderCopy = sender;
+  contactProperty = [itemCopy contactProperty];
+  [(CNEmergencyContactAction *)self setContactProperty:contactProperty];
 
   if ([(CNEmergencyContactAction *)self addingToEmergency])
   {
-    v9 = [v6 contactProperty];
-    [(CNEmergencyContactAction *)self showRelationshipPickerForContactProperty:v9 sender:v7];
+    contactProperty2 = [itemCopy contactProperty];
+    [(CNEmergencyContactAction *)self showRelationshipPickerForContactProperty:contactProperty2 sender:senderCopy];
   }
 
   else
@@ -625,8 +625,8 @@ void __74__CNEmergencyContactAction_performActionWithContactProperty_relationshi
     v10[2] = __56__CNEmergencyContactAction_performActionForItem_sender___block_invoke;
     v10[3] = &unk_1E74E6D30;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
-    [(CNEmergencyContactAction *)self showConfirmRemoveAlertWithSender:v7 completion:v10];
+    v11 = itemCopy;
+    [(CNEmergencyContactAction *)self showConfirmRemoveAlertWithSender:senderCopy completion:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -640,25 +640,25 @@ void __56__CNEmergencyContactAction_performActionForItem_sender___block_invoke(u
   [WeakRetained performActionWithContactProperty:v2 relationship:0];
 }
 
-- (CNEmergencyContactAction)initWithContact:(id)a3 healthStoreManager:(id)a4 propertyItems:(id)a5
+- (CNEmergencyContactAction)initWithContact:(id)contact healthStoreManager:(id)manager propertyItems:(id)items
 {
-  v9 = a4;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = CNEmergencyContactAction;
-  v10 = [(CNPropertyAction *)&v22 initWithContact:a3 propertyItems:a5];
+  v10 = [(CNPropertyAction *)&v22 initWithContact:contact propertyItems:items];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_healthStoreManager, a4);
+    objc_storeStrong(&v10->_healthStoreManager, manager);
     v12 = +[CNUIContactsEnvironment currentEnvironment];
-    v13 = [v12 defaultSchedulerProvider];
-    v14 = [v13 mainThreadScheduler];
+    defaultSchedulerProvider = [v12 defaultSchedulerProvider];
+    mainThreadScheduler = [defaultSchedulerProvider mainThreadScheduler];
     mainThreadScheduler = v11->_mainThreadScheduler;
-    v11->_mainThreadScheduler = v14;
+    v11->_mainThreadScheduler = mainThreadScheduler;
 
     v16 = +[CNUIContactsEnvironment currentEnvironment];
-    v17 = [v16 defaultSchedulerProvider];
-    v18 = [v17 newSerialSchedulerWithName:@"com.apple.Contacts.CNEmergencyContactAction.workQueue"];
+    defaultSchedulerProvider2 = [v16 defaultSchedulerProvider];
+    v18 = [defaultSchedulerProvider2 newSerialSchedulerWithName:@"com.apple.Contacts.CNEmergencyContactAction.workQueue"];
     workQueue = v11->_workQueue;
     v11->_workQueue = v18;
 

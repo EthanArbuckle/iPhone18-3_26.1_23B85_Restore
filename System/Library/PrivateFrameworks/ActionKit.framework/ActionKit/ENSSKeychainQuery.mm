@@ -1,32 +1,32 @@
 @interface ENSSKeychainQuery
-+ (id)errorWithCode:(int)a3;
-- (BOOL)deleteItem:(id *)a3;
-- (BOOL)fetch:(id *)a3;
-- (BOOL)save:(id *)a3;
++ (id)errorWithCode:(int)code;
+- (BOOL)deleteItem:(id *)item;
+- (BOOL)fetch:(id *)fetch;
+- (BOOL)save:(id *)save;
 - (NSCoding)passwordObject;
 - (NSString)password;
-- (id)fetchAll:(id *)a3;
+- (id)fetchAll:(id *)all;
 - (id)query;
-- (void)setPassword:(id)a3;
-- (void)setPasswordObject:(id)a3;
+- (void)setPassword:(id)password;
+- (void)setPasswordObject:(id)object;
 @end
 
 @implementation ENSSKeychainQuery
 
-+ (id)errorWithCode:(int)a3
++ (id)errorWithCode:(int)code
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  if (a3 <= -25292)
+  if (code <= -25292)
   {
-    if (a3 <= -25301)
+    if (code <= -25301)
     {
-      if (a3 == -26275)
+      if (code == -26275)
       {
         v4 = @"errSecDecode";
         goto LABEL_27;
       }
 
-      if (a3 == -25308)
+      if (code == -25308)
       {
         v4 = @"errSecInteractionNotAllowed";
         goto LABEL_27;
@@ -35,7 +35,7 @@
 
     else
     {
-      switch(a3)
+      switch(code)
       {
         case -25300:
           v4 = @"errSecItemNotFound";
@@ -54,9 +54,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (a3 <= -51)
+  if (code <= -51)
   {
-    switch(a3)
+    switch(code)
     {
       case -25291:
         v4 = @"errSecNotAvailable";
@@ -67,8 +67,8 @@ LABEL_26:
       case -108:
         v4 = @"errSecAllocate";
 LABEL_27:
-        v6 = [MEMORY[0x277CCA8D8] mainBundle];
-        v7 = [v6 localizedStringForKey:v4 value:&stru_2850323E8 table:@"ENSSKeychain"];
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v7 = [mainBundle localizedStringForKey:v4 value:&stru_2850323E8 table:@"ENSSKeychain"];
 
         if (v7)
         {
@@ -82,7 +82,7 @@ LABEL_27:
           v8 = 0;
         }
 
-        v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.samsoffes.ENSSKeychain" code:a3 userInfo:v8];
+        v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.samsoffes.ENSSKeychain" code:code userInfo:v8];
 
         goto LABEL_31;
     }
@@ -90,15 +90,15 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  if (a3 == -50)
+  if (code == -50)
   {
     v4 = @"errSecParam";
     goto LABEL_27;
   }
 
-  if (a3)
+  if (code)
   {
-    if (a3 == -4)
+    if (code == -4)
     {
       v4 = @"errSecUnimplemented";
       goto LABEL_27;
@@ -118,42 +118,42 @@ LABEL_31:
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
   [v3 setObject:*MEMORY[0x277CDC238] forKey:*MEMORY[0x277CDC228]];
-  v4 = [(ENSSKeychainQuery *)self service];
+  service = [(ENSSKeychainQuery *)self service];
 
-  if (v4)
+  if (service)
   {
-    v5 = [(ENSSKeychainQuery *)self service];
-    [v3 setObject:v5 forKey:*MEMORY[0x277CDC120]];
+    service2 = [(ENSSKeychainQuery *)self service];
+    [v3 setObject:service2 forKey:*MEMORY[0x277CDC120]];
   }
 
-  v6 = [(ENSSKeychainQuery *)self account];
+  account = [(ENSSKeychainQuery *)self account];
 
-  if (v6)
+  if (account)
   {
-    v7 = [(ENSSKeychainQuery *)self account];
-    [v3 setObject:v7 forKey:*MEMORY[0x277CDBF20]];
+    account2 = [(ENSSKeychainQuery *)self account];
+    [v3 setObject:account2 forKey:*MEMORY[0x277CDBF20]];
   }
 
-  v8 = [(ENSSKeychainQuery *)self accessGroup];
+  accessGroup = [(ENSSKeychainQuery *)self accessGroup];
 
-  if (v8)
+  if (accessGroup)
   {
-    v9 = [(ENSSKeychainQuery *)self accessGroup];
-    [v3 setObject:v9 forKey:*MEMORY[0x277CDBEC8]];
+    accessGroup2 = [(ENSSKeychainQuery *)self accessGroup];
+    [v3 setObject:accessGroup2 forKey:*MEMORY[0x277CDBEC8]];
   }
 
   if ([objc_opt_class() isSynchronizationAvailable])
   {
-    v10 = [(ENSSKeychainQuery *)self synchronizationMode];
-    if (v10)
+    synchronizationMode = [(ENSSKeychainQuery *)self synchronizationMode];
+    if (synchronizationMode)
     {
       v11 = MEMORY[0x277CBEC28];
-      if (v10 != 1)
+      if (synchronizationMode != 1)
       {
         v11 = 0;
       }
 
-      if (v10 == 2)
+      if (synchronizationMode == 2)
       {
         v12 = MEMORY[0x277CBEC38];
       }
@@ -177,14 +177,14 @@ LABEL_31:
 
 - (NSString)password
 {
-  v3 = [(ENSSKeychainQuery *)self passwordData];
-  v4 = [v3 length];
+  passwordData = [(ENSSKeychainQuery *)self passwordData];
+  v4 = [passwordData length];
 
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCACA8]);
-    v6 = [(ENSSKeychainQuery *)self passwordData];
-    v7 = [v5 initWithData:v6 encoding:4];
+    passwordData2 = [(ENSSKeychainQuery *)self passwordData];
+    v7 = [v5 initWithData:passwordData2 encoding:4];
   }
 
   else
@@ -195,22 +195,22 @@ LABEL_31:
   return v7;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [password dataUsingEncoding:4];
   [(ENSSKeychainQuery *)self setPasswordData:v4];
 }
 
 - (NSCoding)passwordObject
 {
-  v3 = [(ENSSKeychainQuery *)self passwordData];
-  v4 = [v3 length];
+  passwordData = [(ENSSKeychainQuery *)self passwordData];
+  v4 = [passwordData length];
 
   if (v4)
   {
     v5 = MEMORY[0x277CCAAC8];
-    v6 = [(ENSSKeychainQuery *)self passwordData];
-    v7 = [v5 unarchiveObjectWithData:v6];
+    passwordData2 = [(ENSSKeychainQuery *)self passwordData];
+    v7 = [v5 unarchiveObjectWithData:passwordData2];
   }
 
   else
@@ -221,28 +221,28 @@ LABEL_31:
   return v7;
 }
 
-- (void)setPasswordObject:(id)a3
+- (void)setPasswordObject:(id)object
 {
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:object];
   [(ENSSKeychainQuery *)self setPasswordData:v4];
 }
 
-- (BOOL)fetch:(id *)a3
+- (BOOL)fetch:(id *)fetch
 {
-  v5 = [(ENSSKeychainQuery *)self service];
-  if (v5 && (v6 = v5, [(ENSSKeychainQuery *)self account], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  service = [(ENSSKeychainQuery *)self service];
+  if (service && (v6 = service, [(ENSSKeychainQuery *)self account], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     result = 0;
-    v8 = [(ENSSKeychainQuery *)self query];
-    [v8 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC558]];
-    [v8 setObject:*MEMORY[0x277CDC438] forKey:*MEMORY[0x277CDC428]];
-    v9 = SecItemCopyMatching(v8, &result);
+    query = [(ENSSKeychainQuery *)self query];
+    [query setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC558]];
+    [query setObject:*MEMORY[0x277CDC438] forKey:*MEMORY[0x277CDC428]];
+    v9 = SecItemCopyMatching(query, &result);
     v10 = v9 == 0;
     if (v9)
     {
-      if (a3)
+      if (fetch)
       {
-        *a3 = [objc_opt_class() errorWithCode:v9];
+        *fetch = [objc_opt_class() errorWithCode:v9];
       }
     }
 
@@ -253,10 +253,10 @@ LABEL_31:
     }
   }
 
-  else if (a3)
+  else if (fetch)
   {
     [objc_opt_class() errorWithCode:4294966295];
-    *a3 = v10 = 0;
+    *fetch = v10 = 0;
   }
 
   else
@@ -267,17 +267,17 @@ LABEL_31:
   return v10;
 }
 
-- (id)fetchAll:(id *)a3
+- (id)fetchAll:(id *)all
 {
-  v4 = [(ENSSKeychainQuery *)self query];
-  [v4 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC550]];
-  [v4 setObject:*MEMORY[0x277CDC430] forKey:*MEMORY[0x277CDC428]];
+  query = [(ENSSKeychainQuery *)self query];
+  [query setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDC550]];
+  [query setObject:*MEMORY[0x277CDC430] forKey:*MEMORY[0x277CDC428]];
   result = 0;
-  v5 = SecItemCopyMatching(v4, &result);
-  if (a3 && v5)
+  v5 = SecItemCopyMatching(query, &result);
+  if (all && v5)
   {
     [objc_opt_class() errorWithCode:v5];
-    *a3 = v6 = 0;
+    *all = v6 = 0;
   }
 
   else
@@ -288,26 +288,26 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)deleteItem:(id *)a3
+- (BOOL)deleteItem:(id *)item
 {
-  v5 = [(ENSSKeychainQuery *)self service];
-  if (v5 && (v6 = v5, [(ENSSKeychainQuery *)self account], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  service = [(ENSSKeychainQuery *)self service];
+  if (service && (v6 = service, [(ENSSKeychainQuery *)self account], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v8 = [(ENSSKeychainQuery *)self query];
-    v9 = SecItemDelete(v8);
+    query = [(ENSSKeychainQuery *)self query];
+    v9 = SecItemDelete(query);
     v10 = v9;
-    if (a3 && v9)
+    if (item && v9)
     {
-      *a3 = [objc_opt_class() errorWithCode:v9];
+      *item = [objc_opt_class() errorWithCode:v9];
     }
 
     v11 = v10 == 0;
   }
 
-  else if (a3)
+  else if (item)
   {
     [objc_opt_class() errorWithCode:4294966295];
-    *a3 = v11 = 0;
+    *item = v11 = 0;
   }
 
   else
@@ -318,62 +318,62 @@ LABEL_31:
   return v11;
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  v5 = [(ENSSKeychainQuery *)self service];
-  if (!v5)
+  service = [(ENSSKeychainQuery *)self service];
+  if (!service)
   {
     goto LABEL_13;
   }
 
-  v6 = v5;
-  v7 = [(ENSSKeychainQuery *)self account];
-  if (!v7)
+  v6 = service;
+  account = [(ENSSKeychainQuery *)self account];
+  if (!account)
   {
 
 LABEL_13:
-    if (!a3)
+    if (!save)
     {
       return 0;
     }
 
     [objc_opt_class() errorWithCode:4294966295];
-    *a3 = v17 = 0;
+    *save = v17 = 0;
     return v17;
   }
 
-  v8 = v7;
-  v9 = [(ENSSKeychainQuery *)self passwordData];
+  v8 = account;
+  passwordData = [(ENSSKeychainQuery *)self passwordData];
 
-  if (!v9)
+  if (!passwordData)
   {
     goto LABEL_13;
   }
 
   [(ENSSKeychainQuery *)self deleteItem:0];
-  v10 = [(ENSSKeychainQuery *)self query];
-  v11 = [(ENSSKeychainQuery *)self passwordData];
-  [v10 setObject:v11 forKey:*MEMORY[0x277CDC5E8]];
+  query = [(ENSSKeychainQuery *)self query];
+  passwordData2 = [(ENSSKeychainQuery *)self passwordData];
+  [query setObject:passwordData2 forKey:*MEMORY[0x277CDC5E8]];
 
-  v12 = [(ENSSKeychainQuery *)self label];
+  label = [(ENSSKeychainQuery *)self label];
 
-  if (v12)
+  if (label)
   {
-    v13 = [(ENSSKeychainQuery *)self label];
-    [v10 setObject:v13 forKey:*MEMORY[0x277CDC080]];
+    label2 = [(ENSSKeychainQuery *)self label];
+    [query setObject:label2 forKey:*MEMORY[0x277CDC080]];
   }
 
   v14 = +[ENSSKeychain accessibilityType];
   if (v14)
   {
-    [v10 setObject:v14 forKey:*MEMORY[0x277CDBED8]];
+    [query setObject:v14 forKey:*MEMORY[0x277CDBED8]];
   }
 
-  v15 = SecItemAdd(v10, 0);
+  v15 = SecItemAdd(query, 0);
   v16 = v15;
-  if (a3 && v15)
+  if (save && v15)
   {
-    *a3 = [objc_opt_class() errorWithCode:v15];
+    *save = [objc_opt_class() errorWithCode:v15];
   }
 
   v17 = v16 == 0;

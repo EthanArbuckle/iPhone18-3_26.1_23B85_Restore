@@ -5,8 +5,8 @@
 - (id)fetchIndexableAttachments;
 - (id)searchableItem;
 - (int64_t)indexingType;
-- (void)setEnqueuedDonation:(id)a3;
-- (void)setIndexingType:(int64_t)a3;
+- (void)setEnqueuedDonation:(id)donation;
+- (void)setIndexingType:(int64_t)type;
 @end
 
 @implementation EDSearchableNewMessageItem
@@ -18,11 +18,11 @@
   return *(self + v3);
 }
 
-- (void)setIndexingType:(int64_t)a3
+- (void)setIndexingType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC11EmailDaemon26EDSearchableNewMessageItem_indexingType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (EDEnqueuedDonation)enqueuedDonation
@@ -32,13 +32,13 @@
   return *(self + v3);
 }
 
-- (void)setEnqueuedDonation:(id)a3
+- (void)setEnqueuedDonation:(id)donation
 {
   v5 = OBJC_IVAR____TtC11EmailDaemon26EDSearchableNewMessageItem_enqueuedDonation;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = donation;
+  donationCopy = donation;
 }
 
 - (_TtC11EmailDaemon26EDSearchableNewMessageItem)init
@@ -66,14 +66,14 @@
 
 - (id)fetchIndexableAttachments
 {
-  v2 = [objc_opt_self() nullFuture];
+  nullFuture = [objc_opt_self() nullFuture];
 
-  return v2;
+  return nullFuture;
 }
 
 - (id)searchableItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = EDSearchableNewMessageItem.searchableItem()();
 
   return v3;

@@ -1,25 +1,25 @@
 @interface HDSPWatchOnWristWakeDetector
 - (HDSPEnvironment)environment;
 - (HDSPWakeDetectorDelegate)wakeDetectorDelegate;
-- (HDSPWatchOnWristWakeDetector)initWithEnvironment:(id)a3;
+- (HDSPWatchOnWristWakeDetector)initWithEnvironment:(id)environment;
 - (id)onWristMonitor;
-- (void)detectedOnWristOnDate:(id)a3;
+- (void)detectedOnWristOnDate:(id)date;
 - (void)startDetecting;
 - (void)stopDetecting;
 @end
 
 @implementation HDSPWatchOnWristWakeDetector
 
-- (HDSPWatchOnWristWakeDetector)initWithEnvironment:(id)a3
+- (HDSPWatchOnWristWakeDetector)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPWatchOnWristWakeDetector;
   v5 = [(HDSPWatchOnWristWakeDetector *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
@@ -29,10 +29,10 @@
 - (id)onWristMonitor
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained systemMonitor];
-  v4 = [v3 watchOnWristMonitor];
+  systemMonitor = [WeakRetained systemMonitor];
+  watchOnWristMonitor = [systemMonitor watchOnWristMonitor];
 
-  return v4;
+  return watchOnWristMonitor;
 }
 
 - (void)startDetecting
@@ -50,23 +50,23 @@
     }
 
     self->_isDetecting = 1;
-    v5 = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
-    [v5 addObserver:self];
+    onWristMonitor = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
+    [onWristMonitor addObserver:self];
 
-    v6 = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
-    v7 = [v6 lastOnWristDate];
+    onWristMonitor2 = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
+    lastOnWristDate = [onWristMonitor2 lastOnWristDate];
 
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v9 = [WeakRetained currentDateProvider];
-    v11 = v9[2](v9, v10);
+    currentDateProvider = [WeakRetained currentDateProvider];
+    v11 = currentDateProvider[2](currentDateProvider, v10);
 
-    if (v7)
+    if (lastOnWristDate)
     {
-      [v7 timeIntervalSinceDate:v11];
+      [lastOnWristDate timeIntervalSinceDate:v11];
       if (fabs(v12) < 5.0)
       {
-        v13 = [(HDSPWatchOnWristWakeDetector *)self wakeDetectorDelegate];
-        [v13 wakeDetector:self didDetectWakeUpEventOnDate:v7];
+        wakeDetectorDelegate = [(HDSPWatchOnWristWakeDetector *)self wakeDetectorDelegate];
+        [wakeDetectorDelegate wakeDetector:self didDetectWakeUpEventOnDate:lastOnWristDate];
       }
     }
   }
@@ -87,16 +87,16 @@
   }
 
   self->_isDetecting = 0;
-  v5 = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
-  [v5 removeObserver:self];
+  onWristMonitor = [(HDSPWatchOnWristWakeDetector *)self onWristMonitor];
+  [onWristMonitor removeObserver:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)detectedOnWristOnDate:(id)a3
+- (void)detectedOnWristOnDate:(id)date
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if ([(HDSPWatchOnWristWakeDetector *)self isDetecting])
   {
     v5 = HKSPLogForCategory();
@@ -105,13 +105,13 @@
       v9 = 138543618;
       v10 = objc_opt_class();
       v11 = 2114;
-      v12 = v4;
+      v12 = dateCopy;
       v6 = v10;
       _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] detectedOnWristOnDate: %{public}@", &v9, 0x16u);
     }
 
-    v7 = [(HDSPWatchOnWristWakeDetector *)self wakeDetectorDelegate];
-    [v7 wakeDetector:self didDetectWakeUpEventOnDate:v4];
+    wakeDetectorDelegate = [(HDSPWatchOnWristWakeDetector *)self wakeDetectorDelegate];
+    [wakeDetectorDelegate wakeDetector:self didDetectWakeUpEventOnDate:dateCopy];
   }
 
   v8 = *MEMORY[0x277D85DE8];

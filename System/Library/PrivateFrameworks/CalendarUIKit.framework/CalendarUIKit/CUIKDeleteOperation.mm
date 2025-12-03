@@ -1,6 +1,6 @@
 @interface CUIKDeleteOperation
 - (BOOL)_canBeUndone;
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4;
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error;
 - (Class)_inverseOperationClass;
 - (id)_actionName;
 - (id)_objectsForInverse;
@@ -10,20 +10,20 @@
 
 - (id)_actionName
 {
-  v3 = [(CUIKUserOperation *)self objects];
-  v4 = [v3 count];
+  objects = [(CUIKUserOperation *)self objects];
+  v4 = [objects count];
 
-  v5 = [(CUIKUserOperation *)self objects];
-  v6 = [v5 firstObject];
-  v7 = v6;
+  objects2 = [(CUIKUserOperation *)self objects];
+  firstObject = [objects2 firstObject];
+  v7 = firstObject;
   if (v4 == 1)
   {
-    v8 = [v6 actionStringsDisplayTitle];
+    actionStringsDisplayTitle = [firstObject actionStringsDisplayTitle];
 
     v9 = MEMORY[0x1E696AEC0];
     v10 = CUIKBundle();
     v11 = [v10 localizedStringForKey:@"Action: Delete “%@”" value:@"Delete “%@”" table:0];
-    v12 = [v9 localizedStringWithFormat:v11, v8];
+    v12 = [v9 localizedStringWithFormat:v11, actionStringsDisplayTitle];
   }
 
   else
@@ -34,20 +34,20 @@
     if (isKindOfClass)
     {
       v14 = CUIKBundle();
-      v8 = v14;
+      actionStringsDisplayTitle = v14;
       v15 = @"Action: Delete events";
       v16 = @"Delete events";
     }
 
     else
     {
-      v17 = [(CUIKUserOperation *)self objects];
-      v18 = [v17 firstObject];
+      objects3 = [(CUIKUserOperation *)self objects];
+      firstObject2 = [objects3 firstObject];
       objc_opt_class();
       v19 = objc_opt_isKindOfClass();
 
       v14 = CUIKBundle();
-      v8 = v14;
+      actionStringsDisplayTitle = v14;
       if (v19)
       {
         v15 = @"Action: Delete calendars";
@@ -67,16 +67,16 @@
   return v12;
 }
 
-- (BOOL)_executeWithUndoDelegate:(id)a3 error:(id *)a4
+- (BOOL)_executeWithUndoDelegate:(id)delegate error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v29 = [(CUIKDeleteOperation *)self _canBeUndone];
-  if (v29)
+  delegateCopy = delegate;
+  _canBeUndone = [(CUIKDeleteOperation *)self _canBeUndone];
+  if (_canBeUndone)
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = [(CUIKUserOperation *)self objects];
-    v26 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    objects = [(CUIKUserOperation *)self objects];
+    v26 = [v6 arrayWithCapacity:{objc_msgSend(objects, "count")}];
   }
 
   else
@@ -88,7 +88,7 @@
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v28 = self;
+  selfCopy = self;
   obj = [(CUIKUserOperation *)self objects];
   v8 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (!v8)
@@ -110,9 +110,9 @@
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
-      if (v5)
+      if (delegateCopy)
       {
-        v14 = [v5 objectToSaveForUndoingChangeToObject:v13];
+        v14 = [delegateCopy objectToSaveForUndoingChangeToObject:v13];
       }
 
       else
@@ -128,7 +128,7 @@
         v17 = v16;
         if (v16 && ([v16 isDetached] & 1) == 0)
         {
-          v18 = [v17 hasRecurrenceRules];
+          hasRecurrenceRules = [v17 hasRecurrenceRules];
           goto LABEL_18;
         }
       }
@@ -138,26 +138,26 @@
         v17 = 0;
       }
 
-      v18 = 0;
+      hasRecurrenceRules = 0;
 LABEL_18:
-      if (v29)
+      if (_canBeUndone)
       {
-        v19 = [v15 snapshotCopy];
-        v20 = v19;
-        if (v18)
+        snapshotCopy = [v15 snapshotCopy];
+        v20 = snapshotCopy;
+        if (hasRecurrenceRules)
         {
           v21 = 1;
           goto LABEL_23;
         }
 
-        [v19 markAsUndeleted];
+        [snapshotCopy markAsUndeleted];
         [v26 addObject:v20];
       }
 
       v21 = 0;
       v20 = 0;
 LABEL_23:
-      v22 = [v15 CUIKEditingContext_removeWithSpan:-[CUIKUserOperation span](v28 error:{"span"), a4}];
+      v22 = [v15 CUIKEditingContext_removeWithSpan:-[CUIKUserOperation span](selfCopy error:{"span"), error}];
       if (v21)
       {
         v23 = [v15 inverseObjectWithObject:v20 diff:0];
@@ -173,10 +173,10 @@ LABEL_23:
   while (v9);
 LABEL_29:
 
-  if (v29)
+  if (_canBeUndone)
   {
-    [(CUIKDeleteOperation *)v28 setPrecomputedInverseObjects:v26];
-    [(CUIKUserOperation *)v28 _precomputeInverseOperation];
+    [(CUIKDeleteOperation *)selfCopy setPrecomputedInverseObjects:v26];
+    [(CUIKUserOperation *)selfCopy _precomputeInverseOperation];
   }
 
   return v11;
@@ -194,8 +194,8 @@ LABEL_29:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(CUIKUserOperation *)self objects];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objects = [(CUIKUserOperation *)self objects];
+  v5 = [objects countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -206,7 +206,7 @@ LABEL_29:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objects);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -218,7 +218,7 @@ LABEL_29:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objects countByEnumeratingWithState:&v11 objects:v15 count:16];
       v3 = 1;
       if (v6)
       {
@@ -258,15 +258,15 @@ LABEL_15:
 {
   if ([(CUIKUserOperation *)self span])
   {
-    v3 = 0;
+    precomputedInverseObjects = 0;
   }
 
   else
   {
-    v3 = [(CUIKDeleteOperation *)self precomputedInverseObjects];
+    precomputedInverseObjects = [(CUIKDeleteOperation *)self precomputedInverseObjects];
   }
 
-  return v3;
+  return precomputedInverseObjects;
 }
 
 @end

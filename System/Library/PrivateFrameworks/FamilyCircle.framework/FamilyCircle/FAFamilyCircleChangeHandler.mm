@@ -1,16 +1,16 @@
 @interface FAFamilyCircleChangeHandler
-+ (void)_refetchFamilyWithContext:(id)a3 completion:(id)a4;
-+ (void)handleDidRepairFamilyWithCompletion:(id)a3;
-+ (void)handleDidSetupFamilyWithCompletion:(id)a3;
-+ (void)handleURLResponse:(id)a3;
++ (void)_refetchFamilyWithContext:(id)context completion:(id)completion;
++ (void)handleDidRepairFamilyWithCompletion:(id)completion;
++ (void)handleDidSetupFamilyWithCompletion:(id)completion;
++ (void)handleURLResponse:(id)response;
 @end
 
 @implementation FAFamilyCircleChangeHandler
 
-+ (void)handleURLResponse:(id)a3
++ (void)handleURLResponse:(id)response
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,9 +23,9 @@
     _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", &v12, 0x16u);
   }
 
-  v8 = [v4 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
 
-  v9 = [v8 objectForKey:@"X-Apple-Family-Changed"];
+  v9 = [allHeaderFields objectForKey:@"X-Apple-Family-Changed"];
 
   if (v9)
   {
@@ -36,16 +36,16 @@
       _os_log_impl(&dword_1B70B0000, v10, OS_LOG_TYPE_DEFAULT, "FACircleRemoteUIDelegate - Family state has changed", &v12, 2u);
     }
 
-    [a1 _refetchFamilyWithContext:@"family_changed_header" completion:&__block_literal_global_1];
+    [self _refetchFamilyWithContext:@"family_changed_header" completion:&__block_literal_global_1];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)handleDidRepairFamilyWithCompletion:(id)a3
++ (void)handleDidRepairFamilyWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -58,14 +58,14 @@
     _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", &v9, 0x16u);
   }
 
-  [a1 _refetchFamilyWithContext:@"family_repair" completion:v4];
+  [self _refetchFamilyWithContext:@"family_repair" completion:completionCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)handleDidSetupFamilyWithCompletion:(id)a3
++ (void)handleDidSetupFamilyWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -78,15 +78,15 @@
     _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "%@ %s", &v9, 0x16u);
   }
 
-  [a1 _refetchFamilyWithContext:@"family_setup" completion:v4];
+  [self _refetchFamilyWithContext:@"family_setup" completion:completionCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_refetchFamilyWithContext:(id)a3 completion:(id)a4
++ (void)_refetchFamilyWithContext:(id)context completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -101,14 +101,14 @@
 
   v10 = objc_alloc_init(FAFetchFamilyCircleRequest);
   [(FAFetchFamilyCircleRequest *)v10 setCachePolicy:1000];
-  [(FAFetchFamilyCircleRequest *)v10 setContext:v6];
+  [(FAFetchFamilyCircleRequest *)v10 setContext:contextCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __68__FAFamilyCircleChangeHandler__refetchFamilyWithContext_completion___block_invoke;
   v16[3] = &unk_1E7CA4928;
-  v17 = v5;
-  v11 = v5;
+  v17 = completionCopy;
+  v11 = completionCopy;
   [(FAFetchFamilyCircleRequest *)v10 startRequestWithCompletionHandler:v16];
   v12 = _FALogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))

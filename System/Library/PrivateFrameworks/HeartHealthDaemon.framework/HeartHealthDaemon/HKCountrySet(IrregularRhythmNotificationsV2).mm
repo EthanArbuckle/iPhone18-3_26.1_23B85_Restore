@@ -18,8 +18,8 @@
 
 + (void)localAvailabilityForIrregularRhythmNotificationsV2
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HKCountrySet+IrregularRhythmNotificationsV2.m" lineNumber:40 description:@"Local generated country set should never be nil"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HKCountrySet+IrregularRhythmNotificationsV2.m" lineNumber:40 description:@"Local generated country set should never be nil"];
 }
 
 @end

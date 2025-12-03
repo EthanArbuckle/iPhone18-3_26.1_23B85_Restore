@@ -1,17 +1,17 @@
 @interface _NUCropPipeline
 - (_NUCropPipeline)init;
-- (_NUCropPipeline)initWithIdentifier:(id)a3;
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5;
+- (_NUCropPipeline)initWithIdentifier:(id)identifier;
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error;
 @end
 
 @implementation _NUCropPipeline
 
-- (id)_evaluateOutputPort:(id)a3 context:(id)a4 error:(id *)a5
+- (id)_evaluateOutputPort:(id)port context:(id)context error:(id *)error
 {
   v88 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  portCopy = port;
+  contextCopy = context;
+  if (!portCopy)
   {
     v33 = NUAssertLogger_5769();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -32,8 +32,8 @@
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v55 callStackSymbols];
+        v58 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v54;
         *&buf[12] = 2114;
@@ -44,8 +44,8 @@
 
     else if (v37)
     {
-      v38 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v39 = [v38 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v39 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v39;
       _os_log_error_impl(&dword_1C0184000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -54,8 +54,8 @@
     _NUAssertFailHandler("[_NUCropPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3180, @"Invalid parameter not satisfying: %s", v59, v60, v61, v62, "outputPort != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = contextCopy;
+  if (!contextCopy)
   {
     v40 = NUAssertLogger_5769();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -76,8 +76,8 @@
         v63 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v64 = MEMORY[0x1E696AF00];
         v65 = v63;
-        v66 = [v64 callStackSymbols];
-        v67 = [v66 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v64 callStackSymbols];
+        v67 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v63;
         *&buf[12] = 2114;
@@ -88,8 +88,8 @@
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v46;
       _os_log_error_impl(&dword_1C0184000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -98,7 +98,7 @@
     _NUAssertFailHandler("[_NUCropPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3181, @"Invalid parameter not satisfying: %s", v68, v69, v70, v71, "context != nil");
   }
 
-  if (!a5)
+  if (!error)
   {
     v47 = NUAssertLogger_5769();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -119,8 +119,8 @@
         v72 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v73 = MEMORY[0x1E696AF00];
         v74 = v72;
-        v75 = [v73 callStackSymbols];
-        v76 = [v75 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v73 callStackSymbols];
+        v76 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v72;
         *&buf[12] = 2114;
@@ -131,8 +131,8 @@
 
     else if (v51)
     {
-      v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v53 = [v52 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v53 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v53;
       _os_log_error_impl(&dword_1C0184000, v50, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -141,13 +141,13 @@
     _NUAssertFailHandler("[_NUCropPipeline _evaluateOutputPort:context:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUPipeline.m", 3182, @"Invalid parameter not satisfying: %s", v77, v78, v79, v80, "error != NULL");
   }
 
-  v11 = [v9 dataForChannel:@"media"];
+  v11 = [contextCopy dataForChannel:@"media"];
   if ([v11 isNull])
   {
     v12 = [NUError missingError:@"Missing media input" object:self];
 LABEL_10:
     v15 = 0;
-    *a5 = v12;
+    *error = v12;
     goto LABEL_21;
   }
 
@@ -157,22 +157,22 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v13 = [v11 media];
+  media = [v11 media];
   v14 = [v10 dataForChannel:@"pixelRect"];
   if ([v14 isNull])
   {
     [NUError missingError:@"Missing crop rect input" object:self];
-    *a5 = v15 = 0;
+    *error = v15 = 0;
   }
 
   else
   {
     memset(buf, 0, 32);
-    v16 = [v14 value];
-    v17 = v16;
-    if (v16)
+    value = [v14 value];
+    v17 = value;
+    if (value)
     {
-      [v16 nu_pixelRect];
+      [value nu_pixelRect];
     }
 
     else
@@ -183,18 +183,18 @@ LABEL_10:
     v18 = [v10 dataForChannel:@"projectDirtyApertureInCrop"];
     if (([v18 isNull] & 1) == 0)
     {
-      v19 = [v18 value];
-      [v19 BOOLValue];
+      value2 = [v18 value];
+      [value2 BOOLValue];
     }
 
     v20 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:&unk_1F3F82928];
     v21 = objc_alloc_init(NURenderPipelineHelper);
-    v22 = [v13 renderNode];
+    renderNode = [media renderNode];
     v86[0] = *buf;
     v86[1] = *&buf[16];
     v83 = v21;
     v84 = v20;
-    v23 = [(NURenderPipelineHelper *)v21 cropNode:v22 cropRect:v86 cropSettings:v20];
+    v23 = [(NURenderPipelineHelper *)v21 cropNode:renderNode cropRect:v86 cropSettings:v20];
 
     v85 = 0;
     v24 = [v23 outputImageGeometry:&v85];
@@ -205,19 +205,19 @@ LABEL_10:
       v26 = [_NUMediaGeometry alloc];
       v27 = [v24 size];
       v81 = v18;
-      v28 = v13;
+      v28 = media;
       v30 = -[_NUMediaGeometry initWithSize:orientation:](v26, "initWithSize:orientation:", v27, v29, [v24 orientation]);
       v31 = [v28 filteredMediaWithRenderNode:v23 geometry:v30];
       v15 = [[NUChannelMediaData alloc] initWithMedia:v31];
 
-      v13 = v28;
+      media = v28;
       v18 = v81;
     }
 
     else
     {
       [NUError errorWithCode:1 reason:@"Failed to evaluate node geometry" object:v23 underlyingError:v25];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
     }
   }
 
@@ -254,10 +254,10 @@ LABEL_21:
   return v4;
 }
 
-- (_NUCropPipeline)initWithIdentifier:(id)a3
+- (_NUCropPipeline)initWithIdentifier:(id)identifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_1383);
@@ -301,8 +301,8 @@ LABEL_8:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v14 callStackSymbols];
+      v17 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v32 = v17;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -318,8 +318,8 @@ LABEL_8:
     v20 = MEMORY[0x1E696AF00];
     v21 = specific;
     v22 = v18;
-    v23 = [v20 callStackSymbols];
-    v24 = [v23 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v20 callStackSymbols];
+    v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v32 = specific;
     v33 = 2114;

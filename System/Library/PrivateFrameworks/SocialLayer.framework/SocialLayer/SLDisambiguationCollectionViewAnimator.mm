@@ -1,7 +1,7 @@
 @interface SLDisambiguationCollectionViewAnimator
 + (id)init;
 + (id)springAnimation;
-- (SLDisambiguationCollectionViewAnimator)initWithCoder:(id)a3;
+- (SLDisambiguationCollectionViewAnimator)initWithCoder:(id)coder;
 - (UISpringTimingParameters)springTimingParameters;
 - (id)commonInit;
 @end
@@ -10,36 +10,36 @@
 
 + (id)init
 {
-  v2 = [a1 alloc];
-  v3 = [v2 commonInit];
+  v2 = [self alloc];
+  commonInit = [v2 commonInit];
 
-  return v3;
+  return commonInit;
 }
 
 - (id)commonInit
 {
-  v2 = self;
-  v3 = [(UIViewPropertyAnimator *)v2 initWithDuration:v2 timingParameters:0.3];
+  selfCopy = self;
+  v3 = [(UIViewPropertyAnimator *)selfCopy initWithDuration:selfCopy timingParameters:0.3];
 
   return v3;
 }
 
-- (SLDisambiguationCollectionViewAnimator)initWithCoder:(id)a3
+- (SLDisambiguationCollectionViewAnimator)initWithCoder:(id)coder
 {
-  v4 = [(SLDisambiguationCollectionViewAnimator *)self commonInit];
+  commonInit = [(SLDisambiguationCollectionViewAnimator *)self commonInit];
 
-  return v4;
+  return commonInit;
 }
 
 - (UISpringTimingParameters)springTimingParameters
 {
-  v2 = [objc_opt_class() springAnimation];
+  springAnimation = [objc_opt_class() springAnimation];
   v3 = objc_alloc(MEMORY[0x277D75A60]);
-  [v2 mass];
+  [springAnimation mass];
   v5 = v4;
-  [v2 stiffness];
+  [springAnimation stiffness];
   v7 = v6;
-  [v2 damping];
+  [springAnimation damping];
   v9 = [v3 initWithMass:v5 stiffness:v7 damping:v8 initialVelocity:{10.0, 10.0}];
 
   return v9;

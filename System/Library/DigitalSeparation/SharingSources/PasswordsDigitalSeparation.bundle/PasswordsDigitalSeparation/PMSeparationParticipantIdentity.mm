@@ -1,20 +1,20 @@
 @interface PMSeparationParticipantIdentity
-- (PMSeparationParticipantIdentity)initWithContactIdentifier:(id)a3;
-- (PMSeparationParticipantIdentity)initWithEmailAddress:(id)a3;
-- (PMSeparationParticipantIdentity)initWithPhoneNumber:(id)a3;
+- (PMSeparationParticipantIdentity)initWithContactIdentifier:(id)identifier;
+- (PMSeparationParticipantIdentity)initWithEmailAddress:(id)address;
+- (PMSeparationParticipantIdentity)initWithPhoneNumber:(id)number;
 @end
 
 @implementation PMSeparationParticipantIdentity
 
-- (PMSeparationParticipantIdentity)initWithContactIdentifier:(id)a3
+- (PMSeparationParticipantIdentity)initWithContactIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = PMSeparationParticipantIdentity;
   v5 = [(PMSeparationParticipantIdentity *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     contactIdentifier = v5->_contactIdentifier;
     v5->_contactIdentifier = v6;
 
@@ -24,15 +24,15 @@
   return v5;
 }
 
-- (PMSeparationParticipantIdentity)initWithEmailAddress:(id)a3
+- (PMSeparationParticipantIdentity)initWithEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = PMSeparationParticipantIdentity;
   v5 = [(PMSeparationParticipantIdentity *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [addressCopy copy];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v6;
 
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (PMSeparationParticipantIdentity)initWithPhoneNumber:(id)a3
+- (PMSeparationParticipantIdentity)initWithPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v10.receiver = self;
   v10.super_class = PMSeparationParticipantIdentity;
   v5 = [(PMSeparationParticipantIdentity *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [numberCopy copy];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v6;
 

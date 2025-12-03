@@ -1,13 +1,13 @@
 @interface PKPassAutomaticSelectionCriterion
-+ (id)criterionForExpressMode:(id)a3;
-+ (id)expressModeForCriterion:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPassAutomaticSelectionCriterion)initWithCoder:(id)a3;
-- (PKPassAutomaticSelectionCriterion)initWithDictionary:(id)a3;
++ (id)criterionForExpressMode:(id)mode;
++ (id)expressModeForCriterion:(id)criterion;
+- (BOOL)isEqual:(id)equal;
+- (PKPassAutomaticSelectionCriterion)initWithCoder:(id)coder;
+- (PKPassAutomaticSelectionCriterion)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassAutomaticSelectionCriterion
@@ -24,10 +24,10 @@
   return self->_supportsExpress - v9 + 32 * v9 + 0xD2FD88B5F11;
 }
 
-+ (id)criterionForExpressMode:(id)a3
++ (id)criterionForExpressMode:(id)mode
 {
-  v3 = a3;
-  if (![v3 length])
+  modeCopy = mode;
+  if (![modeCopy length])
   {
     v6 = 0;
     goto LABEL_13;
@@ -35,18 +35,18 @@
 
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"supportsExpress"];
-  if (([v3 isEqualToString:@"transit.felica.suica"] & 1) == 0)
+  if (([modeCopy isEqualToString:@"transit.felica.suica"] & 1) == 0)
   {
-    if ([v3 hasPrefix:@"access.hid."])
+    if ([modeCopy hasPrefix:@"access.hid."])
     {
-      v5 = [v3 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"access.hid.", "length"), @"ecp.1.access."}];
+      v5 = [modeCopy stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"access.hid.", "length"), @"ecp.1.access."}];
       if (v5)
       {
         goto LABEL_10;
       }
     }
 
-    else if ([v3 isEqualToString:@"type_a.generic"])
+    else if ([modeCopy isEqualToString:@"type_a.generic"])
     {
       v5 = @"generic.type_a";
       goto LABEL_10;
@@ -67,23 +67,23 @@ LABEL_13:
   return v6;
 }
 
-+ (id)expressModeForCriterion:(id)a3
++ (id)expressModeForCriterion:(id)criterion
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  criterionCopy = criterion;
+  v4 = criterionCopy;
+  if (criterionCopy)
   {
-    v5 = [v3 technologyType];
-    switch(v5)
+    technologyType = [criterionCopy technologyType];
+    switch(technologyType)
     {
       case 3:
         v6 = &PKPaymentExpressModeTypeAGeneric;
         goto LABEL_9;
       case 2:
-        v7 = [v4 type];
-        if ([v7 hasPrefix:@"ecp.1.access."])
+        type = [v4 type];
+        if ([type hasPrefix:@"ecp.1.access."])
         {
-          v8 = [v7 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"ecp.1.access.", "length"), @"access.hid."}];
+          v8 = [type stringByReplacingCharactersInRange:0 withString:{objc_msgSend(@"ecp.1.access.", "length"), @"access.hid."}];
 
           goto LABEL_12;
         }
@@ -103,15 +103,15 @@ LABEL_12:
   return v8;
 }
 
-- (PKPassAutomaticSelectionCriterion)initWithDictionary:(id)a3
+- (PKPassAutomaticSelectionCriterion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKStringForKey:@"type"];
-    v7 = PKPassAutomaticSelectionTechnologyTypeFromType(v6);
-    if (v6)
+    selfCopy = [dictionaryCopy PKStringForKey:@"type"];
+    v7 = PKPassAutomaticSelectionTechnologyTypeFromType(selfCopy);
+    if (selfCopy)
     {
       v8 = v7;
       v9 = [(PKPassAutomaticSelectionCriterion *)self init];
@@ -120,11 +120,11 @@ LABEL_12:
 LABEL_25:
         self = v9;
 
-        v6 = self;
+        selfCopy = self;
         goto LABEL_26;
       }
 
-      v10 = [(PKPassAutomaticSelectionCriterion *)v6 copy];
+      v10 = [(PKPassAutomaticSelectionCriterion *)selfCopy copy];
       type = v9->_type;
       v9->_type = v10;
 
@@ -132,15 +132,15 @@ LABEL_25:
       if (v8 == 5)
       {
         v22 = [v5 PKStringForKey:@"openLoopExpressMask"];
-        v23 = [v22 pk_decodeHexadecimal];
+        pk_decodeHexadecimal = [v22 pk_decodeHexadecimal];
         mask = v9->_mask;
-        v9->_mask = v23;
+        v9->_mask = pk_decodeHexadecimal;
 
-        v25 = [(NSData *)v9->_mask bytes];
+        bytes = [(NSData *)v9->_mask bytes];
         v26 = [(NSData *)v9->_mask length];
         if (v26)
         {
-          if (*v25)
+          if (*bytes)
           {
             v21 = 1;
           }
@@ -150,7 +150,7 @@ LABEL_25:
             v31 = 0;
             while (v26 - 1 != v31)
             {
-              if (v25[++v31])
+              if (bytes[++v31])
               {
                 goto LABEL_21;
               }
@@ -226,12 +226,12 @@ LABEL_23:
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
 LABEL_26:
 
-  return v6;
+  return selfCopy;
 }
 
 id __56__PKPassAutomaticSelectionCriterion_initWithDictionary___block_invoke(void *a1, void *a2)
@@ -306,36 +306,36 @@ PKASCAssociatedReaderID *__56__PKPassAutomaticSelectionCriterion_initWithDiction
   if ([(NSSet *)self->_primaryTCIs count])
   {
     v6 = [(NSSet *)self->_primaryTCIs pk_setByApplyingBlock:&__block_literal_global_52_2];
-    v7 = [v6 allObjects];
-    [v4 setObject:v7 forKeyedSubscript:@"primaryTCIs"];
+    allObjects = [v6 allObjects];
+    [v4 setObject:allObjects forKeyedSubscript:@"primaryTCIs"];
   }
 
   if ([(NSSet *)self->_TCIs count])
   {
     v8 = [(NSSet *)self->_TCIs pk_setByApplyingBlock:&__block_literal_global_54_1];
-    v9 = [v8 allObjects];
-    [v4 setObject:v9 forKeyedSubscript:@"tcis"];
+    allObjects2 = [v8 allObjects];
+    [v4 setObject:allObjects2 forKeyedSubscript:@"tcis"];
   }
 
   if ([(NSSet *)self->_readerIDs count])
   {
     v10 = [(NSSet *)self->_readerIDs pk_setByApplyingBlock:&__block_literal_global_56_0];
-    v11 = [v10 allObjects];
-    [v4 setObject:v11 forKeyedSubscript:@"readerIDs"];
+    allObjects3 = [v10 allObjects];
+    [v4 setObject:allObjects3 forKeyedSubscript:@"readerIDs"];
   }
 
   if ([(NSSet *)self->_associatedReaderIDs count])
   {
     v12 = [(NSSet *)self->_associatedReaderIDs pk_setByApplyingBlock:&__block_literal_global_59_0];
-    v13 = [v12 allObjects];
-    [v4 setObject:v13 forKeyedSubscript:@"associatedReaderIDs"];
+    allObjects4 = [v12 allObjects];
+    [v4 setObject:allObjects4 forKeyedSubscript:@"associatedReaderIDs"];
   }
 
   mask = self->_mask;
   if (mask)
   {
-    v15 = [(NSData *)mask hexEncoding];
-    [v4 setObject:v15 forKeyedSubscript:@"openLoopExpressMask"];
+    hexEncoding = [(NSData *)mask hexEncoding];
+    [v4 setObject:hexEncoding forKeyedSubscript:@"openLoopExpressMask"];
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsInSessionExpress];
@@ -349,13 +349,13 @@ PKASCAssociatedReaderID *__56__PKPassAutomaticSelectionCriterion_initWithDiction
   return v18;
 }
 
-- (PKPassAutomaticSelectionCriterion)initWithCoder:(id)a3
+- (PKPassAutomaticSelectionCriterion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKPassAutomaticSelectionCriterion *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
 
@@ -363,34 +363,34 @@ PKASCAssociatedReaderID *__56__PKPassAutomaticSelectionCriterion_initWithDiction
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"primaryTCIs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"primaryTCIs"];
     primaryTCIs = v5->_primaryTCIs;
     v5->_primaryTCIs = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"tcis"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"tcis"];
     TCIs = v5->_TCIs;
     v5->_TCIs = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mask"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mask"];
     mask = v5->_mask;
     v5->_mask = v18;
 
-    v5->_supportsExpress = [v4 decodeBoolForKey:@"supportsExpress"];
-    v5->_supportsInSessionExpress = [v4 decodeBoolForKey:@"supportsInSessionExpress"];
+    v5->_supportsExpress = [coderCopy decodeBoolForKey:@"supportsExpress"];
+    v5->_supportsInSessionExpress = [coderCopy decodeBoolForKey:@"supportsInSessionExpress"];
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"readerIDs"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"readerIDs"];
     readerIDs = v5->_readerIDs;
     v5->_readerIDs = v23;
 
     v25 = MEMORY[0x1E695DFD8];
     v26 = objc_opt_class();
     v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"associatedReaderIDs"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"associatedReaderIDs"];
     associatedReaderIDs = v5->_associatedReaderIDs;
     v5->_associatedReaderIDs = v28;
   }
@@ -398,29 +398,29 @@ PKASCAssociatedReaderID *__56__PKPassAutomaticSelectionCriterion_initWithDiction
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeObject:type forKey:@"type"];
-  [v5 encodeObject:self->_primaryTCIs forKey:@"primaryTCIs"];
-  [v5 encodeObject:self->_TCIs forKey:@"tcis"];
-  [v5 encodeObject:self->_mask forKey:@"mask"];
-  [v5 encodeBool:self->_supportsExpress forKey:@"supportsExpress"];
-  [v5 encodeBool:self->_supportsInSessionExpress forKey:@"supportsInSessionExpress"];
-  [v5 encodeObject:self->_readerIDs forKey:@"readerIDs"];
-  [v5 encodeObject:self->_associatedReaderIDs forKey:@"associatedReaderIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:type forKey:@"type"];
+  [coderCopy encodeObject:self->_primaryTCIs forKey:@"primaryTCIs"];
+  [coderCopy encodeObject:self->_TCIs forKey:@"tcis"];
+  [coderCopy encodeObject:self->_mask forKey:@"mask"];
+  [coderCopy encodeBool:self->_supportsExpress forKey:@"supportsExpress"];
+  [coderCopy encodeBool:self->_supportsInSessionExpress forKey:@"supportsInSessionExpress"];
+  [coderCopy encodeObject:self->_readerIDs forKey:@"readerIDs"];
+  [coderCopy encodeObject:self->_associatedReaderIDs forKey:@"associatedReaderIDs"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

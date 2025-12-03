@@ -1,47 +1,47 @@
 @interface JournalRecordInfo
-- (JournalRecordInfo)initWithCoder:(id)a3;
-- (JournalRecordInfo)initWithJournalName:(id)a3 lastUpdate:(id)a4 journalData:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (JournalRecordInfo)initWithCoder:(id)coder;
+- (JournalRecordInfo)initWithJournalName:(id)name lastUpdate:(id)update journalData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation JournalRecordInfo
 
-- (JournalRecordInfo)initWithJournalName:(id)a3 lastUpdate:(id)a4 journalData:(id)a5
+- (JournalRecordInfo)initWithJournalName:(id)name lastUpdate:(id)update journalData:(id)data
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  updateCopy = update;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = JournalRecordInfo;
   v12 = [(JournalRecordInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_journalName, a3);
-    objc_storeStrong(&v13->_lastUpdate, a4);
-    objc_storeStrong(&v13->_journalData, a5);
+    objc_storeStrong(&v12->_journalName, name);
+    objc_storeStrong(&v13->_lastUpdate, update);
+    objc_storeStrong(&v13->_journalData, data);
   }
 
   return v13;
 }
 
-- (JournalRecordInfo)initWithCoder:(id)a3
+- (JournalRecordInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = JournalRecordInfo;
   v5 = [(JournalRecordInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"journalName"];
+    v6 = [coderCopy decodeObjectForKey:@"journalName"];
     journalName = v5->_journalName;
     v5->_journalName = v6;
 
-    v8 = [v4 decodeObjectForKey:@"lastUpdate"];
+    v8 = [coderCopy decodeObjectForKey:@"lastUpdate"];
     lastUpdate = v5->_lastUpdate;
     v5->_lastUpdate = v8;
 
-    v10 = [v4 decodeObjectForKey:@"journalData"];
+    v10 = [coderCopy decodeObjectForKey:@"journalData"];
     journalData = v5->_journalData;
     v5->_journalData = v10;
   }
@@ -49,17 +49,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(JournalRecordInfo *)self journalName];
-  [v4 encodeObject:v5 forKey:@"journalName"];
+  coderCopy = coder;
+  journalName = [(JournalRecordInfo *)self journalName];
+  [coderCopy encodeObject:journalName forKey:@"journalName"];
 
-  v6 = [(JournalRecordInfo *)self lastUpdate];
-  [v4 encodeObject:v6 forKey:@"lastUpdate"];
+  lastUpdate = [(JournalRecordInfo *)self lastUpdate];
+  [coderCopy encodeObject:lastUpdate forKey:@"lastUpdate"];
 
-  v7 = [(JournalRecordInfo *)self journalData];
-  [v4 encodeObject:v7 forKey:@"journalData"];
+  journalData = [(JournalRecordInfo *)self journalData];
+  [coderCopy encodeObject:journalData forKey:@"journalData"];
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface PRPosterHomeScreenConfiguration
-+ (PRPosterHomeScreenConfiguration)allocWithZone:(_NSZone *)a3;
-+ (id)defaultHomeScreenConfigurationForProvider:(id)a3 role:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (PRPosterHomeScreenConfiguration)allocWithZone:(_NSZone *)zone;
++ (id)defaultHomeScreenConfigurationForProvider:(id)provider role:(id)role;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (PRPosterHomeScreenAppearance)selectedAppearance;
 - (PRPosterHomeScreenConfiguration)init;
-- (PRPosterHomeScreenConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterHomeScreenConfiguration)initWithCoder:(id)a3;
-- (PRPosterHomeScreenConfiguration)initWithHomeScreenConfiguration:(id)a3;
-- (PRPosterHomeScreenConfiguration)initWithSelectedAppearanceType:(unint64_t)a3 lockPosterAppearance:(id)a4 solidColorAppearance:(id)a5 gradientAppearance:(id)a6 homePosterAppearance:(id)a7 customizationConfiguration:(id)a8;
-- (id)configurationApplyingColorPickerConfigurationsFromConfiguration:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PRPosterHomeScreenConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterHomeScreenConfiguration)initWithCoder:(id)coder;
+- (PRPosterHomeScreenConfiguration)initWithHomeScreenConfiguration:(id)configuration;
+- (PRPosterHomeScreenConfiguration)initWithSelectedAppearanceType:(unint64_t)type lockPosterAppearance:(id)appearance solidColorAppearance:(id)colorAppearance gradientAppearance:(id)gradientAppearance homePosterAppearance:(id)posterAppearance customizationConfiguration:(id)configuration;
+- (id)configurationApplyingColorPickerConfigurationsFromConfiguration:(id)configuration;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterHomeScreenConfiguration
 
-+ (id)defaultHomeScreenConfigurationForProvider:(id)a3 role:(id)a4
++ (id)defaultHomeScreenConfigurationForProvider:(id)provider role:(id)role
 {
-  v5 = a3;
+  providerCopy = provider;
   if (PFCurrentDeviceClass() == 1)
   {
     v6 = 0;
   }
 
-  else if ([v5 isEqualToString:@"com.apple.EmojiPoster.EmojiPosterExtension"])
+  else if ([providerCopy isEqualToString:@"com.apple.EmojiPoster.EmojiPosterExtension"])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+    v6 = [providerCopy isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
   }
 
-  v7 = -[PRPosterLockPosterHomeScreenAppearance initWithLegibilityBlurEnabled:allowsModifyingLegibilityBlur:]([PRPosterLockPosterHomeScreenAppearance alloc], "initWithLegibilityBlurEnabled:allowsModifyingLegibilityBlur:", v6, [v5 isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"] ^ 1);
-  v8 = [a1 alloc];
+  v7 = -[PRPosterLockPosterHomeScreenAppearance initWithLegibilityBlurEnabled:allowsModifyingLegibilityBlur:]([PRPosterLockPosterHomeScreenAppearance alloc], "initWithLegibilityBlurEnabled:allowsModifyingLegibilityBlur:", v6, [providerCopy isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"] ^ 1);
+  v8 = [self alloc];
   v9 = objc_alloc_init(PRPosterSolidColorHomeScreenAppearance);
   v10 = objc_alloc_init(PRPosterGradientHomeScreenAppearance);
   v11 = objc_alloc_init(PRPosterHomePosterHomeScreenAppearance);
@@ -48,21 +48,21 @@
   return v13;
 }
 
-+ (PRPosterHomeScreenConfiguration)allocWithZone:(_NSZone *)a3
++ (PRPosterHomeScreenConfiguration)allocWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_self();
 
-  if (v5 == a1)
+  if (v5 == self)
   {
 
-    return [(PRPosterHomeScreenConfiguration *)PRImmutableHomeScreenConfiguration allocWithZone:a3];
+    return [(PRPosterHomeScreenConfiguration *)PRImmutableHomeScreenConfiguration allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PRPosterHomeScreenConfiguration;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
@@ -78,16 +78,16 @@
   return v8;
 }
 
-- (PRPosterHomeScreenConfiguration)initWithSelectedAppearanceType:(unint64_t)a3 lockPosterAppearance:(id)a4 solidColorAppearance:(id)a5 gradientAppearance:(id)a6 homePosterAppearance:(id)a7 customizationConfiguration:(id)a8
+- (PRPosterHomeScreenConfiguration)initWithSelectedAppearanceType:(unint64_t)type lockPosterAppearance:(id)appearance solidColorAppearance:(id)colorAppearance gradientAppearance:(id)gradientAppearance homePosterAppearance:(id)posterAppearance customizationConfiguration:(id)configuration
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v14)
+  appearanceCopy = appearance;
+  colorAppearanceCopy = colorAppearance;
+  gradientAppearanceCopy = gradientAppearance;
+  posterAppearanceCopy = posterAppearance;
+  configurationCopy = configuration;
+  if (appearanceCopy)
   {
-    if (v15)
+    if (colorAppearanceCopy)
     {
       goto LABEL_3;
     }
@@ -96,10 +96,10 @@
   else
   {
     [PRPosterHomeScreenConfiguration initWithSelectedAppearanceType:lockPosterAppearance:solidColorAppearance:gradientAppearance:homePosterAppearance:customizationConfiguration:];
-    if (v15)
+    if (colorAppearanceCopy)
     {
 LABEL_3:
-      if (v16)
+      if (gradientAppearanceCopy)
       {
         goto LABEL_4;
       }
@@ -109,10 +109,10 @@ LABEL_3:
   }
 
   [PRPosterHomeScreenConfiguration initWithSelectedAppearanceType:lockPosterAppearance:solidColorAppearance:gradientAppearance:homePosterAppearance:customizationConfiguration:];
-  if (v16)
+  if (gradientAppearanceCopy)
   {
 LABEL_4:
-    if (v17)
+    if (posterAppearanceCopy)
     {
       goto LABEL_5;
     }
@@ -122,10 +122,10 @@ LABEL_4:
 
 LABEL_13:
   [PRPosterHomeScreenConfiguration initWithSelectedAppearanceType:lockPosterAppearance:solidColorAppearance:gradientAppearance:homePosterAppearance:customizationConfiguration:];
-  if (v17)
+  if (posterAppearanceCopy)
   {
 LABEL_5:
-    if (v18)
+    if (configurationCopy)
     {
       goto LABEL_7;
     }
@@ -135,10 +135,10 @@ LABEL_5:
 
 LABEL_14:
   [PRPosterHomeScreenConfiguration initWithSelectedAppearanceType:lockPosterAppearance:solidColorAppearance:gradientAppearance:homePosterAppearance:customizationConfiguration:];
-  if (!v18)
+  if (!configurationCopy)
   {
 LABEL_6:
-    v18 = objc_opt_new();
+    configurationCopy = objc_opt_new();
   }
 
 LABEL_7:
@@ -147,7 +147,7 @@ LABEL_7:
 
   if (v20)
   {
-    v21 = [[PRImmutableHomeScreenConfiguration alloc] initWithSelectedAppearanceType:a3 lockPosterAppearance:v14 solidColorAppearance:v15 gradientAppearance:v16 homePosterAppearance:v17 customizationConfiguration:v18];
+    v21 = [[PRImmutableHomeScreenConfiguration alloc] initWithSelectedAppearanceType:type lockPosterAppearance:appearanceCopy solidColorAppearance:colorAppearanceCopy gradientAppearance:gradientAppearanceCopy homePosterAppearance:posterAppearanceCopy customizationConfiguration:configurationCopy];
   }
 
   else
@@ -163,78 +163,78 @@ LABEL_7:
   return p_super;
 }
 
-- (PRPosterHomeScreenConfiguration)initWithHomeScreenConfiguration:(id)a3
+- (PRPosterHomeScreenConfiguration)initWithHomeScreenConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 selectedAppearanceType];
-  v6 = [v4 lockPosterAppearance];
-  v7 = [v4 solidColorAppearance];
-  v8 = [v4 gradientAppearance];
-  v9 = [v4 homePosterAppearance];
-  v10 = [v4 customizationConfiguration];
+  configurationCopy = configuration;
+  selectedAppearanceType = [configurationCopy selectedAppearanceType];
+  lockPosterAppearance = [configurationCopy lockPosterAppearance];
+  solidColorAppearance = [configurationCopy solidColorAppearance];
+  gradientAppearance = [configurationCopy gradientAppearance];
+  homePosterAppearance = [configurationCopy homePosterAppearance];
+  customizationConfiguration = [configurationCopy customizationConfiguration];
 
-  v11 = [(PRPosterHomeScreenConfiguration *)self initWithSelectedAppearanceType:v5 lockPosterAppearance:v6 solidColorAppearance:v7 gradientAppearance:v8 homePosterAppearance:v9 customizationConfiguration:v10];
+  v11 = [(PRPosterHomeScreenConfiguration *)self initWithSelectedAppearanceType:selectedAppearanceType lockPosterAppearance:lockPosterAppearance solidColorAppearance:solidColorAppearance gradientAppearance:gradientAppearance homePosterAppearance:homePosterAppearance customizationConfiguration:customizationConfiguration];
   return v11;
 }
 
 - (PRPosterHomeScreenAppearance)selectedAppearance
 {
-  v3 = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
-  v4 = 0;
-  if (v3 > 1)
+  selectedAppearanceType = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
+  gradientAppearance = 0;
+  if (selectedAppearanceType > 1)
   {
-    if (v3 == 2)
+    if (selectedAppearanceType == 2)
     {
-      v4 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+      gradientAppearance = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
     }
 
-    else if (v3 == 3)
+    else if (selectedAppearanceType == 3)
     {
-      v4 = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
+      gradientAppearance = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
     }
   }
 
-  else if (v3)
+  else if (selectedAppearanceType)
   {
-    if (v3 == 1)
+    if (selectedAppearanceType == 1)
     {
-      v4 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+      gradientAppearance = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
     }
   }
 
   else
   {
-    v4 = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
+    gradientAppearance = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
   }
 
-  return v4;
+  return gradientAppearance;
 }
 
-- (id)configurationApplyingColorPickerConfigurationsFromConfiguration:(id)a3
+- (id)configurationApplyingColorPickerConfigurationsFromConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(PRPosterHomeScreenConfiguration *)self mutableCopy];
-  v6 = [v4 solidColorAppearance];
-  v7 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+  solidColorAppearance = [configurationCopy solidColorAppearance];
+  solidColorAppearance2 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
   v8 = [PRPosterSolidColorHomeScreenAppearance alloc];
-  v9 = [v7 color];
-  v10 = [v6 colorPickerConfiguration];
-  v11 = [(PRPosterSolidColorHomeScreenAppearance *)v8 initWithColor:v9 colorPickerConfiguration:v10];
+  color = [solidColorAppearance2 color];
+  colorPickerConfiguration = [solidColorAppearance colorPickerConfiguration];
+  v11 = [(PRPosterSolidColorHomeScreenAppearance *)v8 initWithColor:color colorPickerConfiguration:colorPickerConfiguration];
 
   [v5 setSolidColorAppearance:v11];
-  v12 = [v4 gradientAppearance];
-  v13 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+  gradientAppearance = [configurationCopy gradientAppearance];
+  gradientAppearance2 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
   v14 = [PRPosterGradientHomeScreenAppearance alloc];
-  v15 = [v13 color];
-  v16 = [v12 colorPickerConfiguration];
-  v17 = [(PRPosterGradientHomeScreenAppearance *)v14 initWithColor:v15 colorPickerConfiguration:v16];
+  color2 = [gradientAppearance2 color];
+  colorPickerConfiguration2 = [gradientAppearance colorPickerConfiguration];
+  v17 = [(PRPosterGradientHomeScreenAppearance *)v14 initWithColor:color2 colorPickerConfiguration:colorPickerConfiguration2];
 
   [v5 setGradientAppearance:v17];
-  v18 = [v4 customizationConfiguration];
+  customizationConfiguration = [configurationCopy customizationConfiguration];
 
-  if (v18)
+  if (customizationConfiguration)
   {
-    [v5 setCustomizationConfiguration:v18];
+    [v5 setCustomizationConfiguration:customizationConfiguration];
   }
 
   else
@@ -246,10 +246,10 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -261,12 +261,12 @@ LABEL_7:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
-      if (v8 == [(PRPosterHomeScreenConfiguration *)v7 selectedAppearanceType]&& ([(PRPosterHomeScreenConfiguration *)self lockPosterAppearance], v9 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 lockPosterAppearance], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11) && ([(PRPosterHomeScreenConfiguration *)self solidColorAppearance], v12 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 solidColorAppearance], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && ([(PRPosterHomeScreenConfiguration *)self gradientAppearance], v15 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 gradientAppearance], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17) && ([(PRPosterHomeScreenConfiguration *)self homePosterAppearance], v18 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 homePosterAppearance], v19 = objc_claimAutoreleasedReturnValue(), v20 = BSEqualObjects(), v19, v18, v20))
+      v7 = equalCopy;
+      selectedAppearanceType = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
+      if (selectedAppearanceType == [(PRPosterHomeScreenConfiguration *)v7 selectedAppearanceType]&& ([(PRPosterHomeScreenConfiguration *)self lockPosterAppearance], v9 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 lockPosterAppearance], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11) && ([(PRPosterHomeScreenConfiguration *)self solidColorAppearance], v12 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 solidColorAppearance], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && ([(PRPosterHomeScreenConfiguration *)self gradientAppearance], v15 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 gradientAppearance], v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17) && ([(PRPosterHomeScreenConfiguration *)self homePosterAppearance], v18 = objc_claimAutoreleasedReturnValue(), [(PRPosterHomeScreenConfiguration *)v7 homePosterAppearance], v19 = objc_claimAutoreleasedReturnValue(), v20 = BSEqualObjects(), v19, v18, v20))
       {
-        v21 = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
-        v22 = [(PRPosterHomeScreenConfiguration *)v7 customizationConfiguration];
+        customizationConfiguration = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
+        customizationConfiguration2 = [(PRPosterHomeScreenConfiguration *)v7 customizationConfiguration];
         v23 = BSEqualObjects();
       }
 
@@ -287,17 +287,17 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
-  v4 = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
-  v5 = [v4 hash] ^ v3;
-  v6 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
-  v7 = [v6 hash];
-  v8 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
-  v9 = v5 ^ v7 ^ [v8 hash];
-  v10 = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
-  v11 = [v10 hash];
-  v12 = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
-  v13 = v11 ^ [v12 hash];
+  selectedAppearanceType = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
+  lockPosterAppearance = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
+  v5 = [lockPosterAppearance hash] ^ selectedAppearanceType;
+  solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+  v7 = [solidColorAppearance hash];
+  gradientAppearance = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+  v9 = v5 ^ v7 ^ [gradientAppearance hash];
+  homePosterAppearance = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
+  v11 = [homePosterAppearance hash];
+  customizationConfiguration = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
+  v13 = v11 ^ [customizationConfiguration hash];
 
   return v9 ^ v13;
 }
@@ -309,7 +309,7 @@ LABEL_7:
   v8 = 3221225472;
   v9 = __46__PRPosterHomeScreenConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -318,51 +318,51 @@ LABEL_7:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(PRPosterHomeScreenConfiguration *)PRMutablePosterHomeScreenConfiguration allocWithZone:a3];
+  v4 = [(PRPosterHomeScreenConfiguration *)PRMutablePosterHomeScreenConfiguration allocWithZone:zone];
 
   return [(PRPosterHomeScreenConfiguration *)v4 initWithHomeScreenConfiguration:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[PRPosterHomeScreenConfiguration selectedAppearanceType](self forKey:{"selectedAppearanceType"), @"selectedAppearanceType"}];
-  v5 = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
-  [v4 encodeObject:v5 forKey:@"lockPosterAppearance"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[PRPosterHomeScreenConfiguration selectedAppearanceType](self forKey:{"selectedAppearanceType"), @"selectedAppearanceType"}];
+  lockPosterAppearance = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
+  [coderCopy encodeObject:lockPosterAppearance forKey:@"lockPosterAppearance"];
 
-  v6 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
-  [v4 encodeObject:v6 forKey:@"solidColorAppearance"];
+  solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+  [coderCopy encodeObject:solidColorAppearance forKey:@"solidColorAppearance"];
 
-  v7 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
-  [v4 encodeObject:v7 forKey:@"gradientAppearance"];
+  gradientAppearance = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+  [coderCopy encodeObject:gradientAppearance forKey:@"gradientAppearance"];
 
-  v8 = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
-  [v4 encodeObject:v8 forKey:@"homePosterAppearance"];
+  homePosterAppearance = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
+  [coderCopy encodeObject:homePosterAppearance forKey:@"homePosterAppearance"];
 
-  v9 = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
-  [v4 encodeObject:v9 forKey:@"customizationConfiguration"];
+  customizationConfiguration = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
+  [coderCopy encodeObject:customizationConfiguration forKey:@"customizationConfiguration"];
 }
 
-- (PRPosterHomeScreenConfiguration)initWithCoder:(id)a3
+- (PRPosterHomeScreenConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeIntegerForKey:@"selectedAppearanceType"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeIntegerForKey:@"selectedAppearanceType"];
   v5 = objc_opt_self();
-  v6 = [v3 decodeObjectOfClass:v5 forKey:@"lockPosterAppearance"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"lockPosterAppearance"];
 
   v7 = objc_opt_self();
-  v8 = [v3 decodeObjectOfClass:v7 forKey:@"solidColorAppearance"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"solidColorAppearance"];
 
   v9 = objc_opt_self();
-  v10 = [v3 decodeObjectOfClass:v9 forKey:@"gradientAppearance"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"gradientAppearance"];
 
   v11 = objc_opt_self();
-  v12 = [v3 decodeObjectOfClass:v11 forKey:@"homePosterAppearance"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"homePosterAppearance"];
 
   v13 = objc_opt_self();
-  v14 = [v3 decodeObjectOfClass:v13 forKey:@"customizationConfiguration"];
+  v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"customizationConfiguration"];
 
   if (v6)
   {
@@ -437,44 +437,44 @@ LABEL_6:
   return v16;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeUInt64:-[PRPosterHomeScreenConfiguration selectedAppearanceType](self forKey:{"selectedAppearanceType"), @"selectedAppearanceType"}];
-  v5 = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
-  [v4 encodeObject:v5 forKey:@"lockPosterAppearance"];
+  coderCopy = coder;
+  [coderCopy encodeUInt64:-[PRPosterHomeScreenConfiguration selectedAppearanceType](self forKey:{"selectedAppearanceType"), @"selectedAppearanceType"}];
+  lockPosterAppearance = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
+  [coderCopy encodeObject:lockPosterAppearance forKey:@"lockPosterAppearance"];
 
-  v6 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
-  [v4 encodeObject:v6 forKey:@"solidColorAppearance"];
+  solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+  [coderCopy encodeObject:solidColorAppearance forKey:@"solidColorAppearance"];
 
-  v7 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
-  [v4 encodeObject:v7 forKey:@"gradientAppearance"];
+  gradientAppearance = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+  [coderCopy encodeObject:gradientAppearance forKey:@"gradientAppearance"];
 
-  v8 = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
-  [v4 encodeObject:v8 forKey:@"homePosterAppearance"];
+  homePosterAppearance = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
+  [coderCopy encodeObject:homePosterAppearance forKey:@"homePosterAppearance"];
 
-  v9 = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
-  [v4 encodeObject:v9 forKey:@"customizationConfiguration"];
+  customizationConfiguration = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
+  [coderCopy encodeObject:customizationConfiguration forKey:@"customizationConfiguration"];
 }
 
-- (PRPosterHomeScreenConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterHomeScreenConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeUInt64ForKey:@"selectedAppearanceType"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeUInt64ForKey:@"selectedAppearanceType"];
   v5 = objc_opt_self();
-  v6 = [v3 decodeObjectOfClass:v5 forKey:@"lockPosterAppearance"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"lockPosterAppearance"];
 
   v7 = objc_opt_self();
-  v8 = [v3 decodeObjectOfClass:v7 forKey:@"solidColorAppearance"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"solidColorAppearance"];
 
   v9 = objc_opt_self();
-  v10 = [v3 decodeObjectOfClass:v9 forKey:@"gradientAppearance"];
+  v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"gradientAppearance"];
 
   v11 = objc_opt_self();
-  v12 = [v3 decodeObjectOfClass:v11 forKey:@"homePosterAppearance"];
+  v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"homePosterAppearance"];
 
   v13 = objc_opt_self();
-  v14 = [v3 decodeObjectOfClass:v13 forKey:@"customizationConfiguration"];
+  v14 = [coderCopy decodeObjectOfClass:v13 forKey:@"customizationConfiguration"];
 
   if (v6)
   {
@@ -549,35 +549,35 @@ LABEL_6:
   return v16;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v16 = a3;
-  v4 = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
-  if (v4 > 3)
+  formatterCopy = formatter;
+  selectedAppearanceType = [(PRPosterHomeScreenConfiguration *)self selectedAppearanceType];
+  if (selectedAppearanceType > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E78461B8[v4];
+    v5 = off_1E78461B8[selectedAppearanceType];
   }
 
-  [v16 appendString:v5 withName:@"selectedAppearanceType"];
-  v6 = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
-  v7 = [v16 appendObject:v6 withName:@"lockPosterAppearance"];
+  [formatterCopy appendString:v5 withName:@"selectedAppearanceType"];
+  lockPosterAppearance = [(PRPosterHomeScreenConfiguration *)self lockPosterAppearance];
+  v7 = [formatterCopy appendObject:lockPosterAppearance withName:@"lockPosterAppearance"];
 
-  v8 = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
-  v9 = [v16 appendObject:v8 withName:@"solidColorAppearance"];
+  solidColorAppearance = [(PRPosterHomeScreenConfiguration *)self solidColorAppearance];
+  v9 = [formatterCopy appendObject:solidColorAppearance withName:@"solidColorAppearance"];
 
-  v10 = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
-  v11 = [v16 appendObject:v10 withName:@"gradientAppearance"];
+  gradientAppearance = [(PRPosterHomeScreenConfiguration *)self gradientAppearance];
+  v11 = [formatterCopy appendObject:gradientAppearance withName:@"gradientAppearance"];
 
-  v12 = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
-  v13 = [v16 appendObject:v12 withName:@"homePosterAppearance"];
+  homePosterAppearance = [(PRPosterHomeScreenConfiguration *)self homePosterAppearance];
+  v13 = [formatterCopy appendObject:homePosterAppearance withName:@"homePosterAppearance"];
 
-  v14 = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
-  v15 = [v16 appendObject:v14 withName:@"customizationConfiguration" skipIfNil:1];
+  customizationConfiguration = [(PRPosterHomeScreenConfiguration *)self customizationConfiguration];
+  v15 = [formatterCopy appendObject:customizationConfiguration withName:@"customizationConfiguration" skipIfNil:1];
 }
 
 - (void)initWithSelectedAppearanceType:lockPosterAppearance:solidColorAppearance:gradientAppearance:homePosterAppearance:customizationConfiguration:.cold.1()

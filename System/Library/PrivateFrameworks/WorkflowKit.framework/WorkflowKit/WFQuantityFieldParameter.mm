@@ -1,8 +1,8 @@
 @interface WFQuantityFieldParameter
-- (WFQuantityFieldParameter)initWithDefinition:(id)a3;
+- (WFQuantityFieldParameter)initWithDefinition:(id)definition;
 - (id)defaultSerializedRepresentation;
 - (id)defaultUnit;
-- (void)setPossibleUnits:(id)a3;
+- (void)setPossibleUnits:(id)units;
 @end
 
 @implementation WFQuantityFieldParameter
@@ -11,10 +11,10 @@
 {
   v10.receiver = self;
   v10.super_class = WFQuantityFieldParameter;
-  v3 = [(WFParameter *)&v10 defaultSerializedRepresentation];
-  if (v3)
+  defaultSerializedRepresentation = [(WFParameter *)&v10 defaultSerializedRepresentation];
+  if (defaultSerializedRepresentation)
   {
-    v4 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithSerializedRepresentation:v3 variableProvider:0 parameter:0];
+    v4 = [(WFVariableSubstitutableParameterState *)[WFNumberStringSubstitutableState alloc] initWithSerializedRepresentation:defaultSerializedRepresentation variableProvider:0 parameter:0];
   }
 
   else
@@ -23,40 +23,40 @@
   }
 
   v5 = [WFQuantityParameterState alloc];
-  v6 = [(WFQuantityFieldParameter *)self defaultUnit];
-  v7 = [(WFQuantityParameterState *)v5 initWithMagnitudeState:v4 unitString:v6];
-  v8 = [(WFQuantityParameterState *)v7 serializedRepresentation];
+  defaultUnit = [(WFQuantityFieldParameter *)self defaultUnit];
+  v7 = [(WFQuantityParameterState *)v5 initWithMagnitudeState:v4 unitString:defaultUnit];
+  serializedRepresentation = [(WFQuantityParameterState *)v7 serializedRepresentation];
 
-  return v8;
+  return serializedRepresentation;
 }
 
 - (id)defaultUnit
 {
-  v2 = [(WFQuantityFieldParameter *)self possibleUnits];
-  v3 = [v2 firstObject];
+  possibleUnits = [(WFQuantityFieldParameter *)self possibleUnits];
+  firstObject = [possibleUnits firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setPossibleUnits:(id)a3
+- (void)setPossibleUnits:(id)units
 {
-  v4 = [a3 copy];
+  v4 = [units copy];
   possibleUnits = self->_possibleUnits;
   self->_possibleUnits = v4;
 
   [(WFParameter *)self attributesDidChange];
 }
 
-- (WFQuantityFieldParameter)initWithDefinition:(id)a3
+- (WFQuantityFieldParameter)initWithDefinition:(id)definition
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v17.receiver = self;
   v17.super_class = WFQuantityFieldParameter;
-  v5 = [(WFNumberFieldParameter *)&v17 initWithDefinition:v4];
+  v5 = [(WFNumberFieldParameter *)&v17 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"PossibleUnits"];
+    v6 = [definitionCopy objectForKey:@"PossibleUnits"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

@@ -1,102 +1,102 @@
 @interface CRLiOSDocumentModeFindReplace
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point touchType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (CRLInteractiveCanvasController)interactiveCanvasController;
-- (CRLiOSDocumentModeFindReplace)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4;
-- (void)handleAlternateContextMenuBehaviorAtPoint:(CGPoint)a3;
-- (void)modeDidEndForMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4;
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4;
+- (CRLiOSDocumentModeFindReplace)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController;
+- (void)handleAlternateContextMenuBehaviorAtPoint:(CGPoint)point;
+- (void)modeDidEndForMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced;
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced;
 @end
 
 @implementation CRLiOSDocumentModeFindReplace
 
-- (CRLiOSDocumentModeFindReplace)initWithBoardViewController:(id)a3 andInteractiveCanvasController:(id)a4
+- (CRLiOSDocumentModeFindReplace)initWithBoardViewController:(id)controller andInteractiveCanvasController:(id)canvasController
 {
-  v6 = a4;
+  canvasControllerCopy = canvasController;
   v10.receiver = self;
   v10.super_class = CRLiOSDocumentModeFindReplace;
-  v7 = [(CRLiOSDocumentMode *)&v10 initWithBoardViewController:a3];
+  v7 = [(CRLiOSDocumentMode *)&v10 initWithBoardViewController:controller];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_interactiveCanvasController, v6);
+    objc_storeWeak(&v7->_interactiveCanvasController, canvasControllerCopy);
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v4 = [equalCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (void)modeWillBeginFromMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillBeginFromMode:(id)mode forced:(BOOL)forced
 {
   v12.receiver = self;
   v12.super_class = CRLiOSDocumentModeFindReplace;
-  [(CRLiOSDocumentMode *)&v12 modeWillBeginFromMode:a3 forced:a4];
-  v5 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  v6 = [v5 editorController];
+  [(CRLiOSDocumentMode *)&v12 modeWillBeginFromMode:mode forced:forced];
+  interactiveCanvasController = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  editorController = [interactiveCanvasController editorController];
 
-  v7 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  v8 = [v7 selectionModelTranslator];
-  v9 = [v8 selectionPathForInfos:0];
+  interactiveCanvasController2 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  selectionModelTranslator = [interactiveCanvasController2 selectionModelTranslator];
+  v9 = [selectionModelTranslator selectionPathForInfos:0];
 
-  [v6 setSelectionPath:v9];
-  v10 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  v11 = [v10 textInputResponder];
-  [v11 setDisallowBecomingFirstResponder:1];
+  [editorController setSelectionPath:v9];
+  interactiveCanvasController3 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController3 textInputResponder];
+  [textInputResponder setDisallowBecomingFirstResponder:1];
 }
 
-- (void)modeWillEndForMode:(id)a3 forced:(BOOL)a4
+- (void)modeWillEndForMode:(id)mode forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  v8 = [v7 textInputResponder];
-  [v8 setDisallowBecomingFirstResponder:0];
+  forcedCopy = forced;
+  modeCopy = mode;
+  interactiveCanvasController = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  textInputResponder = [interactiveCanvasController textInputResponder];
+  [textInputResponder setDisallowBecomingFirstResponder:0];
 
-  v9 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  [v9 setShowGrayOverlay:0];
+  interactiveCanvasController2 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  [interactiveCanvasController2 setShowGrayOverlay:0];
 
   v10.receiver = self;
   v10.super_class = CRLiOSDocumentModeFindReplace;
-  [(CRLiOSDocumentMode *)&v10 modeWillEndForMode:v6 forced:v4];
+  [(CRLiOSDocumentMode *)&v10 modeWillEndForMode:modeCopy forced:forcedCopy];
 }
 
-- (void)modeDidEndForMode:(id)a3 forced:(BOOL)a4
+- (void)modeDidEndForMode:(id)mode forced:(BOOL)forced
 {
   v10.receiver = self;
   v10.super_class = CRLiOSDocumentModeFindReplace;
-  [(CRLiOSDocumentMode *)&v10 modeDidEndForMode:a3 forced:a4];
-  v5 = [(CRLiOSDocumentMode *)self boardViewController];
-  v6 = [v5 findReplaceInteraction];
-  [v6 dismissFindNavigator];
+  [(CRLiOSDocumentMode *)&v10 modeDidEndForMode:mode forced:forced];
+  boardViewController = [(CRLiOSDocumentMode *)self boardViewController];
+  findReplaceInteraction = [boardViewController findReplaceInteraction];
+  [findReplaceInteraction dismissFindNavigator];
 
-  v7 = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
-  v8 = [v7 layerHost];
-  v9 = [v8 asiOSCVC];
-  [v9 becomeFirstResponderIfAppropriate];
+  interactiveCanvasController = [(CRLiOSDocumentModeFindReplace *)self interactiveCanvasController];
+  layerHost = [interactiveCanvasController layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  [asiOSCVC becomeFirstResponderIfAppropriate];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 touchType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point touchType:(int64_t)type
 {
-  v4 = [(CRLiOSDocumentMode *)self boardViewController:a4];
-  v5 = [v4 findReplaceInteraction];
-  [v5 dismissFindNavigator];
+  v4 = [(CRLiOSDocumentMode *)self boardViewController:type];
+  findReplaceInteraction = [v4 findReplaceInteraction];
+  [findReplaceInteraction dismissFindNavigator];
 
   return 1;
 }
 
-- (void)handleAlternateContextMenuBehaviorAtPoint:(CGPoint)a3
+- (void)handleAlternateContextMenuBehaviorAtPoint:(CGPoint)point
 {
-  v4 = [(CRLiOSDocumentMode *)self boardViewController:a3.x];
-  v3 = [v4 documentModeController];
-  [v3 performSelector:"resetToDefaultModeAnimated:" withObject:&__kCFBooleanTrue afterDelay:0.0];
+  v4 = [(CRLiOSDocumentMode *)self boardViewController:point.x];
+  documentModeController = [v4 documentModeController];
+  [documentModeController performSelector:"resetToDefaultModeAnimated:" withObject:&__kCFBooleanTrue afterDelay:0.0];
 }
 
 - (CRLInteractiveCanvasController)interactiveCanvasController

@@ -1,16 +1,16 @@
 @interface MobileMail_UIDimmingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityObscuredScreenAllowedViews;
 @end
 
 @implementation MobileMail_UIDimmingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MailActionsViewController"];
-  [v3 validateClass:@"MFModernAddressAtom"];
-  [v3 validateClass:@"UIDimmingView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MailActionsViewController"];
+  [validationsCopy validateClass:@"MFModernAddressAtom"];
+  [validationsCopy validateClass:@"UIDimmingView" isKindOfClass:@"UIView"];
 }
 
 - (id)_accessibilityObscuredScreenAllowedViews

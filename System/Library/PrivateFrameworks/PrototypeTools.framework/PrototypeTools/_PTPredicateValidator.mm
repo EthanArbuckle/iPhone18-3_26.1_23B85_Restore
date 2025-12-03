@@ -1,13 +1,13 @@
 @interface _PTPredicateValidator
-+ (void)validatorWithPredicate:(uint64_t)a1;
++ (void)validatorWithPredicate:(uint64_t)predicate;
 - (uint64_t)evaluate;
-- (void)visitPredicateExpression:(id)a3;
-- (void)visitPredicateOperator:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
+- (void)visitPredicateOperator:(id)operator;
 @end
 
 @implementation _PTPredicateValidator
 
-+ (void)validatorWithPredicate:(uint64_t)a1
++ (void)validatorWithPredicate:(uint64_t)predicate
 {
   v2 = a2;
   objc_opt_self();
@@ -18,30 +18,30 @@
   return v3;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v5 = a3;
+  expressionCopy = expression;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [(_PTPredicateValidator *)a2 visitPredicateExpression:v5];
+    [(_PTPredicateValidator *)a2 visitPredicateExpression:expressionCopy];
   }
 
-  v6 = [v5 expressionType];
-  if (v6 <= 0x14 && ((1 << v6) & 0x181010) != 0)
+  expressionType = [expressionCopy expressionType];
+  if (expressionType <= 0x14 && ((1 << expressionType) & 0x181010) != 0)
   {
     self->_valid = 0;
   }
 }
 
-- (void)visitPredicateOperator:(id)a3
+- (void)visitPredicateOperator:(id)operator
 {
-  v5 = a3;
+  operatorCopy = operator;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [(_PTPredicateValidator *)a2 visitPredicateOperator:v5];
+    [(_PTPredicateValidator *)a2 visitPredicateOperator:operatorCopy];
   }
 
-  if ([v5 operatorType] == 11)
+  if ([operatorCopy operatorType] == 11)
   {
     self->_valid = 0;
   }
@@ -50,21 +50,21 @@
 - (uint64_t)evaluate
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     v3 = 0;
     return v3 & 1;
   }
 
-  *(a1 + 16) = 1;
-  [*(a1 + 8) acceptVisitor:a1 flags:3];
-  if (*(a1 + 16) == 1)
+  *(self + 16) = 1;
+  [*(self + 8) acceptVisitor:self flags:3];
+  if (*(self + 16) == 1)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v2 = [*(a1 + 8) predicateFormat];
+      predicateFormat = [*(self + 8) predicateFormat];
       v5 = 138543362;
-      v6 = v2;
+      v6 = predicateFormat;
       _os_log_debug_impl(&dword_21E61D000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Predicate passed validation: %{public}@", &v5, 0xCu);
 LABEL_9:
     }
@@ -72,14 +72,14 @@ LABEL_9:
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v2 = [*(a1 + 8) predicateFormat];
+    predicateFormat = [*(self + 8) predicateFormat];
     v5 = 138543362;
-    v6 = v2;
+    v6 = predicateFormat;
     _os_log_error_impl(&dword_21E61D000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Predicate failed validation: %{public}@", &v5, 0xCu);
     goto LABEL_9;
   }
 
-  v3 = *(a1 + 16);
+  v3 = *(self + 16);
   return v3 & 1;
 }
 

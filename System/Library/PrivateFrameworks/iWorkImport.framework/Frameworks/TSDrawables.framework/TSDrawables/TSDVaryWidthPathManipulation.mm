@@ -1,19 +1,19 @@
 @interface TSDVaryWidthPathManipulation
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4;
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width;
 @end
 
 @implementation TSDVaryWidthPathManipulation
 
-- (CGPath)manipulatePath:(CGPath *)a3 withLineWidth:(double)a4
+- (CGPath)manipulatePath:(CGPath *)path withLineWidth:(double)width
 {
   Mutable = CGPathCreateMutable();
-  v7 = a4 + a4;
+  v7 = width + width;
   v8 = 3;
   do
   {
-    a3 = sub_2767B2B48(a3, 2uLL, v7);
+    path = sub_2767B2B48(path, 2uLL, v7);
     CGPathAddPathSafe();
-    CFAutorelease(a3);
+    CFAutorelease(path);
     --v8;
   }
 

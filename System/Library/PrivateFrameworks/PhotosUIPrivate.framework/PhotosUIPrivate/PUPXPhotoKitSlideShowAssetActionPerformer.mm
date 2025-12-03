@@ -1,29 +1,29 @@
 @interface PUPXPhotoKitSlideShowAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
 - (id)_getLegacySlideshowSession;
-- (id)_getSlideshowSession:(id)a3;
+- (id)_getSlideshowSession:(id)session;
 - (void)_startSlideshow;
 - (void)performUserInteractionTask;
-- (void)slideshowViewControllerDidFinish:(id)a3 withVisibleAssets:(id)a4;
+- (void)slideshowViewControllerDidFinish:(id)finish withVisibleAssets:(id)assets;
 @end
 
 @implementation PUPXPhotoKitSlideShowAssetActionPerformer
 
-- (void)slideshowViewControllerDidFinish:(id)a3 withVisibleAssets:(id)a4
+- (void)slideshowViewControllerDidFinish:(id)finish withVisibleAssets:(id)assets
 {
-  v5 = [a3 navigationController];
-  v6 = [(PXActionPerformer *)self dismissViewController:v5 completionHandler:0];
+  navigationController = [finish navigationController];
+  v6 = [(PXActionPerformer *)self dismissViewController:navigationController completionHandler:0];
 
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:v6 error:0];
 }
 
-- (id)_getSlideshowSession:(id)a3
+- (id)_getSlideshowSession:(id)session
 {
-  v4 = a3;
-  v5 = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
-  v6 = [v5 fetchResultWithAssetsAtIndexPaths:v4];
+  sessionCopy = session;
+  photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
+  v6 = [photosDataSourceSnapshot fetchResultWithAssetsAtIndexPaths:sessionCopy];
   if ([v6 count])
   {
     v11 = 0;
@@ -35,15 +35,15 @@
     v10[2] = __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___block_invoke;
     v10[3] = &unk_1E7B7A7B0;
     v10[4] = &v11;
-    [v4 enumerateItemIndexSetsUsingBlock:v10];
+    [sessionCopy enumerateItemIndexSetsUsingBlock:v10];
     if (v12[3] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v5 firstAssetCollection];
+      [photosDataSourceSnapshot firstAssetCollection];
     }
 
     else
     {
-      [v5 assetCollectionForSection:?];
+      [photosDataSourceSnapshot assetCollectionForSection:?];
     }
     v8 = ;
     v7 = [[PUSlideshowSession alloc] initWithFetchResult:v6 assetCollection:v8];
@@ -74,28 +74,28 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
 
 - (id)_getLegacySlideshowSession
 {
-  v4 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v5 = [v4 firstObject];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  firstObject = [assets firstObject];
 
-  v6 = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
-  v7 = [v6 allKeys];
-  v8 = [v7 firstObject];
+  assetsByAssetCollection = [(PXPhotoKitAssetActionPerformer *)self assetsByAssetCollection];
+  allKeys = [assetsByAssetCollection allKeys];
+  firstObject2 = [allKeys firstObject];
 
-  v9 = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
-  if (!v9)
+  photosDataSourceSnapshot = [(PXPhotoKitAssetActionPerformer *)self photosDataSourceSnapshot];
+  if (!photosDataSourceSnapshot)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:544 description:@"Share performer should have a photosDataSource set."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:544 description:@"Share performer should have a photosDataSource set."];
   }
 
-  v10 = [v9 indexPathForAsset:v5 inCollection:v8];
+  v10 = [photosDataSourceSnapshot indexPathForAsset:firstObject inCollection:firstObject2];
   v11 = v10;
   if (v10)
   {
     v12 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:{objc_msgSend(v10, "section")}];
-    v13 = [v9 assetsStartingAtIndexPath:v12];
+    v13 = [photosDataSourceSnapshot assetsStartingAtIndexPath:v12];
 
-    v14 = -[PUSlideshowSession initWithFetchResult:assetCollection:startIndex:]([PUSlideshowSession alloc], "initWithFetchResult:assetCollection:startIndex:", v13, v8, [v11 item]);
+    v14 = -[PUSlideshowSession initWithFetchResult:assetCollection:startIndex:]([PUSlideshowSession alloc], "initWithFetchResult:assetCollection:startIndex:", v13, firstObject2, [v11 item]);
   }
 
   else
@@ -108,29 +108,29 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
 
 - (void)_startSlideshow
 {
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v10 = [v4 selectedIndexPaths];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
 
-  if ([v10 itemCount] <= 0)
+  if ([selectedIndexPaths itemCount] <= 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:513 description:@"Expected at least one selected index path."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:513 description:@"Expected at least one selected index path."];
   }
 
-  if ([v10 itemCount] == 1)
+  if ([selectedIndexPaths itemCount] == 1)
   {
     [(PUPXPhotoKitSlideShowAssetActionPerformer *)self _getLegacySlideshowSession];
   }
 
   else
   {
-    [(PUPXPhotoKitSlideShowAssetActionPerformer *)self _getSlideshowSession:v10];
+    [(PUPXPhotoKitSlideShowAssetActionPerformer *)self _getSlideshowSession:selectedIndexPaths];
   }
   v5 = ;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:523 description:@"Slideshow session was unable to be created"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:523 description:@"Slideshow session was unable to be created"];
   }
 
   v6 = [[PUSlideshowViewController alloc] initWithSession:v5];
@@ -145,9 +145,9 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v4 = [v3 selectedIndexPaths];
-  v5 = [v4 count];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v5 = [selectedIndexPaths count];
 
   if (v5 < 1)
   {
@@ -162,20 +162,20 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
   }
 }
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
-  v8 = a3;
-  v9 = [a1 localizedTitleForUseCase:1 actionManager:a5];
-  v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:0 target:v8 action:a4];
+  targetCopy = target;
+  v9 = [self localizedTitleForUseCase:1 actionManager:manager];
+  v10 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:v9 style:0 target:targetCopy action:action];
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  if (a3)
+  if (asset)
   {
-    return [a3 needsSensitivityProtection] ^ 1;
+    return [asset needsSensitivityProtection] ^ 1;
   }
 
   else
@@ -184,20 +184,20 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
   }
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v7 = a3;
-  v8 = [MEMORY[0x1E69C3350] sharedInstance];
-  v9 = [v8 enableSlideshowAction];
+  snapshotCopy = snapshot;
+  mEMORY[0x1E69C3350] = [MEMORY[0x1E69C3350] sharedInstance];
+  enableSlideshowAction = [mEMORY[0x1E69C3350] enableSlideshowAction];
 
-  if (!v9)
+  if (!enableSlideshowAction)
   {
     LOBYTE(v12) = 0;
     goto LABEL_10;
   }
 
-  v10 = [v7 dataSource];
-  if (v10)
+  dataSource = [snapshotCopy dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -205,26 +205,26 @@ uint64_t __66__PUPXPhotoKitSlideShowAssetActionPerformer__getSlideshowSession___
       goto LABEL_4;
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = objc_opt_class();
     v16 = NSStringFromClass(v17);
-    v18 = [v10 px_descriptionForAssertionMessage];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:459 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v16, v18}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:459 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v16, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:459 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v16}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPXPhotoKitAssetActionManager.m" lineNumber:459 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v16}];
   }
 
 LABEL_4:
-  v11 = [v10 containerCollection];
-  if ([v7 isAnyItemSelected] && (objc_msgSend(v11, "px_isRecentlyDeletedSmartAlbum") & 1) == 0)
+  containerCollection = [dataSource containerCollection];
+  if ([snapshotCopy isAnyItemSelected] && (objc_msgSend(containerCollection, "px_isRecentlyDeletedSmartAlbum") & 1) == 0)
   {
-    v12 = [v11 px_isRecoveredSmartAlbum] ^ 1;
+    v12 = [containerCollection px_isRecoveredSmartAlbum] ^ 1;
   }
 
   else

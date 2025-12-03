@@ -1,5 +1,5 @@
 @interface RBSProcessStateUpdate
-+ (id)updateWithState:(id)a3 previousState:(id)a4 exitEvent:(id)a5;
++ (id)updateWithState:(id)state previousState:(id)previousState exitEvent:(id)event;
 - (id)description;
 @end
 
@@ -16,52 +16,52 @@
   return v7;
 }
 
-+ (id)updateWithState:(id)a3 previousState:(id)a4 exitEvent:(id)a5
++ (id)updateWithState:(id)state previousState:(id)previousState exitEvent:(id)event
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9 && !v10 && !v11)
+  stateCopy = state;
+  previousStateCopy = previousState;
+  eventCopy = event;
+  v12 = eventCopy;
+  if (!stateCopy && !previousStateCopy && !eventCopy)
   {
-    [RBSProcessStateUpdate updateWithState:a2 previousState:a1 exitEvent:?];
+    [RBSProcessStateUpdate updateWithState:a2 previousState:self exitEvent:?];
   }
 
   v13 = objc_alloc_init(RBSProcessStateUpdate);
-  v14 = [(RBSProcessState *)v9 process];
-  v15 = v14;
-  if (v14)
+  process = [(RBSProcessState *)stateCopy process];
+  v15 = process;
+  if (process)
   {
-    v16 = v14;
+    v16 = process;
     process = v13->_process;
     v13->_process = v16;
   }
 
   else
   {
-    v18 = [(RBSProcessState *)v10 process];
-    process = v18;
-    if (v18)
+    process2 = [(RBSProcessState *)previousStateCopy process];
+    process = process2;
+    if (process2)
     {
-      v19 = v18;
+      process3 = process2;
     }
 
     else
     {
-      v19 = [(RBSProcessExitEvent *)v12 process];
+      process3 = [(RBSProcessExitEvent *)v12 process];
     }
 
     v20 = v13->_process;
-    v13->_process = v19;
+    v13->_process = process3;
   }
 
   state = v13->_state;
-  v13->_state = v9;
-  v22 = v9;
+  v13->_state = stateCopy;
+  v22 = stateCopy;
 
   previousState = v13->_previousState;
-  v13->_previousState = v10;
-  v24 = v10;
+  v13->_previousState = previousStateCopy;
+  v24 = previousStateCopy;
 
   exitEvent = v13->_exitEvent;
   v13->_exitEvent = v12;

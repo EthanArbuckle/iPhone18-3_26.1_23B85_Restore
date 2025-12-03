@@ -6,10 +6,10 @@
 
 - (PKShippingMethod)shippingMethod
 {
-  v2 = [(PKPaymentDataItem *)self model];
-  v3 = [v2 shippingMethod];
+  model = [(PKPaymentDataItem *)self model];
+  shippingMethod = [model shippingMethod];
 
-  return v3;
+  return shippingMethod;
 }
 
 @end

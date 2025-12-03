@@ -1,28 +1,28 @@
 @interface DMFUpdateEnqueuedCommandsRequest
-- (DMFUpdateEnqueuedCommandsRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DMFUpdateEnqueuedCommandsRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMFUpdateEnqueuedCommandsRequest
 
-- (DMFUpdateEnqueuedCommandsRequest)initWithCoder:(id)a3
+- (DMFUpdateEnqueuedCommandsRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = DMFUpdateEnqueuedCommandsRequest;
-  v5 = [(CATTaskRequest *)&v14 initWithCoder:v4];
+  v5 = [(CATTaskRequest *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"organizationIdentifier"];
     organizationIdentifier = v5->_organizationIdentifier;
     v5->_organizationIdentifier = v7;
 
-    v9 = [v4 decodePropertyListForKey:@"addCommands"];
+    v9 = [coderCopy decodePropertyListForKey:@"addCommands"];
     addCommands = v5->_addCommands;
     v5->_addCommands = v9;
 
-    v11 = [v4 decodePropertyListForKey:@"removeCommands"];
+    v11 = [coderCopy decodePropertyListForKey:@"removeCommands"];
     removeCommands = v5->_removeCommands;
     v5->_removeCommands = v11;
   }
@@ -30,20 +30,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = DMFUpdateEnqueuedCommandsRequest;
-  v4 = a3;
-  [(CATTaskRequest *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CATTaskRequest *)&v8 encodeWithCoder:coderCopy];
   v5 = [(DMFUpdateEnqueuedCommandsRequest *)self organizationIdentifier:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"organizationIdentifier"];
+  [coderCopy encodeObject:v5 forKey:@"organizationIdentifier"];
 
-  v6 = [(DMFUpdateEnqueuedCommandsRequest *)self addCommands];
-  [v4 encodeObject:v6 forKey:@"addCommands"];
+  addCommands = [(DMFUpdateEnqueuedCommandsRequest *)self addCommands];
+  [coderCopy encodeObject:addCommands forKey:@"addCommands"];
 
-  v7 = [(DMFUpdateEnqueuedCommandsRequest *)self removeCommands];
-  [v4 encodeObject:v7 forKey:@"removeCommands"];
+  removeCommands = [(DMFUpdateEnqueuedCommandsRequest *)self removeCommands];
+  [coderCopy encodeObject:removeCommands forKey:@"removeCommands"];
 }
 
 @end

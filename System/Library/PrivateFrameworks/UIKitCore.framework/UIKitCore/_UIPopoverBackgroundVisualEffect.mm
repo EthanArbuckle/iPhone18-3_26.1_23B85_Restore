@@ -1,20 +1,20 @@
 @interface _UIPopoverBackgroundVisualEffect
-+ (id)effectWithStyle:(int64_t)a3 tint:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)effectWithStyle:(int64_t)style tint:(id)tint;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)effectSettings;
 @end
 
 @implementation _UIPopoverBackgroundVisualEffect
 
-+ (id)effectWithStyle:(int64_t)a3 tint:(id)a4
++ (id)effectWithStyle:(int64_t)style tint:(id)tint
 {
-  v6 = a4;
-  v7 = [a1 _effectWithStyle:a3 tintColor:v6 invertAutomaticStyle:0];
+  tintCopy = tint;
+  v7 = [self _effectWithStyle:style tintColor:tintCopy invertAutomaticStyle:0];
   v8 = v7;
-  if (v6)
+  if (tintCopy)
   {
     v10 = 0.0;
-    [v6 getRed:0 green:0 blue:0 alpha:&v10];
+    [tintCopy getRed:0 green:0 blue:0 alpha:&v10];
     v8[16] = v10 < 1.0;
   }
 
@@ -26,11 +26,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UIPopoverBackgroundVisualEffect;
-  result = [(UIBlurEffect *)&v5 copyWithZone:a3];
+  result = [(UIBlurEffect *)&v5 copyWithZone:zone];
   *(result + 16) = self->_tintColorIsTranslucent;
   return result;
 }
@@ -39,20 +39,20 @@
 {
   v7.receiver = self;
   v7.super_class = _UIPopoverBackgroundVisualEffect;
-  v3 = [(UIBlurEffect *)&v7 effectSettings];
-  v4 = [(UIBlurEffect *)self _tintColor];
+  effectSettings = [(UIBlurEffect *)&v7 effectSettings];
+  _tintColor = [(UIBlurEffect *)self _tintColor];
 
-  if (v4)
+  if (_tintColor)
   {
-    [v3 setUsesColorTintView:1];
-    v5 = [(UIBlurEffect *)self _tintColor];
-    [v3 setColorTint:v5];
+    [effectSettings setUsesColorTintView:1];
+    _tintColor2 = [(UIBlurEffect *)self _tintColor];
+    [effectSettings setColorTint:_tintColor2];
 
-    [v3 setGrayscaleTintAlpha:0.0];
-    [v3 setUsesBackdropEffectView:self->_tintColorIsTranslucent];
+    [effectSettings setGrayscaleTintAlpha:0.0];
+    [effectSettings setUsesBackdropEffectView:self->_tintColorIsTranslucent];
   }
 
-  return v3;
+  return effectSettings;
 }
 
 @end

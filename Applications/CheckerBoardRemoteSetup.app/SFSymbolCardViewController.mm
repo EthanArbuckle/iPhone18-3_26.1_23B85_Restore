@@ -1,13 +1,13 @@
 @interface SFSymbolCardViewController
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFSymbolCardViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000081D8(a3);
+  selfCopy = self;
+  sub_1000081D8(appear);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface FCCGoalCompletionProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)completedGoalTypesAtIndex:(unint64_t)a3;
+- (int)completedGoalTypesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FCCGoalCompletionProtobuf
@@ -21,20 +21,20 @@
   [(FCCGoalCompletionProtobuf *)&v3 dealloc];
 }
 
-- (int)completedGoalTypesAtIndex:(unint64_t)a3
+- (int)completedGoalTypesAtIndex:(unint64_t)index
 {
   p_completedGoalTypes = &self->_completedGoalTypes;
   count = self->_completedGoalTypes.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x277CBEAD8];
     v7 = *MEMORY[0x277CBE730];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_completedGoalTypes->list[a3];
+  return p_completedGoalTypes->list[index];
 }
 
 - (id)description
@@ -43,48 +43,48 @@
   v8.receiver = self;
   v8.super_class = FCCGoalCompletionProtobuf;
   v4 = [(FCCGoalCompletionProtobuf *)&v8 description];
-  v5 = [(FCCGoalCompletionProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(FCCGoalCompletionProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_activitySummaryIndex];
-    [v3 setObject:v4 forKey:@"activitySummaryIndex"];
+    [dictionary setObject:v4 forKey:@"activitySummaryIndex"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   v6 = PBRepeatedInt32NSArray();
-  [v3 setObject:v6 forKey:@"completedGoalTypes"];
+  [dictionary setObject:v6 forKey:@"completedGoalTypes"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     activitySummaryIndex = self->_activitySummaryIndex;
     PBDataWriterWriteInt64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   p_completedGoalTypes = &self->_completedGoalTypes;
@@ -95,7 +95,7 @@
     {
       v8 = p_completedGoalTypes->list[v7];
       PBDataWriterWriteInt32Field();
-      v4 = v9;
+      toCopy = v9;
       ++v7;
     }
 
@@ -103,28 +103,28 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_activitySummaryIndex;
-    *(v4 + 48) |= 1u;
+    toCopy[4] = self->_activitySummaryIndex;
+    *(toCopy + 48) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
+    [toCopy setIdentifier:?];
   }
 
   if ([(FCCGoalCompletionProtobuf *)self completedGoalTypesCount])
   {
     [v8 clearCompletedGoalTypes];
-    v5 = [(FCCGoalCompletionProtobuf *)self completedGoalTypesCount];
-    if (v5)
+    completedGoalTypesCount = [(FCCGoalCompletionProtobuf *)self completedGoalTypesCount];
+    if (completedGoalTypesCount)
     {
-      v6 = v5;
+      v6 = completedGoalTypesCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addCompletedGoalTypes:{-[FCCGoalCompletionProtobuf completedGoalTypesAtIndex:](self, "completedGoalTypesAtIndex:", i)}];
@@ -133,9 +133,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -143,7 +143,7 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_identifier copyWithZone:a3];
+  v7 = [(NSString *)self->_identifier copyWithZone:zone];
   v8 = v6[5];
   v6[5] = v7;
 
@@ -151,24 +151,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_activitySummaryIndex != *(v4 + 4))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_activitySummaryIndex != *(equalCopy + 4))
     {
       goto LABEL_10;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_10:
     IsEqual = 0;
@@ -176,7 +176,7 @@ LABEL_10:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 5) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_10;
   }
@@ -203,26 +203,26 @@ LABEL_11:
   return v3 ^ v2 ^ PBRepeatedInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
-    self->_activitySummaryIndex = v4[4];
+    self->_activitySummaryIndex = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  if (v4[5])
+  v8 = fromCopy;
+  if (fromCopy[5])
   {
     [(FCCGoalCompletionProtobuf *)self setIdentifier:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = [v4 completedGoalTypesCount];
-  if (v5)
+  completedGoalTypesCount = [fromCopy completedGoalTypesCount];
+  if (completedGoalTypesCount)
   {
-    v6 = v5;
+    v6 = completedGoalTypesCount;
     for (i = 0; i != v6; ++i)
     {
       -[FCCGoalCompletionProtobuf addCompletedGoalTypes:](self, "addCompletedGoalTypes:", [v8 completedGoalTypesAtIndex:i]);

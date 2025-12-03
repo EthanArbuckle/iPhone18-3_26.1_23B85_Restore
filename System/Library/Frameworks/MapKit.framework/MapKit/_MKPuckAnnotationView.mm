@@ -1,9 +1,9 @@
 @interface _MKPuckAnnotationView
 + (CGPoint)_calloutOffset;
 - (BOOL)_balloonCalloutShouldShowArrow;
-- (BOOL)_isLocationStale:(id)a3;
+- (BOOL)_isLocationStale:(id)stale;
 - (BOOL)_isSelectable;
-- (BOOL)_shouldPulseForLocation:(id)a3;
+- (BOOL)_shouldPulseForLocation:(id)location;
 - (BOOL)_shouldShowAccuracyRing;
 - (BOOL)_tracking;
 - (CGPoint)calloutOffset;
@@ -12,12 +12,12 @@
 - (CGSize)collisionSize;
 - (UIEdgeInsets)_annotationTrackingInsets;
 - (UIEdgeInsets)_defaultCollisionAlignmentRectInsets;
-- (_MKPuckAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_MKPuckAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (double)_locationAccuracyInScreenPoints;
 - (double)presentationAccuracy;
 - (float)_selectionPriority;
 - (float)opacity;
-- (id)_animationToSynchronizePulse:(id *)a3;
+- (id)_animationToSynchronizePulse:(id *)pulse;
 - (id)_createFakePuckLayer;
 - (id)_currentInnerColor;
 - (id)_effectiveTintColor;
@@ -26,94 +26,94 @@
 - (id)_pulseLayer;
 - (int64_t)_enforcedHeadingIndicatorStyle;
 - (int64_t)collisionMode;
-- (unint64_t)_innerPulseFrameWhenDisabled:(unint64_t)a3;
+- (unint64_t)_innerPulseFrameWhenDisabled:(unint64_t)disabled;
 - (void)_createOrRemoveFaux3DRingsIfNecessary;
 - (void)_pausePulse;
 - (void)_removePulse;
 - (void)_resetInnerPulseFrame;
 - (void)_resetLayerToMatchAccuracyRing;
 - (void)_resumePulse;
-- (void)_setAccuracyRingStrokeOpacityThreshold:(double)a3;
-- (void)_setAnimatingToCoordinate:(BOOL)a3;
-- (void)_setDisplaysPuckAsAccuracy:(BOOL)a3;
-- (void)_setForceHeadingUp:(BOOL)a3;
-- (void)_setMapDisplayStyle:(id)a3;
-- (void)_setMapPitchRadians:(double)a3;
-- (void)_setMapRotationRadians:(double)a3;
-- (void)_setMapType:(unint64_t)a3;
-- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_setPresentationCourse:(double)a3;
-- (void)_setShouldHidePuckWhenAccuracyVisible:(BOOL)a3;
-- (void)_setShouldShowDynamicLocationAnimations:(BOOL)a3;
-- (void)_setTracking:(BOOL)a3;
-- (void)_setVKNavigationPuckMarker:(id)a3;
+- (void)_setAccuracyRingStrokeOpacityThreshold:(double)threshold;
+- (void)_setAnimatingToCoordinate:(BOOL)coordinate;
+- (void)_setDisplaysPuckAsAccuracy:(BOOL)accuracy;
+- (void)_setForceHeadingUp:(BOOL)up;
+- (void)_setMapDisplayStyle:(id)style;
+- (void)_setMapPitchRadians:(double)radians;
+- (void)_setMapRotationRadians:(double)radians;
+- (void)_setMapType:(unint64_t)type;
+- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_setPresentationCourse:(double)course;
+- (void)_setShouldHidePuckWhenAccuracyVisible:(BOOL)visible;
+- (void)_setShouldShowDynamicLocationAnimations:(BOOL)animations;
+- (void)_setTracking:(BOOL)tracking;
+- (void)_setVKNavigationPuckMarker:(id)marker;
 - (void)_setupLayers;
 - (void)_updateAccuracyAnimation;
 - (void)_updateAccuracyColors;
-- (void)_updateAccuracyOpacityForRadius:(double)a3 duration:(double)a4;
+- (void)_updateAccuracyOpacityForRadius:(double)radius duration:(double)duration;
 - (void)_updateBaseImage;
 - (void)_updateFaux3DColors;
 - (void)_updateFaux3DLayers;
 - (void)_updateFromMap;
 - (void)_updateGlyphImage;
 - (void)_updateHeadingIndicators;
-- (void)_updateHeadingLayerForStyleChange:(BOOL)a3;
+- (void)_updateHeadingLayerForStyleChange:(BOOL)change;
 - (void)_updateInnerCourseRotation;
 - (void)_updateInnerImage;
 - (void)_updateInnerMaskLayer;
 - (void)_updateLayers;
 - (void)_updateLegacyConfiguration;
-- (void)_updatePuckVisibilityForRadius:(double)a3 previousRadius:(double)a4 duration:(double)a5;
+- (void)_updatePuckVisibilityForRadius:(double)radius previousRadius:(double)previousRadius duration:(double)duration;
 - (void)_updatePulse;
 - (void)_updatePulseAnimation;
 - (void)_updatePulseColor;
 - (void)_updateShadowImage;
-- (void)_updateShowHeadingLayer:(BOOL)a3 animatedIfPossible:(BOOL)a4;
-- (void)_updateShowHeadingLayerAnimatedIfPossible:(BOOL)a3;
-- (void)_updateToReflectLocationAccuracyWithDuration:(double)a3 allowShowHideAnimation:(BOOL)a4;
+- (void)_updateShowHeadingLayer:(BOOL)layer animatedIfPossible:(BOOL)possible;
+- (void)_updateShowHeadingLayerAnimatedIfPossible:(BOOL)possible;
+- (void)_updateToReflectLocationAccuracyWithDuration:(double)duration allowShowHideAnimation:(BOOL)animation;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 - (void)locationManagerFailedToUpdateLocation;
-- (void)setAccuracyRingAlpha:(double)a3;
-- (void)setAllowsAccuracyRing:(BOOL)a3;
-- (void)setAllowsPulse:(BOOL)a3;
-- (void)setAlpha:(double)a3;
-- (void)setAnimatingPresentationAccuracy:(BOOL)a3;
-- (void)setAnimatingToCoordinate:(BOOL)a3;
-- (void)setCollisionMode:(int64_t)a3;
-- (void)setDisplayPriority:(float)a3;
-- (void)setEffectsEnabled:(BOOL)a3;
-- (void)setForcesConeIndicator:(BOOL)a3;
-- (void)setGlyphImage:(id)a3;
-- (void)setGlyphTintColor:(id)a3;
-- (void)setHeading:(double)a3;
-- (void)setHeadingAccuracy:(double)a3;
-- (void)setHeadingIndicatorStyle:(int64_t)a3;
-- (void)setInnerImageMask:(id)a3;
-- (void)setLocationAccuracy:(double)a3 duration:(double)a4;
-- (void)setMaxRadiusToShowAccuracyRing:(double)a3;
-- (void)setOpacity:(float)a3;
-- (void)setPresentationAccuracy:(double)a3;
-- (void)setPresentationCoordinate:(id)a3;
-- (void)setPuckScale:(double)a3;
-- (void)setRotateInnerImageToMatchCourse:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShouldDisplayHeading:(BOOL)a3;
-- (void)setShouldDisplayInaccurateHeading:(BOOL)a3;
-- (void)setShouldInnerPulse:(BOOL)a3;
-- (void)setShouldShowOuterRing:(BOOL)a3;
-- (void)setStale:(BOOL)a3;
+- (void)setAccuracyRingAlpha:(double)alpha;
+- (void)setAllowsAccuracyRing:(BOOL)ring;
+- (void)setAllowsPulse:(BOOL)pulse;
+- (void)setAlpha:(double)alpha;
+- (void)setAnimatingPresentationAccuracy:(BOOL)accuracy;
+- (void)setAnimatingToCoordinate:(BOOL)coordinate;
+- (void)setCollisionMode:(int64_t)mode;
+- (void)setDisplayPriority:(float)priority;
+- (void)setEffectsEnabled:(BOOL)enabled;
+- (void)setForcesConeIndicator:(BOOL)indicator;
+- (void)setGlyphImage:(id)image;
+- (void)setGlyphTintColor:(id)color;
+- (void)setHeading:(double)heading;
+- (void)setHeadingAccuracy:(double)accuracy;
+- (void)setHeadingIndicatorStyle:(int64_t)style;
+- (void)setInnerImageMask:(id)mask;
+- (void)setLocationAccuracy:(double)accuracy duration:(double)duration;
+- (void)setMaxRadiusToShowAccuracyRing:(double)ring;
+- (void)setOpacity:(float)opacity;
+- (void)setPresentationAccuracy:(double)accuracy;
+- (void)setPresentationCoordinate:(id)coordinate;
+- (void)setPuckScale:(double)scale;
+- (void)setRotateInnerImageToMatchCourse:(BOOL)course;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setShouldDisplayHeading:(BOOL)heading;
+- (void)setShouldDisplayInaccurateHeading:(BOOL)heading;
+- (void)setShouldInnerPulse:(BOOL)pulse;
+- (void)setShouldShowOuterRing:(BOOL)ring;
+- (void)setStale:(BOOL)stale;
 - (void)tintColorDidChange;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)updateStateFromLocation:(id)a3 duration:(double)a4;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)updateStateFromLocation:(id)location duration:(double)duration;
 @end
 
 @implementation _MKPuckAnnotationView
 
 + (CGPoint)_calloutOffset
 {
-  [a1 shadowBlur];
+  [self shadowBlur];
   v3 = v2;
   v4 = 0.0;
   result.y = v3;
@@ -183,13 +183,13 @@ LABEL_6:
   v6 = v4 + v5 * 2.0;
   [objc_opt_class() shadowBlur];
   v8 = v4 + v7 * 2.0 + 2.0;
-  v9 = [(_MKPuckAnnotationView *)self traitCollection];
-  self->_useDarkAppearance = [v9 userInterfaceStyle] == 2;
+  traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+  self->_useDarkAppearance = [traitCollection userInterfaceStyle] == 2;
 
   [(MKAnnotationView *)self setBounds:0.0, 0.0, v6, v8];
-  v10 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   accuracyContainerLayer = self->_accuracyContainerLayer;
-  self->_accuracyContainerLayer = v10;
+  self->_accuracyContainerLayer = layer;
 
   [(CALayer *)self->_accuracyContainerLayer setBounds:0.0, 0.0, 0.0, 0.0];
   [(_MKPuckAnnotationView *)self bounds];
@@ -198,8 +198,8 @@ LABEL_6:
   [(CALayer *)self->_accuracyContainerLayer setPosition:MidX, CGRectGetMidY(v87)];
   [(CALayer *)self->_accuracyContainerLayer setAllowsGroupBlending:0];
   [(CALayer *)self->_accuracyContainerLayer setAllowsGroupOpacity:0];
-  v13 = [(_MKPuckAnnotationView *)self layer];
-  [v13 addSublayer:self->_accuracyContainerLayer];
+  layer2 = [(_MKPuckAnnotationView *)self layer];
+  [layer2 addSublayer:self->_accuracyContainerLayer];
 
   v14 = +[_MKPuckAccuracyLayer layer];
   accuracyLayer = self->_accuracyLayer;
@@ -210,31 +210,31 @@ LABEL_6:
   v17 = v16 * 0.5;
   [(_MKPuckAccuracyLayer *)self->_accuracyLayer setMinimumRadius:v16 * 0.5];
   v84[0] = @"bounds";
-  v18 = [MEMORY[0x1E695DFB0] null];
-  v85[0] = v18;
+  null = [MEMORY[0x1E695DFB0] null];
+  v85[0] = null;
   v84[1] = @"position";
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v85[1] = v19;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v85[1] = null2;
   v84[2] = @"cornerRadius";
-  v20 = [MEMORY[0x1E695DFB0] null];
-  v85[2] = v20;
+  null3 = [MEMORY[0x1E695DFB0] null];
+  v85[2] = null3;
   v84[3] = @"transform";
-  v21 = [MEMORY[0x1E695DFB0] null];
-  v85[3] = v21;
+  null4 = [MEMORY[0x1E695DFB0] null];
+  v85[3] = null4;
   v84[4] = @"hidden";
-  v22 = [MEMORY[0x1E695DFB0] null];
-  v85[4] = v22;
+  null5 = [MEMORY[0x1E695DFB0] null];
+  v85[4] = null5;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v85 forKeys:v84 count:5];
   [(_MKPuckAccuracyLayer *)self->_accuracyLayer setActions:v23];
 
   [(_MKPuckAccuracyLayer *)self->_accuracyLayer setZPosition:-10000.0];
-  v24 = [(_MKPuckAnnotationView *)self traitCollection];
-  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTraitCollection:v24];
+  traitCollection2 = [(_MKPuckAnnotationView *)self traitCollection];
+  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTraitCollection:traitCollection2];
 
   [(CALayer *)self->_accuracyContainerLayer addSublayer:self->_accuracyLayer];
-  v25 = [MEMORY[0x1E6979398] layer];
+  layer3 = [MEMORY[0x1E6979398] layer];
   puckContainerLayer = self->_puckContainerLayer;
-  self->_puckContainerLayer = v25;
+  self->_puckContainerLayer = layer3;
 
   [(CALayer *)self->_puckContainerLayer setBounds:0.0, 0.0, 0.0, 0.0];
   [(_MKPuckAnnotationView *)self bounds];
@@ -242,32 +242,32 @@ LABEL_6:
   [(_MKPuckAnnotationView *)self bounds];
   [(CALayer *)self->_puckContainerLayer setPosition:v27, CGRectGetMidY(v89)];
   [(CALayer *)self->_puckContainerLayer _mapkit_setActionsToRemoveDefaultImplicitActions];
-  v28 = [(_MKPuckAnnotationView *)self layer];
-  [v28 addSublayer:self->_puckContainerLayer];
+  layer4 = [(_MKPuckAnnotationView *)self layer];
+  [layer4 addSublayer:self->_puckContainerLayer];
 
-  v29 = [MEMORY[0x1E6979398] layer];
+  layer5 = [MEMORY[0x1E6979398] layer];
   puckLayer = self->_puckLayer;
-  self->_puckLayer = v29;
+  self->_puckLayer = layer5;
 
   [(CALayer *)self->_puckLayer setBounds:0.0, 0.0, 0.0, 0.0];
   v31 = *MEMORY[0x1E695EFF8];
   v32 = *(MEMORY[0x1E695EFF8] + 8);
   [(CALayer *)self->_puckLayer setPosition:*MEMORY[0x1E695EFF8], v32];
   v82[0] = @"hidden";
-  v33 = [MEMORY[0x1E695DFB0] null];
-  v83[0] = v33;
+  null6 = [MEMORY[0x1E695DFB0] null];
+  v83[0] = null6;
   v82[1] = @"opacity";
-  v34 = [MEMORY[0x1E695DFB0] null];
-  v83[1] = v34;
+  null7 = [MEMORY[0x1E695DFB0] null];
+  v83[1] = null7;
   v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:v82 count:2];
   [(CALayer *)self->_puckLayer setActions:v35];
 
   [(CALayer *)self->_puckLayer setAllowsGroupBlending:0];
   [(CALayer *)self->_puckLayer setAllowsGroupOpacity:0];
   [(CALayer *)self->_puckContainerLayer addSublayer:self->_puckLayer];
-  v36 = [MEMORY[0x1E6979398] layer];
+  layer6 = [MEMORY[0x1E6979398] layer];
   headingContainerLayer = self->_headingContainerLayer;
-  self->_headingContainerLayer = v36;
+  self->_headingContainerLayer = layer6;
 
   [(CALayer *)self->_headingContainerLayer setBounds:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   [(CALayer *)self->_headingContainerLayer setPosition:v31, v32];
@@ -275,21 +275,21 @@ LABEL_6:
   [(CALayer *)self->_headingContainerLayer setAllowsGroupBlending:0];
   [(CALayer *)self->_headingContainerLayer setAllowsGroupOpacity:0];
   [(CALayer *)self->_headingContainerLayer setZPosition:-10001.0];
-  v38 = [(_MKPuckAnnotationView *)self layer];
-  [v38 insertSublayer:self->_headingContainerLayer below:self->_accuracyLayer];
+  layer7 = [(_MKPuckAnnotationView *)self layer];
+  [layer7 insertSublayer:self->_headingContainerLayer below:self->_accuracyLayer];
 
-  v39 = [MEMORY[0x1E6979398] layer];
+  layer8 = [MEMORY[0x1E6979398] layer];
   shadowLayer = self->_shadowLayer;
-  self->_shadowLayer = v39;
+  self->_shadowLayer = layer8;
 
   [(CALayer *)self->_shadowLayer setName:@"shadow"];
   [(CALayer *)self->_shadowLayer setBounds:0.0, 0.0, v6, v8];
   v80[0] = @"bounds";
-  v41 = [MEMORY[0x1E695DFB0] null];
+  null8 = [MEMORY[0x1E695DFB0] null];
   v80[1] = @"opacity";
-  v81[0] = v41;
-  v42 = [MEMORY[0x1E695DFB0] null];
-  v81[1] = v42;
+  v81[0] = null8;
+  null9 = [MEMORY[0x1E695DFB0] null];
+  v81[1] = null9;
   v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v81 forKeys:v80 count:2];
   [(CALayer *)self->_shadowLayer setActions:v43];
 
@@ -301,88 +301,88 @@ LABEL_6:
 
   [(CALayer *)self->_shadowLayer setOpacity:v44];
   [(CALayer *)self->_puckLayer addSublayer:self->_shadowLayer];
-  v45 = [MEMORY[0x1E6979380] layer];
+  layer9 = [MEMORY[0x1E6979380] layer];
   faux3DFaceLayer = self->_faux3DFaceLayer;
-  self->_faux3DFaceLayer = v45;
+  self->_faux3DFaceLayer = layer9;
 
   [(CAGradientLayer *)self->_faux3DFaceLayer setName:@"faux3DFace"];
   [(CAGradientLayer *)self->_faux3DFaceLayer setStartPoint:0.0, 0.5];
   [(CAGradientLayer *)self->_faux3DFaceLayer setEndPoint:1.0, 0.5];
   [(CAGradientLayer *)self->_faux3DFaceLayer setBounds:0.0, 0.0, v4, 0.0];
   v78[0] = @"bounds";
-  v47 = [MEMORY[0x1E695DFB0] null];
+  null10 = [MEMORY[0x1E695DFB0] null];
   v78[1] = @"transform";
-  v79[0] = v47;
-  v48 = [MEMORY[0x1E695DFB0] null];
-  v79[1] = v48;
+  v79[0] = null10;
+  null11 = [MEMORY[0x1E695DFB0] null];
+  v79[1] = null11;
   v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v79 forKeys:v78 count:2];
   [(CAGradientLayer *)self->_faux3DFaceLayer setActions:v49];
 
   [(CALayer *)self->_puckLayer addSublayer:self->_faux3DFaceLayer];
-  v50 = [MEMORY[0x1E6979380] layer];
+  layer10 = [MEMORY[0x1E6979380] layer];
   faux3DBaseBottomLayer = self->_faux3DBaseBottomLayer;
-  self->_faux3DBaseBottomLayer = v50;
+  self->_faux3DBaseBottomLayer = layer10;
 
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setName:@"faux3DBaseBottom"];
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setStartPoint:0.0, 0.5];
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setEndPoint:1.0, 0.5];
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setBounds:0.0, 0.0, v4, v4];
   v76[0] = @"bounds";
-  v52 = [MEMORY[0x1E695DFB0] null];
+  null12 = [MEMORY[0x1E695DFB0] null];
   v76[1] = @"cornerRadius";
-  v77[0] = v52;
-  v53 = [MEMORY[0x1E695DFB0] null];
-  v77[1] = v53;
+  v77[0] = null12;
+  null13 = [MEMORY[0x1E695DFB0] null];
+  v77[1] = null13;
   v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v77 forKeys:v76 count:2];
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setActions:v54];
 
   [(CAGradientLayer *)self->_faux3DBaseBottomLayer setCornerRadius:v17];
   [(CALayer *)self->_puckLayer addSublayer:self->_faux3DBaseBottomLayer];
-  v55 = [MEMORY[0x1E6979398] layer];
+  layer11 = [MEMORY[0x1E6979398] layer];
   baseLayer = self->_baseLayer;
-  self->_baseLayer = v55;
+  self->_baseLayer = layer11;
 
   [(CALayer *)self->_baseLayer setName:@"base"];
   [(CALayer *)self->_baseLayer setBounds:0.0, 0.0, v4, v4];
   v74[0] = @"bounds";
-  v57 = [MEMORY[0x1E695DFB0] null];
-  v75[0] = v57;
+  null14 = [MEMORY[0x1E695DFB0] null];
+  v75[0] = null14;
   v74[1] = @"cornerRadius";
-  v58 = [MEMORY[0x1E695DFB0] null];
-  v75[1] = v58;
+  null15 = [MEMORY[0x1E695DFB0] null];
+  v75[1] = null15;
   v74[2] = @"transform";
-  v59 = [MEMORY[0x1E695DFB0] null];
-  v75[2] = v59;
+  null16 = [MEMORY[0x1E695DFB0] null];
+  v75[2] = null16;
   v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:3];
   [(CALayer *)self->_baseLayer setActions:v60];
 
   [(CALayer *)self->_puckLayer addSublayer:self->_baseLayer];
   [objc_opt_class() innerDiameter];
   v62 = v61;
-  v63 = [MEMORY[0x1E6979398] layer];
+  layer12 = [MEMORY[0x1E6979398] layer];
   innerCircleLayer = self->_innerCircleLayer;
-  self->_innerCircleLayer = v63;
+  self->_innerCircleLayer = layer12;
 
   [(CALayer *)self->_innerCircleLayer setName:@"inner"];
   [(CALayer *)self->_innerCircleLayer setBounds:0.0, 0.0, v62, v62];
   v72[0] = @"bounds";
-  v65 = [MEMORY[0x1E695DFB0] null];
-  v73[0] = v65;
+  null17 = [MEMORY[0x1E695DFB0] null];
+  v73[0] = null17;
   v72[1] = @"cornerRadius";
-  v66 = [MEMORY[0x1E695DFB0] null];
-  v73[1] = v66;
+  null18 = [MEMORY[0x1E695DFB0] null];
+  v73[1] = null18;
   v72[2] = @"contents";
-  v67 = [MEMORY[0x1E695DFB0] null];
-  v73[2] = v67;
+  null19 = [MEMORY[0x1E695DFB0] null];
+  v73[2] = null19;
   v72[3] = @"backgroundColor";
-  v68 = [MEMORY[0x1E695DFB0] null];
-  v73[3] = v68;
+  null20 = [MEMORY[0x1E695DFB0] null];
+  v73[3] = null20;
   v72[4] = @"mask";
-  v69 = [MEMORY[0x1E695DFB0] null];
-  v73[4] = v69;
+  null21 = [MEMORY[0x1E695DFB0] null];
+  v73[4] = null21;
   v72[5] = @"transform";
-  v70 = [MEMORY[0x1E695DFB0] null];
-  v73[5] = v70;
+  null22 = [MEMORY[0x1E695DFB0] null];
+  v73[5] = null22;
   v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:v72 count:6];
   [(CALayer *)self->_innerCircleLayer setActions:v71];
 
@@ -403,9 +403,9 @@ LABEL_6:
   v29 = *MEMORY[0x1E69E9840];
   if (self->_faux3DEnabled && self->_displaysPuckAsAccuracy)
   {
-    v3 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     faux3DHighlightMask = self->_faux3DHighlightMask;
-    self->_faux3DHighlightMask = v3;
+    self->_faux3DHighlightMask = layer;
 
     [(CAGradientLayer *)self->_faux3DFaceLayer bounds];
     [(CALayer *)self->_faux3DHighlightMask setFrame:?];
@@ -422,20 +422,20 @@ LABEL_6:
       v12 = *(MEMORY[0x1E695EFF8] + 8);
       do
       {
-        v13 = [MEMORY[0x1E6979398] layer];
-        [v13 setBounds:{0.0, 0.0, v6, v6}];
-        [v13 setAnchorPoint:{v11, v12}];
-        [v13 setPosition:{v11, v12}];
-        [v13 bounds];
-        [v13 setCornerRadius:v14 * 0.5];
-        [v13 setBorderWidth:v8];
-        v15 = [MEMORY[0x1E69DC888] blackColor];
-        [v13 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+        layer2 = [MEMORY[0x1E6979398] layer];
+        [layer2 setBounds:{0.0, 0.0, v6, v6}];
+        [layer2 setAnchorPoint:{v11, v12}];
+        [layer2 setPosition:{v11, v12}];
+        [layer2 bounds];
+        [layer2 setCornerRadius:v14 * 0.5];
+        [layer2 setBorderWidth:v8];
+        blackColor = [MEMORY[0x1E69DC888] blackColor];
+        [layer2 setBorderColor:{objc_msgSend(blackColor, "CGColor")}];
 
-        [v13 _mapkit_setActionsToRemoveDefaultImplicitActions];
-        [v13 setHidden:1];
-        [(NSArray *)v10 addObject:v13];
-        [(CALayer *)self->_faux3DHighlightMask insertSublayer:v13 above:self->_shadowLayer];
+        [layer2 _mapkit_setActionsToRemoveDefaultImplicitActions];
+        [layer2 setHidden:1];
+        [(NSArray *)v10 addObject:layer2];
+        [(CALayer *)self->_faux3DHighlightMask insertSublayer:layer2 above:self->_shadowLayer];
 
         --v9;
       }
@@ -524,10 +524,10 @@ LABEL_6:
   [objc_opt_class() shadowBlur];
   v25 = v4 * v24;
   v26 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"PuckShadowColor"];
-  v27 = [v26 CGColor];
+  cGColor = [v26 CGColor];
   v41.width = 0.0;
   v41.height = v16 - v4;
-  CGContextSetShadowWithColor(v19, v41, v25, v27);
+  CGContextSetShadowWithColor(v19, v41, v25, cGColor);
 
   if (self->_displaysPuckAsAccuracy)
   {
@@ -587,9 +587,9 @@ LABEL_6:
 
 - (void)_updateBaseImage
 {
-  v33 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v3 = [(_MKPuckAnnotationView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v3];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
   [(UIView *)self _mapkit_currentScreenScale];
   v5 = fmax(v4, 1.0);
@@ -620,9 +620,9 @@ LABEL_6:
         [(_MKPuckAnnotationView *)self _effectiveTintColor];
       }
       v16 = ;
-      v17 = [v16 CGColor];
+      cGColor = [v16 CGColor];
 
-      CGContextSetFillColorWithColor(v12, v17);
+      CGContextSetFillColorWithColor(v12, cGColor);
       v35.origin.x = round(v7 - v7) * 0.5;
       v35.origin.y = v35.origin.x;
       v35.size.width = v7;
@@ -635,7 +635,7 @@ LABEL_6:
   CGContextSaveGState(v12);
   v19 = round(v7 - v7 + v13) * 0.5;
   v20 = v7 - v13;
-  v21 = [v18 CGColor];
+  cGColor2 = [v18 CGColor];
   v22 = v7 - v9;
   if (self->_displaysPuckAsAccuracy)
   {
@@ -649,7 +649,7 @@ LABEL_6:
     width = v37.size.width;
     height = v37.size.height;
     CGContextSetLineWidth(v12, v22 * 0.5);
-    CGContextSetStrokeColorWithColor(v12, v21);
+    CGContextSetStrokeColorWithColor(v12, cGColor2);
     v38.origin.x = x;
     v38.origin.y = y;
     v38.size.width = width;
@@ -659,7 +659,7 @@ LABEL_6:
 
   else
   {
-    CGContextSetFillColorWithColor(v12, v21);
+    CGContextSetFillColorWithColor(v12, cGColor2);
     v39.origin.x = v19;
     v39.origin.y = v19;
     v39.size.width = v20;
@@ -680,8 +680,8 @@ LABEL_6:
     v29 = v41.size.width;
     v30 = v41.size.height;
     CGContextSaveGState(v12);
-    v31 = [(_MKPuckAnnotationView *)self _currentInnerColor];
-    CGContextSetFillColorWithColor(v12, [v31 CGColor]);
+    _currentInnerColor = [(_MKPuckAnnotationView *)self _currentInnerColor];
+    CGContextSetFillColorWithColor(v12, [_currentInnerColor CGColor]);
 
     v42.origin.x = v27;
     v42.origin.y = v28;
@@ -695,24 +695,24 @@ LABEL_6:
   [(CALayer *)self->_baseLayer setContents:Image];
   CGImageRelease(Image);
   CGContextRelease(v12);
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v33];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
 }
 
 - (void)_updateInnerMaskLayer
 {
   if (self->_innerImageMask)
   {
-    v3 = [MEMORY[0x1E6979398] layer];
-    [v3 setContents:{-[UIImage CGImage](self->_innerImageMask, "CGImage")}];
+    layer = [MEMORY[0x1E6979398] layer];
+    [layer setContents:{-[UIImage CGImage](self->_innerImageMask, "CGImage")}];
     [(UIImage *)self->_innerImageMask size];
     v5 = v4;
     [(UIImage *)self->_innerImageMask size];
-    [v3 setBounds:{0.0, 0.0, v5, v6}];
+    [layer setBounds:{0.0, 0.0, v5, v6}];
     [(CALayer *)self->_innerCircleLayer bounds];
     MidX = CGRectGetMidX(v9);
     [(CALayer *)self->_innerCircleLayer bounds];
-    [v3 setPosition:{MidX, CGRectGetMidY(v10)}];
-    [(CALayer *)self->_innerCircleLayer setMask:v3];
+    [layer setPosition:{MidX, CGRectGetMidY(v10)}];
+    [(CALayer *)self->_innerCircleLayer setMask:layer];
   }
 
   else
@@ -725,24 +725,24 @@ LABEL_6:
 
 - (void)_updateInnerImage
 {
-  v26 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v3 = [(_MKPuckAnnotationView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v3];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
-  v4 = [(_MKPuckAnnotationView *)self _currentInnerColor];
-  v5 = [v4 CGColor];
+  _currentInnerColor = [(_MKPuckAnnotationView *)self _currentInnerColor];
+  cGColor = [_currentInnerColor CGColor];
 
   if (self->_innerImageMask)
   {
     [(CALayer *)self->_innerCircleLayer setContents:0];
-    [(CALayer *)self->_innerCircleLayer setBackgroundColor:v5];
+    [(CALayer *)self->_innerCircleLayer setBackgroundColor:cGColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
-    v7 = [(CALayer *)self->_innerCircleLayer contents];
-    v8 = CGImageRetain(v7);
+    _mapkit_shouldAdoptImplicitAnimationParameters = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
+    contents = [(CALayer *)self->_innerCircleLayer contents];
+    v8 = CGImageRetain(contents);
 
     [(UIView *)self _mapkit_currentScreenScale];
     v10 = fmax(v9, 1.0);
@@ -764,7 +764,7 @@ LABEL_6:
         v20 = v17 + (i - 1) * v12 - v19;
         v21 = v17 - v19;
         v22 = v19 + v19;
-        CGContextSetFillColorWithColor(v16, v5);
+        CGContextSetFillColorWithColor(v16, cGColor);
         v28.origin.x = v20;
         v28.origin.y = v21;
         v28.size.width = v22;
@@ -780,15 +780,15 @@ LABEL_6:
     [(CALayer *)self->_innerCircleLayer setBackgroundColor:0];
     CGContextRelease(v16);
     [(_MKPuckAnnotationView *)self _resetInnerPulseFrame];
-    if (v6)
+    if (_mapkit_shouldAdoptImplicitAnimationParameters)
     {
       v24 = [MEMORY[0x1E6979318] animationWithKeyPath:@"contents"];
       [v24 setFromValue:v8];
       [v24 setToValue:Image];
       [MEMORY[0x1E69DD250] _currentAnimationDuration];
       [v24 setDuration:?];
-      v25 = [MEMORY[0x1E69DD250] _mapkit_currentAnimationTimingFunction];
-      [v24 setTimingFunction:v25];
+      _mapkit_currentAnimationTimingFunction = [MEMORY[0x1E69DD250] _mapkit_currentAnimationTimingFunction];
+      [v24 setTimingFunction:_mapkit_currentAnimationTimingFunction];
 
       [v24 setRemovedOnCompletion:1];
       [(CALayer *)self->_innerCircleLayer addAnimation:v24 forKey:@"image"];
@@ -796,7 +796,7 @@ LABEL_6:
 
     CGImageRelease(v8);
     CGImageRelease(Image);
-    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v26];
+    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
   }
 }
 
@@ -821,8 +821,8 @@ LABEL_6:
 
     else
     {
-      v5 = [(MKAnnotationView *)self _mapType];
-      if (v5 - 1 < 4 || v5 == 107)
+      _mapType = [(MKAnnotationView *)self _mapType];
+      if (_mapType - 1 < 4 || _mapType == 107)
       {
         v4 = 0.400000006;
       }
@@ -843,15 +843,15 @@ LABEL_6:
 
 - (id)_effectiveTintColor
 {
-  v2 = [(_MKPuckAnnotationView *)self tintColor];
-  if ([v2 _mapkit_isWhite])
+  tintColor = [(_MKPuckAnnotationView *)self tintColor];
+  if ([tintColor _mapkit_isWhite])
   {
-    v3 = [MEMORY[0x1E69DC888] systemBlueColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
 
-    v2 = v3;
+    tintColor = systemBlueColor;
   }
 
-  return v2;
+  return tintColor;
 }
 
 - (void)_resetInnerPulseFrame
@@ -879,9 +879,9 @@ LABEL_6:
     {
       if (!self->_glyphLayer)
       {
-        v3 = [MEMORY[0x1E6979398] layer];
+        layer = [MEMORY[0x1E6979398] layer];
         glyphLayer = self->_glyphLayer;
-        self->_glyphLayer = v3;
+        self->_glyphLayer = layer;
 
         [(CALayer *)self->_glyphLayer _mapkit_setActionsToRemoveDefaultImplicitActions];
         [(CALayer *)self->_glyphLayer setContentsGravity:*MEMORY[0x1E6979DE8]];
@@ -894,8 +894,8 @@ LABEL_6:
       v8[3] = &unk_1E76CDB38;
       v8[4] = self;
       v5 = MEMORY[0x1A58E9F30](v8, a2);
-      v6 = [(_MKPuckAnnotationView *)self traitCollection];
-      [v6 performAsCurrentTraitCollection:v5];
+      traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+      [traitCollection performAsCurrentTraitCollection:v5];
     }
   }
 
@@ -909,8 +909,8 @@ LABEL_6:
 
 - (void)_updateAccuracyColors
 {
-  v3 = [(_MKPuckAnnotationView *)self _effectiveTintColor];
-  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTintColor:v3];
+  _effectiveTintColor = [(_MKPuckAnnotationView *)self _effectiveTintColor];
+  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTintColor:_effectiveTintColor];
 }
 
 - (void)_updateFaux3DColors
@@ -918,9 +918,9 @@ LABEL_6:
   v9[3] = *MEMORY[0x1E69E9840];
   if (self->_faux3DEnabled)
   {
-    v3 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v4 = [(_MKPuckAnnotationView *)self traitCollection];
-    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v4];
+    currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
     v5 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"PuckFaux3DFaceHighlight"];
     v6 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"PuckFaux3DFaceDark"];
@@ -933,7 +933,7 @@ LABEL_6:
     [(CAGradientLayer *)self->_faux3DFaceLayer setLocations:&unk_1F16121F8];
     [(CAGradientLayer *)self->_faux3DBaseBottomLayer setColors:v8];
     [(CAGradientLayer *)self->_faux3DBaseBottomLayer setLocations:&unk_1F16121F8];
-    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v3];
+    [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
   }
 }
 
@@ -945,7 +945,7 @@ LABEL_6:
 
     if (!v3)
     {
-      v26 = [(_MKPuckAnnotationView *)self _innerPulseAnimation];
+      _innerPulseAnimation = [(_MKPuckAnnotationView *)self _innerPulseAnimation];
       v5 = [(CALayer *)self->_pulseLayer animationForKey:@"outerPulse"];
 
       if (v5)
@@ -957,13 +957,13 @@ LABEL_6:
         innerCircleLayer = self->_innerCircleLayer;
         v10 = v7;
         v11 = pulseLayer;
-        v12 = v26;
+        v12 = _innerPulseAnimation;
         if (v12)
         {
           v13 = innerCircleLayer;
-          v14 = [v12 autoreverses];
+          autoreverses = [v12 autoreverses];
           [v12 duration];
-          if (v14)
+          if (autoreverses)
           {
             v16 = v15 + v15;
           }
@@ -992,7 +992,7 @@ LABEL_6:
         [(CALayer *)self->_pulseLayer addAnimation:v10 forKey:@"outerPulse"];
       }
 
-      [(CALayer *)self->_innerCircleLayer addAnimation:v26 forKey:@"pulse"];
+      [(CALayer *)self->_innerCircleLayer addAnimation:_innerPulseAnimation forKey:@"pulse"];
     }
   }
 
@@ -1108,13 +1108,13 @@ LABEL_6:
 
 - (void)_updateFromMap
 {
-  v3 = [(MKAnnotationView *)self _mapView];
-  v4 = [v3 _mapLayer];
-  [v4 altitude];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  _mapLayer = [_mapView _mapLayer];
+  [_mapLayer altitude];
   v6 = v5;
-  v7 = [(MKAnnotationView *)self _mapView];
-  v8 = [v7 _mapLayer];
-  [v8 pitch];
+  _mapView2 = [(MKAnnotationView *)self _mapView];
+  _mapLayer2 = [_mapView2 _mapLayer];
+  [_mapLayer2 pitch];
   v10 = v6 / cos(v9 * 0.0174532925);
 
   if (vabdd_f64(v10, self->_mapCameraDistance) >= 0.00000011920929)
@@ -1131,8 +1131,8 @@ LABEL_6:
     }
   }
 
-  v12 = [(_MKPuckAnnotationView *)self window];
-  [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:v12 != 0 allowShowHideAnimation:0.0];
+  window = [(_MKPuckAnnotationView *)self window];
+  [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:window != 0 allowShowHideAnimation:0.0];
 }
 
 - (void)_updateLayers
@@ -1173,16 +1173,16 @@ LABEL_6:
 
 - (void)_removePulse
 {
-  v3 = [(CALayer *)self->_pulseLayer superlayer];
+  superlayer = [(CALayer *)self->_pulseLayer superlayer];
 
-  if (v3)
+  if (superlayer)
   {
-    v4 = [(_MKPuckAnnotationView *)self _hideLargeAccuracyRing];
+    _hideLargeAccuracyRing = [(_MKPuckAnnotationView *)self _hideLargeAccuracyRing];
     pulseLayer = self->_pulseLayer;
-    if (v4)
+    if (_hideLargeAccuracyRing)
     {
-      v6 = [(CALayer *)pulseLayer animationForKey:@"fadePulse"];
-      if (!v6)
+      _pulseAnimation = [(CALayer *)pulseLayer animationForKey:@"fadePulse"];
+      if (!_pulseAnimation)
       {
         v7 = [(CALayer *)self->_pulseLayer animationForKey:@"outerPulse"];
         if (v7)
@@ -1194,11 +1194,11 @@ LABEL_6:
           v12 = v10 + v11;
           [v7 duration];
           v14 = fmod(v12, v13);
-          v6 = [(_MKPuckAnnotationView *)self _pulseAnimation];
-          [v6 setRepeatCount:0.0];
-          [v6 setRemovedOnCompletion:1];
-          [v6 setBeginTime:-v14];
-          [v6 setBeginTimeMode:*MEMORY[0x1E69795C0]];
+          _pulseAnimation = [(_MKPuckAnnotationView *)self _pulseAnimation];
+          [_pulseAnimation setRepeatCount:0.0];
+          [_pulseAnimation setRemovedOnCompletion:1];
+          [_pulseAnimation setBeginTime:-v14];
+          [_pulseAnimation setBeginTimeMode:*MEMORY[0x1E69795C0]];
           [(CALayer *)self->_pulseLayer removeAnimationForKey:@"outerPulse"];
           v15 = self->_pulseLayer;
           v17[0] = MEMORY[0x1E69E9820];
@@ -1206,13 +1206,13 @@ LABEL_6:
           v17[2] = __37___MKPuckAnnotationView__removePulse__block_invoke;
           v17[3] = &unk_1E76CA670;
           v17[4] = self;
-          [(CALayer *)v15 _mapkit_addAnimation:v6 forKey:@"fadePulse" completion:v17];
+          [(CALayer *)v15 _mapkit_addAnimation:_pulseAnimation forKey:@"fadePulse" completion:v17];
         }
 
         else
         {
           [(CALayer *)self->_pulseLayer removeFromSuperlayer];
-          v6 = 0;
+          _pulseAnimation = 0;
         }
       }
     }
@@ -1269,15 +1269,15 @@ LABEL_6:
 
   if (_MKModernPuckDesignEnabled_linkedOnOrAfterGoldenAzulHunterArcher == 1 && (_MKModernPuckDesignEnabled_newPuckEnabled & 1) != 0)
   {
-    v3 = [(MKAnnotationView *)self _annotationContainer];
-    v4 = [(MKAnnotationView *)self _annotationContainer];
-    [v3 _visibleCenteringRectInView:v4];
+    _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
+    _annotationContainer2 = [(MKAnnotationView *)self _annotationContainer];
+    [_annotationContainer _visibleCenteringRectInView:_annotationContainer2];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(_MKPuckAnnotationView *)self shouldDisplayHeading];
+    shouldDisplayHeading = [(_MKPuckAnnotationView *)self shouldDisplayHeading];
     v10 = 0.100000001;
-    if (v9)
+    if (shouldDisplayHeading)
     {
       v10 = 0.200000003;
     }
@@ -1417,8 +1417,8 @@ LABEL_6:
 
         [(CAGradientLayer *)self->_faux3DFaceLayer bounds];
         v30 = v29;
-        v31 = [(NSArray *)self->_faux3DHighlightMaskRings firstObject];
-        [v31 bounds];
+        firstObject = [(NSArray *)self->_faux3DHighlightMaskRings firstObject];
+        [firstObject bounds];
         v33 = v32;
 
         v57 = 0u;
@@ -1542,13 +1542,13 @@ LABEL_6:
   return result;
 }
 
-- (void)_setPresentationCourse:(double)a3
+- (void)_setPresentationCourse:(double)course
 {
   [(MKAnnotationView *)self _presentationCourse];
   v6 = v5;
   [(MKAnnotationView *)self _presentationCourse];
-  v8 = a3 - v7;
-  if (v6 > a3)
+  v8 = course - v7;
+  if (v6 > course)
   {
     v8 = -v8;
   }
@@ -1557,33 +1557,33 @@ LABEL_6:
   {
     v9.receiver = self;
     v9.super_class = _MKPuckAnnotationView;
-    [(MKAnnotationView *)&v9 _setPresentationCourse:a3];
+    [(MKAnnotationView *)&v9 _setPresentationCourse:course];
     [(_MKPuckAnnotationView *)self _updateInnerCourseRotation];
   }
 }
 
-- (void)_setAnimatingToCoordinate:(BOOL)a3
+- (void)_setAnimatingToCoordinate:(BOOL)coordinate
 {
-  v3 = a3;
+  coordinateCopy = coordinate;
   v5.receiver = self;
   v5.super_class = _MKPuckAnnotationView;
   [(MKAnnotationView *)&v5 _setAnimatingToCoordinate:?];
-  [(VKNavigationPuck *)self->_navigationPuckMarker setAnimatingToCoordinate:v3];
+  [(VKNavigationPuck *)self->_navigationPuckMarker setAnimatingToCoordinate:coordinateCopy];
 }
 
-- (void)setAnimatingToCoordinate:(BOOL)a3
+- (void)setAnimatingToCoordinate:(BOOL)coordinate
 {
-  v3 = a3;
+  coordinateCopy = coordinate;
   [(_MKPuckAnnotationView *)self _setAnimatingToCoordinate:?];
   navigationPuckMarker = self->_navigationPuckMarker;
 
-  [(VKNavigationPuck *)navigationPuckMarker setAnimatingToCoordinate:v3];
+  [(VKNavigationPuck *)navigationPuckMarker setAnimatingToCoordinate:coordinateCopy];
 }
 
-- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)a3
+- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v20 = *MEMORY[0x1E69E9840];
   [(MKAnnotationView *)self _presentationCoordinate];
   if (vabdd_f64(latitude, v7) >= 0.00000000999999994 || vabdd_f64(longitude, v6) >= 0.00000000999999994)
@@ -1594,7 +1594,7 @@ LABEL_6:
       *buf = 138413059;
       v13 = objc_opt_class();
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2049;
       v17 = latitude;
       v18 = 2049;
@@ -1612,10 +1612,10 @@ LABEL_6:
   }
 }
 
-- (void)setPresentationCoordinate:(id)a3
+- (void)setPresentationCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v16 = *MEMORY[0x1E69E9840];
   v6 = MKGetUserLocationViewLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1623,7 +1623,7 @@ LABEL_6:
     v8 = 138413059;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2049;
     v13 = var0;
     v14 = 2049;
@@ -1642,37 +1642,37 @@ LABEL_6:
   return [(MKAnnotationView *)&v3 _isTracking];
 }
 
-- (void)_setTracking:(BOOL)a3
+- (void)_setTracking:(BOOL)tracking
 {
-  v3 = a3;
+  trackingCopy = tracking;
   v5.receiver = self;
   v5.super_class = _MKPuckAnnotationView;
   [(MKAnnotationView *)&v5 _setTracking:?];
-  [(VKNavigationPuck *)self->_navigationPuckMarker setTracking:v3];
+  [(VKNavigationPuck *)self->_navigationPuckMarker setTracking:trackingCopy];
 }
 
-- (void)_setVKNavigationPuckMarker:(id)a3
+- (void)_setVKNavigationPuckMarker:(id)marker
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_navigationPuckMarker != v5)
+  markerCopy = marker;
+  if (self->_navigationPuckMarker != markerCopy)
   {
     v6 = MKGetUserLocationViewLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       navigationPuckMarker = self->_navigationPuckMarker;
       v9 = 138412802;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = navigationPuckMarker;
       v13 = 2112;
-      v14 = v5;
+      v14 = markerCopy;
       _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "Updating VK navigation puck marker for view: %@. Current: %@, New: %@", &v9, 0x20u);
     }
 
-    objc_storeStrong(&self->_navigationPuckMarker, a3);
-    v8 = [(MKAnnotationView *)self annotation];
-    [(VKNavigationPuck *)self->_navigationPuckMarker setAnnotation:v8];
+    objc_storeStrong(&self->_navigationPuckMarker, marker);
+    annotation = [(MKAnnotationView *)self annotation];
+    [(VKNavigationPuck *)self->_navigationPuckMarker setAnnotation:annotation];
 
     [(VKNavigationPuck *)self->_navigationPuckMarker setAnimatingToCoordinate:[(MKAnnotationView *)self _isAnimatingToCoordinate]];
     [(MKAnnotationView *)self _presentationCoordinate];
@@ -1685,27 +1685,27 @@ LABEL_6:
   }
 }
 
-- (void)setHeadingAccuracy:(double)a3
+- (void)setHeadingAccuracy:(double)accuracy
 {
   headingAccuracy = self->_headingAccuracy;
-  v4 = a3 - headingAccuracy;
-  if (a3 - headingAccuracy < 0.0)
+  v4 = accuracy - headingAccuracy;
+  if (accuracy - headingAccuracy < 0.0)
   {
-    v4 = -(a3 - headingAccuracy);
+    v4 = -(accuracy - headingAccuracy);
   }
 
-  if (v4 > 1.0 || a3 >= 0.0 == headingAccuracy < 0.0)
+  if (v4 > 1.0 || accuracy >= 0.0 == headingAccuracy < 0.0)
   {
-    self->_headingAccuracy = a3;
+    self->_headingAccuracy = accuracy;
     [MKUserLocationHeadingIndicator updateHeadingAccuracy:"updateHeadingAccuracy:previousAccuracy:" previousAccuracy:?];
   }
 }
 
-- (void)setHeading:(double)a3
+- (void)setHeading:(double)heading
 {
   if (self->_hasValidHeading)
   {
-    v3 = a3 - self->_heading;
+    v3 = heading - self->_heading;
     if (v3 < 0.0)
     {
       v3 = -v3;
@@ -1713,43 +1713,43 @@ LABEL_6:
 
     if (v3 > 1.0)
     {
-      self->_heading = a3;
+      self->_heading = heading;
       [(_MKPuckAnnotationView *)self _updateHeadingIndicators];
     }
   }
 
   else
   {
-    self->_heading = a3;
+    self->_heading = heading;
     self->_hasValidHeading = 1;
     [(_MKPuckAnnotationView *)self _updateShowHeadingLayerAnimatedIfPossible:1];
   }
 }
 
-- (void)_setForceHeadingUp:(BOOL)a3
+- (void)_setForceHeadingUp:(BOOL)up
 {
-  if (self->_forceHeadingUp != a3)
+  if (self->_forceHeadingUp != up)
   {
-    self->_forceHeadingUp = a3;
+    self->_forceHeadingUp = up;
     [(_MKPuckAnnotationView *)self _updateHeadingIndicators];
   }
 }
 
-- (void)setShouldDisplayInaccurateHeading:(BOOL)a3
+- (void)setShouldDisplayInaccurateHeading:(BOOL)heading
 {
-  if (self->_shouldDisplayInaccurateHeading != a3)
+  if (self->_shouldDisplayInaccurateHeading != heading)
   {
-    self->_shouldDisplayInaccurateHeading = a3;
+    self->_shouldDisplayInaccurateHeading = heading;
     [(MKUserLocationHeadingIndicator *)self->_headingLayer updateHeadingAccuracy:self->_headingAccuracy previousAccuracy:self->_headingAccuracy];
   }
 }
 
-- (void)setShouldDisplayHeading:(BOOL)a3
+- (void)setShouldDisplayHeading:(BOOL)heading
 {
-  v3 = a3;
+  headingCopy = heading;
   v9 = *MEMORY[0x1E69E9840];
-  self->_shouldDisplayHeading = a3;
-  if (!a3)
+  self->_shouldDisplayHeading = heading;
+  if (!heading)
   {
     self->_hasValidHeading = 0;
   }
@@ -1758,7 +1758,7 @@ LABEL_6:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = @"NO";
-    if (v3)
+    if (headingCopy)
     {
       v6 = @"YES";
     }
@@ -1771,10 +1771,10 @@ LABEL_6:
   [(_MKPuckAnnotationView *)self _updateShowHeadingLayerAnimatedIfPossible:1];
 }
 
-- (void)_updateShowHeadingLayer:(BOOL)a3 animatedIfPossible:(BOOL)a4
+- (void)_updateShowHeadingLayer:(BOOL)layer animatedIfPossible:(BOOL)possible
 {
-  v4 = a4;
-  v5 = a3;
+  possibleCopy = possible;
+  layerCopy = layer;
   headingLayer = self->_headingLayer;
   if (_MKModernPuckDesignEnabled_onceToken != -1)
   {
@@ -1782,25 +1782,25 @@ LABEL_6:
   }
 
   v8 = _MKModernPuckDesignEnabled_linkedOnOrAfterGoldenAzulHunterArcher & _MKModernPuckDesignEnabled_newPuckEnabled & 1;
-  if ((headingLayer == 0) == v5 || self->_headingLayerTracksAccuracy != v8)
+  if ((headingLayer == 0) == layerCopy || self->_headingLayerTracksAccuracy != v8)
   {
     v9 = self->_headingLayer;
-    if (v5)
+    if (layerCopy)
     {
-      v10 = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
-      v11 = [MKUserLocationHeadingLayerFactory headingLayerWithStyle:v10 userLocationView:self shouldMatchAccuracyRadius:v8];
+      _enforcedHeadingIndicatorStyle = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
+      v11 = [MKUserLocationHeadingLayerFactory headingLayerWithStyle:_enforcedHeadingIndicatorStyle userLocationView:self shouldMatchAccuracyRadius:v8];
       v12 = self->_headingLayer;
       self->_headingLayer = v11;
 
       [objc_opt_class() baseDiameter];
       [(MKUserLocationHeadingIndicator *)self->_headingLayer setMinimumAccuracyRadius:v13 * 0.5];
-      v14 = [(_MKPuckAnnotationView *)self traitCollection];
-      [(MKUserLocationHeadingIndicator *)self->_headingLayer setTraitCollection:v14];
+      traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+      [(MKUserLocationHeadingIndicator *)self->_headingLayer setTraitCollection:traitCollection];
 
       [(MKUserLocationHeadingIndicator *)self->_headingLayer setMapType:[(MKAnnotationView *)self _mapType]];
       v15 = self->_headingLayer;
-      v16 = [(_MKPuckAnnotationView *)self _effectiveTintColor];
-      [(MKUserLocationHeadingIndicator *)v15 updateTintColor:v16];
+      _effectiveTintColor = [(_MKPuckAnnotationView *)self _effectiveTintColor];
+      [(MKUserLocationHeadingIndicator *)v15 updateTintColor:_effectiveTintColor];
 
       [(MKUserLocationHeadingIndicator *)self->_headingLayer updateHeadingAccuracy:self->_headingAccuracy previousAccuracy:self->_headingAccuracy];
       [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
@@ -1808,10 +1808,10 @@ LABEL_6:
       self->_headingLayerTracksAccuracy = v8;
       [(_MKPuckAnnotationView *)self _updateHeadingIndicators];
       v17 = self->_headingLayer;
-      if (v10 == 2 || v8)
+      if (_enforcedHeadingIndicatorStyle == 2 || v8)
       {
         [(CALayer *)self->_headingContainerLayer addSublayer:self->_headingLayer];
-        if (!v4)
+        if (!possibleCopy)
         {
           goto LABEL_15;
         }
@@ -1820,10 +1820,10 @@ LABEL_6:
       else
       {
         puckLayer = self->_puckLayer;
-        v19 = [(_MKPuckAnnotationView *)self _baseLayer];
-        [(CALayer *)puckLayer insertSublayer:v17 below:v19];
+        _baseLayer = [(_MKPuckAnnotationView *)self _baseLayer];
+        [(CALayer *)puckLayer insertSublayer:v17 below:_baseLayer];
 
-        if (!v4)
+        if (!possibleCopy)
         {
           goto LABEL_15;
         }
@@ -1835,7 +1835,7 @@ LABEL_6:
       v20 = self->_headingLayer;
       self->_headingLayer = 0;
 
-      if (!v4)
+      if (!possibleCopy)
       {
         goto LABEL_15;
       }
@@ -1860,9 +1860,9 @@ LABEL_16:
   }
 }
 
-- (void)_updateShowHeadingLayerAnimatedIfPossible:(BOOL)a3
+- (void)_updateShowHeadingLayerAnimatedIfPossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   if (self->_shouldDisplayHeading && self->_canShowHeadingIndicator && self->_hasValidHeading)
   {
     v5 = [(_MKPuckAnnotationView *)self isStale]^ 1;
@@ -1873,27 +1873,27 @@ LABEL_16:
     v5 = 0;
   }
 
-  [(_MKPuckAnnotationView *)self _updateShowHeadingLayer:v5 animatedIfPossible:v3];
+  [(_MKPuckAnnotationView *)self _updateShowHeadingLayer:v5 animatedIfPossible:possibleCopy];
 }
 
-- (void)_updateHeadingLayerForStyleChange:(BOOL)a3
+- (void)_updateHeadingLayerForStyleChange:(BOOL)change
 {
   [(_MKPuckAnnotationView *)self _updateShowHeadingLayer:0 animatedIfPossible:1];
 
   [(_MKPuckAnnotationView *)self _updateShowHeadingLayerAnimatedIfPossible:1];
 }
 
-- (void)setForcesConeIndicator:(BOOL)a3
+- (void)setForcesConeIndicator:(BOOL)indicator
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (self->_forcesConeIndicator != a3)
+  if (self->_forcesConeIndicator != indicator)
   {
-    v3 = a3;
+    indicatorCopy = indicator;
     v5 = MKGetUserLocationViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (indicatorCopy)
       {
         v6 = @"YES";
       }
@@ -1903,71 +1903,71 @@ LABEL_16:
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Set force heading cone indicator: %@", &v8, 0xCu);
     }
 
-    v7 = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
-    self->_forcesConeIndicator = v3;
-    if (v7 != [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle])
+    _enforcedHeadingIndicatorStyle = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
+    self->_forcesConeIndicator = indicatorCopy;
+    if (_enforcedHeadingIndicatorStyle != [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle])
     {
       [(_MKPuckAnnotationView *)self _updateHeadingLayerForStyleChange:0];
     }
   }
 }
 
-- (void)setHeadingIndicatorStyle:(int64_t)a3
+- (void)setHeadingIndicatorStyle:(int64_t)style
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_headingIndicatorStyle != a3)
+  if (self->_headingIndicatorStyle != style)
   {
     v5 = MKGetUserLocationViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v7 = 134217984;
-      v8 = a3;
+      styleCopy = style;
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Set heading indicator style: %ld", &v7, 0xCu);
     }
 
-    v6 = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
-    self->_headingIndicatorStyle = a3;
-    if (v6 != [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle])
+    _enforcedHeadingIndicatorStyle = [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle];
+    self->_headingIndicatorStyle = style;
+    if (_enforcedHeadingIndicatorStyle != [(_MKPuckAnnotationView *)self _enforcedHeadingIndicatorStyle])
     {
-      [(_MKPuckAnnotationView *)self _updateHeadingLayerForStyleChange:a3 == 2];
+      [(_MKPuckAnnotationView *)self _updateHeadingLayerForStyleChange:style == 2];
     }
   }
 }
 
-- (BOOL)_shouldPulseForLocation:(id)a3
+- (BOOL)_shouldPulseForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if ([(_MKPuckAnnotationView *)self isStale])
   {
-    v5 = 0;
+    _shouldShowAccuracyRing = 0;
   }
 
   else
   {
-    v6 = [v4 type];
-    v5 = 0;
-    if (v6 <= 0xA && ((1 << v6) & 0x40E) != 0)
+    type = [locationCopy type];
+    _shouldShowAccuracyRing = 0;
+    if (type <= 0xA && ((1 << type) & 0x40E) != 0)
     {
       if ([(_MKPuckAnnotationView *)self _hideLargeAccuracyRing])
       {
-        v5 = [(_MKPuckAnnotationView *)self _shouldShowAccuracyRing];
+        _shouldShowAccuracyRing = [(_MKPuckAnnotationView *)self _shouldShowAccuracyRing];
       }
 
       else
       {
-        v5 = 1;
+        _shouldShowAccuracyRing = 1;
       }
     }
   }
 
-  return v5;
+  return _shouldShowAccuracyRing;
 }
 
-- (void)setAllowsPulse:(BOOL)a3
+- (void)setAllowsPulse:(BOOL)pulse
 {
-  if (self->_allowsPulse != a3)
+  if (self->_allowsPulse != pulse)
   {
-    self->_allowsPulse = a3;
+    self->_allowsPulse = pulse;
     [(_MKPuckAnnotationView *)self _updatePulse];
   }
 }
@@ -1992,26 +1992,26 @@ LABEL_16:
 
 - (void)_resumePulse
 {
-  v3 = [(_MKPuckAnnotationView *)self _pulseLayer];
-  [v3 removeAnimationForKey:@"fadePulse"];
-  v4 = [v3 animationForKey:@"outerPulse"];
+  _pulseLayer = [(_MKPuckAnnotationView *)self _pulseLayer];
+  [_pulseLayer removeAnimationForKey:@"fadePulse"];
+  v4 = [_pulseLayer animationForKey:@"outerPulse"];
   if (!v4)
   {
-    [v3 removeFromSuperlayer];
-    [(CALayer *)self->_accuracyContainerLayer insertSublayer:v3 atIndex:0];
-    v5 = [(_MKPuckAnnotationView *)self _pulseAnimation];
+    [_pulseLayer removeFromSuperlayer];
+    [(CALayer *)self->_accuracyContainerLayer insertSublayer:_pulseLayer atIndex:0];
+    _pulseAnimation = [(_MKPuckAnnotationView *)self _pulseAnimation];
     v28 = 0;
     v6 = [(_MKPuckAnnotationView *)self _animationToSynchronizePulse:&v28];
     v7 = v28;
-    v8 = [(_MKPuckAnnotationView *)self _pulseLayer];
-    v9 = v5;
+    _pulseLayer2 = [(_MKPuckAnnotationView *)self _pulseLayer];
+    v9 = _pulseAnimation;
     v10 = v6;
     v11 = v7;
     if (v10)
     {
-      v12 = [v10 autoreverses];
+      autoreverses = [v10 autoreverses];
       [v10 duration];
-      if (v12)
+      if (autoreverses)
       {
         v14 = v13 + v13;
       }
@@ -2028,7 +2028,7 @@ LABEL_16:
       [v10 timeOffset];
       v20 = fmod(v16 - (v18 + v19), v14);
       [v10 beginTime];
-      [v11 convertTime:v8 toLayer:?];
+      [v11 convertTime:_pulseLayer2 toLayer:?];
       v22 = v21;
       [v9 duration];
       [v9 setBeginTime:{fmod(v22, v23)}];
@@ -2036,20 +2036,20 @@ LABEL_16:
       [v9 setDuration:v14];
     }
 
-    [v3 addAnimation:v9 forKey:@"outerPulse"];
+    [_pulseLayer addAnimation:v9 forKey:@"outerPulse"];
   }
 
-  [v3 speed];
+  [_pulseLayer speed];
   if (fabsf(v24) < 0.000001)
   {
-    [v3 timeOffset];
+    [_pulseLayer timeOffset];
     v26 = v25;
     LODWORD(v25) = 1.0;
-    [v3 setSpeed:v25];
-    [v3 setTimeOffset:0.0];
-    [v3 setBeginTime:0.0];
-    [v3 convertTime:0 fromLayer:CACurrentMediaTime()];
-    [v3 setBeginTime:v27 - v26];
+    [_pulseLayer setSpeed:v25];
+    [_pulseLayer setTimeOffset:0.0];
+    [_pulseLayer setBeginTime:0.0];
+    [_pulseLayer convertTime:0 fromLayer:CACurrentMediaTime()];
+    [_pulseLayer setBeginTime:v27 - v26];
   }
 }
 
@@ -2062,29 +2062,29 @@ LABEL_16:
   v3 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
   [v3 setKeyTimes:&unk_1F1612210];
   [v3 setValues:&unk_1F1612228];
-  v4 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v9[0] = v2;
   v9[1] = v3;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
-  [v4 setAnimations:v5];
+  [animation setAnimations:v5];
 
-  [v4 setDuration:3.0];
+  [animation setDuration:3.0];
   v6 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EA0]];
-  [v4 setTimingFunction:v6];
+  [animation setTimingFunction:v6];
 
-  [v4 setFrameInterval:0.0250000004];
+  [animation setFrameInterval:0.0250000004];
   LODWORD(v7) = 2139095040;
-  [v4 setRepeatCount:v7];
-  [v4 setRemovedOnCompletion:0];
+  [animation setRepeatCount:v7];
+  [animation setRemovedOnCompletion:0];
 
-  return v4;
+  return animation;
 }
 
-- (id)_animationToSynchronizePulse:(id *)a3
+- (id)_animationToSynchronizePulse:(id *)pulse
 {
-  if (a3)
+  if (pulse)
   {
-    *a3 = self->_innerCircleLayer;
+    *pulse = self->_innerCircleLayer;
   }
 
   innerCircleLayer = self->_innerCircleLayer;
@@ -2098,21 +2098,21 @@ LABEL_16:
   pulseLayer = self->_pulseLayer;
   if (!pulseLayer)
   {
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     v5 = self->_pulseLayer;
-    self->_pulseLayer = v4;
+    self->_pulseLayer = layer;
 
     [(CALayer *)self->_pulseLayer setBounds:0.0, 0.0, 120.0, 120.0];
     [(CALayer *)self->_pulseLayer setCornerRadius:60.0];
     v11[0] = @"bounds";
-    v6 = [MEMORY[0x1E695DFB0] null];
-    v12[0] = v6;
+    null = [MEMORY[0x1E695DFB0] null];
+    v12[0] = null;
     v11[1] = @"cornerRadius";
-    v7 = [MEMORY[0x1E695DFB0] null];
-    v12[1] = v7;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v12[1] = null2;
     v11[2] = @"transform";
-    v8 = [MEMORY[0x1E695DFB0] null];
-    v12[2] = v8;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v12[2] = null3;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
     [(CALayer *)self->_pulseLayer setActions:v9];
 
@@ -2127,15 +2127,15 @@ LABEL_16:
 
 - (void)_updatePulseColor
 {
-  v3 = [(MKAnnotationView *)self _mapType];
-  v4 = v3 - 1 < 4 || v3 == 107;
-  v5 = [(MKAnnotationView *)self _mapDisplayStyle];
-  v6 = [(_MKPuckAnnotationView *)self _effectiveTintColor];
-  if (v4 || v5 == 1)
+  _mapType = [(MKAnnotationView *)self _mapType];
+  v4 = _mapType - 1 < 4 || _mapType == 107;
+  _mapDisplayStyle = [(MKAnnotationView *)self _mapDisplayStyle];
+  _effectiveTintColor = [(_MKPuckAnnotationView *)self _effectiveTintColor];
+  if (v4 || _mapDisplayStyle == 1)
   {
-    v11 = v6;
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    v8 = [v11 _mapkit_blendedColorWithFraction:v7 ofColor:0.400000006];
+    v11 = _effectiveTintColor;
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v8 = [v11 _mapkit_blendedColorWithFraction:whiteColor ofColor:0.400000006];
 
     if (v8)
     {
@@ -2144,19 +2144,19 @@ LABEL_16:
       v11 = v9;
     }
 
-    v6 = v11;
+    _effectiveTintColor = v11;
   }
 
-  v12 = v6;
-  v10 = v6;
+  v12 = _effectiveTintColor;
+  v10 = _effectiveTintColor;
   -[CALayer setBackgroundColor:](self->_pulseLayer, "setBackgroundColor:", [v12 CGColor]);
 }
 
-- (unint64_t)_innerPulseFrameWhenDisabled:(unint64_t)a3
+- (unint64_t)_innerPulseFrameWhenDisabled:(unint64_t)disabled
 {
-  if (a3)
+  if (disabled)
   {
-    return a3 - 1;
+    return disabled - 1;
   }
 
   else
@@ -2165,11 +2165,11 @@ LABEL_16:
   }
 }
 
-- (void)_setShouldShowDynamicLocationAnimations:(BOOL)a3
+- (void)_setShouldShowDynamicLocationAnimations:(BOOL)animations
 {
-  if (self->_shouldShowDynamicLocationAnimations != a3)
+  if (self->_shouldShowDynamicLocationAnimations != animations)
   {
-    self->_shouldShowDynamicLocationAnimations = a3;
+    self->_shouldShowDynamicLocationAnimations = animations;
     [(_MKPuckAnnotationView *)self _updatePulseAnimation];
     [(_MKPuckAnnotationView *)self _resetInnerPulseFrame];
 
@@ -2177,11 +2177,11 @@ LABEL_16:
   }
 }
 
-- (void)setShouldInnerPulse:(BOOL)a3
+- (void)setShouldInnerPulse:(BOOL)pulse
 {
-  if (self->_shouldInnerPulse != a3)
+  if (self->_shouldInnerPulse != pulse)
   {
-    self->_shouldInnerPulse = a3;
+    self->_shouldInnerPulse = pulse;
     [(_MKPuckAnnotationView *)self _updatePulseAnimation];
 
     [(_MKPuckAnnotationView *)self _resetInnerPulseFrame];
@@ -2203,16 +2203,16 @@ LABEL_16:
   }
 }
 
-- (void)_updateToReflectLocationAccuracyWithDuration:(double)a3 allowShowHideAnimation:(BOOL)a4
+- (void)_updateToReflectLocationAccuracyWithDuration:(double)duration allowShowHideAnimation:(BOOL)animation
 {
-  v4 = a4;
+  animationCopy = animation;
   v34[2] = *MEMORY[0x1E69E9840];
   [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
   v8 = v7;
   [(_MKPuckAccuracyLayer *)self->_accuracyLayer accuracy];
   v10 = v9;
-  v11 = 0.0;
-  if (v4)
+  durationCopy2 = 0.0;
+  if (animationCopy)
   {
     if (v8 >= v9)
     {
@@ -2227,7 +2227,7 @@ LABEL_16:
     minimumAccuracyRadius = self->_minimumAccuracyRadius;
     if (v12 >= minimumAccuracyRadius)
     {
-      v11 = a3;
+      durationCopy2 = duration;
     }
 
     else
@@ -2242,7 +2242,7 @@ LABEL_16:
         v14 = v8;
       }
 
-      v11 = a3;
+      durationCopy2 = duration;
       if (v14 >= minimumAccuracyRadius)
       {
         v15 = v10 - v8;
@@ -2251,36 +2251,36 @@ LABEL_16:
           v15 = -(v10 - v8);
         }
 
-        v11 = fmin(v15 / self->_maxRadiusToShowAccuracyRing, 1.0) * 0.75 + 0.25;
-        a3 = v11;
+        durationCopy2 = fmin(v15 / self->_maxRadiusToShowAccuracyRing, 1.0) * 0.75 + 0.25;
+        duration = durationCopy2;
       }
     }
   }
 
   if (vabdd_f64(v8, v10) >= 0.25)
   {
-    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setAccuracy:v8 duration:a3];
-    [(MKUserLocationHeadingIndicator *)self->_headingLayer setAccuracyRadius:v8 duration:a3];
-    [(_MKPuckAnnotationView *)self _updateAccuracyOpacityForRadius:v8 duration:a3];
-    [(_MKPuckAnnotationView *)self _updatePuckVisibilityForRadius:v8 previousRadius:v10 duration:v11];
-    v16 = [(MKAnnotationView *)self _calloutView];
-    if (v16)
+    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setAccuracy:v8 duration:duration];
+    [(MKUserLocationHeadingIndicator *)self->_headingLayer setAccuracyRadius:v8 duration:duration];
+    [(_MKPuckAnnotationView *)self _updateAccuracyOpacityForRadius:v8 duration:duration];
+    [(_MKPuckAnnotationView *)self _updatePuckVisibilityForRadius:v8 previousRadius:v10 duration:durationCopy2];
+    _calloutView = [(MKAnnotationView *)self _calloutView];
+    if (_calloutView)
     {
-      v17 = v16;
-      v18 = [(MKAnnotationView *)self _calloutView];
+      v17 = _calloutView;
+      _calloutView2 = [(MKAnnotationView *)self _calloutView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v20 = [(MKAnnotationView *)self _calloutView];
-        [v20 setShowsArrow:-[_MKPuckAnnotationView _balloonCalloutShouldShowArrow](self animated:{"_balloonCalloutShouldShowArrow"), 1}];
-        [v20 updateWithNewCalloutOffset];
+        _calloutView3 = [(MKAnnotationView *)self _calloutView];
+        [_calloutView3 setShowsArrow:-[_MKPuckAnnotationView _balloonCalloutShouldShowArrow](self animated:{"_balloonCalloutShouldShowArrow"), 1}];
+        [_calloutView3 updateWithNewCalloutOffset];
       }
     }
 
-    v21 = [(_MKPuckAnnotationView *)self _layerToMatchAccuracyRing];
-    if (v21)
+    _layerToMatchAccuracyRing = [(_MKPuckAnnotationView *)self _layerToMatchAccuracyRing];
+    if (_layerToMatchAccuracyRing)
     {
       if (([(_MKPuckAccuracyLayer *)self->_accuracyLayer isHidden]& 1) != 0)
       {
@@ -2291,8 +2291,8 @@ LABEL_16:
       {
         v22 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
         v23 = MEMORY[0x1E696B098];
-        v24 = [v21 currentLayer];
-        [v24 bounds];
+        currentLayer = [_layerToMatchAccuracyRing currentLayer];
+        [currentLayer bounds];
         v25 = [v23 valueWithCGRect:?];
         [v22 setFromValue:v25];
 
@@ -2301,25 +2301,25 @@ LABEL_16:
 
         v27 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
         v28 = MEMORY[0x1E696AD98];
-        v29 = [v21 currentLayer];
-        [v29 cornerRadius];
+        currentLayer2 = [_layerToMatchAccuracyRing currentLayer];
+        [currentLayer2 cornerRadius];
         v30 = [v28 numberWithDouble:?];
         [v27 setFromValue:v30];
 
         v31 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
         [v27 setToValue:v31];
 
-        v32 = [MEMORY[0x1E6979308] animation];
+        animation = [MEMORY[0x1E6979308] animation];
         v34[0] = v22;
         v34[1] = v27;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-        [v32 setAnimations:v33];
+        [animation setAnimations:v33];
 
-        [v32 setRemovedOnCompletion:1];
-        [v32 setDuration:a3];
-        [v21 addAnimation:v32 forKey:@"accuracy"];
-        [v21 setBounds:{0.0, 0.0, v8 + v8, v8 + v8}];
-        [v21 setCornerRadius:v8];
+        [animation setRemovedOnCompletion:1];
+        [animation setDuration:duration];
+        [_layerToMatchAccuracyRing addAnimation:animation forKey:@"accuracy"];
+        [_layerToMatchAccuracyRing setBounds:{0.0, 0.0, v8 + v8, v8 + v8}];
+        [_layerToMatchAccuracyRing setCornerRadius:v8];
       }
     }
   }
@@ -2364,30 +2364,30 @@ LABEL_16:
   return v4 <= 50.0;
 }
 
-- (void)setLocationAccuracy:(double)a3 duration:(double)a4
+- (void)setLocationAccuracy:(double)accuracy duration:(double)duration
 {
-  if (vabdd_f64(a3, self->_locationAccuracy) >= 0.000001)
+  if (vabdd_f64(accuracy, self->_locationAccuracy) >= 0.000001)
   {
-    self->_locationAccuracy = a3;
-    v6 = [(_MKPuckAnnotationView *)self window];
-    if (v6)
+    self->_locationAccuracy = accuracy;
+    window = [(_MKPuckAnnotationView *)self window];
+    if (window)
     {
       animatingPresentationAccuracy = self->_animatingPresentationAccuracy;
 
       if (!animatingPresentationAccuracy)
       {
 
-        [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:1 allowShowHideAnimation:a4];
+        [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:1 allowShowHideAnimation:duration];
       }
     }
   }
 }
 
-- (void)setPresentationAccuracy:(double)a3
+- (void)setPresentationAccuracy:(double)accuracy
 {
-  self->_presentationAccuracy = a3;
-  v4 = [(_MKPuckAnnotationView *)self window];
-  [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:v4 != 0 allowShowHideAnimation:0.0];
+  self->_presentationAccuracy = accuracy;
+  window = [(_MKPuckAnnotationView *)self window];
+  [(_MKPuckAnnotationView *)self _updateToReflectLocationAccuracyWithDuration:window != 0 allowShowHideAnimation:0.0];
 }
 
 - (double)presentationAccuracy
@@ -2401,11 +2401,11 @@ LABEL_16:
   return result;
 }
 
-- (void)setAnimatingPresentationAccuracy:(BOOL)a3
+- (void)setAnimatingPresentationAccuracy:(BOOL)accuracy
 {
   [(_MKPuckAccuracyLayer *)self->_accuracyLayer currentAccuracy];
   self->_presentationAccuracy = v5;
-  self->_animatingPresentationAccuracy = a3;
+  self->_animatingPresentationAccuracy = accuracy;
 }
 
 - (void)_resetLayerToMatchAccuracyRing
@@ -2427,8 +2427,8 @@ LABEL_16:
     {
       v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
       v9 = MEMORY[0x1E696B098];
-      v10 = [(CALayer *)self->_pulseLayer currentLayer];
-      [v10 bounds];
+      currentLayer = [(CALayer *)self->_pulseLayer currentLayer];
+      [currentLayer bounds];
       v11 = [v9 valueWithCGRect:?];
       [v8 setFromValue:v11];
 
@@ -2437,32 +2437,32 @@ LABEL_16:
 
       v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
       v14 = MEMORY[0x1E696AD98];
-      v15 = [(CALayer *)self->_pulseLayer currentLayer];
-      [v15 cornerRadius];
+      currentLayer2 = [(CALayer *)self->_pulseLayer currentLayer];
+      [currentLayer2 cornerRadius];
       v16 = [v14 numberWithDouble:?];
       [v13 setFromValue:v16];
 
       [v13 setToValue:&unk_1F1610D70];
-      v17 = [MEMORY[0x1E6979308] animation];
+      animation = [MEMORY[0x1E6979308] animation];
       v19[0] = v8;
       v19[1] = v13;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
-      [v17 setAnimations:v18];
+      [animation setAnimations:v18];
 
-      [v17 setRemovedOnCompletion:1];
+      [animation setRemovedOnCompletion:1];
       [(CALayer *)self->_pulseLayer removeAnimationForKey:@"accuracy"];
-      [(CALayer *)self->_pulseLayer addAnimation:v17 forKey:@"reset"];
+      [(CALayer *)self->_pulseLayer addAnimation:animation forKey:@"reset"];
       [(CALayer *)self->_pulseLayer setBounds:0.0, 0.0, 120.0, 120.0];
       [(CALayer *)self->_pulseLayer setCornerRadius:60.0];
     }
   }
 }
 
-- (void)_setShouldHidePuckWhenAccuracyVisible:(BOOL)a3
+- (void)_setShouldHidePuckWhenAccuracyVisible:(BOOL)visible
 {
-  if (self->_shouldHidePuckWhenAccuracyVisible != a3)
+  if (self->_shouldHidePuckWhenAccuracyVisible != visible)
   {
-    self->_shouldHidePuckWhenAccuracyVisible = a3;
+    self->_shouldHidePuckWhenAccuracyVisible = visible;
     [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
     v6 = v5;
     [(_MKPuckAccuracyLayer *)self->_accuracyLayer currentAccuracy];
@@ -2471,20 +2471,20 @@ LABEL_16:
   }
 }
 
-- (void)setAccuracyRingAlpha:(double)a3
+- (void)setAccuracyRingAlpha:(double)alpha
 {
-  self->_accuracyRingAlpha = a3;
+  self->_accuracyRingAlpha = alpha;
   [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
 
   [_MKPuckAnnotationView _updateAccuracyOpacityForRadius:"_updateAccuracyOpacityForRadius:duration:" duration:?];
 }
 
-- (void)setAllowsAccuracyRing:(BOOL)a3
+- (void)setAllowsAccuracyRing:(BOOL)ring
 {
-  if (self->_allowsAccuracyRing != a3)
+  if (self->_allowsAccuracyRing != ring)
   {
-    self->_allowsAccuracyRing = a3;
-    if (self->_shouldHidePuckWhenAccuracyVisible && a3)
+    self->_allowsAccuracyRing = ring;
+    if (self->_shouldHidePuckWhenAccuracyVisible && ring)
     {
       [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
       v5 = v4;
@@ -2504,48 +2504,48 @@ LABEL_16:
   }
 }
 
-- (void)_setAccuracyRingStrokeOpacityThreshold:(double)a3
+- (void)_setAccuracyRingStrokeOpacityThreshold:(double)threshold
 {
-  if (vabdd_f64(self->_accuracyRingStrokeOpacityThreshold, a3) >= 0.00000011920929)
+  if (vabdd_f64(self->_accuracyRingStrokeOpacityThreshold, threshold) >= 0.00000011920929)
   {
-    self->_accuracyRingStrokeOpacityThreshold = a3;
+    self->_accuracyRingStrokeOpacityThreshold = threshold;
     [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
 
     [_MKPuckAnnotationView _updateAccuracyOpacityForRadius:"_updateAccuracyOpacityForRadius:duration:" duration:?];
   }
 }
 
-- (void)setMaxRadiusToShowAccuracyRing:(double)a3
+- (void)setMaxRadiusToShowAccuracyRing:(double)ring
 {
-  self->_maxRadiusToShowAccuracyRing = a3;
+  self->_maxRadiusToShowAccuracyRing = ring;
   [(_MKPuckAnnotationView *)self _locationAccuracyInScreenPoints];
 
   [_MKPuckAnnotationView _updateAccuracyOpacityForRadius:"_updateAccuracyOpacityForRadius:duration:" duration:?];
 }
 
-- (void)_updateAccuracyOpacityForRadius:(double)a3 duration:(double)a4
+- (void)_updateAccuracyOpacityForRadius:(double)radius duration:(double)duration
 {
   minimumAccuracyRadius = self->_minimumAccuracyRadius;
   maxRadiusToShowAccuracyRing = self->_maxRadiusToShowAccuracyRing;
-  v9 = [(CALayer *)self->_accuracyContainerLayer currentLayer];
-  [v9 opacity];
+  currentLayer = [(CALayer *)self->_accuracyContainerLayer currentLayer];
+  [currentLayer opacity];
   v11 = v10;
 
   v12 = 1.0;
   v13 = 1.0;
   if (maxRadiusToShowAccuracyRing >= minimumAccuracyRadius && maxRadiusToShowAccuracyRing >= 0.1)
   {
-    v12 = 1.0 - fmin(fmax((a3 - minimumAccuracyRadius) / (maxRadiusToShowAccuracyRing - minimumAccuracyRadius), 0.0), 1.0);
-    v14 = 1.0 - fmin(fmax((a3 - self->_accuracyRingStrokeOpacityThreshold) / (maxRadiusToShowAccuracyRing - self->_accuracyRingStrokeOpacityThreshold), 0.0), 1.0);
+    v12 = 1.0 - fmin(fmax((radius - minimumAccuracyRadius) / (maxRadiusToShowAccuracyRing - minimumAccuracyRadius), 0.0), 1.0);
+    v14 = 1.0 - fmin(fmax((radius - self->_accuracyRingStrokeOpacityThreshold) / (maxRadiusToShowAccuracyRing - self->_accuracyRingStrokeOpacityThreshold), 0.0), 1.0);
     v13 = v14;
   }
 
   if (vabdd_f64(v12, v11) >= 0.01)
   {
-    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setFillOpacity:v12 duration:a4];
-    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setStrokeOpacity:v13 duration:a4];
+    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setFillOpacity:v12 duration:duration];
+    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setStrokeOpacity:v13 duration:duration];
     [(CALayer *)self->_headingContainerLayer removeAnimationForKey:@"accuracyOpacity"];
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
       v17 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
       v18 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
@@ -2555,7 +2555,7 @@ LABEL_16:
       v20 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
       [v17 setToValue:v20];
 
-      [v17 setDuration:a4];
+      [v17 setDuration:duration];
       [v17 setRemovedOnCompletion:1];
       [(CALayer *)self->_headingContainerLayer addAnimation:v17 forKey:@"accuracyOpacity"];
     }
@@ -2583,13 +2583,13 @@ LABEL_16:
   }
 }
 
-- (void)updateStateFromLocation:(id)a3 duration:(double)a4
+- (void)updateStateFromLocation:(id)location duration:(double)duration
 {
-  v5 = a3;
-  [(_MKPuckAnnotationView *)self setStale:[(_MKPuckAnnotationView *)self _isLocationStale:v5]];
+  locationCopy = location;
+  [(_MKPuckAnnotationView *)self setStale:[(_MKPuckAnnotationView *)self _isLocationStale:locationCopy]];
   lastLocation = self->_lastLocation;
-  self->_lastLocation = v5;
-  v7 = v5;
+  self->_lastLocation = locationCopy;
+  v7 = locationCopy;
 
   [(CLLocation *)v7 horizontalAccuracy];
   [_MKPuckAnnotationView setLocationAccuracy:"setLocationAccuracy:duration:" duration:?];
@@ -2602,30 +2602,30 @@ LABEL_16:
   [(_MKPuckAnnotationView *)self _updatePulse];
 }
 
-- (BOOL)_isLocationStale:(id)a3
+- (BOOL)_isLocationStale:(id)stale
 {
-  if (!a3 || self->_overrideIsStale)
+  if (!stale || self->_overrideIsStale)
   {
     return 1;
   }
 
   else
   {
-    return [a3 _navigation_isStale];
+    return [stale _navigation_isStale];
   }
 }
 
-- (void)setStale:(BOOL)a3
+- (void)setStale:(BOOL)stale
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (self->_stale != a3)
+  if (self->_stale != stale)
   {
-    v3 = a3;
+    staleCopy = stale;
     v5 = MKGetUserLocationViewLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = @"NO";
-      if (v3)
+      if (staleCopy)
       {
         v6 = @"YES";
       }
@@ -2635,17 +2635,17 @@ LABEL_16:
       _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "User location stale: %@", &v7, 0xCu);
     }
 
-    self->_stale = v3;
-    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setStale:v3];
+    self->_stale = staleCopy;
+    [(_MKPuckAccuracyLayer *)self->_accuracyLayer setStale:staleCopy];
     [(_MKPuckAnnotationView *)self _updateLayers];
   }
 }
 
-- (void)setGlyphTintColor:(id)a3
+- (void)setGlyphTintColor:(id)color
 {
-  if (self->_glyphTintColor != a3)
+  if (self->_glyphTintColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     glyphTintColor = self->_glyphTintColor;
     self->_glyphTintColor = v4;
 
@@ -2653,49 +2653,49 @@ LABEL_16:
   }
 }
 
-- (void)setGlyphImage:(id)a3
+- (void)setGlyphImage:(id)image
 {
-  v5 = a3;
-  if (self->_glyphImage != v5)
+  imageCopy = image;
+  if (self->_glyphImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_glyphImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_glyphImage, image);
     [(_MKPuckAnnotationView *)self _updateGlyphImage];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setInnerImageMask:(id)a3
+- (void)setInnerImageMask:(id)mask
 {
-  v5 = a3;
-  if (self->_innerImageMask != v5)
+  maskCopy = mask;
+  if (self->_innerImageMask != maskCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_innerImageMask, a3);
+    v6 = maskCopy;
+    objc_storeStrong(&self->_innerImageMask, mask);
     [(_MKPuckAnnotationView *)self _updateInnerMaskLayer];
-    v5 = v6;
+    maskCopy = v6;
   }
 }
 
-- (void)setShouldShowOuterRing:(BOOL)a3
+- (void)setShouldShowOuterRing:(BOOL)ring
 {
-  if (self->_shouldShowOuterRing != a3)
+  if (self->_shouldShowOuterRing != ring)
   {
-    self->_shouldShowOuterRing = a3;
+    self->_shouldShowOuterRing = ring;
     [(_MKPuckAnnotationView *)self _updateShadowImage];
 
     [(_MKPuckAnnotationView *)self _updateBaseImage];
   }
 }
 
-- (void)setEffectsEnabled:(BOOL)a3
+- (void)setEffectsEnabled:(BOOL)enabled
 {
-  if (self->_effectsEnabled != a3)
+  if (self->_effectsEnabled != enabled)
   {
-    v3 = a3;
-    self->_effectsEnabled = a3;
+    enabledCopy = enabled;
+    self->_effectsEnabled = enabled;
     [(_MKPuckAnnotationView *)self _updatePulse];
-    if (v3)
+    if (enabledCopy)
     {
       [(CALayer *)self->_innerCircleLayer timeOffset];
       v6 = v5;
@@ -2722,20 +2722,20 @@ LABEL_16:
   }
 }
 
-- (void)setPuckScale:(double)a3
+- (void)setPuckScale:(double)scale
 {
-  if (vabdd_f64(a3, self->_puckScale) >= 0.00000011920929)
+  if (vabdd_f64(scale, self->_puckScale) >= 0.00000011920929)
   {
     v33 = v6;
     v34 = v5;
     v35 = v3;
     v36 = v4;
-    self->_puckScale = a3;
-    v8 = fabs(a3 + -1.0);
+    self->_puckScale = scale;
+    v8 = fabs(scale + -1.0);
     memset(&v32, 0, sizeof(v32));
     if (v8 >= 0.00000011920929)
     {
-      CATransform3DMakeScale(&v32, a3, a3, 1.0);
+      CATransform3DMakeScale(&v32, scale, scale, 1.0);
     }
 
     else
@@ -2756,11 +2756,11 @@ LABEL_16:
 
     v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform"];
     v14 = MEMORY[0x1E696B098];
-    v15 = [(CALayer *)self->_puckContainerLayer currentLayer];
-    v16 = v15;
-    if (v15)
+    currentLayer = [(CALayer *)self->_puckContainerLayer currentLayer];
+    v16 = currentLayer;
+    if (currentLayer)
     {
-      [v15 transform];
+      [currentLayer transform];
     }
 
     else
@@ -2790,11 +2790,11 @@ LABEL_16:
       v19 = [v13 copy];
 
       v20 = MEMORY[0x1E696B098];
-      v21 = [(CALayer *)self->_puckLayer currentLayer];
-      v22 = v21;
-      if (v21)
+      currentLayer2 = [(CALayer *)self->_puckLayer currentLayer];
+      v22 = currentLayer2;
+      if (currentLayer2)
       {
-        [v21 transform];
+        [currentLayer2 transform];
       }
 
       else
@@ -2845,17 +2845,17 @@ LABEL_16:
   }
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v5 = [(_MKPuckAnnotationView *)self layer];
-  *&v4 = a3;
-  [v5 setOpacity:v4];
+  layer = [(_MKPuckAnnotationView *)self layer];
+  *&v4 = opacity;
+  [layer setOpacity:v4];
 }
 
 - (float)opacity
 {
-  v2 = [(_MKPuckAnnotationView *)self layer];
-  [v2 opacity];
+  layer = [(_MKPuckAnnotationView *)self layer];
+  [layer opacity];
   v4 = v3;
 
   return v4;
@@ -2886,12 +2886,12 @@ LABEL_16:
     height = v26.size.height;
   }
 
-  v15 = [(MKAnnotationView *)self _calloutView];
+  _calloutView = [(MKAnnotationView *)self _calloutView];
 
-  if (v15)
+  if (_calloutView)
   {
-    v16 = [(MKAnnotationView *)self _calloutView];
-    [v16 frame];
+    _calloutView2 = [(MKAnnotationView *)self _calloutView];
+    [_calloutView2 frame];
     v31.origin.x = v17;
     v31.origin.y = v18;
     v31.size.width = v19;
@@ -2918,13 +2918,13 @@ LABEL_16:
   return result;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v6.receiver = self;
   v6.super_class = _MKPuckAnnotationView;
-  [(MKAnnotationView *)&v6 setSelected:a3 animated:a4];
-  [(_MKPuckAnnotationView *)self _setHeadingLayerHidden:v4];
+  [(MKAnnotationView *)&v6 setSelected:selected animated:animated];
+  [(_MKPuckAnnotationView *)self _setHeadingLayerHidden:selectedCopy];
 }
 
 - (void)didMoveToWindow
@@ -2950,33 +2950,33 @@ LABEL_16:
   [(_MKPuckAnnotationView *)self _updateAccuracyColors];
   [(_MKPuckAnnotationView *)self _updatePulseColor];
   headingLayer = self->_headingLayer;
-  v4 = [(_MKPuckAnnotationView *)self _effectiveTintColor];
-  [(MKUserLocationHeadingIndicator *)headingLayer updateTintColor:v4];
+  _effectiveTintColor = [(_MKPuckAnnotationView *)self _effectiveTintColor];
+  [(MKUserLocationHeadingIndicator *)headingLayer updateTintColor:_effectiveTintColor];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [(_MKPuckAnnotationView *)self traitCollection:a3];
+  v5 = [(_MKPuckAnnotationView *)self traitCollection:environment];
   self->_useDarkAppearance = [v5 userInterfaceStyle] == 2;
 
   [(_MKPuckAnnotationView *)self _updateAccuracyColors];
   [(_MKPuckAnnotationView *)self _updateFaux3DColors];
   [(_MKPuckAnnotationView *)self _updateBaseImage];
   [(_MKPuckAnnotationView *)self _updateGlyphImage];
-  v6 = [(_MKPuckAnnotationView *)self traitCollection];
-  [(MKUserLocationHeadingIndicator *)self->_headingLayer setTraitCollection:v6];
+  traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+  [(MKUserLocationHeadingIndicator *)self->_headingLayer setTraitCollection:traitCollection];
 
-  v7 = [(_MKPuckAnnotationView *)self traitCollection];
-  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTraitCollection:v7];
+  traitCollection2 = [(_MKPuckAnnotationView *)self traitCollection];
+  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setTraitCollection:traitCollection2];
 
   [(_MKPuckAnnotationView *)self _accessibilitySetInterfaceStyleIntent:1];
 }
 
-- (void)_setDisplaysPuckAsAccuracy:(BOOL)a3
+- (void)_setDisplaysPuckAsAccuracy:(BOOL)accuracy
 {
-  if (self->_displaysPuckAsAccuracy != a3)
+  if (self->_displaysPuckAsAccuracy != accuracy)
   {
-    self->_displaysPuckAsAccuracy = a3;
+    self->_displaysPuckAsAccuracy = accuracy;
     [(_MKPuckAnnotationView *)self _updateBaseImage];
     [(_MKPuckAnnotationView *)self _updateInnerImage];
     [(_MKPuckAnnotationView *)self _createOrRemoveFaux3DRingsIfNecessary];
@@ -2986,21 +2986,21 @@ LABEL_16:
   }
 }
 
-- (void)setRotateInnerImageToMatchCourse:(BOOL)a3
+- (void)setRotateInnerImageToMatchCourse:(BOOL)course
 {
-  if (self->_rotateInnerImageToMatchCourse != a3)
+  if (self->_rotateInnerImageToMatchCourse != course)
   {
-    self->_rotateInnerImageToMatchCourse = a3;
+    self->_rotateInnerImageToMatchCourse = course;
     [(_MKPuckAnnotationView *)self _updateInnerCourseRotation];
   }
 }
 
-- (void)_setMapRotationRadians:(double)a3
+- (void)_setMapRotationRadians:(double)radians
 {
   v7.receiver = self;
   v7.super_class = _MKPuckAnnotationView;
   [(MKAnnotationView *)&v7 _setMapRotationRadians:?];
-  self->_mapRotation = a3 * 57.2957795;
+  self->_mapRotation = radians * 57.2957795;
   v5 = +[MKThreadContext currentContext];
   [v5 _CA_setDisableActions:1];
 
@@ -3010,7 +3010,7 @@ LABEL_16:
   [v6 _CA_setDisableActions:0];
 }
 
-- (void)_setMapPitchRadians:(double)a3
+- (void)_setMapPitchRadians:(double)radians
 {
   v16.receiver = self;
   v16.super_class = _MKPuckAnnotationView;
@@ -3018,36 +3018,36 @@ LABEL_16:
   v5 = +[MKThreadContext currentContext];
   [v5 _CA_setDisableActions:1];
 
-  CATransform3DMakeRotation(&v15, a3, 1.0, 0.0, 0.0);
+  CATransform3DMakeRotation(&v15, radians, 1.0, 0.0, 0.0);
   accuracyContainerLayer = self->_accuracyContainerLayer;
   v14 = v15;
   [(CALayer *)accuracyContainerLayer setTransform:&v14];
-  CATransform3DMakeRotation(&v13, a3, 1.0, 0.0, 0.0);
+  CATransform3DMakeRotation(&v13, radians, 1.0, 0.0, 0.0);
   headingContainerLayer = self->_headingContainerLayer;
   v14 = v13;
   [(CALayer *)headingContainerLayer setTransform:&v14];
   if (self->_shouldHidePuckWhenAccuracyVisible || self->_faux3DEnabled)
   {
-    CATransform3DMakeRotation(&v12, a3, 1.0, 0.0, 0.0);
+    CATransform3DMakeRotation(&v12, radians, 1.0, 0.0, 0.0);
     puckLayer = self->_puckLayer;
     v14 = v12;
     [(CALayer *)puckLayer setTransform:&v14];
-    CATransform3DMakeRotation(&v11, a3, 1.0, 0.0, 0.0);
+    CATransform3DMakeRotation(&v11, radians, 1.0, 0.0, 0.0);
     puckTransitionContainer = self->_puckTransitionContainer;
     v14 = v11;
     [(CALayer *)puckTransitionContainer setTransform:&v14];
   }
 
-  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setMapPitchRadians:a3];
+  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setMapPitchRadians:radians];
   [(_MKPuckAnnotationView *)self _updateFaux3DLayers];
   v10 = +[MKThreadContext currentContext];
   [v10 _CA_setDisableActions:0];
 }
 
-- (void)_updatePuckVisibilityForRadius:(double)a3 previousRadius:(double)a4 duration:(double)a5
+- (void)_updatePuckVisibilityForRadius:(double)radius previousRadius:(double)previousRadius duration:(double)duration
 {
   v134 = *MEMORY[0x1E69E9840];
-  v9 = self->_shouldHidePuckWhenAccuracyVisible && ([(_MKPuckAccuracyLayer *)self->_accuracyLayer isHidden]& 1) == 0 && self->_minimumAccuracyRadius <= a3;
+  v9 = self->_shouldHidePuckWhenAccuracyVisible && ([(_MKPuckAccuracyLayer *)self->_accuracyLayer isHidden]& 1) == 0 && self->_minimumAccuracyRadius <= radius;
   if (!self->_animatingPresentationAccuracy)
   {
     if (self->_locationAccuracy < self->_minimumAccuracyUncertainty || !v9)
@@ -3068,7 +3068,7 @@ LABEL_9:
   }
 
   [(MKAnnotationView *)self _pointsForDistance:1.0];
-  if (a3 / v10 >= self->_minimumAccuracyUncertainty && v9)
+  if (radius / v10 >= self->_minimumAccuracyUncertainty && v9)
   {
     goto LABEL_9;
   }
@@ -3099,7 +3099,7 @@ LABEL_11:
   if (v11)
   {
     v15[2](v15);
-    if (a5 > 0.0)
+    if (duration > 0.0)
     {
       v112 = v16;
       v17 = v16[2](v16);
@@ -3107,14 +3107,14 @@ LABEL_11:
       objc_storeStrong(&self->_puckTransitionLayer, v17);
       v18 = v17;
       [v18 bounds];
-      if (20.0 / (a3 + v19 * -0.5) > 0.400000006 || ([v18 bounds], v21 = 0.150000006, 20.0 / (a3 + v20 * -0.5) > 0.150000006))
+      if (20.0 / (radius + v19 * -0.5) > 0.400000006 || ([v18 bounds], v21 = 0.150000006, 20.0 / (radius + v20 * -0.5) > 0.150000006))
       {
         [v18 bounds];
         v21 = 0.400000006;
-        if (20.0 / (a3 + v22 * -0.5) <= 0.400000006)
+        if (20.0 / (radius + v22 * -0.5) <= 0.400000006)
         {
           [v18 bounds];
-          v21 = 20.0 / (a3 + v23 * -0.5);
+          v21 = 20.0 / (radius + v23 * -0.5);
         }
       }
 
@@ -3124,7 +3124,7 @@ LABEL_11:
       v26 = [v25 valueWithCGRect:?];
       [v24 setFromValue:v26];
 
-      v27 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, a3 + a3, a3 + a3}];
+      v27 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, radius + radius, radius + radius}];
       [v24 setToValue:v27];
 
       v28 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
@@ -3133,7 +3133,7 @@ LABEL_11:
       v30 = [v29 numberWithDouble:?];
       [v28 setFromValue:v30];
 
-      v31 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v31 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
       [v28 setToValue:v31];
 
       v32 = [MEMORY[0x1E6979390] animationWithKeyPath:@"opacity"];
@@ -3154,45 +3154,45 @@ LABEL_11:
       v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v128 count:2];
       [v35 setValues:v39];
 
-      v40 = [v32 keyTimes];
-      [v35 setKeyTimes:v40];
+      keyTimes = [v32 keyTimes];
+      [v35 setKeyTimes:keyTimes];
 
       v41 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowPath"];
       [v41 setFromValue:{objc_msgSend(v18, "shadowPath")}];
       v135.origin.x = 0.0;
       v135.origin.y = 0.0;
-      v135.size.width = a3 + a3;
-      v135.size.height = a3 + a3;
+      v135.size.width = radius + radius;
+      v135.size.height = radius + radius;
       v42 = CGPathCreateWithEllipseInRect(v135, 0);
       CopyByStrokingPath = CGPathCreateCopyByStrokingPath(v42, 0, 4.0, kCGLineCapRound, kCGLineJoinRound, 0.0);
       [v41 setToValue:CopyByStrokingPath];
       CGPathRelease(CopyByStrokingPath);
       CGPathRelease(v42);
-      v44 = [MEMORY[0x1E6979308] animation];
+      animation = [MEMORY[0x1E6979308] animation];
       v123 = v24;
       v124 = v28;
       v125 = v32;
       v126 = v35;
       v127 = v41;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:5];
-      [v44 setAnimations:v45];
+      [animation setAnimations:v45];
 
-      [v44 setDuration:a5];
-      [v44 setRemovedOnCompletion:1];
+      [animation setDuration:duration];
+      [animation setRemovedOnCompletion:1];
 
       v46 = 0;
       if (self->_displaysPuckAsAccuracy)
       {
         v47 = v18;
         [v47 bounds];
-        if (20.0 / (a3 + v48 * -0.5) > 0.400000006 || ([v47 bounds], v50 = 0.150000006, 20.0 / (a3 + v49 * -0.5) > 0.150000006))
+        if (20.0 / (radius + v48 * -0.5) > 0.400000006 || ([v47 bounds], v50 = 0.150000006, 20.0 / (radius + v49 * -0.5) > 0.150000006))
         {
           [v47 bounds];
           v50 = 0.400000006;
-          if (20.0 / (a3 + v51 * -0.5) <= 0.400000006)
+          if (20.0 / (radius + v51 * -0.5) <= 0.400000006)
           {
             [v47 bounds];
-            v50 = 20.0 / (a3 + v52 * -0.5);
+            v50 = 20.0 / (radius + v52 * -0.5);
           }
         }
 
@@ -3204,7 +3204,7 @@ LABEL_11:
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:2];
         [v46 setKeyTimes:v54];
 
-        [v46 setDuration:a5];
+        [v46 setDuration:duration];
         [v46 setFillMode:*MEMORY[0x1E69797E0]];
         [v46 setRemovedOnCompletion:1];
       }
@@ -3217,8 +3217,8 @@ LABEL_11:
       v118 = v55;
       v56 = v110;
       v119 = v56;
-      v120 = self;
-      [v55 _mapkit_addAnimation:v44 forKey:@"show/hide" completion:v117];
+      selfCopy = self;
+      [v55 _mapkit_addAnimation:animation forKey:@"show/hide" completion:v117];
       if (v46)
       {
         [(_MKPuckAccuracyLayer *)self->_accuracyLayer addAnimation:v46 forKey:@"show/hide"];
@@ -3241,7 +3241,7 @@ LABEL_11:
       goto LABEL_44;
     }
 
-    if (a5 > 0.0)
+    if (duration > 0.0)
     {
       v15[2](v15);
       v113 = v16;
@@ -3250,19 +3250,19 @@ LABEL_11:
       objc_storeStrong(&self->_puckTransitionLayer, v59);
       v60 = v59;
       [v60 bounds];
-      if (20.0 / (a4 + v61 * -0.5) > 0.400000006 || ([v60 bounds], v63 = 0.150000006, 20.0 / (a4 + v62 * -0.5) > 0.150000006))
+      if (20.0 / (previousRadius + v61 * -0.5) > 0.400000006 || ([v60 bounds], v63 = 0.150000006, 20.0 / (previousRadius + v62 * -0.5) > 0.150000006))
       {
         [v60 bounds];
         v63 = 0.400000006;
-        if (20.0 / (a4 + v64 * -0.5) <= 0.400000006)
+        if (20.0 / (previousRadius + v64 * -0.5) <= 0.400000006)
         {
           [v60 bounds];
-          v63 = 20.0 / (a4 + v65 * -0.5);
+          v63 = 20.0 / (previousRadius + v65 * -0.5);
         }
       }
 
       v66 = [MEMORY[0x1E6979318] animationWithKeyPath:@"bounds"];
-      v67 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, a4 + a4, a4 + a4}];
+      v67 = [MEMORY[0x1E696B098] valueWithCGRect:{0.0, 0.0, previousRadius + previousRadius, previousRadius + previousRadius}];
       v108 = v66;
       [v66 setFromValue:v67];
 
@@ -3272,7 +3272,7 @@ LABEL_11:
       [v66 setToValue:v69];
 
       v70 = [MEMORY[0x1E6979318] animationWithKeyPath:@"cornerRadius"];
-      v71 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+      v71 = [MEMORY[0x1E696AD98] numberWithDouble:previousRadius];
       v106 = v70;
       [v70 setFromValue:v71];
 
@@ -3302,15 +3302,15 @@ LABEL_11:
       v82 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v128 count:3];
       [v77 setValues:v82];
 
-      v83 = [v74 keyTimes];
-      [v77 setKeyTimes:v83];
+      keyTimes2 = [v74 keyTimes];
+      [v77 setKeyTimes:keyTimes2];
 
       v84 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowPath"];
       [v84 setToValue:{objc_msgSend(v60, "shadowPath")}];
       v136.origin.x = 0.0;
       v136.origin.y = 0.0;
-      v136.size.width = a4 + a4;
-      v136.size.height = a4 + a4;
+      v136.size.width = previousRadius + previousRadius;
+      v136.size.height = previousRadius + previousRadius;
       v85 = CGPathCreateWithEllipseInRect(v136, 0);
       v86 = CGPathCreateCopyByStrokingPath(v85, 0, 4.0, kCGLineCapRound, kCGLineJoinRound, 0.0);
       [v84 setFromValue:v86];
@@ -3326,7 +3326,7 @@ LABEL_11:
       v89 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:5];
       [v88 setAnimations:v89];
 
-      [v88 setDuration:a5];
+      [v88 setDuration:duration];
       v109 = *MEMORY[0x1E69797F0];
       [v88 setFillMode:?];
       v107 = v88;
@@ -3337,14 +3337,14 @@ LABEL_11:
       {
         v91 = v87;
         [v91 bounds];
-        if (20.0 / (a4 + v92 * -0.5) > 0.400000006 || ([v91 bounds], v94 = 0.150000006, 20.0 / (a4 + v93 * -0.5) > 0.150000006))
+        if (20.0 / (previousRadius + v92 * -0.5) > 0.400000006 || ([v91 bounds], v94 = 0.150000006, 20.0 / (previousRadius + v93 * -0.5) > 0.150000006))
         {
           [v91 bounds];
           v94 = 0.400000006;
-          if (20.0 / (a4 + v95 * -0.5) <= 0.400000006)
+          if (20.0 / (previousRadius + v95 * -0.5) <= 0.400000006)
           {
             [v91 bounds];
-            v94 = 20.0 / (a4 + v96 * -0.5);
+            v94 = 20.0 / (previousRadius + v96 * -0.5);
           }
         }
 
@@ -3357,7 +3357,7 @@ LABEL_11:
         v98 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v123 count:3];
         [v90 setKeyTimes:v98];
 
-        [v90 setDuration:a5];
+        [v90 setDuration:duration];
         [v90 setFillMode:*MEMORY[0x1E69797E0]];
         [v90 setRemovedOnCompletion:0];
       }
@@ -3374,7 +3374,7 @@ LABEL_11:
       v116 = v99;
       [v58 _mapkit_addAnimation:v107 forKey:@"show/hide" completion:v114];
       v100 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-      [v100 setDuration:a5];
+      [v100 setDuration:duration];
       [v100 setFromValue:&unk_1F1611668];
       [v100 setToValue:&unk_1F1611668];
       [v100 setRemovedOnCompletion:1];
@@ -3416,10 +3416,10 @@ LABEL_44:
 
 - (id)_createFakePuckLayer
 {
-  v3 = [MEMORY[0x1E6979398] layer];
-  v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v5 = [(_MKPuckAnnotationView *)self traitCollection];
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v5];
+  layer = [MEMORY[0x1E6979398] layer];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  traitCollection = [(_MKPuckAnnotationView *)self traitCollection];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:traitCollection];
 
   [objc_opt_class() baseDiameter];
   v7 = v6;
@@ -3429,25 +3429,25 @@ LABEL_44:
   v11 = (v7 - v8) * 0.5 * puckScale;
   [(MKAnnotationView *)self _mapPitchRadians];
   v13 = v12;
-  [v3 setName:@"accuracyTransition"];
-  [v3 setBounds:{0.0, 0.0, v10, v10}];
-  [v3 bounds];
-  [v3 setCornerRadius:CGRectGetWidth(v26) * 0.5];
-  [v3 setBorderWidth:v11];
+  [layer setName:@"accuracyTransition"];
+  [layer setBounds:{0.0, 0.0, v10, v10}];
+  [layer bounds];
+  [layer setCornerRadius:CGRectGetWidth(v26) * 0.5];
+  [layer setBorderWidth:v11];
   v14 = 0.0;
-  [v3 setOpacity:0.0];
+  [layer setOpacity:0.0];
   v15 = _MKPuckAnnotationViewBaseColor([(MKAnnotationView *)self _mapType], self->_displaysPuckAsAccuracy);
-  [v3 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+  [layer setBorderColor:{objc_msgSend(v15, "CGColor")}];
 
-  v16 = [(_MKPuckAnnotationView *)self _currentInnerColor];
-  [v3 setBackgroundColor:{objc_msgSend(v16, "CGColor")}];
+  _currentInnerColor = [(_MKPuckAnnotationView *)self _currentInnerColor];
+  [layer setBackgroundColor:{objc_msgSend(_currentInnerColor, "CGColor")}];
 
-  [v3 setMasksToBounds:0];
-  [v3 setShadowOffset:{0.0, 1.0}];
+  [layer setMasksToBounds:0];
+  [layer setShadowOffset:{0.0, 1.0}];
   [objc_opt_class() shadowBlur];
-  [v3 setShadowRadius:v17 * 0.5];
+  [layer setShadowRadius:v17 * 0.5];
   v18 = [MEMORY[0x1E69DC888] _mapkit_colorNamed:@"PuckShadowColor"];
-  [v3 setShadowColor:{objc_msgSend(v18, "CGColor")}];
+  [layer setShadowColor:{objc_msgSend(v18, "CGColor")}];
 
   v19 = fabs(v13);
   if (v19 < 0.000001)
@@ -3468,29 +3468,29 @@ LABEL_44:
   }
 
   *&v19 = v14;
-  [v3 setShadowOpacity:v19];
-  [v3 _mapkit_setActionsToRemoveDefaultImplicitActions];
-  [v3 bounds];
+  [layer setShadowOpacity:v19];
+  [layer _mapkit_setActionsToRemoveDefaultImplicitActions];
+  [layer bounds];
   v22 = CGPathCreateWithEllipseInRect(v27, 0);
   CopyByStrokingPath = CGPathCreateCopyByStrokingPath(v22, 0, 4.0, kCGLineCapRound, kCGLineJoinRound, 0.0);
-  [v3 setShadowPath:CopyByStrokingPath];
+  [layer setShadowPath:CopyByStrokingPath];
   CGPathRelease(CopyByStrokingPath);
   CGPathRelease(v22);
-  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:v4];
+  [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:currentTraitCollection];
 
-  return v3;
+  return layer;
 }
 
-- (void)_setMapDisplayStyle:(id)a3
+- (void)_setMapDisplayStyle:(id)style
 {
-  v3 = *&a3.var0;
-  if ((([(MKAnnotationView *)self _mapDisplayStyle]^ *&a3.var0) & 0x1FFFFFFFFFFLL) != 0)
+  v3 = *&style.var0;
+  if ((([(MKAnnotationView *)self _mapDisplayStyle]^ *&style.var0) & 0x1FFFFFFFFFFLL) != 0)
   {
-    v5 = [(MKAnnotationView *)self _mapDisplayStyle];
+    _mapDisplayStyle = [(MKAnnotationView *)self _mapDisplayStyle];
     v6.receiver = self;
     v6.super_class = _MKPuckAnnotationView;
     [(MKAnnotationView *)&v6 _setMapDisplayStyle:v3 & 0xFFFFFFFFFFFFLL];
-    if ((v3 == 1) == (v5 != 1))
+    if ((v3 == 1) == (_mapDisplayStyle != 1))
     {
       [(_MKPuckAnnotationView *)self _updatePulseColor];
       [(_MKPuckAnnotationView *)self _updateInnerImage];
@@ -3498,15 +3498,15 @@ LABEL_44:
   }
 }
 
-- (void)_setMapType:(unint64_t)a3
+- (void)_setMapType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = _MKPuckAnnotationView;
   [(MKAnnotationView *)&v7 _setMapType:?];
   [(_MKPuckAnnotationView *)self _updatePulseColor];
-  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setMapType:a3];
-  [(MKUserLocationHeadingIndicator *)self->_headingLayer setMapType:a3];
-  if (a3 == 107)
+  [(_MKPuckAccuracyLayer *)self->_accuracyLayer setMapType:type];
+  [(MKUserLocationHeadingIndicator *)self->_headingLayer setMapType:type];
+  if (type == 107)
   {
     v5 = 2;
   }
@@ -3516,7 +3516,7 @@ LABEL_44:
     v5 = 0;
   }
 
-  if (a3 - 1 >= 4)
+  if (type - 1 >= 4)
   {
     v6 = v5;
   }
@@ -3529,7 +3529,7 @@ LABEL_44:
   [(_MKPuckAnnotationView *)self _setOverrideUserInterfaceStyle:v6];
 }
 
-- (void)setDisplayPriority:(float)a3
+- (void)setDisplayPriority:(float)priority
 {
   v5.receiver = self;
   v5.super_class = _MKPuckAnnotationView;
@@ -3550,8 +3550,8 @@ LABEL_44:
 {
   if (_MKLinkedOnOrAfterReleaseSet(2824))
   {
-    v5 = self;
-    v3 = &v5;
+    selfCopy = self;
+    v3 = &selfCopy;
 LABEL_5:
     v3->super_class = _MKPuckAnnotationView;
     return [(objc_super *)v3 collisionMode];
@@ -3567,12 +3567,12 @@ LABEL_5:
   return 1;
 }
 
-- (void)setCollisionMode:(int64_t)a3
+- (void)setCollisionMode:(int64_t)mode
 {
   self->_hasExplicitCollisionMode = 1;
   v3.receiver = self;
   v3.super_class = _MKPuckAnnotationView;
-  [(MKAnnotationView *)&v3 setCollisionMode:a3];
+  [(MKAnnotationView *)&v3 setCollisionMode:mode];
 }
 
 - (CGRect)_significantBounds
@@ -3585,8 +3585,8 @@ LABEL_5:
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(_MKPuckAnnotationView *)self layer];
-    [(_MKPuckAccuracyLayer *)accuracyLayer convertRect:v13 toLayer:v6, v8, v10, v12];
+    layer = [(_MKPuckAnnotationView *)self layer];
+    [(_MKPuckAccuracyLayer *)accuracyLayer convertRect:layer toLayer:v6, v8, v10, v12];
     v15 = v14;
     v17 = v16;
     v19 = v18;
@@ -3662,20 +3662,20 @@ LABEL_5:
   return [(MKAnnotationView *)&v6 _isSelectable];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = MKGetUserLocationViewLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v8 = a3;
+    alphaCopy = alpha;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "MKPuckAnnotationView setting alpha: %f", buf, 0xCu);
   }
 
   v6.receiver = self;
   v6.super_class = _MKPuckAnnotationView;
-  [(MKAnnotationView *)&v6 setAlpha:a3];
+  [(MKAnnotationView *)&v6 setAlpha:alpha];
 }
 
 - (void)dealloc
@@ -3689,13 +3689,13 @@ LABEL_5:
   [(MKAnnotationView *)&v3 dealloc];
 }
 
-- (_MKPuckAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKPuckAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  annotationCopy = annotation;
+  identifierCopy = identifier;
   v45.receiver = self;
   v45.super_class = _MKPuckAnnotationView;
-  v8 = [(MKAnnotationView *)&v45 initWithAnnotation:v6 reuseIdentifier:v7];
+  v8 = [(MKAnnotationView *)&v45 initWithAnnotation:annotationCopy reuseIdentifier:identifierCopy];
   v9 = v8;
   if (v8)
   {
@@ -3708,9 +3708,9 @@ LABEL_5:
     v9->_shouldDisplayInaccurateHeading = 1;
     v9->_puckScale = 1.0;
     v9->super._collisionMode = 2;
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     glyphTintColor = v9->_glyphTintColor;
-    v9->_glyphTintColor = v10;
+    v9->_glyphTintColor = whiteColor;
 
     [objc_opt_class() _calloutOffset];
     [(MKAnnotationView *)v9 setCalloutOffset:?];
@@ -3780,8 +3780,8 @@ LABEL_5:
     v9->_minimumAccuracyUncertainty = v28;
     [(_MKPuckAnnotationView *)v9 _setupLayers:v32];
     [(_MKPuckAnnotationView *)v9 setShouldInnerPulse:1];
-    v29 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v30 = [(_MKPuckAnnotationView *)v9 registerForTraitChanges:v29 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v30 = [(_MKPuckAnnotationView *)v9 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
 
     [(MKAnnotationView *)v9 setZPriority:0.0];
     objc_destroyWeak(v33);

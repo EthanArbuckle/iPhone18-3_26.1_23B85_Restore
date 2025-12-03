@@ -1,16 +1,16 @@
 @interface MFSafariTabsClassConstants
-+ (void)configureStatusBarGradientLayer:(id)a3;
-+ (void)configureTabContentGradientLayer:(id)a3;
++ (void)configureStatusBarGradientLayer:(id)layer;
++ (void)configureTabContentGradientLayer:(id)layer;
 @end
 
 @implementation MFSafariTabsClassConstants
 
-+ (void)configureTabContentGradientLayer:(id)a3
++ (void)configureTabContentGradientLayer:(id)layer
 {
-  v20 = a3;
-  [v20 setAnchorPoint:{0.5, 0.0}];
-  [v20 setStartPoint:{0.5, 0.0}];
-  [v20 setEndPoint:{0.5, 1.0}];
+  layerCopy = layer;
+  [layerCopy setAnchorPoint:{0.5, 0.0}];
+  [layerCopy setStartPoint:{0.5, 0.0}];
+  [layerCopy setEndPoint:{0.5, 1.0}];
   v19 = +[UIColor clearColor];
   v21[0] = [v19 CGColor];
   v18 = [UIColor colorWithWhite:0.0 alpha:0.01];
@@ -44,14 +44,14 @@
   v11 = [UIColor colorWithWhite:0.0 alpha:0.65];
   v21[15] = [v11 CGColor];
   v12 = [NSArray arrayWithObjects:v21 count:16];
-  [v20 setColors:v12];
+  [layerCopy setColors:v12];
 
-  [v20 setLocations:&off_100674FB8];
+  [layerCopy setLocations:&off_100674FB8];
 }
 
-+ (void)configureStatusBarGradientLayer:(id)a3
++ (void)configureStatusBarGradientLayer:(id)layer
 {
-  v20 = a3;
+  layerCopy = layer;
   v19 = [UIColor colorWithWhite:0.0 alpha:1.0];
   v21[0] = [v19 CGColor];
   v18 = [UIColor colorWithWhite:0.0 alpha:0.994603225];
@@ -85,9 +85,9 @@
   v11 = [UIColor colorWithWhite:0.0 alpha:0.00392156863];
   v21[15] = [v11 CGColor];
   v12 = [NSArray arrayWithObjects:v21 count:16];
-  [v20 setColors:v12];
+  [layerCopy setColors:v12];
 
-  [v20 setLocations:&off_100674FD0];
+  [layerCopy setLocations:&off_100674FD0];
 }
 
 @end

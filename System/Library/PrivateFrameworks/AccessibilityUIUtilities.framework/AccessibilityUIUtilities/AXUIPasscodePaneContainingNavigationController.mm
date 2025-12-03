@@ -1,22 +1,22 @@
 @interface AXUIPasscodePaneContainingNavigationController
 - (unint64_t)supportedInterfaceOrientations;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation AXUIPasscodePaneContainingNavigationController
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = AXUIPasscodePaneContainingNavigationController;
-  [(AXUIPasscodePaneContainingNavigationController *)&v8 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  v5 = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
+  [(AXUIPasscodePaneContainingNavigationController *)&v8 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  delegate = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
-    -[AXUIPasscodePaneContainingNavigationController setInterfaceOrientation:](self, "setInterfaceOrientation:", [v7 navigationControllerPreferredInterfaceOrientationForPresentation:self]);
+    delegate2 = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
+    -[AXUIPasscodePaneContainingNavigationController setInterfaceOrientation:](self, "setInterfaceOrientation:", [delegate2 navigationControllerPreferredInterfaceOrientationForPresentation:self]);
   }
 
   [(AXUIPasscodePaneContainingNavigationController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -24,8 +24,8 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
-  v4 = [v3 axui_activeInterfaceOrientationForNavigationController:self];
+  delegate = [(AXUIPasscodePaneContainingNavigationController *)self delegate];
+  v4 = [delegate axui_activeInterfaceOrientationForNavigationController:self];
 
   if ((v4 - 2) > 2)
   {

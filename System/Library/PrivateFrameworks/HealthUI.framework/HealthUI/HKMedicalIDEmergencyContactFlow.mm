@@ -1,29 +1,29 @@
 @interface HKMedicalIDEmergencyContactFlow
 - (HKCoreTelephonyUtilities)coreTelephonyUtilities;
-- (HKMedicalIDEmergencyContactFlow)initWithPresentingViewController:(id)a3 forMedicalIDData:(id)a4;
+- (HKMedicalIDEmergencyContactFlow)initWithPresentingViewController:(id)controller forMedicalIDData:(id)data;
 - (HKMedicalIDEmergencyContactFlowDelegate)delegate;
-- (void)_didSelectContact:(id)a3 property:(id)a4;
-- (void)emergencyContactRelationshipPicker:(id)a3 didChooseRelationshipNamed:(id)a4;
-- (void)emergencyContactRelationshipPickerDidCancel:(id)a3;
+- (void)_didSelectContact:(id)contact property:(id)property;
+- (void)emergencyContactRelationshipPicker:(id)picker didChooseRelationshipNamed:(id)named;
+- (void)emergencyContactRelationshipPickerDidCancel:(id)cancel;
 - (void)fetchFamilyContactsForSuggestion;
 - (void)presentEmergencyContactFlow;
-- (void)setSuggestedContacts:(id)a3;
+- (void)setSuggestedContacts:(id)contacts;
 @end
 
 @implementation HKMedicalIDEmergencyContactFlow
 
-- (HKMedicalIDEmergencyContactFlow)initWithPresentingViewController:(id)a3 forMedicalIDData:(id)a4
+- (HKMedicalIDEmergencyContactFlow)initWithPresentingViewController:(id)controller forMedicalIDData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = HKMedicalIDEmergencyContactFlow;
   v9 = [(HKMedicalIDEmergencyContactFlow *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_medicalIDData, a4);
-    objc_storeStrong(&v10->_owningViewController, a3);
+    objc_storeStrong(&v9->_medicalIDData, data);
+    objc_storeStrong(&v10->_owningViewController, controller);
     v11 = [[HKEmergencyContactPicker alloc] initWithOwningViewController:v10->_owningViewController];
     contactPicker = v10->_contactPicker;
     v10->_contactPicker = v11;
@@ -65,16 +65,16 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
   [WeakRetained setSuggestedContacts:v3];
 }
 
-- (void)setSuggestedContacts:(id)a3
+- (void)setSuggestedContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__HKMedicalIDEmergencyContactFlow_setSuggestedContacts___block_invoke;
   v6[3] = &unk_1E81B5AD0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contactsCopy;
+  v5 = contactsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -108,12 +108,12 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
   return coreTelephonyUtilities;
 }
 
-- (void)_didSelectContact:(id)a3 property:(id)a4
+- (void)_didSelectContact:(id)contact property:(id)property
 {
-  v5 = [MEMORY[0x1E696C628] emergencyContactWithContact:a3 property:a4];
-  v6 = [(HKMedicalIDEmergencyContactFlow *)self coreTelephonyUtilities];
-  v7 = [v5 phoneNumber];
-  v8 = [v6 isEmergencyServicePhoneNumber:v7];
+  v5 = [MEMORY[0x1E696C628] emergencyContactWithContact:contact property:property];
+  coreTelephonyUtilities = [(HKMedicalIDEmergencyContactFlow *)self coreTelephonyUtilities];
+  phoneNumber = [v5 phoneNumber];
+  v8 = [coreTelephonyUtilities isEmergencyServicePhoneNumber:phoneNumber];
 
   if (v8)
   {
@@ -151,9 +151,9 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
   [(UIViewController *)owningViewController dismissViewControllerAnimated:1 completion:v21];
 }
 
-- (void)emergencyContactRelationshipPicker:(id)a3 didChooseRelationshipNamed:(id)a4
+- (void)emergencyContactRelationshipPicker:(id)picker didChooseRelationshipNamed:(id)named
 {
-  v5 = a4;
+  namedCopy = named;
   if (!self)
   {
     _HKInitializeLogging();
@@ -164,9 +164,9 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
     }
   }
 
-  [(_HKEmergencyContact *)self->_selectedContact setRelationship:v5];
-  v7 = [(HKMedicalIDEmergencyContactFlow *)self delegate];
-  [v7 emergencyContactFlow:self didSelectContact:self->_selectedContact];
+  [(_HKEmergencyContact *)self->_selectedContact setRelationship:namedCopy];
+  delegate = [(HKMedicalIDEmergencyContactFlow *)self delegate];
+  [delegate emergencyContactFlow:self didSelectContact:self->_selectedContact];
 
   selectedContact = self->_selectedContact;
   self->_selectedContact = 0;
@@ -174,7 +174,7 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
   [(UIViewController *)self->_owningViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)emergencyContactRelationshipPickerDidCancel:(id)a3
+- (void)emergencyContactRelationshipPickerDidCancel:(id)cancel
 {
   if (!self)
   {
@@ -186,8 +186,8 @@ void __67__HKMedicalIDEmergencyContactFlow_fetchFamilyContactsForSuggestion__blo
     }
   }
 
-  v5 = [(HKMedicalIDEmergencyContactFlow *)self delegate];
-  [v5 emergencyContactFlowDidCancel:self];
+  delegate = [(HKMedicalIDEmergencyContactFlow *)self delegate];
+  [delegate emergencyContactFlowDidCancel:self];
 
   selectedContact = self->_selectedContact;
   self->_selectedContact = 0;

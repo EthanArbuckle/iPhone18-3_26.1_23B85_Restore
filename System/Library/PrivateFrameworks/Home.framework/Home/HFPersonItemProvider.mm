@@ -1,23 +1,23 @@
 @interface HFPersonItemProvider
-- (HFPersonItemProvider)initWithHome:(id)a3 personManager:(id)a4;
+- (HFPersonItemProvider)initWithHome:(id)home personManager:(id)manager;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFPersonItemProvider
 
-- (HFPersonItemProvider)initWithHome:(id)a3 personManager:(id)a4
+- (HFPersonItemProvider)initWithHome:(id)home personManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = HFPersonItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_personManager, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_personManager, manager);
     v11 = [MEMORY[0x277CBEB58] set];
     personItems = v10->_personItems;
     v10->_personItems = v11;
@@ -30,13 +30,13 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v4 = [(HFPersonItemProvider *)self personManager];
+  personManager = [(HFPersonItemProvider *)self personManager];
 
-  if (v4)
+  if (personManager)
   {
-    v5 = [(HFPersonItemProvider *)self personManager];
-    v6 = [v3 completionHandlerAdapter];
-    [v5 fetchAllPersonsWithCompletion:v6];
+    personManager2 = [(HFPersonItemProvider *)self personManager];
+    completionHandlerAdapter = [v3 completionHandlerAdapter];
+    [personManager2 fetchAllPersonsWithCompletion:completionHandlerAdapter];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -52,7 +52,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_20D9BF000, v8, OS_LOG_TYPE_DEFAULT, "%@: Person manager is nil", buf, 0xCu);
     }
 
@@ -154,8 +154,8 @@ id __35__HFPersonItemProvider_reloadItems__block_invoke_4(uint64_t a1, void *a2)
 {
   v5.receiver = self;
   v5.super_class = HFPersonItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"person"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"person"];
 
   return v3;
 }

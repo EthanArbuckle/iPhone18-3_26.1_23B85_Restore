@@ -1,7 +1,7 @@
 @interface PHAdjustmentDataRequest
-- (PHAdjustmentDataRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 behaviorSpec:(id)a8 delegate:(id)a9;
+- (PHAdjustmentDataRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset behaviorSpec:(id)spec delegate:(id)delegate;
 - (PHAdjustmentDataRequestDelegate)adjustmentDataDelegate;
-- (void)_cplDownloadStatusNotification:(id)a3;
+- (void)_cplDownloadStatusNotification:(id)notification;
 - (void)_finishFromAsynchronousCallback;
 - (void)cancel;
 - (void)startRequest;
@@ -16,22 +16,22 @@
   return WeakRetained;
 }
 
-- (void)_cplDownloadStatusNotification:(id)a3
+- (void)_cplDownloadStatusNotification:(id)notification
 {
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   legacyDownloadContext = self->_legacyDownloadContext;
   if (legacyDownloadContext)
   {
-    v6 = [(PLCPLDownloadContext *)legacyDownloadContext taskIdentifier];
-    v7 = [v4 objectForKey:*MEMORY[0x1E69BFEB8]];
-    v8 = [v6 isEqualToString:v7];
+    taskIdentifier = [(PLCPLDownloadContext *)legacyDownloadContext taskIdentifier];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69BFEB8]];
+    v8 = [taskIdentifier isEqualToString:v7];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BFE98]];
-      v10 = [v9 BOOLValue];
+      v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BFE98]];
+      bOOLValue = [v9 BOOLValue];
 
-      v11 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BFEB0]];
+      v11 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BFEB0]];
       v12 = v11;
       if (v11)
       {
@@ -44,25 +44,25 @@
         v14 = NAN;
       }
 
-      v15 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BFEA0]];
-      v16 = [(PHAdjustmentDataRequest *)self adjustmentDataDelegate];
-      [v16 adjustmentDataRequest:self didReportProgress:v10 completed:v15 error:v14];
+      v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BFEA0]];
+      adjustmentDataDelegate = [(PHAdjustmentDataRequest *)self adjustmentDataDelegate];
+      [adjustmentDataDelegate adjustmentDataRequest:self didReportProgress:bOOLValue completed:v15 error:v14];
 
-      if (v10)
+      if (bOOLValue)
       {
-        v17 = [(PHMediaRequest *)self asset];
-        v18 = [v17 photoLibrary];
-        v19 = [v18 assetsdClient];
+        asset = [(PHMediaRequest *)self asset];
+        photoLibrary = [asset photoLibrary];
+        assetsdClient = [photoLibrary assetsdClient];
 
-        v20 = [v19 resourceClient];
-        v21 = [(PHMediaRequest *)self asset];
-        v22 = [v21 objectID];
+        resourceClient = [assetsdClient resourceClient];
+        asset2 = [(PHMediaRequest *)self asset];
+        objectID = [asset2 objectID];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __58__PHAdjustmentDataRequest__cplDownloadStatusNotification___block_invoke;
         v23[3] = &unk_1E75AAD20;
         v23[4] = self;
-        [v20 adjustmentDataForAsset:v22 networkAccessAllowed:0 trackCPLDownload:0 completionHandler:v23];
+        [resourceClient adjustmentDataForAsset:objectID networkAccessAllowed:0 trackCPLDownload:0 completionHandler:v23];
       }
     }
   }
@@ -122,12 +122,12 @@ void __58__PHAdjustmentDataRequest__cplDownloadStatusNotification___block_invoke
   [(PHMediaRequest *)&v8 cancel];
   if (self->_legacyDownloadContext)
   {
-    v3 = [(PHMediaRequest *)self asset];
-    v4 = [v3 photoLibrary];
-    v5 = [v4 assetsdClient];
+    asset = [(PHMediaRequest *)self asset];
+    photoLibrary = [asset photoLibrary];
+    assetsdClient = [photoLibrary assetsdClient];
 
-    v6 = [v5 cloudClient];
-    [v6 cancelCPLDownloadWithContext:self->_legacyDownloadContext completionHandler:0];
+    cloudClient = [assetsdClient cloudClient];
+    [cloudClient cancelCPLDownloadWithContext:self->_legacyDownloadContext completionHandler:0];
 
     legacyDownloadContext = self->_legacyDownloadContext;
     self->_legacyDownloadContext = 0;
@@ -140,41 +140,41 @@ void __58__PHAdjustmentDataRequest__cplDownloadStatusNotification___block_invoke
   v3 = PLImageManagerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PHMediaRequest *)self identifierString];
-    v5 = [(PHAdjustmentDataRequest *)self isSynchronous];
+    identifierString = [(PHMediaRequest *)self identifierString];
+    isSynchronous = [(PHAdjustmentDataRequest *)self isSynchronous];
     v6 = @"N";
-    if (v5)
+    if (isSynchronous)
     {
       v6 = @"Y";
     }
 
     *buf = 138412546;
-    v17 = v4;
+    v17 = identifierString;
     v18 = 2112;
     v19 = v6;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_INFO, "[RM]: %@ starting adjustment data request, sync: %@", buf, 0x16u);
   }
 
-  v7 = [(PHMediaRequest *)self asset];
-  v8 = [v7 photoLibrary];
-  v9 = [v8 assetsdClient];
+  asset = [(PHMediaRequest *)self asset];
+  photoLibrary = [asset photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
 
-  v10 = [v9 resourceClient];
-  v11 = [(PHMediaRequest *)self asset];
-  v12 = [v11 objectID];
-  v13 = [(PHAdjustmentDataRequestBehaviorSpec *)self->_behaviorSpec isNetworkAccessAllowed];
+  resourceClient = [assetsdClient resourceClient];
+  asset2 = [(PHMediaRequest *)self asset];
+  objectID = [asset2 objectID];
+  isNetworkAccessAllowed = [(PHAdjustmentDataRequestBehaviorSpec *)self->_behaviorSpec isNetworkAccessAllowed];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __39__PHAdjustmentDataRequest_startRequest__block_invoke;
   v15[3] = &unk_1E75AAD20;
   v15[4] = self;
-  [v10 adjustmentDataForAsset:v12 networkAccessAllowed:v13 trackCPLDownload:1 completionHandler:v15];
+  [resourceClient adjustmentDataForAsset:objectID networkAccessAllowed:isNetworkAccessAllowed trackCPLDownload:1 completionHandler:v15];
 
   if ([(PHAdjustmentDataRequestBehaviorSpec *)self->_behaviorSpec isSynchronous])
   {
     dispatch_semaphore_wait(self->_syncDownloadWaitSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    v14 = [(PHMediaRequest *)self delegate];
-    [v14 mediaRequest:self didFinishWithResult:self->_adjustmentDataResult];
+    delegate = [(PHMediaRequest *)self delegate];
+    [delegate mediaRequest:self didFinishWithResult:self->_adjustmentDataResult];
   }
 }
 
@@ -253,37 +253,37 @@ void __39__PHAdjustmentDataRequest_startRequest__block_invoke(uint64_t a1, void 
 
   else
   {
-    v4 = [(PHMediaRequest *)self delegate];
-    [v4 mediaRequest:self didFinishWithResult:self->_adjustmentDataResult];
+    delegate = [(PHMediaRequest *)self delegate];
+    [delegate mediaRequest:self didFinishWithResult:self->_adjustmentDataResult];
   }
 }
 
-- (PHAdjustmentDataRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 behaviorSpec:(id)a8 delegate:(id)a9
+- (PHAdjustmentDataRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset behaviorSpec:(id)spec delegate:(id)delegate
 {
-  v14 = *&a3;
-  v16 = a8;
-  v17 = a9;
+  v14 = *&d;
+  specCopy = spec;
+  delegateCopy = delegate;
   v26.receiver = self;
   v26.super_class = PHAdjustmentDataRequest;
-  v18 = [(PHMediaRequest *)&v26 initWithRequestID:v14 requestIndex:a4 contextType:a5 managerID:a6 asset:a7 delegate:v17];
+  v18 = [(PHMediaRequest *)&v26 initWithRequestID:v14 requestIndex:index contextType:type managerID:iD asset:asset delegate:delegateCopy];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_behaviorSpec, a8);
-    objc_storeWeak(&v19->_adjustmentDataDelegate, v17);
+    objc_storeStrong(&v18->_behaviorSpec, spec);
+    objc_storeWeak(&v19->_adjustmentDataDelegate, delegateCopy);
     v20 = [(PHCompositeMediaResult *)[PHAdjustmentDataResult alloc] initWithRequestID:v14];
     adjustmentDataResult = v19->_adjustmentDataResult;
     v19->_adjustmentDataResult = v20;
 
-    if ([v16 isSynchronous])
+    if ([specCopy isSynchronous])
     {
       v22 = dispatch_semaphore_create(0);
       syncDownloadWaitSemaphore = v19->_syncDownloadWaitSemaphore;
       v19->_syncDownloadWaitSemaphore = v22;
     }
 
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v24 addObserver:v19 selector:sel__cplDownloadStatusNotification_ name:*MEMORY[0x1E69BFEA8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel__cplDownloadStatusNotification_ name:*MEMORY[0x1E69BFEA8] object:0];
   }
 
   return v19;

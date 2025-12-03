@@ -1,19 +1,19 @@
 @interface WFDiagnosticsEvent
-- (id)_testTypeToString:(int64_t)a3;
+- (id)_testTypeToString:(int64_t)string;
 @end
 
 @implementation WFDiagnosticsEvent
 
-- (id)_testTypeToString:(int64_t)a3
+- (id)_testTypeToString:(int64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279EBE768[a3];
+    return off_279EBE768[string];
   }
 }
 

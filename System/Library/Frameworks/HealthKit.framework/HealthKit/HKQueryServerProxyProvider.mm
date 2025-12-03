@@ -1,38 +1,38 @@
 @interface HKQueryServerProxyProvider
-- (HKQueryServerProxyProvider)initWithHealthStore:(id)a3 query:(id)a4 configuration:(id)a5 queryUUID:(id)a6;
-- (id)proxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 error:(id *)a5;
-- (void)fetchProxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 endpointHandler:(id)a5 errorHandler:(id)a6;
+- (HKQueryServerProxyProvider)initWithHealthStore:(id)store query:(id)query configuration:(id)configuration queryUUID:(id)d;
+- (id)proxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier error:(id *)error;
+- (void)fetchProxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler;
 @end
 
 @implementation HKQueryServerProxyProvider
 
-- (HKQueryServerProxyProvider)initWithHealthStore:(id)a3 query:(id)a4 configuration:(id)a5 queryUUID:(id)a6
+- (HKQueryServerProxyProvider)initWithHealthStore:(id)store query:(id)query configuration:(id)configuration queryUUID:(id)d
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() taskIdentifier];
-  v15 = [v12 exportedInterface];
-  v16 = [v12 remoteInterface];
+  configurationCopy = configuration;
+  dCopy = d;
+  queryCopy = query;
+  storeCopy = store;
+  taskIdentifier = [objc_opt_class() taskIdentifier];
+  exportedInterface = [queryCopy exportedInterface];
+  remoteInterface = [queryCopy remoteInterface];
   v19.receiver = self;
   v19.super_class = HKQueryServerProxyProvider;
-  v17 = [(HKTaskServerProxyProvider *)&v19 initWithHealthStore:v13 taskIdentifier:v14 exportedObject:v12 exportedInterface:v15 remoteInterface:v16 taskUUID:v11];
+  v17 = [(HKTaskServerProxyProvider *)&v19 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:queryCopy exportedInterface:exportedInterface remoteInterface:remoteInterface taskUUID:dCopy];
 
   if (v17)
   {
-    [(HKTaskServerProxyProvider *)v17 setTaskConfiguration:v10];
+    [(HKTaskServerProxyProvider *)v17 setTaskConfiguration:configurationCopy];
   }
 
   return v17;
 }
 
-- (void)fetchProxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 endpointHandler:(id)a5 errorHandler:(id)a6
+- (void)fetchProxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier endpointHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  sourceCopy = source;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -43,14 +43,14 @@
   v18[1] = 3221225472;
   v18[2] = __113__HKQueryServerProxyProvider_fetchProxyServiceEndpointFromSource_serviceIdentifier_endpointHandler_errorHandler___block_invoke;
   v18[3] = &unk_1E7378798;
-  v19 = v12;
-  v20 = self;
-  v21 = v13;
-  v22 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
-  [v11 _serverProxyWithHandler:v18 errorHandler:v15];
+  v19 = identifierCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v22 = errorHandlerCopy;
+  v15 = errorHandlerCopy;
+  v16 = handlerCopy;
+  v17 = identifierCopy;
+  [sourceCopy _serverProxyWithHandler:v18 errorHandler:v15];
 }
 
 void __113__HKQueryServerProxyProvider_fetchProxyServiceEndpointFromSource_serviceIdentifier_endpointHandler_errorHandler___block_invoke(uint64_t a1, void *a2)
@@ -83,17 +83,17 @@ uint64_t __113__HKQueryServerProxyProvider_fetchProxyServiceEndpointFromSource_s
   }
 }
 
-- (id)proxyServiceEndpointFromSource:(id)a3 serviceIdentifier:(id)a4 error:(id *)a5
+- (id)proxyServiceEndpointFromSource:(id)source serviceIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  sourceCopy = source;
+  identifierCopy = identifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [HKQueryServerProxyProvider proxyServiceEndpointFromSource:a2 serviceIdentifier:self error:?];
   }
 
-  v11 = v9;
+  v11 = sourceCopy;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -112,25 +112,25 @@ uint64_t __113__HKQueryServerProxyProvider_fetchProxyServiceEndpointFromSource_s
   v22[3] = &unk_1E7378838;
   v22[4] = &v23;
   v12 = [v11 _synchronousServerProxyWithErrorHandler:v22];
-  v13 = [(HKTaskServerProxyProvider *)self taskUUID];
-  v14 = [(HKTaskServerProxyProvider *)self taskConfiguration];
-  v15 = [(HKQueryServerProxyProvider *)self shouldForceReactivation];
+  taskUUID = [(HKTaskServerProxyProvider *)self taskUUID];
+  taskConfiguration = [(HKTaskServerProxyProvider *)self taskConfiguration];
+  shouldForceReactivation = [(HKQueryServerProxyProvider *)self shouldForceReactivation];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __85__HKQueryServerProxyProvider_proxyServiceEndpointFromSource_serviceIdentifier_error___block_invoke_2;
   v21[3] = &unk_1E7381E70;
   v21[4] = &v29;
   v21[5] = &v23;
-  [v12 remote_createQueryServerEndpointForIdentifier:v10 queryUUID:v13 configuration:v14 forceReactivation:v15 completion:v21];
+  [v12 remote_createQueryServerEndpointForIdentifier:identifierCopy queryUUID:taskUUID configuration:taskConfiguration forceReactivation:shouldForceReactivation completion:v21];
 
   v16 = v24[5];
   v17 = v16;
   if (v16)
   {
-    if (a5)
+    if (error)
     {
       v18 = v16;
-      *a5 = v17;
+      *error = v17;
     }
 
     else

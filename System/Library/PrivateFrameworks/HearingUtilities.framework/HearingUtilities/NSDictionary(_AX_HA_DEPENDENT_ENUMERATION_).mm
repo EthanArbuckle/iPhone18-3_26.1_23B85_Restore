@@ -8,8 +8,8 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 allKeys];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_119];
+  allKeys = [self allKeys];
+  v6 = [allKeys sortedArrayUsingComparator:&__block_literal_global_119];
 
   v18 = 0u;
   v19 = 0u;
@@ -31,7 +31,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v16 + 1) + 8 * v11);
-      v13 = [a1 objectForKeyedSubscript:v12];
+      v13 = [self objectForKeyedSubscript:v12];
       v15 = 0;
       v4[2](v4, v12, v13, &v15);
       LOBYTE(v12) = v15;

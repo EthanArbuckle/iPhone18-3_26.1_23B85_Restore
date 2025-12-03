@@ -1,6 +1,6 @@
 @interface ISRateCurveRequest
 - (ISAVPlayer)avPlayer;
-- (ISRateCurveRequest)initWithTargetTime:(id *)a3 duration:(double)a4 initialRate:(float)a5 avPlayer:(id)a6 progressHandler:(id)a7;
+- (ISRateCurveRequest)initWithTargetTime:(id *)time duration:(double)duration initialRate:(float)rate avPlayer:(id)player progressHandler:(id)handler;
 - (void)_didReachTargetTime;
 - (void)_stepDownRate;
 - (void)_stopObservingPlayer;
@@ -53,11 +53,11 @@
     v10 = v12;
     [v4 seekToTime:&targetTime toleranceBefore:&v11 toleranceAfter:&v9];
 
-    v5 = [(ISRateCurveRequest *)self progressHandler];
+    progressHandler = [(ISRateCurveRequest *)self progressHandler];
 
-    if (v5)
+    if (progressHandler)
     {
-      v6 = [(ISRateCurveRequest *)self progressHandler];
+      progressHandler2 = [(ISRateCurveRequest *)self progressHandler];
       v7 = objc_loadWeakRetained(&self->_avPlayer);
       v8 = v7;
       if (v7)
@@ -70,7 +70,7 @@
         memset(&targetTime, 0, sizeof(targetTime));
       }
 
-      (v6)[2](v6, &targetTime, 1.0);
+      (progressHandler2)[2](progressHandler2, &targetTime, 1.0);
     }
   }
 }
@@ -104,9 +104,9 @@
     Seconds = CMTimeGetSeconds(&rhs);
     rhs = lhs;
     v6 = CMTimeGetSeconds(&rhs);
-    v7 = [(ISRateCurveRequest *)self progressHandler];
+    progressHandler = [(ISRateCurveRequest *)self progressHandler];
 
-    if (v7)
+    if (progressHandler)
     {
       if (Seconds / v6 <= 1.0)
       {
@@ -118,10 +118,10 @@
         v8 = 1.0;
       }
 
-      v9 = [(ISRateCurveRequest *)self progressHandler];
-      v10 = v9[2];
+      progressHandler2 = [(ISRateCurveRequest *)self progressHandler];
+      v10 = progressHandler2[2];
       rhs = v22;
-      v10(v9, &rhs, v8);
+      v10(progressHandler2, &rhs, v8);
     }
 
     v11 = self->_stepIndex + 1;
@@ -146,12 +146,12 @@
 {
   if (!self->_cancelled)
   {
-    v3 = [(ISRateCurveRequest *)self avPlayer];
-    v4 = v3;
-    if (v3)
+    avPlayer = [(ISRateCurveRequest *)self avPlayer];
+    v4 = avPlayer;
+    if (avPlayer)
     {
       memset(&v21, 0, sizeof(v21));
-      [v3 currentTime];
+      [avPlayer currentTime];
       lhs = self->_targetTime;
       memset(&v20, 0, sizeof(v20));
       rhs = v21;
@@ -178,13 +178,13 @@
       [v4 _setRate:v8];
       objc_initWeak(&lhs, self);
       WeakRetained = objc_loadWeakRetained(&self->_avPlayer);
-      v11 = [WeakRetained dispatchQueue];
+      dispatchQueue = [WeakRetained dispatchQueue];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __27__ISRateCurveRequest_start__block_invoke;
       v14[3] = &unk_279A2A3C0;
       objc_copyWeak(&v15, &lhs);
-      v12 = [v4 addBoundaryTimeObserverForTimes:v5 queue:v11 usingBlock:v14];
+      v12 = [v4 addBoundaryTimeObserverForTimes:v5 queue:dispatchQueue usingBlock:v14];
       boundaryObserver = self->_boundaryObserver;
       self->_boundaryObserver = v12;
 
@@ -200,23 +200,23 @@ void __27__ISRateCurveRequest_start__block_invoke(uint64_t a1)
   [WeakRetained _stepDownRate];
 }
 
-- (ISRateCurveRequest)initWithTargetTime:(id *)a3 duration:(double)a4 initialRate:(float)a5 avPlayer:(id)a6 progressHandler:(id)a7
+- (ISRateCurveRequest)initWithTargetTime:(id *)time duration:(double)duration initialRate:(float)rate avPlayer:(id)player progressHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
+  playerCopy = player;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = ISRateCurveRequest;
   v14 = [(ISRateCurveRequest *)&v20 init];
   v15 = v14;
   if (v14)
   {
-    v16 = *&a3->var0;
-    *(v14 + 15) = a3->var3;
+    v16 = *&time->var0;
+    *(v14 + 15) = time->var3;
     *(v14 + 104) = v16;
-    *(v14 + 10) = a4;
-    *(v14 + 18) = a5;
-    objc_storeWeak(v14 + 11, v12);
-    v17 = [v13 copy];
+    *(v14 + 10) = duration;
+    *(v14 + 18) = rate;
+    objc_storeWeak(v14 + 11, playerCopy);
+    v17 = [handlerCopy copy];
     progressHandler = v15->_progressHandler;
     v15->_progressHandler = v17;
   }

@@ -3,10 +3,10 @@
 - (id)computeLayoutGeometry;
 - (id)p_transformInfo;
 - (id)reliedOnLayouts;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
 - (void)endDynamicOperation;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
 @end
 
 @implementation CRLFreehandDrawingTransformLayout
@@ -14,10 +14,10 @@
 - (NSSet)representedShapeLayouts
 {
   v3 = +[NSMutableSet set];
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [(CRLFreehandDrawingTransformLayout *)self p_transformInfo];
-  v6 = [v5 representedShapeInfos];
-  v7 = [v4 layoutsForInfos:v6];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  p_transformInfo = [(CRLFreehandDrawingTransformLayout *)self p_transformInfo];
+  representedShapeInfos = [p_transformInfo representedShapeInfos];
+  v7 = [layoutController layoutsForInfos:representedShapeInfos];
 
   v19 = 0u;
   v20 = 0u;
@@ -53,31 +53,31 @@
   return v3;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
-  v5 = v4;
+  trackerCopy = tracker;
+  v5 = trackerCopy;
   v20 = 0u;
   v21 = 0u;
   v19 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
   }
 
-  v6 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v18[0] = v19;
   v18[1] = v20;
   v18[2] = v21;
-  v7 = [v6 geometryByTransformingBy:v18];
+  v7 = [originalGeometry geometryByTransformingBy:v18];
 
   [(CRLCanvasLayout *)self setDynamicGeometry:v7];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(CRLFreehandDrawingTransformLayout *)self representedShapeLayouts];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  representedShapeLayouts = [(CRLFreehandDrawingTransformLayout *)self representedShapeLayouts];
+  v9 = [representedShapeLayouts countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -88,7 +88,7 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(representedShapeLayouts);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -98,7 +98,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+      v10 = [representedShapeLayouts countByEnumeratingWithState:&v14 objects:v22 count:16];
     }
 
     while (v10);
@@ -107,35 +107,35 @@
   [(CRLCanvasLayout *)self invalidateFrame];
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v21.receiver = self;
   v21.super_class = CRLFreehandDrawingTransformLayout;
-  [(CRLCanvasLayout *)&v21 takeFreeTransformFromTracker:v4];
+  [(CRLCanvasLayout *)&v21 takeFreeTransformFromTracker:trackerCopy];
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 freeTransformForLayout:self];
+    [trackerCopy freeTransformForLayout:self];
   }
 
-  v5 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v17[0] = v18;
   v17[1] = v19;
   v17[2] = v20;
-  v6 = [v5 geometryByTransformingBy:v17];
+  v6 = [originalGeometry geometryByTransformingBy:v17];
 
   [(CRLCanvasLayout *)self setDynamicGeometry:v6];
-  if ([v4 isResizing])
+  if ([trackerCopy isResizing])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(CRLFreehandDrawingTransformLayout *)self representedShapeLayouts];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v22 count:16];
+    representedShapeLayouts = [(CRLFreehandDrawingTransformLayout *)self representedShapeLayouts];
+    v8 = [representedShapeLayouts countByEnumeratingWithState:&v13 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -146,17 +146,17 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(representedShapeLayouts);
           }
 
           v12 = *(*(&v13 + 1) + 8 * i);
           if (v12 != self)
           {
-            [(CRLFreehandDrawingTransformLayout *)v12 takeFreeTransformFromTracker:v4];
+            [(CRLFreehandDrawingTransformLayout *)v12 takeFreeTransformFromTracker:trackerCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v22 count:16];
+        v9 = [representedShapeLayouts countByEnumeratingWithState:&v13 objects:v22 count:16];
       }
 
       while (v9);
@@ -168,14 +168,14 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(CRLCanvasAbstractLayout *)self parent];
-  v4 = [v3 children];
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  children = [parent children];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100140718;
   v33[3] = &unk_10183EBB8;
   v33[4] = self;
-  v5 = [v4 crl_arrayOfObjectsPassingTest:v33];
+  v5 = [children crl_arrayOfObjectsPassingTest:v33];
   v6 = [NSSet setWithArray:v5];
 
   x = CGRectNull.origin.x;
@@ -201,8 +201,8 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v29 + 1) + 8 * i) pureGeometry];
-        [v16 frame];
+        pureGeometry = [*(*(&v29 + 1) + 8 * i) pureGeometry];
+        [pureGeometry frame];
         v39.origin.x = v17;
         v39.origin.y = v18;
         v39.size.width = v19;
@@ -264,16 +264,16 @@
     x = 0.0;
   }
 
-  v27 = [[CRLCanvasLayoutGeometry alloc] initWithFrame:x, y, width, height];
+  height = [[CRLCanvasLayoutGeometry alloc] initWithFrame:x, y, width, height];
 
-  return v27;
+  return height;
 }
 
 - (id)reliedOnLayouts
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
 
-  if (!v3)
+  if (!layoutController)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -302,22 +302,22 @@
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:104 isFatal:0 description:"invalid nil value for '%{public}s'", "self.layoutController"];
   }
 
-  v7 = [(CRLCanvasLayout *)self layoutController];
-  v8 = [(CRLFreehandDrawingTransformLayout *)self p_transformInfo];
-  v9 = [v8 representedShapeInfos];
-  v10 = [v7 layoutsForInfos:v9];
+  layoutController2 = [(CRLCanvasLayout *)self layoutController];
+  p_transformInfo = [(CRLFreehandDrawingTransformLayout *)self p_transformInfo];
+  representedShapeInfos = [p_transformInfo representedShapeInfos];
+  v10 = [layoutController2 layoutsForInfos:representedShapeInfos];
 
   return v10;
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
   v10.receiver = self;
   v10.super_class = CRLFreehandDrawingTransformLayout;
-  [(CRLCanvasLayout *)&v10 beginDynamicOperationWithRealTimeCommands:a3];
+  [(CRLCanvasLayout *)&v10 beginDynamicOperationWithRealTimeCommands:commands];
   v4 = objc_opt_class();
-  v5 = [(CRLCanvasAbstractLayout *)self parent];
-  v6 = sub_100013F00(v4, v5);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v6 = sub_100013F00(v4, parent);
 
   if (!v6)
   {
@@ -357,8 +357,8 @@
   v9.super_class = CRLFreehandDrawingTransformLayout;
   [(CRLCanvasLayout *)&v9 endDynamicOperation];
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasAbstractLayout *)self parent];
-  v5 = sub_100013F00(v3, v4);
+  parent = [(CRLCanvasAbstractLayout *)self parent];
+  v5 = sub_100013F00(v3, parent);
 
   if (!v5)
   {
@@ -395,8 +395,8 @@
 - (id)p_transformInfo
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }

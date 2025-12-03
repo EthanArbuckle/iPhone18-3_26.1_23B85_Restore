@@ -1,20 +1,20 @@
 @interface RMDummyDataProviderConfiguration
-- (RMDummyDataProviderConfiguration)initWithUniqueIdentifier:(id)a3 updateInterval:(unint64_t)a4;
+- (RMDummyDataProviderConfiguration)initWithUniqueIdentifier:(id)identifier updateInterval:(unint64_t)interval;
 @end
 
 @implementation RMDummyDataProviderConfiguration
 
-- (RMDummyDataProviderConfiguration)initWithUniqueIdentifier:(id)a3 updateInterval:(unint64_t)a4
+- (RMDummyDataProviderConfiguration)initWithUniqueIdentifier:(id)identifier updateInterval:(unint64_t)interval
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = RMDummyDataProviderConfiguration;
   v7 = [(RMDummyDataProviderConfiguration *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(RMDummyDataProviderConfiguration *)v7 setIdentifier:v6];
-    [(RMDummyDataProviderConfiguration *)v8 setIntervalInNanoSeconds:a4];
+    [(RMDummyDataProviderConfiguration *)v7 setIdentifier:identifierCopy];
+    [(RMDummyDataProviderConfiguration *)v8 setIntervalInNanoSeconds:interval];
   }
 
   return v8;

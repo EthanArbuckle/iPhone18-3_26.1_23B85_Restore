@@ -6,8 +6,8 @@
 
 - (void)vfx_setClearBackground
 {
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [a1 setBackgroundColor:v2];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [self setBackgroundColor:clearColor];
 }
 
 @end

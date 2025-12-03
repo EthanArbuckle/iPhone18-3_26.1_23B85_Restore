@@ -1,34 +1,34 @@
 @interface SFCreditCardFillingViewController
-- (SFCreditCardFillingViewController)initWithFormAutocompleteState:(id)a3;
+- (SFCreditCardFillingViewController)initWithFormAutocompleteState:(id)state;
 - (SFFormAutocompleteState)formAutocompleteState;
-- (double)_calculateCellWidthForCollectionViewWidth:(double)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)_cardDataChanged:(id)a3;
+- (double)_calculateCellWidthForCollectionViewWidth:(double)width;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)_cardDataChanged:(id)changed;
 - (void)_loadCardData;
 - (void)_scrollToPreviouslySelectedEmptyVirtualCardIfBalanceIncreased;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadView;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFCreditCardFillingViewController
 
-- (SFCreditCardFillingViewController)initWithFormAutocompleteState:(id)a3
+- (SFCreditCardFillingViewController)initWithFormAutocompleteState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v10.receiver = self;
   v10.super_class = SFCreditCardFillingViewController;
   v5 = [(SFCreditCardFillingViewController *)&v10 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_formAutocompleteState, v4);
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel__cardDataChanged_ name:*MEMORY[0x1E69DDBC0] object:0];
+    objc_storeWeak(&v5->_formAutocompleteState, stateCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__cardDataChanged_ name:*MEMORY[0x1E69DDBC0] object:0];
 
     v8 = v6;
   }
@@ -36,18 +36,18 @@
   return v6;
 }
 
-- (double)_calculateCellWidthForCollectionViewWidth:(double)a3
+- (double)_calculateCellWidthForCollectionViewWidth:(double)width
 {
-  if (self->_lastLayoutWidth == a3)
+  if (self->_lastLayoutWidth == width)
   {
     return self->_cachedCellWidth;
   }
 
-  self->_lastLayoutWidth = a3;
+  self->_lastLayoutWidth = width;
   v4 = 30;
   while (v4 != 5)
   {
-    v3 = floor((a3 - v4) / floor((a3 - v4) / 180.0));
+    v3 = floor((width - v4) / floor((width - v4) / 180.0));
     v4 -= 5;
     if (v3 <= 285.0)
     {
@@ -76,8 +76,8 @@ LABEL_8:
   collectionView = self->_collectionView;
   self->_collectionView = v6;
 
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_collectionView setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_collectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_collectionView setDataSource:self];
   [(UICollectionView *)self->_collectionView setDelegate:self];
@@ -115,8 +115,8 @@ LABEL_8:
 
   [(UICollectionView *)self->_collectionView addSubview:self->_rightShadowView];
   [(SFCreditCardFillingViewController *)self setView:self->_collectionView];
-  v26 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v26 addObserver:self selector:sel__cardDataChanged_ name:*MEMORY[0x1E69C9158] object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__cardDataChanged_ name:*MEMORY[0x1E69C9158] object:0];
 }
 
 id __45__SFCreditCardFillingViewController_loadView__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -172,24 +172,24 @@ id __45__SFCreditCardFillingViewController_loadView__block_invoke(uint64_t a1, u
   return v23;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SFCreditCardFillingViewController;
-  [(SFCreditCardFillingViewController *)&v4 viewWillAppear:a3];
+  [(SFCreditCardFillingViewController *)&v4 viewWillAppear:appear];
   [(SFCreditCardFillingViewController *)self _loadCardData];
 }
 
 - (void)_loadCardData
 {
   objc_initWeak(&location, self);
-  v2 = [MEMORY[0x1E69E3090] sharedCreditCardDataController];
+  mEMORY[0x1E69E3090] = [MEMORY[0x1E69E3090] sharedCreditCardDataController];
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __50__SFCreditCardFillingViewController__loadCardData__block_invoke;
   v3[3] = &unk_1E8491CE8;
   objc_copyWeak(&v4, &location);
-  [v2 getCreditCardDataWithCompletionHandler:v3];
+  [mEMORY[0x1E69E3090] getCreditCardDataWithCompletionHandler:v3];
 
   objc_destroyWeak(&v4);
   objc_destroyWeak(&location);
@@ -238,34 +238,34 @@ void __50__SFCreditCardFillingViewController__loadCardData__block_invoke_2(uint6
 
 - (void)_scrollToPreviouslySelectedEmptyVirtualCardIfBalanceIncreased
 {
-  v3 = [(SFCreditCardFillingViewController *)self formAutocompleteState];
-  v4 = [v3 previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance];
-  v5 = v4;
-  if (v4)
+  formAutocompleteState = [(SFCreditCardFillingViewController *)self formAutocompleteState];
+  previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance = [formAutocompleteState previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance];
+  v5 = previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance;
+  if (previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance)
   {
     creditCards = self->_creditCards;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __98__SFCreditCardFillingViewController__scrollToPreviouslySelectedEmptyVirtualCardIfBalanceIncreased__block_invoke;
     v12[3] = &unk_1E8491D10;
-    v13 = v4;
+    v13 = previouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance;
     v7 = [(NSArray *)creditCards indexOfObjectPassingTest:v12];
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [v3 setPreviouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance:0];
+      [formAutocompleteState setPreviouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance:0];
     }
 
     else
     {
       v8 = v7;
       v9 = [(NSArray *)self->_creditCards objectAtIndexedSubscript:v7];
-      v10 = [v9 isCardBalanceZeroOrNegative];
+      isCardBalanceZeroOrNegative = [v9 isCardBalanceZeroOrNegative];
 
-      if ((v10 & 1) == 0)
+      if ((isCardBalanceZeroOrNegative & 1) == 0)
       {
         v11 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:0];
         [(UICollectionView *)self->_collectionView scrollToItemAtIndexPath:v11 atScrollPosition:16 animated:1];
-        [v3 setPreviouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance:0];
+        [formAutocompleteState setPreviouslySelectedVirtualCardWhereUserRequestedToIncreaseBalance:0];
       }
     }
   }
@@ -298,8 +298,8 @@ uint64_t __98__SFCreditCardFillingViewController__scrollToPreviouslySelectedEmpt
   v4 = v3;
   [(UICollectionView *)self->_collectionView bounds];
   v6 = v5;
-  v7 = [(UICollectionView *)self->_collectionView superview];
-  [v7 bounds];
+  superview = [(UICollectionView *)self->_collectionView superview];
+  [superview bounds];
   v9 = v8;
 
   v10 = -2.0;
@@ -332,8 +332,8 @@ uint64_t __98__SFCreditCardFillingViewController__scrollToPreviouslySelectedEmpt
   else
   {
     [(UICollectionView *)collectionView _setContinuousCornerRadius:12.0];
-    v20 = [(UIImageView *)self->_leftShadowView image];
-    [v20 size];
+    image = [(UIImageView *)self->_leftShadowView image];
+    [image size];
     v22 = v21;
     v24 = v23;
 
@@ -342,8 +342,8 @@ uint64_t __98__SFCreditCardFillingViewController__scrollToPreviouslySelectedEmpt
     [(UIImageView *)self->_leftShadowView setAlpha:?];
     [(UICollectionView *)self->_collectionView bounds];
     [(UIImageView *)self->_leftShadowView setFrame:CGRectGetMinX(v32), 0.0, v22, v24];
-    v25 = [(UIImageView *)self->_rightShadowView image];
-    [v25 size];
+    image2 = [(UIImageView *)self->_rightShadowView image];
+    [image2 size];
     v27 = v26;
     v29 = v28;
 
@@ -355,28 +355,28 @@ uint64_t __98__SFCreditCardFillingViewController__scrollToPreviouslySelectedEmpt
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 section];
-  if (v9 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 1)
   {
     v11 = +[SFScanningCreditCardCollectionViewCell reuseIdentifier];
-    v4 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+    v4 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
   }
 
   else
   {
-    if (v9)
+    if (section)
     {
       goto LABEL_6;
     }
 
     v10 = +[SFCreditCardCollectionViewCell reuseIdentifier];
-    v4 = [v7 dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:v8];
+    v4 = [viewCopy dequeueReusableCellWithReuseIdentifier:v10 forIndexPath:pathCopy];
 
-    v11 = -[NSArray objectAtIndexedSubscript:](self->_creditCards, "objectAtIndexedSubscript:", [v8 row]);
+    v11 = -[NSArray objectAtIndexedSubscript:](self->_creditCards, "objectAtIndexedSubscript:", [pathCopy row]);
     [v4 configureViewWithCardData:v11];
   }
 
@@ -385,18 +385,18 @@ LABEL_6:
   return v4;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  pathCopy = path;
+  kindCopy = kind;
+  viewCopy = view;
   v10 = +[SFCreditCardSeparator reuseIdentifier];
-  v11 = [v9 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v10 forIndexPath:v7];
+  v11 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v10 forIndexPath:pathCopy];
 
   return v11;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   creditCards = self->_creditCards;
   v4 = +[_SFCreditCardCaptureViewController canCapture];
@@ -417,9 +417,9 @@ LABEL_6:
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -430,26 +430,26 @@ LABEL_6:
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v9 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_formAutocompleteState);
-  v6 = [v9 section];
-  if (v6 == 1)
+  section = [pathCopy section];
+  if (section == 1)
   {
     [WeakRetained captureCreditCardDataWithCameraAndFill];
   }
 
-  else if (!v6)
+  else if (!section)
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_creditCards, "objectAtIndexedSubscript:", [v9 row]);
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_creditCards, "objectAtIndexedSubscript:", [pathCopy row]);
     v8 = [_SFTextSuggestion textSuggestionWithCreditCardData:v7];
 
     [WeakRetained autoFillTextSuggestion:v8];
   }
 }
 
-- (void)_cardDataChanged:(id)a3
+- (void)_cardDataChanged:(id)changed
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;

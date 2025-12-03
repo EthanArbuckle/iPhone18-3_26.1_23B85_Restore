@@ -1,34 +1,34 @@
 @interface HKGraphSeriesOverlayData
 - (CGAffineTransform)graphSeriesPointTransform;
 - (CGRect)graphSeriesScreenRect;
-- (HKGraphSeriesOverlayData)initWithGraphSeries:(id)a3 graphSeriesScreenRect:(CGRect)a4 graphSeriesCoordinates:(id)a5 graphSeriesPointTransform:(CGAffineTransform *)a6;
+- (HKGraphSeriesOverlayData)initWithGraphSeries:(id)series graphSeriesScreenRect:(CGRect)rect graphSeriesCoordinates:(id)coordinates graphSeriesPointTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation HKGraphSeriesOverlayData
 
-- (HKGraphSeriesOverlayData)initWithGraphSeries:(id)a3 graphSeriesScreenRect:(CGRect)a4 graphSeriesCoordinates:(id)a5 graphSeriesPointTransform:(CGAffineTransform *)a6
+- (HKGraphSeriesOverlayData)initWithGraphSeries:(id)series graphSeriesScreenRect:(CGRect)rect graphSeriesCoordinates:(id)coordinates graphSeriesPointTransform:(CGAffineTransform *)transform
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v15 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  seriesCopy = series;
+  coordinatesCopy = coordinates;
   v21.receiver = self;
   v21.super_class = HKGraphSeriesOverlayData;
   v16 = [(HKGraphSeriesOverlayData *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_graphSeries, a3);
+    objc_storeStrong(&v16->_graphSeries, series);
     v17->_graphSeriesScreenRect.origin.x = x;
     v17->_graphSeriesScreenRect.origin.y = y;
     v17->_graphSeriesScreenRect.size.width = width;
     v17->_graphSeriesScreenRect.size.height = height;
-    objc_storeStrong(&v17->_graphSeriesCoordinates, a5);
-    v18 = *&a6->a;
-    v19 = *&a6->c;
-    *&v17->_graphSeriesPointTransform.tx = *&a6->tx;
+    objc_storeStrong(&v17->_graphSeriesCoordinates, coordinates);
+    v18 = *&transform->a;
+    v19 = *&transform->c;
+    *&v17->_graphSeriesPointTransform.tx = *&transform->tx;
     *&v17->_graphSeriesPointTransform.c = v19;
     *&v17->_graphSeriesPointTransform.a = v18;
   }

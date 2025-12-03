@@ -1,29 +1,29 @@
 @interface _EditScriptIndexed
-+ (id)editScriptFromArray:(id)a3 toArray:(id)a4 orderAtomsAscending:(BOOL)a5 operationPrecedence:(int64_t)a6;
-- (_EditScriptIndexed)initWithOperationPrecedence:(int64_t)a3 dataClass:(Class)a4 fromArray:(id)a5 toArray:(id)a6 orderAtomsAscending:(BOOL)a7;
-- (id)applyToArray:(id)a3;
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
++ (id)editScriptFromArray:(id)array toArray:(id)toArray orderAtomsAscending:(BOOL)ascending operationPrecedence:(int64_t)precedence;
+- (_EditScriptIndexed)initWithOperationPrecedence:(int64_t)precedence dataClass:(Class)class fromArray:(id)array toArray:(id)toArray orderAtomsAscending:(BOOL)ascending;
+- (id)applyToArray:(id)array;
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b;
 - (void)finalizeCurrentScriptAtom;
 - (void)initializeCurrentScriptAtom;
 @end
 
 @implementation _EditScriptIndexed
 
-- (_EditScriptIndexed)initWithOperationPrecedence:(int64_t)a3 dataClass:(Class)a4 fromArray:(id)a5 toArray:(id)a6 orderAtomsAscending:(BOOL)a7
+- (_EditScriptIndexed)initWithOperationPrecedence:(int64_t)precedence dataClass:(Class)class fromArray:(id)array toArray:(id)toArray orderAtomsAscending:(BOOL)ascending
 {
-  v7 = a7;
-  v12 = a5;
-  v13 = a6;
+  ascendingCopy = ascending;
+  arrayCopy = array;
+  toArrayCopy = toArray;
   v20.receiver = self;
   v20.super_class = _EditScriptIndexed;
-  v14 = [(_EditScript *)&v20 initWithOperationPrecedence:a3 orderAtomsAscending:v7];
+  v14 = [(_EditScript *)&v20 initWithOperationPrecedence:precedence orderAtomsAscending:ascendingCopy];
   if (v14)
   {
-    v15 = [(objc_class *)a4 EditScriptDataWithArray:v12];
+    v15 = [(objc_class *)class EditScriptDataWithArray:arrayCopy];
     itemAData = v14->super._itemAData;
     v14->super._itemAData = v15;
 
-    v17 = [(objc_class *)a4 EditScriptDataWithArray:v13];
+    v17 = [(objc_class *)class EditScriptDataWithArray:toArrayCopy];
     itemBData = v14->super._itemBData;
     v14->super._itemBData = v17;
   }
@@ -31,12 +31,12 @@
   return v14;
 }
 
-+ (id)editScriptFromArray:(id)a3 toArray:(id)a4 orderAtomsAscending:(BOOL)a5 operationPrecedence:(int64_t)a6
++ (id)editScriptFromArray:(id)array toArray:(id)toArray orderAtomsAscending:(BOOL)ascending operationPrecedence:(int64_t)precedence
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_EditScriptIndexed alloc] initWithOperationPrecedence:a6 dataClass:objc_opt_class() fromArray:v10 toArray:v9 orderAtomsAscending:v7];
+  ascendingCopy = ascending;
+  toArrayCopy = toArray;
+  arrayCopy = array;
+  v11 = [[_EditScriptIndexed alloc] initWithOperationPrecedence:precedence dataClass:objc_opt_class() fromArray:arrayCopy toArray:toArrayCopy orderAtomsAscending:ascendingCopy];
 
   [(_EditScript *)v11 computeDistanceMatrix];
   [(_EditScript *)v11 computeEditsFromMatrix];
@@ -44,23 +44,23 @@
   return v11;
 }
 
-- (id)applyToArray:(id)a3
+- (id)applyToArray:(id)array
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  arrayCopy = array;
+  if (!arrayCopy)
   {
-    v5 = MEMORY[0x1E695E0F0];
+    arrayCopy = MEMORY[0x1E695E0F0];
   }
 
-  v17 = v5;
-  v6 = [v5 mutableCopy];
+  v17 = arrayCopy;
+  v6 = [arrayCopy mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(_EditScript *)self script];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  script = [(_EditScript *)self script];
+  v8 = [script countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -71,35 +71,35 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(script);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 editOperation];
-        switch(v13)
+        editOperation = [v12 editOperation];
+        switch(editOperation)
         {
           case 1:
             [v6 removeObjectAtIndex:{objc_msgSend(v12, "indexToEdit")}];
             break;
           case 2:
-            v14 = [v12 replacementText];
-            [v6 insertObject:v14 atIndex:{objc_msgSend(v12, "indexToEdit")}];
+            replacementText = [v12 replacementText];
+            [v6 insertObject:replacementText atIndex:{objc_msgSend(v12, "indexToEdit")}];
             goto LABEL_13;
           case 3:
-            v14 = [v12 replacementText];
-            [v6 setObject:v14 atIndexedSubscript:{objc_msgSend(v12, "indexToEdit")}];
+            replacementText = [v12 replacementText];
+            [v6 setObject:replacementText atIndexedSubscript:{objc_msgSend(v12, "indexToEdit")}];
 LABEL_13:
 
             continue;
           default:
-            v15 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v15 handleFailureInMethod:a2 object:self file:@"_EditScriptIndexed.m" lineNumber:57 description:@"Invalid operation used in _EditScriptIndexed"];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScriptIndexed.m" lineNumber:57 description:@"Invalid operation used in _EditScriptIndexed"];
 
             break;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [script countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -114,25 +114,25 @@ LABEL_13:
   self->_currentScriptAtom = 0;
 }
 
-- (void)addToCurrentScriptAtomEditOperation:(int64_t)a3 editIndex:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
+- (void)addToCurrentScriptAtomEditOperation:(int64_t)operation editIndex:(unint64_t)index newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v11 = a5;
-  v12 = v11;
-  if (a3)
+  textCopy = text;
+  v12 = textCopy;
+  if (operation)
   {
-    v16 = v11;
-    if (a3 != 2)
+    v16 = textCopy;
+    if (operation != 2)
     {
-      if (!a4)
+      if (!index)
       {
-        v15 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v15 handleFailureInMethod:a2 object:self file:@"_EditScriptIndexed.m" lineNumber:78 description:@"Deletions and Substitutions should never start with an index of 0"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_EditScriptIndexed.m" lineNumber:78 description:@"Deletions and Substitutions should never start with an index of 0"];
       }
 
-      --a4;
+      --index;
     }
 
-    v13 = [_EditScriptIndexedAtom atomWithEditOperation:a3 indexToEdit:a4 newText:v16 indexInArrayB:a6];
+    v13 = [_EditScriptIndexedAtom atomWithEditOperation:operation indexToEdit:index newText:v16 indexInArrayB:b];
     currentScriptAtom = self->_currentScriptAtom;
     self->_currentScriptAtom = v13;
 
@@ -168,8 +168,8 @@ LABEL_13:
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v6 = [(_EditScript *)self script];
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      script = [(_EditScript *)self script];
+      v7 = [script countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         v8 = v7;
@@ -181,7 +181,7 @@ LABEL_13:
           {
             if (*v13 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(script);
             }
 
             [*(*(&v12 + 1) + 8 * v10) setIndexToEdit:{objc_msgSend(*(*(&v12 + 1) + 8 * v10), "indexToEdit") + v4}];
@@ -189,20 +189,20 @@ LABEL_13:
           }
 
           while (v8 != v10);
-          v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v8 = [script countByEnumeratingWithState:&v12 objects:v16 count:16];
         }
 
         while (v8);
       }
 
-      v5 = [(_EditScript *)self script];
-      [v5 insertObject:self->_currentScriptAtom atIndex:0];
+      script2 = [(_EditScript *)self script];
+      [script2 insertObject:self->_currentScriptAtom atIndex:0];
     }
 
     else
     {
-      v5 = [(_EditScript *)self script];
-      [v5 addObject:self->_currentScriptAtom];
+      script2 = [(_EditScript *)self script];
+      [script2 addObject:self->_currentScriptAtom];
     }
 
     v11 = self->_currentScriptAtom;

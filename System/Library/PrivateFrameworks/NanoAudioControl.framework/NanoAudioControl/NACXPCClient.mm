@@ -2,41 +2,41 @@
 + (id)sharedClient;
 - (NACXPCClient)init;
 - (id)_proxy;
-- (void)EULimitForTarget:(id)a3 result:(id)a4;
+- (void)EULimitForTarget:(id)target result:(id)result;
 - (void)_createConnection;
 - (void)_resumeListeningModesObservingIfNecessary;
 - (void)_resumeRouteObservingIfNecessary;
 - (void)_resumeVolumeObservingIfNecessary;
-- (void)audioRoutesForCategory:(id)a3 result:(id)a4;
-- (void)availableListeningModesForTarget:(id)a3 result:(id)a4;
-- (void)beginObservingAudioRoutesForCategory:(id)a3;
-- (void)beginObservingListeningModesForTarget:(id)a3;
-- (void)beginObservingVolumeForTarget:(id)a3;
-- (void)currentListeningModeForTarget:(id)a3 result:(id)a4;
-- (void)endObservingAudioRoutesForCategory:(id)a3;
-- (void)endObservingListeningModesForTarget:(id)a3;
-- (void)endObservingVolumeForTarget:(id)a3;
-- (void)hapticIntensity:(id)a3;
-- (void)hapticState:(id)a3;
-- (void)mutedStateForTarget:(id)a3 result:(id)a4;
-- (void)pickAudioRouteWithIdentifier:(id)a3 category:(id)a4;
+- (void)audioRoutesForCategory:(id)category result:(id)result;
+- (void)availableListeningModesForTarget:(id)target result:(id)result;
+- (void)beginObservingAudioRoutesForCategory:(id)category;
+- (void)beginObservingListeningModesForTarget:(id)target;
+- (void)beginObservingVolumeForTarget:(id)target;
+- (void)currentListeningModeForTarget:(id)target result:(id)result;
+- (void)endObservingAudioRoutesForCategory:(id)category;
+- (void)endObservingListeningModesForTarget:(id)target;
+- (void)endObservingVolumeForTarget:(id)target;
+- (void)hapticIntensity:(id)intensity;
+- (void)hapticState:(id)state;
+- (void)mutedStateForTarget:(id)target result:(id)result;
+- (void)pickAudioRouteWithIdentifier:(id)identifier category:(id)category;
 - (void)playAudioAndHapticPreview;
 - (void)playDefaultHapticPreview;
 - (void)playProminentHapticPreview;
-- (void)playToneWithConfiguration:(id)a3;
-- (void)prominentHapticEnabled:(id)a3;
-- (void)setCurrentListeningMode:(id)a3 forTarget:(id)a4;
-- (void)setHapticIntensity:(float)a3;
-- (void)setHapticState:(int64_t)a3;
-- (void)setMuted:(BOOL)a3 forTarget:(id)a4;
-- (void)setProminentHapticEnabled:(BOOL)a3;
-- (void)setSystemMuted:(BOOL)a3;
-- (void)setVolumeValue:(float)a3 forTarget:(id)a4;
-- (void)stopToneWithOptions:(id)a3;
-- (void)systemMutedState:(id)a3;
-- (void)volumeControlAvailabilityForTarget:(id)a3 result:(id)a4;
-- (void)volumeValueForTarget:(id)a3 result:(id)a4;
-- (void)volumeWarningForTarget:(id)a3 result:(id)a4;
+- (void)playToneWithConfiguration:(id)configuration;
+- (void)prominentHapticEnabled:(id)enabled;
+- (void)setCurrentListeningMode:(id)mode forTarget:(id)target;
+- (void)setHapticIntensity:(float)intensity;
+- (void)setHapticState:(int64_t)state;
+- (void)setMuted:(BOOL)muted forTarget:(id)target;
+- (void)setProminentHapticEnabled:(BOOL)enabled;
+- (void)setSystemMuted:(BOOL)muted;
+- (void)setVolumeValue:(float)value forTarget:(id)target;
+- (void)stopToneWithOptions:(id)options;
+- (void)systemMutedState:(id)state;
+- (void)volumeControlAvailabilityForTarget:(id)target result:(id)result;
+- (void)volumeValueForTarget:(id)target result:(id)result;
+- (void)volumeWarningForTarget:(id)target result:(id)result;
 @end
 
 @implementation NACXPCClient
@@ -201,21 +201,21 @@ uint64_t __28__NACXPCClient_sharedClient__block_invoke()
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginObservingVolumeForTarget:(id)a3
+- (void)beginObservingVolumeForTarget:(id)target
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_volumeObservingTargets containsObject:v4]& 1) == 0)
+  targetCopy = target;
+  if (([(NSMutableSet *)self->_volumeObservingTargets containsObject:targetCopy]& 1) == 0)
   {
     xpcConnectionQueue = self->_xpcConnectionQueue;
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __46__NACXPCClient_beginObservingVolumeForTarget___block_invoke;
     v10 = &unk_27992B510;
-    v11 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = targetCopy;
     v12 = v6;
     dispatch_async(xpcConnectionQueue, &v7);
-    [(NSMutableSet *)self->_volumeObservingTargets addObject:v6, v7, v8, v9, v10, v11];
+    [(NSMutableSet *)self->_volumeObservingTargets addObject:v6, v7, v8, v9, v10, selfCopy];
   }
 }
 
@@ -225,19 +225,19 @@ void __46__NACXPCClient_beginObservingVolumeForTarget___block_invoke(uint64_t a1
   [v2 beginObservingVolumeForTarget:*(a1 + 40)];
 }
 
-- (void)endObservingVolumeForTarget:(id)a3
+- (void)endObservingVolumeForTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __44__NACXPCClient_endObservingVolumeForTarget___block_invoke;
   v10 = &unk_27992B510;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = targetCopy;
+  v6 = targetCopy;
   dispatch_async(xpcConnectionQueue, &v7);
-  [(NSMutableSet *)self->_volumeObservingTargets removeObject:v6, v7, v8, v9, v10, v11];
+  [(NSMutableSet *)self->_volumeObservingTargets removeObject:v6, v7, v8, v9, v10, selfCopy];
 }
 
 void __44__NACXPCClient_endObservingVolumeForTarget___block_invoke(uint64_t a1)
@@ -246,18 +246,18 @@ void __44__NACXPCClient_endObservingVolumeForTarget___block_invoke(uint64_t a1)
   [v2 endObservingVolumeForTarget:*(a1 + 40)];
 }
 
-- (void)beginObservingListeningModesForTarget:(id)a3
+- (void)beginObservingListeningModesForTarget:(id)target
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_listeningModesObservingTargets containsObject:v4]& 1) == 0)
+  targetCopy = target;
+  if (([(NSMutableSet *)self->_listeningModesObservingTargets containsObject:targetCopy]& 1) == 0)
   {
     xpcConnectionQueue = self->_xpcConnectionQueue;
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __54__NACXPCClient_beginObservingListeningModesForTarget___block_invoke;
     v13 = &unk_27992B510;
-    v14 = self;
-    v6 = v4;
+    selfCopy = self;
+    v6 = targetCopy;
     v15 = v6;
     dispatch_async(xpcConnectionQueue, &v10);
     listeningModesObservingTargets = self->_listeningModesObservingTargets;
@@ -270,7 +270,7 @@ void __44__NACXPCClient_endObservingVolumeForTarget___block_invoke(uint64_t a1)
       listeningModesObservingTargets = self->_listeningModesObservingTargets;
     }
 
-    [(NSMutableSet *)listeningModesObservingTargets addObject:v6, v10, v11, v12, v13, v14];
+    [(NSMutableSet *)listeningModesObservingTargets addObject:v6, v10, v11, v12, v13, selfCopy];
   }
 }
 
@@ -280,19 +280,19 @@ void __54__NACXPCClient_beginObservingListeningModesForTarget___block_invoke(uin
   [v2 beginObservingListeningModesForTarget:*(a1 + 40)];
 }
 
-- (void)endObservingListeningModesForTarget:(id)a3
+- (void)endObservingListeningModesForTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __52__NACXPCClient_endObservingListeningModesForTarget___block_invoke;
   v10 = &unk_27992B510;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = targetCopy;
+  v6 = targetCopy;
   dispatch_async(xpcConnectionQueue, &v7);
-  [(NSMutableSet *)self->_listeningModesObservingTargets removeObject:v6, v7, v8, v9, v10, v11];
+  [(NSMutableSet *)self->_listeningModesObservingTargets removeObject:v6, v7, v8, v9, v10, selfCopy];
 }
 
 void __52__NACXPCClient_endObservingListeningModesForTarget___block_invoke(uint64_t a1)
@@ -301,20 +301,20 @@ void __52__NACXPCClient_endObservingListeningModesForTarget___block_invoke(uint6
   [v2 endObservingListeningModesForTarget:*(a1 + 40)];
 }
 
-- (void)volumeValueForTarget:(id)a3 result:(id)a4
+- (void)volumeValueForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__NACXPCClient_volumeValueForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -324,20 +324,20 @@ void __44__NACXPCClient_volumeValueForTarget_result___block_invoke(uint64_t a1)
   [v2 volumeValueForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)volumeControlAvailabilityForTarget:(id)a3 result:(id)a4
+- (void)volumeControlAvailabilityForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NACXPCClient_volumeControlAvailabilityForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -347,20 +347,20 @@ void __58__NACXPCClient_volumeControlAvailabilityForTarget_result___block_invoke
   [v2 volumeControlAvailabilityForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)mutedStateForTarget:(id)a3 result:(id)a4
+- (void)mutedStateForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__NACXPCClient_mutedStateForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -370,17 +370,17 @@ void __43__NACXPCClient_mutedStateForTarget_result___block_invoke(uint64_t a1)
   [v2 mutedStateForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)hapticState:(id)a3
+- (void)hapticState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__NACXPCClient_hapticState___block_invoke;
   v7[3] = &unk_27992B560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 
@@ -390,17 +390,17 @@ void __28__NACXPCClient_hapticState___block_invoke(uint64_t a1)
   [v2 hapticState:*(a1 + 40)];
 }
 
-- (void)hapticIntensity:(id)a3
+- (void)hapticIntensity:(id)intensity
 {
-  v4 = a3;
+  intensityCopy = intensity;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__NACXPCClient_hapticIntensity___block_invoke;
   v7[3] = &unk_27992B560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intensityCopy;
+  v6 = intensityCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 
@@ -410,17 +410,17 @@ void __32__NACXPCClient_hapticIntensity___block_invoke(uint64_t a1)
   [v2 hapticIntensity:*(a1 + 40)];
 }
 
-- (void)prominentHapticEnabled:(id)a3
+- (void)prominentHapticEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__NACXPCClient_prominentHapticEnabled___block_invoke;
   v7[3] = &unk_27992B560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enabledCopy;
+  v6 = enabledCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 
@@ -430,17 +430,17 @@ void __39__NACXPCClient_prominentHapticEnabled___block_invoke(uint64_t a1)
   [v2 prominentHapticEnabled:*(a1 + 40)];
 }
 
-- (void)systemMutedState:(id)a3
+- (void)systemMutedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__NACXPCClient_systemMutedState___block_invoke;
   v7[3] = &unk_27992B560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 
@@ -450,20 +450,20 @@ void __33__NACXPCClient_systemMutedState___block_invoke(uint64_t a1)
   [v2 systemMutedState:*(a1 + 40)];
 }
 
-- (void)EULimitForTarget:(id)a3 result:(id)a4
+- (void)EULimitForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__NACXPCClient_EULimitForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -473,20 +473,20 @@ void __40__NACXPCClient_EULimitForTarget_result___block_invoke(uint64_t a1)
   [v2 EULimitForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)volumeWarningForTarget:(id)a3 result:(id)a4
+- (void)volumeWarningForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__NACXPCClient_volumeWarningForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -496,18 +496,18 @@ void __46__NACXPCClient_volumeWarningForTarget_result___block_invoke(uint64_t a1
   [v2 volumeWarningForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)setVolumeValue:(float)a3 forTarget:(id)a4
+- (void)setVolumeValue:(float)value forTarget:(id)target
 {
-  v6 = a4;
+  targetCopy = target;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__NACXPCClient_setVolumeValue_forTarget___block_invoke;
   block[3] = &unk_27992B588;
-  v11 = a3;
+  valueCopy = value;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = targetCopy;
+  v8 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -518,18 +518,18 @@ void __41__NACXPCClient_setVolumeValue_forTarget___block_invoke(uint64_t a1)
   [v3 setVolumeValue:*(a1 + 40) forTarget:v2];
 }
 
-- (void)setMuted:(BOOL)a3 forTarget:(id)a4
+- (void)setMuted:(BOOL)muted forTarget:(id)target
 {
-  v6 = a4;
+  targetCopy = target;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__NACXPCClient_setMuted_forTarget___block_invoke;
   block[3] = &unk_27992B5B0;
-  v11 = a3;
+  mutedCopy = muted;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = targetCopy;
+  v8 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -539,7 +539,7 @@ void __35__NACXPCClient_setMuted_forTarget___block_invoke(uint64_t a1)
   [v2 setMuted:*(a1 + 48) forTarget:*(a1 + 40)];
 }
 
-- (void)setHapticIntensity:(float)a3
+- (void)setHapticIntensity:(float)intensity
 {
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -547,7 +547,7 @@ void __35__NACXPCClient_setMuted_forTarget___block_invoke(uint64_t a1)
   v4[2] = __35__NACXPCClient_setHapticIntensity___block_invoke;
   v4[3] = &unk_27992B5D8;
   v4[4] = self;
-  v5 = a3;
+  intensityCopy = intensity;
   dispatch_async(xpcConnectionQueue, v4);
 }
 
@@ -558,7 +558,7 @@ void __35__NACXPCClient_setHapticIntensity___block_invoke(uint64_t a1)
   [v3 setHapticIntensity:v2];
 }
 
-- (void)setProminentHapticEnabled:(BOOL)a3
+- (void)setProminentHapticEnabled:(BOOL)enabled
 {
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -566,7 +566,7 @@ void __35__NACXPCClient_setHapticIntensity___block_invoke(uint64_t a1)
   v4[2] = __42__NACXPCClient_setProminentHapticEnabled___block_invoke;
   v4[3] = &unk_27992B600;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(xpcConnectionQueue, v4);
 }
 
@@ -576,7 +576,7 @@ void __42__NACXPCClient_setProminentHapticEnabled___block_invoke(uint64_t a1)
   [v2 setProminentHapticEnabled:*(a1 + 40)];
 }
 
-- (void)setHapticState:(int64_t)a3
+- (void)setHapticState:(int64_t)state
 {
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -584,7 +584,7 @@ void __42__NACXPCClient_setProminentHapticEnabled___block_invoke(uint64_t a1)
   v4[2] = __31__NACXPCClient_setHapticState___block_invoke;
   v4[3] = &unk_27992B628;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(xpcConnectionQueue, v4);
 }
 
@@ -594,7 +594,7 @@ void __31__NACXPCClient_setHapticState___block_invoke(uint64_t a1)
   [v2 setHapticState:*(a1 + 40)];
 }
 
-- (void)setSystemMuted:(BOOL)a3
+- (void)setSystemMuted:(BOOL)muted
 {
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -602,7 +602,7 @@ void __31__NACXPCClient_setHapticState___block_invoke(uint64_t a1)
   v4[2] = __31__NACXPCClient_setSystemMuted___block_invoke;
   v4[3] = &unk_27992B600;
   v4[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_async(xpcConnectionQueue, v4);
 }
 
@@ -612,20 +612,20 @@ void __31__NACXPCClient_setSystemMuted___block_invoke(uint64_t a1)
   [v2 setSystemMuted:*(a1 + 40)];
 }
 
-- (void)availableListeningModesForTarget:(id)a3 result:(id)a4
+- (void)availableListeningModesForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__NACXPCClient_availableListeningModesForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -635,20 +635,20 @@ void __56__NACXPCClient_availableListeningModesForTarget_result___block_invoke(u
   [v2 availableListeningModesForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)currentListeningModeForTarget:(id)a3 result:(id)a4
+- (void)currentListeningModeForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NACXPCClient_currentListeningModeForTarget_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = targetCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = targetCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -658,20 +658,20 @@ void __53__NACXPCClient_currentListeningModeForTarget_result___block_invoke(uint
   [v2 currentListeningModeForTarget:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)setCurrentListeningMode:(id)a3 forTarget:(id)a4
+- (void)setCurrentListeningMode:(id)mode forTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  targetCopy = target;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__NACXPCClient_setCurrentListeningMode_forTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = modeCopy;
+  v13 = targetCopy;
+  v9 = targetCopy;
+  v10 = modeCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -681,20 +681,20 @@ void __50__NACXPCClient_setCurrentListeningMode_forTarget___block_invoke(uint64_
   [v2 setCurrentListeningMode:*(a1 + 40) forTarget:*(a1 + 48)];
 }
 
-- (void)audioRoutesForCategory:(id)a3 result:(id)a4
+- (void)audioRoutesForCategory:(id)category result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  resultCopy = result;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__NACXPCClient_audioRoutesForCategory_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = categoryCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = categoryCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -704,10 +704,10 @@ void __46__NACXPCClient_audioRoutesForCategory_result___block_invoke(uint64_t a1
   [v2 audioRoutesForCategory:*(a1 + 40) result:*(a1 + 48)];
 }
 
-- (void)beginObservingAudioRoutesForCategory:(id)a3
+- (void)beginObservingAudioRoutesForCategory:(id)category
 {
-  v4 = a3;
-  v5 = NACCategoryStringWithRouteCategory(v4);
+  categoryCopy = category;
+  v5 = NACCategoryStringWithRouteCategory(categoryCopy);
   if (([(NSMutableSet *)self->_routeObservingCategories containsObject:v5]& 1) == 0)
   {
     xpcConnectionQueue = self->_xpcConnectionQueue;
@@ -715,10 +715,10 @@ void __46__NACXPCClient_audioRoutesForCategory_result___block_invoke(uint64_t a1
     v8 = 3221225472;
     v9 = __53__NACXPCClient_beginObservingAudioRoutesForCategory___block_invoke;
     v10 = &unk_27992B510;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = categoryCopy;
     dispatch_async(xpcConnectionQueue, &v7);
-    [(NSMutableSet *)self->_routeObservingCategories addObject:v5, v7, v8, v9, v10, v11];
+    [(NSMutableSet *)self->_routeObservingCategories addObject:v5, v7, v8, v9, v10, selfCopy];
   }
 }
 
@@ -728,20 +728,20 @@ void __53__NACXPCClient_beginObservingAudioRoutesForCategory___block_invoke(uint
   [v2 beginObservingAudioRoutesForCategory:*(a1 + 40)];
 }
 
-- (void)endObservingAudioRoutesForCategory:(id)a3
+- (void)endObservingAudioRoutesForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __51__NACXPCClient_endObservingAudioRoutesForCategory___block_invoke;
   v11 = &unk_27992B510;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = categoryCopy;
+  v6 = categoryCopy;
   dispatch_async(xpcConnectionQueue, &v8);
   v7 = NACCategoryStringWithRouteCategory(v6);
-  [(NSMutableSet *)self->_routeObservingCategories removeObject:v7, v8, v9, v10, v11, v12];
+  [(NSMutableSet *)self->_routeObservingCategories removeObject:v7, v8, v9, v10, v11, selfCopy];
 }
 
 void __51__NACXPCClient_endObservingAudioRoutesForCategory___block_invoke(uint64_t a1)
@@ -750,20 +750,20 @@ void __51__NACXPCClient_endObservingAudioRoutesForCategory___block_invoke(uint64
   [v2 endObservingAudioRoutesForCategory:*(a1 + 40)];
 }
 
-- (void)pickAudioRouteWithIdentifier:(id)a3 category:(id)a4
+- (void)pickAudioRouteWithIdentifier:(id)identifier category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  categoryCopy = category;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__NACXPCClient_pickAudioRouteWithIdentifier_category___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = categoryCopy;
+  v9 = categoryCopy;
+  v10 = identifierCopy;
   dispatch_async(xpcConnectionQueue, block);
 }
 
@@ -824,17 +824,17 @@ void __42__NACXPCClient_playProminentHapticPreview__block_invoke(uint64_t a1)
   [v1 playProminentHapticPreview];
 }
 
-- (void)playToneWithConfiguration:(id)a3
+- (void)playToneWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__NACXPCClient_playToneWithConfiguration___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 
@@ -844,17 +844,17 @@ void __42__NACXPCClient_playToneWithConfiguration___block_invoke(uint64_t a1)
   [v2 playToneWithConfiguration:*(a1 + 40)];
 }
 
-- (void)stopToneWithOptions:(id)a3
+- (void)stopToneWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   xpcConnectionQueue = self->_xpcConnectionQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__NACXPCClient_stopToneWithOptions___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(xpcConnectionQueue, v7);
 }
 

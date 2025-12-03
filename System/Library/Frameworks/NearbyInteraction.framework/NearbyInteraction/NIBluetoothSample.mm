@@ -1,31 +1,31 @@
 @interface NIBluetoothSample
-- (BOOL)isEqual:(id)a3;
-- (NIBluetoothSample)initWithBluetoothSample:(id)a3;
-- (NIBluetoothSample)initWithCoder:(id)a3;
-- (NIBluetoothSample)initWithRSSI:(double)a3 identifier:(id)a4 model:(id)a5 channel:(int)a6 machContinuousTimeSeconds:(double)a7 partIdentifier:(id)a8 name:(id)a9 presenceConfigData:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIBluetoothSample)initWithBluetoothSample:(id)sample;
+- (NIBluetoothSample)initWithCoder:(id)coder;
+- (NIBluetoothSample)initWithRSSI:(double)i identifier:(id)identifier model:(id)model channel:(int)channel machContinuousTimeSeconds:(double)seconds partIdentifier:(id)partIdentifier name:(id)name presenceConfigData:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIBluetoothSample
 
-- (NIBluetoothSample)initWithRSSI:(double)a3 identifier:(id)a4 model:(id)a5 channel:(int)a6 machContinuousTimeSeconds:(double)a7 partIdentifier:(id)a8 name:(id)a9 presenceConfigData:(id)a10
+- (NIBluetoothSample)initWithRSSI:(double)i identifier:(id)identifier model:(id)model channel:(int)channel machContinuousTimeSeconds:(double)seconds partIdentifier:(id)partIdentifier name:(id)name presenceConfigData:(id)self0
 {
-  v26 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  modelCopy = model;
+  partIdentifierCopy = partIdentifier;
+  nameCopy = name;
+  dataCopy = data;
   if (self)
   {
-    self->_rssi = a3;
-    objc_storeStrong(&self->_identifier, a4);
-    if (v19)
+    self->_rssi = i;
+    objc_storeStrong(&self->_identifier, identifier);
+    if (modelCopy)
     {
-      v23 = v19;
+      v23 = modelCopy;
     }
 
     else
@@ -36,23 +36,23 @@
     model = self->_model;
     self->_model = &v23->isa;
 
-    self->_channel = a6;
-    self->_machContinuousTimeSeconds = a7;
-    objc_storeStrong(&self->_partIdentifier, a8);
-    objc_storeStrong(&self->_name, a9);
-    objc_storeStrong(&self->_presenceConfigData, a10);
+    self->_channel = channel;
+    self->_machContinuousTimeSeconds = seconds;
+    objc_storeStrong(&self->_partIdentifier, partIdentifier);
+    objc_storeStrong(&self->_name, name);
+    objc_storeStrong(&self->_presenceConfigData, data);
   }
 
   return self;
 }
 
-- (NIBluetoothSample)initWithBluetoothSample:(id)a3
+- (NIBluetoothSample)initWithBluetoothSample:(id)sample
 {
-  v5 = a3;
-  if (!v5)
+  sampleCopy = sample;
+  if (!sampleCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"NIBluetoothSample.mm" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sample"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NIBluetoothSample.mm" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"sample"}];
   }
 
   v21.receiver = self;
@@ -60,70 +60,70 @@
   v6 = [(NIBluetoothSample *)&v21 init];
   if (v6)
   {
-    [v5 rssi];
+    [sampleCopy rssi];
     v6->_rssi = v7;
-    v8 = [v5 identifier];
+    identifier = [sampleCopy identifier];
     identifier = v6->_identifier;
-    v6->_identifier = v8;
+    v6->_identifier = identifier;
 
-    v10 = [v5 model];
+    model = [sampleCopy model];
     model = v6->_model;
-    v6->_model = v10;
+    v6->_model = model;
 
-    v6->_channel = [v5 channel];
-    [v5 machContinuousTimeSeconds];
+    v6->_channel = [sampleCopy channel];
+    [sampleCopy machContinuousTimeSeconds];
     v6->_machContinuousTimeSeconds = v12;
-    v13 = [v5 partIdentifier];
+    partIdentifier = [sampleCopy partIdentifier];
     partIdentifier = v6->_partIdentifier;
-    v6->_partIdentifier = v13;
+    v6->_partIdentifier = partIdentifier;
 
-    v15 = [v5 name];
+    name = [sampleCopy name];
     name = v6->_name;
-    v6->_name = v15;
+    v6->_name = name;
 
-    v17 = [v5 presenceConfigData];
+    presenceConfigData = [sampleCopy presenceConfigData];
     presenceConfigData = v6->_presenceConfigData;
-    v6->_presenceConfigData = v17;
+    v6->_presenceConfigData = presenceConfigData;
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithBluetoothSample:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeDouble:@"rssi" forKey:self->_rssi];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeInt:self->_channel forKey:@"channel"];
-  [v5 encodeDouble:@"machContinuousTimeSeconds" forKey:self->_machContinuousTimeSeconds];
-  [v5 encodeObject:self->_partIdentifier forKey:@"partIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_presenceConfigData forKey:@"presenceConfigData"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"rssi" forKey:self->_rssi];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeInt:self->_channel forKey:@"channel"];
+  [coderCopy encodeDouble:@"machContinuousTimeSeconds" forKey:self->_machContinuousTimeSeconds];
+  [coderCopy encodeObject:self->_partIdentifier forKey:@"partIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_presenceConfigData forKey:@"presenceConfigData"];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_devicePlacement];
-  [v5 encodeObject:v4 forKey:@"devicePlacement"];
+  [coderCopy encodeObject:v4 forKey:@"devicePlacement"];
 }
 
-- (NIBluetoothSample)initWithCoder:(id)a3
+- (NIBluetoothSample)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & (v6 != 0)) == 1) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v4 decodeDoubleForKey:@"rssi"];
+    [coderCopy decodeDoubleForKey:@"rssi"];
     v8 = v7;
-    v9 = [v4 decodeIntForKey:@"channel"];
-    [v4 decodeDoubleForKey:@"machContinuousTimeSeconds"];
+    v9 = [coderCopy decodeIntForKey:@"channel"];
+    [coderCopy decodeDoubleForKey:@"machContinuousTimeSeconds"];
     v11 = v10;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partIdentifier"];
     if (v12)
     {
       objc_opt_class();
@@ -134,7 +134,7 @@
       }
     }
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     if (v13)
     {
       objc_opt_class();
@@ -145,8 +145,8 @@
       }
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"presenceConfigData"];
-    v15 = [v4 decodeIntegerForKey:@"devicePlacement"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"presenceConfigData"];
+    v15 = [coderCopy decodeIntegerForKey:@"devicePlacement"];
     v20.receiver = self;
     v20.super_class = NIBluetoothSample;
     v16 = [(NIBluetoothSample *)&v20 init];
@@ -166,24 +166,24 @@
 
     self = v17;
 
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -196,18 +196,18 @@ LABEL_32:
     identifier = self->_identifier;
     if (!identifier)
     {
-      v8 = [(NIBluetoothSample *)v5 identifier];
+      identifier = [(NIBluetoothSample *)v5 identifier];
 
-      if (!v8)
+      if (!identifier)
       {
         v10 = 1;
 LABEL_7:
         model = self->_model;
         if (!model)
         {
-          v12 = [(NIBluetoothSample *)v6 model];
+          model = [(NIBluetoothSample *)v6 model];
 
-          if (!v12)
+          if (!model)
           {
             v14 = 1;
 LABEL_11:
@@ -215,7 +215,7 @@ LABEL_11:
             [(NIBluetoothSample *)v6 rssi];
             v17 = v16;
             channel = self->_channel;
-            v18 = [(NIBluetoothSample *)v6 channel];
+            channel = [(NIBluetoothSample *)v6 channel];
             v19 = v10;
             machContinuousTimeSeconds = self->_machContinuousTimeSeconds;
             [(NIBluetoothSample *)v6 machContinuousTimeSeconds];
@@ -223,27 +223,27 @@ LABEL_11:
             partIdentifier = self->_partIdentifier;
             if (!partIdentifier)
             {
-              v24 = [(NIBluetoothSample *)v6 partIdentifier];
+              partIdentifier = [(NIBluetoothSample *)v6 partIdentifier];
 
-              if (!v24)
+              if (!partIdentifier)
               {
                 v26 = 1;
 LABEL_15:
                 name = self->_name;
                 if (!name)
                 {
-                  v28 = [(NIBluetoothSample *)v6 name];
+                  name = [(NIBluetoothSample *)v6 name];
 
-                  if (!v28)
+                  if (!name)
                   {
                     v30 = 1;
 LABEL_19:
                     presenceConfigData = self->_presenceConfigData;
                     if (!presenceConfigData)
                     {
-                      v32 = [(NIBluetoothSample *)v6 presenceConfigData];
+                      presenceConfigData = [(NIBluetoothSample *)v6 presenceConfigData];
 
-                      if (!v32)
+                      if (!presenceConfigData)
                       {
                         v34 = 1;
                         goto LABEL_23;
@@ -252,8 +252,8 @@ LABEL_19:
                       presenceConfigData = self->_presenceConfigData;
                     }
 
-                    v33 = [(NIBluetoothSample *)v6 presenceConfigData];
-                    v34 = [(NSData *)presenceConfigData isEqualToData:v33];
+                    presenceConfigData2 = [(NIBluetoothSample *)v6 presenceConfigData];
+                    v34 = [(NSData *)presenceConfigData isEqualToData:presenceConfigData2];
 
 LABEL_23:
                     v35 = v19 & v14;
@@ -262,7 +262,7 @@ LABEL_23:
                       v35 = 0;
                     }
 
-                    if (channel != v18)
+                    if (channel != channel)
                     {
                       v35 = 0;
                     }
@@ -279,8 +279,8 @@ LABEL_23:
                   name = self->_name;
                 }
 
-                v29 = [(NIBluetoothSample *)v6 name];
-                v30 = [(NSString *)name isEqualToString:v29];
+                name2 = [(NIBluetoothSample *)v6 name];
+                v30 = [(NSString *)name isEqualToString:name2];
 
                 goto LABEL_19;
               }
@@ -288,8 +288,8 @@ LABEL_23:
               partIdentifier = self->_partIdentifier;
             }
 
-            v25 = [(NIBluetoothSample *)v6 partIdentifier];
-            v26 = [(NSString *)partIdentifier isEqualToString:v25];
+            partIdentifier2 = [(NIBluetoothSample *)v6 partIdentifier];
+            v26 = [(NSString *)partIdentifier isEqualToString:partIdentifier2];
 
             goto LABEL_15;
           }
@@ -297,8 +297,8 @@ LABEL_23:
           model = self->_model;
         }
 
-        v13 = [(NIBluetoothSample *)v6 model];
-        v14 = [(NSString *)model isEqualToString:v13];
+        model2 = [(NIBluetoothSample *)v6 model];
+        v14 = [(NSString *)model isEqualToString:model2];
 
         goto LABEL_11;
       }
@@ -306,8 +306,8 @@ LABEL_23:
       identifier = self->_identifier;
     }
 
-    v9 = [(NIBluetoothSample *)v6 identifier];
-    v10 = [(NSString *)identifier isEqualToString:v9];
+    identifier2 = [(NIBluetoothSample *)v6 identifier];
+    v10 = [(NSString *)identifier isEqualToString:identifier2];
 
     goto LABEL_7;
   }
@@ -348,8 +348,8 @@ LABEL_33:
   [v6 appendFormat:@", Mach Continuous Time Seconds: %f", *&self->_machContinuousTimeSeconds];
   [v6 appendFormat:@", Channel: %d", self->_channel];
   [v6 appendFormat:@", Model: %@", self->_model];
-  v7 = [(NIBluetoothSample *)self descriptionInternal];
-  [v6 appendString:v7];
+  descriptionInternal = [(NIBluetoothSample *)self descriptionInternal];
+  [v6 appendString:descriptionInternal];
 
   [v6 appendString:@">"];
 

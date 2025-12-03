@@ -1,23 +1,23 @@
 @interface BRLTBrailleBuffer
-- (BRLTBrailleBuffer)initWithBrailleString:(id)a3;
+- (BRLTBrailleBuffer)initWithBrailleString:(id)string;
 - (BRLTBrailleString)brailleString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)deleteBrailleChar;
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4 inputMode:(unint64_t)a5;
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers inputMode:(unint64_t)mode;
 @end
 
 @implementation BRLTBrailleBuffer
 
-- (BRLTBrailleBuffer)initWithBrailleString:(id)a3
+- (BRLTBrailleBuffer)initWithBrailleString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = BRLTBrailleBuffer;
   v5 = [(BRLTBrailleBuffer *)&v9 init];
-  if (v4)
+  if (stringCopy)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
   }
 
   else
@@ -31,39 +31,39 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithBrailleString:", self->_brailleString}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithBrailleString:", self->_brailleString}];
   *(result + 2) = self->_cursor;
   return result;
 }
 
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4 inputMode:(unint64_t)a5
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers inputMode:(unint64_t)mode
 {
-  v17 = a3;
+  charCopy = char;
   brailleString = self->_brailleString;
-  v9 = a4;
-  v10 = [(BRLTBrailleString *)brailleString brailleChars];
-  v11 = [v10 mutableCopy];
+  modifiersCopy = modifiers;
+  brailleChars = [(BRLTBrailleString *)brailleString brailleChars];
+  v11 = [brailleChars mutableCopy];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:8];
-  v13 = [v9 containsObject:v12];
+  v13 = [modifiersCopy containsObject:v12];
 
   if (!v13)
   {
     goto LABEL_4;
   }
 
-  if (a5 == 2)
+  if (mode == 2)
   {
-    [v17 setDot7:1];
+    [charCopy setDot7:1];
 LABEL_4:
-    [v11 insertObject:v17 atIndex:self->_cursor];
+    [v11 insertObject:charCopy atIndex:self->_cursor];
     goto LABEL_6;
   }
 
   v14 = [[BRLTBrailleChar alloc] initWithUnicode:@"⠠"];
-  [v11 insertObject:v17 atIndex:self->_cursor];
+  [v11 insertObject:charCopy atIndex:self->_cursor];
   [v11 insertObject:v14 atIndex:self->_cursor++];
 
 LABEL_6:
@@ -76,8 +76,8 @@ LABEL_6:
 
 - (void)deleteBrailleChar
 {
-  v3 = [(BRLTBrailleString *)self->_brailleString brailleChars];
-  v7 = [v3 mutableCopy];
+  brailleChars = [(BRLTBrailleString *)self->_brailleString brailleChars];
+  v7 = [brailleChars mutableCopy];
 
   if ([v7 count])
   {

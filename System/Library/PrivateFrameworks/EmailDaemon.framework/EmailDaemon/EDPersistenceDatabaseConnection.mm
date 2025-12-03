@@ -1,102 +1,102 @@
 @interface EDPersistenceDatabaseConnection
 + (OS_os_log)log;
-- (BOOL)attachJournalDatabase:(id)a3 withName:(id)a4;
-- (BOOL)attachJournalDatabase:(id)a3 withName:(id)a4 error:(id *)a5;
-- (BOOL)attachProtectedDatabaseWithName:(id)a3;
-- (BOOL)attachProtectedDatabaseWithName:(id)a3 error:(id *)a4;
-- (BOOL)attachProtectedDatabaseWithName:(id)a3 url:(id)a4 error:(id *)a5;
-- (BOOL)checkForConnectionErrorWithMessage:(id)a3;
-- (BOOL)columnExists:(id)a3 inTable:(id)a4 database:(id)a5 type:(unint64_t *)a6;
-- (BOOL)databaseIsAttached:(id)a3;
+- (BOOL)attachJournalDatabase:(id)database withName:(id)name;
+- (BOOL)attachJournalDatabase:(id)database withName:(id)name error:(id *)error;
+- (BOOL)attachProtectedDatabaseWithName:(id)name;
+- (BOOL)attachProtectedDatabaseWithName:(id)name error:(id *)error;
+- (BOOL)attachProtectedDatabaseWithName:(id)name url:(id)url error:(id *)error;
+- (BOOL)checkForConnectionErrorWithMessage:(id)message;
+- (BOOL)columnExists:(id)exists inTable:(id)table database:(id)database type:(unint64_t *)type;
+- (BOOL)databaseIsAttached:(id)attached;
 - (BOOL)detachJournalDatabase;
-- (BOOL)executeDeleteStatement:(id)a3 error:(id *)a4;
-- (BOOL)executeDeleteStatement:(id)a3 rowsChanged:(unint64_t *)a4;
-- (BOOL)executeInsertStatement:(id)a3 error:(id *)a4;
-- (BOOL)executeInsertStatement:(id)a3 rowsChanged:(unint64_t *)a4;
-- (BOOL)executeSelectStatement:(id)a3 withBlock:(id)a4 error:(id *)a5;
-- (BOOL)executeStatementString:(id)a3 errorMessage:(id)a4;
-- (BOOL)executeUpdateStatement:(id)a3 error:(id *)a4;
-- (BOOL)executeUpdateStatement:(id)a3 rowsChanged:(unint64_t *)a4;
-- (BOOL)executeUpsertStatement:(id)a3 error:(id *)a4;
-- (BOOL)executeUpsertStatement:(id)a3 rowsChanged:(unint64_t *)a4;
+- (BOOL)executeDeleteStatement:(id)statement error:(id *)error;
+- (BOOL)executeDeleteStatement:(id)statement rowsChanged:(unint64_t *)changed;
+- (BOOL)executeInsertStatement:(id)statement error:(id *)error;
+- (BOOL)executeInsertStatement:(id)statement rowsChanged:(unint64_t *)changed;
+- (BOOL)executeSelectStatement:(id)statement withBlock:(id)block error:(id *)error;
+- (BOOL)executeStatementString:(id)string errorMessage:(id)message;
+- (BOOL)executeUpdateStatement:(id)statement error:(id *)error;
+- (BOOL)executeUpdateStatement:(id)statement rowsChanged:(unint64_t *)changed;
+- (BOOL)executeUpsertStatement:(id)statement error:(id *)error;
+- (BOOL)executeUpsertStatement:(id)statement rowsChanged:(unint64_t *)changed;
 - (BOOL)isValid;
 - (BOOL)journalDatabaseAttached;
-- (BOOL)performWithOptions:(unint64_t)a3 transactionError:(id *)a4 block:(id)a5;
+- (BOOL)performWithOptions:(unint64_t)options transactionError:(id *)error block:(id)block;
 - (BOOL)protectedDatabaseAttached;
-- (BOOL)tableExists:(id)a3 inDatabase:(id)a4;
-- (EDPersistenceDatabaseConnection)initWithBasePath:(id)a3 databaseName:(id)a4 isWriter:(BOOL)a5 delegate:(id)a6;
-- (EDPersistenceDatabaseConnection)initWithSQLDB:(sqlite3 *)a3 isWriter:(BOOL)a4 delegate:(id)a5;
+- (BOOL)tableExists:(id)exists inDatabase:(id)database;
+- (EDPersistenceDatabaseConnection)initWithBasePath:(id)path databaseName:(id)name isWriter:(BOOL)writer delegate:(id)delegate;
+- (EDPersistenceDatabaseConnection)initWithSQLDB:(sqlite3 *)b isWriter:(BOOL)writer delegate:(id)delegate;
 - (EDPersistenceDatabaseConnectionDelegate)delegate;
 - (NSString)description;
 - (NSString)fullPath;
 - (id)SQLQueryLogger;
-- (id)_databasePathForFileName:(void *)a1;
-- (id)assignIndexedAttachmentItems:(uint64_t)a3 transaction:;
-- (id)assignIndexedRichLinkItems:(uint64_t)a3 transaction:;
-- (id)attachmentDataForItemsRequiringIndexingExcludingIDs:(void *)a3 lastProcessedAttachmentID:(uint64_t)a4 limit:(void *)a5 cancelationToken:;
-- (id)attachmentDataForMessageWithIdentifier:(void *)a1;
-- (id)databaseIDsForSelectStatement:(id)a3;
+- (id)_databasePathForFileName:(void *)name;
+- (id)assignIndexedAttachmentItems:(uint64_t)items transaction:;
+- (id)assignIndexedRichLinkItems:(uint64_t)items transaction:;
+- (id)attachmentDataForItemsRequiringIndexingExcludingIDs:(void *)ds lastProcessedAttachmentID:(uint64_t)d limit:(void *)limit cancelationToken:;
+- (id)attachmentDataForMessageWithIdentifier:(void *)identifier;
+- (id)databaseIDsForSelectStatement:(id)statement;
 - (id)getIndexSnapshot;
-- (id)identifiersForAttachmentsWithQuery:(void *)a1;
-- (id)messageIDTransactionIDDictionaryToVerifyWithCount:(uint64_t)a3 lastVerifiedMessageID:;
+- (id)identifiersForAttachmentsWithQuery:(void *)query;
+- (id)messageIDTransactionIDDictionaryToVerifyWithCount:(uint64_t)count lastVerifiedMessageID:;
 - (id)messagesNeedingReindex;
-- (id)messagesWithUnindexedBodiesAfterID:(uint64_t)a3 limit:;
-- (id)preparedStatementForQueryString:(id)a3;
-- (id)richLinkDataForItemsRequiringIndexingExcludingIdentifiers:(uint64_t)a3 limit:(void *)a4 cancelationToken:;
-- (id)selectAttachmentIdentifiersForMessages:(void *)a1;
-- (id)selectAttachmentIdentifiersForTransactions:(void *)a1;
+- (id)messagesWithUnindexedBodiesAfterID:(uint64_t)d limit:;
+- (id)preparedStatementForQueryString:(id)string;
+- (id)richLinkDataForItemsRequiringIndexingExcludingIdentifiers:(uint64_t)identifiers limit:(void *)limit cancelationToken:;
+- (id)selectAttachmentIdentifiersForMessages:(void *)messages;
+- (id)selectAttachmentIdentifiersForTransactions:(void *)transactions;
 - (id)selectDistinctTransactionIDs;
 - (id)selectIdentifiersForDeletedAttachments;
 - (id)selectIdentifiersForDeletedMessages;
-- (id)selectIdentifiersForTombstonesOfType:(void *)a1;
+- (id)selectIdentifiersForTombstonesOfType:(void *)type;
 - (id)selectLastProcessedAttachmentID;
-- (id)selectMessageIDsFromBacklogWithBatchSize:(void *)a1;
-- (id)selectMessageIdentifiersForTransactions:(void *)a1;
-- (id)selectTombstoneIdentifiersForTransactions:(void *)a1;
-- (id)selectTransactionAndIndexTypeForMessage:(id)a1;
+- (id)selectMessageIDsFromBacklogWithBatchSize:(void *)size;
+- (id)selectMessageIdentifiersForTransactions:(void *)transactions;
+- (id)selectTombstoneIdentifiersForTransactions:(void *)transactions;
+- (id)selectTransactionAndIndexTypeForMessage:(id)message;
 - (int)configureSQLConnection;
 - (int64_t)lastInsertedDatabaseID;
 - (int64_t)transactionGeneration;
 - (sqlite3)sqlDB;
 - (uint64_t)_adjustedDatabaseTypeForType:(uint64_t)result;
-- (uint64_t)_attachDatabaseWithName:(void *)a3 url:(uint64_t)a4 error:;
-- (uint64_t)_detachDatabaseWithName:(void *)a1;
-- (uint64_t)_executePreparedStatement:(void *)a3 withBlock:(void *)a4 description:(id *)a5 error:;
-- (uint64_t)_finishTransactionWithSQLConnection:(int)a3 afterSuccess:(void *)a4 transactionError:;
-- (uint64_t)_startTransactionWithSQLConnection:(char)a3 options:(uint64_t)a4 error:;
+- (uint64_t)_attachDatabaseWithName:(void *)name url:(uint64_t)url error:;
+- (uint64_t)_detachDatabaseWithName:(void *)name;
+- (uint64_t)_executePreparedStatement:(void *)statement withBlock:(void *)block description:(id *)description error:;
+- (uint64_t)_finishTransactionWithSQLConnection:(int)connection afterSuccess:(void *)success transactionError:;
+- (uint64_t)_startTransactionWithSQLConnection:(char)connection options:(uint64_t)options error:;
 - (uint64_t)selectIsReindexing;
-- (uint64_t)setLastProcessedAttachmentID:(void *)a1;
-- (unint64_t)countForSelectStatement:(id)a3;
-- (void)_fetchTransactionWriteGenerationWithSQLConnection:(void *)a1;
-- (void)_storeTransactionWriteGenerationWithSQLConnection:(uint64_t)a3 newGeneration:;
+- (uint64_t)setLastProcessedAttachmentID:(void *)d;
+- (unint64_t)countForSelectStatement:(id)statement;
+- (void)_fetchTransactionWriteGenerationWithSQLConnection:(void *)connection;
+- (void)_storeTransactionWriteGenerationWithSQLConnection:(uint64_t)connection newGeneration:;
 - (void)addAllMessagesToRebuildTable;
-- (void)addTombstonesForIdentifiers:(uint64_t)a3 type:;
-- (void)assignTombstonesForIdentifiers:(uint64_t)a3 type:(uint64_t)a4 transaction:;
+- (void)addTombstonesForIdentifiers:(uint64_t)identifiers type:;
+- (void)assignTombstonesForIdentifiers:(uint64_t)identifiers type:(uint64_t)type transaction:;
 - (void)clearLastInsertedDatabaseID;
 - (void)clearReferencesToMissingSearchableMessages;
 - (void)clearReferencesToSearchableMessages;
-- (void)clearTransactionsForTombstonesAfterTransaction:(void *)a1;
+- (void)clearTransactionsForTombstonesAfterTransaction:(void *)transaction;
 - (void)close;
 - (void)dealloc;
-- (void)deleteAttachmentItems:(void *)a1;
-- (void)deleteAttachmentsAfterTransaction:(void *)a1;
-- (void)deleteAttachmentsForMessage:(void *)a1;
-- (void)deleteAttachmentsInTransactions:(void *)a1;
-- (void)deleteMessagesAfterTransaction:(void *)a1;
-- (void)deleteMessagesInTransactions:(void *)a1;
-- (void)deleteRichLinkItems:(void *)a1;
-- (void)deleteRichLinksInTransactions:(void *)a1;
-- (void)deleteTombstonesBeforeTransaction:(void *)a1;
-- (void)deleteTombstonesInTransactions:(void *)a1;
+- (void)deleteAttachmentItems:(void *)items;
+- (void)deleteAttachmentsAfterTransaction:(void *)transaction;
+- (void)deleteAttachmentsForMessage:(void *)message;
+- (void)deleteAttachmentsInTransactions:(void *)transactions;
+- (void)deleteMessagesAfterTransaction:(void *)transaction;
+- (void)deleteMessagesInTransactions:(void *)transactions;
+- (void)deleteRichLinkItems:(void *)items;
+- (void)deleteRichLinksInTransactions:(void *)transactions;
+- (void)deleteTombstonesBeforeTransaction:(void *)transaction;
+- (void)deleteTombstonesInTransactions:(void *)transactions;
 - (void)detachJournalDatabase;
 - (void)detachProtectedDatabase;
 - (void)emptyAllSearchableIndexTables;
-- (void)handleError:(id)a3 message:(id)a4;
-- (void)handleSQLResult:(int)a3 message:(id)a4;
+- (void)handleError:(id)error message:(id)message;
+- (void)handleSQLResult:(int)result message:(id)message;
 - (void)open;
-- (void)performBlockAfterTransaction:(id)a3;
-- (void)removeIndexedIdentifiers:(void *)a1;
-- (void)setJournal:(uint64_t)a1;
+- (void)performBlockAfterTransaction:(id)transaction;
+- (void)removeIndexedIdentifiers:(void *)identifiers;
+- (void)setJournal:(uint64_t)journal;
 @end
 
 @implementation EDPersistenceDatabaseConnection
@@ -104,9 +104,9 @@
 - (void)detachProtectedDatabase
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = a1[2];
+    v2 = self[2];
   }
 
   else
@@ -114,10 +114,10 @@
     v2 = 0;
   }
 
-  v4 = [(EDPersistenceDatabaseConnection *)a1 _detachDatabaseWithName:v2];
-  if (a1)
+  v4 = [(EDPersistenceDatabaseConnection *)self _detachDatabaseWithName:v2];
+  if (self)
   {
-    objc_setProperty_nonatomic_copy(a1, v3, 0, 16);
+    objc_setProperty_nonatomic_copy(self, v3, 0, 16);
   }
 
   if (v4)
@@ -126,7 +126,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "Detached Protected Index on connection %{public}@", &v8, 0xCu);
     }
 
@@ -135,10 +135,10 @@
 
   else
   {
-    [a1 close];
+    [self close];
     v7 = *MEMORY[0x1E69E9840];
 
-    [a1 open];
+    [self open];
   }
 }
 
@@ -165,9 +165,9 @@
 
 - (void)close
 {
-  v3 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
   v7 = 0;
-  v4 = [v3 finalizeStatementsWithError:&v7];
+  v4 = [sqlConnection finalizeStatementsWithError:&v7];
   v5 = v7;
 
   if ((v4 & 1) == 0)
@@ -185,8 +185,8 @@
     [(EDPersistenceDatabaseConnection *)self detachJournalDatabase];
   }
 
-  v6 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  [v6 close];
+  sqlConnection2 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  [sqlConnection2 close];
 }
 
 - (NSString)description
@@ -195,62 +195,62 @@
   v11.receiver = self;
   v11.super_class = EDPersistenceDatabaseConnection;
   v4 = [(EDPersistenceDatabaseConnection *)&v11 description];
-  v5 = [(EDPersistenceDatabaseConnection *)self isWriter];
-  v6 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v7 = v6;
+  isWriter = [(EDPersistenceDatabaseConnection *)self isWriter];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  v7 = sqlConnection;
   v8 = @"NO";
-  if (v5)
+  if (isWriter)
   {
     v8 = @"YES";
   }
 
-  v9 = [v3 initWithFormat:@"[%@ isWriter: %@, SQL connection: %@]", v4, v8, v6];
+  v9 = [v3 initWithFormat:@"[%@ isWriter: %@, SQL connection: %@]", v4, v8, sqlConnection];
 
   return v9;
 }
 
 - (sqlite3)sqlDB
 {
-  v4 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v5 = [v4 sqlDB];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  sqlDB = [sqlConnection sqlDB];
 
-  if (!v5)
+  if (!sqlDB)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:295 description:@"We have a database connection without a sql database pointer"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:295 description:@"We have a database connection without a sql database pointer"];
   }
 
-  return v5;
+  return sqlDB;
 }
 
 - (int64_t)transactionGeneration
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
-  v5 = [v4 longLongValue];
+  v4 = [threadDictionary objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
+  longLongValue = [v4 longLongValue];
 
-  return v5;
+  return longLongValue;
 }
 
 - (id)SQLQueryLogger
 {
-  v3 = [(EDPersistenceDatabaseConnection *)self delegate];
+  delegate = [(EDPersistenceDatabaseConnection *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(EDPersistenceDatabaseConnection *)self delegate];
-    v6 = [v5 queryLogger];
+    delegate2 = [(EDPersistenceDatabaseConnection *)self delegate];
+    queryLogger = [delegate2 queryLogger];
   }
 
   else
   {
-    v6 = 0;
+    queryLogger = 0;
   }
 
-  return v6;
+  return queryLogger;
 }
 
 - (BOOL)protectedDatabaseAttached
@@ -279,7 +279,7 @@
   block[1] = 3221225472;
   block[2] = __38__EDPersistenceDatabaseConnection_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_75 != -1)
   {
     dispatch_once(&log_onceToken_75, block);
@@ -292,75 +292,75 @@
 
 - (void)open
 {
-  v12 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v4 = [v12 isOpen];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  isOpen = [sqlConnection isOpen];
 
-  if (v4)
+  if (isOpen)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:300 description:@"EDPersistenceDatabaseConnection open called when already open"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:300 description:@"EDPersistenceDatabaseConnection open called when already open"];
   }
 
-  v13 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v5 = [v13 url];
-  v6 = [v5 path];
-  v7 = [v6 fileSystemRepresentation];
+  sqlConnection2 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  v5 = [sqlConnection2 url];
+  path = [v5 path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (([v13 openWithError:0] & 1) == 0)
+  if (([sqlConnection2 openWithError:0] & 1) == 0)
   {
-    v8 = [(EDPersistenceDatabaseConnection *)self basePath];
+    basePath = [(EDPersistenceDatabaseConnection *)self basePath];
 
-    if (!v8 || ([MEMORY[0x1E696AC08] defaultManager], v9 = objc_claimAutoreleasedReturnValue(), -[EDPersistenceDatabaseConnection basePath](self, "basePath"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v10, 1, 0, 0), v10, v9, (objc_msgSend(v13, "openWithError:", 0) & 1) == 0))
+    if (!basePath || ([MEMORY[0x1E696AC08] defaultManager], v9 = objc_claimAutoreleasedReturnValue(), -[EDPersistenceDatabaseConnection basePath](self, "basePath"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", v10, 1, 0, 0), v10, v9, (objc_msgSend(sqlConnection2, "openWithError:", 0) & 1) == 0))
     {
-      v11 = [(EDPersistenceDatabaseConnection *)self basePath];
+      basePath2 = [(EDPersistenceDatabaseConnection *)self basePath];
 
-      if (!v11)
+      if (!basePath2)
       {
         goto LABEL_20;
       }
 
-      if (self && v7)
+      if (self && fileSystemRepresentation)
       {
-        chmod(v7, 0x180u);
+        chmod(fileSystemRepresentation, 0x180u);
       }
 
-      if (![v13 openWithError:0])
+      if (![sqlConnection2 openWithError:0])
       {
         goto LABEL_20;
       }
     }
   }
 
-  if ([v13 isOpen] && -[EDPersistenceDatabaseConnection configureSQLConnection](self, "configureSQLConnection"))
+  if ([sqlConnection2 isOpen] && -[EDPersistenceDatabaseConnection configureSQLConnection](self, "configureSQLConnection"))
   {
 LABEL_20:
-    if ([v13 isOpen])
+    if ([sqlConnection2 isOpen])
     {
-      [v13 finalizeStatementsWithError:0];
-      [v13 close];
+      [sqlConnection2 finalizeStatementsWithError:0];
+      [sqlConnection2 close];
     }
   }
 }
 
 - (int)configureSQLConnection
 {
-  v4 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v5 = [v4 isOpen];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  isOpen = [sqlConnection isOpen];
 
-  if ((v5 & 1) == 0)
+  if ((isOpen & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:360 description:@"configureSQLConnection called on a closed connection"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:360 description:@"configureSQLConnection called on a closed connection"];
   }
 
-  v6 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v7 = [v6 sqlDB];
+  sqlConnection2 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  sqlDB = [sqlConnection2 sqlDB];
 
-  function = sqlite3_create_function(v7, "and64", 2, 1, 0, and64, 0, 0);
+  function = sqlite3_create_function(sqlDB, "and64", 2, 1, 0, and64, 0, 0);
   [(EDPersistenceDatabaseConnection *)self handleSQLResult:function message:@"error creating user function and64"];
   if (!function)
   {
-    v9 = sqlite3_exec(v7, "PRAGMA foreign_keys = ON;", 0, 0, 0);
+    v9 = sqlite3_exec(sqlDB, "PRAGMA foreign_keys = ON;", 0, 0, 0);
     if (v9)
     {
       function = v9;
@@ -370,7 +370,7 @@ LABEL_8:
       return function;
     }
 
-    function = sqlite3_busy_timeout(v7, 0x7FFFFFFF);
+    function = sqlite3_busy_timeout(sqlDB, 0x7FFFFFFF);
     if (function)
     {
       v10 = @"error setting busy timeout";
@@ -383,10 +383,10 @@ LABEL_8:
 
 - (BOOL)isValid
 {
-  v2 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v3 = [v2 isOpen];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  isOpen = [sqlConnection isOpen];
 
-  return v3;
+  return isOpen;
 }
 
 void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
@@ -397,24 +397,24 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
   log_log_75 = v1;
 }
 
-- (EDPersistenceDatabaseConnection)initWithBasePath:(id)a3 databaseName:(id)a4 isWriter:(BOOL)a5 delegate:(id)a6
+- (EDPersistenceDatabaseConnection)initWithBasePath:(id)path databaseName:(id)name isWriter:(BOOL)writer delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  pathCopy = path;
+  nameCopy = name;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = EDPersistenceDatabaseConnection;
   v14 = [(EDPersistenceDatabaseConnection *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_delegate, v13);
-    objc_storeStrong(&v15->_basePath, a3);
-    v15->_isWriter = a5;
-    v16 = [(EDPersistenceDatabaseConnection *)v15 _databasePathForFileName:v12];
-    v17 = [(EDPersistenceDatabaseConnection *)v15 basePath];
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_basePath, path);
+    v15->_isWriter = writer;
+    v16 = [(EDPersistenceDatabaseConnection *)v15 _databasePathForFileName:nameCopy];
+    basePath = [(EDPersistenceDatabaseConnection *)v15 basePath];
 
-    if (v17)
+    if (basePath)
     {
       v18 = 0;
     }
@@ -424,7 +424,7 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
       v18 = 3;
     }
 
-    v19 = [v13 urlForDatabasePath:v16 type:v18];
+    v19 = [delegateCopy urlForDatabasePath:v16 type:v18];
 
     v20 = [objc_alloc(MEMORY[0x1E699B8E0]) initWithURL:v19];
     sqlConnection = v15->_sqlConnection;
@@ -434,16 +434,16 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)_databasePathForFileName:(void *)a1
+- (id)_databasePathForFileName:(void *)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    v4 = [a1 basePath];
-    v5 = v4;
-    if (v4)
+    basePath = [name basePath];
+    v5 = basePath;
+    if (basePath)
     {
-      v6 = [v4 stringByAppendingPathComponent:v3];
+      v6 = [basePath stringByAppendingPathComponent:v3];
     }
 
     else
@@ -462,18 +462,18 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (EDPersistenceDatabaseConnection)initWithSQLDB:(sqlite3 *)a3 isWriter:(BOOL)a4 delegate:(id)a5
+- (EDPersistenceDatabaseConnection)initWithSQLDB:(sqlite3 *)b isWriter:(BOOL)writer delegate:(id)delegate
 {
-  v8 = a5;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = EDPersistenceDatabaseConnection;
   v9 = [(EDPersistenceDatabaseConnection *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    v10->_isWriter = a4;
-    v11 = [objc_alloc(MEMORY[0x1E699B8E0]) initWithSQLDB:a3];
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    v10->_isWriter = writer;
+    v11 = [objc_alloc(MEMORY[0x1E699B8E0]) initWithSQLDB:b];
     sqlConnection = v10->_sqlConnection;
     v10->_sqlConnection = v11;
   }
@@ -481,54 +481,54 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)preparedStatementForQueryString:(id)a3
+- (id)preparedStatementForQueryString:(id)string
 {
-  v4 = a3;
-  v5 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v6 = [(EDPersistenceDatabaseConnection *)self transactionLabel];
-  v7 = [(EDPersistenceDatabaseConnection *)self SQLQueryLogger];
-  v8 = [v5 preparedStatementForQueryString:v4 transactionLabel:v6 queryLogger:v7];
+  stringCopy = string;
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  transactionLabel = [(EDPersistenceDatabaseConnection *)self transactionLabel];
+  sQLQueryLogger = [(EDPersistenceDatabaseConnection *)self SQLQueryLogger];
+  v8 = [sqlConnection preparedStatementForQueryString:stringCopy transactionLabel:transactionLabel queryLogger:sQLQueryLogger];
 
   if (!v8)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Error preparing statement for query %@", v4];
-    [(EDPersistenceDatabaseConnection *)self handleSQLResult:sqlite3_errcode([(EDPersistenceDatabaseConnection *)self sqlDB]) message:v9];
+    stringCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Error preparing statement for query %@", stringCopy];
+    [(EDPersistenceDatabaseConnection *)self handleSQLResult:sqlite3_errcode([(EDPersistenceDatabaseConnection *)self sqlDB]) message:stringCopy];
   }
 
   return v8;
 }
 
-- (BOOL)executeSelectStatement:(id)a3 withBlock:(id)a4 error:(id *)a5
+- (BOOL)executeSelectStatement:(id)statement withBlock:(id)block error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 queryString];
-  v10 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v9];
+  blockCopy = block;
+  queryString = [statement queryString];
+  v10 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:queryString];
 
-  LOBYTE(a5) = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v10 withBlock:v8 description:@"SELECT statement" error:a5];
-  return a5;
+  LOBYTE(error) = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v10 withBlock:blockCopy description:@"SELECT statement" error:error];
+  return error;
 }
 
-- (uint64_t)_executePreparedStatement:(void *)a3 withBlock:(void *)a4 description:(id *)a5 error:
+- (uint64_t)_executePreparedStatement:(void *)statement withBlock:(void *)block description:(id *)description error:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (a1)
+  statementCopy = statement;
+  blockCopy = block;
+  if (self)
   {
     v18 = 0;
-    if (a5)
+    if (description)
     {
-      v12 = a5;
+      descriptionCopy = description;
     }
 
     else
     {
-      v12 = &v18;
+      descriptionCopy = &v18;
     }
 
-    v13 = [v9 executeUsingBlock:v10 error:&v18];
+    v13 = [v9 executeUsingBlock:statementCopy error:&v18];
     v14 = v13;
-    if (a5)
+    if (description)
     {
       v15 = 1;
     }
@@ -540,11 +540,11 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
 
     if ((v15 & 1) == 0)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while executing %@", v11];
-      [a1 handleError:v18 message:v16];
+      blockCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error while executing %@", blockCopy];
+      [self handleError:v18 message:blockCopy];
     }
 
-    *v12 = v18;
+    *descriptionCopy = v18;
   }
 
   else
@@ -555,18 +555,18 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (BOOL)executeInsertStatement:(id)a3 error:(id *)a4
+- (BOOL)executeInsertStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isEmpty])
+  statementCopy = statement;
+  if ([statementCopy isEmpty])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v6 queryString];
-    v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v8];
+    queryString = [statementCopy queryString];
+    v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:queryString];
     v10 = v9;
     if (v9)
     {
@@ -576,8 +576,8 @@ void __38__EDPersistenceDatabaseConnection_log__block_invoke(uint64_t a1)
       v13[3] = &unk_1E8255BB8;
       v11 = v9;
       v14 = v11;
-      [v6 enumerateBindingIndicesAndValuesUsingBlock:v13];
-      v7 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v11 withBlock:0 description:@"INSERT statement" error:a4];
+      [statementCopy enumerateBindingIndicesAndValuesUsingBlock:v13];
+      v7 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v11 withBlock:0 description:@"INSERT statement" error:error];
     }
 
     else
@@ -595,23 +595,23 @@ void __64__EDPersistenceDatabaseConnection_executeInsertStatement_error___block_
   [v5 bindToStatement:*(a1 + 32) usingIndex:a2];
 }
 
-- (BOOL)executeInsertStatement:(id)a3 rowsChanged:(unint64_t *)a4
+- (BOOL)executeInsertStatement:(id)statement rowsChanged:(unint64_t *)changed
 {
-  v6 = a3;
-  v7 = [(EDPersistenceDatabaseConnection *)self executeInsertStatement:v6 error:0];
-  if (a4)
+  statementCopy = statement;
+  v7 = [(EDPersistenceDatabaseConnection *)self executeInsertStatement:statementCopy error:0];
+  if (changed)
   {
-    *a4 = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
+    *changed = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
   }
 
   return v7;
 }
 
-- (BOOL)executeUpdateStatement:(id)a3 error:(id *)a4
+- (BOOL)executeUpdateStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 queryString];
-  v8 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v7];
+  statementCopy = statement;
+  queryString = [statementCopy queryString];
+  v8 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:queryString];
   v9 = v8;
   if (v8)
   {
@@ -621,8 +621,8 @@ void __64__EDPersistenceDatabaseConnection_executeInsertStatement_error___block_
     v13[3] = &unk_1E8255BE0;
     v10 = v8;
     v14 = v10;
-    [v6 enumerateBindingNamesAndValuesUsingBlock:v13];
-    v11 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v10 withBlock:0 description:@"UPDATE statement" error:a4];
+    [statementCopy enumerateBindingNamesAndValuesUsingBlock:v13];
+    v11 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v10 withBlock:0 description:@"UPDATE statement" error:error];
   }
 
   else
@@ -640,30 +640,30 @@ void __64__EDPersistenceDatabaseConnection_executeUpdateStatement_error___block_
   [v5 bindToStatement:*(a1 + 32) usingName:v6];
 }
 
-- (BOOL)executeUpdateStatement:(id)a3 rowsChanged:(unint64_t *)a4
+- (BOOL)executeUpdateStatement:(id)statement rowsChanged:(unint64_t *)changed
 {
-  v6 = a3;
-  v7 = [(EDPersistenceDatabaseConnection *)self executeUpdateStatement:v6 error:0];
-  if (a4)
+  statementCopy = statement;
+  v7 = [(EDPersistenceDatabaseConnection *)self executeUpdateStatement:statementCopy error:0];
+  if (changed)
   {
-    *a4 = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
+    *changed = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
   }
 
   return v7;
 }
 
-- (BOOL)executeUpsertStatement:(id)a3 error:(id *)a4
+- (BOOL)executeUpsertStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isEmpty])
+  statementCopy = statement;
+  if ([statementCopy isEmpty])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v6 queryString];
-    v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v8];
+    queryString = [statementCopy queryString];
+    v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:queryString];
     v10 = v9;
     if (v9)
     {
@@ -673,8 +673,8 @@ void __64__EDPersistenceDatabaseConnection_executeUpdateStatement_error___block_
       v13[3] = &unk_1E8255BE0;
       v11 = v9;
       v14 = v11;
-      [v6 enumerateBindingNamesAndValuesUsingBlock:v13];
-      v7 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v11 withBlock:0 description:@"UPSERT statement" error:a4];
+      [statementCopy enumerateBindingNamesAndValuesUsingBlock:v13];
+      v7 = [(EDPersistenceDatabaseConnection *)self _executePreparedStatement:v11 withBlock:0 description:@"UPSERT statement" error:error];
     }
 
     else
@@ -693,68 +693,68 @@ void __64__EDPersistenceDatabaseConnection_executeUpsertStatement_error___block_
   [v5 bindToStatement:*(a1 + 32) usingName:v6];
 }
 
-- (BOOL)executeUpsertStatement:(id)a3 rowsChanged:(unint64_t *)a4
+- (BOOL)executeUpsertStatement:(id)statement rowsChanged:(unint64_t *)changed
 {
-  v6 = a3;
-  v7 = [(EDPersistenceDatabaseConnection *)self executeUpsertStatement:v6 error:0];
-  if (a4)
+  statementCopy = statement;
+  v7 = [(EDPersistenceDatabaseConnection *)self executeUpsertStatement:statementCopy error:0];
+  if (changed)
   {
-    *a4 = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
+    *changed = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
   }
 
   return v7;
 }
 
-- (BOOL)executeDeleteStatement:(id)a3 error:(id *)a4
+- (BOOL)executeDeleteStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  statementCopy = statement;
+  v7 = statementCopy;
+  if (error)
   {
-    v8 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-    v9 = [v7 queryString];
-    LOBYTE(a4) = [v8 executeStatementString:v9 error:a4];
+    sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+    queryString = [v7 queryString];
+    LOBYTE(error) = [sqlConnection executeStatementString:queryString error:error];
   }
 
   else
   {
-    v8 = [v6 queryString];
-    a4 = [(EDPersistenceDatabaseConnection *)self executeStatementString:v8 errorMessage:@"Error while executing DELETE statement"];
+    sqlConnection = [statementCopy queryString];
+    error = [(EDPersistenceDatabaseConnection *)self executeStatementString:sqlConnection errorMessage:@"Error while executing DELETE statement"];
   }
 
-  return a4;
+  return error;
 }
 
-- (BOOL)executeDeleteStatement:(id)a3 rowsChanged:(unint64_t *)a4
+- (BOOL)executeDeleteStatement:(id)statement rowsChanged:(unint64_t *)changed
 {
-  v6 = a3;
-  v7 = [(EDPersistenceDatabaseConnection *)self executeDeleteStatement:v6 error:0];
-  if (a4)
+  statementCopy = statement;
+  v7 = [(EDPersistenceDatabaseConnection *)self executeDeleteStatement:statementCopy error:0];
+  if (changed)
   {
-    *a4 = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
+    *changed = sqlite3_changes([(EDPersistenceDatabaseConnection *)self sqlDB]);
   }
 
   return v7;
 }
 
-- (BOOL)executeStatementString:(id)a3 errorMessage:(id)a4
+- (BOOL)executeStatementString:(id)string errorMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  stringCopy = string;
+  messageCopy = message;
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
   v12 = 0;
-  v9 = [v8 executeStatementString:v6 error:&v12];
+  v9 = [sqlConnection executeStatementString:stringCopy error:&v12];
   v10 = v12;
 
   if ((v9 & 1) == 0)
   {
-    [(EDPersistenceDatabaseConnection *)self handleError:v10 message:v7];
+    [(EDPersistenceDatabaseConnection *)self handleError:v10 message:messageCopy];
   }
 
   return v9;
 }
 
-- (unint64_t)countForSelectStatement:(id)a3
+- (unint64_t)countForSelectStatement:(id)statement
 {
   v6 = 0;
   v7 = &v6;
@@ -765,7 +765,7 @@ void __64__EDPersistenceDatabaseConnection_executeUpsertStatement_error___block_
   v5[2] = __59__EDPersistenceDatabaseConnection_countForSelectStatement___block_invoke;
   v5[3] = &unk_1E8250418;
   v5[4] = &v6;
-  [(EDPersistenceDatabaseConnection *)self executeSelectStatement:a3 withBlock:v5 error:0];
+  [(EDPersistenceDatabaseConnection *)self executeSelectStatement:statement withBlock:v5 error:0];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -779,9 +779,9 @@ void __59__EDPersistenceDatabaseConnection_countForSelectStatement___block_invok
   *(*(*(a1 + 32) + 8) + 24) = [v4 unsignedIntegerValue];
 }
 
-- (id)databaseIDsForSelectStatement:(id)a3
+- (id)databaseIDsForSelectStatement:(id)statement
 {
-  v4 = a3;
+  statementCopy = statement;
   v5 = objc_alloc_init(MEMORY[0x1E699B810]);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -789,7 +789,7 @@ void __59__EDPersistenceDatabaseConnection_countForSelectStatement___block_invok
   v8[3] = &unk_1E8250300;
   v6 = v5;
   v9 = v6;
-  [(EDPersistenceDatabaseConnection *)self executeSelectStatement:v4 withBlock:v8 error:0];
+  [(EDPersistenceDatabaseConnection *)self executeSelectStatement:statementCopy withBlock:v8 error:0];
 
   return v6;
 }
@@ -805,29 +805,29 @@ void __65__EDPersistenceDatabaseConnection_databaseIDsForSelectStatement___block
 
 - (int64_t)lastInsertedDatabaseID
 {
-  v2 = [(EDPersistenceDatabaseConnection *)self sqlDB];
+  sqlDB = [(EDPersistenceDatabaseConnection *)self sqlDB];
 
-  return sqlite3_last_insert_rowid(v2);
+  return sqlite3_last_insert_rowid(sqlDB);
 }
 
 - (void)clearLastInsertedDatabaseID
 {
-  v2 = [(EDPersistenceDatabaseConnection *)self sqlDB];
+  sqlDB = [(EDPersistenceDatabaseConnection *)self sqlDB];
 
-  sqlite3_set_last_insert_rowid(v2, 0);
+  sqlite3_set_last_insert_rowid(sqlDB, 0);
 }
 
-- (BOOL)performWithOptions:(unint64_t)a3 transactionError:(id *)a4 block:(id)a5
+- (BOOL)performWithOptions:(unint64_t)options transactionError:(id *)error block:(id)block
 {
-  v6 = a3;
+  optionsCopy = options;
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  if (v6)
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  if (optionsCopy)
   {
     v30 = 0;
-    v12 = [(EDPersistenceDatabaseConnection *)self _startTransactionWithSQLConnection:v11 options:v6 error:&v30];
+    v12 = [(EDPersistenceDatabaseConnection *)self _startTransactionWithSQLConnection:sqlConnection options:optionsCopy error:&v30];
     v13 = v30;
     if (v13)
     {
@@ -835,14 +835,14 @@ void __65__EDPersistenceDatabaseConnection_databaseIDsForSelectStatement___block
       v15 = +[EDPersistenceDatabaseConnection log];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v14 ef_publicDescription];
-        [(EDPersistenceDatabaseConnection *)self performWithOptions:v16 transactionError:buf block:v15];
+        ef_publicDescription = [v14 ef_publicDescription];
+        [(EDPersistenceDatabaseConnection *)self performWithOptions:ef_publicDescription transactionError:buf block:v15];
       }
 
       if (v12)
       {
-        v17 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v17 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:403 description:@"Transaction error set despite not needing/attempting to take a transaction"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:403 description:@"Transaction error set despite not needing/attempting to take a transaction"];
       }
 
 LABEL_20:
@@ -856,7 +856,7 @@ LABEL_20:
     v12 = 0;
   }
 
-  v18 = v9[2](v9, self);
+  v18 = blockCopy[2](blockCopy, self);
   if (!v12)
   {
     if (v18)
@@ -866,7 +866,7 @@ LABEL_20:
       goto LABEL_25;
     }
 
-    if (v6)
+    if (optionsCopy)
     {
       v22 = +[EDPersistenceDatabaseConnection log];
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -874,10 +874,10 @@ LABEL_20:
         [EDPersistenceDatabaseConnection performWithOptions:transactionError:block:];
       }
 
-      v23 = [MEMORY[0x1E696AF00] currentThread];
-      v24 = [v23 threadDictionary];
+      currentThread = [MEMORY[0x1E696AF00] currentThread];
+      threadDictionary = [currentThread threadDictionary];
 
-      [v24 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
+      [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
       v14 = 0;
     }
 
@@ -912,49 +912,49 @@ LABEL_20:
   }
 
   v29 = 0;
-  v20 = [(EDPersistenceDatabaseConnection *)self _finishTransactionWithSQLConnection:v11 afterSuccess:v19 transactionError:&v29];
+  v20 = [(EDPersistenceDatabaseConnection *)self _finishTransactionWithSQLConnection:sqlConnection afterSuccess:v19 transactionError:&v29];
   v14 = v29;
 LABEL_25:
 
   objc_autoreleasePoolPop(v10);
-  if (a4)
+  if (error)
   {
     v26 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   v27 = *MEMORY[0x1E69E9840];
   return v20;
 }
 
-- (uint64_t)_startTransactionWithSQLConnection:(char)a3 options:(uint64_t)a4 error:
+- (uint64_t)_startTransactionWithSQLConnection:(char)connection options:(uint64_t)options error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [MEMORY[0x1E696AF00] currentThread];
-    v9 = [v8 threadDictionary];
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v10 = [v9 objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
-    v11 = [v10 BOOLValue];
+    v10 = [threadDictionary objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
+    bOOLValue = [v10 BOOLValue];
 
-    if ((v11 & 1) != 0 || ((a3 & 2) != 0 ? (v12 = [a1 transactionTypeForWriting]) : (v12 = 0), !objc_msgSend(v7, "beginTransaction:error:", v12, a4)))
+    if ((bOOLValue & 1) != 0 || ((connection & 2) != 0 ? (v12 = [self transactionTypeForWriting]) : (v12 = 0), !objc_msgSend(v7, "beginTransaction:error:", v12, options)))
     {
-      a1 = 0;
+      self = 0;
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
-    if ((a3 & 4) == 0)
+    [threadDictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
+    if ((connection & 4) == 0)
     {
-      v13 = [(EDPersistenceDatabaseConnection *)a1 _fetchTransactionWriteGenerationWithSQLConnection:v7];
+      v13 = [(EDPersistenceDatabaseConnection *)self _fetchTransactionWriteGenerationWithSQLConnection:v7];
       v14 = v13;
-      if ((a3 & 2) != 0)
+      if ((connection & 2) != 0)
       {
         v14 = v13 + 1;
-        [(EDPersistenceDatabaseConnection *)a1 _storeTransactionWriteGenerationWithSQLConnection:v7 newGeneration:(v13 + 1)];
+        [(EDPersistenceDatabaseConnection *)self _storeTransactionWriteGenerationWithSQLConnection:v7 newGeneration:(v13 + 1)];
         if (EFSQLVerboseDebugLoggingEnabled())
         {
           v15 = +[EDPersistenceDatabaseConnection log];
@@ -980,13 +980,13 @@ LABEL_26:
 
 LABEL_25:
       v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v14];
-      [v9 setObject:v16 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
+      [threadDictionary setObject:v16 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
 
-      a1 = 1;
+      self = 1;
       goto LABEL_26;
     }
 
-    if ((a3 & 2) != 0)
+    if ((connection & 2) != 0)
     {
       if (EFSQLVerboseDebugLoggingEnabled())
       {
@@ -1021,35 +1021,35 @@ LABEL_24:
 
 LABEL_27:
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)_finishTransactionWithSQLConnection:(int)a3 afterSuccess:(void *)a4 transactionError:
+- (uint64_t)_finishTransactionWithSQLConnection:(int)connection afterSuccess:(void *)success transactionError:
 {
   v33 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  if (!a1)
+  if (!self)
   {
     v16 = 0;
     goto LABEL_25;
   }
 
-  v8 = [MEMORY[0x1E696AF00] currentThread];
-  v9 = [v8 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  if (!a3)
+  if (!connection)
   {
 LABEL_6:
     v12 = 0;
     goto LABEL_7;
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
-  v11 = [v10 BOOLValue];
+  v10 = [threadDictionary objectForKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    if (([a1 hadIOError] & 1) == 0)
+    if (([self hadIOError] & 1) == 0)
     {
       v25 = 0;
       v15 = &v25;
@@ -1071,7 +1071,7 @@ LABEL_7:
       v14 = @" (due to nested block failure)";
     }
 
-    else if ([a1 hadIOError])
+    else if ([self hadIOError])
     {
       v14 = @"(due to IOError)";
     }
@@ -1081,7 +1081,7 @@ LABEL_7:
       v14 = &stru_1F45B4608;
     }
 
-    [(EDPersistenceDatabaseConnection *)v14 _finishTransactionWithSQLConnection:v32 afterSuccess:a1 transactionError:v13];
+    [(EDPersistenceDatabaseConnection *)v14 _finishTransactionWithSQLConnection:v32 afterSuccess:self transactionError:v13];
   }
 
   v24 = 0;
@@ -1096,13 +1096,13 @@ LABEL_15:
     v19 = +[EDPersistenceDatabaseConnection log];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v18 ef_publicDescription];
+      ef_publicDescription = [v18 ef_publicDescription];
       *buf = 138543874;
-      v27 = a1;
+      selfCopy = self;
       v28 = 2114;
       v29 = v17;
       v30 = 2114;
-      v31 = v20;
+      v31 = ef_publicDescription;
       _os_log_error_impl(&dword_1C61EF000, v19, OS_LOG_TYPE_ERROR, "Transaction on connection %{public}@ %{public}@ failed: %{public}@", buf, 0x20u);
     }
 
@@ -1123,29 +1123,29 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (a4)
+  if (success)
   {
     v21 = v18;
-    *a4 = v18;
+    *success = v18;
   }
 
-  [v9 setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
-  [v9 setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
-  [v9 setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
+  [threadDictionary setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionInTransaction"];
+  [threadDictionary setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionNestedBlockFailed"];
+  [threadDictionary setObject:0 forKeyedSubscript:@"_EDPersistenceDatabaseConnectionTransactionGeneration"];
 
 LABEL_25:
   v22 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (void)_fetchTransactionWriteGenerationWithSQLConnection:(void *)a1
+- (void)_fetchTransactionWriteGenerationWithSQLConnection:(void *)connection
 {
   v3 = a2;
-  if (a1)
+  if (connection)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDPersistenceDatabaseConnection _fetchTransactionWriteGenerationWithSQLConnection:]"];
-    v5 = [a1 SQLQueryLogger];
-    v6 = [v3 preparedStatementForQueryString:@"SELECT value FROM properties WHERE key = :key" transactionLabel:v4 queryLogger:v5];
+    sQLQueryLogger = [connection SQLQueryLogger];
+    v6 = [v3 preparedStatementForQueryString:@"SELECT value FROM properties WHERE key = :key" transactionLabel:v4 queryLogger:sQLQueryLogger];
 
     if (v6)
     {
@@ -1165,37 +1165,37 @@ LABEL_25:
       v9 = v11;
       if ((v8 & 1) == 0)
       {
-        [a1 handleError:v9 message:@"Fetching transaction write generation"];
+        [connection handleError:v9 message:@"Fetching transaction write generation"];
       }
 
-      a1 = v14[3];
+      connection = v14[3];
       _Block_object_dispose(&v13, 8);
     }
 
     else
     {
-      a1 = 0;
+      connection = 0;
     }
   }
 
-  return a1;
+  return connection;
 }
 
-- (void)_storeTransactionWriteGenerationWithSQLConnection:(uint64_t)a3 newGeneration:
+- (void)_storeTransactionWriteGenerationWithSQLConnection:(uint64_t)connection newGeneration:
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDPersistenceDatabaseConnection _storeTransactionWriteGenerationWithSQLConnection:newGeneration:]"];
-    v7 = [a1 SQLQueryLogger];
-    v8 = [v5 preparedStatementForQueryString:@"INSERT OR REPLACE INTO properties (key transactionLabel:value) VALUES (:key queryLogger:{:value)", v6, v7}];
+    sQLQueryLogger = [self SQLQueryLogger];
+    v8 = [v5 preparedStatementForQueryString:@"INSERT OR REPLACE INTO properties (key transactionLabel:value) VALUES (:key queryLogger:{:value)", v6, sQLQueryLogger}];
 
     if (v8)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v9 setObject:@"WriteTransactionGeneration" forKeyedSubscript:@":key"];
-      v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+      v10 = [MEMORY[0x1E696AD98] numberWithLongLong:connection];
       [v9 setObject:v10 forKeyedSubscript:@":value"];
 
       v16 = 0;
@@ -1206,11 +1206,11 @@ LABEL_25:
         v13 = +[EDPersistenceDatabaseConnection log];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = [v12 ef_publicDescription];
-          [(EDPersistenceDatabaseConnection *)v14 _storeTransactionWriteGenerationWithSQLConnection:buf newGeneration:v13];
+          ef_publicDescription = [v12 ef_publicDescription];
+          [(EDPersistenceDatabaseConnection *)ef_publicDescription _storeTransactionWriteGenerationWithSQLConnection:buf newGeneration:v13];
         }
 
-        [a1 handleError:v12 message:@"Storing transaction write generation"];
+        [self handleError:v12 message:@"Storing transaction write generation"];
       }
     }
   }
@@ -1225,11 +1225,11 @@ void __85__EDPersistenceDatabaseConnection__fetchTransactionWriteGenerationWithS
   *(*(*(a1 + 32) + 8) + 24) = [v3 int64Value];
 }
 
-- (BOOL)checkForConnectionErrorWithMessage:(id)a3
+- (BOOL)checkForConnectionErrorWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = sqlite3_errcode([(EDPersistenceDatabaseConnection *)self sqlDB]);
-  [(EDPersistenceDatabaseConnection *)self handleSQLResult:v5 message:v4];
+  [(EDPersistenceDatabaseConnection *)self handleSQLResult:v5 message:messageCopy];
   v6 = v5 == 9;
   if (!v5)
   {
@@ -1241,41 +1241,41 @@ void __85__EDPersistenceDatabaseConnection__fetchTransactionWriteGenerationWithS
   return v7;
 }
 
-- (void)handleError:(id)a3 message:(id)a4
+- (void)handleError:(id)error message:(id)message
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  errorCopy = error;
+  messageCopy = message;
+  if (errorCopy)
   {
-    v7 = [v9 domain];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E699B770]];
+    domain = [errorCopy domain];
+    v8 = [domain isEqualToString:*MEMORY[0x1E699B770]];
 
     if (v8)
     {
-      -[EDPersistenceDatabaseConnection handleSQLResult:message:](self, "handleSQLResult:message:", [v9 code], v6);
+      -[EDPersistenceDatabaseConnection handleSQLResult:message:](self, "handleSQLResult:message:", [errorCopy code], messageCopy);
     }
   }
 }
 
-- (void)handleSQLResult:(int)a3 message:(id)a4
+- (void)handleSQLResult:(int)result message:(id)message
 {
-  v6 = a4;
+  messageCopy = message;
   [(EDPersistenceDatabaseConnection *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[EDPersistenceDatabaseConnection handleSQLResult:message:]", "EDPersistenceDatabaseConnection.m", 578, "0");
 }
 
 - (NSString)fullPath
 {
-  v2 = [(EDPersistenceDatabaseConnection *)self sqlConnection];
-  v3 = [v2 url];
-  v4 = [v3 path];
+  sqlConnection = [(EDPersistenceDatabaseConnection *)self sqlConnection];
+  v3 = [sqlConnection url];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
-- (BOOL)databaseIsAttached:(id)a3
+- (BOOL)databaseIsAttached:(id)attached
 {
-  v4 = a3;
+  attachedCopy = attached;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1285,7 +1285,7 @@ void __85__EDPersistenceDatabaseConnection__fetchTransactionWriteGenerationWithS
   v12[1] = 3221225472;
   v12[2] = __54__EDPersistenceDatabaseConnection_databaseIsAttached___block_invoke;
   v12[3] = &unk_1E8255C08;
-  v6 = v4;
+  v6 = attachedCopy;
   v13 = v6;
   v14 = &v15;
   v11 = 0;
@@ -1315,27 +1315,27 @@ void __54__EDPersistenceDatabaseConnection_databaseIsAttached___block_invoke(uin
   }
 }
 
-- (BOOL)tableExists:(id)a3 inDatabase:(id)a4
+- (BOOL)tableExists:(id)exists inDatabase:(id)database
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  existsCopy = exists;
+  databaseCopy = database;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v7)
+  if (databaseCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT 1 FROM %@.sqlite_master WHERE name = ? AND type = 'table'", v7];
+    databaseCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT 1 FROM %@.sqlite_master WHERE name = ? AND type = 'table'", databaseCopy];
   }
 
   else
   {
-    v8 = @"SELECT 1 FROM sqlite_master WHERE name = ? AND type = 'table'";
+    databaseCopy = @"SELECT 1 FROM sqlite_master WHERE name = ? AND type = 'table'";
   }
 
-  v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v8];
-  v22[0] = v6;
+  v9 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:databaseCopy];
+  v22[0] = existsCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v16 = 0;
   v17[0] = MEMORY[0x1E69E9820];
@@ -1365,11 +1365,11 @@ uint64_t __58__EDPersistenceDatabaseConnection_tableExists_inDatabase___block_in
   return result;
 }
 
-- (BOOL)columnExists:(id)a3 inTable:(id)a4 database:(id)a5 type:(unint64_t *)a6
+- (BOOL)columnExists:(id)exists inTable:(id)table database:(id)database type:(unint64_t *)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  existsCopy = exists;
+  tableCopy = table;
+  databaseCopy = database;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -1378,23 +1378,23 @@ uint64_t __58__EDPersistenceDatabaseConnection_tableExists_inDatabase___block_in
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  if (v12)
+  if (databaseCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.table_info(%@)", v12, v11];
+    tableCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA %@.table_info(%@)", databaseCopy, tableCopy];
   }
 
   else
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA table_info(%@)", v11];
+    tableCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"PRAGMA table_info(%@)", tableCopy];
   }
 
-  v14 = v13;
-  v15 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:v13];
+  v14 = tableCopy;
+  v15 = [(EDPersistenceDatabaseConnection *)self preparedStatementForQueryString:tableCopy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___block_invoke;
   v22[3] = &unk_1E8255C30;
-  v16 = v10;
+  v16 = existsCopy;
   v23 = v16;
   v24 = &v30;
   v25 = &v26;
@@ -1406,9 +1406,9 @@ uint64_t __58__EDPersistenceDatabaseConnection_tableExists_inDatabase___block_in
     [(EDPersistenceDatabaseConnection *)self handleError:v18 message:@"Fetching column type"];
   }
 
-  if (a6)
+  if (type)
   {
-    *a6 = v27[3];
+    *type = v27[3];
   }
 
   v19 = *(v31 + 24);
@@ -1437,15 +1437,15 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
   }
 }
 
-- (BOOL)attachProtectedDatabaseWithName:(id)a3 url:(id)a4 error:(id *)a5
+- (BOOL)attachProtectedDatabaseWithName:(id)name url:(id)url error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![(EDPersistenceDatabaseConnection *)self protectedDatabaseAttached]&& [(EDPersistenceDatabaseConnection *)self _attachDatabaseWithName:v8 url:v9 error:a5])
+  nameCopy = name;
+  urlCopy = url;
+  if (![(EDPersistenceDatabaseConnection *)self protectedDatabaseAttached]&& [(EDPersistenceDatabaseConnection *)self _attachDatabaseWithName:nameCopy url:urlCopy error:error])
   {
     if (self)
     {
-      objc_setProperty_nonatomic_copy(self, v10, v8, 16);
+      objc_setProperty_nonatomic_copy(self, v10, nameCopy, 16);
     }
 
     v13 = +[EDPersistenceDatabaseConnection log];
@@ -1461,16 +1461,16 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
   return v11;
 }
 
-- (uint64_t)_attachDatabaseWithName:(void *)a3 url:(uint64_t)a4 error:
+- (uint64_t)_attachDatabaseWithName:(void *)name url:(uint64_t)url error:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
-    if (![a1 sqlDB])
+    if (![self sqlDB])
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:sel__attachDatabaseWithName_url_error_ object:a1 file:@"EDPersistenceDatabaseConnection.m" lineNumber:782 description:@"Attaching database when not open"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__attachDatabaseWithName_url_error_ object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:782 description:@"Attaching database when not open"];
     }
 
     v9 = +[EDPersistenceDatabaseConnection log];
@@ -1479,13 +1479,13 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
       [EDPersistenceDatabaseConnection _attachDatabaseWithName:url:error:];
     }
 
-    v10 = [a1 sqlConnection];
+    sqlConnection = [self sqlConnection];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [v8 absoluteString];
-    v13 = [v12 ef_quotedSQLEscapedString];
-    v14 = [v11 stringWithFormat:@"ATTACH DATABASE %@ AS %@", v13, v7];
+    absoluteString = [nameCopy absoluteString];
+    ef_quotedSQLEscapedString = [absoluteString ef_quotedSQLEscapedString];
+    v14 = [v11 stringWithFormat:@"ATTACH DATABASE %@ AS %@", ef_quotedSQLEscapedString, v7];
 
-    v15 = [v10 executeStatementString:v14 error:a4];
+    v15 = [sqlConnection executeStatementString:v14 error:url];
   }
 
   else
@@ -1496,54 +1496,54 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
   return v15;
 }
 
-- (BOOL)attachProtectedDatabaseWithName:(id)a3 error:(id *)a4
+- (BOOL)attachProtectedDatabaseWithName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EDPersistenceDatabaseConnection *)self delegate];
-  v8 = [(EDPersistenceDatabaseConnection *)self delegate];
-  v9 = [v8 protectedDatabasePath];
-  v10 = [v7 urlForDatabasePath:v9 type:{-[EDPersistenceDatabaseConnection _adjustedDatabaseTypeForType:](self, 1)}];
+  nameCopy = name;
+  delegate = [(EDPersistenceDatabaseConnection *)self delegate];
+  delegate2 = [(EDPersistenceDatabaseConnection *)self delegate];
+  protectedDatabasePath = [delegate2 protectedDatabasePath];
+  v10 = [delegate urlForDatabasePath:protectedDatabasePath type:{-[EDPersistenceDatabaseConnection _adjustedDatabaseTypeForType:](self, 1)}];
 
-  LOBYTE(v7) = [(EDPersistenceDatabaseConnection *)self attachProtectedDatabaseWithName:v6 url:v10 error:a4];
-  return v7;
+  LOBYTE(delegate) = [(EDPersistenceDatabaseConnection *)self attachProtectedDatabaseWithName:nameCopy url:v10 error:error];
+  return delegate;
 }
 
-- (BOOL)attachProtectedDatabaseWithName:(id)a3
+- (BOOL)attachProtectedDatabaseWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9 = 0;
-  v5 = [(EDPersistenceDatabaseConnection *)self attachProtectedDatabaseWithName:v4 error:&v9];
+  v5 = [(EDPersistenceDatabaseConnection *)self attachProtectedDatabaseWithName:nameCopy error:&v9];
   v6 = v9;
   if (!v5)
   {
-    v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"attaching %@", v4];
-    [(EDPersistenceDatabaseConnection *)self handleError:v6 message:v7];
+    nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"attaching %@", nameCopy];
+    [(EDPersistenceDatabaseConnection *)self handleError:v6 message:nameCopy];
   }
 
   return v5;
 }
 
-- (uint64_t)_detachDatabaseWithName:(void *)a1
+- (uint64_t)_detachDatabaseWithName:(void *)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    if (![a1 sqlDB])
+    if (![name sqlDB])
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel__detachDatabaseWithName_ object:a1 file:@"EDPersistenceDatabaseConnection.m" lineNumber:793 description:@"Detaching database when not open"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__detachDatabaseWithName_ object:name file:@"EDPersistenceDatabaseConnection.m" lineNumber:793 description:@"Detaching database when not open"];
     }
 
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DETACH DATABASE %@", v3];
-    v5 = [a1 sqlConnection];
+    sqlConnection = [name sqlConnection];
     v11 = 0;
-    v6 = [v5 executeStatementString:v4 error:&v11];
+    v6 = [sqlConnection executeStatementString:v4 error:&v11];
     v7 = v11;
 
     if ((v6 & 1) == 0)
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"detaching %@", v3];
-      [a1 handleError:v7 message:v8];
+      [name handleError:v7 message:v8];
     }
   }
 
@@ -1555,11 +1555,11 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
   return v6;
 }
 
-- (BOOL)attachJournalDatabase:(id)a3 withName:(id)a4 error:(id *)a5
+- (BOOL)attachJournalDatabase:(id)database withName:(id)name error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  databaseCopy = database;
+  nameCopy = name;
   if ([(EDPersistenceDatabaseConnection *)self journalDatabaseAttached])
   {
     LOBYTE(v10) = 0;
@@ -1567,25 +1567,25 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
 
   else
   {
-    v11 = [(EDPersistenceDatabaseConnection *)self delegate];
-    v12 = [v8 path];
-    v13 = [v11 urlForDatabasePath:v12 type:{-[EDPersistenceDatabaseConnection _adjustedDatabaseTypeForType:](self, 2)}];
+    delegate = [(EDPersistenceDatabaseConnection *)self delegate];
+    path = [databaseCopy path];
+    v13 = [delegate urlForDatabasePath:path type:{-[EDPersistenceDatabaseConnection _adjustedDatabaseTypeForType:](self, 2)}];
 
-    v10 = [(EDPersistenceDatabaseConnection *)self _attachDatabaseWithName:v9 url:v13 error:a5];
+    v10 = [(EDPersistenceDatabaseConnection *)self _attachDatabaseWithName:nameCopy url:v13 error:error];
     if (v10)
     {
       if (self)
       {
-        objc_setProperty_nonatomic_copy(self, v14, v9, 24);
+        objc_setProperty_nonatomic_copy(self, v14, nameCopy, 24);
       }
 
-      [(EDPersistenceDatabaseConnection *)self setJournal:v8];
-      [v8 checkOut];
+      [(EDPersistenceDatabaseConnection *)self setJournal:databaseCopy];
+      [databaseCopy checkOut];
       v17 = +[EDPersistenceDatabaseConnection log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138543362;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "Attached journal on connection %{public}@", &v18, 0xCu);
       }
     }
@@ -1595,16 +1595,16 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
   return v10;
 }
 
-- (BOOL)attachJournalDatabase:(id)a3 withName:(id)a4
+- (BOOL)attachJournalDatabase:(id)database withName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11 = 0;
-  v7 = [(EDPersistenceDatabaseConnection *)self attachJournalDatabase:a3 withName:v6 error:&v11];
+  v7 = [(EDPersistenceDatabaseConnection *)self attachJournalDatabase:database withName:nameCopy error:&v11];
   v8 = v11;
   if (!v7)
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"attaching %@", v6];
-    [(EDPersistenceDatabaseConnection *)self handleError:v8 message:v9];
+    nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"attaching %@", nameCopy];
+    [(EDPersistenceDatabaseConnection *)self handleError:v8 message:nameCopy];
   }
 
   return v7;
@@ -1612,33 +1612,33 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
 
 - (BOOL)detachJournalDatabase
 {
-  v3 = [(EDPersistenceDatabaseConnection *)self journalDatabaseAttached];
-  if (v3)
+  journalDatabaseAttached = [(EDPersistenceDatabaseConnection *)self journalDatabaseAttached];
+  if (journalDatabaseAttached)
   {
     [(EDPersistenceDatabaseConnection *)self detachJournalDatabase];
-    LOBYTE(v3) = v5;
+    LOBYTE(journalDatabaseAttached) = v5;
   }
 
-  return v3;
+  return journalDatabaseAttached;
 }
 
-- (void)performBlockAfterTransaction:(id)a3
+- (void)performBlockAfterTransaction:(id)transaction
 {
-  v7 = a3;
-  v5 = [(EDPersistenceDatabaseConnection *)self delegate];
+  transactionCopy = transaction;
+  delegate = [(EDPersistenceDatabaseConnection *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:807 description:@"performBlockAfterTransaction not supported (unit test?)."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDPersistenceDatabaseConnection.m" lineNumber:807 description:@"performBlockAfterTransaction not supported (unit test?)."];
   }
 
-  [v5 performBlockAfterTransaction:v7];
+  [delegate performBlockAfterTransaction:transactionCopy];
 }
 
 - (id)selectLastProcessedAttachmentID
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v8 = 0;
     v9 = &v8;
@@ -1647,7 +1647,7 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
     v12 = __Block_byref_object_dispose__39;
     v13 = 0;
     v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT value FROM properties WHERE key = '%@'", @"com.apple.mail.searchableIndex.lastProcessedAttachmentIDKey"];
-    v3 = [v1 preparedStatementForQueryString:v2];
+    v3 = [selfCopy preparedStatementForQueryString:v2];
 
     v6 = 0;
     v7[0] = MEMORY[0x1E69E9820];
@@ -1657,13 +1657,13 @@ void __70__EDPersistenceDatabaseConnection_columnExists_inTable_database_type___
     v7[4] = &v8;
     [v3 executeUsingBlock:v7 error:&v6];
     v4 = v6;
-    [v1 handleError:v4 message:@"Selecting previous conversation daily export sync anchor"];
-    v1 = v9[5];
+    [selfCopy handleError:v4 message:@"Selecting previous conversation daily export sync anchor"];
+    selfCopy = v9[5];
 
     _Block_object_dispose(&v8, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __96__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectLastProcessedAttachmentID__block_invoke(uint64_t a1, void *a2)
@@ -1681,12 +1681,12 @@ void __96__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectL
   }
 }
 
-- (uint64_t)setLastProcessedAttachmentID:(void *)a1
+- (uint64_t)setLastProcessedAttachmentID:(void *)d
 {
   v3 = a2;
-  if (a1)
+  if (d)
   {
-    v4 = [a1 preparedStatementForQueryString:{@"INSERT OR REPLACE INTO properties (key, value) VALUES (:key, :value)"}];
+    v4 = [d preparedStatementForQueryString:{@"INSERT OR REPLACE INTO properties (key, value) VALUES (:key, :value)"}];
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v5 setObject:@"com.apple.mail.searchableIndex.lastProcessedAttachmentIDKey" forKeyedSubscript:@":key"];
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v3, "databaseID")}];
@@ -1697,7 +1697,7 @@ void __96__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectL
     v8 = v10;
     if ((v7 & 1) == 0)
     {
-      [a1 handleError:v8 message:@"Setting latest value for lastProcessAttachmentID"];
+      [d handleError:v8 message:@"Setting latest value for lastProcessAttachmentID"];
     }
   }
 
@@ -1709,15 +1709,15 @@ void __96__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectL
   return v7;
 }
 
-- (id)attachmentDataForMessageWithIdentifier:(void *)a1
+- (id)attachmentDataForMessageWithIdentifier:(void *)identifier
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (identifier)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT ma.ROWID, m.ROWID, ma.mime_part_number, ma.name, m.mailbox FROM messages AS m LEFT OUTER JOIN message_attachments AS ma ON (ma.global_message_id = m.global_message_id) LEFT OUTER JOIN searchable_attachments AS s ON (ma.ROWID = s.attachment_id) WHERE m.ROWID = %d AND s.attachment_id IS NULL AND ma.attachment IS NOT NULL", objc_msgSend(v3, "intValue")];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v7 = [a1 preparedStatementForQueryString:v5];
+    v7 = [identifier preparedStatementForQueryString:v5];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__attachmentDataForMessageWithIdentifier___block_invoke;
@@ -1729,7 +1729,7 @@ void __96__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectL
     v10 = v14;
     if ((v9 & 1) == 0)
     {
-      [a1 handleError:v10 message:@"Searching for attachment data for message identifier"];
+      [identifier handleError:v10 message:@"Searching for attachment data for message identifier"];
     }
 
     v11 = v16;
@@ -1768,31 +1768,31 @@ void __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__attach
   [*(a1 + 32) addObject:v15];
 }
 
-- (id)attachmentDataForItemsRequiringIndexingExcludingIDs:(void *)a3 lastProcessedAttachmentID:(uint64_t)a4 limit:(void *)a5 cancelationToken:
+- (id)attachmentDataForItemsRequiringIndexingExcludingIDs:(void *)ds lastProcessedAttachmentID:(uint64_t)d limit:(void *)limit cancelationToken:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  dsCopy = ds;
+  limitCopy = limit;
+  if (self)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT ma.ROWID, m.ROWID, ma.mime_part_number, ma.name, m.mailbox FROM messages AS m LEFT OUTER JOIN message_attachments AS ma ON (ma.global_message_id = m.global_message_id) LEFT OUTER JOIN searchable_attachments AS s ON (ma.ROWID = s.attachment_id) WHERE ma.ROWID > %lld AND s.attachment_id IS NULL AND ma.attachment IS NOT NULL ORDER BY m.ROWID", objc_msgSend(v10, "databaseID")];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT ma.ROWID, m.ROWID, ma.mime_part_number, ma.name, m.mailbox FROM messages AS m LEFT OUTER JOIN message_attachments AS ma ON (ma.global_message_id = m.global_message_id) LEFT OUTER JOIN searchable_attachments AS s ON (ma.ROWID = s.attachment_id) WHERE ma.ROWID > %lld AND s.attachment_id IS NULL AND ma.attachment IS NOT NULL ORDER BY m.ROWID", objc_msgSend(dsCopy, "databaseID")];
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v14 = [a1 preparedStatementForQueryString:v12];
+    v14 = [self preparedStatementForQueryString:v12];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __166__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__attachmentDataForItemsRequiringIndexingExcludingIDs_lastProcessedAttachmentID_limit_cancelationToken___block_invoke;
     v22[3] = &unk_1E8256FB0;
-    v23 = v11;
+    v23 = limitCopy;
     v24 = v9;
     v15 = v13;
     v25 = v15;
-    v26 = a4;
+    dCopy = d;
     v21 = 0;
     v16 = [v14 executeUsingBlock:v22 error:&v21];
     v17 = v21;
     if ((v16 & 1) == 0)
     {
-      [a1 handleError:v17 message:@"Searching for attachments to index"];
+      [self handleError:v17 message:@"Searching for attachments to index"];
     }
 
     v18 = v25;
@@ -1846,13 +1846,13 @@ void __166__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__attach
   }
 }
 
-- (id)identifiersForAttachmentsWithQuery:(void *)a1
+- (id)identifiersForAttachmentsWithQuery:(void *)query
 {
   v3 = a2;
-  if (a1)
+  if (query)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [a1 preparedStatementForQueryString:v3];
+    v5 = [query preparedStatementForQueryString:v3];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__identifiersForAttachmentsWithQuery___block_invoke;
@@ -1864,7 +1864,7 @@ void __166__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__attach
     v8 = v12;
     if ((v7 & 1) == 0)
     {
-      [a1 handleError:v8 message:@"searching for removed attachment identifiers"];
+      [query handleError:v8 message:@"searching for removed attachment identifiers"];
     }
 
     v9 = v14;
@@ -1890,32 +1890,32 @@ void __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__identi
   [*(a1 + 32) addObject:v6];
 }
 
-- (id)selectAttachmentIdentifiersForTransactions:(void *)a1
+- (id)selectAttachmentIdentifiersForTransactions:(void *)transactions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (transactions)
   {
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT attachment_id FROM searchable_attachments WHERE transaction_id in (%@)", v5];
-    a1 = [(EDPersistenceDatabaseConnection *)a1 identifiersForAttachmentsWithQuery:v6];
+    transactions = [(EDPersistenceDatabaseConnection *)transactions identifiersForAttachmentsWithQuery:v6];
   }
 
-  return a1;
+  return transactions;
 }
 
-- (id)selectAttachmentIdentifiersForMessages:(void *)a1
+- (id)selectAttachmentIdentifiersForMessages:(void *)messages
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (messages)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v6 = [v4 ef_filter:&__block_literal_global_80];
 
     v7 = [v6 componentsJoinedByString:{@", "}];
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT attachment_id FROM searchable_attachments WHERE message_id IN (%@)", v7];
-    v9 = [a1 preparedStatementForQueryString:v8];
+    v9 = [messages preparedStatementForQueryString:v8];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectAttachmentIdentifiersForMessages___block_invoke_2;
@@ -1927,7 +1927,7 @@ void __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__identi
     v12 = v16;
     if ((v11 & 1) == 0)
     {
-      [a1 handleError:v12 message:@"searching for child attachment identifiers"];
+      [messages handleError:v12 message:@"searching for child attachment identifiers"];
     }
 
     v13 = v18;
@@ -1962,22 +1962,22 @@ void __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   [*(a1 + 32) addObject:v6];
 }
 
-- (id)assignIndexedAttachmentItems:(uint64_t)a3 transaction:
+- (id)assignIndexedAttachmentItems:(uint64_t)items transaction:
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  v30 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     if ([v5 count])
     {
-      if (a3)
+      if (items)
       {
         v27 = v6;
         v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_attachments (attachment_id, attachment, message_id, transaction_id) VALUES (?, ?, ?, %lld)", a3];
-        v7 = [a1 preparedStatementForQueryString:v28];
+        items = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_attachments (attachment_id, attachment, message_id, transaction_id) VALUES (?, ?, ?, %lld)", items];
+        v7 = [self preparedStatementForQueryString:items];
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
@@ -2002,12 +2002,12 @@ void __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
 
             v10 = *(*(&v35 + 1) + 8 * i);
             v11 = MEMORY[0x1E696AD98];
-            v12 = [v10 attachmentID];
-            v13 = [v11 numberWithLongLong:{objc_msgSend(v12, "databaseID")}];
+            attachmentID = [v10 attachmentID];
+            v13 = [v11 numberWithLongLong:{objc_msgSend(attachmentID, "databaseID")}];
 
             v14 = MEMORY[0x1E696AD98];
-            v15 = [v10 messageID];
-            v16 = [v14 numberWithLongLong:{objc_msgSend(v15, "databaseID")}];
+            messageID = [v10 messageID];
+            v16 = [v14 numberWithLongLong:{objc_msgSend(messageID, "databaseID")}];
 
             v39[0] = v13;
             v39[1] = v13;
@@ -2019,15 +2019,15 @@ void __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
             v20 = v19;
             if ((v18 & 1) == 0)
             {
-              v21 = [v19 domain];
-              if ([v21 isEqualToString:v31])
+              domain = [v19 domain];
+              if ([domain isEqualToString:v31])
               {
                 v22 = [v20 code] == 19;
 
                 if (v22)
                 {
-                  v23 = [v10 attachmentID];
-                  v24 = [EDSearchableIndexAttachmentItem identifierForAttachmentPersistentID:v23];
+                  attachmentID2 = [v10 attachmentID];
+                  v24 = [EDSearchableIndexAttachmentItem identifierForAttachmentPersistentID:attachmentID2];
                   [v29 addObject:v24];
 
                   goto LABEL_15;
@@ -2038,7 +2038,7 @@ void __104__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
               {
               }
 
-              [v30 handleError:v20 message:@"Adding to searchable_attachments"];
+              [selfCopy handleError:v20 message:@"Adding to searchable_attachments"];
             }
 
 LABEL_15:
@@ -2057,7 +2057,7 @@ LABEL_17:
         }
       }
 
-      [(EDPersistenceDatabaseConnection *)a1 deleteAttachmentItems:v6];
+      [(EDPersistenceDatabaseConnection *)self deleteAttachmentItems:v6];
     }
 
     v29 = MEMORY[0x1E695E0F0];
@@ -2075,10 +2075,10 @@ LABEL_20:
   return v29;
 }
 
-- (void)deleteAttachmentItems:(void *)a1
+- (void)deleteAttachmentItems:(void *)items
 {
   v3 = a2;
-  if (a1)
+  if (items)
   {
     v8 = v3;
     v4 = [v3 ef_map:&__block_literal_global_167];
@@ -2086,7 +2086,7 @@ LABEL_20:
     v6 = [v5 in:v4];
 
     v7 = [objc_alloc(MEMORY[0x1E699B8E8]) initWithTable:@"searchable_attachments" where:v6];
-    [a1 executeDeleteStatement:v7 error:0];
+    [items executeDeleteStatement:v7 error:0];
 
     v3 = v8;
   }
@@ -2101,65 +2101,65 @@ id __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__deleteAtt
   return v4;
 }
 
-- (void)deleteAttachmentsAfterTransaction:(void *)a1
+- (void)deleteAttachmentsAfterTransaction:(void *)transaction
 {
-  if (a1)
+  if (transaction)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_attachments WHERE transaction_id > %llu", a2];
-    v4 = [a1 preparedStatementForQueryString:v3];
+    v4 = [transaction preparedStatementForQueryString:v3];
     v7 = 0;
     v5 = [v4 executeUsingBlock:0 error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0)
     {
-      [a1 handleError:v6 message:@"Invalidating searchable_attachments"];
+      [transaction handleError:v6 message:@"Invalidating searchable_attachments"];
     }
   }
 }
 
-- (void)deleteAttachmentsInTransactions:(void *)a1
+- (void)deleteAttachmentsInTransactions:(void *)transactions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (transactions)
   {
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_attachments WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v10 = 0;
     v8 = [v7 executeUsingBlock:0 error:&v10];
     v9 = v10;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"Failed to delete messages for items in searchable_attachments"];
+      [transactions handleError:v9 message:@"Failed to delete messages for items in searchable_attachments"];
     }
   }
 }
 
-- (void)deleteAttachmentsForMessage:(void *)a1
+- (void)deleteAttachmentsForMessage:(void *)message
 {
   v3 = a2;
-  if (a1)
+  if (message)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_attachments WHERE message_id = %@", v3];
-    v5 = [a1 preparedStatementForQueryString:v4];
+    v5 = [message preparedStatementForQueryString:v4];
     v8 = 0;
     v6 = [v5 executeUsingBlock:0 error:&v8];
     v7 = v8;
     if ((v6 & 1) == 0)
     {
-      [a1 handleError:v7 message:@"Removing message identifier from searchable_attachments"];
+      [message handleError:v7 message:@"Removing message identifier from searchable_attachments"];
     }
   }
 }
 
-- (id)selectTransactionAndIndexTypeForMessage:(id)a1
+- (id)selectTransactionAndIndexTypeForMessage:(id)message
 {
   v3 = a2;
-  if (a1)
+  if (message)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT transaction_id, reindex_type FROM searchable_messages WHERE message_id = %@", v3];
-    v5 = [a1 preparedStatementForQueryString:v4];
+    v5 = [message preparedStatementForQueryString:v4];
     v11 = 0;
     v12 = &v11;
     v13 = 0x3032000000;
@@ -2176,15 +2176,15 @@ id __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__deleteAtt
     v7 = v9;
     if ((v6 & 1) == 0)
     {
-      [a1 handleError:v7 message:@"Searching for reindex type"];
+      [message handleError:v7 message:@"Searching for reindex type"];
     }
 
-    a1 = v12[5];
+    message = v12[5];
 
     _Block_object_dispose(&v11, 8);
   }
 
-  return a1;
+  return message;
 }
 
 void __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectTransactionAndIndexTypeForMessage___block_invoke(uint64_t a1, void *a2)
@@ -2203,11 +2203,11 @@ void __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
 
 - (id)getIndexSnapshot
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT message_id, message_body_indexed FROM searchable_messages WHERE transaction_id > %lld", 0];
-    v3 = [v1 preparedStatementForQueryString:v2];
+    v3 = [selfCopy preparedStatementForQueryString:v2];
     v4 = objc_opt_new();
     v5 = objc_opt_new();
     v12[0] = MEMORY[0x1E69E9820];
@@ -2223,13 +2223,13 @@ void __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v9 = v11;
     if ((v8 & 1) == 0)
     {
-      [v1 handleError:v9 message:@"Error looking up index state for message"];
+      [selfCopy handleError:v9 message:@"Error looking up index state for message"];
     }
 
-    v1 = [MEMORY[0x1E699B848] pairWithFirst:v6 second:v7];
+    selfCopy = [MEMORY[0x1E699B848] pairWithFirst:v6 second:v7];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __81__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__getIndexSnapshot__block_invoke(uint64_t a1, void *a2)
@@ -2251,12 +2251,12 @@ void __81__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__getInde
 
 - (id)messagesNeedingReindex
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_opt_new();
     v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT message_id FROM searchable_rebuild"];
-    v4 = [v1 preparedStatementForQueryString:v3];
+    v4 = [selfCopy preparedStatementForQueryString:v3];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messagesNeedingReindex__block_invoke;
@@ -2268,13 +2268,13 @@ void __81__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__getInde
     v7 = v9;
     if ((v6 & 1) == 0)
     {
-      [v1 handleError:v7 message:@"Could not select message_id from searchable_rebuild table"];
+      [selfCopy handleError:v7 message:@"Could not select message_id from searchable_rebuild table"];
     }
 
-    v1 = [v5 copy];
+    selfCopy = [v5 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messagesNeedingReindex__block_invoke(uint64_t a1, void *a2)
@@ -2284,21 +2284,21 @@ void __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__message
   [v2 addIndex:{objc_msgSend(v3, "integerValue")}];
 }
 
-- (id)messagesWithUnindexedBodiesAfterID:(uint64_t)a3 limit:
+- (id)messagesWithUnindexedBodiesAfterID:(uint64_t)d limit:
 {
-  v3 = a1;
+  selfCopy = self;
   v20[3] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
-    v7 = [v3 preparedStatementForQueryString:@"   SELECT message_id     FROM searchable_messages    WHERE transaction_id > :transaction      AND message_id > :after_id      AND NOT message_body_indexed ORDER BY message_id ASC    LIMIT :limit"];
+    array = [MEMORY[0x1E695DF70] array];
+    v7 = [selfCopy preparedStatementForQueryString:@"   SELECT message_id     FROM searchable_messages    WHERE transaction_id > :transaction      AND message_id > :after_id      AND NOT message_body_indexed ORDER BY message_id ASC    LIMIT :limit"];
     v20[0] = &unk_1F45E69A0;
     v19[0] = @":transaction";
     v19[1] = @":after_id";
     v8 = [MEMORY[0x1E696AD98] numberWithLongLong:a2];
     v20[1] = v8;
     v19[2] = @":limit";
-    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
     v20[2] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
@@ -2306,22 +2306,22 @@ void __87__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__message
     v17[1] = 3221225472;
     v17[2] = __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messagesWithUnindexedBodiesAfterID_limit___block_invoke;
     v17[3] = &unk_1E8250300;
-    v11 = v6;
+    v11 = array;
     v18 = v11;
     v16 = 0;
     v12 = [v7 executeWithNamedBindings:v10 usingBlock:v17 error:&v16];
     v13 = v16;
     if ((v12 & 1) == 0)
     {
-      [v3 handleError:v13 message:@"Could not load unindexed bodies from searchable_messages table"];
+      [selfCopy handleError:v13 message:@"Could not load unindexed bodies from searchable_messages table"];
     }
 
-    v3 = [v11 copy];
+    selfCopy = [v11 copy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return selfCopy;
 }
 
 void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messagesWithUnindexedBodiesAfterID_limit___block_invoke(uint64_t a1, void *a2)
@@ -2332,15 +2332,15 @@ void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
   [v2 addObject:v3];
 }
 
-- (id)selectMessageIdentifiersForTransactions:(void *)a1
+- (id)selectMessageIdentifiersForTransactions:(void *)transactions
 {
   v3 = a2;
-  if (a1)
+  if (transactions)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT rowid FROM searchable_messages WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectMessageIdentifiersForTransactions___block_invoke;
@@ -2352,7 +2352,7 @@ void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
     v10 = v14;
     if ((v9 & 1) == 0)
     {
-      [a1 handleError:v10 message:@"Failed to get messages for transaction ids in searchable_messages"];
+      [transactions handleError:v10 message:@"Failed to get messages for transaction ids in searchable_messages"];
     }
 
     v11 = v16;
@@ -2375,47 +2375,47 @@ void __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   [v2 addObject:v3];
 }
 
-- (void)deleteMessagesAfterTransaction:(void *)a1
+- (void)deleteMessagesAfterTransaction:(void *)transaction
 {
-  if (a1)
+  if (transaction)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_messages WHERE transaction_id > %llu", a2];
-    v4 = [a1 preparedStatementForQueryString:v3];
+    v4 = [transaction preparedStatementForQueryString:v3];
     v7 = 0;
     v5 = [v4 executeUsingBlock:0 error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0)
     {
-      [a1 handleError:v6 message:@"Invalidating searchable_messages"];
+      [transaction handleError:v6 message:@"Invalidating searchable_messages"];
     }
   }
 }
 
-- (void)deleteMessagesInTransactions:(void *)a1
+- (void)deleteMessagesInTransactions:(void *)transactions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (transactions)
   {
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_messages WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v10 = 0;
     v8 = [v7 executeUsingBlock:0 error:&v10];
     v9 = v10;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"Failed to delete messages for items in searchable_messages"];
+      [transactions handleError:v9 message:@"Failed to delete messages for items in searchable_messages"];
     }
   }
 }
 
 - (id)selectIdentifiersForDeletedMessages
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v3 = [a1 preparedStatementForQueryString:@"SELECT message_id FROM searchable_messages WHERE message is NULL"];
+    v3 = [self preparedStatementForQueryString:@"SELECT message_id FROM searchable_messages WHERE message is NULL"];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectIdentifiersForDeletedMessages__block_invoke;
@@ -2427,7 +2427,7 @@ void __105__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v6 = v10;
     if ((v5 & 1) == 0)
     {
-      [a1 handleError:v6 message:@"searching for removed identifiers"];
+      [self handleError:v6 message:@"searching for removed identifiers"];
     }
 
     v7 = v12;
@@ -2450,13 +2450,13 @@ void __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)selectMessageIDsFromBacklogWithBatchSize:(void *)a1
+- (id)selectMessageIDsFromBacklogWithBatchSize:(void *)size
 {
-  if (a1)
+  if (size)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT message_id FROM searchable_rebuild LIMIT %ld", a2];
-    v6 = [a1 preparedStatementForQueryString:v5];
+    v6 = [size preparedStatementForQueryString:v5];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectMessageIDsFromBacklogWithBatchSize___block_invoke;
@@ -2468,7 +2468,7 @@ void __100__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v9 = v13;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"Could not select message_id from searchable_rebuild table"];
+      [size handleError:v9 message:@"Could not select message_id from searchable_rebuild table"];
     }
 
     v10 = v15;
@@ -2493,8 +2493,8 @@ void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
 
 - (uint64_t)selectIsReindexing
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc(MEMORY[0x1E699B948]);
     v3 = [v2 initWithResultColumn:*MEMORY[0x1E699B768] table:@"searchable_rebuild"];
@@ -2509,27 +2509,27 @@ void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v7[2] = __83__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectIsReindexing__block_invoke;
     v7[3] = &unk_1E8250418;
     v7[4] = &v8;
-    [v1 executeSelectStatement:v3 withBlock:v7 error:&v6];
+    [selfCopy executeSelectStatement:v3 withBlock:v7 error:&v6];
     v4 = v6;
     if (v4)
     {
-      [v1 handleError:v4 message:@"Failed to query searchable_rebuild table to establish if it still has data"];
+      [selfCopy handleError:v4 message:@"Failed to query searchable_rebuild table to establish if it still has data"];
     }
 
-    LOBYTE(v1) = *(v9 + 24);
+    LOBYTE(selfCopy) = *(v9 + 24);
     _Block_object_dispose(&v8, 8);
   }
 
-  return v1 & 1;
+  return selfCopy & 1;
 }
 
-- (id)selectIdentifiersForTombstonesOfType:(void *)a1
+- (id)selectIdentifiersForTombstonesOfType:(void *)type
 {
-  if (a1)
+  if (type)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT identifier FROM searchable_message_tombstones WHERE transaction_id IS NULL AND type = %lld", a2];
-    v6 = [a1 preparedStatementForQueryString:v5];
+    v6 = [type preparedStatementForQueryString:v5];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __102__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectIdentifiersForTombstonesOfType___block_invoke;
@@ -2541,7 +2541,7 @@ void __106__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v9 = v13;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"searching for tombstone identifiers"];
+      [type handleError:v9 message:@"searching for tombstone identifiers"];
     }
 
     v10 = v15;
@@ -2564,15 +2564,15 @@ void __102__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   [*(a1 + 32) addObject:v4];
 }
 
-- (id)selectTombstoneIdentifiersForTransactions:(void *)a1
+- (id)selectTombstoneIdentifiersForTransactions:(void *)transactions
 {
   v3 = a2;
-  if (a1)
+  if (transactions)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT rowid FROM searchable_message_tombstones WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __107__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectTombstoneIdentifiersForTransactions___block_invoke;
@@ -2584,7 +2584,7 @@ void __102__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v10 = v14;
     if ((v9 & 1) == 0)
     {
-      [a1 handleError:v10 message:@"Failed to get messages for transaction ids in searchable_message_tombstones"];
+      [transactions handleError:v10 message:@"Failed to get messages for transaction ids in searchable_message_tombstones"];
     }
 
     v11 = v16;
@@ -2607,15 +2607,15 @@ void __107__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   [v2 addObject:v3];
 }
 
-- (void)addTombstonesForIdentifiers:(uint64_t)a3 type:
+- (void)addTombstonesForIdentifiers:(uint64_t)identifiers type:
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1 && [v5 count])
+  if (self && [v5 count])
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_message_tombstones (type, identifier) VALUES (%lld, ?)", a3];
-    v7 = [a1 preparedStatementForQueryString:v16];
+    identifiers = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_message_tombstones (type, identifier) VALUES (%lld, ?)", identifiers];
+    v7 = [self preparedStatementForQueryString:identifiers];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -2642,7 +2642,7 @@ void __107__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
 
           if ((v13 & 1) == 0)
           {
-            [a1 handleError:v14 message:@"Adding to searchable_message_tombstones index"];
+            [self handleError:v14 message:@"Adding to searchable_message_tombstones index"];
           }
 
           [v7 clearBindingsWithError:0];
@@ -2659,94 +2659,94 @@ void __107__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)assignTombstonesForIdentifiers:(uint64_t)a3 type:(uint64_t)a4 transaction:
+- (void)assignTombstonesForIdentifiers:(uint64_t)identifiers type:(uint64_t)type transaction:
 {
   v7 = a2;
   v8 = v7;
-  if (a1 && [v7 count])
+  if (self && [v7 count])
   {
     v9 = [v8 ef_mapSelector:sel_ef_quotedSQLEscapedString];
     v10 = [v9 componentsJoinedByString:{@", "}];
-    if (a4 < 0)
+    if (type < 0)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_message_tombstones WHERE type = %lld AND identifier IN (%@)", a3, v10];
+      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_message_tombstones WHERE type = %lld AND identifier IN (%@)", identifiers, v10];
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"UPDATE searchable_message_tombstones SET transaction_id = %lld WHERE type = %lld AND identifier IN (%@)", a4, a3, v10];
+      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"UPDATE searchable_message_tombstones SET transaction_id = %lld WHERE type = %lld AND identifier IN (%@)", type, identifiers, v10];
     }
 
     v12 = v11;
-    v13 = [a1 preparedStatementForQueryString:v11];
+    v13 = [self preparedStatementForQueryString:v11];
     v16 = 0;
     v14 = [v13 executeUsingBlock:0 error:&v16];
     v15 = v16;
     if ((v14 & 1) == 0)
     {
-      [a1 handleError:v15 message:@"Updating or deleting searchable_message_tombstones"];
+      [self handleError:v15 message:@"Updating or deleting searchable_message_tombstones"];
     }
   }
 }
 
-- (void)clearTransactionsForTombstonesAfterTransaction:(void *)a1
+- (void)clearTransactionsForTombstonesAfterTransaction:(void *)transaction
 {
-  if (a1)
+  if (transaction)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"UPDATE searchable_message_tombstones SET transaction_id = NULL WHERE transaction_id > %lld", a2];
-    v4 = [a1 preparedStatementForQueryString:v3];
+    v4 = [transaction preparedStatementForQueryString:v3];
     v7 = 0;
     v5 = [v4 executeUsingBlock:0 error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0)
     {
-      [a1 handleError:v6 message:@"Invalidating searchable_message_tombstones"];
+      [transaction handleError:v6 message:@"Invalidating searchable_message_tombstones"];
     }
   }
 }
 
-- (void)deleteTombstonesBeforeTransaction:(void *)a1
+- (void)deleteTombstonesBeforeTransaction:(void *)transaction
 {
-  if (a1)
+  if (transaction)
   {
     v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_message_tombstones WHERE transaction_id < %lld", a2];
-    v4 = [a1 preparedStatementForQueryString:v3];
+    v4 = [transaction preparedStatementForQueryString:v3];
     v7 = 0;
     v5 = [v4 executeUsingBlock:0 error:&v7];
     v6 = v7;
     if ((v5 & 1) == 0)
     {
-      [a1 handleError:v6 message:@"Purging searchable_message_tombstones"];
+      [transaction handleError:v6 message:@"Purging searchable_message_tombstones"];
     }
   }
 }
 
-- (void)deleteTombstonesInTransactions:(void *)a1
+- (void)deleteTombstonesInTransactions:(void *)transactions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (transactions)
   {
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_message_tombstones WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v10 = 0;
     v8 = [v7 executeUsingBlock:0 error:&v10];
     v9 = v10;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"Failed to delete messages for items in searchable_message_tombstones"];
+      [transactions handleError:v9 message:@"Failed to delete messages for items in searchable_message_tombstones"];
     }
   }
 }
 
 - (id)selectDistinctTransactionIDs
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v3 = [v1 preparedStatementForQueryString:@"SELECT DISTINCT transaction_id FROM searchable_messages"];
+    v3 = [selfCopy preparedStatementForQueryString:@"SELECT DISTINCT transaction_id FROM searchable_messages"];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __93__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectDistinctTransactionIDs__block_invoke;
@@ -2758,13 +2758,13 @@ void __107__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__select
     v6 = v8;
     if ((v5 & 1) == 0)
     {
-      [v1 handleError:v6 message:@"Searching for distinct transaction identifiers"];
+      [selfCopy handleError:v6 message:@"Searching for distinct transaction identifiers"];
     }
 
-    v1 = [v4 copy];
+    selfCopy = [v4 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __93__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectDistinctTransactionIDs__block_invoke(uint64_t a1, void *a2)
@@ -2778,15 +2778,15 @@ void __93__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectD
   }
 }
 
-- (id)richLinkDataForItemsRequiringIndexingExcludingIdentifiers:(uint64_t)a3 limit:(void *)a4 cancelationToken:
+- (id)richLinkDataForItemsRequiringIndexingExcludingIdentifiers:(uint64_t)identifiers limit:(void *)limit cancelationToken:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  limitCopy = limit;
+  if (self)
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT m.ROWID, mr.rich_link, m.mailbox, r.title, r.url FROM message_rich_links AS mr LEFT OUTER JOIN messages AS m ON (m.global_message_id = mr.global_message_id) LEFT OUTER JOIN rich_links AS r ON (r.ROWID = mr.rich_link) LEFT OUTER JOIN searchable_rich_links AS s ON (m.ROWID = s.message_id) WHERE s.rich_link_id IS NULL ORDER BY m.ROWID"];
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11 = [a1 preparedStatementForQueryString:v9];
+    v11 = [self preparedStatementForQueryString:v9];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __146__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__richLinkDataForItemsRequiringIndexingExcludingIdentifiers_limit_cancelationToken___block_invoke;
@@ -2794,14 +2794,14 @@ void __93__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__selectD
     v20 = v7;
     v12 = v10;
     v21 = v12;
-    v23 = a3;
-    v22 = v8;
+    identifiersCopy = identifiers;
+    v22 = limitCopy;
     v18 = 0;
     v13 = [v11 executeUsingBlock:v19 error:&v18];
     v14 = v18;
     if ((v13 & 1) == 0)
     {
-      [a1 handleError:v14 message:@"Searching for rich links requiring indexing"];
+      [self handleError:v14 message:@"Searching for rich links requiring indexing"];
     }
 
     v15 = v22;
@@ -2848,21 +2848,21 @@ void __146__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__richLi
   }
 }
 
-- (id)assignIndexedRichLinkItems:(uint64_t)a3 transaction:
+- (id)assignIndexedRichLinkItems:(uint64_t)items transaction:
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v30 = a1;
+  selfCopy = self;
   v28 = v5;
-  if (a1)
+  if (self)
   {
     if ([v5 count])
     {
-      if (a3)
+      if (items)
       {
         v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_rich_links (rich_link, message_id, transaction_id) VALUES (?, ?, %lld)", a3];
-        v6 = [a1 preparedStatementForQueryString:?];
+        items = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"INSERT OR REPLACE INTO searchable_rich_links (rich_link, message_id, transaction_id) VALUES (?, ?, %lld)", items];
+        v6 = [self preparedStatementForQueryString:?];
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
@@ -2887,12 +2887,12 @@ void __146__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__richLi
 
             v9 = *(*(&v35 + 1) + 8 * i);
             v10 = MEMORY[0x1E696AD98];
-            v11 = [v9 richLinkID];
-            v12 = [v10 numberWithLongLong:{objc_msgSend(v11, "databaseID")}];
+            richLinkID = [v9 richLinkID];
+            v12 = [v10 numberWithLongLong:{objc_msgSend(richLinkID, "databaseID")}];
 
             v13 = MEMORY[0x1E696AD98];
-            v14 = [v9 messageID];
-            v15 = [v13 numberWithLongLong:{objc_msgSend(v14, "databaseID")}];
+            messageID = [v9 messageID];
+            v15 = [v13 numberWithLongLong:{objc_msgSend(messageID, "databaseID")}];
 
             v39[0] = v12;
             v39[1] = v15;
@@ -2903,16 +2903,16 @@ void __146__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__richLi
             v19 = v18;
             if ((v17 & 1) == 0)
             {
-              v20 = [v18 domain];
-              if ([v20 isEqualToString:v31])
+              domain = [v18 domain];
+              if ([domain isEqualToString:v31])
               {
                 v21 = [v19 code] == 19;
 
                 if (v21)
                 {
-                  v22 = [v9 messageID];
-                  v23 = [v9 richLinkID];
-                  v24 = [EDSearchableIndexRichLinkItem identifierForMessageID:v22 richLinkID:v23];
+                  messageID2 = [v9 messageID];
+                  richLinkID2 = [v9 richLinkID];
+                  v24 = [EDSearchableIndexRichLinkItem identifierForMessageID:messageID2 richLinkID:richLinkID2];
                   [v29 addObject:v24];
 
                   goto LABEL_15;
@@ -2923,7 +2923,7 @@ void __146__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__richLi
               {
               }
 
-              [v30 handleError:v19 message:@"Adding to searchable_rich_links"];
+              [selfCopy handleError:v19 message:@"Adding to searchable_rich_links"];
             }
 
 LABEL_15:
@@ -2941,7 +2941,7 @@ LABEL_17:
         }
       }
 
-      [(EDPersistenceDatabaseConnection *)a1 deleteRichLinkItems:v28];
+      [(EDPersistenceDatabaseConnection *)self deleteRichLinkItems:v28];
     }
 
     v29 = MEMORY[0x1E695E0F0];
@@ -2959,14 +2959,14 @@ LABEL_20:
   return v29;
 }
 
-- (void)deleteRichLinkItems:(void *)a1
+- (void)deleteRichLinkItems:(void *)items
 {
   v28 = *MEMORY[0x1E69E9840];
   v18 = a2;
-  if (a1)
+  if (items)
   {
-    v3 = [a1 preparedStatementForQueryString:@"DELETE FROM searchable_rich_links WHERE rich_link = ? AND message_id = ?"];
-    v19 = a1;
+    v3 = [items preparedStatementForQueryString:@"DELETE FROM searchable_rich_links WHERE rich_link = ? AND message_id = ?"];
+    itemsCopy = items;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -2987,12 +2987,12 @@ LABEL_20:
 
           v7 = *(*(&v22 + 1) + 8 * i);
           v8 = MEMORY[0x1E696AD98];
-          v9 = [v7 richLinkID];
-          v10 = [v8 numberWithLongLong:{objc_msgSend(v9, "databaseID")}];
+          richLinkID = [v7 richLinkID];
+          v10 = [v8 numberWithLongLong:{objc_msgSend(richLinkID, "databaseID")}];
 
           v11 = MEMORY[0x1E696AD98];
-          v12 = [v7 messageID];
-          v13 = [v11 numberWithLongLong:{objc_msgSend(v12, "databaseID")}];
+          messageID = [v7 messageID];
+          v13 = [v11 numberWithLongLong:{objc_msgSend(messageID, "databaseID")}];
 
           v26[0] = v10;
           v26[1] = v13;
@@ -3002,7 +3002,7 @@ LABEL_20:
           v16 = v21;
           if ((v15 & 1) == 0)
           {
-            [v19 handleError:v16 message:@"Failed to delete items in searchable_rich_links"];
+            [itemsCopy handleError:v16 message:@"Failed to delete items in searchable_rich_links"];
           }
 
           [v3 clearBindingsWithError:0];
@@ -3019,48 +3019,48 @@ LABEL_20:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteRichLinksInTransactions:(void *)a1
+- (void)deleteRichLinksInTransactions:(void *)transactions
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (transactions)
   {
     v5 = [v3 componentsJoinedByString:{@", "}];
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_rich_links WHERE transaction_id IN (%@)", v5];
-    v7 = [a1 preparedStatementForQueryString:v6];
+    v7 = [transactions preparedStatementForQueryString:v6];
     v10 = 0;
     v8 = [v7 executeUsingBlock:0 error:&v10];
     v9 = v10;
     if ((v8 & 1) == 0)
     {
-      [a1 handleError:v9 message:@"Failed to delete items in searchable_rich_links"];
+      [transactions handleError:v9 message:@"Failed to delete items in searchable_rich_links"];
     }
   }
 }
 
 - (void)addAllMessagesToRebuildTable
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 preparedStatementForQueryString:@"INSERT OR IGNORE INTO searchable_rebuild (message_id) SELECT ROWID FROM messages ORDER BY date_received DESC"];
+    v2 = [self preparedStatementForQueryString:@"INSERT OR IGNORE INTO searchable_rebuild (message_id) SELECT ROWID FROM messages ORDER BY date_received DESC"];
     v5 = 0;
     v3 = [v2 executeUsingBlock:0 error:&v5];
     v4 = v5;
     if ((v3 & 1) == 0)
     {
-      [a1 handleError:v4 message:@"could not populate searchable_rebuild table"];
+      [self handleError:v4 message:@"could not populate searchable_rebuild table"];
     }
   }
 }
 
 - (void)clearReferencesToMissingSearchableMessages
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"messages"];
-    v3 = [MEMORY[0x1E695DFB0] null];
-    [v2 setObject:v3 forKeyedSubscript:@"searchable_message"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v2 setObject:null forKeyedSubscript:@"searchable_message"];
 
     v4 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"message_id" table:@"searchable_messages"];
     v5 = [objc_alloc(MEMORY[0x1E699B8C8]) initWithName:@"searchable_message"];
@@ -3068,30 +3068,30 @@ LABEL_20:
     [v2 setWhereClause:v6];
 
     v8 = 0;
-    [v1 executeUpdateStatement:v2 rowsChanged:&v8];
-    v1 = v8;
+    [selfCopy executeUpdateStatement:v2 rowsChanged:&v8];
+    selfCopy = v8;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)clearReferencesToSearchableMessages
 {
-  if (a1)
+  if (self)
   {
     v2 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"messages"];
-    v3 = [MEMORY[0x1E695DFB0] null];
-    [v2 setObject:v3 forKeyedSubscript:@"searchable_message"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v2 setObject:null forKeyedSubscript:@"searchable_message"];
 
-    v4 = [v2 queryString];
-    v5 = [a1 preparedStatementForQueryString:v4];
+    queryString = [v2 queryString];
+    v5 = [self preparedStatementForQueryString:queryString];
 
     v8 = 0;
     v6 = [v5 executeUsingBlock:0 error:&v8];
     v7 = v8;
     if ((v6 & 1) == 0)
     {
-      [a1 handleError:v7 message:@"Clearing searchable_message column"];
+      [self handleError:v7 message:@"Clearing searchable_message column"];
     }
   }
 }
@@ -3099,7 +3099,7 @@ LABEL_20:
 - (void)emptyAllSearchableIndexTables
 {
   v19[6] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v19[0] = @"searchable_messages";
     v19[1] = @"searchable_message_tombstones";
@@ -3128,14 +3128,14 @@ LABEL_20:
 
           v5 = *(*(&v14 + 1) + 8 * v4);
           v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM %@", v5];
-          v7 = [a1 preparedStatementForQueryString:v6];
+          v7 = [self preparedStatementForQueryString:v6];
           v13 = 0;
           v8 = [v7 executeUsingBlock:0 error:&v13];
           v9 = v13;
           if ((v8 & 1) == 0)
           {
             v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Purging %@", v5];
-            [a1 handleError:v9 message:v10];
+            [self handleError:v9 message:v10];
           }
 
           ++v4;
@@ -3152,11 +3152,11 @@ LABEL_20:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeIndexedIdentifiers:(void *)a1
+- (void)removeIndexedIdentifiers:(void *)identifiers
 {
   v32 = *MEMORY[0x1E69E9840];
   v24 = a2;
-  if (a1)
+  if (identifiers)
   {
     v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -3183,8 +3183,8 @@ LABEL_20:
           v11 = v10;
           if (v10)
           {
-            v12 = [v10 stringValue];
-            [v4 addObject:v12];
+            stringValue = [v10 stringValue];
+            [v4 addObject:stringValue];
           }
 
           else
@@ -3203,13 +3203,13 @@ LABEL_20:
     {
       v13 = [v3 componentsJoinedByString:{@", "}];
       v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_messages WHERE message_id IN (%@)", v13];
-      v15 = [a1 preparedStatementForQueryString:v14];
+      v15 = [identifiers preparedStatementForQueryString:v14];
       v26 = 0;
       v16 = [v15 executeUsingBlock:0 error:&v26];
       v17 = v26;
       if ((v16 & 1) == 0)
       {
-        [a1 handleError:v17 message:@"Removing items from searchable_messages"];
+        [identifiers handleError:v17 message:@"Removing items from searchable_messages"];
       }
     }
 
@@ -3217,13 +3217,13 @@ LABEL_20:
     {
       v18 = [v4 componentsJoinedByString:{@", "}];
       v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"DELETE FROM searchable_attachments WHERE attachment_id IN (%@)", v18];
-      v20 = [a1 preparedStatementForQueryString:v19];
+      v20 = [identifiers preparedStatementForQueryString:v19];
       v25 = 0;
       v21 = [v20 executeUsingBlock:0 error:&v25];
       v22 = v25;
       if ((v21 & 1) == 0)
       {
-        [a1 handleError:v22 message:@"Removing items from searchable_attachments"];
+        [identifiers handleError:v22 message:@"Removing items from searchable_attachments"];
       }
     }
   }
@@ -3231,13 +3231,13 @@ LABEL_20:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (id)messageIDTransactionIDDictionaryToVerifyWithCount:(uint64_t)a3 lastVerifiedMessageID:
+- (id)messageIDTransactionIDDictionaryToVerifyWithCount:(uint64_t)count lastVerifiedMessageID:
 {
-  if (a1)
+  if (self)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT message_id, transaction_id FROM searchable_messages WHERE reindex_type = 0 AND message IS NOT NULL AND message_id > %lu LIMIT %lu", a3, a2];
-    v8 = [a1 preparedStatementForQueryString:v7];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT message_id, transaction_id FROM searchable_messages WHERE reindex_type = 0 AND message IS NOT NULL AND message_id > %lu LIMIT %lu", count, a2];
+    v8 = [self preparedStatementForQueryString:v7];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messageIDTransactionIDDictionaryToVerifyWithCount_lastVerifiedMessageID___block_invoke;
@@ -3249,7 +3249,7 @@ LABEL_20:
     v11 = v15;
     if ((v10 & 1) == 0)
     {
-      [a1 handleError:v11 message:@"Searching for random sample of messages to verify for spotlight integrity"];
+      [self handleError:v11 message:@"Searching for random sample of messages to verify for spotlight integrity"];
     }
 
     v12 = v17;
@@ -3280,9 +3280,9 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
 {
   if (result)
   {
-    v3 = [result basePath];
+    basePath = [result basePath];
 
-    if (v3)
+    if (basePath)
     {
       return a2;
     }
@@ -3296,11 +3296,11 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
   return result;
 }
 
-- (void)setJournal:(uint64_t)a1
+- (void)setJournal:(uint64_t)journal
 {
-  if (a1)
+  if (journal)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((journal + 32), a2);
   }
 }
 
@@ -3417,9 +3417,9 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
 - (void)detachJournalDatabase
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 24);
+    v4 = *(self + 24);
   }
 
   else
@@ -3427,13 +3427,13 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
     v4 = 0;
   }
 
-  if ([(EDPersistenceDatabaseConnection *)a1 _detachDatabaseWithName:v4])
+  if ([(EDPersistenceDatabaseConnection *)self _detachDatabaseWithName:v4])
   {
-    if (a1)
+    if (self)
     {
-      [*(a1 + 32) checkIn];
-      [(EDPersistenceDatabaseConnection *)a1 setJournal:?];
-      objc_setProperty_nonatomic_copy(a1, v7, 0, 24);
+      [*(self + 32) checkIn];
+      [(EDPersistenceDatabaseConnection *)self setJournal:?];
+      objc_setProperty_nonatomic_copy(self, v7, 0, 24);
     }
 
     else
@@ -3446,7 +3446,7 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "Detached journal on connection %{public}@", &v9, 0xCu);
     }
 
@@ -3464,13 +3464,13 @@ void __137__EDPersistenceDatabaseConnection_EDSearchableIndexPersistence__messag
 
 - (id)selectIdentifiersForDeletedAttachments
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(EDPersistenceDatabaseConnection *)a1 identifiersForAttachmentsWithQuery:?];
+    self = [(EDPersistenceDatabaseConnection *)self identifiersForAttachmentsWithQuery:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

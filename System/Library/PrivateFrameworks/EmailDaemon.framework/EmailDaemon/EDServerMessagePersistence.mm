@@ -2,33 +2,33 @@
 + (OS_os_log)log;
 + (id)serverLabelsTableSchema;
 + (id)serverMessagesTableSchema;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (BOOL)addLabels:(id)a3 removeLabels:(id)a4 toMessagesWithRemoteIDs:(id)a5;
-- (BOOL)addServerMessage:(id)a3 invalidMessage:(BOOL *)a4 duplicateRemoteID:(BOOL *)a5;
-- (BOOL)applyFlagChange:(id)a3 toMessagesWithRemoteIDs:(id)a4;
-- (BOOL)applySortedFlags:(id)a3;
-- (BOOL)attachMessage:(int64_t)a3 toServerMessageWithRemoteID:(id)a4;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (BOOL)addLabels:(id)labels removeLabels:(id)removeLabels toMessagesWithRemoteIDs:(id)ds;
+- (BOOL)addServerMessage:(id)message invalidMessage:(BOOL *)invalidMessage duplicateRemoteID:(BOOL *)d;
+- (BOOL)applyFlagChange:(id)change toMessagesWithRemoteIDs:(id)ds;
+- (BOOL)applySortedFlags:(id)flags;
+- (BOOL)attachMessage:(int64_t)message toServerMessageWithRemoteID:(id)d;
 - (BOOL)deleteAllServerMessagesInMailbox;
-- (BOOL)deleteServerMessagesWithRemoteIDs:(id)a3;
-- (EDServerMessagePersistence)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4 mailboxID:(int64_t)a5 useNumericSearch:(BOOL)a6 supportsLabels:(BOOL)a7;
-- (id)_remoteIDStringForRemoteIDArray:(id)a3;
-- (id)_serverMessageForRow:(id)a3 connection:(id)a4;
-- (id)_serverMessagesWithWhereClause:(id)a3 limitClause:(id)a4 returnLastEntries:(BOOL)a5;
+- (BOOL)deleteServerMessagesWithRemoteIDs:(id)ds;
+- (EDServerMessagePersistence)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence mailboxID:(int64_t)d useNumericSearch:(BOOL)search supportsLabels:(BOOL)labels;
+- (id)_remoteIDStringForRemoteIDArray:(id)array;
+- (id)_serverMessageForRow:(id)row connection:(id)connection;
+- (id)_serverMessagesWithWhereClause:(id)clause limitClause:(id)limitClause returnLastEntries:(BOOL)entries;
 - (id)deleteAllClearedUIDMessages;
-- (id)downloadStateForUIDs:(id)a3;
-- (id)serverMessagesForMessageIDHeaders:(id)a3;
-- (id)serverMessagesForRemoteIDs:(id)a3;
+- (id)downloadStateForUIDs:(id)ds;
+- (id)serverMessagesForMessageIDHeaders:(id)headers;
+- (id)serverMessagesForRemoteIDs:(id)ds;
 - (unint64_t)messageCount;
 - (unint64_t)undeletedMessageCount;
 - (unint64_t)unreadMessageCount;
 - (unsigned)maximumIMAPUID;
 - (unsigned)minimumIMAPUID;
-- (void)enumerateMessageBatchLimitUIDsWithWindow:(_NSRange)a3 batchSize:(int64_t)a4 newUIDCount:(int64_t)a5 block:(id)a6;
-- (void)enumerateUIDsInIndexSet:(id)a3 includingJSON:(id)a4 excludingJSON:(id)a5 withBlock:(id)a6;
-- (void)enumerateUIDsInOlderThanDate:(id)a3 limit:(unint64_t)a4 withBlock:(id)a5;
-- (void)enumerateUIDsInRanges:(id)a3 withBlock:(id)a4;
-- (void)groupInsideWriteTransactionWithDescription:(id)a3 block:(id)a4;
-- (void)setDownloadStateForUIDs:(id)a3;
+- (void)enumerateMessageBatchLimitUIDsWithWindow:(_NSRange)window batchSize:(int64_t)size newUIDCount:(int64_t)count block:(id)block;
+- (void)enumerateUIDsInIndexSet:(id)set includingJSON:(id)n excludingJSON:(id)oN withBlock:(id)block;
+- (void)enumerateUIDsInOlderThanDate:(id)date limit:(unint64_t)limit withBlock:(id)block;
+- (void)enumerateUIDsInRanges:(id)ranges withBlock:(id)block;
+- (void)groupInsideWriteTransactionWithDescription:(id)description block:(id)block;
+- (void)setDownloadStateForUIDs:(id)ds;
 @end
 
 @implementation EDServerMessagePersistence
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __33__EDServerMessagePersistence_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_97 != -1)
   {
     dispatch_once(&log_onceToken_97, block);
@@ -58,33 +58,33 @@ void __33__EDServerMessagePersistence_log__block_invoke(uint64_t a1)
   log_log_97 = v1;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v25[3] = *MEMORY[0x1E69E9840];
-  v5 = [a1 serverMessagesTableSchema];
-  v6 = [a1 serverLabelsTableSchema];
-  v7 = [v6 columnForName:@"server_message"];
-  [v7 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
+  serverMessagesTableSchema = [self serverMessagesTableSchema];
+  serverLabelsTableSchema = [self serverLabelsTableSchema];
+  v7 = [serverLabelsTableSchema columnForName:@"server_message"];
+  [v7 setAsForeignKeyForTable:serverMessagesTableSchema onDelete:2 onUpdate:0];
 
   v23 = +[EDMessagePersistence messagesTableName];
   v8 = +[EDPersistenceDatabaseSchema mailboxesTableName];
   v9 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v10 = [v5 columnForName:@"message"];
+  v10 = [serverMessagesTableSchema columnForName:@"message"];
   v11 = [(EDPersistenceForeignKeyPlaceholder *)v9 initWithColumn:v10 tableName:v23 onDelete:3 onUpdate:0];
   v25[0] = v11;
   v12 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v13 = [v5 columnForName:@"mailbox"];
+  v13 = [serverMessagesTableSchema columnForName:@"mailbox"];
   v14 = [(EDPersistenceForeignKeyPlaceholder *)v12 initWithColumn:v13 tableName:v8 onDelete:2 onUpdate:0];
   v25[1] = v14;
   v15 = [EDPersistenceForeignKeyPlaceholder alloc];
-  v16 = [v6 columnForName:@"label"];
+  v16 = [serverLabelsTableSchema columnForName:@"label"];
   v17 = [(EDPersistenceForeignKeyPlaceholder *)v15 initWithColumn:v16 tableName:v8 onDelete:2 onUpdate:0];
   v25[2] = v17;
-  *a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
+  *resolve = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
 
-  *a4 = MEMORY[0x1E695E0F0];
-  v24[0] = v5;
-  v24[1] = v6;
+  *toResolve = MEMORY[0x1E695E0F0];
+  v24[0] = serverMessagesTableSchema;
+  v24[1] = serverLabelsTableSchema;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
 
   v19 = *MEMORY[0x1E69E9840];
@@ -160,14 +160,14 @@ void __33__EDServerMessagePersistence_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (EDServerMessagePersistence)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4 mailboxID:(int64_t)a5 useNumericSearch:(BOOL)a6 supportsLabels:(BOOL)a7
+- (EDServerMessagePersistence)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence mailboxID:(int64_t)d useNumericSearch:(BOOL)search supportsLabels:(BOOL)labels
 {
-  v14 = a3;
-  v15 = a4;
-  if (*MEMORY[0x1E699A728] == a5)
+  databaseCopy = database;
+  persistenceCopy = persistence;
+  if (*MEMORY[0x1E699A728] == d)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"EDServerMessagePersistence.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"mailboxID != EMDatabaseIDUndefined"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDServerMessagePersistence.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"mailboxID != EMDatabaseIDUndefined"}];
   }
 
   v20.receiver = self;
@@ -176,11 +176,11 @@ void __33__EDServerMessagePersistence_log__block_invoke(uint64_t a1)
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_database, a3);
-    objc_storeStrong(&v17->_gmailLabelPersistence, a4);
-    v17->_mailboxID = a5;
-    v17->_useNumericSearch = a6;
-    v17->_supportsLabels = a7;
+    objc_storeStrong(&v16->_database, database);
+    objc_storeStrong(&v17->_gmailLabelPersistence, persistence);
+    v17->_mailboxID = d;
+    v17->_useNumericSearch = search;
+    v17->_supportsLabels = labels;
   }
 
   return v17;
@@ -192,7 +192,7 @@ void __33__EDServerMessagePersistence_log__block_invoke(uint64_t a1)
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence messageCount]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -200,7 +200,7 @@ void __33__EDServerMessagePersistence_log__block_invoke(uint64_t a1)
   v7[3] = &unk_1E8250350;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 __performReadWithCaller:v4 usingBlock:v7];
+  [database __performReadWithCaller:v4 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -244,7 +244,7 @@ void __42__EDServerMessagePersistence_messageCount__block_invoke_2(uint64_t a1, 
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence unreadMessageCount]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -252,7 +252,7 @@ void __42__EDServerMessagePersistence_messageCount__block_invoke_2(uint64_t a1, 
   v7[3] = &unk_1E8250350;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 __performReadWithCaller:v4 usingBlock:v7];
+  [database __performReadWithCaller:v4 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -296,7 +296,7 @@ void __48__EDServerMessagePersistence_unreadMessageCount__block_invoke_2(uint64_
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence undeletedMessageCount]"];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -304,7 +304,7 @@ void __48__EDServerMessagePersistence_unreadMessageCount__block_invoke_2(uint64_
   v7[3] = &unk_1E8250350;
   v7[4] = self;
   v7[5] = &v8;
-  [v3 __performReadWithCaller:v4 usingBlock:v7];
+  [database __performReadWithCaller:v4 usingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -348,7 +348,7 @@ void __51__EDServerMessagePersistence_undeletedMessageCount__block_invoke_2(uint
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence maximumIMAPUID]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -356,11 +356,11 @@ void __51__EDServerMessagePersistence_undeletedMessageCount__block_invoke_2(uint
   v6[3] = &unk_1E8250350;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __performReadWithCaller:v4 usingBlock:v6];
+  [database __performReadWithCaller:v4 usingBlock:v6];
 
-  LODWORD(v3) = *(v8 + 6);
+  LODWORD(database) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return database;
 }
 
 uint64_t __44__EDServerMessagePersistence_maximumIMAPUID__block_invoke(uint64_t a1, void *a2)
@@ -400,7 +400,7 @@ void __44__EDServerMessagePersistence_maximumIMAPUID__block_invoke_2(uint64_t a1
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence minimumIMAPUID]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -408,11 +408,11 @@ void __44__EDServerMessagePersistence_maximumIMAPUID__block_invoke_2(uint64_t a1
   v6[3] = &unk_1E8250350;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __performReadWithCaller:v4 usingBlock:v6];
+  [database __performReadWithCaller:v4 usingBlock:v6];
 
-  LODWORD(v3) = *(v8 + 6);
+  LODWORD(database) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return database;
 }
 
 uint64_t __44__EDServerMessagePersistence_minimumIMAPUID__block_invoke(uint64_t a1, void *a2)
@@ -446,9 +446,9 @@ void __44__EDServerMessagePersistence_minimumIMAPUID__block_invoke_2(uint64_t a1
   *a4 = 1;
 }
 
-- (id)serverMessagesForRemoteIDs:(id)a3
+- (id)serverMessagesForRemoteIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -457,7 +457,7 @@ void __44__EDServerMessagePersistence_minimumIMAPUID__block_invoke_2(uint64_t a1
   v10[4] = self;
   v6 = v5;
   v11 = v6;
-  [v4 ef_enumerateObjectsInBatchesOfSize:500 block:v10];
+  [dsCopy ef_enumerateObjectsInBatchesOfSize:500 block:v10];
   v7 = v11;
   v8 = v6;
 
@@ -515,10 +515,10 @@ id __80__EDServerMessagePersistence_serverMessagesForIMAPUIDs_limit_returnLastEn
 
 - (id)deleteAllClearedUIDMessages
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT message AS message_row_id FROM server_messages WHERE mailbox = %lld AND remote_id < 0", -[EDServerMessagePersistence mailboxID](self, "mailboxID")];
-  v6 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence deleteAllClearedUIDMessages]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -526,22 +526,22 @@ id __80__EDServerMessagePersistence_serverMessagesForIMAPUIDs_limit_returnLastEn
   v14[3] = &unk_1E8250328;
   v8 = v5;
   v15 = v8;
-  v16 = v3;
-  [v6 __performReadWithCaller:v7 usingBlock:v14];
+  v16 = array;
+  [database __performReadWithCaller:v7 usingBlock:v14];
 
   objc_autoreleasePoolPop(v4);
-  v9 = [(EDServerMessagePersistence *)self database];
+  database2 = [(EDServerMessagePersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence deleteAllClearedUIDMessages]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __57__EDServerMessagePersistence_deleteAllClearedUIDMessages__block_invoke_169;
   v13[3] = &unk_1E8250328;
   v13[4] = self;
-  v13[5] = v3;
-  [v9 __performWriteWithCaller:v10 usingBlock:v13];
+  v13[5] = array;
+  [database2 __performWriteWithCaller:v10 usingBlock:v13];
 
-  v11 = v3;
-  return v3;
+  v11 = array;
+  return array;
 }
 
 uint64_t __57__EDServerMessagePersistence_deleteAllClearedUIDMessages__block_invoke(uint64_t a1, void *a2)
@@ -624,17 +624,17 @@ LABEL_7:
   return 1;
 }
 
-- (id)serverMessagesForMessageIDHeaders:(id)a3
+- (id)serverMessagesForMessageIDHeaders:(id)headers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  headersCopy = headers;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(headersCopy, "count")}];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v4 ef_map:&__block_literal_global_87];
+  v7 = [headersCopy ef_map:&__block_literal_global_87];
   v8 = [v7 componentsJoinedByString:{@", "}];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"SELECT server_messages.ROWID, server_messages.message, server_messages.mailbox, server_messages.read, server_messages.deleted, server_messages.replied, server_messages.flagged, server_messages.draft, server_messages.forwarded, server_messages.redirected, server_messages.junk_level_set_by_user, server_messages.junk_level, server_messages.flag_color, server_messages.remote_id, messages.message_id AS message_id_header, messages.ROWID AS message_row_id FROM messages INNER JOIN server_messages ON messages.ROWID = server_messages.message WHERE (server_messages.mailbox = %lld AND messages.message_id IN (%@) AND server_messages.remote_id < 0)", -[EDServerMessagePersistence mailboxID](self, "mailboxID"), v8];
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence serverMessagesForMessageIDHeaders:]"];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -642,9 +642,9 @@ LABEL_7:
   v15[3] = &unk_1E8250440;
   v12 = v9;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v18 = v5;
-  [v10 __performReadWithCaller:v11 usingBlock:v15];
+  [database __performReadWithCaller:v11 usingBlock:v15];
 
   v13 = v5;
   return v5;
@@ -712,33 +712,33 @@ void __64__EDServerMessagePersistence_serverMessagesForMessageIDHeaders___block_
   }
 }
 
-- (id)_serverMessagesWithWhereClause:(id)a3 limitClause:(id)a4 returnLastEntries:(BOOL)a5
+- (id)_serverMessagesWithWhereClause:(id)clause limitClause:(id)limitClause returnLastEntries:(BOOL)entries
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  entriesCopy = entries;
+  clauseCopy = clause;
+  limitClauseCopy = limitClause;
   v10 = &stru_1F45B4608;
-  if (v5)
+  if (entriesCopy)
   {
     v10 = @" DESC";
   }
 
   v11 = v10;
-  v12 = [MEMORY[0x1E695DF70] array];
-  v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT %@ FROM server_messages WHERE (mailbox = %lld) AND (%@) ORDER BY remote_id%@%@", @"ROWID, message, mailbox, read, deleted, replied, flagged, draft, forwarded, redirected, junk_level_set_by_user, junk_level, flag_color, remote_id", -[EDServerMessagePersistence mailboxID](self, "mailboxID"), v8, v11, v9];
-  v14 = [(EDServerMessagePersistence *)self database];
+  array = [MEMORY[0x1E695DF70] array];
+  limitClauseCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"SELECT %@ FROM server_messages WHERE (mailbox = %lld) AND (%@) ORDER BY remote_id%@%@", @"ROWID, message, mailbox, read, deleted, replied, flagged, draft, forwarded, redirected, junk_level_set_by_user, junk_level, flag_color, remote_id", -[EDServerMessagePersistence mailboxID](self, "mailboxID"), clauseCopy, v11, limitClauseCopy];
+  database = [(EDServerMessagePersistence *)self database];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence _serverMessagesWithWhereClause:limitClause:returnLastEntries:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __91__EDServerMessagePersistence__serverMessagesWithWhereClause_limitClause_returnLastEntries___block_invoke;
   v20[3] = &unk_1E82512F0;
-  v16 = v13;
+  v16 = limitClauseCopy;
   v21 = v16;
-  v24 = v5;
-  v17 = v12;
+  v24 = entriesCopy;
+  v17 = array;
   v22 = v17;
-  v23 = self;
-  [v14 __performReadWithCaller:v15 usingBlock:v20];
+  selfCopy = self;
+  [database __performReadWithCaller:v15 usingBlock:v20];
 
   v18 = v17;
   return v17;
@@ -784,44 +784,44 @@ void __91__EDServerMessagePersistence__serverMessagesWithWhereClause_limitClause
   }
 }
 
-- (id)_serverMessageForRow:(id)a3 connection:(id)a4
+- (id)_serverMessageForRow:(id)row connection:(id)connection
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  rowCopy = row;
+  connectionCopy = connection;
   v8 = objc_alloc(MEMORY[0x1E699B308]);
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __62__EDServerMessagePersistence__serverMessageForRow_connection___block_invoke;
   v46[3] = &unk_1E8257A00;
-  v9 = v6;
+  v9 = rowCopy;
   v47 = v9;
   v10 = [v8 initWithBuilder:v46];
   v11 = [v9 objectForKeyedSubscript:@"remote_id"];
-  v12 = [v11 objectValue];
+  objectValue = [v11 objectValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v13 = [v9 objectForKeyedSubscript:@"ROWID"];
-    v14 = [v13 databaseIDValue];
+    databaseIDValue = [v13 databaseIDValue];
 
     v15 = [v9 objectForKeyedSubscript:@"ROWID"];
-    v32 = [v15 stringValue];
+    stringValue = [v15 stringValue];
 
     if ([(EDServerMessagePersistence *)self supportsLabels])
     {
-      v31 = [v7 preparedStatementForQueryString:@"SELECT label FROM server_labels WHERE server_message = ?"];
+      v31 = [connectionCopy preparedStatementForQueryString:@"SELECT label FROM server_labels WHERE server_message = ?"];
       v30 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-      v29 = [(EDServerMessagePersistence *)self gmailLabelPersistence];
-      v16 = [MEMORY[0x1E696AD98] numberWithLongLong:v14];
+      gmailLabelPersistence = [(EDServerMessagePersistence *)self gmailLabelPersistence];
+      v16 = [MEMORY[0x1E696AD98] numberWithLongLong:databaseIDValue];
       v48[0] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __62__EDServerMessagePersistence__serverMessageForRow_connection___block_invoke_2;
       v43[3] = &unk_1E82511B8;
-      v18 = v29;
+      v18 = gmailLabelPersistence;
       v44 = v18;
       v19 = v30;
       v45 = v19;
@@ -831,7 +831,7 @@ void __91__EDServerMessagePersistence__serverMessagesWithWhereClause_limitClause
 
       if ((v20 & 1) == 0)
       {
-        [v7 handleError:v21 message:@"Fetching server labels"];
+        [connectionCopy handleError:v21 message:@"Fetching server labels"];
       }
     }
 
@@ -845,10 +845,10 @@ void __91__EDServerMessagePersistence__serverMessagesWithWhereClause_limitClause
     v36[1] = 3221225472;
     v36[2] = __62__EDServerMessagePersistence__serverMessageForRow_connection___block_invoke_211;
     v36[3] = &unk_1E8257A28;
-    v24 = v32;
+    v24 = stringValue;
     v37 = v24;
     v38 = v9;
-    v39 = v12;
+    v39 = objectValue;
     v40 = v10;
     v41 = v19;
     v26 = v19;
@@ -985,36 +985,36 @@ void __62__EDServerMessagePersistence__serverMessageForRow_connection___block_in
   [v9 setServerFlags:*(a1 + 40)];
 }
 
-- (BOOL)addServerMessage:(id)a3 invalidMessage:(BOOL *)a4 duplicateRemoteID:(BOOL *)a5
+- (BOOL)addServerMessage:(id)message invalidMessage:(BOOL *)invalidMessage duplicateRemoteID:(BOOL *)d
 {
-  v8 = a3;
+  messageCopy = message;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 1;
-  if (a4)
+  if (invalidMessage)
   {
-    *a4 = 0;
+    *invalidMessage = 0;
   }
 
-  if (a5)
+  if (d)
   {
-    *a5 = 0;
+    *d = 0;
   }
 
-  v9 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence addServerMessage:invalidMessage:duplicateRemoteID:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__EDServerMessagePersistence_addServerMessage_invalidMessage_duplicateRemoteID___block_invoke;
   v14[3] = &unk_1E8257A78;
-  v11 = v8;
+  v11 = messageCopy;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v17 = &v20;
-  v18 = a4;
-  v19 = a5;
-  [v9 __performWriteWithCaller:v10 usingBlock:v14];
+  invalidMessageCopy = invalidMessage;
+  dCopy = d;
+  [database __performWriteWithCaller:v10 usingBlock:v14];
 
   v12 = *(v21 + 24);
   _Block_object_dispose(&v20, 8);
@@ -1159,36 +1159,36 @@ LABEL_21:
   return v29;
 }
 
-- (BOOL)attachMessage:(int64_t)a3 toServerMessageWithRemoteID:(id)a4
+- (BOOL)attachMessage:(int64_t)message toServerMessageWithRemoteID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 1;
   if ([(EDServerMessagePersistence *)self useNumericSearch])
   {
-    v7 = v6;
+    ef_quotedSQLEscapedString = dCopy;
   }
 
   else
   {
-    v7 = [v6 ef_quotedSQLEscapedString];
+    ef_quotedSQLEscapedString = [dCopy ef_quotedSQLEscapedString];
   }
 
-  v8 = v7;
-  v9 = [(EDServerMessagePersistence *)self database];
+  v8 = ef_quotedSQLEscapedString;
+  database = [(EDServerMessagePersistence *)self database];
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence attachMessage:toServerMessageWithRemoteID:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__EDServerMessagePersistence_attachMessage_toServerMessageWithRemoteID___block_invoke;
   v13[3] = &unk_1E8253058;
   v15 = &v17;
-  v16 = a3;
+  messageCopy = message;
   v13[4] = self;
   v11 = v8;
   v14 = v11;
-  [v9 __performWriteWithCaller:v10 usingBlock:v13];
+  [database __performWriteWithCaller:v10 usingBlock:v13];
 
   LOBYTE(v8) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
@@ -1206,29 +1206,29 @@ uint64_t __72__EDServerMessagePersistence_attachMessage_toServerMessageWithRemot
   return v5;
 }
 
-- (BOOL)deleteServerMessagesWithRemoteIDs:(id)a3
+- (BOOL)deleteServerMessagesWithRemoteIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence deleteServerMessagesWithRemoteIDs:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__EDServerMessagePersistence_deleteServerMessagesWithRemoteIDs___block_invoke;
   v9[3] = &unk_1E8250288;
   v9[4] = self;
-  v7 = v4;
+  v7 = dsCopy;
   v10 = v7;
   v11 = &v12;
-  [v5 __performWriteWithCaller:v6 usingBlock:v9];
+  [database __performWriteWithCaller:v6 usingBlock:v9];
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(dsCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v4;
+  return dsCopy;
 }
 
 uint64_t __64__EDServerMessagePersistence_deleteServerMessagesWithRemoteIDs___block_invoke(uint64_t a1, void *a2)
@@ -1248,7 +1248,7 @@ uint64_t __64__EDServerMessagePersistence_deleteServerMessagesWithRemoteIDs___bl
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 1;
-  v3 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence deleteAllServerMessagesInMailbox]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1256,11 +1256,11 @@ uint64_t __64__EDServerMessagePersistence_deleteServerMessagesWithRemoteIDs___bl
   v6[3] = &unk_1E8250FD8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 __performWriteWithCaller:v4 usingBlock:v6];
+  [database __performWriteWithCaller:v4 usingBlock:v6];
 
-  LOBYTE(v3) = *(v8 + 24);
+  LOBYTE(database) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v3;
+  return database;
 }
 
 uint64_t __62__EDServerMessagePersistence_deleteAllServerMessagesInMailbox__block_invoke(uint64_t a1, void *a2)
@@ -1273,74 +1273,74 @@ uint64_t __62__EDServerMessagePersistence_deleteAllServerMessagesInMailbox__bloc
   return v5;
 }
 
-- (BOOL)applyFlagChange:(id)a3 toMessagesWithRemoteIDs:(id)a4
+- (BOOL)applyFlagChange:(id)change toMessagesWithRemoteIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasChanges])
+  changeCopy = change;
+  dsCopy = ds;
+  if ([changeCopy hasChanges])
   {
     v8 = objc_opt_new();
-    if ([v6 readChanged])
+    if ([changeCopy readChanged])
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"read = %d", objc_msgSend(v6, "read")];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"read = %d", objc_msgSend(changeCopy, "read")];
       [v8 addObject:v9];
     }
 
-    if ([v6 deletedChanged])
+    if ([changeCopy deletedChanged])
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deleted = %d", objc_msgSend(v6, "deleted")];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deleted = %d", objc_msgSend(changeCopy, "deleted")];
       [v8 addObject:v10];
     }
 
-    if ([v6 repliedChanged])
+    if ([changeCopy repliedChanged])
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"replied = %d", objc_msgSend(v6, "replied")];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"replied = %d", objc_msgSend(changeCopy, "replied")];
       [v8 addObject:v11];
     }
 
-    if ([v6 flaggedChanged])
+    if ([changeCopy flaggedChanged])
     {
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"flagged = %d", objc_msgSend(v6, "flagged")];
+      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"flagged = %d", objc_msgSend(changeCopy, "flagged")];
       [v8 addObject:v12];
     }
 
-    if ([v6 draftChanged])
+    if ([changeCopy draftChanged])
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"draft = %d", objc_msgSend(v6, "draft")];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"draft = %d", objc_msgSend(changeCopy, "draft")];
       [v8 addObject:v13];
     }
 
-    if ([v6 forwardedChanged])
+    if ([changeCopy forwardedChanged])
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"forwarded = %d", objc_msgSend(v6, "forwarded")];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"forwarded = %d", objc_msgSend(changeCopy, "forwarded")];
       [v8 addObject:v14];
     }
 
-    if ([v6 redirectedChanged])
+    if ([changeCopy redirectedChanged])
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"redirected = %d", objc_msgSend(v6, "redirected")];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"redirected = %d", objc_msgSend(changeCopy, "redirected")];
       [v8 addObject:v15];
     }
 
-    if ([v6 junkLevelSetByUserChanged])
+    if ([changeCopy junkLevelSetByUserChanged])
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"junk_level_set_by_user = %d", objc_msgSend(v6, "junkLevelSetByUser")];
+      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"junk_level_set_by_user = %d", objc_msgSend(changeCopy, "junkLevelSetByUser")];
       [v8 addObject:v16];
     }
 
-    if ([v6 junkLevelChanged])
+    if ([changeCopy junkLevelChanged])
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"junk_level = %d", objc_msgSend(v6, "junkLevel")];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"junk_level = %d", objc_msgSend(changeCopy, "junkLevel")];
       [v8 addObject:v17];
     }
 
-    if ([v6 flagColorChanged])
+    if ([changeCopy flagColorChanged])
     {
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"flag_color = %d", objc_msgSend(v6, "flagColor")];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"flag_color = %d", objc_msgSend(changeCopy, "flagColor")];
       [v8 addObject:v18];
     }
 
-    v19 = [(EDServerMessagePersistence *)self _remoteIDStringForRemoteIDArray:v7];
+    v19 = [(EDServerMessagePersistence *)self _remoteIDStringForRemoteIDArray:dsCopy];
     v20 = MEMORY[0x1E696AEC0];
     v21 = [v8 componentsJoinedByString:{@", "}];
     v22 = [v20 stringWithFormat:@"UPDATE server_messages SET %@ WHERE (mailbox = %lld) AND (remote_id in (%@))", v21, -[EDServerMessagePersistence mailboxID](self, "mailboxID"), v19];
@@ -1349,7 +1349,7 @@ uint64_t __62__EDServerMessagePersistence_deleteAllServerMessagesInMailbox__bloc
     v32 = &v31;
     v33 = 0x2020000000;
     v34 = 0;
-    v23 = [(EDServerMessagePersistence *)self database];
+    database = [(EDServerMessagePersistence *)self database];
     v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence applyFlagChange:toMessagesWithRemoteIDs:]"];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
@@ -1358,7 +1358,7 @@ uint64_t __62__EDServerMessagePersistence_deleteAllServerMessagesInMailbox__bloc
     v30 = &v31;
     v25 = v22;
     v29 = v25;
-    [v23 __performWriteWithCaller:v24 usingBlock:v28];
+    [database __performWriteWithCaller:v24 usingBlock:v28];
 
     v26 = *(v32 + 24);
     _Block_object_dispose(&v31, 8);
@@ -1381,29 +1381,29 @@ uint64_t __70__EDServerMessagePersistence_applyFlagChange_toMessagesWithRemoteID
   return v4;
 }
 
-- (BOOL)applySortedFlags:(id)a3
+- (BOOL)applySortedFlags:(id)flags
 {
-  v4 = a3;
+  flagsCopy = flags;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence applySortedFlags:]"];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__EDServerMessagePersistence_applySortedFlags___block_invoke;
   v9[3] = &unk_1E8250288;
   v9[4] = self;
-  v7 = v4;
+  v7 = flagsCopy;
   v10 = v7;
   v11 = &v12;
-  [v5 __performWriteWithCaller:v6 usingBlock:v9];
+  [database __performWriteWithCaller:v6 usingBlock:v9];
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(flagsCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
 
-  return v4;
+  return flagsCopy;
 }
 
 uint64_t __47__EDServerMessagePersistence_applySortedFlags___block_invoke(uint64_t a1, void *a2)
@@ -1571,22 +1571,22 @@ id __47__EDServerMessagePersistence_applySortedFlags___block_invoke_2(uint64_t a
   return v4;
 }
 
-- (void)enumerateUIDsInRanges:(id)a3 withBlock:(id)a4
+- (void)enumerateUIDsInRanges:(id)ranges withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  rangesCopy = ranges;
+  blockCopy = block;
+  if ([rangesCopy count])
   {
-    v8 = [(EDServerMessagePersistence *)self database];
+    database = [(EDServerMessagePersistence *)self database];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence enumerateUIDsInRanges:withBlock:]"];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__EDServerMessagePersistence_enumerateUIDsInRanges_withBlock___block_invoke;
     v10[3] = &unk_1E8257AC8;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
-    [v8 __performReadWithCaller:v9 usingBlock:v10];
+    v11 = rangesCopy;
+    selfCopy = self;
+    v13 = blockCopy;
+    [database __performReadWithCaller:v9 usingBlock:v10];
   }
 }
 
@@ -1647,28 +1647,28 @@ void __62__EDServerMessagePersistence_enumerateUIDsInRanges_withBlock___block_in
   }
 }
 
-- (void)enumerateUIDsInIndexSet:(id)a3 includingJSON:(id)a4 excludingJSON:(id)a5 withBlock:(id)a6
+- (void)enumerateUIDsInIndexSet:(id)set includingJSON:(id)n excludingJSON:(id)oN withBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(EDServerMessagePersistence *)self database];
+  setCopy = set;
+  nCopy = n;
+  oNCopy = oN;
+  blockCopy = block;
+  database = [(EDServerMessagePersistence *)self database];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence enumerateUIDsInIndexSet:includingJSON:excludingJSON:withBlock:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __92__EDServerMessagePersistence_enumerateUIDsInIndexSet_includingJSON_excludingJSON_withBlock___block_invoke;
   v20[3] = &unk_1E8257AF0;
-  v16 = v10;
+  v16 = setCopy;
   v21 = v16;
-  v22 = self;
-  v17 = v11;
+  selfCopy = self;
+  v17 = nCopy;
   v23 = v17;
-  v18 = v12;
+  v18 = oNCopy;
   v24 = v18;
-  v19 = v13;
+  v19 = blockCopy;
   v25 = v19;
-  [v14 __performReadWithCaller:v15 usingBlock:v20];
+  [database __performReadWithCaller:v15 usingBlock:v20];
 }
 
 uint64_t __92__EDServerMessagePersistence_enumerateUIDsInIndexSet_includingJSON_excludingJSON_withBlock___block_invoke(uint64_t a1, void *a2)
@@ -1740,23 +1740,23 @@ void __92__EDServerMessagePersistence_enumerateUIDsInIndexSet_includingJSON_excl
   }
 }
 
-- (void)enumerateUIDsInOlderThanDate:(id)a3 limit:(unint64_t)a4 withBlock:(id)a5
+- (void)enumerateUIDsInOlderThanDate:(id)date limit:(unint64_t)limit withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(EDServerMessagePersistence *)self database];
+  dateCopy = date;
+  blockCopy = block;
+  database = [(EDServerMessagePersistence *)self database];
   v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence enumerateUIDsInOlderThanDate:limit:withBlock:]"];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__EDServerMessagePersistence_enumerateUIDsInOlderThanDate_limit_withBlock___block_invoke;
   v14[3] = &unk_1E8257B18;
   v14[4] = self;
-  v12 = v8;
+  v12 = dateCopy;
   v15 = v12;
-  v17 = a4;
-  v13 = v9;
+  limitCopy = limit;
+  v13 = blockCopy;
   v16 = v13;
-  [v10 __performReadWithCaller:v11 usingBlock:v14];
+  [database __performReadWithCaller:v11 usingBlock:v14];
 }
 
 uint64_t __75__EDServerMessagePersistence_enumerateUIDsInOlderThanDate_limit_withBlock___block_invoke(uint64_t a1, void *a2)
@@ -1802,22 +1802,22 @@ void __75__EDServerMessagePersistence_enumerateUIDsInOlderThanDate_limit_withBlo
   }
 }
 
-- (id)downloadStateForUIDs:(id)a3
+- (id)downloadStateForUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(EDServerMessagePersistence *)self database];
+  dsCopy = ds;
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
+  database = [(EDServerMessagePersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence downloadStateForUIDs:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__EDServerMessagePersistence_downloadStateForUIDs___block_invoke;
   v13[3] = &unk_1E8250440;
-  v8 = v4;
+  v8 = dsCopy;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v9 = v5;
   v16 = v9;
-  [v6 __performReadWithCaller:v7 usingBlock:v13];
+  [database __performReadWithCaller:v7 usingBlock:v13];
 
   v10 = v16;
   v11 = v9;
@@ -1866,32 +1866,32 @@ void __51__EDServerMessagePersistence_downloadStateForUIDs___block_invoke_2(uint
   }
 }
 
-- (void)setDownloadStateForUIDs:(id)a3
+- (void)setDownloadStateForUIDs:(id)ds
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence setDownloadStateForUIDs:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__EDServerMessagePersistence_setDownloadStateForUIDs___block_invoke;
   v11[3] = &unk_1E8250288;
-  v7 = v4;
+  v7 = dsCopy;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v14 = &v15;
-  [v5 __performWriteWithCaller:v6 usingBlock:v11];
+  [database __performWriteWithCaller:v6 usingBlock:v11];
 
   v8 = +[EDServerMessagePersistence log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v16[3];
     *buf = 134218240;
-    v20 = self;
+    selfCopy2 = self;
     v21 = 1024;
     v22 = v9;
     _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Updated download_state for %u rows.", buf, 0x12u);
@@ -1948,26 +1948,26 @@ void __54__EDServerMessagePersistence_setDownloadStateForUIDs___block_invoke_2(u
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateMessageBatchLimitUIDsWithWindow:(_NSRange)a3 batchSize:(int64_t)a4 newUIDCount:(int64_t)a5 block:(id)a6
+- (void)enumerateMessageBatchLimitUIDsWithWindow:(_NSRange)window batchSize:(int64_t)size newUIDCount:(int64_t)count block:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v11 = a6;
-  if (a4 >= 1)
+  length = window.length;
+  location = window.location;
+  blockCopy = block;
+  if (size >= 1)
   {
-    v12 = [(EDServerMessagePersistence *)self database];
+    database = [(EDServerMessagePersistence *)self database];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence enumerateMessageBatchLimitUIDsWithWindow:batchSize:newUIDCount:block:]"];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __99__EDServerMessagePersistence_enumerateMessageBatchLimitUIDsWithWindow_batchSize_newUIDCount_block___block_invoke;
     v14[3] = &unk_1E8257B68;
     v14[4] = self;
-    v16 = a4;
+    sizeCopy = size;
     v17 = location;
     v18 = length;
-    v19 = a5;
-    v15 = v11;
-    [v12 __performReadWithCaller:v13 usingBlock:v14];
+    countCopy = count;
+    v15 = blockCopy;
+    [database __performReadWithCaller:v13 usingBlock:v14];
   }
 }
 
@@ -2021,49 +2021,49 @@ void __99__EDServerMessagePersistence_enumerateMessageBatchLimitUIDsWithWindow_b
   }
 }
 
-- (void)groupInsideWriteTransactionWithDescription:(id)a3 block:(id)a4
+- (void)groupInsideWriteTransactionWithDescription:(id)description block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EDServerMessagePersistence *)self database];
+  descriptionCopy = description;
+  blockCopy = block;
+  database = [(EDServerMessagePersistence *)self database];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __79__EDServerMessagePersistence_groupInsideWriteTransactionWithDescription_block___block_invoke;
   v10[3] = &unk_1E8250F38;
-  v9 = v7;
+  v9 = blockCopy;
   v11 = v9;
-  [v8 __performWriteWithCaller:v6 usingBlock:v10];
+  [database __performWriteWithCaller:descriptionCopy usingBlock:v10];
 }
 
-- (BOOL)addLabels:(id)a3 removeLabels:(id)a4 toMessagesWithRemoteIDs:(id)a5
+- (BOOL)addLabels:(id)labels removeLabels:(id)removeLabels toMessagesWithRemoteIDs:(id)ds
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelsCopy = labels;
+  removeLabelsCopy = removeLabels;
+  dsCopy = ds;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
-  v11 = [(EDServerMessagePersistence *)self database];
+  database = [(EDServerMessagePersistence *)self database];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDServerMessagePersistence addLabels:removeLabels:toMessagesWithRemoteIDs:]"];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__EDServerMessagePersistence_addLabels_removeLabels_toMessagesWithRemoteIDs___block_invoke;
   v17[3] = &unk_1E8257B90;
-  v13 = v10;
+  v13 = dsCopy;
   v22 = &v23;
   v18 = v13;
-  v19 = self;
-  v14 = v8;
+  selfCopy = self;
+  v14 = labelsCopy;
   v20 = v14;
-  v15 = v9;
+  v15 = removeLabelsCopy;
   v21 = v15;
-  [v11 __performWriteWithCaller:v12 usingBlock:v17];
+  [database __performWriteWithCaller:v12 usingBlock:v17];
 
-  LOBYTE(v8) = *(v24 + 24);
+  LOBYTE(labelsCopy) = *(v24 + 24);
   _Block_object_dispose(&v23, 8);
 
-  return v8;
+  return labelsCopy;
 }
 
 uint64_t __77__EDServerMessagePersistence_addLabels_removeLabels_toMessagesWithRemoteIDs___block_invoke(uint64_t a1, void *a2)
@@ -2122,17 +2122,17 @@ void __72__EDServerMessagePersistence__addLabels_removeLabels_forUID_connection_
   *(v5 + 40) = v4;
 }
 
-- (id)_remoteIDStringForRemoteIDArray:(id)a3
+- (id)_remoteIDStringForRemoteIDArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   if ([(EDServerMessagePersistence *)self useNumericSearch])
   {
-    [v4 ef_filter:&__block_literal_global_468_0];
+    [arrayCopy ef_filter:&__block_literal_global_468_0];
   }
 
   else
   {
-    [v4 valueForKey:@"ef_quotedSQLEscapedString"];
+    [arrayCopy valueForKey:@"ef_quotedSQLEscapedString"];
   }
   v5 = ;
   v6 = [v5 componentsJoinedByString:{@", "}];

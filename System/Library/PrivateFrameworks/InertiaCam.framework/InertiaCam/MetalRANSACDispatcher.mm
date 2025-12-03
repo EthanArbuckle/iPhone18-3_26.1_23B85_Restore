@@ -1,13 +1,13 @@
 @interface MetalRANSACDispatcher
 - (CGSize)frameSize;
-- (MetalRANSACDispatcher)initWithMaxCorrespondences:(unint64_t)a3;
-- (void)assureSizeAndCopyToMetalBuffer:(id *)a3 fromData:(const void *)a4 dataSize:(unint64_t)a5 metalResourceOptions:(unint64_t)a6;
-- (void)performRansacOnData:(unsigned int)a3 firstPointSet:(const float *)a4 secondPointSet:(const float *)a5 pointWeights:(const float *)a6 homographies:(const ransac_homography_record *)a7 numHomographies:(unsigned int)a8 homScores:(float *)a9;
+- (MetalRANSACDispatcher)initWithMaxCorrespondences:(unint64_t)correspondences;
+- (void)assureSizeAndCopyToMetalBuffer:(id *)buffer fromData:(const void *)data dataSize:(unint64_t)size metalResourceOptions:(unint64_t)options;
+- (void)performRansacOnData:(unsigned int)data firstPointSet:(const float *)set secondPointSet:(const float *)pointSet pointWeights:(const float *)weights homographies:(const ransac_homography_record *)homographies numHomographies:(unsigned int)numHomographies homScores:(float *)scores;
 @end
 
 @implementation MetalRANSACDispatcher
 
-- (MetalRANSACDispatcher)initWithMaxCorrespondences:(unint64_t)a3
+- (MetalRANSACDispatcher)initWithMaxCorrespondences:(unint64_t)correspondences
 {
   v25.receiver = self;
   v25.super_class = MetalRANSACDispatcher;
@@ -56,79 +56,79 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v21 = [(MTLComputePipelineState *)v20 maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)v20 maxTotalThreadsPerThreadgroup];
   v4->inlierLimit = 0.0;
   v22 = 32;
-  if (v21 < 0x20)
+  if (maxTotalThreadsPerThreadgroup < 0x20)
   {
-    v22 = v21;
+    v22 = maxTotalThreadsPerThreadgroup;
   }
 
   v4->frameSize.width = 0.0;
   v4->frameSize.height = 0.0;
   v4->_m_numThreadsPerGroup = v22;
-  v4->_m_maxCorrespondences = a3;
+  v4->_m_maxCorrespondences = correspondences;
 LABEL_12:
 
   return v4;
 }
 
-- (void)performRansacOnData:(unsigned int)a3 firstPointSet:(const float *)a4 secondPointSet:(const float *)a5 pointWeights:(const float *)a6 homographies:(const ransac_homography_record *)a7 numHomographies:(unsigned int)a8 homScores:(float *)a9
+- (void)performRansacOnData:(unsigned int)data firstPointSet:(const float *)set secondPointSet:(const float *)pointSet pointWeights:(const float *)weights homographies:(const ransac_homography_record *)homographies numHomographies:(unsigned int)numHomographies homScores:(float *)scores
 {
-  v27 = a8;
-  v28 = a3;
+  numHomographiesCopy = numHomographies;
+  dataCopy = data;
   inlierLimit = self->inlierLimit;
   v25 = vcvt_f32_f64(self->frameSize);
-  v15 = 8 * a3;
-  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_mX fromData:a4 dataSize:v15 metalResourceOptions:0];
-  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_mXhat fromData:a5 dataSize:v15 metalResourceOptions:0];
-  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_ScoreBuffer fromData:a6 dataSize:4 * a3 metalResourceOptions:0];
+  v15 = 8 * data;
+  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_mX fromData:set dataSize:v15 metalResourceOptions:0];
+  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_mXhat fromData:pointSet dataSize:v15 metalResourceOptions:0];
+  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_ScoreBuffer fromData:weights dataSize:4 * data metalResourceOptions:0];
   [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_RansacParams fromData:&v25 dataSize:20 metalResourceOptions:0];
-  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_RansacHomographies fromData:a7 dataSize:36 * a8 metalResourceOptions:0];
-  v16 = 4 * a8;
+  [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_RansacHomographies fromData:homographies dataSize:36 * numHomographies metalResourceOptions:0];
+  v16 = 4 * numHomographies;
   [(MetalRANSACDispatcher *)self assureSizeAndCopyToMetalBuffer:&self->_m_ModelScores fromData:0 dataSize:v16 metalResourceOptions:0];
   m_numThreadsPerGroup = self->_m_numThreadsPerGroup;
-  v18 = (m_numThreadsPerGroup + a8 - 1) / m_numThreadsPerGroup;
-  v19 = [(MTLCommandQueue *)self->m_metalCommandQueue commandBuffer];
-  v20 = [v19 computeCommandEncoder];
-  [v20 setComputePipelineState:self->m_metalPipeline];
-  [v20 setBuffer:self->_m_RansacParams offset:0 atIndex:0];
-  [v20 setBuffer:self->_m_mX offset:0 atIndex:1];
-  [v20 setBuffer:self->_m_mXhat offset:0 atIndex:2];
-  [v20 setBuffer:self->_m_ScoreBuffer offset:0 atIndex:3];
-  [v20 setBuffer:self->_m_RansacHomographies offset:0 atIndex:4];
-  [v20 setBuffer:self->_m_ModelScores offset:0 atIndex:5];
+  v18 = (m_numThreadsPerGroup + numHomographies - 1) / m_numThreadsPerGroup;
+  commandBuffer = [(MTLCommandQueue *)self->m_metalCommandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->m_metalPipeline];
+  [computeCommandEncoder setBuffer:self->_m_RansacParams offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_m_mX offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_m_mXhat offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_m_ScoreBuffer offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_m_RansacHomographies offset:0 atIndex:4];
+  [computeCommandEncoder setBuffer:self->_m_ModelScores offset:0 atIndex:5];
   v23 = v18;
   v24 = vdupq_n_s64(1uLL);
   v21 = m_numThreadsPerGroup;
   v22 = v24;
-  [v20 dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
-  [v20 endEncoding];
-  [v19 commit];
-  [v19 waitUntilCompleted];
-  memcpy(a9, [(MTLBuffer *)self->_m_ModelScores contents], v16);
+  [computeCommandEncoder dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
+  memcpy(scores, [(MTLBuffer *)self->_m_ModelScores contents], v16);
 }
 
-- (void)assureSizeAndCopyToMetalBuffer:(id *)a3 fromData:(const void *)a4 dataSize:(unint64_t)a5 metalResourceOptions:(unint64_t)a6
+- (void)assureSizeAndCopyToMetalBuffer:(id *)buffer fromData:(const void *)data dataSize:(unint64_t)size metalResourceOptions:(unint64_t)options
 {
-  if (!*a3)
+  if (!*buffer)
   {
     goto LABEL_9;
   }
 
-  if ([*a3 length] < a5)
+  if ([*buffer length] < size)
   {
-    v11 = *a3;
-    *a3 = 0;
+    v11 = *buffer;
+    *buffer = 0;
   }
 
-  if (*a3)
+  if (*buffer)
   {
-    if (a4)
+    if (data)
     {
-      v12 = [*a3 contents];
+      contents = [*buffer contents];
 
-      memcpy(v12, a4, a5);
+      memcpy(contents, data, size);
     }
   }
 
@@ -136,17 +136,17 @@ LABEL_12:
   {
 LABEL_9:
     m_metalDevice = self->m_metalDevice;
-    if (a4)
+    if (data)
     {
-      v14 = [(MTLDevice *)m_metalDevice newBufferWithBytes:a4 length:a5 options:a6];
+      v14 = [(MTLDevice *)m_metalDevice newBufferWithBytes:data length:size options:options];
     }
 
     else
     {
-      v14 = [(MTLDevice *)m_metalDevice newBufferWithLength:a5 options:a6];
+      v14 = [(MTLDevice *)m_metalDevice newBufferWithLength:size options:options];
     }
 
-    *a3 = v14;
+    *buffer = v14;
 
     MEMORY[0x2821F96F8]();
   }

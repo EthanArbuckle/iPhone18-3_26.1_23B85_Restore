@@ -1,5 +1,5 @@
 @interface CUBluetoothDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CUBluetoothDevice)init;
 - (id)description;
 - (unint64_t)hash;
@@ -7,16 +7,16 @@
 
 @implementation CUBluetoothDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CUBluetoothDevice *)self addressString];
-    v6 = [v4 addressString];
-    v7 = v5;
-    v8 = v6;
+    addressString = [(CUBluetoothDevice *)self addressString];
+    addressString2 = [equalCopy addressString];
+    v7 = addressString;
+    v8 = addressString2;
     v9 = v8;
     if (v7 == v8)
     {
@@ -44,8 +44,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CUBluetoothDevice *)self addressString];
-  v3 = [v2 hash];
+  addressString = [(CUBluetoothDevice *)self addressString];
+  v3 = [addressString hash];
 
   return v3;
 }
@@ -53,49 +53,49 @@
 - (id)description
 {
   v106 = 0;
-  v3 = [(CUBluetoothDevice *)self addressString];
-  NSAppendPrintF(&v106, "CUBluetoothDevice %@", v4, v5, v6, v7, v8, v9, v3);
+  addressString = [(CUBluetoothDevice *)self addressString];
+  NSAppendPrintF(&v106, "CUBluetoothDevice %@", v4, v5, v6, v7, v8, v9, addressString);
   v10 = v106;
 
-  v11 = [(CUBluetoothDevice *)self identifier];
-  v18 = v11;
-  if (v11)
+  identifier = [(CUBluetoothDevice *)self identifier];
+  v18 = identifier;
+  if (identifier)
   {
     v105 = v10;
-    NSAppendPrintF(&v105, ", ID '%@'", v12, v13, v14, v15, v16, v17, v11);
+    NSAppendPrintF(&v105, ", ID '%@'", v12, v13, v14, v15, v16, v17, identifier);
     v19 = v105;
 
     v10 = v19;
   }
 
-  v20 = [(CUBluetoothDevice *)self name];
-  v27 = v20;
-  if (v20)
+  name = [(CUBluetoothDevice *)self name];
+  v27 = name;
+  if (name)
   {
     v104 = v10;
-    NSAppendPrintF(&v104, ", '%@'", v21, v22, v23, v24, v25, v26, v20);
+    NSAppendPrintF(&v104, ", '%@'", v21, v22, v23, v24, v25, v26, name);
     v28 = v104;
 
     v10 = v28;
   }
 
-  v29 = [(CUBluetoothDevice *)self manufacturer];
-  v36 = v29;
-  if (v29)
+  manufacturer = [(CUBluetoothDevice *)self manufacturer];
+  v36 = manufacturer;
+  if (manufacturer)
   {
     v103 = v10;
-    NSAppendPrintF(&v103, ", Mfg '%@'", v30, v31, v32, v33, v34, v35, v29);
+    NSAppendPrintF(&v103, ", Mfg '%@'", v30, v31, v32, v33, v34, v35, manufacturer);
     v37 = v103;
 
     v10 = v37;
   }
 
-  v38 = [(CUBluetoothDevice *)self modelNumber];
-  v45 = v38;
-  if (v38)
+  modelNumber = [(CUBluetoothDevice *)self modelNumber];
+  v45 = modelNumber;
+  if (modelNumber)
   {
     v102 = v10;
-    NSAppendPrintF(&v102, ", Md %@", v39, v40, v41, v42, v43, v44, v38);
+    NSAppendPrintF(&v102, ", Md %@", v39, v40, v41, v42, v43, v44, modelNumber);
     v46 = v102;
 
     v10 = v46;

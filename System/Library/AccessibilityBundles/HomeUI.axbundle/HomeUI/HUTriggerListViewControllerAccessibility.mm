@@ -1,16 +1,16 @@
 @interface HUTriggerListViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation HUTriggerListViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUTriggerListViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"HUTriggerListViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"HUTriggerListViewController" hasInstanceMethod:@"navigationAddButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUTriggerListViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"HUTriggerListViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"HUTriggerListViewController" hasInstanceMethod:@"navigationAddButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

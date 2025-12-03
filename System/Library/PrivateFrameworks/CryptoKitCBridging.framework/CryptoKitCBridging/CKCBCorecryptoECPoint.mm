@@ -1,43 +1,43 @@
 @interface CKCBCorecryptoECPoint
-- (BOOL)isEqual:(id)a3;
-- (CKCBCorecryptoECPoint)initWithGeneratorForCP:(ccec_cp *)a3;
-- (CKCBCorecryptoECPoint)initWithPublicKey:(ccec_pub_ctx *)a3;
-- (id)add:(id)a3 corecryptoError:(int *)a4;
-- (id)initFromPublicKeyBytes:(id)a3 inGroup:(ccec_cp *)a4 compressed:(BOOL)a5 corecryptoError:(int *)a6;
-- (id)initPoint:(ccec_affine_point *)a3 onGroup:(ccec_cp *)a4;
-- (id)multiply:(id)a3 corecryptoError:(int *)a4;
-- (id)serializedPublicKey:(BOOL)a3;
-- (id)sub:(id)a3 corecryptoError:(int *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CKCBCorecryptoECPoint)initWithGeneratorForCP:(ccec_cp *)p;
+- (CKCBCorecryptoECPoint)initWithPublicKey:(ccec_pub_ctx *)key;
+- (id)add:(id)add corecryptoError:(int *)error;
+- (id)initFromPublicKeyBytes:(id)bytes inGroup:(ccec_cp *)group compressed:(BOOL)compressed corecryptoError:(int *)error;
+- (id)initPoint:(ccec_affine_point *)point onGroup:(ccec_cp *)group;
+- (id)multiply:(id)multiply corecryptoError:(int *)error;
+- (id)serializedPublicKey:(BOOL)key;
+- (id)sub:(id)sub corecryptoError:(int *)error;
 - (void)dealloc;
 @end
 
 @implementation CKCBCorecryptoECPoint
 
-- (id)initPoint:(ccec_affine_point *)a3 onGroup:(ccec_cp *)a4
+- (id)initPoint:(ccec_affine_point *)point onGroup:(ccec_cp *)group
 {
   v7.receiver = self;
   v7.super_class = CKCBCorecryptoECPoint;
   result = [(CKCBCorecryptoECPoint *)&v7 init];
   if (result)
   {
-    *(result + 1) = a4;
-    *(result + 2) = a3;
+    *(result + 1) = group;
+    *(result + 2) = point;
   }
 
   return result;
 }
 
-- (id)initFromPublicKeyBytes:(id)a3 inGroup:(ccec_cp *)a4 compressed:(BOOL)a5 corecryptoError:(int *)a6
+- (id)initFromPublicKeyBytes:(id)bytes inGroup:(ccec_cp *)group compressed:(BOOL)compressed corecryptoError:(int *)error
 {
-  v7 = a5;
+  compressedCopy = compressed;
   v24[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = (24 * a4->var0 + 31) & 0xFFFFFFFFFFFFFFF0;
-  v14 = MEMORY[0x28223BE20](v10, v12, v13);
+  bytesCopy = bytes;
+  v11 = (24 * group->var0 + 31) & 0xFFFFFFFFFFFFFFF0;
+  v14 = MEMORY[0x28223BE20](bytesCopy, v12, v13);
   v16 = v24 - v15;
   [v14 length];
-  [v10 bytes];
-  if (v7)
+  [bytesCopy bytes];
+  if (compressedCopy)
   {
     v17 = ccec_compressed_x962_import_pub();
   }
@@ -47,12 +47,12 @@
     v17 = ccec_raw_import_pub();
   }
 
-  *a6 = v17;
+  *error = v17;
   if (v17)
   {
     var0 = self->_group->var0;
     cc_clear();
-    v19 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -61,29 +61,29 @@
     v21 = v20->_group->var0;
     cc_clear();
     self = v20;
-    v19 = self;
+    selfCopy = self;
   }
 
   v22 = *MEMORY[0x277D85DE8];
-  return v19;
+  return selfCopy;
 }
 
-- (CKCBCorecryptoECPoint)initWithGeneratorForCP:(ccec_cp *)a3
+- (CKCBCorecryptoECPoint)initWithGeneratorForCP:(ccec_cp *)p
 {
   v5 = [(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:?];
   v6 = malloc_type_malloc(v5, 0xF1E2E41FuLL);
-  v7 = a3 + 16 * a3->var0 + 8 * a3->var0;
+  v7 = p + 16 * p->var0 + 8 * p->var0;
   bzero(v6, v5);
-  memcpy(v6, v7 + 32, 16 * a3->var0);
+  memcpy(v6, v7 + 32, 16 * p->var0);
 
-  return [(CKCBCorecryptoECPoint *)self initPoint:v6 onGroup:a3];
+  return [(CKCBCorecryptoECPoint *)self initPoint:v6 onGroup:p];
 }
 
-- (CKCBCorecryptoECPoint)initWithPublicKey:(ccec_pub_ctx *)a3
+- (CKCBCorecryptoECPoint)initWithPublicKey:(ccec_pub_ctx *)key
 {
-  v4 = &a3->var1[1];
-  var0 = a3->var0;
-  v6 = [(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:a3->var0];
+  v4 = &key->var1[1];
+  var0 = key->var0;
+  v6 = [(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:key->var0];
   v7 = malloc_type_malloc(v6, 0x6A29DF8AuLL);
   memcpy(v7, v4, v6);
   v8 = var0->var0;
@@ -92,15 +92,15 @@
   return [(CKCBCorecryptoECPoint *)self initPoint:v7 onGroup:var0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(CKCBCorecryptoECPoint *)self group];
-  if (v5 == [v4 group])
+  equalCopy = equal;
+  group = [(CKCBCorecryptoECPoint *)self group];
+  if (group == [equalCopy group])
   {
     v7 = *[(CKCBCorecryptoECPoint *)self group];
     [(CKCBCorecryptoECPoint *)self point];
-    [v4 point];
+    [equalCopy point];
     v6 = ccn_cmp() == 0;
   }
 
@@ -112,13 +112,13 @@
   return v6;
 }
 
-- (id)serializedPublicKey:(BOOL)a3
+- (id)serializedPublicKey:(BOOL)key
 {
   v21[1] = *MEMORY[0x277D85DE8];
   group = self->_group;
   v6 = cczp_bitlen();
   v9 = (v6 + 7) >> 3;
-  if (a3)
+  if (key)
   {
     v10 = (24 * group->var0 + 31) & 0xFFFFFFFFFFFFFFF0;
     MEMORY[0x28223BE20](v6, v7, v8);
@@ -157,12 +157,12 @@
   return v15;
 }
 
-- (id)add:(id)a3 corecryptoError:(int *)a4
+- (id)add:(id)add corecryptoError:(int *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CKCBCorecryptoECPoint *)self group];
-  if (v7 != [v6 group] || (v8 = ccrng(), *a4))
+  addCopy = add;
+  group = [(CKCBCorecryptoECPoint *)self group];
+  if (group != [addCopy group] || (v8 = ccrng(), *error))
   {
     v11 = 0;
     goto LABEL_4;
@@ -175,8 +175,8 @@
   MEMORY[0x28223BE20](v16, v20, v21);
   [(CKCBCorecryptoECPoint *)self point];
   v22 = ccec_projectify();
-  *a4 = v22;
-  if (v22 || ([v6 point], v23 = ccec_projectify(), (*a4 = v23) != 0))
+  *error = v22;
+  if (v22 || ([addCopy point], v23 = ccec_projectify(), (*error = v23) != 0))
   {
     var0 = group->var0;
     cc_clear();
@@ -188,20 +188,20 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  *a4 = ccec_full_add();
+  *error = ccec_full_add();
   v26 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     v27 = group->var0;
     goto LABEL_10;
   }
 
   v28 = malloc_type_malloc([(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:group], 0x100004000313F17uLL);
-  *a4 = ccec_affinify();
+  *error = ccec_affinify();
   v29 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     free(v28);
     goto LABEL_11;
@@ -215,12 +215,12 @@ LABEL_4:
   return v11;
 }
 
-- (id)sub:(id)a3 corecryptoError:(int *)a4
+- (id)sub:(id)sub corecryptoError:(int *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CKCBCorecryptoECPoint *)self group];
-  if (v7 != [v6 group] || (v8 = ccrng(), *a4))
+  subCopy = sub;
+  group = [(CKCBCorecryptoECPoint *)self group];
+  if (group != [subCopy group] || (v8 = ccrng(), *error))
   {
     v11 = 0;
     goto LABEL_4;
@@ -233,8 +233,8 @@ LABEL_4:
   MEMORY[0x28223BE20](v16, v20, v21);
   [(CKCBCorecryptoECPoint *)self point];
   v22 = ccec_projectify();
-  *a4 = v22;
-  if (v22 || ([v6 point], v23 = ccec_projectify(), (*a4 = v23) != 0))
+  *error = v22;
+  if (v22 || ([subCopy point], v23 = ccec_projectify(), (*error = v23) != 0))
   {
     var0 = group->var0;
     cc_clear();
@@ -246,20 +246,20 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  *a4 = ccec_full_sub();
+  *error = ccec_full_sub();
   v26 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     v27 = group->var0;
     goto LABEL_10;
   }
 
   v28 = malloc_type_malloc([(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:group], 0x100004000313F17uLL);
-  *a4 = ccec_affinify();
+  *error = ccec_affinify();
   v29 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     free(v28);
     goto LABEL_11;
@@ -273,12 +273,12 @@ LABEL_4:
   return v11;
 }
 
-- (id)multiply:(id)a3 corecryptoError:(int *)a4
+- (id)multiply:(id)multiply corecryptoError:(int *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CKCBCorecryptoECPoint *)self group];
-  if (v7 != [v6 group] || (v8 = ccrng(), *a4))
+  multiplyCopy = multiply;
+  group = [(CKCBCorecryptoECPoint *)self group];
+  if (group != [multiplyCopy group] || (v8 = ccrng(), *error))
   {
     v11 = 0;
     goto LABEL_4;
@@ -291,7 +291,7 @@ LABEL_4:
   MEMORY[0x28223BE20](v16, v20, v21);
   [(CKCBCorecryptoECPoint *)self point];
   v22 = ccec_projectify();
-  *a4 = v22;
+  *error = v22;
   if (v22)
   {
     var0 = group->var0;
@@ -304,21 +304,21 @@ LABEL_12:
     goto LABEL_4;
   }
 
-  [v6 corecryptoScalar];
-  *a4 = ccec_mult_blinded();
+  [multiplyCopy corecryptoScalar];
+  *error = ccec_mult_blinded();
   v25 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     v26 = group->var0;
     goto LABEL_11;
   }
 
   v27 = malloc_type_malloc([(CKCBCorecryptoECPoint *)self pointAllocationSizeForGroup:group], 0x100004000313F17uLL);
-  *a4 = ccec_affinify();
+  *error = ccec_affinify();
   v28 = group->var0;
   cc_clear();
-  if (*a4)
+  if (*error)
   {
     free(v27);
     goto LABEL_12;

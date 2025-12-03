@@ -1,30 +1,30 @@
 @interface PBBridgeWatchAttributeController
-+ (id)editionDescription:(unint64_t)a3;
-+ (id)hwBehaviorDescription:(unint64_t)a3;
-+ (id)materialDescription:(unint64_t)a3;
-+ (id)materialKeyColorForMaterial:(unint64_t)a3;
-+ (id)resourceString:(id)a3 material:(unint64_t)a4 size:(unint64_t)a5 forAttributes:(unint64_t)a6;
++ (id)editionDescription:(unint64_t)description;
++ (id)hwBehaviorDescription:(unint64_t)description;
++ (id)materialDescription:(unint64_t)description;
++ (id)materialKeyColorForMaterial:(unint64_t)material;
++ (id)resourceString:(id)string material:(unint64_t)material size:(unint64_t)size forAttributes:(unint64_t)attributes;
 + (id)sharedDeviceController;
-+ (id)sizeDescription:(unint64_t)a3;
-+ (id)stingMaterialDescription:(unint64_t)a3;
-+ (unint64_t)_materialForCLHSValue:(unint64_t)a3;
-+ (unint64_t)materialFromDevice:(id)a3;
-+ (unint64_t)materialFromPdrDevice:(id)a3;
-+ (unint64_t)sizeFromDevice:(id)a3;
-+ (unint64_t)sizeFromPdrDevice:(id)a3;
-+ (unsigned)sizeFromInternalSize:(unint64_t)a3;
++ (id)sizeDescription:(unint64_t)description;
++ (id)stingMaterialDescription:(unint64_t)description;
++ (unint64_t)_materialForCLHSValue:(unint64_t)value;
++ (unint64_t)materialFromDevice:(id)device;
++ (unint64_t)materialFromPdrDevice:(id)device;
++ (unint64_t)sizeFromDevice:(id)device;
++ (unint64_t)sizeFromPdrDevice:(id)device;
++ (unsigned)sizeFromInternalSize:(unint64_t)size;
 - (BOOL)hasTwoYearWarranty;
 - (PBBridgeWatchAttributeController)init;
 - (PDRDevice)pdrDevice;
 - (id)attributesDescription;
 - (id)getGestaltDmin;
-- (id)resourceString:(id)a3 forAttributes:(unint64_t)a4;
-- (unint64_t)fallbackMaterialForSize:(unint64_t)a3;
-- (void)_populateMaterialDetailsWithDMinProperties:(id)a3;
-- (void)_setMaterialWithCLHSValue:(unint64_t)a3;
-- (void)setDevice:(id)a3;
-- (void)setInternalSize:(unint64_t)a3;
-- (void)setMaterial:(unint64_t)a3;
+- (id)resourceString:(id)string forAttributes:(unint64_t)attributes;
+- (unint64_t)fallbackMaterialForSize:(unint64_t)size;
+- (void)_populateMaterialDetailsWithDMinProperties:(id)properties;
+- (void)_setMaterialWithCLHSValue:(unint64_t)value;
+- (void)setDevice:(id)device;
+- (void)setInternalSize:(unint64_t)size;
+- (void)setMaterial:(unint64_t)material;
 @end
 
 @implementation PBBridgeWatchAttributeController
@@ -48,19 +48,19 @@ uint64_t __58__PBBridgeWatchAttributeController_sharedDeviceController__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_populateMaterialDetailsWithDMinProperties:(id)a3
+- (void)_populateMaterialDetailsWithDMinProperties:(id)properties
 {
-  v6 = [a3 objectForKey:&unk_286FB4178];
-  v4 = [v6 integerValue];
-  self->_material = v4;
-  if (v4 - 1 > 0x25)
+  v6 = [properties objectForKey:&unk_286FB4178];
+  integerValue = [v6 integerValue];
+  self->_material = integerValue;
+  if (integerValue - 1 > 0x25)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_25DEB4D30[v4 - 1];
+    v5 = qword_25DEB4D30[integerValue - 1];
   }
 
   self->_edition = v5;
@@ -86,10 +86,10 @@ uint64_t __58__PBBridgeWatchAttributeController_sharedDeviceController__block_in
       v2->_stringCache = v3;
 
       v5 = MGCopyAnswer();
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
       v7 = pbb_setup_log();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-      if (v6)
+      if (integerValue)
       {
         if (v8)
         {
@@ -97,7 +97,7 @@ uint64_t __58__PBBridgeWatchAttributeController_sharedDeviceController__block_in
           _os_log_impl(&dword_25DE64000, v7, OS_LOG_TYPE_DEFAULT, "Device is CLHS Type", buf, 2u);
         }
 
-        [(PBBridgeWatchAttributeController *)v2 _setMaterialWithCLHSValue:v6];
+        [(PBBridgeWatchAttributeController *)v2 _setMaterialWithCLHSValue:integerValue];
       }
 
       else
@@ -108,8 +108,8 @@ uint64_t __58__PBBridgeWatchAttributeController_sharedDeviceController__block_in
           _os_log_impl(&dword_25DE64000, v7, OS_LOG_TYPE_DEFAULT, "Device is DMin Type", buf, 2u);
         }
 
-        v9 = [(PBBridgeWatchAttributeController *)v2 getGestaltDmin];
-        [(PBBridgeWatchAttributeController *)v2 _populateMaterialDetailsWithDMinProperties:v9];
+        getGestaltDmin = [(PBBridgeWatchAttributeController *)v2 getGestaltDmin];
+        [(PBBridgeWatchAttributeController *)v2 _populateMaterialDetailsWithDMinProperties:getGestaltDmin];
       }
 
       v10 = MGCopyAnswer();
@@ -151,9 +151,9 @@ LABEL_97:
                 v29 = pbb_setup_log();
                 if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
                 {
-                  v30 = [(PBBridgeWatchAttributeController *)v2 attributesDescription];
+                  attributesDescription = [(PBBridgeWatchAttributeController *)v2 attributesDescription];
                   *buf = 138412290;
-                  v35 = v30;
+                  v35 = attributesDescription;
                   _os_log_impl(&dword_25DE64000, v29, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
                 }
 
@@ -302,7 +302,7 @@ LABEL_82:
             {
 LABEL_96:
               v2->_internalSize = v25;
-              [PBBridgeCAReporter recordMaterial:v6 andSize:?];
+              [PBBridgeCAReporter recordMaterial:integerValue andSize:?];
               goto LABEL_97;
             }
 
@@ -460,32 +460,32 @@ LABEL_100:
     return 0;
   }
 
-  v4 = [(PBBridgeWatchAttributeController *)self edition];
-  v5 = [(PBBridgeWatchAttributeController *)self hardwareBehavior];
+  edition = [(PBBridgeWatchAttributeController *)self edition];
+  hardwareBehavior = [(PBBridgeWatchAttributeController *)self hardwareBehavior];
   v6 = [(PBBridgeWatchAttributeController *)self material]& 0xFFFFFFFFFFFFFFFELL;
-  return v4 == 3 || v5 == 1 || v6 == 10;
+  return edition == 3 || hardwareBehavior == 1 || v6 == 10;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_device != v4)
+  deviceCopy = device;
+  if (self->_device != deviceCopy)
   {
     [(NSCache *)self->_stringCache removeAllObjects];
     v5 = objc_alloc_init(MEMORY[0x277CBEA78]);
     stringCache = self->_stringCache;
     self->_stringCache = v5;
 
-    v7 = [(NRDevice *)v4 valueForProperty:*MEMORY[0x277D2BAD8]];
-    v8 = [(NRDevice *)v4 valueForProperty:*MEMORY[0x277D2BAC0]];
-    v9 = [v8 intValue];
+    v7 = [(NRDevice *)deviceCopy valueForProperty:*MEMORY[0x277D2BAD8]];
+    v8 = [(NRDevice *)deviceCopy valueForProperty:*MEMORY[0x277D2BAC0]];
+    intValue = [v8 intValue];
 
-    v10 = [(NRDevice *)v4 valueForProperty:*MEMORY[0x277D2BAC8]];
-    v11 = [v10 integerValue];
+    v10 = [(NRDevice *)deviceCopy valueForProperty:*MEMORY[0x277D2BAC8]];
+    integerValue = [v10 integerValue];
     v12 = pbb_setup_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-    if (v11)
+    if (integerValue)
     {
       if (v13)
       {
@@ -493,7 +493,7 @@ LABEL_100:
         _os_log_impl(&dword_25DE64000, v12, OS_LOG_TYPE_DEFAULT, "Device is CLHS Type", &v29, 2u);
       }
 
-      [(PBBridgeWatchAttributeController *)self _setMaterialWithCLHSValue:v11];
+      [(PBBridgeWatchAttributeController *)self _setMaterialWithCLHSValue:integerValue];
     }
 
     else
@@ -507,8 +507,8 @@ LABEL_100:
       [(PBBridgeWatchAttributeController *)self _populateMaterialDetailsWithDMinProperties:v7];
     }
 
-    self->_hardwareBehavior = v9;
-    v14 = [(NRDevice *)v4 valueForProperty:*MEMORY[0x277D2BA80]];
+    self->_hardwareBehavior = intValue;
+    v14 = [(NRDevice *)deviceCopy valueForProperty:*MEMORY[0x277D2BA80]];
     if (MGGetBoolAnswer() && v14)
     {
       v15 = [v14 objectForKeyedSubscript:@"ArtworkDeviceSubType"];
@@ -518,26 +518,26 @@ LABEL_100:
 
     else
     {
-      v15 = [(NRDevice *)v4 valueForProperty:*MEMORY[0x277D2BBC0]];
+      v15 = [(NRDevice *)deviceCopy valueForProperty:*MEMORY[0x277D2BBC0]];
       v16 = NRDeviceSizeForProductType();
     }
 
     if (v16 > 5)
     {
       v17 = 20;
-      if (v9 == 1)
+      if (intValue == 1)
       {
         v17 = 22;
       }
 
       v21 = 21;
-      if (v9 == 1)
+      if (intValue == 1)
       {
         v21 = 23;
       }
 
       v22 = 25;
-      if (v9 == 1)
+      if (intValue == 1)
       {
         v22 = 26;
       }
@@ -558,18 +558,18 @@ LABEL_100:
       }
 
       v23 = 13;
-      if (v9 == 2)
+      if (intValue == 2)
       {
         v23 = 17;
       }
 
-      if (v9 == 1)
+      if (intValue == 1)
       {
         v23 = 15;
       }
 
       v24 = 19;
-      if (v9 == 1)
+      if (intValue == 1)
       {
         v24 = 24;
       }
@@ -595,23 +595,23 @@ LABEL_100:
       if (v16 <= 2)
       {
         v17 = 5;
-        if (v9 != 2)
+        if (intValue != 2)
         {
           v17 = 1;
         }
 
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v17 = 3;
         }
 
         v18 = 2;
-        if (v9 == 2)
+        if (intValue == 2)
         {
           v18 = 6;
         }
 
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v18 = 4;
         }
@@ -627,34 +627,34 @@ LABEL_100:
       else
       {
         v17 = 7;
-        if (v9 == 2)
+        if (intValue == 2)
         {
           v17 = 11;
         }
 
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v17 = 9;
         }
 
         v18 = 8;
-        if (v9 == 2)
+        if (intValue == 2)
         {
           v18 = 12;
         }
 
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v18 = 10;
         }
 
         v19 = 14;
-        if (v9 == 2)
+        if (intValue == 2)
         {
           v19 = 18;
         }
 
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v19 = 16;
         }
@@ -683,15 +683,15 @@ LABEL_100:
     v25 = pbb_setup_log();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [(PBBridgeWatchAttributeController *)self attributesDescription];
+      attributesDescription = [(PBBridgeWatchAttributeController *)self attributesDescription];
       v29 = 138543362;
-      v30 = v26;
+      v30 = attributesDescription;
       _os_log_impl(&dword_25DE64000, v25, OS_LOG_TYPE_DEFAULT, "Populating With Device: %{public}@", &v29, 0xCu);
     }
   }
 
   device = self->_device;
-  self->_device = v4;
+  self->_device = deviceCopy;
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -701,9 +701,9 @@ LABEL_100:
   device = self->_device;
   if (device)
   {
-    v3 = [(NRDevice *)device pairingID];
-    v4 = [MEMORY[0x277D37B50] sharedInstance];
-    v5 = [v4 deviceForPairingID:v3];
+    pairingID = [(NRDevice *)device pairingID];
+    mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+    v5 = [mEMORY[0x277D37B50] deviceForPairingID:pairingID];
   }
 
   else
@@ -722,9 +722,9 @@ LABEL_100:
   return v2;
 }
 
-+ (id)stingMaterialDescription:(unint64_t)a3
++ (id)stingMaterialDescription:(unint64_t)description
 {
-  if (a3 == 1)
+  if (description == 1)
   {
     return @"Color-2022";
   }
@@ -735,41 +735,41 @@ LABEL_100:
   }
 }
 
-+ (id)materialDescription:(unint64_t)a3
++ (id)materialDescription:(unint64_t)description
 {
-  if (a3 - 1 > 0x25)
+  if (description - 1 > 0x25)
   {
     return @"Generic";
   }
 
   else
   {
-    return off_2799F3F28[a3 - 1];
+    return off_2799F3F28[description - 1];
   }
 }
 
-+ (id)sizeDescription:(unint64_t)a3
++ (id)sizeDescription:(unint64_t)description
 {
-  if (a3 > 0x1A)
+  if (description > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return off_2799F4058[a3];
+    return off_2799F4058[description];
   }
 }
 
-+ (id)hwBehaviorDescription:(unint64_t)a3
++ (id)hwBehaviorDescription:(unint64_t)description
 {
   v3 = @"Default";
-  if (a3 == 2)
+  if (description == 2)
   {
     v3 = @"Nike+";
   }
 
-  if (a3 == 1)
+  if (description == 1)
   {
     return @"Hermès";
   }
@@ -780,16 +780,16 @@ LABEL_100:
   }
 }
 
-+ (id)resourceString:(id)a3 material:(unint64_t)a4 size:(unint64_t)a5 forAttributes:(unint64_t)a6
++ (id)resourceString:(id)string material:(unint64_t)material size:(unint64_t)size forAttributes:(unint64_t)attributes
 {
-  v6 = a6;
+  attributesCopy = attributes;
   v20 = *MEMORY[0x277D85DE8];
-  v9 = [MEMORY[0x277CCAB68] stringWithString:a3];
+  v9 = [MEMORY[0x277CCAB68] stringWithString:string];
   v10 = v9;
-  if ((v6 & 2) != 0)
+  if ((attributesCopy & 2) != 0)
   {
-    v11 = a4 - 1;
-    if (a4 - 1 >= 0x26)
+    v11 = material - 1;
+    if (material - 1 >= 0x26)
     {
       v13 = @"-M3";
       goto LABEL_10;
@@ -800,13 +800,13 @@ LABEL_100:
 
   else
   {
-    if ((v6 & 1) == 0)
+    if ((attributesCopy & 1) == 0)
     {
       goto LABEL_11;
     }
 
-    v11 = a4 - 5;
-    if (a4 - 5 >= 0x22)
+    v11 = material - 5;
+    if (material - 5 >= 0x22)
     {
       v13 = @"-E2";
       goto LABEL_10;
@@ -819,16 +819,16 @@ LABEL_100:
 LABEL_10:
   [v9 appendString:v13];
 LABEL_11:
-  if ((v6 & 4) != 0)
+  if ((attributesCopy & 4) != 0)
   {
-    if (a5 - 1 > 0x19)
+    if (size - 1 > 0x19)
     {
       v14 = @"-448h";
     }
 
     else
     {
-      v14 = off_2799F4390[a5 - 1];
+      v14 = off_2799F4390[size - 1];
     }
 
     [v10 appendString:v14];
@@ -847,24 +847,24 @@ LABEL_11:
   return v10;
 }
 
-+ (id)editionDescription:(unint64_t)a3
++ (id)editionDescription:(unint64_t)description
 {
-  if (a3 > 3)
+  if (description > 3)
   {
     return @"Sport";
   }
 
   else
   {
-    return off_2799F4240[a3];
+    return off_2799F4240[description];
   }
 }
 
-- (id)resourceString:(id)a3 forAttributes:(unint64_t)a4
+- (id)resourceString:(id)string forAttributes:(unint64_t)attributes
 {
-  v4 = a4;
+  attributesCopy = attributes;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringCopy = string;
   if (self->_material - 29 <= 0xFFFFFFFFFFFFFFE3)
   {
     v7 = pbb_setup_log();
@@ -877,12 +877,12 @@ LABEL_11:
     }
   }
 
-  v9 = [(NSCache *)self->_stringCache objectForKey:v6];
+  v9 = [(NSCache *)self->_stringCache objectForKey:stringCopy];
   if (!v9)
   {
-    v10 = [MEMORY[0x277CCAB68] stringWithString:v6];
+    v10 = [MEMORY[0x277CCAB68] stringWithString:stringCopy];
     v9 = v10;
-    if ((v4 & 2) != 0)
+    if ((attributesCopy & 2) != 0)
     {
       v14 = self->_material - 1;
       if (v14 >= 0x26)
@@ -898,10 +898,10 @@ LABEL_11:
 
     else
     {
-      if ((v4 & 1) == 0)
+      if ((attributesCopy & 1) == 0)
       {
 LABEL_17:
-        if ((v4 & 4) != 0)
+        if ((attributesCopy & 4) != 0)
         {
           v15 = self->_internalSize - 1;
           if (v15 > 0x19)
@@ -917,7 +917,7 @@ LABEL_17:
           [v9 appendString:v16];
         }
 
-        [(NSCache *)self->_stringCache setObject:v9 forKey:v6];
+        [(NSCache *)self->_stringCache setObject:v9 forKey:stringCopy];
         goto LABEL_23;
       }
 
@@ -957,12 +957,12 @@ LABEL_23:
   return v9;
 }
 
-+ (id)materialKeyColorForMaterial:(unint64_t)a3
++ (id)materialKeyColorForMaterial:(unint64_t)material
 {
-  switch(a3)
+  switch(material)
   {
     case 0x14uLL:
-      v6 = [MEMORY[0x277D75348] systemOrangeColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
       break;
     case 9uLL:
       v3 = 0.91372549;
@@ -974,30 +974,30 @@ LABEL_23:
       v4 = 0.796078431;
       v5 = 0.482352941;
 LABEL_6:
-      v6 = [MEMORY[0x277D75348] colorWithRed:v3 green:v4 blue:v5 alpha:1.0];
+      systemOrangeColor = [MEMORY[0x277D75348] colorWithRed:v3 green:v4 blue:v5 alpha:1.0];
       break;
     default:
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      systemOrangeColor = [MEMORY[0x277D75348] whiteColor];
       break;
   }
 
-  return v6;
+  return systemOrangeColor;
 }
 
-- (unint64_t)fallbackMaterialForSize:(unint64_t)a3
+- (unint64_t)fallbackMaterialForSize:(unint64_t)size
 {
   v3 = 3;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x14)
+  if ((size & 0xFFFFFFFFFFFFFFFELL) == 0x14)
   {
     v3 = 22;
   }
 
-  if (a3 == 25)
+  if (size == 25)
   {
     v3 = 14;
   }
 
-  if (a3 == 19)
+  if (size == 19)
   {
     return 14;
   }
@@ -1008,65 +1008,65 @@ LABEL_6:
   }
 }
 
-- (void)setInternalSize:(unint64_t)a3
+- (void)setInternalSize:(unint64_t)size
 {
-  self->_internalSize = a3;
-  if (a3 - 3 > 0x15)
+  self->_internalSize = size;
+  if (size - 3 > 0x15)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_25DEB4B08[a3 - 3];
+    v3 = qword_25DEB4B08[size - 3];
   }
 
   self->_hardwareBehavior = v3;
 }
 
-- (void)setMaterial:(unint64_t)a3
+- (void)setMaterial:(unint64_t)material
 {
-  self->_material = a3;
-  if (a3 - 1 > 0x25)
+  self->_material = material;
+  if (material - 1 > 0x25)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_25DEB4D30[a3 - 1];
+    v3 = qword_25DEB4D30[material - 1];
   }
 
   self->_edition = v3;
 }
 
-+ (unint64_t)materialFromDevice:(id)a3
++ (unint64_t)materialFromDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x277D2BAC8]];
-  v6 = [v5 integerValue];
-  if (v6)
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x277D2BAC8]];
+  integerValue = [v5 integerValue];
+  if (integerValue)
   {
-    v7 = [a1 _materialForCLHSValue:v6];
+    integerValue2 = [self _materialForCLHSValue:integerValue];
   }
 
   else
   {
-    v8 = [v4 valueForProperty:*MEMORY[0x277D2BAD8]];
+    v8 = [deviceCopy valueForProperty:*MEMORY[0x277D2BAD8]];
     v9 = [v8 objectForKeyedSubscript:&unk_286FB4178];
-    v7 = [v9 integerValue];
+    integerValue2 = [v9 integerValue];
   }
 
-  return v7;
+  return integerValue2;
 }
 
-+ (unint64_t)sizeFromDevice:(id)a3
++ (unint64_t)sizeFromDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 valueForProperty:*MEMORY[0x277D2BAC0]];
-  v5 = [v4 intValue];
+  deviceCopy = device;
+  v4 = [deviceCopy valueForProperty:*MEMORY[0x277D2BAC0]];
+  intValue = [v4 intValue];
 
-  v6 = [v3 valueForProperty:*MEMORY[0x277D2BA80]];
+  v6 = [deviceCopy valueForProperty:*MEMORY[0x277D2BA80]];
   if (MGGetBoolAnswer() && v6)
   {
     v7 = [v6 objectForKeyedSubscript:@"ArtworkDeviceSubType"];
@@ -1076,26 +1076,26 @@ LABEL_6:
 
   else
   {
-    v7 = [v3 valueForProperty:*MEMORY[0x277D2BBC0]];
+    v7 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBC0]];
     v8 = NRDeviceSizeForProductType();
   }
 
   if (v8 > 5)
   {
     v13 = 20;
-    if (v5 == 1)
+    if (intValue == 1)
     {
       v13 = 22;
     }
 
     v14 = 21;
-    if (v5 == 1)
+    if (intValue == 1)
     {
       v14 = 23;
     }
 
     v15 = 25;
-    if (v5 == 1)
+    if (intValue == 1)
     {
       v15 = 26;
     }
@@ -1116,18 +1116,18 @@ LABEL_6:
     }
 
     v16 = 13;
-    if (v5 == 2)
+    if (intValue == 2)
     {
       v16 = 17;
     }
 
-    if (v5 == 1)
+    if (intValue == 1)
     {
       v16 = 15;
     }
 
     v17 = 19;
-    if (v5 == 1)
+    if (intValue == 1)
     {
       v17 = 24;
     }
@@ -1158,23 +1158,23 @@ LABEL_6:
     if (v8 <= 2)
     {
       v9 = 5;
-      if (v5 != 2)
+      if (intValue != 2)
       {
         v9 = 1;
       }
 
-      if (v5 == 1)
+      if (intValue == 1)
       {
         v9 = 3;
       }
 
       v10 = 2;
-      if (v5 == 2)
+      if (intValue == 2)
       {
         v10 = 6;
       }
 
-      if (v5 == 1)
+      if (intValue == 1)
       {
         v10 = 4;
       }
@@ -1190,34 +1190,34 @@ LABEL_6:
     else
     {
       v9 = 7;
-      if (v5 == 2)
+      if (intValue == 2)
       {
         v9 = 11;
       }
 
-      if (v5 == 1)
+      if (intValue == 1)
       {
         v9 = 9;
       }
 
       v10 = 8;
-      if (v5 == 2)
+      if (intValue == 2)
       {
         v10 = 12;
       }
 
-      if (v5 == 1)
+      if (intValue == 1)
       {
         v10 = 10;
       }
 
       v11 = 14;
-      if (v5 == 2)
+      if (intValue == 2)
       {
         v11 = 18;
       }
 
-      if (v5 == 1)
+      if (intValue == 1)
       {
         v11 = 16;
       }
@@ -1250,52 +1250,52 @@ LABEL_6:
   return v19;
 }
 
-+ (unint64_t)materialFromPdrDevice:(id)a3
++ (unint64_t)materialFromPdrDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x277D37B80]];
-  v6 = [v5 integerValue];
-  if (v6)
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x277D37B80]];
+  integerValue = [v5 integerValue];
+  if (integerValue)
   {
-    v7 = [a1 _materialForCLHSValue:v6];
+    integerValue2 = [self _materialForCLHSValue:integerValue];
   }
 
   else
   {
-    v8 = [v4 valueForProperty:*MEMORY[0x277D37B90]];
+    v8 = [deviceCopy valueForProperty:*MEMORY[0x277D37B90]];
     v9 = [v8 objectForKeyedSubscript:&unk_286FB4178];
-    v7 = [v9 integerValue];
+    integerValue2 = [v9 integerValue];
   }
 
-  return v7;
+  return integerValue2;
 }
 
-+ (unint64_t)sizeFromPdrDevice:(id)a3
++ (unint64_t)sizeFromPdrDevice:(id)device
 {
   v3 = *MEMORY[0x277D37B78];
-  v4 = a3;
-  v5 = [v4 valueForProperty:v3];
-  v6 = [v5 intValue];
+  deviceCopy = device;
+  v5 = [deviceCopy valueForProperty:v3];
+  intValue = [v5 intValue];
 
-  v7 = [v4 valueForProperty:*MEMORY[0x277D37BE8]];
+  v7 = [deviceCopy valueForProperty:*MEMORY[0x277D37BE8]];
 
   v8 = NRDeviceSizeForProductType();
   if (v8 > 5)
   {
     v13 = 20;
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v13 = 22;
     }
 
     v14 = 21;
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v14 = 23;
     }
 
     v15 = 25;
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v15 = 26;
     }
@@ -1316,18 +1316,18 @@ LABEL_6:
     }
 
     v16 = 13;
-    if (v6 == 2)
+    if (intValue == 2)
     {
       v16 = 17;
     }
 
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v16 = 15;
     }
 
     v17 = 19;
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v17 = 24;
     }
@@ -1358,23 +1358,23 @@ LABEL_6:
     if (v8 <= 2)
     {
       v9 = 5;
-      if (v6 != 2)
+      if (intValue != 2)
       {
         v9 = 1;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v9 = 3;
       }
 
       v10 = 2;
-      if (v6 == 2)
+      if (intValue == 2)
       {
         v10 = 6;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v10 = 4;
       }
@@ -1390,34 +1390,34 @@ LABEL_6:
     else
     {
       v9 = 7;
-      if (v6 == 2)
+      if (intValue == 2)
       {
         v9 = 11;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v9 = 9;
       }
 
       v10 = 8;
-      if (v6 == 2)
+      if (intValue == 2)
       {
         v10 = 12;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v10 = 10;
       }
 
       v11 = 14;
-      if (v6 == 2)
+      if (intValue == 2)
       {
         v11 = 18;
       }
 
-      if (v6 == 1)
+      if (intValue == 1)
       {
         v11 = 16;
       }
@@ -1449,35 +1449,35 @@ LABEL_6:
   return SizeForInternalSize(v18);
 }
 
-+ (unsigned)sizeFromInternalSize:(unint64_t)a3
++ (unsigned)sizeFromInternalSize:(unint64_t)size
 {
-  if (a3 - 1 > 0x19)
+  if (size - 1 > 0x19)
   {
     return 0;
   }
 
   else
   {
-    return word_25DEB4BB8[a3 - 1];
+    return word_25DEB4BB8[size - 1];
   }
 }
 
-+ (unint64_t)_materialForCLHSValue:(unint64_t)a3
++ (unint64_t)_materialForCLHSValue:(unint64_t)value
 {
-  if (a3 - 2 > 0x27)
+  if (value - 2 > 0x27)
   {
     return 3;
   }
 
   else
   {
-    return qword_25DEB4BF0[a3 - 2];
+    return qword_25DEB4BF0[value - 2];
   }
 }
 
-- (void)_setMaterialWithCLHSValue:(unint64_t)a3
+- (void)_setMaterialWithCLHSValue:(unint64_t)value
 {
-  v4 = [PBBridgeWatchAttributeController _materialForCLHSValue:a3];
+  v4 = [PBBridgeWatchAttributeController _materialForCLHSValue:value];
   self->_material = v4;
   if (v4 - 1 > 0x25)
   {

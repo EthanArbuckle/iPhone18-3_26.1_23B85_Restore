@@ -1,17 +1,17 @@
 @interface PGAssetCollectionFeatureDefinition
-- (BOOL)isEqual:(id)a3;
-- (PGAssetCollectionFeatureDefinition)initWithAssetFilterByName:(id)a3;
-- (PGAssetCollectionFeatureDefinition)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PGAssetCollectionFeatureDefinition)initWithAssetFilterByName:(id)name;
+- (PGAssetCollectionFeatureDefinition)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PGAssetCollectionFeatureDefinition
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -21,24 +21,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v7 = v6;
       sceneAssetFilter = self->_sceneAssetFilter;
       v9 = sceneAssetFilter;
       if (!sceneAssetFilter)
       {
-        v10 = [(PGAssetCollectionFeatureDefinition *)v6 sceneAssetFilter];
-        if (!v10)
+        sceneAssetFilter = [(PGAssetCollectionFeatureDefinition *)v6 sceneAssetFilter];
+        if (!sceneAssetFilter)
         {
           goto LABEL_12;
         }
 
-        v3 = v10;
+        cLIPQueryAssetFilter = sceneAssetFilter;
         v9 = self->_sceneAssetFilter;
       }
 
-      v11 = [(PGAssetCollectionFeatureDefinition *)v7 sceneAssetFilter];
-      v12 = [(PGSceneAssetFilter *)v9 isEqual:v11];
+      sceneAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 sceneAssetFilter];
+      v12 = [(PGSceneAssetFilter *)v9 isEqual:sceneAssetFilter2];
 
       if (sceneAssetFilter)
       {
@@ -62,18 +62,18 @@ LABEL_12:
       v15 = peopleAssetFilter;
       if (!peopleAssetFilter)
       {
-        v16 = [(PGAssetCollectionFeatureDefinition *)v7 peopleAssetFilter];
-        if (!v16)
+        peopleAssetFilter = [(PGAssetCollectionFeatureDefinition *)v7 peopleAssetFilter];
+        if (!peopleAssetFilter)
         {
           goto LABEL_19;
         }
 
-        v3 = v16;
+        cLIPQueryAssetFilter = peopleAssetFilter;
         v15 = self->_peopleAssetFilter;
       }
 
-      v17 = [(PGAssetCollectionFeatureDefinition *)v7 peopleAssetFilter];
-      v18 = [(PGPeopleAssetFilter *)v15 isEqual:v17];
+      peopleAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 peopleAssetFilter];
+      v18 = [(PGPeopleAssetFilter *)v15 isEqual:peopleAssetFilter2];
 
       if (peopleAssetFilter)
       {
@@ -97,18 +97,18 @@ LABEL_19:
       v20 = socialGroupAssetFilter;
       if (!socialGroupAssetFilter)
       {
-        v21 = [(PGAssetCollectionFeatureDefinition *)v7 socialGroupAssetFilter];
-        if (!v21)
+        socialGroupAssetFilter = [(PGAssetCollectionFeatureDefinition *)v7 socialGroupAssetFilter];
+        if (!socialGroupAssetFilter)
         {
           goto LABEL_26;
         }
 
-        v3 = v21;
+        cLIPQueryAssetFilter = socialGroupAssetFilter;
         v20 = self->_socialGroupAssetFilter;
       }
 
-      v22 = [(PGAssetCollectionFeatureDefinition *)v7 socialGroupAssetFilter];
-      v23 = [(PGSocialGroupAssetFilter *)v20 isEqual:v22];
+      socialGroupAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 socialGroupAssetFilter];
+      v23 = [(PGSocialGroupAssetFilter *)v20 isEqual:socialGroupAssetFilter2];
 
       if (socialGroupAssetFilter)
       {
@@ -132,26 +132,26 @@ LABEL_26:
       v25 = audioAssetFilter;
       if (!audioAssetFilter)
       {
-        v26 = [(PGAssetCollectionFeatureDefinition *)v7 audioAssetFilter];
-        if (!v26)
+        audioAssetFilter = [(PGAssetCollectionFeatureDefinition *)v7 audioAssetFilter];
+        if (!audioAssetFilter)
         {
 LABEL_33:
           allowlistAssetFilter = self->_allowlistAssetFilter;
           v30 = allowlistAssetFilter;
           if (!allowlistAssetFilter)
           {
-            v31 = [(PGAssetCollectionFeatureDefinition *)v7 allowlistAssetFilter];
-            if (!v31)
+            allowlistAssetFilter = [(PGAssetCollectionFeatureDefinition *)v7 allowlistAssetFilter];
+            if (!allowlistAssetFilter)
             {
               goto LABEL_38;
             }
 
-            v3 = v31;
+            cLIPQueryAssetFilter = allowlistAssetFilter;
             v30 = self->_allowlistAssetFilter;
           }
 
-          v32 = [(PGAssetCollectionFeatureDefinition *)v7 allowlistAssetFilter];
-          v33 = [(PGAllowlistAssetFilter *)v30 isEqual:v32];
+          allowlistAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 allowlistAssetFilter];
+          v33 = [(PGAllowlistAssetFilter *)v30 isEqual:allowlistAssetFilter2];
 
           if (allowlistAssetFilter)
           {
@@ -171,8 +171,8 @@ LABEL_38:
               v35 = CLIPQueryAssetFilter;
               if (!CLIPQueryAssetFilter)
               {
-                v3 = [(PGAssetCollectionFeatureDefinition *)v7 CLIPQueryAssetFilter];
-                if (!v3)
+                cLIPQueryAssetFilter = [(PGAssetCollectionFeatureDefinition *)v7 CLIPQueryAssetFilter];
+                if (!cLIPQueryAssetFilter)
                 {
                   v13 = 1;
                   goto LABEL_48;
@@ -181,8 +181,8 @@ LABEL_38:
                 v35 = self->_CLIPQueryAssetFilter;
               }
 
-              v36 = [(PGAssetCollectionFeatureDefinition *)v7 CLIPQueryAssetFilter];
-              v13 = [(PGCLIPQueryAssetFilter *)v35 isEqual:v36];
+              cLIPQueryAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 CLIPQueryAssetFilter];
+              v13 = [(PGCLIPQueryAssetFilter *)v35 isEqual:cLIPQueryAssetFilter2];
 
               if (CLIPQueryAssetFilter)
               {
@@ -202,12 +202,12 @@ LABEL_44:
           goto LABEL_45;
         }
 
-        v3 = v26;
+        cLIPQueryAssetFilter = audioAssetFilter;
         v25 = self->_audioAssetFilter;
       }
 
-      v27 = [(PGAssetCollectionFeatureDefinition *)v7 audioAssetFilter];
-      v28 = [(PGAudioAssetFilter *)v25 isEqual:v27];
+      audioAssetFilter2 = [(PGAssetCollectionFeatureDefinition *)v7 audioAssetFilter];
+      v28 = [(PGAudioAssetFilter *)v25 isEqual:audioAssetFilter2];
 
       if (audioAssetFilter)
       {
@@ -272,11 +272,11 @@ LABEL_46:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   sceneAssetFilter = self->_sceneAssetFilter;
-  v18 = v4;
+  v18 = coderCopy;
   if (sceneAssetFilter)
   {
     v6 = +[PGSceneAssetFilter name];
@@ -322,127 +322,127 @@ LABEL_46:
   }
 }
 
-- (PGAssetCollectionFeatureDefinition)initWithCoder:(id)a3
+- (PGAssetCollectionFeatureDefinition)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  coderCopy = coder;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6 = +[PGSceneAssetFilter name];
-  v7 = [v4 containsValueForKey:v6];
+  v7 = [coderCopy containsValueForKey:v6];
 
   if (v7)
   {
     v8 = objc_opt_class();
     v9 = +[PGSceneAssetFilter name];
-    v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
     v11 = +[PGSceneAssetFilter name];
-    [v5 setObject:v10 forKeyedSubscript:v11];
+    [dictionary setObject:v10 forKeyedSubscript:v11];
   }
 
   v12 = +[PGPeopleAssetFilter name];
-  v13 = [v4 containsValueForKey:v12];
+  v13 = [coderCopy containsValueForKey:v12];
 
   if (v13)
   {
     v14 = objc_opt_class();
     v15 = +[PGPeopleAssetFilter name];
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     v17 = +[PGPeopleAssetFilter name];
-    [v5 setObject:v16 forKeyedSubscript:v17];
+    [dictionary setObject:v16 forKeyedSubscript:v17];
   }
 
   v18 = +[PGSocialGroupAssetFilter name];
-  v19 = [v4 containsValueForKey:v18];
+  v19 = [coderCopy containsValueForKey:v18];
 
   if (v19)
   {
     v20 = objc_opt_class();
     v21 = +[PGSocialGroupAssetFilter name];
-    v22 = [v4 decodeObjectOfClass:v20 forKey:v21];
+    v22 = [coderCopy decodeObjectOfClass:v20 forKey:v21];
     v23 = +[PGSocialGroupAssetFilter name];
-    [v5 setObject:v22 forKeyedSubscript:v23];
+    [dictionary setObject:v22 forKeyedSubscript:v23];
   }
 
   v24 = +[PGAudioAssetFilter name];
-  v25 = [v4 containsValueForKey:v24];
+  v25 = [coderCopy containsValueForKey:v24];
 
   if (v25)
   {
     v26 = objc_opt_class();
     v27 = +[PGAudioAssetFilter name];
-    v28 = [v4 decodeObjectOfClass:v26 forKey:v27];
+    v28 = [coderCopy decodeObjectOfClass:v26 forKey:v27];
     v29 = +[PGAudioAssetFilter name];
-    [v5 setObject:v28 forKeyedSubscript:v29];
+    [dictionary setObject:v28 forKeyedSubscript:v29];
   }
 
   v30 = +[PGAllowlistAssetFilter name];
-  v31 = [v4 containsValueForKey:v30];
+  v31 = [coderCopy containsValueForKey:v30];
 
   if (v31)
   {
     v32 = objc_opt_class();
     v33 = +[PGAllowlistAssetFilter name];
-    v34 = [v4 decodeObjectOfClass:v32 forKey:v33];
+    v34 = [coderCopy decodeObjectOfClass:v32 forKey:v33];
     v35 = +[PGAllowlistAssetFilter name];
-    [v5 setObject:v34 forKeyedSubscript:v35];
+    [dictionary setObject:v34 forKeyedSubscript:v35];
   }
 
   v36 = +[PGCLIPQueryAssetFilter name];
-  v37 = [v4 containsValueForKey:v36];
+  v37 = [coderCopy containsValueForKey:v36];
 
   if (v37)
   {
     v38 = objc_opt_class();
     v39 = +[PGCLIPQueryAssetFilter name];
-    v40 = [v4 decodeObjectOfClass:v38 forKey:v39];
+    v40 = [coderCopy decodeObjectOfClass:v38 forKey:v39];
     v41 = +[PGCLIPQueryAssetFilter name];
-    [v5 setObject:v40 forKeyedSubscript:v41];
+    [dictionary setObject:v40 forKeyedSubscript:v41];
   }
 
-  v42 = [(PGAssetCollectionFeatureDefinition *)self initWithAssetFilterByName:v5];
+  v42 = [(PGAssetCollectionFeatureDefinition *)self initWithAssetFilterByName:dictionary];
 
   return v42;
 }
 
-- (PGAssetCollectionFeatureDefinition)initWithAssetFilterByName:(id)a3
+- (PGAssetCollectionFeatureDefinition)initWithAssetFilterByName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v28.receiver = self;
   v28.super_class = PGAssetCollectionFeatureDefinition;
   v5 = [(PGAssetCollectionFeatureDefinition *)&v28 init];
   if (v5)
   {
     v6 = +[PGSceneAssetFilter name];
-    v7 = [v4 objectForKeyedSubscript:v6];
+    v7 = [nameCopy objectForKeyedSubscript:v6];
     sceneAssetFilter = v5->_sceneAssetFilter;
     v5->_sceneAssetFilter = v7;
 
     v9 = +[PGPeopleAssetFilter name];
-    v10 = [v4 objectForKeyedSubscript:v9];
+    v10 = [nameCopy objectForKeyedSubscript:v9];
     peopleAssetFilter = v5->_peopleAssetFilter;
     v5->_peopleAssetFilter = v10;
 
     v12 = +[PGSocialGroupAssetFilter name];
-    v13 = [v4 objectForKeyedSubscript:v12];
+    v13 = [nameCopy objectForKeyedSubscript:v12];
     socialGroupAssetFilter = v5->_socialGroupAssetFilter;
     v5->_socialGroupAssetFilter = v13;
 
     v15 = +[PGAudioAssetFilter name];
-    v16 = [v4 objectForKeyedSubscript:v15];
+    v16 = [nameCopy objectForKeyedSubscript:v15];
     audioAssetFilter = v5->_audioAssetFilter;
     v5->_audioAssetFilter = v16;
 
     v18 = +[PGCustomFoodieAssetFilter name];
-    v19 = [v4 objectForKeyedSubscript:v18];
+    v19 = [nameCopy objectForKeyedSubscript:v18];
     customAssetFilter = v5->_customAssetFilter;
     v5->_customAssetFilter = v19;
 
     v21 = +[PGAllowlistAssetFilter name];
-    v22 = [v4 objectForKeyedSubscript:v21];
+    v22 = [nameCopy objectForKeyedSubscript:v21];
     allowlistAssetFilter = v5->_allowlistAssetFilter;
     v5->_allowlistAssetFilter = v22;
 
     v24 = +[PGCLIPQueryAssetFilter name];
-    v25 = [v4 objectForKeyedSubscript:v24];
+    v25 = [nameCopy objectForKeyedSubscript:v24];
     CLIPQueryAssetFilter = v5->_CLIPQueryAssetFilter;
     v5->_CLIPQueryAssetFilter = v25;
   }

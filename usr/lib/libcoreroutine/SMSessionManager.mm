@@ -1,6 +1,6 @@
 @interface SMSessionManager
-+ (id)SessionHandoffRebootReconciliationDecisionToString:(unint64_t)a3;
-+ (id)SessionHandoffRebootReconciliationStateToString:(unint64_t)a3;
++ (id)SessionHandoffRebootReconciliationDecisionToString:(unint64_t)string;
++ (id)SessionHandoffRebootReconciliationStateToString:(unint64_t)string;
 - (BOOL)_canDeviceModifyState;
 - (BOOL)_isActiveDevice;
 - (BOOL)_isActiveSessionDetailsFetchAttemptFailed;
@@ -8,250 +8,250 @@
 - (BOOL)_isActiveSessionDetailsLocalRecordExpired;
 - (BOOL)_isActiveSessionDetailsOutOfSync;
 - (BOOL)_isEffectivePairedDeviceNearby;
-- (BOOL)_isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:(id)a3;
-- (BOOL)_isEligibleOutOfOrderEndSessionMessage:(id)a3 currentSessionManagerState:(id)a4;
-- (BOOL)_isEligibleOutOfOrderStateSyncMessage:(id)a3 currentSessionManagerState:(id)a4;
-- (BOOL)_isEligibleRecentHandoffMessage:(id)a3 currentSessionManagerState:(id)a4;
-- (BOOL)_isEligibleToBecomeNonActiveDeviceForHandoffStateSyncMessage:(id)a3;
-- (BOOL)_isEligibleToProcessSessionTypeKeyReleaseMessage:(id)a3;
-- (BOOL)_isEligibleToSendStateUpdateReqMessageAfterBootstrap:(id)a3 isActiveDevice:(BOOL)a4;
-- (BOOL)_isEligibleTransitionFromStateSyncMessage:(id)a3 currentSessionManagerState:(id)a4;
-- (BOOL)_isLocalStateInSyncWithActiveSessionDetails:(id)a3 deviceSessionManagerState:(id)a4;
-- (BOOL)_isMultiDeviceSetupForLocalState:(id)a3;
-- (BOOL)_isRemoteSessionEndForPreviousState:(id)a3 nextState:(id)a4;
+- (BOOL)_isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:(id)identifier;
+- (BOOL)_isEligibleOutOfOrderEndSessionMessage:(id)message currentSessionManagerState:(id)state;
+- (BOOL)_isEligibleOutOfOrderStateSyncMessage:(id)message currentSessionManagerState:(id)state;
+- (BOOL)_isEligibleRecentHandoffMessage:(id)message currentSessionManagerState:(id)state;
+- (BOOL)_isEligibleToBecomeNonActiveDeviceForHandoffStateSyncMessage:(id)message;
+- (BOOL)_isEligibleToProcessSessionTypeKeyReleaseMessage:(id)message;
+- (BOOL)_isEligibleToSendStateUpdateReqMessageAfterBootstrap:(id)bootstrap isActiveDevice:(BOOL)device;
+- (BOOL)_isEligibleTransitionFromStateSyncMessage:(id)message currentSessionManagerState:(id)state;
+- (BOOL)_isLocalStateInSyncWithActiveSessionDetails:(id)details deviceSessionManagerState:(id)state;
+- (BOOL)_isMultiDeviceSetupForLocalState:(id)state;
+- (BOOL)_isRemoteSessionEndForPreviousState:(id)state nextState:(id)nextState;
 - (BOOL)_isSessionManagerStateStaleToHandoff;
 - (BOOL)_isWatchDeviceEligibleForHandoff;
-- (BOOL)_performStateTransitionTo:(id)a3 transitionType:(unint64_t)a4 handler:(id)a5;
+- (BOOL)_performStateTransitionTo:(id)to transitionType:(unint64_t)type handler:(id)handler;
 - (BOOL)_sessionSupportsHandoff;
-- (BOOL)_shouldAlertNowWithTargetAlertDate:(id)a3;
-- (BOOL)_shouldExitHysteresisState:(unint64_t)a3 nearbyDeviceConnected:(BOOL)a4;
-- (BOOL)_shouldRetryForHandoffError:(id)a3 retryCount:(unint64_t)a4;
-- (BOOL)_stateValidForSendSessionEndMessageRetry:(id)a3;
-- (BOOL)_stateValidForSendingEndSessionMessage:(id)a3;
-- (BOOL)_stateValidForSessionResume:(id)a3;
-- (SMSessionManager)initWithAuthorizationManager:(id)a3 biomeManager:(id)a4 contactsManager:(id)a5 defaultsManager:(id)a6 locationManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 messagingService:(id)a11 carPlayAlertManager:(id)a12 observers:(id)a13 activeSessionDetailsDelegate:(id)a14 wristStateManager:(id)a15 appDeletionManager:(id)a16 healthKitManager:(id)a17 emergencyCallManager:(id)a18;
-- (id)_checkDefaultsForCacheReleaseDateWithState:(id)a3;
+- (BOOL)_shouldAlertNowWithTargetAlertDate:(id)date;
+- (BOOL)_shouldExitHysteresisState:(unint64_t)state nearbyDeviceConnected:(BOOL)connected;
+- (BOOL)_shouldRetryForHandoffError:(id)error retryCount:(unint64_t)count;
+- (BOOL)_stateValidForSendSessionEndMessageRetry:(id)retry;
+- (BOOL)_stateValidForSendingEndSessionMessage:(id)message;
+- (BOOL)_stateValidForSessionResume:(id)resume;
+- (SMSessionManager)initWithAuthorizationManager:(id)manager biomeManager:(id)biomeManager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager locationManager:(id)locationManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 messagingService:(id)self1 carPlayAlertManager:(id)self2 observers:(id)self3 activeSessionDetailsDelegate:(id)self4 wristStateManager:(id)self5 appDeletionManager:(id)self6 healthKitManager:(id)self7 emergencyCallManager:(id)self8;
+- (id)_checkDefaultsForCacheReleaseDateWithState:(id)state;
 - (id)_getMostRecentSessionState;
-- (id)_stateTransitionDecisionToState:(id)a3 transitionType:(unint64_t)a4;
-- (id)_updateDestinationForRoundTripSessionConfiguration:(id)a3;
-- (id)checkSessionIDAndCanDeviceModifyStateWithSelector:(SEL)a3 sessionID:(id)a4;
-- (id)checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:(SEL)a3 sessionID:(id)a4 validSessionStates:(id)a5;
-- (id)checkSessionIDWithSelector:(SEL)a3 sessionID:(id)a4;
-- (id)checkSessionStateWithSelector:(SEL)a3 validSessionStates:(id)a4;
+- (id)_stateTransitionDecisionToState:(id)state transitionType:(unint64_t)type;
+- (id)_updateDestinationForRoundTripSessionConfiguration:(id)configuration;
+- (id)checkSessionIDAndCanDeviceModifyStateWithSelector:(SEL)selector sessionID:(id)d;
+- (id)checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:(SEL)selector sessionID:(id)d validSessionStates:(id)states;
+- (id)checkSessionIDWithSelector:(SEL)selector sessionID:(id)d;
+- (id)checkSessionStateWithSelector:(SEL)selector validSessionStates:(id)states;
 - (id)localState;
 - (id)state;
-- (unint64_t)_evaluateHandoffRebootReconciliationState:(id)a3;
+- (unint64_t)_evaluateHandoffRebootReconciliationState:(id)state;
 - (unint64_t)_getCurrentHysteresisStateType;
-- (unint64_t)_getEndSessionStateWithReason:(unint64_t)a3;
-- (unint64_t)_reconciliationDecisionForState:(id)a3 isActiveDevice:(BOOL)a4;
-- (unint64_t)_reconciliationForDecisionForCKFetchCompleted:(id)a3;
-- (void)_addObserver:(id)a3;
-- (void)_becomeActiveDeviceForSessionWithHandler:(id)a3;
+- (unint64_t)_getEndSessionStateWithReason:(unint64_t)reason;
+- (unint64_t)_reconciliationDecisionForState:(id)state isActiveDevice:(BOOL)device;
+- (unint64_t)_reconciliationForDecisionForCKFetchCompleted:(id)completed;
+- (void)_addObserver:(id)observer;
+- (void)_becomeActiveDeviceForSessionWithHandler:(id)handler;
 - (void)_bootstrapHysteresisState;
 - (void)_bootstrapToState;
 - (void)_cancelMagnetBreakTimerAndExitHysteresisState;
-- (void)_checkIfHandoffCriteriaSatisfiedForState:(id)a3 handler:(id)a4;
-- (void)_checkInitiatorEligibilityWithHandoffType:(int64_t)a3 completion:(id)a4;
+- (void)_checkIfHandoffCriteriaSatisfiedForState:(id)state handler:(id)handler;
+- (void)_checkInitiatorEligibilityWithHandoffType:(int64_t)type completion:(id)completion;
 - (void)_clearActiveSessionDetailsTimeoutTimer;
 - (void)_clearHysteresisState;
-- (void)_endRemoteSessionForSessionID:(id)a3 reason:(unint64_t)a4 handler:(id)a5;
-- (void)_endSessionForSessionID:(id)a3 reason:(unint64_t)a4 handler:(id)a5;
+- (void)_endRemoteSessionForSessionID:(id)d reason:(unint64_t)reason handler:(id)handler;
+- (void)_endSessionForSessionID:(id)d reason:(unint64_t)reason handler:(id)handler;
 - (void)_handleMagnetBreakPhone;
-- (void)_handleMagnetConnect:(int64_t)a3;
-- (void)_handleTransitionToStateAfterBootstrap:(id)a3 isActiveDevice:(BOOL)a4;
-- (void)_handoffSessionForSessionID:(id)a3 retryCount:(unint64_t)a4 handler:(id)a5;
-- (void)_initializeSessionWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5;
+- (void)_handleMagnetConnect:(int64_t)connect;
+- (void)_handleTransitionToStateAfterBootstrap:(id)bootstrap isActiveDevice:(BOOL)device;
+- (void)_handoffSessionForSessionID:(id)d retryCount:(unint64_t)count handler:(id)handler;
+- (void)_initializeSessionWithSessionID:(id)d conversation:(id)conversation handler:(id)handler;
 - (void)_invalidateScreenLockMonitor;
 - (void)_invalidateSessionManagerXPCTimerAlarms;
-- (void)_invalidateTimer:(id)a3;
-- (void)_modifyRemoteSessionWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_modifySessionWithConfiguration:(id)a3 handler:(id)a4;
+- (void)_invalidateTimer:(id)timer;
+- (void)_modifyRemoteSessionWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_modifySessionWithConfiguration:(id)configuration handler:(id)handler;
 - (void)_notifyObserversForBecomingActiveDevice;
 - (void)_notifyObserversForBecomingNonActiveDevice;
 - (void)_notifyObserversForConfigurationChange;
 - (void)_notifyObserversForLocalStateChange;
 - (void)_notifyObserversForSecondarySOSTrigger;
-- (void)_notifyObserversForSessionEndForActiveDevice:(BOOL)a3;
+- (void)_notifyObserversForSessionEndForActiveDevice:(BOOL)device;
 - (void)_notifyObserversForSessionResume;
 - (void)_notifyObserversForStart;
-- (void)_notifyObserversForStateChangeWithTransitionType:(unint64_t)a3;
+- (void)_notifyObserversForStateChangeWithTransitionType:(unint64_t)type;
 - (void)_notifyObserversForTriggerResponse;
-- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error;
 - (void)_onActiveSessionDetailsTimeoutTimerExpiry;
-- (void)_onDeletedConversation:(id)a3 handler:(id)a4;
-- (void)_onDeletedMessage:(id)a3 handler:(id)a4;
+- (void)_onDeletedConversation:(id)conversation handler:(id)handler;
+- (void)_onDeletedMessage:(id)message handler:(id)handler;
 - (void)_onEmergencyCallEnded;
 - (void)_onEmergencyCallStarted;
 - (void)_onHandoffRetryTimerExpiry;
-- (void)_onHealthKitManagerNotification:(id)a3;
+- (void)_onHealthKitManagerNotification:(id)notification;
 - (void)_onMessagesAppUninstalled;
-- (void)_onScheduledSendForSessionID:(id)a3 handler:(id)a4;
-- (void)_onSessionStoreNotification:(id)a3;
-- (void)_onWristStateChangeNotification:(id)a3;
-- (void)_performActionsAndUpdatesUponStateTransitionWithType:(unint64_t)a3;
-- (void)_performStateSyncOriginatedTransitionTo:(id)a3 transitionType:(unint64_t)a4 handler:(id)a5;
+- (void)_onScheduledSendForSessionID:(id)d handler:(id)handler;
+- (void)_onSessionStoreNotification:(id)notification;
+- (void)_onWristStateChangeNotification:(id)notification;
+- (void)_performActionsAndUpdatesUponStateTransitionWithType:(unint64_t)type;
+- (void)_performStateSyncOriginatedTransitionTo:(id)to transitionType:(unint64_t)type handler:(id)handler;
 - (void)_playCacheReleaseAndUpdatingSound;
 - (void)_postAnomalyAlert;
-- (void)_postCacheReleaseAndUpdatingWithTargetDate:(id)a3;
+- (void)_postCacheReleaseAndUpdatingWithTargetDate:(id)date;
 - (void)_postEndAwarenessLiveActivity;
-- (void)_processNearbyEffectivePairedDeviceChanged:(id)a3;
+- (void)_processNearbyEffectivePairedDeviceChanged:(id)changed;
 - (void)_registerForConnectivityNotifications;
-- (void)_removeObserver:(id)a3;
-- (void)_resetInitializationWithHandler:(id)a3;
+- (void)_removeObserver:(id)observer;
+- (void)_resetInitializationWithHandler:(id)handler;
 - (void)_resetPendingSendSessionEndMessage;
-- (void)_respondToTriggerPromptForSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5;
-- (void)_respondToTriggerPromptWithRemoteControlSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5;
-- (void)_sessionInitializedWithAllowReadToken:(id)a3 safetyCacheKey:(id)a4 scheduledSendMessageGUID:(id)a5 completionHandler:(id)a6;
-- (void)_setHysteresisState:(unint64_t)a3;
-- (void)_setPendingSendSessionEndMessageWithReason:(unint64_t)a3 associatedGUID:(id)a4;
+- (void)_respondToTriggerPromptForSessionID:(id)d response:(int64_t)response handler:(id)handler;
+- (void)_respondToTriggerPromptWithRemoteControlSessionID:(id)d response:(int64_t)response handler:(id)handler;
+- (void)_sessionInitializedWithAllowReadToken:(id)token safetyCacheKey:(id)key scheduledSendMessageGUID:(id)d completionHandler:(id)handler;
+- (void)_setHysteresisState:(unint64_t)state;
+- (void)_setPendingSendSessionEndMessageWithReason:(unint64_t)reason associatedGUID:(id)d;
 - (void)_setUpCacheReleaseTimer;
 - (void)_setUpWorkoutTimeouts;
 - (void)_setupAnomalyAlerts;
 - (void)_setupAnomalyAlertsOnResume;
 - (void)_setupTimerAndLockMonitorForEndAwareness;
 - (void)_setupTimerForAnomaly;
-- (void)_setupWithObservers:(id)a3;
-- (void)_setupWorkoutTimeoutWithFireDate:(id)a3;
+- (void)_setupWithObservers:(id)observers;
+- (void)_setupWorkoutTimeoutWithFireDate:(id)date;
 - (void)_showUserDisabledConnectivityAlert;
-- (void)_startActiveSessionDetailsTimerWithLatency:(double)a3;
-- (void)_startHandoffRetryTimerWithLatency:(double)a3 sessionID:(id)a4 retryCount:(unint64_t)a5 handoffCompletion:(id)a6;
+- (void)_startActiveSessionDetailsTimerWithLatency:(double)latency;
+- (void)_startHandoffRetryTimerWithLatency:(double)latency sessionID:(id)d retryCount:(unint64_t)count handoffCompletion:(id)completion;
 - (void)_stopPlayingCacheReleaseAndUpdatingSound;
 - (void)_tearDownWorkoutTimeouts;
 - (void)_teardownAnomalyAlerts;
-- (void)_terminateSessionWithSessionID:(id)a3;
-- (void)_transitionToState:(id)a3 transitionType:(unint64_t)a4;
-- (void)_updateActivityWithState:(id)a3 shouldNotify:(BOOL)a4;
+- (void)_terminateSessionWithSessionID:(id)d;
+- (void)_transitionToState:(id)state transitionType:(unint64_t)type;
+- (void)_updateActivityWithState:(id)state shouldNotify:(BOOL)notify;
 - (void)_updateConnectivityAndStatusSignalsObserverUponStateTransition;
-- (void)_updateLastLocationWithLocations:(id)a3;
+- (void)_updateLastLocationWithLocations:(id)locations;
 - (void)_updateLocationObserverUponStateTransition;
-- (void)_updateReceiverWithEstimatedEndDate:(id)a3 coarseEstimatedEndDate:(id)a4 sessionID:(id)a5;
-- (void)_updateReceiverWithLowPowerModeWarningStateUpdate:(int64_t)a3 sessionID:(id)a4;
-- (void)_updateSessionWithConversation:(id)a3 sosReceivers:(id)a4 handler:(id)a5;
-- (void)_updateSessionWithWorkoutSnapshot:(id)a3 handler:(id)a4;
-- (void)_updateTimersUponStateTransition:(unint64_t)a3;
-- (void)_updateUnsupportedSeparationStateIfNeededWithNotify:(BOOL)a3;
-- (void)_updateUnsupportedSeparationStateWithNewState:(BOOL)a3 shouldNotify:(BOOL)a4;
+- (void)_updateReceiverWithEstimatedEndDate:(id)date coarseEstimatedEndDate:(id)endDate sessionID:(id)d;
+- (void)_updateReceiverWithLowPowerModeWarningStateUpdate:(int64_t)update sessionID:(id)d;
+- (void)_updateSessionWithConversation:(id)conversation sosReceivers:(id)receivers handler:(id)handler;
+- (void)_updateSessionWithWorkoutSnapshot:(id)snapshot handler:(id)handler;
+- (void)_updateTimersUponStateTransition:(unint64_t)transition;
+- (void)_updateUnsupportedSeparationStateIfNeededWithNotify:(BOOL)notify;
+- (void)_updateUnsupportedSeparationStateWithNewState:(BOOL)state shouldNotify:(BOOL)notify;
 - (void)_updateUserDisabledConnectivityStatus;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)bootstrapToState;
-- (void)cancelInitializationForSessionID:(id)a3 handler:(id)a4;
-- (void)cancelInitializationWithCompletion:(id)a3;
-- (void)endSessionForSessionID:(id)a3 reason:(unint64_t)a4 completion:(id)a5;
-- (void)fetchCurrentLocalSessionStateWithHandler:(id)a3;
-- (void)fetchCurrentSessionStateWithCompletion:(id)a3;
-- (void)fetchSOSReceiversWithCompletion:(id)a3;
-- (void)handoffSessionForSessionID:(id)a3 handler:(id)a4;
-- (void)iMessageGroupDisplayNameChangedFor:(id)a3;
-- (void)iMessageGroupMembershipChangedFor:(id)a3;
-- (void)initializeSessionWithConversation:(id)a3 completion:(id)a4;
-- (void)initializeSessionWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5;
-- (void)kickedFromIMessageGroupWith:(id)a3;
-- (void)logSignPostForStateTransition:(id)a3;
-- (void)modifySessionWithConfiguration:(id)a3 handler:(id)a4;
-- (void)onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5;
+- (void)cancelInitializationForSessionID:(id)d handler:(id)handler;
+- (void)cancelInitializationWithCompletion:(id)completion;
+- (void)endSessionForSessionID:(id)d reason:(unint64_t)reason completion:(id)completion;
+- (void)fetchCurrentLocalSessionStateWithHandler:(id)handler;
+- (void)fetchCurrentSessionStateWithCompletion:(id)completion;
+- (void)fetchSOSReceiversWithCompletion:(id)completion;
+- (void)handoffSessionForSessionID:(id)d handler:(id)handler;
+- (void)iMessageGroupDisplayNameChangedFor:(id)for;
+- (void)iMessageGroupMembershipChangedFor:(id)for;
+- (void)initializeSessionWithConversation:(id)conversation completion:(id)completion;
+- (void)initializeSessionWithSessionID:(id)d conversation:(id)conversation handler:(id)handler;
+- (void)kickedFromIMessageGroupWith:(id)with;
+- (void)logSignPostForStateTransition:(id)transition;
+- (void)modifySessionWithConfiguration:(id)configuration handler:(id)handler;
+- (void)onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error;
 - (void)onDataSettingsChangedNotification;
-- (void)onDeletedConversation:(id)a3 handler:(id)a4;
-- (void)onDeletedMessage:(id)a3 handler:(id)a4;
+- (void)onDeletedConversation:(id)conversation handler:(id)handler;
+- (void)onDeletedMessage:(id)message handler:(id)handler;
 - (void)onEmergencyCallEnded;
 - (void)onEmergencyCallStarted;
-- (void)onHealthKitManagerNotification:(id)a3;
-- (void)onLocationNotification:(id)a3;
+- (void)onHealthKitManagerNotification:(id)notification;
+- (void)onLocationNotification:(id)notification;
 - (void)onMessagesAppUninstalled;
-- (void)onScheduledSendForSessionID:(id)a3;
-- (void)onScheduledSendMessageCanceledForSessionID:(id)a3 guid:(id)a4;
-- (void)onScheduledSendMessageScheduledForSessionID:(id)a3 guid:(id)a4 date:(id)a5;
-- (void)onSessionStartMessageSendResultWithMessage:(id)a3 messageGUID:(id)a4 success:(BOOL)a5 error:(id)a6;
-- (void)onSessionStoreNotification:(id)a3;
-- (void)onWristStateChangeNotification:(id)a3;
+- (void)onScheduledSendForSessionID:(id)d;
+- (void)onScheduledSendMessageCanceledForSessionID:(id)d guid:(id)guid;
+- (void)onScheduledSendMessageScheduledForSessionID:(id)d guid:(id)guid date:(id)date;
+- (void)onSessionStartMessageSendResultWithMessage:(id)message messageGUID:(id)d success:(BOOL)success error:(id)error;
+- (void)onSessionStoreNotification:(id)notification;
+- (void)onWristStateChangeNotification:(id)notification;
 - (void)overrideMagnetBreakIntervalIfNeeded;
-- (void)processEmergencyContactsNotifiedMessage:(id)a3;
-- (void)processModifySessionConfigurationRemoteControlMessage:(id)a3;
-- (void)processNearbyEffectivePairedDeviceChanged:(id)a3;
-- (void)processResponseToTriggerPromptRemoteControlMessage:(id)a3;
-- (void)processSessionEndRemoteControlMessage:(id)a3;
-- (void)processSessionTypeKeyRelease:(id)a3;
-- (void)processStateSyncMessage:(id)a3;
-- (void)processStateSyncUpdateReqMessage:(id)a3;
-- (void)promptDestinationAnomalyVerificationWithContext:(id)a3;
-- (void)promptDestinationAnomalyVerificationWithContext:(id)a3 handler:(id)a4;
-- (void)promptDirectTriggerWithContext:(id)a3;
-- (void)promptEstimatedEndDateUpdateWithContext:(id)a3;
-- (void)promptRoundTripAnomalyVerificationWithContext:(id)a3;
-- (void)promptRoundTripAnomalyVerificationWithContext:(id)a3 handler:(id)a4;
-- (void)promptSafeArrivalWithContext:(id)a3;
-- (void)promptSafeArrivalWithContext:(id)a3 handler:(id)a4;
-- (void)promptTimerEndedVerificationWithContext:(id)a3;
-- (void)promptTimerEndedVerificationWithContext:(id)a3 handler:(id)a4;
-- (void)promptWorkoutAnomalyVerificationWithContext:(id)a3;
-- (void)promptWorkoutAnomalyVerificationWithContext:(id)a3 handler:(id)a4;
-- (void)promptWorkoutSessionEndVerificationWithContext:(id)a3 handlers:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 handler:(id)a6;
-- (void)respondToTriggerPromptForSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5;
-- (void)sendSafetyCacheForSessionID:(id)a3 handler:(id)a4;
-- (void)sendSessionEndMessageWithReason:(unint64_t)a3 associatedGUID:(id)a4 state:(id)a5;
-- (void)sessionInitializedWithSessionID:(id)a3 allowReadToken:(id)a4 safetyCacheKey:(id)a5 scheduledSendMessageGUID:(id)a6 completionHandler:(id)a7;
-- (void)setSessionStoreAvailability:(unint64_t)a3;
+- (void)processEmergencyContactsNotifiedMessage:(id)message;
+- (void)processModifySessionConfigurationRemoteControlMessage:(id)message;
+- (void)processNearbyEffectivePairedDeviceChanged:(id)changed;
+- (void)processResponseToTriggerPromptRemoteControlMessage:(id)message;
+- (void)processSessionEndRemoteControlMessage:(id)message;
+- (void)processSessionTypeKeyRelease:(id)release;
+- (void)processStateSyncMessage:(id)message;
+- (void)processStateSyncUpdateReqMessage:(id)message;
+- (void)promptDestinationAnomalyVerificationWithContext:(id)context;
+- (void)promptDestinationAnomalyVerificationWithContext:(id)context handler:(id)handler;
+- (void)promptDirectTriggerWithContext:(id)context;
+- (void)promptEstimatedEndDateUpdateWithContext:(id)context;
+- (void)promptRoundTripAnomalyVerificationWithContext:(id)context;
+- (void)promptRoundTripAnomalyVerificationWithContext:(id)context handler:(id)handler;
+- (void)promptSafeArrivalWithContext:(id)context;
+- (void)promptSafeArrivalWithContext:(id)context handler:(id)handler;
+- (void)promptTimerEndedVerificationWithContext:(id)context;
+- (void)promptTimerEndedVerificationWithContext:(id)context handler:(id)handler;
+- (void)promptWorkoutAnomalyVerificationWithContext:(id)context;
+- (void)promptWorkoutAnomalyVerificationWithContext:(id)context handler:(id)handler;
+- (void)promptWorkoutSessionEndVerificationWithContext:(id)context handlers:(id)handlers;
+- (void)removeObserver:(id)observer;
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier handler:(id)handler;
+- (void)respondToTriggerPromptForSessionID:(id)d response:(int64_t)response handler:(id)handler;
+- (void)sendSafetyCacheForSessionID:(id)d handler:(id)handler;
+- (void)sendSessionEndMessageWithReason:(unint64_t)reason associatedGUID:(id)d state:(id)state;
+- (void)sessionInitializedWithSessionID:(id)d allowReadToken:(id)token safetyCacheKey:(id)key scheduledSendMessageGUID:(id)iD completionHandler:(id)handler;
+- (void)setSessionStoreAvailability:(unint64_t)availability;
 - (void)setupWarningStates;
-- (void)setupWithObservers:(id)a3;
-- (void)startSessionWithConfiguration:(id)a3 completion:(id)a4;
-- (void)storeManagerStatusInStore:(unint64_t)a3 completion:(id)a4;
-- (void)terminateSessionWithSessionID:(id)a3;
-- (void)updateManagerStatusInStoreWithCompletion:(id)a3;
-- (void)updateUserWithContext:(id)a3;
-- (void)updateUserWithTriggerContext:(id)a3;
+- (void)setupWithObservers:(id)observers;
+- (void)startSessionWithConfiguration:(id)configuration completion:(id)completion;
+- (void)storeManagerStatusInStore:(unint64_t)store completion:(id)completion;
+- (void)terminateSessionWithSessionID:(id)d;
+- (void)updateManagerStatusInStoreWithCompletion:(id)completion;
+- (void)updateUserWithContext:(id)context;
+- (void)updateUserWithTriggerContext:(id)context;
 @end
 
 @implementation SMSessionManager
 
-- (SMSessionManager)initWithAuthorizationManager:(id)a3 biomeManager:(id)a4 contactsManager:(id)a5 defaultsManager:(id)a6 locationManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 messagingService:(id)a11 carPlayAlertManager:(id)a12 observers:(id)a13 activeSessionDetailsDelegate:(id)a14 wristStateManager:(id)a15 appDeletionManager:(id)a16 healthKitManager:(id)a17 emergencyCallManager:(id)a18
+- (SMSessionManager)initWithAuthorizationManager:(id)manager biomeManager:(id)biomeManager contactsManager:(id)contactsManager defaultsManager:(id)defaultsManager locationManager:(id)locationManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 messagingService:(id)self1 carPlayAlertManager:(id)self2 observers:(id)self3 activeSessionDetailsDelegate:(id)self4 wristStateManager:(id)self5 appDeletionManager:(id)self6 healthKitManager:(id)self7 emergencyCallManager:(id)self8
 {
   v109 = *MEMORY[0x277D85DE8];
-  v94 = a3;
-  v93 = a4;
-  v79 = a5;
-  v92 = a5;
-  v91 = a6;
-  v80 = a7;
-  v23 = a7;
-  v81 = a8;
-  v89 = a8;
-  v24 = a9;
-  v96 = a10;
-  v88 = a11;
-  v97 = a12;
-  v95 = a13;
-  v87 = a14;
-  v86 = a15;
-  v85 = a16;
-  v84 = a17;
-  v83 = a18;
-  v90 = v23;
-  if (v23)
+  managerCopy = manager;
+  biomeManagerCopy = biomeManager;
+  contactsManagerCopy = contactsManager;
+  contactsManagerCopy2 = contactsManager;
+  defaultsManagerCopy = defaultsManager;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  platformCopy = platform;
+  platformCopy2 = platform;
+  metricManagerCopy = metricManager;
+  storeCopy = store;
+  serviceCopy = service;
+  alertManagerCopy = alertManager;
+  observersCopy = observers;
+  delegateCopy = delegate;
+  stateManagerCopy = stateManager;
+  deletionManagerCopy = deletionManager;
+  kitManagerCopy = kitManager;
+  callManagerCopy = callManager;
+  v90 = locationManagerCopy2;
+  if (locationManagerCopy2)
   {
-    if (v24)
+    if (metricManagerCopy)
     {
-      v25 = v96;
-      v26 = self;
-      if (v96)
+      v25 = storeCopy;
+      selfCopy3 = self;
+      if (storeCopy)
       {
-        if (v97)
+        if (alertManagerCopy)
         {
-          v77 = v24;
+          v77 = metricManagerCopy;
           v98.receiver = self;
           v98.super_class = SMSessionManager;
           v27 = [(SMSessionManager *)&v98 init];
           v28 = v27;
           if (v27)
           {
-            objc_storeStrong(&v27->_authorizationManager, a3);
-            objc_storeStrong(&v28->_biomeManager, a4);
-            objc_storeStrong(&v28->_contactsManager, v79);
-            objc_storeStrong(&v28->_defaultsManager, a6);
-            objc_storeStrong(&v28->_locationManager, v80);
-            objc_storeStrong(&v28->_platform, v81);
-            objc_storeStrong(&v28->_sessionMetricManager, a9);
-            objc_storeStrong(&v28->_sessionStore, a10);
+            objc_storeStrong(&v27->_authorizationManager, manager);
+            objc_storeStrong(&v28->_biomeManager, biomeManager);
+            objc_storeStrong(&v28->_contactsManager, contactsManagerCopy);
+            objc_storeStrong(&v28->_defaultsManager, defaultsManager);
+            objc_storeStrong(&v28->_locationManager, locationManagerCopy);
+            objc_storeStrong(&v28->_platform, platformCopy);
+            objc_storeStrong(&v28->_sessionMetricManager, metricManager);
+            objc_storeStrong(&v28->_sessionStore, store);
             v29 = objc_alloc_init(MEMORY[0x277D4ABB0]);
             state = v28->_state;
             v28->_state = v29;
@@ -269,23 +269,23 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v37 = [v35 UTF8String];
+              uTF8String = [v35 UTF8String];
             }
 
             else
             {
               v42 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v35];
-              v37 = [v42 UTF8String];
+              uTF8String = [v42 UTF8String];
             }
 
-            v43 = dispatch_queue_create(v37, v36);
+            v43 = dispatch_queue_create(uTF8String, v36);
 
             v44 = v35[17];
             v35[17] = v43;
 
-            objc_storeStrong(v35 + 36, a11);
-            objc_storeStrong(v35 + 38, a12);
-            objc_storeStrong(v35 + 46, a16);
+            objc_storeStrong(v35 + 36, service);
+            objc_storeStrong(v35 + 38, alertManager);
+            objc_storeStrong(v35 + 46, deletionManager);
             [v35[46] addObserver:v35];
             v35[10] = 0;
             v35[33] = 0;
@@ -317,10 +317,10 @@
               }
             }
 
-            v52 = [v35 defaultsManager];
+            defaultsManager = [v35 defaultsManager];
             v53 = *MEMORY[0x277D4ADF0];
             v54 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D4ADF0]];
-            v55 = [v52 objectForKey:@"RTDefaultsSessionManagerSendSessionEndMessageTimeoutKey" value:v54];
+            v55 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerSendSessionEndMessageTimeoutKey" value:v54];
             [v55 doubleValue];
             v35[14] = v56;
 
@@ -344,9 +344,9 @@
               }
             }
 
-            v59 = [v35 defaultsManager];
+            defaultsManager2 = [v35 defaultsManager];
             v60 = [MEMORY[0x277CCABB0] numberWithDouble:*&SMMagnetBreakHysteresisCellularTimeInterval];
-            v61 = [v59 objectForKey:@"RTDefaultsSessionManagerHysteresisMagnetBreakHysteresisTimeIntervalKey" value:v60];
+            v61 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerHysteresisMagnetBreakHysteresisTimeIntervalKey" value:v60];
             [v61 doubleValue];
             v35[13] = v62;
 
@@ -371,10 +371,10 @@
             }
 
             [v35 overrideMagnetBreakIntervalIfNeeded];
-            v65 = [v35 defaultsManager];
+            defaultsManager3 = [v35 defaultsManager];
             v66 = *MEMORY[0x277D4ADE8];
             v67 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D4ADE8]];
-            v68 = [v65 objectForKey:@"RTDefaultsSessionManagerHandoffActiveSessionDetailsFetchTimeout" value:v67];
+            v68 = [defaultsManager3 objectForKey:@"RTDefaultsSessionManagerHandoffActiveSessionDetailsFetchTimeout" value:v67];
             [v68 doubleValue];
             v35[7] = v69;
 
@@ -398,29 +398,29 @@
               }
             }
 
-            objc_storeStrong(v35 + 18, a14);
+            objc_storeStrong(v35 + 18, delegate);
             [v35[18] addObserver:v35];
-            objc_storeStrong(v35 + 44, a15);
+            objc_storeStrong(v35 + 44, stateManager);
             v72 = objc_opt_new();
             v73 = v35[15];
             v35[15] = v72;
 
-            [v35 setupWithObservers:v95];
-            objc_storeStrong(v35 + 16, a17);
+            [v35 setupWithObservers:observersCopy];
+            objc_storeStrong(v35 + 16, kitManager);
             v74 = v35[16];
             v75 = +[(RTNotification *)RTHealthKitManagerWorkoutSnapshotUpdateNotification];
             [v74 addObserver:v35 selector:sel_onHealthKitManagerNotification_ name:v75];
 
             *(v35 + 32) = 0;
-            objc_storeStrong(v35 + 47, a18);
+            objc_storeStrong(v35 + 47, callManager);
             [v35[47] addObserver:v35];
             [v35 setupWarningStates];
           }
 
-          v26 = v28;
-          v39 = v26;
-          v24 = v77;
-          v25 = v96;
+          selfCopy3 = v28;
+          v39 = selfCopy3;
+          metricManagerCopy = v77;
+          v25 = storeCopy;
           goto LABEL_42;
         }
 
@@ -451,8 +451,8 @@ LABEL_18:
     else
     {
       v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v25 = v96;
-      v26 = self;
+      v25 = storeCopy;
+      selfCopy3 = self;
       if (!os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_18;
@@ -475,8 +475,8 @@ LABEL_17:
   }
 
   v39 = 0;
-  v25 = v96;
-  v26 = self;
+  v25 = storeCopy;
+  selfCopy3 = self;
 LABEL_42:
 
   return v39;
@@ -484,38 +484,38 @@ LABEL_42:
 
 - (void)setupWarningStates
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__SMSessionManager_setupWarningStates__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)setupWithObservers:(id)a3
+- (void)setupWithObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  observersCopy = observers;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__SMSessionManager_setupWithObservers___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observersCopy;
+  v6 = observersCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_setupWithObservers:(id)a3
+- (void)_setupWithObservers:(id)observers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observersCopy = observers;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [observersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -527,14 +527,14 @@ LABEL_42:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(observersCopy);
         }
 
         [(SMSessionManager *)self _addObserver:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [observersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -547,27 +547,27 @@ LABEL_42:
 
 - (void)overrideMagnetBreakIntervalIfNeeded
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__SMSessionManager_overrideMagnetBreakIntervalIfNeeded__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)processResponseToTriggerPromptRemoteControlMessage:(id)a3
+- (void)processResponseToTriggerPromptRemoteControlMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SMSessionManager_processResponseToTriggerPromptRemoteControlMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __71__SMSessionManager_processResponseToTriggerPromptRemoteControlMessage___block_invoke(uint64_t a1)
@@ -680,18 +680,18 @@ void __71__SMSessionManager_processResponseToTriggerPromptRemoteControlMessage__
   }
 }
 
-- (void)processSessionEndRemoteControlMessage:(id)a3
+- (void)processSessionEndRemoteControlMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__SMSessionManager_processSessionEndRemoteControlMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __58__SMSessionManager_processSessionEndRemoteControlMessage___block_invoke(uint64_t a1)
@@ -804,18 +804,18 @@ void __58__SMSessionManager_processSessionEndRemoteControlMessage___block_invoke
   }
 }
 
-- (void)processModifySessionConfigurationRemoteControlMessage:(id)a3
+- (void)processModifySessionConfigurationRemoteControlMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__SMSessionManager_processModifySessionConfigurationRemoteControlMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __74__SMSessionManager_processModifySessionConfigurationRemoteControlMessage___block_invoke(uint64_t a1)
@@ -941,18 +941,18 @@ void __74__SMSessionManager_processModifySessionConfigurationRemoteControlMessag
   }
 }
 
-- (void)processStateSyncMessage:(id)a3
+- (void)processStateSyncMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SMSessionManager_processStateSyncMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __44__SMSessionManager_processStateSyncMessage___block_invoke(uint64_t a1)
@@ -1192,18 +1192,18 @@ void __44__SMSessionManager_processStateSyncMessage___block_invoke_150(uint64_t 
   }
 }
 
-- (void)processStateSyncUpdateReqMessage:(id)a3
+- (void)processStateSyncUpdateReqMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SMSessionManager_processStateSyncUpdateReqMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __53__SMSessionManager_processStateSyncUpdateReqMessage___block_invoke(uint64_t a1)
@@ -1251,18 +1251,18 @@ void __53__SMSessionManager_processStateSyncUpdateReqMessage___block_invoke_152(
   }
 }
 
-- (void)processSessionTypeKeyRelease:(id)a3
+- (void)processSessionTypeKeyRelease:(id)release
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  releaseCopy = release;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SMSessionManager_processSessionTypeKeyRelease___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = releaseCopy;
+  v6 = releaseCopy;
+  dispatch_async(queue, v7);
 }
 
 void __49__SMSessionManager_processSessionTypeKeyRelease___block_invoke(uint64_t a1)
@@ -1349,19 +1349,19 @@ void __49__SMSessionManager_processSessionTypeKeyRelease___block_invoke_157(uint
   }
 }
 
-- (BOOL)_isEligibleToProcessSessionTypeKeyReleaseMessage:(id)a3
+- (BOOL)_isEligibleToProcessSessionTypeKeyReleaseMessage:(id)message
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionManager *)self _isActiveDevice];
-  if (!v5)
+  messageCopy = message;
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
+  if (!_isActiveDevice)
   {
     if ([(SMSessionManagerState *)self->_state sessionState]!= 4 && ([(SMSessionManagerState *)self->_state isEndSessionState]& 1) == 0)
     {
-      v8 = [(SMSessionManagerState *)self->_state configuration];
-      v9 = [v8 sessionID];
-      v10 = [v4 sessionID];
-      v11 = [v9 isEqual:v10];
+      configuration = [(SMSessionManagerState *)self->_state configuration];
+      sessionID = [configuration sessionID];
+      sessionID2 = [messageCopy sessionID];
+      v11 = [sessionID isEqual:sessionID2];
 
       if (v11)
       {
@@ -1380,7 +1380,7 @@ void __49__SMSessionManager_processSessionTypeKeyRelease___block_invoke_157(uint
         v14 = 136315394;
         v15 = "[SMSessionManager _isEligibleToProcessSessionTypeKeyReleaseMessage:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = messageCopy;
         v12 = "%s, non-active device isEligible to process keyReleaseMessage %@";
         goto LABEL_15;
       }
@@ -1402,31 +1402,31 @@ LABEL_11:
     v14 = 136315394;
     v15 = "[SMSessionManager _isEligibleToProcessSessionTypeKeyReleaseMessage:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = messageCopy;
     v12 = "%s, active device, state transition has already been processed, ignores SMKeyReleaseMessage, %@";
 LABEL_15:
     _os_log_debug_impl(&dword_2304B3000, v6, OS_LOG_TYPE_DEBUG, v12, &v14, 0x16u);
   }
 
 LABEL_4:
-  v7 = !v5;
+  v7 = !_isActiveDevice;
 
 LABEL_12:
   return v7;
 }
 
-- (void)processEmergencyContactsNotifiedMessage:(id)a3
+- (void)processEmergencyContactsNotifiedMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__SMSessionManager_processEmergencyContactsNotifiedMessage___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = messageCopy;
+  v6 = messageCopy;
+  dispatch_async(queue, v7);
 }
 
 void __60__SMSessionManager_processEmergencyContactsNotifiedMessage___block_invoke(uint64_t a1)
@@ -1509,14 +1509,14 @@ void __60__SMSessionManager_processEmergencyContactsNotifiedMessage___block_invo
   objc_initWeak(&location, self);
   out_token = 0;
   [(SMSessionManager *)self _updateUserDisabledConnectivityStatus];
-  v3 = [@"com.apple.commcenter.DataSettingsChangedNotification" UTF8String];
-  v4 = [(SMSessionManager *)self queue];
+  uTF8String = [@"com.apple.commcenter.DataSettingsChangedNotification" UTF8String];
+  queue = [(SMSessionManager *)self queue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __57__SMSessionManager__registerForConnectivityNotifications__block_invoke;
   handler[3] = &unk_2788CA130;
   objc_copyWeak(&v6, &location);
-  notify_register_dispatch(v3, &out_token, v4, handler);
+  notify_register_dispatch(uTF8String, &out_token, queue, handler);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -1542,20 +1542,20 @@ void __57__SMSessionManager__registerForConnectivityNotifications__block_invoke(
 
 - (void)onDataSettingsChangedNotification
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMSessionManager_onDataSettingsChangedNotification__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_updateUserDisabledConnectivityStatus
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self queue];
-  v4 = [SMInitiatorEligibility checkAirplaneModeEnabledWithQueue:v3];
+  queue = [(SMSessionManager *)self queue];
+  v4 = [SMInitiatorEligibility checkAirplaneModeEnabledWithQueue:queue];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -1570,14 +1570,14 @@ void __57__SMSessionManager__registerForConnectivityNotifications__block_invoke(
     }
   }
 
-  v6 = [(SMSessionManager *)self queue];
+  queue2 = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__SMSessionManager__updateUserDisabledConnectivityStatus__block_invoke;
   v7[3] = &unk_2788D2FC8;
   v8 = v4;
   v7[4] = self;
-  [SMInitiatorEligibility checkCellularEnabledWithQueue:v6 handler:v7];
+  [SMInitiatorEligibility checkCellularEnabledWithQueue:queue2 handler:v7];
 }
 
 void __57__SMSessionManager__updateUserDisabledConnectivityStatus__block_invoke(uint64_t a1, int a2, void *a3)
@@ -1650,18 +1650,18 @@ LABEL_15:
 - (void)_showUserDisabledConnectivityAlert
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D4AB70] disabledConnectivityAlertTitle];
-  v4 = [MEMORY[0x277D4AB70] disabledConnectivityAlertOKButton];
-  v5 = [MEMORY[0x277D4AB70] disabledConnectivityAlertGenericMessage];
-  v6 = [(SMSessionManager *)self state];
-  v7 = [v6 configuration];
-  v8 = [v7 sessionType];
+  disabledConnectivityAlertTitle = [MEMORY[0x277D4AB70] disabledConnectivityAlertTitle];
+  disabledConnectivityAlertOKButton = [MEMORY[0x277D4AB70] disabledConnectivityAlertOKButton];
+  disabledConnectivityAlertGenericMessage = [MEMORY[0x277D4AB70] disabledConnectivityAlertGenericMessage];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionType = [configuration sessionType];
 
-  if (v8 == 2)
+  if (sessionType == 2)
   {
-    v9 = [MEMORY[0x277D4AB70] disabledConnectivityAlertDestinationMessage];
+    disabledConnectivityAlertDestinationMessage = [MEMORY[0x277D4AB70] disabledConnectivityAlertDestinationMessage];
 
-    v5 = v9;
+    disabledConnectivityAlertGenericMessage = disabledConnectivityAlertDestinationMessage;
   }
 
   error = 0;
@@ -1669,12 +1669,12 @@ LABEL_15:
   v20[0] = *MEMORY[0x277CBF1B0];
   v20[1] = v10;
   v21[0] = MEMORY[0x277CBEC38];
-  v21[1] = v3;
+  v21[1] = disabledConnectivityAlertTitle;
   v11 = *MEMORY[0x277CBF1E8];
   v20[2] = *MEMORY[0x277CBF198];
   v20[3] = v11;
-  v21[2] = v5;
-  v21[3] = v4;
+  v21[2] = disabledConnectivityAlertGenericMessage;
+  v21[3] = disabledConnectivityAlertOKButton;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:4];
   v13 = [v12 mutableCopy];
 
@@ -1707,39 +1707,39 @@ LABEL_6:
 
 - (void)bootstrapToState
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__SMSessionManager_bootstrapToState__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_bootstrapToState
 {
   v84 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self state];
-  v4 = [v3 sessionState];
+  state = [(SMSessionManager *)self state];
+  sessionState = [state sessionState];
 
-  if (v4)
+  if (sessionState)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       return;
     }
 
-    v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    state3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (!os_log_type_enabled(state3, OS_LOG_TYPE_INFO))
     {
       goto LABEL_42;
     }
 
-    v6 = [(SMSessionManager *)self state];
+    state2 = [(SMSessionManager *)self state];
     *buf = 136315395;
     v79 = "[SMSessionManager _bootstrapToState]";
     v80 = 2117;
-    v81 = v6;
+    v81 = state2;
     v7 = "%s, Session State is not SMSessionStateUnknown, bootstrap not needed, %{sensitive}@";
     goto LABEL_13;
   }
@@ -1751,17 +1751,17 @@ LABEL_6:
       return;
     }
 
-    v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    state3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(state3, OS_LOG_TYPE_INFO))
     {
-      v6 = [RTStore availabilityToString:[(SMSessionManager *)self sessionStoreAvailability]];
+      state2 = [RTStore availabilityToString:[(SMSessionManager *)self sessionStoreAvailability]];
       *buf = 136315394;
       v79 = "[SMSessionManager _bootstrapToState]";
       v80 = 2112;
-      v81 = v6;
+      v81 = state2;
       v7 = "%s, Deferring - Session Store is not available, %@";
 LABEL_13:
-      _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, v7, buf, 0x16u);
+      _os_log_impl(&dword_2304B3000, state3, OS_LOG_TYPE_INFO, v7, buf, 0x16u);
 
       goto LABEL_42;
     }
@@ -1769,28 +1769,28 @@ LABEL_13:
     goto LABEL_42;
   }
 
-  v8 = [(SMSessionManager *)self status];
-  v5 = [v8 state];
+  status = [(SMSessionManager *)self status];
+  state3 = [status state];
 
-  v9 = [v5 activeDeviceIdentifier];
-  v10 = [(SMSessionManager *)self messagingService];
-  v11 = [v10 deviceIdentifier];
-  v12 = [v9 isEqual:v11];
+  activeDeviceIdentifier = [state3 activeDeviceIdentifier];
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  v12 = [activeDeviceIdentifier isEqual:deviceIdentifier];
 
-  [(SMSessionManager *)self setHandoffRebootReconciliationState:[(SMSessionManager *)self _evaluateHandoffRebootReconciliationState:v5]];
-  v13 = [(SMSessionManager *)self _reconciliationDecisionForState:v5 isActiveDevice:v12];
+  [(SMSessionManager *)self setHandoffRebootReconciliationState:[(SMSessionManager *)self _evaluateHandoffRebootReconciliationState:state3]];
+  v13 = [(SMSessionManager *)self _reconciliationDecisionForState:state3 isActiveDevice:v12];
   if (v13 != 1)
   {
     v17 = v13;
-    v18 = [(SMSessionManager *)self _stateValidForSessionResume:v5];
+    v18 = [(SMSessionManager *)self _stateValidForSessionResume:state3];
     if (v17 == 2 && v18)
     {
-      [(SMSessionManager *)self _transitionToState:v5 transitionType:1];
-      [(SMSessionManager *)self _handleTransitionToStateAfterBootstrap:v5 isActiveDevice:v12];
+      [(SMSessionManager *)self _transitionToState:state3 transitionType:1];
+      [(SMSessionManager *)self _handleTransitionToStateAfterBootstrap:state3 isActiveDevice:v12];
       goto LABEL_35;
     }
 
-    v19 = [(SMSessionManager *)self _stateValidForSendingEndSessionMessage:v5];
+    v19 = [(SMSessionManager *)self _stateValidForSendingEndSessionMessage:state3];
     if (v17 == 2)
     {
       v20 = v12;
@@ -1804,73 +1804,73 @@ LABEL_13:
     if (v19 && v20)
     {
       v70 = objc_alloc(MEMORY[0x277D4ABB0]);
-      v67 = [v5 configuration];
-      v65 = [v5 monitorContext];
-      v75 = [MEMORY[0x277CBEAA8] date];
-      v63 = [v5 location];
-      v72 = [v5 allowReadToken];
-      v61 = [v5 safetyCacheKey];
-      v59 = [v5 startMessageGUID];
-      v57 = [v5 scheduledSendMessageGUID];
-      v21 = [v5 scheduledSendMessageDate];
-      v55 = [v5 activeDeviceIdentifier];
-      v22 = [v5 estimatedEndDate];
-      v23 = [v5 coarseEstimatedEndDate];
-      v24 = [MEMORY[0x277CBEAA8] date];
-      v25 = [v70 initWithSessionState:1 configuration:v67 userTriggerResponse:0 monitorContext:v65 date:v75 location:v63 allowReadToken:v72 safetyCacheKey:v61 startMessageGUID:v59 scheduledSendMessageGUID:v57 scheduledSendMessageDate:v21 activeDeviceIdentifier:v55 estimatedEndDate:v22 coarseEstimatedEndDate:v23 estimatedEndDateStatus:0 sessionEndReason:7 sessionStateTransitionDate:v24 activePairedDeviceIdentifier:0];
+      configuration = [state3 configuration];
+      monitorContext = [state3 monitorContext];
+      date = [MEMORY[0x277CBEAA8] date];
+      location = [state3 location];
+      allowReadToken = [state3 allowReadToken];
+      safetyCacheKey = [state3 safetyCacheKey];
+      startMessageGUID = [state3 startMessageGUID];
+      scheduledSendMessageGUID = [state3 scheduledSendMessageGUID];
+      scheduledSendMessageDate = [state3 scheduledSendMessageDate];
+      activeDeviceIdentifier2 = [state3 activeDeviceIdentifier];
+      estimatedEndDate = [state3 estimatedEndDate];
+      coarseEstimatedEndDate = [state3 coarseEstimatedEndDate];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v25 = [v70 initWithSessionState:1 configuration:configuration userTriggerResponse:0 monitorContext:monitorContext date:date location:location allowReadToken:allowReadToken safetyCacheKey:safetyCacheKey startMessageGUID:startMessageGUID scheduledSendMessageGUID:scheduledSendMessageGUID scheduledSendMessageDate:scheduledSendMessageDate activeDeviceIdentifier:activeDeviceIdentifier2 estimatedEndDate:estimatedEndDate coarseEstimatedEndDate:coarseEstimatedEndDate estimatedEndDateStatus:0 sessionEndReason:7 sessionStateTransitionDate:date2 activePairedDeviceIdentifier:0];
 
       [(SMSessionManager *)self _transitionToState:v25 transitionType:1];
-      v26 = [v25 startMessageGUID];
-      [(SMSessionManager *)self sendSessionEndMessageWithReason:7 associatedGUID:v26 state:v25];
+      startMessageGUID2 = [v25 startMessageGUID];
+      [(SMSessionManager *)self sendSessionEndMessageWithReason:7 associatedGUID:startMessageGUID2 state:v25];
 
       goto LABEL_35;
     }
 
     if (v17 == 3)
     {
-      v27 = [(SMSessionManager *)self activeSessionDetails];
-      if (v27)
+      activeSessionDetails = [(SMSessionManager *)self activeSessionDetails];
+      if (activeSessionDetails)
       {
-        v28 = v27;
-        v29 = [(SMSessionManager *)self activeSessionDetails];
-        v30 = [v29 activeDeviceIdentifier];
-        v31 = [(SMSessionManager *)self messagingService];
-        v32 = [v31 deviceIdentifier];
-        if ([v30 isEqual:v32])
+        v28 = activeSessionDetails;
+        activeSessionDetails2 = [(SMSessionManager *)self activeSessionDetails];
+        activeDeviceIdentifier3 = [activeSessionDetails2 activeDeviceIdentifier];
+        messagingService2 = [(SMSessionManager *)self messagingService];
+        deviceIdentifier2 = [messagingService2 deviceIdentifier];
+        if ([activeDeviceIdentifier3 isEqual:deviceIdentifier2])
         {
         }
 
         else
         {
-          v33 = [(SMSessionManager *)self activeSessionDetails];
-          v34 = [v33 sessionID];
-          v35 = [v5 configuration];
-          [v35 sessionID];
-          v36 = v76 = v29;
-          v73 = [v34 isEqual:v36];
+          activeSessionDetails3 = [(SMSessionManager *)self activeSessionDetails];
+          sessionID = [activeSessionDetails3 sessionID];
+          configuration2 = [state3 configuration];
+          [configuration2 sessionID];
+          v36 = v76 = activeSessionDetails2;
+          v73 = [sessionID isEqual:v36];
 
           if (v73)
           {
-            v37 = [(SMSessionManager *)self activeSessionDetails];
-            v77 = [v37 activeDeviceIdentifier];
+            activeSessionDetails4 = [(SMSessionManager *)self activeSessionDetails];
+            activeDeviceIdentifier4 = [activeSessionDetails4 activeDeviceIdentifier];
 
             v68 = objc_alloc(MEMORY[0x277D4ABB0]);
-            v66 = [v5 sessionState];
-            v64 = [v5 configuration];
-            v62 = [v5 monitorContext];
-            v60 = [v5 date];
-            v58 = [v5 location];
-            v74 = [v5 allowReadToken];
-            v71 = [v5 safetyCacheKey];
-            v56 = [v5 startMessageGUID];
-            v54 = [v5 scheduledSendMessageGUID];
-            v53 = [v5 scheduledSendMessageDate];
-            v52 = [v5 estimatedEndDate];
-            v38 = [v5 coarseEstimatedEndDate];
-            v39 = [v5 sessionStateTransitionDate];
-            v40 = [(SMSessionManager *)self messagingService];
-            v41 = [v40 deviceIdentifier];
-            v69 = [v68 initWithSessionState:v66 configuration:v64 userTriggerResponse:0 monitorContext:v62 date:v60 location:v58 allowReadToken:v74 safetyCacheKey:v71 startMessageGUID:v56 scheduledSendMessageGUID:v54 scheduledSendMessageDate:v53 activeDeviceIdentifier:v77 estimatedEndDate:v52 coarseEstimatedEndDate:v38 estimatedEndDateStatus:0 sessionEndReason:7 sessionStateTransitionDate:v39 activePairedDeviceIdentifier:v41];
+            sessionState2 = [state3 sessionState];
+            configuration3 = [state3 configuration];
+            monitorContext2 = [state3 monitorContext];
+            date3 = [state3 date];
+            location2 = [state3 location];
+            allowReadToken2 = [state3 allowReadToken];
+            safetyCacheKey2 = [state3 safetyCacheKey];
+            startMessageGUID3 = [state3 startMessageGUID];
+            scheduledSendMessageGUID2 = [state3 scheduledSendMessageGUID];
+            scheduledSendMessageDate2 = [state3 scheduledSendMessageDate];
+            estimatedEndDate2 = [state3 estimatedEndDate];
+            coarseEstimatedEndDate2 = [state3 coarseEstimatedEndDate];
+            sessionStateTransitionDate = [state3 sessionStateTransitionDate];
+            messagingService3 = [(SMSessionManager *)self messagingService];
+            deviceIdentifier3 = [messagingService3 deviceIdentifier];
+            v69 = [v68 initWithSessionState:sessionState2 configuration:configuration3 userTriggerResponse:0 monitorContext:monitorContext2 date:date3 location:location2 allowReadToken:allowReadToken2 safetyCacheKey:safetyCacheKey2 startMessageGUID:startMessageGUID3 scheduledSendMessageGUID:scheduledSendMessageGUID2 scheduledSendMessageDate:scheduledSendMessageDate2 activeDeviceIdentifier:activeDeviceIdentifier4 estimatedEndDate:estimatedEndDate2 coarseEstimatedEndDate:coarseEstimatedEndDate2 estimatedEndDateStatus:0 sessionEndReason:7 sessionStateTransitionDate:sessionStateTransitionDate activePairedDeviceIdentifier:deviceIdentifier3];
 
             [(SMSessionManager *)self _transitionToState:v69 transitionType:5];
             goto LABEL_35;
@@ -1880,31 +1880,31 @@ LABEL_13:
     }
 
     v42 = objc_alloc(MEMORY[0x277D4ABB0]);
-    if (v5)
+    if (state3)
     {
-      v43 = [v5 configuration];
+      configuration4 = [state3 configuration];
     }
 
     else
     {
-      v43 = 0;
+      configuration4 = 0;
     }
 
-    v44 = [MEMORY[0x277CBEAA8] date];
-    v45 = [(SMSessionManager *)self messagingService];
-    v46 = [v45 deviceIdentifier];
-    v47 = [MEMORY[0x277CBEAA8] date];
-    v48 = [v42 initWithSessionState:1 configuration:v43 userTriggerResponse:0 monitorContext:0 date:v44 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:v46 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:v47 activePairedDeviceIdentifier:0];
+    date4 = [MEMORY[0x277CBEAA8] date];
+    messagingService4 = [(SMSessionManager *)self messagingService];
+    deviceIdentifier4 = [messagingService4 deviceIdentifier];
+    date5 = [MEMORY[0x277CBEAA8] date];
+    v48 = [v42 initWithSessionState:1 configuration:configuration4 userTriggerResponse:0 monitorContext:0 date:date4 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:deviceIdentifier4 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:date5 activePairedDeviceIdentifier:0];
 
-    if (v5)
+    if (state3)
     {
     }
 
     [(SMSessionManager *)self _transitionToState:v48 transitionType:1];
 
 LABEL_35:
-    v49 = [(SMSessionManager *)self defaultsManager];
-    [RTBootInfo setBootSessionIDWithDefaultsManager:v49 defaultsKey:@"SMDefaultsBootInfo"];
+    defaultsManager = [(SMSessionManager *)self defaultsManager];
+    [RTBootInfo setBootSessionIDWithDefaultsManager:defaultsManager defaultsKey:@"SMDefaultsBootInfo"];
 
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -1914,18 +1914,18 @@ LABEL_35:
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [(SMSessionManager *)self state];
-      v50 = [(SMSessionManager *)self _isActiveDevice];
+      state4 = [(SMSessionManager *)self state];
+      _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
       v51 = "NO";
       v79 = "[SMSessionManager _bootstrapToState]";
       *buf = 136315651;
-      if (v50)
+      if (_isActiveDevice)
       {
         v51 = "YES";
       }
 
       v80 = 2117;
-      v81 = v15;
+      v81 = state4;
       v82 = 2080;
       v83 = v51;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%s, bootstrapping complete with state, %{sensitive}@, activeDevice %s", buf, 0x20u);
@@ -1942,12 +1942,12 @@ LABEL_41:
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:{-[SMSessionManager handoffRebootReconciliationState](self, "handoffRebootReconciliationState")}];
+      state4 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:{-[SMSessionManager handoffRebootReconciliationState](self, "handoffRebootReconciliationState")}];
       v16 = [objc_opt_class() SessionHandoffRebootReconciliationDecisionToString:1];
       *buf = 136315650;
       v79 = "[SMSessionManager _bootstrapToState]";
       v80 = 2112;
-      v81 = v15;
+      v81 = state4;
       v82 = 2112;
       v83 = v16;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%s, Deferring - Handoff Reboot Reconciliation state, %@, reconciliationDecision, %@", buf, 0x20u);
@@ -1962,21 +1962,21 @@ LABEL_40:
 LABEL_42:
 }
 
-- (void)_handleTransitionToStateAfterBootstrap:(id)a3 isActiveDevice:(BOOL)a4
+- (void)_handleTransitionToStateAfterBootstrap:(id)bootstrap isActiveDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SMSessionManager *)self defaultsManager];
-  v8 = [v7 objectForKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
+  bootstrapCopy = bootstrap;
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v8 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
 
   if (v8)
   {
-    if ([(SMSessionManager *)self _stateValidForSendSessionEndMessageRetry:v6])
+    if ([(SMSessionManager *)self _stateValidForSendSessionEndMessageRetry:bootstrapCopy])
     {
-      v9 = [(SMSessionManager *)self defaultsManager];
-      v10 = [v9 objectForKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
-      v11 = [v10 unsignedIntegerValue];
+      defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+      v10 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -1986,14 +1986,14 @@ LABEL_42:
           *buf = 136315650;
           v29 = "[SMSessionManager _handleTransitionToStateAfterBootstrap:isActiveDevice:]";
           v30 = 2048;
-          v31 = v11;
+          v31 = unsignedIntegerValue;
           v32 = 2112;
           v33 = v8;
           _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, resending session end message, reason, %ld, associatedGUID, %@", buf, 0x20u);
         }
       }
 
-      [(SMSessionManager *)self sendSessionEndMessageWithReason:v11 associatedGUID:v8 state:v6];
+      [(SMSessionManager *)self sendSessionEndMessageWithReason:unsignedIntegerValue associatedGUID:v8 state:bootstrapCopy];
     }
 
     else
@@ -2002,16 +2002,16 @@ LABEL_42:
     }
   }
 
-  else if ([(SMSessionManager *)self _isEligibleToSendStateUpdateReqMessageAfterBootstrap:v6 isActiveDevice:v4])
+  else if ([(SMSessionManager *)self _isEligibleToSendStateUpdateReqMessageAfterBootstrap:bootstrapCopy isActiveDevice:deviceCopy])
   {
-    v13 = [v6 configuration];
-    v14 = [v13 sessionID];
-    if (v14)
+    configuration = [bootstrapCopy configuration];
+    sessionID = [configuration sessionID];
+    if (sessionID)
     {
-      v15 = v14;
-      v16 = [v6 activePairedDeviceIdentifier];
+      v15 = sessionID;
+      activePairedDeviceIdentifier = [bootstrapCopy activePairedDeviceIdentifier];
 
-      if (v16)
+      if (activePairedDeviceIdentifier)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -2024,22 +2024,22 @@ LABEL_42:
           }
         }
 
-        v18 = [v6 configuration];
-        v19 = [v18 sessionID];
+        configuration2 = [bootstrapCopy configuration];
+        sessionID2 = [configuration2 sessionID];
 
-        v20 = [v6 activeDeviceIdentifier];
+        activeDeviceIdentifier = [bootstrapCopy activeDeviceIdentifier];
         v21 = objc_alloc(MEMORY[0x277D4AC00]);
-        v22 = [MEMORY[0x277CBEAA8] date];
-        v23 = [MEMORY[0x277CCAD78] UUID];
-        v24 = [v21 initWithDate:v22 messageID:v23 sessionID:v19 deviceToRequest:v20];
+        date = [MEMORY[0x277CBEAA8] date];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v24 = [v21 initWithDate:date messageID:uUID sessionID:sessionID2 deviceToRequest:activeDeviceIdentifier];
 
-        v25 = [(SMSessionManager *)self messagingService];
+        messagingService = [(SMSessionManager *)self messagingService];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __74__SMSessionManager__handleTransitionToStateAfterBootstrap_isActiveDevice___block_invoke;
         v26[3] = &__block_descriptor_33_e20_v20__0B8__NSError_12l;
-        v27 = v4;
-        [v25 sendIDSMessageToPairedDevice:v24 completion:v26];
+        v27 = deviceCopy;
+        [messagingService sendIDSMessageToPairedDevice:v24 completion:v26];
       }
     }
 
@@ -2072,32 +2072,32 @@ void __74__SMSessionManager__handleTransitionToStateAfterBootstrap_isActiveDevic
   }
 }
 
-- (BOOL)_isEligibleToSendStateUpdateReqMessageAfterBootstrap:(id)a3 isActiveDevice:(BOOL)a4
+- (BOOL)_isEligibleToSendStateUpdateReqMessageAfterBootstrap:(id)bootstrap isActiveDevice:(BOOL)device
 {
-  if (a4)
+  if (device)
   {
     return 0;
   }
 
-  v5 = [a3 configuration];
-  v6 = [v5 sessionSupportsHandoff];
+  configuration = [bootstrap configuration];
+  sessionSupportsHandoff = [configuration sessionSupportsHandoff];
 
-  return v6 ^ 1;
+  return sessionSupportsHandoff ^ 1;
 }
 
-- (void)fetchCurrentSessionStateWithCompletion:(id)a3
+- (void)fetchCurrentSessionStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __59__SMSessionManager_fetchCurrentSessionStateWithCompletion___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = completionCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -2120,19 +2120,19 @@ void __59__SMSessionManager_fetchCurrentSessionStateWithCompletion___block_invok
   (*(v2 + 16))(v2, v3, [*(a1 + 32) _canDeviceModifyState], 0);
 }
 
-- (void)fetchCurrentLocalSessionStateWithHandler:(id)a3
+- (void)fetchCurrentLocalSessionStateWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __61__SMSessionManager_fetchCurrentLocalSessionStateWithHandler___block_invoke;
     v7[3] = &unk_2788C4D38;
     v7[4] = self;
-    v8 = v4;
-    dispatch_async(v5, v7);
+    v8 = handlerCopy;
+    dispatch_async(queue, v7);
 
     v6 = v8;
   }
@@ -2178,7 +2178,7 @@ void __61__SMSessionManager_fetchCurrentLocalSessionStateWithHandler___block_inv
   v37[4] = a2;
   [(SMSessionStore *)sessionStore logStoreWithReason:@"Running sessionStore logStoreWithReason before _getMostRecentSessionState" handler:v37];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(SMSessionManager *)self sessionStore];
+  sessionStore = [(SMSessionManager *)self sessionStore];
   v30 = MEMORY[0x277D85DD0];
   v31 = 3221225472;
   v32 = __46__SMSessionManager__getMostRecentSessionState__block_invoke_186;
@@ -2187,7 +2187,7 @@ void __61__SMSessionManager_fetchCurrentLocalSessionStateWithHandler___block_inv
   v36 = &v38;
   v6 = v4;
   v34 = v6;
-  [v5 fetchMostRecentSessionManagerStateWithHandler:&v30];
+  [sessionStore fetchMostRecentSessionManagerStateWithHandler:&v30];
 
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
@@ -2199,11 +2199,11 @@ void __61__SMSessionManager_fetchCurrentLocalSessionStateWithHandler___block_inv
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_1253];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -2306,26 +2306,26 @@ void __46__SMSessionManager__getMostRecentSessionState__block_invoke_186(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_transitionToState:(id)a3 transitionType:(unint64_t)a4
+- (void)_transitionToState:(id)state transitionType:(unint64_t)type
 {
-  v8 = [a3 mutableCopy];
-  v6 = [(SMSessionManager *)self _stateTransitionDecisionToState:v8 transitionType:a4];
-  v7 = [v6 actionBlock];
-  v7[2]();
+  v8 = [state mutableCopy];
+  v6 = [(SMSessionManager *)self _stateTransitionDecisionToState:v8 transitionType:type];
+  actionBlock = [v6 actionBlock];
+  actionBlock[2]();
 }
 
-- (BOOL)_stateValidForSessionResume:(id)a3
+- (BOOL)_stateValidForSessionResume:(id)resume
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isValidState] & 1) == 0)
+  resumeCopy = resume;
+  if (([resumeCopy isValidState] & 1) == 0)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v4, "sessionState")}];
+        v8 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(resumeCopy, "sessionState")}];
         v21 = 136315394;
         v22 = "[SMSessionManager _stateValidForSessionResume:]";
         v23 = 2112;
@@ -2341,10 +2341,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v5 = [(SMSessionManager *)self defaultsManager];
-  v6 = [RTBootInfo isFirstRunSinceBootWithDefaultsManager:v5 defaultsKey:@"SMDefaultsBootInfo"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v6 = [RTBootInfo isFirstRunSinceBootWithDefaultsManager:defaultsManager defaultsKey:@"SMDefaultsBootInfo"];
 
-  if (v6 && ([v4 sessionState] == 11 || objc_msgSend(v4, "sessionState") == 10))
+  if (v6 && ([resumeCopy sessionState] == 11 || objc_msgSend(resumeCopy, "sessionState") == 10))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2364,17 +2364,17 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v9 = [(SMSessionManager *)self defaultsManager];
-  v10 = [v9 objectForKey:@"RTDefaultsSessionManagerSessionResumeWindowThresholdKey"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  v10 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerSessionResumeWindowThresholdKey"];
 
   if (v10)
   {
-    v11 = [(SMSessionManager *)self defaultsManager];
-    v12 = [v11 objectForKey:@"RTDefaultsSessionManagerSessionResumeWindowThresholdKey"];
+    defaultsManager3 = [(SMSessionManager *)self defaultsManager];
+    v12 = [defaultsManager3 objectForKey:@"RTDefaultsSessionManagerSessionResumeWindowThresholdKey"];
     [v12 doubleValue];
     v14 = v13;
 
-    if (!v4)
+    if (!resumeCopy)
     {
       goto LABEL_17;
     }
@@ -2383,18 +2383,18 @@ LABEL_11:
   else
   {
     v14 = *MEMORY[0x277D4ADF8];
-    if (!v4)
+    if (!resumeCopy)
     {
       goto LABEL_17;
     }
   }
 
-  v15 = [v4 configuration];
-  if (v15)
+  configuration = [resumeCopy configuration];
+  if (configuration)
   {
-    v16 = [MEMORY[0x277CBEAA8] date];
-    v17 = [v4 date];
-    [v16 timeIntervalSinceDate:v17];
+    date = [MEMORY[0x277CBEAA8] date];
+    date2 = [resumeCopy date];
+    [date timeIntervalSinceDate:date2];
     v19 = v18 <= v14;
   }
 
@@ -2407,13 +2407,13 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)_stateValidForSendSessionEndMessageRetry:(id)a3
+- (BOOL)_stateValidForSendSessionEndMessageRetry:(id)retry
 {
-  v3 = a3;
+  retryCopy = retry;
   v4 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0818, &unk_2845A0830, 0}];
-  if (v3)
+  if (retryCopy)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "sessionState")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(retryCopy, "sessionState")}];
     v6 = [v4 containsObject:v5];
   }
 
@@ -2425,18 +2425,18 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)_stateValidForSendingEndSessionMessage:(id)a3
+- (BOOL)_stateValidForSendingEndSessionMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0848, &unk_2845A0860, &unk_2845A0878, &unk_2845A0890, &unk_2845A08A8, &unk_2845A08C0, 0}];
-  if (v4)
+  if (messageCopy)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "sessionState")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "sessionState")}];
     if ([v5 containsObject:v6])
     {
-      v7 = [MEMORY[0x277CBEAA8] date];
-      v8 = [v4 date];
-      [v7 timeIntervalSinceDate:v8];
+      date = [MEMORY[0x277CBEAA8] date];
+      date2 = [messageCopy date];
+      [date timeIntervalSinceDate:date2];
       v10 = v9;
       [(SMSessionManager *)self sendSessionEndMessageTimeout];
       v12 = v10 <= v11;
@@ -2456,10 +2456,10 @@ LABEL_18:
   return v12;
 }
 
-- (id)_updateDestinationForRoundTripSessionConfiguration:(id)a3
+- (id)_updateDestinationForRoundTripSessionConfiguration:(id)configuration
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v57 = 0;
   v58 = &v57;
   v59 = 0x3032000000;
@@ -2473,18 +2473,18 @@ LABEL_18:
   v55 = __Block_byref_object_dispose__198;
   v56 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(SMSessionManager *)self locationManager];
+  locationManager = [(SMSessionManager *)self locationManager];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __71__SMSessionManager__updateDestinationForRoundTripSessionConfiguration___block_invoke;
   v46[3] = &unk_2788D3038;
   v49 = &v51;
   v50 = &v57;
-  v7 = v4;
+  v7 = configurationCopy;
   v47 = v7;
   v8 = v5;
   v48 = v8;
-  [v6 fetchCachedLocationWithHandler:v46];
+  [locationManager fetchCachedLocationWithHandler:v46];
 
   v9 = v8;
   v10 = [MEMORY[0x277CBEAA8] now];
@@ -2496,11 +2496,11 @@ LABEL_18:
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_1253];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -2533,8 +2533,8 @@ LABEL_18:
     {
       v27 = v58[5];
       v28 = MEMORY[0x277D4ABB0];
-      v29 = [(SMSessionManager *)self state];
-      v30 = [v28 convertSessionStateToString:{objc_msgSend(v29, "sessionState")}];
+      state = [(SMSessionManager *)self state];
+      v30 = [v28 convertSessionStateToString:{objc_msgSend(state, "sessionState")}];
       *buf = 136315907;
       *&buf[4] = "[SMSessionManager _updateDestinationForRoundTripSessionConfiguration:]";
       v64 = 2112;
@@ -2554,8 +2554,8 @@ LABEL_18:
     {
       v32 = v58[5];
       v33 = MEMORY[0x277D4ABB0];
-      v34 = [(SMSessionManager *)self state];
-      v35 = [v33 convertSessionStateToString:{objc_msgSend(v34, "sessionState")}];
+      state2 = [(SMSessionManager *)self state];
+      v35 = [v33 convertSessionStateToString:{objc_msgSend(state2, "sessionState")}];
       v36 = v52[5];
       *buf = 136315907;
       *&buf[4] = "[SMSessionManager _updateDestinationForRoundTripSessionConfiguration:]";
@@ -2570,13 +2570,13 @@ LABEL_18:
   }
 
   v37 = objc_alloc(MEMORY[0x277D4AB78]);
-  v38 = [v7 conversation];
-  v39 = [v7 sessionID];
+  conversation = [v7 conversation];
+  sessionID = [v7 sessionID];
   v40 = v58[5];
   v41 = [MEMORY[0x277CBEAA8] now];
-  v42 = [v7 sessionSupportsHandoff];
-  v43 = [v7 sosReceivers];
-  v44 = [v37 initRoundTripSessionConfigurationWithConversation:v38 sessionID:v39 destination:v40 sessionStartDate:v41 userResponseSafeDate:0 sessionSupportsHandoff:v42 sosReceivers:v43];
+  sessionSupportsHandoff = [v7 sessionSupportsHandoff];
+  sosReceivers = [v7 sosReceivers];
+  v44 = [v37 initRoundTripSessionConfigurationWithConversation:conversation sessionID:sessionID destination:v40 sessionStartDate:v41 userResponseSafeDate:0 sessionSupportsHandoff:sessionSupportsHandoff sosReceivers:sosReceivers];
 
   _Block_object_dispose(&v51, 8);
   _Block_object_dispose(&v57, 8);
@@ -2602,35 +2602,35 @@ void __71__SMSessionManager__updateDestinationForRoundTripSessionConfiguration__
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (void)_invalidateTimer:(id)a3
+- (void)_invalidateTimer:(id)timer
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  timerCopy = timer;
   v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [timerCopy identifier];
     v6 = 136315394;
     v7 = "[SMSessionManager _invalidateTimer:]";
     v8 = 2112;
-    v9 = v5;
+    v9 = identifier;
     _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_DEFAULT, "%s, invalidating timer with identifier, %@", &v6, 0x16u);
   }
 
-  [v3 invalidate];
+  [timerCopy invalidate];
 }
 
-- (id)_checkDefaultsForCacheReleaseDateWithState:(id)a3
+- (id)_checkDefaultsForCacheReleaseDateWithState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 cacheReleaseDate];
-  v6 = [v4 sessionState] - 7;
+  stateCopy = state;
+  cacheReleaseDate = [stateCopy cacheReleaseDate];
+  v6 = [stateCopy sessionState] - 7;
   if (v6 < 8 && ((0x87u >> v6) & 1) != 0)
   {
     v7 = off_2788D3460[v6];
-    v8 = [(SMSessionManager *)self defaultsManager];
-    v9 = [v8 objectForKey:v7];
+    defaultsManager = [(SMSessionManager *)self defaultsManager];
+    v9 = [defaultsManager objectForKey:v7];
 
     if (!v9)
     {
@@ -2651,11 +2651,11 @@ void __71__SMSessionManager__updateDestinationForRoundTripSessionConfiguration__
       }
     }
 
-    v12 = [v4 sessionStateTransitionDate];
+    sessionStateTransitionDate = [stateCopy sessionStateTransitionDate];
     [v9 doubleValue];
-    v13 = [v12 dateByAddingTimeInterval:?];
+    v13 = [sessionStateTransitionDate dateByAddingTimeInterval:?];
 
-    v5 = v13;
+    cacheReleaseDate = v13;
   }
 
   else
@@ -2663,7 +2663,7 @@ void __71__SMSessionManager__updateDestinationForRoundTripSessionConfiguration__
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v16 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v4, "sessionState")}];
+      v16 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(stateCopy, "sessionState")}];
       v17 = 136315394;
       v18 = "[SMSessionManager _checkDefaultsForCacheReleaseDateWithState:]";
       v19 = 2112;
@@ -2681,35 +2681,35 @@ LABEL_12:
       v17 = 136315394;
       v18 = "[SMSessionManager _checkDefaultsForCacheReleaseDateWithState:]";
       v19 = 2112;
-      v20 = v5;
+      v20 = cacheReleaseDate;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%s, cache release date set to, %@", &v17, 0x16u);
     }
   }
 
-  return v5;
+  return cacheReleaseDate;
 }
 
-- (void)_updateReceiverWithEstimatedEndDate:(id)a3 coarseEstimatedEndDate:(id)a4 sessionID:(id)a5
+- (void)_updateReceiverWithEstimatedEndDate:(id)date coarseEstimatedEndDate:(id)endDate sessionID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D4AAD8]) initWithSessionID:v10 estimatedEndTime:v8 coarseEstimatedEndTime:v9];
-  v12 = [(SMSessionManager *)self messagingService];
-  v13 = [(SMSessionManager *)self state];
-  v14 = [v13 configuration];
-  v15 = [v14 conversation];
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  v11 = [objc_alloc(MEMORY[0x277D4AAD8]) initWithSessionID:dCopy estimatedEndTime:dateCopy coarseEstimatedEndTime:endDateCopy];
+  messagingService = [(SMSessionManager *)self messagingService];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  conversation = [configuration conversation];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __89__SMSessionManager__updateReceiverWithEstimatedEndDate_coarseEstimatedEndDate_sessionID___block_invoke;
   v19[3] = &unk_2788CC598;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v16 = v10;
-  v17 = v9;
-  v18 = v8;
-  [v12 sendIDSMessage:v11 toConversation:v15 completion:v19];
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = dCopy;
+  v16 = dCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  [messagingService sendIDSMessage:v11 toConversation:conversation completion:v19];
 }
 
 void __89__SMSessionManager__updateReceiverWithEstimatedEndDate_coarseEstimatedEndDate_sessionID___block_invoke(uint64_t a1, int a2, void *a3)
@@ -2751,22 +2751,22 @@ void __89__SMSessionManager__updateReceiverWithEstimatedEndDate_coarseEstimatedE
   }
 }
 
-- (void)_updateReceiverWithLowPowerModeWarningStateUpdate:(int64_t)a3 sessionID:(id)a4
+- (void)_updateReceiverWithLowPowerModeWarningStateUpdate:(int64_t)update sessionID:(id)d
 {
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277D4AB30]) initWithSessionID:v6 lowPowerModeWarningState:a3];
-  v8 = [(SMSessionManager *)self messagingService];
-  v9 = [(SMSessionManager *)self state];
-  v10 = [v9 configuration];
-  v11 = [v10 conversation];
+  dCopy = d;
+  v7 = [objc_alloc(MEMORY[0x277D4AB30]) initWithSessionID:dCopy lowPowerModeWarningState:update];
+  messagingService = [(SMSessionManager *)self messagingService];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  conversation = [configuration conversation];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_sessionID___block_invoke;
   v13[3] = &unk_2788CCF30;
-  v14 = v6;
-  v15 = a3;
-  v12 = v6;
-  [v8 sendIDSMessage:v7 toConversation:v11 completion:v13];
+  v14 = dCopy;
+  updateCopy = update;
+  v12 = dCopy;
+  [messagingService sendIDSMessage:v7 toConversation:conversation completion:v13];
 }
 
 void __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_sessionID___block_invoke(uint64_t a1, int a2, void *a3)
@@ -2795,10 +2795,10 @@ void __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_se
   }
 }
 
-- (void)setSessionStoreAvailability:(unint64_t)a3
+- (void)setSessionStoreAvailability:(unint64_t)availability
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_sessionStoreAvailability != a3)
+  if (self->_sessionStoreAvailability != availability)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -2806,7 +2806,7 @@ void __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_se
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = [RTStore availabilityToString:self->_sessionStoreAvailability];
-        v8 = [RTStore availabilityToString:a3];
+        v8 = [RTStore availabilityToString:availability];
         *buf = 136315650;
         v14 = "[SMSessionManager setSessionStoreAvailability:]";
         v15 = 2112;
@@ -2817,8 +2817,8 @@ void __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_se
       }
     }
 
-    self->_sessionStoreAvailability = a3;
-    if (a3 == 2)
+    self->_sessionStoreAvailability = availability;
+    if (availability == 2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -2832,14 +2832,14 @@ void __80__SMSessionManager__updateReceiverWithLowPowerModeWarningStateUpdate_se
       }
 
       objc_initWeak(buf, self);
-      v10 = [(SMSessionManager *)self sessionStore];
+      sessionStore = [(SMSessionManager *)self sessionStore];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __48__SMSessionManager_setSessionStoreAvailability___block_invoke;
       v11[3] = &unk_2788D3060;
       objc_copyWeak(v12, buf);
       v12[1] = a2;
-      [v10 fetchSessionStatusWithHandler:v11];
+      [sessionStore fetchSessionStatusWithHandler:v11];
 
       objc_destroyWeak(v12);
       objc_destroyWeak(buf);
@@ -3145,98 +3145,98 @@ void __48__SMSessionManager_setSessionStoreAvailability___block_invoke_235(uint6
 
 - (void)_bootstrapHysteresisState
 {
-  v3 = [(SMSessionManager *)self magnetBreakTimer];
+  magnetBreakTimer = [(SMSessionManager *)self magnetBreakTimer];
 
-  if (v3)
+  if (magnetBreakTimer)
   {
-    v4 = [(SMSessionManager *)self magnetBreakTimer];
-    [(SMSessionManager *)self _invalidateTimer:v4];
+    magnetBreakTimer2 = [(SMSessionManager *)self magnetBreakTimer];
+    [(SMSessionManager *)self _invalidateTimer:magnetBreakTimer2];
 
     [(SMSessionManager *)self setMagnetBreakTimer:0];
   }
 
-  v5 = [(SMSessionManager *)self messagingService];
-  v6 = [v5 effectivePairedDevice];
+  messagingService = [(SMSessionManager *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
 
-  [(SMSessionManager *)self _processNearbyEffectivePairedDeviceChanged:v6];
+  [(SMSessionManager *)self _processNearbyEffectivePairedDeviceChanged:effectivePairedDevice];
 }
 
-- (unint64_t)_getEndSessionStateWithReason:(unint64_t)a3
+- (unint64_t)_getEndSessionStateWithReason:(unint64_t)reason
 {
-  if (a3 - 1 > 8)
+  if (reason - 1 > 8)
   {
     return 1;
   }
 
   else
   {
-    return qword_230B02110[a3 - 1];
+    return qword_230B02110[reason - 1];
   }
 }
 
 - (void)_postEndAwarenessLiveActivity
 {
-  v3 = [(SMSessionManager *)self state];
-  [(SMSessionManager *)self _updateActivityWithState:v3];
+  state = [(SMSessionManager *)self state];
+  [(SMSessionManager *)self _updateActivityWithState:state];
 }
 
-- (void)_initializeSessionWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5
+- (void)_initializeSessionWithSessionID:(id)d conversation:(id)conversation handler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  dCopy = d;
+  conversationCopy = conversation;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
-    v37 = v10;
+    v37 = handlerCopy;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v9 receiverHandles];
-        v14 = [v9 identifier];
+        receiverHandles = [conversationCopy receiverHandles];
+        identifier = [conversationCopy identifier];
         *buf = 136315906;
         v39 = "[SMSessionManager _initializeSessionWithSessionID:conversation:handler:]";
         v40 = 2112;
-        v41 = v8;
+        v41 = dCopy;
         v42 = 2112;
-        v43 = v13;
+        v43 = receiverHandles;
         v44 = 2112;
-        v45 = v14;
+        v45 = identifier;
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, transitioning to Initializing, sessionID, %@, handles, %@, groupID, %@", buf, 0x2Au);
       }
     }
 
     v15 = objc_alloc(MEMORY[0x277D4AB78]);
     LOBYTE(v32) = [MEMORY[0x277D4AAE0] zelkovaHandoffEnabled];
-    v16 = [v15 initWithConversation:v9 sessionID:v8 sessionStartDate:0 sessionType:0 time:0 destination:0 userResponseSafeDate:0 sessionSupportsHandoff:v32 sosReceivers:v9 sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
+    v16 = [v15 initWithConversation:conversationCopy sessionID:dCopy sessionStartDate:0 sessionType:0 time:0 destination:0 userResponseSafeDate:0 sessionSupportsHandoff:v32 sosReceivers:conversationCopy sessionWorkoutIdentifier:0 sessionWorkoutType:0 sessionWorkoutMirrorType:0];
     v33 = objc_alloc(MEMORY[0x277D4ABA8]);
     v17 = [MEMORY[0x277CBEAA8] now];
-    v35 = [(SMSessionManager *)self messagingService];
-    v18 = [v35 deviceIdentifier];
+    messagingService = [(SMSessionManager *)self messagingService];
+    deviceIdentifier = [messagingService deviceIdentifier];
     v19 = [MEMORY[0x277CBEAA8] now];
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = self;
-    v34 = self;
-    v22 = v20;
-    v23 = [(SMSessionManager *)v21 messagingService];
-    [v23 effectivePairedDevice];
-    v24 = v36 = v9;
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    selfCopy = self;
+    selfCopy2 = self;
+    v22 = uUID;
+    messagingService2 = [(SMSessionManager *)selfCopy messagingService];
+    [messagingService2 effectivePairedDevice];
+    v24 = v36 = conversationCopy;
     [v24 uniqueIDOverride];
-    v26 = v25 = v8;
+    v26 = v25 = dCopy;
     v27 = [v22 initWithUUIDString:v26];
     v28 = v16;
     v29 = v16;
     v30 = v17;
-    v31 = [v33 initWithSessionState:10 configuration:v29 userTriggerResponse:0 monitorContext:0 date:v17 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:v18 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:v19 activePairedDeviceIdentifier:v27];
+    v31 = [v33 initWithSessionState:10 configuration:v29 userTriggerResponse:0 monitorContext:0 date:v17 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:deviceIdentifier estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:0 sessionStateTransitionDate:v19 activePairedDeviceIdentifier:v27];
 
-    v8 = v25;
-    v9 = v36;
+    dCopy = v25;
+    conversationCopy = v36;
 
     v11 = v37;
-    [(SMSessionManager *)v34 _performStateTransitionTo:v31 transitionType:1 handler:v37];
+    [(SMSessionManager *)selfCopy2 _performStateTransitionTo:v31 transitionType:1 handler:v37];
   }
 
   else
@@ -3250,27 +3250,27 @@ void __48__SMSessionManager_setSessionStoreAvailability___block_invoke_235(uint6
   }
 }
 
-- (void)_resetInitializationWithHandler:(id)a3
+- (void)_resetInitializationWithHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = MEMORY[0x277D4ABB0];
-      v7 = [(SMSessionManager *)self state];
-      v8 = [v6 convertSessionStateToString:{objc_msgSend(v7, "sessionState")}];
-      v9 = [(SMSessionManager *)self state];
-      v10 = [v9 configuration];
-      v11 = [v10 sessionID];
+      state = [(SMSessionManager *)self state];
+      v8 = [v6 convertSessionStateToString:{objc_msgSend(state, "sessionState")}];
+      state2 = [(SMSessionManager *)self state];
+      configuration = [state2 configuration];
+      sessionID = [configuration sessionID];
       *buf = 136315650;
       v16 = "[SMSessionManager _resetInitializationWithHandler:]";
       v17 = 2112;
       v18 = v8;
       v19 = 2112;
-      v20 = v11;
+      v20 = sessionID;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%s, resetting initialization for previous session with session state, %@, sessionID, %@", buf, 0x20u);
     }
 
@@ -3285,7 +3285,7 @@ void __48__SMSessionManager_setSessionStoreAvailability___block_invoke_235(uint6
     v13[2] = __52__SMSessionManager__resetInitializationWithHandler___block_invoke;
     v13[3] = &unk_2788C4F60;
     v13[4] = self;
-    v14 = v4;
+    v14 = handlerCopy;
     [(SMSessionManager *)self _performStateTransitionTo:v12 transitionType:1 handler:v13];
   }
 
@@ -3322,39 +3322,39 @@ void __52__SMSessionManager__resetInitializationWithHandler___block_invoke(uint6
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)SessionHandoffRebootReconciliationStateToString:(unint64_t)a3
++ (id)SessionHandoffRebootReconciliationStateToString:(unint64_t)string
 {
-  if (a3 - 1 > 3)
+  if (string - 1 > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D34A0[a3 - 1];
+    return off_2788D34A0[string - 1];
   }
 }
 
-+ (id)SessionHandoffRebootReconciliationDecisionToString:(unint64_t)a3
++ (id)SessionHandoffRebootReconciliationDecisionToString:(unint64_t)string
 {
-  if (a3 - 1 > 2)
+  if (string - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788D34C0[a3 - 1];
+    return off_2788D34C0[string - 1];
   }
 }
 
-- (void)storeManagerStatusInStore:(unint64_t)a3 completion:(id)a4
+- (void)storeManagerStatusInStore:(unint64_t)store completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SMSessionManager *)self statusStoreInProgress];
+  completionCopy = completion;
+  statusStoreInProgress = [(SMSessionManager *)self statusStoreInProgress];
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v8)
+  if (statusStoreInProgress)
   {
     if (v9)
     {
@@ -3369,7 +3369,7 @@ void __52__SMSessionManager__resetInitializationWithHandler___block_invoke(uint6
     }
 
     [(SMSessionManager *)self setStatusUpdatePending:1];
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
@@ -3388,17 +3388,17 @@ void __52__SMSessionManager__resetInitializationWithHandler___block_invoke(uint6
 
     [(SMSessionManager *)self setStatusStoreInProgress:1];
     objc_initWeak(buf, self);
-    v14 = [(SMSessionManager *)self sessionStore];
-    v15 = [(SMSessionManager *)self status];
+    sessionStore = [(SMSessionManager *)self sessionStore];
+    status = [(SMSessionManager *)self status];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __57__SMSessionManager_storeManagerStatusInStore_completion___block_invoke;
     v16[3] = &unk_2788D3088;
     objc_copyWeak(v18, buf);
     v18[1] = a2;
-    v17 = v7;
-    v18[2] = a3;
-    [v14 storeSessionManagerStatus:v15 handler:v16];
+    v17 = completionCopy;
+    v18[2] = store;
+    [sessionStore storeSessionManagerStatus:status handler:v16];
 
     objc_destroyWeak(v18);
     objc_destroyWeak(buf);
@@ -3498,13 +3498,13 @@ void __57__SMSessionManager_storeManagerStatusInStore_completion___block_invoke_
   }
 }
 
-- (void)updateManagerStatusInStoreWithCompletion:(id)a3
+- (void)updateManagerStatusInStoreWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   if ([(SMSessionManager *)self statusStored])
   {
-    v6 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3514,27 +3514,27 @@ void __57__SMSessionManager_storeManagerStatusInStore_completion___block_invoke_
         *buf = 138412546;
         v17 = v8;
         v18 = 2112;
-        v19 = v6;
+        v19 = uUID;
         _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@,Attempting to update sessionManagerStatus, transaction,%@", buf, 0x16u);
       }
     }
 
-    v9 = [(SMSessionManager *)self sessionStore];
-    v10 = [(SMSessionManager *)self status];
+    sessionStore = [(SMSessionManager *)self sessionStore];
+    status = [(SMSessionManager *)self status];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __61__SMSessionManager_updateManagerStatusInStoreWithCompletion___block_invoke;
     v12[3] = &unk_2788C56C0;
     v15 = a2;
-    v13 = v6;
-    v14 = v5;
-    v11 = v6;
-    [v9 updateSessionManagerStatus:v10 handler:v12];
+    v13 = uUID;
+    v14 = completionCopy;
+    v11 = uUID;
+    [sessionStore updateSessionManagerStatus:status handler:v12];
   }
 
   else
   {
-    [(SMSessionManager *)self storeManagerStatusInStore:2 completion:v5];
+    [(SMSessionManager *)self storeManagerStatusInStore:2 completion:completionCopy];
   }
 }
 
@@ -3588,11 +3588,11 @@ LABEL_4:
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)checkSessionIDWithSelector:(SEL)a3 sessionID:(id)a4
+- (id)checkSessionIDWithSelector:(SEL)selector sessionID:(id)d
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6 && (-[SMSessionManagerState configuration](self->_state, "configuration"), v7 = objc_claimAutoreleasedReturnValue(), [v7 sessionID], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v6, "isEqual:", v8), v8, v7, (v9 & 1) != 0))
+  dCopy = d;
+  if (dCopy && (-[SMSessionManagerState configuration](self->_state, "configuration"), v7 = objc_claimAutoreleasedReturnValue(), [v7 sessionID], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(dCopy, "isEqual:", v8), v8, v7, (v9 & 1) != 0))
   {
     v10 = 0;
   }
@@ -3602,15 +3602,15 @@ LABEL_4:
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v19 = NSStringFromSelector(a3);
-      v20 = [(SMSessionManagerState *)self->_state configuration];
-      v21 = [v20 sessionID];
+      v19 = NSStringFromSelector(selector);
+      configuration = [(SMSessionManagerState *)self->_state configuration];
+      sessionID = [configuration sessionID];
       *buf = 138412802;
       v25 = v19;
       v26 = 2112;
-      v27 = v6;
+      v27 = dCopy;
       v28 = 2112;
-      v29 = v21;
+      v29 = sessionID;
       _os_log_error_impl(&dword_2304B3000, v11, OS_LOG_TYPE_ERROR, "%@, invalid session ID %@, current sessionID, %@", buf, 0x20u);
     }
 
@@ -3618,7 +3618,7 @@ LABEL_4:
     v13 = *MEMORY[0x277D4ACD0];
     v22 = *MEMORY[0x277CCA450];
     v14 = MEMORY[0x277CCACA8];
-    v15 = NSStringFromSelector(a3);
+    v15 = NSStringFromSelector(selector);
     v16 = [v14 stringWithFormat:@"%@ cannot be completed since sessionID passed in does not match current sessionID", v15];
     v23 = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
@@ -3628,18 +3628,18 @@ LABEL_4:
   return v10;
 }
 
-- (id)checkSessionIDAndCanDeviceModifyStateWithSelector:(SEL)a3 sessionID:(id)a4
+- (id)checkSessionIDAndCanDeviceModifyStateWithSelector:(SEL)selector sessionID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SMSessionManager *)self checkSessionIDWithSelector:a3 sessionID:v6];
+  dCopy = d;
+  v7 = [(SMSessionManager *)self checkSessionIDWithSelector:selector sessionID:dCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (sel__endSessionForSessionID_reason_handler_ == a3 || [(SMSessionManager *)self _canDeviceModifyState])
+  else if (sel__endSessionForSessionID_reason_handler_ == selector || [(SMSessionManager *)self _canDeviceModifyState])
   {
     v9 = 0;
   }
@@ -3649,17 +3649,17 @@ LABEL_4:
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v17 = NSStringFromSelector(a3);
+      v17 = NSStringFromSelector(selector);
       *buf = 138412546;
       v21 = v17;
       v22 = 2112;
-      v23 = v6;
+      v23 = dCopy;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "%@, User requested on non active device with sessionID %@", buf, 0x16u);
     }
 
     v18 = *MEMORY[0x277CCA450];
     v11 = MEMORY[0x277CCACA8];
-    v12 = NSStringFromSelector(a3);
+    v12 = NSStringFromSelector(selector);
     v13 = [v11 stringWithFormat:@"%@ cannot be completed since current device is not active", v12];
     v19 = v13;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
@@ -3671,10 +3671,10 @@ LABEL_4:
   return v9;
 }
 
-- (id)checkSessionStateWithSelector:(SEL)a3 validSessionStates:(id)a4
+- (id)checkSessionStateWithSelector:(SEL)selector validSessionStates:(id)states
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  statesCopy = states;
   state = self->_state;
   if (state)
   {
@@ -3686,7 +3686,7 @@ LABEL_4:
     v8 = 0;
   }
 
-  if ([v6 containsObject:v8])
+  if ([statesCopy containsObject:v8])
   {
     v9 = 0;
   }
@@ -3694,7 +3694,7 @@ LABEL_4:
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = NSStringFromSelector(a3);
+    v11 = NSStringFromSelector(selector);
     v12 = [v10 stringWithFormat:@"%@ cannot run as session is not currently in an appropriate state for this function.", v11];
 
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3719,10 +3719,10 @@ LABEL_4:
   return v9;
 }
 
-- (id)checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:(SEL)a3 sessionID:(id)a4 validSessionStates:(id)a5
+- (id)checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:(SEL)selector sessionID:(id)d validSessionStates:(id)states
 {
-  v8 = a5;
-  v9 = [(SMSessionManager *)self checkSessionIDAndCanDeviceModifyStateWithSelector:a3 sessionID:a4];
+  statesCopy = states;
+  v9 = [(SMSessionManager *)self checkSessionIDAndCanDeviceModifyStateWithSelector:selector sessionID:d];
   v10 = v9;
   if (v9)
   {
@@ -3731,7 +3731,7 @@ LABEL_4:
 
   else
   {
-    v11 = [(SMSessionManager *)self checkSessionStateWithSelector:a3 validSessionStates:v8];
+    v11 = [(SMSessionManager *)self checkSessionStateWithSelector:selector validSessionStates:statesCopy];
   }
 
   v12 = v11;
@@ -3739,65 +3739,65 @@ LABEL_4:
   return v12;
 }
 
-- (void)onSessionStoreNotification:(id)a3
+- (void)onSessionStoreNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  notificationCopy = notification;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SMSessionManager_onSessionStoreNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onSessionStoreNotification:(id)a3
+- (void)_onSessionStoreNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [v7 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v5 = +[(RTNotification *)RTStoreNotificationAvailabilityDidChange];
-  v6 = [v4 isEqualToString:v5];
+  v6 = [name isEqualToString:v5];
 
   if (v6)
   {
-    -[SMSessionManager setSessionStoreAvailability:](self, "setSessionStoreAvailability:", [v7 availability]);
+    -[SMSessionManager setSessionStoreAvailability:](self, "setSessionStoreAvailability:", [notificationCopy availability]);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SMSessionManager_addObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  observerCopy = observer;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__SMSessionManager_removeObserver___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3817,13 +3817,13 @@ LABEL_4:
     }
   }
 
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -3843,7 +3843,7 @@ LABEL_4:
     }
   }
 
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 }
 
 - (void)_notifyObserversForStart
@@ -3854,8 +3854,8 @@ LABEL_4:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3867,22 +3867,22 @@ LABEL_4:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self state];
-          v10 = [v9 configuration];
-          [v8 onSessionStartedWithConfiguration:v10];
+          state = [(SMSessionManager *)self state];
+          configuration = [state configuration];
+          [v8 onSessionStartedWithConfiguration:configuration];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -3897,8 +3897,8 @@ LABEL_4:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3910,14 +3910,14 @@ LABEL_4:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self state];
-          v10 = [v9 copy];
+          state = [(SMSessionManager *)self state];
+          v10 = [state copy];
           [v8 onBecomingActiveDevice:v10];
         }
 
@@ -3925,7 +3925,7 @@ LABEL_4:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -3940,8 +3940,8 @@ LABEL_4:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3953,14 +3953,14 @@ LABEL_4:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self state];
-          v10 = [v9 copy];
+          state = [(SMSessionManager *)self state];
+          v10 = [state copy];
           [v8 onBecomingNonActiveDevice:v10];
         }
 
@@ -3968,7 +3968,7 @@ LABEL_4:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -3978,35 +3978,35 @@ LABEL_4:
 - (void)_notifyObserversForConfigurationChange
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self state];
-  v4 = [v3 configuration];
-  v5 = [v4 sessionType];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionType = [configuration sessionType];
 
-  if (v5 == 1)
+  if (sessionType == 1)
   {
     v6 = MEMORY[0x277CBEAA8];
-    v7 = [(SMSessionManager *)self state];
-    v8 = [v7 configuration];
-    v9 = [v8 time];
-    v10 = [v9 timeBound];
-    v11 = [v6 roundingUpDate:v10 bucketDurationMinute:*MEMORY[0x277D4AC98]];
+    state2 = [(SMSessionManager *)self state];
+    configuration2 = [state2 configuration];
+    time = [configuration2 time];
+    timeBound = [time timeBound];
+    v11 = [v6 roundingUpDate:timeBound bucketDurationMinute:*MEMORY[0x277D4AC98]];
 
-    v12 = [(SMSessionManager *)self state];
-    v13 = [v12 configuration];
-    v14 = [v13 time];
-    v15 = [v14 timeBound];
-    v16 = [(SMSessionManager *)self state];
-    v17 = [v16 configuration];
-    v18 = [v17 sessionID];
-    [(SMSessionManager *)self _updateReceiverWithEstimatedEndDate:v15 coarseEstimatedEndDate:v11 sessionID:v18];
+    state3 = [(SMSessionManager *)self state];
+    configuration3 = [state3 configuration];
+    time2 = [configuration3 time];
+    timeBound2 = [time2 timeBound];
+    state4 = [(SMSessionManager *)self state];
+    configuration4 = [state4 configuration];
+    sessionID = [configuration4 sessionID];
+    [(SMSessionManager *)self _updateReceiverWithEstimatedEndDate:timeBound2 coarseEstimatedEndDate:v11 sessionID:sessionID];
   }
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = [(SMSessionManager *)self observers];
-  v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v20 = [observers countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v20)
   {
     v21 = v20;
@@ -4018,22 +4018,22 @@ LABEL_4:
       {
         if (*v28 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(observers);
         }
 
         v24 = *(*(&v27 + 1) + 8 * v23);
         if (objc_opt_respondsToSelector())
         {
-          v25 = [(SMSessionManager *)self state];
-          v26 = [v25 configuration];
-          [v24 onSessionChangedWithConfiguration:v26];
+          state5 = [(SMSessionManager *)self state];
+          configuration5 = [state5 configuration];
+          [v24 onSessionChangedWithConfiguration:configuration5];
         }
 
         ++v23;
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v21 = [observers countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v21);
@@ -4048,8 +4048,8 @@ LABEL_4:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4061,38 +4061,38 @@ LABEL_4:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self state];
-          [v8 onSessionResumedWithState:v9 forActiveDevice:{-[SMSessionManager _isActiveDevice](self, "_isActiveDevice")}];
+          state = [(SMSessionManager *)self state];
+          [v8 onSessionResumedWithState:state forActiveDevice:{-[SMSessionManager _isActiveDevice](self, "_isActiveDevice")}];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyObserversForSessionEndForActiveDevice:(BOOL)a3
+- (void)_notifyObserversForSessionEndForActiveDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v16 = *MEMORY[0x277D85DE8];
   [(SMSessionManager *)self _unregisterForNotifications];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(SMSessionManager *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4104,33 +4104,33 @@ LABEL_4:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 onSessionEndedForActiveDevice:v3];
+          [v10 onSessionEndedForActiveDevice:deviceCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyObserversForStateChangeWithTransitionType:(unint64_t)a3
+- (void)_notifyObserversForStateChangeWithTransitionType:(unint64_t)type
 {
   v58[1] = *MEMORY[0x277D85DE8];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(SMSessionManager *)self state];
-  v6 = [(SMSessionManager *)self status];
-  [v6 setState:v5];
+  state = [(SMSessionManager *)self state];
+  status = [(SMSessionManager *)self status];
+  [status setState:state];
 
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
@@ -4150,11 +4150,11 @@ LABEL_4:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_1253];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -4186,11 +4186,11 @@ LABEL_4:
     v26 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v42 = [(SMSessionManager *)self state];
+      state2 = [(SMSessionManager *)self state];
       *buf = 136315650;
       *&buf[4] = "[SMSessionManager _notifyObserversForStateChangeWithTransitionType:]";
       v54 = 2112;
-      v55 = v42;
+      v55 = state2;
       v56 = 2112;
       v57 = v25;
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "%s, failed to store most recent session state with timeout, %@, with error, %@", buf, 0x20u);
@@ -4198,26 +4198,26 @@ LABEL_4:
   }
 
   v44 = v25;
-  v27 = [(SMSessionManager *)self _isActiveDevice];
-  if (v27)
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
+  if (_isActiveDevice)
   {
-    v28 = [(SMSessionManager *)self state];
-    if ([v28 sessionState] != 10)
+    state3 = [(SMSessionManager *)self state];
+    if ([state3 sessionState] != 10)
     {
-      v29 = [(SMSessionManager *)self state];
-      v30 = [v29 sessionState];
+      state4 = [(SMSessionManager *)self state];
+      sessionState = [state4 sessionState];
 
-      if (v30 == 11)
+      if (sessionState == 11)
       {
         goto LABEL_16;
       }
 
       v31 = objc_alloc(MEMORY[0x277D4ABF8]);
-      v32 = [(SMSessionManager *)self state];
-      v28 = [v31 initWithSessionManagerState:v32 stateTransitionType:a3];
+      state5 = [(SMSessionManager *)self state];
+      state3 = [v31 initWithSessionManagerState:state5 stateTransitionType:type];
 
-      v33 = [(SMSessionManager *)self messagingService];
-      [v33 sendIDSMessageToMyDevices:v28 completion:&__block_literal_global_288];
+      messagingService = [(SMSessionManager *)self messagingService];
+      [messagingService sendIDSMessageToMyDevices:state3 completion:&__block_literal_global_288];
     }
   }
 
@@ -4226,8 +4226,8 @@ LABEL_16:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v34 = [(SMSessionManager *)self observers];
-  v35 = [v34 countByEnumeratingWithState:&v46 objects:v52 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v35 = [observers countByEnumeratingWithState:&v46 objects:v52 count:16];
   if (v35)
   {
     v36 = v35;
@@ -4239,22 +4239,22 @@ LABEL_16:
       {
         if (*v47 != v37)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(observers);
         }
 
         v39 = *(*(&v46 + 1) + 8 * v38);
         if (objc_opt_respondsToSelector())
         {
-          v40 = [(SMSessionManager *)self state];
-          v41 = [v40 copy];
-          [v39 onSessionStateChanged:v41 forActiveDevice:v27];
+          state6 = [(SMSessionManager *)self state];
+          v41 = [state6 copy];
+          [v39 onSessionStateChanged:v41 forActiveDevice:_isActiveDevice];
         }
 
         ++v38;
       }
 
       while (v36 != v38);
-      v36 = [v34 countByEnumeratingWithState:&v46 objects:v52 count:16];
+      v36 = [observers countByEnumeratingWithState:&v46 objects:v52 count:16];
     }
 
     while (v36);
@@ -4281,26 +4281,26 @@ void __69__SMSessionManager__notifyObserversForStateChangeWithTransitionType___b
   }
 }
 
-- (void)_updateUnsupportedSeparationStateIfNeededWithNotify:(BOOL)a3
+- (void)_updateUnsupportedSeparationStateIfNeededWithNotify:(BOOL)notify
 {
-  v5 = [(SMSessionManager *)self state];
-  v6 = [v5 isActiveState];
+  state = [(SMSessionManager *)self state];
+  isActiveState = [state isActiveState];
 
-  v7 = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
-  v8 = [(SMSessionManager *)self _getCurrentHysteresisStateType];
+  _isEffectivePairedDeviceNearby = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
+  _getCurrentHysteresisStateType = [(SMSessionManager *)self _getCurrentHysteresisStateType];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNotify___block_invoke;
   v14[3] = &unk_2788D30B0;
   v14[4] = self;
-  v15 = a3;
+  notifyCopy = notify;
   v9 = _Block_copy(v14);
-  v10 = [(SMSessionManager *)self state];
-  v11 = [v10 configuration];
-  v12 = [v11 sessionType];
+  state2 = [(SMSessionManager *)self state];
+  configuration = [state2 configuration];
+  sessionType = [configuration sessionType];
 
   v13 = 0;
-  if (v6 && !v7 && v8 != 2 && v12 == 4)
+  if (isActiveState && !_isEffectivePairedDeviceNearby && _getCurrentHysteresisStateType != 2 && sessionType == 4)
   {
     v13 = [(SMSessionManager *)self _isActiveDevice]^ 1;
   }
@@ -4320,12 +4320,12 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
   return [v6 _updateUnsupportedSeparationStateWithNewState:a2 shouldNotify:v7];
 }
 
-- (void)_updateUnsupportedSeparationStateWithNewState:(BOOL)a3 shouldNotify:(BOOL)a4
+- (void)_updateUnsupportedSeparationStateWithNewState:(BOOL)state shouldNotify:(BOOL)notify
 {
-  v4 = a4;
-  v5 = a3;
+  notifyCopy = notify;
+  stateCopy = state;
   v20 = *MEMORY[0x277D85DE8];
-  v7 = [(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState];
+  unsupportedDeviceSeparationState = [(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -4334,31 +4334,31 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       v14 = 136315650;
       v15 = "[SMSessionManager _updateUnsupportedSeparationStateWithNewState:shouldNotify:]";
       v16 = 1024;
-      v17 = v5;
+      v17 = stateCopy;
       v18 = 1024;
-      v19 = v7;
+      v19 = unsupportedDeviceSeparationState;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%s, newState:%{Bool}d, oldState:%{Bool}d", &v14, 0x18u);
     }
   }
 
-  if ([(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState]!= v5)
+  if ([(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState]!= stateCopy)
   {
-    [(SMLocalSessionState *)self->_localState setUnsupportedDeviceSeparationState:v5];
-    v9 = [(SMSessionManager *)self defaultsManager];
+    [(SMLocalSessionState *)self->_localState setUnsupportedDeviceSeparationState:stateCopy];
+    defaultsManager = [(SMSessionManager *)self defaultsManager];
     v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMLocalSessionState unsupportedDeviceSeparationState](self->_localState, "unsupportedDeviceSeparationState")}];
-    [v9 setObject:v10 forKey:@"RTDefaultsSessionManagerUnsupportedDeviceSeparationKey"];
+    [defaultsManager setObject:v10 forKey:@"RTDefaultsSessionManagerUnsupportedDeviceSeparationKey"];
 
     [(SMSessionManager *)self _notifyObserversForLocalStateChange];
-    if (v5)
+    if (stateCopy)
     {
-      v11 = [(SMSessionManager *)self sessionMetricManager];
-      [v11 onUnsupportedDeviceSeparation];
+      sessionMetricManager = [(SMSessionManager *)self sessionMetricManager];
+      [sessionMetricManager onUnsupportedDeviceSeparation];
     }
   }
 
   v12 = MEMORY[0x277D4AA60];
-  v13 = [(SMSessionManager *)self state];
-  [v12 updateActivityWithState:v13 localState:self->_localState shouldNotify:v5 & v4];
+  state = [(SMSessionManager *)self state];
+  [v12 updateActivityWithState:state localState:self->_localState shouldNotify:stateCopy & notifyCopy];
 }
 
 - (void)_notifyObserversForLocalStateChange
@@ -4368,8 +4368,8 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4381,14 +4381,14 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self localState];
-          v10 = [v9 copy];
+          localState = [(SMSessionManager *)self localState];
+          v10 = [localState copy];
           [v8 onLocalSessionStateChanged:v10];
         }
 
@@ -4396,7 +4396,7 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -4406,13 +4406,13 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
 - (void)_notifyObserversForSecondarySOSTrigger
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self _isActiveDevice];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SMSessionManager *)self observers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v5 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4424,22 +4424,22 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(observers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [(SMSessionManager *)self state];
-          v11 = [v10 copy];
-          [v9 onSecondarySOSTriggerWithState:v11 forActiveDevice:v3];
+          state = [(SMSessionManager *)self state];
+          v11 = [state copy];
+          [v9 onSecondarySOSTriggerWithState:v11 forActiveDevice:_isActiveDevice];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -4454,27 +4454,27 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
     v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SMSessionManager *)self state];
-      v5 = [v4 activeDeviceIdentifier];
-      v6 = [(SMSessionManager *)self messagingService];
-      v7 = [v6 deviceIdentifier];
-      v8 = [(SMSessionManager *)self state];
-      v9 = [v8 activeDeviceIdentifier];
-      v10 = [(SMSessionManager *)self messagingService];
-      v11 = [v10 deviceIdentifier];
-      v12 = [v9 isEqual:v11];
+      state = [(SMSessionManager *)self state];
+      activeDeviceIdentifier = [state activeDeviceIdentifier];
+      messagingService = [(SMSessionManager *)self messagingService];
+      deviceIdentifier = [messagingService deviceIdentifier];
+      state2 = [(SMSessionManager *)self state];
+      activeDeviceIdentifier2 = [state2 activeDeviceIdentifier];
+      messagingService2 = [(SMSessionManager *)self messagingService];
+      deviceIdentifier2 = [messagingService2 deviceIdentifier];
+      v12 = [activeDeviceIdentifier2 isEqual:deviceIdentifier2];
       v13 = "NO";
       *v20 = 136315906;
       *&v20[4] = "[SMSessionManager _isActiveDevice]";
       *&v20[12] = 2112;
-      *&v20[14] = v5;
+      *&v20[14] = activeDeviceIdentifier;
       if (v12)
       {
         v13 = "YES";
       }
 
       *&v20[22] = 2112;
-      v21 = v7;
+      v21 = deviceIdentifier;
       v22 = 2080;
       v23 = v13;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, activeDeviceIdentifier, %@, messaging service device identifier, %@, result, %s", v20, 0x2Au);
@@ -4482,10 +4482,10 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
   }
 
   v14 = [(SMSessionManager *)self state:*v20];
-  v15 = [v14 activeDeviceIdentifier];
-  v16 = [(SMSessionManager *)self messagingService];
-  v17 = [v16 deviceIdentifier];
-  v18 = [v15 isEqual:v17];
+  activeDeviceIdentifier3 = [v14 activeDeviceIdentifier];
+  messagingService3 = [(SMSessionManager *)self messagingService];
+  deviceIdentifier3 = [messagingService3 deviceIdentifier];
+  v18 = [activeDeviceIdentifier3 isEqual:deviceIdentifier3];
 
   return v18;
 }
@@ -4493,34 +4493,34 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
 - (BOOL)_canDeviceModifyState
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self _isActiveDevice];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(SMSessionManager *)self state];
-      v6 = [v5 isActiveState];
-      v7 = [(SMSessionManager *)self state];
-      v8 = [v7 activeDeviceIdentifier];
+      state = [(SMSessionManager *)self state];
+      isActiveState = [state isActiveState];
+      state2 = [(SMSessionManager *)self state];
+      activeDeviceIdentifier = [state2 activeDeviceIdentifier];
       v14 = 136315906;
       v15 = "[SMSessionManager _canDeviceModifyState]";
       v16 = 1024;
-      v17 = v6;
+      v17 = isActiveState;
       v18 = 2112;
-      v19 = v8;
+      v19 = activeDeviceIdentifier;
       v20 = 1024;
-      v21 = v3;
+      v21 = _isActiveDevice;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%s, isActiveState, %{Bool}d, activeDeviceIdentifier, %@, isActiveDevice, %{Bool}d", &v14, 0x22u);
     }
   }
 
-  v9 = [(SMSessionManager *)self state];
-  if ([v9 isActiveState])
+  state3 = [(SMSessionManager *)self state];
+  if ([state3 isActiveState])
   {
-    v10 = [(SMSessionManager *)self state];
-    v11 = [v10 activeDeviceIdentifier];
-    v12 = v11 == 0 || v3;
+    state4 = [(SMSessionManager *)self state];
+    activeDeviceIdentifier2 = [state4 activeDeviceIdentifier];
+    v12 = activeDeviceIdentifier2 == 0 || _isActiveDevice;
   }
 
   else
@@ -4538,8 +4538,8 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(SMSessionManager *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observers = [(SMSessionManager *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -4551,33 +4551,33 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [(SMSessionManager *)self state];
-          [v8 onUserTriggerResponse:{objc_msgSend(v9, "userTriggerResponse")}];
+          state = [(SMSessionManager *)self state];
+          [v8 onUserTriggerResponse:{objc_msgSend(state, "userTriggerResponse")}];
         }
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)handoffSessionForSessionID:(id)a3 handler:(id)a4
+- (void)handoffSessionForSessionID:(id)d handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4590,15 +4590,15 @@ uint64_t __72__SMSessionManager__updateUnsupportedSeparationStateIfNeededWithNot
       }
     }
 
-    v9 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__SMSessionManager_handoffSessionForSessionID_handler___block_invoke;
     block[3] = &unk_2788C6210;
-    v13 = v7;
+    v13 = handlerCopy;
     block[4] = self;
-    v12 = v6;
-    dispatch_async(v9, block);
+    v12 = dCopy;
+    dispatch_async(queue, block);
 
     v10 = v13;
   }
@@ -4677,12 +4677,12 @@ LABEL_13:
   [v14 _handoffSessionForSessionID:v15 retryCount:2 handler:v16];
 }
 
-- (void)_handoffSessionForSessionID:(id)a3 retryCount:(unint64_t)a4 handler:(id)a5
+- (void)_handoffSessionForSessionID:(id)d retryCount:(unint64_t)count handler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -4697,17 +4697,17 @@ LABEL_13:
 
     if ([(SMSessionManager *)self _sessionSupportsHandoff])
     {
-      v11 = [(SMSessionManager *)self defaultsManager];
-      [v11 setObject:MEMORY[0x277CBEC38] forKey:@"RTDefaultsSessionManagerHandoffInProgressKey"];
+      defaultsManager = [(SMSessionManager *)self defaultsManager];
+      [defaultsManager setObject:MEMORY[0x277CBEC38] forKey:@"RTDefaultsSessionManagerHandoffInProgressKey"];
 
-      v29 = [(SMSessionManager *)self state];
+      state = [(SMSessionManager *)self state];
       objc_initWeak(buf, self);
       v12 = [MEMORY[0x277CBEAA8] now];
       v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
-      v14 = [(SMSessionManager *)self state];
-      v15 = [v14 configuration];
-      v16 = [v15 sessionID];
-      v17 = os_signpost_id_make_with_pointer(v13, v16);
+      state2 = [(SMSessionManager *)self state];
+      configuration = [state2 configuration];
+      sessionID = [configuration sessionID];
+      v17 = os_signpost_id_make_with_pointer(v13, sessionID);
 
       v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
       v19 = v18;
@@ -4717,9 +4717,9 @@ LABEL_13:
         _os_signpost_emit_with_name_impl(&dword_2304B3000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "SMHandoffSessionCriteriaInitiatorEligibilityCheckLatency", " enableTelemetry=YES ", v37, 2u);
       }
 
-      v20 = [(SMSessionManager *)self state];
-      v21 = [v20 configuration];
-      v22 = [v21 sessionType] == 4;
+      state3 = [(SMSessionManager *)self state];
+      configuration2 = [state3 configuration];
+      v22 = [configuration2 sessionType] == 4;
 
       if (v22)
       {
@@ -4738,13 +4738,13 @@ LABEL_13:
       v36[1] = v17;
       v24 = v12;
       v31 = v24;
-      v32 = self;
+      selfCopy = self;
       objc_copyWeak(v36, buf);
-      v35 = v9;
-      v25 = v29;
+      v35 = handlerCopy;
+      v25 = state;
       v33 = v25;
-      v36[2] = a4;
-      v34 = v8;
+      v36[2] = count;
+      v34 = dCopy;
       [(SMSessionManager *)self _checkInitiatorEligibilityWithHandoffType:v23 completion:v30];
 
       objc_destroyWeak(v36);
@@ -4760,7 +4760,7 @@ LABEL_13:
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v25 = [v26 initWithDomain:*MEMORY[0x277D4ACD0] code:1 userInfo:v28];
 
-      (*(v9 + 2))(v9, v25);
+      (*(handlerCopy + 2))(handlerCopy, v25);
     }
   }
 
@@ -4957,23 +4957,23 @@ void __67__SMSessionManager__handoffSessionForSessionID_retryCount_handler___blo
   }
 }
 
-- (BOOL)_shouldRetryForHandoffError:(id)a3 retryCount:(unint64_t)a4
+- (BOOL)_shouldRetryForHandoffError:(id)error retryCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (count)
   {
-    LOBYTE(a4) = [v5 code] == 3 || objc_msgSend(v6, "code") == 4 || objc_msgSend(v6, "code") == 7 || objc_msgSend(v6, "code") == 36;
+    LOBYTE(count) = [errorCopy code] == 3 || objc_msgSend(v6, "code") == 4 || objc_msgSend(v6, "code") == 7 || objc_msgSend(v6, "code") == 36;
   }
 
-  return a4;
+  return count;
 }
 
-- (void)_startHandoffRetryTimerWithLatency:(double)a3 sessionID:(id)a4 retryCount:(unint64_t)a5 handoffCompletion:(id)a6
+- (void)_startHandoffRetryTimerWithLatency:(double)latency sessionID:(id)d retryCount:(unint64_t)count handoffCompletion:(id)completion
 {
   v39 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  completionCopy = completion;
   handoffRetryTimer = self->_handoffRetryTimer;
   if (handoffRetryTimer)
   {
@@ -4983,22 +4983,22 @@ void __67__SMSessionManager__handoffSessionForSessionID_retryCount_handler___blo
   }
 
   timerManager = self->_timerManager;
-  v16 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v25 = MEMORY[0x277D85DD0];
   v26 = 3221225472;
   v27 = __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_retryCount_handoffCompletion___block_invoke;
   v28 = &unk_2788C4C20;
-  v29 = self;
-  v17 = v11;
+  selfCopy = self;
+  v17 = dCopy;
   v30 = v17;
-  v32 = a5;
-  v18 = v12;
+  countCopy = count;
+  v18 = completionCopy;
   v31 = v18;
-  v19 = [(RTTimerManager *)timerManager timerWithIdentifier:@"SMHandoffRetryTimerIdentifier" queue:v16 handler:&v25];
+  v19 = [(RTTimerManager *)timerManager timerWithIdentifier:@"SMHandoffRetryTimerIdentifier" queue:queue handler:&v25];
   v20 = self->_handoffRetryTimer;
   self->_handoffRetryTimer = v19;
 
-  [(RTTimer *)self->_handoffRetryTimer fireWithInterval:a3, v25, v26, v27, v28, v29];
+  [(RTTimer *)self->_handoffRetryTimer fireWithInterval:latency, v25, v26, v27, v28, selfCopy];
   [(RTTimer *)self->_handoffRetryTimer resume];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -5013,7 +5013,7 @@ void __67__SMSessionManager__handoffSessionForSessionID_retryCount_handler___blo
       v35 = 2112;
       v36 = v24;
       v37 = 2048;
-      v38 = a3;
+      latencyCopy = latency;
       _os_log_impl(&dword_2304B3000, v21, OS_LOG_TYPE_INFO, "%@, %@, handoff retry timer interval, %.2f", buf, 0x20u);
     }
   }
@@ -5037,7 +5037,7 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
   self->_handoffRetryTimer = 0;
 }
 
-- (void)_startActiveSessionDetailsTimerWithLatency:(double)a3
+- (void)_startActiveSessionDetailsTimerWithLatency:(double)latency
 {
   v21 = *MEMORY[0x277D85DE8];
   if (self->_activeSessionDetailsTimeoutTimer)
@@ -5046,17 +5046,17 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
   }
 
   timerManager = self->_timerManager;
-  v7 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__SMSessionManager__startActiveSessionDetailsTimerWithLatency___block_invoke;
   v14[3] = &unk_2788C4EA0;
   v14[4] = self;
-  v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"SMHandoffActiveSessionDetailsTimeoutTimerIdentifier" queue:v7 handler:v14];
+  v8 = [(RTTimerManager *)timerManager timerWithIdentifier:@"SMHandoffActiveSessionDetailsTimeoutTimerIdentifier" queue:queue handler:v14];
   activeSessionDetailsTimeoutTimer = self->_activeSessionDetailsTimeoutTimer;
   self->_activeSessionDetailsTimeoutTimer = v8;
 
-  [(RTTimer *)self->_activeSessionDetailsTimeoutTimer fireWithInterval:a3];
+  [(RTTimer *)self->_activeSessionDetailsTimeoutTimer fireWithInterval:latency];
   [(RTTimer *)self->_activeSessionDetailsTimeoutTimer resume];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -5071,7 +5071,7 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
       v17 = 2112;
       v18 = v13;
       v19 = 2048;
-      v20 = a3;
+      latencyCopy = latency;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%@, %@, ActiveSessionDetails fetch timeout / interval, %.2f", buf, 0x20u);
     }
   }
@@ -5098,8 +5098,8 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
     }
 
     defaultsManager = self->_defaultsManager;
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [(RTDefaultsManager *)defaultsManager setObject:v6 forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(RTDefaultsManager *)defaultsManager setObject:date forKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
 
     [(SMSessionManager *)self _bootstrapToState];
   }
@@ -5112,10 +5112,10 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
   self->_activeSessionDetailsTimeoutTimer = 0;
 }
 
-- (void)_checkIfHandoffCriteriaSatisfiedForState:(id)a3 handler:(id)a4
+- (void)_checkIfHandoffCriteriaSatisfiedForState:(id)state handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
@@ -5125,10 +5125,10 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
   v30 = &v29;
   v31 = 0x2020000000;
   v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
-  v10 = [(SMSessionManager *)self state];
-  v11 = [v10 configuration];
-  v12 = [v11 sessionID];
-  v13 = os_signpost_id_make_with_pointer(v9, v12);
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionID = [configuration sessionID];
+  v13 = os_signpost_id_make_with_pointer(v9, sessionID);
 
   v32 = v13;
   v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
@@ -5140,7 +5140,7 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
     _os_signpost_emit_with_name_impl(&dword_2304B3000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v16, "SMHandoffSessionCriteriaFetchActiveSessionDetailsCkLatency", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v17 = [(SMSessionManager *)self activeSessionDetailsDelegate];
+  activeSessionDetailsDelegate = [(SMSessionManager *)self activeSessionDetailsDelegate];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __69__SMSessionManager__checkIfHandoffCriteriaSatisfiedForState_handler___block_invoke;
@@ -5148,13 +5148,13 @@ uint64_t __94__SMSessionManager__startHandoffRetryTimerWithLatency_sessionID_ret
   v26 = &v29;
   v18 = v8;
   v22 = v18;
-  v23 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = stateCopy;
   v24 = v19;
   v27 = v33;
-  v20 = v7;
+  v20 = handlerCopy;
   v25 = v20;
-  [v17 fetchActiveSessionDetailsWithHandler:v21];
+  [activeSessionDetailsDelegate fetchActiveSessionDetailsWithHandler:v21];
 
   _Block_object_dispose(&v29, 8);
   _Block_object_dispose(v33, 8);
@@ -5347,10 +5347,10 @@ uint64_t __69__SMSessionManager__checkIfHandoffCriteriaSatisfiedForState_handler
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_checkInitiatorEligibilityWithHandoffType:(int64_t)a3 completion:(id)a4
+- (void)_checkInitiatorEligibilityWithHandoffType:(int64_t)type completion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -5359,7 +5359,7 @@ uint64_t __69__SMSessionManager__checkIfHandoffCriteriaSatisfiedForState_handler
       *buf = 136315394;
       *&buf[4] = "[SMSessionManager _checkInitiatorEligibilityWithHandoffType:completion:]";
       *&buf[12] = 2048;
-      *&buf[14] = a3;
+      *&buf[14] = type;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, check initiator eligibility for handoff type,%lu", buf, 0x16u);
     }
   }
@@ -5369,32 +5369,32 @@ uint64_t __69__SMSessionManager__checkIfHandoffCriteriaSatisfiedForState_handler
   *&buf[16] = 0x2020000000;
   v29 = 0;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(SMSessionManager *)self state];
-  v9 = [v8 configuration];
-  v10 = [v9 sessionID];
-  v22 = [v7 stringWithFormat:@"com.apple.SafetyMonitor.SessionManager.handoff.InitiatorEligibility.%@", v10];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionID = [configuration sessionID];
+  v22 = [v7 stringWithFormat:@"com.apple.SafetyMonitor.SessionManager.handoff.InitiatorEligibility.%@", sessionID];
 
   v11 = v22;
   v12 = dispatch_queue_create([v22 UTF8String], 0);
   [(SMSessionManager *)self setInitiatorEligibilityQueue:v12];
 
   objc_initWeak(&location, self);
-  v13 = [(SMSessionManager *)self initiatorEligibilityQueue];
-  v14 = [(SMSessionManager *)self authorizationManager];
-  v15 = [(SMSessionManager *)self messagingService];
-  v16 = [v15 effectivePairedDevice];
-  v17 = [(SMSessionManager *)self defaultsManager];
-  v18 = [(SMSessionManager *)self platform];
-  v19 = [(SMSessionManager *)self appDeletionManager];
+  initiatorEligibilityQueue = [(SMSessionManager *)self initiatorEligibilityQueue];
+  authorizationManager = [(SMSessionManager *)self authorizationManager];
+  messagingService = [(SMSessionManager *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  platform = [(SMSessionManager *)self platform];
+  appDeletionManager = [(SMSessionManager *)self appDeletionManager];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_completion___block_invoke;
   v23[3] = &unk_2788D31F0;
   objc_copyWeak(&v26, &location);
-  v20 = v5;
+  v20 = completionCopy;
   v24 = v20;
   v25 = buf;
-  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:v13 authorizationManager:v14 effectivePairedDevice:v16 handoffType:a3 defaultsManager:v17 platform:v18 appDeletionManager:v19 handler:v23];
+  [SMInitiatorEligibility checkInitiatorEligibilityWithQueue:initiatorEligibilityQueue authorizationManager:authorizationManager effectivePairedDevice:effectivePairedDevice handoffType:type defaultsManager:defaultsManager platform:platform appDeletionManager:appDeletionManager handler:v23];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
@@ -5467,7 +5467,7 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
 - (BOOL)_isWatchDeviceEligibleForHandoff
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(SMSessionManager *)self _isWatchOnWristEligibilityCriteriaSatisfied];
+  _isWatchOnWristEligibilityCriteriaSatisfied = [(SMSessionManager *)self _isWatchOnWristEligibilityCriteriaSatisfied];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -5476,12 +5476,12 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
       v5 = 136315394;
       v6 = "[SMSessionManager _isWatchDeviceEligibleForHandoff]";
       v7 = 1024;
-      v8 = v2;
+      v8 = _isWatchOnWristEligibilityCriteriaSatisfied;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s isWatchOnWrist, %d", &v5, 0x12u);
     }
   }
 
-  return v2;
+  return _isWatchOnWristEligibilityCriteriaSatisfied;
 }
 
 - (BOOL)_sessionSupportsHandoff
@@ -5495,42 +5495,42 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
       v7 = NSStringFromSelector(a2);
-      v22 = [(SMSessionManager *)self state];
-      v21 = [v22 configuration];
-      v8 = [v21 sessionID];
-      v20 = [(SMSessionManager *)self state];
-      v19 = [v20 configuration];
-      v18 = [v19 sessionSupportsHandoff];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
+      state2 = [(SMSessionManager *)self state];
+      configuration2 = [state2 configuration];
+      sessionSupportsHandoff = [configuration2 sessionSupportsHandoff];
       v9 = MEMORY[0x277D4ABB0];
-      v10 = [(SMSessionManager *)self state];
-      v11 = [v9 convertSessionStateToString:{objc_msgSend(v10, "sessionState")}];
-      v12 = [(SMSessionManager *)self state];
+      state3 = [(SMSessionManager *)self state];
+      v11 = [v9 convertSessionStateToString:{objc_msgSend(state3, "sessionState")}];
+      state4 = [(SMSessionManager *)self state];
       *buf = 138414082;
       v24 = v6;
       v25 = 2112;
       v26 = v7;
       v27 = 2112;
-      v28 = v8;
+      v28 = sessionID;
       v29 = 1024;
-      v30 = v18;
+      v30 = sessionSupportsHandoff;
       v31 = 2112;
       v32 = v11;
       v33 = 1024;
-      v34 = -[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [v12 sessionState]);
+      v34 = -[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [state4 sessionState]);
       v35 = 1024;
-      v36 = [(SMSessionManager *)self _isSessionManagerStateStaleToHandoff];
+      _isSessionManagerStateStaleToHandoff = [(SMSessionManager *)self _isSessionManagerStateStaleToHandoff];
       v37 = 1024;
-      v38 = [MEMORY[0x277D4AAE0] zelkovaHandoffEnabled];
+      zelkovaHandoffEnabled = [MEMORY[0x277D4AAE0] zelkovaHandoffEnabled];
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@, config %d, sessionState, %@, _isHandoffAllowedInSessionState, %{Bool}d, _isSessionManagerStateStaleToHandoff, %{Bool}d, feature %d", buf, 0x42u);
     }
   }
 
-  v13 = [(SMSessionManager *)self state];
-  v14 = [v13 configuration];
-  if ([v14 sessionSupportsHandoff] && objc_msgSend(MEMORY[0x277D4AAE0], "zelkovaHandoffEnabled"))
+  state5 = [(SMSessionManager *)self state];
+  configuration3 = [state5 configuration];
+  if ([configuration3 sessionSupportsHandoff] && objc_msgSend(MEMORY[0x277D4AAE0], "zelkovaHandoffEnabled"))
   {
-    v15 = [(SMSessionManager *)self state];
-    if (-[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [v15 sessionState]))
+    state6 = [(SMSessionManager *)self state];
+    if (-[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [state6 sessionState]))
     {
       v16 = ![(SMSessionManager *)self _isSessionManagerStateStaleToHandoff];
     }
@@ -5551,29 +5551,29 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
 
 - (BOOL)_isSessionManagerStateStaleToHandoff
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [(SMSessionManagerState *)self->_state date];
-  [v3 timeIntervalSinceDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  date2 = [(SMSessionManagerState *)self->_state date];
+  [date timeIntervalSinceDate:date2];
   v6 = v5 > 172800.0;
 
   return v6;
 }
 
-- (void)onWristStateChangeNotification:(id)a3
+- (void)onWristStateChangeNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__SMSessionManager_onWristStateChangeNotification___block_invoke;
     v10[3] = &unk_2788C4A70;
     v10[4] = self;
-    v11 = v4;
-    dispatch_async(v5, v10);
+    v11 = notificationCopy;
+    dispatch_async(queue, v10);
   }
 
   else
@@ -5581,18 +5581,18 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
     v6 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412290;
-      v13 = v8;
+      v13 = name;
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v13 = v9;
+      v13 = name2;
       v14 = 2080;
       v15 = "[SMSessionManager onWristStateChangeNotification:]";
       v16 = 1024;
@@ -5602,10 +5602,10 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
   }
 }
 
-- (void)_onWristStateChangeNotification:(id)a3
+- (void)_onWristStateChangeNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -5614,19 +5614,19 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
       v6 = 136315394;
       v7 = "[SMSessionManager _onWristStateChangeNotification:]";
       v8 = 2048;
-      v9 = [v4 wristState];
+      wristState = [notificationCopy wristState];
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, received wrist state, %ld", &v6, 0x16u);
     }
   }
 
-  -[SMSessionManager setWristState:](self, "setWristState:", [v4 wristState]);
+  -[SMSessionManager setWristState:](self, "setWristState:", [notificationCopy wristState]);
 }
 
-- (unint64_t)_evaluateHandoffRebootReconciliationState:(id)a3
+- (unint64_t)_evaluateHandoffRebootReconciliationState:(id)state
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(SMSessionManager *)self _stateValidForSessionResume:v4])
+  stateCopy = state;
+  if (![(SMSessionManager *)self _stateValidForSessionResume:stateCopy])
   {
     v11 = 1;
     goto LABEL_40;
@@ -5639,12 +5639,12 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
       v35 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
-        v36 = [(SMSessionManager *)self _isActiveSessionDetailsFetchedFromCloudKitSinceBoot];
+        _isActiveSessionDetailsFetchedFromCloudKitSinceBoot = [(SMSessionManager *)self _isActiveSessionDetailsFetchedFromCloudKitSinceBoot];
         v37 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:2];
         *buf = 136315650;
         *&buf[4] = "[SMSessionManager _evaluateHandoffRebootReconciliationState:]";
         *&buf[12] = 1024;
-        *&buf[14] = v36;
+        *&buf[14] = _isActiveSessionDetailsFetchedFromCloudKitSinceBoot;
         *&buf[18] = 2112;
         *&buf[20] = v37;
         _os_log_impl(&dword_2304B3000, v35, OS_LOG_TYPE_INFO, "%s, _isActiveSessionDetailsFetchedFromCloudKitSinceBoot, %{Bool}d, setting handoffRebootReconciliationState to, %@", buf, 0x1Cu);
@@ -5657,24 +5657,24 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
 
   if ([(SMSessionManager *)self _isActiveSessionDetailsOutOfSync])
   {
-    v5 = [(SMSessionManager *)self _isActiveSessionDetailsFetchAttemptFailed];
+    _isActiveSessionDetailsFetchAttemptFailed = [(SMSessionManager *)self _isActiveSessionDetailsFetchAttemptFailed];
     v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-    if (v5)
+    if (_isActiveSessionDetailsFetchAttemptFailed)
     {
       if (v6)
       {
         v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
         {
-          v8 = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
-          v9 = [(SMSessionManager *)self _isActiveSessionDetailsFetchAttemptFailed];
+          _isActiveSessionDetailsOutOfSync = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
+          _isActiveSessionDetailsFetchAttemptFailed2 = [(SMSessionManager *)self _isActiveSessionDetailsFetchAttemptFailed];
           v10 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:4];
           *buf = 136315906;
           *&buf[4] = "[SMSessionManager _evaluateHandoffRebootReconciliationState:]";
           *&buf[12] = 1024;
-          *&buf[14] = v8;
+          *&buf[14] = _isActiveSessionDetailsOutOfSync;
           *&buf[18] = 1024;
-          *&buf[20] = v9;
+          *&buf[20] = _isActiveSessionDetailsFetchAttemptFailed2;
           *&buf[24] = 2112;
           *&buf[26] = v10;
           _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, _isActiveSessionDetailsOutOfSync, %{Bool}d, _isActiveSessionDetailsFetchAttemptFailed, %{Bool}d setting handoffRebootReconciliationState to, %@", buf, 0x22u);
@@ -5690,20 +5690,20 @@ uint64_t __73__SMSessionManager__checkInitiatorEligibilityWithHandoffType_comple
       v38 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
-        v39 = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
+        _isActiveSessionDetailsOutOfSync2 = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
         v40 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:2];
         *buf = 136315650;
         *&buf[4] = "[SMSessionManager _evaluateHandoffRebootReconciliationState:]";
         *&buf[12] = 1024;
-        *&buf[14] = v39;
+        *&buf[14] = _isActiveSessionDetailsOutOfSync2;
         *&buf[18] = 2112;
         *&buf[20] = v40;
         _os_log_impl(&dword_2304B3000, v38, OS_LOG_TYPE_INFO, "%s, _isActiveSessionDetailsOutOfSync, %{Bool}d, setting handoffRebootReconciliationState to, %@", buf, 0x1Cu);
       }
     }
 
-    v41 = [(SMSessionManager *)self activeSessionDetailsDelegate];
-    [v41 fetchActiveSessionDetailsWithHandler:&__block_literal_global_346];
+    activeSessionDetailsDelegate = [(SMSessionManager *)self activeSessionDetailsDelegate];
+    [activeSessionDetailsDelegate fetchActiveSessionDetailsWithHandler:&__block_literal_global_346];
 
     [(SMSessionManager *)self _startActiveSessionDetailsTimerWithLatency:self->_activeSessionDetailsFetchTimeout];
 LABEL_31:
@@ -5716,12 +5716,12 @@ LABEL_31:
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
+      _isActiveSessionDetailsOutOfSync3 = [(SMSessionManager *)self _isActiveSessionDetailsOutOfSync];
       v14 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:3];
       *buf = 136315650;
       *&buf[4] = "[SMSessionManager _evaluateHandoffRebootReconciliationState:]";
       *&buf[12] = 1024;
-      *&buf[14] = v13;
+      *&buf[14] = _isActiveSessionDetailsOutOfSync3;
       *&buf[18] = 2112;
       *&buf[20] = v14;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, _isActiveSessionDetailsOutOfSync, %{Bool}d, setting handoffRebootReconciliationState to, %@", buf, 0x1Cu);
@@ -5741,7 +5741,7 @@ LABEL_31:
   v51 = __Block_byref_object_copy__198;
   v52 = __Block_byref_object_dispose__198;
   v53 = 0;
-  v16 = [(SMSessionManager *)self activeSessionDetailsDelegate];
+  activeSessionDetailsDelegate2 = [(SMSessionManager *)self activeSessionDetailsDelegate];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __62__SMSessionManager__evaluateHandoffRebootReconciliationState___block_invoke;
@@ -5750,7 +5750,7 @@ LABEL_31:
   v47 = buf;
   v17 = v15;
   v45 = v17;
-  [v16 fetchActiveSessionDetailsWithHandler:v44];
+  [activeSessionDetailsDelegate2 fetchActiveSessionDetailsWithHandler:v44];
 
   v18 = v17;
   v19 = [MEMORY[0x277CBEAA8] now];
@@ -5768,11 +5768,11 @@ LABEL_33:
   v23 = v22;
   v24 = objc_opt_new();
   v25 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_1253];
-  v26 = [MEMORY[0x277CCACC8] callStackSymbols];
-  v27 = [v26 filteredArrayUsingPredicate:v25];
-  v28 = [v27 firstObject];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  v27 = [callStackSymbols filteredArrayUsingPredicate:v25];
+  firstObject = [v27 firstObject];
 
-  [v24 submitToCoreAnalytics:v28 type:1 duration:v23];
+  [v24 submitToCoreAnalytics:firstObject type:1 duration:v23];
   v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_FAULT))
   {
@@ -5878,24 +5878,24 @@ void __62__SMSessionManager__evaluateHandoffRebootReconciliationState___block_in
   }
 }
 
-- (unint64_t)_reconciliationDecisionForState:(id)a3 isActiveDevice:(BOOL)a4
+- (unint64_t)_reconciliationDecisionForState:(id)state isActiveDevice:(BOOL)device
 {
-  v4 = a4;
+  deviceCopy = device;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v4 || ![(SMSessionManager *)self _isMultiDeviceSetupForLocalState:v6])
+  stateCopy = state;
+  if (!deviceCopy || ![(SMSessionManager *)self _isMultiDeviceSetupForLocalState:stateCopy])
   {
 LABEL_6:
     v8 = 2;
     goto LABEL_7;
   }
 
-  v7 = [(SMSessionManager *)self handoffRebootReconciliationState];
-  if (v7 != 2)
+  handoffRebootReconciliationState = [(SMSessionManager *)self handoffRebootReconciliationState];
+  if (handoffRebootReconciliationState != 2)
   {
-    if (v7 == 3)
+    if (handoffRebootReconciliationState == 3)
     {
-      v8 = [(SMSessionManager *)self _reconciliationForDecisionForCKFetchCompleted:v6];
+      v8 = [(SMSessionManager *)self _reconciliationForDecisionForCKFetchCompleted:stateCopy];
       goto LABEL_7;
     }
 
@@ -5910,17 +5910,17 @@ LABEL_7:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v13 = [objc_opt_class() SessionHandoffRebootReconciliationStateToString:{-[SMSessionManager handoffRebootReconciliationState](self, "handoffRebootReconciliationState")}];
-      v14 = [(SMSessionManager *)self activeSessionDetails];
+      activeSessionDetails = [(SMSessionManager *)self activeSessionDetails];
       v15 = 136316163;
       v16 = "[SMSessionManager _reconciliationDecisionForState:isActiveDevice:]";
       v17 = 1024;
-      *v18 = v4;
+      *v18 = deviceCopy;
       *&v18[4] = 2112;
       *&v18[6] = v13;
       v19 = 2112;
-      v20 = v14;
+      v20 = activeSessionDetails;
       v21 = 2117;
-      v22 = v6;
+      v22 = stateCopy;
       _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "%s, isActiveDevice, %{Bool}d, self.handoffRebootReconciliationState, %@,\n activeSessionDetails, %@,\n sessionManagerState, %{sensitive}@", &v15, 0x30u);
     }
   }
@@ -5942,18 +5942,18 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_isMultiDeviceSetupForLocalState:(id)a3
+- (BOOL)_isMultiDeviceSetupForLocalState:(id)state
 {
-  v3 = [a3 activePairedDeviceIdentifier];
+  activePairedDeviceIdentifier = [state activePairedDeviceIdentifier];
 
-  return v3 != 0;
+  return activePairedDeviceIdentifier != 0;
 }
 
-- (unint64_t)_reconciliationForDecisionForCKFetchCompleted:(id)a3
+- (unint64_t)_reconciliationForDecisionForCKFetchCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self activeSessionDetails];
-  LODWORD(self) = [(SMSessionManager *)self _isLocalStateInSyncWithActiveSessionDetails:v5 deviceSessionManagerState:v4];
+  completedCopy = completed;
+  activeSessionDetails = [(SMSessionManager *)self activeSessionDetails];
+  LODWORD(self) = [(SMSessionManager *)self _isLocalStateInSyncWithActiveSessionDetails:activeSessionDetails deviceSessionManagerState:completedCopy];
 
   if (self)
   {
@@ -5968,19 +5968,19 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isLocalStateInSyncWithActiveSessionDetails:(id)a3 deviceSessionManagerState:(id)a4
+- (BOOL)_isLocalStateInSyncWithActiveSessionDetails:(id)details deviceSessionManagerState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sessionID];
-  v8 = [v6 configuration];
-  v9 = [v8 sessionID];
-  if ([v7 isEqual:v9])
+  detailsCopy = details;
+  stateCopy = state;
+  sessionID = [detailsCopy sessionID];
+  configuration = [stateCopy configuration];
+  sessionID2 = [configuration sessionID];
+  if ([sessionID isEqual:sessionID2])
   {
-    v10 = [v5 activeDeviceIdentifier];
-    v11 = [v6 activeDeviceIdentifier];
-    v12 = [v10 isEqual:v11];
+    activeDeviceIdentifier = [detailsCopy activeDeviceIdentifier];
+    activeDeviceIdentifier2 = [stateCopy activeDeviceIdentifier];
+    v12 = [activeDeviceIdentifier isEqual:activeDeviceIdentifier2];
   }
 
   else
@@ -5996,9 +5996,9 @@ LABEL_7:
       v15 = 136315907;
       v16 = "[SMSessionManager _isLocalStateInSyncWithActiveSessionDetails:deviceSessionManagerState:]";
       v17 = 2112;
-      v18 = v5;
+      v18 = detailsCopy;
       v19 = 2117;
-      v20 = v6;
+      v20 = stateCopy;
       v21 = 1024;
       v22 = v12;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, activeSessionDetails %@, deviceSessionManagerState, %{sensitive}@, isLocalStateInSync %{Bool}d", &v15, 0x26u);
@@ -6008,12 +6008,12 @@ LABEL_7:
   return v12;
 }
 
-- (void)onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  completedCopy = completed;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -6022,35 +6022,35 @@ LABEL_7:
       *buf = 136315906;
       v19 = "[SMSessionManager onActiveSessionDetailsFetchAttemptFromCKCompleted:success:error:]";
       v20 = 2112;
-      v21 = v8;
+      v21 = completedCopy;
       v22 = 1024;
-      v23 = v6;
+      v23 = successCopy;
       v24 = 2112;
-      v25 = v9;
+      v25 = errorCopy;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s activeSessionDetails, %@, success, %{Bool}d, error, %@", buf, 0x26u);
     }
   }
 
-  v11 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __84__SMSessionManager_onActiveSessionDetailsFetchAttemptFromCKCompleted_success_error___block_invoke;
   v14[3] = &unk_2788CC570;
   v14[4] = self;
-  v15 = v8;
-  v17 = v6;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v14);
+  v15 = completedCopy;
+  v17 = successCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = completedCopy;
+  dispatch_async(queue, v14);
 }
 
-- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)a3 success:(BOOL)a4 error:(id)a5
+- (void)_onActiveSessionDetailsFetchAttemptFromCKCompleted:(id)completed success:(BOOL)success error:(id)error
 {
-  v6 = a4;
+  successCopy = success;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  completedCopy = completed;
+  errorCopy = error;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -6060,27 +6060,27 @@ LABEL_7:
       v15 = 136316162;
       v16 = "[SMSessionManager _onActiveSessionDetailsFetchAttemptFromCKCompleted:success:error:]";
       v17 = 2112;
-      v18 = v8;
+      v18 = completedCopy;
       v19 = 1024;
-      v20 = v6;
+      v20 = successCopy;
       v21 = 2112;
       v22 = v12;
       v23 = 2112;
-      v24 = v9;
+      v24 = errorCopy;
       _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s activeSessionDetails, %@, success, %{Bool}d, current handoffRebootReconciliationState, %@,error, %@", &v15, 0x30u);
     }
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v10 = v8;
-    if (v6)
+    v10 = completedCopy;
+    if (successCopy)
     {
       goto LABEL_7;
     }
   }
 
-  if (!v6 && [v9 code] == 11)
+  if (!successCopy && [errorCopy code] == 11)
   {
     v10 = 0;
 LABEL_7:
@@ -6111,13 +6111,13 @@ LABEL_7:
 - (BOOL)_isActiveSessionDetailsFetchAttemptFailed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SMSessionManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchFailureDateKey"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v3];
     v6 = v5 < 1800.0;
   }
 
@@ -6186,13 +6186,13 @@ LABEL_7:
 - (BOOL)_isActiveSessionDetailsLocalRecordExpired
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(SMSessionManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchSuccessDateKey"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [v4 timeIntervalSinceDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v3];
     v6 = v5 < 1800.0;
   }
 
@@ -6226,9 +6226,9 @@ LABEL_7:
 - (BOOL)_isActiveSessionDetailsFetchedFromCloudKitSinceBoot
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [(SMSessionManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
-  v4 = [v3 BOOLValue];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSafetyCacheActiveSessionDetailsFetchedFromCloudKitSinceBootKey"];
+  bOOLValue = [v3 BOOLValue];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -6236,7 +6236,7 @@ LABEL_7:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v7 = @"YES";
       }
@@ -6249,44 +6249,44 @@ LABEL_7:
     }
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)_stateTransitionDecisionToState:(id)a3 transitionType:(unint64_t)a4
+- (id)_stateTransitionDecisionToState:(id)state transitionType:(unint64_t)type
 {
   v145 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stateCopy = state;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(SMSessionManager *)self state];
+      state = [(SMSessionManager *)self state];
       *buf = 136315651;
       v140 = "[SMSessionManager _stateTransitionDecisionToState:transitionType:]";
       v141 = 2117;
-      v142 = v8;
+      stateCopy2 = state;
       v143 = 2117;
-      v144 = v6;
+      v144 = stateCopy;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, attempting state transition from state, %{sensitive}@, to state, %{sensitive}@", buf, 0x20u);
     }
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v9 = [(SMSessionManager *)self state];
-    v10 = [v9 sessionState];
-    v11 = [v6 sessionState];
+    state2 = [(SMSessionManager *)self state];
+    sessionState = [state2 sessionState];
+    sessionState2 = [stateCopy sessionState];
 
-    if (v10 != v11)
+    if (sessionState != sessionState2)
     {
       v20 = [SMSessionStateTransitionDecision alloc];
       v21 = &__block_literal_global_355;
       goto LABEL_95;
     }
 
-    v12 = [(SMSessionManager *)self state];
-    v13 = -[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [v12 sessionState]);
+    state3 = [(SMSessionManager *)self state];
+    v13 = -[SMSessionManager _isHandoffAllowedInSessionState:](self, "_isHandoffAllowedInSessionState:", [state3 sessionState]);
 
     if (!v13)
     {
@@ -6299,9 +6299,9 @@ LABEL_7:
           *buf = 136315651;
           v140 = "[SMSessionManager _stateTransitionDecisionToState:transitionType:]";
           v141 = 2117;
-          v142 = state;
+          stateCopy2 = state;
           v143 = 2117;
-          v144 = v6;
+          v144 = stateCopy;
           _os_log_impl(&dword_2304B3000, v27, OS_LOG_TYPE_INFO, "%s, state transition from state, %{sensitive}@, to state, %{sensitive}@, invalid and not allowed for a handoff operation", buf, 0x20u);
         }
       }
@@ -6312,20 +6312,20 @@ LABEL_7:
     }
   }
 
-  v14 = [(SMSessionManager *)self state];
-  v15 = [v14 sessionState];
+  state4 = [(SMSessionManager *)self state];
+  sessionState3 = [state4 sessionState];
 
-  if (v15 <= 6)
+  if (sessionState3 <= 6)
   {
-    if (v15 > 1)
+    if (sessionState3 > 1)
     {
-      if (v15 != 2)
+      if (sessionState3 != 2)
       {
-        if (v15 == 4)
+        if (sessionState3 == 4)
         {
-          v29 = [v6 sessionState];
+          sessionState4 = [stateCopy sessionState];
           v17 = [SMSessionStateTransitionDecision alloc];
-          switch(v29)
+          switch(sessionState4)
           {
             case 12:
               v85[0] = MEMORY[0x277D85DD0];
@@ -6333,8 +6333,8 @@ LABEL_7:
               v85[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_3_371;
               v85[3] = &unk_2788C5020;
               v85[4] = self;
-              v86 = v6;
-              v87 = a4;
+              v86 = stateCopy;
+              typeCopy = type;
               v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v85];
               v19 = v86;
               goto LABEL_104;
@@ -6344,8 +6344,8 @@ LABEL_7:
               v82[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_4_372;
               v82[3] = &unk_2788C5020;
               v82[4] = self;
-              v83 = v6;
-              v84 = a4;
+              v83 = stateCopy;
+              typeCopy2 = type;
               v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v82];
               v19 = v83;
               goto LABEL_104;
@@ -6355,8 +6355,8 @@ LABEL_7:
               v88[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_2_370;
               v88[3] = &unk_2788C5020;
               v88[4] = self;
-              v89 = v6;
-              v90 = a4;
+              v89 = stateCopy;
+              typeCopy3 = type;
               v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v88];
               v19 = v89;
               goto LABEL_104;
@@ -6369,10 +6369,10 @@ LABEL_7:
         goto LABEL_39;
       }
 
-      v33 = [v6 sessionState];
-      if (v33 <= 6)
+      sessionState5 = [stateCopy sessionState];
+      if (sessionState5 <= 6)
       {
-        switch(v33)
+        switch(sessionState5)
         {
           case 1:
             v46 = [SMSessionStateTransitionDecision alloc];
@@ -6381,8 +6381,8 @@ LABEL_7:
             v103[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_17;
             v103[3] = &unk_2788C5020;
             v103[4] = self;
-            v104 = v6;
-            v105 = a4;
+            v104 = stateCopy;
+            typeCopy4 = type;
             v18 = [(SMSessionStateTransitionDecision *)v46 initWithIsAllowed:1 actionBlock:v103];
             v19 = v104;
             goto LABEL_104;
@@ -6393,8 +6393,8 @@ LABEL_7:
             v91[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_21;
             v91[3] = &unk_2788C5020;
             v91[4] = self;
-            v92 = v6;
-            v93 = a4;
+            v92 = stateCopy;
+            typeCopy5 = type;
             v18 = [(SMSessionStateTransitionDecision *)v47 initWithIsAllowed:1 actionBlock:v91];
             v19 = v92;
             goto LABEL_104;
@@ -6405,8 +6405,8 @@ LABEL_7:
             v94[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_20;
             v94[3] = &unk_2788C5020;
             v94[4] = self;
-            v95 = v6;
-            v96 = a4;
+            v95 = stateCopy;
+            typeCopy6 = type;
             v18 = [(SMSessionStateTransitionDecision *)v41 initWithIsAllowed:1 actionBlock:v94];
             v19 = v95;
             goto LABEL_104;
@@ -6415,12 +6415,12 @@ LABEL_7:
 
       else
       {
-        if ((v33 - 7) < 3)
+        if ((sessionState5 - 7) < 3)
         {
           goto LABEL_52;
         }
 
-        if (v33 == 12)
+        if (sessionState5 == 12)
         {
           v48 = [SMSessionStateTransitionDecision alloc];
           v100[0] = MEMORY[0x277D85DD0];
@@ -6428,14 +6428,14 @@ LABEL_7:
           v100[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_18;
           v100[3] = &unk_2788C5020;
           v100[4] = self;
-          v101 = v6;
-          v102 = a4;
+          v101 = stateCopy;
+          typeCopy7 = type;
           v18 = [(SMSessionStateTransitionDecision *)v48 initWithIsAllowed:1 actionBlock:v100];
           v19 = v101;
           goto LABEL_104;
         }
 
-        if (v33 == 14)
+        if (sessionState5 == 14)
         {
 LABEL_52:
           v34 = [SMSessionStateTransitionDecision alloc];
@@ -6444,8 +6444,8 @@ LABEL_52:
           v97[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_19;
           v97[3] = &unk_2788C5020;
           v97[4] = self;
-          v98 = v6;
-          v99 = a4;
+          v98 = stateCopy;
+          typeCopy8 = type;
           v18 = [(SMSessionStateTransitionDecision *)v34 initWithIsAllowed:1 actionBlock:v97];
           v19 = v98;
           goto LABEL_104;
@@ -6458,21 +6458,21 @@ LABEL_52:
 
     else
     {
-      if (v15)
+      if (sessionState3)
       {
-        if (v15 == 1)
+        if (sessionState3 == 1)
         {
-          v22 = [v6 sessionState];
+          sessionState6 = [stateCopy sessionState];
           v17 = [SMSessionStateTransitionDecision alloc];
-          if (v22 == 10)
+          if (sessionState6 == 10)
           {
             v115[0] = MEMORY[0x277D85DD0];
             v115[1] = 3221225472;
             v115[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_10;
             v115[3] = &unk_2788C5020;
             v115[4] = self;
-            v116 = v6;
-            v117 = a4;
+            v116 = stateCopy;
+            typeCopy9 = type;
             v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v115];
             v19 = v116;
             goto LABEL_104;
@@ -6485,10 +6485,10 @@ LABEL_52:
         goto LABEL_39;
       }
 
-      v31 = [v6 sessionState];
-      if (v31 > 9)
+      sessionState7 = [stateCopy sessionState];
+      if (sessionState7 > 9)
       {
-        if ((v31 - 10) < 2)
+        if ((sessionState7 - 10) < 2)
         {
           v45 = [SMSessionStateTransitionDecision alloc];
           v133[0] = MEMORY[0x277D85DD0];
@@ -6496,14 +6496,14 @@ LABEL_52:
           v133[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_3;
           v133[3] = &unk_2788C5020;
           v133[4] = self;
-          v134 = v6;
-          v135 = a4;
+          v134 = stateCopy;
+          typeCopy10 = type;
           v18 = [(SMSessionStateTransitionDecision *)v45 initWithIsAllowed:1 actionBlock:v133];
           v19 = v134;
           goto LABEL_104;
         }
 
-        if (v31 == 12)
+        if (sessionState7 == 12)
         {
           v51 = [SMSessionStateTransitionDecision alloc];
           v118[0] = MEMORY[0x277D85DD0];
@@ -6511,14 +6511,14 @@ LABEL_52:
           v118[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_8;
           v118[3] = &unk_2788C5020;
           v118[4] = self;
-          v119 = v6;
-          v120 = a4;
+          v119 = stateCopy;
+          typeCopy11 = type;
           v18 = [(SMSessionStateTransitionDecision *)v51 initWithIsAllowed:1 actionBlock:v118];
           v19 = v119;
           goto LABEL_104;
         }
 
-        if (v31 == 14)
+        if (sessionState7 == 14)
         {
           v40 = [SMSessionStateTransitionDecision alloc];
           v124[0] = MEMORY[0x277D85DD0];
@@ -6526,8 +6526,8 @@ LABEL_52:
           v124[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_6;
           v124[3] = &unk_2788C5020;
           v124[4] = self;
-          v125 = v6;
-          v126 = a4;
+          v125 = stateCopy;
+          typeCopy12 = type;
           v18 = [(SMSessionStateTransitionDecision *)v40 initWithIsAllowed:1 actionBlock:v124];
           v19 = v125;
           goto LABEL_104;
@@ -6536,7 +6536,7 @@ LABEL_52:
 
       else
       {
-        if (v31 > 6)
+        if (sessionState7 > 6)
         {
           v44 = [SMSessionStateTransitionDecision alloc];
           v127[0] = MEMORY[0x277D85DD0];
@@ -6544,14 +6544,14 @@ LABEL_52:
           v127[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_5;
           v127[3] = &unk_2788C5020;
           v127[4] = self;
-          v128 = v6;
-          v129 = a4;
+          v128 = stateCopy;
+          typeCopy13 = type;
           v18 = [(SMSessionStateTransitionDecision *)v44 initWithIsAllowed:1 actionBlock:v127];
           v19 = v128;
           goto LABEL_104;
         }
 
-        switch(v31)
+        switch(sessionState7)
         {
           case 1:
             v49 = [SMSessionStateTransitionDecision alloc];
@@ -6560,8 +6560,8 @@ LABEL_52:
             v136[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_2;
             v136[3] = &unk_2788C5020;
             v136[4] = self;
-            v137 = v6;
-            v138 = a4;
+            v137 = stateCopy;
+            typeCopy14 = type;
             v18 = [(SMSessionStateTransitionDecision *)v49 initWithIsAllowed:1 actionBlock:v136];
             v19 = v137;
             goto LABEL_104;
@@ -6572,8 +6572,8 @@ LABEL_52:
             v130[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_4;
             v130[3] = &unk_2788C5020;
             v130[4] = self;
-            v131 = v6;
-            v132 = a4;
+            v131 = stateCopy;
+            typeCopy15 = type;
             v18 = [(SMSessionStateTransitionDecision *)v50 initWithIsAllowed:1 actionBlock:v130];
             v19 = v131;
             goto LABEL_104;
@@ -6584,8 +6584,8 @@ LABEL_52:
             v121[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_7;
             v121[3] = &unk_2788C5020;
             v121[4] = self;
-            v122 = v6;
-            v123 = a4;
+            v122 = stateCopy;
+            typeCopy16 = type;
             v18 = [(SMSessionStateTransitionDecision *)v32 initWithIsAllowed:1 actionBlock:v121];
             v19 = v122;
             goto LABEL_104;
@@ -6601,17 +6601,17 @@ LABEL_95:
     goto LABEL_105;
   }
 
-  if (v15 < 10)
+  if (sessionState3 < 10)
   {
-    v23 = [(SMSessionManager *)self state];
-    v24 = [v23 sessionState];
-    v25 = [v6 sessionState];
+    state5 = [(SMSessionManager *)self state];
+    sessionState8 = [state5 sessionState];
+    sessionState9 = [stateCopy sessionState];
 
-    if (v24 == v25)
+    if (sessionState8 == sessionState9)
     {
-      if (a4 > 2)
+      if (type > 2)
       {
-        if (a4 == 3)
+        if (type == 3)
         {
           v43 = [SMSessionStateTransitionDecision alloc];
           v76[0] = MEMORY[0x277D85DD0];
@@ -6619,14 +6619,14 @@ LABEL_95:
           v76[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_7_377;
           v76[3] = &unk_2788C5020;
           v76[4] = self;
-          v77 = v6;
+          v77 = stateCopy;
           v78 = 3;
           v18 = [(SMSessionStateTransitionDecision *)v43 initWithIsAllowed:1 actionBlock:v76];
           v19 = v77;
           goto LABEL_104;
         }
 
-        if (a4 == 5)
+        if (type == 5)
         {
           v38 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -6639,7 +6639,7 @@ LABEL_95:
 
       else
       {
-        if (a4 == 1)
+        if (type == 1)
         {
           v42 = [SMSessionStateTransitionDecision alloc];
           v73[0] = MEMORY[0x277D85DD0];
@@ -6647,14 +6647,14 @@ LABEL_95:
           v73[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_8_378;
           v73[3] = &unk_2788C5020;
           v73[4] = self;
-          v74 = v6;
+          v74 = stateCopy;
           v75 = 1;
           v18 = [(SMSessionStateTransitionDecision *)v42 initWithIsAllowed:1 actionBlock:v73];
           v19 = v74;
           goto LABEL_104;
         }
 
-        if (a4 == 2)
+        if (type == 2)
         {
           v26 = [SMSessionStateTransitionDecision alloc];
           v79[0] = MEMORY[0x277D85DD0];
@@ -6662,7 +6662,7 @@ LABEL_95:
           v79[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_6_376;
           v79[3] = &unk_2788C5020;
           v79[4] = self;
-          v80 = v6;
+          v80 = stateCopy;
           v81 = 2;
           v18 = [(SMSessionStateTransitionDecision *)v26 initWithIsAllowed:1 actionBlock:v79];
           v19 = v80;
@@ -6674,21 +6674,21 @@ LABEL_95:
     goto LABEL_63;
   }
 
-  if (v15 > 11)
+  if (sessionState3 > 11)
   {
-    if (v15 == 12)
+    if (sessionState3 == 12)
     {
-      v37 = [v6 sessionState];
+      sessionState10 = [stateCopy sessionState];
       v17 = [SMSessionStateTransitionDecision alloc];
-      if (v37 == 1)
+      if (sessionState10 == 1)
       {
         v55[0] = MEMORY[0x277D85DD0];
         v55[1] = 3221225472;
         v55[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_7_387;
         v55[3] = &unk_2788C5020;
         v55[4] = self;
-        v56 = v6;
-        v57 = a4;
+        v56 = stateCopy;
+        typeCopy17 = type;
         v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v55];
         v19 = v56;
         goto LABEL_104;
@@ -6698,18 +6698,18 @@ LABEL_95:
       goto LABEL_94;
     }
 
-    if (v15 != 14)
+    if (sessionState3 != 14)
     {
 LABEL_39:
       v30 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
-        v53 = [(SMSessionManager *)self state];
-        v54 = [v53 sessionState];
+        state6 = [(SMSessionManager *)self state];
+        sessionState11 = [state6 sessionState];
         *buf = 136315394;
         v140 = "[SMSessionManager _stateTransitionDecisionToState:transitionType:]";
         v141 = 2048;
-        v142 = v54;
+        stateCopy2 = sessionState11;
         _os_log_fault_impl(&dword_2304B3000, v30, OS_LOG_TYPE_FAULT, "%s, UNHANDLED FROM STATE, %lu", buf, 0x16u);
       }
 
@@ -6719,33 +6719,33 @@ LABEL_39:
     }
 
 LABEL_63:
-    v39 = [v6 sessionState];
+    sessionState12 = [stateCopy sessionState];
     v17 = [SMSessionStateTransitionDecision alloc];
-    if (v39 <= 3)
+    if (sessionState12 <= 3)
     {
-      if (v39 == 1)
+      if (sessionState12 == 1)
       {
         v70[0] = MEMORY[0x277D85DD0];
         v70[1] = 3221225472;
         v70[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_379;
         v70[3] = &unk_2788C5020;
         v70[4] = self;
-        v71 = v6;
-        v72 = a4;
+        v71 = stateCopy;
+        typeCopy18 = type;
         v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v70];
         v19 = v71;
         goto LABEL_104;
       }
 
-      if (v39 == 2)
+      if (sessionState12 == 2)
       {
         v64[0] = MEMORY[0x277D85DD0];
         v64[1] = 3221225472;
         v64[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_3_381;
         v64[3] = &unk_2788C5020;
         v64[4] = self;
-        v65 = v6;
-        v66 = a4;
+        v65 = stateCopy;
+        typeCopy19 = type;
         v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v64];
         v19 = v65;
         goto LABEL_104;
@@ -6754,7 +6754,7 @@ LABEL_63:
 
     else
     {
-      switch(v39)
+      switch(sessionState12)
       {
         case 4:
           v61[0] = MEMORY[0x277D85DD0];
@@ -6762,8 +6762,8 @@ LABEL_63:
           v61[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_4_382;
           v61[3] = &unk_2788C5020;
           v61[4] = self;
-          v62 = v6;
-          v63 = a4;
+          v62 = stateCopy;
+          typeCopy20 = type;
           v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v61];
           v19 = v62;
           goto LABEL_104;
@@ -6773,8 +6773,8 @@ LABEL_63:
           v67[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_2_380;
           v67[3] = &unk_2788C5020;
           v67[4] = self;
-          v68 = v6;
-          v69 = a4;
+          v68 = stateCopy;
+          typeCopy21 = type;
           v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v67];
           v19 = v68;
           goto LABEL_104;
@@ -6784,8 +6784,8 @@ LABEL_63:
           v58[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_5_383;
           v58[3] = &unk_2788C5020;
           v58[4] = self;
-          v59 = v6;
-          v60 = a4;
+          v59 = stateCopy;
+          typeCopy22 = type;
           v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v58];
           v19 = v59;
           goto LABEL_104;
@@ -6796,10 +6796,10 @@ LABEL_63:
     goto LABEL_94;
   }
 
-  if (v15 == 10)
+  if (sessionState3 == 10)
   {
-    v35 = [v6 sessionState];
-    if (v35 == 11 || v35 == 1)
+    sessionState13 = [stateCopy sessionState];
+    if (sessionState13 == 11 || sessionState13 == 1)
     {
       v36 = [SMSessionStateTransitionDecision alloc];
       v112[0] = MEMORY[0x277D85DD0];
@@ -6807,8 +6807,8 @@ LABEL_63:
       v112[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_12;
       v112[3] = &unk_2788C5020;
       v112[4] = self;
-      v113 = v6;
-      v114 = a4;
+      v113 = stateCopy;
+      typeCopy23 = type;
       v18 = [(SMSessionStateTransitionDecision *)v36 initWithIsAllowed:1 actionBlock:v112];
       v19 = v113;
       goto LABEL_104;
@@ -6819,23 +6819,23 @@ LABEL_63:
     goto LABEL_95;
   }
 
-  v16 = [v6 sessionState];
+  sessionState14 = [stateCopy sessionState];
   v17 = [SMSessionStateTransitionDecision alloc];
-  if (v16 == 2)
+  if (sessionState14 == 2)
   {
     v106[0] = MEMORY[0x277D85DD0];
     v106[1] = 3221225472;
     v106[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_15;
     v106[3] = &unk_2788C5020;
     v106[4] = self;
-    v107 = v6;
-    v108 = a4;
+    v107 = stateCopy;
+    typeCopy24 = type;
     v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v106];
     v19 = v107;
     goto LABEL_104;
   }
 
-  if (v16 != 1)
+  if (sessionState14 != 1)
   {
     v21 = &__block_literal_global_366_1;
 LABEL_94:
@@ -6848,8 +6848,8 @@ LABEL_94:
   v109[2] = __67__SMSessionManager__stateTransitionDecisionToState_transitionType___block_invoke_14;
   v109[3] = &unk_2788C5020;
   v109[4] = self;
-  v110 = v6;
-  v111 = a4;
+  v110 = stateCopy;
+  typeCopy25 = type;
   v18 = [(SMSessionStateTransitionDecision *)v17 initWithIsAllowed:1 actionBlock:v109];
   v19 = v110;
 LABEL_104:
@@ -7347,10 +7347,10 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
   return [v5 _performActionsAndUpdatesUponStateTransitionWithType:v6];
 }
 
-- (void)_setPendingSendSessionEndMessageWithReason:(unint64_t)a3 associatedGUID:(id)a4
+- (void)_setPendingSendSessionEndMessageWithReason:(unint64_t)reason associatedGUID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -7359,19 +7359,19 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
       v11 = 136315650;
       v12 = "[SMSessionManager _setPendingSendSessionEndMessageWithReason:associatedGUID:]";
       v13 = 2048;
-      v14 = a3;
+      reasonCopy = reason;
       v15 = 2112;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%s, reason, %ld, associatedGUID, %@", &v11, 0x20u);
     }
   }
 
-  v8 = [(SMSessionManager *)self defaultsManager];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v8 setObject:v9 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:reason];
+  [defaultsManager setObject:v9 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
 
-  v10 = [(SMSessionManager *)self defaultsManager];
-  [v10 setObject:v6 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager2 setObject:dCopy forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
 }
 
 - (void)_resetPendingSendSessionEndMessage
@@ -7388,18 +7388,18 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
     }
   }
 
-  v4 = [(SMSessionManager *)self defaultsManager];
-  [v4 setObject:0 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager setObject:0 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageReasonKey"];
 
-  v5 = [(SMSessionManager *)self defaultsManager];
-  [v5 setObject:0 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager2 setObject:0 forKey:@"RTDefaultsSessionManagerPendingSendSessionEndMessageAssociatedGUIDKey"];
 }
 
 - (void)_setupTimerAndLockMonitorForEndAwareness
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v3];
+  endAwarenessBeforeUnlockXPCTimerAlarm = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:endAwarenessBeforeUnlockXPCTimerAlarm];
 
   [(SMSessionManager *)self _invalidateScreenLockMonitor];
   objc_initWeak(&location, self);
@@ -7408,11 +7408,11 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
   v42[2] = 0x3032000000;
   v42[3] = __Block_byref_object_copy__198;
   v42[4] = __Block_byref_object_dispose__198;
-  v4 = [(SMSessionManagerState *)self->_state configuration];
-  v43 = [v4 sessionID];
+  configuration = [(SMSessionManagerState *)self->_state configuration];
+  sessionID = [configuration sessionID];
 
   v5 = [RTXPCTimerAlarm alloc];
-  v6 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __60__SMSessionManager__setupTimerAndLockMonitorForEndAwareness__block_invoke;
@@ -7420,16 +7420,16 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
   v40[4] = self;
   objc_copyWeak(&v41, &location);
   v40[5] = v42;
-  v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.endAwarenessBeforeUnlock" queue:v6 handler:v40];
+  v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.endAwarenessBeforeUnlock" queue:queue handler:v40];
   [(SMSessionManager *)self setEndAwarenessBeforeUnlockXPCTimerAlarm:v7];
 
-  v8 = [(SMSessionManager *)self defaultsManager];
-  v9 = [v8 objectForKey:@"RTDefaultsSessionManagerEndAwarenessBeforeUnlockTimerDurationKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v9 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerEndAwarenessBeforeUnlockTimerDurationKey"];
 
   if (v9)
   {
-    v10 = [(SMSessionManager *)self defaultsManager];
-    v11 = [v10 objectForKey:@"RTDefaultsSessionManagerEndAwarenessBeforeUnlockTimerDurationKey"];
+    defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+    v11 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerEndAwarenessBeforeUnlockTimerDurationKey"];
     [v11 doubleValue];
     v13 = v12;
   }
@@ -7439,13 +7439,13 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
     v13 = *MEMORY[0x277D4ACC8];
   }
 
-  v14 = [(SMSessionManager *)self state];
-  v15 = [v14 sessionStateTransitionDate];
-  v16 = [v15 dateByAddingTimeInterval:v13];
+  state = [(SMSessionManager *)self state];
+  sessionStateTransitionDate = [state sessionStateTransitionDate];
+  v16 = [sessionStateTransitionDate dateByAddingTimeInterval:v13];
 
-  v17 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
+  endAwarenessBeforeUnlockXPCTimerAlarm2 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
   v39 = 0;
-  [v17 fireWithDate:v16 error:&v39];
+  [endAwarenessBeforeUnlockXPCTimerAlarm2 fireWithDate:v16 error:&v39];
   v18 = v39;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -7453,12 +7453,12 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
     v19 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
-      v21 = [v20 identifier];
+      endAwarenessBeforeUnlockXPCTimerAlarm3 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
+      identifier = [endAwarenessBeforeUnlockXPCTimerAlarm3 identifier];
       *buf = 136315650;
       v46 = "[SMSessionManager _setupTimerAndLockMonitorForEndAwareness]";
       v47 = 2112;
-      v48 = v21;
+      v48 = identifier;
       v49 = 2112;
       v50 = v16;
       _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%s, %@, set with end date, %@", buf, 0x20u);
@@ -7470,35 +7470,35 @@ uint64_t __67__SMSessionManager__stateTransitionDecisionToState_transitionType__
     v22 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
-      v29 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
-      v30 = [v29 identifier];
-      v31 = [v18 localizedDescription];
+      endAwarenessBeforeUnlockXPCTimerAlarm4 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
+      identifier2 = [endAwarenessBeforeUnlockXPCTimerAlarm4 identifier];
+      localizedDescription = [v18 localizedDescription];
       *buf = 136315650;
       v46 = "[SMSessionManager _setupTimerAndLockMonitorForEndAwareness]";
       v47 = 2112;
-      v48 = v30;
+      v48 = identifier2;
       v49 = 2112;
-      v50 = v31;
+      v50 = localizedDescription;
       _os_log_fault_impl(&dword_2304B3000, v22, OS_LOG_TYPE_FAULT, "%s, %@, unable to start timer error, %@", buf, 0x20u);
     }
   }
 
-  v23 = [(SMSessionManagerState *)self->_state configuration];
-  v24 = [v23 sessionID];
+  configuration2 = [(SMSessionManagerState *)self->_state configuration];
+  sessionID2 = [configuration2 sessionID];
 
   objc_initWeak(buf, self);
   v25 = [SMScreenLockMonitor alloc];
-  v26 = [(SMSessionManager *)self queue];
+  queue2 = [(SMSessionManager *)self queue];
   v32 = MEMORY[0x277D85DD0];
   v33 = 3221225472;
   v34 = __60__SMSessionManager__setupTimerAndLockMonitorForEndAwareness__block_invoke_399;
   v35 = &unk_2788D3288;
   objc_copyWeak(&v38, buf);
-  v36 = self;
-  v27 = v24;
+  selfCopy = self;
+  v27 = sessionID2;
   v37 = v27;
-  v28 = [(SMScreenLockMonitor *)v25 initWithQueue:v26 handler:&v32];
-  [(SMSessionManager *)self setScreenLockMonitor:v28, v32, v33, v34, v35, v36];
+  v28 = [(SMScreenLockMonitor *)v25 initWithQueue:queue2 handler:&v32];
+  [(SMSessionManager *)self setScreenLockMonitor:v28, v32, v33, v34, v35, selfCopy];
 
   objc_destroyWeak(&v38);
   objc_destroyWeak(buf);
@@ -7612,30 +7612,30 @@ uint64_t __60__SMSessionManager__setupTimerAndLockMonitorForEndAwareness__block_
 - (void)_setUpCacheReleaseTimer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v3];
+  cacheReleaseXPCTimerAlarm = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:cacheReleaseXPCTimerAlarm];
 
   objc_initWeak(&location, self);
   v4 = [RTXPCTimerAlarm alloc];
   v5 = cacheReleaseXPCTimerAlarmIdentifier;
-  v6 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __43__SMSessionManager__setUpCacheReleaseTimer__block_invoke;
   v17[3] = &unk_2788C7638;
   v17[4] = self;
   objc_copyWeak(&v18, &location);
-  v7 = [(RTXPCTimerAlarm *)v4 initWithIdentifier:v5 queue:v6 handler:v17];
+  v7 = [(RTXPCTimerAlarm *)v4 initWithIdentifier:v5 queue:queue handler:v17];
   [(SMSessionManager *)self setCacheReleaseXPCTimerAlarm:v7];
 
-  v8 = [(SMSessionManager *)self state];
-  v9 = [v8 sessionStateTransitionDate];
+  state = [(SMSessionManager *)self state];
+  sessionStateTransitionDate = [state sessionStateTransitionDate];
   [(SMSessionManager *)self cacheReleaseMaxDuration];
-  v10 = [v9 dateByAddingTimeInterval:?];
+  v10 = [sessionStateTransitionDate dateByAddingTimeInterval:?];
 
-  v11 = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
+  cacheReleaseXPCTimerAlarm2 = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
   v16 = 0;
-  [v11 fireWithDate:v10 error:&v16];
+  [cacheReleaseXPCTimerAlarm2 fireWithDate:v10 error:&v16];
   v12 = v16;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -7656,11 +7656,11 @@ uint64_t __60__SMSessionManager__setupTimerAndLockMonitorForEndAwareness__block_
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
-      v15 = [v12 localizedDescription];
+      localizedDescription = [v12 localizedDescription];
       *buf = 136315394;
       v21 = "[SMSessionManager _setUpCacheReleaseTimer]";
       v22 = 2112;
-      v23 = v15;
+      v23 = localizedDescription;
       _os_log_fault_impl(&dword_2304B3000, v14, OS_LOG_TYPE_FAULT, "%s cacheReleaseXPCTimerAlarm fireWithDate hit error: %@", buf, 0x16u);
     }
   }
@@ -7715,10 +7715,10 @@ void __43__SMSessionManager__setUpCacheReleaseTimer__block_invoke_404(uint64_t a
   }
 }
 
-- (void)_postCacheReleaseAndUpdatingWithTargetDate:(id)a3
+- (void)_postCacheReleaseAndUpdatingWithTargetDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -7730,36 +7730,36 @@ void __43__SMSessionManager__setUpCacheReleaseTimer__block_invoke_404(uint64_t a
     }
   }
 
-  if ([(SMSessionManager *)self _shouldAlertNowWithTargetAlertDate:v4])
+  if ([(SMSessionManager *)self _shouldAlertNowWithTargetAlertDate:dateCopy])
   {
-    v6 = [(SMSessionManager *)self state];
-    [(SMSessionManager *)self _updateActivityWithState:v6];
+    state = [(SMSessionManager *)self state];
+    [(SMSessionManager *)self _updateActivityWithState:state];
 
     v7 = MEMORY[0x277D4ABC8];
-    v8 = [(SMSessionManager *)self state];
-    v9 = [v8 monitorContext];
-    LOBYTE(v7) = [v7 isSOSTriggerCategory:{objc_msgSend(v9, "triggerCategory")}];
+    state2 = [(SMSessionManager *)self state];
+    monitorContext = [state2 monitorContext];
+    LOBYTE(v7) = [v7 isSOSTriggerCategory:{objc_msgSend(monitorContext, "triggerCategory")}];
 
     if ((v7 & 1) == 0)
     {
       [(SMSessionManager *)self _playCacheReleaseAndUpdatingSound];
     }
 
-    v10 = [(SMSessionManager *)self carPlayAlertManager];
-    v11 = [(SMSessionManager *)self state];
-    [v10 postCarPlayNotificationForNotificationType:5 sessionManagerState:v11 handler:0];
+    carPlayAlertManager = [(SMSessionManager *)self carPlayAlertManager];
+    state3 = [(SMSessionManager *)self state];
+    [carPlayAlertManager postCarPlayNotificationForNotificationType:5 sessionManagerState:state3 handler:0];
   }
 
   else
   {
-    v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    carPlayAlertManager = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(carPlayAlertManager, OS_LOG_TYPE_ERROR))
     {
       v12 = 136315394;
       v13 = "[SMSessionManager _postCacheReleaseAndUpdatingWithTargetDate:]";
       v14 = 2112;
-      v15 = v4;
-      _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "%s, current time exceeds the alert target allowance, target date, %@", &v12, 0x16u);
+      v15 = dateCopy;
+      _os_log_error_impl(&dword_2304B3000, carPlayAlertManager, OS_LOG_TYPE_ERROR, "%s, current time exceeds the alert target allowance, target date, %@", &v12, 0x16u);
     }
   }
 }
@@ -7767,13 +7767,13 @@ void __43__SMSessionManager__setUpCacheReleaseTimer__block_invoke_404(uint64_t a
 - (void)_playCacheReleaseAndUpdatingSound
 {
   v3 = dispatch_time(0, 700000000);
-  v4 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SMSessionManager__playCacheReleaseAndUpdatingSound__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_after(v3, v4, block);
+  dispatch_after(v3, queue, block);
 }
 
 void __53__SMSessionManager__playCacheReleaseAndUpdatingSound__block_invoke(uint64_t a1)
@@ -7852,37 +7852,37 @@ void __53__SMSessionManager__playCacheReleaseAndUpdatingSound__block_invoke_413(
   v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SMSessionManager *)self cacheReleaseTLAlert];
+    cacheReleaseTLAlert = [(SMSessionManager *)self cacheReleaseTLAlert];
     v7 = 136315394;
     v8 = "[SMSessionManager _stopPlayingCacheReleaseAndUpdatingSound]";
     v9 = 2112;
-    v10 = v4;
+    v10 = cacheReleaseTLAlert;
     _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_DEFAULT, "%s, stopping cache release sound alert,%@", &v7, 0x16u);
   }
 
-  v5 = [(SMSessionManager *)self cacheReleaseTLAlert];
+  cacheReleaseTLAlert2 = [(SMSessionManager *)self cacheReleaseTLAlert];
 
-  if (v5)
+  if (cacheReleaseTLAlert2)
   {
-    v6 = [(SMSessionManager *)self cacheReleaseTLAlert];
-    [v6 stop];
+    cacheReleaseTLAlert3 = [(SMSessionManager *)self cacheReleaseTLAlert];
+    [cacheReleaseTLAlert3 stop];
 
     [(SMSessionManager *)self setCacheReleaseTLAlert:0];
   }
 }
 
-- (BOOL)_shouldAlertNowWithTargetAlertDate:(id)a3
+- (BOOL)_shouldAlertNowWithTargetAlertDate:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionManager *)self defaultsManager];
+  dateCopy = date;
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:300.0];
-  v7 = [v5 objectForKey:@"RTDefaultsSessionManagerCacheReleaseAlertDelayAllowanceKey" value:v6];
+  v7 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerCacheReleaseAlertDelayAllowanceKey" value:v6];
   [v7 doubleValue];
   v9 = v8;
 
   v10 = [MEMORY[0x277CBEAA8] now];
-  [v10 timeIntervalSinceDate:v4];
+  [v10 timeIntervalSinceDate:dateCopy];
   v12 = v11;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -7894,7 +7894,7 @@ void __53__SMSessionManager__playCacheReleaseAndUpdatingSound__block_invoke_413(
       v16 = 136315906;
       v17 = "[SMSessionManager _shouldAlertNowWithTargetAlertDate:]";
       v18 = 2112;
-      v19 = v4;
+      v19 = dateCopy;
       if (v12 <= v9)
       {
         v15 = @"YES";
@@ -7925,63 +7925,63 @@ void __53__SMSessionManager__playCacheReleaseAndUpdatingSound__block_invoke_413(
     }
   }
 
-  v4 = [(SMSessionManager *)self state];
-  v5 = [v4 isPromptState];
+  state = [(SMSessionManager *)self state];
+  isPromptState = [state isPromptState];
 
-  if ((v5 & 1) == 0)
+  if ((isPromptState & 1) == 0)
   {
-    v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (!os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    sessionStateTransitionDate = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (!os_log_type_enabled(sessionStateTransitionDate, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_17;
     }
 
-    v16 = [(SMSessionManager *)self state];
+    state2 = [(SMSessionManager *)self state];
     v17 = 136315394;
     v18 = "[SMSessionManager _postAnomalyAlert]";
     v19 = 2112;
-    v20 = v16;
-    _os_log_fault_impl(&dword_2304B3000, v7, OS_LOG_TYPE_FAULT, "%s, unexpected state for anomaly alert, %@", &v17, 0x16u);
+    v20 = state2;
+    _os_log_fault_impl(&dword_2304B3000, sessionStateTransitionDate, OS_LOG_TYPE_FAULT, "%s, unexpected state for anomaly alert, %@", &v17, 0x16u);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v6 = [(SMSessionManager *)self state];
-  v7 = [v6 sessionStateTransitionDate];
+  state3 = [(SMSessionManager *)self state];
+  sessionStateTransitionDate = [state3 sessionStateTransitionDate];
 
-  v8 = [(SMSessionManager *)self state];
-  if ([v8 sessionState] == 9)
+  state4 = [(SMSessionManager *)self state];
+  if ([state4 sessionState] == 9)
   {
-    v9 = [(SMSessionManager *)self state];
-    v10 = [v9 configuration];
-    v11 = [v10 time];
-    v12 = [v11 timeBound];
+    state5 = [(SMSessionManager *)self state];
+    configuration = [state5 configuration];
+    time = [configuration time];
+    timeBound = [time timeBound];
 
-    if (!v12)
+    if (!timeBound)
     {
       goto LABEL_10;
     }
 
-    v8 = [(SMSessionManager *)self state];
-    v13 = [v8 configuration];
-    v14 = [v13 time];
-    v15 = [v14 timeBound];
+    state4 = [(SMSessionManager *)self state];
+    configuration2 = [state4 configuration];
+    time2 = [configuration2 time];
+    timeBound2 = [time2 timeBound];
 
-    v7 = v15;
+    sessionStateTransitionDate = timeBound2;
   }
 
 LABEL_10:
-  if (![(SMSessionManager *)self _shouldAlertNowWithTargetAlertDate:v7])
+  if (![(SMSessionManager *)self _shouldAlertNowWithTargetAlertDate:sessionStateTransitionDate])
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    state2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(state2, OS_LOG_TYPE_ERROR))
     {
       v17 = 136315394;
       v18 = "[SMSessionManager _postAnomalyAlert]";
       v19 = 2112;
-      v20 = v7;
-      _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "%s, current time exceeds the alert target allowance, target date, %@", &v17, 0x16u);
+      v20 = sessionStateTransitionDate;
+      _os_log_error_impl(&dword_2304B3000, state2, OS_LOG_TYPE_ERROR, "%s, current time exceeds the alert target allowance, target date, %@", &v17, 0x16u);
     }
 
     goto LABEL_16;
@@ -7993,12 +7993,12 @@ LABEL_17:
 
 - (void)_teardownAnomalyAlerts
 {
-  v3 = [(SMSessionManager *)self anomalyAlertManager];
+  anomalyAlertManager = [(SMSessionManager *)self anomalyAlertManager];
 
-  if (v3)
+  if (anomalyAlertManager)
   {
-    v4 = [(SMSessionManager *)self anomalyAlertManager];
-    [v4 stop];
+    anomalyAlertManager2 = [(SMSessionManager *)self anomalyAlertManager];
+    [anomalyAlertManager2 stop];
 
     [(SMSessionManager *)self setAnomalyAlertManager:0];
   }
@@ -8008,30 +8008,30 @@ LABEL_17:
 {
   [(SMSessionManager *)self _teardownAnomalyAlerts];
   v3 = [SMAnomalyAlertManager alloc];
-  v4 = [(SMSessionManager *)self queue];
-  v5 = [(SMSessionManager *)self state];
-  v6 = [(SMSessionManager *)self defaultsManager];
-  v7 = [(SMSessionManager *)self carPlayAlertManager];
-  v8 = [(SMAnomalyAlertManager *)v3 initWithQueue:v4 anomalyState:v5 defaultsManager:v6 carPlayAlertManager:v7];
+  queue = [(SMSessionManager *)self queue];
+  state = [(SMSessionManager *)self state];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  carPlayAlertManager = [(SMSessionManager *)self carPlayAlertManager];
+  v8 = [(SMAnomalyAlertManager *)v3 initWithQueue:queue anomalyState:state defaultsManager:defaultsManager carPlayAlertManager:carPlayAlertManager];
   [(SMSessionManager *)self setAnomalyAlertManager:v8];
 
-  v9 = [(SMSessionManager *)self anomalyAlertManager];
-  [v9 start];
+  anomalyAlertManager = [(SMSessionManager *)self anomalyAlertManager];
+  [anomalyAlertManager start];
 }
 
 - (void)_setupAnomalyAlertsOnResume
 {
   [(SMSessionManager *)self _teardownAnomalyAlerts];
   v3 = [SMAnomalyAlertManager alloc];
-  v4 = [(SMSessionManager *)self queue];
-  v5 = [(SMSessionManager *)self state];
-  v6 = [(SMSessionManager *)self defaultsManager];
-  v7 = [(SMSessionManager *)self carPlayAlertManager];
-  v8 = [(SMAnomalyAlertManager *)v3 initWithQueue:v4 anomalyState:v5 defaultsManager:v6 carPlayAlertManager:v7];
+  queue = [(SMSessionManager *)self queue];
+  state = [(SMSessionManager *)self state];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  carPlayAlertManager = [(SMSessionManager *)self carPlayAlertManager];
+  v8 = [(SMAnomalyAlertManager *)v3 initWithQueue:queue anomalyState:state defaultsManager:defaultsManager carPlayAlertManager:carPlayAlertManager];
   [(SMSessionManager *)self setAnomalyAlertManager:v8];
 
-  v9 = [(SMSessionManager *)self anomalyAlertManager];
-  [v9 resume];
+  anomalyAlertManager = [(SMSessionManager *)self anomalyAlertManager];
+  [anomalyAlertManager resume];
 }
 
 - (void)_setupTimerForAnomaly
@@ -8048,32 +8048,32 @@ LABEL_17:
     }
   }
 
-  v4 = [(SMSessionManager *)self state];
-  v5 = [v4 isPromptState];
+  state = [(SMSessionManager *)self state];
+  isPromptState = [state isPromptState];
 
-  if (v5)
+  if (isPromptState)
   {
-    v6 = [(SMSessionManager *)self checkInXPCTimerAlarm];
-    [(SMSessionManager *)self _invalidateTimer:v6];
+    checkInXPCTimerAlarm = [(SMSessionManager *)self checkInXPCTimerAlarm];
+    [(SMSessionManager *)self _invalidateTimer:checkInXPCTimerAlarm];
 
     objc_initWeak(&location, self);
     v7 = [RTXPCTimerAlarm alloc];
-    v8 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __41__SMSessionManager__setupTimerForAnomaly__block_invoke;
     v20[3] = &unk_2788C7638;
     v20[4] = self;
     objc_copyWeak(&v21, &location);
-    v9 = [(RTXPCTimerAlarm *)v7 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.checkInTimerAlarm" queue:v8 handler:v20];
+    v9 = [(RTXPCTimerAlarm *)v7 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.checkInTimerAlarm" queue:queue handler:v20];
     [(SMSessionManager *)self setCheckInXPCTimerAlarm:v9];
 
-    v10 = [(SMSessionManager *)self state];
-    v11 = [(SMSessionManager *)self _checkDefaultsForCacheReleaseDateWithState:v10];
+    state2 = [(SMSessionManager *)self state];
+    v11 = [(SMSessionManager *)self _checkDefaultsForCacheReleaseDateWithState:state2];
 
-    v12 = [(SMSessionManager *)self checkInXPCTimerAlarm];
+    checkInXPCTimerAlarm2 = [(SMSessionManager *)self checkInXPCTimerAlarm];
     v19 = 0;
-    [v12 fireWithDate:v11 error:&v19];
+    [checkInXPCTimerAlarm2 fireWithDate:v11 error:&v19];
     v13 = v19;
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -8094,11 +8094,11 @@ LABEL_17:
       v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
       {
-        v18 = [v13 localizedDescription];
+        localizedDescription = [v13 localizedDescription];
         *buf = 136315394;
         v24 = "[SMSessionManager _setupTimerForAnomaly]";
         v25 = 2112;
-        v26 = v18;
+        v26 = localizedDescription;
         _os_log_fault_impl(&dword_2304B3000, v15, OS_LOG_TYPE_FAULT, "%s checkInXPCTimerAlarm fireWithDate hit error: %@", buf, 0x16u);
       }
     }
@@ -8112,11 +8112,11 @@ LABEL_17:
     v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      v17 = [(SMSessionManager *)self state];
+      state3 = [(SMSessionManager *)self state];
       *buf = 136315394;
       v24 = "[SMSessionManager _setupTimerForAnomaly]";
       v25 = 2112;
-      v26 = v17;
+      v26 = state3;
       _os_log_fault_impl(&dword_2304B3000, v16, OS_LOG_TYPE_FAULT, "%s, unexpected state for anomaly alert, %@", buf, 0x16u);
     }
   }
@@ -8167,24 +8167,24 @@ void __41__SMSessionManager__setupTimerForAnomaly__block_invoke_418(uint64_t a1,
   }
 }
 
-- (BOOL)_performStateTransitionTo:(id)a3 transitionType:(unint64_t)a4 handler:(id)a5
+- (BOOL)_performStateTransitionTo:(id)to transitionType:(unint64_t)type handler:(id)handler
 {
   v63 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  toCopy = to;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = MEMORY[0x277D4ABB0];
-      v13 = [(SMSessionManager *)self state];
-      v14 = [v12 convertSessionStateToString:{objc_msgSend(v13, "sessionState")}];
-      v15 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v9, "sessionState")}];
+      state = [(SMSessionManager *)self state];
+      v14 = [v12 convertSessionStateToString:{objc_msgSend(state, "sessionState")}];
+      v15 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(toCopy, "sessionState")}];
       *buf = 136315906;
       v56 = "[SMSessionManager _performStateTransitionTo:transitionType:handler:]";
       v57 = 2048;
-      v58 = a4;
+      typeCopy = type;
       v59 = 2112;
       v60 = v14;
       v61 = 2112;
@@ -8193,46 +8193,46 @@ void __41__SMSessionManager__setupTimerForAnomaly__block_invoke_418(uint64_t a1,
     }
   }
 
-  v16 = [(SMSessionManager *)self state];
-  v52 = [v16 sessionState];
+  state2 = [(SMSessionManager *)self state];
+  sessionState = [state2 sessionState];
 
-  v17 = [MEMORY[0x277CBEAA8] date];
-  [v9 setDate:v17];
+  date = [MEMORY[0x277CBEAA8] date];
+  [toCopy setDate:date];
 
-  v18 = [(SMSessionManager *)self state];
-  v19 = [v18 sessionState];
-  v20 = [v9 sessionState];
+  state3 = [(SMSessionManager *)self state];
+  sessionState2 = [state3 sessionState];
+  sessionState3 = [toCopy sessionState];
 
-  if (v19 != v20)
+  if (sessionState2 != sessionState3)
   {
-    v21 = [MEMORY[0x277CBEAA8] date];
-    [v9 setSessionStateTransitionDate:v21];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [toCopy setSessionStateTransitionDate:date2];
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v22 = [(SMSessionManager *)self messagingService];
-    v23 = [v22 deviceIdentifier];
-    [v9 setActiveDeviceIdentifier:v23];
+    messagingService = [(SMSessionManager *)self messagingService];
+    deviceIdentifier = [messagingService deviceIdentifier];
+    [toCopy setActiveDeviceIdentifier:deviceIdentifier];
   }
 
-  v24 = [(SMSessionManager *)self lastLocation];
-  v25 = [v24 timestamp];
-  if (v25)
+  lastLocation = [(SMSessionManager *)self lastLocation];
+  timestamp = [lastLocation timestamp];
+  if (timestamp)
   {
-    v26 = v25;
-    v27 = [MEMORY[0x277CBEAA8] date];
+    v26 = timestamp;
+    date3 = [MEMORY[0x277CBEAA8] date];
     [(SMSessionManager *)self lastLocation];
     v29 = v28 = a2;
-    v30 = [v29 timestamp];
-    [v27 timeIntervalSinceDate:v30];
+    timestamp2 = [v29 timestamp];
+    [date3 timeIntervalSinceDate:timestamp2];
     v32 = v31;
 
     a2 = v28;
     if (v32 <= 60.0)
     {
-      v33 = [(SMSessionManager *)self lastLocation];
-      [v9 setLocation:v33];
+      lastLocation2 = [(SMSessionManager *)self lastLocation];
+      [toCopy setLocation:lastLocation2];
 
       goto LABEL_14;
     }
@@ -8242,36 +8242,36 @@ void __41__SMSessionManager__setupTimerForAnomaly__block_invoke_418(uint64_t a1,
   {
   }
 
-  [v9 setLocation:0];
+  [toCopy setLocation:0];
 LABEL_14:
-  v34 = [(SMSessionManager *)self _stateTransitionDecisionToState:v9 transitionType:a4];
-  v35 = [v34 isAllowed];
-  if (v35)
+  v34 = [(SMSessionManager *)self _stateTransitionDecisionToState:toCopy transitionType:type];
+  isAllowed = [v34 isAllowed];
+  if (isAllowed)
   {
-    [(SMSessionManager *)self logSignPostForStateTransition:v9];
-    v36 = [v34 actionBlock];
-    v36[2]();
+    [(SMSessionManager *)self logSignPostForStateTransition:toCopy];
+    actionBlock = [v34 actionBlock];
+    actionBlock[2]();
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
-        v38 = [MEMORY[0x277D4ABB0] convertSessionStateToString:v52];
-        v39 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v9, "sessionState")}];
+        v38 = [MEMORY[0x277D4ABB0] convertSessionStateToString:sessionState];
+        v39 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(toCopy, "sessionState")}];
         *buf = 136315650;
         v56 = "[SMSessionManager _performStateTransitionTo:transitionType:handler:]";
         v57 = 2112;
-        v58 = v38;
+        typeCopy = v38;
         v59 = 2112;
         v60 = v39;
         _os_log_impl(&dword_2304B3000, v37, OS_LOG_TYPE_INFO, "%s, Successful state transition from %@ to %@", buf, 0x20u);
       }
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -8281,19 +8281,19 @@ LABEL_14:
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
       v48 = MEMORY[0x277D4ABB0];
-      v49 = [(SMSessionManager *)self state];
-      v50 = [v48 convertSessionStateToString:{objc_msgSend(v49, "sessionState")}];
-      v51 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v9, "sessionState")}];
+      state4 = [(SMSessionManager *)self state];
+      v50 = [v48 convertSessionStateToString:{objc_msgSend(state4, "sessionState")}];
+      v51 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(toCopy, "sessionState")}];
       *buf = 136315650;
       v56 = "[SMSessionManager _performStateTransitionTo:transitionType:handler:]";
       v57 = 2112;
-      v58 = v50;
+      typeCopy = v50;
       v59 = 2112;
       v60 = v51;
       _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "%s, Invalid transition from %@ to %@", buf, 0x20u);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v53 = *MEMORY[0x277CCA450];
       v41 = MEMORY[0x277CCACA8];
@@ -8304,20 +8304,20 @@ LABEL_14:
 
       v45 = objc_alloc(MEMORY[0x277CCA9B8]);
       v46 = [v45 initWithDomain:*MEMORY[0x277D4ACD0] code:16 userInfo:v44];
-      (v10)[2](v10, v46);
+      (handlerCopy)[2](handlerCopy, v46);
     }
   }
 
-  return v35;
+  return isAllowed;
 }
 
-- (void)_performStateSyncOriginatedTransitionTo:(id)a3 transitionType:(unint64_t)a4 handler:(id)a5
+- (void)_performStateSyncOriginatedTransitionTo:(id)to transitionType:(unint64_t)type handler:(id)handler
 {
   v84 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  toCopy = to;
+  handlerCopy = handler;
   p_state = &self->_state;
-  if ([(SMSessionManagerState *)self->_state isEqual:v9])
+  if ([(SMSessionManagerState *)self->_state isEqual:toCopy])
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -8325,7 +8325,7 @@ LABEL_14:
       *buf = 136315394;
       v79 = "[SMSessionManager _performStateSyncOriginatedTransitionTo:transitionType:handler:]";
       v80 = 2112;
-      v81 = v9;
+      v81 = toCopy;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%s, identical state sync state transition requested, %@", buf, 0x16u);
     }
 
@@ -8337,20 +8337,20 @@ LABEL_14:
     v13 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(SMSessionManager *)self state];
+      state = [(SMSessionManager *)self state];
       *buf = 136315651;
       v79 = "[SMSessionManager _performStateSyncOriginatedTransitionTo:transitionType:handler:]";
       v80 = 2117;
-      v81 = v14;
+      v81 = state;
       v82 = 2117;
-      v83 = v9;
+      v83 = toCopy;
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, state transition originated by a state sync message, %{sensitive}@, to state, %{sensitive}@", buf, 0x20u);
     }
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v15 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -8369,7 +8369,7 @@ LABEL_14:
       v12 = [v16 initWithDomain:v17 code:7 userInfo:v19];
 
 LABEL_30:
-      v10[2](v10, v12);
+      handlerCopy[2](handlerCopy, v12);
 LABEL_31:
 
       goto LABEL_105;
@@ -8378,22 +8378,22 @@ LABEL_31:
     goto LABEL_15;
   }
 
-  v20 = [(SMSessionManager *)self state];
-  v21 = [v20 sessionState];
-  v22 = [(SMSessionManagerState *)v9 sessionState];
+  state2 = [(SMSessionManager *)self state];
+  sessionState = [state2 sessionState];
+  sessionState2 = [(SMSessionManagerState *)toCopy sessionState];
 
-  if (v21 != v22)
+  if (sessionState != sessionState2)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      v70 = [(SMSessionManager *)self state];
+      state3 = [(SMSessionManager *)self state];
       *buf = 136315650;
       v79 = "[SMSessionManager _performStateSyncOriginatedTransitionTo:transitionType:handler:]";
       v80 = 2112;
-      v81 = v70;
+      v81 = state3;
       v82 = 2112;
-      v83 = v9;
+      v83 = toCopy;
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "%s, SMStateTransitionTypeHandoffBecomeNonActive; invalid state transition from %@ to %@", buf, 0x20u);
     }
 
@@ -8405,7 +8405,7 @@ LABEL_31:
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v75 forKeys:&v74 count:1];
     v12 = [v28 initWithDomain:v29 code:16 userInfo:v31];
 
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_31;
     }
@@ -8417,17 +8417,17 @@ LABEL_31:
   {
 LABEL_15:
     v23 = [(SMSessionManagerState *)self->_state copy];
-    objc_storeStrong(&self->_state, a3);
-    [(SMSessionManager *)self _notifyObserversForStateChangeWithTransitionType:a4];
-    v24 = [(SMSessionManager *)self _isRemoteSessionEndForPreviousState:v23 nextState:v9];
-    v25 = [v23 sessionState];
-    if (v25 > 9)
+    objc_storeStrong(&self->_state, to);
+    [(SMSessionManager *)self _notifyObserversForStateChangeWithTransitionType:type];
+    v24 = [(SMSessionManager *)self _isRemoteSessionEndForPreviousState:v23 nextState:toCopy];
+    sessionState3 = [v23 sessionState];
+    if (sessionState3 > 9)
     {
-      if ((v25 - 10) >= 2)
+      if ((sessionState3 - 10) >= 2)
       {
-        if (v25 == 12)
+        if (sessionState3 == 12)
         {
-          if ([(SMSessionManagerState *)v9 sessionState]== 1)
+          if ([(SMSessionManagerState *)toCopy sessionState]== 1)
           {
             [(SMSessionManager *)self _clearHysteresisState];
             [MEMORY[0x277D4AA60] endActivities];
@@ -8435,24 +8435,24 @@ LABEL_15:
 
           else
           {
-            v54 = [(SMSessionManager *)self state];
-            [(SMSessionManager *)self _updateActivityWithState:v54 shouldNotify:0];
+            state4 = [(SMSessionManager *)self state];
+            [(SMSessionManager *)self _updateActivityWithState:state4 shouldNotify:0];
           }
         }
 
-        else if (v25 != 14)
+        else if (sessionState3 != 14)
         {
           goto LABEL_102;
         }
 
-        v55 = [(SMSessionManagerState *)v9 sessionState];
-        if (v55 > 3)
+        sessionState4 = [(SMSessionManagerState *)toCopy sessionState];
+        if (sessionState4 > 3)
         {
-          switch(v55)
+          switch(sessionState4)
           {
             case 4:
-              v64 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-              v65 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v64];
+              activeDeviceIdentifier = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+              v65 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier];
 
               if (!v65)
               {
@@ -8462,13 +8462,13 @@ LABEL_15:
               [(SMSessionManager *)self _teardownAnomalyAlerts];
               goto LABEL_97;
             case 12:
-              v66 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-              v67 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v66];
+              activeDeviceIdentifier2 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+              v67 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier2];
 
               if (v67)
               {
-                v68 = [(SMSessionManager *)self state];
-                [(SMSessionManager *)self _updateActivityWithState:v68 shouldNotify:1];
+                state5 = [(SMSessionManager *)self state];
+                [(SMSessionManager *)self _updateActivityWithState:state5 shouldNotify:1];
 
                 [(SMSessionManager *)self _teardownAnomalyAlerts];
               }
@@ -8481,14 +8481,14 @@ LABEL_15:
           goto LABEL_93;
         }
 
-        if (!v55)
+        if (!sessionState4)
         {
           goto LABEL_102;
         }
 
-        if (v55 != 1)
+        if (sessionState4 != 1)
         {
-          if (v55 == 2)
+          if (sessionState4 == 2)
           {
             goto LABEL_79;
           }
@@ -8505,13 +8505,13 @@ LABEL_81:
 
     else
     {
-      if (v25 > 6)
+      if (sessionState3 > 6)
       {
 LABEL_20:
-        v26 = [v23 sessionState];
-        if (v26 == [(SMSessionManagerState *)v9 sessionState])
+        sessionState5 = [v23 sessionState];
+        if (sessionState5 == [(SMSessionManagerState *)toCopy sessionState])
         {
-          if (a4 == 3)
+          if (type == 3)
           {
             [(SMSessionManager *)self _notifyObserversForBecomingNonActiveDevice];
           }
@@ -8525,10 +8525,10 @@ LABEL_61:
           goto LABEL_102;
         }
 
-        if ([(SMSessionManagerState *)v9 sessionState]== 4)
+        if ([(SMSessionManagerState *)toCopy sessionState]== 4)
         {
-          v42 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-          v43 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v42];
+          activeDeviceIdentifier3 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+          v43 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier3];
 
           if (v43)
           {
@@ -8540,17 +8540,17 @@ LABEL_61:
           goto LABEL_61;
         }
 
-        if ([(SMSessionManagerState *)v9 sessionState]!= 2)
+        if ([(SMSessionManagerState *)toCopy sessionState]!= 2)
         {
-          if ([(SMSessionManagerState *)v9 isEndSessionState])
+          if ([(SMSessionManagerState *)toCopy isEndSessionState])
           {
-            v47 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-            v48 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v47];
+            activeDeviceIdentifier4 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+            v48 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier4];
 
             if (v48)
             {
-              v49 = [(SMSessionManager *)self state];
-              [(SMSessionManager *)self _updateActivityWithState:v49 shouldNotify:1];
+              state6 = [(SMSessionManager *)self state];
+              [(SMSessionManager *)self _updateActivityWithState:state6 shouldNotify:1];
 
               [(SMSessionManager *)self _teardownAnomalyAlerts];
             }
@@ -8562,13 +8562,13 @@ LABEL_61:
         }
 
 LABEL_79:
-        v56 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-        v57 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v56];
+        activeDeviceIdentifier5 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+        v57 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier5];
 
         if (v57)
         {
-          v58 = [(SMSessionManager *)self state];
-          [(SMSessionManager *)self _updateActivityWithState:v58 shouldNotify:0];
+          state7 = [(SMSessionManager *)self state];
+          [(SMSessionManager *)self _updateActivityWithState:state7 shouldNotify:0];
 
           [(SMSessionManager *)self _teardownAnomalyAlerts];
         }
@@ -8576,11 +8576,11 @@ LABEL_79:
         goto LABEL_102;
       }
 
-      if (v25 != 1)
+      if (sessionState3 != 1)
       {
-        if (v25 != 2)
+        if (sessionState3 != 2)
         {
-          if (v25 == 4)
+          if (sessionState3 == 4)
           {
             goto LABEL_20;
           }
@@ -8592,27 +8592,27 @@ LABEL_79:
       }
     }
 
-    v32 = [(SMSessionManagerState *)v9 sessionState];
-    if (v32 > 0xE)
+    sessionState6 = [(SMSessionManagerState *)toCopy sessionState];
+    if (sessionState6 > 0xE)
     {
       goto LABEL_36;
     }
 
-    if (((1 << v32) & 0x5390) == 0)
+    if (((1 << sessionState6) & 0x5390) == 0)
     {
-      if (v32 != 2)
+      if (sessionState6 != 2)
       {
         goto LABEL_36;
       }
 
-      v50 = [(SMSessionManagerState *)v9 activePairedDeviceIdentifier];
-      v51 = [(SMSessionManager *)self messagingService];
-      v52 = [v51 deviceIdentifier];
-      if ([v50 isEqual:v52] && -[SMSessionManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
+      activePairedDeviceIdentifier = [(SMSessionManagerState *)toCopy activePairedDeviceIdentifier];
+      messagingService = [(SMSessionManager *)self messagingService];
+      deviceIdentifier = [messagingService deviceIdentifier];
+      if ([activePairedDeviceIdentifier isEqual:deviceIdentifier] && -[SMSessionManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
       {
-        v73 = [(SMSessionManagerState *)v9 startMessageGUID];
+        startMessageGUID = [(SMSessionManagerState *)toCopy startMessageGUID];
 
-        if (v73)
+        if (startMessageGUID)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
@@ -8624,7 +8624,7 @@ LABEL_79:
               v80 = 2117;
               v81 = v23;
               v82 = 2117;
-              v83 = v9;
+              v83 = toCopy;
               _os_log_impl(&dword_2304B3000, v53, OS_LOG_TYPE_INFO, "%s, state transition from state, %{sensitive}@, to state, %{sensitive}@, calling _handleMagnetConnect to evaluate if a handoff is needed", buf, 0x20u);
             }
           }
@@ -8637,29 +8637,29 @@ LABEL_79:
       {
       }
 
-      v69 = [(SMSessionManager *)self sessionMetricManager];
-      [v69 onSessionStartedWithState:v9];
+      sessionMetricManager = [(SMSessionManager *)self sessionMetricManager];
+      [sessionMetricManager onSessionStartedWithState:toCopy];
 
       [(SMSessionManager *)self _updateUnsupportedSeparationStateIfNeededWithNotify:0];
     }
 
-    v33 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-    v34 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v33];
+    activeDeviceIdentifier6 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+    v34 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier6];
 
     if (v34)
     {
-      [MEMORY[0x277D4AA60] startActivityWithState:v9 localState:self->_localState];
+      [MEMORY[0x277D4AA60] startActivityWithState:toCopy localState:self->_localState];
     }
 
 LABEL_36:
-    v35 = [(SMSessionManagerState *)v9 sessionState];
-    if (v35 > 6)
+    sessionState7 = [(SMSessionManagerState *)toCopy sessionState];
+    if (sessionState7 > 6)
     {
-      if ((v35 - 7) < 3)
+      if ((sessionState7 - 7) < 3)
       {
 LABEL_40:
-        v36 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-        v37 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v36];
+        activeDeviceIdentifier7 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+        v37 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier7];
 
         if (!v37)
         {
@@ -8667,17 +8667,17 @@ LABEL_40:
         }
 
         [(SMSessionManager *)self _postAnomalyAlert];
-        v38 = [(SMSessionManager *)self sessionMetricManager];
-        v39 = [(SMSessionManagerState *)self->_state monitorContext];
-        [v38 onDeclareAnomalyForTriggerCategory:{objc_msgSend(v39, "triggerCategory")}];
+        sessionMetricManager2 = [(SMSessionManager *)self sessionMetricManager];
+        monitorContext = [(SMSessionManagerState *)self->_state monitorContext];
+        [sessionMetricManager2 onDeclareAnomalyForTriggerCategory:{objc_msgSend(monitorContext, "triggerCategory")}];
 
 LABEL_98:
         goto LABEL_102;
       }
 
-      if (v35 != 12)
+      if (sessionState7 != 12)
       {
-        if (v35 != 14)
+        if (sessionState7 != 14)
         {
           goto LABEL_102;
         }
@@ -8685,26 +8685,26 @@ LABEL_98:
         goto LABEL_40;
       }
 
-      objc_storeStrong(&self->_state, a3);
-      v63 = [(SMSessionManager *)self state];
-      [(SMSessionManager *)self _updateActivityWithState:v63 shouldNotify:1];
+      objc_storeStrong(&self->_state, to);
+      state8 = [(SMSessionManager *)self state];
+      [(SMSessionManager *)self _updateActivityWithState:state8 shouldNotify:1];
 
 LABEL_101:
       [(SMSessionManager *)self _notifyObserversForSessionEndForActiveDevice:[(SMSessionManager *)self _isActiveDevice]];
       goto LABEL_102;
     }
 
-    if (v35 >= 2)
+    if (sessionState7 >= 2)
     {
-      if (v35 != 2)
+      if (sessionState7 != 2)
       {
-        if (v35 != 4)
+        if (sessionState7 != 4)
         {
           goto LABEL_102;
         }
 
-        v45 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-        v46 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v45];
+        activeDeviceIdentifier8 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+        v46 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier8];
 
         if (!v46)
         {
@@ -8712,40 +8712,40 @@ LABEL_101:
         }
 
 LABEL_97:
-        v38 = [(SMSessionManager *)self _checkDefaultsForCacheReleaseDateWithState:v23];
-        [(SMSessionManager *)self _postCacheReleaseAndUpdatingWithTargetDate:v38];
+        sessionMetricManager2 = [(SMSessionManager *)self _checkDefaultsForCacheReleaseDateWithState:v23];
+        [(SMSessionManager *)self _postCacheReleaseAndUpdatingWithTargetDate:sessionMetricManager2];
         goto LABEL_98;
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
         [(SMSessionManager *)self _notifyObserversForBecomingNonActiveDevice];
         goto LABEL_102;
       }
 
-      if (a4 != 1)
+      if (type != 1)
       {
 LABEL_102:
-        [(SMSessionManager *)self _performActionsAndUpdatesUponStateTransitionWithType:a4];
-        if (v10)
+        [(SMSessionManager *)self _performActionsAndUpdatesUponStateTransitionWithType:type];
+        if (handlerCopy)
         {
-          v10[2](v10, 0);
+          handlerCopy[2](handlerCopy, 0);
         }
 
         goto LABEL_105;
       }
 
-      v59 = [(SMSessionManagerState *)v9 activePairedDeviceIdentifier];
-      v60 = [(SMSessionManager *)self messagingService];
-      v61 = [v60 deviceIdentifier];
-      if ([v59 isEqual:v61] && -[SMSessionManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
+      activePairedDeviceIdentifier2 = [(SMSessionManagerState *)toCopy activePairedDeviceIdentifier];
+      messagingService2 = [(SMSessionManager *)self messagingService];
+      deviceIdentifier2 = [messagingService2 deviceIdentifier];
+      if ([activePairedDeviceIdentifier2 isEqual:deviceIdentifier2] && -[SMSessionManager _isEffectivePairedDeviceNearby](self, "_isEffectivePairedDeviceNearby"))
       {
-        v62 = [v23 startMessageGUID];
-        if (!v62)
+        startMessageGUID2 = [v23 startMessageGUID];
+        if (!startMessageGUID2)
         {
-          v71 = [(SMSessionManagerState *)v9 startMessageGUID];
+          startMessageGUID3 = [(SMSessionManagerState *)toCopy startMessageGUID];
 
-          if (v71)
+          if (startMessageGUID3)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
             {
@@ -8757,7 +8757,7 @@ LABEL_102:
                 v80 = 2117;
                 v81 = v23;
                 v82 = 2117;
-                v83 = v9;
+                v83 = toCopy;
                 _os_log_impl(&dword_2304B3000, v72, OS_LOG_TYPE_INFO, "%s, state transition from state, %{sensitive}@, to state, %{sensitive}@, calling _handleMagnetConnect to evaluate if a handoff is needed", buf, 0x20u);
               }
             }
@@ -8770,8 +8770,8 @@ LABEL_102:
       }
 
 LABEL_93:
-      v38 = [(SMSessionManager *)self state];
-      [(SMSessionManager *)self _updateActivityWithState:v38 shouldNotify:0];
+      sessionMetricManager2 = [(SMSessionManager *)self state];
+      [(SMSessionManager *)self _updateActivityWithState:sessionMetricManager2 shouldNotify:0];
       goto LABEL_98;
     }
 
@@ -8789,110 +8789,110 @@ LABEL_93:
       v80 = 2117;
       v81 = v41;
       v82 = 2117;
-      v83 = v9;
+      v83 = toCopy;
       _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_INFO, "%s, state transition from state, %{sensitive}@, to state, %{sensitive}@, invalid and not allowed for a handoff operation", buf, 0x20u);
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_105:
 }
 
-- (BOOL)_isRemoteSessionEndForPreviousState:(id)a3 nextState:(id)a4
+- (BOOL)_isRemoteSessionEndForPreviousState:(id)state nextState:(id)nextState
 {
-  v6 = a4;
-  v7 = [a3 activeDeviceIdentifier];
-  v8 = [(SMSessionManager *)self messagingService];
-  v9 = [v8 deviceIdentifier];
-  if ([v7 isEqual:v9])
+  nextStateCopy = nextState;
+  activeDeviceIdentifier = [state activeDeviceIdentifier];
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  if ([activeDeviceIdentifier isEqual:deviceIdentifier])
   {
-    v10 = [v6 activeDeviceIdentifier];
-    v11 = [(SMSessionManager *)self messagingService];
-    v12 = [v11 deviceIdentifier];
-    if ([v10 isEqual:v12])
+    activeDeviceIdentifier2 = [nextStateCopy activeDeviceIdentifier];
+    messagingService2 = [(SMSessionManager *)self messagingService];
+    deviceIdentifier2 = [messagingService2 deviceIdentifier];
+    if ([activeDeviceIdentifier2 isEqual:deviceIdentifier2])
     {
-      v13 = 0;
+      isEndSessionState = 0;
     }
 
     else
     {
-      v13 = [v6 isEndSessionState];
+      isEndSessionState = [nextStateCopy isEndSessionState];
     }
   }
 
   else
   {
-    v13 = 0;
+    isEndSessionState = 0;
   }
 
-  return v13;
+  return isEndSessionState;
 }
 
-- (void)_performActionsAndUpdatesUponStateTransitionWithType:(unint64_t)a3
+- (void)_performActionsAndUpdatesUponStateTransitionWithType:(unint64_t)type
 {
-  [(SMSessionManager *)self _updateTimersUponStateTransition:a3];
+  [(SMSessionManager *)self _updateTimersUponStateTransition:type];
   [(SMSessionManager *)self _updateLocationObserverUponStateTransition];
 
   [(SMSessionManager *)self _updateConnectivityAndStatusSignalsObserverUponStateTransition];
 }
 
-- (void)logSignPostForStateTransition:(id)a3
+- (void)logSignPostForStateTransition:(id)transition
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SMSessionManager *)self state];
-  v6 = [v5 configuration];
+  transitionCopy = transition;
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
 
-  if (!v6)
+  if (!configuration)
   {
     goto LABEL_26;
   }
 
   v7 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
-  v8 = [(SMSessionManager *)self state];
-  v9 = [v8 configuration];
-  v10 = [v9 sessionID];
-  v11 = os_signpost_id_make_with_pointer(v7, v10);
+  state2 = [(SMSessionManager *)self state];
+  configuration2 = [state2 configuration];
+  sessionID = [configuration2 sessionID];
+  v11 = os_signpost_id_make_with_pointer(v7, sessionID);
 
-  v12 = [(SMSessionManager *)self state];
-  if ([v12 sessionState]!= 11)
+  state3 = [(SMSessionManager *)self state];
+  if ([state3 sessionState]!= 11)
   {
     goto LABEL_7;
   }
 
-  v13 = [v4 sessionState];
+  sessionState = [transitionCopy sessionState];
 
-  if (v13 == 2)
+  if (sessionState == 2)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
-    v15 = [v4 configuration];
-    v16 = [v15 sessionID];
-    v11 = os_signpost_id_make_with_pointer(v14, v16);
+    configuration3 = [transitionCopy configuration];
+    sessionID2 = [configuration3 sessionID];
+    v11 = os_signpost_id_make_with_pointer(v14, sessionID2);
 
     v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
-    v12 = v17;
+    state3 = v17;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
     {
       v18 = MEMORY[0x277D4AB78];
-      v19 = [v4 configuration];
-      v20 = [v18 sessionTypeToString:{objc_msgSend(v19, "sessionType")}];
-      v21 = [v20 UTF8String];
-      v22 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v4, "sessionState")}];
+      configuration4 = [transitionCopy configuration];
+      v20 = [v18 sessionTypeToString:{objc_msgSend(configuration4, "sessionType")}];
+      uTF8String = [v20 UTF8String];
+      v22 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(transitionCopy, "sessionState")}];
       v42 = 136446466;
-      v43 = v21;
+      v43 = uTF8String;
       v44 = 2082;
-      v45 = [v22 UTF8String];
-      _os_signpost_emit_with_name_impl(&dword_2304B3000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v11, "SMSessionDuration", " enableTelemetry=YES {sessionType:%{public, signpost.telemetry:string1}s, currentState:%{public, signpost.telemetry:string2}s}", &v42, 0x16u);
+      uTF8String2 = [v22 UTF8String];
+      _os_signpost_emit_with_name_impl(&dword_2304B3000, state3, OS_SIGNPOST_INTERVAL_BEGIN, v11, "SMSessionDuration", " enableTelemetry=YES {sessionType:%{public, signpost.telemetry:string1}s, currentState:%{public, signpost.telemetry:string2}s}", &v42, 0x16u);
     }
 
 LABEL_7:
   }
 
-  if ([v4 sessionState] == 1)
+  if ([transitionCopy sessionState] == 1)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
     v24 = v23;
@@ -8900,11 +8900,11 @@ LABEL_7:
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
     {
       v26 = MEMORY[0x277D4ABB0];
-      v27 = [(SMSessionManager *)self state];
-      v28 = [v26 convertSessionStateToString:{objc_msgSend(v27, "sessionState")}];
-      v29 = [v28 UTF8String];
+      state4 = [(SMSessionManager *)self state];
+      v28 = [v26 convertSessionStateToString:{objc_msgSend(state4, "sessionState")}];
+      uTF8String3 = [v28 UTF8String];
       v42 = 136446210;
-      v43 = v29;
+      v43 = uTF8String3;
       _os_signpost_emit_with_name_impl(&dword_2304B3000, v24, OS_SIGNPOST_INTERVAL_END, v11, "SMSessionDuration", " enableTelemetry=YES {currentState:%{public, signpost.telemetry:string2}s}", &v42, 0xCu);
     }
   }
@@ -8915,39 +8915,39 @@ LABEL_7:
   }
 
   v30 = MEMORY[0x277D4ABB0];
-  v31 = [(SMSessionManager *)self state];
-  v32 = [v30 convertSessionStateToString:{objc_msgSend(v31, "sessionState")}];
+  state5 = [(SMSessionManager *)self state];
+  v32 = [v30 convertSessionStateToString:{objc_msgSend(state5, "sessionState")}];
 
-  v33 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(v4, "sessionState")}];
+  v33 = [MEMORY[0x277D4ABB0] convertSessionStateToString:{objc_msgSend(transitionCopy, "sessionState")}];
   v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
   v35 = v34;
   if (v25 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
   {
-    v36 = [v32 UTF8String];
-    v37 = [v33 UTF8String];
+    uTF8String4 = [v32 UTF8String];
+    uTF8String5 = [v33 UTF8String];
     v42 = 136446722;
-    v43 = v36;
+    v43 = uTF8String4;
     v44 = 2082;
-    v45 = v37;
+    uTF8String2 = uTF8String5;
     v46 = 2112;
-    v47 = v4;
+    v47 = transitionCopy;
     _os_signpost_emit_with_name_impl(&dword_2304B3000, v35, OS_SIGNPOST_INTERVAL_END, v11, "SMSessionStateTransition", " enableTelemetry=YES {currentSessionState:%{public, signpost.telemetry:string1}s, nextSessionState:%{public, signpost.telemetry:string2}s, nextState:%@}", &v42, 0x20u);
   }
 
-  if ([v4 sessionState] != 1 || objc_msgSend(v4, "sessionState") || objc_msgSend(v4, "sessionState") != 11 || objc_msgSend(v4, "sessionState") != 10)
+  if ([transitionCopy sessionState] != 1 || objc_msgSend(transitionCopy, "sessionState") || objc_msgSend(transitionCopy, "sessionState") != 11 || objc_msgSend(transitionCopy, "sessionState") != 10)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitorAnalytics);
     v39 = v38;
     if (v25 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v38))
     {
-      v40 = [v32 UTF8String];
-      v41 = [v33 UTF8String];
+      uTF8String6 = [v32 UTF8String];
+      uTF8String7 = [v33 UTF8String];
       v42 = 136446722;
-      v43 = v40;
+      v43 = uTF8String6;
       v44 = 2082;
-      v45 = v41;
+      uTF8String2 = uTF8String7;
       v46 = 2112;
-      v47 = v4;
+      v47 = transitionCopy;
       _os_signpost_emit_with_name_impl(&dword_2304B3000, v39, OS_SIGNPOST_INTERVAL_BEGIN, v11, "SMSessionStateTransition", " enableTelemetry=YES {currentSessionState:%{public, signpost.telemetry:string1}s, nextSessionState:%{public, signpost.telemetry:string2}s, nextState:%@}", &v42, 0x20u);
     }
   }
@@ -8969,41 +8969,41 @@ LABEL_26:
     }
   }
 
-  v4 = [(SMSessionManager *)self state];
-  v5 = [v4 sessionState];
+  state = [(SMSessionManager *)self state];
+  sessionState = [state sessionState];
 
-  if (v5 > 0xE)
+  if (sessionState > 0xE)
   {
     goto LABEL_12;
   }
 
-  if (((1 << v5) & 0x4394) != 0)
+  if (((1 << sessionState) & 0x4394) != 0)
   {
-    v6 = [(SMSessionManager *)self messagingService];
-    [v6 startSubscriptionOnNearbyDevicesChanged];
+    messagingService = [(SMSessionManager *)self messagingService];
+    [messagingService startSubscriptionOnNearbyDevicesChanged];
 LABEL_8:
 
     return;
   }
 
-  if (((1 << v5) & 0x1003) != 0)
+  if (((1 << sessionState) & 0x1003) != 0)
   {
-    v7 = [(SMSessionManager *)self messagingService];
-    [v7 cancelSubscriptionOnNearbyDevicesChanged];
+    messagingService2 = [(SMSessionManager *)self messagingService];
+    [messagingService2 cancelSubscriptionOnNearbyDevicesChanged];
 
     [(SMSessionManager *)self _clearHysteresisState];
     return;
   }
 
-  if (((1 << v5) & 0xC00) == 0)
+  if (((1 << sessionState) & 0xC00) == 0)
   {
 LABEL_12:
-    v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    messagingService = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(messagingService, OS_LOG_TYPE_ERROR))
     {
       v8 = 136315138;
       v9 = "[SMSessionManager _updateConnectivityAndStatusSignalsObserverUponStateTransition]";
-      _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "%s, should never reach this code path, logging error.", &v8, 0xCu);
+      _os_log_error_impl(&dword_2304B3000, messagingService, OS_LOG_TYPE_ERROR, "%s, should never reach this code path, logging error.", &v8, 0xCu);
     }
 
     goto LABEL_8;
@@ -9013,7 +9013,7 @@ LABEL_12:
 - (void)_updateLocationObserverUponStateTransition
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self _isActiveDevice];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -9022,19 +9022,19 @@ LABEL_12:
       *v22 = 136315394;
       *&v22[4] = "[SMSessionManager _updateLocationObserverUponStateTransition]";
       *&v22[12] = 1024;
-      *&v22[14] = v3;
+      *&v22[14] = _isActiveDevice;
       _os_log_impl(&dword_2304B3000, v4, OS_LOG_TYPE_INFO, "%s, updating location observers, isActiveDevice, %{Bool}d", v22, 0x12u);
     }
   }
 
-  if (v3)
+  if (_isActiveDevice)
   {
-    v5 = [(SMSessionManager *)self state];
-    v6 = [v5 sessionState];
+    state = [(SMSessionManager *)self state];
+    sessionState = [state sessionState];
 
-    if (v6 <= 0xE)
+    if (sessionState <= 0xE)
     {
-      if (((1 << v6) & 0x4384) != 0)
+      if (((1 << sessionState) & 0x4384) != 0)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -9047,23 +9047,23 @@ LABEL_12:
           }
         }
 
-        v8 = [(SMSessionManager *)self locationManager];
-        [v8 removeObserver:self];
+        locationManager = [(SMSessionManager *)self locationManager];
+        [locationManager removeObserver:self];
 
-        v9 = [(SMSessionManager *)self locationManager];
+        locationManager2 = [(SMSessionManager *)self locationManager];
         v10 = RTLocationManagerNotificationLocationsAccuracyRhythmicNonWaking;
 LABEL_31:
-        v20 = [(__objc2_class *)v10 notificationName];
-        [v9 addObserver:self selector:sel_onLocationNotification_ name:v20];
+        notificationName = [(__objc2_class *)v10 notificationName];
+        [locationManager2 addObserver:self selector:sel_onLocationNotification_ name:notificationName];
 
-        v15 = [(SMSessionManager *)self locationManager];
+        locationManager3 = [(SMSessionManager *)self locationManager];
         v21 = +[(RTNotification *)RTLocationManagerNotificationLocationsLeeched];
-        [v15 addObserver:self selector:sel_onLocationNotification_ name:v21];
+        [locationManager3 addObserver:self selector:sel_onLocationNotification_ name:v21];
 
         goto LABEL_32;
       }
 
-      if (((1 << v6) & 0xC00) != 0)
+      if (((1 << sessionState) & 0xC00) != 0)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -9076,15 +9076,15 @@ LABEL_31:
           }
         }
 
-        v17 = [(SMSessionManager *)self locationManager];
-        [v17 removeObserver:self];
+        locationManager4 = [(SMSessionManager *)self locationManager];
+        [locationManager4 removeObserver:self];
 
-        v9 = [(SMSessionManager *)self locationManager];
+        locationManager2 = [(SMSessionManager *)self locationManager];
         v10 = RTLocationManagerNotificationLocationsAccuracyBest;
         goto LABEL_31;
       }
 
-      if (v6 == 4)
+      if (sessionState == 4)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -9097,10 +9097,10 @@ LABEL_31:
           }
         }
 
-        v19 = [(SMSessionManager *)self locationManager];
-        [v19 removeObserver:self];
+        locationManager5 = [(SMSessionManager *)self locationManager];
+        [locationManager5 removeObserver:self];
 
-        v9 = [(SMSessionManager *)self locationManager];
+        locationManager2 = [(SMSessionManager *)self locationManager];
         v10 = RTLocationManagerNotificationLocationsAccuracyRhythmicWaking;
         goto LABEL_31;
       }
@@ -9146,18 +9146,18 @@ LABEL_16:
   }
 
 LABEL_18:
-  v15 = [(SMSessionManager *)self locationManager:*v22];
-  [v15 removeObserver:self];
+  locationManager3 = [(SMSessionManager *)self locationManager:*v22];
+  [locationManager3 removeObserver:self];
 LABEL_32:
 }
 
-- (void)_updateTimersUponStateTransition:(unint64_t)a3
+- (void)_updateTimersUponStateTransition:(unint64_t)transition
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(SMSessionManager *)self _isActiveDevice];
-  v6 = [(SMSessionManager *)self state];
-  v7 = [v6 activeDeviceIdentifier];
-  v8 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:v7];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
+  state = [(SMSessionManager *)self state];
+  activeDeviceIdentifier = [state activeDeviceIdentifier];
+  v8 = [(SMSessionManager *)self _isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:activeDeviceIdentifier];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -9167,27 +9167,27 @@ LABEL_32:
       v19 = 136315906;
       v20 = "[SMSessionManager _updateTimersUponStateTransition:]";
       v21 = 1024;
-      v22 = v5;
+      v22 = _isActiveDevice;
       v23 = 1024;
       v24 = v8;
       v25 = 2048;
-      v26 = a3;
+      transitionCopy = transition;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, updating timers upon state transition, isActiveDevice, %{Bool}d, isEffectivePairedDeviceSameAsActiveDevice, %{Bool}d, transitionType, %ld", &v19, 0x22u);
     }
   }
 
-  v10 = [(SMSessionManager *)self state];
-  v11 = [v10 sessionState];
+  state2 = [(SMSessionManager *)self state];
+  sessionState = [state2 sessionState];
 
-  if (v11 > 6)
+  if (sessionState > 6)
   {
-    if (v11 <= 0xE)
+    if (sessionState <= 0xE)
     {
-      if (((1 << v11) & 0x4380) != 0)
+      if (((1 << sessionState) & 0x4380) != 0)
       {
         [(SMSessionManager *)self _invalidateSessionManagerXPCTimerAlarms];
         [(SMSessionManager *)self _invalidateScreenLockMonitor];
-        if (v5)
+        if (_isActiveDevice)
         {
           [(SMSessionManager *)self _setupTimerForAnomaly];
         }
@@ -9195,17 +9195,17 @@ LABEL_32:
         return;
       }
 
-      if (((1 << v11) & 0xC00) != 0)
+      if (((1 << sessionState) & 0xC00) != 0)
       {
         return;
       }
 
-      if (v11 == 12)
+      if (sessionState == 12)
       {
         [(SMSessionManager *)self _invalidateSessionManagerXPCTimerAlarms];
         [(SMSessionManager *)self _invalidateScreenLockMonitor];
         [(SMSessionManager *)self _tearDownWorkoutTimeouts];
-        if (v5 || v8)
+        if (_isActiveDevice || v8)
         {
           [(SMSessionManager *)self _setupTimerAndLockMonitorForEndAwareness];
         }
@@ -9217,7 +9217,7 @@ LABEL_32:
     goto LABEL_23;
   }
 
-  if (v11 < 2)
+  if (sessionState < 2)
   {
     [(SMSessionManager *)self _invalidateSessionManagerXPCTimerAlarms];
     [(SMSessionManager *)self _invalidateScreenLockMonitor];
@@ -9225,27 +9225,27 @@ LABEL_32:
     return;
   }
 
-  if (v11 == 2)
+  if (sessionState == 2)
   {
     [(SMSessionManager *)self _invalidateSessionManagerXPCTimerAlarms];
     [(SMSessionManager *)self _invalidateScreenLockMonitor];
-    v12 = [(SMSessionManager *)self defaultsManager];
-    v13 = [v12 objectForKey:@"RTDefaultsWorkoutOngoing"];
-    v14 = [v13 BOOLValue];
+    defaultsManager = [(SMSessionManager *)self defaultsManager];
+    v13 = [defaultsManager objectForKey:@"RTDefaultsWorkoutOngoing"];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v5)
+    if (_isActiveDevice)
     {
-      v15 = [(SMSessionManager *)self state];
-      v16 = [v15 configuration];
-      if (([v16 sessionType] != 4) | v14 & 1)
+      state3 = [(SMSessionManager *)self state];
+      configuration = [state3 configuration];
+      if (([configuration sessionType] != 4) | bOOLValue & 1)
       {
       }
 
       else
       {
-        v18 = [(SMSessionManager *)self isEmergencyCallOngoing];
+        isEmergencyCallOngoing = [(SMSessionManager *)self isEmergencyCallOngoing];
 
-        if (!v18)
+        if (!isEmergencyCallOngoing)
         {
           [(SMSessionManager *)self _setUpWorkoutTimeouts];
         }
@@ -9255,7 +9255,7 @@ LABEL_32:
 
   else
   {
-    if (v11 != 4)
+    if (sessionState != 4)
     {
 LABEL_23:
       v17 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -9272,7 +9272,7 @@ LABEL_23:
     [(SMSessionManager *)self _invalidateSessionManagerXPCTimerAlarms];
     [(SMSessionManager *)self _invalidateScreenLockMonitor];
     [(SMSessionManager *)self _tearDownWorkoutTimeouts];
-    if (v5)
+    if (_isActiveDevice)
     {
       [(SMSessionManager *)self _setUpCacheReleaseTimer];
     }
@@ -9281,39 +9281,39 @@ LABEL_23:
 
 - (void)_invalidateSessionManagerXPCTimerAlarms
 {
-  v3 = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v3];
+  cacheReleaseXPCTimerAlarm = [(SMSessionManager *)self cacheReleaseXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:cacheReleaseXPCTimerAlarm];
 
-  v4 = [(SMSessionManager *)self checkInXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v4];
+  checkInXPCTimerAlarm = [(SMSessionManager *)self checkInXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:checkInXPCTimerAlarm];
 
-  v5 = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v5];
+  endAwarenessBeforeUnlockXPCTimerAlarm = [(SMSessionManager *)self endAwarenessBeforeUnlockXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:endAwarenessBeforeUnlockXPCTimerAlarm];
 }
 
 - (void)_invalidateScreenLockMonitor
 {
-  v3 = [(SMSessionManager *)self screenLockMonitor];
+  screenLockMonitor = [(SMSessionManager *)self screenLockMonitor];
 
-  if (v3)
+  if (screenLockMonitor)
   {
-    v4 = [(SMSessionManager *)self screenLockMonitor];
-    [v4 _unregisterForLockNotification];
+    screenLockMonitor2 = [(SMSessionManager *)self screenLockMonitor];
+    [screenLockMonitor2 _unregisterForLockNotification];
 
     screenLockMonitor = self->_screenLockMonitor;
     self->_screenLockMonitor = 0;
   }
 }
 
-- (void)_updateLastLocationWithLocations:(id)a3
+- (void)_updateLastLocationWithLocations:(id)locations
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationsCopy = locations;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v5 = [locationsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v5)
   {
     v6 = v5;
@@ -9324,20 +9324,20 @@ LABEL_23:
       {
         if (*v28 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(locationsCopy);
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
         [v9 horizontalAccuracy];
         if (v10 <= 100.0)
         {
-          v11 = [v9 timestamp];
+          timestamp = [v9 timestamp];
 
-          if (v11)
+          if (timestamp)
           {
-            v12 = [(SMSessionManager *)self lastLocation];
-            v13 = [v12 timestamp];
-            if (!v13)
+            lastLocation = [(SMSessionManager *)self lastLocation];
+            timestamp2 = [lastLocation timestamp];
+            if (!timestamp2)
             {
 
 LABEL_12:
@@ -9345,15 +9345,15 @@ LABEL_12:
               continue;
             }
 
-            v26 = v13;
-            v25 = [(SMSessionManager *)self lastLocation];
-            v24 = [v25 timestamp];
-            v14 = [v9 timestamp];
-            v15 = [v24 laterDate:v14];
+            v26 = timestamp2;
+            lastLocation2 = [(SMSessionManager *)self lastLocation];
+            timestamp3 = [lastLocation2 timestamp];
+            timestamp4 = [v9 timestamp];
+            v15 = [timestamp3 laterDate:timestamp4];
             [(SMSessionManager *)self lastLocation];
-            v17 = v16 = v4;
+            v17 = v16 = locationsCopy;
             [v17 timestamp];
-            v23 = v12;
+            v23 = lastLocation;
             v18 = v6;
             v19 = v7;
             v21 = v20 = self;
@@ -9363,7 +9363,7 @@ LABEL_12:
             v7 = v19;
             v6 = v18;
 
-            v4 = v16;
+            locationsCopy = v16;
             if ((v22 & 1) == 0)
             {
               goto LABEL_12;
@@ -9372,25 +9372,25 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v6 = [locationsCopy countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)onLocationNotification:(id)a3
+- (void)onLocationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self queue];
+  notificationCopy = notification;
+  queue = [(SMSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__SMSessionManager_onLocationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __43__SMSessionManager_onLocationNotification___block_invoke(uint64_t a1)
@@ -9407,7 +9407,7 @@ void __43__SMSessionManager_onLocationNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)initializeSessionWithConversation:(id)a3 completion:(id)a4
+- (void)initializeSessionWithConversation:(id)conversation completion:(id)completion
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -9421,24 +9421,24 @@ void __43__SMSessionManager_onLocationNotification___block_invoke(uint64_t a1)
   }
 }
 
-- (void)initializeSessionWithSessionID:(id)a3 conversation:(id)a4 handler:(id)a5
+- (void)initializeSessionWithSessionID:(id)d conversation:(id)conversation handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v11)
+  dCopy = d;
+  conversationCopy = conversation;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v12 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__SMSessionManager_initializeSessionWithSessionID_conversation_handler___block_invoke;
     block[3] = &unk_2788C47F8;
-    v15 = v9;
-    v16 = self;
-    v18 = v11;
-    v17 = v10;
+    v15 = dCopy;
+    selfCopy = self;
+    v18 = handlerCopy;
+    v17 = conversationCopy;
     v19 = a2;
-    dispatch_async(v12, block);
+    dispatch_async(queue, block);
 
     v13 = v15;
   }
@@ -9617,20 +9617,20 @@ uint64_t __72__SMSessionManager_initializeSessionWithSessionID_conversation_hand
   }
 }
 
-- (void)cancelInitializationWithCompletion:(id)a3
+- (void)cancelInitializationWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__SMSessionManager_cancelInitializationWithCompletion___block_invoke;
     block[3] = &unk_2788C6300;
     block[4] = self;
     v10 = a2;
-    v9 = v5;
-    dispatch_async(v6, block);
+    v9 = completionCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -9722,22 +9722,22 @@ void __55__SMSessionManager_cancelInitializationWithCompletion___block_invoke(ui
   }
 }
 
-- (void)cancelInitializationForSessionID:(id)a3 handler:(id)a4
+- (void)cancelInitializationForSessionID:(id)d handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v9 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __61__SMSessionManager_cancelInitializationForSessionID_handler___block_invoke;
     v11[3] = &unk_2788C4C20;
-    v12 = v7;
-    v13 = self;
-    v14 = v8;
+    v12 = dCopy;
+    selfCopy = self;
+    v14 = handlerCopy;
     v15 = a2;
-    dispatch_async(v9, v11);
+    dispatch_async(queue, v11);
 
     v10 = v12;
   }
@@ -9869,12 +9869,12 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)endSessionForSessionID:(id)a3 reason:(unint64_t)a4 completion:(id)a5
+- (void)endSessionForSessionID:(id)d reason:(unint64_t)reason completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -9884,21 +9884,21 @@ LABEL_15:
         *buf = 136315394;
         v18 = "[SMSessionManager endSessionForSessionID:reason:completion:]";
         v19 = 2048;
-        v20 = a4;
+        reasonCopy = reason;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s, User requested to end session with reason %lu", buf, 0x16u);
       }
     }
 
-    v11 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__SMSessionManager_endSessionForSessionID_reason_completion___block_invoke;
     v13[3] = &unk_2788C4C20;
     v13[4] = self;
-    v14 = v8;
-    v16 = a4;
-    v15 = v9;
-    dispatch_async(v11, v13);
+    v14 = dCopy;
+    reasonCopy2 = reason;
+    v15 = completionCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -10002,12 +10002,12 @@ void __61__SMSessionManager_endSessionForSessionID_reason_completion___block_inv
   [v8 onUserActionWithRemoteCommand:3 remoteCommandType:2 error:v6 errorDomain:v7];
 }
 
-- (void)_endSessionForSessionID:(id)a3 reason:(unint64_t)a4 handler:(id)a5
+- (void)_endSessionForSessionID:(id)d reason:(unint64_t)reason handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10017,47 +10017,47 @@ void __61__SMSessionManager_endSessionForSessionID_reason_completion___block_inv
         *buf = 136315394;
         v33 = "[SMSessionManager _endSessionForSessionID:reason:handler:]";
         v34 = 2048;
-        v35 = a4;
+        reasonCopy = reason;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s, User requested to end session with reason %lu", buf, 0x16u);
       }
     }
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0848, &unk_2845A0860, &unk_2845A0878, &unk_2845A0890, &unk_2845A08C0, &unk_2845A08A8, 0}];
-    v13 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:v9 validSessionStates:v12];
+    v13 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:dCopy validSessionStates:v12];
     if (v13)
     {
-      v10[2](v10, v13);
+      handlerCopy[2](handlerCopy, v13);
     }
 
     else
     {
-      v26 = [(SMSessionManagerState *)self->_state startMessageGUID];
-      v22 = [(SMSessionManager *)self _getEndSessionStateWithReason:a4];
+      startMessageGUID = [(SMSessionManagerState *)self->_state startMessageGUID];
+      v22 = [(SMSessionManager *)self _getEndSessionStateWithReason:reason];
       v21 = objc_alloc(MEMORY[0x277D4ABA8]);
-      v25 = [(SMSessionManager *)self state];
-      v14 = [v25 configuration];
-      v24 = [(SMSessionManager *)self state];
-      v20 = [v24 monitorContext];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      state2 = [(SMSessionManager *)self state];
+      monitorContext = [state2 monitorContext];
       v15 = [MEMORY[0x277CBEAA8] now];
-      v16 = [(SMSessionManager *)self messagingService];
-      [v16 deviceIdentifier];
-      v17 = v27 = v9;
+      messagingService = [(SMSessionManager *)self messagingService];
+      [messagingService deviceIdentifier];
+      v17 = v27 = dCopy;
       v18 = [MEMORY[0x277CBEAA8] now];
-      v23 = [v21 initWithSessionState:v22 configuration:v14 userTriggerResponse:0 monitorContext:v20 date:v15 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:v17 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:a4 sessionStateTransitionDate:v18 activePairedDeviceIdentifier:0];
+      v23 = [v21 initWithSessionState:v22 configuration:configuration userTriggerResponse:0 monitorContext:monitorContext date:v15 location:0 allowReadToken:0 safetyCacheKey:0 startMessageGUID:0 scheduledSendMessageGUID:0 scheduledSendMessageDate:0 activeDeviceIdentifier:v17 estimatedEndDate:0 coarseEstimatedEndDate:0 estimatedEndDateStatus:0 sessionEndReason:reason sessionStateTransitionDate:v18 activePairedDeviceIdentifier:0];
 
-      [(SMSessionManager *)self _setPendingSendSessionEndMessageWithReason:a4 associatedGUID:v26];
+      [(SMSessionManager *)self _setPendingSendSessionEndMessageWithReason:reason associatedGUID:startMessageGUID];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __59__SMSessionManager__endSessionForSessionID_reason_handler___block_invoke;
       v28[3] = &unk_2788C59D0;
-      v31 = a4;
+      reasonCopy2 = reason;
       v28[4] = self;
-      v29 = v26;
-      v30 = v10;
-      v19 = v26;
+      v29 = startMessageGUID;
+      v30 = handlerCopy;
+      v19 = startMessageGUID;
       [(SMSessionManager *)self _performStateTransitionTo:v23 transitionType:1 handler:v28];
 
-      v9 = v27;
+      dCopy = v27;
     }
   }
 
@@ -10097,28 +10097,28 @@ void __59__SMSessionManager__endSessionForSessionID_reason_handler___block_invok
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_endRemoteSessionForSessionID:(id)a3 reason:(unint64_t)a4 handler:(id)a5
+- (void)_endRemoteSessionForSessionID:(id)d reason:(unint64_t)reason handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SMSessionManager *)self messagingService];
-  v11 = [v10 deviceIdentifier];
-  v12 = [v11 UUIDString];
+  handlerCopy = handler;
+  dCopy = d;
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
-  v13 = [(SMSessionManager *)self messagingService];
-  v14 = [(SMSessionManager *)self platform];
-  v15 = [v13 convertRTPlatformToIDSDeviceType:v14];
+  messagingService2 = [(SMSessionManager *)self messagingService];
+  platform = [(SMSessionManager *)self platform];
+  v15 = [messagingService2 convertRTPlatformToIDSDeviceType:platform];
 
-  v16 = [objc_alloc(MEMORY[0x277D4ABA0]) initWithSessionEndReason:a4 sessionID:v9 sourceDeviceType:v15 sourceDeviceID:v12];
-  v17 = [(SMSessionManager *)self messagingService];
+  v16 = [objc_alloc(MEMORY[0x277D4ABA0]) initWithSessionEndReason:reason sessionID:dCopy sourceDeviceType:v15 sourceDeviceID:uUIDString];
+  messagingService3 = [(SMSessionManager *)self messagingService];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block_invoke;
   v19[3] = &unk_2788C58B8;
   v19[4] = self;
-  v20 = v8;
-  v18 = v8;
-  [v17 sendIDSMessageToMyNearbyDevices:v16 completion:v19];
+  v20 = handlerCopy;
+  v18 = handlerCopy;
+  [messagingService3 sendIDSMessageToMyNearbyDevices:v16 completion:v19];
 }
 
 void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block_invoke(uint64_t a1, int a2, void *a3)
@@ -10158,9 +10158,9 @@ void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)terminateSessionWithSessionID:(id)a3
+- (void)terminateSessionWithSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -10171,26 +10171,26 @@ void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block
     }
   }
 
-  v6 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__SMSessionManager_terminateSessionWithSessionID___block_invoke;
   v8[3] = &unk_2788C4A70;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = dCopy;
+  v7 = dCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)_terminateSessionWithSessionID:(id)a3
+- (void)_terminateSessionWithSessionID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   if ([(SMSessionManager *)self _canDeviceModifyState])
   {
-    v5 = [(SMSessionManagerState *)self->_state configuration];
-    v6 = [v5 sessionID];
-    v7 = [v6 isEqual:v4];
+    configuration = [(SMSessionManagerState *)self->_state configuration];
+    sessionID = [configuration sessionID];
+    v7 = [sessionID isEqual:dCopy];
 
     if (v7)
     {
@@ -10208,12 +10208,12 @@ void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block
       v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v10 = [(SMSessionManagerState *)self->_state configuration];
-        v11 = [v10 sessionID];
+        configuration2 = [(SMSessionManagerState *)self->_state configuration];
+        sessionID2 = [configuration2 sessionID];
         v12 = 138412546;
-        v13 = v4;
+        v13 = dCopy;
         v14 = 2112;
-        v15 = v11;
+        v15 = sessionID2;
         _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "sessionID %@ does not match current configuration sessionID %@", &v12, 0x16u);
       }
     }
@@ -10230,12 +10230,12 @@ void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block
   }
 }
 
-- (void)modifySessionWithConfiguration:(id)a3 handler:(id)a4
+- (void)modifySessionWithConfiguration:(id)configuration handler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10248,15 +10248,15 @@ void __65__SMSessionManager__endRemoteSessionForSessionID_reason_handler___block
       }
     }
 
-    v9 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__SMSessionManager_modifySessionWithConfiguration_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
-    dispatch_async(v9, block);
+    v12 = configurationCopy;
+    v13 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -10358,42 +10358,42 @@ void __59__SMSessionManager_modifySessionWithConfiguration_handler___block_invok
   [v8 onUserActionWithRemoteCommand:1 remoteCommandType:2 error:v6 errorDomain:v7];
 }
 
-- (void)_modifySessionWithConfiguration:(id)a3 handler:(id)a4
+- (void)_modifySessionWithConfiguration:(id)configuration handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0848, &unk_2845A0860, &unk_2845A0878, &unk_2845A0890, &unk_2845A08C0, 0}];
-    v10 = [v7 sessionID];
-    v11 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:v10 validSessionStates:v9];
+    sessionID = [configurationCopy sessionID];
+    v11 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:sessionID validSessionStates:v9];
 
     if (v11)
     {
-      v8[2](v8, v11);
+      handlerCopy[2](handlerCopy, v11);
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    if ([MEMORY[0x277D4AB78] configurationIsValid:v7])
+    if ([MEMORY[0x277D4AB78] configurationIsValid:configurationCopy])
     {
       v11 = [(SMSessionManagerState *)self->_state mutableCopy];
       [v11 setSessionState:2];
-      [v11 setConfiguration:v7];
-      [(SMSessionManager *)self _performStateTransitionTo:v11 transitionType:1 handler:v8];
+      [v11 setConfiguration:configurationCopy];
+      [(SMSessionManager *)self _performStateTransitionTo:v11 transitionType:1 handler:handlerCopy];
       goto LABEL_8;
     }
 
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v7 sessionID];
+      sessionID2 = [configurationCopy sessionID];
       *buf = 136315394;
       v21 = "[SMSessionManager _modifySessionWithConfiguration:handler:]";
       v22 = 2112;
-      v23 = v17;
+      v23 = sessionID2;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "%s, invalid configuration, %@", buf, 0x16u);
     }
 
@@ -10404,7 +10404,7 @@ LABEL_8:
 
     v15 = objc_alloc(MEMORY[0x277CCA9B8]);
     v16 = [v15 initWithDomain:*MEMORY[0x277D4ACD0] code:7 userInfo:v14];
-    v8[2](v8, v16);
+    handlerCopy[2](handlerCopy, v16);
   }
 
   else
@@ -10420,30 +10420,30 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_modifyRemoteSessionWithConfiguration:(id)a3 handler:(id)a4
+- (void)_modifyRemoteSessionWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SMSessionManager *)self messagingService];
-  v9 = [v8 deviceIdentifier];
-  v10 = [v9 UUIDString];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
-  v11 = [(SMSessionManager *)self messagingService];
-  v12 = [(SMSessionManager *)self platform];
-  v13 = [v11 convertRTPlatformToIDSDeviceType:v12];
+  messagingService2 = [(SMSessionManager *)self messagingService];
+  platform = [(SMSessionManager *)self platform];
+  v13 = [messagingService2 convertRTPlatformToIDSDeviceType:platform];
 
-  v14 = [objc_alloc(MEMORY[0x277D4ABC0]) initWithSourceDeviceType:v13 sourceDeviceID:v10 updatedSessionConfiguration:v7];
-  v15 = [(SMSessionManager *)self messagingService];
+  v14 = [objc_alloc(MEMORY[0x277D4ABC0]) initWithSourceDeviceType:v13 sourceDeviceID:uUIDString updatedSessionConfiguration:configurationCopy];
+  messagingService3 = [(SMSessionManager *)self messagingService];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __66__SMSessionManager__modifyRemoteSessionWithConfiguration_handler___block_invoke;
   v18[3] = &unk_2788D32D8;
   v19 = v14;
-  v20 = self;
-  v21 = v6;
-  v16 = v6;
+  selfCopy = self;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v14;
-  [v15 sendIDSMessageToMyDevices:v17 completion:v18];
+  [messagingService3 sendIDSMessageToMyDevices:v17 completion:v18];
 }
 
 void __66__SMSessionManager__modifyRemoteSessionWithConfiguration_handler___block_invoke(uint64_t a1, int a2, void *a3)
@@ -10486,12 +10486,12 @@ void __66__SMSessionManager__modifyRemoteSessionWithConfiguration_handler___bloc
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)sendSafetyCacheForSessionID:(id)a3 handler:(id)a4
+- (void)sendSafetyCacheForSessionID:(id)d handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10504,16 +10504,16 @@ void __66__SMSessionManager__modifyRemoteSessionWithConfiguration_handler___bloc
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __56__SMSessionManager_sendSafetyCacheForSessionID_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = dCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -10544,12 +10544,12 @@ void __56__SMSessionManager_sendSafetyCacheForSessionID_handler___block_invoke(u
   }
 }
 
-- (void)startSessionWithConfiguration:(id)a3 completion:(id)a4
+- (void)startSessionWithConfiguration:(id)configuration completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10560,21 +10560,21 @@ void __56__SMSessionManager_sendSafetyCacheForSessionID_handler___block_invoke(u
         *buf = 138412547;
         v18 = v10;
         v19 = 2117;
-        v20 = v7;
+        v20 = configurationCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, configuration, %{sensitive}@", buf, 0x16u);
       }
     }
 
-    v11 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __61__SMSessionManager_startSessionWithConfiguration_completion___block_invoke;
     v13[3] = &unk_2788C4C20;
     v13[4] = self;
-    v14 = v7;
+    v14 = configurationCopy;
     v16 = a2;
-    v15 = v8;
-    dispatch_async(v11, v13);
+    v15 = completionCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -10762,12 +10762,12 @@ void __61__SMSessionManager_startSessionWithConfiguration_completion___block_inv
   [*(a1 + 40) _performStateTransitionTo:v7 transitionType:1 handler:*(a1 + 48)];
 }
 
-- (void)respondToTriggerPromptForSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5
+- (void)respondToTriggerPromptForSessionID:(id)d response:(int64_t)response handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10780,16 +10780,16 @@ void __61__SMSessionManager_startSessionWithConfiguration_completion___block_inv
       }
     }
 
-    v11 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __72__SMSessionManager_respondToTriggerPromptForSessionID_response_handler___block_invoke;
     v13[3] = &unk_2788C4C20;
     v13[4] = self;
-    v14 = v8;
-    v16 = a4;
-    v15 = v9;
-    dispatch_async(v11, v13);
+    v14 = dCopy;
+    responseCopy = response;
+    v15 = handlerCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -10893,28 +10893,28 @@ void __72__SMSessionManager_respondToTriggerPromptForSessionID_response_handler_
   [v8 onUserActionWithRemoteCommand:2 remoteCommandType:2 error:v6 errorDomain:v7];
 }
 
-- (void)_respondToTriggerPromptWithRemoteControlSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5
+- (void)_respondToTriggerPromptWithRemoteControlSessionID:(id)d response:(int64_t)response handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SMSessionManager *)self messagingService];
-  v11 = [v10 deviceIdentifier];
-  v12 = [v11 UUIDString];
+  handlerCopy = handler;
+  dCopy = d;
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
-  v13 = [(SMSessionManager *)self messagingService];
-  v14 = [(SMSessionManager *)self platform];
-  v15 = [v13 convertRTPlatformToIDSDeviceType:v14];
+  messagingService2 = [(SMSessionManager *)self messagingService];
+  platform = [(SMSessionManager *)self platform];
+  v15 = [messagingService2 convertRTPlatformToIDSDeviceType:platform];
 
-  v16 = [objc_alloc(MEMORY[0x277D4AB60]) initWithTriggerPromptResponse:a4 sessionID:v9 sourceDeviceType:v15 sourceDeviceID:v12];
-  v17 = [(SMSessionManager *)self messagingService];
+  v16 = [objc_alloc(MEMORY[0x277D4AB60]) initWithTriggerPromptResponse:response sessionID:dCopy sourceDeviceType:v15 sourceDeviceID:uUIDString];
+  messagingService3 = [(SMSessionManager *)self messagingService];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __87__SMSessionManager__respondToTriggerPromptWithRemoteControlSessionID_response_handler___block_invoke;
   v19[3] = &unk_2788C58B8;
   v19[4] = self;
-  v20 = v8;
-  v18 = v8;
-  [v17 sendIDSMessageToMyDevices:v16 completion:v19];
+  v20 = handlerCopy;
+  v18 = handlerCopy;
+  [messagingService3 sendIDSMessageToMyDevices:v16 completion:v19];
 }
 
 void __87__SMSessionManager__respondToTriggerPromptWithRemoteControlSessionID_response_handler___block_invoke(uint64_t a1, int a2, void *a3)
@@ -10954,12 +10954,12 @@ void __87__SMSessionManager__respondToTriggerPromptWithRemoteControlSessionID_re
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_respondToTriggerPromptForSessionID:(id)a3 response:(int64_t)a4 handler:(id)a5
+- (void)_respondToTriggerPromptForSessionID:(id)d response:(int64_t)response handler:(id)handler
 {
   v85 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  if (v10)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -10973,37 +10973,37 @@ void __87__SMSessionManager__respondToTriggerPromptWithRemoteControlSessionID_re
     }
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0848, &unk_2845A0860, &unk_2845A0878, &unk_2845A0890, &unk_2845A08C0, 0}];
-    v13 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:v9 validSessionStates:v12];
+    v13 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:dCopy validSessionStates:v12];
     if (v13)
     {
-      v10[2](v10, v13);
+      handlerCopy[2](handlerCopy, v13);
 LABEL_37:
 
       goto LABEL_38;
     }
 
-    v14 = [(SMSessionManager *)self state];
-    v15 = [v14 sessionState];
+    state = [(SMSessionManager *)self state];
+    sessionState = [state sessionState];
 
-    if (v15 > 8)
+    if (sessionState > 8)
     {
-      if (v15 == 9)
+      if (sessionState == 9)
       {
-        if (a4 != 1)
+        if (response != 1)
         {
-          if (a4 == 2)
+          if (response == 2)
           {
             v36 = [(SMSessionManagerState *)self->_state mutableCopy];
             [v36 setSessionState:2];
             v68 = v36;
             [v36 setUserTriggerResponse:2];
-            v37 = [(SMSessionManager *)self defaultsManager];
-            v38 = [v37 objectForKey:@"RTDefaultsSessionManagerTimerExtensionPeriodKey"];
+            defaultsManager = [(SMSessionManager *)self defaultsManager];
+            v38 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerTimerExtensionPeriodKey"];
 
             if (v38)
             {
-              v39 = [(SMSessionManager *)self defaultsManager];
-              v40 = [v39 objectForKey:@"RTDefaultsSessionManagerTimerExtensionPeriodKey"];
+              defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+              v40 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerTimerExtensionPeriodKey"];
               [v40 doubleValue];
               v42 = v41;
             }
@@ -11013,38 +11013,38 @@ LABEL_37:
               v42 = *MEMORY[0x277D4AE00];
             }
 
-            v44 = [(SMSessionManager *)self state];
-            v45 = [v44 configuration];
-            v46 = [v45 time];
-            v66 = [v46 timeBound];
+            state2 = [(SMSessionManager *)self state];
+            configuration = [state2 configuration];
+            time = [configuration time];
+            timeBound = [time timeBound];
 
             v47 = objc_alloc(MEMORY[0x277D4AC08]);
-            v48 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v66 sinceDate:v42];
+            v48 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:timeBound sinceDate:v42];
             v72 = [v47 initWithTimeBound:v48];
 
             v57 = objc_alloc(MEMORY[0x277D4AB78]);
-            v64 = [(SMSessionManager *)self state];
-            v62 = [v64 configuration];
-            v70 = [v62 conversation];
-            v60 = [(SMSessionManager *)self state];
-            v58 = [v60 configuration];
-            v49 = [v58 sessionID];
-            v56 = [(SMSessionManager *)self state];
-            v55 = [v56 configuration];
-            v50 = [v55 sessionSupportsHandoff];
-            v51 = [(SMSessionManager *)self state];
-            v52 = [v51 configuration];
-            v53 = [v52 sosReceivers];
-            v54 = [v57 initTimeBoundSessionConfigurationWithConversation:v70 sessionID:v49 time:v72 sessionSupportsHandoff:v50 sosReceivers:v53];
+            state3 = [(SMSessionManager *)self state];
+            configuration2 = [state3 configuration];
+            conversation = [configuration2 conversation];
+            state4 = [(SMSessionManager *)self state];
+            configuration3 = [state4 configuration];
+            sessionID = [configuration3 sessionID];
+            state5 = [(SMSessionManager *)self state];
+            configuration4 = [state5 configuration];
+            sessionSupportsHandoff = [configuration4 sessionSupportsHandoff];
+            state6 = [(SMSessionManager *)self state];
+            configuration5 = [state6 configuration];
+            sosReceivers = [configuration5 sosReceivers];
+            v54 = [v57 initTimeBoundSessionConfigurationWithConversation:conversation sessionID:sessionID time:v72 sessionSupportsHandoff:sessionSupportsHandoff sosReceivers:sosReceivers];
 
             v28 = v68;
             [v68 setConfiguration:v54];
-            [(SMSessionManager *)self _performStateTransitionTo:v68 transitionType:1 handler:v10];
+            [(SMSessionManager *)self _performStateTransitionTo:v68 transitionType:1 handler:handlerCopy];
 
             goto LABEL_36;
           }
 
-          if (a4 != 3)
+          if (response != 3)
           {
             v77 = *MEMORY[0x277CCA450];
             v43 = MEMORY[0x277CCACA8];
@@ -11063,13 +11063,13 @@ LABEL_37:
         goto LABEL_33;
       }
 
-      if (v15 == 14)
+      if (sessionState == 14)
       {
-        if (a4 != 1)
+        if (response != 1)
         {
-          if (a4 != 2)
+          if (response != 2)
           {
-            if (a4 != 3)
+            if (response != 3)
             {
               v75 = *MEMORY[0x277CCA450];
               v22 = MEMORY[0x277CCACA8];
@@ -11099,35 +11099,35 @@ LABEL_33:
 
     else
     {
-      if (v15 == 7)
+      if (sessionState == 7)
       {
-        if (a4 != 1)
+        if (response != 1)
         {
-          if (a4 == 2)
+          if (response == 2)
           {
             v69 = [(SMSessionManagerState *)self->_state mutableCopy];
             [v69 setSessionState:2];
             [v69 setUserTriggerResponse:2];
-            v31 = [(SMSessionManager *)self state];
-            v32 = [v31 configuration];
+            state7 = [(SMSessionManager *)self state];
+            configuration6 = [state7 configuration];
 
             v71 = [MEMORY[0x277CBEAA8] now];
             v67 = objc_alloc(MEMORY[0x277D4AB78]);
-            v65 = [v32 conversation];
-            v61 = [v32 sessionID];
-            v63 = [v32 destination];
-            v33 = [v32 sessionStartDate];
-            v59 = [v32 sessionSupportsHandoff];
-            v34 = [v32 sosReceivers];
-            v35 = [v67 initDestinationBoundSessionConfigurationWithConversation:v65 sessionID:v61 destination:v63 sessionStartDate:v33 userResponseSafeDate:v71 sessionSupportsHandoff:v59 sosReceivers:v34];
+            conversation2 = [configuration6 conversation];
+            sessionID2 = [configuration6 sessionID];
+            destination = [configuration6 destination];
+            sessionStartDate = [configuration6 sessionStartDate];
+            sessionSupportsHandoff2 = [configuration6 sessionSupportsHandoff];
+            sosReceivers2 = [configuration6 sosReceivers];
+            v35 = [v67 initDestinationBoundSessionConfigurationWithConversation:conversation2 sessionID:sessionID2 destination:destination sessionStartDate:sessionStartDate userResponseSafeDate:v71 sessionSupportsHandoff:sessionSupportsHandoff2 sosReceivers:sosReceivers2];
 
             [v69 setConfiguration:v35];
-            [(SMSessionManager *)self _performStateTransitionTo:v69 transitionType:1 handler:v10];
+            [(SMSessionManager *)self _performStateTransitionTo:v69 transitionType:1 handler:handlerCopy];
 
             goto LABEL_37;
           }
 
-          if (a4 != 3)
+          if (response != 3)
           {
             v81 = *MEMORY[0x277CCA450];
             v27 = MEMORY[0x277CCACA8];
@@ -11147,7 +11147,7 @@ LABEL_32:
           v30 = 3;
 LABEL_35:
           [v29 setUserTriggerResponse:v30];
-          [(SMSessionManager *)self _performStateTransitionTo:v28 transitionType:1 handler:v10];
+          [(SMSessionManager *)self _performStateTransitionTo:v28 transitionType:1 handler:handlerCopy];
 LABEL_36:
 
           goto LABEL_37;
@@ -11156,13 +11156,13 @@ LABEL_36:
         goto LABEL_33;
       }
 
-      if (v15 == 8)
+      if (sessionState == 8)
       {
-        if (a4 != 1)
+        if (response != 1)
         {
-          if (a4 != 2)
+          if (response != 2)
           {
-            if (a4 != 3)
+            if (response != 3)
             {
               v79 = *MEMORY[0x277CCA450];
               v16 = MEMORY[0x277CCACA8];
@@ -11177,7 +11177,7 @@ LABEL_24:
 
               v25 = objc_alloc(MEMORY[0x277CCA9B8]);
               v26 = [v25 initWithDomain:*MEMORY[0x277D4ACD0] code:7 userInfo:v24];
-              v10[2](v10, v26);
+              handlerCopy[2](handlerCopy, v26);
 
               goto LABEL_37;
             }
@@ -11218,52 +11218,52 @@ LABEL_34:
 LABEL_38:
 }
 
-- (void)fetchSOSReceiversWithCompletion:(id)a3
+- (void)fetchSOSReceiversWithCompletion:(id)completion
 {
-  v10 = a3;
-  v4 = [(SMSessionManager *)self state];
-  v5 = [v4 isActiveState];
+  completionCopy = completion;
+  state = [(SMSessionManager *)self state];
+  isActiveState = [state isActiveState];
 
-  if (v5)
+  if (isActiveState)
   {
-    v6 = [(SMSessionManager *)self state];
-    v7 = [v6 configuration];
-    v8 = [v7 sosReceivers];
-    v9 = [v8 receiverHandles];
+    state2 = [(SMSessionManager *)self state];
+    configuration = [state2 configuration];
+    sosReceivers = [configuration sosReceivers];
+    receiverHandles = [sosReceivers receiverHandles];
   }
 
   else
   {
-    v9 = MEMORY[0x277CBEBF8];
+    receiverHandles = MEMORY[0x277CBEBF8];
   }
 
-  v10[2](v10, v9, 0);
+  completionCopy[2](completionCopy, receiverHandles, 0);
 }
 
-- (void)iMessageGroupMembershipChangedFor:(id)a3
+- (void)iMessageGroupMembershipChangedFor:(id)for
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  forCopy = for;
+  if (forCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(SMSessionManager *)self state];
-        v7 = [v6 configuration];
-        v8 = [v7 conversation];
-        v9 = [v8 identifier];
-        v10 = [(SMSessionManager *)self state];
+        state = [(SMSessionManager *)self state];
+        configuration = [state configuration];
+        conversation = [configuration conversation];
+        identifier = [conversation identifier];
+        state2 = [(SMSessionManager *)self state];
         *buf = 136315906;
         *&buf[4] = "[SMSessionManager iMessageGroupMembershipChangedFor:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = identifier;
         *&buf[22] = 2112;
-        v28 = v4;
+        v28 = forCopy;
         LOWORD(v29) = 2048;
-        *(&v29 + 2) = [v10 sessionState];
+        *(&v29 + 2) = [state2 sessionState];
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, current session groupID, %@, membership changed for groupID, %@, session state, %lu", buf, 0x2Au);
       }
     }
@@ -11274,11 +11274,11 @@ LABEL_38:
     v28 = __Block_byref_object_copy__198;
     *&v29 = __Block_byref_object_dispose__198;
     *(&v29 + 1) = objc_alloc_init(MEMORY[0x277CBEB58]);
-    if (-[SMSessionManager _canDeviceModifyState](self, "_canDeviceModifyState") && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v4), v14, v13, v12, v11, v15))
+    if (-[SMSessionManager _canDeviceModifyState](self, "_canDeviceModifyState") && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", forCopy), v14, v13, v12, v11, v15))
     {
       v16 = dispatch_group_create();
       dispatch_group_enter(v16);
-      v17 = [(SMSessionManager *)self queue];
+      queue = [(SMSessionManager *)self queue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __54__SMSessionManager_iMessageGroupMembershipChangedFor___block_invoke;
@@ -11286,16 +11286,16 @@ LABEL_38:
       v24 = buf;
       v18 = v16;
       v23 = v18;
-      [SMMessagingUtilities queryChatWithGroupID:v4 queue:v17 handler:v22];
+      [SMMessagingUtilities queryChatWithGroupID:forCopy queue:queue handler:v22];
 
-      v19 = [(SMSessionManager *)self queue];
+      queue2 = [(SMSessionManager *)self queue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __54__SMSessionManager_iMessageGroupMembershipChangedFor___block_invoke_477;
       v21[3] = &unk_2788C4FD8;
       v21[4] = self;
       v21[5] = buf;
-      dispatch_group_notify(v18, v19, v21);
+      dispatch_group_notify(v18, queue2, v21);
     }
 
     else
@@ -11478,17 +11478,17 @@ void __54__SMSessionManager_iMessageGroupMembershipChangedFor___block_invoke_480
   }
 }
 
-- (void)kickedFromIMessageGroupWith:(id)a3
+- (void)kickedFromIMessageGroupWith:(id)with
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  withCopy = with;
+  if (!withCopy)
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    state4 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(state4, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v19) = 0;
-      _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: groupID", &v19, 2u);
+      _os_log_error_impl(&dword_2304B3000, state4, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: groupID", &v19, 2u);
     }
 
     goto LABEL_14;
@@ -11499,37 +11499,37 @@ void __54__SMSessionManager_iMessageGroupMembershipChangedFor___block_invoke_480
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(SMSessionManager *)self state];
-      v7 = [v6 configuration];
-      v8 = [v7 conversation];
-      v9 = [v8 identifier];
-      v10 = [(SMSessionManager *)self state];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      conversation = [configuration conversation];
+      identifier = [conversation identifier];
+      state2 = [(SMSessionManager *)self state];
       v19 = 136315906;
       v20 = "[SMSessionManager kickedFromIMessageGroupWith:]";
       v21 = 2112;
-      v22 = v9;
+      v22 = identifier;
       v23 = 2112;
-      v24 = v4;
+      v24 = withCopy;
       v25 = 2048;
-      v26 = [v10 sessionState];
+      sessionState = [state2 sessionState];
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, current session groupID, %@, unjoined from groupID, %@, session state, %lu", &v19, 0x2Au);
     }
   }
 
   if ([(SMSessionManager *)self _canDeviceModifyState])
   {
-    v11 = [(SMSessionManager *)self state];
-    v12 = [v11 configuration];
-    v13 = [v12 conversation];
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:v4];
+    state3 = [(SMSessionManager *)self state];
+    configuration2 = [state3 configuration];
+    conversation2 = [configuration2 conversation];
+    identifier2 = [conversation2 identifier];
+    v15 = [identifier2 isEqualToString:withCopy];
 
     if (v15)
     {
-      v16 = [(SMSessionManager *)self state];
-      v17 = [v16 configuration];
-      v18 = [v17 sessionID];
-      [(SMSessionManager *)self _endSessionForSessionID:v18 reason:9 handler:&__block_literal_global_484];
+      state4 = [(SMSessionManager *)self state];
+      configuration3 = [state4 configuration];
+      sessionID = [configuration3 sessionID];
+      [(SMSessionManager *)self _endSessionForSessionID:sessionID reason:9 handler:&__block_literal_global_484];
 
 LABEL_14:
       goto LABEL_15;
@@ -11538,12 +11538,12 @@ LABEL_14:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v16 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    state4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(state4, OS_LOG_TYPE_DEBUG))
     {
       v19 = 136315138;
       v20 = "[SMSessionManager kickedFromIMessageGroupWith:]";
-      _os_log_debug_impl(&dword_2304B3000, v16, OS_LOG_TYPE_DEBUG, "%s, initiator unjoin ignored", &v19, 0xCu);
+      _os_log_debug_impl(&dword_2304B3000, state4, OS_LOG_TYPE_DEBUG, "%s, initiator unjoin ignored", &v19, 0xCu);
     }
 
     goto LABEL_14;
@@ -11570,30 +11570,30 @@ void __48__SMSessionManager_kickedFromIMessageGroupWith___block_invoke(uint64_t 
   }
 }
 
-- (void)iMessageGroupDisplayNameChangedFor:(id)a3
+- (void)iMessageGroupDisplayNameChangedFor:(id)for
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  forCopy = for;
+  if (forCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(SMSessionManager *)self state];
-        v7 = [v6 configuration];
-        v8 = [v7 conversation];
-        v9 = [v8 identifier];
-        v10 = [(SMSessionManager *)self state];
+        state = [(SMSessionManager *)self state];
+        configuration = [state configuration];
+        conversation = [configuration conversation];
+        identifier = [conversation identifier];
+        state2 = [(SMSessionManager *)self state];
         *buf = 136315906;
         *&buf[4] = "[SMSessionManager iMessageGroupDisplayNameChangedFor:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = identifier;
         *&buf[22] = 2112;
-        v28 = v4;
+        v28 = forCopy;
         LOWORD(v29) = 2048;
-        *(&v29 + 2) = [v10 sessionState];
+        *(&v29 + 2) = [state2 sessionState];
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, current session groupID, %@, displayName changed for groupID, %@, session state, %lu", buf, 0x2Au);
       }
     }
@@ -11604,11 +11604,11 @@ void __48__SMSessionManager_kickedFromIMessageGroupWith___block_invoke(uint64_t 
     v28 = __Block_byref_object_copy__198;
     *&v29 = __Block_byref_object_dispose__198;
     *(&v29 + 1) = 0;
-    if (-[SMSessionManager _canDeviceModifyState](self, "_canDeviceModifyState") && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v4), v14, v13, v12, v11, v15))
+    if (-[SMSessionManager _canDeviceModifyState](self, "_canDeviceModifyState") && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "conversation"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "identifier"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", forCopy), v14, v13, v12, v11, v15))
     {
       v16 = dispatch_group_create();
       dispatch_group_enter(v16);
-      v17 = [(SMSessionManager *)self queue];
+      queue = [(SMSessionManager *)self queue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __55__SMSessionManager_iMessageGroupDisplayNameChangedFor___block_invoke;
@@ -11616,16 +11616,16 @@ void __48__SMSessionManager_kickedFromIMessageGroupWith___block_invoke(uint64_t 
       v24 = buf;
       v18 = v16;
       v23 = v18;
-      [SMMessagingUtilities queryChatWithGroupID:v4 queue:v17 handler:v22];
+      [SMMessagingUtilities queryChatWithGroupID:forCopy queue:queue handler:v22];
 
-      v19 = [(SMSessionManager *)self queue];
+      queue2 = [(SMSessionManager *)self queue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __55__SMSessionManager_iMessageGroupDisplayNameChangedFor___block_invoke_485;
       v21[3] = &unk_2788C4FD8;
       v21[4] = self;
       v21[5] = buf;
-      dispatch_group_notify(v18, v19, v21);
+      dispatch_group_notify(v18, queue2, v21);
     }
 
     else
@@ -11740,44 +11740,44 @@ void __55__SMSessionManager_iMessageGroupDisplayNameChangedFor___block_invoke_48
   }
 }
 
-- (void)_updateSessionWithConversation:(id)a3 sosReceivers:(id)a4 handler:(id)a5
+- (void)_updateSessionWithConversation:(id)conversation sosReceivers:(id)receivers handler:(id)handler
 {
-  v30 = a5;
-  v28 = a4;
-  v8 = a3;
-  v9 = [(SMSessionManager *)self state];
-  v31 = [v9 configuration];
+  handlerCopy = handler;
+  receiversCopy = receivers;
+  conversationCopy = conversation;
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
 
-  v10 = [(SMSessionManager *)self state];
-  v27 = [v10 mutableCopy];
+  state2 = [(SMSessionManager *)self state];
+  v27 = [state2 mutableCopy];
 
   v26 = objc_alloc(MEMORY[0x277D4AB78]);
-  v11 = [v31 sessionID];
-  v12 = [v31 sessionStartDate];
-  v13 = [v31 sessionType];
-  v14 = [v31 time];
-  v15 = [v31 destination];
-  v16 = [v31 userResponseSafeDate];
-  v17 = [v31 sessionSupportsHandoff];
-  v18 = [v31 sessionWorkoutIdentifier];
-  v19 = [v31 sessionWorkoutType];
-  v20 = [v31 sessionWorkoutMirrorType];
-  LOBYTE(v25) = v17;
-  v21 = v8;
-  v22 = v8;
-  v23 = v11;
-  v24 = [v26 initWithConversation:v22 sessionID:v11 sessionStartDate:v12 sessionType:v13 time:v14 destination:v15 userResponseSafeDate:v16 sessionSupportsHandoff:v25 sosReceivers:v28 sessionWorkoutIdentifier:v18 sessionWorkoutType:v19 sessionWorkoutMirrorType:v20];
+  sessionID = [configuration sessionID];
+  sessionStartDate = [configuration sessionStartDate];
+  sessionType = [configuration sessionType];
+  time = [configuration time];
+  destination = [configuration destination];
+  userResponseSafeDate = [configuration userResponseSafeDate];
+  sessionSupportsHandoff = [configuration sessionSupportsHandoff];
+  sessionWorkoutIdentifier = [configuration sessionWorkoutIdentifier];
+  sessionWorkoutType = [configuration sessionWorkoutType];
+  sessionWorkoutMirrorType = [configuration sessionWorkoutMirrorType];
+  LOBYTE(v25) = sessionSupportsHandoff;
+  v21 = conversationCopy;
+  v22 = conversationCopy;
+  v23 = sessionID;
+  v24 = [v26 initWithConversation:v22 sessionID:sessionID sessionStartDate:sessionStartDate sessionType:sessionType time:time destination:destination userResponseSafeDate:userResponseSafeDate sessionSupportsHandoff:v25 sosReceivers:receiversCopy sessionWorkoutIdentifier:sessionWorkoutIdentifier sessionWorkoutType:sessionWorkoutType sessionWorkoutMirrorType:sessionWorkoutMirrorType];
 
   [v27 setConfiguration:v24];
-  [(SMSessionManager *)self _performStateTransitionTo:v27 transitionType:1 handler:v30];
+  [(SMSessionManager *)self _performStateTransitionTo:v27 transitionType:1 handler:handlerCopy];
 }
 
-- (void)promptDestinationAnomalyVerificationWithContext:(id)a3 handler:(id)a4
+- (void)promptDestinationAnomalyVerificationWithContext:(id)context handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -11790,16 +11790,16 @@ void __55__SMSessionManager_iMessageGroupDisplayNameChangedFor___block_invoke_48
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __76__SMSessionManager_promptDestinationAnomalyVerificationWithContext_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -11871,12 +11871,12 @@ void __76__SMSessionManager_promptDestinationAnomalyVerificationWithContext_hand
   }
 }
 
-- (void)promptRoundTripAnomalyVerificationWithContext:(id)a3 handler:(id)a4
+- (void)promptRoundTripAnomalyVerificationWithContext:(id)context handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -11889,16 +11889,16 @@ void __76__SMSessionManager_promptDestinationAnomalyVerificationWithContext_hand
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74__SMSessionManager_promptRoundTripAnomalyVerificationWithContext_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -11970,12 +11970,12 @@ void __74__SMSessionManager_promptRoundTripAnomalyVerificationWithContext_handle
   }
 }
 
-- (void)promptTimerEndedVerificationWithContext:(id)a3 handler:(id)a4
+- (void)promptTimerEndedVerificationWithContext:(id)context handler:(id)handler
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -11988,16 +11988,16 @@ void __74__SMSessionManager_promptRoundTripAnomalyVerificationWithContext_handle
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__SMSessionManager_promptTimerEndedVerificationWithContext_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -12069,12 +12069,12 @@ void __68__SMSessionManager_promptTimerEndedVerificationWithContext_handler___bl
   }
 }
 
-- (void)promptWorkoutAnomalyVerificationWithContext:(id)a3 handler:(id)a4
+- (void)promptWorkoutAnomalyVerificationWithContext:(id)context handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -12084,21 +12084,21 @@ void __68__SMSessionManager_promptTimerEndedVerificationWithContext_handler___bl
         *buf = 136315394;
         v17 = "[SMSessionManager promptWorkoutAnomalyVerificationWithContext:handler:]";
         v18 = 2112;
-        v19 = v7;
+        v19 = contextCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, Received prompt request for workout anoamly with handler, context, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __72__SMSessionManager_promptWorkoutAnomalyVerificationWithContext_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -12170,12 +12170,12 @@ void __72__SMSessionManager_promptWorkoutAnomalyVerificationWithContext_handler_
   }
 }
 
-- (void)promptWorkoutSessionEndVerificationWithContext:(id)a3 handlers:(id)a4
+- (void)promptWorkoutSessionEndVerificationWithContext:(id)context handlers:(id)handlers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlersCopy = handlers;
+  if (handlersCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -12185,21 +12185,21 @@ void __72__SMSessionManager_promptWorkoutAnomalyVerificationWithContext_handler_
         *buf = 136315394;
         v17 = "[SMSessionManager promptWorkoutSessionEndVerificationWithContext:handlers:]";
         v18 = 2112;
-        v19 = v7;
+        v19 = contextCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, Received prompt request for watch anoamly with handler, context, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __76__SMSessionManager_promptWorkoutSessionEndVerificationWithContext_handlers___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlersCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -12296,12 +12296,12 @@ void __76__SMSessionManager_promptWorkoutSessionEndVerificationWithContext_handl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)promptSafeArrivalWithContext:(id)a3 handler:(id)a4
+- (void)promptSafeArrivalWithContext:(id)context handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -12311,21 +12311,21 @@ void __76__SMSessionManager_promptWorkoutSessionEndVerificationWithContext_handl
         *buf = 136315394;
         v17 = "[SMSessionManager promptSafeArrivalWithContext:handler:]";
         v18 = 2112;
-        v19 = v7;
+        v19 = contextCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, Received prompt request for safe arrival with handler, context, %@", buf, 0x16u);
       }
     }
 
-    v10 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __57__SMSessionManager_promptSafeArrivalWithContext_handler___block_invoke;
     v12[3] = &unk_2788C4C20;
     v12[4] = self;
     v15 = a2;
-    v13 = v7;
-    v14 = v8;
-    dispatch_async(v10, v12);
+    v13 = contextCopy;
+    v14 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 
   else
@@ -12422,12 +12422,12 @@ void __57__SMSessionManager_promptSafeArrivalWithContext_handler___block_invoke_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)onSessionStartMessageSendResultWithMessage:(id)a3 messageGUID:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)onSessionStartMessageSendResultWithMessage:(id)message messageGUID:(id)d success:(BOOL)success error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (!v11)
+  messageCopy = message;
+  dCopy = d;
+  errorCopy = error;
+  if (!messageCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -12444,7 +12444,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v12)
+  if (!dCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -12457,18 +12457,18 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v14 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __89__SMSessionManager_onSessionStartMessageSendResultWithMessage_messageGUID_success_error___block_invoke;
   v17[3] = &unk_2788CCA70;
   v17[4] = self;
   v21 = a2;
-  v18 = v11;
-  v19 = v12;
-  v22 = a5;
-  v20 = v13;
-  dispatch_async(v14, v17);
+  v18 = messageCopy;
+  v19 = dCopy;
+  successCopy = success;
+  v20 = errorCopy;
+  dispatch_async(queue, v17);
 
 LABEL_8:
 }
@@ -12585,13 +12585,13 @@ void __89__SMSessionManager_onSessionStartMessageSendResultWithMessage_messageGU
   }
 }
 
-- (void)onScheduledSendMessageScheduledForSessionID:(id)a3 guid:(id)a4 date:(id)a5
+- (void)onScheduledSendMessageScheduledForSessionID:(id)d guid:(id)guid date:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  dCopy = d;
+  guidCopy = guid;
+  dateCopy = date;
+  v12 = dateCopy;
+  if (!dCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -12606,7 +12606,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!guidCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -12619,7 +12619,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (!v11)
+  if (!dateCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -12634,17 +12634,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__SMSessionManager_onScheduledSendMessageScheduledForSessionID_guid_date___block_invoke;
   block[3] = &unk_2788C50E8;
   block[4] = self;
   v20 = a2;
-  v17 = v9;
-  v18 = v10;
+  v17 = dCopy;
+  v18 = guidCopy;
   v19 = v12;
-  dispatch_async(v13, block);
+  dispatch_async(queue, block);
 
 LABEL_13:
 }
@@ -12715,12 +12715,12 @@ void __74__SMSessionManager_onScheduledSendMessageScheduledForSessionID_guid_dat
   }
 }
 
-- (void)onScheduledSendMessageCanceledForSessionID:(id)a3 guid:(id)a4
+- (void)onScheduledSendMessageCanceledForSessionID:(id)d guid:(id)guid
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  dCopy = d;
+  guidCopy = guid;
+  v9 = guidCopy;
+  if (!dCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -12737,7 +12737,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!guidCopy)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -12750,16 +12750,16 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__SMSessionManager_onScheduledSendMessageCanceledForSessionID_guid___block_invoke;
   v13[3] = &unk_2788C4C70;
   v13[4] = self;
   v16 = a2;
-  v14 = v7;
+  v14 = dCopy;
   v15 = v9;
-  dispatch_async(v10, v13);
+  dispatch_async(queue, v13);
 
 LABEL_8:
 }
@@ -12823,19 +12823,19 @@ void __68__SMSessionManager_onScheduledSendMessageCanceledForSessionID_guid___bl
   }
 }
 
-- (void)onScheduledSendForSessionID:(id)a3
+- (void)onScheduledSendForSessionID:(id)d
 {
-  v5 = a3;
-  v6 = [(SMSessionManager *)self queue];
+  dCopy = d;
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__SMSessionManager_onScheduledSendForSessionID___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v9 = v5;
+  v9 = dCopy;
   v10 = a2;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __48__SMSessionManager_onScheduledSendForSessionID___block_invoke(uint64_t a1)
@@ -12871,12 +12871,12 @@ void __48__SMSessionManager_onScheduledSendForSessionID___block_invoke_2(uint64_
   }
 }
 
-- (void)_onScheduledSendForSessionID:(id)a3 handler:(id)a4
+- (void)_onScheduledSendForSessionID:(id)d handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (dCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -12886,30 +12886,30 @@ void __48__SMSessionManager_onScheduledSendForSessionID___block_invoke_2(uint64_
         *buf = 136315394;
         v17 = "[SMSessionManager _onScheduledSendForSessionID:handler:]";
         v18 = 2112;
-        v19 = v7;
+        v19 = dCopy;
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, Received scheduled send event for sessionID:%@", buf, 0x16u);
       }
     }
 
     v10 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_2845A0848, &unk_2845A0860, &unk_2845A0878, &unk_2845A0890, &unk_2845A08C0, &unk_2845A08A8, 0}];
-    v11 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:v7 validSessionStates:v10];
+    v11 = [(SMSessionManager *)self checkSessionIDCanDeviceModifyStateAndSessionStateWithSelector:a2 sessionID:dCopy validSessionStates:v10];
     if (v11)
     {
-      v8[2](v8, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
 
     else
     {
       v12 = [(SMSessionManagerState *)self->_state mutableCopy];
       [v12 setSessionState:4];
-      v13 = [objc_alloc(MEMORY[0x277D4ABC8]) initWithUpdateReason:1 triggerCategory:15 sessionID:v7];
+      v13 = [objc_alloc(MEMORY[0x277D4ABC8]) initWithUpdateReason:1 triggerCategory:15 sessionID:dCopy];
       [v12 setMonitorContext:v13];
 
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __57__SMSessionManager__onScheduledSendForSessionID_handler___block_invoke;
       v14[3] = &unk_2788C48C0;
-      v15 = v8;
+      v15 = handlerCopy;
       [(SMSessionManager *)self _performStateTransitionTo:v12 transitionType:1 handler:v14];
     }
   }
@@ -12945,10 +12945,10 @@ void __57__SMSessionManager__onScheduledSendForSessionID_handler___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)promptDirectTriggerWithContext:(id)a3
+- (void)promptDirectTriggerWithContext:(id)context
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -12960,16 +12960,16 @@ void __57__SMSessionManager__onScheduledSendForSessionID_handler___block_invoke(
     }
   }
 
-  v7 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke;
   block[3] = &unk_2788C5020;
   block[4] = self;
-  v10 = v5;
+  v10 = contextCopy;
   v11 = a2;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = contextCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke(uint64_t a1)
@@ -13118,7 +13118,7 @@ void __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke_507(ui
   }
 }
 
-- (void)updateUserWithContext:(id)a3
+- (void)updateUserWithContext:(id)context
 {
   v6 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -13133,7 +13133,7 @@ void __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke_507(ui
   }
 }
 
-- (void)updateUserWithTriggerContext:(id)a3
+- (void)updateUserWithTriggerContext:(id)context
 {
   v6 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -13148,10 +13148,10 @@ void __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke_507(ui
   }
 }
 
-- (void)promptSafeArrivalWithContext:(id)a3
+- (void)promptSafeArrivalWithContext:(id)context
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -13160,12 +13160,12 @@ void __51__SMSessionManager_promptDirectTriggerWithContext___block_invoke_507(ui
       v6 = 136315394;
       v7 = "[SMSessionManager promptSafeArrivalWithContext:]";
       v8 = 2112;
-      v9 = v4;
+      v9 = contextCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, Received safe arrival, context, %@", &v6, 0x16u);
     }
   }
 
-  [(SMSessionManager *)self promptSafeArrivalWithContext:v4 handler:&__block_literal_global_509];
+  [(SMSessionManager *)self promptSafeArrivalWithContext:contextCopy handler:&__block_literal_global_509];
 }
 
 void __49__SMSessionManager_promptSafeArrivalWithContext___block_invoke(uint64_t a1, void *a2)
@@ -13186,10 +13186,10 @@ void __49__SMSessionManager_promptSafeArrivalWithContext___block_invoke(uint64_t
   }
 }
 
-- (void)promptEstimatedEndDateUpdateWithContext:(id)a3
+- (void)promptEstimatedEndDateUpdateWithContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -13198,21 +13198,21 @@ void __49__SMSessionManager_promptSafeArrivalWithContext___block_invoke(uint64_t
       *buf = 136315394;
       v13 = "[SMSessionManager promptEstimatedEndDateUpdateWithContext:]";
       v14 = 2112;
-      v15 = v5;
+      v15 = contextCopy;
       _os_log_impl(&dword_2304B3000, v6, OS_LOG_TYPE_INFO, "%s, context, %@", buf, 0x16u);
     }
   }
 
-  v7 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__SMSessionManager_promptEstimatedEndDateUpdateWithContext___block_invoke;
   block[3] = &unk_2788C5020;
-  v10 = v5;
+  v10 = contextCopy;
   v11 = a2;
   block[4] = self;
-  v8 = v5;
-  dispatch_async(v7, block);
+  v8 = contextCopy;
+  dispatch_async(queue, block);
 }
 
 void __60__SMSessionManager_promptEstimatedEndDateUpdateWithContext___block_invoke(uint64_t a1)
@@ -13278,10 +13278,10 @@ void __60__SMSessionManager_promptEstimatedEndDateUpdateWithContext___block_invo
   }
 }
 
-- (void)promptDestinationAnomalyVerificationWithContext:(id)a3
+- (void)promptDestinationAnomalyVerificationWithContext:(id)context
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -13290,7 +13290,7 @@ void __60__SMSessionManager_promptEstimatedEndDateUpdateWithContext___block_invo
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%s, Received prompt request for destination anomaly verification", &v6, 0xCu);
   }
 
-  [(SMSessionManager *)self promptDestinationAnomalyVerificationWithContext:v4 handler:&__block_literal_global_511];
+  [(SMSessionManager *)self promptDestinationAnomalyVerificationWithContext:contextCopy handler:&__block_literal_global_511];
 }
 
 void __68__SMSessionManager_promptDestinationAnomalyVerificationWithContext___block_invoke(uint64_t a1, void *a2)
@@ -13311,10 +13311,10 @@ void __68__SMSessionManager_promptDestinationAnomalyVerificationWithContext___bl
   }
 }
 
-- (void)promptRoundTripAnomalyVerificationWithContext:(id)a3
+- (void)promptRoundTripAnomalyVerificationWithContext:(id)context
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -13323,7 +13323,7 @@ void __68__SMSessionManager_promptDestinationAnomalyVerificationWithContext___bl
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%s, Received prompt request for round trip anomaly verification", &v6, 0xCu);
   }
 
-  [(SMSessionManager *)self promptRoundTripAnomalyVerificationWithContext:v4 handler:&__block_literal_global_513];
+  [(SMSessionManager *)self promptRoundTripAnomalyVerificationWithContext:contextCopy handler:&__block_literal_global_513];
 }
 
 void __66__SMSessionManager_promptRoundTripAnomalyVerificationWithContext___block_invoke(uint64_t a1, void *a2)
@@ -13344,10 +13344,10 @@ void __66__SMSessionManager_promptRoundTripAnomalyVerificationWithContext___bloc
   }
 }
 
-- (void)promptTimerEndedVerificationWithContext:(id)a3
+- (void)promptTimerEndedVerificationWithContext:(id)context
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -13356,7 +13356,7 @@ void __66__SMSessionManager_promptRoundTripAnomalyVerificationWithContext___bloc
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%s, Received prompt request for timer ended verification", &v6, 0xCu);
   }
 
-  [(SMSessionManager *)self promptTimerEndedVerificationWithContext:v4 handler:&__block_literal_global_515];
+  [(SMSessionManager *)self promptTimerEndedVerificationWithContext:contextCopy handler:&__block_literal_global_515];
 }
 
 void __60__SMSessionManager_promptTimerEndedVerificationWithContext___block_invoke(uint64_t a1, void *a2)
@@ -13377,10 +13377,10 @@ void __60__SMSessionManager_promptTimerEndedVerificationWithContext___block_invo
   }
 }
 
-- (void)promptWorkoutAnomalyVerificationWithContext:(id)a3
+- (void)promptWorkoutAnomalyVerificationWithContext:(id)context
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -13389,7 +13389,7 @@ void __60__SMSessionManager_promptTimerEndedVerificationWithContext___block_invo
     _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEFAULT, "%s, Received prompt request for workout anomaly verification", &v6, 0xCu);
   }
 
-  [(SMSessionManager *)self promptWorkoutAnomalyVerificationWithContext:v4 handler:&__block_literal_global_517];
+  [(SMSessionManager *)self promptWorkoutAnomalyVerificationWithContext:contextCopy handler:&__block_literal_global_517];
 }
 
 void __64__SMSessionManager_promptWorkoutAnomalyVerificationWithContext___block_invoke(uint64_t a1, void *a2)
@@ -13410,82 +13410,82 @@ void __64__SMSessionManager_promptWorkoutAnomalyVerificationWithContext___block_
   }
 }
 
-- (void)onDeletedMessage:(id)a3 handler:(id)a4
+- (void)onDeletedMessage:(id)message handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMSessionManager *)self queue];
+  messageCopy = message;
+  handlerCopy = handler;
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SMSessionManager_onDeletedMessage_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = messageCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_onDeletedMessage:(id)a3 handler:(id)a4
+- (void)_onDeletedMessage:(id)message handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(SMSessionManager *)self state];
-      v10 = [v9 configuration];
-      v11 = [v10 sessionID];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
       *buf = 136315651;
       v24 = "[SMSessionManager _onDeletedMessage:handler:]";
       v25 = 2112;
-      v26 = v11;
+      v26 = sessionID;
       v27 = 2117;
-      v28 = v6;
+      v28 = messageCopy;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "SMSessionManager,%s,currentSessionID,%@,message,%{sensitive}@", buf, 0x20u);
     }
   }
 
-  v12 = [(SMSessionManager *)self state];
-  if (![v12 isActiveState])
+  state2 = [(SMSessionManager *)self state];
+  if (![state2 isActiveState])
   {
     goto LABEL_10;
   }
 
-  v13 = [(SMSessionManager *)self state];
-  v14 = [v13 configuration];
-  v15 = [v14 sessionID];
-  v16 = [v6 sessionID];
-  if (![v15 isEqual:v16])
+  state3 = [(SMSessionManager *)self state];
+  configuration2 = [state3 configuration];
+  sessionID2 = [configuration2 sessionID];
+  sessionID3 = [messageCopy sessionID];
+  if (![sessionID2 isEqual:sessionID3])
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [(SMSessionManager *)self _isActiveDevice];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
 
-  if (!v17)
+  if (!_isActiveDevice)
   {
 LABEL_11:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_12;
   }
 
-  v18 = [(SMSessionManager *)self state];
-  v19 = [v18 configuration];
-  v20 = [v19 sessionID];
+  state4 = [(SMSessionManager *)self state];
+  configuration3 = [state4 configuration];
+  sessionID4 = [configuration3 sessionID];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __46__SMSessionManager__onDeletedMessage_handler___block_invoke;
   v21[3] = &unk_2788C4F60;
   v21[4] = self;
-  v22 = v7;
-  [(SMSessionManager *)self _endSessionForSessionID:v20 reason:2 handler:v21];
+  v22 = handlerCopy;
+  [(SMSessionManager *)self _endSessionForSessionID:sessionID4 reason:2 handler:v21];
 
 LABEL_12:
 }
@@ -13512,82 +13512,82 @@ void __46__SMSessionManager__onDeletedMessage_handler___block_invoke(uint64_t a1
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)onDeletedConversation:(id)a3 handler:(id)a4
+- (void)onDeletedConversation:(id)conversation handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMSessionManager *)self queue];
+  conversationCopy = conversation;
+  handlerCopy = handler;
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SMSessionManager_onDeletedConversation_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = conversationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = conversationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_onDeletedConversation:(id)a3 handler:(id)a4
+- (void)_onDeletedConversation:(id)conversation handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  conversationCopy = conversation;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(SMSessionManager *)self state];
-      v10 = [v9 configuration];
-      v11 = [v10 sessionID];
-      v12 = [v6 receiverHandles];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
+      receiverHandles = [conversationCopy receiverHandles];
       *buf = 136315650;
       v24 = "[SMSessionManager _onDeletedConversation:handler:]";
       v25 = 2112;
-      v26 = v11;
+      v26 = sessionID;
       v27 = 2112;
-      v28 = v12;
+      v28 = receiverHandles;
       _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "SMSessionManager,%s,currentSessionID,%@,receiverHandles,%@", buf, 0x20u);
     }
   }
 
-  v13 = [(SMSessionManager *)self state];
-  if (![v13 isActiveState])
+  state2 = [(SMSessionManager *)self state];
+  if (![state2 isActiveState])
   {
     goto LABEL_10;
   }
 
-  v14 = [(SMSessionManager *)self state];
-  v15 = [v14 configuration];
-  v16 = [v15 conversation];
-  if (![SMMessagingUtilities handlesInConversation1:v16 canonicallyEqualsHandlesInConversation2:v6])
+  state3 = [(SMSessionManager *)self state];
+  configuration2 = [state3 configuration];
+  conversation = [configuration2 conversation];
+  if (![SMMessagingUtilities handlesInConversation1:conversation canonicallyEqualsHandlesInConversation2:conversationCopy])
   {
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v17 = [(SMSessionManager *)self _isActiveDevice];
+  _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
 
-  if (!v17)
+  if (!_isActiveDevice)
   {
 LABEL_11:
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_12;
   }
 
-  v18 = [(SMSessionManager *)self state];
-  v19 = [v18 configuration];
-  v20 = [v19 sessionID];
+  state4 = [(SMSessionManager *)self state];
+  configuration3 = [state4 configuration];
+  sessionID2 = [configuration3 sessionID];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __51__SMSessionManager__onDeletedConversation_handler___block_invoke;
   v21[3] = &unk_2788C4F60;
   v21[4] = self;
-  v22 = v7;
-  [(SMSessionManager *)self _endSessionForSessionID:v20 reason:2 handler:v21];
+  v22 = handlerCopy;
+  [(SMSessionManager *)self _endSessionForSessionID:sessionID2 reason:2 handler:v21];
 
 LABEL_12:
 }
@@ -13614,28 +13614,28 @@ void __51__SMSessionManager__onDeletedConversation_handler___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sessionInitializedWithSessionID:(id)a3 allowReadToken:(id)a4 safetyCacheKey:(id)a5 scheduledSendMessageGUID:(id)a6 completionHandler:(id)a7
+- (void)sessionInitializedWithSessionID:(id)d allowReadToken:(id)token safetyCacheKey:(id)key scheduledSendMessageGUID:(id)iD completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (v17)
+  dCopy = d;
+  tokenCopy = token;
+  keyCopy = key;
+  iDCopy = iD;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v18 = [(SMSessionManager *)self queue];
+    queue = [(SMSessionManager *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __125__SMSessionManager_sessionInitializedWithSessionID_allowReadToken_safetyCacheKey_scheduledSendMessageGUID_completionHandler___block_invoke;
     block[3] = &unk_2788C6648;
-    v21 = v13;
-    v22 = self;
-    v26 = v17;
-    v23 = v14;
-    v24 = v15;
-    v25 = v16;
+    v21 = dCopy;
+    selfCopy = self;
+    v26 = handlerCopy;
+    v23 = tokenCopy;
+    v24 = keyCopy;
+    v25 = iDCopy;
     v27 = a2;
-    dispatch_async(v18, block);
+    dispatch_async(queue, block);
 
     v19 = v21;
   }
@@ -13812,61 +13812,61 @@ LABEL_15:
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)_sessionInitializedWithAllowReadToken:(id)a3 safetyCacheKey:(id)a4 scheduledSendMessageGUID:(id)a5 completionHandler:(id)a6
+- (void)_sessionInitializedWithAllowReadToken:(id)token safetyCacheKey:(id)key scheduledSendMessageGUID:(id)d completionHandler:(id)handler
 {
   state = self->_state;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  keyCopy = key;
+  tokenCopy = token;
   v15 = [(SMSessionManagerState *)state mutableCopy];
   [v15 setSessionState:11];
-  [v15 setAllowReadToken:v14];
+  [v15 setAllowReadToken:tokenCopy];
 
-  [v15 setSafetyCacheKey:v13];
-  [v15 setScheduledSendMessageGUID:v12];
+  [v15 setSafetyCacheKey:keyCopy];
+  [v15 setScheduledSendMessageGUID:dCopy];
 
-  [(SMSessionManager *)self _performStateTransitionTo:v15 transitionType:1 handler:v11];
+  [(SMSessionManager *)self _performStateTransitionTo:v15 transitionType:1 handler:handlerCopy];
 }
 
-- (void)sendSessionEndMessageWithReason:(unint64_t)a3 associatedGUID:(id)a4 state:(id)a5
+- (void)sendSessionEndMessageWithReason:(unint64_t)reason associatedGUID:(id)d state:(id)state
 {
-  v30 = a4;
-  v7 = a5;
+  dCopy = d;
+  stateCopy = state;
   v31 = objc_alloc(MEMORY[0x277D4AB98]);
-  v33 = [v7 configuration];
-  v8 = [v33 sessionID];
-  v9 = [v7 configuration];
-  v10 = [v9 sessionType];
-  v11 = [v7 configuration];
-  v12 = [v11 destination];
-  v13 = [v12 destinationType];
-  v35 = v7;
-  v14 = [v7 configuration];
-  v15 = [v14 destination];
-  v16 = [v15 destinationMapItem];
-  v17 = [v31 initWithSessionID:v8 sessionEndReason:a3 sessionType:v10 destinationType:v13 destinationMapItem:v16];
+  configuration = [stateCopy configuration];
+  sessionID = [configuration sessionID];
+  configuration2 = [stateCopy configuration];
+  sessionType = [configuration2 sessionType];
+  configuration3 = [stateCopy configuration];
+  destination = [configuration3 destination];
+  destinationType = [destination destinationType];
+  v35 = stateCopy;
+  configuration4 = [stateCopy configuration];
+  destination2 = [configuration4 destination];
+  destinationMapItem = [destination2 destinationMapItem];
+  v17 = [v31 initWithSessionID:sessionID sessionEndReason:reason sessionType:sessionType destinationType:destinationType destinationMapItem:destinationMapItem];
 
   v46[0] = 0;
   v46[1] = v46;
   v46[2] = 0x3032000000;
   v46[3] = __Block_byref_object_copy__198;
   v46[4] = __Block_byref_object_dispose__198;
-  v47 = [v17 summaryText];
+  summaryText = [v17 summaryText];
   v18 = dispatch_group_create();
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v19 = [v35 configuration];
-    v20 = [v19 destination];
-    v21 = [v20 destinationType];
+    configuration5 = [v35 configuration];
+    destination3 = [configuration5 destination];
+    destinationType2 = [destination3 destinationType];
 
-    if (v21 == 4)
+    if (destinationType2 == 4)
     {
       dispatch_group_enter(v18);
       v22 = MEMORY[0x277D4AB50];
-      v23 = [v35 configuration];
-      v24 = [v23 destination];
-      v25 = [v24 destinationMapItem];
+      configuration6 = [v35 configuration];
+      destination4 = [configuration6 destination];
+      destinationMapItem2 = [destination4 destinationMapItem];
       v42[0] = MEMORY[0x277D85DD0];
       v42[1] = 3221225472;
       v42[2] = __73__SMSessionManager_sendSessionEndMessageWithReason_associatedGUID_state___block_invoke;
@@ -13875,25 +13875,25 @@ LABEL_15:
       v44 = v46;
       v45 = a2;
       v43 = v18;
-      [v22 fetchDestinationNameFromMapItem:v25 completionHandler:v42];
+      [v22 fetchDestinationNameFromMapItem:destinationMapItem2 completionHandler:v42];
     }
   }
 
-  v26 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SMSessionManager_sendSessionEndMessageWithReason_associatedGUID_state___block_invoke_533;
   block[3] = &unk_2788C79C8;
   block[4] = self;
   v37 = v17;
-  v38 = v30;
+  v38 = dCopy;
   v39 = v35;
   v40 = v46;
   v41 = a2;
   v27 = v35;
-  v28 = v30;
+  v28 = dCopy;
   v29 = v17;
-  dispatch_group_notify(v18, v26, block);
+  dispatch_group_notify(v18, queue, block);
 
   _Block_object_dispose(v46, 8);
 }
@@ -14012,19 +14012,19 @@ void __73__SMSessionManager_sendSessionEndMessageWithReason_associatedGUID_state
   [*(a1 + 32) _resetPendingSendSessionEndMessage];
 }
 
-- (void)processNearbyEffectivePairedDeviceChanged:(id)a3
+- (void)processNearbyEffectivePairedDeviceChanged:(id)changed
 {
-  v5 = a3;
-  v6 = [(SMSessionManager *)self queue];
+  changedCopy = changed;
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___block_invoke;
   block[3] = &unk_2788C5020;
-  v9 = v5;
+  v9 = changedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = changedCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___block_invoke(uint64_t a1)
@@ -14057,11 +14057,11 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
   return [*(a1 + 32) _processNearbyEffectivePairedDeviceChanged:*(a1 + 40)];
 }
 
-- (void)_processNearbyEffectivePairedDeviceChanged:(id)a3
+- (void)_processNearbyEffectivePairedDeviceChanged:(id)changed
 {
   v116 = *MEMORY[0x277D85DE8];
-  v100 = a3;
-  if (v100)
+  changedCopy = changed;
+  if (changedCopy)
   {
     aSelector = a2;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -14069,33 +14069,33 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v93 = [v100 name];
-        v92 = [v100 isNearby];
-        v97 = [(SMSessionManager *)self state];
-        v95 = [v97 configuration];
-        v6 = [v95 sessionID];
-        v7 = [(SMSessionManager *)self status];
-        v8 = [v7 lastSessionIDDuringMagnetBreak];
-        v9 = [(SMSessionManager *)self magnetBreakTimer];
-        v10 = [(SMSessionManager *)self state];
-        v11 = [v10 isActiveState];
-        v12 = [(SMSessionManager *)self state];
+        name = [changedCopy name];
+        isNearby = [changedCopy isNearby];
+        state = [(SMSessionManager *)self state];
+        configuration = [state configuration];
+        sessionID = [configuration sessionID];
+        status = [(SMSessionManager *)self status];
+        lastSessionIDDuringMagnetBreak = [status lastSessionIDDuringMagnetBreak];
+        magnetBreakTimer = [(SMSessionManager *)self magnetBreakTimer];
+        state2 = [(SMSessionManager *)self state];
+        isActiveState = [state2 isActiveState];
+        state3 = [(SMSessionManager *)self state];
         *buf = 136316931;
         v109 = "[SMSessionManager _processNearbyEffectivePairedDeviceChanged:]";
         v110 = 2112;
-        v111 = v93;
+        v111 = name;
         v112 = 1024;
-        *v113 = v92;
+        *v113 = isNearby;
         *&v113[4] = 2112;
-        *&v113[6] = v6;
+        *&v113[6] = sessionID;
         *&v113[14] = 2112;
-        *&v113[16] = v8;
+        *&v113[16] = lastSessionIDDuringMagnetBreak;
         *&v113[24] = 1024;
-        *&v113[26] = v9 != 0;
+        *&v113[26] = magnetBreakTimer != 0;
         LOWORD(v114) = 1024;
-        *(&v114 + 2) = v11;
+        *(&v114 + 2) = isActiveState;
         HIWORD(v114) = 2117;
-        v115 = v12;
+        v115 = state3;
         _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, effectivePairedDevice, %@, effectivePairedDevice.nearby, %{Bool}d, sessionID, %@, lastSessionIDDuringMagnetBreak, %@, magnetBreakTimer, %{Bool}d, is state active state, %{Bool}d, state, %{sensitive}@", buf, 0x46u);
       }
     }
@@ -14106,24 +14106,24 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(SMSessionManager *)self state];
-        v16 = [v15 configuration];
-        v17 = [v16 sessionID];
+        state4 = [(SMSessionManager *)self state];
+        configuration2 = [state4 configuration];
+        sessionID2 = [configuration2 sessionID];
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = NSStringFromSelector(aSelector);
-        v21 = [(SMSessionManager *)self _getCurrentHysteresisStateType];
-        v22 = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
+        _getCurrentHysteresisStateType = [(SMSessionManager *)self _getCurrentHysteresisStateType];
+        _isEffectivePairedDeviceNearby = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
         *buf = 138413570;
-        v109 = v17;
+        v109 = sessionID2;
         v110 = 2112;
         v111 = v19;
         v112 = 2112;
         *v113 = v20;
         *&v113[8] = 2048;
-        *&v113[10] = v21;
+        *&v113[10] = _getCurrentHysteresisStateType;
         *&v113[18] = 1024;
-        *&v113[20] = v22;
+        *&v113[20] = _isEffectivePairedDeviceNearby;
         *&v113[24] = 1024;
         *&v113[26] = v13;
         _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@, hysteresisState, %lu, isNearbyDeviceConnected, %d, shouldExitHysteresisState, %d", buf, 0x36u);
@@ -14136,33 +14136,33 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       goto LABEL_42;
     }
 
-    v24 = [(SMSessionManager *)self magnetBreakTimer];
+    magnetBreakTimer2 = [(SMSessionManager *)self magnetBreakTimer];
 
-    if (v24)
+    if (magnetBreakTimer2)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v25 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [(SMSessionManager *)self state];
-          v27 = [v26 configuration];
-          v28 = [v27 sessionID];
+          state5 = [(SMSessionManager *)self state];
+          configuration3 = [state5 configuration];
+          sessionID3 = [configuration3 sessionID];
           v29 = objc_opt_class();
           v30 = NSStringFromClass(v29);
           v31 = NSStringFromSelector(aSelector);
-          v32 = [(SMSessionManager *)self _getCurrentHysteresisStateType];
-          v33 = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
+          _getCurrentHysteresisStateType2 = [(SMSessionManager *)self _getCurrentHysteresisStateType];
+          _isEffectivePairedDeviceNearby2 = [(SMSessionManager *)self _isEffectivePairedDeviceNearby];
           *buf = 138413314;
-          v109 = v28;
+          v109 = sessionID3;
           v110 = 2112;
           v111 = v30;
           v112 = 2112;
           *v113 = v31;
           *&v113[8] = 2048;
-          *&v113[10] = v32;
+          *&v113[10] = _getCurrentHysteresisStateType2;
           *&v113[18] = 1024;
-          *&v113[20] = v33;
+          *&v113[20] = _isEffectivePairedDeviceNearby2;
           _os_log_impl(&dword_2304B3000, v25, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@, hysteresisState, %lu, isNearbyDeviceConnected, %d, already processing a magnetEvent, waiting for the XPC timer to finish hysteresis, returning", buf, 0x30u);
         }
       }
@@ -14170,26 +14170,26 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       goto LABEL_42;
     }
 
-    v34 = [(SMSessionManager *)self state];
-    v35 = [v34 isActiveState];
+    state6 = [(SMSessionManager *)self state];
+    isActiveState2 = [state6 isActiveState];
 
-    if (v35)
+    if (isActiveState2)
     {
-      v36 = [MEMORY[0x277CCAD78] UUID];
-      v37 = [v100 uniqueIDOverride];
-      v98 = [v36 initWithUUIDString:v37];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uniqueIDOverride = [changedCopy uniqueIDOverride];
+      v98 = [uUID initWithUUIDString:uniqueIDOverride];
 
-      v38 = [(SMSessionManager *)self state];
-      v39 = [v38 activeDeviceIdentifier];
-      if ([v98 isEqual:v39])
+      state7 = [(SMSessionManager *)self state];
+      activeDeviceIdentifier = [state7 activeDeviceIdentifier];
+      if ([v98 isEqual:activeDeviceIdentifier])
       {
       }
 
       else
       {
-        v47 = [(SMSessionManager *)self state];
-        v48 = [v47 activePairedDeviceIdentifier];
-        v49 = [v98 isEqual:v48];
+        state8 = [(SMSessionManager *)self state];
+        activePairedDeviceIdentifier = [state8 activePairedDeviceIdentifier];
+        v49 = [v98 isEqual:activePairedDeviceIdentifier];
 
         if ((v49 & 1) == 0)
         {
@@ -14198,18 +14198,18 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
             v81 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
             if (os_log_type_enabled(v81, OS_LOG_TYPE_INFO))
             {
-              v82 = [(SMSessionManager *)self state];
-              v83 = [v82 configuration];
-              v84 = [v83 sessionID];
+              state9 = [(SMSessionManager *)self state];
+              configuration4 = [state9 configuration];
+              sessionID4 = [configuration4 sessionID];
               v85 = objc_opt_class();
               v86 = NSStringFromClass(v85);
               v87 = NSStringFromSelector(aSelector);
-              v88 = [(SMSessionManager *)self state];
-              v89 = [v88 activeDeviceIdentifier];
-              v90 = [(SMSessionManager *)self state];
-              v91 = [v90 activePairedDeviceIdentifier];
+              state10 = [(SMSessionManager *)self state];
+              activeDeviceIdentifier2 = [state10 activeDeviceIdentifier];
+              state11 = [(SMSessionManager *)self state];
+              activePairedDeviceIdentifier2 = [state11 activePairedDeviceIdentifier];
               *buf = 138413570;
-              v109 = v84;
+              v109 = sessionID4;
               v110 = 2112;
               v111 = v86;
               v112 = 2112;
@@ -14217,9 +14217,9 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
               *&v113[8] = 2112;
               *&v113[10] = v98;
               *&v113[18] = 2112;
-              *&v113[20] = v89;
+              *&v113[20] = activeDeviceIdentifier2;
               *&v113[28] = 2112;
-              v114 = v91;
+              v114 = activePairedDeviceIdentifier2;
               _os_log_impl(&dword_2304B3000, v81, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@,Ignoring changed device %@, activeDeviceIdentifier %@, activePairedDeviceIdentifier %@", buf, 0x3Eu);
             }
           }
@@ -14229,9 +14229,9 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       }
 
       objc_initWeak(&location, self);
-      v50 = [(SMSessionManager *)self state];
-      v51 = [v50 configuration];
-      v52 = [v51 sessionID];
+      state12 = [(SMSessionManager *)self state];
+      configuration5 = [state12 configuration];
+      sessionID5 = [configuration5 sessionID];
 
       v53 = objc_opt_class();
       v54 = NSStringFromClass(v53);
@@ -14250,14 +14250,14 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
         v56 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
         {
-          v57 = [(SMSessionManager *)self state];
-          v58 = [v57 configuration];
-          v59 = [v58 sessionID];
+          state13 = [(SMSessionManager *)self state];
+          configuration6 = [state13 configuration];
+          sessionID6 = [configuration6 sessionID];
           v60 = objc_opt_class();
           v61 = NSStringFromClass(v60);
           v62 = NSStringFromSelector(aSelector);
           *buf = 138413058;
-          v109 = v59;
+          v109 = sessionID6;
           v110 = 2112;
           v111 = v61;
           v112 = 2112;
@@ -14271,29 +14271,29 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
       [(SMSessionManager *)self _setHysteresisState:v55];
       [(SMSessionManager *)self _updateUnsupportedSeparationStateIfNeededWithNotify:0];
       v63 = [RTXPCTimerAlarm alloc];
-      v64 = [(SMSessionManager *)self queue];
+      queue = [(SMSessionManager *)self queue];
       v102[0] = MEMORY[0x277D85DD0];
       v102[1] = 3221225472;
       v102[2] = __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_invoke;
       v102[3] = &unk_2788CDA80;
       objc_copyWeak(v106, &location);
-      v65 = v52;
+      v65 = sessionID5;
       v103 = v65;
       v66 = v54;
       v106[1] = aSelector;
       v104 = v66;
-      v105 = self;
-      v67 = [(RTXPCTimerAlarm *)v63 initWithIdentifier:@"com.apple.routined.magnetBreakTimer" queue:v64 handler:v102];
+      selfCopy = self;
+      v67 = [(RTXPCTimerAlarm *)v63 initWithIdentifier:@"com.apple.routined.magnetBreakTimer" queue:queue handler:v102];
       [(SMSessionManager *)self setMagnetBreakTimer:v67];
 
       magnetBreakTimerInterval = self->_magnetBreakTimerInterval;
-      v69 = [(SMSessionManager *)self defaultsManager];
-      v70 = [v69 objectForKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
+      defaultsManager = [(SMSessionManager *)self defaultsManager];
+      v70 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
 
-      v71 = [(SMSessionManager *)self magnetBreakTimer];
+      magnetBreakTimer3 = [(SMSessionManager *)self magnetBreakTimer];
       v72 = [v70 dateByAddingTimeInterval:magnetBreakTimerInterval];
       v101 = 0;
-      v73 = [v71 fireWithDate:v72 error:&v101];
+      v73 = [magnetBreakTimer3 fireWithDate:v72 error:&v101];
       v74 = v101;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -14301,15 +14301,15 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
         v75 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
         {
-          v96 = [(SMSessionManager *)self state];
-          v94 = [v96 configuration];
-          v76 = [v94 sessionID];
+          state14 = [(SMSessionManager *)self state];
+          configuration7 = [state14 configuration];
+          sessionID7 = [configuration7 sessionID];
           v77 = objc_opt_class();
           v78 = NSStringFromClass(v77);
           v79 = NSStringFromSelector(aSelector);
-          v80 = [v74 localizedDescription];
+          localizedDescription = [v74 localizedDescription];
           *buf = 138413314;
-          v109 = v76;
+          v109 = sessionID7;
           v110 = 2112;
           v111 = v78;
           v112 = 2112;
@@ -14317,7 +14317,7 @@ uint64_t __62__SMSessionManager_processNearbyEffectivePairedDeviceChanged___bloc
           *&v113[8] = 1024;
           *&v113[10] = v73;
           *&v113[14] = 2112;
-          *&v113[16] = v80;
+          *&v113[16] = localizedDescription;
           _os_log_impl(&dword_2304B3000, v75, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@,magnetBreak timer scheduled %d with error, %@", buf, 0x30u);
         }
       }
@@ -14334,14 +14334,14 @@ LABEL_41:
       v40 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
-        v41 = [(SMSessionManager *)self state];
-        v42 = [v41 configuration];
-        v43 = [v42 sessionID];
+        state15 = [(SMSessionManager *)self state];
+        configuration8 = [state15 configuration];
+        sessionID8 = [configuration8 sessionID];
         v44 = objc_opt_class();
         v45 = NSStringFromClass(v44);
         v46 = NSStringFromSelector(aSelector);
         *buf = 138412802;
-        v109 = v43;
+        v109 = sessionID8;
         v110 = 2112;
         v111 = v45;
         v112 = 2112;
@@ -14433,17 +14433,17 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
   }
 }
 
-- (BOOL)_shouldExitHysteresisState:(unint64_t)a3 nearbyDeviceConnected:(BOOL)a4
+- (BOOL)_shouldExitHysteresisState:(unint64_t)state nearbyDeviceConnected:(BOOL)connected
 {
-  v4 = !a4;
-  if (a3 != 1)
+  v4 = !connected;
+  if (state != 1)
   {
     v4 = 0;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
-    return a4;
+    return connected;
   }
 
   else
@@ -14454,12 +14454,12 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
 
 - (void)_cancelMagnetBreakTimerAndExitHysteresisState
 {
-  v3 = [(SMSessionManager *)self magnetBreakTimer];
+  magnetBreakTimer = [(SMSessionManager *)self magnetBreakTimer];
 
-  if (v3)
+  if (magnetBreakTimer)
   {
-    v4 = [(SMSessionManager *)self magnetBreakTimer];
-    [(SMSessionManager *)self _invalidateTimer:v4];
+    magnetBreakTimer2 = [(SMSessionManager *)self magnetBreakTimer];
+    [(SMSessionManager *)self _invalidateTimer:magnetBreakTimer2];
 
     [(SMSessionManager *)self setMagnetBreakTimer:0];
   }
@@ -14469,45 +14469,45 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
 
 - (BOOL)_isEffectivePairedDeviceNearby
 {
-  v2 = [(SMSessionManager *)self messagingService];
-  v3 = [v2 effectivePairedDevice];
-  v4 = [v3 isNearby];
+  messagingService = [(SMSessionManager *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
+  isNearby = [effectivePairedDevice isNearby];
 
-  return v4;
+  return isNearby;
 }
 
-- (BOOL)_isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:(id)a3
+- (BOOL)_isEffectivePairedDeviceSameAsActiveDeviceWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 alloc];
-  v7 = [(SMSessionManager *)self messagingService];
-  v8 = [v7 effectivePairedDevice];
-  v9 = [v8 uniqueIDOverride];
-  v10 = [v6 initWithUUIDString:v9];
-  v11 = [v5 compare:v10];
+  messagingService = [(SMSessionManager *)self messagingService];
+  effectivePairedDevice = [messagingService effectivePairedDevice];
+  uniqueIDOverride = [effectivePairedDevice uniqueIDOverride];
+  v10 = [v6 initWithUUIDString:uniqueIDOverride];
+  v11 = [identifierCopy compare:v10];
 
   return v11 == 0;
 }
 
 - (unint64_t)_getCurrentHysteresisStateType
 {
-  v2 = [(SMSessionManager *)self defaultsManager];
-  v3 = [v2 objectForKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v3 = [defaultsManager objectForKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)_setHysteresisState:(unint64_t)a3
+- (void)_setHysteresisState:(unint64_t)state
 {
-  v5 = [(SMSessionManager *)self defaultsManager];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v6 forKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
+  [defaultsManager setObject:v6 forKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
 
-  v8 = [(SMSessionManager *)self defaultsManager];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v8 setObject:v7 forKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  date = [MEMORY[0x277CBEAA8] date];
+  [defaultsManager2 setObject:date forKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
 }
 
 - (void)_clearHysteresisState
@@ -14518,14 +14518,14 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(SMSessionManager *)self state];
-      v6 = [v5 configuration];
-      v7 = [v6 sessionID];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       v10 = NSStringFromSelector(a2);
       v13 = 138412802;
-      v14 = v7;
+      v14 = sessionID;
       v15 = 2112;
       v16 = v9;
       v17 = 2112;
@@ -14534,11 +14534,11 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
     }
   }
 
-  v11 = [(SMSessionManager *)self defaultsManager];
-  [v11 setObject:&unk_2845A08F0 forKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager setObject:&unk_2845A08F0 forKey:@"RTDefaultsSessionManagerHysteresisEventTypeKey"];
 
-  v12 = [(SMSessionManager *)self defaultsManager];
-  [v12 setObject:0 forKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager2 setObject:0 forKey:@"RTDefaultsSessionManagerHysteresisMagnetEventDateKey"];
 
   [(SMSessionManager *)self _updateUnsupportedSeparationStateIfNeededWithNotify:0];
 }
@@ -14551,14 +14551,14 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
     v4 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(SMSessionManager *)self state];
-      v6 = [v5 configuration];
-      v7 = [v6 sessionID];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
       v10 = NSStringFromSelector(a2);
       v23 = 138412802;
-      v24 = v7;
+      v24 = sessionID;
       v25 = 2112;
       v26 = v9;
       v27 = 2112;
@@ -14569,25 +14569,25 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
 
   if (![(SMSessionManager *)self _isActiveDevice])
   {
-    v11 = [(SMSessionManager *)self state];
-    v12 = [v11 configuration];
-    v13 = [v12 sessionType];
+    state2 = [(SMSessionManager *)self state];
+    configuration2 = [state2 configuration];
+    sessionType = [configuration2 sessionType];
 
-    if (v13 == 4)
+    if (sessionType == 4)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [(SMSessionManager *)self state];
-          v16 = [v15 configuration];
-          v17 = [v16 sessionID];
+          state3 = [(SMSessionManager *)self state];
+          configuration3 = [state3 configuration];
+          sessionID2 = [configuration3 sessionID];
           v18 = objc_opt_class();
           v19 = NSStringFromClass(v18);
           v20 = NSStringFromSelector(a2);
           v23 = 138412802;
-          v24 = v17;
+          v24 = sessionID2;
           v25 = 2112;
           v26 = v19;
           v27 = 2112;
@@ -14598,18 +14598,18 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
 
       [(SMSessionManager *)self _updateUnsupportedSeparationStateIfNeededWithNotify:1];
       v21 = MEMORY[0x277D4AA60];
-      v22 = [(SMSessionManager *)self state];
-      [v21 updateActivityWithState:v22 localState:self->_localState shouldNotify:1];
+      state4 = [(SMSessionManager *)self state];
+      [v21 updateActivityWithState:state4 localState:self->_localState shouldNotify:1];
     }
   }
 }
 
-- (void)_handleMagnetConnect:(int64_t)a3
+- (void)_handleMagnetConnect:(int64_t)connect
 {
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
-  v23[3] = a3;
+  v23[3] = connect;
   v5 = dispatch_group_create();
   v21[0] = 0;
   v21[1] = v21;
@@ -14625,14 +14625,14 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v18[3] = 0;
-  v6 = [(SMSessionManager *)self state];
-  v7 = [v6 configuration];
-  v8 = [v7 sessionType];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionType = [configuration sessionType];
 
-  if (v8 == 4)
+  if (sessionType == 4)
   {
     dispatch_group_enter(v5);
-    v9 = [(SMSessionManager *)self healthKitManager];
+    healthKitManager = [(SMSessionManager *)self healthKitManager];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __41__SMSessionManager__handleMagnetConnect___block_invoke;
@@ -14643,10 +14643,10 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
     v12[4] = self;
     v17 = a2;
     v13 = v5;
-    [v9 fetchCurrentWorkoutSnapshotWithHandler:v12];
+    [healthKitManager fetchCurrentWorkoutSnapshotWithHandler:v12];
   }
 
-  v10 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __41__SMSessionManager__handleMagnetConnect___block_invoke_546;
@@ -14657,7 +14657,7 @@ void __63__SMSessionManager__processNearbyEffectivePairedDeviceChanged___block_i
   v11[7] = v18;
   v11[8] = v23;
   v11[9] = a2;
-  dispatch_group_notify(v5, v10, v11);
+  dispatch_group_notify(v5, queue, v11);
 
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(v19, 8);
@@ -14926,13 +14926,13 @@ void __41__SMSessionManager__handleMagnetConnect___block_invoke_548(uint64_t a1,
   [v22 submitMetricsWithError:&v23];
 }
 
-- (BOOL)_isEligibleOutOfOrderStateSyncMessage:(id)a3 currentSessionManagerState:(id)a4
+- (BOOL)_isEligibleOutOfOrderStateSyncMessage:(id)message currentSessionManagerState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  messageCopy = message;
+  stateCopy = state;
+  v8 = stateCopy;
+  if (!messageCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -14949,7 +14949,7 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!stateCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -14962,7 +14962,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if ([(SMSessionManager *)self _isEligibleRecentHandoffMessage:v6 currentSessionManagerState:self->_state])
+  if ([(SMSessionManager *)self _isEligibleRecentHandoffMessage:messageCopy currentSessionManagerState:self->_state])
   {
     v9 = 1;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -14973,7 +14973,7 @@ LABEL_20:
         v14 = 136315394;
         v15 = "[SMSessionManager _isEligibleOutOfOrderStateSyncMessage:currentSessionManagerState:]";
         v16 = 2112;
-        v17 = v6;
+        v17 = messageCopy;
         v11 = "%s, received state transition message type SMStateTransitionTypeHandoffBecomeActive, with older state, but within accepted delta, stateSyncMessage, %@";
 LABEL_17:
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, v11, &v14, 0x16u);
@@ -14986,7 +14986,7 @@ LABEL_17:
 
   else
   {
-    if (![(SMSessionManager *)self _isEligibleOutOfOrderEndSessionMessage:v6 currentSessionManagerState:self->_state])
+    if (![(SMSessionManager *)self _isEligibleOutOfOrderEndSessionMessage:messageCopy currentSessionManagerState:self->_state])
     {
       v9 = 0;
       goto LABEL_12;
@@ -15001,7 +15001,7 @@ LABEL_17:
         v14 = 136315394;
         v15 = "[SMSessionManager _isEligibleOutOfOrderStateSyncMessage:currentSessionManagerState:]";
         v16 = 2112;
-        v17 = v6;
+        v17 = messageCopy;
         v11 = "%s, received state transition message to endState, with older date, but within accepted delta and same sessionID, stateSyncMessage, %@";
         goto LABEL_17;
       }
@@ -15015,19 +15015,19 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_isEligibleOutOfOrderEndSessionMessage:(id)a3 currentSessionManagerState:(id)a4
+- (BOOL)_isEligibleOutOfOrderEndSessionMessage:(id)message currentSessionManagerState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  messageCopy = message;
+  stateCopy = state;
+  v7 = stateCopy;
+  if (!messageCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
 LABEL_10:
 
-      v15 = 0;
+      isEndSessionState = 0;
       goto LABEL_15;
     }
 
@@ -15039,7 +15039,7 @@ LABEL_17:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!stateCopy)
   {
     v16 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -15053,42 +15053,42 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v8 = [v5 sessionID];
-  v9 = [v7 configuration];
-  v10 = [v9 sessionID];
-  if ([v8 isEqual:v10])
+  sessionID = [messageCopy sessionID];
+  configuration = [v7 configuration];
+  sessionID2 = [configuration sessionID];
+  if ([sessionID isEqual:sessionID2])
   {
-    v11 = [v7 date];
-    v12 = [v5 sessionManagerState];
-    v13 = [v12 date];
-    if ([v11 isAfterDate:v13] && objc_msgSend(v7, "isActiveState"))
+    date = [v7 date];
+    sessionManagerState = [messageCopy sessionManagerState];
+    date2 = [sessionManagerState date];
+    if ([date isAfterDate:date2] && objc_msgSend(v7, "isActiveState"))
     {
-      v14 = [v5 sessionManagerState];
-      v15 = [v14 isEndSessionState];
+      sessionManagerState2 = [messageCopy sessionManagerState];
+      isEndSessionState = [sessionManagerState2 isEndSessionState];
     }
 
     else
     {
-      v15 = 0;
+      isEndSessionState = 0;
     }
   }
 
   else
   {
-    v15 = 0;
+    isEndSessionState = 0;
   }
 
 LABEL_15:
-  return v15;
+  return isEndSessionState;
 }
 
-- (BOOL)_isEligibleRecentHandoffMessage:(id)a3 currentSessionManagerState:(id)a4
+- (BOOL)_isEligibleRecentHandoffMessage:(id)message currentSessionManagerState:(id)state
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  messageCopy = message;
+  stateCopy = state;
+  v7 = stateCopy;
+  if (!messageCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -15107,7 +15107,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v6)
+  if (!stateCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -15120,30 +15120,30 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if ([v5 stateTransitionType] != 2)
+  if ([messageCopy stateTransitionType] != 2)
   {
 LABEL_20:
     v21 = 0;
     goto LABEL_21;
   }
 
-  v8 = [v5 sessionManagerState];
-  v9 = [v8 date];
-  v10 = [v7 date];
-  if (![v9 isAfterDate:v10])
+  sessionManagerState = [messageCopy sessionManagerState];
+  date = [sessionManagerState date];
+  date2 = [v7 date];
+  if (![date isAfterDate:date2])
   {
 
     goto LABEL_14;
   }
 
-  v11 = [v7 isActiveState];
+  isActiveState = [v7 isActiveState];
 
-  if ((v11 & 1) == 0)
+  if ((isActiveState & 1) == 0)
   {
 LABEL_14:
-    v16 = [v7 date];
-    v17 = [v5 date];
-    [v16 timeIntervalSinceDate:v17];
+    date3 = [v7 date];
+    date4 = [messageCopy date];
+    [date3 timeIntervalSinceDate:date4];
     v19 = v18;
 
     v20 = -v19;
@@ -15178,24 +15178,24 @@ LABEL_21:
   return v21;
 }
 
-- (BOOL)_isEligibleTransitionFromStateSyncMessage:(id)a3 currentSessionManagerState:(id)a4
+- (BOOL)_isEligibleTransitionFromStateSyncMessage:(id)message currentSessionManagerState:(id)state
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 sessionManagerState];
-  v8 = [v6 configuration];
-  v9 = [v8 sessionID];
-  v10 = [v7 configuration];
-  v11 = [v10 sessionID];
-  if (![v9 isEqual:v11] || !objc_msgSend(v6, "isEndSessionState"))
+  stateCopy = state;
+  sessionManagerState = [message sessionManagerState];
+  configuration = [stateCopy configuration];
+  sessionID = [configuration sessionID];
+  configuration2 = [sessionManagerState configuration];
+  sessionID2 = [configuration2 sessionID];
+  if (![sessionID isEqual:sessionID2] || !objc_msgSend(stateCopy, "isEndSessionState"))
   {
 
     goto LABEL_10;
   }
 
-  v12 = [v7 isEndSessionState];
+  isEndSessionState = [sessionManagerState isEndSessionState];
 
-  if (v12)
+  if (isEndSessionState)
   {
 LABEL_10:
     v14 = 1;
@@ -15210,7 +15210,7 @@ LABEL_10:
       v16 = 136315394;
       v17 = "[SMSessionManager _isEligibleTransitionFromStateSyncMessage:currentSessionManagerState:]";
       v18 = 1024;
-      v19 = [(SMSessionManager *)self _isActiveDevice];
+      _isActiveDevice = [(SMSessionManager *)self _isActiveDevice];
       _os_log_impl(&dword_2304B3000, v13, OS_LOG_TYPE_INFO, "%s, stateSyncMessage invalid transition, NotActive State -> Active State, isActiveDevice, %{Bool}d", &v16, 0x12u);
     }
   }
@@ -15221,28 +15221,28 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_isEligibleToBecomeNonActiveDeviceForHandoffStateSyncMessage:(id)a3
+- (BOOL)_isEligibleToBecomeNonActiveDeviceForHandoffStateSyncMessage:(id)message
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
-  v7 = [v5 sessionManagerState];
-  v8 = [v7 activeDeviceIdentifier];
-  v9 = [v6 isEqual:v8];
+  messageCopy = message;
+  activeDeviceIdentifier = [(SMSessionManagerState *)self->_state activeDeviceIdentifier];
+  sessionManagerState = [messageCopy sessionManagerState];
+  activeDeviceIdentifier2 = [sessionManagerState activeDeviceIdentifier];
+  v9 = [activeDeviceIdentifier isEqual:activeDeviceIdentifier2];
 
   if (v9)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(SMSessionManager *)self state];
-      v12 = [v11 configuration];
-      v13 = [v12 sessionID];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
       v16 = NSStringFromSelector(a2);
       v25 = 138412802;
-      v26 = v13;
+      v26 = sessionID;
       v27 = 2112;
       v28 = v15;
       v29 = 2112;
@@ -15256,31 +15256,31 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v17 = [(SMSessionManagerState *)self->_state configuration];
-  v18 = [v17 sessionID];
-  v19 = [v5 sessionID];
-  v20 = [v18 isEqual:v19];
+  configuration2 = [(SMSessionManagerState *)self->_state configuration];
+  sessionID2 = [configuration2 sessionID];
+  sessionID3 = [messageCopy sessionID];
+  v20 = [sessionID2 isEqual:sessionID3];
 
   if ((v20 & 1) == 0)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(SMSessionManager *)self state];
-      v12 = [v11 configuration];
-      v13 = [v12 sessionID];
+      state = [(SMSessionManager *)self state];
+      configuration = [state configuration];
+      sessionID = [configuration sessionID];
       v23 = objc_opt_class();
       v15 = NSStringFromClass(v23);
       v16 = NSStringFromSelector(a2);
-      v24 = [v5 sessionID];
+      sessionID4 = [messageCopy sessionID];
       v25 = 138413058;
-      v26 = v13;
+      v26 = sessionID;
       v27 = 2112;
       v28 = v15;
       v29 = 2112;
       v30 = v16;
       v31 = 2112;
-      v32 = v24;
+      v32 = sessionID4;
       _os_log_error_impl(&dword_2304B3000, v10, OS_LOG_TYPE_ERROR, "#SessionManager,Initiator,sessionID:%@,%@,%@,receiving a handoff message for a different session, stateSyncMessage.sessionID %@", &v25, 0x2Au);
 
       goto LABEL_10;
@@ -15298,29 +15298,29 @@ LABEL_8:
   return v21;
 }
 
-- (void)_becomeActiveDeviceForSessionWithHandler:(id)a3
+- (void)_becomeActiveDeviceForSessionWithHandler:(id)handler
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SMSessionManager *)self messagingService];
-  v7 = [v6 deviceIdentifier];
-  v8 = [(SMSessionManager *)self state];
-  v9 = [v8 activeDeviceIdentifier];
-  v10 = [v7 isEqual:v9];
+  handlerCopy = handler;
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  state = [(SMSessionManager *)self state];
+  activeDeviceIdentifier = [state activeDeviceIdentifier];
+  v10 = [deviceIdentifier isEqual:activeDeviceIdentifier];
 
   if (v10)
   {
     v11 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v37 = [(SMSessionManager *)self state];
-      v38 = [v37 configuration];
-      v39 = [v38 sessionID];
+      state2 = [(SMSessionManager *)self state];
+      configuration = [state2 configuration];
+      sessionID = [configuration sessionID];
       v40 = objc_opt_class();
       v41 = NSStringFromClass(v40);
       v42 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v50 = v39;
+      v50 = sessionID;
       v51 = 2112;
       *v52 = v41;
       *&v52[8] = 2112;
@@ -15334,50 +15334,50 @@ LABEL_8:
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(SMSessionManager *)self state];
-      v14 = [v13 configuration];
-      v15 = [v14 sessionID];
+      state3 = [(SMSessionManager *)self state];
+      configuration2 = [state3 configuration];
+      sessionID2 = [configuration2 sessionID];
       v16 = objc_opt_class();
       v17 = NSStringFromClass(v16);
       v18 = NSStringFromSelector(a2);
-      v19 = [(SMSessionManager *)self messagingService];
-      v20 = [v19 deviceIdentifier];
+      messagingService2 = [(SMSessionManager *)self messagingService];
+      deviceIdentifier2 = [messagingService2 deviceIdentifier];
       *buf = 138413058;
-      v50 = v15;
+      v50 = sessionID2;
       v51 = 2112;
       *v52 = v17;
       *&v52[8] = 2112;
       *&v52[10] = v18;
       v53 = 2112;
-      v54 = v20;
+      v54 = deviceIdentifier2;
       _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "#SessionManager,Initiator,sessionID:%@,%@,%@,Becoming the active device, deviceIdentifier, %@", buf, 0x2Au);
     }
   }
 
-  v21 = [(SMSessionManager *)self state];
-  v22 = [v21 mutableCopy];
+  state4 = [(SMSessionManager *)self state];
+  v22 = [state4 mutableCopy];
 
-  v23 = [(SMSessionManager *)self messagingService];
-  v24 = [v23 deviceIdentifier];
-  [v22 setActiveDeviceIdentifier:v24];
+  messagingService3 = [(SMSessionManager *)self messagingService];
+  deviceIdentifier3 = [messagingService3 deviceIdentifier];
+  [v22 setActiveDeviceIdentifier:deviceIdentifier3];
 
-  v25 = [MEMORY[0x277CCAD78] UUID];
-  v26 = [(SMSessionManager *)self messagingService];
-  v27 = [v26 effectivePairedDevice];
-  v28 = [v27 uniqueIDOverride];
-  v29 = [v25 initWithUUIDString:v28];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  messagingService4 = [(SMSessionManager *)self messagingService];
+  effectivePairedDevice = [messagingService4 effectivePairedDevice];
+  uniqueIDOverride = [effectivePairedDevice uniqueIDOverride];
+  v29 = [uUID initWithUUIDString:uniqueIDOverride];
   [v22 setActivePairedDeviceIdentifier:v29];
 
   v30 = [MEMORY[0x277CBEAA8] now];
   [v22 setDate:v30];
 
-  v31 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v43 = MEMORY[0x277D85DD0];
   v44 = 3221225472;
   v45 = __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_invoke;
   v46 = &unk_2788C4F60;
-  v47 = self;
-  v32 = v5;
+  selfCopy = self;
+  v32 = handlerCopy;
   v48 = v32;
   v33 = [(SMSessionManager *)self _performStateTransitionTo:v22 transitionType:2 handler:&v43];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -15385,8 +15385,8 @@ LABEL_8:
     v34 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
     {
-      v35 = [MEMORY[0x277CBEAA8] date];
-      [v35 timeIntervalSinceDate:v31];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceDate:date];
       *buf = 136315650;
       v50 = "[SMSessionManager _becomeActiveDeviceForSessionWithHandler:]";
       v51 = 1024;
@@ -15432,36 +15432,36 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_updateActivityWithState:(id)a3 shouldNotify:(BOOL)a4
+- (void)_updateActivityWithState:(id)state shouldNotify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState];
+  stateCopy = state;
+  unsupportedDeviceSeparationState = [(SMLocalSessionState *)self->_localState unsupportedDeviceSeparationState];
   v8 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 description];
+    v9 = [stateCopy description];
     v10 = 136315651;
     v11 = "[SMSessionManager _updateActivityWithState:shouldNotify:]";
     v12 = 2117;
     v13 = v9;
     v14 = 1024;
-    v15 = v7;
+    v15 = unsupportedDeviceSeparationState;
     _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEFAULT, "%s,state,%{sensitive}@, disconnected,%{Bool}d", &v10, 0x1Cu);
   }
 
-  [MEMORY[0x277D4AA60] updateActivityWithState:v6 localState:self->_localState shouldNotify:v4];
+  [MEMORY[0x277D4AA60] updateActivityWithState:stateCopy localState:self->_localState shouldNotify:notifyCopy];
 }
 
-- (void)respondToNotificationWithIdentifier:(id)a3 sessionIdentifier:(id)a4 actionIdentifier:(id)a5 handler:(id)a6
+- (void)respondToNotificationWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier actionIdentifier:(id)actionIdentifier handler:(id)handler
 {
   v93 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  actionIdentifierCopy = actionIdentifier;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     goto LABEL_29;
   }
@@ -15474,17 +15474,17 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
       *buf = 136315906;
       v86 = "[SMSessionManager respondToNotificationWithIdentifier:sessionIdentifier:actionIdentifier:handler:]";
       v87 = 2112;
-      v88 = v11;
+      v88 = identifierCopy;
       v89 = 2112;
-      v90 = v12;
+      v90 = sessionIdentifierCopy;
       v91 = 2112;
-      v92 = v13;
+      v92 = actionIdentifierCopy;
       _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%s, notification identifier, %@, session identifier, %@, action identifier, %@,", buf, 0x2Au);
     }
   }
 
-  v73 = v11;
-  if (v11)
+  v73 = identifierCopy;
+  if (identifierCopy)
   {
     v16 = 0;
   }
@@ -15507,11 +15507,11 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
     a2 = v21;
 
     v16 = v25;
-    v14[2](v14, v25);
+    handlerCopy[2](handlerCopy, v25);
   }
 
   aSelector = a2;
-  if (!v12)
+  if (!sessionIdentifierCopy)
   {
     v26 = objc_alloc(MEMORY[0x277CCA9B8]);
     v27 = *MEMORY[0x277D4ACD0];
@@ -15525,20 +15525,20 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
     v33 = [v26 initWithDomain:v27 code:7 userInfo:v32];
 
     self = v31;
-    v14[2](v14, v33);
+    handlerCopy[2](handlerCopy, v33);
     v16 = v33;
   }
 
-  v34 = [(SMSessionManagerState *)self->_state configuration];
-  v35 = [v34 sessionID];
-  v36 = [v35 UUIDString];
-  v37 = [v12 isEqualToString:v36];
+  configuration = [(SMSessionManagerState *)self->_state configuration];
+  sessionID = [configuration sessionID];
+  uUIDString = [sessionID UUIDString];
+  v37 = [sessionIdentifierCopy isEqualToString:uUIDString];
 
-  v72 = v12;
+  v72 = sessionIdentifierCopy;
   if (v37)
   {
     v38 = v16;
-    if (v13)
+    if (actionIdentifierCopy)
     {
       goto LABEL_16;
     }
@@ -15549,23 +15549,23 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
     v39 = objc_alloc(MEMORY[0x277CCA9B8]);
     v40 = *MEMORY[0x277D4ACD0];
     v79 = *MEMORY[0x277CCA450];
-    v71 = v13;
-    v41 = v12;
+    v71 = actionIdentifierCopy;
+    v41 = sessionIdentifierCopy;
     v42 = MEMORY[0x277CCACA8];
     v43 = NSStringFromSelector(aSelector);
-    v44 = [(SMSessionManagerState *)self->_state configuration];
-    [v44 sessionID];
+    configuration2 = [(SMSessionManagerState *)self->_state configuration];
+    [configuration2 sessionID];
     v45 = v70 = self;
-    v46 = [v45 UUIDString];
-    v47 = [v42 stringWithFormat:@"%@, session identifier, %@, does not match sessionId from config, %@", v43, v41, v46];
+    uUIDString2 = [v45 UUIDString];
+    v47 = [v42 stringWithFormat:@"%@, session identifier, %@, does not match sessionId from config, %@", v43, v41, uUIDString2];
     v80 = v47;
     v48 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v80 forKeys:&v79 count:1];
     v49 = [v39 initWithDomain:v40 code:7 userInfo:v48];
 
-    v13 = v71;
+    actionIdentifierCopy = v71;
     self = v70;
 
-    v14[2](v14, v49);
+    handlerCopy[2](handlerCopy, v49);
     v38 = v49;
     if (v71)
     {
@@ -15576,7 +15576,7 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
   v50 = objc_alloc(MEMORY[0x277CCA9B8]);
   v51 = *MEMORY[0x277D4ACD0];
   v77 = *MEMORY[0x277CCA450];
-  v52 = v13;
+  v52 = actionIdentifierCopy;
   v53 = MEMORY[0x277CCACA8];
   v54 = NSStringFromSelector(aSelector);
   v55 = [v53 stringWithFormat:@"%@, missing action identifier", v54];
@@ -15584,11 +15584,11 @@ void __61__SMSessionManager__becomeActiveDeviceForSessionWithHandler___block_inv
   v56 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
   v57 = [v50 initWithDomain:v51 code:7 userInfo:v56];
 
-  v13 = v52;
-  v14[2](v14, v57);
+  actionIdentifierCopy = v52;
+  handlerCopy[2](handlerCopy, v57);
   v38 = v57;
 LABEL_16:
-  if (([v13 isEqualToString:*MEMORY[0x277D4AC68]] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", *MEMORY[0x277D4AC70]))
+  if (([actionIdentifierCopy isEqualToString:*MEMORY[0x277D4AC68]] & 1) != 0 || objc_msgSend(actionIdentifierCopy, "isEqualToString:", *MEMORY[0x277D4AC70]))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -15601,9 +15601,9 @@ LABEL_16:
       }
     }
 
-    v59 = [(SMSessionManagerState *)self->_state configuration];
-    v60 = [v59 sessionID];
-    [(SMSessionManager *)self respondToTriggerPromptForSessionID:v60 response:2 handler:v14];
+    configuration3 = [(SMSessionManagerState *)self->_state configuration];
+    sessionID2 = [configuration3 sessionID];
+    [(SMSessionManager *)self respondToTriggerPromptForSessionID:sessionID2 response:2 handler:handlerCopy];
   }
 
   else
@@ -15622,7 +15622,7 @@ LABEL_16:
     v62 = objc_alloc(MEMORY[0x277CCA9B8]);
     v63 = *MEMORY[0x277D4ACD0];
     v75 = *MEMORY[0x277CCA450];
-    v64 = v13;
+    v64 = actionIdentifierCopy;
     v65 = MEMORY[0x277CCACA8];
     v66 = NSStringFromSelector(aSelector);
     v67 = [v65 stringWithFormat:@"%@, action identifier to code path mapping is invalid", v66];
@@ -15630,44 +15630,44 @@ LABEL_16:
     v68 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
     v69 = [v62 initWithDomain:v63 code:7 userInfo:v68];
 
-    v13 = v64;
-    v14[2](v14, v69);
+    actionIdentifierCopy = v64;
+    handlerCopy[2](handlerCopy, v69);
     v38 = v69;
   }
 
-  v12 = v72;
-  v11 = v73;
+  sessionIdentifierCopy = v72;
+  identifierCopy = v73;
 LABEL_29:
 }
 
 - (void)onMessagesAppUninstalled
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__SMSessionManager_onMessagesAppUninstalled__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_onMessagesAppUninstalled
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self state];
-  v4 = [v3 isActiveState];
+  state = [(SMSessionManager *)self state];
+  isActiveState = [state isActiveState];
 
-  if (v4)
+  if (isActiveState)
   {
-    v5 = [(SMSessionManager *)self state];
-    v6 = [v5 configuration];
-    v7 = [v6 sessionID];
+    state2 = [(SMSessionManager *)self state];
+    configuration = [state2 configuration];
+    sessionID = [configuration sessionID];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __45__SMSessionManager__onMessagesAppUninstalled__block_invoke;
     v9[3] = &unk_2788C4730;
     v9[4] = self;
-    [(SMSessionManager *)self _endSessionForSessionID:v7 reason:10 handler:v9];
+    [(SMSessionManager *)self _endSessionForSessionID:sessionID reason:10 handler:v9];
   }
 
   else
@@ -15677,15 +15677,15 @@ LABEL_29:
       return;
     }
 
-    v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+    state2 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+    if (os_log_type_enabled(state2, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(SMSessionManager *)self state];
+      state3 = [(SMSessionManager *)self state];
       *buf = 136315394;
       v11 = "[SMSessionManager _onMessagesAppUninstalled]";
       v12 = 2112;
-      v13 = v8;
-      _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "SMSessionManager,%s,ignoring deletion notification in non-active state,%@", buf, 0x16u);
+      v13 = state3;
+      _os_log_debug_impl(&dword_2304B3000, state2, OS_LOG_TYPE_DEBUG, "SMSessionManager,%s,ignoring deletion notification in non-active state,%@", buf, 0x16u);
     }
   }
 }
@@ -15712,13 +15712,13 @@ void __45__SMSessionManager__onMessagesAppUninstalled__block_invoke(uint64_t a1,
 
 - (void)onEmergencyCallStarted
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__SMSessionManager_onEmergencyCallStarted__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_onEmergencyCallStarted
@@ -15741,35 +15741,35 @@ void __45__SMSessionManager__onMessagesAppUninstalled__block_invoke(uint64_t a1,
 
 - (void)onEmergencyCallEnded
 {
-  v3 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SMSessionManager_onEmergencyCallEnded__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_onEmergencyCallEnded
 {
   v30 = *MEMORY[0x277D85DE8];
   [(SMSessionManager *)self setIsEmergencyCallOngoing:0];
-  v3 = [(SMSessionManager *)self state];
-  v4 = [v3 activeDeviceIdentifier];
-  v5 = [(SMSessionManager *)self messagingService];
-  v6 = [v5 deviceIdentifier];
-  v7 = [v4 isEqual:v6];
+  state = [(SMSessionManager *)self state];
+  activeDeviceIdentifier = [state activeDeviceIdentifier];
+  messagingService = [(SMSessionManager *)self messagingService];
+  deviceIdentifier = [messagingService deviceIdentifier];
+  v7 = [activeDeviceIdentifier isEqual:deviceIdentifier];
 
-  v8 = [(SMSessionManager *)self defaultsManager];
-  v9 = [v8 objectForKey:@"RTDefaultsWorkoutOngoing"];
-  v10 = [v9 BOOLValue];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v9 = [defaultsManager objectForKey:@"RTDefaultsWorkoutOngoing"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v7 && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), v13 = (objc_msgSend(v12, "sessionType") != 4) | v10, v12, v11, (v13 & 1) == 0))
+  if (v7 && (-[SMSessionManager state](self, "state"), v11 = objc_claimAutoreleasedReturnValue(), [v11 configuration], v12 = objc_claimAutoreleasedReturnValue(), v13 = (objc_msgSend(v12, "sessionType") != 4) | bOOLValue, v12, v11, (v13 & 1) == 0))
   {
     v21 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:20.0];
     [(SMSessionManager *)self _setupWorkoutTimeoutWithFireDate:v21];
-    v15 = [(SMSessionManager *)self defaultsManager];
-    [v15 setObject:v21 forKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
+    defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+    [defaultsManager2 setObject:v21 forKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -15787,11 +15787,11 @@ void __45__SMSessionManager__onMessagesAppUninstalled__block_invoke(uint64_t a1,
         v16 = @"NO";
       }
 
-      v17 = [(SMSessionManager *)self state];
-      v18 = [v17 configuration];
+      state2 = [(SMSessionManager *)self state];
+      configuration = [state2 configuration];
       *buf = 136446978;
       v23 = "[SMSessionManager _onEmergencyCallEnded]";
-      if ([v18 sessionType] == 4)
+      if ([configuration sessionType] == 4)
       {
         v19 = @"YES";
       }
@@ -15802,7 +15802,7 @@ void __45__SMSessionManager__onMessagesAppUninstalled__block_invoke(uint64_t a1,
       }
 
       v24 = 2112;
-      if (v10)
+      if (bOOLValue)
       {
         v20 = @"YES";
       }
@@ -15822,83 +15822,83 @@ void __45__SMSessionManager__onMessagesAppUninstalled__block_invoke(uint64_t a1,
   }
 }
 
-- (void)onHealthKitManagerNotification:(id)a3
+- (void)onHealthKitManagerNotification:(id)notification
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v4 name];
+      name = [notificationCopy name];
       *buf = 136446466;
       v12 = "[SMSessionManager onHealthKitManagerNotification:]";
       v13 = 2114;
-      v14 = v8;
+      v14 = name;
       _os_log_debug_impl(&dword_2304B3000, v5, OS_LOG_TYPE_DEBUG, "%{public}s, received RTHealthKitManager notification, %{public}@", buf, 0x16u);
     }
   }
 
-  v6 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __51__SMSessionManager_onHealthKitManagerNotification___block_invoke;
   v9[3] = &unk_2788C4A70;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = notificationCopy;
+  v7 = notificationCopy;
+  dispatch_async(queue, v9);
 }
 
-- (void)_onHealthKitManagerNotification:(id)a3
+- (void)_onHealthKitManagerNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMSessionManager *)self state];
-  v6 = [v5 configuration];
-  if ([v6 sessionType] != 4)
+  notificationCopy = notification;
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  if ([configuration sessionType] != 4)
   {
 
     goto LABEL_9;
   }
 
-  v7 = [v4 name];
+  name = [notificationCopy name];
   v8 = +[(RTNotification *)RTHealthKitManagerWorkoutSnapshotUpdateNotification];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [name isEqualToString:v8];
 
   if (v9)
   {
-    v10 = [(SMSessionManager *)self defaultsManager];
-    v11 = [v10 objectForKey:@"RTDefaultsWorkoutOngoing"];
-    v12 = [v11 BOOLValue];
+    defaultsManager = [(SMSessionManager *)self defaultsManager];
+    v11 = [defaultsManager objectForKey:@"RTDefaultsWorkoutOngoing"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
-      v13 = [(SMSessionManager *)self state];
-      v14 = [v13 startMessageGUID];
-      if (!v14)
+      state2 = [(SMSessionManager *)self state];
+      startMessageGUID = [state2 startMessageGUID];
+      if (!startMessageGUID)
       {
 LABEL_7:
 
         goto LABEL_9;
       }
 
-      v15 = v14;
-      v16 = [(SMSessionManager *)self _canDeviceModifyState];
+      v15 = startMessageGUID;
+      _canDeviceModifyState = [(SMSessionManager *)self _canDeviceModifyState];
 
-      if (v16)
+      if (_canDeviceModifyState)
       {
-        v17 = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
-        [(SMSessionManager *)self _invalidateTimer:v17];
+        workoutTimeoutXPCTimerAlarm = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
+        [(SMSessionManager *)self _invalidateTimer:workoutTimeoutXPCTimerAlarm];
 
-        v13 = [(SMSessionManager *)self healthKitManager];
+        state2 = [(SMSessionManager *)self healthKitManager];
         v18[0] = MEMORY[0x277D85DD0];
         v18[1] = 3221225472;
         v18[2] = __52__SMSessionManager__onHealthKitManagerNotification___block_invoke;
         v18[3] = &unk_2788D3440;
-        v19 = v12;
+        v19 = bOOLValue;
         v18[4] = self;
-        [v13 fetchCurrentWorkoutSnapshotWithHandler:v18];
+        [state2 fetchCurrentWorkoutSnapshotWithHandler:v18];
         goto LABEL_7;
       }
     }
@@ -15962,19 +15962,19 @@ void __52__SMSessionManager__onHealthKitManagerNotification___block_invoke_568(u
 - (void)_setUpWorkoutTimeouts
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v3];
+  workoutTimeoutXPCTimerAlarm = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:workoutTimeoutXPCTimerAlarm];
 
-  v4 = [(SMSessionManager *)self state];
-  v5 = [v4 configuration];
-  v6 = [v5 sessionStartDate];
-  v7 = [v6 dateByAddingTimeInterval:20.0];
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
+  sessionStartDate = [configuration sessionStartDate];
+  v7 = [sessionStartDate dateByAddingTimeInterval:20.0];
 
-  v8 = [(SMSessionManager *)self defaultsManager];
-  v9 = [v8 objectForKey:@"RTDefaultsInitiatorServiceWorkoutEndBufferTimerFireDate"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  v9 = [defaultsManager objectForKey:@"RTDefaultsInitiatorServiceWorkoutEndBufferTimerFireDate"];
 
-  v10 = [(SMSessionManager *)self defaultsManager];
-  v11 = [v10 objectForKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  v11 = [defaultsManager2 objectForKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
 
   if (v11 && [v11 compare:v7] == 1)
   {
@@ -15989,7 +15989,7 @@ void __52__SMSessionManager__onHealthKitManagerNotification___block_invoke_568(u
       }
     }
 
-    v13 = self;
+    selfCopy3 = self;
     v14 = v11;
   }
 
@@ -16006,7 +16006,7 @@ void __52__SMSessionManager__onHealthKitManagerNotification___block_invoke_568(u
       }
     }
 
-    v13 = self;
+    selfCopy3 = self;
     v14 = v9;
   }
 
@@ -16023,31 +16023,31 @@ void __52__SMSessionManager__onHealthKitManagerNotification___block_invoke_568(u
       }
     }
 
-    v13 = self;
+    selfCopy3 = self;
     v14 = v7;
   }
 
-  [(SMSessionManager *)v13 _setupWorkoutTimeoutWithFireDate:v14];
+  [(SMSessionManager *)selfCopy3 _setupWorkoutTimeoutWithFireDate:v14];
 }
 
-- (void)_setupWorkoutTimeoutWithFireDate:(id)a3
+- (void)_setupWorkoutTimeoutWithFireDate:(id)date
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   objc_initWeak(&location, self);
   v5 = [RTXPCTimerAlarm alloc];
-  v6 = [(SMSessionManager *)self queue];
+  queue = [(SMSessionManager *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__SMSessionManager__setupWorkoutTimeoutWithFireDate___block_invoke;
   v12[3] = &unk_2788C5908;
   objc_copyWeak(&v13, &location);
-  v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.workoutTimeout" queue:v6 handler:v12];
+  v7 = [(RTXPCTimerAlarm *)v5 initWithIdentifier:@"com.apple.routined.safetyMonitor.sessionManager.workoutTimeout" queue:queue handler:v12];
   [(SMSessionManager *)self setWorkoutTimeoutXPCTimerAlarm:v7];
 
-  v8 = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
+  workoutTimeoutXPCTimerAlarm = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
   v11 = 0;
-  [v8 fireWithDate:v4 error:&v11];
+  [workoutTimeoutXPCTimerAlarm fireWithDate:dateCopy error:&v11];
   v9 = v11;
 
   if (v9)
@@ -16076,7 +16076,7 @@ void __52__SMSessionManager__onHealthKitManagerNotification___block_invoke_568(u
       *buf = 136446466;
       v16 = "[SMSessionManager _setupWorkoutTimeoutWithFireDate:]";
       v17 = 2112;
-      v18 = v4;
+      v18 = dateCopy;
       _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%{public}s, timer set with end date, %@", buf, 0x16u);
     }
   }
@@ -16115,55 +16115,55 @@ void __53__SMSessionManager__setupWorkoutTimeoutWithFireDate___block_invoke_2(ui
 
 - (void)_tearDownWorkoutTimeouts
 {
-  v3 = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
-  [(SMSessionManager *)self _invalidateTimer:v3];
+  workoutTimeoutXPCTimerAlarm = [(SMSessionManager *)self workoutTimeoutXPCTimerAlarm];
+  [(SMSessionManager *)self _invalidateTimer:workoutTimeoutXPCTimerAlarm];
 
-  v4 = [(SMSessionManager *)self defaultsManager];
-  [v4 setObject:0 forKey:@"RTDefaultsInitiatorServiceWorkoutEndBufferTimerFireDate"];
+  defaultsManager = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager setObject:0 forKey:@"RTDefaultsInitiatorServiceWorkoutEndBufferTimerFireDate"];
 
-  v5 = [(SMSessionManager *)self defaultsManager];
-  [v5 setObject:0 forKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
+  defaultsManager2 = [(SMSessionManager *)self defaultsManager];
+  [defaultsManager2 setObject:0 forKey:@"RTDefaultsSessionManagerWorkoutEmergencyContactNotificationTimerFireDate"];
 }
 
-- (void)_updateSessionWithWorkoutSnapshot:(id)a3 handler:(id)a4
+- (void)_updateSessionWithWorkoutSnapshot:(id)snapshot handler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMSessionManager *)self state];
-  v9 = [v8 configuration];
+  snapshotCopy = snapshot;
+  handlerCopy = handler;
+  state = [(SMSessionManager *)self state];
+  configuration = [state configuration];
 
-  v10 = [(SMSessionManager *)self state];
-  v30 = [v10 mutableCopy];
+  state2 = [(SMSessionManager *)self state];
+  v30 = [state2 mutableCopy];
 
-  v11 = [v9 sessionWorkoutIdentifier];
-  v31 = v6;
-  v12 = [v6 sessionIdentifier];
-  if (v11 != v12 || (v13 = [v9 sessionWorkoutType], v13 != objc_msgSend(v6, "activityType")))
+  sessionWorkoutIdentifier = [configuration sessionWorkoutIdentifier];
+  v31 = snapshotCopy;
+  sessionIdentifier = [snapshotCopy sessionIdentifier];
+  if (sessionWorkoutIdentifier != sessionIdentifier || (v13 = [configuration sessionWorkoutType], v13 != objc_msgSend(snapshotCopy, "activityType")))
   {
 
     goto LABEL_9;
   }
 
-  v14 = [v9 sessionWorkoutMirrorType];
-  v15 = [v6 sessionType];
+  sessionWorkoutMirrorType = [configuration sessionWorkoutMirrorType];
+  sessionType = [snapshotCopy sessionType];
 
-  if (v14 != v15)
+  if (sessionWorkoutMirrorType != sessionType)
   {
 LABEL_9:
     v29 = objc_alloc(MEMORY[0x277D4AB78]);
-    v17 = [v9 conversation];
-    v28 = [v9 sessionID];
-    v27 = [v9 sessionStartDate];
-    v26 = [v9 sessionType];
-    v18 = [v9 time];
-    v25 = [v9 destination];
-    v24 = [v9 userResponseSafeDate];
-    v19 = [v9 sessionSupportsHandoff];
-    v20 = [v9 sosReceivers];
-    v21 = [v31 sessionIdentifier];
-    LOBYTE(v23) = v19;
-    v22 = [v29 initWithConversation:v17 sessionID:v28 sessionStartDate:v27 sessionType:v26 time:v18 destination:v25 userResponseSafeDate:v24 sessionSupportsHandoff:v23 sosReceivers:v20 sessionWorkoutIdentifier:v21 sessionWorkoutType:objc_msgSend(v31 sessionWorkoutMirrorType:{"activityType"), objc_msgSend(v31, "sessionType")}];
+    conversation = [configuration conversation];
+    sessionID = [configuration sessionID];
+    sessionStartDate = [configuration sessionStartDate];
+    sessionType2 = [configuration sessionType];
+    time = [configuration time];
+    destination = [configuration destination];
+    userResponseSafeDate = [configuration userResponseSafeDate];
+    sessionSupportsHandoff = [configuration sessionSupportsHandoff];
+    sosReceivers = [configuration sosReceivers];
+    sessionIdentifier2 = [v31 sessionIdentifier];
+    LOBYTE(v23) = sessionSupportsHandoff;
+    v22 = [v29 initWithConversation:conversation sessionID:sessionID sessionStartDate:sessionStartDate sessionType:sessionType2 time:time destination:destination userResponseSafeDate:userResponseSafeDate sessionSupportsHandoff:v23 sosReceivers:sosReceivers sessionWorkoutIdentifier:sessionIdentifier2 sessionWorkoutType:objc_msgSend(v31 sessionWorkoutMirrorType:{"activityType"), objc_msgSend(v31, "sessionType")}];
     [v30 setConfiguration:v22];
 
     [(SMSessionManager *)self _performStateTransitionTo:v30 transitionType:1 handler:?];

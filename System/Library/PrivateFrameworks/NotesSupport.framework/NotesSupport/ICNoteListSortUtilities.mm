@@ -1,19 +1,19 @@
 @interface ICNoteListSortUtilities
-+ (id)dateForCurrentSortTypeAccessibilityStringForNote:(id)a3 folderNoteSortType:(id)a4;
-+ (id)dateForCurrentSortTypeForNote:(id)a3 folderNoteSortType:(id)a4;
-+ (id)descriptionForNoteListSortType:(int64_t)a3;
-+ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)a3;
-+ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)a3 folderNoteSortType:(id)a4;
++ (id)dateForCurrentSortTypeAccessibilityStringForNote:(id)note folderNoteSortType:(id)type;
++ (id)dateForCurrentSortTypeForNote:(id)note folderNoteSortType:(id)type;
++ (id)descriptionForNoteListSortType:(int64_t)type;
++ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)notes;
++ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)notes folderNoteSortType:(id)type;
 + (id)sortDescriptorsForPinnedNotes;
-+ (id)sortDescriptorsForType:(int64_t)a3 ascending:(BOOL)a4;
++ (id)sortDescriptorsForType:(int64_t)type ascending:(BOOL)ascending;
 + (int64_t)currentNoteListSortType;
-+ (int64_t)folderSortOrderForNoteListSortType:(int64_t)a3;
-+ (int64_t)sortTypeForFolderNoteOrder:(int64_t)a3;
-+ (int64_t)sortTypeForTag:(int64_t)a3;
-+ (int64_t)tagForSortType:(int64_t)a3;
++ (int64_t)folderSortOrderForNoteListSortType:(int64_t)type;
++ (int64_t)sortTypeForFolderNoteOrder:(int64_t)order;
++ (int64_t)sortTypeForTag:(int64_t)tag;
++ (int64_t)tagForSortType:(int64_t)type;
 + (void)clearCache;
-+ (void)setCurrentNoteListSortType:(int64_t)a3;
-+ (void)setCurrentNoteListSortTypeByTag:(int64_t)a3;
++ (void)setCurrentNoteListSortType:(int64_t)type;
++ (void)setCurrentNoteListSortTypeByTag:(int64_t)tag;
 @end
 
 @implementation ICNoteListSortUtilities
@@ -56,11 +56,11 @@
   cachedNoteListSortType = 0;
 }
 
-+ (void)setCurrentNoteListSortType:(int64_t)a3
++ (void)setCurrentNoteListSortType:(int64_t)type
 {
-  if ([a1 currentNoteListSortType] != a3)
+  if ([self currentNoteListSortType] != type)
   {
-    if (a3 >= 3)
+    if (type >= 3)
     {
 
       +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "+[ICNoteListSortUtilities setCurrentNoteListSortType:]", 1, 0, @"Unexpected Note List Sort Type");
@@ -68,11 +68,11 @@
 
     else
     {
-      v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       v5 = cachedNoteListSortType;
       cachedNoteListSortType = v4;
 
-      v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
       [ICSettingsUtilities setObject:v6 forKey:@"kICSettingsNoteListSortTypeKey"];
 
       v7 = +[ICWidget sharedWidget];
@@ -81,26 +81,26 @@
   }
 }
 
-+ (id)sortDescriptorsForType:(int64_t)a3 ascending:(BOOL)a4
++ (id)sortDescriptorsForType:(int64_t)type ascending:(BOOL)ascending
 {
-  v4 = a4;
+  ascendingCopy = ascending;
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (type)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:a4 selector:sel_localizedStandardCompare_];
+      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascending selector:sel_localizedStandardCompare_];
       v12[0] = v5;
-      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:v4 ^ 1];
+      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:ascendingCopy ^ 1];
       v12[1] = v6;
       v7 = v12;
     }
 
-    else if (a3 == 1)
+    else if (type == 1)
     {
-      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:!a4];
+      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:!ascending];
       v13[0] = v5;
-      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:v4 selector:sel_localizedStandardCompare_];
+      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascendingCopy selector:sel_localizedStandardCompare_];
       v13[1] = v6;
       v7 = v13;
     }
@@ -108,9 +108,9 @@
     else
     {
       +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "+[ICNoteListSortUtilities sortDescriptorsForType:ascending:]", 1, 0, @"Unexpected sort type for sort descriptors");
-      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:v4 ^ 1];
+      v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:ascendingCopy ^ 1];
       v10[0] = v5;
-      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:v4 selector:sel_localizedStandardCompare_];
+      v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascendingCopy selector:sel_localizedStandardCompare_];
       v10[1] = v6;
       v7 = v10;
     }
@@ -118,9 +118,9 @@
 
   else
   {
-    v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:!a4];
+    v5 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"modificationDate" ascending:!ascending];
     v11[0] = v5;
-    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:v4 selector:sel_localizedStandardCompare_];
+    v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"title" ascending:ascendingCopy selector:sel_localizedStandardCompare_];
     v11[1] = v6;
     v7 = v11;
   }
@@ -130,14 +130,14 @@
   return v8;
 }
 
-+ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)a3
++ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)notes
 {
-  v3 = a3;
-  v5 = [a1 sortDescriptorsForType:{objc_msgSend(a1, "currentNoteListSortType")}];
-  if (v3)
+  notesCopy = notes;
+  v5 = [self sortDescriptorsForType:{objc_msgSend(self, "currentNoteListSortType")}];
+  if (notesCopy)
   {
-    v6 = [a1 sortDescriptorsForPinnedNotes];
-    v7 = [v6 arrayByAddingObjectsFromArray:v5];
+    sortDescriptorsForPinnedNotes = [self sortDescriptorsForPinnedNotes];
+    v7 = [sortDescriptorsForPinnedNotes arrayByAddingObjectsFromArray:v5];
 
     v5 = v7;
   }
@@ -145,17 +145,17 @@
   return v5;
 }
 
-+ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)a3 folderNoteSortType:(id)a4
++ (id)sortDescriptorsForCurrentTypeIncludingPinnedNotes:(BOOL)notes folderNoteSortType:(id)type
 {
-  v4 = a3;
-  v6 = a4;
-  if ([v6 order])
+  notesCopy = notes;
+  typeCopy = type;
+  if ([typeCopy order])
   {
-    v7 = [a1 sortDescriptorsForType:objc_msgSend(a1 ascending:{"sortTypeForFolderNoteOrder:", objc_msgSend(v6, "order")), objc_msgSend(v6, "direction") == 0}];
-    if (v4)
+    v7 = [self sortDescriptorsForType:objc_msgSend(self ascending:{"sortTypeForFolderNoteOrder:", objc_msgSend(typeCopy, "order")), objc_msgSend(typeCopy, "direction") == 0}];
+    if (notesCopy)
     {
-      v8 = [a1 sortDescriptorsForPinnedNotes];
-      v9 = [v8 ic_arrayByAddingObjectsFromNonNilArray:v7];
+      sortDescriptorsForPinnedNotes = [self sortDescriptorsForPinnedNotes];
+      v9 = [sortDescriptorsForPinnedNotes ic_arrayByAddingObjectsFromNonNilArray:v7];
 
       v7 = v9;
     }
@@ -163,19 +163,19 @@
 
   else
   {
-    v7 = [a1 sortDescriptorsForCurrentTypeIncludingPinnedNotes:v4];
+    v7 = [self sortDescriptorsForCurrentTypeIncludingPinnedNotes:notesCopy];
   }
 
   return v7;
 }
 
-+ (int64_t)sortTypeForFolderNoteOrder:(int64_t)a3
++ (int64_t)sortTypeForFolderNoteOrder:(int64_t)order
 {
-  if (a3 > 1)
+  if (order > 1)
   {
-    if (a3 != 2)
+    if (order != 2)
     {
-      if (a3 == 3)
+      if (order == 3)
       {
         return 2;
       }
@@ -188,9 +188,9 @@
 
   else
   {
-    if (a3)
+    if (order)
     {
-      if (a3 == 1)
+      if (order == 1)
       {
         return 0;
       }
@@ -200,13 +200,13 @@ LABEL_8:
       return 0;
     }
 
-    return [a1 currentNoteListSortType];
+    return [self currentNoteListSortType];
   }
 }
 
-+ (id)descriptionForNoteListSortType:(int64_t)a3
++ (id)descriptionForNoteListSortType:(int64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 2:
       v3 = @"SORT_BY_TITLE_TITLE";
@@ -230,17 +230,17 @@ LABEL_9:
   return v5;
 }
 
-+ (void)setCurrentNoteListSortTypeByTag:(int64_t)a3
++ (void)setCurrentNoteListSortTypeByTag:(int64_t)tag
 {
-  v4 = [a1 sortTypeForTag:a3];
+  v4 = [self sortTypeForTag:tag];
 
-  [a1 setCurrentNoteListSortType:v4];
+  [self setCurrentNoteListSortType:v4];
 }
 
-+ (int64_t)sortTypeForTag:(int64_t)a3
++ (int64_t)sortTypeForTag:(int64_t)tag
 {
-  result = a3 - 200;
-  if ((a3 - 200) >= 3)
+  result = tag - 200;
+  if ((tag - 200) >= 3)
   {
     +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "+[ICNoteListSortUtilities sortTypeForTag:]", 1, 0, @"Unexpected tag for sort type", v3, v4);
     return 0;
@@ -249,26 +249,26 @@ LABEL_9:
   return result;
 }
 
-+ (int64_t)tagForSortType:(int64_t)a3
++ (int64_t)tagForSortType:(int64_t)type
 {
-  if (a3 < 3)
+  if (type < 3)
   {
-    return a3 | 0xC8;
+    return type | 0xC8;
   }
 
   +[ICAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](ICAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "__objc_no", "+[ICNoteListSortUtilities tagForSortType:]", 1, 0, @"Unexpected sort type for tag.", v3, v4);
   return 0;
 }
 
-+ (int64_t)folderSortOrderForNoteListSortType:(int64_t)a3
++ (int64_t)folderSortOrderForNoteListSortType:(int64_t)type
 {
   v3 = 1;
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 3;
   }
@@ -279,29 +279,29 @@ LABEL_9:
   }
 }
 
-+ (id)dateForCurrentSortTypeForNote:(id)a3 folderNoteSortType:(id)a4
++ (id)dateForCurrentSortTypeForNote:(id)note folderNoteSortType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  noteCopy = note;
+  typeCopy = type;
+  v8 = typeCopy;
+  if (!typeCopy)
   {
     goto LABEL_5;
   }
 
-  v9 = [v7 order];
-  if (v9 < 2 || v9 == 3)
+  order = [typeCopy order];
+  if (order < 2 || order == 3)
   {
     goto LABEL_9;
   }
 
-  if (v9 != 2)
+  if (order != 2)
   {
 LABEL_5:
-    v10 = [a1 currentNoteListSortType];
-    if (v10 && v10 != 2)
+    currentNoteListSortType = [self currentNoteListSortType];
+    if (currentNoteListSortType && currentNoteListSortType != 2)
     {
-      if (v10 != 1)
+      if (currentNoteListSortType != 1)
       {
         goto LABEL_11;
       }
@@ -310,27 +310,27 @@ LABEL_5:
     }
 
 LABEL_9:
-    v11 = [v6 modificationDate];
+    modificationDate = [noteCopy modificationDate];
     goto LABEL_10;
   }
 
 LABEL_8:
-  v11 = [v6 creationDate];
+  modificationDate = [noteCopy creationDate];
 LABEL_10:
-  a1 = v11;
+  self = modificationDate;
 LABEL_11:
 
-  return a1;
+  return self;
 }
 
-+ (id)dateForCurrentSortTypeAccessibilityStringForNote:(id)a3 folderNoteSortType:(id)a4
++ (id)dateForCurrentSortTypeAccessibilityStringForNote:(id)note folderNoteSortType:(id)type
 {
-  v5 = [a1 dateForCurrentSortTypeForNote:a3 folderNoteSortType:a4];
+  v5 = [self dateForCurrentSortTypeForNote:note folderNoteSortType:type];
   if (v5)
   {
-    v6 = [a1 currentNoteListSortType];
+    currentNoteListSortType = [self currentNoteListSortType];
     v7 = MEMORY[0x1E696AEC0];
-    if (v6 == 1)
+    if (currentNoteListSortType == 1)
     {
       v8 = @"created %@";
     }
@@ -341,8 +341,8 @@ LABEL_11:
     }
 
     v10 = __ICLocalizedFrameworkString_impl(v8, v8, 0, 1);
-    v11 = [v5 ic_briefFormattedDateForAccessibility];
-    v9 = [v7 localizedStringWithFormat:v10, v11];
+    ic_briefFormattedDateForAccessibility = [v5 ic_briefFormattedDateForAccessibility];
+    v9 = [v7 localizedStringWithFormat:v10, ic_briefFormattedDateForAccessibility];
   }
 
   else

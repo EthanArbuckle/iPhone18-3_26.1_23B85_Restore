@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (BOOL)_hasLaunchedPrimaryAppProcess;
 - (CBWindowManager)init;
-- (double)_maxLevelForLayer:(unint64_t)a3;
-- (id)_presentVC:(id)a3 onLayer:(unint64_t)a4 backgroundTunnel:(BOOL)a5 statusBarVisible:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8;
-- (id)createRepresentationWithIdentifier:(id)a3;
-- (id)presentViewController:(id)a3 onLayer:(unint64_t)a4 backgroundTunnel:(BOOL)a5 statusBarVisible:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8;
+- (double)_maxLevelForLayer:(unint64_t)layer;
+- (id)_presentVC:(id)c onLayer:(unint64_t)layer backgroundTunnel:(BOOL)tunnel statusBarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
+- (id)createRepresentationWithIdentifier:(id)identifier;
+- (id)presentViewController:(id)controller onLayer:(unint64_t)layer backgroundTunnel:(BOOL)tunnel statusBarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 - (void)_adjustBackgroundWindowLevel;
 - (void)_rekeyWindows;
-- (void)windowDidAppear:(id)a3;
-- (void)windowDidDismiss:(id)a3;
-- (void)windowWillAppear:(id)a3;
-- (void)windowWillDismiss:(id)a3;
+- (void)windowDidAppear:(id)appear;
+- (void)windowDidDismiss:(id)dismiss;
+- (void)windowWillAppear:(id)appear;
+- (void)windowWillDismiss:(id)dismiss;
 @end
 
 @implementation CBWindowManager
@@ -37,8 +37,8 @@
   {
     v3 = objc_opt_new();
     v4 = +[UIColor blackColor];
-    v5 = [v3 view];
-    [v5 setBackgroundColor:v4];
+    view = [v3 view];
+    [view setBackgroundColor:v4];
 
     v6 = objc_alloc_init(CBWindow);
     backgroundWindow = v2->_backgroundWindow;
@@ -46,8 +46,8 @@
 
     [(CBWindow *)v2->_backgroundWindow setWindowLevel:-5000.0];
     [(CBWindow *)v2->_backgroundWindow setRootViewController:v3];
-    v8 = [(CBWindow *)v2->_backgroundWindow rootViewController];
-    [(CBWindow *)v2->_backgroundWindow setPresentedView:v8];
+    rootViewController = [(CBWindow *)v2->_backgroundWindow rootViewController];
+    [(CBWindow *)v2->_backgroundWindow setPresentedView:rootViewController];
 
     [(CBWindow *)v2->_backgroundWindow makeKeyAndVisible];
     v9 = CheckerBoardLogHandleForCategory();
@@ -58,8 +58,8 @@
     }
 
     v10 = [CBRecordingIndicatorManager alloc];
-    v11 = [(CBWindow *)v2->_backgroundWindow windowScene];
-    v12 = [(CBRecordingIndicatorManager *)v10 initWithWindowScene:v11];
+    windowScene = [(CBWindow *)v2->_backgroundWindow windowScene];
+    v12 = [(CBRecordingIndicatorManager *)v10 initWithWindowScene:windowScene];
     rootWindowRecordingIndicatorManager = v2->_rootWindowRecordingIndicatorManager;
     v2->_rootWindowRecordingIndicatorManager = v12;
 
@@ -77,9 +77,9 @@
   return v2;
 }
 
-- (id)createRepresentationWithIdentifier:(id)a3
+- (id)createRepresentationWithIdentifier:(id)identifier
 {
-  v4 = [CBWindowRepresentation windowRepresentationForIdentifier:a3];
+  v4 = [CBWindowRepresentation windowRepresentationForIdentifier:identifier];
   [(CBWindowManager *)self _maxLevelForLayer:1];
   [v4 setWindowLevel:v5 + 10.0];
   [v4 setBackgroundTunnel:1];
@@ -89,46 +89,46 @@
   return v4;
 }
 
-- (id)presentViewController:(id)a3 onLayer:(unint64_t)a4 backgroundTunnel:(BOOL)a5 statusBarVisible:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8
+- (id)presentViewController:(id)controller onLayer:(unint64_t)layer backgroundTunnel:(BOOL)tunnel statusBarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a8;
+  animatedCopy = animated;
+  visibleCopy = visible;
+  tunnelCopy = tunnel;
+  controllerCopy = controller;
+  completionCopy = completion;
   if ([(CBWindowManager *)self _hasLaunchedPrimaryAppProcess])
   {
     v16 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v14;
+      v21 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "CBSceneManager: present viewController %@ to be on top of the Diagnostics app", &v20, 0xCu);
     }
 
     v17 = +[CBSceneManager sharedInstance];
-    v18 = [v17 presentViewController:v14 completion:v15];
+    v18 = [v17 presentViewController:controllerCopy completion:completionCopy];
   }
 
   else
   {
-    v18 = [(CBWindowManager *)self _presentVC:v14 onLayer:a4 backgroundTunnel:v11 statusBarVisible:v10 animated:v9 completion:v15];
+    v18 = [(CBWindowManager *)self _presentVC:controllerCopy onLayer:layer backgroundTunnel:tunnelCopy statusBarVisible:visibleCopy animated:animatedCopy completion:completionCopy];
   }
 
   return v18;
 }
 
-- (id)_presentVC:(id)a3 onLayer:(unint64_t)a4 backgroundTunnel:(BOOL)a5 statusBarVisible:(BOOL)a6 animated:(BOOL)a7 completion:(id)a8
+- (id)_presentVC:(id)c onLayer:(unint64_t)layer backgroundTunnel:(BOOL)tunnel statusBarVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a7;
-  v9 = a6;
-  v10 = a5;
-  v14 = a8;
-  v15 = a3;
-  v16 = [[CBWindow alloc] initWithBackgroundTunnel:v10];
+  animatedCopy = animated;
+  visibleCopy = visible;
+  tunnelCopy = tunnel;
+  completionCopy = completion;
+  cCopy = c;
+  v16 = [[CBWindow alloc] initWithBackgroundTunnel:tunnelCopy];
   [(CBWindow *)v16 setWindowManager:self];
-  [(CBWindow *)v16 setWindowManagerLayer:a4];
-  [(CBWindowManager *)self _maxLevelForLayer:a4];
+  [(CBWindow *)v16 setWindowManagerLayer:layer];
+  [(CBWindowManager *)self _maxLevelForLayer:layer];
   [(CBWindow *)v16 setWindowLevel:v17 + 10.0];
   v18 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -139,17 +139,17 @@
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Set window level to: %f", buf, 0xCu);
   }
 
-  [(CBWindow *)v16 setPresentViewControllerWithStatusBarShown:v9];
-  [(CBWindow *)v16 setPresentedView:v15];
-  [v15 setModalPresentationStyle:0];
+  [(CBWindow *)v16 setPresentViewControllerWithStatusBarShown:visibleCopy];
+  [(CBWindow *)v16 setPresentedView:cCopy];
+  [cCopy setModalPresentationStyle:0];
   v20 = objc_alloc_init(CBWindowRootViewController);
   [(CBWindowRootViewController *)v20 setWindow:v16];
   [(CBWindow *)v16 setRootViewController:v20];
   v21 = +[UIColor clearColor];
   [(CBWindow *)v16 setBackgroundColor:v21];
 
-  v22 = [(CBWindow *)v16 windowManager];
-  [v22 windowWillAppear:v16];
+  windowManager = [(CBWindow *)v16 windowManager];
+  [windowManager windowWillAppear:v16];
 
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -157,9 +157,9 @@
   v28[3] = &unk_10007E148;
   v23 = v16;
   v29 = v23;
-  v30 = v14;
-  v24 = v14;
-  [(CBWindowRootViewController *)v20 presentViewController:v15 animated:v8 completion:v28];
+  v30 = completionCopy;
+  v24 = completionCopy;
+  [(CBWindowRootViewController *)v20 presentViewController:cCopy animated:animatedCopy completion:v28];
 
   v25 = v30;
   v26 = v23;
@@ -167,18 +167,18 @@
   return v23;
 }
 
-- (void)windowWillAppear:(id)a3
+- (void)windowWillAppear:(id)appear
 {
-  v3 = a3;
-  [v3 setHidden:0];
+  appearCopy = appear;
+  [appearCopy setHidden:0];
 }
 
-- (void)windowDidAppear:(id)a3
+- (void)windowDidAppear:(id)appear
 {
-  objc_initWeak(&location, a3);
-  v4 = [(CBWindowManager *)self layers];
+  objc_initWeak(&location, appear);
+  layers = [(CBWindowManager *)self layers];
   v5 = objc_loadWeakRetained(&location);
-  v6 = [v4 objectAtIndex:{objc_msgSend(v5, "windowManagerLayer")}];
+  v6 = [layers objectAtIndex:{objc_msgSend(v5, "windowManagerLayer")}];
   v7 = objc_loadWeakRetained(&location);
   [v6 addObject:v7];
 
@@ -187,33 +187,33 @@
   objc_destroyWeak(&location);
 }
 
-- (void)windowWillDismiss:(id)a3
+- (void)windowWillDismiss:(id)dismiss
 {
-  v7 = a3;
+  dismissCopy = dismiss;
   for (i = 0; i != 3; ++i)
   {
-    v5 = [(CBWindowManager *)self layers];
-    v6 = [v5 objectAtIndex:i];
+    layers = [(CBWindowManager *)self layers];
+    v6 = [layers objectAtIndex:i];
 
-    [v6 removeObject:v7];
+    [v6 removeObject:dismissCopy];
   }
 
   [(CBWindowManager *)self _adjustBackgroundWindowLevel];
   [(CBWindowManager *)self _rekeyWindows];
 }
 
-- (void)windowDidDismiss:(id)a3
+- (void)windowDidDismiss:(id)dismiss
 {
-  v3 = a3;
-  [v3 setHidden:1];
+  dismissCopy = dismiss;
+  [dismissCopy setHidden:1];
 }
 
 - (BOOL)_hasLaunchedPrimaryAppProcess
 {
   v2 = +[CBAppManager sharedInstance];
-  v3 = [v2 primaryAppBundleID];
+  primaryAppBundleID = [v2 primaryAppBundleID];
   v4 = +[FBProcessManager sharedInstance];
-  v5 = [v4 applicationProcessesForBundleIdentifier:v3];
+  v5 = [v4 applicationProcessesForBundleIdentifier:primaryAppBundleID];
 
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -235,8 +235,8 @@
   v3 = 2;
   while (1)
   {
-    v4 = [(CBWindowManager *)self layers];
-    v5 = [v4 objectAtIndex:v3];
+    layers = [(CBWindowManager *)self layers];
+    v5 = [layers objectAtIndex:v3];
 
     if ([v5 count])
     {
@@ -249,23 +249,23 @@
     }
   }
 
-  v6 = [v5 lastObject];
+  lastObject = [v5 lastObject];
   v7 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v6;
+    v9 = lastObject;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Making %@ the key window.", &v8, 0xCu);
   }
 
-  [v6 makeKeyWindow];
+  [lastObject makeKeyWindow];
 }
 
-- (double)_maxLevelForLayer:(unint64_t)a3
+- (double)_maxLevelForLayer:(unint64_t)layer
 {
-  if (a3)
+  if (layer)
   {
-    if (a3 == 2)
+    if (layer == 2)
     {
       v4 = &UIWindowLevelAlert;
     }
@@ -283,8 +283,8 @@
     v5 = -4990.0;
   }
 
-  v6 = [(CBWindowManager *)self layers];
-  v7 = [v6 objectAtIndex:a3];
+  layers = [(CBWindowManager *)self layers];
+  v7 = [layers objectAtIndex:layer];
 
   if ([v7 count])
   {
@@ -316,8 +316,8 @@
   v18 = v2;
   do
   {
-    v6 = [(CBWindowManager *)self layers];
-    v7 = [v6 objectAtIndex:v4];
+    layers = [(CBWindowManager *)self layers];
+    v7 = [layers objectAtIndex:v4];
 
     if ([v7 count])
     {
@@ -352,8 +352,8 @@
   }
 
   while (v4 != 3);
-  v13 = [(CBWindowManager *)self backgroundWindow];
-  [v13 windowLevel];
+  backgroundWindow = [(CBWindowManager *)self backgroundWindow];
+  [backgroundWindow windowLevel];
   v15 = v14;
 
   if (v15 != v5)
@@ -366,8 +366,8 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Setting background to level %f.", buf, 0xCu);
     }
 
-    v17 = [(CBWindowManager *)self backgroundWindow];
-    [v17 setWindowLevel:v5];
+    backgroundWindow2 = [(CBWindowManager *)self backgroundWindow];
+    [backgroundWindow2 setWindowLevel:v5];
   }
 }
 

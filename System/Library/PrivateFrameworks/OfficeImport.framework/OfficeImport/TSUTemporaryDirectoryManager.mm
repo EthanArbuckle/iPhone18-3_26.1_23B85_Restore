@@ -1,11 +1,11 @@
 @interface TSUTemporaryDirectoryManager
 + (id)baseDirectoryURL;
-+ (id)makeUniqueDirectoryWithBaseDirectory:(id)a3 filename:(id)a4;
++ (id)makeUniqueDirectoryWithBaseDirectory:(id)directory filename:(id)filename;
 + (id)sharedManager;
 - (TSUTemporaryDirectoryManager)init;
 - (id)_readDirectories;
-- (id)newDirectoryWithFilename:(id)a3;
-- (void)_clearDirectories:(id)a3;
+- (id)newDirectoryWithFilename:(id)filename;
+- (void)_clearDirectories:(id)directories;
 @end
 
 @implementation TSUTemporaryDirectoryManager
@@ -52,12 +52,12 @@
   objc_exception_throw(v12);
 }
 
-+ (id)makeUniqueDirectoryWithBaseDirectory:(id)a3 filename:(id)a4
++ (id)makeUniqueDirectoryWithBaseDirectory:(id)directory filename:(id)filename
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  directoryCopy = directory;
+  filenameCopy = filename;
+  v7 = filenameCopy;
+  if (!directoryCopy)
   {
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUTemporaryDirectoryManager makeUniqueDirectoryWithBaseDirectory:filename:]"];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUTemporaryDirectoryManager.m"];
@@ -78,15 +78,15 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!filenameCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v26 = 0;
-  v9 = [v8 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v26];
+  v9 = [defaultManager createDirectoryAtPath:directoryCopy withIntermediateDirectories:1 attributes:0 error:&v26];
 
   if ((v9 & 1) == 0 && TSUDefaultCat_init_token != -1)
   {
@@ -94,17 +94,17 @@ LABEL_3:
   }
 
   v10 = 0;
-  if (v5 && v7)
+  if (directoryCopy && v7)
   {
     v11 = [v7 stringByAppendingString:@".XXXXXX"];
-    v12 = [v5 stringByAppendingPathComponent:v11];
+    v12 = [directoryCopy stringByAppendingPathComponent:v11];
 
-    v5 = v12;
-    v13 = [v12 fileSystemRepresentation];
-    if (v13 && (v14 = strlen(v13), (v15 = malloc_type_calloc(v14 + 1, 1uLL, 0x100004077774924uLL)) != 0))
+    directoryCopy = v12;
+    fileSystemRepresentation = [v12 fileSystemRepresentation];
+    if (fileSystemRepresentation && (v14 = strlen(fileSystemRepresentation), (v15 = malloc_type_calloc(v14 + 1, 1uLL, 0x100004077774924uLL)) != 0))
     {
       v16 = v15;
-      v17 = strncpy(v15, [v5 fileSystemRepresentation], v14);
+      v17 = strncpy(v15, [directoryCopy fileSystemRepresentation], v14);
       v16[v14] = 0;
       v18 = mkdtemp(v17);
       if (v18)
@@ -145,8 +145,8 @@ void __78__TSUTemporaryDirectoryManager_makeUniqueDirectoryWithBaseDirectory_fil
   v2 = [(TSUTemporaryDirectoryManager *)&v14 init];
   if (v2)
   {
-    v3 = [objc_opt_class() baseDirectoryURL];
-    v4 = [v3 copy];
+    baseDirectoryURL = [objc_opt_class() baseDirectoryURL];
+    v4 = [baseDirectoryURL copy];
     baseDirectoryURL = v2->_baseDirectoryURL;
     v2->_baseDirectoryURL = v4;
 
@@ -159,15 +159,15 @@ void __78__TSUTemporaryDirectoryManager_makeUniqueDirectoryWithBaseDirectory_fil
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    v8 = [(TSUTemporaryDirectoryManager *)v2 _readDirectories];
-    if ([v8 count])
+    _readDirectories = [(TSUTemporaryDirectoryManager *)v2 _readDirectories];
+    if ([_readDirectories count])
     {
       v9 = dispatch_get_global_queue(-32768, 0);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __36__TSUTemporaryDirectoryManager_init__block_invoke;
       block[3] = &unk_2799C68A8;
-      v12 = v8;
+      v12 = _readDirectories;
       v13 = v2;
       dispatch_async(v9, block);
     }
@@ -201,11 +201,11 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
   v20[1] = *MEMORY[0x277D85DE8];
   if (self->_baseDirectoryURL)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     baseDirectoryURL = self->_baseDirectoryURL;
     v20[0] = *MEMORY[0x277CBE8F8];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-    v6 = [v3 contentsOfDirectoryAtURL:baseDirectoryURL includingPropertiesForKeys:v5 options:0 error:0];
+    v6 = [defaultManager contentsOfDirectoryAtURL:baseDirectoryURL includingPropertiesForKeys:v5 options:0 error:0];
 
     v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
     v15 = 0u;
@@ -227,8 +227,8 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) path];
-          [v7 addObject:v13];
+          path = [*(*(&v15 + 1) + 8 * i) path];
+          [v7 addObject:path];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -246,16 +246,16 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
   return v7;
 }
 
-- (void)_clearDirectories:(id)a3
+- (void)_clearDirectories:(id)directories
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoriesCopy = directories;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v3;
+  v5 = directoriesCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -271,7 +271,7 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
           objc_enumerationMutation(v5);
         }
 
-        [v4 removeItemAtPath:*(*(&v10 + 1) + 8 * v9++) error:{0, v10}];
+        [defaultManager removeItemAtPath:*(*(&v10 + 1) + 8 * v9++) error:{0, v10}];
       }
 
       while (v7 != v9);
@@ -282,23 +282,23 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
   }
 }
 
-- (id)newDirectoryWithFilename:(id)a3
+- (id)newDirectoryWithFilename:(id)filename
 {
-  v4 = a3;
-  if (!v4)
+  filenameCopy = filename;
+  if (!filenameCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUTemporaryDirectoryManager newDirectoryWithFilename:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUTemporaryDirectoryManager.m"];
     [OITSUAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:139 isFatal:0 description:"invalid nil value for '%{public}s'", "filename"];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    filenameCopy = [uUID UUIDString];
   }
 
   v8 = objc_opt_class();
-  v9 = [(NSURL *)self->_baseDirectoryURL path];
-  v10 = [v8 makeUniqueDirectoryWithBaseDirectory:v9 filename:v4];
+  path = [(NSURL *)self->_baseDirectoryURL path];
+  v10 = [v8 makeUniqueDirectoryWithBaseDirectory:path filename:filenameCopy];
 
   if (!v10)
   {
@@ -308,9 +308,9 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
     }
 
     baseDirectoryURL = self->_baseDirectoryURL;
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    v10 = [(NSURL *)baseDirectoryURL URLByAppendingPathComponent:v13];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID2 UUIDString];
+    v10 = [(NSURL *)baseDirectoryURL URLByAppendingPathComponent:uUIDString];
 
     if (!v10)
     {
@@ -323,18 +323,18 @@ void __36__TSUTemporaryDirectoryManager_init__block_invoke_2()
     }
   }
 
-  v16 = [objc_opt_class() managedTemporaryDirectoryClass];
-  if (([(objc_class *)v16 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  managedTemporaryDirectoryClass = [objc_opt_class() managedTemporaryDirectoryClass];
+  if (([(objc_class *)managedTemporaryDirectoryClass isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUTemporaryDirectoryManager newDirectoryWithFilename:]"];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUTemporaryDirectoryManager.m"];
-    v19 = NSStringFromClass(v16);
+    v19 = NSStringFromClass(managedTemporaryDirectoryClass);
     [OITSUAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:154 isFatal:0 description:"Invalid managed temporary directory class: %{public}@", v19];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v20 = [[v16 alloc] initWithURL:v10];
+  v20 = [[managedTemporaryDirectoryClass alloc] initWithURL:v10];
 
   return v20;
 }

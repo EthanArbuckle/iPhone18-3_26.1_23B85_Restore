@@ -1,9 +1,9 @@
 @interface ASCLockupWrapperComponent
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4;
+- (void)lockupView:(id)view appStateDidChange:(id)change;
 - (void)prepareForReuse;
 @end
 
@@ -11,13 +11,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1323C(&selRef_prepareForReuse);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_11DA8();
   v5 = v4;
   v7 = v6;
@@ -31,13 +31,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_11E14();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  v5 = self;
+  selfCopy = self;
   sub_11ED0();
   v7 = v6;
   v9 = v8;
@@ -49,19 +49,19 @@
   return result;
 }
 
-- (void)lockupView:(id)a3 appStateDidChange:(id)a4
+- (void)lockupView:(id)view appStateDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  changeCopy = change;
+  selfCopy = self;
   sub_1350C();
 }
 
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1389C();
 
   swift_unknownObjectRelease();

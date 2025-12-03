@@ -1,59 +1,59 @@
 @interface SWContainerConfiguration
-- (SWContainerConfiguration)initWithStoreFront:(id)a3 locale:(id)a4 contentEnvironment:(id)a5 contentSizeCategory:(id)a6 layoutGuide:(id)a7 dataSources:(id)a8 location:(id)a9 sourceURL:(id)a10 activePictureInPictureURL:(id)a11 feedConfiguration:(id)a12 supportsLiveActivities:(BOOL)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SWContainerConfiguration)initWithStoreFront:(id)front locale:(id)locale contentEnvironment:(id)environment contentSizeCategory:(id)category layoutGuide:(id)guide dataSources:(id)sources location:(id)location sourceURL:(id)self0 activePictureInPictureURL:(id)self1 feedConfiguration:(id)self2 supportsLiveActivities:(BOOL)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SWContainerConfiguration
 
-- (SWContainerConfiguration)initWithStoreFront:(id)a3 locale:(id)a4 contentEnvironment:(id)a5 contentSizeCategory:(id)a6 layoutGuide:(id)a7 dataSources:(id)a8 location:(id)a9 sourceURL:(id)a10 activePictureInPictureURL:(id)a11 feedConfiguration:(id)a12 supportsLiveActivities:(BOOL)a13
+- (SWContainerConfiguration)initWithStoreFront:(id)front locale:(id)locale contentEnvironment:(id)environment contentSizeCategory:(id)category layoutGuide:(id)guide dataSources:(id)sources location:(id)location sourceURL:(id)self0 activePictureInPictureURL:(id)self1 feedConfiguration:(id)self2 supportsLiveActivities:(BOOL)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v31 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
+  frontCopy = front;
+  localeCopy = locale;
+  environmentCopy = environment;
+  categoryCopy = category;
+  guideCopy = guide;
+  sourcesCopy = sources;
+  locationCopy = location;
+  lCopy = l;
+  rLCopy = rL;
+  configurationCopy = configuration;
   v32.receiver = self;
   v32.super_class = SWContainerConfiguration;
   v27 = [(SWContainerConfiguration *)&v32 init];
   v28 = v27;
   if (v27)
   {
-    [(SWContainerConfiguration *)v27 setStoreFront:v18];
-    [(SWContainerConfiguration *)v28 setLocale:v19];
-    [(SWContainerConfiguration *)v28 setContentEnvironment:v31];
-    [(SWContainerConfiguration *)v28 setContentSizeCategory:v20];
-    [(SWContainerConfiguration *)v28 setLayoutGuide:v21];
-    [(SWContainerConfiguration *)v28 setDataSources:v22];
-    [(SWContainerConfiguration *)v28 setLocation:v23];
-    [(SWContainerConfiguration *)v28 setSourceURL:v24];
-    [(SWContainerConfiguration *)v28 setActivePictureInPictureURL:v25];
-    [(SWContainerConfiguration *)v28 setFeedConfiguration:v26];
-    [(SWContainerConfiguration *)v28 setSupportsLiveActivities:a13];
+    [(SWContainerConfiguration *)v27 setStoreFront:frontCopy];
+    [(SWContainerConfiguration *)v28 setLocale:localeCopy];
+    [(SWContainerConfiguration *)v28 setContentEnvironment:environmentCopy];
+    [(SWContainerConfiguration *)v28 setContentSizeCategory:categoryCopy];
+    [(SWContainerConfiguration *)v28 setLayoutGuide:guideCopy];
+    [(SWContainerConfiguration *)v28 setDataSources:sourcesCopy];
+    [(SWContainerConfiguration *)v28 setLocation:locationCopy];
+    [(SWContainerConfiguration *)v28 setSourceURL:lCopy];
+    [(SWContainerConfiguration *)v28 setActivePictureInPictureURL:rLCopy];
+    [(SWContainerConfiguration *)v28 setFeedConfiguration:configurationCopy];
+    [(SWContainerConfiguration *)v28 setSupportsLiveActivities:activities];
   }
 
   return v28;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SWContainerConfiguration alloc];
-  v5 = [(SWContainerConfiguration *)self storeFront];
-  v17 = [(SWContainerConfiguration *)self locale];
-  v6 = [(SWContainerConfiguration *)self contentEnvironment];
-  v16 = [(SWContainerConfiguration *)self contentSizeCategory];
-  v7 = [(SWContainerConfiguration *)self layoutGuide];
-  v8 = [(SWContainerConfiguration *)self dataSources];
-  v9 = [(SWContainerConfiguration *)self location];
-  v10 = [(SWContainerConfiguration *)self sourceURL];
-  v11 = [(SWContainerConfiguration *)self activePictureInPictureURL];
-  v12 = [(SWContainerConfiguration *)self feedConfiguration];
+  storeFront = [(SWContainerConfiguration *)self storeFront];
+  locale = [(SWContainerConfiguration *)self locale];
+  contentEnvironment = [(SWContainerConfiguration *)self contentEnvironment];
+  contentSizeCategory = [(SWContainerConfiguration *)self contentSizeCategory];
+  layoutGuide = [(SWContainerConfiguration *)self layoutGuide];
+  dataSources = [(SWContainerConfiguration *)self dataSources];
+  location = [(SWContainerConfiguration *)self location];
+  sourceURL = [(SWContainerConfiguration *)self sourceURL];
+  activePictureInPictureURL = [(SWContainerConfiguration *)self activePictureInPictureURL];
+  feedConfiguration = [(SWContainerConfiguration *)self feedConfiguration];
   LOBYTE(v14) = [(SWContainerConfiguration *)self supportsLiveActivities];
-  v15 = [(SWContainerConfiguration *)v4 initWithStoreFront:v5 locale:v17 contentEnvironment:v6 contentSizeCategory:v16 layoutGuide:v7 dataSources:v8 location:v9 sourceURL:v10 activePictureInPictureURL:v11 feedConfiguration:v12 supportsLiveActivities:v14];
+  v15 = [(SWContainerConfiguration *)v4 initWithStoreFront:storeFront locale:locale contentEnvironment:contentEnvironment contentSizeCategory:contentSizeCategory layoutGuide:layoutGuide dataSources:dataSources location:location sourceURL:sourceURL activePictureInPictureURL:activePictureInPictureURL feedConfiguration:feedConfiguration supportsLiveActivities:v14];
 
   return v15;
 }

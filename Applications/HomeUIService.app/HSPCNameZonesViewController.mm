@@ -1,18 +1,18 @@
 @interface HSPCNameZonesViewController
-+ (id)applicableServicesForAccessory:(id)a3;
-- (HSPCNameZonesViewController)initWithCoordinator:(id)a3 config:(id)a4;
++ (id)applicableServicesForAccessory:(id)accessory;
+- (HSPCNameZonesViewController)initWithCoordinator:(id)coordinator config:(id)config;
 @end
 
 @implementation HSPCNameZonesViewController
 
-+ (id)applicableServicesForAccessory:(id)a3
++ (id)applicableServicesForAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [v3 hf_primaryService];
-  v5 = [v3 hf_visibleServices];
+  accessoryCopy = accessory;
+  hf_primaryService = [accessoryCopy hf_primaryService];
+  hf_visibleServices = [accessoryCopy hf_visibleServices];
 
-  v6 = [v4 hf_childServices];
-  v7 = [v5 setByAddingObjectsFromSet:v6];
+  hf_childServices = [hf_primaryService hf_childServices];
+  v7 = [hf_visibleServices setByAddingObjectsFromSet:hf_childServices];
 
   v8 = [v7 na_filter:&stru_1000C7820];
   v9 = HFLogForCategory();
@@ -30,11 +30,11 @@
   return v8;
 }
 
-- (HSPCNameZonesViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCNameZonesViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
   v7.receiver = self;
   v7.super_class = HSPCNameZonesViewController;
-  v4 = [(HSPCNameServicesViewController *)&v7 initWithCoordinator:a3 config:a4];
+  v4 = [(HSPCNameServicesViewController *)&v7 initWithCoordinator:coordinator config:config];
   if (v4)
   {
     v5 = HULocalizedString();

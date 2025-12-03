@@ -65,8 +65,8 @@ uint64_t __38__PXPhotosGridSettings_sharedInstance__block_invoke()
   [(PXPhotosGridSettings *)self setEnableMultiSelectMenu:1];
   [(PXPhotosGridSettings *)self setEnableNewActionMenu:1];
   [(PXPhotosGridSettings *)self setEnableFilterDropDownButton:0];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  -[PXPhotosGridSettings setEnableFilterViewControllerAnchoringToSender:](self, "setEnableFilterViewControllerAnchoringToSender:", [v3 userInterfaceIdiom] == 1);
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  -[PXPhotosGridSettings setEnableFilterViewControllerAnchoringToSender:](self, "setEnableFilterViewControllerAnchoringToSender:", [currentDevice userInterfaceIdiom] == 1);
 
   [(PXPhotosGridSettings *)self setEnableDetailsMenuAction:0];
   [(PXPhotosGridSettings *)self setExposeMoviePresentationAction:0];
@@ -90,20 +90,20 @@ uint64_t __38__PXPhotosGridSettings_sharedInstance__block_invoke()
   [(PXPhotosGridSettings *)self setGridBadgesOnlyShowGlyph:0];
   [(PXPhotosGridSettings *)self setGridBadgesPortraitEnabled:0];
   [(PXPhotosGridSettings *)self setGridBadgesForAllMediaTypes:0];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v4 objectForKey:@"PXPhotosGridEnableStacksReviewUI"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"PXPhotosGridEnableStacksReviewUI"];
 
   if (v6)
   {
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  [(PXPhotosGridSettings *)self setEnableStacksReviewUI:v5];
+  [(PXPhotosGridSettings *)self setEnableStacksReviewUI:bOOLValue];
   [(PXPhotosGridSettings *)self setPlayingRecordsUpdateRateLimit:0.02];
   [(PXPhotosGridSettings *)self setPlaybackVisibleRectEdgeInset:30.0];
   [(PXPhotosGridSettings *)self setMaxNumberOfPlayingItems:1];

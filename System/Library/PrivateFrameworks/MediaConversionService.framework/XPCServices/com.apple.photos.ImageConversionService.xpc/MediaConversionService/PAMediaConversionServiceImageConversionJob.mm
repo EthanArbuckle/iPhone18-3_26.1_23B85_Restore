@@ -19,7 +19,7 @@
 - (NSString)photosAdjustmentFormatVersion;
 - (NSString)sourceUTI;
 - (NSURL)mainSourceResourceURL;
-- (PAMediaConversionServiceImageConversionJob)initWithRequestIdentifier:(id)a3 sourceResourceURLCollection:(id)a4 outputFileType:(id)a5;
+- (PAMediaConversionServiceImageConversionJob)initWithRequestIdentifier:(id)identifier sourceResourceURLCollection:(id)collection outputFileType:(id)type;
 - (int64_t)requestedOrCalculatedMaximumLongSideLength;
 - (int64_t)sourceOrientation;
 - (unint64_t)orientationTransformBehavior;
@@ -68,8 +68,8 @@
 {
   if ([(PAMediaConversionServiceImageConversionJob *)self canAccessSourceImageProperties])
   {
-    v3 = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
-    [PFMediaUtilities maximumImageSizeFromProperties:v3];
+    sourceImageProperties = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
+    [PFMediaUtilities maximumImageSizeFromProperties:sourceImageProperties];
     v5 = v4;
     v7 = v6;
 
@@ -79,9 +79,9 @@
 
   else
   {
-    v10 = [(PAMediaConversionServiceImageConversionJob *)self sourceImageRef];
-    Width = CGImageGetWidth(v10);
-    Height = CGImageGetHeight(v10);
+    sourceImageRef = [(PAMediaConversionServiceImageConversionJob *)self sourceImageRef];
+    Width = CGImageGetWidth(sourceImageRef);
+    Height = CGImageGetHeight(sourceImageRef);
     v8 = Width;
   }
 
@@ -97,23 +97,23 @@
     return 1;
   }
 
-  v3 = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
-  v4 = [v3 objectForKeyedSubscript:kCGImagePropertyOrientation];
+  sourceImageProperties = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
+  v4 = [sourceImageProperties objectForKeyedSubscript:kCGImagePropertyOrientation];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
 - (BOOL)isRAWSourceUTI
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self sourceUTI];
-  v3 = [PFUniformTypeUtilities typeWithIdentifier:v2];
+  sourceUTI = [(PAMediaConversionServiceImageConversionJob *)self sourceUTI];
+  v3 = [PFUniformTypeUtilities typeWithIdentifier:sourceUTI];
   v4 = [v3 conformsToType:UTTypeRAWImage];
 
   return v4;
@@ -121,16 +121,16 @@
 
 - (NSString)sourceUTI
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
-  v3 = [v2 typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
+  sourceResourceURLCollection = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
+  v3 = [sourceResourceURLCollection typeIdentifierForResourceURLWithRole:@"PAMediaConversionResourceRoleMainResource"];
 
   return v3;
 }
 
 - (BOOL)sourceRequiresRasterization
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self sourceUTI];
-  v3 = [PFUniformTypeUtilities typeWithIdentifier:v2];
+  sourceUTI = [(PAMediaConversionServiceImageConversionJob *)self sourceUTI];
+  v3 = [PFUniformTypeUtilities typeWithIdentifier:sourceUTI];
   v4 = [PFMediaUtilities typeRequiresRasterization:v3];
 
   return v4;
@@ -148,21 +148,21 @@ LABEL_2:
 
   if ([(PAMediaConversionServiceImageConversionJob *)self canAccessSourceImageProperties])
   {
-    v6 = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
-    v7 = [v6 isBlastDoorAccessRequired];
+    sourceResourceURLCollection = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
+    isBlastDoorAccessRequired = [sourceResourceURLCollection isBlastDoorAccessRequired];
 
-    if (v7)
+    if (isBlastDoorAccessRequired)
     {
-      v8 = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
-      v9 = [v8 blastDoorMainSourceProperties];
+      sourceResourceURLCollection2 = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
+      blastDoorMainSourceProperties = [sourceResourceURLCollection2 blastDoorMainSourceProperties];
       v10 = self->_sourceImageProperties;
-      self->_sourceImageProperties = v9;
+      self->_sourceImageProperties = blastDoorMainSourceProperties;
     }
 
     else
     {
       v11 = [PFMediaUtilities imagePropertiesFromImageSource:self->_imageSource];
-      v8 = self->_sourceImageProperties;
+      sourceResourceURLCollection2 = self->_sourceImageProperties;
       self->_sourceImageProperties = v11;
     }
 
@@ -171,9 +171,9 @@ LABEL_2:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
+        mainSourceResourceURL = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
         v14 = 138412290;
-        v15 = v13;
+        v15 = mainSourceResourceURL;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to get source image properties for %@", &v14, 0xCu);
 
         sourceImageProperties = self->_sourceImageProperties;
@@ -190,9 +190,9 @@ LABEL_2:
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    v12 = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
+    mainSourceResourceURL2 = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
     v14 = 138412290;
-    v15 = v12;
+    v15 = mainSourceResourceURL2;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to get source image properties for input image: %@", &v14, 0xCu);
   }
 
@@ -226,10 +226,10 @@ LABEL_3:
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v4 = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
-        v5 = [v4 path];
+        mainSourceResourceURL = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
+        path = [mainSourceResourceURL path];
         v6 = 138412290;
-        v7 = v5;
+        v7 = path;
         _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create image ref from %@", &v6, 0xCu);
 
         return self->_sourceImageRef;
@@ -279,43 +279,43 @@ LABEL_3:
 
 - (NSString)photosAdjustmentFormatVersion
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentFormatVersionKey"];
+  adjustmentInformation = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
+  v3 = [adjustmentInformation objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentFormatVersionKey"];
 
   return v3;
 }
 
 - (NSString)photosAdjustmentFormatIdentifier
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentFormatIdentifierKey"];
+  adjustmentInformation = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
+  v3 = [adjustmentInformation objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentFormatIdentifierKey"];
 
   return v3;
 }
 
 - (NSData)photosAdjustmentData
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
-  v3 = [v2 objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentDataKey"];
+  adjustmentInformation = [(PAMediaConversionServiceImageConversionJob *)self adjustmentInformation];
+  v3 = [adjustmentInformation objectForKeyedSubscript:@"PAMediaConversionServiceAdjustmentDataKey"];
 
   return v3;
 }
 
 - (BOOL)hasLivePhotoSourceURLs
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
+  sourceResourceURLCollection = [(PAMediaConversionServiceImageConversionJob *)self sourceResourceURLCollection];
   v6[0] = @"PAMediaConversionResourceRoleMainResource";
   v6[1] = @"PAMediaConversionResourceRoleVideoComplement";
   v3 = [NSArray arrayWithObjects:v6 count:2];
-  v4 = [v2 containsAllRoles:v3];
+  v4 = [sourceResourceURLCollection containsAllRoles:v3];
 
   return v4;
 }
 
 - (BOOL)hasPhotosAdjustments
 {
-  v2 = [(PAMediaConversionServiceImageConversionJob *)self photosAdjustmentData];
-  v3 = v2 != 0;
+  photosAdjustmentData = [(PAMediaConversionServiceImageConversionJob *)self photosAdjustmentData];
+  v3 = photosAdjustmentData != 0;
 
   return v3;
 }
@@ -392,7 +392,7 @@ LABEL_15:
         return v5;
       }
 
-      v9 = [(PAMediaConversionServiceImageConversionJob *)self requestedMaximumLongSideLength];
+      requestedMaximumLongSideLength = [(PAMediaConversionServiceImageConversionJob *)self requestedMaximumLongSideLength];
       if (v6 >= v7)
       {
         v10 = v6;
@@ -403,7 +403,7 @@ LABEL_15:
         v10 = v7;
       }
 
-      v8 = v9 / v10;
+      v8 = requestedMaximumLongSideLength / v10;
     }
 
     [(PAMediaConversionServiceImageConversionJob *)self setScaleFactor:v8];
@@ -421,19 +421,19 @@ LABEL_15:
 
 - (BOOL)_validateOrientation
 {
-  v3 = [(PAMediaConversionServiceImageConversionJob *)self sourceOrientation];
+  sourceOrientation = [(PAMediaConversionServiceImageConversionJob *)self sourceOrientation];
   if ([(PAMediaConversionServiceImageConversionJob *)self applySourceOrientationTransform])
   {
-    [(PAMediaConversionServiceImageConversionJob *)self setOrientation:v3];
+    [(PAMediaConversionServiceImageConversionJob *)self setOrientation:sourceOrientation];
   }
 
-  v4 = [(PAMediaConversionServiceImageConversionJob *)self orientation];
+  orientation = [(PAMediaConversionServiceImageConversionJob *)self orientation];
   self->_orientationTransformBehavior = 0;
   if (IPAOrientationIsValid())
   {
-    if (v4 == v3)
+    if (orientation == sourceOrientation)
     {
-      if (v3 == 1)
+      if (sourceOrientation == 1)
       {
 LABEL_12:
         [(NSMutableDictionary *)self->_destinationImageProperties removeObjectForKey:kCGImagePropertyOrientation];
@@ -452,7 +452,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!orientation)
   {
 LABEL_13:
     LOBYTE(v6) = 1;
@@ -463,7 +463,7 @@ LABEL_13:
   if (v6)
   {
     v8 = 134217984;
-    v9 = v4;
+    v9 = orientation;
     _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Invalid orientation request option %ld", &v8, 0xCu);
     LOBYTE(v6) = 0;
   }
@@ -475,9 +475,9 @@ LABEL_13:
 {
   if ([(PAMediaConversionServiceImageConversionJob *)self canAccessSourceImageProperties])
   {
-    v3 = [(PAMediaConversionServiceImageConversionJob *)self metadataPolicy];
+    metadataPolicy = [(PAMediaConversionServiceImageConversionJob *)self metadataPolicy];
 
-    if (!v3)
+    if (!metadataPolicy)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
@@ -489,9 +489,9 @@ LABEL_13:
       [(PAMediaConversionServiceImageConversionJob *)self setMetadataPolicy:v4];
     }
 
-    v5 = [(PAMediaConversionServiceImageConversionJob *)self metadataPolicy];
-    v6 = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
-    v7 = [v5 processMetadata:v6];
+    metadataPolicy2 = [(PAMediaConversionServiceImageConversionJob *)self metadataPolicy];
+    sourceImageProperties = [(PAMediaConversionServiceImageConversionJob *)self sourceImageProperties];
+    v7 = [metadataPolicy2 processMetadata:sourceImageProperties];
     v8 = [v7 mutableCopy];
     destinationImageProperties = self->_destinationImageProperties;
     self->_destinationImageProperties = v8;
@@ -509,18 +509,18 @@ LABEL_13:
 
 - (BOOL)_validateSource
 {
-  v3 = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
+  mainSourceResourceURL = [(PAMediaConversionServiceImageConversionJob *)self mainSourceResourceURL];
   v13 = kCGImageSourceShouldCache;
   v14 = &__kCFBooleanFalse;
-  v4 = CGImageSourceCreateWithURL(v3, [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1]);
+  v4 = CGImageSourceCreateWithURL(mainSourceResourceURL, [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1]);
   self->_imageSource = v4;
   if (!v4)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(__CFURL *)v3 path];
+      path = [(__CFURL *)mainSourceResourceURL path];
       v11 = 138412290;
-      v12 = v10;
+      v12 = path;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create image source from %@", &v11, 0xCu);
     }
 
@@ -561,9 +561,9 @@ LABEL_7:
 
   if ([(PAMediaConversionServiceImageConversionJob *)self _validateSource]&& [(PAMediaConversionServiceImageConversionJob *)self _validateMetadata]&& [(PAMediaConversionServiceImageConversionJob *)self _validateOrientation])
   {
-    v5 = [(PAMediaConversionServiceImageConversionJob *)self _validateOutputSize];
+    _validateOutputSize = [(PAMediaConversionServiceImageConversionJob *)self _validateOutputSize];
     v6 = 1;
-    if (v5)
+    if (_validateOutputSize)
     {
       v6 = 2;
     }
@@ -593,12 +593,12 @@ LABEL_7:
   return [(PAMediaConversionServiceImageConversionJob *)self valid];
 }
 
-- (PAMediaConversionServiceImageConversionJob)initWithRequestIdentifier:(id)a3 sourceResourceURLCollection:(id)a4 outputFileType:(id)a5
+- (PAMediaConversionServiceImageConversionJob)initWithRequestIdentifier:(id)identifier sourceResourceURLCollection:(id)collection outputFileType:(id)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  identifierCopy = identifier;
+  collectionCopy = collection;
+  typeCopy = type;
+  if (!collectionCopy)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceSharedUtilitiesServiceSide.m" lineNumber:981 description:{@"Invalid parameter not satisfying: %@", @"resourceURLCollection"}];
@@ -610,9 +610,9 @@ LABEL_7:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_requestIdentifier, a3);
-    objc_storeStrong(&v14->_sourceResourceURLCollection, a4);
-    objc_storeStrong(&v14->_outputFileType, a5);
+    objc_storeStrong(&v13->_requestIdentifier, identifier);
+    objc_storeStrong(&v14->_sourceResourceURLCollection, collection);
+    objc_storeStrong(&v14->_outputFileType, type);
   }
 
   return v14;

@@ -3,7 +3,7 @@
 - (NSString)localPlayerID;
 - (int)localPlayerAgeCategory;
 - (void)didSetEnvironment;
-- (void)didSetInboxContactsOnlyWithRefresh:(BOOL)a3;
+- (void)didSetInboxContactsOnlyWithRefresh:(BOOL)refresh;
 - (void)didSetStoreBagUrl;
 @end
 
@@ -12,48 +12,48 @@
 - (NSString)localPlayerID
 {
   v2 = +[GKLocalPlayer local];
-  v3 = [v2 playerID];
+  playerID = [v2 playerID];
 
-  return v3;
+  return playerID;
 }
 
 - (BOOL)localPlayerIsUnderage
 {
   v2 = +[GKLocalPlayer local];
-  v3 = [v2 isUnderage];
+  isUnderage = [v2 isUnderage];
 
-  return v3;
+  return isUnderage;
 }
 
 - (int)localPlayerAgeCategory
 {
-  v2 = [(GKClientPreferencesSupport *)self daemonProxy];
-  v3 = [v2 localPlayerAgeCategory];
+  daemonProxy = [(GKClientPreferencesSupport *)self daemonProxy];
+  localPlayerAgeCategory = [daemonProxy localPlayerAgeCategory];
 
-  return v3;
+  return localPlayerAgeCategory;
 }
 
 - (void)didSetEnvironment
 {
-  v3 = [(GKClientPreferencesSupport *)self daemonProxy];
-  v2 = [v3 utilityServicePrivate];
-  [v2 terminate];
+  daemonProxy = [(GKClientPreferencesSupport *)self daemonProxy];
+  utilityServicePrivate = [daemonProxy utilityServicePrivate];
+  [utilityServicePrivate terminate];
 }
 
 - (void)didSetStoreBagUrl
 {
-  v3 = [(GKClientPreferencesSupport *)self daemonProxy];
-  v2 = [v3 utilityServicePrivate];
-  [v2 refreshPreferences];
+  daemonProxy = [(GKClientPreferencesSupport *)self daemonProxy];
+  utilityServicePrivate = [daemonProxy utilityServicePrivate];
+  [utilityServicePrivate refreshPreferences];
 }
 
-- (void)didSetInboxContactsOnlyWithRefresh:(BOOL)a3
+- (void)didSetInboxContactsOnlyWithRefresh:(BOOL)refresh
 {
-  if (a3)
+  if (refresh)
   {
-    v4 = [(GKClientPreferencesSupport *)self daemonProxy];
-    v3 = [v4 utilityServicePrivate];
-    [v3 refreshPreferencesWithDataType:3];
+    daemonProxy = [(GKClientPreferencesSupport *)self daemonProxy];
+    utilityServicePrivate = [daemonProxy utilityServicePrivate];
+    [utilityServicePrivate refreshPreferencesWithDataType:3];
   }
 }
 

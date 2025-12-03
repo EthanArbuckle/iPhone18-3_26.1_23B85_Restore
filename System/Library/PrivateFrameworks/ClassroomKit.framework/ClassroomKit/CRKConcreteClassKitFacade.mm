@@ -1,36 +1,36 @@
 @interface CRKConcreteClassKitFacade
-+ (id)makePersonSortDescriptorsSortingGivenNameFirst:(BOOL)a3;
-- (BOOL)ownsError:(id)a3;
++ (id)makePersonSortDescriptorsSortingGivenNameFirst:(BOOL)first;
+- (BOOL)ownsError:(id)error;
 - (CRKConcreteClassKitFacade)init;
-- (id)classDataObserverWithSortDescriptors:(id)a3;
-- (id)locationsObserverWithSortDescriptors:(id)a3;
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4;
-- (id)makeDataObserverWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5;
-- (id)makePredicateForObjectIDs:(id)a3;
-- (id)makePredicatesForObjectIDs:(id)a3;
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3;
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3;
-- (id)makeQueryForPersonsWithRole:(int64_t)a3 locationIDs:(id)a4 searchString:(id)a5 sortingGivenNameFirst:(BOOL)a6 pageSize:(int64_t)a7;
-- (id)objectIDsOfMembersInClass:(id)a3 withRole:(unint64_t)a4;
-- (id)personObserverWithPersonIDs:(id)a3 sortDescriptors:(id)a4;
-- (id)subscribeToClassMembershipChangeEvents:(id)a3;
-- (id)subscribeToCurrentUserDidChangeEvents:(id)a3;
+- (id)classDataObserverWithSortDescriptors:(id)descriptors;
+- (id)locationsObserverWithSortDescriptors:(id)descriptors;
+- (id)makeClassWithLocationID:(id)d name:(id)name;
+- (id)makeDataObserverWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors;
+- (id)makePredicateForObjectIDs:(id)ds;
+- (id)makePredicatesForObjectIDs:(id)ds;
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d;
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers;
+- (id)makeQueryForPersonsWithRole:(int64_t)role locationIDs:(id)ds searchString:(id)string sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size;
+- (id)objectIDsOfMembersInClass:(id)class withRole:(unint64_t)role;
+- (id)personObserverWithPersonIDs:(id)ds sortDescriptors:(id)descriptors;
+- (id)subscribeToClassMembershipChangeEvents:(id)events;
+- (id)subscribeToCurrentUserDidChangeEvents:(id)events;
 - (int64_t)accountState;
-- (void)addPerson:(id)a3 withRole:(unint64_t)a4 toClass:(id)a5;
-- (void)currentUserWithCompletion:(id)a3;
-- (void)deregisterDataObserver:(id)a3;
-- (void)enrolledClassesWithCompletion:(id)a3;
-- (void)executeQuery:(id)a3;
-- (void)instructedClassesWithCompletion:(id)a3;
-- (void)instructorsInClassWithObjectID:(id)a3 completion:(id)a4;
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4;
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4;
-- (void)registerDataObserver:(id)a3;
-- (void)removeClass:(id)a3 completion:(id)a4;
-- (void)removePerson:(id)a3 withRole:(unint64_t)a4 fromClass:(id)a5;
-- (void)saveClass:(id)a3 completion:(id)a4;
-- (void)studentsInClassWithObjectID:(id)a3 completion:(id)a4;
-- (void)syncServerConfigWithCompletion:(id)a3;
+- (void)addPerson:(id)person withRole:(unint64_t)role toClass:(id)class;
+- (void)currentUserWithCompletion:(id)completion;
+- (void)deregisterDataObserver:(id)observer;
+- (void)enrolledClassesWithCompletion:(id)completion;
+- (void)executeQuery:(id)query;
+- (void)instructedClassesWithCompletion:(id)completion;
+- (void)instructorsInClassWithObjectID:(id)d completion:(id)completion;
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion;
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion;
+- (void)registerDataObserver:(id)observer;
+- (void)removeClass:(id)class completion:(id)completion;
+- (void)removePerson:(id)person withRole:(unint64_t)role fromClass:(id)class;
+- (void)saveClass:(id)class completion:(id)completion;
+- (void)studentsInClassWithObjectID:(id)d completion:(id)completion;
+- (void)syncServerConfigWithCompletion:(id)completion;
 @end
 
 @implementation CRKConcreteClassKitFacade
@@ -52,95 +52,95 @@
 
 - (int64_t)accountState
 {
-  v2 = [(CRKConcreteClassKitFacade *)self accountStateProvider];
-  v3 = [v2 accountState];
+  accountStateProvider = [(CRKConcreteClassKitFacade *)self accountStateProvider];
+  accountState = [accountStateProvider accountState];
 
-  return v3;
+  return accountState;
 }
 
-- (BOOL)ownsError:(id)a3
+- (BOOL)ownsError:(id)error
 {
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CBB5D0]];
+  domain = [error domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277CBB5D0]];
 
   return v4;
 }
 
-- (void)registerDataObserver:(id)a3
+- (void)registerDataObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v5 registerDataObserver:v4];
+  observerCopy = observer;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore registerDataObserver:observerCopy];
 }
 
-- (void)deregisterDataObserver:(id)a3
+- (void)deregisterDataObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v5 deregisterDataObserver:v4];
+  observerCopy = observer;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore deregisterDataObserver:observerCopy];
 }
 
-- (void)syncServerConfigWithCompletion:(id)a3
+- (void)syncServerConfigWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v5 syncServerConfigWithCompletion:v4];
+  completionCopy = completion;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore syncServerConfigWithCompletion:completionCopy];
 }
 
-- (void)instructorsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)instructorsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v8 personsInClassWithClassID:v7 role:2 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore personsInClassWithClassID:dCopy role:2 completion:completionCopy];
 }
 
-- (void)studentsInClassWithObjectID:(id)a3 completion:(id)a4
+- (void)studentsInClassWithObjectID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v8 personsInClassWithClassID:v7 role:1 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore personsInClassWithClassID:dCopy role:1 completion:completionCopy];
 }
 
-- (id)personObserverWithPersonIDs:(id)a3 sortDescriptors:(id)a4
+- (id)personObserverWithPersonIDs:(id)ds sortDescriptors:(id)descriptors
 {
-  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", a4, *MEMORY[0x277CBB5E0], a3];
+  v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", descriptors, *MEMORY[0x277CBB5E0], ds];
   v6 = [(CRKConcreteClassKitFacade *)self makeDataObserverWithObjectType:objc_opt_class() predicate:v5 sortDescriptors:0];
 
   return v6;
 }
 
-- (id)classDataObserverWithSortDescriptors:(id)a3
+- (id)classDataObserverWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self makeDataObserverWithObjectType:objc_opt_class() predicate:0 sortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  v5 = [(CRKConcreteClassKitFacade *)self makeDataObserverWithObjectType:objc_opt_class() predicate:0 sortDescriptors:descriptorsCopy];
 
   return v5;
 }
 
-- (void)enrolledClassesWithCompletion:(id)a3
+- (void)enrolledClassesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v5 enrolledClassesWithCompletion:v4];
+  completionCopy = completion;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore enrolledClassesWithCompletion:completionCopy];
 }
 
-- (void)instructedClassesWithCompletion:(id)a3
+- (void)instructedClassesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v5 instructedClassesWithCompletion:v4];
+  completionCopy = completion;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore instructedClassesWithCompletion:completionCopy];
 }
 
-- (void)saveClass:(id)a3 completion:(id)a4
+- (void)saveClass:(id)class completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  classCopy = class;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = classCopy;
   }
 
   else
@@ -151,33 +151,33 @@
   v9 = v8;
   if (v9)
   {
-    v10 = [(CRKConcreteClassKitFacade *)self dataStore];
+    dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __50__CRKConcreteClassKitFacade_saveClass_completion___block_invoke;
     v12[3] = &unk_278DC11B8;
-    v13 = v7;
-    [v10 saveClass:v9 completion:v12];
+    v13 = completionCopy;
+    [dataStore saveClass:v9 completion:v12];
   }
 
   else
   {
     v11 = CRKErrorWithCodeAndUserInfo(2, &unk_2856722E8);
-    (*(v7 + 2))(v7, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
-- (void)removeClass:(id)a3 completion:(id)a4
+- (void)removeClass:(id)class completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  classCopy = class;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (classCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v6;
+      v9 = classCopy;
     }
 
     else
@@ -188,13 +188,13 @@
     v10 = v9;
     if (v10)
     {
-      v11 = [(CRKConcreteClassKitFacade *)self dataStore];
+      dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __52__CRKConcreteClassKitFacade_removeClass_completion___block_invoke;
       v13[3] = &unk_278DC11B8;
       v14 = v8;
-      [v11 removeClass:v10 completion:v13];
+      [dataStore removeClass:v10 completion:v13];
     }
 
     else
@@ -206,43 +206,43 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (id)makeClassWithLocationID:(id)a3 name:(id)a4
+- (id)makeClassWithLocationID:(id)d name:(id)name
 {
   v5 = MEMORY[0x277CBB5F0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithLocation:v7 customName:v6];
+  nameCopy = name;
+  dCopy = d;
+  v8 = [[v5 alloc] initWithLocation:dCopy customName:nameCopy];
 
   return v8;
 }
 
-- (id)subscribeToCurrentUserDidChangeEvents:(id)a3
+- (id)subscribeToCurrentUserDidChangeEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = *MEMORY[0x277CBB5C8];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__CRKConcreteClassKitFacade_subscribeToCurrentUserDidChangeEvents___block_invoke;
   v9[3] = &unk_278DC11E0;
-  v10 = v3;
-  v6 = v3;
+  v10 = eventsCopy;
+  v6 = eventsCopy;
   v7 = [v4 subscribeToNotificationWithName:v5 object:0 handler:v9];
 
   return v7;
 }
 
-- (id)subscribeToClassMembershipChangeEvents:(id)a3
+- (id)subscribeToClassMembershipChangeEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = *MEMORY[0x277CBB5E8];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277CBB5E8]];
-  v7 = [v4 subscribeToNotificationWithName:v6 handler:v3];
+  v7 = [v4 subscribeToNotificationWithName:v6 handler:eventsCopy];
 
   if (v7)
   {
@@ -258,52 +258,52 @@
   return v8;
 }
 
-- (void)currentUserWithCompletion:(id)a3
+- (void)currentUserWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self dataStore];
+  completionCopy = completion;
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__CRKConcreteClassKitFacade_currentUserWithCompletion___block_invoke;
   v7[3] = &unk_278DC1208;
-  v8 = v4;
-  v6 = v4;
-  [v5 currentUserWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [dataStore currentUserWithCompletion:v7];
 }
 
-- (id)locationsObserverWithSortDescriptors:(id)a3
+- (id)locationsObserverWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(CRKConcreteClassKitFacade *)self makeDataObserverWithObjectType:objc_opt_class() predicate:0 sortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  v5 = [(CRKConcreteClassKitFacade *)self makeDataObserverWithObjectType:objc_opt_class() predicate:0 sortDescriptors:descriptorsCopy];
 
   return v5;
 }
 
-- (void)locationsWithManagePermissionsForUserWithObjectID:(id)a3 completion:(id)a4
+- (void)locationsWithManagePermissionsForUserWithObjectID:(id)d completion:(id)completion
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBB638];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v9 = [[v6 alloc] initWithOptions:4 behaviors:3];
   v10 = NSStringFromCLSASMPrivilegeType();
-  v13[0] = v8;
+  v13[0] = dCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   [v9 requirePrivilege:v10 onPersonIDs:v11];
 
   v12 = [MEMORY[0x277CBB628] queryWithSearchSpecification:v9];
 
-  [v12 setCompletion:v7];
+  [v12 setCompletion:completionCopy];
   [(CRKConcreteClassKitFacade *)self executeQuery:v12];
 }
 
-- (void)locationsWithObjectIDs:(id)a3 completion:(id)a4
+- (void)locationsWithObjectIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([dsCopy count])
   {
-    v8 = [(CRKConcreteClassKitFacade *)self makePredicateForObjectIDs:v6];
+    v8 = [(CRKConcreteClassKitFacade *)self makePredicateForObjectIDs:dsCopy];
     v17 = 0;
     v9 = [MEMORY[0x277CBB628] queryWithObjectType:objc_opt_class() predicate:v8 error:&v17];
     v10 = v17;
@@ -313,7 +313,7 @@
       v13 = 3221225472;
       v14 = __63__CRKConcreteClassKitFacade_locationsWithObjectIDs_completion___block_invoke;
       v15 = &unk_278DC0F30;
-      v16 = v7;
+      v16 = completionCopy;
       [v9 setCompletion:&v12];
       v11 = [(CRKConcreteClassKitFacade *)self dataStore:v12];
       [v11 executeQuery:v9];
@@ -321,21 +321,21 @@
 
     else
     {
-      (*(v7 + 2))(v7, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
   }
 
   else
   {
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
-- (id)makeQueryForPersonsWithIdentifiers:(id)a3
+- (id)makeQueryForPersonsWithIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = [objc_alloc(MEMORY[0x277CBB638]) initWithOptions:1 behaviors:1];
-  v5 = [v4 predicateForPersonsWithObjectIDs:v3];
+  v5 = [v4 predicateForPersonsWithObjectIDs:identifiersCopy];
   v10 = 0;
   v6 = [MEMORY[0x277CBB628] queryWithObjectType:objc_opt_class() predicate:v5 error:&v10];
   v7 = v10;
@@ -344,20 +344,20 @@
     v8 = _CRKLogASM_2();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CRKConcreteClassKitFacade *)v3 makeQueryForPersonsWithIdentifiers:v7, v8];
+      [(CRKConcreteClassKitFacade *)identifiersCopy makeQueryForPersonsWithIdentifiers:v7, v8];
     }
   }
 
   return v6;
 }
 
-- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)a3
+- (id)makeQueryForLocationsAllowingEasyStudentSignInForPersonID:(id)d
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = [objc_alloc(MEMORY[0x277CBB638]) initWithOptions:4 behaviors:1];
   v5 = NSStringFromCLSASMPrivilegeType();
-  v10[0] = v3;
+  v10[0] = dCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   [v4 requirePrivilege:v5 onPersonIDs:v6];
 
@@ -367,32 +367,32 @@
     v8 = _CRKLogASM_2();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CRKConcreteClassKitFacade *)v3 makeQueryForLocationsAllowingEasyStudentSignInForPersonID:v8];
+      [(CRKConcreteClassKitFacade *)dCopy makeQueryForLocationsAllowingEasyStudentSignInForPersonID:v8];
     }
   }
 
   return v7;
 }
 
-- (void)executeQuery:(id)a3
+- (void)executeQuery:(id)query
 {
-  v5 = a3;
+  queryCopy = query;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKConcreteClassKitFacade executeQuery:];
   }
 
-  v4 = [(CRKConcreteClassKitFacade *)self dataStore];
-  [v4 executeQuery:v5];
+  dataStore = [(CRKConcreteClassKitFacade *)self dataStore];
+  [dataStore executeQuery:queryCopy];
 }
 
-- (id)makeDataObserverWithObjectType:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5
+- (id)makeDataObserverWithObjectType:(Class)type predicate:(id)predicate sortDescriptors:(id)descriptors
 {
   v7 = MEMORY[0x277CBB630];
-  v8 = a5;
-  v9 = [v7 querySpecificationWithObjectType:a3 predicate:a4];
-  [v9 setSortDescriptors:v8];
+  descriptorsCopy = descriptors;
+  v9 = [v7 querySpecificationWithObjectType:type predicate:predicate];
+  [v9 setSortDescriptors:descriptorsCopy];
 
   v14 = 0;
   v10 = [objc_alloc(MEMORY[0x277CBB5F8]) initWithQuerySpecification:v9 error:&v14];
@@ -409,52 +409,52 @@
   return v10;
 }
 
-- (void)addPerson:(id)a3 withRole:(unint64_t)a4 toClass:(id)a5
+- (void)addPerson:(id)person withRole:(unint64_t)role toClass:(id)class
 {
-  v9 = a3;
-  v7 = a5;
+  personCopy = person;
+  classCopy = class;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKConcreteClassKitFacade addPerson:withRole:toClass:];
   }
 
-  v8 = v7;
+  v8 = classCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKConcreteClassKitFacade addPerson:withRole:toClass:];
   }
 
-  [v8 addPerson:v9 withRole:a4];
+  [v8 addPerson:personCopy withRole:role];
 }
 
-- (void)removePerson:(id)a3 withRole:(unint64_t)a4 fromClass:(id)a5
+- (void)removePerson:(id)person withRole:(unint64_t)role fromClass:(id)class
 {
-  v9 = a3;
-  v7 = a5;
+  personCopy = person;
+  classCopy = class;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKConcreteClassKitFacade removePerson:withRole:fromClass:];
   }
 
-  v8 = v7;
+  v8 = classCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [CRKConcreteClassKitFacade removePerson:withRole:fromClass:];
   }
 
-  [v8 removePerson:v9 withRole:a4];
+  [v8 removePerson:personCopy withRole:role];
 }
 
-- (id)objectIDsOfMembersInClass:(id)a3 withRole:(unint64_t)a4
+- (id)objectIDsOfMembersInClass:(id)class withRole:(unint64_t)role
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  classCopy = class;
   v6 = objc_opt_new();
-  v7 = v5;
+  v7 = classCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -465,8 +465,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 classMembers];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  classMembers = [v7 classMembers];
+  v9 = [classMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -477,18 +477,18 @@
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(classMembers);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if (([v13 roles] & a4) != 0)
+        if (([v13 roles] & role) != 0)
         {
-          v14 = [v13 personID];
-          [v6 addObject:v14];
+          personID = [v13 personID];
+          [v6 addObject:personID];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [classMembers countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -499,14 +499,14 @@
   return v15;
 }
 
-+ (id)makePersonSortDescriptorsSortingGivenNameFirst:(BOOL)a3
++ (id)makePersonSortDescriptorsSortingGivenNameFirst:(BOOL)first
 {
-  v3 = a3;
+  firstCopy = first;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"givenName" ascending:1];
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"familyName" ascending:1];
   v7 = v6;
-  if (v3)
+  if (firstCopy)
   {
     v8 = v5;
   }
@@ -516,7 +516,7 @@
     v8 = v6;
   }
 
-  if (v3)
+  if (firstCopy)
   {
     v9 = v6;
   }
@@ -536,16 +536,16 @@
   return v11;
 }
 
-- (id)makeQueryForPersonsWithRole:(int64_t)a3 locationIDs:(id)a4 searchString:(id)a5 sortingGivenNameFirst:(BOOL)a6 pageSize:(int64_t)a7
+- (id)makeQueryForPersonsWithRole:(int64_t)role locationIDs:(id)ds searchString:(id)string sortingGivenNameFirst:(BOOL)first pageSize:(int64_t)size
 {
-  v8 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [objc_opt_class() makePersonSortDescriptorsSortingGivenNameFirst:v8];
+  firstCopy = first;
+  stringCopy = string;
+  dsCopy = ds;
+  v13 = [objc_opt_class() makePersonSortDescriptorsSortingGivenNameFirst:firstCopy];
   v14 = objc_alloc(MEMORY[0x277CBB638]);
-  if (v11)
+  if (stringCopy)
   {
-    v15 = [v14 initWithOptions:1 behaviors:3 searchString:v11];
+    v15 = [v14 initWithOptions:1 behaviors:3 searchString:stringCopy];
   }
 
   else
@@ -554,34 +554,34 @@
   }
 
   v16 = v15;
-  [v15 requireRoleType:a3 atLocationIDs:v12];
+  [v15 requireRoleType:role atLocationIDs:dsCopy];
 
   [v16 setPersonSortDescriptors:v13];
   v17 = [MEMORY[0x277CBB628] queryWithSearchSpecification:v16];
-  [v17 setFetchLimit:a7];
+  [v17 setFetchLimit:size];
 
   return v17;
 }
 
-- (id)makePredicateForObjectIDs:(id)a3
+- (id)makePredicateForObjectIDs:(id)ds
 {
   v3 = MEMORY[0x277CCA920];
-  v4 = [(CRKConcreteClassKitFacade *)self makePredicatesForObjectIDs:a3];
+  v4 = [(CRKConcreteClassKitFacade *)self makePredicatesForObjectIDs:ds];
   v5 = [v3 orPredicateWithSubpredicates:v4];
 
   return v5;
 }
 
-- (id)makePredicatesForObjectIDs:(id)a3
+- (id)makePredicatesForObjectIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  dsCopy = ds;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {

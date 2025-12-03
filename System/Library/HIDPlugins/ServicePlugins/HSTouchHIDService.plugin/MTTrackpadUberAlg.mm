@@ -1,46 +1,46 @@
 @interface MTTrackpadUberAlg
-+ (MTForceBehavior_)forceBehaviorFromForceConfig:(SEL)a3 mask:(__MTForceConfig *)a4;
-+ (int)getForceSourceForBehavior:(int)a3 secondaryClickEnabled:(BOOL)a4;
-- (BOOL)handleProperty:(id)a3 value:(id)a4;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
-- (BOOL)updateGestureConfiguration:(id)a3 value:(id)a4;
-- (MTTrackpadUberAlg)initWithConfig:(id)a3 actuationHandler:(id)a4 builtIn:(BOOL)a5 supportsForce:(BOOL)a6 supportsDeepPress:(BOOL)a7;
-- (__IOHIDEvent)createHIDCollectionEvents:(unsigned int)a3 timestamp:(double)a4;
-- (double)autoReleaseTapAndAHalfDrag:(double)a3 eventRef:(__IOHIDEvent *)a4;
++ (MTForceBehavior_)forceBehaviorFromForceConfig:(SEL)config mask:(__MTForceConfig *)mask;
++ (int)getForceSourceForBehavior:(int)behavior secondaryClickEnabled:(BOOL)enabled;
+- (BOOL)handleProperty:(id)property value:(id)value;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
+- (BOOL)updateGestureConfiguration:(id)configuration value:(id)value;
+- (MTTrackpadUberAlg)initWithConfig:(id)config actuationHandler:(id)handler builtIn:(BOOL)in supportsForce:(BOOL)force supportsDeepPress:(BOOL)press;
+- (__IOHIDEvent)createHIDCollectionEvents:(unsigned int)events timestamp:(double)timestamp;
+- (double)autoReleaseTapAndAHalfDrag:(double)drag eventRef:(__IOHIDEvent *)ref;
 - (id).cxx_construct;
 - (uint64_t)shouldSecondaryClick;
-- (void)appendInjectedPointerEventToBaseEvent:(__IOHIDEvent *)a3;
+- (void)appendInjectedPointerEventToBaseEvent:(__IOHIDEvent *)event;
 - (void)cancelCurrentTapAndAHalfDrag;
 - (void)clearState;
-- (void)createDigitizerChildEventForPath:(__IOHIDEvent *)a3 parserPath:(const MTParserPath_ *)a4 pathEventMask:(id *)a5 hostTimestamp:(float)a6 cancellingCollection:(float)a7;
-- (void)createDigitizerPathChildEvents:(__IOHIDEvent *)a3 collectionEventMask:(unsigned int)a4 hostTimestamp:(unint64_t)a5 additionalEventMask:(unsigned int *)a6;
+- (void)createDigitizerChildEventForPath:(__IOHIDEvent *)path parserPath:(const MTParserPath_ *)parserPath pathEventMask:(id *)mask hostTimestamp:(float)timestamp cancellingCollection:(float)collection;
+- (void)createDigitizerPathChildEvents:(__IOHIDEvent *)events collectionEventMask:(unsigned int)mask hostTimestamp:(unint64_t)timestamp additionalEventMask:(unsigned int *)eventMask;
 - (void)dealloc;
-- (void)handleMomentumState:(int)a3 active:(BOOL)a4;
-- (void)handleSettings:(id)a3;
-- (void)handleTPSettings:(id)a3;
-- (void)processContact:(id *)a3 activePathCount:(float)a4 timestamp:(float)a5 baseEvent:callbackInterval:isFlush:;
-- (void)setDivingButtonState:(BOOL)a3;
-- (void)setHostClickEnabled:(BOOL)a3;
-- (void)setMouseButtonFilterData:(float)a3;
-- (void)setMouseMotionFilterData:(const MTPoint *)a3;
-- (void)updateFingerStats:(id)a3;
+- (void)handleMomentumState:(int)state active:(BOOL)active;
+- (void)handleSettings:(id)settings;
+- (void)handleTPSettings:(id)settings;
+- (void)processContact:(id *)contact activePathCount:(float)count timestamp:(float)timestamp baseEvent:callbackInterval:isFlush:;
+- (void)setDivingButtonState:(BOOL)state;
+- (void)setHostClickEnabled:(BOOL)enabled;
+- (void)setMouseButtonFilterData:(float)data;
+- (void)setMouseMotionFilterData:(const MTPoint *)data;
+- (void)updateFingerStats:(id)stats;
 @end
 
 @implementation MTTrackpadUberAlg
 
-- (MTTrackpadUberAlg)initWithConfig:(id)a3 actuationHandler:(id)a4 builtIn:(BOOL)a5 supportsForce:(BOOL)a6 supportsDeepPress:(BOOL)a7
+- (MTTrackpadUberAlg)initWithConfig:(id)config actuationHandler:(id)handler builtIn:(BOOL)in supportsForce:(BOOL)force supportsDeepPress:(BOOL)press
 {
-  v10 = a3;
-  v11 = a4;
-  v15 = v11;
-  v14 = a5;
+  configCopy = config;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  inCopy = in;
   v13.receiver = self;
   v13.super_class = MTTrackpadUberAlg;
   if ([(MTTrackpadUberAlg *)&v13 init])
   {
-    [(AlgsConfigEvent *)v10 surfaceSize];
-    [(AlgsConfigEvent *)v10 surfaceSize];
+    [(AlgsConfigEvent *)configCopy surfaceSize];
+    [(AlgsConfigEvent *)configCopy surfaceSize];
     std::allocate_shared[abi:ne200100]<MTSurfaceDimensions_,std::allocator<MTSurfaceDimensions_>,MTRect &,MTSize,0>();
   }
 
@@ -61,19 +61,19 @@
   [(MTTrackpadUberAlg *)&v5 dealloc];
 }
 
-- (void)setDivingButtonState:(BOOL)a3
+- (void)setDivingButtonState:(BOOL)state
 {
-  v3 = a3;
-  if ([(MTTrackpadUberAlg *)self divingButtonState]!= a3)
+  stateCopy = state;
+  if ([(MTTrackpadUberAlg *)self divingButtonState]!= state)
   {
-    MTPathStates_::setDivingButtonState(self->_pathStates.__ptr_, v3);
+    MTPathStates_::setDivingButtonState(self->_pathStates.__ptr_, stateCopy);
     ptr = self->_mtHandStats.__ptr_;
-    if (*(ptr + 305) != v3)
+    if (*(ptr + 305) != stateCopy)
     {
       *(ptr + 36) = *(ptr + 1);
     }
 
-    *(ptr + 305) = v3;
+    *(ptr + 305) = stateCopy;
     MTAbsoluteTimeGetCurrent();
     *(ptr + 6) = v6;
     if (self->_dragManagerEventQueue._cycle_state >= 2)
@@ -81,16 +81,16 @@
       [(MTTrackpadUberAlg *)self cancelCurrentTapAndAHalfDrag];
     }
 
-    self->_divingButtonState = v3;
+    self->_divingButtonState = stateCopy;
   }
 }
 
-- (void)processContact:(id *)a3 activePathCount:(float)a4 timestamp:(float)a5 baseEvent:callbackInterval:isFlush:
+- (void)processContact:(id *)contact activePathCount:(float)count timestamp:(float)timestamp baseEvent:callbackInterval:isFlush:
 {
   v9 = v8;
   v10 = v7;
   v52 = v6;
-  v11 = *&a4;
+  v11 = *&count;
   v12 = v5;
   MTTapDragManager_::updateLastState(&self->_dragManagerEventQueue);
   ChordTableForHand = MTGestureConfig_::getChordTableForHand(self->_gestureConfig.__ptr_, 1);
@@ -158,10 +158,10 @@ LABEL_9:
   }
 
   v29 = mach_continuous_time();
-  v51 = a3;
-  v30 = a3;
+  contactCopy = contact;
+  contactCopy2 = contact;
   v31 = v12;
-  v32 = MTPathStates_::unpackContactFrame(self->_pathStates.__ptr_, v30, v12, v11);
+  v32 = MTPathStates_::unpackContactFrame(self->_pathStates.__ptr_, contactCopy2, v12, v11);
   v33 = self->_forceManagement.__ptr_;
   if (v33 && *(v33 + 606) == 1)
   {
@@ -243,7 +243,7 @@ LABEL_9:
     }
 
     [(MTTrackpadUberAlg *)self updateFingerStats:*v52];
-    if (MTTapDragManager_::hasPhysicalDraggingEnded(&self->_dragManagerEventQueue, v51, v37))
+    if (MTTapDragManager_::hasPhysicalDraggingEnded(&self->_dragManagerEventQueue, contactCopy, v37))
     {
       [(MTTrackpadUberAlg *)self appendInjectedPointerEventToBaseEvent:v52];
     }
@@ -284,9 +284,9 @@ LABEL_48:
   }
 }
 
-- (__IOHIDEvent)createHIDCollectionEvents:(unsigned int)a3 timestamp:(double)a4
+- (__IOHIDEvent)createHIDCollectionEvents:(unsigned int)events timestamp:(double)timestamp
 {
-  v4 = *&a3;
+  v4 = *&events;
   v6 = mach_absolute_time();
   ptr = self->_mtHandStats.__ptr_;
   if ((*(ptr + 168) & 0x20) != 0)
@@ -357,10 +357,10 @@ LABEL_20:
   return DigitizerEvent;
 }
 
-- (void)createDigitizerPathChildEvents:(__IOHIDEvent *)a3 collectionEventMask:(unsigned int)a4 hostTimestamp:(unint64_t)a5 additionalEventMask:(unsigned int *)a6
+- (void)createDigitizerPathChildEvents:(__IOHIDEvent *)events collectionEventMask:(unsigned int)mask hostTimestamp:(unint64_t)timestamp additionalEventMask:(unsigned int *)eventMask
 {
-  v33 = a3;
-  v34 = a5;
+  eventsCopy = events;
+  timestampCopy = timestamp;
   v7 = 916;
   v8 = 31;
   parserOptions = self->_parserOptions;
@@ -390,7 +390,7 @@ LABEL_20:
 
       else
       {
-        v20 = (v14 > 4) & (a4 >> 7);
+        v20 = (v14 > 4) & (mask >> 7);
       }
 
       v21 = v20 | ~(v16 < 5) | (v14 < 5);
@@ -406,7 +406,7 @@ LABEL_20:
 
       if (v21)
       {
-        v23 = (v14 > 4) & (a4 >> 7);
+        v23 = (v14 > 4) & (mask >> 7);
       }
 
       else
@@ -460,7 +460,7 @@ LABEL_20:
         if ((v30 | isStylusContact | v28))
         {
 LABEL_46:
-          [(MTTrackpadUberAlg *)self createDigitizerChildEventForPath:v33 parserPath:v12 pathEventMask:v26 hostTimestamp:v34 cancellingCollection:v23, v33, v34];
+          [(MTTrackpadUberAlg *)self createDigitizerChildEventForPath:eventsCopy parserPath:v12 pathEventMask:v26 hostTimestamp:timestampCopy cancellingCollection:v23, eventsCopy, timestampCopy];
           goto LABEL_47;
         }
       }
@@ -472,7 +472,7 @@ LABEL_46:
 
       v31 = v17 >= 0xFFFFFFFE && v14 >= 5;
       v32 = !v31;
-      if ((a4 & 0x80) == 0)
+      if ((mask & 0x80) == 0)
       {
         v32 = 1;
       }
@@ -491,12 +491,12 @@ LABEL_47:
   while (v8);
 }
 
-- (void)createDigitizerChildEventForPath:(__IOHIDEvent *)a3 parserPath:(const MTParserPath_ *)a4 pathEventMask:(id *)a5 hostTimestamp:(float)a6 cancellingCollection:(float)a7
+- (void)createDigitizerChildEventForPath:(__IOHIDEvent *)path parserPath:(const MTParserPath_ *)parserPath pathEventMask:(id *)mask hostTimestamp:(float)timestamp cancellingCollection:(float)collection
 {
   ptr = self->_pathStates.__ptr_;
   if (ptr && (*(ptr + 144) & 1) != 0)
   {
-    v11 = *&a4[3].var3.var12;
+    v11 = *&parserPath[3].var3.var12;
   }
 
   else
@@ -504,7 +504,7 @@ LABEL_47:
     v11 = 0;
   }
 
-  if ((a4->var3.var3 - 3) < 2)
+  if ((parserPath->var3.var3 - 3) < 2)
   {
     v12 = v7 ^ 1;
   }
@@ -515,14 +515,14 @@ LABEL_47:
   }
 
   v13 = self->_surfaceDimensions.__ptr_;
-  v22.y = MTParserPath_::getQuantizedMinorRadius_mm(a4);
+  v22.y = MTParserPath_::getQuantizedMinorRadius_mm(parserPath);
   v22.x = 0.0;
   MTSurfaceDimensions_::convertMillimetersToSurfaceFraction(v13, v22);
   v14 = self->_surfaceDimensions.__ptr_;
-  v23.y = MTParserPath_::getQuantizedMajorRadius_mm(a4);
+  v23.y = MTParserPath_::getQuantizedMajorRadius_mm(parserPath);
   v23.x = 0.0;
   MTSurfaceDimensions_::convertMillimetersToSurfaceFraction(v14, v23);
-  v15 = vadd_f32(v11, a4[3].var3.var6);
+  v15 = vadd_f32(v11, parserPath[3].var3.var6);
   y = v15.y;
   MTSurfaceDimensions_::convertPixelsToSurfaceFraction(self->_surfaceDimensions.__ptr_, v15);
   MTContact_getEllipseOrientationDegrees();
@@ -531,7 +531,7 @@ LABEL_47:
   if (DigitizerFingerEventWithQuality)
   {
     v18 = self->_surfaceDimensions.__ptr_;
-    v24.y = MTParserPath_::getQuantizedRadiusAccuracy_mm(a4);
+    v24.y = MTParserPath_::getQuantizedRadiusAccuracy_mm(parserPath);
     v24.x = 0.0;
     MTSurfaceDimensions_::convertMillimetersToSurfaceFraction(v18, v24);
     IOHIDEventSetFloatValue();
@@ -546,7 +546,7 @@ LABEL_47:
       }
     }
 
-    if ((a4->var3.var15 & 0x4000) != 0)
+    if ((parserPath->var3.var15 & 0x4000) != 0)
     {
       IOHIDEventGetPhase();
       IOHIDEventSetPhase();
@@ -558,9 +558,9 @@ LABEL_47:
   }
 }
 
-- (void)updateFingerStats:(id)a3
+- (void)updateFingerStats:(id)stats
 {
-  v4 = a3;
+  statsCopy = stats;
   ptr = self->_mtHandStats.__ptr_;
   v7 = *(ptr + 1) - self->_dragManagerEventQueue.t_mostRecentTap == 0.0 || self->_dragManagerEventQueue._cycle_state > 1;
   v8 = *(ptr + 186);
@@ -669,8 +669,8 @@ LABEL_47:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v38 = [v4 children];
-  v39 = [v38 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  children = [statsCopy children];
+  v39 = [children countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v39)
   {
     v40 = *v48;
@@ -680,19 +680,19 @@ LABEL_47:
       {
         if (*v48 != v40)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(children);
         }
 
         v42 = *(*(&v47 + 1) + 8 * i);
-        v43 = [v42 type];
-        if (v43 == 2)
+        type = [v42 type];
+        if (type == 2)
         {
           v44 = 0x20000;
         }
 
         else
         {
-          if (v43 != 17)
+          if (type != 17)
           {
             continue;
           }
@@ -711,17 +711,17 @@ LABEL_47:
         self->_previousButtonState = v46;
       }
 
-      v39 = [v38 countByEnumeratingWithState:&v47 objects:v52 count:16];
+      v39 = [children countByEnumeratingWithState:&v47 objects:v52 count:16];
     }
 
     while (v39);
   }
 }
 
-- (double)autoReleaseTapAndAHalfDrag:(double)a3 eventRef:(__IOHIDEvent *)a4
+- (double)autoReleaseTapAndAHalfDrag:(double)drag eventRef:(__IOHIDEvent *)ref
 {
   v4 = 0.0;
-  if (a4)
+  if (ref)
   {
     if (self->_gestureConfig.__ptr_)
     {
@@ -730,7 +730,7 @@ LABEL_47:
       if (DigitizerEvent)
       {
         v9 = DigitizerEvent;
-        v10 = MTDragManagerEventQueue_::serviceEventQueue(&self->_dragManagerEventQueue, DigitizerEvent, self->_gestureConfig.__ptr_, a3, *(self->_mtHandStats.__ptr_ + 211) + *(self->_mtHandStats.__ptr_ + 186));
+        v10 = MTDragManagerEventQueue_::serviceEventQueue(&self->_dragManagerEventQueue, DigitizerEvent, self->_gestureConfig.__ptr_, drag, *(self->_mtHandStats.__ptr_ + 211) + *(self->_mtHandStats.__ptr_ + 186));
         if (IOHIDEventGetChildren())
         {
           MTSurfaceDimensions_::convertPixelsToSurfaceFraction(self->_surfaceDimensions.__ptr_, *(self->_mtHandMotion.__ptr_ + 184));
@@ -738,12 +738,12 @@ LABEL_47:
           IOHIDEventSetFloatValue();
           mach_absolute_time();
           IOHIDEventSetTimeStamp();
-          if (*a4)
+          if (*ref)
           {
-            CFRelease(*a4);
+            CFRelease(*ref);
           }
 
-          *a4 = v9;
+          *ref = v9;
         }
 
         else
@@ -773,21 +773,21 @@ LABEL_47:
   return v4;
 }
 
-- (void)appendInjectedPointerEventToBaseEvent:(__IOHIDEvent *)a3
+- (void)appendInjectedPointerEventToBaseEvent:(__IOHIDEvent *)event
 {
-  if (a3)
+  if (event)
   {
-    v4 = *a3;
+    v4 = *event;
     [(__IOHIDEvent *)v4 timestamp];
     RelativePointerEvent = IOHIDEventCreateRelativePointerEvent();
     [(__IOHIDEvent *)v4 appendEvent:RelativePointerEvent];
   }
 }
 
-- (void)handleSettings:(id)a3
+- (void)handleSettings:(id)settings
 {
-  v4 = a3;
-  configureGestureParser(self->_gestureConfig.__ptr_, v4);
+  settingsCopy = settings;
+  configureGestureParser(self->_gestureConfig.__ptr_, settingsCopy);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -799,30 +799,30 @@ LABEL_47:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(MTTrackpadUberAlg *)self handleTPSettings:v4];
+      [(MTTrackpadUberAlg *)self handleTPSettings:settingsCopy];
     }
   }
 }
 
-- (void)handleTPSettings:(id)a3
+- (void)handleTPSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   ptr = self->_mtHandMotion.__ptr_;
-  *(ptr + 136) = [v4 notificationCenterEdgeSwipe2F] == 1;
+  *(ptr + 136) = [settingsCopy notificationCenterEdgeSwipe2F] == 1;
   v6 = self->_mtHandMotion.__ptr_;
-  *(v6 + 137) = [v4 notificationCenterEdgeSwipe2F] == 2;
+  *(v6 + 137) = [settingsCopy notificationCenterEdgeSwipe2F] == 2;
   v7 = self->_mtHandMotion.__ptr_;
   *(v7 + 138) = 0;
-  *(v7 + 139) = [v4 symmetricZoomRotate];
-  self->_dragManagerEventQueue._tap_drag_lock_enabled = [v4 accessibilityDrag] == 2;
-  self->_secondaryClick = [v4 secondaryClick];
-  self->_actuateDetents = [v4 forceSuppressed] ^ 1;
+  *(v7 + 139) = [settingsCopy symmetricZoomRotate];
+  self->_dragManagerEventQueue._tap_drag_lock_enabled = [settingsCopy accessibilityDrag] == 2;
+  self->_secondaryClick = [settingsCopy secondaryClick];
+  self->_actuateDetents = [settingsCopy forceSuppressed] ^ 1;
   v8 = self->_forceManagement.__ptr_;
   if (v8)
   {
     *(v8 + 608) = 1;
     MTForceBehavior_Configuration::clearBehaviors((v8 + 272));
-    if ([v4 forceSuppressed])
+    if ([settingsCopy forceSuppressed])
     {
       v9 = 1;
     }
@@ -958,18 +958,18 @@ LABEL_47:
       CFRelease(v14);
     }
 
-    MTForceManagement_::setFirstStageClickPreference(self->_forceManagement.__ptr_, [v4 clickStrength]);
-    MTForceManagement_::setSecondStageClickPreference(self->_forceManagement.__ptr_, [v4 clickStrength]);
+    MTForceManagement_::setFirstStageClickPreference(self->_forceManagement.__ptr_, [settingsCopy clickStrength]);
+    MTForceManagement_::setSecondStageClickPreference(self->_forceManagement.__ptr_, [settingsCopy clickStrength]);
     v17 = self->_forceManagement.__ptr_;
-    *(v17 + 607) = [v4 forceSuppressed];
+    *(v17 + 607) = [settingsCopy forceSuppressed];
   }
 }
 
-- (void)handleMomentumState:(int)a3 active:(BOOL)a4
+- (void)handleMomentumState:(int)state active:(BOOL)active
 {
   ChordTableForHand = MTGestureConfig_::getChordTableForHand(self->_gestureConfig.__ptr_, 1);
-  *(ChordTableForHand + 1276) = a3;
-  *(ChordTableForHand + 1272) = a4;
+  *(ChordTableForHand + 1276) = state;
+  *(ChordTableForHand + 1272) = active;
 }
 
 - (void)clearState
@@ -993,10 +993,10 @@ LABEL_47:
   [(MTTrackpadUberAlg *)self setDivingButtonState:0];
 }
 
-+ (MTForceBehavior_)forceBehaviorFromForceConfig:(SEL)a3 mask:(__MTForceConfig *)a4
++ (MTForceBehavior_)forceBehaviorFromForceConfig:(SEL)config mask:(__MTForceConfig *)mask
 {
-  Behavior = MTForceConfigGetBehavior(a4);
-  NumStages = MTForceConfigGetNumStages(a4);
+  Behavior = MTForceConfigGetBehavior(mask);
+  NumStages = MTForceConfigGetNumStages(mask);
   *&v10 = 0xAAAAAAAAAAAAAAAALL;
   *(&v10 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *&retstr->var0 = v10;
@@ -1009,7 +1009,7 @@ LABEL_47:
   *&retstr->var8.__cap_ = v10;
   *&retstr->var9.__end_ = v10;
   MTForceBehavior_::MTForceBehavior_(retstr);
-  result = MTForceConfigIsContinuous(a4);
+  result = MTForceConfigIsContinuous(mask);
   retstr->var3 = result;
   retstr->var0 = Behavior;
   retstr->var1 = a5;
@@ -1017,17 +1017,17 @@ LABEL_47:
   {
     for (i = 0; i != NumStages; ++i)
     {
-      ThresholdsForStage = MTForceConfigGetThresholdsForStage(a4, i);
+      ThresholdsForStage = MTForceConfigGetThresholdsForStage(mask, i);
       v15 = v14;
-      ActuationsForStage = MTForceConfigGetActuationsForStage(a4, i);
+      ActuationsForStage = MTForceConfigGetActuationsForStage(mask, i);
       MTForceBehavior_::addStage(retstr, i, ActuationsForStage, ThresholdsForStage, v15);
-      if (MTForceConfigShouldSkipActivationForStage(a4, i))
+      if (MTForceConfigShouldSkipActivationForStage(mask, i))
       {
         v17 = i;
         std::vector<int>::push_back[abi:ne200100](&retstr->var6.__begin_, &v17);
       }
 
-      result = MTForceConfigShouldSkipReleaseForStage(a4, i);
+      result = MTForceConfigShouldSkipReleaseForStage(mask, i);
       if (result)
       {
         v18 = i;
@@ -1039,24 +1039,24 @@ LABEL_47:
   return result;
 }
 
-+ (int)getForceSourceForBehavior:(int)a3 secondaryClickEnabled:(BOOL)a4
++ (int)getForceSourceForBehavior:(int)behavior secondaryClickEnabled:(BOOL)enabled
 {
-  if (a3 > 0x11)
+  if (behavior > 0x11)
   {
     return 0;
   }
 
-  if (((1 << a3) & 0x31C22) != 0)
+  if (((1 << behavior) & 0x31C22) != 0)
   {
     return 34;
   }
 
-  if (a3 != 2)
+  if (behavior != 2)
   {
     return 0;
   }
 
-  if (a4)
+  if (enabled)
   {
     return 134;
   }
@@ -1064,15 +1064,15 @@ LABEL_47:
   return 0;
 }
 
-- (void)setHostClickEnabled:(BOOL)a3
+- (void)setHostClickEnabled:(BOOL)enabled
 {
   ptr = self->_forceManagement.__ptr_;
   if (ptr)
   {
-    self->_hostClickEnabled = a3;
+    self->_hostClickEnabled = enabled;
     v5 = *(ptr + 606);
-    *(ptr + 606) = a3;
-    if (!a3 && (v5 & 1) != 0)
+    *(ptr + 606) = enabled;
+    if (!enabled && (v5 & 1) != 0)
     {
       MTForceManagement_::clearState(ptr, 1);
     }
@@ -1087,12 +1087,12 @@ LABEL_47:
   }
 }
 
-- (BOOL)updateGestureConfiguration:(id)a3 value:(id)a4
+- (BOOL)updateGestureConfiguration:(id)configuration value:(id)value
 {
-  v33 = a3;
-  v6 = a4;
-  v32 = v6;
-  if (v6 && (v7 = self->_forceManagement.__ptr_) != 0 && (*(v7 + 607) & 1) == 0 && (v8 = v6, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  configurationCopy = configuration;
+  valueCopy = value;
+  v32 = valueCopy;
+  if (valueCopy && (v7 = self->_forceManagement.__ptr_) != 0 && (*(v7 + 607) & 1) == 0 && (v8 = valueCopy, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = v8;
     v30 = v9;
@@ -1104,7 +1104,7 @@ LABEL_47:
       v29 = v11;
       if (v11)
       {
-        if ([v33 isEqualToString:@"MTGestureConfiguration"])
+        if ([configurationCopy isEqualToString:@"MTGestureConfiguration"])
         {
           MTForceBehavior_Configuration::clearNonDefaultBehaviors((self->_forceManagement.__ptr_ + 272));
         }
@@ -1136,9 +1136,9 @@ LABEL_47:
                 v19 = v18;
                 if (v18)
                 {
-                  v20 = [v18 intValue];
-                  v21 = MTForceConfigCreate(v20, 0);
-                  v22 = [objc_opt_class() getForceSourceForBehavior:v20 secondaryClickEnabled:self->_secondaryClick == 1];
+                  intValue = [v18 intValue];
+                  v21 = MTForceConfigCreate(intValue, 0);
+                  v22 = [objc_opt_class() getForceSourceForBehavior:intValue secondaryClickEnabled:self->_secondaryClick == 1];
                   if (v21)
                   {
                     v23 = v22;
@@ -1166,7 +1166,7 @@ LABEL_47:
                         memset(&v34, 0, sizeof(v34));
                       }
 
-                      v26 = [v33 isEqualToString:@"MTGestureConfiguration"];
+                      v26 = [configurationCopy isEqualToString:@"MTGestureConfiguration"];
                       ptr = self->_forceManagement.__ptr_;
                       if (v26)
                       {
@@ -1244,64 +1244,64 @@ LABEL_47:
   return v13 & 1;
 }
 
-- (void)setMouseMotionFilterData:(const MTPoint *)a3
+- (void)setMouseMotionFilterData:(const MTPoint *)data
 {
   ptr = self->_mtHandMotion.__ptr_;
   if (ptr)
   {
-    MTHandMotion_::storeFeedbackFromMouse(ptr, *a3);
+    MTHandMotion_::storeFeedbackFromMouse(ptr, *data);
   }
 }
 
-- (void)setMouseButtonFilterData:(float)a3
+- (void)setMouseButtonFilterData:(float)data
 {
   ptr = self->_mtHandMotion.__ptr_;
   if (ptr)
   {
-    MTHandMotion_::storeFeedbackFromButton(ptr, a3);
+    MTHandMotion_::storeFeedbackFromButton(ptr, data);
   }
 }
 
-- (BOOL)handleProperty:(id)a3 value:(id)a4
+- (BOOL)handleProperty:(id)property value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isEqualToString:@"AppKitActuateWithID"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v8 = self->_forceManagement.__ptr_) == 0)
+  propertyCopy = property;
+  valueCopy = value;
+  if (![propertyCopy isEqualToString:@"AppKitActuateWithID"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v8 = self->_forceManagement.__ptr_) == 0)
   {
-    if (([v6 isEqualToString:@"MTGestureConfiguration"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"MTGestureConfigurationOverride"))
+    if (([propertyCopy isEqualToString:@"MTGestureConfiguration"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"MTGestureConfigurationOverride"))
     {
-      v9 = [(MTTrackpadUberAlg *)self updateGestureConfiguration:v6 value:v7];
+      v9 = [(MTTrackpadUberAlg *)self updateGestureConfiguration:propertyCopy value:valueCopy];
       goto LABEL_11;
     }
 
-    if ([v6 isEqualToString:@"SendClickThresholdInfo"])
+    if ([propertyCopy isEqualToString:@"SendClickThresholdInfo"])
     {
       ptr = self->_forceManagement.__ptr_;
       if (ptr)
       {
-        *(ptr + 224) = [v7 BOOLValue];
+        *(ptr + 224) = [valueCopy BOOLValue];
 LABEL_21:
         v9 = 1;
         goto LABEL_11;
       }
     }
 
-    else if ([v6 isEqualToString:@"DisableClickWaveformAdaptation"])
+    else if ([propertyCopy isEqualToString:@"DisableClickWaveformAdaptation"])
     {
       v12 = self->_forceManagement.__ptr_;
       if (v12)
       {
-        MTForceManagement_::setDisableClickWaveformAdaptation(v12, [v7 BOOLValue]);
+        MTForceManagement_::setDisableClickWaveformAdaptation(v12, [valueCopy BOOLValue]);
         goto LABEL_21;
       }
     }
 
-    else if ([v6 isEqualToString:@"DisableForceThresholdAdaptation"])
+    else if ([propertyCopy isEqualToString:@"DisableForceThresholdAdaptation"])
     {
       v13 = self->_forceManagement.__ptr_;
       if (v13)
       {
-        MTForceManagement_::setDisableForceThresholdAdaptation(v13, [v7 BOOLValue]);
+        MTForceManagement_::setDisableForceThresholdAdaptation(v13, [valueCopy BOOLValue]);
         goto LABEL_21;
       }
     }
@@ -1313,7 +1313,7 @@ LABEL_21:
   v9 = 1;
   if (self->_actuateDetents && *(self->_mtHandStats.__ptr_ + 186) && (*(v8 + 607) & 1) == 0)
   {
-    [v7 intValue];
+    [valueCopy intValue];
     (*(self->_actBlock + 2))(1.0, 1.0);
   }
 
@@ -1322,35 +1322,35 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v7 = *(a3 + 17);
+    *&v7 = *(encode + 17);
     DWORD2(v7) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v7);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v7);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  HSUtil::Encoder::encodeCodable<MTHandStatistics_>(a3, HSUtil::CoderKey::Literal<(char)109,(char)116,(char)72,(char)97,(char)110,(char)100,(char)83,(char)116,(char)97,(char)116,(char)115>::Key, self->_mtHandStats.__ptr_);
-  HSUtil::Encoder::encodeCodable<MTHandStatistics_>(a3, HSUtil::CoderKey::Literal<(char)109,(char)116,(char)80,(char)97,(char)116,(char)104,(char)83,(char)116,(char)97,(char)116,(char)101,(char)115>::Key, self->_pathStates.__ptr_);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)112,(char)112,(char)111,(char)114,(char)116,(char)115,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, self->_forceManagement.__ptr_ != 0);
+  HSUtil::Encoder::encodeCodable<MTHandStatistics_>(encode, HSUtil::CoderKey::Literal<(char)109,(char)116,(char)72,(char)97,(char)110,(char)100,(char)83,(char)116,(char)97,(char)116,(char)115>::Key, self->_mtHandStats.__ptr_);
+  HSUtil::Encoder::encodeCodable<MTHandStatistics_>(encode, HSUtil::CoderKey::Literal<(char)109,(char)116,(char)80,(char)97,(char)116,(char)104,(char)83,(char)116,(char)97,(char)116,(char)101,(char)115>::Key, self->_pathStates.__ptr_);
+  HSUtil::Encoder::encodeBool(encode, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)112,(char)112,(char)111,(char)114,(char)116,(char)115,(char)70,(char)111,(char)114,(char)99,(char)101>::Key, self->_forceManagement.__ptr_ != 0);
   ptr = self->_forceManagement.__ptr_;
   if (ptr)
   {
-    HSUtil::Encoder::encodeCodable<MTForceManagement_>(a3, HSUtil::CoderKey::Literal<(char)102,(char)111,(char)114,(char)99,(char)101,(char)77,(char)97,(char)110,(char)97,(char)103,(char)101,(char)109,(char)101,(char)110,(char)116>::Key, ptr);
+    HSUtil::Encoder::encodeCodable<MTForceManagement_>(encode, HSUtil::CoderKey::Literal<(char)102,(char)111,(char)114,(char)99,(char)101,(char)77,(char)97,(char)110,(char)97,(char)103,(char)101,(char)109,(char)101,(char)110,(char)116>::Key, ptr);
   }
 
-  HSUtil::Encoder::encodeCodable<MTPListGestureConfig_>(a3, HSUtil::CoderKey::Literal<(char)103,(char)101,(char)115,(char)116,(char)117,(char)114,(char)101,(char)67,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, self->_gestureConfig.__ptr_);
-  if (!*a3)
+  HSUtil::Encoder::encodeCodable<MTPListGestureConfig_>(encode, HSUtil::CoderKey::Literal<(char)103,(char)101,(char)115,(char)116,(char)117,(char)114,(char)101,(char)67,(char)111,(char)110,(char)102,(char)105,(char)103>::Key, self->_gestureConfig.__ptr_);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -1359,8 +1359,8 @@ LABEL_11:
   v11 = v5;
   v12 = v5;
   v10 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v10);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v10);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/Alg/MTTrackpadUberAlg.mm", __b);
@@ -1475,9 +1475,9 @@ LABEL_21:
 
 - (uint64_t)shouldSecondaryClick
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 256);
+    v1 = *(self + 256);
   }
 
   else

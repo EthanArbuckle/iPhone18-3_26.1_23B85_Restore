@@ -18,12 +18,12 @@
   v11[0] = v2;
   v3 = [MEMORY[0x277D75358] colorEffectSaturate:2.0];
   v11[1] = v3;
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  v5 = [v4 colorWithAlphaComponent:0.05];
-  v6 = [a1 colorEffectBlendNormal:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v5 = [whiteColor colorWithAlphaComponent:0.05];
+  v6 = [self colorEffectBlendNormal:v5];
   v11[2] = v6;
   v7 = [MEMORY[0x277D75348] colorWithRed:0.062745098 green:0.062745098 blue:0.062745098 alpha:0.5];
-  v8 = [a1 colorEffectBlendNormal:v7];
+  v8 = [self colorEffectBlendNormal:v7];
   v11[3] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:4];
 
@@ -32,12 +32,12 @@
 
 + (id)_gkGameLayerModuleVisualEffect
 {
-  v2 = [a1 _gkGameLayerBackgroundVisualEffect];
-  v3 = [v2 mutableCopy];
+  _gkGameLayerBackgroundVisualEffect = [self _gkGameLayerBackgroundVisualEffect];
+  v3 = [_gkGameLayerBackgroundVisualEffect mutableCopy];
 
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  v5 = [v4 colorWithAlphaComponent:0.08];
-  v6 = [a1 colorEffectBlendNormal:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v5 = [whiteColor colorWithAlphaComponent:0.08];
+  v6 = [self colorEffectBlendNormal:v5];
   [v3 addObject:v6];
 
   return v3;
@@ -48,9 +48,9 @@
   v8[2] = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D75358] colorEffectSaturate:4.0];
   v8[0] = v2;
-  v3 = [MEMORY[0x277D75348] whiteColor];
-  v4 = [v3 colorWithAlphaComponent:0.7];
-  v5 = [a1 colorEffectBlendNormal:v4];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v4 = [whiteColor colorWithAlphaComponent:0.7];
+  v5 = [self colorEffectBlendNormal:v4];
   v8[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
@@ -60,9 +60,9 @@
 + (id)_gkGameLayerDisabledButtonVisualEffect
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D75348] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.1];
-  v4 = [a1 colorEffectBlendNormal:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.1];
+  v4 = [self colorEffectBlendNormal:v3];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
@@ -71,12 +71,12 @@
 
 + (id)_gkGameLayerPanelVisualEffect
 {
-  v2 = [a1 _gkGameLayerBackgroundVisualEffect];
-  v3 = [v2 mutableCopy];
+  _gkGameLayerBackgroundVisualEffect = [self _gkGameLayerBackgroundVisualEffect];
+  v3 = [_gkGameLayerBackgroundVisualEffect mutableCopy];
 
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  v5 = [v4 colorWithAlphaComponent:0.1];
-  v6 = [a1 colorEffectBlendNormal:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v5 = [whiteColor colorWithAlphaComponent:0.1];
+  v6 = [self colorEffectBlendNormal:v5];
   [v3 addObject:v6];
 
   return v3;

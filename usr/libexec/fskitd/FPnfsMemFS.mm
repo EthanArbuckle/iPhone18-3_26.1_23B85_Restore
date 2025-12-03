@@ -1,45 +1,45 @@
 @interface FPnfsMemFS
-- (FPnfsMemFS)initWithRootPath:(id)a3;
-- (id)findNode:(id)a3 nascentOk:(BOOL)a4;
-- (id)mkMountPath:(id)a3 mountID:(unsigned int)a4;
-- (void)LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)addNode:(id)a3 withLock:(BOOL)a4;
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)getRootFileHandleWithError:(id)a3;
-- (void)lookupIn:(id)a3 name:(id)a4 usingFlags:(unsigned int)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)makeCloneOf:(id)a3 named:(id)a4 inDirectory:(id)a5 attributes:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)makeLinkOf:(id)a3 named:(id)a4 inDirectory:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)performExclusiveMemFS:(id)a3;
-- (void)performSharedMemFS:(id)a3;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9;
-- (void)readFrom:(id)a3 atOffset:(unint64_t)a4 intoBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)reclaim:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)removeDirectory:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8;
-- (void)renameItemIn:(id)a3 named:(id)a4 item:(id)a5 toDirectory:(id)a6 newName:(id)a7 toItem:(id)a8 usingFlags:(unsigned int)a9 requestID:(unint64_t)a10 reply:(id)a11;
-- (void)rmMountPath:(id)a3;
-- (void)rmNode:(id)a3;
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5;
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 fromBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 sharedBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
+- (FPnfsMemFS)initWithRootPath:(id)path;
+- (id)findNode:(id)node nascentOk:(BOOL)ok;
+- (id)mkMountPath:(id)path mountID:(unsigned int)d;
+- (void)LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
+- (void)addNode:(id)node withLock:(BOOL)lock;
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
+- (void)getRootFileHandleWithError:(id)error;
+- (void)lookupIn:(id)in name:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)makeCloneOf:(id)of named:(id)named inDirectory:(id)directory attributes:(id)attributes usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
+- (void)makeLinkOf:(id)of named:(id)named inDirectory:(id)directory requestID:(unint64_t)d reply:(id)reply;
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply;
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply;
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply;
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply;
+- (void)performExclusiveMemFS:(id)s;
+- (void)performSharedMemFS:(id)s;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply;
+- (void)readFrom:(id)from atOffset:(unint64_t)offset intoBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply;
+- (void)reclaim:(id)reclaim requestID:(unint64_t)d reply:(id)reply;
+- (void)removeDirectory:(id)directory from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply;
+- (void)renameItemIn:(id)in named:(id)named item:(id)item toDirectory:(id)directory newName:(id)name toItem:(id)toItem usingFlags:(unsigned int)flags requestID:(unint64_t)self0 reply:(id)self1;
+- (void)rmMountPath:(id)path;
+- (void)rmNode:(id)node;
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply;
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 requestID:(unint64_t)d reply:(id)reply;
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply;
+- (void)writeTo:(id)to atOffset:(unint64_t)offset fromBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
+- (void)writeTo:(id)to atOffset:(unint64_t)offset sharedBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply;
 @end
 
 @implementation FPnfsMemFS
 
-- (FPnfsMemFS)initWithRootPath:(id)a3
+- (FPnfsMemFS)initWithRootPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = FPnfsMemFS;
   v6 = [(FPnfsMemFS *)&v14 init];
@@ -54,7 +54,7 @@
     goto LABEL_3;
   }
 
-  objc_storeStrong(&v7->rootPath, a3);
+  objc_storeStrong(&v7->rootPath, path);
   v9 = objc_alloc_init(NSMutableDictionary);
   fhMap = v7->fhMap;
   v7->fhMap = v9;
@@ -74,33 +74,33 @@ LABEL_6:
   return v8;
 }
 
-- (void)performExclusiveMemFS:(id)a3
+- (void)performExclusiveMemFS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   pthread_rwlock_wrlock(&self->opLock);
-  v4[2](v4);
+  sCopy[2](sCopy);
 
   pthread_rwlock_unlock(&self->opLock);
 }
 
-- (void)performSharedMemFS:(id)a3
+- (void)performSharedMemFS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   pthread_rwlock_rdlock(&self->opLock);
-  v4[2](v4);
+  sCopy[2](sCopy);
 
   pthread_rwlock_unlock(&self->opLock);
 }
 
-- (void)addNode:(id)a3 withLock:(BOOL)a4
+- (void)addNode:(id)node withLock:(BOOL)lock
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  lockCopy = lock;
+  nodeCopy = node;
+  v7 = nodeCopy;
+  if (lockCopy)
   {
     fhMap = self->fhMap;
-    v9 = [v6 fh];
+    v9 = [nodeCopy fh];
     [(NSMutableDictionary *)fhMap setObject:v7 forKey:v9];
   }
 
@@ -111,7 +111,7 @@ LABEL_6:
     v13[2] = sub_100005170;
     v13[3] = &unk_100060B20;
     v13[4] = self;
-    v14 = v6;
+    v14 = nodeCopy;
     [(FPnfsMemFS *)self performExclusiveMemFS:v13];
   }
 
@@ -121,19 +121,19 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = [v7 fh];
-      v12 = [v7 nascent];
+      nascent = [v7 nascent];
       *buf = 138412802;
       v16 = v7;
       v17 = 2112;
       v18 = v11;
       v19 = 1024;
-      v20 = v12;
+      v20 = nascent;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Adding node %@ with filehandle %@ nascent %d", buf, 0x1Cu);
     }
   }
 }
 
-- (id)findNode:(id)a3 nascentOk:(BOOL)a4
+- (id)findNode:(id)node nascentOk:(BOOL)ok
 {
   v15 = 0;
   v16 = &v15;
@@ -146,10 +146,10 @@ LABEL_6:
   v11[2] = sub_100005440;
   v11[3] = &unk_100060B48;
   v14 = &v15;
-  v12 = self;
-  v5 = a3;
-  v13 = v5;
-  [(FPnfsMemFS *)v12 performSharedMemFS:v11];
+  selfCopy = self;
+  nodeCopy = node;
+  v13 = nodeCopy;
+  [(FPnfsMemFS *)selfCopy performSharedMemFS:v11];
   v6 = v16[5];
   if (!v6)
   {
@@ -162,14 +162,14 @@ LABEL_6:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v5;
+      v22 = nodeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Could not find node for fh %@", buf, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  if ([v6 nascent] && !a4)
+  if ([v6 nascent] && !ok)
   {
     if (verbose)
     {
@@ -177,7 +177,7 @@ LABEL_6:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v5;
+        v22 = nodeCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Found nascent node for fh %@", buf, 0xCu);
       }
     }
@@ -195,39 +195,39 @@ LABEL_13:
   return v9;
 }
 
-- (void)rmNode:(id)a3
+- (void)rmNode:(id)node
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nodeCopy = node;
+  v5 = nodeCopy;
+  if (nodeCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100005534;
     v6[3] = &unk_100060B20;
     v6[4] = self;
-    v7 = v4;
+    v7 = nodeCopy;
     [(FPnfsMemFS *)self performExclusiveMemFS:v6];
   }
 }
 
-- (id)mkMountPath:(id)a3 mountID:(unsigned int)a4
+- (id)mkMountPath:(id)path mountID:(unsigned int)d
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = livefs_std_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     rootPath = self->rootPath;
     *buf = 138412802;
-    v59 = v4;
+    v59 = pathCopy;
     v60 = 1024;
-    v61 = a4;
+    dCopy = d;
     v62 = 2112;
     *v63 = rootPath;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "mkMountPath: path = %@ id %u rootPath = %@", buf, 0x1Cu);
   }
 
-  if (!v4)
+  if (!pathCopy)
   {
     v8 = livefs_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -241,28 +241,28 @@ LABEL_13:
     goto LABEL_11;
   }
 
-  if ([(NSString *)v4 isAbsolutePath])
+  if ([(NSString *)pathCopy isAbsolutePath])
   {
     p_rootPath = &self->rootPath;
-    if (![(NSString *)v4 hasPrefix:self->rootPath])
+    if (![(NSString *)pathCopy hasPrefix:self->rootPath])
     {
       v28 = livefs_std_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        sub_10000839C(v4, p_rootPath, v28);
+        sub_10000839C(pathCopy, p_rootPath, v28);
       }
 
       v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:2 userInfo:0];
       goto LABEL_60;
     }
 
-    if ([(NSString *)v4 isEqualToString:*p_rootPath])
+    if ([(NSString *)pathCopy isEqualToString:*p_rootPath])
     {
       v7 = 0;
       goto LABEL_60;
     }
 
-    v7 = -[NSString substringFromIndex:](v4, "substringFromIndex:", [*p_rootPath length] + 1);
+    v7 = -[NSString substringFromIndex:](pathCopy, "substringFromIndex:", [*p_rootPath length] + 1);
 
     if (v7)
     {
@@ -278,20 +278,20 @@ LABEL_13:
     }
 
 LABEL_11:
-    v4 = 0;
+    pathCopy = 0;
     goto LABEL_60;
   }
 
-  v7 = v4;
+  v7 = pathCopy;
 LABEL_13:
-  v9 = [v7 pathComponents];
-  v10 = [v9 count];
-  v11 = [(FPnfsMemFS *)self rootNode];
+  pathComponents = [v7 pathComponents];
+  v10 = [pathComponents count];
+  rootNode = [(FPnfsMemFS *)self rootNode];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v9;
+  obj = pathComponents;
   v12 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
   if (v12)
   {
@@ -307,7 +307,7 @@ LABEL_13:
     {
       v18 = 0;
       v19 = v15;
-      v20 = v11;
+      v20 = rootNode;
       v21 = v16;
       do
       {
@@ -321,15 +321,15 @@ LABEL_13:
         v52 = v19;
         if (v17 == v21)
         {
-          v23 = a4;
+          dCopy2 = d;
         }
 
         else
         {
-          v23 = 0;
+          dCopy2 = 0;
         }
 
-        v24 = [v20 mkDirPlaceholder:v22 fhBuffer:&v52 wellKnownMount:{v23, v42}];
+        v24 = [v20 mkDirPlaceholder:v22 fhBuffer:&v52 wellKnownMount:{dCopy2, v42}];
         v15 = v52;
 
         v25 = livefs_std_log();
@@ -338,7 +338,7 @@ LABEL_13:
           *buf = v42;
           v59 = v22;
           v60 = 1024;
-          v61 = v24;
+          dCopy = v24;
           v62 = 1024;
           *v63 = v21 + 1;
           *&v63[4] = 1024;
@@ -357,21 +357,21 @@ LABEL_13:
           v24 = 5;
 LABEL_38:
 
-          v4 = v43;
-          v11 = v20;
+          pathCopy = v43;
+          rootNode = v20;
           goto LABEL_55;
         }
 
-        v11 = v27;
+        rootNode = v27;
         if (v17 == v21)
         {
-          v29 = [theMountTable lookup:a4];
+          v29 = [theMountTable lookup:d];
           if (v29)
           {
-            [v29 setFileno:{objc_msgSend(v11, "fileno")}];
+            [v29 setFileno:{objc_msgSend(rootNode, "fileno")}];
           }
 
-          v11 = 0;
+          rootNode = 0;
           v15 = 0;
           v7 = v43;
           goto LABEL_42;
@@ -379,7 +379,7 @@ LABEL_38:
 
         v18 = v18 + 1;
         v19 = v15;
-        v20 = v11;
+        v20 = rootNode;
         ++v21;
       }
 
@@ -402,7 +402,7 @@ LABEL_38:
 
 LABEL_42:
 
-  v4 = self->rootPath;
+  pathCopy = self->rootPath;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -415,7 +415,7 @@ LABEL_42:
     v33 = *v49;
 LABEL_44:
     v34 = 0;
-    v35 = v4;
+    v35 = pathCopy;
     while (1)
     {
       if (*v49 != v33)
@@ -423,17 +423,17 @@ LABEL_44:
         objc_enumerationMutation(v30);
       }
 
-      v4 = [(NSString *)v35 stringByAppendingPathComponent:*(*(&v48 + 1) + 8 * v34)];
+      pathCopy = [(NSString *)v35 stringByAppendingPathComponent:*(*(&v48 + 1) + 8 * v34)];
 
       v36 = livefs_std_log();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v59 = v4;
+        v59 = pathCopy;
         _os_log_debug_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEBUG, "mkMountPath: About to mkdir(%@, 0755)", buf, 0xCu);
       }
 
-      if (mkdir([(NSString *)v4 UTF8String], 0x1EDu))
+      if (mkdir([(NSString *)pathCopy UTF8String], 0x1EDu))
       {
         if (*__error() != 17)
         {
@@ -442,7 +442,7 @@ LABEL_44:
       }
 
       v34 = v34 + 1;
-      v35 = v4;
+      v35 = pathCopy;
       if (v32 == v34)
       {
         v32 = [v30 countByEnumeratingWithState:&v48 objects:v57 count:16];
@@ -486,32 +486,32 @@ LABEL_60:
   return v7;
 }
 
-- (void)rmMountPath:(id)a3
+- (void)rmMountPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (verbose)
   {
     v5 = livefs_std_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = pathCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "rmMountPath: %@", buf, 0xCu);
     }
   }
 
-  if (![v4 isAbsolutePath])
+  if (![pathCopy isAbsolutePath])
   {
     goto LABEL_9;
   }
 
-  if ([v4 hasPrefix:self->rootPath] && (objc_msgSend(v4, "isEqualToString:", self->rootPath) & 1) == 0)
+  if ([pathCopy hasPrefix:self->rootPath] && (objc_msgSend(pathCopy, "isEqualToString:", self->rootPath) & 1) == 0)
   {
-    v6 = [v4 substringFromIndex:{-[NSString length](self->rootPath, "length") + 1}];
+    v6 = [pathCopy substringFromIndex:{-[NSString length](self->rootPath, "length") + 1}];
 
-    v4 = v6;
+    pathCopy = v6;
 LABEL_9:
-    [v4 pathComponents];
+    [pathCopy pathComponents];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_100005DC4;
@@ -522,66 +522,66 @@ LABEL_9:
   }
 }
 
-- (void)close:(id)a3 keepingMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)close:(id)close keepingMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a6;
+  closeCopy = close;
+  replyCopy = reply;
   if (verbose)
   {
     v9 = livefs_std_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = closeCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Close %@", &v10, 0xCu);
     }
   }
 
-  v8[2](v8, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)createIn:(id)a3 named:(id)a4 attributes:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)createIn:(id)in named:(id)named attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a7;
+  inCopy = in;
+  namedCopy = named;
+  replyCopy = reply;
   if (verbose)
   {
     v12 = livefs_std_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v9;
+      v14 = inCopy;
       v15 = 2112;
-      v16 = v10;
+      v16 = namedCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Create called dir: %@ name:%@", &v13, 0x16u);
     }
   }
 
-  (*(v11 + 2))(v11, 30, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0, 0);
 }
 
-- (void)fileAttributes:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)fileAttributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a5;
+  attributesCopy = attributes;
+  replyCopy = reply;
   if (verbose)
   {
     v9 = livefs_std_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v7;
+      v15 = attributesCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Getattr called for %@", &v14, 0xCu);
     }
   }
 
-  v10 = [(FPnfsMemFS *)self findNode:v7];
+  v10 = [(FPnfsMemFS *)self findNode:attributesCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 getattr];
-    if (v12)
+    getattr = [v10 getattr];
+    if (getattr)
     {
       v13 = 0;
     }
@@ -591,212 +591,212 @@ LABEL_9:
       v13 = 28;
     }
 
-    v8[2](v8, v13, v12);
+    replyCopy[2](replyCopy, v13, getattr);
   }
 
   else
   {
-    v8[2](v8, 70, 0);
+    replyCopy[2](replyCopy, 70, 0);
   }
 }
 
-- (void)getRootFileHandleWithError:(id)a3
+- (void)getRootFileHandleWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (verbose)
   {
     v5 = livefs_std_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(FPnfsMemFS *)self rootNode];
-      v7 = [v6 fh];
+      rootNode = [(FPnfsMemFS *)self rootNode];
+      v7 = [rootNode fh];
       v10 = 138412290;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "GetRootFileHandle %@", &v10, 0xCu);
     }
   }
 
-  v8 = [(FPnfsMemFS *)self rootNode];
-  v9 = [v8 fh];
-  v4[2](v4, v9, 0);
+  rootNode2 = [(FPnfsMemFS *)self rootNode];
+  v9 = [rootNode2 fh];
+  errorCopy[2](errorCopy, v9, 0);
 }
 
-- (void)lookupIn:(id)a3 name:(id)a4 usingFlags:(unsigned int)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)lookupIn:(id)in name:(id)name usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  inCopy = in;
+  nameCopy = name;
+  replyCopy = reply;
   if (verbose)
   {
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v10;
+      v20 = inCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Lookup called dir: %@ name: %@", buf, 0x16u);
     }
   }
 
-  v14 = [(FPnfsMemFS *)self findNode:v10];
+  v14 = [(FPnfsMemFS *)self findNode:inCopy];
   if (v14)
   {
-    v15 = [v11 string];
-    v16 = [v14 lookupNode:v15];
+    string = [nameCopy string];
+    v16 = [v14 lookupNode:string];
 
     if (v16)
     {
-      v17 = [v16 getattr];
+      getattr = [v16 getattr];
       v18 = [v16 fh];
-      (*(v12 + 2))(v12, 0, 0xFFFFFFFFLL, v18, v17, 0, 0, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0xFFFFFFFFLL, v18, getattr, 0, 0, 0, 0, 0);
     }
 
     else
     {
-      (*(v12 + 2))(v12, 2, 0xFFFFFFFFLL, 0, 0, 0, 0, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 2, 0xFFFFFFFFLL, 0, 0, 0, 0, 0, 0, 0);
     }
   }
 
   else
   {
-    (*(v12 + 2))(v12, 70, 0xFFFFFFFFLL, 0, 0, 0, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 70, 0xFFFFFFFFLL, 0, 0, 0, 0, 0, 0, 0);
   }
 }
 
-- (void)makeDirectoryIn:(id)a3 named:(id)a4 attributes:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)makeDirectoryIn:(id)in named:(id)named attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  inCopy = in;
+  namedCopy = named;
+  attributesCopy = attributes;
+  replyCopy = reply;
   if (verbose)
   {
     v15 = livefs_std_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v26 = v11;
+      v26 = inCopy;
       v27 = 2112;
-      v28 = v12;
+      v28 = namedCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Mkdir called dir: %@ name: %@", buf, 0x16u);
     }
   }
 
-  v16 = [(FPnfsMemFS *)self findNode:v11];
+  v16 = [(FPnfsMemFS *)self findNode:inCopy];
   if (v16)
   {
-    v23 = v13;
-    v17 = [v12 string];
+    v23 = attributesCopy;
+    string = [namedCopy string];
     v24 = 0;
-    v18 = [v16 mkDir:v17 fhBuffer:&v24];
+    v18 = [v16 mkDir:string fhBuffer:&v24];
     v19 = v24;
 
-    v20 = [v16 getattr];
+    getattr = [v16 getattr];
     v21 = 0;
-    v22 = 0;
+    getattr2 = 0;
     if (!v18)
     {
       v21 = [(FPnfsMemFS *)self findNode:v19];
-      v22 = [v21 getattr];
+      getattr2 = [v21 getattr];
     }
 
-    (*(v14 + 2))(v14, v18, v20, v19, v22, 0, 0);
+    (*(replyCopy + 2))(replyCopy, v18, getattr, v19, getattr2, 0, 0);
 
-    v13 = v23;
+    attributesCopy = v23;
   }
 
   else
   {
-    (*(v14 + 2))(v14, 70, 0, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 70, 0, 0, 0, 0, 0);
   }
 }
 
-- (void)makeSymLinkIn:(id)a3 named:(id)a4 contents:(id)a5 attributes:(id)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)makeSymLinkIn:(id)in named:(id)named contents:(id)contents attributes:(id)attributes requestID:(unint64_t)d reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a8;
+  inCopy = in;
+  namedCopy = named;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v10;
+      v15 = inCopy;
       v16 = 2112;
-      v17 = v11;
+      v17 = namedCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "MakeSymLink called dir: %@ name: %@", &v14, 0x16u);
     }
   }
 
-  (*(v12 + 2))(v12, 30, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0, 0);
 }
 
-- (void)makeLinkOf:(id)a3 named:(id)a4 inDirectory:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)makeLinkOf:(id)of named:(id)named inDirectory:(id)directory requestID:(unint64_t)d reply:(id)reply
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a7;
+  namedCopy = named;
+  directoryCopy = directory;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v12 = livefs_std_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v10;
+      v14 = directoryCopy;
       v15 = 2112;
-      v16 = v9;
+      v16 = namedCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "MakeLink called dir: %@ name: %@", &v13, 0x16u);
     }
   }
 
-  (*(v11 + 2))(v11, 30, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0);
 }
 
-- (void)makeCloneOf:(id)a3 named:(id)a4 inDirectory:(id)a5 attributes:(id)a6 usingFlags:(unsigned int)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)makeCloneOf:(id)of named:(id)named inDirectory:(id)directory attributes:(id)attributes usingFlags:(unsigned int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a9;
+  namedCopy = named;
+  directoryCopy = directory;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v11;
+      v15 = directoryCopy;
       v16 = 2112;
-      v17 = v10;
+      v17 = namedCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "MakeClone called dir: %@ name: %@", &v14, 0x16u);
     }
   }
 
-  (*(v12 + 2))(v12, 30, 0, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0, 0);
 }
 
-- (void)open:(id)a3 withMode:(int)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)open:(id)open withMode:(int)mode requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a6;
+  openCopy = open;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v9 = livefs_std_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = openCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Open %@", &v10, 0xCu);
     }
   }
 
-  v8[2](v8, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)pathConfiguration:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)pathConfiguration:(id)configuration requestID:(unint64_t)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a5;
+  configurationCopy = configuration;
+  replyCopy = reply;
   v13 = 0;
   if (verbose)
   {
@@ -804,7 +804,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = configurationCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Pathconf called on %@", buf, 0xCu);
     }
   }
@@ -823,299 +823,299 @@ LABEL_9:
     v10 = 28;
   }
 
-  v7[2](v7, v10, v9);
+  replyCopy[2](replyCopy, v10, v9);
 }
 
-- (void)readFrom:(id)a3 atOffset:(unint64_t)a4 intoBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)readFrom:(id)from atOffset:(unint64_t)offset intoBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a7;
+  fromCopy = from;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v10 = livefs_std_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = fromCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Read %@", &v11, 0xCu);
     }
   }
 
-  (*(v9 + 2))(v9, 45, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 45, 0, 0);
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 cookie:(unint64_t)a5 verifier:(unint64_t)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a4;
-  v14 = a8;
-  v15 = a3;
+  bufferCopy = buffer;
+  replyCopy = reply;
+  directoryCopy = directory;
   v16 = livefs_std_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
     sub_1000084A0(v16);
   }
 
-  v17 = [(FPnfsMemFS *)self findNode:v15];
+  v17 = [(FPnfsMemFS *)self findNode:directoryCopy];
 
   if (v17)
   {
     v19 = 0;
-    v18 = [v17 readDirAtCookie:a5 withVerifier:a6 forBytes:objc_msgSend(v13 andError:{"length"), &v19}];
+    v18 = [v17 readDirAtCookie:cookie withVerifier:verifier forBytes:objc_msgSend(bufferCopy andError:{"length"), &v19}];
     if (v18)
     {
-      memmove([v13 mutableBytes], objc_msgSend(v18, "bytes"), objc_msgSend(v18, "length"));
-      [v13 setLength:{objc_msgSend(v18, "length")}];
+      memmove([bufferCopy mutableBytes], objc_msgSend(v18, "bytes"), objc_msgSend(v18, "length"));
+      [bufferCopy setLength:{objc_msgSend(v18, "length")}];
     }
 
-    v14[2](v14, v19, [v18 length], objc_msgSend(v17, "verf"));
+    replyCopy[2](replyCopy, v19, [v18 length], objc_msgSend(v17, "verf"));
   }
 
   else
   {
-    v14[2](v14, 70, 0, 0);
+    replyCopy[2](replyCopy, 70, 0, 0);
   }
 }
 
-- (void)readDirectory:(id)a3 intoBuffer:(id)a4 requestedAttributes:(unint64_t)a5 cookie:(unint64_t)a6 verifier:(unint64_t)a7 requestID:(unint64_t)a8 reply:(id)a9
+- (void)readDirectory:(id)directory intoBuffer:(id)buffer requestedAttributes:(unint64_t)attributes cookie:(unint64_t)cookie verifier:(unint64_t)verifier requestID:(unint64_t)d reply:(id)reply
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a9;
+  directoryCopy = directory;
+  bufferCopy = buffer;
+  replyCopy = reply;
   v16 = livefs_std_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    sub_1000084E4(v13, v16);
+    sub_1000084E4(directoryCopy, v16);
   }
 
-  v17 = [(FPnfsMemFS *)self findNode:v13];
+  v17 = [(FPnfsMemFS *)self findNode:directoryCopy];
   v19 = 0;
   if (v17)
   {
-    v18 = [v17 readDirAttrAtCookie:a6 withVerifier:a7 forBytes:objc_msgSend(v14 andError:{"length"), &v19}];
+    v18 = [v17 readDirAttrAtCookie:cookie withVerifier:verifier forBytes:objc_msgSend(bufferCopy andError:{"length"), &v19}];
     if (v18)
     {
-      memmove([v14 mutableBytes], objc_msgSend(v18, "bytes"), objc_msgSend(v18, "length"));
-      [v14 setLength:{objc_msgSend(v18, "length")}];
+      memmove([bufferCopy mutableBytes], objc_msgSend(v18, "bytes"), objc_msgSend(v18, "length"));
+      [bufferCopy setLength:{objc_msgSend(v18, "length")}];
     }
 
-    v15[2](v15, v19, [v18 length], objc_msgSend(v17, "verf"));
+    replyCopy[2](replyCopy, v19, [v18 length], objc_msgSend(v17, "verf"));
   }
 
   else
   {
-    v15[2](v15, 70, 0, 0);
+    replyCopy[2](replyCopy, 70, 0, 0);
   }
 }
 
-- (void)readLinkOf:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)readLinkOf:(id)of requestID:(unint64_t)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a5;
+  ofCopy = of;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v8 = livefs_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = ofCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "ReadLink %@", &v9, 0xCu);
     }
   }
 
-  (*(v7 + 2))(v7, 45, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 45, 0, 0);
 }
 
-- (void)reclaim:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)reclaim:(id)reclaim requestID:(unint64_t)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a5;
+  reclaimCopy = reclaim;
+  replyCopy = reply;
   if (verbose)
   {
     v8 = livefs_std_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v6;
+      v10 = reclaimCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Reclaim %@", &v9, 0xCu);
     }
   }
 
-  (*(v7 + 2))(v7, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 0, 0);
 }
 
-- (void)removeItem:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)removeItem:(id)item from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a8;
+  fromCopy = from;
+  namedCopy = named;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v13 = livefs_std_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v10;
+      v15 = fromCopy;
       v16 = 2112;
-      v17 = v11;
+      v17 = namedCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Remove dir: %@ name:%@", &v14, 0x16u);
     }
   }
 
-  (*(v12 + 2))(v12, 30, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0);
 }
 
-- (void)removeDirectory:(id)a3 from:(id)a4 named:(id)a5 usingFlags:(int)a6 requestID:(unint64_t)a7 reply:(id)a8
+- (void)removeDirectory:(id)directory from:(id)from named:(id)named usingFlags:(int)flags requestID:(unint64_t)d reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  directoryCopy = directory;
+  fromCopy = from;
+  namedCopy = named;
+  replyCopy = reply;
   if (verbose)
   {
     v16 = livefs_std_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412546;
-      v22 = v13;
+      v22 = fromCopy;
       v23 = 2112;
-      v24 = v14;
+      v24 = namedCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Rmdir dir: %@ name:%@", &v21, 0x16u);
     }
   }
 
-  v17 = [(FPnfsMemFS *)self findNode:v13];
+  v17 = [(FPnfsMemFS *)self findNode:fromCopy];
   if (v17)
   {
-    v18 = [v14 string];
-    v19 = [v17 rmDir:v18];
+    string = [namedCopy string];
+    v19 = [v17 rmDir:string];
 
     if (v19)
     {
-      (*(v15 + 2))(v15, v19, 0, 0);
+      (*(replyCopy + 2))(replyCopy, v19, 0, 0);
     }
 
     else
     {
-      v20 = [v17 getattr];
-      (*(v15 + 2))(v15, 0, v20, 0);
+      getattr = [v17 getattr];
+      (*(replyCopy + 2))(replyCopy, 0, getattr, 0);
     }
   }
 
   else
   {
-    (*(v15 + 2))(v15, 70, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 70, 0, 0);
   }
 }
 
-- (void)renameItemIn:(id)a3 named:(id)a4 item:(id)a5 toDirectory:(id)a6 newName:(id)a7 toItem:(id)a8 usingFlags:(unsigned int)a9 requestID:(unint64_t)a10 reply:(id)a11
+- (void)renameItemIn:(id)in named:(id)named item:(id)item toDirectory:(id)directory newName:(id)name toItem:(id)toItem usingFlags:(unsigned int)flags requestID:(unint64_t)self0 reply:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a11;
+  inCopy = in;
+  namedCopy = named;
+  itemCopy = item;
+  directoryCopy = directory;
+  nameCopy = name;
+  toItemCopy = toItem;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v24 = livefs_std_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v41 = v17;
+      v41 = inCopy;
       v42 = 2112;
-      v43 = v18;
+      v43 = namedCopy;
       v44 = 2112;
-      v45 = v20;
+      v45 = directoryCopy;
       v46 = 2112;
-      v47 = v21;
+      v47 = nameCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Rename from dir: %@ from name: %@ to dir: %@ to name: %@", buf, 0x2Au);
     }
   }
 
-  if ([v17 isEqualToString:v20])
+  if ([inCopy isEqualToString:directoryCopy])
   {
-    v25 = [(FPnfsMemFS *)self findNode:v17];
+    v25 = [(FPnfsMemFS *)self findNode:inCopy];
     if (v25)
     {
-      v26 = [v18 string];
-      v27 = [v25 lookupNode:v26];
+      string = [namedCopy string];
+      v27 = [v25 lookupNode:string];
 
       if (v27)
       {
         v39 = v27;
-        v28 = [v21 string];
-        v29 = [v25 lookupNode:v28];
+        string2 = [nameCopy string];
+        v29 = [v25 lookupNode:string2];
 
         v38 = v29;
-        if (v29 && ([v21 string], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v25, "rmDir:", v30), v30, v31))
+        if (v29 && ([nameCopy string], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v25, "rmDir:", v30), v30, v31))
         {
-          (*(v23 + 2))(v23, v31, 0, 0, 0, 0, 0);
+          (*(replyCopy + 2))(replyCopy, v31, 0, 0, 0, 0, 0);
         }
 
         else
         {
-          v37 = v19;
-          v32 = [v18 string];
-          v33 = [v21 string];
-          v34 = [v39 renameFrom:v32 toName:v33];
+          v37 = itemCopy;
+          string3 = [namedCopy string];
+          string4 = [nameCopy string];
+          v34 = [v39 renameFrom:string3 toName:string4];
 
           if (v34)
           {
-            (*(v23 + 2))(v23, v34, 0, 0, 0, 0, 0);
+            (*(replyCopy + 2))(replyCopy, v34, 0, 0, 0, 0, 0);
           }
 
           else
           {
-            v35 = [v25 getattr];
-            v36 = [v25 getattr];
-            (*(v23 + 2))(v23, 0, v35, 0, v36, 0, 0);
+            getattr = [v25 getattr];
+            getattr2 = [v25 getattr];
+            (*(replyCopy + 2))(replyCopy, 0, getattr, 0, getattr2, 0, 0);
           }
 
-          v19 = v37;
+          itemCopy = v37;
         }
       }
 
       else
       {
-        (*(v23 + 2))(v23, 2, 0, 0, 0, 0, 0);
+        (*(replyCopy + 2))(replyCopy, 2, 0, 0, 0, 0, 0);
       }
     }
 
     else
     {
-      (*(v23 + 2))(v23, 70, 0, 0, 0, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 70, 0, 0, 0, 0, 0);
     }
   }
 
   else
   {
-    (*(v23 + 2))(v23, 18, 0, 0, 0, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 18, 0, 0, 0, 0, 0);
   }
 }
 
-- (void)setFileAttributesOf:(id)a3 to:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)setFileAttributesOf:(id)of to:(id)to requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a3;
-  v8 = a6;
+  ofCopy = of;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v9 = livefs_std_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v7;
+      v11 = ofCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SetAttr %@", &v10, 0xCu);
     }
   }
 
-  (*(v8 + 2))(v8, 30, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0);
 }
 
-- (void)volumeStatistics:(id)a3 requestID:(unint64_t)a4 reply:(id)a5
+- (void)volumeStatistics:(id)statistics requestID:(unint64_t)d reply:(id)reply
 {
-  v6 = a3;
-  v7 = a5;
+  statisticsCopy = statistics;
+  replyCopy = reply;
   v12 = 0;
   memset(v11, 0, sizeof(v11));
   if (verbose)
@@ -1124,7 +1124,7 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = statisticsCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Statfs called on %@", buf, 0xCu);
     }
   }
@@ -1143,82 +1143,82 @@ LABEL_9:
     v10 = 28;
   }
 
-  v7[2](v7, v10, v9);
+  replyCopy[2](replyCopy, v10, v9);
 }
 
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 fromBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)writeTo:(id)to atOffset:(unint64_t)offset fromBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a7;
+  toCopy = to;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v10 = livefs_std_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = toCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Write %@", &v11, 0xCu);
     }
   }
 
-  (*(v9 + 2))(v9, 30, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0);
 }
 
-- (void)writeTo:(id)a3 atOffset:(unint64_t)a4 sharedBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)writeTo:(id)to atOffset:(unint64_t)offset sharedBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a7;
+  toCopy = to;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v10 = livefs_std_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = toCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Write %@", &v11, 0xCu);
     }
   }
 
-  (*(v9 + 2))(v9, 30, 0, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 30, 0, 0, 0);
 }
 
-- (void)LIWrite:(id)a3 atOffset:(unint64_t)a4 withBuffer:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)LIWrite:(id)write atOffset:(unint64_t)offset withBuffer:(id)buffer requestID:(unint64_t)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a7;
+  writeCopy = write;
+  replyCopy = reply;
   if (verbose >= 2)
   {
     v10 = livefs_std_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v8;
+      v12 = writeCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Write %@", &v11, 0xCu);
     }
   }
 
-  v9[2](v9, 30, 0);
+  replyCopy[2](replyCopy, 30, 0);
 }
 
-- (void)otherAttributeOf:(id)a3 named:(id)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)otherAttributeOf:(id)of named:(id)named requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a6;
-  v8 = [a4 string];
-  if (([v8 isEqualToString:@"_B_has_perm_enforcement"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"_B_has_access_check"))
+  replyCopy = reply;
+  string = [named string];
+  if (([string isEqualToString:@"_B_has_perm_enforcement"] & 1) != 0 || objc_msgSend(string, "isEqualToString:", @"_B_has_access_check"))
   {
     __s = 0;
   }
 
   else
   {
-    if ([v8 isEqualToString:@"_S_f_type"])
+    if ([string isEqualToString:@"_S_f_type"])
     {
       p_s = "lifs";
       v10 = 5;
       goto LABEL_5;
     }
 
-    if ([v8 isEqualToString:@"_S_f_location"])
+    if ([string isEqualToString:@"_S_f_location"])
     {
       __s = 0;
       v13 = getpid();
@@ -1227,23 +1227,23 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    if ([v8 isEqualToString:@"_S_f_vol_name"])
+    if ([string isEqualToString:@"_S_f_vol_name"])
     {
       p_s = "LiveFiles";
       v10 = 10;
       goto LABEL_5;
     }
 
-    if ([v8 isEqualToString:@"_N_caps_format"])
+    if ([string isEqualToString:@"_N_caps_format"])
     {
       v14 = 4195072;
     }
 
     else
     {
-      if (![v8 isEqualToString:@"_N_caps_interfaces"])
+      if (![string isEqualToString:@"_N_caps_interfaces"])
       {
-        v7[2](v7, 45, 0);
+        replyCopy[2](replyCopy, 45, 0);
         goto LABEL_7;
       }
 
@@ -1259,16 +1259,16 @@ LABEL_5:
   v11 = [NSData dataWithBytes:p_s length:v10];
 LABEL_6:
   v12 = v11;
-  v7[2](v7, 0, v11);
+  replyCopy[2](replyCopy, 0, v11);
 
 LABEL_7:
 }
 
-- (void)setUpdateInterest:(id)a3 interest:(BOOL)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)setUpdateInterest:(id)interest interest:(BOOL)a4 requestID:(unint64_t)d reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v8 = [NSError errorWithDomain:NSPOSIXErrorDomain code:45 userInfo:0];
-  (*(a6 + 2))(v7, v8);
+  (*(reply + 2))(replyCopy, v8);
 }
 
 @end

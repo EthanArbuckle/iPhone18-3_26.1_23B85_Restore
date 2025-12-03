@@ -1,5 +1,5 @@
 @interface RemoteAlertRootViewController
-- (_TtC19CoreServicesUIAgent29RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19CoreServicesUIAgent29RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
@@ -17,9 +17,9 @@
   }
 
   v3 = objc_allocWithZone(UIView);
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(RemoteAlertRootViewController *)v5 setView:v4];
+  [(RemoteAlertRootViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
@@ -37,7 +37,7 @@
   [(RemoteAlertRootViewController *)&v3 viewDidLoad];
 }
 
-- (_TtC19CoreServicesUIAgent29RemoteAlertRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19CoreServicesUIAgent29RemoteAlertRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -47,23 +47,23 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC19CoreServicesUIAgent29RemoteAlertRootViewController_remoteAlertContentViewController) = 0;
-    v7 = a4;
-    a3 = String._bridgeToObjectiveC()();
+    bundleCopy = bundle;
+    name = String._bridgeToObjectiveC()();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC19CoreServicesUIAgent29RemoteAlertRootViewController_remoteAlertContentViewController) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for RemoteAlertRootViewController();
-  v9 = [(RemoteAlertRootViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(RemoteAlertRootViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }

@@ -1,13 +1,13 @@
 @interface MTL4TileRenderPipelineDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4StaticLinkingDescriptor)staticLinkingDescriptor;
 - (MTL4TileRenderPipelineDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)reset;
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3;
-- (void)setStaticLinkingDescriptor:(id)a3;
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup;
+- (void)setStaticLinkingDescriptor:(id)descriptor;
 @end
 
 @implementation MTL4TileRenderPipelineDescriptor
@@ -28,28 +28,28 @@
   [(MTL4PipelineDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MTL4TileRenderPipelineDescriptor;
   v5 = [(MTL4PipelineDescriptor *)&v8 copyWithZone:?];
-  *(v5 + 7) = [(MTL4FunctionDescriptor *)self->_tileFunctionDescriptor copyWithZone:a3];
+  *(v5 + 7) = [(MTL4FunctionDescriptor *)self->_tileFunctionDescriptor copyWithZone:zone];
 
-  *(v5 + 9) = [(MTLTileRenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:a3];
+  *(v5 + 9) = [(MTLTileRenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments copyWithZone:zone];
   *(v5 + 8) = self->_rasterSampleCount;
   v5[40] = self->_threadgroupSizeMatchesTileSize;
   *(v5 + 10) = self->_maxTotalThreadsPerThreadgroup;
   v5[41] = self->_supportBinaryLinking;
-  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_staticLinkingDescriptor copyWithZone:a3];
+  *(v5 + 6) = [(MTL4StaticLinkingDescriptor *)self->_staticLinkingDescriptor copyWithZone:zone];
   v6 = *&self->_requiredThreadsPerThreadgroup.width;
   *(v5 + 13) = self->_requiredThreadsPerThreadgroup.depth;
   *(v5 + 88) = v6;
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
     return v8;
@@ -58,23 +58,23 @@
   v16 = v3;
   v17 = v4;
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     goto LABEL_3;
   }
 
   v15.receiver = self;
   v15.super_class = MTL4TileRenderPipelineDescriptor;
-  LODWORD(v8) = [(MTL4PipelineDescriptor *)&v15 isEqual:a3];
+  LODWORD(v8) = [(MTL4PipelineDescriptor *)&v15 isEqual:equal];
   if (v8)
   {
     tileFunctionDescriptor = self->_tileFunctionDescriptor;
-    if (tileFunctionDescriptor == *(a3 + 7) || (LODWORD(v8) = [(MTL4FunctionDescriptor *)tileFunctionDescriptor isEqual:?], v8))
+    if (tileFunctionDescriptor == *(equal + 7) || (LODWORD(v8) = [(MTL4FunctionDescriptor *)tileFunctionDescriptor isEqual:?], v8))
     {
       for (i = 0; i != 8; ++i)
       {
         v11 = [(MTLTileRenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments objectAtIndexedSubscript:i];
-        if (v11 != [*(a3 + 9) objectAtIndexedSubscript:i])
+        if (v11 != [*(equal + 9) objectAtIndexedSubscript:i])
         {
           v8 = [(MTLTileRenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments objectAtIndexedSubscript:i];
           if (!v8)
@@ -82,14 +82,14 @@
             return v8;
           }
 
-          v8 = [*(a3 + 9) objectAtIndexedSubscript:i];
+          v8 = [*(equal + 9) objectAtIndexedSubscript:i];
           if (!v8)
           {
             return v8;
           }
 
           v12 = [(MTLTileRenderPipelineColorAttachmentDescriptorArray *)self->_colorAttachments objectAtIndexedSubscript:i][8];
-          if (v12 != *([*(a3 + 9) objectAtIndexedSubscript:i] + 8))
+          if (v12 != *([*(equal + 9) objectAtIndexedSubscript:i] + 8))
           {
             goto LABEL_3;
           }
@@ -97,11 +97,11 @@
       }
 
       staticLinkingDescriptor = self->_staticLinkingDescriptor;
-      if (staticLinkingDescriptor == *(a3 + 6) || (LODWORD(v8) = [(MTL4StaticLinkingDescriptor *)staticLinkingDescriptor isEqual:?], v8))
+      if (staticLinkingDescriptor == *(equal + 6) || (LODWORD(v8) = [(MTL4StaticLinkingDescriptor *)staticLinkingDescriptor isEqual:?], v8))
       {
-        if (*(a3 + 8) == self->_rasterSampleCount && *(a3 + 40) == self->_threadgroupSizeMatchesTileSize && *(a3 + 10) == self->_maxTotalThreadsPerThreadgroup && *(a3 + 41) == self->_supportBinaryLinking && *(a3 + 11) == self->_requiredThreadsPerThreadgroup.width && *(a3 + 12) == self->_requiredThreadsPerThreadgroup.height)
+        if (*(equal + 8) == self->_rasterSampleCount && *(equal + 40) == self->_threadgroupSizeMatchesTileSize && *(equal + 10) == self->_maxTotalThreadsPerThreadgroup && *(equal + 41) == self->_supportBinaryLinking && *(equal + 11) == self->_requiredThreadsPerThreadgroup.width && *(equal + 12) == self->_requiredThreadsPerThreadgroup.height)
         {
-          LOBYTE(v8) = *(a3 + 13) == self->_requiredThreadsPerThreadgroup.depth;
+          LOBYTE(v8) = *(equal + 13) == self->_requiredThreadsPerThreadgroup.depth;
           return v8;
         }
 
@@ -194,9 +194,9 @@ LABEL_3:
   return result;
 }
 
-- (void)setStaticLinkingDescriptor:(id)a3
+- (void)setStaticLinkingDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -206,17 +206,17 @@ LABEL_3:
     }
   }
 
-  if (self->_staticLinkingDescriptor != a3)
+  if (self->_staticLinkingDescriptor != descriptor)
   {
     staticLinkingDescriptor = self->_staticLinkingDescriptor;
-    self->_staticLinkingDescriptor = [a3 copy];
+    self->_staticLinkingDescriptor = [descriptor copy];
   }
 }
 
-- (void)setRequiredThreadsPerThreadgroup:(id *)a3
+- (void)setRequiredThreadsPerThreadgroup:(id *)threadgroup
 {
-  var2 = a3->var2;
-  *&self->_requiredThreadsPerThreadgroup.width = *&a3->var0;
+  var2 = threadgroup->var2;
+  *&self->_requiredThreadsPerThreadgroup.width = *&threadgroup->var0;
   self->_requiredThreadsPerThreadgroup.depth = var2;
 }
 

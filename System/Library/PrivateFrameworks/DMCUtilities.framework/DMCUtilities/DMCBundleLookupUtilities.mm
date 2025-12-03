@@ -1,22 +1,22 @@
 @interface DMCBundleLookupUtilities
-+ (id)bundleIDFromAuditToken:(id *)a3;
-+ (id)teamIDFromAuditToken:(id *)a3;
++ (id)bundleIDFromAuditToken:(id *)token;
++ (id)teamIDFromAuditToken:(id *)token;
 @end
 
 @implementation DMCBundleLookupUtilities
 
-+ (id)bundleIDFromAuditToken:(id *)a3
++ (id)bundleIDFromAuditToken:(id *)token
 {
   v27 = *MEMORY[0x1E69E9840];
   v25 = 0;
-  v4 = *&a3->var0[4];
-  *buf.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *buf.val = *token->var0;
   *&buf.val[4] = v4;
   if (!CPCopyBundleIdentifierAndTeamFromAuditToken())
   {
     v10 = *MEMORY[0x1E695E480];
-    v11 = *&a3->var0[4];
-    *buf.val = *a3->var0;
+    v11 = *&token->var0[4];
+    *buf.val = *token->var0;
     *&buf.val[4] = v11;
     v12 = SecTaskCreateWithAuditToken(v10, &buf);
     if (!v12)
@@ -103,18 +103,18 @@ LABEL_17:
   return v20;
 }
 
-+ (id)teamIDFromAuditToken:(id *)a3
++ (id)teamIDFromAuditToken:(id *)token
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
-  v4 = *&a3->var0[4];
-  *buf.val = *a3->var0;
+  v4 = *&token->var0[4];
+  *buf.val = *token->var0;
   *&buf.val[4] = v4;
   if (!CPCopyBundleIdentifierAndTeamFromAuditToken())
   {
     v10 = *MEMORY[0x1E695E480];
-    v11 = *&a3->var0[4];
-    *buf.val = *a3->var0;
+    v11 = *&token->var0[4];
+    *buf.val = *token->var0;
     *&buf.val[4] = v11;
     v12 = SecTaskCreateWithAuditToken(v10, &buf);
     if (!v12)

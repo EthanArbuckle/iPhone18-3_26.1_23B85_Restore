@@ -1,12 +1,12 @@
 @interface ShineImageLayer
-+ (BOOL)needsDisplayForKey:(id)a3;
-- (_TtC5TeaUI15ShineImageLayer)initWithLayer:(id)a3;
++ (BOOL)needsDisplayForKey:(id)key;
+- (_TtC5TeaUI15ShineImageLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation ShineImageLayer
 
-- (_TtC5TeaUI15ShineImageLayer)initWithLayer:(id)a3
+- (_TtC5TeaUI15ShineImageLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1D8191F34();
@@ -14,7 +14,7 @@
   return sub_1D7F8CF0C(v4);
 }
 
-+ (BOOL)needsDisplayForKey:(id)a3
++ (BOOL)needsDisplayForKey:(id)key
 {
   v3 = sub_1D8190F14();
   v5 = v4;
@@ -26,7 +26,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7F8D2B0();
 }
 

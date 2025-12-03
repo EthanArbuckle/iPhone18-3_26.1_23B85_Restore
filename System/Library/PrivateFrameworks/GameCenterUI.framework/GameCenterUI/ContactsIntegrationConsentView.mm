@@ -7,13 +7,13 @@
 
 - (void)primaryAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E09BAE8(1, sub_24E09BE88);
 }
 
 - (void)secondaryAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E09BAE8(0, sub_24E09BEA4);
 }
 

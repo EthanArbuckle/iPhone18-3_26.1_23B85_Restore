@@ -1,6 +1,6 @@
 @interface FPUIAuthenticationRowDescriptor
 - (FPUIAuthenticationRowDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FPUIAuthenticationRowDescriptor
@@ -15,13 +15,13 @@
   {
     v2->_rowHeight = *MEMORY[0x277D76F30];
     v2->_shouldHighlight = 1.0;
-    v4 = [objc_opt_class() defaultCellClass];
+    defaultCellClass = [objc_opt_class() defaultCellClass];
     cellClass = v3->_cellClass;
-    v3->_cellClass = v4;
+    v3->_cellClass = defaultCellClass;
 
-    v6 = [objc_opt_class() defaultCellReuseIdentifier];
+    defaultCellReuseIdentifier = [objc_opt_class() defaultCellReuseIdentifier];
     cellReuseIdentifier = v3->_cellReuseIdentifier;
-    v3->_cellReuseIdentifier = v6;
+    v3->_cellReuseIdentifier = defaultCellReuseIdentifier;
 
     v3->_cellSelectionStyle = 0;
   }
@@ -29,7 +29,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   *(v4 + 8) = self->_rowHeight;

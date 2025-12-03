@@ -1,10 +1,10 @@
 @interface GKSimpleComposeController
 - (void)donePressed;
 - (void)loadView;
-- (void)pushOntoNavigationController:(id)a3 withDoneHandler:(id)a4;
-- (void)setPlayers:(id)a3;
+- (void)pushOntoNavigationController:(id)controller withDoneHandler:(id)handler;
+- (void)setPlayers:(id)players;
 - (void)setupSendButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKSimpleComposeController
@@ -19,77 +19,77 @@
 
 - (void)setupSendButton
 {
-  v7 = [(GKSimpleComposeController *)self navigationItem];
+  navigationItem = [(GKSimpleComposeController *)self navigationItem];
   v3 = objc_alloc(MEMORY[0x277D751E0]);
   v4 = GKGameCenterUIFrameworkBundle();
   v5 = GKGetLocalizedStringFromTableInBundle();
   v6 = [v3 initWithTitle:v5 style:2 target:self action:sel_donePressed];
 
-  [v7 setRightBarButtonItem:v6];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
-- (void)setPlayers:(id)a3
+- (void)setPlayers:(id)players
 {
-  v5 = a3;
-  if (self->_players != v5)
+  playersCopy = players;
+  if (self->_players != playersCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_players, a3);
-    v5 = v6;
+    v6 = playersCopy;
+    objc_storeStrong(&self->_players, players);
+    playersCopy = v6;
   }
 }
 
-- (void)pushOntoNavigationController:(id)a3 withDoneHandler:(id)a4
+- (void)pushOntoNavigationController:(id)controller withDoneHandler:(id)handler
 {
-  v6 = a3;
-  [(GKSimpleComposeController *)self setDoneHandler:a4];
-  [v6 pushViewController:self animated:1];
+  controllerCopy = controller;
+  [(GKSimpleComposeController *)self setDoneHandler:handler];
+  [controllerCopy pushViewController:self animated:1];
 }
 
 - (void)donePressed
 {
-  v3 = [(GKSimpleComposeController *)self doneHandler];
-  if (v3)
+  doneHandler = [(GKSimpleComposeController *)self doneHandler];
+  if (doneHandler)
   {
-    v6 = v3;
-    v4 = [(GKBaseComposeController *)self messageField];
-    v5 = [v4 text];
-    v6[2](v6, v5, 0);
+    v6 = doneHandler;
+    messageField = [(GKBaseComposeController *)self messageField];
+    text = [messageField text];
+    v6[2](v6, text, 0);
 
     [(GKSimpleComposeController *)self setDoneHandler:0];
-    v3 = v6;
+    doneHandler = v6;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = [(NSArray *)self->_players _gkMapWithBlock:&__block_literal_global_5];
   [(GKComposeHeaderWithStaticRecipients *)self->_toField setRecipientNameStrings:v5];
 
   v10.receiver = self;
   v10.super_class = GKSimpleComposeController;
-  [(GKBaseComposeController *)&v10 viewWillAppear:v3];
-  v6 = [MEMORY[0x277D0C138] localPlayer];
-  LODWORD(v5) = [v6 isUnderage];
+  [(GKBaseComposeController *)&v10 viewWillAppear:appearCopy];
+  localPlayer = [MEMORY[0x277D0C138] localPlayer];
+  LODWORD(v5) = [localPlayer isUnderage];
 
-  v7 = [(GKBaseComposeController *)self messageField];
-  v8 = v7;
+  messageField = [(GKBaseComposeController *)self messageField];
+  v8 = messageField;
   if (v5)
   {
-    [v7 setEditable:0];
+    [messageField setEditable:0];
 
     [(GKBaseComposeController *)self setMessageFieldText:@" "];
-    v9 = [(GKBaseComposeController *)self messageField];
-    [v9 setPlaceholderText:0];
+    messageField2 = [(GKBaseComposeController *)self messageField];
+    [messageField2 setPlaceholderText:0];
   }
 
   else
   {
-    [v7 setEditable:1];
+    [messageField setEditable:1];
 
-    v9 = [(GKSimpleComposeController *)self defaultMessage];
-    [(GKBaseComposeController *)self setMessageFieldText:v9];
+    messageField2 = [(GKSimpleComposeController *)self defaultMessage];
+    [(GKBaseComposeController *)self setMessageFieldText:messageField2];
   }
 }
 

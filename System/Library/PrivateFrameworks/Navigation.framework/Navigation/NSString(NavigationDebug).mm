@@ -28,14 +28,14 @@
 {
   if (a2 == 0.0)
   {
-    [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", llround(a1 * 3.2808399), v4];
+    [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", llround(self * 3.2808399), v4];
     v2 = LABEL_5:;
     goto LABEL_6;
   }
 
   if (a2 > 0.0)
   {
-    [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld ±%ld", llround(a1 * 3.2808399), llround(a2 * 3.2808399)];
+    [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld ±%ld", llround(self * 3.2808399), llround(a2 * 3.2808399)];
     goto LABEL_5;
   }
 
@@ -80,13 +80,13 @@ LABEL_6:
     a4 = v40;
   }
 
-  v27 = a1 + 360.0;
-  if (a1 >= 0.0)
+  selfCopy = self + 360.0;
+  if (self >= 0.0)
   {
-    v27 = a1;
+    selfCopy = self;
   }
 
-  if (v27 >= 0.0)
+  if (selfCopy >= 0.0)
   {
     v30 = &_navigation_stringWithDirection_abbreviated__abbreviatedHeadings;
     if (!a4)
@@ -95,7 +95,7 @@ LABEL_6:
     }
 
     v31 = *v30;
-    v32 = llround(floor(v27 * 0.0222222222 + 0.5));
+    v32 = llround(floor(selfCopy * 0.0222222222 + 0.5));
     v33 = v32 & 7;
     v35 = -v32;
     v34 = v35 < 0;
@@ -137,9 +137,9 @@ LABEL_6:
 
 + (__CFString)_navigation_stringWithSpeed:()NavigationDebug
 {
-  if (a1 >= 0.0)
+  if (self >= 0.0)
   {
-    v2 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", llround(a1 * 2.23693629)];
+    v2 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld", llround(self * 2.23693629)];
   }
 
   else

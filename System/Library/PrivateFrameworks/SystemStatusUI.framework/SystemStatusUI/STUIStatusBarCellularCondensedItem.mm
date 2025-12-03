@@ -1,31 +1,31 @@
 @interface STUIStatusBarCellularCondensedItem
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 typeClass:(Class)a5 allowDualNetwork:(BOOL)a6;
-- (BOOL)_animateServiceType:(int64_t)a3 prefixLength:(int64_t *)a4 currentType:(int64_t)a5;
-- (BOOL)_showCallFowardingForEntry:(id)a3;
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
-- (STUIStatusBarCellularCondensedItem)initWithIdentifier:(id)a3 statusBar:(id)a4;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority typeClass:(Class)class allowDualNetwork:(BOOL)network;
+- (BOOL)_animateServiceType:(int64_t)type prefixLength:(int64_t *)length currentType:(int64_t)currentType;
+- (BOOL)_showCallFowardingForEntry:(id)entry;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
+- (STUIStatusBarCellularCondensedItem)initWithIdentifier:(id)identifier statusBar:(id)bar;
 - (STUIStatusBarCellularNetworkTypeView)animatedNetworkTypeView;
 - (STUIStatusBarDualCellularSignalView)dualSignalView;
 - (STUIStatusBarEmergencySignalView)sosSignalView;
 - (STUIStatusBarMultilineStringView)dualNameView;
 - (STUIStatusBarStringView)dualSingleLineNameAndTypeView;
 - (STUIStatusBarStringView)dualSingleLineNameView;
-- (_NSRange)_nonCondensedFontRangeForEntry:(id)a3;
-- (id)_fontForEntry:(id)a3 styleAttributes:(id)a4 baselineOffset:(double *)a5;
-- (id)_singleCellularEntryMatching:(id)a3;
-- (id)_stringForCellularType:(int64_t)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)entryForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (_NSRange)_nonCondensedFontRangeForEntry:(id)entry;
+- (id)_fontForEntry:(id)entry styleAttributes:(id)attributes baselineOffset:(double *)offset;
+- (id)_singleCellularEntryMatching:(id)matching;
+- (id)_stringForCellularType:(int64_t)type;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)entryForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_animatedNetworkTypeView;
 - (void)_create_dualNameView;
 - (void)_create_dualSignalView;
 - (void)_create_dualSingleLineNameAndTypeView;
 - (void)_create_dualSingleLineNameView;
 - (void)_create_sosSignalView;
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4;
-- (void)prepareAnimation:(id)a3 forDisplayItem:(id)a4;
-- (void)setShrinksBeforeMarquee:(BOOL)a3;
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item;
+- (void)prepareAnimation:(id)animation forDisplayItem:(id)item;
+- (void)setShrinksBeforeMarquee:(BOOL)marquee;
 @end
 
 @implementation STUIStatusBarCellularCondensedItem
@@ -61,11 +61,11 @@
   dualSignalView = self->_dualSignalView;
   self->_dualSignalView = v4;
 
-  v6 = [(STUIStatusBarDualCellularSignalView *)self->_dualSignalView topSignalView];
-  [v6 setNumberOfBars:4];
+  topSignalView = [(STUIStatusBarDualCellularSignalView *)self->_dualSignalView topSignalView];
+  [topSignalView setNumberOfBars:4];
 
-  v7 = [(STUIStatusBarDualCellularSignalView *)self->_dualSignalView bottomSignalView];
-  [v7 setNumberOfBars:4];
+  bottomSignalView = [(STUIStatusBarDualCellularSignalView *)self->_dualSignalView bottomSignalView];
+  [bottomSignalView setNumberOfBars:4];
 }
 
 - (void)_create_sosSignalView
@@ -75,109 +75,109 @@
   sosSignalView = self->_sosSignalView;
   self->_sosSignalView = v4;
 
-  v6 = [(STUIStatusBarEmergencySignalView *)self->_sosSignalView signalView];
-  [v6 setNumberOfBars:4];
+  signalView = [(STUIStatusBarEmergencySignalView *)self->_sosSignalView signalView];
+  [signalView setNumberOfBars:4];
 }
 
-- (void)setShrinksBeforeMarquee:(BOOL)a3
+- (void)setShrinksBeforeMarquee:(BOOL)marquee
 {
-  if (self->_shrinksBeforeMarquee != a3)
+  if (self->_shrinksBeforeMarquee != marquee)
   {
-    self->_shrinksBeforeMarquee = a3;
+    self->_shrinksBeforeMarquee = marquee;
     [(STUIStatusBarCellularItem *)self _updateServiceNameMarquee];
   }
 }
 
-- (STUIStatusBarCellularCondensedItem)initWithIdentifier:(id)a3 statusBar:(id)a4
+- (STUIStatusBarCellularCondensedItem)initWithIdentifier:(id)identifier statusBar:(id)bar
 {
   v6.receiver = self;
   v6.super_class = STUIStatusBarCellularCondensedItem;
-  v4 = [(STUIStatusBarCellularItem *)&v6 initWithIdentifier:a3 statusBar:a4];
+  v4 = [(STUIStatusBarCellularItem *)&v6 initWithIdentifier:identifier statusBar:bar];
   [(STUIStatusBarCellularCondensedItem *)v4 setReducesFontSize:1];
   return v4;
 }
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
+  dataCopy = data;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  dualSignalStrengthDisplayIdentifier = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == dualSignalStrengthDisplayIdentifier)
   {
     v14.receiver = self;
     v14.super_class = STUIStatusBarCellularCondensedItem;
-    v12 = [(STUIStatusBarItem *)&v14 canEnableDisplayItem:v7 fromData:v6];
+    isEnabled = [(STUIStatusBarItem *)&v14 canEnableDisplayItem:itemCopy fromData:dataCopy];
   }
 
   else
   {
-    v10 = [v7 identifier];
+    identifier2 = [itemCopy identifier];
 
-    v11 = [(STUIStatusBarCellularCondensedItem *)self entryForDisplayItemWithIdentifier:v10];
-    v12 = [v11 isEnabled];
+    v11 = [(STUIStatusBarCellularCondensedItem *)self entryForDisplayItemWithIdentifier:identifier2];
+    isEnabled = [v11 isEnabled];
   }
 
-  return v12;
+  return isEnabled;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
   v197[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v185.receiver = self;
   v185.super_class = STUIStatusBarCellularCondensedItem;
-  v173 = v10;
-  v171 = [(STUIStatusBarCellularItem *)&v185 applyUpdate:v10 toDisplayItem:v11];
-  v12 = [v11 identifier];
-  v172 = [(STUIStatusBarCellularCondensedItem *)self entryForDisplayItemWithIdentifier:v12];
+  v173 = updateCopy;
+  v171 = [(STUIStatusBarCellularItem *)&v185 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
+  v172 = [(STUIStatusBarCellularCondensedItem *)self entryForDisplayItemWithIdentifier:identifier];
 
-  v13 = [v11 identifier];
-  v14 = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
-  LODWORD(v10) = v13 == v14;
+  identifier2 = [itemCopy identifier];
+  dualSignalStrengthDisplayIdentifier = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
+  LODWORD(updateCopy) = identifier2 == dualSignalStrengthDisplayIdentifier;
 
-  if (v10)
+  if (updateCopy)
   {
-    v35 = [(STUIStatusBarItem *)self statusBar];
-    v36 = [v35 currentAggregatedData];
+    statusBar = [(STUIStatusBarItem *)self statusBar];
+    currentAggregatedData = [statusBar currentAggregatedData];
 
-    v37 = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
-    v38 = [v37 topSignalView];
-    v39 = [v36 cellularEntry];
-    v40 = [(STUIStatusBarCellularItem *)self _updateSignalView:v38 withUpdate:v173 entry:v39 forceShowingDisabledSignalBars:1];
+    dualSignalView = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
+    topSignalView = [dualSignalView topSignalView];
+    cellularEntry = [currentAggregatedData cellularEntry];
+    v40 = [(STUIStatusBarCellularItem *)self _updateSignalView:topSignalView withUpdate:v173 entry:cellularEntry forceShowingDisabledSignalBars:1];
 
-    v41 = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
-    v42 = [v41 bottomSignalView];
-    v43 = [v36 secondaryCellularEntry];
-    v44 = [(STUIStatusBarCellularItem *)self _updateSignalView:v42 withUpdate:v173 entry:v43 forceShowingDisabledSignalBars:1];
+    dualSignalView2 = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
+    bottomSignalView = [dualSignalView2 bottomSignalView];
+    secondaryCellularEntry = [currentAggregatedData secondaryCellularEntry];
+    v44 = [(STUIStatusBarCellularItem *)self _updateSignalView:bottomSignalView withUpdate:v173 entry:secondaryCellularEntry forceShowingDisabledSignalBars:1];
 
     if ([v173 dataChanged])
     {
-      [v11 setEnabled:v40 & v44];
+      [itemCopy setEnabled:v40 & v44];
     }
 
     goto LABEL_81;
   }
 
-  v15 = [v11 identifier];
-  v16 = [objc_opt_class() dualNameDisplayIdentifier];
-  if (v15 == v16)
+  identifier3 = [itemCopy identifier];
+  dualNameDisplayIdentifier = [objc_opt_class() dualNameDisplayIdentifier];
+  if (identifier3 == dualNameDisplayIdentifier)
   {
     goto LABEL_21;
   }
 
-  v5 = [v11 identifier];
-  v6 = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
-  if (v5 == v6)
+  identifier4 = [itemCopy identifier];
+  dualSingleLineNameDisplayIdentifier = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
+  if (identifier4 == dualSingleLineNameDisplayIdentifier)
   {
 LABEL_20:
 
 LABEL_21:
 LABEL_22:
-    v45 = [(STUIStatusBarItem *)self statusBar];
-    v36 = [v45 currentAggregatedData];
+    statusBar2 = [(STUIStatusBarItem *)self statusBar];
+    currentAggregatedData = [statusBar2 currentAggregatedData];
 
     v181 = 0.0;
     v182 = &v181;
@@ -198,11 +198,11 @@ LABEL_22:
       v177 = __64__STUIStatusBarCellularCondensedItem_applyUpdate_toDisplayItem___block_invoke_2;
       v178 = &unk_279D37E70;
       v179 = &v181;
-      v47 = [v36 cellularEntry];
-      v165 = __64__STUIStatusBarCellularCondensedItem_applyUpdate_toDisplayItem___block_invoke_2(v176, v47, &v180 + 1);
+      cellularEntry2 = [currentAggregatedData cellularEntry];
+      v165 = __64__STUIStatusBarCellularCondensedItem_applyUpdate_toDisplayItem___block_invoke_2(v176, cellularEntry2, &v180 + 1);
 
-      v48 = [v36 secondaryCellularEntry];
-      v168 = v177(v176, v48, &v180);
+      secondaryCellularEntry2 = [currentAggregatedData secondaryCellularEntry];
+      v168 = v177(v176, secondaryCellularEntry2, &v180);
 
       if ((v182[3] & 1) == 0 && [(__CFString *)v165 length]&& [(__CFString *)v168 length]&& ([(__CFString *)v165 isEqualToString:v168]& 1) == 0)
       {
@@ -210,12 +210,12 @@ LABEL_22:
       }
     }
 
-    v49 = [v11 isEnabled];
-    if (v49)
+    isEnabled = [itemCopy isEnabled];
+    if (isEnabled)
     {
-      v7 = +[STUIStatusBarSettingsDomain rootSettings];
-      v4 = [v7 itemSettings];
-      if ([v4 showBothDualCarrierNames])
+      identifier10 = +[STUIStatusBarSettingsDomain rootSettings];
+      itemSettings = [identifier10 itemSettings];
+      if ([itemSettings showBothDualCarrierNames])
       {
         v50 = *(v182 + 24);
       }
@@ -225,9 +225,9 @@ LABEL_22:
         v50 = 0;
       }
 
-      v5 = [v11 identifier];
-      v6 = [objc_opt_class() nameDisplayIdentifier];
-      v51 = v50 != (v5 == v6);
+      identifier4 = [itemCopy identifier];
+      dualSingleLineNameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
+      v51 = v50 != (identifier4 == dualSingleLineNameDisplayIdentifier);
     }
 
     else
@@ -235,19 +235,19 @@ LABEL_22:
       v51 = 0;
     }
 
-    [v11 setEnabled:v51];
-    if (v49)
+    [itemCopy setEnabled:v51];
+    if (isEnabled)
     {
     }
 
-    if (*(v182 + 24) != 1 || ![v11 isEnabled])
+    if (*(v182 + 24) != 1 || ![itemCopy isEnabled])
     {
       goto LABEL_80;
     }
 
-    v52 = [v11 identifier];
-    v53 = [objc_opt_class() nameDisplayIdentifier];
-    v54 = v52 == v53;
+    identifier5 = [itemCopy identifier];
+    nameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
+    v54 = identifier5 == nameDisplayIdentifier;
 
     if (v54)
     {
@@ -258,8 +258,8 @@ LABEL_22:
           goto LABEL_80;
         }
 
-        v64 = [v36 secondaryCellularEntry];
-        v65 = [v64 type] == 0;
+        secondaryCellularEntry3 = [currentAggregatedData secondaryCellularEntry];
+        v65 = [secondaryCellularEntry3 type] == 0;
 
         if (v65)
         {
@@ -267,43 +267,43 @@ LABEL_22:
         }
       }
 
-      v162 = [(STUIStatusBarCellularItem *)self serviceNameView];
-      [(__CFString *)v162 setText:v168];
-      v66 = [v36 secondaryCellularEntry];
-      v67 = [v66 crossfadeString];
-      [(__CFString *)v162 setAlternateText:v67];
+      serviceNameView = [(STUIStatusBarCellularItem *)self serviceNameView];
+      [(__CFString *)serviceNameView setText:v168];
+      secondaryCellularEntry4 = [currentAggregatedData secondaryCellularEntry];
+      crossfadeString = [secondaryCellularEntry4 crossfadeString];
+      [(__CFString *)serviceNameView setAlternateText:crossfadeString];
     }
 
     else
     {
-      v55 = [v11 identifier];
-      v56 = [objc_opt_class() dualNameDisplayIdentifier];
-      v57 = v55 == v56;
+      identifier6 = [itemCopy identifier];
+      dualNameDisplayIdentifier2 = [objc_opt_class() dualNameDisplayIdentifier];
+      v57 = identifier6 == dualNameDisplayIdentifier2;
 
       if (v57)
       {
-        v162 = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
-        v94 = [(__CFString *)v162 stringViews];
-        v95 = [v94 firstObject];
-        [v95 setText:v165];
+        serviceNameView = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
+        stringViews = [(__CFString *)serviceNameView stringViews];
+        firstObject = [stringViews firstObject];
+        [firstObject setText:v165];
 
-        v96 = [(__CFString *)v162 stringViews];
-        v97 = [v96 firstObject];
-        [v97 setMarqueeRunning:1];
+        stringViews2 = [(__CFString *)serviceNameView stringViews];
+        firstObject2 = [stringViews2 firstObject];
+        [firstObject2 setMarqueeRunning:1];
 
-        v98 = [(__CFString *)v162 stringViews];
-        v99 = [v98 lastObject];
-        [v99 setText:v168];
+        stringViews3 = [(__CFString *)serviceNameView stringViews];
+        lastObject = [stringViews3 lastObject];
+        [lastObject setText:v168];
 
-        v66 = [(__CFString *)v162 stringViews];
-        v67 = [v66 lastObject];
-        [v67 setMarqueeRunning:1];
+        secondaryCellularEntry4 = [(__CFString *)serviceNameView stringViews];
+        crossfadeString = [secondaryCellularEntry4 lastObject];
+        [crossfadeString setMarqueeRunning:1];
       }
 
       else
       {
-        v58 = [(STUIStatusBarItem *)self statusBar];
-        v159 = [v58 effectiveUserInterfaceLayoutDirection];
+        statusBar3 = [(STUIStatusBarItem *)self statusBar];
+        effectiveUserInterfaceLayoutDirection = [statusBar3 effectiveUserInterfaceLayoutDirection];
 
         v59 = &stru_287D04F38;
         if (v165)
@@ -318,7 +318,7 @@ LABEL_22:
           if ([(__CFString *)v60 length])
           {
             v62 = v168;
-            if (v159)
+            if (effectiveUserInterfaceLayoutDirection)
             {
               v63 = v168;
             }
@@ -328,44 +328,44 @@ LABEL_22:
               v63 = v60;
             }
 
-            if (v159)
+            if (effectiveUserInterfaceLayoutDirection)
             {
               v62 = v60;
             }
 
-            v162 = [(__CFString *)v63 stringByAppendingFormat:@" • %@", v62];
+            serviceNameView = [(__CFString *)v63 stringByAppendingFormat:@" • %@", v62];
           }
 
           else
           {
-            v162 = v168;
+            serviceNameView = v168;
 
-            v61 = [(__CFString *)v162 length];
+            v61 = [(__CFString *)serviceNameView length];
           }
         }
 
         else
         {
-          v162 = v60;
+          serviceNameView = v60;
         }
 
-        v75 = [v11 identifier];
-        v76 = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
-        v77 = v75 == v76;
+        identifier7 = [itemCopy identifier];
+        dualSingleLineNameDisplayIdentifier2 = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
+        v77 = identifier7 == dualSingleLineNameDisplayIdentifier2;
 
         if (v77)
         {
-          v100 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
-          [v100 setText:v162];
+          dualSingleLineNameView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
+          [dualSingleLineNameView setText:serviceNameView];
 
-          v66 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
-          [v66 setMarqueeRunning:1];
+          secondaryCellularEntry4 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
+          [secondaryCellularEntry4 setMarqueeRunning:1];
           goto LABEL_78;
         }
 
-        v78 = [v11 identifier];
-        v79 = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
-        v80 = v78 == v79;
+        identifier8 = [itemCopy identifier];
+        dualSingleLineNameAndTypeDisplayIdentifier = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
+        v80 = identifier8 == dualSingleLineNameAndTypeDisplayIdentifier;
 
         if (!v80)
         {
@@ -378,29 +378,29 @@ LABEL_81:
           goto LABEL_82;
         }
 
-        v81 = [v173 styleAttributes];
-        v66 = [v81 copy];
+        styleAttributes = [v173 styleAttributes];
+        secondaryCellularEntry4 = [styleAttributes copy];
 
-        v82 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
-        v155 = [v66 fontForStyle:{objc_msgSend(v82, "fontStyle")}];
+        dualSingleLineNameAndTypeView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
+        v155 = [secondaryCellularEntry4 fontForStyle:{objc_msgSend(dualSingleLineNameAndTypeView, "fontStyle")}];
 
-        v83 = [v66 textColor];
+        textColor = [secondaryCellularEntry4 textColor];
         v84 = *MEMORY[0x277D740A8];
         v85 = *MEMORY[0x277D740C0];
         v196[0] = *MEMORY[0x277D740A8];
         v196[1] = v85;
         v197[0] = v155;
-        v197[1] = v83;
-        v154 = v83;
+        v197[1] = textColor;
+        v154 = textColor;
         v156 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v197 forKeys:v196 count:2];
-        v157 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v162 attributes:v156];
+        v157 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:serviceNameView attributes:v156];
         v86 = -[STUIStatusBarCellularCondensedItem _stringForCellularType:](self, "_stringForCellularType:", [v172 type]);
-        if (v86 || ([v36 secondaryCellularEntry], v87 = objc_claimAutoreleasedReturnValue(), -[STUIStatusBarCellularCondensedItem _stringForCellularType:](self, "_stringForCellularType:", objc_msgSend(v87, "type")), v86 = objc_claimAutoreleasedReturnValue(), v87, v61 = objc_msgSend(v157, "length"), v86))
+        if (v86 || ([currentAggregatedData secondaryCellularEntry], v87 = objc_claimAutoreleasedReturnValue(), -[STUIStatusBarCellularCondensedItem _stringForCellularType:](self, "_stringForCellularType:", objc_msgSend(v87, "type")), v86 = objc_claimAutoreleasedReturnValue(), v87, v61 = objc_msgSend(v157, "length"), v86))
         {
           if ([v86 length])
           {
             v175 = 0.0;
-            v153 = [(STUIStatusBarCellularCondensedItem *)self _fontForEntry:v172 styleAttributes:v66 baselineOffset:&v175];
+            v153 = [(STUIStatusBarCellularCondensedItem *)self _fontForEntry:v172 styleAttributes:secondaryCellularEntry4 baselineOffset:&v175];
             v88 = objc_alloc(MEMORY[0x277CCA898]);
             v194[0] = v84;
             v194[1] = v85;
@@ -409,7 +409,7 @@ LABEL_81:
             v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v195 forKeys:v194 count:2];
             v90 = [v88 initWithString:v86 attributes:v89];
 
-            if (v159)
+            if (effectiveUserInterfaceLayoutDirection)
             {
               v61 = [v157 length] - v61;
             }
@@ -417,17 +417,17 @@ LABEL_81:
             v91 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:@" " attributes:v156];
             [v157 insertAttributedString:v91 atIndex:v61];
 
-            [v157 insertAttributedString:v90 atIndex:v61 + (v159 == 0)];
+            [v157 insertAttributedString:v90 atIndex:v61 + (effectiveUserInterfaceLayoutDirection == 0)];
           }
         }
 
-        v92 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
-        [v92 setAttributedText:v157];
+        dualSingleLineNameAndTypeView2 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
+        [dualSingleLineNameAndTypeView2 setAttributedText:v157];
 
-        v93 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
-        [v93 setMarqueeRunning:1];
+        dualSingleLineNameAndTypeView3 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
+        [dualSingleLineNameAndTypeView3 setMarqueeRunning:1];
 
-        v67 = v155;
+        crossfadeString = v155;
       }
     }
 
@@ -435,99 +435,99 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  v17 = [v11 identifier];
-  v18 = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
-  v4 = v18;
-  if (v17 == v18)
+  identifier9 = [itemCopy identifier];
+  dualSingleLineNameAndTypeDisplayIdentifier2 = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
+  itemSettings = dualSingleLineNameAndTypeDisplayIdentifier2;
+  if (identifier9 == dualSingleLineNameAndTypeDisplayIdentifier2)
   {
 
     goto LABEL_20;
   }
 
-  v7 = [v11 identifier];
-  v19 = [objc_opt_class() nameDisplayIdentifier];
-  v20 = v7 == v19;
+  identifier10 = [itemCopy identifier];
+  nameDisplayIdentifier2 = [objc_opt_class() nameDisplayIdentifier];
+  v20 = identifier10 == nameDisplayIdentifier2;
 
   if (v20)
   {
     goto LABEL_22;
   }
 
-  v21 = [v11 identifier];
-  v22 = [objc_opt_class() typeDisplayIdentifier];
-  v23 = v22;
-  if (v21 == v22)
+  identifier11 = [itemCopy identifier];
+  typeDisplayIdentifier = [objc_opt_class() typeDisplayIdentifier];
+  v23 = typeDisplayIdentifier;
+  if (identifier11 == typeDisplayIdentifier)
   {
 
     goto LABEL_58;
   }
 
-  v24 = [v11 identifier];
-  v25 = [objc_opt_class() externalTypeDisplayIdentifier];
-  v26 = v24 == v25;
+  identifier12 = [itemCopy identifier];
+  externalTypeDisplayIdentifier = [objc_opt_class() externalTypeDisplayIdentifier];
+  v26 = identifier12 == externalTypeDisplayIdentifier;
 
   if (v26)
   {
 LABEL_58:
-    if ([v11 isEnabled] && ((objc_msgSend(v173, "styleAttributesChanged") & 1) != 0 || objc_msgSend(v173, "dataChanged")))
+    if ([itemCopy isEnabled] && ((objc_msgSend(v173, "styleAttributesChanged") & 1) != 0 || objc_msgSend(v173, "dataChanged")))
     {
-      v68 = [v173 styleAttributes];
-      v36 = [v68 copy];
+      styleAttributes2 = [v173 styleAttributes];
+      currentAggregatedData = [styleAttributes2 copy];
 
       v181 = 0.0;
-      v69 = [(STUIStatusBarCellularCondensedItem *)self _fontForEntry:v172 styleAttributes:v36 baselineOffset:&v181];
+      v69 = [(STUIStatusBarCellularCondensedItem *)self _fontForEntry:v172 styleAttributes:currentAggregatedData baselineOffset:&v181];
       v70 = v181;
-      [v11 baselineOffset];
+      [itemCopy baselineOffset];
       if (v70 != v71)
       {
-        [v11 setBaselineOffset:v181];
-        v72 = [v11 region];
-        v73 = [v72 layout];
-        [v73 invalidate];
+        [itemCopy setBaselineOffset:v181];
+        region = [itemCopy region];
+        layout = [region layout];
+        [layout invalidate];
       }
 
-      [v36 setFont:v69];
+      [currentAggregatedData setFont:v69];
       v169 = [(STUIStatusBarCellularCondensedItem *)self _nonCondensedFontRangeForEntry:v172];
       v163 = v74;
       if (v169 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v174.receiver = self;
         v174.super_class = STUIStatusBarCellularCondensedItem;
-        [(STUIStatusBarItem *)&v174 applyStyleAttributes:v36 toDisplayItem:v11];
+        [(STUIStatusBarItem *)&v174 applyStyleAttributes:currentAggregatedData toDisplayItem:itemCopy];
       }
 
       else
       {
         v105 = objc_alloc(MEMORY[0x277CCAB48]);
-        v106 = [(STUIStatusBarCellularItem *)self networkTypeView];
-        v107 = [v106 text];
+        networkTypeView = [(STUIStatusBarCellularItem *)self networkTypeView];
+        text = [networkTypeView text];
         v108 = *MEMORY[0x277D740A8];
         v193[0] = v69;
         v109 = *MEMORY[0x277D740C0];
         v160 = v108;
         v192[0] = v108;
         v192[1] = v109;
-        v110 = [v36 textColor];
-        v193[1] = v110;
+        textColor2 = [currentAggregatedData textColor];
+        v193[1] = textColor2;
         v111 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v193 forKeys:v192 count:2];
-        v166 = [v105 initWithString:v107 attributes:v111];
+        v166 = [v105 initWithString:text attributes:v111];
 
         v112 = MEMORY[0x277D74300];
-        v113 = [v69 fontDescriptor];
-        v114 = [v113 fontDescriptorWithSymbolicTraits:0];
+        fontDescriptor = [v69 fontDescriptor];
+        v114 = [fontDescriptor fontDescriptorWithSymbolicTraits:0];
         [v69 pointSize];
         v115 = [v112 fontWithDescriptor:v114 size:?];
 
         v190[1] = v109;
         v191[0] = v115;
         v190[0] = v160;
-        v116 = [v36 textColor];
-        v191[1] = v116;
+        textColor3 = [currentAggregatedData textColor];
+        v191[1] = textColor3;
         v117 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v191 forKeys:v190 count:2];
         [v166 setAttributes:v117 range:{v169, v163}];
 
-        v118 = [(STUIStatusBarCellularItem *)self networkTypeView];
-        [v118 setAttributedText:v166];
+        networkTypeView2 = [(STUIStatusBarCellularItem *)self networkTypeView];
+        [networkTypeView2 setAttributedText:v166];
       }
 
       goto LABEL_81;
@@ -536,9 +536,9 @@ LABEL_58:
     goto LABEL_82;
   }
 
-  v27 = [v11 identifier];
-  v28 = [objc_opt_class() animatedTypeDisplayIdentifier];
-  v29 = v27 == v28;
+  identifier13 = [itemCopy identifier];
+  animatedTypeDisplayIdentifier = [objc_opt_class() animatedTypeDisplayIdentifier];
+  v29 = identifier13 == animatedTypeDisplayIdentifier;
 
   if (v29)
   {
@@ -549,11 +549,11 @@ LABEL_58:
 
     if ([v172 isEnabled])
     {
-      v36 = -[STUIStatusBarCellularCondensedItem _stringForCellularType:](self, "_stringForCellularType:", [v172 type]);
-      v102 = [v11 isEnabled];
-      if (v36)
+      currentAggregatedData = -[STUIStatusBarCellularCondensedItem _stringForCellularType:](self, "_stringForCellularType:", [v172 type]);
+      isEnabled2 = [itemCopy isEnabled];
+      if (currentAggregatedData)
       {
-        v103 = v102;
+        v103 = isEnabled2;
       }
 
       else
@@ -565,15 +565,15 @@ LABEL_58:
       {
         v104 = [v172 isBootstrapCellular] ^ 1;
 LABEL_103:
-        [v11 setEnabled:v104];
-        if ([v11 isEnabled] && ((objc_msgSend(v173, "styleAttributesChanged") & 1) != 0 || objc_msgSend(v173, "dataChanged")))
+        [itemCopy setEnabled:v104];
+        if ([itemCopy isEnabled] && ((objc_msgSend(v173, "styleAttributesChanged") & 1) != 0 || objc_msgSend(v173, "dataChanged")))
         {
-          v123 = [(STUIStatusBarCellularItem *)self typeStringProvider];
+          typeStringProvider = [(STUIStatusBarCellularItem *)self typeStringProvider];
 
-          if (v123)
+          if (typeStringProvider)
           {
-            v124 = [(STUIStatusBarCellularItem *)self typeStringProvider];
-            [v124 animatedTypeDisplayItemSpacingFactorForCellularType:{objc_msgSend(v172, "type")}];
+            typeStringProvider2 = [(STUIStatusBarCellularItem *)self typeStringProvider];
+            [typeStringProvider2 animatedTypeDisplayItemSpacingFactorForCellularType:{objc_msgSend(v172, "type")}];
             v126 = v125;
           }
 
@@ -582,29 +582,29 @@ LABEL_103:
             v126 = 1.0;
           }
 
-          v127 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
-          v128 = [v173 styleAttributes];
-          +[STUIStatusBarWifiSignalView widthForIconSize:](STUIStatusBarWifiSignalView, "widthForIconSize:", [v128 iconSize]);
-          [v127 setFixedWidth:v126 * v129];
+          animatedNetworkTypeView = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
+          styleAttributes3 = [v173 styleAttributes];
+          +[STUIStatusBarWifiSignalView widthForIconSize:](STUIStatusBarWifiSignalView, "widthForIconSize:", [styleAttributes3 iconSize]);
+          [animatedNetworkTypeView setFixedWidth:v126 * v129];
 
           v181 = NAN;
-          v130 = [v172 type];
-          v131 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
-          v167 = -[STUIStatusBarCellularCondensedItem _animateServiceType:prefixLength:currentType:](self, "_animateServiceType:prefixLength:currentType:", v130, &v181, [v131 type]);
+          type = [v172 type];
+          animatedNetworkTypeView2 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
+          v167 = -[STUIStatusBarCellularCondensedItem _animateServiceType:prefixLength:currentType:](self, "_animateServiceType:prefixLength:currentType:", type, &v181, [animatedNetworkTypeView2 type]);
 
-          v132 = [v173 styleAttributes];
-          v133 = [v132 copy];
+          styleAttributes4 = [v173 styleAttributes];
+          v133 = [styleAttributes4 copy];
 
           v175 = 0.0;
           v170 = [(STUIStatusBarCellularCondensedItem *)self _fontForEntry:v172 styleAttributes:v133 baselineOffset:&v175];
           v134 = v175;
-          [v11 baselineOffset];
+          [itemCopy baselineOffset];
           if (v134 != v135)
           {
-            [v11 setBaselineOffset:v175];
-            v136 = [v11 region];
-            v137 = [v136 layout];
-            [v137 invalidate];
+            [itemCopy setBaselineOffset:v175];
+            region2 = [itemCopy region];
+            layout2 = [region2 layout];
+            [layout2 invalidate];
           }
 
           [v133 setFont:v170];
@@ -613,8 +613,8 @@ LABEL_103:
           v140 = v138;
           if (v138 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v141 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
-            [v141 setText:v36 prefixLength:*&v181 withStyleAttributes:v133 forType:objc_msgSend(v172 animated:{"type"), v167}];
+            animatedNetworkTypeView3 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
+            [animatedNetworkTypeView3 setText:currentAggregatedData prefixLength:*&v181 withStyleAttributes:v133 forType:objc_msgSend(v172 animated:{"type"), v167}];
           }
 
           else
@@ -626,27 +626,27 @@ LABEL_103:
             v158 = v143;
             v188[0] = v143;
             v188[1] = v144;
-            v145 = [v133 textColor];
-            v189[1] = v145;
+            textColor4 = [v133 textColor];
+            v189[1] = textColor4;
             v146 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v189 forKeys:v188 count:2];
-            v141 = [v142 initWithString:v36 attributes:v146];
+            animatedNetworkTypeView3 = [v142 initWithString:currentAggregatedData attributes:v146];
 
             v147 = MEMORY[0x277D74300];
-            v148 = [v170 fontDescriptor];
-            v149 = [v148 fontDescriptorWithSymbolicTraits:0];
+            fontDescriptor2 = [v170 fontDescriptor];
+            v149 = [fontDescriptor2 fontDescriptorWithSymbolicTraits:0];
             [v170 pointSize];
             v161 = [v147 fontWithDescriptor:v149 size:?];
 
             v186[1] = v144;
             v187[0] = v161;
             v186[0] = v158;
-            v150 = [v133 textColor];
-            v187[1] = v150;
+            textColor5 = [v133 textColor];
+            v187[1] = textColor5;
             v151 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v187 forKeys:v186 count:2];
-            [v141 setAttributes:v151 range:{v140, v164}];
+            [animatedNetworkTypeView3 setAttributes:v151 range:{v140, v164}];
 
-            v152 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
-            [v152 setAttributedText:v141 prefixLength:*&v181 forType:objc_msgSend(v172 animated:{"type"), v167}];
+            animatedNetworkTypeView4 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
+            [animatedNetworkTypeView4 setAttributedText:animatedNetworkTypeView3 prefixLength:*&v181 forType:objc_msgSend(v172 animated:{"type"), v167}];
           }
         }
 
@@ -656,17 +656,17 @@ LABEL_103:
 
     else
     {
-      [v11 isEnabled];
-      v36 = 0;
+      [itemCopy isEnabled];
+      currentAggregatedData = 0;
     }
 
     v104 = 0;
     goto LABEL_103;
   }
 
-  v30 = [v11 identifier];
-  v31 = [objc_opt_class() sosSignalStrengthDisplayIdentifier];
-  v32 = v30 == v31;
+  identifier14 = [itemCopy identifier];
+  sosSignalStrengthDisplayIdentifier = [objc_opt_class() sosSignalStrengthDisplayIdentifier];
+  v32 = identifier14 == sosSignalStrengthDisplayIdentifier;
 
   if (v172)
   {
@@ -680,13 +680,13 @@ LABEL_103:
 
   if (v33)
   {
-    v34 = [v11 isEnabled] && (objc_msgSend(v172, "isBootstrapCellular") & 1) == 0 && objc_msgSend(v172, "showsSOSWhenDisabled") && (objc_msgSend(v172, "status") == 1);
-    [v11 setEnabled:v34];
-    if ([v11 isEnabled])
+    v34 = [itemCopy isEnabled] && (objc_msgSend(v172, "isBootstrapCellular") & 1) == 0 && objc_msgSend(v172, "showsSOSWhenDisabled") && (objc_msgSend(v172, "status") == 1);
+    [itemCopy setEnabled:v34];
+    if ([itemCopy isEnabled])
     {
-      v119 = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
-      v120 = [v119 signalView];
-      [(STUIStatusBarCellularItem *)self _updateSignalView:v120 withUpdate:v173 entry:v172 forceShowingDisabledSignalBars:1];
+      sosSignalView = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
+      signalView = [sosSignalView signalView];
+      [(STUIStatusBarCellularItem *)self _updateSignalView:signalView withUpdate:v173 entry:v172 forceShowingDisabledSignalBars:1];
 
       if ([v172 sosAvailable])
       {
@@ -698,9 +698,9 @@ LABEL_103:
         v121 = 0.3;
       }
 
-      v36 = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
-      v122 = [v36 sosView];
-      [v122 setAlpha:v121];
+      currentAggregatedData = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
+      sosView = [currentAggregatedData sosView];
+      [sosView setAlpha:v121];
 
       goto LABEL_81;
     }
@@ -752,20 +752,20 @@ LABEL_5:
   return v6;
 }
 
-- (void)applyStyleAttributes:(id)a3 toDisplayItem:(id)a4
+- (void)applyStyleAttributes:(id)attributes toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 identifier];
-  v9 = [objc_opt_class() typeDisplayIdentifier];
-  if (v8 == v9)
+  attributesCopy = attributes;
+  itemCopy = item;
+  identifier = [itemCopy identifier];
+  typeDisplayIdentifier = [objc_opt_class() typeDisplayIdentifier];
+  if (identifier == typeDisplayIdentifier)
   {
     goto LABEL_8;
   }
 
-  v10 = [v7 identifier];
-  v11 = [objc_opt_class() externalTypeDisplayIdentifier];
-  if (v10 == v11)
+  identifier2 = [itemCopy identifier];
+  externalTypeDisplayIdentifier = [objc_opt_class() externalTypeDisplayIdentifier];
+  if (identifier2 == externalTypeDisplayIdentifier)
   {
 LABEL_7:
 
@@ -773,74 +773,74 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v12 = [v7 identifier];
-  v13 = [objc_opt_class() animatedTypeDisplayIdentifier];
-  v14 = v13;
-  if (v12 == v13)
+  identifier3 = [itemCopy identifier];
+  animatedTypeDisplayIdentifier = [objc_opt_class() animatedTypeDisplayIdentifier];
+  v14 = animatedTypeDisplayIdentifier;
+  if (identifier3 == animatedTypeDisplayIdentifier)
   {
 
     goto LABEL_7;
   }
 
-  v15 = [v7 identifier];
+  identifier4 = [itemCopy identifier];
   [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
-  v16 = v18 = v6;
+  v16 = v18 = attributesCopy;
 
-  v17 = v15 == v16;
-  v6 = v18;
+  v17 = identifier4 == v16;
+  attributesCopy = v18;
   if (!v17)
   {
     v19.receiver = self;
     v19.super_class = STUIStatusBarCellularCondensedItem;
-    [(STUIStatusBarItem *)&v19 applyStyleAttributes:v18 toDisplayItem:v7];
+    [(STUIStatusBarItem *)&v19 applyStyleAttributes:v18 toDisplayItem:itemCopy];
   }
 
 LABEL_9:
 }
 
-- (id)_stringForCellularType:(int64_t)a3
+- (id)_stringForCellularType:(int64_t)type
 {
-  v5 = [(STUIStatusBarCellularItem *)self typeStringProvider];
+  typeStringProvider = [(STUIStatusBarCellularItem *)self typeStringProvider];
 
-  if (!v5 || (-[STUIStatusBarCellularItem typeStringProvider](self, "typeStringProvider"), v6 = objc_claimAutoreleasedReturnValue(), [v6 stringForCellularType:a3 condensed:1], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!typeStringProvider || (-[STUIStatusBarCellularItem typeStringProvider](self, "typeStringProvider"), v6 = objc_claimAutoreleasedReturnValue(), [v6 stringForCellularType:type condensed:1], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    if (a3 == 7)
+    if (type == 7)
     {
-      v8 = [MEMORY[0x277CCA8D8] mainBundle];
-      v9 = v8;
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v9 = mainBundle;
       v10 = @"5GE[condensed]";
       v11 = @"5G  ᴇ";
     }
 
     else
     {
-      if (a3 == 3)
+      if (type == 3)
       {
-        v8 = [MEMORY[0x277CCA8D8] mainBundle];
-        v9 = v8;
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v9 = mainBundle;
         v10 = @"E";
       }
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
 LABEL_11:
           v13.receiver = self;
           v13.super_class = STUIStatusBarCellularCondensedItem;
-          v7 = [(STUIStatusBarCellularItem *)&v13 _stringForCellularType:a3];
+          v7 = [(STUIStatusBarCellularItem *)&v13 _stringForCellularType:type];
           goto LABEL_12;
         }
 
-        v8 = [MEMORY[0x277CCA8D8] mainBundle];
-        v9 = v8;
+        mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+        v9 = mainBundle;
         v10 = @"G";
       }
 
       v11 = &stru_287D04F38;
     }
 
-    v7 = [v8 localizedStringForKey:v10 value:v11 table:0];
+    v7 = [mainBundle localizedStringForKey:v10 value:v11 table:0];
 
     if (v7)
     {
@@ -855,27 +855,27 @@ LABEL_12:
   return v7;
 }
 
-- (id)_fontForEntry:(id)a3 styleAttributes:(id)a4 baselineOffset:(double *)a5
+- (id)_fontForEntry:(id)entry styleAttributes:(id)attributes baselineOffset:(double *)offset
 {
-  v8 = a3;
-  v9 = [a4 smallFont];
-  v10 = [(STUIStatusBarCellularItem *)self typeStringProvider];
+  entryCopy = entry;
+  smallFont = [attributes smallFont];
+  typeStringProvider = [(STUIStatusBarCellularItem *)self typeStringProvider];
 
-  v11 = v9;
-  if (v10)
+  v11 = smallFont;
+  if (typeStringProvider)
   {
-    v12 = [(STUIStatusBarCellularItem *)self typeStringProvider];
-    v11 = [v12 condensedFontForCellularType:objc_msgSend(v8 defaultFont:"type") baselineOffset:{v9, a5}];
+    typeStringProvider2 = [(STUIStatusBarCellularItem *)self typeStringProvider];
+    v11 = [typeStringProvider2 condensedFontForCellularType:objc_msgSend(entryCopy defaultFont:"type") baselineOffset:{smallFont, offset}];
   }
 
   return v11;
 }
 
-- (_NSRange)_nonCondensedFontRangeForEntry:(id)a3
+- (_NSRange)_nonCondensedFontRangeForEntry:(id)entry
 {
-  v3 = [a3 type];
-  v4 = (v3 & 0xFFFFFFFFFFFFFFFELL) == 12;
-  if ((v3 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+  type = [entry type];
+  v4 = (type & 0xFFFFFFFFFFFFFFFELL) == 12;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 0xC)
   {
     v5 = 2;
   }
@@ -890,23 +890,23 @@ LABEL_12:
   return result;
 }
 
-- (id)_singleCellularEntryMatching:(id)a3
+- (id)_singleCellularEntryMatching:(id)matching
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarItem *)self statusBar];
-  v6 = [v5 currentAggregatedData];
+  matchingCopy = matching;
+  statusBar = [(STUIStatusBarItem *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
 
-  v7 = [v6 cellularEntry];
-  if (v4[2](v4, v7))
+  cellularEntry = [currentAggregatedData cellularEntry];
+  if (matchingCopy[2](matchingCopy, cellularEntry))
   {
-    v8 = [v6 secondaryCellularEntry];
-    v9 = v4[2](v4, v8);
+    secondaryCellularEntry = [currentAggregatedData secondaryCellularEntry];
+    v9 = matchingCopy[2](matchingCopy, secondaryCellularEntry);
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v6 cellularEntry];
+      cellularEntry2 = [currentAggregatedData cellularEntry];
 LABEL_9:
-      v14 = v10;
+      v14 = cellularEntry2;
       goto LABEL_11;
     }
   }
@@ -915,19 +915,19 @@ LABEL_9:
   {
   }
 
-  v11 = [v6 cellularEntry];
-  if (v4[2](v4, v11))
+  cellularEntry3 = [currentAggregatedData cellularEntry];
+  if (matchingCopy[2](matchingCopy, cellularEntry3))
   {
   }
 
   else
   {
-    v12 = [v6 secondaryCellularEntry];
-    v13 = v4[2](v4, v12);
+    secondaryCellularEntry2 = [currentAggregatedData secondaryCellularEntry];
+    v13 = matchingCopy[2](matchingCopy, secondaryCellularEntry2);
 
     if (v13)
     {
-      v10 = [v6 secondaryCellularEntry];
+      cellularEntry2 = [currentAggregatedData secondaryCellularEntry];
       goto LABEL_9;
     }
   }
@@ -938,62 +938,62 @@ LABEL_11:
   return v14;
 }
 
-- (BOOL)_showCallFowardingForEntry:(id)a3
+- (BOOL)_showCallFowardingForEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarItem *)self statusBar];
-  v6 = [v5 currentAggregatedData];
-  v7 = [v6 secondaryCellularEntry];
+  entryCopy = entry;
+  statusBar = [(STUIStatusBarItem *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
+  secondaryCellularEntry = [currentAggregatedData secondaryCellularEntry];
 
-  LOBYTE(v5) = [v4 callForwardingEnabled];
-  if (v5)
+  LOBYTE(statusBar) = [entryCopy callForwardingEnabled];
+  if (statusBar)
   {
-    v8 = 1;
+    callForwardingEnabled = 1;
   }
 
   else
   {
-    v8 = [v7 callForwardingEnabled];
+    callForwardingEnabled = [secondaryCellularEntry callForwardingEnabled];
   }
 
-  return v8;
+  return callForwardingEnabled;
 }
 
-- (BOOL)_animateServiceType:(int64_t)a3 prefixLength:(int64_t *)a4 currentType:(int64_t)a5
+- (BOOL)_animateServiceType:(int64_t)type prefixLength:(int64_t *)length currentType:(int64_t)currentType
 {
-  if ((a3 - 11) >= 3)
+  if ((type - 11) >= 3)
   {
-    return a3 == 10 && (a5 - 11) < 3;
+    return type == 10 && (currentType - 11) < 3;
   }
 
-  if (a4)
+  if (length)
   {
-    *a4 = 2;
+    *length = 2;
   }
 
-  return a5 == 10;
+  return currentType == 10;
 }
 
-- (void)prepareAnimation:(id)a3 forDisplayItem:(id)a4
+- (void)prepareAnimation:(id)animation forDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] != 1)
+  animationCopy = animation;
+  itemCopy = item;
+  if ([animationCopy type] != 1)
   {
     goto LABEL_11;
   }
 
-  v8 = [v7 identifier];
-  v9 = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
+  identifier = [itemCopy identifier];
+  dualSingleLineNameDisplayIdentifier = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
 
-  if (v8 == v9)
+  if (identifier == dualSingleLineNameDisplayIdentifier)
   {
-    v12 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
+    dualSingleLineNameView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
 LABEL_6:
-    v13 = v12;
-    if (v12)
+    dualNameView = dualSingleLineNameView;
+    if (dualSingleLineNameView)
     {
-      [v12 setMarqueeRunning:0];
+      [dualSingleLineNameView setMarqueeRunning:0];
       v14 = v24;
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
@@ -1001,9 +1001,9 @@ LABEL_6:
 LABEL_10:
       v14[2] = v15;
       v14[3] = &unk_279D37E28;
-      v14[4] = v13;
-      v22 = v13;
-      [v6 addCompletionHandler:v14];
+      v14[4] = dualNameView;
+      v22 = dualNameView;
+      [animationCopy addCompletionHandler:v14];
 
       goto LABEL_11;
     }
@@ -1011,29 +1011,29 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  v10 = [v7 identifier];
-  v11 = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
+  identifier2 = [itemCopy identifier];
+  dualSingleLineNameAndTypeDisplayIdentifier = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
 
-  if (v10 == v11)
+  if (identifier2 == dualSingleLineNameAndTypeDisplayIdentifier)
   {
-    v12 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
+    dualSingleLineNameView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
     goto LABEL_6;
   }
 
 LABEL_8:
-  v16 = [v7 identifier];
-  v17 = [objc_opt_class() dualNameDisplayIdentifier];
+  identifier3 = [itemCopy identifier];
+  dualNameDisplayIdentifier = [objc_opt_class() dualNameDisplayIdentifier];
 
-  if (v16 == v17)
+  if (identifier3 == dualNameDisplayIdentifier)
   {
-    v13 = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
-    v18 = [v13 stringViews];
-    v19 = [v18 firstObject];
-    [v19 setMarqueeRunning:0];
+    dualNameView = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
+    stringViews = [dualNameView stringViews];
+    firstObject = [stringViews firstObject];
+    [firstObject setMarqueeRunning:0];
 
-    v20 = [v13 stringViews];
-    v21 = [v20 lastObject];
-    [v21 setMarqueeRunning:0];
+    stringViews2 = [dualNameView stringViews];
+    lastObject = [stringViews2 lastObject];
+    [lastObject setMarqueeRunning:0];
 
     v14 = v23;
     v23[0] = MEMORY[0x277D85DD0];
@@ -1069,32 +1069,32 @@ void __70__STUIStatusBarCellularCondensedItem_prepareAnimation_forDisplayItem___
   }
 }
 
-- (id)entryForDisplayItemWithIdentifier:(id)a3
+- (id)entryForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
-  if (v5 == v4)
+  identifierCopy = identifier;
+  externalSignalStrengthDisplayIdentifier = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
+  if (externalSignalStrengthDisplayIdentifier == identifierCopy)
   {
     goto LABEL_7;
   }
 
-  v6 = [objc_opt_class() externalTypeDisplayIdentifier];
-  v7 = v6;
-  if (v6 == v4)
+  externalTypeDisplayIdentifier = [objc_opt_class() externalTypeDisplayIdentifier];
+  v7 = externalTypeDisplayIdentifier;
+  if (externalTypeDisplayIdentifier == identifierCopy)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [objc_opt_class() externalWarningDisplayIdentifier];
+  externalWarningDisplayIdentifier = [objc_opt_class() externalWarningDisplayIdentifier];
 
-  if (v8 == v4)
+  if (externalWarningDisplayIdentifier == identifierCopy)
   {
 LABEL_8:
     v20.receiver = self;
     v20.super_class = STUIStatusBarCellularCondensedItem;
-    v12 = [(STUIStatusBarCellularItem *)&v20 entryForDisplayItemWithIdentifier:v4];
+    v12 = [(STUIStatusBarCellularItem *)&v20 entryForDisplayItemWithIdentifier:identifierCopy];
     goto LABEL_20;
   }
 
@@ -1102,16 +1102,16 @@ LABEL_8:
   v10 = v9;
   if (!v9)
   {
-    v13 = [objc_opt_class() typeDisplayIdentifier];
-    if (v13 != v4)
+    typeDisplayIdentifier = [objc_opt_class() typeDisplayIdentifier];
+    if (typeDisplayIdentifier != identifierCopy)
     {
-      v14 = [objc_opt_class() animatedTypeDisplayIdentifier];
-      v15 = v14;
-      if (v14 != v4)
+      animatedTypeDisplayIdentifier = [objc_opt_class() animatedTypeDisplayIdentifier];
+      v15 = animatedTypeDisplayIdentifier;
+      if (animatedTypeDisplayIdentifier != identifierCopy)
       {
-        v16 = [objc_opt_class() nameDisplayIdentifier];
+        nameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
 
-        if (v16 != v4)
+        if (nameDisplayIdentifier != identifierCopy)
         {
           goto LABEL_16;
         }
@@ -1128,13 +1128,13 @@ LABEL_15:
     }
 
 LABEL_16:
-    v17 = [objc_opt_class() nameDisplayIdentifier];
+    nameDisplayIdentifier2 = [objc_opt_class() nameDisplayIdentifier];
 
-    if (v17 != v4 || ([(STUIStatusBarCellularCondensedItem *)self _singleCellularEntryMatching:&__block_literal_global_283], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (nameDisplayIdentifier2 != identifierCopy || ([(STUIStatusBarCellularCondensedItem *)self _singleCellularEntryMatching:&__block_literal_global_283], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v19.receiver = self;
       v19.super_class = STUIStatusBarCellularCondensedItem;
-      v11 = [(STUIStatusBarCellularItem *)&v19 entryForDisplayItemWithIdentifier:v4];
+      v11 = [(STUIStatusBarCellularItem *)&v19 entryForDisplayItemWithIdentifier:identifierCopy];
     }
 
     goto LABEL_19;
@@ -1217,18 +1217,18 @@ uint64_t __72__STUIStatusBarCellularCondensedItem_entryForDisplayItemWithIdentif
   self->_dualNameView = v4;
 
   [(STUIStatusBarMultilineStringView *)self->_dualNameView setNumberOfLines:2];
-  v6 = [(STUIStatusBarMultilineStringView *)self->_dualNameView stringViews];
-  v9 = [v6 firstObject];
+  stringViews = [(STUIStatusBarMultilineStringView *)self->_dualNameView stringViews];
+  firstObject = [stringViews firstObject];
 
-  [v9 setTextAlignment:1];
-  [v9 setFontStyle:2];
-  [v9 setMarqueeEnabled:1];
-  v7 = [(STUIStatusBarMultilineStringView *)self->_dualNameView stringViews];
-  v8 = [v7 lastObject];
+  [firstObject setTextAlignment:1];
+  [firstObject setFontStyle:2];
+  [firstObject setMarqueeEnabled:1];
+  stringViews2 = [(STUIStatusBarMultilineStringView *)self->_dualNameView stringViews];
+  lastObject = [stringViews2 lastObject];
 
-  [v8 setTextAlignment:1];
-  [v8 setFontStyle:2];
-  [v8 setMarqueeEnabled:1];
+  [lastObject setTextAlignment:1];
+  [lastObject setFontStyle:2];
+  [lastObject setMarqueeEnabled:1];
 }
 
 - (STUIStatusBarStringView)dualSingleLineNameView
@@ -1307,93 +1307,93 @@ uint64_t __72__STUIStatusBarCellularCondensedItem_entryForDisplayItemWithIdentif
   MEMORY[0x2821F96F8]();
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
+  identifierCopy = identifier;
+  dualSignalStrengthDisplayIdentifier = [objc_opt_class() dualSignalStrengthDisplayIdentifier];
 
-  if (v5 == v4)
+  if (dualSignalStrengthDisplayIdentifier == identifierCopy)
   {
-    v14 = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
+    dualSignalView = [(STUIStatusBarCellularCondensedItem *)self dualSignalView];
   }
 
   else
   {
-    v6 = [objc_opt_class() dualNameDisplayIdentifier];
+    dualNameDisplayIdentifier = [objc_opt_class() dualNameDisplayIdentifier];
 
-    if (v6 == v4)
+    if (dualNameDisplayIdentifier == identifierCopy)
     {
-      v14 = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
+      dualSignalView = [(STUIStatusBarCellularCondensedItem *)self dualNameView];
     }
 
     else
     {
-      v7 = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
+      dualSingleLineNameDisplayIdentifier = [objc_opt_class() dualSingleLineNameDisplayIdentifier];
 
-      if (v7 == v4)
+      if (dualSingleLineNameDisplayIdentifier == identifierCopy)
       {
-        v14 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
+        dualSignalView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameView];
       }
 
       else
       {
-        v8 = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
+        dualSingleLineNameAndTypeDisplayIdentifier = [objc_opt_class() dualSingleLineNameAndTypeDisplayIdentifier];
 
-        if (v8 == v4)
+        if (dualSingleLineNameAndTypeDisplayIdentifier == identifierCopy)
         {
-          v14 = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
+          dualSignalView = [(STUIStatusBarCellularCondensedItem *)self dualSingleLineNameAndTypeView];
         }
 
         else
         {
-          v9 = [objc_opt_class() animatedTypeDisplayIdentifier];
+          animatedTypeDisplayIdentifier = [objc_opt_class() animatedTypeDisplayIdentifier];
 
-          if (v9 == v4)
+          if (animatedTypeDisplayIdentifier == identifierCopy)
           {
-            v14 = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
+            dualSignalView = [(STUIStatusBarCellularCondensedItem *)self animatedNetworkTypeView];
           }
 
           else
           {
-            v10 = [objc_opt_class() sosSignalStrengthDisplayIdentifier];
+            sosSignalStrengthDisplayIdentifier = [objc_opt_class() sosSignalStrengthDisplayIdentifier];
 
-            if (v10 == v4)
+            if (sosSignalStrengthDisplayIdentifier == identifierCopy)
             {
-              v14 = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
+              dualSignalView = [(STUIStatusBarCellularCondensedItem *)self sosSignalView];
             }
 
             else
             {
-              v11 = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
+              externalSignalStrengthDisplayIdentifier = [objc_opt_class() externalSignalStrengthDisplayIdentifier];
 
-              if (v11 == v4)
+              if (externalSignalStrengthDisplayIdentifier == identifierCopy)
               {
-                v14 = [(STUIStatusBarCellularItem *)self signalView];
+                dualSignalView = [(STUIStatusBarCellularItem *)self signalView];
               }
 
               else
               {
-                v12 = [objc_opt_class() externalTypeDisplayIdentifier];
+                externalTypeDisplayIdentifier = [objc_opt_class() externalTypeDisplayIdentifier];
 
-                if (v12 == v4)
+                if (externalTypeDisplayIdentifier == identifierCopy)
                 {
-                  v14 = [(STUIStatusBarCellularItem *)self networkTypeView];
+                  dualSignalView = [(STUIStatusBarCellularItem *)self networkTypeView];
                 }
 
                 else
                 {
-                  v13 = [objc_opt_class() externalWarningDisplayIdentifier];
+                  externalWarningDisplayIdentifier = [objc_opt_class() externalWarningDisplayIdentifier];
 
-                  if (v13 == v4)
+                  if (externalWarningDisplayIdentifier == identifierCopy)
                   {
-                    v14 = [(STUIStatusBarCellularItem *)self warningView];
+                    dualSignalView = [(STUIStatusBarCellularItem *)self warningView];
                   }
 
                   else
                   {
                     v17.receiver = self;
                     v17.super_class = STUIStatusBarCellularCondensedItem;
-                    v14 = [(STUIStatusBarCellularItem *)&v17 viewForIdentifier:v4];
+                    dualSignalView = [(STUIStatusBarCellularItem *)&v17 viewForIdentifier:identifierCopy];
                   }
                 }
               }
@@ -1404,44 +1404,44 @@ uint64_t __72__STUIStatusBarCellularCondensedItem_entryForDisplayItemWithIdentif
     }
   }
 
-  v15 = v14;
+  v15 = dualSignalView;
 
   return v15;
 }
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 typeClass:(Class)a5 allowDualNetwork:(BOOL)a6
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority typeClass:(Class)class allowDualNetwork:(BOOL)network
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  if (a6)
+  if (network)
   {
-    v7 = a3 - a4;
-    v49.receiver = a1;
+    v7 = priority - lowPriority;
+    v49.receiver = self;
     v49.super_class = &OBJC_METACLASS___STUIStatusBarCellularCondensedItem;
-    v8 = objc_msgSendSuper2(&v49, sel_groupWithHighPriority_lowPriority_typeClass_allowDualNetwork_, a3 - a4, 0, a5, 1);
-    v9 = [a1 dualSignalStrengthDisplayIdentifier];
-    v10 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v9 priority:v7 + 7];
-    v11 = [v8 signalStrengthPlacement];
-    v55[0] = v11;
+    v8 = objc_msgSendSuper2(&v49, sel_groupWithHighPriority_lowPriority_typeClass_allowDualNetwork_, priority - lowPriority, 0, class, 1);
+    dualSignalStrengthDisplayIdentifier = [self dualSignalStrengthDisplayIdentifier];
+    v10 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:dualSignalStrengthDisplayIdentifier priority:v7 + 7];
+    signalStrengthPlacement = [v8 signalStrengthPlacement];
+    v55[0] = signalStrengthPlacement;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:1];
     v13 = [v10 excludingPlacements:v12];
 
-    v14 = [a1 dualSingleLineNameDisplayIdentifier];
-    v15 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v14 priority:v7 + 3];
-    v16 = [v8 namePlacement];
-    v54 = v16;
+    dualSingleLineNameDisplayIdentifier = [self dualSingleLineNameDisplayIdentifier];
+    v15 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:dualSingleLineNameDisplayIdentifier priority:v7 + 3];
+    namePlacement = [v8 namePlacement];
+    v54 = namePlacement;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v54 count:1];
     v18 = [v15 excludingPlacements:v17];
 
-    v19 = [v8 typePlacement];
+    typePlacement = [v8 typePlacement];
     v46 = v13;
     v53 = v13;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v53 count:1];
-    v21 = [v19 requiringAnyPlacements:v20];
+    v21 = [typePlacement requiringAnyPlacements:v20];
 
-    v22 = [a1 dualSingleLineNameAndTypeDisplayIdentifier];
-    v23 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:v22 priority:v7 + 5];
-    v24 = [v8 namePlacement];
-    v52[0] = v24;
+    dualSingleLineNameAndTypeDisplayIdentifier = [self dualSingleLineNameAndTypeDisplayIdentifier];
+    v23 = [STUIStatusBarDisplayItemPlacement placementWithIdentifier:dualSingleLineNameAndTypeDisplayIdentifier priority:v7 + 5];
+    namePlacement2 = [v8 namePlacement];
+    v52[0] = namePlacement2;
     v52[1] = v18;
     v25 = v18;
     v44 = v18;
@@ -1449,57 +1449,57 @@ uint64_t __72__STUIStatusBarCellularCondensedItem_entryForDisplayItemWithIdentif
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:3];
     v45 = [v23 excludingPlacements:v26];
 
-    v27 = [v8 signalStrengthPlacement];
-    v51[0] = v27;
+    signalStrengthPlacement2 = [v8 signalStrengthPlacement];
+    v51[0] = signalStrengthPlacement2;
     v51[1] = v13;
-    v28 = [v8 warningPlacement];
-    v51[2] = v28;
-    v29 = [v8 rawPlacement];
-    v51[3] = v29;
-    v30 = [v8 namePlacement];
-    v51[4] = v30;
+    warningPlacement = [v8 warningPlacement];
+    v51[2] = warningPlacement;
+    rawPlacement = [v8 rawPlacement];
+    v51[3] = rawPlacement;
+    namePlacement3 = [v8 namePlacement];
+    v51[4] = namePlacement3;
     v51[5] = v25;
     v51[6] = v45;
     v51[7] = v21;
-    v31 = [v8 callForwardingPlacement];
-    v51[8] = v31;
+    callForwardingPlacement = [v8 callForwardingPlacement];
+    v51[8] = callForwardingPlacement;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:9];
-    v33 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementCellularGroup groupWithPriority:a4 placements:v32];
+    v33 = [(STUIStatusBarDisplayItemPlacementGroup *)STUIStatusBarDisplayItemPlacementCellularGroup groupWithPriority:lowPriority placements:v32];
 
-    v34 = [v8 signalStrengthPlacement];
-    [v33 setSignalStrengthPlacement:v34];
+    signalStrengthPlacement3 = [v8 signalStrengthPlacement];
+    [v33 setSignalStrengthPlacement:signalStrengthPlacement3];
 
-    v35 = [v8 warningPlacement];
-    [v33 setWarningPlacement:v35];
+    warningPlacement2 = [v8 warningPlacement];
+    [v33 setWarningPlacement:warningPlacement2];
 
-    v36 = [v8 namePlacement];
-    [v33 setNamePlacement:v36];
+    namePlacement4 = [v8 namePlacement];
+    [v33 setNamePlacement:namePlacement4];
 
     [v33 setTypePlacement:v21];
-    v37 = [v8 callForwardingPlacement];
-    [v33 setCallForwardingPlacement:v37];
+    callForwardingPlacement2 = [v8 callForwardingPlacement];
+    [v33 setCallForwardingPlacement:callForwardingPlacement2];
 
-    v38 = [v8 rawPlacement];
-    [v33 setRawPlacement:v38];
+    rawPlacement2 = [v8 rawPlacement];
+    [v33 setRawPlacement:rawPlacement2];
 
     [v33 setDualSignalStrengthPlacement:v46];
     [v33 setDualNamePlacement:v44];
     [v33 setDualNameAndTypePlacement:v45];
-    v39 = [v8 placementsAffectedByAirplaneMode];
+    placementsAffectedByAirplaneMode = [v8 placementsAffectedByAirplaneMode];
     v50 = v46;
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
-    v41 = [v39 arrayByAddingObjectsFromArray:v40];
+    v41 = [placementsAffectedByAirplaneMode arrayByAddingObjectsFromArray:v40];
     [v33 setPlacementsAffectedByAirplaneMode:v41];
 
-    v42 = [v8 sosPlacement];
-    [v33 setSosPlacement:v42];
+    sosPlacement = [v8 sosPlacement];
+    [v33 setSosPlacement:sosPlacement];
   }
 
   else
   {
-    v48.receiver = a1;
+    v48.receiver = self;
     v48.super_class = &OBJC_METACLASS___STUIStatusBarCellularCondensedItem;
-    v33 = objc_msgSendSuper2(&v48, sel_groupWithHighPriority_lowPriority_typeClass_allowDualNetwork_, a3, a4, a5);
+    v33 = objc_msgSendSuper2(&v48, sel_groupWithHighPriority_lowPriority_typeClass_allowDualNetwork_, priority, lowPriority, class);
   }
 
   return v33;

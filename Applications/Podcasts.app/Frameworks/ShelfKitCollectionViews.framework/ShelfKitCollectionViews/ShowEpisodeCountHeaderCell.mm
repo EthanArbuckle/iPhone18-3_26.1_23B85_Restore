@@ -1,6 +1,6 @@
 @interface ShowEpisodeCountHeaderCell
 - (UILabel)accessibilityTitle;
-- (_TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell)initWithFrame:(CGRect)frame;
 - (void)artworkTapped;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)artworkTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_133858();
 }
 
@@ -24,12 +24,12 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell_internalArtworkView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews26ShowEpisodeCountHeaderCell_title) = 0;

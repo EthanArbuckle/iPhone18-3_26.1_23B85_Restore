@@ -1,12 +1,12 @@
 @interface MAAutoAssetSetRapidLock
 + (id)lockRecords;
-- (MAAutoAssetSetRapidLock)initWithCoder:(id)a3;
+- (MAAutoAssetSetRapidLock)initWithCoder:(id)coder;
 - (id)acquireShortTermLockSync;
 - (id)checkLockFileValidity;
 - (id)endShortTermLockSync;
-- (id)init:(id)a3 assetSetIdentifier:(id)a4 assetSetAtomicInstance:(id)a5;
+- (id)init:(id)init assetSetIdentifier:(id)identifier assetSetAtomicInstance:(id)instance;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetSetRapidLock
@@ -16,17 +16,17 @@
   v35 = *MEMORY[0x1E69E9840];
   v3 = +[MAAutoAssetSetRapidLock lockRecords];
   objc_sync_enter(v3);
-  v4 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  shortTermLockFileName = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+  v5 = [v3 objectForKeyedSubscript:shortTermLockFileName];
 
   if (v5)
   {
-    v6 = [(MAAutoAssetSetRapidLock *)self checkLockFileValidity];
-    if (v6)
+    checkLockFileValidity = [(MAAutoAssetSetRapidLock *)self checkLockFileValidity];
+    if (checkLockFileValidity)
     {
 
-      v7 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-      [v3 removeObjectForKey:v7];
+      shortTermLockFileName2 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+      [v3 removeObjectForKey:shortTermLockFileName2];
 
       v8 = 0;
       self = 0;
@@ -34,18 +34,18 @@
     }
 
     v13 = [v5 objectAtIndex:0];
-    v14 = v13;
+    selfCopy = v13;
     if (v13)
     {
-      v15 = [(MAAutoAssetSetRapidLock *)v13 intValue];
-      if (v15 > 1)
+      intValue = [(MAAutoAssetSetRapidLock *)v13 intValue];
+      if (intValue > 1)
       {
-        self = [MEMORY[0x1E696AD98] numberWithInt:(v15 - 1)];
+        self = [MEMORY[0x1E696AD98] numberWithInt:(intValue - 1)];
 
         [v5 setObject:self atIndexedSubscript:0];
-        v6 = 0;
+        checkLockFileValidity = 0;
         v8 = 1;
-        v14 = self;
+        selfCopy = self;
         goto LABEL_19;
       }
 
@@ -55,11 +55,11 @@
       {
         close([v16 intValue]);
 
-        v18 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-        [v3 setObject:0 forKeyedSubscript:v18];
+        shortTermLockFileName3 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+        [v3 setObject:0 forKeyedSubscript:shortTermLockFileName3];
 
         v5 = 0;
-        v6 = 0;
+        checkLockFileValidity = 0;
         v8 = 1;
 LABEL_19:
 
@@ -67,8 +67,8 @@ LABEL_19:
       }
 
       v25 = MEMORY[0x1E696AEC0];
-      v26 = [(MAAutoAssetSetRapidLock *)self summary];
-      v27 = [v25 stringWithFormat:@"No file descriptor in entry for lock %@", v26];
+      summary = [(MAAutoAssetSetRapidLock *)self summary];
+      v27 = [v25 stringWithFormat:@"No file descriptor in entry for lock %@", summary];
 
       v28 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -79,18 +79,18 @@ LABEL_19:
       }
 
       v29 = [MAAutoAssetError buildError:6108 fromOperation:@"[AUTO-SHORT-TERM][FRAMEWORK][RAPID-LOCK]{endShortTermLockSync}" underlyingError:0 withDescription:v27];
-      v30 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-      [v3 removeObjectForKey:v30];
+      shortTermLockFileName4 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+      [v3 removeObjectForKey:shortTermLockFileName4];
 
-      v6 = v29;
+      checkLockFileValidity = v29;
       v8 = 0;
     }
 
     else
     {
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [(MAAutoAssetSetRapidLock *)self summary];
-      v21 = [v19 stringWithFormat:@"Unable to determine ref count for lock %@", v20];
+      summary2 = [(MAAutoAssetSetRapidLock *)self summary];
+      v21 = [v19 stringWithFormat:@"Unable to determine ref count for lock %@", summary2];
 
       v22 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -102,22 +102,22 @@ LABEL_19:
 
       v23 = [MAAutoAssetError buildError:6108 fromOperation:@"[AUTO-SHORT-TERM][FRAMEWORK][RAPID-LOCK]{endShortTermLockSync}" underlyingError:0 withDescription:v21];
 
-      v24 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-      [v3 removeObjectForKey:v24];
+      shortTermLockFileName5 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+      [v3 removeObjectForKey:shortTermLockFileName5];
 
-      v6 = v23;
-      v14 = 0;
+      checkLockFileValidity = v23;
+      selfCopy = 0;
       v8 = 0;
       v5 = 0;
     }
 
-    self = v6;
+    self = checkLockFileValidity;
     goto LABEL_19;
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(MAAutoAssetSetRapidLock *)self summary];
-  v11 = [v9 stringWithFormat:@"Asked to end lock when no prior lock exists for %@", v10];
+  summary3 = [(MAAutoAssetSetRapidLock *)self summary];
+  v11 = [v9 stringWithFormat:@"Asked to end lock when no prior lock exists for %@", summary3];
 
   v12 = _MAClientLog(@"AutoSet");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -127,16 +127,16 @@ LABEL_19:
     _os_log_impl(&dword_197AD5000, v12, OS_LOG_TYPE_ERROR, "MA-auto-set[AUTO-SHORT-TERM][FRAMEWORK][RAPID-LOCK]{endShortTermLockSync}: %{public}@", buf, 0xCu);
   }
 
-  v6 = [MAAutoAssetError buildError:6501 fromOperation:@"[AUTO-SHORT-TERM][FRAMEWORK][RAPID-LOCK]{endShortTermLockSync}" underlyingError:0 withDescription:v11];
+  checkLockFileValidity = [MAAutoAssetError buildError:6501 fromOperation:@"[AUTO-SHORT-TERM][FRAMEWORK][RAPID-LOCK]{endShortTermLockSync}" underlyingError:0 withDescription:v11];
 
   v8 = 0;
-  self = v6;
+  self = checkLockFileValidity;
 LABEL_20:
   objc_sync_exit(v3);
 
   if (v8)
   {
-    self = v6;
+    self = checkLockFileValidity;
   }
 
   v31 = *MEMORY[0x1E69E9840];
@@ -147,9 +147,9 @@ LABEL_20:
 - (id)checkLockFileValidity
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  shortTermLockFileName = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+  v5 = [defaultManager fileExistsAtPath:shortTermLockFileName];
 
   if (v5)
   {
@@ -159,8 +159,8 @@ LABEL_20:
   else
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MAAutoAssetSetRapidLock *)self summary];
-    v9 = [v7 stringWithFormat:@"Shared lock file no longer exists for lock %@", v8];
+    summary = [(MAAutoAssetSetRapidLock *)self summary];
+    v9 = [v7 stringWithFormat:@"Shared lock file no longer exists for lock %@", summary];
 
     v10 = _MAClientLog(@"AutoSet");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -183,23 +183,23 @@ LABEL_20:
   v34 = *MEMORY[0x1E69E9840];
   v3 = +[MAAutoAssetSetRapidLock lockRecords];
   objc_sync_enter(v3);
-  v4 = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
+  assetSetAtomicInstance = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
 
-  if (v4)
+  if (assetSetAtomicInstance)
   {
-    v5 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-    v6 = [v3 objectForKeyedSubscript:v5];
+    shortTermLockFileName = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+    v6 = [v3 objectForKeyedSubscript:shortTermLockFileName];
 
     if (v6)
     {
-      v7 = [(MAAutoAssetSetRapidLock *)self checkLockFileValidity];
-      if (v7)
+      checkLockFileValidity = [(MAAutoAssetSetRapidLock *)self checkLockFileValidity];
+      if (checkLockFileValidity)
       {
 
-        v8 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-        [v3 removeObjectForKey:v8];
+        shortTermLockFileName2 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+        [v3 removeObjectForKey:shortTermLockFileName2];
 
-        v9 = v7;
+        v9 = checkLockFileValidity;
       }
 
       else
@@ -217,8 +217,8 @@ LABEL_20:
         else
         {
           v26 = MEMORY[0x1E696AEC0];
-          v27 = [(MAAutoAssetSetRapidLock *)self summary];
-          v28 = [v26 stringWithFormat:@"Unable to determine ref count for lock %@", v27];
+          summary = [(MAAutoAssetSetRapidLock *)self summary];
+          v28 = [v26 stringWithFormat:@"Unable to determine ref count for lock %@", summary];
 
           v29 = _MAClientLog(@"AutoSet");
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -237,15 +237,15 @@ LABEL_20:
 
     else
     {
-      v12 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-      v13 = open([v12 UTF8String], 20);
+      shortTermLockFileName3 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+      v13 = open([shortTermLockFileName3 UTF8String], 20);
 
       if ((v13 & 0x80000000) == 0)
       {
         v14 = [MEMORY[0x1E696AD98] numberWithInt:v13];
         v15 = [MEMORY[0x1E695DF70] arrayWithObjects:{&unk_1F0C33608, v14, 0}];
-        v16 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-        [v3 setObject:v15 forKeyedSubscript:v16];
+        shortTermLockFileName4 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+        [v3 setObject:v15 forKeyedSubscript:shortTermLockFileName4];
 
         v9 = 0;
         v17 = 1;
@@ -254,8 +254,8 @@ LABEL_20:
 
       v21 = *__error();
       v22 = MEMORY[0x1E696AEC0];
-      v23 = [(MAAutoAssetSetRapidLock *)self summary];
-      v24 = [v22 stringWithFormat:@"Failed to open lock file for %@ | Error: %s", v23, strerror(v21)];
+      summary2 = [(MAAutoAssetSetRapidLock *)self summary];
+      v24 = [v22 stringWithFormat:@"Failed to open lock file for %@ | Error: %s", summary2, strerror(v21)];
 
       v25 = _MAClientLog(@"AutoSet");
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -318,25 +318,25 @@ uint64_t __38__MAAutoAssetSetRapidLock_lockRecords__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)init:(id)a3 assetSetIdentifier:(id)a4 assetSetAtomicInstance:(id)a5
+- (id)init:(id)init assetSetIdentifier:(id)identifier assetSetAtomicInstance:(id)instance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  initCopy = init;
+  identifierCopy = identifier;
+  instanceCopy = instance;
   v21.receiver = self;
   v21.super_class = MAAutoAssetSetRapidLock;
   v11 = [(MAAutoAssetSetRapidLock *)&v21 init];
   clientDomainName = v11->_clientDomainName;
-  v11->_clientDomainName = v8;
-  v13 = v8;
+  v11->_clientDomainName = initCopy;
+  v13 = initCopy;
 
   assetSetIdentifier = v11->_assetSetIdentifier;
-  v11->_assetSetIdentifier = v9;
-  v15 = v9;
+  v11->_assetSetIdentifier = identifierCopy;
+  v15 = identifierCopy;
 
   assetSetAtomicInstance = v11->_assetSetAtomicInstance;
-  v11->_assetSetAtomicInstance = v10;
-  v17 = v10;
+  v11->_assetSetAtomicInstance = instanceCopy;
+  v17 = instanceCopy;
 
   v18 = [MAAutoAssetSetStatus shortTermLockFilename:v13 forAssetSetIdentifier:v15 forSetAtomicInstance:v17];
   shortTermLockFileName = v11->_shortTermLockFileName;
@@ -345,43 +345,43 @@ uint64_t __38__MAAutoAssetSetRapidLock_lockRecords__block_invoke()
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MAAutoAssetSetRapidLock *)self clientDomainName];
-  [v4 encodeObject:v5 forKey:@"rapidLockClientDomainName"];
+  coderCopy = coder;
+  clientDomainName = [(MAAutoAssetSetRapidLock *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"rapidLockClientDomainName"];
 
-  v6 = [(MAAutoAssetSetRapidLock *)self assetSetIdentifier];
-  [v4 encodeObject:v6 forKey:@"rapidLockAssetSetIdentifier"];
+  assetSetIdentifier = [(MAAutoAssetSetRapidLock *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"rapidLockAssetSetIdentifier"];
 
-  v7 = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
-  [v4 encodeObject:v7 forKey:@"rapidLockAssetSetAtomicInstance"];
+  assetSetAtomicInstance = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
+  [coderCopy encodeObject:assetSetAtomicInstance forKey:@"rapidLockAssetSetAtomicInstance"];
 
-  v8 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-  [v4 encodeObject:v8 forKey:@"rapidLockAssetSetAtomicShortTermLockFileName"];
+  shortTermLockFileName = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+  [coderCopy encodeObject:shortTermLockFileName forKey:@"rapidLockAssetSetAtomicShortTermLockFileName"];
 }
 
-- (MAAutoAssetSetRapidLock)initWithCoder:(id)a3
+- (MAAutoAssetSetRapidLock)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MAAutoAssetSetRapidLock;
   v5 = [(MAAutoAssetSetRapidLock *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockClientDomainName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockClientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetAtomicInstance"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetAtomicInstance"];
     assetSetAtomicInstance = v5->_assetSetAtomicInstance;
     v5->_assetSetAtomicInstance = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetAtomicShortTermLockFileName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rapidLockAssetSetAtomicShortTermLockFileName"];
     shortTermLockFileName = v5->_shortTermLockFileName;
     v5->_shortTermLockFileName = v12;
   }
@@ -392,11 +392,11 @@ uint64_t __38__MAAutoAssetSetRapidLock_lockRecords__block_invoke()
 - (id)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAutoAssetSetRapidLock *)self clientDomainName];
-  v5 = [(MAAutoAssetSetRapidLock *)self assetSetIdentifier];
-  v6 = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
-  v7 = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
-  v8 = [v3 stringWithFormat:@"ClientDomain:%@ | SetIdentifier:%@ | AtomicInstance:%@ | LockFile:%@ ", v4, v5, v6, v7];
+  clientDomainName = [(MAAutoAssetSetRapidLock *)self clientDomainName];
+  assetSetIdentifier = [(MAAutoAssetSetRapidLock *)self assetSetIdentifier];
+  assetSetAtomicInstance = [(MAAutoAssetSetRapidLock *)self assetSetAtomicInstance];
+  shortTermLockFileName = [(MAAutoAssetSetRapidLock *)self shortTermLockFileName];
+  v8 = [v3 stringWithFormat:@"ClientDomain:%@ | SetIdentifier:%@ | AtomicInstance:%@ | LockFile:%@ ", clientDomainName, assetSetIdentifier, assetSetAtomicInstance, shortTermLockFileName];
 
   return v8;
 }

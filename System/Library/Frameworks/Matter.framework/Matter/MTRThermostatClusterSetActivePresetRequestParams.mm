@@ -1,8 +1,8 @@
 @interface MTRThermostatClusterSetActivePresetRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRThermostatClusterSetActivePresetRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterSetActivePresetRequestParams);
-  v5 = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
-  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setPresetHandle:v5];
+  presetHandle = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
+  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setPresetHandle:presetHandle];
 
-  v6 = [(MTRThermostatClusterSetActivePresetRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRThermostatClusterSetActivePresetRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRThermostatClusterSetActivePresetRequestParams *)self serverSideProcessingTimeout];
-  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRThermostatClusterSetActivePresetRequestParams *)self serverSideProcessingTimeout];
+  [(MTRThermostatClusterSetActivePresetRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -55,21 +55,21 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v23) = 0;
   v24 = 0;
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
+  presetHandle = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
 
-  if (v5)
+  if (presetHandle)
   {
     v23 = 0uLL;
     v24 = 1;
-    v6 = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
-    sub_238DB6950(v15, [v6 bytes], objc_msgSend(v6, "length"));
+    presetHandle2 = [(MTRThermostatClusterSetActivePresetRequestParams *)self presetHandle];
+    sub_238DB6950(v15, [presetHandle2 bytes], objc_msgSend(presetHandle2, "length"));
 
     v23 = v15[0];
   }
@@ -93,8 +93,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v14;
       v9 = v7;
     }
@@ -122,19 +122,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRThermostatClusterSetActivePresetRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -145,7 +145,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x5EE700000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

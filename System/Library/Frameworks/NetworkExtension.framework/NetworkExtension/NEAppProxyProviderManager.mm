@@ -28,7 +28,7 @@
     v7[1] = 3221225472;
     v7[2] = __73__NEAppProxyProviderManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7F0B1E8;
-    v9 = a1;
+    selfCopy = self;
     v8 = v4;
     [v6 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v7];
   }

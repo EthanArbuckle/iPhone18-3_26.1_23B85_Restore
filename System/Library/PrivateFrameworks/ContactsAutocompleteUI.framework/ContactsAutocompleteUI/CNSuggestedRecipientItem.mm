@@ -1,9 +1,9 @@
 @interface CNSuggestedRecipientItem
 + (id)os_log;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSelectedForHandles:(id)a3;
-- (BOOL)shouldDeselectForHandles:(id)a3;
-- (CNSuggestedRecipientItem)initWithRecipient:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSelectedForHandles:(id)handles;
+- (BOOL)shouldDeselectForHandles:(id)handles;
+- (CNSuggestedRecipientItem)initWithRecipient:(id)recipient;
 - (id)description;
 - (unint64_t)hash;
 - (void)loadHandles;
@@ -30,19 +30,19 @@ uint64_t __34__CNSuggestedRecipientItem_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (CNSuggestedRecipientItem)initWithRecipient:(id)a3
+- (CNSuggestedRecipientItem)initWithRecipient:(id)recipient
 {
-  v5 = a3;
+  recipientCopy = recipient;
   v14.receiver = self;
   v14.super_class = CNSuggestedRecipientItem;
   v6 = [(CNSuggestedRecipientItem *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recipient, a3);
-    v8 = [v5 compositeName];
+    objc_storeStrong(&v6->_recipient, recipient);
+    compositeName = [recipientCopy compositeName];
     title = v7->_title;
-    v7->_title = v8;
+    v7->_title = compositeName;
 
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     handles = v7->_handles;
@@ -60,41 +60,41 @@ uint64_t __34__CNSuggestedRecipientItem_os_log__block_invoke()
   recipient = self->_recipient;
   if (recipient)
   {
-    v4 = [(CNComposeRecipient *)recipient isGroup];
+    isGroup = [(CNComposeRecipient *)recipient isGroup];
     handles = self->_handles;
     v6 = self->_recipient;
-    if (v4)
+    if (isGroup)
     {
-      v8 = [(CNComposeRecipient *)v6 children];
-      v7 = [v8 _cn_map:&__block_literal_global_5];
+      children = [(CNComposeRecipient *)v6 children];
+      v7 = [children _cn_map:&__block_literal_global_5];
       [(NSMutableSet *)handles addObjectsFromArray:v7];
     }
 
     else
     {
-      v8 = [(CNComposeRecipient *)v6 normalizedAddress];
+      children = [(CNComposeRecipient *)v6 normalizedAddress];
       [(NSMutableSet *)handles addObject:?];
     }
   }
 }
 
-- (BOOL)isSelectedForHandles:(id)a3
+- (BOOL)isSelectedForHandles:(id)handles
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_handles isSubsetOfSet:v4]& 1) != 0)
+  handlesCopy = handles;
+  if (([(NSMutableSet *)self->_handles isSubsetOfSet:handlesCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else if ([(CNComposeRecipient *)self->_recipient isGroup])
   {
-    v6 = [(CNComposeRecipient *)self->_recipient children];
+    children = [(CNComposeRecipient *)self->_recipient children];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __49__CNSuggestedRecipientItem_isSelectedForHandles___block_invoke;
     v9[3] = &unk_1E7CD1BE0;
-    v10 = v4;
-    v7 = [v6 _cn_any:v9];
+    v10 = handlesCopy;
+    v7 = [children _cn_any:v9];
 
     v5 = v7 ^ 1;
   }
@@ -129,23 +129,23 @@ uint64_t __49__CNSuggestedRecipientItem_isSelectedForHandles___block_invoke(uint
   return v6;
 }
 
-- (BOOL)shouldDeselectForHandles:(id)a3
+- (BOOL)shouldDeselectForHandles:(id)handles
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_handles intersectsSet:v4]& 1) != 0)
+  handlesCopy = handles;
+  if (([(NSMutableSet *)self->_handles intersectsSet:handlesCopy]& 1) != 0)
   {
     v5 = 1;
   }
 
   else if ([(CNComposeRecipient *)self->_recipient isGroup])
   {
-    v6 = [(CNComposeRecipient *)self->_recipient children];
+    children = [(CNComposeRecipient *)self->_recipient children];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __53__CNSuggestedRecipientItem_shouldDeselectForHandles___block_invoke;
     v8[3] = &unk_1E7CD1BE0;
-    v9 = v4;
-    v5 = [v6 _cn_any:v8];
+    v9 = handlesCopy;
+    v5 = [children _cn_any:v8];
   }
 
   else
@@ -180,18 +180,18 @@ uint64_t __53__CNSuggestedRecipientItem_shouldDeselectForHandles___block_invoke(
 
 - (unint64_t)hash
 {
-  v2 = [(CNSuggestedRecipientItem *)self recipient];
-  v3 = [v2 autocompleteResult];
-  v4 = [v3 hash];
+  recipient = [(CNSuggestedRecipientItem *)self recipient];
+  autocompleteResult = [recipient autocompleteResult];
+  v4 = [autocompleteResult hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -224,9 +224,9 @@ uint64_t __53__CNSuggestedRecipientItem_shouldDeselectForHandles___block_invoke(
   v4 = [v3 appendName:@"title" object:self->_title];
   v5 = [v3 appendName:@"handles" object:self->_handles];
   v6 = [v3 appendName:@"recipient" object:self->_recipient];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

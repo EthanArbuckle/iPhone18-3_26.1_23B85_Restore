@@ -1,16 +1,16 @@
 @interface RouteLibraryOfflineDownloadStateView
-- (RouteLibraryOfflineDownloadStateView)initWithFrame:(CGRect)a3;
+- (RouteLibraryOfflineDownloadStateView)initWithFrame:(CGRect)frame;
 - (void)_updateIfNeeded;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setSubscriptionInfo:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setSubscriptionInfo:(id)info;
 @end
 
 @implementation RouteLibraryOfflineDownloadStateView
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_10192D0F8 == a6)
+  if (off_10192D0F8 == context)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -27,7 +27,7 @@
   {
     v6.receiver = self;
     v6.super_class = RouteLibraryOfflineDownloadStateView;
-    [(RouteLibraryOfflineDownloadStateView *)&v6 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(RouteLibraryOfflineDownloadStateView *)&v6 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -36,39 +36,39 @@
   subscriptionInfo = self->_subscriptionInfo;
   if (subscriptionInfo)
   {
-    v4 = [(MapDataSubscriptionInfo *)subscriptionInfo state];
-    v5 = [v4 loadState];
+    state = [(MapDataSubscriptionInfo *)subscriptionInfo state];
+    loadState = [state loadState];
 
-    if ((v5 - 1) < 2)
+    if ((loadState - 1) < 2)
     {
       v9 = 0;
-      v15 = 0;
+      downloadProgress2 = 0;
       v10 = 0;
 LABEL_17:
       [(UIImageView *)self->_imageView setHidden:v9];
-      [(MUCircleProgressObservingView *)self->_progressView setProgress:v15];
+      [(MUCircleProgressObservingView *)self->_progressView setProgress:downloadProgress2];
       [(MUCircleProgressObservingView *)self->_progressView setTintColor:v10];
-      [(MUCircleProgressObservingView *)self->_progressView setHidden:v15 == 0];
+      [(MUCircleProgressObservingView *)self->_progressView setHidden:downloadProgress2 == 0];
 
       return;
     }
 
-    if (v5 == 3 || v5 == 0)
+    if (loadState == 3 || loadState == 0)
     {
-      v7 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-      v8 = [v7 downloadState];
+      state2 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+      downloadState = [state2 downloadState];
 
       v9 = 1;
-      if (v8 > 5)
+      if (downloadState > 5)
       {
         v10 = 0;
-        v15 = 0;
+        downloadProgress2 = 0;
         goto LABEL_17;
       }
 
-      if (((1 << v8) & 0x33) != 0)
+      if (((1 << downloadState) & 0x33) != 0)
       {
-        v15 = [NSProgress progressWithTotalUnitCount:-1];
+        downloadProgress2 = [NSProgress progressWithTotalUnitCount:-1];
         v10 = +[UIColor systemFillColor];
 LABEL_16:
         v9 = 1;
@@ -76,30 +76,30 @@ LABEL_16:
       }
 
       v10 = 0;
-      v15 = 0;
-      if (v8 != 2)
+      downloadProgress2 = 0;
+      if (downloadState != 2)
       {
         goto LABEL_17;
       }
 
-      v12 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-      v13 = [v12 downloadProgress];
+      state3 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+      downloadProgress = [state3 downloadProgress];
 
-      if (v13)
+      if (downloadProgress)
       {
-        v14 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
-        v15 = [v14 downloadProgress];
+        state4 = [(MapDataSubscriptionInfo *)self->_subscriptionInfo state];
+        downloadProgress2 = [state4 downloadProgress];
       }
 
       else
       {
-        v15 = [NSProgress progressWithTotalUnitCount:-1];
+        downloadProgress2 = [NSProgress progressWithTotalUnitCount:-1];
       }
     }
 
     else
     {
-      v15 = 0;
+      downloadProgress2 = 0;
     }
 
     v10 = 0;
@@ -112,11 +112,11 @@ LABEL_16:
   [(MUCircleProgressObservingView *)progressView setHidden:1];
 }
 
-- (void)setSubscriptionInfo:(id)a3
+- (void)setSubscriptionInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   subscriptionInfo = self->_subscriptionInfo;
-  if (subscriptionInfo != v5)
+  if (subscriptionInfo != infoCopy)
   {
     if (subscriptionInfo)
     {
@@ -151,7 +151,7 @@ LABEL_16:
       }
     }
 
-    objc_storeStrong(&self->_subscriptionInfo, a3);
+    objc_storeStrong(&self->_subscriptionInfo, info);
     if (self->_subscriptionInfo)
     {
       v17 = 0u;
@@ -229,11 +229,11 @@ LABEL_16:
   [(RouteLibraryOfflineDownloadStateView *)&v7 dealloc];
 }
 
-- (RouteLibraryOfflineDownloadStateView)initWithFrame:(CGRect)a3
+- (RouteLibraryOfflineDownloadStateView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = RouteLibraryOfflineDownloadStateView;
-  v3 = [(RouteLibraryOfflineDownloadStateView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RouteLibraryOfflineDownloadStateView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIImageView);
@@ -266,8 +266,8 @@ LABEL_16:
     [(RouteLibraryOfflineDownloadStateView *)v3 addSubview:v3->_progressView];
     LODWORD(v13) = 1148846080;
     v14 = [(UIImageView *)v3->_imageView _maps_constraintsEqualToEdgesOfView:v3 priority:v13];
-    v15 = [v14 allConstraints];
-    [NSLayoutConstraint activateConstraints:v15];
+    allConstraints = [v14 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
 
     v16 = [(MUCircleProgressObservingView *)v3->_progressView _maps_constraintsForCenteringInView:v3 edgeInsets:1.0, 1.0, 1.0, 1.0];
     [NSLayoutConstraint activateConstraints:v16];

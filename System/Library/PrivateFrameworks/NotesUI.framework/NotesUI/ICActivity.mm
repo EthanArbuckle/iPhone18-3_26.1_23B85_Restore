@@ -1,8 +1,8 @@
 @interface ICActivity
 - (ICActivity)init;
-- (ICActivity)initWithPerformActivity:(id)a3;
-- (id)actionWithCompletion:(id)a3;
-- (void)performActivityWithCompletion:(id)a3;
+- (ICActivity)initWithPerformActivity:(id)activity;
+- (id)actionWithCompletion:(id)completion;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICActivity
@@ -21,13 +21,13 @@
   return v3;
 }
 
-- (ICActivity)initWithPerformActivity:(id)a3
+- (ICActivity)initWithPerformActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = [(ICActivity *)self init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(activityCopy);
     performActivityBlock = v5->_performActivityBlock;
     v5->_performActivityBlock = v6;
 
@@ -37,21 +37,21 @@
   return v5;
 }
 
-- (id)actionWithCompletion:(id)a3
+- (id)actionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E69DC628];
-  v6 = [(UIActivity *)self activityTitle];
-  v7 = [(UIActivity *)self activityImage];
-  v8 = [(ICActivity *)self actionIdentifier];
+  activityTitle = [(UIActivity *)self activityTitle];
+  activityImage = [(UIActivity *)self activityImage];
+  actionIdentifier = [(ICActivity *)self actionIdentifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __35__ICActivity_actionWithCompletion___block_invoke;
   v12[3] = &unk_1E846CFE0;
   v12[4] = self;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v5 actionWithTitle:v6 image:v7 identifier:v8 handler:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [v5 actionWithTitle:activityTitle image:activityImage identifier:actionIdentifier handler:v12];
 
   return v10;
 }
@@ -67,25 +67,25 @@ uint64_t __35__ICActivity_actionWithCompletion___block_invoke(uint64_t a1, void 
   return [v4 performActivityWithCompletion:v5];
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(ICActivity *)self performActivityBlock];
+  completionCopy = completion;
+  performActivityBlock = [(ICActivity *)self performActivityBlock];
 
-  if (v4)
+  if (performActivityBlock)
   {
-    v5 = [(ICActivity *)self performActivityBlock];
-    v5[2]();
+    performActivityBlock2 = [(ICActivity *)self performActivityBlock];
+    performActivityBlock2[2]();
   }
 
   [(UIActivity *)self activityDidFinish:1];
-  v6 = v8;
-  if (v8)
+  v6 = completionCopy;
+  if (completionCopy)
   {
-    v7 = [(UIActivity *)self activityType];
-    (*(v8 + 2))(v8, 1, v7);
+    activityType = [(UIActivity *)self activityType];
+    (*(completionCopy + 2))(completionCopy, 1, activityType);
 
-    v6 = v8;
+    v6 = completionCopy;
   }
 }
 

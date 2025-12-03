@@ -1,9 +1,9 @@
 @interface PHConversation
 + (id)entityKeyMap;
-+ (id)fetchConversationsWithConversationIDs:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (PHConversation)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchConversationsWithConversationIDs:(id)ds options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (PHConversation)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 - (id)description;
 @end
 
@@ -14,31 +14,31 @@
   v9.receiver = self;
   v9.super_class = PHConversation;
   v3 = [(PHAssetCollection *)&v9 description];
-  v4 = [(PHConversation *)self conversationID];
-  v5 = [(PHAssetCollection *)self startDate];
-  v6 = [(PHAssetCollection *)self endDate];
-  v7 = [v3 stringByAppendingFormat:@" %@ (%@ - %@)", v4, v5, v6];
+  conversationID = [(PHConversation *)self conversationID];
+  startDate = [(PHAssetCollection *)self startDate];
+  endDate = [(PHAssetCollection *)self endDate];
+  v7 = [v3 stringByAppendingFormat:@" %@ (%@ - %@)", conversationID, startDate, endDate];
 
   return v7;
 }
 
-- (PHConversation)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHConversation)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PHConversation;
-  v9 = [(PHAssetCollection *)&v17 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHAssetCollection *)&v17 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"importSessionID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"importSessionID"];
     conversationID = v9->_conversationID;
     v9->_conversationID = v10;
 
-    v12 = [v8 objectForKeyedSubscript:@"startDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"startDate"];
     startDate = v9->super._startDate;
     v9->super._startDate = v12;
 
-    v14 = [v8 objectForKeyedSubscript:@"endDate"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"endDate"];
     endDate = v9->super._endDate;
     v9->super._endDate = v14;
 
@@ -48,14 +48,14 @@
   return v9;
 }
 
-+ (id)fetchConversationsWithConversationIDs:(id)a3 options:(id)a4
++ (id)fetchConversationsWithConversationIDs:(id)ds options:(id)options
 {
-  v6 = a3;
-  v7 = [a4 copy];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"importSessionID", v6];
+  dsCopy = ds;
+  v7 = [options copy];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"importSessionID", dsCopy];
 
-  [v7 setInternalPredicate:v8];
-  v9 = [a1 fetchConversationsWithOptions:v7];
+  [v7 setInternalPredicate:dsCopy];
+  v9 = [self fetchConversationsWithOptions:v7];
 
   return v9;
 }
@@ -68,23 +68,23 @@ id __48__PHConversation_fetchConversationsWithOptions___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__PHConversation_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_29100 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_29100, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_29101 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_29101 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -141,13 +141,13 @@ void __30__PHConversation_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_29105 = v6;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__PHConversation_propertiesToFetchWithHint___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (propertiesToFetchWithHint__onceToken_29114 != -1)
   {
     dispatch_once(&propertiesToFetchWithHint__onceToken_29114, block);

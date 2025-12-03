@@ -1,18 +1,18 @@
 @interface WBSAppIDsToDomainsAssociationManager
-- (WBSAppIDsToDomainsAssociationManager)initWithAppIDsToDomains:(id)a3;
+- (WBSAppIDsToDomainsAssociationManager)initWithAppIDsToDomains:(id)domains;
 @end
 
 @implementation WBSAppIDsToDomainsAssociationManager
 
-- (WBSAppIDsToDomainsAssociationManager)initWithAppIDsToDomains:(id)a3
+- (WBSAppIDsToDomainsAssociationManager)initWithAppIDsToDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   v10.receiver = self;
   v10.super_class = WBSAppIDsToDomainsAssociationManager;
   v5 = [(WBSAppIDsToDomainsAssociationManager *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [domainsCopy copy];
     appIDsToDomains = v5->_appIDsToDomains;
     v5->_appIDsToDomains = v6;
 

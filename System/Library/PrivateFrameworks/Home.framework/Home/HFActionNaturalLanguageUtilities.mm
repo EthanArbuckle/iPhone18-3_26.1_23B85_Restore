@@ -1,46 +1,46 @@
 @interface HFActionNaturalLanguageUtilities
-+ (BOOL)_shouldIgnoreActions:(id)a3 withCharacteristicType:(id)a4 execution:(id)a5;
-+ (BOOL)actionTypesMissingDescriptionShouldCauseFailure:(id)a3;
++ (BOOL)_shouldIgnoreActions:(id)actions withCharacteristicType:(id)type execution:(id)execution;
++ (BOOL)actionTypesMissingDescriptionShouldCauseFailure:(id)failure;
 + (id)_actionTypeDescriptionPriority;
-+ (id)_actionTypeForAction:(id)a3;
-+ (id)_actionValue:(id)a3 forCharacteristicType:(id)a4;
++ (id)_actionTypeForAction:(id)action;
++ (id)_actionValue:(id)value forCharacteristicType:(id)type;
 + (id)_characteristicTypesFailingMismatch;
-+ (id)_relativePercentValueInActions:(id)a3 characteristics:(id)a4 characteristicType:(id)a5;
-+ (id)_valueForAction:(id)a3 withActionType:(id)a4;
-+ (id)actionValuesByTypeForActions:(id)a3 execution:(id)a4;
-+ (id)hf_naturalLanguageDescriptionForActions:(id)a3 withOptions:(id)a4;
-+ (id)lightbulbStringKeyWithExecution:(id)a3;
-+ (id)selectHighestPriorityStringsFromStrings:(id)a3;
-+ (id)shortcutsStringKeyWithExecution:(id)a3;
-+ (id)stringKeyForCharacteristicType:(id)a3 targetValue:(id)a4 named:(BOOL)a5 options:(id)a6;
-+ (id)stringKeyForMediaPlaybackAction:(id)a3 named:(BOOL)a4 options:(id)a5;
-+ (id)stringKeyForSpecialCasesWithValuesByType:(id)a3 execution:(id)a4 characteristics:(id)a5;
-+ (id)stringKeyWithType:(id)a3 values:(id)a4 execution:(id)a5;
-+ (id)stringKeysForActions:(id)a3 withServiceType:(id)a4 execution:(id)a5;
-+ (id)temperatureStringKeyForActions:(id)a3 execution:(id)a4 characteristics:(id)a5;
-+ (void)characteristicCaseClassification:(id *)a3 valueKey:(id *)a4 argumentKeys:(id *)a5 fromCharacteristicType:(id)a6 targetValue:(id)a7;
++ (id)_relativePercentValueInActions:(id)actions characteristics:(id)characteristics characteristicType:(id)type;
++ (id)_valueForAction:(id)action withActionType:(id)type;
++ (id)actionValuesByTypeForActions:(id)actions execution:(id)execution;
++ (id)hf_naturalLanguageDescriptionForActions:(id)actions withOptions:(id)options;
++ (id)lightbulbStringKeyWithExecution:(id)execution;
++ (id)selectHighestPriorityStringsFromStrings:(id)strings;
++ (id)shortcutsStringKeyWithExecution:(id)execution;
++ (id)stringKeyForCharacteristicType:(id)type targetValue:(id)value named:(BOOL)named options:(id)options;
++ (id)stringKeyForMediaPlaybackAction:(id)action named:(BOOL)named options:(id)options;
++ (id)stringKeyForSpecialCasesWithValuesByType:(id)type execution:(id)execution characteristics:(id)characteristics;
++ (id)stringKeyWithType:(id)type values:(id)values execution:(id)execution;
++ (id)stringKeysForActions:(id)actions withServiceType:(id)type execution:(id)execution;
++ (id)temperatureStringKeyForActions:(id)actions execution:(id)execution characteristics:(id)characteristics;
++ (void)characteristicCaseClassification:(id *)classification valueKey:(id *)key argumentKeys:(id *)keys fromCharacteristicType:(id)type targetValue:(id)value;
 @end
 
 @implementation HFActionNaturalLanguageUtilities
 
-+ (id)hf_naturalLanguageDescriptionForActions:(id)a3 withOptions:(id)a4
++ (id)hf_naturalLanguageDescriptionForActions:(id)actions withOptions:(id)options
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [HFActionNaturalLanguageExecution executionWithActions:v6 options:v7];
-  v9 = [v8 singularInvolvedObject];
-  v10 = [v9 hf_serviceNameComponents];
-  v11 = [v10 composedString];
+  actionsCopy = actions;
+  optionsCopy = options;
+  v8 = [HFActionNaturalLanguageExecution executionWithActions:actionsCopy options:optionsCopy];
+  singularInvolvedObject = [v8 singularInvolvedObject];
+  hf_serviceNameComponents = [singularInvolvedObject hf_serviceNameComponents];
+  composedString = [hf_serviceNameComponents composedString];
 
-  v12 = [v8 singularInvolvedObject];
-  v13 = [v12 hf_serviceNameComponents];
-  v14 = [v13 serviceName];
+  singularInvolvedObject2 = [v8 singularInvolvedObject];
+  hf_serviceNameComponents2 = [singularInvolvedObject2 hf_serviceNameComponents];
+  serviceName = [hf_serviceNameComponents2 serviceName];
 
-  v15 = [v8 named];
-  if (v14)
+  named = [v8 named];
+  if (serviceName)
   {
-    v16 = v15;
+    v16 = named;
   }
 
   else
@@ -49,37 +49,37 @@
   }
 
   [v8 setNamed:v16];
-  v17 = [v8 actions];
-  v18 = [v17 count];
+  actions = [v8 actions];
+  v18 = [actions count];
 
   if (v18)
   {
-    v19 = [v8 allInvolvedObjects];
-    v20 = [v19 na_flatMap:&__block_literal_global_135];
+    allInvolvedObjects = [v8 allInvolvedObjects];
+    v20 = [allInvolvedObjects na_flatMap:&__block_literal_global_135];
 
-    v21 = [v8 actions];
-    v22 = [v21 na_map:&__block_literal_global_25_9];
+    actions2 = [v8 actions];
+    v22 = [actions2 na_map:&__block_literal_global_25_9];
     v23 = [v20 setByAddingObjectsFromSet:v22];
 
-    v74 = a1;
+    selfCopy = self;
     v75 = v23;
     if ([v8 accessoryCount] > 1)
     {
       goto LABEL_45;
     }
 
-    v24 = [v8 actions];
-    v25 = [v24 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_30_6];
+    actions3 = [v8 actions];
+    v25 = [actions3 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_30_6];
 
     v26 = [MEMORY[0x277CBEB58] set];
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __88__HFActionNaturalLanguageUtilities_hf_naturalLanguageDescriptionForActions_withOptions___block_invoke_5;
     v81[3] = &unk_277DFD350;
-    v84 = a1;
+    selfCopy2 = self;
     v27 = v8;
     v82 = v27;
-    v28 = a1;
+    selfCopy3 = self;
     v29 = v26;
     v83 = v29;
     [v25 enumerateKeysAndObjectsUsingBlock:v81];
@@ -88,24 +88,24 @@
       goto LABEL_8;
     }
 
-    v30 = [v27 indescribableActionTypes];
-    v31 = [v28 actionTypesMissingDescriptionShouldCauseFailure:v30];
+    indescribableActionTypes = [v27 indescribableActionTypes];
+    v31 = [selfCopy3 actionTypesMissingDescriptionShouldCauseFailure:indescribableActionTypes];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [v29 anyObject];
+      anyObject = [v29 anyObject];
     }
 
     else
     {
 LABEL_8:
-      v32 = 0;
+      anyObject = 0;
     }
 
     v23 = v75;
 
-    a1 = v74;
-    if (!v32)
+    self = selfCopy;
+    if (!anyObject)
     {
 LABEL_45:
       if ([v23 count] == 1)
@@ -116,14 +116,14 @@ LABEL_45:
 
         if (v38)
         {
-          v39 = [MEMORY[0x277CBEB98] setWithArray:v6];
+          v39 = [MEMORY[0x277CBEB98] setWithArray:actionsCopy];
           v40 = [v8 stringKeysForMatterActions:v39];
 
           if ([v40 count] == 1)
           {
-            v32 = [v40 anyObject];
+            anyObject = [v40 anyObject];
 
-            if (v32)
+            if (anyObject)
             {
               goto LABEL_27;
             }
@@ -135,77 +135,77 @@ LABEL_45:
         }
       }
 
-      if ([v23 count] != 1 || !objc_msgSend(v23, "containsObject:", *MEMORY[0x277CD0EA0]) || (objc_msgSend(a1, "lightbulbStringKeyWithExecution:", v8), (v41 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ([v23 count] != 1 || !objc_msgSend(v23, "containsObject:", *MEMORY[0x277CD0EA0]) || (objc_msgSend(self, "lightbulbStringKeyWithExecution:", v8), (v41 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v42 = [v8 actions];
-        v43 = [v42 na_allObjectsPassTest:&__block_literal_global_39_0];
+        actions4 = [v8 actions];
+        v43 = [actions4 na_allObjectsPassTest:&__block_literal_global_39_0];
 
-        if (!v43 || ([a1 shortcutsStringKeyWithExecution:v8], (v41 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!v43 || ([self shortcutsStringKeyWithExecution:v8], (v41 = objc_claimAutoreleasedReturnValue()) == 0))
         {
-          v44 = [v7 objectsInContext];
-          v45 = [v8 allInvolvedObjects];
-          v46 = [v44 intersectsSet:v45];
+          objectsInContext = [optionsCopy objectsInContext];
+          allInvolvedObjects2 = [v8 allInvolvedObjects];
+          v46 = [objectsInContext intersectsSet:allInvolvedObjects2];
 
-          v41 = [objc_opt_class() genericStringKeyWithNumberOfAccessories:objc_msgSend(v8 named:"accessoryCount") inContext:objc_msgSend(v8 options:{"named"), v46, v7}];
+          v41 = [objc_opt_class() genericStringKeyWithNumberOfAccessories:objc_msgSend(v8 named:"accessoryCount") inContext:objc_msgSend(v8 options:{"named"), v46, optionsCopy}];
         }
       }
 
-      v32 = v41;
+      anyObject = v41;
     }
 
 LABEL_27:
-    v47 = v11;
-    v48 = [v8 singularInvolvedObject];
-    if (!v48)
+    v47 = composedString;
+    singularInvolvedObject3 = [v8 singularInvolvedObject];
+    if (!singularInvolvedObject3)
     {
       goto LABEL_35;
     }
 
-    v49 = v48;
-    v50 = [v8 named];
+    v49 = singularInvolvedObject3;
+    named2 = [v8 named];
 
-    if (!v50)
+    if (!named2)
     {
       goto LABEL_35;
     }
 
-    v51 = [v32 argumentMap];
-    [v51 setObject:v11 forKeyedSubscript:@"name"];
+    argumentMap = [anyObject argumentMap];
+    [argumentMap setObject:composedString forKeyedSubscript:@"name"];
 
-    v52 = [v8 involvedServices];
-    if ([v52 count] == 1)
+    involvedServices = [v8 involvedServices];
+    if ([involvedServices count] == 1)
     {
-      v53 = [v8 singularInvolvedObject];
-      v54 = [v8 involvedServices];
-      [v54 anyObject];
-      v55 = v73 = v6;
-      v56 = [v53 isEqual:v55];
+      singularInvolvedObject4 = [v8 singularInvolvedObject];
+      involvedServices2 = [v8 involvedServices];
+      [involvedServices2 anyObject];
+      v55 = v73 = actionsCopy;
+      v56 = [singularInvolvedObject4 isEqual:v55];
 
-      v6 = v73;
+      actionsCopy = v73;
       if (!v56)
       {
         goto LABEL_35;
       }
 
-      v57 = [v8 involvedServices];
-      v58 = [v57 anyObject];
-      v59 = [v58 accessory];
-      v72 = [v59 hf_showAsAccessoryTile];
+      involvedServices3 = [v8 involvedServices];
+      anyObject2 = [involvedServices3 anyObject];
+      accessory = [anyObject2 accessory];
+      hf_showAsAccessoryTile = [accessory hf_showAsAccessoryTile];
 
-      v60 = [v7 objectsInContext];
-      v61 = [v8 involvedServices];
-      v62 = [v61 anyObject];
-      v63 = [v62 accessory];
-      v64 = [v60 containsObject:v63];
+      objectsInContext2 = [optionsCopy objectsInContext];
+      involvedServices4 = [v8 involvedServices];
+      anyObject3 = [involvedServices4 anyObject];
+      accessory2 = [anyObject3 accessory];
+      v64 = [objectsInContext2 containsObject:accessory2];
 
-      v6 = v73;
-      if (!v72 || !v64)
+      actionsCopy = v73;
+      if (!hf_showAsAccessoryTile || !v64)
       {
         goto LABEL_35;
       }
 
-      v52 = [v32 argumentMap];
-      [v52 setObject:v14 forKeyedSubscript:@"name"];
+      involvedServices = [anyObject argumentMap];
+      [involvedServices setObject:serviceName forKeyedSubscript:@"name"];
     }
 
 LABEL_35:
@@ -214,21 +214,21 @@ LABEL_35:
     v76[1] = 3221225472;
     v76[2] = __88__HFActionNaturalLanguageUtilities_hf_naturalLanguageDescriptionForActions_withOptions___block_invoke_8;
     v76[3] = &unk_277DFD378;
-    v33 = v32;
+    v33 = anyObject;
     v77 = v33;
     v66 = v65;
     v78 = v66;
-    v11 = v47;
+    composedString = v47;
     v79 = v47;
     v67 = v8;
     v80 = v67;
     v68 = [v33 localizedStringWithArgumentBlock:v76];
     if ([v66 count] && !+[HFUtilities isInternalInstall](HFUtilities, "isInternalInstall"))
     {
-      v69 = [objc_opt_class() genericStringKeyWithNumberOfAccessories:objc_msgSend(v67 named:"accessoryCount") inContext:0 options:{0, v7}];
+      v69 = [objc_opt_class() genericStringKeyWithNumberOfAccessories:objc_msgSend(v67 named:"accessoryCount") inContext:0 options:{0, optionsCopy}];
       v35 = [v69 localizedStringWithArgumentBlock:&__block_literal_global_53_1];
 
-      v11 = v47;
+      composedString = v47;
     }
 
     else
@@ -242,7 +242,7 @@ LABEL_35:
   v33 = HFLogForCategory(0x31uLL);
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = NSStringFromClass(a1);
+    v34 = NSStringFromClass(self);
     *buf = 138412290;
     v86 = v34;
     _os_log_impl(&dword_20D9BF000, v33, OS_LOG_TYPE_DEFAULT, "%@: natural language requested but no actions were supplied!", buf, 0xCu);
@@ -411,25 +411,25 @@ id __88__HFActionNaturalLanguageUtilities_hf_naturalLanguageDescriptionForAction
   return v2;
 }
 
-+ (id)stringKeysForActions:(id)a3 withServiceType:(id)a4 execution:(id)a5
++ (id)stringKeysForActions:(id)actions withServiceType:(id)type execution:(id)execution
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  actionsCopy = actions;
+  executionCopy = execution;
+  typeCopy = type;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v10 isEqualToString:v12];
+  v13 = [typeCopy isEqualToString:v12];
 
   if (v13)
   {
-    v14 = [v9 stringKeysForMatterActions:v8];
+    v14 = [executionCopy stringKeysForMatterActions:actionsCopy];
   }
 
   else
   {
-    v15 = [a1 actionValuesByTypeForActions:v8 execution:v9];
-    v16 = [v8 na_map:&__block_literal_global_56_1];
-    v17 = [a1 stringKeyForSpecialCasesWithValuesByType:v15 execution:v9 characteristics:v16];
+    v15 = [self actionValuesByTypeForActions:actionsCopy execution:executionCopy];
+    v16 = [actionsCopy na_map:&__block_literal_global_56_1];
+    v17 = [self stringKeyForSpecialCasesWithValuesByType:v15 execution:executionCopy characteristics:v16];
     if (v17)
     {
       v14 = [MEMORY[0x277CBEB98] setWithObject:v17];
@@ -441,10 +441,10 @@ id __88__HFActionNaturalLanguageUtilities_hf_naturalLanguageDescriptionForAction
       v21 = 3221225472;
       v22 = __83__HFActionNaturalLanguageUtilities_stringKeysForActions_withServiceType_execution___block_invoke_2;
       v23 = &unk_277DFD3A0;
-      v25 = a1;
-      v24 = v9;
+      selfCopy = self;
+      v24 = executionCopy;
       v18 = [v15 na_dictionaryByMappingValues:&v20];
-      v14 = [a1 selectHighestPriorityStringsFromStrings:{v18, v20, v21, v22, v23}];
+      v14 = [self selectHighestPriorityStringsFromStrings:{v18, v20, v21, v22, v23}];
     }
   }
 
@@ -486,41 +486,41 @@ id __83__HFActionNaturalLanguageUtilities_stringKeysForActions_withServiceType_e
   return v6;
 }
 
-+ (id)actionValuesByTypeForActions:(id)a3 execution:(id)a4
++ (id)actionValuesByTypeForActions:(id)actions execution:(id)execution
 {
-  v6 = a4;
+  executionCopy = execution;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __75__HFActionNaturalLanguageUtilities_actionValuesByTypeForActions_execution___block_invoke;
   v23[3] = &__block_descriptor_40_e31____NSCopying__16__0__HMAction_8l;
-  v23[4] = a1;
-  v7 = [a3 na_dictionaryByBucketingObjectsUsingKeyGenerator:v23];
+  v23[4] = self;
+  v7 = [actions na_dictionaryByBucketingObjectsUsingKeyGenerator:v23];
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [v7 allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __75__HFActionNaturalLanguageUtilities_actionValuesByTypeForActions_execution___block_invoke_2;
   v20[3] = &unk_277DFD3E8;
-  v21 = v6;
-  v22 = a1;
-  v11 = v6;
+  v21 = executionCopy;
+  selfCopy = self;
+  v11 = executionCopy;
   v12 = [v7 na_filter:v20];
 
   v13 = MEMORY[0x277CBEB98];
-  v14 = [v12 allKeys];
-  v15 = [v13 setWithArray:v14];
+  allKeys2 = [v12 allKeys];
+  v15 = [v13 setWithArray:allKeys2];
   [v10 minusSet:v15];
 
-  v16 = [v11 indescribableActionTypes];
-  [v16 unionSet:v10];
+  indescribableActionTypes = [v11 indescribableActionTypes];
+  [indescribableActionTypes unionSet:v10];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__HFActionNaturalLanguageUtilities_actionValuesByTypeForActions_execution___block_invoke_3;
   v19[3] = &__block_descriptor_40_e35___NSSet_24__0__NSString_8__NSSet_16l;
-  v19[4] = a1;
+  v19[4] = self;
   v17 = [v12 na_dictionaryByMappingValues:v19];
 
   return v17;
@@ -542,11 +542,11 @@ id __75__HFActionNaturalLanguageUtilities_actionValuesByTypeForActions_execution
   return v8;
 }
 
-+ (id)stringKeyForSpecialCasesWithValuesByType:(id)a3 execution:(id)a4 characteristics:(id)a5
++ (id)stringKeyForSpecialCasesWithValuesByType:(id)type execution:(id)execution characteristics:(id)characteristics
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  executionCopy = execution;
+  characteristicsCopy = characteristics;
   if (_MergedGlobals_274 != -1)
   {
     dispatch_once(&_MergedGlobals_274, &__block_literal_global_67_2);
@@ -554,13 +554,13 @@ id __75__HFActionNaturalLanguageUtilities_actionValuesByTypeForActions_execution
 
   v11 = qword_280E031D8;
   v12 = MEMORY[0x277CBEB98];
-  v13 = [v8 allKeys];
-  v14 = [v12 setWithArray:v13];
+  allKeys = [typeCopy allKeys];
+  v14 = [v12 setWithArray:allKeys];
   v15 = [v11 intersectsSet:v14];
 
   if (v15)
   {
-    v16 = [a1 temperatureStringKeyForActions:v8 execution:v9 characteristics:v10];
+    v16 = [self temperatureStringKeyForActions:typeCopy execution:executionCopy characteristics:characteristicsCopy];
   }
 
   else
@@ -586,20 +586,20 @@ void __103__HFActionNaturalLanguageUtilities_stringKeyForSpecialCasesWithValuesB
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringKeyWithType:(id)a3 values:(id)a4 execution:(id)a5
++ (id)stringKeyWithType:(id)type values:(id)values execution:(id)execution
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count] != 1)
+  typeCopy = type;
+  valuesCopy = values;
+  executionCopy = execution;
+  if ([valuesCopy count] != 1)
   {
     v18 = 0;
     goto LABEL_12;
   }
 
-  v11 = [v9 anyObject];
+  anyObject = [valuesCopy anyObject];
   objc_opt_class();
-  v12 = v11;
+  v12 = anyObject;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -614,9 +614,9 @@ void __103__HFActionNaturalLanguageUtilities_stringKeyForSpecialCasesWithValuesB
 
   if (v14)
   {
-    v15 = [v10 named];
-    v16 = [v10 options];
-    v17 = [a1 stringKeyForMediaPlaybackAction:v14 named:v15 options:v16];
+    named = [executionCopy named];
+    options = [executionCopy options];
+    v17 = [self stringKeyForMediaPlaybackAction:v14 named:named options:options];
   }
 
   else
@@ -627,9 +627,9 @@ void __103__HFActionNaturalLanguageUtilities_stringKeyForSpecialCasesWithValuesB
       goto LABEL_11;
     }
 
-    v19 = [v10 named];
-    v16 = [v10 options];
-    v17 = [a1 stringKeyForCharacteristicType:v8 targetValue:v12 named:v19 options:v16];
+    named2 = [executionCopy named];
+    options = [executionCopy options];
+    v17 = [self stringKeyForCharacteristicType:typeCopy targetValue:v12 named:named2 options:options];
   }
 
   v18 = v17;
@@ -640,20 +640,20 @@ LABEL_12:
   return v18;
 }
 
-+ (id)selectHighestPriorityStringsFromStrings:(id)a3
++ (id)selectHighestPriorityStringsFromStrings:(id)strings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringsCopy = strings;
   memset(v15, 0, sizeof(v15));
-  v5 = [a1 _actionTypeDescriptionPriority];
-  if ([v5 countByEnumeratingWithState:v15 objects:v16 count:16])
+  _actionTypeDescriptionPriority = [self _actionTypeDescriptionPriority];
+  if ([_actionTypeDescriptionPriority countByEnumeratingWithState:v15 objects:v16 count:16])
   {
     v6 = **(&v15[0] + 1);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __76__HFActionNaturalLanguageUtilities_selectHighestPriorityStringsFromStrings___block_invoke;
     v13[3] = &unk_277DF5170;
-    v14 = v4;
+    v14 = stringsCopy;
     v7 = [v6 na_map:v13];
   }
 
@@ -670,8 +670,8 @@ LABEL_12:
   else
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v4 allValues];
-    v8 = [v9 setWithArray:v10];
+    allValues = [stringsCopy allValues];
+    v8 = [v9 setWithArray:allValues];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -679,12 +679,12 @@ LABEL_12:
   return v8;
 }
 
-+ (id)stringKeyForCharacteristicType:(id)a3 targetValue:(id)a4 named:(BOOL)a5 options:(id)a6
++ (id)stringKeyForCharacteristicType:(id)type targetValue:(id)value named:(BOOL)named options:(id)options
 {
-  v6 = a5;
+  namedCopy = named;
   v53[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  valueCopy = value;
   if (qword_280E031E0 != -1)
   {
     dispatch_once(&qword_280E031E0, &__block_literal_global_74_0);
@@ -694,13 +694,13 @@ LABEL_12:
   v43 = 0;
   v44 = 0;
   v42 = 0;
-  [a1 characteristicCaseClassification:&v44 valueKey:&v43 argumentKeys:&v42 fromCharacteristicType:v9 targetValue:v10];
+  [self characteristicCaseClassification:&v44 valueKey:&v43 argumentKeys:&v42 fromCharacteristicType:typeCopy targetValue:valueCopy];
   v12 = v44;
   v13 = v43;
   v14 = v42;
   if (v12)
   {
-    if (v6)
+    if (namedCopy)
     {
       if (qword_280E031F0 != -1)
       {
@@ -719,13 +719,13 @@ LABEL_12:
       v53[0] = @"name";
       v53[1] = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
-      v19 = [v18 na_arrayByFlattening];
+      na_arrayByFlattening = [v18 na_arrayByFlattening];
 
-      v14 = v19;
+      v14 = na_arrayByFlattening;
       v11 = v16;
     }
 
-    v39 = v9;
+    v39 = typeCopy;
     if (v13)
     {
       v41 = 0;
@@ -740,7 +740,7 @@ LABEL_12:
       [MEMORY[0x277CCACA8] stringWithValidatedFormat:v11 validFormatSpecifiers:@"%@" error:&v40, v12, v35];
     }
     v21 = ;
-    v36 = a1;
+    selfCopy = self;
     v37 = v13;
     v24 = *v20;
     v25 = v24;
@@ -749,16 +749,16 @@ LABEL_12:
       NSLog(&cfstr_CouldnTLocaliz_0.isa, v11, v24);
     }
 
-    v26 = v10;
+    v26 = valueCopy;
     v23 = [HFLocalizableStringKey stringKeyWithKey:v21 argumentKeys:v14];
     if ([v14 containsObject:@"targetValuePercent"])
     {
       v27 = +[HFFormatterManager sharedInstance];
-      v28 = [v27 percentFormatter];
+      percentFormatter = [v27 percentFormatter];
 
-      v29 = [v28 stringForObjectValue:v26];
-      v30 = [v23 argumentMap];
-      [v30 setObject:v29 forKeyedSubscript:@"targetValuePercent"];
+      v29 = [percentFormatter stringForObjectValue:v26];
+      argumentMap = [v23 argumentMap];
+      [argumentMap setObject:v29 forKeyedSubscript:@"targetValuePercent"];
     }
 
     v31 = HFLogForCategory(0x31uLL);
@@ -766,7 +766,7 @@ LABEL_12:
     {
       v32 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v46 = v36;
+      selfCopy2 = selfCopy;
       v47 = 2112;
       v48 = v32;
       v49 = 2112;
@@ -776,8 +776,8 @@ LABEL_12:
       _os_log_impl(&dword_20D9BF000, v31, OS_LOG_TYPE_DEFAULT, "%@:%@ Produced string key %@ for characteristic type %@", buf, 0x2Au);
     }
 
-    v9 = v39;
-    v10 = v26;
+    typeCopy = v39;
+    valueCopy = v26;
     v13 = v37;
   }
 
@@ -788,11 +788,11 @@ LABEL_12:
     {
       v22 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v46 = a1;
+      selfCopy2 = self;
       v47 = 2112;
       v48 = v22;
       v49 = 2112;
-      v50 = v9;
+      v50 = typeCopy;
       _os_log_impl(&dword_20D9BF000, v21, OS_LOG_TYPE_DEFAULT, "%@:%@ Failed to produce classification for characteristic type %@", buf, 0x20u);
     }
 
@@ -816,13 +816,13 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
   qword_280E031F8 = @"_Named";
 }
 
-+ (void)characteristicCaseClassification:(id *)a3 valueKey:(id *)a4 argumentKeys:(id *)a5 fromCharacteristicType:(id)a6 targetValue:(id)a7
++ (void)characteristicCaseClassification:(id *)classification valueKey:(id *)key argumentKeys:(id *)keys fromCharacteristicType:(id)type targetValue:(id)value
 {
   v61 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = a7;
+  typeCopy = type;
+  valueCopy = value;
   objc_opt_class();
-  v13 = v12;
+  v13 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -841,12 +841,12 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
   }
 
   v16 = qword_280E03208;
-  v17 = [v16 objectForKeyedSubscript:v11];
+  v17 = [v16 objectForKeyedSubscript:typeCopy];
 
   if (v17)
   {
     objc_opt_class();
-    v18 = [v16 objectForKeyedSubscript:v11];
+    v18 = [v16 objectForKeyedSubscript:typeCopy];
     if (objc_opt_isKindOfClass())
     {
       v19 = v18;
@@ -861,15 +861,15 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
 
     if (v20)
     {
-      *a3 = [v20 first];
-      v21 = [v20 second];
-      *a4 = [v21 objectForKeyedSubscript:v13];
+      *classification = [v20 first];
+      second = [v20 second];
+      *key = [second objectForKeyedSubscript:v13];
     }
 
     else
     {
       objc_opt_class();
-      v22 = [v16 objectForKeyedSubscript:v11];
+      v22 = [v16 objectForKeyedSubscript:typeCopy];
       if (objc_opt_isKindOfClass())
       {
         v23 = v22;
@@ -880,7 +880,7 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
         v23 = 0;
       }
 
-      *a3 = v23;
+      *classification = v23;
 
       if (v15)
       {
@@ -892,30 +892,30 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
         v24 = v13;
       }
 
-      *a4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v24];
+      *key = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v24];
     }
   }
 
-  if (!*a3)
+  if (!*classification)
   {
-    v53 = a4;
+    keyCopy = key;
     if (qword_280E03210 != -1)
     {
       dispatch_once(&qword_280E03210, &__block_literal_global_142_1);
     }
 
     v25 = qword_280E03218;
-    v26 = [v25 objectForKeyedSubscript:v11];
+    v26 = [v25 objectForKeyedSubscript:typeCopy];
 
     if (v26)
     {
       v48 = v16;
       v49 = v13;
-      v51 = v11;
-      v52 = a3;
-      v50 = a5;
+      v51 = typeCopy;
+      classificationCopy = classification;
+      keysCopy = keys;
       v47 = v25;
-      [v25 objectForKeyedSubscript:v11];
+      [v25 objectForKeyedSubscript:typeCopy];
       v56 = 0u;
       v57 = 0u;
       v58 = 0u;
@@ -936,16 +936,16 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
             }
 
             v31 = *(*(&v56 + 1) + 8 * i);
-            v32 = [v31 first];
-            v33 = [v31 second];
-            v34 = v33;
+            first = [v31 first];
+            second2 = [v31 second];
+            v34 = second2;
             if (v15)
             {
-              v35 = [v33 maxValue];
-              if (v35)
+              maxValue = [second2 maxValue];
+              if (maxValue)
               {
-                v36 = [v34 maxValue];
-                v37 = [v36 compare:v15] == -1;
+                maxValue2 = [v34 maxValue];
+                v37 = [maxValue2 compare:v15] == -1;
               }
 
               else
@@ -953,11 +953,11 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
                 v37 = 0;
               }
 
-              v38 = [v34 minValue];
-              if (v38)
+              minValue = [v34 minValue];
+              if (minValue)
               {
-                v39 = [v34 minValue];
-                v40 = [v39 compare:v15] == 1;
+                minValue2 = [v34 minValue];
+                v40 = [minValue2 compare:v15] == 1;
               }
 
               else
@@ -969,9 +969,9 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
               v15 = v55;
               if (!v41)
               {
-                v42 = v32;
-                *v52 = v32;
-                *v53 = [v31 third];
+                v42 = first;
+                *classificationCopy = first;
+                *keyCopy = [v31 third];
 
                 goto LABEL_41;
               }
@@ -990,15 +990,15 @@ void __93__HFActionNaturalLanguageUtilities_stringKeyForCharacteristicType_targe
 
 LABEL_41:
 
-      a5 = v50;
-      v11 = v51;
+      keys = keysCopy;
+      typeCopy = v51;
       v16 = v48;
       v13 = v49;
-      a3 = v52;
+      classification = classificationCopy;
       v25 = v47;
     }
 
-    if (!*a3)
+    if (!*classification)
     {
       v43 = v25;
       if (qword_280E03220 != -1)
@@ -1007,23 +1007,23 @@ LABEL_41:
       }
 
       v44 = qword_280E03228;
-      v45 = [v44 objectForKeyedSubscript:v11];
+      v45 = [v44 objectForKeyedSubscript:typeCopy];
 
       if (v45)
       {
-        *a3 = [v44 objectForKeyedSubscript:v11];
+        *classification = [v44 objectForKeyedSubscript:typeCopy];
         if (qword_280E03230 != -1)
         {
           dispatch_once(&qword_280E03230, &__block_literal_global_173_0);
         }
 
-        *v53 = qword_280E03238;
+        *keyCopy = qword_280E03238;
         if (qword_280E03240 != -1)
         {
           dispatch_once(&qword_280E03240, &__block_literal_global_177_1);
         }
 
-        *a5 = qword_280E03248;
+        *keys = qword_280E03248;
       }
 
       v25 = v43;
@@ -1130,53 +1130,53 @@ void __126__HFActionNaturalLanguageUtilities_characteristicCaseClassification_va
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)shortcutsStringKeyWithExecution:(id)a3
++ (id)shortcutsStringKeyWithExecution:(id)execution
 {
   v3 = [[HFLocalizableStringKey alloc] initWithKey:@"HFNaturalLanguage_Action_Shortcut" argumentKeys:0];
 
   return v3;
 }
 
-+ (id)lightbulbStringKeyWithExecution:(id)a3
++ (id)lightbulbStringKeyWithExecution:(id)execution
 {
-  v3 = a3;
-  v4 = [v3 actions];
-  v5 = [v4 na_map:&__block_literal_global_182_0];
+  executionCopy = execution;
+  actions = [executionCopy actions];
+  v5 = [actions na_map:&__block_literal_global_182_0];
 
   if ([v5 count] == 1)
   {
-    v6 = [v5 anyObject];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFNaturalLanguage_Action_MultiLightbulb_%@", v6];
+    anyObject = [v5 anyObject];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFNaturalLanguage_Action_MultiLightbulb_%@", anyObject];
     v8 = [[HFNumberDependentLocalizableStringKey alloc] initWithKey:v7];
-    -[HFNumberDependentLocalizableStringKey setIntegerArgument:](v8, "setIntegerArgument:", [v3 accessoryCount]);
-    v9 = [v3 allInvolvedObjects];
-    v10 = [v9 na_map:&__block_literal_global_189_1];
+    -[HFNumberDependentLocalizableStringKey setIntegerArgument:](v8, "setIntegerArgument:", [executionCopy accessoryCount]);
+    allInvolvedObjects = [executionCopy allInvolvedObjects];
+    v10 = [allInvolvedObjects na_map:&__block_literal_global_189_1];
 
     if ([v10 count] == 1)
     {
-      v11 = [v10 anyObject];
-      v12 = [v11 hf_allVisibleServices];
-      v13 = [v12 na_filter:&__block_literal_global_192];
+      anyObject2 = [v10 anyObject];
+      hf_allVisibleServices = [anyObject2 hf_allVisibleServices];
+      v13 = [hf_allVisibleServices na_filter:&__block_literal_global_192];
 
       v33 = v13;
       v14 = [v13 mutableCopy];
-      v15 = [v3 allInvolvedObjects];
+      allInvolvedObjects2 = [executionCopy allInvolvedObjects];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __68__HFActionNaturalLanguageUtilities_lightbulbStringKeyWithExecution___block_invoke_4;
       v35[3] = &unk_277DF69F8;
       v16 = v14;
       v36 = v16;
-      [v15 na_each:v35];
+      [allInvolvedObjects2 na_each:v35];
 
-      v34 = v6;
+      v34 = anyObject;
       if ([v16 count])
       {
         v17 = [v7 stringByAppendingString:@"_WithRoom"];
 
-        v18 = [(HFNumberDependentLocalizableStringKey *)v8 integerArgument];
-        v32 = [v11 hf_displayName];
-        v25 = HFLocalizedStringWithFormat(v17, @"%lu %@", v19, v20, v21, v22, v23, v24, v18);
+        integerArgument = [(HFNumberDependentLocalizableStringKey *)v8 integerArgument];
+        hf_displayName = [anyObject2 hf_displayName];
+        v25 = HFLocalizedStringWithFormat(v17, @"%lu %@", v19, v20, v21, v22, v23, v24, integerArgument);
 
         v26 = [[HFLiteralLocalizableStringKey alloc] initWithLocalizedString:v25];
       }
@@ -1197,12 +1197,12 @@ void __126__HFActionNaturalLanguageUtilities_characteristicCaseClassification_va
 
       v27 = v26;
 
-      v29 = [v11 hf_displayName];
-      v30 = [(HFLocalizableStringKey *)v27 argumentMap];
-      [v30 setObject:v29 forKeyedSubscript:@"room"];
+      hf_displayName2 = [anyObject2 hf_displayName];
+      argumentMap = [(HFLocalizableStringKey *)v27 argumentMap];
+      [argumentMap setObject:hf_displayName2 forKeyedSubscript:@"room"];
 
       v7 = v17;
-      v6 = v34;
+      anyObject = v34;
     }
 
     else
@@ -1306,11 +1306,11 @@ void __100__HFActionNaturalLanguageUtilities_genericStringKeyWithNumberOfAccesso
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringKeyForMediaPlaybackAction:(id)a3 named:(BOOL)a4 options:(id)a5
++ (id)stringKeyForMediaPlaybackAction:(id)action named:(BOOL)named options:(id)options
 {
-  v5 = a4;
+  namedCopy = named;
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  actionCopy = action;
   if (qword_280E03270 != -1)
   {
     dispatch_once(&qword_280E03270, &__block_literal_global_225_0);
@@ -1321,12 +1321,12 @@ void __100__HFActionNaturalLanguageUtilities_genericStringKeyWithNumberOfAccesso
   v26[1] = 3221225472;
   v26[2] = __82__HFActionNaturalLanguageUtilities_stringKeyForMediaPlaybackAction_named_options___block_invoke_3;
   v26[3] = &unk_277DF3568;
-  v10 = v8;
+  v10 = actionCopy;
   v27 = v10;
   v11 = __82__HFActionNaturalLanguageUtilities_stringKeyForMediaPlaybackAction_named_options___block_invoke_3(v26);
   if (v11)
   {
-    if (v5)
+    if (namedCopy)
     {
       if (qword_280E03280 != -1)
       {
@@ -1365,7 +1365,7 @@ void __100__HFActionNaturalLanguageUtilities_genericStringKeyWithNumberOfAccesso
     {
       v22 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v29 = a1;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v22;
       v32 = 2112;
@@ -1382,7 +1382,7 @@ void __100__HFActionNaturalLanguageUtilities_genericStringKeyWithNumberOfAccesso
       v15 = NSStringFromSelector(a2);
       v16 = NSStringFromHMMediaPlaybackState([v10 state]);
       *buf = 138412802;
-      v29 = a1;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v15;
       v32 = 2112;
@@ -1449,12 +1449,12 @@ void __82__HFActionNaturalLanguageUtilities_stringKeyForMediaPlaybackAction_name
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)temperatureStringKeyForActions:(id)a3 execution:(id)a4 characteristics:(id)a5
++ (id)temperatureStringKeyForActions:(id)actions execution:(id)execution characteristics:(id)characteristics
 {
   v87[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionsCopy = actions;
+  executionCopy = execution;
+  characteristicsCopy = characteristics;
   if (qword_280E032A0 != -1)
   {
     dispatch_once(&qword_280E032A0, &__block_literal_global_255_0);
@@ -1467,7 +1467,7 @@ void __82__HFActionNaturalLanguageUtilities_stringKeyForMediaPlaybackAction_name
   v77[1] = 3221225472;
   v77[2] = __93__HFActionNaturalLanguageUtilities_temperatureStringKeyForActions_execution_characteristics___block_invoke_3;
   v77[3] = &unk_277DFD478;
-  v14 = v8;
+  v14 = actionsCopy;
   v78 = v14;
   v15 = v13;
   v79 = v15;
@@ -1489,12 +1489,12 @@ void __82__HFActionNaturalLanguageUtilities_stringKeyForMediaPlaybackAction_name
 
   v64 = v17;
   v65 = v16;
-  v20 = [v9 indescribableActionTypes];
-  [v20 unionSet:v15];
+  indescribableActionTypes = [executionCopy indescribableActionTypes];
+  [indescribableActionTypes unionSet:v15];
 
-  v72 = [a1 _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCF748]];
-  v21 = [a1 _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCFB20]];
-  v22 = [a1 _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCFB18]];
+  v72 = [self _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCF748]];
+  v21 = [self _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCFB20]];
+  v22 = [self _actionValue:v14 forCharacteristicType:*MEMORY[0x277CCFB18]];
   v68 = v11;
   v66 = v15;
   v63 = v21;
@@ -1572,9 +1572,9 @@ LABEL_18:
   }
 
 LABEL_27:
-  v27 = [a1 _relativePercentValueInActions:v14 characteristics:v10 characteristicType:*MEMORY[0x277CCFB68]];
-  v28 = [a1 _relativePercentValueInActions:v14 characteristics:v10 characteristicType:*MEMORY[0x277CCF8C8]];
-  [a1 _relativePercentValueInActions:v14 characteristics:v10 characteristicType:*MEMORY[0x277CCF7F0]];
+  v27 = [self _relativePercentValueInActions:v14 characteristics:characteristicsCopy characteristicType:*MEMORY[0x277CCFB68]];
+  v28 = [self _relativePercentValueInActions:v14 characteristics:characteristicsCopy characteristicType:*MEMORY[0x277CCF8C8]];
+  [self _relativePercentValueInActions:v14 characteristics:characteristicsCopy characteristicType:*MEMORY[0x277CCF7F0]];
   v75 = v62 = v27;
   v29 = [HFTargetRangeUtilities targetRelativePercentValueWithTargetMode:v24 currentMode:0 rawTargetRelativePercentValue:v27 minimumThresholdRelativePercentValue:v28 maximumThresholdRelativePercentValue:?];
   if (v28)
@@ -1627,8 +1627,8 @@ LABEL_35:
     v19 = @"HFNaturalLanguage_Action_Thermostat_%@";
   }
 
-  v70 = v9;
-  if ([v9 named])
+  v70 = executionCopy;
+  if ([executionCopy named])
   {
     v35 = [(__CFString *)v19 stringByAppendingString:@"_Named"];
 
@@ -1651,8 +1651,8 @@ LABEL_35:
     v19 = v35;
   }
 
-  v59 = a1;
-  v69 = v10;
+  selfCopy = self;
+  v69 = characteristicsCopy;
   v76 = 0;
   v40 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v19 validFormatSpecifiers:@"%@" error:&v76, v25];
   v41 = v76;
@@ -1665,14 +1665,14 @@ LABEL_35:
   v60 = v42;
   v18 = [HFLocalizableStringKey stringKeyWithKey:v40 argumentKeys:v26];
   v43 = +[HFFormatterManager sharedInstance];
-  v44 = [v43 temperatureFormatter];
+  temperatureFormatter = [v43 temperatureFormatter];
 
-  [v44 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
   v45 = v75;
   if (v28)
   {
-    v46 = [v28 value];
-    v47 = [v44 stringForObjectValue:v46];
+    value = [v28 value];
+    v47 = [temperatureFormatter stringForObjectValue:value];
   }
 
   else
@@ -1683,8 +1683,8 @@ LABEL_35:
   v61 = v28;
   if (v75)
   {
-    v48 = [v75 value];
-    v49 = [v44 stringForObjectValue:v48];
+    value2 = [v75 value];
+    v49 = [temperatureFormatter stringForObjectValue:value2];
   }
 
   else
@@ -1695,8 +1695,8 @@ LABEL_35:
   v67 = v14;
   if (v74)
   {
-    v50 = [v74 value];
-    v51 = [v44 stringForObjectValue:v50];
+    value3 = [v74 value];
+    v51 = [temperatureFormatter stringForObjectValue:value3];
   }
 
   else
@@ -1704,21 +1704,21 @@ LABEL_35:
     v51 = 0;
   }
 
-  v52 = [v18 argumentMap];
-  [v52 na_safeSetObject:v47 forKey:@"targetTemperatureHeat"];
+  argumentMap = [v18 argumentMap];
+  [argumentMap na_safeSetObject:v47 forKey:@"targetTemperatureHeat"];
 
-  v53 = [v18 argumentMap];
-  [v53 na_safeSetObject:v49 forKey:@"targetTemperatureCool"];
+  argumentMap2 = [v18 argumentMap];
+  [argumentMap2 na_safeSetObject:v49 forKey:@"targetTemperatureCool"];
 
-  v54 = [v18 argumentMap];
-  [v54 na_safeSetObject:v51 forKey:@"targetTemperatureTarget"];
+  argumentMap3 = [v18 argumentMap];
+  [argumentMap3 na_safeSetObject:v51 forKey:@"targetTemperatureTarget"];
 
   v55 = HFLogForCategory(0x31uLL);
   if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
   {
     v56 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v82 = v59;
+    v82 = selfCopy;
     v83 = 2112;
     v84 = v56;
     v85 = 2112;
@@ -1728,8 +1728,8 @@ LABEL_35:
     v45 = v75;
   }
 
-  v10 = v69;
-  v9 = v70;
+  characteristicsCopy = v69;
+  executionCopy = v70;
   v14 = v67;
   v11 = v68;
   v16 = v65;
@@ -1836,33 +1836,33 @@ void __93__HFActionNaturalLanguageUtilities_temperatureStringKeyForActions_execu
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_actionTypeForAction:(id)a3
++ (id)_actionTypeForAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 hf_affectedCharacteristic];
+  actionCopy = action;
+  hf_affectedCharacteristic = [actionCopy hf_affectedCharacteristic];
 
-  if (v4)
+  if (hf_affectedCharacteristic)
   {
-    v5 = [v3 hf_affectedCharacteristic];
+    hf_affectedCharacteristic2 = [actionCopy hf_affectedCharacteristic];
 
-    v6 = [v5 characteristicType];
+    characteristicType = [hf_affectedCharacteristic2 characteristicType];
   }
 
   else
   {
     v7 = objc_opt_class();
 
-    v6 = NSStringFromClass(v7);
+    characteristicType = NSStringFromClass(v7);
   }
 
-  return v6;
+  return characteristicType;
 }
 
-+ (id)_valueForAction:(id)a3 withActionType:(id)a4
++ (id)_valueForAction:(id)action withActionType:(id)type
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
-  v5 = v4;
+  v5 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -1877,35 +1877,35 @@ void __93__HFActionNaturalLanguageUtilities_temperatureStringKeyForActions_execu
 
   if (v7)
   {
-    v8 = [v7 targetValue];
+    targetValue = [v7 targetValue];
   }
 
   else
   {
-    v8 = v5;
+    targetValue = v5;
   }
 
-  v9 = v8;
+  v9 = targetValue;
 
   return v9;
 }
 
-+ (BOOL)_shouldIgnoreActions:(id)a3 withCharacteristicType:(id)a4 execution:(id)a5
++ (BOOL)_shouldIgnoreActions:(id)actions withCharacteristicType:(id)type execution:(id)execution
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 na_map:&__block_literal_global_287_0];
+  typeCopy = type;
+  executionCopy = execution;
+  v9 = [actions na_map:&__block_literal_global_287_0];
   if ([v9 count])
   {
-    v10 = [v8 allInvolvedObjects];
+    allInvolvedObjects = [executionCopy allInvolvedObjects];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __90__HFActionNaturalLanguageUtilities__shouldIgnoreActions_withCharacteristicType_execution___block_invoke_2;
     v18 = &unk_277DFD4A0;
-    v19 = v7;
+    v19 = typeCopy;
     v11 = v9;
     v20 = v11;
-    v12 = [v10 na_all:&v15] ^ 1;
+    v12 = [allInvolvedObjects na_all:&v15] ^ 1;
 
     v13 = [v11 count];
   }
@@ -1942,18 +1942,18 @@ uint64_t __90__HFActionNaturalLanguageUtilities__shouldIgnoreActions_withCharact
   return v5;
 }
 
-+ (id)_relativePercentValueInActions:(id)a3 characteristics:(id)a4 characteristicType:(id)a5
++ (id)_relativePercentValueInActions:(id)actions characteristics:(id)characteristics characteristicType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _actionValue:a3 forCharacteristicType:v8];
+  typeCopy = type;
+  characteristicsCopy = characteristics;
+  v10 = [self _actionValue:actions forCharacteristicType:typeCopy];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__HFActionNaturalLanguageUtilities__relativePercentValueInActions_characteristics_characteristicType___block_invoke;
   v15[3] = &unk_277DF6218;
-  v11 = v8;
+  v11 = typeCopy;
   v16 = v11;
-  v12 = [v9 na_firstObjectPassingTest:v15];
+  v12 = [characteristicsCopy na_firstObjectPassingTest:v15];
 
   if (v10)
   {
@@ -1976,22 +1976,22 @@ uint64_t __102__HFActionNaturalLanguageUtilities__relativePercentValueInActions_
   return v4;
 }
 
-+ (id)_actionValue:(id)a3 forCharacteristicType:(id)a4
++ (id)_actionValue:(id)value forCharacteristicType:(id)type
 {
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [value objectForKeyedSubscript:type];
   objc_opt_class();
   v5 = [v4 count];
   if (v5 == 1)
   {
-    v6 = [v4 anyObject];
+    anyObject = [v4 anyObject];
   }
 
   else
   {
-    v6 = 0;
+    anyObject = 0;
   }
 
-  v7 = v6;
+  v7 = anyObject;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -2011,11 +2011,11 @@ uint64_t __102__HFActionNaturalLanguageUtilities__relativePercentValueInActions_
   return v8;
 }
 
-+ (BOOL)actionTypesMissingDescriptionShouldCauseFailure:(id)a3
++ (BOOL)actionTypesMissingDescriptionShouldCauseFailure:(id)failure
 {
-  v4 = a3;
-  v5 = [a1 _characteristicTypesFailingMismatch];
-  v6 = [v5 intersectsSet:v4];
+  failureCopy = failure;
+  _characteristicTypesFailingMismatch = [self _characteristicTypesFailingMismatch];
+  v6 = [_characteristicTypesFailingMismatch intersectsSet:failureCopy];
 
   return v6;
 }

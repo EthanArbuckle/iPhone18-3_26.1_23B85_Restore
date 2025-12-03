@@ -1,21 +1,21 @@
 @interface CATLocalizationHelper
-+ (id)helperForBundle:(id)a3;
-- (CATLocalizationHelper)initWithBundle:(id)a3;
++ (id)helperForBundle:(id)bundle;
+- (CATLocalizationHelper)initWithBundle:(id)bundle;
 - (NSBundle)bundle;
-- (id)stringByKeyForTableName:(id)a3;
-- (id)stringsForKey:(id)a3 value:(id)a4 table:(id)a5;
+- (id)stringByKeyForTableName:(id)name;
+- (id)stringsForKey:(id)key value:(id)value table:(id)table;
 @end
 
 @implementation CATLocalizationHelper
 
-+ (id)helperForBundle:(id)a3
++ (id)helperForBundle:(id)bundle
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __41__CATLocalizationHelper_helperForBundle___block_invoke;
   v11 = &__block_descriptor_48_e5_v8__0l;
-  v12 = a1;
+  selfCopy = self;
   v13 = a2;
   if (helperForBundle__onceToken != -1)
   {
@@ -23,11 +23,11 @@
   }
 
   [helperForBundle__lock lock];
-  v6 = [helperForBundle__helperByBundle objectForKey:v5];
+  v6 = [helperForBundle__helperByBundle objectForKey:bundleCopy];
   if (!v6)
   {
-    v6 = [[CATLocalizationHelper alloc] initWithBundle:v5];
-    [helperForBundle__helperByBundle setObject:v6 forKey:v5];
+    v6 = [[CATLocalizationHelper alloc] initWithBundle:bundleCopy];
+    [helperForBundle__helperByBundle setObject:v6 forKey:bundleCopy];
   }
 
   [helperForBundle__lock unlock];
@@ -52,16 +52,16 @@ void __41__CATLocalizationHelper_helperForBundle___block_invoke(uint64_t a1)
   [helperForBundle__lock setName:v8];
 }
 
-- (CATLocalizationHelper)initWithBundle:(id)a3
+- (CATLocalizationHelper)initWithBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v13.receiver = self;
   v13.super_class = CATLocalizationHelper;
   v5 = [(CATLocalizationHelper *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_bundle, v4);
+    objc_storeWeak(&v5->_bundle, bundleCopy);
     v7 = objc_opt_new();
     mLock = v6->mLock;
     v6->mLock = v7;
@@ -77,20 +77,20 @@ void __41__CATLocalizationHelper_helperForBundle___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)stringByKeyForTableName:(id)a3
+- (id)stringByKeyForTableName:(id)name
 {
-  v5 = a3;
-  if (!v5)
+  nameCopy = name;
+  if (!nameCopy)
   {
     [(CATLocalizationHelper *)a2 stringByKeyForTableName:?];
   }
 
   [(NSLock *)self->mLock lock];
-  v6 = [(NSMutableDictionary *)self->mStringByKeyByTableName objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->mStringByKeyByTableName objectForKeyedSubscript:nameCopy];
   if (!v6)
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v7 URLForResource:v5 withExtension:@"strings" subdirectory:@"/" localization:@"en"];
+    v8 = [v7 URLForResource:nameCopy withExtension:@"strings" subdirectory:@"/" localization:@"en"];
     if (v8)
     {
       v9 = v8;
@@ -99,7 +99,7 @@ void __41__CATLocalizationHelper_helperForBundle___block_invoke(uint64_t a1)
     else
     {
       v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v9 = [v10 URLForResource:v5 withExtension:@"strings" subdirectory:@"/" localization:@"English"];
+      v9 = [v10 URLForResource:nameCopy withExtension:@"strings" subdirectory:@"/" localization:@"English"];
 
       if (!v9)
       {
@@ -115,7 +115,7 @@ LABEL_15:
           v15 = MEMORY[0x277CBEC10];
         }
 
-        [(NSMutableDictionary *)self->mStringByKeyByTableName setObject:v15 forKeyedSubscript:v5];
+        [(NSMutableDictionary *)self->mStringByKeyByTableName setObject:v15 forKeyedSubscript:nameCopy];
 
         goto LABEL_19;
       }
@@ -149,20 +149,20 @@ LABEL_19:
   return v6;
 }
 
-- (id)stringsForKey:(id)a3 value:(id)a4 table:(id)a5
+- (id)stringsForKey:(id)key value:(id)value table:(id)table
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  keyCopy = key;
+  valueCopy = value;
+  tableCopy = table;
+  if (!keyCopy)
   {
     [CATLocalizationHelper stringsForKey:a2 value:self table:?];
   }
 
-  if (v11)
+  if (tableCopy)
   {
-    v12 = v11;
+    v12 = tableCopy;
   }
 
   else
@@ -172,18 +172,18 @@ LABEL_19:
 
   v13 = [(CATLocalizationHelper *)self stringByKeyForTableName:v12];
   WeakRetained = objc_loadWeakRetained(&self->_bundle);
-  v15 = [WeakRetained localizedStringForKey:v9 value:v10 table:v11];
+  v15 = [WeakRetained localizedStringForKey:keyCopy value:valueCopy table:tableCopy];
 
-  v16 = [v13 objectForKey:v9];
+  v16 = [v13 objectForKey:keyCopy];
   v17 = v16;
-  if (v10)
+  if (valueCopy)
   {
-    v18 = v10;
+    v18 = valueCopy;
   }
 
   else
   {
-    v18 = v9;
+    v18 = keyCopy;
   }
 
   if (v16)

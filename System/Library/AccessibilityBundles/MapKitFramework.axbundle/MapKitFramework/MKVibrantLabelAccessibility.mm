@@ -1,15 +1,15 @@
 @interface MKVibrantLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation MKVibrantLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKVibrantLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKVibrantLabel" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKVibrantLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKVibrantLabel" hasInstanceMethod:@"attributedText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -20,15 +20,15 @@
 
   if (v4 && [v4 length])
   {
-    v5 = [v4 string];
+    string = [v4 string];
   }
 
   else
   {
-    v5 = [(MKVibrantLabelAccessibility *)self safeStringForKey:@"text"];
+    string = [(MKVibrantLabelAccessibility *)self safeStringForKey:@"text"];
   }
 
-  v6 = v5;
+  v6 = string;
 
   return v6;
 }

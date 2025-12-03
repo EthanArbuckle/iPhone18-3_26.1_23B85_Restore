@@ -1,5 +1,5 @@
 @interface MPAVItem
-+ (id)URLFromPath:(id)a3;
++ (id)URLFromPath:(id)path;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_playerItemDurationIfAvailable;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)forwardPlaybackEndTime;
@@ -15,10 +15,10 @@
 - (BOOL)supportsRewind;
 - (CGSize)naturalSize;
 - (CGSize)presentationSize;
-- (MPAVItem)initWithAsset:(id)a3;
-- (MPAVItem)initWithPlayerItem:(id)a3;
-- (MPAVItem)initWithURL:(id)a3;
-- (MPAVItem)initWithURL:(id)a3 options:(id)a4;
+- (MPAVItem)initWithAsset:(id)asset;
+- (MPAVItem)initWithPlayerItem:(id)item;
+- (MPAVItem)initWithURL:(id)l;
+- (MPAVItem)initWithURL:(id)l options:(id)options;
 - (MPAVItemObserver)observer;
 - (MPNowPlayingContentItem)contentItem;
 - (MPQueueFeeder)feeder;
@@ -31,65 +31,65 @@
 - (NSString)storeItemID;
 - (OpaqueCMTimebase)timebase;
 - (double)_durationFromExternalMetadataIfAvailable;
-- (double)_expectedStartTimeWithPlaybackInfo:(id)a3;
-- (double)_expectedStopTimeWithPlaybackInfo:(id)a3;
-- (double)_playableDurationForLoadedTimeRanges:(id)a3;
+- (double)_expectedStartTimeWithPlaybackInfo:(id)info;
+- (double)_expectedStopTimeWithPlaybackInfo:(id)info;
+- (double)_playableDurationForLoadedTimeRanges:(id)ranges;
 - (double)durationIfAvailable;
 - (double)durationInSeconds;
 - (double)timeOfSeekableEnd;
 - (double)timeOfSeekableStart;
 - (id)_contentItemDeviceSpecificUserInfo;
 - (id)_contentItemUserInfo;
-- (id)_imageChapterTrackIDsForAsset:(id)a3;
-- (id)_initialPlaybackStartTimeForPlaybackInfo:(id)a3;
+- (id)_imageChapterTrackIDsForAsset:(id)asset;
+- (id)_initialPlaybackStartTimeForPlaybackInfo:(id)info;
 - (id)_seekableTimeRanges;
 - (id)artworkCatalogBlock;
-- (id)artworkCatalogForPlaybackTime:(double)a3;
+- (id)artworkCatalogForPlaybackTime:(double)time;
 - (id)description;
 - (id)path;
 - (id)url;
 - (int64_t)likedState;
-- (void)_addObservationsForAVPlayerItem:(id)a3;
+- (void)_addObservationsForAVPlayerItem:(id)item;
 - (void)_clearAssetNow;
 - (void)_copyPlayerItem;
-- (void)_internalLikedStateDidChangeNotification:(id)a3;
-- (void)_itemAttributeAvailableKey:(id)a3;
+- (void)_internalLikedStateDidChangeNotification:(id)notification;
+- (void)_itemAttributeAvailableKey:(id)key;
 - (void)_likedStateDidChange;
-- (void)_loadAssetAndPlayerItemWithTask:(id)a3 completion:(id)a4;
+- (void)_loadAssetAndPlayerItemWithTask:(id)task completion:(id)completion;
 - (void)_loadAssetProperties;
-- (void)_performContentItemUpdate:(id)a3 debounceWithIdentifier:(id)a4;
-- (void)_pickupContentItemFrom:(id)a3;
-- (void)_removeObservationsForAVPlayerItem:(id)a3;
-- (void)_setCurrentPlaybackRate:(float)a3;
+- (void)_performContentItemUpdate:(id)update debounceWithIdentifier:(id)identifier;
+- (void)_pickupContentItemFrom:(id)from;
+- (void)_removeObservationsForAVPlayerItem:(id)item;
+- (void)_setCurrentPlaybackRate:(float)rate;
 - (void)_setNeedsPersistedLikedStateUpdate;
-- (void)_updateContentItemIncludingPlaybackState:(BOOL)a3;
-- (void)_updateDurationSnapshotWithElapsedTime:(double)a3 playbackRate:(float)a4;
+- (void)_updateContentItemIncludingPlaybackState:(BOOL)state;
+- (void)_updateDurationSnapshotWithElapsedTime:(double)time playbackRate:(float)rate;
 - (void)_updateHasFinishedDownloading;
 - (void)_updateSoundCheckVolumeNormalizationForPlayerItem;
-- (void)addAdjunctError:(id)a3;
+- (void)addAdjunctError:(id)error;
 - (void)clearAdjunctErrors;
 - (void)dealloc;
 - (void)invalidateContentItemAudioFormatInfo;
 - (void)invalidateContentItemDeviceSpecificUserInfo;
 - (void)invalidateContentItemUserInfo;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)prepareForRate:(float)a3 completionHandler:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)prepareForRate:(float)rate completionHandler:(id)handler;
 - (void)reevaluateHasProtectedContent;
 - (void)reevaluateType;
-- (void)replacePlayerItemWithPlayerItem:(id)a3;
-- (void)resolvePlaybackError:(id)a3 withCompletion:(id)a4;
-- (void)setAutoPlayItem:(BOOL)a3;
-- (void)setContentItemID:(id)a3 queueSectionID:(id)a4 queueItemID:(id)a5;
-- (void)setExplicitBadge:(id)a3;
-- (void)setExplicitContentState:(int64_t)a3;
-- (void)setFeeder:(id)a3;
-- (void)setLastChangeDirection:(int64_t)a3;
-- (void)setLastPlayPerformanceTime:(double)a3;
-- (void)setLikedState:(int64_t)a3 forUserIdentity:(id)a4;
-- (void)setPlayerItem:(id)a3;
-- (void)setSharedListeningItem:(BOOL)a3;
-- (void)setSoundCheckVolumeNormalization:(float)a3;
-- (void)setupEQPresetWithDefaultPreset:(int64_t)a3;
+- (void)replacePlayerItemWithPlayerItem:(id)item;
+- (void)resolvePlaybackError:(id)error withCompletion:(id)completion;
+- (void)setAutoPlayItem:(BOOL)item;
+- (void)setContentItemID:(id)d queueSectionID:(id)iD queueItemID:(id)itemID;
+- (void)setExplicitBadge:(id)badge;
+- (void)setExplicitContentState:(int64_t)state;
+- (void)setFeeder:(id)feeder;
+- (void)setLastChangeDirection:(int64_t)direction;
+- (void)setLastPlayPerformanceTime:(double)time;
+- (void)setLikedState:(int64_t)state forUserIdentity:(id)identity;
+- (void)setPlayerItem:(id)item;
+- (void)setSharedListeningItem:(BOOL)item;
+- (void)setSoundCheckVolumeNormalization:(float)normalization;
+- (void)setupEQPresetWithDefaultPreset:(int64_t)preset;
 - (void)setupWithPlaybackInfo;
 @end
 
@@ -99,8 +99,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MPAVItem *)self contentItemID];
-  v6 = [v3 stringWithFormat:@"<%@: %p> (%@)", v4, self, v5];
+  contentItemID = [(MPAVItem *)self contentItemID];
+  v6 = [v3 stringWithFormat:@"<%@: %p> (%@)", v4, self, contentItemID];
 
   return v6;
 }
@@ -119,20 +119,20 @@
     return 1;
   }
 
-  v3 = [(MPAVItem *)self playerItem];
-  v4 = [v3 canPlayFastReverse];
+  playerItem = [(MPAVItem *)self playerItem];
+  canPlayFastReverse = [playerItem canPlayFastReverse];
 
-  return v4;
+  return canPlayFastReverse;
 }
 
 - (BOOL)supportsFastForward
 {
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [v3 canPlayFastForward];
+    playerItem = [(MPAVItem *)self playerItem];
+    canPlayFastForward = [playerItem canPlayFastForward];
 
-    return v4;
+    return canPlayFastForward;
   }
 
   else
@@ -156,13 +156,13 @@
 
 - (id)artworkCatalogBlock
 {
-  v2 = [(MPAVItem *)self mediaItem];
+  mediaItem = [(MPAVItem *)self mediaItem];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke;
   aBlock[3] = &unk_1E76753F8;
-  v7 = v2;
-  v3 = v2;
+  v7 = mediaItem;
+  v3 = mediaItem;
   v4 = _Block_copy(aBlock);
 
   return v4;
@@ -181,13 +181,13 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
   return v7;
 }
 
-- (id)artworkCatalogForPlaybackTime:(double)a3
+- (id)artworkCatalogForPlaybackTime:(double)time
 {
-  v4 = [(MPAVItem *)self artworkCatalogBlock];
-  v5 = v4;
-  if (v4)
+  artworkCatalogBlock = [(MPAVItem *)self artworkCatalogBlock];
+  v5 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v6 = (*(v4 + 16))(v4, a3);
+    v6 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, time);
   }
 
   else
@@ -214,25 +214,25 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addAdjunctError:(id)a3
+- (void)addAdjunctError:(id)error
 {
-  v9 = a3;
-  if (!v9)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:2010 description:@"Error must be nonnil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:2010 description:@"Error must be nonnil"];
   }
 
   os_unfair_lock_lock(&self->_lock);
   adjunctErrors = self->_adjunctErrors;
   if (adjunctErrors)
   {
-    [(NSMutableArray *)adjunctErrors addObject:v9];
+    [(NSMutableArray *)adjunctErrors addObject:errorCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
+    v6 = [MEMORY[0x1E695DF70] arrayWithObject:errorCopy];
     v7 = self->_adjunctErrors;
     self->_adjunctErrors = v6;
   }
@@ -249,9 +249,9 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)setLastPlayPerformanceTime:(double)a3
+- (void)setLastPlayPerformanceTime:(double)time
 {
-  self->_lastPlayPerformanceTime = a3;
+  self->_lastPlayPerformanceTime = time;
   if (MSVDeviceOSIsInternalInstall())
   {
 
@@ -264,10 +264,10 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
   v28 = *MEMORY[0x1E69E9840];
   if (!self->_hasFinishedDownloading && [(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [v3 asset];
+    playerItem = [(MPAVItem *)self playerItem];
+    asset = [playerItem asset];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 URL], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isFileURL"), v5, v6))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([asset URL], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isFileURL"), v5, v6))
     {
       self->_hasFinishedDownloading = 1;
     }
@@ -275,17 +275,17 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
     else
     {
       memset(&v24, 0, sizeof(v24));
-      if (v3)
+      if (playerItem)
       {
-        [v3 duration];
+        [playerItem duration];
         if ((v24.flags & 0x1D) == 1)
         {
-          v7 = [v3 loadedTimeRanges];
+          loadedTimeRanges = [playerItem loadedTimeRanges];
           v20 = 0u;
           v21 = 0u;
           v22 = 0u;
           v23 = 0u;
-          v8 = [v7 countByEnumeratingWithState:&v20 objects:v27 count:16];
+          v8 = [loadedTimeRanges countByEnumeratingWithState:&v20 objects:v27 count:16];
           if (v8)
           {
             v9 = v8;
@@ -297,7 +297,7 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
               {
                 if (*v21 != v10)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(loadedTimeRanges);
                 }
 
                 v13 = *(*(&v20 + 1) + 8 * i);
@@ -316,7 +316,7 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
                 v11 = v11 + CMTimeGetSeconds(&time);
               }
 
-              v9 = [v7 countByEnumeratingWithState:&v20 objects:v27 count:16];
+              v9 = [loadedTimeRanges countByEnumeratingWithState:&v20 objects:v27 count:16];
             }
 
             while (v9);
@@ -371,19 +371,19 @@ id __49__MPAVItem_MPArtworkCatalog__artworkCatalogBlock__block_invoke(uint64_t a
       }
     }
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 postNotificationName:@"MPAVItemHasFinishedDownloadingDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVItemHasFinishedDownloadingDidChangeNotification" object:self];
 
 LABEL_31:
   }
 }
 
-- (void)resolvePlaybackError:(id)a3 withCompletion:(id)a4
+- (void)resolvePlaybackError:(id)error withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPAVItem *)self feeder];
-  v9 = [v8 errorResolverForItem:self];
+  errorCopy = error;
+  completionCopy = completion;
+  feeder = [(MPAVItem *)self feeder];
+  v9 = [feeder errorResolverForItem:self];
   if (v9)
   {
     v10 = [[MPAVErrorResolverBlockHandler alloc] initWithErrorResolver:v9];
@@ -391,14 +391,14 @@ LABEL_31:
     v11[1] = 3221225472;
     v11[2] = __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke;
     v11[3] = &unk_1E7681D70;
-    v12 = v7;
+    v12 = completionCopy;
     [(MPAVErrorResolverBlockHandler *)v10 setResolutionHandler:v11];
-    [(MPAVErrorResolverBlockHandler *)v10 resolveError:v6];
+    [(MPAVErrorResolverBlockHandler *)v10 resolveError:errorCopy];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -423,23 +423,23 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
   return result;
 }
 
-- (void)replacePlayerItemWithPlayerItem:(id)a3
+- (void)replacePlayerItemWithPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"MPAVItemPlayerItemWillChangeNotification" object:self];
+  itemCopy = item;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVItemPlayerItemWillChangeNotification" object:self];
 
   assetQueue = self->_assetQueue;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __44__MPAVItem_replacePlayerItemWithPlayerItem___block_invoke;
   v12 = &unk_1E76823C0;
-  v13 = self;
-  v14 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v14 = itemCopy;
+  v7 = itemCopy;
   dispatch_sync(assetQueue, &v9);
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 postNotificationName:@"MPAVItemPlayerItemDidChangeNotification" object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"MPAVItemPlayerItemDidChangeNotification" object:self];
 
   [(MPAVItem *)self _updateSoundCheckVolumeNormalizationForPlayerItem];
   [(MPAVItem *)self updatePlayerItemMetadata];
@@ -448,18 +448,18 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
 - (void)reevaluateType
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVItem *)self asset];
-  v4 = [(MPAVItem *)self _imageChapterTrackIDsForAsset:v3];
+  asset = [(MPAVItem *)self asset];
+  v4 = [(MPAVItem *)self _imageChapterTrackIDsForAsset:asset];
 
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v5 = [(MPAVItem *)self playerItem];
-    v6 = [v5 hasVideo];
+    playerItem = [(MPAVItem *)self playerItem];
+    hasVideo = [playerItem hasVideo];
 
-    if (v6)
+    if (hasVideo)
     {
-      v7 = os_log_create("com.apple.amp.mediaplayer", "Playback");
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      tracks = os_log_create("com.apple.amp.mediaplayer", "Playback");
+      if (os_log_type_enabled(tracks, OS_LOG_TYPE_DEFAULT))
       {
         type = self->_type;
         if (type >= 3)
@@ -476,7 +476,7 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
         v39 = v9;
         v40 = 2114;
         v41 = @"Video";
-        _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "Updating item type [hasVideo]: %{public}@ -> %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_1A238D000, tracks, OS_LOG_TYPE_DEFAULT, "Updating item type [hasVideo]: %{public}@ -> %{public}@", buf, 0x16u);
       }
 
       v10 = 2;
@@ -488,10 +488,10 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v11 = [(MPAVItem *)self playerItem];
-      v7 = [v11 tracks];
+      playerItem2 = [(MPAVItem *)self playerItem];
+      tracks = [playerItem2 tracks];
 
-      v12 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v12 = [tracks countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v12)
       {
         v13 = v12;
@@ -508,21 +508,21 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
           {
             if (*v34 != v14)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(tracks);
             }
 
             v16 = *(*(&v33 + 1) + 8 * i);
-            v17 = [v16 assetTrack];
+            assetTrack = [v16 assetTrack];
             if ([v16 isEnabled])
             {
-              v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v17, "trackID")}];
+              v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(assetTrack, "trackID")}];
               v19 = [v4 containsObject:v18];
 
               if ((v19 & 1) == 0)
               {
                 v20 = v4;
-                v21 = [v17 mediaType];
-                if ([v21 isEqualToString:v32])
+                mediaType = [assetTrack mediaType];
+                if ([mediaType isEqualToString:v32])
                 {
                   if (v10 <= 0)
                   {
@@ -551,7 +551,7 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
                   v10 = 1;
                 }
 
-                else if (([v21 isEqualToString:v31] & 1) != 0 || (objc_msgSend(v21, "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(v21, "isEqualToString:", v29) & 1) != 0 || objc_msgSend(v21, "isEqualToString:", v28))
+                else if (([mediaType isEqualToString:v31] & 1) != 0 || (objc_msgSend(mediaType, "isEqualToString:", v30) & 1) != 0 || (objc_msgSend(mediaType, "isEqualToString:", v29) & 1) != 0 || objc_msgSend(mediaType, "isEqualToString:", v28))
                 {
                   v25 = os_log_create("com.apple.amp.mediaplayer", "Playback");
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -584,7 +584,7 @@ uint64_t __48__MPAVItem_resolvePlaybackError_withCompletion___block_invoke(uint6
             }
           }
 
-          v13 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          v13 = [tracks countByEnumeratingWithState:&v33 objects:v37 count:16];
           if (v13)
           {
             continue;
@@ -617,10 +617,10 @@ LABEL_42:
 {
   if (!self->_hasLoadedHasProtectedContent && [(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [v3 status];
+    playerItem = [(MPAVItem *)self playerItem];
+    status = [playerItem status];
 
-    if (v4 == 1)
+    if (status == 1)
     {
       self->_hasLoadedHasProtectedContent = 1;
       self->_hasProtectedContent = [(AVAsset *)self->_asset hasProtectedContent];
@@ -683,29 +683,29 @@ void __41__MPAVItem_invalidateContentItemUserInfo__block_invoke(uint64_t a1, voi
   [v3 setUserInfo:v4];
 }
 
-- (void)setExplicitContentState:(int64_t)a3
+- (void)setExplicitContentState:(int64_t)state
 {
-  if (self->_explicitContentState != a3)
+  if (self->_explicitContentState != state)
   {
-    self->_explicitContentState = a3;
+    self->_explicitContentState = state;
     [(MPAVItem *)self invalidateContentItemUserInfo];
   }
 }
 
-- (void)setSharedListeningItem:(BOOL)a3
+- (void)setSharedListeningItem:(BOOL)item
 {
-  if (self->_sharedListeningItem != a3)
+  if (self->_sharedListeningItem != item)
   {
-    self->_sharedListeningItem = a3;
+    self->_sharedListeningItem = item;
     [(MPAVItem *)self invalidateContentItemUserInfo];
   }
 }
 
-- (void)setAutoPlayItem:(BOOL)a3
+- (void)setAutoPlayItem:(BOOL)item
 {
-  if (self->_autoPlayItem != a3)
+  if (self->_autoPlayItem != item)
   {
-    self->_autoPlayItem = a3;
+    self->_autoPlayItem = item;
     [(MPAVItem *)self invalidateContentItemUserInfo];
   }
 }
@@ -716,28 +716,28 @@ void __41__MPAVItem_invalidateContentItemUserInfo__block_invoke(uint64_t a1, voi
   self->_likedState = 0;
   if (likedState)
   {
-    v4 = [(MPAVItem *)self likedState];
-    if (likedState != v4)
+    likedState = [(MPAVItem *)self likedState];
+    if (likedState != likedState)
     {
-      self->_likedState = v4;
+      self->_likedState = likedState;
 
       [(MPAVItem *)self _likedStateDidChange];
     }
   }
 }
 
-- (void)_setCurrentPlaybackRate:(float)a3
+- (void)_setCurrentPlaybackRate:(float)rate
 {
-  if (vabds_f32(self->_currentPlaybackRate, a3) > 0.00000011921)
+  if (vabds_f32(self->_currentPlaybackRate, rate) > 0.00000011921)
   {
-    self->_currentPlaybackRate = a3;
+    self->_currentPlaybackRate = rate;
     [(MPAVItem *)self _currentPlaybackRateDidChange:?];
   }
 }
 
-- (double)_expectedStopTimeWithPlaybackInfo:(id)a3
+- (double)_expectedStopTimeWithPlaybackInfo:(id)info
 {
-  v4 = [a3 objectForKey:@"MPAVItemPlaybackProperties_EndTime"];
+  v4 = [info objectForKey:@"MPAVItemPlaybackProperties_EndTime"];
   v5 = v4;
   if (v4)
   {
@@ -765,9 +765,9 @@ void __41__MPAVItem_invalidateContentItemUserInfo__block_invoke(uint64_t a1, voi
   return v7;
 }
 
-- (double)_expectedStartTimeWithPlaybackInfo:(id)a3
+- (double)_expectedStartTimeWithPlaybackInfo:(id)info
 {
-  v3 = [a3 objectForKey:@"MPAVItemPlaybackProperties_StartTime"];
+  v3 = [info objectForKey:@"MPAVItemPlaybackProperties_StartTime"];
   v4 = v3;
   if (v3)
   {
@@ -783,15 +783,15 @@ void __41__MPAVItem_invalidateContentItemUserInfo__block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)_updateDurationSnapshotWithElapsedTime:(double)a3 playbackRate:(float)a4
+- (void)_updateDurationSnapshotWithElapsedTime:(double)time playbackRate:(float)rate
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_invoke;
   v4[3] = &unk_1E767FEC0;
   v4[4] = self;
-  *&v4[5] = a3;
-  v5 = a4;
+  *&v4[5] = time;
+  rateCopy = rate;
   [(MPAVItem *)self _performContentItemUpdate:v4 debounceWithIdentifier:@"durationSnapshot"];
 }
 
@@ -831,36 +831,36 @@ void __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_
   v52 = *MEMORY[0x1E69E9840];
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [(MPAVItem *)self playbackInfo];
-    v5 = [(MPAVItem *)self initialPlaybackStartTimeOverride];
-    v6 = v5;
-    if (v5)
+    playerItem = [(MPAVItem *)self playerItem];
+    playbackInfo = [(MPAVItem *)self playbackInfo];
+    initialPlaybackStartTimeOverride = [(MPAVItem *)self initialPlaybackStartTimeOverride];
+    v6 = initialPlaybackStartTimeOverride;
+    if (initialPlaybackStartTimeOverride)
     {
-      [v5 doubleValue];
+      [initialPlaybackStartTimeOverride doubleValue];
       v8 = v7;
     }
 
     else
     {
-      v9 = [(MPAVItem *)self _initialPlaybackStartTimeForPlaybackInfo:v4];
+      v9 = [(MPAVItem *)self _initialPlaybackStartTimeForPlaybackInfo:playbackInfo];
       [v9 doubleValue];
       v8 = v10;
     }
 
     memset(&v49, 0, sizeof(v49));
-    if (!v3 || ([v3 currentTime], (v49.flags & 0x1D) != 1) || (buf = v49, vabdd_f64(CMTimeGetSeconds(&buf), v8) >= 0.01))
+    if (!playerItem || ([playerItem currentTime], (v49.flags & 0x1D) != 1) || (buf = v49, vabdd_f64(CMTimeGetSeconds(&buf), v8) >= 0.01))
     {
       v11 = os_log_create("com.apple.amp.mediaplayer", "Playback");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(MPAVItem *)self initialPlaybackStartTimeOverride];
+        initialPlaybackStartTimeOverride2 = [(MPAVItem *)self initialPlaybackStartTimeOverride];
         LODWORD(buf.value) = 138543874;
         *(&buf.value + 4) = self;
         LOWORD(buf.flags) = 2048;
         *(&buf.flags + 2) = v8;
         HIWORD(buf.epoch) = 1024;
-        v51 = v12 != 0;
+        v51 = initialPlaybackStartTimeOverride2 != 0;
         _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Seeking to start time: %f [override: %{BOOL}u]", &buf, 0x1Cu);
       }
 
@@ -869,10 +869,10 @@ void __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_
       v48 = *(MEMORY[0x1E6960CC0] + 16);
       v45 = v47;
       v46 = v48;
-      [v3 seekToTime:&buf toleranceBefore:&v47 toleranceAfter:&v45 completionHandler:0];
+      [playerItem seekToTime:&buf toleranceBefore:&v47 toleranceAfter:&v45 completionHandler:0];
     }
 
-    v13 = [v4 objectForKey:@"MPAVItemPlaybackProperties_EndTime"];
+    v13 = [playbackInfo objectForKey:@"MPAVItemPlaybackProperties_EndTime"];
     v14 = v13;
     if (v13)
     {
@@ -890,10 +890,10 @@ void __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_
 
       CMTimeMakeWithSeconds(&v44, v16, 10000);
       buf = v44;
-      [v3 setForwardPlaybackEndTime:&buf];
+      [playerItem setForwardPlaybackEndTime:&buf];
     }
 
-    v18 = [v4 objectForKey:@"MPAVItemPlaybackProperties_AudibleDRMGroupID"];
+    v18 = [playbackInfo objectForKey:@"MPAVItemPlaybackProperties_AudibleDRMGroupID"];
 
     if (v18)
     {
@@ -908,17 +908,17 @@ void __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_
       }
 
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObject:v18 forKey:@"AudibleDRMInfoGroupID"];
-      [v3 _setAudibleDRMInfo:v20];
+      [playerItem _setAudibleDRMInfo:v20];
     }
 
-    v21 = [v4 objectForKey:@"AVItemPlaybackProperties_RampInDuration"];
+    v21 = [playbackInfo objectForKey:@"AVItemPlaybackProperties_RampInDuration"];
 
     if (v21)
     {
       v22 = v21;
     }
 
-    v23 = [v4 objectForKey:@"MPAVItemPlaybackProperties_RampInDuration"];
+    v23 = [playbackInfo objectForKey:@"MPAVItemPlaybackProperties_RampInDuration"];
 
     if (v23)
     {
@@ -927,14 +927,14 @@ void __64__MPAVItem__updateDurationSnapshotWithElapsedTime_playbackRate___block_
       v21 = v24;
     }
 
-    v25 = [v4 objectForKey:@"AVItemPlaybackProperties_RampOutDuration"];
+    v25 = [playbackInfo objectForKey:@"AVItemPlaybackProperties_RampOutDuration"];
 
     if (v25)
     {
       v26 = v25;
     }
 
-    v27 = [v4 objectForKey:@"MPAVItemPlaybackProperties_RampOutDuration"];
+    v27 = [playbackInfo objectForKey:@"MPAVItemPlaybackProperties_RampOutDuration"];
 
     if (v27)
     {
@@ -956,18 +956,18 @@ LABEL_37:
         if ((*(self + 108) & 4) == 0)
         {
           objc_initWeak(&buf, self);
-          v34 = [(MPAVItem *)self asset];
-          v35 = [v4 objectForKey:@"MPAVItemPlaybackProperties_LookForLyrics"];
-          v36 = [v35 BOOLValue];
+          asset = [(MPAVItem *)self asset];
+          v35 = [playbackInfo objectForKey:@"MPAVItemPlaybackProperties_LookForLyrics"];
+          bOOLValue = [v35 BOOLValue];
 
-          if (v36)
+          if (bOOLValue)
           {
             v41[0] = MEMORY[0x1E69E9820];
             v41[1] = 3221225472;
             v41[2] = __33__MPAVItem_setupWithPlaybackInfo__block_invoke;
             v41[3] = &unk_1E767FE98;
             objc_copyWeak(&v43, &buf);
-            v42 = v34;
+            v42 = asset;
             [v42 loadValuesAsynchronouslyForKeys:&unk_1F150AC00 completionHandler:v41];
 
             objc_destroyWeak(&v43);
@@ -978,7 +978,7 @@ LABEL_37:
           v38[2] = __33__MPAVItem_setupWithPlaybackInfo__block_invoke_3;
           v38[3] = &unk_1E767FE98;
           objc_copyWeak(&v40, &buf);
-          v37 = v34;
+          v37 = asset;
           v39 = v37;
           [v37 loadValuesAsynchronouslyForKeys:&unk_1F150AC18 completionHandler:v38];
           *(self + 108) |= 4u;
@@ -991,11 +991,11 @@ LABEL_37:
       }
     }
 
-    v31 = [MEMORY[0x1E695DF90] dictionary];
-    v32 = v31;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v32 = dictionary;
     if (v29)
     {
-      [v31 setObject:v21 forKey:@"RampInOutInfoInDuration"];
+      [dictionary setObject:v21 forKey:@"RampInOutInfoInDuration"];
     }
 
     if (v30)
@@ -1013,16 +1013,16 @@ LABEL_37:
       _os_log_impl(&dword_1A238D000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting ramp in/out info: %{public}@", &buf, 0x16u);
     }
 
-    [v3 _setRampInOutInfo:v32];
+    [playerItem _setRampInOutInfo:v32];
     goto LABEL_37;
   }
 
-  v3 = os_log_create("com.apple.amp.mediaplayer", "Playback");
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+  playerItem = os_log_create("com.apple.amp.mediaplayer", "Playback");
+  if (os_log_type_enabled(playerItem, OS_LOG_TYPE_FAULT))
   {
     LODWORD(buf.value) = 138543362;
     *(&buf.value + 4) = self;
-    _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_FAULT, "%{public}@: setupPlaybackInfo called without an asset loaded", &buf, 0xCu);
+    _os_log_impl(&dword_1A238D000, playerItem, OS_LOG_TYPE_FAULT, "%{public}@: setupPlaybackInfo called without an asset loaded", &buf, 0xCu);
   }
 
 LABEL_42:
@@ -1064,36 +1064,36 @@ void __33__MPAVItem_setupWithPlaybackInfo__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setupEQPresetWithDefaultPreset:(int64_t)a3
+- (void)setupEQPresetWithDefaultPreset:(int64_t)preset
 {
   v13 = *MEMORY[0x1E69E9840];
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v5 = [(MPAVItem *)self customAVEQPreset];
-    if (!v5)
+    presetCopy = [(MPAVItem *)self customAVEQPreset];
+    if (!presetCopy)
     {
       if ([(MPAVItem *)self allowsEQ])
       {
-        v5 = a3;
+        presetCopy = preset;
       }
 
       else
       {
-        v5 = 0;
+        presetCopy = 0;
       }
     }
 
-    v6 = [(MPAVItem *)self playerItem];
-    [v6 _setEQPreset:v5];
+    playerItem = [(MPAVItem *)self playerItem];
+    [playerItem _setEQPreset:presetCopy];
 
     v7 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(MPAVItem *)self playerItem];
+      playerItem2 = [(MPAVItem *)self playerItem];
       v9 = 138543618;
-      v10 = v8;
+      selfCopy = playerItem2;
       v11 = 1024;
-      v12 = v5;
+      v12 = presetCopy;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "Setting item %{public}@ EQ to %d", &v9, 0x12u);
     }
   }
@@ -1104,7 +1104,7 @@ void __33__MPAVItem_setupWithPlaybackInfo__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_FAULT, "%{public}@: setupEQPresetWithDefaultPreset called without an asset loaded", &v9, 0xCu);
     }
   }
@@ -1112,7 +1112,7 @@ void __33__MPAVItem_setupWithPlaybackInfo__block_invoke_2(uint64_t a1)
 
 - (id)_contentItemDeviceSpecificUserInfo
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v58 = 0;
   v59 = &v58;
   v60 = 0x2020000000;
@@ -1125,124 +1125,124 @@ void __33__MPAVItem_setupWithPlaybackInfo__block_invoke_2(uint64_t a1)
   {
     *(v59 + 24) = 1;
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem persistentID](self, "persistentID")}];
-    [v3 setObject:v4 forKeyedSubscript:@"pid"];
+    [dictionary setObject:v4 forKeyedSubscript:@"pid"];
   }
 
   if ([(MPAVItem *)self cloudID])
   {
     *(v55 + 24) = 1;
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem cloudID](self, "cloudID")}];
-    [v3 setObject:v5 forKeyedSubscript:@"clid"];
+    [dictionary setObject:v5 forKeyedSubscript:@"clid"];
   }
 
-  v6 = [(MPAVItem *)self cloudAlbumID];
-  v7 = [v6 length];
+  cloudAlbumID = [(MPAVItem *)self cloudAlbumID];
+  v7 = [cloudAlbumID length];
 
   if (v7)
   {
     *(v55 + 24) = 1;
-    v8 = [(MPAVItem *)self cloudAlbumID];
-    [v3 setObject:v8 forKeyedSubscript:@"claid"];
+    cloudAlbumID2 = [(MPAVItem *)self cloudAlbumID];
+    [dictionary setObject:cloudAlbumID2 forKeyedSubscript:@"claid"];
   }
 
-  v9 = [(MPAVItem *)self cloudUniversalLibraryID];
-  v10 = [v9 length];
+  cloudUniversalLibraryID = [(MPAVItem *)self cloudUniversalLibraryID];
+  v10 = [cloudUniversalLibraryID length];
 
   if (v10)
   {
-    v11 = [(MPAVItem *)self cloudUniversalLibraryID];
-    [v3 setObject:v11 forKeyedSubscript:@"ulid"];
+    cloudUniversalLibraryID2 = [(MPAVItem *)self cloudUniversalLibraryID];
+    [dictionary setObject:cloudUniversalLibraryID2 forKeyedSubscript:@"ulid"];
   }
 
   if ([(MPAVItem *)self albumPersistentID]!= -1 && [(MPAVItem *)self albumPersistentID])
   {
     *(v59 + 24) = 1;
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem albumPersistentID](self, "albumPersistentID")}];
-    [v3 setObject:v12 forKeyedSubscript:@"apid"];
+    [dictionary setObject:v12 forKeyedSubscript:@"apid"];
   }
 
   if ([(MPAVItem *)self albumArtistPersistentID]!= -1 && [(MPAVItem *)self albumArtistPersistentID])
   {
     *(v59 + 24) = 1;
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem albumArtistPersistentID](self, "albumArtistPersistentID")}];
-    [v3 setObject:v13 forKeyedSubscript:@"aarpid"];
+    [dictionary setObject:v13 forKeyedSubscript:@"aarpid"];
   }
 
   if ([(MPAVItem *)self artistPersistentID]!= -1 && [(MPAVItem *)self artistPersistentID])
   {
     *(v59 + 24) = 1;
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem artistPersistentID](self, "artistPersistentID")}];
-    [v3 setObject:v14 forKeyedSubscript:@"arpid"];
+    [dictionary setObject:v14 forKeyedSubscript:@"arpid"];
   }
 
   if ([(MPAVItem *)self genrePersistentID]!= -1 && [(MPAVItem *)self genrePersistentID])
   {
     *(v59 + 24) = 1;
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem genrePersistentID](self, "genrePersistentID")}];
-    [v3 setObject:v15 forKeyedSubscript:@"gpid"];
+    [dictionary setObject:v15 forKeyedSubscript:@"gpid"];
   }
 
   if ([(MPAVItem *)self composerPersistentID]!= -1 && [(MPAVItem *)self composerPersistentID])
   {
     *(v59 + 24) = 1;
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MPAVItem composerPersistentID](self, "composerPersistentID")}];
-    [v3 setObject:v16 forKeyedSubscript:@"cpid"];
+    [dictionary setObject:v16 forKeyedSubscript:@"cpid"];
   }
 
   if ([(MPAVItem *)self storePurchasedAdamID])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[MPAVItem storePurchasedAdamID](self, "storePurchasedAdamID")}];
-    [v3 setObject:v17 forKeyedSubscript:@"purID"];
+    [dictionary setObject:v17 forKeyedSubscript:@"purID"];
   }
 
-  v18 = [(MPAVItem *)self libraryLyrics];
+  libraryLyrics = [(MPAVItem *)self libraryLyrics];
 
-  if (v18)
+  if (libraryLyrics)
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsLibLy"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsLibLy"];
   }
 
-  v19 = [(MPAVItem *)self modelGenericObject];
-  v20 = [v19 type];
+  modelGenericObject = [(MPAVItem *)self modelGenericObject];
+  type = [modelGenericObject type];
 
-  if (v20 == 5)
+  if (type == 5)
   {
-    v21 = [(MPAVItem *)self modelGenericObject];
-    v22 = [v21 identifiers];
-    v23 = [v22 library];
-    v24 = [v23 persistentID];
+    modelGenericObject2 = [(MPAVItem *)self modelGenericObject];
+    identifiers = [modelGenericObject2 identifiers];
+    library = [identifiers library];
+    persistentID = [library persistentID];
 
-    if (v24)
+    if (persistentID)
     {
       *(v59 + 24) = 1;
-      v25 = [MEMORY[0x1E696AD98] numberWithLongLong:v24];
-      [v3 setObject:v25 forKeyedSubscript:@"peid"];
+      v25 = [MEMORY[0x1E696AD98] numberWithLongLong:persistentID];
+      [dictionary setObject:v25 forKeyedSubscript:@"peid"];
     }
   }
 
-  v26 = [(MPAVItem *)self libraryLyrics];
-  v27 = [v26 dataUsingEncoding:4];
+  libraryLyrics2 = [(MPAVItem *)self libraryLyrics];
+  v27 = [libraryLyrics2 dataUsingEncoding:4];
 
   if (v27)
   {
     v28 = MSVGzipCompressData();
-    [v3 setObject:v28 forKeyedSubscript:@"lrcsGzpData"];
+    [dictionary setObject:v28 forKeyedSubscript:@"lrcsGzpData"];
   }
 
-  [v3 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"supART"];
-  v29 = [(MPAVItem *)self modelPlayEvent];
-  v30 = [(MPAVItem *)self modelGenericObject];
-  v31 = [v30 flattenedGenericObject];
-  v32 = [v31 anyObject];
+  [dictionary setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"supART"];
+  modelPlayEvent = [(MPAVItem *)self modelPlayEvent];
+  modelGenericObject3 = [(MPAVItem *)self modelGenericObject];
+  flattenedGenericObject = [modelGenericObject3 flattenedGenericObject];
+  anyObject = [flattenedGenericObject anyObject];
 
-  if ([v29 itemType] == 3)
+  if ([modelPlayEvent itemType] == 3)
   {
     v46 = MEMORY[0x1E69E9820];
     v47 = 3221225472;
     v48 = __46__MPAVItem__contentItemDeviceSpecificUserInfo__block_invoke;
     v49 = &unk_1E767FE70;
-    v50 = v29;
-    v51 = v3;
+    v50 = modelPlayEvent;
+    v51 = dictionary;
     v52 = &v58;
     v53 = &v54;
     [MPModelObject performWithoutEnforcement:&v46];
@@ -1250,94 +1250,94 @@ void __33__MPAVItem_setupWithPlaybackInfo__block_invoke_2(uint64_t a1)
 
   if (*(v59 + 24) == 1)
   {
-    v33 = [(MPAVItem *)self databaseID];
-    [v3 setObject:v33 forKeyedSubscript:@"did"];
+    databaseID = [(MPAVItem *)self databaseID];
+    [dictionary setObject:databaseID forKeyedSubscript:@"did"];
   }
 
   if (*(v55 + 24) == 1)
   {
-    v34 = [(MPAVItem *)self personID];
-    [v3 setObject:v34 forKeyedSubscript:@"prid"];
+    personID = [(MPAVItem *)self personID];
+    [dictionary setObject:personID forKeyedSubscript:@"prid"];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v32 isDisliked])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [anyObject isDisliked])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isDisliked"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isDisliked"];
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v32 isFavorite])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [anyObject isFavorite])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isFav"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"isFav"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    if ([v32 isLibraryAdded])
+    if ([anyObject isLibraryAdded])
     {
-      [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libAdded"];
-      if ([v29 itemType] == 1)
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libAdded"];
+      if ([modelPlayEvent itemType] == 1)
       {
-        [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"colLibAdded"];
+        [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"colLibAdded"];
       }
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v32 isPinned])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [anyObject isPinned])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libPinned"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libPinned"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v35 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v32, "keepLocalEnableState")}];
-    [v3 setObject:v35 forKeyedSubscript:@"klEnable"];
+    v35 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(anyObject, "keepLocalEnableState")}];
+    [dictionary setObject:v35 forKeyedSubscript:@"klEnable"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v36 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v32, "keepLocalManagedStatus")}];
-    [v3 setObject:v36 forKeyedSubscript:@"klStatus"];
+    v36 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(anyObject, "keepLocalManagedStatus")}];
+    [dictionary setObject:v36 forKeyedSubscript:@"klStatus"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v37 = [v32 localFileAsset];
-    if ([v37 isNonPurgeable])
+    localFileAsset = [anyObject localFileAsset];
+    if ([localFileAsset isNonPurgeable])
     {
-      [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"nonPurge"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"nonPurge"];
     }
 
-    v38 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v37, "protectionType", v46, v47, v48, v49)}];
-    [v3 setObject:v38 forKeyedSubscript:@"procType"];
+    v38 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(localFileAsset, "protectionType", v46, v47, v48, v49)}];
+    [dictionary setObject:v38 forKeyedSubscript:@"procType"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v39 = [v32 storeAsset];
-    v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v39, "endpointType")}];
-    [v3 setObject:v40 forKeyedSubscript:@"endpt"];
+    storeAsset = [anyObject storeAsset];
+    v40 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(storeAsset, "endpointType")}];
+    [dictionary setObject:v40 forKeyedSubscript:@"endpt"];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v32 userRating];
+    [anyObject userRating];
     if (v41 > 0.00000011921)
     {
       v42 = [MEMORY[0x1E696AD98] numberWithFloat:?];
-      [v3 setObject:v42 forKeyedSubscript:@"rating"];
+      [dictionary setObject:v42 forKeyedSubscript:@"rating"];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v43 = [v32 playbackPosition];
-    if ([v43 shouldRememberBookmarkTime])
+    playbackPosition = [anyObject playbackPosition];
+    if ([playbackPosition shouldRememberBookmarkTime])
     {
-      [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"rembok"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"rembok"];
     }
   }
 
-  v44 = v3;
+  v44 = dictionary;
 
   _Block_object_dispose(&v54, 8);
   _Block_object_dispose(&v58, 8);
@@ -1386,7 +1386,7 @@ void __46__MPAVItem__contentItemDeviceSpecificUserInfo__block_invoke(uint64_t a1
 
 - (id)_contentItemUserInfo
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -1401,59 +1401,59 @@ void __46__MPAVItem__contentItemDeviceSpecificUserInfo__block_invoke(uint64_t a1
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v4 = [(MPAVItem *)self modelPlayEvent];
-  if ([v4 itemType] == 4)
+  modelPlayEvent = [(MPAVItem *)self modelPlayEvent];
+  if ([modelPlayEvent itemType] == 4)
   {
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __32__MPAVItem__contentItemUserInfo__block_invoke;
     v29[3] = &unk_1E767FE48;
-    v30 = v4;
+    v30 = modelPlayEvent;
     v33 = &v44;
     v34 = &v40;
     v35 = &v36;
-    v31 = v3;
-    v32 = self;
+    v31 = dictionary;
+    selfCopy = self;
     [MPModelObject performWithoutEnforcement:v29];
   }
 
-  if ([v4 itemType] == 3)
+  if ([modelPlayEvent itemType] == 3)
   {
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __32__MPAVItem__contentItemUserInfo__block_invoke_2;
     v26 = &unk_1E76823C0;
-    v27 = v4;
-    v28 = v3;
+    v27 = modelPlayEvent;
+    v28 = dictionary;
     [MPModelObject performWithoutEnforcement:&v23];
   }
 
   if (v41[3])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [v3 setObject:v5 forKeyedSubscript:@"raTy"];
+    [dictionary setObject:v5 forKeyedSubscript:@"raTy"];
   }
 
   if (v37[3])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [v3 setObject:v6 forKeyedSubscript:@"raSty"];
+    [dictionary setObject:v6 forKeyedSubscript:@"raSty"];
   }
 
   v7 = v45[5];
   if (v7)
   {
-    [v3 setObject:v7 forKeyedSubscript:@"raAttrLbl"];
+    [dictionary setObject:v7 forKeyedSubscript:@"raAttrLbl"];
   }
 
   if ([objc_opt_class() isPlaceholder])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"phold"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"phold"];
   }
 
   if ([(MPAVItem *)self _shouldPublishArtworkURL:v23])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"supART"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"supART"];
   }
 
   if ([(MPAVItem *)self isAssetLoaded])
@@ -1461,89 +1461,89 @@ void __46__MPAVItem__contentItemDeviceSpecificUserInfo__block_invoke(uint64_t a1
     v8 = MEMORY[0x1E696AD98];
     [(MPAVItem *)self timeOfSeekableEnd];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"endT"];
+    [dictionary setObject:v9 forKeyedSubscript:@"endT"];
   }
 
   if ([(MPAVItem *)self shouldShowComposer])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shComp"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shComp"];
   }
 
   if ([(MPAVItem *)self hasStoreLyrics])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsStLy"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsStLy"];
   }
 
   if ([(MPAVItem *)self hasTimeSyncedLyrics])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsTSL"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"hsTSL"];
   }
 
-  v10 = [(MPAVItem *)self containerUniqueID];
-  if ([v10 length])
+  containerUniqueID = [(MPAVItem *)self containerUniqueID];
+  if ([containerUniqueID length])
   {
-    [v3 setObject:v10 forKeyedSubscript:@"cntrUID"];
+    [dictionary setObject:containerUniqueID forKeyedSubscript:@"cntrUID"];
   }
 
-  v11 = [(MPAVItem *)self storeFrontIdentifier];
-  if (v11)
+  storeFrontIdentifier = [(MPAVItem *)self storeFrontIdentifier];
+  if (storeFrontIdentifier)
   {
-    [v3 setObject:v11 forKeyedSubscript:@"sfid"];
+    [dictionary setObject:storeFrontIdentifier forKeyedSubscript:@"sfid"];
   }
 
-  v12 = [(MPAVItem *)self modelGenericObject];
-  v13 = [v12 flattenedGenericObject];
-  v14 = [v13 anyObject];
+  modelGenericObject = [(MPAVItem *)self modelGenericObject];
+  flattenedGenericObject = [modelGenericObject flattenedGenericObject];
+  anyObject = [flattenedGenericObject anyObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v14 storeAsset];
-    if ([v15 isRedownloadable])
+    storeAsset = [anyObject storeAsset];
+    if ([storeAsset isRedownloadable])
     {
-      [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"rdwn"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"rdwn"];
     }
 
-    if ([v15 isSubscriptionRequired])
+    if ([storeAsset isSubscriptionRequired])
     {
-      [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"subReq"];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"subReq"];
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v14 isLibraryAddEligible])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [anyObject isLibraryAddEligible])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libEligible"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"libEligible"];
   }
 
-  v16 = [(MPAVItem *)self explicitBadge];
-  v17 = [v16 length];
+  explicitBadge = [(MPAVItem *)self explicitBadge];
+  v17 = [explicitBadge length];
 
   if (v17)
   {
-    v18 = [(MPAVItem *)self explicitBadge];
-    [v3 setObject:v18 forKeyedSubscript:@"ex"];
+    explicitBadge2 = [(MPAVItem *)self explicitBadge];
+    [dictionary setObject:explicitBadge2 forKeyedSubscript:@"ex"];
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithInteger:{-[MPAVItem lastChangeDirection](self, "lastChangeDirection")}];
-  [v3 setObject:v19 forKeyedSubscript:@"lcd"];
+  [dictionary setObject:v19 forKeyedSubscript:@"lcd"];
 
   if ([(MPAVItem *)self isAutoPlayItem])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"aPly"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"aPly"];
   }
 
   if ([(MPAVItem *)self isSharedListeningItem])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shLis"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shLis"];
     v20 = [MEMORY[0x1E696AD98] numberWithInteger:self->_explicitContentState];
-    [v3 setObject:v20 forKeyedSubscript:@"eConSt"];
+    [dictionary setObject:v20 forKeyedSubscript:@"eConSt"];
   }
 
   if ([(MPAVItem *)self isArtistUploadedContent])
   {
-    [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"arUp"];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"arUp"];
   }
 
-  v21 = v3;
+  v21 = dictionary;
 
   _Block_object_dispose(&v36, 8);
   _Block_object_dispose(&v40, 8);
@@ -1585,34 +1585,34 @@ void __32__MPAVItem__contentItemUserInfo__block_invoke_2(uint64_t a1)
   [*(a1 + 40) setObject:v2 forKeyedSubscript:@"pclbStatus"];
 }
 
-- (void)_updateContentItemIncludingPlaybackState:(BOOL)a3
+- (void)_updateContentItemIncludingPlaybackState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v69[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPAVItem *)self persistentID];
-  v6 = v5;
-  if (v5 == -1)
+  persistentID = [(MPAVItem *)self persistentID];
+  storeSubscriptionAdamID = persistentID;
+  if (persistentID == -1)
   {
-    v6 = [(MPAVItem *)self storeSubscriptionAdamID];
-    if (!v6)
+    storeSubscriptionAdamID = [(MPAVItem *)self storeSubscriptionAdamID];
+    if (!storeSubscriptionAdamID)
     {
       goto LABEL_5;
     }
   }
 
-  else if (!v5)
+  else if (!persistentID)
   {
 LABEL_5:
-    v6 = [(MPAVItem *)self storeItemInt64ID];
-    if (!v6)
+    storeSubscriptionAdamID = [(MPAVItem *)self storeItemInt64ID];
+    if (!storeSubscriptionAdamID)
     {
       goto LABEL_7;
     }
   }
 
-  [(MPNowPlayingContentItem *)self->_contentItem setLegacyUniqueID:v6];
+  [(MPNowPlayingContentItem *)self->_contentItem setLegacyUniqueID:storeSubscriptionAdamID];
 LABEL_7:
-  if (v3)
+  if (stateCopy)
   {
     [(MPContentItem *)self->_contentItem setPlayable:1];
     memset(&v66, 0, sizeof(v66));
@@ -1627,14 +1627,14 @@ LABEL_7:
     [(MPNowPlayingContentItem *)self->_contentItem setDuration:Seconds];
     [(MPAVItem *)self defaultPlaybackRate];
     [(MPNowPlayingContentItem *)self->_contentItem setDefaultPlaybackRate:?];
-    v8 = [(MPAVItem *)self initialPlaybackStartTime];
-    [v8 doubleValue];
+    initialPlaybackStartTime = [(MPAVItem *)self initialPlaybackStartTime];
+    [initialPlaybackStartTime doubleValue];
     [(MPNowPlayingContentItem *)self->_contentItem setElapsedTime:?];
 
     [(MPNowPlayingContentItem *)self->_contentItem setPlaybackRate:0.0];
-    v9 = [(MPAVItem *)self isAssetLoaded];
+    isAssetLoaded = [(MPAVItem *)self isAssetLoaded];
     v10 = 0.0;
-    if (v9)
+    if (isAssetLoaded)
     {
       [(MPAVItem *)self timeOfSeekableStart];
     }
@@ -1643,8 +1643,8 @@ LABEL_7:
   }
 
   [(MPNowPlayingContentItem *)self->_contentItem setInTransition:[(MPAVItem *)self isInTransition]];
-  v11 = [(MPAVItem *)self transitionInfo];
-  [(MPNowPlayingContentItem *)self->_contentItem setTransitionInfo:v11];
+  transitionInfo = [(MPAVItem *)self transitionInfo];
+  [(MPNowPlayingContentItem *)self->_contentItem setTransitionInfo:transitionInfo];
 
   [(MPNowPlayingContentItem *)self->_contentItem setStoreID:[(MPAVItem *)self storeItemInt64ID]];
   [(MPNowPlayingContentItem *)self->_contentItem setStoreAlbumID:[(MPAVItem *)self albumStoreID]];
@@ -1653,20 +1653,20 @@ LABEL_7:
   [(MPNowPlayingContentItem *)self->_contentItem setStoreSubscriptionID:[(MPAVItem *)self storeSubscriptionAdamID]];
   [(MPNowPlayingContentItem *)self->_contentItem setReportingAdamID:[(MPAVItem *)self reportingAdamID]];
   [(MPNowPlayingContentItem *)self->_contentItem setLyricsAdamID:[(MPAVItem *)self lyricsAdamID]];
-  v12 = [(MPAVItem *)self mainTitle];
-  [(MPContentItem *)self->_contentItem setTitle:v12];
+  mainTitle = [(MPAVItem *)self mainTitle];
+  [(MPContentItem *)self->_contentItem setTitle:mainTitle];
 
-  v13 = [(MPAVItem *)self subtitle];
-  [(MPContentItem *)self->_contentItem setSubtitle:v13];
+  subtitle = [(MPAVItem *)self subtitle];
+  [(MPContentItem *)self->_contentItem setSubtitle:subtitle];
 
-  v14 = [(MPAVItem *)self subtitleShort];
-  [(MPNowPlayingContentItem *)self->_contentItem setSubtitleShort:v14];
+  subtitleShort = [(MPAVItem *)self subtitleShort];
+  [(MPNowPlayingContentItem *)self->_contentItem setSubtitleShort:subtitleShort];
 
-  v15 = [(MPAVItem *)self album];
-  v16 = v15;
-  if (v15)
+  album = [(MPAVItem *)self album];
+  v16 = album;
+  if (album)
   {
-    v17 = v15;
+    v17 = album;
   }
 
   else
@@ -1718,14 +1718,14 @@ LABEL_7:
   p_contentItem = &self->_contentItem;
   [(MPNowPlayingContentItem *)self->_contentItem setAlbumYear:v24];
 
-  v26 = [(MPAVItem *)self releaseDate];
-  [(MPNowPlayingContentItem *)self->_contentItem setReleaseDate:v26];
+  releaseDate = [(MPAVItem *)self releaseDate];
+  [(MPNowPlayingContentItem *)self->_contentItem setReleaseDate:releaseDate];
 
-  v27 = [(MPAVItem *)self artist];
-  v28 = v27;
-  if (v27)
+  artist = [(MPAVItem *)self artist];
+  v28 = artist;
+  if (artist)
   {
-    v29 = v27;
+    v29 = artist;
   }
 
   else
@@ -1735,11 +1735,11 @@ LABEL_7:
 
   [(MPNowPlayingContentItem *)*p_contentItem setTrackArtistName:v29];
 
-  v30 = [(MPAVItem *)self albumArtist];
-  v31 = v30;
-  if (v30)
+  albumArtist = [(MPAVItem *)self albumArtist];
+  v31 = albumArtist;
+  if (albumArtist)
   {
-    v32 = v30;
+    v32 = albumArtist;
   }
 
   else
@@ -1749,11 +1749,11 @@ LABEL_7:
 
   [(MPNowPlayingContentItem *)*p_contentItem setAlbumArtistName:v32];
 
-  v33 = [(MPAVItem *)self composer];
-  v34 = v33;
-  if (v33)
+  composer = [(MPAVItem *)self composer];
+  v34 = composer;
+  if (composer)
   {
-    v35 = v33;
+    v35 = composer;
   }
 
   else
@@ -1763,11 +1763,11 @@ LABEL_7:
 
   [(MPNowPlayingContentItem *)*p_contentItem setComposerName:v35];
 
-  v36 = [(MPAVItem *)self genre];
-  v37 = v36;
-  if (v36)
+  genre = [(MPAVItem *)self genre];
+  v37 = genre;
+  if (genre)
   {
-    v38 = v36;
+    v38 = genre;
   }
 
   else
@@ -1782,20 +1782,20 @@ LABEL_7:
   [(MPNowPlayingContentItem *)*p_contentItem setTrackNumber:[(MPAVItem *)self albumTrackNumber]];
   [(MPNowPlayingContentItem *)*p_contentItem setTotalTrackCount:[(MPAVItem *)self albumTrackCount]];
   [(MPNowPlayingContentItem *)*p_contentItem setMediaType:[(MPAVItem *)self mediaType]];
-  v39 = [(MPAVItem *)self externalContentIdentifier];
-  [(MPNowPlayingContentItem *)*p_contentItem setExternalContentIdentifier:v39];
+  externalContentIdentifier = [(MPAVItem *)self externalContentIdentifier];
+  [(MPNowPlayingContentItem *)*p_contentItem setExternalContentIdentifier:externalContentIdentifier];
 
   [(MPContentItem *)*p_contentItem setExplicitContent:[(MPAVItem *)self isExplicitTrack]];
   [(MPNowPlayingContentItem *)*p_contentItem setAlwaysLiveItem:[(MPAVItem *)self isAlwaysLive]];
-  v40 = [(MPAVItem *)self modelPlayEvent];
-  if ([v40 itemType] == 4)
+  modelPlayEvent = [(MPAVItem *)self modelPlayEvent];
+  if ([modelPlayEvent itemType] == 4)
   {
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __53__MPAVItem__updateContentItemIncludingPlaybackState___block_invoke;
     v62[3] = &unk_1E76823C0;
-    v63 = v40;
-    v64 = self;
+    v63 = modelPlayEvent;
+    selfCopy = self;
     [MPModelObject performWithoutEnforcement:v62];
   }
 
@@ -1805,9 +1805,9 @@ LABEL_7:
     [(MPNowPlayingContentItem *)self->_contentItem setRadioStationStringIdentifier:0];
   }
 
-  v41 = [v40 contentItemCollectionInfo];
+  contentItemCollectionInfo = [modelPlayEvent contentItemCollectionInfo];
   v42 = &self->_contentItem;
-  [(MPNowPlayingContentItem *)self->_contentItem setCollectionInfo:v41];
+  [(MPNowPlayingContentItem *)self->_contentItem setCollectionInfo:contentItemCollectionInfo];
 
   if ([objc_opt_class() isPlaceholder])
   {
@@ -1841,13 +1841,13 @@ LABEL_7:
   if (v45)
   {
     [(MPNowPlayingContentItem *)v46 setHasArtwork:1];
-    v47 = [v45 visualIdenticalityIdentifier];
+    visualIdenticalityIdentifier = [v45 visualIdenticalityIdentifier];
     if (objc_opt_respondsToSelector())
     {
-      v48 = [v47 stringRepresentation];
-      if ([v48 length])
+      stringRepresentation = [visualIdenticalityIdentifier stringRepresentation];
+      if ([stringRepresentation length])
       {
-        [(MPNowPlayingContentItem *)self->_contentItem setArtworkIdentifier:v48];
+        [(MPNowPlayingContentItem *)self->_contentItem setArtworkIdentifier:stringRepresentation];
       }
     }
 
@@ -1885,38 +1885,38 @@ LABEL_7:
     [(MPNowPlayingContentItem *)self->_contentItem setArtworkIdentifier:0];
   }
 
-  v51 = [(MPAVItem *)self libraryLyrics];
+  libraryLyrics = [(MPAVItem *)self libraryLyrics];
 
-  if (v51)
+  if (libraryLyrics)
   {
     v52 = [MPNowPlayingInfoLyricsItem alloc];
-    v53 = [(MPAVItem *)self libraryLyrics];
-    v54 = [(MPNowPlayingInfoLyricsItem *)v52 initWithLyrics:v53 userProvided:1];
+    libraryLyrics2 = [(MPAVItem *)self libraryLyrics];
+    v54 = [(MPNowPlayingInfoLyricsItem *)v52 initWithLyrics:libraryLyrics2 userProvided:1];
     [(MPNowPlayingContentItem *)self->_contentItem setLyrics:v54];
 
-    v55 = 0;
+    hasStoreLyrics = 0;
   }
 
   else
   {
     [(MPNowPlayingContentItem *)self->_contentItem setLyrics:0];
-    v55 = [(MPAVItem *)self hasStoreLyrics];
+    hasStoreLyrics = [(MPAVItem *)self hasStoreLyrics];
   }
 
   v56 = &self->_contentItem;
-  [(MPNowPlayingContentItem *)self->_contentItem setHasLyrics:v55];
-  v57 = [(MPAVItem *)self itemDescription];
-  [(MPNowPlayingContentItem *)self->_contentItem setHasDescription:v57 != 0];
+  [(MPNowPlayingContentItem *)self->_contentItem setHasLyrics:hasStoreLyrics];
+  itemDescription = [(MPAVItem *)self itemDescription];
+  [(MPNowPlayingContentItem *)self->_contentItem setHasDescription:itemDescription != 0];
 
-  v58 = [(MPAVItem *)self associatedParticipantIdentifier];
-  [(MPNowPlayingContentItem *)self->_contentItem setAssociatedParticipantIdentifier:v58];
+  associatedParticipantIdentifier = [(MPAVItem *)self associatedParticipantIdentifier];
+  [(MPNowPlayingContentItem *)self->_contentItem setAssociatedParticipantIdentifier:associatedParticipantIdentifier];
 
   [(MPAVItem *)self _updateAudioFormatInfoForContentItem:self->_contentItem];
-  v59 = [(MPAVItem *)self _contentItemUserInfo];
-  [(MPNowPlayingContentItem *)self->_contentItem setUserInfo:v59];
+  _contentItemUserInfo = [(MPAVItem *)self _contentItemUserInfo];
+  [(MPNowPlayingContentItem *)self->_contentItem setUserInfo:_contentItemUserInfo];
 
-  v60 = [(MPAVItem *)self _contentItemDeviceSpecificUserInfo];
-  [(MPNowPlayingContentItem *)*v56 setDeviceSpecificUserInfo:v60];
+  _contentItemDeviceSpecificUserInfo = [(MPAVItem *)self _contentItemDeviceSpecificUserInfo];
+  [(MPNowPlayingContentItem *)*v56 setDeviceSpecificUserInfo:_contentItemDeviceSpecificUserInfo];
 }
 
 void __53__MPAVItem__updateContentItemIncludingPlaybackState___block_invoke(uint64_t a1)
@@ -2003,22 +2003,22 @@ void __53__MPAVItem__updateContentItemIncludingPlaybackState___block_invoke_260(
   }
 }
 
-- (void)_pickupContentItemFrom:(id)a3
+- (void)_pickupContentItemFrom:(id)from
 {
-  v11 = a3;
-  v5 = [(MPAVItem *)self contentItemID];
-  v6 = [v11 contentItemID];
-  v7 = [v5 isEqualToString:v6];
+  fromCopy = from;
+  contentItemID = [(MPAVItem *)self contentItemID];
+  contentItemID2 = [fromCopy contentItemID];
+  v7 = [contentItemID isEqualToString:contentItemID2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = [v11 contentItemID];
-    v10 = [(MPAVItem *)self contentItemID];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:1160 description:{@"fromItem contentItemID %@ does not match this item %@", v9, v10}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    contentItemID3 = [fromCopy contentItemID];
+    contentItemID4 = [(MPAVItem *)self contentItemID];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:1160 description:{@"fromItem contentItemID %@ does not match this item %@", contentItemID3, contentItemID4}];
   }
 
-  objc_storeStrong(&self->_contentItem, v11[12]);
+  objc_storeStrong(&self->_contentItem, fromCopy[12]);
 }
 
 - (void)_clearAssetNow
@@ -2054,31 +2054,31 @@ uint64_t __26__MPAVItem__clearAssetNow__block_invoke(uint64_t result)
   dispatch_assert_queue_V2(self->_assetQueue);
   if (![(MPAVItem *)self isAssetLoaded])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:1143 description:@"Asset must be already loaded to copy player item"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVItem.m" lineNumber:1143 description:@"Asset must be already loaded to copy player item"];
   }
 
   v5 = [(AVPlayerItem *)self->_avPlayerItem copy];
   [(MPAVItem *)self setPlayerItem:v5];
 }
 
-- (void)_performContentItemUpdate:(id)a3 debounceWithIdentifier:(id)a4
+- (void)_performContentItemUpdate:(id)update debounceWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  updateCopy = update;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_5;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (([(NSMutableSet *)self->_pendingContentItemUpdates containsObject:v7]& 1) == 0)
+  if (([(NSMutableSet *)self->_pendingContentItemUpdates containsObject:identifierCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_pendingContentItemUpdates addObject:v7];
+    [(NSMutableSet *)self->_pendingContentItemUpdates addObject:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
 LABEL_5:
-    v8 = v7;
-    v9 = v6;
+    v8 = identifierCopy;
+    v9 = updateCopy;
     msv_dispatch_on_main_queue();
 
     goto LABEL_6;
@@ -2137,13 +2137,13 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
       if (v5)
       {
         soundCheckVolumeNormalization = self->_soundCheckVolumeNormalization;
-        v10 = [(MPAVItem *)self playerItem];
+        playerItem = [(MPAVItem *)self playerItem];
         v11 = 138543874;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2048;
         v14 = soundCheckVolumeNormalization;
         v15 = 2114;
-        v16 = v10;
+        v16 = playerItem;
         _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: ignoring volume normalization %f on %{public}@", &v11, 0x20u);
       }
     }
@@ -2153,13 +2153,13 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
       if (v5)
       {
         v6 = self->_soundCheckVolumeNormalization;
-        v7 = [(MPAVItem *)self playerItem];
+        playerItem2 = [(MPAVItem *)self playerItem];
         v11 = 138543874;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2048;
         v14 = v6;
         v15 = 2114;
-        v16 = v7;
+        v16 = playerItem2;
         _os_log_impl(&dword_1A238D000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Setting volume normalization to %f on %{public}@", &v11, 0x20u);
       }
 
@@ -2178,13 +2178,13 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
   }
 }
 
-- (double)_playableDurationForLoadedTimeRanges:(id)a3
+- (double)_playableDurationForLoadedTimeRanges:(id)ranges
 {
-  v4 = a3;
-  if ([v4 count])
+  rangesCopy = ranges;
+  if ([rangesCopy count])
   {
     memset(&v11, 0, sizeof(v11));
-    v5 = [v4 objectAtIndex:0];
+    v5 = [rangesCopy objectAtIndex:0];
     v6 = v5;
     if (v5)
     {
@@ -2217,9 +2217,9 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
   v4 = v3;
   if ([(MPAVItem *)self isAssetLoaded]&& v4 - self->_seekableTimeRangesCacheTime > 0.2)
   {
-    v5 = [(MPAVItem *)self playerItem];
-    v6 = [v5 seekableTimeRanges];
-    v7 = [v6 copy];
+    playerItem = [(MPAVItem *)self playerItem];
+    seekableTimeRanges = [playerItem seekableTimeRanges];
+    v7 = [seekableTimeRanges copy];
     cachedSeekableTimeRanges = self->_cachedSeekableTimeRanges;
     self->_cachedSeekableTimeRanges = v7;
 
@@ -2231,10 +2231,10 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
   return v9;
 }
 
-- (id)_initialPlaybackStartTimeForPlaybackInfo:(id)a3
+- (id)_initialPlaybackStartTimeForPlaybackInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"MPAVItemPlaybackProperties_NextPlayStartTime"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"MPAVItemPlaybackProperties_NextPlayStartTime"];
   v5 = v4;
   if (v4)
   {
@@ -2247,7 +2247,7 @@ void __61__MPAVItem__performContentItemUpdate_debounceWithIdentifier___block_inv
     v7 = 0.0;
   }
 
-  v8 = [v3 objectForKey:@"MPAVItemPlaybackProperties_StartTime"];
+  v8 = [infoCopy objectForKey:@"MPAVItemPlaybackProperties_StartTime"];
 
   if (v8)
   {
@@ -2276,31 +2276,31 @@ LABEL_10:
 
 - (void)_likedStateDidChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_MPAVItemInternalLikedStateDidChangeNotification" object:self];
-  [v3 postNotificationName:@"MPAVItemLikedStateDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_MPAVItemInternalLikedStateDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"MPAVItemLikedStateDidChangeNotification" object:self];
 }
 
-- (void)_removeObservationsForAVPlayerItem:(id)a3
+- (void)_removeObservationsForAVPlayerItem:(id)item
 {
-  v5 = a3;
-  [v5 removeObserver:self forKeyPath:@"duration" context:@"MPAVItemDurationObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"loadedTimeRanges" context:@"MPAVItemLoadedTimeRangesObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"timebase" context:@"MPAVItemTimebaseObservationContext"];
+  itemCopy = item;
+  [itemCopy removeObserver:self forKeyPath:@"duration" context:@"MPAVItemDurationObservationContext"];
+  [itemCopy removeObserver:self forKeyPath:@"loadedTimeRanges" context:@"MPAVItemLoadedTimeRangesObservationContext"];
+  [itemCopy removeObserver:self forKeyPath:@"timebase" context:@"MPAVItemTimebaseObservationContext"];
   if (self->_metadataOutput)
   {
-    [v5 removeOutput:?];
+    [itemCopy removeOutput:?];
     metadataOutput = self->_metadataOutput;
     self->_metadataOutput = 0;
   }
 }
 
-- (void)_addObservationsForAVPlayerItem:(id)a3
+- (void)_addObservationsForAVPlayerItem:(id)item
 {
-  v6 = a3;
-  [v6 addObserver:self forKeyPath:@"duration" options:3 context:@"MPAVItemDurationObservationContext"];
-  [v6 addObserver:self forKeyPath:@"loadedTimeRanges" options:3 context:@"MPAVItemLoadedTimeRangesObservationContext"];
-  [v6 addObserver:self forKeyPath:@"timebase" options:7 context:@"MPAVItemTimebaseObservationContext"];
+  itemCopy = item;
+  [itemCopy addObserver:self forKeyPath:@"duration" options:3 context:@"MPAVItemDurationObservationContext"];
+  [itemCopy addObserver:self forKeyPath:@"loadedTimeRanges" options:3 context:@"MPAVItemLoadedTimeRangesObservationContext"];
+  [itemCopy addObserver:self forKeyPath:@"timebase" options:7 context:@"MPAVItemTimebaseObservationContext"];
   if ([(MPAVItem *)self conformsToProtocol:&unk_1F15AA290])
   {
     v4 = [objc_alloc(MEMORY[0x1E69880C8]) initWithIdentifiers:0];
@@ -2308,27 +2308,27 @@ LABEL_10:
     self->_metadataOutput = v4;
 
     [(AVPlayerItemMetadataOutput *)self->_metadataOutput setDelegate:self queue:MEMORY[0x1E69E96A0]];
-    [v6 addOutput:self->_metadataOutput];
+    [itemCopy addOutput:self->_metadataOutput];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == @"MPAVItemLoadedTimeRangesObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == @"MPAVItemLoadedTimeRangesObservationContext")
   {
-    v14 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+    v14 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     [(MPAVItem *)self _playableDurationForLoadedTimeRanges:v14];
 
     [(MPAVItem *)self _updateHasFinishedDownloading];
   }
 
-  else if (a6 == @"MPAVItemDurationObservationContext")
+  else if (context == @"MPAVItemDurationObservationContext")
   {
-    v15 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+    v15 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
     v16 = v15;
     if (v15)
     {
@@ -2358,13 +2358,13 @@ LABEL_10:
     [(MPAVItem *)self _performContentItemUpdate:v23 debounceWithIdentifier:@"duration"];
   }
 
-  else if (a6 == @"MPAVItemTimebaseObservationContext")
+  else if (context == @"MPAVItemTimebaseObservationContext")
   {
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __59__MPAVItem_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v21 = &unk_1E7682518;
-    v22 = self;
+    selfCopy = self;
     msv_dispatch_on_main_queue();
   }
 
@@ -2372,7 +2372,7 @@ LABEL_10:
   {
     v17.receiver = self;
     v17.super_class = MPAVItem;
-    [(MPAVItem *)&v17 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(MPAVItem *)&v17 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -2395,19 +2395,19 @@ void __59__MPAVItem_observeValueForKeyPath_ofObject_change_context___block_invok
   [v2 postNotificationName:@"MPAVItemTimebaseDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_itemAttributeAvailableKey:(id)a3
+- (void)_itemAttributeAvailableKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"lyrics"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"lyrics"])
   {
-    v5 = [(MPAVItem *)self asset];
-    v6 = [v5 lyrics];
+    asset = [(MPAVItem *)self asset];
+    lyrics = [asset lyrics];
 
     *(self + 108) |= 8u;
-    if (v6)
+    if (lyrics)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 postNotificationName:@"MPAVItemDisplayableTextAvailableNotification" object:self userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"MPAVItemDisplayableTextAvailableNotification" object:self userInfo:0];
     }
 
 LABEL_9:
@@ -2415,13 +2415,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:@"duration"])
+  if ([keyCopy isEqualToString:@"duration"])
   {
-    v8 = [(MPAVItem *)self asset];
-    v9 = v8;
-    if (v8)
+    asset2 = [(MPAVItem *)self asset];
+    v9 = asset2;
+    if (asset2)
     {
-      [v8 duration];
+      [asset2 duration];
     }
 
     else
@@ -2431,27 +2431,27 @@ LABEL_9:
 
     self->_cachedDuration = CMTimeGetSeconds(&time);
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"MPAVItemDurationAvailableNotification" object:self];
+    lyrics = [MEMORY[0x1E696AD88] defaultCenter];
+    [lyrics postNotificationName:@"MPAVItemDurationAvailableNotification" object:self];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)_internalLikedStateDidChangeNotification:(id)a3
+- (void)_internalLikedStateDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4 != self)
+  object = [notification object];
+  if (object != self)
   {
-    v7 = v4;
-    v5 = [(MPAVItem *)self isEqual:v4];
-    v4 = v7;
+    v7 = object;
+    v5 = [(MPAVItem *)self isEqual:object];
+    object = v7;
     if (v5)
     {
-      v6 = [(MPAVItem *)v7 likedState];
-      v4 = v7;
-      self->_likedState = v6;
+      likedState = [(MPAVItem *)v7 likedState];
+      object = v7;
+      self->_likedState = likedState;
     }
   }
 }
@@ -2519,9 +2519,9 @@ LABEL_14:
 - (double)timeOfSeekableStart
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVItem *)self _seekableTimeRanges];
+  _seekableTimeRanges = [(MPAVItem *)self _seekableTimeRanges];
   memset(v7, 0, sizeof(v7));
-  if ([v2 countByEnumeratingWithState:v7 objects:v8 count:16])
+  if ([_seekableTimeRanges countByEnumeratingWithState:v7 objects:v8 count:16])
   {
     if (**(&v7[0] + 1))
     {
@@ -2552,10 +2552,10 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(MPAVItem *)self playerItem];
-  v4 = [v3 timebase];
+  playerItem = [(MPAVItem *)self playerItem];
+  timebase = [playerItem timebase];
 
-  return v4;
+  return timebase;
 }
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)_playerItemDurationIfAvailable
@@ -2616,12 +2616,12 @@ LABEL_5:
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration
 {
-  v4 = [(MPAVItem *)self asset];
-  if (v4)
+  asset = [(MPAVItem *)self asset];
+  if (asset)
   {
-    v6 = v4;
-    [v4 duration];
-    v4 = v6;
+    v6 = asset;
+    [asset duration];
+    asset = v6;
   }
 
   else
@@ -2634,16 +2634,16 @@ LABEL_5:
   return result;
 }
 
-- (id)_imageChapterTrackIDsForAsset:(id)a3
+- (id)_imageChapterTrackIDsForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = [(AVAsset *)self->_asset statusOfValueForKey:@"trackReferences" error:0];
   v6 = 0;
   if (v5 == 2)
   {
     v6 = [MEMORY[0x1E695DFA8] set];
-    v7 = [v4 trackReferences];
-    v8 = [v7 objectForKey:*MEMORY[0x1E6987230]];
+    trackReferences = [assetCopy trackReferences];
+    v8 = [trackReferences objectForKey:*MEMORY[0x1E6987230]];
     if ([v8 count] >= 2)
     {
       v9 = *MEMORY[0x1E6987608];
@@ -2651,9 +2651,9 @@ LABEL_5:
       do
       {
         v11 = [v8 objectAtIndex:v10];
-        v12 = [v4 trackWithTrackID:{objc_msgSend(v11, "intValue")}];
-        v13 = [v12 mediaType];
-        v14 = [v13 isEqualToString:v9];
+        v12 = [assetCopy trackWithTrackID:{objc_msgSend(v11, "intValue")}];
+        mediaType = [v12 mediaType];
+        v14 = [mediaType isEqualToString:v9];
 
         if (v14)
         {
@@ -2676,8 +2676,8 @@ LABEL_5:
   if (!contentItem)
   {
     v4 = [MPNowPlayingContentItem alloc];
-    v5 = [(MPAVItem *)self contentItemID];
-    v6 = [(MPContentItem *)v4 initWithIdentifier:v5];
+    contentItemID = [(MPAVItem *)self contentItemID];
+    v6 = [(MPContentItem *)v4 initWithIdentifier:contentItemID];
     v7 = self->_contentItem;
     self->_contentItem = v6;
 
@@ -2694,15 +2694,15 @@ LABEL_5:
   return contentItem;
 }
 
-- (void)setContentItemID:(id)a3 queueSectionID:(id)a4 queueItemID:(id)a5
+- (void)setContentItemID:(id)d queueSectionID:(id)iD queueItemID:(id)itemID
 {
-  v18 = a3;
-  v8 = a4;
+  dCopy = d;
+  iDCopy = iD;
   contentItemID = self->_contentItemID;
-  v10 = a5;
-  if (![(NSString *)contentItemID isEqualToString:v18])
+  itemIDCopy = itemID;
+  if (![(NSString *)contentItemID isEqualToString:dCopy])
   {
-    v11 = [v18 copy];
+    v11 = [dCopy copy];
     v12 = self->_contentItemID;
     self->_contentItemID = v11;
 
@@ -2710,39 +2710,39 @@ LABEL_5:
     self->_contentItem = 0;
   }
 
-  v14 = [v8 copy];
+  v14 = [iDCopy copy];
   queueSectionID = self->_queueSectionID;
   self->_queueSectionID = v14;
 
-  v16 = [v10 copy];
+  v16 = [itemIDCopy copy];
   queueItemID = self->_queueItemID;
   self->_queueItemID = v16;
 }
 
 - (BOOL)supportsRating
 {
-  v3 = [(MPAVItem *)self mediaItem];
-  v4 = [v3 objectForKeyedSubscript:@"isInMyLibrary"];
-  v5 = [v4 BOOLValue];
+  mediaItem = [(MPAVItem *)self mediaItem];
+  v4 = [mediaItem objectForKeyedSubscript:@"isInMyLibrary"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(MPAVItem *)self mediaItem];
-  v7 = [v6 objectForKeyedSubscript:@"storeSagaID"];
-  v8 = [v7 longLongValue];
+  mediaItem2 = [(MPAVItem *)self mediaItem];
+  v7 = [mediaItem2 objectForKeyedSubscript:@"storeSagaID"];
+  longLongValue = [v7 longLongValue];
 
-  v9 = [(MPAVItem *)self mediaItem];
-  v10 = [v9 mediaLibrary];
+  mediaItem3 = [(MPAVItem *)self mediaItem];
+  mediaLibrary = [mediaItem3 mediaLibrary];
 
-  if (v8)
+  if (longLongValue)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v5;
+    v11 = bOOLValue;
   }
 
-  return v10 && v11;
+  return mediaLibrary && v11;
 }
 
 - (NSString)storeItemID
@@ -2785,31 +2785,31 @@ LABEL_5:
   return quot;
 }
 
-- (void)setSoundCheckVolumeNormalization:(float)a3
+- (void)setSoundCheckVolumeNormalization:(float)normalization
 {
-  if (self->_soundCheckVolumeNormalization != a3)
+  if (self->_soundCheckVolumeNormalization != normalization)
   {
-    self->_soundCheckVolumeNormalization = a3;
+    self->_soundCheckVolumeNormalization = normalization;
     [(MPAVItem *)self _updateSoundCheckVolumeNormalizationForPlayerItem];
   }
 }
 
-- (void)setLikedState:(int64_t)a3 forUserIdentity:(id)a4
+- (void)setLikedState:(int64_t)state forUserIdentity:(id)identity
 {
-  v6 = a4;
-  if ([(MPAVItem *)self likedState]!= a3)
+  identityCopy = identity;
+  if ([(MPAVItem *)self likedState]!= state)
   {
-    self->_likedState = a3;
+    self->_likedState = state;
     [(MPAVItem *)self _likedStateDidChange];
-    [(MPAVItem *)self _handleUpdatedLikedState:a3 forUserIdentity:v6 completion:&__block_literal_global_48424];
+    [(MPAVItem *)self _handleUpdatedLikedState:state forUserIdentity:identityCopy completion:&__block_literal_global_48424];
   }
 }
 
-- (void)setFeeder:(id)a3
+- (void)setFeeder:(id)feeder
 {
-  v4 = a3;
+  feederCopy = feeder;
   os_unfair_lock_lock(&self->_lock);
-  objc_storeWeak(&self->_feeder, v4);
+  objc_storeWeak(&self->_feeder, feederCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2819,12 +2819,12 @@ LABEL_5:
   result = [(MPAVItem *)self isAssetLoaded];
   if (result)
   {
-    v6 = [(MPAVItem *)self playerItem];
-    if (v6)
+    playerItem = [(MPAVItem *)self playerItem];
+    if (playerItem)
     {
-      v8 = v6;
-      [v6 forwardPlaybackEndTime];
-      v6 = v8;
+      v8 = playerItem;
+      [playerItem forwardPlaybackEndTime];
+      playerItem = v8;
     }
 
     else
@@ -2849,8 +2849,8 @@ LABEL_5:
 {
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    [v3 presentationSize];
+    playerItem = [(MPAVItem *)self playerItem];
+    [playerItem presentationSize];
     v5 = v4;
     v7 = v6;
   }
@@ -2868,11 +2868,11 @@ LABEL_5:
   return result;
 }
 
-- (void)prepareForRate:(float)a3 completionHandler:(id)a4
+- (void)prepareForRate:(float)rate completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4, a3);
+    (*(handler + 2))(handler, rate);
   }
 }
 
@@ -2880,8 +2880,8 @@ LABEL_5:
 {
   if ([(MPAVItem *)self isAssetLoaded]&& [(MPAVItem *)self status]== 1)
   {
-    v3 = [(MPAVItem *)self playerItem];
-    [v3 presentationSize];
+    playerItem = [(MPAVItem *)self playerItem];
+    [playerItem presentationSize];
     v5 = v4;
     v7 = v6;
   }
@@ -2904,14 +2904,14 @@ LABEL_5:
   v2 = *(self + 108) & 3;
   if (v2 == 2)
   {
-    v4 = [(MPAVItem *)self path];
-    if ([v4 compare:@"https://" options:1 range:{0, objc_msgSend(@"https://", "length")}])
+    path = [(MPAVItem *)self path];
+    if ([path compare:@"https://" options:1 range:{0, objc_msgSend(@"https://", "length")}])
     {
-      v5 = [(MPAVItem *)self path];
-      if ([v5 compare:@"http://" options:1 range:{0, objc_msgSend(@"http://", "length")}])
+      path2 = [(MPAVItem *)self path];
+      if ([path2 compare:@"http://" options:1 range:{0, objc_msgSend(@"http://", "length")}])
       {
-        v6 = [(MPAVItem *)self path];
-        v7 = [v6 compare:@"home-sharing://" options:1 range:{0, objc_msgSend(@"home-sharing://", "length")}];
+        path3 = [(MPAVItem *)self path];
+        v7 = [path3 compare:@"home-sharing://" options:1 range:{0, objc_msgSend(@"home-sharing://", "length")}];
 
         if (v7)
         {
@@ -2938,16 +2938,16 @@ LABEL_8:
 {
   if ((*(self + 108) & 8) != 0 && [(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self asset];
-    v4 = [v3 lyrics];
+    asset = [(MPAVItem *)self asset];
+    lyrics = [asset lyrics];
   }
 
   else
   {
-    v4 = 0;
+    lyrics = 0;
   }
 
-  return v4;
+  return lyrics;
 }
 
 - (MPQueueFeeder)feeder
@@ -2966,30 +2966,30 @@ LABEL_8:
     return 1;
   }
 
-  v2 = [(MPAVItem *)self displayableText];
-  v3 = [v2 length] != 0;
+  displayableText = [(MPAVItem *)self displayableText];
+  v3 = [displayableText length] != 0;
 
   return v3;
 }
 
-- (void)setLastChangeDirection:(int64_t)a3
+- (void)setLastChangeDirection:(int64_t)direction
 {
-  if (self->_lastChangeDirection != a3)
+  if (self->_lastChangeDirection != direction)
   {
-    self->_lastChangeDirection = a3;
+    self->_lastChangeDirection = direction;
     [(MPAVItem *)self invalidateContentItemUserInfo];
   }
 }
 
-- (void)setExplicitBadge:(id)a3
+- (void)setExplicitBadge:(id)badge
 {
-  v4 = a3;
+  badgeCopy = badge;
   explicitBadge = self->_explicitBadge;
-  if (explicitBadge != v4)
+  if (explicitBadge != badgeCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)explicitBadge isEqual:v4];
-    v4 = v9;
+    v9 = badgeCopy;
+    v6 = [(NSString *)explicitBadge isEqual:badgeCopy];
+    badgeCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSString *)v9 copy];
@@ -2997,7 +2997,7 @@ LABEL_8:
       self->_explicitBadge = v7;
 
       [(MPAVItem *)self invalidateContentItemUserInfo];
-      v4 = v9;
+      badgeCopy = v9;
     }
   }
 }
@@ -3006,24 +3006,24 @@ LABEL_8:
 {
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [v3 accessLog];
+    playerItem = [(MPAVItem *)self playerItem];
+    accessLog = [playerItem accessLog];
   }
 
   else
   {
-    v4 = 0;
+    accessLog = 0;
   }
 
-  return v4;
+  return accessLog;
 }
 
 - (id)url
 {
   if ([(MPAVItem *)self isAssetLoaded]&& ([(MPAVItem *)self asset], v3 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v3, (isKindOfClass & 1) != 0))
   {
-    v5 = [(MPAVItem *)self asset];
-    v6 = [v5 URL];
+    asset = [(MPAVItem *)self asset];
+    v6 = [asset URL];
   }
 
   else
@@ -3038,28 +3038,28 @@ LABEL_8:
 {
   if ([(MPAVItem *)self isAssetLoaded]&& ([(MPAVItem *)self asset], v3 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v3, (isKindOfClass & 1) != 0))
   {
-    v5 = [(MPAVItem *)self asset];
-    v6 = [v5 URL];
-    v7 = [v6 absoluteString];
+    asset = [(MPAVItem *)self asset];
+    v6 = [asset URL];
+    absoluteString = [v6 absoluteString];
   }
 
   else
   {
-    v7 = &stru_1F149ECA8;
+    absoluteString = &stru_1F149ECA8;
   }
 
-  return v7;
+  return absoluteString;
 }
 
 - (double)durationInSeconds
 {
   if (self->_cachedDuration < 0.00000011920929 && [(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self asset];
-    v4 = v3;
-    if (v3)
+    asset = [(MPAVItem *)self asset];
+    v4 = asset;
+    if (asset)
     {
-      [v3 duration];
+      [asset duration];
     }
 
     else
@@ -3075,36 +3075,36 @@ LABEL_8:
 
 - (NSNumber)playbackInfoStartTime
 {
-  v3 = [(MPAVItem *)self playbackInfo];
-  v4 = [(MPAVItem *)self _initialPlaybackStartTimeForPlaybackInfo:v3];
+  playbackInfo = [(MPAVItem *)self playbackInfo];
+  v4 = [(MPAVItem *)self _initialPlaybackStartTimeForPlaybackInfo:playbackInfo];
 
   return v4;
 }
 
 - (NSNumber)initialPlaybackStartTime
 {
-  v3 = [(MPAVItem *)self initialPlaybackStartTimeOverride];
-  v4 = v3;
-  if (v3)
+  initialPlaybackStartTimeOverride = [(MPAVItem *)self initialPlaybackStartTimeOverride];
+  v4 = initialPlaybackStartTimeOverride;
+  if (initialPlaybackStartTimeOverride)
   {
-    v5 = v3;
+    playbackInfoStartTime = initialPlaybackStartTimeOverride;
   }
 
   else
   {
-    v5 = [(MPAVItem *)self playbackInfoStartTime];
+    playbackInfoStartTime = [(MPAVItem *)self playbackInfoStartTime];
   }
 
-  v6 = v5;
+  v6 = playbackInfoStartTime;
 
   return v6;
 }
 
 - (NSNumber)bookmarkTime
 {
-  v2 = [(MPAVItem *)self mediaItem];
-  v3 = v2;
-  if (v2 && [v2 rememberBookmarkTime])
+  mediaItem = [(MPAVItem *)self mediaItem];
+  v3 = mediaItem;
+  if (mediaItem && [mediaItem rememberBookmarkTime])
   {
     v4 = MEMORY[0x1E696AD98];
     [v3 bookmarkTime];
@@ -3123,32 +3123,32 @@ LABEL_8:
 {
   if ([(MPAVItem *)self isAssetLoaded])
   {
-    v3 = [(MPAVItem *)self playerItem];
-    v4 = [v3 error];
+    playerItem = [(MPAVItem *)self playerItem];
+    error = [playerItem error];
   }
 
   else
   {
-    v4 = 0;
+    error = 0;
   }
 
-  return v4;
+  return error;
 }
 
-- (void)setPlayerItem:(id)a3
+- (void)setPlayerItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_avPlayerItem != v5)
+  itemCopy = item;
+  if (self->_avPlayerItem != itemCopy)
   {
     [(MPAVItem *)self _removeObservationsForAVPlayerItem:?];
-    objc_storeStrong(&self->_avPlayerItem, a3);
+    objc_storeStrong(&self->_avPlayerItem, item);
     v6 = os_log_create("com.apple.amp.mediaplayer", "Playback");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       avPlayerItem = self->_avPlayerItem;
       *buf = 138543618;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
       v12 = avPlayerItem;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "MP->AV Asset Log Mapping: %{public}@ -> %{public}@", buf, 0x16u);
@@ -3248,28 +3248,28 @@ void __17__MPAVItem_asset__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_loadAssetAndPlayerItemWithTask:(id)a3 completion:(id)a4
+- (void)_loadAssetAndPlayerItemWithTask:(id)task completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  completionCopy = completion;
   v8 = qos_class_self();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke;
   aBlock[3] = &unk_1E767FD30;
   v20 = v8;
-  v19 = v7;
-  v9 = v7;
+  v19 = completionCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
   assetQueue = self->_assetQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_3;
   block[3] = &unk_1E7681568;
-  v16 = v6;
+  v16 = taskCopy;
   v17 = v10;
   block[4] = self;
-  v12 = v6;
+  v12 = taskCopy;
   v13 = v10;
   v14 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v8, 0, block);
   dispatch_async(assetQueue, v14);
@@ -3393,8 +3393,8 @@ void __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_6(
 - (void)dealloc
 {
   [(MPMediaLibraryPrivacyContext *)self->_privacyContext endAccessInterval];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_MPAVItemInternalLikedStateDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_MPAVItemInternalLikedStateDidChangeNotification" object:0];
   [(MPAVItem *)self _removeObservationsForAVPlayerItem:self->_avPlayerItem];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
 
@@ -3403,10 +3403,10 @@ void __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_6(
   [(MPAVItem *)&v4 dealloc];
 }
 
-- (MPAVItem)initWithPlayerItem:(id)a3
+- (MPAVItem)initWithPlayerItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = MPAVItem;
   v5 = [(MPAVItem *)&v20 init];
@@ -3418,13 +3418,13 @@ void __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_6(
     assetQueue = v6->_assetQueue;
     v6->_assetQueue = v7;
 
-    if (v4)
+    if (itemCopy)
     {
-      v9 = [v4 asset];
+      asset = [itemCopy asset];
       asset = v6->_asset;
-      v6->_asset = v9;
+      v6->_asset = asset;
 
-      [(MPAVItem *)v6 setPlayerItem:v4];
+      [(MPAVItem *)v6 setPlayerItem:itemCopy];
       v6->_isAssetLoaded = 1;
       v6->_isPreloadedAsset = 1;
       v6->_didAttemptToLoadAsset = 1;
@@ -3445,25 +3445,25 @@ void __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_6(
     v6->_likedState = 0;
     v6->_type = 0;
     v6->_nowPlayingInfoQueueIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     contentItemID = v6->_contentItemID;
-    v6->_contentItemID = v14;
+    v6->_contentItemID = uUIDString;
 
     v16 = [MEMORY[0x1E695DFA8] set];
     pendingContentItemUpdates = v6->_pendingContentItemUpdates;
     v6->_pendingContentItemUpdates = v16;
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v6 selector:sel__internalLikedStateDidChangeNotification_ name:@"_MPAVItemInternalLikedStateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__internalLikedStateDidChangeNotification_ name:@"_MPAVItemInternalLikedStateDidChangeNotification" object:0];
   }
 
   return v6;
 }
 
-- (MPAVItem)initWithAsset:(id)a3
+- (MPAVItem)initWithAsset:(id)asset
 {
-  if (a3)
+  if (asset)
   {
     v4 = [MEMORY[0x1E69880B0] playerItemWithAsset:?];
   }
@@ -3478,48 +3478,48 @@ void __55__MPAVItem__loadAssetAndPlayerItemWithTask_completion___block_invoke_6(
   return v5;
 }
 
-- (MPAVItem)initWithURL:(id)a3 options:(id)a4
+- (MPAVItem)initWithURL:(id)l options:(id)options
 {
-  v5 = [MEMORY[0x1E6988168] URLAssetWithURL:a3 options:a4];
+  v5 = [MEMORY[0x1E6988168] URLAssetWithURL:l options:options];
   v6 = [(MPAVItem *)self initWithAsset:v5];
 
   return v6;
 }
 
-- (MPAVItem)initWithURL:(id)a3
+- (MPAVItem)initWithURL:(id)l
 {
-  v4 = [MEMORY[0x1E6988168] URLAssetWithURL:a3 options:0];
+  v4 = [MEMORY[0x1E6988168] URLAssetWithURL:l options:0];
   v5 = [(MPAVItem *)self initWithAsset:v4];
 
   return v5;
 }
 
-+ (id)URLFromPath:(id)a3
++ (id)URLFromPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v4 = [MEMORY[0x1E695DFF8] URLWithString:v3 relativeToURL:0];
-    v5 = [v4 scheme];
+    v4 = [MEMORY[0x1E695DFF8] URLWithString:pathCopy relativeToURL:0];
+    scheme = [v4 scheme];
 
-    if (v5)
+    if (scheme)
     {
       v6 = v4;
     }
 
     else
     {
-      v7 = [v3 stringByRemovingPercentEncoding];
-      v8 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-      v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+      stringByRemovingPercentEncoding = [pathCopy stringByRemovingPercentEncoding];
+      uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+      v9 = [stringByRemovingPercentEncoding stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
       v10 = [MEMORY[0x1E695DFF8] URLWithString:v9 relativeToURL:0];
 
-      v11 = [v10 scheme];
+      scheme2 = [v10 scheme];
 
-      if (!v11)
+      if (!scheme2)
       {
-        v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+        v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
 
         v10 = v12;
       }

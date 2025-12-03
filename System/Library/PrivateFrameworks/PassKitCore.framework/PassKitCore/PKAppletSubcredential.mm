@@ -1,68 +1,68 @@
 @interface PKAppletSubcredential
 - (BOOL)canShare;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSharedCredential;
 - (NSString)manufacturerIdentifier;
-- (PKAppletSubcredential)initWithCoder:(id)a3;
-- (PKAppletSubcredential)initWithDictionary:(id)a3;
-- (PKAppletSubcredential)initWithIdentifier:(id)a3;
-- (PKAppletSubcredential)initWithKeyInformation:(id)a3 deviceSupportedRadioTechnologies:(unint64_t)a4;
+- (PKAppletSubcredential)initWithCoder:(id)coder;
+- (PKAppletSubcredential)initWithDictionary:(id)dictionary;
+- (PKAppletSubcredential)initWithIdentifier:(id)identifier;
+- (PKAppletSubcredential)initWithKeyInformation:(id)information deviceSupportedRadioTechnologies:(unint64_t)technologies;
 - (id)asDictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppletSubcredential
 
-- (PKAppletSubcredential)initWithKeyInformation:(id)a3 deviceSupportedRadioTechnologies:(unint64_t)a4
+- (PKAppletSubcredential)initWithKeyInformation:(id)information deviceSupportedRadioTechnologies:(unint64_t)technologies
 {
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  informationCopy = information;
   v7 = [(PKAppletSubcredential *)self init];
   if (!v7)
   {
     goto LABEL_15;
   }
 
-  v8 = [v6 publicKeyIdentifier];
+  publicKeyIdentifier = [informationCopy publicKeyIdentifier];
   identifier = v7->_identifier;
-  v7->_identifier = v8;
+  v7->_identifier = publicKeyIdentifier;
 
-  v10 = [v6 keyType];
-  v11 = v10;
+  keyType = [informationCopy keyType];
+  v11 = keyType;
   v12 = 1;
-  if (v10 > 2)
+  if (keyType > 2)
   {
-    if (v10 == 3)
+    if (keyType == 3)
     {
 LABEL_6:
       v7->_credentialState = 21;
-      v13 = v10 == 3;
+      v13 = keyType == 3;
       v7->_supportedRadioTechnologies = v13;
       v7->_allSupportedRadioTechnologies = v13;
-      v14 = [v6 publicKeyIdentifier];
+      publicKeyIdentifier2 = [informationCopy publicKeyIdentifier];
       endpointIdentifier = v7->_endpointIdentifier;
-      v7->_endpointIdentifier = v14;
+      v7->_endpointIdentifier = publicKeyIdentifier2;
 
-      v16 = [v6 homeKeyInformation];
-      v17 = [v16 publicKey];
+      homeKeyInformation = [informationCopy homeKeyInformation];
+      publicKey = [homeKeyInformation publicKey];
       transactionKey = v7->_transactionKey;
-      v7->_transactionKey = v17;
+      v7->_transactionKey = publicKey;
 
-      v19 = [v16 appletIdentifier];
-      v20 = [v19 hexEncoding];
-      v21 = [v20 uppercaseString];
+      appletIdentifier = [homeKeyInformation appletIdentifier];
+      hexEncoding = [appletIdentifier hexEncoding];
+      uppercaseString = [hexEncoding uppercaseString];
       appletIdentifier = v7->_appletIdentifier;
-      v7->_appletIdentifier = v21;
+      v7->_appletIdentifier = uppercaseString;
 
-      v23 = [v16 readerIdentifier];
+      readerIdentifier = [homeKeyInformation readerIdentifier];
       readerIdentifier = v7->_readerIdentifier;
-      v7->_readerIdentifier = v23;
+      v7->_readerIdentifier = readerIdentifier;
 
-      v25 = [(NSData *)v7->_readerIdentifier hexEncoding];
+      hexEncoding2 = [(NSData *)v7->_readerIdentifier hexEncoding];
       pairedReaderIdentifier = v7->_pairedReaderIdentifier;
-      v7->_pairedReaderIdentifier = v25;
+      v7->_pairedReaderIdentifier = hexEncoding2;
 
       v27 = 133;
       if (v11 == 5)
@@ -77,9 +77,9 @@ LABEL_6:
       goto LABEL_14;
     }
 
-    if (v10 != 4)
+    if (keyType != 4)
     {
-      if (v10 == 5)
+      if (keyType == 5)
       {
         goto LABEL_6;
       }
@@ -93,27 +93,27 @@ LABEL_15:
 
 LABEL_11:
     v7->_credentialState = 21;
-    v28 = v10 == 2;
+    v28 = keyType == 2;
     v7->_supportedRadioTechnologies = v28;
     v7->_allSupportedRadioTechnologies = v28;
-    v29 = [v6 publicKeyIdentifier];
+    publicKeyIdentifier3 = [informationCopy publicKeyIdentifier];
     v30 = v7->_endpointIdentifier;
-    v7->_endpointIdentifier = v29;
+    v7->_endpointIdentifier = publicKeyIdentifier3;
 
-    v31 = [v6 hydraKeyInformation];
-    v32 = [v31 certificateChain];
+    hydraKeyInformation = [informationCopy hydraKeyInformation];
+    certificateChain = [hydraKeyInformation certificateChain];
     transactionKeyCertificateChain = v7->_transactionKeyCertificateChain;
-    v7->_transactionKeyCertificateChain = v32;
+    v7->_transactionKeyCertificateChain = certificateChain;
 
-    v34 = [(NSArray *)v7->_transactionKeyCertificateChain lastObject];
+    lastObject = [(NSArray *)v7->_transactionKeyCertificateChain lastObject];
     v35 = v7->_transactionKey;
-    v7->_transactionKey = v34;
+    v7->_transactionKey = lastObject;
 
-    v36 = [v31 appletIdentifier];
-    v37 = [v36 hexEncoding];
-    v38 = [v37 uppercaseString];
+    appletIdentifier2 = [hydraKeyInformation appletIdentifier];
+    hexEncoding3 = [appletIdentifier2 hexEncoding];
+    uppercaseString2 = [hexEncoding3 uppercaseString];
     v39 = v7->_appletIdentifier;
-    v7->_appletIdentifier = v38;
+    v7->_appletIdentifier = uppercaseString2;
 
     v40 = 130;
     if (v11 == 4)
@@ -128,9 +128,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if (v10 != 1)
+  if (keyType != 1)
   {
-    if (v10 != 2)
+    if (keyType != 2)
     {
       goto LABEL_14;
     }
@@ -138,28 +138,28 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v43 = [v6 alishaKeyInformation];
-  v44 = [v43 trackingRequest];
-  if (v44)
+  alishaKeyInformation = [informationCopy alishaKeyInformation];
+  trackingRequest = [alishaKeyInformation trackingRequest];
+  if (trackingRequest)
   {
-    v45 = [[PKSubcredentialEncryptedContainer alloc] initWithRequest:v44];
+    v45 = [[PKSubcredentialEncryptedContainer alloc] initWithRequest:trackingRequest];
     trackingRequest = v7->_trackingRequest;
     v7->_trackingRequest = v45;
   }
 
   v7->_credentialState = 21;
-  v47 = [v43 revocationAttestation];
+  revocationAttestation = [alishaKeyInformation revocationAttestation];
 
-  if (v47)
+  if (revocationAttestation)
   {
     v48 = 129;
   }
 
   else
   {
-    v49 = [v43 trackingReceipt];
+    trackingReceipt = [alishaKeyInformation trackingReceipt];
 
-    if (!v49)
+    if (!trackingReceipt)
     {
       goto LABEL_24;
     }
@@ -171,33 +171,33 @@ LABEL_11:
 LABEL_24:
   obj = 0;
   v80 = 0;
-  v50 = [v43 invitationIdentifier];
+  invitationIdentifier = [alishaKeyInformation invitationIdentifier];
   invitationIdentifier = v7->_invitationIdentifier;
-  v7->_invitationIdentifier = v50;
+  v7->_invitationIdentifier = invitationIdentifier;
 
-  v52 = [v43 pairedEntityIdentifier];
-  v53 = PKCredentialRoutingInformationFromPairedEntityIdentifer(v52, &v80, &obj);
+  pairedEntityIdentifier = [alishaKeyInformation pairedEntityIdentifier];
+  v53 = PKCredentialRoutingInformationFromPairedEntityIdentifer(pairedEntityIdentifier, &v80, &obj);
   partnerIdentifier = v7->_partnerIdentifier;
   v7->_partnerIdentifier = v53;
 
   objc_storeStrong(&v7->_brandIdentifier, obj);
   objc_storeStrong(&v7->_pairedReaderIdentifier, v80);
-  v55 = [v43 name];
+  name = [alishaKeyInformation name];
   sharingFriendlyName = v7->_sharingFriendlyName;
-  v7->_sharingFriendlyName = v55;
+  v7->_sharingFriendlyName = name;
 
-  v57 = [v43 localIdentifier];
+  localIdentifier = [alishaKeyInformation localIdentifier];
   v58 = v7->_endpointIdentifier;
-  v7->_endpointIdentifier = v57;
+  v7->_endpointIdentifier = localIdentifier;
 
-  v7->_isOnlineImmobilizerToken = [v43 onlineImmobilizerToken];
-  v59 = [v43 supportedTransports];
-  v7->_allSupportedRadioTechnologies = PKRadioTechnologyFromNumbers(v59);
+  v7->_isOnlineImmobilizerToken = [alishaKeyInformation onlineImmobilizerToken];
+  supportedTransports = [alishaKeyInformation supportedTransports];
+  v7->_allSupportedRadioTechnologies = PKRadioTechnologyFromNumbers(supportedTransports);
 
   allSupportedRadioTechnologies = v7->_allSupportedRadioTechnologies;
-  if (a4)
+  if (technologies)
   {
-    v61 = allSupportedRadioTechnologies & a4;
+    v61 = allSupportedRadioTechnologies & technologies;
   }
 
   else
@@ -209,15 +209,15 @@ LABEL_24:
   if (v7->_partnerIdentifier && v7->_pairedReaderIdentifier && v7->_brandIdentifier)
   {
     v7->_credentialType = 301;
-    v62 = [v43 ownerIDSIdentifier];
+    ownerIDSIdentifier = [alishaKeyInformation ownerIDSIdentifier];
     originatorIDSHandle = v7->_originatorIDSHandle;
-    v7->_originatorIDSHandle = v62;
+    v7->_originatorIDSHandle = ownerIDSIdentifier;
 
-    v64 = [v43 sharingSessionUUID];
+    sharingSessionUUID = [alishaKeyInformation sharingSessionUUID];
     sharingSessionIdentifier = v7->_sharingSessionIdentifier;
-    v7->_sharingSessionIdentifier = v64;
+    v7->_sharingSessionIdentifier = sharingSessionUUID;
 
-    if ([v43 vehicleSupportsSharingPassword])
+    if ([alishaKeyInformation vehicleSupportsSharingPassword])
     {
       v66 = objc_alloc_init(PKAppletSubcredentialSharingConfiguration);
       sharingConfiguration = v7->_sharingConfiguration;
@@ -232,9 +232,9 @@ LABEL_24:
       [(PKAppletSubcredentialSharingConfiguration *)v7->_sharingConfiguration setActivationOptions:v71];
     }
 
-    v72 = [v43 agreedFrameworkVersion];
+    agreedFrameworkVersion = [alishaKeyInformation agreedFrameworkVersion];
     v12 = 1;
-    if (v72 == 257)
+    if (agreedFrameworkVersion == 257)
     {
       v73 = 2;
     }
@@ -244,13 +244,13 @@ LABEL_24:
       v73 = 1;
     }
 
-    if (v72 == 768)
+    if (agreedFrameworkVersion == 768)
     {
       v73 = 3;
     }
 
     v7->_carKeyVehicleVersion = v73;
-    if ([v43 agreedVehicleServerVersion] == 768)
+    if ([alishaKeyInformation agreedVehicleServerVersion] == 768)
     {
       v74 = 2;
     }
@@ -261,7 +261,7 @@ LABEL_24:
     }
 
     v7->_carKeyServerVersion = v74;
-    if ([v43 fleetVehicle])
+    if ([alishaKeyInformation fleetVehicle])
     {
       v75 = 2;
     }
@@ -272,7 +272,7 @@ LABEL_24:
     }
 
     v7->_keyClass = v75;
-    if ([v43 serverIssued])
+    if ([alishaKeyInformation serverIssued])
     {
       v76 = 2;
     }
@@ -290,9 +290,9 @@ LABEL_24:
   v77 = PKLogFacilityTypeGetObject(0x17uLL);
   if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
   {
-    v78 = [v43 pairedEntityIdentifier];
+    pairedEntityIdentifier2 = [alishaKeyInformation pairedEntityIdentifier];
     *buf = 138412290;
-    v83 = v78;
+    v83 = pairedEntityIdentifier2;
     _os_log_impl(&dword_1AD337000, v77, OS_LOG_TYPE_DEFAULT, "Unable to parse paired entity identifier: %@", buf, 0xCu);
   }
 
@@ -302,41 +302,41 @@ LABEL_16:
   return v41;
 }
 
-- (PKAppletSubcredential)initWithIdentifier:(id)a3
+- (PKAppletSubcredential)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(PKAppletSubcredential *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v7->_isManagedByTSM = 1;
   }
 
   return v7;
 }
 
-- (PKAppletSubcredential)initWithDictionary:(id)a3
+- (PKAppletSubcredential)initWithDictionary:(id)dictionary
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PKAppletSubcredential *)self init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
     if (v5->_identifier)
     {
-      v8 = [v4 PKIntegerForKey:@"state"];
+      v8 = [dictionaryCopy PKIntegerForKey:@"state"];
       v5->_state = v8;
       if (v8)
       {
-        v9 = [v4 PKDictionaryForKey:@"entitlement"];
+        v9 = [dictionaryCopy PKDictionaryForKey:@"entitlement"];
         if (!v9 || (v10 = [[PKPassEntitlement alloc] initWithSubcredentialDictionary:v9 active:1 subcredentialIdentifier:v5->_identifier], entitlement = v5->_entitlement, v5->_entitlement = v10, entitlement, v5->_entitlement))
         {
-          v12 = [v4 PKDictionaryForKey:@"sharing"];
+          v12 = [dictionaryCopy PKDictionaryForKey:@"sharing"];
           if (v12)
           {
             v13 = [[PKAppletSubcredentialSharingConfiguration alloc] initWithDictionary:v12];
@@ -344,32 +344,32 @@ LABEL_16:
             v5->_sharingConfiguration = v13;
           }
 
-          v15 = [v4 PKStringForKey:@"invitationIdentifier"];
+          v15 = [dictionaryCopy PKStringForKey:@"invitationIdentifier"];
           invitationIdentifier = v5->_invitationIdentifier;
           v5->_invitationIdentifier = v15;
 
-          v17 = [v4 PKStringForKey:@"partnerIdentifier"];
+          v17 = [dictionaryCopy PKStringForKey:@"partnerIdentifier"];
           partnerIdentifier = v5->_partnerIdentifier;
           v5->_partnerIdentifier = v17;
 
-          v19 = [v4 PKStringForKey:@"pairedReaderIdentifier"];
+          v19 = [dictionaryCopy PKStringForKey:@"pairedReaderIdentifier"];
           pairedReaderIdentifier = v5->_pairedReaderIdentifier;
           v5->_pairedReaderIdentifier = v19;
 
-          v21 = [v4 PKStringForKey:@"brandIdentifier"];
+          v21 = [dictionaryCopy PKStringForKey:@"brandIdentifier"];
           brandIdentifier = v5->_brandIdentifier;
           v5->_brandIdentifier = v21;
 
-          v23 = [v4 PKStringForKey:@"sharingFriendlyName"];
+          v23 = [dictionaryCopy PKStringForKey:@"sharingFriendlyName"];
           sharingFriendlyName = v5->_sharingFriendlyName;
           v5->_sharingFriendlyName = v23;
 
-          v25 = [v4 PKStringForKey:@"endpointIdentifier"];
+          v25 = [dictionaryCopy PKStringForKey:@"endpointIdentifier"];
           endpointIdentifier = v5->_endpointIdentifier;
           v5->_endpointIdentifier = v25;
 
-          v5->_isOnlineImmobilizerToken = [v4 PKBoolForKey:@"onlineImmobilizerToken"];
-          v27 = [v4 PKStringForKey:@"sharingSessionIdentifier"];
+          v5->_isOnlineImmobilizerToken = [dictionaryCopy PKBoolForKey:@"onlineImmobilizerToken"];
+          v27 = [dictionaryCopy PKStringForKey:@"sharingSessionIdentifier"];
           if (v27)
           {
             v28 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v27];
@@ -377,12 +377,12 @@ LABEL_16:
             v5->_sharingSessionIdentifier = v28;
           }
 
-          v30 = [v4 PKStringForKey:@"originatorIDSHandle"];
+          v30 = [dictionaryCopy PKStringForKey:@"originatorIDSHandle"];
           originatorIDSHandle = v5->_originatorIDSHandle;
           v5->_originatorIDSHandle = v30;
 
-          v5->_allSupportedRadioTechnologies = [v4 PKIntegerForKey:@"allSupportedRadioTechnologies"];
-          v32 = [v4 PKIntegerForKey:@"supportedRadioTechnologies"];
+          v5->_allSupportedRadioTechnologies = [dictionaryCopy PKIntegerForKey:@"allSupportedRadioTechnologies"];
+          v32 = [dictionaryCopy PKIntegerForKey:@"supportedRadioTechnologies"];
           v5->_supportedRadioTechnologies = v32;
           if (!v32)
           {
@@ -393,17 +393,17 @@ LABEL_16:
             }
           }
 
-          v34 = [v4 PKStringForKey:@"isoFormat"];
+          v34 = [dictionaryCopy PKStringForKey:@"isoFormat"];
           isoFormat = v5->_isoFormat;
           v5->_isoFormat = v34;
 
-          v5->_credentialType = [v4 PKIntegerForKey:@"paymentNetwork"];
-          v36 = [v4 PKStringForKey:@"readerIdentifier"];
-          v37 = [v36 pk_decodeHexadecimal];
+          v5->_credentialType = [dictionaryCopy PKIntegerForKey:@"paymentNetwork"];
+          v36 = [dictionaryCopy PKStringForKey:@"readerIdentifier"];
+          pk_decodeHexadecimal = [v36 pk_decodeHexadecimal];
           readerIdentifier = v5->_readerIdentifier;
-          v5->_readerIdentifier = v37;
+          v5->_readerIdentifier = pk_decodeHexadecimal;
 
-          v39 = [v4 PKSetContaining:objc_opt_class() forKey:@"aliroGroupResolvingKeys"];
+          v39 = [dictionaryCopy PKSetContaining:objc_opt_class() forKey:@"aliroGroupResolvingKeys"];
           v40 = [v39 pk_setBySafelyApplyingBlock:&__block_literal_global_159];
           aliroGroupResolvingKeys = v5->_aliroGroupResolvingKeys;
           v5->_aliroGroupResolvingKeys = v40;
@@ -474,15 +474,15 @@ LABEL_25:
   entitlement = self->_entitlement;
   if (entitlement)
   {
-    v9 = [(PKPassEntitlement *)entitlement subcredentialDictionaryRepresentation];
-    [v4 setObject:v9 forKeyedSubscript:@"entitlement"];
+    subcredentialDictionaryRepresentation = [(PKPassEntitlement *)entitlement subcredentialDictionaryRepresentation];
+    [v4 setObject:subcredentialDictionaryRepresentation forKeyedSubscript:@"entitlement"];
   }
 
   sharingConfiguration = self->_sharingConfiguration;
   if (sharingConfiguration)
   {
-    v11 = [(PKAppletSubcredentialSharingConfiguration *)sharingConfiguration asDictionary];
-    [v4 setObject:v11 forKeyedSubscript:@"sharing"];
+    asDictionary = [(PKAppletSubcredentialSharingConfiguration *)sharingConfiguration asDictionary];
+    [v4 setObject:asDictionary forKeyedSubscript:@"sharing"];
   }
 
   invitationIdentifier = self->_invitationIdentifier;
@@ -543,8 +543,8 @@ LABEL_25:
   v22 = [MEMORY[0x1E696AD98] numberWithInteger:self->_credentialType];
   [v4 setObject:v22 forKeyedSubscript:@"paymentNetwork"];
 
-  v23 = [(NSData *)self->_readerIdentifier hexEncoding];
-  [v4 setObject:v23 forKeyedSubscript:@"readerIdentifier"];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
+  [v4 setObject:hexEncoding forKeyedSubscript:@"readerIdentifier"];
 
   v24 = [(NSSet *)self->_aliroGroupResolvingKeys pk_setByApplyingBlock:&__block_literal_global_124_0];
   [v4 setObject:v24 forKeyedSubscript:@"aliroGroupResolvingKeys"];
@@ -556,13 +556,13 @@ LABEL_25:
 
 - (BOOL)canShare
 {
-  v3 = [(PKAppletSubcredential *)self isShareable];
-  if (v3)
+  isShareable = [(PKAppletSubcredential *)self isShareable];
+  if (isShareable)
   {
-    LOBYTE(v3) = [(PKAppletSubcredentialSharingConfiguration *)self->_sharingConfiguration numberOfShareableCredentials]!= 0;
+    LOBYTE(isShareable) = [(PKAppletSubcredentialSharingConfiguration *)self->_sharingConfiguration numberOfShareableCredentials]!= 0;
   }
 
-  return v3;
+  return isShareable;
 }
 
 - (BOOL)isSharedCredential
@@ -604,37 +604,37 @@ LABEL_25:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v13 = a3;
-  [v13 encodeObject:identifier forKey:@"identifier"];
-  [v13 encodeInteger:self->_state forKey:@"state"];
-  [v13 encodeObject:self->_entitlement forKey:@"entitlement"];
-  [v13 encodeObject:self->_sharingConfiguration forKey:@"sharing"];
-  [v13 encodeObject:self->_invitationIdentifier forKey:@"invitationIdentifier"];
-  [v13 encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
-  [v13 encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
-  [v13 encodeObject:self->_brandIdentifier forKey:@"brandIdentifier"];
-  [v13 encodeObject:self->_sharingFriendlyName forKey:@"sharingFriendlyName"];
-  [v13 encodeObject:self->_endpointIdentifier forKey:@"endpointIdentifier"];
-  [v13 encodeBool:self->_isOnlineImmobilizerToken forKey:@"onlineImmobilizerToken"];
-  [v13 encodeInteger:self->_credentialState forKey:@"credentialState"];
-  [v13 encodeObject:self->_trackingRequest forKey:@"trackingRequest"];
-  [v13 encodeObject:self->_sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
-  [v13 encodeObject:self->_originatorIDSHandle forKey:@"originatorIDSHandle"];
-  [v13 encodeInteger:self->_allSupportedRadioTechnologies forKey:@"allSupportedRadioTechnologies"];
-  [v13 encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
-  [v13 encodeObject:self->_transactionKeyCertificateChain forKey:@"transactionKeyCertificateChain"];
-  [v13 encodeObject:self->_transactionKey forKey:@"transactionKey"];
-  [v13 encodeObject:self->_appletIdentifier forKey:@"appletIdentifier"];
-  [v13 encodeInteger:self->_credentialType forKey:@"paymentNetwork"];
-  [v13 encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_entitlement forKey:@"entitlement"];
+  [coderCopy encodeObject:self->_sharingConfiguration forKey:@"sharing"];
+  [coderCopy encodeObject:self->_invitationIdentifier forKey:@"invitationIdentifier"];
+  [coderCopy encodeObject:self->_partnerIdentifier forKey:@"partnerIdentifier"];
+  [coderCopy encodeObject:self->_pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
+  [coderCopy encodeObject:self->_brandIdentifier forKey:@"brandIdentifier"];
+  [coderCopy encodeObject:self->_sharingFriendlyName forKey:@"sharingFriendlyName"];
+  [coderCopy encodeObject:self->_endpointIdentifier forKey:@"endpointIdentifier"];
+  [coderCopy encodeBool:self->_isOnlineImmobilizerToken forKey:@"onlineImmobilizerToken"];
+  [coderCopy encodeInteger:self->_credentialState forKey:@"credentialState"];
+  [coderCopy encodeObject:self->_trackingRequest forKey:@"trackingRequest"];
+  [coderCopy encodeObject:self->_sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
+  [coderCopy encodeObject:self->_originatorIDSHandle forKey:@"originatorIDSHandle"];
+  [coderCopy encodeInteger:self->_allSupportedRadioTechnologies forKey:@"allSupportedRadioTechnologies"];
+  [coderCopy encodeInteger:self->_supportedRadioTechnologies forKey:@"supportedRadioTechnologies"];
+  [coderCopy encodeObject:self->_transactionKeyCertificateChain forKey:@"transactionKeyCertificateChain"];
+  [coderCopy encodeObject:self->_transactionKey forKey:@"transactionKey"];
+  [coderCopy encodeObject:self->_appletIdentifier forKey:@"appletIdentifier"];
+  [coderCopy encodeInteger:self->_credentialType forKey:@"paymentNetwork"];
+  [coderCopy encodeObject:self->_readerIdentifier forKey:@"readerIdentifier"];
   v5 = PKAppletSubcredentialCarKeyVehicleVersionToString(self->_carKeyVehicleVersion);
-  [v13 encodeObject:v5 forKey:@"vehicleVersion"];
+  [coderCopy encodeObject:v5 forKey:@"vehicleVersion"];
 
   v6 = PKAppletSubcredentialCarKeyServerVersionToString(self->_carKeyServerVersion);
-  [v13 encodeObject:v6 forKey:@"serverVersion"];
+  [coderCopy encodeObject:v6 forKey:@"serverVersion"];
 
   keyClass = self->_keyClass;
   v8 = @"private";
@@ -653,7 +653,7 @@ LABEL_25:
     v9 = v8;
   }
 
-  [v13 encodeObject:v9 forKey:@"keyClass"];
+  [coderCopy encodeObject:v9 forKey:@"keyClass"];
   credentialAuthorityType = self->_credentialAuthorityType;
   v11 = @"secure-element";
   if (credentialAuthorityType != 1)
@@ -671,106 +671,106 @@ LABEL_25:
     v12 = v11;
   }
 
-  [v13 encodeObject:v12 forKey:@"credentialAuthority"];
-  [v13 encodeBool:self->_isManagedByTSM forKey:@"isManagedbyTSM"];
-  [v13 encodeObject:self->_isoFormat forKey:@"isoFormat"];
-  [v13 encodeObject:self->_aliroGroupResolvingKeys forKey:@"aliroGroupResolvingKeys"];
+  [coderCopy encodeObject:v12 forKey:@"credentialAuthority"];
+  [coderCopy encodeBool:self->_isManagedByTSM forKey:@"isManagedbyTSM"];
+  [coderCopy encodeObject:self->_isoFormat forKey:@"isoFormat"];
+  [coderCopy encodeObject:self->_aliroGroupResolvingKeys forKey:@"aliroGroupResolvingKeys"];
 }
 
-- (PKAppletSubcredential)initWithCoder:(id)a3
+- (PKAppletSubcredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppletSubcredential *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entitlement"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entitlement"];
     entitlement = v5->_entitlement;
     v5->_entitlement = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharing"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharing"];
     sharingConfiguration = v5->_sharingConfiguration;
     v5->_sharingConfiguration = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"invitationIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"invitationIdentifier"];
     invitationIdentifier = v5->_invitationIdentifier;
     v5->_invitationIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerIdentifier"];
     partnerIdentifier = v5->_partnerIdentifier;
     v5->_partnerIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"brandIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"brandIdentifier"];
     brandIdentifier = v5->_brandIdentifier;
     v5->_brandIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingFriendlyName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingFriendlyName"];
     sharingFriendlyName = v5->_sharingFriendlyName;
     v5->_sharingFriendlyName = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pairedReaderIdentifier"];
     pairedReaderIdentifier = v5->_pairedReaderIdentifier;
     v5->_pairedReaderIdentifier = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endpointIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endpointIdentifier"];
     endpointIdentifier = v5->_endpointIdentifier;
     v5->_endpointIdentifier = v22;
 
-    v5->_isOnlineImmobilizerToken = [v4 decodeBoolForKey:@"onlineImmobilizerToken"];
-    v5->_credentialState = [v4 decodeIntegerForKey:@"credentialState"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"trackingRequest"];
+    v5->_isOnlineImmobilizerToken = [coderCopy decodeBoolForKey:@"onlineImmobilizerToken"];
+    v5->_credentialState = [coderCopy decodeIntegerForKey:@"credentialState"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"trackingRequest"];
     trackingRequest = v5->_trackingRequest;
     v5->_trackingRequest = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingSessionIdentifier"];
     sharingSessionIdentifier = v5->_sharingSessionIdentifier;
     v5->_sharingSessionIdentifier = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatorIDSHandle"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatorIDSHandle"];
     originatorIDSHandle = v5->_originatorIDSHandle;
     v5->_originatorIDSHandle = v28;
 
-    v5->_allSupportedRadioTechnologies = [v4 decodeIntegerForKey:@"allSupportedRadioTechnologies"];
-    v5->_supportedRadioTechnologies = [v4 decodeIntegerForKey:@"supportedRadioTechnologies"];
+    v5->_allSupportedRadioTechnologies = [coderCopy decodeIntegerForKey:@"allSupportedRadioTechnologies"];
+    v5->_supportedRadioTechnologies = [coderCopy decodeIntegerForKey:@"supportedRadioTechnologies"];
     v30 = objc_alloc(MEMORY[0x1E695DFD8]);
     v31 = objc_opt_class();
     v32 = [v30 initWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"transactionKeyCertificateChain"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"transactionKeyCertificateChain"];
     transactionKeyCertificateChain = v5->_transactionKeyCertificateChain;
     v5->_transactionKeyCertificateChain = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionKey"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionKey"];
     transactionKey = v5->_transactionKey;
     v5->_transactionKey = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletIdentifier"];
     appletIdentifier = v5->_appletIdentifier;
     v5->_appletIdentifier = v37;
 
-    v5->_credentialType = [v4 decodeIntegerForKey:@"paymentNetwork"];
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    v5->_credentialType = [coderCopy decodeIntegerForKey:@"paymentNetwork"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v5->_readerIdentifier;
     v5->_readerIdentifier = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vehicleVersion"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vehicleVersion"];
     v5->_carKeyVehicleVersion = PKAppletSubcredentialCarKeyVehicleVersionFromString(v41);
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverVersion"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverVersion"];
     v5->_carKeyServerVersion = PKAppletSubcredentialCarKeyServerVersionFromString(v42);
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyClass"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyClass"];
     v5->_keyClass = PKAppletSubcredentialKeyClassFromString(v43);
 
-    v44 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialAuthority"];
+    v44 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialAuthority"];
     v5->_credentialAuthorityType = PKAppletSubcredentialCredentialAuthorityTypeFromString(v44);
 
-    if ([v4 containsValueForKey:@"isManagedbyTSM"])
+    if ([coderCopy containsValueForKey:@"isManagedbyTSM"])
     {
-      v45 = [v4 decodeBoolForKey:@"isManagedbyTSM"];
+      v45 = [coderCopy decodeBoolForKey:@"isManagedbyTSM"];
     }
 
     else
@@ -779,14 +779,14 @@ LABEL_25:
     }
 
     v5->_isManagedByTSM = v45;
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isoFormat"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isoFormat"];
     isoFormat = v5->_isoFormat;
     v5->_isoFormat = v46;
 
     v48 = MEMORY[0x1E695DFD8];
     v49 = objc_opt_class();
     v50 = [v48 setWithObjects:{v49, objc_opt_class(), 0}];
-    v51 = [v4 decodeObjectOfClasses:v50 forKey:@"aliroGroupResolvingKeys"];
+    v51 = [coderCopy decodeObjectOfClasses:v50 forKey:@"aliroGroupResolvingKeys"];
     aliroGroupResolvingKeys = v5->_aliroGroupResolvingKeys;
     v5->_aliroGroupResolvingKeys = v51;
   }
@@ -796,12 +796,12 @@ LABEL_25:
 
 - (id)description
 {
-  v3 = [(NSSet *)self->_aliroGroupResolvingKeys allObjects];
-  v4 = [v3 count];
-  v39 = v3;
+  allObjects = [(NSSet *)self->_aliroGroupResolvingKeys allObjects];
+  v4 = [allObjects count];
+  v39 = allObjects;
   if (v4 < 4)
   {
-    v5 = [v3 pk_arrayByApplyingBlock:&__block_literal_global_137_0];
+    v5 = [allObjects pk_arrayByApplyingBlock:&__block_literal_global_137_0];
     v38 = [v5 componentsJoinedByString:{@", "}];
   }
 
@@ -818,10 +818,10 @@ LABEL_25:
   partnerIdentifier = self->_partnerIdentifier;
   invitationIdentifier = self->_invitationIdentifier;
   pairedReaderIdentifier = self->_pairedReaderIdentifier;
-  v6 = [(NSData *)self->_readerIdentifier hexEncoding];
+  hexEncoding = [(NSData *)self->_readerIdentifier hexEncoding];
   isOnlineImmobilizerToken = self->_isOnlineImmobilizerToken;
   brandIdentifier = self->_brandIdentifier;
-  v29 = v6;
+  v29 = hexEncoding;
   sharingFriendlyName = self->_sharingFriendlyName;
   sharingSessionIdentifier = self->_sharingSessionIdentifier;
   originatorIDSHandle = self->_originatorIDSHandle;
@@ -883,14 +883,14 @@ LABEL_25:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     identifier = self->_identifier;
-    v6 = v4[3];
+    v6 = equalCopy[3];
     if (identifier && v6)
     {
       v7 = [(NSString *)identifier isEqual:?];

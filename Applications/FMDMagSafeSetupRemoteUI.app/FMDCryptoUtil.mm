@@ -1,16 +1,16 @@
 @interface FMDCryptoUtil
-+ (BOOL)generatePublicPrivateKeyPair:(id *)a3 privateKey:(id *)a4;
-+ (__SecKey)dataToKey:(id)a3 isPublic:(BOOL)a4;
-+ (id)decryptData:(id)a3 privateKeyData:(id)a4;
-+ (id)keyToData:(__SecKey *)a3;
-+ (id)publicKeyFromPrivateKey:(id)a3;
++ (BOOL)generatePublicPrivateKeyPair:(id *)pair privateKey:(id *)key;
++ (__SecKey)dataToKey:(id)key isPublic:(BOOL)public;
++ (id)decryptData:(id)data privateKeyData:(id)keyData;
++ (id)keyToData:(__SecKey *)data;
++ (id)publicKeyFromPrivateKey:(id)key;
 + (void)testCrypto;
-+ (void)testCrypto2:(id)a3 privateKey:(id)a4;
++ (void)testCrypto2:(id)crypto2 privateKey:(id)key;
 @end
 
 @implementation FMDCryptoUtil
 
-+ (BOOL)generatePublicPrivateKeyPair:(id *)a3 privateKey:(id *)a4
++ (BOOL)generatePublicPrivateKeyPair:(id *)pair privateKey:(id *)key
 {
   v16[0] = kSecAttrKeyType;
   v16[1] = kSecAttrKeySizeInBits;
@@ -44,29 +44,29 @@
   else
   {
     v10 = v7;
-    *a3 = [FMDCryptoUtil keyToData:SecKeyCopyPublicKey(v7)];
-    *a4 = [FMDCryptoUtil keyToData:v10];
+    *pair = [FMDCryptoUtil keyToData:SecKeyCopyPublicKey(v7)];
+    *key = [FMDCryptoUtil keyToData:v10];
   }
 
   return v9;
 }
 
-+ (id)decryptData:(id)a3 privateKeyData:(id)a4
++ (id)decryptData:(id)data privateKeyData:(id)keyData
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  dataCopy = data;
+  keyDataCopy = keyData;
+  v7 = keyDataCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (dataCopy && keyDataCopy)
   {
     v9 = sub_100002400();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v7 fm_hexString];
+      fm_hexString = [v7 fm_hexString];
       *buf = 138412546;
-      v21 = v10;
+      v21 = fm_hexString;
       v22 = 2112;
-      v23 = v5;
+      v23 = dataCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "### privateKey = %@ cipherText = %@", buf, 0x16u);
     }
 
@@ -80,15 +80,15 @@
     }
 
     error = 0;
-    v8 = SecKeyCreateDecryptedData(v11, kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA256AESGCM, v5, &error);
+    v8 = SecKeyCreateDecryptedData(v11, kSecKeyAlgorithmECIESEncryptionStandardVariableIVX963SHA256AESGCM, dataCopy, &error);
     if (v8)
     {
       v13 = sub_100002400();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(__CFData *)v8 bytes];
+        bytes = [(__CFData *)v8 bytes];
         *buf = 136315138;
-        v21 = v14;
+        v21 = bytes;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "### decryption success with cipherText = %s", buf, 0xCu);
       }
 
@@ -159,11 +159,11 @@
         v13 = sub_100002400();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v12 bytes];
+          bytes = [v12 bytes];
           *buf = 138412546;
           v26 = v12;
           v27 = 2080;
-          v28 = v14;
+          v28 = bytes;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "### encryption success with cipherText = %@\n cipherString = %s", buf, 0x16u);
         }
 
@@ -174,15 +174,15 @@
           v16 = sub_100002400();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(__CFData *)v15 bytes];
+            bytes2 = [(__CFData *)v15 bytes];
             *buf = 136315138;
-            v26 = v17;
+            v26 = bytes2;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "### decryption success with cipherText = %s", buf, 0xCu);
           }
 
           v18 = objc_opt_class();
-          v19 = [a1 keyToData:v6];
-          v20 = [a1 keyToData:v4];
+          v19 = [self keyToData:v6];
+          v20 = [self keyToData:v4];
           [v18 testCrypto2:v19 privateKey:v20];
         }
 
@@ -219,31 +219,31 @@
   }
 }
 
-+ (void)testCrypto2:(id)a3 privateKey:(id)a4
++ (void)testCrypto2:(id)crypto2 privateKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() dataToKey:v6 isPublic:0];
-  v8 = [objc_opt_class() dataToKey:v5 isPublic:1];
+  crypto2Copy = crypto2;
+  keyCopy = key;
+  v7 = [objc_opt_class() dataToKey:keyCopy isPublic:0];
+  v8 = [objc_opt_class() dataToKey:crypto2Copy isPublic:1];
   v9 = sub_100002400();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v5;
+    v27 = crypto2Copy;
     v28 = 2112;
-    v29 = v6;
+    v29 = keyCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "### publicKeyData = %@ privateKeyData = %@", buf, 0x16u);
   }
 
   v10 = sub_100002400();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 bytes];
-    v12 = [v6 bytes];
+    bytes = [crypto2Copy bytes];
+    bytes2 = [keyCopy bytes];
     *buf = 136315394;
-    v27 = v11;
+    v27 = bytes;
     v28 = 2080;
-    v29 = v12;
+    v29 = bytes2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "### string publicKeyData = %s privateKeyData = %s", buf, 0x16u);
   }
 
@@ -279,11 +279,11 @@
         v19 = sub_100002400();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v18 bytes];
+          bytes3 = [v18 bytes];
           *buf = 138412546;
           v27 = v18;
           v28 = 2080;
-          v29 = v20;
+          v29 = bytes3;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "### encryption success with cipherText = %@\n cipherString = %s", buf, 0x16u);
         }
 
@@ -294,9 +294,9 @@
           v22 = sub_100002400();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [(__CFData *)v21 bytes];
+            bytes4 = [(__CFData *)v21 bytes];
             *buf = 136315138;
-            v27 = v23;
+            v27 = bytes4;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "### decryption success with cipherText = %s", buf, 0xCu);
           }
         }
@@ -334,10 +334,10 @@
   }
 }
 
-+ (id)keyToData:(__SecKey *)a3
++ (id)keyToData:(__SecKey *)data
 {
   error = 0;
-  v3 = SecKeyCopyExternalRepresentation(a3, &error);
+  v3 = SecKeyCopyExternalRepresentation(data, &error);
   if (!v3)
   {
     v4 = error;
@@ -353,9 +353,9 @@
   return v3;
 }
 
-+ (__SecKey)dataToKey:(id)a3 isPublic:(BOOL)a4
++ (__SecKey)dataToKey:(id)key isPublic:(BOOL)public
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
@@ -363,7 +363,7 @@
   v15[0] = kSecAttrKeyType;
   v15[1] = kSecAttrKeyClass;
   v4 = &kSecAttrKeyClassPublic;
-  if (!a4)
+  if (!public)
   {
     v4 = &kSecAttrKeyClassPrivate;
   }
@@ -373,10 +373,10 @@
   v16[1] = v5;
   v15[2] = kSecAttrKeySizeInBits;
   v16[2] = &off_10003D9C0;
-  v6 = a3;
+  keyCopy = key;
   v7 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:3];
   error = 0;
-  v8 = SecKeyCreateWithData(v6, v7, &error);
+  v8 = SecKeyCreateWithData(keyCopy, v7, &error);
 
   if (!v8)
   {
@@ -393,10 +393,10 @@
   return v8;
 }
 
-+ (id)publicKeyFromPrivateKey:(id)a3
++ (id)publicKeyFromPrivateKey:(id)key
 {
-  v3 = a3;
-  v4 = [objc_opt_class() dataToKey:v3 isPublic:0];
+  keyCopy = key;
+  v4 = [objc_opt_class() dataToKey:keyCopy isPublic:0];
 
   if (v4)
   {

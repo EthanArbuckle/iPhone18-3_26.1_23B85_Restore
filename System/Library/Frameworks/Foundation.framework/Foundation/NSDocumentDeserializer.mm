@@ -1,7 +1,7 @@
 @interface NSDocumentDeserializer
 - (id)deserializeNewData;
 - (id)deserializeNewPList;
-- (void)fixupDirInfo:(id)a3;
+- (void)fixupDirInfo:(id)info;
 @end
 
 @implementation NSDocumentDeserializer
@@ -13,16 +13,16 @@
   return [(NSAKDeserializer *)self deserializeData:v3];
 }
 
-- (void)fixupDirInfo:(id)a3
+- (void)fixupDirInfo:(id)info
 {
   v4 = [(NSDocumentDeserializer *)self zone];
-  v5 = [a3 objectForKey:@"."];
+  v5 = [info objectForKey:@"."];
   if (v5)
   {
-    v8 = [v5 deserializer];
-    v6 = [(NSAKDeserializer *)[NSDirInfoDeserializer allocWithZone:?], "initForDeserializerStream:", v8];
+    deserializer = [v5 deserializer];
+    v6 = [(NSAKDeserializer *)[NSDirInfoDeserializer allocWithZone:?], "initForDeserializerStream:", deserializer];
     v7 = [v6 deserializePList:{+[NSDirInfo allocWithZone:](NSDirInfo, "allocWithZone:", v4)}];
-    [a3 setObject:v7 forKey:@"."];
+    [info setObject:v7 forKey:@"."];
   }
 }
 

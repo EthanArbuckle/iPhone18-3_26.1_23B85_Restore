@@ -1,5 +1,5 @@
 @interface SFSiriLinkCoordinator
-+ (void)setApplicationProxy:(id)a3;
++ (void)setApplicationProxy:(id)proxy;
 - (SFSiriLinkActionPerformer)actionPerformer;
 - (SFSiriLinkCoordinator)init;
 - (id)changeReaderModeInteraction;
@@ -27,7 +27,7 @@
 
 @implementation SFSiriLinkCoordinator
 
-+ (void)setApplicationProxy:(id)a3
++ (void)setApplicationProxy:(id)proxy
 {
   swift_unknownObjectRetain();
   _sSo21SFSiriLinkCoordinatorC12MobileSafariE19setApplicationProxyyySo09SFBrowsergH0_pFZ_0();

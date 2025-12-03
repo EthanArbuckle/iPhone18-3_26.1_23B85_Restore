@@ -1,26 +1,26 @@
 @interface HKSignedClinicalDataRegistryIssuerEntry
-- (BOOL)isEqual:(id)a3;
-- (HKSignedClinicalDataRegistryIssuerEntry)initWithCoder:(id)a3;
-- (HKSignedClinicalDataRegistryIssuerEntry)initWithIdentifier:(id)a3 title:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSignedClinicalDataRegistryIssuerEntry)initWithCoder:(id)coder;
+- (HKSignedClinicalDataRegistryIssuerEntry)initWithIdentifier:(id)identifier title:(id)title;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataRegistryIssuerEntry
 
-- (HKSignedClinicalDataRegistryIssuerEntry)initWithIdentifier:(id)a3 title:(id)a4
+- (HKSignedClinicalDataRegistryIssuerEntry)initWithIdentifier:(id)identifier title:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = HKSignedClinicalDataRegistryIssuerEntry;
   v8 = [(HKSignedClinicalDataRegistryIssuerEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v11;
   }
@@ -28,13 +28,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -45,14 +45,14 @@ LABEL_18:
     }
 
     identifier = self->_identifier;
-    v10 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
-    if (identifier == v10)
+    identifier = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
+    if (identifier == identifier)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
-    if (!v11)
+    identifier2 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
+    if (!identifier2)
     {
       v13 = 0;
 LABEL_17:
@@ -60,16 +60,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v3 = v11;
+    v3 = identifier2;
     v12 = self->_identifier;
-    v4 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
-    if ([(NSString *)v12 isEqualToString:v4])
+    identifier3 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 identifier];
+    if ([(NSString *)v12 isEqualToString:identifier3])
     {
 LABEL_9:
       title = self->_title;
-      v15 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
-      v16 = v15;
-      if (title == v15)
+      title = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
+      v16 = title;
+      if (title == title)
       {
 
         v13 = 1;
@@ -77,13 +77,13 @@ LABEL_9:
 
       else
       {
-        v17 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
-        if (v17)
+        title2 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
+        if (title2)
         {
-          v18 = v17;
+          v18 = title2;
           v19 = self->_title;
-          v20 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
-          v13 = [(NSString *)v19 isEqualToString:v20];
+          title3 = [(HKSignedClinicalDataRegistryIssuerEntry *)v8 title];
+          v13 = [(NSString *)v19 isEqualToString:title3];
         }
 
         else
@@ -93,7 +93,7 @@ LABEL_9:
         }
       }
 
-      if (identifier == v10)
+      if (identifier == identifier)
       {
         goto LABEL_17;
       }
@@ -113,41 +113,41 @@ LABEL_19:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
 }
 
-- (HKSignedClinicalDataRegistryIssuerEntry)initWithCoder:(id)a3
+- (HKSignedClinicalDataRegistryIssuerEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     if (v6)
     {
       self = [(HKSignedClinicalDataRegistryIssuerEntry *)self initWithIdentifier:v5 title:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v7 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

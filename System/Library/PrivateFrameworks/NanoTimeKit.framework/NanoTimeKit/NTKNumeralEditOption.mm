@@ -1,23 +1,23 @@
 @interface NTKNumeralEditOption
-+ (BOOL)isPartiallySupported:(unint64_t)a3;
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)defaultOptionForDevice:(id)a3;
-+ (id)partiallySupportedEditOptionsForDevice:(id)a3;
++ (BOOL)isPartiallySupported:(unint64_t)supported;
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)defaultOptionForDevice:(id)device;
++ (id)partiallySupportedEditOptionsForDevice:(id)device;
 + (id)partiallySupportedOptions;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
-- (id)styleForSwatchTimeLabelWithFont:(id)a3 device:(id)a4 baseline:(double)a5 faceBounds:(CGRect)a6;
-- (id)swatchImageWithFont:(id)a3 device:(id)a4 baseline:(double)a5;
+- (id)styleForSwatchTimeLabelWithFont:(id)font device:(id)device baseline:(double)baseline faceBounds:(CGRect)bounds;
+- (id)swatchImageWithFont:(id)font device:(id)device baseline:(double)baseline;
 @end
 
 @implementation NTKNumeralEditOption
 
-+ (id)defaultOptionForDevice:(id)a3
++ (id)defaultOptionForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = CLKLocaleCurrentNumberSystem();
-  v5 = [NTKNumeralEditOption optionWithNumeral:NTKNumeralOptionFromCLKLocaleNumberSystem(v4) forDevice:v3];
+  v5 = [NTKNumeralEditOption optionWithNumeral:NTKNumeralOptionFromCLKLocaleNumberSystem(v4) forDevice:deviceCopy];
 
   return v5;
 }
@@ -206,28 +206,28 @@ void __52__NTKNumeralEditOption__valueToFaceBundleStringDict__block_invoke()
   _valueToFaceBundleStringDict_valueToFaceBundleString_0 = v0;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = CLKLocaleNumberSystemFromNumeralOption(a3);
+  v4 = CLKLocaleNumberSystemFromNumeralOption(value);
 
   return MEMORY[0x28210D9E0](v4);
 }
 
 - (id)localizedName
 {
-  v3 = [(NTKNumeralEditOption *)self numeralOption];
-  v4 = [(NTKEditOption *)self device];
-  v5 = [NTKNumeralEditOption _localizedNameForValue:v3 forDevice:v4];
+  numeralOption = [(NTKNumeralEditOption *)self numeralOption];
+  device = [(NTKEditOption *)self device];
+  v5 = [NTKNumeralEditOption _localizedNameForValue:numeralOption forDevice:device];
 
   return v5;
 }
 
-+ (id)_localizedNameForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_localizedNameForValue:(unint64_t)value forDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   if (_os_feature_enabled_impl())
   {
-    v6 = [v5 supportsPDRCapability:270936181];
+    v6 = [deviceCopy supportsPDRCapability:270936181];
   }
 
   else
@@ -236,7 +236,7 @@ void __52__NTKNumeralEditOption__valueToFaceBundleStringDict__block_invoke()
   }
 
   v7 = @"EDIT_OPTION_LABEL_NUMERAL_DEVANAGARI";
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       v8 = @"EDIT_OPTION_LABEL_NUMERAL_LATIN_COMPATIBILITY";
@@ -307,22 +307,22 @@ LABEL_23:
   return v10;
 }
 
-- (id)swatchImageWithFont:(id)a3 device:(id)a4 baseline:(double)a5
+- (id)swatchImageWithFont:(id)font device:(id)device baseline:(double)baseline
 {
-  v8 = a4;
-  v9 = a3;
+  deviceCopy = device;
+  fontCopy = font;
   [NTKEditOption sizeForSwatchStyle:[(NTKNumeralEditOption *)self swatchStyle]];
   v11 = v10;
   v13 = v12;
-  v14 = [v9 fontWithSize:22.0];
+  v14 = [fontCopy fontWithSize:22.0];
 
-  v15 = [(NTKEditOption *)self device];
-  v16 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:1 forDevice:v15];
+  device = [(NTKEditOption *)self device];
+  v16 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:1 forDevice:device];
 
   v17 = CLKLocaleNumberSystemFromNumeralOption([(NTKNumeralEditOption *)self numeralOption]);
   [v16 setUsesLegibility:1];
-  v18 = [MEMORY[0x277D75348] whiteColor];
-  [v16 setTextColor:v18];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v16 setTextColor:whiteColor];
 
   v19 = +[NTKTimeOffsetManager sharedManager];
   [v19 timeOffset];
@@ -332,7 +332,7 @@ LABEL_23:
   [v16 setOverrideDate:v20 duration:0.0];
 
   [v16 setForcedNumberSystem:v17];
-  v21 = [(NTKNumeralEditOption *)self styleForSwatchTimeLabelWithFont:v14 device:v8 baseline:a5 faceBounds:0.0, 0.0, v11, v13];
+  v21 = [(NTKNumeralEditOption *)self styleForSwatchTimeLabelWithFont:v14 device:deviceCopy baseline:baseline faceBounds:0.0, 0.0, v11, v13];
 
   [v16 setStyle:v21];
   [v16 sizeToFit];
@@ -366,29 +366,29 @@ void __60__NTKNumeralEditOption_swatchImageWithFont_device_baseline___block_invo
   [v5 renderInContext:v4];
 }
 
-- (id)styleForSwatchTimeLabelWithFont:(id)a3 device:(id)a4 baseline:(double)a5 faceBounds:(CGRect)a6
+- (id)styleForSwatchTimeLabelWithFont:(id)font device:(id)device baseline:(double)baseline faceBounds:(CGRect)bounds
 {
-  width = a6.size.width;
-  v7 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:a3 applyAdvanceFudge:a4 withBaselineY:a6.origin.x withFont:a6.origin.y forDevice:a6.size.width, a6.size.height, 0.0, round(a6.size.height * a5)];
-  v8 = [v7 layoutRule];
-  [v8 referenceFrame];
+  width = bounds.size.width;
+  v7 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:font applyAdvanceFudge:device withBaselineY:bounds.origin.x withFont:bounds.origin.y forDevice:bounds.size.width, bounds.size.height, 0.0, round(bounds.size.height * baseline)];
+  layoutRule = [v7 layoutRule];
+  [layoutRule referenceFrame];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 layoutRule];
-  [v13 setReferenceFrame:{0.0, v10, width, v12}];
+  layoutRule2 = [v7 layoutRule];
+  [layoutRule2 setReferenceFrame:{0.0, v10, width, v12}];
 
-  v14 = [v7 layoutRule];
-  [v14 setHorizontalLayout:1];
+  layoutRule3 = [v7 layoutRule];
+  [layoutRule3 setHorizontalLayout:1];
 
   return v7;
 }
 
-+ (id)partiallySupportedEditOptionsForDevice:(id)a3
++ (id)partiallySupportedEditOptionsForDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -408,8 +408,8 @@ void __60__NTKNumeralEditOption_swatchImageWithFont_device_baseline___block_invo
           objc_enumerationMutation(v5);
         }
 
-        v10 = [objc_opt_class() optionWithNumeral:objc_msgSend(*(*(&v12 + 1) + 8 * i) forDevice:{"intValue", v12), v3}];
-        [v4 addObject:v10];
+        v10 = [objc_opt_class() optionWithNumeral:objc_msgSend(*(*(&v12 + 1) + 8 * i) forDevice:{"intValue", v12), deviceCopy}];
+        [array addObject:v10];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -418,13 +418,13 @@ void __60__NTKNumeralEditOption_swatchImageWithFont_device_baseline___block_invo
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (id)partiallySupportedOptions
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -444,9 +444,9 @@ void __60__NTKNumeralEditOption_swatchImageWithFont_device_baseline___block_invo
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) intValue];
-        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-        [v2 addObject:v9];
+        intValue = [*(*(&v11 + 1) + 8 * i) intValue];
+        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:intValue];
+        [array addObject:v9];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -455,13 +455,13 @@ void __60__NTKNumeralEditOption_swatchImageWithFont_device_baseline___block_invo
     while (v5);
   }
 
-  return v2;
+  return array;
 }
 
-+ (BOOL)isPartiallySupported:(unint64_t)a3
++ (BOOL)isPartiallySupported:(unint64_t)supported
 {
   v4 = +[NTKNumeralEditOption partiallySupportedOptions];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:supported];
   v6 = [v4 containsObject:v5];
 
   return v6;

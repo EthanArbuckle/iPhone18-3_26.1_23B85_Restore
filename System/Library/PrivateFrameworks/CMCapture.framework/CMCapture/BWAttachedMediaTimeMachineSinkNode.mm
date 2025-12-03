@@ -1,40 +1,40 @@
 @interface BWAttachedMediaTimeMachineSinkNode
-- (BWAttachedMediaTimeMachineSinkNode)initWithTimeMachineCapacity:(int)a3 attachedMediaKeys:(id)a4 metadataKeys:(id)a5 sinkID:(id)a6;
-- (CFTypeRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(uint64_t)a4 additionalMetadata:(CFTypeRef *)a5 formatDescriptionInOut:;
-- (CFTypeRef)_newSampleBufferfromSbuf:(uint64_t)a1;
-- (id)getMetadataDictionaryForPts:(id *)a3;
-- (opaqueCMSampleBuffer)copyAttachedMediaSampleBufferForPts:(id *)a3 attachedMediaKey:(id)a4;
-- (uint64_t)_indexOfSampleBufferClosestToPTS:(const os_unfair_lock *)a1 attachedMediaKey:(CMTime *)a2;
-- (unint64_t)_indexOfMetadataClosestToPTS:(unint64_t)a1;
+- (BWAttachedMediaTimeMachineSinkNode)initWithTimeMachineCapacity:(int)capacity attachedMediaKeys:(id)keys metadataKeys:(id)metadataKeys sinkID:(id)d;
+- (CFTypeRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(uint64_t)pixelBuffer additionalMetadata:(CFTypeRef *)metadata formatDescriptionInOut:;
+- (CFTypeRef)_newSampleBufferfromSbuf:(uint64_t)sbuf;
+- (id)getMetadataDictionaryForPts:(id *)pts;
+- (opaqueCMSampleBuffer)copyAttachedMediaSampleBufferForPts:(id *)pts attachedMediaKey:(id)key;
+- (uint64_t)_indexOfSampleBufferClosestToPTS:(const os_unfair_lock *)s attachedMediaKey:(CMTime *)key;
+- (unint64_t)_indexOfMetadataClosestToPTS:(unint64_t)s;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWAttachedMediaTimeMachineSinkNode
 
-- (BWAttachedMediaTimeMachineSinkNode)initWithTimeMachineCapacity:(int)a3 attachedMediaKeys:(id)a4 metadataKeys:(id)a5 sinkID:(id)a6
+- (BWAttachedMediaTimeMachineSinkNode)initWithTimeMachineCapacity:(int)capacity attachedMediaKeys:(id)keys metadataKeys:(id)metadataKeys sinkID:(id)d
 {
-  if (![a4 count])
+  if (![keys count])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"The attachedMediaKeys array needs to have at least one element" userInfo:0]);
   }
 
   v27.receiver = self;
   v27.super_class = BWAttachedMediaTimeMachineSinkNode;
-  v11 = [(BWSinkNode *)&v27 initWithSinkID:a6];
+  v11 = [(BWSinkNode *)&v27 initWithSinkID:d];
   if (v11)
   {
     v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v11];
     [(BWNodeInput *)v12 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
-    v11->_timeMachineCapacity = a3;
+    v11->_timeMachineCapacity = capacity;
     [(BWNode *)v11 addInput:v12];
     v11->_timeMachineFrames = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11->_timeMachineLock._os_unfair_lock_opaque = 0;
-    if (a4)
+    if (keys)
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a4];
+      v13 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:keys];
       v11->_attachedMediaKeys = v13;
       v25 = 0u;
       v26 = 0u;
@@ -77,9 +77,9 @@
       [(BWNodeInputMediaConfiguration *)v20 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
       [(BWNodeInputMediaConfiguration *)v20 setPassthroughMode:0];
       [(BWNodeInput *)v11->super.super._input setUnspecifiedAttachedMediaConfiguration:v20];
-      if (a5)
+      if (metadataKeys)
       {
-        v11->_metadataKeys = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:a5];
+        v11->_metadataKeys = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:metadataKeys];
         [(NSMutableDictionary *)v11->_timeMachineFrames setObject:objc_alloc_init(MEMORY[0x1E695DF70]) forKeyedSubscript:*off_1E798A3C8];
         [(BWNode *)v11 setSupportsLiveReconfiguration:1];
         [(BWNode *)v11 setSupportsPrepareWhileRunning:1];
@@ -100,11 +100,11 @@
   return v11;
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (a3)
+  if (format)
   {
-    if (a4)
+    if (input)
     {
       v5.receiver = self;
       v5.super_class = BWAttachedMediaTimeMachineSinkNode;
@@ -136,17 +136,17 @@
   [(BWSinkNode *)&v4 dealloc];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   os_unfair_lock_lock(&self->_timeMachineLock);
-  if (a3)
+  if (d)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(NSMutableDictionary *)self->_timeMachineFrames allValues];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    allValues = [(NSMutableDictionary *)self->_timeMachineFrames allValues];
+    v8 = [allValues countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v8)
     {
       v9 = v8;
@@ -157,13 +157,13 @@
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v14 + 1) + 8 * i) removeAllObjects];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v9 = [allValues countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v9);
@@ -179,24 +179,24 @@
   os_unfair_lock_unlock(&self->_timeMachineLock);
   v12.receiver = self;
   v12.super_class = BWAttachedMediaTimeMachineSinkNode;
-  [(BWSinkNode *)&v12 didReachEndOfDataForInput:a4];
+  [(BWSinkNode *)&v12 didReachEndOfDataForInput:input];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v5 = a3;
+  bufferCopy = buffer;
   key = *off_1E798A3C8;
-  v7 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   v8 = *off_1E798B710;
   if (([objc_msgSend(v7 objectForKeyedSubscript:{*off_1E798B710), "BOOLValue"}] & 1) == 0)
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(v5, @"SynchronizedSlaveFrame");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(bufferCopy, @"SynchronizedSlaveFrame");
     if (AttachedMedia)
     {
       v10 = AttachedMedia;
       if ([objc_msgSend(CMGetAttachment(AttachedMedia key])
       {
-        v5 = v10;
+        bufferCopy = v10;
       }
     }
   }
@@ -218,7 +218,7 @@
         }
 
         v24 = *(8 * i);
-        v25 = BWSampleBufferGetAttachedMedia(v5, v24);
+        v25 = BWSampleBufferGetAttachedMedia(bufferCopy, v24);
         if (v25)
         {
           v33 = v25;
@@ -254,13 +254,13 @@
 
   if (self->_metadataKeys)
   {
-    v38 = CMGetAttachment(v5, keya, 0);
+    v38 = CMGetAttachment(bufferCopy, keya, 0);
     if (v38)
     {
       v39 = v38;
-      v40 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       metadataKeys = self->_metadataKeys;
-      v49 = OUTLINED_FUNCTION_16(v40, v42, v43, v44, v45, v46, v47, v48, v62, v65, v68, v70, v72, keya, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v116, v119, v122, 0);
+      v49 = OUTLINED_FUNCTION_16(dictionary, v42, v43, v44, v45, v46, v47, v48, v62, v65, v68, v70, v72, keya, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v116, v119, v122, 0);
       if (v49)
       {
         v50 = v49;
@@ -274,7 +274,7 @@
               objc_enumerationMutation(metadataKeys);
             }
 
-            v53 = [v40 setObject:objc_msgSend(v39 forKeyedSubscript:{"objectForKeyedSubscript:", *(8 * j)), *(8 * j)}];
+            v53 = [dictionary setObject:objc_msgSend(v39 forKeyedSubscript:{"objectForKeyedSubscript:", *(8 * j)), *(8 * j)}];
           }
 
           v50 = OUTLINED_FUNCTION_16(v53, v54, v55, v56, v57, v58, v59, v60, v63, v66, v69, v71, v72, keyb, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, v111, v114, v117, v120, v123, v126);
@@ -283,7 +283,7 @@
         while (v50);
       }
 
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames objectForKeyedSubscript:{keyb), "addObject:", v40}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames objectForKeyedSubscript:{keyb), "addObject:", dictionary}];
       if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames objectForKeyedSubscript:{keyb), "count"}] > self->_timeMachineCapacity)
       {
         [-[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames objectForKeyedSubscript:{keyb), "removeObjectAtIndex:", 0}];
@@ -301,9 +301,9 @@ LABEL_29:
   os_unfair_lock_unlock((self + v72));
 }
 
-- (CFTypeRef)_newSampleBufferfromSbuf:(uint64_t)a1
+- (CFTypeRef)_newSampleBufferfromSbuf:(uint64_t)sbuf
 {
-  if (!a1)
+  if (!sbuf)
   {
     return 0;
   }
@@ -316,7 +316,7 @@ LABEL_29:
   v8 = CMSampleBufferGetImageBuffer(sbuf);
   Height = CVPixelBufferGetHeight(v8);
   v21[0] = *MEMORY[0x1E696CE38];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(objc_msgSend(*(a1 + 16), "memoryPool"), "poolIdentifier")}];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(objc_msgSend(*(sbuf + 16), "memoryPool"), "poolIdentifier")}];
   v11 = *MEMORY[0x1E696CE60];
   v22[0] = v10;
   v22[1] = &unk_1F2244A70;
@@ -349,7 +349,7 @@ LABEL_29:
 
   else
   {
-    v17 = [(BWAttachedMediaTimeMachineSinkNode *)a1 _newOutputSampleBufferFromSampleBuffer:pixelBufferOut pixelBuffer:v16 additionalMetadata:(a1 + 224) formatDescriptionInOut:?];
+    v17 = [(BWAttachedMediaTimeMachineSinkNode *)sbuf _newOutputSampleBufferFromSampleBuffer:pixelBufferOut pixelBuffer:v16 additionalMetadata:(sbuf + 224) formatDescriptionInOut:?];
   }
 
   if (pixelBufferOut)
@@ -360,10 +360,10 @@ LABEL_29:
   return v17;
 }
 
-- (id)getMetadataDictionaryForPts:(id *)a3
+- (id)getMetadataDictionaryForPts:(id *)pts
 {
   os_unfair_lock_lock(&self->_timeMachineLock);
-  if (self->_metadataKeys && (v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames, "objectForKeyedSubscript:", *off_1E798A3C8)) != 0 && (v6 = v5, v10 = *a3, v7 = -[BWAttachedMediaTimeMachineSinkNode _indexOfMetadataClosestToPTS:](self, &v10), v7 < [v6 count]))
+  if (self->_metadataKeys && (v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_timeMachineFrames, "objectForKeyedSubscript:", *off_1E798A3C8)) != 0 && (v6 = v5, v10 = *pts, v7 = -[BWAttachedMediaTimeMachineSinkNode _indexOfMetadataClosestToPTS:](self, &v10), v7 < [v6 count]))
   {
     v8 = [v6 objectAtIndexedSubscript:v7];
   }
@@ -377,10 +377,10 @@ LABEL_29:
   return v8;
 }
 
-- (unint64_t)_indexOfMetadataClosestToPTS:(unint64_t)a1
+- (unint64_t)_indexOfMetadataClosestToPTS:(unint64_t)s
 {
-  v2 = a1;
-  if (a1)
+  sCopy = s;
+  if (s)
   {
     OUTLINED_FUNCTION_5_55();
     memset(&v30, 0, sizeof(v30));
@@ -390,9 +390,9 @@ LABEL_29:
     OUTLINED_FUNCTION_2_70();
     CMTimeMultiply(&lhs, &rhs, 2);
     CMTimeRangeMake(&v30, &v23.start, &lhs);
-    os_unfair_lock_assert_owner((v2 + 216));
-    v4 = [*(v2 + 208) objectForKeyedSubscript:*off_1E798A3C8];
-    v2 = 0;
+    os_unfair_lock_assert_owner((sCopy + 216));
+    v4 = [*(sCopy + 208) objectForKeyedSubscript:*off_1E798A3C8];
+    sCopy = 0;
     if ([v4 count])
     {
       v5 = 0;
@@ -429,7 +429,7 @@ LABEL_29:
             OUTLINED_FUNCTION_4_55();
             if (v21)
             {
-              v2 = v5;
+              sCopy = v5;
             }
           }
         }
@@ -441,14 +441,14 @@ LABEL_29:
     }
   }
 
-  return v2;
+  return sCopy;
 }
 
-- (opaqueCMSampleBuffer)copyAttachedMediaSampleBufferForPts:(id *)a3 attachedMediaKey:(id)a4
+- (opaqueCMSampleBuffer)copyAttachedMediaSampleBufferForPts:(id *)pts attachedMediaKey:(id)key
 {
   os_unfair_lock_lock(&self->_timeMachineLock);
-  v7 = [(NSMutableDictionary *)self->_timeMachineFrames objectForKeyedSubscript:a4];
-  if (v7 && (v8 = v7, v13 = *a3, v9 = -[BWAttachedMediaTimeMachineSinkNode _indexOfSampleBufferClosestToPTS:attachedMediaKey:](self, &v13), v9 < [v8 count]) && (v10 = objc_msgSend(v8, "objectAtIndexedSubscript:", v9)) != 0)
+  v7 = [(NSMutableDictionary *)self->_timeMachineFrames objectForKeyedSubscript:key];
+  if (v7 && (v8 = v7, v13 = *pts, v9 = -[BWAttachedMediaTimeMachineSinkNode _indexOfSampleBufferClosestToPTS:attachedMediaKey:](self, &v13), v9 < [v8 count]) && (v10 = objc_msgSend(v8, "objectAtIndexedSubscript:", v9)) != 0)
   {
     v11 = [(BWAttachedMediaTimeMachineSinkNode *)self _newSampleBufferfromSbuf:v10];
   }
@@ -462,22 +462,22 @@ LABEL_29:
   return v11;
 }
 
-- (uint64_t)_indexOfSampleBufferClosestToPTS:(const os_unfair_lock *)a1 attachedMediaKey:(CMTime *)a2
+- (uint64_t)_indexOfSampleBufferClosestToPTS:(const os_unfair_lock *)s attachedMediaKey:(CMTime *)key
 {
-  if (!a1)
+  if (!s)
   {
     return 0;
   }
 
   OUTLINED_FUNCTION_5_55();
   memset(&v28, 0, sizeof(v28));
-  lhs = *a2;
+  lhs = *key;
   OUTLINED_FUNCTION_2_70();
   CMTimeSubtract(&v21.start, &lhs, &rhs);
   OUTLINED_FUNCTION_2_70();
   CMTimeMultiply(&lhs, &rhs, 2);
   CMTimeRangeMake(&v28, &v21.start, &lhs);
-  os_unfair_lock_assert_owner(a1 + 54);
+  os_unfair_lock_assert_owner(s + 54);
   v4 = 0;
   if ([OUTLINED_FUNCTION_6_48() count])
   {
@@ -487,7 +487,7 @@ LABEL_29:
       memset(&lhs, 0, sizeof(lhs));
       v6 = [OUTLINED_FUNCTION_6_48() objectAtIndexedSubscript:v5];
       CMSampleBufferGetPresentationTimeStamp(&lhs, v6);
-      OUTLINED_FUNCTION_3_63(a2->epoch, v21.start.value, *&v21.start.timescale, v21.start.epoch, v21.duration.value, *&v21.duration.timescale, v21.duration.epoch, v22, v23, v24, *&a2->value, rhs.epoch, v26, *&lhs.value, lhs.epoch);
+      OUTLINED_FUNCTION_3_63(key->epoch, v21.start.value, *&v21.start.timescale, v21.start.epoch, v21.duration.value, *&v21.duration.timescale, v21.duration.epoch, v22, v23, v24, *&key->value, rhs.epoch, v26, *&lhs.value, lhs.epoch);
       CMTimeGetSeconds(&v21.start);
       v21 = v28;
       *&rhs.value = *&lhs.value;
@@ -499,7 +499,7 @@ LABEL_29:
       }
 
       OUTLINED_FUNCTION_7_44(v9, v10, v11, v12, v13, v14, v15, v16, v21.start.value, *&v21.start.timescale, v21.start.epoch, v21.duration.value, *&v21.duration.timescale, v21.duration.epoch, v22, *(&v22 + 1), v23, v24, rhs.value, *&rhs.timescale, rhs.epoch, v26, *&lhs.value);
-      *&rhs.value = *&a2->value;
+      *&rhs.value = *&key->value;
       OUTLINED_FUNCTION_1_79();
       if (!CMTimeCompare(v17, v18))
       {
@@ -524,9 +524,9 @@ LABEL_29:
   return v4;
 }
 
-- (CFTypeRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)a3 pixelBuffer:(uint64_t)a4 additionalMetadata:(CFTypeRef *)a5 formatDescriptionInOut:
+- (CFTypeRef)_newOutputSampleBufferFromSampleBuffer:(__CVBuffer *)buffer pixelBuffer:(uint64_t)pixelBuffer additionalMetadata:(CFTypeRef *)metadata formatDescriptionInOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -535,9 +535,9 @@ LABEL_29:
   cf = 0;
   if (a2)
   {
-    if (a3)
+    if (buffer)
     {
-      CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, a3, a5, &cf);
+      CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, buffer, metadata, &cf);
       v6 = cf;
       if (CopyWithNewPixelBuffer || (v8 = BWCMSampleBufferCopyMetadataToSampleBuffer(a2, cf) != 0, v6 = cf, v8))
       {

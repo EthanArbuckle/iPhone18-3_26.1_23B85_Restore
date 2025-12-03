@@ -1,22 +1,22 @@
 @interface UIViewControllerAction
-- (UIViewControllerAction)initWithViewController:(id)a3 name:(id)a4 transition:(int)a5;
+- (UIViewControllerAction)initWithViewController:(id)controller name:(id)name transition:(int)transition;
 @end
 
 @implementation UIViewControllerAction
 
-- (UIViewControllerAction)initWithViewController:(id)a3 name:(id)a4 transition:(int)a5
+- (UIViewControllerAction)initWithViewController:(id)controller name:(id)name transition:(int)transition
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = UIViewControllerAction;
   v10 = [(UIViewControllerAction *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_viewController, v8);
-    objc_storeStrong(&v11->_name, a4);
-    v11->_transition = a5;
+    objc_storeWeak(&v10->_viewController, controllerCopy);
+    objc_storeStrong(&v11->_name, name);
+    v11->_transition = transition;
   }
 
   return v11;

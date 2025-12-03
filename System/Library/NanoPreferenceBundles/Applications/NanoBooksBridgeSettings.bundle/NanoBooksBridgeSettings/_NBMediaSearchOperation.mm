@@ -1,22 +1,22 @@
 @interface _NBMediaSearchOperation
-- (_NBMediaSearchOperation)initWithSearchDataSource:(id)a3 searchString:(id)a4;
-- (id)_representativeItemFromCollection:(id)a3;
+- (_NBMediaSearchOperation)initWithSearchDataSource:(id)source searchString:(id)string;
+- (id)_representativeItemFromCollection:(id)collection;
 - (id)results;
 - (void)executeSearch;
 @end
 
 @implementation _NBMediaSearchOperation
 
-- (_NBMediaSearchOperation)initWithSearchDataSource:(id)a3 searchString:(id)a4
+- (_NBMediaSearchOperation)initWithSearchDataSource:(id)source searchString:(id)string
 {
-  v6 = a3;
+  sourceCopy = source;
   v14.receiver = self;
   v14.super_class = _NBMediaSearchOperation;
-  v7 = [(_NBSearchOperation *)&v14 initWithSearchDataSource:v6 searchString:a4];
+  v7 = [(_NBSearchOperation *)&v14 initWithSearchDataSource:sourceCopy searchString:string];
   if (v7)
   {
-    v8 = [v6 searchQuery];
-    v9 = [v8 copy];
+    searchQuery = [sourceCopy searchQuery];
+    v9 = [searchQuery copy];
     query = v7->_query;
     v7->_query = v9;
 
@@ -40,14 +40,14 @@
   [(MPMediaQuery *)query _enumerateCollectionsUsingBlock:v4];
 }
 
-- (id)_representativeItemFromCollection:(id)a3
+- (id)_representativeItemFromCollection:(id)collection
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  items = [collection items];
+  v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -57,7 +57,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -68,7 +68,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;

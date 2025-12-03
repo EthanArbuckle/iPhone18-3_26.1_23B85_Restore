@@ -1,23 +1,23 @@
 @interface HFActionSetListItem
 - (HFActionSetListItem)init;
-- (HFActionSetListItem)initWithHome:(id)a3 room:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFActionSetListItem)initWithHome:(id)home room:(id)room;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFActionSetListItem
 
-- (HFActionSetListItem)initWithHome:(id)a3 room:(id)a4
+- (HFActionSetListItem)initWithHome:(id)home room:(id)room
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  roomCopy = room;
   v12.receiver = self;
   v12.super_class = HFActionSetListItem;
   v9 = [(HFActionSetListItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_room, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_room, room);
   }
 
   return v10;
@@ -25,31 +25,31 @@
 
 - (HFActionSetListItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFActionSetListItem.m" lineNumber:36 description:@"Use -initWithHome:room:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionSetListItem.m" lineNumber:36 description:@"Use -initWithHome:room:"];
 
   return 0;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(MEMORY[0x277D2C900]);
   v5 = [HFActionSetItemProvider alloc];
-  v6 = [(HFActionSetListItem *)self home];
-  v7 = [(HFActionSetItemProvider *)v5 initWithHome:v6 actionSetItemStyle:0];
+  home = [(HFActionSetListItem *)self home];
+  v7 = [(HFActionSetItemProvider *)v5 initWithHome:home actionSetItemStyle:0];
 
-  v8 = [(HFActionSetListItem *)self room];
-  [(HFActionSetItemProvider *)v7 setRoom:v8];
+  room = [(HFActionSetListItem *)self room];
+  [(HFActionSetItemProvider *)v7 setRoom:room];
 
   [(HFActionSetItemProvider *)v7 setOnlyShowsFavorites:[(HFActionSetListItem *)self onlyShowsFavorites]];
-  v9 = [(HFActionSetItemProvider *)v7 reloadItems];
+  reloadItems = [(HFActionSetItemProvider *)v7 reloadItems];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __51__HFActionSetListItem__subclass_updateWithOptions___block_invoke;
   v19[3] = &unk_277DF2D08;
   v10 = v4;
   v20 = v10;
-  v11 = [v9 addFailureBlock:v19];
+  v11 = [reloadItems addFailureBlock:v19];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __51__HFActionSetListItem__subclass_updateWithOptions___block_invoke_2;
@@ -57,7 +57,7 @@
   v17[4] = self;
   v12 = v10;
   v18 = v12;
-  v13 = [v9 addSuccessBlock:v17];
+  v13 = [reloadItems addSuccessBlock:v17];
   v14 = v18;
   v15 = v12;
 

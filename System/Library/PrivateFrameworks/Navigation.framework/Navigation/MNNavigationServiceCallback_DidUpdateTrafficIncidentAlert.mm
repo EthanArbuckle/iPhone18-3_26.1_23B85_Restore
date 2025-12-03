@@ -1,8 +1,8 @@
 @interface MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert
 - (NSString)updateTypeString;
 - (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)init;
-- (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)initWithUpdateType:(int64_t)a3 trafficIncidentAlert:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)initWithUpdateType:(int64_t)type trafficIncidentAlert:(id)alert;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert
@@ -19,7 +19,7 @@
 
 LABEL_12:
     v6 = *(&self->super.super.isa + OBJC_IVAR____TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert_updateType);
-    v5 = self;
+    selfCopy = self;
     result = sub_1D3277900();
     __break(1u);
     return result;
@@ -36,21 +36,21 @@ LABEL_9:
   return v3;
 }
 
-- (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)initWithUpdateType:(int64_t)a3 trafficIncidentAlert:(id)a4
+- (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)initWithUpdateType:(int64_t)type trafficIncidentAlert:(id)alert
 {
-  *(&self->super.super.isa + OBJC_IVAR____TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert_updateType) = a3;
-  *(&self->super.super.isa + OBJC_IVAR____TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert_trafficIncidentAlert) = a4;
+  *(&self->super.super.isa + OBJC_IVAR____TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert_updateType) = type;
+  *(&self->super.super.isa + OBJC_IVAR____TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert_trafficIncidentAlert) = alert;
   v7.receiver = self;
   v7.super_class = type metadata accessor for MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert();
-  v5 = a4;
+  alertCopy = alert;
   return [(MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert *)&v7 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D31436A0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1D31436A0(coderCopy);
 }
 
 - (_TtC10Navigation57MNNavigationServiceCallback_DidUpdateTrafficIncidentAlert)init

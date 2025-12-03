@@ -1,23 +1,23 @@
 @interface PPFlightEventsAggregator
 - (id)_multiDestinationsFlights;
-- (id)_returningFlightForFlight:(id)a3 inPool:(id)a4;
+- (id)_returningFlightForFlight:(id)flight inPool:(id)pool;
 - (id)_simpleRoundTripFlights;
 - (id)tripCandidatesFromEventsPool;
 @end
 
 @implementation PPFlightEventsAggregator
 
-- (id)_returningFlightForFlight:(id)a3 inPool:(id)a4
+- (id)_returningFlightForFlight:(id)flight inPool:(id)pool
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 pp_airports];
+  flightCopy = flight;
+  poolCopy = pool;
+  pp_airports = [flightCopy pp_airports];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = poolCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
@@ -36,27 +36,27 @@
         }
 
         v13 = *(*(&v30 + 1) + 8 * v12);
-        if (v13 != v5)
+        if (v13 != flightCopy)
         {
-          v14 = [*(*(&v30 + 1) + 8 * v12) startDate];
-          v15 = [v5 startDate];
+          startDate = [*(*(&v30 + 1) + 8 * v12) startDate];
+          startDate2 = [flightCopy startDate];
 
-          if (v14 >= v15)
+          if (startDate >= startDate2)
           {
-            v16 = [v13 pp_airports];
-            v17 = [v16 first];
-            v18 = [v7 second];
-            if ([v17 isEqualToPPFlightAirport:v18])
+            pp_airports2 = [v13 pp_airports];
+            first = [pp_airports2 first];
+            second = [pp_airports second];
+            if ([first isEqualToPPFlightAirport:second])
             {
-              v19 = [v16 second];
-              [v7 first];
+              second2 = [pp_airports2 second];
+              [pp_airports first];
               v20 = v11;
-              v21 = v5;
-              v23 = v22 = v7;
-              v29 = [v19 isEqualToPPFlightAirport:v23];
+              v21 = flightCopy;
+              v23 = v22 = pp_airports;
+              v29 = [second2 isEqualToPPFlightAirport:v23];
 
-              v7 = v22;
-              v5 = v21;
+              pp_airports = v22;
+              flightCopy = v21;
               v11 = v20;
               v10 = v28;
 
@@ -98,8 +98,8 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
   if (self)
   {
-    v2 = [(PPEventsAggregator *)self eventsPool];
-    v3 = [v2 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
+    eventsPool = [(PPEventsAggregator *)self eventsPool];
+    v3 = [eventsPool sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
   }
 
   else
@@ -108,9 +108,9 @@ LABEL_16:
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 firstObject];
-  v6 = [v5 pp_airports];
-  v7 = [v6 first];
+  firstObject = [v3 firstObject];
+  pp_airports = [firstObject pp_airports];
+  first = [pp_airports first];
 
   v27 = 0u;
   v28 = 0u;
@@ -121,38 +121,38 @@ LABEL_16:
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    second = 0;
     v11 = *v26;
     do
     {
       for (i = 0; i != v9; ++i)
       {
-        v13 = v10;
+        v13 = second;
         if (*v26 != v11)
         {
           objc_enumerationMutation(obj);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        if (![v4 count] || v7 && objc_msgSend(v13, "isEqualToPPFlightAirport:", v7) || (objc_msgSend(v4, "lastObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "lastObject"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "pp_isConnectionFromFlight:", v14), v16, v15, !v17))
+        if (![v4 count] || first && objc_msgSend(v13, "isEqualToPPFlightAirport:", first) || (objc_msgSend(v4, "lastObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "lastObject"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "pp_isConnectionFromFlight:", v14), v16, v15, !v17))
         {
           v19 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
           [v4 addObject:v19];
 
-          v18 = [v14 pp_airports];
-          v20 = [v18 first];
+          pp_airports2 = [v14 pp_airports];
+          first2 = [pp_airports2 first];
 
-          v7 = v20;
+          first = first2;
         }
 
         else
         {
-          v18 = [v4 lastObject];
-          [v18 addObject:v14];
+          pp_airports2 = [v4 lastObject];
+          [pp_airports2 addObject:v14];
         }
 
-        v21 = [v14 pp_airports];
-        v10 = [v21 second];
+        pp_airports3 = [v14 pp_airports];
+        second = [pp_airports3 second];
       }
 
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -175,8 +175,8 @@ LABEL_16:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(PPEventsAggregator *)self eventsPool];
-  v6 = [v5 sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
+  eventsPool = [(PPEventsAggregator *)self eventsPool];
+  v6 = [eventsPool sortedArrayUsingSelector:sel_compareStartDateWithEvent_];
 
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
@@ -195,8 +195,8 @@ LABEL_16:
         v11 = *(*(&v17 + 1) + 8 * i);
         if (([v4 containsObject:v11] & 1) == 0)
         {
-          v12 = [(PPEventsAggregator *)self eventsPool];
-          v13 = [(PPFlightEventsAggregator *)self _returningFlightForFlight:v11 inPool:v12];
+          eventsPool2 = [(PPEventsAggregator *)self eventsPool];
+          v13 = [(PPFlightEventsAggregator *)self _returningFlightForFlight:v11 inPool:eventsPool2];
 
           if (v13)
           {
@@ -228,8 +228,8 @@ LABEL_16:
 
   v3 = objc_opt_new();
   v4 = objc_opt_new();
-  v5 = [(PPFlightEventsAggregator *)self _multiDestinationsFlights];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  _multiDestinationsFlights = [(PPFlightEventsAggregator *)self _multiDestinationsFlights];
+  v6 = [v4 arrayByAddingObjectsFromArray:_multiDestinationsFlights];
 
   v18 = 0u;
   v19 = 0u;

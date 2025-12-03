@@ -1,21 +1,21 @@
 @interface MXDiagnosticServices
-- (MXDiagnosticServices)initWithSourcePathUtil:(id)a3 andDateUtil:(id)a4;
-- (id)_diagnosticPayloadForClient:(id)a3 andDate:(id)a4;
-- (id)_diagnosticsFromServicesForClient:(id)a3 dateString:(id)a4;
-- (id)diagnosticPayloadForClient:(id)a3 andDate:(id)a4;
-- (id)diagnosticPayloadForClient:(id)a3 isExtension:(BOOL)a4 andMainAppBundleID:(id)a5 andDate:(id)a6;
-- (void)_createServicesForClient:(id)a3;
+- (MXDiagnosticServices)initWithSourcePathUtil:(id)util andDateUtil:(id)dateUtil;
+- (id)_diagnosticPayloadForClient:(id)client andDate:(id)date;
+- (id)_diagnosticsFromServicesForClient:(id)client dateString:(id)string;
+- (id)diagnosticPayloadForClient:(id)client andDate:(id)date;
+- (id)diagnosticPayloadForClient:(id)client isExtension:(BOOL)extension andMainAppBundleID:(id)d andDate:(id)date;
+- (void)_createServicesForClient:(id)client;
 - (void)_startServices;
 - (void)_stopServices;
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3;
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client;
 @end
 
 @implementation MXDiagnosticServices
 
-- (MXDiagnosticServices)initWithSourcePathUtil:(id)a3 andDateUtil:(id)a4
+- (MXDiagnosticServices)initWithSourcePathUtil:(id)util andDateUtil:(id)dateUtil
 {
-  v7 = a3;
-  v8 = a4;
+  utilCopy = util;
+  dateUtilCopy = dateUtil;
   v15.receiver = self;
   v15.super_class = MXDiagnosticServices;
   v9 = [(MXDiagnosticServices *)&v15 init];
@@ -25,8 +25,8 @@
     services = v9->_services;
     v9->_services = v10;
 
-    objc_storeStrong(&v9->_sourcePathUtil, a3);
-    objc_storeStrong(&v9->_dateUtil, a4);
+    objc_storeStrong(&v9->_sourcePathUtil, util);
+    objc_storeStrong(&v9->_dateUtil, dateUtil);
     v12 = os_log_create("com.apple.metrickit", "diagnostic.service.manager");
     logHandle = v9->_logHandle;
     v9->_logHandle = v12;
@@ -40,15 +40,15 @@
   return v9;
 }
 
-- (id)diagnosticPayloadForClient:(id)a3 andDate:(id)a4
+- (id)diagnosticPayloadForClient:(id)client andDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x277D28708] verifySDKVersionForClient:v6])
+  clientCopy = client;
+  dateCopy = date;
+  if ([MEMORY[0x277D28708] verifySDKVersionForClient:clientCopy])
   {
-    [(MXDiagnosticServices *)self _createServicesForClient:v6];
+    [(MXDiagnosticServices *)self _createServicesForClient:clientCopy];
     [(MXDiagnosticServices *)self _startServices];
-    v8 = [(MXDiagnosticServices *)self _diagnosticPayloadForClient:v6 andDate:v7];
+    v8 = [(MXDiagnosticServices *)self _diagnosticPayloadForClient:clientCopy andDate:dateCopy];
     [(MXDiagnosticServices *)self _stopServices];
   }
 
@@ -60,13 +60,13 @@
   return v8;
 }
 
-- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)a3
+- (void)cleanServiceDiagnosticsDirectoriesForClient:(id)client
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MXDiagnosticServices *)self services];
+  clientCopy = client;
+  services = [(MXDiagnosticServices *)self services];
 
-  if (v5)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -79,10 +79,10 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(MXDiagnosticServices *)self services];
-    v8 = [v7 allObjects];
+    services2 = [(MXDiagnosticServices *)self services];
+    allObjects = [services2 allObjects];
 
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+    v9 = [allObjects countByEnumeratingWithState:&v18 objects:v24 count:16];
     if (v9)
     {
       v11 = v9;
@@ -95,7 +95,7 @@
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
@@ -112,11 +112,11 @@
 
           else
           {
-            -[MXSourcePathUtilProtocol cleanDiagnosticsDirectoryForSource:andClient:](self->_sourcePathUtil, "cleanDiagnosticsDirectoryForSource:andClient:", [v14 sourceID], v4);
+            -[MXSourcePathUtilProtocol cleanDiagnosticsDirectoryForSource:andClient:](self->_sourcePathUtil, "cleanDiagnosticsDirectoryForSource:andClient:", [v14 sourceID], clientCopy);
           }
         }
 
-        v11 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v11 = [allObjects countByEnumeratingWithState:&v18 objects:v24 count:16];
       }
 
       while (v11);
@@ -126,13 +126,13 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createServicesForClient:(id)a3
+- (void)_createServicesForClient:(id)client
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MXDiagnosticServices *)self services];
+  clientCopy = client;
+  services = [(MXDiagnosticServices *)self services];
 
-  if (v5)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -141,26 +141,26 @@
       _os_log_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_DEFAULT, "Initializing MXSource Services\n", buf, 2u);
     }
 
-    v7 = [(MXDiagnosticServices *)self services];
-    v8 = [MEMORY[0x277D286E0] sharedHangTracerService];
-    [v7 addObject:v8];
+    services2 = [(MXDiagnosticServices *)self services];
+    mEMORY[0x277D286E0] = [MEMORY[0x277D286E0] sharedHangTracerService];
+    [services2 addObject:mEMORY[0x277D286E0]];
 
-    v9 = [(MXDiagnosticServices *)self services];
-    v10 = [MEMORY[0x277D28700] sharedSpinTracerService];
-    [v9 addObject:v10];
+    services3 = [(MXDiagnosticServices *)self services];
+    mEMORY[0x277D28700] = [MEMORY[0x277D28700] sharedSpinTracerService];
+    [services3 addObject:mEMORY[0x277D28700]];
 
-    v11 = [(MXDiagnosticServices *)self services];
-    v12 = [MEMORY[0x277D286F0] sharedReportCrashService];
-    [v11 addObject:v12];
+    services4 = [(MXDiagnosticServices *)self services];
+    mEMORY[0x277D286F0] = [MEMORY[0x277D286F0] sharedReportCrashService];
+    [services4 addObject:mEMORY[0x277D286F0]];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [(MXDiagnosticServices *)self services];
-    v14 = [v13 allObjects];
+    services5 = [(MXDiagnosticServices *)self services];
+    allObjects = [services5 allObjects];
 
-    v15 = [v14 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v15 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v15)
     {
       v16 = v15;
@@ -171,13 +171,13 @@
         {
           if (*v21 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v20 + 1) + 8 * i) setCurrentClient:v4];
+          [*(*(&v20 + 1) + 8 * i) setCurrentClient:clientCopy];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v16 = [allObjects countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v16);
@@ -190,18 +190,18 @@
 - (void)_startServices
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(MXDiagnosticServices *)self services];
+  services = [(MXDiagnosticServices *)self services];
 
-  if (v3)
+  if (services)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(MXDiagnosticServices *)self services];
-    v5 = [v4 allObjects];
+    services2 = [(MXDiagnosticServices *)self services];
+    allObjects = [services2 allObjects];
 
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    v6 = [allObjects countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
     {
       v8 = v6;
@@ -214,7 +214,7 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
@@ -228,12 +228,12 @@
               _os_log_error_impl(&dword_258D6F000, logHandle, OS_LOG_TYPE_ERROR, "%@ service failed to start", buf, 0xCu);
             }
 
-            v13 = [(MXDiagnosticServices *)self services];
-            [v13 removeObject:v11];
+            services3 = [(MXDiagnosticServices *)self services];
+            [services3 removeObject:v11];
           }
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v8);
@@ -243,9 +243,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = v14;
-      v16 = [(MXDiagnosticServices *)self services];
+      services4 = [(MXDiagnosticServices *)self services];
       *buf = 138412290;
-      v24 = v16;
+      v24 = services4;
       _os_log_impl(&dword_258D6F000, v15, OS_LOG_TYPE_INFO, "Services started:%@", buf, 0xCu);
     }
   }
@@ -256,9 +256,9 @@
 - (void)_stopServices
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(MXDiagnosticServices *)self services];
+  services = [(MXDiagnosticServices *)self services];
 
-  if (v3)
+  if (services)
   {
     logHandle = self->_logHandle;
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -271,10 +271,10 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(MXDiagnosticServices *)self services];
-    v6 = [v5 allObjects];
+    services2 = [(MXDiagnosticServices *)self services];
+    allObjects = [services2 allObjects];
 
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v17 objects:v23 count:16];
     if (v7)
     {
       v9 = v7;
@@ -287,7 +287,7 @@
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -301,12 +301,12 @@
               _os_log_error_impl(&dword_258D6F000, v13, OS_LOG_TYPE_ERROR, "%@ service failed to stop", buf, 0xCu);
             }
 
-            v14 = [(MXDiagnosticServices *)self services];
-            [v14 removeObject:v12];
+            services3 = [(MXDiagnosticServices *)self services];
+            [services3 removeObject:v12];
           }
         }
 
-        v9 = [v6 countByEnumeratingWithState:&v17 objects:v23 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v17 objects:v23 count:16];
       }
 
       while (v9);
@@ -316,38 +316,38 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_diagnosticPayloadForClient:(id)a3 andDate:(id)a4
+- (id)_diagnosticPayloadForClient:(id)client andDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MXDiagnosticServices *)self dateUtil];
-  v9 = [v8 stringFromDate:v7];
+  clientCopy = client;
+  dateCopy = date;
+  dateUtil = [(MXDiagnosticServices *)self dateUtil];
+  v9 = [dateUtil stringFromDate:dateCopy];
 
-  v10 = [(MXDiagnosticServices *)self _diagnosticsFromServicesForClient:v6 dateString:v9];
+  v10 = [(MXDiagnosticServices *)self _diagnosticsFromServicesForClient:clientCopy dateString:v9];
   logHandle = self->_logHandle;
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
     [MXDiagnosticServices _diagnosticPayloadForClient:v10 andDate:logHandle];
   }
 
-  v12 = [MXCorePayloadConstructor buildDiagnosticPayloadForClient:v6 fromClientDiagnosticsDictionary:v10 withDateString:v9];
+  v12 = [MXCorePayloadConstructor buildDiagnosticPayloadForClient:clientCopy fromClientDiagnosticsDictionary:v10 withDateString:v9];
 
   return v12;
 }
 
-- (id)_diagnosticsFromServicesForClient:(id)a3 dateString:(id)a4
+- (id)_diagnosticsFromServicesForClient:(id)client dateString:(id)string
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  stringCopy = string;
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = self;
-  v9 = [(MXDiagnosticServices *)self services];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  selfCopy = self;
+  services = [(MXDiagnosticServices *)self services];
+  v10 = [services countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v10)
   {
     v12 = v10;
@@ -360,14 +360,14 @@
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(services);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        v16 = [v15 getDiagnosticsForClient:v6 dateString:{v7, v21}];
+        v16 = [v15 getDiagnosticsForClient:clientCopy dateString:{stringCopy, v21}];
         if (v16)
         {
-          logHandle = v8->_logHandle;
+          logHandle = selfCopy->_logHandle;
           if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = v21;
@@ -382,7 +382,7 @@
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v12 = [services countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v12);
@@ -393,27 +393,27 @@
   return v22;
 }
 
-- (id)diagnosticPayloadForClient:(id)a3 isExtension:(BOOL)a4 andMainAppBundleID:(id)a5 andDate:(id)a6
+- (id)diagnosticPayloadForClient:(id)client isExtension:(BOOL)extension andMainAppBundleID:(id)d andDate:(id)date
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = v11;
-  if (v8)
+  extensionCopy = extension;
+  clientCopy = client;
+  dCopy = d;
+  v12 = dCopy;
+  if (extensionCopy)
   {
-    v13 = v11;
+    v13 = dCopy;
   }
 
   else
   {
-    v13 = v10;
+    v13 = clientCopy;
   }
 
   v14 = v13;
-  v15 = a6;
+  dateCopy = date;
   [(MXDiagnosticServices *)self _createServicesForClient:v14];
   [(MXDiagnosticServices *)self _startServices];
-  v16 = [(MXDiagnosticServices *)self _diagnosticPayloadForClient:v10 andDate:v15];
+  v16 = [(MXDiagnosticServices *)self _diagnosticPayloadForClient:clientCopy andDate:dateCopy];
 
   [(MXDiagnosticServices *)self _stopServices];
 

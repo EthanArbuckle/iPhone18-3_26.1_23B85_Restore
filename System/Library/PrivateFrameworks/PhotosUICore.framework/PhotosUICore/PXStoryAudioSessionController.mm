@@ -1,15 +1,15 @@
 @interface PXStoryAudioSessionController
-- (PXStoryAudioSessionController)initWithModel:(id)a3;
-- (PXStoryAudioSessionController)initWithObservableModel:(id)a3;
+- (PXStoryAudioSessionController)initWithModel:(id)model;
+- (PXStoryAudioSessionController)initWithObservableModel:(id)model;
 - (PXStoryModel)model;
 - (void)_invalidateAudioSession;
 - (void)_invalidateShouldMixWithOthers;
 - (void)_updateAudioSession;
 - (void)_updateShouldMixWithOthers;
 - (void)_workQueue_createAudioSession;
-- (void)configureUpdater:(id)a3;
-- (void)handleModelChange:(unint64_t)a3;
-- (void)setShouldMixWithOthers:(BOOL)a3;
+- (void)configureUpdater:(id)updater;
+- (void)handleModelChange:(unint64_t)change;
+- (void)setShouldMixWithOthers:(BOOL)others;
 @end
 
 @implementation PXStoryAudioSessionController
@@ -21,22 +21,22 @@
   return WeakRetained;
 }
 
-- (PXStoryAudioSessionController)initWithObservableModel:(id)a3
+- (PXStoryAudioSessionController)initWithObservableModel:(id)model
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXStoryAudioSessionController.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXStoryAudioSessionController initWithObservableModel:]"}];
+  modelCopy = model;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryAudioSessionController.m" lineNumber:124 description:{@"%s is not available as initializer", "-[PXStoryAudioSessionController initWithObservableModel:]"}];
 
   abort();
 }
 
-- (void)handleModelChange:(unint64_t)a3
+- (void)handleModelChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = PXStoryAudioSessionController;
   [(PXStoryController *)&v6 handleModelChange:?];
-  if ((v3 & 0x400) != 0)
+  if ((changeCopy & 0x400) != 0)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -47,31 +47,31 @@
   }
 }
 
-- (void)configureUpdater:(id)a3
+- (void)configureUpdater:(id)updater
 {
   v4.receiver = self;
   v4.super_class = PXStoryAudioSessionController;
-  v3 = a3;
-  [(PXStoryController *)&v4 configureUpdater:v3];
-  [v3 addUpdateSelector:{sel__updateShouldMixWithOthers, v4.receiver, v4.super_class}];
-  [v3 addUpdateSelector:sel__updateAudioSession];
+  updaterCopy = updater;
+  [(PXStoryController *)&v4 configureUpdater:updaterCopy];
+  [updaterCopy addUpdateSelector:{sel__updateShouldMixWithOthers, v4.receiver, v4.super_class}];
+  [updaterCopy addUpdateSelector:sel__updateAudioSession];
 }
 
 - (void)_workQueue_createAudioSession
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryAudioSessionController *)self model];
+  model = [(PXStoryAudioSessionController *)self model];
 
-  if (v3)
+  if (model)
   {
     v4 = [MEMORY[0x1E69C1B18] sharedInstanceWithKind:3];
-    v5 = [(PXStoryAudioSessionController *)self shouldMixWithOthers];
+    shouldMixWithOthers = [(PXStoryAudioSessionController *)self shouldMixWithOthers];
     v6 = *MEMORY[0x1E6958068];
     v7 = *MEMORY[0x1E6958130];
     v19 = 0;
-    LOBYTE(v5) = [v4 setCategory:v6 mode:v7 routeSharingPolicy:0 options:v5 error:&v19];
+    LOBYTE(shouldMixWithOthers) = [v4 setCategory:v6 mode:v7 routeSharingPolicy:0 options:shouldMixWithOthers error:&v19];
     v8 = v19;
-    if ((v5 & 1) == 0)
+    if ((shouldMixWithOthers & 1) == 0)
     {
       v9 = PLStoryGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -98,7 +98,7 @@
     }
 
     objc_initWeak(buf, self);
-    v13 = [(PXStoryController *)self storyQueue];
+    storyQueue = [(PXStoryController *)self storyQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __62__PXStoryAudioSessionController__workQueue_createAudioSession__block_invoke;
@@ -106,7 +106,7 @@
     objc_copyWeak(&v17, buf);
     v16 = v4;
     v14 = v4;
-    dispatch_async(v13, v15);
+    dispatch_async(storyQueue, v15);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -122,20 +122,20 @@ void __62__PXStoryAudioSessionController__workQueue_createAudioSession__block_in
 
 - (void)_updateAudioSession
 {
-  v3 = [(PXStoryAudioSessionController *)self model];
-  v4 = [v3 configuration];
-  v5 = ~[v4 options] & 3;
+  model = [(PXStoryAudioSessionController *)self model];
+  configuration = [model configuration];
+  v5 = ~[configuration options] & 3;
 
   if (v5)
   {
     objc_initWeak(&location, self);
-    v6 = [(PXStoryAudioSessionController *)self workQueue];
+    workQueue = [(PXStoryAudioSessionController *)self workQueue];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __52__PXStoryAudioSessionController__updateAudioSession__block_invoke;
     v7[3] = &unk_1E774C318;
     objc_copyWeak(&v8, &location);
-    dispatch_async(v6, v7);
+    dispatch_async(workQueue, v7);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -150,42 +150,42 @@ void __52__PXStoryAudioSessionController__updateAudioSession__block_invoke(uint6
 
 - (void)_invalidateAudioSession
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAudioSession];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAudioSession];
 }
 
-- (void)setShouldMixWithOthers:(BOOL)a3
+- (void)setShouldMixWithOthers:(BOOL)others
 {
-  if (self->_shouldMixWithOthers != a3)
+  if (self->_shouldMixWithOthers != others)
   {
-    self->_shouldMixWithOthers = a3;
+    self->_shouldMixWithOthers = others;
     [(PXStoryAudioSessionController *)self _invalidateAudioSession];
   }
 }
 
 - (void)_updateShouldMixWithOthers
 {
-  v5 = [(PXStoryAudioSessionController *)self model];
-  v3 = [v5 activeSongResource];
-  v4 = [v3 px_storyResourceSongAsset];
-  -[PXStoryAudioSessionController setShouldMixWithOthers:](self, "setShouldMixWithOthers:", [v4 catalog] == 2);
+  model = [(PXStoryAudioSessionController *)self model];
+  activeSongResource = [model activeSongResource];
+  px_storyResourceSongAsset = [activeSongResource px_storyResourceSongAsset];
+  -[PXStoryAudioSessionController setShouldMixWithOthers:](self, "setShouldMixWithOthers:", [px_storyResourceSongAsset catalog] == 2);
 }
 
 - (void)_invalidateShouldMixWithOthers
 {
-  v2 = [(PXStoryController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldMixWithOthers];
+  updater = [(PXStoryController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldMixWithOthers];
 }
 
-- (PXStoryAudioSessionController)initWithModel:(id)a3
+- (PXStoryAudioSessionController)initWithModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v7.receiver = self;
   v7.super_class = PXStoryAudioSessionController;
-  v5 = [(PXStoryController *)&v7 initWithObservableModel:v4];
+  v5 = [(PXStoryController *)&v7 initWithObservableModel:modelCopy];
   if (v5)
   {
-    objc_storeWeak(&v5->_model, v4);
+    objc_storeWeak(&v5->_model, modelCopy);
     px_dispatch_queue_create_serial();
   }
 

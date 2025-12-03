@@ -1,23 +1,23 @@
 @interface IdentityProofingAuthCodeViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (_TtC9CoreIDVUI38IdentityProofingAuthCodeViewController)initWithCoder:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (_TtC9CoreIDVUI38IdentityProofingAuthCodeViewController)initWithCoder:(id)coder;
 - (void)dismissKeyboard;
-- (void)keyboardWillHideWithNotification:(id)a3;
-- (void)keyboardWillShowWithNotification:(id)a3;
-- (void)textFieldDidChange:(id)a3;
-- (void)updateViewLayout:(id)a3 previousTraitCollection:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)keyboardWillHideWithNotification:(id)notification;
+- (void)keyboardWillShowWithNotification:(id)notification;
+- (void)textFieldDidChange:(id)change;
+- (void)updateViewLayout:(id)layout previousTraitCollection:(id)collection;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation IdentityProofingAuthCodeViewController
 
-- (_TtC9CoreIDVUI38IdentityProofingAuthCodeViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI38IdentityProofingAuthCodeViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9CoreIDVUI38IdentityProofingAuthCodeViewController_authCodeTextField;
   v5 = [objc_allocWithZone(type metadata accessor for AuthCodeTextField()) init];
@@ -39,11 +39,11 @@
   sub_2457B333C();
   sub_2457B3424();
   v3 = objc_opt_self();
-  v4 = [v3 defaultCenter];
-  [v4 addObserver:v2 selector:sel_keyboardWillShowWithNotification_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel_keyboardWillShowWithNotification_ name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [v3 defaultCenter];
-  [v5 addObserver:v2 selector:sel_keyboardWillHideWithNotification_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [v3 defaultCenter];
+  [defaultCenter2 addObserver:v2 selector:sel_keyboardWillHideWithNotification_ name:*MEMORY[0x277D76C50] object:0];
 
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -57,30 +57,30 @@
   sub_2457B3508();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2457B37C0(a3);
+  selfCopy = self;
+  sub_2457B37C0(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2457B39A8(a3);
+  selfCopy = self;
+  sub_2457B39A8(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(IdentityProofingAuthCodeViewController *)&v7 viewWillDisappear:v3];
-  v5 = [v4 view];
-  if (v5)
+  [(IdentityProofingAuthCodeViewController *)&v7 viewWillDisappear:disappearCopy];
+  view = [v4 view];
+  if (view)
   {
-    v6 = v5;
-    [v5 endEditing_];
+    v6 = view;
+    [view endEditing_];
   }
 
   else
@@ -89,34 +89,34 @@
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_2457B4914(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2457B4914(controller);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457B4B0C();
 }
 
-- (void)updateViewLayout:(id)a3 previousTraitCollection:(id)a4
+- (void)updateViewLayout:(id)layout previousTraitCollection:(id)collection
 {
-  v4 = self;
+  selfCopy = self;
   sub_2458A3560();
-  sub_2458A6BA0(*(&v4->super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI38IdentityProofingAuthCodeViewController_authCodeTextField), 0, 1, 0, 1);
+  sub_2458A6BA0(*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI38IdentityProofingAuthCodeViewController_authCodeTextField), 0, 1, 0, 1);
 }
 
 - (void)dismissKeyboard
 {
-  v4 = self;
-  v2 = [(IdentityProofingAuthCodeViewController *)v4 view];
-  if (v2)
+  selfCopy = self;
+  view = [(IdentityProofingAuthCodeViewController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    [v2 endEditing_];
+    v3 = view;
+    [view endEditing_];
   }
 
   else
@@ -125,47 +125,47 @@
   }
 }
 
-- (void)keyboardWillShowWithNotification:(id)a3
+- (void)keyboardWillShowWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_2457B5DD4(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_2457B5DD4(notificationCopy);
 }
 
-- (void)keyboardWillHideWithNotification:(id)a3
+- (void)keyboardWillHideWithNotification:(id)notification
 {
-  v5 = self;
+  selfCopy = self;
   v3 = sub_2458A1930();
   [v3 contentInset];
   [v3 setContentInset_];
 
-  v4 = *(&v5->super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI30IdentityProofingViewController____lazy_storage___scrollView);
+  v4 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC9CoreIDVUI30IdentityProofingViewController____lazy_storage___scrollView);
   [v4 verticalScrollIndicatorInsets];
   [v4 setVerticalScrollIndicatorInsets_];
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = self;
+  selfCopy = self;
   v3 = sub_2458A1B04();
   [v3 setEnabled_];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = self;
+  selfCopy = self;
   if (sub_2457B2F28())
   {
     sub_2457B4C80();
   }
 
-  v4 = [(IdentityProofingAuthCodeViewController *)v3 view];
-  if (v4)
+  view = [(IdentityProofingAuthCodeViewController *)selfCopy view];
+  if (view)
   {
-    v5 = v4;
-    [v4 endEditing_];
+    v5 = view;
+    [view endEditing_];
 
-    LOBYTE(v4) = 1;
+    LOBYTE(view) = 1;
   }
 
   else
@@ -173,18 +173,18 @@
     __break(1u);
   }
 
-  return v4;
+  return view;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = sub_245910A04();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_2457B62DC(v12, location, length, v9, v11);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_2457B62DC(fieldCopy, location, length, v9, v11);
 
   return length & 1;
 }

@@ -1,22 +1,22 @@
 @interface TCCDSyncRequestAccessAction
-+ (id)requestAccessActionFromIDSMessage:(id)a3 mainSyncController:(id)a4;
++ (id)requestAccessActionFromIDSMessage:(id)message mainSyncController:(id)controller;
 - (id)idsMessageDictionary;
 @end
 
 @implementation TCCDSyncRequestAccessAction
 
-+ (id)requestAccessActionFromIDSMessage:(id)a3 mainSyncController:(id)a4
++ (id)requestAccessActionFromIDSMessage:(id)message mainSyncController:(id)controller
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"TCCDSyncAccessActionServiceIdentifierKey"];
-  v8 = [v6 objectForKeyedSubscript:@"TCCDSyncAccessActionReplicaClientIdentifierKey"];
-  v9 = [v6 objectForKeyedSubscript:@"TCCDSyncAccessActionClientTypeKey"];
-  v10 = [v6 objectForKeyedSubscript:@"TCCDSyncAccessActionDesiredAuthKey"];
+  controllerCopy = controller;
+  messageCopy = message;
+  v7 = [messageCopy objectForKeyedSubscript:@"TCCDSyncAccessActionServiceIdentifierKey"];
+  v8 = [messageCopy objectForKeyedSubscript:@"TCCDSyncAccessActionReplicaClientIdentifierKey"];
+  v9 = [messageCopy objectForKeyedSubscript:@"TCCDSyncAccessActionClientTypeKey"];
+  v10 = [messageCopy objectForKeyedSubscript:@"TCCDSyncAccessActionDesiredAuthKey"];
 
   if (v7 && v8 && v9 && v10)
   {
-    v11 = [v5 mainClientIdentifierForReplicaClientIdentifier:v8];
+    v11 = [controllerCopy mainClientIdentifierForReplicaClientIdentifier:v8];
     if (v11)
     {
       v12 = -[TCCDSyncClientAccessAction initWithServiceIdentifier:mainClientIdentifier:replicaClientIdentifier:clientType:]([TCCDSyncRequestAccessAction alloc], "initWithServiceIdentifier:mainClientIdentifier:replicaClientIdentifier:clientType:", v7, v11, v8, [v9 intValue]);
@@ -59,11 +59,11 @@
 - (id)idsMessageDictionary
 {
   v9[0] = @"TCCDSyncAccessActionServiceIdentifierKey";
-  v3 = [(TCCDSyncAccessAction *)self serviceIdentifier];
-  v10[0] = v3;
+  serviceIdentifier = [(TCCDSyncAccessAction *)self serviceIdentifier];
+  v10[0] = serviceIdentifier;
   v9[1] = @"TCCDSyncAccessActionReplicaClientIdentifierKey";
-  v4 = [(TCCDSyncClientAccessAction *)self replicaClientIdentifier];
-  v10[1] = v4;
+  replicaClientIdentifier = [(TCCDSyncClientAccessAction *)self replicaClientIdentifier];
+  v10[1] = replicaClientIdentifier;
   v9[2] = @"TCCDSyncAccessActionClientTypeKey";
   v5 = [NSNumber numberWithInt:[(TCCDSyncClientAccessAction *)self clientType]];
   v10[2] = v5;

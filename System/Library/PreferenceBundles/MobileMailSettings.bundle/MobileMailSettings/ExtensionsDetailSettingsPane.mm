@@ -2,18 +2,18 @@
 - (PSListController)parentListController;
 - (double)_groupTextIndentSize;
 - (id)_descriptionText;
-- (id)_extensionEnabledStatus:(id)a3;
-- (id)_hostAppDisplayName:(id)a3;
-- (id)_messageContentAccessPermissionDetailsForExtension:(id)a3;
-- (id)_messageContentPermissionsForExtension:(id)a3;
-- (id)_messageModificationPermissionsForExtension:(id)a3;
-- (id)_messageRenderingPermissionsForExtension:(id)a3;
+- (id)_extensionEnabledStatus:(id)status;
+- (id)_hostAppDisplayName:(id)name;
+- (id)_messageContentAccessPermissionDetailsForExtension:(id)extension;
+- (id)_messageContentPermissionsForExtension:(id)extension;
+- (id)_messageModificationPermissionsForExtension:(id)extension;
+- (id)_messageRenderingPermissionsForExtension:(id)extension;
 - (id)_permissionsDetailParagraphStyle;
-- (id)_permissionsSectionGroupTitleAtributedStringWithString:(id)a3;
-- (id)_permissionsTextForRemoteExtension:(id)a3;
+- (id)_permissionsSectionGroupTitleAtributedStringWithString:(id)string;
+- (id)_permissionsTextForRemoteExtension:(id)extension;
 - (id)specifiers;
 - (void)_loadExtensionIfNeeded;
-- (void)_setExtensionEnabledStatus:(id)a3 forSpecifier:(id)a4;
+- (void)_setExtensionEnabledStatus:(id)status forSpecifier:(id)specifier;
 @end
 
 @implementation ExtensionsDetailSettingsPane
@@ -31,14 +31,14 @@
       v35 = v5;
       v31 = [PSSpecifier groupSpecifierWithID:@"EXTENSION_INFO_GROUP"];
       [v5 addObject:?];
-      v33 = [(ExtensionsDetailSettingsPane *)self extension];
-      v6 = [v33 displayName];
-      v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:"_setExtensionEnabledStatus:forSpecifier:" get:"_extensionEnabledStatus:" detail:0 cell:6 edit:0];
+      extension = [(ExtensionsDetailSettingsPane *)self extension];
+      displayName = [extension displayName];
+      v7 = [PSSpecifier preferenceSpecifierNamed:displayName target:self set:"_setExtensionEnabledStatus:forSpecifier:" get:"_extensionEnabledStatus:" detail:0 cell:6 edit:0];
 
       v34 = v7;
       [v7 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-      v8 = [v33 menuIcon];
-      [v7 setProperty:v8 forKey:PSIconImageKey];
+      menuIcon = [extension menuIcon];
+      [v7 setProperty:menuIcon forKey:PSIconImageKey];
 
       [v7 setUserInfo:self->_extension];
       [v5 addObject:v7];
@@ -48,8 +48,8 @@
       [v5 addObject:v11];
 
       v12 = [NSAttributedString alloc];
-      v13 = [(ExtensionsDetailSettingsPane *)self _descriptionText];
-      v32 = [v12 initWithString:v13];
+      _descriptionText = [(ExtensionsDetailSettingsPane *)self _descriptionText];
+      v32 = [v12 initWithString:_descriptionText];
 
       v14 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       v15 = PSIDKey;
@@ -71,17 +71,17 @@
       v22 = [NSBundle bundleForClass:objc_opt_class()];
       v23 = [v22 localizedStringForKey:@"EXTENSIONS_DETAILS_PERMISSIONS_SECTION_HEADER" value:&stru_3D2B0 table:@"Preferences"];
 
-      v24 = [(MERemoteExtension *)self->_extension displayName];
-      v25 = [NSString stringWithFormat:v23, v24];
+      displayName2 = [(MERemoteExtension *)self->_extension displayName];
+      v25 = [NSString stringWithFormat:v23, displayName2];
       [v21 setName:v25];
 
       [v35 addObject:v21];
-      v26 = [(ExtensionsDetailSettingsPane *)self _permissionsText];
+      _permissionsText = [(ExtensionsDetailSettingsPane *)self _permissionsText];
       v27 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:-1 edit:0];
       [v27 setProperty:@"DESCRIPTION" forKey:v15];
       v36[0] = @"subtitle";
       v36[1] = @"subtitleNumberOfLines";
-      v37[0] = v26;
+      v37[0] = _permissionsText;
       v37[1] = &off_3F780;
       v28 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
       [v27 setUserInfo:v28];
@@ -103,56 +103,56 @@
 
 - (void)_loadExtensionIfNeeded
 {
-  v7 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v3 = [v7 objectForKeyedSubscript:@"EXTENSION_IDENIFIER"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"EXTENSION_IDENIFIER"];
   v4 = +[MEAppExtensionsController sharedInstance];
   v5 = [v4 extensionForIdentifier:v3];
   extension = self->_extension;
   self->_extension = v5;
 }
 
-- (id)_extensionEnabledStatus:(id)a3
+- (id)_extensionEnabledStatus:(id)status
 {
   v3 = [NSNumber numberWithBool:[(MERemoteExtension *)self->_extension isEnabled]];
 
   return v3;
 }
 
-- (void)_setExtensionEnabledStatus:(id)a3 forSpecifier:(id)a4
+- (void)_setExtensionEnabledStatus:(id)status forSpecifier:(id)specifier
 {
-  v6 = a3;
-  -[MERemoteExtension setEnabled:](self->_extension, "setEnabled:", [v6 BOOLValue]);
-  v5 = [(ExtensionsDetailSettingsPane *)self parentListController];
-  [v5 reloadSpecifiers];
+  statusCopy = status;
+  -[MERemoteExtension setEnabled:](self->_extension, "setEnabled:", [statusCopy BOOLValue]);
+  parentListController = [(ExtensionsDetailSettingsPane *)self parentListController];
+  [parentListController reloadSpecifiers];
 }
 
-- (id)_hostAppDisplayName:(id)a3
+- (id)_hostAppDisplayName:(id)name
 {
-  v3 = [(MERemoteExtension *)self->_extension displayName];
+  displayName = [(MERemoteExtension *)self->_extension displayName];
 
-  return v3;
+  return displayName;
 }
 
 - (id)_descriptionText
 {
-  v3 = [(MERemoteExtension *)self->_extension descriptionText];
-  if (![v3 length])
+  descriptionText = [(MERemoteExtension *)self->_extension descriptionText];
+  if (![descriptionText length])
   {
-    v4 = [(MERemoteExtension *)self->_extension displayName];
-    v5 = [NSString stringWithFormat:@"This is %@. You should tell us what your extension does here", v4];
+    displayName = [(MERemoteExtension *)self->_extension displayName];
+    v5 = [NSString stringWithFormat:@"This is %@. You should tell us what your extension does here", displayName];
 
-    v3 = v5;
+    descriptionText = v5;
   }
 
-  return v3;
+  return descriptionText;
 }
 
-- (id)_permissionsTextForRemoteExtension:(id)a3
+- (id)_permissionsTextForRemoteExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v5 = objc_alloc_init(NSMutableAttributedString);
   v6 = [[NSAttributedString alloc] initWithString:@"\n"];
-  v7 = [(ExtensionsDetailSettingsPane *)self _messageContentPermissionsForExtension:v4];
+  v7 = [(ExtensionsDetailSettingsPane *)self _messageContentPermissionsForExtension:extensionCopy];
   if (v7)
   {
     [v5 appendAttributedString:v6];
@@ -160,7 +160,7 @@
     [v5 appendAttributedString:v6];
   }
 
-  v8 = [(ExtensionsDetailSettingsPane *)self _messageModificationPermissionsForExtension:v4];
+  v8 = [(ExtensionsDetailSettingsPane *)self _messageModificationPermissionsForExtension:extensionCopy];
   if (v8)
   {
     [v5 appendAttributedString:v6];
@@ -168,7 +168,7 @@
     [v5 appendAttributedString:v6];
   }
 
-  v9 = [(ExtensionsDetailSettingsPane *)self _messageRenderingPermissionsForExtension:v4];
+  v9 = [(ExtensionsDetailSettingsPane *)self _messageRenderingPermissionsForExtension:extensionCopy];
   if (v9)
   {
     [v5 appendAttributedString:v6];
@@ -179,14 +179,14 @@
   return v5;
 }
 
-- (id)_permissionsSectionGroupTitleAtributedStringWithString:(id)a3
+- (id)_permissionsSectionGroupTitleAtributedStringWithString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[NSParagraphStyle defaultParagraphStyle];
   v5 = [v4 mutableCopy];
 
   [v5 setLineBreakMode:0];
-  v6 = [NSString stringWithFormat:@"• %@", v3];
+  stringCopy = [NSString stringWithFormat:@"• %@", stringCopy];
   v7 = [NSAttributedString alloc];
   v13[0] = NSForegroundColorAttributeName;
   v8 = +[ExtensionsDetailSettingsPane primaryLabelColor];
@@ -198,7 +198,7 @@
   v14[1] = v9;
   v14[2] = v5;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:3];
-  v11 = [v7 initWithString:v6 attributes:v10];
+  v11 = [v7 initWithString:stringCopy attributes:v10];
 
   return v11;
 }
@@ -242,10 +242,10 @@
   return v10;
 }
 
-- (id)_messageContentPermissionsForExtension:(id)a3
+- (id)_messageContentPermissionsForExtension:(id)extension
 {
-  v4 = a3;
-  if ([v4 hasMessageContentAccess])
+  extensionCopy = extension;
+  if ([extensionCopy hasMessageContentAccess])
   {
     v5 = objc_alloc_init(NSMutableAttributedString);
     v6 = [NSBundle bundleForClass:objc_opt_class()];
@@ -257,7 +257,7 @@
     v9 = [[NSAttributedString alloc] initWithString:@"\n"];
     [v5 appendAttributedString:v9];
 
-    v10 = [(ExtensionsDetailSettingsPane *)self _messageContentAccessPermissionDetailsForExtension:v4];
+    v10 = [(ExtensionsDetailSettingsPane *)self _messageContentAccessPermissionDetailsForExtension:extensionCopy];
     [v5 appendAttributedString:v10];
   }
 
@@ -269,27 +269,27 @@
   return v5;
 }
 
-- (id)_messageContentAccessPermissionDetailsForExtension:(id)a3
+- (id)_messageContentAccessPermissionDetailsForExtension:(id)extension
 {
-  v30 = a3;
-  v4 = [v30 capabilities];
-  if ([v4 containsObject:MEMailExtensionCapabilityMessageActions])
+  extensionCopy = extension;
+  capabilities = [extensionCopy capabilities];
+  if ([capabilities containsObject:MEMailExtensionCapabilityMessageActions])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v30 capabilities];
-    v5 = [v6 containsObject:MEMailExtensionCapabilityMessageSecurity];
+    capabilities2 = [extensionCopy capabilities];
+    v5 = [capabilities2 containsObject:MEMailExtensionCapabilityMessageSecurity];
   }
 
-  v7 = [v30 capabilities];
+  capabilities3 = [extensionCopy capabilities];
   v8 = @"EXTENSIONS_PERMISSIONS_CONTENT_ACCESS_LOCATION_ALL_MESSAGES";
-  if (([v7 containsObject:MEMailExtensionCapabilityComposeSession] & 1) == 0)
+  if (([capabilities3 containsObject:MEMailExtensionCapabilityComposeSession] & 1) == 0)
   {
-    v9 = [v30 capabilities];
-    v10 = [v9 containsObject:MEMailExtensionCapabilityMessageSecurity];
+    capabilities4 = [extensionCopy capabilities];
+    v10 = [capabilities4 containsObject:MEMailExtensionCapabilityMessageSecurity];
 
     if (!v10)
     {
@@ -297,11 +297,11 @@
     }
   }
 
-  v11 = [v30 bodyAccess];
+  bodyAccess = [extensionCopy bodyAccess];
   v28 = objc_alloc_init(NSMutableAttributedString);
-  v29 = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
+  _permissionsDetailParagraphStyle = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  if (v11)
+  if (bodyAccess)
   {
     [v12 localizedStringForKey:@"EXTENSIONS_PERMISSIONS_CONTENT_ACCESS_WITH_BODY" value:&stru_3D2B0 table:@"Preferences"];
   }
@@ -322,7 +322,7 @@
   v16 = [UIFont systemFontOfSize:?];
   v33[2] = NSParagraphStyleAttributeName;
   v34[1] = v16;
-  v34[2] = v29;
+  v34[2] = _permissionsDetailParagraphStyle;
   v17 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:3];
   v18 = [v13 initWithString:v14 attributes:v17];
   [v28 appendAttributedString:v18];
@@ -349,7 +349,7 @@
   v24 = [UIFont systemFontOfSize:?];
   v31[2] = NSParagraphStyleAttributeName;
   v32[1] = v24;
-  v32[2] = v29;
+  v32[2] = _permissionsDetailParagraphStyle;
   v25 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
   [v22 addAttributes:v25 range:{0, objc_msgSend(v22, "length")}];
 
@@ -358,14 +358,14 @@
   return v28;
 }
 
-- (id)_messageModificationPermissionsForExtension:(id)a3
+- (id)_messageModificationPermissionsForExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 capabilities];
-  v6 = [v5 containsObject:MEMailExtensionCapabilityMessageActions];
+  extensionCopy = extension;
+  capabilities = [extensionCopy capabilities];
+  v6 = [capabilities containsObject:MEMailExtensionCapabilityMessageActions];
 
-  v7 = [v4 capabilities];
-  v8 = [v7 containsObject:MEMailExtensionCapabilityMessageSecurity];
+  capabilities2 = [extensionCopy capabilities];
+  v8 = [capabilities2 containsObject:MEMailExtensionCapabilityMessageSecurity];
 
   if (((v6 | v8) & 1) == 0)
   {
@@ -383,7 +383,7 @@
   v13 = [[NSAttributedString alloc] initWithString:@"\n"];
   [v9 appendAttributedString:v13];
 
-  v30 = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
+  _permissionsDetailParagraphStyle = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
   if (v6)
   {
     v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -398,7 +398,7 @@
     v18 = [UIFont systemFontOfSize:?];
     v33[2] = NSParagraphStyleAttributeName;
     v34[1] = v18;
-    v34[2] = v30;
+    v34[2] = _permissionsDetailParagraphStyle;
     v19 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:3];
     v20 = [v16 initWithString:v15 attributes:v19];
     [v9 appendAttributedString:v20];
@@ -421,7 +421,7 @@ LABEL_7:
       v26 = [UIFont systemFontOfSize:?];
       v31[2] = NSParagraphStyleAttributeName;
       v32[1] = v26;
-      v32[2] = v30;
+      v32[2] = _permissionsDetailParagraphStyle;
       v27 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
       v28 = [v24 initWithString:v23 attributes:v27];
       [v9 appendAttributedString:v28];
@@ -438,10 +438,10 @@ LABEL_9:
   return v9;
 }
 
-- (id)_messageRenderingPermissionsForExtension:(id)a3
+- (id)_messageRenderingPermissionsForExtension:(id)extension
 {
-  v4 = [a3 capabilities];
-  v5 = [v4 containsObject:MEMailExtensionCapabilityContentBlocking];
+  capabilities = [extension capabilities];
+  v5 = [capabilities containsObject:MEMailExtensionCapabilityContentBlocking];
 
   if (v5)
   {
@@ -455,7 +455,7 @@ LABEL_9:
     v10 = [[NSAttributedString alloc] initWithString:@"\n"];
     [v6 appendAttributedString:v10];
 
-    v11 = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
+    _permissionsDetailParagraphStyle = [(ExtensionsDetailSettingsPane *)self _permissionsDetailParagraphStyle];
     v12 = [NSBundle bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"EXTENSIONS_PERMISSIONS_RENDERING_DETAILS" value:&stru_3D2B0 table:@"Preferences"];
 
@@ -468,7 +468,7 @@ LABEL_9:
     v16 = [UIFont systemFontOfSize:?];
     v20[2] = NSParagraphStyleAttributeName;
     v21[1] = v16;
-    v21[2] = v11;
+    v21[2] = _permissionsDetailParagraphStyle;
     v17 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
     v18 = [v14 initWithString:v13 attributes:v17];
     [v6 appendAttributedString:v18];

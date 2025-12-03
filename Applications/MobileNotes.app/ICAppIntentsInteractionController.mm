@@ -1,8 +1,8 @@
 @interface ICAppIntentsInteractionController
 - (ICWindow)window;
 - (_TtC11MobileNotes33ICAppIntentsInteractionController)init;
-- (void)rootViewControllerDidChange:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)rootViewControllerDidChange:(id)change;
+- (void)setWindow:(id)window;
 @end
 
 @implementation ICAppIntentsInteractionController
@@ -27,21 +27,21 @@
   return [(ICAppIntentsInteractionController *)&v6 init];
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_10000D3C0(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_10000D3C0(window);
 }
 
-- (void)rootViewControllerDidChange:(id)a3
+- (void)rootViewControllerDidChange:(id)change
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10001F848();
 
   (*(v5 + 8))(v7, v4);

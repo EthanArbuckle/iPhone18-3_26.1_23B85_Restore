@@ -7,8 +7,8 @@
 
 - (void)addToParentView:()NTKDialMarkerView
 {
-  v4 = [a3 layer];
-  [v4 addSublayer:a1];
+  layer = [a3 layer];
+  [layer addSublayer:self];
 }
 
 - (uint64_t)_setAffineTransform:()NTKDialMarkerView
@@ -17,7 +17,7 @@
   v5[0] = *a3;
   v5[1] = v3;
   v5[2] = a3[2];
-  return [a1 setAffineTransform:v5];
+  return [self setAffineTransform:v5];
 }
 
 @end

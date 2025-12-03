@@ -12,21 +12,21 @@
 - (void)finish
 {
   +[CalculateRequest _lock];
-  v3 = [(CalculateRequest *)self isCanceled];
-  v7 = [(CalculateRequest *)self result];
-  v4 = [(CalculateRequest *)self error];
+  isCanceled = [(CalculateRequest *)self isCanceled];
+  result = [(CalculateRequest *)self result];
+  error = [(CalculateRequest *)self error];
   [(CalculateRequest *)self setResult:0];
   [(CalculateRequest *)self setError:0];
   [(CalculateRequest *)self setIsCanceled:1];
   +[CalculateRequest _unlock];
-  if (!v3)
+  if (!isCanceled)
   {
-    v5 = [(CalculateRequest *)self resultHandler];
+    resultHandler = [(CalculateRequest *)self resultHandler];
 
-    if (v5)
+    if (resultHandler)
     {
-      v6 = [(CalculateRequest *)self resultHandler];
-      (v6)[2](v6, v7, v4);
+      resultHandler2 = [(CalculateRequest *)self resultHandler];
+      (resultHandler2)[2](resultHandler2, result, error);
     }
   }
 }
@@ -34,19 +34,19 @@
 - (void)cancel
 {
   +[CalculateRequest _lock];
-  v3 = [(CalculateRequest *)self isCanceled];
+  isCanceled = [(CalculateRequest *)self isCanceled];
   [(CalculateRequest *)self setResult:0];
   [(CalculateRequest *)self setError:0];
   [(CalculateRequest *)self setIsCanceled:1];
   +[CalculateRequest _unlock];
-  if (!v3)
+  if (!isCanceled)
   {
-    v4 = [(CalculateRequest *)self resultHandler];
+    resultHandler = [(CalculateRequest *)self resultHandler];
 
-    if (v4)
+    if (resultHandler)
     {
-      v5 = [(CalculateRequest *)self resultHandler];
-      (*(v5 + 2))(v5, 0, 0);
+      resultHandler2 = [(CalculateRequest *)self resultHandler];
+      (*(resultHandler2 + 2))(resultHandler2, 0, 0);
     }
   }
 }
@@ -111,19 +111,19 @@ uint64_t __26__CalculateRequest_update__block_invoke_2()
     [(CalculateRequest *)self setResult:0];
     [(CalculateRequest *)self setError:0];
     v10 = 0;
-    v3 = [(CalculateRequest *)self expression];
-    v4 = [(CalculateRequest *)self options];
+    expression = [(CalculateRequest *)self expression];
+    options = [(CalculateRequest *)self options];
     v9 = 0;
-    v5 = [Calculate evaluate:v3 options:v4 error:&v9 needsUpdate:&v10];
+    v5 = [Calculate evaluate:expression options:options error:&v9 needsUpdate:&v10];
     v6 = v9;
 
     +[CalculateRequest _unlock];
-    v7 = [(CalculateRequest *)self resultHandler];
+    resultHandler = [(CalculateRequest *)self resultHandler];
 
-    if (v7)
+    if (resultHandler)
     {
-      v8 = [(CalculateRequest *)self resultHandler];
-      (v8)[2](v8, v5, v6);
+      resultHandler2 = [(CalculateRequest *)self resultHandler];
+      (resultHandler2)[2](resultHandler2, v5, v6);
     }
   }
 }

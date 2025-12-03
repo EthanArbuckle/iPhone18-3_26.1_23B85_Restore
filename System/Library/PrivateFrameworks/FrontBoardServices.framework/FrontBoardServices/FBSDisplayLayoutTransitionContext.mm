@@ -1,26 +1,26 @@
 @interface FBSDisplayLayoutTransitionContext
-- (FBSDisplayLayoutTransitionContext)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (FBSDisplayLayoutTransitionContext)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)setTransitionReasons:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)setTransitionReasons:(id)reasons;
 @end
 
 @implementation FBSDisplayLayoutTransitionContext
 
-- (void)setTransitionReasons:(id)a3
+- (void)setTransitionReasons:(id)reasons
 {
-  v4 = [a3 copy];
+  v4 = [reasons copy];
   transitionReasons = self->_transitionReasons;
   self->_transitionReasons = v4;
 
   MEMORY[0x1EEE66BB8](v4, transitionReasons);
 }
 
-- (FBSDisplayLayoutTransitionContext)initWithXPCDictionary:(id)a3
+- (FBSDisplayLayoutTransitionContext)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6.receiver = self;
   v6.super_class = FBSDisplayLayoutTransitionContext;
   if ([(FBSDisplayLayoutTransitionContext *)&v6 init])
@@ -48,10 +48,10 @@ id __59__FBSDisplayLayoutTransitionContext_initWithXPCDictionary___block_invoke(
   return v4;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   transitionReasons = self->_transitionReasons;
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [(NSOrderedSet *)transitionReasons array];
   objc_claimAutoreleasedReturnValue();
   BSSerializeArrayToXPCDictionaryWithKey();
@@ -66,28 +66,28 @@ id __61__FBSDisplayLayoutTransitionContext_encodeWithXPCDictionary___block_invok
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplayLayoutTransitionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplayLayoutTransitionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplayLayoutTransitionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplayLayoutTransitionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSDisplayLayoutTransitionContext *)self succinctDescriptionBuilder];
-  v5 = [(NSOrderedSet *)self->_transitionReasons array];
-  v6 = [v5 componentsJoinedByString:{@", "}];
-  v7 = [v4 appendObject:v6 withName:@"reasons" skipIfNil:1];
+  succinctDescriptionBuilder = [(FBSDisplayLayoutTransitionContext *)self succinctDescriptionBuilder];
+  array = [(NSOrderedSet *)self->_transitionReasons array];
+  v6 = [array componentsJoinedByString:{@", "}];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:@"reasons" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

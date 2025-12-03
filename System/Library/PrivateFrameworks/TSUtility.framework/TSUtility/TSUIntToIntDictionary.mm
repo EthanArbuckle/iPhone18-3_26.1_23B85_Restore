@@ -1,18 +1,18 @@
 @interface TSUIntToIntDictionary
-- (TSUIntToIntDictionary)initWithCapacity:(unint64_t)a3;
+- (TSUIntToIntDictionary)initWithCapacity:(unint64_t)capacity;
 - (id)allKeys;
 - (id)allValues;
 - (id)arrayOfBoxedKeys;
 - (id)description;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)applyFromIntToIntDictionary:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)applyFromIntToIntDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation TSUIntToIntDictionary
 
-- (TSUIntToIntDictionary)initWithCapacity:(unint64_t)a3
+- (TSUIntToIntDictionary)initWithCapacity:(unint64_t)capacity
 {
   v4 = *MEMORY[0x277CBF138];
   keyCallBacks.retain = 0;
@@ -31,7 +31,7 @@
   v5 = [(TSUIntToIntDictionary *)&v7 init];
   if (v5)
   {
-    v5->mDictionary = CFDictionaryCreateMutable(0, a3, &keyCallBacks, &valueCallBacks);
+    v5->mDictionary = CFDictionaryCreateMutable(0, capacity, &keyCallBacks, &valueCallBacks);
   }
 
   return v5;
@@ -52,20 +52,20 @@
   return v2;
 }
 
-- (void)applyFromIntToIntDictionary:(id)a3
+- (void)applyFromIntToIntDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
-    v5 = [a3 count];
+    v5 = [dictionary count];
     v6 = malloc_type_calloc(v5, 8uLL, 0x10040436913F5uLL);
-    CFDictionaryGetKeysAndValues([a3 p_cfDictionary], v6, 0);
+    CFDictionaryGetKeysAndValues([dictionary p_cfDictionary], v6, 0);
     if (v5)
     {
       v7 = 0;
       v8 = 1;
       do
       {
-        -[TSUIntToIntDictionary setInt:forKey:](self, "setInt:forKey:", [a3 intForKey:v6[v7]], v6[v7]);
+        -[TSUIntToIntDictionary setInt:forKey:](self, "setInt:forKey:", [dictionary intForKey:v6[v7]], v6[v7]);
         v7 = v8;
       }
 
@@ -149,7 +149,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TSUIntToIntDictionary);
   v4->mDictionary = CFDictionaryCreateMutableCopy(0, 0, self->mDictionary);
@@ -158,21 +158,21 @@
 
 - (id)description
 {
-  v3 = [(TSUIntToIntDictionary *)self keyEnumerator];
-  v4 = [MEMORY[0x277CCAB68] string];
-  [v4 appendString:@"{\n"];
-  v5 = [v3 nextKey];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  keyEnumerator = [(TSUIntToIntDictionary *)self keyEnumerator];
+  string = [MEMORY[0x277CCAB68] string];
+  [string appendString:@"{\n"];
+  nextKey = [keyEnumerator nextKey];
+  if (nextKey != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [v3 nextKey])
+    for (i = nextKey; i != 0x7FFFFFFFFFFFFFFFLL; i = [keyEnumerator nextKey])
     {
       v7 = [(TSUIntToIntDictionary *)self intForKey:i];
-      [v4 appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%ld = %ld;\n", i, v7)}];
+      [string appendString:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%ld = %ld;\n", i, v7)}];
     }
   }
 
-  [v4 appendString:@"}"];
-  return v4;
+  [string appendString:@"}"];
+  return string;
 }
 
 @end

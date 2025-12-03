@@ -1,18 +1,18 @@
 @interface SNSoundPrintKEmbeddingModel
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (SNSoundPrintKEmbeddingModel)init;
-- (SNSoundPrintKEmbeddingModel)initWithConfiguration:(id)a3 error:(id *)a4;
-- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (SNSoundPrintKEmbeddingModel)initWithMLModel:(id)a3;
-- (id)predictionFromAudioSamples:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (SNSoundPrintKEmbeddingModel)initWithConfiguration:(id)configuration error:(id *)error;
+- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (SNSoundPrintKEmbeddingModel)initWithMLModel:(id)model;
+- (id)predictionFromAudioSamples:(id)samples error:(id *)error;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation SNSoundPrintKEmbeddingModel
@@ -41,10 +41,10 @@
   return v4;
 }
 
-- (SNSoundPrintKEmbeddingModel)initWithMLModel:(id)a3
+- (SNSoundPrintKEmbeddingModel)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = SNSoundPrintKEmbeddingModel;
@@ -52,118 +52,118 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (SNSoundPrintKEmbeddingModel)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(SNSoundPrintKEmbeddingModel *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(SNSoundPrintKEmbeddingModel *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (SNSoundPrintKEmbeddingModel)initWithConfiguration:(id)a3 error:(id *)a4
+- (SNSoundPrintKEmbeddingModel)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(SNSoundPrintKEmbeddingModel *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(SNSoundPrintKEmbeddingModel *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:a3 error:a4];
+  v5 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(SNSoundPrintKEmbeddingModel *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (SNSoundPrintKEmbeddingModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MEMORY[0x1E695FE90] modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(SNSoundPrintKEmbeddingModel *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E695FE90];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1C9A8DC08;
   v10[3] = &unk_1E8347710;
-  v11 = v7;
-  v9 = v7;
-  [v8 loadContentsOfURL:a3 configuration:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 loadContentsOfURL:l configuration:configuration completionHandler:v10];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x1E695FF08];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(SNSoundPrintKEmbeddingModel *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(SNSoundPrintKEmbeddingModel *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SNSoundPrintKEmbeddingModel *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(SNSoundPrintKEmbeddingModel *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [SNSoundPrintKEmbeddingModelOutput alloc];
     v13 = [v11 featureValueForName:@"fixedLengthEmbedding"];
-    v14 = [v13 multiArrayValue];
+    multiArrayValue = [v13 multiArrayValue];
     v15 = [v11 featureValueForName:@"framewiseEmbedding"];
-    v16 = [v15 multiArrayValue];
-    v17 = [(SNSoundPrintKEmbeddingModelOutput *)v12 initWithFixedLengthEmbedding:v14 framewiseEmbedding:v16];
+    multiArrayValue2 = [v15 multiArrayValue];
+    v17 = [(SNSoundPrintKEmbeddingModelOutput *)v12 initWithFixedLengthEmbedding:multiArrayValue framewiseEmbedding:multiArrayValue2];
   }
 
   else
@@ -174,52 +174,52 @@
   return v17;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SNSoundPrintKEmbeddingModel *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(SNSoundPrintKEmbeddingModel *)self model];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_1C9A8DF08;
   v10[3] = &unk_1E8347738;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SNSoundPrintKEmbeddingModel *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(SNSoundPrintKEmbeddingModel *)self model];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_1C9A8E118;
   v13[3] = &unk_1E8347738;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromAudioSamples:(id)a3 error:(id *)a4
+- (id)predictionFromAudioSamples:(id)samples error:(id *)error
 {
-  v6 = a3;
-  v7 = [[SNSoundPrintKEmbeddingModelInput alloc] initWithAudioSamples:v6];
+  samplesCopy = samples;
+  v7 = [[SNSoundPrintKEmbeddingModelInput alloc] initWithAudioSamples:samplesCopy];
 
-  v8 = [(SNSoundPrintKEmbeddingModel *)self predictionFromFeatures:v7 error:a4];
+  v8 = [(SNSoundPrintKEmbeddingModel *)self predictionFromFeatures:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:v8];
-  v11 = [(SNSoundPrintKEmbeddingModel *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x1E695FE30]) initWithFeatureProviderArray:inputsCopy];
+  model = [(SNSoundPrintKEmbeddingModel *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -227,26 +227,26 @@
     if ([v12 count] >= 1)
     {
       v23 = v10;
-      v24 = v9;
-      v25 = v8;
+      v24 = optionsCopy;
+      v25 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:v14];
         v16 = [SNSoundPrintKEmbeddingModelOutput alloc];
         v17 = [v15 featureValueForName:@"fixedLengthEmbedding"];
-        v18 = [v17 multiArrayValue];
+        multiArrayValue = [v17 multiArrayValue];
         v19 = [v15 featureValueForName:@"framewiseEmbedding"];
-        v20 = [v19 multiArrayValue];
-        v21 = [(SNSoundPrintKEmbeddingModelOutput *)v16 initWithFixedLengthEmbedding:v18 framewiseEmbedding:v20];
+        multiArrayValue2 = [v19 multiArrayValue];
+        v21 = [(SNSoundPrintKEmbeddingModelOutput *)v16 initWithFixedLengthEmbedding:multiArrayValue framewiseEmbedding:multiArrayValue2];
 
         [v13 addObject:v21];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v24;
-      v8 = v25;
+      optionsCopy = v24;
+      inputsCopy = v25;
       v10 = v23;
     }
   }

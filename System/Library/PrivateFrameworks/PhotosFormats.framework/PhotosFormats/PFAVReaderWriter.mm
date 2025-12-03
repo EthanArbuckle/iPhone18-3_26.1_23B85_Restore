@@ -1,26 +1,26 @@
 @interface PFAVReaderWriter
 - ($E33AF59C8D263E738CA17719EFF006B3)timeRange;
-- (BOOL)setUpReaderAndWriterReturningError:(id *)a3;
-- (BOOL)startReadingAndWritingReturningError:(id *)a3;
-- (PFAVReaderWriter)initWithAsset:(id)a3;
-- (PFAVReaderWriter)initWithAsset:(id)a3 stillImageTime:(id *)a4;
+- (BOOL)setUpReaderAndWriterReturningError:(id *)error;
+- (BOOL)startReadingAndWritingReturningError:(id *)error;
+- (PFAVReaderWriter)initWithAsset:(id)asset;
+- (PFAVReaderWriter)initWithAsset:(id)asset stillImageTime:(id *)time;
 - (PFAVReaderWriterAdjustDelegate)delegate;
 - (void)_didLoadAVAssetValues;
 - (void)cancel;
-- (void)readingAndWritingDidFinishSuccessfully:(BOOL)a3 withError:(id)a4;
-- (void)sampleBufferChannel:(id)a3 didReadSampleBuffer:(opaqueCMSampleBuffer *)a4;
-- (void)sampleBufferChannel:(id)a3 didReadSampleBuffer:(opaqueCMSampleBuffer *)a4 andMadeWriteSampleBuffer:(__CVBuffer *)a5;
-- (void)setTimeRange:(id *)a3;
-- (void)writeToURL:(id)a3 progress:(id)a4 completion:(id)a5;
+- (void)readingAndWritingDidFinishSuccessfully:(BOOL)successfully withError:(id)error;
+- (void)sampleBufferChannel:(id)channel didReadSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)sampleBufferChannel:(id)channel didReadSampleBuffer:(opaqueCMSampleBuffer *)buffer andMadeWriteSampleBuffer:(__CVBuffer *)sampleBuffer;
+- (void)setTimeRange:(id *)range;
+- (void)writeToURL:(id)l progress:(id)progress completion:(id)completion;
 @end
 
 @implementation PFAVReaderWriter
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_timeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_timeRange.start.epoch = *&range->var0.var3;
   *&self->_timeRange.duration.timescale = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -41,10 +41,10 @@
   return WeakRetained;
 }
 
-- (void)sampleBufferChannel:(id)a3 didReadSampleBuffer:(opaqueCMSampleBuffer *)a4 andMadeWriteSampleBuffer:(__CVBuffer *)a5
+- (void)sampleBufferChannel:(id)channel didReadSampleBuffer:(opaqueCMSampleBuffer *)buffer andMadeWriteSampleBuffer:(__CVBuffer *)sampleBuffer
 {
   [(PFAVReaderWriter *)self timeRange];
-  v8 = progressOfSampleBufferInTimeRange(a4, v18);
+  v8 = progressOfSampleBufferInTimeRange(buffer, v18);
   progressBlock = self->_progressBlock;
   if (progressBlock)
   {
@@ -52,33 +52,33 @@
     progressBlock[2](v10);
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
     v12 = ImageBuffer;
     v13 = CFGetTypeID(ImageBuffer);
     TypeID = CVPixelBufferGetTypeID();
-    if (a5)
+    if (sampleBuffer)
     {
       if (v13 == TypeID)
       {
-        v15 = [(PFAVReaderWriter *)self delegate];
+        delegate = [(PFAVReaderWriter *)self delegate];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [(PFAVReaderWriter *)self delegate];
-          [v17 adjustPixelBuffer:v12 toOutputBuffer:a5];
+          delegate2 = [(PFAVReaderWriter *)self delegate];
+          [delegate2 adjustPixelBuffer:v12 toOutputBuffer:sampleBuffer];
         }
       }
     }
   }
 }
 
-- (void)sampleBufferChannel:(id)a3 didReadSampleBuffer:(opaqueCMSampleBuffer *)a4
+- (void)sampleBufferChannel:(id)channel didReadSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   [(PFAVReaderWriter *)self timeRange];
-  v6 = progressOfSampleBufferInTimeRange(a4, v15);
+  v6 = progressOfSampleBufferInTimeRange(buffer, v15);
   progressBlock = self->_progressBlock;
   if (progressBlock)
   {
@@ -86,30 +86,30 @@
     progressBlock[2](v8);
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   if (ImageBuffer)
   {
     v10 = ImageBuffer;
     v11 = CFGetTypeID(ImageBuffer);
     if (v11 == CVPixelBufferGetTypeID())
     {
-      v12 = [(PFAVReaderWriter *)self delegate];
+      delegate = [(PFAVReaderWriter *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v14 = [(PFAVReaderWriter *)self delegate];
-        [v14 adjustPixelBuffer:v10];
+        delegate2 = [(PFAVReaderWriter *)self delegate];
+        [delegate2 adjustPixelBuffer:v10];
       }
     }
   }
 }
 
-- (void)readingAndWritingDidFinishSuccessfully:(BOOL)a3 withError:(id)a4
+- (void)readingAndWritingDidFinishSuccessfully:(BOOL)successfully withError:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  if (!v4)
+  successfullyCopy = successfully;
+  errorCopy = error;
+  if (!successfullyCopy)
   {
     [(AVAssetReader *)self->assetReader cancelReading];
     [(AVAssetWriter *)self->assetWriter cancelWriting];
@@ -144,7 +144,7 @@
   dispatch_sync(isolationQueue, block);
   if (v12)
   {
-    (v12)[2](v12, v4, v6);
+    (v12)[2](v12, successfullyCopy, errorCopy);
   }
 }
 
@@ -226,19 +226,19 @@ uint64_t __26__PFAVReaderWriter_cancel__block_invoke(uint64_t a1)
   return [*(a1 + 32) readingAndWritingDidFinishSuccessfully:0 withError:0];
 }
 
-- (BOOL)startReadingAndWritingReturningError:(id *)a3
+- (BOOL)startReadingAndWritingReturningError:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
   if (![(AVAssetReader *)self->assetReader startReading])
   {
-    if (a3)
+    if (error)
     {
       assetReader = self->assetReader;
 LABEL_27:
-      v27 = [assetReader error];
-      v28 = v27;
+      error = [assetReader error];
+      v28 = error;
       result = 0;
-      *a3 = v27;
+      *error = error;
       return result;
     }
 
@@ -247,7 +247,7 @@ LABEL_27:
 
   if (![(AVAssetWriter *)self->assetWriter startWriting])
   {
-    if (a3)
+    if (error)
     {
       assetReader = self->assetWriter;
       goto LABEL_27;
@@ -283,18 +283,18 @@ LABEL_27:
 
         v11 = *(*(&v41 + 1) + 8 * i);
         dispatch_group_enter(v5);
-        v12 = [(PFAVReaderWriter *)self delegate];
-        if (v12)
+        delegate = [(PFAVReaderWriter *)self delegate];
+        if (delegate)
         {
-          v13 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v13 = 0;
+          selfCopy = 0;
         }
 
-        v14 = v13;
+        v14 = selfCopy;
 
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
@@ -345,9 +345,9 @@ LABEL_27:
     while (v17);
   }
 
-  v21 = [(PFAVReaderWriter *)self metadataInput];
+  metadataInput = [(PFAVReaderWriter *)self metadataInput];
 
-  if (v21)
+  if (metadataInput)
   {
     dispatch_group_enter(v5);
     metadataInput = self->_metadataInput;
@@ -434,13 +434,13 @@ void __57__PFAVReaderWriter_startReadingAndWritingReturningError___block_invoke_
   [v3 readingAndWritingDidFinishSuccessfully:v2 withError:v4];
 }
 
-- (BOOL)setUpReaderAndWriterReturningError:(id *)a3
+- (BOOL)setUpReaderAndWriterReturningError:(id *)error
 {
   v134 = *MEMORY[0x1E69E9840];
-  v5 = [(PFAVReaderWriter *)self asset];
-  v6 = [(PFAVReaderWriter *)self outputURL];
+  asset = [(PFAVReaderWriter *)self asset];
+  outputURL = [(PFAVReaderWriter *)self outputURL];
   v122 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:v5 error:&v122];
+  v7 = [objc_alloc(MEMORY[0x1E6987E78]) initWithAsset:asset error:&v122];
   v8 = v122;
   assetReader = self->assetReader;
   self->assetReader = v7;
@@ -450,28 +450,28 @@ void __57__PFAVReaderWriter_startReadingAndWritingReturningError___block_invoke_
     v10 = objc_alloc(MEMORY[0x1E6987ED8]);
     v11 = *MEMORY[0x1E69874C0];
     v121 = v8;
-    v12 = [v10 initWithURL:v6 fileType:v11 error:&v121];
+    v12 = [v10 initWithURL:outputURL fileType:v11 error:&v121];
     v13 = v121;
 
     assetWriter = self->assetWriter;
     self->assetWriter = v12;
 
-    v109 = self;
+    selfCopy = self;
     if (self->assetWriter)
     {
-      v15 = [v5 metadata];
-      if (v15)
+      metadata = [asset metadata];
+      if (metadata)
       {
-        [(AVAssetWriter *)self->assetWriter setMetadata:v15];
+        [(AVAssetWriter *)self->assetWriter setMetadata:metadata];
       }
 
-      v75 = v15;
+      v75 = metadata;
       v76 = v13;
-      v77 = v6;
-      v16 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v5];
+      v77 = outputURL;
+      v16 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:asset];
       v94 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v78 = v5;
-      v79 = [v5 tracks];
+      v78 = asset;
+      tracks = [asset tracks];
       v97 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v117 = 0u;
       v118 = 0u;
@@ -523,8 +523,8 @@ LABEL_7:
           v132[1] = MEMORY[0x1E695E0F8];
           v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v132 forKeys:v131 count:2];
           v21 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v19 outputSettings:v20];
-          v22 = [v19 formatDescriptions];
-          if ([v22 count] && (objc_msgSend(v22, "objectAtIndexedSubscript:", 0), v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
+          formatDescriptions = [v19 formatDescriptions];
+          if ([formatDescriptions count] && (objc_msgSend(formatDescriptions, "objectAtIndexedSubscript:", 0), v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
           {
             PresentationDimensions = CMVideoFormatDescriptionGetPresentationDimensions(v23, 0, 0);
             width = PresentationDimensions.width;
@@ -557,11 +557,11 @@ LABEL_7:
 
             if (v28 | v30)
             {
-              v31 = [MEMORY[0x1E695DF90] dictionary];
-              v32 = v31;
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
+              v32 = dictionary;
               if (v28)
               {
-                [v31 setObject:v28 forKeyedSubscript:v81];
+                [dictionary setObject:v28 forKeyedSubscript:v81];
               }
 
               if (v30)
@@ -595,8 +595,8 @@ LABEL_7:
           }
 
           v39 = MEMORY[0x1E6987EE0];
-          v40 = [v19 mediaType];
-          v41 = [v39 assetWriterInputWithMediaType:v40 outputSettings:v38];
+          mediaType = [v19 mediaType];
+          v41 = [v39 assetWriterInputWithMediaType:mediaType outputSettings:v38];
 
           if (v19)
           {
@@ -611,10 +611,10 @@ LABEL_7:
           }
 
           [v41 setTransform:formatDescriptionOut];
-          if ([(AVAssetReader *)v109->assetReader canAddOutput:v21]&& [(AVAssetWriter *)v109->assetWriter canAddInput:v41])
+          if ([(AVAssetReader *)selfCopy->assetReader canAddOutput:v21]&& [(AVAssetWriter *)selfCopy->assetWriter canAddInput:v41])
           {
-            [(AVAssetReader *)v109->assetReader addOutput:v21];
-            [(AVAssetWriter *)v109->assetWriter addInput:v41];
+            [(AVAssetReader *)selfCopy->assetReader addOutput:v21];
+            [(AVAssetWriter *)selfCopy->assetWriter addInput:v41];
             v42 = 1;
             v43 = [[PFRWSampleBufferChannel alloc] initWithAssetReaderOutput:v21 assetWriterInput:v41 useAdaptor:1];
             [v94 addObject:v43];
@@ -647,8 +647,8 @@ LABEL_7:
         if ((v99 & 1) == 0)
         {
           v44 = 0;
-          v6 = v77;
-          v5 = v78;
+          outputURL = v77;
+          asset = v78;
           v13 = v76;
           goto LABEL_61;
         }
@@ -658,12 +658,12 @@ LABEL_7:
       {
       }
 
-      timescale = v109->_stillImagetime.timescale;
+      timescale = selfCopy->_stillImagetime.timescale;
       v110 = 0u;
       v111 = 0u;
       v112 = 0u;
       v113 = 0u;
-      v48 = v79;
+      v48 = tracks;
       v49 = [v48 countByEnumeratingWithState:&v110 objects:v126 count:16];
       if (v49)
       {
@@ -686,22 +686,22 @@ LABEL_7:
               {
                 v57 = [MEMORY[0x1E6987EA8] assetReaderTrackOutputWithTrack:v54 outputSettings:0];
                 v58 = MEMORY[0x1E6987EE0];
-                v59 = [v54 mediaType];
-                v60 = [v58 assetWriterInputWithMediaType:v59 outputSettings:0];
+                mediaType2 = [v54 mediaType];
+                v60 = [v58 assetWriterInputWithMediaType:mediaType2 outputSettings:0];
 
-                if (![(AVAssetReader *)v109->assetReader canAddOutput:v57]|| ![(AVAssetWriter *)v109->assetWriter canAddInput:v60])
+                if (![(AVAssetReader *)selfCopy->assetReader canAddOutput:v57]|| ![(AVAssetWriter *)selfCopy->assetWriter canAddInput:v60])
                 {
 
                   v44 = 0;
-                  v6 = v77;
-                  v5 = v78;
+                  outputURL = v77;
+                  asset = v78;
                   v13 = v76;
                   v17 = v108;
                   goto LABEL_61;
                 }
 
-                [(AVAssetReader *)v109->assetReader addOutput:v57];
-                [(AVAssetWriter *)v109->assetWriter addInput:v60];
+                [(AVAssetReader *)selfCopy->assetReader addOutput:v57];
+                [(AVAssetWriter *)selfCopy->assetWriter addInput:v60];
                 v61 = [[PFRWSampleBufferChannel alloc] initWithAssetReaderOutput:v57 assetWriterInput:v60 useAdaptor:0];
                 [v97 addObject:v61];
 
@@ -720,8 +720,8 @@ LABEL_7:
         }
       }
 
-      v6 = v77;
-      v5 = v78;
+      outputURL = v77;
+      asset = v78;
       v13 = v76;
       if (timescale)
       {
@@ -739,27 +739,27 @@ LABEL_7:
         CMMetadataFormatDescriptionCreateWithMetadataSpecifications(*MEMORY[0x1E695E480], 0x6D656278u, v65, formatDescriptionOut);
         v66 = objc_alloc(MEMORY[0x1E6987EE0]);
         v67 = [v66 initWithMediaType:*MEMORY[0x1E69875D0] outputSettings:0 sourceFormatHint:formatDescriptionOut[0]];
-        if (![(AVAssetWriter *)v109->assetWriter canAddInput:v67])
+        if (![(AVAssetWriter *)selfCopy->assetWriter canAddInput:v67])
         {
-          metadataInput = v109->_metadataInput;
-          v109->_metadataInput = v67;
+          metadataInput = selfCopy->_metadataInput;
+          selfCopy->_metadataInput = v67;
 
           v44 = 0;
           goto LABEL_61;
         }
 
-        [(AVAssetWriter *)v109->assetWriter addInput:v67];
-        v68 = v109->_metadataInput;
-        v109->_metadataInput = v67;
+        [(AVAssetWriter *)selfCopy->assetWriter addInput:v67];
+        v68 = selfCopy->_metadataInput;
+        selfCopy->_metadataInput = v67;
       }
 
       v69 = [v94 copy];
-      videoChannels = v109->videoChannels;
-      v109->videoChannels = v69;
+      videoChannels = selfCopy->videoChannels;
+      selfCopy->videoChannels = v69;
 
       v71 = [v97 copy];
-      passthroughChannels = v109->passthroughChannels;
-      v109->passthroughChannels = v71;
+      passthroughChannels = selfCopy->passthroughChannels;
+      selfCopy->passthroughChannels = v71;
 
       v44 = 1;
 LABEL_61:
@@ -767,11 +767,11 @@ LABEL_61:
       goto LABEL_64;
     }
 
-    if (a3)
+    if (error)
     {
       v46 = v13;
       v44 = 0;
-      *a3 = v13;
+      *error = v13;
     }
 
     else
@@ -782,11 +782,11 @@ LABEL_61:
 
   else
   {
-    if (a3)
+    if (error)
     {
       v45 = v8;
       v44 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -806,29 +806,29 @@ LABEL_64:
 {
   if (!self->cancelled)
   {
-    v3 = [(PFAVReaderWriter *)self asset];
-    v4 = [(PFAVReaderWriter *)self outputURL];
+    asset = [(PFAVReaderWriter *)self asset];
+    outputURL = [(PFAVReaderWriter *)self outputURL];
     v27 = 0;
-    v5 = [v3 statusOfValueForKey:@"tracks" error:&v27];
+    v5 = [asset statusOfValueForKey:@"tracks" error:&v27];
     v6 = v27;
     v7 = v6;
     if (v5 == 2)
     {
       v26 = v6;
-      v8 = [v3 statusOfValueForKey:@"duration" error:&v26];
+      v8 = [asset statusOfValueForKey:@"duration" error:&v26];
       v9 = v26;
 
       if (v8 == 2)
       {
         v25 = v9;
-        v10 = [v3 statusOfValueForKey:@"metadata" error:&v25];
+        v10 = [asset statusOfValueForKey:@"metadata" error:&v25];
         v7 = v25;
 
         if (v10 == 2)
         {
-          if (v3)
+          if (asset)
           {
-            [v3 duration];
+            [asset duration];
           }
 
           else
@@ -839,9 +839,9 @@ LABEL_64:
           start = **&MEMORY[0x1E6960CC0];
           CMTimeRangeMake(&v24, &start, &duration);
           [(PFAVReaderWriter *)self setTimeRange:&v24];
-          v11 = [MEMORY[0x1E696AC08] defaultManager];
-          v12 = [v4 path];
-          if (([v11 fileExistsAtPath:v12] & 1) == 0)
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          path = [outputURL path];
+          if (([defaultManager fileExistsAtPath:path] & 1) == 0)
           {
 
 LABEL_16:
@@ -867,7 +867,7 @@ LABEL_16:
           }
 
           v21 = v7;
-          v13 = [v11 removeItemAtPath:v12 error:&v21];
+          v13 = [defaultManager removeItemAtPath:path error:&v21];
           v14 = v21;
 
           v7 = v14;
@@ -890,12 +890,12 @@ LABEL_9:
   }
 }
 
-- (void)writeToURL:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)writeToURL:(id)l progress:(id)progress completion:(id)completion
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  progressCopy = progress;
+  completionCopy = completion;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -910,7 +910,7 @@ LABEL_9:
   dispatch_sync(isolationQueue, block);
   if (v30[3])
   {
-    if (v8 && ([v8 isFileURL] & 1) != 0)
+    if (lCopy && ([lCopy isFileURL] & 1) != 0)
     {
       v12 = self->_isolationQueue;
       v27[0] = MEMORY[0x1E69E9820];
@@ -919,13 +919,13 @@ LABEL_9:
       v27[3] = &unk_1E7B66D20;
       v27[4] = self;
       dispatch_sync(v12, v27);
-      [(PFAVReaderWriter *)self setOutputURL:v8];
-      v13 = [(PFAVReaderWriter *)self asset];
-      v14 = [v10 copy];
+      [(PFAVReaderWriter *)self setOutputURL:lCopy];
+      asset = [(PFAVReaderWriter *)self asset];
+      v14 = [completionCopy copy];
       completionBlock = self->_completionBlock;
       self->_completionBlock = v14;
 
-      v16 = [v9 copy];
+      v16 = [progressCopy copy];
       progressBlock = self->_progressBlock;
       self->_progressBlock = v16;
 
@@ -936,12 +936,12 @@ LABEL_9:
       v24[3] = &unk_1E7B66790;
       v24[4] = self;
       objc_copyWeak(&v25, &location);
-      [v13 loadValuesAsynchronouslyForKeys:&unk_1F2AAB848 completionHandler:v24];
+      [asset loadValuesAsynchronouslyForKeys:&unk_1F2AAB848 completionHandler:v24];
       objc_destroyWeak(&v25);
       objc_destroyWeak(&location);
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
       v21 = MEMORY[0x1E696ABC0];
       v33 = *MEMORY[0x1E696A578];
@@ -949,11 +949,11 @@ LABEL_9:
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
       v23 = [v21 errorWithDomain:@"PFAVReaderWriterErrorDomain" code:2 userInfo:v22];
 
-      (*(v10 + 2))(v10, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, v23);
     }
   }
 
-  else if (v10)
+  else if (completionCopy)
   {
     v18 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A578];
@@ -961,7 +961,7 @@ LABEL_9:
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v20 = [v18 errorWithDomain:@"PFAVReaderWriterErrorDomain" code:1 userInfo:v19];
 
-    (*(v10 + 2))(v10, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 
   _Block_object_dispose(&v29, 8);
@@ -985,20 +985,20 @@ void __51__PFAVReaderWriter_writeToURL_progress_completion___block_invoke_4(uint
   [WeakRetained _didLoadAVAssetValues];
 }
 
-- (PFAVReaderWriter)initWithAsset:(id)a3 stillImageTime:(id *)a4
+- (PFAVReaderWriter)initWithAsset:(id)asset stillImageTime:(id *)time
 {
-  v6 = a3;
+  assetCopy = asset;
   v16.receiver = self;
   v16.super_class = PFAVReaderWriter;
   v7 = [(PFAVReaderWriter *)&v16 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [assetCopy copy];
     v9 = *(v7 + 15);
     *(v7 + 15) = v8;
 
-    v10 = *&a4->var0;
-    *(v7 + 100) = a4->var3;
+    v10 = *&time->var0;
+    *(v7 + 100) = time->var3;
     *(v7 + 84) = v10;
     v11 = dispatch_queue_create("com.apple.PFAVReaderWriter.serializationQueue", 0);
     v12 = *(v7 + 1);
@@ -1012,7 +1012,7 @@ void __51__PFAVReaderWriter_writeToURL_progress_completion___block_invoke_4(uint
   return v7;
 }
 
-- (PFAVReaderWriter)initWithAsset:(id)a3
+- (PFAVReaderWriter)initWithAsset:(id)asset
 {
   v4 = *MEMORY[0x1E6960C70];
   v5 = *(MEMORY[0x1E6960C70] + 16);

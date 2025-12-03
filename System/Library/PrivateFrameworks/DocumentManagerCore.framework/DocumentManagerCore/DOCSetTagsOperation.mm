@@ -1,44 +1,44 @@
 @interface DOCSetTagsOperation
-- (DOCSetTagsOperation)initWithItems:(id)a3 tagsLists:(id)a4 isUndoable:(BOOL)a5 shouldClearUndoStack:(BOOL)a6 undoManager:(id)a7;
+- (DOCSetTagsOperation)initWithItems:(id)items tagsLists:(id)lists isUndoable:(BOOL)undoable shouldClearUndoStack:(BOOL)stack undoManager:(id)manager;
 - (NSString)actionNameForUndoing;
 - (id)currentItems;
 - (id)currentTagsLists;
-- (id)itemIDsFromItems:(id)a3;
-- (id)itemsFromItemIDs:(id)a3;
+- (id)itemIDsFromItems:(id)items;
+- (id)itemsFromItemIDs:(id)ds;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 - (id)operationItemIDs;
-- (id)tagsListsFromItems:(id)a3;
+- (id)tagsListsFromItems:(id)items;
 - (void)clearUndoStack;
 - (void)registerUndo;
 @end
 
 @implementation DOCSetTagsOperation
 
-- (DOCSetTagsOperation)initWithItems:(id)a3 tagsLists:(id)a4 isUndoable:(BOOL)a5 shouldClearUndoStack:(BOOL)a6 undoManager:(id)a7
+- (DOCSetTagsOperation)initWithItems:(id)items tagsLists:(id)lists isUndoable:(BOOL)undoable shouldClearUndoStack:(BOOL)stack undoManager:(id)manager
 {
-  v8 = a6;
-  v9 = a5;
-  v13 = a4;
-  v14 = a7;
+  stackCopy = stack;
+  undoableCopy = undoable;
+  listsCopy = lists;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = DOCSetTagsOperation;
-  v15 = [(FPSetTagsOperation *)&v20 initWithItems:a3 tagsLists:v13];
+  v15 = [(FPSetTagsOperation *)&v20 initWithItems:items tagsLists:listsCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [(DOCSetTagsOperation *)v15 currentTagsLists];
+    currentTagsLists = [(DOCSetTagsOperation *)v15 currentTagsLists];
     oldTagsLists = v16->_oldTagsLists;
-    v16->_oldTagsLists = v17;
+    v16->_oldTagsLists = currentTagsLists;
 
-    objc_storeStrong(&v16->_updatedTagsLists, a4);
-    objc_storeStrong(&v16->_undoManager, a7);
-    if (v9)
+    objc_storeStrong(&v16->_updatedTagsLists, lists);
+    objc_storeStrong(&v16->_undoManager, manager);
+    if (undoableCopy)
     {
       [(DOCSetTagsOperation *)v16 registerUndo];
     }
 
-    else if (v8)
+    else if (stackCopy)
     {
       [(DOCSetTagsOperation *)v16 clearUndoStack];
     }
@@ -55,16 +55,16 @@
   v5 = _DocumentManagerBundle();
   v6 = [v5 localizedStringForKey:@"Edit Tags of %lu Items [undo / redo command]" value:@"Edit Tags of %lu Items [undo / redo command]" table:@"Localizable"];
 
-  v7 = [(FPTransformOperation *)self items];
-  v8 = [v7 count];
+  items = [(FPTransformOperation *)self items];
+  v8 = [items count];
 
-  v9 = [(FPTransformOperation *)self items];
-  v10 = [v9 firstObject];
-  v11 = [v10 displayName];
+  items2 = [(FPTransformOperation *)self items];
+  firstObject = [items2 firstObject];
+  displayName = [firstObject displayName];
 
   if (v8 == 1)
   {
-    [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, v11];
+    [MEMORY[0x277CCACA8] localizedStringWithFormat:v4, displayName];
   }
 
   else
@@ -78,13 +78,13 @@
 
 - (id)operationForRedoing
 {
-  v3 = [(DOCSetTagsOperation *)self currentItems];
-  if ([v3 count] && (v4 = objc_msgSend(v3, "count"), -[FPTransformOperation items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 == v6))
+  currentItems = [(DOCSetTagsOperation *)self currentItems];
+  if ([currentItems count] && (v4 = objc_msgSend(currentItems, "count"), -[FPTransformOperation items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 == v6))
   {
     v7 = [DOCSetTagsOperation alloc];
-    v8 = [(DOCSetTagsOperation *)self updatedTagsLists];
-    v9 = [(DOCSetTagsOperation *)self undoManager];
-    v10 = [(DOCSetTagsOperation *)v7 initWithItems:v3 tagsLists:v8 isUndoable:1 shouldClearUndoStack:0 undoManager:v9];
+    updatedTagsLists = [(DOCSetTagsOperation *)self updatedTagsLists];
+    undoManager = [(DOCSetTagsOperation *)self undoManager];
+    v10 = [(DOCSetTagsOperation *)v7 initWithItems:currentItems tagsLists:updatedTagsLists isUndoable:1 shouldClearUndoStack:0 undoManager:undoManager];
   }
 
   else
@@ -97,13 +97,13 @@
 
 - (id)operationForUndoing
 {
-  v3 = [(DOCSetTagsOperation *)self currentItems];
-  if ([v3 count] && (v4 = objc_msgSend(v3, "count"), -[FPTransformOperation items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 == v6))
+  currentItems = [(DOCSetTagsOperation *)self currentItems];
+  if ([currentItems count] && (v4 = objc_msgSend(currentItems, "count"), -[FPTransformOperation items](self, "items"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v4 == v6))
   {
     v7 = [DOCSetTagsOperation alloc];
-    v8 = [(DOCSetTagsOperation *)self oldTagsLists];
-    v9 = [(DOCSetTagsOperation *)self undoManager];
-    v10 = [(DOCSetTagsOperation *)v7 initWithItems:v3 tagsLists:v8 isUndoable:1 shouldClearUndoStack:0 undoManager:v9];
+    oldTagsLists = [(DOCSetTagsOperation *)self oldTagsLists];
+    undoManager = [(DOCSetTagsOperation *)self undoManager];
+    v10 = [(DOCSetTagsOperation *)v7 initWithItems:currentItems tagsLists:oldTagsLists isUndoable:1 shouldClearUndoStack:0 undoManager:undoManager];
   }
 
   else
@@ -116,42 +116,42 @@
 
 - (void)registerUndo
 {
-  v3 = [(DOCSetTagsOperation *)self undoManager];
-  [v3 registerUndoOperationForSender:self];
+  undoManager = [(DOCSetTagsOperation *)self undoManager];
+  [undoManager registerUndoOperationForSender:self];
 }
 
 - (void)clearUndoStack
 {
-  v2 = [(DOCSetTagsOperation *)self undoManager];
-  [v2 removeAllActions];
+  undoManager = [(DOCSetTagsOperation *)self undoManager];
+  [undoManager removeAllActions];
 }
 
 - (id)currentItems
 {
-  v3 = [(DOCSetTagsOperation *)self operationItemIDs];
-  v4 = [(DOCSetTagsOperation *)self itemsFromItemIDs:v3];
+  operationItemIDs = [(DOCSetTagsOperation *)self operationItemIDs];
+  v4 = [(DOCSetTagsOperation *)self itemsFromItemIDs:operationItemIDs];
 
   return v4;
 }
 
 - (id)operationItemIDs
 {
-  v3 = [(FPTransformOperation *)self items];
-  v4 = [(DOCSetTagsOperation *)self itemIDsFromItems:v3];
+  items = [(FPTransformOperation *)self items];
+  v4 = [(DOCSetTagsOperation *)self itemIDsFromItems:items];
 
   return v4;
 }
 
-- (id)itemIDsFromItems:(id)a3
+- (id)itemIDsFromItems:(id)items
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -166,8 +166,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) itemID];
-        [v4 addObject:v10];
+        itemID = [*(*(&v13 + 1) + 8 * i) itemID];
+        [v4 addObject:itemID];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -181,10 +181,10 @@
   return v4;
 }
 
-- (id)itemsFromItemIDs:(id)a3
+- (id)itemsFromItemIDs:(id)ds
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dsCopy = ds;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -196,7 +196,7 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v30 count:16];
   if (v6)
   {
@@ -211,7 +211,7 @@
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [(FPActionOperation *)self itemManager];
+        itemManager = [(FPActionOperation *)self itemManager];
         v17[0] = MEMORY[0x277D85DD0];
         v17[1] = 3221225472;
         v17[2] = __40__DOCSetTagsOperation_itemsFromItemIDs___block_invoke;
@@ -219,7 +219,7 @@
         v19 = &v24;
         v11 = v5;
         v18 = v11;
-        [v10 fetchItemForItemID:v9 completionHandler:v17];
+        [itemManager fetchItemForItemID:v9 completionHandler:v17];
 
         v12 = dispatch_time(0, 1000000000);
         dispatch_semaphore_wait(v11, v12);
@@ -253,22 +253,22 @@ intptr_t __40__DOCSetTagsOperation_itemsFromItemIDs___block_invoke(uint64_t a1, 
 
 - (id)currentTagsLists
 {
-  v3 = [(FPTransformOperation *)self items];
-  v4 = [(DOCSetTagsOperation *)self tagsListsFromItems:v3];
+  items = [(FPTransformOperation *)self items];
+  v4 = [(DOCSetTagsOperation *)self tagsListsFromItems:items];
 
   return v4;
 }
 
-- (id)tagsListsFromItems:(id)a3
+- (id)tagsListsFromItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -285,12 +285,12 @@ intptr_t __40__DOCSetTagsOperation_itemsFromItemIDs___block_invoke(uint64_t a1, 
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 tags];
+        tags = [v11 tags];
 
-        if (v12)
+        if (tags)
         {
-          v13 = [v11 tags];
-          [v4 addObject:v13];
+          tags2 = [v11 tags];
+          [v4 addObject:tags2];
         }
 
         else

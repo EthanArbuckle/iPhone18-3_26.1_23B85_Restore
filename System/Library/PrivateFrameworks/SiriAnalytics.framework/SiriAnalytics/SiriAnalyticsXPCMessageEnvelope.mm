@@ -1,7 +1,7 @@
 @interface SiriAnalyticsXPCMessageEnvelope
 - (NSData)payload;
-- (SiriAnalyticsXPCMessageEnvelope)initWithEventTypeId:(int64_t)a3 payload:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SiriAnalyticsXPCMessageEnvelope)initWithEventTypeId:(int64_t)id payload:(id)payload;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriAnalyticsXPCMessageEnvelope
@@ -16,20 +16,20 @@
   return v5;
 }
 
-- (SiriAnalyticsXPCMessageEnvelope)initWithEventTypeId:(int64_t)a3 payload:(id)a4
+- (SiriAnalyticsXPCMessageEnvelope)initWithEventTypeId:(int64_t)id payload:(id)payload
 {
-  v5 = a4;
+  payloadCopy = payload;
   v6 = sub_1D992AD84();
   v8 = v7;
 
-  return XPCMessageEnvelope.init(eventTypeId:payload:)(a3, v6, v8);
+  return XPCMessageEnvelope.init(eventTypeId:payload:)(id, v6, v8);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D98CD1A8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1D98CD1A8(coderCopy);
 }
 
 @end

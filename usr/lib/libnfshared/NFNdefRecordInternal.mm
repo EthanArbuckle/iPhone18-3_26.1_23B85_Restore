@@ -1,69 +1,69 @@
 @interface NFNdefRecordInternal
-+ (BOOL)parseRecordUsingScanner:(_NFDataScanner *)a3 header:(char *)a4 type:(id *)a5 identifier:(id *)a6 payload:(id *)a7;
-+ (id)_decodeTextRecord:(id)a3;
-+ (id)_decodeTextRecordLanguage:(id)a3;
-+ (id)_decodeTextRecordText:(id)a3;
-+ (id)_decodeURIRecord:(id)a3;
-+ (id)dataFromRecord:(id)a3;
-+ (id)decodeFromRecord:(id)a3;
-+ (id)recordsFromBytes:(const void *)a3 length:(unsigned int)a4;
++ (BOOL)parseRecordUsingScanner:(_NFDataScanner *)scanner header:(char *)header type:(id *)type identifier:(id *)identifier payload:(id *)payload;
++ (id)_decodeTextRecord:(id)record;
++ (id)_decodeTextRecordLanguage:(id)language;
++ (id)_decodeTextRecordText:(id)text;
++ (id)_decodeURIRecord:(id)record;
++ (id)dataFromRecord:(id)record;
++ (id)decodeFromRecord:(id)record;
++ (id)recordsFromBytes:(const void *)bytes length:(unsigned int)length;
 - (BOOL)isURIRecord;
 - (NFNdefRecordInternal)init;
-- (NFNdefRecordInternal)initWithCoder:(id)a3;
-- (NFNdefRecordInternal)initWithHeader:(unsigned __int8)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6;
-- (NFNdefRecordInternal)initWithNDEFRecord:(id)a3;
+- (NFNdefRecordInternal)initWithCoder:(id)coder;
+- (NFNdefRecordInternal)initWithHeader:(unsigned __int8)header type:(id)type identifier:(id)identifier payload:(id)payload;
+- (NFNdefRecordInternal)initWithNDEFRecord:(id)record;
 - (NSString)description;
-- (void)_setIdLengthPresent:(BOOL)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setChunked:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setMessageBegin:(BOOL)a3;
-- (void)setMessageEnd:(BOOL)a3;
-- (void)setPayload:(id)a3;
-- (void)setShortRecord:(BOOL)a3;
+- (void)_setIdLengthPresent:(BOOL)present;
+- (void)encodeWithCoder:(id)coder;
+- (void)setChunked:(BOOL)chunked;
+- (void)setIdentifier:(id)identifier;
+- (void)setMessageBegin:(BOOL)begin;
+- (void)setMessageEnd:(BOOL)end;
+- (void)setPayload:(id)payload;
+- (void)setShortRecord:(BOOL)record;
 @end
 
 @implementation NFNdefRecordInternal
 
-+ (BOOL)parseRecordUsingScanner:(_NFDataScanner *)a3 header:(char *)a4 type:(id *)a5 identifier:(id *)a6 payload:(id *)a7
++ (BOOL)parseRecordUsingScanner:(_NFDataScanner *)scanner header:(char *)header type:(id *)type identifier:(id *)identifier payload:(id *)payload
 {
   LOBYTE(Data) = 0;
-  if (!a4 || !a5 || !a6 || !a7)
+  if (!header || !type || !identifier || !payload)
   {
     return Data;
   }
 
-  *a5 = 0;
-  *a6 = 0;
-  *a7 = 0;
-  *a4 = 0;
-  var1 = a3->var1;
-  if (var1 + 1 > *(a3->var0 + 1))
+  *type = 0;
+  *identifier = 0;
+  *payload = 0;
+  *header = 0;
+  var1 = scanner->var1;
+  if (var1 + 1 > *(scanner->var0 + 1))
   {
     goto LABEL_7;
   }
 
-  v13 = *a3->var0;
-  a3->var1 = var1 + 1;
+  v13 = *scanner->var0;
+  scanner->var1 = var1 + 1;
   v14 = *(v13 + var1);
-  *a4 = v14;
-  v15 = a3->var1;
+  *header = v14;
+  v15 = scanner->var1;
   v16 = v15 + 1;
-  v17 = *(a3->var0 + 1);
+  v17 = *(scanner->var0 + 1);
   if (v15 + 1 > v17)
   {
     goto LABEL_7;
   }
 
-  v18 = *a3->var0;
-  a3->var1 = v16;
+  v18 = *scanner->var0;
+  scanner->var1 = v16;
   v19 = *(v18 + v15);
   if ((v14 & 0x10) != 0)
   {
     v22 = v15 + 2;
     if (v22 <= v17)
     {
-      a3->var1 = v22;
+      scanner->var1 = v22;
       v20 = *(v18 + v16);
       if ((v14 & 8) == 0)
       {
@@ -88,7 +88,7 @@ LABEL_7:
   do
   {
     v22 = v16 + 1;
-    a3->var1 = v16 + 1;
+    scanner->var1 = v16 + 1;
     v20 = *(v18 + v16++) | (v20 << 8);
   }
 
@@ -103,7 +103,7 @@ LABEL_15:
     }
 
 LABEL_21:
-    Data = NFDataScannerReadData(a3, v19);
+    Data = NFDataScannerReadData(scanner, v19);
     if (!Data)
     {
       return Data;
@@ -111,7 +111,7 @@ LABEL_21:
 
     v25 = Data;
     v26 = objc_alloc(MEMORY[0x277CBEA90]);
-    *a5 = objc_msgSend_initWithBytes_length_(v26, v27, *v25, v25[1]);
+    *type = objc_msgSend_initWithBytes_length_(v26, v27, *v25, v25[1]);
     NFDataRelease(v25);
     goto LABEL_23;
   }
@@ -122,7 +122,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  a3->var1 = v22 + 1;
+  scanner->var1 = v22 + 1;
   v24 = *(v18 + v22);
   if (v19)
   {
@@ -132,7 +132,7 @@ LABEL_19:
 LABEL_23:
   if (v24)
   {
-    Data = NFDataScannerReadData(a3, v24);
+    Data = NFDataScannerReadData(scanner, v24);
     if (!Data)
     {
       return Data;
@@ -140,13 +140,13 @@ LABEL_23:
 
     v28 = Data;
     v29 = objc_alloc(MEMORY[0x277CBEA90]);
-    *a6 = objc_msgSend_initWithBytes_length_(v29, v30, *v28, v28[1]);
+    *identifier = objc_msgSend_initWithBytes_length_(v29, v30, *v28, v28[1]);
     NFDataRelease(v28);
   }
 
   if (v20)
   {
-    Data = NFDataScannerReadData(a3, v20);
+    Data = NFDataScannerReadData(scanner, v20);
     if (!Data)
     {
       return Data;
@@ -154,7 +154,7 @@ LABEL_23:
 
     v31 = Data;
     v32 = objc_alloc(MEMORY[0x277CBEA90]);
-    *a7 = objc_msgSend_initWithBytes_length_(v32, v33, *v31, v31[1]);
+    *payload = objc_msgSend_initWithBytes_length_(v32, v33, *v31, v31[1]);
     NFDataRelease(v31);
   }
 
@@ -162,10 +162,10 @@ LABEL_23:
   return Data;
 }
 
-+ (id)recordsFromBytes:(const void *)a3 length:(unsigned int)a4
++ (id)recordsFromBytes:(const void *)bytes length:(unsigned int)length
 {
   v6 = objc_opt_new();
-  v7 = NFDataCreateWithBytesNoCopy(a3, a4, 0);
+  v7 = NFDataCreateWithBytesNoCopy(bytes, length, 0);
   v8 = NFDataScannerCreateWithData(v7);
   v10 = v8;
   if (v8)
@@ -222,24 +222,24 @@ LABEL_23:
   return result;
 }
 
-- (NFNdefRecordInternal)initWithNDEFRecord:(id)a3
+- (NFNdefRecordInternal)initWithNDEFRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v21.receiver = self;
   v21.super_class = NFNdefRecordInternal;
   v7 = [(NFNdefRecordInternal *)&v21 init];
   if (v7)
   {
-    v7->_firstOctet = objc_msgSend_header(v4, v5, v6);
-    v10 = objc_msgSend_identifier(v4, v8, v9);
+    v7->_firstOctet = objc_msgSend_header(recordCopy, v5, v6);
+    v10 = objc_msgSend_identifier(recordCopy, v8, v9);
     identifier = v7->_identifier;
     v7->_identifier = v10;
 
-    v14 = objc_msgSend_type(v4, v12, v13);
+    v14 = objc_msgSend_type(recordCopy, v12, v13);
     type = v7->_type;
     v7->_type = v14;
 
-    v18 = objc_msgSend_payload(v4, v16, v17);
+    v18 = objc_msgSend_payload(recordCopy, v16, v17);
     payload = v7->_payload;
     v7->_payload = v18;
   }
@@ -247,29 +247,29 @@ LABEL_23:
   return v7;
 }
 
-- (NFNdefRecordInternal)initWithHeader:(unsigned __int8)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6
+- (NFNdefRecordInternal)initWithHeader:(unsigned __int8)header type:(id)type identifier:(id)identifier payload:(id)payload
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v19.receiver = self;
   v19.super_class = NFNdefRecordInternal;
   v13 = [(NFNdefRecordInternal *)&v19 init];
   v15 = v13;
   if (v13)
   {
-    v13->_firstOctet = a3;
-    objc_msgSend_setIdentifier_(v13, v14, v11);
-    objc_msgSend_setType_(v15, v16, v10);
-    objc_msgSend_setPayload_(v15, v17, v12);
+    v13->_firstOctet = header;
+    objc_msgSend_setIdentifier_(v13, v14, identifierCopy);
+    objc_msgSend_setType_(v15, v16, typeCopy);
+    objc_msgSend_setPayload_(v15, v17, payloadCopy);
   }
 
   return v15;
 }
 
-- (void)setMessageBegin:(BOOL)a3
+- (void)setMessageBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
     v3 = 0x80;
   }
@@ -282,9 +282,9 @@ LABEL_23:
   self->_firstOctet = v3 & 0x80 | self->_firstOctet & 0x7F;
 }
 
-- (void)setMessageEnd:(BOOL)a3
+- (void)setMessageEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     v3 = 64;
   }
@@ -297,9 +297,9 @@ LABEL_23:
   self->_firstOctet = self->_firstOctet & 0xBF | v3;
 }
 
-- (void)setChunked:(BOOL)a3
+- (void)setChunked:(BOOL)chunked
 {
-  if (a3)
+  if (chunked)
   {
     v3 = 32;
   }
@@ -312,9 +312,9 @@ LABEL_23:
   self->_firstOctet = self->_firstOctet & 0xDF | v3;
 }
 
-- (void)setShortRecord:(BOOL)a3
+- (void)setShortRecord:(BOOL)record
 {
-  if (a3)
+  if (record)
   {
     v3 = 16;
   }
@@ -327,9 +327,9 @@ LABEL_23:
   self->_firstOctet = self->_firstOctet & 0xEF | v3;
 }
 
-- (void)_setIdLengthPresent:(BOOL)a3
+- (void)_setIdLengthPresent:(BOOL)present
 {
-  if (a3)
+  if (present)
   {
     v3 = 8;
   }
@@ -342,13 +342,13 @@ LABEL_23:
   self->_firstOctet = self->_firstOctet & 0xF7 | v3;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_msgSend__setIdLengthPresent_(self, v4, 1);
-    v5 = v7;
+    v5 = identifierCopy;
   }
 
   else
@@ -357,13 +357,13 @@ LABEL_23:
   }
 
   identifier = self->_identifier;
-  self->_identifier = v7;
+  self->_identifier = identifierCopy;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  objc_storeStrong(&self->_payload, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_payload, payload);
+  payloadCopy = payload;
   v8 = objc_msgSend_length(self->_payload, v6, v7);
 
   objc_msgSend_setShortRecord_(self, v9, v8 < 0x100);
@@ -482,27 +482,27 @@ LABEL_23:
   return 0;
 }
 
-- (NFNdefRecordInternal)initWithCoder:(id)a3
+- (NFNdefRecordInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = NFNdefRecordInternal;
   v6 = [(NFNdefRecordInternal *)&v20 init];
   if (v6)
   {
-    v6->_firstOctet = objc_msgSend_decodeInt32ForKey_(v4, v5, @"firstOctet");
+    v6->_firstOctet = objc_msgSend_decodeInt32ForKey_(coderCopy, v5, @"firstOctet");
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"type");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"type");
     type = v6->_type;
     v6->_type = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"id");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"id");
     identifier = v6->_identifier;
     v6->_identifier = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"payload");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"payload");
     payload = v6->_payload;
     v6->_payload = v17;
   }
@@ -510,36 +510,36 @@ LABEL_23:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  objc_msgSend_encodeInt32_forKey_(v10, v4, self->_firstOctet, @"firstOctet");
+  coderCopy = coder;
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v4, self->_firstOctet, @"firstOctet");
   type = self->_type;
   if (type)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, type, @"type");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, type, @"type");
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, identifier, @"id");
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, identifier, @"id");
   }
 
   payload = self->_payload;
-  v9 = v10;
+  v9 = coderCopy;
   if (payload)
   {
-    objc_msgSend_encodeObject_forKey_(v10, v5, payload, @"payload");
-    v9 = v10;
+    objc_msgSend_encodeObject_forKey_(coderCopy, v5, payload, @"payload");
+    v9 = coderCopy;
   }
 }
 
-+ (id)_decodeTextRecordLanguage:(id)a3
++ (id)_decodeTextRecordLanguage:(id)language
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  languageCopy = language;
+  v6 = languageCopy;
   v9 = objc_msgSend_bytes(v6, v7, v8);
   v12 = *v9 & 0x1F;
   if ((*v9 & 0x1F) == 0)
@@ -551,9 +551,9 @@ LABEL_23:
       v28 = *(&off_27DA9DE50 + specific);
       if (v28)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v32 = 45;
         if (isMetaClass)
@@ -572,7 +572,7 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v34 = object_getClass(a1);
+      v34 = object_getClass(self);
       if (class_isMetaClass(v34))
       {
         v35 = 43;
@@ -586,7 +586,7 @@ LABEL_23:
       *buf = 67109890;
       v44 = v35;
       v45 = 2082;
-      v46 = object_getClassName(a1);
+      v46 = object_getClassName(self);
       v47 = 2082;
       v48 = sel_getName(a2);
       v49 = 1024;
@@ -600,7 +600,7 @@ LABEL_29:
   }
 
   v13 = v9;
-  if (objc_msgSend_length(v5, v10, v11) < (v12 + 1))
+  if (objc_msgSend_length(languageCopy, v10, v11) < (v12 + 1))
   {
     v14 = kNFLOG_DISPATCH_SPECIFIC_KEY;
     v15 = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -609,9 +609,9 @@ LABEL_29:
       v16 = *(&off_27DA9DE50 + v15);
       if (v16)
       {
-        v17 = object_getClass(a1);
+        v17 = object_getClass(self);
         v18 = class_isMetaClass(v17);
-        v19 = object_getClassName(a1);
+        v19 = object_getClassName(self);
         v41 = sel_getName(a2);
         v20 = 45;
         if (v18)
@@ -630,7 +630,7 @@ LABEL_29:
         goto LABEL_24;
       }
 
-      v23 = object_getClass(a1);
+      v23 = object_getClass(self);
       if (class_isMetaClass(v23))
       {
         v24 = 43;
@@ -644,7 +644,7 @@ LABEL_29:
       *buf = 67109890;
       v44 = v24;
       v45 = 2082;
-      v46 = object_getClassName(a1);
+      v46 = object_getClassName(self);
       v47 = 2082;
       v48 = sel_getName(a2);
       v49 = 1024;
@@ -670,15 +670,15 @@ LABEL_26:
   return v36;
 }
 
-+ (id)_decodeTextRecordText:(id)a3
++ (id)_decodeTextRecordText:(id)text
 {
   v88 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  textCopy = text;
+  v6 = textCopy;
   v9 = objc_msgSend_bytes(v6, v7, v8);
   v10 = *v9;
   v11 = (*v9 & 0x1F) + 1;
-  if (objc_msgSend_length(v5, v12, v13) <= v11)
+  if (objc_msgSend_length(textCopy, v12, v13) <= v11)
   {
     v40 = kNFLOG_DISPATCH_SPECIFIC_KEY;
     specific = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -687,9 +687,9 @@ LABEL_26:
       v42 = *(&off_27DA9DE50 + specific);
       if (v42)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v46 = 45;
         if (isMetaClass)
@@ -705,7 +705,7 @@ LABEL_26:
       v15 = NFSharedLogGetLogger(v47);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v48 = object_getClass(a1);
+        v48 = object_getClass(self);
         if (class_isMetaClass(v48))
         {
           v49 = 43;
@@ -719,7 +719,7 @@ LABEL_26:
         *buf = 67109890;
         v81 = v49;
         v82 = 2082;
-        v83 = object_getClassName(a1);
+        v83 = object_getClassName(self);
         v84 = 2082;
         v85 = sel_getName(a2);
         v86 = 1024;
@@ -737,9 +737,9 @@ LABEL_54:
   sel = a2;
   v14 = v10;
   v15 = objc_opt_new();
-  if (objc_msgSend_length(v5, v16, v17) > v11)
+  if (objc_msgSend_length(textCopy, v16, v17) > v11)
   {
-    for (i = &v9[v11]; i < &v9[objc_msgSend_length(v5, v25, v26)]; ++i)
+    for (i = &v9[v11]; i < &v9[objc_msgSend_length(textCopy, v25, v26)]; ++i)
     {
       if ((v14 & 0x80000000) == 0 && (v21 = *i, v21 <= 0x1F) && ((v22 = v21 > 0xD, v23 = (1 << v21) & 0x2500, !v22) ? (v24 = v23 == 0) : (v24 = 1), v24))
       {
@@ -753,9 +753,9 @@ LABEL_54:
         v29 = *(&off_27DA9DE50 + v28);
         if (v29)
         {
-          v30 = object_getClass(a1);
+          v30 = object_getClass(self);
           v31 = class_isMetaClass(v30);
-          v32 = object_getClassName(a1);
+          v32 = object_getClassName(self);
           v76 = sel_getName(sel);
           v33 = 45;
           if (v31)
@@ -771,7 +771,7 @@ LABEL_54:
         v35 = NFSharedLogGetLogger(v34);
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
-          v36 = object_getClass(a1);
+          v36 = object_getClass(self);
           if (class_isMetaClass(v36))
           {
             v37 = 43;
@@ -782,7 +782,7 @@ LABEL_54:
             v37 = 45;
           }
 
-          v38 = object_getClassName(a1);
+          v38 = object_getClassName(self);
           v39 = sel_getName(sel);
           *buf = 67109890;
           v81 = v37;
@@ -833,9 +833,9 @@ LABEL_54:
   v62 = *(&off_27DA9DE50 + v61);
   if (v62)
   {
-    v63 = object_getClass(a1);
+    v63 = object_getClass(self);
     v64 = class_isMetaClass(v63);
-    v65 = object_getClassName(a1);
+    v65 = object_getClassName(self);
     v78 = sel_getName(sel);
     v66 = 45;
     if (v64)
@@ -851,7 +851,7 @@ LABEL_54:
   v68 = NFSharedLogGetLogger(v67);
   if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
   {
-    v69 = object_getClass(a1);
+    v69 = object_getClass(self);
     if (class_isMetaClass(v69))
     {
       v70 = 43;
@@ -862,7 +862,7 @@ LABEL_54:
       v70 = 45;
     }
 
-    v71 = object_getClassName(a1);
+    v71 = object_getClassName(self);
     v72 = sel_getName(sel);
     *buf = 67109890;
     v81 = v70;
@@ -884,20 +884,20 @@ LABEL_51:
   return v73;
 }
 
-+ (id)_decodeTextRecord:(id)a3
++ (id)_decodeTextRecord:(id)record
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_length(v5, v6, v7))
+  recordCopy = record;
+  if (objc_msgSend_length(recordCopy, v6, v7))
   {
-    v10 = objc_msgSend__decodeTextRecordLanguage_(NFNdefRecordInternal, v8, v5);
+    v10 = objc_msgSend__decodeTextRecordLanguage_(NFNdefRecordInternal, v8, recordCopy);
     v11 = &stru_2843AE380;
     if (!v10)
     {
       goto LABEL_31;
     }
 
-    v12 = objc_msgSend__decodeTextRecordText_(NFNdefRecordInternal, v9, v5);
+    v12 = objc_msgSend__decodeTextRecordText_(NFNdefRecordInternal, v9, recordCopy);
     if (v12)
     {
       v13 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -926,9 +926,9 @@ LABEL_30:
       v30 = *(&off_27DA9DE50 + specific);
       if (v30)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v34 = 45;
         if (isMetaClass)
@@ -944,7 +944,7 @@ LABEL_30:
       v36 = NFSharedLogGetLogger(v35);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = object_getClass(a1);
+        v37 = object_getClass(self);
         if (class_isMetaClass(v37))
         {
           v38 = 43;
@@ -958,7 +958,7 @@ LABEL_30:
         *buf = 67109890;
         v44 = v38;
         v45 = 2082;
-        v46 = object_getClassName(a1);
+        v46 = object_getClassName(self);
         v47 = 2082;
         v48 = sel_getName(a2);
         v49 = 1024;
@@ -984,9 +984,9 @@ LABEL_34:
   v20 = *(&off_27DA9DE50 + v19);
   if (v20)
   {
-    v21 = object_getClass(a1);
+    v21 = object_getClass(self);
     v22 = class_isMetaClass(v21);
-    v23 = object_getClassName(a1);
+    v23 = object_getClassName(self);
     v41 = sel_getName(a2);
     v24 = 45;
     if (v22)
@@ -1002,7 +1002,7 @@ LABEL_34:
   v10 = NFSharedLogGetLogger(v25);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v26 = object_getClass(a1);
+    v26 = object_getClass(self);
     if (class_isMetaClass(v26))
     {
       v27 = 43;
@@ -1016,7 +1016,7 @@ LABEL_34:
     *buf = 67109890;
     v44 = v27;
     v45 = 2082;
-    v46 = object_getClassName(a1);
+    v46 = object_getClassName(self);
     v47 = 2082;
     v48 = sel_getName(a2);
     v49 = 1024;
@@ -1032,11 +1032,11 @@ LABEL_31:
   return v11;
 }
 
-+ (id)_decodeURIRecord:(id)a3
++ (id)_decodeURIRecord:(id)record
 {
   v105 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_length(v5, v6, v7) <= 1)
+  recordCopy = record;
+  if (objc_msgSend_length(recordCopy, v6, v7) <= 1)
   {
     v8 = kNFLOG_DISPATCH_SPECIFIC_KEY;
     specific = dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1045,9 +1045,9 @@ LABEL_31:
       v10 = *(&off_27DA9DE50 + specific);
       if (v10)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v14 = 45;
         if (isMetaClass)
@@ -1063,7 +1063,7 @@ LABEL_31:
       v16 = NFSharedLogGetLogger(v15);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = object_getClass(a1);
+        v17 = object_getClass(self);
         if (class_isMetaClass(v17))
         {
           v18 = 43;
@@ -1077,7 +1077,7 @@ LABEL_31:
         *buf = 67109890;
         v98 = v18;
         v99 = 2082;
-        v100 = object_getClassName(a1);
+        v100 = object_getClassName(self);
         v101 = 2082;
         v102 = sel_getName(a2);
         v103 = 1024;
@@ -1093,18 +1093,18 @@ LABEL_61:
     __assert_rtn("NFLogGetLogger", "NFSharedLog.c", 230, "category < NFLogCategoryMax");
   }
 
-  v20 = v5;
+  v20 = recordCopy;
   v25 = objc_msgSend_bytes(v20, v21, v22);
   v26 = v25 + 1;
   v27 = *v25;
   do
   {
-    if (v26 >= &v25[objc_msgSend_length(v5, v23, v24)])
+    if (v26 >= &v25[objc_msgSend_length(recordCopy, v23, v24)])
     {
-      v40 = v5;
+      v40 = recordCopy;
       v43 = objc_msgSend_bytes(v40, v41, v42);
       v44 = MEMORY[0x277CBEA90];
-      v47 = objc_msgSend_length(v5, v45, v46);
+      v47 = objc_msgSend_length(recordCopy, v45, v46);
       v16 = objc_msgSend_dataWithBytes_length_(v44, v48, v43 + 1, v47 - 1);
       v49 = objc_alloc(MEMORY[0x277CCACA8]);
       v52 = objc_msgSend_initWithFormat_(v49, v50, @"%02x", v27);
@@ -1147,9 +1147,9 @@ LABEL_61:
           v82 = *(&off_27DA9DE50 + v81);
           if (v82)
           {
-            v83 = object_getClass(a1);
+            v83 = object_getClass(self);
             v84 = class_isMetaClass(v83);
-            v85 = object_getClassName(a1);
+            v85 = object_getClassName(self);
             v96 = sel_getName(a2);
             v86 = 45;
             if (v84)
@@ -1165,7 +1165,7 @@ LABEL_61:
           v88 = NFSharedLogGetLogger(v87);
           if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
           {
-            v89 = object_getClass(a1);
+            v89 = object_getClass(self);
             if (class_isMetaClass(v89))
             {
               v90 = 43;
@@ -1179,7 +1179,7 @@ LABEL_61:
             *buf = 67109890;
             v98 = v90;
             v99 = 2082;
-            v100 = object_getClassName(a1);
+            v100 = object_getClassName(self);
             v101 = 2082;
             v102 = sel_getName(a2);
             v103 = 1024;
@@ -1203,9 +1203,9 @@ LABEL_61:
         v72 = *(&off_27DA9DE50 + v71);
         if (v72)
         {
-          v73 = object_getClass(a1);
+          v73 = object_getClass(self);
           v74 = class_isMetaClass(v73);
-          v75 = object_getClassName(a1);
+          v75 = object_getClassName(self);
           v95 = sel_getName(a2);
           v76 = 45;
           if (v74)
@@ -1221,7 +1221,7 @@ LABEL_61:
         v53 = NFSharedLogGetLogger(v77);
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
         {
-          v78 = object_getClass(a1);
+          v78 = object_getClass(self);
           if (class_isMetaClass(v78))
           {
             v79 = 43;
@@ -1235,7 +1235,7 @@ LABEL_61:
           *buf = 67109890;
           v98 = v79;
           v99 = 2082;
-          v100 = object_getClassName(a1);
+          v100 = object_getClassName(self);
           v101 = 2082;
           v102 = sel_getName(a2);
           v103 = 1024;
@@ -1263,9 +1263,9 @@ LABEL_61:
   v31 = *(&off_27DA9DE50 + v30);
   if (v31)
   {
-    v32 = object_getClass(a1);
+    v32 = object_getClass(self);
     v33 = class_isMetaClass(v32);
-    v34 = object_getClassName(a1);
+    v34 = object_getClassName(self);
     v94 = sel_getName(a2);
     v35 = 45;
     if (v33)
@@ -1281,7 +1281,7 @@ LABEL_61:
   v16 = NFSharedLogGetLogger(v36);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v37 = object_getClass(a1);
+    v37 = object_getClass(self);
     if (class_isMetaClass(v37))
     {
       v38 = 43;
@@ -1295,7 +1295,7 @@ LABEL_61:
     *buf = 67109890;
     v98 = v38;
     v99 = 2082;
-    v100 = object_getClassName(a1);
+    v100 = object_getClassName(self);
     v101 = 2082;
     v102 = sel_getName(a2);
     v103 = 1024;
@@ -1314,28 +1314,28 @@ LABEL_58:
   return v39;
 }
 
-+ (id)decodeFromRecord:(id)a3
++ (id)decodeFromRecord:(id)record
 {
   v96 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (objc_msgSend_typeNameFormat(v5, v6, v7) == 1)
+  recordCopy = record;
+  if (objc_msgSend_typeNameFormat(recordCopy, v6, v7) == 1)
   {
-    v10 = objc_msgSend_type(v5, v8, v9);
+    v10 = objc_msgSend_type(recordCopy, v8, v9);
     v13 = objc_msgSend_length(v10, v11, v12);
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x277CCACA8]);
-      v17 = objc_msgSend_type(v5, v15, v16);
+      v17 = objc_msgSend_type(recordCopy, v15, v16);
       v18 = v17;
       v21 = objc_msgSend_bytes(v18, v19, v20);
-      v24 = objc_msgSend_type(v5, v22, v23);
+      v24 = objc_msgSend_type(recordCopy, v22, v23);
       v27 = objc_msgSend_length(v24, v25, v26);
       v29 = objc_msgSend_initWithBytes_length_encoding_(v14, v28, v21, v27, 4);
 
       if (objc_msgSend_isEqualToString_(v29, v30, @"T"))
       {
-        v33 = objc_msgSend_payload(v5, v31, v32);
+        v33 = objc_msgSend_payload(recordCopy, v31, v32);
         v35 = objc_msgSend__decodeTextRecord_(NFNdefRecordInternal, v34, v33);
 LABEL_20:
         v57 = v35;
@@ -1345,7 +1345,7 @@ LABEL_20:
 
       if (objc_msgSend_isEqualToString_(v29, v31, @"U"))
       {
-        v33 = objc_msgSend_payload(v5, v69, v70);
+        v33 = objc_msgSend_payload(recordCopy, v69, v70);
         v35 = objc_msgSend__decodeURIRecord_(NFNdefRecordInternal, v71, v33);
         goto LABEL_20;
       }
@@ -1360,9 +1360,9 @@ LABEL_20:
       v60 = *(&off_27DA9DE50 + specific);
       if (v60)
       {
-        Class = object_getClass(a1);
+        Class = object_getClass(self);
         isMetaClass = class_isMetaClass(Class);
-        ClassName = object_getClassName(a1);
+        ClassName = object_getClassName(self);
         Name = sel_getName(a2);
         v64 = 45;
         if (isMetaClass)
@@ -1381,7 +1381,7 @@ LABEL_20:
         goto LABEL_32;
       }
 
-      v67 = object_getClass(a1);
+      v67 = object_getClass(self);
       if (class_isMetaClass(v67))
       {
         v68 = 43;
@@ -1395,7 +1395,7 @@ LABEL_20:
       *buf = 67109890;
       v89 = v68;
       v90 = 2082;
-      v91 = object_getClassName(a1);
+      v91 = object_getClassName(self);
       v92 = 2082;
       v93 = sel_getName(a2);
       v94 = 1024;
@@ -1411,18 +1411,18 @@ LABEL_32:
     goto LABEL_38;
   }
 
-  if (objc_msgSend_typeNameFormat(v5, v8, v9) == 3)
+  if (objc_msgSend_typeNameFormat(recordCopy, v8, v9) == 3)
   {
-    v38 = objc_msgSend_type(v5, v36, v37);
+    v38 = objc_msgSend_type(recordCopy, v36, v37);
     v41 = objc_msgSend_length(v38, v39, v40);
 
     if (v41)
     {
       v42 = objc_alloc(MEMORY[0x277CCACA8]);
-      v45 = objc_msgSend_type(v5, v43, v44);
+      v45 = objc_msgSend_type(recordCopy, v43, v44);
       v46 = v45;
       v49 = objc_msgSend_bytes(v46, v47, v48);
-      v52 = objc_msgSend_type(v5, v50, v51);
+      v52 = objc_msgSend_type(recordCopy, v50, v51);
       v55 = objc_msgSend_length(v52, v53, v54);
       v57 = objc_msgSend_initWithBytes_length_encoding_(v42, v56, v49, v55, 4);
 
@@ -1436,9 +1436,9 @@ LABEL_32:
       v74 = *(&off_27DA9DE50 + v73);
       if (v74)
       {
-        v75 = object_getClass(a1);
+        v75 = object_getClass(self);
         v76 = class_isMetaClass(v75);
-        v77 = object_getClassName(a1);
+        v77 = object_getClassName(self);
         v87 = sel_getName(a2);
         v78 = 45;
         if (v76)
@@ -1457,7 +1457,7 @@ LABEL_32:
         goto LABEL_32;
       }
 
-      v80 = object_getClass(a1);
+      v80 = object_getClass(self);
       if (class_isMetaClass(v80))
       {
         v81 = 43;
@@ -1471,7 +1471,7 @@ LABEL_32:
       *buf = 67109890;
       v89 = v81;
       v90 = 2082;
-      v91 = object_getClassName(a1);
+      v91 = object_getClassName(self);
       v92 = 2082;
       v93 = sel_getName(a2);
       v94 = 1024;
@@ -1485,7 +1485,7 @@ LABEL_38:
 
 LABEL_34:
   v82 = objc_alloc(MEMORY[0x277CCACA8]);
-  v57 = objc_msgSend_initWithFormat_(v82, v83, @"%@", v5);
+  v57 = objc_msgSend_initWithFormat_(v82, v83, @"%@", recordCopy);
 LABEL_35:
 
   v84 = *MEMORY[0x277D85DE8];
@@ -1493,19 +1493,19 @@ LABEL_35:
   return v57;
 }
 
-+ (id)dataFromRecord:(id)a3
++ (id)dataFromRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_opt_new();
   v97 = 0;
-  v96 = objc_msgSend_header(v3, v5, v6);
+  v96 = objc_msgSend_header(recordCopy, v5, v6);
   objc_msgSend_appendBytes_length_(v4, v7, &v96, 1);
-  v10 = objc_msgSend_type(v3, v8, v9);
+  v10 = objc_msgSend_type(recordCopy, v8, v9);
   if (v10)
   {
   }
 
-  else if (!objc_msgSend_typeNameFormat(v3, v11, v12))
+  else if (!objc_msgSend_typeNameFormat(recordCopy, v11, v12))
   {
     v97 = 0;
     objc_msgSend_appendBytes_length_(v4, v13, &v97, 1);
@@ -1514,23 +1514,23 @@ LABEL_35:
     goto LABEL_26;
   }
 
-  v15 = objc_msgSend_type(v3, v13, v14);
+  v15 = objc_msgSend_type(recordCopy, v13, v14);
   v97 = objc_msgSend_length(v15, v16, v17);
 
   objc_msgSend_appendBytes_length_(v4, v18, &v97, 1);
-  if (objc_msgSend_shortRecord(v3, v19, v20))
+  if (objc_msgSend_shortRecord(recordCopy, v19, v20))
   {
     v97 = 0;
-    v23 = objc_msgSend_payload(v3, v21, v22);
+    v23 = objc_msgSend_payload(recordCopy, v21, v22);
     if (v23)
     {
       v26 = v23;
-      v27 = objc_msgSend_payload(v3, v24, v25);
+      v27 = objc_msgSend_payload(recordCopy, v24, v25);
       v30 = objc_msgSend_length(v27, v28, v29);
 
       if (v30)
       {
-        v32 = objc_msgSend_payload(v3, v24, v31);
+        v32 = objc_msgSend_payload(recordCopy, v24, v31);
         v97 = objc_msgSend_length(v32, v33, v34);
       }
     }
@@ -1538,15 +1538,15 @@ LABEL_35:
 
   else
   {
-    v37 = objc_msgSend_payload(v3, v21, v22);
+    v37 = objc_msgSend_payload(recordCopy, v21, v22);
     if (v37)
     {
-      v38 = objc_msgSend_payload(v3, v35, v36);
+      v38 = objc_msgSend_payload(recordCopy, v35, v36);
       v41 = objc_msgSend_length(v38, v39, v40);
 
       if (v41)
       {
-        v43 = objc_msgSend_payload(v3, v35, v42);
+        v43 = objc_msgSend_payload(recordCopy, v35, v42);
         LODWORD(v37) = objc_msgSend_length(v43, v44, v45);
       }
 
@@ -1566,60 +1566,60 @@ LABEL_35:
   }
 
   objc_msgSend_appendBytes_length_(v4, v24, &v97, 1);
-  v51 = objc_msgSend_identifier(v3, v49, v50);
+  v51 = objc_msgSend_identifier(recordCopy, v49, v50);
   if (v51)
   {
     v54 = v51;
-    v55 = objc_msgSend_identifier(v3, v52, v53);
+    v55 = objc_msgSend_identifier(recordCopy, v52, v53);
     v58 = objc_msgSend_length(v55, v56, v57);
 
     if (v58)
     {
-      v59 = objc_msgSend_identifier(v3, v52, v53);
+      v59 = objc_msgSend_identifier(recordCopy, v52, v53);
       v97 = objc_msgSend_length(v59, v60, v61);
 
       objc_msgSend_appendBytes_length_(v4, v62, &v97, 1);
     }
   }
 
-  v63 = objc_msgSend_type(v3, v52, v53);
+  v63 = objc_msgSend_type(recordCopy, v52, v53);
   if (v63)
   {
     v66 = v63;
-    v67 = objc_msgSend_type(v3, v64, v65);
+    v67 = objc_msgSend_type(recordCopy, v64, v65);
     v70 = objc_msgSend_length(v67, v68, v69);
 
     if (v70)
     {
-      v71 = objc_msgSend_type(v3, v64, v65);
+      v71 = objc_msgSend_type(recordCopy, v64, v65);
       objc_msgSend_appendData_(v4, v72, v71);
     }
   }
 
-  v73 = objc_msgSend_identifier(v3, v64, v65);
+  v73 = objc_msgSend_identifier(recordCopy, v64, v65);
   if (v73)
   {
     v76 = v73;
-    v77 = objc_msgSend_identifier(v3, v74, v75);
+    v77 = objc_msgSend_identifier(recordCopy, v74, v75);
     v80 = objc_msgSend_length(v77, v78, v79);
 
     if (v80)
     {
-      v81 = objc_msgSend_identifier(v3, v74, v75);
+      v81 = objc_msgSend_identifier(recordCopy, v74, v75);
       objc_msgSend_appendData_(v4, v82, v81);
     }
   }
 
-  v83 = objc_msgSend_payload(v3, v74, v75);
+  v83 = objc_msgSend_payload(recordCopy, v74, v75);
   if (v83)
   {
     v86 = v83;
-    v87 = objc_msgSend_payload(v3, v84, v85);
+    v87 = objc_msgSend_payload(recordCopy, v84, v85);
     v90 = objc_msgSend_length(v87, v88, v89);
 
     if (v90)
     {
-      v93 = objc_msgSend_payload(v3, v91, v92);
+      v93 = objc_msgSend_payload(recordCopy, v91, v92);
       objc_msgSend_appendData_(v4, v94, v93);
     }
   }

@@ -1,13 +1,13 @@
 @interface AUUITableViewController
-- (AUUITableViewController)initWithCoder:(id)a3;
-- (AUUITableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AUUITableViewController)initWithCoder:(id)coder;
+- (AUUITableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)initAUUITableViewControllerCommon;
 - (void)loadView;
-- (void)setDelegate:(id)a3;
-- (void)setTableView:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setTableView:(id)view;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AUUITableViewController
@@ -23,11 +23,11 @@
   }
 }
 
-- (AUUITableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AUUITableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = AUUITableViewController;
-  v4 = [(AUUITableViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(AUUITableViewController *)&v9 initWithNibName:name bundle:bundle];
   v7 = v4;
   if (v4)
   {
@@ -37,11 +37,11 @@
   return v7;
 }
 
-- (AUUITableViewController)initWithCoder:(id)a3
+- (AUUITableViewController)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = AUUITableViewController;
-  v3 = [(AUUITableViewController *)&v8 initWithCoder:a3];
+  v3 = [(AUUITableViewController *)&v8 initWithCoder:coder];
   v6 = v3;
   if (v3)
   {
@@ -72,39 +72,39 @@
   objc_msgSend_setManagedTableView_(v8, v9, v5);
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  objc_msgSend_initAUUITableViewControllerCommon(self, a2, a3);
-  objc_msgSend_setManagedTableView_(self->_tableManager, v5, a3);
+  objc_msgSend_initAUUITableViewControllerCommon(self, a2, view);
+  objc_msgSend_setManagedTableView_(self->_tableManager, v5, view);
   v6.receiver = self;
   v6.super_class = AUUITableViewController;
-  [(AUUITableViewController *)&v6 setTableView:a3];
+  [(AUUITableViewController *)&v6 setTableView:view];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_msgSend_initAUUITableViewControllerCommon(self, a2, a3);
+  objc_msgSend_initAUUITableViewControllerCommon(self, a2, delegate);
   tableManager = self->_tableManager;
 
-  objc_msgSend_setDelegate_(tableManager, v5, a3);
+  objc_msgSend_setDelegate_(tableManager, v5, delegate);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  objc_msgSend_viewWillAppear_(self->_tableManager, a2, a3);
+  appearCopy = appear;
+  objc_msgSend_viewWillAppear_(self->_tableManager, a2, appear);
   v5.receiver = self;
   v5.super_class = AUUITableViewController;
-  [(AUUITableViewController *)&v5 viewWillAppear:v3];
+  [(AUUITableViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  objc_msgSend_viewWillDisappear_(self->_tableManager, a2, a3);
+  disappearCopy = disappear;
+  objc_msgSend_viewWillDisappear_(self->_tableManager, a2, disappear);
   v5.receiver = self;
   v5.super_class = AUUITableViewController;
-  [(AUUITableViewController *)&v5 viewWillDisappear:v3];
+  [(AUUITableViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 @end

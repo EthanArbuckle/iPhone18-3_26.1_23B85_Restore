@@ -1,37 +1,37 @@
 @interface WFContextualActionFile
-- (WFContextualActionFile)initWithCoder:(id)a3;
-- (WFContextualActionFile)initWithFileURL:(id)a3 type:(id)a4;
+- (WFContextualActionFile)initWithCoder:(id)coder;
+- (WFContextualActionFile)initWithFileURL:(id)l type:(id)type;
 - (id)description;
 - (void)dispose;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContextualActionFile
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [getFPSandboxingURLWrapperClass() wrapperWithURL:self->_fileURL readonly:0 error:0];
-  [v4 encodeObject:v5 forKey:@"SecurityScopedURLWrapper"];
-  [v4 encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"SecurityScopedURLWrapper"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
 }
 
-- (WFContextualActionFile)initWithCoder:(id)a3
+- (WFContextualActionFile)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"SecurityScopedURLWrapper"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:getFPSandboxingURLWrapperClass() forKey:@"SecurityScopedURLWrapper"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
 
-  v7 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     v8 = [v5 url];
     self = [(WFContextualActionFile *)self initWithFileURL:v8 type:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)description
@@ -39,19 +39,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFContextualActionFile *)self fileURL];
-  v7 = [(WFContextualActionFile *)self type];
-  v8 = [v3 stringWithFormat:@"<%@ %p url=%@, type=%@>", v5, self, v6, v7];
+  fileURL = [(WFContextualActionFile *)self fileURL];
+  type = [(WFContextualActionFile *)self type];
+  v8 = [v3 stringWithFormat:@"<%@ %p url=%@, type=%@>", v5, self, fileURL, type];
 
   return v8;
 }
 
 - (void)dispose
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(WFContextualActionFile *)self fileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  fileURL = [(WFContextualActionFile *)self fileURL];
   v6 = 0;
-  [v3 removeItemAtURL:v4 error:&v6];
+  [defaultManager removeItemAtURL:fileURL error:&v6];
   v5 = v6;
 
   if (v5)
@@ -60,15 +60,15 @@
   }
 }
 
-- (WFContextualActionFile)initWithFileURL:(id)a3 type:(id)a4
+- (WFContextualActionFile)initWithFileURL:(id)l type:(id)type
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (([v8 isFileURL] & 1) == 0)
+  lCopy = l;
+  typeCopy = type;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFContextualActionFile.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"fileURL.isFileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContextualActionFile.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"fileURL.isFileURL"}];
   }
 
   v32.receiver = self;
@@ -77,8 +77,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_fileURL, a3);
-    if (!v9)
+    objc_storeStrong(&v10->_fileURL, l);
+    if (!typeCopy)
     {
       v24 = 0;
 LABEL_18:
@@ -89,17 +89,17 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v12 = v8;
-    v13 = v9;
+    v12 = lCopy;
+    v13 = typeCopy;
     if (!v12)
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"UTType * _Nonnull WFResolvedType(NSURL * _Nonnull __strong, UTType * _Nonnull __strong)"}];
-      [v30 handleFailureInFunction:v31 file:@"WFContextualActionFile.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+      [currentHandler2 handleFailureInFunction:v31 file:@"WFContextualActionFile.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
     }
 
-    v14 = [v13 identifier];
-    v15 = [v14 isEqualToString:@"com.apple.icloud-file-fault"];
+    identifier = [v13 identifier];
+    v15 = [identifier isEqualToString:@"com.apple.icloud-file-fault"];
 
     if ((v15 & 1) == 0)
     {

@@ -1,11 +1,11 @@
 @interface COClientObserverSet
 - (COClientObserverSet)init;
 - (id)clientObservers;
-- (id)clientObserversForNotificationName:(id)a3;
-- (id)clientObserversForXPCConnection:(id)a3;
-- (void)_withLock:(id)a3;
-- (void)addClientObserver:(id)a3 forNotificationName:(id)a4;
-- (void)removeClientObserver:(id)a3 forNotificationName:(id)a4;
+- (id)clientObserversForNotificationName:(id)name;
+- (id)clientObserversForXPCConnection:(id)connection;
+- (void)_withLock:(id)lock;
+- (void)addClientObserver:(id)observer forNotificationName:(id)name;
+- (void)removeClientObserver:(id)observer forNotificationName:(id)name;
 @end
 
 @implementation COClientObserverSet
@@ -17,9 +17,9 @@
   v2 = [(COClientObserverSet *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = strongToStrongObjectsMapTable;
 
     v5 = objc_alloc_init(MEMORY[0x277CBEAC0]);
     registrations = v2->_registrations;
@@ -29,11 +29,11 @@
   return v2;
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -95,9 +95,9 @@ void __38__COClientObserverSet_clientObservers__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)clientObserversForXPCConnection:(id)a3
+- (id)clientObserversForXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -110,7 +110,7 @@ void __38__COClientObserverSet_clientObservers__block_invoke(uint64_t a1)
   v8[3] = &unk_278E15A18;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = connectionCopy;
   v9 = v5;
   [(COClientObserverSet *)self _withLock:v8];
   v6 = v12[5];
@@ -129,9 +129,9 @@ void __55__COClientObserverSet_clientObserversForXPCConnection___block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (id)clientObserversForNotificationName:(id)a3
+- (id)clientObserversForNotificationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -144,7 +144,7 @@ void __55__COClientObserverSet_clientObserversForXPCConnection___block_invoke(ui
   v8[3] = &unk_278E15A18;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = nameCopy;
   v9 = v5;
   [(COClientObserverSet *)self _withLock:v8];
   v6 = v12[5];
@@ -163,19 +163,19 @@ void __58__COClientObserverSet_clientObserversForNotificationName___block_invoke
   *(v3 + 40) = v2;
 }
 
-- (void)addClientObserver:(id)a3 forNotificationName:(id)a4
+- (void)addClientObserver:(id)observer forNotificationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__COClientObserverSet_addClientObserver_forNotificationName___block_invoke;
   v10[3] = &unk_278E15728;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = nameCopy;
+  v12 = observerCopy;
+  v8 = observerCopy;
+  v9 = nameCopy;
   [(COClientObserverSet *)self _withLock:v10];
 }
 
@@ -222,19 +222,19 @@ void __61__COClientObserverSet_addClientObserver_forNotificationName___block_inv
   }
 }
 
-- (void)removeClientObserver:(id)a3 forNotificationName:(id)a4
+- (void)removeClientObserver:(id)observer forNotificationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  nameCopy = name;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__COClientObserverSet_removeClientObserver_forNotificationName___block_invoke;
   v10[3] = &unk_278E15728;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = observerCopy;
+  v12 = nameCopy;
+  v8 = nameCopy;
+  v9 = observerCopy;
   [(COClientObserverSet *)self _withLock:v10];
 }
 

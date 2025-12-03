@@ -34,79 +34,79 @@
 
 - (void)cacPerformTextPaste
 {
-  v1 = a1;
-  if ([v1 hasAnyTraits:*MEMORY[0x277CE6E90]])
+  selfCopy = self;
+  if ([selfCopy hasAnyTraits:*MEMORY[0x277CE6E90]])
   {
-    v2 = [v1 textOperationsOperator];
-    v3 = v2;
-    if (v2)
+    textOperationsOperator = [selfCopy textOperationsOperator];
+    v3 = textOperationsOperator;
+    if (textOperationsOperator)
     {
-      v4 = v2;
+      v4 = textOperationsOperator;
 
-      v1 = v4;
+      selfCopy = v4;
     }
   }
 
-  v5 = [MEMORY[0x277D75810] generalPasteboard];
-  v6 = [v1 uiElement];
-  v7 = [v6 numberWithAXAttribute:3065];
-  v8 = [v7 longLongValue];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  uiElement = [selfCopy uiElement];
+  v7 = [uiElement numberWithAXAttribute:3065];
+  longLongValue = [v7 longLongValue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__AXElement_AXElementTextEditing__cacPerformTextPaste__block_invoke;
   v10[3] = &unk_279CEBE30;
-  v11 = v1;
-  v9 = v1;
-  [v5 _requestSecurePasteAuthenticationMessageWithContext:0x6B3CE0810AAF53ALL forClientVersionedPID:v8 completionBlock:v10];
+  v11 = selfCopy;
+  v9 = selfCopy;
+  [generalPasteboard _requestSecurePasteAuthenticationMessageWithContext:0x6B3CE0810AAF53ALL forClientVersionedPID:longLongValue completionBlock:v10];
 }
 
 - (void)cacPerformTextUndo
 {
-  if ([a1 cacSupportsTextOperation:*MEMORY[0x277CE6E60]])
+  if ([self cacSupportsTextOperation:*MEMORY[0x277CE6E60]])
   {
-    v2 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    [v2 performUndoIncludingProvisionalTextForElement:a1];
+    mEMORY[0x277CE7178] = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
+    [mEMORY[0x277CE7178] performUndoIncludingProvisionalTextForElement:self];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CE7178] sharedInstance];
-    [v2 shake];
+    mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+    [mEMORY[0x277CE7178] shake];
   }
 }
 
 - (void)cacPerformTextSelectAll
 {
   v2 = MEMORY[0x277CE6E50];
-  v3 = [a1 cacSupportsTextOperation:*MEMORY[0x277CE6E50]];
-  v12 = [a1 cacFirstPosition];
-  v4 = [a1 cacLastPosition];
-  v5 = [CACTextMarkerRange markerRangeWithStartMarker:v12 endMarker:v4];
+  v3 = [self cacSupportsTextOperation:*MEMORY[0x277CE6E50]];
+  cacFirstPosition = [self cacFirstPosition];
+  cacLastPosition = [self cacLastPosition];
+  v5 = [CACTextMarkerRange markerRangeWithStartMarker:cacFirstPosition endMarker:cacLastPosition];
   v6 = v5;
   if (v3)
   {
-    v7 = [v5 nsRange];
+    nsRange = [v5 nsRange];
     v9 = v8;
 
     v10 = +[CACDisplayManager sharedManager];
-    [v10 willProgrammaticallySelectRange:v7 forElement:{v9, a1}];
+    [v10 willProgrammaticallySelectRange:nsRange forElement:{v9, self}];
 
     v11 = *v2;
 
-    [a1 cacPerformTextOperation:v11];
+    [self cacPerformTextOperation:v11];
   }
 
   else
   {
-    [a1 cacSetTextSelectionToCACTextMarkerRange:v5];
+    [self cacSetTextSelectionToCACTextMarkerRange:v5];
   }
 }
 
 - (uint64_t)cacSupportsTextOperation:()AXElementTextEditing
 {
   v4 = a3;
-  v5 = [a1 cacTextOperations];
-  v6 = [v5 containsObject:v4];
+  cacTextOperations = [self cacTextOperations];
+  v6 = [cacTextOperations containsObject:v4];
 
   return v6;
 }
@@ -125,36 +125,36 @@
 {
   if (a3 != 0x7FFFFFFF)
   {
-    [a1 boundsForTextRange:?];
+    [self boundsForTextRange:?];
     x = v11.origin.x;
     y = v11.origin.y;
     width = v11.size.width;
     height = v11.size.height;
     if (!CGRectEqualToRect(v11, *MEMORY[0x277CBF3A0]))
     {
-      v9 = [a1 uiElement];
+      uiElement = [self uiElement];
       v8 = [MEMORY[0x277CCAE60] valueWithRect:{x, y, width, height}];
-      [v9 performAXAction:2039 withValue:v8];
+      [uiElement performAXAction:2039 withValue:v8];
     }
   }
 }
 
 - (uint64_t)visibleTextRange
 {
-  v2 = [a1 uiElement];
-  [v2 updateCache:2216];
+  uiElement = [self uiElement];
+  [uiElement updateCache:2216];
 
-  v3 = [a1 uiElement];
-  v4 = [v3 rangeWithAXAttribute:2216];
+  uiElement2 = [self uiElement];
+  v4 = [uiElement2 rangeWithAXAttribute:2216];
 
   return v4;
 }
 
 - (uint64_t)isVisibleTextRange:()AXElementTextEditing
 {
-  [a1 rectForRange:?];
+  [self rectForRange:?];
 
-  return [a1 isVisibleTextRect:?];
+  return [self isVisibleTextRect:?];
 }
 
 - (BOOL)isVisibleTextRect:()AXElementTextEditing
@@ -164,7 +164,7 @@
     return 0;
   }
 
-  [a1 visibleFrame];
+  [self visibleFrame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -179,21 +179,21 @@
 
 - (CACTextMarkerRange)cacTextSelectionCACTextMarkerRange
 {
-  v2 = [a1 selectedTextRange];
+  selectedTextRange = [self selectedTextRange];
 
-  return [CACTextMarkerRange markerRangeWithNSRange:v2, v1];
+  return [CACTextMarkerRange markerRangeWithNSRange:selectedTextRange, v1];
 }
 
 - (uint64_t)cacSetTextSelectionToRange:()AXElementTextEditing
 {
   v7 = +[CACDisplayManager sharedManager];
-  [v7 willProgrammaticallySelectRange:a3 forElement:{a4, a1}];
+  [v7 willProgrammaticallySelectRange:a3 forElement:{a4, self}];
 
-  result = [a1 setSelectedTextRange:{a3, a4}];
+  result = [self setSelectedTextRange:{a3, a4}];
   if (a4)
   {
 
-    return [a1 _scrollToVisibleForRange:{a3, a4}];
+    return [self _scrollToVisibleForRange:{a3, a4}];
   }
 
   return result;
@@ -201,24 +201,24 @@
 
 - (uint64_t)cacSetTextSelectionToCACTextMarkerRange:()AXElementTextEditing
 {
-  v5 = [a3 nsRange];
+  nsRange = [a3 nsRange];
 
-  return [a1 cacSetTextSelectionToRange:{v5, v4}];
+  return [self cacSetTextSelectionToRange:{nsRange, v4}];
 }
 
 - (id)cacStringForRange:()AXElementTextEditing
 {
-  v7 = [a1 _numberOfCharacters];
-  if (a3 <= v7)
+  _numberOfCharacters = [self _numberOfCharacters];
+  if (a3 <= _numberOfCharacters)
   {
     v8 = 0;
-    if (a4 && a3 + a4 <= v7)
+    if (a4 && a3 + a4 <= _numberOfCharacters)
     {
-      v9 = [a1 uiElement];
-      [v9 updateCache:2006];
+      uiElement = [self uiElement];
+      [uiElement updateCache:2006];
 
-      v10 = [a1 value];
-      v8 = [v10 substringWithRange:{a3, a4}];
+      value = [self value];
+      v8 = [value substringWithRange:{a3, a4}];
     }
   }
 
@@ -232,14 +232,14 @@
 
 - (id)cacString
 {
-  v2 = [a1 uiElement];
-  [v2 updateCache:2006];
+  uiElement = [self uiElement];
+  [uiElement updateCache:2006];
 
-  v3 = [a1 value];
+  value = [self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 copy];
+    v4 = [value copy];
   }
 
   else
@@ -252,43 +252,43 @@
 
 - (uint64_t)cacStringForCACTextMarkerRange:()AXElementTextEditing
 {
-  v5 = [a3 nsRange];
+  nsRange = [a3 nsRange];
 
-  return [a1 cacStringForRange:{v5, v4}];
+  return [self cacStringForRange:{nsRange, v4}];
 }
 
 - (uint64_t)deleteTextAtRange:()AXElementTextEditing
 {
-  [a1 setSelectedTextRange:?];
+  [self setSelectedTextRange:?];
   if (a4)
   {
-    [a1 _scrollToVisibleForRange:{a3, a4}];
+    [self _scrollToVisibleForRange:{a3, a4}];
   }
 
-  return [a1 deleteText];
+  return [self deleteText];
 }
 
 - (uint64_t)deleteTextAtTextMarkerRange:()AXElementTextEditing
 {
-  v5 = [a3 nsRange];
+  nsRange = [a3 nsRange];
 
-  return [a1 deleteTextAtRange:{v5, v4}];
+  return [self deleteTextAtRange:{nsRange, v4}];
 }
 
 - (CACTextMarker)cacLastPosition
 {
-  v1 = [a1 _numberOfCharacters];
+  _numberOfCharacters = [self _numberOfCharacters];
 
-  return [CACTextMarker markerWithIndex:v1];
+  return [CACTextMarker markerWithIndex:_numberOfCharacters];
 }
 
 - (uint64_t)_numberOfCharacters
 {
-  v2 = [a1 uiElement];
-  [v2 updateCache:2006];
+  uiElement = [self uiElement];
+  [uiElement updateCache:2006];
 
-  v3 = [a1 value];
-  v4 = [v3 length];
+  value = [self value];
+  v4 = [value length];
 
   return v4;
 }
@@ -296,8 +296,8 @@
 - (uint64_t)lineRangeForPosition:()AXElementTextEditing
 {
   v8 = xmmword_26B404FF0;
-  v4 = [a1 uiElement];
-  v5 = [v4 objectWithAXAttribute:94009 parameter:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a3)}];
+  uiElement = [self uiElement];
+  v5 = [uiElement objectWithAXAttribute:94009 parameter:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", a3)}];
 
   if (!v5)
   {
@@ -316,11 +316,11 @@
 
 - (id)textMarkerRangeForSelection
 {
-  v2 = [a1 uiElement];
-  [v2 updateCache:4004];
+  uiElement = [self uiElement];
+  [uiElement updateCache:4004];
 
-  v3 = [a1 uiElement];
-  v4 = [v3 arrayWithAXAttribute:4004];
+  uiElement2 = [self uiElement];
+  v4 = [uiElement2 arrayWithAXAttribute:4004];
 
   return v4;
 }
@@ -328,11 +328,11 @@
 - (id)textLineEndMarker:()AXElementTextEditing
 {
   v4 = a3;
-  v5 = [a1 uiElement];
-  [v5 updateCache:94003];
+  uiElement = [self uiElement];
+  [uiElement updateCache:94003];
 
-  v6 = [a1 uiElement];
-  v7 = [v6 objectWithAXAttribute:94003 parameter:v4];
+  uiElement2 = [self uiElement];
+  v7 = [uiElement2 objectWithAXAttribute:94003 parameter:v4];
 
   return v7;
 }
@@ -340,11 +340,11 @@
 - (id)textLineStartMarker:()AXElementTextEditing
 {
   v4 = a3;
-  v5 = [a1 uiElement];
-  [v5 updateCache:94002];
+  uiElement = [self uiElement];
+  [uiElement updateCache:94002];
 
-  v6 = [a1 uiElement];
-  v7 = [v6 objectWithAXAttribute:94002 parameter:v4];
+  uiElement2 = [self uiElement];
+  v7 = [uiElement2 objectWithAXAttribute:94002 parameter:v4];
 
   return v7;
 }
@@ -352,10 +352,10 @@
 - (id)elementForTextMarker:()AXElementTextEditing
 {
   v4 = a3;
-  v5 = [a1 uiElement];
-  [v5 updateCache:94006];
+  uiElement = [self uiElement];
+  [uiElement updateCache:94006];
 
-  v6 = [a1 elementForAttribute:94006 parameter:v4];
+  v6 = [self elementForAttribute:94006 parameter:v4];
 
   return v6;
 }
@@ -363,8 +363,8 @@
 - (double)textMarkerFrame:()AXElementTextEditing
 {
   v4 = a3;
-  v5 = [a1 uiElement];
-  v6 = [v5 objectWithAXAttribute:94000 parameter:v4];
+  uiElement = [self uiElement];
+  v6 = [uiElement objectWithAXAttribute:94000 parameter:v4];
 
   if (v6 && (v7 = CFGetTypeID(v6), v7 == AXValueGetTypeID()))
   {
@@ -387,8 +387,8 @@
 {
   v9 = xmmword_26B404FF0;
   v4 = a3;
-  v5 = [a1 uiElement];
-  v6 = [v5 objectWithAXAttribute:94012 parameter:v4];
+  uiElement = [self uiElement];
+  v6 = [uiElement objectWithAXAttribute:94012 parameter:v4];
 
   if (v6)
   {
@@ -406,8 +406,8 @@
 {
   v9 = xmmword_26B404FF0;
   v4 = a3;
-  v5 = [a1 uiElement];
-  v6 = [v5 objectWithAXAttribute:94017 parameter:v4];
+  uiElement = [self uiElement];
+  v6 = [uiElement objectWithAXAttribute:94017 parameter:v4];
 
   if (v6)
   {
@@ -429,8 +429,8 @@
   if (v7)
   {
     v8 = v7;
-    v9 = [a1 uiElement];
-    v10 = [v9 objectWithAXAttribute:a5 parameter:v8];
+    uiElement = [self uiElement];
+    v10 = [uiElement objectWithAXAttribute:a5 parameter:v8];
 
     CFRelease(v8);
   }
@@ -445,7 +445,7 @@
 
 - (id)textMarkersForRange:()AXElementTextEditing
 {
-  v4 = [a1 objectForRange:a3 withParameterizedAttribute:{a4, 94014}];
+  v4 = [self objectForRange:a3 withParameterizedAttribute:{a4, 94014}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

@@ -1,14 +1,14 @@
 @interface REUpNextHeaderView
 + (void)initialize;
-- (REUpNextHeaderView)initWithFrame:(CGRect)a3;
-- (void)setAttributedText:(id)a3;
+- (REUpNextHeaderView)initWithFrame:(CGRect)frame;
+- (void)setAttributedText:(id)text;
 @end
 
 @implementation REUpNextHeaderView
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     kActiveLayout_2_3 = 0x4030000000000000;
     kActiveLayout_0_3 = 0x3FF0000000000000;
@@ -16,12 +16,12 @@
   }
 }
 
-- (REUpNextHeaderView)initWithFrame:(CGRect)a3
+- (REUpNextHeaderView)initWithFrame:(CGRect)frame
 {
   v26[3] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = REUpNextHeaderView;
-  v3 = [(REUpNextHeaderView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(REUpNextHeaderView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -34,27 +34,27 @@
     [(UILabel *)v7 setFont:v8];
 
     v9 = v3->_label;
-    v10 = [MEMORY[0x277D75348] blackColor];
-    [(UILabel *)v9 setTextColor:v10];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UILabel *)v9 setTextColor:blackColor];
 
     [(UILabel *)v3->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     v11 = v3->_label;
-    v12 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v11 setBackgroundColor:v12];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v11 setBackgroundColor:clearColor];
 
     [(UILabel *)v3->_label setTextAlignment:4];
     [(REUpNextHeaderView *)v3 addSubview:v3->_label];
-    v24 = [(UILabel *)v3->_label leadingAnchor];
-    v13 = [(REUpNextHeaderView *)v3 leadingAnchor];
-    v14 = [v24 constraintEqualToAnchor:v13 constant:*&kActiveLayout_0_3];
+    leadingAnchor = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor2 = [(REUpNextHeaderView *)v3 leadingAnchor];
+    v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:*&kActiveLayout_0_3];
     v26[0] = v14;
-    v15 = [(UILabel *)v3->_label trailingAnchor];
-    v16 = [(REUpNextHeaderView *)v3 trailingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:-*&kActiveLayout_0_3];
+    trailingAnchor = [(UILabel *)v3->_label trailingAnchor];
+    trailingAnchor2 = [(REUpNextHeaderView *)v3 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-*&kActiveLayout_0_3];
     v26[1] = v17;
-    v18 = [(UILabel *)v3->_label lastBaselineAnchor];
-    v19 = [(REUpNextHeaderView *)v3 bottomAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:-*&kActiveLayout_1_3];
+    lastBaselineAnchor = [(UILabel *)v3->_label lastBaselineAnchor];
+    bottomAnchor = [(REUpNextHeaderView *)v3 bottomAnchor];
+    v20 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:-*&kActiveLayout_1_3];
     v26[2] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
 
@@ -65,9 +65,9 @@
   return v3;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   attributedText = self->_attributedText;
   self->_attributedText = v4;
 

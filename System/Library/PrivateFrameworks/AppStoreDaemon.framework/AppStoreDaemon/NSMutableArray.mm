@@ -6,18 +6,18 @@
 
 - (id)asd_pop
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 lastObject];
-    [a1 removeLastObject];
+    lastObject = [self lastObject];
+    [self removeLastObject];
   }
 
   else
   {
-    v2 = 0;
+    lastObject = 0;
   }
 
-  return v2;
+  return lastObject;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface BMSiriUIEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriUIEvent)initWithProto:(id)a3;
-- (BMSiriUIEvent)initWithProtoData:(id)a3;
-- (BMSiriUIEvent)initWithSessionID:(id)a3 UUID:(id)a4 viewMode:(id)a5 dismissalReason:(id)a6 starting:(BOOL)a7 absoluteTimeStamp:(double)a8;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriUIEvent)initWithProto:(id)proto;
+- (BMSiriUIEvent)initWithProtoData:(id)data;
+- (BMSiriUIEvent)initWithSessionID:(id)d UUID:(id)iD viewMode:(id)mode dismissalReason:(id)reason starting:(BOOL)starting absoluteTimeStamp:(double)stamp;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,35 +12,35 @@
 
 @implementation BMSiriUIEvent
 
-- (BMSiriUIEvent)initWithSessionID:(id)a3 UUID:(id)a4 viewMode:(id)a5 dismissalReason:(id)a6 starting:(BOOL)a7 absoluteTimeStamp:(double)a8
+- (BMSiriUIEvent)initWithSessionID:(id)d UUID:(id)iD viewMode:(id)mode dismissalReason:(id)reason starting:(BOOL)starting absoluteTimeStamp:(double)stamp
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  modeCopy = mode;
+  reasonCopy = reason;
   v28.receiver = self;
   v28.super_class = BMSiriUIEvent;
   v18 = [(BMEventBase *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [dCopy copy];
     sessionID = v18->_sessionID;
     v18->_sessionID = v19;
 
-    v21 = [v15 copy];
+    v21 = [iDCopy copy];
     UUID = v18->_UUID;
     v18->_UUID = v21;
 
-    v23 = [v16 copy];
+    v23 = [modeCopy copy];
     viewMode = v18->_viewMode;
     v18->_viewMode = v23;
 
-    v25 = [v17 copy];
+    v25 = [reasonCopy copy];
     dismissalReason = v18->_dismissalReason;
     v18->_dismissalReason = v25;
 
-    v18->_starting = a7;
-    v18->_absoluteTimestamp = a8;
+    v18->_starting = starting;
+    v18->_absoluteTimestamp = stamp;
   }
 
   return v18;
@@ -50,42 +50,42 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(BMSiriUIEvent *)self sessionID];
-  v6 = [(BMSiriUIEvent *)self UUID];
-  v7 = [(BMSiriUIEvent *)self viewMode];
-  v8 = [(BMSiriUIEvent *)self dismissalReason];
+  sessionID = [(BMSiriUIEvent *)self sessionID];
+  uUID = [(BMSiriUIEvent *)self UUID];
+  viewMode = [(BMSiriUIEvent *)self viewMode];
+  dismissalReason = [(BMSiriUIEvent *)self dismissalReason];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMSiriUIEvent isStarting](self, "isStarting")}];
   v10 = MEMORY[0x1E696AD98];
   [(BMSiriUIEvent *)self absoluteTimestamp];
   v11 = [v10 numberWithDouble:?];
-  v12 = [v3 initWithFormat:@"<%@ %p> sessionID: %@, UUID: %@, viewMode: %@, dismissalReason: %@, starting: %@, absoluteTimestamp: %@", v4, self, v5, v6, v7, v8, v9, v11];
+  v12 = [v3 initWithFormat:@"<%@ %p> sessionID: %@, UUID: %@, viewMode: %@, dismissalReason: %@, starting: %@, absoluteTimestamp: %@", v4, self, sessionID, uUID, viewMode, dismissalReason, v9, v11];
 
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriUIEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriUIEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriUIEvent)initWithProto:(id)a3
+- (BMSiriUIEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -101,55 +101,55 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 sessionID];
-  v7 = [v5 uuid];
-  v8 = [v5 viewMode];
-  v9 = [v5 dismissalReason];
-  v10 = [v5 starting];
+  v5 = protoCopy;
+  sessionID = [v5 sessionID];
+  uuid = [v5 uuid];
+  viewMode = [v5 viewMode];
+  dismissalReason = [v5 dismissalReason];
+  starting = [v5 starting];
   [v5 absoluteTimestamp];
   v12 = v11;
 
-  self = [(BMSiriUIEvent *)self initWithSessionID:v6 UUID:v7 viewMode:v8 dismissalReason:v9 starting:v10 absoluteTimeStamp:v12];
-  v13 = self;
+  self = [(BMSiriUIEvent *)self initWithSessionID:sessionID UUID:uuid viewMode:viewMode dismissalReason:dismissalReason starting:starting absoluteTimeStamp:v12];
+  selfCopy = self;
 LABEL_8:
 
-  return v13;
+  return selfCopy;
 }
 
-- (BMSiriUIEvent)initWithProtoData:(id)a3
+- (BMSiriUIEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriUIEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriUIEvent alloc] initWithData:dataCopy];
 
     self = [(BMSiriUIEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMSiriUIEvent *)self sessionID];
-  [v3 setSessionID:v4];
+  sessionID = [(BMSiriUIEvent *)self sessionID];
+  [v3 setSessionID:sessionID];
 
-  v5 = [(BMSiriUIEvent *)self UUID];
-  [v3 setUuid:v5];
+  uUID = [(BMSiriUIEvent *)self UUID];
+  [v3 setUuid:uUID];
 
-  v6 = [(BMSiriUIEvent *)self viewMode];
-  [v3 setViewMode:v6];
+  viewMode = [(BMSiriUIEvent *)self viewMode];
+  [v3 setViewMode:viewMode];
 
-  v7 = [(BMSiriUIEvent *)self dismissalReason];
-  [v3 setDismissalReason:v7];
+  dismissalReason = [(BMSiriUIEvent *)self dismissalReason];
+  [v3 setDismissalReason:dismissalReason];
 
   [v3 setStarting:{-[BMSiriUIEvent isStarting](self, "isStarting")}];
   [(BMSiriUIEvent *)self absoluteTimestamp];
@@ -172,9 +172,9 @@ LABEL_8:
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -182,12 +182,12 @@ LABEL_8:
     goto LABEL_31;
   }
 
-  v8 = v7;
-  v9 = [(BMSiriUIEvent *)self sessionID];
-  if (!v9)
+  v8 = equalCopy;
+  sessionID = [(BMSiriUIEvent *)self sessionID];
+  if (!sessionID)
   {
-    v3 = [v8 sessionID];
-    if (!v3)
+    sessionID2 = [v8 sessionID];
+    if (!sessionID2)
     {
       v10 = 1;
 LABEL_8:
@@ -196,22 +196,22 @@ LABEL_8:
     }
   }
 
-  v4 = [(BMSiriUIEvent *)self sessionID];
-  v5 = [v8 sessionID];
-  v10 = [v4 isEqual:v5];
+  sessionID3 = [(BMSiriUIEvent *)self sessionID];
+  sessionID4 = [v8 sessionID];
+  v10 = [sessionID3 isEqual:sessionID4];
 
-  if (!v9)
+  if (!sessionID)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
 
-  v12 = [(BMSiriUIEvent *)self UUID];
-  if (!v12)
+  uUID = [(BMSiriUIEvent *)self UUID];
+  if (!uUID)
   {
-    v4 = [v8 UUID];
-    if (!v4)
+    sessionID3 = [v8 UUID];
+    if (!sessionID3)
     {
       v14 = 1;
 LABEL_14:
@@ -220,22 +220,22 @@ LABEL_14:
     }
   }
 
-  v5 = [(BMSiriUIEvent *)self UUID];
-  v13 = [v8 UUID];
-  v14 = [v5 isEqual:v13];
+  sessionID4 = [(BMSiriUIEvent *)self UUID];
+  uUID2 = [v8 UUID];
+  v14 = [sessionID4 isEqual:uUID2];
 
-  if (!v12)
+  if (!uUID)
   {
     goto LABEL_14;
   }
 
 LABEL_15:
 
-  v15 = [(BMSiriUIEvent *)self viewMode];
-  if (!v15)
+  viewMode = [(BMSiriUIEvent *)self viewMode];
+  if (!viewMode)
   {
-    v5 = [v8 viewMode];
-    if (!v5)
+    sessionID4 = [v8 viewMode];
+    if (!sessionID4)
     {
       v18 = 1;
 LABEL_20:
@@ -244,34 +244,34 @@ LABEL_20:
     }
   }
 
-  v16 = [(BMSiriUIEvent *)self viewMode];
-  v17 = [v8 viewMode];
-  v18 = [v16 isEqual:v17];
+  viewMode2 = [(BMSiriUIEvent *)self viewMode];
+  viewMode3 = [v8 viewMode];
+  v18 = [viewMode2 isEqual:viewMode3];
 
-  if (!v15)
+  if (!viewMode)
   {
     goto LABEL_20;
   }
 
 LABEL_21:
 
-  v19 = [(BMSiriUIEvent *)self dismissalReason];
-  if (v19 || ([v8 dismissalReason], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+  dismissalReason = [(BMSiriUIEvent *)self dismissalReason];
+  if (dismissalReason || ([v8 dismissalReason], (v33 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v20 = [(BMSiriUIEvent *)self dismissalReason];
+    dismissalReason2 = [(BMSiriUIEvent *)self dismissalReason];
     [v8 dismissalReason];
-    v21 = v7;
+    v21 = equalCopy;
     v22 = v18;
     v23 = v14;
     v25 = v24 = v10;
-    v26 = [v20 isEqual:v25];
+    v26 = [dismissalReason2 isEqual:v25];
 
     v10 = v24;
     v14 = v23;
     v18 = v22;
-    v7 = v21;
+    equalCopy = v21;
 
-    if (v19)
+    if (dismissalReason)
     {
       goto LABEL_27;
     }
@@ -284,15 +284,15 @@ LABEL_21:
   }
 
 LABEL_27:
-  v27 = [(BMSiriUIEvent *)self isStarting];
-  v28 = [v8 isStarting];
+  isStarting = [(BMSiriUIEvent *)self isStarting];
+  isStarting2 = [v8 isStarting];
   [(BMSiriUIEvent *)self absoluteTimestamp];
   v30 = v29;
   [v8 absoluteTimestamp];
   v11 = 0;
   if ((v10 & v14 & v18) == 1 && v26)
   {
-    v11 = (v30 == v31) & ~(v27 ^ v28);
+    v11 = (v30 == v31) & ~(isStarting ^ isStarting2);
   }
 
 LABEL_31:

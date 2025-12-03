@@ -1,23 +1,23 @@
 @interface CATSendBroadcastMessageOperation
-- (CATSendBroadcastMessageOperation)initWithBroadcastPrimitive:(id)a3 message:(id)a4;
+- (CATSendBroadcastMessageOperation)initWithBroadcastPrimitive:(id)primitive message:(id)message;
 - (void)main;
 - (void)sendMessage;
 @end
 
 @implementation CATSendBroadcastMessageOperation
 
-- (CATSendBroadcastMessageOperation)initWithBroadcastPrimitive:(id)a3 message:(id)a4
+- (CATSendBroadcastMessageOperation)initWithBroadcastPrimitive:(id)primitive message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  primitiveCopy = primitive;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = CATSendBroadcastMessageOperation;
   v9 = [(CATOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mBroadcastPrimitives, a3);
-    objc_storeStrong(&v10->mMessage, a4);
+    objc_storeStrong(&v9->mBroadcastPrimitives, primitive);
+    objc_storeStrong(&v10->mMessage, message);
   }
 
   return v10;
@@ -54,8 +54,8 @@
   else
   {
     mBroadcastPrimitives = self->mBroadcastPrimitives;
-    v5 = [(CATDictionaryCodable *)self->mMessage dictionaryValue];
-    [(CATSharingBroadcastPrimitives *)mBroadcastPrimitives sendMessageToPairedDevice:v5];
+    dictionaryValue = [(CATDictionaryCodable *)self->mMessage dictionaryValue];
+    [(CATSharingBroadcastPrimitives *)mBroadcastPrimitives sendMessageToPairedDevice:dictionaryValue];
 
     [(CATOperation *)self endOperationWithResultObject:0];
   }

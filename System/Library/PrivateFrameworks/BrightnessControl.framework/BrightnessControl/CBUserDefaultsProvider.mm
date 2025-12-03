@@ -1,25 +1,25 @@
 @interface CBUserDefaultsProvider
-+ (id)providerWithDomain:(id)a3;
-- (CBUserDefaultsProvider)initWithDomain:(id)a3;
++ (id)providerWithDomain:(id)domain;
+- (CBUserDefaultsProvider)initWithDomain:(id)domain;
 - (void)dealloc;
 @end
 
 @implementation CBUserDefaultsProvider
 
-+ (id)providerWithDomain:(id)a3
++ (id)providerWithDomain:(id)domain
 {
-  v3 = [[CBUserDefaultsProvider alloc] initWithDomain:a3];
+  v3 = [[CBUserDefaultsProvider alloc] initWithDomain:domain];
 
   return v3;
 }
 
-- (CBUserDefaultsProvider)initWithDomain:(id)a3
+- (CBUserDefaultsProvider)initWithDomain:(id)domain
 {
   v5 = objc_autoreleasePoolPush();
   v8.receiver = self;
   v8.super_class = CBUserDefaultsProvider;
-  v6 = -[CBDictConfigProvider initWithDictionary:](&v8, sel_initWithDictionary_, [objc_msgSend(objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:{a3), "dictionaryRepresentation"}]);
-  v6->_desc = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CBUserDefaultsProvider(%@)", a3];
+  v6 = -[CBDictConfigProvider initWithDictionary:](&v8, sel_initWithDictionary_, [objc_msgSend(objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:{domain), "dictionaryRepresentation"}]);
+  v6->_desc = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"CBUserDefaultsProvider(%@)", domain];
   objc_autoreleasePoolPop(v5);
   return v6;
 }

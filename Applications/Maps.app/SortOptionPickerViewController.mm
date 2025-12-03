@@ -1,9 +1,9 @@
 @interface SortOptionPickerViewController
-- (_TtC4Maps30SortOptionPickerViewController)initWithCoder:(id)a3;
-- (_TtC4Maps30SortOptionPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Maps30SortOptionPickerViewController)initWithSortOptions:(id)a3 initialSelectedSortOptionIndex:(int64_t)a4 onDone:(id)a5;
+- (_TtC4Maps30SortOptionPickerViewController)initWithCoder:(id)coder;
+- (_TtC4Maps30SortOptionPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Maps30SortOptionPickerViewController)initWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index onDone:(id)done;
 - (id)customDismissHandler;
-- (void)setCustomDismissHandler:(id)a3;
+- (void)setCustomDismissHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -31,9 +31,9 @@
   return v3;
 }
 
-- (void)setCustomDismissHandler:(id)a3
+- (void)setCustomDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -52,14 +52,14 @@
   v9 = *(self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_customDismissHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1000D3B90(v8, v9);
 }
 
-- (_TtC4Maps30SortOptionPickerViewController)initWithSortOptions:(id)a3 initialSelectedSortOptionIndex:(int64_t)a4 onDone:(id)a5
+- (_TtC4Maps30SortOptionPickerViewController)initWithSortOptions:(id)options initialSelectedSortOptionIndex:(int64_t)index onDone:(id)done
 {
   ObjectType = swift_getObjectType();
-  v9 = _Block_copy(a5);
+  v9 = _Block_copy(done);
   type metadata accessor for SortOptionPickerSortOption();
   v10 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = swift_allocObject();
@@ -67,7 +67,7 @@
   *v12 = 0;
   v12[1] = 0;
   *(self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_sortOptions) = v10;
-  *(self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_initialSelectedSortOptionIndex) = a4;
+  *(self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_initialSelectedSortOptionIndex) = index;
   *(v11 + 16) = v9;
   v13 = (self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_onDone);
   *v13 = sub_1001D18BC;
@@ -77,7 +77,7 @@
   return [(MapsHostingContaineeViewController *)&v15 initWithNibName:0 bundle:0];
 }
 
-- (_TtC4Maps30SortOptionPickerViewController)initWithCoder:(id)a3
+- (_TtC4Maps30SortOptionPickerViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC4Maps30SortOptionPickerViewController_customDismissHandler);
   *v3 = 0;
@@ -89,11 +89,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003BFD60();
 }
 
-- (_TtC4Maps30SortOptionPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps30SortOptionPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,10 +2,10 @@
 + (id)_allowedValueClasses;
 + (id)detectionAbsent;
 + (id)detectionPresent;
-+ (id)detectionPresentWithValue:(id)a3;
-- (PBItemDetection)initWithCoder:(id)a3;
-- (PBItemDetection)initWithPresent:(BOOL)a3 value:(id)a4;
-- (void)encodeWithCoder:(id)a3;
++ (id)detectionPresentWithValue:(id)value;
+- (PBItemDetection)initWithCoder:(id)coder;
+- (PBItemDetection)initWithPresent:(BOOL)present value:(id)value;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBItemDetection
@@ -72,41 +72,41 @@ uint64_t __35__PBItemDetection_detectionPresent__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)detectionPresentWithValue:(id)a3
++ (id)detectionPresentWithValue:(id)value
 {
-  v3 = a3;
-  v4 = [[PBItemDetection alloc] initWithPresent:1 value:v3];
+  valueCopy = value;
+  v4 = [[PBItemDetection alloc] initWithPresent:1 value:valueCopy];
 
   return v4;
 }
 
-- (PBItemDetection)initWithPresent:(BOOL)a3 value:(id)a4
+- (PBItemDetection)initWithPresent:(BOOL)present value:(id)value
 {
-  v7 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = PBItemDetection;
   v8 = [(PBItemDetection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_present = a3;
-    objc_storeStrong(&v8->_value, a4);
+    v8->_present = present;
+    objc_storeStrong(&v8->_value, value);
   }
 
   return v9;
 }
 
-- (PBItemDetection)initWithCoder:(id)a3
+- (PBItemDetection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PBItemDetection;
   v5 = [(PBItemDetection *)&v10 init];
   if (v5)
   {
-    v5->_present = [v4 decodeBoolForKey:@"present"];
+    v5->_present = [coderCopy decodeBoolForKey:@"present"];
     v6 = +[PBItemDetection _allowedValueClasses];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"value"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"value"];
     value = v5->_value;
     v5->_value = v7;
   }
@@ -114,12 +114,12 @@ uint64_t __35__PBItemDetection_detectionPresent__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   present = self->_present;
-  v5 = a3;
-  [v5 encodeBool:present forKey:@"present"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeBool:present forKey:@"present"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
 @end

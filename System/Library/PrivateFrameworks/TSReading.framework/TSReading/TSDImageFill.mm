@@ -2,51 +2,51 @@
 - (BOOL)canApplyToCALayer;
 - (BOOL)canApplyToCALayerByAddingSublayers;
 - (BOOL)drawsInOneStep;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOpaque;
 - (BOOL)p_shouldApplyTintedImage;
-- (BOOL)shouldBeReappliedToCALayer:(id)a3;
-- (CGImage)p_newTintedImageWithScale:(double)a3;
-- (CGRect)p_drawnRectForImageSize:(CGSize)a3 destRect:(CGRect)a4 inContext:(CGContext *)a5;
+- (BOOL)shouldBeReappliedToCALayer:(id)layer;
+- (CGImage)p_newTintedImageWithScale:(double)scale;
+- (CGRect)p_drawnRectForImageSize:(CGSize)size destRect:(CGRect)rect inContext:(CGContext *)context;
 - (CGSize)fillSize;
-- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (CGSize)renderedImageSizeForObjectSize:(CGSize)a3;
-- (TSDImageFill)initWithGenericImageData:(id)a3 technique:(int)a4 tintColor:(id)a5 size:(CGSize)a6 originalImageData:(id)a7;
-- (TSDImageFill)initWithImageData:(id)a3 technique:(int)a4 tintColor:(id)a5 size:(CGSize)a6 originalImageData:(id)a7;
+- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)rect inContext:(CGContext *)context;
+- (CGSize)renderedImageSizeForObjectSize:(CGSize)size;
+- (TSDImageFill)initWithGenericImageData:(id)data technique:(int)technique tintColor:(id)color size:(CGSize)size originalImageData:(id)imageData;
+- (TSDImageFill)initWithImageData:(id)data technique:(int)technique tintColor:(id)color size:(CGSize)size originalImageData:(id)imageData;
 - (double)scale;
 - (id)imageDataAtFillSize;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)p_cachedImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orLayer:(id)a5;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)p_cachedImageForSize:(CGSize)size inContext:(CGContext *)context orLayer:(id)layer;
 - (id)p_halfSizeCachedImage;
 - (id)p_quarterSizeCachedImage;
 - (id)p_standardSizeCachedImage;
 - (id)p_validatedImageProvider;
 - (id)referenceColor;
-- (int64_t)mixingTypeWithObject:(id)a3;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 forShapeRep:(id)a4 inContext:(CGContext *)a5;
-- (void)applyToCALayer:(id)a3 withScale:(double)a4;
+- (int64_t)mixingTypeWithObject:(id)object;
+- (void)addBitmapsToRenderingQualityInfo:(id)info forShapeRep:(id)rep inContext:(CGContext *)context;
+- (void)applyToCALayer:(id)layer withScale:(double)scale;
 - (void)dealloc;
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)p_drawBitmapImage:(CGImage *)a3 withOrientation:(int64_t)a4 inContext:(CGContext *)a5 bounds:(CGRect)a6;
-- (void)p_drawPDFWithProvider:(id)a3 inContext:(CGContext *)a4 bounds:(CGRect)a5;
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)p_drawBitmapImage:(CGImage *)image withOrientation:(int64_t)orientation inContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)p_drawPDFWithProvider:(id)provider inContext:(CGContext *)context bounds:(CGRect)bounds;
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context;
 - (void)p_setFillSizeForApplicationData;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
 @end
 
 @implementation TSDImageFill
 
-- (TSDImageFill)initWithImageData:(id)a3 technique:(int)a4 tintColor:(id)a5 size:(CGSize)a6 originalImageData:(id)a7
+- (TSDImageFill)initWithImageData:(id)data technique:(int)technique tintColor:(id)color size:(CGSize)size originalImageData:(id)imageData
 {
-  height = a6.height;
-  width = a6.width;
-  if (a4 >= 5)
+  height = size.height;
+  width = size.width;
+  if (technique >= 5)
   {
-    v14 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill initWithImageData:technique:tintColor:size:originalImageData:]"];
-    [v14 handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 71, @"bogus technique"}];
+    [currentHandler handleFailureInFunction:v15 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 71, @"bogus technique"}];
   }
 
   v18.receiver = self;
@@ -54,10 +54,10 @@
   v16 = [(TSDImageFill *)&v18 init];
   if (v16)
   {
-    v16->mImageData = a3;
-    v16->mOriginalImageData = a7;
-    v16->mTechnique = a4;
-    v16->mTintColor = [a5 copy];
+    v16->mImageData = data;
+    v16->mOriginalImageData = imageData;
+    v16->mTechnique = technique;
+    v16->mTintColor = [color copy];
     v16->mFillSize.width = width;
     v16->mFillSize.height = height;
     v16->mTempRenderLock = dispatch_queue_create("com.apple.iwork.drawing.fills.image", 0);
@@ -66,9 +66,9 @@
   return v16;
 }
 
-- (TSDImageFill)initWithGenericImageData:(id)a3 technique:(int)a4 tintColor:(id)a5 size:(CGSize)a6 originalImageData:(id)a7
+- (TSDImageFill)initWithGenericImageData:(id)data technique:(int)technique tintColor:(id)color size:(CGSize)size originalImageData:(id)imageData
 {
-  result = [(TSDImageFill *)self initWithImageData:a3 technique:*&a4 tintColor:a5 size:a7 originalImageData:a6.width, a6.height];
+  result = [(TSDImageFill *)self initWithImageData:data technique:*&technique tintColor:color size:imageData originalImageData:size.width, size.height];
   if (result)
   {
     result->mInterpretsUntaggedImageDataAsGeneric = 1;
@@ -92,9 +92,9 @@
   [(TSDImageFill *)&v3 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableImageFill allocWithZone:a3];
+  v4 = [TSDMutableImageFill allocWithZone:zone];
   mTechnique = self->mTechnique;
   mTintColor = self->mTintColor;
   [(TSDImageFill *)self fillSize];
@@ -127,9 +127,9 @@
   v12 = v10 / v11;
   if (vabdd_f64(v8, v12) >= 0.00999999978)
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill scale]"];
-    [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 215, @"The scaled fill size should respect the aspect ratio of the natural size"}];
+    [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 215, @"The scaled fill size should respect the aspect ratio of the natural size"}];
   }
 
   return fmin(v8, v12);
@@ -184,15 +184,15 @@
   mOriginalImageData = self->mOriginalImageData;
   if (!mOriginalImageData || mOriginalImageData == self->mImageData)
   {
-    v4 = [(TSDImageFill *)self p_validatedImageProvider];
+    p_validatedImageProvider = [(TSDImageFill *)self p_validatedImageProvider];
   }
 
   else
   {
-    v4 = [+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
+    p_validatedImageProvider = [+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
   }
 
-  v5 = v4;
+  v5 = p_validatedImageProvider;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
@@ -213,15 +213,15 @@
 {
   if ([(TSDImageFill *)self originalImageData])
   {
-    v3 = [(TSDImageFill *)self originalImageData];
+    originalImageData = [(TSDImageFill *)self originalImageData];
   }
 
   else
   {
-    v3 = [(TSDImageFill *)self imageData];
+    originalImageData = [(TSDImageFill *)self imageData];
   }
 
-  v4 = v3;
+  v4 = originalImageData;
   v5 = [+[TSDImageProviderPool sharedPool](TSDImageProviderPool "sharedPool")];
   [v5 naturalSize];
   v7 = v6;
@@ -246,9 +246,9 @@
   [(TSDImageFill *)self fillSize];
   if (v17 != v21 || v19 != v20)
   {
-    v23 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill imageDataAtFillSize]"];
-    [v23 handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 287, @"Fill size is incorrect."}];
+    [currentHandler handleFailureInFunction:v24 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 287, @"Fill size is incorrect."}];
   }
 
   return v4;
@@ -262,7 +262,7 @@
     objc_sync_enter(self);
     if (!self->mReferenceColor)
     {
-      v4 = [MEMORY[0x277D6C2A8] clearColor];
+      clearColor = [MEMORY[0x277D6C2A8] clearColor];
       if ([(TSDImageFill *)self p_validatedImageProvider])
       {
         v5 = TSDBitmapContextCreate(3, 1.0);
@@ -283,15 +283,15 @@
 
           else
           {
-            v15 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill referenceColor]"];
-            [v15 handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 312, @"invalid nil value for '%s'", "path"}];
+            [currentHandler handleFailureInFunction:v16 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 312, @"invalid nil value for '%s'", "path"}];
           }
 
           Data = CGBitmapContextGetData(v5);
           if (Data)
           {
-            v4 = [MEMORY[0x277D6C2A8] colorWithRed:BYTE2(*Data) / 255.0 green:BYTE1(*Data) / 255.0 blue:*Data / 255.0 alpha:1.0];
+            clearColor = [MEMORY[0x277D6C2A8] colorWithRed:BYTE2(*Data) / 255.0 green:BYTE1(*Data) / 255.0 blue:*Data / 255.0 alpha:1.0];
           }
 
           CGContextRelease(v5);
@@ -299,22 +299,22 @@
 
         else
         {
-          v13 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill referenceColor]"];
-          [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 308, @"invalid nil value for '%s'", "smallContext"}];
+          [currentHandler2 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 308, @"invalid nil value for '%s'", "smallContext"}];
         }
       }
 
       else
       {
-        v11 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill referenceColor]"];
-        [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 302, @"invalid nil value for '%s'", "provider"}];
+        [currentHandler3 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 302, @"invalid nil value for '%s'", "provider"}];
       }
 
-      v18 = v4;
+      v18 = clearColor;
       __dmb(0xBu);
-      self->mReferenceColor = v4;
+      self->mReferenceColor = clearColor;
     }
 
     objc_sync_exit(self);
@@ -324,9 +324,9 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -344,12 +344,12 @@
       LODWORD(v12) = -[TSPData isEqual:](-[TSDImageFill imageData](self, "imageData"), "isEqual:", [v12 imageData]);
       if (v12)
       {
-        v14 = [(TSDImageFill *)self technique];
-        if (v14 == [v13 technique])
+        technique = [(TSDImageFill *)self technique];
+        if (technique == [v13 technique])
         {
-          v15 = [(TSDImageFill *)self tintColor];
-          v16 = [v13 tintColor];
-          if (!(v15 | v16) || (LODWORD(v12) = [v15 isEqual:v16], v12))
+          tintColor = [(TSDImageFill *)self tintColor];
+          tintColor2 = [v13 tintColor];
+          if (!(tintColor | tintColor2) || (LODWORD(v12) = [tintColor isEqual:tintColor2], v12))
           {
             [(TSDImageFill *)self fillSize:v10];
             v18 = v17;
@@ -441,16 +441,16 @@
 
 - (BOOL)p_shouldApplyTintedImage
 {
-  v3 = [(TSDImageFill *)self p_standardSizeCachedImage];
-  if (v3)
+  p_standardSizeCachedImage = [(TSDImageFill *)self p_standardSizeCachedImage];
+  if (p_standardSizeCachedImage)
   {
-    LOBYTE(v3) = [(TSDImageFill *)self tintColor]!= 0;
+    LOBYTE(p_standardSizeCachedImage) = [(TSDImageFill *)self tintColor]!= 0;
   }
 
-  return v3;
+  return p_standardSizeCachedImage;
 }
 
-- (BOOL)shouldBeReappliedToCALayer:(id)a3
+- (BOOL)shouldBeReappliedToCALayer:(id)layer
 {
   if (!self->mTechnique)
   {
@@ -465,41 +465,41 @@
   objc_opt_class();
   [(TSDImageFill *)self p_validatedImageProvider];
   v6 = TSUDynamicCast();
-  [a3 bounds];
-  v9 = [v6 CGImageForSize:0 inContext:a3 orLayer:{v7, v8}];
-  return [a3 contents] != v9;
+  [layer bounds];
+  v9 = [v6 CGImageForSize:0 inContext:layer orLayer:{v7, v8}];
+  return [layer contents] != v9;
 }
 
-- (id)p_cachedImageForSize:(CGSize)a3 inContext:(CGContext *)a4 orLayer:(id)a5
+- (id)p_cachedImageForSize:(CGSize)size inContext:(CGContext *)context orLayer:(id)layer
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = size.height;
+  width = size.width;
+  if (context)
   {
-    if (a5)
+    if (layer)
     {
-      v9 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill p_cachedImageForSize:inContext:orLayer:]"];
-      [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 442, @"using context to determine requested image size. layer should be nil"}];
+      [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 442, @"using context to determine requested image size. layer should be nil"}];
     }
 
-    if ((TSDCGContextIsPrintContext(a4) & 1) != 0 || TSDCGContextIsPDFContext(a4))
+    if ((TSDCGContextIsPrintContext(context) & 1) != 0 || TSDCGContextIsPDFContext(context))
     {
 
       return [(TSDImageFill *)self p_standardSizeCachedImage];
     }
 
-    v13 = TSDCGContextAssociatedScreenScale(a4);
+    v13 = TSDCGContextAssociatedScreenScale(context);
     width = TSDMultiplySizeScalar(width, height, v13);
     height = v14;
-    CGContextGetCTM(&v22, a4);
+    CGContextGetCTM(&v22, context);
     v12 = TSDTransformScale(&v22.a);
     goto LABEL_12;
   }
 
-  if (a5)
+  if (layer)
   {
-    [a5 contentsScale];
+    [layer contentsScale];
 LABEL_12:
     width = TSDMultiplySizeScalar(width, height, v12);
     height = v15;
@@ -521,35 +521,35 @@ LABEL_12:
   return [(TSDImageFill *)self p_standardSizeCachedImage];
 }
 
-- (void)applyToCALayer:(id)a3 withScale:(double)a4
+- (void)applyToCALayer:(id)layer withScale:(double)scale
 {
   if (![(TSDImageFill *)self canApplyToCALayer]&& ![(TSDImageFill *)self canApplyToCALayerByAddingSublayers])
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill applyToCALayer:withScale:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 472, @"Applying image fill with unsupported properties to CALayer"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 472, @"Applying image fill with unsupported properties to CALayer"}];
   }
 
   objc_opt_class();
   [(TSDImageFill *)self p_validatedImageProvider];
   v9 = TSUDynamicCast();
-  v10 = [(TSDImageFill *)self p_shouldApplyTintedImage];
-  [a3 bounds];
-  if (v10)
+  p_shouldApplyTintedImage = [(TSDImageFill *)self p_shouldApplyTintedImage];
+  [layer bounds];
+  if (p_shouldApplyTintedImage)
   {
-    v13 = [-[TSDImageFill p_cachedImageForSize:inContext:orLayer:](self p_cachedImageForSize:0 inContext:a3 orLayer:{v11, v12), "newImage"}];
+    v13 = [-[TSDImageFill p_cachedImageForSize:inContext:orLayer:](self p_cachedImageForSize:0 inContext:layer orLayer:{v11, v12), "newImage"}];
   }
 
   else
   {
-    v13 = CGImageRetain([v9 CGImageForSize:0 inContext:a3 orLayer:{v11, v12}]);
+    v13 = CGImageRetain([v9 CGImageForSize:0 inContext:layer orLayer:{v11, v12}]);
   }
 
   v14 = v13;
   v15 = MEMORY[0x277CBF348];
-  if ([a3 sublayers])
+  if ([layer sublayers])
   {
-    v16 = [objc_msgSend(a3 "sublayers")];
+    v16 = [objc_msgSend(layer "sublayers")];
   }
 
   else
@@ -568,7 +568,7 @@ LABEL_12:
       [(TSDImageFill *)self fillSize];
       v29 = v28;
       v31 = v30;
-      [a3 bounds];
+      [layer bounds];
       v33 = v32;
       v35 = v34;
       v36 = TSDRectWithSize();
@@ -588,13 +588,13 @@ LABEL_12:
       y = v77.origin.y;
       width = v77.size.width;
       height = v77.size.height;
-      v20 = 0;
+      layer = 0;
       goto LABEL_23;
     }
 
     if (mTechnique == 4)
     {
-      v20 = 0;
+      layer = 0;
       v21 = MEMORY[0x277CDA710];
 LABEL_19:
       v24 = *v21;
@@ -613,41 +613,41 @@ LABEL_23:
     if (mTechnique == 1)
     {
 LABEL_18:
-      v20 = 0;
+      layer = 0;
       v21 = MEMORY[0x277CDA700];
       goto LABEL_19;
     }
 
 LABEL_17:
-    v22 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill applyToCALayer:withScale:]"];
-    [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 565, @"bogus fill technique to apply to CALayer"}];
+    [currentHandler2 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 565, @"bogus fill technique to apply to CALayer"}];
     goto LABEL_18;
   }
 
   v24 = *MEMORY[0x277CDA700];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v20 = [MEMORY[0x277CD9ED0] layer];
-    v27 = [MEMORY[0x277CD9ED0] layer];
-    [v20 addSublayer:v27];
+    layer = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
+    [layer addSublayer:layer2];
   }
 
   else
   {
-    v20 = [objc_msgSend(a3 "sublayers")];
-    v27 = [objc_msgSend(v20 "sublayers")];
+    layer = [objc_msgSend(layer "sublayers")];
+    layer2 = [objc_msgSend(layer "sublayers")];
   }
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  [a3 bounds];
-  [v20 setPosition:{TSDCenterOfRect(v47, v48, v49, v50)}];
-  [a3 bounds];
-  [v20 setBounds:?];
-  [v20 setMasksToBounds:1];
-  [v20 setEdgeAntialiasingMask:1];
-  [v20 bounds];
+  [layer bounds];
+  [layer setPosition:{TSDCenterOfRect(v47, v48, v49, v50)}];
+  [layer bounds];
+  [layer setBounds:?];
+  [layer setMasksToBounds:1];
+  [layer setEdgeAntialiasingMask:1];
+  [layer bounds];
   v55 = TSDCenterOfRect(v51, v52, v53, v54);
   v57 = v56;
   [(TSDImageFill *)self fillSize];
@@ -655,60 +655,60 @@ LABEL_17:
   v61 = v60;
   v63 = v62;
   v65 = v64;
-  [a3 contentsScale];
-  v67 = TSDRoundedRectForScale(v59, v61, v63, v65, v66 * a4);
+  [layer contentsScale];
+  v67 = TSDRoundedRectForScale(v59, v61, v63, v65, v66 * scale);
   v69 = v68;
   v71 = v70;
   v73 = v72;
-  [v27 setContents:v14];
-  [v27 setPosition:{TSDCenterOfRect(v67, v69, v71, v73)}];
-  [v27 setBounds:TSDRectWithSize()];
-  [a3 contentsScale];
-  [v27 setContentsScale:?];
+  [layer2 setContents:v14];
+  [layer2 setPosition:{TSDCenterOfRect(v67, v69, v71, v73)}];
+  [layer2 setBounds:TSDRectWithSize()];
+  [layer contentsScale];
+  [layer2 setContentsScale:?];
   height = 1.0;
-  CATransform3DMakeScale(&v75, a4, a4, 1.0);
+  CATransform3DMakeScale(&v75, scale, scale, 1.0);
   v74 = v75;
-  [v27 setTransform:&v74];
-  [v27 setDelegate:{objc_msgSend(a3, "delegate")}];
-  [v27 setEdgeAntialiasingMask:0];
+  [layer2 setTransform:&v74];
+  [layer2 setDelegate:{objc_msgSend(layer, "delegate")}];
+  [layer2 setEdgeAntialiasingMask:0];
   [MEMORY[0x277CD9FF0] commit];
   v46 = 0;
   width = 1.0;
 LABEL_24:
-  if ([a3 contents] != v46)
+  if ([layer contents] != v46)
   {
-    [a3 setContents:v46];
+    [layer setContents:v46];
   }
 
-  if ([a3 contentsGravity] != v24)
+  if ([layer contentsGravity] != v24)
   {
-    [a3 setContentsGravity:v24];
+    [layer setContentsGravity:v24];
   }
 
-  [a3 contentsRect];
+  [layer contentsRect];
   v80.origin.x = x;
   v80.origin.y = y;
   v80.size.width = width;
   v80.size.height = height;
   if (!CGRectEqualToRect(v78, v80))
   {
-    [a3 setContentsRect:{x, y, width, height}];
+    [layer setContentsRect:{x, y, width, height}];
   }
 
-  if ([a3 backgroundColor])
+  if ([layer backgroundColor])
   {
-    [a3 setBackgroundColor:0];
+    [layer setBackgroundColor:0];
   }
 
-  if (v20 && v16 == 0x7FFFFFFFFFFFFFFFLL)
+  if (layer && v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v20 setName:@"TSDImageFillSublayer"];
-    [a3 addSublayer:v20];
+    [layer setName:@"TSDImageFillSublayer"];
+    [layer addSublayer:layer];
   }
 
-  else if (!v20 && v16 != 0x7FFFFFFFFFFFFFFFLL)
+  else if (!layer && v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [objc_msgSend(objc_msgSend(a3 "sublayers")];
+    [objc_msgSend(objc_msgSend(layer "sublayers")];
   }
 
   CGImageRelease(v14);
@@ -721,16 +721,16 @@ uint64_t __41__TSDImageFill_applyToCALayer_withScale___block_invoke(uint64_t a1,
   return [v2 isEqualToString:@"TSDImageFillSublayer"];
 }
 
-- (CGSize)renderedImageSizeForObjectSize:(CGSize)a3
+- (CGSize)renderedImageSizeForObjectSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TSDImageFill *)self technique];
+  height = size.height;
+  width = size.width;
+  technique = [(TSDImageFill *)self technique];
   v7 = 0.0;
-  if (v6 > 2)
+  if (technique > 2)
   {
     v8 = 0.0;
-    if ((v6 - 3) < 2)
+    if ((technique - 3) < 2)
     {
       [(TSDImageFill *)self fillSize:0.0];
       v8 = TSDFitOrFillSizeInSize([(TSDImageFill *)self technique]== 3, v9, v10, width, height);
@@ -739,12 +739,12 @@ uint64_t __41__TSDImageFill_applyToCALayer_withScale___block_invoke(uint64_t a1,
 
   else
   {
-    if (!v6)
+    if (!technique)
     {
       goto LABEL_5;
     }
 
-    if (v6 == 1)
+    if (technique == 1)
     {
       v7 = height;
       v8 = width;
@@ -752,7 +752,7 @@ uint64_t __41__TSDImageFill_applyToCALayer_withScale___block_invoke(uint64_t a1,
     }
 
     v8 = 0.0;
-    if (v6 == 2)
+    if (technique == 2)
     {
 LABEL_5:
       [(TSDImageFill *)self fillSize];
@@ -765,40 +765,40 @@ LABEL_9:
   return result;
 }
 
-- (void)drawSwatchInRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)drawSwatchInRect:(CGRect)rect inContext:(CGContext *)context
 {
-  if (a4)
+  if (context)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     Mutable = CGPathCreateMutable();
     v14.origin.x = x;
     v14.origin.y = y;
     v14.size.width = width;
     v14.size.height = height;
     CGPathAddRect(Mutable, 0, v14);
-    [(TSDImageFill *)self paintPath:Mutable inContext:a4];
+    [(TSDImageFill *)self paintPath:Mutable inContext:context];
 
     CGPathRelease(Mutable);
   }
 
   else
   {
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill drawSwatchInRect:inContext:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 621, @"invalid nil value for '%s'", "ctx"}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 621, @"invalid nil value for '%s'", "ctx"}];
   }
 }
 
-- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)a3 inContext:(CGContext *)a4
+- (CGSize)p_sizeOfFillImageForDestRect:(CGRect)rect inContext:(CGContext *)context
 {
-  v6 = [(TSDImageFill *)self technique];
+  technique = [(TSDImageFill *)self technique];
   [(TSDImageFill *)self fillSize];
-  if (v6 != 2)
+  if (technique != 2)
   {
-    [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a4 inContext:?];
+    [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
     v7 = v9;
     v8 = v10;
   }
@@ -808,14 +808,14 @@ LABEL_9:
   return result;
 }
 
-- (void)p_paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)p_paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  if (!a3)
+  if (!path)
   {
-    v10 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill p_paintPath:inContext:]"];
-    [v10 handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 648, @"invalid nil value for '%s'", "path"}];
-    if (a4)
+    [currentHandler handleFailureInFunction:v11 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 648, @"invalid nil value for '%s'", "path"}];
+    if (context)
     {
       return;
     }
@@ -823,46 +823,46 @@ LABEL_9:
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!context)
   {
 LABEL_7:
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill p_paintPath:inContext:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 649, @"invalid nil value for '%s'", "ctx"}];
+    [currentHandler2 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 649, @"invalid nil value for '%s'", "ctx"}];
     return;
   }
 
-  v7 = [(TSDImageFill *)self p_validatedImageProvider];
-  if (v7)
+  p_validatedImageProvider = [(TSDImageFill *)self p_validatedImageProvider];
+  if (p_validatedImageProvider)
   {
-    v8 = v7;
-    CGContextSaveGState(a4);
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
-    CGContextClip(a4);
+    v8 = p_validatedImageProvider;
+    CGContextSaveGState(context);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
+    CGContextClip(context);
     objc_opt_class();
-    v9 = (objc_opt_isKindOfClass() & 1) == 0 || TSDCGContextGetBitmapQualityInfo(a4) == 0;
-    PathBoundingBox = CGPathGetPathBoundingBox(a3);
+    v9 = (objc_opt_isKindOfClass() & 1) == 0 || TSDCGContextGetBitmapQualityInfo(context) == 0;
+    PathBoundingBox = CGPathGetPathBoundingBox(path);
     x = PathBoundingBox.origin.x;
     y = PathBoundingBox.origin.y;
     width = PathBoundingBox.size.width;
     height = PathBoundingBox.size.height;
     if (-[TSDImageFill tintColor](self, "tintColor") && v9 && ([v8 isError] & 1) == 0)
     {
-      [(TSDImageFill *)self p_sizeOfFillImageForDestRect:a4 inContext:x, y, width, height];
-      v18 = [-[TSDImageFill p_cachedImageForSize:inContext:orLayer:](self p_cachedImageForSize:a4 inContext:0) orLayer:"newImage"];
-      [(TSDImageFill *)self p_drawBitmapImage:v18 withOrientation:0 inContext:a4 bounds:x, y, width, height];
+      [(TSDImageFill *)self p_sizeOfFillImageForDestRect:context inContext:x, y, width, height];
+      v18 = [-[TSDImageFill p_cachedImageForSize:inContext:orLayer:](self p_cachedImageForSize:context inContext:0) orLayer:"newImage"];
+      [(TSDImageFill *)self p_drawBitmapImage:v18 withOrientation:0 inContext:context bounds:x, y, width, height];
       CGImageRelease(v18);
     }
 
     else
     {
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(TSDImageFill *)self p_sizeOfFillImageForDestRect:a4 inContext:x, y, width, height];
-        -[TSDImageFill p_drawBitmapImage:withOrientation:inContext:bounds:](self, "p_drawBitmapImage:withOrientation:inContext:bounds:", [v8 CGImageForSize:a4 inContext:0 orLayer:?], objc_msgSend(v8, "orientation"), a4, x, y, width, height);
+        [(TSDImageFill *)self p_sizeOfFillImageForDestRect:context inContext:x, y, width, height];
+        -[TSDImageFill p_drawBitmapImage:withOrientation:inContext:bounds:](self, "p_drawBitmapImage:withOrientation:inContext:bounds:", [v8 CGImageForSize:context inContext:0 orLayer:?], objc_msgSend(v8, "orientation"), context, x, y, width, height);
       }
 
       else
@@ -870,7 +870,7 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(TSDImageFill *)self p_drawPDFWithProvider:v8 inContext:a4 bounds:x, y, width, height];
+          [(TSDImageFill *)self p_drawPDFWithProvider:v8 inContext:context bounds:x, y, width, height];
         }
 
         else
@@ -878,24 +878,24 @@ LABEL_7:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(TSDImageFill *)self p_drawnRectForImageSize:a4 destRect:width inContext:height, x, y, width, height];
-            [v8 drawImageInContext:a4 rect:?];
+            [(TSDImageFill *)self p_drawnRectForImageSize:context destRect:width inContext:height, x, y, width, height];
+            [v8 drawImageInContext:context rect:?];
           }
         }
       }
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
       if (!v9 && [(TSDImageFill *)self tintColor])
       {
-        [(TSUColor *)[(TSDImageFill *)self tintColor] paintRect:a4 inContext:x, y, width, height];
+        [(TSUColor *)[(TSDImageFill *)self tintColor] paintRect:context inContext:x, y, width, height];
       }
     }
 
-    CGContextRestoreGState(a4);
+    CGContextRestoreGState(context);
   }
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 forShapeRep:(id)a4 inContext:(CGContext *)a5
+- (void)addBitmapsToRenderingQualityInfo:(id)info forShapeRep:(id)rep inContext:(CGContext *)context
 {
   objc_opt_class();
   [(TSDImageFill *)self p_validatedImageProvider];
@@ -906,49 +906,49 @@ LABEL_7:
     [(TSDImageFill *)self fillSize];
     v12 = v11;
     v14 = v13;
-    [a4 layerFrameInScaledCanvas];
-    [(TSDImageFill *)self p_drawnRectForImageSize:a5 destRect:v12 inContext:v14, v15, v16, v17, v18];
+    [rep layerFrameInScaledCanvas];
+    [(TSDImageFill *)self p_drawnRectForImageSize:context destRect:v12 inContext:v14, v15, v16, v17, v18];
 
-    [a3 cacheProvider:v10 ofSize:{v19, v20}];
+    [info cacheProvider:v10 ofSize:{v19, v20}];
   }
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  if (!a3)
+  if (!path)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill paintPath:inContext:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 715, @"invalid nil value for '%s'", "path"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 715, @"invalid nil value for '%s'", "path"}];
   }
 
-  [(TSDImageFill *)self p_paintPath:a3 inContext:a4];
+  [(TSDImageFill *)self p_paintPath:path inContext:context];
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  if (!a3)
+  if (!path)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageFill paintPath:naturalBounds:inContext:isPDF:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 722, @"invalid nil value for '%s'", "path"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageFill.m"), 722, @"invalid nil value for '%s'", "path"}];
   }
 
-  [(TSDImageFill *)self p_paintPath:a3 inContext:a5, a6, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(TSDImageFill *)self p_paintPath:path inContext:context, f, bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
 }
 
-- (CGImage)p_newTintedImageWithScale:(double)a3
+- (CGImage)p_newTintedImageWithScale:(double)scale
 {
-  v5 = [(TSDImageFill *)self p_validatedImageProvider];
-  if (!-[TSDImageFill tintColor](self, "tintColor") || !v5 || ([v5 isError] & 1) != 0)
+  p_validatedImageProvider = [(TSDImageFill *)self p_validatedImageProvider];
+  if (!-[TSDImageFill tintColor](self, "tintColor") || !p_validatedImageProvider || ([p_validatedImageProvider isError] & 1) != 0)
   {
     return 0;
   }
 
-  [v5 naturalSize];
-  TSDMultiplySizeScalar(v7, v8, a3);
+  [p_validatedImageProvider naturalSize];
+  TSDMultiplySizeScalar(v7, v8, scale);
   v9 = TSDRoundedSize();
-  if ([v5 imageGamut] == 2)
+  if ([p_validatedImageProvider imageGamut] == 2)
   {
     v10 = 11;
   }
@@ -964,7 +964,7 @@ LABEL_7:
   v16 = v15;
   v18 = v17;
   CGContextSaveGState(v11);
-  [v5 drawImageInContext:v11 rect:{v12, v14, v16, v18}];
+  [p_validatedImageProvider drawImageInContext:v11 rect:{v12, v14, v16, v18}];
   CGContextRestoreGState(v11);
   CGContextSetFillColorWithColor(v11, [(TSUColor *)[(TSDImageFill *)self tintColor] CGColor]);
   v20.origin.x = v12;
@@ -1058,15 +1058,15 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__TSDImageFill_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __37__TSDImageFill_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -1105,16 +1105,16 @@ uint64_t __37__TSDImageFill_mixingTypeWithObject___block_invoke(uint64_t a1)
   return TSDMixingTypeBestFromMixingTypes(v5, 3);
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __49__TSDImageFill_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDImageFill *__49__TSDImageFill_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -1167,16 +1167,16 @@ TSDImageFill *__49__TSDImageFill_mixedObjectWithFraction_ofObject___block_invoke
   return [v3 providerForData:mImageData shouldValidate:1];
 }
 
-- (CGRect)p_drawnRectForImageSize:(CGSize)a3 destRect:(CGRect)a4 inContext:(CGContext *)a5
+- (CGRect)p_drawnRectForImageSize:(CGSize)size destRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
-  v13 = [(TSDImageFill *)self technique];
-  if ((v13 - 3) < 2)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = size.height;
+  v11 = size.width;
+  technique = [(TSDImageFill *)self technique];
+  if ((technique - 3) < 2)
   {
     v14 = TSDFitOrFillSizeInRect([(TSDImageFill *)self technique]== 3, v11, v10, x, y, width, height);
 LABEL_3:
@@ -1187,9 +1187,9 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  if (!v13)
+  if (!technique)
   {
-    CGContextGetUserSpaceToDeviceSpaceTransform(&v33, a5);
+    CGContextGetUserSpaceToDeviceSpaceTransform(&v33, context);
     v18 = TSDIsTransformAxisAligned(&v33.a);
     v19 = TSDCenterOfRect(x, y, width, height);
     v21 = TSDRectWithCenterAndSize(v19, v20, v11);
@@ -1199,14 +1199,14 @@ LABEL_3:
     height = v24;
     if (v18)
     {
-      CGContextConvertRectToDeviceSpace(a5, *&v21);
+      CGContextConvertRectToDeviceSpace(context, *&v21);
       v25 = TSDRoundedPoint();
       v27 = v26;
       v34.size.width = TSDRoundedSize();
       v34.size.height = v28;
       v34.origin.x = v25;
       v34.origin.y = v27;
-      *&v14 = CGContextConvertRectToUserSpace(a5, v34);
+      *&v14 = CGContextConvertRectToUserSpace(context, v34);
       goto LABEL_3;
     }
   }
@@ -1223,29 +1223,29 @@ LABEL_7:
   return result;
 }
 
-- (void)p_drawBitmapImage:(CGImage *)a3 withOrientation:(int64_t)a4 inContext:(CGContext *)a5 bounds:(CGRect)a6
+- (void)p_drawBitmapImage:(CGImage *)image withOrientation:(int64_t)orientation inContext:(CGContext *)context bounds:(CGRect)bounds
 {
-  if (a3)
+  if (image)
   {
-    height = a6.size.height;
-    width = a6.size.width;
-    y = a6.origin.y;
-    x = a6.origin.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     [(TSDImageFill *)self fillSize];
     v14 = v13;
     v16 = v15;
-    [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a5 inContext:?];
+    [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
     v43 = v17;
     v44 = v18;
     v20 = v19;
     v22 = v21;
-    v23 = [(TSDImageFill *)self technique];
-    if (v23 > 4 || v23 == 2)
+    technique = [(TSDImageFill *)self technique];
+    if (technique > 4 || technique == 2)
     {
       if (width > v14 || height > v16)
       {
-        CGContextTranslateCTM(a5, v43, v44);
-        CGContextScaleCTM(a5, 1.0, -1.0);
+        CGContextTranslateCTM(context, v43, v44);
+        CGContextScaleCTM(context, 1.0, -1.0);
         v32 = TSDRectWithSize();
         v34 = v33;
         v36 = v35;
@@ -1255,21 +1255,21 @@ LABEL_7:
         v47 = 0u;
         TSUImageOrientationTransform();
         memset(&transform, 0, sizeof(transform));
-        CGContextConcatCTM(a5, &transform);
+        CGContextConcatCTM(context, &transform);
         mTempRenderLock = self->mTempRenderLock;
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds___block_invoke;
         block[3] = &unk_279D47810;
         block[4] = self;
-        block[5] = a3;
+        block[5] = image;
         dispatch_sync(mTempRenderLock, block);
         v40 = CGImageRetain(self->mTempRenderCopy);
         v52.origin.x = v32;
         v52.origin.y = v34;
         v52.size.width = v36;
         v52.size.height = v38;
-        CGContextDrawTiledImage(a5, v52, v40);
+        CGContextDrawTiledImage(context, v52, v40);
         CGImageRelease(v40);
         return;
       }
@@ -1284,15 +1284,15 @@ LABEL_7:
       v54.size.width = v14;
       v54.size.height = v16;
       MaxY = CGRectGetMaxY(v54);
-      CGContextTranslateCTM(a5, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a5, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v48 = 0u;
       v49 = 0u;
       v47 = 0u;
       TSUImageOrientationTransform();
       memset(&transform, 0, sizeof(transform));
-      CGContextConcatCTM(a5, &transform);
-      v26 = a5;
+      CGContextConcatCTM(context, &transform);
+      contextCopy2 = context;
       v27 = v43;
       v28 = v44;
       v29 = v14;
@@ -1311,22 +1311,22 @@ LABEL_7:
       v51.size.width = width;
       v51.size.height = height;
       v25 = CGRectGetMaxY(v51);
-      CGContextTranslateCTM(a5, 0.0, v24 + v25);
-      CGContextScaleCTM(a5, 1.0, -1.0);
+      CGContextTranslateCTM(context, 0.0, v24 + v25);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v48 = 0u;
       v49 = 0u;
       v47 = 0u;
       TSUImageOrientationTransform();
       memset(&transform, 0, sizeof(transform));
-      CGContextConcatCTM(a5, &transform);
-      v26 = a5;
+      CGContextConcatCTM(context, &transform);
+      contextCopy2 = context;
       v27 = v43;
       v28 = v44;
       v29 = v20;
       v30 = v22;
     }
 
-    CGContextDrawImage(v26, *&v27, a3);
+    CGContextDrawImage(contextCopy2, *&v27, image);
   }
 }
 
@@ -1349,20 +1349,20 @@ CGImage *__67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds__
   return result;
 }
 
-- (void)p_drawPDFWithProvider:(id)a3 inContext:(CGContext *)a4 bounds:(CGRect)a5
+- (void)p_drawPDFWithProvider:(id)provider inContext:(CGContext *)context bounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = [a3 CGPDFDocument];
-  if (v11)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  cGPDFDocument = [provider CGPDFDocument];
+  if (cGPDFDocument)
   {
-    Page = CGPDFDocumentGetPage(v11, 1uLL);
+    Page = CGPDFDocumentGetPage(cGPDFDocument, 1uLL);
     if (Page)
     {
       v13 = Page;
-      CGContextSaveGState(a4);
+      CGContextSaveGState(context);
       memset(&v51, 0, sizeof(v51));
       v49 = 0.0;
       v50 = 0.0;
@@ -1373,7 +1373,7 @@ CGImage *__67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds__
       [(TSDImageFill *)self fillSize];
       v41 = v18;
       v42 = v17;
-      [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:a4 inContext:?];
+      [TSDImageFill p_drawnRectForImageSize:"p_drawnRectForImageSize:destRect:inContext:" destRect:context inContext:?];
       v20 = v19;
       v22 = v21;
       v43 = v23;
@@ -1388,14 +1388,14 @@ CGImage *__67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds__
       v54.size.width = width;
       v54.size.height = height;
       MaxY = CGRectGetMaxY(v54);
-      CGContextTranslateCTM(a4, 0.0, MinY + MaxY);
-      CGContextScaleCTM(a4, 1.0, -1.0);
-      v28 = [(TSDImageFill *)self technique];
-      if (v28 > 4 || v28 == 2)
+      CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+      CGContextScaleCTM(context, 1.0, -1.0);
+      technique = [(TSDImageFill *)self technique];
+      if (technique > 4 || technique == 2)
       {
         v52.width = 1.0;
         v52.height = 1.0;
-        v29 = CGContextConvertSizeToDeviceSpace(a4, v52);
+        v29 = CGContextConvertSizeToDeviceSpace(context, v52);
         v30 = TSDMultiplySizeScalar(v42, v41, fmax(fabs(v29.width), fabs(v29.height)));
         v31 = TSDCeilSize(v30);
         v32 = TSDBitmapContextCreate(3, v31);
@@ -1428,9 +1428,9 @@ CGImage *__67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds__
             v56.size.width = width;
             v56.size.height = height;
             v40 = CGRectGetMaxY(v56);
-            CGContextTranslateCTM(a4, MinX, v40);
+            CGContextTranslateCTM(context, MinX, v40);
             v57.origin.x = TSDRectWithSize();
-            CGContextDrawTiledImage(a4, v57, Image);
+            CGContextDrawTiledImage(context, v57, Image);
             CGImageRelease(Image);
           }
         }
@@ -1446,12 +1446,12 @@ CGImage *__67__TSDImageFill_p_drawBitmapImage_withOrientation_inContext_bounds__
         *&transform.a = v46;
         *&transform.c = v47;
         *&transform.tx = v48;
-        CGContextConcatCTM(a4, &transform);
-        CGContextClipToRect(a4, v44);
-        CGContextDrawPDFPage(a4, v13);
+        CGContextConcatCTM(context, &transform);
+        CGContextClipToRect(context, v44);
+        CGContextDrawPDFPage(context, v13);
       }
 
-      CGContextRestoreGState(a4);
+      CGContextRestoreGState(context);
     }
   }
 }

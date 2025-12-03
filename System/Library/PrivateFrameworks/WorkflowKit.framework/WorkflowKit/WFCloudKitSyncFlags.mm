@@ -1,19 +1,19 @@
 @interface WFCloudKitSyncFlags
-+ (BOOL)isCloudKitSyncFlagsRecordID:(id)a3;
++ (BOOL)isCloudKitSyncFlagsRecordID:(id)d;
 + (NSDictionary)properties;
-+ (id)recordIDWithZoneID:(id)a3;
-- (WFCloudKitSyncFlags)initWithZoneID:(id)a3;
++ (id)recordIDWithZoneID:(id)d;
+- (WFCloudKitSyncFlags)initWithZoneID:(id)d;
 @end
 
 @implementation WFCloudKitSyncFlags
 
-- (WFCloudKitSyncFlags)initWithZoneID:(id)a3
+- (WFCloudKitSyncFlags)initWithZoneID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFCloudKitSyncFlags.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitSyncFlags.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
   }
 
   v12.receiver = self;
@@ -21,7 +21,7 @@
   v6 = [(WFCloudKitSyncFlags *)&v12 init];
   if (v6)
   {
-    v7 = [WFCloudKitSyncFlags recordIDWithZoneID:v5];
+    v7 = [WFCloudKitSyncFlags recordIDWithZoneID:dCopy];
     identifier = v6->_identifier;
     v6->_identifier = v7;
 
@@ -31,24 +31,24 @@
   return v6;
 }
 
-+ (BOOL)isCloudKitSyncFlagsRecordID:(id)a3
++ (BOOL)isCloudKitSyncFlagsRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 isEqualToString:@"ShortcutFlags"];
+  recordName = [d recordName];
+  v4 = [recordName isEqualToString:@"ShortcutFlags"];
 
   return v4;
 }
 
-+ (id)recordIDWithZoneID:(id)a3
++ (id)recordIDWithZoneID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFCloudKitSyncFlags.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFCloudKitSyncFlags.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"zoneID"}];
   }
 
-  v6 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"ShortcutFlags" zoneID:v5];
+  v6 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"ShortcutFlags" zoneID:dCopy];
 
   return v6;
 }

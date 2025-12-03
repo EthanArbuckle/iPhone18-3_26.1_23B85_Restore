@@ -12,9 +12,9 @@
 + (int64_t)currentCollaborationOnboardingVersion;
 + (unint64_t)syndicationOnboardingLastShownVersion;
 - (BOOL)_meCardSharingEnabled;
-- (BOOL)_shouldShowNicknameOnboardingFlowIgnoringVersion:(BOOL)a3;
+- (BOOL)_shouldShowNicknameOnboardingFlowIgnoringVersion:(BOOL)version;
 - (BOOL)accountCanCreateNickname;
-- (BOOL)presentNicknameSharingSetupFlowWithMemoji:(BOOL)a3 forUserInitiatedEdit:(BOOL)a4;
+- (BOOL)presentNicknameSharingSetupFlowWithMemoji:(BOOL)memoji forUserInitiatedEdit:(BOOL)edit;
 - (BOOL)presentOnboardingIfNeeded;
 - (CKOnboardingControllerDelegate)delegate;
 - (OBWelcomeController)_appleIntelligenceOnboardingController;
@@ -27,36 +27,36 @@
 - (id)contactForNicknameOnboarding;
 - (unint64_t)_meCardSharingAudience;
 - (unint64_t)_meCardSharingNameFormat;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
 - (unint64_t)nicknameOnboardingLastShownVersion;
 - (void)_enrollInRCSEncryptionTest;
-- (void)_fetchMemojiWithCompletionBlock:(id)a3;
-- (void)_presentMemojiCreationIfNeeded:(id)a3 skipAction:(id)a4;
-- (void)_pushOnboardingViewController:(id)a3 animated:(BOOL)a4;
+- (void)_fetchMemojiWithCompletionBlock:(id)block;
+- (void)_presentMemojiCreationIfNeeded:(id)needed skipAction:(id)action;
+- (void)_pushOnboardingViewController:(id)controller animated:(BOOL)animated;
 - (void)_updateLastShownAppleIntelligenceOnboardingVersion;
 - (void)_writeDefaultCollaborationOnboardingVersion;
 - (void)_writeDefaultNicknameOnboardingVersion;
 - (void)_writeDefaultSyndicationOnboardingVersion;
 - (void)_writeDefaultWhatsNewDidShow;
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4;
-- (void)avatarEditorViewControllerDidCancel:(id)a3;
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record;
+- (void)avatarEditorViewControllerDidCancel:(id)cancel;
 - (void)completedOnboarding;
-- (void)completedOnboardingWithCompletion:(id)a3;
+- (void)completedOnboardingWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)enableSyndication;
-- (void)flowManager:(id)a3 didFinishWithResult:(id)a4;
-- (void)initializeBundleIDsInAppPreferences:(BOOL)a3;
-- (void)meCardSharingOnboardingAudienceViewControllerDidFinish:(id)a3 withSharingAudience:(unint64_t)a4;
-- (void)meCardSharingOnboardingEditController:(id)a3 didFinishWithOnboardingResult:(id)a4;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)flowManager:(id)manager didFinishWithResult:(id)result;
+- (void)initializeBundleIDsInAppPreferences:(BOOL)preferences;
+- (void)meCardSharingOnboardingAudienceViewControllerDidFinish:(id)finish withSharingAudience:(unint64_t)audience;
+- (void)meCardSharingOnboardingEditController:(id)controller didFinishWithOnboardingResult:(id)result;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)onboardCollaborationApps;
 - (void)prepareForOnboarding;
 - (void)prepareForSuspend;
 - (void)presentMemojiSetup;
 - (void)presentNicknameOnboardingOrEditFlow;
-- (void)presentOnboarding:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentOnboarding:(id)onboarding;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)pushMemojiCreationStep;
 - (void)pushMemojiCreationStepIfNeeded;
 - (void)pushNameAndPhotoSharingConfigDataStep;
@@ -65,7 +65,7 @@
 - (void)pushNameAndPhotoSharingIntroStepIfNeeded;
 - (void)pushSyndicationIntroStep;
 - (void)setUpSyndicationLater;
-- (void)sharingPickerDidFinish:(id)a3;
+- (void)sharingPickerDidFinish:(id)finish;
 - (void)showAppleIntelligenceOnboardingStepIfNeeded;
 - (void)startNicknameOnboardingIfNeeded;
 @end
@@ -104,8 +104,8 @@
     }
 
     [(CKOnboardingController *)self prepareForOnboarding];
-    v4 = [(CKOnboardingController *)self _introController];
-    [(CKOnboardingController *)self presentOnboarding:v4];
+    _introController = [(CKOnboardingController *)self _introController];
+    [(CKOnboardingController *)self presentOnboarding:_introController];
 
     [(CKOnboardingController *)self _writeDefaultWhatsNewDidShow];
     return 1;
@@ -140,10 +140,10 @@
       }
     }
 
-    v9 = [(CKOnboardingController *)self delegate];
-    v10 = [v9 presentingViewControllerForOnboardingController:self];
+    delegate = [(CKOnboardingController *)self delegate];
+    _userDefaults = [delegate presentingViewControllerForOnboardingController:self];
 
-    if (([v10 interfaceOrientation] - 1) < 2 || (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceIdiom"), v11, v12))
+    if (([_userDefaults interfaceOrientation] - 1) < 2 || (objc_msgSend(MEMORY[0x1E69DC938], "currentDevice"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "userInterfaceIdiom"), v11, v12))
     {
       [(CKOnboardingController *)self prepareForOnboarding];
       [(CKOnboardingController *)self pushSyndicationIntroStep];
@@ -200,12 +200,12 @@ LABEL_47:
     }
 
     [(CKOnboardingController *)self prepareForOnboarding];
-    v15 = [(CKOnboardingController *)self _rcsEncryptionOptInOnboardingController];
-    [(CKOnboardingController *)self presentOnboarding:v15];
+    _rcsEncryptionOptInOnboardingController = [(CKOnboardingController *)self _rcsEncryptionOptInOnboardingController];
+    [(CKOnboardingController *)self presentOnboarding:_rcsEncryptionOptInOnboardingController];
 
-    v10 = [(CKOnboardingController *)self _userDefaults];
+    _userDefaults = [(CKOnboardingController *)self _userDefaults];
     v6 = 1;
-    [v10 setBool:1 forKey:@"didShowRCSEncryptionOptInOnboarding"];
+    [_userDefaults setBool:1 forKey:@"didShowRCSEncryptionOptInOnboarding"];
     goto LABEL_47;
   }
 
@@ -229,31 +229,31 @@ LABEL_47:
 
 + (BOOL)shouldPresentOnboarding
 {
-  if ([a1 _shouldPresentNewInMessages] & 1) != 0 || (objc_msgSend(a1, "_shouldShowNicknameOnboardingFlowOnLaunch") & 1) != 0 || (objc_msgSend(a1, "_shouldShowSyndicationOnboardingFlowOnLaunch") & 1) != 0 || (objc_msgSend(a1, "_shouldOnboardCollaborationApps") & 1) != 0 || (objc_msgSend(a1, "_shouldShowAppleIntelligenceOnboarding"))
+  if ([self _shouldPresentNewInMessages] & 1) != 0 || (objc_msgSend(self, "_shouldShowNicknameOnboardingFlowOnLaunch") & 1) != 0 || (objc_msgSend(self, "_shouldShowSyndicationOnboardingFlowOnLaunch") & 1) != 0 || (objc_msgSend(self, "_shouldOnboardCollaborationApps") & 1) != 0 || (objc_msgSend(self, "_shouldShowAppleIntelligenceOnboarding"))
   {
     return 1;
   }
 
-  return [a1 _shouldShowRCSEncryptionOptInOnboarding];
+  return [self _shouldShowRCSEncryptionOptInOnboarding];
 }
 
 + (BOOL)alwaysShowNicknameOnboarding
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 BOOLForKey:@"AlwaysShowNicknameOnboarding"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults BOOLForKey:@"AlwaysShowNicknameOnboarding"];
 
   return v3;
 }
 
 - (unint64_t)nicknameOnboardingLastShownVersion
 {
-  v2 = [(CKOnboardingController *)self _userDefaults];
-  v3 = [v2 integerForKey:@"NicknameOnboardingVersion"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  v3 = [_userDefaults integerForKey:@"NicknameOnboardingVersion"];
 
   return v3;
 }
 
-- (BOOL)_shouldShowNicknameOnboardingFlowIgnoringVersion:(BOOL)a3
+- (BOOL)_shouldShowNicknameOnboardingFlowIgnoringVersion:(BOOL)version
 {
   if (+[CKOnboardingController _isRunningTest])
   {
@@ -265,7 +265,7 @@ LABEL_47:
     return 1;
   }
 
-  if (!a3 && [(CKOnboardingController *)self nicknameOnboardingLastShownVersion])
+  if (!version && [(CKOnboardingController *)self nicknameOnboardingLastShownVersion])
   {
     return 0;
   }
@@ -275,24 +275,24 @@ LABEL_47:
 
 + (BOOL)alwaysShowSyndicationOnboarding
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 BOOLForKey:@"AlwaysShowSyndicationOnboarding"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults BOOLForKey:@"AlwaysShowSyndicationOnboarding"];
 
   return v3;
 }
 
 + (unint64_t)syndicationOnboardingLastShownVersion
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 integerForKey:@"SyndicationOnboardingVersion"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults integerForKey:@"SyndicationOnboardingVersion"];
 
   return v3;
 }
 
 + (int64_t)currentCollaborationOnboardingVersion
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 integerForKey:@"CollaborationOnboardingVersion"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults integerForKey:@"CollaborationOnboardingVersion"];
 
   return v3;
 }
@@ -319,7 +319,7 @@ LABEL_18:
     return v4;
   }
 
-  if (([a1 _isRunningTest] & 1) != 0 || !CKIsRunningInMessages())
+  if (([self _isRunningTest] & 1) != 0 || !CKIsRunningInMessages())
   {
     if (IMOSLoggingEnabled())
     {
@@ -338,7 +338,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([a1 alwaysShowSyndicationOnboarding])
+  if ([self alwaysShowSyndicationOnboarding])
   {
     if (IMOSLoggingEnabled())
     {
@@ -355,16 +355,16 @@ LABEL_17:
 
   else
   {
-    v7 = [a1 syndicationOnboardingLastShownVersion];
-    v8 = [MEMORY[0x1E69A8288] sharedWithYouKeyExists];
-    if (v7 < 3)
+    syndicationOnboardingLastShownVersion = [self syndicationOnboardingLastShownVersion];
+    mEMORY[0x1E69A8288] = [MEMORY[0x1E69A8288] sharedWithYouKeyExists];
+    if (syndicationOnboardingLastShownVersion < 3)
     {
       v4 = 1;
     }
 
     else
     {
-      v4 = v8 ^ 1;
+      v4 = mEMORY[0x1E69A8288] ^ 1;
     }
 
     if (IMOSLoggingEnabled())
@@ -383,7 +383,7 @@ LABEL_17:
           v11 = @"NO";
         }
 
-        if (v8)
+        if (mEMORY[0x1E69A8288])
         {
           v12 = @"YES";
         }
@@ -397,7 +397,7 @@ LABEL_17:
         v14 = v11;
         v15 = 2112;
         v16 = v12;
-        if (v7 < 3)
+        if (syndicationOnboardingLastShownVersion < 3)
         {
           v10 = @"YES";
         }
@@ -415,15 +415,15 @@ LABEL_17:
 + (BOOL)_shouldOnboardCollaborationApps
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (([a1 _isRunningTest] & 1) != 0 || !CKIsRunningInMessages())
+  if (([self _isRunningTest] & 1) != 0 || !CKIsRunningInMessages())
   {
     v4 = 0;
   }
 
   else
   {
-    v3 = [a1 currentCollaborationOnboardingVersion];
-    v4 = (v3 < 1) | [MEMORY[0x1E69A8288] defaultCollaborationAppsEnabled] ^ 1;
+    currentCollaborationOnboardingVersion = [self currentCollaborationOnboardingVersion];
+    v4 = (currentCollaborationOnboardingVersion < 1) | [MEMORY[0x1E69A8288] defaultCollaborationAppsEnabled] ^ 1;
     if (IMOSLoggingEnabled())
     {
       v5 = OSLogHandleForIMFoundationCategory();
@@ -438,7 +438,7 @@ LABEL_17:
         v8 = 138412546;
         v9 = v6;
         v10 = 2048;
-        v11 = v3;
+        v11 = currentCollaborationOnboardingVersion;
         _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "shouldOnboard: %@ collaborationOnboardingVersion = %lu", &v8, 0x16u);
       }
     }
@@ -450,23 +450,23 @@ LABEL_17:
 + (BOOL)_shouldShowRCSEncryptionOptInOnboarding
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if (([v3 isInternalInstall] & 1) == 0)
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if (([mEMORY[0x1E69A60F0] isInternalInstall] & 1) == 0)
   {
 
     return 0;
   }
 
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isRCSEncryptionOptInTestEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isRCSEncryptionOptInTestEnabled = [mEMORY[0x1E69A8070] isRCSEncryptionOptInTestEnabled];
 
-  if (!v5)
+  if (!isRCSEncryptionOptInTestEnabled)
   {
     return 0;
   }
 
-  v6 = [a1 _classUserDefaults];
-  v7 = [v6 BOOLForKey:@"didShowRCSEncryptionOptInOnboarding"];
+  _classUserDefaults = [self _classUserDefaults];
+  v7 = [_classUserDefaults BOOLForKey:@"didShowRCSEncryptionOptInOnboarding"];
 
   if (IMOSLoggingEnabled())
   {
@@ -490,16 +490,16 @@ LABEL_17:
 
 - (BOOL)accountCanCreateNickname
 {
-  v2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v3 = [v2 isAllowMultiplePhoneNumbersSNaPEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isAllowMultiplePhoneNumbersSNaPEnabled = [mEMORY[0x1E69A8070] isAllowMultiplePhoneNumbersSNaPEnabled];
 
   v4 = IMSharedHelperNickNameEnabled();
-  if (v3)
+  if (isAllowMultiplePhoneNumbersSNaPEnabled)
   {
     if (v4)
     {
-      v5 = [MEMORY[0x1E69A5C10] sharedInstance];
-      LOBYTE(v6) = [v5 iCloudSignedInToUseNicknames];
+      mEMORY[0x1E69A5C10] = [MEMORY[0x1E69A5C10] sharedInstance];
+      LOBYTE(v6) = [mEMORY[0x1E69A5C10] iCloudSignedInToUseNicknames];
 LABEL_9:
 
       return v6;
@@ -508,8 +508,8 @@ LABEL_9:
 
   else if (v4)
   {
-    v5 = [MEMORY[0x1E69A5C10] sharedInstance];
-    if ([v5 iCloudSignedInToUseNicknames])
+    mEMORY[0x1E69A5C10] = [MEMORY[0x1E69A5C10] sharedInstance];
+    if ([mEMORY[0x1E69A5C10] iCloudSignedInToUseNicknames])
     {
       v6 = [MEMORY[0x1E69A5C10] multiplePhoneNumbersTiedToAppleID] ^ 1;
     }
@@ -526,17 +526,17 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)presentNicknameSharingSetupFlowWithMemoji:(BOOL)a3 forUserInitiatedEdit:(BOOL)a4
+- (BOOL)presentNicknameSharingSetupFlowWithMemoji:(BOOL)memoji forUserInitiatedEdit:(BOOL)edit
 {
-  v4 = a4;
-  v5 = a3;
+  editCopy = edit;
+  memojiCopy = memoji;
   v7 = [(CKOnboardingController *)self _shouldShowNicknameOnboardingFlowIgnoringVersion:1];
   if (v7)
   {
-    [(CKOnboardingController *)self setIsUserInitiatedEditNameAndPhoto:v4];
+    [(CKOnboardingController *)self setIsUserInitiatedEditNameAndPhoto:editCopy];
     [(CKOnboardingController *)self prepareForOnboarding];
     objc_initWeak(location, self);
-    if (v5)
+    if (memojiCopy)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -555,12 +555,12 @@ LABEL_9:
 
     else
     {
-      v9 = [(CKOnboardingController *)self avatarRecord];
+      avatarRecord = [(CKOnboardingController *)self avatarRecord];
 
-      if (v9)
+      if (avatarRecord)
       {
-        v10 = [(CKOnboardingController *)self _nameAndPhotoSharingIntroController];
-        [(CKOnboardingController *)self presentOnboarding:v10];
+        _nameAndPhotoSharingIntroController = [(CKOnboardingController *)self _nameAndPhotoSharingIntroController];
+        [(CKOnboardingController *)self presentOnboarding:_nameAndPhotoSharingIntroController];
       }
 
       else
@@ -614,9 +614,9 @@ void __89__CKOnboardingController_presentNicknameSharingSetupFlowWithMemoji_forU
 
 - (void)presentNicknameOnboardingOrEditFlow
 {
-  v3 = [(CKOnboardingController *)self sharedProfileOnboardingController];
+  sharedProfileOnboardingController = [(CKOnboardingController *)self sharedProfileOnboardingController];
 
-  if (!v3)
+  if (!sharedProfileOnboardingController)
   {
     if (_ContactsUIForwardDeclareInit_onceToken != -1)
     {
@@ -624,17 +624,17 @@ void __89__CKOnboardingController_presentNicknameSharingSetupFlowWithMemoji_forU
     }
 
     v4 = [_CKCNSharedProfileOnboardingController alloc];
-    v5 = [MEMORY[0x1E69A7FD0] sharedInstance];
-    v6 = [v5 getContactStore];
-    v7 = [v4 initWithContactStore:v6];
+    mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+    getContactStore = [mEMORY[0x1E69A7FD0] getContactStore];
+    v7 = [v4 initWithContactStore:getContactStore];
     [(CKOnboardingController *)self setSharedProfileOnboardingController:v7];
   }
 
-  v8 = [(CKOnboardingController *)self delegate];
-  v10 = [v8 presentingViewControllerForOnboardingController:self];
+  delegate = [(CKOnboardingController *)self delegate];
+  v10 = [delegate presentingViewControllerForOnboardingController:self];
 
-  v9 = [(CKOnboardingController *)self sharedProfileOnboardingController];
-  [v9 startOnboardingOrEditForMode:0 fromViewController:v10];
+  sharedProfileOnboardingController2 = [(CKOnboardingController *)self sharedProfileOnboardingController];
+  [sharedProfileOnboardingController2 startOnboardingOrEditForMode:0 fromViewController:v10];
 }
 
 - (void)prepareForSuspend
@@ -645,20 +645,20 @@ void __89__CKOnboardingController_presentNicknameSharingSetupFlowWithMemoji_forU
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKOnboardingController *)self navigationController];
-      v5 = [(CKOnboardingController *)self navigationController];
-      v6 = [v5 presentingViewController];
+      navigationController = [(CKOnboardingController *)self navigationController];
+      navigationController2 = [(CKOnboardingController *)self navigationController];
+      presentingViewController = [navigationController2 presentingViewController];
       v9 = 138412546;
-      v10 = v4;
+      v10 = navigationController;
       v11 = 2112;
-      v12 = v6;
+      v12 = presentingViewController;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "prepareForSuspend for navigationController: %@ presentingViewController: %@", &v9, 0x16u);
     }
   }
 
-  v7 = [(CKOnboardingController *)self navigationController];
-  v8 = [v7 presentingViewController];
-  [v8 dismissViewControllerAnimated:1 completion:0];
+  navigationController3 = [(CKOnboardingController *)self navigationController];
+  presentingViewController2 = [navigationController3 presentingViewController];
+  [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)prepareForOnboarding
@@ -679,11 +679,11 @@ void __89__CKOnboardingController_presentNicknameSharingSetupFlowWithMemoji_forU
   }
 }
 
-- (void)presentOnboarding:(id)a3
+- (void)presentOnboarding:(id)onboarding
 {
-  v4 = a3;
-  v5 = [(CKOnboardingController *)self delegate];
-  v6 = [v5 presentingViewControllerForOnboardingController:self];
+  onboardingCopy = onboarding;
+  delegate = [(CKOnboardingController *)self delegate];
+  v6 = [delegate presentingViewControllerForOnboardingController:self];
 
   if (!v6)
   {
@@ -692,8 +692,8 @@ void __89__CKOnboardingController_presentNicknameSharingSetupFlowWithMemoji_forU
       goto LABEL_27;
     }
 
-    v10 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    navigationController9 = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(navigationController9, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
       v11 = "Onboarding: no presenting view controller!";
@@ -723,68 +723,68 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v10 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    navigationController9 = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(navigationController9, OS_LOG_TYPE_INFO))
     {
       v30 = 0;
       v11 = "Onboarding: OnBoardingKit classes not linked!";
       v12 = &v30;
 LABEL_19:
-      _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, v11, v12, 2u);
+      _os_log_impl(&dword_19020E000, navigationController9, OS_LOG_TYPE_INFO, v11, v12, 2u);
       goto LABEL_26;
     }
 
     goto LABEL_26;
   }
 
-  if (v4)
+  if (onboardingCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v4];
+    v13 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:onboardingCopy];
     [(CKOnboardingController *)self setNavigationController:v13];
 
-    v14 = [(CKOnboardingController *)self navigationController];
-    [v14 setModalPresentationStyle:2];
+    navigationController = [(CKOnboardingController *)self navigationController];
+    [navigationController setModalPresentationStyle:2];
 
-    v15 = [(CKOnboardingController *)self navigationController];
-    v16 = [v15 interactivePopGestureRecognizer];
-    [v16 setEnabled:0];
+    navigationController2 = [(CKOnboardingController *)self navigationController];
+    interactivePopGestureRecognizer = [navigationController2 interactivePopGestureRecognizer];
+    [interactivePopGestureRecognizer setEnabled:0];
 
-    v17 = [(CKOnboardingController *)self navigationController];
-    [v17 setModalInPresentation:0];
+    navigationController3 = [(CKOnboardingController *)self navigationController];
+    [navigationController3 setModalInPresentation:0];
 
-    v18 = [(CKOnboardingController *)self navigationController];
-    v19 = [v18 navigationBar];
+    navigationController4 = [(CKOnboardingController *)self navigationController];
+    navigationBar = [navigationController4 navigationBar];
     v20 = objc_opt_new();
-    [v19 setBackgroundImage:v20 forBarMetrics:0];
+    [navigationBar setBackgroundImage:v20 forBarMetrics:0];
 
-    v21 = [(CKOnboardingController *)self navigationController];
-    v22 = [v21 navigationBar];
-    [v22 _setHidesShadow:1];
+    navigationController5 = [(CKOnboardingController *)self navigationController];
+    navigationBar2 = [navigationController5 navigationBar];
+    [navigationBar2 _setHidesShadow:1];
 
-    v23 = [(CKOnboardingController *)self navigationController];
-    [v23 setDelegate:self];
+    navigationController6 = [(CKOnboardingController *)self navigationController];
+    [navigationController6 setDelegate:self];
 
-    v24 = [(CKOnboardingController *)self navigationController];
-    v25 = [v24 presentationController];
-    [v25 setDelegate:self];
+    navigationController7 = [(CKOnboardingController *)self navigationController];
+    presentationController = [navigationController7 presentationController];
+    [presentationController setDelegate:self];
 
-    v26 = [MEMORY[0x1E69DC938] currentDevice];
-    v27 = [v26 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v27)
+    if (!userInterfaceIdiom)
     {
-      v28 = [MEMORY[0x1E69DC938] currentDevice];
-      [v28 setOrientation:1 animated:1];
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      [currentDevice2 setOrientation:1 animated:1];
     }
 
     if (+[CKOnboardingController _shouldShowSyndicationOnboardingFlowOnLaunch])
     {
-      v29 = [(CKOnboardingController *)self navigationController];
-      [v29 setNavigationBarHidden:1];
+      navigationController8 = [(CKOnboardingController *)self navigationController];
+      [navigationController8 setNavigationBarHidden:1];
     }
 
-    v10 = [(CKOnboardingController *)self navigationController];
-    [v6 presentViewController:v10 animated:1 completion:0];
+    navigationController9 = [(CKOnboardingController *)self navigationController];
+    [v6 presentViewController:navigationController9 animated:1 completion:0];
     goto LABEL_26;
   }
 
@@ -797,14 +797,14 @@ LABEL_27:
   v4 = [v3 localizedStringForKey:@"WHATS_NEW_IN_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v5 = [[_CKOBWelcomeController alloc] initWithTitle:v4 detailText:0 icon:0];
-  v6 = [_CKOBBoldTrayButton boldButton];
+  boldButton = [_CKOBBoldTrayButton boldButton];
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"CONTINUE" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v6 setTitle:v8 forState:0];
+  [boldButton setTitle:v8 forState:0];
 
-  [v6 addTarget:self action:sel_pushMemojiCreationStepIfNeeded forControlEvents:64];
-  v9 = [v5 buttonTray];
-  [v9 addButton:v6];
+  [boldButton addTarget:self action:sel_pushMemojiCreationStepIfNeeded forControlEvents:64];
+  buttonTray = [v5 buttonTray];
+  [buttonTray addButton:boldButton];
 
   if (IMSharedHelperNickNameEnabled())
   {
@@ -846,23 +846,23 @@ LABEL_27:
   v4 = [v3 localizedStringForKey:@"RCS_ENCRYPTION_ONBOARDING_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v5 = [[_CKOBWelcomeController alloc] initWithTitle:v4 detailText:0 icon:0];
-  v6 = [_CKOBBoldTrayButton boldButton];
+  boldButton = [_CKOBBoldTrayButton boldButton];
   v7 = CKFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"ENROLL" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v6 setTitle:v8 forState:0];
+  [boldButton setTitle:v8 forState:0];
 
-  [v6 addTarget:self action:sel__enrollInRCSEncryptionTest forControlEvents:64];
-  v9 = [_CKOBBoldTrayButton boldButton];
+  [boldButton addTarget:self action:sel__enrollInRCSEncryptionTest forControlEvents:64];
+  boldButton2 = [_CKOBBoldTrayButton boldButton];
   v10 = CKFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"SKIP" value:&stru_1F04268F8 table:@"ChatKit"];
-  [v9 setTitle:v11 forState:0];
+  [boldButton2 setTitle:v11 forState:0];
 
-  [v9 addTarget:self action:sel_completedOnboarding forControlEvents:64];
-  v12 = [v5 buttonTray];
-  [v12 addButton:v6];
+  [boldButton2 addTarget:self action:sel_completedOnboarding forControlEvents:64];
+  buttonTray = [v5 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v13 = [v5 buttonTray];
-  [v13 addButton:v9];
+  buttonTray2 = [v5 buttonTray];
+  [buttonTray2 addButton:boldButton2];
 
   v14 = CKFrameworkBundle();
   v15 = [v14 localizedStringForKey:@"RCS_ENCRYPTION_ONBOARDING_MESSAGE_TITLE_1" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -881,8 +881,8 @@ LABEL_27:
 
 - (void)_enrollInRCSEncryptionTest
 {
-  v3 = [(CKOnboardingController *)self _userDefaults];
-  [v3 setBool:1 forKey:@"RCSEncryptionOptInTestEnabled"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  [_userDefaults setBool:1 forKey:@"RCSEncryptionOptInTestEnabled"];
 
   [(CKOnboardingController *)self completedOnboarding];
 }
@@ -912,13 +912,13 @@ LABEL_27:
 
   else
   {
-    v5 = [(CKOnboardingController *)self _nicknameController];
+    _nicknameController = [(CKOnboardingController *)self _nicknameController];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_128;
     v6[3] = &unk_1E72F3488;
     v7 = v3;
-    [v5 fetchPersonalNicknameWithCompletion:v6];
+    [_nicknameController fetchPersonalNicknameWithCompletion:v6];
   }
 }
 
@@ -957,16 +957,16 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
 
 + (BOOL)_alwaysShowAppleIntelligenceOnboarding
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 BOOLForKey:@"AlwaysShowAppleIntelligenceOnboarding"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults BOOLForKey:@"AlwaysShowAppleIntelligenceOnboarding"];
 
   return v3;
 }
 
 + (int64_t)_lastShownAppleIntelligenceOnboardingVersion
 {
-  v2 = [a1 _classUserDefaults];
-  v3 = [v2 integerForKey:@"LastShownAppleIntelligenceOnboardingVersion"];
+  _classUserDefaults = [self _classUserDefaults];
+  v3 = [_classUserDefaults integerForKey:@"LastShownAppleIntelligenceOnboardingVersion"];
 
   return v3;
 }
@@ -974,7 +974,7 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
 - (void)_updateLastShownAppleIntelligenceOnboardingVersion
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = [(CKOnboardingController *)self _userDefaults];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
   if (IMOSLoggingEnabled())
   {
     v3 = OSLogHandleForIMFoundationCategory();
@@ -986,7 +986,7 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
     }
   }
 
-  [v2 setInteger:1 forKey:@"LastShownAppleIntelligenceOnboardingVersion"];
+  [_userDefaults setInteger:1 forKey:@"LastShownAppleIntelligenceOnboardingVersion"];
 }
 
 - (void)showAppleIntelligenceOnboardingStepIfNeeded
@@ -995,10 +995,10 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
   if (+[CKOnboardingController _shouldShowAppleIntelligenceOnboarding])
   {
     [(CKOnboardingController *)self _updateLastShownAppleIntelligenceOnboardingVersion];
-    v3 = [(CKOnboardingController *)self _appleIntelligenceOnboardingController];
-    v4 = [(CKOnboardingController *)self navigationController];
+    _appleIntelligenceOnboardingController = [(CKOnboardingController *)self _appleIntelligenceOnboardingController];
+    navigationController = [(CKOnboardingController *)self navigationController];
     v5 = IMOSLoggingEnabled();
-    if (v4)
+    if (navigationController)
     {
       if (v5)
       {
@@ -1006,12 +1006,12 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
         if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
         {
           v8 = 138412290;
-          v9 = v4;
+          v9 = navigationController;
           _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Push apple intelligence onboarding, navigationController: %@", &v8, 0xCu);
         }
       }
 
-      [(CKOnboardingController *)self _pushOnboardingViewController:v3 animated:1];
+      [(CKOnboardingController *)self _pushOnboardingViewController:_appleIntelligenceOnboardingController animated:1];
     }
 
     else
@@ -1026,7 +1026,7 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
         }
       }
 
-      [(CKOnboardingController *)self presentOnboarding:v3];
+      [(CKOnboardingController *)self presentOnboarding:_appleIntelligenceOnboardingController];
     }
   }
 
@@ -1045,8 +1045,8 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
 
   [v3 onBoardingKitWelcomeControllerHeaderViewIconSize];
   v7 = v6;
-  v8 = [v5 traitCollection];
-  [v8 displayScale];
+  traitCollection = [v5 traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
 
   v11 = objc_opt_new();
@@ -1062,8 +1062,8 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
     v13 = v14;
   }
 
-  v15 = [v13 CGImage];
-  v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v15];
+  cGImage = [v13 CGImage];
+  v16 = [MEMORY[0x1E69DCAB8] imageWithCGImage:cGImage];
 
   return v16;
 }
@@ -1073,11 +1073,11 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
   appleIntelligenceOnboardingController = self->_appleIntelligenceOnboardingController;
   if (!appleIntelligenceOnboardingController)
   {
-    v27 = [(CKOnboardingController *)self _appleIntelligenceIconImage];
+    _appleIntelligenceIconImage = [(CKOnboardingController *)self _appleIntelligenceIconImage];
     v4 = CKFrameworkBundle();
     v26 = [v4 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 
-    v5 = [[_CKOBWelcomeController alloc] initWithTitle:v26 detailText:0 icon:v27 contentLayout:2];
+    v5 = [[_CKOBWelcomeController alloc] initWithTitle:v26 detailText:0 icon:_appleIntelligenceIconImage contentLayout:2];
     v6 = CKFrameworkBundle();
     v24 = [v6 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_MESSAGE_SUMMARIES_BULLET_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 
@@ -1085,27 +1085,27 @@ void __57__CKOnboardingController_startNicknameOnboardingIfNeeded__block_invoke_
     v23 = [v7 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_MESSAGE_SUMMARIES_BULLET_DESCRIPTION" value:&stru_1F04268F8 table:@"ChatKit"];
 
     v8 = CKFrameworkBundle();
-    v25 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-    v22 = [MEMORY[0x1E69DCAB8] imageNamed:@"text.line.2.summary" inBundle:v8 withConfiguration:v25];
-    v21 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(OBWelcomeController *)v5 addBulletedListItemWithTitle:v24 description:v23 image:v22 tintColor:v21];
+    configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+    v22 = [MEMORY[0x1E69DCAB8] imageNamed:@"text.line.2.summary" inBundle:v8 withConfiguration:configurationPreferringMulticolor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(OBWelcomeController *)v5 addBulletedListItemWithTitle:v24 description:v23 image:v22 tintColor:tertiaryLabelColor];
     v9 = CKFrameworkBundle();
     v10 = [v9 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_MESSAGE_SMART_REPLIES_BULLET_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 
     v11 = CKFrameworkBundle();
     v12 = [v11 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_MESSAGE_SMART_REPLIES_BULLET_DESCRIPTION" value:&stru_1F04268F8 table:@"ChatKit"];
 
-    v13 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-    v14 = [MEMORY[0x1E69DCAB8] imageNamed:@"arrowshape.turn.up.left" inBundle:v8 withConfiguration:v13];
+    configurationPreferringMulticolor2 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+    v14 = [MEMORY[0x1E69DCAB8] imageNamed:@"arrowshape.turn.up.left" inBundle:v8 withConfiguration:configurationPreferringMulticolor2];
     [(OBWelcomeController *)v5 addBulletedListItemWithTitle:v10 description:v12 image:v14];
-    v15 = [_CKOBBoldTrayButton boldButton];
+    boldButton = [_CKOBBoldTrayButton boldButton];
     v16 = CKFrameworkBundle();
     v17 = [v16 localizedStringForKey:@"APPLE_INTELLIGENCE_ONBOARDING_CONTINUE_BUTTON_TEXT" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v15 setTitle:v17 forState:0];
+    [boldButton setTitle:v17 forState:0];
 
-    [v15 addTarget:self action:sel_completedOnboarding forControlEvents:64];
-    v18 = [(OBWelcomeController *)v5 buttonTray];
-    [v18 addButton:v15];
+    [boldButton addTarget:self action:sel_completedOnboarding forControlEvents:64];
+    buttonTray = [(OBWelcomeController *)v5 buttonTray];
+    [buttonTray addButton:boldButton];
 
     v19 = self->_appleIntelligenceOnboardingController;
     self->_appleIntelligenceOnboardingController = v5;
@@ -1147,10 +1147,10 @@ void __56__CKOnboardingController_pushMemojiCreationStepIfNeeded__block_invoke_2
   [WeakRetained pushNameAndPhotoSharingIntroStepIfNeeded];
 }
 
-- (void)_fetchMemojiWithCompletionBlock:(id)a3
+- (void)_fetchMemojiWithCompletionBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (CKIsRunningInMacCatalyst())
   {
     goto LABEL_5;
@@ -1168,17 +1168,17 @@ LABEL_5:
     [(CKOnboardingController *)self setAvatarStore:v5];
 
     v6 = [_CKAVTAvatarFetchRequest requestForCustomAvatarsWithLimit:1];
-    v7 = [(CKOnboardingController *)self avatarStore];
+    avatarStore = [(CKOnboardingController *)self avatarStore];
 
-    if (v7 && v6)
+    if (avatarStore && v6)
     {
-      v8 = [(CKOnboardingController *)self avatarStore];
+      avatarStore2 = [(CKOnboardingController *)self avatarStore];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __58__CKOnboardingController__fetchMemojiWithCompletionBlock___block_invoke_168;
       v12[3] = &unk_1E72F34B0;
-      v13 = v4;
-      [v8 fetchAvatarsForFetchRequest:v6 completionHandler:v12];
+      v13 = blockCopy;
+      [avatarStore2 fetchAvatarsForFetchRequest:v6 completionHandler:v12];
     }
 
     else
@@ -1188,16 +1188,16 @@ LABEL_5:
         v9 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
-          v10 = [(CKOnboardingController *)self avatarStore];
+          avatarStore3 = [(CKOnboardingController *)self avatarStore];
           *buf = 138412546;
-          v15 = v10;
+          v15 = avatarStore3;
           v16 = 2112;
           v17 = v6;
           _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Onboarding: nil avatar store %@ or fetch request %@. Going to memoji creation flow.", buf, 0x16u);
         }
       }
 
-      (*(v4 + 2))(v4, 1, 0);
+      (*(blockCopy + 2))(blockCopy, 1, 0);
     }
   }
 
@@ -1213,7 +1213,7 @@ LABEL_5:
       }
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
   }
 }
 
@@ -1256,19 +1256,19 @@ void __58__CKOnboardingController__fetchMemojiWithCompletionBlock___block_invoke
   }
 }
 
-- (void)_presentMemojiCreationIfNeeded:(id)a3 skipAction:(id)a4
+- (void)_presentMemojiCreationIfNeeded:(id)needed skipAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  actionCopy = action;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction___block_invoke;
   v10[3] = &unk_1E72F34D8;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = actionCopy;
+  v12 = neededCopy;
+  v8 = neededCopy;
+  v9 = actionCopy;
   [(CKOnboardingController *)self _fetchMemojiWithCompletionBlock:v10];
 }
 
@@ -1320,38 +1320,38 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
     [(CKOnboardingController *)self setMemojiVideoPlayerLooper:v12];
 
     v13 = objc_alloc_init(_CKAVPlayerViewController);
-    v14 = [v13 view];
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [v14 setBackgroundColor:v15];
+    view = [v13 view];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [view setBackgroundColor:clearColor];
 
     [v13 setPlayer:v11];
     [v13 setShowsPlaybackControls:0];
     [(OBWelcomeFullCenterContentController *)v4 addChildViewController:v13];
-    v16 = [v13 view];
-    [(OBWelcomeFullCenterContentController *)v4 setCenteredContentView:v16];
+    view2 = [v13 view];
+    [(OBWelcomeFullCenterContentController *)v4 setCenteredContentView:view2];
 
-    v44 = [v13 view];
-    [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [v13 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
     if (!CKIsRunningInMacCatalyst())
     {
-      v38 = [v44 leadingAnchor];
-      v39 = [(OBWelcomeFullCenterContentController *)v4 view];
-      v37 = [v39 leadingAnchor];
-      v17 = [v38 constraintEqualToAnchor:v37];
+      leadingAnchor = [view3 leadingAnchor];
+      view4 = [(OBWelcomeFullCenterContentController *)v4 view];
+      leadingAnchor2 = [view4 leadingAnchor];
+      v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v45[0] = v17;
-      v18 = [v44 trailingAnchor];
-      v19 = [(OBWelcomeFullCenterContentController *)v4 view];
-      v20 = [v19 trailingAnchor];
-      v21 = [v18 constraintEqualToAnchor:v20];
+      trailingAnchor = [view3 trailingAnchor];
+      view5 = [(OBWelcomeFullCenterContentController *)v4 view];
+      trailingAnchor2 = [view5 trailingAnchor];
+      v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v45[1] = v21;
       [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
       v22 = v40 = v11;
 
       [MEMORY[0x1E696ACD8] activateConstraints:v22];
-      v23 = [v44 heightAnchor];
-      v24 = [(OBWelcomeFullCenterContentController *)v4 view];
-      v25 = [v24 widthAnchor];
-      v26 = [v23 constraintEqualToAnchor:v25];
+      heightAnchor = [view3 heightAnchor];
+      view6 = [(OBWelcomeFullCenterContentController *)v4 view];
+      widthAnchor = [view6 widthAnchor];
+      v26 = [heightAnchor constraintEqualToAnchor:widthAnchor];
 
       LODWORD(v27) = 1132068864;
       [v26 setPriority:v27];
@@ -1360,23 +1360,23 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
       v11 = v40;
     }
 
-    v28 = [_CKOBBoldTrayButton boldButton];
+    boldButton = [_CKOBBoldTrayButton boldButton];
     v29 = CKFrameworkBundle();
     v30 = [v29 localizedStringForKey:@"GET_STARTED" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v28 setTitle:v30 forState:0];
+    [boldButton setTitle:v30 forState:0];
 
-    [v28 addTarget:self action:sel_presentMemojiSetup forControlEvents:64];
-    v31 = [(OBWelcomeFullCenterContentController *)v4 buttonTray];
-    [v31 addButton:v28];
+    [boldButton addTarget:self action:sel_presentMemojiSetup forControlEvents:64];
+    buttonTray = [(OBWelcomeFullCenterContentController *)v4 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v32 = [_CKOBLinkTrayButton linkButton];
+    linkButton = [_CKOBLinkTrayButton linkButton];
     v33 = CKFrameworkBundle();
     v34 = [v33 localizedStringForKey:@"WHATS_NEW_SETUP_LATER_MESSAGES" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v32 setTitle:v34 forState:0];
+    [linkButton setTitle:v34 forState:0];
 
-    [v32 addTarget:self action:sel_pushNameAndPhotoSharingIntroStepIfNeeded forControlEvents:64];
-    v35 = [(OBWelcomeFullCenterContentController *)v4 buttonTray];
-    [v35 addButton:v32];
+    [linkButton addTarget:self action:sel_pushNameAndPhotoSharingIntroStepIfNeeded forControlEvents:64];
+    buttonTray2 = [(OBWelcomeFullCenterContentController *)v4 buttonTray];
+    [buttonTray2 addButton:linkButton];
 
     objc_storeStrong(p_memojiCreationController, v4);
   }
@@ -1386,17 +1386,17 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 
 - (void)pushMemojiCreationStep
 {
-  v4 = [(CKOnboardingController *)self _memojiCreationController];
-  v3 = [(CKOnboardingController *)self navigationController];
+  _memojiCreationController = [(CKOnboardingController *)self _memojiCreationController];
+  navigationController = [(CKOnboardingController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    [(CKOnboardingController *)self _pushOnboardingViewController:v4 animated:1];
+    [(CKOnboardingController *)self _pushOnboardingViewController:_memojiCreationController animated:1];
   }
 
   else
   {
-    [(CKOnboardingController *)self presentOnboarding:v4];
+    [(CKOnboardingController *)self presentOnboarding:_memojiCreationController];
   }
 
   _CKAVTUISetHasDisplayedSplashScreen(1);
@@ -1405,8 +1405,8 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 - (void)presentMemojiSetup
 {
   v3 = _CKAVTAvatarEditorViewController;
-  v4 = [(CKOnboardingController *)self avatarStore];
-  v5 = [v3 viewControllerForCreatingAvatarInStore:v4];
+  avatarStore = [(CKOnboardingController *)self avatarStore];
+  v5 = [v3 viewControllerForCreatingAvatarInStore:avatarStore];
 
   [v5 setDelegate:self];
   [(CKOnboardingController *)self _pushOnboardingViewController:v5 animated:1];
@@ -1414,9 +1414,9 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 
 - (id)contactForNicknameOnboarding
 {
-  v2 = [MEMORY[0x1E69A7FD0] sharedInstance];
-  v3 = [MEMORY[0x1E69A7FD0] keysForNicknameHandling];
-  v4 = [v2 fetchMeContactWithKeys:v3];
+  mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+  keysForNicknameHandling = [MEMORY[0x1E69A7FD0] keysForNicknameHandling];
+  v4 = [mEMORY[0x1E69A7FD0] fetchMeContactWithKeys:keysForNicknameHandling];
 
   if (!v4)
   {
@@ -1435,27 +1435,27 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   v25 = [v4 localizedStringForKey:@"WHATS_NEW_NAME_AND_PHOTO_SHARING_DETAIL_DESCRIPTION" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v5 = [[CKNicknameIntroViewController alloc] initWithTitle:v26 detailText:v25 icon:0 contentLayout:1];
-  v24 = [(CKOnboardingController *)self contactForNicknameOnboarding];
+  contactForNicknameOnboarding = [(CKOnboardingController *)self contactForNicknameOnboarding];
   v6 = [CKNicknamePreviewView alloc];
-  v7 = [(CKOnboardingController *)self avatarRecord];
-  v8 = [(CKNicknamePreviewView *)v6 initWithContact:v24 avatarRecord:v7];
+  avatarRecord = [(CKOnboardingController *)self avatarRecord];
+  v8 = [(CKNicknamePreviewView *)v6 initWithContact:contactForNicknameOnboarding avatarRecord:avatarRecord];
 
-  v9 = [(CKNicknamePreviewView *)v8 avatarItemProviderConfiguration];
-  [(CKOnboardingController *)self setAvatarItemProviderConfiguration:v9];
+  avatarItemProviderConfiguration = [(CKNicknamePreviewView *)v8 avatarItemProviderConfiguration];
+  [(CKOnboardingController *)self setAvatarItemProviderConfiguration:avatarItemProviderConfiguration];
 
-  v10 = [(CKNicknameIntroViewController *)v5 contentView];
-  [v10 addSubview:v8];
+  contentView = [(CKNicknameIntroViewController *)v5 contentView];
+  [contentView addSubview:v8];
 
   [(CKNicknameIntroViewController *)v5 setNicknamePreviewView:v8];
   [(CKNicknamePreviewView *)v8 setNeedsLayout];
   [(CKNicknamePreviewView *)v8 layoutIfNeeded];
   [(CKNicknamePreviewView *)v8 sizeToFit];
   v11 = objc_alloc_init(CKOnboardingBoldButtonProvider);
-  v12 = [(CKOnboardingBoldButtonProvider *)v11 boldButton];
-  LODWORD(v10) = CKIsRunningInMacCatalyst();
+  boldButton = [(CKOnboardingBoldButtonProvider *)v11 boldButton];
+  LODWORD(contentView) = CKIsRunningInMacCatalyst();
   v13 = CKFrameworkBundle();
   v14 = v13;
-  if (v10)
+  if (contentView)
   {
     v15 = @"CONTINUE";
   }
@@ -1466,13 +1466,13 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 
   v16 = [v13 localizedStringForKey:v15 value:&stru_1F04268F8 table:@"ChatKit"];
-  [v12 setTitle:v16 forState:0];
+  [boldButton setTitle:v16 forState:0];
 
-  [v12 addTarget:self action:sel_pushNameAndPhotoSharingConfigDataStep forControlEvents:64];
-  v17 = [(CKNicknameIntroViewController *)v5 buttonTray];
-  [v17 addButton:v12];
+  [boldButton addTarget:self action:sel_pushNameAndPhotoSharingConfigDataStep forControlEvents:64];
+  buttonTray = [(CKNicknameIntroViewController *)v5 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v18 = [_CKOBLinkTrayButton linkButton];
+  linkButton = [_CKOBLinkTrayButton linkButton];
   if (CKIsRunningInMacCatalyst())
   {
     v19 = @"WHATS_NEW_SETUP_LATER";
@@ -1485,11 +1485,11 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 
   v20 = CKFrameworkBundle();
   v21 = [v20 localizedStringForKey:v19 value:&stru_1F04268F8 table:@"ChatKit"];
-  [v18 setTitle:v21 forState:0];
+  [linkButton setTitle:v21 forState:0];
 
-  [v18 addTarget:self action:sel_showAppleIntelligenceOnboardingStepIfNeeded forControlEvents:64];
-  v22 = [(CKNicknameIntroViewController *)v5 buttonTray];
-  [v22 addButton:v18];
+  [linkButton addTarget:self action:sel_showAppleIntelligenceOnboardingStepIfNeeded forControlEvents:64];
+  buttonTray2 = [(CKNicknameIntroViewController *)v5 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   return v5;
 }
@@ -1498,11 +1498,11 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 {
   if ([(CKOnboardingController *)self _shouldShowNicknameOnboardingFlow]&& _CKCNSharingProfileOnboardingFlowManager)
   {
-    v3 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v3 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
-      v4 = [MEMORY[0x1E69DC938] currentDevice];
-      v5 = [v4 userInterfaceIdiom] == 1;
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      v5 = [currentDevice2 userInterfaceIdiom] == 1;
     }
 
     else
@@ -1510,27 +1510,27 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
       v5 = 1;
     }
 
-    v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v7 = [v6 isNameAndPhotoC3Enabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isNameAndPhotoC3Enabled = [mEMORY[0x1E69A8070] isNameAndPhotoC3Enabled];
 
-    if (v7 && v5)
+    if (isNameAndPhotoC3Enabled && v5)
     {
-      v8 = [(CKOnboardingController *)self delegate];
-      v15 = [v8 presentingViewControllerForOnboardingController:self];
+      delegate = [(CKOnboardingController *)self delegate];
+      v15 = [delegate presentingViewControllerForOnboardingController:self];
 
-      v9 = [(CKOnboardingController *)self sharedProfileOnboardingController];
+      sharedProfileOnboardingController = [(CKOnboardingController *)self sharedProfileOnboardingController];
 
-      if (!v9)
+      if (!sharedProfileOnboardingController)
       {
         v10 = [_CKCNSharedProfileOnboardingController alloc];
-        v11 = [MEMORY[0x1E69A7FD0] sharedInstance];
-        v12 = [v11 getContactStore];
-        v13 = [v10 initWithContactStore:v12];
+        mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+        getContactStore = [mEMORY[0x1E69A7FD0] getContactStore];
+        v13 = [v10 initWithContactStore:getContactStore];
         [(CKOnboardingController *)self setSharedProfileOnboardingController:v13];
       }
 
-      v14 = [(CKOnboardingController *)self sharedProfileOnboardingController];
-      [v14 presentOnboardingFlowIfNeededForMode:0 fromViewController:v15];
+      sharedProfileOnboardingController2 = [(CKOnboardingController *)self sharedProfileOnboardingController];
+      [sharedProfileOnboardingController2 presentOnboardingFlowIfNeededForMode:0 fromViewController:v15];
     }
 
     else
@@ -1547,28 +1547,28 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 }
 
-- (void)flowManager:(id)a3 didFinishWithResult:(id)a4
+- (void)flowManager:(id)manager didFinishWithResult:(id)result
 {
-  v5 = a4;
-  v6 = [(CKOnboardingController *)self _nicknameController];
-  [v6 setPersonalNicknameFromOnboardingResult:v5];
+  resultCopy = result;
+  _nicknameController = [(CKOnboardingController *)self _nicknameController];
+  [_nicknameController setPersonalNicknameFromOnboardingResult:resultCopy];
 
   [(CKOnboardingController *)self showAppleIntelligenceOnboardingStepIfNeeded];
 }
 
 - (void)pushNameAndPhotoSharingIntroStep
 {
-  v4 = [(CKOnboardingController *)self _nameAndPhotoSharingIntroController];
-  v3 = [(CKOnboardingController *)self navigationController];
+  _nameAndPhotoSharingIntroController = [(CKOnboardingController *)self _nameAndPhotoSharingIntroController];
+  navigationController = [(CKOnboardingController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
-    [(CKOnboardingController *)self _pushOnboardingViewController:v4 animated:1];
+    [(CKOnboardingController *)self _pushOnboardingViewController:_nameAndPhotoSharingIntroController animated:1];
   }
 
   else
   {
-    [(CKOnboardingController *)self presentOnboarding:v4];
+    [(CKOnboardingController *)self presentOnboarding:_nameAndPhotoSharingIntroController];
   }
 
   [(CKOnboardingController *)self _writeDefaultNicknameOnboardingVersion];
@@ -1576,7 +1576,7 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 
 - (void)pushNameAndPhotoSharingConfigDataStep
 {
-  v11 = [(CKOnboardingController *)self contactForNicknameOnboarding];
+  contactForNicknameOnboarding = [(CKOnboardingController *)self contactForNicknameOnboarding];
   v3 = [CKMeCardSharingNameProvider nameProviderForContact:?];
   if (!v3)
   {
@@ -1584,20 +1584,20 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 
   v4 = [_CKCNSharingProfileOnboardingFlowManager alloc];
-  v5 = [(CKOnboardingController *)self navigationController];
-  v6 = [(CKOnboardingController *)self avatarRecord];
-  v7 = [(CKOnboardingController *)self avatarItemProviderConfiguration];
-  v8 = [v4 initWithNavigationController:v5 contact:v11 avatarRecord:v6 avatarItemProviderConfiguration:v7];
+  navigationController = [(CKOnboardingController *)self navigationController];
+  avatarRecord = [(CKOnboardingController *)self avatarRecord];
+  avatarItemProviderConfiguration = [(CKOnboardingController *)self avatarItemProviderConfiguration];
+  v8 = [v4 initWithNavigationController:navigationController contact:contactForNicknameOnboarding avatarRecord:avatarRecord avatarItemProviderConfiguration:avatarItemProviderConfiguration];
 
   [v8 setDelegate:self];
   if (v8)
   {
-    v9 = [(CKOnboardingController *)self navigationController];
-    [v9 setModalInPresentation:1];
+    navigationController2 = [(CKOnboardingController *)self navigationController];
+    [navigationController2 setModalInPresentation:1];
 
     [(CKOnboardingController *)self setNicknameFlowManager:v8];
-    v10 = [(CKOnboardingController *)self nicknameFlowManager];
-    [v10 startFlow];
+    nicknameFlowManager = [(CKOnboardingController *)self nicknameFlowManager];
+    [nicknameFlowManager startFlow];
   }
 
   else
@@ -1608,15 +1608,15 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 
 - (void)pushNameAndPhotoSharingConfigSharingPreferenceStep
 {
-  v3 = [(CKOnboardingController *)self _meCardSharingAudience];
-  if (!v3)
+  _meCardSharingAudience = [(CKOnboardingController *)self _meCardSharingAudience];
+  if (!_meCardSharingAudience)
   {
-    v4 = [(CKOnboardingController *)self _meCardSharingState];
-    v3 = 1;
-    [v4 setSharingAudience:1];
+    _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+    _meCardSharingAudience = 1;
+    [_meCardSharingState setSharingAudience:1];
   }
 
-  v5 = [[_CKCNMeCardSharingOnboardingAudienceViewController alloc] initWithSelectedSharingAudience:v3];
+  v5 = [[_CKCNMeCardSharingOnboardingAudienceViewController alloc] initWithSelectedSharingAudience:_meCardSharingAudience];
   v6 = v5;
   if (v5)
   {
@@ -1630,50 +1630,50 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 }
 
-- (void)_pushOnboardingViewController:(id)a3 animated:(BOOL)a4
+- (void)_pushOnboardingViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(CKOnboardingController *)self navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 containsObject:v10];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  navigationController = [(CKOnboardingController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers containsObject:controllerCopy];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(CKOnboardingController *)self navigationController];
-    [v9 pushViewController:v10 animated:v4];
+    navigationController2 = [(CKOnboardingController *)self navigationController];
+    [navigationController2 pushViewController:controllerCopy animated:animatedCopy];
   }
 }
 
 - (void)onboardCollaborationApps
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A8288] sharedWithYouKeyExists];
+  mEMORY[0x1E69A8288] = [MEMORY[0x1E69A8288] sharedWithYouKeyExists];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v20 = v3;
+      v20 = mEMORY[0x1E69A8288];
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Collaboration onboarding sharedWithYouKeyExists = %d", buf, 8u);
     }
   }
 
-  if (v3)
+  if (mEMORY[0x1E69A8288])
   {
     if (!+[CKOnboardingController currentCollaborationOnboardingVersion])
     {
       [(CKOnboardingController *)self _writeDefaultCollaborationOnboardingVersion];
     }
 
-    v5 = [MEMORY[0x1E69A8288] isSharedWithYouEnabled];
+    isSharedWithYouEnabled = [MEMORY[0x1E69A8288] isSharedWithYouEnabled];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [MEMORY[0x1E69A8288] collaborationAppBundleIDs];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    collaborationAppBundleIDs = [MEMORY[0x1E69A8288] collaborationAppBundleIDs];
+    v7 = [collaborationAppBundleIDs countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v7)
     {
       v9 = *v16;
@@ -1685,7 +1685,7 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(collaborationAppBundleIDs);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -1697,18 +1697,18 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
               if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
               {
                 *buf = v14;
-                v20 = v5;
+                v20 = isSharedWithYouEnabled;
                 v21 = 2112;
                 v22 = v11;
                 _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "App was not set up, setting Shared with You to %d for %@", buf, 0x12u);
               }
             }
 
-            [MEMORY[0x1E69A8288] setSharedWithYouEnabled:v5 forApplicationWithBundleID:v11];
+            [MEMORY[0x1E69A8288] setSharedWithYouEnabled:isSharedWithYouEnabled forApplicationWithBundleID:v11];
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v7 = [collaborationAppBundleIDs countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v7);
@@ -1734,70 +1734,70 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   {
     v4 = [[_CKOBWelcomeController alloc] initWithTitle:&stru_1F04268F8 detailText:&stru_1F04268F8 icon:0];
     v54 = objc_alloc_init(CKOnboardingBoldButtonProvider);
-    v5 = [(CKOnboardingBoldButtonProvider *)v54 boldButton];
+    boldButton = [(CKOnboardingBoldButtonProvider *)v54 boldButton];
     v6 = CKFrameworkBundle();
     v7 = [v6 localizedStringForKey:@"OK" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v5 setTitle:v7 forState:0];
+    [boldButton setTitle:v7 forState:0];
 
-    v53 = v5;
-    [v5 addTarget:self action:sel_enableSyndication forControlEvents:64];
-    v8 = [(OBWelcomeController *)v4 buttonTray];
-    [v8 addButton:v5];
+    v53 = boldButton;
+    [boldButton addTarget:self action:sel_enableSyndication forControlEvents:64];
+    buttonTray = [(OBWelcomeController *)v4 buttonTray];
+    [buttonTray addButton:boldButton];
 
-    v9 = [_CKOBLinkTrayButton linkButton];
+    linkButton = [_CKOBLinkTrayButton linkButton];
     v10 = CKFrameworkBundle();
     v52 = [v10 localizedStringForKey:@"WHATS_NEW_SETUP_EDIT_SETTINGS" value:&stru_1F04268F8 table:@"ChatKit"];
 
-    [v9 setTitle:v52 forState:0];
-    v51 = v9;
-    [v9 addTarget:self action:sel_setUpSyndicationLater forControlEvents:64];
-    v11 = [(OBWelcomeController *)v4 buttonTray];
-    [v11 addButton:v9];
+    [linkButton setTitle:v52 forState:0];
+    v51 = linkButton;
+    [linkButton addTarget:self action:sel_setUpSyndicationLater forControlEvents:64];
+    buttonTray2 = [(OBWelcomeController *)v4 buttonTray];
+    [buttonTray2 addButton:linkButton];
 
-    v12 = [(OBWelcomeController *)v4 buttonTray];
-    [(CKOnboardingController *)self setButtonTray:v12];
+    buttonTray3 = [(OBWelcomeController *)v4 buttonTray];
+    [(CKOnboardingController *)self setButtonTray:buttonTray3];
 
     v13 = objc_alloc_init(CKSyndicationPageViewController);
     [(CKSyndicationPageViewController *)v13 setDelegate:self];
     [(OBWelcomeController *)v4 addChildViewController:v13];
-    v14 = [(OBWelcomeController *)v4 view];
-    v15 = [(CKSyndicationPageViewController *)v13 view];
-    [v14 addSubview:v15];
+    view = [(OBWelcomeController *)v4 view];
+    view2 = [(CKSyndicationPageViewController *)v13 view];
+    [view addSubview:view2];
 
     [(CKSyndicationPageViewController *)v13 didMoveToParentViewController:v4];
-    v16 = [(OBWelcomeController *)v4 view];
-    [v16 frame];
+    view3 = [(OBWelcomeController *)v4 view];
+    [view3 frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(CKSyndicationPageViewController *)v13 view];
-    [v25 setFrame:{v18, v20, v22, v24}];
+    view4 = [(CKSyndicationPageViewController *)v13 view];
+    [view4 setFrame:{v18, v20, v22, v24}];
 
     v41 = MEMORY[0x1E696ACD8];
-    v50 = [(CKSyndicationPageViewController *)v13 view];
-    v48 = [v50 topAnchor];
-    v49 = [(OBWelcomeController *)v4 contentView];
-    v47 = [v49 topAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    view5 = [(CKSyndicationPageViewController *)v13 view];
+    topAnchor = [view5 topAnchor];
+    contentView = [(OBWelcomeController *)v4 contentView];
+    topAnchor2 = [contentView topAnchor];
+    v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v55[0] = v46;
-    v45 = [(CKSyndicationPageViewController *)v13 view];
-    v43 = [v45 centerXAnchor];
-    v44 = [(OBWelcomeController *)v4 buttonTray];
-    v42 = [v44 centerXAnchor];
-    v40 = [v43 constraintEqualToAnchor:v42];
+    view6 = [(CKSyndicationPageViewController *)v13 view];
+    centerXAnchor = [view6 centerXAnchor];
+    buttonTray4 = [(OBWelcomeController *)v4 buttonTray];
+    centerXAnchor2 = [buttonTray4 centerXAnchor];
+    v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v55[1] = v40;
-    v39 = [(CKSyndicationPageViewController *)v13 view];
-    v36 = [v39 widthAnchor];
-    v37 = [(OBWelcomeController *)v4 contentView];
-    v26 = [v37 widthAnchor];
-    v27 = [v36 constraintEqualToAnchor:v26];
+    view7 = [(CKSyndicationPageViewController *)v13 view];
+    widthAnchor = [view7 widthAnchor];
+    contentView2 = [(OBWelcomeController *)v4 contentView];
+    widthAnchor2 = [contentView2 widthAnchor];
+    v27 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v55[2] = v27;
-    v28 = [(CKSyndicationPageViewController *)v13 view];
-    v29 = [v28 bottomAnchor];
-    v30 = [(OBWelcomeController *)v4 buttonTray];
-    v31 = [v30 topAnchor];
-    [v29 constraintEqualToAnchor:v31];
+    view8 = [(CKSyndicationPageViewController *)v13 view];
+    bottomAnchor = [view8 bottomAnchor];
+    buttonTray5 = [(OBWelcomeController *)v4 buttonTray];
+    topAnchor3 = [buttonTray5 topAnchor];
+    [bottomAnchor constraintEqualToAnchor:topAnchor3];
     v32 = v38 = self;
     v55[3] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
@@ -1815,25 +1815,25 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 - (void)pushSyndicationIntroStep
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(CKOnboardingController *)self syndicationIntroController];
-  v4 = [(CKOnboardingController *)self navigationController];
+  syndicationIntroController = [(CKOnboardingController *)self syndicationIntroController];
+  navigationController = [(CKOnboardingController *)self navigationController];
 
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (navigationController)
   {
     if (v5)
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(CKOnboardingController *)self navigationController];
+        navigationController2 = [(CKOnboardingController *)self navigationController];
         v9 = 138412290;
-        v10 = v7;
+        v10 = navigationController2;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Push Syndication onboarding, navigationController: %@", &v9, 0xCu);
       }
     }
 
-    [(CKOnboardingController *)self _pushOnboardingViewController:v3 animated:1];
+    [(CKOnboardingController *)self _pushOnboardingViewController:syndicationIntroController animated:1];
   }
 
   else
@@ -1848,7 +1848,7 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
       }
     }
 
-    [(CKOnboardingController *)self presentOnboarding:v3];
+    [(CKOnboardingController *)self presentOnboarding:syndicationIntroController];
   }
 }
 
@@ -1874,23 +1874,23 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
 {
   [(CKOnboardingController *)self enableSyndication];
   v4 = [MEMORY[0x1E695DFF8] URLWithString:@"prefs:root=MESSAGES&path=SHARED_WITH_YOU_BUTTON"];
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-  [v3 openSensitiveURL:v4 withOptions:0];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  [defaultWorkspace openSensitiveURL:v4 withOptions:0];
 
   [(CKOnboardingController *)self completedOnboarding];
 }
 
-- (void)initializeBundleIDsInAppPreferences:(BOOL)a3
+- (void)initializeBundleIDsInAppPreferences:(BOOL)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v19 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFA8];
-  v5 = [MEMORY[0x1E69A8288] sharedManager];
-  v6 = [v5 defaultAppBundleIDs];
-  v7 = [v4 setWithArray:v6];
+  mEMORY[0x1E69A8288] = [MEMORY[0x1E69A8288] sharedManager];
+  defaultAppBundleIDs = [mEMORY[0x1E69A8288] defaultAppBundleIDs];
+  v7 = [v4 setWithArray:defaultAppBundleIDs];
 
-  v8 = [MEMORY[0x1E69A8288] collaborationAppBundleIDs];
-  [v7 addObjectsFromArray:v8];
+  collaborationAppBundleIDs = [MEMORY[0x1E69A8288] collaborationAppBundleIDs];
+  [v7 addObjectsFromArray:collaborationAppBundleIDs];
 
   v16 = 0u;
   v17 = 0u;
@@ -1912,7 +1912,7 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
           objc_enumerationMutation(v9);
         }
 
-        [MEMORY[0x1E69A8288] setSharedWithYouEnabled:v3 forApplicationWithBundleID:{*(*(&v14 + 1) + 8 * v13++), v14}];
+        [MEMORY[0x1E69A8288] setSharedWithYouEnabled:preferencesCopy forApplicationWithBundleID:{*(*(&v14 + 1) + 8 * v13++), v14}];
       }
 
       while (v11 != v13);
@@ -1923,16 +1923,16 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v9 = [a3 presentedViewController];
-  v4 = [(CKOnboardingController *)self navigationController];
-  if (v9 == v4)
+  presentedViewController = [dismiss presentedViewController];
+  navigationController = [(CKOnboardingController *)self navigationController];
+  if (presentedViewController == navigationController)
   {
-    v5 = [(CKOnboardingController *)self navigationController];
-    v6 = [v5 viewControllers];
-    v7 = [(CKOnboardingController *)self syndicationIntroController];
-    v8 = [v6 containsObject:v7];
+    navigationController2 = [(CKOnboardingController *)self navigationController];
+    viewControllers = [navigationController2 viewControllers];
+    syndicationIntroController = [(CKOnboardingController *)self syndicationIntroController];
+    v8 = [viewControllers containsObject:syndicationIntroController];
 
     if (v8)
     {
@@ -1962,29 +1962,29 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   [(CKOnboardingController *)self completedOnboardingWithCompletion:0];
 }
 
-- (void)completedOnboardingWithCompletion:(id)a3
+- (void)completedOnboardingWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CKOnboardingController *)self navigationController];
-      v7 = [(CKOnboardingController *)self navigationController];
-      v8 = [v7 presentingViewController];
-      v9 = [(CKOnboardingController *)self presentingFromPrefs];
+      navigationController = [(CKOnboardingController *)self navigationController];
+      navigationController2 = [(CKOnboardingController *)self navigationController];
+      presentingViewController = [navigationController2 presentingViewController];
+      presentingFromPrefs = [(CKOnboardingController *)self presentingFromPrefs];
       v10 = @"NO";
       *v16 = 138412802;
-      *&v16[4] = v6;
+      *&v16[4] = navigationController;
       *&v16[12] = 2112;
-      if (v9)
+      if (presentingFromPrefs)
       {
         v10 = @"YES";
       }
 
-      *&v16[14] = v8;
+      *&v16[14] = presentingViewController;
       v17 = 2112;
       v18 = v10;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Onboarding completed: dismissing navigationController: %@ presentingViewController: %@ fromPrefs: %@", v16, 0x20u);
@@ -1992,53 +1992,53 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
   }
 
   [(CKOnboardingController *)self setPendingMeCardSharingResult:0, *v16];
-  v11 = [(CKOnboardingController *)self _userDefaults];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
   v12 = [MEMORY[0x1E695DF00] now];
-  [v11 setObject:v12 forKey:@"OnboardingFinishTime"];
+  [_userDefaults setObject:v12 forKey:@"OnboardingFinishTime"];
 
-  v13 = [(CKOnboardingController *)self navigationController];
-  v14 = [v13 presentingViewController];
-  [v14 dismissViewControllerAnimated:1 completion:v4];
+  navigationController3 = [(CKOnboardingController *)self navigationController];
+  presentingViewController2 = [navigationController3 presentingViewController];
+  [presentingViewController2 dismissViewControllerAnimated:1 completion:completionCopy];
 
-  v15 = [(CKOnboardingController *)self delegate];
-  [v15 onboardingControllerDidFinish:self];
+  delegate = [(CKOnboardingController *)self delegate];
+  [delegate onboardingControllerDidFinish:self];
 }
 
 + (BOOL)_shouldPresentNewInMessages
 {
-  if ([a1 _isRunningTest])
+  if ([self _isRunningTest])
   {
     return 0;
   }
 
-  v3 = [a1 _classUserDefaults];
-  v4 = [v3 BOOLForKey:@"DisableWhatsNewScreen"];
+  _classUserDefaults = [self _classUserDefaults];
+  v4 = [_classUserDefaults BOOLForKey:@"DisableWhatsNewScreen"];
 
   if (v4)
   {
     return 0;
   }
 
-  v6 = [a1 _classUserDefaults];
-  v7 = [v6 BOOLForKey:@"AlwaysShowWhatsNewScreen"];
+  _classUserDefaults2 = [self _classUserDefaults];
+  v7 = [_classUserDefaults2 BOOLForKey:@"AlwaysShowWhatsNewScreen"];
 
-  v8 = [a1 _classUserDefaults];
-  v9 = [v8 integerForKey:@"whatsNewInMessagesVersion"];
+  _classUserDefaults3 = [self _classUserDefaults];
+  _whatsNewLatestShippingVersion = [_classUserDefaults3 integerForKey:@"whatsNewInMessagesVersion"];
 
-  if (v9 < [a1 _whatsNewLatestShippingVersion] || v9 > objc_msgSend(a1, "_whatsNewVersion"))
+  if (_whatsNewLatestShippingVersion < [self _whatsNewLatestShippingVersion] || _whatsNewLatestShippingVersion > objc_msgSend(self, "_whatsNewVersion"))
   {
-    v9 = [a1 _whatsNewLatestShippingVersion];
+    _whatsNewLatestShippingVersion = [self _whatsNewLatestShippingVersion];
   }
 
-  return (v7 & 1) != 0 || v9 < [a1 _whatsNewVersion];
+  return (v7 & 1) != 0 || _whatsNewLatestShippingVersion < [self _whatsNewVersion];
 }
 
 + (BOOL)_isRunningTest
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 isRunningTest];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  isRunningTest = [mEMORY[0x1E69DC668] isRunningTest];
 
-  return v3;
+  return isRunningTest;
 }
 
 - (void)_writeDefaultWhatsNewDidShow
@@ -2056,8 +2056,8 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
     }
   }
 
-  v5 = [(CKOnboardingController *)self _userDefaults];
-  [v5 setInteger:v3 forKey:@"whatsNewInMessagesVersion"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  [_userDefaults setInteger:v3 forKey:@"whatsNewInMessagesVersion"];
 }
 
 - (void)_writeDefaultNicknameOnboardingVersion
@@ -2076,8 +2076,8 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
     }
   }
 
-  v4 = [(CKOnboardingController *)self _userDefaults];
-  [v4 setInteger:1 forKey:@"NicknameOnboardingVersion"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  [_userDefaults setInteger:1 forKey:@"NicknameOnboardingVersion"];
 }
 
 - (void)_writeDefaultSyndicationOnboardingVersion
@@ -2096,8 +2096,8 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
     }
   }
 
-  v4 = [(CKOnboardingController *)self _userDefaults];
-  [v4 setInteger:3 forKey:@"SyndicationOnboardingVersion"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  [_userDefaults setInteger:3 forKey:@"SyndicationOnboardingVersion"];
 }
 
 - (void)_writeDefaultCollaborationOnboardingVersion
@@ -2116,132 +2116,132 @@ uint64_t __68__CKOnboardingController__presentMemojiCreationIfNeeded_skipAction_
     }
   }
 
-  v4 = [(CKOnboardingController *)self _userDefaults];
-  [v4 setInteger:1 forKey:@"CollaborationOnboardingVersion"];
+  _userDefaults = [(CKOnboardingController *)self _userDefaults];
+  [_userDefaults setInteger:1 forKey:@"CollaborationOnboardingVersion"];
 }
 
 - (BOOL)_meCardSharingEnabled
 {
-  v2 = [(CKOnboardingController *)self _meCardSharingState];
-  v3 = [v2 sharingEnabled];
+  _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+  sharingEnabled = [_meCardSharingState sharingEnabled];
 
-  return v3;
+  return sharingEnabled;
 }
 
 - (unint64_t)_meCardSharingNameFormat
 {
-  v2 = [(CKOnboardingController *)self _meCardSharingState];
-  v3 = [v2 nameFormat];
+  _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+  nameFormat = [_meCardSharingState nameFormat];
 
-  return v3;
+  return nameFormat;
 }
 
 - (unint64_t)_meCardSharingAudience
 {
-  v2 = [(CKOnboardingController *)self _meCardSharingState];
-  v3 = [v2 sharingAudience];
+  _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+  sharingAudience = [_meCardSharingState sharingAudience];
 
-  return v3;
+  return sharingAudience;
 }
 
-- (void)sharingPickerDidFinish:(id)a3
+- (void)sharingPickerDidFinish:(id)finish
 {
-  v7 = a3;
-  if ([v7 sharingEnabled])
+  finishCopy = finish;
+  if ([finishCopy sharingEnabled])
   {
-    v4 = [(CKOnboardingController *)self _meCardSharingState];
-    [v4 setSharingEnabled:{objc_msgSend(v7, "sharingEnabled")}];
+    _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+    [_meCardSharingState setSharingEnabled:{objc_msgSend(finishCopy, "sharingEnabled")}];
 
-    v5 = [(CKOnboardingController *)self _meCardSharingState];
-    [v5 setSharingAudience:{objc_msgSend(v7, "selectedSharingAudience")}];
+    _meCardSharingState2 = [(CKOnboardingController *)self _meCardSharingState];
+    [_meCardSharingState2 setSharingAudience:{objc_msgSend(finishCopy, "selectedSharingAudience")}];
 
-    v6 = [(CKOnboardingController *)self _meCardSharingState];
-    [v6 setNameFormat:objc_msgSend(v7, "selectedNameFormat")];
+    _meCardSharingState3 = [(CKOnboardingController *)self _meCardSharingState];
+    [_meCardSharingState3 setNameFormat:objc_msgSend(finishCopy, "selectedNameFormat")];
   }
 
   [(CKOnboardingController *)self showAppleIntelligenceOnboardingStepIfNeeded];
 }
 
-- (void)avatarEditorViewController:(id)a3 didFinishWithAvatarRecord:(id)a4
+- (void)avatarEditorViewController:(id)controller didFinishWithAvatarRecord:(id)record
 {
-  [(CKOnboardingController *)self setAvatarRecord:a4];
+  [(CKOnboardingController *)self setAvatarRecord:record];
 
   [(CKOnboardingController *)self pushNameAndPhotoSharingIntroStepIfNeeded];
 }
 
-- (void)avatarEditorViewControllerDidCancel:(id)a3
+- (void)avatarEditorViewControllerDidCancel:(id)cancel
 {
-  v4 = [(CKOnboardingController *)self navigationController];
-  v3 = [v4 popViewControllerAnimated:1];
+  navigationController = [(CKOnboardingController *)self navigationController];
+  v3 = [navigationController popViewControllerAnimated:1];
 }
 
-- (void)meCardSharingOnboardingEditController:(id)a3 didFinishWithOnboardingResult:(id)a4
+- (void)meCardSharingOnboardingEditController:(id)controller didFinishWithOnboardingResult:(id)result
 {
-  [(CKOnboardingController *)self setPendingMeCardSharingResult:a4];
+  [(CKOnboardingController *)self setPendingMeCardSharingResult:result];
 
   [(CKOnboardingController *)self pushNameAndPhotoSharingConfigSharingPreferenceStep];
 }
 
-- (void)meCardSharingOnboardingAudienceViewControllerDidFinish:(id)a3 withSharingAudience:(unint64_t)a4
+- (void)meCardSharingOnboardingAudienceViewControllerDidFinish:(id)finish withSharingAudience:(unint64_t)audience
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CKOnboardingController *)self _meCardSharingState];
-  [v7 setSharingEnabled:1];
+  finishCopy = finish;
+  _meCardSharingState = [(CKOnboardingController *)self _meCardSharingState];
+  [_meCardSharingState setSharingEnabled:1];
 
-  v8 = [(CKOnboardingController *)self _meCardSharingState];
-  [v8 setSharingAudience:a4];
+  _meCardSharingState2 = [(CKOnboardingController *)self _meCardSharingState];
+  [_meCardSharingState2 setSharingAudience:audience];
 
-  v9 = [(CKOnboardingController *)self pendingMeCardSharingResult];
+  pendingMeCardSharingResult = [(CKOnboardingController *)self pendingMeCardSharingResult];
 
-  if (v9)
+  if (pendingMeCardSharingResult)
   {
     if (IMOSLoggingEnabled())
     {
       v10 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(CKOnboardingController *)self pendingMeCardSharingResult];
+        pendingMeCardSharingResult2 = [(CKOnboardingController *)self pendingMeCardSharingResult];
         v14 = 134218242;
-        v15 = a4;
+        audienceCopy = audience;
         v16 = 2112;
-        v17 = v11;
+        v17 = pendingMeCardSharingResult2;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Sharing audience chosen: %lu, sharing enabled, uploading pending me card sharing result: %@", &v14, 0x16u);
       }
     }
 
-    v12 = [(CKOnboardingController *)self _nicknameController];
-    v13 = [(CKOnboardingController *)self pendingMeCardSharingResult];
-    [v12 updatePersonalNicknameIfNecessaryWithMeCardSharingResult:v13];
+    _nicknameController = [(CKOnboardingController *)self _nicknameController];
+    pendingMeCardSharingResult3 = [(CKOnboardingController *)self pendingMeCardSharingResult];
+    [_nicknameController updatePersonalNicknameIfNecessaryWithMeCardSharingResult:pendingMeCardSharingResult3];
   }
 
   [(CKOnboardingController *)self showAppleIntelligenceOnboardingStepIfNeeded];
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (self->_memojiCreationController != a4)
+  if (self->_memojiCreationController != viewController)
   {
-    v6 = [(CKOnboardingController *)self memojiVideoPlayer];
-    [v6 pause];
+    memojiVideoPlayer = [(CKOnboardingController *)self memojiVideoPlayer];
+    [memojiVideoPlayer pause];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (self->_memojiCreationController == a4)
+  if (self->_memojiCreationController == viewController)
   {
-    v6 = [(CKOnboardingController *)self memojiVideoPlayer];
-    [v6 play];
+    memojiVideoPlayer = [(CKOnboardingController *)self memojiVideoPlayer];
+    [memojiVideoPlayer play];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }

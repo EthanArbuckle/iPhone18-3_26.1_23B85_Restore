@@ -1,16 +1,16 @@
 @interface COSCoreSpotlightIndexer
-- (id)_bundleForSpecifier:(id)a3 parentBundle:(id)a4;
+- (id)_bundleForSpecifier:(id)specifier parentBundle:(id)bundle;
 @end
 
 @implementation COSCoreSpotlightIndexer
 
-- (id)_bundleForSpecifier:(id)a3 parentBundle:(id)a4
+- (id)_bundleForSpecifier:(id)specifier parentBundle:(id)bundle
 {
-  v5 = a4;
-  v6 = [a3 propertyForKey:PSBundlePathKey];
+  bundleCopy = bundle;
+  v6 = [specifier propertyForKey:PSBundlePathKey];
   if (![v6 length])
   {
-    v12 = v5;
+    v12 = bundleCopy;
     goto LABEL_6;
   }
 

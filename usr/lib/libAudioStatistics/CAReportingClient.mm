@@ -2,34 +2,34 @@
 + (id)getClient;
 + (id)sharedInstance;
 + (void)destroyClient;
-- (CAReportingClient)initWithXPC:(BOOL)a3 endpoint:(id)a4;
-- (id)getConfigurationForReporterID:(int64_t)a3;
+- (CAReportingClient)initWithXPC:(BOOL)c endpoint:(id)endpoint;
+- (id)getConfigurationForReporterID:(int64_t)d;
 - (id)listClientReporterIDs;
 - (id)listServerReporterIDs;
-- (id)reporterWithID:(int64_t)a3;
-- (int64_t)createReporterID:(unsigned int)a3;
+- (id)reporterWithID:(int64_t)d;
+- (int64_t)createReporterID:(unsigned int)d;
 - (uint64_t)requestMessageWithID:category:type:callback:;
-- (unsigned)getServiceTypeForReporterID:(int64_t)a3;
-- (void)addReporter:(id)a3;
+- (unsigned)getServiceTypeForReporterID:(int64_t)d;
+- (void)addReporter:(id)reporter;
 - (void)dealloc;
-- (void)destroyReporterWithID:(int64_t)a3;
+- (void)destroyReporterWithID:(int64_t)d;
 - (void)destroyService;
 - (void)disconnectReporters;
-- (void)reconnectReporter:(id)a3;
+- (void)reconnectReporter:(id)reporter;
 - (void)reconnectStartedReporters;
-- (void)requestMessageWithID:(int64_t)a3 category:(unsigned int)a4 type:(unsigned __int16)a5 callback:(id)a6;
+- (void)requestMessageWithID:(int64_t)d category:(unsigned int)category type:(unsigned __int16)type callback:(id)callback;
 - (void)requestMessageWithID:category:type:callback:;
-- (void)setConfiguration:(id)a3 reporterID:(int64_t)a4;
-- (void)startReporter:(int64_t)a3;
-- (void)stopReporter:(int64_t)a3;
+- (void)setConfiguration:(id)configuration reporterID:(int64_t)d;
+- (void)startReporter:(int64_t)reporter;
+- (void)stopReporter:(int64_t)reporter;
 @end
 
 @implementation CAReportingClient
 
-- (void)reconnectReporter:(id)a3
+- (void)reconnectReporter:(id)reporter
 {
   v35 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  reporterCopy = reporter;
   if (_os_feature_enabled_impl())
   {
     v5 = *AA_ClientCategory();
@@ -45,25 +45,25 @@
     }
   }
 
-  if (v4 && ([v4 connected] & 1) == 0)
+  if (reporterCopy && ([reporterCopy connected] & 1) == 0)
   {
     v6 = *AA_ClientCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 reporterID];
-      v8 = CAReportingUtilityGenerateServiceNameFromServiceType([v4 serviceType]);
-      v9 = [v4 serviceType];
-      v10 = aNy[[v4 started]];
+      reporterID = [reporterCopy reporterID];
+      v8 = CAReportingUtilityGenerateServiceNameFromServiceType([reporterCopy serviceType]);
+      serviceType = [reporterCopy serviceType];
+      v10 = aNy[[reporterCopy started]];
       v23 = 136316418;
       v24 = "CAReportingClient.mm";
       v25 = 1024;
       v26 = 514;
       v27 = 2048;
-      v28 = v7;
+      v28 = reporterID;
       v29 = 2112;
       v30 = v8;
       v31 = 1024;
-      v32 = v9;
+      v32 = serviceType;
       v33 = 1024;
       v34 = v10;
       _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Reconnecting reporter { careporter_id=%lli, servicename=%@, servicetype=%i, started=%c }", &v23, 0x32u);
@@ -71,37 +71,37 @@
 
     if (_os_feature_enabled_impl())
     {
-      v11 = [(CAReportingClient *)self connection];
-      v12 = [v11 _unboostingRemoteObjectProxy];
-      [v12 createSessionWith:{objc_msgSend(v4, "reporterID")}];
+      connection = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+      [_unboostingRemoteObjectProxy createSessionWith:{objc_msgSend(reporterCopy, "reporterID")}];
 
-      v13 = [(CAReportingClient *)self connection];
-      v14 = [v13 _unboostingRemoteObjectProxy];
-      [v14 setWithServiceType:objc_msgSend(v4 for:{"serviceType"), objc_msgSend(v4, "reporterID")}];
+      connection2 = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy2 = [connection2 _unboostingRemoteObjectProxy];
+      [_unboostingRemoteObjectProxy2 setWithServiceType:objc_msgSend(reporterCopy for:{"serviceType"), objc_msgSend(reporterCopy, "reporterID")}];
 
-      v15 = [(CAReportingClient *)self connection];
-      v16 = [v15 _unboostingRemoteObjectProxy];
-      v17 = [v4 configuration];
-      [v16 setWithConfiguration:v17 for:{objc_msgSend(v4, "reporterID")}];
+      connection3 = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy3 = [connection3 _unboostingRemoteObjectProxy];
+      configuration = [reporterCopy configuration];
+      [_unboostingRemoteObjectProxy3 setWithConfiguration:configuration for:{objc_msgSend(reporterCopy, "reporterID")}];
     }
 
     else
     {
-      v18 = [(CAReportingClient *)self connection];
-      v19 = [v18 _unboostingRemoteObjectProxy];
-      [v19 createReportingSession:{objc_msgSend(v4, "reporterID")}];
+      connection4 = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy4 = [connection4 _unboostingRemoteObjectProxy];
+      [_unboostingRemoteObjectProxy4 createReportingSession:{objc_msgSend(reporterCopy, "reporterID")}];
 
-      v20 = [(CAReportingClient *)self connection];
-      v21 = [v20 _unboostingRemoteObjectProxy];
-      [v21 setServiceType:objc_msgSend(v4 reportingSession:{"serviceType"), objc_msgSend(v4, "reporterID")}];
+      connection5 = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy5 = [connection5 _unboostingRemoteObjectProxy];
+      [_unboostingRemoteObjectProxy5 setServiceType:objc_msgSend(reporterCopy reportingSession:{"serviceType"), objc_msgSend(reporterCopy, "reporterID")}];
 
-      v15 = [(CAReportingClient *)self connection];
-      v16 = [v15 _unboostingRemoteObjectProxy];
-      v17 = [v4 configuration];
-      [v16 setConfiguration:v17 forReporterID:{objc_msgSend(v4, "reporterID")}];
+      connection3 = [(CAReportingClient *)self connection];
+      _unboostingRemoteObjectProxy3 = [connection3 _unboostingRemoteObjectProxy];
+      configuration = [reporterCopy configuration];
+      [_unboostingRemoteObjectProxy3 setConfiguration:configuration forReporterID:{objc_msgSend(reporterCopy, "reporterID")}];
     }
 
-    [v4 setConnected:1];
+    [reporterCopy setConnected:1];
   }
 
   v22 = *MEMORY[0x29EDCA608];
@@ -128,9 +128,9 @@
   v4 = gReportingClient;
   objc_sync_enter(v4);
   v5 = [MEMORY[0x29EDBA0A8] predicateWithFormat:@"started == YES"];
-  v6 = [(CAReportingClient *)self clientReporters];
-  v7 = [v6 allValues];
-  v8 = [v7 filteredArrayUsingPredicate:v5];
+  clientReporters = [(CAReportingClient *)self clientReporters];
+  allValues = [clientReporters allValues];
+  v8 = [allValues filteredArrayUsingPredicate:v5];
 
   v17 = 0u;
   v18 = 0u;
@@ -193,16 +193,16 @@
     _os_log_impl(&dword_296C89000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Disconnecting reporters", buf, 0x12u);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(CAReportingClient *)v5 clientReporters];
-  v7 = [v6 allValues];
+  clientReporters = [(CAReportingClient *)selfCopy clientReporters];
+  allValues = [clientReporters allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = *v15;
@@ -212,30 +212,30 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         [v11 setConnected:0];
-        v12 = [v11 perfObject];
-        [v12 abandon];
+        perfObject = [v11 perfObject];
+        [perfObject abandon];
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (CAReportingClient)initWithXPC:(BOOL)a3 endpoint:(id)a4
+- (CAReportingClient)initWithXPC:(BOOL)c endpoint:(id)endpoint
 {
-  v4 = a3;
+  cCopy = c;
   v41 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  endpointCopy = endpoint;
   if (_os_feature_enabled_impl())
   {
     v7 = *AA_ClientCategory();
@@ -254,7 +254,7 @@
   v8 = *AA_ClientCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = aNy[v4];
+    v9 = aNy[cCopy];
     *buf = 136315906;
     *&buf[4] = "CAReportingClient.mm";
     v31 = 1024;
@@ -262,7 +262,7 @@
     v33 = 1024;
     *v34 = v9;
     *&v34[4] = 2112;
-    *&v34[6] = v6;
+    *&v34[6] = endpointCopy;
     _os_log_impl(&dword_296C89000, v8, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Creating CAReportingClient { useXPC=%c, endpoint=%@ }", buf, 0x22u);
   }
 
@@ -277,14 +277,14 @@
   v11 = objc_opt_new();
   [(CAReportingClient *)v10 setClientReporters:v11];
 
-  if (!v4)
+  if (!cCopy)
   {
     goto LABEL_26;
   }
 
-  if (v6)
+  if (endpointCopy)
   {
-    v12 = [objc_alloc(MEMORY[0x29EDBA170]) initWithListenerEndpoint:v6];
+    v12 = [objc_alloc(MEMORY[0x29EDBA170]) initWithListenerEndpoint:endpointCopy];
     [(CAReportingClient *)v10 setConnection:v12];
   }
 
@@ -303,8 +303,8 @@
     [(CAReportingClient *)v10 setConnection:v12];
   }
 
-  v13 = [(CAReportingClient *)v10 connection];
-  v14 = v13 == 0;
+  connection = [(CAReportingClient *)v10 connection];
+  v14 = connection == 0;
 
   if (!v14)
   {
@@ -318,23 +318,23 @@
       [MEMORY[0x29EDBA178] interfaceWithProtocol:&unk_2A1DF5740];
     }
     v15 = ;
-    v16 = [(CAReportingClient *)v10 connection];
-    [v16 setRemoteObjectInterface:v15];
+    connection2 = [(CAReportingClient *)v10 connection];
+    [connection2 setRemoteObjectInterface:v15];
 
     objc_initWeak(buf, v10);
-    v18 = [(CAReportingClient *)v10 connection];
+    connection3 = [(CAReportingClient *)v10 connection];
     v25[0] = MEMORY[0x29EDCA5F8];
     v25[1] = 3221225472;
     v25[2] = __42__CAReportingClient_initWithXPC_endpoint___block_invoke;
     v25[3] = &unk_29EE531C8;
     objc_copyWeak(&v26, buf);
-    [v18 setInterruptionHandler:v25];
+    [connection3 setInterruptionHandler:v25];
 
-    v19 = [(CAReportingClient *)v10 connection];
-    [v19 setInvalidationHandler:&__block_literal_global];
+    connection4 = [(CAReportingClient *)v10 connection];
+    [connection4 setInvalidationHandler:&__block_literal_global];
 
-    v20 = [(CAReportingClient *)v10 connection];
-    [v20 resume];
+    connection5 = [(CAReportingClient *)v10 connection];
+    [connection5 resume];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -448,11 +448,11 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     }
   }
 
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!gReportingClient)
   {
-    v5 = [[v4 alloc] initWithXPC:1 endpoint:0];
+    v5 = [[selfCopy alloc] initWithXPC:1 endpoint:0];
     v6 = gReportingClient;
     gReportingClient = v5;
 
@@ -467,7 +467,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     }
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v8 = gReportingClient;
   v9 = *MEMORY[0x29EDCA608];
@@ -475,7 +475,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   return v8;
 }
 
-- (int64_t)createReporterID:(unsigned int)a3
+- (int64_t)createReporterID:(unsigned int)d
 {
   v21 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -495,27 +495,27 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
 
   v6 = gReportingClient;
   objc_sync_enter(v6);
-  v7 = a3;
+  dCopy = d;
   kdebug_trace();
-  v8 = [MEMORY[0x29EDBA0B0] processInfo];
-  v9 = [v8 processIdentifier];
-  if (!a3)
+  processInfo = [MEMORY[0x29EDBA0B0] processInfo];
+  processIdentifier = [processInfo processIdentifier];
+  if (!d)
   {
-    v7 = ++gReporterIDCount | (v9 << 32);
+    dCopy = ++gReporterIDCount | (processIdentifier << 32);
   }
 
   if (_os_feature_enabled_impl())
   {
-    v10 = [(CAReportingClient *)self connection];
-    v11 = [v10 _unboostingRemoteObjectProxy];
-    [v11 createSessionWith:v7];
+    connection = [(CAReportingClient *)self connection];
+    _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+    [_unboostingRemoteObjectProxy createSessionWith:dCopy];
   }
 
   else
   {
-    v10 = [(CAReportingClient *)self connection];
-    v11 = [v10 _unboostingRemoteObjectProxy];
-    [v11 createReportingSession:v7];
+    connection = [(CAReportingClient *)self connection];
+    _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+    [_unboostingRemoteObjectProxy createReportingSession:dCopy];
   }
 
   v12 = *AA_ClientCategory();
@@ -526,17 +526,17 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     v17 = 1024;
     v18 = 661;
     v19 = 2048;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_impl(&dword_296C89000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Created reporter { careporter_id=%lli }", &v15, 0x1Cu);
   }
 
   objc_sync_exit(v6);
 
   v13 = *MEMORY[0x29EDCA608];
-  return v7;
+  return dCopy;
 }
 
-- (id)reporterWithID:(int64_t)a3
+- (id)reporterWithID:(int64_t)d
 {
   v42 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -549,7 +549,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v36 = 1024;
       v37 = 79;
       v38 = 2080;
-      v39 = "[CAReportingClient reporterWithID:]";
+      dCopy = "[CAReportingClient reporterWithID:]";
       _os_log_impl(&dword_296C89000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Assertion failed: Unreachable Code. { function=%s }", buf, 0x1Cu);
     }
   }
@@ -562,31 +562,31 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     v36 = 1024;
     v37 = 676;
     v38 = 2048;
-    v39 = a3;
+    dCopy = d;
     _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Finding reporter { careporter_id=%lli }", buf, 0x1Cu);
   }
 
-  if (a3)
+  if (d)
   {
     v7 = gReportingClient;
     objc_sync_enter(v7);
-    v8 = GetLocalCAReporterObjectFromClient(self, a3);
+    v8 = GetLocalCAReporterObjectFromClient(self, d);
     v9 = v8;
     if (v8)
     {
-      v10 = v8;
+      longLongValue = v8;
     }
 
     else
     {
       if (_os_feature_enabled_impl())
       {
-        v11 = [(CAReportingClient *)self connection];
-        caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, v11);
+        connection = [(CAReportingClient *)self connection];
+        caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, connection);
 
         v12 = caulk::xpc::message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_proxy(buf);
         v13 = caulk::xpc::message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::reply(buf);
-        [v12 validateFor:a3 completion:v13];
+        [v12 validateFor:d completion:v13];
 
         v14 = v41;
         if (v40)
@@ -595,13 +595,13 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             v16 = v40;
-            v17 = [v16 localizedDescription];
+            localizedDescription = [v16 localizedDescription];
             v29 = 136315650;
             v30 = "CAReportingClient.mm";
             v31 = 1024;
             v32 = 699;
             v33 = 2112;
-            v34 = v17;
+            v34 = localizedDescription;
             _os_log_impl(&dword_296C89000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d Error creating reporter { message=%@ }", &v29, 0x1Cu);
           }
         }
@@ -609,12 +609,12 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
 
       else
       {
-        v18 = [(CAReportingClient *)self connection];
-        caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, v18);
+        connection2 = [(CAReportingClient *)self connection];
+        caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, connection2);
 
         v19 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_proxy(buf);
         v20 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::reply(buf);
-        [v19 reporterID:a3 valid:v20];
+        [v19 reporterID:d valid:v20];
 
         v14 = v41;
         if (v40)
@@ -623,13 +623,13 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
             v22 = v40;
-            v23 = [v22 localizedDescription];
+            localizedDescription2 = [v22 localizedDescription];
             v29 = 136315650;
             v30 = "CAReportingClient.mm";
             v31 = 1024;
             v32 = 707;
             v33 = 2112;
-            v34 = v23;
+            v34 = localizedDescription2;
             _os_log_impl(&dword_296C89000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d Error creating reporter { message=%@ }", &v29, 0x1Cu);
           }
         }
@@ -639,20 +639,20 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       if (v14)
       {
         v24 = [v14 objectForKey:@"reporterID"];
-        v10 = [v24 longLongValue];
+        longLongValue = [v24 longLongValue];
 
         v25 = [v14 objectForKey:@"serviceType"];
-        v26 = [v25 intValue];
+        intValue = [v25 intValue];
 
-        if (v10)
+        if (longLongValue)
         {
-          v10 = [[CAReporter alloc] initWithReporterID:v10 serviceType:v26];
+          longLongValue = [[CAReporter alloc] initWithReporterID:longLongValue serviceType:intValue];
         }
       }
 
       else
       {
-        v10 = 0;
+        longLongValue = 0;
       }
     }
 
@@ -661,18 +661,18 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
 
   else
   {
-    v10 = 0;
+    longLongValue = 0;
   }
 
   v27 = *MEMORY[0x29EDCA608];
 
-  return v10;
+  return longLongValue;
 }
 
-- (void)addReporter:(id)a3
+- (void)addReporter:(id)reporter
 {
   v22 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  reporterCopy = reporter;
   if (_os_feature_enabled_impl())
   {
     v5 = *AA_ClientCategory();
@@ -688,29 +688,29 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     }
   }
 
-  if (v4)
+  if (reporterCopy)
   {
     v6 = *AA_ClientCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 reporterID];
+      reporterID = [reporterCopy reporterID];
       *buf = 136315650;
       v17 = "CAReportingClient.mm";
       v18 = 1024;
       v19 = 737;
       v20 = 2048;
-      v21 = v7;
+      v21 = reporterID;
       _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Adding reporter to client { careporter_id=%lli }", buf, 0x1Cu);
     }
 
     v8 = gReportingClient;
     objc_sync_enter(v8);
-    v9 = [(CAReportingClient *)self clientReporters];
-    v10 = [MEMORY[0x29EDBA070] numberWithLongLong:{objc_msgSend(v4, "reporterID")}];
+    clientReporters = [(CAReportingClient *)self clientReporters];
+    v10 = [MEMORY[0x29EDBA070] numberWithLongLong:{objc_msgSend(reporterCopy, "reporterID")}];
     v14 = v10;
-    v15 = v4;
+    v15 = reporterCopy;
     v11 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    [v9 addEntriesFromDictionary:v11];
+    [clientReporters addEntriesFromDictionary:v11];
 
     objc_sync_exit(v8);
   }
@@ -731,7 +731,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)destroyReporterWithID:(int64_t)a3
+- (void)destroyReporterWithID:(int64_t)d
 {
   v23 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -744,22 +744,22 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v19 = 1024;
       v20 = 79;
       v21 = 2080;
-      v22 = "[CAReportingClient destroyReporterWithID:]";
+      dCopy2 = "[CAReportingClient destroyReporterWithID:]";
       _os_log_impl(&dword_296C89000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Assertion failed: Unreachable Code. { function=%s }", &v17, 0x1Cu);
     }
   }
 
   v6 = gReportingClient;
   objc_sync_enter(v6);
-  if (a3)
+  if (d)
   {
-    v7 = [(CAReportingClient *)self clientReporters];
-    v8 = [MEMORY[0x29EDBA070] numberWithLongLong:a3];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    clientReporters = [(CAReportingClient *)self clientReporters];
+    v8 = [MEMORY[0x29EDBA070] numberWithLongLong:d];
+    v9 = [clientReporters objectForKeyedSubscript:v8];
 
     if (v9)
     {
-      [(CAReportingClient *)self stopReporter:a3];
+      [(CAReportingClient *)self stopReporter:d];
       v10 = *AA_ClientCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -768,29 +768,29 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
         v19 = 1024;
         v20 = 760;
         v21 = 2048;
-        v22 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_296C89000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Removing reporter from client and server { careporter_id=%lli }", &v17, 0x1Cu);
       }
 
       [v9 setRemovedByClient:1];
-      v11 = [(CAReportingClient *)self clientReporters];
-      v12 = [MEMORY[0x29EDBA070] numberWithLongLong:a3];
-      [v11 removeObjectForKey:v12];
+      clientReporters2 = [(CAReportingClient *)self clientReporters];
+      v12 = [MEMORY[0x29EDBA070] numberWithLongLong:d];
+      [clientReporters2 removeObjectForKey:v12];
 
       if ([v9 connected])
       {
         if (_os_feature_enabled_impl())
         {
-          v13 = [(CAReportingClient *)self connection];
-          v14 = [v13 _unboostingRemoteObjectProxy];
-          [v14 destroySessionFor:a3];
+          connection = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy destroySessionFor:d];
         }
 
         else
         {
-          v13 = [(CAReportingClient *)self connection];
-          v14 = [v13 _unboostingRemoteObjectProxy];
-          [v14 destroyReportingSession:a3];
+          connection = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy destroyReportingSession:d];
         }
       }
     }
@@ -805,7 +805,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
         v19 = 1024;
         v20 = 773;
         v21 = 2048;
-        v22 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_296C89000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d Attempted to remove a reporter not created by this client { careporter_id=%lli }", &v17, 0x1Cu);
       }
     }
@@ -816,11 +816,11 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)requestMessageWithID:(int64_t)a3 category:(unsigned int)a4 type:(unsigned __int16)a5 callback:(id)a6
+- (void)requestMessageWithID:(int64_t)d category:(unsigned int)category type:(unsigned __int16)type callback:(id)callback
 {
-  v6 = a5;
+  typeCopy = type;
   v34 = *MEMORY[0x29EDCA608];
-  v10 = a6;
+  callbackCopy = callback;
   if (_os_feature_enabled_impl())
   {
     v11 = *AA_ClientCategory();
@@ -831,7 +831,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v22 = 1024;
       v23 = 79;
       v24 = 2080;
-      v25 = "[CAReportingClient requestMessageWithID:category:type:callback:]";
+      dCopy = "[CAReportingClient requestMessageWithID:category:type:callback:]";
       _os_log_impl(&dword_296C89000, v11, OS_LOG_TYPE_ERROR, "%25s:%-5d Assertion failed: Unreachable Code. { function=%s }", buf, 0x1Cu);
     }
   }
@@ -839,54 +839,54 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   v12 = *AA_ClientCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = CAReportingUtilityCategoryString(a4);
-    v14 = CAReportingUtilityTypeString(v6);
+    v13 = CAReportingUtilityCategoryString(category);
+    v14 = CAReportingUtilityTypeString(typeCopy);
     buf[0] = 136316674;
     *&buf[1] = "CAReportingClient.mm";
     v22 = 1024;
     v23 = 786;
     v24 = 2048;
-    v25 = a3;
+    dCopy = d;
     v26 = 2112;
     v27 = v13;
     v28 = 1024;
-    v29 = a4;
+    categoryCopy2 = category;
     v30 = 2112;
     v31 = v14;
     v32 = 1024;
-    v33 = v6;
+    v33 = typeCopy;
     _os_log_impl(&dword_296C89000, v12, OS_LOG_TYPE_DEFAULT, "%25s:%-5d requestMessageWithID called. { careporter_id=%lli, eventcategoryname=%@, eventcategory=%i, servicename=%@, servicetype=%i }", buf, 0x3Cu);
   }
 
-  if (!a3)
+  if (!d)
   {
     v15 = *AA_ClientCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = CAReportingUtilityCategoryString(a4);
-      v17 = CAReportingUtilityTypeString(v6);
+      v16 = CAReportingUtilityCategoryString(category);
+      v17 = CAReportingUtilityTypeString(typeCopy);
       buf[0] = 136316674;
       *&buf[1] = "CAReportingClient.mm";
       v22 = 1024;
       v23 = 788;
       v24 = 2048;
-      v25 = 0;
+      dCopy = 0;
       v26 = 2112;
       v27 = v16;
       v28 = 1024;
-      v29 = a4;
+      categoryCopy2 = category;
       v30 = 2112;
       v31 = v17;
       v32 = 1024;
-      v33 = v6;
+      v33 = typeCopy;
       _os_log_impl(&dword_296C89000, v15, OS_LOG_TYPE_DEFAULT, "%25s:%-5d requestMessageWithID: Invalid reporterID. Invoking callback. { careporter_id=%lli, eventcategoryname=%@, eventcategory=%i, servicename=%@, servicetype=%i }", buf, 0x3Cu);
     }
 
-    v10[2](v10, 0);
+    callbackCopy[2](callbackCopy, 0);
   }
 
   objc_sync_enter(gReportingClient);
-  v18 = MEMORY[0x29C261C60](v10);
+  v18 = MEMORY[0x29C261C60](callbackCopy);
   if (_os_feature_enabled_impl())
   {
     [(CAReportingClient *)self connection];
@@ -905,12 +905,12 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
 {
   v3 = gReportingClient;
   objc_sync_enter(v3);
-  v4 = [(CAReportingClient *)self clientReporters];
-  v5 = [v4 allKeys];
+  clientReporters = [(CAReportingClient *)self clientReporters];
+  allKeys = [clientReporters allKeys];
 
   objc_sync_exit(v3);
 
-  return v5;
+  return allKeys;
 }
 
 - (id)listServerReporterIDs
@@ -920,8 +920,8 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   objc_sync_enter(v3);
   if (_os_feature_enabled_impl())
   {
-    v4 = [(CAReportingClient *)self connection];
-    caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::sync_message(&v23, v4);
+    connection = [(CAReportingClient *)self connection];
+    caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::sync_message(&v23, connection);
 
     v5 = v26;
     if (v25)
@@ -930,13 +930,13 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v7 = v25;
-        v8 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         v17 = 136315650;
         v18 = "CAReportingClient.mm";
         v19 = 1024;
         v20 = 836;
         v21 = 2112;
-        v22 = v8;
+        v22 = localizedDescription;
         _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_ERROR, "%25s:%-5d error listing reporters { message=%@ }", &v17, 0x1Cu);
       }
     }
@@ -944,8 +944,8 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
 
   else
   {
-    v9 = [(CAReportingClient *)self connection];
-    caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::sync_message(&v23, v9);
+    connection2 = [(CAReportingClient *)self connection];
+    caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::sync_message(&v23, connection2);
 
     v10 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::sync_proxy(&v23);
     v11 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSArray<NSNumber *> * {__strong}>::reply(&v23);
@@ -958,13 +958,13 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v13 = v25;
-        v14 = [v13 localizedDescription];
+        localizedDescription2 = [v13 localizedDescription];
         v17 = 136315650;
         v18 = "CAReportingClient.mm";
         v19 = 1024;
         v20 = 844;
         v21 = 2112;
-        v22 = v14;
+        v22 = localizedDescription2;
         _os_log_impl(&dword_296C89000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d error listing reporters { message=%@ }", &v17, 0x1Cu);
       }
     }
@@ -978,7 +978,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   return v5;
 }
 
-- (void)startReporter:(int64_t)a3
+- (void)startReporter:(int64_t)reporter
 {
   v30 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -991,7 +991,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v25 = 1024;
       v26 = 79;
       v27 = 2080;
-      v28 = "[CAReportingClient startReporter:]";
+      reporterCopy2 = "[CAReportingClient startReporter:]";
       _os_log_impl(&dword_296C89000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Assertion failed: Unreachable Code. { function=%s }", v24, 0x1Cu);
     }
   }
@@ -1006,11 +1006,11 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     v25 = 1024;
     v26 = 861;
     v27 = 2048;
-    v28 = a3;
+    reporterCopy2 = reporter;
     _os_log_impl(&dword_296C89000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Starting { careporter_id=%lli }", v24, 0x1Cu);
   }
 
-  v8 = GetLocalCAReporterObjectFromClient(self, a3);
+  v8 = GetLocalCAReporterObjectFromClient(self, reporter);
   v9 = v8;
   if (v8)
   {
@@ -1020,40 +1020,40 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     [(CAReportingClient *)self reconnectReporter:v9];
     if (([v9 started] & 1) == 0)
     {
-      v10 = [MEMORY[0x29EDB8DB0] date];
-      [v9 setStartDate:v10];
+      date = [MEMORY[0x29EDB8DB0] date];
+      [v9 setStartDate:date];
 
       [v9 setStarted:1];
       v11 = *AA_ClientCategory();
-      v12 = [v9 signpostID];
-      if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
+      signpostID = [v9 signpostID];
+      if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
       {
-        v13 = [v9 configuration];
-        v14 = CAReportingUtilityRetrieveAppName(v13);
+        configuration = [v9 configuration];
+        v14 = CAReportingUtilityRetrieveAppName(configuration);
         *v24 = 138543362;
         *&v24[4] = v14;
-        _os_signpost_emit_with_name_impl(&dword_296C89000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v12, "CoreAudioReportingSession", "Starting Application=%{public}@", v24, 0xCu);
+        _os_signpost_emit_with_name_impl(&dword_296C89000, v11, OS_SIGNPOST_INTERVAL_BEGIN, signpostID, "CoreAudioReportingSession", "Starting Application=%{public}@", v24, 0xCu);
       }
 
       if ([v9 serviceType] == 11 && CAReportingUtilityIsInternalBuild())
       {
         if (_os_feature_enabled_impl())
         {
-          v15 = [(CAReportingClient *)self connection];
-          caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},BOOL>::sync_message(v24, v15);
+          connection = [(CAReportingClient *)self connection];
+          caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},BOOL>::sync_message(v24, connection);
 
           v16 = caulk::xpc::message<objc_object  {objcproto14ServerProtocol}* {__strong},BOOL>::sync_proxy(v24);
-          [v16 startSessionFor:a3];
+          [v16 startSessionFor:reporter];
         }
 
         else
         {
-          v20 = [(CAReportingClient *)self connection];
-          caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},BOOL>::sync_message(v24, v20);
+          connection2 = [(CAReportingClient *)self connection];
+          caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},BOOL>::sync_message(v24, connection2);
 
           v16 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},BOOL>::sync_proxy(v24);
           v21 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},BOOL>::reply(v24);
-          [v16 startReportingSessionForID:a3 reply:v21];
+          [v16 startReportingSessionForID:reporter reply:v21];
         }
 
         std::__function::__value_func<void ()(NSError *,std::tuple<BOOL> &&)>::~__value_func[abi:ne200100](&v24[8]);
@@ -1063,21 +1063,21 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       {
         if (_os_feature_enabled_impl())
         {
-          v18 = [(CAReportingClient *)self connection];
-          v19 = [v18 _unboostingRemoteObjectProxy];
-          [v19 startSessionFor:a3];
+          connection3 = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection3 _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy startSessionFor:reporter];
         }
 
         else
         {
-          v18 = [(CAReportingClient *)self connection];
-          v19 = [v18 _unboostingRemoteObjectProxy];
-          [v19 startReportingSessionForID:a3];
+          connection3 = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection3 _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy startReportingSessionForID:reporter];
         }
       }
 
-      v22 = [v9 perfObject];
-      [v22 begin];
+      perfObject = [v9 perfObject];
+      [perfObject begin];
     }
   }
 
@@ -1091,7 +1091,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v25 = 1024;
       v26 = 865;
       v27 = 2048;
-      v28 = a3;
+      reporterCopy2 = reporter;
       _os_log_impl(&dword_296C89000, v17, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Reporter not found { careporter_id=%lli }", v24, 0x1Cu);
     }
   }
@@ -1100,7 +1100,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
   v23 = *MEMORY[0x29EDCA608];
 }
 
-- (void)stopReporter:(int64_t)a3
+- (void)stopReporter:(int64_t)reporter
 {
   v37[1] = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -1113,7 +1113,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       v30 = 1024;
       v31 = 79;
       v32 = 2080;
-      v33 = "[CAReportingClient stopReporter:]";
+      reporterCopy3 = "[CAReportingClient stopReporter:]";
       _os_log_impl(&dword_296C89000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d Assertion failed: Unreachable Code. { function=%s }", &v28, 0x1Cu);
     }
   }
@@ -1128,11 +1128,11 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
     v30 = 1024;
     v31 = 909;
     v32 = 2048;
-    v33 = a3;
+    reporterCopy3 = reporter;
     _os_log_impl(&dword_296C89000, v7, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Stopping { careporter_id=%lli }", &v28, 0x1Cu);
   }
 
-  v8 = GetLocalCAReporterObjectFromClient(self, a3);
+  v8 = GetLocalCAReporterObjectFromClient(self, reporter);
   v9 = v8;
   if (v8)
   {
@@ -1146,7 +1146,7 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
         v30 = 1024;
         v31 = 917;
         v32 = 2048;
-        v33 = a3;
+        reporterCopy3 = reporter;
         _os_log_impl(&dword_296C89000, v22, OS_LOG_TYPE_DEBUG, "%25s:%-5d !reporter.started or reporter.startDate is nil { careporter_id=%lli }", &v28, 0x1Cu);
       }
     }
@@ -1158,17 +1158,17 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
       kdebug_trace();
       v36 = @"session_duration";
       v12 = MEMORY[0x29EDBA070];
-      v13 = [v9 startDate];
-      [v13 timeIntervalSinceNow];
+      startDate = [v9 startDate];
+      [startDate timeIntervalSinceNow];
       v15 = [v12 numberWithDouble:fabs(v14)];
       v37[0] = v15;
       v16 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-      [(CAReportingClient *)self sendMessage:v16 category:1 type:0 reporter:a3];
+      [(CAReportingClient *)self sendMessage:v16 category:1 type:0 reporter:reporter];
 
-      v17 = [v9 perfObject];
-      v18 = [v17 endAndReturnPerformanceMetrics];
+      perfObject = [v9 perfObject];
+      endAndReturnPerformanceMetrics = [perfObject endAndReturnPerformanceMetrics];
 
-      if (v18)
+      if (endAndReturnPerformanceMetrics)
       {
         v19 = *AA_ClientCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -1178,41 +1178,41 @@ void __42__CAReportingClient_initWithXPC_endpoint___block_invoke_210()
           v30 = 1024;
           v31 = 925;
           v32 = 2048;
-          v33 = a3;
+          reporterCopy3 = reporter;
           v34 = 2112;
-          v35 = v18;
+          v35 = endAndReturnPerformanceMetrics;
           _os_log_impl(&dword_296C89000, v19, OS_LOG_TYPE_DEBUG, "%25s:%-5d gathered perf metrics { careporter_id=%lli, perfMetrics=%@ }", &v28, 0x26u);
         }
 
-        [(CAReportingClient *)self sendMessage:v18 category:13 type:0 reporter:a3];
+        [(CAReportingClient *)self sendMessage:endAndReturnPerformanceMetrics category:13 type:0 reporter:reporter];
       }
 
       if ([v9 connected])
       {
         if (_os_feature_enabled_impl())
         {
-          v20 = [(CAReportingClient *)self connection];
-          v21 = [v20 _unboostingRemoteObjectProxy];
-          [v21 stopSessionFor:a3];
+          connection = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy stopSessionFor:reporter];
         }
 
         else
         {
-          v20 = [(CAReportingClient *)self connection];
-          v21 = [v20 _unboostingRemoteObjectProxy];
-          [v21 stopReportingSessionForID:a3];
+          connection = [(CAReportingClient *)self connection];
+          _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+          [_unboostingRemoteObjectProxy stopReportingSessionForID:reporter];
         }
       }
 
       v23 = *AA_ClientCategory();
-      v24 = [v9 signpostID];
-      if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+      signpostID = [v9 signpostID];
+      if (signpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
       {
-        v25 = [v9 configuration];
-        v26 = CAReportingUtilityRetrieveAppName(v25);
+        configuration = [v9 configuration];
+        v26 = CAReportingUtilityRetrieveAppName(configuration);
         v28 = 138543362;
         v29 = v26;
-        _os_signpost_emit_with_name_impl(&dword_296C89000, v23, OS_SIGNPOST_INTERVAL_END, v24, "CoreAudioReportingSession", "Stopping Application=%{public}@", &v28, 0xCu);
+        _os_signpost_emit_with_name_impl(&dword_296C89000, v23, OS_SIGNPOST_INTERVAL_END, signpostID, "CoreAudioReportingSession", "Stopping Application=%{public}@", &v28, 0xCu);
       }
 
       [v9 setStarted:0];
@@ -1231,7 +1231,7 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
   return result;
 }
 
-- (unsigned)getServiceTypeForReporterID:(int64_t)a3
+- (unsigned)getServiceTypeForReporterID:(int64_t)d
 {
   v45 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -1251,25 +1251,25 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
 
   v6 = gReportingClient;
   objc_sync_enter(v6);
-  v7 = [(CAReportingClient *)self clientReporters];
-  v8 = [MEMORY[0x29EDBA070] numberWithLongLong:a3];
-  v9 = [v7 objectForKey:v8];
+  clientReporters = [(CAReportingClient *)self clientReporters];
+  v8 = [MEMORY[0x29EDBA070] numberWithLongLong:d];
+  v9 = [clientReporters objectForKey:v8];
 
   if (v9)
   {
-    v10 = [v9 serviceType];
+    serviceType = [v9 serviceType];
   }
 
   else if (_os_feature_enabled_impl())
   {
     if (_os_feature_enabled_impl())
     {
-      v11 = [(CAReportingClient *)self connection];
-      caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, v11);
+      connection = [(CAReportingClient *)self connection];
+      caulk::xpc::sync_message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, connection);
 
       v12 = caulk::xpc::message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::sync_proxy(buf);
       v13 = caulk::xpc::message<objc_object  {objcproto14ServerProtocol}* {__strong},NSDictionary * {__strong}>::reply(buf);
-      [v12 validateFor:a3 completion:v13];
+      [v12 validateFor:d completion:v13];
 
       v14 = v44;
       if (v43)
@@ -1278,15 +1278,15 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v16 = v43;
-          v17 = [v16 localizedDescription];
+          localizedDescription = [v16 localizedDescription];
           v30 = 136315906;
           v31 = "CAReportingClient.mm";
           v32 = 1024;
           v33 = 1084;
           v34 = 2112;
-          v35 = v17;
+          v35 = localizedDescription;
           v36 = 2048;
-          v37 = a3;
+          dCopy2 = d;
           _os_log_impl(&dword_296C89000, v15, OS_LOG_TYPE_ERROR, "%25s:%-5d Error getting service type { message=%@, careporter_id=%lli }", &v30, 0x26u);
         }
       }
@@ -1294,12 +1294,12 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
 
     else
     {
-      v18 = [(CAReportingClient *)self connection];
-      caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, v18);
+      connection2 = [(CAReportingClient *)self connection];
+      caulk::xpc::sync_message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_message(buf, connection2);
 
       v19 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::sync_proxy(buf);
       v20 = caulk::xpc::message<objc_object  {objcproto26CAReportingServiceProtocol}* {__strong},NSDictionary * {__strong}>::reply(buf);
-      [v19 reporterID:a3 valid:v20];
+      [v19 reporterID:d valid:v20];
 
       v14 = v44;
       if (v43)
@@ -1308,15 +1308,15 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           v22 = v43;
-          v23 = [v22 localizedDescription];
+          localizedDescription2 = [v22 localizedDescription];
           v30 = 136315906;
           v31 = "CAReportingClient.mm";
           v32 = 1024;
           v33 = 1094;
           v34 = 2112;
-          v35 = v23;
+          v35 = localizedDescription2;
           v36 = 2048;
-          v37 = a3;
+          dCopy2 = d;
           _os_log_impl(&dword_296C89000, v21, OS_LOG_TYPE_ERROR, "%25s:%-5d Error getting service type { message=%@, careporter_id=%lli }", &v30, 0x26u);
         }
       }
@@ -1326,43 +1326,43 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
     if (v14)
     {
       v24 = [v14 objectForKey:@"reporterID"];
-      v25 = [v24 longLongValue];
+      longLongValue = [v24 longLongValue];
 
       v26 = [v14 objectForKey:@"serviceType"];
-      v27 = [v26 intValue];
+      intValue = [v26 intValue];
 
-      if (v25)
+      if (longLongValue)
       {
-        v10 = v27;
+        serviceType = intValue;
       }
 
       else
       {
-        v10 = -1;
+        serviceType = -1;
       }
     }
 
     else
     {
-      v10 = -1;
+      serviceType = -1;
     }
   }
 
   else
   {
-    v10 = -1;
+    serviceType = -1;
   }
 
   objc_sync_exit(v6);
 
   v28 = *MEMORY[0x29EDCA608];
-  return v10;
+  return serviceType;
 }
 
-- (void)setConfiguration:(id)a3 reporterID:(int64_t)a4
+- (void)setConfiguration:(id)configuration reporterID:(int64_t)d
 {
   v17 = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  configurationCopy = configuration;
   if (_os_feature_enabled_impl())
   {
     v7 = *AA_ClientCategory();
@@ -1380,14 +1380,14 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
 
   v8 = gReportingClient;
   objc_sync_enter(v8);
-  v9 = GetLocalCAReporterObjectFromClient(self, a4);
-  [v9 setConfiguration:v6];
+  v9 = GetLocalCAReporterObjectFromClient(self, d);
+  [v9 setConfiguration:configurationCopy];
 
   objc_sync_exit(v8);
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (id)getConfigurationForReporterID:(int64_t)a3
+- (id)getConfigurationForReporterID:(int64_t)d
 {
   v19 = *MEMORY[0x29EDCA608];
   if (_os_feature_enabled_impl())
@@ -1407,19 +1407,19 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
 
   v6 = gReportingClient;
   objc_sync_enter(v6);
-  v7 = GetLocalCAReporterObjectFromClient(self, a3);
+  v7 = GetLocalCAReporterObjectFromClient(self, d);
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 configuration];
+    configuration = [v7 configuration];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    configuration = objc_opt_new();
   }
 
-  v10 = v9;
+  v10 = configuration;
 
   objc_sync_exit(v6);
   v11 = *MEMORY[0x29EDCA608];
@@ -1504,9 +1504,9 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
   objc_sync_enter(v4);
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    v5 = [(CAReportingClient *)self connection];
-    v6 = [v5 _unboostingRemoteObjectProxy];
-    [v6 killService];
+    connection = [(CAReportingClient *)self connection];
+    _unboostingRemoteObjectProxy = [connection _unboostingRemoteObjectProxy];
+    [_unboostingRemoteObjectProxy killService];
   }
 
   objc_sync_exit(v4);
@@ -1545,20 +1545,20 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
     v7 = *AA_ClientCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v6 localizedDescription];
-      v9 = *(a1 + 16);
+      localizedDescription = [v6 localizedDescription];
+      v9 = *(self + 16);
       v20 = 136315906;
       v21 = "CAReportingClient.mm";
       v22 = 1024;
       v23 = 795;
       v24 = 2112;
-      v25 = v8;
+      v25 = localizedDescription;
       v26 = 2048;
       v27 = v9;
       _os_log_impl(&dword_296C89000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d requestMessageWithID error. { message=%@, careporter_id=%lli }", &v20, 0x26u);
     }
 
-    (*(*(a1 + 8) + 16))();
+    (*(*(self + 8) + 16))();
   }
 
   else
@@ -1566,11 +1566,11 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
     v10 = *AA_ClientCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = *(a1 + 16);
-      v12 = CAReportingUtilityCategoryString(*(a1 + 24));
-      v13 = *(a1 + 24);
-      v14 = CAReportingUtilityTypeString(*(a1 + 28));
-      v15 = *(a1 + 28);
+      v11 = *(self + 16);
+      v12 = CAReportingUtilityCategoryString(*(self + 24));
+      v13 = *(self + 24);
+      v14 = CAReportingUtilityTypeString(*(self + 28));
+      v15 = *(self + 28);
       v20 = 136316674;
       v21 = "CAReportingClient.mm";
       v22 = 1024;
@@ -1588,7 +1588,7 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
       _os_log_impl(&dword_296C89000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d requestMessageWithID: Received message. Invoking callback. { careporter_id=%lli, eventcategoryname=%@, eventcategory=%i, servicename=%@, servicetype=%i }", &v20, 0x3Cu);
     }
 
-    v16 = *(a1 + 8);
+    v16 = *(self + 8);
     v17 = *(v16 + 16);
     v18 = v5;
     v17(v16, v18);
@@ -1600,7 +1600,7 @@ uint64_t __56__CAReportingClient_sendMessage_category_type_reporter___block_invo
 - (uint64_t)requestMessageWithID:category:type:callback:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

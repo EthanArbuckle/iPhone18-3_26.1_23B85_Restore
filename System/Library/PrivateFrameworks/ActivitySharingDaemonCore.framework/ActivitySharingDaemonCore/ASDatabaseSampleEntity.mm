@@ -1,38 +1,38 @@
 @interface ASDatabaseSampleEntity
-+ (BOOL)deleteSamplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 deletedSampleCount:(unint64_t *)a6 error:(id *)a7;
-+ (BOOL)enumerateSamplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7 handler:(id)a8;
-+ (BOOL)enumerateSamplesOfTypes:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7 handler:(id)a8;
-+ (id)samplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7;
-+ (id)samplesOfTypes:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7;
++ (BOOL)deleteSamplesOfType:(id)type predicate:(id)predicate healthStore:(id)store deletedSampleCount:(unint64_t *)count error:(id *)error;
++ (BOOL)enumerateSamplesOfType:(id)type predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error handler:(id)handler;
++ (BOOL)enumerateSamplesOfTypes:(id)types predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error handler:(id)handler;
++ (id)samplesOfType:(id)type predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error;
++ (id)samplesOfTypes:(id)types predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error;
 @end
 
 @implementation ASDatabaseSampleEntity
 
-+ (id)samplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7
++ (id)samplesOfType:(id)type predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  typeCopy = type;
   v12 = MEMORY[0x277CBEA60];
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 arrayWithObjects:&v20 count:1];
+  storeCopy = store;
+  predicateCopy = predicate;
+  typeCopy2 = type;
+  v16 = [v12 arrayWithObjects:&typeCopy count:1];
 
-  v17 = [a1 samplesOfTypes:v16 predicate:v14 healthStore:v13 anchor:a6 error:{a7, v20, v21}];
+  v17 = [self samplesOfTypes:v16 predicate:predicateCopy healthStore:storeCopy anchor:anchor error:{error, typeCopy, v21}];
 
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-+ (id)samplesOfTypes:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7
++ (id)samplesOfTypes:(id)types predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a6)
+  typesCopy = types;
+  predicateCopy = predicate;
+  storeCopy = store;
+  if (anchor)
   {
-    v14 = [MEMORY[0x277CCD840] anchorFromValue:{objc_msgSend(*a6, "integerValue")}];
+    v14 = [MEMORY[0x277CCD840] anchorFromValue:{objc_msgSend(*anchor, "integerValue")}];
   }
 
   else
@@ -63,9 +63,9 @@
   v37[1] = 3221225472;
   v37[2] = __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_error___block_invoke;
   v37[3] = &unk_278C4B8C0;
-  v16 = v12;
+  v16 = predicateCopy;
   v38 = v16;
-  v17 = [v11 hk_map:v37];
+  v17 = [typesCopy hk_map:v37];
   v18 = objc_alloc(MEMORY[0x277CCCFF0]);
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
@@ -82,10 +82,10 @@
   v22 = NSStringFromClass(v21);
   [v20 setDebugIdentifier:v22];
 
-  [v13 executeQuery:v20];
+  [storeCopy executeQuery:v20];
   v23 = dispatch_time(0, 15000000000);
   v24 = dispatch_semaphore_wait(v19, v23);
-  [v13 stopQuery:v20];
+  [storeCopy stopQuery:v20];
   if (v24)
   {
     v25 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.ActivitySharing.DatabaseSampleEntity" code:0 userInfo:0];
@@ -93,12 +93,12 @@
     v40[5] = v25;
   }
 
-  if (a6)
+  if (anchor)
   {
-    *a6 = v46[5];
+    *anchor = v46[5];
   }
 
-  *a7 = v40[5];
+  *error = v40[5];
   v27 = v52[5];
 
   _Block_object_dispose(&v39, 8);
@@ -144,30 +144,30 @@ void __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_er
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)enumerateSamplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7 handler:(id)a8
++ (BOOL)enumerateSamplesOfType:(id)type predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v22 = a3;
+  typeCopy = type;
   v14 = MEMORY[0x277CBEA60];
-  v15 = a8;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v14 arrayWithObjects:&v22 count:1];
+  handlerCopy = handler;
+  storeCopy = store;
+  predicateCopy = predicate;
+  typeCopy2 = type;
+  v19 = [v14 arrayWithObjects:&typeCopy count:1];
 
-  LOBYTE(a7) = [a1 enumerateSamplesOfTypes:v19 predicate:v17 healthStore:v16 anchor:a6 error:a7 handler:{v15, v22, v23}];
+  LOBYTE(error) = [self enumerateSamplesOfTypes:v19 predicate:predicateCopy healthStore:storeCopy anchor:anchor error:error handler:{handlerCopy, typeCopy, v23}];
   v20 = *MEMORY[0x277D85DE8];
-  return a7;
+  return error;
 }
 
-+ (BOOL)enumerateSamplesOfTypes:(id)a3 predicate:(id)a4 healthStore:(id)a5 anchor:(id *)a6 error:(id *)a7 handler:(id)a8
++ (BOOL)enumerateSamplesOfTypes:(id)types predicate:(id)predicate healthStore:(id)store anchor:(id *)anchor error:(id *)error handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v14 = a8;
-  v15 = [a1 samplesOfTypes:a3 predicate:a4 healthStore:a5 anchor:a6 error:a7];
+  handlerCopy = handler;
+  v15 = [self samplesOfTypes:types predicate:predicate healthStore:store anchor:anchor error:error];
   v16 = v15;
-  v17 = *a7;
-  if (!*a7)
+  v17 = *error;
+  if (!*error)
   {
     v26 = 0u;
     v27 = 0u;
@@ -187,7 +187,7 @@ void __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_er
             objc_enumerationMutation(v16);
           }
 
-          v14[2](v14, *(*(&v24 + 1) + 8 * i));
+          handlerCopy[2](handlerCopy, *(*(&v24 + 1) + 8 * i));
         }
 
         v19 = [v16 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -201,11 +201,11 @@ void __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_er
   return v17 == 0;
 }
 
-+ (BOOL)deleteSamplesOfType:(id)a3 predicate:(id)a4 healthStore:(id)a5 deletedSampleCount:(unint64_t *)a6 error:(id *)a7
++ (BOOL)deleteSamplesOfType:(id)type predicate:(id)predicate healthStore:(id)store deletedSampleCount:(unint64_t *)count error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  typeCopy = type;
+  predicateCopy = predicate;
+  storeCopy = store;
   v14 = dispatch_semaphore_create(0);
   v39 = 0;
   v40 = &v39;
@@ -230,7 +230,7 @@ void __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_er
   v28 = &v29;
   v15 = v14;
   v25 = v15;
-  [v13 deleteObjectsOfType:v11 predicate:v12 withCompletion:&v21];
+  [storeCopy deleteObjectsOfType:typeCopy predicate:predicateCopy withCompletion:&v21];
   v16 = dispatch_time(0, 15000000000);
   if (dispatch_semaphore_wait(v15, v16))
   {
@@ -239,8 +239,8 @@ void __76__ASDatabaseSampleEntity_samplesOfTypes_predicate_healthStore_anchor_er
     v30[5] = v17;
   }
 
-  *a6 = v36[3];
-  *a7 = v30[5];
+  *count = v36[3];
+  *error = v30[5];
   v19 = *(v40 + 24);
 
   _Block_object_dispose(&v29, 8);

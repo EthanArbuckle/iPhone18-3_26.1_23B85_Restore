@@ -8,40 +8,40 @@
 
 - (NSString)unifiedContactIdentifier
 {
-  v2 = [(MSPSharedTripContact *)self contact];
-  v3 = [v2 identifier];
+  contact = [(MSPSharedTripContact *)self contact];
+  identifier = [contact identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSString)emailAddress
 {
   if (([(MSPSharedTripContact *)self isPhoneNumber]& 1) != 0)
   {
-    v3 = 0;
+    stringValue = 0;
   }
 
   else
   {
-    v3 = [(MSPSharedTripContact *)self stringValue];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (NSString)phoneNumber
 {
   if ([(MSPSharedTripContact *)self isPhoneNumber])
   {
-    v3 = [(MSPSharedTripContact *)self stringValue];
+    stringValue = [(MSPSharedTripContact *)self stringValue];
   }
 
   else
   {
-    v3 = 0;
+    stringValue = 0;
   }
 
-  return v3;
+  return stringValue;
 }
 
 @end

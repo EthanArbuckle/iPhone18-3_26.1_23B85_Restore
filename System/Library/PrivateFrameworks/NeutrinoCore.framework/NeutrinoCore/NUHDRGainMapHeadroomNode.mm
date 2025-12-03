@@ -1,51 +1,51 @@
 @interface NUHDRGainMapHeadroomNode
-+ (double)_updateContentHeadroom:(double)a3 withOffset:(double)a4;
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3;
-- (NUHDRGainMapHeadroomNode)initWithInput:(id)a3 settings:(id)a4;
-- (NUHDRGainMapHeadroomNode)initWithSettings:(id)a3 inputs:(id)a4;
++ (double)_updateContentHeadroom:(double)headroom withOffset:(double)offset;
+- (BOOL)shouldCacheNodeForPipelineState:(id)state;
+- (NUHDRGainMapHeadroomNode)initWithInput:(id)input settings:(id)settings;
+- (NUHDRGainMapHeadroomNode)initWithSettings:(id)settings inputs:(id)inputs;
 - (double)headroomOffset;
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)_evaluateImageProperties:(id *)a3;
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error;
+- (id)_evaluateImage:(id *)image;
+- (id)_evaluateImageProperties:(id *)properties;
 - (id)inputNode;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUHDRGainMapHeadroomNode
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  v4 = [(NUHDRGainMapHeadroomNode *)self inputNode];
-  v5 = [v4 outputImage:a3];
+  inputNode = [(NUHDRGainMapHeadroomNode *)self inputNode];
+  v5 = [inputNode outputImage:image];
 
   return v5;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUHDRGainMapHeadroomNode;
-  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NURenderNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (id)_evaluateAuxiliaryImageForType:(int64_t)a3 error:(id *)a4
+- (id)_evaluateAuxiliaryImageForType:(int64_t)type error:(id *)error
 {
   v16.receiver = self;
   v16.super_class = NUHDRGainMapHeadroomNode;
-  v6 = [(NURenderNode *)&v16 _evaluateAuxiliaryImageForType:a3 error:a4];
+  v6 = [(NURenderNode *)&v16 _evaluateAuxiliaryImageForType:type error:error];
   v7 = v6;
   if (v6)
   {
-    if (a3 == 7)
+    if (type == 7)
     {
-      v8 = [v6 metadata];
+      metadata = [v6 metadata];
       v15 = 0x3FF0000000000000;
-      if ([_NUImageProperties getGainMapHeadroom:&v15 fromMetadata:v8])
+      if ([_NUImageProperties getGainMapHeadroom:&v15 fromMetadata:metadata])
       {
-        MutableCopy = CGImageMetadataCreateMutableCopy(v8);
-        [_NUImageProperties getGainMapHeadroom:&v15 fromMetadata:v8];
+        MutableCopy = CGImageMetadataCreateMutableCopy(metadata);
+        [_NUImageProperties getGainMapHeadroom:&v15 fromMetadata:metadata];
         v10 = objc_opt_class();
         v11 = *&v15;
         [(NUHDRGainMapHeadroomNode *)self headroomOffset];
@@ -61,10 +61,10 @@
   return v7;
 }
 
-- (id)_evaluateImageProperties:(id *)a3
+- (id)_evaluateImageProperties:(id *)properties
 {
-  v5 = [(NUHDRGainMapHeadroomNode *)self inputNode];
-  v6 = [v5 imageProperties:a3];
+  inputNode = [(NUHDRGainMapHeadroomNode *)self inputNode];
+  v6 = [inputNode imageProperties:properties];
   v7 = [v6 copy];
 
   if (v7)
@@ -83,8 +83,8 @@
 
 - (double)headroomOffset
 {
-  v2 = [(NURenderNode *)self settings];
-  v3 = [v2 objectForKeyedSubscript:@"headroomOffset"];
+  settings = [(NURenderNode *)self settings];
+  v3 = [settings objectForKeyedSubscript:@"headroomOffset"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -93,26 +93,26 @@
 
 - (id)inputNode
 {
-  v2 = [(NURenderNode *)self inputs];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
+  inputs = [(NURenderNode *)self inputs];
+  v3 = [inputs objectForKeyedSubscript:*MEMORY[0x1E695FAB0]];
 
   return v3;
 }
 
-- (BOOL)shouldCacheNodeForPipelineState:(id)a3
+- (BOOL)shouldCacheNodeForPipelineState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 evaluationMode] == 1 && objc_msgSend(v3, "auxiliaryImageType") == 1;
+  stateCopy = state;
+  v4 = [stateCopy evaluationMode] == 1 && objc_msgSend(stateCopy, "auxiliaryImageType") == 1;
 
   return v4;
 }
 
-- (NUHDRGainMapHeadroomNode)initWithInput:(id)a3 settings:(id)a4
+- (NUHDRGainMapHeadroomNode)initWithInput:(id)input settings:(id)settings
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  inputCopy = input;
+  settingsCopy = settings;
+  if (!inputCopy)
   {
     v17 = NUAssertLogger_11533();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -133,8 +133,8 @@
         v24 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v25 = MEMORY[0x1E696AF00];
         v26 = v24;
-        v27 = [v25 callStackSymbols];
-        v28 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v25 callStackSymbols];
+        v28 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v24;
         v40 = 2114;
@@ -145,8 +145,8 @@
 
     else if (v21)
     {
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v23;
       _os_log_error_impl(&dword_1C0184000, v20, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -155,8 +155,8 @@
     _NUAssertFailHandler("[NUHDRGainMapHeadroomNode initWithInput:settings:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 1036, @"Invalid parameter not satisfying: %s", v29, v30, v31, v32, "input != nil");
   }
 
-  v8 = v7;
-  v9 = [v7 objectForKeyedSubscript:@"headroomOffset"];
+  v8 = settingsCopy;
+  v9 = [settingsCopy objectForKeyedSubscript:@"headroomOffset"];
   [v9 doubleValue];
   v11 = v10;
 
@@ -165,7 +165,7 @@
   v37 = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v34 = *MEMORY[0x1E695FAB0];
-  v35 = v6;
+  v35 = inputCopy;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v33.receiver = self;
   v33.super_class = NUHDRGainMapHeadroomNode;
@@ -174,11 +174,11 @@
   return v15;
 }
 
-- (NUHDRGainMapHeadroomNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUHDRGainMapHeadroomNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_311);
@@ -222,8 +222,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -239,8 +239,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -256,21 +256,21 @@ LABEL_14:
   _NUAssertFailHandler("[NUHDRGainMapHeadroomNode initWithSettings:inputs:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NUHDRGainMapNode.m", 1032, @"Initializer not available: [%@ %@], use designated initializer instead.", v30, v31, v32, v33, v29);
 }
 
-+ (double)_updateContentHeadroom:(double)a3 withOffset:(double)a4
++ (double)_updateContentHeadroom:(double)headroom withOffset:(double)offset
 {
-  v5 = a3;
-  if (a4 >= 0.0)
+  headroomCopy = headroom;
+  if (offset >= 0.0)
   {
-    if (a4 > 0.0)
+    if (offset > 0.0)
     {
       +[NUGlobalSettings maxGainMapHeadroom];
-      return v5 + a4 * (v6 - v5);
+      return headroomCopy + offset * (v6 - headroomCopy);
     }
   }
 
-  else if (a3 + a4 * (a3 + -1.0) >= 1.0)
+  else if (headroom + offset * (headroom + -1.0) >= 1.0)
   {
-    return a3 + a4 * (a3 + -1.0);
+    return headroom + offset * (headroom + -1.0);
   }
 
   else
@@ -278,7 +278,7 @@ LABEL_14:
     return 1.0;
   }
 
-  return v5;
+  return headroomCopy;
 }
 
 @end

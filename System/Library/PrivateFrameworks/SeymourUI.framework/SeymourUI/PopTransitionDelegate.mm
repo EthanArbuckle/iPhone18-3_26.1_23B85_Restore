@@ -1,12 +1,12 @@
 @interface PopTransitionDelegate
 - (_TtC9SeymourUI21PopTransitionDelegate)init;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 @end
 
 @implementation PopTransitionDelegate
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
   v3 = type metadata accessor for PopTransitionAnimator();
   v4 = objc_allocWithZone(v3);
@@ -19,7 +19,7 @@
   return v5;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v5 = type metadata accessor for PopTransitionAnimator();
   v6 = objc_allocWithZone(v5);

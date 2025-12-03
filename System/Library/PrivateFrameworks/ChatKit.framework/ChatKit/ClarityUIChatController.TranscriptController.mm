@@ -1,17 +1,17 @@
 @interface ClarityUIChatController.TranscriptController
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithCoder:(id)a3;
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6;
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6 collectionViewSize:(CGSize)a7;
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 notifications:(id)a5 balloonMaxWidth:(double)a6 marginInsets:(UIEdgeInsets)a7;
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 notifications:(id)a5 balloonMaxWidth:(double)a6 marginInsets:(UIEdgeInsets)a7 collectionViewSize:(CGSize)a8;
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)generateConversationFooterActions:(id)a3;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithCoder:(id)coder;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets collectionViewSize:(CGSize)size;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate notifications:(id)notifications balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate notifications:(id)notifications balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets collectionViewSize:(CGSize)size;
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)generateConversationFooterActions:(id)actions;
 - (void)viewDidLoad;
 @end
 
 @implementation ClarityUIChatController.TranscriptController
 
-- (id)generateConversationFooterActions:(id)a3
+- (id)generateConversationFooterActions:(id)actions
 {
   type metadata accessor for FooterButtonAction();
   v3 = sub_190D57160();
@@ -25,86 +25,86 @@
   v4.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
   v2 = v4.receiver;
   [(CKTranscriptCollectionViewController *)&v4 viewDidLoad];
-  v3 = [v2 collectionView];
-  [v3 setShowsVerticalScrollIndicator_];
+  collectionView = [v2 collectionView];
+  [collectionView setShowsVerticalScrollIndicator_];
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v14.receiver = self;
   v14.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  return [(CKTranscriptCollectionViewController *)&v14 initWithConversation:a3 delegate:a4 balloonMaxWidth:a5 marginInsets:top, left, bottom, right];
+  return [(CKTranscriptCollectionViewController *)&v14 initWithConversation:conversation delegate:delegate balloonMaxWidth:width marginInsets:top, left, bottom, right];
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 balloonMaxWidth:(double)a5 marginInsets:(UIEdgeInsets)a6 collectionViewSize:(CGSize)a7
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets collectionViewSize:(CGSize)size
 {
-  height = a7.height;
-  width = a7.width;
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
+  height = size.height;
+  width = size.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v17.receiver = self;
   v17.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  return [(CKTranscriptCollectionViewController *)&v17 initWithConversation:a3 delegate:a4 balloonMaxWidth:a5 marginInsets:top collectionViewSize:left, bottom, right, width, height];
+  return [(CKTranscriptCollectionViewController *)&v17 initWithConversation:conversation delegate:delegate balloonMaxWidth:width marginInsets:top collectionViewSize:left, bottom, right, width, height];
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 notifications:(id)a5 balloonMaxWidth:(double)a6 marginInsets:(UIEdgeInsets)a7
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate notifications:(id)notifications balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets
 {
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v16.receiver = self;
   v16.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  return [(CKTranscriptCollectionViewController *)&v16 initWithConversation:a3 delegate:a4 notifications:a5 balloonMaxWidth:a6 marginInsets:top, left, bottom, right];
+  return [(CKTranscriptCollectionViewController *)&v16 initWithConversation:conversation delegate:delegate notifications:notifications balloonMaxWidth:width marginInsets:top, left, bottom, right];
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)a3 delegate:(id)a4 notifications:(id)a5 balloonMaxWidth:(double)a6 marginInsets:(UIEdgeInsets)a7 collectionViewSize:(CGSize)a8
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithConversation:(id)conversation delegate:(id)delegate notifications:(id)notifications balloonMaxWidth:(double)width marginInsets:(UIEdgeInsets)insets collectionViewSize:(CGSize)size
 {
-  height = a8.height;
-  width = a8.width;
-  right = a7.right;
-  bottom = a7.bottom;
-  left = a7.left;
-  top = a7.top;
+  height = size.height;
+  width = size.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v19.receiver = self;
   v19.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  return [(CKTranscriptCollectionViewController *)&v19 initWithConversation:a3 delegate:a4 notifications:a5 balloonMaxWidth:a6 marginInsets:top collectionViewSize:left, bottom, right, width, height];
+  return [(CKTranscriptCollectionViewController *)&v19 initWithConversation:conversation delegate:delegate notifications:notifications balloonMaxWidth:width marginInsets:top collectionViewSize:left, bottom, right, width, height];
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_190D56F10();
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_190D56ED0();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  v9 = [(ClarityUIChatController.TranscriptController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ClarityUIChatController.TranscriptController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithCoder:(id)a3
+- (_TtCC7ChatKit23ClarityUIChatControllerP33_95E71DB35453CEDB4FA265025E24F84720TranscriptController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClarityUIChatController.TranscriptController();
-  v4 = a3;
-  v5 = [(ClarityUIChatController.TranscriptController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ClarityUIChatController.TranscriptController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

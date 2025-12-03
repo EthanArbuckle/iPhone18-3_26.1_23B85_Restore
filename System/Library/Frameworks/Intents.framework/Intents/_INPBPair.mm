@@ -1,40 +1,40 @@
 @interface _INPBPair
-- (BOOL)isEqual:(id)a3;
-- (_INPBPair)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPair)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPairCurrencyAmountValue:(id)a3;
-- (void)addPairCustomObject:(id)a3;
-- (void)addPairDataString:(id)a3;
-- (void)addPairDataValue:(id)a3;
-- (void)addPairDistanceValue:(id)a3;
-- (void)addPairDoubleValue:(id)a3;
-- (void)addPairImageValue:(id)a3;
-- (void)addPairIntegerValue:(id)a3;
-- (void)addPairLocationValue:(id)a3;
-- (void)addPairPaymentMethodValue:(id)a3;
-- (void)addPairPersonValue:(id)a3;
-- (void)addPairStringValue:(id)a3;
-- (void)addPairTemperatureValue:(id)a3;
-- (void)addPairUrlValue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setKey:(id)a3;
-- (void)setPairCurrencyAmountValues:(id)a3;
-- (void)setPairCustomObjects:(id)a3;
-- (void)setPairDataStrings:(id)a3;
-- (void)setPairDataValues:(id)a3;
-- (void)setPairDistanceValues:(id)a3;
-- (void)setPairDoubleValues:(id)a3;
-- (void)setPairImageValues:(id)a3;
-- (void)setPairIntegerValues:(id)a3;
-- (void)setPairLocationValues:(id)a3;
-- (void)setPairPaymentMethodValues:(id)a3;
-- (void)setPairPersonValues:(id)a3;
-- (void)setPairStringValues:(id)a3;
-- (void)setPairTemperatureValues:(id)a3;
-- (void)setPairUrlValues:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPairCurrencyAmountValue:(id)value;
+- (void)addPairCustomObject:(id)object;
+- (void)addPairDataString:(id)string;
+- (void)addPairDataValue:(id)value;
+- (void)addPairDistanceValue:(id)value;
+- (void)addPairDoubleValue:(id)value;
+- (void)addPairImageValue:(id)value;
+- (void)addPairIntegerValue:(id)value;
+- (void)addPairLocationValue:(id)value;
+- (void)addPairPaymentMethodValue:(id)value;
+- (void)addPairPersonValue:(id)value;
+- (void)addPairStringValue:(id)value;
+- (void)addPairTemperatureValue:(id)value;
+- (void)addPairUrlValue:(id)value;
+- (void)encodeWithCoder:(id)coder;
+- (void)setKey:(id)key;
+- (void)setPairCurrencyAmountValues:(id)values;
+- (void)setPairCustomObjects:(id)objects;
+- (void)setPairDataStrings:(id)strings;
+- (void)setPairDataValues:(id)values;
+- (void)setPairDistanceValues:(id)values;
+- (void)setPairDoubleValues:(id)values;
+- (void)setPairImageValues:(id)values;
+- (void)setPairIntegerValues:(id)values;
+- (void)setPairLocationValues:(id)values;
+- (void)setPairPaymentMethodValues:(id)values;
+- (void)setPairPersonValues:(id)values;
+- (void)setPairStringValues:(id)values;
+- (void)setPairTemperatureValues:(id)values;
+- (void)setPairUrlValues:(id)values;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPair
@@ -42,17 +42,17 @@
 - (id)dictionaryRepresentation
 {
   v177 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_key)
   {
     v4 = [(_INPBPair *)self key];
     v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"key"];
+    [dictionary setObject:v5 forKeyedSubscript:@"key"];
   }
 
   if ([(NSArray *)self->_pairCurrencyAmountValues count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v159 = 0u;
     v160 = 0u;
     v161 = 0u;
@@ -72,8 +72,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v159 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v159 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v159 objects:v176 count:16];
@@ -82,12 +82,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"pairCurrencyAmountValue"];
+    [dictionary setObject:array forKeyedSubscript:@"pairCurrencyAmountValue"];
   }
 
   if ([(NSArray *)self->_pairCustomObjects count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v155 = 0u;
     v156 = 0u;
     v157 = 0u;
@@ -107,8 +107,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v155 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v155 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSArray *)v14 countByEnumeratingWithState:&v155 objects:v175 count:16];
@@ -117,12 +117,12 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"pairCustomObject"];
+    [dictionary setObject:array2 forKeyedSubscript:@"pairCustomObject"];
   }
 
   if ([(NSArray *)self->_pairDataStrings count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v151 = 0u;
     v152 = 0u;
     v153 = 0u;
@@ -142,8 +142,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v151 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v151 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSArray *)v21 countByEnumeratingWithState:&v151 objects:v174 count:16];
@@ -152,12 +152,12 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"pairDataString"];
+    [dictionary setObject:array3 forKeyedSubscript:@"pairDataString"];
   }
 
   if ([(NSArray *)self->_pairDataValues count])
   {
-    v27 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v147 = 0u;
     v148 = 0u;
     v149 = 0u;
@@ -177,8 +177,8 @@
             objc_enumerationMutation(v28);
           }
 
-          v33 = [*(*(&v147 + 1) + 8 * m) dictionaryRepresentation];
-          [v27 addObject:v33];
+          dictionaryRepresentation4 = [*(*(&v147 + 1) + 8 * m) dictionaryRepresentation];
+          [array4 addObject:dictionaryRepresentation4];
         }
 
         v30 = [(NSArray *)v28 countByEnumeratingWithState:&v147 objects:v173 count:16];
@@ -187,12 +187,12 @@
       while (v30);
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"pairDataValue"];
+    [dictionary setObject:array4 forKeyedSubscript:@"pairDataValue"];
   }
 
   if ([(NSArray *)self->_pairDistanceValues count])
   {
-    v34 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v143 = 0u;
     v144 = 0u;
     v145 = 0u;
@@ -212,8 +212,8 @@
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v143 + 1) + 8 * n) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation5 = [*(*(&v143 + 1) + 8 * n) dictionaryRepresentation];
+          [array5 addObject:dictionaryRepresentation5];
         }
 
         v37 = [(NSArray *)v35 countByEnumeratingWithState:&v143 objects:v172 count:16];
@@ -222,12 +222,12 @@
       while (v37);
     }
 
-    [v3 setObject:v34 forKeyedSubscript:@"pairDistanceValue"];
+    [dictionary setObject:array5 forKeyedSubscript:@"pairDistanceValue"];
   }
 
   if ([(NSArray *)self->_pairDoubleValues count])
   {
-    v41 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v139 = 0u;
     v140 = 0u;
     v141 = 0u;
@@ -247,8 +247,8 @@
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v139 + 1) + 8 * ii) dictionaryRepresentation];
-          [v41 addObject:v47];
+          dictionaryRepresentation6 = [*(*(&v139 + 1) + 8 * ii) dictionaryRepresentation];
+          [array6 addObject:dictionaryRepresentation6];
         }
 
         v44 = [(NSArray *)v42 countByEnumeratingWithState:&v139 objects:v171 count:16];
@@ -257,12 +257,12 @@
       while (v44);
     }
 
-    [v3 setObject:v41 forKeyedSubscript:@"pairDoubleValue"];
+    [dictionary setObject:array6 forKeyedSubscript:@"pairDoubleValue"];
   }
 
   if ([(NSArray *)self->_pairImageValues count])
   {
-    v48 = [MEMORY[0x1E695DF70] array];
+    array7 = [MEMORY[0x1E695DF70] array];
     v135 = 0u;
     v136 = 0u;
     v137 = 0u;
@@ -282,8 +282,8 @@
             objc_enumerationMutation(v49);
           }
 
-          v54 = [*(*(&v135 + 1) + 8 * jj) dictionaryRepresentation];
-          [v48 addObject:v54];
+          dictionaryRepresentation7 = [*(*(&v135 + 1) + 8 * jj) dictionaryRepresentation];
+          [array7 addObject:dictionaryRepresentation7];
         }
 
         v51 = [(NSArray *)v49 countByEnumeratingWithState:&v135 objects:v170 count:16];
@@ -292,12 +292,12 @@
       while (v51);
     }
 
-    [v3 setObject:v48 forKeyedSubscript:@"pairImageValue"];
+    [dictionary setObject:array7 forKeyedSubscript:@"pairImageValue"];
   }
 
   if ([(NSArray *)self->_pairIntegerValues count])
   {
-    v55 = [MEMORY[0x1E695DF70] array];
+    array8 = [MEMORY[0x1E695DF70] array];
     v131 = 0u;
     v132 = 0u;
     v133 = 0u;
@@ -317,8 +317,8 @@
             objc_enumerationMutation(v56);
           }
 
-          v61 = [*(*(&v131 + 1) + 8 * kk) dictionaryRepresentation];
-          [v55 addObject:v61];
+          dictionaryRepresentation8 = [*(*(&v131 + 1) + 8 * kk) dictionaryRepresentation];
+          [array8 addObject:dictionaryRepresentation8];
         }
 
         v58 = [(NSArray *)v56 countByEnumeratingWithState:&v131 objects:v169 count:16];
@@ -327,12 +327,12 @@
       while (v58);
     }
 
-    [v3 setObject:v55 forKeyedSubscript:@"pairIntegerValue"];
+    [dictionary setObject:array8 forKeyedSubscript:@"pairIntegerValue"];
   }
 
   if ([(NSArray *)self->_pairLocationValues count])
   {
-    v62 = [MEMORY[0x1E695DF70] array];
+    array9 = [MEMORY[0x1E695DF70] array];
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
@@ -352,8 +352,8 @@
             objc_enumerationMutation(v63);
           }
 
-          v68 = [*(*(&v127 + 1) + 8 * mm) dictionaryRepresentation];
-          [v62 addObject:v68];
+          dictionaryRepresentation9 = [*(*(&v127 + 1) + 8 * mm) dictionaryRepresentation];
+          [array9 addObject:dictionaryRepresentation9];
         }
 
         v65 = [(NSArray *)v63 countByEnumeratingWithState:&v127 objects:v168 count:16];
@@ -362,12 +362,12 @@
       while (v65);
     }
 
-    [v3 setObject:v62 forKeyedSubscript:@"pairLocationValue"];
+    [dictionary setObject:array9 forKeyedSubscript:@"pairLocationValue"];
   }
 
   if ([(NSArray *)self->_pairPaymentMethodValues count])
   {
-    v69 = [MEMORY[0x1E695DF70] array];
+    array10 = [MEMORY[0x1E695DF70] array];
     v123 = 0u;
     v124 = 0u;
     v125 = 0u;
@@ -387,8 +387,8 @@
             objc_enumerationMutation(v70);
           }
 
-          v75 = [*(*(&v123 + 1) + 8 * nn) dictionaryRepresentation];
-          [v69 addObject:v75];
+          dictionaryRepresentation10 = [*(*(&v123 + 1) + 8 * nn) dictionaryRepresentation];
+          [array10 addObject:dictionaryRepresentation10];
         }
 
         v72 = [(NSArray *)v70 countByEnumeratingWithState:&v123 objects:v167 count:16];
@@ -397,12 +397,12 @@
       while (v72);
     }
 
-    [v3 setObject:v69 forKeyedSubscript:@"pairPaymentMethodValue"];
+    [dictionary setObject:array10 forKeyedSubscript:@"pairPaymentMethodValue"];
   }
 
   if ([(NSArray *)self->_pairPersonValues count])
   {
-    v76 = [MEMORY[0x1E695DF70] array];
+    array11 = [MEMORY[0x1E695DF70] array];
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
@@ -422,8 +422,8 @@
             objc_enumerationMutation(v77);
           }
 
-          v82 = [*(*(&v119 + 1) + 8 * i1) dictionaryRepresentation];
-          [v76 addObject:v82];
+          dictionaryRepresentation11 = [*(*(&v119 + 1) + 8 * i1) dictionaryRepresentation];
+          [array11 addObject:dictionaryRepresentation11];
         }
 
         v79 = [(NSArray *)v77 countByEnumeratingWithState:&v119 objects:v166 count:16];
@@ -432,12 +432,12 @@
       while (v79);
     }
 
-    [v3 setObject:v76 forKeyedSubscript:@"pairPersonValue"];
+    [dictionary setObject:array11 forKeyedSubscript:@"pairPersonValue"];
   }
 
   if ([(NSArray *)self->_pairStringValues count])
   {
-    v83 = [MEMORY[0x1E695DF70] array];
+    array12 = [MEMORY[0x1E695DF70] array];
     v115 = 0u;
     v116 = 0u;
     v117 = 0u;
@@ -457,8 +457,8 @@
             objc_enumerationMutation(v84);
           }
 
-          v89 = [*(*(&v115 + 1) + 8 * i2) dictionaryRepresentation];
-          [v83 addObject:v89];
+          dictionaryRepresentation12 = [*(*(&v115 + 1) + 8 * i2) dictionaryRepresentation];
+          [array12 addObject:dictionaryRepresentation12];
         }
 
         v86 = [(NSArray *)v84 countByEnumeratingWithState:&v115 objects:v165 count:16];
@@ -467,12 +467,12 @@
       while (v86);
     }
 
-    [v3 setObject:v83 forKeyedSubscript:@"pairStringValue"];
+    [dictionary setObject:array12 forKeyedSubscript:@"pairStringValue"];
   }
 
   if ([(NSArray *)self->_pairTemperatureValues count])
   {
-    v90 = [MEMORY[0x1E695DF70] array];
+    array13 = [MEMORY[0x1E695DF70] array];
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
@@ -492,8 +492,8 @@
             objc_enumerationMutation(v91);
           }
 
-          v96 = [*(*(&v111 + 1) + 8 * i3) dictionaryRepresentation];
-          [v90 addObject:v96];
+          dictionaryRepresentation13 = [*(*(&v111 + 1) + 8 * i3) dictionaryRepresentation];
+          [array13 addObject:dictionaryRepresentation13];
         }
 
         v93 = [(NSArray *)v91 countByEnumeratingWithState:&v111 objects:v164 count:16];
@@ -502,12 +502,12 @@
       while (v93);
     }
 
-    [v3 setObject:v90 forKeyedSubscript:@"pairTemperatureValue"];
+    [dictionary setObject:array13 forKeyedSubscript:@"pairTemperatureValue"];
   }
 
   if ([(NSArray *)self->_pairUrlValues count])
   {
-    v97 = [MEMORY[0x1E695DF70] array];
+    array14 = [MEMORY[0x1E695DF70] array];
     v107 = 0u;
     v108 = 0u;
     v109 = 0u;
@@ -527,8 +527,8 @@
             objc_enumerationMutation(v98);
           }
 
-          v103 = [*(*(&v107 + 1) + 8 * i4) dictionaryRepresentation];
-          [v97 addObject:v103];
+          dictionaryRepresentation14 = [*(*(&v107 + 1) + 8 * i4) dictionaryRepresentation];
+          [array14 addObject:dictionaryRepresentation14];
         }
 
         v100 = [(NSArray *)v98 countByEnumeratingWithState:&v107 objects:v163 count:16];
@@ -537,18 +537,18 @@
       while (v100);
     }
 
-    [v3 setObject:v97 forKeyedSubscript:@"pairUrlValue"];
+    [dictionary setObject:array14 forKeyedSubscript:@"pairUrlValue"];
   }
 
   if ([(_INPBPair *)self hasRepeated])
   {
     v104 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBPair repeated](self, "repeated")}];
-    [v3 setObject:v104 forKeyedSubscript:@"repeated"];
+    [dictionary setObject:v104 forKeyedSubscript:@"repeated"];
   }
 
   v105 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -581,17 +581,17 @@
   return v18 ^ v19 ^ v17 ^ v16 ^ v15 ^ v14 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
-  v5 = [(_INPBPair *)self key];
-  v6 = [v4 key];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self key];
+  pairCurrencyAmountValues2 = [equalCopy key];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
@@ -601,7 +601,7 @@
   {
     v8 = v7;
     v9 = [(_INPBPair *)self key];
-    v10 = [v4 key];
+    v10 = [equalCopy key];
     v11 = [v9 isEqual:v10];
 
     if (!v11)
@@ -614,20 +614,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairCurrencyAmountValues];
-  v6 = [v4 pairCurrencyAmountValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairCurrencyAmountValues];
+  pairCurrencyAmountValues2 = [equalCopy pairCurrencyAmountValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v12 = [(_INPBPair *)self pairCurrencyAmountValues];
-  if (v12)
+  pairCurrencyAmountValues3 = [(_INPBPair *)self pairCurrencyAmountValues];
+  if (pairCurrencyAmountValues3)
   {
-    v13 = v12;
-    v14 = [(_INPBPair *)self pairCurrencyAmountValues];
-    v15 = [v4 pairCurrencyAmountValues];
-    v16 = [v14 isEqual:v15];
+    v13 = pairCurrencyAmountValues3;
+    pairCurrencyAmountValues4 = [(_INPBPair *)self pairCurrencyAmountValues];
+    pairCurrencyAmountValues5 = [equalCopy pairCurrencyAmountValues];
+    v16 = [pairCurrencyAmountValues4 isEqual:pairCurrencyAmountValues5];
 
     if (!v16)
     {
@@ -639,20 +639,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairCustomObjects];
-  v6 = [v4 pairCustomObjects];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairCustomObjects];
+  pairCurrencyAmountValues2 = [equalCopy pairCustomObjects];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v17 = [(_INPBPair *)self pairCustomObjects];
-  if (v17)
+  pairCustomObjects = [(_INPBPair *)self pairCustomObjects];
+  if (pairCustomObjects)
   {
-    v18 = v17;
-    v19 = [(_INPBPair *)self pairCustomObjects];
-    v20 = [v4 pairCustomObjects];
-    v21 = [v19 isEqual:v20];
+    v18 = pairCustomObjects;
+    pairCustomObjects2 = [(_INPBPair *)self pairCustomObjects];
+    pairCustomObjects3 = [equalCopy pairCustomObjects];
+    v21 = [pairCustomObjects2 isEqual:pairCustomObjects3];
 
     if (!v21)
     {
@@ -664,20 +664,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairDataStrings];
-  v6 = [v4 pairDataStrings];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairDataStrings];
+  pairCurrencyAmountValues2 = [equalCopy pairDataStrings];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v22 = [(_INPBPair *)self pairDataStrings];
-  if (v22)
+  pairDataStrings = [(_INPBPair *)self pairDataStrings];
+  if (pairDataStrings)
   {
-    v23 = v22;
-    v24 = [(_INPBPair *)self pairDataStrings];
-    v25 = [v4 pairDataStrings];
-    v26 = [v24 isEqual:v25];
+    v23 = pairDataStrings;
+    pairDataStrings2 = [(_INPBPair *)self pairDataStrings];
+    pairDataStrings3 = [equalCopy pairDataStrings];
+    v26 = [pairDataStrings2 isEqual:pairDataStrings3];
 
     if (!v26)
     {
@@ -689,20 +689,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairDataValues];
-  v6 = [v4 pairDataValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairDataValues];
+  pairCurrencyAmountValues2 = [equalCopy pairDataValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v27 = [(_INPBPair *)self pairDataValues];
-  if (v27)
+  pairDataValues = [(_INPBPair *)self pairDataValues];
+  if (pairDataValues)
   {
-    v28 = v27;
-    v29 = [(_INPBPair *)self pairDataValues];
-    v30 = [v4 pairDataValues];
-    v31 = [v29 isEqual:v30];
+    v28 = pairDataValues;
+    pairDataValues2 = [(_INPBPair *)self pairDataValues];
+    pairDataValues3 = [equalCopy pairDataValues];
+    v31 = [pairDataValues2 isEqual:pairDataValues3];
 
     if (!v31)
     {
@@ -714,20 +714,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairDistanceValues];
-  v6 = [v4 pairDistanceValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairDistanceValues];
+  pairCurrencyAmountValues2 = [equalCopy pairDistanceValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v32 = [(_INPBPair *)self pairDistanceValues];
-  if (v32)
+  pairDistanceValues = [(_INPBPair *)self pairDistanceValues];
+  if (pairDistanceValues)
   {
-    v33 = v32;
-    v34 = [(_INPBPair *)self pairDistanceValues];
-    v35 = [v4 pairDistanceValues];
-    v36 = [v34 isEqual:v35];
+    v33 = pairDistanceValues;
+    pairDistanceValues2 = [(_INPBPair *)self pairDistanceValues];
+    pairDistanceValues3 = [equalCopy pairDistanceValues];
+    v36 = [pairDistanceValues2 isEqual:pairDistanceValues3];
 
     if (!v36)
     {
@@ -739,20 +739,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairDoubleValues];
-  v6 = [v4 pairDoubleValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairDoubleValues];
+  pairCurrencyAmountValues2 = [equalCopy pairDoubleValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v37 = [(_INPBPair *)self pairDoubleValues];
-  if (v37)
+  pairDoubleValues = [(_INPBPair *)self pairDoubleValues];
+  if (pairDoubleValues)
   {
-    v38 = v37;
-    v39 = [(_INPBPair *)self pairDoubleValues];
-    v40 = [v4 pairDoubleValues];
-    v41 = [v39 isEqual:v40];
+    v38 = pairDoubleValues;
+    pairDoubleValues2 = [(_INPBPair *)self pairDoubleValues];
+    pairDoubleValues3 = [equalCopy pairDoubleValues];
+    v41 = [pairDoubleValues2 isEqual:pairDoubleValues3];
 
     if (!v41)
     {
@@ -764,20 +764,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairImageValues];
-  v6 = [v4 pairImageValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairImageValues];
+  pairCurrencyAmountValues2 = [equalCopy pairImageValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v42 = [(_INPBPair *)self pairImageValues];
-  if (v42)
+  pairImageValues = [(_INPBPair *)self pairImageValues];
+  if (pairImageValues)
   {
-    v43 = v42;
-    v44 = [(_INPBPair *)self pairImageValues];
-    v45 = [v4 pairImageValues];
-    v46 = [v44 isEqual:v45];
+    v43 = pairImageValues;
+    pairImageValues2 = [(_INPBPair *)self pairImageValues];
+    pairImageValues3 = [equalCopy pairImageValues];
+    v46 = [pairImageValues2 isEqual:pairImageValues3];
 
     if (!v46)
     {
@@ -789,20 +789,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairIntegerValues];
-  v6 = [v4 pairIntegerValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairIntegerValues];
+  pairCurrencyAmountValues2 = [equalCopy pairIntegerValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v47 = [(_INPBPair *)self pairIntegerValues];
-  if (v47)
+  pairIntegerValues = [(_INPBPair *)self pairIntegerValues];
+  if (pairIntegerValues)
   {
-    v48 = v47;
-    v49 = [(_INPBPair *)self pairIntegerValues];
-    v50 = [v4 pairIntegerValues];
-    v51 = [v49 isEqual:v50];
+    v48 = pairIntegerValues;
+    pairIntegerValues2 = [(_INPBPair *)self pairIntegerValues];
+    pairIntegerValues3 = [equalCopy pairIntegerValues];
+    v51 = [pairIntegerValues2 isEqual:pairIntegerValues3];
 
     if (!v51)
     {
@@ -814,20 +814,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairLocationValues];
-  v6 = [v4 pairLocationValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairLocationValues];
+  pairCurrencyAmountValues2 = [equalCopy pairLocationValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v52 = [(_INPBPair *)self pairLocationValues];
-  if (v52)
+  pairLocationValues = [(_INPBPair *)self pairLocationValues];
+  if (pairLocationValues)
   {
-    v53 = v52;
-    v54 = [(_INPBPair *)self pairLocationValues];
-    v55 = [v4 pairLocationValues];
-    v56 = [v54 isEqual:v55];
+    v53 = pairLocationValues;
+    pairLocationValues2 = [(_INPBPair *)self pairLocationValues];
+    pairLocationValues3 = [equalCopy pairLocationValues];
+    v56 = [pairLocationValues2 isEqual:pairLocationValues3];
 
     if (!v56)
     {
@@ -839,20 +839,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairPaymentMethodValues];
-  v6 = [v4 pairPaymentMethodValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairPaymentMethodValues];
+  pairCurrencyAmountValues2 = [equalCopy pairPaymentMethodValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v57 = [(_INPBPair *)self pairPaymentMethodValues];
-  if (v57)
+  pairPaymentMethodValues = [(_INPBPair *)self pairPaymentMethodValues];
+  if (pairPaymentMethodValues)
   {
-    v58 = v57;
-    v59 = [(_INPBPair *)self pairPaymentMethodValues];
-    v60 = [v4 pairPaymentMethodValues];
-    v61 = [v59 isEqual:v60];
+    v58 = pairPaymentMethodValues;
+    pairPaymentMethodValues2 = [(_INPBPair *)self pairPaymentMethodValues];
+    pairPaymentMethodValues3 = [equalCopy pairPaymentMethodValues];
+    v61 = [pairPaymentMethodValues2 isEqual:pairPaymentMethodValues3];
 
     if (!v61)
     {
@@ -864,20 +864,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairPersonValues];
-  v6 = [v4 pairPersonValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairPersonValues];
+  pairCurrencyAmountValues2 = [equalCopy pairPersonValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v62 = [(_INPBPair *)self pairPersonValues];
-  if (v62)
+  pairPersonValues = [(_INPBPair *)self pairPersonValues];
+  if (pairPersonValues)
   {
-    v63 = v62;
-    v64 = [(_INPBPair *)self pairPersonValues];
-    v65 = [v4 pairPersonValues];
-    v66 = [v64 isEqual:v65];
+    v63 = pairPersonValues;
+    pairPersonValues2 = [(_INPBPair *)self pairPersonValues];
+    pairPersonValues3 = [equalCopy pairPersonValues];
+    v66 = [pairPersonValues2 isEqual:pairPersonValues3];
 
     if (!v66)
     {
@@ -889,20 +889,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairStringValues];
-  v6 = [v4 pairStringValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairStringValues];
+  pairCurrencyAmountValues2 = [equalCopy pairStringValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v67 = [(_INPBPair *)self pairStringValues];
-  if (v67)
+  pairStringValues = [(_INPBPair *)self pairStringValues];
+  if (pairStringValues)
   {
-    v68 = v67;
-    v69 = [(_INPBPair *)self pairStringValues];
-    v70 = [v4 pairStringValues];
-    v71 = [v69 isEqual:v70];
+    v68 = pairStringValues;
+    pairStringValues2 = [(_INPBPair *)self pairStringValues];
+    pairStringValues3 = [equalCopy pairStringValues];
+    v71 = [pairStringValues2 isEqual:pairStringValues3];
 
     if (!v71)
     {
@@ -914,20 +914,20 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairTemperatureValues];
-  v6 = [v4 pairTemperatureValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairTemperatureValues];
+  pairCurrencyAmountValues2 = [equalCopy pairTemperatureValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
     goto LABEL_76;
   }
 
-  v72 = [(_INPBPair *)self pairTemperatureValues];
-  if (v72)
+  pairTemperatureValues = [(_INPBPair *)self pairTemperatureValues];
+  if (pairTemperatureValues)
   {
-    v73 = v72;
-    v74 = [(_INPBPair *)self pairTemperatureValues];
-    v75 = [v4 pairTemperatureValues];
-    v76 = [v74 isEqual:v75];
+    v73 = pairTemperatureValues;
+    pairTemperatureValues2 = [(_INPBPair *)self pairTemperatureValues];
+    pairTemperatureValues3 = [equalCopy pairTemperatureValues];
+    v76 = [pairTemperatureValues2 isEqual:pairTemperatureValues3];
 
     if (!v76)
     {
@@ -939,22 +939,22 @@
   {
   }
 
-  v5 = [(_INPBPair *)self pairUrlValues];
-  v6 = [v4 pairUrlValues];
-  if ((v5 != 0) == (v6 == 0))
+  pairCurrencyAmountValues = [(_INPBPair *)self pairUrlValues];
+  pairCurrencyAmountValues2 = [equalCopy pairUrlValues];
+  if ((pairCurrencyAmountValues != 0) == (pairCurrencyAmountValues2 == 0))
   {
 LABEL_76:
 
     goto LABEL_77;
   }
 
-  v77 = [(_INPBPair *)self pairUrlValues];
-  if (v77)
+  pairUrlValues = [(_INPBPair *)self pairUrlValues];
+  if (pairUrlValues)
   {
-    v78 = v77;
-    v79 = [(_INPBPair *)self pairUrlValues];
-    v80 = [v4 pairUrlValues];
-    v81 = [v79 isEqual:v80];
+    v78 = pairUrlValues;
+    pairUrlValues2 = [(_INPBPair *)self pairUrlValues];
+    pairUrlValues3 = [equalCopy pairUrlValues];
+    v81 = [pairUrlValues2 isEqual:pairUrlValues3];
 
     if (!v81)
     {
@@ -966,10 +966,10 @@ LABEL_76:
   {
   }
 
-  v84 = [(_INPBPair *)self hasRepeated];
-  if (v84 == [v4 hasRepeated])
+  hasRepeated = [(_INPBPair *)self hasRepeated];
+  if (hasRepeated == [equalCopy hasRepeated])
   {
-    if (!-[_INPBPair hasRepeated](self, "hasRepeated") || ![v4 hasRepeated] || (repeated = self->_repeated, repeated == objc_msgSend(v4, "repeated")))
+    if (!-[_INPBPair hasRepeated](self, "hasRepeated") || ![equalCopy hasRepeated] || (repeated = self->_repeated, repeated == objc_msgSend(equalCopy, "repeated")))
     {
       v82 = 1;
       goto LABEL_78;
@@ -983,52 +983,52 @@ LABEL_78:
   return v82;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPair allocWithZone:](_INPBPair init];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   [(_INPBPair *)v5 setKey:v6];
 
-  v7 = [(NSArray *)self->_pairCurrencyAmountValues copyWithZone:a3];
+  v7 = [(NSArray *)self->_pairCurrencyAmountValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairCurrencyAmountValues:v7];
 
-  v8 = [(NSArray *)self->_pairCustomObjects copyWithZone:a3];
+  v8 = [(NSArray *)self->_pairCustomObjects copyWithZone:zone];
   [(_INPBPair *)v5 setPairCustomObjects:v8];
 
-  v9 = [(NSArray *)self->_pairDataStrings copyWithZone:a3];
+  v9 = [(NSArray *)self->_pairDataStrings copyWithZone:zone];
   [(_INPBPair *)v5 setPairDataStrings:v9];
 
-  v10 = [(NSArray *)self->_pairDataValues copyWithZone:a3];
+  v10 = [(NSArray *)self->_pairDataValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairDataValues:v10];
 
-  v11 = [(NSArray *)self->_pairDistanceValues copyWithZone:a3];
+  v11 = [(NSArray *)self->_pairDistanceValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairDistanceValues:v11];
 
-  v12 = [(NSArray *)self->_pairDoubleValues copyWithZone:a3];
+  v12 = [(NSArray *)self->_pairDoubleValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairDoubleValues:v12];
 
-  v13 = [(NSArray *)self->_pairImageValues copyWithZone:a3];
+  v13 = [(NSArray *)self->_pairImageValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairImageValues:v13];
 
-  v14 = [(NSArray *)self->_pairIntegerValues copyWithZone:a3];
+  v14 = [(NSArray *)self->_pairIntegerValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairIntegerValues:v14];
 
-  v15 = [(NSArray *)self->_pairLocationValues copyWithZone:a3];
+  v15 = [(NSArray *)self->_pairLocationValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairLocationValues:v15];
 
-  v16 = [(NSArray *)self->_pairPaymentMethodValues copyWithZone:a3];
+  v16 = [(NSArray *)self->_pairPaymentMethodValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairPaymentMethodValues:v16];
 
-  v17 = [(NSArray *)self->_pairPersonValues copyWithZone:a3];
+  v17 = [(NSArray *)self->_pairPersonValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairPersonValues:v17];
 
-  v18 = [(NSArray *)self->_pairStringValues copyWithZone:a3];
+  v18 = [(NSArray *)self->_pairStringValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairStringValues:v18];
 
-  v19 = [(NSArray *)self->_pairTemperatureValues copyWithZone:a3];
+  v19 = [(NSArray *)self->_pairTemperatureValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairTemperatureValues:v19];
 
-  v20 = [(NSArray *)self->_pairUrlValues copyWithZone:a3];
+  v20 = [(NSArray *)self->_pairUrlValues copyWithZone:zone];
   [(_INPBPair *)v5 setPairUrlValues:v20];
 
   if ([(_INPBPair *)self hasRepeated])
@@ -1039,34 +1039,34 @@ LABEL_78:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPair *)self data];
+  coderCopy = coder;
+  data = [(_INPBPair *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPair)initWithCoder:(id)a3
+- (_INPBPair)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPair *)self initWithData:v6];
+    self = [(_INPBPair *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v163 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = [(_INPBPair *)self key];
 
   if (v5)
@@ -1532,387 +1532,387 @@ LABEL_78:
   v92 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPairUrlValue:(id)a3
+- (void)addPairUrlValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairUrlValues = self->_pairUrlValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairUrlValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairUrlValues;
-    self->_pairUrlValues = v6;
+    self->_pairUrlValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairUrlValues = self->_pairUrlValues;
   }
 
-  [(NSArray *)pairUrlValues addObject:v4];
+  [(NSArray *)pairUrlValues addObject:valueCopy];
 }
 
-- (void)setPairUrlValues:(id)a3
+- (void)setPairUrlValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairUrlValues = self->_pairUrlValues;
   self->_pairUrlValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairUrlValues);
 }
 
-- (void)addPairTemperatureValue:(id)a3
+- (void)addPairTemperatureValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairTemperatureValues = self->_pairTemperatureValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairTemperatureValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairTemperatureValues;
-    self->_pairTemperatureValues = v6;
+    self->_pairTemperatureValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairTemperatureValues = self->_pairTemperatureValues;
   }
 
-  [(NSArray *)pairTemperatureValues addObject:v4];
+  [(NSArray *)pairTemperatureValues addObject:valueCopy];
 }
 
-- (void)setPairTemperatureValues:(id)a3
+- (void)setPairTemperatureValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairTemperatureValues = self->_pairTemperatureValues;
   self->_pairTemperatureValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairTemperatureValues);
 }
 
-- (void)addPairStringValue:(id)a3
+- (void)addPairStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairStringValues = self->_pairStringValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairStringValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairStringValues;
-    self->_pairStringValues = v6;
+    self->_pairStringValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairStringValues = self->_pairStringValues;
   }
 
-  [(NSArray *)pairStringValues addObject:v4];
+  [(NSArray *)pairStringValues addObject:valueCopy];
 }
 
-- (void)setPairStringValues:(id)a3
+- (void)setPairStringValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairStringValues = self->_pairStringValues;
   self->_pairStringValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairStringValues);
 }
 
-- (void)addPairPersonValue:(id)a3
+- (void)addPairPersonValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairPersonValues = self->_pairPersonValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairPersonValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairPersonValues;
-    self->_pairPersonValues = v6;
+    self->_pairPersonValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairPersonValues = self->_pairPersonValues;
   }
 
-  [(NSArray *)pairPersonValues addObject:v4];
+  [(NSArray *)pairPersonValues addObject:valueCopy];
 }
 
-- (void)setPairPersonValues:(id)a3
+- (void)setPairPersonValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairPersonValues = self->_pairPersonValues;
   self->_pairPersonValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairPersonValues);
 }
 
-- (void)addPairPaymentMethodValue:(id)a3
+- (void)addPairPaymentMethodValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairPaymentMethodValues = self->_pairPaymentMethodValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairPaymentMethodValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairPaymentMethodValues;
-    self->_pairPaymentMethodValues = v6;
+    self->_pairPaymentMethodValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairPaymentMethodValues = self->_pairPaymentMethodValues;
   }
 
-  [(NSArray *)pairPaymentMethodValues addObject:v4];
+  [(NSArray *)pairPaymentMethodValues addObject:valueCopy];
 }
 
-- (void)setPairPaymentMethodValues:(id)a3
+- (void)setPairPaymentMethodValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairPaymentMethodValues = self->_pairPaymentMethodValues;
   self->_pairPaymentMethodValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairPaymentMethodValues);
 }
 
-- (void)addPairLocationValue:(id)a3
+- (void)addPairLocationValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairLocationValues = self->_pairLocationValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairLocationValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairLocationValues;
-    self->_pairLocationValues = v6;
+    self->_pairLocationValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairLocationValues = self->_pairLocationValues;
   }
 
-  [(NSArray *)pairLocationValues addObject:v4];
+  [(NSArray *)pairLocationValues addObject:valueCopy];
 }
 
-- (void)setPairLocationValues:(id)a3
+- (void)setPairLocationValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairLocationValues = self->_pairLocationValues;
   self->_pairLocationValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairLocationValues);
 }
 
-- (void)addPairIntegerValue:(id)a3
+- (void)addPairIntegerValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairIntegerValues = self->_pairIntegerValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairIntegerValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairIntegerValues;
-    self->_pairIntegerValues = v6;
+    self->_pairIntegerValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairIntegerValues = self->_pairIntegerValues;
   }
 
-  [(NSArray *)pairIntegerValues addObject:v4];
+  [(NSArray *)pairIntegerValues addObject:valueCopy];
 }
 
-- (void)setPairIntegerValues:(id)a3
+- (void)setPairIntegerValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairIntegerValues = self->_pairIntegerValues;
   self->_pairIntegerValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairIntegerValues);
 }
 
-- (void)addPairImageValue:(id)a3
+- (void)addPairImageValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairImageValues = self->_pairImageValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairImageValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairImageValues;
-    self->_pairImageValues = v6;
+    self->_pairImageValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairImageValues = self->_pairImageValues;
   }
 
-  [(NSArray *)pairImageValues addObject:v4];
+  [(NSArray *)pairImageValues addObject:valueCopy];
 }
 
-- (void)setPairImageValues:(id)a3
+- (void)setPairImageValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairImageValues = self->_pairImageValues;
   self->_pairImageValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairImageValues);
 }
 
-- (void)addPairDoubleValue:(id)a3
+- (void)addPairDoubleValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairDoubleValues = self->_pairDoubleValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairDoubleValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairDoubleValues;
-    self->_pairDoubleValues = v6;
+    self->_pairDoubleValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairDoubleValues = self->_pairDoubleValues;
   }
 
-  [(NSArray *)pairDoubleValues addObject:v4];
+  [(NSArray *)pairDoubleValues addObject:valueCopy];
 }
 
-- (void)setPairDoubleValues:(id)a3
+- (void)setPairDoubleValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairDoubleValues = self->_pairDoubleValues;
   self->_pairDoubleValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairDoubleValues);
 }
 
-- (void)addPairDistanceValue:(id)a3
+- (void)addPairDistanceValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairDistanceValues = self->_pairDistanceValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairDistanceValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairDistanceValues;
-    self->_pairDistanceValues = v6;
+    self->_pairDistanceValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairDistanceValues = self->_pairDistanceValues;
   }
 
-  [(NSArray *)pairDistanceValues addObject:v4];
+  [(NSArray *)pairDistanceValues addObject:valueCopy];
 }
 
-- (void)setPairDistanceValues:(id)a3
+- (void)setPairDistanceValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairDistanceValues = self->_pairDistanceValues;
   self->_pairDistanceValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairDistanceValues);
 }
 
-- (void)addPairDataValue:(id)a3
+- (void)addPairDataValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairDataValues = self->_pairDataValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairDataValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairDataValues;
-    self->_pairDataValues = v6;
+    self->_pairDataValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairDataValues = self->_pairDataValues;
   }
 
-  [(NSArray *)pairDataValues addObject:v4];
+  [(NSArray *)pairDataValues addObject:valueCopy];
 }
 
-- (void)setPairDataValues:(id)a3
+- (void)setPairDataValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairDataValues = self->_pairDataValues;
   self->_pairDataValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairDataValues);
 }
 
-- (void)addPairDataString:(id)a3
+- (void)addPairDataString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   pairDataStrings = self->_pairDataStrings;
-  v8 = v4;
+  v8 = stringCopy;
   if (!pairDataStrings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairDataStrings;
-    self->_pairDataStrings = v6;
+    self->_pairDataStrings = array;
 
-    v4 = v8;
+    stringCopy = v8;
     pairDataStrings = self->_pairDataStrings;
   }
 
-  [(NSArray *)pairDataStrings addObject:v4];
+  [(NSArray *)pairDataStrings addObject:stringCopy];
 }
 
-- (void)setPairDataStrings:(id)a3
+- (void)setPairDataStrings:(id)strings
 {
-  v4 = [a3 mutableCopy];
+  v4 = [strings mutableCopy];
   pairDataStrings = self->_pairDataStrings;
   self->_pairDataStrings = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairDataStrings);
 }
 
-- (void)addPairCustomObject:(id)a3
+- (void)addPairCustomObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   pairCustomObjects = self->_pairCustomObjects;
-  v8 = v4;
+  v8 = objectCopy;
   if (!pairCustomObjects)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairCustomObjects;
-    self->_pairCustomObjects = v6;
+    self->_pairCustomObjects = array;
 
-    v4 = v8;
+    objectCopy = v8;
     pairCustomObjects = self->_pairCustomObjects;
   }
 
-  [(NSArray *)pairCustomObjects addObject:v4];
+  [(NSArray *)pairCustomObjects addObject:objectCopy];
 }
 
-- (void)setPairCustomObjects:(id)a3
+- (void)setPairCustomObjects:(id)objects
 {
-  v4 = [a3 mutableCopy];
+  v4 = [objects mutableCopy];
   pairCustomObjects = self->_pairCustomObjects;
   self->_pairCustomObjects = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairCustomObjects);
 }
 
-- (void)addPairCurrencyAmountValue:(id)a3
+- (void)addPairCurrencyAmountValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   pairCurrencyAmountValues = self->_pairCurrencyAmountValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!pairCurrencyAmountValues)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairCurrencyAmountValues;
-    self->_pairCurrencyAmountValues = v6;
+    self->_pairCurrencyAmountValues = array;
 
-    v4 = v8;
+    valueCopy = v8;
     pairCurrencyAmountValues = self->_pairCurrencyAmountValues;
   }
 
-  [(NSArray *)pairCurrencyAmountValues addObject:v4];
+  [(NSArray *)pairCurrencyAmountValues addObject:valueCopy];
 }
 
-- (void)setPairCurrencyAmountValues:(id)a3
+- (void)setPairCurrencyAmountValues:(id)values
 {
-  v4 = [a3 mutableCopy];
+  v4 = [values mutableCopy];
   pairCurrencyAmountValues = self->_pairCurrencyAmountValues;
   self->_pairCurrencyAmountValues = v4;
 
   MEMORY[0x1EEE66BB8](v4, pairCurrencyAmountValues);
 }
 
-- (void)setKey:(id)a3
+- (void)setKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   key = self->_key;
   self->_key = v4;
 

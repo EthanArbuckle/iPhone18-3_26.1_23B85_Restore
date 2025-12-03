@@ -1,15 +1,15 @@
 @interface _UIFullscreenPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (void)_adjustOrientationIfNecessaryInWindow:(id)a3 forViewController:(id)a4 preservingViewController:(id)a5;
-- (void)_applyCounterRotationToView:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5 withBounds:(CGRect)a6;
-- (void)_placeCounterRotationViewWithView:(id)a3 inWindow:(id)a4 fromOrientation:(int64_t)a5 toOrientation:(int64_t)a6 force:(BOOL)a7;
-- (void)_prepareForMixedOrientationTransitionIfNecessaryInWindow:(id)a3 fromViewController:(id)a4 toViewController:(id)a5;
+- (void)_adjustOrientationIfNecessaryInWindow:(id)window forViewController:(id)controller preservingViewController:(id)viewController;
+- (void)_applyCounterRotationToView:(id)view fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation withBounds:(CGRect)bounds;
+- (void)_placeCounterRotationViewWithView:(id)view inWindow:(id)window fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation force:(BOOL)force;
+- (void)_prepareForMixedOrientationTransitionIfNecessaryInWindow:(id)window fromViewController:(id)controller toViewController:(id)viewController;
 - (void)_removeCounterRotationIfApplied;
-- (void)_setPresentedViewController:(id)a3;
-- (void)_transitionDidEnd:(BOOL)a3 isDismissal:(BOOL)a4;
+- (void)_setPresentedViewController:(id)controller;
+- (void)_transitionDidEnd:(BOOL)end isDismissal:(BOOL)dismissal;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 @end
 
 @implementation _UIFullscreenPresentationController
@@ -24,8 +24,8 @@
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = [(UIPresentationController *)self containerView];
-  [v2 bounds];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -42,25 +42,25 @@
   return result;
 }
 
-- (void)_adjustOrientationIfNecessaryInWindow:(id)a3 forViewController:(id)a4 preservingViewController:(id)a5
+- (void)_adjustOrientationIfNecessaryInWindow:(id)window forViewController:(id)controller preservingViewController:(id)viewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIPresentationController *)self state];
-  if (v11 == 1)
+  windowCopy = window;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  state = [(UIPresentationController *)self state];
+  if (state == 1)
   {
-    self->_originalOrientation = [v8 interfaceOrientation];
+    self->_originalOrientation = [windowCopy interfaceOrientation];
   }
 
   self->_disableAnimatedReenablingOfAutorotation = 0;
-  if ([v8 _isWindowServerHostingManaged] && objc_msgSend(v8, "autorotates"))
+  if ([windowCopy _isWindowServerHostingManaged] && objc_msgSend(windowCopy, "autorotates"))
   {
     v34 = 0;
     v35 = &v34;
     v36 = 0x2020000000;
-    v37 = [UIApp _expectedViewOrientation];
-    if (v10 && v11 == 1)
+    _expectedViewOrientation = [UIApp _expectedViewOrientation];
+    if (viewControllerCopy && state == 1)
     {
       v12 = v35[3];
       v33[0] = MEMORY[0x1E69E9820];
@@ -68,28 +68,28 @@
       v33[2] = __120___UIFullscreenPresentationController__adjustOrientationIfNecessaryInWindow_forViewController_preservingViewController___block_invoke;
       v33[3] = &unk_1E7101BE8;
       v33[4] = &v34;
-      [(UIViewController *)v10 __withSupportedInterfaceOrientation:v12 apply:v33];
+      [(UIViewController *)viewControllerCopy __withSupportedInterfaceOrientation:v12 apply:v33];
     }
 
     v29 = 0;
     v30 = &v29;
     v31 = 0x2020000000;
     v32 = 0;
-    v13 = [v8 interfaceOrientation];
-    v14 = v35[3];
-    if (v13 != v14)
+    interfaceOrientation = [windowCopy interfaceOrientation];
+    _expectedViewOrientation2 = v35[3];
+    if (interfaceOrientation != _expectedViewOrientation2)
     {
-      if (!v14)
+      if (!_expectedViewOrientation2)
       {
         if (dyld_program_sdk_at_least())
         {
-          v14 = v35[3];
+          _expectedViewOrientation2 = v35[3];
         }
 
         else
         {
-          v14 = [UIApp _expectedViewOrientation];
-          v35[3] = v14;
+          _expectedViewOrientation2 = [UIApp _expectedViewOrientation];
+          v35[3] = _expectedViewOrientation2;
         }
       }
 
@@ -99,31 +99,31 @@
       v28[3] = &unk_1E7101C10;
       v28[4] = &v29;
       v28[5] = &v34;
-      [(UIViewController *)v9 __withSupportedInterfaceOrientation:v14 apply:v28];
+      [(UIViewController *)controllerCopy __withSupportedInterfaceOrientation:_expectedViewOrientation2 apply:v28];
     }
 
     if (!v30[3])
     {
-      v15 = [(UIViewController *)v9 _preferredInterfaceOrientationForPresentationInWindow:v8 fromInterfaceOrientation:v13];
+      v15 = [(UIViewController *)controllerCopy _preferredInterfaceOrientationForPresentationInWindow:windowCopy fromInterfaceOrientation:interfaceOrientation];
       v30[3] = v15;
     }
 
-    if (v11 == 1 || ![(_UIFullscreenPresentationController *)self _invokesDelegatesOnOrientationChange])
+    if (state == 1 || ![(_UIFullscreenPresentationController *)self _invokesDelegatesOnOrientationChange])
     {
       presentingViewControllerHandledCounterRotation = 1;
     }
 
     else
     {
-      v16 = [(UIPresentationController *)self presentedViewController];
-      v17 = [v16 supportedInterfaceOrientations];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
+      supportedInterfaceOrientations = [presentedViewController supportedInterfaceOrientations];
 
       originalOrientation = self->_originalOrientation;
-      v19 = _UIInterfaceOrientationMaskContainsOrientation(v17, originalOrientation);
+      v19 = _UIInterfaceOrientationMaskContainsOrientation(supportedInterfaceOrientations, originalOrientation);
       v20 = v30[3];
       if (v19)
       {
-        LOBYTE(v19) = _UIInterfaceOrientationMaskContainsOrientation(v17, v30[3]);
+        LOBYTE(v19) = _UIInterfaceOrientationMaskContainsOrientation(supportedInterfaceOrientations, v30[3]);
       }
 
       presentingViewControllerHandledCounterRotation = 1;
@@ -133,31 +133,31 @@
       }
     }
 
-    v22 = [(UIPresentationController *)self presentedViewController];
+    presentedViewController2 = [(UIPresentationController *)self presentedViewController];
 
-    if (v22 == v10)
+    if (presentedViewController2 == viewControllerCopy)
     {
-      [v10 _setFreezeLayoutForOrientationChangeOnDismissal:1];
+      [viewControllerCopy _setFreezeLayoutForOrientationChangeOnDismissal:1];
     }
 
-    v23 = [v8 windowScene];
-    v24 = [(UIScene *)v23 _systemShellOwnsInterfaceOrientation];
+    windowScene = [windowCopy windowScene];
+    _systemShellOwnsInterfaceOrientation = [(UIScene *)windowScene _systemShellOwnsInterfaceOrientation];
 
-    if (v24)
+    if (_systemShellOwnsInterfaceOrientation)
     {
-      v25 = [v8 windowScene];
-      v26 = [v25 _canDynamicallySpecifySupportedInterfaceOrientations];
+      windowScene2 = [windowCopy windowScene];
+      _canDynamicallySpecifySupportedInterfaceOrientations = [windowScene2 _canDynamicallySpecifySupportedInterfaceOrientations];
 
-      if (v26)
+      if (_canDynamicallySpecifySupportedInterfaceOrientations)
       {
-        [(_UIFullscreenPresentationController *)self _prepareForMixedOrientationTransitionIfNecessaryInWindow:v8 fromViewController:v10 toViewController:v9];
+        [(_UIFullscreenPresentationController *)self _prepareForMixedOrientationTransitionIfNecessaryInWindow:windowCopy fromViewController:viewControllerCopy toViewController:controllerCopy];
       }
     }
 
     else
     {
-      v27 = [v10 view];
-      [(_UIFullscreenPresentationController *)self _placeCounterRotationViewWithView:v27 inWindow:v8 fromOrientation:v13 toOrientation:v30[3] force:presentingViewControllerHandledCounterRotation];
+      view = [viewControllerCopy view];
+      [(_UIFullscreenPresentationController *)self _placeCounterRotationViewWithView:view inWindow:windowCopy fromOrientation:interfaceOrientation toOrientation:v30[3] force:presentingViewControllerHandledCounterRotation];
     }
 
     _Block_object_dispose(&v29, 8);
@@ -165,25 +165,25 @@
   }
 }
 
-- (void)_prepareForMixedOrientationTransitionIfNecessaryInWindow:(id)a3 fromViewController:(id)a4 toViewController:(id)a5
+- (void)_prepareForMixedOrientationTransitionIfNecessaryInWindow:(id)window fromViewController:(id)controller toViewController:(id)viewController
 {
-  v39 = a3;
-  v8 = a4;
-  v9 = a5;
+  windowCopy = window;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   [(_UIFullscreenPresentationController *)self _removeCounterRotationIfApplied];
-  v10 = [(_UICurrentContextPresentationController *)self shouldRemovePresentersView];
-  if (v10)
+  shouldRemovePresentersView = [(_UICurrentContextPresentationController *)self shouldRemovePresentersView];
+  if (shouldRemovePresentersView)
   {
-    [v8 _willBeginCounterRotationForPresentation];
+    [controllerCopy _willBeginCounterRotationForPresentation];
     if ([(UIPresentationController *)self state]== 1)
     {
-      self->_presentingViewControllerHandledCounterRotation = [v8 _handlesCounterRotationForPresentation];
+      self->_presentingViewControllerHandledCounterRotation = [controllerCopy _handlesCounterRotationForPresentation];
     }
   }
 
-  v11 = [v39 interfaceOrientation];
-  v12 = [v8 view];
-  [v12 bounds];
+  interfaceOrientation = [windowCopy interfaceOrientation];
+  view = [controllerCopy view];
+  [view bounds];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -191,7 +191,7 @@
 
   v21 = MEMORY[0x1E696AEC0];
   v22 = _NSStringForUIPresentationControllerState([(UIPresentationController *)self state]);
-  v23 = v8;
+  v23 = controllerCopy;
   if (v23)
   {
     v24 = MEMORY[0x1E696AEC0];
@@ -205,7 +205,7 @@
     v27 = @"(nil)";
   }
 
-  v28 = v9;
+  v28 = viewControllerCopy;
   if (v28)
   {
     v29 = MEMORY[0x1E696AEC0];
@@ -221,36 +221,36 @@
 
   v33 = [v21 stringWithFormat:@"Fullscreen transition (%@): fromVC=%@ toVC=%@;", v22, v27, v32];;
 
-  v34 = [v39 _adjustWindowOrientationForTransitionWithSupportedOrientations:objc_msgSend(v28 preferredOrientation:"__supportedInterfaceOrientations") reason:{objc_msgSend(v28, "preferredInterfaceOrientationForPresentation"), v33}];
+  v34 = [windowCopy _adjustWindowOrientationForTransitionWithSupportedOrientations:objc_msgSend(v28 preferredOrientation:"__supportedInterfaceOrientations") reason:{objc_msgSend(v28, "preferredInterfaceOrientationForPresentation"), v33}];
   forcedOrientationToken = self->_forcedOrientationToken;
   self->_forcedOrientationToken = v34;
 
   self->_disableAnimatedReenablingOfAutorotation = 1;
-  v36 = [v39 interfaceOrientation];
-  if (v10)
+  interfaceOrientation2 = [windowCopy interfaceOrientation];
+  if (shouldRemovePresentersView)
   {
-    v37 = v36;
-    if (v11 == v36)
+    v37 = interfaceOrientation2;
+    if (interfaceOrientation == interfaceOrientation2)
     {
       [v23 _didEndCounterRotationForPresentation];
     }
 
     else
     {
-      v38 = [v23 view];
-      [(_UIFullscreenPresentationController *)self _applyCounterRotationToView:v38 fromOrientation:v11 toOrientation:v37 withBounds:v14, v16, v18, v20];
+      view2 = [v23 view];
+      [(_UIFullscreenPresentationController *)self _applyCounterRotationToView:view2 fromOrientation:interfaceOrientation toOrientation:v37 withBounds:v14, v16, v18, v20];
     }
   }
 }
 
-- (void)_placeCounterRotationViewWithView:(id)a3 inWindow:(id)a4 fromOrientation:(int64_t)a5 toOrientation:(int64_t)a6 force:(BOOL)a7
+- (void)_placeCounterRotationViewWithView:(id)view inWindow:(id)window fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation force:(BOOL)force
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  if (a6 == a5)
+  forceCopy = force;
+  viewCopy = view;
+  windowCopy = window;
+  if (toOrientation == orientation)
   {
-    if (!v7)
+    if (!forceCopy)
     {
       [(_UIFullscreenPresentationController *)self _removeCounterRotationIfApplied];
       originalOrientation = self->_originalOrientation;
@@ -260,10 +260,10 @@
         v27[1] = 3221225472;
         v27[2] = __118___UIFullscreenPresentationController__placeCounterRotationViewWithView_inWindow_fromOrientation_toOrientation_force___block_invoke;
         v27[3] = &unk_1E7101C38;
-        v28 = v13;
+        v28 = windowCopy;
         v29 = originalOrientation;
-        v30 = a6;
-        v31 = v7;
+        toOrientationCopy = toOrientation;
+        v31 = forceCopy;
         v15 = [v27 copy];
         finalRotationBlock = self->_finalRotationBlock;
         self->_finalRotationBlock = v15;
@@ -274,57 +274,57 @@
   else
   {
     [(_UIFullscreenPresentationController *)self _removeCounterRotationIfApplied];
-    [v12 bounds];
+    [viewCopy bounds];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
     if ([(_UICurrentContextPresentationController *)self shouldRemovePresentersView])
     {
-      v25 = [(UIView *)v12 __viewDelegate];
-      [v25 _willBeginCounterRotationForPresentation];
+      __viewDelegate = [(UIView *)viewCopy __viewDelegate];
+      [__viewDelegate _willBeginCounterRotationForPresentation];
 
       if ([(UIPresentationController *)self state]== 1)
       {
-        v26 = [(UIView *)v12 __viewDelegate];
-        self->_presentingViewControllerHandledCounterRotation = [v26 _handlesCounterRotationForPresentation];
+        __viewDelegate2 = [(UIView *)viewCopy __viewDelegate];
+        self->_presentingViewControllerHandledCounterRotation = [__viewDelegate2 _handlesCounterRotationForPresentation];
       }
 
-      [(UIWindow *)v13 _internal_setRotatableViewOrientation:a6 updateStatusBar:1 duration:v7 force:0.0];
-      [(_UIFullscreenPresentationController *)self _applyCounterRotationToView:v12 fromOrientation:a5 toOrientation:a6 withBounds:v18, v20, v22, v24];
+      [(UIWindow *)windowCopy _internal_setRotatableViewOrientation:toOrientation updateStatusBar:1 duration:forceCopy force:0.0];
+      [(_UIFullscreenPresentationController *)self _applyCounterRotationToView:viewCopy fromOrientation:orientation toOrientation:toOrientation withBounds:v18, v20, v22, v24];
     }
 
     else
     {
-      [(UIWindow *)v13 _internal_setRotatableViewOrientation:a6 updateStatusBar:1 duration:v7 force:0.0];
+      [(UIWindow *)windowCopy _internal_setRotatableViewOrientation:toOrientation updateStatusBar:1 duration:forceCopy force:0.0];
     }
   }
 }
 
-- (void)_applyCounterRotationToView:(id)a3 fromOrientation:(int64_t)a4 toOrientation:(int64_t)a5 withBounds:(CGRect)a6
+- (void)_applyCounterRotationToView:(id)view fromOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation withBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a3;
-  v14 = v13;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  v14 = viewCopy;
   memset(&v21, 0, sizeof(v21));
-  if (v13)
+  if (viewCopy)
   {
-    [(UIView *)v13 transform];
+    [(UIView *)viewCopy transform];
   }
 
   v15 = 0.0;
   v16 = 0.0;
-  if (a4 != 1)
+  if (orientation != 1)
   {
-    if (a4 == 3)
+    if (orientation == 3)
     {
       v16 = 1.57079633;
     }
 
-    else if (a4 == 4)
+    else if (orientation == 4)
     {
       v16 = -1.57079633;
     }
@@ -332,21 +332,21 @@
     else
     {
       v16 = 3.14159265;
-      if (a4 != 2)
+      if (orientation != 2)
       {
         v16 = 0.0;
       }
     }
   }
 
-  if (a5 != 1)
+  if (toOrientation != 1)
   {
-    if (a5 == 3)
+    if (toOrientation == 3)
     {
       v15 = 1.57079633;
     }
 
-    else if (a5 == 4)
+    else if (toOrientation == 4)
     {
       v15 = -1.57079633;
     }
@@ -354,7 +354,7 @@
     else
     {
       v15 = 3.14159265;
-      if (a5 != 2)
+      if (toOrientation != 2)
       {
         v15 = 0.0;
       }
@@ -389,39 +389,39 @@
     v9 = v8;
     [(UIView *)self->_counterRotatedView setTransform:&v8];
     [(UIView *)self->_counterRotatedView setBounds:self->_counterRotatedOriginalBounds.origin.x, self->_counterRotatedOriginalBounds.origin.y, self->_counterRotatedOriginalBounds.size.width, self->_counterRotatedOriginalBounds.size.height];
-    v5 = [(UIView *)&self->_counterRotatedView->super.super.isa __viewDelegate];
-    [v5 _didEndCounterRotationForPresentation];
+    __viewDelegate = [(UIView *)&self->_counterRotatedView->super.super.isa __viewDelegate];
+    [__viewDelegate _didEndCounterRotationForPresentation];
 
     v6 = self->_counterRotatedView;
     self->_counterRotatedView = 0;
   }
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
-  [(_UIFullscreenPresentationController *)self _transitionDidEnd:a3 isDismissal:0];
+  endCopy = end;
+  [(_UIFullscreenPresentationController *)self _transitionDidEnd:end isDismissal:0];
   v5.receiver = self;
   v5.super_class = _UIFullscreenPresentationController;
-  [(UIPresentationController *)&v5 presentationTransitionDidEnd:v3];
+  [(UIPresentationController *)&v5 presentationTransitionDidEnd:endCopy];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
-  [(_UIFullscreenPresentationController *)self _transitionDidEnd:a3 isDismissal:1];
+  endCopy = end;
+  [(_UIFullscreenPresentationController *)self _transitionDidEnd:end isDismissal:1];
   v5.receiver = self;
   v5.super_class = _UIFullscreenPresentationController;
-  [(UIPresentationController *)&v5 dismissalTransitionDidEnd:v3];
+  [(UIPresentationController *)&v5 dismissalTransitionDidEnd:endCopy];
 }
 
-- (void)_transitionDidEnd:(BOOL)a3 isDismissal:(BOOL)a4
+- (void)_transitionDidEnd:(BOOL)end isDismissal:(BOOL)dismissal
 {
-  v4 = a4;
+  dismissalCopy = dismissal;
   forcedOrientationToken = self->_forcedOrientationToken;
   if (forcedOrientationToken)
   {
-    v7 = !a3;
+    v7 = !end;
   }
 
   else
@@ -439,7 +439,7 @@
     }
 
     [(_UIFullscreenPresentationController *)self _removeCounterRotationIfApplied];
-    if (v4)
+    if (dismissalCopy)
     {
       finalRotationBlock = self->_finalRotationBlock;
       if (finalRotationBlock)
@@ -449,8 +449,8 @@
         self->_finalRotationBlock = 0;
       }
 
-      v12 = [(UIPresentationController *)self presentedViewController];
-      [v12 _setFreezeLayoutForOrientationChangeOnDismissal:0];
+      presentedViewController = [(UIPresentationController *)self presentedViewController];
+      [presentedViewController _setFreezeLayoutForOrientationChangeOnDismissal:0];
     }
   }
 
@@ -463,24 +463,24 @@
     v13[2] = __69___UIFullscreenPresentationController__transitionDidEnd_isDismissal___block_invoke;
     v13[3] = &unk_1E7101C60;
     objc_copyWeak(&v14, &location);
-    v15 = v4;
+    v15 = dismissalCopy;
     [(_UIForcedOrientationTransactionToken *)v11 commitAnimated:0 completionBlock:v13];
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_setPresentedViewController:(id)a3
+- (void)_setPresentedViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = _UIFullscreenPresentationController;
-  v3 = a3;
-  [(UIPresentationController *)&v5 _setPresentedViewController:v3];
-  v4 = [v3 view];
+  controllerCopy = controller;
+  [(UIPresentationController *)&v5 _setPresentedViewController:controllerCopy];
+  view = [controllerCopy view];
 
-  if (![v4 _wantsAutolayout] || objc_msgSend(v4, "translatesAutoresizingMaskIntoConstraints"))
+  if (![view _wantsAutolayout] || objc_msgSend(view, "translatesAutoresizingMaskIntoConstraints"))
   {
-    [v4 setAutoresizingMask:18];
+    [view setAutoresizingMask:18];
   }
 }
 

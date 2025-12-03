@@ -1,42 +1,42 @@
 @interface SBSceneOrientationFollowingWindowRootViewController
 - (SBIsolatedSceneOrientationFollowingWrapperViewController)hostingViewController;
-- (SBSceneOrientationFollowingWindowRootViewController)initWithHostingViewController:(id)a3;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (SBSceneOrientationFollowingWindowRootViewController)initWithHostingViewController:(id)controller;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)setOverlayContentView:(id)a3;
+- (void)setOverlayContentView:(id)view;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBSceneOrientationFollowingWindowRootViewController
 
-- (SBSceneOrientationFollowingWindowRootViewController)initWithHostingViewController:(id)a3
+- (SBSceneOrientationFollowingWindowRootViewController)initWithHostingViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SBSceneOrientationFollowingWindowRootViewController;
   v5 = [(SBSceneOrientationFollowingWindowRootViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostingViewController, v4);
+    objc_storeWeak(&v5->_hostingViewController, controllerCopy);
   }
 
   return v6;
 }
 
-- (void)setOverlayContentView:(id)a3
+- (void)setOverlayContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   overlayContentView = self->_overlayContentView;
-  v8 = v5;
-  if (overlayContentView != v5)
+  v8 = viewCopy;
+  if (overlayContentView != viewCopy)
   {
     [(UIView *)overlayContentView removeFromSuperview];
-    objc_storeStrong(&self->_overlayContentView, a3);
+    objc_storeStrong(&self->_overlayContentView, view);
     if (self->_overlayContentView)
     {
-      v7 = [(SBSceneOrientationFollowingWindowRootViewController *)self view];
-      [v7 addSubview:v8];
+      view = [(SBSceneOrientationFollowingWindowRootViewController *)self view];
+      [view addSubview:v8];
     }
   }
 }
@@ -44,10 +44,10 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
-  v3 = [WeakRetained orientationDelegate];
-  v4 = [v3 supportedInterfaceOrientations];
+  orientationDelegate = [WeakRetained orientationDelegate];
+  supportedInterfaceOrientations = [orientationDelegate supportedInterfaceOrientations];
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
 - (void)viewWillLayoutSubviews
@@ -55,7 +55,7 @@
   v14.receiver = self;
   v14.super_class = SBSceneOrientationFollowingWindowRootViewController;
   [(SBSceneOrientationFollowingWindowRootViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(SBSceneOrientationFollowingWindowRootViewController *)self view];
+  view = [(SBSceneOrientationFollowingWindowRootViewController *)self view];
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
   [WeakRetained _boundsForOverlayRootView];
   v6 = v5;
@@ -63,46 +63,46 @@
   v10 = v9;
   v12 = v11;
 
-  v13 = [v3 window];
-  [v13 center];
-  [v3 setCenter:?];
+  window = [view window];
+  [window center];
+  [view setCenter:?];
 
-  [v3 setBounds:{v6, v8, v10, v12}];
+  [view setBounds:{v6, v8, v10, v12}];
   [(UIView *)self->_overlayContentView setFrame:v6, v8, v10, v12];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
   WeakRetained = objc_loadWeakRetained(&self->_hostingViewController);
-  v7 = [WeakRetained _isSceneStatusBarHidden];
-  v8 = [WeakRetained _sbWindowScene];
-  v9 = [v8 statusBarManager];
+  _isSceneStatusBarHidden = [WeakRetained _isSceneStatusBarHidden];
+  _sbWindowScene = [WeakRetained _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
 
-  v10 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  v11 = v10;
-  if (v7)
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  v11 = sb_thisDeviceDisplayEdgeInfo;
+  if (_isSceneStatusBarHidden)
   {
-    v12 = [v10 sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:0.0];
+    v12 = [sb_thisDeviceDisplayEdgeInfo sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:0.0];
   }
 
   else
   {
-    v13 = [v9 statusBar];
-    [v13 currentHeight];
+    statusBar = [statusBarManager statusBar];
+    [statusBar currentHeight];
     v12 = [v11 sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:?];
   }
 
-  v14 = [WeakRetained _hostOrientation];
-  v15 = [(SBSceneOrientationFollowingWindowRootViewController *)self traitCollection];
-  [v12 sb_orientedEdgeInsetsForInterfaceOrientation:v14 traitCollection:v15];
+  _hostOrientation = [WeakRetained _hostOrientation];
+  traitCollection = [(SBSceneOrientationFollowingWindowRootViewController *)self traitCollection];
+  [v12 sb_orientedEdgeInsetsForInterfaceOrientation:_hostOrientation traitCollection:traitCollection];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
 
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v24 = v17;

@@ -13,8 +13,8 @@
   v2 = [(PSUIPlanPendingTransferDetailController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_cellularPlanChanged name:@"PSUICellularPlanChanged" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_cellularPlanChanged name:@"PSUICellularPlanChanged" object:0];
   }
 
   return v2;
@@ -23,14 +23,14 @@
 - (void)cellularPlanChanged
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUIPlanPendingTransferDetailController *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIPlanPendingTransferDetailController *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v8 = "[PSUIPlanPendingTransferDetailController cellularPlanChanged]";
     v9 = 2112;
     v10 = @"PSUICellularPlanChanged";
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "%s received notification %@", buf, 0x16u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s received notification %@", buf, 0x16u);
   }
 
   planPendingTransferMenus = self->_planPendingTransferMenus;
@@ -73,12 +73,12 @@ void __62__PSUIPlanPendingTransferDetailController_cellularPlanChanged__block_in
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(PSUIPlanPendingTransferDetailController *)self getLogger];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUIPlanPendingTransferDetailController *)self getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 136315138;
       v16 = "[PSUIPlanPendingTransferDetailController specifiers]";
-      _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", &v15, 0xCu);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s (re)loading specifiers", &v15, 0xCu);
     }
 
     v6 = objc_opt_new();
@@ -93,8 +93,8 @@ void __62__PSUIPlanPendingTransferDetailController_cellularPlanChanged__block_in
       planPendingTransferMenus = self->_planPendingTransferMenus;
     }
 
-    v11 = [(PSUIPlanPendingTransferMenusGroup *)planPendingTransferMenus specifiers];
-    [v6 addObjectsFromArray:v11];
+    specifiers = [(PSUIPlanPendingTransferMenusGroup *)planPendingTransferMenus specifiers];
+    [v6 addObjectsFromArray:specifiers];
 
     [MEMORY[0x277D4D878] logSpecifiers:v6 origin:@"[PSUIPlanPendingTransferDetailController specifiers] end"];
     v12 = *(&self->super.super.super.super.super.isa + v3);

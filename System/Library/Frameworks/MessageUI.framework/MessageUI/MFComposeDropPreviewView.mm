@@ -1,21 +1,21 @@
 @interface MFComposeDropPreviewView
-- (MFComposeDropPreviewView)initWithFrame:(CGRect)a3;
-- (void)setFinalImage:(id)a3;
-- (void)setPreviewClippingPath:(id)a3;
-- (void)setPreviewView:(id)a3;
+- (MFComposeDropPreviewView)initWithFrame:(CGRect)frame;
+- (void)setFinalImage:(id)image;
+- (void)setPreviewClippingPath:(id)path;
+- (void)setPreviewView:(id)view;
 @end
 
 @implementation MFComposeDropPreviewView
 
-- (MFComposeDropPreviewView)initWithFrame:(CGRect)a3
+- (MFComposeDropPreviewView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = MFComposeDropPreviewView;
-  v3 = [(MFComposeDropPreviewView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeDropPreviewView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] mailGeneralBackgroundColor];
-    [(MFComposeDropPreviewView *)v3 setBackgroundColor:v4];
+    mailGeneralBackgroundColor = [MEMORY[0x1E69DC888] mailGeneralBackgroundColor];
+    [(MFComposeDropPreviewView *)v3 setBackgroundColor:mailGeneralBackgroundColor];
 
     [(MFComposeDropPreviewView *)v3 setClipsToBounds:1];
     [(MFComposeDropPreviewView *)v3 setOpaque:1];
@@ -24,32 +24,32 @@
     v6 = [v5 initWithFrame:?];
     [(MFComposeDropPreviewView *)v3 setImageView:v6];
 
-    v7 = [(MFComposeDropPreviewView *)v3 imageView];
-    [v7 setContentMode:0];
+    imageView = [(MFComposeDropPreviewView *)v3 imageView];
+    [imageView setContentMode:0];
 
-    v8 = [(MFComposeDropPreviewView *)v3 imageView];
-    [v8 setAutoresizingMask:18];
+    imageView2 = [(MFComposeDropPreviewView *)v3 imageView];
+    [imageView2 setAutoresizingMask:18];
 
-    v9 = [(MFComposeDropPreviewView *)v3 imageView];
-    [(MFComposeDropPreviewView *)v3 addSubview:v9];
+    imageView3 = [(MFComposeDropPreviewView *)v3 imageView];
+    [(MFComposeDropPreviewView *)v3 addSubview:imageView3];
   }
 
   return v3;
 }
 
-- (void)setPreviewView:(id)a3
+- (void)setPreviewView:(id)view
 {
-  v5 = a3;
-  if (self->_previewView != v5)
+  viewCopy = view;
+  if (self->_previewView != viewCopy)
   {
-    objc_storeStrong(&self->_previewView, a3);
+    objc_storeStrong(&self->_previewView, view);
     v6 = MEMORY[0x1E69DD250];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __43__MFComposeDropPreviewView_setPreviewView___block_invoke;
     v7[3] = &unk_1E806C520;
-    v8 = v5;
-    v9 = self;
+    v8 = viewCopy;
+    selfCopy = self;
     [v6 performWithoutAnimation:v7];
   }
 }
@@ -65,23 +65,23 @@ uint64_t __43__MFComposeDropPreviewView_setPreviewView___block_invoke(uint64_t a
   return [v2 addSubview:v3];
 }
 
-- (void)setPreviewClippingPath:(id)a3
+- (void)setPreviewClippingPath:(id)path
 {
-  v5 = a3;
-  if (self->_previewClippingPath != v5)
+  pathCopy = path;
+  if (self->_previewClippingPath != pathCopy)
   {
-    objc_storeStrong(&self->_previewClippingPath, a3);
+    objc_storeStrong(&self->_previewClippingPath, path);
     if (self->_previewClippingPath)
     {
-      v6 = [(MFComposeDropPreviewView *)self previewClippingPath];
-      [v6 bounds];
+      previewClippingPath = [(MFComposeDropPreviewView *)self previewClippingPath];
+      [previewClippingPath bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
       v14 = v13;
 
-      v15 = [(MFComposeDropPreviewView *)self previewView];
-      [v15 convertRect:self toView:{v8, v10, v12, v14}];
+      previewView = [(MFComposeDropPreviewView *)self previewView];
+      [previewView convertRect:self toView:{v8, v10, v12, v14}];
       v17 = v16;
       v19 = v18;
       v21 = v20;
@@ -139,25 +139,25 @@ uint64_t __43__MFComposeDropPreviewView_setPreviewView___block_invoke(uint64_t a
       CGAffineTransformTranslate(&v41, &v40, (MidX - v37) / (v34 / v33), (MidY - v35) / v31);
       v42 = v41;
       v39 = v41;
-      v32 = [(MFComposeDropPreviewView *)self previewView];
+      previewView2 = [(MFComposeDropPreviewView *)self previewView];
       v41 = v39;
-      [v32 setTransform:&v41];
+      [previewView2 setTransform:&v41];
     }
   }
 }
 
-- (void)setFinalImage:(id)a3
+- (void)setFinalImage:(id)image
 {
-  v5 = a3;
-  if (self->_finalImage != v5)
+  imageCopy = image;
+  if (self->_finalImage != imageCopy)
   {
-    objc_storeStrong(&self->_finalImage, a3);
-    v6 = [(MFComposeDropPreviewView *)self imageView];
-    [v6 setImage:v5];
+    objc_storeStrong(&self->_finalImage, image);
+    imageView = [(MFComposeDropPreviewView *)self imageView];
+    [imageView setImage:imageCopy];
 
-    v7 = [(MFComposeDropPreviewView *)self previewView];
+    previewView = [(MFComposeDropPreviewView *)self previewView];
 
-    if (v7)
+    if (previewView)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;

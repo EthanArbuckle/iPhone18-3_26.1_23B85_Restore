@@ -1,112 +1,112 @@
 @interface UIPageViewController
-+ (BOOL)_isSpineLocation:(int64_t)a3 supportedForTransitionStyle:(int64_t)a4;
++ (BOOL)_isSpineLocation:(int64_t)location supportedForTransitionStyle:(int64_t)style;
 + (BOOL)doesOverridePreferredInterfaceOrientationForPresentation;
 + (id)_incomingViewControllerKeys;
 + (id)_outgoingViewControllerKeys;
-+ (id)stringForSpineLocation:(int64_t)a3;
++ (id)stringForSpineLocation:(int64_t)location;
 - (BOOL)_canHandleGestures;
-- (BOOL)_child:(id)a3 canBeginAppearanceTransition:(BOOL)a4;
-- (BOOL)_childCanEndAppearanceTransition:(id)a3;
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_child:(id)_child canBeginAppearanceTransition:(BOOL)transition;
+- (BOOL)_childCanEndAppearanceTransition:(id)transition;
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)_hasPreferredInterfaceOrientationForPresentation;
 - (BOOL)_isCurrentViewControllerStateValid;
-- (BOOL)_shouldBeginNavigationInDirection:(int64_t *)a3 inResponseToPanGestureRecognizer:(id)a4;
-- (BOOL)_shouldCompleteManualCurlWithSuggestedVelocity:(double *)a3;
+- (BOOL)_shouldBeginNavigationInDirection:(int64_t *)direction inResponseToPanGestureRecognizer:(id)recognizer;
+- (BOOL)_shouldCompleteManualCurlWithSuggestedVelocity:(double *)velocity;
 - (BOOL)_shouldFlipInRightToLeft;
 - (BOOL)_shouldGenerateAppearanceCallbacksWhenScrolling;
-- (BOOL)_shouldNavigateInDirection:(int64_t *)a3 inResponseToTapGestureRecognizer:(id)a4;
-- (BOOL)_shouldNavigateInDirection:(int64_t *)a3 inResponseToVelocity:(double *)a4 ofGestureRecognizedByPanGestureRecognizer:(id)a5;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
+- (BOOL)_shouldNavigateInDirection:(int64_t *)direction inResponseToTapGestureRecognizer:(id)recognizer;
+- (BOOL)_shouldNavigateInDirection:(int64_t *)direction inResponseToVelocity:(double *)velocity ofGestureRecognizedByPanGestureRecognizer:(id)recognizer;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (CGRect)_disabledScrollingRegion;
 - (CGRect)_tapRegions;
-- (CGSize)_contentSizeForSize:(CGSize)a3;
+- (CGSize)_contentSizeForSize:(CGSize)size;
 - (CGSize)_effectiveTapRegionBreadths;
 - (NSArray)viewControllers;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (UIEdgeInsets)_effectiveTapRegionInsets;
 - (UIPageViewController)initWithCoder:(NSCoder *)coder;
 - (UIPageViewController)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary *)options;
-- (_NSRange)_validRangeForPresentationOfViewControllersWithSpineLocation:(int64_t)a3;
+- (_NSRange)_validRangeForPresentationOfViewControllersWithSpineLocation:(int64_t)location;
 - (_UIPageViewControllerContentView)_contentView;
 - (_UIQueuingScrollView)_scrollView;
 - (id)_deepestActionResponder;
-- (id)_incomingViewControllersForGestureDrivenCurlInDirection:(int64_t)a3;
+- (id)_incomingViewControllersForGestureDrivenCurlInDirection:(int64_t)direction;
 - (id)_pageControl;
-- (id)_queuingScrollView:(id)a3 viewBefore:(BOOL)a4 view:(id)a5;
-- (id)_validatedViewControllersForPresentationOfViewControllers:(id)a3 validRange:(_NSRange)a4;
-- (id)_validatedViewControllersForTransitionWithViewControllers:(id)a3 animated:(BOOL)a4;
-- (id)_viewControllerBefore:(BOOL)a3 viewController:(id)a4;
-- (id)_viewControllersForCurlWithViewControllers:(id)a3 direction:(int64_t)a4;
-- (id)_viewControllersForPendingSpineLocation:(int64_t)a3;
+- (id)_queuingScrollView:(id)view viewBefore:(BOOL)before view:(id)a5;
+- (id)_validatedViewControllersForPresentationOfViewControllers:(id)controllers validRange:(_NSRange)range;
+- (id)_validatedViewControllersForTransitionWithViewControllers:(id)controllers animated:(BOOL)animated;
+- (id)_viewControllerBefore:(BOOL)before viewController:(id)controller;
+- (id)_viewControllersForCurlWithViewControllers:(id)controllers direction:(int64_t)direction;
+- (id)_viewControllersForPendingSpineLocation:(int64_t)location;
 - (id)dataSource;
 - (id)delegate;
-- (int64_t)_navigationEndDirectionInResponseToPanGestureRecognizer:(id)a3 suggestedVelocity:(double *)a4;
-- (int64_t)_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:(int64_t)a3;
+- (int64_t)_navigationEndDirectionInResponseToPanGestureRecognizer:(id)recognizer suggestedVelocity:(double *)velocity;
+- (int64_t)_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:(int64_t)controllers;
 - (int64_t)preferredInterfaceOrientationForPresentation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_beginDisablingInterfaceAutorotation;
-- (void)_cacheViewControllerForScroll:(id)a3;
-- (void)_child:(id)a3 beginAppearanceTransition:(BOOL)a4 animated:(BOOL)a5;
-- (void)_child:(id)a3 beginAppearanceTransitionIfPossible:(BOOL)a4 animated:(BOOL)a5;
-- (void)_child:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4;
-- (void)_child:(id)a3 endAppearanceTransitionIfPossible:(BOOL)a4;
-- (void)_child:(id)a3 willAnimateRotationToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
-- (void)_child:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5;
-- (void)_childEndAppearanceTransition:(id)a3;
+- (void)_cacheViewControllerForScroll:(id)scroll;
+- (void)_child:(id)_child beginAppearanceTransition:(BOOL)transition animated:(BOOL)animated;
+- (void)_child:(id)_child beginAppearanceTransitionIfPossible:(BOOL)possible animated:(BOOL)animated;
+- (void)_child:(id)_child didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)_child:(id)_child endAppearanceTransitionIfPossible:(BOOL)possible;
+- (void)_child:(id)_child willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)_child:(id)_child willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)_childEndAppearanceTransition:(id)transition;
 - (void)_contentViewFrameOrBoundsDidChange;
 - (void)_endDisablingInterfaceAutorotation;
-- (void)_flushViewController:(id)a3 animated:(BOOL)a4;
-- (void)_handlePagingInDirection:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handleTapGesture:(id)a3;
+- (void)_flushViewController:(id)controller animated:(BOOL)animated;
+- (void)_handlePagingInDirection:(int64_t)direction animated:(BOOL)animated completion:(id)completion;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handleTapGesture:(id)gesture;
 - (void)_invalidateEffectiveTapRegions;
 - (void)_invalidatePageCurl;
-- (void)_marginInfoForChild:(id)a3 leftMargin:(double *)a4 rightMargin:(double *)a5;
-- (void)_pageControlValueChanged:(id)a3;
-- (void)_populateIncomingViewControllersInMap:(id)a3 withViewControllers:(id)a4 forCurlInDirection:(int64_t)a5;
-- (void)_populateOutgoingViewControllersInMap:(id)a3;
-- (void)_sendChildViewWill:(BOOL)a3 appear:(BOOL)a4 animated:(BOOL)a5;
-- (void)_setDisabledScrollingRegion:(CGRect)a3;
-- (void)_setPageSpacing:(double)a3;
-- (void)_setSpineLocation:(int64_t)a3;
-- (void)_setTapRegionBreadths:(CGSize)a3;
-- (void)_setTapRegionInsets:(UIEdgeInsets)a3;
-- (void)_setViewControllers:(id)a3 withCurlOfType:(int64_t)a4 fromLocation:(CGPoint)a5 direction:(int64_t)a6 animated:(BOOL)a7 notifyDelegate:(BOOL)a8 completion:(id)a9;
-- (void)_setViewControllers:(id)a3 withScrollInDirection:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)_marginInfoForChild:(id)child leftMargin:(double *)margin rightMargin:(double *)rightMargin;
+- (void)_pageControlValueChanged:(id)changed;
+- (void)_populateIncomingViewControllersInMap:(id)map withViewControllers:(id)controllers forCurlInDirection:(int64_t)direction;
+- (void)_populateOutgoingViewControllersInMap:(id)map;
+- (void)_sendChildViewWill:(BOOL)will appear:(BOOL)appear animated:(BOOL)animated;
+- (void)_setDisabledScrollingRegion:(CGRect)region;
+- (void)_setPageSpacing:(double)spacing;
+- (void)_setSpineLocation:(int64_t)location;
+- (void)_setTapRegionBreadths:(CGSize)breadths;
+- (void)_setTapRegionInsets:(UIEdgeInsets)insets;
+- (void)_setViewControllers:(id)controllers withCurlOfType:(int64_t)type fromLocation:(CGPoint)location direction:(int64_t)direction animated:(BOOL)animated notifyDelegate:(BOOL)delegate completion:(id)completion;
+- (void)_setViewControllers:(id)controllers withScrollInDirection:(int64_t)direction animated:(BOOL)animated completion:(id)completion;
 - (void)_updatePageControlViaDataSourceIfNecessary;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadView;
-- (void)queuingScrollView:(id)a3 attemptToPageInDirection:(int64_t)a4;
-- (void)queuingScrollView:(id)a3 didBailoutOfScrollAndRevealedView:(id)a4;
-- (void)queuingScrollView:(id)a3 didCommitManualScroll:(BOOL)a4 toRevealView:(id)a5 concealView:(id)a6 direction:(int64_t)a7 animated:(BOOL)a8 canComplete:(BOOL)a9;
-- (void)queuingScrollView:(id)a3 didEndManualScroll:(BOOL)a4 toRevealView:(id)a5 direction:(int64_t)a6 animated:(BOOL)a7 didFinish:(BOOL)a8 didComplete:(BOOL)a9;
-- (void)queuingScrollView:(id)a3 didFlushView:(id)a4 animated:(BOOL)a5;
-- (void)queuingScrollView:(id)a3 willManuallyScroll:(BOOL)a4 toRevealView:(id)a5 concealView:(id)a6 animated:(BOOL)a7;
-- (void)queuingScrollViewDidFinishScrolling:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)queuingScrollView:(id)view attemptToPageInDirection:(int64_t)direction;
+- (void)queuingScrollView:(id)view didBailoutOfScrollAndRevealedView:(id)revealedView;
+- (void)queuingScrollView:(id)view didCommitManualScroll:(BOOL)scroll toRevealView:(id)revealView concealView:(id)concealView direction:(int64_t)direction animated:(BOOL)animated canComplete:(BOOL)complete;
+- (void)queuingScrollView:(id)view didEndManualScroll:(BOOL)scroll toRevealView:(id)revealView direction:(int64_t)direction animated:(BOOL)animated didFinish:(BOOL)finish didComplete:(BOOL)complete;
+- (void)queuingScrollView:(id)view didFlushView:(id)flushView animated:(BOOL)animated;
+- (void)queuingScrollView:(id)view willManuallyScroll:(BOOL)scroll toRevealView:(id)revealView concealView:(id)concealView animated:(BOOL)animated;
+- (void)queuingScrollViewDidFinishScrolling:(id)scrolling;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)setDataSource:(id)dataSource;
 - (void)setDelegate:(id)delegate;
 - (void)setDoubleSided:(BOOL)doubleSided;
 - (void)setViewControllers:(NSArray *)viewControllers direction:(UIPageViewControllerNavigationDirection)direction animated:(BOOL)animated completion:(void *)completion;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation UIPageViewController
 
-+ (BOOL)_isSpineLocation:(int64_t)a3 supportedForTransitionStyle:(int64_t)a4
++ (BOOL)_isSpineLocation:(int64_t)location supportedForTransitionStyle:(int64_t)style
 {
-  v5 = a3 == 101 || (a3 - 1) < 3;
-  if (a4)
+  v5 = location == 101 || (location - 1) < 3;
+  if (style)
   {
-    return a3 == 0;
+    return location == 0;
   }
 
   else
@@ -119,7 +119,7 @@
 {
   v3 = objc_opt_class();
 
-  return [a1 doesOverrideViewControllerMethod:sel_preferredInterfaceOrientationForPresentation inBaseClass:v3];
+  return [self doesOverrideViewControllerMethod:sel_preferredInterfaceOrientationForPresentation inBaseClass:v3];
 }
 
 - (UIPageViewController)initWithTransitionStyle:(UIPageViewControllerTransitionStyle)style navigationOrientation:(UIPageViewControllerNavigationOrientation)navigationOrientation options:(NSDictionary *)options
@@ -162,11 +162,11 @@
         if (v11)
         {
           v12 = [(NSDictionary *)v8 objectForKey:@"UIPageViewControllerOptionSpineLocationKey"];
-          v13 = [v12 integerValue];
+          integerValue = [v12 integerValue];
 
-          if ([objc_opt_class() _isSpineLocation:v13 supportedForTransitionStyle:v9->_transitionStyle])
+          if ([objc_opt_class() _isSpineLocation:integerValue supportedForTransitionStyle:v9->_transitionStyle])
           {
-            [(UIPageViewController *)v9 _setSpineLocation:v13];
+            [(UIPageViewController *)v9 _setSpineLocation:integerValue];
           }
         }
       }
@@ -176,18 +176,18 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UIPageViewController;
-  [(UIViewController *)&v11 encodeWithCoder:v4];
+  [(UIViewController *)&v11 encodeWithCoder:coderCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v4 encodeConditionalObject:v6 forKey:@"UIDelegate"];
+    [coderCopy encodeConditionalObject:v6 forKey:@"UIDelegate"];
   }
 
   v7 = objc_loadWeakRetained(&self->_dataSource);
@@ -195,28 +195,28 @@
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v4 encodeConditionalObject:v8 forKey:@"UIDataSource"];
+    [coderCopy encodeConditionalObject:v8 forKey:@"UIDataSource"];
   }
 
-  [v4 encodeInteger:self->_transitionStyle forKey:@"UITransitionStyle"];
-  [v4 encodeInteger:self->_navigationOrientation forKey:@"UINavigationOrientation"];
-  [v4 encodeInteger:self->_spineLocation forKey:@"UISpineLocation"];
-  [v4 encodeBool:self->_doubleSided forKey:@"UIDoubleSided"];
+  [coderCopy encodeInteger:self->_transitionStyle forKey:@"UITransitionStyle"];
+  [coderCopy encodeInteger:self->_navigationOrientation forKey:@"UINavigationOrientation"];
+  [coderCopy encodeInteger:self->_spineLocation forKey:@"UISpineLocation"];
+  [coderCopy encodeBool:self->_doubleSided forKey:@"UIDoubleSided"];
   viewControllers = self->_viewControllers;
-  v10 = [(UIViewController *)self childViewControllers];
-  LODWORD(viewControllers) = [(NSArray *)viewControllers isEqual:v10];
+  childViewControllers = [(UIViewController *)self childViewControllers];
+  LODWORD(viewControllers) = [(NSArray *)viewControllers isEqual:childViewControllers];
 
   if (viewControllers)
   {
-    [v4 encodeBool:1 forKey:@"UIViewControllersAreChildren"];
+    [coderCopy encodeBool:1 forKey:@"UIViewControllersAreChildren"];
   }
 
   else
   {
-    [v4 encodeObject:self->_viewControllers forKey:@"UIViewControllers"];
+    [coderCopy encodeObject:self->_viewControllers forKey:@"UIViewControllers"];
   }
 
-  [v4 encodeInteger:self->_pageSpacing forKey:@"UIPageSpacing"];
+  [coderCopy encodeInteger:self->_pageSpacing forKey:@"UIPageSpacing"];
 }
 
 - (UIPageViewController)initWithCoder:(NSCoder *)coder
@@ -312,12 +312,12 @@
     objc_setAssociatedObject(v5, &self->super.super.super.isa + 1, 0, 1);
   }
 
-  v7 = [(UIGestureRecognizer *)self->_panGestureRecognizer view];
-  [v7 removeGestureRecognizer:self->_panGestureRecognizer];
+  view = [(UIGestureRecognizer *)self->_panGestureRecognizer view];
+  [view removeGestureRecognizer:self->_panGestureRecognizer];
 
   [(UIGestureRecognizer *)self->_panGestureRecognizer removeTarget:self action:sel__handlePanGesture_];
-  v8 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-  [v8 removeGestureRecognizer:self->_tapGestureRecognizer];
+  view2 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_tapGestureRecognizer];
 
   [(UIGestureRecognizer *)self->_tapGestureRecognizer removeTarget:self action:sel__handleTapGesture_];
   tapRegions = self->_tapRegions;
@@ -327,13 +327,13 @@
     self->_tapRegions = 0;
   }
 
-  v10 = [(UIPageViewController *)self _contentView];
-  v11 = v10;
-  if (v10)
+  _contentView = [(UIPageViewController *)self _contentView];
+  v11 = _contentView;
+  if (_contentView)
   {
-    [v10 invalidatePageViewController];
-    v12 = [v11 scrollView];
-    [v12 setDelegate:0];
+    [_contentView invalidatePageViewController];
+    scrollView = [v11 scrollView];
+    [scrollView setDelegate:0];
   }
 
   v13.receiver = self;
@@ -362,16 +362,16 @@ LABEL_7:
   v6 = v4;
   if ((v5 & 1) == 0)
   {
-    v7 = [v4 allowsWeakReference];
+    allowsWeakReference = [v4 allowsWeakReference];
     v6 = v4;
-    if ((v7 & 1) == 0)
+    if ((allowsWeakReference & 1) == 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __36__UIPageViewController_setDelegate___block_invoke;
       block[3] = &unk_1E70F35B8;
       v34 = v4;
-      v35 = self;
+      selfCopy = self;
       if (setDelegate__once_1 != -1)
       {
         dispatch_once(&setDelegate__once_1, block);
@@ -396,13 +396,13 @@ LABEL_8:
 
     objc_storeWeak(&self->_delegate, v8);
     v11 = v8;
-    v12 = [(UIPageViewController *)self delegate];
-    v13 = v12;
-    if (v11 == v12)
+    delegate = [(UIPageViewController *)self delegate];
+    v13 = delegate;
+    if (v11 == delegate)
     {
-      v14 = [(UIPageViewController *)self allowsWeakReference];
+      allowsWeakReference2 = [(UIPageViewController *)self allowsWeakReference];
 
-      if (v11 && v14)
+      if (v11 && allowsWeakReference2)
       {
         objc_initWeak(&location, self);
         v15 = [_UIWeakHelper alloc];
@@ -460,10 +460,10 @@ LABEL_8:
     *&self->_delegateFlags = *&self->_delegateFlags & 0xFFF7 | v20;
     if (v19)
     {
-      v21 = [(UIPageViewController *)self _contentView];
-      v22 = [v21 scrollView];
-      v23 = [v21 pageViewController];
-      [v22 setDelegate:v23];
+      _contentView = [(UIPageViewController *)self _contentView];
+      scrollView = [_contentView scrollView];
+      pageViewController = [_contentView pageViewController];
+      [scrollView setDelegate:pageViewController];
     }
 
     if (self->_transitionStyle)
@@ -561,16 +561,16 @@ LABEL_7:
   v6 = v4;
   if ((v5 & 1) == 0)
   {
-    v7 = [v4 allowsWeakReference];
+    allowsWeakReference = [v4 allowsWeakReference];
     v6 = v4;
-    if ((v7 & 1) == 0)
+    if ((allowsWeakReference & 1) == 0)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __38__UIPageViewController_setDataSource___block_invoke;
       block[3] = &unk_1E70F35B8;
       v34 = v4;
-      v35 = self;
+      selfCopy = self;
       if (setDataSource__once_0 != -1)
       {
         dispatch_once(&setDataSource__once_0, block);
@@ -595,13 +595,13 @@ LABEL_8:
 
     objc_storeWeak(&self->_dataSource, v8);
     v11 = v8;
-    v12 = [(UIPageViewController *)self dataSource];
-    v13 = v12;
-    if (v11 == v12)
+    dataSource = [(UIPageViewController *)self dataSource];
+    v13 = dataSource;
+    if (v11 == dataSource)
     {
-      v14 = [(UIPageViewController *)self allowsWeakReference];
+      allowsWeakReference2 = [(UIPageViewController *)self allowsWeakReference];
 
-      if (v11 && v14)
+      if (v11 && allowsWeakReference2)
       {
         objc_initWeak(&location, self);
         v15 = [_UIWeakHelper alloc];
@@ -668,21 +668,21 @@ LABEL_8:
     *&self->_delegateFlags = *&self->_delegateFlags & 0xFBFF | v20;
     if ([(UIViewController *)self isViewLoaded:v27])
     {
-      v21 = [(UIPageViewController *)self _canHandleGestures];
-      v22 = [(UIPageViewController *)self _scrollView];
-      v23 = [v22 isScrollEnabled];
+      _canHandleGestures = [(UIPageViewController *)self _canHandleGestures];
+      _scrollView = [(UIPageViewController *)self _scrollView];
+      isScrollEnabled = [_scrollView isScrollEnabled];
 
-      if (v21 != v23)
+      if (_canHandleGestures != isScrollEnabled)
       {
-        v24 = [(UIPageViewController *)self _scrollView];
-        [v24 setScrollEnabled:{-[UIPageViewController _canHandleGestures](self, "_canHandleGestures")}];
+        _scrollView2 = [(UIPageViewController *)self _scrollView];
+        [_scrollView2 setScrollEnabled:{-[UIPageViewController _canHandleGestures](self, "_canHandleGestures")}];
       }
 
-      v25 = [(UIPageViewController *)self _scrollView];
-      [v25 _invalidateOffscreenViews];
+      _scrollView3 = [(UIPageViewController *)self _scrollView];
+      [_scrollView3 _invalidateOffscreenViews];
 
-      v26 = [(UIPageViewController *)self _contentView];
-      [v26 setNeedsLayout];
+      _contentView = [(UIPageViewController *)self _contentView];
+      [_contentView setNeedsLayout];
     }
   }
 }
@@ -719,7 +719,7 @@ void __38__UIPageViewController_setDataSource___block_invoke_107(uint64_t a1)
   }
 }
 
-- (void)_setSpineLocation:(int64_t)a3
+- (void)_setSpineLocation:(int64_t)location
 {
   if (self->_transitionStyle)
   {
@@ -730,10 +730,10 @@ LABEL_3:
     return;
   }
 
-  if (self->_spineLocation != a3)
+  if (self->_spineLocation != location)
   {
-    self->_spineLocation = a3;
-    if (a3 == 2)
+    self->_spineLocation = location;
+    if (location == 2)
     {
       v3 = 1;
       goto LABEL_3;
@@ -759,8 +759,8 @@ LABEL_3:
   if (transitionStyle == 1)
   {
     v6 = MEMORY[0x1E695DEC8];
-    v7 = [(NSArray *)self->_viewControllers _ui_onlyObject];
-    v8 = [v6 arrayWithObjects:{v7, 0}];
+    _ui_onlyObject = [(NSArray *)self->_viewControllers _ui_onlyObject];
+    v8 = [v6 arrayWithObjects:{_ui_onlyObject, 0}];
   }
 
   else if (transitionStyle)
@@ -821,12 +821,12 @@ LABEL_3:
       *&self->_effectiveTapRegionInsets.bottom = v8;
     }
 
-    v9 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-    [v9 bounds];
+    view = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    [view bounds];
     Height = CGRectGetHeight(v16);
 
-    v10 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-    [v10 bounds];
+    view2 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    [view2 bounds];
     Width = CGRectGetWidth(v17);
 
     v12 = fmax(p_effectiveTapRegionInsets[1].f64[0], 0.0);
@@ -864,15 +864,15 @@ LABEL_3:
   return result;
 }
 
-- (void)_setTapRegionInsets:(UIEdgeInsets)a3
+- (void)_setTapRegionInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_tapRegionInsets.top, v3), vceqq_f64(*&self->_tapRegionInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_tapRegionInsets = a3;
+    self->_tapRegionInsets = insets;
     [(UIPageViewController *)self _invalidateEffectiveTapRegions];
   }
 }
@@ -887,7 +887,7 @@ LABEL_3:
     if (self->_tapRegionBreadths.width == 0.0 && self->_tapRegionBreadths.height == 0.0)
     {
       v6 = +[UIDevice currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      userInterfaceIdiom = [v6 userInterfaceIdiom];
 
       v8 = 80.0;
       if (self->_spineLocation == 2)
@@ -895,7 +895,7 @@ LABEL_3:
         v8 = 60.0;
       }
 
-      if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v9 = dbl_18A679320[self->_spineLocation == 2];
       }
@@ -915,8 +915,8 @@ LABEL_3:
       v9 = p_effectiveTapRegionBreadths->width;
     }
 
-    v10 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-    [v10 bounds];
+    view = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    [view bounds];
     v11 = CGRectGetWidth(v17) * 0.5;
 
     if (v9 <= v11)
@@ -931,8 +931,8 @@ LABEL_3:
 
     p_effectiveTapRegionBreadths->width = v12;
     v13 = p_effectiveTapRegionBreadths->height;
-    v14 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-    [v14 bounds];
+    view2 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    [view2 bounds];
     v15 = CGRectGetHeight(v18) * 0.5;
 
     if (v13 <= v15)
@@ -954,22 +954,22 @@ LABEL_3:
   return result;
 }
 
-- (void)_setTapRegionBreadths:(CGSize)a3
+- (void)_setTapRegionBreadths:(CGSize)breadths
 {
-  if (self->_tapRegionBreadths.width != a3.width || self->_tapRegionBreadths.height != a3.height)
+  if (self->_tapRegionBreadths.width != breadths.width || self->_tapRegionBreadths.height != breadths.height)
   {
-    self->_tapRegionBreadths = a3;
+    self->_tapRegionBreadths = breadths;
     [(UIPageViewController *)self _invalidateEffectiveTapRegions];
   }
 }
 
 - (CGRect)_disabledScrollingRegion
 {
-  v3 = [(UIPageViewController *)self _scrollView];
-  if (v3)
+  _scrollView = [(UIPageViewController *)self _scrollView];
+  if (_scrollView)
   {
-    v4 = [(UIPageViewController *)self _scrollView];
-    [v4 disabledScrollingRegion];
+    _scrollView2 = [(UIPageViewController *)self _scrollView];
+    [_scrollView2 disabledScrollingRegion];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -995,16 +995,16 @@ LABEL_3:
   return result;
 }
 
-- (void)_setDisabledScrollingRegion:(CGRect)a3
+- (void)_setDisabledScrollingRegion:(CGRect)region
 {
   if (self->_transitionStyle == 1)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
-    v8 = [(UIPageViewController *)self _scrollView];
-    [v8 setDisabledScrollingRegion:{x, y, width, height}];
+    height = region.size.height;
+    width = region.size.width;
+    y = region.origin.y;
+    x = region.origin.x;
+    _scrollView = [(UIPageViewController *)self _scrollView];
+    [_scrollView setDisabledScrollingRegion:{x, y, width, height}];
   }
 }
 
@@ -1012,39 +1012,39 @@ LABEL_3:
 {
   if ([(UIViewController *)self isViewLoaded])
   {
-    v3 = [(UIViewController *)self view];
+    view = [(UIViewController *)self view];
   }
 
   else
   {
-    v3 = 0;
+    view = 0;
   }
 
-  return v3;
+  return view;
 }
 
 - (_UIQueuingScrollView)_scrollView
 {
-  v2 = [(UIPageViewController *)self _contentView];
-  v3 = [v2 scrollView];
+  _contentView = [(UIPageViewController *)self _contentView];
+  scrollView = [_contentView scrollView];
 
-  return v3;
+  return scrollView;
 }
 
 - (id)_pageControl
 {
-  v2 = [(UIPageViewController *)self _contentView];
-  v3 = [v2 pageControl];
+  _contentView = [(UIPageViewController *)self _contentView];
+  pageControl = [_contentView pageControl];
 
-  return v3;
+  return pageControl;
 }
 
-- (CGSize)_contentSizeForSize:(CGSize)a3
+- (CGSize)_contentSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(UIPageViewController *)self _navigationOrientation];
-  if (v5)
+  height = size.height;
+  width = size.width;
+  _navigationOrientation = [(UIPageViewController *)self _navigationOrientation];
+  if (_navigationOrientation)
   {
     v6 = width;
   }
@@ -1054,7 +1054,7 @@ LABEL_3:
     v6 = width * 3.0;
   }
 
-  if (v5)
+  if (_navigationOrientation)
   {
     v7 = height * 3.0;
   }
@@ -1069,17 +1069,17 @@ LABEL_3:
   return result;
 }
 
-- (void)_setPageSpacing:(double)a3
+- (void)_setPageSpacing:(double)spacing
 {
   if (self->_transitionStyle == 1)
   {
-    v4 = fmax(ceil(a3 * 0.5), 0.0);
+    v4 = fmax(ceil(spacing * 0.5), 0.0);
     v5 = v4 + v4;
     if (self->_pageSpacing != v5)
     {
       self->_pageSpacing = v5;
-      v6 = [(UIPageViewController *)self _contentView];
-      [v6 setNeedsLayout];
+      _contentView = [(UIPageViewController *)self _contentView];
+      [_contentView setNeedsLayout];
     }
   }
 }
@@ -1094,19 +1094,19 @@ LABEL_3:
   transitionStyle = self->_transitionStyle;
   if (transitionStyle == 1)
   {
-    v7 = [(UIPageViewController *)self _canHandleGestures];
-    v8 = [(UIPageViewController *)self _scrollView];
-    v9 = [v8 isScrollEnabled];
+    _canHandleGestures = [(UIPageViewController *)self _canHandleGestures];
+    _scrollView = [(UIPageViewController *)self _scrollView];
+    isScrollEnabled = [_scrollView isScrollEnabled];
 
-    if (v7 != v9)
+    if (_canHandleGestures != isScrollEnabled)
     {
-      v10 = [(UIPageViewController *)self _scrollView];
-      [v10 setScrollEnabled:{-[UIPageViewController _canHandleGestures](self, "_canHandleGestures")}];
+      _scrollView2 = [(UIPageViewController *)self _scrollView];
+      [_scrollView2 setScrollEnabled:{-[UIPageViewController _canHandleGestures](self, "_canHandleGestures")}];
     }
 
-    v11 = [(UIPageViewController *)self _scrollView];
-    v12 = [v11 visibleView];
-    if (v12)
+    _scrollView3 = [(UIPageViewController *)self _scrollView];
+    visibleView = [_scrollView3 visibleView];
+    if (visibleView)
     {
     }
 
@@ -1123,16 +1123,16 @@ LABEL_3:
 
   else if (!transitionStyle)
   {
-    v5 = [(UIGestureRecognizer *)self->_panGestureRecognizer view];
+    view = [(UIGestureRecognizer *)self->_panGestureRecognizer view];
 
-    if (!v5)
+    if (!view)
     {
       [(UIView *)v14 addGestureRecognizer:self->_panGestureRecognizer];
     }
 
-    v6 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    view2 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
 
-    if (!v6)
+    if (!view2)
     {
       [(UIView *)v14 addGestureRecognizer:self->_tapGestureRecognizer];
     }
@@ -1149,13 +1149,13 @@ LABEL_3:
   v4.receiver = self;
   v4.super_class = UIPageViewController;
   [(UIViewController *)&v4 viewWillUnload];
-  v3 = [(UIPageViewController *)self _contentView];
-  [v3 invalidatePageViewController];
+  _contentView = [(UIPageViewController *)self _contentView];
+  [_contentView invalidatePageViewController];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  *a4 = 1;
+  *absolute = 1;
   [(UIViewController *)self _contentOverlayInsets];
   result.right = v7;
   result.bottom = v6;
@@ -1164,13 +1164,13 @@ LABEL_3:
   return result;
 }
 
-- (void)_marginInfoForChild:(id)a3 leftMargin:(double *)a4 rightMargin:(double *)a5
+- (void)_marginInfoForChild:(id)child leftMargin:(double *)margin rightMargin:(double *)rightMargin
 {
-  v8 = [(UIViewController *)self _existingView];
-  v9 = [v8 _shouldReverseLayoutDirection];
+  _existingView = [(UIViewController *)self _existingView];
+  _shouldReverseLayoutDirection = [_existingView _shouldReverseLayoutDirection];
 
   [(UIViewController *)self systemMinimumLayoutMargins];
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v12 = v11;
   }
@@ -1180,8 +1180,8 @@ LABEL_3:
     v12 = v10;
   }
 
-  *a4 = v12;
-  if (v9)
+  *margin = v12;
+  if (_shouldReverseLayoutDirection)
   {
     v13 = v10;
   }
@@ -1191,40 +1191,40 @@ LABEL_3:
     v13 = v11;
   }
 
-  *a5 = v13;
+  *rightMargin = v13;
 }
 
-- (void)_child:(id)a3 beginAppearanceTransition:(BOOL)a4 animated:(BOOL)a5
+- (void)_child:(id)_child beginAppearanceTransition:(BOOL)transition animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  transitionCopy = transition;
+  _childCopy = _child;
   if (![(UIViewController *)self _forwardAppearanceMethods])
   {
-    v8 = [v9 view];
-    [v9 beginAppearanceTransition:v6 animated:v5];
+    view = [_childCopy view];
+    [_childCopy beginAppearanceTransition:transitionCopy animated:animatedCopy];
   }
 }
 
-- (BOOL)_child:(id)a3 canBeginAppearanceTransition:(BOOL)a4
+- (BOOL)_child:(id)_child canBeginAppearanceTransition:(BOOL)transition
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 && ![(UIViewController *)self _forwardAppearanceMethods])
+  transitionCopy = transition;
+  _childCopy = _child;
+  if (_childCopy && ![(UIViewController *)self _forwardAppearanceMethods])
   {
-    v9 = [v6 _appearState];
-    if (v4)
+    _appearState = [_childCopy _appearState];
+    if (transitionCopy)
     {
-      if (v9 != 3)
+      if (_appearState != 3)
       {
         v10 = 0;
 LABEL_11:
-        v7 = [v6 _appearState] == v10;
+        v7 = [_childCopy _appearState] == v10;
         goto LABEL_4;
       }
     }
 
-    else if (v9 != 1)
+    else if (_appearState != 1)
     {
       v10 = 2;
       goto LABEL_11;
@@ -1240,48 +1240,48 @@ LABEL_4:
   return v7;
 }
 
-- (void)_child:(id)a3 beginAppearanceTransitionIfPossible:(BOOL)a4 animated:(BOOL)a5
+- (void)_child:(id)_child beginAppearanceTransitionIfPossible:(BOOL)possible animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  possibleCopy = possible;
+  _childCopy = _child;
   if ([UIPageViewController _child:"_child:canBeginAppearanceTransition:" canBeginAppearanceTransition:?])
   {
-    [(UIPageViewController *)self _child:v8 beginAppearanceTransition:v6 animated:v5];
+    [(UIPageViewController *)self _child:_childCopy beginAppearanceTransition:possibleCopy animated:animatedCopy];
   }
 }
 
-- (void)_childEndAppearanceTransition:(id)a3
+- (void)_childEndAppearanceTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   if (![(UIViewController *)self _forwardAppearanceMethods])
   {
-    [v4 endAppearanceTransition];
+    [transitionCopy endAppearanceTransition];
   }
 }
 
-- (BOOL)_childCanEndAppearanceTransition:(id)a3
+- (BOOL)_childCanEndAppearanceTransition:(id)transition
 {
-  v4 = a3;
-  v5 = v4 && !-[UIViewController _forwardAppearanceMethods](self, "_forwardAppearanceMethods") && ([v4 _appearState] == 3 || objc_msgSend(v4, "_appearState") == 1);
+  transitionCopy = transition;
+  v5 = transitionCopy && !-[UIViewController _forwardAppearanceMethods](self, "_forwardAppearanceMethods") && ([transitionCopy _appearState] == 3 || objc_msgSend(transitionCopy, "_appearState") == 1);
 
   return v5;
 }
 
-- (void)_child:(id)a3 endAppearanceTransitionIfPossible:(BOOL)a4
+- (void)_child:(id)_child endAppearanceTransitionIfPossible:(BOOL)possible
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  v10 = v6;
-  if (v6)
+  possibleCopy = possible;
+  _childCopy = _child;
+  v7 = _childCopy;
+  v10 = _childCopy;
+  if (_childCopy)
   {
-    v8 = [v6 _appearState];
-    v9 = v4 ? v8 == 3 : v8 == 1;
+    _appearState = [_childCopy _appearState];
+    v9 = possibleCopy ? _appearState == 3 : _appearState == 1;
     v7 = v10;
     if (v9)
     {
-      [(UIPageViewController *)self _child:v10 beginAppearanceTransitionIfPossible:v4 animated:0];
+      [(UIPageViewController *)self _child:v10 beginAppearanceTransitionIfPossible:possibleCopy animated:0];
       v7 = v10;
     }
   }
@@ -1292,38 +1292,38 @@ LABEL_4:
   }
 }
 
-- (void)_child:(id)a3 willRotateToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)_child:(id)_child willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v8 = a3;
+  _childCopy = _child;
   if (![(UIViewController *)self _forwardRotationMethods])
   {
-    [v8 willRotateToInterfaceOrientation:a4 duration:a5];
+    [_childCopy willRotateToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (void)_child:(id)a3 willAnimateRotationToInterfaceOrientation:(int64_t)a4 duration:(double)a5
+- (void)_child:(id)_child willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
-  v8 = a3;
+  _childCopy = _child;
   if (![(UIViewController *)self _forwardRotationMethods])
   {
-    [v8 willAnimateRotationToInterfaceOrientation:a4 duration:a5];
+    [_childCopy willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (void)_child:(id)a3 didRotateFromInterfaceOrientation:(int64_t)a4
+- (void)_child:(id)_child didRotateFromInterfaceOrientation:(int64_t)orientation
 {
-  v6 = a3;
+  _childCopy = _child;
   if (![(UIViewController *)self _forwardRotationMethods])
   {
-    [v6 didRotateFromInterfaceOrientation:a4];
+    [_childCopy didRotateFromInterfaceOrientation:orientation];
   }
 }
 
-- (void)_sendChildViewWill:(BOOL)a3 appear:(BOOL)a4 animated:(BOOL)a5
+- (void)_sendChildViewWill:(BOOL)will appear:(BOOL)appear animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  appearCopy = appear;
+  willCopy = will;
   v20 = *MEMORY[0x1E69E9840];
   if ([(UIViewController *)self isViewLoaded]&& [(NSArray *)self->_viewControllers count])
   {
@@ -1349,14 +1349,14 @@ LABEL_4:
           v14 = *(*(&v15 + 1) + 8 * i);
           if ([v14 isViewLoaded])
           {
-            if (v7)
+            if (willCopy)
             {
-              [(UIPageViewController *)self _child:v14 beginAppearanceTransitionIfPossible:v6 animated:v5];
+              [(UIPageViewController *)self _child:v14 beginAppearanceTransitionIfPossible:appearCopy animated:animatedCopy];
             }
 
             else
             {
-              [(UIPageViewController *)self _child:v14 endAppearanceTransitionIfPossible:v6];
+              [(UIPageViewController *)self _child:v14 endAppearanceTransitionIfPossible:appearCopy];
             }
           }
         }
@@ -1369,17 +1369,17 @@ LABEL_4:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = UIPageViewController;
   [(UIViewController *)&v13 viewWillAppear:?];
   if (!self->_transitionStyle)
   {
-    v5 = [(UIViewController *)self _window];
+    _window = [(UIViewController *)self _window];
 
-    if (!v5)
+    if (!_window)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -1402,12 +1402,12 @@ LABEL_4:
       }
     }
 
-    v6 = [(UIViewController *)self _window];
-    if (v6)
+    _window2 = [(UIViewController *)self _window];
+    if (_window2)
     {
       v7 = UIApp;
-      v8 = [(UIViewController *)self _window];
-      v9 = -[UIPageViewController _requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:](self, "_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:", [v7 _sceneInterfaceOrientationFromWindow:v8]);
+      _window3 = [(UIViewController *)self _window];
+      v9 = -[UIPageViewController _requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:](self, "_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:", [v7 _sceneInterfaceOrientationFromWindow:_window3]);
     }
 
     else
@@ -1425,37 +1425,37 @@ LABEL_4:
     [(UIPageViewController *)self _setViewControllersStashedForRotation:0];
   }
 
-  [(UIPageViewController *)self _sendChildViewWill:1 appear:1 animated:v3];
+  [(UIPageViewController *)self _sendChildViewWill:1 appear:1 animated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = UIPageViewController;
   [(UIViewController *)&v5 viewDidAppear:?];
-  [(UIPageViewController *)self _sendChildViewWill:0 appear:1 animated:v3];
+  [(UIPageViewController *)self _sendChildViewWill:0 appear:1 animated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UIPageViewController;
   [(UIViewController *)&v5 viewWillDisappear:?];
-  [(UIPageViewController *)self _sendChildViewWill:1 appear:0 animated:v3];
+  [(UIPageViewController *)self _sendChildViewWill:1 appear:0 animated:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = UIPageViewController;
   [(UIViewController *)&v5 viewDidDisappear:?];
-  [(UIPageViewController *)self _sendChildViewWill:0 appear:0 animated:v3];
+  [(UIPageViewController *)self _sendChildViewWill:0 appear:0 animated:disappearCopy];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v7 = 0;
   v8 = &v7;
@@ -1467,7 +1467,7 @@ LABEL_4:
   v6[2] = __63__UIPageViewController_shouldAutorotateToInterfaceOrientation___block_invoke;
   v6[3] = &unk_1E70F7AA8;
   v6[4] = &v7;
-  v6[5] = a3;
+  v6[5] = orientation;
   [(NSArray *)viewControllers enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -1539,22 +1539,22 @@ uint64_t __63__UIPageViewController_shouldAutorotateToInterfaceOrientation___blo
   }
 }
 
-+ (id)stringForSpineLocation:(int64_t)a3
++ (id)stringForSpineLocation:(int64_t)location
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Spine Location (%ld)", a3];
-  if (a3 <= 3)
+  location = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Spine Location (%ld)", location];
+  if (location <= 3)
   {
-    v5 = off_1E7103078[a3];
+    v5 = off_1E7103078[location];
 
-    v4 = v5;
+    location = v5;
   }
 
-  return v4;
+  return location;
 }
 
-- (_NSRange)_validRangeForPresentationOfViewControllersWithSpineLocation:(int64_t)a3
+- (_NSRange)_validRangeForPresentationOfViewControllersWithSpineLocation:(int64_t)location
 {
-  if (a3 == 2)
+  if (location == 2)
   {
     v3 = 2;
   }
@@ -1570,14 +1570,14 @@ uint64_t __63__UIPageViewController_shouldAutorotateToInterfaceOrientation___blo
   return result;
 }
 
-- (id)_validatedViewControllersForPresentationOfViewControllers:(id)a3 validRange:(_NSRange)a4
+- (id)_validatedViewControllersForPresentationOfViewControllers:(id)controllers validRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v6 = a3;
-  if ([v6 count] == length)
+  length = range.length;
+  location = range.location;
+  controllersCopy = controllers;
+  if ([controllersCopy count] == length)
   {
-    v7 = [v6 subarrayWithRange:{location, length}];
+    v7 = [controllersCopy subarrayWithRange:{location, length}];
   }
 
   else
@@ -1588,7 +1588,7 @@ uint64_t __63__UIPageViewController_shouldAutorotateToInterfaceOrientation___blo
   return v7;
 }
 
-- (id)_viewControllersForPendingSpineLocation:(int64_t)a3
+- (id)_viewControllersForPendingSpineLocation:(int64_t)location
 {
   v5 = [(UIPageViewController *)self _validRangeForPresentationOfViewControllersWithSpineLocation:?];
   v7 = v6;
@@ -1616,7 +1616,7 @@ LABEL_7:
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
     v13 = [(NSArray *)v10 count];
-    v14 = [objc_opt_class() stringForSpineLocation:a3];
+    v14 = [objc_opt_class() stringForSpineLocation:location];
     [v11 raise:v12 format:{@"The number of provided view controllers (%ld) doesn't match the number required (%ld) for the requested spine location (%@)", v13, v7, v14}];
 
     v15 = 0;
@@ -1646,14 +1646,14 @@ LABEL_10:
   self->_pageCurl = 0;
 }
 
-- (int64_t)_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:(int64_t)a3
+- (int64_t)_requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:(int64_t)controllers
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained && (*&self->_delegateFlags & 0x10) != 0)
   {
     self->_stashingViewControllersForRotation = 1;
-    v7 = [WeakRetained pageViewController:self spineLocationForInterfaceOrientation:a3];
+    v7 = [WeakRetained pageViewController:self spineLocationForInterfaceOrientation:controllers];
     if (([objc_opt_class() _isSpineLocation:v7 supportedForTransitionStyle:self->_transitionStyle] & 1) == 0)
     {
       v8 = MEMORY[0x1E695DF30];
@@ -1675,7 +1675,7 @@ LABEL_10:
   return v7;
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v85 = *MEMORY[0x1E69E9840];
   self->_interfaceRotating = 1;
@@ -1699,8 +1699,8 @@ LABEL_10:
   }
 
   v14 = [UISnapshotView alloc];
-  v15 = [(UIViewController *)self view];
-  [v15 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v16 = [(UISnapshotView *)v14 initWithFrame:?];
 
   rotationSnapshotViews = self->_rotationSnapshotViews;
@@ -1714,10 +1714,10 @@ LABEL_10:
   }
 
   [(NSMutableArray *)rotationSnapshotViews addObject:v16];
-  v20 = [(UIViewController *)self view];
-  [(UISnapshotView *)v16 captureSnapshotOfView:v20 withSnapshotType:1];
+  view2 = [(UIViewController *)self view];
+  [(UISnapshotView *)v16 captureSnapshotOfView:view2 withSnapshotType:1];
 
-  v21 = [(UIPageViewController *)self _requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:a3];
+  v21 = [(UIPageViewController *)self _requestSpineLocationForInterfaceOrientationAndUpdateStashedViewControllers:orientation];
   v22 = self->_viewControllersStashedForRotation;
   spineLocation = self->_spineLocation;
   if (spineLocation == 2 || v21 != 2)
@@ -1746,27 +1746,27 @@ LABEL_23:
   [(UIPageViewController *)self _setSpineLocation:v21];
   v24 = self->_viewControllers;
   v25 = [UISnapshotView alloc];
-  v26 = [(UIViewController *)self view];
-  [v26 bounds];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
   v27 = [(UISnapshotView *)v25 initWithFrame:?];
 
   [(NSMutableArray *)self->_rotationSnapshotViews addObject:v27];
   if (self->_spineLocationPriorToInterfaceRotation == 2 && self->_spineLocation != 2)
   {
-    v28 = [(NSArray *)v22 _ui_onlyObject];
-    v29 = [(NSArray *)v24 containsObject:v28];
+    _ui_onlyObject = [(NSArray *)v22 _ui_onlyObject];
+    v29 = [(NSArray *)v24 containsObject:_ui_onlyObject];
 
     if (v29)
     {
-      v30 = [(NSArray *)v22 _ui_onlyObject];
-      v31 = [v30 view];
-      [v31 frame];
+      _ui_onlyObject2 = [(NSArray *)v22 _ui_onlyObject];
+      view4 = [_ui_onlyObject2 view];
+      [view4 frame];
       [(UISnapshotView *)v27 setFrame:?];
     }
   }
 
-  v32 = [(UIViewController *)self view];
-  [v32 bounds];
+  view5 = [(UIViewController *)self view];
+  [view5 bounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -1777,8 +1777,8 @@ LABEL_23:
   {
     if (v41 != 2)
     {
-      v42 = [(NSArray *)v22 _ui_onlyObject];
-      v43 = [(NSArray *)v24 indexOfObject:v42];
+      _ui_onlyObject3 = [(NSArray *)v22 _ui_onlyObject];
+      v43 = [(NSArray *)v24 indexOfObject:_ui_onlyObject3];
 
       v86.origin.x = v34;
       v86.origin.y = v36;
@@ -1845,8 +1845,8 @@ LABEL_54:
 
   else if (v41 == 2)
   {
-    v53 = [(NSArray *)v24 _ui_onlyObject];
-    v54 = [(NSArray *)v22 indexOfObject:v53];
+    _ui_onlyObject4 = [(NSArray *)v24 _ui_onlyObject];
+    v54 = [(NSArray *)v22 indexOfObject:_ui_onlyObject4];
 
     v92.origin.x = v34;
     v92.origin.y = v36;
@@ -1913,8 +1913,8 @@ LABEL_54:
 
     v40 = v61 * v62;
     v63 = [(NSArray *)v22 objectAtIndex:v54 == 0];
-    v64 = [v63 view];
-    [v64 setAlpha:0.0];
+    view6 = [v63 view];
+    [view6 setAlpha:0.0];
 
     v36 = v75;
     v38 = v60;
@@ -1965,8 +1965,8 @@ LABEL_54:
     }
   }
 
-  v72 = [(UIViewController *)self view];
-  v73 = [(_UIPageCurl *)v65 initWithSpineLocation:v67 andContentRect:v72 inContentView:v34, v36, v38, v40];
+  view7 = [(UIViewController *)self view];
+  v73 = [(_UIPageCurl *)v65 initWithSpineLocation:v67 andContentRect:view7 inContentView:v34, v36, v38, v40];
   pageCurl = self->_pageCurl;
   self->_pageCurl = v73;
 
@@ -1993,7 +1993,7 @@ LABEL_3:
           objc_enumerationMutation(v7);
         }
 
-        [(UIPageViewController *)self _child:*(*(&v80 + 1) + 8 * i) willRotateToInterfaceOrientation:a3 duration:a4];
+        [(UIPageViewController *)self _child:*(*(&v80 + 1) + 8 * i) willRotateToInterfaceOrientation:orientation duration:duration];
       }
 
       v9 = [(NSArray *)v7 countByEnumeratingWithState:&v80 objects:v84 count:16];
@@ -2005,7 +2005,7 @@ LABEL_3:
   [(UIPageViewController *)self _invalidatePageCurl];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v103 = *MEMORY[0x1E69E9840];
   if (self->_transitionStyle)
@@ -2015,8 +2015,8 @@ LABEL_3:
 
   if (![(NSArray *)self->_viewControllersStashedForRotation count])
   {
-    v83 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v83 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1071 description:@"No view controllers"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1071 description:@"No view controllers"];
   }
 
   v8 = self->_viewControllersStashedForRotation;
@@ -2035,9 +2035,9 @@ LABEL_3:
         v12 = [(NSArray *)v8 objectAtIndex:v11];
         if (![(NSArray *)v85 containsObject:v12])
         {
-          v13 = [(NSArray *)v85 _ui_onlyObject];
-          v14 = [v13 view];
-          [v14 frame];
+          _ui_onlyObject = [(NSArray *)v85 _ui_onlyObject];
+          view = [_ui_onlyObject view];
+          [view frame];
           v16 = v15;
           v18 = v17;
           v20 = v19;
@@ -2073,11 +2073,11 @@ LABEL_3:
             v16 = v16 + Width;
           }
 
-          v25 = [v12 view];
-          [v25 setFrame:{v16, v18, v20, v22}];
+          view2 = [v12 view];
+          [view2 setFrame:{v16, v18, v20, v22}];
 
-          v26 = [v12 view];
-          [v26 setAlpha:0.0];
+          view3 = [v12 view];
+          [view3 setAlpha:0.0];
         }
 
         ++v11;
@@ -2114,8 +2114,8 @@ LABEL_3:
             v32 = *(*(&v96 + 1) + 8 * i);
             if (![(NSArray *)v8 containsObject:v32])
             {
-              v33 = [v32 view];
-              [v33 setAlpha:1.0];
+              view4 = [v32 view];
+              [view4 setAlpha:1.0];
             }
           }
 
@@ -2129,21 +2129,21 @@ LABEL_3:
 
   if ([(NSMutableArray *)self->_rotationSnapshotViews count])
   {
-    v34 = [(UIViewController *)self view];
-    [v34 layoutBelowIfNeeded];
+    view5 = [(UIViewController *)self view];
+    [view5 layoutBelowIfNeeded];
 
-    v35 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
-    v36 = [(UIViewController *)self view];
-    [v35 captureSnapshotOfView:v36 withSnapshotType:0];
+    lastObject = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+    view6 = [(UIViewController *)self view];
+    [lastObject captureSnapshotOfView:view6 withSnapshotType:0];
 
     v94 = 0u;
     v95 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v37 = [(UIViewController *)self view];
-    v38 = [v37 subviews];
+    view7 = [(UIViewController *)self view];
+    subviews = [view7 subviews];
 
-    v39 = [v38 countByEnumeratingWithState:&v92 objects:v101 count:16];
+    v39 = [subviews countByEnumeratingWithState:&v92 objects:v101 count:16];
     if (v39)
     {
       v40 = v39;
@@ -2154,19 +2154,19 @@ LABEL_3:
         {
           if (*v93 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(subviews);
           }
 
           v43 = *(*(&v92 + 1) + 8 * j);
-          v44 = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
+          _ui_firstObject = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
 
-          if (v43 != v44)
+          if (v43 != _ui_firstObject)
           {
             [v43 setHidden:1];
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v92 objects:v101 count:16];
+        v40 = [subviews countByEnumeratingWithState:&v92 objects:v101 count:16];
       }
 
       while (v40);
@@ -2174,32 +2174,32 @@ LABEL_3:
 
     if (self->_spineLocationPriorToInterfaceRotation == 2 || self->_spineLocation != 2)
     {
-      v74 = [(UIViewController *)self view];
-      v75 = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
-      [v74 addSubview:v75];
+      view8 = [(UIViewController *)self view];
+      _ui_firstObject2 = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
+      [view8 addSubview:_ui_firstObject2];
 
-      v72 = [(UIViewController *)self view];
-      v73 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+      view9 = [(UIViewController *)self view];
+      lastObject2 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
     }
 
     else
     {
       viewControllers = self->_viewControllers;
-      v46 = [(NSArray *)v8 _ui_onlyObject];
-      LODWORD(viewControllers) = [(NSArray *)viewControllers containsObject:v46];
+      _ui_onlyObject2 = [(NSArray *)v8 _ui_onlyObject];
+      LODWORD(viewControllers) = [(NSArray *)viewControllers containsObject:_ui_onlyObject2];
 
       if (viewControllers)
       {
-        v47 = [(NSArray *)v8 _ui_onlyObject];
-        v48 = [v47 view];
-        [v48 frame];
+        _ui_onlyObject3 = [(NSArray *)v8 _ui_onlyObject];
+        view10 = [_ui_onlyObject3 view];
+        [view10 frame];
         v50 = v49;
         v52 = v51;
         v54 = v53;
         v56 = v55;
 
-        v57 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
-        [v57 frame];
+        lastObject3 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+        [lastObject3 frame];
         v58 = CGRectGetWidth(v106);
         v107.origin.x = v50;
         v107.origin.y = v52;
@@ -2207,8 +2207,8 @@ LABEL_3:
         v107.size.height = v56;
         v59 = v58 / CGRectGetWidth(v107);
 
-        v60 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
-        [v60 frame];
+        lastObject4 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+        [lastObject4 frame];
         v61 = CGRectGetHeight(v108);
         v109.origin.x = v50;
         v109.origin.y = v52;
@@ -2244,7 +2244,7 @@ LABEL_3:
           v67 = v66;
         }
 
-        v68 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+        lastObject5 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
         v112.origin.x = v50;
         v112.origin.y = v52;
         v112.size.width = v54;
@@ -2254,23 +2254,23 @@ LABEL_3:
         v113.origin.y = v52;
         v113.size.width = v54;
         v113.size.height = v56;
-        [v68 setFrame:{v69, -(CGRectGetMinY(v113) * v62), v84, v67}];
+        [lastObject5 setFrame:{v69, -(CGRectGetMinY(v113) * v62), v84, v67}];
       }
 
-      v70 = [(UIViewController *)self view];
-      v71 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
-      [v70 addSubview:v71];
+      view11 = [(UIViewController *)self view];
+      lastObject6 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+      [view11 addSubview:lastObject6];
 
-      v72 = [(UIViewController *)self view];
-      v73 = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
+      view9 = [(UIViewController *)self view];
+      lastObject2 = [(NSMutableArray *)self->_rotationSnapshotViews _ui_firstObject];
     }
 
-    v76 = v73;
-    [v72 addSubview:v73];
+    v76 = lastObject2;
+    [view9 addSubview:lastObject2];
     v10 = v85;
 
-    v77 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
-    [v77 setAlpha:0.0];
+    lastObject7 = [(NSMutableArray *)self->_rotationSnapshotViews lastObject];
+    [lastObject7 setAlpha:0.0];
 
     v90[0] = MEMORY[0x1E69E9820];
     v90[1] = 3221225472;
@@ -2278,7 +2278,7 @@ LABEL_3:
     v90[3] = &unk_1E70F35B8;
     v90[4] = self;
     v91 = v8;
-    [UIView animateWithDuration:v90 animations:a4];
+    [UIView animateWithDuration:v90 animations:duration];
   }
 
   if (self->_transitionStyle || ![(NSMutableArray *)self->_rotationSnapshotViews count])
@@ -2303,7 +2303,7 @@ LABEL_53:
             objc_enumerationMutation(v78);
           }
 
-          [(UIPageViewController *)self _child:*(*(&v86 + 1) + 8 * k) willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+          [(UIPageViewController *)self _child:*(*(&v86 + 1) + 8 * k) willAnimateRotationToInterfaceOrientation:orientation duration:duration];
         }
 
         v80 = [(NSArray *)v78 countByEnumeratingWithState:&v86 objects:v100 count:16];
@@ -2452,7 +2452,7 @@ LABEL_17:
   [v47 setFrame:?];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v27 = *MEMORY[0x1E69E9840];
   if (!self->_transitionStyle)
@@ -2467,10 +2467,10 @@ LABEL_17:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(UIViewController *)self view];
-    v6 = [v5 subviews];
+    view = [(UIViewController *)self view];
+    subviews = [view subviews];
 
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v7 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2481,7 +2481,7 @@ LABEL_17:
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
@@ -2497,7 +2497,7 @@ LABEL_17:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v8);
@@ -2525,7 +2525,7 @@ LABEL_17:
           objc_enumerationMutation(v12);
         }
 
-        [(UIPageViewController *)self _child:*(*(&v17 + 1) + 8 * j) didRotateFromInterfaceOrientation:a3, v17];
+        [(UIPageViewController *)self _child:*(*(&v17 + 1) + 8 * j) didRotateFromInterfaceOrientation:orientation, v17];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -2545,8 +2545,8 @@ LABEL_17:
     pageCurl = self->_pageCurl;
     if (pageCurl)
     {
-      v4 = [(UIViewController *)self view];
-      [v4 bounds];
+      view = [(UIViewController *)self view];
+      [view bounds];
       [(_UIPageCurl *)pageCurl _setContentRect:?];
 
       if ([(NSArray *)self->_viewControllers count])
@@ -2557,7 +2557,7 @@ LABEL_17:
           v6 = [(NSArray *)self->_viewControllers objectAtIndex:v5];
           if ([v6 isViewLoaded])
           {
-            v7 = [v6 view];
+            view2 = [v6 view];
             if (v5)
             {
               v8 = 0;
@@ -2569,7 +2569,7 @@ LABEL_17:
             }
 
             [(_UIPageCurl *)self->_pageCurl _pageViewFrame:v8];
-            [v7 setFrame:?];
+            [view2 setFrame:?];
           }
 
           ++v5;
@@ -2603,15 +2603,15 @@ LABEL_17:
   }
 }
 
-- (id)_validatedViewControllersForTransitionWithViewControllers:(id)a3 animated:(BOOL)a4
+- (id)_validatedViewControllersForTransitionWithViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  animatedCopy = animated;
+  controllersCopy = controllers;
+  v7 = controllersCopy;
   transitionStyle = self->_transitionStyle;
   if (transitionStyle == 1)
   {
-    if ([v6 count] == 1)
+    if ([controllersCopy count] == 1)
     {
       v12 = v7;
       v10 = 1;
@@ -2632,7 +2632,7 @@ LABEL_17:
     v10 = 0;
   }
 
-  else if (v4)
+  else if (animatedCopy)
   {
     doubleSided = self->_doubleSided;
     if (doubleSided)
@@ -2645,7 +2645,7 @@ LABEL_17:
       v10 = 1;
     }
 
-    if ([v6 count] == v10)
+    if ([controllersCopy count] == v10)
     {
       v11 = doubleSided ? 2 : 1;
       v12 = [v7 subarrayWithRange:{0, v11}];
@@ -2705,21 +2705,21 @@ LABEL_21:
   return v5;
 }
 
-- (id)_viewControllerBefore:(BOOL)a3 viewController:(id)a4
+- (id)_viewControllerBefore:(BOOL)before viewController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   if ([(UIPageViewController *)self _canHandleGestures])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v8 = WeakRetained;
-    if (a3)
+    if (before)
     {
-      [WeakRetained pageViewController:self viewControllerBeforeViewController:v6];
+      [WeakRetained pageViewController:self viewControllerBeforeViewController:controllerCopy];
     }
 
     else
     {
-      [WeakRetained pageViewController:self viewControllerAfterViewController:v6];
+      [WeakRetained pageViewController:self viewControllerAfterViewController:controllerCopy];
     }
     v9 = ;
   }
@@ -2732,16 +2732,16 @@ LABEL_21:
   return v9;
 }
 
-- (id)_viewControllersForCurlWithViewControllers:(id)a3 direction:(int64_t)a4
+- (id)_viewControllersForCurlWithViewControllers:(id)controllers direction:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  controllersCopy = controllers;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   spineLocation = self->_spineLocation;
   if (spineLocation == 1 || spineLocation == 101)
   {
-    if (!a4)
+    if (!direction)
     {
-      v9 = [v6 objectForKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
+      v9 = [controllersCopy objectForKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
       if (self->_doubleSided)
       {
         goto LABEL_18;
@@ -2755,13 +2755,13 @@ LABEL_13:
       }
 
 LABEL_20:
-      [v7 setObject:v9 forKey:@"UIPageCurlControllerFrontViewControllerKey"];
+      [dictionary setObject:v9 forKey:@"UIPageCurlControllerFrontViewControllerKey"];
       goto LABEL_21;
     }
 
     if (self->_doubleSided)
     {
-      v10 = [v6 objectForKey:@"UIPageCurlControllerIncomingLeftViewControllerKey"];
+      v10 = [controllersCopy objectForKey:@"UIPageCurlControllerIncomingLeftViewControllerKey"];
     }
 
     else
@@ -2776,19 +2776,19 @@ LABEL_20:
   {
     if (spineLocation == 2)
     {
-      if (a4)
+      if (direction)
       {
-        v9 = [v6 objectForKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
+        v9 = [controllersCopy objectForKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
 LABEL_11:
         v11 = @"UIPageCurlControllerIncomingRightViewControllerKey";
         goto LABEL_19;
       }
 
-      v9 = [v6 objectForKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
+      v9 = [controllersCopy objectForKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
 LABEL_18:
       v11 = @"UIPageCurlControllerIncomingLeftViewControllerKey";
 LABEL_19:
-      v10 = [v6 objectForKey:v11];
+      v10 = [controllersCopy objectForKey:v11];
       if (!v9)
       {
         goto LABEL_21;
@@ -2797,9 +2797,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    if (a4)
+    if (direction)
     {
-      v9 = [v6 objectForKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
+      v9 = [controllersCopy objectForKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
       if (self->_doubleSided)
       {
         goto LABEL_11;
@@ -2810,7 +2810,7 @@ LABEL_19:
 
     if (self->_doubleSided)
     {
-      v10 = [v6 objectForKey:@"UIPageCurlControllerIncomingRightViewControllerKey"];
+      v10 = [controllersCopy objectForKey:@"UIPageCurlControllerIncomingRightViewControllerKey"];
     }
 
     else
@@ -2821,7 +2821,7 @@ LABEL_19:
     v12 = @"UIPageCurlControllerIncomingLeftViewControllerKey";
   }
 
-  v9 = [v6 objectForKey:v12];
+  v9 = [controllersCopy objectForKey:v12];
   if (v9)
   {
     goto LABEL_20;
@@ -2830,15 +2830,15 @@ LABEL_19:
 LABEL_21:
   if (v10)
   {
-    [v7 setObject:v10 forKey:@"UIPageCurlControllerBackViewControllerKey"];
+    [dictionary setObject:v10 forKey:@"UIPageCurlControllerBackViewControllerKey"];
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (void)_populateOutgoingViewControllersInMap:(id)a3
+- (void)_populateOutgoingViewControllersInMap:(id)map
 {
-  v10 = a3;
+  mapCopy = map;
   spineLocation = self->_spineLocation;
   if ((spineLocation & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
@@ -2846,7 +2846,7 @@ LABEL_21:
     if (v5)
     {
       v6 = v5;
-      [v10 setObject:v5 forKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
+      [mapCopy setObject:v5 forKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
     }
 
     spineLocation = self->_spineLocation;
@@ -2867,22 +2867,22 @@ LABEL_21:
   if (v8)
   {
     v9 = v8;
-    [v10 setObject:v8 forKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
+    [mapCopy setObject:v8 forKey:@"UIPageCurlControllerOutgoingRightViewControllerKey"];
   }
 
 LABEL_11:
 }
 
-- (void)_populateIncomingViewControllersInMap:(id)a3 withViewControllers:(id)a4 forCurlInDirection:(int64_t)a5
+- (void)_populateIncomingViewControllersInMap:(id)map withViewControllers:(id)controllers forCurlInDirection:(int64_t)direction
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = v7;
+  mapCopy = map;
+  controllersCopy = controllers;
+  v8 = controllersCopy;
   spineLocation = self->_spineLocation;
   if (spineLocation == 101 || spineLocation == 1)
   {
-    v11 = [v7 objectAtIndex:0];
-    [v15 setObject:v11 forKey:@"UIPageCurlControllerIncomingRightViewControllerKey"];
+    v11 = [controllersCopy objectAtIndex:0];
+    [mapCopy setObject:v11 forKey:@"UIPageCurlControllerIncomingRightViewControllerKey"];
 
     if (!self->_doubleSided)
     {
@@ -2893,15 +2893,15 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v13 = [v7 objectAtIndex:0];
-  [v15 setObject:v13 forKey:@"UIPageCurlControllerIncomingLeftViewControllerKey"];
+  v13 = [controllersCopy objectAtIndex:0];
+  [mapCopy setObject:v13 forKey:@"UIPageCurlControllerIncomingLeftViewControllerKey"];
 
   if (self->_doubleSided)
   {
     v12 = @"UIPageCurlControllerIncomingRightViewControllerKey";
 LABEL_10:
     v14 = [v8 objectAtIndex:1];
-    [v15 setObject:v14 forKey:v12];
+    [mapCopy setObject:v14 forKey:v12];
   }
 
 LABEL_11:
@@ -2962,36 +2962,36 @@ LABEL_11:
   }
 }
 
-- (void)_setViewControllers:(id)a3 withCurlOfType:(int64_t)a4 fromLocation:(CGPoint)a5 direction:(int64_t)a6 animated:(BOOL)a7 notifyDelegate:(BOOL)a8 completion:(id)a9
+- (void)_setViewControllers:(id)controllers withCurlOfType:(int64_t)type fromLocation:(CGPoint)location direction:(int64_t)direction animated:(BOOL)animated notifyDelegate:(BOOL)delegate completion:(id)completion
 {
-  LODWORD(WeakRetained) = a8;
-  v11 = a7;
-  y = a5.y;
-  x = a5.x;
+  LODWORD(WeakRetained) = delegate;
+  animatedCopy = animated;
+  y = location.y;
+  x = location.x;
   v113 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a9;
+  controllersCopy = controllers;
+  completionCopy = completion;
   if (self->_transitionStyle)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v83 = v82 = v18;
+    v83 = v82 = controllersCopy;
     [v83 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1405 description:@"Invalid transition style"];
 
-    v18 = v82;
+    controllersCopy = v82;
   }
 
   if (self->_stashingViewControllersForRotation)
   {
-    [(UIPageViewController *)self _setViewControllersStashedForRotation:v18];
+    [(UIPageViewController *)self _setViewControllersStashedForRotation:controllersCopy];
   }
 
   else
   {
     if (!self->_pageCurl)
     {
-      v93 = a6;
-      v20 = a4;
-      v21 = v18;
+      directionCopy = direction;
+      typeCopy = type;
+      v21 = controllersCopy;
       v22 = [_UIPageCurl alloc];
       spineLocation = self->_spineLocation;
       v24 = WeakRetained;
@@ -3037,8 +3037,8 @@ LABEL_11:
         }
       }
 
-      v30 = [(UIViewController *)self view];
-      [v30 bounds];
+      view = [(UIViewController *)self view];
+      [view bounds];
       v32 = v31;
       v34 = v33;
       v36 = v35;
@@ -3048,16 +3048,16 @@ LABEL_11:
       pageCurl = self->_pageCurl;
       self->_pageCurl = v39;
 
-      v18 = v21;
+      controllersCopy = v21;
       LODWORD(WeakRetained) = v24;
-      a4 = v20;
-      a6 = v93;
+      type = typeCopy;
+      direction = directionCopy;
     }
 
-    if ([(UIPageViewController *)self _isCurrentViewControllerStateValid]&& v11)
+    if ([(UIPageViewController *)self _isCurrentViewControllerStateValid]&& animatedCopy)
     {
-      v41 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:v18 animated:1];
-      if ([v41 count] && -[_UIPageCurl _isPreviousCurlCompatibleWithCurlOfType:inDirection:](self->_pageCurl, "_isPreviousCurlCompatibleWithCurlOfType:inDirection:", a4, a6))
+      v41 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:controllersCopy animated:1];
+      if ([v41 count] && -[_UIPageCurl _isPreviousCurlCompatibleWithCurlOfType:inDirection:](self->_pageCurl, "_isPreviousCurlCompatibleWithCurlOfType:inDirection:", type, direction))
       {
         v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
         [(UIPageViewController *)self _populateOutgoingViewControllersInMap:v42];
@@ -3081,9 +3081,9 @@ LABEL_11:
           LOBYTE(WeakRetained) = v65;
         }
 
-        [(UIPageViewController *)self _populateIncomingViewControllersInMap:v42 withViewControllers:v41 forCurlInDirection:a6];
+        [(UIPageViewController *)self _populateIncomingViewControllersInMap:v42 withViewControllers:v41 forCurlInDirection:direction];
         v89 = v41;
-        if (a4 == 4 || a4 == 1)
+        if (type == 4 || type == 1)
         {
           [(UIPageViewController *)self _setViewControllers:v90];
         }
@@ -3093,7 +3093,7 @@ LABEL_11:
           objc_storeStrong(&self->_incomingAndOutgoingViewControllersForManualTransition, v42);
         }
 
-        v66 = [(UIPageViewController *)self _viewControllersForCurlWithViewControllers:v42 direction:a6];
+        v66 = [(UIPageViewController *)self _viewControllersForCurlWithViewControllers:v42 direction:direction];
         v91 = [v66 objectForKey:@"UIPageCurlControllerFrontViewControllerKey"];
         v85 = [v66 objectForKey:@"UIPageCurlControllerBackViewControllerKey"];
         v67 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -3102,12 +3102,12 @@ LABEL_11:
         aBlock[2] = __117__UIPageViewController__setViewControllers_withCurlOfType_fromLocation_direction_animated_notifyDelegate_completion___block_invoke;
         aBlock[3] = &unk_1E7102F18;
         aBlock[4] = self;
-        v111 = v11;
+        v111 = animatedCopy;
         v84 = v67;
         v110 = v84;
         v68 = _Block_copy(aBlock);
         v69 = [v42 objectForKey:@"UIPageCurlControllerIncomingRightViewControllerKey"];
-        if (a6)
+        if (direction)
         {
           v70 = 0;
         }
@@ -3121,12 +3121,12 @@ LABEL_11:
         }
 
         v86 = WeakRetained;
-        v95 = v18;
+        v95 = controllersCopy;
         v68[2](v68, v69, v70, 0);
 
         v74 = [v42 objectForKey:@"UIPageCurlControllerIncomingLeftViewControllerKey"];
         v75 = 0;
-        if (a6 == 1)
+        if (direction == 1)
         {
           v75 = (self->_spineLocation & 0xFFFFFFFFFFFFFFFELL) == 2;
         }
@@ -3141,8 +3141,8 @@ LABEL_11:
 
         [(UIPageViewController *)self _beginDisablingInterfaceAutorotation];
         v96 = self->_pageCurl;
-        v78 = [v91 view];
-        v79 = [v85 view];
+        view2 = [v91 view];
+        view3 = [v85 view];
         v102[0] = MEMORY[0x1E69E9820];
         v102[1] = 3221225472;
         v102[2] = __117__UIPageViewController__setViewControllers_withCurlOfType_fromLocation_direction_animated_notifyDelegate_completion___block_invoke_2;
@@ -3150,9 +3150,9 @@ LABEL_11:
         v102[4] = self;
         v103 = v42;
         v104 = v84;
-        v106 = a6;
-        v107 = a4;
-        v105 = v19;
+        directionCopy2 = direction;
+        typeCopy2 = type;
+        v105 = completionCopy;
         v108 = v86;
         v101[0] = MEMORY[0x1E69E9820];
         v101[1] = 3221225472;
@@ -3161,30 +3161,30 @@ LABEL_11:
         v101[4] = self;
         v80 = v84;
         v81 = v42;
-        [(_UIPageCurl *)v96 _enqueueCurlOfType:a4 fromLocation:a6 inDirection:v78 withView:v79 revealingView:v102 completion:v101 finally:x, y];
+        [(_UIPageCurl *)v96 _enqueueCurlOfType:type fromLocation:direction inDirection:view2 withView:view3 revealingView:v102 completion:v101 finally:x, y];
 
-        v18 = v95;
+        controllersCopy = v95;
         v41 = v89;
       }
     }
 
     else
     {
-      v44 = [(UIGestureRecognizer *)self->_tapGestureRecognizer isEnabled];
-      v45 = [(UIGestureRecognizer *)self->_panGestureRecognizer isEnabled];
+      isEnabled = [(UIGestureRecognizer *)self->_tapGestureRecognizer isEnabled];
+      isEnabled2 = [(UIGestureRecognizer *)self->_panGestureRecognizer isEnabled];
       [(UIGestureRecognizer *)self->_tapGestureRecognizer setEnabled:0];
       [(UIGestureRecognizer *)self->_panGestureRecognizer setEnabled:0];
       [(_UIPageCurl *)self->_pageCurl _cancelAllActiveTransitionsAndAbandonCallbacks:0];
-      if (-[NSArray count](self->_viewControllers, "count") || [v18 count])
+      if (-[NSArray count](self->_viewControllers, "count") || [controllersCopy count])
       {
-        v46 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:v18 animated:0];
+        v46 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:controllersCopy animated:0];
         if (v46)
         {
           v47 = v46;
-          v87 = v45;
-          v88 = v44;
-          v92 = v19;
-          v94 = v18;
+          v87 = isEnabled2;
+          v88 = isEnabled;
+          v92 = completionCopy;
+          v94 = controllersCopy;
           v48 = objc_alloc_init(MEMORY[0x1E695DFA8]);
           v97 = 0u;
           v98 = 0u;
@@ -3217,8 +3217,8 @@ LABEL_11:
                   if ([v54 isViewLoaded])
                   {
                     [(UIPageViewController *)self _child:v54 beginAppearanceTransition:0 animated:0];
-                    v55 = [v54 view];
-                    [v55 removeFromSuperview];
+                    view4 = [v54 view];
+                    [view4 removeFromSuperview];
 
                     [(UIPageViewController *)self _childEndAppearanceTransition:v54];
                   }
@@ -3234,7 +3234,7 @@ LABEL_11:
           }
 
           [(UIPageViewController *)self _setViewControllers:v47];
-          v19 = v92;
+          completionCopy = v92;
           if ([(NSArray *)self->_viewControllers count])
           {
             v56 = 0;
@@ -3246,16 +3246,16 @@ LABEL_11:
                 [(UIViewController *)self addChildViewController:v57];
               }
 
-              v58 = [v57 view];
-              v59 = [v58 superview];
-              v60 = [(UIViewController *)self view];
+              view5 = [v57 view];
+              superview = [view5 superview];
+              view6 = [(UIViewController *)self view];
 
-              if (v59 != v60)
+              if (superview != view6)
               {
                 [(UIPageViewController *)self _child:v57 beginAppearanceTransition:1 animated:0];
-                v61 = [(UIViewController *)self view];
-                v62 = [v57 view];
-                [v61 addSubview:v62];
+                view7 = [(UIViewController *)self view];
+                view8 = [v57 view];
+                [view7 addSubview:view8];
 
                 [(UIPageViewController *)self _childEndAppearanceTransition:v57];
               }
@@ -3265,7 +3265,7 @@ LABEL_11:
                 [v57 didMoveToParentViewController:self];
               }
 
-              v63 = [v57 view];
+              view9 = [v57 view];
               if (v56)
               {
                 v64 = 0;
@@ -3277,7 +3277,7 @@ LABEL_11:
               }
 
               [(_UIPageCurl *)self->_pageCurl _pageViewFrame:v64];
-              [v63 setFrame:?];
+              [view9 setFrame:?];
 
               ++v56;
             }
@@ -3285,19 +3285,19 @@ LABEL_11:
             while (v56 < [(NSArray *)self->_viewControllers count]);
           }
 
-          v18 = v94;
-          v44 = v88;
-          v45 = v87;
+          controllersCopy = v94;
+          isEnabled = v88;
+          isEnabled2 = v87;
         }
       }
 
-      if (v19)
+      if (completionCopy)
       {
-        (*(v19 + 2))(v19, 1);
+        (*(completionCopy + 2))(completionCopy, 1);
       }
 
-      [(UIGestureRecognizer *)self->_tapGestureRecognizer setEnabled:v44];
-      [(UIGestureRecognizer *)self->_panGestureRecognizer setEnabled:v45];
+      [(UIGestureRecognizer *)self->_tapGestureRecognizer setEnabled:isEnabled];
+      [(UIGestureRecognizer *)self->_panGestureRecognizer setEnabled:isEnabled2];
     }
   }
 
@@ -3601,37 +3601,37 @@ void __117__UIPageViewController__setViewControllers_withCurlOfType_fromLocation
   }
 }
 
-- (void)_cacheViewControllerForScroll:(id)a3
+- (void)_cacheViewControllerForScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (![(NSHashTable *)self->_cachedViewControllersForScroll containsObject:?])
   {
-    [(UIViewController *)self addChildViewController:v4];
-    [v4 didMoveToParentViewController:self];
-    [(NSHashTable *)self->_cachedViewControllersForScroll addObject:v4];
+    [(UIViewController *)self addChildViewController:scrollCopy];
+    [scrollCopy didMoveToParentViewController:self];
+    [(NSHashTable *)self->_cachedViewControllersForScroll addObject:scrollCopy];
   }
 }
 
-- (void)_setViewControllers:(id)a3 withScrollInDirection:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_setViewControllers:(id)controllers withScrollInDirection:(int64_t)direction animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:a3 animated:v6];
-  v12 = [(NSArray *)self->_viewControllers _ui_onlyObject];
-  v13 = [v11 _ui_onlyObject];
-  if (v13)
+  animatedCopy = animated;
+  completionCopy = completion;
+  v11 = [(UIPageViewController *)self _validatedViewControllersForTransitionWithViewControllers:controllers animated:animatedCopy];
+  _ui_onlyObject = [(NSArray *)self->_viewControllers _ui_onlyObject];
+  _ui_onlyObject2 = [v11 _ui_onlyObject];
+  if (_ui_onlyObject2)
   {
-    v14 = [(UIPageViewController *)self _scrollView];
-    v15 = [v14 visibleView];
-    if (!v15)
+    _scrollView = [(UIPageViewController *)self _scrollView];
+    visibleView = [_scrollView visibleView];
+    if (!visibleView)
     {
 
-      v17 = a4;
+      directionCopy2 = direction;
       goto LABEL_8;
     }
 
-    v16 = v15;
-    if (v13 == v12 && v6)
+    v16 = visibleView;
+    if (_ui_onlyObject2 == _ui_onlyObject && animatedCopy)
     {
 
 LABEL_11:
@@ -3639,35 +3639,35 @@ LABEL_11:
     }
 
     [(UIPageViewController *)self _scrollView];
-    v18 = v23 = v10;
-    v22 = [v18 isPreviousScrollCompatibleWithScrollInDirection:a4];
+    v18 = v23 = completionCopy;
+    v22 = [v18 isPreviousScrollCompatibleWithScrollInDirection:direction];
 
-    v10 = v23;
-    v17 = a4;
+    completionCopy = v23;
+    directionCopy2 = direction;
 
     if (v22)
     {
 LABEL_8:
-      if (v6)
+      if (animatedCopy)
       {
-        v6 = [(NSArray *)self->_viewControllers count]!= 0;
+        animatedCopy = [(NSArray *)self->_viewControllers count]!= 0;
       }
 
-      [v12 willMoveToParentViewController:0];
-      [(UIPageViewController *)self _cacheViewControllerForScroll:v13];
-      v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v13, 0}];
+      [_ui_onlyObject willMoveToParentViewController:0];
+      [(UIPageViewController *)self _cacheViewControllerForScroll:_ui_onlyObject2];
+      v19 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{_ui_onlyObject2, 0}];
       viewControllers = self->_viewControllers;
       self->_viewControllers = v19;
 
-      v14 = [(UIPageViewController *)self _scrollView];
-      v21 = [v13 view];
+      _scrollView = [(UIPageViewController *)self _scrollView];
+      view = [_ui_onlyObject2 view];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __86__UIPageViewController__setViewControllers_withScrollInDirection_animated_completion___block_invoke;
       v24[3] = &unk_1E7103008;
       v24[4] = self;
-      v25 = v10;
-      [v14 setView:v21 direction:v17 animated:v6 completion:v24];
+      v25 = completionCopy;
+      [_scrollView setView:view direction:directionCopy2 animated:animatedCopy completion:v24];
 
       goto LABEL_11;
     }
@@ -3801,7 +3801,7 @@ LABEL_16:
   return v9;
 }
 
-- (id)_incomingViewControllersForGestureDrivenCurlInDirection:(int64_t)a3
+- (id)_incomingViewControllersForGestureDrivenCurlInDirection:(int64_t)direction
 {
   cachedViewControllersForCurl = self->_cachedViewControllersForCurl;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -3810,7 +3810,7 @@ LABEL_16:
   if (!v7)
   {
     [(NSMutableDictionary *)self->_cachedViewControllersForCurl removeAllObjects];
-    if (a3)
+    if (direction)
     {
       v8 = [(NSArray *)self->_viewControllers objectAtIndex:0];
       v9 = [(UIPageViewController *)self _viewControllerBeforeViewController:v8];
@@ -3848,7 +3848,7 @@ LABEL_12:
 
 LABEL_16:
           v17 = self->_cachedViewControllersForCurl;
-          v18 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+          v18 = [MEMORY[0x1E696AD98] numberWithInteger:direction];
           [(NSMutableDictionary *)v17 setObject:v7 forKey:v18];
 
           goto LABEL_17;
@@ -3899,16 +3899,16 @@ LABEL_17:
     v15 = v14;
     navigationOrientation = self->_navigationOrientation;
     tapRegions = self->_tapRegions;
-    v18 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-    [v18 bounds];
+    view = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+    [view bounds];
     MinX = CGRectGetMinX(v36);
     [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
     if (navigationOrientation)
       v20 = {;
       [v20 bounds];
       MinY = CGRectGetMinY(v37);
-      v22 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v22 bounds];
+      view2 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view2 bounds];
       Width = CGRectGetWidth(v38);
       tapRegions->origin.x = v7 + MinX;
       tapRegions->origin.y = MinY;
@@ -3916,14 +3916,14 @@ LABEL_17:
       tapRegions->size.height = v15;
 
       v24 = self->_tapRegions;
-      v25 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v25 bounds];
+      view3 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view3 bounds];
       v26 = v7 + CGRectGetMinX(v39);
-      v27 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v27 bounds];
+      view4 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view4 bounds];
       v28 = CGRectGetMaxY(v40) - v15;
-      v29 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v29 bounds];
+      view5 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view5 bounds];
       v30 = CGRectGetWidth(v41);
       v24[1].origin.x = v26;
       v24[1].origin.y = v28;
@@ -3941,11 +3941,11 @@ LABEL_17:
       tapRegions->size.height = Height - v5 - v9;
 
       v33 = self->_tapRegions;
-      v25 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v25 bounds];
+      view3 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view3 bounds];
       v34 = CGRectGetMaxX(v43) - v13;
-      v27 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
-      [v27 bounds];
+      view4 = [(UIGestureRecognizer *)self->_tapGestureRecognizer view];
+      [view4 bounds];
       v35 = CGRectGetHeight(v44);
       v33[1].origin.x = v34;
       v33[1].origin.y = v5;
@@ -3959,9 +3959,9 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)_shouldNavigateInDirection:(int64_t *)a3 inResponseToTapGestureRecognizer:(id)a4
+- (BOOL)_shouldNavigateInDirection:(int64_t *)direction inResponseToTapGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
+  recognizerCopy = recognizer;
   if (self->_transitionStyle)
   {
     LOBYTE(v7) = 0;
@@ -3969,18 +3969,18 @@ LABEL_17:
 
   else
   {
-    v8 = [(UIPageViewController *)self _tapRegions];
+    _tapRegions = [(UIPageViewController *)self _tapRegions];
     v9 = 0;
     v10 = 0;
     while (1)
     {
-      v11 = [v6 view];
-      [v6 locationInView:v11];
+      view = [recognizerCopy view];
+      [recognizerCopy locationInView:view];
       v16.x = v12;
       v16.y = v13;
-      v7 = CGRectContainsPoint(v8[v10], v16);
+      v7 = CGRectContainsPoint(_tapRegions[v10], v16);
 
-      if (a3)
+      if (direction)
       {
         if (v7)
         {
@@ -3997,7 +3997,7 @@ LABEL_17:
       }
     }
 
-    *a3 = v10 ^ 1;
+    *direction = v10 ^ 1;
     LOBYTE(v7) = 1;
   }
 
@@ -4015,18 +4015,18 @@ LABEL_9:
 
   else
   {
-    v3 = [(UIViewController *)self view];
-    v4 = (v3[13] >> 22) & 1;
+    view = [(UIViewController *)self view];
+    v4 = (view[13] >> 22) & 1;
   }
 
   return v4;
 }
 
-- (BOOL)_shouldNavigateInDirection:(int64_t *)a3 inResponseToVelocity:(double *)a4 ofGestureRecognizedByPanGestureRecognizer:(id)a5
+- (BOOL)_shouldNavigateInDirection:(int64_t *)direction inResponseToVelocity:(double *)velocity ofGestureRecognizedByPanGestureRecognizer:(id)recognizer
 {
-  v8 = a5;
-  v9 = [(UIViewController *)self view];
-  [v8 velocityInView:v9];
+  recognizerCopy = recognizer;
+  view = [(UIViewController *)self view];
+  [recognizerCopy velocityInView:view];
   v11 = v10;
   v13 = v12;
 
@@ -4042,20 +4042,20 @@ LABEL_9:
     if (v17 > 300.0)
     {
       v11 = v13;
-      if (!a4)
+      if (!velocity)
       {
 LABEL_8:
         if ([(UIPageViewController *)self _shouldFlipInRightToLeft])
         {
-          if (a3)
+          if (direction)
           {
             v16 = v11 < 0.0;
 LABEL_20:
-            *a3 = v16;
+            *direction = v16;
           }
         }
 
-        else if (a3)
+        else if (direction)
         {
           v16 = v11 >= 0.0;
           goto LABEL_20;
@@ -4065,7 +4065,7 @@ LABEL_20:
       }
 
 LABEL_7:
-      *a4 = v11;
+      *velocity = v11;
       goto LABEL_8;
     }
   }
@@ -4080,7 +4080,7 @@ LABEL_7:
 
     if (v15 > 300.0)
     {
-      if (!a4)
+      if (!velocity)
       {
         goto LABEL_8;
       }
@@ -4090,23 +4090,23 @@ LABEL_7:
   }
 
   result = 0;
-  if (a4)
+  if (velocity)
   {
-    *a4 = 0.0;
+    *velocity = 0.0;
   }
 
   return result;
 }
 
-- (BOOL)_shouldBeginNavigationInDirection:(int64_t *)a3 inResponseToPanGestureRecognizer:(id)a4
+- (BOOL)_shouldBeginNavigationInDirection:(int64_t *)direction inResponseToPanGestureRecognizer:(id)recognizer
 {
-  v6 = a4;
+  recognizerCopy = recognizer;
   if (!self->_transitionStyle)
   {
     v22 = 0;
-    if ([(UIPageViewController *)self _shouldNavigateInDirection:&v22 inResponseToVelocity:0 ofGestureRecognizedByPanGestureRecognizer:v6])
+    if ([(UIPageViewController *)self _shouldNavigateInDirection:&v22 inResponseToVelocity:0 ofGestureRecognizedByPanGestureRecognizer:recognizerCopy])
     {
-      if (!a3)
+      if (!direction)
       {
 LABEL_7:
         v7 = 1;
@@ -4115,13 +4115,13 @@ LABEL_7:
 
       v8 = v22;
 LABEL_6:
-      *a3 = v8;
+      *direction = v8;
       goto LABEL_7;
     }
 
-    v10 = [(UIViewController *)self view];
-    v11 = [v10 superview];
-    [v6 translationInView:v11];
+    view = [(UIViewController *)self view];
+    superview = [view superview];
+    [recognizerCopy translationInView:superview];
     v13 = v12;
     v15 = v14;
 
@@ -4146,7 +4146,7 @@ LABEL_6:
 
       if ([(UIPageViewController *)self _shouldFlipInRightToLeft])
       {
-        if (!a3)
+        if (!direction)
         {
           goto LABEL_7;
         }
@@ -4155,7 +4155,7 @@ LABEL_6:
         goto LABEL_26;
       }
 
-      if (!a3)
+      if (!direction)
       {
         goto LABEL_7;
       }
@@ -4184,7 +4184,7 @@ LABEL_6:
 
       if ([(UIPageViewController *)self _shouldFlipInRightToLeft])
       {
-        if (!a3)
+        if (!direction)
         {
           goto LABEL_7;
         }
@@ -4195,7 +4195,7 @@ LABEL_26:
         goto LABEL_6;
       }
 
-      if (!a3)
+      if (!direction)
       {
         goto LABEL_7;
       }
@@ -4214,15 +4214,15 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = v4;
+  beginCopy = begin;
+  v5 = beginCopy;
   v14 = -1;
   panGestureRecognizer = self->_panGestureRecognizer;
   if (panGestureRecognizer)
   {
-    v7 = panGestureRecognizer == v4;
+    v7 = panGestureRecognizer == beginCopy;
   }
 
   else
@@ -4233,7 +4233,7 @@ LABEL_8:
   if (!v7)
   {
     tapGestureRecognizer = self->_tapGestureRecognizer;
-    if (!tapGestureRecognizer || tapGestureRecognizer != v4)
+    if (!tapGestureRecognizer || tapGestureRecognizer != beginCopy)
     {
       goto LABEL_16;
     }
@@ -4273,9 +4273,9 @@ LABEL_18:
   return v12;
 }
 
-- (int64_t)_navigationEndDirectionInResponseToPanGestureRecognizer:(id)a3 suggestedVelocity:(double *)a4
+- (int64_t)_navigationEndDirectionInResponseToPanGestureRecognizer:(id)recognizer suggestedVelocity:(double *)velocity
 {
-  v6 = a3;
+  recognizerCopy = recognizer;
   if (self->_transitionStyle)
   {
     v7 = 1;
@@ -4284,27 +4284,27 @@ LABEL_18:
   else
   {
     v26 = 0;
-    if ([(UIPageViewController *)self _shouldNavigateInDirection:&v26 inResponseToVelocity:a4 ofGestureRecognizedByPanGestureRecognizer:v6])
+    if ([(UIPageViewController *)self _shouldNavigateInDirection:&v26 inResponseToVelocity:velocity ofGestureRecognizedByPanGestureRecognizer:recognizerCopy])
     {
       v7 = v26;
     }
 
     else
     {
-      if (a4)
+      if (velocity)
       {
-        *a4 = 0.0;
+        *velocity = 0.0;
       }
 
-      v8 = [(UIViewController *)self view];
-      [v6 locationInView:v8];
+      view = [(UIViewController *)self view];
+      [recognizerCopy locationInView:view];
       v10 = v9;
       v12 = v11;
 
       navigationOrientation = self->_navigationOrientation;
-      v14 = [(UIPageViewController *)self _shouldFlipInRightToLeft];
-      v15 = [(UIViewController *)self view];
-      [v15 bounds];
+      _shouldFlipInRightToLeft = [(UIPageViewController *)self _shouldFlipInRightToLeft];
+      view2 = [(UIViewController *)self view];
+      [view2 bounds];
       if (navigationOrientation)
       {
         MidY = CGRectGetMidY(*&v16);
@@ -4321,7 +4321,7 @@ LABEL_18:
 
       v23 = v21;
       v24 = !v21;
-      if (!v14)
+      if (!_shouldFlipInRightToLeft)
       {
         v23 = v24;
       }
@@ -4333,14 +4333,14 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)_shouldCompleteManualCurlWithSuggestedVelocity:(double *)a3
+- (BOOL)_shouldCompleteManualCurlWithSuggestedVelocity:(double *)velocity
 {
-  v5 = [(_UIPageCurl *)self->_pageCurl _wrappedManualPageCurlDirection];
-  v6 = v5;
-  if (v5)
+  _wrappedManualPageCurlDirection = [(_UIPageCurl *)self->_pageCurl _wrappedManualPageCurlDirection];
+  v6 = _wrappedManualPageCurlDirection;
+  if (_wrappedManualPageCurlDirection)
   {
-    v7 = [v5 integerValue];
-    v8 = v7 == [(UIPageViewController *)self _navigationEndDirectionInResponseToPanGestureRecognizer:self->_panGestureRecognizer suggestedVelocity:a3];
+    integerValue = [_wrappedManualPageCurlDirection integerValue];
+    v8 = integerValue == [(UIPageViewController *)self _navigationEndDirectionInResponseToPanGestureRecognizer:self->_panGestureRecognizer suggestedVelocity:velocity];
   }
 
   else
@@ -4351,14 +4351,14 @@ LABEL_18:
   return v8;
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
   v60 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  gestureCopy = gesture;
   panGestureRecognizer = self->_panGestureRecognizer;
   if (panGestureRecognizer)
   {
-    v6 = panGestureRecognizer == v4;
+    v6 = panGestureRecognizer == gestureCopy;
   }
 
   else
@@ -4382,8 +4382,8 @@ LABEL_18:
 LABEL_9:
     v7 = [(UIPageViewController *)self _incomingViewControllersForGestureDrivenCurlInDirection:v56];
     v8 = self->_panGestureRecognizer;
-    v9 = [(UIViewController *)self view];
-    [(UIPanGestureRecognizer *)v8 locationInView:v9];
+    view = [(UIViewController *)self view];
+    [(UIPanGestureRecognizer *)v8 locationInView:view];
     [(UIPageViewController *)self _setViewControllers:v7 withCurlOfType:0 fromLocation:v56 direction:1 animated:1 notifyDelegate:0 completion:?];
 
     goto LABEL_5;
@@ -4397,14 +4397,14 @@ LABEL_9:
     }
 
     v56 = 0;
-    if (![(UIGestureRecognizer *)v4 isEnabled]|| ![(UIPageViewController *)self _shouldCompleteManualCurlWithSuggestedVelocity:&v56])
+    if (![(UIGestureRecognizer *)gestureCopy isEnabled]|| ![(UIPageViewController *)self _shouldCompleteManualCurlWithSuggestedVelocity:&v56])
     {
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v25 = [objc_opt_class() _incomingViewControllerKeys];
-      v26 = [v25 countByEnumeratingWithState:&v48 objects:v58 count:16];
+      _incomingViewControllerKeys = [objc_opt_class() _incomingViewControllerKeys];
+      v26 = [_incomingViewControllerKeys countByEnumeratingWithState:&v48 objects:v58 count:16];
       if (v26)
       {
         v27 = v26;
@@ -4415,14 +4415,14 @@ LABEL_9:
           {
             if (*v49 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(_incomingViewControllerKeys);
             }
 
             v30 = [(NSDictionary *)self->_incomingAndOutgoingViewControllersForManualTransition objectForKey:*(*(&v48 + 1) + 8 * i)];
             [(UIPageViewController *)self _child:v30 beginAppearanceTransition:0 animated:1];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v48 objects:v58 count:16];
+          v27 = [_incomingViewControllerKeys countByEnumeratingWithState:&v48 objects:v58 count:16];
         }
 
         while (v27);
@@ -4432,8 +4432,8 @@ LABEL_9:
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v31 = [objc_opt_class() _outgoingViewControllerKeys];
-      v32 = [v31 countByEnumeratingWithState:&v44 objects:v57 count:16];
+      _outgoingViewControllerKeys = [objc_opt_class() _outgoingViewControllerKeys];
+      v32 = [_outgoingViewControllerKeys countByEnumeratingWithState:&v44 objects:v57 count:16];
       if (v32)
       {
         v33 = v32;
@@ -4444,14 +4444,14 @@ LABEL_9:
           {
             if (*v45 != v34)
             {
-              objc_enumerationMutation(v31);
+              objc_enumerationMutation(_outgoingViewControllerKeys);
             }
 
             v36 = [(NSDictionary *)self->_incomingAndOutgoingViewControllersForManualTransition objectForKey:*(*(&v44 + 1) + 8 * j)];
             [(UIPageViewController *)self _child:v36 beginAppearanceTransition:1 animated:1];
           }
 
-          v33 = [v31 countByEnumeratingWithState:&v44 objects:v57 count:16];
+          v33 = [_outgoingViewControllerKeys countByEnumeratingWithState:&v44 objects:v57 count:16];
         }
 
         while (v33);
@@ -4459,8 +4459,8 @@ LABEL_9:
 
       pageCurl = self->_pageCurl;
       v38 = self->_panGestureRecognizer;
-      v21 = [(UIViewController *)self view];
-      [(UIPanGestureRecognizer *)v38 locationInView:v21];
+      view2 = [(UIViewController *)self view];
+      [(UIPanGestureRecognizer *)v38 locationInView:view2];
       [_UIPageCurl _abortManualCurlAtLocation:"_abortManualCurlAtLocation:withSuggestedVelocity:" withSuggestedVelocity:?];
 LABEL_49:
 
@@ -4470,14 +4470,14 @@ LABEL_49:
       goto LABEL_5;
     }
 
-    v42 = v4;
+    v42 = gestureCopy;
     v43 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v13 = [objc_opt_class() _incomingViewControllerKeys];
-    v14 = [v13 countByEnumeratingWithState:&v52 objects:v59 count:16];
+    _incomingViewControllerKeys2 = [objc_opt_class() _incomingViewControllerKeys];
+    v14 = [_incomingViewControllerKeys2 countByEnumeratingWithState:&v52 objects:v59 count:16];
     if (!v14)
     {
       goto LABEL_33;
@@ -4491,7 +4491,7 @@ LABEL_19:
     {
       if (*v53 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(_incomingViewControllerKeys2);
       }
 
       v18 = *(*(&v52 + 1) + 8 * v17);
@@ -4531,20 +4531,20 @@ LABEL_31:
 
       if (v15 == ++v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v52 objects:v59 count:16];
+        v15 = [_incomingViewControllerKeys2 countByEnumeratingWithState:&v52 objects:v59 count:16];
         if (!v15)
         {
 LABEL_33:
 
-          v21 = v43;
+          view2 = v43;
           [(UIPageViewController *)self _setViewControllers:v43];
           v22 = self->_pageCurl;
           v23 = self->_panGestureRecognizer;
-          v24 = [(UIViewController *)self view];
-          [(UIPanGestureRecognizer *)v23 locationInView:v24];
+          view3 = [(UIViewController *)self view];
+          [(UIPanGestureRecognizer *)v23 locationInView:view3];
           [_UIPageCurl _completeManualCurlAtLocation:v22 withSuggestedVelocity:"_completeManualCurlAtLocation:withSuggestedVelocity:"];
 
-          v4 = v42;
+          gestureCopy = v42;
           goto LABEL_49;
         }
 
@@ -4557,8 +4557,8 @@ LABEL_33:
   {
     v10 = self->_pageCurl;
     v11 = self->_panGestureRecognizer;
-    v12 = [(UIViewController *)self view];
-    [(UIPanGestureRecognizer *)v11 locationInView:v12];
+    view4 = [(UIViewController *)self view];
+    [(UIPanGestureRecognizer *)v11 locationInView:view4];
     [(_UIPageCurl *)v10 _updateManualCurlToLocation:?];
 
     goto LABEL_5;
@@ -4582,12 +4582,12 @@ LABEL_33:
 LABEL_5:
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
   tapGestureRecognizer = self->_tapGestureRecognizer;
   if (tapGestureRecognizer)
   {
-    v5 = tapGestureRecognizer == a3;
+    v5 = tapGestureRecognizer == gesture;
   }
 
   else
@@ -4606,25 +4606,25 @@ LABEL_5:
   }
 }
 
-- (void)_handlePagingInDirection:(int64_t)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_handlePagingInDirection:(int64_t)direction animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = [(UIPageViewController *)self _scrollView];
-  if ([v9 isTracking])
+  animatedCopy = animated;
+  completionCopy = completion;
+  _scrollView = [(UIPageViewController *)self _scrollView];
+  if ([_scrollView isTracking])
   {
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v10 = [(UIPageViewController *)self _scrollView];
-  v11 = [v10 isDecelerating];
+  _scrollView2 = [(UIPageViewController *)self _scrollView];
+  isDecelerating = [_scrollView2 isDecelerating];
 
-  if ((v11 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v9 = [(NSArray *)self->_viewControllers _ui_onlyObject];
-    v12 = [(UIPageViewController *)self _viewControllerBefore:a3 == 1 viewController:v9];
+    _scrollView = [(NSArray *)self->_viewControllers _ui_onlyObject];
+    v12 = [(UIPageViewController *)self _viewControllerBefore:direction == 1 viewController:_scrollView];
     if (v12)
     {
       v13 = [MEMORY[0x1E695DEC8] arrayWithObject:v12];
@@ -4640,9 +4640,9 @@ LABEL_8:
       v15[2] = __69__UIPageViewController__handlePagingInDirection_animated_completion___block_invoke;
       v15[3] = &unk_1E7103058;
       objc_copyWeak(&v18, &location);
-      v16 = v9;
-      v17 = v8;
-      [(UIPageViewController *)self _setViewControllers:v13 withScrollInDirection:a3 animated:v5 completion:v15];
+      v16 = _scrollView;
+      v17 = completionCopy;
+      [(UIPageViewController *)self _setViewControllers:v13 withScrollInDirection:direction animated:animatedCopy completion:v15];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -4680,19 +4680,19 @@ void __69__UIPageViewController__handlePagingInDirection_animated_completion___b
 {
   if ([(UIPageViewController *)self _isPageControlVisible])
   {
-    v3 = [(UIPageViewController *)self _pageControl];
-    v4 = [v3 numberOfPages];
+    _pageControl = [(UIPageViewController *)self _pageControl];
+    numberOfPages = [_pageControl numberOfPages];
 
-    v5 = [(UIPageViewController *)self _pageControl];
-    v6 = [v5 currentPage];
+    _pageControl2 = [(UIPageViewController *)self _pageControl];
+    currentPage = [_pageControl2 currentPage];
 
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v8 = [WeakRetained presentationCountForPageViewController:self];
     v9 = [WeakRetained presentationIndexForPageViewController:self];
     v10 = v9;
-    if (v4 == v8)
+    if (numberOfPages == v8)
     {
-      if (v9 < 0 || v6 == v9 || v4 < 1 || v9 >= v4)
+      if (v9 < 0 || currentPage == v9 || numberOfPages < 1 || v9 >= numberOfPages)
       {
         goto LABEL_12;
       }
@@ -4703,11 +4703,11 @@ void __69__UIPageViewController__handlePagingInDirection_animated_completion___b
       goto LABEL_12;
     }
 
-    v11 = [(UIPageViewController *)self _pageControl];
-    [v11 setNumberOfPages:v8];
+    _pageControl3 = [(UIPageViewController *)self _pageControl];
+    [_pageControl3 setNumberOfPages:v8];
 
-    v12 = [(UIPageViewController *)self _pageControl];
-    [v12 setCurrentPage:v10];
+    _pageControl4 = [(UIPageViewController *)self _pageControl];
+    [_pageControl4 setCurrentPage:v10];
 
 LABEL_12:
   }
@@ -4715,41 +4715,41 @@ LABEL_12:
   self->_pageControlRequiresValidation = 0;
 }
 
-- (void)queuingScrollView:(id)a3 willManuallyScroll:(BOOL)a4 toRevealView:(id)a5 concealView:(id)a6 animated:(BOOL)a7
+- (void)queuingScrollView:(id)view willManuallyScroll:(BOOL)scroll toRevealView:(id)revealView concealView:(id)concealView animated:(BOOL)animated
 {
-  v7 = a7;
-  v9 = a4;
+  animatedCopy = animated;
+  scrollCopy = scroll;
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = [UIViewController viewControllerForView:v12];
+  revealViewCopy = revealView;
+  concealViewCopy = concealView;
+  v14 = [UIViewController viewControllerForView:revealViewCopy];
   if (!v14)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1976 description:{@"No view controller managing revealed view %@", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1976 description:{@"No view controller managing revealed view %@", revealViewCopy}];
   }
 
   if (![(NSHashTable *)self->_cachedViewControllersForScroll containsObject:v14])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1977 description:{@"Unexpected view controller: %@", v14}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1977 description:{@"Unexpected view controller: %@", v14}];
   }
 
-  v15 = [UIViewController viewControllerForView:v13];
+  v15 = [UIViewController viewControllerForView:concealViewCopy];
   if (v15 && ![(NSHashTable *)self->_cachedViewControllersForScroll containsObject:v15])
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v28 = v27 = v12;
+    v28 = v27 = revealViewCopy;
     [v28 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:1979 description:{@"Unexpected view controller: %@", v15}];
 
-    v12 = v27;
-    if (!v9)
+    revealViewCopy = v27;
+    if (!scrollCopy)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v9)
+  else if (!scrollCopy)
   {
     goto LABEL_11;
   }
@@ -4765,8 +4765,8 @@ LABEL_11:
   if ([(UIPageViewController *)self _shouldGenerateAppearanceCallbacksWhenScrolling])
   {
     v29 = v15;
-    v30 = v12;
-    [(UIPageViewController *)self _child:v14 beginAppearanceTransitionIfPossible:1 animated:v7];
+    v30 = revealViewCopy;
+    [(UIPageViewController *)self _child:v14 beginAppearanceTransitionIfPossible:1 animated:animatedCopy];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -4789,9 +4789,9 @@ LABEL_11:
           v23 = *(*(&v31 + 1) + 8 * i);
           if (v23 != v14)
           {
-            if (![*(*(&v31 + 1) + 8 * i) isViewLoaded] || (objc_msgSend(v23, "view"), v24 = objc_claimAutoreleasedReturnValue(), v24, v24 == v13))
+            if (![*(*(&v31 + 1) + 8 * i) isViewLoaded] || (objc_msgSend(v23, "view"), v24 = objc_claimAutoreleasedReturnValue(), v24, v24 == concealViewCopy))
             {
-              [(UIPageViewController *)self _child:v23 beginAppearanceTransitionIfPossible:0 animated:v7];
+              [(UIPageViewController *)self _child:v23 beginAppearanceTransitionIfPossible:0 animated:animatedCopy];
             }
 
             else
@@ -4808,7 +4808,7 @@ LABEL_11:
     }
 
     v15 = v29;
-    v12 = v30;
+    revealViewCopy = v30;
   }
 }
 
@@ -4836,46 +4836,46 @@ LABEL_11:
   return v5 & 1;
 }
 
-- (void)queuingScrollView:(id)a3 didCommitManualScroll:(BOOL)a4 toRevealView:(id)a5 concealView:(id)a6 direction:(int64_t)a7 animated:(BOOL)a8 canComplete:(BOOL)a9
+- (void)queuingScrollView:(id)view didCommitManualScroll:(BOOL)scroll toRevealView:(id)revealView concealView:(id)concealView direction:(int64_t)direction animated:(BOOL)animated canComplete:(BOOL)complete
 {
-  v9 = a8;
-  v11 = a4;
+  animatedCopy = animated;
+  scrollCopy = scroll;
   v53 = *MEMORY[0x1E69E9840];
-  v13 = a5;
-  v14 = a6;
-  v15 = [(NSArray *)self->_viewControllers _ui_onlyObject];
-  v16 = [UIViewController viewControllerForView:v13];
+  revealViewCopy = revealView;
+  concealViewCopy = concealView;
+  _ui_onlyObject = [(NSArray *)self->_viewControllers _ui_onlyObject];
+  v16 = [UIViewController viewControllerForView:revealViewCopy];
   if (!v16)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2010 description:{@"No view controller managing revealed view %@", v13}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2010 description:{@"No view controller managing revealed view %@", revealViewCopy}];
   }
 
-  if (v11 && a9)
+  if (scrollCopy && complete)
   {
     v17 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v16, 0}];
     viewControllers = self->_viewControllers;
     self->_viewControllers = v17;
   }
 
-  v19 = [UIViewController viewControllerForView:v14];
+  v19 = [UIViewController viewControllerForView:concealViewCopy];
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v21 = v20;
-  v45 = v11;
-  if (v11 && v19)
+  v45 = scrollCopy;
+  if (scrollCopy && v19)
   {
     [v20 setObject:v19 forKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
   }
 
   v47 = v21;
   objc_storeStrong(&self->_incomingAndOutgoingViewControllersForManualTransition, v21);
-  v22 = v15;
+  v22 = _ui_onlyObject;
   if ([(UIPageViewController *)self _shouldGenerateAppearanceCallbacksWhenScrolling])
   {
     v41 = v19;
-    v42 = v15;
-    v43 = v13;
-    [(UIPageViewController *)self _child:v16 beginAppearanceTransitionIfPossible:1 animated:v9];
+    v42 = _ui_onlyObject;
+    v43 = revealViewCopy;
+    [(UIPageViewController *)self _child:v16 beginAppearanceTransitionIfPossible:1 animated:animatedCopy];
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
@@ -4898,9 +4898,9 @@ LABEL_11:
           v28 = *(*(&v48 + 1) + 8 * i);
           if (v28 != v16)
           {
-            if (![*(*(&v48 + 1) + 8 * i) isViewLoaded] || (objc_msgSend(v28, "view"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29 == v14))
+            if (![*(*(&v48 + 1) + 8 * i) isViewLoaded] || (objc_msgSend(v28, "view"), v29 = objc_claimAutoreleasedReturnValue(), v29, v29 == concealViewCopy))
             {
-              [(UIPageViewController *)self _child:v28 beginAppearanceTransitionIfPossible:0 animated:v9];
+              [(UIPageViewController *)self _child:v28 beginAppearanceTransitionIfPossible:0 animated:animatedCopy];
             }
 
             else
@@ -4917,14 +4917,14 @@ LABEL_11:
     }
 
     v22 = v42;
-    v13 = v43;
+    revealViewCopy = v43;
     v19 = v41;
   }
 
-  v30 = [(UIPageViewController *)self _pageControl];
-  v31 = [v30 numberOfPages];
+  _pageControl = [(UIPageViewController *)self _pageControl];
+  numberOfPages = [_pageControl numberOfPages];
 
-  if (a9 && [(UIPageViewController *)self _isPageControlVisible]&& v31)
+  if (complete && [(UIPageViewController *)self _isPageControlVisible]&& numberOfPages)
   {
     if (self->_pageControlRequiresValidation)
     {
@@ -4936,43 +4936,43 @@ LABEL_11:
       v32 = v19;
       if ([(UIPageViewController *)self _shouldFlipInRightToLeft])
       {
-        v33 = a7 == 0;
+        directionCopy = direction == 0;
       }
 
       else
       {
-        v33 = a7;
+        directionCopy = direction;
       }
 
-      v34 = [(UIPageViewController *)self _pageControl];
-      v35 = [v34 currentPage];
-      v36 = v35 - 1;
-      if (!v33)
+      _pageControl2 = [(UIPageViewController *)self _pageControl];
+      currentPage = [_pageControl2 currentPage];
+      v36 = currentPage - 1;
+      if (!directionCopy)
       {
-        v36 = v35 + 1;
+        v36 = currentPage + 1;
       }
 
-      v37 = v36 % v31;
+      v37 = v36 % numberOfPages;
 
-      v38 = [(UIPageViewController *)self _pageControl];
-      v39 = (v31 & (v37 >> 63)) + v37;
+      _pageControl3 = [(UIPageViewController *)self _pageControl];
+      v39 = (numberOfPages & (v37 >> 63)) + v37;
       v19 = v32;
-      [v38 setCurrentPage:v39];
+      [_pageControl3 setCurrentPage:v39];
     }
   }
 }
 
-- (void)queuingScrollView:(id)a3 didEndManualScroll:(BOOL)a4 toRevealView:(id)a5 direction:(int64_t)a6 animated:(BOOL)a7 didFinish:(BOOL)a8 didComplete:(BOOL)a9
+- (void)queuingScrollView:(id)view didEndManualScroll:(BOOL)scroll toRevealView:(id)revealView direction:(int64_t)direction animated:(BOOL)animated didFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  v9 = a8;
-  v10 = a7;
-  v12 = a4;
+  finishCopy = finish;
+  animatedCopy = animated;
+  scrollCopy = scroll;
   v39 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a5;
-  if (!v12 || a9)
+  viewCopy = view;
+  revealViewCopy = revealView;
+  if (!scrollCopy || complete)
   {
-    v17 = [UIViewController viewControllerForView:v16];
+    v17 = [UIViewController viewControllerForView:revealViewCopy];
   }
 
   else
@@ -4983,16 +4983,16 @@ LABEL_11:
   v18 = v17;
   if (!v17)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2064 description:{@"No view controller managing visible view %@", v16}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2064 description:{@"No view controller managing visible view %@", revealViewCopy}];
   }
 
-  v32 = v16;
-  v33 = v15;
+  v32 = revealViewCopy;
+  v33 = viewCopy;
   if ([(UIPageViewController *)self _shouldGenerateAppearanceCallbacksWhenScrolling])
   {
-    [(UIPageViewController *)self _child:v18 beginAppearanceTransitionIfPossible:1 animated:v10];
-    if (v9)
+    [(UIPageViewController *)self _child:v18 beginAppearanceTransitionIfPossible:1 animated:animatedCopy];
+    if (finishCopy)
     {
       [(UIPageViewController *)self _child:v18 endAppearanceTransitionIfPossible:1];
     }
@@ -5020,8 +5020,8 @@ LABEL_11:
         v24 = *(*(&v34 + 1) + 8 * i);
         if (v24 != v18)
         {
-          [(UIPageViewController *)self _child:*(*(&v34 + 1) + 8 * i) beginAppearanceTransitionIfPossible:0 animated:v10];
-          if (v9)
+          [(UIPageViewController *)self _child:*(*(&v34 + 1) + 8 * i) beginAppearanceTransitionIfPossible:0 animated:animatedCopy];
+          if (finishCopy)
           {
             [(UIPageViewController *)self _child:v24 endAppearanceTransitionIfPossible:0];
           }
@@ -5034,12 +5034,12 @@ LABEL_11:
     while (v21);
   }
 
-  if (v12 && (*&self->_delegateFlags & 2) != 0)
+  if (scrollCopy && (*&self->_delegateFlags & 2) != 0)
   {
     v25 = [(NSDictionary *)self->_incomingAndOutgoingViewControllersForManualTransition objectForKey:@"UIPageCurlControllerOutgoingLeftViewControllerKey"];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v25, 0}];
-    [WeakRetained pageViewController:self didFinishAnimating:v10 previousViewControllers:v27 transitionCompleted:a9];
+    [WeakRetained pageViewController:self didFinishAnimating:animatedCopy previousViewControllers:v27 transitionCompleted:complete];
 
     incomingAndOutgoingViewControllersForManualTransition = self->_incomingAndOutgoingViewControllersForManualTransition;
     self->_incomingAndOutgoingViewControllersForManualTransition = 0;
@@ -5047,16 +5047,16 @@ LABEL_11:
 
   if ([(UIPageViewController *)self _isPageControlVisible])
   {
-    v29 = [(UIPageViewController *)self _pageControl];
-    if (![v29 numberOfPages] || v12 || a9)
+    _pageControl = [(UIPageViewController *)self _pageControl];
+    if (![_pageControl numberOfPages] || scrollCopy || complete)
     {
     }
 
     else
     {
-      v30 = [v33 isManualScrollInProgress];
+      isManualScrollInProgress = [v33 isManualScrollInProgress];
 
-      if (v30)
+      if (isManualScrollInProgress)
       {
         self->_pageControlRequiresValidation = 1;
       }
@@ -5064,20 +5064,20 @@ LABEL_11:
   }
 }
 
-- (void)queuingScrollView:(id)a3 didBailoutOfScrollAndRevealedView:(id)a4
+- (void)queuingScrollView:(id)view didBailoutOfScrollAndRevealedView:(id)revealedView
 {
-  v12 = a4;
+  revealedViewCopy = revealedView;
   v6 = [UIViewController viewControllerForView:?];
   if (!v6)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2093 description:{@"No view controller managing visible view %@", v12}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2093 description:{@"No view controller managing visible view %@", revealedViewCopy}];
   }
 
-  v7 = [(UIPageViewController *)self _viewControllers];
-  v8 = [v7 _ui_onlyObject];
+  _viewControllers = [(UIPageViewController *)self _viewControllers];
+  _ui_onlyObject = [_viewControllers _ui_onlyObject];
 
-  if (v8 != v6)
+  if (_ui_onlyObject != v6)
   {
     v9 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v6, 0}];
     viewControllers = self->_viewControllers;
@@ -5087,7 +5087,7 @@ LABEL_11:
   [(UIPageViewController *)self _updatePageControlViaDataSourceIfNecessary];
 }
 
-- (void)queuingScrollViewDidFinishScrolling:(id)a3
+- (void)queuingScrollViewDidFinishScrolling:(id)scrolling
 {
   if ((*&self->_delegateFlags & 4) != 0)
   {
@@ -5096,12 +5096,12 @@ LABEL_11:
   }
 }
 
-- (id)_queuingScrollView:(id)a3 viewBefore:(BOOL)a4 view:(id)a5
+- (id)_queuingScrollView:(id)view viewBefore:(BOOL)before view:(id)a5
 {
-  v6 = a4;
-  v8 = a3;
+  beforeCopy = before;
+  viewCopy = view;
   v9 = a5;
-  if (([v8 isTracking] & 1) != 0 || objc_msgSend(v8, "isManualScrollInProgress"))
+  if (([viewCopy isTracking] & 1) != 0 || objc_msgSend(viewCopy, "isManualScrollInProgress"))
   {
     v10 = 0;
     v11 = 1;
@@ -5122,7 +5122,7 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    v6 = v6 ^ 1;
+    beforeCopy = beforeCopy ^ 1;
   }
 
   else if ((v11 & 1) == 0)
@@ -5130,14 +5130,14 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v14 = [(UIPageViewController *)self _viewControllerBefore:v6 viewController:v13];
+  v14 = [(UIPageViewController *)self _viewControllerBefore:beforeCopy viewController:v13];
   if (v14)
   {
     v15 = v14;
     [(UIPageViewController *)self _cacheViewControllerForScroll:v14];
-    v16 = [v15 view];
+    view = [v15 view];
 
-    v12 = v16;
+    v12 = view;
   }
 
 LABEL_11:
@@ -5145,74 +5145,74 @@ LABEL_11:
   return v12;
 }
 
-- (void)_flushViewController:(id)a3 animated:(BOOL)a4
+- (void)_flushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v11 = v7;
-  if (!v7)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  v11 = controllerCopy;
+  if (!controllerCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2135 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2135 description:{@"Invalid parameter not satisfying: %@", @"viewController"}];
 
-    v7 = 0;
+    controllerCopy = 0;
   }
 
-  if (![(NSHashTable *)self->_cachedViewControllersForScroll containsObject:v7])
+  if (![(NSHashTable *)self->_cachedViewControllersForScroll containsObject:controllerCopy])
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    v10 = [v11 view];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2136 description:{@"Don't know about flushed view %@", v10}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    view = [v11 view];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIPageViewController.m" lineNumber:2136 description:{@"Don't know about flushed view %@", view}];
   }
 
-  [(UIPageViewController *)self _child:v11 beginAppearanceTransitionIfPossible:0 animated:v4];
-  [(UIPageViewController *)self _child:v11 endAppearanceTransitionIfPossible:v4];
+  [(UIPageViewController *)self _child:v11 beginAppearanceTransitionIfPossible:0 animated:animatedCopy];
+  [(UIPageViewController *)self _child:v11 endAppearanceTransitionIfPossible:animatedCopy];
   [v11 willMoveToParentViewController:0];
   [(UIViewController *)self removeChildViewController:v11];
   [(NSHashTable *)self->_cachedViewControllersForScroll removeObject:v11];
 }
 
-- (void)queuingScrollView:(id)a3 didFlushView:(id)a4 animated:(BOOL)a5
+- (void)queuingScrollView:(id)view didFlushView:(id)flushView animated:(BOOL)animated
 {
-  v5 = a5;
-  v9 = [UIViewController viewControllerForView:a4];
+  animatedCopy = animated;
+  v9 = [UIViewController viewControllerForView:flushView];
   if (v9)
   {
-    v7 = [(UIPageViewController *)self viewControllers];
-    v8 = [v7 indexOfObjectIdenticalTo:v9];
+    viewControllers = [(UIPageViewController *)self viewControllers];
+    v8 = [viewControllers indexOfObjectIdenticalTo:v9];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(UIPageViewController *)self _flushViewController:v9 animated:v5];
+      [(UIPageViewController *)self _flushViewController:v9 animated:animatedCopy];
     }
   }
 }
 
-- (void)queuingScrollView:(id)a3 attemptToPageInDirection:(int64_t)a4
+- (void)queuingScrollView:(id)view attemptToPageInDirection:(int64_t)direction
 {
-  v8 = [(UIPageViewController *)self _pageControl];
-  v6 = [v8 currentPage];
-  if (a4)
+  _pageControl = [(UIPageViewController *)self _pageControl];
+  currentPage = [_pageControl currentPage];
+  if (direction)
   {
-    v7 = v6 - 1;
+    v7 = currentPage - 1;
   }
 
   else
   {
-    v7 = v6 + 1;
+    v7 = currentPage + 1;
   }
 
-  [v8 setCurrentPage:v7];
-  [(UIPageViewController *)self _handlePagingInDirection:a4 animated:1 completion:0];
+  [_pageControl setCurrentPage:v7];
+  [(UIPageViewController *)self _handlePagingInDirection:direction animated:1 completion:0];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if ((*&self->_delegateFlags & 8) != 0)
   {
-    v5 = a3;
+    scrollCopy = scroll;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [v5 contentOffset];
+    [scrollCopy contentOffset];
     v7 = v6;
     v9 = v8;
 
@@ -5220,27 +5220,27 @@ LABEL_11:
   }
 }
 
-- (void)_pageControlValueChanged:(id)a3
+- (void)_pageControlValueChanged:(id)changed
 {
-  v11 = a3;
-  v4 = [(UIPageViewController *)self _scrollView];
-  if ([v4 isTracking])
+  changedCopy = changed;
+  _scrollView = [(UIPageViewController *)self _scrollView];
+  if ([_scrollView isTracking])
   {
 
     goto LABEL_17;
   }
 
-  v5 = [(UIPageViewController *)self _scrollView];
-  v6 = [v5 isDecelerating];
+  _scrollView2 = [(UIPageViewController *)self _scrollView];
+  isDecelerating = [_scrollView2 isDecelerating];
 
-  if ((v6 & 1) == 0)
+  if ((isDecelerating & 1) == 0)
   {
-    v7 = [v11 currentPage];
-    v8 = [v11 previousPage];
-    v9 = [v11 interactionState];
+    currentPage = [changedCopy currentPage];
+    previousPage = [changedCopy previousPage];
+    interactionState = [changedCopy interactionState];
     if ([(UIPageViewController *)self _shouldFlipInRightToLeft])
     {
-      if (v7 < v8)
+      if (currentPage < previousPage)
       {
         v10 = 0;
       }
@@ -5250,18 +5250,18 @@ LABEL_11:
         v10 = -1;
       }
 
-      if (v7 > v8)
+      if (currentPage > previousPage)
       {
         v10 = 1;
 LABEL_16:
-        [(UIPageViewController *)self _handlePagingInDirection:v10 animated:v9 == 1 completion:0];
+        [(UIPageViewController *)self _handlePagingInDirection:v10 animated:interactionState == 1 completion:0];
         goto LABEL_17;
       }
     }
 
     else
     {
-      if (v7 < v8)
+      if (currentPage < previousPage)
       {
         v10 = 1;
       }
@@ -5271,7 +5271,7 @@ LABEL_16:
         v10 = -1;
       }
 
-      if (v7 > v8)
+      if (currentPage > previousPage)
       {
         v10 = 0;
         goto LABEL_16;

@@ -1,49 +1,49 @@
 @interface AVPlayerItemRenderedLegibleOutput
-- (AVPlayerItemRenderedLegibleOutput)initWithDependencyFactory:(id)a3 videoDisplaySize:(CGSize)a4;
-- (AVPlayerItemRenderedLegibleOutput)initWithVideoDisplaySize:(CGSize)a3;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (AVPlayerItemRenderedLegibleOutput)initWithDependencyFactory:(id)factory videoDisplaySize:(CGSize)size;
+- (AVPlayerItemRenderedLegibleOutput)initWithVideoDisplaySize:(CGSize)size;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (BOOL)suppressesPlayerRendering;
 - (CGSize)videoDisplaySize;
 - (double)advanceIntervalForDelegateInvocation;
 - (id)_figRenderedLegibleOutputsDictionaryOptions;
 - (void)_collectUncollectables;
 - (void)_detachFromPlayerItem;
-- (void)_pushRenderedCaptionImages:(id)a3 atItemTime:(id *)a4;
+- (void)_pushRenderedCaptionImages:(id)images atItemTime:(id *)time;
 - (void)_signalFlush;
 - (void)dealloc;
-- (void)setAdvanceIntervalForDelegateInvocation:(double)a3;
-- (void)setDelegate:(id)a3 queue:(id)a4;
-- (void)setSuppressesPlayerRendering:(BOOL)a3;
-- (void)setVideoDisplaySize:(CGSize)a3;
+- (void)setAdvanceIntervalForDelegateInvocation:(double)invocation;
+- (void)setDelegate:(id)delegate queue:(id)queue;
+- (void)setSuppressesPlayerRendering:(BOOL)rendering;
+- (void)setVideoDisplaySize:(CGSize)size;
 @end
 
 @implementation AVPlayerItemRenderedLegibleOutput
 
-- (AVPlayerItemRenderedLegibleOutput)initWithVideoDisplaySize:(CGSize)a3
+- (AVPlayerItemRenderedLegibleOutput)initWithVideoDisplaySize:(CGSize)size
 {
-  if (a3.width == 0.0 || (height = a3.height, a3.height == 0.0))
+  if (size.width == 0.0 || (height = size.height, size.height == 0.0))
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"AVPlayerItemRenderedLegibleOutput shall be initialized with a valid videoDisplaySize having non-zero height and width", v3, v4, v5, v6, v7, v14), 0}];
     objc_exception_throw(v13);
   }
 
-  width = a3.width;
+  width = size.width;
   v11 = objc_alloc_init(AVPlayerItemRenderedLegibleOutputRealDependencyFactory);
 
   return [(AVPlayerItemRenderedLegibleOutput *)self initWithDependencyFactory:v11 videoDisplaySize:width, height];
 }
 
-- (AVPlayerItemRenderedLegibleOutput)initWithDependencyFactory:(id)a3 videoDisplaySize:(CGSize)a4
+- (AVPlayerItemRenderedLegibleOutput)initWithDependencyFactory:(id)factory videoDisplaySize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = AVPlayerItemRenderedLegibleOutput;
   v7 = [(AVPlayerItemOutput *)&v9 init];
   if (v7)
   {
     v7->_delegateStorage = objc_alloc_init(AVWeakReferencingDelegateStorage);
-    v7->_dependencyFactory = a3;
+    v7->_dependencyFactory = factory;
     v7->_ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avplayeritemrenderedlegibleoutput.ivars");
     v7->_videoDisplaySize.width = width;
     v7->_videoDisplaySize.height = height;
@@ -70,7 +70,7 @@
   [(AVPlayerItemOutput *)&v3 dealloc];
 }
 
-- (void)_pushRenderedCaptionImages:(id)a3 atItemTime:(id *)a4
+- (void)_pushRenderedCaptionImages:(id)images atItemTime:(id *)time
 {
   delegateStorage = self->_delegateStorage;
   v5[0] = MEMORY[0x1E69E9820];
@@ -78,8 +78,8 @@
   v5[2] = __75__AVPlayerItemRenderedLegibleOutput__pushRenderedCaptionImages_atItemTime___block_invoke;
   v5[3] = &unk_1E74646E0;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = *a4;
+  v5[5] = images;
+  v6 = *time;
   [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:v5];
 }
 
@@ -122,13 +122,13 @@ uint64_t __49__AVPlayerItemRenderedLegibleOutput__signalFlush__block_invoke(uint
   return result;
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if (!a3)
+  if (!item)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "playerItem != nil"), 0}];
     objc_exception_throw(v13);
@@ -175,7 +175,7 @@ id __57__AVPlayerItemRenderedLegibleOutput__attachToPlayerItem___block_invoke(id
 
 - (id)_figRenderedLegibleOutputsDictionaryOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   [(AVPlayerItemRenderedLegibleOutput *)self advanceIntervalForDelegateInvocation];
   v5 = v4;
   [(AVPlayerItemRenderedLegibleOutput *)self videoDisplaySize];
@@ -183,23 +183,23 @@ id __57__AVPlayerItemRenderedLegibleOutput__attachToPlayerItem___block_invoke(id
   if (v5 != 0.0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-    [v3 setObject:v7 forKey:*MEMORY[0x1E6972C38]];
+    [dictionary setObject:v7 forKey:*MEMORY[0x1E6972C38]];
   }
 
-  [v3 setObject:DictionaryRepresentation forKey:*MEMORY[0x1E6972C40]];
+  [dictionary setObject:DictionaryRepresentation forKey:*MEMORY[0x1E6972C40]];
   if (DictionaryRepresentation)
   {
     CFRelease(DictionaryRepresentation);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setDelegate:(id)a3 queue:(id)a4
+- (void)setDelegate:(id)delegate queue:(id)queue
 {
-  if (a3 | a4 && (!a3 || !a4))
+  if (delegate | queue && (!delegate || !queue))
   {
-    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, "(newDelegate == nil && newDelegateQueue == NULL) || (newDelegate != nil && newDelegateQueue != NULL)"), 0}];
+    v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", queue, v4, v5, v6, v7, "(newDelegate == nil && newDelegateQueue == NULL) || (newDelegate != nil && newDelegateQueue != NULL)"), 0}];
     objc_exception_throw(v10);
   }
 
@@ -234,7 +234,7 @@ double __73__AVPlayerItemRenderedLegibleOutput_advanceIntervalForDelegateInvocat
   return result;
 }
 
-- (void)setAdvanceIntervalForDelegateInvocation:(double)a3
+- (void)setAdvanceIntervalForDelegateInvocation:(double)invocation
 {
   v11 = 0;
   v12 = &v11;
@@ -251,7 +251,7 @@ double __73__AVPlayerItemRenderedLegibleOutput_advanceIntervalForDelegateInvocat
   v4[1] = 3221225472;
   v4[2] = __77__AVPlayerItemRenderedLegibleOutput_setAdvanceIntervalForDelegateInvocation___block_invoke;
   v4[3] = &unk_1E7463C28;
-  *&v4[7] = a3;
+  *&v4[7] = invocation;
   v4[4] = self;
   v4[5] = &v11;
   v4[6] = &v5;
@@ -293,7 +293,7 @@ double __77__AVPlayerItemRenderedLegibleOutput_setAdvanceIntervalForDelegateInvo
   return v3;
 }
 
-- (void)setSuppressesPlayerRendering:(BOOL)a3
+- (void)setSuppressesPlayerRendering:(BOOL)rendering
 {
   v13 = 0;
   v14 = &v13;
@@ -312,7 +312,7 @@ double __77__AVPlayerItemRenderedLegibleOutput_setAdvanceIntervalForDelegateInvo
   v5[3] = &unk_1E7464708;
   v5[4] = self;
   v5[5] = &v13;
-  v6 = a3;
+  renderingCopy = rendering;
   v5[6] = &v7;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v5);
   if (*(v14 + 24) == 1)
@@ -365,9 +365,9 @@ __n128 __53__AVPlayerItemRenderedLegibleOutput_videoDisplaySize__block_invoke(ui
   return result;
 }
 
-- (void)setVideoDisplaySize:(CGSize)a3
+- (void)setVideoDisplaySize:(CGSize)size
 {
-  if (a3.width == 0.0 || a3.height == 0.0)
+  if (size.width == 0.0 || size.height == 0.0)
   {
     v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"videoDisplaySize for AVPlayerItemRenderedLegibleOutput shall have non-zero height and width", v3, v4, v5, v6, v7, v10), 0}];
     objc_exception_throw(v9);
@@ -390,7 +390,7 @@ __n128 __53__AVPlayerItemRenderedLegibleOutput_videoDisplaySize__block_invoke(ui
   v11[3] = &unk_1E7464730;
   v11[4] = self;
   v11[5] = &v19;
-  v12 = a3;
+  sizeCopy = size;
   v11[6] = &v13;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v11);
   if (*(v20 + 24) == 1)

@@ -1,11 +1,11 @@
 @interface STHorizontalDivider
-- (STHorizontalDivider)initWithTintColor:(id)a3;
+- (STHorizontalDivider)initWithTintColor:(id)color;
 - (UIImage)horizontalLineImage;
 @end
 
 @implementation STHorizontalDivider
 
-- (STHorizontalDivider)initWithTintColor:(id)a3
+- (STHorizontalDivider)initWithTintColor:(id)color
 {
   v42[6] = *MEMORY[0x277D85DE8];
   v41.receiver = self;
@@ -14,20 +14,20 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = a3;
+  colorCopy = color;
   v8 = [(STHorizontalDivider *)&v41 initWithFrame:v3, v4, v5, v6];
   v9 = objc_alloc(MEMORY[0x277D755E8]);
-  v10 = [(STHorizontalDivider *)v8 horizontalLineImage];
-  v11 = [v9 initWithImage:v10];
+  horizontalLineImage = [(STHorizontalDivider *)v8 horizontalLineImage];
+  v11 = [v9 initWithImage:horizontalLineImage];
   horizontalLine = v8->_horizontalLine;
   v8->_horizontalLine = v11;
 
   [(UIImageView *)v8->_horizontalLine setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIImageView *)v8->_horizontalLine setTintColor:v7];
+  [(UIImageView *)v8->_horizontalLine setTintColor:colorCopy];
 
-  v13 = [(UIImageView *)v8->_horizontalLine trailingAnchor];
+  trailingAnchor = [(UIImageView *)v8->_horizontalLine trailingAnchor];
   horizontalLineTrailingAnchor = v8->_horizontalLineTrailingAnchor;
-  v8->_horizontalLineTrailingAnchor = v13;
+  v8->_horizontalLineTrailingAnchor = trailingAnchor;
 
   [(STHorizontalDivider *)v8 addSubview:v8->_horizontalLine];
   v15 = objc_opt_new();
@@ -38,8 +38,8 @@
   v17 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [(UILabel *)v8->_label setFont:v17];
 
-  v18 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [(UILabel *)v8->_label setTextColor:v18];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [(UILabel *)v8->_label setTextColor:tertiaryLabelColor];
 
   LODWORD(v19) = 1144750080;
   [(UILabel *)v8->_label setContentHuggingPriority:0 forAxis:v19];
@@ -47,28 +47,28 @@
   [(UILabel *)v8->_label setContentCompressionResistancePriority:0 forAxis:v20];
   [(STHorizontalDivider *)v8 addSubview:v8->_label];
   v33 = MEMORY[0x277CCAAD0];
-  v40 = [(UIImageView *)v8->_horizontalLine leadingAnchor];
-  v39 = [(STHorizontalDivider *)v8 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UIImageView *)v8->_horizontalLine leadingAnchor];
+  leadingAnchor2 = [(STHorizontalDivider *)v8 leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v38;
-  v37 = [(UIImageView *)v8->_horizontalLine centerYAnchor];
-  v36 = [(STHorizontalDivider *)v8 centerYAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  centerYAnchor = [(UIImageView *)v8->_horizontalLine centerYAnchor];
+  centerYAnchor2 = [(STHorizontalDivider *)v8 centerYAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v42[1] = v35;
-  v34 = [(UILabel *)v8->_label topAnchor];
-  v32 = [(STHorizontalDivider *)v8 topAnchor];
-  v31 = [v34 constraintEqualToAnchor:v32];
+  topAnchor = [(UILabel *)v8->_label topAnchor];
+  topAnchor2 = [(STHorizontalDivider *)v8 topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v31;
-  v21 = [(UILabel *)v8->_label leadingAnchor];
-  v22 = [v21 constraintEqualToAnchor:v8->_horizontalLineTrailingAnchor constant:4.0];
+  leadingAnchor3 = [(UILabel *)v8->_label leadingAnchor];
+  v22 = [leadingAnchor3 constraintEqualToAnchor:v8->_horizontalLineTrailingAnchor constant:4.0];
   v42[3] = v22;
-  v23 = [(UILabel *)v8->_label bottomAnchor];
-  v24 = [(STHorizontalDivider *)v8 bottomAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  bottomAnchor = [(UILabel *)v8->_label bottomAnchor];
+  bottomAnchor2 = [(STHorizontalDivider *)v8 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[4] = v25;
-  v26 = [(UILabel *)v8->_label trailingAnchor];
-  v27 = [(STHorizontalDivider *)v8 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor2 = [(UILabel *)v8->_label trailingAnchor];
+  trailingAnchor3 = [(STHorizontalDivider *)v8 trailingAnchor];
+  v28 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v42[5] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:6];
   [v33 activateConstraints:v29];

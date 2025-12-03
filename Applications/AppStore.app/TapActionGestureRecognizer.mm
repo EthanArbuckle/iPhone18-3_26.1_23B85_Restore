@@ -1,5 +1,5 @@
 @interface TapActionGestureRecognizer
-- (_TtC8AppStore26TapActionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC8AppStore26TapActionGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)execute;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002FD82C();
 }
 
-- (_TtC8AppStore26TapActionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC8AppStore26TapActionGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

@@ -1,101 +1,101 @@
 @interface _INPBPayloadConfirmation
-- (BOOL)isEqual:(id)a3;
-- (_INPBPayloadConfirmation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPayloadConfirmation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsReason:(id)a3;
-- (int)StringAsStartCallIntentContactsConfirmationReason:(id)a3;
+- (int)StringAsReason:(id)reason;
+- (int)StringAsStartCallIntentContactsConfirmationReason:(id)reason;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddTasksIntentTargetTaskListConfirmationReason:(int)a3;
-- (void)setHasAddTasksIntentTargetTaskListConfirmationReason:(BOOL)a3;
-- (void)setHasReason:(BOOL)a3;
-- (void)setHasStartCallIntentContactsConfirmationReason:(BOOL)a3;
-- (void)setReason:(int)a3;
-- (void)setSendAnnouncementIntentAnnouncementConfirmationReason:(int)a3;
-- (void)setStartCallIntentContactsConfirmationReason:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddTasksIntentTargetTaskListConfirmationReason:(int)reason;
+- (void)setHasAddTasksIntentTargetTaskListConfirmationReason:(BOOL)reason;
+- (void)setHasReason:(BOOL)reason;
+- (void)setHasStartCallIntentContactsConfirmationReason:(BOOL)reason;
+- (void)setReason:(int)reason;
+- (void)setSendAnnouncementIntentAnnouncementConfirmationReason:(int)reason;
+- (void)setStartCallIntentContactsConfirmationReason:(int)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPayloadConfirmation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason])
   {
-    v4 = [(_INPBPayloadConfirmation *)self sendAnnouncementIntentAnnouncementConfirmationReason];
-    if (v4 == 1)
+    sendAnnouncementIntentAnnouncementConfirmationReason = [(_INPBPayloadConfirmation *)self sendAnnouncementIntentAnnouncementConfirmationReason];
+    if (sendAnnouncementIntentAnnouncementConfirmationReason == 1)
     {
       v5 = @"DURATION_ABOVE_MAX_THRESHOLD";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", sendAnnouncementIntentAnnouncementConfirmationReason];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"announcementConfirmationReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"announcementConfirmationReason"];
   }
 
-  v6 = [(_INPBPayloadConfirmation *)self confirmationItem];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"confirmationItem"];
+  confirmationItem = [(_INPBPayloadConfirmation *)self confirmationItem];
+  dictionaryRepresentation = [confirmationItem dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"confirmationItem"];
 
   if ([(_INPBPayloadConfirmation *)self hasStartCallIntentContactsConfirmationReason])
   {
-    v8 = [(_INPBPayloadConfirmation *)self startCallIntentContactsConfirmationReason];
-    if ((v8 - 1) >= 5)
+    startCallIntentContactsConfirmationReason = [(_INPBPayloadConfirmation *)self startCallIntentContactsConfirmationReason];
+    if ((startCallIntentContactsConfirmationReason - 1) >= 5)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", startCallIntentContactsConfirmationReason];
     }
 
     else
     {
-      v9 = off_1E7281050[(v8 - 1)];
+      v9 = off_1E7281050[(startCallIntentContactsConfirmationReason - 1)];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"contactsConfirmationReason"];
+    [dictionary setObject:v9 forKeyedSubscript:@"contactsConfirmationReason"];
   }
 
   if ([(_INPBPayloadConfirmation *)self hasReason])
   {
-    v10 = [(_INPBPayloadConfirmation *)self reason];
-    if (v10 == 1)
+    reason = [(_INPBPayloadConfirmation *)self reason];
+    if (reason == 1)
     {
       v11 = @"ConfirmationReasonNone";
     }
 
-    else if (v10 == 1000)
+    else if (reason == 1000)
     {
       v11 = @"ConfirmationReasonExtension";
     }
 
     else
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", reason];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"reason"];
+    [dictionary setObject:v11 forKeyedSubscript:@"reason"];
   }
 
   if ([(_INPBPayloadConfirmation *)self hasAddTasksIntentTargetTaskListConfirmationReason])
   {
-    v12 = [(_INPBPayloadConfirmation *)self addTasksIntentTargetTaskListConfirmationReason];
-    if (v12 == 1)
+    addTasksIntentTargetTaskListConfirmationReason = [(_INPBPayloadConfirmation *)self addTasksIntentTargetTaskListConfirmationReason];
+    if (addTasksIntentTargetTaskListConfirmationReason == 1)
     {
       v13 = @"LIST_SHOULD_BE_CREATED";
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", addTasksIntentTargetTaskListConfirmationReason];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"targetTaskListConfirmationReason"];
+    [dictionary setObject:v13 forKeyedSubscript:@"targetTaskListConfirmationReason"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -144,44 +144,44 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = [(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason];
-  if (v5 != [v4 hasSendAnnouncementIntentAnnouncementConfirmationReason])
+  hasSendAnnouncementIntentAnnouncementConfirmationReason = [(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason];
+  if (hasSendAnnouncementIntentAnnouncementConfirmationReason != [equalCopy hasSendAnnouncementIntentAnnouncementConfirmationReason])
   {
     goto LABEL_21;
   }
 
   if ([(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason])
   {
-    if ([v4 hasSendAnnouncementIntentAnnouncementConfirmationReason])
+    if ([equalCopy hasSendAnnouncementIntentAnnouncementConfirmationReason])
     {
       sendAnnouncementIntentAnnouncementConfirmationReason = self->_sendAnnouncementIntentAnnouncementConfirmationReason;
-      if (sendAnnouncementIntentAnnouncementConfirmationReason != [v4 sendAnnouncementIntentAnnouncementConfirmationReason])
+      if (sendAnnouncementIntentAnnouncementConfirmationReason != [equalCopy sendAnnouncementIntentAnnouncementConfirmationReason])
       {
         goto LABEL_21;
       }
     }
   }
 
-  v7 = [(_INPBPayloadConfirmation *)self confirmationItem];
-  v8 = [v4 confirmationItem];
-  v9 = v8;
-  if ((v7 != 0) != (v8 == 0))
+  confirmationItem = [(_INPBPayloadConfirmation *)self confirmationItem];
+  confirmationItem2 = [equalCopy confirmationItem];
+  v9 = confirmationItem2;
+  if ((confirmationItem != 0) != (confirmationItem2 == 0))
   {
-    v10 = [(_INPBPayloadConfirmation *)self confirmationItem];
-    if (v10)
+    confirmationItem3 = [(_INPBPayloadConfirmation *)self confirmationItem];
+    if (confirmationItem3)
     {
-      v11 = v10;
-      v12 = [(_INPBPayloadConfirmation *)self confirmationItem];
-      v13 = [v4 confirmationItem];
-      v14 = [v12 isEqual:v13];
+      v11 = confirmationItem3;
+      confirmationItem4 = [(_INPBPayloadConfirmation *)self confirmationItem];
+      confirmationItem5 = [equalCopy confirmationItem];
+      v14 = [confirmationItem4 isEqual:confirmationItem5];
 
       if (!v14)
       {
@@ -193,20 +193,20 @@
     {
     }
 
-    v15 = [(_INPBPayloadConfirmation *)self hasStartCallIntentContactsConfirmationReason];
-    if (v15 == [v4 hasStartCallIntentContactsConfirmationReason])
+    hasStartCallIntentContactsConfirmationReason = [(_INPBPayloadConfirmation *)self hasStartCallIntentContactsConfirmationReason];
+    if (hasStartCallIntentContactsConfirmationReason == [equalCopy hasStartCallIntentContactsConfirmationReason])
     {
-      if (!-[_INPBPayloadConfirmation hasStartCallIntentContactsConfirmationReason](self, "hasStartCallIntentContactsConfirmationReason") || ![v4 hasStartCallIntentContactsConfirmationReason] || (startCallIntentContactsConfirmationReason = self->_startCallIntentContactsConfirmationReason, startCallIntentContactsConfirmationReason == objc_msgSend(v4, "startCallIntentContactsConfirmationReason")))
+      if (!-[_INPBPayloadConfirmation hasStartCallIntentContactsConfirmationReason](self, "hasStartCallIntentContactsConfirmationReason") || ![equalCopy hasStartCallIntentContactsConfirmationReason] || (startCallIntentContactsConfirmationReason = self->_startCallIntentContactsConfirmationReason, startCallIntentContactsConfirmationReason == objc_msgSend(equalCopy, "startCallIntentContactsConfirmationReason")))
       {
-        v17 = [(_INPBPayloadConfirmation *)self hasReason];
-        if (v17 == [v4 hasReason])
+        hasReason = [(_INPBPayloadConfirmation *)self hasReason];
+        if (hasReason == [equalCopy hasReason])
         {
-          if (!-[_INPBPayloadConfirmation hasReason](self, "hasReason") || ![v4 hasReason] || (reason = self->_reason, reason == objc_msgSend(v4, "reason")))
+          if (!-[_INPBPayloadConfirmation hasReason](self, "hasReason") || ![equalCopy hasReason] || (reason = self->_reason, reason == objc_msgSend(equalCopy, "reason")))
           {
-            v19 = [(_INPBPayloadConfirmation *)self hasAddTasksIntentTargetTaskListConfirmationReason];
-            if (v19 == [v4 hasAddTasksIntentTargetTaskListConfirmationReason])
+            hasAddTasksIntentTargetTaskListConfirmationReason = [(_INPBPayloadConfirmation *)self hasAddTasksIntentTargetTaskListConfirmationReason];
+            if (hasAddTasksIntentTargetTaskListConfirmationReason == [equalCopy hasAddTasksIntentTargetTaskListConfirmationReason])
             {
-              if (!-[_INPBPayloadConfirmation hasAddTasksIntentTargetTaskListConfirmationReason](self, "hasAddTasksIntentTargetTaskListConfirmationReason") || ![v4 hasAddTasksIntentTargetTaskListConfirmationReason] || (addTasksIntentTargetTaskListConfirmationReason = self->_addTasksIntentTargetTaskListConfirmationReason, addTasksIntentTargetTaskListConfirmationReason == objc_msgSend(v4, "addTasksIntentTargetTaskListConfirmationReason")))
+              if (!-[_INPBPayloadConfirmation hasAddTasksIntentTargetTaskListConfirmationReason](self, "hasAddTasksIntentTargetTaskListConfirmationReason") || ![equalCopy hasAddTasksIntentTargetTaskListConfirmationReason] || (addTasksIntentTargetTaskListConfirmationReason = self->_addTasksIntentTargetTaskListConfirmationReason, addTasksIntentTargetTaskListConfirmationReason == objc_msgSend(equalCopy, "addTasksIntentTargetTaskListConfirmationReason")))
               {
                 v20 = 1;
                 goto LABEL_22;
@@ -229,7 +229,7 @@ LABEL_22:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPayloadConfirmation allocWithZone:](_INPBPayloadConfirmation init];
   if ([(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason])
@@ -237,7 +237,7 @@ LABEL_22:
     [(_INPBPayloadConfirmation *)v5 setSendAnnouncementIntentAnnouncementConfirmationReason:[(_INPBPayloadConfirmation *)self sendAnnouncementIntentAnnouncementConfirmationReason]];
   }
 
-  v6 = [(_INPBSelectionItem *)self->_confirmationItem copyWithZone:a3];
+  v6 = [(_INPBSelectionItem *)self->_confirmationItem copyWithZone:zone];
   [(_INPBPayloadConfirmation *)v5 setConfirmationItem:v6];
 
   if ([(_INPBPayloadConfirmation *)self hasStartCallIntentContactsConfirmationReason])
@@ -258,44 +258,44 @@ LABEL_22:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPayloadConfirmation *)self data];
+  coderCopy = coder;
+  data = [(_INPBPayloadConfirmation *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPayloadConfirmation)initWithCoder:(id)a3
+- (_INPBPayloadConfirmation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPayloadConfirmation *)self initWithData:v6];
+    self = [(_INPBPayloadConfirmation *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ([(_INPBPayloadConfirmation *)self hasSendAnnouncementIntentAnnouncementConfirmationReason])
   {
     sendAnnouncementIntentAnnouncementConfirmationReason = self->_sendAnnouncementIntentAnnouncementConfirmationReason;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBPayloadConfirmation *)self confirmationItem];
+  confirmationItem = [(_INPBPayloadConfirmation *)self confirmationItem];
 
-  if (v5)
+  if (confirmationItem)
   {
-    v6 = [(_INPBPayloadConfirmation *)self confirmationItem];
+    confirmationItem2 = [(_INPBPayloadConfirmation *)self confirmationItem];
     PBDataWriterWriteSubmessage();
   }
 
@@ -318,9 +318,9 @@ LABEL_22:
   }
 }
 
-- (void)setHasAddTasksIntentTargetTaskListConfirmationReason:(BOOL)a3
+- (void)setHasAddTasksIntentTargetTaskListConfirmationReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 8;
   }
@@ -333,10 +333,10 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setAddTasksIntentTargetTaskListConfirmationReason:(int)a3
+- (void)setAddTasksIntentTargetTaskListConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xF7;
   }
@@ -344,19 +344,19 @@ LABEL_22:
   else
   {
     *&self->_has = has | 8;
-    self->_addTasksIntentTargetTaskListConfirmationReason = a3;
+    self->_addTasksIntentTargetTaskListConfirmationReason = reason;
   }
 }
 
-- (int)StringAsReason:(id)a3
+- (int)StringAsReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ConfirmationReasonNone"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"ConfirmationReasonNone"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmationReasonExtension"])
+  else if ([reasonCopy isEqualToString:@"ConfirmationReasonExtension"])
   {
     v4 = 1000;
   }
@@ -369,9 +369,9 @@ LABEL_22:
   return v4;
 }
 
-- (void)setHasReason:(BOOL)a3
+- (void)setHasReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -384,10 +384,10 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setReason:(int)a3
+- (void)setReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -395,34 +395,34 @@ LABEL_22:
   else
   {
     *&self->_has = has | 4;
-    self->_reason = a3;
+    self->_reason = reason;
   }
 }
 
-- (int)StringAsStartCallIntentContactsConfirmationReason:(id)a3
+- (int)StringAsStartCallIntentContactsConfirmationReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"INVALID_NUMBER"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"INVALID_NUMBER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TOP_MATCH_HANDLE"])
+  else if ([reasonCopy isEqualToString:@"TOP_MATCH_HANDLE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TOP_MATCH_NAME"])
+  else if ([reasonCopy isEqualToString:@"TOP_MATCH_NAME"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN_CONTACTS"])
+  else if ([reasonCopy isEqualToString:@"UNKNOWN_CONTACTS"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FOUND_IN_APPS_TOP_MATCH_NAME"])
+  else if ([reasonCopy isEqualToString:@"FOUND_IN_APPS_TOP_MATCH_NAME"])
   {
     v4 = 5;
   }
@@ -435,9 +435,9 @@ LABEL_22:
   return v4;
 }
 
-- (void)setHasStartCallIntentContactsConfirmationReason:(BOOL)a3
+- (void)setHasStartCallIntentContactsConfirmationReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 2;
   }
@@ -450,10 +450,10 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setStartCallIntentContactsConfirmationReason:(int)a3
+- (void)setStartCallIntentContactsConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -461,14 +461,14 @@ LABEL_22:
   else
   {
     *&self->_has = has | 2;
-    self->_startCallIntentContactsConfirmationReason = a3;
+    self->_startCallIntentContactsConfirmationReason = reason;
   }
 }
 
-- (void)setSendAnnouncementIntentAnnouncementConfirmationReason:(int)a3
+- (void)setSendAnnouncementIntentAnnouncementConfirmationReason:(int)reason
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (reason == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -476,7 +476,7 @@ LABEL_22:
   else
   {
     *&self->_has = has | 1;
-    self->_sendAnnouncementIntentAnnouncementConfirmationReason = a3;
+    self->_sendAnnouncementIntentAnnouncementConfirmationReason = reason;
   }
 }
 

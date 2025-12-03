@@ -1,10 +1,10 @@
 @interface CNUIPRUISPosterSnapshotController
-- (id)currentSnapshotBundleForRequest:(id)a3 error:(id *)a4;
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4;
+- (id)currentSnapshotBundleForRequest:(id)request error:(id *)error;
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error;
 - (id)sharedController;
-- (void)acquireKeepActiveAssertionForReason:(id)a3;
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4;
-- (void)releaseKeepActiveAssertionForReason:(id)a3;
+- (void)acquireKeepActiveAssertionForReason:(id)reason;
+- (void)executeSnapshotRequest:(id)request completion:(id)completion;
+- (void)releaseKeepActiveAssertionForReason:(id)reason;
 @end
 
 @implementation CNUIPRUISPosterSnapshotController
@@ -48,13 +48,13 @@ void __53__CNUIPRUISPosterSnapshotController_sharedController__block_invoke()
   sharedController___sharedSnapshotController = v4;
 }
 
-- (id)currentSnapshotBundleForRequest:(id)a3 error:(id *)a4
+- (id)currentSnapshotBundleForRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNUIPRUISPosterSnapshotController *)self sharedController];
-  v8 = [v6 wrappedRequest];
+  requestCopy = request;
+  sharedController = [(CNUIPRUISPosterSnapshotController *)self sharedController];
+  wrappedRequest = [requestCopy wrappedRequest];
 
-  v9 = [v7 currentSnapshotBundleForRequest:v8 error:a4];
+  v9 = [sharedController currentSnapshotBundleForRequest:wrappedRequest error:error];
 
   if (v9)
   {
@@ -69,13 +69,13 @@ void __53__CNUIPRUISPosterSnapshotController_sharedController__block_invoke()
   return v10;
 }
 
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CNUIPRUISPosterSnapshotController *)self sharedController];
-  v8 = [v6 wrappedRequest];
+  requestCopy = request;
+  sharedController = [(CNUIPRUISPosterSnapshotController *)self sharedController];
+  wrappedRequest = [requestCopy wrappedRequest];
 
-  v9 = [v7 latestSnapshotBundleForRequest:v8 error:a4];
+  v9 = [sharedController latestSnapshotBundleForRequest:wrappedRequest error:error];
 
   if (v9)
   {
@@ -90,20 +90,20 @@ void __53__CNUIPRUISPosterSnapshotController_sharedController__block_invoke()
   return v10;
 }
 
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4
+- (void)executeSnapshotRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNUIPRUISPosterSnapshotController *)self sharedController];
-  v9 = [v7 wrappedRequest];
+  completionCopy = completion;
+  requestCopy = request;
+  sharedController = [(CNUIPRUISPosterSnapshotController *)self sharedController];
+  wrappedRequest = [requestCopy wrappedRequest];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__CNUIPRUISPosterSnapshotController_executeSnapshotRequest_completion___block_invoke;
   v11[3] = &unk_1E76E99A8;
-  v12 = v6;
-  v10 = v6;
-  [v8 executeSnapshotRequest:v9 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [sharedController executeSnapshotRequest:wrappedRequest completion:v11];
 }
 
 void __71__CNUIPRUISPosterSnapshotController_executeSnapshotRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -120,14 +120,14 @@ void __71__CNUIPRUISPosterSnapshotController_executeSnapshotRequest_completion__
   }
 }
 
-- (void)acquireKeepActiveAssertionForReason:(id)a3
+- (void)acquireKeepActiveAssertionForReason:(id)reason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  reasonCopy = reason;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v7 = +[CNUICoreLogProvider posters_os_log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -148,14 +148,14 @@ LABEL_9:
       [CNUIPRUISPosterSnapshotController acquireKeepActiveAssertionForReason:];
     }
 
-    v11 = [_assertions objectForKeyedSubscript:v4];
+    v11 = [_assertions objectForKeyedSubscript:reasonCopy];
 
     if (!v11)
     {
-      v12 = [(CNUIPRUISPosterSnapshotController *)self sharedController];
-      v13 = [v12 acquireKeepActiveAssertionForReason:v4];
+      sharedController = [(CNUIPRUISPosterSnapshotController *)self sharedController];
+      v13 = [sharedController acquireKeepActiveAssertionForReason:reasonCopy];
 
-      [_assertions setObject:v13 forKeyedSubscript:v4];
+      [_assertions setObject:v13 forKeyedSubscript:reasonCopy];
       goto LABEL_11;
     }
 
@@ -163,7 +163,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = reasonCopy;
       v8 = "There's already an assertion for reason: %@, skipping adding another one";
       v9 = v7;
       v10 = 12;
@@ -181,13 +181,13 @@ uint64_t __73__CNUIPRUISPosterSnapshotController_acquireKeepActiveAssertionForRe
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)releaseKeepActiveAssertionForReason:(id)a3
+- (void)releaseKeepActiveAssertionForReason:(id)reason
 {
   v3 = _assertions;
-  v4 = a3;
-  v5 = [v3 objectForKeyedSubscript:v4];
+  reasonCopy = reason;
+  v5 = [v3 objectForKeyedSubscript:reasonCopy];
   [v5 invalidate];
-  [_assertions setObject:0 forKeyedSubscript:v4];
+  [_assertions setObject:0 forKeyedSubscript:reasonCopy];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface CarCardView
 - ($FEAE32A1819615878361D0F810751286)_cornerMask;
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3;
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout;
 - (BOOL)_canAnchorBecomeFocused;
-- (BOOL)_shouldEmbedBackgroundInMaskingView:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceivePress:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_shouldEmbedBackgroundInMaskingView:(id)view;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceivePress:(id)press;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CarCardStyleProviding)styleProvider;
-- (CarCardView)initWithContent:(id)a3;
-- (CarCardView)initWithFrame:(CGRect)a3;
+- (CarCardView)initWithContent:(id)content;
+- (CarCardView)initWithFrame:(CGRect)frame;
 - (CarCardViewDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
 - (UIViewController)parentViewController;
-- (double)_calculateCornerRadiusForCornerMask:(id *)a3;
+- (double)_calculateCornerRadiusForCornerMask:(id *)mask;
 - (id)_dynamicBlurView;
 - (id)_styleProviderOrSelf;
 - (unint64_t)accessoryType;
 - (void)_applyCornerMask;
-- (void)_chevronButtonTapped:(id)a3;
-- (void)_closeButtonTapped:(id)a3;
-- (void)_customAccessoryTapped:(id)a3;
-- (void)_customButtonTapped:(id)a3;
-- (void)_handleTapOnAccessory:(id)a3;
+- (void)_chevronButtonTapped:(id)tapped;
+- (void)_closeButtonTapped:(id)tapped;
+- (void)_customAccessoryTapped:(id)tapped;
+- (void)_customButtonTapped:(id)tapped;
+- (void)_handleTapOnAccessory:(id)accessory;
 - (void)_refreshAccessories;
 - (void)_refreshBackgroundView;
-- (void)_setFocusable:(BOOL)a3;
-- (void)_setHighlighted:(BOOL)a3;
-- (void)_setLayout:(id)a3;
+- (void)_setFocusable:(BOOL)focusable;
+- (void)_setHighlighted:(BOOL)highlighted;
+- (void)_setLayout:(id)layout;
 - (void)_setNeedsRefreshAccessories;
 - (void)_updateContainerViewSuperviewIfNeeded;
 - (void)_updateFocusRing;
@@ -35,24 +35,24 @@
 - (void)_updateShadow;
 - (void)_updateTransitioning;
 - (void)didMoveToWindow;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)handlePress:(id)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)handlePress:(id)press;
 - (void)layoutSubviews;
-- (void)setAccessoryImage:(id)a3;
-- (void)setAccessoryType:(unint64_t)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setLayout:(id)a3;
-- (void)setParentViewController:(id)a3;
-- (void)setPrimaryAccessory:(id)a3;
-- (void)setSecondaryAccessory:(id)a3;
-- (void)setSelectionHandler:(id)a3;
-- (void)setStyleProvider:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleNumberOfLines:(int64_t)a3;
-- (void)setTransitioning:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateHeaderWithTitle:(id)a3 primaryAccessory:(id)a4 secondaryAccessory:(id)a5 leadingImage:(id)a6 handler:(id)a7;
+- (void)setAccessoryImage:(id)image;
+- (void)setAccessoryType:(unint64_t)type;
+- (void)setBackgroundView:(id)view;
+- (void)setContent:(id)content;
+- (void)setLayout:(id)layout;
+- (void)setParentViewController:(id)controller;
+- (void)setPrimaryAccessory:(id)accessory;
+- (void)setSecondaryAccessory:(id)accessory;
+- (void)setSelectionHandler:(id)handler;
+- (void)setStyleProvider:(id)provider;
+- (void)setTitle:(id)title;
+- (void)setTitleNumberOfLines:(int64_t)lines;
+- (void)setTransitioning:(BOOL)transitioning;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateHeaderWithTitle:(id)title primaryAccessory:(id)accessory secondaryAccessory:(id)secondaryAccessory leadingImage:(id)image handler:(id)handler;
 @end
 
 @implementation CarCardView
@@ -66,9 +66,9 @@
 
 - (void)_updateFocusRing
 {
-  v3 = [(CarCardView *)self window];
+  window = [(CarCardView *)self window];
 
-  if (v3)
+  if (window)
   {
     if (self->_focusable)
     {
@@ -91,8 +91,8 @@
 
         [(CAShapeLayer *)self->_focusShapeLayer setCornerRadius:*(&v32 + 1) + 3.0];
         [(CAShapeLayer *)self->_focusShapeLayer setCornerCurve:v33];
-        v7 = [(CarCardView *)self layer];
-        [v7 addSublayer:self->_focusShapeLayer];
+        layer = [(CarCardView *)self layer];
+        [layer addSublayer:self->_focusShapeLayer];
       }
 
       [(CAShapeLayer *)self->_focusShapeLayer setHidden:[(CarCardView *)self isEffectivelyFocused]^ 1];
@@ -109,21 +109,21 @@
 
         else
         {
-          v10 = [(CarCardView *)self layer];
-          [v10 cornerRadius];
+          layer2 = [(CarCardView *)self layer];
+          [layer2 cornerRadius];
           [(CAShapeLayer *)self->_focusShapeLayer setCornerRadius:v11 + -3.0];
         }
 
         v12 = +[UIColor _carSystemFocusColor];
-        v13 = [(CarCardView *)self backgroundView];
-        v14 = v13;
-        if (!v13)
+        selfCopy = [(CarCardView *)self backgroundView];
+        v14 = selfCopy;
+        if (!selfCopy)
         {
-          v13 = self;
+          selfCopy = self;
         }
 
-        v15 = [v13 traitCollection];
-        v16 = [v12 resolvedColorWithTraitCollection:v15];
+        traitCollection = [selfCopy traitCollection];
+        v16 = [v12 resolvedColorWithTraitCollection:traitCollection];
 
         -[CAShapeLayer setBorderColor:](self->_focusShapeLayer, "setBorderColor:", [v16 CGColor]);
         [(CarCardView *)self bounds];
@@ -149,8 +149,8 @@
 
 - (void)_updateHuggingCompressionPriorities
 {
-  v3 = [(CarCardLayout *)self->_layout primaryAxis];
-  if (v3 == 1)
+  primaryAxis = [(CarCardLayout *)self->_layout primaryAxis];
+  if (primaryAxis == 1)
   {
     *&v4 = 751.0;
   }
@@ -160,7 +160,7 @@
     *&v4 = 999.0;
   }
 
-  if (v3 == 1)
+  if (primaryAxis == 1)
   {
     v5 = 999.0;
   }
@@ -178,29 +178,29 @@
 
 - (void)_refreshBackgroundView
 {
-  v3 = [(CarCardView *)self window];
+  window = [(CarCardView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(CarCardView *)self styleProvider];
+    styleProvider = [(CarCardView *)self styleProvider];
     v5 = objc_opt_respondsToSelector();
-    v6 = [(CarCardView *)self layout];
-    v7 = [(CarCardView *)self traitCollection];
-    [v7 displayScale];
+    layout = [(CarCardView *)self layout];
+    traitCollection = [(CarCardView *)self traitCollection];
+    [traitCollection displayScale];
     v9 = v8;
-    v10 = [(CarCardView *)self traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection2 = [(CarCardView *)self traitCollection];
+    userInterfaceStyle = [traitCollection2 userInterfaceStyle];
     if (v5)
     {
-      v12 = v4;
+      selfCopy = styleProvider;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
 
-    v13 = [(CarCardView *)v12 backgroundViewForCarCardLayout:v6 scale:v11 userInterfaceStyle:v9];
+    v13 = [(CarCardView *)selfCopy backgroundViewForCarCardLayout:layout scale:userInterfaceStyle userInterfaceStyle:v9];
 
     [(CarCardView *)self setBackgroundView:v13];
   }
@@ -214,39 +214,39 @@
 
 - (void)_updateContainerViewSuperviewIfNeeded
 {
-  v3 = [(CarCardView *)self maskingView];
+  maskingView = [(CarCardView *)self maskingView];
   v4 = self->_backgroundView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIView *)v4 contentView];
-    v6 = v5;
-    if (v5)
+    contentView = [(UIView *)v4 contentView];
+    v6 = contentView;
+    if (contentView)
     {
-      v7 = v5;
+      v7 = contentView;
 
-      v3 = v7;
+      maskingView = v7;
     }
   }
 
-  v8 = [(UIView *)self->_containerView superview];
+  superview = [(UIView *)self->_containerView superview];
 
-  if (v8 != v3)
+  if (superview != maskingView)
   {
-    [v3 addSubview:self->_containerView];
+    [maskingView addSubview:self->_containerView];
     v9 = objc_alloc_init(NSMutableArray);
     LODWORD(v10) = 1148846080;
-    v11 = [(UIView *)self->_containerView _maps_constraintsEqualToEdgesOfView:v3 priority:v10];
-    v12 = [v11 allConstraints];
-    [v9 addObjectsFromArray:v12];
+    v11 = [(UIView *)self->_containerView _maps_constraintsEqualToEdgesOfView:maskingView priority:v10];
+    allConstraints = [v11 allConstraints];
+    [v9 addObjectsFromArray:allConstraints];
 
-    v13 = [(UIView *)self->_accessoryContainerView leadingAnchor];
-    v14 = [(UIView *)self->_containerView leadingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UIView *)self->_accessoryContainerView leadingAnchor];
+    leadingAnchor2 = [(UIView *)self->_containerView leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v20[0] = v15;
-    v16 = [(UIView *)self->_containerView trailingAnchor];
-    v17 = [(UIView *)self->_accessoryContainerView trailingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    trailingAnchor = [(UIView *)self->_containerView trailingAnchor];
+    trailingAnchor2 = [(UIView *)self->_accessoryContainerView trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v20[1] = v18;
     v19 = [NSArray arrayWithObjects:v20 count:2];
     [v9 addObjectsFromArray:v19];
@@ -258,61 +258,61 @@
 - (void)_refreshAccessories
 {
   self->_needsRefreshAccessories = 0;
-  v3 = [(CarCardView *)self title];
-  v4 = [(CarCardView *)self primaryAccessory];
-  v5 = [(CarCardView *)self secondaryAccessory];
-  v6 = [(CarCardView *)self accessoryImage];
-  v7 = [(CarCardView *)self content];
+  title = [(CarCardView *)self title];
+  primaryAccessory = [(CarCardView *)self primaryAccessory];
+  secondaryAccessory = [(CarCardView *)self secondaryAccessory];
+  accessoryImage = [(CarCardView *)self accessoryImage];
+  content = [(CarCardView *)self content];
   v8 = &OBJC_PROTOCOL___CarCardHeaderHosting;
   v9 = v8;
-  if (!v7 || !v8)
+  if (!content || !v8)
   {
 
 LABEL_8:
-    v12 = self;
-    [(NSLayoutConstraint *)v12->_constraintAccessoryBarPosition setActive:0];
-    constraintAccessoryBarPosition = v12->_constraintAccessoryBarPosition;
-    v12->_constraintAccessoryBarPosition = 0;
+    selfCopy = self;
+    [(NSLayoutConstraint *)selfCopy->_constraintAccessoryBarPosition setActive:0];
+    constraintAccessoryBarPosition = selfCopy->_constraintAccessoryBarPosition;
+    selfCopy->_constraintAccessoryBarPosition = 0;
 
     goto LABEL_9;
   }
 
-  v10 = objc_getAssociatedObject(v7, off_10192EF78);
+  v10 = objc_getAssociatedObject(content, off_10192EF78);
   if (!v10)
   {
-    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 conformsToProtocol:v9]);
-    objc_setAssociatedObject(v7, off_10192EF78, v10, 1);
+    v10 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [content conformsToProtocol:v9]);
+    objc_setAssociatedObject(content, off_10192EF78, v10, 1);
   }
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if (!v11)
+  if (!bOOLValue)
   {
     goto LABEL_8;
   }
 
-  v12 = [(CarCardView *)self content];
-  v13 = [(CarCardView *)self accessoryBar];
-  [v13 removeFromSuperview];
+  selfCopy = [(CarCardView *)self content];
+  accessoryBar = [(CarCardView *)self accessoryBar];
+  [accessoryBar removeFromSuperview];
 
   [(CarCardView *)self setAccessoryBar:0];
   [(NSLayoutConstraint *)self->_constraintAccessoryBarPosition setActive:0];
-  v26 = [(CarCardView *)self accessoryContainerView];
-  v14 = [v26 bottomAnchor];
-  v15 = [(CarCardView *)self containerView];
-  [v15 topAnchor];
-  v16 = v6;
-  v17 = v3;
-  v18 = v5;
-  v20 = v19 = v4;
-  v21 = [v14 constraintEqualToAnchor:v20];
+  accessoryContainerView = [(CarCardView *)self accessoryContainerView];
+  bottomAnchor = [accessoryContainerView bottomAnchor];
+  containerView = [(CarCardView *)self containerView];
+  [containerView topAnchor];
+  v16 = accessoryImage;
+  v17 = title;
+  v18 = secondaryAccessory;
+  v20 = v19 = primaryAccessory;
+  v21 = [bottomAnchor constraintEqualToAnchor:v20];
   v22 = self->_constraintAccessoryBarPosition;
   self->_constraintAccessoryBarPosition = v21;
 
-  v4 = v19;
-  v5 = v18;
-  v3 = v17;
-  v6 = v16;
+  primaryAccessory = v19;
+  secondaryAccessory = v18;
+  title = v17;
+  accessoryImage = v16;
 
   [(NSLayoutConstraint *)self->_constraintAccessoryBarPosition setActive:1];
 LABEL_9:
@@ -322,11 +322,11 @@ LABEL_9:
   v27[2] = sub_1009B55A0;
   v27[3] = &unk_101630F18;
   objc_copyWeak(&v30, &location);
-  v24 = v4;
+  v24 = primaryAccessory;
   v28 = v24;
-  v25 = v5;
+  v25 = secondaryAccessory;
   v29 = v25;
-  [(CarCardView *)v12 updateHeaderWithTitle:v3 primaryAccessory:v24 secondaryAccessory:v25 leadingImage:v6 handler:v27];
+  [(CarCardView *)selfCopy updateHeaderWithTitle:title primaryAccessory:v24 secondaryAccessory:v25 leadingImage:accessoryImage handler:v27];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -334,16 +334,16 @@ LABEL_9:
 
 - ($FEAE32A1819615878361D0F810751286)_cornerMask
 {
-  v5 = [(CarCardView *)self styleProvider];
+  styleProvider = [(CarCardView *)self styleProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v9 = [(CarCardView *)self _styleProviderOrSelf];
-    v7 = [(CarCardView *)self layout];
-    if (v9)
+    _styleProviderOrSelf = [(CarCardView *)self _styleProviderOrSelf];
+    layout = [(CarCardView *)self layout];
+    if (_styleProviderOrSelf)
     {
-      [v9 cornerMaskForCarCardLayout:v7];
+      [_styleProviderOrSelf cornerMaskForCarCardLayout:layout];
     }
 
     else
@@ -356,8 +356,8 @@ LABEL_9:
 
   else
   {
-    v9 = [(CarCardView *)self layout];
-    [(CarCardView *)self cornerMaskForCarCardLayout:v9];
+    _styleProviderOrSelf = [(CarCardView *)self layout];
+    [(CarCardView *)self cornerMaskForCarCardLayout:_styleProviderOrSelf];
   }
 
   return result;
@@ -377,17 +377,17 @@ LABEL_9:
 
 - (id)_styleProviderOrSelf
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_styleProvider);
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v2 = WeakRetained;
+    selfCopy = WeakRetained;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)didMoveToWindow
@@ -395,9 +395,9 @@ LABEL_9:
   v5.receiver = self;
   v5.super_class = CarCardView;
   [(CarCardView *)&v5 didMoveToWindow];
-  v3 = [(CarCardView *)self window];
+  window = [(CarCardView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CarCardView *)self _applyCornerMask];
     [(CarCardView *)self _refreshAccessories];
@@ -414,9 +414,9 @@ LABEL_9:
 
 - (void)_applyCornerMask
 {
-  v3 = [(CarCardView *)self window];
+  window = [(CarCardView *)self window];
 
-  if (v3)
+  if (window)
   {
     v43 = 0u;
     memset(obj, 0, sizeof(obj));
@@ -438,70 +438,70 @@ LABEL_9:
     }
 
     v7 = [(CarCardView *)self maskingView:v40];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:v6];
+    layer = [v7 layer];
+    [layer setCornerRadius:v6];
 
-    v9 = [(CarCardView *)self layer];
-    [v9 setCornerRadius:v6];
+    layer2 = [(CarCardView *)self layer];
+    [layer2 setCornerRadius:v6];
 
     v10 = obj[0];
-    v11 = [(CarCardView *)self maskingView];
-    v12 = [v11 layer];
-    [v12 setCornerCurve:v10];
+    maskingView = [(CarCardView *)self maskingView];
+    layer3 = [maskingView layer];
+    [layer3 setCornerCurve:v10];
 
-    v13 = [(CarCardView *)self maskingView];
-    v14 = [v13 layer];
-    [v14 setMasksToBounds:1];
+    maskingView2 = [(CarCardView *)self maskingView];
+    layer4 = [maskingView2 layer];
+    [layer4 setMasksToBounds:1];
 
     v15 = v43;
-    v16 = [(CarCardView *)self maskingView];
-    v17 = [v16 layer];
-    [v17 setMaskedCorners:v15];
+    maskingView3 = [(CarCardView *)self maskingView];
+    layer5 = [maskingView3 layer];
+    [layer5 setMaskedCorners:v15];
 
     if ([(CarCardView *)self _shouldEmbedBackgroundInMaskingView:self->_backgroundView])
     {
-      v18 = [(CarCardView *)self maskingView];
-      v19 = [v18 layer];
-      [v19 setShadowPathIsBounds:1];
+      maskingView4 = [(CarCardView *)self maskingView];
+      layer6 = [maskingView4 layer];
+      [layer6 setShadowPathIsBounds:1];
 
-      v20 = [(CarCardView *)self layer];
-      [v20 setShadowPathIsBounds:1];
+      layer7 = [(CarCardView *)self layer];
+      [layer7 setShadowPathIsBounds:1];
 
       v21 = 0.0;
     }
 
     else
     {
-      v22 = [(CarCardView *)self backgroundView];
+      backgroundView = [(CarCardView *)self backgroundView];
 
-      if (v22)
+      if (backgroundView)
       {
         v23 = v43;
-        v24 = [(CarCardView *)self backgroundView];
-        v25 = [v24 layer];
-        [v25 setMaskedCorners:v23];
+        backgroundView2 = [(CarCardView *)self backgroundView];
+        layer8 = [backgroundView2 layer];
+        [layer8 setMaskedCorners:v23];
 
         v26 = obj[0];
-        v27 = [(CarCardView *)self backgroundView];
-        v28 = [v27 layer];
-        [v28 setCornerCurve:v26];
+        backgroundView3 = [(CarCardView *)self backgroundView];
+        layer9 = [backgroundView3 layer];
+        [layer9 setCornerCurve:v26];
 
         v29 = *(&v43 + 1);
-        v30 = [(CarCardView *)self backgroundView];
-        v31 = [v30 layer];
-        [v31 setCornerRadius:v29];
+        backgroundView4 = [(CarCardView *)self backgroundView];
+        layer10 = [backgroundView4 layer];
+        [layer10 setCornerRadius:v29];
 
-        v32 = [(CarCardView *)self backgroundView];
-        v33 = [v32 layer];
-        [v33 setMasksToBounds:1];
+        backgroundView5 = [(CarCardView *)self backgroundView];
+        layer11 = [backgroundView5 layer];
+        [layer11 setMasksToBounds:1];
       }
 
-      v34 = [(CarCardView *)self maskingView];
-      v35 = [v34 layer];
-      [v35 setShadowPathIsBounds:0];
+      maskingView5 = [(CarCardView *)self maskingView];
+      layer12 = [maskingView5 layer];
+      [layer12 setShadowPathIsBounds:0];
 
-      v36 = [(CarCardView *)self layer];
-      [v36 setShadowPathIsBounds:0];
+      layer13 = [(CarCardView *)self layer];
+      [layer13 setShadowPathIsBounds:0];
 
       v21 = *(&v43 + 1) + *(&v43 + 1);
       if (LOBYTE(obj[1]))
@@ -512,8 +512,8 @@ LABEL_9:
 
     [(NSLayoutConstraint *)self->_minimumHeightConstraint setConstant:v21];
     v37 = obj[0];
-    v38 = [(CarCardView *)self layer];
-    [v38 setCornerCurve:v37];
+    layer14 = [(CarCardView *)self layer];
+    [layer14 setCornerCurve:v37];
 
     p_lastAppliedCornerMask = &self->_lastAppliedCornerMask;
     *&p_lastAppliedCornerMask->maskedCorners = v43;
@@ -533,10 +533,10 @@ LABEL_9:
 {
   if ([(CarCardView *)self _shouldEmbedBackgroundInMaskingView:self->_backgroundView])
   {
-    v3 = [(CarCardView *)self window];
-    v4 = [v3 _car_hybridInstrumentClusterPresentationType];
+    window = [(CarCardView *)self window];
+    _car_hybridInstrumentClusterPresentationType = [window _car_hybridInstrumentClusterPresentationType];
 
-    if (v4)
+    if (_car_hybridInstrumentClusterPresentationType)
     {
       [(CarCardView *)self _cornerMask];
       [(CarCardView *)self _mapsCar_updateShadowWithCornerRadius:0.0];
@@ -561,28 +561,28 @@ LABEL_9:
   dynamicBlurView = self->_dynamicBlurView;
   if (!dynamicBlurView)
   {
-    v4 = [(CarCardView *)self _styleProviderOrSelf];
+    _styleProviderOrSelf = [(CarCardView *)self _styleProviderOrSelf];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 dynamicBlurViewContextForCarCardBackground];
+      dynamicBlurViewContextForCarCardBackground = [_styleProviderOrSelf dynamicBlurViewContextForCarCardBackground];
     }
 
     else
     {
-      v5 = 0;
+      dynamicBlurViewContextForCarCardBackground = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 dynamicBlurViewDelegateForCarCardBackground];
+      dynamicBlurViewDelegateForCarCardBackground = [_styleProviderOrSelf dynamicBlurViewDelegateForCarCardBackground];
     }
 
     else
     {
-      v6 = 0;
+      dynamicBlurViewDelegateForCarCardBackground = 0;
     }
 
-    v7 = [[CarDynamicBlurView alloc] initWithBlurViewContext:v5 delegate:v6];
+    v7 = [[CarDynamicBlurView alloc] initWithBlurViewContext:dynamicBlurViewContextForCarCardBackground delegate:dynamicBlurViewDelegateForCarCardBackground];
     v8 = self->_dynamicBlurView;
     self->_dynamicBlurView = v7;
 
@@ -612,22 +612,22 @@ LABEL_9:
     v13 = *&self->_lastAppliedCornerMask.automaticallyRoundCorners;
     [(CarCardView *)self _calculateCornerRadiusForCornerMask:&v11];
     v4 = v3;
-    v5 = [(CarCardView *)self maskingView];
-    v6 = [v5 layer];
-    [v6 setCornerRadius:v4];
+    maskingView = [(CarCardView *)self maskingView];
+    layer = [maskingView layer];
+    [layer setCornerRadius:v4];
 
-    v7 = [(CarCardView *)self backgroundView];
-    LOBYTE(v6) = [(CarCardView *)self _shouldEmbedBackgroundInMaskingView:v7];
+    backgroundView = [(CarCardView *)self backgroundView];
+    LOBYTE(layer) = [(CarCardView *)self _shouldEmbedBackgroundInMaskingView:backgroundView];
 
-    if ((v6 & 1) == 0)
+    if ((layer & 1) == 0)
     {
-      v8 = [(CarCardView *)self backgroundView];
-      v9 = [v8 layer];
-      [v9 setCornerRadius:v4];
+      backgroundView2 = [(CarCardView *)self backgroundView];
+      layer2 = [backgroundView2 layer];
+      [layer2 setCornerRadius:v4];
     }
 
-    v10 = [(CarCardView *)self layer];
-    [v10 setCornerRadius:v4];
+    layer3 = [(CarCardView *)self layer];
+    [layer3 setCornerRadius:v4];
   }
 
   [(CarCardView *)self _updateFocusRing];
@@ -635,14 +635,14 @@ LABEL_9:
 
 - (void)_updateTransitioning
 {
-  v3 = [(CarCardView *)self styleProvider];
+  styleProvider = [(CarCardView *)self styleProvider];
 
-  if (v3)
+  if (styleProvider)
   {
-    v4 = [(CarCardView *)self containerView];
-    [v4 setAlpha:1.0];
+    containerView = [(CarCardView *)self containerView];
+    [containerView setAlpha:1.0];
 
-    v5 = [(CarCardView *)self styleProvider];
+    styleProvider2 = [(CarCardView *)self styleProvider];
     v6 = objc_opt_respondsToSelector();
 
     if ((v6 & 1) == 0)
@@ -650,15 +650,15 @@ LABEL_9:
       return;
     }
 
-    v10 = [(CarCardView *)self styleProvider];
-    [v10 setTransitioning:{-[CarCardView isTransitioning](self, "isTransitioning")}];
+    styleProvider3 = [(CarCardView *)self styleProvider];
+    [styleProvider3 setTransitioning:{-[CarCardView isTransitioning](self, "isTransitioning")}];
   }
 
   else
   {
     transitioning = self->_transitioning;
-    v8 = [(CarCardView *)self containerView];
-    v10 = v8;
+    containerView2 = [(CarCardView *)self containerView];
+    styleProvider3 = containerView2;
     if (transitioning)
     {
       v9 = 0.0;
@@ -669,7 +669,7 @@ LABEL_9:
       v9 = 1.0;
     }
 
-    [v8 setAlpha:v9];
+    [containerView2 setAlpha:v9];
   }
 }
 
@@ -680,16 +680,16 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
-  if (self->_transitioning != a3)
+  if (self->_transitioning != transitioning)
   {
-    self->_transitioning = a3;
+    self->_transitioning = transitioning;
     [(CarCardView *)self _updateTransitioning];
   }
 }
 
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout
 {
   retstr->var0 = [(CarCardView *)self roundedCorners]& 0xF;
   retstr->var1 = 28.0;
@@ -700,13 +700,13 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)_shouldEmbedBackgroundInMaskingView:(id)a3
+- (BOOL)_shouldEmbedBackgroundInMaskingView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 wantsCornerMasking] ^ 1;
+    v4 = [viewCopy wantsCornerMasking] ^ 1;
   }
 
   else
@@ -717,16 +717,16 @@ LABEL_9:
   return v4;
 }
 
-- (double)_calculateCornerRadiusForCornerMask:(id *)a3
+- (double)_calculateCornerRadiusForCornerMask:(id *)mask
 {
-  var1 = a3->var1;
-  if (a3->var3)
+  var1 = mask->var1;
+  if (mask->var3)
   {
     [(CarCardView *)self bounds];
     Width = CGRectGetWidth(v12);
     [(CarCardView *)self bounds];
     Height = CGRectGetHeight(v13);
-    var4 = a3->var4;
+    var4 = mask->var4;
     if (var4)
     {
       if (var4 == 1)
@@ -763,51 +763,51 @@ LABEL_9:
   return v10;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v14 = v5;
+    v14 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
     [(UIView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(CarCardView *)self _updateShadow];
     [(CarCardView *)self _updateContainerViewSuperviewIfNeeded];
     v7 = [(CarCardView *)self _shouldEmbedBackgroundInMaskingView:self->_backgroundView];
-    v8 = [(CarCardView *)self maskingView];
-    v9 = v8;
+    maskingView = [(CarCardView *)self maskingView];
+    v9 = maskingView;
     if (v7)
     {
-      [v8 setHidden:0];
+      [maskingView setHidden:0];
 
-      v10 = [(CarCardView *)self maskingView];
-      [v10 insertSubview:self->_backgroundView atIndex:0];
+      maskingView2 = [(CarCardView *)self maskingView];
+      [maskingView2 insertSubview:self->_backgroundView atIndex:0];
 
       v11 = self->_backgroundView;
-      v12 = [(CarCardView *)self maskingView];
-      v13 = [(UIView *)v11 _maps_constraintsForCenteringInView:v12];
+      maskingView3 = [(CarCardView *)self maskingView];
+      v13 = [(UIView *)v11 _maps_constraintsForCenteringInView:maskingView3];
       [NSLayoutConstraint activateConstraints:v13];
     }
 
     else
     {
-      [v8 setHidden:1];
+      [maskingView setHidden:1];
 
       [(CarCardView *)self insertSubview:self->_backgroundView atIndex:0];
-      v12 = [(UIView *)self->_backgroundView _maps_constraintsForCenteringInView:self];
-      [NSLayoutConstraint activateConstraints:v12];
+      maskingView3 = [(UIView *)self->_backgroundView _maps_constraintsForCenteringInView:self];
+      [NSLayoutConstraint activateConstraints:maskingView3];
     }
 
     [(CarCardView *)self _applyCornerMask];
-    v5 = v14;
+    viewCopy = v14;
   }
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_styleProvider);
 
   v5 = obj;
@@ -824,109 +824,109 @@ LABEL_9:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CarCardView;
-  v4 = a3;
-  [(CarCardView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarCardView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CarCardView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CarCardView *)self _updateInterfaceStyleRelatedViews];
   }
 }
 
-- (void)_handleTapOnAccessory:(id)a3
+- (void)_handleTapOnAccessory:(id)accessory
 {
-  v6 = a3;
-  if ([v6 type] == 1 || objc_msgSend(v6, "type") == 2)
+  accessoryCopy = accessory;
+  if ([accessoryCopy type] == 1 || objc_msgSend(accessoryCopy, "type") == 2)
   {
     [(CarCardView *)self _closeButtonTapped:0];
   }
 
-  else if ([v6 type] == 4 || objc_msgSend(v6, "type") == 3)
+  else if ([accessoryCopy type] == 4 || objc_msgSend(accessoryCopy, "type") == 3)
   {
-    v4 = [v6 handler];
+    handler = [accessoryCopy handler];
 
-    if (v4)
+    if (handler)
     {
-      v5 = [v6 handler];
-      v5[2]();
+      handler2 = [accessoryCopy handler];
+      handler2[2]();
     }
   }
 }
 
-- (void)updateHeaderWithTitle:(id)a3 primaryAccessory:(id)a4 secondaryAccessory:(id)a5 leadingImage:(id)a6 handler:(id)a7
+- (void)updateHeaderWithTitle:(id)title primaryAccessory:(id)accessory secondaryAccessory:(id)secondaryAccessory leadingImage:(id)image handler:(id)handler
 {
-  v38 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  titleCopy = title;
+  accessoryCopy = accessory;
+  secondaryAccessoryCopy = secondaryAccessory;
+  imageCopy = image;
+  handlerCopy = handler;
   [(NSLayoutConstraint *)self->_constraintAccessoryBarPosition setActive:0];
-  v16 = [(CarCardView *)self title];
-  if (v16)
+  title = [(CarCardView *)self title];
+  if (title)
   {
 
     goto LABEL_3;
   }
 
-  if (v12 && [v12 type])
+  if (accessoryCopy && [accessoryCopy type])
   {
 LABEL_3:
-    v17 = [(CarCardView *)self accessoryBar];
-    if (!v17)
+    accessoryBar = [(CarCardView *)self accessoryBar];
+    if (!accessoryBar)
     {
-      v18 = [(CarCardView *)self parentViewController];
+      parentViewController = [(CarCardView *)self parentViewController];
 
-      if (!v18)
+      if (!parentViewController)
       {
 LABEL_7:
-        v30 = [(CarCardView *)self accessoryBar];
-        [v30 updateWithTitle:v38 primaryAccessory:v12 secondaryAccessory:v13 leadingImage:v14];
+        accessoryBar2 = [(CarCardView *)self accessoryBar];
+        [accessoryBar2 updateWithTitle:titleCopy primaryAccessory:accessoryCopy secondaryAccessory:secondaryAccessoryCopy leadingImage:imageCopy];
 
-        v31 = [(CarCardView *)self accessoryContainerView];
-        v32 = [v31 topAnchor];
+        accessoryContainerView = [(CarCardView *)self accessoryContainerView];
+        topAnchor = [accessoryContainerView topAnchor];
         goto LABEL_11;
       }
 
       v19 = [_TtC4Maps19CarCardAccessoryBar alloc];
-      v20 = [(CarCardView *)self parentViewController];
-      v21 = [(CarCardAccessoryBar *)v19 initWithParentViewController:v20 accessoryTapHandler:v15];
+      parentViewController2 = [(CarCardView *)self parentViewController];
+      v21 = [(CarCardAccessoryBar *)v19 initWithParentViewController:parentViewController2 accessoryTapHandler:handlerCopy];
       [(CarCardView *)self setAccessoryBar:v21];
 
-      v22 = [(CarCardView *)self accessoryBar];
-      [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+      accessoryBar3 = [(CarCardView *)self accessoryBar];
+      [accessoryBar3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v23 = [(CarCardView *)self accessoryContainerView];
-      v24 = [(CarCardView *)self accessoryBar];
-      [v23 addSubview:v24];
+      accessoryContainerView2 = [(CarCardView *)self accessoryContainerView];
+      accessoryBar4 = [(CarCardView *)self accessoryBar];
+      [accessoryContainerView2 addSubview:accessoryBar4];
 
-      v17 = [(CarCardView *)self accessoryBar];
-      v25 = [(CarCardView *)self accessoryContainerView];
+      accessoryBar = [(CarCardView *)self accessoryBar];
+      accessoryContainerView3 = [(CarCardView *)self accessoryContainerView];
       LODWORD(v26) = 1148846080;
-      v27 = [v17 _maps_constraintsEqualToEdgesOfView:v25 priority:v26];
+      v27 = [accessoryBar _maps_constraintsEqualToEdgesOfView:accessoryContainerView3 priority:v26];
       [v27 allConstraints];
-      v29 = v28 = v15;
+      v29 = v28 = handlerCopy;
       [NSLayoutConstraint activateConstraints:v29];
 
-      v15 = v28;
+      handlerCopy = v28;
     }
 
     goto LABEL_7;
   }
 
-  v31 = [(CarCardView *)self accessoryContainerView];
-  v32 = [v31 bottomAnchor];
+  accessoryContainerView = [(CarCardView *)self accessoryContainerView];
+  topAnchor = [accessoryContainerView bottomAnchor];
 LABEL_11:
-  v33 = v32;
-  v34 = [(CarCardView *)self containerView];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  v33 = topAnchor;
+  containerView = [(CarCardView *)self containerView];
+  topAnchor2 = [containerView topAnchor];
+  v36 = [v33 constraintEqualToAnchor:topAnchor2];
   constraintAccessoryBarPosition = self->_constraintAccessoryBarPosition;
   self->_constraintAccessoryBarPosition = v36;
 
@@ -942,25 +942,25 @@ LABEL_11:
   }
 }
 
-- (void)_chevronButtonTapped:(id)a3
+- (void)_chevronButtonTapped:(id)tapped
 {
-  v7 = a3;
-  [v7 setSelected:{objc_msgSend(v7, "isSelected") ^ 1}];
-  v4 = [(CarCardView *)self delegate];
+  tappedCopy = tapped;
+  [tappedCopy setSelected:{objc_msgSend(tappedCopy, "isSelected") ^ 1}];
+  delegate = [(CarCardView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarCardView *)self delegate];
-    [v6 carCardView:self chevronButtonSelected:v7];
+    delegate2 = [(CarCardView *)self delegate];
+    [delegate2 carCardView:self chevronButtonSelected:tappedCopy];
   }
 }
 
-- (void)_customAccessoryTapped:(id)a3
+- (void)_customAccessoryTapped:(id)tapped
 {
-  if (a3)
+  if (tapped)
   {
-    v3 = a3;
+    tappedCopy = tapped;
     v4 = sub_100006E1C();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -968,18 +968,18 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Will call custom button handler.", v6, 2u);
     }
 
-    v5 = [v3 handler];
+    handler = [tappedCopy handler];
 
-    v5[2](v5);
+    handler[2](handler);
   }
 }
 
-- (void)_customButtonTapped:(id)a3
+- (void)_customButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v6 = [(CarCardView *)self primaryButtonView];
+  tappedCopy = tapped;
+  primaryButtonView = [(CarCardView *)self primaryButtonView];
 
-  if (v6 == v4)
+  if (primaryButtonView == tappedCopy)
   {
     [(CarCardView *)self primaryAccessory];
   }
@@ -992,7 +992,7 @@ LABEL_11:
   [(CarCardView *)self _customAccessoryTapped:v5];
 }
 
-- (void)_closeButtonTapped:(id)a3
+- (void)_closeButtonTapped:(id)tapped
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -1001,47 +1001,47 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Will close the current context.", v8, 2u);
   }
 
-  v5 = [(CarCardView *)self delegate];
+  delegate = [(CarCardView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CarCardView *)self delegate];
-    [v7 carCardViewCloseButtonTapped:self];
+    delegate2 = [(CarCardView *)self delegate];
+    [delegate2 carCardViewCloseButtonTapped:self];
   }
 }
 
-- (void)setAccessoryImage:(id)a3
+- (void)setAccessoryImage:(id)image
 {
-  v5 = a3;
-  if (self->_accessoryImage != v5)
+  imageCopy = image;
+  if (self->_accessoryImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_accessoryImage, image);
     [(CarCardView *)self _setNeedsRefreshAccessories];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setAccessoryType:(unint64_t)a3
+- (void)setAccessoryType:(unint64_t)type
 {
-  v4 = [[CarCardAccessory alloc] initWithType:a3];
+  v4 = [[CarCardAccessory alloc] initWithType:type];
   [(CarCardView *)self setPrimaryAccessory:v4];
 }
 
 - (unint64_t)accessoryType
 {
-  v2 = [(CarCardView *)self primaryAccessory];
-  v3 = [v2 type];
+  primaryAccessory = [(CarCardView *)self primaryAccessory];
+  type = [primaryAccessory type];
 
-  return v3;
+  return type;
 }
 
-- (void)setSecondaryAccessory:(id)a3
+- (void)setSecondaryAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   secondaryAccessory = self->_secondaryAccessory;
-  v10 = v5;
+  v10 = accessoryCopy;
   v7 = secondaryAccessory;
   v8 = v10;
   if (v10 | v7)
@@ -1051,18 +1051,18 @@ LABEL_11:
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_secondaryAccessory, a3);
+      objc_storeStrong(&self->_secondaryAccessory, accessory);
       [(CarCardView *)self _setNeedsRefreshAccessories];
       v8 = v10;
     }
   }
 }
 
-- (void)setPrimaryAccessory:(id)a3
+- (void)setPrimaryAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   primaryAccessory = self->_primaryAccessory;
-  v10 = v5;
+  v10 = accessoryCopy;
   v7 = primaryAccessory;
   v8 = v10;
   if (v10 | v7)
@@ -1072,41 +1072,41 @@ LABEL_11:
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_primaryAccessory, a3);
+      objc_storeStrong(&self->_primaryAccessory, accessory);
       [(CarCardView *)self _setNeedsRefreshAccessories];
       v8 = v10;
     }
   }
 }
 
-- (void)setTitleNumberOfLines:(int64_t)a3
+- (void)setTitleNumberOfLines:(int64_t)lines
 {
-  if (self->_titleNumberOfLines != a3)
+  if (self->_titleNumberOfLines != lines)
   {
-    self->_titleNumberOfLines = a3;
+    self->_titleNumberOfLines = lines;
     [(CarCardView *)self _setNeedsRefreshAccessories];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->_title != v5)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_title, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_title, title);
     [(CarCardView *)self _setNeedsRefreshAccessories];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceivePress:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceivePress:(id)press
 {
-  v5 = [a4 responder];
+  responder = [press responder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = responder;
   }
 
   else
@@ -1131,12 +1131,12 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [(CarCardView *)self accessoryBar];
-    if (v9)
+    accessoryBar = [(CarCardView *)self accessoryBar];
+    if (accessoryBar)
     {
-      v10 = v9;
-      v11 = [(CarCardView *)self accessoryBar];
-      [v11 frame];
+      v10 = accessoryBar;
+      accessoryBar2 = [(CarCardView *)self accessoryBar];
+      [accessoryBar2 frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
@@ -1167,22 +1167,22 @@ LABEL_11:
   return v8 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  [v5 locationInView:self];
+  touchCopy = touch;
+  [touchCopy locationInView:self];
   v7 = v6;
   v9 = v8;
   [(CarCardView *)self selectionTriggerHeight];
   v11 = v10 <= 0.0 || v9 <= v10;
-  if (v11 && ([v5 view], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v12, (isKindOfClass & 1) == 0))
+  if (v11 && ([touchCopy view], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v12, (isKindOfClass & 1) == 0))
   {
-    v16 = [(CarCardView *)self accessoryBar];
-    if (v16)
+    accessoryBar = [(CarCardView *)self accessoryBar];
+    if (accessoryBar)
     {
-      v17 = v16;
-      v18 = [(CarCardView *)self accessoryBar];
-      [v18 frame];
+      v17 = accessoryBar;
+      accessoryBar2 = [(CarCardView *)self accessoryBar];
+      [accessoryBar2 frame];
       v20.x = v7;
       v20.y = v9;
       v19 = CGRectContainsPoint(v21, v20);
@@ -1204,12 +1204,12 @@ LABEL_11:
   return v14 & 1;
 }
 
-- (void)_setHighlighted:(BOOL)a3
+- (void)_setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
-    if (a3)
+    self->_highlighted = highlighted;
+    if (highlighted)
     {
       v4 = 0.800000012;
     }
@@ -1219,31 +1219,31 @@ LABEL_11:
       v4 = 1.0;
     }
 
-    v5 = [(CarCardView *)self backgroundView];
-    [v5 setAlpha:v4];
+    backgroundView = [(CarCardView *)self backgroundView];
+    [backgroundView setAlpha:v4];
   }
 }
 
-- (void)handlePress:(id)a3
+- (void)handlePress:(id)press
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  pressCopy = press;
+  if ([pressCopy state] == 1)
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
 LABEL_3:
-    [(CarCardView *)v5 _setHighlighted:v6];
+    [(CarCardView *)selfCopy2 _setHighlighted:v6];
     goto LABEL_4;
   }
 
-  if ([v4 state] != 3)
+  if ([pressCopy state] != 3)
   {
-    if ([v4 state] == 2)
+    if ([pressCopy state] == 2)
     {
       goto LABEL_4;
     }
 
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
     goto LABEL_3;
   }
@@ -1254,24 +1254,24 @@ LABEL_3:
   v9[3] = &unk_101661B18;
   v9[4] = self;
   [UIView animateWithDuration:v9 animations:0.25];
-  v7 = [(CarCardView *)self selectionHandler];
+  selectionHandler = [(CarCardView *)self selectionHandler];
 
-  if (v7)
+  if (selectionHandler)
   {
-    v8 = [(CarCardView *)self selectionHandler];
-    [v4 locationInView:self];
-    v8[2](v8);
+    selectionHandler2 = [(CarCardView *)self selectionHandler];
+    [pressCopy locationInView:self];
+    selectionHandler2[2](selectionHandler2);
   }
 
 LABEL_4:
 }
 
-- (void)_setFocusable:(BOOL)a3
+- (void)_setFocusable:(BOOL)focusable
 {
-  if (self->_focusable != a3)
+  if (self->_focusable != focusable)
   {
-    self->_focusable = a3;
-    if (a3)
+    self->_focusable = focusable;
+    if (focusable)
     {
       v4 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"handlePress:"];
       buttonRecognizer = self->_buttonRecognizer;
@@ -1303,34 +1303,34 @@ LABEL_4:
   }
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  [(CarCardView *)self _updateFocusRing:a3];
-  v5 = [(CarCardView *)self isEffectivelyFocused];
-  v6 = [(CarCardView *)self delegate];
+  [(CarCardView *)self _updateFocusRing:context];
+  isEffectivelyFocused = [(CarCardView *)self isEffectivelyFocused];
+  delegate = [(CarCardView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CarCardView *)self delegate];
-    [v8 carCardView:self didChangeFocus:v5];
+    delegate2 = [(CarCardView *)self delegate];
+    [delegate2 carCardView:self didChangeFocus:isEffectivelyFocused];
   }
 
-  v9 = [(CarCardView *)self content];
+  content = [(CarCardView *)self content];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(CarCardView *)self content];
-    [v11 cardDidUpdateFocus:v5];
+    content2 = [(CarCardView *)self content];
+    [content2 cardDidUpdateFocus:isEffectivelyFocused];
   }
 }
 
 - (BOOL)_canAnchorBecomeFocused
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 chromeViewController];
-  if (([v4 isAutohidingContentHiddenForCurrentContext] & 1) != 0 || !self->_focusable)
+  chromeViewController = [v3 chromeViewController];
+  if (([chromeViewController isAutohidingContentHiddenForCurrentContext] & 1) != 0 || !self->_focusable)
   {
     LOBYTE(v5) = 0;
   }
@@ -1343,9 +1343,9 @@ LABEL_4:
   return v5;
 }
 
-- (void)setSelectionHandler:(id)a3
+- (void)setSelectionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   selectionHandler = self->_selectionHandler;
   self->_selectionHandler = v4;
 
@@ -1369,18 +1369,18 @@ LABEL_4:
       [v4 addObject:self->_focusAnchor];
     }
 
-    v5 = [(CarCardView *)self accessoryBar];
+    accessoryBar = [(CarCardView *)self accessoryBar];
 
-    if (v5)
+    if (accessoryBar)
     {
-      v6 = [(CarCardView *)self accessoryBar];
-      v7 = [v6 focusOrderSubItems];
-      [v4 addObjectsFromArray:v7];
+      accessoryBar2 = [(CarCardView *)self accessoryBar];
+      focusOrderSubItems = [accessoryBar2 focusOrderSubItems];
+      [v4 addObjectsFromArray:focusOrderSubItems];
     }
 
-    v8 = [(CarCardView *)self content];
-    v9 = [v8 focusOrderSubItems];
-    [v4 addObjectsFromArray:v9];
+    content = [(CarCardView *)self content];
+    focusOrderSubItems2 = [content focusOrderSubItems];
+    [v4 addObjectsFromArray:focusOrderSubItems2];
 
     v3 = [v4 copy];
   }
@@ -1398,33 +1398,33 @@ LABEL_4:
   if ([(CarCardFocusAnchor *)self->_focusAnchor canBecomeFocused])
   {
     focusAnchor = self->_focusAnchor;
-    v3 = [NSArray arrayWithObjects:&focusAnchor count:1];
+    preferredFocusEnvironments = [NSArray arrayWithObjects:&focusAnchor count:1];
   }
 
   else
   {
-    v4 = [(CarCardView *)self content];
+    content = [(CarCardView *)self content];
 
-    if (!v4)
+    if (!content)
     {
 LABEL_2:
-      v3 = &__NSArray0__struct;
+      preferredFocusEnvironments = &__NSArray0__struct;
       goto LABEL_7;
     }
 
-    v5 = [(CarCardView *)self content];
-    v3 = [v5 preferredFocusEnvironments];
+    content2 = [(CarCardView *)self content];
+    preferredFocusEnvironments = [content2 preferredFocusEnvironments];
   }
 
 LABEL_7:
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
-- (void)_setLayout:(id)a3
+- (void)_setLayout:(id)layout
 {
-  v6 = a3;
-  objc_storeStrong(&self->_layout, a3);
+  layoutCopy = layout;
+  objc_storeStrong(&self->_layout, layout);
   [(CarCardView *)self _updateHuggingCompressionPriorities];
   v5 = sub_100083670([(CarCardLayout *)self->_layout pinnedEdges]);
   if (self->_roundedCorners != v5)
@@ -1434,24 +1434,24 @@ LABEL_7:
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(CarCardView *)self styleProvider];
+  layoutCopy = layout;
+  styleProvider = [(CarCardView *)self styleProvider];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CarCardView *)self styleProvider];
-    v8 = [v7 validateCarCardLayout:v4];
+    styleProvider2 = [(CarCardView *)self styleProvider];
+    v8 = [styleProvider2 validateCarCardLayout:layoutCopy];
 
-    v4 = v8;
+    layoutCopy = v8;
   }
 
   v9 = self->_layout;
-  v10 = v4;
-  v11 = [(CarCardLayout *)v9 edgePosition];
-  if (v11 != [v10 edgePosition] || (v12 = -[CarCardLayout cornerPosition](v9, "cornerPosition"), v12 != objc_msgSend(v10, "cornerPosition")) || (v13 = -[CarCardLayout primaryAxis](v9, "primaryAxis"), v13 != objc_msgSend(v10, "primaryAxis")) || (v14 = -[CarCardLayout pinnedEdges](v9, "pinnedEdges"), v14 != objc_msgSend(v10, "pinnedEdges")) || (v15 = -[CarCardLayout primaryAxisFillMode](v9, "primaryAxisFillMode"), v15 != objc_msgSend(v10, "primaryAxisFillMode")) || (-[CarCardLayout primaryAxisFillModePriority](v9, "primaryAxisFillModePriority"), v17 = v16, objc_msgSend(v10, "primaryAxisFillModePriority"), v17 != v18) || (v19 = -[CarCardLayout secondaryAxisFillMode](v9, "secondaryAxisFillMode"), v19 != objc_msgSend(v10, "secondaryAxisFillMode")) || (-[CarCardLayout secondaryAxisFillModePriority](v9, "secondaryAxisFillModePriority"), v21 = v20, objc_msgSend(v10, "secondaryAxisFillModePriority"), v21 != v22) || (v23 = -[CarCardLayout flipForRightHandDrive](v9, "flipForRightHandDrive"), v23 != objc_msgSend(v10, "flipForRightHandDrive")) || (v24 = -[CarCardLayout edgesAffectingMapInsets](v9, "edgesAffectingMapInsets"), v24 != objc_msgSend(v10, "edgesAffectingMapInsets")) || (v25 = -[CarCardLayout horizontallyCenterMapInsets](v9, "horizontallyCenterMapInsets"), v25 != objc_msgSend(v10, "horizontallyCenterMapInsets")) || (-[CarCardLayout margins](v9, "margins"), v30 = v29, v32 = v31, v34 = v33, v36 = v35, objc_msgSend(v10, "margins"), v32 != v40) || v30 != v37 || v36 != v39)
+  v10 = layoutCopy;
+  edgePosition = [(CarCardLayout *)v9 edgePosition];
+  if (edgePosition != [v10 edgePosition] || (v12 = -[CarCardLayout cornerPosition](v9, "cornerPosition"), v12 != objc_msgSend(v10, "cornerPosition")) || (v13 = -[CarCardLayout primaryAxis](v9, "primaryAxis"), v13 != objc_msgSend(v10, "primaryAxis")) || (v14 = -[CarCardLayout pinnedEdges](v9, "pinnedEdges"), v14 != objc_msgSend(v10, "pinnedEdges")) || (v15 = -[CarCardLayout primaryAxisFillMode](v9, "primaryAxisFillMode"), v15 != objc_msgSend(v10, "primaryAxisFillMode")) || (-[CarCardLayout primaryAxisFillModePriority](v9, "primaryAxisFillModePriority"), v17 = v16, objc_msgSend(v10, "primaryAxisFillModePriority"), v17 != v18) || (v19 = -[CarCardLayout secondaryAxisFillMode](v9, "secondaryAxisFillMode"), v19 != objc_msgSend(v10, "secondaryAxisFillMode")) || (-[CarCardLayout secondaryAxisFillModePriority](v9, "secondaryAxisFillModePriority"), v21 = v20, objc_msgSend(v10, "secondaryAxisFillModePriority"), v21 != v22) || (v23 = -[CarCardLayout flipForRightHandDrive](v9, "flipForRightHandDrive"), v23 != objc_msgSend(v10, "flipForRightHandDrive")) || (v24 = -[CarCardLayout edgesAffectingMapInsets](v9, "edgesAffectingMapInsets"), v24 != objc_msgSend(v10, "edgesAffectingMapInsets")) || (v25 = -[CarCardLayout horizontallyCenterMapInsets](v9, "horizontallyCenterMapInsets"), v25 != objc_msgSend(v10, "horizontallyCenterMapInsets")) || (-[CarCardLayout margins](v9, "margins"), v30 = v29, v32 = v31, v34 = v33, v36 = v35, objc_msgSend(v10, "margins"), v32 != v40) || v30 != v37 || v36 != v39)
   {
 
 LABEL_15:
@@ -1475,44 +1475,44 @@ LABEL_16:
   }
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v5 = a3;
-  if (self->_content != v5)
+  contentCopy = content;
+  if (self->_content != contentCopy)
   {
-    v6 = [(CarCardView *)self content];
-    objc_storeStrong(&self->_content, a3);
-    if (v6)
+    content = [(CarCardView *)self content];
+    objc_storeStrong(&self->_content, content);
+    if (content)
     {
-      if ([v6 isViewLoaded])
+      if ([content isViewLoaded])
       {
-        v7 = [v6 view];
-        v8 = [v7 superview];
-        v9 = [(CarCardView *)self containerView];
+        view = [content view];
+        superview = [view superview];
+        containerView = [(CarCardView *)self containerView];
 
-        if (v8 == v9)
+        if (superview == containerView)
         {
-          v10 = [v6 view];
-          [v10 removeFromSuperview];
+          view2 = [content view];
+          [view2 removeFromSuperview];
         }
       }
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_styleProvider);
 
-    if (WeakRetained == v6)
+    if (WeakRetained == content)
     {
       [(CarCardView *)self setStyleProvider:0];
     }
 
-    if (v5)
+    if (contentCopy)
     {
       v12 = _NSConcreteStackBlock;
       v13 = 3221225472;
       v14 = sub_1009B6A50;
       v15 = &unk_101661A90;
-      v16 = self;
-      v17 = v5;
+      selfCopy = self;
+      v17 = contentCopy;
       [UIView performWithoutAnimation:&v12];
     }
 
@@ -1520,11 +1520,11 @@ LABEL_16:
   }
 }
 
-- (void)setParentViewController:(id)a3
+- (void)setParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_parentViewController);
-  obj = v4;
+  obj = controllerCopy;
   v6 = WeakRetained;
   if (obj | v6)
   {
@@ -1538,24 +1538,24 @@ LABEL_16:
   }
 }
 
-- (CarCardView)initWithContent:(id)a3
+- (CarCardView)initWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = [(CarCardView *)self initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    [(CarCardView *)v5 setContent:v4];
+    [(CarCardView *)v5 setContent:contentCopy];
   }
 
   return v6;
 }
 
-- (CarCardView)initWithFrame:(CGRect)a3
+- (CarCardView)initWithFrame:(CGRect)frame
 {
   v60.receiver = self;
   v60.super_class = CarCardView;
-  v3 = [(CarCardView *)&v60 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarCardView *)&v60 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -1583,10 +1583,10 @@ LABEL_16:
     [(CarCardLayout *)v8 setFlipForRightHandDrive:1];
     v11 = v8;
     v12 = [(CarCardLayout *)v11 primaryAxis]== 1;
-    v13 = [(CarCardLayout *)v11 cornerPosition];
+    cornerPosition = [(CarCardLayout *)v11 cornerPosition];
     if (v12)
     {
-      if (v13 == 4 || [(CarCardLayout *)v11 cornerPosition]== 1 || [(CarCardLayout *)v11 edgePosition]== 2)
+      if (cornerPosition == 4 || [(CarCardLayout *)v11 cornerPosition]== 1 || [(CarCardLayout *)v11 edgePosition]== 2)
       {
         v14 = 8;
       }
@@ -1611,7 +1611,7 @@ LABEL_16:
 
     else
     {
-      v15 = v13 == 4 || [(CarCardLayout *)v11 cornerPosition]== 8 || [(CarCardLayout *)v11 edgePosition]== 4;
+      v15 = cornerPosition == 4 || [(CarCardLayout *)v11 cornerPosition]== 8 || [(CarCardLayout *)v11 edgePosition]== 4;
       if ([(CarCardLayout *)v11 cornerPosition]== 1 || [(CarCardLayout *)v11 cornerPosition]== 2 || [(CarCardLayout *)v11 edgePosition]== 1)
       {
         v15 |= 4uLL;
@@ -1674,42 +1674,42 @@ LABEL_16:
     [v56 setContentCompressionResistancePriority:1 forAxis:v25];
     [v54 addSubview:v56];
     [(CarCardView *)v4 setAccessoryContainerView:v56];
-    v26 = [(CarCardView *)v4 heightAnchor];
-    v27 = [v26 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor = [(CarCardView *)v4 heightAnchor];
+    v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
     minimumHeightConstraint = v4->_minimumHeightConstraint;
     v4->_minimumHeightConstraint = v27;
 
     [(NSLayoutConstraint *)v4->_minimumHeightConstraint setActive:1];
-    v53 = [(CarCardFocusAnchor *)v4->_focusAnchor topAnchor];
-    v52 = [(CarCardView *)v4 topAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    topAnchor = [(CarCardFocusAnchor *)v4->_focusAnchor topAnchor];
+    topAnchor2 = [(CarCardView *)v4 topAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v61[0] = v51;
-    v50 = [(CarCardFocusAnchor *)v4->_focusAnchor leftAnchor];
-    v49 = [(CarCardView *)v4 leftAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    leftAnchor = [(CarCardFocusAnchor *)v4->_focusAnchor leftAnchor];
+    leftAnchor2 = [(CarCardView *)v4 leftAnchor];
+    v48 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v61[1] = v48;
-    v47 = [(CarCardFocusAnchor *)v4->_focusAnchor rightAnchor];
-    v46 = [(CarCardView *)v4 rightAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    rightAnchor = [(CarCardFocusAnchor *)v4->_focusAnchor rightAnchor];
+    rightAnchor2 = [(CarCardView *)v4 rightAnchor];
+    v45 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v61[2] = v45;
-    v44 = [(CarCardFocusAnchor *)v4->_focusAnchor heightAnchor];
-    v43 = [v44 constraintEqualToConstant:1.0];
+    heightAnchor2 = [(CarCardFocusAnchor *)v4->_focusAnchor heightAnchor];
+    v43 = [heightAnchor2 constraintEqualToConstant:1.0];
     v61[3] = v43;
-    v42 = [v55 topAnchor];
-    v41 = [(CarCardView *)v4 topAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    topAnchor3 = [v55 topAnchor];
+    topAnchor4 = [(CarCardView *)v4 topAnchor];
+    v40 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v61[4] = v40;
-    v39 = [v55 leftAnchor];
-    v29 = [(CarCardView *)v4 leftAnchor];
-    v30 = [v39 constraintEqualToAnchor:v29];
+    leftAnchor3 = [v55 leftAnchor];
+    leftAnchor4 = [(CarCardView *)v4 leftAnchor];
+    v30 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
     v61[5] = v30;
-    v31 = [v55 bottomAnchor];
-    v32 = [(CarCardView *)v4 bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    bottomAnchor = [v55 bottomAnchor];
+    bottomAnchor2 = [(CarCardView *)v4 bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v61[6] = v33;
-    v34 = [v55 rightAnchor];
-    v35 = [(CarCardView *)v4 rightAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    rightAnchor3 = [v55 rightAnchor];
+    rightAnchor4 = [(CarCardView *)v4 rightAnchor];
+    v36 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v61[7] = v36;
     v37 = [NSArray arrayWithObjects:v61 count:8];
     [NSLayoutConstraint activateConstraints:v37];

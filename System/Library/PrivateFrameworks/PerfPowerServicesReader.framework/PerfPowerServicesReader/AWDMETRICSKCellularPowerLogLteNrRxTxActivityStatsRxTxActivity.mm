@@ -1,21 +1,21 @@
 @interface AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActState:(id)a3;
-- (int)StringAsCaState:(id)a3;
-- (int)StringAsRatDpl:(id)a3;
+- (int)StringAsActState:(id)state;
+- (int)StringAsCaState:(id)state;
+- (int)StringAsRatDpl:(id)dpl;
 - (int)actState;
 - (int)caState;
 - (int)ratDpl;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCaState:(BOOL)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasRatDpl:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCaState:(BOOL)state;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasRatDpl:(BOOL)dpl;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity
@@ -33,9 +33,9 @@
   }
 }
 
-- (void)setHasRatDpl:(BOOL)a3
+- (void)setHasRatDpl:(BOOL)dpl
 {
-  if (a3)
+  if (dpl)
   {
     v3 = 8;
   }
@@ -48,25 +48,25 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsRatDpl:(id)a3
+- (int)StringAsRatDpl:(id)dpl
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DPL_LTE"])
+  dplCopy = dpl;
+  if ([dplCopy isEqualToString:@"DPL_LTE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DPL_LTE_ENDC"])
+  else if ([dplCopy isEqualToString:@"DPL_LTE_ENDC"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DPL_NR_SA"])
+  else if ([dplCopy isEqualToString:@"DPL_NR_SA"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DPL_NR_ENDC"])
+  else if ([dplCopy isEqualToString:@"DPL_NR_ENDC"])
   {
     v4 = 3;
   }
@@ -92,9 +92,9 @@
   }
 }
 
-- (void)setHasCaState:(BOOL)a3
+- (void)setHasCaState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -107,20 +107,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsCaState:(id)a3
+- (int)StringAsCaState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CA_PCELL_ONLY"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"CA_PCELL_ONLY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"CA_ONE_SCELL_ONLY"])
+  else if ([stateCopy isEqualToString:@"CA_ONE_SCELL_ONLY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CA_MULTI_CELLS"])
+  else if ([stateCopy isEqualToString:@"CA_MULTI_CELLS"])
   {
     v4 = 2;
   }
@@ -146,40 +146,40 @@
   }
 }
 
-- (int)StringAsActState:(id)a3
+- (int)StringAsActState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"RX_ONLY"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"RX_ONLY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"TX_ONLY"])
+  else if ([stateCopy isEqualToString:@"TX_ONLY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RX_TX"])
+  else if ([stateCopy isEqualToString:@"RX_TX"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TDD_UL_SF_NO_TX"])
+  else if ([stateCopy isEqualToString:@"TDD_UL_SF_NO_TX"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NO_RX_NO_TX_WITH_DCI"])
+  else if ([stateCopy isEqualToString:@"NO_RX_NO_TX_WITH_DCI"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"NO_RX_NO_TX_WITHOUT_DCI"])
+  else if ([stateCopy isEqualToString:@"NO_RX_NO_TX_WITHOUT_DCI"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NO_RX_NO_TX_NO_DCI_DECODING"])
+  else if ([stateCopy isEqualToString:@"NO_RX_NO_TX_NO_DCI_DECODING"])
   {
     v4 = 7;
   }
@@ -192,9 +192,9 @@
   return v4;
 }
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -213,15 +213,15 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity;
   v4 = [(AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogLteNrRxTxActivityStatsRxTxActivity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -236,7 +236,7 @@
       v8 = off_279A11540[ratDpl];
     }
 
-    [v3 setObject:v8 forKey:@"rat_dpl"];
+    [dictionary setObject:v8 forKey:@"rat_dpl"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -267,7 +267,7 @@ LABEL_3:
     v10 = off_279A11560[caState];
   }
 
-  [v3 setObject:v10 forKey:@"ca_state"];
+  [dictionary setObject:v10 forKey:@"ca_state"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -293,7 +293,7 @@ LABEL_17:
     v12 = off_279A11578[v11];
   }
 
-  [v3 setObject:v12 forKey:@"act_state"];
+  [dictionary setObject:v12 forKey:@"act_state"];
 
   if ((*&self->_has & 4) == 0)
   {
@@ -302,16 +302,16 @@ LABEL_17:
 
 LABEL_5:
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_count];
-  [v3 setObject:v5 forKey:@"count"];
+  [dictionary setObject:v5 forKey:@"count"];
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -362,14 +362,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[5] = self->_ratDpl;
-    *(v4 + 24) |= 8u;
+    toCopy[5] = self->_ratDpl;
+    *(toCopy + 24) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -388,8 +388,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_caState;
-  *(v4 + 24) |= 2u;
+  toCopy[3] = self->_caState;
+  *(toCopy + 24) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -403,21 +403,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[2] = self->_actState;
-  *(v4 + 24) |= 1u;
+  toCopy[2] = self->_actState;
+  *(toCopy + 24) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    v4[4] = self->_count;
-    *(v4 + 24) |= 4u;
+    toCopy[4] = self->_count;
+    *(toCopy + 24) |= 4u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -469,23 +469,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 24) & 8) == 0 || self->_ratDpl != *(v4 + 5))
+    if ((*(equalCopy + 24) & 8) == 0 || self->_ratDpl != *(equalCopy + 5))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 8) != 0)
+  else if ((*(equalCopy + 24) & 8) != 0)
   {
 LABEL_21:
     v5 = 0;
@@ -494,34 +494,34 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_caState != *(v4 + 3))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_caState != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_actState != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_actState != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 24) & 4) == 0;
+  v5 = (*(equalCopy + 24) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_count != *(v4 + 4))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_count != *(equalCopy + 4))
     {
       goto LABEL_21;
     }
@@ -588,15 +588,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 8) != 0)
   {
-    self->_ratDpl = *(v4 + 5);
+    self->_ratDpl = *(fromCopy + 5);
     *&self->_has |= 8u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -609,14 +609,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 2) == 0)
+  else if ((*(fromCopy + 24) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_caState = *(v4 + 3);
+  self->_caState = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 24);
+  v5 = *(fromCopy + 24);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -629,12 +629,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_actState = *(v4 + 2);
+  self->_actState = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 24) & 4) != 0)
+  if ((*(fromCopy + 24) & 4) != 0)
   {
 LABEL_5:
-    self->_count = *(v4 + 4);
+    self->_count = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

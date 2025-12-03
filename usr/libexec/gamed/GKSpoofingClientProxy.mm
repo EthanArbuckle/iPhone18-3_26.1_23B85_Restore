@@ -1,14 +1,14 @@
 @interface GKSpoofingClientProxy
-- (id)transportWithCredential:(id)a3;
+- (id)transportWithCredential:(id)credential;
 @end
 
 @implementation GKSpoofingClientProxy
 
-- (id)transportWithCredential:(id)a3
+- (id)transportWithCredential:(id)credential
 {
-  v3 = a3;
+  credentialCopy = credential;
   v4 = +[GKClientProxy gameCenterClient];
-  v5 = [v4 transportWithCredential:v3];
+  v5 = [v4 transportWithCredential:credentialCopy];
 
   return v5;
 }

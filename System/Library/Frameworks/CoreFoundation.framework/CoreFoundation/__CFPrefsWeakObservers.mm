@@ -1,10 +1,10 @@
 @interface __CFPrefsWeakObservers
 - (__CFPrefsWeakObservers)init;
 - (id)debugDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (unint64_t)borrowObjects:(id *)a3 count:(unint64_t)a4;
-- (unsigned)addObject:(id)a3;
-- (unsigned)removeObject:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (unint64_t)borrowObjects:(id *)objects count:(unint64_t)count;
+- (unsigned)addObject:(id)object;
+- (unsigned)removeObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -51,7 +51,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v7[5] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(__CFPrefsWeakObservers);
@@ -65,10 +65,10 @@
   return v4;
 }
 
-- (unsigned)addObject:(id)a3
+- (unsigned)addObject:(id)object
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!object)
   {
     [__CFPrefsWeakObservers addObject:];
   }
@@ -81,7 +81,7 @@
   v9[1] = 3221225472;
   v9[2] = __36____CFPrefsWeakObservers_addObject___block_invoke;
   v9[3] = &unk_1E6D81F38;
-  v9[4] = a3;
+  v9[4] = object;
   v9[5] = &v10;
   v5 = visit(self, 0, v9);
   if (*(v11 + 24))
@@ -91,7 +91,7 @@
 
   else
   {
-    objc_storeWeak(v5, a3);
+    objc_storeWeak(v5, object);
     ++self->count;
     v6 = *(v11 + 24) == 0;
   }
@@ -101,10 +101,10 @@
   return v6;
 }
 
-- (unsigned)removeObject:(id)a3
+- (unsigned)removeObject:(id)object
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!object)
   {
     [__CFPrefsWeakObservers removeObject:];
   }
@@ -117,7 +117,7 @@
   v6[1] = 3221225472;
   v6[2] = __39____CFPrefsWeakObservers_removeObject___block_invoke;
   v6[3] = &unk_1E6D81F38;
-  v6[4] = a3;
+  v6[4] = object;
   v6[5] = &v7;
   visit(self, 1, v6);
   if (*(v8 + 24))
@@ -130,7 +130,7 @@
   return 1;
 }
 
-- (unint64_t)borrowObjects:(id *)a3 count:(unint64_t)a4
+- (unint64_t)borrowObjects:(id *)objects count:(unint64_t)count
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -142,8 +142,8 @@
   v7[2] = __46____CFPrefsWeakObservers_borrowObjects_count___block_invoke;
   v7[3] = &unk_1E6D81F60;
   v7[4] = &v8;
-  v7[5] = a4;
-  v7[6] = a3;
+  v7[5] = count;
+  v7[6] = objects;
   visit(self, 2, v7);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);

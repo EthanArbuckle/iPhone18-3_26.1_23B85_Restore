@@ -1,10 +1,10 @@
 @interface _UIPhysicalButtonBSAction
-+ (id)actionFromBuilder:(id)a3;
-- (BOOL)settings:(id)a3 appendDescriptionToBuilder:(id)a4 forFlag:(int64_t)a5 object:(id)a6 ofSetting:(unint64_t)a7;
-- (_UIPhysicalButtonBSAction)initWithPhysicalButton:(unint64_t)a3 behavior:(unint64_t)a4 state:(unint64_t)a5 generation:(unint64_t)a6 completion:(id)a7;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)actionFromBuilder:(id)builder;
+- (BOOL)settings:(id)settings appendDescriptionToBuilder:(id)builder forFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (_UIPhysicalButtonBSAction)initWithPhysicalButton:(unint64_t)button behavior:(unint64_t)behavior state:(unint64_t)state generation:(unint64_t)generation completion:(id)completion;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)behavior;
@@ -16,59 +16,59 @@
 
 @implementation _UIPhysicalButtonBSAction
 
-+ (id)actionFromBuilder:(id)a3
++ (id)actionFromBuilder:(id)builder
 {
-  if (!a3)
+  if (!builder)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"_UIPhysicalButtonBSAction.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"builder"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonBSAction.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"builder"}];
   }
 
   v6 = objc_opt_new();
-  (*(a3 + 2))(a3, v6);
-  v7 = [v6 button];
-  v8 = [v6 behavior];
-  if ((_UIPhysicalButtonBehaviorIsValidForButton(v8, v7) & 1) == 0)
+  (*(builder + 2))(builder, v6);
+  button = [v6 button];
+  behavior = [v6 behavior];
+  if ((_UIPhysicalButtonBehaviorIsValidForButton(behavior, button) & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"_UIPhysicalButtonBSAction.m" lineNumber:56 description:{@"Invalid behavior: %lu; for button: %lu", v8, v7}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonBSAction.m" lineNumber:56 description:{@"Invalid behavior: %lu; for button: %lu", behavior, button}];
   }
 
-  v9 = [v6 generation];
-  if (!v9)
+  generation = [v6 generation];
+  if (!generation)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"_UIPhysicalButtonBSAction.m" lineNumber:59 description:{@"Generation must be greater than zero: %llu", 0}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonBSAction.m" lineNumber:59 description:{@"Generation must be greater than zero: %llu", 0}];
   }
 
-  v10 = _UIPhysicalButtonBSActionSettings(v7, [v6 source], v8, objc_msgSend(v6, "state"), v9);
-  v11 = [v6 completionHandler];
+  v10 = _UIPhysicalButtonBSActionSettings(button, [v6 source], behavior, objc_msgSend(v6, "state"), generation);
+  completionHandler = [v6 completionHandler];
 
-  if (v11)
+  if (completionHandler)
   {
     v12 = MEMORY[0x1E698E5F8];
-    v13 = [v6 completionHandler];
-    v11 = [v12 responderWithHandler:v13];
+    completionHandler2 = [v6 completionHandler];
+    completionHandler = [v12 responderWithHandler:completionHandler2];
 
-    [v11 setQueue:MEMORY[0x1E69E96A0]];
+    [completionHandler setQueue:MEMORY[0x1E69E96A0]];
   }
 
-  v14 = [[_UIPhysicalButtonBSAction alloc] initWithInfo:v10 responder:v11];
+  v14 = [[_UIPhysicalButtonBSAction alloc] initWithInfo:v10 responder:completionHandler];
 
   return v14;
 }
 
-- (_UIPhysicalButtonBSAction)initWithPhysicalButton:(unint64_t)a3 behavior:(unint64_t)a4 state:(unint64_t)a5 generation:(unint64_t)a6 completion:(id)a7
+- (_UIPhysicalButtonBSAction)initWithPhysicalButton:(unint64_t)button behavior:(unint64_t)behavior state:(unint64_t)state generation:(unint64_t)generation completion:(id)completion
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89___UIPhysicalButtonBSAction_initWithPhysicalButton_behavior_state_generation_completion___block_invoke;
   v10[3] = &unk_1E7126C48;
-  v10[6] = a4;
-  v10[7] = a5;
-  v10[8] = a6;
-  v10[4] = a7;
-  v10[5] = a3;
+  v10[6] = behavior;
+  v10[7] = state;
+  v10[8] = generation;
+  v10[4] = completion;
+  v10[5] = button;
   v8 = [_UIPhysicalButtonBSAction actionFromBuilder:v10];
 
   return v8;
@@ -76,55 +76,55 @@
 
 - (unint64_t)button
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self info];
-  v3 = [v2 objectForSetting:0];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(_UIPhysicalButtonBSAction *)self info];
+  v3 = [info objectForSetting:0];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)source
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self info];
-  v3 = [v2 objectForSetting:4];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(_UIPhysicalButtonBSAction *)self info];
+  v3 = [info objectForSetting:4];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)behavior
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(_UIPhysicalButtonBSAction *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)state
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self info];
-  v3 = [v2 objectForSetting:3];
-  v4 = [v3 unsignedIntegerValue];
+  info = [(_UIPhysicalButtonBSAction *)self info];
+  v3 = [info objectForSetting:3];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)generation
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self info];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 unsignedLongLongValue];
+  info = [(_UIPhysicalButtonBSAction *)self info];
+  v3 = [info objectForSetting:2];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonBSAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonBSAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -142,82 +142,82 @@
   v9 = _NSStringFromUIPhysicalButtonActionSetting(3uLL);
   v10 = _NSStringFromUIPhysicalButtonState([(_UIPhysicalButtonBSAction *)self state]);
   [v3 appendString:v10 withName:v9];
-  v11 = [(_UIPhysicalButtonBSAction *)self generation];
+  generation = [(_UIPhysicalButtonBSAction *)self generation];
   v12 = _NSStringFromUIPhysicalButtonActionSetting(2uLL);
-  v13 = [v3 appendUInt64:v11 withName:v12];
+  v13 = [v3 appendUInt64:generation withName:v12];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonBSAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonBSAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonBSAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonBSAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67___UIPhysicalButtonBSAction_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 
   return v6;
 }
 
-- (BOOL)settings:(id)a3 appendDescriptionToBuilder:(id)a4 forFlag:(int64_t)a5 object:(id)a6 ofSetting:(unint64_t)a7
+- (BOOL)settings:(id)settings appendDescriptionToBuilder:(id)builder forFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v10 = _NSStringFromUIPhysicalButtonActionSetting(a7);
+  v10 = _NSStringFromUIPhysicalButtonActionSetting(setting);
   v11 = 0;
-  if (a7 <= 1)
+  if (setting <= 1)
   {
-    if (!a7)
+    if (!setting)
     {
-      v12 = _NSStringFromUIPhysicalButton([a6 unsignedIntegerValue]);
+      v12 = _NSStringFromUIPhysicalButton([object unsignedIntegerValue]);
       goto LABEL_12;
     }
 
-    if (a7 == 1)
+    if (setting == 1)
     {
-      v12 = _NSStringFromUIPhysicalButtonBehavior([a6 unsignedIntegerValue]);
+      v12 = _NSStringFromUIPhysicalButtonBehavior([object unsignedIntegerValue]);
       goto LABEL_12;
     }
   }
 
   else
   {
-    switch(a7)
+    switch(setting)
     {
       case 2uLL:
-        v13 = [a4 appendUInt64:objc_msgSend(a6 withName:{"longLongValue"), v10}];
+        v13 = [builder appendUInt64:objc_msgSend(object withName:{"longLongValue"), v10}];
 LABEL_13:
         v11 = 1;
         break;
       case 3uLL:
-        v12 = _NSStringFromUIPhysicalButtonState([a6 unsignedIntegerValue]);
+        v12 = _NSStringFromUIPhysicalButtonState([object unsignedIntegerValue]);
         goto LABEL_12;
       case 4uLL:
-        v12 = _NSStringFromUIPhysicalButtonSource([a6 unsignedIntegerValue]);
+        v12 = _NSStringFromUIPhysicalButtonSource([object unsignedIntegerValue]);
 LABEL_12:
         v14 = v12;
-        [a4 appendString:v12 withName:v10];
+        [builder appendString:v12 withName:v10];
 
         goto LABEL_13;
     }

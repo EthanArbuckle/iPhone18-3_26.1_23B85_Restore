@@ -1,70 +1,70 @@
 @interface DBAppHistory
 + (id)availableApplicationContexts;
-+ (id)contextForApplicationCategory:(unint64_t)a3;
-+ (unint64_t)applicationCategoryForURL:(id)a3;
-- (BOOL)_evaluatePolicyForBundleIdentifier:(id)a3 withBlock:(id)a4;
-- (BOOL)_isCommunicationApplicationForBundleIdentifier:(id)a3;
-- (BOOL)_isMapsApplicationForBundleIdentifier:(id)a3;
-- (BOOL)_isNowPlayingApplicationForBundleIdentifier:(id)a3;
-- (BOOL)applicationVisibleInCarPlay:(id)a3 withIconProvider:(id)a4;
-- (BOOL)isBundleIdentifierValidForDock:(id)a3;
++ (id)contextForApplicationCategory:(unint64_t)category;
++ (unint64_t)applicationCategoryForURL:(id)l;
+- (BOOL)_evaluatePolicyForBundleIdentifier:(id)identifier withBlock:(id)block;
+- (BOOL)_isCommunicationApplicationForBundleIdentifier:(id)identifier;
+- (BOOL)_isMapsApplicationForBundleIdentifier:(id)identifier;
+- (BOOL)_isNowPlayingApplicationForBundleIdentifier:(id)identifier;
+- (BOOL)applicationVisibleInCarPlay:(id)play withIconProvider:(id)provider;
+- (BOOL)isBundleIdentifierValidForDock:(id)dock;
 - (DBAppHistory)init;
 - (NSArray)orderedAppHistory;
-- (double)lastActivationTimeForApplication:(id)a3;
-- (double)lastActivationTimeForBundleIdentifier:(id)a3;
-- (id)_allInstalledApplicationsInCategories:(id)a3 defaultAppPreferenceHints:(unint64_t)a4;
-- (id)_applicationForBundleIdentifier:(id)a3;
-- (id)_orderedAppsForBundleIdentifiers:(id)a3;
-- (id)_preferredBundleIdentifierInCategory:(unint64_t)a3 defaultAppPreferenceHints:(unint64_t)a4;
-- (id)orderedAppsMatchingCategory:(unint64_t)a3;
-- (id)orderedAppsMatchingDockCategories:(id)a3 defaultAppPreferenceHints:(unint64_t)a4;
-- (id)orderedAppsMatchingDockCategory:(unint64_t)a3;
-- (id)orderedBundleIdentifiersMatchingDockCategory:(unint64_t)a3;
-- (id)policyForBundleIdentifier:(id)a3;
-- (unint64_t)appDockCategoryForBundleIdentifier:(id)a3;
-- (unint64_t)applicationCategoryForBundleIdentifier:(id)a3;
-- (unint64_t)currentOwnerForContext:(id)a3;
-- (void)_bundleIdentifierDidBecomeVisible:(id)a3 previousBundleIdentifier:(id)a4;
-- (void)_evaluateUniversalLinksForURL:(id)a3 withIconProvider:(id)a4 completion:(id)a5;
-- (void)_nowPlayingWillAppear:(id)a3;
-- (void)_nowPlayingWillDisappear:(id)a3;
+- (double)lastActivationTimeForApplication:(id)application;
+- (double)lastActivationTimeForBundleIdentifier:(id)identifier;
+- (id)_allInstalledApplicationsInCategories:(id)categories defaultAppPreferenceHints:(unint64_t)hints;
+- (id)_applicationForBundleIdentifier:(id)identifier;
+- (id)_orderedAppsForBundleIdentifiers:(id)identifiers;
+- (id)_preferredBundleIdentifierInCategory:(unint64_t)category defaultAppPreferenceHints:(unint64_t)hints;
+- (id)orderedAppsMatchingCategory:(unint64_t)category;
+- (id)orderedAppsMatchingDockCategories:(id)categories defaultAppPreferenceHints:(unint64_t)hints;
+- (id)orderedAppsMatchingDockCategory:(unint64_t)category;
+- (id)orderedBundleIdentifiersMatchingDockCategory:(unint64_t)category;
+- (id)policyForBundleIdentifier:(id)identifier;
+- (unint64_t)appDockCategoryForBundleIdentifier:(id)identifier;
+- (unint64_t)applicationCategoryForBundleIdentifier:(id)identifier;
+- (unint64_t)currentOwnerForContext:(id)context;
+- (void)_bundleIdentifierDidBecomeVisible:(id)visible previousBundleIdentifier:(id)identifier;
+- (void)_evaluateUniversalLinksForURL:(id)l withIconProvider:(id)provider completion:(id)completion;
+- (void)_nowPlayingWillAppear:(id)appear;
+- (void)_nowPlayingWillDisappear:(id)disappear;
 - (void)_persistSessionUIContextOwnership;
-- (void)_sessionDidConnect:(id)a3 environmentConfiguration:(id)a4;
+- (void)_sessionDidConnect:(id)connect environmentConfiguration:(id)configuration;
 - (void)_sessionDidDisconnect;
-- (void)addObserver:(id)a3;
-- (void)applySessionAppContexts:(id)a3;
-- (void)applySessionEchoContexts:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)applySessionAppContexts:(id)contexts;
+- (void)applySessionEchoContexts:(id)contexts;
 - (void)dealloc;
-- (void)openApplicationURL:(id)a3 withIconProvider:(id)a4 activationSettings:(id)a5 completion:(id)a6;
-- (void)removeObserver:(id)a3;
+- (void)openApplicationURL:(id)l withIconProvider:(id)provider activationSettings:(id)settings completion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)resetAppHistory;
-- (void)setDashboardAppOnDisconnect:(id)a3;
-- (void)siriPresentedIntentForBundleIdentifier:(id)a3;
-- (void)updateOwner:(unint64_t)a3 forContext:(id)a4;
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5;
+- (void)setDashboardAppOnDisconnect:(id)disconnect;
+- (void)siriPresentedIntentForBundleIdentifier:(id)identifier;
+- (void)updateOwner:(unint64_t)owner forContext:(id)context;
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState;
 @end
 
 @implementation DBAppHistory
 
 - (NSArray)orderedAppHistory
 {
-  v3 = [(DBAppHistory *)self appHistory];
-  v4 = [v3 allKeys];
-  v5 = [(DBAppHistory *)self _orderedAppsForBundleIdentifiers:v4];
+  appHistory = [(DBAppHistory *)self appHistory];
+  allKeys = [appHistory allKeys];
+  v5 = [(DBAppHistory *)self _orderedAppsForBundleIdentifiers:allKeys];
 
   return v5;
 }
 
-- (BOOL)isBundleIdentifierValidForDock:(id)a3
+- (BOOL)isBundleIdentifierValidForDock:(id)dock
 {
   v3 = isBundleIdentifierValidForDock__onceToken;
-  v4 = a3;
+  dockCopy = dock;
   if (v3 != -1)
   {
     [DBAppHistory(AppDock) isBundleIdentifierValidForDock:];
   }
 
-  v5 = [isBundleIdentifierValidForDock__invalidDockBundles containsObject:v4];
+  v5 = [isBundleIdentifierValidForDock__invalidDockBundles containsObject:dockCopy];
 
   return v5 ^ 1;
 }
@@ -79,20 +79,20 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
   isBundleIdentifierValidForDock__invalidDockBundles = v0;
 }
 
-- (unint64_t)appDockCategoryForBundleIdentifier:(id)a3
+- (unint64_t)appDockCategoryForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(DBAppHistory *)self _isNowPlayingApplicationForBundleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(DBAppHistory *)self _isNowPlayingApplicationForBundleIdentifier:identifierCopy])
   {
     v5 = 2;
   }
 
-  else if ([(DBAppHistory *)self _isMapsApplicationForBundleIdentifier:v4])
+  else if ([(DBAppHistory *)self _isMapsApplicationForBundleIdentifier:identifierCopy])
   {
     v5 = 1;
   }
 
-  else if ([(DBAppHistory *)self _isCommunicationApplicationForBundleIdentifier:v4])
+  else if ([(DBAppHistory *)self _isCommunicationApplicationForBundleIdentifier:identifierCopy])
   {
     v5 = 3;
   }
@@ -105,18 +105,18 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
   return v5;
 }
 
-- (id)orderedBundleIdentifiersMatchingDockCategory:(unint64_t)a3
+- (id)orderedBundleIdentifiersMatchingDockCategory:(unint64_t)category
 {
-  v3 = [(DBAppHistory *)self orderedAppsMatchingDockCategory:a3];
+  v3 = [(DBAppHistory *)self orderedAppsMatchingDockCategory:category];
   v4 = [v3 db_map:&__block_literal_global_61];
 
   return v4;
 }
 
-- (id)orderedAppsMatchingDockCategory:(unint64_t)a3
+- (id)orderedAppsMatchingDockCategory:(unint64_t)category
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:category];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   v6 = [(DBAppHistory *)self orderedAppsMatchingDockCategories:v5 defaultAppPreferenceHints:0];
@@ -124,11 +124,11 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
   return v6;
 }
 
-- (id)orderedAppsMatchingDockCategories:(id)a3 defaultAppPreferenceHints:(unint64_t)a4
+- (id)orderedAppsMatchingDockCategories:(id)categories defaultAppPreferenceHints:(unint64_t)hints
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v19 = [MEMORY[0x277CBEB18] array];
+  categoriesCopy = categories;
+  array = [MEMORY[0x277CBEB18] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -149,8 +149,8 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [(DBAppHistory *)self appDockCategoryForBundleIdentifier:v11];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [(DBAppHistory *)self appDockCategoryForBundleIdentifier:bundleIdentifier];
 
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
@@ -158,9 +158,9 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
         aBlock[3] = &__block_descriptor_40_e18_B16__0__NSNumber_8l;
         aBlock[4] = v12;
         v13 = _Block_copy(aBlock);
-        if ([v5 bs_containsObjectPassingTest:v13])
+        if ([categoriesCopy bs_containsObjectPassingTest:v13])
         {
-          [v19 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -170,13 +170,13 @@ void __56__DBAppHistory_AppDock__isBundleIdentifierValidForDock___block_invoke()
     while (v7);
   }
 
-  v14 = [(DBAppHistory *)self _allInstalledApplicationsInCategories:v5 defaultAppPreferenceHints:a4];
+  v14 = [(DBAppHistory *)self _allInstalledApplicationsInCategories:categoriesCopy defaultAppPreferenceHints:hints];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __85__DBAppHistory_AppDock__orderedAppsMatchingDockCategories_defaultAppPreferenceHints___block_invoke_2;
   v21[3] = &unk_278F01420;
-  v22 = v19;
-  v15 = v19;
+  v22 = array;
+  v15 = array;
   [v14 bs_each:v21];
   v16 = [MEMORY[0x277CBEA60] arrayWithArray:v15];
 
@@ -192,19 +192,19 @@ void __85__DBAppHistory_AppDock__orderedAppsMatchingDockCategories_defaultAppPre
   }
 }
 
-- (BOOL)_evaluatePolicyForBundleIdentifier:(id)a3 withBlock:(id)a4
+- (BOOL)_evaluatePolicyForBundleIdentifier:(id)identifier withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(DBAppHistory *)self policyForBundleIdentifier:a3];
-  LOBYTE(self) = v6[2](v6, v7);
+  blockCopy = block;
+  v7 = [(DBAppHistory *)self policyForBundleIdentifier:identifier];
+  LOBYTE(self) = blockCopy[2](blockCopy, v7);
 
   return self;
 }
 
-- (BOOL)_isNowPlayingApplicationForBundleIdentifier:(id)a3
+- (BOOL)_isNowPlayingApplicationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = ([v4 isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"com.apple.CarRadio") & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", v4, &__block_literal_global_68);
+  identifierCopy = identifier;
+  v5 = ([identifierCopy isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.CarRadio") & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", identifierCopy, &__block_literal_global_68);
 
   return v5;
 }
@@ -230,10 +230,10 @@ BOOL __69__DBAppHistory_AppDock___isNowPlayingApplicationForBundleIdentifier___b
   return v3;
 }
 
-- (BOOL)_isMapsApplicationForBundleIdentifier:(id)a3
+- (BOOL)_isMapsApplicationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = ([v4 isEqualToString:@"com.apple.Maps"] & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", v4, &__block_literal_global_70);
+  identifierCopy = identifier;
+  v5 = ([identifierCopy isEqualToString:@"com.apple.Maps"] & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", identifierCopy, &__block_literal_global_70);
 
   return v5;
 }
@@ -254,19 +254,19 @@ BOOL __63__DBAppHistory_AppDock___isMapsApplicationForBundleIdentifier___block_i
   return v3;
 }
 
-- (BOOL)_isCommunicationApplicationForBundleIdentifier:(id)a3
+- (BOOL)_isCommunicationApplicationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = ([v4 isEqualToString:@"com.apple.mobilephone"] & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", v4, &__block_literal_global_72);
+  identifierCopy = identifier;
+  v5 = ([identifierCopy isEqualToString:@"com.apple.mobilephone"] & 1) != 0 || -[DBAppHistory _evaluatePolicyForBundleIdentifier:withBlock:](self, "_evaluatePolicyForBundleIdentifier:withBlock:", identifierCopy, &__block_literal_global_72);
 
   return v5;
 }
 
-- (id)_preferredBundleIdentifierInCategory:(unint64_t)a3 defaultAppPreferenceHints:(unint64_t)a4
+- (id)_preferredBundleIdentifierInCategory:(unint64_t)category defaultAppPreferenceHints:(unint64_t)hints
 {
-  if (a3 > 1)
+  if (category > 1)
   {
-    if (a3 == 2)
+    if (category == 2)
     {
       v4 = DBMusicBundleIdentifier;
       return *v4;
@@ -275,9 +275,9 @@ BOOL __63__DBAppHistory_AppDock___isMapsApplicationForBundleIdentifier___block_i
     goto LABEL_7;
   }
 
-  if (a3)
+  if (category)
   {
-    if (a3 == 1)
+    if (category == 1)
     {
       v4 = DBMapsBundleIdentifier;
       return *v4;
@@ -289,7 +289,7 @@ LABEL_7:
   }
 
   v4 = DBSettingsBundleIdentifier;
-  if ((a4 & 1) == 0)
+  if ((hints & 1) == 0)
   {
     v4 = DBMessagesBundleIdentifier;
   }
@@ -297,28 +297,28 @@ LABEL_7:
   return *v4;
 }
 
-- (id)_allInstalledApplicationsInCategories:(id)a3 defaultAppPreferenceHints:(unint64_t)a4
+- (id)_allInstalledApplicationsInCategories:(id)categories defaultAppPreferenceHints:(unint64_t)hints
 {
-  v6 = a3;
-  if ([v6 count])
+  categoriesCopy = categories;
+  if ([categoriesCopy count])
   {
     v7 = +[DBApplicationController sharedInstance];
-    v8 = [v7 allApplications];
-    v9 = [v8 copy];
+    allApplications = [v7 allApplications];
+    v9 = [allApplications copy];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __89__DBAppHistory_AppDock___allInstalledApplicationsInCategories_defaultAppPreferenceHints___block_invoke;
     v20[3] = &unk_278F01468;
     v20[4] = self;
-    v10 = v6;
+    v10 = categoriesCopy;
     v21 = v10;
     v11 = [v9 bs_filter:v20];
 
-    v12 = [v10 firstObject];
-    v13 = [v12 unsignedIntegerValue];
+    firstObject = [v10 firstObject];
+    unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-    v14 = [(DBAppHistory *)self _preferredBundleIdentifierInCategory:v13 defaultAppPreferenceHints:a4];
+    v14 = [(DBAppHistory *)self _preferredBundleIdentifierInCategory:unsignedIntegerValue defaultAppPreferenceHints:hints];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __89__DBAppHistory_AppDock___allInstalledApplicationsInCategories_defaultAppPreferenceHints___block_invoke_3;
@@ -399,41 +399,41 @@ uint64_t __89__DBAppHistory_AppDock___allInstalledApplicationsInCategories_defau
   v2 = [(DBAppHistory *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     appHistory = v2->_appHistory;
-    v2->_appHistory = v3;
+    v2->_appHistory = dictionary;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     sessionAppContextURLs = v2->_sessionAppContextURLs;
-    v2->_sessionAppContextURLs = v5;
+    v2->_sessionAppContextURLs = array;
 
-    v7 = [MEMORY[0x277CBEA60] array];
+    array2 = [MEMORY[0x277CBEA60] array];
     sessionEchoContextURLs = v2->_sessionEchoContextURLs;
-    v2->_sessionEchoContextURLs = v7;
+    v2->_sessionEchoContextURLs = array2;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     sessionContextOwners = v2->_sessionContextOwners;
-    v2->_sessionContextOwners = v9;
+    v2->_sessionContextOwners = dictionary2;
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 dictionaryForKey:@"CARRecentAppHistory"];
-    v13 = [v11 dictionaryForKey:@"CARLastSessionUIContextOwners"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults dictionaryForKey:@"CARRecentAppHistory"];
+    v13 = [standardUserDefaults dictionaryForKey:@"CARLastSessionUIContextOwners"];
     if (v13)
     {
-      v14 = [(DBAppHistory *)v2 sessionContextOwners];
-      [v14 setDictionary:v13];
+      sessionContextOwners = [(DBAppHistory *)v2 sessionContextOwners];
+      [sessionContextOwners setDictionary:v13];
     }
 
     if (v12)
     {
-      v15 = [(DBAppHistory *)v2 appHistory];
-      [v15 setDictionary:v12];
+      appHistory = [(DBAppHistory *)v2 appHistory];
+      [appHistory setDictionary:v12];
     }
 
     else
     {
-      v15 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.springboard"];
-      v16 = [v15 arrayForKey:@"CarDisplayRecentlyUsedApps"];
+      appHistory = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.springboard"];
+      v16 = [appHistory arrayForKey:@"CarDisplayRecentlyUsedApps"];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __20__DBAppHistory_init__block_invoke;
@@ -442,11 +442,11 @@ uint64_t __89__DBAppHistory_AppDock___allInstalledApplicationsInCategories_defau
       [v16 enumerateObjectsWithOptions:2 usingBlock:v20];
     }
 
-    v17 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v17 addObserver:v2 selector:sel__nowPlayingWillAppear_ name:@"MCDNowPlayingWillAppearNotification" object:0 suspensionBehavior:4];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__nowPlayingWillAppear_ name:@"MCDNowPlayingWillAppearNotification" object:0 suspensionBehavior:4];
 
-    v18 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v18 addObserver:v2 selector:sel__nowPlayingWillDisappear_ name:@"MCDNowPlayingWillDisappearNotification" object:0 suspensionBehavior:4];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__nowPlayingWillDisappear_ name:@"MCDNowPlayingWillDisappearNotification" object:0 suspensionBehavior:4];
   }
 
   return v2;
@@ -464,9 +464,9 @@ void __20__DBAppHistory_init__block_invoke(uint64_t a1, void *a2)
   [v7 setObject:v6 forKeyedSubscript:v5];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (!self->_observers)
   {
     v4 = [objc_alloc(MEMORY[0x277CF89C0]) initWithProtocol:&unk_285B040A0];
@@ -474,21 +474,21 @@ void __20__DBAppHistory_init__block_invoke(uint64_t a1, void *a2)
     self->_observers = v4;
   }
 
-  v6 = [(DBAppHistory *)self observers];
-  [v6 addObserver:v7];
+  observers = [(DBAppHistory *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBAppHistory *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBAppHistory *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DBAppHistory;
@@ -497,44 +497,44 @@ void __20__DBAppHistory_init__block_invoke(uint64_t a1, void *a2)
 
 - (void)resetAppHistory
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(DBAppHistory *)self setAppHistory:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(DBAppHistory *)self setAppHistory:dictionary];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [MEMORY[0x277CBEAC0] dictionary];
-  [v5 setObject:v4 forKey:@"CARRecentAppHistory"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
+  [standardUserDefaults setObject:dictionary2 forKey:@"CARRecentAppHistory"];
 }
 
-- (void)_sessionDidConnect:(id)a3 environmentConfiguration:(id)a4
+- (void)_sessionDidConnect:(id)connect environmentConfiguration:(id)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 configuration];
-  v9 = [v8 lastOnDisplayUIContextURLs];
+  connectCopy = connect;
+  configurationCopy = configuration;
+  configuration = [connectCopy configuration];
+  lastOnDisplayUIContextURLs = [configuration lastOnDisplayUIContextURLs];
 
-  v10 = [v6 configuration];
-  v11 = [v10 nowOnDisplayUIContextURLs];
+  configuration2 = [connectCopy configuration];
+  nowOnDisplayUIContextURLs = [configuration2 nowOnDisplayUIContextURLs];
 
   v12 = DBLogForCategory(0);
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (lastOnDisplayUIContextURLs)
   {
     if (v13)
     {
       *buf = 138412290;
-      v19 = v9;
+      v19 = lastOnDisplayUIContextURLs;
       _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "Applying session UI contexts: %@", buf, 0xCu);
     }
 
-    [(DBAppHistory *)self applySessionAppContexts:v9];
+    [(DBAppHistory *)self applySessionAppContexts:lastOnDisplayUIContextURLs];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __60__DBAppHistory__sessionDidConnect_environmentConfiguration___block_invoke;
     v16[3] = &unk_278F021F8;
     v16[4] = self;
-    v17 = v6;
-    [v7 fetchEnhancedIntegrationStatusWithCompletion:v16];
+    v17 = connectCopy;
+    [configurationCopy fetchEnhancedIntegrationStatusWithCompletion:v16];
   }
 
   else
@@ -548,16 +548,16 @@ void __20__DBAppHistory_init__block_invoke(uint64_t a1, void *a2)
 
   v14 = DBLogForCategory(0);
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (nowOnDisplayUIContextURLs)
   {
     if (v15)
     {
       *buf = 138412290;
-      v19 = v11;
+      v19 = nowOnDisplayUIContextURLs;
       _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "Applying session echo contexts: %@", buf, 0xCu);
     }
 
-    [(DBAppHistory *)self applySessionEchoContexts:v11];
+    [(DBAppHistory *)self applySessionEchoContexts:nowOnDisplayUIContextURLs];
   }
 
   else
@@ -672,48 +672,48 @@ LABEL_13:
   v3 = MEMORY[0x277CBEBF8];
   [(DBAppHistory *)self setSessionAppContextURLs:MEMORY[0x277CBEBF8]];
   [(DBAppHistory *)self setSessionEchoContextURLs:v3];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(DBAppHistory *)self setSessionContextOwners:v4];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(DBAppHistory *)self setSessionContextOwners:dictionary];
 }
 
-- (id)policyForBundleIdentifier:(id)a3
+- (id)policyForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:identifierCopy];
 
-  v6 = [v5 appPolicy];
+  appPolicy = [v5 appPolicy];
 
-  return v6;
+  return appPolicy;
 }
 
-- (BOOL)applicationVisibleInCarPlay:(id)a3 withIconProvider:(id)a4
+- (BOOL)applicationVisibleInCarPlay:(id)play withIconProvider:(id)provider
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DBAppHistory *)self policyForBundleIdentifier:v6];
+  playCopy = play;
+  providerCopy = provider;
+  v8 = [(DBAppHistory *)self policyForBundleIdentifier:playCopy];
   if (([v8 isCarPlaySupported] & 1) == 0)
   {
     v9 = DBLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = playCopy;
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "Application %@ does not support CarPlay.", &v13, 0xCu);
     }
 
     goto LABEL_11;
   }
 
-  v9 = [v7 iconForIdentifier:v6];
-  if (([v6 isEqualToString:@"com.apple.InCallService"] & 1) == 0 && (!v9 || (objc_msgSend(v7, "isIconVisible:", v9) & 1) == 0))
+  v9 = [providerCopy iconForIdentifier:playCopy];
+  if (([playCopy isEqualToString:@"com.apple.InCallService"] & 1) == 0 && (!v9 || (objc_msgSend(providerCopy, "isIconVisible:", v9) & 1) == 0))
   {
     v11 = DBLogForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = playCopy;
       _os_log_impl(&dword_248146000, v11, OS_LOG_TYPE_DEFAULT, "Application %@ is not available in the current layout.", &v13, 0xCu);
     }
 
@@ -728,23 +728,23 @@ LABEL_12:
   return v10;
 }
 
-- (void)_evaluateUniversalLinksForURL:(id)a3 withIconProvider:(id)a4 completion:(id)a5
+- (void)_evaluateUniversalLinksForURL:(id)l withIconProvider:(id)provider completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  providerCopy = provider;
+  completionCopy = completion;
   v11 = MEMORY[0x277CC1E48];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__DBAppHistory__evaluateUniversalLinksForURL_withIconProvider_completion___block_invoke;
   v15[3] = &unk_278F028F8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = lCopy;
+  selfCopy = self;
+  v18 = providerCopy;
+  v19 = completionCopy;
+  v12 = providerCopy;
+  v13 = completionCopy;
+  v14 = lCopy;
   [v11 getAppLinksWithURL:v14 completionHandler:v15];
 }
 
@@ -875,18 +875,18 @@ void __74__DBAppHistory__evaluateUniversalLinksForURL_withIconProvider_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)openApplicationURL:(id)a3 withIconProvider:(id)a4 activationSettings:(id)a5 completion:(id)a6
+- (void)openApplicationURL:(id)l withIconProvider:(id)provider activationSettings:(id)settings completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  providerCopy = provider;
+  settingsCopy = settings;
+  completionCopy = completion;
   v14 = DBLogForCategory(0);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = lCopy;
     _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "Evaluating application URL %@", buf, 0xCu);
   }
 
@@ -894,15 +894,15 @@ void __74__DBAppHistory__evaluateUniversalLinksForURL_withIconProvider_completio
   v19[1] = 3221225472;
   v19[2] = __82__DBAppHistory_openApplicationURL_withIconProvider_activationSettings_completion___block_invoke;
   v19[3] = &unk_278F02920;
-  v23 = v12;
-  v24 = v13;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v23 = settingsCopy;
+  v24 = completionCopy;
+  v20 = lCopy;
+  selfCopy = self;
+  v22 = providerCopy;
+  v15 = settingsCopy;
+  v16 = providerCopy;
+  v17 = lCopy;
+  v18 = completionCopy;
   [(DBAppHistory *)self _evaluateUniversalLinksForURL:v17 withIconProvider:v16 completion:v19];
 }
 
@@ -993,56 +993,56 @@ LABEL_16:
   }
 }
 
-- (void)setDashboardAppOnDisconnect:(id)a3
+- (void)setDashboardAppOnDisconnect:(id)disconnect
 {
-  if (a3)
+  if (disconnect)
   {
     v4 = MEMORY[0x277CCABB0];
     v5 = MEMORY[0x277CBEAA8];
-    v6 = a3;
-    v7 = [v5 date];
-    [v7 timeIntervalSince1970];
+    disconnectCopy = disconnect;
+    date = [v5 date];
+    [date timeIntervalSince1970];
     v8 = [v4 numberWithDouble:?];
-    v9 = [(DBAppHistory *)self appHistory];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    appHistory = [(DBAppHistory *)self appHistory];
+    [appHistory setObject:v8 forKeyedSubscript:disconnectCopy];
 
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v10 = MEMORY[0x277CBEAC0];
-    v11 = [(DBAppHistory *)self appHistory];
-    v12 = [v10 dictionaryWithDictionary:v11];
-    [v13 setObject:v12 forKey:@"CARRecentAppHistory"];
+    appHistory2 = [(DBAppHistory *)self appHistory];
+    v12 = [v10 dictionaryWithDictionary:appHistory2];
+    [standardUserDefaults setObject:v12 forKey:@"CARRecentAppHistory"];
   }
 }
 
-- (unint64_t)applicationCategoryForBundleIdentifier:(id)a3
+- (unint64_t)applicationCategoryForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CF8FC8]])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:*MEMORY[0x277CF8FC8]])
   {
-    v5 = 64;
+    applicationCategory = 64;
   }
 
   else
   {
-    v6 = [(DBAppHistory *)self policyForBundleIdentifier:v4];
-    v5 = [v6 applicationCategory];
+    v6 = [(DBAppHistory *)self policyForBundleIdentifier:identifierCopy];
+    applicationCategory = [v6 applicationCategory];
   }
 
-  return v5;
+  return applicationCategory;
 }
 
-- (id)orderedAppsMatchingCategory:(unint64_t)a3
+- (id)orderedAppsMatchingCategory:(unint64_t)category
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(DBAppHistory *)self appHistory];
-  v7 = [v6 allKeys];
+  appHistory = [(DBAppHistory *)self appHistory];
+  allKeys = [appHistory allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1053,43 +1053,43 @@ LABEL_16:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([(DBAppHistory *)self applicationCategoryForBundleIdentifier:v12]== a3)
+        if ([(DBAppHistory *)self applicationCategoryForBundleIdentifier:v12]== category)
         {
-          [v5 addObject:v12];
+          [array addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(DBAppHistory *)self _orderedAppsForBundleIdentifiers:v5];
+  v13 = [(DBAppHistory *)self _orderedAppsForBundleIdentifiers:array];
 
   return v13;
 }
 
-- (double)lastActivationTimeForApplication:(id)a3
+- (double)lastActivationTimeForApplication:(id)application
 {
-  v4 = [a3 bundleIdentifier];
-  [(DBAppHistory *)self lastActivationTimeForBundleIdentifier:v4];
+  bundleIdentifier = [application bundleIdentifier];
+  [(DBAppHistory *)self lastActivationTimeForBundleIdentifier:bundleIdentifier];
   v6 = v5;
 
   return v6;
 }
 
-- (double)lastActivationTimeForBundleIdentifier:(id)a3
+- (double)lastActivationTimeForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 isEqualToString:*MEMORY[0x277CF8FC8]] || (v5 = 0.0, !-[DBAppHistory nowPlayingIsVisible](self, "nowPlayingIsVisible")))
+  identifierCopy = identifier;
+  if (![identifierCopy isEqualToString:*MEMORY[0x277CF8FC8]] || (v5 = 0.0, !-[DBAppHistory nowPlayingIsVisible](self, "nowPlayingIsVisible")))
   {
-    v6 = [(DBAppHistory *)self appHistory];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    appHistory = [(DBAppHistory *)self appHistory];
+    v7 = [appHistory objectForKeyedSubscript:identifierCopy];
 
     if (v7)
     {
@@ -1106,65 +1106,65 @@ LABEL_16:
   return v5;
 }
 
-- (void)workspace:(id)a3 stateDidChangeFromState:(id)a4 toState:(id)a5
+- (void)workspace:(id)workspace stateDidChangeFromState:(id)state toState:(id)toState
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a5 activeBundleIdentifier];
-  if (v8)
+  stateCopy = state;
+  activeBundleIdentifier = [toState activeBundleIdentifier];
+  if (activeBundleIdentifier)
   {
     v9 = DBLogForCategory(6uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = activeBundleIdentifier;
       _os_log_impl(&dword_248146000, v9, OS_LOG_TYPE_DEFAULT, "Workspace did change to active app %@", buf, 0xCu);
     }
 
-    if ([v8 isEqualToString:@"com.apple.InCallService"])
+    if ([activeBundleIdentifier isEqualToString:@"com.apple.InCallService"])
     {
       v10 = @"com.apple.mobilephone";
 
-      v8 = v10;
+      activeBundleIdentifier = v10;
     }
 
-    if ([(DBAppHistory *)self isBundleIdentifierValidForDock:v8])
+    if ([(DBAppHistory *)self isBundleIdentifierValidForDock:activeBundleIdentifier])
     {
-      v11 = [(DBAppHistory *)self _applicationForBundleIdentifier:v8];
+      v11 = [(DBAppHistory *)self _applicationForBundleIdentifier:activeBundleIdentifier];
       if (v11)
       {
-        v12 = [v7 activeBundleIdentifier];
+        activeBundleIdentifier2 = [stateCopy activeBundleIdentifier];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __58__DBAppHistory_workspace_stateDidChangeFromState_toState___block_invoke;
         block[3] = &unk_278F015F8;
         block[4] = self;
-        v15 = v8;
-        v16 = v12;
-        v13 = v12;
+        v15 = activeBundleIdentifier;
+        v16 = activeBundleIdentifier2;
+        observers = activeBundleIdentifier2;
         dispatch_async(MEMORY[0x277D85CD0], block);
       }
 
       else
       {
-        v13 = [(DBAppHistory *)self observers];
-        [v13 appHistory:self mostRecentHomeScreenUpdatedTo:v8];
+        observers = [(DBAppHistory *)self observers];
+        [observers appHistory:self mostRecentHomeScreenUpdatedTo:activeBundleIdentifier];
       }
     }
   }
 }
 
-- (void)siriPresentedIntentForBundleIdentifier:(id)a3
+- (void)siriPresentedIntentForBundleIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(DBAppHistory *)self isBundleIdentifierValidForDock:v4])
+  identifierCopy = identifier;
+  if ([(DBAppHistory *)self isBundleIdentifierValidForDock:identifierCopy])
   {
     v5 = DBLogForCategory(6uLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Siri presented active app %@", buf, 0xCu);
     }
 
@@ -1173,70 +1173,70 @@ LABEL_16:
     v6[2] = __55__DBAppHistory_siriPresentedIntentForBundleIdentifier___block_invoke;
     v6[3] = &unk_278F014B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = identifierCopy;
     dispatch_async(MEMORY[0x277D85CD0], v6);
   }
 }
 
-- (void)_bundleIdentifierDidBecomeVisible:(id)a3 previousBundleIdentifier:(id)a4
+- (void)_bundleIdentifierDidBecomeVisible:(id)visible previousBundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  -[DBAppHistory setNowPlayingIsVisible:](self, "setNowPlayingIsVisible:", [v6 isEqualToString:*MEMORY[0x277CF8FC8]]);
-  if (v6)
+  visibleCopy = visible;
+  identifierCopy = identifier;
+  -[DBAppHistory setNowPlayingIsVisible:](self, "setNowPlayingIsVisible:", [visibleCopy isEqualToString:*MEMORY[0x277CF8FC8]]);
+  if (visibleCopy)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v10 = [v8 numberWithDouble:?];
-    v11 = [(DBAppHistory *)self appHistory];
-    [v11 setObject:v10 forKeyedSubscript:v6];
+    appHistory = [(DBAppHistory *)self appHistory];
+    [appHistory setObject:v10 forKeyedSubscript:visibleCopy];
   }
 
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   v13 = MEMORY[0x277CBEAC0];
-  v14 = [(DBAppHistory *)self appHistory];
-  v15 = [v13 dictionaryWithDictionary:v14];
-  [v12 setObject:v15 forKey:@"CARRecentAppHistory"];
+  appHistory2 = [(DBAppHistory *)self appHistory];
+  v15 = [v13 dictionaryWithDictionary:appHistory2];
+  [standardUserDefaults setObject:v15 forKey:@"CARRecentAppHistory"];
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  if (v7)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (identifierCopy)
   {
-    v17 = [(DBAppHistory *)self applicationCategoryForBundleIdentifier:v7];
+    v17 = [(DBAppHistory *)self applicationCategoryForBundleIdentifier:identifierCopy];
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
-    [v16 setObject:v18 forKeyedSubscript:*MEMORY[0x277CF8FA8]];
+    [dictionary setObject:v18 forKeyedSubscript:*MEMORY[0x277CF8FA8]];
   }
 
-  if (v6)
+  if (visibleCopy)
   {
-    v19 = [(DBAppHistory *)self applicationCategoryForBundleIdentifier:v6];
+    v19 = [(DBAppHistory *)self applicationCategoryForBundleIdentifier:visibleCopy];
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-    [v16 setObject:v20 forKeyedSubscript:*MEMORY[0x277CF8F98]];
+    [dictionary setObject:v20 forKeyedSubscript:*MEMORY[0x277CF8F98]];
   }
 
   v21 = DBLogForCategory(6uLL);
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412290;
-    v26 = v16;
+    v26 = dictionary;
     _os_log_impl(&dword_248146000, v21, OS_LOG_TYPE_DEFAULT, "Workspace change event %@", &v25, 0xCu);
   }
 
-  v22 = [(DBAppHistory *)self appDockCategoryForBundleIdentifier:v6];
+  v22 = [(DBAppHistory *)self appDockCategoryForBundleIdentifier:visibleCopy];
   if (v22 > 1)
   {
     if (v22 == 2)
     {
-      v23 = [(DBAppHistory *)self observers];
-      [v23 appHistory:self mostRecentAudioAppUpdatedTo:v6];
+      observers = [(DBAppHistory *)self observers];
+      [observers appHistory:self mostRecentAudioAppUpdatedTo:visibleCopy];
       goto LABEL_18;
     }
 
     if (v22 == 3)
     {
-      v23 = [(DBAppHistory *)self observers];
-      [v23 appHistory:self mostRecentCommunicationAppUpdatedTo:v6];
+      observers = [(DBAppHistory *)self observers];
+      [observers appHistory:self mostRecentCommunicationAppUpdatedTo:visibleCopy];
       goto LABEL_18;
     }
   }
@@ -1245,24 +1245,24 @@ LABEL_16:
   {
     if (!v22)
     {
-      v23 = [(DBAppHistory *)self observers];
-      [v23 appHistory:self mostRecentOtherAppUpdatedTo:v6];
+      observers = [(DBAppHistory *)self observers];
+      [observers appHistory:self mostRecentOtherAppUpdatedTo:visibleCopy];
       goto LABEL_18;
     }
 
     if (v22 == 1)
     {
-      v23 = [(DBAppHistory *)self observers];
-      [v23 appHistory:self mostRecentNavigationAppUpdatedTo:v6];
+      observers = [(DBAppHistory *)self observers];
+      [observers appHistory:self mostRecentNavigationAppUpdatedTo:visibleCopy];
 LABEL_18:
     }
   }
 
-  v24 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v24 postNotificationName:*MEMORY[0x277CF8FA0] object:0 userInfo:v16];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277CF8FA0] object:0 userInfo:dictionary];
 }
 
-- (void)_nowPlayingWillAppear:(id)a3
+- (void)_nowPlayingWillAppear:(id)appear
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1272,7 +1272,7 @@ LABEL_18:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_nowPlayingWillDisappear:(id)a3
+- (void)_nowPlayingWillDisappear:(id)disappear
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1282,23 +1282,23 @@ LABEL_18:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)_applicationForBundleIdentifier:(id)a3
+- (id)_applicationForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[DBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (id)_orderedAppsForBundleIdentifiers:(id)a3
+- (id)_orderedAppsForBundleIdentifiers:(id)identifiers
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__DBAppHistory__orderedAppsForBundleIdentifiers___block_invoke;
   v10[3] = &unk_278F02948;
   v10[4] = self;
-  v4 = [a3 sortedArrayUsingComparator:v10];
+  v4 = [identifiers sortedArrayUsingComparator:v10];
   v5 = [v4 bs_filter:&__block_literal_global_6];
 
   v9[0] = MEMORY[0x277D85DD0];
@@ -1307,9 +1307,9 @@ LABEL_18:
   v9[3] = &unk_278F02990;
   v9[4] = self;
   v6 = [v5 bs_mapNoNulls:v9];
-  v7 = [v6 bs_reverse];
+  bs_reverse = [v6 bs_reverse];
 
-  return v7;
+  return bs_reverse;
 }
 
 uint64_t __49__DBAppHistory__orderedAppsForBundleIdentifiers___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1345,9 +1345,9 @@ uint64_t __49__DBAppHistory__orderedAppsForBundleIdentifiers___block_invoke_2(ui
 
 - (void)_persistSessionUIContextOwnership
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [(DBAppHistory *)self sessionContextOwners];
-  [v4 setObject:v3 forKey:@"CARLastSessionUIContextOwners"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  sessionContextOwners = [(DBAppHistory *)self sessionContextOwners];
+  [standardUserDefaults setObject:sessionContextOwners forKey:@"CARLastSessionUIContextOwners"];
 }
 
 + (id)availableApplicationContexts
@@ -1374,30 +1374,30 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
   availableApplicationContexts___contexts = v0;
 }
 
-+ (unint64_t)applicationCategoryForURL:(id)a3
++ (unint64_t)applicationCategoryForURL:(id)l
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"maps:"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"maps:/car/destinations"))
+  lCopy = l;
+  if ([lCopy hasPrefix:@"maps:"] & 1) != 0 || (objc_msgSend(lCopy, "hasPrefix:", @"maps:/car/destinations"))
   {
     v4 = 8;
   }
 
-  else if ([v3 hasPrefix:@"nowplaying:"])
+  else if ([lCopy hasPrefix:@"nowplaying:"])
   {
     v4 = 64;
   }
 
-  else if ([v3 hasPrefix:@"music:"])
+  else if ([lCopy hasPrefix:@"music:"])
   {
     v4 = 16;
   }
 
-  else if ([v3 hasPrefix:@"mobilephone:"])
+  else if ([lCopy hasPrefix:@"mobilephone:"])
   {
     v4 = 4;
   }
 
-  else if ([v3 hasPrefix:@"messages:"])
+  else if ([lCopy hasPrefix:@"messages:"])
   {
     v4 = 2;
   }
@@ -1410,17 +1410,17 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
   return v4;
 }
 
-+ (id)contextForApplicationCategory:(unint64_t)a3
++ (id)contextForApplicationCategory:(unint64_t)category
 {
-  if (a3 <= 7)
+  if (category <= 7)
   {
     v4 = @"mobilephone:";
-    if (a3 != 4)
+    if (category != 4)
     {
       v4 = 0;
     }
 
-    if (a3 == 2)
+    if (category == 2)
     {
       return @"messages:";
     }
@@ -1431,12 +1431,12 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
     }
   }
 
-  else if (a3 == 8)
+  else if (category == 8)
   {
     return @"maps:";
   }
 
-  else if (a3 == 64 || a3 == 16)
+  else if (category == 64 || category == 16)
   {
     return @"nowplaying:";
   }
@@ -1447,18 +1447,18 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
   }
 }
 
-- (void)applySessionAppContexts:(id)a3
+- (void)applySessionAppContexts:(id)contexts
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v15 = self;
-  v5 = [objc_opt_class() availableApplicationContexts];
-  v6 = [MEMORY[0x277CBEB18] array];
+  contextsCopy = contexts;
+  selfCopy = self;
+  availableApplicationContexts = [objc_opt_class() availableApplicationContexts];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = contextsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v8)
   {
@@ -1474,9 +1474,9 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v5 containsObject:v12])
+        if ([availableApplicationContexts containsObject:v12])
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -1497,22 +1497,22 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
     while (v9);
   }
 
-  v14 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
-  [(DBAppHistory *)v15 setSessionAppContextURLs:v14];
+  v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
+  [(DBAppHistory *)selfCopy setSessionAppContextURLs:v14];
 }
 
-- (void)applySessionEchoContexts:(id)a3
+- (void)applySessionEchoContexts:(id)contexts
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v15 = self;
-  v5 = [objc_opt_class() availableApplicationContexts];
-  v6 = [MEMORY[0x277CBEB18] array];
+  contextsCopy = contexts;
+  selfCopy = self;
+  availableApplicationContexts = [objc_opt_class() availableApplicationContexts];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = contextsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v8)
   {
@@ -1528,9 +1528,9 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v5 containsObject:v12])
+        if ([availableApplicationContexts containsObject:v12])
         {
-          [v6 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -1551,26 +1551,26 @@ void __54__DBAppHistory_Contexts__availableApplicationContexts__block_invoke()
     while (v9);
   }
 
-  v14 = [MEMORY[0x277CBEA60] arrayWithArray:v6];
-  [(DBAppHistory *)v15 setSessionEchoContextURLs:v14];
+  v14 = [MEMORY[0x277CBEA60] arrayWithArray:array];
+  [(DBAppHistory *)selfCopy setSessionEchoContextURLs:v14];
 }
 
-- (unint64_t)currentOwnerForContext:(id)a3
+- (unint64_t)currentOwnerForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(DBAppHistory *)self sessionContextOwners];
-  v6 = [v5 objectForKey:v4];
+  contextCopy = context;
+  sessionContextOwners = [(DBAppHistory *)self sessionContextOwners];
+  v6 = [sessionContextOwners objectForKey:contextCopy];
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)updateOwner:(unint64_t)a3 forContext:(id)a4
+- (void)updateOwner:(unint64_t)owner forContext:(id)context
 {
-  v6 = a4;
-  v7 = [(DBAppHistory *)self sessionContextOwners];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v7 setObject:v8 forKey:v6];
+  contextCopy = context;
+  sessionContextOwners = [(DBAppHistory *)self sessionContextOwners];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:owner];
+  [sessionContextOwners setObject:v8 forKey:contextCopy];
 
   [(DBAppHistory *)self _persistSessionUIContextOwnership];
 }

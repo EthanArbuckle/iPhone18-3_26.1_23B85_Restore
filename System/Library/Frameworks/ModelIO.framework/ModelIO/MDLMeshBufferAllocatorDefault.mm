@@ -1,75 +1,75 @@
 @interface MDLMeshBufferAllocatorDefault
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4;
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5;
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5;
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4;
-- (id)newZone:(unint64_t)a3;
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4;
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type;
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type;
+- (id)newBufferWithData:(id)data type:(unint64_t)type;
+- (id)newZone:(unint64_t)zone;
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type;
 @end
 
 @implementation MDLMeshBufferAllocatorDefault
 
-- (id)newZone:(unint64_t)a3
+- (id)newZone:(unint64_t)zone
 {
   v4 = [MDLMeshBufferZoneDefault alloc];
 
-  return MEMORY[0x2821F9670](v4, sel_initWithCapacity_allocator_, a3);
+  return MEMORY[0x2821F9670](v4, sel_initWithCapacity_allocator_, zone);
 }
 
-- (id)newBuffer:(unint64_t)a3 type:(unint64_t)a4
+- (id)newBuffer:(unint64_t)buffer type:(unint64_t)type
 {
   v7 = [MDLMeshBufferData alloc];
-  result = objc_msgSend_initWithLength_data_allocator_zone_(v7, v8, a3, 0, self, 0);
-  *(result + 6) = a4;
+  result = objc_msgSend_initWithLength_data_allocator_zone_(v7, v8, buffer, 0, self, 0);
+  *(result + 6) = type;
   return result;
 }
 
-- (id)newBufferWithData:(id)a3 type:(unint64_t)a4
+- (id)newBufferWithData:(id)data type:(unint64_t)type
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = [MDLMeshBufferData alloc];
-  v10 = objc_msgSend_length(v6, v8, v9);
-  v12 = objc_msgSend_initWithLength_data_allocator_zone_(v7, v11, v10, v6, self, 0);
-  v12[6] = a4;
+  v10 = objc_msgSend_length(dataCopy, v8, v9);
+  v12 = objc_msgSend_initWithLength_data_allocator_zone_(v7, v11, v10, dataCopy, self, 0);
+  v12[6] = type;
 
   return v12;
 }
 
-- (id)newBufferFromZone:(id)a3 length:(unint64_t)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone length:(unint64_t)length type:(unint64_t)type
 {
-  v8 = a3;
+  zoneCopy = zone;
   v9 = [MDLMeshBufferData alloc];
-  v11 = objc_msgSend_initWithLength_data_allocator_zone_(v9, v10, a4, 0, self, v8);
-  v11[6] = a5;
+  v11 = objc_msgSend_initWithLength_data_allocator_zone_(v9, v10, length, 0, self, zoneCopy);
+  v11[6] = type;
 
   return v11;
 }
 
-- (id)newBufferFromZone:(id)a3 data:(id)a4 type:(unint64_t)a5
+- (id)newBufferFromZone:(id)zone data:(id)data type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  zoneCopy = zone;
+  dataCopy = data;
   v10 = [MDLMeshBufferData alloc];
-  v13 = objc_msgSend_length(v9, v11, v12);
-  v15 = objc_msgSend_initWithLength_data_allocator_zone_(v10, v14, v13, v9, self, v8);
-  v15[6] = a5;
+  v13 = objc_msgSend_length(dataCopy, v11, v12);
+  v15 = objc_msgSend_initWithLength_data_allocator_zone_(v10, v14, v13, dataCopy, self, zoneCopy);
+  v15[6] = type;
 
   return v15;
 }
 
-- (id)newZoneForBuffersWithSize:(id)a3 andType:(id)a4
+- (id)newZoneForBuffersWithSize:(id)size andType:(id)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_count(v6, v8, v9);
-  if (v10 == objc_msgSend_count(v7, v11, v12))
+  sizeCopy = size;
+  typeCopy = type;
+  v10 = objc_msgSend_count(sizeCopy, v8, v9);
+  if (v10 == objc_msgSend_count(typeCopy, v11, v12))
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = v6;
+    v13 = sizeCopy;
     v15 = 0;
     v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v25, v29, 16);
     if (v18)

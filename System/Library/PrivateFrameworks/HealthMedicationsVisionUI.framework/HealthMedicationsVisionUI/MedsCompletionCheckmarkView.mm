@@ -1,14 +1,14 @@
 @interface MedsCompletionCheckmarkView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithCoder:(id)a3;
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithCoder:(id)coder;
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MedsCompletionCheckmarkView
 
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithCoder:(id)a3
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithCoder:(id)coder
 {
   sub_2518F0278();
   sub_2518F0268();
@@ -37,10 +37,10 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for MedsCompletionCheckmarkView();
-  v3 = self;
+  selfCopy = self;
   [(MedsCompletionCheckmarkView *)&v5 layoutSubviews];
-  v4 = *(&v3->super.super.super.isa + OBJC_IVAR____TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView_shapeLayer);
-  [(MedsCompletionCheckmarkView *)v3 bounds:v5.receiver];
+  v4 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView_shapeLayer);
+  [(MedsCompletionCheckmarkView *)selfCopy bounds:v5.receiver];
   [v4 setFrame_];
 }
 
@@ -63,7 +63,7 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   sub_2518F0278();
   sub_2518F0268();
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithFrame:(CGRect)a3
+- (_TtC25HealthMedicationsVisionUIP33_36E86986F41219E6742057645D27BDD227MedsCompletionCheckmarkView)initWithFrame:(CGRect)frame
 {
   sub_2518F0278();
   sub_2518F0268();

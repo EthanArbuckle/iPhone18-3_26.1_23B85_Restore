@@ -1,33 +1,33 @@
 @interface MusicDespacitoContentView
-- (MusicDespacitoContentView)initWithFrame:(CGRect)a3;
+- (MusicDespacitoContentView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMainLineView:(id)a3;
-- (void)setTranslationLineView:(id)a3;
+- (void)setMainLineView:(id)view;
+- (void)setTranslationLineView:(id)view;
 @end
 
 @implementation MusicDespacitoContentView
 
-- (void)setMainLineView:(id)a3
+- (void)setMainLineView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_mainLineView);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_mainLineView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_mainLineView) = view;
+  viewCopy = view;
 }
 
-- (void)setTranslationLineView:(id)a3
+- (void)setTranslationLineView:(id)view
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_translationLineView);
-  *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_translationLineView) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___MusicDespacitoContentView_translationLineView) = view;
+  viewCopy = view;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100483930();
 }
 
-- (MusicDespacitoContentView)initWithFrame:(CGRect)a3
+- (MusicDespacitoContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

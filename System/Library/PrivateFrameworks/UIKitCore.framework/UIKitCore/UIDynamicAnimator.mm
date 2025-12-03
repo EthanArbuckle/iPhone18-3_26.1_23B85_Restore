@@ -1,11 +1,11 @@
 @interface UIDynamicAnimator
 + (id)_allDynamicAnimators;
-+ (void)_clearReferenceViewFromAnimators:(id)a3;
-+ (void)_referenceViewSizeChanged:(id)a3;
-+ (void)_registerAnimator:(id)a3;
-+ (void)_unregisterAnimator:(id)a3;
++ (void)_clearReferenceViewFromAnimators:(id)animators;
++ (void)_referenceViewSizeChanged:(id)changed;
++ (void)_registerAnimator:(id)animator;
++ (void)_unregisterAnimator:(id)animator;
 + (void)initialize;
-- (BOOL)_animatorStep:(double)a3;
+- (BOOL)_animatorStep:(double)step;
 - (BOOL)_isWorldActive;
 - (BOOL)isSettling;
 - (CGRect)_referenceSystemBounds;
@@ -18,55 +18,55 @@
 - (double)settlingAngularVelocityThreshold;
 - (double)settlingDuration;
 - (double)settlingLinearVelocityThreshold;
-- (id)_bodyForItem:(id)a3;
+- (id)_bodyForItem:(id)item;
 - (id)_delegate;
-- (id)_keyForItem:(id)a3;
-- (id)_newBodyForItem:(id)a3 inItemGroup:(id)a4;
+- (id)_keyForItem:(id)item;
+- (id)_newBodyForItem:(id)item inItemGroup:(id)group;
 - (id)_referenceSystem;
-- (id)_registerBodyForItem:(id)a3;
+- (id)_registerBodyForItem:(id)item;
 - (id)delegate;
 - (id)description;
 - (id)recursiveDescription;
 - (int)_registerCollisionGroup;
 - (void)_activateUIUpdateSequenceItem;
-- (void)_checkBehavior:(id)a3;
+- (void)_checkBehavior:(id)behavior;
 - (void)_clearReferenceView;
-- (void)_configureUpdateRequestFrameRateForSettling:(BOOL)a3;
+- (void)_configureUpdateRequestFrameRateForSettling:(BOOL)settling;
 - (void)_deactivateUIUpdateSequenceItem;
-- (void)_defaultMapper:(id)a3 position:(CGPoint)a4 angle:(double)a5 itemType:(unint64_t)a6;
-- (void)_invalidateCollectionViewLayout:(id)a3;
-- (void)_performAnimationTickForTimestamp:(double)a3;
+- (void)_defaultMapper:(id)mapper position:(CGPoint)position angle:(double)angle itemType:(unint64_t)type;
+- (void)_invalidateCollectionViewLayout:(id)layout;
+- (void)_performAnimationTickForTimestamp:(double)timestamp;
 - (void)_postSolverStep;
 - (void)_preSolverStep;
 - (void)_reevaluateImplicitBounds;
-- (void)_registerBehavior:(id)a3;
-- (void)_registerFieldCategoryForFieldBehavior:(id)a3;
+- (void)_registerBehavior:(id)behavior;
+- (void)_registerFieldCategoryForFieldBehavior:(id)behavior;
 - (void)_reportBeginContacts;
 - (void)_reportEndContacts;
-- (void)_runBlockPostSolverIfNeeded:(id)a3;
-- (void)_setAction:(id)a3;
-- (void)_setReferenceSystem:(id)a3;
-- (void)_setRunning:(BOOL)a3;
+- (void)_runBlockPostSolverIfNeeded:(id)needed;
+- (void)_setAction:(id)action;
+- (void)_setReferenceSystem:(id)system;
+- (void)_setRunning:(BOOL)running;
 - (void)_setupWorld;
 - (void)_start;
 - (void)_stop;
 - (void)_tickle;
-- (void)_traverseBehaviorHierarchy:(id)a3;
-- (void)_unregisterBehavior:(id)a3;
-- (void)_unregisterBodyForItem:(id)a3 action:(id)a4;
-- (void)_unregisterFieldCategoryForFieldBehavior:(id)a3;
+- (void)_traverseBehaviorHierarchy:(id)hierarchy;
+- (void)_unregisterBehavior:(id)behavior;
+- (void)_unregisterBodyForItem:(id)item action:(id)action;
+- (void)_unregisterFieldCategoryForFieldBehavior:(id)behavior;
 - (void)_updateRequestedFrameRateIfNeeded;
 - (void)addBehavior:(UIDynamicBehavior *)behavior;
 - (void)dealloc;
-- (void)didBeginContact:(id)a3;
-- (void)didEndContact:(id)a3;
+- (void)didBeginContact:(id)contact;
+- (void)didEndContact:(id)contact;
 - (void)removeAllBehaviors;
 - (void)removeBehavior:(UIDynamicBehavior *)behavior;
-- (void)setDebugEnabled:(BOOL)a3;
+- (void)setDebugEnabled:(BOOL)enabled;
 - (void)setDelegate:(id)delegate;
-- (void)setSettlingAngularVelocityThreshold:(double)a3;
-- (void)setSettlingDuration:(double)a3;
-- (void)setSettlingLinearVelocityThreshold:(double)a3;
+- (void)setSettlingAngularVelocityThreshold:(double)threshold;
+- (void)setSettlingDuration:(double)duration;
+- (void)setSettlingLinearVelocityThreshold:(double)threshold;
 - (void)updateItemUsingCurrentState:(id)item;
 @end
 
@@ -74,34 +74,34 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _UISetupPhysicsKit();
   }
 }
 
-+ (void)_registerAnimator:(id)a3
++ (void)_registerAnimator:(id)animator
 {
-  v3 = a3;
+  animatorCopy = animator;
   v4 = __dynamicAnimatorsTable;
-  v7 = v3;
+  v7 = animatorCopy;
   if (!__dynamicAnimatorsTable)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = __dynamicAnimatorsTable;
-    __dynamicAnimatorsTable = v5;
+    __dynamicAnimatorsTable = weakObjectsHashTable;
 
-    v3 = v7;
+    animatorCopy = v7;
     v4 = __dynamicAnimatorsTable;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:animatorCopy];
 }
 
-+ (void)_unregisterAnimator:(id)a3
++ (void)_unregisterAnimator:(id)animator
 {
-  [__dynamicAnimatorsTable removeObject:a3];
+  [__dynamicAnimatorsTable removeObject:animator];
   if (![__dynamicAnimatorsTable count])
   {
     v3 = __dynamicAnimatorsTable;
@@ -109,37 +109,37 @@
   }
 }
 
-- (void)_registerFieldCategoryForFieldBehavior:(id)a3
+- (void)_registerFieldCategoryForFieldBehavior:(id)behavior
 {
-  v8 = a3;
+  behaviorCopy = behavior;
   if (![(UIDynamicAnimator *)self _containsBehavior:?])
   {
-    v4 = [(NSMutableIndexSet *)self->_availableFieldCategories lastIndex];
-    if (v4 == 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [(NSMutableIndexSet *)self->_availableFieldCategories lastIndex];
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       [MEMORY[0x1E695DF30] raise:@"Invalid Association" format:@"UIDynamicAnimator supports a maximum of 32 distinct fields"];
     }
 
     else
     {
-      v5 = v4;
-      [(NSMutableIndexSet *)self->_availableFieldCategories removeIndex:v4];
+      v5 = lastIndex;
+      [(NSMutableIndexSet *)self->_availableFieldCategories removeIndex:lastIndex];
       v6 = (1 << v5);
-      v7 = [v8 _field];
-      [v7 setCategoryBitMask:v6];
+      _field = [behaviorCopy _field];
+      [_field setCategoryBitMask:v6];
     }
   }
 }
 
-- (void)_unregisterFieldCategoryForFieldBehavior:(id)a3
+- (void)_unregisterFieldCategoryForFieldBehavior:(id)behavior
 {
-  v6 = a3;
+  behaviorCopy = behavior;
   if ([(UIDynamicAnimator *)self _containsBehavior:?])
   {
-    v4 = [v6 _field];
-    v5 = [v4 categoryBitMask];
+    _field = [behaviorCopy _field];
+    categoryBitMask = [_field categoryBitMask];
 
-    [(NSMutableIndexSet *)self->_availableFieldCategories addIndex:log2(v5)];
+    [(NSMutableIndexSet *)self->_availableFieldCategories addIndex:log2(categoryBitMask)];
   }
 }
 
@@ -230,8 +230,8 @@
     availableFieldCategories = v7->_availableFieldCategories;
     v7->_availableFieldCategories = v31;
 
-    v33 = [objc_opt_self() mainScreen];
-    [v33 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v7->_accuracy = v34;
 
     v7->_registeredCollisionGroups = 0;
@@ -287,13 +287,13 @@
       self->_updateRequest.flags = 5;
       [(UIDynamicAnimator *)self _configureUpdateRequestFrameRateForSettling:0];
       _UIUpdateRequestRegistryAddRecord(&mainRegistry, &self->_updateRequest, 0x100035u);
-      v3 = [(UIDynamicAnimator *)self ticker];
+      ticker = [(UIDynamicAnimator *)self ticker];
       v5[0] = MEMORY[0x1E69E9820];
       v5[1] = 3221225472;
       v5[2] = __50__UIDynamicAnimator__activateUIUpdateSequenceItem__block_invoke;
       v5[3] = &unk_1E70F5B90;
-      v6 = v3;
-      v4 = v3;
+      v6 = ticker;
+      v4 = ticker;
       self->_uiUpdateSequenceItem = _UIUpdateSequenceInsertItem(_UIUpdateSequenceCADisplayLinksItemInternal, 1, "DynamicAnimator", 0, 0, v5);
     }
   }
@@ -333,18 +333,18 @@ void __50__UIDynamicAnimator__activateUIUpdateSequenceItem__block_invoke(uint64_
 
 - (void)_updateRequestedFrameRateIfNeeded
 {
-  v3 = [(UIDynamicAnimator *)self isSettling];
-  if (self->_updateRequestIsConfiguredForSettling != v3)
+  isSettling = [(UIDynamicAnimator *)self isSettling];
+  if (self->_updateRequestIsConfiguredForSettling != isSettling)
   {
-    [(UIDynamicAnimator *)self _configureUpdateRequestFrameRateForSettling:v3];
+    [(UIDynamicAnimator *)self _configureUpdateRequestFrameRateForSettling:isSettling];
 
     _UIUpdateRequestRegistryMutableRequestChanged(&mainRegistry, &self->_updateRequest.flags);
   }
 }
 
-- (void)_configureUpdateRequestFrameRateForSettling:(BOOL)a3
+- (void)_configureUpdateRequestFrameRateForSettling:(BOOL)settling
 {
-  if (a3)
+  if (settling)
   {
     v3 = 30;
   }
@@ -354,7 +354,7 @@ void __50__UIDynamicAnimator__activateUIUpdateSequenceItem__block_invoke(uint64_
     v3 = 80;
   }
 
-  if (a3)
+  if (settling)
   {
     v4 = 60;
   }
@@ -367,7 +367,7 @@ void __50__UIDynamicAnimator__activateUIUpdateSequenceItem__block_invoke(uint64_
   self->_updateRequest.minRate = v3;
   self->_updateRequest.preferredRate = v4;
   self->_updateRequest.maxRate = v4;
-  self->_updateRequestIsConfiguredForSettling = a3;
+  self->_updateRequestIsConfiguredForSettling = settling;
 }
 
 - (void)dealloc
@@ -430,10 +430,10 @@ LABEL_19:
         objc_enumerationMutation(v6);
       }
 
-      v12 = [*(*(&v16 + 1) + 8 * i) referenceView];
+      referenceView = [*(*(&v16 + 1) + 8 * i) referenceView];
       v13 = objc_loadWeakRetained(&self->_referenceSystem);
 
-      if (v12 == v13)
+      if (referenceView == v13)
       {
         ++v9;
       }
@@ -455,10 +455,10 @@ LABEL_22:
   [(UIDynamicAnimator *)&v15 dealloc];
 }
 
-+ (void)_referenceViewSizeChanged:(id)a3
++ (void)_referenceViewSizeChanged:(id)changed
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changedCopy = changed;
   if (__dynamicAnimatorsTable)
   {
     v13 = 0u;
@@ -481,9 +481,9 @@ LABEL_22:
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [v9 referenceView];
+          referenceView = [v9 referenceView];
 
-          if (v10 == v3)
+          if (referenceView == changedCopy)
           {
             [v9 _tickle];
           }
@@ -497,10 +497,10 @@ LABEL_22:
   }
 }
 
-+ (void)_clearReferenceViewFromAnimators:(id)a3
++ (void)_clearReferenceViewFromAnimators:(id)animators
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  animatorsCopy = animators;
   if (__dynamicAnimatorsTable)
   {
     v13 = 0u;
@@ -523,9 +523,9 @@ LABEL_22:
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [v9 referenceView];
+          referenceView = [v9 referenceView];
 
-          if (v10 == v3)
+          if (referenceView == animatorsCopy)
           {
             [v9 _clearReferenceView];
           }
@@ -542,7 +542,7 @@ LABEL_22:
 + (id)_allDynamicAnimators
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -562,7 +562,7 @@ LABEL_22:
           objc_enumerationMutation(v3);
         }
 
-        [v2 addObject:{*(*(&v9 + 1) + 8 * i), v9}];
+        [array addObject:{*(*(&v9 + 1) + 8 * i), v9}];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -571,7 +571,7 @@ LABEL_22:
     while (v5);
   }
 
-  return v2;
+  return array;
 }
 
 - (id)description
@@ -589,28 +589,28 @@ LABEL_22:
 
   [(UIDynamicAnimator *)self elapsedTime];
   [v5 appendFormat:@" (%fs)", v6];
-  v7 = [(UIDynamicAnimator *)self _referenceSystem];
+  _referenceSystem = [(UIDynamicAnimator *)self _referenceSystem];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [(UIDynamicAnimator *)self _referenceSystem];
+  _referenceSystem2 = [(UIDynamicAnimator *)self _referenceSystem];
   v11 = NSStringFromCGRect(self->_referenceSystemBounds);
-  [v5 appendFormat:@" in <%@: %p> %@", v9, v10, v11];
+  [v5 appendFormat:@" in <%@: %p> %@", v9, _referenceSystem2, v11];
 
   return v5;
 }
 
 - (id)recursiveDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = [(UIDynamicAnimator *)self description];
-  [v3 appendString:v4];
+  [string appendString:v4];
 
-  [v3 appendString:@"\n"];
+  [string appendString:@"\n"];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __41__UIDynamicAnimator_recursiveDescription__block_invoke;
   aBlock[3] = &unk_1E7106A48;
-  v5 = v3;
+  v5 = string;
   v10 = v5;
   v6 = _Block_copy(aBlock);
   [(UIDynamicAnimator *)self _traverseBehaviorHierarchy:v6];
@@ -677,36 +677,36 @@ void __41__UIDynamicAnimator_recursiveDescription__block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)_checkBehavior:(id)a3
+- (void)_checkBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   if ([(NSMutableSet *)self->_registeredBehaviors containsObject:?])
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Adding the same behavior twice to the same animator is not supported %@", v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Adding the same behavior twice to the same animator is not supported %@", behaviorCopy}];
   }
 }
 
-- (void)_registerBehavior:(id)a3
+- (void)_registerBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   if (self->_isInWorldStepMethod)
   {
-    if ([(NSMutableSet *)self->_behaviorsToRemove containsObject:v4])
+    if ([(NSMutableSet *)self->_behaviorsToRemove containsObject:behaviorCopy])
     {
-      [(NSMutableSet *)self->_behaviorsToRemove removeObject:v4];
+      [(NSMutableSet *)self->_behaviorsToRemove removeObject:behaviorCopy];
     }
 
-    if (([(NSMutableSet *)self->_registeredBehaviors containsObject:v4]& 1) == 0)
+    if (([(NSMutableSet *)self->_registeredBehaviors containsObject:behaviorCopy]& 1) == 0)
     {
       behaviorsToAdd = self->_behaviorsToAdd;
       if (behaviorsToAdd)
       {
-        [(NSMutableSet *)behaviorsToAdd addObject:v4];
+        [(NSMutableSet *)behaviorsToAdd addObject:behaviorCopy];
       }
 
       else
       {
-        v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{v4, 0}];
+        v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{behaviorCopy, 0}];
         v9 = self->_behaviorsToAdd;
         self->_behaviorsToAdd = v8;
       }
@@ -723,13 +723,13 @@ void __41__UIDynamicAnimator_recursiveDescription__block_invoke(uint64_t a1, voi
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(UIDynamicAnimator *)self _registerFieldCategoryForFieldBehavior:v4];
+      [(UIDynamicAnimator *)self _registerFieldCategoryForFieldBehavior:behaviorCopy];
     }
 
-    [v4 _setContext:self];
-    [v4 willMoveToAnimator:self];
-    [v4 _associate];
-    [(NSMutableSet *)self->_registeredBehaviors addObject:v4];
+    [behaviorCopy _setContext:self];
+    [behaviorCopy willMoveToAnimator:self];
+    [behaviorCopy _associate];
+    [(NSMutableSet *)self->_registeredBehaviors addObject:behaviorCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -760,9 +760,9 @@ void __41__UIDynamicAnimator_recursiveDescription__block_invoke(uint64_t a1, voi
 
     if (self->_registeredCollisionGroups >= 1)
     {
-      v7 = [(PKExtendedPhysicsWorld *)self->_world contactDelegate];
+      contactDelegate = [(PKExtendedPhysicsWorld *)self->_world contactDelegate];
 
-      if (!v7)
+      if (!contactDelegate)
       {
         [(PKExtendedPhysicsWorld *)self->_world setContactDelegate:self];
       }
@@ -784,13 +784,13 @@ void __39__UIDynamicAnimator__registerBehavior___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_unregisterBehavior:(id)a3
+- (void)_unregisterBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  behaviorCopy = behavior;
+  v5 = behaviorCopy;
+  if (behaviorCopy)
   {
-    v10 = v4;
+    v10 = behaviorCopy;
     if (!self->_isInWorldStepMethod)
     {
       objc_opt_class();
@@ -818,7 +818,7 @@ void __39__UIDynamicAnimator__registerBehavior___block_invoke(uint64_t a1, void 
       goto LABEL_15;
     }
 
-    if ([(NSMutableSet *)self->_behaviorsToAdd containsObject:v4])
+    if ([(NSMutableSet *)self->_behaviorsToAdd containsObject:behaviorCopy])
     {
       [(NSMutableSet *)self->_behaviorsToAdd removeObject:v10];
     }
@@ -846,40 +846,40 @@ LABEL_15:
   }
 }
 
-- (void)didBeginContact:(id)a3
+- (void)didBeginContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   beginContacts = self->_beginContacts;
-  v8 = v4;
+  v8 = contactCopy;
   if (!beginContacts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_beginContacts;
     self->_beginContacts = v6;
 
-    v4 = v8;
+    contactCopy = v8;
     beginContacts = self->_beginContacts;
   }
 
-  [(NSMutableArray *)beginContacts addObject:v4];
+  [(NSMutableArray *)beginContacts addObject:contactCopy];
 }
 
-- (void)didEndContact:(id)a3
+- (void)didEndContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   endContacts = self->_endContacts;
-  v8 = v4;
+  v8 = contactCopy;
   if (!endContacts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_endContacts;
     self->_endContacts = v6;
 
-    v4 = v8;
+    contactCopy = v8;
     endContacts = self->_endContacts;
   }
 
-  [(NSMutableArray *)endContacts addObject:v4];
+  [(NSMutableArray *)endContacts addObject:contactCopy];
 }
 
 - (void)_reportBeginContacts
@@ -1011,10 +1011,10 @@ void __39__UIDynamicAnimator__reportEndContacts__block_invoke(uint64_t a1, void 
   [(UIDynamicAnimator *)self _tickle];
 }
 
-- (void)_traverseBehaviorHierarchy:(id)a3
+- (void)_traverseBehaviorHierarchy:(id)hierarchy
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hierarchyCopy = hierarchy;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
@@ -1023,7 +1023,7 @@ void __39__UIDynamicAnimator__reportEndContacts__block_invoke(uint64_t a1, void 
   aBlock[1] = 3221225472;
   aBlock[2] = __48__UIDynamicAnimator__traverseBehaviorHierarchy___block_invoke;
   aBlock[3] = &unk_1E7106AB8;
-  v5 = v4;
+  v5 = hierarchyCopy;
   v16 = v5;
   v17 = &v18;
   v6 = _Block_copy(aBlock);
@@ -1032,8 +1032,8 @@ void __39__UIDynamicAnimator__reportEndContacts__block_invoke(uint64_t a1, void 
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(UIDynamicAnimator *)self behaviors];
-  v8 = [v7 countByEnumeratingWithState:&v11 objects:v22 count:16];
+  behaviors = [(UIDynamicAnimator *)self behaviors];
+  v8 = [behaviors countByEnumeratingWithState:&v11 objects:v22 count:16];
   if (v8)
   {
     v9 = *v12;
@@ -1044,14 +1044,14 @@ void __39__UIDynamicAnimator__reportEndContacts__block_invoke(uint64_t a1, void 
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(behaviors);
         }
 
         v6[2](v6, *(*(&v11 + 1) + 8 * v10++), 1);
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v11 objects:v22 count:16];
+      v8 = [behaviors countByEnumeratingWithState:&v11 objects:v22 count:16];
     }
 
     while (v8);
@@ -1170,23 +1170,23 @@ void __48__UIDynamicAnimator__traverseBehaviorHierarchy___block_invoke(uint64_t 
   return v2;
 }
 
-- (void)_defaultMapper:(id)a3 position:(CGPoint)a4 angle:(double)a5 itemType:(unint64_t)a6
+- (void)_defaultMapper:(id)mapper position:(CGPoint)position angle:(double)angle itemType:(unint64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  if (a6 == 1 && self->_referenceSystemType == 1)
+  y = position.y;
+  x = position.x;
+  mapperCopy = mapper;
+  if (type == 1 && self->_referenceSystemType == 1)
   {
-    v12 = [(UIDynamicAnimator *)self referenceView];
-    v13 = [v11 superview];
-    [v12 convertPoint:v13 toView:{x, y}];
+    referenceView = [(UIDynamicAnimator *)self referenceView];
+    superview = [mapperCopy superview];
+    [referenceView convertPoint:superview toView:{x, y}];
     x = v14;
     y = v15;
   }
 
   integralization = self->_integralization;
   v17 = 1;
-  if (!a6)
+  if (!type)
   {
     v17 = 2;
   }
@@ -1224,8 +1224,8 @@ LABEL_19:
 
       break;
     case 2uLL:
-      [v11 setCenter:{x, y}];
-      v18 = a5;
+      [mapperCopy setCenter:{x, y}];
+      angleCopy = angle;
       goto LABEL_27;
     default:
       v19 = self->_accuracy;
@@ -1242,22 +1242,22 @@ LABEL_19:
 
   y = round(y);
 LABEL_23:
-  [v11 center];
+  [mapperCopy center];
   if (v25 != x || v24 != y)
   {
-    [v11 setCenter:{x, y}];
+    [mapperCopy setCenter:{x, y}];
   }
 
-  v18 = round(a5 * 5000.0) / 5000.0;
+  angleCopy = round(angle * 5000.0) / 5000.0;
 LABEL_27:
-  CGAffineTransformMakeRotation(&v26, v18);
-  [v11 setTransform:&v26];
+  CGAffineTransformMakeRotation(&v26, angleCopy);
+  [mapperCopy setTransform:&v26];
 }
 
-- (void)_unregisterBodyForItem:(id)a3 action:(id)a4
+- (void)_unregisterBodyForItem:(id)item action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  actionCopy = action;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -1279,19 +1279,19 @@ LABEL_27:
     v8 = @"Can't use layout attributes as item (%@) in an animator with view reference %@";
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v8, v6, self}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v8, itemCopy, self}];
 LABEL_8:
   bodies = self->_bodies;
-  v10 = [(UIDynamicAnimator *)self _keyForItem:v6];
+  v10 = [(UIDynamicAnimator *)self _keyForItem:itemCopy];
   v11 = [(NSMutableDictionary *)bodies objectForKey:v10];
 
   if (v11)
   {
-    v12 = [v11 representedObject];
+    representedObject = [v11 representedObject];
 
-    if (v12 != v6)
+    if (representedObject != itemCopy)
     {
-      NSLog(&cfstr_BodyWithoutRep.isa, self, v11, v6);
+      NSLog(&cfstr_BodyWithoutRep.isa, self, v11, itemCopy);
     }
 
     if ([v11 dissociate])
@@ -1302,13 +1302,13 @@ LABEL_8:
       v13[3] = &unk_1E70F6228;
       v13[4] = self;
       v14 = v11;
-      v15 = v6;
+      v15 = itemCopy;
       [(UIDynamicAnimator *)self _runBlockPostSolverIfNeeded:v13];
     }
 
-    else if (v7)
+    else if (actionCopy)
     {
-      v7[2](v7, v11);
+      actionCopy[2](actionCopy, v11);
     }
   }
 }
@@ -1334,15 +1334,15 @@ uint64_t __51__UIDynamicAnimator__unregisterBodyForItem_action___block_invoke(ui
   width = rect.size.width;
   y = rect.origin.y;
   x = rect.origin.x;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(UIDynamicAnimator *)self _world];
+  array = [MEMORY[0x1E695DF70] array];
+  _world = [(UIDynamicAnimator *)self _world];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __33__UIDynamicAnimator_itemsInRect___block_invoke;
   v12[3] = &unk_1E7106AE0;
-  v10 = v8;
+  v10 = array;
   v13 = v10;
-  [v9 enumerateBodiesInRect:v12 usingBlock:{x, y, width, height}];
+  [_world enumerateBodiesInRect:v12 usingBlock:{x, y, width, height}];
 
   return v10;
 }
@@ -1364,15 +1364,15 @@ void __33__UIDynamicAnimator_itemsInRect___block_invoke(uint64_t a1, void *a2)
   {
     v5 = [_UICollectionViewItemKey collectionItemKeyForSupplementaryViewOfKind:indexPath andIndexPath:?];
     v6 = [(NSMutableDictionary *)self->_bodies objectForKey:v5];
-    v7 = [v6 representedObject];
+    representedObject = [v6 representedObject];
   }
 
   else
   {
-    v7 = 0;
+    representedObject = 0;
   }
 
-  return v7;
+  return representedObject;
 }
 
 - (UICollectionViewLayoutAttributes)layoutAttributesForDecorationViewOfKind:(NSString *)decorationViewKind atIndexPath:(NSIndexPath *)indexPath
@@ -1381,15 +1381,15 @@ void __33__UIDynamicAnimator_itemsInRect___block_invoke(uint64_t a1, void *a2)
   {
     v5 = [_UICollectionViewItemKey collectionItemKeyForDecorationViewOfKind:indexPath andIndexPath:?];
     v6 = [(NSMutableDictionary *)self->_bodies objectForKey:v5];
-    v7 = [v6 representedObject];
+    representedObject = [v6 representedObject];
   }
 
   else
   {
-    v7 = 0;
+    representedObject = 0;
   }
 
-  return v7;
+  return representedObject;
 }
 
 - (UICollectionViewLayoutAttributes)layoutAttributesForCellAtIndexPath:(NSIndexPath *)indexPath
@@ -1398,15 +1398,15 @@ void __33__UIDynamicAnimator_itemsInRect___block_invoke(uint64_t a1, void *a2)
   {
     v4 = [_UICollectionViewItemKey collectionItemKeyForCellWithIndexPath:?];
     v5 = [(NSMutableDictionary *)self->_bodies objectForKey:v4];
-    v6 = [v5 representedObject];
+    representedObject = [v5 representedObject];
   }
 
   else
   {
-    v6 = 0;
+    representedObject = 0;
   }
 
-  return v6;
+  return representedObject;
 }
 
 - (void)updateItemUsingCurrentState:(id)item
@@ -1455,12 +1455,12 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v6 = [(UIDynamicAnimator *)self referenceView];
+  referenceView = [(UIDynamicAnimator *)self referenceView];
   [v4 center];
   v8 = v7;
   v10 = v9;
-  v11 = [v4 superview];
-  [v6 convertPoint:v11 fromView:{v8, v10}];
+  superview = [v4 superview];
+  [referenceView convertPoint:superview fromView:{v8, v10}];
   v13 = v12;
   v15 = v14;
 
@@ -1630,32 +1630,32 @@ LABEL_48:
 LABEL_50:
 }
 
-- (id)_newBodyForItem:(id)a3 inItemGroup:(id)a4
+- (id)_newBodyForItem:(id)item inItemGroup:(id)group
 {
   v64 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (_dynamicItemTypeForItem(v6) == 1)
+  itemCopy = item;
+  groupCopy = group;
+  if (_dynamicItemTypeForItem(itemCopy) == 1)
   {
-    v8 = v6;
+    v8 = itemCopy;
     v9 = v8;
-    v57 = v6;
+    v57 = itemCopy;
     if (self->_referenceSystemType == 1)
     {
-      v10 = [(UIDynamicAnimator *)self referenceView];
-      v11 = [v9 isDescendantOfView:v10];
+      referenceView = [(UIDynamicAnimator *)self referenceView];
+      v11 = [v9 isDescendantOfView:referenceView];
 
       if ((v11 & 1) == 0)
       {
         [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"View item (%@) should be a descendant of reference view in %@", v9, self}];
       }
 
-      v12 = [(UIDynamicAnimator *)self referenceView];
+      referenceView2 = [(UIDynamicAnimator *)self referenceView];
       [v9 center];
       v14 = v13;
       v16 = v15;
-      v17 = [v9 superview];
-      [v12 convertPoint:v17 fromView:{v14, v16}];
+      superview = [v9 superview];
+      [referenceView2 convertPoint:superview fromView:{v14, v16}];
       v19 = v18;
       v21 = v20;
     }
@@ -1667,15 +1667,15 @@ LABEL_50:
       v21 = v25;
     }
 
-    v26 = [MEMORY[0x1E695DF70] array];
-    v27 = [v9 superview];
-    v28 = [v27 constraints];
+    array = [MEMORY[0x1E695DF70] array];
+    superview2 = [v9 superview];
+    constraints = [superview2 constraints];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v29 = v28;
+    v29 = constraints;
     v30 = [v29 countByEnumeratingWithState:&v59 objects:v63 count:16];
     if (v30)
     {
@@ -1709,7 +1709,7 @@ LABEL_17:
                 }
 
 LABEL_21:
-                [v26 addObject:v34];
+                [array addObject:v34];
                 continue;
               }
             }
@@ -1734,32 +1734,32 @@ LABEL_21:
       while (v31);
     }
 
-    if ([v26 count])
+    if ([array count])
     {
-      v38 = [v9 superview];
-      [v38 removeConstraints:v26];
+      superview3 = [v9 superview];
+      [superview3 removeConstraints:array];
 
       [v9 setTranslatesAutoresizingMaskIntoConstraints:1];
       [v9 _setHostsLayoutEngine:1];
     }
 
-    v6 = v57;
+    itemCopy = v57;
   }
 
   else
   {
-    [v6 center];
+    [itemCopy center];
     v19 = v22;
     v21 = v23;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v39 = [v6 collisionBoundsType];
-    if (v7)
+    collisionBoundsType = [itemCopy collisionBoundsType];
+    if (groupCopy)
     {
 LABEL_29:
-      [v7 center];
+      [groupCopy center];
       v41 = v19 - v40;
       v43 = v21 - v42;
       goto LABEL_32;
@@ -1768,8 +1768,8 @@ LABEL_29:
 
   else
   {
-    v39 = 0;
-    if (v7)
+    collisionBoundsType = 0;
+    if (groupCopy)
     {
       goto LABEL_29;
     }
@@ -1778,27 +1778,27 @@ LABEL_29:
   v41 = *MEMORY[0x1E695EFF8];
   v43 = *(MEMORY[0x1E695EFF8] + 8);
 LABEL_32:
-  if (v39 == 2)
+  if (collisionBoundsType == 2)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"UIDynamicItem (%@) MUST implement -[UIDynamicItem boundingPath] when specifying a collision bounds of UIDynamicItemCollisionBoundsPath", v6}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"UIDynamicItem (%@) MUST implement -[UIDynamicItem boundingPath] when specifying a collision bounds of UIDynamicItemCollisionBoundsPath", itemCopy}];
     }
 
-    v54 = [v6 collisionBoundingPath];
-    v55 = +[PKExtendedPhysicsBody bodyWithPolygonFromPath:](PKExtendedPhysicsBody, "bodyWithPolygonFromPath:", [v54 CGPath]);
+    collisionBoundingPath = [itemCopy collisionBoundingPath];
+    v55 = +[PKExtendedPhysicsBody bodyWithPolygonFromPath:](PKExtendedPhysicsBody, "bodyWithPolygonFromPath:", [collisionBoundingPath CGPath]);
 
     if (!v55)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"UIDynamicItem (%@) provided an invalid bounding path", v6}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"UIDynamicItem (%@) provided an invalid bounding path", itemCopy}];
     }
   }
 
   else
   {
-    if (v39 == 1)
+    if (collisionBoundsType == 1)
     {
-      [v6 bounds];
+      [itemCopy bounds];
       x = v65.origin.x;
       y = v65.origin.y;
       width = v65.size.width;
@@ -1809,7 +1809,7 @@ LABEL_32:
       v66.size.width = width;
       v66.size.height = height;
       v52 = CGRectGetHeight(v66);
-      [v6 bounds];
+      [itemCopy bounds];
       if (v51 == v52)
       {
         [PKExtendedPhysicsBody bodyWithCircleOfRadius:v53 * 0.5];
@@ -1824,13 +1824,13 @@ LABEL_32:
 
     else
     {
-      if (v39)
+      if (collisionBoundsType)
       {
         v55 = 0;
         goto LABEL_46;
       }
 
-      [v6 bounds];
+      [itemCopy bounds];
       v46 = [PKExtendedPhysicsBody bodyWithRectangleOfSize:v44 center:v45, v41, v43];
     }
 
@@ -1838,10 +1838,10 @@ LABEL_32:
   }
 
 LABEL_46:
-  [v55 setRepresentedObject:v6];
-  if (v6)
+  [v55 setRepresentedObject:itemCopy];
+  if (itemCopy)
   {
-    [v6 transform];
+    [itemCopy transform];
   }
 
   else
@@ -1854,11 +1854,11 @@ LABEL_46:
   return v55;
 }
 
-- (id)_registerBodyForItem:(id)a3
+- (id)_registerBodyForItem:(id)item
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = _dynamicItemTypeForItem(v5);
+  itemCopy = item;
+  v6 = _dynamicItemTypeForItem(itemCopy);
   referenceSystemType = self->_referenceSystemType;
   if (v6 == 2)
   {
@@ -1880,19 +1880,19 @@ LABEL_46:
     v8 = @"Can't use view as item (%@) in an animator with layout reference %@";
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v8, v5, self}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{v8, itemCopy, self}];
 LABEL_7:
   bodies = self->_bodies;
-  v10 = [(UIDynamicAnimator *)self _keyForItem:v5];
+  v10 = [(UIDynamicAnimator *)self _keyForItem:itemCopy];
   v11 = [(NSMutableDictionary *)bodies objectForKey:v10];
 
   if (v11)
   {
-    v12 = [v11 representedObject];
+    representedObject = [v11 representedObject];
 
-    if (v12 != v5)
+    if (representedObject != itemCopy)
     {
-      NSLog(&cfstr_BodyWithoutRep.isa, self, v11, v5);
+      NSLog(&cfstr_BodyWithoutRep.isa, self, v11, itemCopy);
     }
 
     [v11 associate];
@@ -1901,27 +1901,27 @@ LABEL_7:
 
   else
   {
-    [v5 bounds];
-    if (v14 == 0.0 || ([v5 bounds], v15 == 0.0))
+    [itemCopy bounds];
+    if (v14 == 0.0 || ([itemCopy bounds], v15 == 0.0))
     {
-      v32 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 bounds];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [itemCopy bounds];
       v49.width = v33;
       v49.height = v34;
       v35 = NSStringFromCGSize(v49);
-      [v32 handleFailureInMethod:a2 object:self file:@"UIDynamicAnimator.m" lineNumber:959 description:{@"Invalid size %@ for item %@ in Dynamics", v35, v5}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIDynamicAnimator.m" lineNumber:959 description:{@"Invalid size %@ for item %@ in Dynamics", v35, itemCopy}];
     }
 
     if (v6 == 3)
     {
-      v16 = v5;
+      v16 = itemCopy;
       v17 = objc_opt_new();
-      v18 = [v16 items];
+      items = [v16 items];
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v19 = [v18 countByEnumeratingWithState:&v42 objects:v46 count:16];
+      v19 = [items countByEnumeratingWithState:&v42 objects:v46 count:16];
       if (v19)
       {
         v20 = *v43;
@@ -1931,14 +1931,14 @@ LABEL_7:
           {
             if (*v43 != v20)
             {
-              objc_enumerationMutation(v18);
+              objc_enumerationMutation(items);
             }
 
             v22 = [(UIDynamicAnimator *)self _newBodyForItem:*(*(&v42 + 1) + 8 * i) inItemGroup:v16];
             [v17 addObject:v22];
           }
 
-          v19 = [v18 countByEnumeratingWithState:&v42 objects:v46 count:16];
+          v19 = [items countByEnumeratingWithState:&v42 objects:v46 count:16];
         }
 
         while (v19);
@@ -1966,7 +1966,7 @@ LABEL_7:
 
     else
     {
-      v23 = [(UIDynamicAnimator *)self _newBodyForItem:v5 inItemGroup:0];
+      v23 = [(UIDynamicAnimator *)self _newBodyForItem:itemCopy inItemGroup:0];
     }
 
     [v23 associate];
@@ -1976,7 +1976,7 @@ LABEL_7:
     v36[2] = __42__UIDynamicAnimator__registerBodyForItem___block_invoke;
     v36[3] = &unk_1E7106B08;
     objc_copyWeak(v38, location);
-    v28 = v5;
+    v28 = itemCopy;
     v37 = v28;
     v38[1] = v6;
     [v23 setPostStepBlock:v36];
@@ -2009,32 +2009,32 @@ void __42__UIDynamicAnimator__registerBodyForItem___block_invoke(uint64_t a1, vo
   [WeakRetained _defaultMapper:v4 position:*(a1 + 48) angle:v6 itemType:{v8, v10}];
 }
 
-- (id)_keyForItem:(id)a3
+- (id)_keyForItem:(id)item
 {
   if (self->_referenceSystemType == 2)
   {
-    [_UICollectionViewItemKey collectionItemKeyForLayoutAttributes:a3];
+    [_UICollectionViewItemKey collectionItemKeyForLayoutAttributes:item];
   }
 
   else
   {
-    [MEMORY[0x1E696B098] valueWithPointer:a3];
+    [MEMORY[0x1E696B098] valueWithPointer:item];
   }
   v3 = ;
 
   return v3;
 }
 
-- (id)_bodyForItem:(id)a3
+- (id)_bodyForItem:(id)item
 {
   bodies = self->_bodies;
-  v5 = a3;
-  v6 = [(UIDynamicAnimator *)self _keyForItem:v5];
+  itemCopy = item;
+  v6 = [(UIDynamicAnimator *)self _keyForItem:itemCopy];
   v7 = [(NSMutableDictionary *)bodies objectForKey:v6];
 
-  v8 = [v7 representedObject];
+  representedObject = [v7 representedObject];
 
-  if (v8 == v5)
+  if (representedObject == itemCopy)
   {
     v9 = v7;
   }
@@ -2074,12 +2074,12 @@ void __42__UIDynamicAnimator__registerBodyForItem___block_invoke(uint64_t a1, vo
   return uiUpdateSequenceItem != 0;
 }
 
-- (void)_setRunning:(BOOL)a3
+- (void)_setRunning:(BOOL)running
 {
-  v3 = a3;
-  if ([(UIDynamicAnimator *)self isRunning]!= a3)
+  runningCopy = running;
+  if ([(UIDynamicAnimator *)self isRunning]!= running)
   {
-    if (v3)
+    if (runningCopy)
     {
 
       [(UIDynamicAnimator *)self _start];
@@ -2183,8 +2183,8 @@ uint64_t __28__UIDynamicAnimator__tickle__block_invoke(uint64_t a1)
   ticker = self->_ticker;
   self->_ticker = v4;
 
-  v6 = [(UIDynamicAnimator *)self ticker];
-  [v6 setAnimator:self];
+  ticker = [(UIDynamicAnimator *)self ticker];
+  [ticker setAnimator:self];
 
   if (!_UIUpdateCycleEnabled())
   {
@@ -2193,9 +2193,9 @@ uint64_t __28__UIDynamicAnimator__tickle__block_invoke(uint64_t a1)
     if (referenceSystemType == 1)
     {
       v8 = objc_loadWeakRetained(&self->_referenceSystem);
-      v9 = [v8 _screen];
-      v10 = [(UIDynamicAnimator *)self ticker];
-      v12 = [v9 displayLinkWithTarget:v10 selector:sel__displayLinkTick_];
+      _screen = [v8 _screen];
+      ticker2 = [(UIDynamicAnimator *)self ticker];
+      v12 = [_screen displayLinkWithTarget:ticker2 selector:sel__displayLinkTick_];
     }
 
     else
@@ -2206,10 +2206,10 @@ uint64_t __28__UIDynamicAnimator__tickle__block_invoke(uint64_t a1)
       }
 
       v8 = objc_loadWeakRetained(&self->_referenceSystem);
-      v9 = [v8 collectionView];
-      v10 = [v9 _screen];
-      v11 = [(UIDynamicAnimator *)self ticker];
-      v12 = [v10 displayLinkWithTarget:v11 selector:sel__displayLinkTick_];
+      _screen = [v8 collectionView];
+      ticker2 = [_screen _screen];
+      ticker3 = [(UIDynamicAnimator *)self ticker];
+      v12 = [ticker2 displayLinkWithTarget:ticker3 selector:sel__displayLinkTick_];
     }
 
     if (v12)
@@ -2221,8 +2221,8 @@ LABEL_13:
         [v12 setPreferredFramesPerSecond:llround(1.0 / v15)];
       }
 
-      v16 = [MEMORY[0x1E695DFD0] currentRunLoop];
-      [v12 addToRunLoop:v16 forMode:*MEMORY[0x1E695DA28]];
+      currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+      [v12 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       objc_storeWeak(&self->_displaylink, v12);
       goto LABEL_16;
@@ -2230,8 +2230,8 @@ LABEL_13:
 
 LABEL_12:
     v13 = MEMORY[0x1E6979330];
-    v14 = [(UIDynamicAnimator *)self ticker];
-    v12 = [v13 displayLinkWithTarget:v14 selector:sel__displayLinkTick_];
+    ticker4 = [(UIDynamicAnimator *)self ticker];
+    v12 = [v13 displayLinkWithTarget:ticker4 selector:sel__displayLinkTick_];
 
     goto LABEL_13;
   }
@@ -2240,10 +2240,10 @@ LABEL_12:
 LABEL_16:
   if (self->_referenceSystemType == 1)
   {
-    v17 = [(UIDynamicAnimator *)self referenceView];
-    v18 = [v17 window];
-    v19 = [v18 screen];
-    [v19 scale];
+    referenceView = [(UIDynamicAnimator *)self referenceView];
+    window = [referenceView window];
+    screen = [window screen];
+    [screen scale];
     self->_accuracy = v20;
   }
 
@@ -2259,12 +2259,12 @@ LABEL_16:
   }
 }
 
-- (void)setDebugEnabled:(BOOL)a3
+- (void)setDebugEnabled:(BOOL)enabled
 {
-  if (self->_debugEnabled != a3)
+  if (self->_debugEnabled != enabled)
   {
-    self->_debugEnabled = a3;
-    if (a3)
+    self->_debugEnabled = enabled;
+    if (enabled)
     {
       if (!self->_world)
       {
@@ -2364,9 +2364,9 @@ LABEL_14:
       if (!v10)
       {
         v11 = objc_loadWeakRetained(&self->_referenceSystem);
-        v12 = [v11 layer];
-        v13 = [v12 presentationLayer];
-        [v13 bounds];
+        layer = [v11 layer];
+        presentationLayer = [layer presentationLayer];
+        [presentationLayer bounds];
         self->_referenceSystemBounds.origin.x = v14;
         self->_referenceSystemBounds.origin.y = v15;
         self->_referenceSystemBounds.size.width = v16;
@@ -2413,20 +2413,20 @@ LABEL_16:
   [(UIDynamicsDebug *)self->_dynamicsDebug captureDebugInformation];
 }
 
-- (void)_runBlockPostSolverIfNeeded:(id)a3
+- (void)_runBlockPostSolverIfNeeded:(id)needed
 {
   if (self->_isInWorldStepMethod)
   {
     postSolverActions = self->_postSolverActions;
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(needed);
     [(NSMutableArray *)postSolverActions addObject:v6];
   }
 
   else
   {
-    v5 = *(a3 + 2);
+    v5 = *(needed + 2);
 
-    v5(a3);
+    v5(needed);
   }
 }
 
@@ -2456,12 +2456,12 @@ LABEL_16:
         }
 
         v8 = *(*(&v54 + 1) + 8 * i);
-        v9 = [v8 action];
+        action = [v8 action];
 
-        if (v9)
+        if (action)
         {
-          v10 = [v8 action];
-          v10[2]();
+          action2 = [v8 action];
+          action2[2]();
         }
       }
 
@@ -2666,21 +2666,21 @@ LABEL_20:
   }
 }
 
-- (void)_setAction:(id)a3
+- (void)_setAction:(id)action
 {
-  v4 = [a3 copy];
+  v4 = [action copy];
   action = self->_action;
   self->_action = v4;
 }
 
-- (BOOL)_animatorStep:(double)a3
+- (BOOL)_animatorStep:(double)step
 {
   ++self->_ticks;
-  self->_lastInterval = a3;
-  self->_elapsedTime = self->_elapsedTime + a3;
+  self->_lastInterval = step;
+  self->_elapsedTime = self->_elapsedTime + step;
   [(UIDynamicAnimator *)self _preSolverStep];
   self->_isInWorldStepMethod = 1;
-  v5 = [(PKExtendedPhysicsWorld *)self->_world stepWithTime:8 velocityIterations:3 positionIterations:a3];
+  v5 = [(PKExtendedPhysicsWorld *)self->_world stepWithTime:8 velocityIterations:3 positionIterations:step];
   self->_isInWorldStepMethod = 0;
   [(UIDynamicAnimator *)self _postSolverStep];
   action = self->_action;
@@ -2698,16 +2698,16 @@ LABEL_20:
   return v5;
 }
 
-- (void)_invalidateCollectionViewLayout:(id)a3
+- (void)_invalidateCollectionViewLayout:(id)layout
 {
-  v3 = a3;
-  v4 = [v3 _invalidationContextForRefreshingVisibleElementAttributes];
-  [v3 invalidateLayoutWithContext:v4];
+  layoutCopy = layout;
+  _invalidationContextForRefreshingVisibleElementAttributes = [layoutCopy _invalidationContextForRefreshingVisibleElementAttributes];
+  [layoutCopy invalidateLayoutWithContext:_invalidationContextForRefreshingVisibleElementAttributes];
 }
 
-- (void)_performAnimationTickForTimestamp:(double)a3
+- (void)_performAnimationTickForTimestamp:(double)timestamp
 {
-  v5 = a3 - self->_lastUpdateTime;
+  v5 = timestamp - self->_lastUpdateTime;
   if (v5 > 0.5)
   {
     v5 = 0.0166666667;
@@ -2715,7 +2715,7 @@ LABEL_20:
 
   self->_realElapsedTime = self->_realElapsedTime + v5;
   v6 = [(UIDynamicAnimator *)self _animatorStep:?];
-  self->_lastUpdateTime = a3;
+  self->_lastUpdateTime = timestamp;
   if (!v6)
   {
 
@@ -2740,7 +2740,7 @@ LABEL_20:
   return [(PKExtendedPhysicsWorld *)world isSettling];
 }
 
-- (void)setSettlingLinearVelocityThreshold:(double)a3
+- (void)setSettlingLinearVelocityThreshold:(double)threshold
 {
   if (!self->_world)
   {
@@ -2751,7 +2751,7 @@ LABEL_20:
   {
     world = self->_world;
 
-    [(PKExtendedPhysicsWorld *)world setSettlingLinearVelocityThreshold:a3];
+    [(PKExtendedPhysicsWorld *)world setSettlingLinearVelocityThreshold:threshold];
   }
 }
 
@@ -2773,7 +2773,7 @@ LABEL_20:
   return result;
 }
 
-- (void)setSettlingAngularVelocityThreshold:(double)a3
+- (void)setSettlingAngularVelocityThreshold:(double)threshold
 {
   if (!self->_world)
   {
@@ -2784,7 +2784,7 @@ LABEL_20:
   {
     world = self->_world;
 
-    [(PKExtendedPhysicsWorld *)world setSettlingAngularVelocityThreshold:a3];
+    [(PKExtendedPhysicsWorld *)world setSettlingAngularVelocityThreshold:threshold];
   }
 }
 
@@ -2806,7 +2806,7 @@ LABEL_20:
   return result;
 }
 
-- (void)setSettlingDuration:(double)a3
+- (void)setSettlingDuration:(double)duration
 {
   if (!self->_world)
   {
@@ -2817,7 +2817,7 @@ LABEL_20:
   {
     world = self->_world;
 
-    [(PKExtendedPhysicsWorld *)world setSettlingDuration:a3];
+    [(PKExtendedPhysicsWorld *)world setSettlingDuration:duration];
   }
 }
 
@@ -2854,15 +2854,15 @@ LABEL_20:
   return WeakRetained;
 }
 
-- (void)_setReferenceSystem:(id)a3
+- (void)_setReferenceSystem:(id)system
 {
-  v4 = a3;
-  if (v4)
+  systemCopy = system;
+  if (systemCopy)
   {
-    obj = v4;
+    obj = systemCopy;
     WeakRetained = objc_loadWeakRetained(&self->_referenceSystem);
 
-    v4 = obj;
+    systemCopy = obj;
     if (WeakRetained != obj)
     {
       objc_opt_class();
@@ -2901,7 +2901,7 @@ LABEL_20:
       self->_referenceSystemBounds.size.height = v11;
 
 LABEL_9:
-      v4 = obj;
+      systemCopy = obj;
     }
   }
 }

@@ -1,17 +1,17 @@
 @interface TSCELeafQueue
-- (BOOL)addLeaf:(const TSCEInternalCellReference *)a3 withOptions:(unint64_t)a4;
+- (BOOL)addLeaf:(const TSCEInternalCellReference *)leaf withOptions:(unint64_t)options;
 - (BOOL)hasMultiEvalLeaves;
 - (BOOL)isEmpty;
 - (BOOL)isSingleEvalQueueEmpty;
-- (TSCECellCoordSet)cellCoordsForMultiEvalOwnerID:(SEL)a3;
+- (TSCECellCoordSet)cellCoordsForMultiEvalOwnerID:(SEL)d;
 - (TSCEInternalCellReference)popLeaf;
 - (TSCELeafQueue)init;
 - (id).cxx_construct;
 - (vector<unsigned)multiEvalOwnerIDs;
-- (void)addAllLeavesToSet:(void *)a3;
-- (void)addMultiEvalOwnerID:(unsigned __int16)a3;
-- (void)clearMultiEvalOwnerID:(unsigned __int16)a3;
-- (void)removeMultiEvalOwnerID:(unsigned __int16)a3;
+- (void)addAllLeavesToSet:(void *)set;
+- (void)addMultiEvalOwnerID:(unsigned __int16)d;
+- (void)clearMultiEvalOwnerID:(unsigned __int16)d;
+- (void)removeMultiEvalOwnerID:(unsigned __int16)d;
 @end
 
 @implementation TSCELeafQueue
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (void)addAllLeavesToSet:(void *)a3
+- (void)addAllLeavesToSet:(void *)set
 {
   os_unfair_lock_lock(&self->_leafQueueMutex);
-  sub_2212DFD90(a3, &self->_leafQueueSet);
-  sub_2212DFD90(a3, &self->_multiEvalSet);
+  sub_2212DFD90(set, &self->_leafQueueSet);
+  sub_2212DFD90(set, &self->_multiEvalSet);
 
   os_unfair_lock_unlock(&self->_leafQueueMutex);
 }
 
-- (void)addMultiEvalOwnerID:(unsigned __int16)a3
+- (void)addMultiEvalOwnerID:(unsigned __int16)d
 {
   os_unfair_lock_lock(&self->_leafQueueMutex);
   TSUIndexSet::addIndex(&self->_multiEvalOwnerIds);
@@ -47,7 +47,7 @@
   os_unfair_lock_unlock(&self->_leafQueueMutex);
 }
 
-- (void)removeMultiEvalOwnerID:(unsigned __int16)a3
+- (void)removeMultiEvalOwnerID:(unsigned __int16)d
 {
   os_unfair_lock_lock(&self->_leafQueueMutex);
   TSUIndexSet::removeIndex(&self->_multiEvalOwnerIds);
@@ -55,9 +55,9 @@
   os_unfair_lock_unlock(&self->_leafQueueMutex);
 }
 
-- (BOOL)addLeaf:(const TSCEInternalCellReference *)a3 withOptions:(unint64_t)a4
+- (BOOL)addLeaf:(const TSCEInternalCellReference *)leaf withOptions:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_leafQueueMutex);
   v7 = TSUIndexSet::containsIndex(&self->_multiEvalOwnerIds);
   v8 = v7;
@@ -82,24 +82,24 @@ LABEL_3:
   }
 
   p_multiEvalSet = &self->_leafQueueSet;
-  if (sub_2212E0198(&self->_leafQueueSet._coordsForOwnerId.__table_.__bucket_list_.__ptr_, a3))
+  if (sub_2212E0198(&self->_leafQueueSet._coordsForOwnerId.__table_.__bucket_list_.__ptr_, leaf))
   {
     goto LABEL_7;
   }
 
   p_leafQueue = &self->_leafQueue;
-  if (v4)
+  if (optionsCopy)
   {
-    sub_2214D9E88(p_leafQueue, a3);
+    sub_2214D9E88(p_leafQueue, leaf);
   }
 
   else
   {
-    sub_2214D9F38(p_leafQueue, a3);
+    sub_2214D9F38(p_leafQueue, leaf);
   }
 
 LABEL_4:
-  sub_2212DFCE8(p_multiEvalSet, a3);
+  sub_2212DFCE8(p_multiEvalSet, leaf);
 LABEL_7:
   os_unfair_lock_unlock(&self->_leafQueueMutex);
   return v9;
@@ -180,15 +180,15 @@ LABEL_7:
   return result;
 }
 
-- (void)clearMultiEvalOwnerID:(unsigned __int16)a3
+- (void)clearMultiEvalOwnerID:(unsigned __int16)d
 {
   os_unfair_lock_lock(&self->_leafQueueMutex);
-  v5 = a3;
-  sub_2212E10A8(&self->_multiEvalSet._coordsForOwnerId.__table_.__bucket_list_.__ptr_, &v5);
+  dCopy = d;
+  sub_2212E10A8(&self->_multiEvalSet._coordsForOwnerId.__table_.__bucket_list_.__ptr_, &dCopy);
   os_unfair_lock_unlock(&self->_leafQueueMutex);
 }
 
-- (TSCECellCoordSet)cellCoordsForMultiEvalOwnerID:(SEL)a3
+- (TSCECellCoordSet)cellCoordsForMultiEvalOwnerID:(SEL)d
 {
   retstr->_rowsPerColumn.__tree_.__end_node_.__left_ = 0;
   retstr->_rowsPerColumn.__tree_.__begin_node_ = &retstr->_rowsPerColumn.__tree_.__end_node_;

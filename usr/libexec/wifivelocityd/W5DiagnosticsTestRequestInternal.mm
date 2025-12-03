@@ -1,6 +1,6 @@
 @interface W5DiagnosticsTestRequestInternal
 - (W5DiagnosticsTestRequestInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -31,7 +31,7 @@
   [(W5DiagnosticsTestRequestInternal *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[W5DiagnosticsTestRequestInternal allocWithZone:?]];
   [(W5DiagnosticsTestRequestInternal *)v4 setUuid:self->_uuid];

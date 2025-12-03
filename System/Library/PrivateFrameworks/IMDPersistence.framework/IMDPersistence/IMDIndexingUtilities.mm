@@ -1,14 +1,14 @@
 @interface IMDIndexingUtilities
-+ (BOOL)canDonateItemDictionary:(id)a3;
-+ (BOOL)isItemGroupPhoto:(id)a3;
++ (BOOL)canDonateItemDictionary:(id)dictionary;
++ (BOOL)isItemGroupPhoto:(id)photo;
 @end
 
 @implementation IMDIndexingUtilities
 
-+ (BOOL)isItemGroupPhoto:(id)a3
++ (BOOL)isItemGroupPhoto:(id)photo
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_objectForKeyedSubscript_(a3, a2, @"attachments");
+  v3 = objc_msgSend_objectForKeyedSubscript_(photo, a2, @"attachments");
   if (objc_msgSend_count(v3, v4, v5) == 1)
   {
     v22 = 0u;
@@ -64,11 +64,11 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)canDonateItemDictionary:(id)a3
++ (BOOL)canDonateItemDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v5 = objc_msgSend_objectForKey_(v3, v4, @"associatedMessageType");
+  dictionaryCopy = dictionary;
+  v5 = objc_msgSend_objectForKey_(dictionaryCopy, v4, @"associatedMessageType");
   v8 = v5;
   if (v5)
   {
@@ -82,7 +82,7 @@ LABEL_13:
         v12 = IMLogHandleForCategory();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v14 = objc_msgSend_objectForKey_(v3, v13, @"guid");
+          v14 = objc_msgSend_objectForKey_(dictionaryCopy, v13, @"guid");
           v17 = 136315650;
           v18 = "+[IMDIndexingUtilities canDonateItemDictionary:]";
           v19 = 2112;

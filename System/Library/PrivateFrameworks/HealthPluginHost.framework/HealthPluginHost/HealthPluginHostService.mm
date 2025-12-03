@@ -1,51 +1,51 @@
 @interface HealthPluginHostService
 - (NSString)description;
 - (_TtC10healthappd23HealthPluginHostService)init;
-- (void)collectFeedItemCacheDiagnosticsWithCompletion:(id)a3;
-- (void)commitSharedSummaryTransactionAsUrgent:(BOOL)a3 completion:(id)a4;
+- (void)collectFeedItemCacheDiagnosticsWithCompletion:(id)completion;
+- (void)commitSharedSummaryTransactionAsUrgent:(BOOL)urgent completion:(id)completion;
 - (void)dealloc;
-- (void)debuggingInfoRequestedWithNote:(id)a3;
-- (void)deleteFeedWithFeedKinds:(id)a3 completion:(id)a4;
-- (void)handleJournaledSharingEntries:(id)a3 completion:(id)a4;
-- (void)populateFeedWithFeedKinds:(id)a3 for:(id)a4 completion:(id)a5;
-- (void)postNotificationWith:(id)a3 userInfo:(id)a4;
-- (void)submitTrainingFor:(id)a3 completion:(id)a4;
+- (void)debuggingInfoRequestedWithNote:(id)note;
+- (void)deleteFeedWithFeedKinds:(id)kinds completion:(id)completion;
+- (void)handleJournaledSharingEntries:(id)entries completion:(id)completion;
+- (void)populateFeedWithFeedKinds:(id)kinds for:(id)for completion:(id)completion;
+- (void)postNotificationWith:(id)with userInfo:(id)info;
+- (void)submitTrainingFor:(id)for completion:(id)completion;
 @end
 
 @implementation HealthPluginHostService
 
-- (void)populateFeedWithFeedKinds:(id)a3 for:(id)a4 completion:(id)a5
+- (void)populateFeedWithFeedKinds:(id)kinds for:(id)for completion:(id)completion
 {
   v7 = type metadata accessor for DateInterval();
   v8 = *(v7 - 8);
   v9 = *(v8 + 64);
   __chkstk_darwin(v7);
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = swift_allocObject();
   *(v14 + 16) = v12;
-  v15 = self;
+  selfCopy = self;
   sub_100017B18(v13, v16, sub_10002389C, v14);
 
   (*(v8 + 8))(v11, v7);
 }
 
-- (void)submitTrainingFor:(id)a3 completion:(id)a4
+- (void)submitTrainingFor:(id)for completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   sub_100004210(0, &qword_1000423A8, NSData_ptr);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = swift_allocObject();
   *(v7 + 16) = v5;
-  v8 = self;
+  selfCopy = self;
   sub_1000182E8(v6, sub_10002389C, v7);
 }
 
-- (void)postNotificationWith:(id)a3 userInfo:(id)a4
+- (void)postNotificationWith:(id)with userInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -55,65 +55,65 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_100018D14(v7, v6);
+  withCopy = with;
+  selfCopy = self;
+  sub_100018D14(withCopy, v6);
 }
 
-- (void)collectFeedItemCacheDiagnosticsWithCompletion:(id)a3
+- (void)collectFeedItemCacheDiagnosticsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1000191CC(sub_100023804, v5);
 }
 
-- (void)deleteFeedWithFeedKinds:(id)a3 completion:(id)a4
+- (void)deleteFeedWithFeedKinds:(id)kinds completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
-  v7 = self;
-  sub_1000229A0(v6, v7, v5);
+  selfCopy = self;
+  sub_1000229A0(v6, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)commitSharedSummaryTransactionAsUrgent:(BOOL)a3 completion:(id)a4
+- (void)commitSharedSummaryTransactionAsUrgent:(BOOL)urgent completion:(id)completion
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a4);
+  v8 = _Block_copy(completion);
   v9 = swift_allocObject();
   v10 = *(&self->super.isa + OBJC_IVAR____TtC10healthappd23HealthPluginHostService_longRunningProcessOracle);
   *(v9 + 16) = v8;
   v11 = *(v10 + 16);
   v12 = *(&self->super.isa + OBJC_IVAR____TtC10healthappd23HealthPluginHostService_transactionBuilderManager);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
+  *(v13 + 16) = urgent;
   *(v13 + 24) = sub_100023898;
   *(v13 + 32) = v9;
   *(v13 + 40) = ObjectType;
-  v14 = self;
+  selfCopy = self;
   v15 = v11;
 
   dispatch thunk of OpenTransactionBuilderManager.commitTransaction(healthStore:asUrgent:completion:)();
 }
 
-- (void)handleJournaledSharingEntries:(id)a3 completion:(id)a4
+- (void)handleJournaledSharingEntries:(id)entries completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_100022D40(sub_1000237DC);
 }
 
 - (void)dealloc
 {
   v3 = type metadata accessor for HealthPluginHostService(0);
-  v4 = self;
+  selfCopy = self;
   DebuggingResponder.deregisterForDebuggingRequests()();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = v3;
   [(HealthPluginHostService *)&v5 dealloc];
 }
@@ -127,7 +127,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001DB38();
 
   v3 = String._bridgeToObjectiveC()();
@@ -135,7 +135,7 @@
   return v3;
 }
 
-- (void)debuggingInfoRequestedWithNote:(id)a3
+- (void)debuggingInfoRequestedWithNote:(id)note
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -143,7 +143,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10001DD44();
 
   (*(v5 + 8))(v8, v4);

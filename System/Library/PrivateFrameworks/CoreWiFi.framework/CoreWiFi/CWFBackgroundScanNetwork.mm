@@ -1,11 +1,11 @@
 @interface CWFBackgroundScanNetwork
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBackgroundScanNetwork:(id)a3;
-- (CWFBackgroundScanNetwork)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBackgroundScanNetwork:(id)network;
+- (CWFBackgroundScanNetwork)initWithCoder:(id)coder;
 - (NSString)description;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFBackgroundScanNetwork
@@ -13,13 +13,13 @@
 - (id)JSONCompatibleKeyValueMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFBackgroundScanNetwork *)self BSSID];
-  v5 = [v4 redactedForWiFi];
-  [v3 setObject:v5 forKeyedSubscript:@"bssid"];
+  bSSID = [(CWFBackgroundScanNetwork *)self BSSID];
+  redactedForWiFi = [bSSID redactedForWiFi];
+  [v3 setObject:redactedForWiFi forKeyedSubscript:@"bssid"];
 
-  v6 = [(CWFBackgroundScanNetwork *)self channel];
-  v7 = [v6 JSONCompatibleKeyValueMap];
-  [v3 setObject:v7 forKeyedSubscript:@"channel"];
+  channel = [(CWFBackgroundScanNetwork *)self channel];
+  jSONCompatibleKeyValueMap = [channel JSONCompatibleKeyValueMap];
+  [v3 setObject:jSONCompatibleKeyValueMap forKeyedSubscript:@"channel"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFBackgroundScanNetwork entry](self, "entry")}];
   [v3 setObject:v8 forKeyedSubscript:@"entry"];
@@ -44,33 +44,33 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CWFBackgroundScanNetwork *)self BSSID];
-  v5 = [v4 redactedForWiFi];
-  v6 = [(CWFBackgroundScanNetwork *)self channel];
-  v7 = [v3 stringWithFormat:@"bssid=%@, ch=%@, entry=%d, exit=%d", v5, v6, -[CWFBackgroundScanNetwork entry](self, "entry"), -[CWFBackgroundScanNetwork exit](self, "exit")];
+  bSSID = [(CWFBackgroundScanNetwork *)self BSSID];
+  redactedForWiFi = [bSSID redactedForWiFi];
+  channel = [(CWFBackgroundScanNetwork *)self channel];
+  v7 = [v3 stringWithFormat:@"bssid=%@, ch=%@, entry=%d, exit=%d", redactedForWiFi, channel, -[CWFBackgroundScanNetwork entry](self, "entry"), -[CWFBackgroundScanNetwork exit](self, "exit")];
 
   return v7;
 }
 
-- (BOOL)isEqualToBackgroundScanNetwork:(id)a3
+- (BOOL)isEqualToBackgroundScanNetwork:(id)network
 {
-  v7 = a3;
+  networkCopy = network;
   BSSID = self->_BSSID;
-  v9 = [v7 BSSID];
-  if (BSSID == v9)
+  bSSID = [networkCopy BSSID];
+  if (BSSID == bSSID)
   {
     goto LABEL_7;
   }
 
   if (self->_BSSID)
   {
-    v10 = [v7 BSSID];
-    if (v10)
+    bSSID2 = [networkCopy BSSID];
+    if (bSSID2)
     {
-      v3 = v10;
+      v3 = bSSID2;
       v11 = self->_BSSID;
-      v12 = [v7 BSSID];
-      if (![(NSString *)v11 isEqual:v12])
+      bSSID3 = [networkCopy BSSID];
+      if (![(NSString *)v11 isEqual:bSSID3])
       {
         v13 = 0;
 LABEL_23:
@@ -78,30 +78,30 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v22 = v12;
+      v22 = bSSID3;
 LABEL_7:
       channel = self->_channel;
-      v15 = [v7 channel];
-      if (channel != v15)
+      channel = [networkCopy channel];
+      if (channel != channel)
       {
         if (!self->_channel)
         {
           goto LABEL_19;
         }
 
-        v16 = [v7 channel];
-        if (!v16)
+        channel2 = [networkCopy channel];
+        if (!channel2)
         {
           goto LABEL_17;
         }
 
-        v4 = v16;
+        v4 = channel2;
         v17 = self->_channel;
-        v5 = [v7 channel];
-        if (![(CWFChannel *)v17 isEqual:v5])
+        channel3 = [networkCopy channel];
+        if (![(CWFChannel *)v17 isEqual:channel3])
         {
           v13 = 0;
-          v12 = v22;
+          bSSID3 = v22;
 LABEL_14:
 
           goto LABEL_20;
@@ -109,12 +109,12 @@ LABEL_14:
       }
 
       entry = self->_entry;
-      if (entry == [v7 entry])
+      if (entry == [networkCopy entry])
       {
         exit = self->_exit;
-        v13 = exit == [v7 exit];
-        v20 = channel == v15;
-        v12 = v22;
+        v13 = exit == [networkCopy exit];
+        v20 = channel == channel;
+        bSSID3 = v22;
         if (v20)
         {
           goto LABEL_20;
@@ -123,13 +123,13 @@ LABEL_14:
         goto LABEL_14;
       }
 
-      if (channel != v15)
+      if (channel != channel)
       {
 
 LABEL_17:
         v13 = 0;
-        v12 = v22;
-        if (BSSID == v9)
+        bSSID3 = v22;
+        if (BSSID == bSSID)
         {
           goto LABEL_24;
         }
@@ -139,10 +139,10 @@ LABEL_17:
 
 LABEL_19:
       v13 = 0;
-      v12 = v22;
+      bSSID3 = v22;
 LABEL_20:
 
-      if (BSSID == v9)
+      if (BSSID == bSSID)
       {
         goto LABEL_24;
       }
@@ -157,24 +157,24 @@ LABEL_24:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFBackgroundScanNetwork *)self isEqualToBackgroundScanNetwork:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFBackgroundScanNetwork *)self isEqualToBackgroundScanNetwork:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFBackgroundScanNetwork allocWithZone:?]];
   [(CWFBackgroundScanNetwork *)v4 setBSSID:self->_BSSID];
@@ -184,34 +184,34 @@ LABEL_24:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   BSSID = self->_BSSID;
-  v5 = a3;
-  [v5 encodeObject:BSSID forKey:@"_BSSID"];
-  [v5 encodeObject:self->_channel forKey:@"_channel"];
-  [v5 encodeBool:self->_entry forKey:@"_entry"];
-  [v5 encodeBool:self->_exit forKey:@"_exit"];
+  coderCopy = coder;
+  [coderCopy encodeObject:BSSID forKey:@"_BSSID"];
+  [coderCopy encodeObject:self->_channel forKey:@"_channel"];
+  [coderCopy encodeBool:self->_entry forKey:@"_entry"];
+  [coderCopy encodeBool:self->_exit forKey:@"_exit"];
 }
 
-- (CWFBackgroundScanNetwork)initWithCoder:(id)a3
+- (CWFBackgroundScanNetwork)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CWFBackgroundScanNetwork;
   v5 = [(CWFBackgroundScanNetwork *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_BSSID"];
     BSSID = v5->_BSSID;
     v5->_BSSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_channel"];
     channel = v5->_channel;
     v5->_channel = v8;
 
-    v5->_entry = [v4 decodeBoolForKey:@"_entry"];
-    v5->_exit = [v4 decodeBoolForKey:@"_exit"];
+    v5->_entry = [coderCopy decodeBoolForKey:@"_entry"];
+    v5->_exit = [coderCopy decodeBoolForKey:@"_exit"];
   }
 
   return v5;

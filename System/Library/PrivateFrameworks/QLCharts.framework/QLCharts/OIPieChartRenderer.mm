@@ -1,31 +1,31 @@
 @interface OIPieChartRenderer
-- (OIPieChartRenderer)initWithChart:(__OIChart *)a3;
-- (OIPieChartRenderer)initWithChart:(__OIChart *)a3 sliceRenderer:(id)a4;
+- (OIPieChartRenderer)initWithChart:(__OIChart *)chart;
+- (OIPieChartRenderer)initWithChart:(__OIChart *)chart sliceRenderer:(id)renderer;
 - (void)dealloc;
-- (void)renderThreeDimensional:(BOOL)a3 pieFromSeriesArray:(__CFArray *)a4;
+- (void)renderThreeDimensional:(BOOL)dimensional pieFromSeriesArray:(__CFArray *)array;
 @end
 
 @implementation OIPieChartRenderer
 
-- (OIPieChartRenderer)initWithChart:(__OIChart *)a3 sliceRenderer:(id)a4
+- (OIPieChartRenderer)initWithChart:(__OIChart *)chart sliceRenderer:(id)renderer
 {
-  v6 = a4;
+  rendererCopy = renderer;
   v9.receiver = self;
   v9.super_class = OIPieChartRenderer;
   v7 = [(OIPieChartRenderer *)&v9 init];
   if (v7)
   {
-    [(OIPieChartRenderer *)v7 setChart:OILabelRetain(a3)];
-    [(OIPieChartRenderer *)v7 setSliceRenderer:v6];
+    [(OIPieChartRenderer *)v7 setChart:OILabelRetain(chart)];
+    [(OIPieChartRenderer *)v7 setSliceRenderer:rendererCopy];
   }
 
   return v7;
 }
 
-- (OIPieChartRenderer)initWithChart:(__OIChart *)a3
+- (OIPieChartRenderer)initWithChart:(__OIChart *)chart
 {
-  v5 = [[OIPieSliceCGRenderer alloc] initWithChart:a3];
-  v6 = [(OIPieChartRenderer *)self initWithChart:a3 sliceRenderer:v5];
+  v5 = [[OIPieSliceCGRenderer alloc] initWithChart:chart];
+  v6 = [(OIPieChartRenderer *)self initWithChart:chart sliceRenderer:v5];
 
   return v6;
 }
@@ -39,19 +39,19 @@
   [(OIPieChartRenderer *)&v3 dealloc];
 }
 
-- (void)renderThreeDimensional:(BOOL)a3 pieFromSeriesArray:(__CFArray *)a4
+- (void)renderThreeDimensional:(BOOL)dimensional pieFromSeriesArray:(__CFArray *)array
 {
-  v5 = a3;
+  dimensionalCopy = dimensional;
   Type = OIAxisGetType(self->_chart);
   PlotArea = OIChartGetPlotArea(self->_chart);
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v15 = OIAxisAreLabelsCentered(self->_chart);
-  if (a4)
+  if (array)
   {
     v16 = v15;
-    Count = CFArrayGetCount(a4);
+    Count = CFArrayGetCount(array);
     if (Count >= 1)
     {
       v18 = Count;
@@ -59,7 +59,7 @@
       v20 = 0.0;
       do
       {
-        ValueAtIndex = CFArrayGetValueAtIndex(a4, v19);
+        ValueAtIndex = CFArrayGetValueAtIndex(array, v19);
         Values = OISeriesGetValues(ValueAtIndex);
         if (Values)
         {
@@ -89,7 +89,7 @@
 
         CGContextTranslateCTM(Type, PlotArea + v12 * 0.5, v24);
         v56 = 0.0;
-        if (v5)
+        if (dimensionalCopy)
         {
           v26 = (90.0 - OIChartGetElevation(self->_chart)) / 90.0 * -0.8 + 1.0;
           CGContextScaleCTM(Type, 1.0, v26);
@@ -104,12 +104,12 @@
         }
 
         v55 = v25 * 0.9 * 0.5;
-        v27 = CFArrayGetCount(a4);
+        v27 = CFArrayGetCount(array);
         v28 = 0;
         v29 = 1.57079633;
         while (v28 < v18)
         {
-          v30 = CFArrayGetValueAtIndex(a4, v28);
+          v30 = CFArrayGetValueAtIndex(array, v28);
           Offset = OISeriesGetOffset(v30);
           v32 = OISeriesGetValues(v30);
           if (v32)
@@ -140,7 +140,7 @@ LABEL_21:
         *&v39 = 3.14159265;
         while (v27 >= 2)
         {
-          v40 = CFArrayGetValueAtIndex(a4, v27 - 1);
+          v40 = CFArrayGetValueAtIndex(array, v27 - 1);
           v41 = OISeriesGetOffset(v40);
           v42 = OISeriesGetValues(v40);
           if (v42)
@@ -176,7 +176,7 @@ LABEL_21:
 
         if (v28 == v27 - 1 && v29 != v35)
         {
-          v51 = CFArrayGetValueAtIndex(a4, v28);
+          v51 = CFArrayGetValueAtIndex(array, v28);
           v52 = OISeriesGetOffset(v51);
           v53 = __sincos_stret((v35 + v29) * 0.5);
           [(OIPieSliceRenderer *)self->_sliceRenderer renderPieSliceFromSeries:v51 radius:v55 angle:v29 newAngle:v35 xOffset:v53.__cosval * v52 yOffset:v53.__sinval * v52 thickness:v56];

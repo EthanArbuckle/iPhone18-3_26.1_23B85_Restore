@@ -1,30 +1,30 @@
 @interface PGLayoutContainerView
-- (PGLayoutContainerView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (PGLayoutContainerView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation PGLayoutContainerView
 
-- (PGLayoutContainerView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4
+- (PGLayoutContainerView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background
 {
   v9.receiver = self;
   v9.super_class = PGLayoutContainerView;
-  v5 = [(PGLayoutContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PGLayoutContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
-  if (v5 && !a4)
+  if (v5 && !background)
   {
-    v7 = [(PGLayoutContainerView *)v5 layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(PGLayoutContainerView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
   }
 
   return v6;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PGLayoutContainerView;
-  v5 = [(PGLayoutContainerView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PGLayoutContainerView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {

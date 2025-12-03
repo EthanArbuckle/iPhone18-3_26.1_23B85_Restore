@@ -12,13 +12,13 @@
 - (uint64_t)mad_checkCoreDataErrorIndicatorFileExistence
 {
   v18 = *MEMORY[0x1E69E9840];
-  v1 = [a1 vcp_mediaAnalysisDirectory];
-  v2 = v1;
-  if (v1)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  v2 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"coredata_error.plist"];
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    v3 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@"coredata_error.plist"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager fileExistsAtPath:v3];
 
     if (v5)
     {
@@ -70,11 +70,11 @@
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 vcp_mediaAnalysisDirectory];
-  if (v5)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  if (vcp_mediaAnalysisDirectory)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    if ([v6 fileExistsAtPath:v5])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if ([defaultManager fileExistsAtPath:vcp_mediaAnalysisDirectory])
     {
       v7 = 0;
     }
@@ -86,7 +86,7 @@
       v29[0] = v8;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
       v19 = 0;
-      v10 = [v6 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v9 error:&v19];
+      v10 = [defaultManager createDirectoryAtPath:vcp_mediaAnalysisDirectory withIntermediateDirectories:1 attributes:v9 error:&v19];
       v7 = v19;
 
       if ((v10 & 1) == 0)
@@ -110,7 +110,7 @@
     v27[1] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
-    v14 = [v5 stringByAppendingPathComponent:@"coredata_error.plist"];
+    v14 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@"coredata_error.plist"];
     v15 = [MEMORY[0x1E695DFF8] fileURLWithPath:v14 isDirectory:0];
     v18 = 0;
     v16 = [v13 writeToURL:v15 error:&v18];
@@ -150,21 +150,21 @@ LABEL_17:
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E695D488]];
+  userInfo = [v4 userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
   if (v6)
   {
-    v7 = [v6 intValue];
-    if ([objc_opt_class() mad_requiresRebuildForCoreDataError:v7])
+    intValue = [v6 intValue];
+    if ([objc_opt_class() mad_requiresRebuildForCoreDataError:intValue])
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
-        [PHPhotoLibrary(MADataStore) mad_handleCoreDataError:v7];
+        [PHPhotoLibrary(MADataStore) mad_handleCoreDataError:intValue];
       }
 
-      [a1 mad_createCoreDataErrorIndicatorFileForError:v4];
-      v8 = [MADPhotosDataStoreClient dataStoreFileSizeInBytesForPhotoLibrary:a1];
+      [self mad_createCoreDataErrorIndicatorFileForError:v4];
+      v8 = [MADPhotosDataStoreClient dataStoreFileSizeInBytesForPhotoLibrary:self];
       v9 = +[VCPMADCoreAnalyticsManager sharedManager];
       v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{5 * (v8 / 0x500000), @"DatabaseSize"}];
       v14[0] = v10;
@@ -173,7 +173,7 @@ LABEL_17:
       v13[2] = @"PhotoLibraryScale";
       v14[2] = @"U";
       v13[3] = @"RebuiltErrorCode";
-      v11 = [MEMORY[0x1E696AD98] numberWithInt:v7];
+      v11 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
       v14[3] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:4];
       [v9 sendEvent:@"com.apple.mediaanalysisd.DatabaseInformation" withAnalytics:v12];
@@ -193,19 +193,19 @@ LABEL_17:
 - (uint64_t)mad_clearCoreDataErrorIndicatorFile
 {
   v15 = *MEMORY[0x1E69E9840];
-  v1 = [a1 vcp_mediaAnalysisDirectory];
-  v2 = v1;
-  if (v1)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  v2 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"coredata_error.plist"];
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    v3 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@"coredata_error.plist"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager fileExistsAtPath:v3];
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v10 = 0;
-      v7 = [v6 removeItemAtPath:v3 error:&v10];
+      v7 = [defaultManager2 removeItemAtPath:v3 error:&v10];
       v8 = v10;
 
       if ((v7 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -241,7 +241,7 @@ LABEL_17:
 - (id)mad_fetchRequest
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [MADPhotosDataStoreClient sharedContextForPhotoLibrary:a1];
+  v2 = [MADPhotosDataStoreClient sharedContextForPhotoLibrary:self];
   if (v2)
   {
     v3 = [MADFetchRequest fetchRequestWithManagedObjectContext:v2];
@@ -253,10 +253,10 @@ LABEL_17:
 
     else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v8 = [a1 photoLibraryURL];
-      v9 = [v8 path];
+      photoLibraryURL = [self photoLibraryURL];
+      path = [photoLibraryURL path];
       v11 = 138412290;
-      v12 = v9;
+      v12 = path;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD] Failed to create fetch request for photo library %@", &v11, 0xCu);
     }
   }
@@ -265,10 +265,10 @@ LABEL_17:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v6 = [a1 photoLibraryURL];
-      v7 = [v6 path];
+      photoLibraryURL2 = [self photoLibraryURL];
+      path2 = [photoLibraryURL2 path];
       v11 = 138412290;
-      v12 = v7;
+      v12 = path2;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD] Failed to obtain shared MOC for photo library %@", &v11, 0xCu);
     }
 
@@ -283,7 +283,7 @@ LABEL_17:
   v30 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = mach_continuous_time();
-  v8 = [MADPhotosDataStoreClient sharedContextForPhotoLibrary:a1];
+  v8 = [MADPhotosDataStoreClient sharedContextForPhotoLibrary:self];
   if (v8)
   {
     v9 = [MADChangeRequest changeRequestWithManagedObjectContext:v8];
@@ -296,7 +296,7 @@ LABEL_17:
       v25 = v7;
       v24 = v6;
       v22 = v9;
-      v23 = a1;
+      selfCopy = self;
       v20 = 0;
       v10 = [v8 mad_performAndSaveChanges:v21 error:&v20];
       v11 = v20;
@@ -304,16 +304,16 @@ LABEL_17:
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v12 = [a1 photoLibraryURL];
-          v13 = [v12 path];
+          photoLibraryURL = [self photoLibraryURL];
+          path = [photoLibraryURL path];
           *buf = 138412546;
-          v27 = v13;
+          v27 = path;
           v28 = 2112;
           v29 = v11;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD] Failed to perform and save changes on photo library %@: %@", buf, 0x16u);
         }
 
-        [a1 mad_handleCoreDataError:v11];
+        [self mad_handleCoreDataError:v11];
         if (a4)
         {
           v14 = v11;
@@ -326,10 +326,10 @@ LABEL_17:
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v17 = [a1 photoLibraryURL];
-        v18 = [v17 path];
+        photoLibraryURL2 = [self photoLibraryURL];
+        path2 = [photoLibraryURL2 path];
         *buf = 138412290;
-        v27 = v18;
+        v27 = path2;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD] Failed to create change request for photo library %@", buf, 0xCu);
       }
 
@@ -341,10 +341,10 @@ LABEL_17:
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v15 = [a1 photoLibraryURL];
-      v16 = [v15 path];
+      photoLibraryURL3 = [self photoLibraryURL];
+      path3 = [photoLibraryURL3 path];
       *buf = 138412290;
-      v27 = v16;
+      v27 = path3;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[MACD] Failed to obtain shared MOC for photo library %@", buf, 0xCu);
     }
 

@@ -1,26 +1,26 @@
 @interface VOTExternalAccessoryManager
 + (id)accessoryManager;
 - (VOTExternalAccessoryManager)init;
-- (id)accessibilityAccessory:(id)a3 currentValueForItemProperty:(int)a4 withElement:(id)a5;
-- (id)accessibilityAccessory:(id)a3 currentValueForSystemProperty:(int)a4;
+- (id)accessibilityAccessory:(id)accessory currentValueForItemProperty:(int)property withElement:(id)element;
+- (id)accessibilityAccessory:(id)accessory currentValueForSystemProperty:(int)property;
 - (id)accessories;
-- (id)accessoryTraitsFromElement:(id)a3;
-- (void)_accessoryConnected:(id)a3;
-- (void)_accessoryWantsStop:(id)a3;
+- (id)accessoryTraitsFromElement:(id)element;
+- (void)_accessoryConnected:(id)connected;
+- (void)_accessoryWantsStop:(id)stop;
 - (void)_handleAccessoryShutdown;
-- (void)_handleSpeakString:(id)a3;
-- (void)_handleTextOperation:(int)a3;
+- (void)_handleSpeakString:(id)string;
+- (void)_handleTextOperation:(int)operation;
 - (void)_updateCurrentVoiceOverItem;
-- (void)accessibilityAccessory:(id)a3 performAction:(int)a4 withObject:(id)a5;
-- (void)accessibilityAccessory:(id)a3 setContext:(int)a4;
-- (void)accessibilityAccessory:(id)a3 setValue:(id)a4 forSystemProperty:(int)a5;
-- (void)accessoryDidDisconnect:(id)a3;
+- (void)accessibilityAccessory:(id)accessory performAction:(int)action withObject:(id)object;
+- (void)accessibilityAccessory:(id)accessory setContext:(int)context;
+- (void)accessibilityAccessory:(id)accessory setValue:(id)value forSystemProperty:(int)property;
+- (void)accessoryDidDisconnect:(id)disconnect;
 - (void)dealloc;
 - (void)startListening;
 - (void)stopListening;
-- (void)updateCurrentItemProperties:(id)a3;
+- (void)updateCurrentItemProperties:(id)properties;
 - (void)updateSpeakingRate;
-- (void)updateVolume:(double)a3;
+- (void)updateVolume:(double)volume;
 @end
 
 @implementation VOTExternalAccessoryManager
@@ -98,9 +98,9 @@
 - (void)_handleAccessoryShutdown
 {
   v2 = +[AXSubsystemVoiceOverIAP sharedInstance];
-  v3 = [v2 ignoreLogging];
+  ignoreLogging = [v2 ignoreLogging];
 
-  if ((v3 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v4 = +[AXSubsystemVoiceOverIAP identifier];
     v5 = AXLoggerForFacility();
@@ -109,10 +109,10 @@
     if (os_log_type_enabled(v5, v6))
     {
       v7 = AXColorizeFormatLog();
-      v8 = [VOTSharedWorkspace wasEnabledThroughAccessory];
+      wasEnabledThroughAccessory = [VOTSharedWorkspace wasEnabledThroughAccessory];
       v25 = _AXSVoiceOverTouchEnabledThroughAccessory();
       v26 = _AXSVoiceOverTouchUIEnabled();
-      v24 = v8;
+      v24 = wasEnabledThroughAccessory;
       v9 = _AXStringForArgs();
       if (os_log_type_enabled(v5, v6))
       {
@@ -126,9 +126,9 @@
   if ([VOTSharedWorkspace wasEnabledThroughAccessory] && !_AXSVoiceOverTouchUIEnabled())
   {
     v10 = +[AXSubsystemVoiceOverIAP sharedInstance];
-    v11 = [v10 ignoreLogging];
+    ignoreLogging2 = [v10 ignoreLogging];
 
-    if ((v11 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
       v12 = +[AXSubsystemVoiceOverIAP identifier];
       v13 = AXLoggerForFacility();
@@ -152,9 +152,9 @@
       _AXSVoiceOverTouchSetEnabledThroughAccessory();
       _AXSVoiceOverTouchSetEnabled();
       v17 = +[AXSubsystemVoiceOverIAP sharedInstance];
-      v18 = [v17 ignoreLogging];
+      ignoreLogging3 = [v17 ignoreLogging];
 
-      if ((v18 & 1) == 0)
+      if ((ignoreLogging3 & 1) == 0)
       {
         v19 = +[AXSubsystemVoiceOverIAP identifier];
         v20 = AXLoggerForFacility();
@@ -179,98 +179,98 @@
   }
 }
 
-- (void)_accessoryWantsStop:(id)a3
+- (void)_accessoryWantsStop:(id)stop
 {
-  v4 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EC600;
   block[3] = &unk_1001C76E8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(eaQueue, block);
 }
 
-- (void)_accessoryConnected:(id)a3
+- (void)_accessoryConnected:(id)connected
 {
-  v4 = a3;
-  v5 = [(VOTExternalAccessoryManager *)self eaQueue];
+  connectedCopy = connected;
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1000EC6CC;
   v10 = &unk_1001C7778;
-  v11 = v4;
-  v12 = self;
-  v6 = v4;
-  dispatch_async(v5, &v7);
+  v11 = connectedCopy;
+  selfCopy = self;
+  v6 = connectedCopy;
+  dispatch_async(eaQueue, &v7);
 
   [NSThread cancelPreviousPerformRequestsWithTarget:self, v7, v8, v9, v10];
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v5 = [(VOTExternalAccessoryManager *)self eaQueue];
+  disconnectCopy = disconnect;
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000ECA2C;
   v7[3] = &unk_1001C7778;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = disconnectCopy;
+  selfCopy = self;
+  v6 = disconnectCopy;
+  dispatch_async(eaQueue, v7);
 }
 
 - (void)startListening
 {
-  v3 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ECEB4;
   block[3] = &unk_1001C76E8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eaQueue, block);
 }
 
 - (void)stopListening
 {
-  v3 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000ED2F4;
   block[3] = &unk_1001C76E8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eaQueue, block);
 }
 
-- (void)_handleSpeakString:(id)a3
+- (void)_handleSpeakString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[VOTOutputManager outputManager];
-  [v4 speakSimpleString:v3];
+  [v4 speakSimpleString:stringCopy];
 }
 
-- (void)_handleTextOperation:(int)a3
+- (void)_handleTextOperation:(int)operation
 {
-  if ((a3 - 12) <= 2)
+  if ((operation - 12) <= 2)
   {
-    v4 = **(&off_1001CAE88 + (a3 - 12));
+    v4 = **(&off_1001CAE88 + (operation - 12));
     if (v4)
     {
       v6 = v4;
-      v5 = [(VOTElementManager *)self->_elementManager currentElement];
-      [v5 performTextOperation:v6];
+      currentElement = [(VOTElementManager *)self->_elementManager currentElement];
+      [currentElement performTextOperation:v6];
     }
   }
 }
 
-- (void)accessibilityAccessory:(id)a3 performAction:(int)a4 withObject:(id)a5
+- (void)accessibilityAccessory:(id)accessory performAction:(int)action withObject:(id)object
 {
-  v5 = *&a4;
-  v7 = a5;
+  v5 = *&action;
+  objectCopy = object;
   v8 = +[AXSubsystemVoiceOverIAP sharedInstance];
-  v9 = [v8 ignoreLogging];
+  ignoreLogging = [v8 ignoreLogging];
 
-  if ((v9 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v10 = +[AXSubsystemVoiceOverIAP identifier];
     v11 = AXLoggerForFacility();
@@ -280,7 +280,7 @@
     {
       v13 = AXColorizeFormatLog();
       v37 = v5;
-      v38 = v7;
+      v38 = objectCopy;
       v14 = _AXStringForArgs();
       if (os_log_type_enabled(v11, v12))
       {
@@ -296,14 +296,14 @@
   {
     case 1:
       v20 = sub_1000EDB64();
-      v21 = [v7 objectForKey:v20];
-      v22 = [v21 intValue];
+      v21 = [objectCopy objectForKey:v20];
+      intValue = [v21 intValue];
       v23 = sub_1000EDC68();
-      v24 = [v7 objectForKey:v23];
+      v24 = [objectCopy objectForKey:v23];
       [v24 intValue];
 
       v25 = [VOTEvent touchEventWithCommand:kVOTEventCommandTracking info:0];
-      [v25 setTouchPoint:sub_1000517DC(v22 / 65535.0)];
+      [v25 setTouchPoint:sub_1000517DC(intValue / 65535.0)];
       [VOTSharedWorkspace dispatchCommand:v25];
       goto LABEL_53;
     case 2:
@@ -425,20 +425,20 @@ LABEL_54:
       goto LABEL_51;
     case 10:
       v26 = sub_1000EDB64();
-      v27 = [v7 objectForKey:v26];
-      v28 = [v27 intValue];
+      v27 = [objectCopy objectForKey:v26];
+      intValue2 = [v27 intValue];
       v29 = sub_1000EDC68();
-      v30 = [v7 objectForKey:v29];
-      v31 = [v30 intValue];
+      v30 = [objectCopy objectForKey:v29];
+      intValue3 = [v30 intValue];
 
-      v32 = [NSValue valueWithPoint:v28 / 65535.0, v31 / 65535.0];
+      v32 = [NSValue valueWithPoint:intValue2 / 65535.0, intValue3 / 65535.0];
       [v15 setObject:v32 forIndex:101];
 
       v19 = &kVOTEventCommandScrollToPoint;
       goto LABEL_51;
     case 11:
       v33 = sub_1000EDD6C();
-      v34 = [v7 objectForKey:v33];
+      v34 = [objectCopy objectForKey:v33];
       [(VOTExternalAccessoryManager *)self _handleInputText:v34];
       goto LABEL_33;
     case 12:
@@ -466,7 +466,7 @@ LABEL_54:
       goto LABEL_51;
     case 23:
       v33 = sub_1000EDD6C();
-      v34 = [v7 objectForKey:v33];
+      v34 = [objectCopy objectForKey:v33];
       [(VOTExternalAccessoryManager *)self _handleSpeakString:v34];
 LABEL_33:
 
@@ -482,12 +482,12 @@ LABEL_33:
   }
 }
 
-- (void)accessibilityAccessory:(id)a3 setContext:(int)a4
+- (void)accessibilityAccessory:(id)accessory setContext:(int)context
 {
   v6 = +[AXSubsystemVoiceOverIAP sharedInstance];
-  v7 = [v6 ignoreLogging];
+  ignoreLogging = [v6 ignoreLogging];
 
-  if ((v7 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v8 = +[AXSubsystemVoiceOverIAP identifier];
     v9 = AXLoggerForFacility();
@@ -506,15 +506,15 @@ LABEL_33:
     }
   }
 
-  self->_context = a4;
+  self->_context = context;
 }
 
-- (id)accessoryTraitsFromElement:(id)a3
+- (id)accessoryTraitsFromElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = +[NSMutableArray array];
-  v5 = [v3 traits];
-  if ((kAXButtonTrait & v5) != 0)
+  traits = [elementCopy traits];
+  if ((kAXButtonTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -538,7 +538,7 @@ LABEL_33:
     [v4 addObject:*v6];
   }
 
-  if ((kAXLinkTrait & v5) != 0)
+  if ((kAXLinkTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -562,7 +562,7 @@ LABEL_33:
     [v4 addObject:*v8];
   }
 
-  if ((kAXImageTrait & v5) != 0)
+  if ((kAXImageTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -586,7 +586,7 @@ LABEL_33:
     [v4 addObject:*v10];
   }
 
-  if ((kAXSearchFieldTrait & v5) != 0)
+  if ((kAXSearchFieldTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -610,7 +610,7 @@ LABEL_33:
     [v4 addObject:*v12];
   }
 
-  if ((kAXSelectedTrait & v5) != 0)
+  if ((kAXSelectedTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -634,7 +634,7 @@ LABEL_33:
     [v4 addObject:*v14];
   }
 
-  if ((kAXPlaysSoundTrait & v5) != 0)
+  if ((kAXPlaysSoundTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -658,7 +658,7 @@ LABEL_33:
     [v4 addObject:*v16];
   }
 
-  if ((kAXKeyboardKeyTrait & v5) != 0)
+  if ((kAXKeyboardKeyTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -682,7 +682,7 @@ LABEL_33:
     [v4 addObject:*v18];
   }
 
-  if ((kAXStaticTextTrait & v5) != 0)
+  if ((kAXStaticTextTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -706,7 +706,7 @@ LABEL_33:
     [v4 addObject:*v20];
   }
 
-  if ((kAXSummaryElementTrait & v5) != 0)
+  if ((kAXSummaryElementTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -730,7 +730,7 @@ LABEL_33:
     [v4 addObject:*v22];
   }
 
-  if ((kAXNotEnabledTrait & v5) != 0)
+  if ((kAXNotEnabledTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -754,7 +754,7 @@ LABEL_33:
     [v4 addObject:*v24];
   }
 
-  if ((kAXUpdatesFrequentlyTrait & v5) != 0)
+  if ((kAXUpdatesFrequentlyTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -778,7 +778,7 @@ LABEL_33:
     [v4 addObject:*v26];
   }
 
-  if ((kAXAdjustableTrait & v5) != 0)
+  if ((kAXAdjustableTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -802,7 +802,7 @@ LABEL_33:
     [v4 addObject:*v28];
   }
 
-  if ((kAXBackButtonTrait & v5) != 0)
+  if ((kAXBackButtonTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -826,7 +826,7 @@ LABEL_33:
     [v4 addObject:*v30];
   }
 
-  if ((kAXMapTrait & v5) != 0)
+  if ((kAXMapTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -850,7 +850,7 @@ LABEL_33:
     [v4 addObject:*v32];
   }
 
-  if ((kAXStartsMediaSessionTrait & v5) != 0)
+  if ((kAXStartsMediaSessionTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -874,7 +874,7 @@ LABEL_33:
     [v4 addObject:*v34];
   }
 
-  if ((kAXDeleteKeyTrait & v5) != 0)
+  if ((kAXDeleteKeyTrait & traits) != 0)
   {
     v39 = 0;
     v40 = &v39;
@@ -901,63 +901,63 @@ LABEL_33:
   return v4;
 }
 
-- (id)accessibilityAccessory:(id)a3 currentValueForItemProperty:(int)a4 withElement:(id)a5
+- (id)accessibilityAccessory:(id)accessory currentValueForItemProperty:(int)property withElement:(id)element
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  accessoryCopy = accessory;
+  elementCopy = element;
+  v10 = elementCopy;
+  if (elementCopy)
   {
-    v11 = v9;
+    currentElement = elementCopy;
   }
 
   else
   {
-    v11 = [(VOTElementManager *)self->_elementManager currentElement];
+    currentElement = [(VOTElementManager *)self->_elementManager currentElement];
   }
 
-  v12 = v11;
+  v12 = currentElement;
   v13 = 0;
-  if (a4 <= 2)
+  if (property <= 2)
   {
-    if (a4 == 1)
+    if (property == 1)
     {
-      v14 = [v11 label];
+      label = [currentElement label];
     }
 
     else
     {
-      if (a4 != 2)
+      if (property != 2)
       {
         goto LABEL_22;
       }
 
-      v14 = [v11 value];
+      label = [currentElement value];
     }
 
     goto LABEL_21;
   }
 
-  if (a4 == 3)
+  if (property == 3)
   {
-    v14 = [v11 hint];
+    label = [currentElement hint];
 LABEL_21:
-    v13 = v14;
+    v13 = label;
     goto LABEL_22;
   }
 
-  if (a4 != 4)
+  if (property != 4)
   {
-    if (a4 != 5)
+    if (property != 5)
     {
       goto LABEL_22;
     }
 
-    v14 = [(VOTExternalAccessoryManager *)self accessoryTraitsFromElement:v11];
+    label = [(VOTExternalAccessoryManager *)self accessoryTraitsFromElement:currentElement];
     goto LABEL_21;
   }
 
-  [v11 frame];
+  [currentElement frame];
   v16 = v15;
   v17 = xmmword_1001FF150;
   v19 = v18 / *&xmmword_1001FF150;
@@ -1022,10 +1022,10 @@ LABEL_22:
 
 - (id)accessories
 {
-  v2 = [sub_1000EC064() sharedAccessoryManager];
-  v3 = [v2 connectedAccessories];
+  sharedAccessoryManager = [sub_1000EC064() sharedAccessoryManager];
+  connectedAccessories = [sharedAccessoryManager connectedAccessories];
 
-  return v3;
+  return connectedAccessories;
 }
 
 - (void)_updateCurrentVoiceOverItem
@@ -1037,60 +1037,60 @@ LABEL_22:
   [(VOTExternalAccessoryManager *)self updateCurrentItemProperties:v4];
 }
 
-- (void)updateCurrentItemProperties:(id)a3
+- (void)updateCurrentItemProperties:(id)properties
 {
   v4 = qword_1001FEE98;
-  v5 = a3;
+  propertiesCopy = properties;
   if (v4 != -1)
   {
     sub_10012FBA0();
   }
 
-  v6 = [v5 copyWithCache];
+  copyWithCache = [propertiesCopy copyWithCache];
 
-  v7 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000EF2D0;
   v9[3] = &unk_1001C7778;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
-  dispatch_async(v7, v9);
+  v10 = copyWithCache;
+  selfCopy = self;
+  v8 = copyWithCache;
+  dispatch_async(eaQueue, v9);
 }
 
-- (void)updateVolume:(double)a3
+- (void)updateVolume:(double)volume
 {
-  v5 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000EF5A0;
   v6[3] = &unk_1001C7900;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = volume;
+  dispatch_async(eaQueue, v6);
 }
 
 - (void)updateSpeakingRate
 {
-  v3 = [(VOTExternalAccessoryManager *)self eaQueue];
+  eaQueue = [(VOTExternalAccessoryManager *)self eaQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000EF758;
   block[3] = &unk_1001C76E8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eaQueue, block);
 }
 
-- (void)accessibilityAccessory:(id)a3 setValue:(id)a4 forSystemProperty:(int)a5
+- (void)accessibilityAccessory:(id)accessory setValue:(id)value forSystemProperty:(int)property
 {
-  v5 = *&a5;
-  v7 = a3;
-  v8 = a4;
+  v5 = *&property;
+  accessoryCopy = accessory;
+  valueCopy = value;
   v9 = +[AXSubsystemVoiceOverIAP sharedInstance];
-  v10 = [v9 ignoreLogging];
+  ignoreLogging = [v9 ignoreLogging];
 
-  if ((v10 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v11 = +[AXSubsystemVoiceOverIAP identifier];
     v12 = AXLoggerForFacility();
@@ -1099,7 +1099,7 @@ LABEL_22:
     if (os_log_type_enabled(v12, v13))
     {
       v14 = AXColorizeFormatLog();
-      v42 = v8;
+      v42 = valueCopy;
       v43 = v5;
       v15 = _AXStringForArgs();
       if (os_log_type_enabled(v12, v13))
@@ -1139,19 +1139,19 @@ LABEL_22:
         sub_10012FBB4();
       }
 
-      v28 = [v8 objectForKey:*v25];
-      v29 = [v28 BOOLValue];
+      v28 = [valueCopy objectForKey:*v25];
+      bOOLValue = [v28 BOOLValue];
 
-      if ((v29 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v30 = [sub_1000EC064() sharedAccessoryManager];
-        v31 = [v30 connectedAccessories];
+        sharedAccessoryManager = [sub_1000EC064() sharedAccessoryManager];
+        connectedAccessories = [sharedAccessoryManager connectedAccessories];
 
-        v32 = [v31 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v32 = [connectedAccessories countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v32)
         {
           v33 = *v45;
@@ -1161,17 +1161,17 @@ LABEL_22:
             {
               if (*v45 != v33)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(connectedAccessories);
               }
 
               if ([*(*(&v44 + 1) + 8 * i) supportsAccessibility])
               {
-                [v7 setDelegate:0];
+                [accessoryCopy setDelegate:0];
                 goto LABEL_32;
               }
             }
 
-            v32 = [v31 countByEnumeratingWithState:&v44 objects:v52 count:16];
+            v32 = [connectedAccessories countByEnumeratingWithState:&v44 objects:v52 count:16];
             if (v32)
             {
               continue;
@@ -1184,9 +1184,9 @@ LABEL_22:
 LABEL_32:
 
         v35 = +[AXSubsystemVoiceOverIAP sharedInstance];
-        v36 = [v35 ignoreLogging];
+        ignoreLogging2 = [v35 ignoreLogging];
 
-        if ((v36 & 1) == 0)
+        if ((ignoreLogging2 & 1) == 0)
         {
           v37 = +[AXSubsystemVoiceOverIAP identifier];
           v38 = AXLoggerForFacility();
@@ -1236,7 +1236,7 @@ LABEL_32:
         sub_10012FC2C();
       }
 
-      v24 = [v8 objectForKey:*v21];
+      v24 = [valueCopy objectForKey:*v21];
       [v24 floatValue];
 
       _AXSVoiceOverTouchSetSpeakingRate();
@@ -1268,7 +1268,7 @@ LABEL_32:
         sub_10012FCA4();
       }
 
-      v20 = [v8 objectForKey:*v17];
+      v20 = [valueCopy objectForKey:*v17];
       [v20 floatValue];
       [v16 setSystemVolume:?];
 
@@ -1276,12 +1276,12 @@ LABEL_32:
   }
 }
 
-- (id)accessibilityAccessory:(id)a3 currentValueForSystemProperty:(int)a4
+- (id)accessibilityAccessory:(id)accessory currentValueForSystemProperty:(int)property
 {
   v5 = +[AXSubsystemVoiceOverIAP sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemVoiceOverIAP identifier];
     v8 = AXLoggerForFacility();
@@ -1300,7 +1300,7 @@ LABEL_32:
     }
   }
 
-  switch(a4)
+  switch(property)
   {
     case 1:
       v15 = [NSNumber numberWithBool:1];

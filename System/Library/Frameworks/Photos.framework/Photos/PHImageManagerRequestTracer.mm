@@ -1,35 +1,35 @@
 @interface PHImageManagerRequestTracer
 + (id)_currentTimestampString;
-+ (id)recentMessagesSummaryForAssetUUID:(id)a3;
-+ (int)requestIDFromTaskIdentifier:(id)a3;
-+ (void)_inq_recordRequestID:(int64_t)a3;
++ (id)recentMessagesSummaryForAssetUUID:(id)d;
++ (int)requestIDFromTaskIdentifier:(id)identifier;
++ (void)_inq_recordRequestID:(int64_t)d;
 + (void)_inq_trimToMostRecentImageManagerMessages;
 + (void)initialize;
-+ (void)registerRequestID:(int)a3 withAssetUUID:(id)a4;
-+ (void)traceMessageForRequestID:(int)a3 message:(id)a4;
++ (void)registerRequestID:(int)d withAssetUUID:(id)iD;
++ (void)traceMessageForRequestID:(int)d message:(id)message;
 @end
 
 @implementation PHImageManagerRequestTracer
 
-+ (id)recentMessagesSummaryForAssetUUID:(id)a3
++ (id)recentMessagesSummaryForAssetUUID:(id)d
 {
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PHImageManagerRequestTracer.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageManagerRequestTracer.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
   }
 
-  v6 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v7 = s_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__PHImageManagerRequestTracer_recentMessagesSummaryForAssetUUID___block_invoke;
   block[3] = &unk_1E75AAEB0;
-  v15 = v5;
-  v8 = v6;
+  v15 = dCopy;
+  v8 = string;
   v16 = v8;
-  v9 = v5;
+  v9 = dCopy;
   dispatch_sync(v7, block);
   v10 = v16;
   v11 = v8;
@@ -134,21 +134,21 @@ void __65__PHImageManagerRequestTracer_recentMessagesSummaryForAssetUUID___block
   }
 }
 
-+ (void)traceMessageForRequestID:(int)a3 message:(id)a4
++ (void)traceMessageForRequestID:(int)d message:(id)message
 {
-  v7 = a4;
-  if (!v7)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"PHImageManagerRequestTracer.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageManagerRequestTracer.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
   v20 = &v21;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [objc_opt_class() _currentTimestampString];
-  v10 = [v8 stringWithFormat:@"%@: ", v9];
+  _currentTimestampString = [objc_opt_class() _currentTimestampString];
+  v10 = [v8 stringWithFormat:@"%@: ", _currentTimestampString];
 
-  v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v7 arguments:&v21];
+  v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:messageCopy arguments:&v21];
   v12 = [v10 stringByAppendingString:v11];
 
   v13 = s_queue;
@@ -156,9 +156,9 @@ void __65__PHImageManagerRequestTracer_recentMessagesSummaryForAssetUUID___block
   block[1] = 3221225472;
   block[2] = __64__PHImageManagerRequestTracer_traceMessageForRequestID_message___block_invoke;
   block[3] = &unk_1E75A8C10;
-  v19 = a3;
+  dCopy = d;
   v17 = v12;
-  v18 = a1;
+  selfCopy = self;
   v14 = v12;
   dispatch_async(v13, block);
 }
@@ -182,13 +182,13 @@ void __64__PHImageManagerRequestTracer_traceMessageForRequestID_message___block_
   [*(a1 + 40) _inq_trimToMostRecentImageManagerMessages];
 }
 
-+ (void)registerRequestID:(int)a3 withAssetUUID:(id)a4
++ (void)registerRequestID:(int)d withAssetUUID:(id)iD
 {
-  v7 = a4;
-  if (!v7)
+  iDCopy = iD;
+  if (!iDCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PHImageManagerRequestTracer.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHImageManagerRequestTracer.m" lineNumber:142 description:{@"Invalid parameter not satisfying: %@", @"assetUUID"}];
   }
 
   v8 = s_queue;
@@ -196,9 +196,9 @@ void __64__PHImageManagerRequestTracer_traceMessageForRequestID_message___block_
   block[1] = 3221225472;
   block[2] = __63__PHImageManagerRequestTracer_registerRequestID_withAssetUUID___block_invoke;
   block[3] = &unk_1E75A8BE8;
-  v12 = v7;
-  v13 = a3;
-  v9 = v7;
+  v12 = iDCopy;
+  dCopy = d;
+  v9 = iDCopy;
   dispatch_async(v8, block);
 }
 
@@ -215,26 +215,26 @@ void __63__PHImageManagerRequestTracer_registerRequestID_withAssetUUID___block_i
   [v3 addObject:v2];
 }
 
-+ (int)requestIDFromTaskIdentifier:(id)a3
++ (int)requestIDFromTaskIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length] && (v4 = objc_msgSend(v3, "rangeOfString:options:", @"-", 2), v4 != 0x7FFFFFFFFFFFFFFFLL))
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (v4 = objc_msgSend(identifierCopy, "rangeOfString:options:", @"-", 2), v4 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v6 = [v3 substringFromIndex:v4];
-    v5 = [v6 integerValue];
+    v6 = [identifierCopy substringFromIndex:v4];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     s_tracingDisabled = 0;
     v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -270,8 +270,8 @@ void __63__PHImageManagerRequestTracer_registerRequestID_withAssetUUID___block_i
     v33 = __Block_byref_object_copy__35970;
     v34 = __Block_byref_object_dispose__35971;
     v35 = 0;
-    v3 = [s_mostRecentTraceDateByRequestID allValues];
-    v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+    allValues = [s_mostRecentTraceDateByRequestID allValues];
+    v4 = [allValues sortedArrayUsingSelector:sel_compare_];
 
     v28 = 0u;
     v29 = 0u;
@@ -364,12 +364,12 @@ void __72__PHImageManagerRequestTracer__inq_trimToMostRecentImageManagerMessages
   }
 }
 
-+ (void)_inq_recordRequestID:(int64_t)a3
++ (void)_inq_recordRequestID:(int64_t)d
 {
-  v6 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v4 = s_mostRecentTraceDateByRequestID;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v4 setObject:v6 forKeyedSubscript:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:d];
+  [v4 setObject:date forKeyedSubscript:v5];
 }
 
 + (id)_currentTimestampString
@@ -380,8 +380,8 @@ void __72__PHImageManagerRequestTracer__inq_trimToMostRecentImageManagerMessages
   }
 
   v2 = _currentTimestampString_s_formatter;
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 stringFromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 stringFromDate:date];
 
   return v4;
 }

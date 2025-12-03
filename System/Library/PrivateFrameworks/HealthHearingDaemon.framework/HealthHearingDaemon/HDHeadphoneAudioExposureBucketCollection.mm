@@ -1,14 +1,14 @@
 @interface HDHeadphoneAudioExposureBucketCollection
 - (HDHeadphoneAudioExposureBucketCollection)init;
-- (HDHeadphoneAudioExposureBucketCollection)initWithBuckets:(id)a3;
-- (id)_lock_snapshotStatisticsForNowDate:(id)a3 error:(id *)a4;
-- (id)_lock_updateWithSampleBatch:(id)a3 error:(id *)a4;
-- (id)_updateWithSampleBatch:(id)a3 needsRebuild:(BOOL *)a4 error:(id *)a5;
-- (id)snapshotStatisticsForNowDate:(id)a3 error:(id *)a4;
+- (HDHeadphoneAudioExposureBucketCollection)initWithBuckets:(id)buckets;
+- (id)_lock_snapshotStatisticsForNowDate:(id)date error:(id *)error;
+- (id)_lock_updateWithSampleBatch:(id)batch error:(id *)error;
+- (id)_updateWithSampleBatch:(id)batch needsRebuild:(BOOL *)rebuild error:(id *)error;
+- (id)snapshotStatisticsForNowDate:(id)date error:(id *)error;
 - (id)unitTesting_snapshotBuckets;
 - (void)clear;
-- (void)insertBuckets:(id)a3;
-- (void)pruneWithNowDate:(id)a3;
+- (void)insertBuckets:(id)buckets;
+- (void)pruneWithNowDate:(id)date;
 @end
 
 @implementation HDHeadphoneAudioExposureBucketCollection
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (HDHeadphoneAudioExposureBucketCollection)initWithBuckets:(id)a3
+- (HDHeadphoneAudioExposureBucketCollection)initWithBuckets:(id)buckets
 {
-  v4 = a3;
+  bucketsCopy = buckets;
   v5 = [(HDHeadphoneAudioExposureBucketCollection *)self init];
   if (v5)
   {
@@ -42,45 +42,45 @@
     v5->_storage = v6;
 
     v5->_lock._os_unfair_lock_opaque = 0;
-    [(HDHeadphoneAudioExposureBucketCollection *)v5 insertBuckets:v4];
+    [(HDHeadphoneAudioExposureBucketCollection *)v5 insertBuckets:bucketsCopy];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (id)snapshotStatisticsForNowDate:(id)a3 error:(id *)a4
+- (id)snapshotStatisticsForNowDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(HDHeadphoneAudioExposureBucketCollection *)self _lock_snapshotStatisticsForNowDate:v6 error:a4];
+  v7 = [(HDHeadphoneAudioExposureBucketCollection *)self _lock_snapshotStatisticsForNowDate:dateCopy error:error];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (id)_lock_snapshotStatisticsForNowDate:(id)a3 error:(id *)a4
+- (id)_lock_snapshotStatisticsForNowDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
   storage = self->_storage;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__HDHeadphoneAudioExposureBucketCollection__lock_snapshotStatisticsForNowDate_error___block_invoke;
   v13[3] = &unk_2796C6480;
-  v8 = v6;
+  v8 = dateCopy;
   v14 = v8;
   v9 = [(NSMutableArray *)storage hk_firstObjectPassingTest:v13];
   if (v9 || ([(NSMutableArray *)self->_storage lastObject], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
-    v11 = [v9 snapshotStatisticsWithError:a4];
+    v11 = [v9 snapshotStatisticsWithError:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:@"missing all buckets"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:@"missing all buckets"];
     v11 = 0;
   }
 
@@ -103,9 +103,9 @@ uint64_t __85__HDHeadphoneAudioExposureBucketCollection__lock_snapshotStatistics
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)pruneWithNowDate:(id)a3
+- (void)pruneWithNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
   storage = self->_storage;
@@ -113,11 +113,11 @@ uint64_t __85__HDHeadphoneAudioExposureBucketCollection__lock_snapshotStatistics
   v9[1] = 3221225472;
   v9[2] = __61__HDHeadphoneAudioExposureBucketCollection_pruneWithNowDate___block_invoke;
   v9[3] = &unk_2796C64A8;
-  v10 = v4;
+  v10 = dateCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v7 = v5;
-  v8 = v4;
+  v8 = dateCopy;
   [(NSMutableArray *)storage enumerateObjectsUsingBlock:v9];
   [(NSMutableArray *)self->_storage removeObjectsAtIndexes:v7];
   os_unfair_lock_unlock(&self->_lock);
@@ -147,13 +147,13 @@ void __61__HDHeadphoneAudioExposureBucketCollection_pruneWithNowDate___block_inv
   }
 }
 
-- (void)insertBuckets:(id)a3
+- (void)insertBuckets:(id)buckets
 {
-  v4 = a3;
-  if ([v4 count])
+  bucketsCopy = buckets;
+  if ([bucketsCopy count])
   {
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_storage addObjectsFromArray:v4];
+    [(NSMutableArray *)self->_storage addObjectsFromArray:bucketsCopy];
     [(NSMutableArray *)self->_storage sortUsingComparator:&__block_literal_global_2];
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -181,11 +181,11 @@ uint64_t __58__HDHeadphoneAudioExposureBucketCollection_insertBuckets___block_in
   return v10;
 }
 
-- (id)_updateWithSampleBatch:(id)a3 needsRebuild:(BOOL *)a4 error:(id *)a5
+- (id)_updateWithSampleBatch:(id)batch needsRebuild:(BOOL *)rebuild error:(id *)error
 {
-  v8 = a3;
+  batchCopy = batch;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(HDHeadphoneAudioExposureBucketCollection *)self _lock_updateWithSampleBatch:v8 error:a5];
+  v9 = [(HDHeadphoneAudioExposureBucketCollection *)self _lock_updateWithSampleBatch:batchCopy error:error];
 
   if (([v9 includedSeries] & 1) == 0)
   {
@@ -205,9 +205,9 @@ uint64_t __58__HDHeadphoneAudioExposureBucketCollection_insertBuckets___block_in
   os_unfair_lock_unlock(&self->_lock);
   if (self->_dirty)
   {
-    if (a4)
+    if (rebuild)
     {
-      *a4 = 1;
+      *rebuild = 1;
     }
 
     else
@@ -224,13 +224,13 @@ uint64_t __58__HDHeadphoneAudioExposureBucketCollection_insertBuckets___block_in
   return v10;
 }
 
-- (id)_lock_updateWithSampleBatch:(id)a3 error:(id *)a4
+- (id)_lock_updateWithSampleBatch:(id)batch error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  batchCopy = batch;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [v6 samples];
-  v8 = [v7 count];
+  samples = [batchCopy samples];
+  v8 = [samples count];
 
   if (v8)
   {
@@ -254,7 +254,7 @@ uint64_t __58__HDHeadphoneAudioExposureBucketCollection_insertBuckets___block_in
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) updateWithSampleBatch:v6 error:{a4, v20}];
+          v15 = [*(*(&v20 + 1) + 8 * i) updateWithSampleBatch:batchCopy error:{error, v20}];
           if (!v15)
           {
 

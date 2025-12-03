@@ -21,16 +21,16 @@
 
 - (id)sanitizedCopy
 {
-  v2 = [MEMORY[0x1E695DFF8] tu_defaultAllowedSchemes];
-  v3 = [a1 sanitizedCopyWithZone:0 allowedSchemes:v2];
+  tu_defaultAllowedSchemes = [MEMORY[0x1E695DFF8] tu_defaultAllowedSchemes];
+  v3 = [self sanitizedCopyWithZone:0 allowedSchemes:tu_defaultAllowedSchemes];
 
   return v3;
 }
 
 - (id)sanitizedCopyWithZone:()TUSanitizedCopying
 {
-  v5 = [MEMORY[0x1E695DFF8] tu_defaultAllowedSchemes];
-  v6 = [a1 sanitizedCopyWithZone:a3 allowedSchemes:v5];
+  tu_defaultAllowedSchemes = [MEMORY[0x1E695DFF8] tu_defaultAllowedSchemes];
+  v6 = [self sanitizedCopyWithZone:a3 allowedSchemes:tu_defaultAllowedSchemes];
 
   return v6;
 }
@@ -39,14 +39,14 @@
 {
   v20 = *MEMORY[0x1E69E9840];
   v6 = a4;
-  v7 = [a1 scheme];
-  v8 = [v7 lowercaseString];
+  scheme = [self scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v8 length])
+  if ([lowercaseString length])
   {
-    if ([v6 containsObject:v8])
+    if ([v6 containsObject:lowercaseString])
     {
-      v9 = [a1 copyWithZone:a3];
+      v9 = [self copyWithZone:a3];
       goto LABEL_10;
     }
 
@@ -54,7 +54,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412546;
-      v17 = a1;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v6;
       v11 = "[WARN] URL scheme is not in list of allowed schemes: %@ allowedSchemes: %@";
@@ -70,7 +70,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = a1;
+      selfCopy2 = self;
       v11 = "[WARN] URL does not contain a valid scheme: %@";
       v12 = v10;
       v13 = 12;

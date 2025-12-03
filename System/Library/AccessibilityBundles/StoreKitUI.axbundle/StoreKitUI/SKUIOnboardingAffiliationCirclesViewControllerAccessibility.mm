@@ -1,18 +1,18 @@
 @interface SKUIOnboardingAffiliationCirclesViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axHandleLayoutChangedTimerFired:(id)a3;
+- (void)_axHandleLayoutChangedTimerFired:(id)fired;
 - (void)loadView;
 @end
 
 @implementation SKUIOnboardingAffiliationCirclesViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIOnboardingAffiliationCirclesViewController" hasInstanceMethod:@"instructionsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIOnboardingInstructionsView" hasInstanceMethod:@"explanationLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKUIOnboardingInstructionsView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIOnboardingAffiliationCirclesViewController" hasInstanceMethod:@"instructionsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIOnboardingInstructionsView" hasInstanceMethod:@"explanationLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKUIOnboardingInstructionsView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,7 +33,7 @@
   [(SKUIOnboardingAffiliationCirclesViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_axHandleLayoutChangedTimerFired:(id)a3
+- (void)_axHandleLayoutChangedTimerFired:(id)fired
 {
   if (UIAccessibilityIsSwitchControlRunning())
   {

@@ -3,9 +3,9 @@
 + (id)defaultModel;
 + (id)defaultModelURL;
 + (id)defaultPersistentStoreURL;
-+ (id)optionDescription:(unint64_t)a3;
++ (id)optionDescription:(unint64_t)description;
 + (id)storeDescriptor;
-- (AnalyticsStoreDescriptor)initWithStoreURL:(id)a3 modelURL:(id)a4;
+- (AnalyticsStoreDescriptor)initWithStoreURL:(id)l modelURL:(id)rL;
 @end
 
 @implementation AnalyticsStoreDescriptor
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __40__AnalyticsStoreDescriptor_defaultModel__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EDE5CA78 != -1)
   {
     dispatch_once(&qword_1EDE5CA78, block);
@@ -152,9 +152,9 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v4 = [v2 firstObject];
+  firstObject = [v2 firstObject];
   v5 = v25[5];
-  v25[5] = v4;
+  v25[5] = firstObject;
 
   v6 = v25[5];
   if (!v6)
@@ -176,18 +176,18 @@ LABEL_8:
   v8 = v25[5];
   v25[5] = v7;
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v9 fileExistsAtPath:v25[5]];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:v25[5]];
 
   if (v10)
   {
     goto LABEL_8;
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v12 = v25[5];
   v23 = 0;
-  v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v23];
+  v13 = [defaultManager2 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v23];
   v14 = v23;
 
   v15 = v14 ? 0 : v13;
@@ -304,7 +304,7 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __53__AnalyticsStoreDescriptor_defaultPersistentStoreURL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals != -1)
   {
     dispatch_once(&_MergedGlobals, block);
@@ -315,17 +315,17 @@ LABEL_6:
   return v2;
 }
 
-+ (id)optionDescription:(unint64_t)a3
++ (id)optionDescription:(unint64_t)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_opt_new();
   v5 = v4;
-  if (v3)
+  if (descriptionCopy)
   {
     [v4 appendFormat:@"SetupXPCStore "];
   }
 
-  if ((v3 & 2) != 0)
+  if ((descriptionCopy & 2) != 0)
   {
     [v5 appendFormat:@"AllowMigration "];
   }
@@ -335,11 +335,11 @@ LABEL_6:
   return v6;
 }
 
-- (AnalyticsStoreDescriptor)initWithStoreURL:(id)a3 modelURL:(id)a4
+- (AnalyticsStoreDescriptor)initWithStoreURL:(id)l modelURL:(id)rL
 {
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v9 = +[WAUtil customMigrationOnProcess];
   v10 = v9;
   v11 = @"wifianalyticsd";
@@ -364,7 +364,7 @@ LABEL_6:
   v51.super_class = AnalyticsStoreDescriptor;
   v17 = [(AnalyticsStoreDescriptor *)&v51 init];
   v18 = v17;
-  if (!v7)
+  if (!lCopy)
   {
     v47 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
@@ -386,7 +386,7 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  if (!v8)
+  if (!rLCopy)
   {
     v47 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_FAULT))
@@ -402,21 +402,21 @@ LABEL_29:
     goto LABEL_29;
   }
 
-  objc_storeStrong(&v17->_storeURL, a3);
-  objc_storeStrong(&v18->_modelURL, a4);
+  objc_storeStrong(&v17->_storeURL, l);
+  objc_storeStrong(&v18->_modelURL, rL);
   v18->_analyticsStoreOptions = 0;
-  v19 = [MEMORY[0x1E696AE30] processInfo];
-  v20 = [v19 processName];
-  v21 = [v20 isEqualToString:v12];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v21 = [processName isEqualToString:v12];
 
   if (v21)
   {
     v18->_analyticsStoreOptions |= 2uLL;
   }
 
-  v22 = [MEMORY[0x1E696AE30] processInfo];
-  v23 = [v22 processName];
-  v24 = [v23 isEqualToString:v16];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  processName2 = [processInfo2 processName];
+  v24 = [processName2 isEqualToString:v16];
 
   if (v24)
   {
@@ -437,14 +437,14 @@ LABEL_29:
   [v28 setOption:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E695D3C0]];
   [v28 setOption:&unk_1F483E158 forKey:*MEMORY[0x1E695D3D0]];
   v49 = v12;
-  v50 = v8;
+  v50 = rLCopy;
   if (analyticsStoreOptions)
   {
     v31 = *MEMORY[0x1E695D518];
     [v28 setOption:@"com.apple.wifianalyticsd.devicestore" forKey:*MEMORY[0x1E695D518]];
     v32 = *MEMORY[0x1E695D4F8];
     v33 = v16;
-    v34 = v7;
+    v34 = lCopy;
     v35 = MEMORY[0x1E695E118];
     [v28 setOption:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E695D4F8]];
     v36 = *MEMORY[0x1E695D430];
@@ -456,7 +456,7 @@ LABEL_29:
     [(NSDictionary *)v37 setObject:v35 forKeyedSubscript:v32];
     [(NSDictionary *)v37 setObject:v35 forKeyedSubscript:*MEMORY[0x1E695D428]];
     v38 = v35;
-    v7 = v34;
+    lCopy = v34;
     v16 = v33;
     [(NSDictionary *)v37 setObject:v38 forKeyedSubscript:v36];
     remoteStoreOptions = v18->_remoteStoreOptions;
@@ -473,8 +473,8 @@ LABEL_29:
   p_super = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [MEMORY[0x1E696AE30] processInfo];
-    v41 = [v40 processName];
+    processInfo3 = [MEMORY[0x1E696AE30] processInfo];
+    processName3 = [processInfo3 processName];
     if (v18->_remoteStoreOptions)
     {
       v42 = @"YES";
@@ -485,10 +485,10 @@ LABEL_29:
       v42 = @"NO";
     }
 
-    v43 = [v28 shouldMigrateStoreAutomatically];
+    shouldMigrateStoreAutomatically = [v28 shouldMigrateStoreAutomatically];
     *buf = 136447234;
     v53 = "[AnalyticsStoreDescriptor initWithStoreURL:modelURL:]";
-    if (v43)
+    if (shouldMigrateStoreAutomatically)
     {
       v44 = @"YES";
     }
@@ -501,7 +501,7 @@ LABEL_29:
     v54 = 1024;
     v55 = 150;
     v56 = 2112;
-    v57 = v41;
+    v57 = processName3;
     v58 = 2112;
     v59 = v42;
     v60 = 2112;
@@ -510,7 +510,7 @@ LABEL_29:
   }
 
   v12 = v49;
-  v8 = v50;
+  rLCopy = v50;
 LABEL_23:
 
   v45 = *MEMORY[0x1E69E9840];

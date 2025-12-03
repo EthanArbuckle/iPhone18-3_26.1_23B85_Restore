@@ -1,12 +1,12 @@
 @interface UGCPhotoCollectionViewCell
-- (UGCPhotoCollectionViewCell)initWithFrame:(CGRect)a3;
+- (UGCPhotoCollectionViewCell)initWithFrame:(CGRect)frame;
 - (UGCPhotoCollectionViewCellDelegate)delegate;
 - (void)_cancelButtonPressed;
-- (void)_handleHover:(id)a3;
+- (void)_handleHover:(id)hover;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)prepareForReuse;
-- (void)setHoverActive:(BOOL)a3;
+- (void)setHoverActive:(BOOL)active;
 @end
 
 @implementation UGCPhotoCollectionViewCell
@@ -30,21 +30,21 @@
 
 - (void)_cancelButtonPressed
 {
-  v3 = [(UGCPhotoCollectionViewCell *)self delegate];
-  [v3 photoCellDidCancel:self];
+  delegate = [(UGCPhotoCollectionViewCell *)self delegate];
+  [delegate photoCellDidCancel:self];
 }
 
-- (void)setHoverActive:(BOOL)a3
+- (void)setHoverActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   if (sub_10000FA08(self) == 5)
   {
-    if (self->_hoverActive != v3)
+    if (self->_hoverActive != activeCopy)
     {
-      self->_hoverActive = v3;
+      self->_hoverActive = activeCopy;
       closeButtonBlurView = self->_closeButtonBlurView;
 
-      [(UIView *)closeButtonBlurView setHidden:!v3];
+      [(UIView *)closeButtonBlurView setHidden:!activeCopy];
     }
   }
 
@@ -55,71 +55,71 @@
   }
 }
 
-- (void)_handleHover:(id)a3
+- (void)_handleHover:(id)hover
 {
-  v4 = [a3 _maps_isHovering];
+  _maps_isHovering = [hover _maps_isHovering];
 
-  [(UGCPhotoCollectionViewCell *)self setHoverActive:v4];
+  [(UGCPhotoCollectionViewCell *)self setHoverActive:_maps_isHovering];
 }
 
 - (void)_setupConstraints
 {
-  v3 = [(UGCPhotoCollectionViewCell *)self contentView];
-  v46 = [v3 leadingAnchor];
-  v45 = [(UIImageView *)self->_contentImageView leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  contentView = [(UGCPhotoCollectionViewCell *)self contentView];
+  leadingAnchor = [contentView leadingAnchor];
+  leadingAnchor2 = [(UIImageView *)self->_contentImageView leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v44;
-  v43 = [v3 trailingAnchor];
-  v42 = [(UIImageView *)self->_contentImageView trailingAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  trailingAnchor = [contentView trailingAnchor];
+  trailingAnchor2 = [(UIImageView *)self->_contentImageView trailingAnchor];
+  v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[1] = v41;
-  v40 = [v3 topAnchor];
-  v39 = [(UIImageView *)self->_contentImageView topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  topAnchor = [contentView topAnchor];
+  topAnchor2 = [(UIImageView *)self->_contentImageView topAnchor];
+  v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[2] = v38;
-  v37 = [v3 bottomAnchor];
-  v36 = [(UIImageView *)self->_contentImageView bottomAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  bottomAnchor = [contentView bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)self->_contentImageView bottomAnchor];
+  v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[3] = v35;
-  v34 = [(UIButton *)self->_closeButton widthAnchor];
-  v33 = [v34 constraintEqualToConstant:24.0];
+  widthAnchor = [(UIButton *)self->_closeButton widthAnchor];
+  v33 = [widthAnchor constraintEqualToConstant:24.0];
   v47[4] = v33;
-  v32 = [(UIButton *)self->_closeButton heightAnchor];
-  v31 = [(UIButton *)self->_closeButton widthAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  heightAnchor = [(UIButton *)self->_closeButton heightAnchor];
+  widthAnchor2 = [(UIButton *)self->_closeButton widthAnchor];
+  v30 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
   v47[5] = v30;
-  v29 = [(UIButton *)self->_closeButton leadingAnchor];
-  v28 = [(UIView *)self->_closeButtonBlurView leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor3 = [(UIButton *)self->_closeButton leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_closeButtonBlurView leadingAnchor];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v47[6] = v27;
-  v26 = [(UIButton *)self->_closeButton trailingAnchor];
-  v25 = [(UIView *)self->_closeButtonBlurView trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  trailingAnchor3 = [(UIButton *)self->_closeButton trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_closeButtonBlurView trailingAnchor];
+  v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v47[7] = v24;
-  v22 = [(UIButton *)self->_closeButton topAnchor];
-  v21 = [(UIView *)self->_closeButtonBlurView topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  topAnchor3 = [(UIButton *)self->_closeButton topAnchor];
+  topAnchor4 = [(UIView *)self->_closeButtonBlurView topAnchor];
+  v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v47[8] = v20;
-  v19 = [(UIButton *)self->_closeButton bottomAnchor];
-  v18 = [(UIView *)self->_closeButtonBlurView bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  bottomAnchor3 = [(UIButton *)self->_closeButton bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_closeButtonBlurView bottomAnchor];
+  v17 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v47[9] = v17;
-  v16 = [(UIView *)self->_closeButtonBlurView topAnchor];
-  v15 = [(UIImageView *)self->_contentImageView topAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15 constant:4.0];
+  topAnchor5 = [(UIView *)self->_closeButtonBlurView topAnchor];
+  topAnchor6 = [(UIImageView *)self->_contentImageView topAnchor];
+  v14 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:4.0];
   v47[10] = v14;
-  v4 = [(UIView *)self->_closeButtonBlurView trailingAnchor];
-  v5 = [(UIImageView *)self->_contentImageView trailingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:-4.0];
+  trailingAnchor5 = [(UIView *)self->_closeButtonBlurView trailingAnchor];
+  trailingAnchor6 = [(UIImageView *)self->_contentImageView trailingAnchor];
+  v6 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-4.0];
   v47[11] = v6;
-  v7 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-  v23 = v3;
-  v8 = [v3 centerXAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+  v23 = contentView;
+  centerXAnchor2 = [contentView centerXAnchor];
+  v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v47[12] = v9;
-  v10 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-  v11 = [v3 centerYAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[13] = v12;
   v13 = [NSArray arrayWithObjects:v47 count:14];
   [NSLayoutConstraint activateConstraints:v13];
@@ -130,8 +130,8 @@
   [(UIImageView *)self->_contentImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_contentImageView setAccessibilityIgnoresInvertColors:1];
   [(UIImageView *)self->_contentImageView setContentMode:2];
-  v3 = [(UGCPhotoCollectionViewCell *)self contentView];
-  [v3 addSubview:self->_contentImageView];
+  contentView = [(UGCPhotoCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_contentImageView];
 
   [(UIButton *)self->_closeButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIButton *)self->_closeButton setOverrideUserInterfaceStyle:2];
@@ -154,8 +154,8 @@
   closeButtonBlurView = self->_closeButtonBlurView;
   if (isKindOfClass)
   {
-    v8 = [(UIView *)closeButtonBlurView contentView];
-    [v8 addSubview:self->_closeButton];
+    contentView2 = [(UIView *)closeButtonBlurView contentView];
+    [contentView2 addSubview:self->_closeButton];
   }
 
   else
@@ -163,11 +163,11 @@
     [(UIView *)closeButtonBlurView addSubview:self->_closeButton];
   }
 
-  v9 = [(UGCPhotoCollectionViewCell *)self contentView];
-  [v9 addSubview:self->_closeButtonBlurView];
+  contentView3 = [(UGCPhotoCollectionViewCell *)self contentView];
+  [contentView3 addSubview:self->_closeButtonBlurView];
 
-  v10 = [(UGCPhotoCollectionViewCell *)self contentView];
-  [v10 addSubview:self->_spinner];
+  contentView4 = [(UGCPhotoCollectionViewCell *)self contentView];
+  [contentView4 addSubview:self->_spinner];
 
   if (sub_10000FA08(self) == 5)
   {
@@ -176,16 +176,16 @@
     hoverGestureRecognizer = self->_hoverGestureRecognizer;
     self->_hoverGestureRecognizer = v11;
 
-    v13 = [(UGCPhotoCollectionViewCell *)self contentView];
-    [v13 addGestureRecognizer:self->_hoverGestureRecognizer];
+    contentView5 = [(UGCPhotoCollectionViewCell *)self contentView];
+    [contentView5 addGestureRecognizer:self->_hoverGestureRecognizer];
   }
 }
 
-- (UGCPhotoCollectionViewCell)initWithFrame:(CGRect)a3
+- (UGCPhotoCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = UGCPhotoCollectionViewCell;
-  v3 = [(UGCPhotoCollectionViewCell *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UGCPhotoCollectionViewCell *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIImageView alloc];

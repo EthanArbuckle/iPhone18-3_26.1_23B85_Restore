@@ -1,15 +1,15 @@
 @interface AVCMediaStreamNegotiatorSettingsImmersiveAudio
-- (AVCMediaStreamNegotiatorSettingsImmersiveAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5;
+- (AVCMediaStreamNegotiatorSettingsImmersiveAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsImmersiveAudio
 
-- (AVCMediaStreamNegotiatorSettingsImmersiveAudio)initWithOptions:(id)a3 deviceRole:(unsigned __int8)a4 error:(id *)a5
+- (AVCMediaStreamNegotiatorSettingsImmersiveAudio)initWithOptions:(id)options deviceRole:(unsigned __int8)role error:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = AVCMediaStreamNegotiatorSettingsImmersiveAudio;
-  v6 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:a3 defaultDirection:? error:?];
+  v6 = [AVCMediaStreamNegotiatorSettings initWithOptions:sel_initWithOptions_deviceRole_defaultDirection_error_ deviceRole:options defaultDirection:? error:?];
   v7 = v6;
   if (!v6)
   {
@@ -44,9 +44,9 @@ LABEL_6:
     v12 = @"audioRules init failed";
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v12;
+    *error = v12;
   }
 
   return 0;

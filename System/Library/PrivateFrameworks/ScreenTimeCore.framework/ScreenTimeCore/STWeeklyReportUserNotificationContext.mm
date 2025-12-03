@@ -1,9 +1,9 @@
 @interface STWeeklyReportUserNotificationContext
 - (STWeeklyReportUserNotificationContext)init;
-- (STWeeklyReportUserNotificationContext)initWithCoder:(id)a3;
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDeltaScreenTimeUsage:(double)a3 totalUsage:(id)a4;
+- (STWeeklyReportUserNotificationContext)initWithCoder:(id)coder;
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDeltaScreenTimeUsage:(double)usage totalUsage:(id)totalUsage;
 @end
 
 @implementation STWeeklyReportUserNotificationContext
@@ -23,25 +23,25 @@
   return v3;
 }
 
-- (STWeeklyReportUserNotificationContext)initWithCoder:(id)a3
+- (STWeeklyReportUserNotificationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = STWeeklyReportUserNotificationContext;
-  v5 = [(STUserNotificationContext *)&v14 initWithCoder:v4];
+  v5 = [(STUserNotificationContext *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"weeklyReportData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weeklyReportData"];
     weeklyReportData = v5->_weeklyReportData;
     v5->_weeklyReportData = v6;
 
-    [v4 decodeDoubleForKey:@"deltaScreenTimeUsage"];
+    [coderCopy decodeDoubleForKey:@"deltaScreenTimeUsage"];
     v5->_deltaScreenTimeUsage = v8;
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalUsage"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalUsage"];
     totalUsage = v5->_totalUsage;
     v5->_totalUsage = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notificationBodyKey"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notificationBodyKey"];
     notificationBodyKey = v5->_notificationBodyKey;
     v5->_notificationBodyKey = v11;
   }
@@ -49,40 +49,40 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STWeeklyReportUserNotificationContext;
-  v4 = a3;
-  [(STUserNotificationContext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_weeklyReportData forKey:{@"weeklyReportData", v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"deltaScreenTimeUsage" forKey:self->_deltaScreenTimeUsage];
-  [v4 encodeObject:self->_totalUsage forKey:@"totalUsage"];
-  [v4 encodeObject:self->_notificationBodyKey forKey:@"notificationBodyKey"];
+  coderCopy = coder;
+  [(STUserNotificationContext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_weeklyReportData forKey:{@"weeklyReportData", v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"deltaScreenTimeUsage" forKey:self->_deltaScreenTimeUsage];
+  [coderCopy encodeObject:self->_totalUsage forKey:@"totalUsage"];
+  [coderCopy encodeObject:self->_notificationBodyKey forKey:@"notificationBodyKey"];
 }
 
-- (void)setDeltaScreenTimeUsage:(double)a3 totalUsage:(id)a4
+- (void)setDeltaScreenTimeUsage:(double)usage totalUsage:(id)totalUsage
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  [(STWeeklyReportUserNotificationContext *)self setDeltaScreenTimeUsage:a3];
-  [(STWeeklyReportUserNotificationContext *)self setTotalUsage:v6];
+  totalUsageCopy = totalUsage;
+  [(STWeeklyReportUserNotificationContext *)self setDeltaScreenTimeUsage:usage];
+  [(STWeeklyReportUserNotificationContext *)self setTotalUsage:totalUsageCopy];
   v7 = objc_opt_new();
   [v7 setAllowedUnits:96];
   [v7 setUnitsStyle:3];
-  [v6 doubleValue];
+  [totalUsageCopy doubleValue];
   v9 = v8;
 
   v10 = objc_opt_new();
   [v10 setSecond:(v9 / 7.0)];
   v11 = [v7 stringFromDateComponents:v10];
-  if (a3 >= 0.05 && a3 <= 2.0)
+  if (usage >= 0.05 && usage <= 2.0)
   {
     notificationBodyKey = self->_notificationBodyKey;
     self->_notificationBodyKey = @"WeeklyReportNotificationPositiveDeltaBody";
 
     v17 = MEMORY[0x1E696ADA0];
-    v18 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v18 = [MEMORY[0x1E696AD98] numberWithDouble:usage];
     v19 = [v17 localizedStringFromNumber:v18 numberStyle:3];
 
     v27[0] = v19;
@@ -96,13 +96,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a3 <= -0.05 && a3 >= -0.9)
+  if (usage <= -0.05 && usage >= -0.9)
   {
     v13 = self->_notificationBodyKey;
     self->_notificationBodyKey = @"WeeklyReportNotificationNegativeDeltaBody";
 
     v14 = MEMORY[0x1E696ADA0];
-    v15 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+    v15 = [MEMORY[0x1E696AD98] numberWithDouble:-usage];
     v19 = [v14 localizedStringFromNumber:v15 numberStyle:3];
 
     v26[0] = v19;
@@ -131,21 +131,21 @@ LABEL_11:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)customizeNotificationContent:(id)a3 withCompletionBlock:(id)a4
+- (void)customizeNotificationContent:(id)content withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  contentCopy = content;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __90__STWeeklyReportUserNotificationContext_customizeNotificationContent_withCompletionBlock___block_invoke;
   v11[3] = &unk_1E7CE6B80;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
+  v12 = contentCopy;
+  selfCopy = self;
+  v14 = blockCopy;
   v10.receiver = self;
   v10.super_class = STWeeklyReportUserNotificationContext;
-  v8 = v7;
-  v9 = v6;
+  v8 = blockCopy;
+  v9 = contentCopy;
   [(STUserNotificationContext *)&v10 customizeNotificationContent:v9 withCompletionBlock:v11];
 }
 

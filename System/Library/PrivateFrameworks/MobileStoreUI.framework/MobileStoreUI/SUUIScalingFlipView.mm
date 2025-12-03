@@ -1,21 +1,21 @@
 @interface SUUIScalingFlipView
-- (SUUIScalingFlipView)initWithFrontView:(id)a3 backView:(id)a4;
+- (SUUIScalingFlipView)initWithFrontView:(id)view backView:(id)backView;
 - (id)_backLayerAnimation;
 - (id)_frontLayerAnimation;
 - (id)_inputColorAnimation;
 - (id)_positionAnimation;
 - (id)_timingFunction;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)performFlipWithCompletionBlock:(id)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)performFlipWithCompletionBlock:(id)block;
 @end
 
 @implementation SUUIScalingFlipView
 
-- (SUUIScalingFlipView)initWithFrontView:(id)a3 backView:(id)a4
+- (SUUIScalingFlipView)initWithFrontView:(id)view backView:(id)backView
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 frame];
+  viewCopy = view;
+  backViewCopy = backView;
+  [viewCopy frame];
   self->_fromFrame.origin.x = v9;
   self->_fromFrame.origin.y = v10;
   self->_fromFrame.size.width = v11;
@@ -24,18 +24,18 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_backView, a4);
-    objc_storeStrong(&v14->_frontView, a3);
+    objc_storeStrong(&v13->_backView, backView);
+    objc_storeStrong(&v14->_frontView, view);
     [(UIView *)v14->_backView frame];
     v14->_toFrame.origin.x = v15;
     v14->_toFrame.origin.y = v16;
     v14->_toFrame.size.width = v17;
     v14->_toFrame.size.height = v18;
-    v19 = [(UIView *)v14->_backView layer];
-    [v19 setDoubleSided:0];
+    layer = [(UIView *)v14->_backView layer];
+    [layer setDoubleSided:0];
 
-    v20 = [(UIView *)v14->_frontView layer];
-    [v20 setDoubleSided:0];
+    layer2 = [(UIView *)v14->_frontView layer];
+    [layer2 setDoubleSided:0];
 
     [(SUUIScalingFlipView *)v14 addSubview:v14->_backView];
     [(SUUIScalingFlipView *)v14 addSubview:v14->_frontView];
@@ -48,70 +48,70 @@
     [(UIView *)v14->_frontView setCenter:v23, v25];
     v26 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5B0]];
     [v26 setName:@"multiply"];
-    v27 = [MEMORY[0x277D75348] whiteColor];
-    [v26 setValue:objc_msgSend(v27 forKeyPath:{"CGColor"), @"inputColor"}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v26 setValue:objc_msgSend(whiteColor forKeyPath:{"CGColor"), @"inputColor"}];
 
-    v28 = [(SUUIScalingFlipView *)v14 layer];
+    layer3 = [(SUUIScalingFlipView *)v14 layer];
     v29 = [MEMORY[0x277CBEA60] arrayWithObject:v26];
-    [v28 setFilters:v29];
+    [layer3 setFilters:v29];
   }
 
   return v14;
 }
 
-- (void)performFlipWithCompletionBlock:(id)a3
+- (void)performFlipWithCompletionBlock:(id)block
 {
-  v20 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  [v4 beginIgnoringInteractionEvents];
+  blockCopy = block;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] beginIgnoringInteractionEvents];
 
-  if (self->_completionBlock != v20)
+  if (self->_completionBlock != blockCopy)
   {
-    v5 = [v20 copy];
+    v5 = [blockCopy copy];
     completionBlock = self->_completionBlock;
     self->_completionBlock = v5;
   }
 
-  v7 = [(UIView *)self->_frontView layer];
-  v8 = [(SUUIScalingFlipView *)self _frontLayerAnimation];
-  [v7 addAnimation:v8 forKey:@"flipAnimation"];
+  layer = [(UIView *)self->_frontView layer];
+  _frontLayerAnimation = [(SUUIScalingFlipView *)self _frontLayerAnimation];
+  [layer addAnimation:_frontLayerAnimation forKey:@"flipAnimation"];
 
-  v9 = [(UIView *)self->_backView layer];
-  v10 = [(SUUIScalingFlipView *)self _backLayerAnimation];
-  [v9 addAnimation:v10 forKey:@"flipAnimation"];
+  layer2 = [(UIView *)self->_backView layer];
+  _backLayerAnimation = [(SUUIScalingFlipView *)self _backLayerAnimation];
+  [layer2 addAnimation:_backLayerAnimation forKey:@"flipAnimation"];
 
-  v11 = [MEMORY[0x277CD9E00] animation];
+  animation = [MEMORY[0x277CD9E00] animation];
   v12 = MEMORY[0x277CBEA60];
-  v13 = [(SUUIScalingFlipView *)self _inputColorAnimation];
-  v14 = [(SUUIScalingFlipView *)self _positionAnimation];
-  v15 = [v12 arrayWithObjects:{v13, v14, 0}];
-  [v11 setAnimations:v15];
+  _inputColorAnimation = [(SUUIScalingFlipView *)self _inputColorAnimation];
+  _positionAnimation = [(SUUIScalingFlipView *)self _positionAnimation];
+  v15 = [v12 arrayWithObjects:{_inputColorAnimation, _positionAnimation, 0}];
+  [animation setAnimations:v15];
 
-  [v11 setDelegate:self];
+  [animation setDelegate:self];
   duration = self->_duration;
   UIAnimationDragCoefficient();
-  [v11 setDuration:duration * v17];
-  [v11 setFillMode:*MEMORY[0x277CDA238]];
-  [v11 setRemovedOnCompletion:0];
-  v18 = [(SUUIScalingFlipView *)self _timingFunction];
-  [v11 setTimingFunction:v18];
+  [animation setDuration:duration * v17];
+  [animation setFillMode:*MEMORY[0x277CDA238]];
+  [animation setRemovedOnCompletion:0];
+  _timingFunction = [(SUUIScalingFlipView *)self _timingFunction];
+  [animation setTimingFunction:_timingFunction];
 
-  v19 = [(SUUIScalingFlipView *)self layer];
-  [v19 addAnimation:v11 forKey:@"multiplyAndPositionAnimation"];
+  layer3 = [(SUUIScalingFlipView *)self layer];
+  [layer3 addAnimation:animation forKey:@"multiplyAndPositionAnimation"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(SUUIScalingFlipView *)self layer:a3];
+  v5 = [(SUUIScalingFlipView *)self layer:stop];
   [v5 removeAllAnimations];
 
-  v6 = [(UIView *)self->_backView layer];
-  [v6 removeAllAnimations];
+  layer = [(UIView *)self->_backView layer];
+  [layer removeAllAnimations];
 
-  v7 = [(UIView *)self->_frontView layer];
-  [v7 removeAllAnimations];
+  layer2 = [(UIView *)self->_frontView layer];
+  [layer2 removeAllAnimations];
 
-  v8 = [(UIView *)self->_backView layer];
+  layer3 = [(UIView *)self->_backView layer];
   v9 = *(MEMORY[0x277CD9DE8] + 80);
   *&v24.m31 = *(MEMORY[0x277CD9DE8] + 64);
   *&v24.m33 = v9;
@@ -124,11 +124,11 @@
   v12 = *(MEMORY[0x277CD9DE8] + 48);
   *&v24.m21 = *(MEMORY[0x277CD9DE8] + 32);
   *&v24.m23 = v12;
-  [v8 setTransform:&v24];
+  [layer3 setTransform:&v24];
 
-  v13 = [(UIView *)self->_frontView layer];
+  layer4 = [(UIView *)self->_frontView layer];
   CATransform3DMakeRotation(&v24, 3.14159265, 0.0, 1.0, 0.0);
-  [v13 setTransform:&v24];
+  [layer4 setTransform:&v24];
 
   [(SUUIScalingFlipView *)self setFrame:self->_toFrame.origin.x, self->_toFrame.origin.y, self->_toFrame.size.width, self->_toFrame.size.height];
   [(SUUIScalingFlipView *)self bounds];
@@ -145,8 +145,8 @@
     completionBlock[2](completionBlock, self);
   }
 
-  v23 = [MEMORY[0x277D75128] sharedApplication];
-  [v23 endIgnoringInteractionEvents];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] endIgnoringInteractionEvents];
 }
 
 - (id)_backLayerAnimation
@@ -332,8 +332,8 @@
   [v16 setDuration:duration * v29];
   [v16 setFillMode:*MEMORY[0x277CDA238]];
   [v16 setRemovedOnCompletion:0];
-  v30 = [(SUUIScalingFlipView *)self _timingFunction];
-  [v16 setTimingFunction:v30];
+  _timingFunction = [(SUUIScalingFlipView *)self _timingFunction];
+  [v16 setTimingFunction:_timingFunction];
 
   return v16;
 }
@@ -486,8 +486,8 @@
   [v16 setDuration:duration * v29];
   [v16 setFillMode:*MEMORY[0x277CDA238]];
   [v16 setRemovedOnCompletion:0];
-  v30 = [(SUUIScalingFlipView *)self _timingFunction];
-  [v16 setTimingFunction:v30];
+  _timingFunction = [(SUUIScalingFlipView *)self _timingFunction];
+  [v16 setTimingFunction:_timingFunction];
 
   return v16;
 }
@@ -514,8 +514,8 @@
 
 - (id)_positionAnimation
 {
-  v2 = [(SUUIScalingFlipView *)self layer];
-  [v2 position];
+  layer = [(SUUIScalingFlipView *)self layer];
+  [layer position];
   v4 = v3;
   v6 = v5;
 

@@ -1,45 +1,45 @@
 @interface NCEventTrackerNotificationMetadata
-+ (id)metadataForNotificationRequest:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithNotificationIdentifier:(id)a3 bundleIdentifier:(id)a4 date:(id)a5;
++ (id)metadataForNotificationRequest:(id)request;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier date:(id)date;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation NCEventTrackerNotificationMetadata
 
-+ (id)metadataForNotificationRequest:(id)a3
++ (id)metadataForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 notificationIdentifier];
-  v7 = [v4 sectionIdentifier];
-  v8 = [v4 timestamp];
+  requestCopy = request;
+  v5 = [self alloc];
+  notificationIdentifier = [requestCopy notificationIdentifier];
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  timestamp = [requestCopy timestamp];
 
-  v9 = [v5 _initWithNotificationIdentifier:v6 bundleIdentifier:v7 date:v8];
+  v9 = [v5 _initWithNotificationIdentifier:notificationIdentifier bundleIdentifier:sectionIdentifier date:timestamp];
 
   return v9;
 }
 
-- (id)_initWithNotificationIdentifier:(id)a3 bundleIdentifier:(id)a4 date:(id)a5
+- (id)_initWithNotificationIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = NCEventTrackerNotificationMetadata;
   v11 = [(NCEventTrackerNotificationMetadata *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     notificationIdentifier = v11->_notificationIdentifier;
     v11->_notificationIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [bundleIdentifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [dateCopy copy];
     date = v11->_date;
     v11->_date = v16;
   }
@@ -50,40 +50,40 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"notification identifier"];
+  notificationIdentifier = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
+  v5 = [v3 appendObject:notificationIdentifier withName:@"notification identifier"];
 
-  v6 = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"bundle identifier"];
+  bundleIdentifier = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
+  v7 = [v3 appendObject:bundleIdentifier withName:@"bundle identifier"];
 
-  v8 = [(NCEventTrackerNotificationMetadata *)self date];
-  v9 = [v3 appendObject:v8 withName:@"date"];
+  date = [(NCEventTrackerNotificationMetadata *)self date];
+  v9 = [v3 appendObject:date withName:@"date"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x277CF0C40] builder];
+  notificationIdentifier = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
+  v5 = [builder appendObject:notificationIdentifier];
 
-  v6 = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
-  v7 = [v3 appendObject:v6];
+  bundleIdentifier = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
+  v7 = [builder appendObject:bundleIdentifier];
 
-  v8 = [(NCEventTrackerNotificationMetadata *)self date];
-  v9 = [v3 appendObject:v8];
+  date = [(NCEventTrackerNotificationMetadata *)self date];
+  v9 = [builder appendObject:date];
 
-  v10 = [v3 hash];
+  v10 = [builder hash];
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -91,19 +91,19 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = v4) != 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass())) && (v5 = equalCopy) != 0)
     {
       v6 = v5;
-      v7 = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
-      v8 = [(NCEventTrackerNotificationMetadata *)v6 notificationIdentifier];
+      notificationIdentifier = [(NCEventTrackerNotificationMetadata *)self notificationIdentifier];
+      notificationIdentifier2 = [(NCEventTrackerNotificationMetadata *)v6 notificationIdentifier];
       if (BSEqualObjects())
       {
-        v9 = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
-        v10 = [(NCEventTrackerNotificationMetadata *)v6 bundleIdentifier];
+        bundleIdentifier = [(NCEventTrackerNotificationMetadata *)self bundleIdentifier];
+        bundleIdentifier2 = [(NCEventTrackerNotificationMetadata *)v6 bundleIdentifier];
         if (BSEqualObjects())
         {
-          v11 = [(NCEventTrackerNotificationMetadata *)self date];
-          v12 = [(NCEventTrackerNotificationMetadata *)v6 date];
+          date = [(NCEventTrackerNotificationMetadata *)self date];
+          date2 = [(NCEventTrackerNotificationMetadata *)v6 date];
           v13 = BSEqualObjects();
         }
 

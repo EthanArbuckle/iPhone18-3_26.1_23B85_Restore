@@ -1,44 +1,44 @@
 @interface NACProxyVolumeControlTarget
-+ (BOOL)_isValidOriginIdentifier:(id)a3;
-+ (id)volumeControlTargetWithCategory:(id)a3;
-+ (id)volumeControlTargetWithOriginIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NACProxyVolumeControlTarget)initWithCoder:(id)a3;
-- (NACProxyVolumeControlTarget)initWithOriginIdentifier:(id)a3 category:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (BOOL)_isValidOriginIdentifier:(id)identifier;
++ (id)volumeControlTargetWithCategory:(id)category;
++ (id)volumeControlTargetWithOriginIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
+- (NACProxyVolumeControlTarget)initWithCoder:(id)coder;
+- (NACProxyVolumeControlTarget)initWithOriginIdentifier:(id)identifier category:(id)category;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NACProxyVolumeControlTarget
 
-+ (id)volumeControlTargetWithCategory:(id)a3
++ (id)volumeControlTargetWithCategory:(id)category
 {
-  v3 = a3;
-  v4 = [[NACProxyVolumeControlTarget alloc] initWithOriginIdentifier:&unk_286C47B18 category:v3];
+  categoryCopy = category;
+  v4 = [[NACProxyVolumeControlTarget alloc] initWithOriginIdentifier:&unk_286C47B18 category:categoryCopy];
 
   return v4;
 }
 
-+ (id)volumeControlTargetWithOriginIdentifier:(id)a3
++ (id)volumeControlTargetWithOriginIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[NACProxyVolumeControlTarget alloc] initWithOriginIdentifier:v3 category:0];
+  identifierCopy = identifier;
+  v4 = [[NACProxyVolumeControlTarget alloc] initWithOriginIdentifier:identifierCopy category:0];
 
   return v4;
 }
 
-+ (BOOL)_isValidOriginIdentifier:(id)a3
++ (BOOL)_isValidOriginIdentifier:(id)identifier
 {
   v3 = _isValidOriginIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     +[NACProxyVolumeControlTarget _isValidOriginIdentifier:];
   }
 
-  v5 = [_isValidOriginIdentifier__invalidOriginIdentifiers containsObject:v4];
+  v5 = [_isValidOriginIdentifier__invalidOriginIdentifiers containsObject:identifierCopy];
 
   return v5 ^ 1;
 }
@@ -50,20 +50,20 @@ uint64_t __56__NACProxyVolumeControlTarget__isValidOriginIdentifier___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (NACProxyVolumeControlTarget)initWithOriginIdentifier:(id)a3 category:(id)a4
+- (NACProxyVolumeControlTarget)initWithOriginIdentifier:(id)identifier category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  categoryCopy = category;
   v13.receiver = self;
   v13.super_class = NACProxyVolumeControlTarget;
   v9 = [(NACProxyVolumeControlTarget *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originIdentifier, a3);
-    if (v8)
+    objc_storeStrong(&v9->_originIdentifier, identifier);
+    if (categoryCopy)
     {
-      v11 = v8;
+      v11 = categoryCopy;
     }
 
     else
@@ -79,9 +79,9 @@ uint64_t __56__NACProxyVolumeControlTarget__isValidOriginIdentifier___block_invo
 
 - (id)description
 {
-  v3 = [(NACProxyVolumeControlTarget *)self isPairedDevice];
+  isPairedDevice = [(NACProxyVolumeControlTarget *)self isPairedDevice];
   v4 = 8;
-  if (v3)
+  if (isPairedDevice)
   {
     v4 = 16;
     v5 = @"<NACVolumeControlTarget-System-(%@)>";
@@ -97,18 +97,18 @@ uint64_t __56__NACProxyVolumeControlTarget__isValidOriginIdentifier___block_invo
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -119,8 +119,8 @@ uint64_t __56__NACProxyVolumeControlTarget__isValidOriginIdentifier___block_invo
         v10 = originIdentifier;
         if (!originIdentifier)
         {
-          v3 = [(NACProxyVolumeControlTarget *)v7 originIdentifier];
-          if (!v3)
+          originIdentifier = [(NACProxyVolumeControlTarget *)v7 originIdentifier];
+          if (!originIdentifier)
           {
             v12 = 1;
 LABEL_12:
@@ -130,8 +130,8 @@ LABEL_13:
             v15 = category;
             if (!category)
             {
-              v3 = [(NACProxyVolumeControlTarget *)v8 category];
-              if (!v3)
+              originIdentifier = [(NACProxyVolumeControlTarget *)v8 category];
+              if (!originIdentifier)
               {
                 v17 = 1;
                 goto LABEL_19;
@@ -140,8 +140,8 @@ LABEL_13:
               v15 = self->_category;
             }
 
-            v16 = [(NACProxyVolumeControlTarget *)v8 category];
-            v17 = [(NSString *)v15 isEqual:v16];
+            category = [(NACProxyVolumeControlTarget *)v8 category];
+            v17 = [(NSString *)v15 isEqual:category];
 
             if (category)
             {
@@ -159,8 +159,8 @@ LABEL_19:
           v10 = self->_originIdentifier;
         }
 
-        v11 = [(NACProxyVolumeControlTarget *)v8 originIdentifier];
-        v12 = [(NSNumber *)v10 isEqual:v11];
+        originIdentifier2 = [(NACProxyVolumeControlTarget *)v8 originIdentifier];
+        v12 = [(NSNumber *)v10 isEqual:originIdentifier2];
 
         if (originIdentifier)
         {
@@ -196,9 +196,9 @@ LABEL_21:
   return v4;
 }
 
-- (NACProxyVolumeControlTarget)initWithCoder:(id)a3
+- (NACProxyVolumeControlTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NACProxyVolumeControlTarget;
   v5 = [(NACProxyVolumeControlTarget *)&v13 init];
@@ -206,33 +206,33 @@ LABEL_21:
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_originIdentifier);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     [(NACProxyVolumeControlTarget *)v5 setOriginIdentifier:v8];
 
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_category);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     [(NACProxyVolumeControlTarget *)v5 setCategory:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(NACProxyVolumeControlTarget *)self originIdentifier];
+  coderCopy = coder;
+  originIdentifier = [(NACProxyVolumeControlTarget *)self originIdentifier];
   v6 = NSStringFromSelector(sel_originIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:originIdentifier forKey:v6];
 
-  v8 = [(NACProxyVolumeControlTarget *)self category];
+  category = [(NACProxyVolumeControlTarget *)self category];
   v7 = NSStringFromSelector(sel_category);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:category forKey:v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_originIdentifier);
   objc_storeStrong(v4 + 2, self->_category);
   return v4;

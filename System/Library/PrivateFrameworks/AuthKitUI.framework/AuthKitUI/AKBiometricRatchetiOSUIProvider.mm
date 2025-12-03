@@ -1,26 +1,26 @@
 @interface AKBiometricRatchetiOSUIProvider
-- (AKBiometricRatchetiOSUIProvider)initWithContext:(id)a3;
-- (id)_makeRatchetOptions:(id)a3;
-- (void)_disableFindMyIfRequiredWithContext:(id)a3 completion:(id)a4;
-- (void)_dismissRatchetUIForContext:(id)a3 viewController:(id)a4;
-- (void)_displayFindMyDisablementFailedErrorWithContext:(id)a3;
-- (void)_presentEmbeddedRatchetUIWithOptions:(id)a3;
-- (void)_presentRatchetUIWithContext:(id)a3 options:(id)a4 completion:(id)a5;
+- (AKBiometricRatchetiOSUIProvider)initWithContext:(id)context;
+- (id)_makeRatchetOptions:(id)options;
+- (void)_disableFindMyIfRequiredWithContext:(id)context completion:(id)completion;
+- (void)_dismissRatchetUIForContext:(id)context viewController:(id)controller;
+- (void)_displayFindMyDisablementFailedErrorWithContext:(id)context;
+- (void)_presentEmbeddedRatchetUIWithOptions:(id)options;
+- (void)_presentRatchetUIWithContext:(id)context options:(id)options completion:(id)completion;
 - (void)_rightNavButtonTapped;
 - (void)dealloc;
-- (void)presentRatchetUIWithCompletion:(id)a3;
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
+- (void)presentRatchetUIWithCompletion:(id)completion;
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error;
 @end
 
 @implementation AKBiometricRatchetiOSUIProvider
 
-- (AKBiometricRatchetiOSUIProvider)initWithContext:(id)a3
+- (AKBiometricRatchetiOSUIProvider)initWithContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v11 = _AKLogSystem();
   v10 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -32,31 +32,31 @@
   }
 
   objc_storeStrong(&v11, 0);
-  v3 = v13;
-  v13 = 0;
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKBiometricRatchetiOSUIProvider;
-  v13 = [(AKBiometricRatchetiOSUIProvider *)&v9 init];
-  objc_storeStrong(&v13, v13);
-  if (v13)
+  selfCopy = [(AKBiometricRatchetiOSUIProvider *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v13->_context, location[0]);
-    v4 = [MEMORY[0x277D08F78] sharedInstance];
-    findMyManager = v13->_findMyManager;
-    v13->_findMyManager = v4;
+    objc_storeWeak(&selfCopy->_context, location[0]);
+    mEMORY[0x277D08F78] = [MEMORY[0x277D08F78] sharedInstance];
+    findMyManager = selfCopy->_findMyManager;
+    selfCopy->_findMyManager = mEMORY[0x277D08F78];
     MEMORY[0x277D82BD8](findMyManager);
   }
 
-  v7 = MEMORY[0x277D82BE0](v13);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v7;
 }
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = 2;
@@ -69,18 +69,18 @@
   }
 
   objc_storeStrong(location, 0);
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = AKBiometricRatchetiOSUIProvider;
   [(AKBiometricRatchetiOSUIProvider *)&v4 dealloc];
 }
 
-- (void)_presentEmbeddedRatchetUIWithOptions:(id)a3
+- (void)_presentEmbeddedRatchetUIWithOptions:(id)options
 {
   v31 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v26 = _AKLogSystem();
   v25 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -92,8 +92,8 @@
   }
 
   objc_storeStrong(&v26, 0);
-  dispatch_group_enter(v28->_dispatchGroup);
-  WeakRetained = objc_loadWeakRetained(&v28->_context);
+  dispatch_group_enter(selfCopy->_dispatchGroup);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_context);
   if (LocalAuthenticationEmbeddedUILibraryCore(0))
   {
     LARatchetViewControllerClass = getLARatchetViewControllerClass();
@@ -105,25 +105,25 @@
   }
 
   v8 = [LARatchetViewControllerClass makeViewControllerWithOptions:location[0]];
-  [(AKBiometricRatchetiOSUIProvider *)v28 setRatchetViewController:?];
+  [(AKBiometricRatchetiOSUIProvider *)selfCopy setRatchetViewController:?];
   MEMORY[0x277D82BD8](v8);
-  v13 = [(AKBiometricRatchetiOSUIProvider *)v28 ratchetViewController];
-  v12 = [(LARatchetViewController *)v13 navigationItem];
+  ratchetViewController = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetViewController];
+  navigationItem = [(LARatchetViewController *)ratchetViewController navigationItem];
   v9 = objc_alloc(MEMORY[0x277D751E0]);
-  v11 = [WeakRetained embeddedUIRightNavButtonTitle];
+  embeddedUIRightNavButtonTitle = [WeakRetained embeddedUIRightNavButtonTitle];
   v10 = [v9 initWithTitle:? style:? target:? action:?];
-  [v12 setRightBarButtonItem:?];
+  [navigationItem setRightBarButtonItem:?];
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  v14 = v28;
-  v15 = [(AKBiometricRatchetiOSUIProvider *)v28 ratchetViewController];
-  [(LARatchetViewController *)v15 setDelegate:v14];
-  MEMORY[0x277D82BD8](v15);
-  v16 = [WeakRetained embeddedUIPresentationMode];
-  v17 = [v16 isEqualToString:@"Modal"];
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](embeddedUIRightNavButtonTitle);
+  MEMORY[0x277D82BD8](navigationItem);
+  MEMORY[0x277D82BD8](ratchetViewController);
+  v14 = selfCopy;
+  ratchetViewController2 = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetViewController];
+  [(LARatchetViewController *)ratchetViewController2 setDelegate:v14];
+  MEMORY[0x277D82BD8](ratchetViewController2);
+  embeddedUIPresentationMode = [WeakRetained embeddedUIPresentationMode];
+  v17 = [embeddedUIPresentationMode isEqualToString:@"Modal"];
+  MEMORY[0x277D82BD8](embeddedUIPresentationMode);
   if (v17)
   {
     v23 = _AKLogSystem();
@@ -137,9 +137,9 @@
     }
 
     objc_storeStrong(&v23, 0);
-    v5 = [(AKBiometricRatchetiOSUIProvider *)v28 ratchetViewController];
-    [(LARatchetViewController *)v5 evaluateAndPresentViewController];
-    MEMORY[0x277D82BD8](v5);
+    ratchetViewController3 = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetViewController];
+    [(LARatchetViewController *)ratchetViewController3 evaluateAndPresentViewController];
+    MEMORY[0x277D82BD8](ratchetViewController3);
   }
 
   else
@@ -147,16 +147,16 @@
     v20 = _AKLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [WeakRetained embeddedUIPresentationMode];
-      __os_log_helper_16_2_1_8_64(v29, v4);
+      embeddedUIPresentationMode2 = [WeakRetained embeddedUIPresentationMode];
+      __os_log_helper_16_2_1_8_64(v29, embeddedUIPresentationMode2);
       _os_log_debug_impl(&dword_222379000, v20, OS_LOG_TYPE_DEBUG, "Ratchet presenting push, %@", v29, 0xCu);
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](embeddedUIPresentationMode2);
     }
 
     objc_storeStrong(&v20, 0);
-    v3 = [(AKBiometricRatchetiOSUIProvider *)v28 ratchetViewController];
-    [(LARatchetViewController *)v3 evaluateAndShowViewController];
-    MEMORY[0x277D82BD8](v3);
+    ratchetViewController4 = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetViewController];
+    [(LARatchetViewController *)ratchetViewController4 evaluateAndShowViewController];
+    MEMORY[0x277D82BD8](ratchetViewController4);
   }
 
   objc_storeStrong(&WeakRetained, 0);
@@ -164,18 +164,18 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentRatchetUIWithContext:(id)a3 options:(id)a4 completion:(id)a5
+- (void)_presentRatchetUIWithContext:(id)context options:(id)options completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, options);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
-  dispatch_group_enter(v39[3]);
+  objc_storeStrong(&v36, completion);
+  dispatch_group_enter(selfCopy[3]);
   v35 = +[AKBiometricRatchetUtility ratchetIdentifier];
   v34 = _AKLogSystem();
   v33 = OS_LOG_TYPE_DEBUG;
@@ -188,7 +188,7 @@
   objc_storeStrong(&v34, 0);
   v9 = objc_alloc(MEMORY[0x277CD47A8]);
   v8 = [v9 initWithIdentifier:v35];
-  [(dispatch_group_t *)v39 setRatchet:v8];
+  [(dispatch_group_t *)selfCopy setRatchet:v8];
   MEMORY[0x277D82BD8](v8);
   v27[0] = 0;
   v27[1] = v27;
@@ -215,7 +215,7 @@
   }
 
   objc_storeStrong(&v20, 0);
-  v6 = [(dispatch_group_t *)v39 ratchet];
+  ratchet = [(dispatch_group_t *)selfCopy ratchet];
   v5 = v37;
   v12 = MEMORY[0x277D85DD0];
   v13 = -1073741824;
@@ -225,9 +225,9 @@
   v18[1] = v27;
   v18[2] = v21;
   v18[0] = MEMORY[0x277D82BE0](v36);
-  v17 = MEMORY[0x277D82BE0](v39);
-  [v6 armWithOptions:v5 completion:&v12];
-  MEMORY[0x277D82BD8](v6);
+  v17 = MEMORY[0x277D82BE0](selfCopy);
+  [ratchet armWithOptions:v5 completion:&v12];
+  MEMORY[0x277D82BD8](ratchet);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(v18, 0);
   _Block_object_dispose(v21, 8);
@@ -328,19 +328,19 @@ void __83__AKBiometricRatchetiOSUIProvider__presentRatchetUIWithContext_options_
   *MEMORY[0x277D85DE8];
 }
 
-- (void)presentRatchetUIWithCompletion:(id)a3
+- (void)presentRatchetUIWithCompletion:(id)completion
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v30->_context);
-  v27 = [(AKBiometricRatchetiOSUIProvider *)v30 _makeRatchetOptions:WeakRetained];
+  objc_storeStrong(location, completion);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_context);
+  v27 = [(AKBiometricRatchetiOSUIProvider *)selfCopy _makeRatchetOptions:WeakRetained];
   v3 = dispatch_group_create();
-  dispatchGroup = v30->_dispatchGroup;
-  v30->_dispatchGroup = v3;
+  dispatchGroup = selfCopy->_dispatchGroup;
+  selfCopy->_dispatchGroup = v3;
   MEMORY[0x277D82BD8](dispatchGroup);
-  dispatch_group_enter(v30->_dispatchGroup);
+  dispatch_group_enter(selfCopy->_dispatchGroup);
   v21[0] = 0;
   v21[1] = v21;
   v22 = 838860800;
@@ -348,26 +348,26 @@ void __83__AKBiometricRatchetiOSUIProvider__presentRatchetUIWithContext_options_
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  v10 = v30;
+  v10 = selfCopy;
   v9 = WeakRetained;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___block_invoke;
   v19[3] = &unk_2784A5BF0;
   v20[1] = v21;
-  v20[0] = MEMORY[0x277D82BE0](v30);
+  v20[0] = MEMORY[0x277D82BE0](selfCopy);
   [(AKBiometricRatchetiOSUIProvider *)v10 _disableFindMyIfRequiredWithContext:v9 completion:v19];
-  v8 = [WeakRetained metaContext];
-  MEMORY[0x277D82BD8](v8);
-  if (v8)
+  metaContext = [WeakRetained metaContext];
+  MEMORY[0x277D82BD8](metaContext);
+  if (metaContext)
   {
-    [(AKBiometricRatchetiOSUIProvider *)v30 setRatchetArmCompletion:location[0]];
-    [(AKBiometricRatchetiOSUIProvider *)v30 _presentEmbeddedRatchetUIWithOptions:v27];
+    [(AKBiometricRatchetiOSUIProvider *)selfCopy setRatchetArmCompletion:location[0]];
+    [(AKBiometricRatchetiOSUIProvider *)selfCopy _presentEmbeddedRatchetUIWithOptions:v27];
   }
 
   else
   {
-    v7 = v30;
+    v7 = selfCopy;
     v5 = WeakRetained;
     v6 = v27;
     v11 = MEMORY[0x277D85DD0];
@@ -375,7 +375,7 @@ void __83__AKBiometricRatchetiOSUIProvider__presentRatchetUIWithContext_options_
     v13 = 0;
     v14 = __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___block_invoke_40;
     v15 = &unk_2784A5C40;
-    v16 = MEMORY[0x277D82BE0](v30);
+    v16 = MEMORY[0x277D82BE0](selfCopy);
     v18[1] = v21;
     v17 = MEMORY[0x277D82BE0](WeakRetained);
     v18[0] = MEMORY[0x277D82BE0](location[0]);
@@ -485,25 +485,25 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_makeRatchetOptions:(id)a3
+- (id)_makeRatchetOptions:(id)options
 {
-  v61 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] presentingViewController];
-  contextViewController = v61->_contextViewController;
-  v61->_contextViewController = v3;
+  objc_storeStrong(location, options);
+  presentingViewController = [location[0] presentingViewController];
+  contextViewController = selfCopy->_contextViewController;
+  selfCopy->_contextViewController = presentingViewController;
   MEMORY[0x277D82BD8](contextViewController);
-  v23 = [location[0] beginRatchetTitle];
+  beginRatchetTitle = [location[0] beginRatchetTitle];
   v57 = 0;
   v55 = 0;
   v53 = 0;
-  if (v23)
+  if (beginRatchetTitle)
   {
-    v58 = [location[0] beginRatchetTitle];
+    beginRatchetTitle2 = [location[0] beginRatchetTitle];
     v57 = 1;
-    v5 = MEMORY[0x277D82BE0](v58);
+    v5 = MEMORY[0x277D82BE0](beginRatchetTitle2);
   }
 
   else
@@ -528,19 +528,19 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
   if (v57)
   {
-    MEMORY[0x277D82BD8](v58);
+    MEMORY[0x277D82BD8](beginRatchetTitle2);
   }
 
-  MEMORY[0x277D82BD8](v23);
-  v22 = [location[0] beginRatchetBody];
+  MEMORY[0x277D82BD8](beginRatchetTitle);
+  beginRatchetBody = [location[0] beginRatchetBody];
   v50 = 0;
   v48 = 0;
   v46 = 0;
-  if (v22)
+  if (beginRatchetBody)
   {
-    v51 = [location[0] beginRatchetBody];
+    beginRatchetBody2 = [location[0] beginRatchetBody];
     v50 = 1;
-    v6 = MEMORY[0x277D82BE0](v51);
+    v6 = MEMORY[0x277D82BE0](beginRatchetBody2);
   }
 
   else
@@ -565,19 +565,19 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
   if (v50)
   {
-    MEMORY[0x277D82BD8](v51);
+    MEMORY[0x277D82BD8](beginRatchetBody2);
   }
 
-  MEMORY[0x277D82BD8](v22);
-  v21 = [location[0] countdownText];
+  MEMORY[0x277D82BD8](beginRatchetBody);
+  countdownText = [location[0] countdownText];
   v43 = 0;
   v41 = 0;
   v39 = 0;
-  if (v21)
+  if (countdownText)
   {
-    v44 = [location[0] countdownText];
+    countdownText2 = [location[0] countdownText];
     v43 = 1;
-    v7 = MEMORY[0x277D82BE0](v44);
+    v7 = MEMORY[0x277D82BE0](countdownText2);
   }
 
   else
@@ -602,19 +602,19 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
   if (v43)
   {
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](countdownText2);
   }
 
-  MEMORY[0x277D82BD8](v21);
-  v20 = [location[0] reason];
+  MEMORY[0x277D82BD8](countdownText);
+  reason = [location[0] reason];
   v36 = 0;
   v34 = 0;
   v32 = 0;
-  if (v20)
+  if (reason)
   {
-    v37 = [location[0] reason];
+    reason2 = [location[0] reason];
     v36 = 1;
-    v8 = MEMORY[0x277D82BE0](v37);
+    v8 = MEMORY[0x277D82BE0](reason2);
   }
 
   else
@@ -639,19 +639,19 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
   if (v36)
   {
-    MEMORY[0x277D82BD8](v37);
+    MEMORY[0x277D82BD8](reason2);
   }
 
-  MEMORY[0x277D82BD8](v20);
-  v19 = [location[0] calloutReason];
+  MEMORY[0x277D82BD8](reason);
+  calloutReason = [location[0] calloutReason];
   v29 = 0;
   v27 = 0;
   v25 = 0;
-  if (v19)
+  if (calloutReason)
   {
-    v30 = [location[0] calloutReason];
+    calloutReason2 = [location[0] calloutReason];
     v29 = 1;
-    v9 = MEMORY[0x277D82BE0](v30);
+    v9 = MEMORY[0x277D82BE0](calloutReason2);
   }
 
   else
@@ -676,17 +676,17 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
   if (v29)
   {
-    MEMORY[0x277D82BD8](v30);
+    MEMORY[0x277D82BD8](calloutReason2);
   }
 
-  MEMORY[0x277D82BD8](v19);
+  MEMORY[0x277D82BD8](calloutReason);
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v24 setObject:v38 forKeyedSubscript:&unk_2835AACD8];
   [v24 setObject:v31 forKeyedSubscript:&unk_2835AACC0];
-  [v24 setObject:v61->_contextViewController forKeyedSubscript:&unk_2835AACF0];
-  v11 = [location[0] deeplinkURL];
+  [v24 setObject:selfCopy->_contextViewController forKeyedSubscript:&unk_2835AACF0];
+  deeplinkURL = [location[0] deeplinkURL];
   [v24 setObject:? forKeyedSubscript:?];
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](deeplinkURL);
   v12 = objc_alloc(MEMORY[0x277CCABB0]);
   v13 = [v12 initWithBool:{objc_msgSend(location[0], "fallbackToNoAuth")}];
   [v24 setObject:? forKeyedSubscript:?];
@@ -716,39 +716,39 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
 
 - (void)_rightNavButtonTapped
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = objc_loadWeakRetained(&self->_context);
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CD4770] code:-2 userInfo:?];
-  v6 = [(AKBiometricRatchetiOSUIProvider *)v10 ratchetArmCompletion];
-  v6[2](v6, 0, v8);
-  MEMORY[0x277D82BD8](v6);
-  contextViewController = v10->_contextViewController;
+  ratchetArmCompletion = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetArmCompletion];
+  ratchetArmCompletion[2](ratchetArmCompletion, 0, v8);
+  MEMORY[0x277D82BD8](ratchetArmCompletion);
+  contextViewController = selfCopy->_contextViewController;
   if (objc_opt_respondsToSelector())
   {
-    v7 = MEMORY[0x277D82BE0](v10->_contextViewController);
+    v7 = MEMORY[0x277D82BE0](selfCopy->_contextViewController);
     [v7 rightNavButtonTapped];
     objc_storeStrong(&v7, 0);
   }
 
-  v5 = [(AKBiometricRatchetiOSUIProvider *)v10 ratchetViewController:v9[0]];
+  v5 = [(AKBiometricRatchetiOSUIProvider *)selfCopy ratchetViewController:v9[0]];
   [v4 _dismissRatchetUIForContext:v3 viewController:?];
   MEMORY[0x277D82BD8](v5);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(v9, 0);
 }
 
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, result);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, error);
   v42 = _AKLogSystem();
   v41 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -778,7 +778,7 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
   v36 = __Block_byref_object_copy_;
   v37 = __Block_byref_object_dispose_;
   v38 = 0;
-  WeakRetained = objc_loadWeakRetained(&v46->_context);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_context);
   v13 = [v44 objectForKeyedSubscript:&unk_2835AACC0];
   MEMORY[0x277D82BD8](v13);
   if (v13)
@@ -797,9 +797,9 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
     MEMORY[0x277D82BD8](v8);
     if (v43)
     {
-      v12 = [v43 userInfo];
-      v31 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
-      MEMORY[0x277D82BD8](v12);
+      userInfo = [v43 userInfo];
+      v31 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      MEMORY[0x277D82BD8](userInfo);
       v30 = _AKLogSystem();
       v29 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -823,9 +823,9 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
     }
   }
 
-  dispatch_group_leave(v46->_dispatchGroup);
-  objc_initWeak(&from, v46);
-  group = v46->_dispatchGroup;
+  dispatch_group_leave(selfCopy->_dispatchGroup);
+  objc_initWeak(&from, selfCopy);
+  group = selfCopy->_dispatchGroup;
   v9 = MEMORY[0x277D85CD0];
   queue = MEMORY[0x277D85CD0];
   v17 = MEMORY[0x277D85DD0];
@@ -837,7 +837,7 @@ void __66__AKBiometricRatchetiOSUIProvider_presentRatchetUIWithCompletion___bloc
   v26[1] = v33;
   v22 = MEMORY[0x277D82BE0](v39);
   v23 = MEMORY[0x277D82BE0](WeakRetained);
-  v24 = MEMORY[0x277D82BE0](v46);
+  v24 = MEMORY[0x277D82BE0](selfCopy);
   v25 = MEMORY[0x277D82BE0](v40);
   v26[0] = MEMORY[0x277D82BE0](location[0]);
   dispatch_group_notify(group, queue, &v17);
@@ -884,17 +884,17 @@ void __83__AKBiometricRatchetiOSUIProvider_ratchetViewController_didFinishWithRe
   objc_storeStrong(location, 0);
 }
 
-- (void)_dismissRatchetUIForContext:(id)a3 viewController:(id)a4
+- (void)_dismissRatchetUIForContext:(id)context viewController:(id)controller
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  v12 = [location[0] embeddedUIPresentationMode];
-  v13 = [v12 isEqualToString:@"Modal"];
-  MEMORY[0x277D82BD8](v12);
+  objc_storeStrong(&v26, controller);
+  embeddedUIPresentationMode = [location[0] embeddedUIPresentationMode];
+  v13 = [embeddedUIPresentationMode isEqualToString:@"Modal"];
+  MEMORY[0x277D82BD8](embeddedUIPresentationMode);
   if (v13)
   {
     v25 = _AKLogSystem();
@@ -914,7 +914,7 @@ void __83__AKBiometricRatchetiOSUIProvider_ratchetViewController_didFinishWithRe
     v19 = 0;
     v20 = __78__AKBiometricRatchetiOSUIProvider__dismissRatchetUIForContext_viewController___block_invoke;
     v21 = &unk_2784A5C90;
-    v22 = MEMORY[0x277D82BE0](v28);
+    v22 = MEMORY[0x277D82BE0](selfCopy);
     [v8 dismissViewControllerAnimated:1 completion:&v17];
     objc_storeStrong(&v22, 0);
   }
@@ -932,31 +932,31 @@ void __83__AKBiometricRatchetiOSUIProvider_ratchetViewController_didFinishWithRe
     }
 
     objc_storeStrong(&v16, 0);
-    v5 = [v26 navigationController];
-    v4 = [v5 popViewControllerAnimated:1];
-    MEMORY[0x277D82BD8](v5);
-    [(AKBiometricRatchetiOSUIProvider *)v28 setRatchetViewController:0];
+    navigationController = [v26 navigationController];
+    v4 = [navigationController popViewControllerAnimated:1];
+    MEMORY[0x277D82BD8](navigationController);
+    [(AKBiometricRatchetiOSUIProvider *)selfCopy setRatchetViewController:0];
   }
 
   objc_storeStrong(&v26, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_disableFindMyIfRequiredWithContext:(id)a3 completion:(id)a4
+- (void)_disableFindMyIfRequiredWithContext:(id)context completion:(id)completion
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, completion);
   if ([location[0] showsLocationWarning])
   {
-    objc_initWeak(&from, v27);
-    findMyManager = v27->_findMyManager;
+    objc_initWeak(&from, selfCopy);
+    findMyManager = selfCopy->_findMyManager;
     if (objc_opt_respondsToSelector())
     {
-      v9 = v27->_findMyManager;
+      v9 = selfCopy->_findMyManager;
       v17 = MEMORY[0x277D85DD0];
       v18 = -1073741824;
       v19 = 0;
@@ -1163,20 +1163,20 @@ void __82__AKBiometricRatchetiOSUIProvider__disableFindMyIfRequiredWithContext_c
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_displayFindMyDisablementFailedErrorWithContext:(id)a3
+- (void)_displayFindMyDisablementFailedErrorWithContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = [location[0] presentingViewController];
+  objc_storeStrong(location, context);
+  presentingViewController = [location[0] presentingViewController];
   v6 = MEMORY[0x277D75110];
-  v8 = [location[0] findMyErrorTitle];
-  v7 = [location[0] findMyErrorMessage];
-  v17 = [v6 alertControllerWithTitle:v8 message:? preferredStyle:?];
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  findMyErrorTitle = [location[0] findMyErrorTitle];
+  findMyErrorMessage = [location[0] findMyErrorMessage];
+  v17 = [v6 alertControllerWithTitle:findMyErrorTitle message:? preferredStyle:?];
+  MEMORY[0x277D82BD8](findMyErrorMessage);
+  MEMORY[0x277D82BD8](findMyErrorTitle);
   v9 = MEMORY[0x277D750F8];
   v12 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.AuthKit"];
   v11 = [v12 localizedStringForKey:@"ALERT_DEFAULT_BUTTON" value:&stru_28358EF68 table:@"Localizable"];
@@ -1185,12 +1185,12 @@ void __82__AKBiometricRatchetiOSUIProvider__disableFindMyIfRequiredWithContext_c
   MEMORY[0x277D82BD8](v10);
   MEMORY[0x277D82BD8](v11);
   MEMORY[0x277D82BD8](v12);
-  if (v18)
+  if (presentingViewController)
   {
     v13 = _AKLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      __os_log_helper_16_2_1_8_64(v20, v18);
+      __os_log_helper_16_2_1_8_64(v20, presentingViewController);
       _os_log_debug_impl(&dword_222379000, v13, OS_LOG_TYPE_DEBUG, "presentingViewController - %@", v20, 0xCu);
     }
 
@@ -1212,9 +1212,9 @@ void __82__AKBiometricRatchetiOSUIProvider__disableFindMyIfRequiredWithContext_c
     objc_storeStrong(&v16, 0);
   }
 
-  [v18 presentViewController:v17 animated:1 completion:&v17];
+  [presentingViewController presentViewController:v17 animated:1 completion:&v17];
   objc_storeStrong(v3, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&presentingViewController, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }

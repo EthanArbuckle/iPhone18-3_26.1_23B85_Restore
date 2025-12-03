@@ -1,25 +1,25 @@
 @interface _UISliderGlassVisualElement
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)additionalTrackingViews;
 - (UIEdgeInsets)thumbHitEdgeInsets;
-- (void)didSetThumbImageForState:(unint64_t)a3;
+- (void)didSetThumbImageForState:(unint64_t)state;
 - (void)didSetThumbImageForStates;
 - (void)didSetThumbTintColor;
 - (void)didUpdateSliderStyle;
-- (void)handleExpansionGesture:(id)a3;
+- (void)handleExpansionGesture:(id)gesture;
 @end
 
 @implementation _UISliderGlassVisualElement
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_188BFF438(x, y, width, height);
   v11 = v10;
   v13 = v12;
@@ -40,7 +40,7 @@
 - (NSArray)additionalTrackingViews
 {
   v2 = *((*MEMORY[0x1E69E7D40] & *self->_TtC5UIKit27_UISliderFluidVisualElement_opaque) + 0x4F8);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -52,7 +52,7 @@
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA933EB0);
     v5 = swift_allocObject();
     *(v5 + 16) = xmmword_18A64B710;
-    v6 = *&v3->_TtC5UIKit27_UISliderFluidVisualElement_opaque[OBJC_IVAR____TtC5UIKit27_UISliderGlassVisualElement_lensView];
+    v6 = *&selfCopy->_TtC5UIKit27_UISliderFluidVisualElement_opaque[OBJC_IVAR____TtC5UIKit27_UISliderGlassVisualElement_lensView];
     *(v5 + 32) = v6;
     v7 = v6;
 
@@ -65,16 +65,16 @@
   return v4;
 }
 
-- (void)handleExpansionGesture:(id)a3
+- (void)handleExpansionGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  sub_188E99B10(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  sub_188E99B10(gestureCopy);
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  v3 = self;
+  selfCopy = self;
   sub_188E99D98();
   v5 = v4;
   v7 = v6;
@@ -86,9 +86,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UISliderGlassVisualElement *)self _intrinsicSizeWithinSize:a3.width, a3.height];
+  [(_UISliderGlassVisualElement *)self _intrinsicSizeWithinSize:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -96,31 +96,31 @@
 
 - (void)didSetThumbImageForStates
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E99F7C();
 }
 
-- (void)didSetThumbImageForState:(unint64_t)a3
+- (void)didSetThumbImageForState:(unint64_t)state
 {
-  v3 = self;
+  selfCopy = self;
   sub_188E99F7C();
 }
 
 - (void)didSetThumbTintColor
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E9A340();
 }
 
 - (void)didUpdateSliderStyle
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E9A448();
 }
 
 - (UIEdgeInsets)thumbHitEdgeInsets
 {
-  v2 = self;
+  selfCopy = self;
   sub_188E9A594();
   v4 = v3;
   v6 = v5;

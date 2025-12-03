@@ -1,18 +1,18 @@
 @interface BMSegmentManagerProtectedState
-- (BMSegmentManagerProtectedState)initWithDeviceStateIsUnlocked:(BOOL)a3;
+- (BMSegmentManagerProtectedState)initWithDeviceStateIsUnlocked:(BOOL)unlocked;
 - (uint64_t)error;
 - (uint64_t)isDataAccessible;
 - (uint64_t)segmentFileHandles;
 - (uint64_t)segmentNames;
 - (uint64_t)setIsDataAccessible:(uint64_t)result;
-- (void)setError:(uint64_t)a1;
-- (void)setSegmentFileHandles:(uint64_t)a1;
-- (void)setSegmentNames:(uint64_t)a1;
+- (void)setError:(uint64_t)error;
+- (void)setSegmentFileHandles:(uint64_t)handles;
+- (void)setSegmentNames:(uint64_t)names;
 @end
 
 @implementation BMSegmentManagerProtectedState
 
-- (BMSegmentManagerProtectedState)initWithDeviceStateIsUnlocked:(BOOL)a3
+- (BMSegmentManagerProtectedState)initWithDeviceStateIsUnlocked:(BOOL)unlocked
 {
   v12.receiver = self;
   v12.super_class = BMSegmentManagerProtectedState;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_isDataAccessible = a3;
+    v4->_isDataAccessible = unlocked;
     v6 = objc_opt_new();
     segmentNames = v5->_segmentNames;
     v5->_segmentNames = v6;
@@ -38,9 +38,9 @@
 
 - (uint64_t)isDataAccessible
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -71,11 +71,11 @@
   return result;
 }
 
-- (void)setSegmentNames:(uint64_t)a1
+- (void)setSegmentNames:(uint64_t)names
 {
-  if (a1)
+  if (names)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((names + 16), a2);
   }
 }
 
@@ -89,11 +89,11 @@
   return result;
 }
 
-- (void)setSegmentFileHandles:(uint64_t)a1
+- (void)setSegmentFileHandles:(uint64_t)handles
 {
-  if (a1)
+  if (handles)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((handles + 24), a2);
   }
 }
 
@@ -107,11 +107,11 @@
   return result;
 }
 
-- (void)setError:(uint64_t)a1
+- (void)setError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((error + 32), a2);
   }
 }
 

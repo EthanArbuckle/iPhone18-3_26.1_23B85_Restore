@@ -1,20 +1,20 @@
 @interface PAEContrast
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (CGPoint)calculateBezier:(double)a3 startPt:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPt:(CGPoint)a7;
-- (PAEContrast)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (CGPoint)calculateBezier:(double)bezier startPt:(CGPoint)pt controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPt:(CGPoint)endPt;
+- (PAEContrast)initWithAPIManager:(id)manager;
 - (id)properties;
-- (void)generateLut:(RGBAfPixel *)a3 forContrast:(double)a4 andPivot:(double)a5;
+- (void)generateLut:(RGBAfPixel *)lut forContrast:(double)contrast andPivot:(double)pivot;
 @end
 
 @implementation PAEContrast
 
-- (PAEContrast)initWithAPIManager:(id)a3
+- (PAEContrast)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEContrast;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -64,23 +64,23 @@ uint64_t __25__PAEContrast_properties__block_invoke()
   return v3 != 0;
 }
 
-- (CGPoint)calculateBezier:(double)a3 startPt:(CGPoint)a4 controlPoint1:(CGPoint)a5 controlPoint2:(CGPoint)a6 endPt:(CGPoint)a7
+- (CGPoint)calculateBezier:(double)bezier startPt:(CGPoint)pt controlPoint1:(CGPoint)point1 controlPoint2:(CGPoint)point2 endPt:(CGPoint)endPt
 {
-  v7 = 1.0 - a3;
+  v7 = 1.0 - bezier;
   v8 = v7 * (v7 * v7);
-  v9 = v7 * v7 * 3.0 * a3;
-  v10 = a4.x * v8 + a5.x * v9;
-  v11 = a3 * a3 * ((1.0 - a3) * 3.0);
-  v12 = v11 * a6.x + v10;
-  v13 = a3 * a3 * a3;
-  v14 = v13 * a7.x + v12;
-  v15 = v13 * a7.y + v11 * a6.y + a4.y * v8 + a5.y * v9;
+  v9 = v7 * v7 * 3.0 * bezier;
+  v10 = pt.x * v8 + point1.x * v9;
+  v11 = bezier * bezier * ((1.0 - bezier) * 3.0);
+  v12 = v11 * point2.x + v10;
+  v13 = bezier * bezier * bezier;
+  v14 = v13 * endPt.x + v12;
+  v15 = v13 * endPt.y + v11 * point2.y + pt.y * v8 + point1.y * v9;
   result.y = v15;
   result.x = v14;
   return result;
 }
 
-- (void)generateLut:(RGBAfPixel *)a3 forContrast:(double)a4 andPivot:(double)a5
+- (void)generateLut:(RGBAfPixel *)lut forContrast:(double)contrast andPivot:(double)pivot
 {
   v5 = MEMORY[0x28223BE20](self);
   v7 = v6;
@@ -141,7 +141,7 @@ uint64_t __25__PAEContrast_properties__block_invoke()
   while (v18 != 1024);
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = v9;
@@ -151,17 +151,17 @@ uint64_t __25__PAEContrast_properties__block_invoke()
     v30 = 0.0;
     v28 = 0;
     v27 = 0;
-    [v9 getFloatValue:&v30 fromParm:1 atFxTime:a5->var0.var1];
-    [v10 getFloatValue:&v29 fromParm:2 atFxTime:a5->var0.var1];
-    [v10 getIntValue:&v27 fromParm:3 atFxTime:a5->var0.var1];
-    [v10 getBoolValue:&v28 + 1 fromParm:4 atFxTime:a5->var0.var1];
-    [v10 getBoolValue:&v28 fromParm:5 atFxTime:a5->var0.var1];
+    [v9 getFloatValue:&v30 fromParm:1 atFxTime:info->var0.var1];
+    [v10 getFloatValue:&v29 fromParm:2 atFxTime:info->var0.var1];
+    [v10 getIntValue:&v27 fromParm:3 atFxTime:info->var0.var1];
+    [v10 getBoolValue:&v28 + 1 fromParm:4 atFxTime:info->var0.var1];
+    [v10 getBoolValue:&v28 fromParm:5 atFxTime:info->var0.var1];
     v11 = v27;
-    [v10 mixAmountAtTime:a5->var0.var1];
+    [v10 mixAmountAtTime:info->var0.var1];
     v13 = v12;
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -178,10 +178,10 @@ uint64_t __25__PAEContrast_properties__block_invoke()
       v19 = HGObject::operator new(0x80uLL);
       HGBitmap::HGBitmap(v19, v16, v18, 28);
       [(PAEContrast *)self generateLut:*(v19 + 10) forContrast:v30 andPivot:v29];
-      [v10 getFloatValue:&v30 fromParm:1 atFxTime:a5->var0.var1];
-      [v10 getFloatValue:&v29 fromParm:2 atFxTime:a5->var0.var1];
-      [v10 getIntValue:&v27 fromParm:3 atFxTime:a5->var0.var1];
-      [v10 mixAmountAtTime:a5->var0.var1];
+      [v10 getFloatValue:&v30 fromParm:1 atFxTime:info->var0.var1];
+      [v10 getFloatValue:&v29 fromParm:2 atFxTime:info->var0.var1];
+      [v10 getIntValue:&v27 fromParm:3 atFxTime:info->var0.var1];
+      [v10 mixAmountAtTime:info->var0.var1];
       v20 = HGObject::operator new(0x1F0uLL);
       HGBitmapLoader::HGBitmapLoader(v20, v19);
       if (v28 == 1)
@@ -236,7 +236,7 @@ uint64_t __25__PAEContrast_properties__block_invoke()
         (*(*v25 + 16))(v25);
       }
 
-      [a3 setHeliumRef:v24];
+      [output setHeliumRef:v24];
       if (v24[0])
       {
         (*(*v24[0] + 24))(v24[0]);
@@ -268,7 +268,7 @@ uint64_t __25__PAEContrast_properties__block_invoke()
         (*(*v25 + 16))(v25);
       }
 
-      [a3 setHeliumRef:{v24, v22}];
+      [output setHeliumRef:{v24, v22}];
       if (v24[0])
       {
         (*(*v24[0] + 24))(v24[0]);
@@ -289,15 +289,15 @@ uint64_t __25__PAEContrast_properties__block_invoke()
   return v10 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

@@ -1,8 +1,8 @@
 @interface AVTStickerRecentsSwiftProvider
-+ (id)imageStoreWithEnvironment:(id)a3;
-+ (id)stickerCacheWithEnvironment:(id)a3;
-- (AVTStickerRecentsSwiftProvider)initWithDelegate:(id)a3;
-- (id)fetchRecents:(int64_t)a3 excludingStickersMatchingRules:(id)a4;
++ (id)imageStoreWithEnvironment:(id)environment;
++ (id)stickerCacheWithEnvironment:(id)environment;
+- (AVTStickerRecentsSwiftProvider)initWithDelegate:(id)delegate;
+- (id)fetchRecents:(int64_t)recents excludingStickersMatchingRules:(id)rules;
 - (void)_notifyStoreChanged;
 - (void)beginObservingAvatarStoreChanges;
 - (void)dealloc;
@@ -12,17 +12,17 @@
 
 @implementation AVTStickerRecentsSwiftProvider
 
-- (AVTStickerRecentsSwiftProvider)initWithDelegate:(id)a3
+- (AVTStickerRecentsSwiftProvider)initWithDelegate:(id)delegate
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = AVTStickerRecentsSwiftProvider;
   v5 = [(AVTStickerRecentsSwiftProvider *)&v39 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_recentsRequestedCount = 0;
     v7 = +[AVTUIEnvironment defaultEnvironment];
     environment = v6->_environment;
@@ -42,23 +42,23 @@
     [(AVTAvatarStore *)v12 setStickerBackendDelegate:v6];
     objc_storeStrong(&v6->_avatarStore, v11);
     v13 = [AVTUIStickerGeneratorPool alloc];
-    v14 = [(AVTUIEnvironment *)v6->_environment logger];
-    v15 = [(AVTUIStickerGeneratorPool *)v13 initWithMaxStickerGeneratorCount:1 logger:v14];
+    logger = [(AVTUIEnvironment *)v6->_environment logger];
+    v15 = [(AVTUIStickerGeneratorPool *)v13 initWithMaxStickerGeneratorCount:1 logger:logger];
     generatorPool = v6->_generatorPool;
     v6->_generatorPool = v15;
 
-    v17 = [(AVTUIEnvironment *)v6->_environment serialQueueProvider];
-    v18 = (v17)[2](v17, "com.apple.AvatarUI.StickerRecentsWorkQueue");
+    serialQueueProvider = [(AVTUIEnvironment *)v6->_environment serialQueueProvider];
+    v18 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.StickerRecentsWorkQueue");
     recentsWorkQueue = v6->_recentsWorkQueue;
     v6->_recentsWorkQueue = v18;
 
-    v20 = [(AVTUIEnvironment *)v6->_environment backgroundRenderingQueue];
+    backgroundRenderingQueue = [(AVTUIEnvironment *)v6->_environment backgroundRenderingQueue];
     renderingQueue = v6->_renderingQueue;
-    v6->_renderingQueue = v20;
+    v6->_renderingQueue = backgroundRenderingQueue;
 
-    v22 = [(AVTUIEnvironment *)v6->_environment backgroundEncodingQueue];
+    backgroundEncodingQueue = [(AVTUIEnvironment *)v6->_environment backgroundEncodingQueue];
     encodingQueue = v6->_encodingQueue;
-    v6->_encodingQueue = v22;
+    v6->_encodingQueue = backgroundEncodingQueue;
 
     v24 = [objc_opt_class() stickerCacheWithEnvironment:v6->_environment];
     cache = v6->_cache;
@@ -91,8 +91,8 @@
     stickerRecentsMigrator = v6->_stickerRecentsMigrator;
     v6->_stickerRecentsMigrator = v33;
 
-    v35 = [(AVTUIEnvironment *)v6->_environment coreEnvironment];
-    v36 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:v35];
+    coreEnvironment = [(AVTUIEnvironment *)v6->_environment coreEnvironment];
+    v36 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:coreEnvironment];
     taskScheduler = v6->_taskScheduler;
     v6->_taskScheduler = v36;
   }
@@ -102,8 +102,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;
@@ -113,14 +113,14 @@
   [(AVTStickerRecentsSwiftProvider *)&v5 dealloc];
 }
 
-+ (id)stickerCacheWithEnvironment:(id)a3
++ (id)stickerCacheWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
@@ -130,33 +130,33 @@
   return v6;
 }
 
-+ (id)imageStoreWithEnvironment:(id)a3
++ (id)imageStoreWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   if (!AVTUIStickersCaching() || AVTUIFlushStickersCache())
   {
-    v4 = [v3 stickerImageStoreLocation];
-    v5 = [v3 logger];
-    [AVTImageStore clearContentAtLocation:v4 logger:v5];
+    stickerImageStoreLocation = [environmentCopy stickerImageStoreLocation];
+    logger = [environmentCopy logger];
+    [AVTImageStore clearContentAtLocation:stickerImageStoreLocation logger:logger];
 
     AVTUISetFlushStickersCache();
   }
 
   v6 = +[AVTUIStickerRenderer imageEncoder];
   v7 = [AVTClippableImageStore alloc];
-  v8 = [v3 coreEnvironment];
-  v9 = [v3 stickerImageStoreLocation];
-  v10 = [(AVTImageStore *)v7 initWithEnvironment:v8 validateImages:1 location:v9 encoder:v6];
+  coreEnvironment = [environmentCopy coreEnvironment];
+  stickerImageStoreLocation2 = [environmentCopy stickerImageStoreLocation];
+  v10 = [(AVTImageStore *)v7 initWithEnvironment:coreEnvironment validateImages:1 location:stickerImageStoreLocation2 encoder:v6];
 
   return v10;
 }
 
-- (id)fetchRecents:(int64_t)a3 excludingStickersMatchingRules:(id)a4
+- (id)fetchRecents:(int64_t)recents excludingStickersMatchingRules:(id)rules
 {
   v73 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v44 = a3;
-  self->_recentsRequestedCount = a3;
+  rulesCopy = rules;
+  recentsCopy = recents;
+  self->_recentsRequestedCount = recents;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__AVTStickerRecentsSwiftProvider_fetchRecents_excludingStickersMatchingRules___block_invoke;
@@ -178,12 +178,12 @@
   v62 = __Block_byref_object_copy__13;
   v63 = __Block_byref_object_dispose__13;
   v64 = 0;
-  v47 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v57 = 0u;
   v58 = 0u;
   v56 = 0u;
   v55 = 0u;
-  obj = v6;
+  obj = rulesCopy;
   v7 = [obj countByEnumeratingWithState:&v55 objects:v72 count:16];
   if (v7)
   {
@@ -199,13 +199,13 @@
 
         v10 = *(*(&v55 + 1) + 8 * i);
         v11 = objc_alloc(MEMORY[0x1E698E358]);
-        v12 = [MEMORY[0x1E696AFB0] UUID];
-        v13 = [v12 UUIDString];
-        v14 = [v10 avatarRecordIdentifier];
-        v15 = [v10 stickerConfigurationIdentifier];
-        v16 = [v11 initWithIdentifier:v13 avatarRecordIdentifier:v14 stickerConfigurationIdentifier:v15 frequencySum:&unk_1F39A5B48 serializationVersion:&unk_1F39A5B60];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
+        avatarRecordIdentifier = [v10 avatarRecordIdentifier];
+        stickerConfigurationIdentifier = [v10 stickerConfigurationIdentifier];
+        v16 = [v11 initWithIdentifier:uUIDString avatarRecordIdentifier:avatarRecordIdentifier stickerConfigurationIdentifier:stickerConfigurationIdentifier frequencySum:&unk_1F39A5B48 serializationVersion:&unk_1F39A5B60];
 
-        [v47 addObject:v16];
+        [array addObject:v16];
       }
 
       v7 = [obj countByEnumeratingWithState:&v55 objects:v72 count:16];
@@ -214,7 +214,7 @@
     while (v7);
   }
 
-  v17 = [(AVTAvatarRecord *)val->_defaultMemoji identifier];
+  identifier = [(AVTAvatarRecord *)val->_defaultMemoji identifier];
   avatarStore = val->_avatarStore;
   v54[0] = MEMORY[0x1E69E9820];
   v54[1] = 3221225472;
@@ -222,29 +222,29 @@
   v54[3] = &unk_1E7F3B270;
   v54[4] = &v65;
   v54[5] = &v59;
-  [AVTStickerRecentsPresetsProvider filteredAndPaddedStickerRecordsWithRecents:MEMORY[0x1E695E0F0] excludingRecords:v47 paddingMemojiIdentifier:v17 avatarStore:avatarStore numberOfStickers:v44 resultBlock:v54];
+  [AVTStickerRecentsPresetsProvider filteredAndPaddedStickerRecordsWithRecents:MEMORY[0x1E695E0F0] excludingRecords:array paddingMemojiIdentifier:identifier avatarStore:avatarStore numberOfStickers:recentsCopy resultBlock:v54];
 
   v43 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v66[5], "count")}];
-  if (v44 >= 1)
+  if (recentsCopy >= 1)
   {
     v19 = 0;
     while (v19 < [v66[5] count])
     {
       v20 = [v66[5] objectAtIndexedSubscript:v19];
       v21 = v60[5];
-      v22 = [v20 avatarRecordIdentifier];
-      v23 = [v21 objectForKeyedSubscript:v22];
+      avatarRecordIdentifier2 = [v20 avatarRecordIdentifier];
+      v23 = [v21 objectForKeyedSubscript:avatarRecordIdentifier2];
 
       configurationProvider = val->_configurationProvider;
-      v25 = [v20 stickerConfigurationIdentifier];
-      v26 = [(AVTStickerConfigurationProvider *)configurationProvider stickerConfigurationForAvatarRecord:v23 stickerName:v25];
+      stickerConfigurationIdentifier2 = [v20 stickerConfigurationIdentifier];
+      v26 = [(AVTStickerConfigurationProvider *)configurationProvider stickerConfigurationForAvatarRecord:v23 stickerName:stickerConfigurationIdentifier2];
 
       if (!v26)
       {
         [(AVTStickerRecentsMigrator *)val->_stickerRecentsMigrator setNeedsMigrationOnNextLaunch];
-        v40 = [(AVTUIEnvironment *)val->_environment logger];
+        logger = [(AVTUIEnvironment *)val->_environment logger];
         v41 = [v20 description];
-        [v40 logFetchedRecentStickerWithNoStickerConfiguration:v41];
+        [logger logFetchedRecentStickerWithNoStickerConfiguration:v41];
 
         v39 = MEMORY[0x1E695E0F0];
         v38 = v43;
@@ -257,8 +257,8 @@
 
       v30 = [(AVTUIStickerRenderer *)v29 scheduledStickerResourceProviderForStickerConfiguration:v26];
       v31 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v32 = [v20 identifier];
-      v33 = [v31 initWithUUIDString:v32];
+      identifier2 = [v20 identifier];
+      v33 = [v31 initWithUUIDString:identifier2];
 
       objc_initWeak(&location, val);
       v48[0] = MEMORY[0x1E69E9820];
@@ -283,7 +283,7 @@
       objc_destroyWeak(&v52);
       objc_destroyWeak(&location);
 
-      if (v44 == ++v19)
+      if (recentsCopy == ++v19)
       {
         break;
       }
@@ -336,21 +336,21 @@ void __78__AVTStickerRecentsSwiftProvider_fetchRecents_excludingStickersMatching
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1BB341000, a2, OS_LOG_TYPE_ERROR, "Unable to fetch default memoji: %@", &v2, 0xCu);
 }
 
 - (void)beginObservingAvatarStoreChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E698E308];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__AVTStickerRecentsSwiftProvider_beginObservingAvatarStoreChanges__block_invoke;
   v7[3] = &unk_1E7F3B248;
   objc_copyWeak(&v8, &location);
-  v5 = [v3 addObserverForName:v4 object:0 queue:0 usingBlock:v7];
+  v5 = [defaultCenter addObserverForName:v4 object:0 queue:0 usingBlock:v7];
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = v5;
 
@@ -366,8 +366,8 @@ void __66__AVTStickerRecentsSwiftProvider_beginObservingAvatarStoreChanges__bloc
 
 - (void)endObservingAvatarStoreChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_avatarStoreChangeObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_avatarStoreChangeObserver];
 
   avatarStoreChangeObserver = self->_avatarStoreChangeObserver;
   self->_avatarStoreChangeObserver = 0;

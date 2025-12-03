@@ -2,17 +2,17 @@
 + (id)defaultShadowColor;
 + (id)shadow;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)shadowOffset;
 - (NSShadow)init;
 - (NSShadow)initWithCoder:(NSCoder *)coder;
-- (NSShadow)initWithShadow:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSShadow)initWithShadow:(id)shadow;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)shadowColor;
-- (void)applyToGraphicsContext:(id)a3;
+- (void)applyToGraphicsContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setShadowColor:(id)shadowColor;
 @end
 
@@ -46,10 +46,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     [NSShadow setVersion:1];
-    __NSShadowClass = a1;
+    __NSShadowClass = self;
   }
 }
 
@@ -67,22 +67,22 @@
   [(NSShadow *)&v3 dealloc];
 }
 
-- (void)applyToGraphicsContext:(id)a3
+- (void)applyToGraphicsContext:(id)context
 {
   width = self->_shadowOffset.width;
   height = self->_shadowOffset.height;
-  v6 = [a3 CGContext];
-  v7 = v6;
+  cGContext = [context CGContext];
+  v7 = cGContext;
   if (self->_shadowFlags)
   {
-    v11 = [(NSColor *)self->_shadowColor CGColor];
-    if (v11)
+    cGColor = [(NSColor *)self->_shadowColor CGColor];
+    if (cGColor)
     {
       shadowBlurRadius = self->_shadowBlurRadius;
       v13 = width;
       v14 = height;
 
-      CGContextSetShadowWithColor(v7, *&v13, shadowBlurRadius, v11);
+      CGContextSetShadowWithColor(v7, *&v13, shadowBlurRadius, cGColor);
     }
   }
 
@@ -92,13 +92,13 @@
     v9 = width;
     v10 = height;
 
-    CGContextSetShadow(v6, *&v9, v8);
+    CGContextSetShadow(cGContext, *&v9, v8);
   }
 }
 
 + (id)shadow
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -115,66 +115,66 @@
   return result;
 }
 
-- (NSShadow)initWithShadow:(id)a3
+- (NSShadow)initWithShadow:(id)shadow
 {
   v4 = [(NSShadow *)self init];
   v5 = v4;
-  if (a3 && v4)
+  if (shadow && v4)
   {
-    if (object_getClass(v4) == __NSShadowClass && object_getClass(a3) == __NSShadowClass)
+    if (object_getClass(v4) == __NSShadowClass && object_getClass(shadow) == __NSShadowClass)
     {
-      v5->_shadowOffset = *(a3 + 1);
-      v5->_shadowBlurRadius = *(a3 + 4);
-      v7 = *(a3 + 1);
+      v5->_shadowOffset = *(shadow + 1);
+      v5->_shadowBlurRadius = *(shadow + 4);
+      v7 = *(shadow + 1);
       v5->_shadowFlags = v7;
       if (v7)
       {
-        v5->_shadowColor = [*(a3 + 5) copyWithZone:{-[NSShadow zone](v5, "zone")}];
+        v5->_shadowColor = [*(shadow + 5) copyWithZone:{-[NSShadow zone](v5, "zone")}];
       }
     }
 
     else
     {
-      [a3 shadowOffset];
+      [shadow shadowOffset];
       [(NSShadow *)v5 setShadowOffset:?];
-      [a3 shadowBlurRadius];
+      [shadow shadowBlurRadius];
       [(NSShadow *)v5 setShadowBlurRadius:?];
-      -[NSShadow setShadowColor:](v5, "setShadowColor:", [a3 shadowColor]);
+      -[NSShadow setShadowColor:](v5, "setShadowColor:", [shadow shadowColor]);
     }
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithShadow:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_20;
   }
 
-  if (!a3)
+  if (!equal)
   {
 LABEL_16:
     LOBYTE(v11) = 0;
     return v11;
   }
 
-  if (object_getClass(self) != __NSShadowClass || object_getClass(a3) != __NSShadowClass)
+  if (object_getClass(self) != __NSShadowClass || object_getClass(equal) != __NSShadowClass)
   {
     if (objc_opt_isKindOfClass())
     {
       [(NSShadow *)self shadowOffset];
       v6 = v5;
       v8 = v7;
-      [a3 shadowOffset];
+      [equal shadowOffset];
       v22.width = v9;
       v22.height = v10;
       v21.width = v6;
@@ -187,15 +187,15 @@ LABEL_16:
 
       [(NSShadow *)self shadowBlurRadius];
       v13 = v12;
-      [a3 shadowBlurRadius];
+      [equal shadowBlurRadius];
       if (v13 == v14)
       {
-        v15 = [(NSShadow *)self shadowColor];
-        v16 = [a3 shadowColor];
-        if (v15 != v16)
+        shadowColor = [(NSShadow *)self shadowColor];
+        shadowColor2 = [equal shadowColor];
+        if (shadowColor != shadowColor2)
         {
-          v17 = v16;
-          shadowColor = v15;
+          v17 = shadowColor2;
+          shadowColor = shadowColor;
           goto LABEL_10;
         }
 
@@ -208,18 +208,18 @@ LABEL_20:
     goto LABEL_16;
   }
 
-  if (self->_shadowOffset.width != *(a3 + 2) || self->_shadowOffset.height != *(a3 + 3) || self->_shadowBlurRadius != *(a3 + 4))
+  if (self->_shadowOffset.width != *(equal + 2) || self->_shadowOffset.height != *(equal + 3) || self->_shadowBlurRadius != *(equal + 4))
   {
     goto LABEL_16;
   }
 
-  if ((self->_shadowFlags & 1) == 0 && (*(a3 + 8) & 1) == 0)
+  if ((self->_shadowFlags & 1) == 0 && (*(equal + 8) & 1) == 0)
   {
     goto LABEL_20;
   }
 
   shadowColor = self->_shadowColor;
-  v17 = *(a3 + 5);
+  v17 = *(equal + 5);
   if (shadowColor == v17)
   {
     goto LABEL_20;
@@ -245,29 +245,29 @@ LABEL_10:
   objc_sync_exit(self);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self->_shadowOffset.width != 0.0)
   {
-    [a3 encodeDouble:@"NSShadowHoriz" forKey:?];
+    [coder encodeDouble:@"NSShadowHoriz" forKey:?];
   }
 
   height = self->_shadowOffset.height;
   if (height != 0.0)
   {
-    [a3 encodeDouble:@"NSShadowVert" forKey:-height];
+    [coder encodeDouble:@"NSShadowVert" forKey:-height];
   }
 
   if (self->_shadowBlurRadius != 0.0)
   {
-    [a3 encodeDouble:@"NSShadowBlurRadius" forKey:?];
+    [coder encodeDouble:@"NSShadowBlurRadius" forKey:?];
   }
 
   if (self->_shadowFlags)
   {
     shadowColor = self->_shadowColor;
 
-    [a3 encodeObject:shadowColor forKey:@"NSShadowColor"];
+    [coder encodeObject:shadowColor forKey:@"NSShadowColor"];
   }
 }
 

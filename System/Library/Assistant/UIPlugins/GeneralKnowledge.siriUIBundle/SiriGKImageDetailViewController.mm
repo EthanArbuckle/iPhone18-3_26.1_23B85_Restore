@@ -1,37 +1,37 @@
 @interface SiriGKImageDetailViewController
-- (SiriGKImageDetailViewController)initWithImageViewSnippet:(id)a3;
-- (double)desiredHeightForWidth:(double)a3;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
+- (SiriGKImageDetailViewController)initWithImageViewSnippet:(id)snippet;
+- (double)desiredHeightForWidth:(double)width;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
 - (id)dragItem;
 - (void)loadView;
-- (void)setAceObject:(id)a3;
-- (void)siriGeneralKnowledgeImageDetailViewImageTapped:(id)a3;
+- (void)setAceObject:(id)object;
+- (void)siriGeneralKnowledgeImageDetailViewImageTapped:(id)tapped;
 @end
 
 @implementation SiriGKImageDetailViewController
 
-- (SiriGKImageDetailViewController)initWithImageViewSnippet:(id)a3
+- (SiriGKImageDetailViewController)initWithImageViewSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v8.receiver = self;
   v8.super_class = SiriGKImageDetailViewController;
   v5 = [(SiriGKImageDetailViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SiriGKImageDetailViewController *)v5 setAceObject:v4];
+    [(SiriGKImageDetailViewController *)v5 setAceObject:snippetCopy];
   }
 
   return v6;
 }
 
-- (void)setAceObject:(id)a3
+- (void)setAceObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = SiriGKImageDetailViewController;
-  [(SiriGKImageDetailViewController *)&v7 setAceObject:v5];
+  [(SiriGKImageDetailViewController *)&v7 setAceObject:objectCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -39,33 +39,33 @@
   }
 
   imageViewSnippet = self->_imageViewSnippet;
-  self->_imageViewSnippet = v5;
+  self->_imageViewSnippet = objectCopy;
 }
 
-- (void)siriGeneralKnowledgeImageDetailViewImageTapped:(id)a3
+- (void)siriGeneralKnowledgeImageDetailViewImageTapped:(id)tapped
 {
-  v4 = [(SAUIImageView *)self->_imageViewSnippet commands];
+  commands = [(SAUIImageView *)self->_imageViewSnippet commands];
 
-  v8 = [(SiriGKImageDetailViewController *)self delegate];
+  delegate = [(SiriGKImageDetailViewController *)self delegate];
   imageViewSnippet = self->_imageViewSnippet;
-  if (v4)
+  if (commands)
   {
-    v6 = [(SAUIImageView *)imageViewSnippet commands];
-    [v8 siriViewController:self performAceCommands:v6];
+    commands2 = [(SAUIImageView *)imageViewSnippet commands];
+    [delegate siriViewController:self performAceCommands:commands2];
   }
 
   else
   {
-    v6 = [(SAUIImageView *)imageViewSnippet image];
-    v7 = [v6 resourceUrl];
-    [v8 siriViewController:self openURL:v7 completion:0];
+    commands2 = [(SAUIImageView *)imageViewSnippet image];
+    resourceUrl = [commands2 resourceUrl];
+    [delegate siriViewController:self openURL:resourceUrl completion:0];
   }
 }
 
 - (void)loadView
 {
-  v3 = [(SiriGKImageDetailViewController *)self delegate];
-  [v3 siriViewControllerExpectedWidth:self];
+  delegate = [(SiriGKImageDetailViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v5 = v4;
 
   v6 = [[SiriGKImageDetailView alloc] initWithAceImageView:self->_imageViewSnippet expectedWidth:v5];
@@ -78,27 +78,27 @@
   [(SiriGKImageDetailViewController *)self setView:v8];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v4 = [(SiriGKImageDetailViewController *)self delegate];
-  [v4 siriViewControllerVisibleContentArea:self];
+  delegate = [(SiriGKImageDetailViewController *)self delegate];
+  [delegate siriViewControllerVisibleContentArea:self];
   v6 = v5;
 
   return v6;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v4 = [(SiriGKImageDetailViewController *)self dragItem:a3];
+  v4 = [(SiriGKImageDetailViewController *)self dragItem:interaction];
   v7 = v4;
   v5 = [NSArray arrayWithObjects:&v7 count:1];
 
   return v5;
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  v5 = [(SiriGKImageDetailViewController *)self dragItem:a3];
+  v5 = [(SiriGKImageDetailViewController *)self dragItem:interaction];
   v8 = v5;
   v6 = [NSArray arrayWithObjects:&v8 count:1];
 
@@ -108,8 +108,8 @@
 - (id)dragItem
 {
   v3 = [NSItemProvider alloc];
-  v4 = [(SiriGKImageDetailView *)self->_imageDetailView displayedImage];
-  v5 = [v3 initWithObject:v4];
+  displayedImage = [(SiriGKImageDetailView *)self->_imageDetailView displayedImage];
+  v5 = [v3 initWithObject:displayedImage];
 
   v6 = [[UIDragItem alloc] initWithItemProvider:v5];
 

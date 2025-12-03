@@ -1,16 +1,16 @@
 @interface TUIBinaryPackage
-+ (TUIBinaryPackage)packageWithURL:(id)a3;
-+ (TUIBinaryPackage)packageWithURL:(id)a3 baseURL:(id)a4 error:(id *)a5;
++ (TUIBinaryPackage)packageWithURL:(id)l;
++ (TUIBinaryPackage)packageWithURL:(id)l baseURL:(id)rL error:(id *)error;
 + (id)emptyPackage;
 + (void)clearCache;
-+ (void)removeCacheForURL:(id)a3;
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)nameForString:(id)a3;
-- ($7E080378D8F67055EE0984892F39872B)symbolForString:(id)a3;
-- (TUIBinaryPackage)initWithURL:(id)a3 baseURL:(id)a4 error:(id *)a5;
++ (void)removeCacheForURL:(id)l;
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)nameForString:(id)string;
+- ($7E080378D8F67055EE0984892F39872B)symbolForString:(id)string;
+- (TUIBinaryPackage)initWithURL:(id)l baseURL:(id)rL error:(id *)error;
 - (id).cxx_construct;
-- (id)debugLocationForNode:(id)a3;
+- (id)debugLocationForNode:(id)node;
 - (id)initAsEmpty;
-- (id)templateWithURL:(id)a3;
+- (id)templateWithURL:(id)l;
 - (void)dealloc;
 @end
 
@@ -18,22 +18,22 @@
 
 + (id)emptyPackage
 {
-  v2 = [[a1 alloc] initAsEmpty];
+  initAsEmpty = [[self alloc] initAsEmpty];
 
-  return v2;
+  return initAsEmpty;
 }
 
-+ (TUIBinaryPackage)packageWithURL:(id)a3
++ (TUIBinaryPackage)packageWithURL:(id)l
 {
-  v3 = [a1 packageWithURL:a3 baseURL:a3 error:0];
+  v3 = [self packageWithURL:l baseURL:l error:0];
 
   return v3;
 }
 
-+ (TUIBinaryPackage)packageWithURL:(id)a3 baseURL:(id)a4 error:(id *)a5
++ (TUIBinaryPackage)packageWithURL:(id)l baseURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  rLCopy = rL;
   os_unfair_lock_lock(&unk_2E5F78);
   v9 = qword_2E5F70;
   if (!qword_2E5F70)
@@ -45,23 +45,23 @@
     v9 = qword_2E5F70;
   }
 
-  v12 = [v9 objectForKeyedSubscript:v7];
+  v12 = [v9 objectForKeyedSubscript:lCopy];
   if (!v12)
   {
     v13 = TUIInstallBundleLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v7;
+      v17 = lCopy;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Installing TUIBinaryPackage for %{public}@", &v16, 0xCu);
     }
 
     v14 = objc_autoreleasePoolPush();
-    v12 = [[TUIBinaryPackage alloc] initWithURL:v7 baseURL:v8 error:a5];
+    v12 = [[TUIBinaryPackage alloc] initWithURL:lCopy baseURL:rLCopy error:error];
     objc_autoreleasePoolPop(v14);
     if (v12)
     {
-      [qword_2E5F70 setObject:v12 forKeyedSubscript:v7];
+      [qword_2E5F70 setObject:v12 forKeyedSubscript:lCopy];
     }
   }
 
@@ -70,19 +70,19 @@
   return v12;
 }
 
-+ (void)removeCacheForURL:(id)a3
++ (void)removeCacheForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = TUIInstallBundleLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = v3;
+    v6 = lCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Removing TUIBinaryPackage for %{public}@", &v5, 0xCu);
   }
 
   os_unfair_lock_lock(&unk_2E5F78);
-  [qword_2E5F70 removeObjectForKey:v3];
+  [qword_2E5F70 removeObjectForKey:lCopy];
   os_unfair_lock_unlock(&unk_2E5F78);
 }
 
@@ -106,25 +106,25 @@
   return 0;
 }
 
-- (TUIBinaryPackage)initWithURL:(id)a3 baseURL:(id)a4 error:(id *)a5
+- (TUIBinaryPackage)initWithURL:(id)l baseURL:(id)rL error:(id *)error
 {
-  v8 = a3;
-  v18 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v20.receiver = self;
   v20.super_class = TUIBinaryPackage;
   v9 = [(TUIBinaryPackage *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_baseURL, a4);
-    if ([v8 isFileURL])
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_baseURL, rL);
+    if ([lCopy isFileURL])
     {
-      v11 = [v8 path];
-      v12 = [v11 UTF8String];
+      path = [lCopy path];
+      uTF8String = [path UTF8String];
       v10->_data = 0;
       v10->_size = 0;
-      v13 = open(v12, 0, 0);
+      v13 = open(uTF8String, 0, 0);
       v14 = v13;
       if (v13 < 0)
       {
@@ -192,18 +192,18 @@
   [(TUIBinaryPackage *)&v5 dealloc];
 }
 
-- ($201E9A47BE70A2B12CCA2F48B75AA2F7)nameForString:(id)a3
+- ($201E9A47BE70A2B12CCA2F48B75AA2F7)nameForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v27 = HIWORD(TUINameNil);
   v28 = TUINameNil;
-  if (v4)
+  if (stringCopy)
   {
     __src = 0;
     v36 = 0;
     v37 = 0;
-    v26 = v4;
-    [v4 componentsSeparatedByString:@"::"];
+    v26 = stringCopy;
+    [stringCopy componentsSeparatedByString:@"::"];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -325,19 +325,19 @@
       operator delete(__src);
     }
 
-    v4 = v26;
+    stringCopy = v26;
   }
 
   return (v28 | (v27 << 16));
 }
 
-- ($7E080378D8F67055EE0984892F39872B)symbolForString:(id)a3
+- ($7E080378D8F67055EE0984892F39872B)symbolForString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
-    v6 = [v4 characterAtIndex:0];
+    v6 = [stringCopy characterAtIndex:0];
     symtab = self->_symtab;
     if (v6 == 58)
     {
@@ -369,23 +369,23 @@
   return v9;
 }
 
-- (id)templateWithURL:(id)a3
+- (id)templateWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
+  lCopy = l;
+  scheme = [lCopy scheme];
 
-  if (!v5)
+  if (!scheme)
   {
-    v6 = [v4 absoluteString];
-    v7 = [NSURL URLWithString:v6 relativeToURL:self->_baseURL];
+    absoluteString = [lCopy absoluteString];
+    v7 = [NSURL URLWithString:absoluteString relativeToURL:self->_baseURL];
 
-    v4 = v7;
+    lCopy = v7;
   }
 
-  v8 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:1];
-  v9 = [v8 path];
-  v10 = [v9 stringByStandardizingPath];
-  [v8 setPath:v10];
+  v8 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:1];
+  path = [v8 path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  [v8 setPath:stringByStandardizingPath];
 
   v11 = [v8 URL];
   v12 = [(NSDictionary *)self->_templates objectForKeyedSubscript:v11];
@@ -393,13 +393,13 @@
   return v12;
 }
 
-- (id)debugLocationForNode:(id)a3
+- (id)debugLocationForNode:(id)node
 {
-  v3 = *&a3.var0;
+  v3 = *&node.var0;
   buffer = self->_buffer;
-  if (buffer[27] <= a3.var0 || (v5 = buffer[26] + 28 * a3.var0) == 0)
+  if (buffer[27] <= node.var0 || (v5 = buffer[26] + 28 * node.var0) == 0)
   {
-    v12 = [NSNumber numberWithUnsignedInt:*&a3.var0];
+    v12 = [NSNumber numberWithUnsignedInt:*&node.var0];
     v13 = [NSString stringWithFormat:@"InvalidNode:%@", v12];
     goto LABEL_18;
   }
@@ -425,8 +425,8 @@
   {
     v16 = 0;
 LABEL_16:
-    v18 = [NSNumber numberWithUnsignedInt:v3];
-    v19 = [NSString stringWithFormat:@"NoLocationOrXPath:%@", v18];
+    lastPathComponent = [NSNumber numberWithUnsignedInt:v3];
+    v19 = [NSString stringWithFormat:@"NoLocationOrXPath:%@", lastPathComponent];
     goto LABEL_17;
   }
 
@@ -446,8 +446,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v18 = [v12 lastPathComponent];
-  v19 = [NSString stringWithFormat:@"Path:%@ XPath:%@", v18, v16];
+  lastPathComponent = [v12 lastPathComponent];
+  v19 = [NSString stringWithFormat:@"Path:%@ XPath:%@", lastPathComponent, v16];
 LABEL_17:
   v13 = v19;
 

@@ -1,31 +1,31 @@
 @interface IDSRegistrationHashProcessor
-- (IDSRegistrationHashProcessor)initWithAccountController:(id)a3 peerIDManager:(id)a4 negativeRegistrationUpdateCache:(id)a5 notifyDidFlushCacheRateLimiter:(id)a6 registrationKeyManager:(id)a7;
+- (IDSRegistrationHashProcessor)initWithAccountController:(id)controller peerIDManager:(id)manager negativeRegistrationUpdateCache:(id)cache notifyDidFlushCacheRateLimiter:(id)limiter registrationKeyManager:(id)keyManager;
 - (IDSRegistrationHashProcessorDelegate)delegate;
-- (id)devicesHashForURI:(id)a3 andService:(id)a4;
+- (id)devicesHashForURI:(id)i andService:(id)service;
 - (id)senderKeyDistributionManager;
-- (void)handleRegistrationUpdateForHash:(id)a3 localURI:(id)a4 remoteURI:(id)a5 service:(id)a6 guid:(id)a7 forceUpdate:(BOOL)a8;
+- (void)handleRegistrationUpdateForHash:(id)hash localURI:(id)i remoteURI:(id)rI service:(id)service guid:(id)guid forceUpdate:(BOOL)update;
 @end
 
 @implementation IDSRegistrationHashProcessor
 
-- (IDSRegistrationHashProcessor)initWithAccountController:(id)a3 peerIDManager:(id)a4 negativeRegistrationUpdateCache:(id)a5 notifyDidFlushCacheRateLimiter:(id)a6 registrationKeyManager:(id)a7
+- (IDSRegistrationHashProcessor)initWithAccountController:(id)controller peerIDManager:(id)manager negativeRegistrationUpdateCache:(id)cache notifyDidFlushCacheRateLimiter:(id)limiter registrationKeyManager:(id)keyManager
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  managerCopy = manager;
+  cacheCopy = cache;
+  limiterCopy = limiter;
+  keyManagerCopy = keyManager;
   v21.receiver = self;
   v21.super_class = IDSRegistrationHashProcessor;
   v17 = [(IDSRegistrationHashProcessor *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_accountController, a3);
-    objc_storeStrong(&v18->_peerIDManager, a4);
-    objc_storeStrong(&v18->_negativeRegistrationUpdateCache, a5);
-    objc_storeStrong(&v18->_notifyDidFlushCacheRateLimiter, a6);
-    objc_storeStrong(&v18->_registrationKeyManager, a7);
+    objc_storeStrong(&v17->_accountController, controller);
+    objc_storeStrong(&v18->_peerIDManager, manager);
+    objc_storeStrong(&v18->_negativeRegistrationUpdateCache, cache);
+    objc_storeStrong(&v18->_notifyDidFlushCacheRateLimiter, limiter);
+    objc_storeStrong(&v18->_registrationKeyManager, keyManager);
   }
 
   return v18;
@@ -34,27 +34,27 @@
 - (id)senderKeyDistributionManager
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 senderKeyDistributionManager];
+  senderKeyDistributionManager = [v2 senderKeyDistributionManager];
 
-  return v3;
+  return senderKeyDistributionManager;
 }
 
-- (id)devicesHashForURI:(id)a3 andService:(id)a4
+- (id)devicesHashForURI:(id)i andService:(id)service
 {
-  v6 = a3;
-  v35 = a4;
-  v7 = [(IDSRegistrationHashProcessor *)self accountController];
-  v36 = [v7 appleIDAccountOnService:v35];
+  iCopy = i;
+  serviceCopy = service;
+  accountController = [(IDSRegistrationHashProcessor *)self accountController];
+  v36 = [accountController appleIDAccountOnService:serviceCopy];
 
-  v8 = [v36 lastGDRDate];
-  v34 = v8;
-  v9 = v8;
-  if (!v8)
+  lastGDRDate = [v36 lastGDRDate];
+  v34 = lastGDRDate;
+  v9 = lastGDRDate;
+  if (!lastGDRDate)
   {
     goto LABEL_22;
   }
 
-  [v8 timeIntervalSinceNow];
+  [lastGDRDate timeIntervalSinceNow];
   v11 = v10 >= 0.0 ? v10 : -v10;
   v12 = [IDSServerBag sharedInstanceForBagType:0];
   v13 = [v12 objectForKey:@"reg-hash-time-since-gdr"];
@@ -83,8 +83,8 @@
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v17 = [v36 registeredDevices];
-    v18 = [v17 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    registeredDevices = [v36 registeredDevices];
+    v18 = [registeredDevices countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v18)
     {
       v19 = *v38;
@@ -94,17 +94,17 @@ LABEL_12:
       {
         if (*v38 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(registeredDevices);
         }
 
         v21 = *(*(&v37 + 1) + 8 * v20);
-        v22 = [v21 URIs];
-        v23 = [v22 containsObject:v6];
+        uRIs = [v21 URIs];
+        v23 = [uRIs containsObject:iCopy];
 
         if (v23)
         {
-          v24 = [v21 publicDeviceIdentity];
-          v25 = v24 == 0;
+          publicDeviceIdentity = [v21 publicDeviceIdentity];
+          v25 = publicDeviceIdentity == 0;
 
           if (v25)
           {
@@ -128,13 +128,13 @@ LABEL_33:
             goto LABEL_34;
           }
 
-          v26 = [v21 publicDeviceIdentity];
-          [v16 addObject:v26];
+          publicDeviceIdentity2 = [v21 publicDeviceIdentity];
+          [v16 addObject:publicDeviceIdentity2];
         }
 
         if (v18 == ++v20)
         {
-          v18 = [v17 countByEnumeratingWithState:&v37 objects:v43 count:16];
+          v18 = [registeredDevices countByEnumeratingWithState:&v37 objects:v43 count:16];
           if (v18)
           {
             goto LABEL_12;
@@ -145,10 +145,10 @@ LABEL_33:
       }
     }
 
-    v27 = [(IDSRegistrationHashProcessor *)self registrationKeyManager];
-    v17 = [v27 publicMessageProtectionData];
+    registrationKeyManager = [(IDSRegistrationHashProcessor *)self registrationKeyManager];
+    registeredDevices = [registrationKeyManager publicMessageProtectionData];
 
-    if (!v17)
+    if (!registeredDevices)
     {
       v32 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -165,11 +165,11 @@ LABEL_33:
       goto LABEL_33;
     }
 
-    [v16 addObject:v17];
+    [v16 addObject:registeredDevices];
     v28 = sub_1006D7178(v16);
-    v29 = [v28 SHA256Data];
+    sHA256Data = [v28 SHA256Data];
     v30 = [[NSMutableData alloc] initWithBytes:&unk_1009AC2E8 length:1];
-    [v30 appendData:v29];
+    [v30 appendData:sHA256Data];
 
 LABEL_34:
     v9 = v34;
@@ -184,35 +184,35 @@ LABEL_22:
   return v30;
 }
 
-- (void)handleRegistrationUpdateForHash:(id)a3 localURI:(id)a4 remoteURI:(id)a5 service:(id)a6 guid:(id)a7 forceUpdate:(BOOL)a8
+- (void)handleRegistrationUpdateForHash:(id)hash localURI:(id)i remoteURI:(id)rI service:(id)service guid:(id)guid forceUpdate:(BOOL)update
 {
-  v8 = a8;
-  v14 = a3;
-  v95 = a4;
-  v15 = a5;
-  v96 = a6;
-  v16 = a7;
-  if (!v14 || v8)
+  updateCopy = update;
+  hashCopy = hash;
+  iCopy = i;
+  rICopy = rI;
+  serviceCopy = service;
+  guidCopy = guid;
+  if (!hashCopy || updateCopy)
   {
 LABEL_35:
-    v94 = v16;
-    v44 = [v15 prefixedURI];
-    v45 = [v44 stringByAppendingFormat:@"-%@", v14];
+    v94 = guidCopy;
+    prefixedURI = [rICopy prefixedURI];
+    hashCopy = [prefixedURI stringByAppendingFormat:@"-%@", hashCopy];
 
-    v46 = [(IDSRegistrationHashProcessor *)self negativeRegistrationUpdateCache];
-    v47 = [v46 underLimitForItem:v45];
+    negativeRegistrationUpdateCache = [(IDSRegistrationHashProcessor *)self negativeRegistrationUpdateCache];
+    v47 = [negativeRegistrationUpdateCache underLimitForItem:hashCopy];
 
-    if (!(v47 | v8))
+    if (!(v47 | updateCopy))
     {
       v58 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413058;
-        *v107 = v15;
+        *v107 = rICopy;
         *&v107[8] = 2112;
-        *&v107[10] = v96;
+        *&v107[10] = serviceCopy;
         *&v107[18] = 2112;
-        *&v107[20] = v95;
+        *&v107[20] = iCopy;
         v108 = 2112;
         v109 = v94;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "Received too many registration updates, ignoring {remoteURI: %@, service: %@, localURI: %@, guid: %@}", buf, 0x2Au);
@@ -226,32 +226,32 @@ LABEL_35:
       goto LABEL_67;
     }
 
-    v48 = [(IDSRegistrationHashProcessor *)self negativeRegistrationUpdateCache];
-    [v48 noteItem:v45];
+    negativeRegistrationUpdateCache2 = [(IDSRegistrationHashProcessor *)self negativeRegistrationUpdateCache];
+    [negativeRegistrationUpdateCache2 noteItem:hashCopy];
 
     v49 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      *v107 = v15;
+      *v107 = rICopy;
       *&v107[8] = 2112;
-      *&v107[10] = v95;
+      *&v107[10] = iCopy;
       *&v107[18] = 2112;
-      *&v107[20] = v96;
+      *&v107[20] = serviceCopy;
       _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, " => Purging Peer ID Cache for: %@   caller URI: %@   service: %@", buf, 0x20u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v86 = v95;
-      v88 = v96;
-      v83 = v15;
+      v86 = iCopy;
+      v88 = serviceCopy;
+      v83 = rICopy;
       _IDSLogV();
     }
 
     v50 = [IDSDServiceController sharedInstance:v83];
-    v51 = [v96 identifier];
-    v91 = [v50 adHocServicesForIdentifier:v51];
+    identifier = [serviceCopy identifier];
+    v91 = [v50 adHocServicesForIdentifier:identifier];
 
     v52 = [v91 __imArrayByApplyingBlock:&stru_100BE5928];
     v53 = v52;
@@ -268,46 +268,46 @@ LABEL_35:
 
     if (v56 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v57 = [v56 BOOLValue];
+      bOOLValue = [v56 BOOLValue];
 
-      if (!v57)
+      if (!bOOLValue)
       {
 LABEL_62:
         v69 = [NSMutableArray alloc];
-        v70 = [v96 identifier];
-        v71 = [v69 initWithObjects:{v70, 0}];
+        identifier2 = [serviceCopy identifier];
+        v71 = [v69 initWithObjects:{identifier2, 0}];
 
         [v71 addObjectsFromArray:v93];
-        v72 = [(IDSRegistrationHashProcessor *)self peerIDManager];
-        [v72 forgetPeerTokensForURI:v15 fromURI:v95 services:v71 reason:12];
+        peerIDManager = [(IDSRegistrationHashProcessor *)self peerIDManager];
+        [peerIDManager forgetPeerTokensForURI:rICopy fromURI:iCopy services:v71 reason:12];
 
-        v73 = [(IDSRegistrationHashProcessor *)self notifyDidFlushCacheRateLimiter];
-        LODWORD(v69) = [v73 underLimitForItem:v45];
+        notifyDidFlushCacheRateLimiter = [(IDSRegistrationHashProcessor *)self notifyDidFlushCacheRateLimiter];
+        LODWORD(v69) = [notifyDidFlushCacheRateLimiter underLimitForItem:hashCopy];
 
         if (v69)
         {
-          v74 = [(IDSRegistrationHashProcessor *)self notifyDidFlushCacheRateLimiter];
-          [v74 noteItem:v45];
+          notifyDidFlushCacheRateLimiter2 = [(IDSRegistrationHashProcessor *)self notifyDidFlushCacheRateLimiter];
+          [notifyDidFlushCacheRateLimiter2 noteItem:hashCopy];
 
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
-          v76 = [v96 identifier];
-          v77 = [v15 prefixedURI];
-          v78 = [v95 prefixedURI];
-          [WeakRetained registrationHashProcessor:self didFlushCacheForService:v76 remoteURI:v77 localURI:v78 guid:v94];
+          identifier3 = [serviceCopy identifier];
+          prefixedURI2 = [rICopy prefixedURI];
+          prefixedURI3 = [iCopy prefixedURI];
+          [WeakRetained registrationHashProcessor:self didFlushCacheForService:identifier3 remoteURI:prefixedURI2 localURI:prefixedURI3 guid:v94];
         }
 
-        v79 = [v96 identifier];
-        v80 = [v79 isEqualToString:IDSServiceNameiMessage];
+        identifier4 = [serviceCopy identifier];
+        v80 = [identifier4 isEqualToString:IDSServiceNameiMessage];
 
         if (v80)
         {
-          v81 = [(IDSRegistrationHashProcessor *)self senderKeyDistributionManager];
-          [v81 handleRemoteDeviceUpdateWithRemoteURI:v15 localURI:v95];
+          senderKeyDistributionManager = [(IDSRegistrationHashProcessor *)self senderKeyDistributionManager];
+          [senderKeyDistributionManager handleRemoteDeviceUpdateWithRemoteURI:rICopy localURI:iCopy];
         }
 
 LABEL_67:
 LABEL_68:
-        v16 = v94;
+        guidCopy = v94;
         goto LABEL_69;
       }
     }
@@ -316,14 +316,14 @@ LABEL_68:
     {
     }
 
-    v59 = [v96 identifier];
-    v60 = [v59 isEqualToString:@"com.apple.madrid"];
+    identifier5 = [serviceCopy identifier];
+    v60 = [identifier5 isEqualToString:@"com.apple.madrid"];
 
     if (v60)
     {
-      v61 = [(IDSRegistrationHashProcessor *)self idStatusQueryController];
-      v62 = [v96 identifier];
-      [v61 removeCachedIDStatusForURI:v15 service:v62];
+      idStatusQueryController = [(IDSRegistrationHashProcessor *)self idStatusQueryController];
+      identifier6 = [serviceCopy identifier];
+      [idStatusQueryController removeCachedIDStatusForURI:rICopy service:identifier6];
 
       v99 = 0u;
       v100 = 0u;
@@ -344,8 +344,8 @@ LABEL_68:
             }
 
             v67 = *(*(&v97 + 1) + 8 * i);
-            v68 = [(IDSRegistrationHashProcessor *)self idStatusQueryController];
-            [v68 removeCachedIDStatusForURI:v15 service:v67];
+            idStatusQueryController2 = [(IDSRegistrationHashProcessor *)self idStatusQueryController];
+            [idStatusQueryController2 removeCachedIDStatusForURI:rICopy service:v67];
           }
 
           v64 = [v63 countByEnumeratingWithState:&v97 objects:v110 count:16];
@@ -358,19 +358,19 @@ LABEL_68:
     goto LABEL_62;
   }
 
-  v17 = [v14 length];
-  if (v96 && v15 && v95 && v17 >= 0x21)
+  v17 = [hashCopy length];
+  if (serviceCopy && rICopy && iCopy && v17 >= 0x21)
   {
-    v94 = v16;
+    v94 = guidCopy;
     v105 = 0;
-    [v14 getBytes:&v105 length:1];
+    [hashCopy getBytes:&v105 length:1];
     if (v105 != 1)
     {
       v38 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
         v39 = v105;
-        v40 = [v14 debugDescription];
+        v40 = [hashCopy debugDescription];
         *buf = 67109378;
         *v107 = v39;
         *&v107[4] = 2112;
@@ -380,20 +380,20 @@ LABEL_68:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
-        v85 = [v14 debugDescription];
+        v85 = [hashCopy debugDescription];
         _IDSLogV();
       }
 
       goto LABEL_68;
     }
 
-    v92 = [v14 subdataWithRange:{1, 32}];
-    v18 = [(IDSRegistrationHashProcessor *)self peerIDManager];
-    v112 = v15;
+    v92 = [hashCopy subdataWithRange:{1, 32}];
+    peerIDManager2 = [(IDSRegistrationHashProcessor *)self peerIDManager];
+    v112 = rICopy;
     v19 = [NSArray arrayWithObjects:&v112 count:1];
-    v20 = [v96 identifier];
-    v21 = [v18 endpointsForURIs:v19 service:v20 fromURI:v95];
-    v22 = [v21 objectForKey:v15];
+    identifier7 = [serviceCopy identifier];
+    v21 = [peerIDManager2 endpointsForURIs:v19 service:identifier7 fromURI:iCopy];
+    v22 = [v21 objectForKey:rICopy];
 
     v23 = objc_alloc_init(NSMutableSet);
     v103 = 0u;
@@ -414,10 +414,10 @@ LABEL_68:
             objc_enumerationMutation(v24);
           }
 
-          v28 = [*(*(&v101 + 1) + 8 * j) serializedPublicLegacyIdentity];
-          if (v28)
+          serializedPublicLegacyIdentity = [*(*(&v101 + 1) + 8 * j) serializedPublicLegacyIdentity];
+          if (serializedPublicLegacyIdentity)
           {
-            [v23 addObject:v28];
+            [v23 addObject:serializedPublicLegacyIdentity];
           }
         }
 
@@ -428,8 +428,8 @@ LABEL_68:
     }
 
     v89 = sub_1006D7178(v23);
-    v90 = [v89 SHA256Data];
-    v29 = [v90 isEqualToData:v92];
+    sHA256Data = [v89 SHA256Data];
+    v29 = [sHA256Data isEqualToData:v92];
     if (v29)
     {
       v30 = OSLogHandleForIDSCategory();
@@ -437,7 +437,7 @@ LABEL_68:
       {
         v31 = v105;
         v32 = [v92 debugDescription];
-        v33 = [v90 debugDescription];
+        v33 = [sHA256Data debugDescription];
         *buf = 67109634;
         *v107 = v31;
         *&v107[4] = 2112;
@@ -452,7 +452,7 @@ LABEL_68:
       {
         v35 = v105;
         v36 = [v92 debugDescription];
-        v37 = [v90 debugDescription];
+        v37 = [sHA256Data debugDescription];
         v84 = v36;
         v87 = v37;
         v82 = v35;
@@ -467,7 +467,7 @@ LABEL_33:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
         v42 = [v92 debugDescription];
-        v43 = [v90 debugDescription];
+        v43 = [sHA256Data debugDescription];
         *buf = 138412546;
         *v107 = v42;
         *&v107[8] = 2112;
@@ -478,7 +478,7 @@ LABEL_33:
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
       {
         v36 = [v92 debugDescription];
-        v37 = [v90 debugDescription];
+        v37 = [sHA256Data debugDescription];
         v82 = v36;
         v84 = v37;
         _IDSLogV();
@@ -486,7 +486,7 @@ LABEL_33:
       }
     }
 
-    v16 = v94;
+    guidCopy = v94;
     if ((v29 & 1) == 0)
     {
       goto LABEL_35;

@@ -2,21 +2,21 @@
 + (void)initialize;
 - (DSEmergencyResetController)init;
 - (DSNavigationDelegate)delegate;
-- (void)fetchSharingPermissions:(id)a3;
+- (void)fetchSharingPermissions:(id)permissions;
 - (void)handleErrorsAndMoveToNextPane;
 - (void)hideProgressBar;
 - (void)initializeEmergencyResetActions;
-- (void)removeAllPairedDevicesOnQueue:(id)a3 completion:(id)a4;
-- (void)resetAllFirstPartySharing:(id)a3;
-- (void)resetAllThirdPartyTCCs:(id)a3;
-- (void)resetAppDistribution:(id)a3;
-- (void)resetIDFA:(id)a3;
-- (void)resetNecessaryFirstPartyPermissions:(id)a3;
+- (void)removeAllPairedDevicesOnQueue:(id)queue completion:(id)completion;
+- (void)resetAllFirstPartySharing:(id)sharing;
+- (void)resetAllThirdPartyTCCs:(id)cs;
+- (void)resetAppDistribution:(id)distribution;
+- (void)resetIDFA:(id)a;
+- (void)resetNecessaryFirstPartyPermissions:(id)permissions;
 - (void)safetyResetAll;
 - (void)safetyResetAllPressed;
 - (void)setDigitalSeparationTipsFlag;
 - (void)showProgressBar;
-- (void)unpairContinuityDevices:(id)a3;
+- (void)unpairContinuityDevices:(id)devices;
 - (void)updateProgressBar;
 - (void)viewDidLoad;
 @end
@@ -25,7 +25,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogSafetyResetAll = os_log_create("com.apple.DigitalSeparation", "DSEmergencyResetController");
 
@@ -47,8 +47,8 @@
   else
   {
     v6 = MEMORY[0x277D755D0];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v3 = [v6 configurationWithHierarchicalColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v3 = [v6 configurationWithHierarchicalColor:systemBlueColor];
 
     v4 = DSUILocStringForKey(@"RESET_PEOPLE_APPS");
     v8 = DSUILocStringForKey(@"RESET_PEOPLE_APPS_DETAIL");
@@ -70,8 +70,8 @@
   v4 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:self selector:sel_safetyResetAllPressed];
   [(DSEmergencyResetController *)self setBoldButton:v4];
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(DSEmergencyResetController *)self setResetErrors:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  [(DSEmergencyResetController *)self setResetErrors:array];
 
   v6 = objc_alloc_init(MEMORY[0x277D49638]);
   beaconManager = self->_beaconManager;
@@ -126,14 +126,14 @@ uint64_t __41__DSEmergencyResetController_viewDidLoad__block_invoke_2(uint64_t a
   return [v2 safetyResetAll];
 }
 
-- (void)fetchSharingPermissions:(id)a3
+- (void)fetchSharingPermissions:(id)permissions
 {
-  v4 = a3;
+  permissionsCopy = permissions;
   v5 = objc_alloc_init(MEMORY[0x277D054B8]);
   [(DSEmergencyResetController *)self setPermissions:v5];
 
   objc_initWeak(&location, self);
-  v6 = [(DSEmergencyResetController *)self permissions];
+  permissions = [(DSEmergencyResetController *)self permissions];
   v7 = MEMORY[0x277D85CD0];
   v8 = MEMORY[0x277D85CD0];
   v10[0] = MEMORY[0x277D85DD0];
@@ -141,9 +141,9 @@ uint64_t __41__DSEmergencyResetController_viewDidLoad__block_invoke_2(uint64_t a
   v10[2] = __54__DSEmergencyResetController_fetchSharingPermissions___block_invoke;
   v10[3] = &unk_278F75390;
   objc_copyWeak(&v12, &location);
-  v9 = v4;
+  v9 = permissionsCopy;
   v11 = v9;
-  [v6 fetchPermissionsOnQueue:v7 completion:v10];
+  [permissions fetchPermissionsOnQueue:v7 completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -699,46 +699,46 @@ uint64_t __44__DSEmergencyResetController_safetyResetAll__block_invoke_405(uint6
 
 - (void)showProgressBar
 {
-  v3 = [(DSEmergencyResetController *)self headerView];
-  [v3 setDetailText:&stru_285BA4988];
+  headerView = [(DSEmergencyResetController *)self headerView];
+  [headerView setDetailText:&stru_285BA4988];
 
-  v4 = [(DSEmergencyResetController *)self buttonTray];
-  v5 = [(DSEmergencyResetController *)self boldButton];
-  [v4 removeButton:v5];
+  buttonTray = [(DSEmergencyResetController *)self buttonTray];
+  boldButton = [(DSEmergencyResetController *)self boldButton];
+  [buttonTray removeButton:boldButton];
 
   [(DSEmergencyResetController *)self setBoldButton:0];
   v6 = objc_alloc_init(MEMORY[0x277D75A68]);
   progressStackView = self->_progressStackView;
   self->_progressStackView = v6;
 
-  v8 = [(DSEmergencyResetController *)self progressStackView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  progressStackView = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(DSEmergencyResetController *)self progressStackView];
-  [v9 setAxis:1];
+  progressStackView2 = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView2 setAxis:1];
 
-  v10 = [(DSEmergencyResetController *)self progressStackView];
-  [v10 setAlignment:3];
+  progressStackView3 = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView3 setAlignment:3];
 
-  v11 = [(DSEmergencyResetController *)self progressStackView];
-  [v11 setSpacing:20.0];
+  progressStackView4 = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView4 setSpacing:20.0];
 
-  v12 = [(DSEmergencyResetController *)self contentView];
-  v13 = [(DSEmergencyResetController *)self progressStackView];
-  [v12 addSubview:v13];
+  contentView = [(DSEmergencyResetController *)self contentView];
+  progressStackView5 = [(DSEmergencyResetController *)self progressStackView];
+  [contentView addSubview:progressStackView5];
 
-  v14 = [(DSEmergencyResetController *)self progressStackView];
-  v15 = [v14 topAnchor];
-  v16 = [(DSEmergencyResetController *)self contentView];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:20.0];
+  progressStackView6 = [(DSEmergencyResetController *)self progressStackView];
+  topAnchor = [progressStackView6 topAnchor];
+  contentView2 = [(DSEmergencyResetController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:20.0];
   [v18 setActive:1];
 
-  v19 = [(DSEmergencyResetController *)self progressStackView];
-  v20 = [v19 widthAnchor];
-  v21 = [(DSEmergencyResetController *)self contentView];
-  v22 = [v21 widthAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  progressStackView7 = [(DSEmergencyResetController *)self progressStackView];
+  widthAnchor = [progressStackView7 widthAnchor];
+  contentView3 = [(DSEmergencyResetController *)self contentView];
+  widthAnchor2 = [contentView3 widthAnchor];
+  v23 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v23 setActive:1];
 
   v41 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -746,50 +746,50 @@ uint64_t __44__DSEmergencyResetController_safetyResetAll__block_invoke_405(uint6
   v24 = DSUILocStringForKey(@"PROGRESS_TEXT");
   [v41 setText:v24];
 
-  v25 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v41 setTextColor:v25];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v41 setTextColor:secondaryLabelColor];
 
   [v41 setTextAlignment:1];
-  v26 = [(DSEmergencyResetController *)self progressStackView];
-  [v26 addArrangedSubview:v41];
+  progressStackView8 = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView8 addArrangedSubview:v41];
 
-  v27 = [v41 widthAnchor];
-  v28 = [(DSEmergencyResetController *)self progressStackView];
-  v29 = [v28 widthAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  widthAnchor3 = [v41 widthAnchor];
+  progressStackView9 = [(DSEmergencyResetController *)self progressStackView];
+  widthAnchor4 = [progressStackView9 widthAnchor];
+  v30 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
   [v30 setActive:1];
 
   v31 = objc_alloc_init(MEMORY[0x277D758F0]);
   progressView = self->_progressView;
   self->_progressView = v31;
 
-  v33 = [(DSEmergencyResetController *)self progressView];
-  [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
+  progressView = [(DSEmergencyResetController *)self progressView];
+  [progressView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v34 = [(DSEmergencyResetController *)self progressStackView];
-  v35 = [(DSEmergencyResetController *)self progressView];
-  [v34 addArrangedSubview:v35];
+  progressStackView10 = [(DSEmergencyResetController *)self progressStackView];
+  progressView2 = [(DSEmergencyResetController *)self progressView];
+  [progressStackView10 addArrangedSubview:progressView2];
 
-  v36 = [(DSEmergencyResetController *)self progressView];
-  v37 = [v36 widthAnchor];
-  v38 = [(DSEmergencyResetController *)self progressStackView];
-  v39 = [v38 widthAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39 constant:-20.0];
+  progressView3 = [(DSEmergencyResetController *)self progressView];
+  widthAnchor5 = [progressView3 widthAnchor];
+  progressStackView11 = [(DSEmergencyResetController *)self progressStackView];
+  widthAnchor6 = [progressStackView11 widthAnchor];
+  v40 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 constant:-20.0];
   [v40 setActive:1];
 }
 
 - (void)hideProgressBar
 {
-  v3 = [(DSEmergencyResetController *)self progressStackView];
-  [v3 removeFromSuperview];
+  progressStackView = [(DSEmergencyResetController *)self progressStackView];
+  [progressStackView removeFromSuperview];
 
-  v4 = [(DSEmergencyResetController *)self headerView];
+  headerView = [(DSEmergencyResetController *)self headerView];
   v5 = DSUILocStringForKey(@"RESET_PEOPLE_APPS_DETAIL");
-  [v4 setDetailText:v5];
+  [headerView setDetailText:v5];
 
-  v6 = [(DSEmergencyResetController *)self boldButton];
+  boldButton = [(DSEmergencyResetController *)self boldButton];
 
-  if (!v6)
+  if (!boldButton)
   {
     v8 = DSUILocStringForKey(@"RESET_PEOPLE_APPS_BUTTON");
     v7 = [DSUIUtilities setUpBoldButtonForController:self title:v8 target:self selector:sel_safetyResetAllPressed];
@@ -799,8 +799,8 @@ uint64_t __44__DSEmergencyResetController_safetyResetAll__block_invoke_405(uint6
 
 - (void)updateProgressBar
 {
-  v3 = [(DSEmergencyResetController *)self progressView];
-  [v3 progress];
+  progressView = [(DSEmergencyResetController *)self progressView];
+  [progressView progress];
   v5 = v4;
   v6 = 1.0 / ([(NSArray *)self->_emergencyResetSteps count]+ 1);
   v7 = v5 + v6;
@@ -810,39 +810,39 @@ uint64_t __44__DSEmergencyResetController_safetyResetAll__block_invoke_405(uint6
     v7 = v7 + -0.1;
   }
 
-  v9 = [(DSEmergencyResetController *)self progressView];
+  progressView2 = [(DSEmergencyResetController *)self progressView];
   *&v8 = v7;
-  [v9 setProgress:v8];
+  [progressView2 setProgress:v8];
 }
 
 - (void)setDigitalSeparationTipsFlag
 {
   v2 = BiomeLibrary();
-  v3 = [v2 Discoverability];
-  v9 = [v3 Signals];
+  discoverability = [v2 Discoverability];
+  signals = [discoverability Signals];
 
-  v4 = [v9 source];
+  source = [signals source];
   v5 = objc_alloc(MEMORY[0x277CF1168]);
-  v6 = [MEMORY[0x277CCAC38] processInfo];
-  v7 = [v6 operatingSystemVersionString];
-  v8 = [v5 initWithContentIdentifier:@"com.apple.DigitalSeparation.safety-reset" context:0 osBuild:v7 userInfo:0];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  operatingSystemVersionString = [processInfo operatingSystemVersionString];
+  v8 = [v5 initWithContentIdentifier:@"com.apple.DigitalSeparation.safety-reset" context:0 osBuild:operatingSystemVersionString userInfo:0];
 
-  [v4 sendEvent:v8];
+  [source sendEvent:v8];
 }
 
 - (void)handleErrorsAndMoveToNextPane
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [(DSEmergencyResetController *)self resetErrors];
-  v4 = [v3 count];
+  resetErrors = [(DSEmergencyResetController *)self resetErrors];
+  v4 = [resetErrors count];
 
   if (v4)
   {
     if (_os_feature_enabled_impl())
     {
       v5 = MEMORY[0x277D75110];
-      v6 = [(DSEmergencyResetController *)self resetErrors];
-      v7 = [v5 ds_alertControllerWithResetErrors:v6];
+      resetErrors2 = [(DSEmergencyResetController *)self resetErrors];
+      v7 = [v5 ds_alertControllerWithResetErrors:resetErrors2];
 
       v8 = MEMORY[0x277D750F8];
       v9 = DSUILocStringForKey(@"OK");
@@ -907,9 +907,9 @@ uint64_t __44__DSEmergencyResetController_safetyResetAll__block_invoke_405(uint6
       }
 
       v18 = MEMORY[0x277D75110];
-      v19 = [(DSEmergencyResetController *)self resetErrors];
-      v20 = [v19 lastObject];
-      v7 = [v18 ds_alertControllerWithStopSharingError:v20];
+      resetErrors3 = [(DSEmergencyResetController *)self resetErrors];
+      lastObject = [resetErrors3 lastObject];
+      v7 = [v18 ds_alertControllerWithStopSharingError:lastObject];
 
       v8 = MEMORY[0x277D750F8];
       v9 = DSUILocStringForKey(@"OK");
@@ -926,16 +926,16 @@ LABEL_19:
     [v7 addAction:v24];
 
     [(DSEmergencyResetController *)self presentViewController:v7 animated:1 completion:0];
-    v25 = [(DSEmergencyResetController *)self resetErrors];
-    [v25 removeAllObjects];
+    resetErrors4 = [(DSEmergencyResetController *)self resetErrors];
+    [resetErrors4 removeAllObjects];
 
     v26 = *MEMORY[0x277D85DE8];
   }
 
   else
   {
-    v27 = [(DSEmergencyResetController *)self delegate];
-    [v27 pushNextPane];
+    delegate = [(DSEmergencyResetController *)self delegate];
+    [delegate pushNextPane];
     v11 = *MEMORY[0x277D85DE8];
   }
 }
@@ -958,18 +958,18 @@ void __59__DSEmergencyResetController_handleErrorsAndMoveToNextPane__block_invok
   [v1 pushNextPane];
 }
 
-- (void)resetAllFirstPartySharing:(id)a3
+- (void)resetAllFirstPartySharing:(id)sharing
 {
-  v4 = a3;
-  v5 = [(DSEmergencyResetController *)self permissions];
+  sharingCopy = sharing;
+  permissions = [(DSEmergencyResetController *)self permissions];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__DSEmergencyResetController_resetAllFirstPartySharing___block_invoke;
   v7[3] = &unk_278F75550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 stopAllSharingOnQueue:MEMORY[0x277D85CD0] completion:v7];
+  v8 = sharingCopy;
+  v6 = sharingCopy;
+  [permissions stopAllSharingOnQueue:MEMORY[0x277D85CD0] completion:v7];
 }
 
 void __56__DSEmergencyResetController_resetAllFirstPartySharing___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -985,22 +985,22 @@ void __56__DSEmergencyResetController_resetAllFirstPartySharing___block_invoke(u
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resetAllThirdPartyTCCs:(id)a3
+- (void)resetAllThirdPartyTCCs:(id)cs
 {
-  v4 = a3;
-  v5 = [(DSEmergencyResetController *)self appSharing];
+  csCopy = cs;
+  appSharing = [(DSEmergencyResetController *)self appSharing];
   v6 = MEMORY[0x277CBEB98];
-  v7 = [MEMORY[0x277D054D8] tccServices];
-  v8 = [v6 setWithArray:v7];
-  v9 = [MEMORY[0x277D054D8] allApps];
+  tccServices = [MEMORY[0x277D054D8] tccServices];
+  v8 = [v6 setWithArray:tccServices];
+  allApps = [MEMORY[0x277D054D8] allApps];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__DSEmergencyResetController_resetAllThirdPartyTCCs___block_invoke;
   v11[3] = &unk_278F75578;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v5 resetPermissions:v8 forApps:v9 queue:MEMORY[0x277D85CD0] handler:v11];
+  v12 = csCopy;
+  v10 = csCopy;
+  [appSharing resetPermissions:v8 forApps:allApps queue:MEMORY[0x277D85CD0] handler:v11];
 }
 
 void __53__DSEmergencyResetController_resetAllThirdPartyTCCs___block_invoke(uint64_t a1, void *a2)
@@ -1016,18 +1016,18 @@ void __53__DSEmergencyResetController_resetAllThirdPartyTCCs___block_invoke(uint
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeAllPairedDevicesOnQueue:(id)a3 completion:(id)a4
+- (void)removeAllPairedDevicesOnQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DSEmergencyResetController *)self wifiSyncStore];
-  [v8 removeAllPairedDevicesOnQueue:v7 completion:v6];
+  completionCopy = completion;
+  queueCopy = queue;
+  wifiSyncStore = [(DSEmergencyResetController *)self wifiSyncStore];
+  [wifiSyncStore removeAllPairedDevicesOnQueue:queueCopy completion:completionCopy];
 }
 
-- (void)resetNecessaryFirstPartyPermissions:(id)a3
+- (void)resetNecessaryFirstPartyPermissions:(id)permissions
 {
-  v4 = a3;
-  v5 = [(DSEmergencyResetController *)self appSharing];
+  permissionsCopy = permissions;
+  appSharing = [(DSEmergencyResetController *)self appSharing];
   v6 = [MEMORY[0x277CBEB98] setWithObject:@"DSLocationAlways"];
   v7 = [MEMORY[0x277CBEB98] setWithObject:@"com.apple.shortcuts"];
   v9[0] = MEMORY[0x277D85DD0];
@@ -1035,9 +1035,9 @@ void __53__DSEmergencyResetController_resetAllThirdPartyTCCs___block_invoke(uint
   v9[2] = __66__DSEmergencyResetController_resetNecessaryFirstPartyPermissions___block_invoke;
   v9[3] = &unk_278F75578;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 resetPermissions:v6 forApps:v7 queue:MEMORY[0x277D85CD0] handler:v9];
+  v10 = permissionsCopy;
+  v8 = permissionsCopy;
+  [appSharing resetPermissions:v6 forApps:v7 queue:MEMORY[0x277D85CD0] handler:v9];
 }
 
 void __66__DSEmergencyResetController_resetNecessaryFirstPartyPermissions___block_invoke(uint64_t a1, void *a2)
@@ -1053,20 +1053,20 @@ void __66__DSEmergencyResetController_resetNecessaryFirstPartyPermissions___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resetIDFA:(id)a3
+- (void)resetIDFA:(id)a
 {
-  v4 = a3;
-  v5 = [(DSEmergencyResetController *)self appSharing];
+  aCopy = a;
+  appSharing = [(DSEmergencyResetController *)self appSharing];
   v6 = [MEMORY[0x277CBEB98] setWithObject:@"kTCCServiceUserTracking"];
-  v7 = [MEMORY[0x277D054D8] allApps];
+  allApps = [MEMORY[0x277D054D8] allApps];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__DSEmergencyResetController_resetIDFA___block_invoke;
   v9[3] = &unk_278F75578;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [v5 resetPermissions:v6 forApps:v7 queue:MEMORY[0x277D85CD0] handler:v9];
+  v10 = aCopy;
+  v8 = aCopy;
+  [appSharing resetPermissions:v6 forApps:allApps queue:MEMORY[0x277D85CD0] handler:v9];
 }
 
 void __40__DSEmergencyResetController_resetIDFA___block_invoke(uint64_t a1, void *a2)
@@ -1082,16 +1082,16 @@ void __40__DSEmergencyResetController_resetIDFA___block_invoke(uint64_t a1, void
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resetAppDistribution:(id)a3
+- (void)resetAppDistribution:(id)distribution
 {
-  v4 = a3;
+  distributionCopy = distribution;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__DSEmergencyResetController_resetAppDistribution___block_invoke;
   v6[3] = &unk_278F755A0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = distributionCopy;
+  v5 = distributionCopy;
   [_TtC19DigitalSeparationUI21AppDistributorWrapper handleEmergencyResetWithCompletionHandler:v6];
 }
 
@@ -1113,18 +1113,18 @@ void __51__DSEmergencyResetController_resetAppDistribution___block_invoke(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)unpairContinuityDevices:(id)a3
+- (void)unpairContinuityDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(DSEmergencyResetController *)self continuityStore];
+  devicesCopy = devices;
+  continuityStore = [(DSEmergencyResetController *)self continuityStore];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__DSEmergencyResetController_unpairContinuityDevices___block_invoke;
   v7[3] = &unk_278F755A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 unpairAllDevicesWithCompletion:v7];
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  [continuityStore unpairAllDevicesWithCompletion:v7];
 }
 
 void __54__DSEmergencyResetController_unpairContinuityDevices___block_invoke(uint64_t a1, void *a2)

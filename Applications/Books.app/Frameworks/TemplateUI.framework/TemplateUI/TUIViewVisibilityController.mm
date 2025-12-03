@@ -1,33 +1,33 @@
 @interface TUIViewVisibilityController
-- (CGRect)_computeClippingBoundsForObserver:(id)a3;
-- (TUIViewVisibilityController)initWithView:(id)a3 scrollView:(id)a4;
-- (double)_updateVisibilityWithTime:(double)a3;
-- (id)observeNavigationBarView:(id)a3 options:(id)a4 block:(id)a5;
-- (id)observeView:(id)a3 options:(id)a4 block:(id)a5;
-- (void)_scheduleUpdateAtTime:(double)a3;
+- (CGRect)_computeClippingBoundsForObserver:(id)observer;
+- (TUIViewVisibilityController)initWithView:(id)view scrollView:(id)scrollView;
+- (double)_updateVisibilityWithTime:(double)time;
+- (id)observeNavigationBarView:(id)view options:(id)options block:(id)block;
+- (id)observeView:(id)view options:(id)options block:(id)block;
+- (void)_scheduleUpdateAtTime:(double)time;
 - (void)_timeCheck;
-- (void)_updateVisibilityForObserver:(id)a3 time:(double)a4;
-- (void)setVisible:(BOOL)a3;
+- (void)_updateVisibilityForObserver:(id)observer time:(double)time;
+- (void)setVisible:(BOOL)visible;
 - (void)updatePopoverLayout;
 - (void)updateView;
-- (void)updatedVisibleBoundsOfScrollView:(id)a3;
+- (void)updatedVisibleBoundsOfScrollView:(id)view;
 @end
 
 @implementation TUIViewVisibilityController
 
-- (TUIViewVisibilityController)initWithView:(id)a3 scrollView:(id)a4
+- (TUIViewVisibilityController)initWithView:(id)view scrollView:(id)scrollView
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
   v18.receiver = self;
   v18.super_class = TUIViewVisibilityController;
   v9 = [(TUIViewVisibilityController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_view, a3);
-    objc_storeStrong(&v10->_scrollView, a4);
-    [v7 frame];
+    objc_storeStrong(&v9->_view, view);
+    objc_storeStrong(&v10->_scrollView, scrollView);
+    [viewCopy frame];
     v10->_frame.origin.x = v11;
     v10->_frame.origin.y = v12;
     v10->_frame.size.width = v13;
@@ -93,12 +93,12 @@
   }
 }
 
-- (id)observeView:(id)a3 options:(id)a4 block:(id)a5
+- (id)observeView:(id)view options:(id)options block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_TUIViewVisibilityObserver alloc] initWithView:v8 options:v9 kind:0 block:v10];
+  viewCopy = view;
+  optionsCopy = options;
+  blockCopy = block;
+  v11 = [[_TUIViewVisibilityObserver alloc] initWithView:viewCopy options:optionsCopy kind:0 block:blockCopy];
   [(TUIViewVisibilityController *)self _addObserver:v11];
   v12 = +[NSDate now];
   [v12 timeIntervalSinceReferenceDate];
@@ -107,8 +107,8 @@
   [(TUIViewVisibilityController *)self _updateVisibilityForObserver:v11 time:v14];
   if ([(_TUIViewVisibilityObserver *)v11 needsTimer])
   {
-    v15 = [(_TUIViewVisibilityObserver *)v11 options];
-    [v15 duration];
+    options = [(_TUIViewVisibilityObserver *)v11 options];
+    [options duration];
     [(TUIViewVisibilityController *)self _scheduleUpdateAtTime:v14 + v16];
   }
 
@@ -128,12 +128,12 @@
   return v18;
 }
 
-- (id)observeNavigationBarView:(id)a3 options:(id)a4 block:(id)a5
+- (id)observeNavigationBarView:(id)view options:(id)options block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[_TUIViewVisibilityObserver alloc] initWithView:v8 options:v9 kind:1 block:v10];
+  viewCopy = view;
+  optionsCopy = options;
+  blockCopy = block;
+  v11 = [[_TUIViewVisibilityObserver alloc] initWithView:viewCopy options:optionsCopy kind:1 block:blockCopy];
   [(TUIViewVisibilityController *)self _addObserver:v11];
   v12 = +[NSDate now];
   [v12 timeIntervalSinceReferenceDate];
@@ -142,8 +142,8 @@
   [(TUIViewVisibilityController *)self _updateVisibilityForObserver:v11 time:v14];
   if ([(_TUIViewVisibilityObserver *)v11 needsTimer])
   {
-    v15 = [(_TUIViewVisibilityObserver *)v11 options];
-    [v15 duration];
+    options = [(_TUIViewVisibilityObserver *)v11 options];
+    [options duration];
     [(TUIViewVisibilityController *)self _scheduleUpdateAtTime:v14 + v16];
   }
 
@@ -163,10 +163,10 @@
   return v18;
 }
 
-- (void)updatedVisibleBoundsOfScrollView:(id)a3
+- (void)updatedVisibleBoundsOfScrollView:(id)view
 {
-  v4 = a3;
-  if ([v4 isDescendantOfView:self->_view])
+  viewCopy = view;
+  if ([viewCopy isDescendantOfView:self->_view])
   {
     v5 = +[NSDate now];
     [v5 timeIntervalSinceReferenceDate];
@@ -195,8 +195,8 @@
           v14 = *(*(&v20 + 1) + 8 * i);
           if ([v14 kind] != &dword_0 + 1)
           {
-            v15 = [v14 view];
-            v16 = [v15 isDescendantOfView:v4];
+            view = [v14 view];
+            v16 = [view isDescendantOfView:viewCopy];
 
             if (!v16)
             {
@@ -207,8 +207,8 @@
           [(TUIViewVisibilityController *)self _updateVisibilityForObserver:v14 time:v7];
           if ([v14 needsTimer])
           {
-            v17 = [v14 options];
-            [v17 duration];
+            options = [v14 options];
+            [options duration];
             v19 = v7 + v18;
 
             v12 = fmin(v12, v19);
@@ -230,7 +230,7 @@
   }
 }
 
-- (double)_updateVisibilityWithTime:(double)a3
+- (double)_updateVisibilityWithTime:(double)time
 {
   v16 = 0u;
   v17 = 0u;
@@ -253,12 +253,12 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        [(TUIViewVisibilityController *)self _updateVisibilityForObserver:v11 time:a3, v16];
+        [(TUIViewVisibilityController *)self _updateVisibilityForObserver:v11 time:time, v16];
         if ([v11 needsTimer])
         {
-          v12 = [v11 options];
-          [v12 duration];
-          v14 = v13 + a3;
+          options = [v11 options];
+          [options duration];
+          v14 = v13 + time;
 
           v9 = fmin(v9, v14);
         }
@@ -278,55 +278,55 @@
   return v9;
 }
 
-- (void)_updateVisibilityForObserver:(id)a3 time:(double)a4
+- (void)_updateVisibilityForObserver:(id)observer time:(double)time
 {
-  v46 = a3;
-  [(TUIViewVisibilityController *)self _computeClippingBoundsForObserver:v46];
+  observerCopy = observer;
+  [(TUIViewVisibilityController *)self _computeClippingBoundsForObserver:observerCopy];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v46 options];
-  v14 = [v46 view];
-  [v14 bounds];
+  options = [observerCopy options];
+  view = [observerCopy view];
+  [view bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  if (!self->_visible || (v48.origin.x = v16, v48.origin.y = v18, v48.size.width = v20, v48.size.height = v22, v51.origin.x = v6, v51.origin.y = v8, v51.size.width = v10, v51.size.height = v12, !CGRectIntersectsRect(v48, v51)) || (-[UIScrollView bounds](self->_scrollView, "bounds"), v42 = v23, v44 = v24, -[UIScrollView adjustedContentInset](self->_scrollView, "adjustedContentInset"), v29 = fmin(v20, v42 - (v25 + v26)), v41 = fmin(v22, v44 - (v27 + v28)), v43 = v29, v49.origin.x = v16, v49.origin.y = v18, v49.size.width = v20, v49.size.height = v22, v52.origin.x = v6, v52.origin.y = v8, v52.size.width = v10, v52.size.height = v12, v50 = CGRectIntersection(v49, v52), v30 = v50.size.width * v50.size.height / (v43 * v41), [v13 fraction], v30 < v31))
+  if (!self->_visible || (v48.origin.x = v16, v48.origin.y = v18, v48.size.width = v20, v48.size.height = v22, v51.origin.x = v6, v51.origin.y = v8, v51.size.width = v10, v51.size.height = v12, !CGRectIntersectsRect(v48, v51)) || (-[UIScrollView bounds](self->_scrollView, "bounds"), v42 = v23, v44 = v24, -[UIScrollView adjustedContentInset](self->_scrollView, "adjustedContentInset"), v29 = fmin(v20, v42 - (v25 + v26)), v41 = fmin(v22, v44 - (v27 + v28)), v43 = v29, v49.origin.x = v16, v49.origin.y = v18, v49.size.width = v20, v49.size.height = v22, v52.origin.x = v6, v52.origin.y = v8, v52.size.width = v10, v52.size.height = v12, v50 = CGRectIntersection(v49, v52), v30 = v50.size.width * v50.size.height / (v43 * v41), [options fraction], v30 < v31))
   {
     v32 = 0;
 LABEL_5:
-    v33 = v46;
+    v33 = observerCopy;
     goto LABEL_6;
   }
 
-  if (([v13 flags] & 1) == 0)
+  if (([options flags] & 1) == 0)
   {
     v32 = 1;
     goto LABEL_5;
   }
 
-  if ([v46 kind] == &dword_0 + 1)
+  if ([observerCopy kind] == &dword_0 + 1)
   {
     if ([(UIScrollView *)self->_scrollView isDragging])
     {
-      v34 = 1;
+      isDecelerating = 1;
     }
 
     else
     {
-      v34 = [(UIScrollView *)self->_scrollView isDecelerating];
+      isDecelerating = [(UIScrollView *)self->_scrollView isDecelerating];
     }
   }
 
   else
   {
-    v35 = [v46 view];
-    if (v35)
+    view2 = [observerCopy view];
+    if (view2)
     {
-      v36 = v35;
+      v36 = view2;
       while (v36 != self->_view)
       {
         v37 = objc_opt_class();
@@ -336,23 +336,23 @@ LABEL_5:
         {
           if ([v38 isDragging])
           {
-            v34 = 1;
+            isDecelerating = 1;
           }
 
           else
           {
-            v34 = [v39 isDecelerating];
+            isDecelerating = [v39 isDecelerating];
           }
         }
 
         else
         {
-          v34 = 0;
+          isDecelerating = 0;
         }
 
         v40 = [(UIView *)v36 superview:*&v41];
 
-        if ((v34 & 1) == 0)
+        if ((isDecelerating & 1) == 0)
         {
           v36 = v40;
           if (v40)
@@ -364,32 +364,32 @@ LABEL_5:
         goto LABEL_28;
       }
 
-      v34 = 0;
+      isDecelerating = 0;
       v40 = v36;
 LABEL_28:
     }
 
     else
     {
-      v34 = 0;
+      isDecelerating = 0;
     }
   }
 
-  v33 = v46;
-  v32 = v34 ^ 1;
+  v33 = observerCopy;
+  v32 = isDecelerating ^ 1;
 LABEL_6:
-  [v33 updateVisible:v32 time:{a4, *&v41, *&v43}];
+  [v33 updateVisible:v32 time:{time, *&v41, *&v43}];
 }
 
-- (void)_scheduleUpdateAtTime:(double)a3
+- (void)_scheduleUpdateAtTime:(double)time
 {
-  if (fabs(a3) != INFINITY && (!self->_queuedTimeCheck || self->_earliestTimeCheck > a3))
+  if (fabs(time) != INFINITY && (!self->_queuedTimeCheck || self->_earliestTimeCheck > time))
   {
     self->_queuedTimeCheck = 1;
-    self->_earliestTimeCheck = a3;
+    self->_earliestTimeCheck = time;
     v5 = +[NSDate now];
     [v5 timeIntervalSinceReferenceDate];
-    v7 = a3 - v6;
+    v7 = time - v6;
 
     v8 = dispatch_time(0, (fmax(v7, 0.0) * 1000000000.0));
     block[0] = _NSConcreteStackBlock;
@@ -412,11 +412,11 @@ LABEL_6:
   [(TUIViewVisibilityController *)self _scheduleUpdateAtTime:?];
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
+    self->_visible = visible;
     v5 = +[NSDate now];
     [v5 timeIntervalSinceReferenceDate];
     v7 = v6;
@@ -427,16 +427,16 @@ LABEL_6:
   }
 }
 
-- (CGRect)_computeClippingBoundsForObserver:(id)a3
+- (CGRect)_computeClippingBoundsForObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = self->_view;
-  v6 = [v4 view];
-  if ([v4 kind] == &dword_0 + 1)
+  view = [observerCopy view];
+  if ([observerCopy kind] == &dword_0 + 1)
   {
-    v7 = [(UIView *)self->_view window];
+    window = [(UIView *)self->_view window];
 
-    v5 = v7;
+    v5 = window;
   }
 
   x = CGRectInfinite.origin.x;
@@ -445,7 +445,7 @@ LABEL_6:
   height = CGRectInfinite.size.height;
   if (v5)
   {
-    v12 = v6 == 0;
+    v12 = view == 0;
   }
 
   else
@@ -453,12 +453,12 @@ LABEL_6:
     v12 = 1;
   }
 
-  if (!v12 && v5 != v6)
+  if (!v12 && v5 != view)
   {
-    v14 = [(UIView *)v6 superview];
-    if (v14)
+    superview = [(UIView *)view superview];
+    if (superview)
     {
-      v15 = v14;
+      v15 = superview;
       do
       {
         if ([(UIView *)v15 clipsToBounds])
@@ -482,7 +482,7 @@ LABEL_6:
           v47.size.width = width;
           v47.size.height = height;
           IsInfinite = CGRectIsInfinite(v47);
-          [(UIView *)v15 convertRect:v6 toView:v17, v19, v21, v23];
+          [(UIView *)v15 convertRect:view toView:v17, v19, v21, v23];
           v30 = v29;
           v32 = v31;
           v34 = v33;
@@ -519,17 +519,17 @@ LABEL_6:
           break;
         }
 
-        v37 = [(UIView *)v15 superview];
+        superview2 = [(UIView *)v15 superview];
 
-        v15 = v37;
+        v15 = superview2;
       }
 
-      while (v37);
+      while (superview2);
     }
   }
 
-  v38 = [(UIView *)self->_view window];
-  if (v38)
+  window2 = [(UIView *)self->_view window];
+  if (window2)
   {
     v51.origin.x = x;
     v51.origin.y = y;
@@ -537,8 +537,8 @@ LABEL_6:
     v51.size.height = height;
     if (!CGRectIsEmpty(v51))
     {
-      [v38 bounds];
-      [v38 convertRect:v6 toView:?];
+      [window2 bounds];
+      [window2 convertRect:view toView:?];
       v55.origin.x = v39;
       v55.origin.y = v40;
       v55.size.width = v41;

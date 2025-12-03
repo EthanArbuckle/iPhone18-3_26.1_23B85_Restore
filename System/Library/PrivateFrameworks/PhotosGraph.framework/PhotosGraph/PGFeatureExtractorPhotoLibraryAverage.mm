@@ -1,48 +1,48 @@
 @interface PGFeatureExtractorPhotoLibraryAverage
-+ (BOOL)preCalculateFeatureVectorWithPhotoLibrary:(id)a3 assetFeatureExtractor:(id)a4 assetFetchOptionPropertySet:(id)a5 error:(id *)a6;
++ (BOOL)preCalculateFeatureVectorWithPhotoLibrary:(id)library assetFeatureExtractor:(id)extractor assetFetchOptionPropertySet:(id)set error:(id *)error;
 - (NSArray)featureNames;
-- (PGFeatureExtractorPhotoLibraryAverage)initWithAssetFeatureExtractor:(id)a3 assetFetchOptionPropertySet:(id)a4;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (PGFeatureExtractorPhotoLibraryAverage)initWithAssetFeatureExtractor:(id)extractor assetFetchOptionPropertySet:(id)set;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 - (id)name;
 - (int64_t)featureLength;
 @end
 
 @implementation PGFeatureExtractorPhotoLibraryAverage
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() preCalculatedFloatVector];
+  entityCopy = entity;
+  preCalculatedFloatVector = [objc_opt_class() preCalculatedFloatVector];
 
-  if (v7)
+  if (preCalculatedFloatVector)
   {
     goto LABEL_3;
   }
 
   v8 = objc_opt_class();
-  v9 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
-  v10 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFetchOptionPropertySet];
-  v11 = [v8 preCalculateFeatureVectorWithPhotoLibrary:v6 assetFeatureExtractor:v9 assetFetchOptionPropertySet:v10 error:a4];
+  assetFeatureExtractor = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
+  assetFetchOptionPropertySet = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFetchOptionPropertySet];
+  v11 = [v8 preCalculateFeatureVectorWithPhotoLibrary:entityCopy assetFeatureExtractor:assetFeatureExtractor assetFetchOptionPropertySet:assetFetchOptionPropertySet error:error];
 
   if (v11)
   {
 LABEL_3:
-    v12 = [objc_opt_class() preCalculatedFloatVector];
+    preCalculatedFloatVector2 = [objc_opt_class() preCalculatedFloatVector];
   }
 
   else
   {
-    v12 = 0;
+    preCalculatedFloatVector2 = 0;
   }
 
-  return v12;
+  return preCalculatedFloatVector2;
 }
 
 - (int64_t)featureLength
 {
-  v2 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
-  v3 = [v2 featureNames];
-  v4 = [v3 count];
+  assetFeatureExtractor = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
+  featureNames = [assetFeatureExtractor featureNames];
+  v4 = [featureNames count];
 
   return v4;
 }
@@ -54,18 +54,18 @@ LABEL_3:
   if (!featureNames)
   {
     v4 = objc_alloc(MEMORY[0x277CBEB18]);
-    v5 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
-    v6 = [v5 featureNames];
-    v7 = [v4 initWithCapacity:{objc_msgSend(v6, "count")}];
+    assetFeatureExtractor = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
+    featureNames = [assetFeatureExtractor featureNames];
+    v7 = [v4 initWithCapacity:{objc_msgSend(featureNames, "count")}];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
-    v9 = [v8 featureNames];
+    assetFeatureExtractor2 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
+    featureNames2 = [assetFeatureExtractor2 featureNames];
 
-    v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v10 = [featureNames2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -77,7 +77,7 @@ LABEL_3:
         {
           if (*v19 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(featureNames2);
           }
 
           v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"PhotoLibraryAverage-%@", *(*(&v18 + 1) + 8 * v13)];
@@ -87,7 +87,7 @@ LABEL_3:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v11 = [featureNames2 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v11);
@@ -107,56 +107,56 @@ LABEL_3:
 - (id)name
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
-  v4 = [v3 name];
-  v5 = [v2 stringWithFormat:@"PhotoLibraryAverage-%@", v4];
+  assetFeatureExtractor = [(PGFeatureExtractorPhotoLibraryAverage *)self assetFeatureExtractor];
+  name = [assetFeatureExtractor name];
+  v5 = [v2 stringWithFormat:@"PhotoLibraryAverage-%@", name];
 
   return v5;
 }
 
-- (PGFeatureExtractorPhotoLibraryAverage)initWithAssetFeatureExtractor:(id)a3 assetFetchOptionPropertySet:(id)a4
+- (PGFeatureExtractorPhotoLibraryAverage)initWithAssetFeatureExtractor:(id)extractor assetFetchOptionPropertySet:(id)set
 {
-  v7 = a3;
-  v8 = a4;
+  extractorCopy = extractor;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = PGFeatureExtractorPhotoLibraryAverage;
   v9 = [(PGFeatureExtractorPhotoLibraryAverage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetFeatureExtractor, a3);
-    objc_storeStrong(&v10->_assetFetchOptionPropertySet, a4);
+    objc_storeStrong(&v9->_assetFeatureExtractor, extractor);
+    objc_storeStrong(&v10->_assetFetchOptionPropertySet, set);
   }
 
   return v10;
 }
 
-+ (BOOL)preCalculateFeatureVectorWithPhotoLibrary:(id)a3 assetFeatureExtractor:(id)a4 assetFetchOptionPropertySet:(id)a5 error:(id *)a6
++ (BOOL)preCalculateFeatureVectorWithPhotoLibrary:(id)library assetFeatureExtractor:(id)extractor assetFetchOptionPropertySet:(id)set error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v44 = a4;
-  v11 = a5;
-  [a1 resetPreCalculatedFeatureVector];
-  v12 = [v10 librarySpecificFetchOptions];
-  [v12 setChunkSizeForFetch:100];
-  [v12 setCacheSizeForFetch:100];
-  if (v11)
+  libraryCopy = library;
+  extractorCopy = extractor;
+  setCopy = set;
+  [self resetPreCalculatedFeatureVector];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setChunkSizeForFetch:100];
+  [librarySpecificFetchOptions setCacheSizeForFetch:100];
+  if (setCopy)
   {
-    [v12 setFetchPropertySets:v11];
+    [librarySpecificFetchOptions setFetchPropertySets:setCopy];
   }
 
-  v43 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v12];
+  v43 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v13 = [v43 count];
-  if (!a6 || v13)
+  if (!error || v13)
   {
-    v37 = a1;
-    v38 = a6;
-    v39 = v12;
-    v40 = v11;
-    v41 = v10;
-    v17 = [v44 featureNames];
-    v18 = [v17 count];
+    selfCopy = self;
+    errorCopy = error;
+    v39 = librarySpecificFetchOptions;
+    v40 = setCopy;
+    v41 = libraryCopy;
+    featureNames = [extractorCopy featureNames];
+    v18 = [featureNames count];
 
     v42 = [MEMORY[0x277D22C68] vectorRepeatingFloat:v18 count:0.0];
     v19 = [v43 count];
@@ -170,7 +170,7 @@ LABEL_3:
         v24 = objc_autoreleasePoolPush();
         v25 = [v43 objectAtIndexedSubscript:i];
         v45 = v15;
-        v26 = [v44 floatVectorWithEntity:v25 error:&v45];
+        v26 = [extractorCopy floatVectorWithEntity:v25 error:&v45];
         v15 = v45;
 
         if (v26 && [v26 count] == v18)
@@ -182,16 +182,16 @@ LABEL_3:
         else
         {
           v27 = +[PGLogging sharedLogging];
-          v28 = [v27 loggingConnection];
+          loggingConnection = [v27 loggingConnection];
 
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
           {
-            v29 = [v25 localIdentifier];
+            localIdentifier = [v25 localIdentifier];
             *buf = 138412546;
-            v49 = v29;
+            v49 = localIdentifier;
             v50 = 2112;
             v51 = v15;
-            _os_log_impl(&dword_22F0FC000, v28, OS_LOG_TYPE_INFO, "Failed to calculate feature vector for asset %@: %@", buf, 0x16u);
+            _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Failed to calculate feature vector for asset %@: %@", buf, 0x16u);
           }
         }
 
@@ -205,10 +205,10 @@ LABEL_3:
       v15 = 0;
     }
 
-    if (v38)
+    if (errorCopy)
     {
       v30 = v15;
-      *v38 = v15;
+      *errorCopy = v15;
       if (v21 <= v19 >> 1)
       {
         v31 = MEMORY[0x277CCA9B8];
@@ -225,7 +225,7 @@ LABEL_3:
         v47[1] = v33;
         v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v47 forKeys:v46 count:2];
         [v31 errorWithDomain:@"com.apple.PhotoAnalysis.PGFeatureExtractorPhotoLibraryAverageDomain" code:2 userInfo:v34];
-        *v38 = v16 = 0;
+        *errorCopy = v16 = 0;
         goto LABEL_24;
       }
     }
@@ -238,14 +238,14 @@ LABEL_3:
 
     *&v20 = v21;
     v34 = [v42 vectorByDividingByScalar:v20];
-    [v37 setPreCalculatedFloatVector:v34];
+    [selfCopy setPreCalculatedFloatVector:v34];
     v16 = 1;
 LABEL_24:
 
 LABEL_25:
-    v11 = v40;
-    v10 = v41;
-    v12 = v39;
+    setCopy = v40;
+    libraryCopy = v41;
+    librarySpecificFetchOptions = v39;
 
     goto LABEL_26;
   }
@@ -255,7 +255,7 @@ LABEL_25:
   v53[0] = @"Library contains no assets.";
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:&v52 count:1];
   [v14 errorWithDomain:@"com.apple.PhotoAnalysis.PGFeatureExtractorPhotoLibraryAverageDomain" code:1 userInfo:v15];
-  *a6 = v16 = 0;
+  *error = v16 = 0;
 LABEL_26:
 
   v35 = *MEMORY[0x277D85DE8];

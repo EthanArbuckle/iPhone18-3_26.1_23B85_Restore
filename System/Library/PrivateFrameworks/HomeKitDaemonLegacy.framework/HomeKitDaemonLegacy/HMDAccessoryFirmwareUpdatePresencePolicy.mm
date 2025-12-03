@@ -1,12 +1,12 @@
 @interface HMDAccessoryFirmwareUpdatePresencePolicy
 + (id)logCategory;
 - (BOOL)evaluate;
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryFirmwareUpdatePresencePolicy)initWithAccessory:(id)a3 presenceNeeded:(BOOL)a4 workQueue:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryFirmwareUpdatePresencePolicy)initWithAccessory:(id)accessory presenceNeeded:(BOOL)needed workQueue:(id)queue;
 - (HMDHome)home;
 - (unint64_t)hash;
 - (void)configure;
-- (void)handlePresenceChange:(id)a3;
+- (void)handlePresenceChange:(id)change;
 - (void)registerForNotifications;
 @end
 
@@ -22,24 +22,24 @@
 - (BOOL)evaluate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
-  v4 = [v3 presenceMonitor];
-  v5 = [v4 currentHomePresence];
+  home = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
+  presenceMonitor = [home presenceMonitor];
+  currentHomePresence = [presenceMonitor currentHomePresence];
 
   if ([(HMDAccessoryFirmwareUpdatePresencePolicy *)self presenceNeeded])
   {
-    if ([v3 isCurrentDeviceAvailableResident])
+    if ([home isCurrentDeviceAvailableResident])
     {
-      if (v5)
+      if (currentHomePresence)
       {
-        LOBYTE(v6) = [v5 isAnyUserAtHome];
+        LOBYTE(homeLocation) = [currentHomePresence isAnyUserAtHome];
         v7 = objc_autoreleasePoolPush();
-        v8 = self;
+        selfCopy = self;
         v9 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v10 = HMFGetLogIdentifier();
-          [v5 isAnyUserAtHome];
+          [currentHomePresence isAnyUserAtHome];
           v11 = HMFBooleanToString();
           v26 = 138543618;
           v27 = v10;
@@ -57,7 +57,7 @@ LABEL_20:
       }
 
       v7 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
@@ -69,18 +69,18 @@ LABEL_20:
       }
 
 LABEL_39:
-      LOBYTE(v6) = 0;
+      LOBYTE(homeLocation) = 0;
       goto LABEL_40;
     }
 
-    v6 = [v3 homeLocation];
+    homeLocation = [home homeLocation];
     v7 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     v9 = v15;
-    if (v6 <= 1)
+    if (homeLocation <= 1)
     {
-      if (!v6)
+      if (!homeLocation)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -94,7 +94,7 @@ LABEL_39:
         goto LABEL_39;
       }
 
-      if (v6 == 1)
+      if (homeLocation == 1)
       {
         if (!os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -105,7 +105,7 @@ LABEL_39:
         v26 = 138543362;
         v27 = v10;
         v16 = "%{public}@(presenceNeeded, non-resident, HMHomeLocationAtHome) -> YES";
-        LOBYTE(v6) = 1;
+        LOBYTE(homeLocation) = 1;
 LABEL_19:
         _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_INFO, v16, &v26, 0xCu);
         goto LABEL_20;
@@ -115,7 +115,7 @@ LABEL_29:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v19 = HMFGetLogIdentifier();
-        v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "homeLocation")}];
+        v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(home, "homeLocation")}];
         v26 = 138543618;
         v27 = v19;
         v28 = 2112;
@@ -129,7 +129,7 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    if (v6 == 2)
+    if (homeLocation == 2)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -143,7 +143,7 @@ LABEL_38:
       goto LABEL_39;
     }
 
-    if (v6 != 3)
+    if (homeLocation != 3)
     {
       goto LABEL_29;
     }
@@ -162,12 +162,12 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (([v3 isResidentSupported] & 1) == 0)
+  if (([home isResidentSupported] & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy4 = self;
     v9 = HMFGetOSLogHandle();
-    LOBYTE(v6) = 1;
+    LOBYTE(homeLocation) = 1;
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       goto LABEL_40;
@@ -180,10 +180,10 @@ LABEL_37:
     goto LABEL_19;
   }
 
-  if (([v3 isCurrentDeviceAvailableResident] & 1) == 0)
+  if (([home isCurrentDeviceAvailableResident] & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy5 = self;
     v9 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -197,10 +197,10 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!v5)
+  if (!currentHomePresence)
   {
     v7 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy6 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -214,14 +214,14 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  LOBYTE(v6) = [v5 isNoUserAtHome];
+  LOBYTE(homeLocation) = [currentHomePresence isNoUserAtHome];
   v7 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy7 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    [v5 isNoUserAtHome];
+    [currentHomePresence isNoUserAtHome];
     v11 = HMFBooleanToString();
     v26 = 138543618;
     v27 = v10;
@@ -235,21 +235,21 @@ LABEL_40:
 
   objc_autoreleasePoolPop(v7);
   v24 = *MEMORY[0x277D85DE8];
-  return v6;
+  return homeLocation;
 }
 
-- (void)handlePresenceChange:(id)a3
+- (void)handlePresenceChange:(id)change
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  changeCopy = change;
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HMDAccessoryFirmwareUpdatePresencePolicy_handlePresenceChange___block_invoke;
   v7[3] = &unk_2797359B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __65__HMDAccessoryFirmwareUpdatePresencePolicy_handlePresenceChange___block_invoke(uint64_t a1)
@@ -277,22 +277,22 @@ uint64_t __65__HMDAccessoryFirmwareUpdatePresencePolicy_handlePresenceChange___b
 
 - (void)registerForNotifications
 {
-  v7 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
-  v3 = [v7 isCurrentDeviceAvailableResident];
-  v4 = [v7 notificationCenter];
-  v5 = v4;
-  if (v3)
+  home = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
+  isCurrentDeviceAvailableResident = [home isCurrentDeviceAvailableResident];
+  notificationCenter = [home notificationCenter];
+  notificationCenter2 = notificationCenter;
+  if (isCurrentDeviceAvailableResident)
   {
-    v6 = [v7 presenceMonitor];
-    [v5 addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomePresenceEvaluatedNotification" object:v6];
+    presenceMonitor = [home presenceMonitor];
+    [notificationCenter2 addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomePresenceEvaluatedNotification" object:presenceMonitor];
   }
 
   else
   {
-    [v4 addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomeDidArriveHomeNotificationKey" object:v7];
+    [notificationCenter addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomeDidArriveHomeNotificationKey" object:home];
 
-    v5 = [v7 notificationCenter];
-    [v5 addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:v7];
+    notificationCenter2 = [home notificationCenter];
+    [notificationCenter2 addObserver:self selector:sel_handlePresenceChange_ name:@"HMDHomeDidLeaveHomeNotificationKey" object:home];
   }
 }
 
@@ -303,32 +303,32 @@ uint64_t __65__HMDAccessoryFirmwareUpdatePresencePolicy_handlePresenceChange___b
   [(HMDAccessoryFirmwareUpdatePresencePolicy *)self registerForNotifications];
 }
 
-- (HMDAccessoryFirmwareUpdatePresencePolicy)initWithAccessory:(id)a3 presenceNeeded:(BOOL)a4 workQueue:(id)a5
+- (HMDAccessoryFirmwareUpdatePresencePolicy)initWithAccessory:(id)accessory presenceNeeded:(BOOL)needed workQueue:(id)queue
 {
-  v8 = a3;
+  accessoryCopy = accessory;
   v12.receiver = self;
   v12.super_class = HMDAccessoryFirmwareUpdatePresencePolicy;
-  v9 = [(HMDAccessoryFirmwareUpdatePolicy *)&v12 initWithAccessory:v8 workQueue:a5];
+  v9 = [(HMDAccessoryFirmwareUpdatePolicy *)&v12 initWithAccessory:accessoryCopy workQueue:queue];
   if (v9)
   {
-    v10 = [v8 home];
-    objc_storeWeak(&v9->_home, v10);
+    home = [accessoryCopy home];
+    objc_storeWeak(&v9->_home, home);
 
-    v9->_presenceNeeded = a4;
+    v9->_presenceNeeded = needed;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -339,23 +339,23 @@ uint64_t __65__HMDAccessoryFirmwareUpdatePresencePolicy_handlePresenceChange___b
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
-      v8 = [v7 uuid];
-      v9 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)v6 home];
-      v10 = [v9 uuid];
-      if ([v8 isEqual:v10])
+      home = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
+      uuid = [home uuid];
+      home2 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)v6 home];
+      uuid2 = [home2 uuid];
+      if ([uuid isEqual:uuid2])
       {
-        v11 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-        v12 = [v11 uuid];
-        v13 = [(HMDAccessoryFirmwareUpdatePolicy *)v6 accessory];
-        [v13 uuid];
-        v14 = v19 = v7;
-        v18 = [v12 isEqual:v14];
+        accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+        uuid3 = [accessory uuid];
+        accessory2 = [(HMDAccessoryFirmwareUpdatePolicy *)v6 accessory];
+        [accessory2 uuid];
+        v14 = v19 = home;
+        v18 = [uuid3 isEqual:v14];
 
         if (v18)
         {
-          v15 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self presenceNeeded];
-          v16 = v15 ^ [(HMDAccessoryFirmwareUpdatePresencePolicy *)v6 presenceNeeded]^ 1;
+          presenceNeeded = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self presenceNeeded];
+          v16 = presenceNeeded ^ [(HMDAccessoryFirmwareUpdatePresencePolicy *)v6 presenceNeeded]^ 1;
 LABEL_12:
 
           goto LABEL_13;
@@ -379,9 +379,9 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
-  v4 = [v3 uuid];
-  v5 = [v4 hash];
+  home = [(HMDAccessoryFirmwareUpdatePresencePolicy *)self home];
+  uuid = [home uuid];
+  v5 = [uuid hash];
 
   return v5 ^ [(HMDAccessoryFirmwareUpdatePresencePolicy *)self presenceNeeded];
 }

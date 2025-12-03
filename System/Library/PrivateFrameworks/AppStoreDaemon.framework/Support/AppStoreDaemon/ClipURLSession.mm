@@ -1,8 +1,8 @@
 @interface ClipURLSession
 - (ClipURLSession)init;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 @end
 
 @implementation ClipURLSession
@@ -35,17 +35,17 @@
   return self;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   tasks = self->_tasks;
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
   v11 = [(NSMutableDictionary *)tasks objectForKeyedSubscript:v10];
 
   v12 = self->_tasks;
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskIdentifier]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
   [(NSMutableDictionary *)v12 setObject:0 forKeyedSubscript:v13];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -60,18 +60,18 @@
   }
 
   v16 = Property;
-  v18 = [v16 completedUnitCount];
+  completedUnitCount = [v16 completedUnitCount];
   if (v11)
   {
     v19 = objc_getProperty(v11, v17, 32, 1);
-    [v19 setTotalUnitCount:v18];
+    [v19 setTotalUnitCount:completedUnitCount];
 
     v21 = objc_getProperty(v11, v20, 48, 1);
   }
 
   else
   {
-    [0 setTotalUnitCount:v18];
+    [0 setTotalUnitCount:completedUnitCount];
 
     v21 = 0;
   }
@@ -79,7 +79,7 @@
   v22 = v21;
   [v22 close];
 
-  if (v8)
+  if (errorCopy)
   {
     if (v11 && (v24 = objc_getProperty(v11, v23, 24, 1)) != 0)
     {
@@ -110,7 +110,7 @@
       v40 = 138412802;
       v41 = v36;
       v42 = 2114;
-      v43 = v7;
+      v43 = taskCopy;
       v44 = 2114;
       v45 = v26;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "[%@] Failed task: %{public}@ error: %{public}@", &v40, 0x20u);
@@ -149,7 +149,7 @@
       v40 = 138412546;
       v41 = v30;
       v42 = 2114;
-      v43 = v7;
+      v43 = taskCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[%@] Completed task: %{public}@", &v40, 0x16u);
     }
 
@@ -168,37 +168,37 @@
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   v11 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = dataCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Received data: %{public}@", &buf, 0xCu);
   }
 
   os_unfair_lock_lock_with_options();
   tasks = self->_tasks;
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 taskIdentifier]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
   v14 = [(NSMutableDictionary *)tasks objectForKeyedSubscript:v13];
 
   os_unfair_lock_unlock(&self->_lock);
-  v16 = [v9 countOfBytesReceived];
+  countOfBytesReceived = [taskCopy countOfBytesReceived];
   if (v14)
   {
     v17 = objc_getProperty(v14, v15, 32, 1);
-    [v17 setCompletedUnitCount:v16];
+    [v17 setCompletedUnitCount:countOfBytesReceived];
 
     Property = objc_getProperty(v14, v18, 48, 1);
   }
 
   else
   {
-    [0 setCompletedUnitCount:v16];
+    [0 setCompletedUnitCount:countOfBytesReceived];
     Property = 0;
   }
 
@@ -216,7 +216,7 @@
   v21 = v20;
   v28 = v21;
   p_buf = &buf;
-  [v10 enumerateByteRangesUsingBlock:&v24];
+  [dataCopy enumerateByteRangesUsingBlock:&v24];
   v23 = *(*(&buf + 1) + 40);
   if (v23)
   {
@@ -225,20 +225,20 @@
       objc_setProperty_atomic(v14, v22, v23, 24);
     }
 
-    [v9 cancel];
+    [taskCopy cancel];
   }
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   os_unfair_lock_lock_with_options();
   tasks = self->_tasks;
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v9 taskIdentifier]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [taskCopy taskIdentifier]);
   v14 = [(NSMutableDictionary *)tasks objectForKeyedSubscript:v13];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -259,11 +259,11 @@
     *buf = 138412546;
     v39 = v18;
     v40 = 2114;
-    v41 = v10;
+    v41 = responseCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%@] Received response: %{public}@", buf, 0x16u);
   }
 
-  v19 = sub_100284B18(v10);
+  v19 = sub_100284B18(responseCopy);
   v20 = v19;
   if (v19 && [v19 length])
   {
@@ -284,14 +284,14 @@
       *buf = 138412802;
       v39 = v24;
       v40 = 2114;
-      v41 = v9;
+      v41 = taskCopy;
       v42 = 2114;
       v43 = v20;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%@] Task: %{public}@ CDNUUID: %{public}@", buf, 0x20u);
     }
   }
 
-  v25 = sub_100271518(v10);
+  v25 = sub_100271518(responseCopy);
   if (v25 > 0x18F)
   {
     v36 = ASDErrorHTTPStatusCodeKey;
@@ -310,27 +310,27 @@
 
   else
   {
-    v27 = [v9 countOfBytesExpectedToReceive];
+    countOfBytesExpectedToReceive = [taskCopy countOfBytesExpectedToReceive];
     if (v14)
     {
       v28 = objc_getProperty(v14, v26, 32, 1);
-      [v28 setTotalUnitCount:v27];
+      [v28 setTotalUnitCount:countOfBytesExpectedToReceive];
 
       v30 = objc_getProperty(v14, v29, 48, 1);
     }
 
     else
     {
-      [0 setTotalUnitCount:v27];
+      [0 setTotalUnitCount:countOfBytesExpectedToReceive];
       v30 = 0;
     }
 
     v31 = v30;
-    [v31 expectedContentLength:{objc_msgSend(v9, "countOfBytesExpectedToReceive")}];
+    [v31 expectedContentLength:{objc_msgSend(taskCopy, "countOfBytesExpectedToReceive")}];
     v32 = 1;
   }
 
-  v11[2](v11, v32);
+  handlerCopy[2](handlerCopy, v32);
 }
 
 @end

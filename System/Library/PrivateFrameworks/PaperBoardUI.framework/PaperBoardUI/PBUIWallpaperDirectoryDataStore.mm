@@ -1,36 +1,36 @@
 @interface PBUIWallpaperDirectoryDataStore
 + (NSURL)defaultDirectoryURL;
-- (BOOL)copyVideoAtURL:(id)a3 toURL:(id)a4;
-- (BOOL)hasWallpaperImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (BOOL)setOriginalVideoURL:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setVideoURL:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setWallpaperImage:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setWallpaperOptions:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setWallpaperOriginalImage:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5;
-- (BOOL)setWallpaperThumbnailData:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5;
+- (BOOL)copyVideoAtURL:(id)l toURL:(id)rL;
+- (BOOL)hasWallpaperImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)setOriginalVideoURL:(id)l forVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)setVideoURL:(id)l forVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)setWallpaperImage:(id)image forVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)setWallpaperOptions:(id)options forVariants:(int64_t)variants wallpaperMode:(int64_t)mode;
+- (BOOL)setWallpaperOriginalImage:(id)image forVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (BOOL)setWallpaperThumbnailData:(id)data forVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
 - (PBUIWallpaperDirectoryDataStore)init;
-- (PBUIWallpaperDirectoryDataStore)initWithDirectoryURL:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (PBUIWallpaperDirectoryDataStore)initWithDirectoryURL:(id)l;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (id)verifiedOriginalVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)verifiedVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperImageURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOptionsURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOriginalImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOriginalImageURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperOriginalVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperThumbnailDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperThumbnailURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
-- (id)wallpaperVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4;
+- (id)verifiedOriginalVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)verifiedVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperImageURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOptionsURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOriginalImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOriginalImageURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperOriginalVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperThumbnailDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperThumbnailURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
+- (id)wallpaperVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode;
 - (void)cleanup;
 - (void)createDirectory;
-- (void)moveWallpaperImageDataTypes:(unint64_t)a3 fromVariant:(int64_t)a4 toVariant:(int64_t)a5;
-- (void)removeVideoForVariant:(int64_t)a3;
-- (void)removeWallpaperImageDataTypes:(unint64_t)a3 forVariants:(int64_t)a4;
-- (void)removeWallpaperOptionsForVariants:(int64_t)a3;
+- (void)moveWallpaperImageDataTypes:(unint64_t)types fromVariant:(int64_t)variant toVariant:(int64_t)toVariant;
+- (void)removeVideoForVariant:(int64_t)variant;
+- (void)removeWallpaperImageDataTypes:(unint64_t)types forVariants:(int64_t)variants;
+- (void)removeWallpaperOptionsForVariants:(int64_t)variants;
 @end
 
 @implementation PBUIWallpaperDirectoryDataStore
@@ -44,15 +44,15 @@
   return v4;
 }
 
-- (PBUIWallpaperDirectoryDataStore)initWithDirectoryURL:(id)a3
+- (PBUIWallpaperDirectoryDataStore)initWithDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PBUIWallpaperDirectoryDataStore;
   v5 = [(PBUIWallpaperDirectoryDataStore *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     directoryURL = v5->_directoryURL;
     v5->_directoryURL = v6;
   }
@@ -63,18 +63,18 @@
 - (void)cleanup
 {
   v66 = *MEMORY[0x277D85DE8];
-  v3 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
   v4 = __possibleWallpaperFileNames();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = *MEMORY[0x277CBE8A8];
   v64 = *MEMORY[0x277CBE8A8];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
-  v34 = v3;
-  v8 = [v5 enumeratorAtURL:v3 includingPropertiesForKeys:v7 options:1 errorHandler:&__block_literal_global_9];
+  v34 = directoryURL;
+  v8 = [defaultManager enumeratorAtURL:directoryURL includingPropertiesForKeys:v7 options:1 errorHandler:&__block_literal_global_9];
 
   v9 = [v8 countByEnumeratingWithState:&v54 objects:v65 count:16];
   if (v9)
@@ -111,8 +111,8 @@
 
           v40 = v15;
           v41 = v12;
-          v16 = [v13 lastPathComponent];
-          if (-[NSObject hasPrefix:](v16, "hasPrefix:", @".") && (-[NSObject pathExtension](v16, "pathExtension"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 length], v17, v18 == 6))
+          lastPathComponent = [v13 lastPathComponent];
+          if (-[NSObject hasPrefix:](lastPathComponent, "hasPrefix:", @".") && (-[NSObject pathExtension](lastPathComponent, "pathExtension"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 length], v17, v18 == 6))
           {
             v50 = 0u;
             v51 = 0u;
@@ -133,11 +133,11 @@
                     objc_enumerationMutation(v19);
                   }
 
-                  if ([v16 containsString:*(*(&v48 + 1) + 8 * i)])
+                  if ([lastPathComponent containsString:*(*(&v48 + 1) + 8 * i)])
                   {
-                    v24 = [MEMORY[0x277CCAA00] defaultManager];
+                    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
                     v47 = 0;
-                    v25 = [v24 removeItemAtURL:v13 error:&v47];
+                    v25 = [defaultManager2 removeItemAtURL:v13 error:&v47];
                     v26 = v47;
 
                     v27 = PBUILogCommon();
@@ -191,7 +191,7 @@
                     objc_enumerationMutation(v29);
                   }
 
-                  if ([v16 hasPrefix:*(*(&v43 + 1) + 8 * j)])
+                  if ([lastPathComponent hasPrefix:*(*(&v43 + 1) + 8 * j)])
                   {
                     [(PBUIWallpaperDirectoryDataStore *)self didWriteFileToURL:v13];
                   }
@@ -216,14 +216,14 @@
         {
           v40 = v15;
           v41 = v12;
-          v16 = PBUILogCommon();
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+          lastPathComponent = PBUILogCommon();
+          if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
             v61 = v13;
             v62 = 2114;
             v63 = v42;
-            _os_log_error_impl(&dword_21E67D000, v16, OS_LOG_TYPE_ERROR, "Unable to read resource type from directory URL %{public}@: %{public}@", buf, 0x16u);
+            _os_log_error_impl(&dword_21E67D000, lastPathComponent, OS_LOG_TYPE_ERROR, "Unable to read resource type from directory URL %{public}@: %{public}@", buf, 0x16u);
           }
         }
 
@@ -257,28 +257,28 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
 
 - (PBUIWallpaperDirectoryDataStore)init
 {
-  v3 = [objc_opt_class() defaultDirectoryURL];
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self initWithDirectoryURL:v3];
+  defaultDirectoryURL = [objc_opt_class() defaultDirectoryURL];
+  v4 = [(PBUIWallpaperDirectoryDataStore *)self initWithDirectoryURL:defaultDirectoryURL];
 
   return v4;
 }
 
-- (id)wallpaperImageURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperImageURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v7 = __wallpaperImageFilename(a3, a4);
-  v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v7 = __wallpaperImageFilename(variant, mode);
+  v8 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
 }
 
-- (id)wallpaperOriginalImageURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOriginalImageURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v7 = __wallpaperOriginalImageFilename(a3, a4);
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v7 = __wallpaperOriginalImageFilename(variant, mode);
   if (v7)
   {
-    v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+    v8 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
   }
 
   else
@@ -289,13 +289,13 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)wallpaperThumbnailURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperThumbnailURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v7 = __wallpaperThumbnailFilename(a3, a4);
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v7 = __wallpaperThumbnailFilename(variant, mode);
   if (v7)
   {
-    v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+    v8 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
   }
 
   else
@@ -306,7 +306,7 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
   return v8;
 }
 
-- (id)wallpaperImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
   v27[3] = *MEMORY[0x277D85DE8];
   v7 = [PBUIWallpaperDirectoryDataStore wallpaperImageURLForVariant:"wallpaperImageURLForVariant:wallpaperMode:" wallpaperMode:?];
@@ -327,7 +327,7 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
   v11 = PBUILogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v24 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:a3 wallpaperMode:a4];
+    v24 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:variant wallpaperMode:mode];
     LODWORD(v27[0]) = 138543362;
     *(v27 + 4) = v24;
     _os_log_debug_impl(&dword_21E67D000, v11, OS_LOG_TYPE_DEBUG, "Wallpaper file URL: %{public}@", v27, 0xCu);
@@ -357,8 +357,8 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
 
       else
       {
-        v21 = [MEMORY[0x277D759A0] mainScreen];
-        [v21 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v17 = v22;
       }
 
@@ -402,17 +402,17 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
   return v19;
 }
 
-- (BOOL)hasWallpaperImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (BOOL)hasWallpaperImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:variant wallpaperMode:mode];
   v5 = [v4 checkResourceIsReachableAndReturnError:0];
 
   return v5;
 }
 
-- (id)wallpaperThumbnailDataForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperThumbnailDataForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:variant wallpaperMode:mode];
   if (v4)
   {
     v5 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v4 options:1 error:0];
@@ -426,15 +426,15 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)wallpaperOriginalImageForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOriginalImageForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:variant wallpaperMode:mode];
   v5 = v4;
   if (v4)
   {
     v6 = MEMORY[0x277D755B8];
-    v7 = [v4 path];
-    v8 = [v6 imageWithContentsOfCPBitmapFile:v7 flags:0];
+    path = [v4 path];
+    v8 = [v6 imageWithContentsOfCPBitmapFile:path flags:0];
   }
 
   else
@@ -447,13 +447,13 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
 
 - (void)createDirectory
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  if (v4)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  if (directoryURL)
   {
-    v5 = [(PBUIWallpaperDirectoryDataStore *)self directoryCreationAttributes];
+    directoryCreationAttributes = [(PBUIWallpaperDirectoryDataStore *)self directoryCreationAttributes];
     v9 = 0;
-    v6 = [v3 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:v5 error:&v9];
+    v6 = [defaultManager createDirectoryAtURL:directoryURL withIntermediateDirectories:1 attributes:directoryCreationAttributes error:&v9];
     v7 = v9;
 
     if (v6)
@@ -476,19 +476,19 @@ uint64_t __42__PBUIWallpaperDirectoryDataStore_cleanup__block_invoke(uint64_t a1
 LABEL_8:
 }
 
-- (BOOL)setWallpaperImage:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperImage:(id)image forVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  if (!__hasEnoughFreeSpaceToSetWallpaper() || ([(PBUIWallpaperDirectoryDataStore *)self createDirectory], a4 == -1))
+  imageCopy = image;
+  if (!__hasEnoughFreeSpaceToSetWallpaper() || ([(PBUIWallpaperDirectoryDataStore *)self createDirectory], variant == -1))
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:a4 wallpaperMode:a5];
-    v10 = [v9 path];
-    if (v10 && (([v8 writeToCPBitmapFile:v10 flags:1] & 1) != 0 || objc_msgSend(v8, "writeToCPBitmapFile:flags:", v10, 0)))
+    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:variant wallpaperMode:mode];
+    path = [v9 path];
+    if (path && (([imageCopy writeToCPBitmapFile:path flags:1] & 1) != 0 || objc_msgSend(imageCopy, "writeToCPBitmapFile:flags:", path, 0)))
     {
       [(PBUIWallpaperDirectoryDataStore *)self didWriteFileToURL:v9];
       v11 = 1;
@@ -503,19 +503,19 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)setWallpaperOriginalImage:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperOriginalImage:(id)image forVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  if (!__hasEnoughFreeSpaceToSetWallpaper() || ([(PBUIWallpaperDirectoryDataStore *)self createDirectory], a4 == -1))
+  imageCopy = image;
+  if (!__hasEnoughFreeSpaceToSetWallpaper() || ([(PBUIWallpaperDirectoryDataStore *)self createDirectory], variant == -1))
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:a4 wallpaperMode:a5];
-    v10 = [v9 path];
-    if (v10 && (([v8 writeToCPBitmapFile:v10 flags:1] & 1) != 0 || objc_msgSend(v8, "writeToCPBitmapFile:flags:", v10, 0)))
+    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:variant wallpaperMode:mode];
+    path = [v9 path];
+    if (path && (([imageCopy writeToCPBitmapFile:path flags:1] & 1) != 0 || objc_msgSend(imageCopy, "writeToCPBitmapFile:flags:", path, 0)))
     {
       [(PBUIWallpaperDirectoryDataStore *)self didWriteFileToURL:v9];
       v11 = 1;
@@ -530,17 +530,17 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)setWallpaperThumbnailData:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperThumbnailData:(id)data forVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 != -1)
+  dataCopy = data;
+  if (variant != -1)
   {
-    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:a4 wallpaperMode:a5];
+    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:variant wallpaperMode:mode];
     if (v9)
     {
       v16 = 0;
-      v10 = [v8 writeToURL:v9 options:268435457 error:&v16];
+      v10 = [dataCopy writeToURL:v9 options:268435457 error:&v16];
       v11 = v16;
       if (v10)
       {
@@ -560,7 +560,7 @@ LABEL_10:
     v13 = PBUILogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = PBUIStringForWallpaperVariant(a4);
+      v14 = PBUIStringForWallpaperVariant(variant);
       *buf = 138543874;
       v18 = v14;
       v19 = 2114;
@@ -580,78 +580,78 @@ LABEL_11:
   return v12;
 }
 
-- (void)moveWallpaperImageDataTypes:(unint64_t)a3 fromVariant:(int64_t)a4 toVariant:(int64_t)a5
+- (void)moveWallpaperImageDataTypes:(unint64_t)types fromVariant:(int64_t)variant toVariant:(int64_t)toVariant
 {
-  v7 = a3;
-  v19 = [MEMORY[0x277CCAA00] defaultManager];
+  typesCopy = types;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   for (i = 0; i != 4; ++i)
   {
-    if (v7)
+    if (typesCopy)
     {
-      v10 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:a4 wallpaperMode:i];
-      v11 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:a5 wallpaperMode:i];
+      v10 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:variant wallpaperMode:i];
+      v11 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperImageURLForVariant:toVariant wallpaperMode:i];
       v12 = v11;
       if (v10 && v11)
       {
-        [v19 moveItemAtURL:v10 toURL:v11 error:0];
+        [defaultManager moveItemAtURL:v10 toURL:v11 error:0];
       }
 
-      if ((v7 & 4) == 0)
+      if ((typesCopy & 4) == 0)
       {
 LABEL_4:
-        if ((v7 & 2) == 0)
+        if ((typesCopy & 2) == 0)
         {
           continue;
         }
 
 LABEL_14:
-        v16 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:a4 wallpaperMode:i];
-        v17 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:a5 wallpaperMode:i];
+        v16 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:variant wallpaperMode:i];
+        v17 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalImageURLForVariant:toVariant wallpaperMode:i];
         v18 = v17;
         if (v16 && v17)
         {
-          [v19 moveItemAtURL:v16 toURL:v17 error:0];
+          [defaultManager moveItemAtURL:v16 toURL:v17 error:0];
         }
 
         continue;
       }
     }
 
-    else if ((v7 & 4) == 0)
+    else if ((typesCopy & 4) == 0)
     {
       goto LABEL_4;
     }
 
-    v13 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:a4 wallpaperMode:i];
-    v14 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:a5 wallpaperMode:i];
+    v13 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:variant wallpaperMode:i];
+    v14 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperThumbnailURLForVariant:toVariant wallpaperMode:i];
     v15 = v14;
     if (v13 && v14)
     {
-      [v19 moveItemAtURL:v13 toURL:v14 error:0];
+      [defaultManager moveItemAtURL:v13 toURL:v14 error:0];
     }
 
-    if ((v7 & 2) != 0)
+    if ((typesCopy & 2) != 0)
     {
       goto LABEL_14;
     }
   }
 }
 
-- (void)removeWallpaperImageDataTypes:(unint64_t)a3 forVariants:(int64_t)a4
+- (void)removeWallpaperImageDataTypes:(unint64_t)types forVariants:(int64_t)variants
 {
-  v4 = a4;
+  variantsCopy = variants;
   v23 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __77__PBUIWallpaperDirectoryDataStore_removeWallpaperImageDataTypes_forVariants___block_invoke;
   v19[3] = &unk_2783626B0;
-  v21 = a3;
+  typesCopy = types;
   v19[4] = self;
   v8 = v7;
   v20 = v8;
-  PBUIWallpaperEnumerateVariantsForLocations(v4, v19);
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v19);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -672,7 +672,7 @@ LABEL_14:
           objc_enumerationMutation(v10);
         }
 
-        [v9 removeItemAtURL:*(*(&v15 + 1) + 8 * v14++) error:{0, v15}];
+        [defaultManager removeItemAtURL:*(*(&v15 + 1) + 8 * v14++) error:{0, v15}];
       }
 
       while (v12 != v14);
@@ -734,30 +734,30 @@ LABEL_12:
   }
 }
 
-- (id)wallpaperVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v7 = __wallpaperVideoFilename(a3, a4);
-  v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v7 = __wallpaperVideoFilename(variant, mode);
+  v8 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
 }
 
-- (id)wallpaperOriginalVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOriginalVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v6 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v7 = __wallpaperOriginalVideoFilename(a3, a4);
-  v8 = [v6 URLByAppendingPathComponent:v7 isDirectory:0];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v7 = __wallpaperOriginalVideoFilename(variant, mode);
+  v8 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
 
   return v8;
 }
 
-- (id)verifiedVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)verifiedVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
   v7 = [PBUIWallpaperDirectoryDataStore wallpaperVideoURLForVariant:"wallpaperVideoURLForVariant:wallpaperMode:" wallpaperMode:?];
   if (([v7 checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
-    v8 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:a3 wallpaperMode:a4];
+    v8 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:variant wallpaperMode:mode];
     v9 = 0;
     if ([v8 checkResourceIsReachableAndReturnError:0])
     {
@@ -770,9 +770,9 @@ LABEL_12:
   return v7;
 }
 
-- (id)verifiedOriginalVideoURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)verifiedOriginalVideoURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:a3 wallpaperMode:a4];
+  v4 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:variant wallpaperMode:mode];
   if (([v4 checkResourceIsReachableAndReturnError:0] & 1) == 0)
   {
 
@@ -782,11 +782,11 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)copyVideoAtURL:(id)a3 toURL:(id)a4
+- (BOOL)copyVideoAtURL:(id)l toURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:v7])
+  lCopy = l;
+  rLCopy = rL;
+  if ([lCopy isEqual:rLCopy])
   {
     LOBYTE(v8) = 1;
   }
@@ -794,19 +794,19 @@ LABEL_12:
   else
   {
     [(PBUIWallpaperDirectoryDataStore *)self createDirectory];
-    v9 = [MEMORY[0x277CE6650] assetWithURL:v6];
+    v9 = [MEMORY[0x277CE6650] assetWithURL:lCopy];
     v10 = v9;
     LOBYTE(v8) = 0;
-    if (v7 && v9)
+    if (rLCopy && v9)
     {
-      v11 = [MEMORY[0x277CCAA00] defaultManager];
-      [v11 removeItemAtURL:v7 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtURL:rLCopy error:0];
       v15 = 0;
-      v8 = [v11 copyItemAtURL:v6 toURL:v7 error:&v15];
+      v8 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:&v15];
       v12 = v15;
       if (v8)
       {
-        [(PBUIWallpaperDirectoryDataStore *)self didWriteFileToURL:v7];
+        [(PBUIWallpaperDirectoryDataStore *)self didWriteFileToURL:rLCopy];
       }
 
       else
@@ -814,7 +814,7 @@ LABEL_12:
         v13 = PBUILogCommon();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          [(PBUIWallpaperDirectoryDataStore *)v7 copyVideoAtURL:v12 toURL:v13];
+          [(PBUIWallpaperDirectoryDataStore *)rLCopy copyVideoAtURL:v12 toURL:v13];
         }
       }
     }
@@ -823,36 +823,36 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)setVideoURL:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setVideoURL:(id)l forVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperVideoURLForVariant:a4 wallpaperMode:a5];
-  LOBYTE(a4) = [(PBUIWallpaperDirectoryDataStore *)self copyVideoAtURL:v8 toURL:v9];
+  lCopy = l;
+  v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperVideoURLForVariant:variant wallpaperMode:mode];
+  LOBYTE(variant) = [(PBUIWallpaperDirectoryDataStore *)self copyVideoAtURL:lCopy toURL:v9];
 
-  return a4;
+  return variant;
 }
 
-- (BOOL)setOriginalVideoURL:(id)a3 forVariant:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setOriginalVideoURL:(id)l forVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  v8 = a3;
-  v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:a4 wallpaperMode:a5];
-  LOBYTE(a4) = [(PBUIWallpaperDirectoryDataStore *)self copyVideoAtURL:v8 toURL:v9];
+  lCopy = l;
+  v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:variant wallpaperMode:mode];
+  LOBYTE(variant) = [(PBUIWallpaperDirectoryDataStore *)self copyVideoAtURL:lCopy toURL:v9];
 
-  return a4;
+  return variant;
 }
 
-- (void)removeVideoForVariant:(int64_t)a3
+- (void)removeVideoForVariant:(int64_t)variant
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = 0;
   v7 = 0;
   *&v8 = 138543362;
   v16 = v8;
   do
   {
-    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperVideoURLForVariant:a3 wallpaperMode:v6, v16];
-    if (!v9 || (v18 = v7, v10 = [v5 removeItemAtURL:v9 error:&v18], v11 = v18, v7, v7 = v11, (v10 & 1) == 0))
+    v9 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperVideoURLForVariant:variant wallpaperMode:v6, v16];
+    if (!v9 || (v18 = v7, v10 = [defaultManager removeItemAtURL:v9 error:&v18], v11 = v18, v7, v7 = v11, (v10 & 1) == 0))
     {
       if (([v7 pbui_isFileNotFoundError] & 1) == 0)
       {
@@ -866,11 +866,11 @@ LABEL_12:
       }
     }
 
-    v13 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:a3 wallpaperMode:v6];
+    v13 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOriginalVideoURLForVariant:variant wallpaperMode:v6];
     if (v13)
     {
       v17 = 0;
-      v14 = [v5 removeItemAtURL:v13 error:&v17];
+      v14 = [defaultManager removeItemAtURL:v13 error:&v17];
       v7 = v17;
       if (v14)
       {
@@ -902,16 +902,16 @@ LABEL_16:
   while (v6 != 4);
 }
 
-- (id)wallpaperOptionsURLForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOptionsURLForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (variant == 1)
   {
     v5 = @"HomeWallpaperOptions";
   }
 
   else
   {
-    if (a3)
+    if (variant)
     {
       goto LABEL_9;
     }
@@ -919,7 +919,7 @@ LABEL_16:
     v5 = @"LockWallpaperOptions";
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     v6 = PBUIStringForWallpaperMode(2uLL);
     v5 = [(__CFString *)v5 stringByAppendingString:v6];
@@ -929,8 +929,8 @@ LABEL_16:
 
   if (v7)
   {
-    v8 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-    v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
+    directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+    v9 = [directoryURL URLByAppendingPathComponent:v7 isDirectory:0];
 
     goto LABEL_10;
   }
@@ -942,11 +942,11 @@ LABEL_10:
   return v9;
 }
 
-- (id)wallpaperOptionsForVariant:(int64_t)a3 wallpaperMode:(int64_t)a4
+- (id)wallpaperOptionsForVariant:(int64_t)variant wallpaperMode:(int64_t)mode
 {
   if ([(PBUIWallpaperDirectoryDataStore *)self supportsWallpaperOptions])
   {
-    v7 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOptionsURLForVariant:a3 wallpaperMode:a4];
+    v7 = [(PBUIWallpaperDirectoryDataStore *)self wallpaperOptionsURLForVariant:variant wallpaperMode:mode];
     if (v7)
     {
       v8 = [[PBUIWallpaperOptions alloc] initWithContentsOfURL:v7];
@@ -966,10 +966,10 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)setWallpaperOptions:(id)a3 forVariants:(int64_t)a4 wallpaperMode:(int64_t)a5
+- (BOOL)setWallpaperOptions:(id)options forVariants:(int64_t)variants wallpaperMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  variantsCopy = variants;
+  optionsCopy = options;
   if ([(PBUIWallpaperDirectoryDataStore *)self supportsWallpaperOptions])
   {
     v15 = 0;
@@ -981,10 +981,10 @@ LABEL_10:
     v11[2] = __81__PBUIWallpaperDirectoryDataStore_setWallpaperOptions_forVariants_wallpaperMode___block_invoke;
     v11[3] = &unk_2783626D8;
     v11[4] = self;
-    v14 = a5;
-    v12 = v8;
+    modeCopy = mode;
+    v12 = optionsCopy;
     v13 = &v15;
-    PBUIWallpaperEnumerateVariantsForLocations(v6, v11);
+    PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v11);
     v9 = *(v16 + 24);
 
     _Block_object_dispose(&v15, 8);
@@ -1010,20 +1010,20 @@ uint64_t __81__PBUIWallpaperDirectoryDataStore_setWallpaperOptions_forVariants_w
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)removeWallpaperOptionsForVariants:(int64_t)a3
+- (void)removeWallpaperOptionsForVariants:(int64_t)variants
 {
-  v3 = a3;
+  variantsCopy = variants;
   if ([(PBUIWallpaperDirectoryDataStore *)self supportsWallpaperOptions])
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __69__PBUIWallpaperDirectoryDataStore_removeWallpaperOptionsForVariants___block_invoke;
     v7[3] = &unk_278362330;
     v7[4] = self;
-    v8 = v5;
-    v6 = v5;
-    PBUIWallpaperEnumerateVariantsForLocations(v3, v7);
+    v8 = defaultManager;
+    v6 = defaultManager;
+    PBUIWallpaperEnumerateVariantsForLocations(variantsCopy, v7);
   }
 }
 
@@ -1039,29 +1039,29 @@ void __69__PBUIWallpaperDirectoryDataStore_removeWallpaperOptionsForVariants___b
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperDirectoryDataStore *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperDirectoryDataStore *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v5 = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
-  v6 = [v4 appendObject:v5 withName:@"directoryURL"];
+  directoryURL = [(PBUIWallpaperDirectoryDataStore *)self directoryURL];
+  v6 = [v4 appendObject:directoryURL withName:@"directoryURL"];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperDirectoryDataStore *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperDirectoryDataStore *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)wallpaperImageForVariant:(void *)a1 wallpaperMode:(NSObject *)a2 .cold.1(void *a1, NSObject *a2)

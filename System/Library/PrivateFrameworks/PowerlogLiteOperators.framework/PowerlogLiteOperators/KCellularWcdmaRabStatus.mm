@@ -1,23 +1,23 @@
 @interface KCellularWcdmaRabStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasHsRabCount:(BOOL)a3;
-- (void)setHasR99RabCount:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)setHasTotalRabCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasHsRabCount:(BOOL)count;
+- (void)setHasR99RabCount:(BOOL)count;
+- (void)setHasSubsId:(BOOL)id;
+- (void)setHasTotalRabCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularWcdmaRabStatus
 
-- (void)setHasTotalRabCount:(BOOL)a3
+- (void)setHasTotalRabCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasR99RabCount:(BOOL)a3
+- (void)setHasR99RabCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHsRabCount:(BOOL)a3
+- (void)setHasHsRabCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = KCellularWcdmaRabStatus;
   v4 = [(KCellularWcdmaRabStatus *)&v8 description];
-  v5 = [(KCellularWcdmaRabStatus *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(KCellularWcdmaRabStatus *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -115,7 +115,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_totalRabCount];
-  [v3 setObject:v8 forKey:@"total_rab_count"];
+  [dictionary setObject:v8 forKey:@"total_rab_count"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -131,7 +131,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_r99RabCount];
-  [v3 setObject:v9 forKey:@"r99_rab_count"];
+  [dictionary setObject:v9 forKey:@"r99_rab_count"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -147,23 +147,23 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_hsRabCount];
-  [v3 setObject:v10 forKey:@"hs_rab_count"];
+  [dictionary setObject:v10 forKey:@"hs_rab_count"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v5 forKey:@"subs_id"];
+    [dictionary setObject:v5 forKey:@"subs_id"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -229,14 +229,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -255,8 +255,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 7) = self->_totalRabCount;
-  *(v4 + 32) |= 0x10u;
+  *(toCopy + 7) = self->_totalRabCount;
+  *(toCopy + 32) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -270,8 +270,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(v4 + 5) = self->_r99RabCount;
-  *(v4 + 32) |= 4u;
+  *(toCopy + 5) = self->_r99RabCount;
+  *(toCopy + 32) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -285,21 +285,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 4) = self->_hsRabCount;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 4) = self->_hsRabCount;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_6:
-    *(v4 + 6) = self->_subsId;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 6) = self->_subsId;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -366,23 +366,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_26:
     v5 = 0;
@@ -391,47 +391,47 @@ LABEL_26:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 32) & 0x10) == 0 || self->_totalRabCount != *(v4 + 7))
+    if ((*(equalCopy + 32) & 0x10) == 0 || self->_totalRabCount != *(equalCopy + 7))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) != 0)
+  else if ((*(equalCopy + 32) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_r99RabCount != *(v4 + 5))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_r99RabCount != *(equalCopy + 5))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 4) != 0)
+  else if ((*(equalCopy + 32) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_hsRabCount != *(v4 + 4))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_hsRabCount != *(equalCopy + 4))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 32) & 8) == 0;
+  v5 = (*(equalCopy + 32) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_subsId != *(v4 + 6))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_subsId != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
@@ -512,15 +512,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 0x10) == 0)
     {
 LABEL_3:
@@ -533,14 +533,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 0x10) == 0)
+  else if ((*(fromCopy + 32) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_totalRabCount = *(v4 + 7);
+  self->_totalRabCount = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -553,9 +553,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_r99RabCount = *(v4 + 5);
+  self->_r99RabCount = *(fromCopy + 5);
   *&self->_has |= 4u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -568,12 +568,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_hsRabCount = *(v4 + 4);
+  self->_hsRabCount = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_6:
-    self->_subsId = *(v4 + 6);
+    self->_subsId = *(fromCopy + 6);
     *&self->_has |= 8u;
   }
 

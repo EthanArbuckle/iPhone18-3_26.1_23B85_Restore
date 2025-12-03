@@ -1,12 +1,12 @@
 @interface WeatherIntentResponse
-- (WeatherIntentResponse)initWithPropertiesByName:(id)a3;
+- (WeatherIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation WeatherIntentResponse
 
-- (WeatherIntentResponse)initWithPropertiesByName:(id)a3
+- (WeatherIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

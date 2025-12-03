@@ -1,78 +1,78 @@
 @interface MCRestrictionManager
-+ (BOOL)BOOLSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5;
-+ (BOOL)intersectedValuesForFeature:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5;
-+ (BOOL)intersectedValuesSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5;
-+ (BOOL)isWebContentFilterUIActiveWithRestrictionDictionary:(id)a3;
-+ (BOOL)isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:(id)a3;
++ (BOOL)BOOLSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings;
++ (BOOL)intersectedValuesForFeature:(id)feature changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions;
++ (BOOL)intersectedValuesSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings;
++ (BOOL)isWebContentFilterUIActiveWithRestrictionDictionary:(id)dictionary;
++ (BOOL)isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:(id)dictionary;
 + (BOOL)mayChangePasscode;
-+ (BOOL)restrictedBool:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5;
-+ (BOOL)restrictedValue:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5;
-+ (BOOL)unionValuesForFeature:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5;
-+ (BOOL)unionValuesSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5;
-+ (BOOL)valueSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5;
-+ (id)_addRestrictionPayloadKeysDictionary:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5;
-+ (id)_filterRestrictionDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5;
-+ (id)_filterRestrictionPayloadKeysDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5;
-+ (id)_lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:(id)a3 forRestrictionKey:(id)a4;
-+ (id)_payloadKeysDictionaryAfterAddingFeature:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5;
-+ (id)addRestrictionPayloadKeysDictionary:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4;
++ (BOOL)restrictedBool:(id)bool changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions;
++ (BOOL)restrictedValue:(id)value changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions;
++ (BOOL)unionValuesForFeature:(id)feature changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions;
++ (BOOL)unionValuesSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings;
++ (BOOL)valueSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings;
++ (id)_addRestrictionPayloadKeysDictionary:(id)dictionary toRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key;
++ (id)_filterRestrictionDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key;
++ (id)_filterRestrictionPayloadKeysDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key;
++ (id)_lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:(id)dictionary forRestrictionKey:(id)key;
++ (id)_payloadKeysDictionaryAfterAddingFeature:(id)feature toRestrictionPayloadKeysDictionary:(id)dictionary forRestrictionKey:(id)key;
++ (id)addRestrictionPayloadKeysDictionary:(id)dictionary toRestrictionPayloadKeysDictionary:(id)keysDictionary;
 + (id)allowedGrandfatheredRestrictionPayloadKeysDictionary;
-+ (id)allowedImportFromAppBundleIDsWithOriginalAppBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 localAppBundleID:(id)a5 localAccountIsManaged:(BOOL)a6 mayOpenFromUnmanagedToManaged:(BOOL)a7 mayOpenFromManagedToUnmanaged:(BOOL)a8 isAppBundleIDExemptBlock:(id)a9 isAppBundleIDAccountBasedBlock:(id)a10;
-+ (id)allowedKeyboardBundleIDsAfterApplyingFilterToBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 hostAppIsManaged:(BOOL)a5 mayOpenFromUnmanagedToManaged:(BOOL)a6 mayOpenFromManagedToUnmanaged:(BOOL)a7;
-+ (id)allowedOpenInAppBundleIDsWithOriginalAppBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 localAppBundleID:(id)a5 localAccountIsManaged:(BOOL)a6 mayOpenFromUnmanagedToManaged:(BOOL)a7 mayOpenFromManagedToUnmanaged:(BOOL)a8 isAppBundleIDExemptBlock:(id)a9 isAppBundleIDAccountBasedBlock:(id)a10;
-+ (id)applyRestrictions:(id)a3 forFeature:(id)a4 toParametersForBoolSetting:(id)a5;
-+ (id)defaultIntersectedValuesForSetting:(id)a3;
-+ (id)defaultParametersForBoolSetting:(id)a3;
-+ (id)defaultParametersForIntersectedValuesSetting:(id)a3;
-+ (id)defaultParametersForUnionValuesSetting:(id)a3;
-+ (id)defaultParametersForValueSetting:(id)a3;
++ (id)allowedImportFromAppBundleIDsWithOriginalAppBundleIDs:(id)ds managedAppBundleIDs:(id)iDs localAppBundleID:(id)d localAccountIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged isAppBundleIDExemptBlock:(id)block isAppBundleIDAccountBasedBlock:(id)self0;
++ (id)allowedKeyboardBundleIDsAfterApplyingFilterToBundleIDs:(id)ds managedAppBundleIDs:(id)iDs hostAppIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged;
++ (id)allowedOpenInAppBundleIDsWithOriginalAppBundleIDs:(id)ds managedAppBundleIDs:(id)iDs localAppBundleID:(id)d localAccountIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged isAppBundleIDExemptBlock:(id)block isAppBundleIDAccountBasedBlock:(id)self0;
++ (id)applyRestrictions:(id)restrictions forFeature:(id)feature toParametersForBoolSetting:(id)setting;
++ (id)defaultIntersectedValuesForSetting:(id)setting;
++ (id)defaultParametersForBoolSetting:(id)setting;
++ (id)defaultParametersForIntersectedValuesSetting:(id)setting;
++ (id)defaultParametersForUnionValuesSetting:(id)setting;
++ (id)defaultParametersForValueSetting:(id)setting;
 + (id)defaultRestrictionFilePath;
 + (id)defaultSettings;
-+ (id)defaultUnionValuesForSetting:(id)a3;
-+ (id)defaultValueForSetting:(id)a3;
++ (id)defaultUnionValuesForSetting:(id)setting;
++ (id)defaultValueForSetting:(id)setting;
 + (id)effectiveGrandfatheredRestrictionPayloadKeysDictionary;
 + (id)explicitlyRestrictedAppsBySetting;
 + (id)explicitlyRestrictedEphemeralMultiUserApps;
-+ (id)filterGrandfatheredRestrictionsIfNeededFromRestrictions:(id)a3;
-+ (id)filterRestrictionDictionary:(id)a3 acceptedKeysDict:(id)a4;
-+ (id)filterRestrictionDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4;
-+ (id)filterRestrictionDictionary:(id)a3 toIncludeOnlyRestrictionsThatDifferFromRestrictions:(id)a4;
-+ (id)filterRestrictionDictionaryForPublicUse:(id)a3;
-+ (id)filterRestrictionPayloadKeysDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4;
-+ (id)filterUserSettingsForPublicUse:(id)a3;
++ (id)filterGrandfatheredRestrictionsIfNeededFromRestrictions:(id)restrictions;
++ (id)filterRestrictionDictionary:(id)dictionary acceptedKeysDict:(id)dict;
++ (id)filterRestrictionDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary;
++ (id)filterRestrictionDictionary:(id)dictionary toIncludeOnlyRestrictionsThatDifferFromRestrictions:(id)restrictions;
++ (id)filterRestrictionDictionaryForPublicUse:(id)use;
++ (id)filterRestrictionPayloadKeysDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary;
++ (id)filterUserSettingsForPublicUse:(id)use;
 + (id)grandfatheredRestrictionPayloadKeysDictionary;
-+ (id)intersectedValuesForFeature:(id)a3 withRestrictionsDictionary:(id)a4;
-+ (id)intersectedValuesSettingForFeature:(id)a3 withUserSettingDectionary:(id)a4;
-+ (id)maximumValueForSetting:(id)a3;
-+ (id)minimumValueForSetting:(id)a3;
-+ (id)newEffectiveSettingsByApplyingRestrictions:(id)a3 toSettings:(id)a4;
-+ (id)objectForFeature:(id)a3 withRestrictionsDictionary:(id)a4;
-+ (id)parametersForSetting:(id)a3 ofType:(id)a4 withUserSettingDictionary:(id)a5;
++ (id)intersectedValuesForFeature:(id)feature withRestrictionsDictionary:(id)dictionary;
++ (id)intersectedValuesSettingForFeature:(id)feature withUserSettingDectionary:(id)dectionary;
++ (id)maximumValueForSetting:(id)setting;
++ (id)minimumValueForSetting:(id)setting;
++ (id)newEffectiveSettingsByApplyingRestrictions:(id)restrictions toSettings:(id)settings;
++ (id)objectForFeature:(id)feature withRestrictionsDictionary:(id)dictionary;
++ (id)parametersForSetting:(id)setting ofType:(id)type withUserSettingDictionary:(id)dictionary;
 + (id)restrictionKeys;
-+ (id)restrictionsAfterApplyingRestrictionsDictionary:(id)a3 toRestrictionsDictionary:(id)a4 outChangeDetected:(BOOL *)a5 outError:(id *)a6;
-+ (id)restrictionsWithCurrentRestrictions:(id)a3 defaultRestrictions:(id)a4 systemProfileRestrictions:(id)a5 userProfileRestrictions:(id)a6 systemClientRestrictions:(id)a7 userClientRestrictions:(id)a8 outRestrictionsChanged:(BOOL *)a9 outError:(id *)a10;
++ (id)restrictionsAfterApplyingRestrictionsDictionary:(id)dictionary toRestrictionsDictionary:(id)restrictionsDictionary outChangeDetected:(BOOL *)detected outError:(id *)error;
++ (id)restrictionsWithCurrentRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions systemProfileRestrictions:(id)profileRestrictions userProfileRestrictions:(id)userProfileRestrictions systemClientRestrictions:(id)clientRestrictions userClientRestrictions:(id)userClientRestrictions outRestrictionsChanged:(BOOL *)changed outError:(id *)self0;
 + (id)sharedManager;
-+ (id)systemMetadataValueForKey:(id)a3;
-+ (id)unionValuesForFeature:(id)a3 withRestrictionsDictionary:(id)a4;
-+ (id)unionValuesSettingForFeature:(id)a3 withUserSettingDictionary:(id)a4;
-+ (id)valueForFeature:(id)a3 withRestrictionsDictionary:(id)a4;
-+ (id)valueSettingForFeature:(id)a3 withUserSettingDictionary:(id)a4;
-+ (int)BOOLSettingForFeature:(id)a3 outAsk:(BOOL *)a4 withUserSettingDictionary:(id)a5;
-+ (int)BOOLSettingForFeature:(id)a3 withNewUserSetting:(id)a4 currentSettings:(id)a5;
-+ (int)appWhitelistStateWithSettingsDictionary:(id)a3 restrictionsDictionary:(id)a4;
-+ (int)defaultBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4;
-+ (int)restrictedBoolForFeature:(id)a3 withRestrictionsDictionary:(id)a4;
-- (BOOL)_isBoolSettingLockedDown:(id)a3;
-- (BOOL)_isValueSettingLockedDown:(id)a3 effectiveSetting:(id)a4;
-- (BOOL)allowedToRunAppWithBundleID:(id)a3;
-- (BOOL)applyConfiguration:(id)a3 toDomain:(unint64_t)a4 inNamespace:(id)a5 fromSender:(id)a6;
-- (BOOL)isBoolSettingLockedDownByRestrictions:(id)a3;
++ (id)systemMetadataValueForKey:(id)key;
++ (id)unionValuesForFeature:(id)feature withRestrictionsDictionary:(id)dictionary;
++ (id)unionValuesSettingForFeature:(id)feature withUserSettingDictionary:(id)dictionary;
++ (id)valueForFeature:(id)feature withRestrictionsDictionary:(id)dictionary;
++ (id)valueSettingForFeature:(id)feature withUserSettingDictionary:(id)dictionary;
++ (int)BOOLSettingForFeature:(id)feature outAsk:(BOOL *)ask withUserSettingDictionary:(id)dictionary;
++ (int)BOOLSettingForFeature:(id)feature withNewUserSetting:(id)setting currentSettings:(id)settings;
++ (int)appWhitelistStateWithSettingsDictionary:(id)dictionary restrictionsDictionary:(id)restrictionsDictionary;
++ (int)defaultBoolValueForSetting:(id)setting outAsk:(BOOL *)ask;
++ (int)restrictedBoolForFeature:(id)feature withRestrictionsDictionary:(id)dictionary;
+- (BOOL)_isBoolSettingLockedDown:(id)down;
+- (BOOL)_isValueSettingLockedDown:(id)down effectiveSetting:(id)setting;
+- (BOOL)allowedToRunAppWithBundleID:(id)d;
+- (BOOL)applyConfiguration:(id)configuration toDomain:(unint64_t)domain inNamespace:(id)namespace fromSender:(id)sender;
+- (BOOL)isBoolSettingLockedDownByRestrictions:(id)restrictions;
 - (BOOL)isInSingleAppMode;
-- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)a3;
-- (BOOL)isSettingLockedDownByRestrictions:(id)a3;
+- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)restrictions;
+- (BOOL)isSettingLockedDownByRestrictions:(id)restrictions;
 - (BOOL)isSingleAppModeLogoutAllowed;
-- (BOOL)isUnionSettingLockedDownByRestrictions:(id)a3;
-- (BOOL)isValueSettingLockedDownByRestrictions:(id)a3;
+- (BOOL)isUnionSettingLockedDownByRestrictions:(id)restrictions;
+- (BOOL)isValueSettingLockedDownByRestrictions:(id)restrictions;
 - (MCRestrictionManager)init;
 - (NSArray)memberQueueEffectiveWhitelistedAppsAndOptions;
 - (NSDictionary)combinedProfileRestrictions;
@@ -96,53 +96,53 @@
 - (NSMutableDictionary)memberQueueUserNamespacedUserSettings;
 - (NSMutableDictionary)memberQueueUserProfileRestrictions;
 - (NSMutableDictionary)memberQueueUserUserSettings;
-- (id)_effectiveIntersectedValuesForSetting:(id)a3 effectiveUserSettings:(id)a4;
-- (id)_effectiveUnionValuesForSetting:(id)a3 effectiveUserSettings:(id)a4;
-- (id)_settingsEventFromProcess:(id)a3 withTag:(id)a4;
-- (id)_updatedDomainSettingsEvents:(id)a3 fromPreviousSettings:(id)a4 toNewSettings:(id)a5 sender:(id)a6;
-- (id)allClientUUIDsForClientType:(id)a3;
-- (id)appsAndOptionsForClientUUID:(id)a3;
-- (id)clientRestrictionsForClientUUID:(id)a3;
+- (id)_effectiveIntersectedValuesForSetting:(id)setting effectiveUserSettings:(id)settings;
+- (id)_effectiveUnionValuesForSetting:(id)setting effectiveUserSettings:(id)settings;
+- (id)_settingsEventFromProcess:(id)process withTag:(id)tag;
+- (id)_updatedDomainSettingsEvents:(id)events fromPreviousSettings:(id)settings toNewSettings:(id)newSettings sender:(id)sender;
+- (id)allClientUUIDsForClientType:(id)type;
+- (id)appsAndOptionsForClientUUID:(id)d;
+- (id)clientRestrictionsForClientUUID:(id)d;
 - (id)description;
-- (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3;
-- (id)effectiveIntersectedValuesForSetting:(id)a3;
-- (id)effectiveParametersForBoolSetting:(id)a3;
-- (id)effectiveParametersForBoolSetting:(id)a3 configurationUUID:(id)a4;
-- (id)effectiveParametersForIntersectedSetting:(id)a3;
-- (id)effectiveParametersForUnionSetting:(id)a3;
-- (id)effectiveParametersForValueSetting:(id)a3;
-- (id)effectiveUnionValuesForSetting:(id)a3;
-- (id)effectiveValueForSetting:(id)a3;
+- (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps;
+- (id)effectiveIntersectedValuesForSetting:(id)setting;
+- (id)effectiveParametersForBoolSetting:(id)setting;
+- (id)effectiveParametersForBoolSetting:(id)setting configurationUUID:(id)d;
+- (id)effectiveParametersForIntersectedSetting:(id)setting;
+- (id)effectiveParametersForUnionSetting:(id)setting;
+- (id)effectiveParametersForValueSetting:(id)setting;
+- (id)effectiveUnionValuesForSetting:(id)setting;
+- (id)effectiveValueForSetting:(id)setting;
 - (id)effectiveWhitelistedAppBundleIDs;
 - (id)effectiveWhitelistedAppsAndOptions;
-- (id)exchangeUUIDsRestrictingSettings:(id)a3;
-- (id)intersectedValuesForFeature:(id)a3;
-- (id)intersectedValuesSettingForFeature:(id)a3;
-- (id)memberQueueAppsAndOptionsForClientUUID:(id)a3;
-- (id)memberQueueClientRestrictionsDictionaryForClientUUID:(id)a3;
-- (id)memberQueueClientRestrictionsForClientUUID:(id)a3;
-- (id)memberQueueClientTypeForClientUUID:(id)a3;
-- (id)memberQueueUserInfoForClientUUID:(id)a3;
-- (id)objectForFeature:(id)a3;
+- (id)exchangeUUIDsRestrictingSettings:(id)settings;
+- (id)intersectedValuesForFeature:(id)feature;
+- (id)intersectedValuesSettingForFeature:(id)feature;
+- (id)memberQueueAppsAndOptionsForClientUUID:(id)d;
+- (id)memberQueueClientRestrictionsDictionaryForClientUUID:(id)d;
+- (id)memberQueueClientRestrictionsForClientUUID:(id)d;
+- (id)memberQueueClientTypeForClientUUID:(id)d;
+- (id)memberQueueUserInfoForClientUUID:(id)d;
+- (id)objectForFeature:(id)feature;
 - (id)parentalControlsBlockedAppBundleIDs;
 - (id)parentalControlsWhitelistedAppBundleIDs;
-- (id)potentialRestrictionsAfterApplyingRestrictionsDictionary:(id)a3 outChangeDetected:(BOOL *)a4 outError:(id *)a5;
-- (id)profileIdentifiersRestrictingSettings:(id)a3;
-- (id)restrictedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3;
-- (id)restrictionEnforcedBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3;
+- (id)potentialRestrictionsAfterApplyingRestrictionsDictionary:(id)dictionary outChangeDetected:(BOOL *)detected outError:(id *)error;
+- (id)profileIdentifiersRestrictingSettings:(id)settings;
+- (id)restrictedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps;
+- (id)restrictionEnforcedBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps;
 - (id)restrictionEnforcedWhitelistedAppBundleIDs;
 - (id)singleAppModeBundleID;
 - (id)systemClientRestrictions;
-- (id)unionValuesForFeature:(id)a3;
-- (id)unionValuesSettingForFeature:(id)a3;
+- (id)unionValuesForFeature:(id)feature;
+- (id)unionValuesSettingForFeature:(id)feature;
 - (id)userClientRestrictions;
-- (id)userInfoForClientUUID:(id)a3;
-- (id)valueForFeature:(id)a3;
-- (id)valueSettingForFeature:(id)a3;
-- (int)BOOLSettingForFeature:(id)a3;
+- (id)userInfoForClientUUID:(id)d;
+- (id)valueForFeature:(id)feature;
+- (id)valueSettingForFeature:(id)feature;
+- (int)BOOLSettingForFeature:(id)feature;
 - (int)appWhitelistState;
-- (int)effectiveRestrictedBoolForSetting:(id)a3 configurationUUID:(id)a4;
-- (int)restrictedBoolForFeature:(id)a3;
+- (int)effectiveRestrictedBoolForSetting:(id)setting configurationUUID:(id)d;
+- (int)restrictedBoolForFeature:(id)feature;
 - (void)clearEffectiveWhitelistedAppsAndOptionsCache;
 - (void)invalidateRestrictions;
 - (void)invalidateSettings;
@@ -167,9 +167,9 @@
   memberQueueEffectiveUserSettings = self->_memberQueueEffectiveUserSettings;
   if (!memberQueueEffectiveUserSettings)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v5 = MCEffectiveUserSettingsFilePath();
-    v6 = [v4 isReadableFileAtPath:v5];
+    v6 = [defaultManager isReadableFileAtPath:v5];
 
     if (v6)
     {
@@ -218,9 +218,9 @@ LABEL_9:
         _os_log_impl(&dword_1A795B000, v16, OS_LOG_TYPE_DEFAULT, "Could not find effective user settings. Creating new dictionary.", v20, 2u);
       }
 
-      v17 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v18 = self->_memberQueueEffectiveUserSettings;
-      self->_memberQueueEffectiveUserSettings = v17;
+      self->_memberQueueEffectiveUserSettings = dictionary;
     }
 
     memberQueueEffectiveUserSettings = self->_memberQueueEffectiveUserSettings;
@@ -253,14 +253,14 @@ LABEL_9:
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__MCRestrictionManager_effectiveUserSettings__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -299,14 +299,14 @@ uint64_t __37__MCRestrictionManager_sharedManager__block_invoke()
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __43__MCRestrictionManager_currentRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -340,10 +340,10 @@ uint64_t __43__MCRestrictionManager_currentRestrictions__block_invoke(uint64_t a
     memberQueueRestrictions = self->_memberQueueRestrictions;
     if (!memberQueueRestrictions)
     {
-      v10 = [(MCRestrictionManager *)self defaultRestrictions];
-      v11 = [v10 MCMutableDeepCopy];
+      defaultRestrictions = [(MCRestrictionManager *)self defaultRestrictions];
+      mCMutableDeepCopy = [defaultRestrictions MCMutableDeepCopy];
       v12 = self->_memberQueueRestrictions;
-      self->_memberQueueRestrictions = v11;
+      self->_memberQueueRestrictions = mCMutableDeepCopy;
 
       memberQueueRestrictions = self->_memberQueueRestrictions;
     }
@@ -354,24 +354,24 @@ uint64_t __43__MCRestrictionManager_currentRestrictions__block_invoke(uint64_t a
 
 - (void)invalidateRestrictions
 {
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__MCRestrictionManager_invalidateRestrictions__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 - (void)invalidateSettings
 {
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__MCRestrictionManager_invalidateSettings__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 uint64_t __46__MCRestrictionManager_invalidateRestrictions__block_invoke(uint64_t a1)
@@ -430,9 +430,9 @@ uint64_t __42__MCRestrictionManager_invalidateSettings__block_invoke(uint64_t a1
         _os_log_impl(&dword_1A795B000, v10, OS_LOG_TYPE_DEFAULT, "Could not find system user settings. Creating new dictionary. serialization error:  %{public}@", buf, 0xCu);
       }
 
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v12 = self->_memberQueueSystemUserSettings;
-      self->_memberQueueSystemUserSettings = v11;
+      self->_memberQueueSystemUserSettings = dictionary;
     }
 
     memberQueueSystemUserSettings = self->_memberQueueSystemUserSettings;
@@ -451,14 +451,14 @@ uint64_t __42__MCRestrictionManager_invalidateSettings__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__MCRestrictionManager_systemUserSettings__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -617,7 +617,7 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)restrictedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3
+- (id)restrictedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps
 {
   v23 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -627,7 +627,7 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
     [v5 addObjectsFromArray:v6];
   }
 
-  if (!a3)
+  if (!apps)
   {
     v7 = [(MCRestrictionManager *)self effectiveUnionValuesForSetting:@"removedSystemAppBundleIDs"];
     if (v7)
@@ -685,7 +685,7 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
   return v5;
 }
 
-- (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3
+- (id)effectiveBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps
 {
   v5 = [(MCRestrictionManager *)self effectiveUnionValuesForSetting:@"blockedAppBundleIDs"];
   v6 = v5;
@@ -697,7 +697,7 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
 
   v8 = v7;
 
-  if (!a3)
+  if (!apps)
   {
     v9 = [(MCRestrictionManager *)self effectiveUnionValuesForSetting:@"removedSystemAppBundleIDs"];
     if (v9)
@@ -713,10 +713,10 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
   return v11;
 }
 
-- (id)restrictionEnforcedBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)a3
+- (id)restrictionEnforcedBlockedAppBundleIDsExcludingRemovedSystemApps:(BOOL)apps
 {
   v5 = [(MCRestrictionManager *)self unionValuesForFeature:@"blockedAppBundleIDs"];
-  if (!a3)
+  if (!apps)
   {
     v6 = [(MCRestrictionManager *)self unionValuesForFeature:@"removedSystemAppBundleIDs"];
     if (v6)
@@ -780,14 +780,14 @@ void __80__MCRestrictionManager_AppWhitelist__explicitlyRestrictedEphemeralMulti
   v10 = __Block_byref_object_copy__2;
   v11 = __Block_byref_object_dispose__2;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __72__MCRestrictionManager_AppWhitelist__effectiveWhitelistedAppsAndOptions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -807,19 +807,19 @@ uint64_t __72__MCRestrictionManager_AppWhitelist__effectiveWhitelistedAppsAndOpt
 
 - (void)clearEffectiveWhitelistedAppsAndOptionsCache
 {
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__MCRestrictionManager_AppWhitelist__clearEffectiveWhitelistedAppsAndOptionsCache__block_invoke;
   block[3] = &unk_1E77D0180;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 }
 
 - (BOOL)isInSingleAppMode
 {
-  v2 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v3 = [MCRestrictionManager isInSingleAppModeWithSettingsDictionary:v2];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v3 = [MCRestrictionManager isInSingleAppModeWithSettingsDictionary:effectiveUserSettings];
 
   return v3;
 }
@@ -828,10 +828,10 @@ uint64_t __72__MCRestrictionManager_AppWhitelist__effectiveWhitelistedAppsAndOpt
 {
   if ([(MCRestrictionManager *)self isInSingleAppMode])
   {
-    v3 = [(MCRestrictionManager *)self effectiveWhitelistedAppsAndOptions];
-    v4 = [v3 firstObject];
+    effectiveWhitelistedAppsAndOptions = [(MCRestrictionManager *)self effectiveWhitelistedAppsAndOptions];
+    firstObject = [effectiveWhitelistedAppsAndOptions firstObject];
 
-    v5 = [v4 objectForKeyedSubscript:@"Identifier"];
+    v5 = [firstObject objectForKeyedSubscript:@"Identifier"];
   }
 
   else
@@ -844,26 +844,26 @@ uint64_t __72__MCRestrictionManager_AppWhitelist__effectiveWhitelistedAppsAndOpt
 
 - (BOOL)isSingleAppModeLogoutAllowed
 {
-  v2 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v3 = [MCRestrictionManager isSingleAppModeLogoutAllowedWithSettingsDictionary:v2];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v3 = [MCRestrictionManager isSingleAppModeLogoutAllowedWithSettingsDictionary:effectiveUserSettings];
 
   return v3;
 }
 
-- (BOOL)allowedToRunAppWithBundleID:(id)a3
+- (BOOL)allowedToRunAppWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self restrictedAppBundleIDs];
-  if ([v5 containsObject:v4])
+  dCopy = d;
+  restrictedAppBundleIDs = [(MCRestrictionManager *)self restrictedAppBundleIDs];
+  if ([restrictedAppBundleIDs containsObject:dCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(MCRestrictionManager *)self effectiveWhitelistedAppBundleIDs];
-    v8 = v7;
-    v6 = !v7 || [v7 containsObject:v4];
+    effectiveWhitelistedAppBundleIDs = [(MCRestrictionManager *)self effectiveWhitelistedAppBundleIDs];
+    v8 = effectiveWhitelistedAppBundleIDs;
+    v6 = !effectiveWhitelistedAppBundleIDs || [effectiveWhitelistedAppBundleIDs containsObject:dCopy];
   }
 
   return v6;
@@ -955,9 +955,9 @@ void __43__MCRestrictionManager_defaultRestrictions__block_invoke()
 
     if (!self->_memberQueueSystemProfileRestrictions || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueSystemProfileRestrictions;
-      self->_memberQueueSystemProfileRestrictions = v10;
+      self->_memberQueueSystemProfileRestrictions = dictionary;
     }
 
     v3 = self->_memberQueueSystemProfileRestrictions;
@@ -989,9 +989,9 @@ void __43__MCRestrictionManager_defaultRestrictions__block_invoke()
 
     if (!self->_memberQueueUserProfileRestrictions || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueUserProfileRestrictions;
-      self->_memberQueueUserProfileRestrictions = v10;
+      self->_memberQueueUserProfileRestrictions = dictionary;
     }
 
     v3 = self->_memberQueueUserProfileRestrictions;
@@ -1008,14 +1008,14 @@ void __43__MCRestrictionManager_defaultRestrictions__block_invoke()
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__MCRestrictionManager_systemProfileRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1041,14 +1041,14 @@ uint64_t __49__MCRestrictionManager_systemProfileRestrictions__block_invoke(uint
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__MCRestrictionManager_userProfileRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1069,13 +1069,13 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
 - (NSMutableDictionary)memberQueueCombinedSystemProfileRestrictions
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  memberQueueSystemProfileRestrictions = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
+  v5 = [memberQueueSystemProfileRestrictions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1083,28 +1083,28 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = dictionary;
       do
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(memberQueueSystemProfileRestrictions);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v8);
-        v11 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
-        v12 = [v11 objectForKey:v10];
+        memberQueueSystemProfileRestrictions2 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
+        v12 = [memberQueueSystemProfileRestrictions2 objectForKey:v10];
 
         v13 = objc_autoreleasePoolPush();
-        v3 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v12 toRestrictionsDictionary:v9 outChangeDetected:0 outError:0];
+        dictionary = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v12 toRestrictionsDictionary:v9 outChangeDetected:0 outError:0];
 
         objc_autoreleasePoolPop(v13);
         ++v8;
-        v9 = v3;
+        v9 = dictionary;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [memberQueueSystemProfileRestrictions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -1112,19 +1112,19 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSMutableDictionary)memberQueueCombinedProfileRestrictions
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  memberQueueSystemProfileRestrictions = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
+  v5 = [memberQueueSystemProfileRestrictions countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1132,28 +1132,28 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
     do
     {
       v8 = 0;
-      v9 = v3;
+      v9 = dictionary;
       do
       {
         if (*v31 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(memberQueueSystemProfileRestrictions);
         }
 
         v10 = *(*(&v30 + 1) + 8 * v8);
-        v11 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
-        v12 = [v11 objectForKey:v10];
+        memberQueueSystemProfileRestrictions2 = [(MCRestrictionManager *)self memberQueueSystemProfileRestrictions];
+        v12 = [memberQueueSystemProfileRestrictions2 objectForKey:v10];
 
         v13 = objc_autoreleasePoolPush();
-        v3 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v12 toRestrictionsDictionary:v9 outChangeDetected:0 outError:0];
+        dictionary = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v12 toRestrictionsDictionary:v9 outChangeDetected:0 outError:0];
 
         objc_autoreleasePoolPop(v13);
         ++v8;
-        v9 = v3;
+        v9 = dictionary;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v6 = [memberQueueSystemProfileRestrictions countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v6);
@@ -1163,8 +1163,8 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(MCRestrictionManager *)self memberQueueUserProfileRestrictions];
-  v15 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  memberQueueUserProfileRestrictions = [(MCRestrictionManager *)self memberQueueUserProfileRestrictions];
+  v15 = [memberQueueUserProfileRestrictions countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1172,28 +1172,28 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
     do
     {
       v18 = 0;
-      v19 = v3;
+      v19 = dictionary;
       do
       {
         if (*v27 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(memberQueueUserProfileRestrictions);
         }
 
         v20 = *(*(&v26 + 1) + 8 * v18);
-        v21 = [(MCRestrictionManager *)self memberQueueUserProfileRestrictions];
-        v22 = [v21 objectForKey:v20];
+        memberQueueUserProfileRestrictions2 = [(MCRestrictionManager *)self memberQueueUserProfileRestrictions];
+        v22 = [memberQueueUserProfileRestrictions2 objectForKey:v20];
 
         v23 = objc_autoreleasePoolPush();
-        v3 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v22 toRestrictionsDictionary:v19 outChangeDetected:0 outError:0];
+        dictionary = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v22 toRestrictionsDictionary:v19 outChangeDetected:0 outError:0];
 
         objc_autoreleasePoolPop(v23);
         ++v18;
-        v19 = v3;
+        v19 = dictionary;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v16 = [memberQueueUserProfileRestrictions countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v16);
@@ -1201,7 +1201,7 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSDictionary)combinedProfileRestrictions
@@ -1212,14 +1212,14 @@ uint64_t __47__MCRestrictionManager_userProfileRestrictions__block_invoke(uint64
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__MCRestrictionManager_combinedProfileRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1243,29 +1243,29 @@ uint64_t __51__MCRestrictionManager_combinedProfileRestrictions__block_invoke(ui
   v8.receiver = self;
   v8.super_class = MCRestrictionManager;
   v4 = [(MCRestrictionManager *)&v8 description];
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [v3 stringWithFormat:@"%@ %p: Restrictions:%@", v4, self, v5];
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [v3 stringWithFormat:@"%@ %p: Restrictions:%@", v4, self, currentRestrictions];
 
   return v6;
 }
 
-- (id)potentialRestrictionsAfterApplyingRestrictionsDictionary:(id)a3 outChangeDetected:(BOOL *)a4 outError:(id *)a5
+- (id)potentialRestrictionsAfterApplyingRestrictionsDictionary:(id)dictionary outChangeDetected:(BOOL *)detected outError:(id *)error
 {
-  v8 = a3;
-  v9 = [(MCRestrictionManager *)self currentRestrictions];
-  v10 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v8 toRestrictionsDictionary:v9 outChangeDetected:a4 outError:a5];
+  dictionaryCopy = dictionary;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v10 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:dictionaryCopy toRestrictionsDictionary:currentRestrictions outChangeDetected:detected outError:error];
 
   return v10;
 }
 
-+ (id)restrictionsAfterApplyingRestrictionsDictionary:(id)a3 toRestrictionsDictionary:(id)a4 outChangeDetected:(BOOL *)a5 outError:(id *)a6
++ (id)restrictionsAfterApplyingRestrictionsDictionary:(id)dictionary toRestrictionsDictionary:(id)restrictionsDictionary outChangeDetected:(BOOL *)detected outError:(id *)error
 {
   v156 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [a4 MCMutableDeepCopy];
-  v10 = [v8 objectForKey:@"restrictedBool"];
-  v114 = v8;
-  v115 = v9;
+  dictionaryCopy = dictionary;
+  mCMutableDeepCopy = [restrictionsDictionary MCMutableDeepCopy];
+  v10 = [dictionaryCopy objectForKey:@"restrictedBool"];
+  v114 = dictionaryCopy;
+  v115 = mCMutableDeepCopy;
   if (!v10)
   {
     v37 = 0;
@@ -1273,11 +1273,11 @@ uint64_t __51__MCRestrictionManager_combinedProfileRestrictions__block_invoke(ui
   }
 
   v11 = v10;
-  v116 = [v9 objectForKey:@"restrictedBool"];
-  if (!v116)
+  dictionary = [mCMutableDeepCopy objectForKey:@"restrictedBool"];
+  if (!dictionary)
   {
-    v116 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setValue:? forKey:?];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [mCMutableDeepCopy setValue:? forKey:?];
   }
 
   v149 = 0u;
@@ -1290,14 +1290,14 @@ uint64_t __51__MCRestrictionManager_combinedProfileRestrictions__block_invoke(ui
   {
     v37 = 0;
     v27 = 0;
-    v13 = v116;
+    v13 = dictionary;
     goto LABEL_34;
   }
 
-  v111 = a6;
+  errorCopy = error;
   v125 = 0;
   v121 = *v148;
-  v13 = v116;
+  v13 = dictionary;
   while (2)
   {
     for (i = 0; i != v123; ++i)
@@ -1344,17 +1344,17 @@ uint64_t __51__MCRestrictionManager_combinedProfileRestrictions__block_invoke(ui
             v24 = [v17 objectForKey:@"value"];
             if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v23 isEqualToNumber:v24] & 1) == 0)
             {
-              v25 = [v23 BOOLValue];
-              if (v22 == v25)
+              bOOLValue = [v23 BOOLValue];
+              if (v22 == bOOLValue)
               {
-                v26 = [MEMORY[0x1E696AD98] numberWithBool:v25];
+                v26 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
                 [v17 setValue:v26 forKey:@"value"];
 
                 v125 = 1;
               }
             }
 
-            v13 = v116;
+            v13 = dictionary;
           }
         }
       }
@@ -1385,30 +1385,30 @@ LABEL_27:
 
   v27 = 0;
 LABEL_31:
-  v8 = v114;
+  dictionaryCopy = v114;
   v37 = v125;
-  a6 = v111;
+  error = errorCopy;
 LABEL_34:
 
-  v9 = v115;
+  mCMutableDeepCopy = v115;
   if (v27)
   {
     goto LABEL_68;
   }
 
 LABEL_35:
-  v38 = [v8 objectForKey:@"restrictedValue"];
+  v38 = [dictionaryCopy objectForKey:@"restrictedValue"];
   if (!v38)
   {
     goto LABEL_70;
   }
 
   v39 = v38;
-  v40 = [v9 objectForKey:@"restrictedValue"];
-  if (!v40)
+  dictionary2 = [mCMutableDeepCopy objectForKey:@"restrictedValue"];
+  if (!dictionary2)
   {
-    v40 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setValue:v40 forKey:@"restrictedValue"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [mCMutableDeepCopy setValue:dictionary2 forKey:@"restrictedValue"];
   }
 
   v145 = 0u;
@@ -1423,7 +1423,7 @@ LABEL_35:
     goto LABEL_67;
   }
 
-  v112 = a6;
+  errorCopy2 = error;
   v126 = v37;
   v122 = *v144;
   while (2)
@@ -1438,7 +1438,7 @@ LABEL_35:
 
       v43 = *(*(&v143 + 1) + 8 * v42);
       v44 = [v41 objectForKey:v43];
-      v45 = [v40 objectForKey:v43];
+      v45 = [dictionary2 objectForKey:v43];
       if (v45)
       {
         v46 = [v44 objectForKey:@"preferSmallerValues"];
@@ -1506,7 +1506,7 @@ LABEL_60:
       else if (v44)
       {
         v46 = [v44 mutableCopy];
-        [v40 setValue:v46 forKey:v43];
+        [dictionary2 setValue:v46 forKey:v43];
         v126 = 1;
         goto LABEL_60;
       }
@@ -1530,20 +1530,20 @@ LABEL_60:
 
   v27 = 0;
 LABEL_65:
-  v8 = v114;
+  dictionaryCopy = v114;
   v37 = v126;
-  a6 = v112;
+  error = errorCopy2;
 LABEL_67:
 
-  v9 = v115;
+  mCMutableDeepCopy = v115;
   if (v27)
   {
 LABEL_68:
-    if (a6)
+    if (error)
     {
       v65 = v27;
       v66 = 0;
-      *a6 = v27;
+      *error = v27;
     }
 
     else
@@ -1555,16 +1555,16 @@ LABEL_68:
   }
 
 LABEL_70:
-  v67 = [v8 objectForKey:@"intersection"];
+  v67 = [dictionaryCopy objectForKey:@"intersection"];
   if (v67)
   {
     v68 = v67;
     v127 = v37;
-    v69 = [v9 objectForKey:@"intersection"];
-    if (!v69)
+    dictionary3 = [mCMutableDeepCopy objectForKey:@"intersection"];
+    if (!dictionary3)
     {
-      v69 = [MEMORY[0x1E695DF90] dictionary];
-      [v9 setObject:v69 forKey:@"intersection"];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      [mCMutableDeepCopy setObject:dictionary3 forKey:@"intersection"];
     }
 
     v141 = 0u;
@@ -1589,7 +1589,7 @@ LABEL_70:
 
           v75 = *(*(&v139 + 1) + 8 * j);
           v76 = [v70 objectForKey:v75];
-          v77 = [v69 objectForKey:v75];
+          v77 = [dictionary3 objectForKey:v75];
           if (v77)
           {
             if (!v76)
@@ -1612,8 +1612,8 @@ LABEL_70:
                   [v81 intersectSet:v80];
                   if (([v81 isEqualToSet:v119] & 1) == 0)
                   {
-                    v128 = [v81 allObjects];
-                    [v77 setObject:v128 forKey:@"values"];
+                    allObjects = [v81 allObjects];
+                    [v77 setObject:allObjects forKey:@"values"];
 
                     v127 = 1;
                   }
@@ -1639,7 +1639,7 @@ LABEL_70:
             }
 
             v78 = [v76 mutableCopy];
-            [v69 setValue:v78 forKey:v75];
+            [dictionary3 setValue:v78 forKey:v75];
             v127 = 1;
           }
 
@@ -1652,21 +1652,21 @@ LABEL_93:
       while (v72);
     }
 
-    v8 = v114;
-    v9 = v115;
+    dictionaryCopy = v114;
+    mCMutableDeepCopy = v115;
     v37 = v127;
   }
 
-  v82 = [v8 objectForKey:@"union"];
+  v82 = [dictionaryCopy objectForKey:@"union"];
   if (v82)
   {
     v83 = v82;
     v129 = v37;
-    v84 = [v9 objectForKey:@"union"];
-    if (!v84)
+    dictionary4 = [mCMutableDeepCopy objectForKey:@"union"];
+    if (!dictionary4)
     {
-      v84 = [MEMORY[0x1E695DF90] dictionary];
-      [v9 setObject:v84 forKey:@"union"];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+      [mCMutableDeepCopy setObject:dictionary4 forKey:@"union"];
     }
 
     v137 = 0u;
@@ -1691,7 +1691,7 @@ LABEL_93:
 
           v90 = *(*(&v135 + 1) + 8 * k);
           v91 = [v85 objectForKey:v90];
-          v92 = [v84 objectForKey:v90];
+          v92 = [dictionary4 objectForKey:v90];
           if (v92)
           {
             if (!v91)
@@ -1714,8 +1714,8 @@ LABEL_93:
                   [v96 unionSet:v95];
                   if (([v96 isEqual:v120] & 1) == 0)
                   {
-                    v130 = [v96 allObjects];
-                    [v92 setObject:v130 forKey:@"values"];
+                    allObjects2 = [v96 allObjects];
+                    [v92 setObject:allObjects2 forKey:@"values"];
 
                     v129 = 1;
                   }
@@ -1741,7 +1741,7 @@ LABEL_93:
             }
 
             v93 = [v91 mutableCopy];
-            [v84 setValue:v93 forKey:v90];
+            [dictionary4 setValue:v93 forKey:v90];
             v129 = 1;
           }
 
@@ -1754,20 +1754,20 @@ LABEL_119:
       while (v87);
     }
 
-    v8 = v114;
-    v9 = v115;
+    dictionaryCopy = v114;
+    mCMutableDeepCopy = v115;
     v37 = v129;
   }
 
-  v97 = [v8 objectForKey:@"assignedObject"];
+  v97 = [dictionaryCopy objectForKey:@"assignedObject"];
   if (v97)
   {
     v98 = v97;
-    v99 = [v9 objectForKey:@"assignedObject"];
-    if (!v99)
+    dictionary5 = [mCMutableDeepCopy objectForKey:@"assignedObject"];
+    if (!dictionary5)
     {
-      v99 = [MEMORY[0x1E695DF90] dictionary];
-      [v9 setValue:v99 forKey:@"assignedObject"];
+      dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+      [mCMutableDeepCopy setValue:dictionary5 forKey:@"assignedObject"];
     }
 
     v133 = 0u;
@@ -1791,7 +1791,7 @@ LABEL_119:
 
           v105 = *(*(&v131 + 1) + 8 * m);
           v106 = [v100 objectForKey:v105];
-          v107 = [v99 objectForKey:v105];
+          v107 = [dictionary5 objectForKey:v105];
           if (!v107)
           {
             goto LABEL_134;
@@ -1800,7 +1800,7 @@ LABEL_119:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v99 removeObjectForKey:v105];
+            [dictionary5 removeObjectForKey:v105];
             goto LABEL_135;
           }
 
@@ -1808,7 +1808,7 @@ LABEL_119:
           {
 LABEL_134:
             v108 = [v106 copy];
-            [v99 setValue:v108 forKey:v105];
+            [dictionary5 setValue:v108 forKey:v105];
 
             v37 = 1;
           }
@@ -1822,16 +1822,16 @@ LABEL_135:
       while (v102);
     }
 
-    v8 = v114;
-    v9 = v115;
+    dictionaryCopy = v114;
+    mCMutableDeepCopy = v115;
   }
 
-  if (a5)
+  if (detected)
   {
-    *a5 = v37 & 1;
+    *detected = v37 & 1;
   }
 
-  v66 = v9;
+  v66 = mCMutableDeepCopy;
   v27 = 0;
 LABEL_142:
 
@@ -1840,21 +1840,21 @@ LABEL_142:
   return v66;
 }
 
-+ (id)restrictionsWithCurrentRestrictions:(id)a3 defaultRestrictions:(id)a4 systemProfileRestrictions:(id)a5 userProfileRestrictions:(id)a6 systemClientRestrictions:(id)a7 userClientRestrictions:(id)a8 outRestrictionsChanged:(BOOL *)a9 outError:(id *)a10
++ (id)restrictionsWithCurrentRestrictions:(id)restrictions defaultRestrictions:(id)defaultRestrictions systemProfileRestrictions:(id)profileRestrictions userProfileRestrictions:(id)userProfileRestrictions systemClientRestrictions:(id)clientRestrictions userClientRestrictions:(id)userClientRestrictions outRestrictionsChanged:(BOOL *)changed outError:(id *)self0
 {
-  v15 = a9;
+  changedCopy = changed;
   v103 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v67 = a5;
-  v66 = a6;
-  v16 = a7;
-  v68 = a8;
-  v17 = [a4 MCMutableDeepCopy];
+  restrictionsCopy = restrictions;
+  profileRestrictionsCopy = profileRestrictions;
+  userProfileRestrictionsCopy = userProfileRestrictions;
+  clientRestrictionsCopy = clientRestrictions;
+  userClientRestrictionsCopy = userClientRestrictions;
+  mCMutableDeepCopy = [defaultRestrictions MCMutableDeepCopy];
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v18 = v16;
+  v18 = clientRestrictionsCopy;
   v19 = [v18 countByEnumeratingWithState:&v93 objects:v102 count:16];
   if (v19)
   {
@@ -1892,7 +1892,7 @@ LABEL_142:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v25 = v68;
+  v25 = userClientRestrictionsCopy;
   v26 = [v25 countByEnumeratingWithState:&v89 objects:v101 count:16];
   if (v26)
   {
@@ -1930,19 +1930,19 @@ LABEL_51:
     v58 = [v23 objectForKeyedSubscript:@"clientRestrictions"];
 
     v30 = v25;
-    v17 = v58;
-    v57 = v65;
+    mCMutableDeepCopy = v58;
+    v57 = restrictionsCopy;
     goto LABEL_52;
   }
 
 LABEL_17:
-  v63 = a9;
+  changedCopy2 = changed;
 
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v30 = v67;
+  v30 = profileRestrictionsCopy;
   v31 = [v30 countByEnumeratingWithState:&v85 objects:v100 count:16];
   if (v31)
   {
@@ -1950,7 +1950,7 @@ LABEL_17:
     v33 = *v86;
 LABEL_19:
     v34 = 0;
-    v35 = v17;
+    v35 = mCMutableDeepCopy;
     while (1)
     {
       if (*v86 != v33)
@@ -1958,9 +1958,9 @@ LABEL_19:
         objc_enumerationMutation(v30);
       }
 
-      v36 = [v30 objectForKeyedSubscript:{*(*(&v85 + 1) + 8 * v34), v63}];
+      v36 = [v30 objectForKeyedSubscript:{*(*(&v85 + 1) + 8 * v34), changedCopy2}];
       v84 = 0;
-      v17 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v36 toRestrictionsDictionary:v35 outChangeDetected:0 outError:&v84];
+      mCMutableDeepCopy = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v36 toRestrictionsDictionary:v35 outChangeDetected:0 outError:&v84];
       v37 = v84;
 
       if (v37)
@@ -1969,7 +1969,7 @@ LABEL_19:
       }
 
       ++v34;
-      v35 = v17;
+      v35 = mCMutableDeepCopy;
       if (v32 == v34)
       {
         v32 = [v30 countByEnumeratingWithState:&v85 objects:v100 count:16];
@@ -1995,7 +1995,7 @@ LABEL_19:
     v64 = *v81;
 LABEL_27:
     v40 = 0;
-    v41 = v17;
+    v41 = mCMutableDeepCopy;
     while (1)
     {
       if (*v81 != v64)
@@ -2003,11 +2003,11 @@ LABEL_27:
         objc_enumerationMutation(v30);
       }
 
-      v42 = [v30 objectForKeyedSubscript:{*(*(&v80 + 1) + 8 * v40), v63}];
+      v42 = [v30 objectForKeyedSubscript:{*(*(&v80 + 1) + 8 * v40), changedCopy2}];
       v43 = [v42 objectForKeyedSubscript:@"clientRestrictions"];
 
       v79 = 0;
-      v17 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v43 toRestrictionsDictionary:v41 outChangeDetected:0 outError:&v79];
+      mCMutableDeepCopy = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v43 toRestrictionsDictionary:v41 outChangeDetected:0 outError:&v79];
       v37 = v79;
 
       if (v37)
@@ -2016,7 +2016,7 @@ LABEL_27:
       }
 
       ++v40;
-      v41 = v17;
+      v41 = mCMutableDeepCopy;
       if (v39 == v40)
       {
         v39 = [v30 countByEnumeratingWithState:&v80 objects:v99 count:16];
@@ -2034,7 +2034,7 @@ LABEL_27:
   v76 = 0u;
   v77 = 0u;
   v75 = 0u;
-  v30 = v66;
+  v30 = userProfileRestrictionsCopy;
   v44 = [v30 countByEnumeratingWithState:&v75 objects:v98 count:16];
   if (v44)
   {
@@ -2042,7 +2042,7 @@ LABEL_27:
     v46 = *v76;
 LABEL_35:
     v47 = 0;
-    v48 = v17;
+    v48 = mCMutableDeepCopy;
     while (1)
     {
       if (*v76 != v46)
@@ -2050,9 +2050,9 @@ LABEL_35:
         objc_enumerationMutation(v30);
       }
 
-      v49 = [v30 objectForKeyedSubscript:{*(*(&v75 + 1) + 8 * v47), v63}];
+      v49 = [v30 objectForKeyedSubscript:{*(*(&v75 + 1) + 8 * v47), changedCopy2}];
       v74 = 0;
-      v17 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v49 toRestrictionsDictionary:v48 outChangeDetected:0 outError:&v74];
+      mCMutableDeepCopy = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v49 toRestrictionsDictionary:v48 outChangeDetected:0 outError:&v74];
       v37 = v74;
 
       if (v37)
@@ -2061,7 +2061,7 @@ LABEL_35:
       }
 
       ++v47;
-      v48 = v17;
+      v48 = mCMutableDeepCopy;
       if (v45 == v47)
       {
         v45 = [v30 countByEnumeratingWithState:&v75 objects:v98 count:16];
@@ -2087,7 +2087,7 @@ LABEL_35:
     v52 = *v71;
 LABEL_43:
     v53 = 0;
-    v54 = v17;
+    v54 = mCMutableDeepCopy;
     while (1)
     {
       if (*v71 != v52)
@@ -2095,11 +2095,11 @@ LABEL_43:
         objc_enumerationMutation(v30);
       }
 
-      v55 = [v30 objectForKeyedSubscript:{*(*(&v70 + 1) + 8 * v53), v63}];
+      v55 = [v30 objectForKeyedSubscript:{*(*(&v70 + 1) + 8 * v53), changedCopy2}];
       v56 = [v55 objectForKeyedSubscript:@"clientRestrictions"];
 
       v69 = 0;
-      v17 = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v56 toRestrictionsDictionary:v54 outChangeDetected:0 outError:&v69];
+      mCMutableDeepCopy = [MCRestrictionManager restrictionsAfterApplyingRestrictionsDictionary:v56 toRestrictionsDictionary:v54 outChangeDetected:0 outError:&v69];
       v37 = v69;
 
       if (v37)
@@ -2108,7 +2108,7 @@ LABEL_43:
       }
 
       ++v53;
-      v54 = v17;
+      v54 = mCMutableDeepCopy;
       if (v51 == v53)
       {
         v51 = [v30 countByEnumeratingWithState:&v70 objects:v97 count:16];
@@ -2123,12 +2123,12 @@ LABEL_43:
 
 LABEL_58:
 
-    v57 = v65;
-    if (a10)
+    v57 = restrictionsCopy;
+    if (error)
     {
       v62 = v37;
       v59 = 0;
-      *a10 = v37;
+      *error = v37;
     }
 
     else
@@ -2140,18 +2140,18 @@ LABEL_58:
   }
 
 LABEL_49:
-  v57 = v65;
-  v15 = v63;
+  v57 = restrictionsCopy;
+  changedCopy = changedCopy2;
 LABEL_52:
 
-  if (v15)
+  if (changedCopy)
   {
-    *v15 = MCEqualDictionaries(v17, v57) ^ 1;
+    *changedCopy = MCEqualDictionaries(mCMutableDeepCopy, v57) ^ 1;
   }
 
-  v17 = v17;
+  mCMutableDeepCopy = mCMutableDeepCopy;
   v37 = 0;
-  v59 = v17;
+  v59 = mCMutableDeepCopy;
 LABEL_55:
 
   v60 = *MEMORY[0x1E69E9840];
@@ -2159,16 +2159,16 @@ LABEL_55:
   return v59;
 }
 
-+ (id)filterRestrictionDictionaryForPublicUse:(id)a3
++ (id)filterRestrictionDictionaryForPublicUse:(id)use
 {
   v4 = filterRestrictionDictionaryForPublicUse__onceToken;
-  v5 = a3;
+  useCopy = use;
   if (v4 != -1)
   {
     +[MCRestrictionManager filterRestrictionDictionaryForPublicUse:];
   }
 
-  v6 = [a1 filterRestrictionDictionary:v5 acceptedKeysDict:filterRestrictionDictionaryForPublicUse__keysDict];
+  v6 = [self filterRestrictionDictionary:useCopy acceptedKeysDict:filterRestrictionDictionaryForPublicUse__keysDict];
 
   return v6;
 }
@@ -2183,31 +2183,31 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
   filterRestrictionDictionaryForPublicUse__keysDict = v2;
 }
 
-+ (id)filterRestrictionDictionary:(id)a3 acceptedKeysDict:(id)a4
++ (id)filterRestrictionDictionary:(id)dictionary acceptedKeysDict:(id)dict
 {
   v96 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v57 = [MEMORY[0x1E695DF90] dictionary];
+  dictionaryCopy = dictionary;
+  dictCopy = dict;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [v6 objectForKeyedSubscript:@"restrictedBool"];
+  v8 = [dictCopy objectForKeyedSubscript:@"restrictedBool"];
   v66 = [v7 setWithArray:v8];
 
   v9 = MEMORY[0x1E695DFD8];
-  v10 = [v6 objectForKeyedSubscript:@"restrictedValue"];
+  v10 = [dictCopy objectForKeyedSubscript:@"restrictedValue"];
   v65 = [v9 setWithArray:v10];
 
   v11 = MEMORY[0x1E695DFD8];
-  v12 = [v6 objectForKeyedSubscript:?];
+  v12 = [dictCopy objectForKeyedSubscript:?];
   v64 = [v11 setWithArray:v12];
 
   v13 = MEMORY[0x1E695DFD8];
-  v56 = v6;
-  v14 = [v6 objectForKeyedSubscript:?];
+  v56 = dictCopy;
+  v14 = [dictCopy objectForKeyedSubscript:?];
   v63 = [v13 setWithArray:v14];
 
-  v58 = v5;
-  v15 = [v5 objectForKeyedSubscript:@"restrictedBool"];
+  v58 = dictionaryCopy;
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"restrictedBool"];
   v62 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
   v80 = 0u;
   v81 = 0u;
@@ -2252,7 +2252,7 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
 
   if ([v62 count])
   {
-    [v57 setObject:v62 forKeyedSubscript:@"restrictedBool"];
+    [dictionary setObject:v62 forKeyedSubscript:@"restrictedBool"];
   }
 
   v24 = [v58 objectForKeyedSubscript:@"restrictedValue"];
@@ -2300,7 +2300,7 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
 
   if ([v61 count])
   {
-    [v57 setObject:v61 forKeyedSubscript:@"restrictedValue"];
+    [dictionary setObject:v61 forKeyedSubscript:@"restrictedValue"];
   }
 
   v34 = [v58 objectForKeyedSubscript:@"intersection"];
@@ -2348,7 +2348,7 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
 
   if ([v60 count])
   {
-    [v57 setObject:v60 forKeyedSubscript:@"intersection"];
+    [dictionary setObject:v60 forKeyedSubscript:@"intersection"];
   }
 
   v44 = [v58 objectForKeyedSubscript:@"union"];
@@ -2396,24 +2396,24 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
 
   if ([v59 count])
   {
-    [v57 setObject:v59 forKeyedSubscript:@"union"];
+    [dictionary setObject:v59 forKeyedSubscript:@"union"];
   }
 
   v54 = *MEMORY[0x1E69E9840];
 
-  return v57;
+  return dictionary;
 }
 
-+ (id)filterRestrictionDictionary:(id)a3 toIncludeOnlyRestrictionsThatDifferFromRestrictions:(id)a4
++ (id)filterRestrictionDictionary:(id)dictionary toIncludeOnlyRestrictionsThatDifferFromRestrictions:(id)restrictions
 {
   v112 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v69 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v71 = v5;
-  v7 = [v5 objectForKeyedSubscript:@"restrictedBool"];
-  v70 = v6;
-  v84 = [v6 objectForKeyedSubscript:@"restrictedBool"];
+  dictionaryCopy = dictionary;
+  restrictionsCopy = restrictions;
+  v69 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
+  v71 = dictionaryCopy;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"restrictedBool"];
+  v70 = restrictionsCopy;
+  v84 = [restrictionsCopy objectForKeyedSubscript:@"restrictedBool"];
   v72 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
   v104 = 0u;
   v105 = 0u;
@@ -2443,12 +2443,12 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
         {
           v15 = v14;
           v16 = [v12 objectForKeyedSubscript:@"value"];
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
           v18 = [v13 objectForKeyedSubscript:@"preference"];
           v19 = v11;
-          v20 = [v18 BOOLValue];
+          bOOLValue2 = [v18 BOOLValue];
 
-          v21 = v17 == v20;
+          v21 = bOOLValue == bOOLValue2;
           v11 = v19;
           v8 = v73;
           if (v21)
@@ -2659,9 +2659,9 @@ void __64__MCRestrictionManager_filterRestrictionDictionaryForPublicUse___block_
   return v69;
 }
 
-+ (id)filterUserSettingsForPublicUse:(id)a3
++ (id)filterUserSettingsForPublicUse:(id)use
 {
-  v3 = [a3 mutableCopy];
+  v3 = [use mutableCopy];
   [v3 MCDeleteBoolRestriction:@"allowSafari"];
   [v3 MCDeleteBoolRestriction:@"allowiTunes"];
   [v3 MCDeleteBoolRestriction:@"allowAppInstallation"];
@@ -2715,9 +2715,9 @@ void __39__MCRestrictionManager_restrictionKeys__block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)systemMetadataValueForKey:(id)a3
++ (id)systemMetadataValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = MEMORY[0x1E695DEF0];
   v5 = MCSystemMetadataFilePath();
   v6 = [v4 MCDataFromFile:v5];
@@ -2739,19 +2739,19 @@ LABEL_5:
     }
   }
 
-  v8 = [v7 objectForKeyedSubscript:v3];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
 
   return v8;
 }
 
-+ (id)filterGrandfatheredRestrictionsIfNeededFromRestrictions:(id)a3
++ (id)filterGrandfatheredRestrictionsIfNeededFromRestrictions:(id)restrictions
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 systemMetadataValueForKey:@"StopFilteringGrandfatheredRestrictions"];
-  v6 = [v5 BOOLValue];
+  restrictionsCopy = restrictions;
+  v5 = [self systemMetadataValueForKey:@"StopFilteringGrandfatheredRestrictions"];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v7 = +[MCRestrictionManager allowedGrandfatheredRestrictionPayloadKeysDictionary];
     v8 = +[MCRestrictionManager grandfatheredRestrictionPayloadKeysDictionary];
@@ -2787,13 +2787,13 @@ LABEL_5:
     v14 = v12;
     if (v12)
     {
-      v15 = [MCRestrictionManager filterRestrictionDictionary:v4 removingPayloadKeysInRestrictionPayloadKeysDictionary:v12];
+      v15 = [MCRestrictionManager filterRestrictionDictionary:restrictionsCopy removingPayloadKeysInRestrictionPayloadKeysDictionary:v12];
 
       goto LABEL_13;
     }
   }
 
-  v15 = v4;
+  v15 = restrictionsCopy;
 LABEL_13:
 
   v16 = *MEMORY[0x1E69E9840];
@@ -2803,7 +2803,7 @@ LABEL_13:
 
 + (id)allowedGrandfatheredRestrictionPayloadKeysDictionary
 {
-  v2 = [a1 systemMetadataValueForKey:@"AllowedGrandfatheredRestrictions"];
+  v2 = [self systemMetadataValueForKey:@"AllowedGrandfatheredRestrictions"];
   if (![v2 count])
   {
     v3 = _MCLogObjects;
@@ -2825,8 +2825,8 @@ LABEL_13:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a1 restrictionKeys];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  restrictionKeys = [self restrictionKeys];
+  v5 = [restrictionKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2837,16 +2837,16 @@ LABEL_13:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(restrictionKeys);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = +[MCRestrictionManager grandfatheredRestrictionPayloadKeysDictionary];
-        v11 = [a1 _lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:v10 forRestrictionKey:v9];
+        v11 = [self _lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:v10 forRestrictionKey:v9];
         [v3 setObject:v11 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v6 = [restrictionKeys countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v6);
@@ -2877,14 +2877,14 @@ LABEL_13:
   return v15;
 }
 
-+ (id)_lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:(id)a3 forRestrictionKey:(id)a4
++ (id)_lockedDownRestrictionPayloadKeysWithPayloadKeysDictionary:(id)dictionary forRestrictionKey:(id)key
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   v8 = objc_opt_new();
-  v22 = v6;
-  v9 = [v6 objectForKeyedSubscript:v7];
+  v22 = dictionaryCopy;
+  v9 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -2904,12 +2904,12 @@ LABEL_13:
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [a1 sharedManager];
-        v16 = [v15 isSettingLockedDownByRestrictions:v14];
+        sharedManager = [self sharedManager];
+        v16 = [sharedManager isSettingLockedDownByRestrictions:v14];
 
         if (v16)
         {
-          v17 = [a1 _payloadKeysDictionaryAfterAddingFeature:v14 toRestrictionPayloadKeysDictionary:v8 forRestrictionKey:v7];
+          v17 = [self _payloadKeysDictionaryAfterAddingFeature:v14 toRestrictionPayloadKeysDictionary:v8 forRestrictionKey:keyCopy];
 
           v8 = v17;
         }
@@ -2923,7 +2923,7 @@ LABEL_13:
 
   if ([v8 count])
   {
-    v18 = [v8 objectForKeyedSubscript:v7];
+    v18 = [v8 objectForKeyedSubscript:keyCopy];
     v19 = [v18 copy];
   }
 
@@ -2937,22 +2937,22 @@ LABEL_13:
   return v19;
 }
 
-+ (id)_payloadKeysDictionaryAfterAddingFeature:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5
++ (id)_payloadKeysDictionaryAfterAddingFeature:(id)feature toRestrictionPayloadKeysDictionary:(id)dictionary forRestrictionKey:(id)key
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  featureCopy = feature;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
   v10 = objc_opt_new();
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
-    v11 = [v8 mutableCopy];
+    v11 = [dictionaryCopy mutableCopy];
 
-    v12 = [v11 objectForKeyedSubscript:v9];
+    v12 = [v11 objectForKeyedSubscript:keyCopy];
 
     if (v12)
     {
-      v13 = [v11 objectForKeyedSubscript:v9];
+      v13 = [v11 objectForKeyedSubscript:keyCopy];
       v14 = [v13 mutableCopy];
     }
 
@@ -2961,22 +2961,22 @@ LABEL_13:
       v14 = objc_opt_new();
     }
 
-    if (([v14 containsObject:v7] & 1) == 0)
+    if (([v14 containsObject:featureCopy] & 1) == 0)
     {
-      [v14 addObject:v7];
+      [v14 addObject:featureCopy];
     }
 
     v17 = [v14 copy];
-    [v11 setObject:v17 forKeyedSubscript:v9];
+    [v11 setObject:v17 forKeyedSubscript:keyCopy];
 
     v16 = [v11 copy];
   }
 
   else
   {
-    v20[0] = v7;
+    v20[0] = featureCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-    [v10 setObject:v15 forKeyedSubscript:v9];
+    [v10 setObject:v15 forKeyedSubscript:keyCopy];
 
     v16 = [v10 copy];
     v11 = v10;
@@ -3010,18 +3010,18 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   grandfatheredRestrictionPayloadKeysDictionary_grandfatheredRestrictionPayloadKeysDictionary = v3;
 }
 
-+ (id)_filterRestrictionDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5
++ (id)_filterRestrictionDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v24 = [v7 mutableCopy];
-  v27 = v7;
-  v10 = [v7 objectForKeyedSubscript:v9];
-  v25 = v9;
-  v26 = v8;
-  v11 = [v8 objectForKeyedSubscript:v9];
+  dictionaryCopy = dictionary;
+  keysDictionaryCopy = keysDictionary;
+  keyCopy = key;
+  v24 = [dictionaryCopy mutableCopy];
+  v27 = dictionaryCopy;
+  v10 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
+  v25 = keyCopy;
+  v26 = keysDictionaryCopy;
+  v11 = [keysDictionaryCopy objectForKeyedSubscript:keyCopy];
   v12 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
@@ -3075,17 +3075,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v21;
 }
 
-+ (id)filterRestrictionDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4
++ (id)filterRestrictionDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 copy];
+  keysDictionaryCopy = keysDictionary;
+  v7 = [dictionary copy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a1 restrictionKeys];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  restrictionKeys = [self restrictionKeys];
+  v9 = [restrictionKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3098,17 +3098,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(restrictionKeys);
         }
 
-        v7 = [objc_opt_class() _filterRestrictionDictionary:v13 removingPayloadKeysInRestrictionPayloadKeysDictionary:v6 forRestrictionKey:*(*(&v17 + 1) + 8 * v12)];
+        v7 = [objc_opt_class() _filterRestrictionDictionary:v13 removingPayloadKeysInRestrictionPayloadKeysDictionary:keysDictionaryCopy forRestrictionKey:*(*(&v17 + 1) + 8 * v12)];
 
         ++v12;
         v13 = v7;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [restrictionKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -3120,47 +3120,47 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v14;
 }
 
-+ (id)_filterRestrictionPayloadKeysDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5
++ (id)_filterRestrictionPayloadKeysDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:v9];
+  dictionaryCopy = dictionary;
+  keysDictionaryCopy = keysDictionary;
+  keyCopy = key;
+  v10 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v11 = [v10 count];
 
   if (v11)
   {
-    v12 = [v7 objectForKeyedSubscript:v9];
+    v12 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
     v13 = [v12 mutableCopy];
 
-    v14 = [v8 objectForKeyedSubscript:v9];
-    v15 = [v7 mutableCopy];
+    v14 = [keysDictionaryCopy objectForKeyedSubscript:keyCopy];
+    v15 = [dictionaryCopy mutableCopy];
     [v13 removeObjectsInArray:v14];
     v16 = [v13 copy];
-    [v15 setObject:v16 forKeyedSubscript:v9];
+    [v15 setObject:v16 forKeyedSubscript:keyCopy];
 
     v17 = [v15 copy];
   }
 
   else
   {
-    v17 = v7;
+    v17 = dictionaryCopy;
   }
 
   return v17;
 }
 
-+ (id)filterRestrictionPayloadKeysDictionary:(id)a3 removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)a4
++ (id)filterRestrictionPayloadKeysDictionary:(id)dictionary removingPayloadKeysInRestrictionPayloadKeysDictionary:(id)keysDictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 copy];
+  keysDictionaryCopy = keysDictionary;
+  v7 = [dictionary copy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [a1 restrictionKeys];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  restrictionKeys = [self restrictionKeys];
+  v9 = [restrictionKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3173,17 +3173,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(restrictionKeys);
         }
 
-        v7 = [a1 _filterRestrictionPayloadKeysDictionary:v13 removingPayloadKeysInRestrictionPayloadKeysDictionary:v6 forRestrictionKey:*(*(&v17 + 1) + 8 * v12)];
+        v7 = [self _filterRestrictionPayloadKeysDictionary:v13 removingPayloadKeysInRestrictionPayloadKeysDictionary:keysDictionaryCopy forRestrictionKey:*(*(&v17 + 1) + 8 * v12)];
 
         ++v12;
         v13 = v7;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [restrictionKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v10);
@@ -3195,27 +3195,27 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v14;
 }
 
-+ (id)_addRestrictionPayloadKeysDictionary:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4 forRestrictionKey:(id)a5
++ (id)_addRestrictionPayloadKeysDictionary:(id)dictionary toRestrictionPayloadKeysDictionary:(id)keysDictionary forRestrictionKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dictionaryCopy = dictionary;
+  keysDictionaryCopy = keysDictionary;
+  keyCopy = key;
   v10 = objc_opt_new();
-  if ([v8 count])
+  if ([keysDictionaryCopy count])
   {
-    v11 = [v8 mutableCopy];
+    v11 = [keysDictionaryCopy mutableCopy];
 
     v10 = v11;
   }
 
-  v12 = [v7 objectForKeyedSubscript:v9];
+  v12 = [dictionaryCopy objectForKeyedSubscript:keyCopy];
   v13 = [v12 copy];
 
-  v14 = [v8 objectForKeyedSubscript:v9];
+  v14 = [keysDictionaryCopy objectForKeyedSubscript:keyCopy];
   if ([v14 count])
   {
-    v26 = v7;
+    v26 = dictionaryCopy;
     v15 = [v14 mutableCopy];
     v27 = 0u;
     v28 = 0u;
@@ -3250,14 +3250,14 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
       while (v18);
     }
 
-    [v10 setObject:v15 forKeyedSubscript:v9];
+    [v10 setObject:v15 forKeyedSubscript:keyCopy];
     v13 = v25;
-    v7 = v26;
+    dictionaryCopy = v26;
   }
 
   else
   {
-    [v10 setObject:v13 forKeyedSubscript:v9];
+    [v10 setObject:v13 forKeyedSubscript:keyCopy];
   }
 
   v22 = [v10 copy];
@@ -3267,17 +3267,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v22;
 }
 
-+ (id)addRestrictionPayloadKeysDictionary:(id)a3 toRestrictionPayloadKeysDictionary:(id)a4
++ (id)addRestrictionPayloadKeysDictionary:(id)dictionary toRestrictionPayloadKeysDictionary:(id)keysDictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 MCDeepCopy];
+  dictionaryCopy = dictionary;
+  mCDeepCopy = [keysDictionary MCDeepCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [a1 restrictionKeys];
-  v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  restrictionKeys = [self restrictionKeys];
+  v9 = [restrictionKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3285,22 +3285,22 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
     do
     {
       v12 = 0;
-      v13 = v7;
+      v13 = mCDeepCopy;
       do
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(restrictionKeys);
         }
 
-        v7 = [a1 _addRestrictionPayloadKeysDictionary:v6 toRestrictionPayloadKeysDictionary:v13 forRestrictionKey:*(*(&v20 + 1) + 8 * v12)];
+        mCDeepCopy = [self _addRestrictionPayloadKeysDictionary:dictionaryCopy toRestrictionPayloadKeysDictionary:v13 forRestrictionKey:*(*(&v20 + 1) + 8 * v12)];
 
         ++v12;
-        v13 = v7;
+        v13 = mCDeepCopy;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v10 = [restrictionKeys countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v10);
@@ -3310,76 +3310,76 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v7 description];
+    v16 = [mCDeepCopy description];
     *buf = 138412290;
     v25 = v16;
     _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEFAULT, "Union Dictionary in the abstract: %@\n", buf, 0xCu);
   }
 
-  v17 = [v7 copy];
+  v17 = [mCDeepCopy copy];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-- (int)restrictedBoolForFeature:(id)a3
+- (int)restrictedBoolForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [MCRestrictionManager restrictedBoolForFeature:v4 withRestrictionsDictionary:v5];
+  featureCopy = feature;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [MCRestrictionManager restrictedBoolForFeature:featureCopy withRestrictionsDictionary:currentRestrictions];
 
   return v6;
 }
 
-- (id)valueForFeature:(id)a3
+- (id)valueForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [MCRestrictionManager valueForFeature:v4 withRestrictionsDictionary:v5];
+  featureCopy = feature;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [MCRestrictionManager valueForFeature:featureCopy withRestrictionsDictionary:currentRestrictions];
 
   return v6;
 }
 
-- (id)objectForFeature:(id)a3
+- (id)objectForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [MCRestrictionManager objectForFeature:v4 withRestrictionsDictionary:v5];
+  featureCopy = feature;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [MCRestrictionManager objectForFeature:featureCopy withRestrictionsDictionary:currentRestrictions];
 
   return v6;
 }
 
-- (id)intersectedValuesForFeature:(id)a3
+- (id)intersectedValuesForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [MCRestrictionManager intersectedValuesForFeature:v4 withRestrictionsDictionary:v5];
+  featureCopy = feature;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [MCRestrictionManager intersectedValuesForFeature:featureCopy withRestrictionsDictionary:currentRestrictions];
 
   return v6;
 }
 
-- (id)unionValuesForFeature:(id)a3
+- (id)unionValuesForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [MCRestrictionManager unionValuesForFeature:v4 withRestrictionsDictionary:v5];
+  featureCopy = feature;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [MCRestrictionManager unionValuesForFeature:featureCopy withRestrictionsDictionary:currentRestrictions];
 
   return v6;
 }
 
-+ (int)restrictedBoolForFeature:(id)a3 withRestrictionsDictionary:(id)a4
++ (int)restrictedBoolForFeature:(id)feature withRestrictionsDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  featureCopy = feature;
+  dictionaryCopy = dictionary;
+  v7 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v8 = [v6 objectForKey:@"restrictedBool"];
+    v8 = [dictionaryCopy objectForKey:@"restrictedBool"];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 objectForKey:v5];
+      v10 = [v8 objectForKey:featureCopy];
       v11 = v10;
       if (v10 && ([v10 objectForKey:@"value"], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
       {
@@ -3415,59 +3415,59 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v14;
 }
 
-+ (id)valueForFeature:(id)a3 withRestrictionsDictionary:(id)a4
++ (id)valueForFeature:(id)feature withRestrictionsDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:featureCopy];
 
   v8 = [v7 objectForKey:@"value"];
 
   return v8;
 }
 
-+ (id)objectForFeature:(id)a3 withRestrictionsDictionary:(id)a4
++ (id)objectForFeature:(id)feature withRestrictionsDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"assignedObject"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKey:@"assignedObject"];
+  v7 = [v6 objectForKey:featureCopy];
 
   return v7;
 }
 
-+ (id)intersectedValuesForFeature:(id)a3 withRestrictionsDictionary:(id)a4
++ (id)intersectedValuesForFeature:(id)feature withRestrictionsDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:featureCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-+ (id)unionValuesForFeature:(id)a3 withRestrictionsDictionary:(id)a4
++ (id)unionValuesForFeature:(id)feature withRestrictionsDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"union"];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKeyedSubscript:@"union"];
+  v7 = [v6 objectForKeyedSubscript:featureCopy];
 
   v8 = [v7 objectForKeyedSubscript:@"values"];
 
   return v8;
 }
 
-+ (BOOL)restrictedBool:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5
++ (BOOL)restrictedBool:(id)bool changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"restrictedBool"];
-  v10 = [v9 objectForKey:v8];
+  newRestrictionsCopy = newRestrictions;
+  boolCopy = bool;
+  v9 = [restrictions objectForKey:@"restrictedBool"];
+  v10 = [v9 objectForKey:boolCopy];
   v11 = [v10 objectForKey:@"value"];
 
-  v12 = [v7 objectForKey:@"restrictedBool"];
+  v12 = [newRestrictionsCopy objectForKey:@"restrictedBool"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:boolCopy];
 
   v14 = [v13 objectForKey:@"value"];
 
@@ -3492,17 +3492,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v15;
 }
 
-+ (BOOL)restrictedValue:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5
++ (BOOL)restrictedValue:(id)value changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"restrictedValue"];
-  v10 = [v9 objectForKey:v8];
+  newRestrictionsCopy = newRestrictions;
+  valueCopy = value;
+  v9 = [restrictions objectForKey:@"restrictedValue"];
+  v10 = [v9 objectForKey:valueCopy];
   v11 = [v10 objectForKey:@"value"];
 
-  v12 = [v7 objectForKey:@"restrictedValue"];
+  v12 = [newRestrictionsCopy objectForKey:@"restrictedValue"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:valueCopy];
 
   v14 = [v13 objectForKey:@"value"];
 
@@ -3527,17 +3527,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v15;
 }
 
-+ (BOOL)intersectedValuesForFeature:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5
++ (BOOL)intersectedValuesForFeature:(id)feature changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"intersection"];
-  v10 = [v9 objectForKey:v8];
+  newRestrictionsCopy = newRestrictions;
+  featureCopy = feature;
+  v9 = [restrictions objectForKey:@"intersection"];
+  v10 = [v9 objectForKey:featureCopy];
   v11 = [v10 objectForKey:@"values"];
 
-  v12 = [v7 objectForKey:@"intersection"];
+  v12 = [newRestrictionsCopy objectForKey:@"intersection"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:featureCopy];
 
   v14 = [v13 objectForKey:@"values"];
 
@@ -3562,17 +3562,17 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   return v15;
 }
 
-+ (BOOL)unionValuesForFeature:(id)a3 changedBetweenOldRestrictions:(id)a4 andNewRestrictions:(id)a5
++ (BOOL)unionValuesForFeature:(id)feature changedBetweenOldRestrictions:(id)restrictions andNewRestrictions:(id)newRestrictions
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKeyedSubscript:@"union"];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  newRestrictionsCopy = newRestrictions;
+  featureCopy = feature;
+  v9 = [restrictions objectForKeyedSubscript:@"union"];
+  v10 = [v9 objectForKeyedSubscript:featureCopy];
   v11 = [v10 objectForKeyedSubscript:@"values"];
 
-  v12 = [v7 objectForKeyedSubscript:@"union"];
+  v12 = [newRestrictionsCopy objectForKeyedSubscript:@"union"];
 
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v13 = [v12 objectForKeyedSubscript:featureCopy];
 
   v14 = [v13 objectForKeyedSubscript:@"values"];
 
@@ -3605,14 +3605,14 @@ void __69__MCRestrictionManager_grandfatheredRestrictionPayloadKeysDictionary__b
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__MCRestrictionManager_systemClientRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3638,14 +3638,14 @@ uint64_t __48__MCRestrictionManager_systemClientRestrictions__block_invoke(uint6
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__MCRestrictionManager_userClientRestrictions__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3693,9 +3693,9 @@ uint64_t __46__MCRestrictionManager_userClientRestrictions__block_invoke(uint64_
         _os_log_impl(&dword_1A795B000, v10, OS_LOG_TYPE_DEFAULT, "Could not find system client restrictions. Creating new dictionary.", v14, 2u);
       }
 
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v12 = self->_memberQueueSystemClientRestrictions;
-      self->_memberQueueSystemClientRestrictions = v11;
+      self->_memberQueueSystemClientRestrictions = dictionary;
     }
 
     v3 = self->_memberQueueSystemClientRestrictions;
@@ -3734,9 +3734,9 @@ uint64_t __46__MCRestrictionManager_userClientRestrictions__block_invoke(uint64_
         _os_log_impl(&dword_1A795B000, v10, OS_LOG_TYPE_DEFAULT, "Could not find user client restrictions. Creating new dictionary.", v14, 2u);
       }
 
-      v11 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v12 = self->_memberQueueUserClientRestrictions;
-      self->_memberQueueUserClientRestrictions = v11;
+      self->_memberQueueUserClientRestrictions = dictionary;
     }
 
     v3 = self->_memberQueueUserClientRestrictions;
@@ -3745,56 +3745,56 @@ uint64_t __46__MCRestrictionManager_userClientRestrictions__block_invoke(uint64_
   return v3;
 }
 
-- (id)memberQueueClientRestrictionsDictionaryForClientUUID:(id)a3
+- (id)memberQueueClientRestrictionsDictionaryForClientUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self memberQueueUserClientRestrictions];
-  v6 = [v5 objectForKey:v4];
+  dCopy = d;
+  memberQueueUserClientRestrictions = [(MCRestrictionManager *)self memberQueueUserClientRestrictions];
+  v6 = [memberQueueUserClientRestrictions objectForKey:dCopy];
 
   if (!v6)
   {
-    v7 = [(MCRestrictionManager *)self memberQueueSystemClientRestrictions];
-    v6 = [v7 objectForKey:v4];
+    memberQueueSystemClientRestrictions = [(MCRestrictionManager *)self memberQueueSystemClientRestrictions];
+    v6 = [memberQueueSystemClientRestrictions objectForKey:dCopy];
   }
 
   return v6;
 }
 
-- (id)memberQueueClientRestrictionsForClientUUID:(id)a3
+- (id)memberQueueClientRestrictionsForClientUUID:(id)d
 {
-  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:a3];
+  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:d];
   v4 = [v3 objectForKey:@"clientRestrictions"];
 
   return v4;
 }
 
-- (id)memberQueueClientTypeForClientUUID:(id)a3
+- (id)memberQueueClientTypeForClientUUID:(id)d
 {
-  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:a3];
+  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:d];
   v4 = [v3 objectForKey:@"clientType"];
 
   return v4;
 }
 
-- (id)clientRestrictionsForClientUUID:(id)a3
+- (id)clientRestrictionsForClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v17 = 0;
-  v5 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__MCRestrictionManager_clientRestrictionsForClientUUID___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3812,33 +3812,33 @@ uint64_t __56__MCRestrictionManager_clientRestrictionsForClientUUID___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)memberQueueUserInfoForClientUUID:(id)a3
+- (id)memberQueueUserInfoForClientUUID:(id)d
 {
-  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:a3];
+  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:d];
   v4 = [v3 objectForKey:@"userInfo"];
 
   return v4;
 }
 
-- (id)userInfoForClientUUID:(id)a3
+- (id)userInfoForClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v17 = 0;
-  v5 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__MCRestrictionManager_userInfoForClientUUID___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3856,33 +3856,33 @@ uint64_t __46__MCRestrictionManager_userInfoForClientUUID___block_invoke(uint64_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)memberQueueAppsAndOptionsForClientUUID:(id)a3
+- (id)memberQueueAppsAndOptionsForClientUUID:(id)d
 {
-  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:a3];
+  v3 = [(MCRestrictionManager *)self memberQueueClientRestrictionsDictionaryForClientUUID:d];
   v4 = [v3 objectForKey:@"appsAndOptions"];
 
   return v4;
 }
 
-- (id)appsAndOptionsForClientUUID:(id)a3
+- (id)appsAndOptionsForClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v17 = 0;
-  v5 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__MCRestrictionManager_appsAndOptionsForClientUUID___block_invoke;
   block[3] = &unk_1E77D1EF0;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -3900,25 +3900,25 @@ uint64_t __52__MCRestrictionManager_appsAndOptionsForClientUUID___block_invoke(u
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)allClientUUIDsForClientType:(id)a3
+- (id)allClientUUIDsForClientType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__15;
   v16 = __Block_byref_object_dispose__15;
   v17 = [MEMORY[0x1E695DFA8] set];
-  v5 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__MCRestrictionManager_allClientUUIDsForClientType___block_invoke;
   block[3] = &unk_1E77D1FE8;
   block[4] = self;
-  v10 = v4;
+  v10 = typeCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = typeCopy;
+  dispatch_sync(memberQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -4005,27 +4005,27 @@ void __52__MCRestrictionManager_allClientUUIDsForClientType___block_invoke(uint6
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)exchangeUUIDsRestrictingSettings:(id)a3
+- (id)exchangeUUIDsRestrictingSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(MCRestrictionManager *)self effectiveUserSettings];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __57__MCRestrictionManager_exchangeUUIDsRestrictingSettings___block_invoke;
   v18 = &unk_1E77D3100;
-  v19 = v4;
-  v20 = self;
-  v21 = v6;
+  v19 = settingsCopy;
+  selfCopy = self;
+  v21 = effectiveUserSettings;
   v7 = v5;
   v22 = v7;
-  v8 = v6;
-  v9 = v4;
+  v8 = effectiveUserSettings;
+  v9 = settingsCopy;
   v10 = MEMORY[0x1AC55F990](&v15);
   v11 = [(MCRestrictionManager *)self systemClientRestrictions:v15];
-  v12 = [(MCRestrictionManager *)self userClientRestrictions];
+  userClientRestrictions = [(MCRestrictionManager *)self userClientRestrictions];
   [v11 enumerateKeysAndObjectsUsingBlock:v10];
-  [v12 enumerateKeysAndObjectsUsingBlock:v10];
+  [userClientRestrictions enumerateKeysAndObjectsUsingBlock:v10];
   v13 = v7;
 
   return v7;
@@ -4180,9 +4180,9 @@ LABEL_26:
         _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEFAULT, "Could not find system name spaced user settings. Creating new dictionary.", v13, 2u);
       }
 
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueSystemNamespacedUserSettings;
-      self->_memberQueueSystemNamespacedUserSettings = v10;
+      self->_memberQueueSystemNamespacedUserSettings = dictionary;
     }
 
     memberQueueSystemNamespacedUserSettings = self->_memberQueueSystemNamespacedUserSettings;
@@ -4216,9 +4216,9 @@ LABEL_26:
         _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEFAULT, "Could not find user user settings. Creating new dictionary.", v13, 2u);
       }
 
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueUserUserSettings;
-      self->_memberQueueUserUserSettings = v10;
+      self->_memberQueueUserUserSettings = dictionary;
     }
 
     memberQueueUserUserSettings = self->_memberQueueUserUserSettings;
@@ -4252,9 +4252,9 @@ LABEL_26:
         _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEFAULT, "Could not find user user settings. Creating new dictionary.", v13, 2u);
       }
 
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueUserNamespacedUserSettings;
-      self->_memberQueueUserNamespacedUserSettings = v10;
+      self->_memberQueueUserNamespacedUserSettings = dictionary;
     }
 
     memberQueueUserNamespacedUserSettings = self->_memberQueueUserNamespacedUserSettings;
@@ -4288,9 +4288,9 @@ LABEL_26:
         _os_log_impl(&dword_1A795B000, v9, OS_LOG_TYPE_DEFAULT, "Could not find settings events. Creating new dictionary.", v13, 2u);
       }
 
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v11 = self->_memberQueueSettingsEvents;
-      self->_memberQueueSettingsEvents = v10;
+      self->_memberQueueSettingsEvents = dictionary;
     }
 
     memberQueueSettingsEvents = self->_memberQueueSettingsEvents;
@@ -4299,35 +4299,35 @@ LABEL_26:
   return memberQueueSettingsEvents;
 }
 
-- (BOOL)applyConfiguration:(id)a3 toDomain:(unint64_t)a4 inNamespace:(id)a5 fromSender:(id)a6
+- (BOOL)applyConfiguration:(id)configuration toDomain:(unint64_t)domain inNamespace:(id)namespace fromSender:(id)sender
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  configurationCopy = configuration;
+  namespaceCopy = namespace;
+  senderCopy = sender;
   v13 = 0;
-  if (a4 > 4)
+  if (domain > 4)
   {
-    if (a4 <= 6)
+    if (domain <= 6)
     {
-      if (a4 == 5)
+      if (domain == 5)
       {
-        if (([(NSMutableDictionary *)self->_memberQueueRestrictions isEqualToDictionary:v10]& 1) == 0)
+        if (([(NSMutableDictionary *)self->_memberQueueRestrictions isEqualToDictionary:configurationCopy]& 1) == 0)
         {
           v13 = self->_memberQueueRestrictions;
-          v22 = [v10 MCMutableDeepCopy];
+          mCMutableDeepCopy = [configurationCopy MCMutableDeepCopy];
           memberQueueRestrictions = self->_memberQueueRestrictions;
-          self->_memberQueueRestrictions = v22;
+          self->_memberQueueRestrictions = mCMutableDeepCopy;
           v16 = @"Restrictions";
           goto LABEL_45;
         }
       }
 
-      else if (([(NSMutableDictionary *)self->_memberQueueSystemProfileRestrictions isEqualToDictionary:v10]& 1) == 0)
+      else if (([(NSMutableDictionary *)self->_memberQueueSystemProfileRestrictions isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueSystemProfileRestrictions;
-        v20 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy2 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueSystemProfileRestrictions;
-        self->_memberQueueSystemProfileRestrictions = v20;
+        self->_memberQueueSystemProfileRestrictions = mCMutableDeepCopy2;
         v16 = @"SystemProfileRestrictions";
         goto LABEL_45;
       }
@@ -4335,14 +4335,14 @@ LABEL_26:
       goto LABEL_31;
     }
 
-    if (a4 == 7)
+    if (domain == 7)
     {
-      if (([(NSMutableDictionary *)self->_memberQueueUserProfileRestrictions isEqualToDictionary:v10]& 1) == 0)
+      if (([(NSMutableDictionary *)self->_memberQueueUserProfileRestrictions isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueUserProfileRestrictions;
-        v24 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy3 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueUserProfileRestrictions;
-        self->_memberQueueUserProfileRestrictions = v24;
+        self->_memberQueueUserProfileRestrictions = mCMutableDeepCopy3;
         v16 = @"UserProfileRestrictions";
         goto LABEL_45;
       }
@@ -4350,14 +4350,14 @@ LABEL_26:
       goto LABEL_31;
     }
 
-    if (a4 == 8)
+    if (domain == 8)
     {
-      if (([(NSMutableDictionary *)self->_memberQueueSystemClientRestrictions isEqualToDictionary:v10]& 1) == 0)
+      if (([(NSMutableDictionary *)self->_memberQueueSystemClientRestrictions isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueSystemClientRestrictions;
-        v28 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy4 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueSystemClientRestrictions;
-        self->_memberQueueSystemClientRestrictions = v28;
+        self->_memberQueueSystemClientRestrictions = mCMutableDeepCopy4;
         v16 = @"SystemClientRestrictions";
         goto LABEL_45;
       }
@@ -4366,14 +4366,14 @@ LABEL_26:
     }
 
     v16 = 0;
-    if (a4 == 9)
+    if (domain == 9)
     {
-      if (([(NSMutableDictionary *)self->_memberQueueUserClientRestrictions isEqualToDictionary:v10]& 1) == 0)
+      if (([(NSMutableDictionary *)self->_memberQueueUserClientRestrictions isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueUserClientRestrictions;
-        v17 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy5 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueUserClientRestrictions;
-        self->_memberQueueUserClientRestrictions = v17;
+        self->_memberQueueUserClientRestrictions = mCMutableDeepCopy5;
         v16 = @"UserClientRestrictions";
         goto LABEL_45;
       }
@@ -4383,23 +4383,23 @@ LABEL_26:
 
 LABEL_46:
     v30 = [(NSMutableDictionary *)self->_memberQueueSettingsEvents objectForKeyedSubscript:v16];
-    v31 = [(MCRestrictionManager *)self _updatedDomainSettingsEvents:v30 fromPreviousSettings:v13 toNewSettings:v10 sender:v12];
+    v31 = [(MCRestrictionManager *)self _updatedDomainSettingsEvents:v30 fromPreviousSettings:v13 toNewSettings:configurationCopy sender:senderCopy];
     [(NSMutableDictionary *)self->_memberQueueSettingsEvents setObject:v31 forKeyedSubscript:v16];
 
     v27 = 1;
     goto LABEL_47;
   }
 
-  if (a4 <= 1)
+  if (domain <= 1)
   {
-    if (!a4)
+    if (!domain)
     {
-      if (([(NSMutableDictionary *)self->_memberQueueSystemUserSettings isEqualToDictionary:v10]& 1) == 0)
+      if (([(NSMutableDictionary *)self->_memberQueueSystemUserSettings isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueSystemUserSettings;
-        v21 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy6 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueSystemUserSettings;
-        self->_memberQueueSystemUserSettings = v21;
+        self->_memberQueueSystemUserSettings = mCMutableDeepCopy6;
         v16 = @"SystemSettings";
         goto LABEL_45;
       }
@@ -4408,12 +4408,12 @@ LABEL_46:
     }
 
     v16 = 0;
-    if (a4 == 1)
+    if (domain == 1)
     {
       memberQueueSystemNamespacedUserSettings = self->_memberQueueSystemNamespacedUserSettings;
-      if (v11)
+      if (namespaceCopy)
       {
-        v19 = [(NSMutableDictionary *)memberQueueSystemNamespacedUserSettings objectForKeyedSubscript:v11];
+        v19 = [(NSMutableDictionary *)memberQueueSystemNamespacedUserSettings objectForKeyedSubscript:namespaceCopy];
       }
 
       else
@@ -4422,16 +4422,16 @@ LABEL_46:
       }
 
       v13 = v19;
-      if (([(NSMutableDictionary *)v19 isEqualToDictionary:v10]& 1) != 0)
+      if (([(NSMutableDictionary *)v19 isEqualToDictionary:configurationCopy]& 1) != 0)
       {
         goto LABEL_39;
       }
 
-      memberQueueRestrictions = [v10 MCMutableDeepCopy];
+      memberQueueRestrictions = [configurationCopy MCMutableDeepCopy];
       v29 = self->_memberQueueSystemNamespacedUserSettings;
-      if (v11)
+      if (namespaceCopy)
       {
-        [(NSMutableDictionary *)v29 setObject:memberQueueRestrictions forKeyedSubscript:v11];
+        [(NSMutableDictionary *)v29 setObject:memberQueueRestrictions forKeyedSubscript:namespaceCopy];
         v16 = @"SystemNamespacedSettings";
         goto LABEL_45;
       }
@@ -4444,16 +4444,16 @@ LABEL_46:
     goto LABEL_46;
   }
 
-  if (a4 != 2)
+  if (domain != 2)
   {
-    if (a4 != 3)
+    if (domain != 3)
     {
-      if (([(NSMutableDictionary *)self->_memberQueueEffectiveUserSettings isEqualToDictionary:v10]& 1) == 0)
+      if (([(NSMutableDictionary *)self->_memberQueueEffectiveUserSettings isEqualToDictionary:configurationCopy]& 1) == 0)
       {
         v13 = self->_memberQueueEffectiveUserSettings;
-        v14 = [v10 MCMutableDeepCopy];
+        mCMutableDeepCopy7 = [configurationCopy MCMutableDeepCopy];
         memberQueueRestrictions = self->_memberQueueEffectiveUserSettings;
-        self->_memberQueueEffectiveUserSettings = v14;
+        self->_memberQueueEffectiveUserSettings = mCMutableDeepCopy7;
         v16 = @"EffectiveSettings";
 LABEL_45:
 
@@ -4464,9 +4464,9 @@ LABEL_45:
     }
 
     memberQueueUserNamespacedUserSettings = self->_memberQueueUserNamespacedUserSettings;
-    if (v11)
+    if (namespaceCopy)
     {
-      v26 = [(NSMutableDictionary *)memberQueueUserNamespacedUserSettings objectForKeyedSubscript:v11];
+      v26 = [(NSMutableDictionary *)memberQueueUserNamespacedUserSettings objectForKeyedSubscript:namespaceCopy];
     }
 
     else
@@ -4475,18 +4475,18 @@ LABEL_45:
     }
 
     v13 = v26;
-    if (([(NSMutableDictionary *)v26 isEqualToDictionary:v10]& 1) != 0)
+    if (([(NSMutableDictionary *)v26 isEqualToDictionary:configurationCopy]& 1) != 0)
     {
 LABEL_39:
       v27 = 0;
       goto LABEL_47;
     }
 
-    memberQueueRestrictions = [v10 MCMutableDeepCopy];
+    memberQueueRestrictions = [configurationCopy MCMutableDeepCopy];
     v29 = self->_memberQueueUserNamespacedUserSettings;
-    if (v11)
+    if (namespaceCopy)
     {
-      [(NSMutableDictionary *)v29 setObject:memberQueueRestrictions forKeyedSubscript:v11];
+      [(NSMutableDictionary *)v29 setObject:memberQueueRestrictions forKeyedSubscript:namespaceCopy];
       v16 = @"UserNamespacedSettings";
       goto LABEL_45;
     }
@@ -4498,12 +4498,12 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (([(NSMutableDictionary *)self->_memberQueueUserUserSettings isEqualToDictionary:v10]& 1) == 0)
+  if (([(NSMutableDictionary *)self->_memberQueueUserUserSettings isEqualToDictionary:configurationCopy]& 1) == 0)
   {
     v13 = self->_memberQueueUserUserSettings;
-    v23 = [v10 MCMutableDeepCopy];
+    mCMutableDeepCopy8 = [configurationCopy MCMutableDeepCopy];
     memberQueueRestrictions = self->_memberQueueUserUserSettings;
-    self->_memberQueueUserUserSettings = v23;
+    self->_memberQueueUserUserSettings = mCMutableDeepCopy8;
     v16 = @"UserSettings";
     goto LABEL_45;
   }
@@ -4516,30 +4516,30 @@ LABEL_47:
   return v27;
 }
 
-- (id)_updatedDomainSettingsEvents:(id)a3 fromPreviousSettings:(id)a4 toNewSettings:(id)a5 sender:(id)a6
+- (id)_updatedDomainSettingsEvents:(id)events fromPreviousSettings:(id)settings toNewSettings:(id)newSettings sender:(id)sender
 {
   v11 = MEMORY[0x1E695E0F8];
-  if (a4)
+  if (settings)
   {
-    v12 = a4;
+    settingsCopy = settings;
   }
 
   else
   {
-    v12 = MEMORY[0x1E695E0F8];
+    settingsCopy = MEMORY[0x1E695E0F8];
   }
 
-  v13 = v12;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v13 MCDictionaryAdditiveDeltaToCreateDictionary:v15];
-  v19 = [v13 MCDictionarySubtractiveDeltaToCreateDictionary:v15];
+  v13 = settingsCopy;
+  senderCopy = sender;
+  newSettingsCopy = newSettings;
+  settingsCopy2 = settings;
+  eventsCopy = events;
+  v18 = [v13 MCDictionaryAdditiveDeltaToCreateDictionary:newSettingsCopy];
+  v19 = [v13 MCDictionarySubtractiveDeltaToCreateDictionary:newSettingsCopy];
 
-  if (v17)
+  if (eventsCopy)
   {
-    v20 = v17;
+    v20 = eventsCopy;
   }
 
   else
@@ -4548,35 +4548,35 @@ LABEL_47:
   }
 
   v21 = v20;
-  v22 = [(MCRestrictionManager *)self _settingsEventFromProcess:v14 withTag:@"set"];
+  v22 = [(MCRestrictionManager *)self _settingsEventFromProcess:senderCopy withTag:@"set"];
   v23 = [v21 MCInsertedKeysFromDictionary:v18 withNewLeafValue:v22];
 
-  v24 = [(MCRestrictionManager *)self _settingsEventFromProcess:v14 withTag:@"remove"];
+  v24 = [(MCRestrictionManager *)self _settingsEventFromProcess:senderCopy withTag:@"remove"];
 
   v25 = [v23 MCInsertedKeysFromDictionary:v19 withNewLeafValue:v24];
 
   return v25;
 }
 
-- (id)_settingsEventFromProcess:(id)a3 withTag:(id)a4
+- (id)_settingsEventFromProcess:(id)process withTag:(id)tag
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v5 = @"unknown";
-  if (a3)
+  processCopy = @"unknown";
+  if (process)
   {
-    v5 = a3;
+    processCopy = process;
   }
 
-  v14[0] = v5;
+  v14[0] = processCopy;
   v13[0] = @"process";
   v13[1] = @"timestamp";
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
+  tagCopy = tag;
+  processCopy2 = process;
+  date = [v6 date];
   v13[2] = @"event";
-  v14[1] = v9;
-  v14[2] = v7;
+  v14[1] = date;
+  v14[2] = tagCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -4592,14 +4592,14 @@ LABEL_47:
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
   v12 = 0;
-  v3 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__MCRestrictionManager_userUserSettings__block_invoke;
   v6[3] = &unk_1E77D0260;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -4617,38 +4617,38 @@ uint64_t __40__MCRestrictionManager_userUserSettings__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)effectiveParametersForBoolSetting:(id)a3
+- (id)effectiveParametersForBoolSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v5 = objc_opt_class();
-  v6 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v7 = [v5 parametersForBoolSetting:v4 withUserSettingDictionary:v6];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v7 = [v5 parametersForBoolSetting:settingCopy withUserSettingDictionary:effectiveUserSettings];
 
   return v7;
 }
 
-- (id)effectiveParametersForBoolSetting:(id)a3 configurationUUID:(id)a4
+- (id)effectiveParametersForBoolSetting:(id)setting configurationUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  settingCopy = setting;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__15;
   v22 = __Block_byref_object_dispose__15;
   v23 = 0;
-  v8 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__MCRestrictionManager_effectiveParametersForBoolSetting_configurationUUID___block_invoke;
   v13[3] = &unk_1E77D3128;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = settingCopy;
   v17 = &v18;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v13);
+  v9 = settingCopy;
+  v10 = dCopy;
+  dispatch_sync(memberQueue, v13);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -4706,75 +4706,75 @@ LABEL_7:
   *(v21 + 40) = v7;
 }
 
-- (id)effectiveParametersForValueSetting:(id)a3
+- (id)effectiveParametersForValueSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v5 = objc_opt_class();
-  v6 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v7 = [v5 parametersForValueSetting:v4 withUserSettingDictionary:v6];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v7 = [v5 parametersForValueSetting:settingCopy withUserSettingDictionary:effectiveUserSettings];
 
   return v7;
 }
 
-- (id)effectiveParametersForIntersectedSetting:(id)a3
+- (id)effectiveParametersForIntersectedSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v5 = objc_opt_class();
-  v6 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v7 = [v5 parametersForIntersectedSetting:v4 withUserSettingDictionary:v6];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v7 = [v5 parametersForIntersectedSetting:settingCopy withUserSettingDictionary:effectiveUserSettings];
 
   return v7;
 }
 
-- (id)effectiveParametersForUnionSetting:(id)a3
+- (id)effectiveParametersForUnionSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   v5 = objc_opt_class();
-  v6 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v7 = [v5 parametersForUnionSetting:v4 withUserSettingDictionary:v6];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  v7 = [v5 parametersForUnionSetting:settingCopy withUserSettingDictionary:effectiveUserSettings];
 
   return v7;
 }
 
-- (int)BOOLSettingForFeature:(id)a3
+- (int)BOOLSettingForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self userSettings];
-  v6 = [MCRestrictionManager BOOLSettingForFeature:v4 withUserSettingDictionary:v5];
+  featureCopy = feature;
+  userSettings = [(MCRestrictionManager *)self userSettings];
+  v6 = [MCRestrictionManager BOOLSettingForFeature:featureCopy withUserSettingDictionary:userSettings];
 
   return v6;
 }
 
-- (id)valueSettingForFeature:(id)a3
+- (id)valueSettingForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self userSettings];
-  v6 = [MCRestrictionManager valueSettingForFeature:v4 withUserSettingDictionary:v5];
+  featureCopy = feature;
+  userSettings = [(MCRestrictionManager *)self userSettings];
+  v6 = [MCRestrictionManager valueSettingForFeature:featureCopy withUserSettingDictionary:userSettings];
 
   return v6;
 }
 
-- (id)intersectedValuesSettingForFeature:(id)a3
+- (id)intersectedValuesSettingForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self userSettings];
-  v6 = [MCRestrictionManager intersectedValuesSettingForFeature:v4 withUserSettingDectionary:v5];
+  featureCopy = feature;
+  userSettings = [(MCRestrictionManager *)self userSettings];
+  v6 = [MCRestrictionManager intersectedValuesSettingForFeature:featureCopy withUserSettingDectionary:userSettings];
 
   return v6;
 }
 
-- (id)unionValuesSettingForFeature:(id)a3
+- (id)unionValuesSettingForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self userSettings];
-  v6 = [MCRestrictionManager unionValuesSettingForFeature:v4 withUserSettingDictionary:v5];
+  featureCopy = feature;
+  userSettings = [(MCRestrictionManager *)self userSettings];
+  v6 = [MCRestrictionManager unionValuesSettingForFeature:featureCopy withUserSettingDictionary:userSettings];
 
   return v6;
 }
 
-- (int)effectiveRestrictedBoolForSetting:(id)a3 configurationUUID:(id)a4
+- (int)effectiveRestrictedBoolForSetting:(id)setting configurationUUID:(id)d
 {
-  v4 = [(MCRestrictionManager *)self effectiveParametersForBoolSetting:a3 configurationUUID:a4];
+  v4 = [(MCRestrictionManager *)self effectiveParametersForBoolSetting:setting configurationUUID:d];
   v5 = [v4 objectForKey:@"value"];
 
   if (v5)
@@ -4798,64 +4798,64 @@ LABEL_7:
   return v6;
 }
 
-- (id)effectiveValueForSetting:(id)a3
+- (id)effectiveValueForSetting:(id)setting
 {
-  v3 = [(MCRestrictionManager *)self effectiveParametersForValueSetting:a3];
+  v3 = [(MCRestrictionManager *)self effectiveParametersForValueSetting:setting];
   v4 = [v3 objectForKey:@"value"];
 
   return v4;
 }
 
-- (id)effectiveIntersectedValuesForSetting:(id)a3
+- (id)effectiveIntersectedValuesForSetting:(id)setting
 {
-  v3 = [(MCRestrictionManager *)self effectiveParametersForIntersectedSetting:a3];
+  v3 = [(MCRestrictionManager *)self effectiveParametersForIntersectedSetting:setting];
   v4 = [v3 objectForKey:@"values"];
 
   return v4;
 }
 
-- (id)effectiveUnionValuesForSetting:(id)a3
+- (id)effectiveUnionValuesForSetting:(id)setting
 {
-  v3 = [(MCRestrictionManager *)self effectiveParametersForUnionSetting:a3];
+  v3 = [(MCRestrictionManager *)self effectiveParametersForUnionSetting:setting];
   v4 = [v3 objectForKey:@"values"];
 
   return v4;
 }
 
-- (id)_effectiveIntersectedValuesForSetting:(id)a3 effectiveUserSettings:(id)a4
+- (id)_effectiveIntersectedValuesForSetting:(id)setting effectiveUserSettings:(id)settings
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v5];
+  settingCopy = setting;
+  v6 = [settings objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-- (id)_effectiveUnionValuesForSetting:(id)a3 effectiveUserSettings:(id)a4
+- (id)_effectiveUnionValuesForSetting:(id)setting effectiveUserSettings:(id)settings
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"union"];
-  v7 = [v6 objectForKey:v5];
+  settingCopy = setting;
+  v6 = [settings objectForKey:@"union"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-- (id)profileIdentifiersRestrictingSettings:(id)a3
+- (id)profileIdentifiersRestrictingSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v6 = objc_opt_new();
-  v7 = [(MCRestrictionManager *)self systemProfileRestrictions];
-  [v6 addEntriesFromDictionary:v7];
+  systemProfileRestrictions = [(MCRestrictionManager *)self systemProfileRestrictions];
+  [v6 addEntriesFromDictionary:systemProfileRestrictions];
 
-  v8 = [(MCRestrictionManager *)self userProfileRestrictions];
-  [v6 addEntriesFromDictionary:v8];
+  userProfileRestrictions = [(MCRestrictionManager *)self userProfileRestrictions];
+  [v6 addEntriesFromDictionary:userProfileRestrictions];
 
-  v9 = [(MCRestrictionManager *)self effectiveUserSettings];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
   v10 = +[MCManifest sharedManifest];
   v11 = [v10 identifiersOfProfilesWithFilterFlags:2];
 
@@ -4863,15 +4863,15 @@ LABEL_7:
   v18[1] = 3221225472;
   v18[2] = __62__MCRestrictionManager_profileIdentifiersRestrictingSettings___block_invoke;
   v18[3] = &unk_1E77D3150;
-  v19 = v4;
-  v20 = self;
-  v21 = v9;
+  v19 = settingsCopy;
+  selfCopy = self;
+  v21 = effectiveUserSettings;
   v22 = v11;
   v23 = v5;
   v12 = v5;
   v13 = v11;
-  v14 = v9;
-  v15 = v4;
+  v14 = effectiveUserSettings;
+  v15 = settingsCopy;
   [v6 enumerateKeysAndObjectsUsingBlock:v18];
   v16 = [v12 copy];
 
@@ -5019,21 +5019,21 @@ LABEL_31:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self isBoolSettingLockedDownByRestrictions:v4]|| [(MCRestrictionManager *)self isValueSettingLockedDownByRestrictions:v4]|| [(MCRestrictionManager *)self isIntersectionSettingLockedDownByRestrictions:v4]|| [(MCRestrictionManager *)self isUnionSettingLockedDownByRestrictions:v4];
+  restrictionsCopy = restrictions;
+  v5 = [(MCRestrictionManager *)self isBoolSettingLockedDownByRestrictions:restrictionsCopy]|| [(MCRestrictionManager *)self isValueSettingLockedDownByRestrictions:restrictionsCopy]|| [(MCRestrictionManager *)self isIntersectionSettingLockedDownByRestrictions:restrictionsCopy]|| [(MCRestrictionManager *)self isUnionSettingLockedDownByRestrictions:restrictionsCopy];
 
   return v5;
 }
 
-- (BOOL)_isBoolSettingLockedDown:(id)a3
+- (BOOL)_isBoolSettingLockedDown:(id)down
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  downCopy = down;
+  v4 = downCopy;
+  if (downCopy)
   {
-    v5 = [v3 objectForKey:@"value"];
+    v5 = [downCopy objectForKey:@"value"];
     v6 = [v4 objectForKey:@"preference"];
     v7 = v6;
     if (v5)
@@ -5053,8 +5053,8 @@ LABEL_31:
 
     else
     {
-      v9 = [v5 BOOLValue];
-      v10 = v9 ^ [v7 BOOLValue] ^ 1;
+      bOOLValue = [v5 BOOLValue];
+      v10 = bOOLValue ^ [v7 BOOLValue] ^ 1;
     }
   }
 
@@ -5066,14 +5066,14 @@ LABEL_31:
   return v10;
 }
 
-- (BOOL)isBoolSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isBoolSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
-  if (!os_variant_has_internal_ui() || ![v4 isEqualToString:@"allowDiagnosticSubmission"] || (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MCInternalOverrideDiagnosticEnforcement", *MEMORY[0x1E695E890], &keyExistsAndHasValidFormat), v6 = 1, keyExistsAndHasValidFormat) && AppBooleanValue)
+  restrictionsCopy = restrictions;
+  if (!os_variant_has_internal_ui() || ![restrictionsCopy isEqualToString:@"allowDiagnosticSubmission"] || (keyExistsAndHasValidFormat = 0, AppBooleanValue = CFPreferencesGetAppBooleanValue(@"MCInternalOverrideDiagnosticEnforcement", *MEMORY[0x1E695E890], &keyExistsAndHasValidFormat), v6 = 1, keyExistsAndHasValidFormat) && AppBooleanValue)
   {
-    v7 = [(MCRestrictionManager *)self currentRestrictions];
-    v8 = [v7 objectForKey:@"restrictedBool"];
-    v9 = [v8 objectForKey:v4];
+    currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+    v8 = [currentRestrictions objectForKey:@"restrictedBool"];
+    v9 = [v8 objectForKey:restrictionsCopy];
 
     v6 = [(MCRestrictionManager *)self _isBoolSettingLockedDown:v9];
   }
@@ -5081,16 +5081,16 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)_isValueSettingLockedDown:(id)a3 effectiveSetting:(id)a4
+- (BOOL)_isValueSettingLockedDown:(id)down effectiveSetting:(id)setting
 {
-  v5 = a4;
-  v6 = v5;
+  settingCopy = setting;
+  v6 = settingCopy;
   v7 = 0;
-  if (a3 && v5)
+  if (down && settingCopy)
   {
-    v8 = a3;
-    v9 = [v8 objectForKey:@"value"];
-    v10 = [v8 objectForKey:@"preferSmallerValues"];
+    downCopy = down;
+    v9 = [downCopy objectForKey:@"value"];
+    v10 = [downCopy objectForKey:@"preferSmallerValues"];
 
     if (v9)
     {
@@ -5143,9 +5143,9 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)isValueSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isValueSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
+  restrictionsCopy = restrictions;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -5158,19 +5158,19 @@ LABEL_19:
   v19 = __Block_byref_object_copy__15;
   v20 = __Block_byref_object_dispose__15;
   v21 = 0;
-  v5 = [(MCRestrictionManager *)self memberQueue];
+  memberQueue = [(MCRestrictionManager *)self memberQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_invoke;
   v11 = &unk_1E77D3178;
   v14 = &v22;
-  v12 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = restrictionsCopy;
   v13 = v6;
   v15 = &v16;
-  dispatch_sync(v5, &v8);
+  dispatch_sync(memberQueue, &v8);
 
-  LOBYTE(self) = [(MCRestrictionManager *)self _isValueSettingLockedDown:v23[5] effectiveSetting:v17[5], v8, v9, v10, v11, v12];
+  LOBYTE(self) = [(MCRestrictionManager *)self _isValueSettingLockedDown:v23[5] effectiveSetting:v17[5], v8, v9, v10, v11, selfCopy];
   _Block_object_dispose(&v16, 8);
 
   _Block_object_dispose(&v22, 8);
@@ -5196,12 +5196,12 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
   *(v11 + 40) = v10;
 }
 
-- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isIntersectionSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [v5 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v4];
+  restrictionsCopy = restrictions;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [currentRestrictions objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:restrictionsCopy];
 
   v8 = [v7 objectForKey:@"overrideUserSettings"];
   LODWORD(v6) = [v8 BOOLValue];
@@ -5220,12 +5220,12 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
   return v10;
 }
 
-- (BOOL)isUnionSettingLockedDownByRestrictions:(id)a3
+- (BOOL)isUnionSettingLockedDownByRestrictions:(id)restrictions
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManager *)self currentRestrictions];
-  v6 = [v5 objectForKey:@"union"];
-  v7 = [v6 objectForKey:v4];
+  restrictionsCopy = restrictions;
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v6 = [currentRestrictions objectForKey:@"union"];
+  v7 = [v6 objectForKey:restrictionsCopy];
 
   v8 = [v7 objectForKey:@"overrideUserSettings"];
   LODWORD(v6) = [v8 BOOLValue];
@@ -5246,9 +5246,9 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
 
 - (int)appWhitelistState
 {
-  v3 = [(MCRestrictionManager *)self effectiveUserSettings];
-  v4 = [(MCRestrictionManager *)self currentRestrictions];
-  v5 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:v3 restrictionsDictionary:v4];
+  effectiveUserSettings = [(MCRestrictionManager *)self effectiveUserSettings];
+  currentRestrictions = [(MCRestrictionManager *)self currentRestrictions];
+  v5 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:effectiveUserSettings restrictionsDictionary:currentRestrictions];
 
   return v5;
 }
@@ -5256,151 +5256,151 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
 + (id)defaultSettings
 {
   v2 = +[MCHacks sharedHacks];
-  v3 = [v2 _deviceSpecificDefaultSettings];
+  _deviceSpecificDefaultSettings = [v2 _deviceSpecificDefaultSettings];
 
-  return v3;
+  return _deviceSpecificDefaultSettings;
 }
 
-+ (id)defaultParametersForBoolSetting:(id)a3
++ (id)defaultParametersForBoolSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"restrictedBool"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"restrictedBool"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-+ (id)defaultParametersForValueSetting:(id)a3
++ (id)defaultParametersForValueSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-+ (id)defaultParametersForIntersectedValuesSetting:(id)a3
++ (id)defaultParametersForIntersectedValuesSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-+ (id)defaultParametersForUnionValuesSetting:(id)a3
++ (id)defaultParametersForUnionValuesSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"union"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"union"];
+  v7 = [v6 objectForKey:settingCopy];
 
   return v7;
 }
 
-+ (int)defaultBoolValueForSetting:(id)a3 outAsk:(BOOL *)a4
++ (int)defaultBoolValueForSetting:(id)setting outAsk:(BOOL *)ask
 {
-  v6 = a3;
-  v7 = [a1 defaultSettings];
-  LODWORD(a4) = [a1 BOOLSettingForFeature:v6 outAsk:a4 withUserSettingDictionary:v7];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  LODWORD(ask) = [self BOOLSettingForFeature:settingCopy outAsk:ask withUserSettingDictionary:defaultSettings];
 
-  return a4;
+  return ask;
 }
 
-+ (id)defaultValueForSetting:(id)a3
++ (id)defaultValueForSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"value"];
 
   return v8;
 }
 
-+ (id)maximumValueForSetting:(id)a3
++ (id)maximumValueForSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"rangeMaximum"];
 
   return v8;
 }
 
-+ (id)minimumValueForSetting:(id)a3
++ (id)minimumValueForSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"rangeMinimum"];
 
   return v8;
 }
 
-+ (id)defaultIntersectedValuesForSetting:(id)a3
++ (id)defaultIntersectedValuesForSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-+ (id)defaultUnionValuesForSetting:(id)a3
++ (id)defaultUnionValuesForSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [a1 defaultSettings];
-  v6 = [v5 objectForKey:@"union"];
-  v7 = [v6 objectForKey:v4];
+  settingCopy = setting;
+  defaultSettings = [self defaultSettings];
+  v6 = [defaultSettings objectForKey:@"union"];
+  v7 = [v6 objectForKey:settingCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-+ (id)parametersForSetting:(id)a3 ofType:(id)a4 withUserSettingDictionary:(id)a5
++ (id)parametersForSetting:(id)setting ofType:(id)type withUserSettingDictionary:(id)dictionary
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  [MCSignpostManager willGetFeature:v9];
-  v10 = [v7 objectForKey:v8];
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  settingCopy = setting;
+  [MCSignpostManager willGetFeature:settingCopy];
+  v10 = [dictionaryCopy objectForKey:typeCopy];
 
-  v11 = [v10 objectForKey:v9];
+  v11 = [v10 objectForKey:settingCopy];
 
   return v11;
 }
 
-+ (int)BOOLSettingForFeature:(id)a3 outAsk:(BOOL *)a4 withUserSettingDictionary:(id)a5
++ (int)BOOLSettingForFeature:(id)feature outAsk:(BOOL *)ask withUserSettingDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 objectForKey:@"restrictedBool"];
-  v10 = [v9 objectForKey:v7];
+  featureCopy = feature;
+  dictionaryCopy = dictionary;
+  v9 = [dictionaryCopy objectForKey:@"restrictedBool"];
+  v10 = [v9 objectForKey:featureCopy];
   v11 = [v10 objectForKey:@"value"];
 
   if (v11)
   {
     if ([v11 BOOLValue])
     {
-      if (a4)
+      if (ask)
       {
-        v12 = [v8 objectForKeyedSubscript:@"restrictedBool"];
-        v13 = [v12 objectForKeyedSubscript:v7];
+        v12 = [dictionaryCopy objectForKeyedSubscript:@"restrictedBool"];
+        v13 = [v12 objectForKeyedSubscript:featureCopy];
         v14 = [v13 objectForKeyedSubscript:@"ask"];
-        *a4 = [v14 BOOLValue];
+        *ask = [v14 BOOLValue];
       }
 
       v15 = 1;
@@ -5420,59 +5420,59 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
   return v15;
 }
 
-+ (id)valueSettingForFeature:(id)a3 withUserSettingDictionary:(id)a4
++ (id)valueSettingForFeature:(id)feature withUserSettingDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"restrictedValue"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKey:@"restrictedValue"];
+  v7 = [v6 objectForKey:featureCopy];
 
   v8 = [v7 objectForKey:@"value"];
 
   return v8;
 }
 
-+ (id)intersectedValuesSettingForFeature:(id)a3 withUserSettingDectionary:(id)a4
++ (id)intersectedValuesSettingForFeature:(id)feature withUserSettingDectionary:(id)dectionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"intersection"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dectionary objectForKey:@"intersection"];
+  v7 = [v6 objectForKey:featureCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-+ (id)unionValuesSettingForFeature:(id)a3 withUserSettingDictionary:(id)a4
++ (id)unionValuesSettingForFeature:(id)feature withUserSettingDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = [a4 objectForKey:@"union"];
-  v7 = [v6 objectForKey:v5];
+  featureCopy = feature;
+  v6 = [dictionary objectForKey:@"union"];
+  v7 = [v6 objectForKey:featureCopy];
 
   v8 = [v7 objectForKey:@"values"];
 
   return v8;
 }
 
-+ (int)BOOLSettingForFeature:(id)a3 withNewUserSetting:(id)a4 currentSettings:(id)a5
++ (int)BOOLSettingForFeature:(id)feature withNewUserSetting:(id)setting currentSettings:(id)settings
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 BOOLSettingForFeature:v8 outAsk:0 withUserSettingDictionary:a4];
+  featureCopy = feature;
+  settingsCopy = settings;
+  v10 = [self BOOLSettingForFeature:featureCopy outAsk:0 withUserSettingDictionary:setting];
   if (!v10)
   {
-    v10 = [a1 BOOLSettingForFeature:v8 outAsk:0 withUserSettingDictionary:v9];
+    v10 = [self BOOLSettingForFeature:featureCopy outAsk:0 withUserSettingDictionary:settingsCopy];
   }
 
   return v10;
 }
 
-+ (id)applyRestrictions:(id)a3 forFeature:(id)a4 toParametersForBoolSetting:(id)a5
++ (id)applyRestrictions:(id)restrictions forFeature:(id)feature toParametersForBoolSetting:(id)setting
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 objectForKeyedSubscript:@"restrictedBool"];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  settingCopy = setting;
+  featureCopy = feature;
+  v9 = [restrictions objectForKeyedSubscript:@"restrictedBool"];
+  v10 = [v9 objectForKeyedSubscript:featureCopy];
 
   v11 = [v10 objectForKeyedSubscript:@"value"];
   v12 = [v10 objectForKeyedSubscript:@"preference"];
@@ -5497,7 +5497,7 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
 
   else
   {
-    v16 = v7;
+    v16 = settingCopy;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -5505,26 +5505,26 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
   return v16;
 }
 
-+ (id)newEffectiveSettingsByApplyingRestrictions:(id)a3 toSettings:(id)a4
++ (id)newEffectiveSettingsByApplyingRestrictions:(id)restrictions toSettings:(id)settings
 {
   v156 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  restrictionsCopy = restrictions;
+  settingsCopy = settings;
   v8 = 0x1E695D000uLL;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v104 = v7;
-  v10 = [v7 objectForKeyedSubscript:@"restrictedBool"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v104 = settingsCopy;
+  v10 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
   v11 = [v10 mutableCopy];
 
-  v107 = v6;
-  v103 = v9;
+  v107 = restrictionsCopy;
+  v103 = dictionary;
   if (v11)
   {
     v148 = 0u;
     v149 = 0u;
     v146 = 0u;
     v147 = 0u;
-    v12 = [v6 objectForKeyedSubscript:@"restrictedBool"];
+    v12 = [restrictionsCopy objectForKeyedSubscript:@"restrictedBool"];
     v13 = [v12 countByEnumeratingWithState:&v146 objects:v155 count:16];
     if (v13)
     {
@@ -5541,10 +5541,10 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
 
           v17 = *(*(&v146 + 1) + 8 * i);
           v18 = [v11 objectForKeyedSubscript:v17];
-          v19 = [a1 applyRestrictions:v6 forFeature:v17 toParametersForBoolSetting:v18];
+          v19 = [self applyRestrictions:restrictionsCopy forFeature:v17 toParametersForBoolSetting:v18];
           [v11 setObject:v19 forKeyedSubscript:v17];
 
-          v6 = v107;
+          restrictionsCopy = v107;
         }
 
         v14 = [v12 countByEnumeratingWithState:&v146 objects:v155 count:16];
@@ -5566,13 +5566,13 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
       _os_log_impl(&dword_1A795B000, v20, OS_LOG_TYPE_ERROR, "settings dictionary missing BOOLean restrictions (restrictedBool)", buf, 2u);
     }
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [v9 setObject:v21 forKey:@"restrictedBool"];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:dictionary2 forKey:@"restrictedBool"];
   }
 
-  v110 = [v6 objectForKey:@"restrictedValue"];
+  v110 = [restrictionsCopy objectForKey:@"restrictedValue"];
   v22 = [v104 objectForKey:@"restrictedValue"];
-  v109 = [*(v8 + 3984) dictionary];
+  dictionary3 = [*(v8 + 3984) dictionary];
   v141 = 0u;
   v142 = 0u;
   v143 = 0u;
@@ -5626,9 +5626,9 @@ void __63__MCRestrictionManager_isValueSettingLockedDownByRestrictions___block_i
           }
 
           v106 = v36;
-          v38 = [v36 BOOLValue];
+          bOOLValue = [v36 BOOLValue];
           v34 = v35;
-          if (v38)
+          if (bOOLValue)
           {
 
             if (!v29 || [v29 compare:v34] != -1)
@@ -5756,7 +5756,7 @@ LABEL_44:
         [v49 MCSetObjectIfNotNil:v34 forKey:@"rangeMaximum"];
         [v49 MCSetObjectIfNotNil:v33 forKey:@"rangeMinimum"];
         [v49 MCSetObjectIfNotNil:v32 forKey:@"value"];
-        [v109 setObject:v49 forKey:v117];
+        [dictionary3 setObject:v49 forKey:v117];
       }
 
       v113 = [obj countByEnumeratingWithState:&v141 objects:v154 count:16];
@@ -5765,13 +5765,13 @@ LABEL_44:
     while (v113);
   }
 
-  [v103 setObject:v109 forKey:@"restrictedValue"];
+  [v103 setObject:dictionary3 forKey:@"restrictedValue"];
   v50 = [v107 objectForKey:@"intersection"];
   v51 = [v104 objectForKey:@"intersection"];
-  v121 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
   v123 = v50;
-  v52 = [v50 allKeys];
-  v118 = [v52 mutableCopy];
+  allKeys = [v50 allKeys];
+  v118 = [allKeys mutableCopy];
 
   v139 = 0u;
   v140 = 0u;
@@ -5802,9 +5802,9 @@ LABEL_44:
         if (v60)
         {
           v61 = [v59 objectForKey:@"overrideUserSettings"];
-          v62 = [v61 BOOLValue];
+          bOOLValue2 = [v61 BOOLValue];
 
-          if (v62)
+          if (bOOLValue2)
           {
             [v57 setObject:v60 forKey:@"values"];
           }
@@ -5816,8 +5816,8 @@ LABEL_44:
               v63 = [MEMORY[0x1E695DFD8] setWithArray:v60];
               v64 = [MEMORY[0x1E695DFA8] setWithArray:v58];
               [v64 intersectSet:v63];
-              v65 = [v64 allObjects];
-              [v57 setObject:v65 forKey:@"values"];
+              allObjects = [v64 allObjects];
+              [v57 setObject:allObjects forKey:@"values"];
 
               v53 = v111;
             }
@@ -5830,7 +5830,7 @@ LABEL_44:
           }
         }
 
-        [v121 setObject:v57 forKey:v55];
+        [dictionary4 setObject:v57 forKey:v55];
         [v118 removeObject:v55];
       }
 
@@ -5861,7 +5861,7 @@ LABEL_44:
 
         v71 = *(*(&v133 + 1) + 8 * m);
         v72 = [v123 objectForKey:v71];
-        [v121 setObject:v72 forKey:v71];
+        [dictionary4 setObject:v72 forKey:v71];
       }
 
       v68 = [v66 countByEnumeratingWithState:&v133 objects:v152 count:16];
@@ -5870,13 +5870,13 @@ LABEL_44:
     while (v68);
   }
 
-  [v103 setObject:v121 forKey:@"intersection"];
+  [v103 setObject:dictionary4 forKey:@"intersection"];
   v73 = [v107 objectForKeyedSubscript:@"union"];
   v74 = [v104 objectForKeyedSubscript:@"union"];
   v75 = v73;
-  v124 = [MEMORY[0x1E695DF90] dictionary];
-  v76 = [v73 allKeys];
-  v77 = [v76 mutableCopy];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  allKeys2 = [v73 allKeys];
+  v77 = [allKeys2 mutableCopy];
 
   v131 = 0u;
   v132 = 0u;
@@ -5931,7 +5931,7 @@ LABEL_44:
           }
         }
 
-        [v124 setObject:v83 forKeyedSubscript:v81];
+        [dictionary5 setObject:v83 forKeyedSubscript:v81];
         [v77 removeObject:v81];
 
         v75 = v120;
@@ -5964,7 +5964,7 @@ LABEL_44:
 
         v97 = *(*(&v125 + 1) + 8 * ii);
         v98 = [v75 objectForKeyedSubscript:v97];
-        [v124 setObject:v98 forKeyedSubscript:v97];
+        [dictionary5 setObject:v98 forKeyedSubscript:v97];
       }
 
       v94 = [v92 countByEnumeratingWithState:&v125 objects:v150 count:16];
@@ -5973,7 +5973,7 @@ LABEL_44:
     while (v94);
   }
 
-  [v103 setObject:v124 forKeyedSubscript:@"union"];
+  [v103 setObject:dictionary5 forKeyedSubscript:@"union"];
   v99 = +[MCHacks sharedHacks];
   [v99 _applyHeuristicsToEffectiveUserSettings:v103];
 
@@ -5984,17 +5984,17 @@ LABEL_44:
   return v103;
 }
 
-+ (BOOL)BOOLSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5
++ (BOOL)BOOLSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 objectForKey:@"restrictedBool"];
-  v11 = [v10 objectForKey:v7];
+  settingCopy = setting;
+  settingsCopy = settings;
+  newSettingsCopy = newSettings;
+  v10 = [settingsCopy objectForKey:@"restrictedBool"];
+  v11 = [v10 objectForKey:settingCopy];
   v12 = [v11 objectForKey:@"value"];
 
-  v13 = [v9 objectForKey:@"restrictedBool"];
-  v14 = [v13 objectForKey:v7];
+  v13 = [newSettingsCopy objectForKey:@"restrictedBool"];
+  v14 = [v13 objectForKey:settingCopy];
   v15 = [v14 objectForKey:@"value"];
 
   if (v12 | v15)
@@ -6018,17 +6018,17 @@ LABEL_44:
 
       if (!v17 && [v12 BOOLValue] && objc_msgSend(v15, "BOOLValue"))
       {
-        v18 = [v8 objectForKeyedSubscript:@"restrictedBool"];
-        v19 = [v18 objectForKeyedSubscript:v7];
+        v18 = [settingsCopy objectForKeyedSubscript:@"restrictedBool"];
+        v19 = [v18 objectForKeyedSubscript:settingCopy];
         v20 = [v19 objectForKeyedSubscript:@"ask"];
-        v25 = [v20 BOOLValue];
+        bOOLValue = [v20 BOOLValue];
 
-        v16 = [v9 objectForKeyedSubscript:@"restrictedBool"];
-        v21 = [v16 objectForKeyedSubscript:v7];
+        v16 = [newSettingsCopy objectForKeyedSubscript:@"restrictedBool"];
+        v21 = [v16 objectForKeyedSubscript:settingCopy];
         v22 = [v21 objectForKeyedSubscript:@"ask"];
-        v23 = [v22 BOOLValue];
+        bOOLValue2 = [v22 BOOLValue];
 
-        LOBYTE(v16) = v25 ^ v23;
+        LOBYTE(v16) = bOOLValue ^ bOOLValue2;
       }
 
       else
@@ -6046,17 +6046,17 @@ LABEL_44:
   return v16;
 }
 
-+ (BOOL)valueSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5
++ (BOOL)valueSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"restrictedValue"];
-  v10 = [v9 objectForKey:v8];
+  newSettingsCopy = newSettings;
+  settingCopy = setting;
+  v9 = [settings objectForKey:@"restrictedValue"];
+  v10 = [v9 objectForKey:settingCopy];
   v11 = [v10 objectForKey:@"value"];
 
-  v12 = [v7 objectForKey:@"restrictedValue"];
+  v12 = [newSettingsCopy objectForKey:@"restrictedValue"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:settingCopy];
 
   v14 = [v13 objectForKey:@"value"];
 
@@ -6081,17 +6081,17 @@ LABEL_44:
   return v15;
 }
 
-+ (BOOL)intersectedValuesSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5
++ (BOOL)intersectedValuesSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"intersection"];
-  v10 = [v9 objectForKey:v8];
+  newSettingsCopy = newSettings;
+  settingCopy = setting;
+  v9 = [settings objectForKey:@"intersection"];
+  v10 = [v9 objectForKey:settingCopy];
   v11 = [v10 objectForKey:@"values"];
 
-  v12 = [v7 objectForKey:@"intersection"];
+  v12 = [newSettingsCopy objectForKey:@"intersection"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:settingCopy];
 
   v14 = [v13 objectForKey:@"values"];
 
@@ -6116,17 +6116,17 @@ LABEL_44:
   return v15;
 }
 
-+ (BOOL)unionValuesSetting:(id)a3 valueChangedBetweenOldSettings:(id)a4 andNewSettings:(id)a5
++ (BOOL)unionValuesSetting:(id)setting valueChangedBetweenOldSettings:(id)settings andNewSettings:(id)newSettings
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [a4 objectForKey:@"union"];
-  v10 = [v9 objectForKey:v8];
+  newSettingsCopy = newSettings;
+  settingCopy = setting;
+  v9 = [settings objectForKey:@"union"];
+  v10 = [v9 objectForKey:settingCopy];
   v11 = [v10 objectForKey:@"values"];
 
-  v12 = [v7 objectForKey:@"union"];
+  v12 = [newSettingsCopy objectForKey:@"union"];
 
-  v13 = [v12 objectForKey:v8];
+  v13 = [v12 objectForKey:settingCopy];
 
   v14 = [v13 objectForKey:@"values"];
 
@@ -6189,28 +6189,28 @@ LABEL_44:
   return memberQueueEffectiveWhitelistedAppsAndOptions;
 }
 
-+ (int)appWhitelistStateWithSettingsDictionary:(id)a3 restrictionsDictionary:(id)a4
++ (int)appWhitelistStateWithSettingsDictionary:(id)dictionary restrictionsDictionary:(id)restrictionsDictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MCRestrictionManager intersectedValuesSettingForFeature:@"appLockBundleIDs" withUserSettingDectionary:v5];
+  dictionaryCopy = dictionary;
+  restrictionsDictionaryCopy = restrictionsDictionary;
+  v7 = [MCRestrictionManager intersectedValuesSettingForFeature:@"appLockBundleIDs" withUserSettingDectionary:dictionaryCopy];
 
   if (v7)
   {
-    if ([MCRestrictionManager isInSingleAppModeWithSettingsDictionary:v5])
+    if ([MCRestrictionManager isInSingleAppModeWithSettingsDictionary:dictionaryCopy])
     {
-      [MCRestrictionManager isPasscodeRequiredToAccessWhitelistedAppsWithSettingsDictionary:v5];
+      [MCRestrictionManager isPasscodeRequiredToAccessWhitelistedAppsWithSettingsDictionary:dictionaryCopy];
       LODWORD(v7) = 1;
     }
 
-    else if ([MCRestrictionManager isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:v6])
+    else if ([MCRestrictionManager isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:restrictionsDictionaryCopy])
     {
       LODWORD(v7) = 6;
     }
 
     else
     {
-      [MCRestrictionManager mayEnterPasscodeToAccessNonWhitelistedAppsWithSettingsDictionary:v5];
+      [MCRestrictionManager mayEnterPasscodeToAccessNonWhitelistedAppsWithSettingsDictionary:dictionaryCopy];
       LODWORD(v7) = 2;
     }
   }
@@ -6218,173 +6218,173 @@ LABEL_44:
   return v7;
 }
 
-+ (BOOL)isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:(id)a3
++ (BOOL)isWhitelistedAppsRestrictionEnforcedWithRestrictionsDictionary:(id)dictionary
 {
-  v3 = [MCRestrictionManager intersectedValuesForFeature:@"appLockBundleIDs" withRestrictionsDictionary:a3];
+  v3 = [MCRestrictionManager intersectedValuesForFeature:@"appLockBundleIDs" withRestrictionsDictionary:dictionary];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)allowedOpenInAppBundleIDsWithOriginalAppBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 localAppBundleID:(id)a5 localAccountIsManaged:(BOOL)a6 mayOpenFromUnmanagedToManaged:(BOOL)a7 mayOpenFromManagedToUnmanaged:(BOOL)a8 isAppBundleIDExemptBlock:(id)a9 isAppBundleIDAccountBasedBlock:(id)a10
++ (id)allowedOpenInAppBundleIDsWithOriginalAppBundleIDs:(id)ds managedAppBundleIDs:(id)iDs localAppBundleID:(id)d localAccountIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged isAppBundleIDExemptBlock:(id)block isAppBundleIDAccountBasedBlock:(id)self0
 {
-  v11 = a7;
-  v29 = a6;
-  v14 = a4;
-  v15 = a5;
-  v16 = a9;
-  v17 = a10;
-  v18 = [MEMORY[0x1E695DFA8] setWithArray:a3];
+  toManagedCopy = toManaged;
+  managedCopy = managed;
+  iDsCopy = iDs;
+  dCopy = d;
+  blockCopy = block;
+  basedBlockCopy = basedBlock;
+  v18 = [MEMORY[0x1E695DFA8] setWithArray:ds];
   v19 = +[MCRestrictionManager sharedManager];
-  v20 = [v19 restrictedAppBundleIDs];
+  restrictedAppBundleIDs = [v19 restrictedAppBundleIDs];
 
-  if ([v20 count])
+  if ([restrictedAppBundleIDs count])
   {
-    [v18 minusSet:v20];
+    [v18 minusSet:restrictedAppBundleIDs];
   }
 
   v21 = +[MCRestrictionManager sharedManager];
-  v22 = [v21 effectiveWhitelistedAppBundleIDs];
+  effectiveWhitelistedAppBundleIDs = [v21 effectiveWhitelistedAppBundleIDs];
 
-  if ([v22 count])
+  if ([effectiveWhitelistedAppBundleIDs count])
   {
-    [v18 intersectSet:v22];
+    [v18 intersectSet:effectiveWhitelistedAppBundleIDs];
   }
 
-  v23 = [MEMORY[0x1E695DFD8] setWithArray:v14];
-  if ((!v11 || !a8) && (v16[2](v16, v15) & 1) == 0)
+  v23 = [MEMORY[0x1E695DFD8] setWithArray:iDsCopy];
+  if ((!toManagedCopy || !unmanaged) && (blockCopy[2](blockCopy, dCopy) & 1) == 0)
   {
-    v24 = v17[2](v17, v15);
-    v25 = v29;
+    v24 = basedBlockCopy[2](basedBlockCopy, dCopy);
+    v25 = managedCopy;
     if ((v24 & 1) == 0)
     {
-      v25 = [v23 containsObject:v15];
+      v25 = [v23 containsObject:dCopy];
     }
 
-    if (v25 && !a8)
+    if (v25 && !unmanaged)
     {
       v26 = v25;
       [v18 intersectSet:v23];
       v25 = v26;
     }
 
-    if (((v25 | v11) & 1) == 0)
+    if (((v25 | toManagedCopy) & 1) == 0)
     {
       [v18 minusSet:v23];
     }
   }
 
-  v27 = [v18 allObjects];
+  allObjects = [v18 allObjects];
 
-  return v27;
+  return allObjects;
 }
 
-+ (id)allowedImportFromAppBundleIDsWithOriginalAppBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 localAppBundleID:(id)a5 localAccountIsManaged:(BOOL)a6 mayOpenFromUnmanagedToManaged:(BOOL)a7 mayOpenFromManagedToUnmanaged:(BOOL)a8 isAppBundleIDExemptBlock:(id)a9 isAppBundleIDAccountBasedBlock:(id)a10
++ (id)allowedImportFromAppBundleIDsWithOriginalAppBundleIDs:(id)ds managedAppBundleIDs:(id)iDs localAppBundleID:(id)d localAccountIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged isAppBundleIDExemptBlock:(id)block isAppBundleIDAccountBasedBlock:(id)self0
 {
-  v10 = a8;
-  v11 = a7;
-  v29 = a6;
-  v14 = a4;
-  v15 = a5;
-  v16 = a9;
-  v17 = a10;
-  v18 = [MEMORY[0x1E695DFA8] setWithArray:a3];
+  unmanagedCopy = unmanaged;
+  toManagedCopy = toManaged;
+  managedCopy = managed;
+  iDsCopy = iDs;
+  dCopy = d;
+  blockCopy = block;
+  basedBlockCopy = basedBlock;
+  v18 = [MEMORY[0x1E695DFA8] setWithArray:ds];
   v19 = +[MCRestrictionManager sharedManager];
-  v20 = [v19 restrictedAppBundleIDs];
+  restrictedAppBundleIDs = [v19 restrictedAppBundleIDs];
 
-  if ([v20 count])
+  if ([restrictedAppBundleIDs count])
   {
-    [v18 minusSet:v20];
+    [v18 minusSet:restrictedAppBundleIDs];
   }
 
   v21 = +[MCRestrictionManager sharedManager];
-  v22 = [v21 effectiveWhitelistedAppBundleIDs];
+  effectiveWhitelistedAppBundleIDs = [v21 effectiveWhitelistedAppBundleIDs];
 
-  if ([v22 count])
+  if ([effectiveWhitelistedAppBundleIDs count])
   {
-    [v18 intersectSet:v22];
+    [v18 intersectSet:effectiveWhitelistedAppBundleIDs];
   }
 
-  v23 = [MEMORY[0x1E695DFD8] setWithArray:v14];
-  if ((!v11 || !v10) && (v16[2](v16, v15) & 1) == 0)
+  v23 = [MEMORY[0x1E695DFD8] setWithArray:iDsCopy];
+  if ((!toManagedCopy || !unmanagedCopy) && (blockCopy[2](blockCopy, dCopy) & 1) == 0)
   {
-    v24 = v17[2](v17, v15);
-    v25 = v29;
+    v24 = basedBlockCopy[2](basedBlockCopy, dCopy);
+    v25 = managedCopy;
     if ((v24 & 1) == 0)
     {
-      v25 = [v23 containsObject:v15];
+      v25 = [v23 containsObject:dCopy];
     }
 
-    if (v25 && !v11)
+    if (v25 && !toManagedCopy)
     {
       v26 = v25;
       [v18 intersectSet:v23];
       v25 = v26;
     }
 
-    if (((v25 | v10) & 1) == 0)
+    if (((v25 | unmanagedCopy) & 1) == 0)
     {
       [v18 minusSet:v23];
     }
   }
 
-  v27 = [v18 allObjects];
+  allObjects = [v18 allObjects];
 
-  return v27;
+  return allObjects;
 }
 
-+ (id)allowedKeyboardBundleIDsAfterApplyingFilterToBundleIDs:(id)a3 managedAppBundleIDs:(id)a4 hostAppIsManaged:(BOOL)a5 mayOpenFromUnmanagedToManaged:(BOOL)a6 mayOpenFromManagedToUnmanaged:(BOOL)a7
++ (id)allowedKeyboardBundleIDsAfterApplyingFilterToBundleIDs:(id)ds managedAppBundleIDs:(id)iDs hostAppIsManaged:(BOOL)managed mayOpenFromUnmanagedToManaged:(BOOL)toManaged mayOpenFromManagedToUnmanaged:(BOOL)unmanaged
 {
-  v8 = a6;
-  v9 = a5;
-  v11 = a4;
-  v12 = [MEMORY[0x1E695DFA8] setWithArray:a3];
+  toManagedCopy = toManaged;
+  managedCopy = managed;
+  iDsCopy = iDs;
+  v12 = [MEMORY[0x1E695DFA8] setWithArray:ds];
   v13 = +[MCRestrictionManager sharedManager];
-  v14 = [v13 restrictedAppBundleIDs];
+  restrictedAppBundleIDs = [v13 restrictedAppBundleIDs];
 
-  if ([v14 count])
+  if ([restrictedAppBundleIDs count])
   {
-    [v12 minusSet:v14];
+    [v12 minusSet:restrictedAppBundleIDs];
   }
 
   v15 = +[MCRestrictionManager sharedManager];
-  v16 = [v15 effectiveWhitelistedAppBundleIDs];
+  effectiveWhitelistedAppBundleIDs = [v15 effectiveWhitelistedAppBundleIDs];
 
-  if ([v16 count])
+  if ([effectiveWhitelistedAppBundleIDs count])
   {
-    [v12 intersectSet:v16];
+    [v12 intersectSet:effectiveWhitelistedAppBundleIDs];
   }
 
-  v17 = [MEMORY[0x1E695DFD8] setWithArray:v11];
-  if (!v8 || !a7)
+  v17 = [MEMORY[0x1E695DFD8] setWithArray:iDsCopy];
+  if (!toManagedCopy || !unmanaged)
   {
-    if (v9 && !a7)
+    if (managedCopy && !unmanaged)
     {
       [v12 intersectSet:v17];
     }
 
-    if (!v9 && !v8)
+    if (!managedCopy && !toManagedCopy)
     {
       [v12 minusSet:v17];
     }
   }
 
-  v18 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
-  return v18;
+  return allObjects;
 }
 
-+ (BOOL)isWebContentFilterUIActiveWithRestrictionDictionary:(id)a3
++ (BOOL)isWebContentFilterUIActiveWithRestrictionDictionary:(id)dictionary
 {
-  v3 = a3;
-  if ([MCRestrictionManager restrictedBoolForFeature:@"forceWebContentFilterAuto" withRestrictionsDictionary:v3]== 1)
+  dictionaryCopy = dictionary;
+  if ([MCRestrictionManager restrictedBoolForFeature:@"forceWebContentFilterAuto" withRestrictionsDictionary:dictionaryCopy]== 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [MCRestrictionManager intersectedValuesForFeature:@"webContentFilterAutoPermittedURLs" withRestrictionsDictionary:v3];
+    v5 = [MCRestrictionManager intersectedValuesForFeature:@"webContentFilterAutoPermittedURLs" withRestrictionsDictionary:dictionaryCopy];
     if (v5)
     {
       v4 = 0;
@@ -6392,7 +6392,7 @@ LABEL_44:
 
     else
     {
-      v6 = [MCRestrictionManager intersectedValuesForFeature:@"webContentFilterWhitelistedURLs" withRestrictionsDictionary:v3];
+      v6 = [MCRestrictionManager intersectedValuesForFeature:@"webContentFilterWhitelistedURLs" withRestrictionsDictionary:dictionaryCopy];
       if (v6)
       {
         v4 = 0;
@@ -6400,7 +6400,7 @@ LABEL_44:
 
       else
       {
-        v7 = [MCRestrictionManager unionValuesForFeature:@"webContentFilterBlacklistedURLs" withRestrictionsDictionary:v3];
+        v7 = [MCRestrictionManager unionValuesForFeature:@"webContentFilterBlacklistedURLs" withRestrictionsDictionary:dictionaryCopy];
         v4 = v7 == 0;
       }
     }

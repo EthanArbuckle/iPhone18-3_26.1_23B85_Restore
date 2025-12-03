@@ -1,16 +1,16 @@
 @interface EFNetworkDomainUtilities
-+ (BOOL)domain:(id)a3 isSubdomainOfDomain:(id)a4;
++ (BOOL)domain:(id)domain isSubdomainOfDomain:(id)ofDomain;
 @end
 
 @implementation EFNetworkDomainUtilities
 
-+ (BOOL)domain:(id)a3 isSubdomainOfDomain:(id)a4
++ (BOOL)domain:(id)domain isSubdomainOfDomain:(id)ofDomain
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v6, "length"))
+  domainCopy = domain;
+  ofDomainCopy = ofDomain;
+  if ([domainCopy length] && objc_msgSend(ofDomainCopy, "length"))
   {
-    v7 = [v5 rangeOfString:v6 options:13];
+    v7 = [domainCopy rangeOfString:ofDomainCopy options:13];
     if (!v7)
     {
       v8 = 1;
@@ -19,7 +19,7 @@
 
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = [v5 characterAtIndex:v7 - 1] == 46;
+      v8 = [domainCopy characterAtIndex:v7 - 1] == 46;
       goto LABEL_6;
     }
   }

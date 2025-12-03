@@ -1,8 +1,8 @@
 @interface _WKSystemPreferences
 + (BOOL)isCaptivePortalModeEnabled;
-+ (BOOL)isCaptivePortalModeIgnored:(id)a3;
-+ (void)setCaptivePortalModeEnabled:(BOOL)a3;
-+ (void)setCaptivePortalModeIgnored:(id)a3 ignore:(BOOL)a4;
++ (BOOL)isCaptivePortalModeIgnored:(id)ignored;
++ (void)setCaptivePortalModeEnabled:(BOOL)enabled;
++ (void)setCaptivePortalModeIgnored:(id)ignored ignore:(BOOL)ignore;
 @end
 
 @implementation _WKSystemPreferences
@@ -32,10 +32,10 @@ LABEL_3:
   return isLockdownModeEnabled;
 }
 
-+ (void)setCaptivePortalModeEnabled:(BOOL)a3
++ (void)setCaptivePortalModeEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x1E695E4C0];
   }
@@ -50,27 +50,27 @@ LABEL_3:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"WKCaptivePortalModeContainerConfigurationChanged", 0, 0, 1u);
 }
 
-+ (BOOL)isCaptivePortalModeIgnored:(id)a3
++ (BOOL)isCaptivePortalModeIgnored:(id)ignored
 {
   v5[3] = *MEMORY[0x1E69E9840];
-  v5[0] = a3;
+  v5[0] = ignored;
   v5[1] = @"System/Preferences/";
   v5[2] = @"com.apple.WebKit.cpmconfig_ignore";
   v3 = [MEMORY[0x1E696AEC0] pathWithComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v5, 3)}];
   return [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
 }
 
-+ (void)setCaptivePortalModeIgnored:(id)a3 ignore:(BOOL)a4
++ (void)setCaptivePortalModeIgnored:(id)ignored ignore:(BOOL)ignore
 {
-  v4 = a4;
+  ignoreCopy = ignore;
   v12[2] = *MEMORY[0x1E69E9840];
-  v12[0] = a3;
+  v12[0] = ignored;
   v12[1] = @"System/Preferences/";
   v5 = [MEMORY[0x1E696AEC0] pathWithComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v12, 2)}];
   v11[0] = v5;
   v11[1] = @"com.apple.WebKit.cpmconfig_ignore";
   v6 = [MEMORY[0x1E696AEC0] pathWithComponents:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v11, 2)}];
-  if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] != v4)
+  if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] != ignoreCopy)
   {
     v10 = 0;
     v7 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
@@ -84,15 +84,15 @@ LABEL_3:
       [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
     }
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    if (v4)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (ignoreCopy)
     {
-      [v8 createFileAtPath:v6 contents:0 attributes:0];
+      [defaultManager createFileAtPath:v6 contents:0 attributes:0];
     }
 
     else
     {
-      [v8 removeItemAtPath:v6 error:0];
+      [defaultManager removeItemAtPath:v6 error:0];
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();

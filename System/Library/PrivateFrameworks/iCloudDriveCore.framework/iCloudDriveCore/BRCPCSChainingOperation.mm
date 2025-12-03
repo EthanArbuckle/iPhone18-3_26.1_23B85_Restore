@@ -1,66 +1,66 @@
 @interface BRCPCSChainingOperation
-- (BOOL)shouldRetryForError:(id)a3;
-- (BRCPCSChainingOperation)initWithRootItem:(id)a3 appLibrary:(id)a4 sessionContext:(id)a5 syncUpCallback:(id)a6;
+- (BOOL)shouldRetryForError:(id)error;
+- (BRCPCSChainingOperation)initWithRootItem:(id)item appLibrary:(id)library sessionContext:(id)context syncUpCallback:(id)callback;
 - (id)createActivity;
-- (void)_buildRecordListWithCompletion:(id)a3;
+- (void)_buildRecordListWithCompletion:(id)completion;
 - (void)_chainRecords;
-- (void)_sendRecordBatch:(id)a3 recursed:(BOOL)a4 completion:(id)a5;
-- (void)finishWithResult:(id)a3 error:(id)a4;
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4;
+- (void)_sendRecordBatch:(id)batch recursed:(BOOL)recursed completion:(id)completion;
+- (void)finishWithResult:(id)result error:(id)error;
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation;
 - (void)main;
 @end
 
 @implementation BRCPCSChainingOperation
 
-- (BRCPCSChainingOperation)initWithRootItem:(id)a3 appLibrary:(id)a4 sessionContext:(id)a5 syncUpCallback:(id)a6
+- (BRCPCSChainingOperation)initWithRootItem:(id)item appLibrary:(id)library sessionContext:(id)context syncUpCallback:(id)callback
 {
-  v11 = a3;
-  v12 = a4;
-  v23 = a6;
-  v13 = a5;
-  v14 = [v11 itemID];
-  v15 = [v14 debugItemIDString];
-  v16 = [@"pcs-chain/" stringByAppendingString:v15];
+  itemCopy = item;
+  libraryCopy = library;
+  callbackCopy = callback;
+  contextCopy = context;
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v16 = [@"pcs-chain/" stringByAppendingString:debugItemIDString];
 
-  if (!v11)
+  if (!itemCopy)
   {
     [BRCPCSChainingOperation initWithRootItem:appLibrary:sessionContext:syncUpCallback:];
   }
 
-  v17 = [v11 serverZone];
-  v18 = [v17 metadataSyncContext];
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v24.receiver = self;
   v24.super_class = BRCPCSChainingOperation;
-  v19 = [(_BRCOperation *)&v24 initWithName:v16 syncContext:v18 sessionContext:v13];
+  v19 = [(_BRCOperation *)&v24 initWithName:v16 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v19)
   {
-    objc_storeStrong(&v19->_appLibrary, a4);
-    objc_storeStrong(&v19->_rootItem, a3);
-    v20 = [v12 mangledID];
-    v21 = [BRCUserDefaults defaultsForMangledID:v20];
+    objc_storeStrong(&v19->_appLibrary, library);
+    objc_storeStrong(&v19->_rootItem, item);
+    mangledID = [libraryCopy mangledID];
+    v21 = [BRCUserDefaults defaultsForMangledID:mangledID];
     v19->_batchSize = [v21 pcsChainingBatchSize];
 
-    objc_storeStrong(&v19->_syncUpCallback, a6);
+    objc_storeStrong(&v19->_syncUpCallback, callback);
   }
 
   return v19;
 }
 
-- (BOOL)shouldRetryForError:(id)a3
+- (BOOL)shouldRetryForError:(id)error
 {
-  v4 = a3;
-  if ([v4 brc_isUserInitiatedRetriable])
+  errorCopy = error;
+  if ([errorCopy brc_isUserInitiatedRetriable])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(BRCServerItem *)self->_rootItem serverZone];
-    v7 = [v6 clientZone];
+    serverZone = [(BRCServerItem *)self->_rootItem serverZone];
+    clientZone = [serverZone clientZone];
 
-    if ([v4 brc_isRetriableForPCSChaining] && self->_tryCount <= 2 && (objc_msgSend(v7, "isSyncBlocked") & 1) == 0)
+    if ([errorCopy brc_isRetriableForPCSChaining] && self->_tryCount <= 2 && (objc_msgSend(clientZone, "isSyncBlocked") & 1) == 0)
     {
       v5 = 1;
       if (self->_canSyncDownBeforeRetry)
@@ -85,15 +85,15 @@
   return v2;
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_listOperation);
   pcsChainCompletionBlock = self->_pcsChainCompletionBlock;
   if (pcsChainCompletionBlock)
   {
-    pcsChainCompletionBlock[2](pcsChainCompletionBlock, [v6 BOOLValue], WeakRetained, self->_chainedRecordsCount, v7);
+    pcsChainCompletionBlock[2](pcsChainCompletionBlock, [resultCopy BOOLValue], WeakRetained, self->_chainedRecordsCount, errorCopy);
     v10 = self->_pcsChainCompletionBlock;
     self->_pcsChainCompletionBlock = 0;
   }
@@ -102,32 +102,32 @@
   objc_storeWeak(&self->_listOperation, 0);
   v11.receiver = self;
   v11.super_class = BRCPCSChainingOperation;
-  [(_BRCOperation *)&v11 finishWithResult:v6 error:v7];
+  [(_BRCOperation *)&v11 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)listOperation:(id)a3 wasReplacedByOperation:(id)a4
+- (void)listOperation:(id)operation wasReplacedByOperation:(id)byOperation
 {
-  obj = a4;
-  v6 = a3;
+  obj = byOperation;
+  operationCopy = operation;
   WeakRetained = objc_loadWeakRetained(&self->_listOperation);
 
-  if (WeakRetained == v6)
+  if (WeakRetained == operationCopy)
   {
     objc_storeWeak(&self->_listOperation, obj);
   }
 }
 
-- (void)_buildRecordListWithCompletion:(id)a3
+- (void)_buildRecordListWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BRCServerItem *)self->_rootItem itemID];
-  if ([v5 isDocumentsFolder])
+  completionCopy = completion;
+  itemID = [(BRCServerItem *)self->_rootItem itemID];
+  if ([itemID isDocumentsFolder])
   {
     goto LABEL_4;
   }
 
-  v6 = [(BRCServerItem *)self->_rootItem itemID];
-  if ([v6 isNonDesktopRoot])
+  itemID2 = [(BRCServerItem *)self->_rootItem itemID];
+  if ([itemID2 isNonDesktopRoot])
   {
 
 LABEL_4:
@@ -135,8 +135,8 @@ LABEL_4:
   }
 
   v16 = [(BRCServerItem *)self->_rootItem st];
-  v17 = [v16 logicalName];
-  v18 = [v17 isEqualToString:@".Trash"];
+  logicalName = [v16 logicalName];
+  v18 = [logicalName isEqualToString:@".Trash"];
 
   if ((v18 & 1) == 0)
   {
@@ -146,7 +146,7 @@ LABEL_4:
     v20[2] = __58__BRCPCSChainingOperation__buildRecordListWithCompletion___block_invoke;
     v20[3] = &unk_278505958;
     v20[4] = self;
-    v21 = v4;
+    v21 = completionCopy;
     [(BRCSessionContext *)sessionContext performAsyncOnClientReadWriteDatabaseWorkloop:v20];
 
     goto LABEL_8;
@@ -161,7 +161,7 @@ LABEL_5:
   }
 
   v15 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't PCS chain to documents, trash, or root"}];
-  (*(v4 + 2))(v4, 0, v15);
+  (*(completionCopy + 2))(completionCopy, 0, v15);
 
 LABEL_8:
 }
@@ -308,20 +308,20 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)_sendRecordBatch:(id)a3 recursed:(BOOL)a4 completion:(id)a5
+- (void)_sendRecordBatch:(id)batch recursed:(BOOL)recursed completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v21 = a5;
-  v20 = v8;
-  if ([v8 count])
+  batchCopy = batch;
+  completionCopy = completion;
+  v20 = batchCopy;
+  if ([batchCopy count])
   {
-    v19 = a4;
+    recursedCopy = recursed;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v8;
+    v9 = batchCopy;
     v10 = [v9 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v10)
     {
@@ -366,7 +366,7 @@ LABEL_33:
     v25[1] = 3221225472;
     v25[2] = __64__BRCPCSChainingOperation__sendRecordBatch_recursed_completion___block_invoke_194;
     v25[3] = &unk_278505980;
-    v28 = v19;
+    v28 = recursedCopy;
     v25[4] = self;
     v27 = v29;
     v26 = v9;
@@ -377,7 +377,7 @@ LABEL_33:
     v22[3] = &unk_2785059A8;
     v24 = v29;
     v22[4] = self;
-    v23 = v21;
+    v23 = completionCopy;
     [v16 setModifyRecordsCompletionBlock:v22];
     [(_BRCOperation *)self addSubOperation:v16];
 
@@ -386,13 +386,13 @@ LABEL_33:
 
   else
   {
-    v17 = [(_BRCOperation *)self callbackQueue];
+    callbackQueue = [(_BRCOperation *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__BRCPCSChainingOperation__sendRecordBatch_recursed_completion___block_invoke;
     block[3] = &unk_278501520;
-    v36 = v21;
-    dispatch_async(v17, block);
+    v36 = completionCopy;
+    dispatch_async(callbackQueue, block);
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -987,7 +987,7 @@ uint64_t __40__BRCPCSChainingOperation__chainRecords__block_invoke_210(uint64_t 
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v3;
       _os_log_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEFAULT, "[WARNING] Syncing down before retrying %@%@", buf, 0x16u);

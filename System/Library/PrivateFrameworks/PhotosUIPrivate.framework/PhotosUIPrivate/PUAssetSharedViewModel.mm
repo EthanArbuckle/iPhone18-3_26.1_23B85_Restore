@@ -1,162 +1,162 @@
 @interface PUAssetSharedViewModel
 - (PUAssetSharedViewModel)init;
-- (PUAssetSharedViewModel)initWithAsset:(id)a3;
+- (PUAssetSharedViewModel)initWithAsset:(id)asset;
 - (PUAssetSharedViewModelChange)currentChange;
-- (void)registerChangeObserver:(id)a3;
-- (void)setAsset:(id)a3;
-- (void)setDeferredProcessingNeeded:(unsigned __int16)a3;
-- (void)setFlippingFullSizeRenderState:(int64_t)a3;
-- (void)setLoadingStatus:(id)a3;
-- (void)setNeedsDeferredProcessing:(BOOL)a3;
-- (void)setSaveProgress:(id)a3;
-- (void)setSaveState:(int64_t)a3;
-- (void)unregisterChangeObserver:(id)a3;
+- (void)registerChangeObserver:(id)observer;
+- (void)setAsset:(id)asset;
+- (void)setDeferredProcessingNeeded:(unsigned __int16)needed;
+- (void)setFlippingFullSizeRenderState:(int64_t)state;
+- (void)setLoadingStatus:(id)status;
+- (void)setNeedsDeferredProcessing:(BOOL)processing;
+- (void)setSaveProgress:(id)progress;
+- (void)setSaveState:(int64_t)state;
+- (void)unregisterChangeObserver:(id)observer;
 @end
 
 @implementation PUAssetSharedViewModel
 
-- (void)setDeferredProcessingNeeded:(unsigned __int16)a3
+- (void)setDeferredProcessingNeeded:(unsigned __int16)needed
 {
-  if (self->_deferredProcessingNeeded != a3)
+  if (self->_deferredProcessingNeeded != needed)
   {
-    self->_deferredProcessingNeeded = a3;
-    v4 = [(PUAssetSharedViewModel *)self currentChange];
-    [v4 setDeferredProcessingNeededChanged:1];
+    self->_deferredProcessingNeeded = needed;
+    currentChange = [(PUAssetSharedViewModel *)self currentChange];
+    [currentChange setDeferredProcessingNeededChanged:1];
   }
 }
 
-- (void)setNeedsDeferredProcessing:(BOOL)a3
+- (void)setNeedsDeferredProcessing:(BOOL)processing
 {
-  if (self->_needsDeferredProcessing != a3)
+  if (self->_needsDeferredProcessing != processing)
   {
-    self->_needsDeferredProcessing = a3;
-    v4 = [(PUAssetSharedViewModel *)self currentChange];
-    [v4 setNeedsDeferredProcessingChanged:1];
+    self->_needsDeferredProcessing = processing;
+    currentChange = [(PUAssetSharedViewModel *)self currentChange];
+    [currentChange setNeedsDeferredProcessingChanged:1];
   }
 }
 
-- (void)setFlippingFullSizeRenderState:(int64_t)a3
+- (void)setFlippingFullSizeRenderState:(int64_t)state
 {
-  if (self->_flippingFullSizeRenderState != a3)
+  if (self->_flippingFullSizeRenderState != state)
   {
-    self->_flippingFullSizeRenderState = a3;
-    v4 = [(PUAssetSharedViewModel *)self currentChange];
-    [v4 setFlippingFullSizeRenderStateChanged:1];
+    self->_flippingFullSizeRenderState = state;
+    currentChange = [(PUAssetSharedViewModel *)self currentChange];
+    [currentChange setFlippingFullSizeRenderStateChanged:1];
   }
 }
 
-- (void)setSaveState:(int64_t)a3
+- (void)setSaveState:(int64_t)state
 {
-  if (self->_saveState != a3)
+  if (self->_saveState != state)
   {
-    self->_saveState = a3;
-    v4 = [(PUAssetSharedViewModel *)self currentChange];
-    [v4 setSaveStateChanged:1];
+    self->_saveState = state;
+    currentChange = [(PUAssetSharedViewModel *)self currentChange];
+    [currentChange setSaveStateChanged:1];
   }
 }
 
-- (void)setSaveProgress:(id)a3
+- (void)setSaveProgress:(id)progress
 {
-  v5 = a3;
-  if (self->_saveProgress != v5)
+  progressCopy = progress;
+  if (self->_saveProgress != progressCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_saveProgress, a3);
-    v6 = [(PUAssetSharedViewModel *)self currentChange];
-    [v6 setSaveProgressChanged:1];
+    v7 = progressCopy;
+    objc_storeStrong(&self->_saveProgress, progress);
+    currentChange = [(PUAssetSharedViewModel *)self currentChange];
+    [currentChange setSaveProgressChanged:1];
 
-    v5 = v7;
+    progressCopy = v7;
   }
 }
 
-- (void)setLoadingStatus:(id)a3
+- (void)setLoadingStatus:(id)status
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_loadingStatus != v4)
+  statusCopy = status;
+  v5 = statusCopy;
+  if (self->_loadingStatus != statusCopy)
   {
-    v9 = v4;
-    v4 = [v4 isEqual:?];
+    v9 = statusCopy;
+    statusCopy = [statusCopy isEqual:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((statusCopy & 1) == 0)
     {
       v6 = [v9 copy];
       loadingStatus = self->_loadingStatus;
       self->_loadingStatus = v6;
 
-      v8 = [(PUAssetSharedViewModel *)self currentChange];
-      [v8 setLoadingStatusChanged:1];
+      currentChange = [(PUAssetSharedViewModel *)self currentChange];
+      [currentChange setLoadingStatusChanged:1];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](statusCopy, v5);
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v8 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(PUDisplayAsset *)v8 needsDeferredProcessing];
+      needsDeferredProcessing = [(PUDisplayAsset *)v8 needsDeferredProcessing];
     }
 
     else
     {
-      v6 = 0;
+      needsDeferredProcessing = 0;
     }
 
-    [(PUAssetSharedViewModel *)self setNeedsDeferredProcessing:v6];
+    [(PUAssetSharedViewModel *)self setNeedsDeferredProcessing:needsDeferredProcessing];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [(PUDisplayAsset *)v8 deferredProcessingNeeded];
+      deferredProcessingNeeded = [(PUDisplayAsset *)v8 deferredProcessingNeeded];
     }
 
     else
     {
-      v7 = 0;
+      deferredProcessingNeeded = 0;
     }
 
-    [(PUAssetSharedViewModel *)self setDeferredProcessingNeeded:v7];
-    v5 = v8;
+    [(PUAssetSharedViewModel *)self setDeferredProcessingNeeded:deferredProcessingNeeded];
+    assetCopy = v8;
   }
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUAssetSharedViewModel;
-  [(PUViewModel *)&v3 unregisterChangeObserver:a3];
+  [(PUViewModel *)&v3 unregisterChangeObserver:observer];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
   v3.receiver = self;
   v3.super_class = PUAssetSharedViewModel;
-  [(PUViewModel *)&v3 registerChangeObserver:a3];
+  [(PUViewModel *)&v3 registerChangeObserver:observer];
 }
 
 - (PUAssetSharedViewModelChange)currentChange
 {
   v4.receiver = self;
   v4.super_class = PUAssetSharedViewModel;
-  v2 = [(PUViewModel *)&v4 currentChange];
+  currentChange = [(PUViewModel *)&v4 currentChange];
 
-  return v2;
+  return currentChange;
 }
 
-- (PUAssetSharedViewModel)initWithAsset:(id)a3
+- (PUAssetSharedViewModel)initWithAsset:(id)asset
 {
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PUAssetSharedViewModel.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetSharedViewModel.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
   v13.receiver = self;
@@ -165,29 +165,29 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_asset, a3);
+    objc_storeStrong(&v7->_asset, asset);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 needsDeferredProcessing];
+      needsDeferredProcessing = [assetCopy needsDeferredProcessing];
     }
 
     else
     {
-      v9 = 0;
+      needsDeferredProcessing = 0;
     }
 
-    v8->_needsDeferredProcessing = v9;
+    v8->_needsDeferredProcessing = needsDeferredProcessing;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v6 deferredProcessingNeeded];
+      deferredProcessingNeeded = [assetCopy deferredProcessingNeeded];
     }
 
     else
     {
-      v10 = 0;
+      deferredProcessingNeeded = 0;
     }
 
-    v8->_deferredProcessingNeeded = v10;
+    v8->_deferredProcessingNeeded = deferredProcessingNeeded;
   }
 
   return v8;
@@ -195,8 +195,8 @@
 
 - (PUAssetSharedViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAssetSharedViewModel.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PUAssetSharedViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetSharedViewModel.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PUAssetSharedViewModel init]"}];
 
   abort();
 }

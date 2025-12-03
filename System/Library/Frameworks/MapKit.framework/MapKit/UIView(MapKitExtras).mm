@@ -10,35 +10,35 @@
 
 - (id)_mapkit_findNearestViewController
 {
-  v1 = a1;
+  selfCopy = self;
   while (1)
   {
-    v2 = [MEMORY[0x1E69DD258] viewControllerForView:v1];
+    v2 = [MEMORY[0x1E69DD258] viewControllerForView:selfCopy];
     if (v2)
     {
       v4 = v2;
       goto LABEL_8;
     }
 
-    v3 = [v1 superview];
+    superview = [selfCopy superview];
 
-    if (!v3)
+    if (!superview)
     {
       break;
     }
 
     objc_opt_class();
-    v1 = v3;
+    selfCopy = superview;
     if (objc_opt_isKindOfClass())
     {
       v4 = 0;
-      v1 = v3;
+      selfCopy = superview;
       goto LABEL_8;
     }
   }
 
   v4 = 0;
-  v1 = 0;
+  selfCopy = 0;
 LABEL_8:
 
   return v4;
@@ -46,18 +46,18 @@ LABEL_8:
 
 - (double)_mapkit_doubleFrame
 {
-  v1 = [a1 layer];
-  [v1 doubleBounds];
+  layer = [self layer];
+  [layer doubleBounds];
   v3 = v2;
   v5 = v4;
   v7 = v6;
   v9 = v8;
-  v10 = [v1 superlayer];
+  superlayer = [layer superlayer];
 
-  if (v10)
+  if (superlayer)
   {
-    v11 = [v1 superlayer];
-    [v1 convertDoubleRect:v11 toLayer:{v3, v5, v7, v9}];
+    superlayer2 = [layer superlayer];
+    [layer convertDoubleRect:superlayer2 toLayer:{v3, v5, v7, v9}];
     v3 = v12;
   }
 
@@ -86,10 +86,10 @@ LABEL_8:
 
 - (id)_mapKit_mapView
 {
-  v1 = [a1 layer];
-  v2 = [v1 _mapKit_mapLayer];
+  layer = [self layer];
+  _mapKit_mapLayer = [layer _mapKit_mapLayer];
 
-  if (v2)
+  if (_mapKit_mapLayer)
   {
     Delegate = CALayerGetDelegate();
     if (Delegate)
@@ -129,20 +129,20 @@ LABEL_8:
 
 - (id)_mapkit_currentLayer
 {
-  v2 = [a1 layer];
-  v3 = [v2 presentationLayer];
+  layer = [self layer];
+  presentationLayer = [layer presentationLayer];
 
-  if (v3)
+  if (presentationLayer)
   {
-    v4 = v3;
+    layer2 = presentationLayer;
   }
 
   else
   {
-    v4 = [a1 layer];
+    layer2 = [self layer];
   }
 
-  v5 = v4;
+  v5 = layer2;
 
   return v5;
 }

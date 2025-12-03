@@ -1,18 +1,18 @@
 @interface PSSpecifier
-+ (void)updateSpecifiers:(id)a3 withTarget:(id)a4;
++ (void)updateSpecifiers:(id)specifiers withTarget:(id)target;
 @end
 
 @implementation PSSpecifier
 
-+ (void)updateSpecifiers:(id)a3 withTarget:(id)a4
++ (void)updateSpecifiers:(id)specifiers withTarget:(id)target
 {
-  v5 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  targetCopy = target;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v5;
+  v7 = specifiersCopy;
   v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -27,7 +27,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) setTarget:{v6, v11}];
+        [*(*(&v11 + 1) + 8 * v10) setTarget:{targetCopy, v11}];
         v10 = v10 + 1;
       }
 

@@ -7,9 +7,9 @@
 - (BOOL)isCloudKeychainSyncAllowed
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 isCloudKeychainSyncAllowed];
+  isCloudKeychainSyncAllowed = [v2 isCloudKeychainSyncAllowed];
 
-  return v3;
+  return isCloudKeychainSyncAllowed;
 }
 
 @end

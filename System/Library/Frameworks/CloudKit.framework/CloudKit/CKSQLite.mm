@@ -1,57 +1,57 @@
 @interface CKSQLite
-+ (id)equalityClauseAndBindingsForDict:(id)a3;
-- (BOOL)deleteExactObject:(id)a3;
++ (id)equalityClauseAndBindingsForDict:(id)dict;
+- (BOOL)deleteExactObject:(id)object;
 - (BOOL)isCorrupt;
-- (BOOL)openWithError:(id *)a3;
+- (BOOL)openWithError:(id *)error;
 - (BOOL)remove;
-- (CKSQLite)initWithPath:(id)a3 schema:(id)a4;
-- (id)_boxedPropertyDictionary:(id)a3 forObjCClass:(id)a4;
-- (id)_boxedValue:(id)a3 forObjcCProperty:(id)a4;
-- (id)_performDatabaseOperation_locked:(id)a3 withErrorHandler:(id)a4;
+- (CKSQLite)initWithPath:(id)path schema:(id)schema;
+- (id)_boxedPropertyDictionary:(id)dictionary forObjCClass:(id)class;
+- (id)_boxedValue:(id)value forObjcCProperty:(id)property;
+- (id)_performDatabaseOperation_locked:(id)operation_locked withErrorHandler:(id)handler;
 - (id)_prepareDatabase;
-- (id)_tableNameForClass:(Class)a3;
+- (id)_tableNameForClass:(Class)class;
 - (id)allTableNames;
-- (id)columnNamesForTable:(id)a3;
+- (id)columnNamesForTable:(id)table;
 - (id)creationDate;
-- (id)datePropertyForKey:(id)a3;
-- (id)handleDatabaseError:(id)a3;
-- (id)handleDatabaseError:(id)a3 args:(char *)a4;
-- (id)handleError:(id)a3;
-- (id)performDatabaseOperation:(id)a3 withErrorHandler:(id)a4;
-- (id)propertyForKey:(id)a3;
-- (id)select:(id)a3 from:(id)a4 where:(id)a5 bindings:(id)a6 orderBy:(id)a7 limit:(id)a8;
-- (id)selectAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5 limit:(id)a6;
-- (id)selectObjectOfClass:(Class)a3 where:(id)a4 bindings:(id)a5;
-- (id)sqlErrorWithMessage:(id)a3;
+- (id)datePropertyForKey:(id)key;
+- (id)handleDatabaseError:(id)error;
+- (id)handleDatabaseError:(id)error args:(char *)args;
+- (id)handleError:(id)error;
+- (id)performDatabaseOperation:(id)operation withErrorHandler:(id)handler;
+- (id)propertyForKey:(id)key;
+- (id)select:(id)select from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit;
+- (id)selectAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings limit:(id)limit;
+- (id)selectObjectOfClass:(Class)class where:(id)where bindings:(id)bindings;
+- (id)sqlErrorWithMessage:(id)message;
 - (int)changes;
 - (int)dbUserVersion;
-- (int)deleteAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5;
+- (int)deleteAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings;
 - (int)userVersion;
-- (int64_t)insertOrReplaceInto:(id)a3 values:(id)a4;
-- (int64_t)insertOrReplaceObject:(id)a3;
+- (int64_t)insertOrReplaceInto:(id)into values:(id)values;
+- (int64_t)insertOrReplaceObject:(id)object;
 - (int64_t)lastInsertRowID;
-- (int64_t)selectCountFrom:(id)a3 where:(id)a4 bindings:(id)a5;
-- (int64_t)upsertInto:(id)a3 values:(id)a4 onConflict:(id)a5 doUpdate:(id)a6 where:(id)a7;
+- (int64_t)selectCountFrom:(id)from where:(id)where bindings:(id)bindings;
+- (int64_t)upsertInto:(id)into values:(id)values onConflict:(id)conflict doUpdate:(id)update where:(id)where;
 - (void)_dropAllTables;
 - (void)_forceClosed_locked;
 - (void)_forceClosed_unlocked;
-- (void)_recursiveOperationLock:(id)a3;
-- (void)assertInOperation:(SEL)a3;
+- (void)_recursiveOperationLock:(id)lock;
+- (void)assertInOperation:(SEL)operation;
 - (void)close;
 - (void)dealloc;
-- (void)deleteFrom:(id)a3 matchingValues:(id)a4;
-- (void)deleteFrom:(id)a3 where:(id)a4 bindings:(id)a5;
-- (void)executeSQL:(id)a3 arguments:(char *)a4;
+- (void)deleteFrom:(id)from matchingValues:(id)values;
+- (void)deleteFrom:(id)from where:(id)where bindings:(id)bindings;
+- (void)executeSQL:(id)l arguments:(char *)arguments;
 - (void)markCorrupt;
-- (void)removePropertyForKey:(id)a3;
-- (void)select:(id)a3 from:(id)a4 where:(id)a5 bindings:(id)a6 orderBy:(id)a7 limit:(id)a8 offset:(id)a9 block:(id)a10;
-- (void)selectAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5 orderBy:(id)a6 limit:(id)a7 block:(id)a8;
-- (void)setDateProperty:(id)a3 forKey:(id)a4;
-- (void)setProperty:(id)a3 forKey:(id)a4;
-- (void)setTraced:(BOOL)a3;
-- (void)update:(id)a3 set:(id)a4 where:(id)a5 bindings:(id)a6 limit:(id)a7;
-- (void)updateAllObjectsOfClass:(Class)a3 set:(id)a4 where:(id)a5 bindings:(id)a6;
-- (void)usingStatementForSQL:(id)a3 performBlock:(id)a4;
+- (void)removePropertyForKey:(id)key;
+- (void)select:(id)select from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit offset:(id)offset block:(id)self0;
+- (void)selectAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit block:(id)block;
+- (void)setDateProperty:(id)property forKey:(id)key;
+- (void)setProperty:(id)property forKey:(id)key;
+- (void)setTraced:(BOOL)traced;
+- (void)update:(id)update set:(id)set where:(id)where bindings:(id)bindings limit:(id)limit;
+- (void)updateAllObjectsOfClass:(Class)class set:(id)set where:(id)where bindings:(id)bindings;
+- (void)usingStatementForSQL:(id)l performBlock:(id)block;
 - (void)vacuum;
 @end
 
@@ -68,28 +68,28 @@
   return result;
 }
 
-- (CKSQLite)initWithPath:(id)a3 schema:(id)a4
+- (CKSQLite)initWithPath:(id)path schema:(id)schema
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  schemaCopy = schema;
   v38.receiver = self;
   v38.super_class = CKSQLite;
   v11 = [(CKSQLite *)&v38 init];
   if (v11)
   {
-    if (!objc_msgSend_length(v7, v9, v10))
+    if (!objc_msgSend_length(pathCopy, v9, v10))
     {
       v36 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v12, v13);
       objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v36, v37, a2, v11, @"CKSQLite.m", 97, @"Can't init a database with a zero-length path");
     }
 
     v11->_operationLock._os_unfair_lock_opaque = 0;
-    v14 = objc_msgSend_copy(v7, v12, v13);
+    v14 = objc_msgSend_copy(pathCopy, v12, v13);
     path = v11->_path;
     v11->_path = v14;
 
-    objc_storeStrong(&v11->_schema, a4);
+    objc_storeStrong(&v11->_schema, schema);
     *md = 0u;
     v40 = 0u;
     v17 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x1E695DEF0], v16, md, 32, 0);
@@ -124,7 +124,7 @@
   [(CKSQLite *)&v6 dealloc];
 }
 
-- (void)assertInOperation:(SEL)a3
+- (void)assertInOperation:(SEL)operation
 {
   os_unfair_lock_assert_owner(&self->_operationLock);
   operationThread = self->_operationThread;
@@ -145,11 +145,11 @@
   }
 }
 
-- (id)sqlErrorWithMessage:(id)a3
+- (id)sqlErrorWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v7 = objc_msgSend_db(self, v5, v6);
-  v9 = objc_msgSend_errorForSQLite_message_args_(CKPrettyError, v8, v7, v4, &v12);
+  v9 = objc_msgSend_errorForSQLite_message_args_(CKPrettyError, v8, v7, messageCopy, &v12);
 
   return v9;
 }
@@ -264,10 +264,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)_performDatabaseOperation_locked:(id)a3 withErrorHandler:(id)a4
+- (id)_performDatabaseOperation_locked:(id)operation_locked withErrorHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  operation_lockedCopy = operation_locked;
+  handlerCopy = handler;
   objc_msgSend_assertInOperation_(self, v9, a2);
   if (objc_msgSend_invalid(self, v10, v11))
   {
@@ -275,7 +275,7 @@ LABEL_11:
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CKSQLite.m", 203, @"expected a valid instance");
   }
 
-  v14 = _Block_copy(v8);
+  v14 = _Block_copy(handlerCopy);
   errorHandlerBlock = self->_errorHandlerBlock;
   self->_errorHandlerBlock = v14;
 
@@ -297,7 +297,7 @@ LABEL_11:
     v28[2] = sub_188666578;
     v28[3] = &unk_1E70C04D0;
     v28[4] = self;
-    v7[2](v7, self, v28);
+    operation_lockedCopy[2](operation_lockedCopy, self, v28);
     v20 = self->_error;
     if (self->_cancelled || objc_msgSend_invalid(self, v21, v22))
     {
@@ -319,13 +319,13 @@ LABEL_11:
   return v20;
 }
 
-- (void)_recursiveOperationLock:(id)a3
+- (void)_recursiveOperationLock:(id)lock
 {
-  v6 = a3;
+  lockCopy = lock;
   v4 = pthread_self();
   if (self->_operationThread == v4)
   {
-    v6[2](v6, 0);
+    lockCopy[2](lockCopy, 0);
   }
 
   else
@@ -333,25 +333,25 @@ LABEL_11:
     v5 = v4;
     os_unfair_lock_lock(&self->_operationLock);
     self->_operationThread = v5;
-    v6[2](v6, 1);
+    lockCopy[2](lockCopy, 1);
     self->_operationThread = 0;
     os_unfair_lock_unlock(&self->_operationLock);
   }
 }
 
-- (id)performDatabaseOperation:(id)a3 withErrorHandler:(id)a4
+- (id)performDatabaseOperation:(id)operation withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
   v34 = sub_1883EE1CC;
   v35 = sub_1883EF78C;
   v36 = 0;
-  if (v7)
+  if (handlerCopy)
   {
-    v10 = v7;
+    v10 = handlerCopy;
   }
 
   else
@@ -382,7 +382,7 @@ LABEL_11:
     v20[3] = &unk_1E70C0518;
     v20[4] = self;
     v23 = &v31;
-    v21 = v6;
+    v21 = operationCopy;
     v22 = v10;
     v24 = &v25;
     objc_msgSend__recursiveOperationLock_(self, v16, v20);
@@ -401,17 +401,17 @@ LABEL_11:
   return v18;
 }
 
-- (id)handleError:(id)a3
+- (id)handleError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   objc_msgSend_assertInOperation_(self, v7, a2);
   if (objc_msgSend_invalid(self, v8, v9))
   {
-    v11 = v6;
+    v11 = errorCopy;
     goto LABEL_20;
   }
 
-  v14 = objc_msgSend_CKIsCorruptDatabaseError_(MEMORY[0x1E696ABC0], v10, v6);
+  v14 = objc_msgSend_CKIsCorruptDatabaseError_(MEMORY[0x1E696ABC0], v10, errorCopy);
   errorHandlerBlock = self->_errorHandlerBlock;
   if (!errorHandlerBlock)
   {
@@ -421,11 +421,11 @@ LABEL_11:
       objc_msgSend_remove(self, v21, v22);
     }
 
-    objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v12, *MEMORY[0x1E695D920], @"%@", v6);
+    objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v12, *MEMORY[0x1E695D920], @"%@", errorCopy);
     goto LABEL_19;
   }
 
-  v16 = errorHandlerBlock[2](errorHandlerBlock, v6);
+  v16 = errorHandlerBlock[2](errorHandlerBlock, errorCopy);
   v17 = 3;
   if (v16 > 3)
   {
@@ -453,14 +453,14 @@ LABEL_19:
   self->_cancelled = 1;
   if (!error)
   {
-    objc_storeStrong(&self->_error, a3);
+    objc_storeStrong(&self->_error, error);
   }
 
-  v11 = v6;
+  v11 = errorCopy;
   if (v18 != 1)
   {
     objc_msgSend_setInvalid_(self, v20, 1);
-    objc_storeStrong(&self->_invalidationError, a3);
+    objc_storeStrong(&self->_invalidationError, error);
     if (v18 >= 3)
     {
       self->_needsMarkCorrupt = 1;
@@ -476,20 +476,20 @@ LABEL_20:
   return v11;
 }
 
-- (id)handleDatabaseError:(id)a3 args:(char *)a4
+- (id)handleDatabaseError:(id)error args:(char *)args
 {
-  v6 = a3;
+  errorCopy = error;
   v9 = objc_msgSend_db(self, v7, v8);
-  v11 = objc_msgSend_errorForSQLite_message_args_(CKPrettyError, v10, v9, v6, a4);
+  v11 = objc_msgSend_errorForSQLite_message_args_(CKPrettyError, v10, v9, errorCopy, args);
 
   v13 = objc_msgSend_handleError_(self, v12, v11);
 
   return v13;
 }
 
-- (id)handleDatabaseError:(id)a3
+- (id)handleDatabaseError:(id)error
 {
-  v3 = objc_msgSend_handleDatabaseError_args_(self, a2, a3, &v6);
+  v3 = objc_msgSend_handleDatabaseError_args_(self, a2, error, &v6);
 
   return v3;
 }
@@ -506,7 +506,7 @@ LABEL_20:
   return v2;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -523,9 +523,9 @@ LABEL_20:
   v7[4] = self;
   objc_msgSend__recursiveOperationLock_(self, a2, v7);
   v4 = v9[5];
-  if (a3 && v4)
+  if (error && v4)
   {
-    *a3 = v4;
+    *error = v4;
     v4 = v9[5];
   }
 
@@ -554,7 +554,7 @@ LABEL_20:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412290;
-        v15 = v5;
+        selfCopy = v5;
         _os_log_error_impl(&dword_1883EA000, v6, OS_LOG_TYPE_ERROR, "Error closing database: %@", &v14, 0xCu);
       }
     }
@@ -573,7 +573,7 @@ LABEL_20:
       v10 = v7;
       v13 = objc_msgSend_CKSanitizedPath(path, v11, v12);
       v14 = 134218242;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
       v17 = v13;
       _os_log_debug_impl(&dword_1883EA000, v10, OS_LOG_TYPE_DEBUG, "Closed db (%p) at %@", &v14, 0x16u);
@@ -630,14 +630,14 @@ LABEL_20:
   return v2;
 }
 
-- (void)setTraced:(BOOL)a3
+- (void)setTraced:(BOOL)traced
 {
-  v3 = a3;
+  tracedCopy = traced;
   os_unfair_lock_lock(&self->_operationLock);
   db = self->_db;
   if (db)
   {
-    if (v3)
+    if (tracedCopy)
     {
       v6 = sub_188668260;
       v7 = 9;
@@ -652,7 +652,7 @@ LABEL_20:
     sqlite3_trace_v2(db, v7, v6, self);
   }
 
-  self->_traced = v3;
+  self->_traced = tracedCopy;
 
   os_unfair_lock_unlock(&self->_operationLock);
 }
@@ -670,14 +670,14 @@ LABEL_20:
   return db;
 }
 
-- (void)executeSQL:(id)a3 arguments:(char *)a4
+- (void)executeSQL:(id)l arguments:(char *)arguments
 {
-  v22 = a3;
+  lCopy = l;
   objc_msgSend_assertInOperation_(self, v7, a2);
   if ((objc_msgSend_invalid(self, v8, v9) & 1) == 0)
   {
     v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v12 = objc_msgSend_initWithFormat_arguments_(v10, v11, v22, a4);
+    v12 = objc_msgSend_initWithFormat_arguments_(v10, v11, lCopy, arguments);
     db = self->_db;
     v16 = objc_msgSend_UTF8String(v12, v14, v15);
     v17 = sqlite3_exec(db, v16, 0, 0, 0);
@@ -689,13 +689,13 @@ LABEL_20:
   }
 }
 
-- (void)usingStatementForSQL:(id)a3 performBlock:(id)a4
+- (void)usingStatementForSQL:(id)l performBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  blockCopy = block;
   objc_msgSend_assertInOperation_(self, v9, a2);
   ppStmt = 0;
-  v10 = v7;
+  v10 = lCopy;
   db = self->_db;
   v14 = objc_msgSend_UTF8String(v10, v12, v13);
   if (sqlite3_prepare_v2(db, v14, -1, &ppStmt, 0))
@@ -712,7 +712,7 @@ LABEL_20:
     v19 = sub_1886805D4(&v20->super.isa, self, v10, ppStmt);
   }
 
-  v8[2](v8, v19);
+  blockCopy[2](blockCopy, v19);
 
   sub_18840103C(v19);
 }
@@ -752,10 +752,10 @@ LABEL_20:
   v2 = objc_msgSend_performDatabaseOperation_withErrorHandler_(self, a2, v3, &unk_1EFA2FE88);
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v7 = a3;
-  if (!v7)
+  keyCopy = key;
+  if (!keyCopy)
   {
     v13 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v13, v14, a2, self, @"CKSQLite.m", 665, @"Null key");
@@ -771,7 +771,7 @@ LABEL_20:
   v15[1] = 3221225472;
   v15[2] = sub_188668C44;
   v15[3] = &unk_1E70C0658;
-  v8 = v7;
+  v8 = keyCopy;
   v16 = v8;
   v17 = &v18;
   v10 = objc_msgSend_performDatabaseOperation_(self, v9, v15);
@@ -782,27 +782,27 @@ LABEL_20:
   return v11;
 }
 
-- (void)setProperty:(id)a3 forKey:(id)a4
+- (void)setProperty:(id)property forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  v11 = v8;
-  if (v8)
+  propertyCopy = property;
+  keyCopy = key;
+  v11 = keyCopy;
+  if (keyCopy)
   {
-    if (v7)
+    if (propertyCopy)
     {
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = sub_188668E84;
       v16[3] = &unk_1E70C06A8;
-      v17 = v8;
-      v18 = v7;
+      v17 = keyCopy;
+      v18 = propertyCopy;
       v13 = objc_msgSend_performDatabaseOperation_(self, v12, v16);
     }
 
     else
     {
-      objc_msgSend_removePropertyForKey_(self, v9, v8);
+      objc_msgSend_removePropertyForKey_(self, v9, keyCopy);
     }
   }
 
@@ -813,9 +813,9 @@ LABEL_20:
   }
 }
 
-- (id)datePropertyForKey:(id)a3
+- (id)datePropertyForKey:(id)key
 {
-  v3 = objc_msgSend_propertyForKey_(self, a2, a3);
+  v3 = objc_msgSend_propertyForKey_(self, a2, key);
   if (objc_msgSend_length(v3, v4, v5))
   {
     v6 = objc_opt_new();
@@ -831,31 +831,31 @@ LABEL_20:
   return v9;
 }
 
-- (void)setDateProperty:(id)a3 forKey:(id)a4
+- (void)setDateProperty:(id)property forKey:(id)key
 {
-  v11 = a4;
-  if (a3)
+  keyCopy = key;
+  if (property)
   {
-    v7 = a3;
+    propertyCopy = property;
     v8 = objc_opt_new();
     objc_msgSend_setDateFormat_(v8, v9, @"yyyy-MM-dd'T'HH:mm:ssZZZZZ");
-    a3 = objc_msgSend_stringFromDate_(v8, v10, v7);
+    property = objc_msgSend_stringFromDate_(v8, v10, propertyCopy);
   }
 
-  objc_msgSend_setProperty_forKey_(self, v6, a3, v11);
+  objc_msgSend_setProperty_forKey_(self, v6, property, keyCopy);
 }
 
-- (void)removePropertyForKey:(id)a3
+- (void)removePropertyForKey:(id)key
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  keyCopy = key;
+  v8 = keyCopy;
+  if (keyCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1886691BC;
     v13[3] = &unk_1E70C0540;
-    v14 = v5;
+    v14 = keyCopy;
     v10 = objc_msgSend_performDatabaseOperation_(self, v9, v13);
   }
 
@@ -885,18 +885,18 @@ LABEL_20:
   return v10;
 }
 
-- (id)columnNamesForTable:(id)a3
+- (id)columnNamesForTable:(id)table
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tableCopy = table;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1886694C8;
   v14[3] = &unk_1E70C06F8;
-  v6 = v4;
+  v6 = tableCopy;
   v15 = v6;
-  v16 = self;
+  selfCopy = self;
   v7 = v5;
   v17 = v7;
   v9 = objc_msgSend_performDatabaseOperation_(self, v8, v14);
@@ -926,11 +926,11 @@ LABEL_20:
   return v7;
 }
 
-+ (id)equalityClauseAndBindingsForDict:(id)a3
++ (id)equalityClauseAndBindingsForDict:(id)dict
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  dictCopy = dict;
+  if (objc_msgSend_count(dictCopy, v4, v5))
   {
     v6 = objc_opt_new();
     v7 = objc_opt_new();
@@ -938,8 +938,8 @@ LABEL_20:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v28 = v3;
-    v8 = v3;
+    v28 = dictCopy;
+    v8 = dictCopy;
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v29, v33, 16);
     if (v10)
     {
@@ -978,7 +978,7 @@ LABEL_20:
     v21 = [CKTuple2 alloc];
     v23 = objc_msgSend_initWithObject1_object2_(v21, v22, v6, v7);
 
-    v3 = v28;
+    dictCopy = v28;
   }
 
   else
@@ -992,21 +992,21 @@ LABEL_20:
   return v23;
 }
 
-- (void)select:(id)a3 from:(id)a4 where:(id)a5 bindings:(id)a6 orderBy:(id)a7 limit:(id)a8 offset:(id)a9 block:(id)a10
+- (void)select:(id)select from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit offset:(id)offset block:(id)self0
 {
-  v17 = a3;
-  v45 = a4;
-  v18 = a5;
-  v44 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  selectCopy = select;
+  fromCopy = from;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  byCopy = by;
+  limitCopy = limit;
+  offsetCopy = offset;
+  blockCopy = block;
   objc_msgSend_assertInOperation_(self, v23, a2);
   v24 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if (objc_msgSend_count(v17, v25, v26))
+  if (objc_msgSend_count(selectCopy, v25, v26))
   {
-    v28 = objc_msgSend_componentsJoinedByString_(v17, v27, @", ");
+    v28 = objc_msgSend_componentsJoinedByString_(selectCopy, v27, @", ");
   }
 
   else
@@ -1014,25 +1014,25 @@ LABEL_20:
     v28 = @"*";
   }
 
-  objc_msgSend_appendFormat_(v24, v27, @"select %@ from %@", v28, v45);
-  if (objc_msgSend_length(v18, v29, v30))
+  objc_msgSend_appendFormat_(v24, v27, @"select %@ from %@", v28, fromCopy);
+  if (objc_msgSend_length(whereCopy, v29, v30))
   {
-    objc_msgSend_appendFormat_(v24, v31, @" where %@", v18);
+    objc_msgSend_appendFormat_(v24, v31, @" where %@", whereCopy);
   }
 
-  if (v19)
+  if (byCopy)
   {
-    v33 = objc_msgSend_componentsJoinedByString_(v19, v31, @", ");
+    v33 = objc_msgSend_componentsJoinedByString_(byCopy, v31, @", ");
     objc_msgSend_appendFormat_(v24, v34, @" order by %@", v33);
   }
 
-  if (v20)
+  if (limitCopy)
   {
-    v35 = objc_msgSend_longValue(v20, v31, v32);
+    v35 = objc_msgSend_longValue(limitCopy, v31, v32);
     objc_msgSend_appendFormat_(v24, v36, @" limit %ld", v35);
-    if (v21)
+    if (offsetCopy)
     {
-      v39 = objc_msgSend_longValue(v21, v37, v38);
+      v39 = objc_msgSend_longValue(offsetCopy, v37, v38);
       objc_msgSend_appendFormat_(v24, v40, @" offset %ld", v39);
     }
   }
@@ -1041,21 +1041,21 @@ LABEL_20:
   v46[1] = 3221225472;
   v46[2] = sub_188669A80;
   v46[3] = &unk_1E70C0720;
-  v47 = v44;
-  v48 = v22;
-  v41 = v22;
-  v42 = v44;
+  v47 = bindingsCopy;
+  v48 = blockCopy;
+  v41 = blockCopy;
+  v42 = bindingsCopy;
   objc_msgSend_usingStatementForSQL_performBlock_(self, v43, v24, v46);
 }
 
-- (id)select:(id)a3 from:(id)a4 where:(id)a5 bindings:(id)a6 orderBy:(id)a7 limit:(id)a8
+- (id)select:(id)select from:(id)from where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  selectCopy = select;
+  fromCopy = from;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  byCopy = by;
+  limitCopy = limit;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -1066,15 +1066,15 @@ LABEL_20:
   v29[1] = 3221225472;
   v29[2] = sub_188669D9C;
   v29[3] = &unk_1E70C0770;
-  v20 = v14;
+  v20 = selectCopy;
   v30 = v20;
-  v21 = v15;
+  v21 = fromCopy;
   v31 = v21;
-  v22 = v16;
+  v22 = whereCopy;
   v32 = v22;
-  v23 = v17;
+  v23 = bindingsCopy;
   v33 = v23;
-  v24 = v18;
+  v24 = byCopy;
   v34 = v24;
   v35 = &v36;
   v26 = objc_msgSend_performDatabaseOperation_(self, v25, v29);
@@ -1085,32 +1085,32 @@ LABEL_20:
   return v27;
 }
 
-- (void)update:(id)a3 set:(id)a4 where:(id)a5 bindings:(id)a6 limit:(id)a7
+- (void)update:(id)update set:(id)set where:(id)where bindings:(id)bindings limit:(id)limit
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a3;
+  setCopy = set;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  limitCopy = limit;
+  updateCopy = update;
   objc_msgSend_assertInOperation_(self, v18, a2);
   v19 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  objc_msgSend_appendFormat_(v19, v20, @"update %@", v17);
+  objc_msgSend_appendFormat_(v19, v20, @"update %@", updateCopy);
 
-  if (!objc_msgSend_length(v13, v21, v22))
+  if (!objc_msgSend_length(setCopy, v21, v22))
   {
     v33 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v23, v24);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v34, a2, self, @"CKSQLite.m", 863, @"null set expression");
   }
 
-  objc_msgSend_appendFormat_(v19, v23, @" set %@", v13);
-  if (objc_msgSend_length(v14, v25, v26))
+  objc_msgSend_appendFormat_(v19, v23, @" set %@", setCopy);
+  if (objc_msgSend_length(whereCopy, v25, v26))
   {
-    objc_msgSend_appendFormat_(v19, v27, @" where %@", v14);
+    objc_msgSend_appendFormat_(v19, v27, @" where %@", whereCopy);
   }
 
-  if (v16)
+  if (limitCopy)
   {
-    v29 = objc_msgSend_integerValue(v16, v27, v28);
+    v29 = objc_msgSend_integerValue(limitCopy, v27, v28);
     objc_msgSend_appendFormat_(v19, v30, @" limit %ld", v29);
   }
 
@@ -1118,14 +1118,14 @@ LABEL_20:
   v35[1] = 3221225472;
   v35[2] = sub_18866A110;
   v35[3] = &unk_1E70C06D0;
-  v36 = v15;
-  v31 = v15;
+  v36 = bindingsCopy;
+  v31 = bindingsCopy;
   objc_msgSend_usingStatementForSQL_performBlock_(self, v32, v19, v35);
 }
 
-- (int64_t)selectCountFrom:(id)a3 where:(id)a4 bindings:(id)a5
+- (int64_t)selectCountFrom:(id)from where:(id)where bindings:(id)bindings
 {
-  v5 = objc_msgSend_select_from_where_bindings_(self, a2, &unk_1EFA85B90, a3, a4, a5);
+  v5 = objc_msgSend_select_from_where_bindings_(self, a2, &unk_1EFA85B90, from, where, bindings);
   v7 = v5;
   if (v5)
   {
@@ -1142,12 +1142,12 @@ LABEL_20:
   return v13;
 }
 
-- (int64_t)insertOrReplaceInto:(id)a3 values:(id)a4
+- (int64_t)insertOrReplaceInto:(id)into values:(id)values
 {
-  v7 = a3;
-  v8 = a4;
+  intoCopy = into;
+  valuesCopy = values;
   objc_msgSend_assertInOperation_(self, v9, a2);
-  v12 = objc_msgSend_allKeys(v8, v10, v11);
+  v12 = objc_msgSend_allKeys(valuesCopy, v10, v11);
   v14 = objc_msgSend_sortedArrayUsingSelector_(v12, v13, sel_compare_);
 
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1157,7 +1157,7 @@ LABEL_20:
     do
     {
       v20 = objc_msgSend_objectAtIndexedSubscript_(v14, v18, v19);
-      v22 = objc_msgSend_objectForKeyedSubscript_(v8, v21, v20);
+      v22 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v21, v20);
       objc_msgSend_setObject_atIndexedSubscript_(v15, v23, v22, v19);
 
       ++v19;
@@ -1168,7 +1168,7 @@ LABEL_20:
 
   v26 = objc_alloc(MEMORY[0x1E696AD60]);
   v28 = objc_msgSend_initWithString_(v26, v27, @"insert or replace into ");
-  objc_msgSend_appendString_(v28, v29, v7);
+  objc_msgSend_appendString_(v28, v29, intoCopy);
   objc_msgSend_appendString_(v28, v30, @" (");
   v33 = objc_msgSend_count(v14, v31, v32);
   if (v33)
@@ -1215,7 +1215,7 @@ LABEL_20:
   v49[2] = sub_18866A4F8;
   v49[3] = &unk_1E70C0798;
   v45 = v15;
-  v51 = self;
+  selfCopy = self;
   v52 = &v53;
   v50 = v45;
   objc_msgSend_usingStatementForSQL_performBlock_(self, v46, v28, v49);
@@ -1225,15 +1225,15 @@ LABEL_20:
   return v47;
 }
 
-- (int64_t)upsertInto:(id)a3 values:(id)a4 onConflict:(id)a5 doUpdate:(id)a6 where:(id)a7
+- (int64_t)upsertInto:(id)into values:(id)values onConflict:(id)conflict doUpdate:(id)update where:(id)where
 {
-  v13 = a3;
-  v14 = a4;
-  v77 = a5;
-  v15 = a6;
-  v75 = a7;
+  intoCopy = into;
+  valuesCopy = values;
+  conflictCopy = conflict;
+  updateCopy = update;
+  whereCopy = where;
   objc_msgSend_assertInOperation_(self, v16, a2);
-  v19 = objc_msgSend_allKeys(v14, v17, v18);
+  v19 = objc_msgSend_allKeys(valuesCopy, v17, v18);
   v21 = objc_msgSend_sortedArrayUsingSelector_(v19, v20, sel_compare_);
 
   v22 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1243,7 +1243,7 @@ LABEL_20:
     do
     {
       v27 = objc_msgSend_objectAtIndexedSubscript_(v21, v25, v26);
-      v29 = objc_msgSend_objectForKeyedSubscript_(v14, v28, v27);
+      v29 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v28, v27);
       objc_msgSend_setObject_atIndexedSubscript_(v22, v30, v29, v26);
 
       ++v26;
@@ -1254,7 +1254,7 @@ LABEL_20:
 
   v33 = objc_alloc(MEMORY[0x1E696AD60]);
   v35 = objc_msgSend_initWithString_(v33, v34, @"insert into ");
-  objc_msgSend_appendString_(v35, v36, v13);
+  objc_msgSend_appendString_(v35, v36, intoCopy);
   objc_msgSend_appendString_(v35, v37, @" (");
   if (objc_msgSend_count(v21, v38, v39))
   {
@@ -1275,7 +1275,7 @@ LABEL_20:
     while (v41 < objc_msgSend_count(v21, v46, v47));
   }
 
-  v76 = v13;
+  v76 = intoCopy;
   objc_msgSend_appendString_(v35, v40, @" values ("));
   if (objc_msgSend_count(v21, v48, v49))
   {
@@ -1299,18 +1299,18 @@ LABEL_20:
   }
 
   objc_msgSend_appendString_(v35, v50, @""));
-  v57 = objc_msgSend_componentsJoinedByString_(v77, v56, @",");
+  v57 = objc_msgSend_componentsJoinedByString_(conflictCopy, v56, @",");
   objc_msgSend_appendFormat_(v35, v58, @" on conflict (%@) ", v57);
 
   objc_msgSend_appendString_(v35, v59, @"do update set ");
-  if (objc_msgSend_count(v15, v60, v61))
+  if (objc_msgSend_count(updateCopy, v60, v61))
   {
     v63 = 0;
     do
     {
-      v64 = objc_msgSend_objectAtIndexedSubscript_(v15, v62, v63);
+      v64 = objc_msgSend_objectAtIndexedSubscript_(updateCopy, v62, v63);
       objc_msgSend_appendFormat_(v35, v65, @"%@ = excluded.%@", v64, v64);
-      if (v63 != objc_msgSend_count(v15, v66, v67) - 1)
+      if (v63 != objc_msgSend_count(updateCopy, v66, v67) - 1)
       {
         objc_msgSend_appendString_(v35, v68, @", ");
       }
@@ -1318,12 +1318,12 @@ LABEL_20:
       ++v63;
     }
 
-    while (v63 < objc_msgSend_count(v15, v69, v70));
+    while (v63 < objc_msgSend_count(updateCopy, v69, v70));
   }
 
-  if (v75)
+  if (whereCopy)
   {
-    objc_msgSend_appendFormat_(v35, v62, @" where %@", v75);
+    objc_msgSend_appendFormat_(v35, v62, @" where %@", whereCopy);
   }
 
   v82 = 0;
@@ -1335,7 +1335,7 @@ LABEL_20:
   v78[2] = sub_18866A96C;
   v78[3] = &unk_1E70C0798;
   v71 = v22;
-  v80 = self;
+  selfCopy = self;
   v81 = &v82;
   v79 = v71;
   objc_msgSend_usingStatementForSQL_performBlock_(self, v72, v35, v78);
@@ -1345,29 +1345,29 @@ LABEL_20:
   return v73;
 }
 
-- (void)deleteFrom:(id)a3 where:(id)a4 bindings:(id)a5
+- (void)deleteFrom:(id)from where:(id)where bindings:(id)bindings
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  bindingsCopy = bindings;
+  whereCopy = where;
+  fromCopy = from;
   objc_msgSend_assertInOperation_(self, v12, a2);
-  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v13, @"delete from %@ where %@", v11, v10);
+  v14 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v13, @"delete from %@ where %@", fromCopy, whereCopy);
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_18866AAE8;
   v17[3] = &unk_1E70C06D0;
-  v18 = v9;
-  v15 = v9;
+  v18 = bindingsCopy;
+  v15 = bindingsCopy;
   objc_msgSend_usingStatementForSQL_performBlock_(self, v16, v14, v17);
 }
 
-- (void)deleteFrom:(id)a3 matchingValues:(id)a4
+- (void)deleteFrom:(id)from matchingValues:(id)values
 {
-  v35 = self;
-  v36 = a3;
-  v5 = a4;
-  v8 = objc_msgSend_allKeys(v5, v6, v7);
+  selfCopy = self;
+  fromCopy = from;
+  valuesCopy = values;
+  v8 = objc_msgSend_allKeys(valuesCopy, v6, v7);
   v10 = objc_msgSend_sortedArrayUsingSelector_(v8, v9, sel_compare_);
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1378,8 +1378,8 @@ LABEL_20:
     v17 = 0;
     do
     {
-      v18 = objc_msgSend_objectAtIndexedSubscript_(v10, v15, v17, v35);
-      v20 = objc_msgSend_objectForKeyedSubscript_(v5, v19, v18);
+      v18 = objc_msgSend_objectAtIndexedSubscript_(v10, v15, v17, selfCopy);
+      v20 = objc_msgSend_objectForKeyedSubscript_(valuesCopy, v19, v18);
 
       v22 = objc_msgSend_objectAtIndexedSubscript_(v10, v21, v17);
       objc_msgSend_appendString_(v12, v23, v22);
@@ -1406,12 +1406,12 @@ LABEL_20:
     while (v17 < objc_msgSend_count(v10, v33, v34));
   }
 
-  objc_msgSend_deleteFrom_where_bindings_(v35, v15, v36, v12, v11, v35);
+  objc_msgSend_deleteFrom_where_bindings_(selfCopy, v15, fromCopy, v12, v11, selfCopy);
 }
 
-- (id)_tableNameForClass:(Class)a3
+- (id)_tableNameForClass:(Class)class
 {
-  v4 = objc_msgSend_CKSQLiteClassName(a3, a2, a3);
+  v4 = objc_msgSend_CKSQLiteClassName(class, a2, class);
   if ((objc_msgSend_hasPrefix_(v4, v5, self->_objectClassPrefix) & 1) == 0)
   {
     objc_msgSend_raise_format_(MEMORY[0x1E695DF30], v6, *MEMORY[0x1E695D940], @"Object class %@ does not have prefix %@", v4, self->_objectClassPrefix);
@@ -1423,24 +1423,24 @@ LABEL_20:
   return v10;
 }
 
-- (int64_t)insertOrReplaceObject:(id)a3
+- (int64_t)insertOrReplaceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
   v7 = objc_msgSend__tableNameForClass_(self, v6, v5);
-  v10 = objc_msgSend_dictionaryPropertyEncoding(v4, v8, v9);
+  v10 = objc_msgSend_dictionaryPropertyEncoding(objectCopy, v8, v9);
 
   v12 = objc_msgSend_insertOrReplaceInto_values_(self, v11, v7, v10);
   return v12;
 }
 
-- (BOOL)deleteExactObject:(id)a3
+- (BOOL)deleteExactObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_class();
   v8 = objc_msgSend__tableNameForClass_(self, v7, v6);
-  v11 = objc_msgSend_dictionaryPropertyEncoding(v4, v9, v10);
+  v11 = objc_msgSend_dictionaryPropertyEncoding(objectCopy, v9, v10);
   objc_msgSend_deleteFrom_matchingValues_(self, v12, v8, v11);
   LODWORD(self) = objc_msgSend_changes(self, v13, v14);
 
@@ -1448,10 +1448,10 @@ LABEL_20:
   return self == 1;
 }
 
-- (int)deleteAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5
+- (int)deleteAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings
 {
-  v8 = a4;
-  v9 = a5;
+  whereCopy = where;
+  bindingsCopy = bindings;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1461,10 +1461,10 @@ LABEL_20:
   v15[2] = sub_18866B000;
   v15[3] = &unk_1E70C07E8;
   v15[4] = self;
-  v19 = a3;
-  v10 = v8;
+  classCopy = class;
+  v10 = whereCopy;
   v16 = v10;
-  v11 = v9;
+  v11 = bindingsCopy;
   v17 = v11;
   v18 = &v20;
   v13 = objc_msgSend_performDatabaseOperation_(self, v12, v15);
@@ -1474,14 +1474,14 @@ LABEL_20:
   return self;
 }
 
-- (id)selectAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5 limit:(id)a6
+- (id)selectAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings limit:(id)limit
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v14 = objc_msgSend_classForHandle_(CKObjCClass, v13, a3);
-  v16 = objc_msgSend__tableNameForClass_(self, v15, a3);
+  whereCopy = where;
+  bindingsCopy = bindings;
+  limitCopy = limit;
+  v14 = objc_msgSend_classForHandle_(CKObjCClass, v13, class);
+  v16 = objc_msgSend__tableNameForClass_(self, v15, class);
   v19 = objc_msgSend_array(MEMORY[0x1E695DF70], v17, v18);
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -1489,16 +1489,16 @@ LABEL_20:
   v32[3] = &unk_1E70C0838;
   v20 = v16;
   v33 = v20;
-  v21 = v10;
+  v21 = whereCopy;
   v34 = v21;
-  v22 = v11;
+  v22 = bindingsCopy;
   v35 = v22;
-  v23 = v12;
+  v23 = limitCopy;
   v36 = v23;
-  v37 = self;
+  selfCopy = self;
   v24 = v14;
   v38 = v24;
-  v40 = a3;
+  classCopy = class;
   v25 = v19;
   v39 = v25;
   v27 = objc_msgSend_performDatabaseOperation_(self, v26, v32);
@@ -1526,34 +1526,34 @@ LABEL_20:
   return v25;
 }
 
-- (void)selectAllObjectsOfClass:(Class)a3 where:(id)a4 bindings:(id)a5 orderBy:(id)a6 limit:(id)a7 block:(id)a8
+- (void)selectAllObjectsOfClass:(Class)class where:(id)where bindings:(id)bindings orderBy:(id)by limit:(id)limit block:(id)block
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  byCopy = by;
+  limitCopy = limit;
+  blockCopy = block;
   v19 = objc_autoreleasePoolPush();
-  v21 = objc_msgSend_classForHandle_(CKObjCClass, v20, a3);
-  v23 = objc_msgSend__tableNameForClass_(self, v22, a3);
+  v21 = objc_msgSend_classForHandle_(CKObjCClass, v20, class);
+  v23 = objc_msgSend__tableNameForClass_(self, v22, class);
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = sub_18866B71C;
   v27[3] = &unk_1E70C0860;
   v27[4] = self;
   v28 = v21;
-  v30 = a3;
-  v24 = v18;
+  classCopy = class;
+  v24 = blockCopy;
   v29 = v24;
   v25 = v21;
-  objc_msgSend_selectFrom_where_bindings_orderBy_limit_block_(self, v26, v23, v14, v15, v16, v17, v27);
+  objc_msgSend_selectFrom_where_bindings_orderBy_limit_block_(self, v26, v23, whereCopy, bindingsCopy, byCopy, limitCopy, v27);
 
   objc_autoreleasePoolPop(v19);
 }
 
-- (id)selectObjectOfClass:(Class)a3 where:(id)a4 bindings:(id)a5
+- (id)selectObjectOfClass:(Class)class where:(id)where bindings:(id)bindings
 {
-  v7 = objc_msgSend_selectAllObjectsOfClass_where_bindings_(self, a2, a3, a4, a5);
+  v7 = objc_msgSend_selectAllObjectsOfClass_where_bindings_(self, a2, class, where, bindings);
   if (objc_msgSend_count(v7, v8, v9))
   {
     if (objc_msgSend_count(v7, v10, v11) != 1)
@@ -1574,35 +1574,35 @@ LABEL_20:
   return v14;
 }
 
-- (void)updateAllObjectsOfClass:(Class)a3 set:(id)a4 where:(id)a5 bindings:(id)a6
+- (void)updateAllObjectsOfClass:(Class)class set:(id)set where:(id)where bindings:(id)bindings
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v15 = objc_msgSend__tableNameForClass_(self, v13, a3);
-  objc_msgSend_update_set_where_bindings_limit_(self, v14, v15, v12, v11, v10, 0);
+  bindingsCopy = bindings;
+  whereCopy = where;
+  setCopy = set;
+  v15 = objc_msgSend__tableNameForClass_(self, v13, class);
+  objc_msgSend_update_set_where_bindings_limit_(self, v14, v15, setCopy, whereCopy, bindingsCopy, 0);
 }
 
-- (id)_boxedPropertyDictionary:(id)a3 forObjCClass:(id)a4
+- (id)_boxedPropertyDictionary:(id)dictionary forObjCClass:(id)class
 {
-  v6 = a4;
+  classCopy = class;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_18866BA0C;
   v11[3] = &unk_1E70C0888;
   v11[4] = self;
-  v12 = v6;
-  v7 = v6;
-  v9 = objc_msgSend_CKMapValues_(a3, v8, v11);
+  v12 = classCopy;
+  v7 = classCopy;
+  v9 = objc_msgSend_CKMapValues_(dictionary, v8, v11);
 
   return v9;
 }
 
-- (id)_boxedValue:(id)a3 forObjcCProperty:(id)a4
+- (id)_boxedValue:(id)value forObjcCProperty:(id)property
 {
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_type(v6, v7, v8);
+  valueCopy = value;
+  propertyCopy = property;
+  v9 = objc_msgSend_type(propertyCopy, v7, v8);
   if (!v9)
   {
     v44 = 0;
@@ -1616,7 +1616,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v13 = objc_msgSend_type(v6, v11, v12);
+  v13 = objc_msgSend_type(propertyCopy, v11, v12);
   v16 = objc_msgSend_className(v13, v14, v15);
   if (!objc_msgSend_isEqualToString_(v16, v17, @"NSDate"))
   {
@@ -1630,7 +1630,7 @@ LABEL_20:
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_7:
-    v25 = objc_msgSend_type(v6, v19, v20);
+    v25 = objc_msgSend_type(propertyCopy, v19, v20);
     v28 = objc_msgSend_className(v25, v26, v27);
     if (objc_msgSend_isEqualToString_(v28, v29, @"NSError"))
     {
@@ -1641,7 +1641,7 @@ LABEL_7:
       {
         v33 = MEMORY[0x1E696ACD0];
         v34 = objc_opt_class();
-        v24 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v33, v35, v34, v5, 0);
+        v24 = objc_msgSend_unarchivedObjectOfClass_fromData_error_(v33, v35, v34, valueCopy, 0);
         goto LABEL_23;
       }
     }
@@ -1650,7 +1650,7 @@ LABEL_7:
     {
     }
 
-    v36 = objc_msgSend_type(v6, v31, v32);
+    v36 = objc_msgSend_type(propertyCopy, v31, v32);
     v39 = objc_msgSend_className(v36, v37, v38);
     if (objc_msgSend_isEqualToString_(v39, v40, @"NSURL"))
     {
@@ -1659,7 +1659,7 @@ LABEL_7:
 
       if (v41)
       {
-        v24 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v42, v5);
+        v24 = objc_msgSend_URLWithString_(MEMORY[0x1E695DFF8], v42, valueCopy);
         goto LABEL_23;
       }
     }
@@ -1668,7 +1668,7 @@ LABEL_7:
     {
     }
 
-    v44 = objc_msgSend_type(v6, v42, v43);
+    v44 = objc_msgSend_type(propertyCopy, v42, v43);
     v47 = objc_msgSend_className(v44, v45, v46);
     if (!objc_msgSend_isEqualToString_(v47, v48, @"NSUUID"))
     {
@@ -1680,7 +1680,7 @@ LABEL_7:
 
     if (v49)
     {
-      v47 = v5;
+      v47 = valueCopy;
       if (objc_msgSend_length(v47, v50, v51) == 16)
       {
         v52 = objc_alloc(MEMORY[0x1E696AFB0]);
@@ -1688,11 +1688,11 @@ LABEL_7:
         v56 = objc_msgSend_bytes(v53, v54, v55);
         v58 = objc_msgSend_initWithUUIDBytes_(v52, v57, v56);
 
-        v5 = v47;
+        valueCopy = v47;
         goto LABEL_24;
       }
 
-      v5 = 0;
+      valueCopy = 0;
       v44 = v47;
 LABEL_20:
 
@@ -1700,13 +1700,13 @@ LABEL_21:
     }
 
 LABEL_22:
-    v24 = v5;
-    v5 = v24;
+    v24 = valueCopy;
+    valueCopy = v24;
     goto LABEL_23;
   }
 
   v21 = MEMORY[0x1E695DF00];
-  objc_msgSend_doubleValue(v5, v19, v20);
+  objc_msgSend_doubleValue(valueCopy, v19, v20);
   v24 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(v21, v22, v23);
 LABEL_23:
   v58 = v24;

@@ -1,20 +1,20 @@
 @interface _UIStatusBarNavigationItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (_UIStatusBarNavigationItemAccessibility)init;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation _UIStatusBarNavigationItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIStatusBarNavigationItem";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -27,27 +27,27 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIStatusBarNavigationItemAccessibility;
   [(_UIStatusBarNavigationItemAccessibility *)&v3 _accessibilityLoadAccessibilityInformation];
-  v2 = [(_UIStatusBarNavigationItemAccessibility *)v5 safeUIViewForKey:@"nameView"];
+  v2 = [(_UIStatusBarNavigationItemAccessibility *)selfCopy safeUIViewForKey:@"nameView"];
   [v2 _accessibilitySetBoolValue:1 forKey:@"AccessibilityStatusBarStringIsBreadcrumb"];
   [v2 setAccessibilityRespondsToUserInteraction:1];
   [v2 setAccessibilityTraits:*MEMORY[0x29EDC7580] | *MEMORY[0x29EDC7F70]];
   objc_storeStrong(&v2, 0);
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
-  v15.receiver = v19;
+  objc_storeStrong(&v17, item);
+  v15.receiver = selfCopy;
   v15.super_class = _UIStatusBarNavigationItemAccessibility;
   v16 = [(_UIStatusBarNavigationItemAccessibility *)&v15 applyUpdate:location[0] toDisplayItem:v17];
   v8 = [location[0] safeValueForKey:@"data"];
@@ -55,7 +55,7 @@
   v14 = [v7 safeStringForKey:@"stringValue"];
   MEMORY[0x29EDC9740](v7);
   *&v4 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v12 = [(_UIStatusBarNavigationItemAccessibility *)v19 safeUIViewForKey:@"nameView", v4];
+  v12 = [(_UIStatusBarNavigationItemAccessibility *)selfCopy safeUIViewForKey:@"nameView", v4];
   v9 = MEMORY[0x29EDBA0F8];
   v11 = accessibilityLocalizedString(@"breadcrumb.return.to.app");
   v10 = [v9 stringWithFormat:v14];

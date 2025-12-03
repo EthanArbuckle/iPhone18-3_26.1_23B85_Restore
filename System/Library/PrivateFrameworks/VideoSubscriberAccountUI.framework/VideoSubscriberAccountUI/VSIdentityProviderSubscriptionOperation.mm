@@ -1,9 +1,9 @@
 @interface VSIdentityProviderSubscriptionOperation
 - (VSIdentityProviderSubscriptionOperation)init;
-- (VSIdentityProviderSubscriptionOperation)initWithRegistrationCenter:(id)a3 andDeveloperSettingsFetchOperation:(id)a4;
-- (id)_authorizedBundleIdsFromAppDescriptions:(id)a3;
-- (void)_registerSubscriptions:(id)a3 withAuthorizedBundleIdentifiers:(id)a4;
-- (void)_removeSubscriptionsForBundleIdentifiers:(id)a3 withAuthorizedBundleIdentifiers:(id)a4;
+- (VSIdentityProviderSubscriptionOperation)initWithRegistrationCenter:(id)center andDeveloperSettingsFetchOperation:(id)operation;
+- (id)_authorizedBundleIdsFromAppDescriptions:(id)descriptions;
+- (void)_registerSubscriptions:(id)subscriptions withAuthorizedBundleIdentifiers:(id)identifiers;
+- (void)_removeSubscriptionsForBundleIdentifiers:(id)identifiers withAuthorizedBundleIdentifiers:(id)bundleIdentifiers;
 - (void)cancel;
 - (void)executionDidBegin;
 @end
@@ -23,9 +23,9 @@
 
     [(NSOperationQueue *)v2->_privateQueue setName:@"VSBulkSubscriptionOperation"];
     [(NSOperationQueue *)v2->_privateQueue setMaxConcurrentOperationCount:1];
-    v5 = [MEMORY[0x277CE22F8] defaultSubscriptionRegistrationCenter];
+    defaultSubscriptionRegistrationCenter = [MEMORY[0x277CE22F8] defaultSubscriptionRegistrationCenter];
     registrationCenter = v2->_registrationCenter;
-    v2->_registrationCenter = v5;
+    v2->_registrationCenter = defaultSubscriptionRegistrationCenter;
 
     v7 = objc_alloc_init(MEMORY[0x277CE2230]);
     developerSettingsFetchOperation = v2->_developerSettingsFetchOperation;
@@ -35,22 +35,22 @@
   return v2;
 }
 
-- (VSIdentityProviderSubscriptionOperation)initWithRegistrationCenter:(id)a3 andDeveloperSettingsFetchOperation:(id)a4
+- (VSIdentityProviderSubscriptionOperation)initWithRegistrationCenter:(id)center andDeveloperSettingsFetchOperation:(id)operation
 {
-  v7 = a3;
-  v8 = a4;
+  centerCopy = center;
+  operationCopy = operation;
   v9 = [(VSIdentityProviderSubscriptionOperation *)self init];
   v10 = v9;
   if (v9)
   {
-    if (v7)
+    if (centerCopy)
     {
-      objc_storeStrong(&v9->_registrationCenter, a3);
+      objc_storeStrong(&v9->_registrationCenter, center);
     }
 
-    if (v8)
+    if (operationCopy)
     {
-      objc_storeStrong(&v10->_developerSettingsFetchOperation, a4);
+      objc_storeStrong(&v10->_developerSettingsFetchOperation, operation);
     }
   }
 
@@ -59,13 +59,13 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSIdentityProviderSubscriptionOperation *)self privateQueue];
-  v4 = [(VSIdentityProviderSubscriptionOperation *)self identityProvider];
-  v5 = [(VSIdentityProviderSubscriptionOperation *)self subscriptionsToAdd];
-  v6 = [(VSIdentityProviderSubscriptionOperation *)self subscriptionsToRemoveByBundleID];
-  v7 = [v4 isDeveloper];
-  v8 = [v4 nonChannelAppDescriptions];
-  v9 = [v8 count] != 0;
+  privateQueue = [(VSIdentityProviderSubscriptionOperation *)self privateQueue];
+  identityProvider = [(VSIdentityProviderSubscriptionOperation *)self identityProvider];
+  subscriptionsToAdd = [(VSIdentityProviderSubscriptionOperation *)self subscriptionsToAdd];
+  subscriptionsToRemoveByBundleID = [(VSIdentityProviderSubscriptionOperation *)self subscriptionsToRemoveByBundleID];
+  isDeveloper = [identityProvider isDeveloper];
+  nonChannelAppDescriptions = [identityProvider nonChannelAppDescriptions];
+  v9 = [nonChannelAppDescriptions count] != 0;
 
   v38[0] = 0;
   v38[1] = v38;
@@ -88,18 +88,18 @@
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy_;
   v32[4] = __Block_byref_object_dispose_;
-  v10 = [v4 nonChannelAppDescriptions];
-  v11 = v10;
-  v12 = v9 | v7;
+  nonChannelAppDescriptions2 = [identityProvider nonChannelAppDescriptions];
+  v11 = nonChannelAppDescriptions2;
+  v12 = v9 | isDeveloper;
   v13 = MEMORY[0x277CBEBF8];
-  if (v10)
+  if (nonChannelAppDescriptions2)
   {
-    v13 = v10;
+    v13 = nonChannelAppDescriptions2;
   }
 
   v33 = v13;
 
-  if ((v12 & 1) != 0 && ([v5 count] || objc_msgSend(v6, "count")))
+  if ((v12 & 1) != 0 && ([subscriptionsToAdd count] || objc_msgSend(subscriptionsToRemoveByBundleID, "count")))
   {
     objc_initWeak(&location, self);
     v14 = MEMORY[0x277CCA8C8];
@@ -108,22 +108,22 @@
     v21[2] = __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invoke;
     v21[3] = &unk_279E193E8;
     objc_copyWeak(&v29, &location);
-    v30 = v7;
+    v30 = isDeveloper;
     v25 = v38;
     v26 = v36;
     v27 = v34;
     v28 = v32;
-    v22 = v6;
-    v23 = v5;
-    v24 = self;
+    v22 = subscriptionsToRemoveByBundleID;
+    v23 = subscriptionsToAdd;
+    selfCopy = self;
     v15 = [v14 blockOperationWithBlock:v21];
-    v16 = [(VSIdentityProviderSubscriptionOperation *)self developerSettingsFetchOperation];
+    developerSettingsFetchOperation = [(VSIdentityProviderSubscriptionOperation *)self developerSettingsFetchOperation];
     v19[0] = 0;
     v19[1] = v19;
     v19[2] = 0x3042000000;
     v19[3] = __Block_byref_object_copy__13;
     v19[4] = __Block_byref_object_dispose__14;
-    objc_initWeak(&v20, v16);
+    objc_initWeak(&v20, developerSettingsFetchOperation);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invoke_15;
@@ -132,11 +132,11 @@
     v18[5] = v38;
     v18[6] = v36;
     v17 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v18];
-    [v17 addDependency:v16];
+    [v17 addDependency:developerSettingsFetchOperation];
     [v15 addDependency:v17];
-    [v3 addOperation:v16];
-    [v3 addOperation:v17];
-    [v3 addOperation:v15];
+    [privateQueue addOperation:developerSettingsFetchOperation];
+    [privateQueue addOperation:v17];
+    [privateQueue addOperation:v15];
     [v15 waitUntilFinished];
 
     _Block_object_dispose(v19, 8);
@@ -275,16 +275,16 @@ void __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invo
   }
 }
 
-- (id)_authorizedBundleIdsFromAppDescriptions:(id)a3
+- (id)_authorizedBundleIdsFromAppDescriptions:(id)descriptions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptionsCopy = descriptions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = descriptionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -299,10 +299,10 @@ void __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invo
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) bundleID];
-        if (v10)
+        bundleID = [*(*(&v13 + 1) + 8 * i) bundleID];
+        if (bundleID)
         {
-          [v4 addObject:v10];
+          [v4 addObject:bundleID];
         }
       }
 
@@ -317,12 +317,12 @@ void __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invo
   return v4;
 }
 
-- (void)_removeSubscriptionsForBundleIdentifiers:(id)a3 withAuthorizedBundleIdentifiers:(id)a4
+- (void)_removeSubscriptionsForBundleIdentifiers:(id)identifiers withAuthorizedBundleIdentifiers:(id)bundleIdentifiers
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(VSIdentityProviderSubscriptionOperation *)self registrationCenter];
+  identifiersCopy = identifiers;
+  bundleIdentifiersCopy = bundleIdentifiers;
+  registrationCenter = [(VSIdentityProviderSubscriptionOperation *)self registrationCenter];
   v9 = objc_alloc_init(MEMORY[0x277CE22D8]);
   v25 = *MEMORY[0x277CE24C8];
   v26[0] = MEMORY[0x277CBEC28];
@@ -331,15 +331,15 @@ void __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invo
   v17 = 3221225472;
   v18 = __116__VSIdentityProviderSubscriptionOperation__removeSubscriptionsForBundleIdentifiers_withAuthorizedBundleIdentifiers___block_invoke;
   v19 = &unk_279E19480;
-  v20 = v6;
-  v21 = v7;
-  v22 = self;
-  v23 = v8;
+  v20 = identifiersCopy;
+  v21 = bundleIdentifiersCopy;
+  selfCopy = self;
+  v23 = registrationCenter;
   v24 = v9;
   v11 = v9;
-  v12 = v8;
-  v13 = v7;
-  v14 = v6;
+  v12 = registrationCenter;
+  v13 = bundleIdentifiersCopy;
+  v14 = identifiersCopy;
   [v12 fetchActiveSubscriptionsWithOptions:v10 completionHandler:&v16];
   [v11 wait];
 
@@ -472,18 +472,18 @@ void __116__VSIdentityProviderSubscriptionOperation__removeSubscriptionsForBundl
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerSubscriptions:(id)a3 withAuthorizedBundleIdentifiers:(id)a4
+- (void)_registerSubscriptions:(id)subscriptions withAuthorizedBundleIdentifiers:(id)identifiers
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v31 = [(VSIdentityProviderSubscriptionOperation *)self registrationCenter];
+  subscriptionsCopy = subscriptions;
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  registrationCenter = [(VSIdentityProviderSubscriptionOperation *)self registrationCenter];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v6;
+  obj = subscriptionsCopy;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v9)
   {
@@ -503,33 +503,33 @@ void __116__VSIdentityProviderSubscriptionOperation__removeSubscriptionsForBundl
         }
 
         v15 = *(*(&v32 + 1) + 8 * v14);
-        if (v7 && ([*(*(&v32 + 1) + 8 * v14) source], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v7, "containsObject:", v17), v17, v16, !v18))
+        if (identifiersCopy && ([*(*(&v32 + 1) + 8 * v14) source], v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "identifier"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(identifiersCopy, "containsObject:", v17), v17, v16, !v18))
         {
           v22 = VSErrorLogObject();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v15 source];
-            v23 = [v29 identifier];
-            v28 = [(VSIdentityProviderSubscriptionOperation *)v8 identityProvider];
-            v24 = [v28 providerID];
-            v25 = [v24 forceUnwrapObject];
+            source = [v15 source];
+            identifier = [source identifier];
+            identityProvider = [(VSIdentityProviderSubscriptionOperation *)selfCopy identityProvider];
+            providerID = [identityProvider providerID];
+            forceUnwrapObject = [providerID forceUnwrapObject];
             *buf = v27;
-            v37 = v23;
+            v37 = identifier;
             v38 = 2112;
-            v39 = v25;
+            v39 = forceUnwrapObject;
             _os_log_error_impl(&dword_270DD4000, v22, OS_LOG_TYPE_ERROR, "denying subscription registration for subscription for bundle ID %@ from identity provider %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v19 = [(VSIdentityProviderSubscriptionOperation *)v8 identityProvider];
-          v20 = [v19 providerID];
-          v21 = [v20 forceUnwrapObject];
-          [v15 setModifierIdentifier:v21];
+          identityProvider2 = [(VSIdentityProviderSubscriptionOperation *)selfCopy identityProvider];
+          providerID2 = [identityProvider2 providerID];
+          forceUnwrapObject2 = [providerID2 forceUnwrapObject];
+          [v15 setModifierIdentifier:forceUnwrapObject2];
 
           [v15 setModifierType:v13];
-          [v31 registerSubscription:v15];
+          [registrationCenter registerSubscription:v15];
         }
 
         ++v14;
@@ -550,8 +550,8 @@ void __116__VSIdentityProviderSubscriptionOperation__removeSubscriptionsForBundl
   v4.receiver = self;
   v4.super_class = VSIdentityProviderSubscriptionOperation;
   [(VSAsyncOperation *)&v4 cancel];
-  v3 = [(VSIdentityProviderSubscriptionOperation *)self privateQueue];
-  [v3 cancelAllOperations];
+  privateQueue = [(VSIdentityProviderSubscriptionOperation *)self privateQueue];
+  [privateQueue cancelAllOperations];
 }
 
 void __60__VSIdentityProviderSubscriptionOperation_executionDidBegin__block_invoke_3_cold_1(uint64_t a1, NSObject *a2)

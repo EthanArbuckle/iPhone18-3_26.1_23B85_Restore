@@ -7,7 +7,7 @@
 
 - (_TtP22SearchIntrospectionKit17SIServiceDelegate_)server
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_264E77358();
 
   return v3;

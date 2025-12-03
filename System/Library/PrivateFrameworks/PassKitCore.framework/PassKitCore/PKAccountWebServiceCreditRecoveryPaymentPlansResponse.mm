@@ -1,15 +1,15 @@
 @interface PKAccountWebServiceCreditRecoveryPaymentPlansResponse
-- (PKAccountWebServiceCreditRecoveryPaymentPlansResponse)initWithData:(id)a3;
+- (PKAccountWebServiceCreditRecoveryPaymentPlansResponse)initWithData:(id)data;
 @end
 
 @implementation PKAccountWebServiceCreditRecoveryPaymentPlansResponse
 
-- (PKAccountWebServiceCreditRecoveryPaymentPlansResponse)initWithData:(id)a3
+- (PKAccountWebServiceCreditRecoveryPaymentPlansResponse)initWithData:(id)data
 {
   v56 = *MEMORY[0x1E69E9840];
   v49.receiver = self;
   v49.super_class = PKAccountWebServiceCreditRecoveryPaymentPlansResponse;
-  v3 = [(PKWebServiceResponse *)&v49 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v49 initWithData:data];
   v4 = v3;
   if (!v3)
   {
@@ -18,13 +18,13 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKArrayForKey:@"eligiblePaymentPlans"];
-    v39 = v5;
-    v40 = [v5 PKArrayForKey:@"enrolledPaymentPlans"];
+    v6 = [jSONObject PKArrayForKey:@"eligiblePaymentPlans"];
+    v39 = jSONObject;
+    v40 = [jSONObject PKArrayForKey:@"enrolledPaymentPlans"];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v45 = 0u;
     v46 = 0u;
@@ -66,7 +66,7 @@ LABEL_20:
 
             v15 = v8;
 LABEL_26:
-            v5 = v39;
+            jSONObject = v39;
 
             goto LABEL_27;
           }

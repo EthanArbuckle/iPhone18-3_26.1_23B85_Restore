@@ -1,23 +1,23 @@
 @interface UIStoryboardPresentationSegueTemplate
-- (UIStoryboardPresentationSegueTemplate)initWithCoder:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (id)newDefaultPrepareHandlerForSegue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardPresentationSegueTemplate)initWithCoder:(id)coder;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (id)newDefaultPrepareHandlerForSegue:(id)segue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardPresentationSegueTemplate
 
-- (UIStoryboardPresentationSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardPresentationSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIStoryboardPresentationSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v7 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"UIModalPresentationStyle"])
+    if ([coderCopy containsValueForKey:@"UIModalPresentationStyle"])
     {
-      v5->_modalPresentationStyle = [v4 decodeIntegerForKey:@"UIModalPresentationStyle"];
+      v5->_modalPresentationStyle = [coderCopy decodeIntegerForKey:@"UIModalPresentationStyle"];
     }
 
     else
@@ -25,9 +25,9 @@
       v5->_useDefaultModalPresentationStyle = 1;
     }
 
-    if ([v4 containsValueForKey:@"UIModalTransitionStyle"])
+    if ([coderCopy containsValueForKey:@"UIModalTransitionStyle"])
     {
-      v5->_modalTransitionStyle = [v4 decodeIntegerForKey:@"UIModalTransitionStyle"];
+      v5->_modalTransitionStyle = [coderCopy decodeIntegerForKey:@"UIModalTransitionStyle"];
     }
 
     else
@@ -39,41 +39,41 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = UIStoryboardPresentationSegueTemplate;
-  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:v4];
+  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:coderCopy];
   if (!self->_useDefaultModalPresentationStyle)
   {
-    [v4 encodeInteger:self->_modalPresentationStyle forKey:@"UIModalPresentationStyle"];
+    [coderCopy encodeInteger:self->_modalPresentationStyle forKey:@"UIModalPresentationStyle"];
   }
 
   if (!self->_useDefaultModalTransitionStyle)
   {
-    [v4 encodeInteger:self->_modalTransitionStyle forKey:@"UIModalTransitionStyle"];
+    [coderCopy encodeInteger:self->_modalTransitionStyle forKey:@"UIModalTransitionStyle"];
   }
 }
 
-- (id)newDefaultPrepareHandlerForSegue:(id)a3
+- (id)newDefaultPrepareHandlerForSegue:(id)segue
 {
-  v4 = a3;
-  v5 = [(UIStoryboardPresentationSegueTemplate *)self useDefaultModalPresentationStyle];
-  v6 = [(UIStoryboardPresentationSegueTemplate *)self modalPresentationStyle];
-  v7 = [(UIStoryboardPresentationSegueTemplate *)self useDefaultModalTransitionStyle];
-  v8 = [(UIStoryboardPresentationSegueTemplate *)self modalTransitionStyle];
-  objc_initWeak(&location, v4);
+  segueCopy = segue;
+  useDefaultModalPresentationStyle = [(UIStoryboardPresentationSegueTemplate *)self useDefaultModalPresentationStyle];
+  modalPresentationStyle = [(UIStoryboardPresentationSegueTemplate *)self modalPresentationStyle];
+  useDefaultModalTransitionStyle = [(UIStoryboardPresentationSegueTemplate *)self useDefaultModalTransitionStyle];
+  modalTransitionStyle = [(UIStoryboardPresentationSegueTemplate *)self modalTransitionStyle];
+  objc_initWeak(&location, segueCopy);
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74__UIStoryboardPresentationSegueTemplate_newDefaultPrepareHandlerForSegue___block_invoke;
   aBlock[3] = &unk_1E7122848;
   objc_copyWeak(v12, &location);
-  v13 = v5;
-  v14 = v7;
-  v12[1] = v6;
-  v12[2] = v8;
+  v13 = useDefaultModalPresentationStyle;
+  v14 = useDefaultModalTransitionStyle;
+  v12[1] = modalPresentationStyle;
+  v12[2] = modalTransitionStyle;
   v9 = _Block_copy(aBlock);
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -104,9 +104,9 @@ void __74__UIStoryboardPresentationSegueTemplate_newDefaultPrepareHandlerForSegu
   }
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, segue);
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__UIStoryboardPresentationSegueTemplate_newDefaultPerformHandlerForSegue___block_invoke;

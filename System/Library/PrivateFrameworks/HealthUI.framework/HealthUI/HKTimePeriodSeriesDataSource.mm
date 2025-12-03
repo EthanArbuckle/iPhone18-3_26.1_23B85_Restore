@@ -1,12 +1,12 @@
 @interface HKTimePeriodSeriesDataSource
-- (id)_calculateTotalDurationFromSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 interval:(id)a6 intervalOut:(id *)a7 intervalCountsOut:(id *)a8;
-- (id)_chartPointsWithStatisticsInterval:(id)a3 dateIntervalsToTotals:(id)a4 intervalCounts:(id)a5 sourceTimeZone:(id)a6;
-- (id)_codableDataWithSamples:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 intervalComponents:(id)a6;
-- (id)_codableTimePeriodDataWithDictionary:(id)a3;
+- (id)_calculateTotalDurationFromSamples:(id)samples startDate:(id)date endDate:(id)endDate interval:(id)interval intervalOut:(id *)out intervalCountsOut:(id *)countsOut;
+- (id)_chartPointsWithStatisticsInterval:(id)interval dateIntervalsToTotals:(id)totals intervalCounts:(id)counts sourceTimeZone:(id)zone;
+- (id)_codableDataWithSamples:(id)samples blockStart:(id)start blockEnd:(id)end intervalComponents:(id)components;
+- (id)_codableTimePeriodDataWithDictionary:(id)dictionary;
 - (id)_startOfDayTransform;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
@@ -14,50 +14,50 @@
 
 - (id)_startOfDayTransform
 {
-  v2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v3 = [v2 hk_startOfDayTransform];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  hk_startOfDayTransform = [displayType hk_startOfDayTransform];
 
-  return v3;
+  return hk_startOfDayTransform;
 }
 
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKTimePeriodSeriesDataSource *)self sampleType];
-  v4 = [v3 hk_localizedName];
-  v5 = [v2 stringWithFormat:@"HKTimePeriodSeries(%@)", v4];
+  sampleType = [(HKTimePeriodSeriesDataSource *)self sampleType];
+  hk_localizedName = [sampleType hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKTimePeriodSeries(%@)", hk_localizedName];
 
   return v5;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 startDate];
-  v9 = [v6 endDate];
-  v10 = [(HKTimePeriodSeriesDataSource *)self _startOfDayTransform];
-  if (v10)
+  requestCopy = request;
+  handlerCopy = handler;
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
+  _startOfDayTransform = [(HKTimePeriodSeriesDataSource *)self _startOfDayTransform];
+  if (_startOfDayTransform)
   {
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    [v6 startDate];
-    v13 = v12 = v7;
-    v14 = (v10)[2](v10, v11, v13);
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    [requestCopy startDate];
+    v13 = v12 = handlerCopy;
+    v14 = (_startOfDayTransform)[2](_startOfDayTransform, currentCalendar, v13);
 
-    v15 = [v6 endDate];
-    v16 = (v10)[2](v10, v11, v15);
+    endDate2 = [requestCopy endDate];
+    v16 = (_startOfDayTransform)[2](_startOfDayTransform, currentCalendar, endDate2);
 
-    v9 = v16;
-    v7 = v12;
-    v8 = v14;
+    endDate = v16;
+    handlerCopy = v12;
+    startDate = v14;
   }
 
-  v28 = v9;
-  v27 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v8 endDate:v9 options:0];
+  v28 = endDate;
+  v27 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
   v17 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:*MEMORY[0x1E696BE38] ascending:1];
   v18 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v19 = [(HKTimePeriodSeriesDataSource *)self sampleType];
+  sampleType = [(HKTimePeriodSeriesDataSource *)self sampleType];
   v20 = HKUIPredicateMatchingPredicates(v27, self->_queryPredicate);
   v33[0] = v17;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:1];
@@ -66,11 +66,11 @@
   v29[2] = __68__HKTimePeriodSeriesDataSource_queriesForRequest_completionHandler___block_invoke;
   v29[3] = &unk_1E81B5A88;
   v29[4] = self;
-  v30 = v6;
-  v31 = v7;
-  v22 = v7;
-  v23 = v6;
-  v24 = [v18 initWithSampleType:v19 predicate:v20 limit:0 sortDescriptors:v21 resultsHandler:v29];
+  v30 = requestCopy;
+  v31 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = requestCopy;
+  v24 = [v18 initWithSampleType:sampleType predicate:v20 limit:0 sortDescriptors:v21 resultsHandler:v29];
 
   [v24 setDebugIdentifier:@"charting (time period)"];
   v32 = v24;
@@ -124,28 +124,28 @@ LABEL_8:
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_chartPointsWithStatisticsInterval:(id)a3 dateIntervalsToTotals:(id)a4 intervalCounts:(id)a5 sourceTimeZone:(id)a6
+- (id)_chartPointsWithStatisticsInterval:(id)interval dateIntervalsToTotals:(id)totals intervalCounts:(id)counts sourceTimeZone:(id)zone
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  intervalCopy = interval;
+  countsCopy = counts;
+  zoneCopy = zone;
   v13 = MEMORY[0x1E695DF70];
-  v14 = a4;
+  totalsCopy = totals;
   v15 = objc_alloc_init(v13);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __119__HKTimePeriodSeriesDataSource__chartPointsWithStatisticsInterval_dateIntervalsToTotals_intervalCounts_sourceTimeZone___block_invoke;
   v22[3] = &unk_1E81B8680;
-  v23 = v12;
-  v24 = self;
-  v25 = v11;
-  v26 = v10;
+  v23 = zoneCopy;
+  selfCopy = self;
+  v25 = countsCopy;
+  v26 = intervalCopy;
   v27 = v15;
   v16 = v15;
-  v17 = v10;
-  v18 = v11;
-  v19 = v12;
-  [v14 enumerateKeysAndObjectsUsingBlock:v22];
+  v17 = intervalCopy;
+  v18 = countsCopy;
+  v19 = zoneCopy;
+  [totalsCopy enumerateKeysAndObjectsUsingBlock:v22];
 
   [v16 sortUsingComparator:&__block_literal_global_40];
   v20 = objc_alloc_init(HKGraphSeriesDataBlock);
@@ -189,54 +189,54 @@ uint64_t __119__HKTimePeriodSeriesDataSource__chartPointsWithStatisticsInterval_
   return v7;
 }
 
-- (id)_calculateTotalDurationFromSamples:(id)a3 startDate:(id)a4 endDate:(id)a5 interval:(id)a6 intervalOut:(id *)a7 intervalCountsOut:(id *)a8
+- (id)_calculateTotalDurationFromSamples:(id)samples startDate:(id)date endDate:(id)endDate interval:(id)interval intervalOut:(id *)out intervalCountsOut:(id *)countsOut
 {
-  v13 = a6;
+  intervalCopy = interval;
   v14 = MEMORY[0x1E696C660];
-  v15 = a5;
-  v16 = a4;
-  v17 = [v14 coalesceTimePeriodsFromSamples:a3 strictStartDate:v16 strictEndDate:v15];
+  endDateCopy = endDate;
+  dateCopy = date;
+  v17 = [v14 coalesceTimePeriodsFromSamples:samples strictStartDate:dateCopy strictEndDate:endDateCopy];
   v18 = MEMORY[0x1E696C660];
-  v19 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v20 = [v19 sampleType];
-  LODWORD(v18) = [v18 shouldUseDailyAverageWithDateComponents:v13 sampleType:v20];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
+  LODWORD(v18) = [v18 shouldUseDailyAverageWithDateComponents:intervalCopy sampleType:sampleType];
 
   if (v18)
   {
-    v21 = [MEMORY[0x1E695DF10] hk_oneDay];
+    hk_oneDay = [MEMORY[0x1E695DF10] hk_oneDay];
   }
 
   else
   {
-    v21 = v13;
+    hk_oneDay = intervalCopy;
   }
 
-  v22 = v21;
+  v22 = hk_oneDay;
   v23 = MEMORY[0x1E696C660];
-  v24 = [(HKTimePeriodSeriesDataSource *)self _startOfDayTransform];
-  v25 = [v23 calculateTotalDurationsWithTimePeriods:v17 startDate:v16 endDate:v15 intervalComponents:v22 startOfDayTransform:v24];
+  _startOfDayTransform = [(HKTimePeriodSeriesDataSource *)self _startOfDayTransform];
+  v25 = [v23 calculateTotalDurationsWithTimePeriods:v17 startDate:dateCopy endDate:endDateCopy intervalComponents:v22 startOfDayTransform:_startOfDayTransform];
 
-  if (a7)
+  if (out)
   {
     v26 = v22;
-    *a7 = v22;
+    *out = v22;
   }
 
-  v27 = [MEMORY[0x1E696C660] coalesceTotalDurations:v25 startDate:v16 intervalComponents:v13 intervalRecordCountsOut:a8];
+  v27 = [MEMORY[0x1E696C660] coalesceTotalDurations:v25 startDate:dateCopy intervalComponents:intervalCopy intervalRecordCountsOut:countsOut];
 
   return v27;
 }
 
-- (id)_codableDataWithSamples:(id)a3 blockStart:(id)a4 blockEnd:(id)a5 intervalComponents:(id)a6
+- (id)_codableDataWithSamples:(id)samples blockStart:(id)start blockEnd:(id)end intervalComponents:(id)components
 {
   v17 = 0;
   v18 = 0;
-  v7 = [(HKTimePeriodSeriesDataSource *)self _calculateTotalDurationFromSamples:a3 startDate:a4 endDate:a5 interval:a6 intervalOut:&v18 intervalCountsOut:&v17];
+  v7 = [(HKTimePeriodSeriesDataSource *)self _calculateTotalDurationFromSamples:samples startDate:start endDate:end interval:components intervalOut:&v18 intervalCountsOut:&v17];
   v8 = v18;
   v9 = v17;
   v10 = objc_alloc_init(HKCodableChartTimePeriodSeriesDataSourceData);
-  v11 = [v8 hkui_codableDateComponents];
-  [(HKCodableChartTimePeriodSeriesDataSourceData *)v10 setStatisticsInterval:v11];
+  hkui_codableDateComponents = [v8 hkui_codableDateComponents];
+  [(HKCodableChartTimePeriodSeriesDataSourceData *)v10 setStatisticsInterval:hkui_codableDateComponents];
 
   v12 = [(HKTimePeriodSeriesDataSource *)self _codableTimePeriodDataWithDictionary:v7];
   v13 = [v12 mutableCopy];
@@ -250,18 +250,18 @@ uint64_t __119__HKTimePeriodSeriesDataSource__chartPointsWithStatisticsInterval_
   return v10;
 }
 
-- (id)_codableTimePeriodDataWithDictionary:(id)a3
+- (id)_codableTimePeriodDataWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 allKeys];
+  dictionaryCopy = dictionary;
+  allKeys = [dictionaryCopy allKeys];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__HKTimePeriodSeriesDataSource__codableTimePeriodDataWithDictionary___block_invoke;
   v9[3] = &unk_1E81B86C8;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
-  v7 = [v5 hk_map:v9];
+  v10 = dictionaryCopy;
+  selfCopy = self;
+  v6 = dictionaryCopy;
+  v7 = [allKeys hk_map:v9];
 
   return v7;
 }
@@ -304,26 +304,26 @@ HKCodableTimePeriodData *__69__HKTimePeriodSeriesDataSource__codableTimePeriodDa
   return v4;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __98__HKTimePeriodSeriesDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v25[3] = &unk_1E81B86F0;
-  v26 = v8;
-  v27 = self;
-  v28 = v10;
-  v11 = v10;
-  v12 = v8;
+  v26 = requestCopy;
+  selfCopy = self;
+  v28 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKTimePeriodSeriesDataSource *)self queriesForRequest:v12 completionHandler:v25];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __98__HKTimePeriodSeriesDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_316;
   v23[3] = &unk_1E81B6D60;
-  v14 = v9;
+  v14 = storeCopy;
   v24 = v14;
   [v13 enumerateObjectsUsingBlock:v23];
   v20[0] = MEMORY[0x1E69E9820];
@@ -407,14 +407,14 @@ void __98__HKTimePeriodSeriesDataSource_generateSharableQueryDataForRequest_heal
   [v1 enumerateObjectsUsingBlock:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -423,18 +423,18 @@ void __98__HKTimePeriodSeriesDataSource_generateSharableQueryDataForRequest_heal
   }
 
   v9 = [HKCodableChartTimePeriodSeriesDataSourceData alloc];
-  v10 = [v5 queryDataObject];
-  v11 = [(HKCodableChartTimePeriodSeriesDataSourceData *)v9 initWithData:v10];
+  queryDataObject = [dataCopy queryDataObject];
+  v11 = [(HKCodableChartTimePeriodSeriesDataSourceData *)v9 initWithData:queryDataObject];
 
   v12 = MEMORY[0x1E695DF10];
-  v13 = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 statisticsInterval];
-  v14 = [v12 hkui_dateComponentsWithCodableDateComponents:v13];
+  statisticsInterval = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 statisticsInterval];
+  v14 = [v12 hkui_dateComponentsWithCodableDateComponents:statisticsInterval];
 
-  v15 = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 dateIntervalsToTotals];
-  v16 = [HKCodableTimePeriodData timePeriodDataWithCodableData:v15];
+  dateIntervalsToTotals = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 dateIntervalsToTotals];
+  v16 = [HKCodableTimePeriodData timePeriodDataWithCodableData:dateIntervalsToTotals];
 
-  v17 = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 intervalCounts];
-  v18 = [HKCodableTimePeriodData timePeriodDataWithCodableData:v17];
+  intervalCounts = [(HKCodableChartTimePeriodSeriesDataSourceData *)v11 intervalCounts];
+  v18 = [HKCodableTimePeriodData timePeriodDataWithCodableData:intervalCounts];
 
   v19 = [(HKTimePeriodSeriesDataSource *)self _chartPointsWithStatisticsInterval:v14 dateIntervalsToTotals:v16 intervalCounts:v18 sourceTimeZone:v8];
 

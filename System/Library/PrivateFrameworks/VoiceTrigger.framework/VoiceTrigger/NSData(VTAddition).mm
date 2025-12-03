@@ -7,7 +7,7 @@
 - (id)MD5HashString
 {
   v20 = *MEMORY[0x277D85DE8];
-  CC_MD5([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_MD5([self bytes], objc_msgSend(self, "length"), md);
   v1 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X", md[0]];
   [v1 appendString:v2];

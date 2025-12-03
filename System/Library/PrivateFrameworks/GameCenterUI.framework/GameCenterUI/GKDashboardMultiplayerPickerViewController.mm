@@ -1,10 +1,10 @@
 @interface GKDashboardMultiplayerPickerViewController
 - (BOOL)nearbyOnly;
 - (BOOL)supportsNearby;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (GKDashboardMultiplayerPickerDelegate)multiplayerPickerDelegate;
-- (GKDashboardMultiplayerPickerViewController)initWithMaxSelectable:(int64_t)a3 hiddenPlayers:(id)a4 nearbyOnly:(BOOL)a5 pickerOrigin:(int64_t)a6;
+- (GKDashboardMultiplayerPickerViewController)initWithMaxSelectable:(int64_t)selectable hiddenPlayers:(id)players nearbyOnly:(BOOL)only pickerOrigin:(int64_t)origin;
 - (NSLayoutConstraint)composeTextViewContainerBackgroundHeightConstraint;
 - (NSLayoutConstraint)navigationHeaderHeightConstraint;
 - (UIButton)customizeMessageButton;
@@ -23,113 +23,113 @@
 - (UIView)dividerLine;
 - (UIVisualEffectView)backgroundEffectView;
 - (UIVisualEffectView)navigationVisualEffectBackground;
-- (id)blurEffectForTraitCollection:(id)a3;
-- (id)composedNameForSuggestedMessageGroup:(id)a3;
+- (id)blurEffectForTraitCollection:(id)collection;
+- (id)composedNameForSuggestedMessageGroup:(id)group;
 - (id)createSortPickerMenu;
 - (id)preferredFocusEnvironments;
 - (id)searchFieldPlaceHolderText;
 - (void)_updateButtonEnableState;
 - (void)_updateCollectionView;
-- (void)addMessage:(id)a3;
-- (void)addRecipientForPlayers:(id)a3 withName:(id)a4;
+- (void)addMessage:(id)message;
+- (void)addRecipientForPlayers:(id)players withName:(id)name;
 - (void)adjustCustomizeMessageConstraint;
-- (void)cancel:(id)a3;
+- (void)cancel:(id)cancel;
 - (void)clearSelection;
 - (void)collapseHeaderView;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4;
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 didSelectRecipients:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3;
-- (void)composeRecipientViewReturnPressed:(id)a3;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size;
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view didSelectRecipients:(id)recipients;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder;
+- (void)composeRecipientViewReturnPressed:(id)pressed;
 - (void)configureComposeTextView;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)customInviteViewController:(id)a3 didFinishWithMessage:(id)a4;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)customInviteViewController:(id)controller didFinishWithMessage:(id)message;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
 - (void)didBeginSearchTextEditing;
 - (void)didEndSearchTextEditing;
-- (void)didPressShowContactPickerButton:(id)a3;
+- (void)didPressShowContactPickerButton:(id)button;
 - (void)dockHeaderViewIfNeeded;
-- (void)handleSearchTextFieldReturn:(id)a3;
-- (void)highlightAlreadySelectedPlayers:(id)a3 inGroup:(id)a4;
-- (void)highlightRecipients:(id)a3;
-- (void)pickerDatasource:(id)a3 didDeselectPlayers:(id)a4 inGroup:(id)a5;
-- (void)pickerDatasource:(id)a3 didPickPlayers:(id)a4;
-- (void)pickerDatasource:(id)a3 didSelectPlayers:(id)a4 inGroup:(id)a5;
-- (void)pickerDatasourceDidSelectAddFriend:(id)a3;
-- (void)removeRecipientWithName:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)send:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setNearbyDelegate:(id)a3;
-- (void)setSearchText:(id)a3;
-- (void)setSupportsNearby:(BOOL)a3;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
+- (void)handleSearchTextFieldReturn:(id)return;
+- (void)highlightAlreadySelectedPlayers:(id)players inGroup:(id)group;
+- (void)highlightRecipients:(id)recipients;
+- (void)pickerDatasource:(id)datasource didDeselectPlayers:(id)players inGroup:(id)group;
+- (void)pickerDatasource:(id)datasource didPickPlayers:(id)players;
+- (void)pickerDatasource:(id)datasource didSelectPlayers:(id)players inGroup:(id)group;
+- (void)pickerDatasourceDidSelectAddFriend:(id)friend;
+- (void)removeRecipientWithName:(id)name;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)send:(id)send;
+- (void)setMessage:(id)message;
+- (void)setNearbyDelegate:(id)delegate;
+- (void)setSearchText:(id)text;
+- (void)setSupportsNearby:(BOOL)nearby;
+- (void)setupNoContentView:(id)view withError:(id)error;
 - (void)showCollapsedTitleAndSubtitleInNavBar;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateAddMessageButtonVisibility;
 - (void)updateCollectionViewContentInsets;
 - (void)updateNavHeaderHeightAndOpacity;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willShowKeyboard:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willShowKeyboard:(id)keyboard;
 @end
 
 @implementation GKDashboardMultiplayerPickerViewController
 
-- (GKDashboardMultiplayerPickerViewController)initWithMaxSelectable:(int64_t)a3 hiddenPlayers:(id)a4 nearbyOnly:(BOOL)a5 pickerOrigin:(int64_t)a6
+- (GKDashboardMultiplayerPickerViewController)initWithMaxSelectable:(int64_t)selectable hiddenPlayers:(id)players nearbyOnly:(BOOL)only pickerOrigin:(int64_t)origin
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = [objc_opt_class() _gkPlatformNibName];
+  onlyCopy = only;
+  playersCopy = players;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17.receiver = self;
   v17.super_class = GKDashboardMultiplayerPickerViewController;
-  v13 = [(GKDashboardCollectionViewController *)&v17 initWithNibName:v11 bundle:v12];
+  v13 = [(GKDashboardCollectionViewController *)&v17 initWithNibName:_gkPlatformNibName bundle:v12];
 
   if (v13)
   {
-    v14 = [[GKDashboardMultiplayerPickerDataSource alloc] initWithMaxSelectable:a3 previouslyInvitedPlayers:v10 nearbyOnly:v7 pickerOrigin:a6];
+    v14 = [[GKDashboardMultiplayerPickerDataSource alloc] initWithMaxSelectable:selectable previouslyInvitedPlayers:playersCopy nearbyOnly:onlyCopy pickerOrigin:origin];
     [(GKDashboardMultiplayerPickerDataSource *)v14 setDelegate:v13];
     [(GKCollectionDataSource *)v14 setBreakSearchInputTextIntoMultipleTerms:0];
     [(GKCollectionDataSource *)v14 setPresentationViewController:v13];
     [(GKDashboardCollectionViewController *)v13 setDataSource:v14];
     [(GKLoadingViewController *)v13 setLoadingIndicatorDelay:0.0];
-    if ([v10 count])
+    if ([playersCopy count])
     {
-      v15 = [MEMORY[0x277D0C1F8] reporter];
-      [v15 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBD0]];
+      reporter = [MEMORY[0x277D0C1F8] reporter];
+      [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBD0]];
     }
 
-    [(GKDashboardMultiplayerPickerViewController *)v13 setPickerOrigin:a6];
+    [(GKDashboardMultiplayerPickerViewController *)v13 setPickerOrigin:origin];
   }
 
   return v13;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardMultiplayerPickerViewController *)&v8 viewWillDisappear:a3];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  [v4 setDelegate:0];
+  [(GKDashboardMultiplayerPickerViewController *)&v8 viewWillDisappear:disappear];
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  [searchTextField setDelegate:0];
 
   completionHandler = self->_completionHandler;
   if (completionHandler)
@@ -138,20 +138,20 @@
     [(GKDashboardMultiplayerPickerViewController *)self setCompletionHandler:0];
   }
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76C60] object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76C50] object:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardMultiplayerPickerViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  [v4 setNearbyPlayersChangedHandler:0];
+  [(GKDashboardMultiplayerPickerViewController *)&v5 viewDidDisappear:disappear];
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  [pickerDataSource setNearbyPlayersChangedHandler:0];
 
   [(GKDashboardCollectionViewController *)self setDataSource:0];
 }
@@ -172,44 +172,44 @@
   [(GKDashboardCollectionViewController *)&v91 viewDidLoad];
   val = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
   [val setOnDarkBackground:1];
-  v3 = [MEMORY[0x277D0C138] local];
-  v4 = ([v3 isMultiplayerGamingRestricted] & 1) != 0 || -[GKDashboardMultiplayerPickerViewController pickerOrigin](self, "pickerOrigin") != 1;
+  local = [MEMORY[0x277D0C138] local];
+  v4 = ([local isMultiplayerGamingRestricted] & 1) != 0 || -[GKDashboardMultiplayerPickerViewController pickerOrigin](self, "pickerOrigin") != 1;
   [(GKDashboardMultiplayerPickerViewController *)self setExcludesContacts:v4];
 
   objc_initWeak(&location, self);
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-  v6 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  [v6 setPlaceholder:v5];
+  searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  [searchTextField setPlaceholder:searchFieldPlaceHolderText];
 
-  v7 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  [v7 setDelegate:self];
+  searchTextField2 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  [searchTextField2 setDelegate:self];
 
   [(GKDashboardMultiplayerPickerViewController *)self configureComposeTextView];
-  v8 = [(GKDashboardCollectionViewController *)self collectionView];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
   [(GKDashboardCollectionViewController *)self setAutoWidthUsesTwoColumnsWhenSpace:0];
-  [v8 setPrefetchingEnabled:0];
-  v9 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
-  v10 = [v9 navigationBar];
-  [v10 setPrefersLargeTitles:0];
+  [collectionView setPrefetchingEnabled:0];
+  navigationController = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setPrefersLargeTitles:0];
 
   v11 = objc_alloc(MEMORY[0x277D75788]);
-  v12 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
-  v13 = [v12 navigationBar];
-  v14 = [v13 standardAppearance];
-  v15 = [v11 initWithBarAppearance:v14];
+  navigationController2 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
+  navigationBar2 = [navigationController2 navigationBar];
+  standardAppearance = [navigationBar2 standardAppearance];
+  v15 = [v11 initWithBarAppearance:standardAppearance];
 
   [v15 configureWithTransparentBackground];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [v15 setShadowColor:v16];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v15 setShadowColor:clearColor];
 
   v17 = objc_alloc_init(MEMORY[0x277D755B8]);
   [v15 setShadowImage:v17];
 
-  v18 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-  [v18 setStandardAppearance:v15];
+  navigationItem = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+  [navigationItem setStandardAppearance:v15];
 
-  v19 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-  [v19 setScrollEdgeAppearance:v15];
+  navigationItem2 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+  [navigationItem2 setScrollEdgeAppearance:v15];
 
   v20 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v20 setSpacing:28.0];
@@ -228,8 +228,8 @@
   v81 = [v24 imageWithRenderingMode:2];
 
   v25 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v81 style:0 target:self action:sel_send_];
-  v26 = [MEMORY[0x277D75348] labelColor];
-  [v25 setTintColor:v26];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v25 setTintColor:labelColor];
 
   v27 = GKGameCenterUIFrameworkBundle();
   v28 = GKGetLocalizedStringFromTableInBundle();
@@ -241,8 +241,8 @@
   v80 = [v29 imageWithRenderingMode:2];
 
   v30 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v80 style:0 target:self action:sel_addMessage_];
-  v31 = [MEMORY[0x277D75348] labelColor];
-  [v30 setTintColor:v31];
+  labelColor2 = [MEMORY[0x277D75348] labelColor];
+  [v30 setTintColor:labelColor2];
 
   v32 = GKGameCenterUIFrameworkBundle();
   v33 = GKGetLocalizedStringFromTableInBundle();
@@ -252,20 +252,20 @@
   v92[0] = v25;
   v92[1] = v30;
   v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v92 count:2];
-  v35 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-  [v35 setRightBarButtonItems:v34];
+  navigationItem3 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItems:v34];
 
-  v36 = [MEMORY[0x277D75348] whiteColor];
-  v37 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
-  v38 = [v37 navigationBar];
-  [v38 setTintColor:v36];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  navigationController3 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
+  navigationBar3 = [navigationController3 navigationBar];
+  [navigationBar3 setTintColor:whiteColor];
 
-  v39 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  headerTitle = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
   v40 = *MEMORY[0x277D76808];
-  [v39 setMaximumContentSizeCategory:*MEMORY[0x277D76808]];
+  [headerTitle setMaximumContentSizeCategory:*MEMORY[0x277D76808]];
 
-  v41 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  [v41 setMaximumContentSizeCategory:v40];
+  headerSubtitle = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  [headerSubtitle setMaximumContentSizeCategory:v40];
 
   objc_initWeak(&from, val);
   v85[0] = MEMORY[0x277D85DD0];
@@ -274,81 +274,81 @@
   v85[3] = &unk_27966ACD8;
   objc_copyWeak(&v87, &location);
   objc_copyWeak(&v88, &from);
-  v77 = v8;
+  v77 = collectionView;
   v86 = v77;
   [val setNearbyPlayersChangedHandler:v85];
   [(GKDashboardMultiplayerPickerViewController *)self _updateCollectionView];
   [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint constant];
   self->_initialCustomizeMessageBottomConstraintConstant = v42;
   [(GKDashboardMultiplayerPickerViewController *)self adjustCustomizeMessageConstraint];
-  v43 = [(GKDashboardCollectionViewController *)self dataSource];
-  v44 = [v43 maxSelectable];
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  maxSelectable = [dataSource maxSelectable];
 
   v45 = MEMORY[0x277CCACA8];
   v46 = GKGameCenterUIFrameworkBundle();
   v47 = GKGetLocalizedStringFromTableInBundle();
-  v48 = [val selectedPlayers];
-  v49 = [v45 localizedStringWithFormat:v47, objc_msgSend(v48, "count"), v44];
+  selectedPlayers = [val selectedPlayers];
+  v49 = [v45 localizedStringWithFormat:v47, objc_msgSend(selectedPlayers, "count"), maxSelectable];
 
   [(GKDashboardMultiplayerPickerViewController *)self pickerOrigin];
   v50 = GKGameCenterUIFrameworkBundle();
   v51 = GKGetLocalizedStringFromTableInBundle();
 
-  v52 = [(GKDashboardMultiplayerPickerViewController *)self navigationVisualEffectBackground];
-  v53 = [v52 layer];
-  [v53 setAllowsGroupBlending:0];
+  navigationVisualEffectBackground = [(GKDashboardMultiplayerPickerViewController *)self navigationVisualEffectBackground];
+  layer = [navigationVisualEffectBackground layer];
+  [layer setAllowsGroupBlending:0];
 
-  v54 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  [v54 setText:v51];
+  headerTitle2 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  [headerTitle2 setText:v51];
 
-  v55 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  [v55 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.HeaderTitle"];
+  headerTitle3 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  [headerTitle3 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.HeaderTitle"];
 
-  v56 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  [v56 setNumberOfLines:1];
+  headerTitle4 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  [headerTitle4 setNumberOfLines:1];
 
-  v57 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  [v57 setAdjustsFontSizeToFitWidth:1];
+  headerTitle5 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  [headerTitle5 setAdjustsFontSizeToFitWidth:1];
 
-  v58 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  [v58 setText:v49];
+  headerSubtitle2 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  [headerSubtitle2 setText:v49];
 
-  v59 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  [v59 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.HeaderSubtitle"];
+  headerSubtitle3 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  [headerSubtitle3 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.HeaderSubtitle"];
 
-  v60 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  v61 = [v60 text];
-  v62 = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
-  [v62 setText:v61];
+  headerSubtitle4 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  text = [headerSubtitle4 text];
+  collapsedSubtitle = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
+  [collapsedSubtitle setText:text];
 
-  v63 = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
-  [v63 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.CollapsedSubtitle"];
+  collapsedSubtitle2 = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
+  [collapsedSubtitle2 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.CollapsedSubtitle"];
 
   v64 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D76A08]];
   v65 = [v64 fontDescriptorWithSymbolicTraits:2];
 
   v66 = [MEMORY[0x277D74300] fontWithDescriptor:v65 size:0.0];
-  v67 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  [v67 setFont:v66];
+  headerTitle6 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  [headerTitle6 setFont:v66];
 
-  v68 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  v69 = [v68 layer];
-  [v69 setCompositingFilter:*MEMORY[0x277CDA5E8]];
+  headerSubtitle5 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  layer2 = [headerSubtitle5 layer];
+  [layer2 setCompositingFilter:*MEMORY[0x277CDA5E8]];
 
   [(GKDashboardMultiplayerPickerViewController *)self setTitle:0];
-  v70 = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
-  [v70 setHidden:1];
+  showContactPickerButton = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
+  [showContactPickerButton setHidden:1];
 
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
   v71 = GKGameCenterUIFrameworkBundle();
   v72 = GKGetLocalizedStringFromTableInBundle();
-  v73 = [(GKDashboardMultiplayerPickerViewController *)self customizeMessageButton];
-  [v73 setAccessibilityLabel:v72];
+  customizeMessageButton = [(GKDashboardMultiplayerPickerViewController *)self customizeMessageButton];
+  [customizeMessageButton setAccessibilityLabel:v72];
 
   v74 = GKGameCenterUIFrameworkBundle();
   v75 = GKGetLocalizedStringFromTableInBundle();
-  v76 = [(GKDashboardMultiplayerPickerViewController *)self sendButton];
-  [v76 setAccessibilityLabel:v75];
+  sendButton = [(GKDashboardMultiplayerPickerViewController *)self sendButton];
+  [sendButton setAccessibilityLabel:v75];
 
   [(GKDashboardMultiplayerPickerViewController *)self setUsePreferredFocusCell:1];
   objc_destroyWeak(&v88);
@@ -424,13 +424,13 @@ void __57__GKDashboardMultiplayerPickerViewController_viewDidLoad__block_invoke_
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v47.receiver = self;
   v47.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v47 viewWillAppear:a3];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self backgroundEffectView];
-  if (v4)
+  [(GKDashboardCollectionViewController *)&v47 viewWillAppear:appear];
+  backgroundEffectView = [(GKDashboardMultiplayerPickerViewController *)self backgroundEffectView];
+  if (backgroundEffectView)
   {
     goto LABEL_4;
   }
@@ -438,45 +438,45 @@ void __57__GKDashboardMultiplayerPickerViewController_viewDidLoad__block_invoke_
   if ([(GKDashboardMultiplayerPickerViewController *)self pickerOrigin]== 1)
   {
     v5 = objc_alloc(MEMORY[0x277D75D68]);
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
-    v7 = [(GKDashboardMultiplayerPickerViewController *)self blurEffectForTraitCollection:v6];
-    v4 = [v5 initWithEffect:v7];
+    traitCollection = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
+    v7 = [(GKDashboardMultiplayerPickerViewController *)self blurEffectForTraitCollection:traitCollection];
+    backgroundEffectView = [v5 initWithEffect:v7];
 
-    v8 = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
-    [v4 setBackgroundEffects:v8];
+    _gkGameLayerBackgroundVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerBackgroundVisualEffect];
+    [backgroundEffectView setBackgroundEffects:_gkGameLayerBackgroundVisualEffect];
 
-    [v4 _setGroupName:@"gameLayerGroup"];
-    v9 = [(GKDashboardMultiplayerPickerViewController *)self view];
-    [v9 bounds];
-    [v4 setFrame:?];
+    [backgroundEffectView _setGroupName:@"gameLayerGroup"];
+    view = [(GKDashboardMultiplayerPickerViewController *)self view];
+    [view bounds];
+    [backgroundEffectView setFrame:?];
 
-    [v4 setAutoresizingMask:18];
-    v10 = [(GKDashboardMultiplayerPickerViewController *)self view];
-    [v10 insertSubview:v4 atIndex:0];
+    [backgroundEffectView setAutoresizingMask:18];
+    view2 = [(GKDashboardMultiplayerPickerViewController *)self view];
+    [view2 insertSubview:backgroundEffectView atIndex:0];
 
-    [(GKDashboardMultiplayerPickerViewController *)self setBackgroundEffectView:v4];
+    [(GKDashboardMultiplayerPickerViewController *)self setBackgroundEffectView:backgroundEffectView];
 LABEL_4:
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:self selector:sel_willShowKeyboard_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_willShowKeyboard_ name:*MEMORY[0x277D76C60] object:0];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_willHideKeyboard_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_willHideKeyboard_ name:*MEMORY[0x277D76C50] object:0];
 
-  v13 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
-  v14 = [v13 viewControllers];
-  v15 = [v14 count];
+  navigationController = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v15 = [viewControllers count];
 
   if (v15 == 1)
   {
-    v16 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-    v17 = [v16 leftBarButtonItem];
+    navigationItem = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-    if (!v17)
+    if (!leftBarButtonItem)
     {
-      v18 = [MEMORY[0x277D75128] sharedApplication];
-      v19 = [v18 statusBarOrientation] - 1;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      v19 = [mEMORY[0x277D75128] statusBarOrientation] - 1;
 
       v20 = objc_alloc_init(MEMORY[0x277D75D18]);
       v21 = [GKFocusableButton buttonWithType:1];
@@ -488,75 +488,75 @@ LABEL_4:
       [v21 setTitle:v24 forState:0];
 
       [v21 addTarget:self action:sel_cancel_ forEvents:0x2000];
-      v25 = [MEMORY[0x277D75348] labelColor];
-      [v21 setTintColor:v25];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      [v21 setTintColor:labelColor];
 
       v26 = *MEMORY[0x277CDA5E8];
-      v27 = [v21 layer];
-      [v27 setCompositingFilter:v26];
+      layer = [v21 layer];
+      [layer setCompositingFilter:v26];
 
-      v28 = [v21 titleLabel];
-      [v28 setAdjustsFontForContentSizeCategory:1];
+      titleLabel = [v21 titleLabel];
+      [titleLabel setAdjustsFontForContentSizeCategory:1];
 
       [v21 setMaximumContentSizeCategory:*MEMORY[0x277D76828]];
       [v20 addSubview:v21];
       [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v29 = [v21 leadingAnchor];
-      v30 = [v20 leadingAnchor];
-      v31 = [v29 constraintEqualToAnchor:v30];
+      leadingAnchor = [v21 leadingAnchor];
+      leadingAnchor2 = [v20 leadingAnchor];
+      v31 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v31 setActive:1];
 
-      v32 = [v21 trailingAnchor];
-      v33 = [v20 trailingAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33];
+      trailingAnchor = [v21 trailingAnchor];
+      trailingAnchor2 = [v20 trailingAnchor];
+      v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [v34 setActive:1];
 
-      v35 = [v21 bottomAnchor];
-      v36 = [v20 bottomAnchor];
-      v37 = [v35 constraintEqualToAnchor:v36];
+      bottomAnchor = [v21 bottomAnchor];
+      bottomAnchor2 = [v20 bottomAnchor];
+      v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [v37 setActive:1];
 
-      v38 = [v21 topAnchor];
-      v39 = [v20 topAnchor];
+      topAnchor = [v21 topAnchor];
+      topAnchor2 = [v20 topAnchor];
       v40 = 0.0;
       if (v19 >= 2)
       {
-        v41 = [MEMORY[0x277D75418] currentDevice];
-        v42 = [v41 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
         v40 = 3.0;
-        if (v42 == 1)
+        if (userInterfaceIdiom == 1)
         {
           v40 = 0.0;
         }
       }
 
-      v43 = [v38 constraintEqualToAnchor:v39 constant:v40];
+      v43 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v40];
       [(GKDashboardMultiplayerPickerViewController *)self setLeftBarButtonTopConstraint:v43];
 
-      v44 = [(GKDashboardMultiplayerPickerViewController *)self leftBarButtonTopConstraint];
-      [v44 setActive:1];
+      leftBarButtonTopConstraint = [(GKDashboardMultiplayerPickerViewController *)self leftBarButtonTopConstraint];
+      [leftBarButtonTopConstraint setActive:1];
 
       v45 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v20];
-      v46 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-      [v46 setLeftBarButtonItem:v45];
+      navigationItem2 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:v45];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v15[2] = *MEMORY[0x277D85DE8];
   [(GKDashboardMultiplayerPickerViewController *)self setShouldIgnoreClearSelection:1];
   v13.receiver = self;
   v13.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v13 viewDidAppear:v3];
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
-  v6 = [v5 navigationBar];
-  [(GKDashboardMultiplayerPickerViewController *)self _gkConfigureFocusGuidesForNavigationBar:v6];
+  [(GKDashboardCollectionViewController *)&v13 viewDidAppear:appearCopy];
+  navigationController = [(GKDashboardMultiplayerPickerViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [(GKDashboardMultiplayerPickerViewController *)self _gkConfigureFocusGuidesForNavigationBar:navigationBar];
 
-  v7 = [MEMORY[0x277D0C1F8] reporter];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v8 = *MEMORY[0x277D0BEA0];
   v9 = *MEMORY[0x277D0BC28];
   v10 = *MEMORY[0x277D0BC38];
@@ -566,18 +566,18 @@ LABEL_4:
   v15[0] = *MEMORY[0x277D0BC78];
   v15[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  [v7 reportEvent:v8 type:v9 payload:v12];
+  [reporter reportEvent:v8 type:v9 payload:v12];
 }
 
 - (void)updateCollectionViewContentInsets
 {
-  v8 = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
-  [v8 frame];
+  headerContentView = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
+  [headerContentView frame];
   v4 = v3 + 16.0;
   [(GKDashboardMultiplayerPickerViewController *)self keyboardHeight];
   v6 = v5 + 16.0;
-  v7 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v7 setContentInset:{v4, 0.0, v6, 0.0}];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setContentInset:{v4, 0.0, v6, 0.0}];
 }
 
 - (void)adjustCustomizeMessageConstraint
@@ -586,22 +586,22 @@ LABEL_4:
   {
     if ((*MEMORY[0x277D0C258] & 1) == 0)
     {
-      v3 = [MEMORY[0x277D75418] currentDevice];
-      v4 = [v3 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v4 == 1)
+      if (userInterfaceIdiom == 1)
       {
-        v8 = [(GKDashboardMultiplayerPickerViewController *)self presentingViewController];
-        if (v8)
+        presentingViewController = [(GKDashboardMultiplayerPickerViewController *)self presentingViewController];
+        if (presentingViewController)
         {
           [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint setConstant:self->_initialCustomizeMessageBottomConstraintConstant];
         }
 
         else
         {
-          v5 = [(GKDashboardMultiplayerPickerViewController *)self tabBarController];
-          v6 = [v5 tabBar];
-          [v6 bounds];
+          tabBarController = [(GKDashboardMultiplayerPickerViewController *)self tabBarController];
+          tabBar = [tabBarController tabBar];
+          [tabBar bounds];
           [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint setConstant:v7 + self->_initialCustomizeMessageBottomConstraintConstant];
         }
       }
@@ -609,14 +609,14 @@ LABEL_4:
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = GKDashboardMultiplayerPickerViewController;
-  v7 = a4;
-  [(GKDashboardMultiplayerPickerViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(GKDashboardMultiplayerPickerViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
@@ -624,7 +624,7 @@ LABEL_4:
   v8[4] = self;
   *&v8[5] = width;
   *&v8[6] = height;
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global_12];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global_12];
 }
 
 void __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -673,36 +673,36 @@ void __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_w
   [v10 setConstant:v3];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v12.receiver = self;
   v12.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v12 traitCollectionDidChange:v4];
+  [(GKDashboardCollectionViewController *)&v12 traitCollectionDidChange:changeCopy];
   if (![(GKDashboardCollectionViewController *)self isLoading])
   {
     [(GKDashboardMultiplayerPickerViewController *)self _updateCollectionView];
     [(GKDashboardMultiplayerPickerViewController *)self updateNavHeaderHeightAndOpacity];
-    v5 = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
+    traitCollection = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    v7 = [v4 preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-    if (v7 != v6)
+    if (preferredContentSizeCategory2 != preferredContentSizeCategory)
     {
       v8 = MEMORY[0x277CCAA78];
-      v9 = [(GKDashboardCollectionViewController *)self collectionView];
-      v10 = [v8 indexSetWithIndexesInRange:{0, objc_msgSend(v9, "numberOfSections")}];
+      collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+      v10 = [v8 indexSetWithIndexesInRange:{0, objc_msgSend(collectionView, "numberOfSections")}];
 
-      v11 = [(GKDashboardCollectionViewController *)self collectionView];
-      [v11 reloadSections:v10];
+      collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+      [collectionView2 reloadSections:v10];
     }
   }
 }
 
-- (id)blurEffectForTraitCollection:(id)a3
+- (id)blurEffectForTraitCollection:(id)collection
 {
-  v3 = [a3 userInterfaceStyle] == 2;
+  v3 = [collection userInterfaceStyle] == 2;
   v4 = [MEMORY[0x277D75210] effectWithStyle:2 * v3];
 
   return v4;
@@ -710,16 +710,16 @@ void __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_w
 
 - (void)configureComposeTextView
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(GKDashboardMultiplayerPickerViewController *)self setRecipientMap:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(GKDashboardMultiplayerPickerViewController *)self setRecipientMap:dictionary];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(GKDashboardMultiplayerPickerViewController *)self setRecipientPlayerMap:v4];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(GKDashboardMultiplayerPickerViewController *)self setRecipientPlayerMap:dictionary2];
 
   [MEMORY[0x277CFBCB0] preferredHeight];
   v6 = v5;
-  v7 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-  [v7 setConstant:v6];
+  composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+  [composeTextViewHeightConstraint setConstant:v6];
 
   v28 = objc_alloc_init(MEMORY[0x277CFBCB0]);
   [v28 setDelegate:self];
@@ -729,118 +729,118 @@ void __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_w
   v11 = [v8 stringWithFormat:v10, &stru_28612D290];
   [v28 setLabel:v11];
 
-  v12 = [v28 textView];
-  [v12 setTextAlignment:4];
+  textView = [v28 textView];
+  [textView setTextAlignment:4];
 
   [v28 setSeparatorHidden:1];
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [v28 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v28 setBackgroundColor:clearColor];
 
-  v14 = [MEMORY[0x277D75348] labelColor];
-  [v28 setTintColor:v14];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v28 setTintColor:labelColor];
 
-  v15 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  v16 = [v28 textView];
-  [v16 setTextColor:v15];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  textView2 = [v28 textView];
+  [textView2 setTextColor:tertiaryLabelColor];
 
-  v17 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-  v18 = [v28 textView];
-  [v18 setText:v17];
+  searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+  textView3 = [v28 textView];
+  [textView3 setText:searchFieldPlaceHolderText];
 
   [(GKDashboardMultiplayerPickerViewController *)self setComposeTextViewShowingPlaceholderText:1];
   [v28 setShowsAddButtonWhenExpanded:0];
-  v19 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainer];
-  [v19 addSubview:v28];
+  composeTextViewContainer = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainer];
+  [composeTextViewContainer addSubview:v28];
 
   [v28 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v20 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainerBackground];
-  [v20 removeFromSuperview];
+  composeTextViewContainerBackground = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainerBackground];
+  [composeTextViewContainerBackground removeFromSuperview];
 
   v21 = MEMORY[0x277CCAAD0];
-  v22 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainer];
-  [v21 _gkInstallEdgeConstraintsForView:v28 containedWithinParentView:v22 edgeInsets:{5.0, -6.0, 0.0, 6.0}];
+  composeTextViewContainer2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewContainer];
+  [v21 _gkInstallEdgeConstraintsForView:v28 containedWithinParentView:composeTextViewContainer2 edgeInsets:{5.0, -6.0, 0.0, 6.0}];
 
   [(GKDashboardMultiplayerPickerViewController *)self setComposeTextView:v28];
-  v23 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  v24 = [v23 label];
-  [v24 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection.label"];
+  composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  label = [composeTextView label];
+  [label setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection.label"];
 
-  v25 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  [v25 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection"];
+  composeTextView2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  [composeTextView2 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection"];
 
-  v26 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  v27 = [v26 textView];
-  [v27 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection.placeHolderText"];
+  composeTextView3 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  textView4 = [composeTextView3 textView];
+  [textView4 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.composeSection.placeHolderText"];
 }
 
-- (void)addRecipientForPlayers:(id)a3 withName:(id)a4
+- (void)addRecipientForPlayers:(id)players withName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v20 = [[GKComposeRecipient alloc] initWithContact:0 address:v6 kind:5];
-  v8 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-  [v8 setObject:v20 forKeyedSubscript:v6];
+  nameCopy = name;
+  playersCopy = players;
+  v20 = [[GKComposeRecipient alloc] initWithContact:0 address:nameCopy kind:5];
+  recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+  [recipientMap setObject:v20 forKeyedSubscript:nameCopy];
 
-  v9 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-  [v9 setObject:v7 forKeyedSubscript:v20];
+  recipientPlayerMap = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+  [recipientPlayerMap setObject:playersCopy forKeyedSubscript:v20];
 
-  v10 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  [v10 addRecipient:v20];
+  composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  [composeTextView addRecipient:v20];
 
-  v11 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  v12 = [v11 atomViewForRecipient:v20];
+  composeTextView2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  v12 = [composeTextView2 atomViewForRecipient:v20];
 
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  v14 = [v13 colorWithAlphaComponent:0.1];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v14 = [whiteColor colorWithAlphaComponent:0.1];
   [v12 setBackgroundColor:v14];
 
-  v15 = [MEMORY[0x277D75348] systemGrayColor];
-  [v12 setTintColor:v15];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v12 setTintColor:systemGrayColor];
 
-  v16 = [MEMORY[0x277D75348] labelColor];
-  v17 = [v12 titleLabel];
-  [v17 setTextColor:v16];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  titleLabel = [v12 titleLabel];
+  [titleLabel setTextColor:labelColor];
 
   v18 = *MEMORY[0x277CDA5E8];
-  v19 = [v12 layer];
-  [v19 setCompositingFilter:v18];
+  layer = [v12 layer];
+  [layer setCompositingFilter:v18];
 }
 
-- (void)removeRecipientWithName:(id)a3
+- (void)removeRecipientWithName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v10 = v4;
-    v5 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-    v6 = [v5 objectForKeyedSubscript:v10];
+    v10 = nameCopy;
+    recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+    v6 = [recipientMap objectForKeyedSubscript:v10];
 
     [(GKDashboardMultiplayerPickerViewController *)self setRecipientRemovedImplicitly:1];
-    v7 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-    [v7 removeRecipient:v6];
+    composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+    [composeTextView removeRecipient:v6];
 
     [(GKDashboardMultiplayerPickerViewController *)self setRecipientRemovedImplicitly:0];
     if (v6)
     {
-      v8 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-      [v8 removeObjectForKey:v6];
+      recipientPlayerMap = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+      [recipientPlayerMap removeObjectForKey:v6];
     }
 
-    v9 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-    [v9 removeObjectForKey:v10];
+    recipientMap2 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+    [recipientMap2 removeObjectForKey:v10];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)highlightRecipients:(id)a3
+- (void)highlightRecipients:(id)recipients
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = recipients;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -857,8 +857,8 @@ void __97__GKDashboardMultiplayerPickerViewController_viewWillTransitionToSize_w
         }
 
         v8 = *(*(&v18 + 1) + 8 * v7);
-        v9 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-        v10 = [v9 atomViewForRecipient:v8];
+        composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+        v10 = [composeTextView atomViewForRecipient:v8];
 
         v11 = MEMORY[0x277D75D18];
         v16[0] = MEMORY[0x277D85DD0];
@@ -910,52 +910,52 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
   [*(a1 + 32) setBackgroundColor:v2];
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v7 = a3;
+  messageCopy = message;
   if (![(NSString *)self->_message isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [messageCopy copy];
     message = self->_message;
     self->_message = v4;
 
     WeakRetained = objc_loadWeakRetained(&self->_messageField);
-    [WeakRetained setText:v7];
+    [WeakRetained setText:messageCopy];
   }
 }
 
 - (BOOL)supportsNearby
 {
-  v2 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v3 = [v2 supportsNearby];
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  supportsNearby = [pickerDataSource supportsNearby];
 
-  return v3;
+  return supportsNearby;
 }
 
-- (void)setSupportsNearby:(BOOL)a3
+- (void)setSupportsNearby:(BOOL)nearby
 {
-  v3 = a3;
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  [v5 setSupportsNearby:v3];
+  nearbyCopy = nearby;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  [pickerDataSource setSupportsNearby:nearbyCopy];
 
-  v7 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-  v6 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  [v6 setPlaceholder:v7];
+  searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  [searchTextField setPlaceholder:searchFieldPlaceHolderText];
 }
 
 - (BOOL)nearbyOnly
 {
-  v2 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v3 = [v2 nearbyOnly];
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  nearbyOnly = [pickerDataSource nearbyOnly];
 
-  return v3;
+  return nearbyOnly;
 }
 
-- (void)setNearbyDelegate:(id)a3
+- (void)setNearbyDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  [v5 setNearbyDelegate:v4];
+  delegateCopy = delegate;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  [pickerDataSource setNearbyDelegate:delegateCopy];
 }
 
 - (id)searchFieldPlaceHolderText
@@ -967,33 +967,33 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
   return v3;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  v5 = [v4 textView];
-  v6 = [v5 isFirstResponder];
+  composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  textView = [composeTextView textView];
+  isFirstResponder = [textView isFirstResponder];
 
-  if (v6)
+  if (isFirstResponder)
   {
     [(GKDashboardMultiplayerPickerViewController *)self setSkipAddressTokenization:1];
-    v7 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-    v8 = [v7 textView];
-    [v8 resignFirstResponder];
+    composeTextView2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+    textView2 = [composeTextView2 textView];
+    [textView2 resignFirstResponder];
 
     [(GKDashboardMultiplayerPickerViewController *)self setSkipAddressTokenization:0];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
+  scrollCopy = scroll;
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
 
-  if (v6 == v4)
+  if (collectionView == scrollCopy)
   {
-    v5 = [(GKDashboardMultiplayerPickerViewController *)self isAnimatingComposeTextViewSizeChange];
+    isAnimatingComposeTextViewSizeChange = [(GKDashboardMultiplayerPickerViewController *)self isAnimatingComposeTextViewSizeChange];
 
-    if (!v5)
+    if (!isAnimatingComposeTextViewSizeChange)
     {
 
       [(GKDashboardMultiplayerPickerViewController *)self updateNavHeaderHeightAndOpacity];
@@ -1007,15 +1007,15 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
 
 - (void)updateNavHeaderHeightAndOpacity
 {
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
 
-  v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-  if ([v6 horizontalSizeClass] == 1)
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  if ([currentTraitCollection horizontalSizeClass] == 1)
   {
-    v7 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v8 = [v7 verticalSizeClass] != 2;
+    currentTraitCollection2 = [MEMORY[0x277D75C80] currentTraitCollection];
+    v8 = [currentTraitCollection2 verticalSizeClass] != 2;
   }
 
   else
@@ -1023,29 +1023,29 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
     v8 = 1;
   }
 
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v10 == 1 || v8)
+  if (userInterfaceIdiom == 1 || v8)
   {
-    v11 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-    [v11 constant];
+    composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+    [composeTextViewHeightConstraint constant];
     v13 = v14;
   }
 
   else
   {
-    v11 = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
-    [v11 frame];
+    composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
+    [composeTextViewHeightConstraint frame];
     v13 = v12;
   }
 
-  v15 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v15 safeAreaInsets];
+  view = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view safeAreaInsets];
   v17 = v13 + v16 + 16.0;
 
-  v18 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v18 safeAreaInsets];
+  view2 = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view2 safeAreaInsets];
   v20 = -v5 - v19 + -16.0;
 
   if (v13 >= v20)
@@ -1053,8 +1053,8 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
     v20 = v13;
   }
 
-  v21 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-  [v21 setConstant:v20];
+  navigationHeaderHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+  [navigationHeaderHeightConstraint setConstant:v20];
 
   v22 = (v5 + v17) / 24.0;
   if (v22 > 1.0)
@@ -1063,15 +1063,15 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
   }
 
   v23 = fmax(v22, 0.0);
-  v24 = [(GKDashboardMultiplayerPickerViewController *)self navigationVisualEffectBackground];
-  v25 = [v24 layer];
+  navigationVisualEffectBackground = [(GKDashboardMultiplayerPickerViewController *)self navigationVisualEffectBackground];
+  layer = [navigationVisualEffectBackground layer];
   *&v26 = v23;
-  [v25 setOpacity:v26];
+  [layer setOpacity:v26];
 
-  v27 = [MEMORY[0x277D75418] currentDevice];
-  v28 = [v27 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v28 == 1 || v8) && (-[GKDashboardMultiplayerPickerViewController navigationHeaderHeightConstraint](self, "navigationHeaderHeightConstraint"), v29 = objc_claimAutoreleasedReturnValue(), [v29 constant], v31 = v30, v29, v31 <= v13))
+  if ((userInterfaceIdiom2 == 1 || v8) && (-[GKDashboardMultiplayerPickerViewController navigationHeaderHeightConstraint](self, "navigationHeaderHeightConstraint"), v29 = objc_claimAutoreleasedReturnValue(), [v29 constant], v31 = v30, v29, v31 <= v13))
   {
 
     [(GKDashboardMultiplayerPickerViewController *)self showCollapsedTitleAndSubtitleInNavBar];
@@ -1079,8 +1079,8 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
 
   else
   {
-    v32 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-    [v32 setTitleView:0];
+    navigationItem = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+    [navigationItem setTitleView:0];
   }
 }
 
@@ -1090,36 +1090,36 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
   v3 = objc_alloc_init(MEMORY[0x277D75A68]);
   [v3 setAxis:1];
   v4 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
-  v6 = [v5 text];
-  [v4 setText:v6];
+  headerTitle = [(GKDashboardMultiplayerPickerViewController *)self headerTitle];
+  text = [headerTitle text];
+  [v4 setText:text];
 
   [v4 sizeToFit];
   v7 = [MEMORY[0x277D74300] _gkPreferredFontForTextStyle:*MEMORY[0x277D76988] symbolicTraits:2];
   [v4 setFont:v7];
 
-  v8 = [MEMORY[0x277D75348] labelColor];
-  [v4 setTextColor:v8];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v4 setTextColor:labelColor];
 
   [v4 setAdjustsFontForContentSizeCategory:1];
   v9 = *MEMORY[0x277D76828];
   [v4 setMaximumContentSizeCategory:*MEMORY[0x277D76828]];
   [v3 addArrangedSubview:v4];
   v10 = objc_alloc_init(MEMORY[0x277D756B8]);
-  v11 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  v12 = [v11 text];
-  [v10 setText:v12];
+  headerSubtitle = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  text2 = [headerSubtitle text];
+  [v10 setText:text2];
 
   [v10 sizeToFit];
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
   [v10 setFont:v13];
 
-  v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v10 setTextColor:v14];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v10 setTextColor:secondaryLabelColor];
 
   v15 = *MEMORY[0x277CDA5E8];
-  v16 = [v10 layer];
-  [v16 setCompositingFilter:v15];
+  layer = [v10 layer];
+  [layer setCompositingFilter:v15];
 
   [v10 setAdjustsFontForContentSizeCategory:1];
   [v10 setMaximumContentSizeCategory:v9];
@@ -1129,59 +1129,59 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
   [v3 setDistribution:0];
   [v33 addSubview:v3];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [v3 heightAnchor];
-  v18 = [v17 constraintGreaterThanOrEqualToConstant:44.0];
+  heightAnchor = [v3 heightAnchor];
+  v18 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
   [v18 setActive:1];
 
-  v19 = [v3 bottomAnchor];
-  v20 = [v33 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor = [v3 bottomAnchor];
+  bottomAnchor2 = [v33 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
   LODWORD(v22) = 1144750080;
   [v21 setPriority:v22];
   [v21 setActive:1];
-  v23 = [v3 topAnchor];
-  v24 = [v33 topAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  topAnchor = [v3 topAnchor];
+  topAnchor2 = [v33 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v25 setActive:1];
 
-  v26 = [v3 leadingAnchor];
-  v27 = [v33 leadingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  leadingAnchor = [v3 leadingAnchor];
+  leadingAnchor2 = [v33 leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v28 setActive:1];
 
-  v29 = [v3 trailingAnchor];
-  v30 = [v33 trailingAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  trailingAnchor = [v3 trailingAnchor];
+  trailingAnchor2 = [v33 trailingAnchor];
+  v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v31 setActive:1];
 
-  v32 = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
-  [v32 setTitleView:v33];
+  navigationItem = [(GKDashboardMultiplayerPickerViewController *)self navigationItem];
+  [navigationItem setTitleView:v33];
 }
 
 - (void)dockHeaderViewIfNeeded
 {
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
   v7 = v6;
 
-  v33 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-  [v33 constant];
+  navigationHeaderHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+  [navigationHeaderHeightConstraint constant];
   v9 = v8;
-  v10 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-  [v10 constant];
+  composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+  [composeTextViewHeightConstraint constant];
   if (v9 <= v11)
   {
   }
 
   else
   {
-    v12 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-    [v12 constant];
+    navigationHeaderHeightConstraint2 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+    [navigationHeaderHeightConstraint2 constant];
     v14 = v13;
-    v15 = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
-    [v15 frame];
+    headerContentView = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
+    [headerContentView frame];
     v17 = v16;
 
     if (v14 >= v17)
@@ -1189,18 +1189,18 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
       return;
     }
 
-    v18 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-    [v18 constant];
+    navigationHeaderHeightConstraint3 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+    [navigationHeaderHeightConstraint3 constant];
     v20 = v19;
-    v21 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-    [v21 constant];
+    composeTextViewHeightConstraint2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+    [composeTextViewHeightConstraint2 constant];
     v23 = v20 - v22;
 
-    v24 = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
-    [v24 frame];
+    headerContentView2 = [(GKDashboardMultiplayerPickerViewController *)self headerContentView];
+    [headerContentView2 frame];
     v26 = v25;
-    v27 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-    [v27 constant];
+    composeTextViewHeightConstraint3 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+    [composeTextViewHeightConstraint3 constant];
     v29 = v26 - v28;
 
     if (v23 >= v29 * 0.5)
@@ -1214,128 +1214,128 @@ void __66__GKDashboardMultiplayerPickerViewController_highlightRecipients___bloc
     }
 
     v31 = v7 + v30;
-    v32 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v32 setScrollEnabled:0];
+    collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView2 setScrollEnabled:0];
 
-    v33 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v33 setContentOffset:1 animated:{v5, v31}];
+    navigationHeaderHeightConstraint = [(GKDashboardCollectionViewController *)self collectionView];
+    [navigationHeaderHeightConstraint setContentOffset:1 animated:{v5, v31}];
   }
 }
 
 - (void)collapseHeaderView
 {
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-  [v8 constant];
+  navigationHeaderHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+  [navigationHeaderHeightConstraint constant];
   v10 = v9;
-  v11 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-  [v11 constant];
+  composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+  [composeTextViewHeightConstraint constant];
   v13 = v12;
 
   if (v10 > v13)
   {
-    v14 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
-    [v14 constant];
+    navigationHeaderHeightConstraint2 = [(GKDashboardMultiplayerPickerViewController *)self navigationHeaderHeightConstraint];
+    [navigationHeaderHeightConstraint2 constant];
     v16 = v15;
-    v17 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-    [v17 constant];
+    composeTextViewHeightConstraint2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+    [composeTextViewHeightConstraint2 constant];
     v19 = v16 - v18;
 
-    v20 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v20 setScrollEnabled:0];
+    collectionView2 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView2 setScrollEnabled:0];
 
-    v21 = [(GKDashboardCollectionViewController *)self collectionView];
-    [v21 setContentOffset:1 animated:{v5, v7 + v19}];
+    collectionView3 = [(GKDashboardCollectionViewController *)self collectionView];
+    [collectionView3 setContentOffset:1 animated:{v5, v7 + v19}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v5 = a3;
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
+  draggingCopy = dragging;
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
 
-  if (v6 == v5)
+  if (collectionView == draggingCopy)
   {
 
     [(GKDashboardMultiplayerPickerViewController *)self dockHeaderViewIfNeeded];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self collectionView];
+  deceleratingCopy = decelerating;
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
 
-  if (v5 == v4)
+  if (collectionView == deceleratingCopy)
   {
 
     [(GKDashboardMultiplayerPickerViewController *)self dockHeaderViewIfNeeded];
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v3 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v3 setScrollEnabled:1];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setScrollEnabled:1];
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v9 = [v8 searchText];
-  v10 = [v9 length];
+  viewCopy = view;
+  errorCopy = error;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  searchText = [pickerDataSource searchText];
+  v10 = [searchText length];
 
   if (v10)
   {
     v11 = GKGameCenterUIFrameworkBundle();
     v12 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setTitle:v12];
+    [viewCopy setTitle:v12];
 
-    [v6 setMessage:0];
+    [viewCopy setMessage:0];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = GKDashboardMultiplayerPickerViewController;
-    [(GKDashboardCollectionViewController *)&v13 setupNoContentView:v6 withError:v7];
+    [(GKDashboardCollectionViewController *)&v13 setupNoContentView:viewCopy withError:errorCopy];
   }
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
   v5.receiver = self;
   v5.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v5 dataUpdated:a3 withError:a4];
+  [(GKDashboardCollectionViewController *)&v5 dataUpdated:updated withError:error];
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
 }
 
 - (id)preferredFocusEnvironments
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v4 = [v3 showsAllFriends];
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  showsAllFriends = [pickerDataSource showsAllFriends];
 
-  if (v4)
+  if (showsAllFriends)
   {
     v5 = MEMORY[0x277CCAA70];
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-    v7 = [v5 indexPathForItem:objc_msgSend(v6 inSection:{"numberOfFriendsToShowInitially"), 1}];
+    pickerDataSource2 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+    v7 = [v5 indexPathForItem:objc_msgSend(pickerDataSource2 inSection:{"numberOfFriendsToShowInitially"), 1}];
 
-    v8 = [(GKDashboardCollectionViewController *)self collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v7];
+    collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+    v9 = [collectionView cellForItemAtIndexPath:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v15[0] = v9;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
+      preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
 
 LABEL_8:
       goto LABEL_11;
@@ -1350,7 +1350,7 @@ LABEL_8:
     if (v7)
     {
       v14 = v7;
-      v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
+      preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
       goto LABEL_8;
     }
   }
@@ -1361,18 +1361,18 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = GKDashboardMultiplayerPickerViewController;
-  v10 = [(GKDashboardCollectionViewController *)&v13 preferredFocusEnvironments];
+  preferredFocusEnvironments = [(GKDashboardCollectionViewController *)&v13 preferredFocusEnvironments];
 LABEL_11:
 
-  return v10;
+  return preferredFocusEnvironments;
 }
 
 - (id)createSortPickerMenu
 {
   v28[2] = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v5 = [v4 friendSortFilterScope];
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  friendSortFilterScope = [pickerDataSource friendSortFilterScope];
 
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D750C8];
@@ -1386,7 +1386,7 @@ LABEL_11:
   v9 = [v6 actionWithTitle:v8 image:0 identifier:0 handler:v25];
 
   [v9 setAccessibilityIdentifier:@"GKDashBoardMultiplayerPickerView.Sort.Recents"];
-  [v9 setState:v5 == 0];
+  [v9 setState:friendSortFilterScope == 0];
   v10 = MEMORY[0x277D750C8];
   v11 = GKGameCenterUIFrameworkBundle();
   v12 = GKGetLocalizedStringFromTableInBundle();
@@ -1398,7 +1398,7 @@ LABEL_11:
   v13 = [v10 actionWithTitle:v12 image:0 identifier:0 handler:&v20];
 
   [v13 setAccessibilityIdentifier:{@"GKDashBoardMultiplayerPickerView.Sort.ABC", v20, v21, v22, v23}];
-  [v13 setState:v5 == 1];
+  [v13 setState:friendSortFilterScope == 1];
   v14 = MEMORY[0x277D75710];
   v15 = GKGameCenterUIFrameworkBundle();
   v16 = GKGetLocalizedStringFromTableInBundle();
@@ -1460,31 +1460,31 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
   objc_destroyWeak(&to);
 }
 
-- (void)pickerDatasource:(id)a3 didPickPlayers:(id)a4
+- (void)pickerDatasource:(id)datasource didPickPlayers:(id)players
 {
-  v11 = a4;
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+  playersCopy = players;
+  multiplayerPickerDelegate = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
-    v8 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-    v9 = [v8 selectedMessageGroups];
-    v10 = [(GKDashboardMultiplayerPickerViewController *)self message];
-    [v7 multiplayerPicker:self didPickPlayers:v11 messageGroups:v9 customMessage:v10];
+    multiplayerPickerDelegate2 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+    pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+    selectedMessageGroups = [pickerDataSource selectedMessageGroups];
+    message = [(GKDashboardMultiplayerPickerViewController *)self message];
+    [multiplayerPickerDelegate2 multiplayerPicker:self didPickPlayers:playersCopy messageGroups:selectedMessageGroups customMessage:message];
   }
 }
 
-- (void)pickerDatasourceDidSelectAddFriend:(id)a3
+- (void)pickerDatasourceDidSelectAddFriend:(id)friend
 {
   if (_os_feature_enabled_impl())
   {
     [_TtC12GameCenterUI15GKMetricsBridge recordInviteFriendClickEventWithType:2 pageType:@"multiplayer" pageId:@"friendSelect"];
-    v4 = [MEMORY[0x277D0C1D8] shared];
-    v5 = [v4 isAddingFriendsRestricted];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    isAddingFriendsRestricted = [mEMORY[0x277D0C1D8] isAddingFriendsRestricted];
 
-    if (v5)
+    if (isAddingFriendsRestricted)
     {
       v6 = MEMORY[0x277D75110];
       v7 = GKGameCenterUIFrameworkBundle();
@@ -1499,7 +1499,7 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
       v14 = [v11 actionWithTitle:v13 style:0 handler:0];
       [v18 addAction:v14];
 
-      v15 = self;
+      selfCopy2 = self;
       v16 = v18;
     }
 
@@ -1507,16 +1507,16 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
     {
       v16 = [GKFriendingViewControllers inviteFriendsWithContainerViewController:self];
       v18 = v16;
-      v15 = self;
+      selfCopy2 = self;
     }
 
-    [(GKDashboardMultiplayerPickerViewController *)v15 presentViewController:v16 animated:1 completion:0, v18];
+    [(GKDashboardMultiplayerPickerViewController *)selfCopy2 presentViewController:v16 animated:1 completion:0, v18];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D0BFA8] reporter];
-    [v17 recordClickWithAction:@"navigate" targetId:@"invite" targetType:@"button" pageId:@"friendSelect" pageType:@"multiplayer"];
+    reporter = [MEMORY[0x277D0BFA8] reporter];
+    [reporter recordClickWithAction:@"navigate" targetId:@"invite" targetType:@"button" pageId:@"friendSelect" pageType:@"multiplayer"];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -1527,28 +1527,28 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
   }
 }
 
-- (void)pickerDatasource:(id)a3 didSelectPlayers:(id)a4 inGroup:(id)a5
+- (void)pickerDatasource:(id)datasource didSelectPlayers:(id)players inGroup:(id)group
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && [v10 fromPeopleSuggester])
+  datasourceCopy = datasource;
+  playersCopy = players;
+  groupCopy = group;
+  v11 = groupCopy;
+  if (groupCopy && [groupCopy fromPeopleSuggester])
   {
     v12 = [(GKDashboardMultiplayerPickerViewController *)self composedNameForSuggestedMessageGroup:v11];
-    [(GKDashboardMultiplayerPickerViewController *)self addRecipientForPlayers:v9 withName:v12];
+    [(GKDashboardMultiplayerPickerViewController *)self addRecipientForPlayers:playersCopy withName:v12];
   }
 
   else
   {
-    v26 = v9;
-    v27 = v8;
+    v26 = playersCopy;
+    v27 = datasourceCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = v9;
+    v13 = playersCopy;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v14)
     {
@@ -1564,11 +1564,11 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
-          v19 = [v18 displayName];
-          v20 = v19;
-          if (v19)
+          displayName = [v18 displayName];
+          v20 = displayName;
+          if (displayName)
           {
-            v21 = v19;
+            v21 = displayName;
           }
 
           else
@@ -1589,14 +1589,14 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
       while (v15);
     }
 
-    v9 = v26;
-    v8 = v27;
+    playersCopy = v26;
+    datasourceCopy = v27;
   }
 
   v24 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource:v26];
-  v25 = [v24 isSearching];
+  isSearching = [v24 isSearching];
 
-  if (v25)
+  if (isSearching)
   {
     [(GKDashboardMultiplayerPickerViewController *)self didEndSearchTextEditing];
   }
@@ -1604,17 +1604,17 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
 }
 
-- (void)highlightAlreadySelectedPlayers:(id)a3 inGroup:(id)a4
+- (void)highlightAlreadySelectedPlayers:(id)players inGroup:(id)group
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 fromPeopleSuggester])
+  playersCopy = players;
+  groupCopy = group;
+  v8 = groupCopy;
+  if (groupCopy && [groupCopy fromPeopleSuggester])
   {
     v9 = [(GKDashboardMultiplayerPickerViewController *)self composedNameForSuggestedMessageGroup:v8];
-    v10 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-    v11 = [v10 objectForKeyedSubscript:v9];
+    recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+    v11 = [recipientMap objectForKeyedSubscript:v9];
 
     if (v11)
     {
@@ -1626,13 +1626,13 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
 
   else
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(playersCopy, "count")}];
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v6;
-    v13 = v6;
+    v25 = playersCopy;
+    v13 = playersCopy;
     v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v14)
     {
@@ -1648,11 +1648,11 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
           }
 
           v18 = *(*(&v26 + 1) + 8 * i);
-          v19 = [v18 displayName];
-          v20 = v19;
-          if (v19)
+          displayName = [v18 displayName];
+          v20 = displayName;
+          if (displayName)
           {
-            v21 = v19;
+            v21 = displayName;
           }
 
           else
@@ -1662,8 +1662,8 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
 
           v22 = v21;
 
-          v23 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-          v24 = [v23 objectForKeyedSubscript:v22];
+          recipientMap2 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+          v24 = [recipientMap2 objectForKeyedSubscript:v22];
 
           if (v24)
           {
@@ -1678,22 +1678,22 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
     }
 
     [(GKDashboardMultiplayerPickerViewController *)self highlightRecipients:v9];
-    v6 = v25;
+    playersCopy = v25;
   }
 }
 
-- (void)pickerDatasource:(id)a3 didDeselectPlayers:(id)a4 inGroup:(id)a5
+- (void)pickerDatasource:(id)datasource didDeselectPlayers:(id)players inGroup:(id)group
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10 && [v10 fromPeopleSuggester])
+  datasourceCopy = datasource;
+  playersCopy = players;
+  groupCopy = group;
+  v11 = groupCopy;
+  if (groupCopy && [groupCopy fromPeopleSuggester])
   {
     v12 = [(GKDashboardMultiplayerPickerViewController *)self composedNameForSuggestedMessageGroup:v11];
-    v13 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+    v14 = [recipientMap objectForKeyedSubscript:v12];
 
     if (v14)
     {
@@ -1706,7 +1706,7 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = v9;
+  v12 = playersCopy;
   v15 = [v12 countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v15)
   {
@@ -1722,11 +1722,11 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
         }
 
         v19 = *(*(&v37 + 1) + 8 * i);
-        v20 = [v19 displayName];
-        v21 = v20;
-        if (v20)
+        displayName = [v19 displayName];
+        v21 = displayName;
+        if (displayName)
         {
-          v22 = v20;
+          v22 = displayName;
         }
 
         else
@@ -1748,43 +1748,43 @@ void __66__GKDashboardMultiplayerPickerViewController_createSortPickerMenu__bloc
 LABEL_16:
 
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
-  v24 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  v25 = [v24 textView];
-  if (([v25 isFirstResponder] & 1) == 0)
+  composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  textView = [composeTextView textView];
+  if (([textView isFirstResponder] & 1) == 0)
   {
-    v26 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-    v27 = [v26 recipients];
-    if ([v27 count])
+    composeTextView2 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+    recipients = [composeTextView2 recipients];
+    if ([recipients count])
     {
     }
 
     else
     {
       [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-      v28 = v36 = v8;
+      v28 = v36 = datasourceCopy;
       [v28 textView];
-      v30 = v29 = v9;
-      v31 = [v30 text];
-      v35 = [v31 length];
+      v30 = v29 = playersCopy;
+      text = [v30 text];
+      v35 = [text length];
 
-      v9 = v29;
-      v8 = v36;
+      playersCopy = v29;
+      datasourceCopy = v36;
 
       if (v35)
       {
         goto LABEL_21;
       }
 
-      v32 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-      v33 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-      v34 = [v33 textView];
-      [v34 setText:v32];
+      searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+      composeTextView3 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+      textView2 = [composeTextView3 textView];
+      [textView2 setText:searchFieldPlaceHolderText];
 
       [(GKDashboardMultiplayerPickerViewController *)self setComposeTextViewShowingPlaceholderText:1];
-      v24 = [MEMORY[0x277D75348] tertiaryLabelColor];
-      v25 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-      v26 = [v25 textView];
-      [v26 setTextColor:v24];
+      composeTextView = [MEMORY[0x277D75348] tertiaryLabelColor];
+      textView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+      composeTextView2 = [textView textView];
+      [composeTextView2 setTextColor:composeTextView];
     }
   }
 
@@ -1798,89 +1798,89 @@ LABEL_21:
     v4.receiver = self;
     v4.super_class = GKDashboardMultiplayerPickerViewController;
     [(GKDashboardCollectionViewController *)&v4 clearSelection];
-    v3 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-    [v3 clearSelection];
+    pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+    [pickerDataSource clearSelection];
 
     [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
   }
 }
 
-- (id)composedNameForSuggestedMessageGroup:(id)a3
+- (id)composedNameForSuggestedMessageGroup:(id)group
 {
-  v3 = a3;
-  v4 = [v3 players];
-  v5 = [v3 groupName];
-  if (![v5 length])
+  groupCopy = group;
+  players = [groupCopy players];
+  groupName = [groupCopy groupName];
+  if (![groupName length])
   {
-    v6 = [v3 players];
-    v7 = [v6 count];
+    players2 = [groupCopy players];
+    v7 = [players2 count];
 
     if (v7 == 1)
     {
-      v8 = [v4 objectAtIndexedSubscript:0];
+      v8 = [players objectAtIndexedSubscript:0];
       v9 = [v8 displayNameWithOptions:0];
     }
 
     else
     {
-      v11 = [v3 players];
-      v12 = [v11 count];
+      players3 = [groupCopy players];
+      v12 = [players3 count];
 
       if (v12 == 2)
       {
         v13 = MEMORY[0x277CCACA8];
         v8 = GKGameCenterUIFrameworkBundle();
         v14 = GKGetLocalizedStringFromTableInBundle();
-        v15 = [v4 objectAtIndexedSubscript:0];
+        v15 = [players objectAtIndexedSubscript:0];
         v16 = [v15 displayNameWithOptions:0];
-        v17 = [v4 objectAtIndexedSubscript:1];
+        v17 = [players objectAtIndexedSubscript:1];
         v18 = [v17 displayNameWithOptions:0];
         v10 = [v13 stringWithFormat:v14, v16, v18];
 
-        v5 = v14;
+        groupName = v14;
         goto LABEL_11;
       }
 
-      v19 = [v3 players];
-      v20 = [v19 count];
+      players4 = [groupCopy players];
+      v20 = [players4 count];
 
       if (v20 == 3)
       {
         v41 = MEMORY[0x277CCACA8];
         v8 = GKGameCenterUIFrameworkBundle();
         v40 = GKGetLocalizedStringFromTableInBundle();
-        v42 = [v4 objectAtIndexedSubscript:0];
+        v42 = [players objectAtIndexedSubscript:0];
         v21 = [v42 displayNameWithOptions:0];
-        v22 = [v4 objectAtIndexedSubscript:1];
+        v22 = [players objectAtIndexedSubscript:1];
         v23 = [v22 displayNameWithOptions:0];
-        v24 = [v4 objectAtIndexedSubscript:2];
+        v24 = [players objectAtIndexedSubscript:2];
         v25 = [v24 displayNameWithOptions:0];
         v10 = [v41 stringWithFormat:v40, v21, v23, v25];
 
-        v5 = v40;
+        groupName = v40;
         goto LABEL_11;
       }
 
-      v26 = [v3 players];
-      v27 = [v26 count];
+      players5 = [groupCopy players];
+      v27 = [players5 count];
 
       if (v27 >= 4)
       {
         v28 = MEMORY[0x277CCACA8];
         v29 = GKGameCenterUIFrameworkBundle();
         v30 = GKGetLocalizedStringFromTableInBundle();
-        v31 = [v4 objectAtIndexedSubscript:0];
+        v31 = [players objectAtIndexedSubscript:0];
         v32 = [v31 displayNameWithOptions:0];
-        v33 = [v4 objectAtIndexedSubscript:1];
+        v33 = [players objectAtIndexedSubscript:1];
         v34 = [v33 displayNameWithOptions:0];
         v35 = [v28 stringWithFormat:v30, v32, v34];
 
         v8 = GKGameCenterUIFrameworkBundle();
-        v5 = GKGetLocalizedStringFromTableInBundle();
+        groupName = GKGetLocalizedStringFromTableInBundle();
         v36 = MEMORY[0x277CCABB0];
-        v37 = [v3 players];
-        v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(v37, "count") - 2}];
-        v10 = [v35 stringByAppendingFormat:v5, v38];
+        players6 = [groupCopy players];
+        v38 = [v36 numberWithUnsignedInteger:{objc_msgSend(players6, "count") - 2}];
+        v10 = [v35 stringByAppendingFormat:groupName, v38];
 
         goto LABEL_11;
       }
@@ -1892,49 +1892,49 @@ LABEL_21:
     v10 = v9;
 LABEL_11:
 
-    v5 = v10;
+    groupName = v10;
   }
 
-  return v5;
+  return groupName;
 }
 
-- (void)send:(id)a3
+- (void)send:(id)send
 {
-  v4 = [MEMORY[0x277D0BFA8] reporter];
-  [v4 recordClickWithAction:@"navigate" targetId:@"inviteFriends" targetType:@"button" pageId:@"lobby" pageType:@"multiplayer"];
+  reporter = [MEMORY[0x277D0BFA8] reporter];
+  [reporter recordClickWithAction:@"navigate" targetId:@"inviteFriends" targetType:@"button" pageId:@"lobby" pageType:@"multiplayer"];
 
-  v15 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v5 = [v15 selectedPlayers];
-  if ([v5 count])
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  selectedPlayers = [pickerDataSource selectedPlayers];
+  if ([selectedPlayers count])
   {
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self message];
-    v7 = [v6 length];
+    message = [(GKDashboardMultiplayerPickerViewController *)self message];
+    v7 = [message length];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277D0C1F8] reporter];
-      [v8 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC90]];
+      reporter2 = [MEMORY[0x277D0C1F8] reporter];
+      [reporter2 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC90]];
     }
 
-    [v15 pickerWillSendInvites];
-    v9 = [v15 selectedMessageGroups];
+    [pickerDataSource pickerWillSendInvites];
+    selectedMessageGroups = [pickerDataSource selectedMessageGroups];
     completionHandler = self->_completionHandler;
     if (completionHandler)
     {
-      completionHandler[2](completionHandler, v5, self->_message);
+      completionHandler[2](completionHandler, selectedPlayers, self->_message);
       [(GKDashboardMultiplayerPickerViewController *)self setCompletionHandler:0];
     }
 
     else
     {
-      v11 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+      multiplayerPickerDelegate = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v13 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
-        v14 = [(GKDashboardMultiplayerPickerViewController *)self message];
-        [v13 multiplayerPicker:self didPickPlayers:v5 messageGroups:v9 customMessage:v14];
+        multiplayerPickerDelegate2 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+        message2 = [(GKDashboardMultiplayerPickerViewController *)self message];
+        [multiplayerPickerDelegate2 multiplayerPicker:self didPickPlayers:selectedPlayers messageGroups:selectedMessageGroups customMessage:message2];
       }
     }
 
@@ -1942,7 +1942,7 @@ LABEL_11:
   }
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
   v7 = +[GKMultiplayerCustomInviteMessageViewController];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1953,9 +1953,9 @@ LABEL_11:
   [(GKDashboardMultiplayerPickerViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v8 = a3;
+  cancelCopy = cancel;
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
@@ -1964,53 +1964,53 @@ LABEL_11:
   }
 
   [(UIViewController *)self _gkRemoveViewController:self animated:1];
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+  multiplayerPickerDelegate = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
-    [v7 multiplayerPickerDidCancel:self];
+    multiplayerPickerDelegate2 = [(GKDashboardMultiplayerPickerViewController *)self multiplayerPickerDelegate];
+    [multiplayerPickerDelegate2 multiplayerPickerDidCancel:self];
   }
 }
 
 - (void)updateAddMessageButtonVisibility
 {
-  v3 = [MEMORY[0x277D0C1D8] shared];
-  if ([v3 shouldAllowCustomCommunication])
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  if ([mEMORY[0x277D0C1D8] shouldAllowCustomCommunication])
   {
-    v4 = [(GKDashboardMultiplayerPickerViewController *)self pickerOrigin];
+    pickerOrigin = [(GKDashboardMultiplayerPickerViewController *)self pickerOrigin];
 
-    if (v4 == 1)
+    if (pickerOrigin == 1)
     {
-      v5 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
-      [v5 setHidden:0];
+      navBarMessageButton = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
+      [navBarMessageButton setHidden:0];
 
-      v6 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
-      [v6 setEnabled:1];
+      navBarMessageButton2 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
+      [navBarMessageButton2 setEnabled:1];
 
       v7 = MEMORY[0x277D755D0];
       v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769C0]];
-      v15 = [v7 configurationWithFont:v8];
+      navBarMessageButton4 = [v7 configurationWithFont:v8];
 
-      v9 = [(GKDashboardMultiplayerPickerViewController *)self message];
-      v10 = [v9 length];
+      message = [(GKDashboardMultiplayerPickerViewController *)self message];
+      v10 = [message length];
 
       if (v10)
       {
         v11 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.bubble"];
-        v12 = [v11 imageWithConfiguration:v15];
+        v12 = [v11 imageWithConfiguration:navBarMessageButton4];
         v13 = [v12 imageWithRenderingMode:2];
       }
 
       else
       {
-        v12 = [MEMORY[0x277D755B8] systemImageNamed:@"plus.bubble" withConfiguration:v15];
+        v12 = [MEMORY[0x277D755B8] systemImageNamed:@"plus.bubble" withConfiguration:navBarMessageButton4];
         v13 = [v12 imageWithRenderingMode:2];
       }
 
-      v14 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
-      [v14 setImage:v13];
+      navBarMessageButton3 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
+      [navBarMessageButton3 setImage:v13];
 
       goto LABEL_9;
     }
@@ -2020,37 +2020,37 @@ LABEL_11:
   {
   }
 
-  v15 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
-  [v15 setHidden:1];
+  navBarMessageButton4 = [(GKDashboardMultiplayerPickerViewController *)self navBarMessageButton];
+  [navBarMessageButton4 setHidden:1];
 LABEL_9:
 }
 
-- (void)customInviteViewController:(id)a3 didFinishWithMessage:(id)a4
+- (void)customInviteViewController:(id)controller didFinishWithMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   [(GKDashboardMultiplayerPickerViewController *)self dismissViewControllerAnimated:1 completion:0];
-  [(GKDashboardMultiplayerPickerViewController *)self setMessage:v5];
+  [(GKDashboardMultiplayerPickerViewController *)self setMessage:messageCopy];
 
   [(GKDashboardMultiplayerPickerViewController *)self updateAddMessageButtonVisibility];
 }
 
-- (void)handleSearchTextFieldReturn:(id)a3
+- (void)handleSearchTextFieldReturn:(id)return
 {
   [(GKDashboardMultiplayerPickerViewController *)self didEndSearchTextEditing];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
-  [v4 setHidden:1];
+  showContactPickerButton = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
+  [showContactPickerButton setHidden:1];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
+  returnCopy = return;
   WeakRetained = objc_loadWeakRetained(&self->_messageField);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == returnCopy)
   {
     v7 = objc_loadWeakRetained(&self->_messageField);
-    v8 = [v7 text];
-    [(GKDashboardMultiplayerPickerViewController *)self setMessage:v8];
+    text = [v7 text];
+    [(GKDashboardMultiplayerPickerViewController *)self setMessage:text];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -2062,255 +2062,255 @@ LABEL_9:
 
   else
   {
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+    searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
 
-    if (v6 == v4)
+    if (searchTextField == returnCopy)
     {
-      [(GKDashboardMultiplayerPickerViewController *)self handleSearchTextFieldReturn:v4];
-      [v4 resignFirstResponder];
+      [(GKDashboardMultiplayerPickerViewController *)self handleSearchTextFieldReturn:returnCopy];
+      [returnCopy resignFirstResponder];
     }
   }
 
-  return WeakRetained != v4;
+  return WeakRetained != returnCopy;
 }
 
 - (void)_updateButtonEnableState
 {
-  v15 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v3 = [v15 selectedPlayers];
-  v4 = [v3 count] != 0;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  selectedPlayers = [pickerDataSource selectedPlayers];
+  v4 = [selectedPlayers count] != 0;
 
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self navBarSendButton];
-  [v5 setEnabled:v4];
+  navBarSendButton = [(GKDashboardMultiplayerPickerViewController *)self navBarSendButton];
+  [navBarSendButton setEnabled:v4];
 
   [(GKDashboardMultiplayerPickerViewController *)self updateAddMessageButtonVisibility];
   v6 = MEMORY[0x277CCACA8];
   v7 = GKGameCenterUIFrameworkBundle();
   v8 = GKGetLocalizedStringFromTableInBundle();
-  v9 = [v15 selectedPlayers];
-  v10 = [v6 localizedStringWithFormat:v8, objc_msgSend(v9, "count"), objc_msgSend(v15, "maxSelectable")];
-  v11 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  [v11 setText:v10];
+  selectedPlayers2 = [pickerDataSource selectedPlayers];
+  v10 = [v6 localizedStringWithFormat:v8, objc_msgSend(selectedPlayers2, "count"), objc_msgSend(pickerDataSource, "maxSelectable")];
+  headerSubtitle = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  [headerSubtitle setText:v10];
 
-  v12 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
-  v13 = [v12 text];
-  v14 = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
-  [v14 setText:v13];
+  headerSubtitle2 = [(GKDashboardMultiplayerPickerViewController *)self headerSubtitle];
+  text = [headerSubtitle2 text];
+  collapsedSubtitle = [(GKDashboardMultiplayerPickerViewController *)self collapsedSubtitle];
+  [collapsedSubtitle setText:text];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v32 = a4;
-  v7 = a5;
-  if ([v7 section])
+  cellCopy = cell;
+  pathCopy = path;
+  if ([pathCopy section])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v32;
-      v9 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-      v10 = [v9 playerForIndexPath:v7];
+      v8 = cellCopy;
+      pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+      v10 = [pickerDataSource playerForIndexPath:pathCopy];
 
-      v11 = [v10 internal];
-      v12 = [v11 contact];
-      v13 = [v12 _gkCompositeName];
+      internal = [v10 internal];
+      contact = [internal contact];
+      _gkCompositeName = [contact _gkCompositeName];
 
-      v14 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-      v15 = [v14 friendSortFilterScope] == 1;
+      pickerDataSource2 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+      v15 = [pickerDataSource2 friendSortFilterScope] == 1;
 
-      v16 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-      [v8 configureWithPlayer:v10 isCoreRecent:objc_msgSend(v16 matchedContactName:"isPlayerAtIndexPathCoreRecent:" onlyShowContactName:{v7), v13, v15}];
+      pickerDataSource3 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+      [v8 configureWithPlayer:v10 isCoreRecent:objc_msgSend(pickerDataSource3 matchedContactName:"isPlayerAtIndexPathCoreRecent:" onlyShowContactName:{pathCopy), _gkCompositeName, v15}];
 
       [v8 setAccessibilityPrefix:@"picker.friends"];
-      v17 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-      v18 = [v17 playerStates];
-      v19 = [v10 referenceKey];
-      v20 = [v18 objectForKey:v19];
-      v21 = [v20 integerValue];
+      pickerDataSource4 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+      playerStates = [pickerDataSource4 playerStates];
+      referenceKey = [v10 referenceKey];
+      v20 = [playerStates objectForKey:referenceKey];
+      integerValue = [v20 integerValue];
 
-      if (v21 != 2)
+      if (integerValue != 2)
       {
-        [v8 setSelected:v21 == 1];
-        v22 = [v8 isSelected];
-        v23 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-        v24 = v23;
-        if (v22)
+        [v8 setSelected:integerValue == 1];
+        isSelected = [v8 isSelected];
+        pickerDataSource5 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+        v24 = pickerDataSource5;
+        if (isSelected)
         {
-          [v23 selectItemAtIndexPath:v7 animated:0 scrollPosition:0];
+          [pickerDataSource5 selectItemAtIndexPath:pathCopy animated:0 scrollPosition:0];
         }
 
         else
         {
-          [v23 deselectItemAtIndexPath:v7 animated:0];
+          [pickerDataSource5 deselectItemAtIndexPath:pathCopy animated:0];
         }
       }
     }
   }
 
-  v25 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  v26 = [v25 cornerMaskForItemAtIndexPath:v7];
+  pickerDataSource6 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  v26 = [pickerDataSource6 cornerMaskForItemAtIndexPath:pathCopy];
 
-  v27 = [v32 layer];
-  v28 = v27;
+  layer = [cellCopy layer];
+  layer4 = layer;
   if (v26)
   {
-    [v27 setMasksToBounds:1];
+    [layer setMasksToBounds:1];
 
-    v29 = [v32 layer];
-    [v29 setMaskedCorners:v26];
+    layer2 = [cellCopy layer];
+    [layer2 setMaskedCorners:v26];
 
-    v30 = [v32 layer];
-    [v30 setCornerRadius:14.0];
+    layer3 = [cellCopy layer];
+    [layer3 setCornerRadius:14.0];
 
     v31 = *MEMORY[0x277CDA138];
-    v28 = [v32 layer];
-    [v28 setCornerCurve:v31];
+    layer4 = [cellCopy layer];
+    [layer4 setCornerCurve:v31];
   }
 
   else
   {
-    [v27 setCornerRadius:0.0];
+    [layer setCornerRadius:0.0];
   }
 }
 
-- (void)didPressShowContactPickerButton:(id)a3
+- (void)didPressShowContactPickerButton:(id)button
 {
   v4 = objc_alloc_init(MEMORY[0x277CBDC18]);
   [v4 setDelegate:self];
   [(GKDashboardMultiplayerPickerViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
-  v5 = a4;
-  v6 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  [v6 didPickContact:v5];
+  contactCopy = contact;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  [pickerDataSource didPickContact:contactCopy];
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
   [(GKDashboardMultiplayerPickerViewController *)self didBeginSearchTextEditing];
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
-  [v4 setHidden:0];
+  showContactPickerButton = [(GKDashboardMultiplayerPickerViewController *)self showContactPickerButton];
+  [showContactPickerButton setHidden:0];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 text];
-  v12 = [v11 stringByAppendingString:v9];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  fieldCopy = field;
+  text = [fieldCopy text];
+  v12 = [text stringByAppendingString:stringCopy];
   [(GKDashboardMultiplayerPickerViewController *)self setSearchText:v12];
 
   v13 = MEMORY[0x277CCAB68];
-  v14 = [v10 text];
+  text2 = [fieldCopy text];
 
-  v15 = [v13 stringWithString:v14];
+  v15 = [v13 stringWithString:text2];
 
-  [v15 replaceCharactersInRange:location withString:{length, v9}];
+  [v15 replaceCharactersInRange:location withString:{length, stringCopy}];
   [(GKDashboardMultiplayerPickerViewController *)self setSearchText:v15];
 
   return 1;
 }
 
-- (void)willShowKeyboard:(id)a3
+- (void)willShowKeyboard:(id)keyboard
 {
-  v17 = a3;
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self excludesContacts];
-  v5 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-  [v5 setShowsAddButtonWhenExpanded:!v4];
+  keyboardCopy = keyboard;
+  excludesContacts = [(GKDashboardMultiplayerPickerViewController *)self excludesContacts];
+  composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+  [composeTextView setShowsAddButtonWhenExpanded:!excludesContacts];
 
-  v6 = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
-  v7 = [v6 verticalSizeClass];
+  traitCollection = [(GKDashboardMultiplayerPickerViewController *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v7 == 1)
+  if (verticalSizeClass == 1)
   {
     [(GKDashboardMultiplayerPickerViewController *)self collapseHeaderView];
   }
 
-  v8 = [v17 userInfo];
-  v9 = [v8 objectForKey:*MEMORY[0x277D76BB8]];
+  userInfo = [keyboardCopy userInfo];
+  v9 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
   [v9 CGRectValue];
   v11 = v10;
 
-  v12 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v12 safeAreaInsets];
+  view = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view safeAreaInsets];
   [(GKDashboardMultiplayerPickerViewController *)self setKeyboardHeight:v11 - v13];
 
-  v14 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  v15 = [v14 isFirstResponder];
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  isFirstResponder = [searchTextField isFirstResponder];
 
-  if (v15)
+  if (isFirstResponder)
   {
-    v16 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-    [v16 setDelegate:self];
+    searchTextField2 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+    [searchTextField2 setDelegate:self];
   }
 }
 
 - (void)didBeginSearchTextEditing
 {
-  v2 = [MEMORY[0x277D0C1F8] reporter];
-  [v2 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCB8]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCB8]];
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
-  v6 = a3;
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-  if (([v4 isSearching] & 1) == 0 && objc_msgSend(v6, "length"))
+  textCopy = text;
+  pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+  if (([pickerDataSource isSearching] & 1) == 0 && objc_msgSend(textCopy, "length"))
   {
-    v5 = [MEMORY[0x277D0C1F8] reporter];
-    [v5 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCC0]];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BCC0]];
   }
 
-  [v4 setSearchText:v6];
+  [pickerDataSource setSearchText:textCopy];
   [(GKDashboardMultiplayerPickerViewController *)self dataUpdated:1 withError:0];
 }
 
 - (void)didEndSearchTextEditing
 {
-  v3 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  [v3 setText:0];
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  [searchTextField setText:0];
 
   [(GKDashboardMultiplayerPickerViewController *)self setSearchText:0];
-  v4 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v4 setNeedsLayout];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setNeedsLayout];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-  v9 = [v8 isFirstResponder];
+  viewCopy = view;
+  pathCopy = path;
+  searchTextField = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+  isFirstResponder = [searchTextField isFirstResponder];
 
-  if (v9)
+  if (isFirstResponder)
   {
-    v10 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
-    [v10 resignFirstResponder];
+    searchTextField2 = [(GKDashboardMultiplayerPickerViewController *)self searchTextField];
+    [searchTextField2 resignFirstResponder];
   }
 
   v14.receiver = self;
   v14.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v14 collectionView:v6 didSelectItemAtIndexPath:v7];
+  [(GKDashboardCollectionViewController *)&v14 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
-  v11 = [v7 section];
+  section = [pathCopy section];
 
-  if (v11 <= 2)
+  if (section <= 2)
   {
-    v12 = qword_27966ADE8[v11];
-    v13 = [MEMORY[0x277D0C1F8] reporter];
-    [v13 reportEvent:*MEMORY[0x277D0BE78] type:*v12];
+    v12 = qword_27966ADE8[section];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE78] type:*v12];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = GKDashboardMultiplayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v5 collectionView:a3 didDeselectItemAtIndexPath:a4];
+  [(GKDashboardCollectionViewController *)&v5 collectionView:view didDeselectItemAtIndexPath:path];
   [(GKDashboardMultiplayerPickerViewController *)self _updateButtonEnableState];
 }
 
@@ -2319,19 +2319,19 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = GKDashboardMultiplayerPickerViewController;
   [(GKDashboardMultiplayerPickerViewController *)&v8 viewSafeAreaInsetsDidChange];
-  v3 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view setNeedsLayout];
 
-  v4 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v4 layoutIfNeeded];
+  view2 = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view2 layoutIfNeeded];
 
-  v5 = [(GKDashboardCollectionViewController *)self collectionView];
-  v6 = [v5 collectionViewLayout];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = collectionViewLayout;
     [(GKDashboardMultiplayerPickerViewController *)self collectionSectionInset];
     [v7 setSectionInset:?];
   }
@@ -2339,11 +2339,11 @@ LABEL_9:
 
 - (UIEdgeInsets)collectionSectionInset
 {
-  v3 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4 + 20.0;
-  v6 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v6 safeAreaInsets];
+  view2 = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view2 safeAreaInsets];
   v8 = v7 + 20.0;
 
   v9 = 10.0;
@@ -2360,16 +2360,16 @@ LABEL_9:
 - (void)_updateCollectionView
 {
   [(GKDashboardCollectionViewController *)self setToHorizontalLayout:0];
-  v8 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v8 setDelegate:self];
-  [v8 setClipsToBounds:1];
-  v3 = [v8 collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView setDelegate:self];
+  [collectionView setClipsToBounds:1];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = MEMORY[0x277CCAB58];
-    v5 = v3;
+    v5 = collectionViewLayout;
     v6 = [v4 indexSetWithIndex:0];
     [v5 setSectionsThatShowHeaderWhenEmpty:v6];
 
@@ -2383,33 +2383,33 @@ LABEL_9:
   }
 }
 
-- (void)composeRecipientView:(id)a3 didAddRecipient:(id)a4
+- (void)composeRecipientView:(id)view didAddRecipient:(id)recipient
 {
-  v5 = a3;
-  [v5 clearText];
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v7 = [v5 textView];
+  viewCopy = view;
+  [viewCopy clearText];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  textView = [viewCopy textView];
 
-  [v7 setTextColor:v6];
+  [textView setTextColor:labelColor];
 
   [(GKDashboardMultiplayerPickerViewController *)self setComposeTextViewShowingPlaceholderText:0];
 }
 
-- (void)composeRecipientView:(id)a3 didFinishEnteringAddress:(id)a4
+- (void)composeRecipientView:(id)view didFinishEnteringAddress:(id)address
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  addressCopy = address;
   if (![(GKDashboardMultiplayerPickerViewController *)self skipAddressTokenization])
   {
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-    v7 = [v5 isEqualToString:v6];
+    searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+    v7 = [addressCopy isEqualToString:searchFieldPlaceHolderText];
 
     if ((v7 & 1) == 0)
     {
       if ([(GKDashboardMultiplayerPickerViewController *)self excludesContacts])
       {
-        v8 = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
-        [(GKDashboardMultiplayerPickerViewController *)self composeRecipientView:v8 didAddRecipient:0];
+        composeTextView = [(GKDashboardMultiplayerPickerViewController *)self composeTextView];
+        [(GKDashboardMultiplayerPickerViewController *)self composeRecipientView:composeTextView didAddRecipient:0];
 
         if (!*MEMORY[0x277D0C2A0])
         {
@@ -2422,8 +2422,8 @@ LABEL_9:
           v11 = MEMORY[0x277CCABB0];
           v12 = MEMORY[0x277D0C1D8];
           v13 = v10;
-          v14 = [v12 shared];
-          v15 = [v11 numberWithUnsignedInteger:{objc_msgSend(v14, "multiplayerAllowedPlayerType")}];
+          shared = [v12 shared];
+          v15 = [v11 numberWithUnsignedInteger:{objc_msgSend(shared, "multiplayerAllowedPlayerType")}];
           *buf = 138412290;
           v24 = v15;
           _os_log_impl(&dword_24DE53000, v13, OS_LOG_TYPE_INFO, "Not forming contact from address that players input, since GKPreferences.shared.multiplayerAllowedPlayerType is set to: %@", buf, 0xCu);
@@ -2432,8 +2432,8 @@ LABEL_9:
 
       else
       {
-        v16 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-        v17 = [v16 objectForKeyedSubscript:v5];
+        recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+        v17 = [recipientMap objectForKeyedSubscript:addressCopy];
 
         if (v17)
         {
@@ -2444,15 +2444,15 @@ LABEL_9:
 
         else
         {
-          v18 = [GKMessageUtilities playerWithPhoneNumberOrEmail:v5 givenName:v5];
+          v18 = [GKMessageUtilities playerWithPhoneNumberOrEmail:addressCopy givenName:addressCopy];
           if (v18)
           {
-            v19 = [MEMORY[0x277D0C1F8] reporter];
-            [v19 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC08]];
+            reporter = [MEMORY[0x277D0C1F8] reporter];
+            [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BC08]];
 
-            v20 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-            v21 = [v18 contact];
-            [v20 didPickContact:v21];
+            pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+            contact = [v18 contact];
+            [pickerDataSource didPickContact:contact];
           }
         }
       }
@@ -2460,46 +2460,46 @@ LABEL_9:
   }
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  v12 = a4;
+  recipientCopy = recipient;
   if (![(GKDashboardMultiplayerPickerViewController *)self recipientRemovedImplicitly])
   {
-    v5 = v12;
-    v6 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    v5 = recipientCopy;
+    recipientPlayerMap = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+    v7 = [recipientPlayerMap objectForKeyedSubscript:v5];
 
-    v8 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-    [v8 removeObjectForKey:v5];
+    recipientPlayerMap2 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+    [recipientPlayerMap2 removeObjectForKey:v5];
 
-    v9 = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
-    v10 = [v5 address];
+    recipientMap = [(GKDashboardMultiplayerPickerViewController *)self recipientMap];
+    address = [v5 address];
 
-    [v9 removeObjectForKey:v10];
-    v11 = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
-    [v11 didRemoveRecipientPlayers:v7];
+    [recipientMap removeObjectForKey:address];
+    pickerDataSource = [(GKDashboardMultiplayerPickerViewController *)self pickerDataSource];
+    [pickerDataSource didRemoveRecipientPlayers:v7];
   }
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   if (![(GKDashboardMultiplayerPickerViewController *)self composeTextViewShowingPlaceholderText])
   {
-    [(GKDashboardMultiplayerPickerViewController *)self setSearchText:v5];
+    [(GKDashboardMultiplayerPickerViewController *)self setSearchText:changeCopy];
   }
 }
 
-- (void)composeRecipientView:(id)a3 didSelectRecipients:(id)a4
+- (void)composeRecipientView:(id)view didSelectRecipients:(id)recipients
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 recipients];
-  v7 = [MEMORY[0x277CBEB18] array];
+  viewCopy = view;
+  recipients = [viewCopy recipients];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = MEMORY[0x277CBEB58];
-  v9 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-  v10 = [v9 allKeys];
-  v11 = [v8 setWithArray:v10];
+  recipientPlayerMap = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+  allKeys = [recipientPlayerMap allKeys];
+  v11 = [v8 setWithArray:allKeys];
 
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
@@ -2507,10 +2507,10 @@ LABEL_9:
   v37[3] = &unk_27966AD78;
   v12 = v11;
   v38 = v12;
-  v26 = v7;
-  v27 = v6;
+  v26 = array;
+  v27 = recipients;
   v39 = v26;
-  [v6 enumerateObjectsUsingBlock:v37];
+  [recipients enumerateObjectsUsingBlock:v37];
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -2532,21 +2532,21 @@ LABEL_9:
         }
 
         v17 = *(*(&v33 + 1) + 8 * v16);
-        v18 = [(GKDashboardMultiplayerPickerViewController *)self removedRecipientPlayerMap];
+        removedRecipientPlayerMap = [(GKDashboardMultiplayerPickerViewController *)self removedRecipientPlayerMap];
 
-        if (!v18)
+        if (!removedRecipientPlayerMap)
         {
           v19 = objc_opt_new();
           [(GKDashboardMultiplayerPickerViewController *)self setRemovedRecipientPlayerMap:v19];
         }
 
-        v20 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
-        v21 = [v20 objectForKeyedSubscript:v17];
-        v22 = [(GKDashboardMultiplayerPickerViewController *)self removedRecipientPlayerMap];
-        v23 = [v17 address];
-        [v22 setObject:v21 forKeyedSubscript:v23];
+        recipientPlayerMap2 = [(GKDashboardMultiplayerPickerViewController *)self recipientPlayerMap];
+        v21 = [recipientPlayerMap2 objectForKeyedSubscript:v17];
+        removedRecipientPlayerMap2 = [(GKDashboardMultiplayerPickerViewController *)self removedRecipientPlayerMap];
+        address = [v17 address];
+        [removedRecipientPlayerMap2 setObject:v21 forKeyedSubscript:address];
 
-        [(GKDashboardMultiplayerPickerViewController *)self composeRecipientView:v5 didRemoveRecipient:v17];
+        [(GKDashboardMultiplayerPickerViewController *)self composeRecipientView:viewCopy didRemoveRecipient:v17];
         ++v16;
       }
 
@@ -2561,7 +2561,7 @@ LABEL_9:
   v31[1] = 3221225472;
   v31[2] = __87__GKDashboardMultiplayerPickerViewController_composeRecipientView_didSelectRecipients___block_invoke_2;
   v31[3] = &unk_27966ADA0;
-  v24 = v5;
+  v24 = viewCopy;
   v32 = v24;
   [v26 enumerateObjectsUsingBlock:v31];
   v29[0] = MEMORY[0x277D85DD0];
@@ -2643,13 +2643,13 @@ LABEL_9:
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)composeHeaderView:(id)a3 didChangeSize:(CGSize)a4
+- (void)composeHeaderView:(id)view didChangeSize:(CGSize)size
 {
-  height = a4.height;
-  v6 = a3;
+  height = size.height;
+  viewCopy = view;
   [(GKDashboardMultiplayerPickerViewController *)self setIsAnimatingComposeTextViewSizeChange:1];
-  v7 = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
-  [v7 constant];
+  composeTextViewHeightConstraint = [(GKDashboardMultiplayerPickerViewController *)self composeTextViewHeightConstraint];
+  [composeTextViewHeightConstraint constant];
   v9 = v8;
 
   v16[0] = 0;
@@ -2658,13 +2658,13 @@ LABEL_9:
   v17 = 0;
   v18 = 0;
   v16[3] = &unk_24E43C07A;
-  v10 = [(GKDashboardCollectionViewController *)self collectionView];
-  [v10 contentOffset];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v17 = v11;
   v18 = v12;
 
-  v13 = [(GKDashboardMultiplayerPickerViewController *)self view];
-  [v13 layoutIfNeeded];
+  view = [(GKDashboardMultiplayerPickerViewController *)self view];
+  [view layoutIfNeeded];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -2714,47 +2714,47 @@ uint64_t __78__GKDashboardMultiplayerPickerViewController_composeHeaderView_didC
   return [v2 updateCollectionViewContentInsets];
 }
 
-- (void)composeRecipientViewReturnPressed:(id)a3
+- (void)composeRecipientViewReturnPressed:(id)pressed
 {
-  v12 = a3;
-  v4 = [v12 recipients];
-  if ([v4 count])
+  pressedCopy = pressed;
+  recipients = [pressedCopy recipients];
+  if ([recipients count])
   {
     goto LABEL_2;
   }
 
-  v5 = [v12 textView];
-  v6 = [v5 text];
-  v7 = [v6 length];
+  textView = [pressedCopy textView];
+  text = [textView text];
+  v7 = [text length];
 
   if (!v7)
   {
-    v9 = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
-    v10 = [v12 textView];
-    [v10 setText:v9];
+    searchFieldPlaceHolderText = [(GKDashboardMultiplayerPickerViewController *)self searchFieldPlaceHolderText];
+    textView2 = [pressedCopy textView];
+    [textView2 setText:searchFieldPlaceHolderText];
 
     [(GKDashboardMultiplayerPickerViewController *)self setComposeTextViewShowingPlaceholderText:1];
-    v4 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    v11 = [v12 textView];
-    [v11 setTextColor:v4];
+    recipients = [MEMORY[0x277D75348] tertiaryLabelColor];
+    textView3 = [pressedCopy textView];
+    [textView3 setTextColor:recipients];
 
 LABEL_2:
   }
 
   [(GKDashboardMultiplayerPickerViewController *)self didEndSearchTextEditing];
-  v8 = [v12 textView];
-  [v8 resignFirstResponder];
+  textView4 = [pressedCopy textView];
+  [textView4 resignFirstResponder];
 }
 
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder
 {
-  v6 = a3;
+  responderCopy = responder;
   if ([(GKDashboardMultiplayerPickerViewController *)self composeTextViewShowingPlaceholderText])
   {
-    [v6 clearText];
-    v4 = [MEMORY[0x277D75348] labelColor];
-    v5 = [v6 textView];
-    [v5 setTextColor:v4];
+    [responderCopy clearText];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    textView = [responderCopy textView];
+    [textView setTextColor:labelColor];
 
     [(GKDashboardMultiplayerPickerViewController *)self setComposeTextViewShowingPlaceholderText:0];
   }

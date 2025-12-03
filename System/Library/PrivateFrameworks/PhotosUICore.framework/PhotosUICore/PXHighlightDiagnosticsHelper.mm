@@ -1,19 +1,19 @@
 @interface PXHighlightDiagnosticsHelper
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceHighlight:(id)a6 sourceDictionary:(id)a7;
-+ (id)preprocessDictionaryForHighlight:(id)a3 inPhotoLibrary:(id)a4;
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceHighlight:(id)highlight sourceDictionary:(id)dictionary;
++ (id)preprocessDictionaryForHighlight:(id)highlight inPhotoLibrary:(id)library;
 @end
 
 @implementation PXHighlightDiagnosticsHelper
 
-+ (BOOL)generateSectionTitles:(id *)a3 andTableContent:(id *)a4 forIndex:(int64_t)a5 sourceHighlight:(id)a6 sourceDictionary:(id)a7
++ (BOOL)generateSectionTitles:(id *)titles andTableContent:(id *)content forIndex:(int64_t)index sourceHighlight:(id)highlight sourceDictionary:(id)dictionary
 {
   v83[3] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a7;
-  v13 = v12;
-  if (a3)
+  highlightCopy = highlight;
+  dictionaryCopy = dictionary;
+  v13 = dictionaryCopy;
+  if (titles)
   {
-    v14 = a4 == 0;
+    v14 = content == 0;
   }
 
   else
@@ -24,9 +24,9 @@
   v15 = !v14;
   if (!v14)
   {
-    if (a5 == 3)
+    if (index == 3)
     {
-      v39 = [v12 objectForKeyedSubscript:@"backingMoments"];
+      v39 = [dictionaryCopy objectForKeyedSubscript:@"backingMoments"];
       v50 = objc_opt_new();
       v51 = objc_opt_new();
       v62[0] = MEMORY[0x1E69E9820];
@@ -39,9 +39,9 @@
       v49 = v50;
       [v39 enumerateObjectsUsingBlock:v62];
       v52 = v49;
-      *a3 = v49;
+      *titles = v49;
       v53 = v48;
-      *a4 = v48;
+      *content = v48;
 
       v42 = v63;
 LABEL_16:
@@ -49,22 +49,22 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (!a5)
+    if (!index)
     {
-      v16 = [v12 objectForKeyedSubscript:@"debugInfo"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"debugInfo"];
       v83[0] = @"Generic";
       v83[1] = @"Enrichment";
       v83[2] = @"Graph Info";
-      *a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:3];
+      *titles = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:3];
       v81[0] = @"Generic";
-      v17 = [MEMORY[0x1E695DF70] array];
-      v82[0] = v17;
+      array = [MEMORY[0x1E695DF70] array];
+      v82[0] = array;
       v81[1] = @"Enrichment";
-      v18 = [MEMORY[0x1E695DF70] array];
-      v82[1] = v18;
+      array2 = [MEMORY[0x1E695DF70] array];
+      v82[1] = array2;
       v81[2] = @"Graph Info";
-      v19 = [MEMORY[0x1E695DF70] array];
-      v82[2] = v19;
+      array3 = [MEMORY[0x1E695DF70] array];
+      v82[2] = array3;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v82 forKeys:v81 count:3];
       v61 = [v20 mutableCopy];
 
@@ -177,7 +177,7 @@ LABEL_16:
       v46 = v40;
       [v44 enumerateKeysAndObjectsUsingBlock:v65];
       v47 = v42;
-      *a4 = v42;
+      *content = v42;
 
       v48 = v59;
       v49 = v60;
@@ -404,44 +404,44 @@ void __112__PXHighlightDiagnosticsHelper_generateSectionTitles_andTableContent_f
   }
 }
 
-+ (id)preprocessDictionaryForHighlight:(id)a3 inPhotoLibrary:(id)a4
++ (id)preprocessDictionaryForHighlight:(id)highlight inPhotoLibrary:(id)library
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a4;
-  v7 = a3;
+  libraryCopy = library;
+  highlightCopy = highlight;
   v8 = objc_alloc_init(v5);
-  v9 = [v7 localIdentifier];
+  localIdentifier = [highlightCopy localIdentifier];
   v66 = 0;
-  v10 = [v6 highlightDebugInformationForHighlightWithLocalIdentifier:v9 error:&v66];
+  v10 = [libraryCopy highlightDebugInformationForHighlightWithLocalIdentifier:localIdentifier error:&v66];
 
   v62 = v10;
   v63 = v8;
   [v8 addEntriesFromDictionary:v10];
-  v11 = [v6 librarySpecificFetchOptions];
-  [v11 setShouldPrefetchCount:1];
-  v12 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v11];
-  v60 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:v7 referenceAsset:0];
-  [v11 setHighlightCurationType:1];
-  v65 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v11];
-  [v11 setHighlightCurationType:2];
-  v13 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v11];
-  v14 = [v7 uuid];
-  v15 = [v6 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  v12 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:highlightCopy options:librarySpecificFetchOptions];
+  v60 = [MEMORY[0x1E6978630] fetchKeyCuratedAssetInAssetCollection:highlightCopy referenceAsset:0];
+  [librarySpecificFetchOptions setHighlightCurationType:1];
+  v65 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:highlightCopy options:librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setHighlightCurationType:2];
+  v13 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:highlightCopy options:librarySpecificFetchOptions];
+  uuid = [highlightCopy uuid];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
 
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlight.uuid == %@", v14];
-  [v15 setInternalPredicate:v16];
+  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"highlight.uuid == %@", uuid];
+  [librarySpecificFetchOptions2 setInternalPredicate:v16];
 
-  [v15 setShouldPrefetchCount:1];
-  v61 = v15;
-  v64 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:v15];
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  [v17 setObject:v14 forKeyedSubscript:@"UUID"];
-  v18 = [v7 localizedTitle];
-  [v17 setObject:v18 forKeyedSubscript:@"Title"];
+  [librarySpecificFetchOptions2 setShouldPrefetchCount:1];
+  v61 = librarySpecificFetchOptions2;
+  v64 = [MEMORY[0x1E6978650] fetchMomentsWithOptions:librarySpecificFetchOptions2];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:uuid forKeyedSubscript:@"UUID"];
+  localizedTitle = [highlightCopy localizedTitle];
+  [dictionary setObject:localizedTitle forKeyedSubscript:@"Title"];
 
-  v19 = [v7 localizedSubtitle];
-  v20 = [v19 stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
-  [v17 setObject:v20 forKeyedSubscript:@"Subtitle"];
+  localizedSubtitle = [highlightCopy localizedSubtitle];
+  v20 = [localizedSubtitle stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+  [dictionary setObject:v20 forKeyedSubscript:@"Subtitle"];
 
   v21 = objc_alloc_init(MEMORY[0x1E696AB78]);
   v22 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
@@ -449,50 +449,50 @@ void __112__PXHighlightDiagnosticsHelper_generateSectionTitles_andTableContent_f
 
   [v21 setDateStyle:1];
   [v21 setTimeStyle:2];
-  v23 = [v7 startDate];
-  v24 = [v21 stringFromDate:v23];
-  [v17 setObject:v24 forKeyedSubscript:@"Start Date (UTC)"];
+  startDate = [highlightCopy startDate];
+  v24 = [v21 stringFromDate:startDate];
+  [dictionary setObject:v24 forKeyedSubscript:@"Start Date (UTC)"];
 
-  v25 = [v7 endDate];
-  v26 = [v21 stringFromDate:v25];
-  [v17 setObject:v26 forKeyedSubscript:@"End Date (UTC)"];
+  endDate = [highlightCopy endDate];
+  v26 = [v21 stringFromDate:endDate];
+  [dictionary setObject:v26 forKeyedSubscript:@"End Date (UTC)"];
 
-  v27 = [v7 localStartDate];
-  v28 = [v21 stringFromDate:v27];
-  [v17 setObject:v28 forKeyedSubscript:@"Start Date (Local)"];
+  localStartDate = [highlightCopy localStartDate];
+  v28 = [v21 stringFromDate:localStartDate];
+  [dictionary setObject:v28 forKeyedSubscript:@"Start Date (Local)"];
 
-  v29 = [v7 localEndDate];
-  v30 = [v21 stringFromDate:v29];
-  [v17 setObject:v30 forKeyedSubscript:@"End Date (Local)"];
+  localEndDate = [highlightCopy localEndDate];
+  v30 = [v21 stringFromDate:localEndDate];
+  [dictionary setObject:v30 forKeyedSubscript:@"End Date (Local)"];
 
-  v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+0.1f hours", objc_msgSend(v7, "startTimeZoneOffset") / 3600.0];
-  [v17 setObject:v31 forKeyedSubscript:@"Start TZ Offset"];
+  v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+0.1f hours", objc_msgSend(highlightCopy, "startTimeZoneOffset") / 3600.0];
+  [dictionary setObject:v31 forKeyedSubscript:@"Start TZ Offset"];
 
-  v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+0.1f hours", objc_msgSend(v7, "endTimeZoneOffset") / 3600.0];
-  [v17 setObject:v32 forKeyedSubscript:@"End TZ Offset"];
+  v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%+0.1f hours", objc_msgSend(highlightCopy, "endTimeZoneOffset") / 3600.0];
+  [dictionary setObject:v32 forKeyedSubscript:@"End TZ Offset"];
 
-  [v7 type];
+  [highlightCopy type];
   v33 = PHShortDescriptionForPhotosHighlightType();
-  [v17 setObject:v33 forKeyedSubscript:@"Type"];
+  [dictionary setObject:v33 forKeyedSubscript:@"Type"];
 
-  [v7 kind];
+  [highlightCopy kind];
   v34 = PHShortDescriptionForPhotosHighlightKind();
-  [v17 setObject:v34 forKeyedSubscript:@"Kind"];
+  [dictionary setObject:v34 forKeyedSubscript:@"Kind"];
 
-  [v7 category];
+  [highlightCopy category];
   v35 = PHShortDescriptionForPhotosHighlightCategory();
-  [v17 setObject:v35 forKeyedSubscript:@"Category"];
+  [dictionary setObject:v35 forKeyedSubscript:@"Category"];
 
-  [v7 sharingComposition];
+  [highlightCopy sharingComposition];
   v36 = PHDescriptionForSharingComposition();
-  [v17 setObject:v36 forKeyedSubscript:@"Sharing Composition"];
+  [dictionary setObject:v36 forKeyedSubscript:@"Sharing Composition"];
 
   v37 = MEMORY[0x1E696AEC0];
-  [v7 promotionScore];
+  [highlightCopy promotionScore];
   v39 = [v37 stringWithFormat:@"%.3f", v38];
-  [v17 setObject:v39 forKeyedSubscript:@"Promotion Score"];
+  [dictionary setObject:v39 forKeyedSubscript:@"Promotion Score"];
 
-  if ([v7 isEnriched])
+  if ([highlightCopy isEnriched])
   {
     v40 = @"YES";
   }
@@ -502,57 +502,57 @@ void __112__PXHighlightDiagnosticsHelper_generateSectionTitles_andTableContent_f
     v40 = @"NO";
   }
 
-  [v17 setObject:v40 forKeyedSubscript:@"Is Enriched"];
-  [v7 enrichmentState];
+  [dictionary setObject:v40 forKeyedSubscript:@"Is Enriched"];
+  [highlightCopy enrichmentState];
   v41 = PHShortDescriptionForPhotosHighlightEnrichmentState();
-  [v17 setObject:v41 forKeyedSubscript:@"Enrichment State"];
+  [dictionary setObject:v41 forKeyedSubscript:@"Enrichment State"];
 
-  [v7 visibilityState];
+  [highlightCopy visibilityState];
   v42 = PHShortDescriptionForPhotosHighlightVisibilityState();
-  [v17 setObject:v42 forKeyedSubscript:@"Visibility State Private"];
+  [dictionary setObject:v42 forKeyedSubscript:@"Visibility State Private"];
 
-  [v7 visibilityStateShared];
+  [highlightCopy visibilityStateShared];
   v43 = PHShortDescriptionForPhotosHighlightVisibilityState();
-  [v17 setObject:v43 forKeyedSubscript:@"Visibility State Shared"];
+  [dictionary setObject:v43 forKeyedSubscript:@"Visibility State Shared"];
 
-  [v7 visibilityStateMixed];
+  [highlightCopy visibilityStateMixed];
   v44 = PHShortDescriptionForPhotosHighlightVisibilityState();
-  [v17 setObject:v44 forKeyedSubscript:@"Visibility State Mixed"];
+  [dictionary setObject:v44 forKeyedSubscript:@"Visibility State Mixed"];
 
-  [v7 mood];
+  [highlightCopy mood];
   v45 = PHStringForMemoryMood();
-  [v17 setObject:v45 forKeyedSubscript:@"Mood"];
+  [dictionary setObject:v45 forKeyedSubscript:@"Mood"];
 
   v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v12, "count")}];
-  [v17 setObject:v46 forKeyedSubscript:@"Number of Assets"];
+  [dictionary setObject:v46 forKeyedSubscript:@"Number of Assets"];
 
   v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v13, "count")}];
-  [v17 setObject:v47 forKeyedSubscript:@"Number of Extended Curated Assets"];
+  [dictionary setObject:v47 forKeyedSubscript:@"Number of Extended Curated Assets"];
 
-  v48 = [v60 firstObject];
-  v49 = [v48 uuid];
-  [v17 setObject:v49 forKeyedSubscript:@"Key Asset UUID"];
+  firstObject = [v60 firstObject];
+  uuid2 = [firstObject uuid];
+  [dictionary setObject:uuid2 forKeyedSubscript:@"Key Asset UUID"];
 
-  v50 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v7, "highlightVersion")}];
-  [v17 setObject:v50 forKeyedSubscript:@"Highlight Version"];
+  v50 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(highlightCopy, "highlightVersion")}];
+  [dictionary setObject:v50 forKeyedSubscript:@"Highlight Version"];
 
-  v51 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v7, "enrichmentVersion")}];
-  [v17 setObject:v51 forKeyedSubscript:@"Enrichment Version"];
+  v51 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(highlightCopy, "enrichmentVersion")}];
+  [dictionary setObject:v51 forKeyedSubscript:@"Enrichment Version"];
 
-  v52 = [v7 kind];
-  if (v52 != 3)
+  kind = [highlightCopy kind];
+  if (kind != 3)
   {
-    if (v52)
+    if (kind)
     {
       goto LABEL_8;
     }
 
     v53 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v64, "count")}];
-    [v17 setObject:v53 forKeyedSubscript:@"Number of Moments"];
+    [dictionary setObject:v53 forKeyedSubscript:@"Number of Moments"];
   }
 
   v54 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v65, "count")}];
-  [v17 setObject:v54 forKeyedSubscript:@"Number of Curated Assets"];
+  [dictionary setObject:v54 forKeyedSubscript:@"Number of Curated Assets"];
 
 LABEL_8:
   v55 = [v62 objectForKeyedSubscript:@"sortedMeaningLabels"];
@@ -560,21 +560,21 @@ LABEL_8:
   if (v55)
   {
     v57 = [v55 componentsJoinedByString:{@", "}];
-    [v17 setObject:v57 forKeyedSubscript:@"Meanings"];
+    [dictionary setObject:v57 forKeyedSubscript:@"Meanings"];
   }
 
   else
   {
-    [v17 setObject:@"-" forKeyedSubscript:@"Meanings"];
+    [dictionary setObject:@"-" forKeyedSubscript:@"Meanings"];
   }
 
   v58 = [v62 objectForKeyedSubscript:@"collectionsInfo"];
   if (v58)
   {
-    [v17 setObject:v58 forKeyedSubscript:@"Graph Info"];
+    [dictionary setObject:v58 forKeyedSubscript:@"Graph Info"];
   }
 
-  [v63 setObject:v17 forKeyedSubscript:@"debugInfo"];
+  [v63 setObject:dictionary forKeyedSubscript:@"debugInfo"];
 
   return v63;
 }

@@ -1,17 +1,17 @@
 @interface GCGameControllerActivationContext
-- (GCGameControllerActivationContext)initWithPreviousApplication:(id)a3;
-- (id)asBSActionWithResponder:(id)a3 error:(id *)a4;
+- (GCGameControllerActivationContext)initWithPreviousApplication:(id)application;
+- (id)asBSActionWithResponder:(id)responder error:(id *)error;
 @end
 
 @implementation GCGameControllerActivationContext
 
-- (GCGameControllerActivationContext)initWithPreviousApplication:(id)a3
+- (GCGameControllerActivationContext)initWithPreviousApplication:(id)application
 {
   v8.receiver = self;
   v8.super_class = GCGameControllerActivationContext;
-  v3 = a3;
+  applicationCopy = application;
   v4 = [(GCGameControllerActivationContext *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [applicationCopy copy];
 
   previousApplicationBundleID = v4->_previousApplicationBundleID;
   v4->_previousApplicationBundleID = v5;
@@ -19,12 +19,12 @@
   return v4;
 }
 
-- (id)asBSActionWithResponder:(id)a3 error:(id *)a4
+- (id)asBSActionWithResponder:(id)responder error:(id *)error
 {
-  v6 = a3;
+  responderCopy = responder;
   if (LoadGameControllerUIFramework(2) == 1)
   {
-    v7 = [(GCGameControllerActivationContext *)self asBSActionWithResponder:v6 error:a4];
+    v7 = [(GCGameControllerActivationContext *)self asBSActionWithResponder:responderCopy error:error];
   }
 
   else

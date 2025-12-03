@@ -1,21 +1,21 @@
 @interface SNNMILNamedArgument
-- (SNNMILNamedArgument)initWithKey:(id)a3 value:(id)a4;
+- (SNNMILNamedArgument)initWithKey:(id)key value:(id)value;
 @end
 
 @implementation SNNMILNamedArgument
 
-- (SNNMILNamedArgument)initWithKey:(id)a3 value:(id)a4
+- (SNNMILNamedArgument)initWithKey:(id)key value:(id)value
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = SNNMILNamedArgument;
   v9 = [(SNNMILNamedArgument *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v10->_value, a4);
+    objc_storeStrong(&v9->_name, key);
+    objc_storeStrong(&v10->_value, value);
   }
 
   return v10;

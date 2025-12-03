@@ -1,17 +1,17 @@
 @interface WidgetLocalNewsChannelService
 - (_TtC7NewsUI229WidgetLocalNewsChannelService)init;
-- (void)fetchWidgetLocalNewsChannelIDWithCompletion:(id)a3;
+- (void)fetchWidgetLocalNewsChannelIDWithCompletion:(id)completion;
 @end
 
 @implementation WidgetLocalNewsChannelService
 
-- (void)fetchWidgetLocalNewsChannelIDWithCompletion:(id)a3
+- (void)fetchWidgetLocalNewsChannelIDWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   sub_2186D0BA8();
-  v6 = self;
+  selfCopy = self;
   sub_219BE3204();
   v7 = swift_allocObject();
   *(v7 + 16) = sub_219AE8E24;

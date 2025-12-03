@@ -1,24 +1,24 @@
 @interface STUsageReportGraphSegment
-- (STUsageReportGraphSegment)initWithAmount:(id)a3 amountAsPercentageOfDataPointTotal:(double)a4 color:(id)a5;
+- (STUsageReportGraphSegment)initWithAmount:(id)amount amountAsPercentageOfDataPointTotal:(double)total color:(id)color;
 @end
 
 @implementation STUsageReportGraphSegment
 
-- (STUsageReportGraphSegment)initWithAmount:(id)a3 amountAsPercentageOfDataPointTotal:(double)a4 color:(id)a5
+- (STUsageReportGraphSegment)initWithAmount:(id)amount amountAsPercentageOfDataPointTotal:(double)total color:(id)color
 {
-  v8 = a3;
-  v9 = a5;
+  amountCopy = amount;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = STUsageReportGraphSegment;
   v10 = [(STUsageReportGraphSegment *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [amountCopy copy];
     amount = v10->_amount;
     v10->_amount = v11;
 
-    v10->_amountAsPercentageOfDataPointTotal = a4;
-    objc_storeStrong(&v10->_color, a5);
+    v10->_amountAsPercentageOfDataPointTotal = total;
+    objc_storeStrong(&v10->_color, color);
   }
 
   return v10;

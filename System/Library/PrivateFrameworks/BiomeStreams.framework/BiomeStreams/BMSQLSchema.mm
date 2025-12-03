@@ -1,6 +1,6 @@
 @interface BMSQLSchema
-- (BMSQLSchema)initWithTableName:(id)a3 columns:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMSQLSchema)initWithTableName:(id)name columns:(id)columns;
+- (BOOL)isEqual:(id)equal;
 - (id)createTableSQL;
 - (id)description;
 - (id)insertSQL;
@@ -13,20 +13,20 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   objc_msgSend(v3, "appendFormat:", @"CREATE TABLE IF NOT EXISTS %@(\n"), self->_tableName;
-  v4 = [(BMSQLSchema *)self columns];
-  v5 = [v4 count];
+  columns = [(BMSQLSchema *)self columns];
+  v5 = [columns count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(BMSQLSchema *)self columns];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      columns2 = [(BMSQLSchema *)self columns];
+      v8 = [columns2 objectAtIndexedSubscript:v6];
 
       [v3 appendString:@"\t"];
-      v9 = [v8 name];
-      [v3 appendFormat:@"%@", v9];
+      name = [v8 name];
+      [v3 appendFormat:@"%@", name];
 
       v10 = BMSQLDataTypeToString([v8 dataType]);
       [v3 appendFormat:@" %@", v10];
@@ -36,8 +36,8 @@
         [v3 appendString:@" HIDDEN"];
       }
 
-      v11 = [(BMSQLSchema *)self columns];
-      v12 = [v11 count] - 1;
+      columns3 = [(BMSQLSchema *)self columns];
+      v12 = [columns3 count] - 1;
 
       if (v6 != v12)
       {
@@ -47,8 +47,8 @@
       [v3 appendString:@"\n"];
 
       ++v6;
-      v13 = [(BMSQLSchema *)self columns];
-      v14 = [v13 count];
+      columns4 = [(BMSQLSchema *)self columns];
+      v14 = [columns4 count];
     }
 
     while (v6 < v14);
@@ -60,20 +60,20 @@
   return v15;
 }
 
-- (BMSQLSchema)initWithTableName:(id)a3 columns:(id)a4
+- (BMSQLSchema)initWithTableName:(id)name columns:(id)columns
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  columnsCopy = columns;
   v12.receiver = self;
   v12.super_class = BMSQLSchema;
   v8 = [(BMSQLSchema *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     tableName = v8->_tableName;
     v8->_tableName = v9;
 
-    objc_storeStrong(&v8->_columns, a4);
+    objc_storeStrong(&v8->_columns, columns);
   }
 
   return v8;
@@ -88,7 +88,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = self;
+  selfCopy = self;
   v5 = self->_columns;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v6)
@@ -106,8 +106,8 @@
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v11 = objc_alloc(MEMORY[0x1E696AEC0]);
-        v12 = [v10 name];
-        v13 = [v11 initWithFormat:@"%@", v12];
+        name = [v10 name];
+        v13 = [v11 initWithFormat:@"%@", name];
         [v3 addObject:v13];
 
         [v4 addObject:@"?"];
@@ -120,7 +120,7 @@
   }
 
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  tableName = v21->_tableName;
+  tableName = selfCopy->_tableName;
   v16 = [v3 componentsJoinedByString:{@", "}];
   v17 = [v4 componentsJoinedByString:{@", "}];
   v18 = [v14 initWithFormat:@"INSERT INTO %@ (%@) VALUES (%@)", tableName, v16, v17];
@@ -134,8 +134,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(BMSQLSchema *)self createTableSQL];
-  v6 = [v3 initWithFormat:@"<%@ %p> sql: '%@'", v4, self, v5];
+  createTableSQL = [(BMSQLSchema *)self createTableSQL];
+  v6 = [v3 initWithFormat:@"<%@ %p> sql: '%@'", v4, self, createTableSQL];
 
   return v6;
 }
@@ -178,20 +178,20 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     tableName = self->_tableName;
-    v7 = [v5 tableName];
-    if ([(NSString *)tableName isEqual:v7])
+    tableName = [v5 tableName];
+    if ([(NSString *)tableName isEqual:tableName])
     {
       columns = self->_columns;
-      v9 = [v5 columns];
-      v10 = [(NSArray *)columns isEqual:v9];
+      columns = [v5 columns];
+      v10 = [(NSArray *)columns isEqual:columns];
     }
 
     else

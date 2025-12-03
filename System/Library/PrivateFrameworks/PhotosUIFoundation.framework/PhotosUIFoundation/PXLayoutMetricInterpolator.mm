@@ -1,9 +1,9 @@
 @interface PXLayoutMetricInterpolator
-+ (CGSize)bestItemSizeForAvailableWidth:(double)a3 screenScale:(double)a4 columns:(unint64_t)a5 bestSpacing:(double *)a6 bestInset:(double *)a7;
-+ (CGSize)zoomableGridLayoutSmallItemSizeForWidth:(double)a3;
++ (CGSize)bestItemSizeForAvailableWidth:(double)width screenScale:(double)scale columns:(unint64_t)columns bestSpacing:(double *)spacing bestInset:(double *)inset;
++ (CGSize)zoomableGridLayoutSmallItemSizeForWidth:(double)width;
 + (NSArray)allLayoutMetricConfigurationSizes;
-+ (double)locketGadgetColumnWidthForLayoutWidth:(CGSize)a3 layoutMargins:(double)a4 interSpacing:(double)a5 isPhone:(BOOL)a6;
-+ (id)_gridItemWidthInterpolatorWithGridEdgeInsetsInterpolator:(id)a3;
++ (double)locketGadgetColumnWidthForLayoutWidth:(CGSize)width layoutMargins:(double)margins interSpacing:(double)spacing isPhone:(BOOL)phone;
++ (id)_gridItemWidthInterpolatorWithGridEdgeInsetsInterpolator:(id)interpolator;
 + (id)_sharedGridEdgeInsetsInterpolator;
 + (id)_sharedGridItemWidthInterpolator;
 + (id)albumsGridEdgeInsetsInterpolator;
@@ -18,16 +18,16 @@
 + (id)legacyLayoutMarginWidthInterpolator;
 + (id)memoriesFeedLandscapeEdgeInsetsInterpolator;
 + (id)photosDetailsEdgeInsetsInterpolator;
-+ (int64_t)photosGridSizeSubclassForScreenSize:(CGSize)a3;
-+ (unint64_t)photosGridLayoutColumnsForWidth:(double)a3;
++ (int64_t)photosGridSizeSubclassForScreenSize:(CGSize)size;
++ (unint64_t)photosGridLayoutColumnsForWidth:(double)width;
 - (PXLayoutMetricInterpolator)init;
-- (double)valueForMetric:(double)a3;
-- (id)_valueForMetric:(double)a3 fromInterpolationBetweenValue:(id)a4 secondValue:(id)a5;
+- (double)valueForMetric:(double)metric;
+- (id)_valueForMetric:(double)metric fromInterpolationBetweenValue:(id)value secondValue:(id)secondValue;
 - (id)description;
-- (void)_getReferenceValueForMetric:(double)a3 exactMatch:(id *)a4 closestBeforeMatch:(id *)a5 closestAfterMatch:(id *)a6;
+- (void)_getReferenceValueForMetric:(double)metric exactMatch:(id *)match closestBeforeMatch:(id *)beforeMatch closestAfterMatch:(id *)afterMatch;
 - (void)_invalidateReferenceValuesByMetricsOrder;
 - (void)_updateReferenceValuesByMetricsOrderIfNeeded;
-- (void)setReferenceValue:(double)a3 forMetric:(double)a4;
+- (void)setReferenceValue:(double)value forMetric:(double)metric;
 @end
 
 @implementation PXLayoutMetricInterpolator
@@ -78,9 +78,9 @@ void __59__PXLayoutMetricInterpolator_layoutMarginWidthInterpolator__block_invok
   v2 = [(PXLayoutMetricInterpolator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     referenceValuesByMetrics = v2->__referenceValuesByMetrics;
-    v2->__referenceValuesByMetrics = v3;
+    v2->__referenceValuesByMetrics = array;
   }
 
   return v2;
@@ -100,20 +100,20 @@ void __59__PXLayoutMetricInterpolator_layoutMarginWidthInterpolator__block_invok
   if (self->_needsUpdateFlags.referenceValuesByMetricsOrder)
   {
     self->_needsUpdateFlags.referenceValuesByMetricsOrder = 0;
-    v3 = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
-    [v3 sortUsingComparator:&__block_literal_global_129];
+    _referenceValuesByMetrics = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
+    [_referenceValuesByMetrics sortUsingComparator:&__block_literal_global_129];
   }
 }
 
-- (double)valueForMetric:(double)a3
+- (double)valueForMetric:(double)metric
 {
   [(PXLayoutMetricInterpolator *)self _cachedMetric];
-  if (v5 != a3)
+  if (v5 != metric)
   {
     v18 = 0;
     v19 = 0;
     v17 = 0;
-    [(PXLayoutMetricInterpolator *)self _getReferenceValueForMetric:&v19 exactMatch:&v18 closestBeforeMatch:&v17 closestAfterMatch:a3];
+    [(PXLayoutMetricInterpolator *)self _getReferenceValueForMetric:&v19 exactMatch:&v18 closestBeforeMatch:&v17 closestAfterMatch:metric];
     v9 = v19;
     v10 = v18;
     v11 = v17;
@@ -133,7 +133,7 @@ void __59__PXLayoutMetricInterpolator_layoutMarginWidthInterpolator__block_invok
           goto LABEL_15;
         }
 
-        v13 = [(PXLayoutMetricInterpolator *)self _valueForMetric:v10 fromInterpolationBetweenValue:v11 secondValue:a3];
+        v13 = [(PXLayoutMetricInterpolator *)self _valueForMetric:v10 fromInterpolationBetweenValue:v11 secondValue:metric];
       }
 
       else
@@ -149,7 +149,7 @@ void __59__PXLayoutMetricInterpolator_layoutMarginWidthInterpolator__block_invok
 
     v14 = v13;
 LABEL_15:
-    [(PXLayoutMetricInterpolator *)self _setCachedMetric:a3];
+    [(PXLayoutMetricInterpolator *)self _setCachedMetric:metric];
     [(PXLayoutMetricInterpolator *)self _setCachedValue:v14];
     [v14 CGPointValue];
     v8 = v15;
@@ -157,43 +157,43 @@ LABEL_15:
     return v8;
   }
 
-  v6 = [(PXLayoutMetricInterpolator *)self _cachedValue];
-  [v6 CGPointValue];
+  _cachedValue = [(PXLayoutMetricInterpolator *)self _cachedValue];
+  [_cachedValue CGPointValue];
   v8 = v7;
 
   return v8;
 }
 
-- (id)_valueForMetric:(double)a3 fromInterpolationBetweenValue:(id)a4 secondValue:(id)a5
+- (id)_valueForMetric:(double)metric fromInterpolationBetweenValue:(id)value secondValue:(id)secondValue
 {
-  v7 = a5;
-  [a4 CGPointValue];
+  secondValueCopy = secondValue;
+  [value CGPointValue];
   v9 = v8;
   v11 = v10;
-  [v7 CGPointValue];
+  [secondValueCopy CGPointValue];
   v13 = v12;
   v15 = v14;
 
   v16 = MEMORY[0x1E696B098];
 
-  return [v16 valueWithCGPoint:{0.0, v11 - (v15 - v11) / (v13 - v9) * v9 + (v15 - v11) / (v13 - v9) * a3}];
+  return [v16 valueWithCGPoint:{0.0, v11 - (v15 - v11) / (v13 - v9) * v9 + (v15 - v11) / (v13 - v9) * metric}];
 }
 
-- (void)_getReferenceValueForMetric:(double)a3 exactMatch:(id *)a4 closestBeforeMatch:(id *)a5 closestAfterMatch:(id *)a6
+- (void)_getReferenceValueForMetric:(double)metric exactMatch:(id *)match closestBeforeMatch:(id *)beforeMatch closestAfterMatch:(id *)afterMatch
 {
-  v15 = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
-  if ([v15 count])
+  _referenceValuesByMetrics = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
+  if ([_referenceValuesByMetrics count])
   {
     [(PXLayoutMetricInterpolator *)self _updateReferenceValuesByMetricsOrderIfNeeded];
-    v11 = _IndexOfReferenceValueForMetricWithOptions(v15, 1024, a3);
-    if (v11 < [v15 count])
+    v11 = _IndexOfReferenceValueForMetricWithOptions(_referenceValuesByMetrics, 1024, metric);
+    if (v11 < [_referenceValuesByMetrics count])
     {
-      v12 = [v15 objectAtIndex:v11];
+      v12 = [_referenceValuesByMetrics objectAtIndex:v11];
       [v12 CGPointValue];
-      if (v13 == a3)
+      if (v13 == metric)
       {
-        a6 = a4;
-        if (!a4)
+        afterMatch = match;
+        if (!match)
         {
 LABEL_6:
 
@@ -203,42 +203,42 @@ LABEL_6:
 
       else
       {
-        if (a5 && v11)
+        if (beforeMatch && v11)
         {
-          *a5 = [v15 objectAtIndexedSubscript:v11 - 1];
+          *beforeMatch = [_referenceValuesByMetrics objectAtIndexedSubscript:v11 - 1];
         }
 
-        if (!a6)
+        if (!afterMatch)
         {
           goto LABEL_6;
         }
       }
 
       v14 = v12;
-      *a6 = v12;
+      *afterMatch = v12;
       goto LABEL_6;
     }
 
-    if (a5)
+    if (beforeMatch)
     {
-      *a5 = [v15 lastObject];
+      *beforeMatch = [_referenceValuesByMetrics lastObject];
     }
   }
 
 LABEL_9:
 }
 
-- (void)setReferenceValue:(double)a3 forMetric:(double)a4
+- (void)setReferenceValue:(double)value forMetric:(double)metric
 {
-  v9 = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
-  v7 = _IndexOfReferenceValueForMetricWithOptions(v9, 256, a4);
+  _referenceValuesByMetrics = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
+  v7 = _IndexOfReferenceValueForMetricWithOptions(_referenceValuesByMetrics, 256, metric);
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v9 removeObjectAtIndex:v7];
+    [_referenceValuesByMetrics removeObjectAtIndex:v7];
   }
 
-  v8 = [MEMORY[0x1E696B098] valueWithCGPoint:{a4, a3}];
-  [v9 addObject:v8];
+  v8 = [MEMORY[0x1E696B098] valueWithCGPoint:{metric, value}];
+  [_referenceValuesByMetrics addObject:v8];
 
   [(PXLayoutMetricInterpolator *)self _invalidateReferenceValuesByMetricsOrder];
 }
@@ -246,30 +246,30 @@ LABEL_9:
 - (id)description
 {
   [(PXLayoutMetricInterpolator *)self _updateReferenceValuesByMetricsOrderIfNeeded];
-  v3 = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p, (%@)>", objc_opt_class(), self, v3];
+  _referenceValuesByMetrics = [(PXLayoutMetricInterpolator *)self _referenceValuesByMetrics];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p, (%@)>", objc_opt_class(), self, _referenceValuesByMetrics];
 
   return v4;
 }
 
-+ (double)locketGadgetColumnWidthForLayoutWidth:(CGSize)a3 layoutMargins:(double)a4 interSpacing:(double)a5 isPhone:(BOOL)a6
++ (double)locketGadgetColumnWidthForLayoutWidth:(CGSize)width layoutMargins:(double)margins interSpacing:(double)spacing isPhone:(BOOL)phone
 {
-  if (a6)
+  if (phone)
   {
-    if (a3.width <= a3.height)
+    if (width.width <= width.height)
     {
       v7 = 3;
-      return (a3.width - a4 - a5 * (v7 - 1)) / v7;
+      return (width.width - margins - spacing * (v7 - 1)) / v7;
     }
 
-    v6 = a3.height / a3.width <= 0.472;
+    v6 = width.height / width.width <= 0.472;
     v7 = 6;
     v8 = 4;
   }
 
   else
   {
-    v6 = a3.width <= a3.height;
+    v6 = width.width <= width.height;
     v7 = 2;
     v8 = 3;
   }
@@ -279,35 +279,35 @@ LABEL_9:
     v7 = v8;
   }
 
-  return (a3.width - a4 - a5 * (v7 - 1)) / v7;
+  return (width.width - margins - spacing * (v7 - 1)) / v7;
 }
 
-+ (CGSize)bestItemSizeForAvailableWidth:(double)a3 screenScale:(double)a4 columns:(unint64_t)a5 bestSpacing:(double *)a6 bestInset:(double *)a7
++ (CGSize)bestItemSizeForAvailableWidth:(double)width screenScale:(double)scale columns:(unint64_t)columns bestSpacing:(double *)spacing bestInset:(double *)inset
 {
   v7 = 0.0;
   v8 = 0.0;
-  if (a3 > 0.0 && a4 > 0.0)
+  if (width > 0.0 && scale > 0.0)
   {
-    v8 = floor(a3 * a4) / a4;
+    v8 = floor(width * scale) / scale;
   }
 
-  v9 = round(a4);
-  if (a4 <= 0.0)
+  v9 = round(scale);
+  if (scale <= 0.0)
   {
     v9 = 1.0;
   }
 
-  v10 = (a5 - 1);
+  v10 = (columns - 1);
   v11 = round(v9 + v9);
-  v12 = floor((v9 * v8 - v11 * v10) / a5);
-  v13 = round(v9 * v8 - (v11 * v10 + v12 * a5 + 0.0));
+  v12 = floor((v9 * v8 - v11 * v10) / columns);
+  v13 = round(v9 * v8 - (v11 * v10 + v12 * columns + 0.0));
   if (v13 <= 0.0)
   {
     v14 = v11;
-    if (a6)
+    if (spacing)
     {
 LABEL_24:
-      *a6 = v14 / v9;
+      *spacing = v14 / v9;
     }
   }
 
@@ -328,7 +328,7 @@ LABEL_24:
         else if (v13 < 2.0 || v7 < v11)
         {
           v12 = v12 + -1.0;
-          v15 = v15 + a5;
+          v15 = v15 + columns;
           v7 = 0.0;
           v13 = v15;
           v14 = v11;
@@ -349,15 +349,15 @@ LABEL_24:
     }
 
     while (v13 > 0.0);
-    if (a6)
+    if (spacing)
     {
       goto LABEL_24;
     }
   }
 
-  if (a7)
+  if (inset)
   {
-    *a7 = v7 / v9;
+    *inset = v7 / v9;
   }
 
   v18 = v12 / v9;
@@ -367,9 +367,9 @@ LABEL_24:
   return result;
 }
 
-+ (CGSize)zoomableGridLayoutSmallItemSizeForWidth:(double)a3
++ (CGSize)zoomableGridLayoutSmallItemSizeForWidth:(double)width
 {
-  v3 = a3 <= 480.0;
+  v3 = width <= 480.0;
   v4 = 10.0;
   if (!v3)
   {
@@ -382,9 +382,9 @@ LABEL_24:
   return result;
 }
 
-+ (unint64_t)photosGridLayoutColumnsForWidth:(double)a3
++ (unint64_t)photosGridLayoutColumnsForWidth:(double)width
 {
-  if (a3 >= 480.0)
+  if (width >= 480.0)
   {
     return 5;
   }
@@ -395,20 +395,20 @@ LABEL_24:
   }
 }
 
-+ (int64_t)photosGridSizeSubclassForScreenSize:(CGSize)a3
++ (int64_t)photosGridSizeSubclassForScreenSize:(CGSize)size
 {
-  if (a3.width > a3.height)
+  if (size.width > size.height)
   {
-    a3.width = a3.height;
+    size.width = size.height;
   }
 
   v3 = 3;
-  if (a3.width != 414.0)
+  if (size.width != 414.0)
   {
     v3 = 1;
   }
 
-  if (a3.width == 375.0)
+  if (size.width == 375.0)
   {
     return 2;
   }
@@ -648,18 +648,18 @@ void __65__PXLayoutMetricInterpolator_legacyLayoutMarginWidthInterpolator__block
   _ConfigureStandardLayoutMarginValues(v2);
 }
 
-+ (id)_gridItemWidthInterpolatorWithGridEdgeInsetsInterpolator:(id)a3
++ (id)_gridItemWidthInterpolatorWithGridEdgeInsetsInterpolator:(id)interpolator
 {
-  v3 = a3;
+  interpolatorCopy = interpolator;
   v4 = objc_alloc_init(PXLayoutMetricInterpolator);
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __87__PXLayoutMetricInterpolator__gridItemWidthInterpolatorWithGridEdgeInsetsInterpolator___block_invoke;
   v13 = &unk_1E7BB5D58;
-  v14 = v3;
+  v14 = interpolatorCopy;
   v5 = v4;
   v15 = v5;
-  v6 = v3;
+  v6 = interpolatorCopy;
   v7 = _Block_copy(&v10);
   v7[2](v7, 2, 16.0, 320.0);
   v7[2](v7, 2, 16.0, 375.0);
@@ -700,7 +700,7 @@ uint64_t __87__PXLayoutMetricInterpolator__gridItemWidthInterpolatorWithGridEdge
   block[1] = 3221225472;
   block[2] = __62__PXLayoutMetricInterpolator__sharedGridItemWidthInterpolator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_sharedGridItemWidthInterpolator_onceToken != -1)
   {
     dispatch_once(&_sharedGridItemWidthInterpolator_onceToken, block);
@@ -748,7 +748,7 @@ void __63__PXLayoutMetricInterpolator__sharedGridEdgeInsetsInterpolator__block_i
   block[1] = 3221225472;
   block[2] = __61__PXLayoutMetricInterpolator_albumsGridItemWidthInterpolator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (albumsGridItemWidthInterpolator_onceToken != -1)
   {
     dispatch_once(&albumsGridItemWidthInterpolator_onceToken, block);

@@ -1,5 +1,5 @@
 @interface PXPeopleCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityFavoriteButton;
 - (id)_accessibilityPersonName;
 - (id)_accessibilityUnfavoriteButton;
@@ -11,18 +11,18 @@
 
 @implementation PXPeopleCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"toggleFavorite:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleBadgeView" hasInstanceMethod:@"favoriteButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleBadgeView" hasInstanceMethod:@"unfavoriteButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"peopleCellDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPersonItem" hasInstanceMethod:@"modelObject" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHPerson" hasInstanceMethod:@"detectionType" withFullSignature:{"s", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"toggleFavorite:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"isFavorite" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleBadgeView" hasInstanceMethod:@"favoriteButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleBadgeView" hasInstanceMethod:@"unfavoriteButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPeopleCollectionViewCell" hasInstanceMethod:@"peopleCellDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPersonItem" hasInstanceMethod:@"modelObject" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHPerson" hasInstanceMethod:@"detectionType" withFullSignature:{"s", 0}];
 }
 
 - (id)_accessibilityPersonName
@@ -135,7 +135,7 @@ id __73__PXPeopleCollectionViewCellAccessibility__accessibilityUnfavoriteButton_
 
 - (id)automationElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if ([(PXPeopleCollectionViewCellAccessibility *)self safeBoolForKey:@"isFavorite"])
   {
     [(PXPeopleCollectionViewCellAccessibility *)self _accessibilityUnfavoriteButton];
@@ -146,17 +146,17 @@ id __73__PXPeopleCollectionViewCellAccessibility__accessibilityUnfavoriteButton_
     [(PXPeopleCollectionViewCellAccessibility *)self _accessibilityFavoriteButton];
   }
   v4 = ;
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(PXPeopleCollectionViewCellAccessibility *)self _accessibilityFavoriteButton];
+  array = [MEMORY[0x29EDB8DE8] array];
+  _accessibilityFavoriteButton = [(PXPeopleCollectionViewCellAccessibility *)self _accessibilityFavoriteButton];
 
-  if (v4)
+  if (_accessibilityFavoriteButton)
   {
     if ([(PXPeopleCollectionViewCellAccessibility *)self safeBoolForKey:@"isFavorite"])
     {
@@ -170,13 +170,13 @@ id __73__PXPeopleCollectionViewCellAccessibility__accessibilityUnfavoriteButton_
 
     v6 = accessibilityPhotosUICoreLocalizedString(v5);
     v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel__accessibilityToggleFavoriteActivate_];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
   v11.receiver = self;
   v11.super_class = PXPeopleCollectionViewCellAccessibility;
-  v8 = [(PXPeopleCollectionViewCellAccessibility *)&v11 accessibilityCustomActions];
-  v9 = [v3 arrayByAddingObjectsFromArray:v8];
+  accessibilityCustomActions = [(PXPeopleCollectionViewCellAccessibility *)&v11 accessibilityCustomActions];
+  v9 = [array arrayByAddingObjectsFromArray:accessibilityCustomActions];
 
   return v9;
 }

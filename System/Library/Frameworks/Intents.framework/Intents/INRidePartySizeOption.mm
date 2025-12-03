@@ -1,12 +1,12 @@
 @interface INRidePartySizeOption
-- (BOOL)isEqual:(id)a3;
-- (INRidePartySizeOption)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INRidePartySizeOption)initWithCoder:(id)coder;
 - (INRidePartySizeOption)initWithPartySizeRange:(NSRange)partySizeRange sizeDescription:(NSString *)sizeDescription priceRange:(INPriceRange *)priceRange;
 - (NSRange)partySizeRange;
 - (id)_dictionaryRepresentation;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRidePartySizeOption
@@ -26,31 +26,31 @@
   v12[0] = @"partySizeRange";
   v15.location = [(INRidePartySizeOption *)self partySizeRange];
   v3 = NSStringFromRange(v15);
-  v4 = v3;
+  null = v3;
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"sizeDescription";
   sizeDescription = self->_sizeDescription;
-  v6 = sizeDescription;
+  null2 = sizeDescription;
   if (!sizeDescription)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"priceRange";
   priceRange = self->_priceRange;
-  v8 = priceRange;
+  null3 = priceRange;
   if (!priceRange)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (priceRange)
   {
@@ -88,55 +88,55 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRidePartySizeOption;
   v6 = [(INRidePartySizeOption *)&v11 description];
-  v7 = [(INRidePartySizeOption *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRidePartySizeOption *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696B098];
-  v5 = a3;
-  v6 = [(INRidePartySizeOption *)self partySizeRange];
-  v8 = [v4 valueWithRange:{v6, v7}];
-  [v5 encodeObject:v8 forKey:@"partySizeRange"];
+  coderCopy = coder;
+  partySizeRange = [(INRidePartySizeOption *)self partySizeRange];
+  v8 = [v4 valueWithRange:{partySizeRange, v7}];
+  [coderCopy encodeObject:v8 forKey:@"partySizeRange"];
 
-  v9 = [(INRidePartySizeOption *)self sizeDescription];
-  [v5 encodeObject:v9 forKey:@"sizeDescription"];
+  sizeDescription = [(INRidePartySizeOption *)self sizeDescription];
+  [coderCopy encodeObject:sizeDescription forKey:@"sizeDescription"];
 
-  v10 = [(INRidePartySizeOption *)self priceRange];
-  [v5 encodeObject:v10 forKey:@"priceRange"];
+  priceRange = [(INRidePartySizeOption *)self priceRange];
+  [coderCopy encodeObject:priceRange forKey:@"priceRange"];
 }
 
-- (INRidePartySizeOption)initWithCoder:(id)a3
+- (INRidePartySizeOption)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partySizeRange"];
-  v6 = [v5 rangeValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partySizeRange"];
+  rangeValue = [v5 rangeValue];
   v8 = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sizeDescription"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"priceRange"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sizeDescription"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"priceRange"];
 
-  v11 = [(INRidePartySizeOption *)self initWithPartySizeRange:v6 sizeDescription:v8 priceRange:v9, v10];
+  v11 = [(INRidePartySizeOption *)self initWithPartySizeRange:rangeValue sizeDescription:v8 priceRange:v9, v10];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v9 = 0;
     if (self->_partySizeRange.length == v5[4] && self->_partySizeRange.location == v5[3])

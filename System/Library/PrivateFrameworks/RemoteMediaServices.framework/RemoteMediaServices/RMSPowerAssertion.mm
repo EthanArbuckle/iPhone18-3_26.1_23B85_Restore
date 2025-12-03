@@ -1,14 +1,14 @@
 @interface RMSPowerAssertion
-- (RMSPowerAssertion)initWithName:(id)a3;
+- (RMSPowerAssertion)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation RMSPowerAssertion
 
-- (RMSPowerAssertion)initWithName:(id)a3
+- (RMSPowerAssertion)initWithName:(id)name
 {
   v13[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = RMSPowerAssertion;
   v5 = [(RMSPowerAssertion *)&v9 init];
@@ -16,7 +16,7 @@
   {
     v12[0] = @"AssertName";
     v12[1] = @"TimeoutSeconds";
-    v13[0] = v4;
+    v13[0] = nameCopy;
     v13[1] = &unk_287486D68;
     v12[2] = @"TimeoutAction";
     v12[3] = @"AssertType";
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = nameCopy;
       _os_log_impl(&dword_261E98000, v7, OS_LOG_TYPE_DEFAULT, "Power assertion created for %@", buf, 0xCu);
     }
   }

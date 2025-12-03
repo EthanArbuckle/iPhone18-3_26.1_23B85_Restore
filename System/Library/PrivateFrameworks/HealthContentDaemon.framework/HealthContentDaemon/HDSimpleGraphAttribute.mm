@@ -1,6 +1,6 @@
 @interface HDSimpleGraphAttribute
 - (HDSimpleGraphAttribute)init;
-- (HDSimpleGraphAttribute)initWithRowID:(int64_t)a3 type:(int64_t)a4 value:(id)a5 nodeID:(int64_t)a6 version:(int64_t)a7 slots:(unint64_t)a8;
+- (HDSimpleGraphAttribute)initWithRowID:(int64_t)d type:(int64_t)type value:(id)value nodeID:(int64_t)iD version:(int64_t)version slots:(unint64_t)slots;
 - (id)description;
 @end
 
@@ -16,32 +16,32 @@
   return 0;
 }
 
-- (HDSimpleGraphAttribute)initWithRowID:(int64_t)a3 type:(int64_t)a4 value:(id)a5 nodeID:(int64_t)a6 version:(int64_t)a7 slots:(unint64_t)a8
+- (HDSimpleGraphAttribute)initWithRowID:(int64_t)d type:(int64_t)type value:(id)value nodeID:(int64_t)iD version:(int64_t)version slots:(unint64_t)slots
 {
-  v14 = a5;
-  v15 = v14;
-  if (v14 == @"hgNULL")
+  valueCopy = value;
+  v15 = valueCopy;
+  if (valueCopy == @"hgNULL")
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = [(__CFString *)v14 isEqualToString:@"hgNULL"];
+    v16 = [(__CFString *)valueCopy isEqualToString:@"hgNULL"];
   }
 
   v22.receiver = self;
   v22.super_class = HDSimpleGraphAttribute;
-  v17 = [(HDSimpleGraphObject *)&v22 initWithRowID:a3 version:a7 slots:a8 deleted:v16];
+  v17 = [(HDSimpleGraphObject *)&v22 initWithRowID:d version:version slots:slots deleted:v16];
   v18 = v17;
   if (v17)
   {
-    v17->_type = a4;
+    v17->_type = type;
     v19 = [(__CFString *)v15 copy];
     value = v18->_value;
     v18->_value = v19;
 
-    v18->_nodeID = a6;
+    v18->_nodeID = iD;
   }
 
   return v18;

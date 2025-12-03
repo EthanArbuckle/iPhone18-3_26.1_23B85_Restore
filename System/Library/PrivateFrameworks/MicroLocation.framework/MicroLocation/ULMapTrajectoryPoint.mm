@@ -1,42 +1,42 @@
 @interface ULMapTrajectoryPoint
-- (BOOL)isEqual:(id)a3;
-- (ULMapTrajectoryPoint)initWithCoder:(id)a3;
-- (ULMapTrajectoryPoint)initWithMapPoint:(id)a3 forwardAzimuth:(float)a4 forwardElevation:(float)a5 backwardAzimuth:(float)a6 backwardElevation:(float)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULMapTrajectoryPoint)initWithCoder:(id)coder;
+- (ULMapTrajectoryPoint)initWithMapPoint:(id)point forwardAzimuth:(float)azimuth forwardElevation:(float)elevation backwardAzimuth:(float)backwardAzimuth backwardElevation:(float)backwardElevation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULMapTrajectoryPoint
 
-- (ULMapTrajectoryPoint)initWithMapPoint:(id)a3 forwardAzimuth:(float)a4 forwardElevation:(float)a5 backwardAzimuth:(float)a6 backwardElevation:(float)a7
+- (ULMapTrajectoryPoint)initWithMapPoint:(id)point forwardAzimuth:(float)azimuth forwardElevation:(float)elevation backwardAzimuth:(float)backwardAzimuth backwardElevation:(float)backwardElevation
 {
-  v12 = a3;
+  pointCopy = point;
   v20.receiver = self;
   v20.super_class = ULMapTrajectoryPoint;
   v13 = [(ULMapTrajectoryPoint *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    [(ULMapTrajectoryPoint *)v13 setMapPoint:v12];
-    *&v15 = a4;
+    [(ULMapTrajectoryPoint *)v13 setMapPoint:pointCopy];
+    *&v15 = azimuth;
     [(ULMapTrajectoryPoint *)v14 setForwardAzimuthDegrees:v15];
-    *&v16 = a5;
+    *&v16 = elevation;
     [(ULMapTrajectoryPoint *)v14 setForwardElevationDegrees:v16];
-    *&v17 = a6;
+    *&v17 = backwardAzimuth;
     [(ULMapTrajectoryPoint *)v14 setBackwardAzimuthDegrees:v17];
-    *&v18 = a7;
+    *&v18 = backwardElevation;
     [(ULMapTrajectoryPoint *)v14 setBackwardElevationDegrees:v18];
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(ULMapTrajectoryPoint *)self mapPoint];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  mapPoint = [(ULMapTrajectoryPoint *)self mapPoint];
   [(ULMapTrajectoryPoint *)self forwardAzimuthDegrees];
   v7 = v6;
   [(ULMapTrajectoryPoint *)self forwardElevationDegrees];
@@ -48,42 +48,42 @@
   LODWORD(v14) = v7;
   LODWORD(v15) = v9;
   LODWORD(v16) = v11;
-  v17 = [v4 initWithMapPoint:v5 forwardAzimuth:v14 forwardElevation:v15 backwardAzimuth:v16 backwardElevation:v13];
+  v17 = [v4 initWithMapPoint:mapPoint forwardAzimuth:v14 forwardElevation:v15 backwardAzimuth:v16 backwardElevation:v13];
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   mapPoint = self->_mapPoint;
-  v5 = a3;
-  [v5 encodeObject:mapPoint forKey:@"mapPoint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:mapPoint forKey:@"mapPoint"];
   *&v6 = self->_forwardAzimuthDegrees;
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
-  [v5 encodeObject:v7 forKey:@"forwardAzimuthDegrees"];
+  [coderCopy encodeObject:v7 forKey:@"forwardAzimuthDegrees"];
 
   *&v8 = self->_forwardElevationDegrees;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v8];
-  [v5 encodeObject:v9 forKey:@"forwardElevationDegrees"];
+  [coderCopy encodeObject:v9 forKey:@"forwardElevationDegrees"];
 
   *&v10 = self->_backwardAzimuthDegrees;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
-  [v5 encodeObject:v11 forKey:@"backwardAzimuthDegrees"];
+  [coderCopy encodeObject:v11 forKey:@"backwardAzimuthDegrees"];
 
   *&v12 = self->_backwardElevationDegrees;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-  [v5 encodeObject:v13 forKey:@"backwardElevationDegrees"];
+  [coderCopy encodeObject:v13 forKey:@"backwardElevationDegrees"];
 }
 
-- (ULMapTrajectoryPoint)initWithCoder:(id)a3
+- (ULMapTrajectoryPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = ULMapTrajectoryPoint;
   v5 = [(ULMapTrajectoryPoint *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapPoint"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"mapPoint"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -91,7 +91,7 @@
       mapPoint = v5->_mapPoint;
       v5->_mapPoint = v7;
 
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"forwardAzimuthDegrees"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forwardAzimuthDegrees"];
       v6 = v9;
       if (v9)
       {
@@ -99,7 +99,7 @@
         v11 = v10;
 
         v5->_forwardAzimuthDegrees = v11;
-        v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"forwardElevationDegrees"];
+        v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"forwardElevationDegrees"];
         v6 = v12;
         if (v12)
         {
@@ -107,7 +107,7 @@
           v14 = v13;
 
           v5->_forwardElevationDegrees = v14;
-          v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backwardAzimuthDegrees"];
+          v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backwardAzimuthDegrees"];
           v6 = v15;
           if (v15)
           {
@@ -115,7 +115,7 @@
             v17 = v16;
 
             v5->_backwardAzimuthDegrees = v17;
-            v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backwardElevationDegrees"];
+            v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backwardElevationDegrees"];
             v6 = v18;
             if (v18)
             {
@@ -146,8 +146,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@: ", v5];
 
-  v7 = [(ULMapTrajectoryPoint *)self mapPoint];
-  [v6 appendFormat:@", mapPoint: %@", v7];
+  mapPoint = [(ULMapTrajectoryPoint *)self mapPoint];
+  [v6 appendFormat:@", mapPoint: %@", mapPoint];
 
   [(ULMapTrajectoryPoint *)self forwardAzimuthDegrees];
   [v6 appendFormat:@", forwardAzimuthDegrees: %f", v8];
@@ -162,25 +162,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULMapTrajectoryPoint *)self mapPoint];
-    v7 = [v5 mapPoint];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    mapPoint = [(ULMapTrajectoryPoint *)self mapPoint];
+    mapPoint2 = [v5 mapPoint];
+    if ([mapPoint isEqual:mapPoint2])
     {
     }
 
     else
     {
-      v9 = [(ULMapTrajectoryPoint *)self mapPoint];
-      v10 = [v5 mapPoint];
+      mapPoint3 = [(ULMapTrajectoryPoint *)self mapPoint];
+      mapPoint4 = [v5 mapPoint];
 
-      if (v9 != v10)
+      if (mapPoint3 != mapPoint4)
       {
         goto LABEL_9;
       }

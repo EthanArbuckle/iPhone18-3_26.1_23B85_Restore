@@ -1,71 +1,71 @@
 @interface _UIFocusScrollManager
-- (BOOL)_scrollWithScrollRequest:(id)a3 onlyIfNecessary:(BOOL)a4;
-- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)a3 toShowFocusItem:(id)a4 targetOffset:(CGPoint)a5;
-- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)a3 toShowRect:(CGRect)a4 targetOffset:(CGPoint)a5;
-- (CGPoint)currentVelocityForScrollableContainer:(id)a3;
-- (CGPoint)targetContentOffsetForScrollableContainer:(id)a3;
+- (BOOL)_scrollWithScrollRequest:(id)request onlyIfNecessary:(BOOL)necessary;
+- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)container toShowFocusItem:(id)item targetOffset:(CGPoint)offset;
+- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)container toShowRect:(CGRect)rect targetOffset:(CGPoint)offset;
+- (CGPoint)currentVelocityForScrollableContainer:(id)container;
+- (CGPoint)targetContentOffsetForScrollableContainer:(id)container;
 - (UIScreen)screen;
-- (_UIFocusScrollManager)initWithScreen:(id)a3;
-- (void)_ensureFocusItemIsOnscreenForScrollRequest:(id)a3;
-- (void)animateOffsetOfEnvironmentScrollableContainer:(id)a3 toShowFocusItem:(id)a4;
-- (void)animateOffsetOfScrollableContainersInParentEnvironmentContainer:(id)a3 toShowFocusItem:(id)a4;
-- (void)performScrollingIfNeededForFocusUpdateInContext:(id)a3;
+- (_UIFocusScrollManager)initWithScreen:(id)screen;
+- (void)_ensureFocusItemIsOnscreenForScrollRequest:(id)request;
+- (void)animateOffsetOfEnvironmentScrollableContainer:(id)container toShowFocusItem:(id)item;
+- (void)animateOffsetOfScrollableContainersInParentEnvironmentContainer:(id)container toShowFocusItem:(id)item;
+- (void)performScrollingIfNeededForFocusUpdateInContext:(id)context;
 @end
 
 @implementation _UIFocusScrollManager
 
-- (_UIFocusScrollManager)initWithScreen:(id)a3
+- (_UIFocusScrollManager)initWithScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   v12.receiver = self;
   v12.super_class = _UIFocusScrollManager;
   v5 = [(_UIFocusScrollManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_screen, v4);
-    if (v4)
+    objc_storeWeak(&v5->_screen, screenCopy);
+    if (screenCopy)
     {
-      v7 = [[_UIFocusDisplayLinkScrollAnimator alloc] initWithScreen:v4];
+      v7 = [[_UIFocusDisplayLinkScrollAnimator alloc] initWithScreen:screenCopy];
       scrollAnimator = v6->_scrollAnimator;
       v6->_scrollAnimator = v7;
 
       [(_UIFocusDisplayLinkScrollAnimator *)v6->_scrollAnimator setDefaultConvergenceRate:_UIGetFocusEngineScrollConvergence()];
-      v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       stackVisitedScrollingContainers = v6->_stackVisitedScrollingContainers;
-      v6->_stackVisitedScrollingContainers = v9;
+      v6->_stackVisitedScrollingContainers = weakObjectsHashTable;
     }
   }
 
   return v6;
 }
 
-- (void)performScrollingIfNeededForFocusUpdateInContext:(id)a3
+- (void)performScrollingIfNeededForFocusUpdateInContext:(id)context
 {
-  v23 = a3;
-  v4 = [v23 _commonEnvironmentScrollableContainer];
-  v5 = [v23 _sourceItemInfo];
-  v6 = [v5 item];
-  v7 = [_UIFocusItemInfo infoWithItem:v6 useFallbackAncestorScroller:1];
+  contextCopy = context;
+  _commonEnvironmentScrollableContainer = [contextCopy _commonEnvironmentScrollableContainer];
+  _sourceItemInfo = [contextCopy _sourceItemInfo];
+  item = [_sourceItemInfo item];
+  v7 = [_UIFocusItemInfo infoWithItem:item useFallbackAncestorScroller:1];
 
-  v8 = [v23 _destinationItemInfo];
-  v9 = [v8 item];
-  v10 = [_UIFocusItemInfo infoWithItem:v9 useFallbackAncestorScroller:1];
+  _destinationItemInfo = [contextCopy _destinationItemInfo];
+  item2 = [_destinationItemInfo item];
+  v10 = [_UIFocusItemInfo infoWithItem:item2 useFallbackAncestorScroller:1];
 
-  v11 = [v23 _request];
-  v12 = [v11 focusSystem];
-  v13 = [v12 behavior];
+  _request = [contextCopy _request];
+  focusSystem = [_request focusSystem];
+  behavior = [focusSystem behavior];
 
-  v14 = [v13 enforcesStrictTargetContentOffsetAdjustmentBehavior];
-  v15 = [v13 scrollingMode];
-  if (v15)
+  enforcesStrictTargetContentOffsetAdjustmentBehavior = [behavior enforcesStrictTargetContentOffsetAdjustmentBehavior];
+  scrollingMode = [behavior scrollingMode];
+  if (scrollingMode)
   {
-    if (v15 == 1)
+    if (scrollingMode == 1)
     {
-      v18 = [v23 _request];
-      v19 = [v18 isMovementRequest];
+      _request2 = [contextCopy _request];
+      isMovementRequest = [_request2 isMovementRequest];
 
-      if (!v19)
+      if (!isMovementRequest)
       {
         goto LABEL_12;
       }
@@ -73,54 +73,54 @@
 
     else
     {
-      if (v15 != 2)
+      if (scrollingMode != 2)
       {
         goto LABEL_12;
       }
 
-      v16 = [v23 _request];
-      v17 = [v16 shouldScrollIfNecessary];
+      _request3 = [contextCopy _request];
+      shouldScrollIfNecessary = [_request3 shouldScrollIfNecessary];
 
-      if ((v17 & 1) == 0)
+      if ((shouldScrollIfNecessary & 1) == 0)
       {
         goto LABEL_12;
       }
     }
   }
 
-  if (!v4)
+  if (!_commonEnvironmentScrollableContainer)
   {
-    v4 = _UIFocusEngineCommonEnvironmentScrollableContainerForItems(v7, v10);
-    if (!v4)
+    _commonEnvironmentScrollableContainer = _UIFocusEngineCommonEnvironmentScrollableContainerForItems(v7, v10);
+    if (!_commonEnvironmentScrollableContainer)
     {
-      v4 = _UIFocusEngineFirstScrollableContainerTupleThatScrollsForItem(v10);
+      _commonEnvironmentScrollableContainer = _UIFocusEngineFirstScrollableContainerTupleThatScrollsForItem(v10);
     }
   }
 
-  v20 = [v4 scrollableContainer];
-  CanScroll = _UIFocusEngineScrollableContainerCanScroll(v20);
+  scrollableContainer = [_commonEnvironmentScrollableContainer scrollableContainer];
+  CanScroll = _UIFocusEngineScrollableContainerCanScroll(scrollableContainer);
 
   if (CanScroll)
   {
-    v22 = [[_UIFocusScrollRequest alloc] initWithEnvironmentScrollableContainer:v4 focusItemInfo:v10 focusUpdateContext:v23];
+    v22 = [[_UIFocusScrollRequest alloc] initWithEnvironmentScrollableContainer:_commonEnvironmentScrollableContainer focusItemInfo:v10 focusUpdateContext:contextCopy];
     [(_UIFocusScrollManager *)self _ensureFocusItemIsOnscreenForScrollRequest:v22];
-    [(_UIFocusScrollManager *)self _scrollWithScrollRequest:v22 onlyIfNecessary:v14];
+    [(_UIFocusScrollManager *)self _scrollWithScrollRequest:v22 onlyIfNecessary:enforcesStrictTargetContentOffsetAdjustmentBehavior];
   }
 
 LABEL_12:
 }
 
-- (CGPoint)targetContentOffsetForScrollableContainer:(id)a3
+- (CGPoint)targetContentOffsetForScrollableContainer:(id)container
 {
-  v4 = a3;
-  if ([(_UIFocusScrollManager *)self isScrollingScrollableContainer:v4])
+  containerCopy = container;
+  if ([(_UIFocusScrollManager *)self isScrollingScrollableContainer:containerCopy])
   {
-    [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator targetContentOffsetForScrollableContainer:v4];
+    [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator targetContentOffsetForScrollableContainer:containerCopy];
   }
 
   else
   {
-    [v4 contentOffset];
+    [containerCopy contentOffset];
   }
 
   v7 = v5;
@@ -133,56 +133,56 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)currentVelocityForScrollableContainer:(id)a3
+- (CGPoint)currentVelocityForScrollableContainer:(id)container
 {
-  [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator currentVelocityForScrollableContainer:a3];
+  [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator currentVelocityForScrollableContainer:container];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)animateOffsetOfEnvironmentScrollableContainer:(id)a3 toShowFocusItem:(id)a4
+- (void)animateOffsetOfEnvironmentScrollableContainer:(id)container toShowFocusItem:(id)item
 {
-  v11 = a3;
-  v6 = a4;
-  if (v11)
+  containerCopy = container;
+  itemCopy = item;
+  if (containerCopy)
   {
-    if (v6)
+    if (itemCopy)
     {
-      v7 = [v11 owningEnvironment];
-      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(v7, v6);
+      owningEnvironment = [containerCopy owningEnvironment];
+      IsAncestorOfEnvironment = _UIFocusEnvironmentIsAncestorOfEnvironment(owningEnvironment, itemCopy);
 
       if (IsAncestorOfEnvironment)
       {
-        v9 = [_UIFocusItemInfo infoWithItem:v6 useFallbackAncestorScroller:1];
-        v10 = [[_UIFocusScrollRequest alloc] initWithEnvironmentScrollableContainer:v11 focusItemInfo:v9 targetContentOffsetValue:0];
+        v9 = [_UIFocusItemInfo infoWithItem:itemCopy useFallbackAncestorScroller:1];
+        v10 = [[_UIFocusScrollRequest alloc] initWithEnvironmentScrollableContainer:containerCopy focusItemInfo:v9 targetContentOffsetValue:0];
         [(_UIFocusScrollManager *)self _scrollWithScrollRequest:v10 onlyIfNecessary:1];
       }
     }
   }
 }
 
-- (void)animateOffsetOfScrollableContainersInParentEnvironmentContainer:(id)a3 toShowFocusItem:(id)a4
+- (void)animateOffsetOfScrollableContainersInParentEnvironmentContainer:(id)container toShowFocusItem:(id)item
 {
-  v6 = a3;
-  v7 = [_UIFocusItemInfo infoWithItem:a4 useFallbackAncestorScroller:1];
-  v8 = [v7 ancestorEnvironmentScrollableContainers];
+  containerCopy = container;
+  v7 = [_UIFocusItemInfo infoWithItem:item useFallbackAncestorScroller:1];
+  ancestorEnvironmentScrollableContainers = [v7 ancestorEnvironmentScrollableContainers];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __105___UIFocusScrollManager_animateOffsetOfScrollableContainersInParentEnvironmentContainer_toShowFocusItem___block_invoke;
   v17[3] = &unk_1E7108440;
-  v9 = v6;
+  v9 = containerCopy;
   v18 = v9;
-  v10 = [v8 indexOfObjectPassingTest:v17];
+  v10 = [ancestorEnvironmentScrollableContainers indexOfObjectPassingTest:v17];
   if (v10 <= 0x7FFFFFFFFFFFFFFELL)
   {
     v11 = 0;
     v12 = v10 + 1;
     do
     {
-      v13 = [v8 objectAtIndexedSubscript:v11];
-      v14 = [v13 scrollableContainer];
-      CanScroll = _UIFocusEngineScrollableContainerCanScroll(v14);
+      v13 = [ancestorEnvironmentScrollableContainers objectAtIndexedSubscript:v11];
+      scrollableContainer = [v13 scrollableContainer];
+      CanScroll = _UIFocusEngineScrollableContainerCanScroll(scrollableContainer);
 
       if (CanScroll)
       {
@@ -197,15 +197,15 @@ LABEL_12:
   }
 }
 
-- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)a3 toShowFocusItem:(id)a4 targetOffset:(CGPoint)a5
+- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)container toShowFocusItem:(id)item targetOffset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a3;
-  v9 = [_UIFocusItemInfo infoWithItem:a4 useFallbackAncestorScroller:1];
+  y = offset.y;
+  x = offset.x;
+  containerCopy = container;
+  v9 = [_UIFocusItemInfo infoWithItem:item useFallbackAncestorScroller:1];
   v10 = [_UIFocusScrollRequest alloc];
   v11 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
-  v12 = [(_UIFocusScrollRequest *)v10 initWithEnvironmentScrollableContainer:v8 focusItemInfo:v9 targetContentOffsetValue:v11];
+  v12 = [(_UIFocusScrollRequest *)v10 initWithEnvironmentScrollableContainer:containerCopy focusItemInfo:v9 targetContentOffsetValue:v11];
 
   [(_UIFocusScrollRequest *)v12 resolveTargetContentOffsetUsingScrollOffsetResolverClamped:1];
   v14 = v13;
@@ -218,20 +218,20 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)a3 toShowRect:(CGRect)a4 targetOffset:(CGPoint)a5
+- (CGPoint)contentOffsetForEnvironmentScrollableContainer:(id)container toShowRect:(CGRect)rect targetOffset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v9 = a4.origin.y;
-  v10 = a4.origin.x;
-  v11 = a3;
+  y = offset.y;
+  x = offset.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
+  containerCopy = container;
   v12 = [_UIFocusScrollRequest alloc];
   v13 = [MEMORY[0x1E696B098] valueWithCGPoint:{x, y}];
-  v14 = [(_UIFocusScrollRequest *)v12 initWithEnvironmentScrollableContainer:v11 focusItemFrame:v13 targetContentOffsetValue:v10, v9, width, height];
+  height = [(_UIFocusScrollRequest *)v12 initWithEnvironmentScrollableContainer:containerCopy focusItemFrame:v13 targetContentOffsetValue:v10, v9, width, height];
 
-  [(_UIFocusScrollRequest *)v14 resolveTargetContentOffsetUsingScrollOffsetResolverClamped:1];
+  [(_UIFocusScrollRequest *)height resolveTargetContentOffsetUsingScrollOffsetResolverClamped:1];
   v16 = v15;
   v18 = v17;
 
@@ -242,41 +242,41 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_scrollWithScrollRequest:(id)a3 onlyIfNecessary:(BOOL)a4
+- (BOOL)_scrollWithScrollRequest:(id)request onlyIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 environmentScrollableContainer];
-  v8 = [v7 scrollableContainer];
-  v9 = [v7 owningEnvironment];
-  v10 = [v6 focusItemInfo];
-  v11 = _UIFocusEnvironmentRootAncestorEnvironment(v9);
+  necessaryCopy = necessary;
+  requestCopy = request;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
+  owningEnvironment = [environmentScrollableContainer owningEnvironment];
+  focusItemInfo = [requestCopy focusItemInfo];
+  v11 = _UIFocusEnvironmentRootAncestorEnvironment(owningEnvironment);
 
-  if (!v11 || [(NSHashTable *)self->_stackVisitedScrollingContainers containsObject:v8])
+  if (!v11 || [(NSHashTable *)self->_stackVisitedScrollingContainers containsObject:scrollableContainer])
   {
     goto LABEL_3;
   }
 
-  v14 = [v10 item];
-  IsFocusedOrContainsFocus = _UIFocusEnvironmentIsFocusedOrContainsFocus(v14);
+  item = [focusItemInfo item];
+  IsFocusedOrContainsFocus = _UIFocusEnvironmentIsFocusedOrContainsFocus(item);
 
   if (!IsFocusedOrContainsFocus)
   {
     goto LABEL_4;
   }
 
-  [v6 originatingContentOffset];
+  [requestCopy originatingContentOffset];
   v16 = v15;
   v18 = v17;
-  [v8 contentOffset];
+  [scrollableContainer contentOffset];
   v20 = v19;
   v22 = v21;
-  [v6 resolveTargetContentOffsetUsingScrollOffsetResolverClamped:1];
+  [requestCopy resolveTargetContentOffsetUsingScrollOffsetResolverClamped:1];
   v25 = v23;
   v26 = v24;
   v69[0] = v23;
   v69[1] = v24;
-  if (v4 && v23 == v16 && v24 == v18)
+  if (necessaryCopy && v23 == v16 && v24 == v18)
   {
 LABEL_3:
     LOBYTE(IsFocusedOrContainsFocus) = 0;
@@ -284,10 +284,10 @@ LABEL_3:
 
   else
   {
-    [(NSHashTable *)self->_stackVisitedScrollingContainers addObject:v8];
-    if ([v8 __isKindOfUIScrollView])
+    [(NSHashTable *)self->_stackVisitedScrollingContainers addObject:scrollableContainer];
+    if ([scrollableContainer __isKindOfUIScrollView])
     {
-      v27 = v8;
+      v27 = scrollableContainer;
     }
 
     else
@@ -296,7 +296,7 @@ LABEL_3:
     }
 
     v58 = v18;
-    v28 = [v27 delegate];
+    delegate = [v27 delegate];
     [v27 _scrollViewWillBeginDragging];
     [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator velocityToScrollFromOffset:v20 toOffset:v22, v25, v26];
     v30 = v29;
@@ -311,11 +311,11 @@ LABEL_3:
     v57 = v22;
     if (v33)
     {
-      [v28 scrollViewWillEndDragging:v27 withVelocity:v69 targetContentOffset:{v30, v32}];
+      [delegate scrollViewWillEndDragging:v27 withVelocity:v69 targetContentOffset:{v30, v32}];
     }
 
-    v34 = [v8 coordinateSpace];
-    [v10 focusedRectInCoordinateSpace:v34];
+    coordinateSpace = [scrollableContainer coordinateSpace];
+    [focusItemInfo focusedRectInCoordinateSpace:coordinateSpace];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -325,7 +325,7 @@ LABEL_3:
     v70.origin.y = v38;
     v70.size.width = v40;
     v70.size.height = v42;
-    if (CGRectGetMinX(v70) < v69[0] || (v71.origin.x = v36, v71.origin.y = v38, v71.size.width = v40, v71.size.height = v42, v43 = v20, MaxX = CGRectGetMaxX(v71), v45 = v69[0], [v8 visibleSize], v47 = MaxX <= v45 + v46, v20 = v43, !v47) || (v72.origin.x = v36, v72.origin.y = v38, v72.size.width = v40, v72.size.height = v42, CGRectGetMinY(v72) < v69[1]) || (v73.origin.x = v36, v73.origin.y = v38, v73.size.width = v40, v73.size.height = v42, MaxY = CGRectGetMaxY(v73), v49 = v69[1], objc_msgSend(v8, "visibleSize"), v47 = MaxY <= v49 + v50, v20 = v43, !v47))
+    if (CGRectGetMinX(v70) < v69[0] || (v71.origin.x = v36, v71.origin.y = v38, v71.size.width = v40, v71.size.height = v42, v43 = v20, MaxX = CGRectGetMaxX(v71), v45 = v69[0], [scrollableContainer visibleSize], v47 = MaxX <= v45 + v46, v20 = v43, !v47) || (v72.origin.x = v36, v72.origin.y = v38, v72.size.width = v40, v72.size.height = v42, CGRectGetMinY(v72) < v69[1]) || (v73.origin.x = v36, v73.origin.y = v38, v73.size.width = v40, v73.size.height = v42, MaxY = CGRectGetMaxY(v73), v49 = v69[1], objc_msgSend(scrollableContainer, "visibleSize"), v47 = MaxY <= v49 + v50, v20 = v43, !v47))
     {
       *v69 = v68;
     }
@@ -336,15 +336,15 @@ LABEL_3:
       [v27 _scrollViewDidEndDraggingForDelegateWithDeceleration:{1, v58, v69[1]}];
       if (objc_opt_respondsToSelector())
       {
-        [v28 scrollViewWillBeginDecelerating:v27];
+        [delegate scrollViewWillBeginDecelerating:v27];
       }
 
-      v59 = v28;
+      v59 = delegate;
       v51 = _UIGetFocusEngineScrollConvergence();
-      v52 = [(_UIFocusScrollManager *)self screen];
-      v53 = [v52 _userInterfaceIdiom];
+      screen = [(_UIFocusScrollManager *)self screen];
+      _userInterfaceIdiom = [screen _userInterfaceIdiom];
 
-      if (v53 == 3)
+      if (_userInterfaceIdiom == 3)
       {
         if ([v27 isPagingEnabled])
         {
@@ -360,7 +360,7 @@ LABEL_3:
 
       objc_initWeak(&location, self);
       objc_initWeak(&from, v27);
-      objc_initWeak(&v65, v8);
+      objc_initWeak(&v65, scrollableContainer);
       scrollAnimator = self->_scrollAnimator;
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
@@ -369,10 +369,10 @@ LABEL_3:
       objc_copyWeak(&v62, &location);
       objc_copyWeak(&v63, &from);
       objc_copyWeak(&v64, &v65);
-      v61 = v6;
-      [(_UIFocusDisplayLinkScrollAnimator *)scrollAnimator setTargetContentOffset:v7 forEnvironmentScrollableContainer:v60 convergenceRate:*v69 completion:v51];
-      [(NSHashTable *)self->_stackVisitedScrollingContainers removeObject:v8];
-      v28 = v59;
+      v61 = requestCopy;
+      [(_UIFocusDisplayLinkScrollAnimator *)scrollAnimator setTargetContentOffset:environmentScrollableContainer forEnvironmentScrollableContainer:v60 convergenceRate:*v69 completion:v51];
+      [(NSHashTable *)self->_stackVisitedScrollingContainers removeObject:scrollableContainer];
+      delegate = v59;
 
       objc_destroyWeak(&v64);
       objc_destroyWeak(&v63);
@@ -384,15 +384,15 @@ LABEL_3:
 
     else
     {
-      v54 = [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator isAnimatingScrollableContainer:v8, v58, v69[1]];
+      v54 = [(_UIFocusDisplayLinkScrollAnimator *)self->_scrollAnimator isAnimatingScrollableContainer:scrollableContainer, v58, v69[1]];
       [v27 _scrollViewDidEndDraggingForDelegateWithDeceleration:v54];
-      [(_UIFocusScrollManager *)self _ensureFocusItemIsOnscreenForScrollRequest:v6];
+      [(_UIFocusScrollManager *)self _ensureFocusItemIsOnscreenForScrollRequest:requestCopy];
       if (v54 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v28 scrollViewWillBeginDecelerating:v27];
+        [delegate scrollViewWillBeginDecelerating:v27];
       }
 
-      [(NSHashTable *)self->_stackVisitedScrollingContainers removeObject:v8];
+      [(NSHashTable *)self->_stackVisitedScrollingContainers removeObject:scrollableContainer];
     }
   }
 
@@ -401,25 +401,25 @@ LABEL_4:
   return IsFocusedOrContainsFocus;
 }
 
-- (void)_ensureFocusItemIsOnscreenForScrollRequest:(id)a3
+- (void)_ensureFocusItemIsOnscreenForScrollRequest:(id)request
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 environmentScrollableContainer];
-  v6 = [v5 scrollableContainer];
+  requestCopy = request;
+  environmentScrollableContainer = [requestCopy environmentScrollableContainer];
+  scrollableContainer = [environmentScrollableContainer scrollableContainer];
 
-  v7 = [v4 focusItemInfo];
-  v8 = [v7 item];
-  v9 = [v8 allowsWeakReference];
+  focusItemInfo = [requestCopy focusItemInfo];
+  item = [focusItemInfo item];
+  allowsWeakReference = [item allowsWeakReference];
 
-  if (v9)
+  if (allowsWeakReference)
   {
-    v10 = [v7 item];
-    if (v7 && v10)
+    item2 = [focusItemInfo item];
+    if (focusItemInfo && item2)
     {
-      v21 = v10;
-      v22 = v7;
-      [v7 ancestorEnvironmentScrollableContainers];
+      v21 = item2;
+      v22 = focusItemInfo;
+      [focusItemInfo ancestorEnvironmentScrollableContainers];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
@@ -439,10 +439,10 @@ LABEL_4:
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
-            v17 = [v16 scrollableContainer];
-            if (_UIFocusEngineScrollableContainerCanScroll(v17))
+            scrollableContainer2 = [v16 scrollableContainer];
+            if (_UIFocusEngineScrollableContainerCanScroll(scrollableContainer2))
             {
-              v18 = v6 == v17;
+              v18 = scrollableContainer == scrollableContainer2;
             }
 
             else
@@ -452,7 +452,7 @@ LABEL_4:
 
             if (!v18)
             {
-              v19 = [[_UIFocusScrollRequest alloc] initWithBaseRequest:v4 environmentScrollableContainer:v16];
+              v19 = [[_UIFocusScrollRequest alloc] initWithBaseRequest:requestCopy environmentScrollableContainer:v16];
               v20 = [(_UIFocusScrollManager *)self _scrollWithScrollRequest:v19 onlyIfNecessary:1];
 
               if (v20)
@@ -475,14 +475,14 @@ LABEL_4:
 
 LABEL_19:
 
-      v10 = v21;
-      v7 = v22;
+      item2 = v21;
+      focusItemInfo = v22;
     }
   }
 
   else
   {
-    v10 = 0;
+    item2 = 0;
   }
 }
 

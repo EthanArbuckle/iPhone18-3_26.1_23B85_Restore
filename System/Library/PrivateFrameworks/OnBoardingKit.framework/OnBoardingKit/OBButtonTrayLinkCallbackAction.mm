@@ -1,19 +1,19 @@
 @interface OBButtonTrayLinkCallbackAction
-- (OBButtonTrayLinkCallbackAction)initWithCallback:(id)a3;
+- (OBButtonTrayLinkCallbackAction)initWithCallback:(id)callback;
 - (void)performButtonTrayLinkAction;
 @end
 
 @implementation OBButtonTrayLinkCallbackAction
 
-- (OBButtonTrayLinkCallbackAction)initWithCallback:(id)a3
+- (OBButtonTrayLinkCallbackAction)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v9.receiver = self;
   v9.super_class = OBButtonTrayLinkCallbackAction;
   v5 = [(OBButtonTrayLinkCallbackAction *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x1B8C83960](v4);
+    v6 = MEMORY[0x1B8C83960](callbackCopy);
     action = v5->_action;
     v5->_action = v6;
   }
@@ -23,12 +23,12 @@
 
 - (void)performButtonTrayLinkAction
 {
-  v3 = [(OBButtonTrayLinkCallbackAction *)self action];
+  action = [(OBButtonTrayLinkCallbackAction *)self action];
 
-  if (v3)
+  if (action)
   {
-    v4 = [(OBButtonTrayLinkCallbackAction *)self action];
-    v4[2]();
+    action2 = [(OBButtonTrayLinkCallbackAction *)self action];
+    action2[2]();
   }
 }
 

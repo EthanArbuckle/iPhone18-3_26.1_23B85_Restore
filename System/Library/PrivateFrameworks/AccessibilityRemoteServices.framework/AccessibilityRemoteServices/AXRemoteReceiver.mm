@@ -1,21 +1,21 @@
 @interface AXRemoteReceiver
-- (AXRemoteReceiver)initWithEventID:(id)a3 delegate:(id)a4;
+- (AXRemoteReceiver)initWithEventID:(id)d delegate:(id)delegate;
 - (AXRemoteReceiverDelegate)delegate;
 @end
 
 @implementation AXRemoteReceiver
 
-- (AXRemoteReceiver)initWithEventID:(id)a3 delegate:(id)a4
+- (AXRemoteReceiver)initWithEventID:(id)d delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = AXRemoteReceiver;
   v8 = [(AXRemoteReceiver *)&v32 init];
   v9 = v8;
   if (v8)
   {
-    [(AXRemoteReceiver *)v8 setDelegate:v7];
+    [(AXRemoteReceiver *)v8 setDelegate:delegateCopy];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_attr_make_with_qos_class(v10, QOS_CLASS_USER_INTERACTIVE, 0);
 
@@ -27,44 +27,44 @@
     v14 = objc_alloc_init(MEMORY[0x277D44160]);
     [(AXRemoteReceiver *)v9 setCompanionLinkClient:v14];
 
-    v15 = [(AXRemoteReceiver *)v9 companionLinkClient];
-    [v15 setAppID:@"com.apple.AXRemoteServices.Receiver"];
+    companionLinkClient = [(AXRemoteReceiver *)v9 companionLinkClient];
+    [companionLinkClient setAppID:@"com.apple.AXRemoteServices.Receiver"];
 
     v16 = v9->_queue;
-    v17 = [(AXRemoteReceiver *)v9 companionLinkClient];
-    [v17 setDispatchQueue:v16];
+    companionLinkClient2 = [(AXRemoteReceiver *)v9 companionLinkClient];
+    [companionLinkClient2 setDispatchQueue:v16];
 
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __45__AXRemoteReceiver_initWithEventID_delegate___block_invoke;
     v29[3] = &unk_2786658D0;
     objc_copyWeak(&v30, &location);
-    v18 = [(AXRemoteReceiver *)v9 companionLinkClient];
-    [v18 setDisconnectHandler:v29];
+    companionLinkClient3 = [(AXRemoteReceiver *)v9 companionLinkClient];
+    [companionLinkClient3 setDisconnectHandler:v29];
 
-    v19 = [(AXRemoteReceiver *)v9 companionLinkClient];
+    companionLinkClient4 = [(AXRemoteReceiver *)v9 companionLinkClient];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __45__AXRemoteReceiver_initWithEventID_delegate___block_invoke_3;
     v27[3] = &unk_278665B68;
     objc_copyWeak(&v28, &location);
-    [v19 activateWithCompletion:v27];
+    [companionLinkClient4 activateWithCompletion:v27];
 
-    v20 = [(AXRemoteReceiver *)v9 companionLinkClient];
+    companionLinkClient5 = [(AXRemoteReceiver *)v9 companionLinkClient];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __45__AXRemoteReceiver_initWithEventID_delegate___block_invoke_5;
     v25[3] = &unk_278665B90;
     objc_copyWeak(&v26, &location);
-    [v20 registerEventID:v6 options:0 handler:v25];
+    [companionLinkClient5 registerEventID:dCopy options:0 handler:v25];
 
-    v21 = [(AXRemoteReceiver *)v9 companionLinkClient];
+    companionLinkClient6 = [(AXRemoteReceiver *)v9 companionLinkClient];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __45__AXRemoteReceiver_initWithEventID_delegate___block_invoke_7;
     v23[3] = &unk_278665BB8;
     objc_copyWeak(&v24, &location);
-    [v21 registerRequestID:@"com.apple.AXRemoteServices.ConnectionSetup" options:0 handler:v23];
+    [companionLinkClient6 registerRequestID:@"com.apple.AXRemoteServices.ConnectionSetup" options:0 handler:v23];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&v26);

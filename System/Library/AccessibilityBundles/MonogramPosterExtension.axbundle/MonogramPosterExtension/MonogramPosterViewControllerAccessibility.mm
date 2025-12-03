@@ -1,16 +1,16 @@
 @interface MonogramPosterViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation MonogramPosterViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MonogramPosterExtension.MonogramPosterViewController" hasSwiftField:@"simulationView" withSwiftType:"Optional<MonogramSimulationView>"];
-  [v3 validateClass:@"MonogramPosterExtension.MonogramPosterViewController" hasSwiftField:@"monogramString" withSwiftType:"String"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MonogramPosterExtension.MonogramPosterViewController" hasSwiftField:@"simulationView" withSwiftType:"Optional<MonogramSimulationView>"];
+  [validationsCopy validateClass:@"MonogramPosterExtension.MonogramPosterViewController" hasSwiftField:@"monogramString" withSwiftType:"String"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

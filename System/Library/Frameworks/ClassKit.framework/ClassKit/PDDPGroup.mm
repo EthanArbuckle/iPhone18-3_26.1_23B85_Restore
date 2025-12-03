@@ -1,12 +1,12 @@
 @interface PDDPGroup
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPGroup
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PDDPGroup;
   v3 = [(PDDPGroup *)&v7 description];
-  v4 = [(PDDPGroup *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPGroup *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,15 +41,15 @@
   dateCreated = self->_dateCreated;
   if (dateCreated)
   {
-    v8 = [(PDDPDate *)dateCreated dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"date_created"];
+    dictionaryRepresentation = [(PDDPDate *)dateCreated dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"date_created"];
   }
 
   dateLastModified = self->_dateLastModified;
   if (dateLastModified)
   {
-    v10 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"date_last_modified"];
+    dictionaryRepresentation2 = [(PDDPDate *)dateLastModified dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"date_last_modified"];
   }
 
   locationId = self->_locationId;
@@ -67,125 +67,125 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_groupId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_groupName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateLastModified)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_email)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_groupId)
   {
-    [v4 setGroupId:?];
-    v4 = v5;
+    [toCopy setGroupId:?];
+    toCopy = v5;
   }
 
   if (self->_groupName)
   {
     [v5 setGroupName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateCreated)
   {
     [v5 setDateCreated:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_dateLastModified)
   {
     [v5 setDateLastModified:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_locationId)
   {
     [v5 setLocationId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_email)
   {
     [v5 setEmail:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_groupId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_groupId copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NSString *)self->_groupName copyWithZone:a3];
+  v8 = [(NSString *)self->_groupName copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:a3];
+  v10 = [(PDDPDate *)self->_dateCreated copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:a3];
+  v12 = [(PDDPDate *)self->_dateLastModified copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(NSString *)self->_locationId copyWithZone:a3];
+  v14 = [(NSString *)self->_locationId copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSString *)self->_email copyWithZone:a3];
+  v16 = [(NSString *)self->_email copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((groupId = self->_groupId, !(groupId | v4[4])) || -[NSString isEqual:](groupId, "isEqual:")) && ((groupName = self->_groupName, !(groupName | v4[5])) || -[NSString isEqual:](groupName, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | v4[1])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | v4[2])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")) && ((locationId = self->_locationId, !(locationId | v4[6])) || -[NSString isEqual:](locationId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((groupId = self->_groupId, !(groupId | equalCopy[4])) || -[NSString isEqual:](groupId, "isEqual:")) && ((groupName = self->_groupName, !(groupName | equalCopy[5])) || -[NSString isEqual:](groupName, "isEqual:")) && ((dateCreated = self->_dateCreated, !(dateCreated | equalCopy[1])) || -[PDDPDate isEqual:](dateCreated, "isEqual:")) && ((dateLastModified = self->_dateLastModified, !(dateLastModified | equalCopy[2])) || -[PDDPDate isEqual:](dateLastModified, "isEqual:")) && ((locationId = self->_locationId, !(locationId | equalCopy[6])) || -[NSString isEqual:](locationId, "isEqual:")))
   {
     email = self->_email;
-    if (email | v4[3])
+    if (email | equalCopy[3])
     {
       v11 = [(NSString *)email isEqual:?];
     }
@@ -214,21 +214,21 @@
   return v6 ^ v7 ^ [(NSString *)self->_email hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v8 = a3;
-  if (v8[4])
+  fromCopy = from;
+  if (fromCopy[4])
   {
     [(PDDPGroup *)self setGroupId:?];
   }
 
-  if (v8[5])
+  if (fromCopy[5])
   {
     [(PDDPGroup *)self setGroupName:?];
   }
 
   dateCreated = self->_dateCreated;
-  v5 = v8[1];
+  v5 = fromCopy[1];
   if (dateCreated)
   {
     if (v5)
@@ -243,7 +243,7 @@
   }
 
   dateLastModified = self->_dateLastModified;
-  v7 = v8[2];
+  v7 = fromCopy[2];
   if (dateLastModified)
   {
     if (v7)
@@ -257,12 +257,12 @@
     [(PDDPGroup *)self setDateLastModified:?];
   }
 
-  if (v8[6])
+  if (fromCopy[6])
   {
     [(PDDPGroup *)self setLocationId:?];
   }
 
-  if (v8[3])
+  if (fromCopy[3])
   {
     [(PDDPGroup *)self setEmail:?];
   }

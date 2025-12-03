@@ -1,6 +1,6 @@
 @interface ValueSlider
 - (CGSize)intrinsicContentSize;
-- (_TtC8PaperKit11ValueSlider)initWithFrame:(CGRect)a3;
+- (_TtC8PaperKit11ValueSlider)initWithFrame:(CGRect)frame;
 - (void)didChangeSlider;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)didChangeSlider
 {
-  v2 = self;
+  selfCopy = self;
   ValueSlider.didChangeSlider()();
 }
 
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC8PaperKit11ValueSlider)initWithFrame:(CGRect)a3
+- (_TtC8PaperKit11ValueSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

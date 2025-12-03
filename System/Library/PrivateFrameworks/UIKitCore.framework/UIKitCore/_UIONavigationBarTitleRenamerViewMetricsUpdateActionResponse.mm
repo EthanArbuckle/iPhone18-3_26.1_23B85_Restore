@@ -1,7 +1,7 @@
 @interface _UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse
 - (CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse)initWithRenderID:(unint64_t)a3 contextID:(unsigned int)a4 intrinsicContentSize:(CGSize)a5 bounds:(CGRect)a6 horizontalTextInset:(double)a7;
+- (_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse)initWithRenderID:(unint64_t)d contextID:(unsigned int)iD intrinsicContentSize:(CGSize)size bounds:(CGRect)bounds horizontalTextInset:(double)inset;
 - (double)horizontalTextInset;
 - (unint64_t)sourceLayerRenderId;
 - (unsigned)sourceContextId;
@@ -9,17 +9,17 @@
 
 @implementation _UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse
 
-- (_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse)initWithRenderID:(unint64_t)a3 contextID:(unsigned int)a4 intrinsicContentSize:(CGSize)a5 bounds:(CGRect)a6 horizontalTextInset:(double)a7
+- (_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse)initWithRenderID:(unint64_t)d contextID:(unsigned int)iD intrinsicContentSize:(CGSize)size bounds:(CGRect)bounds horizontalTextInset:(double)inset
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a5.height;
-  v13 = a5.width;
-  v14 = *&a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v12 = size.height;
+  v13 = size.width;
+  v14 = *&iD;
   v17 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   [v17 setObject:v18 forSetting:0];
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v14];
@@ -31,7 +31,7 @@
   v21 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
   [v17 setObject:v21 forSetting:3];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithDouble:a7];
+  v22 = [MEMORY[0x1E696AD98] numberWithDouble:inset];
   [v17 setObject:v22 forSetting:4];
 
   v23 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self initWithInfo:v17 error:0];
@@ -40,26 +40,26 @@
 
 - (unint64_t)sourceLayerRenderId
 {
-  v2 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
-  v3 = [v2 objectForSetting:0];
-  v4 = [v3 unsignedLongLongValue];
+  info = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
+  v3 = [info objectForSetting:0];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)sourceContextId
 {
-  v2 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
-  v3 = [v2 objectForSetting:1];
-  v4 = [v3 unsignedIntValue];
+  info = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
+  v3 = [info objectForSetting:1];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
-  v3 = [v2 objectForSetting:2];
+  info = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
+  v3 = [info objectForSetting:2];
   [v3 CGSizeValue];
   v5 = v4;
   v7 = v6;
@@ -73,8 +73,8 @@
 
 - (CGRect)bounds
 {
-  v2 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
-  v3 = [v2 objectForSetting:3];
+  info = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
+  v3 = [info objectForSetting:3];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -94,8 +94,8 @@
 
 - (double)horizontalTextInset
 {
-  v2 = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
-  v3 = [v2 objectForSetting:4];
+  info = [(_UIONavigationBarTitleRenamerViewMetricsUpdateActionResponse *)self info];
+  v3 = [info objectForSetting:4];
   [v3 doubleValue];
   v5 = v4;
 

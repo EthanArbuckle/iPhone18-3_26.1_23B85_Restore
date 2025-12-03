@@ -2,33 +2,33 @@
 - (BOOL)_axCanPerformLookupAction;
 - (BOOL)_axTranslationIsFavorited;
 - (id)_axSenseHeader;
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5;
-- (void)disambiguableResult:(id)a3 didChangeResultForSentence:(id)a4 withSelection:(id)a5;
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu;
+- (void)disambiguableResult:(id)result didChangeResultForSentence:(id)sentence withSelection:(id)selection;
 - (void)layoutSubviews;
-- (void)senseTapped:(id)a3;
-- (void)sourceTapped:(id)a3;
-- (void)targetTapped:(id)a3;
+- (void)senseTapped:(id)tapped;
+- (void)sourceTapped:(id)tapped;
+- (void)targetTapped:(id)tapped;
 @end
 
 @implementation TranslationCard
 
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  viewCopy = view;
+  itemCopy = item;
+  menuCopy = menu;
+  selfCopy = self;
   v12 = sub_1002931A4();
 
   return v12;
 }
 
-- (void)disambiguableResult:(id)a3 didChangeResultForSentence:(id)a4 withSelection:(id)a5
+- (void)disambiguableResult:(id)result didChangeResultForSentence:(id)sentence withSelection:(id)selection
 {
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator15TranslationCard_cachedTranslation);
   if (v5)
   {
-    v7 = self;
+    selfCopy = self;
     v6 = v5;
     sub_10028A040(v6);
   }
@@ -36,52 +36,52 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100295494();
 }
 
-- (void)sourceTapped:(id)a3
+- (void)sourceTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_10029737C(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_10029737C(tappedCopy);
 }
 
-- (void)targetTapped:(id)a3
+- (void)targetTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002974EC(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_1002974EC(tappedCopy);
 }
 
-- (void)senseTapped:(id)a3
+- (void)senseTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
-  sub_100297644(v4);
+  tappedCopy = tapped;
+  selfCopy = self;
+  sub_100297644(tappedCopy);
 }
 
 - (BOOL)_axTranslationIsFavorited
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002FC68();
-  v4 = [(objc_class *)v3 isSelected];
+  isSelected = [(objc_class *)v3 isSelected];
 
-  return v4;
+  return isSelected;
 }
 
 - (BOOL)_axCanPerformLookupAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002FE8C();
-  v4 = [(objc_class *)v3 isHidden];
+  isHidden = [(objc_class *)v3 isHidden];
 
-  return v4 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (id)_axSenseHeader
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002948D4();
 
   return v3;

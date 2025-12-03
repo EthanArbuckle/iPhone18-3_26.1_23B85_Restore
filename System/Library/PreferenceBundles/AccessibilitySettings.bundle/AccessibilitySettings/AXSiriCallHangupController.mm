@@ -1,9 +1,9 @@
 @interface AXSiriCallHangupController
 - (id)_localizedFooterText;
 - (id)_localizedHangUpTriggerPhrase;
-- (id)_siriCallHangup:(id)a3;
+- (id)_siriCallHangup:(id)hangup;
 - (id)specifiers;
-- (void)_setSiriCallHangup:(id)a3 specifier:(id)a4;
+- (void)_setSiriCallHangup:(id)hangup specifier:(id)specifier;
 @end
 
 @implementation AXSiriCallHangupController
@@ -11,14 +11,14 @@
 - (id)_localizedHangUpTriggerPhrase
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 languageCode];
+  languageCode = [v2 languageCode];
 
   v4 = +[VTPreferences sharedPreferences];
-  v5 = [v4 localizedTriggerPhraseForLanguageCode:v3];
+  v5 = [v4 localizedTriggerPhraseForLanguageCode:languageCode];
 
   v6 = +[AFLocalization sharedInstance];
   v7 = [NSBundle bundleWithIdentifier:@"com.apple.siri.assistant-settings-support"];
-  v8 = [v6 localizedStringForKey:@"CALL_HANG_UP_TRIGGER_PHRASE" table:@"AssistantSettings" bundle:v7 languageCode:v3];
+  v8 = [v6 localizedStringForKey:@"CALL_HANG_UP_TRIGGER_PHRASE" table:@"AssistantSettings" bundle:v7 languageCode:languageCode];
 
   if ([v5 length] && objc_msgSend(v8, "length"))
   {
@@ -36,11 +36,11 @@
 
 - (id)_localizedFooterText
 {
-  v2 = [(AXSiriCallHangupController *)self _localizedHangUpTriggerPhrase];
+  _localizedHangUpTriggerPhrase = [(AXSiriCallHangupController *)self _localizedHangUpTriggerPhrase];
   AFDeviceSupportsEchoCancellation();
   v3 = AXLocStringKeyForModel();
   v4 = settingsLocString(v3, @"Accessibility");
-  v5 = [NSString stringWithFormat:v4, v2];
+  v5 = [NSString stringWithFormat:v4, _localizedHangUpTriggerPhrase];
 
   return v5;
 }
@@ -53,8 +53,8 @@
   {
     v5 = +[NSMutableArray array];
     v6 = +[PSSpecifier emptyGroupSpecifier];
-    v7 = [(AXSiriCallHangupController *)self _localizedFooterText];
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    _localizedFooterText = [(AXSiriCallHangupController *)self _localizedFooterText];
+    [v6 setProperty:_localizedFooterText forKey:PSFooterTextGroupKey];
 
     [v6 setIdentifier:@"SIRI_CALL_HANGUP_GROUP_ID"];
     [v5 addObject:v6];
@@ -72,18 +72,18 @@
   return v4;
 }
 
-- (void)_setSiriCallHangup:(id)a3 specifier:(id)a4
+- (void)_setSiriCallHangup:(id)hangup specifier:(id)specifier
 {
-  v5 = a3;
+  hangupCopy = hangup;
   v6 = +[VTPreferences sharedPreferences];
-  v7 = [v5 BOOLValue];
+  bOOLValue = [hangupCopy BOOLValue];
 
-  [v6 setCanUseVoiceTriggerDuringPhoneCall:v7];
-  v8 = [(AXSiriCallHangupController *)self parentController];
-  [v8 reloadSpecifiers];
+  [v6 setCanUseVoiceTriggerDuringPhoneCall:bOOLValue];
+  parentController = [(AXSiriCallHangupController *)self parentController];
+  [parentController reloadSpecifiers];
 }
 
-- (id)_siriCallHangup:(id)a3
+- (id)_siriCallHangup:(id)hangup
 {
   v3 = +[VTPreferences sharedPreferences];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 canUseVoiceTriggerDuringPhoneCall]);

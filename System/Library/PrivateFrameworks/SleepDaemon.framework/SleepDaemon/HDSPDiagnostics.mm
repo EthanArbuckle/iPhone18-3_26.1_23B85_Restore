@@ -1,19 +1,19 @@
 @interface HDSPDiagnostics
-- (HDSPDiagnostics)initWithEnvironment:(id)a3;
+- (HDSPDiagnostics)initWithEnvironment:(id)environment;
 - (HDSPEnvironment)environment;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
-- (void)_logDiagnostics:(id)a3;
-- (void)addProvider:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)removeProvider:(id)a3;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
+- (void)_logDiagnostics:(id)diagnostics;
+- (void)addProvider:(id)provider;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)removeProvider:(id)provider;
 @end
 
 @implementation HDSPDiagnostics
 
-- (HDSPDiagnostics)initWithEnvironment:(id)a3
+- (HDSPDiagnostics)initWithEnvironment:(id)environment
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = HDSPDiagnostics;
   v5 = [(HDSPDiagnostics *)&v18 init];
@@ -31,10 +31,10 @@
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@.%p] initializing...", buf, 0x16u);
     }
 
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v9 = objc_alloc(MEMORY[0x277D624A0]);
-    v10 = [MEMORY[0x277D2C938] immediateScheduler];
-    v11 = [v9 initWithCallbackScheduler:v10];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v11 = [v9 initWithCallbackScheduler:immediateScheduler];
     providers = v5->_providers;
     v5->_providers = v11;
 
@@ -49,39 +49,39 @@
   return v5;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
-  v4 = [a3 notificationListener];
-  [v4 addObserver:self];
+  notificationListener = [ready notificationListener];
+  [notificationListener addObserver:self];
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     providers = self->_providers;
-    v5 = a3;
-    [(HKSPObserverSet *)providers addObserver:v5];
-    [(HKSPDiagnostics *)self->_diagnostics addProvider:v5];
+    providerCopy = provider;
+    [(HKSPObserverSet *)providers addObserver:providerCopy];
+    [(HKSPDiagnostics *)self->_diagnostics addProvider:providerCopy];
   }
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     providers = self->_providers;
-    v5 = a3;
-    [(HKSPObserverSet *)providers removeObserver:v5];
-    [(HKSPDiagnostics *)self->_diagnostics removeProvider:v5];
+    providerCopy = provider;
+    [(HKSPObserverSet *)providers removeObserver:providerCopy];
+    [(HKSPDiagnostics *)self->_diagnostics removeProvider:providerCopy];
   }
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.sleepd.diagnostics"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.sleepd.diagnostics"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@
       *buf = 138543618;
       v17 = objc_opt_class();
       v18 = 2114;
-      v19 = v5;
+      v19 = nameCopy;
       v7 = v17;
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", buf, 0x16u);
     }
@@ -104,17 +104,17 @@
     v10 = v8;
     [(HKSPObserverSet *)providers enumerateObserversWithBlock:v14];
     [(HDSPDiagnostics *)self _logDiagnostics:v10];
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
-    v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return futureWithNoResult;
 }
 
 void __71__HDSPDiagnostics_notificationListener_didReceiveNotificationWithName___block_invoke(uint64_t a1, void *a2)
@@ -139,15 +139,15 @@ void __71__HDSPDiagnostics_notificationListener_didReceiveNotificationWithName__
   [v6 setObject:v5 forKeyedSubscript:v8];
 }
 
-- (void)_logDiagnostics:(id)a3
+- (void)_logDiagnostics:(id)diagnostics
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+  v4 = [diagnosticsCopy countByEnumeratingWithState:&v13 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -158,7 +158,7 @@ void __71__HDSPDiagnostics_notificationListener_didReceiveNotificationWithName__
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(diagnosticsCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -173,14 +173,14 @@ void __71__HDSPDiagnostics_notificationListener_didReceiveNotificationWithName__
         v10 = HKSPLogForCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v3 objectForKeyedSubscript:v8];
+          v11 = [diagnosticsCopy objectForKeyedSubscript:v8];
           *buf = 138543362;
           v18 = v11;
           _os_log_impl(&dword_269B11000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]", buf, 0xCu);
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v19 count:16];
+      v5 = [diagnosticsCopy countByEnumeratingWithState:&v13 objects:v19 count:16];
     }
 
     while (v5);

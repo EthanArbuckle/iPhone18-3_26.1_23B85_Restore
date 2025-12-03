@@ -1,19 +1,19 @@
 @interface IATextInputActionsSessionReplaceTextAction
-- (IATextInputActionsSessionReplaceTextAction)initWithCoder:(id)a3;
-- (id)initFromDictionary:(id)a3;
+- (IATextInputActionsSessionReplaceTextAction)initWithCoder:(id)coder;
+- (id)initFromDictionary:(id)dictionary;
 - (id)toDictionary;
-- (int64_t)mergeActionIfPossible:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)mergeActionIfPossible:(id)possible;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IATextInputActionsSessionReplaceTextAction
 
-- (int64_t)mergeActionIfPossible:(id)a3
+- (int64_t)mergeActionIfPossible:(id)possible
 {
-  v4 = a3;
-  if (objc_msgSend_isMergeableWith_(self, v5, v4))
+  possibleCopy = possible;
+  if (objc_msgSend_isMergeableWith_(self, v5, possibleCopy))
   {
-    v10 = objc_msgSend_asReplaceText(v4, v6, v7);
+    v10 = objc_msgSend_asReplaceText(possibleCopy, v6, v7);
     if (!v10)
     {
       v59 = 0;
@@ -67,7 +67,7 @@ LABEL_18:
       objc_msgSend_setLargestSingleInsertionLength_(self, v57, v56);
     }
 
-    v63 = objc_msgSend_inputMode(v4, v54, v55);
+    v63 = objc_msgSend_inputMode(possibleCopy, v54, v55);
     v66 = objc_msgSend_language(v63, v64, v65);
     if (v66)
     {
@@ -75,7 +75,7 @@ LABEL_18:
 
     else
     {
-      v71 = objc_msgSend_inputMode(v4, v67, v68);
+      v71 = objc_msgSend_inputMode(possibleCopy, v67, v68);
       v74 = objc_msgSend_region(v71, v72, v73);
 
       if (!v74)
@@ -86,7 +86,7 @@ LABEL_17:
       }
     }
 
-    v75 = objc_msgSend_inputMode(v4, v69, v70);
+    v75 = objc_msgSend_inputMode(possibleCopy, v69, v70);
     v78 = objc_msgSend_copy(v75, v76, v77);
     objc_msgSend_setInputMode_(self, v79, v78);
 
@@ -99,39 +99,39 @@ LABEL_19:
   return v59;
 }
 
-- (IATextInputActionsSessionReplaceTextAction)initWithCoder:(id)a3
+- (IATextInputActionsSessionReplaceTextAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = IATextInputActionsSessionReplaceTextAction;
-  v5 = [(IATextInputActionsSessionAction *)&v12 initWithCoder:v4];
+  v5 = [(IATextInputActionsSessionAction *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"options");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"options");
     v5->_options = objc_msgSend_longValue(v8, v9, v10);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = IATextInputActionsSessionReplaceTextAction;
-  v4 = a3;
-  [(IATextInputActionsSessionAction *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(IATextInputActionsSessionAction *)&v8 encodeWithCoder:coderCopy];
   v6 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x1E696AD98], v5, self->_options, v8.receiver, v8.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v7, v6, @"options");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, v6, @"options");
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = IATextInputActionsSessionReplaceTextAction;
-  v3 = a3;
-  v4 = [(IATextInputActionsSessionAction *)&v10 initFromDictionary:v3];
-  v6 = objc_msgSend_objectForKeyedSubscript_(v3, v5, @"options", v10.receiver, v10.super_class);
+  dictionaryCopy = dictionary;
+  v4 = [(IATextInputActionsSessionAction *)&v10 initFromDictionary:dictionaryCopy];
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"options", v10.receiver, v10.super_class);
 
   v4[23] = objc_msgSend_longValue(v6, v7, v8);
   return v4;
@@ -141,11 +141,11 @@ LABEL_19:
 {
   v8.receiver = self;
   v8.super_class = IATextInputActionsSessionReplaceTextAction;
-  v3 = [(IATextInputActionsSessionAction *)&v8 toDictionary];
+  toDictionary = [(IATextInputActionsSessionAction *)&v8 toDictionary];
   v5 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v4, self->_options);
-  objc_msgSend_setObjectIfNotNil_forKey_(v3, v6, v5, @"options");
+  objc_msgSend_setObjectIfNotNil_forKey_(toDictionary, v6, v5, @"options");
 
-  return v3;
+  return toDictionary;
 }
 
 @end

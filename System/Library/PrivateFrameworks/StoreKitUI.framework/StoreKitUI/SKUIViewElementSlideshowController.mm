@@ -1,20 +1,20 @@
 @interface SKUIViewElementSlideshowController
-- (SKUIViewElementSlideshowController)initWithShelf:(id)a3 selectedLockup:(id)a4;
+- (SKUIViewElementSlideshowController)initWithShelf:(id)shelf selectedLockup:(id)lockup;
 - (SKUIViewElementSlideshowDelegate)delegate;
-- (id)slideshowViewController:(id)a3 dataConsumerAtIndex:(int64_t)a4;
-- (id)slideshowViewController:(id)a3 imageURLAtIndex:(int64_t)a4;
-- (id)slideshowViewController:(id)a3 placeholderImageAtIndex:(int64_t)a4;
+- (id)slideshowViewController:(id)controller dataConsumerAtIndex:(int64_t)index;
+- (id)slideshowViewController:(id)controller imageURLAtIndex:(int64_t)index;
+- (id)slideshowViewController:(id)controller placeholderImageAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)presentFromParentViewController:(id)a3;
-- (void)slideshowViewControllerDidFinish:(id)a3;
+- (void)presentFromParentViewController:(id)controller;
+- (void)slideshowViewControllerDidFinish:(id)finish;
 @end
 
 @implementation SKUIViewElementSlideshowController
 
-- (SKUIViewElementSlideshowController)initWithShelf:(id)a3 selectedLockup:(id)a4
+- (SKUIViewElementSlideshowController)initWithShelf:(id)shelf selectedLockup:(id)lockup
 {
-  v6 = a3;
-  v7 = a4;
+  shelfCopy = shelf;
+  lockupCopy = lockup;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIViewElementSlideshowController initWithShelf:selectedLockup:];
@@ -33,17 +33,17 @@
     v8->_lockups = v10;
 
     v8->_selectedIndex = 0;
-    v12 = [v6 slideshowTitle];
+    slideshowTitle = [shelfCopy slideshowTitle];
     title = v8->_title;
-    v8->_title = v12;
+    v8->_title = slideshowTitle;
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___block_invoke;
     v15[3] = &unk_2781FA478;
-    v16 = v7;
+    v16 = lockupCopy;
     v17 = v8;
-    [v6 enumerateChildrenUsingBlock:v15];
+    [shelfCopy enumerateChildrenUsingBlock:v15];
   }
 
   return v8;
@@ -90,12 +90,12 @@ void __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___blo
   [(SKUIViewElementSlideshowController *)&v3 dealloc];
 }
 
-- (void)presentFromParentViewController:(id)a3
+- (void)presentFromParentViewController:(id)controller
 {
   layoutContext = self->_layoutContext;
-  v5 = a3;
-  v6 = [(SKUIViewElementLayoutContext *)layoutContext clientContext];
-  v7 = SKUIUserInterfaceIdiom(v6);
+  controllerCopy = controller;
+  clientContext = [(SKUIViewElementLayoutContext *)layoutContext clientContext];
+  v7 = SKUIUserInterfaceIdiom(clientContext);
   if (v7 == 1)
   {
     v8 = 32;
@@ -116,7 +116,7 @@ void __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___blo
   v11 = *(&self->super.isa + v8);
   *(&self->super.isa + v8) = v10;
 
-  [*(&self->super.isa + v8) setClientContext:v6];
+  [*(&self->super.isa + v8) setClientContext:clientContext];
   [*(&self->super.isa + v8) setDataSource:self];
   [*(&self->super.isa + v8) setDelegate:self];
   [*(&self->super.isa + v8) setCurrentIndex:self->_selectedIndex];
@@ -128,18 +128,18 @@ void __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___blo
 
   v12 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v13];
   [v12 setModalPresentationStyle:17];
-  [v5 presentViewController:v12 animated:1 completion:0];
+  [controllerCopy presentViewController:v12 animated:1 completion:0];
 }
 
-- (id)slideshowViewController:(id)a3 placeholderImageAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller placeholderImageAtIndex:(int64_t)index
 {
-  v5 = [(NSMutableArray *)self->_lockups objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_lockups objectAtIndex:index];
   v6 = [v5 firstChildForElementType:49];
   v7 = [(SKUIViewElementLayoutContext *)self->_layoutContext requestIdentifierForViewElement:v6];
   if (v7)
   {
-    v8 = [(SKUIViewElementLayoutContext *)self->_layoutContext resourceLoader];
-    v9 = [v8 cachedResourceForRequestIdentifier:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    resourceLoader = [(SKUIViewElementLayoutContext *)self->_layoutContext resourceLoader];
+    v9 = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v7, "unsignedIntegerValue")}];
   }
 
   else
@@ -150,22 +150,22 @@ void __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___blo
   return v9;
 }
 
-- (id)slideshowViewController:(id)a3 imageURLAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller imageURLAtIndex:(int64_t)index
 {
-  v4 = [(NSMutableArray *)self->_lockups objectAtIndex:a4];
-  v5 = [v4 fullscreenImage];
-  v6 = [v5 URL];
+  v4 = [(NSMutableArray *)self->_lockups objectAtIndex:index];
+  fullscreenImage = [v4 fullscreenImage];
+  v6 = [fullscreenImage URL];
 
   return v6;
 }
 
-- (id)slideshowViewController:(id)a3 dataConsumerAtIndex:(int64_t)a4
+- (id)slideshowViewController:(id)controller dataConsumerAtIndex:(int64_t)index
 {
-  v6 = [(SKUIViewElementSlideshowController *)self dataConsumers];
-  v7 = [v6 objectAtIndex:a4];
+  dataConsumers = [(SKUIViewElementSlideshowController *)self dataConsumers];
+  v7 = [dataConsumers objectAtIndex:index];
 
-  v8 = [(SKUIViewElementLayoutContext *)self->_layoutContext clientContext];
-  if (SKUIUserInterfaceIdiom(v8) != 1)
+  clientContext = [(SKUIViewElementLayoutContext *)self->_layoutContext clientContext];
+  if (SKUIUserInterfaceIdiom(clientContext) != 1)
   {
     [v7 setForcesPortrait:1];
   }
@@ -173,16 +173,16 @@ void __67__SKUIViewElementSlideshowController_initWithShelf_selectedLockup___blo
   return v7;
 }
 
-- (void)slideshowViewControllerDidFinish:(id)a3
+- (void)slideshowViewControllerDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = [(SKUIViewElementSlideshowController *)self delegate];
+  finishCopy = finish;
+  delegate = [(SKUIViewElementSlideshowController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 viewElementSlideshowWillDismiss:self];
+    [delegate viewElementSlideshowWillDismiss:self];
   }
 
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (SKUIViewElementSlideshowDelegate)delegate

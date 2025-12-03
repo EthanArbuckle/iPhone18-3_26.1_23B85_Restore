@@ -1,15 +1,15 @@
 @interface PKPassBannerTrailingViewConfiguration
-+ (id)createWithSymbolName:(id)a3 overrideColor:(id)a4;
++ (id)createWithSymbolName:(id)name overrideColor:(id)color;
 @end
 
 @implementation PKPassBannerTrailingViewConfiguration
 
-+ (id)createWithSymbolName:(id)a3 overrideColor:(id)a4
++ (id)createWithSymbolName:(id)name overrideColor:(id)color
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  colorCopy = color;
   objc_opt_self();
-  if (!v5)
+  if (!nameCopy)
   {
     __break(1u);
     goto LABEL_7;
@@ -34,11 +34,11 @@ LABEL_7:
 
 LABEL_5:
   v10 = v9[2];
-  v9[2] = v5;
-  v11 = v5;
+  v9[2] = nameCopy;
+  v11 = nameCopy;
 
   v12 = v9[3];
-  v9[3] = v6;
+  v9[3] = colorCopy;
 
   return v9;
 }

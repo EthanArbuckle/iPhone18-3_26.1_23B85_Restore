@@ -3,10 +3,10 @@
 - (UIView)view;
 - (id)asyncTextInput;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)selectionDidChange:(id)a3;
-- (void)selectionWillChange:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)selectionDidChange:(id)change;
+- (void)selectionWillChange:(id)change;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIAsyncTextInteraction
@@ -20,9 +20,9 @@
 
 - (void)dealloc
 {
-  v3 = [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant delegate];
+  delegate = [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(UIWKTextInteractionAssistant *)self->_textInteractionAssistant setDelegate:0];
   }
@@ -50,7 +50,7 @@
   return v5;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
@@ -61,9 +61,9 @@
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  object = a3;
+  object = view;
   if (object)
   {
     v4 = [[UIWKTextInteractionAssistant alloc] initWithView:object];
@@ -77,33 +77,33 @@
   objc_storeWeak(&self->_view, object);
 }
 
-- (void)selectionWillChange:(id)a3
+- (void)selectionWillChange:(id)change
 {
-  v4 = [(UIAsyncTextInteraction *)self delegate];
+  delegate = [(UIAsyncTextInteraction *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(UIAsyncTextInteraction *)self delegate];
-    [v5 selectionWillChange:self];
+    delegate2 = [(UIAsyncTextInteraction *)self delegate];
+    [delegate2 selectionWillChange:self];
   }
 
-  v7 = [(UIAsyncTextInteraction *)self asyncTextInput];
-  v6 = [v7 asyncSystemInputDelegate];
-  [v6 selectionWillChange:v7];
+  asyncTextInput = [(UIAsyncTextInteraction *)self asyncTextInput];
+  asyncSystemInputDelegate = [asyncTextInput asyncSystemInputDelegate];
+  [asyncSystemInputDelegate selectionWillChange:asyncTextInput];
 }
 
-- (void)selectionDidChange:(id)a3
+- (void)selectionDidChange:(id)change
 {
-  v7 = [(UIAsyncTextInteraction *)self asyncTextInput];
-  v4 = [v7 asyncSystemInputDelegate];
-  [v4 selectionDidChange:v7];
+  asyncTextInput = [(UIAsyncTextInteraction *)self asyncTextInput];
+  asyncSystemInputDelegate = [asyncTextInput asyncSystemInputDelegate];
+  [asyncSystemInputDelegate selectionDidChange:asyncTextInput];
 
-  v5 = [(UIAsyncTextInteraction *)self delegate];
+  delegate = [(UIAsyncTextInteraction *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(UIAsyncTextInteraction *)self delegate];
-    [v6 selectionDidChange:self];
+    delegate2 = [(UIAsyncTextInteraction *)self delegate];
+    [delegate2 selectionDidChange:self];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface SBFloatingDockViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)accessibilityPerformEscape;
 - (id)_accessibilityScannerGroupElements;
@@ -10,13 +10,13 @@
 
 @implementation SBFloatingDockViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFloatingDockView" hasInstanceMethod:@"userIconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockView" hasInstanceMethod:@"recentIconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockView" hasInstanceMethod:@"utilitiesIconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFloatingDockView" hasInstanceMethod:@"accessoryIconView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFloatingDockView" hasInstanceMethod:@"userIconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockView" hasInstanceMethod:@"recentIconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockView" hasInstanceMethod:@"utilitiesIconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFloatingDockView" hasInstanceMethod:@"accessoryIconView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -34,17 +34,17 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 isScreenLockedWithPasscode:0];
+  server = [MEMORY[0x29EDBDFA8] server];
+  v3 = [server isScreenLockedWithPasscode:0];
 
   return v3;
 }
 
 - (id)accessibilityElements
 {
-  v3 = [(SBFloatingDockViewAccessibility *)self _axDockListViews];
-  v4 = [(SBFloatingDockViewAccessibility *)self _axAccessoryViews];
-  v5 = [MEMORY[0x29EDB8D80] axArrayWithPossiblyNilArrays:{2, v3, v4}];
+  _axDockListViews = [(SBFloatingDockViewAccessibility *)self _axDockListViews];
+  _axAccessoryViews = [(SBFloatingDockViewAccessibility *)self _axAccessoryViews];
+  v5 = [MEMORY[0x29EDB8D80] axArrayWithPossiblyNilArrays:{2, _axDockListViews, _axAccessoryViews}];
 
   return v5;
 }
@@ -52,22 +52,22 @@
 - (id)_accessibilityScannerGroupElements
 {
   v32[2] = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v31[0] = @"GroupTraits";
   v31[1] = @"GroupElements";
   v32[0] = &unk_2A2318CE0;
-  v32[1] = v4;
+  v32[1] = array2;
   v5 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
-  v23 = v3;
-  [v3 addObject:v5];
+  v23 = array;
+  [array addObject:v5];
 
-  v6 = [(SBFloatingDockViewAccessibility *)self _axDockListViews];
+  _axDockListViews = [(SBFloatingDockViewAccessibility *)self _axDockListViews];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  v7 = [_axDockListViews countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -79,15 +79,15 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_axDockListViews);
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [v12 accessibilityElements];
-        v14 = v13;
-        if (v13)
+        accessibilityElements = [v12 accessibilityElements];
+        v14 = accessibilityElements;
+        if (accessibilityElements)
         {
-          v15 = v13;
+          v15 = accessibilityElements;
         }
 
         else
@@ -97,13 +97,13 @@
 
         v16 = v15;
 
-        v17 = [v12 accessibilityIdentifier];
-        v18 = [v17 isEqualToString:@"utilities icon list view"];
+        accessibilityIdentifier = [v12 accessibilityIdentifier];
+        v18 = [accessibilityIdentifier isEqualToString:@"utilities icon list view"];
 
         if (v18)
         {
-          v19 = [(SBFloatingDockViewAccessibility *)self _axAccessoryViews];
-          v20 = [MEMORY[0x29EDB8D80] axArrayWithPossiblyNilArrays:{2, v16, v19}];
+          _axAccessoryViews = [(SBFloatingDockViewAccessibility *)self _axAccessoryViews];
+          v20 = [MEMORY[0x29EDB8D80] axArrayWithPossiblyNilArrays:{2, v16, _axAccessoryViews}];
 
           v16 = v20;
           if (!v20)
@@ -117,10 +117,10 @@
         v29[0] = &unk_2A2318CE0;
         v29[1] = v16;
         v21 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
-        [v4 addObject:v21];
+        [array2 addObject:v21];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v8 = [_axDockListViews countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v8);

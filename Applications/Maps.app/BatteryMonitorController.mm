@@ -2,27 +2,27 @@
 + (id)sharedInstance;
 - (id)beginMonitoringBattery;
 - (void)_updateBatteryMonitoring;
-- (void)batteryMonitorConcreteTokenWillInvalidate:(id)a3;
-- (void)setIsMonitoring:(BOOL)a3;
+- (void)batteryMonitorConcreteTokenWillInvalidate:(id)invalidate;
+- (void)setIsMonitoring:(BOOL)monitoring;
 @end
 
 @implementation BatteryMonitorController
 
-- (void)batteryMonitorConcreteTokenWillInvalidate:(id)a3
+- (void)batteryMonitorConcreteTokenWillInvalidate:(id)invalidate
 {
-  [(NSHashTable *)self->_tokens removeObject:a3];
+  [(NSHashTable *)self->_tokens removeObject:invalidate];
 
   [(BatteryMonitorController *)self _updateBatteryMonitoring];
 }
 
-- (void)setIsMonitoring:(BOOL)a3
+- (void)setIsMonitoring:(BOOL)monitoring
 {
-  if (self->_isMonitoring != a3)
+  if (self->_isMonitoring != monitoring)
   {
-    v3 = a3;
-    self->_isMonitoring = a3;
+    monitoringCopy = monitoring;
+    self->_isMonitoring = monitoring;
     v4 = +[UIDevice currentDevice];
-    [v4 setBatteryMonitoringEnabled:v3];
+    [v4 setBatteryMonitoringEnabled:monitoringCopy];
 
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -37,8 +37,8 @@
 
 - (void)_updateBatteryMonitoring
 {
-  v3 = [(NSHashTable *)self->_tokens allObjects];
-  v4 = [v3 count] != 0;
+  allObjects = [(NSHashTable *)self->_tokens allObjects];
+  v4 = [allObjects count] != 0;
 
   [(BatteryMonitorController *)self setIsMonitoring:v4];
 }

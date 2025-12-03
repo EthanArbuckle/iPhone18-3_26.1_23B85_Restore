@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilPackedDeltaPackedLongValues
 + (void)initialize;
-- (OrgApacheLuceneUtilPackedDeltaPackedLongValues)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)a5 withLongArray:(id)a6 withLong:(int64_t)a7 withLong:(int64_t)a8;
+- (OrgApacheLuceneUtilPackedDeltaPackedLongValues)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)array withLongArray:(id)longArray withLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilPackedDeltaPackedLongValues
 
-- (OrgApacheLuceneUtilPackedDeltaPackedLongValues)initWithInt:(int)a3 withInt:(int)a4 withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)a5 withLongArray:(id)a6 withLong:(int64_t)a7 withLong:(int64_t)a8
+- (OrgApacheLuceneUtilPackedDeltaPackedLongValues)initWithInt:(int)int withInt:(int)withInt withOrgApacheLuceneUtilPackedPackedInts_ReaderArray:(id)array withLongArray:(id)longArray withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  OrgApacheLuceneUtilPackedPackedLongValues_initWithInt_withInt_withOrgApacheLuceneUtilPackedPackedInts_ReaderArray_withLong_withLong_(self, a3, a4, a5, a7, a8);
-  JreStrongAssign(&self->mins_, a6);
+  OrgApacheLuceneUtilPackedPackedLongValues_initWithInt_withInt_withOrgApacheLuceneUtilPackedPackedInts_ReaderArray_withLong_withLong_(self, int, withInt, array, long, withLong);
+  JreStrongAssign(&self->mins_, longArray);
   return self;
 }
 
@@ -22,7 +22,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneUtilPackedDeltaPackedLongValues_class_();
     qword_1005545A0 = OrgApacheLuceneUtilRamUsageEstimator_shallowSizeOfInstanceWithIOSClass_(v2);

@@ -1,17 +1,17 @@
 @interface ABSAddressBookContextStorage
 - (ABSAddressBookContextStorage)init;
-- (BOOL)addMemberRecord:(id)a3 toRecord:(id)a4;
-- (BOOL)addRecord:(id)a3;
-- (BOOL)deleteRecord:(id)a3;
-- (BOOL)recordUpdated:(id)a3;
-- (BOOL)removeMemberRecord:(id)a3 fromRecord:(id)a4;
+- (BOOL)addMemberRecord:(id)record toRecord:(id)toRecord;
+- (BOOL)addRecord:(id)record;
+- (BOOL)deleteRecord:(id)record;
+- (BOOL)recordUpdated:(id)updated;
+- (BOOL)removeMemberRecord:(id)record fromRecord:(id)fromRecord;
 - (NSArray)recordsWithPendingMembershipAdditions;
 - (NSArray)recordsWithPendingMembershipDeletions;
-- (id)addedMembersForRecord:(id)a3;
-- (id)cnImplFetched:(id)a3 creationBlock:(id)a4;
-- (id)recordFetched:(id)a3;
-- (id)removedMembersForRecord:(id)a3;
-- (void)_resetIncludingLivingRecords:(BOOL)a3;
+- (id)addedMembersForRecord:(id)record;
+- (id)cnImplFetched:(id)fetched creationBlock:(id)block;
+- (id)recordFetched:(id)fetched;
+- (id)removedMembersForRecord:(id)record;
+- (void)_resetIncludingLivingRecords:(BOOL)records;
 - (void)commitPendingChanges;
 - (void)revert;
 @end
@@ -59,39 +59,39 @@
   return v2;
 }
 
-- (BOOL)addRecord:(id)a3
+- (BOOL)addRecord:(id)record
 {
-  if (a3)
+  if (record)
   {
-    v5 = a3;
-    v6 = [(ABSAddressBookContextStorage *)self insertedRecords];
-    [v6 addObject:v5];
+    recordCopy = record;
+    insertedRecords = [(ABSAddressBookContextStorage *)self insertedRecords];
+    [insertedRecords addObject:recordCopy];
 
     [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:1];
   }
 
-  return a3 != 0;
+  return record != 0;
 }
 
-- (BOOL)recordUpdated:(id)a3
+- (BOOL)recordUpdated:(id)updated
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
-  v6 = [v4 numberWithInt:{objc_msgSend(v5, "id")}];
-  v7 = [(ABSAddressBookContextStorage *)self records];
-  v8 = [v7 objectForKey:v6];
+  updatedCopy = updated;
+  v6 = [v4 numberWithInt:{objc_msgSend(updatedCopy, "id")}];
+  records = [(ABSAddressBookContextStorage *)self records];
+  v8 = [records objectForKey:v6];
 
-  v9 = v8 == v5;
-  if (v8 == v5)
+  v9 = v8 == updatedCopy;
+  if (v8 == updatedCopy)
   {
-    if (!v5)
+    if (!updatedCopy)
     {
       v9 = 0;
       goto LABEL_5;
     }
 
-    v10 = [(ABSAddressBookContextStorage *)self updatedRecords];
-    [v10 setObject:v8 forKey:v6];
+    updatedRecords = [(ABSAddressBookContextStorage *)self updatedRecords];
+    [updatedRecords setObject:v8 forKey:v6];
 
     [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:1];
   }
@@ -100,11 +100,11 @@ LABEL_5:
   return v9;
 }
 
-- (id)cnImplFetched:(id)a3 creationBlock:(id)a4
+- (id)cnImplFetched:(id)fetched creationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 iOSLegacyIdentifier] == -1)
+  fetchedCopy = fetched;
+  blockCopy = block;
+  if ([fetchedCopy iOSLegacyIdentifier] == -1)
   {
     v15 = +[ABSLog log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -117,92 +117,92 @@ LABEL_5:
 
   else
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "iOSLegacyIdentifier")}];
-    v9 = [(ABSAddressBookContextStorage *)self records];
-    v10 = [v9 objectForKey:v8];
+    v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(fetchedCopy, "iOSLegacyIdentifier")}];
+    records = [(ABSAddressBookContextStorage *)self records];
+    v10 = [records objectForKey:v8];
 
     if (!v10)
     {
-      v11 = [(ABSAddressBookContextStorage *)self revertedRecords];
-      v12 = [v11 objectForKey:v8];
+      revertedRecords = [(ABSAddressBookContextStorage *)self revertedRecords];
+      v12 = [revertedRecords objectForKey:v8];
 
       if (v12)
       {
-        v13 = [(ABSAddressBookContextStorage *)self revertedRecords];
-        [v13 removeObjectForKey:v8];
+        revertedRecords2 = [(ABSAddressBookContextStorage *)self revertedRecords];
+        [revertedRecords2 removeObjectForKey:v8];
 
-        [v12 replaceRecordStorageWithCNObject:v6];
+        [v12 replaceRecordStorageWithCNObject:fetchedCopy];
         v14 = v12;
       }
 
       else
       {
-        v14 = v7[2](v7, v6);
+        v14 = blockCopy[2](blockCopy, fetchedCopy);
       }
 
       v10 = v14;
-      v16 = [(ABSAddressBookContextStorage *)self records];
-      [v16 setObject:v10 forKey:v8];
+      records2 = [(ABSAddressBookContextStorage *)self records];
+      [records2 setObject:v10 forKey:v8];
     }
   }
 
   return v10;
 }
 
-- (id)recordFetched:(id)a3
+- (id)recordFetched:(id)fetched
 {
-  v4 = a3;
-  if ([v4 id] == -1)
+  fetchedCopy = fetched;
+  if ([fetchedCopy id] == -1)
   {
     NSLog(&cfstr_RecordWithInva.isa);
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "id")}];
-    if (v4)
+    v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(fetchedCopy, "id")}];
+    if (fetchedCopy)
     {
-      v6 = [(ABSAddressBookContextStorage *)self records];
-      v7 = [v6 objectForKey:v5];
+      records = [(ABSAddressBookContextStorage *)self records];
+      v7 = [records objectForKey:v5];
 
       if (!v7)
       {
-        v8 = [(ABSAddressBookContextStorage *)self revertedRecords];
-        v9 = [v8 objectForKey:v5];
+        revertedRecords = [(ABSAddressBookContextStorage *)self revertedRecords];
+        v9 = [revertedRecords objectForKey:v5];
 
         if (v9)
         {
-          v10 = [(ABSAddressBookContextStorage *)self revertedRecords];
-          [v10 removeObjectForKey:v5];
+          revertedRecords2 = [(ABSAddressBookContextStorage *)self revertedRecords];
+          [revertedRecords2 removeObjectForKey:v5];
 
-          v11 = [v4 cnImpl];
-          [v9 replaceRecordStorageWithCNObject:v11];
+          cnImpl = [fetchedCopy cnImpl];
+          [v9 replaceRecordStorageWithCNObject:cnImpl];
 
           v12 = v9;
-          v4 = v12;
+          fetchedCopy = v12;
         }
 
-        v13 = [(ABSAddressBookContextStorage *)self records];
-        [v13 setObject:v4 forKey:v5];
+        records2 = [(ABSAddressBookContextStorage *)self records];
+        [records2 setObject:fetchedCopy forKey:v5];
       }
     }
   }
 
-  return v4;
+  return fetchedCopy;
 }
 
-- (BOOL)deleteRecord:(id)a3
+- (BOOL)deleteRecord:(id)record
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "id")}];
-  v6 = [(ABSAddressBookContextStorage *)self records];
-  v7 = [v6 objectForKey:v5];
+  recordCopy = record;
+  v5 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(recordCopy, "id")}];
+  records = [(ABSAddressBookContextStorage *)self records];
+  v7 = [records objectForKey:v5];
 
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if (!v7)
   {
-    v9 = [(ABSAddressBookContextStorage *)self insertedRecords];
-    v10 = [v9 indexOfObject:v4];
+    insertedRecords = [(ABSAddressBookContextStorage *)self insertedRecords];
+    v10 = [insertedRecords indexOfObject:recordCopy];
 
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -211,34 +211,34 @@ LABEL_5:
 
     else
     {
-      v11 = [(ABSAddressBookContextStorage *)self insertedRecords];
-      v7 = [v11 objectAtIndex:v10];
+      insertedRecords2 = [(ABSAddressBookContextStorage *)self insertedRecords];
+      v7 = [insertedRecords2 objectAtIndex:v10];
 
       v8 = v10;
     }
   }
 
-  v12 = v7 == v4;
-  if (v7 != v4)
+  v12 = v7 == recordCopy;
+  if (v7 != recordCopy)
   {
     goto LABEL_12;
   }
 
-  if (v4)
+  if (recordCopy)
   {
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [(ABSAddressBookContextStorage *)self records];
-      [v13 removeObjectForKey:v5];
+      records2 = [(ABSAddressBookContextStorage *)self records];
+      [records2 removeObjectForKey:v5];
 
-      v14 = [(ABSAddressBookContextStorage *)self deletedRecords];
-      [v14 setObject:v7 forKey:v5];
+      deletedRecords = [(ABSAddressBookContextStorage *)self deletedRecords];
+      [deletedRecords setObject:v7 forKey:v5];
     }
 
     else
     {
-      v14 = [(ABSAddressBookContextStorage *)self insertedRecords];
-      [v14 removeObjectAtIndex:v8];
+      deletedRecords = [(ABSAddressBookContextStorage *)self insertedRecords];
+      [deletedRecords removeObjectAtIndex:v8];
     }
 
     [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:1];
@@ -253,38 +253,38 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)addMemberRecord:(id)a3 toRecord:(id)a4
+- (BOOL)addMemberRecord:(id)record toRecord:(id)toRecord
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "id")}];
-  v9 = [v6 CNIdentifierString];
+  recordCopy = record;
+  toRecordCopy = toRecord;
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(toRecordCopy, "id")}];
+  cNIdentifierString = [recordCopy CNIdentifierString];
   v10 = 0;
-  if (v6 && v7)
+  if (recordCopy && toRecordCopy)
   {
-    v11 = [(ABSAddressBookContextStorage *)self records];
-    v12 = [v11 objectForKey:v8];
+    records = [(ABSAddressBookContextStorage *)self records];
+    v12 = [records objectForKey:v8];
 
-    if (v12 == v7)
+    if (v12 == toRecordCopy)
     {
-      v13 = [(ABSAddressBookContextStorage *)self addedMemberships];
-      v14 = [v13 objectForKey:v8];
+      addedMemberships = [(ABSAddressBookContextStorage *)self addedMemberships];
+      v14 = [addedMemberships objectForKey:v8];
 
       if (!v14)
       {
         v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v15 = [(ABSAddressBookContextStorage *)self addedMemberships];
-        [v15 setObject:v14 forKey:v8];
+        addedMemberships2 = [(ABSAddressBookContextStorage *)self addedMemberships];
+        [addedMemberships2 setObject:v14 forKey:v8];
       }
 
-      v16 = [v14 objectForKey:v9];
+      v16 = [v14 objectForKey:cNIdentifierString];
       v10 = v16 == 0;
 
-      [v14 setObject:v6 forKey:v9];
-      v17 = [(ABSAddressBookContextStorage *)self deletedMemberships];
-      v18 = [v17 objectForKey:v8];
+      [v14 setObject:recordCopy forKey:cNIdentifierString];
+      deletedMemberships = [(ABSAddressBookContextStorage *)self deletedMemberships];
+      v18 = [deletedMemberships objectForKey:v8];
 
-      [v18 removeObjectForKey:v9];
+      [v18 removeObjectForKey:cNIdentifierString];
       [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:1];
     }
 
@@ -297,38 +297,38 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)removeMemberRecord:(id)a3 fromRecord:(id)a4
+- (BOOL)removeMemberRecord:(id)record fromRecord:(id)fromRecord
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v7, "id")}];
-  v9 = [v6 CNIdentifierString];
+  recordCopy = record;
+  fromRecordCopy = fromRecord;
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(fromRecordCopy, "id")}];
+  cNIdentifierString = [recordCopy CNIdentifierString];
   v10 = 0;
-  if (v6 && v7)
+  if (recordCopy && fromRecordCopy)
   {
-    v11 = [(ABSAddressBookContextStorage *)self records];
-    v12 = [v11 objectForKey:v8];
+    records = [(ABSAddressBookContextStorage *)self records];
+    v12 = [records objectForKey:v8];
 
-    if (v12 == v7)
+    if (v12 == fromRecordCopy)
     {
-      v13 = [(ABSAddressBookContextStorage *)self deletedMemberships];
-      v14 = [v13 objectForKey:v8];
+      deletedMemberships = [(ABSAddressBookContextStorage *)self deletedMemberships];
+      v14 = [deletedMemberships objectForKey:v8];
 
       if (!v14)
       {
         v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v15 = [(ABSAddressBookContextStorage *)self deletedMemberships];
-        [v15 setObject:v14 forKey:v8];
+        deletedMemberships2 = [(ABSAddressBookContextStorage *)self deletedMemberships];
+        [deletedMemberships2 setObject:v14 forKey:v8];
       }
 
-      v16 = [v14 objectForKey:v9];
+      v16 = [v14 objectForKey:cNIdentifierString];
       v10 = v16 == 0;
 
-      [v14 setObject:v6 forKey:v9];
-      v17 = [(ABSAddressBookContextStorage *)self addedMemberships];
-      v18 = [v17 objectForKey:v8];
+      [v14 setObject:recordCopy forKey:cNIdentifierString];
+      addedMemberships = [(ABSAddressBookContextStorage *)self addedMemberships];
+      v18 = [addedMemberships objectForKey:v8];
 
-      [v18 removeObjectForKey:v9];
+      [v18 removeObjectForKey:cNIdentifierString];
       [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:1];
     }
 
@@ -343,16 +343,16 @@ LABEL_13:
 
 - (NSArray)recordsWithPendingMembershipAdditions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ABSAddressBookContextStorage *)self addedMemberships];
+  array = [MEMORY[0x277CBEB18] array];
+  addedMemberships = [(ABSAddressBookContextStorage *)self addedMemberships];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__ABSAddressBookContextStorage_recordsWithPendingMembershipAdditions__block_invoke;
   v9[3] = &unk_278A04B00;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [addedMemberships enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -377,16 +377,16 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipAdditions__b
 
 - (NSArray)recordsWithPendingMembershipDeletions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ABSAddressBookContextStorage *)self deletedMemberships];
+  array = [MEMORY[0x277CBEB18] array];
+  deletedMemberships = [(ABSAddressBookContextStorage *)self deletedMemberships];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__block_invoke;
   v9[3] = &unk_278A04B00;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [deletedMemberships enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -409,48 +409,48 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
   }
 }
 
-- (id)addedMembersForRecord:(id)a3
+- (id)addedMembersForRecord:(id)record
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "id")}];
-  v5 = [(ABSAddressBookContextStorage *)self addedMemberships];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 allValues];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(record, "id")}];
+  addedMemberships = [(ABSAddressBookContextStorage *)self addedMemberships];
+  v6 = [addedMemberships objectForKey:v4];
+  allValues = [v6 allValues];
 
-  return v7;
+  return allValues;
 }
 
-- (id)removedMembersForRecord:(id)a3
+- (id)removedMembersForRecord:(id)record
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "id")}];
-  v5 = [(ABSAddressBookContextStorage *)self deletedMemberships];
-  v6 = [v5 objectForKey:v4];
-  v7 = [v6 allValues];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(record, "id")}];
+  deletedMemberships = [(ABSAddressBookContextStorage *)self deletedMemberships];
+  v6 = [deletedMemberships objectForKey:v4];
+  allValues = [v6 allValues];
 
-  return v7;
+  return allValues;
 }
 
-- (void)_resetIncludingLivingRecords:(BOOL)a3
+- (void)_resetIncludingLivingRecords:(BOOL)records
 {
-  v3 = a3;
-  v5 = [(ABSAddressBookContextStorage *)self deletedRecords];
-  [v5 removeAllObjects];
+  recordsCopy = records;
+  deletedRecords = [(ABSAddressBookContextStorage *)self deletedRecords];
+  [deletedRecords removeAllObjects];
 
-  v6 = [(ABSAddressBookContextStorage *)self insertedRecords];
-  [v6 removeAllObjects];
+  insertedRecords = [(ABSAddressBookContextStorage *)self insertedRecords];
+  [insertedRecords removeAllObjects];
 
-  v7 = [(ABSAddressBookContextStorage *)self updatedRecords];
-  [v7 removeAllObjects];
+  updatedRecords = [(ABSAddressBookContextStorage *)self updatedRecords];
+  [updatedRecords removeAllObjects];
 
-  v8 = [(ABSAddressBookContextStorage *)self deletedMemberships];
-  [v8 removeAllObjects];
+  deletedMemberships = [(ABSAddressBookContextStorage *)self deletedMemberships];
+  [deletedMemberships removeAllObjects];
 
-  v9 = [(ABSAddressBookContextStorage *)self addedMemberships];
-  [v9 removeAllObjects];
+  addedMemberships = [(ABSAddressBookContextStorage *)self addedMemberships];
+  [addedMemberships removeAllObjects];
 
-  if (v3)
+  if (recordsCopy)
   {
-    v10 = [(ABSAddressBookContextStorage *)self records];
-    [v10 removeAllObjects];
+    records = [(ABSAddressBookContextStorage *)self records];
+    [records removeAllObjects];
   }
 
   [(ABSAddressBookContextStorage *)self setHasUnsavedChanges:0];
@@ -463,8 +463,8 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(ABSAddressBookContextStorage *)self insertedRecords];
-  v4 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  insertedRecords = [(ABSAddressBookContextStorage *)self insertedRecords];
+  v4 = [insertedRecords countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v4)
   {
     v5 = v4;
@@ -475,19 +475,19 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
       {
         if (*v23 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(insertedRecords);
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
         if ([v8 id] != -1)
         {
           v9 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "id")}];
-          v10 = [(ABSAddressBookContextStorage *)self records];
-          [v10 setObject:v8 forKey:v9];
+          records = [(ABSAddressBookContextStorage *)self records];
+          [records setObject:v8 forKey:v9];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v5 = [insertedRecords countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v5);
@@ -497,8 +497,8 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(ABSAddressBookContextStorage *)self deletedRecords];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  deletedRecords = [(ABSAddressBookContextStorage *)self deletedRecords];
+  v12 = [deletedRecords countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -509,18 +509,18 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(deletedRecords);
         }
 
         v16 = *(*(&v18 + 1) + 8 * j);
         if ([v16 intValue] != -1)
         {
-          v17 = [(ABSAddressBookContextStorage *)self records];
-          [v17 removeObjectForKey:v16];
+          records2 = [(ABSAddressBookContextStorage *)self records];
+          [records2 removeObjectForKey:v16];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v13 = [deletedRecords countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v13);
@@ -531,19 +531,19 @@ void __69__ABSAddressBookContextStorage_recordsWithPendingMembershipDeletions__b
 
 - (void)revert
 {
-  v3 = [(ABSAddressBookContextStorage *)self records];
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_8];
+  records = [(ABSAddressBookContextStorage *)self records];
+  [records enumerateKeysAndObjectsUsingBlock:&__block_literal_global_8];
 
-  v4 = [(ABSAddressBookContextStorage *)self revertedRecords];
-  v5 = [(ABSAddressBookContextStorage *)self records];
-  [v4 addEntriesFromDictionary:v5];
+  revertedRecords = [(ABSAddressBookContextStorage *)self revertedRecords];
+  records2 = [(ABSAddressBookContextStorage *)self records];
+  [revertedRecords addEntriesFromDictionary:records2];
 
-  v6 = [(ABSAddressBookContextStorage *)self deletedRecords];
-  [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7_0];
+  deletedRecords = [(ABSAddressBookContextStorage *)self deletedRecords];
+  [deletedRecords enumerateKeysAndObjectsUsingBlock:&__block_literal_global_7_0];
 
-  v7 = [(ABSAddressBookContextStorage *)self revertedRecords];
-  v8 = [(ABSAddressBookContextStorage *)self deletedRecords];
-  [v7 addEntriesFromDictionary:v8];
+  revertedRecords2 = [(ABSAddressBookContextStorage *)self revertedRecords];
+  deletedRecords2 = [(ABSAddressBookContextStorage *)self deletedRecords];
+  [revertedRecords2 addEntriesFromDictionary:deletedRecords2];
 
   [(ABSAddressBookContextStorage *)self _resetIncludingLivingRecords:1];
 }

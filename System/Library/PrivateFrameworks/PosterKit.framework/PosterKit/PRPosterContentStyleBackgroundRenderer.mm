@@ -1,22 +1,22 @@
 @interface PRPosterContentStyleBackgroundRenderer
-- (PRPosterContentStyleBackgroundRenderer)initWithView:(id)a3;
+- (PRPosterContentStyleBackgroundRenderer)initWithView:(id)view;
 - (void)clearAnyPreviousStyle;
-- (void)renderDiscreteColorStyle:(id)a3;
-- (void)renderGradientStyle:(id)a3;
+- (void)renderDiscreteColorStyle:(id)style;
+- (void)renderGradientStyle:(id)style;
 @end
 
 @implementation PRPosterContentStyleBackgroundRenderer
 
-- (PRPosterContentStyleBackgroundRenderer)initWithView:(id)a3
+- (PRPosterContentStyleBackgroundRenderer)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PRPosterContentStyleBackgroundRenderer;
   v6 = [(PRPosterContentStyleBackgroundRenderer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
@@ -47,19 +47,19 @@
   }
 }
 
-- (void)renderDiscreteColorStyle:(id)a3
+- (void)renderDiscreteColorStyle:(id)style
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  styleCopy = style;
   [(PRPosterContentStyleBackgroundRenderer *)self clearAnyPreviousStyle];
-  if ([v4 allowsVariation])
+  if ([styleCopy allowsVariation])
   {
-    [v4 variationAppliedColors];
+    [styleCopy variationAppliedColors];
   }
 
   else
   {
-    [v4 colors];
+    [styleCopy colors];
   }
   v5 = ;
 
@@ -70,18 +70,18 @@
   v13 = v12;
   if ([v5 count] < 2)
   {
-    v25 = [(UIView *)self->_view backgroundColor];
+    backgroundColor = [(UIView *)self->_view backgroundColor];
     originalBackgroundColor = self->_originalBackgroundColor;
-    self->_originalBackgroundColor = v25;
+    self->_originalBackgroundColor = backgroundColor;
 
     view = self->_view;
-    v14 = [v5 firstObject];
-    [(UIView *)view setBackgroundColor:v14];
+    firstObject = [v5 firstObject];
+    [(UIView *)view setBackgroundColor:firstObject];
   }
 
   else
   {
-    v14 = [v5 objectAtIndexedSubscript:0];
+    firstObject = [v5 objectAtIndexedSubscript:0];
     v15 = [v5 objectAtIndexedSubscript:1];
     v16 = objc_alloc(MEMORY[0x1E69DD250]);
     v29.origin.x = v7;
@@ -94,7 +94,7 @@
     v30.size.width = v11;
     v30.size.height = v13;
     v18 = [v16 initWithFrame:{0.0, 0.0, MidX, CGRectGetMaxY(v30)}];
-    [v18 setBackgroundColor:v14];
+    [v18 setBackgroundColor:firstObject];
     [v18 setAutoresizingMask:22];
     [(UIView *)self->_view addSubview:v18];
     v19 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -124,34 +124,34 @@
   }
 }
 
-- (void)renderGradientStyle:(id)a3
+- (void)renderGradientStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   [(PRPosterContentStyleBackgroundRenderer *)self clearAnyPreviousStyle];
-  v23 = [v4 colors];
-  v5 = [v4 gradientType];
+  colors = [styleCopy colors];
+  gradientType = [styleCopy gradientType];
   v6 = MEMORY[0x1E6979DA8];
   v7 = MEMORY[0x1E6979DB0];
-  if (v5 != 1)
+  if (gradientType != 1)
   {
     v7 = MEMORY[0x1E6979DA0];
   }
 
-  if (v5 != 2)
+  if (gradientType != 2)
   {
     v6 = v7;
   }
 
   v8 = *v6;
-  v9 = [v4 locations];
-  [v4 startPoint];
+  locations = [styleCopy locations];
+  [styleCopy startPoint];
   v11 = v10;
   v13 = v12;
-  [v4 endPoint];
+  [styleCopy endPoint];
   v15 = v14;
   v17 = v16;
 
-  v18 = [v23 bs_map:&__block_literal_global_38];
+  v18 = [colors bs_map:&__block_literal_global_38];
   gradientView = self->_gradientView;
   if (!gradientView)
   {
@@ -167,7 +167,7 @@
   }
 
   [(UIView *)self->_view addSubview:gradientView];
-  [(_PRContentStyleGradientView *)self->_gradientView setColors:v18 locations:v9 type:v8];
+  [(_PRContentStyleGradientView *)self->_gradientView setColors:v18 locations:locations type:v8];
   [(_PRContentStyleGradientView *)self->_gradientView setStartPoint:v11 endPoint:v13, v15, v17];
 }
 

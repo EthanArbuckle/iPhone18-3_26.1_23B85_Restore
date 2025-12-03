@@ -1,27 +1,27 @@
 @interface SFBarRegistration
 - (BOOL)_arrangedBarItemsNeedUpdate;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)containsBarItem:(int64_t)a3;
-- (SFBarRegistration)initWithBar:(id)a3 barManager:(id)a4 layout:(int64_t)a5 persona:(int64_t)a6;
-- (id)_UIBarButtonItemForBarItem:(int64_t)a3;
-- (id)_UIBarButtonItemsForArrangedBarItems:(id)a3;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)containsBarItem:(int64_t)item;
+- (SFBarRegistration)initWithBar:(id)bar barManager:(id)manager layout:(int64_t)layout persona:(int64_t)persona;
+- (id)_UIBarButtonItemForBarItem:(int64_t)item;
+- (id)_UIBarButtonItemsForArrangedBarItems:(id)items;
 - (id)_effectiveArrangedBarItems;
-- (id)_newBarButtonItemForSFBarItem:(int64_t)a3;
-- (id)popoverSourceInfoForItem:(int64_t)a3;
-- (int64_t)barItemForUIBarButtonItem:(id)a3;
-- (void)_itemReceivedLongPress:(id)a3;
-- (void)_itemReceivedTap:(id)a3;
-- (void)_itemReceivedTouchDown:(id)a3;
+- (id)_newBarButtonItemForSFBarItem:(int64_t)item;
+- (id)popoverSourceInfoForItem:(int64_t)item;
+- (int64_t)barItemForUIBarButtonItem:(id)item;
+- (void)_itemReceivedLongPress:(id)press;
+- (void)_itemReceivedTap:(id)tap;
+- (void)_itemReceivedTouchDown:(id)down;
 - (void)_updateTitlesAndMenus;
-- (void)pulseBarItem:(int64_t)a3;
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 menu:(id)a4;
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4;
-- (void)setCustomActivityImage:(id)a3 accessibilityLabel:(id)a4;
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4;
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4;
-- (void)updateArrangedUIBarButtonItemsIfNeededWithAnimation:(BOOL)a3;
+- (void)pulseBarItem:(int64_t)item;
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled;
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden;
+- (void)setBarItem:(int64_t)item menu:(id)menu;
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected;
+- (void)setCustomActivityImage:(id)image accessibilityLabel:(id)label;
+- (void)setImage:(id)image forBarItem:(int64_t)item;
+- (void)setProgress:(double)progress forBarItem:(int64_t)item;
+- (void)updateArrangedUIBarButtonItemsIfNeededWithAnimation:(BOOL)animation;
 @end
 
 @implementation SFBarRegistration
@@ -30,8 +30,8 @@
 {
   if (self->_lastCommittedArrangedBarItems)
   {
-    v3 = [(SFBarRegistration *)self _effectiveArrangedBarItems];
-    v4 = ![(NSOrderedSet *)self->_lastCommittedArrangedBarItems isEqualToOrderedSet:v3];
+    _effectiveArrangedBarItems = [(SFBarRegistration *)self _effectiveArrangedBarItems];
+    v4 = ![(NSOrderedSet *)self->_lastCommittedArrangedBarItems isEqualToOrderedSet:_effectiveArrangedBarItems];
   }
 
   else
@@ -45,13 +45,13 @@
 - (id)_effectiveArrangedBarItems
 {
   WeakRetained = objc_loadWeakRetained(&self->_barManager);
-  v4 = [WeakRetained delegate];
+  delegate = [WeakRetained delegate];
   v5 = objc_opt_respondsToSelector();
   arrangedBarItems = self->_arrangedBarItems;
   if (v5)
   {
     v7 = [(NSOrderedSet *)arrangedBarItems set];
-    v8 = [v4 barManager:WeakRetained visibleBarItemsForLayout:self->_layout availableItems:v7];
+    v8 = [delegate barManager:WeakRetained visibleBarItemsForLayout:self->_layout availableItems:v7];
     if ([v7 isEqualToSet:v8])
     {
       v9 = 0;
@@ -138,10 +138,10 @@
   }
 }
 
-- (SFBarRegistration)initWithBar:(id)a3 barManager:(id)a4 layout:(int64_t)a5 persona:(int64_t)a6
+- (SFBarRegistration)initWithBar:(id)bar barManager:(id)manager layout:(int64_t)layout persona:(int64_t)persona
 {
-  v10 = a3;
-  v11 = a4;
+  barCopy = bar;
+  managerCopy = manager;
   v62.receiver = self;
   v62.super_class = SFBarRegistration;
   v12 = [(SFBarRegistration *)&v62 init];
@@ -151,46 +151,46 @@
     goto LABEL_54;
   }
 
-  objc_storeWeak(&v12->_bar, v10);
-  objc_storeWeak(&v13->_barManager, v11);
+  objc_storeWeak(&v12->_bar, barCopy);
+  objc_storeWeak(&v13->_barManager, managerCopy);
   v14 = MEMORY[0x1E695DFB8];
-  if (a6 <= 1)
+  if (persona <= 1)
   {
-    if (a6)
+    if (persona)
     {
 LABEL_9:
-      if (a5 > 1)
+      if (layout > 1)
       {
-        if (a5 == 2)
+        if (layout == 2)
         {
           v15 = &unk_1F5023D40;
           goto LABEL_27;
         }
 
-        if (a5 != 3)
+        if (layout != 3)
         {
           goto LABEL_26;
         }
 
-        v16 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+        isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
         v17 = &unk_1F5023DB8;
         v18 = &unk_1F5023DA0;
       }
 
       else
       {
-        if (!a5)
+        if (!layout)
         {
           v15 = &unk_1F5023D58;
           goto LABEL_27;
         }
 
-        if (a5 != 1)
+        if (layout != 1)
         {
           goto LABEL_26;
         }
 
-        v16 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+        isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
         v17 = &unk_1F5023D88;
         v18 = &unk_1F5023D70;
       }
@@ -198,21 +198,21 @@ LABEL_9:
       goto LABEL_23;
     }
 
-    if (a5 >= 4)
+    if (layout >= 4)
     {
 LABEL_26:
       v15 = MEMORY[0x1E695E0F0];
       goto LABEL_27;
     }
 
-    v15 = qword_1E8491098[a5];
+    v15 = qword_1E8491098[layout];
   }
 
   else
   {
-    if (a6 != 2)
+    if (persona != 2)
     {
-      if (a6 != 3)
+      if (persona != 3)
       {
         goto LABEL_26;
       }
@@ -220,24 +220,24 @@ LABEL_26:
       goto LABEL_9;
     }
 
-    if (a5 > 1)
+    if (layout > 1)
     {
-      if (a5 == 2)
+      if (layout == 2)
       {
         v15 = &unk_1F5023DD0;
         goto LABEL_27;
       }
 
-      if (a5 != 3)
+      if (layout != 3)
       {
         goto LABEL_26;
       }
 
-      v16 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+      isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
       v17 = &unk_1F5023E30;
       v18 = &unk_1F5023E18;
 LABEL_23:
-      if (v16)
+      if (isSolariumEnabled)
       {
         v15 = v18;
       }
@@ -250,13 +250,13 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    if (!a5)
+    if (!layout)
     {
       v15 = &unk_1F5023DE8;
       goto LABEL_27;
     }
 
-    if (a5 != 1)
+    if (layout != 1)
     {
       goto LABEL_26;
     }
@@ -273,19 +273,19 @@ LABEL_27:
   hiddenBarItems = v13->_hiddenBarItems;
   v13->_hiddenBarItems = v21;
 
-  v13->_layout = a5;
+  v13->_layout = layout;
   v23 = 1;
-  if (a5 == 2)
+  if (layout == 2)
   {
     v23 = 2;
   }
 
-  if (a5 == 3)
+  if (layout == 3)
   {
     v23 = 0;
   }
 
-  [v10 _setItemDistribution:qword_1D47DD160[v23]];
+  [barCopy _setItemDistribution:qword_1D47DD160[v23]];
   if ([(NSOrderedSet *)v13->_arrangedBarItems containsObject:&unk_1F5022F30])
   {
     v24 = [(SFBarRegistration *)v13 _newBarButtonItemForSFBarItem:0];
@@ -422,9 +422,9 @@ LABEL_54:
   return v13;
 }
 
-- (id)_newBarButtonItemForSFBarItem:(int64_t)a3
+- (id)_newBarButtonItemForSFBarItem:(int64_t)item
 {
-  if (a3 == 10)
+  if (item == 10)
   {
     v6 = objc_alloc(MEMORY[0x1E69DC708]);
     v7 = objc_opt_new();
@@ -433,7 +433,7 @@ LABEL_54:
     return v8;
   }
 
-  else if (a3 == 11)
+  else if (item == 11)
   {
     v4 = [SFDownloadsBarButtonItem alloc];
 
@@ -462,13 +462,13 @@ LABEL_54:
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel__itemReceivedLongPress_ == a3)
+  if (sel__itemReceivedLongPress_ == action)
   {
-    v8 = a4;
+    senderCopy = sender;
     WeakRetained = objc_loadWeakRetained(&self->_barManager);
-    v9 = [(SFBarRegistration *)self barItemForUIBarButtonItem:v8];
+    v9 = [(SFBarRegistration *)self barItemForUIBarButtonItem:senderCopy];
 
     v7 = [WeakRetained barRegistration:self canHandleLongPressForBarItem:v9];
   }
@@ -477,8 +477,8 @@ LABEL_54:
   {
     v12.receiver = self;
     v12.super_class = SFBarRegistration;
-    WeakRetained = a4;
-    v7 = [(SFBarRegistration *)&v12 canPerformAction:a3 withSender:WeakRetained];
+    WeakRetained = sender;
+    v7 = [(SFBarRegistration *)&v12 canPerformAction:action withSender:WeakRetained];
   }
 
   v10 = v7;
@@ -486,23 +486,23 @@ LABEL_54:
   return v10;
 }
 
-- (void)setCustomActivityImage:(id)a3 accessibilityLabel:(id)a4
+- (void)setCustomActivityImage:(id)image accessibilityLabel:(id)label
 {
-  v6 = a4;
-  v7 = a3;
+  labelCopy = label;
+  imageCopy = image;
   v8 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:10];
-  [v8 setImage:v7];
+  [v8 setImage:imageCopy];
 
-  [v8 setTitle:v6];
-  [v8 setAccessibilityLabel:v6];
+  [v8 setTitle:labelCopy];
+  [v8 setAccessibilityLabel:labelCopy];
 }
 
-- (void)setImage:(id)a3 forBarItem:(int64_t)a4
+- (void)setImage:(id)image forBarItem:(int64_t)item
 {
-  v12 = a3;
-  v6 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:a4];
+  imageCopy = image;
+  v6 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:item];
   v7 = v6;
-  if (v12)
+  if (imageCopy)
   {
     [v6 setImage:?];
   }
@@ -518,25 +518,25 @@ LABEL_54:
   WeakRetained = objc_loadWeakRetained(&self->_bar);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained didSetBarItem:a4 barButtonItem:v7];
+    [WeakRetained didSetBarItem:item barButtonItem:v7];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 enabled:(BOOL)a4
+- (void)setBarItem:(int64_t)item enabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v8 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:?];
-  [v8 setEnabled:v4];
+  [v8 setEnabled:enabledCopy];
   WeakRetained = objc_loadWeakRetained(&self->_bar);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained didSetBarItem:a3 barButtonItem:v8];
+    [WeakRetained didSetBarItem:item barButtonItem:v8];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden
 {
-  v4 = a4;
+  hiddenCopy = hidden;
   arrangedBarItems = self->_arrangedBarItems;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   LODWORD(arrangedBarItems) = [(NSOrderedSet *)arrangedBarItems containsObject:v8];
@@ -544,14 +544,14 @@ LABEL_54:
   if (arrangedBarItems)
   {
     hiddenBarItems = self->_hiddenBarItems;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:item];
     LODWORD(hiddenBarItems) = [(NSMutableSet *)hiddenBarItems containsObject:v10];
 
-    if (hiddenBarItems != v4)
+    if (hiddenBarItems != hiddenCopy)
     {
       v11 = self->_hiddenBarItems;
-      v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-      if (v4)
+      v12 = [MEMORY[0x1E696AD98] numberWithInteger:item];
+      if (hiddenCopy)
       {
         [(NSMutableSet *)v11 addObject:v12];
       }
@@ -564,18 +564,18 @@ LABEL_54:
   }
 }
 
-- (void)updateArrangedUIBarButtonItemsIfNeededWithAnimation:(BOOL)a3
+- (void)updateArrangedUIBarButtonItemsIfNeededWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if ([(SFBarRegistration *)self _arrangedBarItemsNeedUpdate])
   {
-    v5 = [(SFBarRegistration *)self _effectiveArrangedBarItems];
+    _effectiveArrangedBarItems = [(SFBarRegistration *)self _effectiveArrangedBarItems];
     lastCommittedArrangedBarItems = self->_lastCommittedArrangedBarItems;
-    self->_lastCommittedArrangedBarItems = v5;
+    self->_lastCommittedArrangedBarItems = _effectiveArrangedBarItems;
 
     WeakRetained = objc_loadWeakRetained(&self->_bar);
     v7 = [(SFBarRegistration *)self _UIBarButtonItemsForArrangedBarItems:self->_lastCommittedArrangedBarItems];
-    [WeakRetained setItems:v7 animated:v3];
+    [WeakRetained setItems:v7 animated:animationCopy];
 
     if (objc_opt_respondsToSelector())
     {
@@ -584,24 +584,24 @@ LABEL_54:
   }
 }
 
-- (BOOL)containsBarItem:(int64_t)a3
+- (BOOL)containsBarItem:(int64_t)item
 {
-  if (*MEMORY[0x1E69B1E98] == a3)
+  if (*MEMORY[0x1E69B1E98] == item)
   {
     return 0;
   }
 
   [(SFBarRegistration *)self updateArrangedUIBarButtonItemsIfNeededWithAnimation:0];
   lastCommittedArrangedBarItems = self->_lastCommittedArrangedBarItems;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:item];
   LOBYTE(lastCommittedArrangedBarItems) = [(NSOrderedSet *)lastCommittedArrangedBarItems containsObject:v7];
 
   return lastCommittedArrangedBarItems;
 }
 
-- (id)popoverSourceInfoForItem:(int64_t)a3
+- (id)popoverSourceInfoForItem:(int64_t)item
 {
-  v3 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:a3];
+  v3 = [(SFBarRegistration *)self _UIBarButtonItemForBarItem:item];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69B1BE8]) initWithItem:v3];
@@ -615,48 +615,48 @@ LABEL_54:
   return v4;
 }
 
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected
 {
-  if (a3 == 3)
+  if (item == 3)
   {
-    [(UIBarButtonItem *)self->_bookmarksItem setSelected:a4];
+    [(UIBarButtonItem *)self->_bookmarksItem setSelected:selected];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 menu:(id)a4
+- (void)setBarItem:(int64_t)item menu:(id)menu
 {
-  v6 = a4;
-  v8 = [(SFBarRegistration *)self UIBarButtonItemForItem:a3];
-  [v8 setMenu:v6];
+  menuCopy = menu;
+  v8 = [(SFBarRegistration *)self UIBarButtonItemForItem:item];
+  [v8 setMenu:menuCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_bar);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained didSetBarItem:a3 barButtonItem:v8];
+    [WeakRetained didSetBarItem:item barButtonItem:v8];
   }
 }
 
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4
+- (void)setProgress:(double)progress forBarItem:(int64_t)item
 {
-  if (a4 == 11)
+  if (item == 11)
   {
-    [(SFBarRegistration *)self setDownloadsItemProgress:a3];
+    [(SFBarRegistration *)self setDownloadsItemProgress:progress];
   }
 }
 
-- (void)pulseBarItem:(int64_t)a3
+- (void)pulseBarItem:(int64_t)item
 {
-  if (a3 == 11)
+  if (item == 11)
   {
     [(SFBarRegistration *)self pulseDownloadsItem];
   }
 }
 
-- (id)_UIBarButtonItemsForArrangedBarItems:(id)a3
+- (id)_UIBarButtonItemsForArrangedBarItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     if (self->_layout == 2)
     {
@@ -668,14 +668,14 @@ LABEL_54:
       v5 = 0;
     }
 
-    v7 = [v4 lastObject];
-    v8 = [MEMORY[0x1E695DF70] array];
+    lastObject = [itemsCopy lastObject];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v4;
-    v9 = v4;
+    v17 = itemsCopy;
+    v9 = itemsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v10)
     {
@@ -692,11 +692,11 @@ LABEL_54:
 
           v14 = *(*(&v18 + 1) + 8 * i);
           v15 = -[SFBarRegistration _UIBarButtonItemForBarItem:](self, "_UIBarButtonItemForBarItem:", [v14 integerValue]);
-          [v8 addObject:v15];
+          [array addObject:v15];
 
-          if (v5 && ([v14 isEqual:v7] & 1) == 0)
+          if (v5 && ([v14 isEqual:lastObject] & 1) == 0)
           {
-            [v8 addObject:v5];
+            [array addObject:v5];
           }
         }
 
@@ -706,8 +706,8 @@ LABEL_54:
       while (v11);
     }
 
-    v6 = [v8 copy];
-    v4 = v17;
+    v6 = [array copy];
+    itemsCopy = v17;
   }
 
   else
@@ -718,19 +718,19 @@ LABEL_54:
   return v6;
 }
 
-- (id)_UIBarButtonItemForBarItem:(int64_t)a3
+- (id)_UIBarButtonItemForBarItem:(int64_t)item
 {
   v3 = 0;
-  if (a3 > 6)
+  if (item > 6)
   {
-    if (a3 <= 9)
+    if (item <= 9)
     {
-      if (a3 == 7)
+      if (item == 7)
       {
         v5 = 96;
       }
 
-      else if (a3 == 8)
+      else if (item == 8)
       {
         v5 = 112;
       }
@@ -741,16 +741,16 @@ LABEL_54:
       }
     }
 
-    else if (a3 > 13)
+    else if (item > 13)
     {
-      if (a3 == 14)
+      if (item == 14)
       {
         v5 = 144;
       }
 
       else
       {
-        if (a3 != 15)
+        if (item != 15)
         {
           goto LABEL_35;
         }
@@ -759,14 +759,14 @@ LABEL_54:
       }
     }
 
-    else if (a3 == 10)
+    else if (item == 10)
     {
       v5 = 128;
     }
 
     else
     {
-      if (a3 != 11)
+      if (item != 11)
       {
         goto LABEL_35;
       }
@@ -775,22 +775,22 @@ LABEL_54:
     }
 
 LABEL_33:
-    v4 = *(&self->super.super.isa + v5);
+    flexibleSpaceItem = *(&self->super.super.isa + v5);
     goto LABEL_34;
   }
 
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((item & 0x8000000000000000) == 0)
   {
-    if (a3 > 2)
+    if (item > 2)
     {
-      if (a3 == 3)
+      if (item == 3)
       {
         v5 = 72;
       }
 
       else
       {
-        if (a3 != 6)
+        if (item != 6)
         {
           goto LABEL_35;
         }
@@ -799,9 +799,9 @@ LABEL_33:
       }
     }
 
-    else if (a3)
+    else if (item)
     {
-      if (a3 != 1)
+      if (item != 1)
       {
         goto LABEL_35;
       }
@@ -817,89 +817,89 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if ((a3 + 101) < 2)
+  if ((item + 101) < 2)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:0 style:0 target:0 action:0];
     [v3 setWidth:44.0];
     goto LABEL_35;
   }
 
-  if (a3 == -103)
+  if (item == -103)
   {
-    v4 = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:0.0];
+    flexibleSpaceItem = [MEMORY[0x1E69DC708] fixedSpaceItemOfWidth:0.0];
   }
 
   else
   {
-    if (a3 != -102)
+    if (item != -102)
     {
       goto LABEL_35;
     }
 
-    v4 = [MEMORY[0x1E69DC708] flexibleSpaceItem];
+    flexibleSpaceItem = [MEMORY[0x1E69DC708] flexibleSpaceItem];
   }
 
 LABEL_34:
-  v3 = v4;
+  v3 = flexibleSpaceItem;
 LABEL_35:
 
   return v3;
 }
 
-- (int64_t)barItemForUIBarButtonItem:(id)a3
+- (int64_t)barItemForUIBarButtonItem:(id)item
 {
-  v4 = a3;
-  if (self->_backItem == v4)
+  itemCopy = item;
+  if (self->_backItem == itemCopy)
   {
     v5 = 0;
   }
 
-  else if (self->_forwardItem == v4)
+  else if (self->_forwardItem == itemCopy)
   {
     v5 = 1;
   }
 
-  else if (self->_bookmarksItem == v4)
+  else if (self->_bookmarksItem == itemCopy)
   {
     v5 = 3;
   }
 
-  else if (self->_shareItem == v4)
+  else if (self->_shareItem == itemCopy)
   {
     v5 = 6;
   }
 
-  else if (self->_newTabItem == v4)
+  else if (self->_newTabItem == itemCopy)
   {
     v5 = 7;
   }
 
-  else if (self->_tabExposeItem == v4)
+  else if (self->_tabExposeItem == itemCopy)
   {
     v5 = 8;
   }
 
-  else if (self->_openInSafariItem == v4)
+  else if (self->_openInSafariItem == itemCopy)
   {
     v5 = 9;
   }
 
-  else if (self->_customActivityItem == v4)
+  else if (self->_customActivityItem == itemCopy)
   {
     v5 = 10;
   }
 
-  else if (self->_downloadsItem == v4)
+  else if (self->_downloadsItem == itemCopy)
   {
     v5 = 11;
   }
 
-  else if (self->_reloadItem == v4)
+  else if (self->_reloadItem == itemCopy)
   {
     v5 = 15;
   }
 
-  else if (self->_stopItem == v4)
+  else if (self->_stopItem == itemCopy)
   {
     v5 = 14;
   }
@@ -912,29 +912,29 @@ LABEL_35:
   return v5;
 }
 
-- (void)_itemReceivedTouchDown:(id)a3
+- (void)_itemReceivedTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   WeakRetained = objc_loadWeakRetained(&self->_barManager);
-  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:v4];
+  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:downCopy];
 
   [WeakRetained barRegistration:self didReceiveTouchDownForBarItem:v5];
 }
 
-- (void)_itemReceivedTap:(id)a3
+- (void)_itemReceivedTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   WeakRetained = objc_loadWeakRetained(&self->_barManager);
-  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:v4];
+  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:tapCopy];
 
   [WeakRetained barRegistration:self didReceiveTapForBarItem:v5];
 }
 
-- (void)_itemReceivedLongPress:(id)a3
+- (void)_itemReceivedLongPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   WeakRetained = objc_loadWeakRetained(&self->_barManager);
-  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:v4];
+  v5 = [(SFBarRegistration *)self barItemForUIBarButtonItem:pressCopy];
 
   [WeakRetained barRegistration:self didReceiveLongPressForBarItem:v5];
 }

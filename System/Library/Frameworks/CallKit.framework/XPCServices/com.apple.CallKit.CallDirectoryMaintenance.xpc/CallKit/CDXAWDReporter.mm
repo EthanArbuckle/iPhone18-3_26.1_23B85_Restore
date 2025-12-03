@@ -1,8 +1,8 @@
 @interface CDXAWDReporter
 - (CDXAWDReporter)init;
-- (void)_reportMetricId:(unsigned int)a3 usingBlock:(id)a4;
-- (void)reportLoadedDataForExtensionWithIdentifier:(id)a3 blockingEntries:(unint64_t)a4 identificationEntries:(unint64_t)a5;
-- (void)reportSetEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4;
+- (void)_reportMetricId:(unsigned int)id usingBlock:(id)block;
+- (void)reportLoadedDataForExtensionWithIdentifier:(id)identifier blockingEntries:(unint64_t)entries identificationEntries:(unint64_t)identificationEntries;
+- (void)reportSetEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier;
 @end
 
 @implementation CDXAWDReporter
@@ -30,44 +30,44 @@
   return v2;
 }
 
-- (void)reportLoadedDataForExtensionWithIdentifier:(id)a3 blockingEntries:(unint64_t)a4 identificationEntries:(unint64_t)a5
+- (void)reportLoadedDataForExtensionWithIdentifier:(id)identifier blockingEntries:(unint64_t)entries identificationEntries:(unint64_t)identificationEntries
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005770;
   v7[3] = &unk_100034BD0;
-  v9 = a4;
-  v10 = a5;
-  v8 = a3;
-  v6 = v8;
+  entriesCopy = entries;
+  identificationEntriesCopy = identificationEntries;
+  identifierCopy = identifier;
+  v6 = identifierCopy;
   [(CDXAWDReporter *)self _reportMetricId:5242881 usingBlock:v7];
 }
 
-- (void)reportSetEnabled:(BOOL)a3 forExtensionWithIdentifier:(id)a4
+- (void)reportSetEnabled:(BOOL)enabled forExtensionWithIdentifier:(id)identifier
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005980;
   v7[3] = &unk_100034BF8;
-  v8 = a4;
-  v9 = a3;
-  v6 = v8;
+  identifierCopy = identifier;
+  enabledCopy = enabled;
+  v6 = identifierCopy;
   [(CDXAWDReporter *)self _reportMetricId:5242881 usingBlock:v7];
 }
 
-- (void)_reportMetricId:(unsigned int)a3 usingBlock:(id)a4
+- (void)_reportMetricId:(unsigned int)id usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(CDXAWDReporter *)self queue];
+  blockCopy = block;
+  queue = [(CDXAWDReporter *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005A94;
   block[3] = &unk_100034C20;
-  v11 = a3;
+  idCopy = id;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = blockCopy;
+  v8 = blockCopy;
+  dispatch_async(queue, block);
 }
 
 @end

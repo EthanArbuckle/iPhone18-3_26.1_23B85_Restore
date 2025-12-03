@@ -1,15 +1,15 @@
 @interface UARPDynamicAssetPersonalization
-- (BOOL)compareTssResponse:(id)a3;
-- (BOOL)prepareDynamicAsset:(id)a3 error:(id *)a4;
-- (BOOL)processDynamicAsset:(id *)a3;
-- (BOOL)processTssResponse:(id)a3;
-- (BOOL)tssRequest:(id)a3 error:(id *)a4;
-- (BOOL)tssRequest:(id)a3 error:(id *)a4 authListed:(BOOL)a5;
+- (BOOL)compareTssResponse:(id)response;
+- (BOOL)prepareDynamicAsset:(id)asset error:(id *)error;
+- (BOOL)processDynamicAsset:(id *)asset;
+- (BOOL)processTssResponse:(id)response;
+- (BOOL)tssRequest:(id)request error:(id *)error;
+- (BOOL)tssRequest:(id)request error:(id *)error authListed:(BOOL)listed;
 - (NSDictionary)options;
 - (UARPDynamicAssetPersonalization)init;
-- (UARPDynamicAssetPersonalization)initWithEndpoint:(id)a3 url:(id)a4 tatsuServerURL:(id)a5;
-- (id)buildKey:(id)a3 forPayload:(id)a4;
-- (id)buildTicketPrefixForPayload:(id)a3;
+- (UARPDynamicAssetPersonalization)initWithEndpoint:(id)endpoint url:(id)url tatsuServerURL:(id)l;
+- (id)buildKey:(id)key forPayload:(id)payload;
+- (id)buildTicketPrefixForPayload:(id)payload;
 - (int64_t)assetNumber;
 @end
 
@@ -22,20 +22,20 @@
   return 0;
 }
 
-- (UARPDynamicAssetPersonalization)initWithEndpoint:(id)a3 url:(id)a4 tatsuServerURL:(id)a5
+- (UARPDynamicAssetPersonalization)initWithEndpoint:(id)endpoint url:(id)url tatsuServerURL:(id)l
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  endpointCopy = endpoint;
+  urlCopy = url;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = UARPDynamicAssetPersonalization;
   v12 = [(UARPDynamicAssetPersonalization *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_endpoint, a3);
-    objc_storeStrong(&v13->_url, a4);
-    objc_storeStrong(&v13->_tatsuServerURL, a5);
+    objc_storeStrong(&v12->_endpoint, endpoint);
+    objc_storeStrong(&v13->_url, url);
+    objc_storeStrong(&v13->_tatsuServerURL, l);
     v14 = os_log_create("com.apple.accessoryupdater.uarp", "personalization");
     log = v13->_log;
     v13->_log = v14;
@@ -55,64 +55,64 @@
 
 - (int64_t)assetNumber
 {
-  v2 = [(UARPSuperBinaryAsset *)self->_im4mAsset tlvs];
-  v3 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403906 tlvs:v2];
+  tlvs = [(UARPSuperBinaryAsset *)self->_im4mAsset tlvs];
+  v3 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403906 tlvs:tlvs];
 
   if (v3)
   {
-    v4 = [v3 valueAsNumber];
-    v5 = v4;
-    if (v4)
+    valueAsNumber = [v3 valueAsNumber];
+    v5 = valueAsNumber;
+    if (valueAsNumber)
     {
-      v6 = [v4 integerValue];
+      integerValue = [valueAsNumber integerValue];
     }
 
     else
     {
-      v6 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 - (NSDictionary)options
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(NSMutableArray *)self->_options firstObject];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  firstObject = [(NSMutableArray *)self->_options firstObject];
+  v4 = [v2 dictionaryWithDictionary:firstObject];
 
   return v4;
 }
 
-- (id)buildTicketPrefixForPayload:(id)a3
+- (id)buildTicketPrefixForPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 tlvs];
-  v5 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403907 tlvs:v4];
+  payloadCopy = payload;
+  tlvs = [payloadCopy tlvs];
+  v5 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403907 tlvs:tlvs];
 
   if (v5)
   {
-    v6 = [v5 valueAsString];
+    valueAsString = [v5 valueAsString];
   }
 
   else
   {
-    v6 = 0;
+    valueAsString = 0;
   }
 
-  v7 = [v3 tlvs];
-  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403942 tlvs:v7];
+  tlvs2 = [payloadCopy tlvs];
+  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403942 tlvs:tlvs2];
 
   if (v8)
   {
-    v9 = [v8 valueAsNumber];
-    v10 = [v9 unsignedCharValue] != 0;
+    valueAsNumber = [v8 valueAsNumber];
+    v10 = [valueAsNumber unsignedCharValue] != 0;
   }
 
   else
@@ -120,25 +120,25 @@
     v10 = 0;
   }
 
-  v11 = [v3 tlvs];
-  v12 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403941 tlvs:v11];
+  tlvs3 = [payloadCopy tlvs];
+  v12 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403941 tlvs:tlvs3];
 
   if (v12)
   {
-    v13 = [v12 valueAsNumber];
-    v14 = [v13 unsignedLongValue];
+    valueAsNumber2 = [v12 valueAsNumber];
+    unsignedLongValue = [valueAsNumber2 unsignedLongValue];
   }
 
   else
   {
-    v14 = 1;
+    unsignedLongValue = 1;
   }
 
-  v15 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", v6];
+  v15 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", valueAsString];
   v16 = v15;
   if (v10)
   {
-    [v15 appendFormat:@"%lu", v14];
+    [v15 appendFormat:@"%lu", unsignedLongValue];
   }
 
   v17 = [MEMORY[0x277CCACA8] stringWithString:v16];
@@ -146,31 +146,31 @@
   return v17;
 }
 
-- (id)buildKey:(id)a3 forPayload:(id)a4
+- (id)buildKey:(id)key forPayload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 tlvs];
-  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403907 tlvs:v7];
+  keyCopy = key;
+  payloadCopy = payload;
+  tlvs = [payloadCopy tlvs];
+  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403907 tlvs:tlvs];
 
   if (v8)
   {
-    v9 = [v8 valueAsString];
+    valueAsString = [v8 valueAsString];
   }
 
   else
   {
-    v9 = 0;
+    valueAsString = 0;
   }
 
-  v26 = v5;
-  v10 = [v6 tlvs];
-  v11 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403937 tlvs:v10];
+  v26 = keyCopy;
+  tlvs2 = [payloadCopy tlvs];
+  v11 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403937 tlvs:tlvs2];
 
   if (v11)
   {
-    v12 = [v11 valueAsNumber];
-    v13 = [v12 unsignedCharValue] != 0;
+    valueAsNumber = [v11 valueAsNumber];
+    v13 = [valueAsNumber unsignedCharValue] != 0;
   }
 
   else
@@ -178,13 +178,13 @@
     v13 = 0;
   }
 
-  v14 = [v6 tlvs];
-  v15 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403938 tlvs:v14];
+  tlvs3 = [payloadCopy tlvs];
+  v15 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403938 tlvs:tlvs3];
 
   if (v15)
   {
-    v16 = [v15 valueAsNumber];
-    v17 = [v16 unsignedCharValue] != 0;
+    valueAsNumber2 = [v15 valueAsNumber];
+    v17 = [valueAsNumber2 unsignedCharValue] != 0;
   }
 
   else
@@ -192,31 +192,31 @@
     v17 = 0;
   }
 
-  v18 = [v6 tlvs];
-  v19 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403941 tlvs:v18];
+  tlvs4 = [payloadCopy tlvs];
+  v19 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403941 tlvs:tlvs4];
 
   if (v19)
   {
-    v20 = [v19 valueAsNumber];
-    v21 = [v20 unsignedLongValue];
+    valueAsNumber3 = [v19 valueAsNumber];
+    unsignedLongValue = [valueAsNumber3 unsignedLongValue];
   }
 
   else
   {
-    v21 = 1;
+    unsignedLongValue = 1;
   }
 
-  v22 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", v9];
+  v22 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@", valueAsString];
   v23 = v22;
   if (v13)
   {
-    [v22 appendFormat:@"%lu", v21];
+    [v22 appendFormat:@"%lu", unsignedLongValue];
   }
 
   [v23 appendFormat:@", %@", v26];
   if (v17)
   {
-    [v23 appendFormat:@", %lu", v21];
+    [v23 appendFormat:@", %lu", unsignedLongValue];
   }
 
   v24 = [MEMORY[0x277CCACA8] stringWithString:v23];
@@ -224,22 +224,22 @@
   return v24;
 }
 
-- (BOOL)processDynamicAsset:(id *)a3
+- (BOOL)processDynamicAsset:(id *)asset
 {
-  v4 = self;
+  selfCopy = self;
   v127 = *MEMORY[0x277D85DE8];
   v5 = [[UARPSuperBinaryAsset alloc] initWithURL:self->_url];
-  im4mAsset = v4->_im4mAsset;
-  v4->_im4mAsset = v5;
+  im4mAsset = selfCopy->_im4mAsset;
+  selfCopy->_im4mAsset = v5;
 
-  v7 = [(UARPSuperBinaryAsset *)v4->_im4mAsset expandHeadersAndTLVs:a3];
-  log = v4->_log;
+  v7 = [(UARPSuperBinaryAsset *)selfCopy->_im4mAsset expandHeadersAndTLVs:asset];
+  log = selfCopy->_log;
   v100 = v7;
   if (v7)
   {
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
-      v9 = v4->_im4mAsset;
+      v9 = selfCopy->_im4mAsset;
       *buf = 136315394;
       v124 = "[UARPDynamicAssetPersonalization processDynamicAsset:]";
       v125 = 2112;
@@ -248,19 +248,19 @@
     }
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    options = v4->_options;
-    v4->_options = v10;
+    options = selfCopy->_options;
+    selfCopy->_options = v10;
 
     v119 = 0u;
     v120 = 0u;
     v117 = 0u;
     v118 = 0u;
-    obj = [(UARPSuperBinaryAsset *)v4->_im4mAsset payloads];
+    obj = [(UARPSuperBinaryAsset *)selfCopy->_im4mAsset payloads];
     v103 = [obj countByEnumeratingWithState:&v117 objects:v122 count:16];
     if (v103)
     {
       v102 = *v118;
-      v107 = v4;
+      v107 = selfCopy;
       do
       {
         v12 = 0;
@@ -275,83 +275,83 @@
           v13 = *(*(&v117 + 1) + 8 * v12);
           v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v110 = v13;
-          v15 = [(UARPDynamicAssetPersonalization *)v4 buildTicketPrefixForPayload:v13];
+          v15 = [(UARPDynamicAssetPersonalization *)selfCopy buildTicketPrefixForPayload:v13];
           if (v15)
           {
             v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", v15, @"Ticket"];
-            keyNameManifest = v4->_keyNameManifest;
-            v4->_keyNameManifest = v16;
+            keyNameManifest = selfCopy->_keyNameManifest;
+            selfCopy->_keyNameManifest = v16;
 
-            v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"@%@", v4->_keyNameManifest];
-            keyNameTicket = v4->_keyNameTicket;
-            v4->_keyNameTicket = v18;
+            v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"@%@", selfCopy->_keyNameManifest];
+            keyNameTicket = selfCopy->_keyNameTicket;
+            selfCopy->_keyNameTicket = v18;
 
-            [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:v4->_keyNameTicket];
+            [v14 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:selfCopy->_keyNameTicket];
           }
 
-          v20 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"BoardID" forPayload:v13];
-          keyNameBoardID = v4->_keyNameBoardID;
-          v4->_keyNameBoardID = v20;
+          v20 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"BoardID" forPayload:v13];
+          keyNameBoardID = selfCopy->_keyNameBoardID;
+          selfCopy->_keyNameBoardID = v20;
 
-          v22 = [v13 tlvs];
-          v23 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403908 tlvs:v22];
+          tlvs = [v13 tlvs];
+          v23 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403908 tlvs:tlvs];
 
-          if (v4->_keyNameBoardID && v23)
+          if (selfCopy->_keyNameBoardID && v23)
           {
-            v24 = [v23 valueAsNumber];
-            [v14 setObject:v24 forKeyedSubscript:v4->_keyNameBoardID];
+            valueAsNumber = [v23 valueAsNumber];
+            [v14 setObject:valueAsNumber forKeyedSubscript:selfCopy->_keyNameBoardID];
           }
 
-          v25 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"ChipID" forPayload:v110];
-          keyNameChipID = v4->_keyNameChipID;
-          v4->_keyNameChipID = v25;
+          v25 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"ChipID" forPayload:v110];
+          keyNameChipID = selfCopy->_keyNameChipID;
+          selfCopy->_keyNameChipID = v25;
 
-          v27 = [v110 tlvs];
-          v28 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403909 tlvs:v27];
+          tlvs2 = [v110 tlvs];
+          v28 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403909 tlvs:tlvs2];
 
-          if (v4->_keyNameChipID && v28)
+          if (selfCopy->_keyNameChipID && v28)
           {
-            v29 = [v28 valueAsNumber];
-            [v14 setObject:v29 forKeyedSubscript:v4->_keyNameChipID];
+            valueAsNumber2 = [v28 valueAsNumber];
+            [v14 setObject:valueAsNumber2 forKeyedSubscript:selfCopy->_keyNameChipID];
           }
 
-          v30 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"ECID" forPayload:v110];
-          keyNameECID = v4->_keyNameECID;
-          v4->_keyNameECID = v30;
+          v30 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"ECID" forPayload:v110];
+          keyNameECID = selfCopy->_keyNameECID;
+          selfCopy->_keyNameECID = v30;
 
-          v32 = [v110 tlvs];
-          v33 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403910 tlvs:v32];
+          tlvs3 = [v110 tlvs];
+          v33 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403910 tlvs:tlvs3];
 
-          if (v4->_keyNameECID && v33)
+          if (selfCopy->_keyNameECID && v33)
           {
-            v34 = [v33 valueAsNumber];
-            [v14 setObject:v34 forKeyedSubscript:v4->_keyNameECID];
+            valueAsNumber3 = [v33 valueAsNumber];
+            [v14 setObject:valueAsNumber3 forKeyedSubscript:selfCopy->_keyNameECID];
           }
 
-          v35 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"Nonce" forPayload:v110];
-          keyNameNonce = v4->_keyNameNonce;
-          v4->_keyNameNonce = v35;
+          v35 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"Nonce" forPayload:v110];
+          keyNameNonce = selfCopy->_keyNameNonce;
+          selfCopy->_keyNameNonce = v35;
 
-          v37 = [v110 tlvs];
-          v38 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403912 tlvs:v37];
+          tlvs4 = [v110 tlvs];
+          v38 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403912 tlvs:tlvs4];
 
-          if (v4->_keyNameNonce && v38)
+          if (selfCopy->_keyNameNonce && v38)
           {
-            v39 = [v38 valueAsData];
-            [v14 setObject:v39 forKeyedSubscript:v4->_keyNameNonce];
+            valueAsData = [v38 valueAsData];
+            [v14 setObject:valueAsData forKeyedSubscript:selfCopy->_keyNameNonce];
           }
 
-          v40 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"ProductionMode" forPayload:v110];
-          keyNameProductionMode = v4->_keyNameProductionMode;
-          v4->_keyNameProductionMode = v40;
+          v40 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"ProductionMode" forPayload:v110];
+          keyNameProductionMode = selfCopy->_keyNameProductionMode;
+          selfCopy->_keyNameProductionMode = v40;
 
-          v42 = [v110 tlvs];
-          v43 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403915 tlvs:v42];
+          tlvs5 = [v110 tlvs];
+          v43 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403915 tlvs:tlvs5];
 
-          if (v4->_keyNameProductionMode && v43)
+          if (selfCopy->_keyNameProductionMode && v43)
           {
-            v44 = [v43 valueAsNumber];
-            if ([v44 BOOLValue])
+            valueAsNumber4 = [v43 valueAsNumber];
+            if ([valueAsNumber4 BOOLValue])
             {
               v45 = MEMORY[0x277CBEC38];
             }
@@ -361,33 +361,33 @@
               v45 = MEMORY[0x277CBEC28];
             }
 
-            [v14 setObject:v45 forKeyedSubscript:v4->_keyNameProductionMode];
+            [v14 setObject:v45 forKeyedSubscript:selfCopy->_keyNameProductionMode];
           }
 
-          v46 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"SecurityDomain" forPayload:v110];
-          keyNameSecurityDomain = v4->_keyNameSecurityDomain;
-          v4->_keyNameSecurityDomain = v46;
+          v46 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"SecurityDomain" forPayload:v110];
+          keyNameSecurityDomain = selfCopy->_keyNameSecurityDomain;
+          selfCopy->_keyNameSecurityDomain = v46;
 
-          v48 = [v110 tlvs];
-          v49 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403913 tlvs:v48];
+          tlvs6 = [v110 tlvs];
+          v49 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403913 tlvs:tlvs6];
 
-          if (v4->_keyNameSecurityDomain && v49)
+          if (selfCopy->_keyNameSecurityDomain && v49)
           {
-            v50 = [v49 valueAsNumber];
-            [v14 setObject:v50 forKeyedSubscript:v4->_keyNameSecurityDomain];
+            valueAsNumber5 = [v49 valueAsNumber];
+            [v14 setObject:valueAsNumber5 forKeyedSubscript:selfCopy->_keyNameSecurityDomain];
           }
 
-          v51 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"SecurityMode" forPayload:v110];
-          keyNameSecurityMode = v4->_keyNameSecurityMode;
-          v4->_keyNameSecurityMode = v51;
+          v51 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"SecurityMode" forPayload:v110];
+          keyNameSecurityMode = selfCopy->_keyNameSecurityMode;
+          selfCopy->_keyNameSecurityMode = v51;
 
-          v53 = [v110 tlvs];
-          v54 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403914 tlvs:v53];
+          tlvs7 = [v110 tlvs];
+          v54 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403914 tlvs:tlvs7];
 
-          if (v4->_keyNameSecurityMode && v54)
+          if (selfCopy->_keyNameSecurityMode && v54)
           {
-            v55 = [v54 valueAsNumber];
-            if ([v55 BOOLValue])
+            valueAsNumber6 = [v54 valueAsNumber];
+            if ([valueAsNumber6 BOOLValue])
             {
               v56 = MEMORY[0x277CBEC38];
             }
@@ -397,22 +397,22 @@
               v56 = MEMORY[0x277CBEC28];
             }
 
-            [v14 setObject:v56 forKeyedSubscript:v4->_keyNameSecurityMode];
+            [v14 setObject:v56 forKeyedSubscript:selfCopy->_keyNameSecurityMode];
           }
 
           v104 = v15;
 
-          v57 = [(UARPDynamicAssetPersonalization *)v4 buildKey:@"SocLiveNonce" forPayload:v110];
-          keyNameSoCLiveNonce = v4->_keyNameSoCLiveNonce;
-          v4->_keyNameSoCLiveNonce = v57;
+          v57 = [(UARPDynamicAssetPersonalization *)selfCopy buildKey:@"SocLiveNonce" forPayload:v110];
+          keyNameSoCLiveNonce = selfCopy->_keyNameSoCLiveNonce;
+          selfCopy->_keyNameSoCLiveNonce = v57;
 
-          v59 = [v110 tlvs];
-          v60 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403928 tlvs:v59];
+          tlvs8 = [v110 tlvs];
+          v60 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403928 tlvs:tlvs8];
 
-          if (v4->_keyNameSoCLiveNonce && v60)
+          if (selfCopy->_keyNameSoCLiveNonce && v60)
           {
-            v61 = [v60 valueAsNumber];
-            if ([v61 BOOLValue])
+            valueAsNumber7 = [v60 valueAsNumber];
+            if ([valueAsNumber7 BOOLValue])
             {
               v62 = MEMORY[0x277CBEC38];
             }
@@ -422,11 +422,11 @@
               v62 = MEMORY[0x277CBEC28];
             }
 
-            [v14 setObject:v62 forKeyedSubscript:v4->_keyNameSoCLiveNonce];
+            [v14 setObject:v62 forKeyedSubscript:selfCopy->_keyNameSoCLiveNonce];
           }
 
-          v63 = [v110 tlvs];
-          v64 = [UARPSuperBinaryAssetTLV findTLVsWithType:2293403920 tlvs:v63];
+          tlvs9 = [v110 tlvs];
+          v64 = [UARPSuperBinaryAssetTLV findTLVsWithType:2293403920 tlvs:tlvs9];
 
           v115 = 0u;
           v116 = 0u;
@@ -447,23 +447,23 @@
                   objc_enumerationMutation(v106);
                 }
 
-                v66 = [*(*(&v113 + 1) + 8 * i) valueAsTLVs];
+                valueAsTLVs = [*(*(&v113 + 1) + 8 * i) valueAsTLVs];
                 v67 = objc_alloc_init(MEMORY[0x277CBEB38]);
-                v68 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403922 tlvs:v66];
-                v112 = [v68 valueAsString];
+                v68 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403922 tlvs:valueAsTLVs];
+                valueAsString = [v68 valueAsString];
 
                 v69 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", @"Digest"];
-                v70 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403923 tlvs:v66];
-                v71 = [v70 valueAsData];
-                [v67 setObject:v71 forKeyedSubscript:v69];
+                v70 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403923 tlvs:valueAsTLVs];
+                valueAsData2 = [v70 valueAsData];
+                [v67 setObject:valueAsData2 forKeyedSubscript:v69];
 
                 v72 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", @"EPRO"];
-                v73 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403926 tlvs:v66];
+                v73 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403926 tlvs:valueAsTLVs];
                 v74 = v73;
                 if (v73)
                 {
-                  v75 = [v73 valueAsNumber];
-                  if ([v75 BOOLValue])
+                  valueAsNumber8 = [v73 valueAsNumber];
+                  if ([valueAsNumber8 BOOLValue])
                   {
                     v76 = MEMORY[0x277CBEC38];
                   }
@@ -477,12 +477,12 @@
                 }
 
                 v77 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", @"ESEC"];
-                v78 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403925 tlvs:v66];
+                v78 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403925 tlvs:valueAsTLVs];
                 v79 = v78;
                 if (v78)
                 {
-                  v80 = [v78 valueAsNumber];
-                  if ([v80 BOOLValue])
+                  valueAsNumber9 = [v78 valueAsNumber];
+                  if ([valueAsNumber9 BOOLValue])
                   {
                     v81 = MEMORY[0x277CBEC38];
                   }
@@ -496,12 +496,12 @@
                 }
 
                 v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", @"Trusted"];
-                v83 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403927 tlvs:v66];
+                v83 = [UARPSuperBinaryAssetTLV findTLVWithType:2293403927 tlvs:valueAsTLVs];
                 v84 = v83;
                 if (v83)
                 {
-                  v85 = [v83 valueAsNumber];
-                  if ([v85 BOOLValue])
+                  valueAsNumber10 = [v83 valueAsNumber];
+                  if ([valueAsNumber10 BOOLValue])
                   {
                     v86 = MEMORY[0x277CBEC38];
                   }
@@ -514,8 +514,8 @@
                   [v67 setObject:v86 forKeyedSubscript:v82];
                 }
 
-                v4 = v107;
-                v87 = [(UARPDynamicAssetPersonalization *)v107 buildKey:v112 forPayload:v110];
+                selfCopy = v107;
+                v87 = [(UARPDynamicAssetPersonalization *)v107 buildKey:valueAsString forPayload:v110];
                 v14 = v109;
                 [v109 setObject:v67 forKeyedSubscript:v87];
               }
@@ -526,14 +526,14 @@
             while (v111);
           }
 
-          v88 = v4->_log;
+          v88 = selfCopy->_log;
           if (os_log_type_enabled(v88, OS_LOG_TYPE_INFO))
           {
             *buf = 0;
             _os_log_impl(&dword_247AA7000, v88, OS_LOG_TYPE_INFO, "Personalization Options", buf, 2u);
           }
 
-          v89 = v4->_log;
+          v89 = selfCopy->_log;
           if (os_log_type_enabled(v89, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
@@ -542,7 +542,7 @@
           }
 
           v90 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v14];
-          [(NSMutableArray *)v4->_options addObject:v90];
+          [(NSMutableArray *)selfCopy->_options addObject:v90];
 
           v12 = v105 + 1;
         }
@@ -564,12 +564,12 @@
   return v100;
 }
 
-- (BOOL)tssRequest:(id)a3 error:(id *)a4
+- (BOOL)tssRequest:(id)request error:(id *)error
 {
   options = self->_options;
-  v6 = a3;
-  v7 = [(NSMutableArray *)options firstObject];
-  v8 = UARPPersonalizationTSSRequestWithSigningServer(v7, v6);
+  requestCopy = request;
+  firstObject = [(NSMutableArray *)options firstObject];
+  v8 = UARPPersonalizationTSSRequestWithSigningServer(firstObject, requestCopy);
 
   if (v8)
   {
@@ -584,20 +584,20 @@
   return v9;
 }
 
-- (BOOL)tssRequest:(id)a3 error:(id *)a4 authListed:(BOOL)a5
+- (BOOL)tssRequest:(id)request error:(id *)error authListed:(BOOL)listed
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [(NSMutableArray *)self->_options firstObject];
-  v9 = v8;
-  if (v5)
+  listedCopy = listed;
+  requestCopy = request;
+  firstObject = [(NSMutableArray *)self->_options firstObject];
+  v9 = firstObject;
+  if (listedCopy)
   {
-    UARPPersonalizationTSSRequestWithSigningServerAuthListed(v8, v7);
+    UARPPersonalizationTSSRequestWithSigningServerAuthListed(firstObject, requestCopy);
   }
 
   else
   {
-    UARPPersonalizationTSSRequestWithSigningServer(v8, v7);
+    UARPPersonalizationTSSRequestWithSigningServer(firstObject, requestCopy);
   }
   v10 = ;
 
@@ -614,10 +614,10 @@
   return v11;
 }
 
-- (BOOL)processTssResponse:(id)a3
+- (BOOL)processTssResponse:(id)response
 {
   v47 = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  responseCopy = response;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -661,7 +661,7 @@
           _os_log_impl(&dword_247AA7000, v11, OS_LOG_TYPE_INFO, "%s: composed ticket name is %@", buf, 0x16u);
         }
 
-        v13 = [v37 objectForKeyedSubscript:v9];
+        v13 = [responseCopy objectForKeyedSubscript:v9];
         v14 = self->_log;
         if (!v13)
         {
@@ -724,24 +724,24 @@ LABEL_26:
   return v17;
 }
 
-- (BOOL)prepareDynamicAsset:(id)a3 error:(id *)a4
+- (BOOL)prepareDynamicAsset:(id)asset error:(id *)error
 {
   im4mAsset = self->_im4mAsset;
   if (im4mAsset)
   {
-    LOBYTE(im4mAsset) = [(UARPSuperBinaryAsset *)im4mAsset writeToURL:a3 error:a4];
+    LOBYTE(im4mAsset) = [(UARPSuperBinaryAsset *)im4mAsset writeToURL:asset error:error];
   }
 
   return im4mAsset;
 }
 
-- (BOOL)compareTssResponse:(id)a3
+- (BOOL)compareTssResponse:(id)response
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = MEMORY[0x277CBEAC0];
-  v6 = [(NSMutableArray *)self->_options firstObject];
-  v7 = [v5 dictionaryWithDictionary:v6];
+  firstObject = [(NSMutableArray *)self->_options firstObject];
+  v7 = [v5 dictionaryWithDictionary:firstObject];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -759,12 +759,12 @@ LABEL_26:
     *buf = 136315394;
     v71 = "[UARPDynamicAssetPersonalization compareTssResponse:]";
     v72 = 2112;
-    v73 = v4;
+    v73 = responseCopy;
     _os_log_impl(&dword_247AA7000, v9, OS_LOG_TYPE_INFO, "%s TSS Response %@", buf, 0x16u);
   }
 
   v10 = [(NSString *)v7 objectForKeyedSubscript:self->_keyNameBoardID];
-  v11 = [(NSString *)v4 objectForKeyedSubscript:self->_keyNameBoardID];
+  v11 = [(NSString *)responseCopy objectForKeyedSubscript:self->_keyNameBoardID];
   v12 = self->_log;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -806,7 +806,7 @@ LABEL_20:
   if ([v10 isEqualToNumber:v11])
   {
     v19 = [(NSString *)v7 objectForKeyedSubscript:self->_keyNameChipID];
-    v20 = [(NSString *)v4 objectForKeyedSubscript:self->_keyNameChipID];
+    v20 = [(NSString *)responseCopy objectForKeyedSubscript:self->_keyNameChipID];
     v21 = self->_log;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -873,7 +873,7 @@ LABEL_66:
     }
 
     v31 = [(NSString *)v7 objectForKeyedSubscript:self->_keyNameECID];
-    v32 = [(NSString *)v4 objectForKeyedSubscript:self->_keyNameECID];
+    v32 = [(NSString *)responseCopy objectForKeyedSubscript:self->_keyNameECID];
     v33 = self->_log;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
     {
@@ -941,7 +941,7 @@ LABEL_65:
 
     v68 = v32;
     v42 = [(NSString *)v7 objectForKeyedSubscript:self->_keyNameNonce];
-    v69 = [(NSString *)v4 objectForKeyedSubscript:self->_keyNameNonce];
+    v69 = [(NSString *)responseCopy objectForKeyedSubscript:self->_keyNameNonce];
     v43 = self->_log;
     if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
     {
@@ -1013,7 +1013,7 @@ LABEL_63:
     }
 
     v52 = [(NSString *)v7 objectForKeyedSubscript:self->_keyNameTicket];
-    v66 = [(NSString *)v4 objectForKeyedSubscript:self->_keyNameTicket];
+    v66 = [(NSString *)responseCopy objectForKeyedSubscript:self->_keyNameTicket];
     v53 = self->_log;
     if (os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
     {

@@ -1,6 +1,6 @@
 @interface FLSQLiteDatabaseConnection
 - (BOOL)open;
-- (FLSQLiteDatabaseConnection)initWithStorePath:(id)a3;
+- (FLSQLiteDatabaseConnection)initWithStorePath:(id)path;
 - (void)close;
 - (void)dealloc;
 @end
@@ -37,13 +37,13 @@
   p_db = &self->_db;
   if (self->_db)
   {
-    v4 = [(FLSQLiteDatabaseConnection *)self log];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    storePath2 = [(FLSQLiteDatabaseConnection *)self log];
+    if (os_log_type_enabled(storePath2, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(FLSQLiteDatabaseConnection *)self storePath];
+      storePath = [(FLSQLiteDatabaseConnection *)self storePath];
       v15 = 138412290;
-      v16 = v5;
-      _os_log_impl(&dword_24AB3F000, v4, OS_LOG_TYPE_DEFAULT, "Re-using already opened SQLite store %@", &v15, 0xCu);
+      v16 = storePath;
+      _os_log_impl(&dword_24AB3F000, storePath2, OS_LOG_TYPE_DEFAULT, "Re-using already opened SQLite store %@", &v15, 0xCu);
     }
 
     v6 = 1;
@@ -51,8 +51,8 @@
 
   else
   {
-    v4 = [(FLSQLiteDatabaseConnection *)self storePath];
-    v7 = sqlite3_open_v2([v4 UTF8String], p_db, 3211270, 0);
+    storePath2 = [(FLSQLiteDatabaseConnection *)self storePath];
+    v7 = sqlite3_open_v2([storePath2 UTF8String], p_db, 3211270, 0);
     v6 = v7 == 0;
     if (v7)
     {
@@ -86,7 +86,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412290;
-        v16 = v4;
+        v16 = storePath2;
         _os_log_impl(&dword_24AB3F000, v9, OS_LOG_TYPE_DEFAULT, "Opened SQLite store %@", &v15, 0xCu);
       }
     }
@@ -104,32 +104,32 @@
   [(FLSQLiteDatabaseConnection *)&v3 dealloc];
 }
 
-- (FLSQLiteDatabaseConnection)initWithStorePath:(id)a3
+- (FLSQLiteDatabaseConnection)initWithStorePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = FLSQLiteDatabaseConnection;
   v5 = [(FLSQLiteDatabaseConnection *)&v13 init];
   if (v5)
   {
-    v6 = [v4 stringByRemovingPercentEncoding];
-    v7 = v6;
-    if (v6)
+    stringByRemovingPercentEncoding = [pathCopy stringByRemovingPercentEncoding];
+    v7 = stringByRemovingPercentEncoding;
+    if (stringByRemovingPercentEncoding)
     {
-      v8 = v6;
+      v8 = stringByRemovingPercentEncoding;
     }
 
     else
     {
-      v8 = v4;
+      v8 = pathCopy;
     }
 
     [(FLSQLiteDatabaseConnection *)v5 setStorePath:v8];
 
-    v9 = [v4 stringByDeletingLastPathComponent];
-    v10 = [v9 lastPathComponent];
+    stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+    lastPathComponent = [stringByDeletingLastPathComponent lastPathComponent];
 
-    v11 = flAnnotatedLogForObject(v5, v10);
+    v11 = flAnnotatedLogForObject(v5, lastPathComponent);
     [(FLSQLiteDatabaseConnection *)v5 setLog:v11];
   }
 

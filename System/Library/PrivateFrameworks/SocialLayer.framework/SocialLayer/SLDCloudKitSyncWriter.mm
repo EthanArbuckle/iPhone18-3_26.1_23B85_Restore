@@ -1,15 +1,15 @@
 @interface SLDCloudKitSyncWriter
 + (id)sharedInstance;
-- (BOOL)_didHandleSyncError:(id)a3 retryBlock:(id)a4;
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4;
-- (id)_idForRecordIDString:(id)a3;
-- (id)_recordIDsFromStrings:(id)a3;
-- (id)recordIDStringOfSavedIDString:(id)a3;
+- (BOOL)_didHandleSyncError:(id)error retryBlock:(id)block;
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d;
+- (id)_idForRecordIDString:(id)string;
+- (id)_recordIDsFromStrings:(id)strings;
+- (id)recordIDStringOfSavedIDString:(id)string;
 - (id)recordZoneID;
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4;
-- (unint64_t)_batchNumberOfRecordIDString:(id)a3;
-- (unint64_t)versionOfSavedIDString:(id)a3;
-- (void)_savedRecord:(id)a3;
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d;
+- (unint64_t)_batchNumberOfRecordIDString:(id)string;
+- (unint64_t)versionOfSavedIDString:(id)string;
+- (void)_savedRecord:(id)record;
 - (void)accountStatusChanged;
 - (void)checkForAppChanges;
 - (void)checkForAppChangesNow;
@@ -21,14 +21,14 @@
 - (void)invalidateHighlightsInternal;
 - (void)nextTask;
 - (void)reset;
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4;
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4;
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToFetchChangesForRecordZoneID:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5;
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5;
+- (void)syncEngine:(id)engine didFetchRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecord:(id)record;
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone;
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToFetchChangesForRecordZoneID:(id)d error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error;
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error;
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type;
 @end
 
 @implementation SLDCloudKitSyncWriter
@@ -63,10 +63,10 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
 
 - (void)fetchAndProcessFreshHighlights
 {
-  v2 = self;
+  selfCopy = self;
   v189 = *MEMORY[0x277D85DE8];
-  v3 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v106 = os_transaction_create();
   v4 = SLDaemonLogHandle();
@@ -77,11 +77,11 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   }
 
   v5 = objc_opt_new();
-  v6 = *&v2->_freshHighlightsGenerated;
-  *&v2->_freshHighlightsGenerated = v5;
+  v6 = *&selfCopy->_freshHighlightsGenerated;
+  *&selfCopy->_freshHighlightsGenerated = v5;
 
-  v7 = [(SLDCloudKitSyncBase *)v2 persistence];
-  v8 = [v7 objectForKeyedSubscript:@"savedIDs"];
+  persistence = [(SLDCloudKitSyncBase *)selfCopy persistence];
+  v8 = [persistence objectForKeyedSubscript:@"savedIDs"];
 
   v9 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
   v176 = 0u;
@@ -103,7 +103,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
           objc_enumerationMutation(v10);
         }
 
-        v15 = [(SLDCloudKitSyncWriter *)v2 recordIDStringOfSavedIDString:*(*(&v176 + 1) + 8 * i)];
+        v15 = [(SLDCloudKitSyncWriter *)selfCopy recordIDStringOfSavedIDString:*(*(&v176 + 1) + 8 * i)];
         [v9 addObject:v15];
       }
 
@@ -119,24 +119,24 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v17 = objc_opt_new();
   v18 = objc_opt_new();
   v19 = objc_opt_new();
-  v20 = [(SLDCloudKitSyncBase *)v2 getIncrementedBatchNumber];
+  getIncrementedBatchNumber = [(SLDCloudKitSyncBase *)selfCopy getIncrementedBatchNumber];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__SLDCloudKitSyncWriter_fetchAndProcessFreshHighlights__block_invoke;
   aBlock[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-  aBlock[4] = v20;
+  aBlock[4] = getIncrementedBatchNumber;
   v21 = _Block_copy(aBlock);
   v174[0] = MEMORY[0x277D85DD0];
   v174[1] = 3221225472;
   v174[2] = __55__SLDCloudKitSyncWriter_fetchAndProcessFreshHighlights__block_invoke_2;
   v174[3] = &unk_2789272E0;
-  v174[4] = v2;
+  v174[4] = selfCopy;
   v22 = _Block_copy(v174);
   v172[0] = MEMORY[0x277D85DD0];
   v172[1] = 3221225472;
   v172[2] = __55__SLDCloudKitSyncWriter_fetchAndProcessFreshHighlights__block_invoke_3;
   v172[3] = &unk_278927308;
-  v172[4] = v2;
+  v172[4] = selfCopy;
   v23 = v16;
   v173 = v23;
   v24 = _Block_copy(v172);
@@ -144,7 +144,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v168[1] = 3221225472;
   v168[2] = __55__SLDCloudKitSyncWriter_fetchAndProcessFreshHighlights__block_invoke_4;
   v168[3] = &unk_278927330;
-  v168[4] = v2;
+  v168[4] = selfCopy;
   v98 = v9;
   v169 = v98;
   v111 = v23;
@@ -158,7 +158,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v161[3] = &unk_278927358;
   v104 = v17;
   v162 = v104;
-  v163 = v2;
+  v163 = selfCopy;
   v27 = v26;
   v164 = v27;
   v28 = v25;
@@ -185,7 +185,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v151 = v103;
   v102 = v19;
   v152 = v102;
-  v153 = v2;
+  v153 = selfCopy;
   v33 = v27;
   v155 = v33;
   v34 = v28;
@@ -199,7 +199,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v145[1] = 3221225472;
   v145[2] = __55__SLDCloudKitSyncWriter_fetchAndProcessFreshHighlights__block_invoke_3_486;
   v145[3] = &unk_2789273F8;
-  v145[4] = v2;
+  v145[4] = selfCopy;
   v38 = v33;
   v146 = v38;
   v39 = v34;
@@ -220,7 +220,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v137 = v96;
   v99 = v37;
   v140 = v99;
-  v138 = v2;
+  v138 = selfCopy;
   v110 = v38;
   v141 = v110;
   v109 = v39;
@@ -231,8 +231,8 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
   v144 = v107;
   v44 = _Block_copy(v136);
   v45 = objc_opt_new();
-  v46 = [(SLDCloudKitSyncBase *)v2 persistence];
-  v47 = [v46 objectForKeyedSubscript:@"lastKnownApps"];
+  persistence2 = [(SLDCloudKitSyncBase *)selfCopy persistence];
+  v47 = [persistence2 objectForKeyedSubscript:@"lastKnownApps"];
 
   v134 = 0u;
   v135 = 0u;
@@ -246,7 +246,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
     v50 = *v133;
     v112 = *MEMORY[0x277D3A750];
     v113 = *v133;
-    v114 = v2;
+    v114 = selfCopy;
     do
     {
       v51 = 0;
@@ -330,7 +330,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
           }
 
           v50 = v113;
-          v2 = v114;
+          selfCopy = v114;
           v49 = v115;
           v51 = v118;
         }
@@ -366,30 +366,30 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
 
   v69 = [v45 arrayByAddingObjectsFromArray:v68];
   v70 = [v69 componentsJoinedByString:@"\n"];
-  v71 = [(SLDCloudKitSyncBase *)v2 idStringForType:@"index" uniqueString:v70];
+  v71 = [(SLDCloudKitSyncBase *)selfCopy idStringForType:@"index" uniqueString:v70];
 
   v72 = (*(v110 + 2))(v110, v71);
   if (!v72)
   {
     v72 = (*(v109 + 2))(v109, v71);
     v73 = objc_alloc(MEMORY[0x277CBC5A0]);
-    v74 = [(SLDCloudKitSyncWriter *)v2 recordZoneID];
-    v75 = [v73 initWithRecordType:@"index" zoneID:v74];
+    recordZoneID = [(SLDCloudKitSyncWriter *)selfCopy recordZoneID];
+    v75 = [v73 initWithRecordType:@"index" zoneID:recordZoneID];
 
     v76 = (*(v108 + 2))(v108, v72);
     [v75 setRecordID:v76];
 
-    v77 = [v75 encryptedValues];
-    [v77 setObject:v68 forKeyedSubscript:@"recordIDs"];
+    encryptedValues = [v75 encryptedValues];
+    [encryptedValues setObject:v68 forKeyedSubscript:@"recordIDs"];
 
-    v78 = [v75 encryptedValues];
-    [v78 setObject:v45 forKeyedSubscript:@"highlights"];
+    encryptedValues2 = [v75 encryptedValues];
+    [encryptedValues2 setObject:v45 forKeyedSubscript:@"highlights"];
 
     (*(v107 + 2))(v107, v75);
   }
 
-  v79 = [(SLDCloudKitSyncBase *)v2 persistence];
-  v80 = [v79 objectForKeyedSubscript:@"savedIDs"];
+  persistence3 = [(SLDCloudKitSyncBase *)selfCopy persistence];
+  v80 = [persistence3 objectForKeyedSubscript:@"savedIDs"];
   v81 = v80;
   if (!v80)
   {
@@ -417,7 +417,7 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
           objc_enumerationMutation(v83);
         }
 
-        v88 = [(SLDCloudKitSyncWriter *)v2 _idForRecordIDString:*(*(&v121 + 1) + 8 * k)];
+        v88 = [(SLDCloudKitSyncWriter *)selfCopy _idForRecordIDString:*(*(&v121 + 1) + 8 * k)];
         [v82 setObject:0 forKeyedSubscript:v88];
       }
 
@@ -427,18 +427,18 @@ void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke_2(uint64_t a
     while (v85);
   }
 
-  v89 = [(SLDCloudKitSyncBase *)v2 persistence];
-  [v89 setObject:v82 forKeyedSubscript:@"savedIDs"];
+  persistence4 = [(SLDCloudKitSyncBase *)selfCopy persistence];
+  [persistence4 setObject:v82 forKeyedSubscript:@"savedIDs"];
 
-  v90 = [(SLDCloudKitSyncBase *)v2 syncEngine];
-  v91 = [*&v2->_freshHighlightsGenerated allKeys];
-  v92 = [(SLDCloudKitSyncWriter *)v2 _recordIDsFromStrings:v91];
-  v93 = [v83 allObjects];
-  v94 = [(SLDCloudKitSyncWriter *)v2 _recordIDsFromStrings:v93];
-  [v90 addRecordIDsToSave:v92 recordIDsToDelete:v94];
+  syncEngine = [(SLDCloudKitSyncBase *)selfCopy syncEngine];
+  allKeys = [*&selfCopy->_freshHighlightsGenerated allKeys];
+  v92 = [(SLDCloudKitSyncWriter *)selfCopy _recordIDsFromStrings:allKeys];
+  allObjects = [v83 allObjects];
+  v94 = [(SLDCloudKitSyncWriter *)selfCopy _recordIDsFromStrings:allObjects];
+  [syncEngine addRecordIDsToSave:v92 recordIDsToDelete:v94];
 
-  *(&v2->super._saltLocked + 1) = 1;
-  [(SLDCloudKitSyncWriter *)v2 nextTask];
+  *(&selfCopy->super._saltLocked + 1) = 1;
+  [(SLDCloudKitSyncWriter *)selfCopy nextTask];
 
   v95 = *MEMORY[0x277D85DE8];
 }
@@ -478,62 +478,62 @@ void __39__SLDCloudKitSyncWriter_sharedInstance__block_invoke()
   *&self->_freshHighlightsGenerated = 0;
 
   [(SLDCloudKitSyncWriter *)self checkForAppChangesNow];
-  v4 = [(SLDCloudKitSyncBase *)self queue];
+  queue = [(SLDCloudKitSyncBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__SLDCloudKitSyncWriter_initializeState__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
-- (unint64_t)versionOfSavedIDString:(id)a3
+- (unint64_t)versionOfSavedIDString:(id)string
 {
-  v4 = a3;
-  v5 = [(SLDCloudKitSyncBase *)self persistence];
-  v6 = [v5 objectForKeyedSubscript:@"savedIDs"];
+  stringCopy = string;
+  persistence = [(SLDCloudKitSyncBase *)self persistence];
+  v6 = [persistence objectForKeyedSubscript:@"savedIDs"];
 
   if (v6)
   {
-    v7 = [v6 objectForKeyedSubscript:v4];
+    v7 = [v6 objectForKeyedSubscript:stringCopy];
     v8 = v7;
     if (v7)
     {
       v9 = [v7 objectAtIndexedSubscript:0];
-      v10 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v10 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
-    v10 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
-- (id)recordIDStringOfSavedIDString:(id)a3
+- (id)recordIDStringOfSavedIDString:(id)string
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SLDCloudKitSyncBase *)self persistence];
-  v6 = [v5 objectForKeyedSubscript:@"savedIDs"];
+  stringCopy = string;
+  persistence = [(SLDCloudKitSyncBase *)self persistence];
+  v6 = [persistence objectForKeyedSubscript:@"savedIDs"];
 
   if (v6)
   {
-    v7 = [v6 objectForKeyedSubscript:v4];
+    v7 = [v6 objectForKeyedSubscript:stringCopy];
     v8 = v7;
     if (v7)
     {
-      v15[0] = v4;
+      v15[0] = stringCopy;
       v9 = [v7 objectAtIndexedSubscript:1];
-      v10 = [v9 stringValue];
-      v15[1] = v10;
+      stringValue = [v9 stringValue];
+      v15[1] = stringValue;
       v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
       v12 = [v11 componentsJoinedByString:@"!"];
     }
@@ -554,20 +554,20 @@ void __39__SLDCloudKitSyncWriter_sharedInstance__block_invoke()
   return v12;
 }
 
-- (unint64_t)_batchNumberOfRecordIDString:(id)a3
+- (unint64_t)_batchNumberOfRecordIDString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"!" options:6];
-  v6 = [v3 substringFromIndex:v4 + v5];
+  stringCopy = string;
+  v4 = [stringCopy rangeOfString:@"!" options:6];
+  v6 = [stringCopy substringFromIndex:v4 + v5];
 
-  v7 = [v6 longLongValue];
-  return v7;
+  longLongValue = [v6 longLongValue];
+  return longLongValue;
 }
 
-- (id)_idForRecordIDString:(id)a3
+- (id)_idForRecordIDString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 substringToIndex:{objc_msgSend(v3, "rangeOfString:options:", @"!", 6)}];
+  stringCopy = string;
+  v4 = [stringCopy substringToIndex:{objc_msgSend(stringCopy, "rangeOfString:options:", @"!", 6)}];
 
   return v4;
 }
@@ -1339,24 +1339,24 @@ LABEL_11:
   return v38;
 }
 
-- (id)_recordIDsFromStrings:(id)a3
+- (id)_recordIDsFromStrings:(id)strings
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  stringsCopy = strings;
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if ([v4 count])
+  if ([stringsCopy count])
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
-    v7 = [(SLDCloudKitSyncWriter *)self recordZoneID];
-    if (v7)
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(stringsCopy, "count")}];
+    recordZoneID = [(SLDCloudKitSyncWriter *)self recordZoneID];
+    if (recordZoneID)
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v8 = v4;
+      v8 = stringsCopy;
       v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
@@ -1373,7 +1373,7 @@ LABEL_11:
 
             v13 = *(*(&v20 + 1) + 8 * i);
             v14 = objc_alloc(MEMORY[0x277CBC5D0]);
-            v15 = [v14 initWithRecordName:v13 zoneID:{v7, v20}];
+            v15 = [v14 initWithRecordName:v13 zoneID:{recordZoneID, v20}];
             [v6 addObject:v15];
           }
 
@@ -1410,11 +1410,11 @@ LABEL_11:
 
 - (id)recordZoneID
 {
-  v3 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SLDCloudKitSyncBase *)self persistence];
-  v5 = [v4 objectForKeyedSubscript:@"recordZoneID"];
+  persistence = [(SLDCloudKitSyncBase *)self persistence];
+  v5 = [persistence objectForKeyedSubscript:@"recordZoneID"];
 
   if (v5)
   {
@@ -1470,21 +1470,21 @@ LABEL_11:
 
 - (void)checkForAppChanges
 {
-  v3 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (!*(&self->super._saltLocked + 2))
   {
     *(&self->super._saltLocked + 2) = 1;
     objc_initWeak(&location, self);
     v4 = dispatch_time(0, 10000000000);
-    v5 = [(SLDCloudKitSyncBase *)self queue];
+    queue2 = [(SLDCloudKitSyncBase *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke;
     v6[3] = &unk_278925C50;
     objc_copyWeak(&v7, &location);
-    dispatch_after(v4, v5, v6);
+    dispatch_after(v4, queue2, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -1506,19 +1506,19 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
 - (void)checkForAppChangesNow
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SLDCloudKitSyncBase *)self persistence];
-  v5 = [v4 objectForKeyedSubscript:@"readers"];
+  persistence = [(SLDCloudKitSyncBase *)self persistence];
+  v5 = [persistence objectForKeyedSubscript:@"readers"];
 
   v6 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v5 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v32 count:16];
+  allValues = [v5 allValues];
+  v8 = [allValues countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1530,14 +1530,14 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         [v6 addObjectsFromArray:*(*(&v23 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v32 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v23 objects:v32 count:16];
     }
 
     while (v9);
@@ -1548,8 +1548,8 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v31 count:1];
   v14 = [v6 sortedArrayUsingDescriptors:v13];
 
-  v15 = [(SLDCloudKitSyncBase *)self persistence];
-  v16 = [v15 objectForKeyedSubscript:@"lastKnownApps"];
+  persistence2 = [(SLDCloudKitSyncBase *)self persistence];
+  v16 = [persistence2 objectForKeyedSubscript:@"lastKnownApps"];
   v17 = [v16 isEqual:v14];
 
   if ((v17 & 1) == 0)
@@ -1557,8 +1557,8 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
     v18 = SLDaemonLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(SLDCloudKitSyncBase *)self persistence];
-      v20 = [v19 objectForKeyedSubscript:@"lastKnownApps"];
+      persistence3 = [(SLDCloudKitSyncBase *)self persistence];
+      v20 = [persistence3 objectForKeyedSubscript:@"lastKnownApps"];
       *buf = 138412546;
       v28 = v20;
       v29 = 2112;
@@ -1566,8 +1566,8 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
       _os_log_impl(&dword_231772000, v18, OS_LOG_TYPE_DEFAULT, "#SLDCK app list changed (prev %@, now %@)", buf, 0x16u);
     }
 
-    v21 = [(SLDCloudKitSyncBase *)self persistence];
-    [v21 setObject:v14 forKeyedSubscript:@"lastKnownApps"];
+    persistence4 = [(SLDCloudKitSyncBase *)self persistence];
+    [persistence4 setObject:v14 forKeyedSubscript:@"lastKnownApps"];
 
     [(SLDCloudKitSyncWriter *)self invalidateHighlightsInternal];
   }
@@ -1575,30 +1575,30 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_didHandleSyncError:(id)a3 retryBlock:(id)a4
+- (BOOL)_didHandleSyncError:(id)error retryBlock:(id)block
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  blockCopy = block;
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [v6 domain];
-  if ([v9 isEqual:*MEMORY[0x277CBBF50]])
+  domain = [errorCopy domain];
+  if ([domain isEqual:*MEMORY[0x277CBBF50]])
   {
   }
 
   else
   {
-    v10 = [v6 domain];
-    v11 = [v10 isEqual:*MEMORY[0x277CBBF98]];
+    domain2 = [errorCopy domain];
+    v11 = [domain2 isEqual:*MEMORY[0x277CBBF98]];
 
     if (!v11)
     {
-      v17 = [v6 domain];
-      v18 = [v17 isEqual:*MEMORY[0x277CCA050]];
+      domain3 = [errorCopy domain];
+      v18 = [domain3 isEqual:*MEMORY[0x277CCA050]];
 
-      if (!v18 || ([v6 code] | 2) != 0x1003 || !v7)
+      if (!v18 || ([errorCopy code] | 2) != 0x1003 || !blockCopy)
       {
         goto LABEL_21;
       }
@@ -1613,16 +1613,16 @@ void __43__SLDCloudKitSyncWriter_checkForAppChanges__block_invoke(uint64_t a1)
     }
   }
 
-  v12 = [v6 code];
-  switch(v12)
+  code = [errorCopy code];
+  switch(code)
   {
     case 18:
-      v21 = [(SLDCloudKitSyncBase *)self persistence];
-      [v21 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"incompatibleVersion"];
+      persistence = [(SLDCloudKitSyncBase *)self persistence];
+      [persistence setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"incompatibleVersion"];
 
       goto LABEL_23;
     case 34:
-      if (!v7)
+      if (!blockCopy)
       {
         break;
       }
@@ -1637,7 +1637,7 @@ LABEL_19:
       [SLDCloudKitSyncWriter _didHandleSyncError:retryBlock:];
 LABEL_20:
 
-      v7[2](v7);
+      blockCopy[2](blockCopy);
 LABEL_23:
       [(SLDCloudKitSyncWriter *)self nextTask];
 LABEL_24:
@@ -1650,14 +1650,14 @@ LABEL_24:
         [SLDCloudKitSyncWriter _didHandleSyncError:retryBlock:];
       }
 
-      v14 = [(SLDCloudKitSyncWriter *)self recordZoneID];
+      recordZoneID = [(SLDCloudKitSyncWriter *)self recordZoneID];
       [(SLDCloudKitSyncWriter *)self reset];
-      if (v14)
+      if (recordZoneID)
       {
-        v15 = [(SLDCloudKitSyncBase *)self syncEngine];
-        v24[0] = v14;
+        syncEngine = [(SLDCloudKitSyncBase *)self syncEngine];
+        v24[0] = recordZoneID;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-        [v15 addRecordZonesToSave:0 recordZoneIDsToDelete:v16];
+        [syncEngine addRecordZonesToSave:0 recordZoneIDsToDelete:v16];
       }
 
       [(SLDCloudKitSyncWriter *)self nextTask];
@@ -1673,21 +1673,21 @@ LABEL_25:
   return v20;
 }
 
-- (void)syncEngine:(id)a3 didSaveRecordZone:(id)a4
+- (void)syncEngine:(id)engine didSaveRecordZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  zoneCopy = zone;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SLDCloudKitSyncWriter_syncEngine_didSaveRecordZone___block_invoke;
   block[3] = &unk_278927298;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = engineCopy;
+  selfCopy = self;
+  v14 = zoneCopy;
+  v9 = zoneCopy;
+  v10 = engineCopy;
+  dispatch_sync(queue, block);
 }
 
 void __54__SLDCloudKitSyncWriter_syncEngine_didSaveRecordZone___block_invoke(uint64_t a1)
@@ -1738,24 +1738,24 @@ void __54__SLDCloudKitSyncWriter_syncEngine_didSaveRecordZone___block_invoke(uin
   }
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecordZone:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecordZone:(id)zone error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  zoneCopy = zone;
+  errorCopy = error;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecordZone_error___block_invoke;
   v15[3] = &unk_278927470;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = engineCopy;
+  selfCopy = self;
+  v18 = zoneCopy;
+  v19 = errorCopy;
+  v12 = errorCopy;
+  v13 = zoneCopy;
+  v14 = engineCopy;
+  dispatch_sync(queue, v15);
 }
 
 void __65__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecordZone_error___block_invoke(uint64_t a1)
@@ -1841,28 +1841,28 @@ uint64_t __65__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecordZone_error___b
   return [v3 nextTask];
 }
 
-- (id)syncEngine:(id)a3 recordToSaveForRecordID:(id)a4
+- (id)syncEngine:(id)engine recordToSaveForRecordID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  dCopy = d;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__12;
   v22 = __Block_byref_object_dispose__12;
   v23 = 0;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __60__SLDCloudKitSyncWriter_syncEngine_recordToSaveForRecordID___block_invoke;
   v13[3] = &unk_278927498;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
+  v14 = engineCopy;
+  selfCopy = self;
+  v16 = dCopy;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = dCopy;
+  v10 = engineCopy;
+  dispatch_sync(queue, v13);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -1916,29 +1916,29 @@ void __60__SLDCloudKitSyncWriter_syncEngine_recordToSaveForRecordID___block_invo
   }
 }
 
-- (void)_savedRecord:(id)a3
+- (void)_savedRecord:(id)record
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SLDCloudKitSyncBase *)self queue];
-  dispatch_assert_queue_V2(v5);
+  recordCopy = record;
+  queue = [(SLDCloudKitSyncBase *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [v4 recordID];
-  v7 = [v6 recordName];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
 
   v8 = SLDaemonLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [SLDCloudKitSyncWriter _savedRecord:v4];
+    [SLDCloudKitSyncWriter _savedRecord:recordCopy];
   }
 
-  v9 = [*&self->_freshHighlightsGenerated objectForKeyedSubscript:v7];
+  v9 = [*&self->_freshHighlightsGenerated objectForKeyedSubscript:recordName];
 
   if (v9)
   {
-    [*&self->_freshHighlightsGenerated setObject:0 forKeyedSubscript:v7];
-    v10 = [(SLDCloudKitSyncBase *)self persistence];
-    v11 = [v10 objectForKeyedSubscript:@"savedIDs"];
+    [*&self->_freshHighlightsGenerated setObject:0 forKeyedSubscript:recordName];
+    persistence = [(SLDCloudKitSyncBase *)self persistence];
+    v11 = [persistence objectForKeyedSubscript:@"savedIDs"];
     v12 = v11;
     if (!v11)
     {
@@ -1947,21 +1947,21 @@ void __60__SLDCloudKitSyncWriter_syncEngine_recordToSaveForRecordID___block_invo
 
     v13 = [v11 mutableCopy];
 
-    v14 = [(SLDCloudKitSyncWriter *)self _batchNumberOfRecordIDString:v7];
-    v15 = [v4 objectForKeyedSubscript:@"version"];
+    v14 = [(SLDCloudKitSyncWriter *)self _batchNumberOfRecordIDString:recordName];
+    v15 = [recordCopy objectForKeyedSubscript:@"version"];
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v14, v15}];
     v27[1] = v16;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-    v18 = [(SLDCloudKitSyncWriter *)self _idForRecordIDString:v7];
+    v18 = [(SLDCloudKitSyncWriter *)self _idForRecordIDString:recordName];
     [v13 setObject:v17 forKeyedSubscript:v18];
 
-    v19 = [(SLDCloudKitSyncBase *)self persistence];
-    [v19 setObject:v13 forKeyedSubscript:@"savedIDs"];
+    persistence2 = [(SLDCloudKitSyncBase *)self persistence];
+    [persistence2 setObject:v13 forKeyedSubscript:@"savedIDs"];
 
     v20 = SLDaemonLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      [SLDCloudKitSyncWriter _savedRecord:v4];
+      [SLDCloudKitSyncWriter _savedRecord:recordCopy];
     }
 
     [(SLDCloudKitSyncWriter *)self nextTask];
@@ -1969,14 +1969,14 @@ void __60__SLDCloudKitSyncWriter_syncEngine_recordToSaveForRecordID___block_invo
 
   else
   {
-    v21 = [(SLDCloudKitSyncWriter *)self recordIDStringOfSavedIDString:v7];
+    v21 = [(SLDCloudKitSyncWriter *)self recordIDStringOfSavedIDString:recordName];
     v13 = v21;
-    if (v21 && ([v21 isEqual:v7] & 1) != 0)
+    if (v21 && ([v21 isEqual:recordName] & 1) != 0)
     {
-      v22 = SLDaemonLogHandle();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
+      syncEngine = SLDaemonLogHandle();
+      if (os_log_type_enabled(syncEngine, OS_LOG_TYPE_DEBUG))
       {
-        [SLDCloudKitSyncWriter _savedRecord:v4];
+        [SLDCloudKitSyncWriter _savedRecord:recordCopy];
       }
     }
 
@@ -1985,35 +1985,35 @@ void __60__SLDCloudKitSyncWriter_syncEngine_recordToSaveForRecordID___block_invo
       v23 = SLDaemonLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        [SLDCloudKitSyncWriter _savedRecord:v4];
+        [SLDCloudKitSyncWriter _savedRecord:recordCopy];
       }
 
-      v22 = [(SLDCloudKitSyncBase *)self syncEngine];
-      v24 = [v4 recordID];
-      v28[0] = v24;
+      syncEngine = [(SLDCloudKitSyncBase *)self syncEngine];
+      recordID2 = [recordCopy recordID];
+      v28[0] = recordID2;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-      [v22 addRecordIDsToSave:MEMORY[0x277CBEBF8] recordIDsToDelete:v25];
+      [syncEngine addRecordIDsToSave:MEMORY[0x277CBEBF8] recordIDsToDelete:v25];
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngine:(id)a3 didSaveRecord:(id)a4
+- (void)syncEngine:(id)engine didSaveRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  recordCopy = record;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SLDCloudKitSyncWriter_syncEngine_didSaveRecord___block_invoke;
   block[3] = &unk_278927298;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = engineCopy;
+  selfCopy = self;
+  v14 = recordCopy;
+  v9 = recordCopy;
+  v10 = engineCopy;
+  dispatch_sync(queue, block);
 }
 
 void __50__SLDCloudKitSyncWriter_syncEngine_didSaveRecord___block_invoke(uint64_t a1)
@@ -2030,24 +2030,24 @@ void __50__SLDCloudKitSyncWriter_syncEngine_didSaveRecord___block_invoke(uint64_
   }
 }
 
-- (void)syncEngine:(id)a3 failedToSaveRecord:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToSaveRecord:(id)record error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  recordCopy = record;
+  errorCopy = error;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __61__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecord_error___block_invoke;
   v15[3] = &unk_278927470;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = engineCopy;
+  selfCopy = self;
+  v18 = recordCopy;
+  v19 = errorCopy;
+  v12 = errorCopy;
+  v13 = recordCopy;
+  v14 = engineCopy;
+  dispatch_sync(queue, v15);
 }
 
 void __61__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecord_error___block_invoke(uint64_t a1)
@@ -2178,24 +2178,24 @@ void __61__SLDCloudKitSyncWriter_syncEngine_failedToSaveRecord_error___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngine:(id)a3 failedToDeleteRecordWithID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToDeleteRecordWithID:(id)d error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  dCopy = d;
+  errorCopy = error;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__SLDCloudKitSyncWriter_syncEngine_failedToDeleteRecordWithID_error___block_invoke;
   v15[3] = &unk_278927470;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = engineCopy;
+  selfCopy = self;
+  v18 = dCopy;
+  v19 = errorCopy;
+  v12 = errorCopy;
+  v13 = dCopy;
+  v14 = engineCopy;
+  dispatch_sync(queue, v15);
 }
 
 void __69__SLDCloudKitSyncWriter_syncEngine_failedToDeleteRecordWithID_error___block_invoke(uint64_t a1)
@@ -2304,30 +2304,30 @@ void __69__SLDCloudKitSyncWriter_syncEngine_failedToDeleteRecordWithID_error___b
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)syncEngine:(id)a3 shouldFetchChangesForZoneID:(id)a4
+- (BOOL)syncEngine:(id)engine shouldFetchChangesForZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __64__SLDCloudKitSyncWriter_syncEngine_shouldFetchChangesForZoneID___block_invoke;
   v12[3] = &unk_2789274C0;
-  v13 = v6;
-  v14 = self;
-  v15 = v7;
+  v13 = engineCopy;
+  selfCopy = self;
+  v15 = dCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v12);
+  v9 = dCopy;
+  v10 = engineCopy;
+  dispatch_sync(queue, v12);
 
-  LOBYTE(v7) = *(v18 + 24);
+  LOBYTE(dCopy) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
-  return v7;
+  return dCopy;
 }
 
 void __64__SLDCloudKitSyncWriter_syncEngine_shouldFetchChangesForZoneID___block_invoke(uint64_t a1)
@@ -2356,21 +2356,21 @@ void __64__SLDCloudKitSyncWriter_syncEngine_shouldFetchChangesForZoneID___block_
   *(v4 + 24) = 0;
 }
 
-- (void)syncEngine:(id)a3 didFetchRecord:(id)a4
+- (void)syncEngine:(id)engine didFetchRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  recordCopy = record;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SLDCloudKitSyncWriter_syncEngine_didFetchRecord___block_invoke;
   block[3] = &unk_278927298;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = engineCopy;
+  selfCopy = self;
+  v14 = recordCopy;
+  v9 = recordCopy;
+  v10 = engineCopy;
+  dispatch_sync(queue, block);
 }
 
 void __51__SLDCloudKitSyncWriter_syncEngine_didFetchRecord___block_invoke(uint64_t a1)
@@ -2438,24 +2438,24 @@ void __51__SLDCloudKitSyncWriter_syncEngine_didFetchRecord___block_invoke(uint64
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncEngine:(id)a3 recordWithIDWasDeleted:(id)a4 recordType:(id)a5
+- (void)syncEngine:(id)engine recordWithIDWasDeleted:(id)deleted recordType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  deletedCopy = deleted;
+  typeCopy = type;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __70__SLDCloudKitSyncWriter_syncEngine_recordWithIDWasDeleted_recordType___block_invoke;
   v15[3] = &unk_278927470;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = engineCopy;
+  selfCopy = self;
+  v18 = deletedCopy;
+  v19 = typeCopy;
+  v12 = typeCopy;
+  v13 = deletedCopy;
+  v14 = engineCopy;
+  dispatch_sync(queue, v15);
 }
 
 void __70__SLDCloudKitSyncWriter_syncEngine_recordWithIDWasDeleted_recordType___block_invoke(uint64_t a1)
@@ -2505,24 +2505,24 @@ void __70__SLDCloudKitSyncWriter_syncEngine_recordWithIDWasDeleted_recordType___
   }
 }
 
-- (void)syncEngine:(id)a3 failedToFetchChangesForRecordZoneID:(id)a4 error:(id)a5
+- (void)syncEngine:(id)engine failedToFetchChangesForRecordZoneID:(id)d error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SLDCloudKitSyncBase *)self queue];
+  engineCopy = engine;
+  dCopy = d;
+  errorCopy = error;
+  queue = [(SLDCloudKitSyncBase *)self queue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__SLDCloudKitSyncWriter_syncEngine_failedToFetchChangesForRecordZoneID_error___block_invoke;
   v15[3] = &unk_278927470;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = engineCopy;
+  selfCopy = self;
+  v18 = dCopy;
+  v19 = errorCopy;
+  v12 = errorCopy;
+  v13 = dCopy;
+  v14 = engineCopy;
+  dispatch_sync(queue, v15);
 }
 
 void __78__SLDCloudKitSyncWriter_syncEngine_failedToFetchChangesForRecordZoneID_error___block_invoke(uint64_t a1)
@@ -2595,13 +2595,13 @@ LABEL_2:
 
 - (void)invalidateHighlights
 {
-  v3 = [(SLDCloudKitSyncBase *)self queue];
+  queue = [(SLDCloudKitSyncBase *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __45__SLDCloudKitSyncWriter_invalidateHighlights__block_invoke(uint64_t a1)

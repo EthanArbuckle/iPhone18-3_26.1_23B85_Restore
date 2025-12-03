@@ -18,12 +18,12 @@
 
   v17 = [v12 initWithLatitude:v14 longitude:v16];
   v18 = objc_alloc(MEMORY[0x1E69A21A0]);
-  v19 = [v9 dictionaryRepresentation];
+  dictionaryRepresentation = [v9 dictionaryRepresentation];
 
   LODWORD(v23) = 0;
-  v20 = [v18 initWithWithLocation:v17 addressDictionary:v19 name:v10 businessURL:0 phoneNumber:0 sessionID:0 muid:0.0 attributionID:0 sampleSizeForUserRatingScore:0 normalizedUserRatingScore:v23];
+  v20 = [v18 initWithWithLocation:v17 addressDictionary:dictionaryRepresentation name:v10 businessURL:0 phoneNumber:0 sessionID:0 muid:0.0 attributionID:0 sampleSizeForUserRatingScore:0 normalizedUserRatingScore:v23];
 
-  v21 = [a1 placemarkWithGEOMapItem:v20];
+  v21 = [self placemarkWithGEOMapItem:v20];
 
   return v21;
 }

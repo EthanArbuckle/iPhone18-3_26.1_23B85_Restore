@@ -1,28 +1,28 @@
 @interface CSRemoteAssetManager
 + (id)sharedManager;
-- (BOOL)_loadFromJsonFile:(id)a3;
+- (BOOL)_loadFromJsonFile:(id)file;
 - (BOOL)_loadPreinstalledAssetMetaIfNeeded;
-- (BOOL)_writeToJsonFile:(id)a3;
+- (BOOL)_writeToJsonFile:(id)file;
 - (CSRemoteAssetManager)init;
-- (id)_loadJsonDataFromFile:(id)a3;
+- (id)_loadJsonDataFromFile:(id)file;
 - (id)_remoteAssetMetaPath;
-- (id)assetConfigVersionForAssetType:(unint64_t)a3;
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3;
-- (id)assetHashForAssetType:(unint64_t)a3;
-- (id)resourcePathForAssetType:(unint64_t)a3;
-- (void)_setAssetsInfoFromMetaData:(id)a3;
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4;
-- (void)setLanguageCode:(id)a3 resourcePath:(id)a4 configVersion:(id)a5 assetHash:(id)a6 assetType:(unint64_t)a7;
+- (id)assetConfigVersionForAssetType:(unint64_t)type;
+- (id)assetForCurrentLanguageOfType:(unint64_t)type;
+- (id)assetHashForAssetType:(unint64_t)type;
+- (id)resourcePathForAssetType:(unint64_t)type;
+- (void)_setAssetsInfoFromMetaData:(id)data;
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type;
+- (void)setLanguageCode:(id)code resourcePath:(id)path configVersion:(id)version assetHash:(id)hash assetType:(unint64_t)type;
 @end
 
 @implementation CSRemoteAssetManager
 
-- (void)removeObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)removeObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (!type)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -30,7 +30,7 @@
     v9[2] = __52__CSRemoteAssetManager_removeObserver_forAssetType___block_invoke;
     v9[3] = &unk_1E865C970;
     v9[4] = self;
-    v10 = v6;
+    v10 = observerCopy;
     dispatch_sync(queue, v9);
   }
 }
@@ -45,11 +45,11 @@ uint64_t __52__CSRemoteAssetManager_removeObserver_forAssetType___block_invoke(u
   return result;
 }
 
-- (void)addObserver:(id)a3 forAssetType:(unint64_t)a4
+- (void)addObserver:(id)observer forAssetType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!a4)
+  observerCopy = observer;
+  v7 = observerCopy;
+  if (!type)
   {
     queue = self->_queue;
     v9[0] = MEMORY[0x1E69E9820];
@@ -57,7 +57,7 @@ uint64_t __52__CSRemoteAssetManager_removeObserver_forAssetType___block_invoke(u
     v9[2] = __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke;
     v9[3] = &unk_1E865C970;
     v9[4] = self;
-    v10 = v6;
+    v10 = observerCopy;
     dispatch_sync(queue, v9);
   }
 }
@@ -80,9 +80,9 @@ uint64_t __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke(uint
   return [v2 addObject:v6];
 }
 
-- (id)resourcePathForAssetType:(unint64_t)a3
+- (id)resourcePathForAssetType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -95,9 +95,9 @@ uint64_t __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke(uint
   return v4;
 }
 
-- (id)assetHashForAssetType:(unint64_t)a3
+- (id)assetHashForAssetType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -110,9 +110,9 @@ uint64_t __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke(uint
   return v4;
 }
 
-- (id)assetConfigVersionForAssetType:(unint64_t)a3
+- (id)assetConfigVersionForAssetType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v4 = 0;
   }
@@ -125,30 +125,30 @@ uint64_t __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke(uint
   return v4;
 }
 
-- (void)setLanguageCode:(id)a3 resourcePath:(id)a4 configVersion:(id)a5 assetHash:(id)a6 assetType:(unint64_t)a7
+- (void)setLanguageCode:(id)code resourcePath:(id)path configVersion:(id)version assetHash:(id)hash assetType:(unint64_t)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  codeCopy = code;
+  pathCopy = path;
+  versionCopy = version;
+  hashCopy = hash;
   v16 = CSLogCategoryAsset;
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316162;
     v27 = "[CSRemoteAssetManager setLanguageCode:resourcePath:configVersion:assetHash:assetType:]";
     v28 = 2114;
-    v29 = v12;
+    v29 = codeCopy;
     v30 = 2114;
-    v31 = v13;
+    v31 = pathCopy;
     v32 = 2114;
-    v33 = v14;
+    v33 = versionCopy;
     v34 = 2114;
-    v35 = v15;
+    v35 = hashCopy;
     _os_log_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_DEFAULT, "%s LanguageCode : %{public}@, resourcePath : %{public}@, configVersion : %{public}@, assetHash : %{public}@", buf, 0x34u);
   }
 
-  if (!a7)
+  if (!type)
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -156,10 +156,10 @@ uint64_t __49__CSRemoteAssetManager_addObserver_forAssetType___block_invoke(uint
     block[2] = __87__CSRemoteAssetManager_setLanguageCode_resourcePath_configVersion_assetHash_assetType___block_invoke;
     block[3] = &unk_1E865C948;
     block[4] = self;
-    v22 = v12;
-    v23 = v13;
-    v24 = v14;
-    v25 = v15;
+    v22 = codeCopy;
+    v23 = pathCopy;
+    v24 = versionCopy;
+    v25 = hashCopy;
     dispatch_sync(queue, block);
     v18 = self->_queue;
     v20[0] = MEMORY[0x1E69E9820];
@@ -230,16 +230,16 @@ void __87__CSRemoteAssetManager_setLanguageCode_resourcePath_configVersion_asset
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_loadJsonDataFromFile:(id)a3
+- (id)_loadJsonDataFromFile:(id)file
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy];
     if (!v6)
     {
       v14 = CSLogCategoryAsset;
@@ -248,7 +248,7 @@ void __87__CSRemoteAssetManager_setLanguageCode_resourcePath_configVersion_asset
         *buf = 136315394;
         v20 = "[CSRemoteAssetManager _loadJsonDataFromFile:]";
         v21 = 2114;
-        v22 = v3;
+        v22 = fileCopy;
         _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Cannot read configuration file : %{public}@", buf, 0x16u);
       }
 
@@ -265,11 +265,11 @@ void __87__CSRemoteAssetManager_setLanguageCode_resourcePath_configVersion_asset
       if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [v8 localizedDescription];
+        localizedDescription = [v8 localizedDescription];
         *buf = 136315394;
         v20 = "[CSRemoteAssetManager _loadJsonDataFromFile:]";
         v21 = 2114;
-        v22 = v11;
+        v22 = localizedDescription;
         _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s Cannot decode configuration json file : %{public}@", buf, 0x16u);
       }
     }
@@ -305,7 +305,7 @@ LABEL_18:
     *buf = 136315394;
     v20 = "[CSRemoteAssetManager _loadJsonDataFromFile:]";
     v21 = 2114;
-    v22 = v3;
+    v22 = fileCopy;
     _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Remote asset file is not exists : %{public}@", buf, 0x16u);
   }
 
@@ -317,30 +317,30 @@ LABEL_19:
   return v13;
 }
 
-- (void)_setAssetsInfoFromMetaData:(id)a3
+- (void)_setAssetsInfoFromMetaData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"languageCode"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"languageCode"];
   currentLanguageCode = self->_currentLanguageCode;
   self->_currentLanguageCode = v5;
 
-  v7 = [v4 objectForKeyedSubscript:@"resourcePath"];
+  v7 = [dataCopy objectForKeyedSubscript:@"resourcePath"];
   resourcePath = self->_resourcePath;
   self->_resourcePath = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"configVersion"];
+  v9 = [dataCopy objectForKeyedSubscript:@"configVersion"];
   configVersion = self->_configVersion;
   self->_configVersion = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"assetHash"];
+  v11 = [dataCopy objectForKeyedSubscript:@"assetHash"];
 
   assetHash = self->_assetHash;
   self->_assetHash = v11;
 }
 
-- (BOOL)_loadFromJsonFile:(id)a3
+- (BOOL)_loadFromJsonFile:(id)file
 {
-  v4 = [(CSRemoteAssetManager *)self _loadJsonDataFromFile:a3];
+  v4 = [(CSRemoteAssetManager *)self _loadJsonDataFromFile:file];
   if (v4)
   {
     [(CSRemoteAssetManager *)self _setAssetsInfoFromMetaData:v4];
@@ -349,10 +349,10 @@ LABEL_19:
   return v4 != 0;
 }
 
-- (BOOL)_writeToJsonFile:(id)a3
+- (BOOL)_writeToJsonFile:(id)file
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   currentLanguageCode = self->_currentLanguageCode;
   v36[0] = @"languageCode";
   v36[1] = @"resourcePath";
@@ -367,9 +367,9 @@ LABEL_19:
   v8 = v29;
   if (v7)
   {
-    v9 = [v4 stringByDeletingLastPathComponent];
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    stringByDeletingLastPathComponent = [fileCopy stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
     if ((v11 & 1) == 0)
     {
@@ -379,22 +379,22 @@ LABEL_19:
         *buf = 136315394;
         v31 = "[CSRemoteAssetManager _writeToJsonFile:]";
         v32 = 2114;
-        v33 = v9;
+        v33 = stringByDeletingLastPathComponent;
         _os_log_impl(&dword_1DDA4B000, v12, OS_LOG_TYPE_DEFAULT, "%s Creating directory : %{public}@", buf, 0x16u);
       }
 
-      v13 = [MEMORY[0x1E696AC08] defaultManager];
-      [v13 createDirectoryAtPath:v9 withIntermediateDirectories:1 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
 
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v14 fileExistsAtPath:v4];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    v15 = [defaultManager3 fileExistsAtPath:fileCopy];
 
     if (v15)
     {
-      v16 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
       v28 = v8;
-      v17 = [v16 removeItemAtPath:v4 error:&v28];
+      v17 = [defaultManager4 removeItemAtPath:fileCopy error:&v28];
       v18 = v28;
 
       if ((v17 & 1) == 0)
@@ -403,13 +403,13 @@ LABEL_19:
         if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
         {
           v26 = v19;
-          v27 = [v18 localizedDescription];
+          localizedDescription = [v18 localizedDescription];
           *buf = 136315650;
           v31 = "[CSRemoteAssetManager _writeToJsonFile:]";
           v32 = 2114;
-          v33 = v4;
+          v33 = fileCopy;
           v34 = 2114;
-          v35 = v27;
+          v35 = localizedDescription;
           _os_log_error_impl(&dword_1DDA4B000, v26, OS_LOG_TYPE_ERROR, "%s Cannot remove asset meta file : %{public}@, %{public}@", buf, 0x20u);
         }
 
@@ -423,7 +423,7 @@ LABEL_19:
       v18 = v8;
     }
 
-    v20 = [v7 writeToFile:v4 atomically:1];
+    v20 = [v7 writeToFile:fileCopy atomically:1];
 LABEL_16:
 
     v8 = v18;
@@ -434,11 +434,11 @@ LABEL_16:
   if (os_log_type_enabled(CSLogCategoryAsset, OS_LOG_TYPE_ERROR))
   {
     v24 = v21;
-    v25 = [v8 localizedDescription];
+    localizedDescription2 = [v8 localizedDescription];
     *buf = 136315394;
     v31 = "[CSRemoteAssetManager _writeToJsonFile:]";
     v32 = 2114;
-    v33 = v25;
+    v33 = localizedDescription2;
     _os_log_error_impl(&dword_1DDA4B000, v24, OS_LOG_TYPE_ERROR, "%s Cannot create json file : %{public}@", buf, 0x16u);
   }
 
@@ -449,9 +449,9 @@ LABEL_17:
   return v20;
 }
 
-- (id)assetForCurrentLanguageOfType:(unint64_t)a3
+- (id)assetForCurrentLanguageOfType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0;
   }
@@ -499,9 +499,9 @@ uint64_t __54__CSRemoteAssetManager_assetForCurrentLanguageOfType___block_invoke
 - (id)_remoteAssetMetaPath
 {
   v2 = +[CSFPreferences sharedPreferences];
-  v3 = [v2 baseDir];
+  baseDir = [v2 baseDir];
 
-  v4 = [v3 stringByAppendingPathComponent:@"VoiceTrigger/assetMeta.json"];
+  v4 = [baseDir stringByAppendingPathComponent:@"VoiceTrigger/assetMeta.json"];
 
   return v4;
 }
@@ -512,15 +512,15 @@ uint64_t __54__CSRemoteAssetManager_assetForCurrentLanguageOfType___block_invoke
   if (+[CSUtils isDarwinOS](CSUtils, "isDarwinOS") && (+[CSFPreferences sharedPreferences](CSFPreferences, "sharedPreferences"), v3 = objc_claimAutoreleasedReturnValue(), [v3 languageCodeDarwin], v4 = objc_claimAutoreleasedReturnValue(), v4, v3, v4))
   {
     v5 = +[CSFPreferences sharedPreferences];
-    v6 = [v5 languageCodeDarwin];
+    languageCodeDarwin = [v5 languageCodeDarwin];
   }
 
   else
   {
-    v6 = @"en-US";
+    languageCodeDarwin = @"en-US";
   }
 
-  if ([(NSString *)self->_currentLanguageCode isEqualToString:v6]&& (+[CSUtils isExclaveHardware]|| ([(CSRemoteAssetManager *)self _remoteAssetMetaPath], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(CSRemoteAssetManager *)self _loadFromJsonFile:v7], v7, v8)))
+  if ([(NSString *)self->_currentLanguageCode isEqualToString:languageCodeDarwin]&& (+[CSUtils isExclaveHardware]|| ([(CSRemoteAssetManager *)self _remoteAssetMetaPath], v7 = objc_claimAutoreleasedReturnValue(), v8 = [(CSRemoteAssetManager *)self _loadFromJsonFile:v7], v7, v8)))
   {
     v9 = CSLogCategoryAsset;
     v10 = 1;
@@ -537,19 +537,19 @@ uint64_t __54__CSRemoteAssetManager_assetForCurrentLanguageOfType___block_invoke
     v11 = +[CSAsset fallBackAssetResourcePath];
     v12 = [v11 stringByAppendingPathComponent:@"preinstalledMeta.json"];
 
-    v13 = [MEMORY[0x1E696AC08] defaultManager];
-    v14 = [v13 fileExistsAtPath:v12];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v14 = [defaultManager fileExistsAtPath:v12];
 
     if (v14)
     {
       v15 = [(CSRemoteAssetManager *)self _loadJsonDataFromFile:v12];
-      v16 = [v15 objectForKeyedSubscript:v6];
+      v16 = [v15 objectForKeyedSubscript:languageCodeDarwin];
       v17 = v16;
       if (v15 && v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         [(CSRemoteAssetManager *)self _setAssetsInfoFromMetaData:v17];
-        v18 = [(CSRemoteAssetManager *)self _remoteAssetMetaPath];
-        v10 = [(CSRemoteAssetManager *)self _writeToJsonFile:v18];
+        _remoteAssetMetaPath = [(CSRemoteAssetManager *)self _remoteAssetMetaPath];
+        v10 = [(CSRemoteAssetManager *)self _writeToJsonFile:_remoteAssetMetaPath];
       }
 
       else
@@ -604,15 +604,15 @@ uint64_t __54__CSRemoteAssetManager_assetForCurrentLanguageOfType___block_invoke
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     currentLanguageCode = v2->_currentLanguageCode;
     v2->_currentLanguageCode = @"en-US";
 
-    v8 = [(CSRemoteAssetManager *)v2 _remoteAssetMetaPath];
-    [(CSRemoteAssetManager *)v2 _loadFromJsonFile:v8];
+    _remoteAssetMetaPath = [(CSRemoteAssetManager *)v2 _remoteAssetMetaPath];
+    [(CSRemoteAssetManager *)v2 _loadFromJsonFile:_remoteAssetMetaPath];
   }
 
   return v2;

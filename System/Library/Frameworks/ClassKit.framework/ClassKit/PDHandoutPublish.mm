@@ -1,69 +1,69 @@
 @interface PDHandoutPublish
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5;
-- (BOOL)shouldProcessPayload:(id)a3;
-- (id)_findDependencyObjects:(id)a3 from:(id)a4;
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error;
+- (BOOL)shouldProcessPayload:(id)payload;
+- (id)_findDependencyObjects:(id)objects from:(id)from;
 - (id)requestData;
-- (void)_addDependentObject:(id)a3 to:(id)a4;
-- (void)_buildDependencyHashMap:(id)a3;
+- (void)_addDependentObject:(id)object to:(id)to;
+- (void)_buildDependencyHashMap:(id)map;
 @end
 
 @implementation PDHandoutPublish
 
-- (BOOL)shouldProcessPayload:(id)a3
+- (BOOL)shouldProcessPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 status];
-  v5 = [v3 type];
+  payloadCopy = payload;
+  status = [payloadCopy status];
+  type = [payloadCopy type];
 
-  v6 = [v4 code];
-  if (v5 == 1)
+  code = [status code];
+  if (type == 1)
   {
-    v7 = v6 == 1;
+    v7 = code == 1;
   }
 
   else
   {
-    v7 = v6 - 1 < 2;
+    v7 = code - 1 < 2;
   }
 
   return v7;
 }
 
-- (BOOL)processPayloadStatus:(id)a3 allowMixedResponse:(BOOL)a4 error:(id *)a5
+- (BOOL)processPayloadStatus:(id)status allowMixedResponse:(BOOL)response error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 status];
-  if ([v9 hasInternalMessage])
+  statusCopy = status;
+  status = [statusCopy status];
+  if ([status hasInternalMessage])
   {
     CLSInitLog();
-    v10 = [(PDHandoutPublish *)self logSubsystem];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDHandoutPublish *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v18 = objc_opt_class();
       v26 = v18;
-      v19 = [(PDURLRequestOperation *)self operationID];
-      v25 = [v9 code];
-      v20 = [v9 message];
-      v21 = [v9 internalMessage];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      code = [status code];
+      message = [status message];
+      internalMessage = [status internalMessage];
       *buf = 138544386;
       v28 = v18;
       v29 = 2114;
-      v30 = v19;
+      v30 = operationID;
       v31 = 1024;
-      *v32 = v25;
+      *v32 = code;
       *&v32[4] = 2112;
-      *&v32[6] = v20;
+      *&v32[6] = message;
       v33 = 2112;
-      v34 = v21;
-      _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
+      v34 = internalMessage;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ status code: %d message: %@ internal message:%@", buf, 0x30u);
     }
   }
 
-  v11 = sub_100105CA4(v9);
+  v11 = sub_100105CA4(status);
   [(PDEndpointRequestOperation *)self handleServerAlerts:v11];
 
-  LOBYTE(v11) = [(PDHandoutPublish *)self shouldProcessPayload:v8];
-  if ((v11 & 1) != 0 || (sub_1001055FC(v9, a4), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  LOBYTE(v11) = [(PDHandoutPublish *)self shouldProcessPayload:statusCopy];
+  if ((v11 & 1) != 0 || (sub_1001055FC(status, response), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v16 = 1;
   }
@@ -72,26 +72,26 @@
   {
     v13 = v12;
     [(PDEndpointRequestOperation *)self setResponseStatusError:v12];
-    if (a5)
+    if (error)
     {
       v14 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     CLSInitLog();
-    v15 = [(PDHandoutPublish *)self logSubsystem];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    logSubsystem2 = [(PDHandoutPublish *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = [(PDURLRequestOperation *)self operationID];
+      operationID2 = [(PDURLRequestOperation *)self operationID];
       *buf = 138543874;
       v28 = v22;
       v29 = 2114;
-      v30 = v24;
+      v30 = operationID2;
       v31 = 2114;
       *v32 = v13;
-      _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
+      _os_log_error_impl(&_mh_execute_header, logSubsystem2, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@ assignment request errored: %{public}@;", buf, 0x20u);
     }
 
     v16 = 0;
@@ -104,7 +104,7 @@
 {
   if ([(PDOperation *)self isFinished])
   {
-    v3 = 0;
+    immutableData = 0;
     goto LABEL_88;
   }
 
@@ -141,11 +141,11 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 classID];
-          if (v11)
+          classID = [v10 classID];
+          if (classID)
           {
-            v12 = v11;
-            v95 = v11;
+            v12 = classID;
+            v95 = classID;
             v13 = [NSArray arrayWithObjects:&v95 count:1];
 
             if (v13)
@@ -205,12 +205,12 @@ LABEL_16:
 
       v20 = *(*(&v78 + 1) + 8 * j);
       v21 = objc_autoreleasePoolPush();
-      v22 = [(PDOperation *)self database];
+      database = [(PDOperation *)self database];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v20 objectID];
-        v24 = sub_100175C6C(v22, v23);
+        objectID = [v20 objectID];
+        v24 = sub_100175C6C(database, objectID);
       }
 
       else
@@ -218,8 +218,8 @@ LABEL_16:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [v20 objectID];
-          v24 = sub_10016022C(v22, v23);
+          objectID = [v20 objectID];
+          v24 = sub_10016022C(database, objectID);
         }
 
         else
@@ -227,8 +227,8 @@ LABEL_16:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [v20 objectID];
-            v24 = sub_1000C8950(v22, v23);
+            objectID = [v20 objectID];
+            v24 = sub_1000C8950(database, objectID);
           }
 
           else
@@ -236,8 +236,8 @@ LABEL_16:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v23 = [v20 objectID];
-              v24 = sub_10006FEFC(v22, v23);
+              objectID = [v20 objectID];
+              v24 = sub_10006FEFC(database, objectID);
             }
 
             else
@@ -248,8 +248,8 @@ LABEL_16:
                 goto LABEL_34;
               }
 
-              v23 = [v20 objectID];
-              v24 = sub_10015CD74(v22, v23);
+              objectID = [v20 objectID];
+              v24 = sub_10015CD74(database, objectID);
             }
           }
         }
@@ -279,7 +279,7 @@ LABEL_40:
   {
     v27 = objc_alloc_init(PBDataWriter);
     v28 = objc_alloc_init(PDDPPublishHandoutRequest);
-    v68 = [(PDURLRequestOperation *)self operationID];
+    operationID = [(PDURLRequestOperation *)self operationID];
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
@@ -355,41 +355,41 @@ LABEL_40:
                   [(PDDPPublishHandoutRequest *)v28 addPayload:v41];
                   [(PDDPPublishHandoutRequest *)v28 writeTo:v27];
                   [(PDDPPublishHandoutRequest *)v28 clearPayloads];
-                  v43 = [v27 data];
-                  v44 = [v43 length];
-                  v45 = [(PDURLRequestOperation *)self stats];
-                  if (v45)
+                  data = [v27 data];
+                  v44 = [data length];
+                  stats = [(PDURLRequestOperation *)self stats];
+                  if (stats)
                   {
-                    v45[10] = v44;
+                    stats[10] = v44;
                   }
 
-                  v46 = [(PDURLRequestOperation *)self stats];
-                  if (v46)
+                  stats2 = [(PDURLRequestOperation *)self stats];
+                  if (stats2)
                   {
-                    ++v46[14];
+                    ++stats2[14];
                   }
 
                   CLSInitLog();
-                  v47 = [(PDHandoutPublish *)self logSubsystem];
-                  if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
+                  logSubsystem = [(PDHandoutPublish *)self logSubsystem];
+                  if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
                   {
                     v55 = objc_opt_class();
                     v65 = v55;
-                    v56 = [v41 dictionaryRepresentation];
+                    dictionaryRepresentation = [v41 dictionaryRepresentation];
                     *buf = 138543874;
                     v87 = v55;
                     v88 = 2114;
-                    v89 = v68;
+                    v89 = operationID;
                     v90 = 2112;
-                    v91 = v56;
-                    _os_log_debug_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
+                    v91 = dictionaryRepresentation;
+                    _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ added payload item %@ ", buf, 0x20u);
                   }
 
-                  v48 = [(PDURLRequestOperation *)self stats];
-                  v49 = v48;
-                  if (v48)
+                  stats3 = [(PDURLRequestOperation *)self stats];
+                  v49 = stats3;
+                  if (stats3)
                   {
-                    v50 = *(v48 + 80);
+                    v50 = *(stats3 + 80);
                   }
 
                   else
@@ -397,11 +397,11 @@ LABEL_40:
                     v50 = 0;
                   }
 
-                  v51 = [(PDURLRequestOperation *)self stats];
-                  v52 = v51;
-                  if (v51)
+                  stats4 = [(PDURLRequestOperation *)self stats];
+                  v52 = stats4;
+                  if (stats4)
                   {
-                    v53 = *(v51 + 112);
+                    v53 = *(stats4 + 112);
                   }
 
                   else
@@ -449,16 +449,16 @@ LABEL_40:
 
 LABEL_79:
 
-    v58 = [(PDURLRequestOperation *)self stats];
-    if (v58 && (v59 = v58[14], v58, v59))
+    stats5 = [(PDURLRequestOperation *)self stats];
+    if (stats5 && (v59 = stats5[14], stats5, v59))
     {
-      v3 = [v27 immutableData];
+      immutableData = [v27 immutableData];
     }
 
     else
     {
       [(PDEndpointRequestOperation *)self markAsFinished];
-      v3 = 0;
+      immutableData = 0;
     }
 
     v13 = v67;
@@ -468,29 +468,29 @@ LABEL_79:
   {
     v27 = [NSError cls_createErrorWithCode:2 description:@"handout graph missing handout recipient classID."];
     [(PDOperation *)self finishWithError:v27];
-    v3 = 0;
+    immutableData = 0;
   }
 
 LABEL_88:
 
-  return v3;
+  return immutableData;
 }
 
-- (id)_findDependencyObjects:(id)a3 from:(id)a4
+- (id)_findDependencyObjects:(id)objects from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  fromCopy = from;
   if (![*(&self->super.super._responseStatusError + 3) count])
   {
-    [(PDHandoutPublish *)self _buildDependencyHashMap:v7];
+    [(PDHandoutPublish *)self _buildDependencyHashMap:fromCopy];
   }
 
   v8 = objc_opt_new();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v6 objectID];
-    [(PDHandoutPublish *)self _addDependentObject:v9 to:v8];
+    objectID = [objectsCopy objectID];
+    [(PDHandoutPublish *)self _addDependentObject:objectID to:v8];
     v10 = v8;
   }
 
@@ -502,16 +502,16 @@ LABEL_88:
   return v10;
 }
 
-- (void)_buildDependencyHashMap:(id)a3
+- (void)_buildDependencyHashMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v4;
+  v7 = mapCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v8)
   {
@@ -528,8 +528,8 @@ LABEL_88:
 
         v12 = *(*(&v29 + 1) + 8 * i);
         v13 = objc_opt_new();
-        v14 = [v12 objectID];
-        [(NSError *)v6 setObject:v13 forKeyedSubscript:v14];
+        objectID = [v12 objectID];
+        [(NSError *)v6 setObject:v13 forKeyedSubscript:objectID];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -558,12 +558,12 @@ LABEL_88:
         }
 
         v20 = *(*(&v25 + 1) + 8 * j);
-        v21 = [v20 parentObjectID];
-        v22 = [(NSError *)v6 objectForKeyedSubscript:v21];
+        parentObjectID = [v20 parentObjectID];
+        v22 = [(NSError *)v6 objectForKeyedSubscript:parentObjectID];
 
         if (v22)
         {
-          v23 = [(NSError *)v6 objectForKeyedSubscript:v21];
+          v23 = [(NSError *)v6 objectForKeyedSubscript:parentObjectID];
           [v23 addObject:v20];
         }
       }
@@ -580,23 +580,23 @@ LABEL_88:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_addDependentObject:(id)a3 to:(id)a4
+- (void)_addDependentObject:(id)object to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:v6];
+  objectCopy = object;
+  toCopy = to;
+  v8 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:objectCopy];
   v9 = [v8 count];
 
   if (v9)
   {
-    v10 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:v6];
-    [v7 addObjectsFromArray:v10];
+    v10 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:objectCopy];
+    [toCopy addObjectsFromArray:v10];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:{v6, 0}];
+    v11 = [*(&self->super.super._responseStatusError + 3) objectForKeyedSubscript:{objectCopy, 0}];
     v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
@@ -614,8 +614,8 @@ LABEL_88:
 
           v16 = *(*(&v19 + 1) + 8 * v15);
           v17 = objc_autoreleasePoolPush();
-          v18 = [v16 objectID];
-          [(PDHandoutPublish *)self _addDependentObject:v18 to:v7];
+          objectID = [v16 objectID];
+          [(PDHandoutPublish *)self _addDependentObject:objectID to:toCopy];
 
           objc_autoreleasePoolPop(v17);
           v15 = v15 + 1;

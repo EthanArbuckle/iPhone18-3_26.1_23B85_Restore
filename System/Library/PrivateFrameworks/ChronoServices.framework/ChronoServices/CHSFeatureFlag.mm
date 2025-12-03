@@ -1,51 +1,51 @@
 @interface CHSFeatureFlag
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CHSFeatureFlag)init;
-- (CHSFeatureFlag)initWithCoder:(id)a3;
-- (CHSFeatureFlag)initWithDomain:(id)a3 featureName:(id)a4;
+- (CHSFeatureFlag)initWithCoder:(id)coder;
+- (CHSFeatureFlag)initWithDomain:(id)domain featureName:(id)name;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSFeatureFlag
 
 + (id)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CHSFeatureFlag.m" lineNumber:23 description:@"-[CHSFeatureFlag new] is unavailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSFeatureFlag.m" lineNumber:23 description:@"-[CHSFeatureFlag new] is unavailable"];
 
   return 0;
 }
 
 - (CHSFeatureFlag)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CHSFeatureFlag.m" lineNumber:28 description:@"-[CHSFeatureFlag init] is unavailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CHSFeatureFlag.m" lineNumber:28 description:@"-[CHSFeatureFlag init] is unavailable"];
 
   return 0;
 }
 
-- (CHSFeatureFlag)initWithDomain:(id)a3 featureName:(id)a4
+- (CHSFeatureFlag)initWithDomain:(id)domain featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = CHSFeatureFlag;
   v8 = [(CHSFeatureFlag *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [domainCopy copy];
     domain = v8->_domain;
     v8->_domain = v9;
 
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v11;
 
-    v8->_cDomain = strdup([v6 UTF8String]);
-    v8->_cFeatureName = strdup([v7 UTF8String]);
+    v8->_cDomain = strdup([domainCopy UTF8String]);
+    v8->_cFeatureName = strdup([nameCopy UTF8String]);
   }
 
   return v8;
@@ -60,10 +60,10 @@
   [(CHSFeatureFlag *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -73,7 +73,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       if ([(NSString *)self->_domain isEqualToString:v5->_domain])
       {
         v6 = [(NSString *)self->_featureName isEqualToString:v5->_featureName];
@@ -103,11 +103,11 @@
   v10 = &unk_1E7453000;
   v4 = v3;
   v11 = v4;
-  v12 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:&v7];
-  v5 = [v4 build];
+  build = [v4 build];
 
-  return v5;
+  return build;
 }
 
 uint64_t __29__CHSFeatureFlag_description__block_invoke(uint64_t a1)
@@ -119,18 +119,18 @@ uint64_t __29__CHSFeatureFlag_description__block_invoke(uint64_t a1)
   return [v2 appendString:v3 withName:@"featureName"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_domain forKey:@"domain"];
-  [v4 encodeObject:self->_featureName forKey:@"featureName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_domain forKey:@"domain"];
+  [coderCopy encodeObject:self->_featureName forKey:@"featureName"];
 }
 
-- (CHSFeatureFlag)initWithCoder:(id)a3
+- (CHSFeatureFlag)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureName"];
   v7 = v6;
   if (v5)
   {
@@ -144,16 +144,16 @@ uint64_t __29__CHSFeatureFlag_description__block_invoke(uint64_t a1)
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CHSFeatureFlag *)self initWithDomain:v5 featureName:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface VKQuickDynamicAnimation
-- (void)onTimerFired:(double)a3;
+- (void)onTimerFired:(double)fired;
 @end
 
 @implementation VKQuickDynamicAnimation
 
-- (void)onTimerFired:(double)a3
+- (void)onTimerFired:(double)fired
 {
   state = self->super.super._state;
   if (state == 3)
@@ -20,7 +20,7 @@ LABEL_10:
     if (self->super._resuming)
     {
       self->super._resuming = 0;
-      lastTimestamp = a3;
+      lastTimestamp = fired;
     }
 
     else
@@ -28,11 +28,11 @@ LABEL_10:
       lastTimestamp = self->super._lastTimestamp;
     }
 
-    self->super._lastTimestamp = a3;
+    self->super._lastTimestamp = fired;
     dynamicStepHandler = self->super._dynamicStepHandler;
     if (dynamicStepHandler)
     {
-      if (fmax(lastTimestamp, a3) - lastTimestamp > 0.0 && dynamicStepHandler[2](dynamicStepHandler, a2))
+      if (fmax(lastTimestamp, fired) - lastTimestamp > 0.0 && dynamicStepHandler[2](dynamicStepHandler, a2))
       {
         self->super.super._state = 3;
         goto LABEL_10;

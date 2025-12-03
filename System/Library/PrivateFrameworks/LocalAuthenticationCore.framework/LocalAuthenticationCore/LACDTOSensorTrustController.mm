@@ -1,45 +1,45 @@
 @interface LACDTOSensorTrustController
-- (BOOL)_isHardwareTrustError:(id)a3;
-- (LACDTOSensorTrustController)initWithReplyQueue:(id)a3 ui:(id)a4 store:(id)a5 verifier:(id)a6 flags:(id)a7;
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5;
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (BOOL)_isHardwareTrustError:(id)error;
+- (LACDTOSensorTrustController)initWithReplyQueue:(id)queue ui:(id)ui store:(id)store verifier:(id)verifier flags:(id)flags;
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion;
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation LACDTOSensorTrustController
 
-- (LACDTOSensorTrustController)initWithReplyQueue:(id)a3 ui:(id)a4 store:(id)a5 verifier:(id)a6 flags:(id)a7
+- (LACDTOSensorTrustController)initWithReplyQueue:(id)queue ui:(id)ui store:(id)store verifier:(id)verifier flags:(id)flags
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  uiCopy = ui;
+  storeCopy = store;
+  verifierCopy = verifier;
+  flagsCopy = flags;
   v19.receiver = self;
   v19.super_class = LACDTOSensorTrustController;
   v16 = [(LACDTOSensorTrustController *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_ui, a4);
-    objc_storeStrong(&v17->_store, a5);
-    objc_storeStrong(&v17->_verifier, a6);
-    objc_storeStrong(&v17->_flags, a7);
+    objc_storeStrong(&v16->_ui, ui);
+    objc_storeStrong(&v17->_store, store);
+    objc_storeStrong(&v17->_verifier, verifier);
+    objc_storeStrong(&v17->_flags, flags);
   }
 
   return v17;
 }
 
-- (void)processRequest:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)processRequest:(id)request configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(LACDTOSensorTrustController *)self canProcessRequest:v8])
+  requestCopy = request;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if ([(LACDTOSensorTrustController *)self canProcessRequest:requestCopy])
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __71__LACDTOSensorTrustController_processRequest_configuration_completion___block_invoke;
     v21[3] = &unk_1E7A971C0;
-    v11 = v8;
+    v11 = requestCopy;
     v22 = v11;
     v12 = __71__LACDTOSensorTrustController_processRequest_configuration_completion___block_invoke(v21);
     [v11 updateOptions:v12];
@@ -58,7 +58,7 @@
     v16[2] = __71__LACDTOSensorTrustController_processRequest_configuration_completion___block_invoke_3;
     v16[3] = &unk_1E7A971E8;
     objc_copyWeak(&v19, &buf);
-    v18 = v10;
+    v18 = completionCopy;
     v17 = v11;
     [(LACDTOSensorTrustVerifier *)verifier verifySensorTrustWithCompletion:v16];
 
@@ -68,8 +68,8 @@
 
   else
   {
-    v15 = [LACEvaluationResult resultWithNext:v8];
-    (*(v10 + 2))(v10, v15);
+    v15 = [LACEvaluationResult resultWithNext:requestCopy];
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 }
 
@@ -194,47 +194,47 @@ void __71__LACDTOSensorTrustController_processRequest_configuration_completion__
   }
 }
 
-- (void)postProcessRequest:(id)a3 result:(id)a4 completion:(id)a5
+- (void)postProcessRequest:(id)request result:(id)result completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!-[LACDTOSensorTrustController canProcessRequest:](self, "canProcessRequest:", v8) || ([v9 error], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[LACDTOSensorTrustController _isHardwareTrustError:](self, "_isHardwareTrustError:", v11), v11, !v12))
+  requestCopy = request;
+  resultCopy = result;
+  completionCopy = completion;
+  if (!-[LACDTOSensorTrustController canProcessRequest:](self, "canProcessRequest:", requestCopy) || ([resultCopy error], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[LACDTOSensorTrustController _isHardwareTrustError:](self, "_isHardwareTrustError:", v11), v11, !v12))
   {
 LABEL_11:
-    v10[2](v10, v9);
+    completionCopy[2](completionCopy, resultCopy);
     goto LABEL_12;
   }
 
-  v13 = [v8 options];
+  options = [requestCopy options];
   v14 = [MEMORY[0x1E696AD98] numberWithInteger:1085];
-  v15 = [v13 objectForKey:v14];
-  v16 = [v15 BOOLValue];
+  v15 = [options objectForKey:v14];
+  bOOLValue = [v15 BOOLValue];
 
-  if (v16)
+  if (bOOLValue)
   {
     v17 = LACLogDTOSensor();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v9 error];
+      error = [resultCopy error];
       *buf = 138543362;
-      v37 = v18;
+      v37 = error;
       _os_log_impl(&dword_1B0233000, v17, OS_LOG_TYPE_DEFAULT, "Mapping unapproved sensor error %{public}@ to success on client's request", buf, 0xCu);
     }
 
     v19 = [LACEvaluationResult resultWithSuccess:MEMORY[0x1E695E0F8]];
-    v10[2](v10, v19);
+    completionCopy[2](completionCopy, v19);
 
     goto LABEL_12;
   }
 
-  v20 = [v8 options];
+  options2 = [requestCopy options];
   v21 = [MEMORY[0x1E696AD98] numberWithInteger:1039];
-  v22 = [v20 objectForKey:v21];
-  v23 = [v22 BOOLValue];
+  v22 = [options2 objectForKey:v21];
+  bOOLValue2 = [v22 BOOLValue];
 
-  if (v23)
+  if (bOOLValue2)
   {
     v24 = LACLogDTOSensor();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -250,7 +250,7 @@ LABEL_11:
   v34[1] = 3221225472;
   v34[2] = __68__LACDTOSensorTrustController_postProcessRequest_result_completion___block_invoke;
   v34[3] = &unk_1E7A97210;
-  v26 = v8;
+  v26 = requestCopy;
   v35 = v26;
   v27 = __68__LACDTOSensorTrustController_postProcessRequest_result_completion___block_invoke(v34);
   v28 = LACLogDTOSensor();
@@ -267,8 +267,8 @@ LABEL_11:
   v31[1] = 3221225472;
   v31[2] = __68__LACDTOSensorTrustController_postProcessRequest_result_completion___block_invoke_8;
   v31[3] = &unk_1E7A95998;
-  v33 = v10;
-  v32 = v9;
+  v33 = completionCopy;
+  v32 = resultCopy;
   [(LACUserInterfacePresenting *)ui presentUIForIdentifier:v27 request:v26 completion:v31];
 
 LABEL_12:
@@ -311,12 +311,12 @@ void __68__LACDTOSensorTrustController_postProcessRequest_result_completion___bl
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isHardwareTrustError:(id)a3
+- (BOOL)_isHardwareTrustError:(id)error
 {
-  v3 = a3;
-  if (v3)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v4 = [LACError error:v3 hasCode:-1 subcode:30]|| [LACError error:v3 hasCode:-1 subcode:31];
+    v4 = [LACError error:errorCopy hasCode:-1 subcode:30]|| [LACError error:errorCopy hasCode:-1 subcode:31];
   }
 
   else

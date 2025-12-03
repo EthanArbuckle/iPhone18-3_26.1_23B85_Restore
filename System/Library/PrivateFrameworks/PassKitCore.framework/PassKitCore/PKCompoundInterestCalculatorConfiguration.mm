@@ -1,18 +1,18 @@
 @interface PKCompoundInterestCalculatorConfiguration
-+ (id)configurationWithCreditAccount:(id)a3;
++ (id)configurationWithCreditAccount:(id)account;
 - (PKCompoundInterestCalculatorConfiguration)init;
 - (id)description;
-- (int64_t)_daysInYearForDate:(id)a3 withTimeZone:(id)a4;
-- (void)updateWithCreditAccount:(id)a3;
+- (int64_t)_daysInYearForDate:(id)date withTimeZone:(id)zone;
+- (void)updateWithCreditAccount:(id)account;
 @end
 
 @implementation PKCompoundInterestCalculatorConfiguration
 
-+ (id)configurationWithCreditAccount:(id)a3
++ (id)configurationWithCreditAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = objc_alloc_init(PKCompoundInterestCalculatorConfiguration);
-  [(PKCompoundInterestCalculatorConfiguration *)v4 updateWithCreditAccount:v3];
+  [(PKCompoundInterestCalculatorConfiguration *)v4 updateWithCreditAccount:accountCopy];
 
   return v4;
 }
@@ -27,9 +27,9 @@
   {
     v2->_calculationMethod = 0;
     v2->_compoundingPeriods = 365;
-    v4 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     apr = v3->_apr;
-    v3->_apr = v4;
+    v3->_apr = zero;
 
     *&v3->_inGrace = 1;
     v6 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
@@ -40,100 +40,100 @@
   return v3;
 }
 
-- (void)updateWithCreditAccount:(id)a3
+- (void)updateWithCreditAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v38 = v4;
-    v5 = [v4 type] == 1;
-    v4 = v38;
+    v38 = accountCopy;
+    v5 = [accountCopy type] == 1;
+    accountCopy = v38;
     if (v5)
     {
-      v6 = [v38 creditDetails];
-      v7 = [v6 accountSummary];
-      v8 = [v6 accountSummary];
-      v9 = [v8 currentStatement];
+      creditDetails = [v38 creditDetails];
+      accountSummary = [creditDetails accountSummary];
+      accountSummary2 = [creditDetails accountSummary];
+      currentStatement = [accountSummary2 currentStatement];
 
-      v10 = [v7 balanceSummary];
-      v11 = [v6 rates];
-      v12 = [v11 aprForPurchases];
+      balanceSummary = [accountSummary balanceSummary];
+      rates = [creditDetails rates];
+      aprForPurchases = [rates aprForPurchases];
       apr = self->_apr;
-      self->_apr = v12;
+      self->_apr = aprForPurchases;
 
-      v14 = [v10 openingDate];
+      openingDate = [balanceSummary openingDate];
       periodStartDate = self->_periodStartDate;
-      self->_periodStartDate = v14;
+      self->_periodStartDate = openingDate;
 
-      v16 = [v10 closingDate];
+      closingDate = [balanceSummary closingDate];
       periodEndDate = self->_periodEndDate;
-      self->_periodEndDate = v16;
+      self->_periodEndDate = closingDate;
 
-      v18 = [v9 statementBalance];
+      statementBalance = [currentStatement statementBalance];
       periodStartingBalance = self->_periodStartingBalance;
-      self->_periodStartingBalance = v18;
+      self->_periodStartingBalance = statementBalance;
 
-      v20 = [v7 remainingStatementBalanceForInterestCalculation];
-      v21 = v20;
-      if (v20)
+      remainingStatementBalanceForInterestCalculation = [accountSummary remainingStatementBalanceForInterestCalculation];
+      v21 = remainingStatementBalanceForInterestCalculation;
+      if (remainingStatementBalanceForInterestCalculation)
       {
-        v22 = v20;
+        remainingStatementBalance = remainingStatementBalanceForInterestCalculation;
       }
 
       else
       {
-        v22 = [v7 remainingStatementBalance];
+        remainingStatementBalance = [accountSummary remainingStatementBalance];
       }
 
       remainingPeriodStartingBalance = self->_remainingPeriodStartingBalance;
-      self->_remainingPeriodStartingBalance = v22;
+      self->_remainingPeriodStartingBalance = remainingStatementBalance;
 
-      v24 = [v7 remainingStatementBalance];
+      remainingStatementBalance2 = [accountSummary remainingStatementBalance];
       remainingPeriodStartingBalanceForGracePurposes = self->_remainingPeriodStartingBalanceForGracePurposes;
-      self->_remainingPeriodStartingBalanceForGracePurposes = v24;
+      self->_remainingPeriodStartingBalanceForGracePurposes = remainingStatementBalance2;
 
-      v26 = [v7 remainingMinimumPayment];
+      remainingMinimumPayment = [accountSummary remainingMinimumPayment];
       remainingPeriodMinimumPayment = self->_remainingPeriodMinimumPayment;
-      self->_remainingPeriodMinimumPayment = v26;
+      self->_remainingPeriodMinimumPayment = remainingMinimumPayment;
 
-      v28 = [v7 remainingMinimumPaymentExcludedFromInterestCalculation];
+      remainingMinimumPaymentExcludedFromInterestCalculation = [accountSummary remainingMinimumPaymentExcludedFromInterestCalculation];
       remainingPeriodMinimumPaymentExcludedFromInterestCalculation = self->_remainingPeriodMinimumPaymentExcludedFromInterestCalculation;
-      self->_remainingPeriodMinimumPaymentExcludedFromInterestCalculation = v28;
+      self->_remainingPeriodMinimumPaymentExcludedFromInterestCalculation = remainingMinimumPaymentExcludedFromInterestCalculation;
 
-      v30 = [v7 adjustedBalance];
+      adjustedBalance = [accountSummary adjustedBalance];
       currentBalance = self->_currentBalance;
-      self->_currentBalance = v30;
+      self->_currentBalance = adjustedBalance;
 
-      self->_inGrace = [v7 inGrace];
+      self->_inGrace = [accountSummary inGrace];
       self->_isInDisasterRecovery = [v38 stateReason] == 2;
-      v32 = [v7 unpostedInterest];
+      unpostedInterest = [accountSummary unpostedInterest];
       unpostedInterest = self->_unpostedInterest;
-      self->_unpostedInterest = v32;
+      self->_unpostedInterest = unpostedInterest;
 
-      v34 = [v7 unpostedInterestTimestamp];
+      unpostedInterestTimestamp = [accountSummary unpostedInterestTimestamp];
       unpostedInterestTimestamp = self->_unpostedInterestTimestamp;
-      self->_unpostedInterestTimestamp = v34;
+      self->_unpostedInterestTimestamp = unpostedInterestTimestamp;
 
-      v36 = [v6 productTimeZone];
+      productTimeZone = [creditDetails productTimeZone];
       productTimeZone = self->_productTimeZone;
-      self->_productTimeZone = v36;
+      self->_productTimeZone = productTimeZone;
 
       self->_compoundingPeriods = [(PKCompoundInterestCalculatorConfiguration *)self _daysInYearForDate:self->_periodStartDate withTimeZone:self->_productTimeZone];
-      v4 = v38;
+      accountCopy = v38;
     }
   }
 }
 
-- (int64_t)_daysInYearForDate:(id)a3 withTimeZone:(id)a4
+- (int64_t)_daysInYearForDate:(id)date withTimeZone:(id)zone
 {
   calendar = self->_calendar;
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  dateCopy = date;
   v8 = [(NSCalendar *)calendar copy];
-  [v8 setTimeZone:v6];
+  [v8 setTimeZone:zoneCopy];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  v10 = [v8 component:4 fromDate:v7];
+  v10 = [v8 component:4 fromDate:dateCopy];
 
   [v9 setYear:v10];
   [v9 setMonth:{objc_msgSend(v8, "minimumRangeOfUnit:", 8)}];

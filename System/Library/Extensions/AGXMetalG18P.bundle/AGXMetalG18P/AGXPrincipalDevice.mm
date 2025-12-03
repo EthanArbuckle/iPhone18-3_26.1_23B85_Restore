@@ -1,10 +1,10 @@
 @interface AGXPrincipalDevice
-- (AGXPrincipalDevice)initWithAcceleratorPort:(unsigned int)a3;
+- (AGXPrincipalDevice)initWithAcceleratorPort:(unsigned int)port;
 @end
 
 @implementation AGXPrincipalDevice
 
-- (AGXPrincipalDevice)initWithAcceleratorPort:(unsigned int)a3
+- (AGXPrincipalDevice)initWithAcceleratorPort:(unsigned int)port
 {
   fwrite("Attempting to load Metal bundle via AGXPrincipalDevice is not supported!\n", 0x49uLL, 1uLL, *MEMORY[0x29EDCA610]);
   if (os_log_type_enabled(MEMORY[0x29EDCA988], OS_LOG_TYPE_ERROR))

@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchTermQuery
-- (BOOL)isEqual:(id)a3;
-- (id)toStringWithNSString:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)toStringWithNSString:(id)string;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTermQuery
 
-- (id)toStringWithNSString:(id)a3
+- (id)toStringWithNSString:(id)string
 {
   v5 = new_JavaLangStringBuilder_init();
   v6 = *(&self->super.boost_ + 1);
@@ -16,7 +16,7 @@
     JreThrowNullPointerException();
   }
 
-  if (([v7 isEqual:a3] & 1) == 0)
+  if (([v7 isEqual:string] & 1) == 0)
   {
     -[JavaLangStringBuilder appendWithNSString:](v5, "appendWithNSString:", [*(&self->super.boost_ + 1) field]);
     [(JavaLangStringBuilder *)v5 appendWithNSString:@":"];
@@ -29,29 +29,29 @@
   return [(JavaLangStringBuilder *)v5 description];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (equal && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
     v8.receiver = self;
     v8.super_class = OrgApacheLuceneSearchTermQuery;
-    v5 = [(OrgApacheLuceneSearchQuery *)&v8 isEqual:a3];
+    v5 = [(OrgApacheLuceneSearchQuery *)&v8 isEqual:equal];
     if (v5)
     {
       v6 = *(&self->super.boost_ + 1);
-      if (!v6 || !a3)
+      if (!v6 || !equal)
       {
         JreThrowNullPointerException();
       }
 
-      LOBYTE(v5) = [v6 isEqual:*(a3 + 12)];
+      LOBYTE(v5) = [v6 isEqual:*(equal + 12)];
     }
   }
 

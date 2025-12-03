@@ -1,10 +1,10 @@
 @interface MSDGreyMatterHelper
 + (BOOL)waitForGMAvailability;
 + (void)preservePrivateAccessTokens;
-+ (void)purgeExistingAssetOfIdentifier:(id)a3;
++ (void)purgeExistingAssetOfIdentifier:(id)identifier;
 + (void)purgeExistingAssets;
 + (void)restorePrivateAccessTokens;
-+ (void)toggleAutoUpdate:(BOOL)a3 forAssetOfIdentifier:(id)a4;
++ (void)toggleAutoUpdate:(BOOL)update forAssetOfIdentifier:(id)identifier;
 @end
 
 @implementation MSDGreyMatterHelper
@@ -187,14 +187,14 @@ LABEL_15:
   }
 }
 
-+ (void)toggleAutoUpdate:(BOOL)a3 forAssetOfIdentifier:(id)a4
++ (void)toggleAutoUpdate:(BOOL)update forAssetOfIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = a4;
+  updateCopy = update;
+  identifierCopy = identifier;
   v6 = MAGetPallasUrlForType();
   v7 = [NSURL URLWithString:@"https://foobar.apple.com"];
   v8 = [v6 isEqual:v7];
-  if (v4)
+  if (updateCopy)
   {
     if (v8)
     {
@@ -202,7 +202,7 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v5;
+        v13 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Clearing bogus Pallas URL to enable update for asset: %{public}@", &v12, 0xCu);
       }
 
@@ -225,7 +225,7 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v5;
+      v13 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Applying bogus Pallas URL to disable update for asset: %{public}@", &v12, 0xCu);
     }
 
@@ -242,15 +242,15 @@ LABEL_14:
   }
 }
 
-+ (void)purgeExistingAssetOfIdentifier:(id)a3
++ (void)purgeExistingAssetOfIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = dispatch_semaphore_create(0);
   v5 = sub_100063A54();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v3;
+    v17 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Purging existing asset: %{public}@", buf, 0xCu);
   }
 
@@ -260,7 +260,7 @@ LABEL_14:
   v14[3] = &unk_10016AAE8;
   v6 = v4;
   v15 = v6;
-  [MAAutoAssetSet eliminateAtomic:@"Demod purging GreyMatter assets" usingClientDomain:@"com.apple.mobilestoredemod" forAssetSetIdentifier:v3 awaitingUnlocked:1 completion:v14];
+  [MAAutoAssetSet eliminateAtomic:@"Demod purging GreyMatter assets" usingClientDomain:@"com.apple.mobilestoredemod" forAssetSetIdentifier:identifierCopy awaitingUnlocked:1 completion:v14];
   v7 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
@@ -277,7 +277,7 @@ LABEL_14:
   v12[3] = &unk_10016AB10;
   v9 = v6;
   v13 = v9;
-  [MAAutoAsset eliminateAllForAssetType:v3 completion:v12];
+  [MAAutoAsset eliminateAllForAssetType:identifierCopy completion:v12];
   v10 = dispatch_time(0, 30000000000);
   if (dispatch_semaphore_wait(v9, v10))
   {

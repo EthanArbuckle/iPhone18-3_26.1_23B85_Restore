@@ -1,23 +1,23 @@
 @interface AXHAMessageHandlerContext
-- (AXHAMessageHandlerContext)initWithTarget:(id)a3 block:(id)a4;
+- (AXHAMessageHandlerContext)initWithTarget:(id)target block:(id)block;
 @end
 
 @implementation AXHAMessageHandlerContext
 
-- (AXHAMessageHandlerContext)initWithTarget:(id)a3 block:(id)a4
+- (AXHAMessageHandlerContext)initWithTarget:(id)target block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  targetCopy = target;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = AXHAMessageHandlerContext;
   v9 = [(AXHAMessageHandlerContext *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    if (v7 && v8)
+    if (targetCopy && blockCopy)
     {
-      objc_storeStrong(&v9->_target, a3);
-      v11 = _Block_copy(v8);
+      objc_storeStrong(&v9->_target, target);
+      v11 = _Block_copy(blockCopy);
       block = v10->_block;
       v10->_block = v11;
     }

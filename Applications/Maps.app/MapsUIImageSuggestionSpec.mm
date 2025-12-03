@@ -1,10 +1,10 @@
 @interface MapsUIImageSuggestionSpec
-- (BOOL)isEqual:(id)a3;
-- (MapsUIImageSuggestionSpec)initWithFavorite:(id)a3;
-- (MapsUIImageSuggestionSpec)initWithSuggestion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MapsUIImageSuggestionSpec)initWithFavorite:(id)favorite;
+- (MapsUIImageSuggestionSpec)initWithSuggestion:(id)suggestion;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4;
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play;
 - (unint64_t)hash;
 @end
 
@@ -53,10 +53,10 @@
 - (id)description
 {
   v18 = objc_opt_class();
-  v17 = [(MapsUIImageSuggestionSpec *)self suggestionType];
-  v3 = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
-  v4 = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
-  v5 = [(MapsUIImageSuggestionSpec *)self originBundleID];
+  suggestionType = [(MapsUIImageSuggestionSpec *)self suggestionType];
+  suggestionAttributes = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
+  mapItemAttributes = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
+  originBundleID = [(MapsUIImageSuggestionSpec *)self originBundleID];
   if ([(MapsUIImageSuggestionSpec *)self showEVChargingIcon])
   {
     v6 = @"YES";
@@ -111,49 +111,49 @@
     v14 = @"NO";
   }
 
-  v15 = [NSString stringWithFormat:@"<%@: %p suggestionType = %d, suggestionAttributes = %@, mapItemAttributes = %@; originBundleID = %@, showEVChargingIcon = %@, showOnboardingMultipleVehiclesIcon = %@, inverted = %@, isDashboardWidget = %@; nightMode = %@>", v18, self, v17, v3, v4, v5, v7, v9, v11, v13, v14];;
+  v15 = [NSString stringWithFormat:@"<%@: %p suggestionType = %d, suggestionAttributes = %@, mapItemAttributes = %@; originBundleID = %@, showEVChargingIcon = %@, showOnboardingMultipleVehiclesIcon = %@, inverted = %@, isDashboardWidget = %@; nightMode = %@>", v18, self, suggestionType, suggestionAttributes, mapItemAttributes, originBundleID, v7, v9, v11, v13, v14];;
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v21 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MapsUIImageSuggestionSpec *)self suggestionType];
-    if (v7 == [(MapsUIImageSuggestionSpec *)v6 suggestionType])
+    suggestionType = [(MapsUIImageSuggestionSpec *)self suggestionType];
+    if (suggestionType == [(MapsUIImageSuggestionSpec *)v6 suggestionType])
     {
-      v8 = [(MapsUIImageSuggestionSpec *)self uniqueIdentifier];
-      v9 = [(MapsUIImageSuggestionSpec *)v6 uniqueIdentifier];
-      if ([v8 isEqualToString:v9])
+      uniqueIdentifier = [(MapsUIImageSuggestionSpec *)self uniqueIdentifier];
+      uniqueIdentifier2 = [(MapsUIImageSuggestionSpec *)v6 uniqueIdentifier];
+      if ([uniqueIdentifier isEqualToString:uniqueIdentifier2])
       {
-        v10 = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
-        v11 = [(MapsUIImageSuggestionSpec *)v6 suggestionAttributes];
-        if (v10 == v11 || [v10 isEqual:v11])
+        suggestionAttributes = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
+        suggestionAttributes2 = [(MapsUIImageSuggestionSpec *)v6 suggestionAttributes];
+        if (suggestionAttributes == suggestionAttributes2 || [suggestionAttributes isEqual:suggestionAttributes2])
         {
-          v12 = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
-          v13 = [(MapsUIImageSuggestionSpec *)v6 mapItemAttributes];
-          if (v12 == v13 || [v12 isEqual:v13])
+          mapItemAttributes = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
+          mapItemAttributes2 = [(MapsUIImageSuggestionSpec *)v6 mapItemAttributes];
+          if (mapItemAttributes == mapItemAttributes2 || [mapItemAttributes isEqual:mapItemAttributes2])
           {
-            v26 = v12;
-            v14 = [(MapsUIImageSuggestionSpec *)self originBundleID];
-            v15 = [(MapsUIImageSuggestionSpec *)v6 originBundleID];
-            if (v14 == v15 || [v14 isEqual:v15])
+            v26 = mapItemAttributes;
+            originBundleID = [(MapsUIImageSuggestionSpec *)self originBundleID];
+            originBundleID2 = [(MapsUIImageSuggestionSpec *)v6 originBundleID];
+            if (originBundleID == originBundleID2 || [originBundleID isEqual:originBundleID2])
             {
-              v16 = [(MapsUIImageSuggestionSpec *)self showEVChargingIcon];
-              if (v16 == [(MapsUIImageSuggestionSpec *)v6 showEVChargingIcon]&& (v17 = [(MapsUIImageSuggestionSpec *)self showOnboardingMultipleVehiclesIcon], v17 == [(MapsUIImageSuggestionSpec *)v6 showOnboardingMultipleVehiclesIcon]) && (v18 = [(MapsUIImageSuggestionSpec *)self inverted], v18 == [(MapsUIImageSuggestionSpec *)v6 inverted]) && (v19 = [(MapsUIImageSuggestionSpec *)self isDashboardWidget], v19 == [(MapsUIImageSuggestionSpec *)v6 isDashboardWidget]) && (v20 = [(MapsUIImageSpec *)self nightMode], v20 == [(MapsUIImageSpec *)v6 nightMode]))
+              showEVChargingIcon = [(MapsUIImageSuggestionSpec *)self showEVChargingIcon];
+              if (showEVChargingIcon == [(MapsUIImageSuggestionSpec *)v6 showEVChargingIcon]&& (v17 = [(MapsUIImageSuggestionSpec *)self showOnboardingMultipleVehiclesIcon], v17 == [(MapsUIImageSuggestionSpec *)v6 showOnboardingMultipleVehiclesIcon]) && (v18 = [(MapsUIImageSuggestionSpec *)self inverted], v18 == [(MapsUIImageSuggestionSpec *)v6 inverted]) && (v19 = [(MapsUIImageSuggestionSpec *)self isDashboardWidget], v19 == [(MapsUIImageSuggestionSpec *)v6 isDashboardWidget]) && (v20 = [(MapsUIImageSpec *)self nightMode], v20 == [(MapsUIImageSpec *)v6 nightMode]))
               {
-                v23 = [(MapsUIImageSuggestionSpec *)self contact];
-                v24 = [(MapsUIImageSuggestionSpec *)v6 contact];
-                v21 = v23 == v24;
+                contact = [(MapsUIImageSuggestionSpec *)self contact];
+                contact2 = [(MapsUIImageSuggestionSpec *)v6 contact];
+                v21 = contact == contact2;
               }
 
               else
@@ -161,7 +161,7 @@
                 v21 = 0;
               }
 
-              v14 = v25;
+              originBundleID = v25;
             }
 
             else
@@ -169,7 +169,7 @@
               v21 = 0;
             }
 
-            v12 = v26;
+            mapItemAttributes = v26;
           }
 
           else
@@ -204,99 +204,99 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setSuggestionType:{-[MapsUIImageSuggestionSpec suggestionType](self, "suggestionType")}];
-  v5 = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
-  [v4 setSuggestionAttributes:v5];
+  suggestionAttributes = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
+  [v4 setSuggestionAttributes:suggestionAttributes];
 
-  v6 = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
-  [v4 setMapItemAttributes:v6];
+  mapItemAttributes = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
+  [v4 setMapItemAttributes:mapItemAttributes];
 
-  v7 = [(MapsUIImageSuggestionSpec *)self originBundleID];
-  [v4 setOriginBundleID:v7];
+  originBundleID = [(MapsUIImageSuggestionSpec *)self originBundleID];
+  [v4 setOriginBundleID:originBundleID];
 
   [v4 setShowEVChargingIcon:{-[MapsUIImageSuggestionSpec showEVChargingIcon](self, "showEVChargingIcon")}];
   [v4 setShowOnboardingMultipleVehiclesIcon:{-[MapsUIImageSuggestionSpec showOnboardingMultipleVehiclesIcon](self, "showOnboardingMultipleVehiclesIcon")}];
   [v4 setInverted:{-[MapsUIImageSuggestionSpec inverted](self, "inverted")}];
   [v4 setIsDashboardWidget:{-[MapsUIImageSuggestionSpec isDashboardWidget](self, "isDashboardWidget")}];
   [v4 setNightMode:{-[MapsUIImageSpec nightMode](self, "nightMode")}];
-  v8 = [(MapsUIImageSuggestionSpec *)self uniqueIdentifier];
-  [v4 setUniqueIdentifier:v8];
+  uniqueIdentifier = [(MapsUIImageSuggestionSpec *)self uniqueIdentifier];
+  [v4 setUniqueIdentifier:uniqueIdentifier];
 
-  v9 = [(MapsUIImageSuggestionSpec *)self contact];
-  [v4 setContact:v9];
+  contact = [(MapsUIImageSuggestionSpec *)self contact];
+  [v4 setContact:contact];
 
   return v4;
 }
 
-- (id)imageForScale:(double)a3 isCarPlay:(BOOL)a4
+- (id)imageForScale:(double)scale isCarPlay:(BOOL)play
 {
-  v19 = [(MapsUIImageSuggestionSpec *)self suggestionType];
-  v6 = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
-  v7 = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
-  v8 = [(MapsUIImageSuggestionSpec *)self originBundleID];
-  v9 = [(MapsUIImageSuggestionSpec *)self showEVChargingIcon];
-  v10 = [(MapsUIImageSuggestionSpec *)self showOnboardingMultipleVehiclesIcon];
-  v11 = [(MapsUIImageSuggestionSpec *)self inverted];
-  v12 = [(MapsUIImageSuggestionSpec *)self isDashboardWidget];
-  v13 = [(MapsUIImageSpec *)self nightMode];
-  v14 = [(MapsUIImageSpec *)self isRTL];
-  v15 = [(MapsUIImageSuggestionSpec *)self contact];
-  BYTE3(v18) = v14;
-  BYTE2(v18) = v13;
-  BYTE1(v18) = v12;
-  LOBYTE(v18) = v11;
-  v16 = [MapsSuggestionsEntry iconForSuggestionType:"iconForSuggestionType:suggestionAttributes:mapItemAttributes:originBundleID:screenScale:showEVChargingIcon:showOnboardingMultipleVehiclesIcon:inverted:isDashboardWidget:nightMode:isRTL:contact:" suggestionAttributes:v19 mapItemAttributes:v6 originBundleID:v7 screenScale:v8 showEVChargingIcon:v9 showOnboardingMultipleVehiclesIcon:v10 inverted:a3 isDashboardWidget:v18 nightMode:v15 isRTL:? contact:?];
+  suggestionType = [(MapsUIImageSuggestionSpec *)self suggestionType];
+  suggestionAttributes = [(MapsUIImageSuggestionSpec *)self suggestionAttributes];
+  mapItemAttributes = [(MapsUIImageSuggestionSpec *)self mapItemAttributes];
+  originBundleID = [(MapsUIImageSuggestionSpec *)self originBundleID];
+  showEVChargingIcon = [(MapsUIImageSuggestionSpec *)self showEVChargingIcon];
+  showOnboardingMultipleVehiclesIcon = [(MapsUIImageSuggestionSpec *)self showOnboardingMultipleVehiclesIcon];
+  inverted = [(MapsUIImageSuggestionSpec *)self inverted];
+  isDashboardWidget = [(MapsUIImageSuggestionSpec *)self isDashboardWidget];
+  nightMode = [(MapsUIImageSpec *)self nightMode];
+  isRTL = [(MapsUIImageSpec *)self isRTL];
+  contact = [(MapsUIImageSuggestionSpec *)self contact];
+  BYTE3(v18) = isRTL;
+  BYTE2(v18) = nightMode;
+  BYTE1(v18) = isDashboardWidget;
+  LOBYTE(v18) = inverted;
+  v16 = [MapsSuggestionsEntry iconForSuggestionType:"iconForSuggestionType:suggestionAttributes:mapItemAttributes:originBundleID:screenScale:showEVChargingIcon:showOnboardingMultipleVehiclesIcon:inverted:isDashboardWidget:nightMode:isRTL:contact:" suggestionAttributes:suggestionType mapItemAttributes:suggestionAttributes originBundleID:mapItemAttributes screenScale:originBundleID showEVChargingIcon:showEVChargingIcon showOnboardingMultipleVehiclesIcon:showOnboardingMultipleVehiclesIcon inverted:scale isDashboardWidget:v18 nightMode:contact isRTL:? contact:?];
 
   return v16;
 }
 
-- (MapsUIImageSuggestionSpec)initWithFavorite:(id)a3
+- (MapsUIImageSuggestionSpec)initWithFavorite:(id)favorite
 {
-  v4 = a3;
+  favoriteCopy = favorite;
   v11.receiver = self;
   v11.super_class = MapsUIImageSuggestionSpec;
   v5 = [(MapsUIImageSuggestionSpec *)&v11 init];
   if (v5)
   {
-    -[MapsUIImageSuggestionSpec setSuggestionType:](v5, "setSuggestionType:", [v4 entryType]);
-    v6 = [v4 styleAttributes];
-    [(MapsUIImageSuggestionSpec *)v5 setSuggestionAttributes:v6];
+    -[MapsUIImageSuggestionSpec setSuggestionType:](v5, "setSuggestionType:", [favoriteCopy entryType]);
+    styleAttributes = [favoriteCopy styleAttributes];
+    [(MapsUIImageSuggestionSpec *)v5 setSuggestionAttributes:styleAttributes];
 
-    v7 = [v4 geoMapItem];
-    v8 = [v7 _styleAttributes];
-    [(MapsUIImageSuggestionSpec *)v5 setMapItemAttributes:v8];
+    geoMapItem = [favoriteCopy geoMapItem];
+    _styleAttributes = [geoMapItem _styleAttributes];
+    [(MapsUIImageSuggestionSpec *)v5 setMapItemAttributes:_styleAttributes];
 
     [(MapsUIImageSuggestionSpec *)v5 setIsDashboardWidget:0];
-    v9 = [v4 uniqueIdentifier];
-    [(MapsUIImageSuggestionSpec *)v5 setUniqueIdentifier:v9];
+    uniqueIdentifier = [favoriteCopy uniqueIdentifier];
+    [(MapsUIImageSuggestionSpec *)v5 setUniqueIdentifier:uniqueIdentifier];
   }
 
   return v5;
 }
 
-- (MapsUIImageSuggestionSpec)initWithSuggestion:(id)a3
+- (MapsUIImageSuggestionSpec)initWithSuggestion:(id)suggestion
 {
-  v4 = a3;
+  suggestionCopy = suggestion;
   v27.receiver = self;
   v27.super_class = MapsUIImageSuggestionSpec;
   v5 = [(MapsUIImageSuggestionSpec *)&v27 init];
   if (v5)
   {
-    -[MapsUIImageSuggestionSpec setSuggestionType:](v5, "setSuggestionType:", [v4 type]);
-    v6 = [v4 styleAttributes];
-    [(MapsUIImageSuggestionSpec *)v5 setSuggestionAttributes:v6];
+    -[MapsUIImageSuggestionSpec setSuggestionType:](v5, "setSuggestionType:", [suggestionCopy type]);
+    styleAttributes = [suggestionCopy styleAttributes];
+    [(MapsUIImageSuggestionSpec *)v5 setSuggestionAttributes:styleAttributes];
 
-    v7 = [v4 MKMapItem];
-    v8 = [v7 _styleAttributes];
-    [(MapsUIImageSuggestionSpec *)v5 setMapItemAttributes:v8];
+    mKMapItem = [suggestionCopy MKMapItem];
+    _styleAttributes = [mKMapItem _styleAttributes];
+    [(MapsUIImageSuggestionSpec *)v5 setMapItemAttributes:_styleAttributes];
 
-    v9 = [v4 stringForKey:@"MapsSuggestionsOriginBundleIDKey"];
+    v9 = [suggestionCopy stringForKey:@"MapsSuggestionsOriginBundleIDKey"];
     [(MapsUIImageSuggestionSpec *)v5 setOriginBundleID:v9];
 
-    v10 = v4;
+    v10 = suggestionCopy;
     if ([v10 type] == 11 && (objc_msgSend(v10, "BOOLeanForKey:is:", @"MapsSuggestionsHasEnoughChargeKey", 1) & 1) == 0)
     {
       v11 = [v10 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:1];
@@ -313,8 +313,8 @@
 
     [(MapsUIImageSuggestionSpec *)v5 setShowOnboardingMultipleVehiclesIcon:v13];
     [(MapsUIImageSuggestionSpec *)v5 setIsDashboardWidget:0];
-    v14 = [v12 uniqueIdentifier];
-    [(MapsUIImageSuggestionSpec *)v5 setUniqueIdentifier:v14];
+    uniqueIdentifier = [v12 uniqueIdentifier];
+    [(MapsUIImageSuggestionSpec *)v5 setUniqueIdentifier:uniqueIdentifier];
 
     if (*&v5->_inverted == 24)
     {
@@ -331,9 +331,9 @@
         v20 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [v18 localizedDescription];
+          localizedDescription = [v18 localizedDescription];
           *buf = 138412290;
-          v29 = v21;
+          v29 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Error unarchiving contact from entry: %@", buf, 0xCu);
         }
       }

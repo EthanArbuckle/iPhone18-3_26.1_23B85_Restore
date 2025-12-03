@@ -1,20 +1,20 @@
 @interface ASCLazy
-- (ASCLazy)initWithFactory:(id)a3;
+- (ASCLazy)initWithFactory:(id)factory;
 - (id)description;
 - (id)object;
 @end
 
 @implementation ASCLazy
 
-- (ASCLazy)initWithFactory:(id)a3
+- (ASCLazy)initWithFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v9.receiver = self;
   v9.super_class = ASCLazy;
   v5 = [(ASCLazy *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [factoryCopy copy];
     factory = v5->_factory;
     v5->_factory = v6;
 
@@ -26,17 +26,17 @@
 
 - (id)object
 {
-  v3 = [(ASCLazy *)self objectIfLoaded];
+  objectIfLoaded = [(ASCLazy *)self objectIfLoaded];
 
-  if (!v3)
+  if (!objectIfLoaded)
   {
     os_unfair_lock_lock(&self->_loadingGuard);
-    v4 = [(ASCLazy *)self objectIfLoaded];
+    objectIfLoaded2 = [(ASCLazy *)self objectIfLoaded];
 
-    if (!v4)
+    if (!objectIfLoaded2)
     {
-      v5 = [(ASCLazy *)self factory];
-      v6 = v5[2]();
+      factory = [(ASCLazy *)self factory];
+      v6 = factory[2]();
       [(ASCLazy *)self setObjectIfLoaded:v6];
     }
 
@@ -49,12 +49,12 @@
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCLazy *)self objectIfLoaded];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"object"];
+  objectIfLoaded = [(ASCLazy *)self objectIfLoaded];
+  [(ASCDescriber *)v3 addObject:objectIfLoaded withName:@"object"];
 
-  v5 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v5;
+  return finalizeDescription;
 }
 
 @end

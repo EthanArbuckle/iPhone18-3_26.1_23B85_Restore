@@ -1,21 +1,21 @@
 @interface AKBAATimeProvider
 + (id)sharedInstance;
 - (AKBAATimeProvider)init;
-- (BOOL)_shouldUpdateTimeConfigWithNewTime:(double)a3;
+- (BOOL)_shouldUpdateTimeConfigWithNewTime:(double)time;
 - (double)_adjustedEpoch;
-- (double)_calculateTimeUsingConfig:(id)a3;
-- (double)_epochFromServerTime:(id)a3;
+- (double)_calculateTimeUsingConfig:(id)config;
+- (double)_epochFromServerTime:(id)time;
 - (double)_systemEpochTime;
-- (id)_extractServerTimeFromResponseHeaders:(id)a3;
+- (id)_extractServerTimeFromResponseHeaders:(id)headers;
 - (id)adjustedDeviceTime;
 - (id)internalTimeInfo;
-- (unint64_t)addServerAdjustment:(id)a3;
+- (unint64_t)addServerAdjustment:(id)adjustment;
 - (void)_loadBAATimeConfig;
 - (void)_refreshAutomaticTimeState;
 - (void)_startListeningForAutomaticTimeStatusNotification;
 - (void)_stopListeningForAutomaticTimeStatusNotification;
 - (void)dealloc;
-- (void)updateTimeFromResponseHeaders:(id)a3;
+- (void)updateTimeFromResponseHeaders:(id)headers;
 @end
 
 @implementation AKBAATimeProvider
@@ -53,10 +53,10 @@
 
 - (double)_systemEpochTime
 {
-  v4 = [(AKBAATimeProvider *)self _currentSystemDate];
-  [v4 timeIntervalSince1970];
+  _currentSystemDate = [(AKBAATimeProvider *)self _currentSystemDate];
+  [_currentSystemDate timeIntervalSince1970];
   v5 = v2;
-  _objc_release(v4);
+  _objc_release(_currentSystemDate);
   return v5;
 }
 
@@ -88,17 +88,17 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKBAATimeProvider *)self _stopListeningForAutomaticTimeStatusNotification];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKBAATimeProvider;
   [(AKBAATimeProvider *)&v2 dealloc];
 }
 
 - (void)_loadBAATimeConfig
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v11 = +[AKConfiguration sharedConfiguration];
   v22[0] = [v11 configurationValueForKey:@"timeConfig" useDomain:1];
@@ -129,13 +129,13 @@
 
     else
     {
-      [(AKBAATimeProvider *)v23 _monotonicClock];
+      [(AKBAATimeProvider *)selfCopy _monotonicClock];
       v14[1] = v3;
       v7 = *&v3;
       [v19 lastLocalTimeInterval];
       if (v7 >= v4)
       {
-        objc_storeStrong(&v23->_baaTimeConfig, v19);
+        objc_storeStrong(&selfCopy->_baaTimeConfig, v19);
         v21 = 0;
       }
 
@@ -170,18 +170,18 @@
 
 - (double)_adjustedEpoch
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(AKBAATimeProvider *)self baaTimeConfig];
-  if ([(AKBAATimeProvider *)v6 automaticTimeState]!= 1 && location[0])
+  if ([(AKBAATimeProvider *)selfCopy automaticTimeState]!= 1 && location[0])
   {
-    [(AKBAATimeProvider *)v6 _calculateTimeUsingConfig:location[0]];
+    [(AKBAATimeProvider *)selfCopy _calculateTimeUsingConfig:location[0]];
     v7 = v3;
   }
 
   else
   {
-    [(AKBAATimeProvider *)v6 _systemEpochTime];
+    [(AKBAATimeProvider *)selfCopy _systemEpochTime];
     v7 = v2;
   }
 
@@ -191,24 +191,24 @@
 
 - (id)internalTimeInfo
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v9 = +[AKDevice currentDevice];
   v13[0] = [v9 bootSessionUUID];
   _objc_release(v9);
-  location = [(AKBAATimeProvider *)v14 baaTimeConfig];
+  location = [(AKBAATimeProvider *)selfCopy baaTimeConfig];
   if (location)
   {
-    [(AKBAATimeProvider *)v14 _systemEpochTime];
+    [(AKBAATimeProvider *)selfCopy _systemEpochTime];
     v10 = (v2 * 1000.0);
-    [(AKBAATimeProvider *)v14 _calculateTimeUsingConfig:location];
+    [(AKBAATimeProvider *)selfCopy _calculateTimeUsingConfig:location];
     v11 = v10 - (v3 * 1000.0);
-    v7 = [(AKBAATimeProvider *)v14 baaTimeConfig];
-    v6 = [(AKBAATimeConfig *)v7 bootSessionUUID];
+    baaTimeConfig = [(AKBAATimeProvider *)selfCopy baaTimeConfig];
+    bootSessionUUID = [(AKBAATimeConfig *)baaTimeConfig bootSessionUUID];
     v8 = [v13[0] isEqual:?];
-    _objc_release(v6);
-    _objc_release(v7);
-    v15 = [NSString stringWithFormat:@"ats:%li;diff:%lli;sameBoot:%i", [(AKBAATimeProvider *)v14 automaticTimeState], v11, v8 & 1];
+    _objc_release(bootSessionUUID);
+    _objc_release(baaTimeConfig);
+    v15 = [NSString stringWithFormat:@"ats:%li;diff:%lli;sameBoot:%i", [(AKBAATimeProvider *)selfCopy automaticTimeState], v11, v8 & 1];
   }
 
   else
@@ -223,40 +223,40 @@
   return v4;
 }
 
-- (void)updateTimeFromResponseHeaders:(id)a3
+- (void)updateTimeFromResponseHeaders:(id)headers
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(AKBAATimeProvider *)v5 _extractServerTimeFromResponseHeaders:location[0]];
-  [(AKBAATimeProvider *)v5 addServerAdjustment:v3];
+  objc_storeStrong(location, headers);
+  v3 = [(AKBAATimeProvider *)selfCopy _extractServerTimeFromResponseHeaders:location[0]];
+  [(AKBAATimeProvider *)selfCopy addServerAdjustment:v3];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)addServerAdjustment:(id)a3
+- (unint64_t)addServerAdjustment:(id)adjustment
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, adjustment);
   if (location[0])
   {
-    [(AKBAATimeProvider *)v30 _epochFromServerTime:location[0]];
+    [(AKBAATimeProvider *)selfCopy _epochFromServerTime:location[0]];
     v27 = v3;
     if (v3 >= 1704067200.0)
     {
-      if ([(AKBAATimeProvider *)v30 _shouldUpdateTimeConfigWithNewTime:v27])
+      if ([(AKBAATimeProvider *)selfCopy _shouldUpdateTimeConfigWithNewTime:v27])
       {
-        [(AKBAATimeProvider *)v30 _monotonicClock];
+        [(AKBAATimeProvider *)selfCopy _monotonicClock];
         v23 = v4;
         v9 = [AKBAATimeConfig alloc];
         v11 = +[AKDevice currentDevice];
-        v10 = [v11 bootSessionUUID];
+        bootSessionUUID = [v11 bootSessionUUID];
         v22 = [(AKBAATimeConfig *)v9 initWithServerTimeInterval:v27 localTimeInterval:v23 bootSessionUUID:?];
         _objc_release(0);
-        _objc_release(v10);
+        _objc_release(bootSessionUUID);
         _objc_release(v11);
         v21 = 0;
         v19 = 0;
@@ -281,7 +281,7 @@
         v6 = +[AKConfiguration sharedConfiguration];
         [v6 setDomainConfigurationValue:v20 forKey:@"timeConfig"];
         _objc_release(v6);
-        [(AKBAATimeProvider *)v30 setBaaTimeConfig:v22];
+        [(AKBAATimeProvider *)selfCopy setBaaTimeConfig:v22];
         oslog = _AKLogSystem();
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
@@ -332,12 +332,12 @@
   return v31;
 }
 
-- (id)_extractServerTimeFromResponseHeaders:(id)a3
+- (id)_extractServerTimeFromResponseHeaders:(id)headers
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v7 = [location[0] objectForKeyedSubscript:AKHTTPResponseHeaderServerTimeKey];
   if (![v7 length])
   {
@@ -354,18 +354,18 @@
   return v6;
 }
 
-- (double)_epochFromServerTime:(id)a3
+- (double)_epochFromServerTime:(id)time
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, time);
   if ([location[0] length])
   {
-    v7 = [location[0] ak_numberObject];
-    if (v7)
+    ak_numberObject = [location[0] ak_numberObject];
+    if (ak_numberObject)
     {
-      v6 = [v7 longLongValue] / 1000;
+      v6 = [ak_numberObject longLongValue] / 1000;
       v10 = v6;
       v8 = 1;
     }
@@ -385,7 +385,7 @@
       objc_storeStrong(&v5, 0);
     }
 
-    objc_storeStrong(&v7, 0);
+    objc_storeStrong(&ak_numberObject, 0);
   }
 
   else
@@ -413,15 +413,15 @@
   objc_storeStrong(v8, 0);
 }
 
-- (double)_calculateTimeUsingConfig:(id)a3
+- (double)_calculateTimeUsingConfig:(id)config
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, config);
   if (location[0])
   {
-    [(AKBAATimeProvider *)v10 _monotonicClock];
+    [(AKBAATimeProvider *)selfCopy _monotonicClock];
     v8 = v3;
     [location[0] lastServerTimeInterval];
     v7 = v4;
@@ -438,24 +438,24 @@
   return v11;
 }
 
-- (BOOL)_shouldUpdateTimeConfigWithNewTime:(double)a3
+- (BOOL)_shouldUpdateTimeConfigWithNewTime:(double)time
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v27 = *&a3;
-  v26 = [(AKBAATimeProvider *)self baaTimeConfig];
-  if (v26)
+  v27 = *&time;
+  baaTimeConfig = [(AKBAATimeProvider *)self baaTimeConfig];
+  if (baaTimeConfig)
   {
-    v9 = [v26 bootSessionUUID];
+    bootSessionUUID = [baaTimeConfig bootSessionUUID];
     v8 = +[AKDevice currentDevice];
-    v7 = [v8 bootSessionUUID];
-    v10 = [v9 isEqual:?];
-    _objc_release(v7);
+    bootSessionUUID2 = [v8 bootSessionUUID];
+    v10 = [bootSessionUUID isEqual:?];
+    _objc_release(bootSessionUUID2);
     _objc_release(v8);
-    _objc_release(v9);
+    _objc_release(bootSessionUUID);
     if (v10)
     {
-      [(AKBAATimeProvider *)v29 _calculateTimeUsingConfig:v26];
+      [(AKBAATimeProvider *)selfCopy _calculateTimeUsingConfig:baaTimeConfig];
       v18 = *&v3;
       v17 = vabdd_f64(*&v27, v3);
       oslog = _AKLogSystem();
@@ -519,13 +519,13 @@
     v22 = 1;
   }
 
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&baaTimeConfig, 0);
   return v30 & 1;
 }
 
 - (void)_startListeningForAutomaticTimeStatusNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -539,12 +539,12 @@
 
   objc_storeStrong(location, 0);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, v8, sub_100181738, TMLocationTimeZoneActiveNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, selfCopy, sub_100181738, TMLocationTimeZoneActiveNotification, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
 - (void)_stopListeningForAutomaticTimeStatusNotification
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -558,7 +558,7 @@
 
   objc_storeStrong(location, 0);
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, v8, TMLocationTimeZoneActiveNotification, 0);
+  CFNotificationCenterRemoveObserver(DarwinNotifyCenter, selfCopy, TMLocationTimeZoneActiveNotification, 0);
 }
 
 @end

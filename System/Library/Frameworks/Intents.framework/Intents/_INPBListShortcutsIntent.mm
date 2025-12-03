@@ -1,15 +1,15 @@
 @interface _INPBListShortcutsIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBListShortcutsIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBListShortcutsIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsOriginDevice:(id)a3;
+- (int)StringAsOriginDevice:(id)device;
 - (unint64_t)hash;
-- (void)addAppTitle:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppTitles:(id)a3;
-- (void)setOriginDevice:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppTitle:(id)title;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppTitles:(id)titles;
+- (void)setOriginDevice:(int)device;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBListShortcutsIntent
@@ -17,10 +17,10 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_appTitles count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -40,8 +40,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -50,32 +50,32 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"appTitle"];
+    [dictionary setObject:array forKeyedSubscript:@"appTitle"];
   }
 
-  v11 = [(_INPBListShortcutsIntent *)self intentMetadata];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBListShortcutsIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBListShortcutsIntent *)self hasOriginDevice])
   {
-    v13 = [(_INPBListShortcutsIntent *)self originDevice];
-    if ((v13 - 1) >= 7)
+    originDevice = [(_INPBListShortcutsIntent *)self originDevice];
+    if ((originDevice - 1) >= 7)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v13];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", originDevice];
     }
 
     else
     {
-      v14 = *(&off_1E7287540 + (v13 - 1));
+      v14 = *(&off_1E7287540 + (originDevice - 1));
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"originDevice"];
+    [dictionary setObject:v14 forKeyedSubscript:@"originDevice"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,28 +95,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBListShortcutsIntent *)self appTitles];
-  v6 = [v4 appTitles];
-  if ((v5 != 0) == (v6 == 0))
+  appTitles = [(_INPBListShortcutsIntent *)self appTitles];
+  appTitles2 = [equalCopy appTitles];
+  if ((appTitles != 0) == (appTitles2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBListShortcutsIntent *)self appTitles];
-  if (v7)
+  appTitles3 = [(_INPBListShortcutsIntent *)self appTitles];
+  if (appTitles3)
   {
-    v8 = v7;
-    v9 = [(_INPBListShortcutsIntent *)self appTitles];
-    v10 = [v4 appTitles];
-    v11 = [v9 isEqual:v10];
+    v8 = appTitles3;
+    appTitles4 = [(_INPBListShortcutsIntent *)self appTitles];
+    appTitles5 = [equalCopy appTitles];
+    v11 = [appTitles4 isEqual:appTitles5];
 
     if (!v11)
     {
@@ -128,22 +128,22 @@
   {
   }
 
-  v5 = [(_INPBListShortcutsIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  appTitles = [(_INPBListShortcutsIntent *)self intentMetadata];
+  appTitles2 = [equalCopy intentMetadata];
+  if ((appTitles != 0) == (appTitles2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(_INPBListShortcutsIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBListShortcutsIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBListShortcutsIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBListShortcutsIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -155,10 +155,10 @@ LABEL_11:
   {
   }
 
-  v19 = [(_INPBListShortcutsIntent *)self hasOriginDevice];
-  if (v19 == [v4 hasOriginDevice])
+  hasOriginDevice = [(_INPBListShortcutsIntent *)self hasOriginDevice];
+  if (hasOriginDevice == [equalCopy hasOriginDevice])
   {
-    if (!-[_INPBListShortcutsIntent hasOriginDevice](self, "hasOriginDevice") || ![v4 hasOriginDevice] || (originDevice = self->_originDevice, originDevice == objc_msgSend(v4, "originDevice")))
+    if (!-[_INPBListShortcutsIntent hasOriginDevice](self, "hasOriginDevice") || ![equalCopy hasOriginDevice] || (originDevice = self->_originDevice, originDevice == objc_msgSend(equalCopy, "originDevice")))
     {
       v17 = 1;
       goto LABEL_13;
@@ -172,13 +172,13 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBListShortcutsIntent allocWithZone:](_INPBListShortcutsIntent init];
-  v6 = [(NSArray *)self->_appTitles copyWithZone:a3];
+  v6 = [(NSArray *)self->_appTitles copyWithZone:zone];
   [(_INPBListShortcutsIntent *)v5 setAppTitles:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBListShortcutsIntent *)v5 setIntentMetadata:v7];
 
   if ([(_INPBListShortcutsIntent *)self hasOriginDevice])
@@ -189,34 +189,34 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBListShortcutsIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBListShortcutsIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBListShortcutsIntent)initWithCoder:(id)a3
+- (_INPBListShortcutsIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBListShortcutsIntent *)self initWithData:v6];
+    self = [(_INPBListShortcutsIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -249,11 +249,11 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBListShortcutsIntent *)self intentMetadata];
+  intentMetadata = [(_INPBListShortcutsIntent *)self intentMetadata];
 
-  if (v11)
+  if (intentMetadata)
   {
-    v12 = [(_INPBListShortcutsIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBListShortcutsIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -266,40 +266,40 @@ LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsOriginDevice:(id)a3
+- (int)StringAsOriginDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHONE"])
+  deviceCopy = device;
+  if ([deviceCopy isEqualToString:@"PHONE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PAD"])
+  else if ([deviceCopy isEqualToString:@"PAD"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WATCH"])
+  else if ([deviceCopy isEqualToString:@"WATCH"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HOME_POD"])
+  else if ([deviceCopy isEqualToString:@"HOME_POD"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CARPLAY"])
+  else if ([deviceCopy isEqualToString:@"CARPLAY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"APPLE_TV"])
+  else if ([deviceCopy isEqualToString:@"APPLE_TV"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MAC"])
+  else if ([deviceCopy isEqualToString:@"MAC"])
   {
     v4 = 7;
   }
@@ -312,10 +312,10 @@ LABEL_13:
   return v4;
 }
 
-- (void)setOriginDevice:(int)a3
+- (void)setOriginDevice:(int)device
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (device == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -323,31 +323,31 @@ LABEL_13:
   else
   {
     *&self->_has = has | 1;
-    self->_originDevice = a3;
+    self->_originDevice = device;
   }
 }
 
-- (void)addAppTitle:(id)a3
+- (void)addAppTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   appTitles = self->_appTitles;
-  v8 = v4;
+  v8 = titleCopy;
   if (!appTitles)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_appTitles;
-    self->_appTitles = v6;
+    self->_appTitles = array;
 
-    v4 = v8;
+    titleCopy = v8;
     appTitles = self->_appTitles;
   }
 
-  [(NSArray *)appTitles addObject:v4];
+  [(NSArray *)appTitles addObject:titleCopy];
 }
 
-- (void)setAppTitles:(id)a3
+- (void)setAppTitles:(id)titles
 {
-  v4 = [a3 mutableCopy];
+  v4 = [titles mutableCopy];
   appTitles = self->_appTitles;
   self->_appTitles = v4;
 

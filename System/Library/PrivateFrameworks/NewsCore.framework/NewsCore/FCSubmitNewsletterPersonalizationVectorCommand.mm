@@ -1,60 +1,60 @@
 @interface FCSubmitNewsletterPersonalizationVectorCommand
-- (FCSubmitNewsletterPersonalizationVectorCommand)initWithCoder:(id)a3;
-- (FCSubmitNewsletterPersonalizationVectorCommand)initWithPersonalizationVector:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
+- (FCSubmitNewsletterPersonalizationVectorCommand)initWithCoder:(id)coder;
+- (FCSubmitNewsletterPersonalizationVectorCommand)initWithPersonalizationVector:(id)vector;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
 @end
 
 @implementation FCSubmitNewsletterPersonalizationVectorCommand
 
-- (FCSubmitNewsletterPersonalizationVectorCommand)initWithPersonalizationVector:(id)a3
+- (FCSubmitNewsletterPersonalizationVectorCommand)initWithPersonalizationVector:(id)vector
 {
-  v5 = a3;
+  vectorCopy = vector;
   v9.receiver = self;
   v9.super_class = FCSubmitNewsletterPersonalizationVectorCommand;
   v6 = [(FCSubmitNewsletterPersonalizationVectorCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personalizationVector, a3);
+    objc_storeStrong(&v6->_personalizationVector, vector);
   }
 
   return v7;
 }
 
-- (FCSubmitNewsletterPersonalizationVectorCommand)initWithCoder:(id)a3
+- (FCSubmitNewsletterPersonalizationVectorCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kPersonalizationVectorKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kPersonalizationVectorKey"];
 
   v6 = [(FCSubmitNewsletterPersonalizationVectorCommand *)self initWithPersonalizationVector:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCSubmitNewsletterPersonalizationVectorCommand *)self personalizationVector];
-  [v4 encodeObject:v5 forKey:@"kPersonalizationVectorKey"];
+  coderCopy = coder;
+  personalizationVector = [(FCSubmitNewsletterPersonalizationVectorCommand *)self personalizationVector];
+  [coderCopy encodeObject:personalizationVector forKey:@"kPersonalizationVectorKey"];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 newsletterEndpointConnection];
+  contextCopy = context;
+  delegateCopy = delegate;
+  newsletterEndpointConnection = [contextCopy newsletterEndpointConnection];
   personalizationVector = self->_personalizationVector;
   v11 = dispatch_get_global_queue(-2, 0);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __95__FCSubmitNewsletterPersonalizationVectorCommand_executeWithContext_delegate_qualityOfService___block_invoke;
   v14[3] = &unk_1E7C3CA10;
-  v15 = v8;
-  v16 = self;
-  v17 = v7;
-  v12 = v7;
-  v13 = v8;
-  [v9 submitPersonalizationVector:personalizationVector withCallbackQueue:v11 completion:v14];
+  v15 = delegateCopy;
+  selfCopy = self;
+  v17 = contextCopy;
+  v12 = contextCopy;
+  v13 = delegateCopy;
+  [newsletterEndpointConnection submitPersonalizationVector:personalizationVector withCallbackQueue:v11 completion:v14];
 }
 
 void __95__FCSubmitNewsletterPersonalizationVectorCommand_executeWithContext_delegate_qualityOfService___block_invoke(uint64_t a1, int a2, void *a3, void *a4, void *a5, void *a6)

@@ -1,7 +1,7 @@
 @interface PrivacyTypeCollectionViewCell
 - (NSArray)accessibilityCategoryViews;
 - (void)layoutSubviews;
-- (void)lowMemoryWarning:(id)a3;
+- (void)lowMemoryWarning:(id)warning;
 - (void)prepareForReuse;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100362738();
 }
 
@@ -30,7 +30,7 @@
   sub_1003617FC();
 }
 
-- (void)lowMemoryWarning:(id)a3
+- (void)lowMemoryWarning:(id)warning
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -38,7 +38,7 @@
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
   swift_beginAccess();
-  v8 = self;
+  selfCopy = self;
   sub_10002849C(&qword_1009813A0);
   ReusePool.drain()();
   swift_endAccess();

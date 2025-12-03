@@ -1,18 +1,18 @@
 @interface HMMediaProfile
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMAccessorySettings)settings;
 - (HMHome)containerHome;
 - (HMMediaProfile)init;
-- (HMMediaProfile)initWithMediaProfile:(id)a3;
+- (HMMediaProfile)initWithMediaProfile:(id)profile;
 - (HMMediaProfileDelegate)delegate;
 - (HMMediaSession)mediaSession;
 - (NSString)routeUID;
 - (NSUUID)containerUUID;
 - (unint64_t)capability;
-- (void)fetchAccessorySleepWakeStateWithCompletion:(id)a3;
-- (void)mediaProfile:(id)a3 didUpdateMediaSession:(id)a4;
-- (void)refreshStateWithCompletionHandler:(id)a3;
-- (void)setCapability:(unint64_t)a3;
+- (void)fetchAccessorySleepWakeStateWithCompletion:(id)completion;
+- (void)mediaProfile:(id)profile didUpdateMediaSession:(id)session;
+- (void)refreshStateWithCompletionHandler:(id)handler;
+- (void)setCapability:(unint64_t)capability;
 @end
 
 @implementation HMMediaProfile
@@ -30,14 +30,14 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
   return WeakRetained;
 }
 
-- (void)refreshStateWithCompletionHandler:(id)a3
+- (void)refreshStateWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -52,18 +52,18 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
     objc_exception_throw(v18);
   }
 
-  v5 = v4;
-  v6 = [(HMMediaProfile *)self mediaSession];
-  v7 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  mediaSession = [(HMMediaProfile *)self mediaSession];
+  v7 = mediaSession;
+  if (mediaSession)
   {
-    [v6 refreshPlaybackStateWithCompletionHandler:v5];
+    [mediaSession refreshPlaybackStateWithCompletionHandler:v5];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -81,13 +81,13 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -99,12 +99,12 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 mediaSession];
-    v9 = [(HMMediaProfile *)self mediaSession];
-    v10 = [v9 mergeFromNewObject:v8];
+    mediaSession = [v6 mediaSession];
+    mediaSession2 = [(HMMediaProfile *)self mediaSession];
+    v10 = [mediaSession2 mergeFromNewObject:mediaSession];
 
-    v11 = [(HMMediaProfile *)self capability];
-    if (v11 != [v7 capability])
+    capability = [(HMMediaProfile *)self capability];
+    if (capability != [v7 capability])
     {
       -[HMMediaProfile setCapability:](self, "setCapability:", [v7 capability]);
       v10 = 1;
@@ -119,15 +119,15 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
   return v10;
 }
 
-- (void)fetchAccessorySleepWakeStateWithCompletion:(id)a3
+- (void)fetchAccessorySleepWakeStateWithCompletion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMMediaProfile fetchAccessorySleepWakeStateWithCompletion:]", @"completion"];
     v31 = objc_autoreleasePoolPush();
-    v32 = self;
+    selfCopy = self;
     v33 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
@@ -144,37 +144,37 @@ void __56___HMMediaProfile__notifyDelegateOfUpdatedMediaSession___block_invoke(u
     objc_exception_throw(v35);
   }
 
-  v5 = v4;
-  v6 = [(HMAccessoryProfile *)self accessory];
-  if (v6)
+  v5 = completionCopy;
+  accessory = [(HMAccessoryProfile *)self accessory];
+  if (accessory)
   {
-    v7 = [(HMAccessoryProfile *)self accessoryProfile];
-    v8 = [v7 context];
+    accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
+    context = [accessoryProfile context];
 
-    v9 = [v8 messageDispatcher];
-    if (v9)
+    messageDispatcher = [context messageDispatcher];
+    if (messageDispatcher)
     {
-      v10 = [v6 category];
-      v11 = [v10 categoryType];
-      v12 = [v11 isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
+      category = [accessory category];
+      categoryType = [category categoryType];
+      v12 = [categoryType isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"];
 
       if (v12)
       {
         v13 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v14 = [v6 messageTargetUUID];
-        v15 = [v13 initWithTarget:v14];
+        messageTargetUUID = [accessory messageTargetUUID];
+        v15 = [v13 initWithTarget:messageTargetUUID];
 
         v16 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMFetchAppleMediaAccessorySleepWakeStateMessage" destination:v15 payload:0];
         v36[0] = MEMORY[0x1E69E9820];
         v36[1] = 3221225472;
         v36[2] = __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_invoke;
         v36[3] = &unk_1E754E480;
-        v37 = v8;
-        v38 = self;
+        v37 = context;
+        selfCopy2 = self;
         v39 = v5;
         [v16 setResponseHandler:v36];
         v17 = [v16 copy];
-        [v9 sendMessage:v17];
+        [messageDispatcher sendMessage:v17];
 
 LABEL_14:
         goto LABEL_15;
@@ -187,7 +187,7 @@ LABEL_14:
     else
     {
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy3 = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -195,7 +195,7 @@ LABEL_14:
         *buf = 138543618;
         v41 = v25;
         v42 = 2112;
-        v43 = v8;
+        v43 = context;
         _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch sleep wake state due to no message dispatcher given by context: %@", buf, 0x16u);
       }
 
@@ -211,7 +211,7 @@ LABEL_14:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy4 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
@@ -222,8 +222,8 @@ LABEL_14:
   }
 
   objc_autoreleasePoolPop(v18);
-  v8 = [MEMORY[0x1E696ABC0] hmErrorWithCode:21];
-  (v5)[2](v5, 0, v8);
+  context = [MEMORY[0x1E696ABC0] hmErrorWithCode:21];
+  (v5)[2](v5, 0, context);
 LABEL_15:
 
   v29 = *MEMORY[0x1E69E9840];
@@ -323,19 +323,19 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mediaProfile:(id)a3 didUpdateMediaSession:(id)a4
+- (void)mediaProfile:(id)profile didUpdateMediaSession:(id)session
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMediaProfile *)self delegate];
+  profileCopy = profile;
+  sessionCopy = session;
+  delegate = [(HMMediaProfile *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(HMMediaProfile *)self delegate];
+    delegate2 = [(HMMediaProfile *)self delegate];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -343,29 +343,29 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
       *buf = 138543618;
       v52 = v14;
       v53 = 2112;
-      v54 = v7;
+      v54 = sessionCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Notifying client of updated media session: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v11);
-    v15 = [(HMAccessoryProfile *)v12 accessoryProfile];
-    v16 = [v15 context];
-    v17 = [v16 delegateCaller];
+    accessoryProfile = [(HMAccessoryProfile *)selfCopy accessoryProfile];
+    context = [accessoryProfile context];
+    delegateCaller = [context delegateCaller];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __53__HMMediaProfile_mediaProfile_didUpdateMediaSession___block_invoke;
     v46[3] = &unk_1E754E5E8;
-    v47 = v10;
-    v48 = v12;
-    v49 = v7;
-    v18 = v10;
-    [v17 invokeBlock:v46];
+    v47 = delegate2;
+    v48 = selfCopy;
+    v49 = sessionCopy;
+    v18 = delegate2;
+    [delegateCaller invokeBlock:v46];
   }
 
-  v19 = [(HMMediaProfile *)self delegate];
-  if ([v19 conformsToProtocol:&unk_1F0F5C670])
+  delegate3 = [(HMMediaProfile *)self delegate];
+  if ([delegate3 conformsToProtocol:&unk_1F0F5C670])
   {
-    v20 = v19;
+    v20 = delegate3;
   }
 
   else
@@ -378,7 +378,7 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
   if (objc_opt_respondsToSelector())
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -386,33 +386,33 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
       *buf = 138543618;
       v52 = v25;
       v53 = 2112;
-      v54 = v7;
+      v54 = sessionCopy;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_INFO, "%{public}@Notifying media object of updated media session: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v26 = [(HMAccessoryProfile *)v23 accessoryProfile];
-    v27 = [v26 context];
-    v28 = [v27 delegateCaller];
+    accessoryProfile2 = [(HMAccessoryProfile *)selfCopy2 accessoryProfile];
+    context2 = [accessoryProfile2 context];
+    delegateCaller2 = [context2 delegateCaller];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __53__HMMediaProfile_mediaProfile_didUpdateMediaSession___block_invoke_65;
     v42[3] = &unk_1E754E5E8;
     v43 = v21;
-    v44 = v23;
-    v45 = v7;
-    [v28 invokeBlock:v42];
+    v44 = selfCopy2;
+    v45 = sessionCopy;
+    [delegateCaller2 invokeBlock:v42];
   }
 
-  v29 = [(HMAccessoryProfile *)self accessory];
-  v30 = [v29 home];
-  v31 = [v30 mediaSystems];
+  accessory = [(HMAccessoryProfile *)self accessory];
+  home = [accessory home];
+  mediaSystems = [home mediaSystems];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v32 = v31;
+  v32 = mediaSystems;
   v33 = [v32 countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v33)
   {
@@ -428,7 +428,7 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
           objc_enumerationMutation(v32);
         }
 
-        [*(*(&v38 + 1) + 8 * v36++) updateMediaSession:v7 forMediaProfile:{self, v38}];
+        [*(*(&v38 + 1) + 8 * v36++) updateMediaSession:sessionCopy forMediaProfile:{self, v38}];
       }
 
       while (v34 != v36);
@@ -443,11 +443,11 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
 - (NSUUID)containerUUID
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -457,20 +457,20 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v4 = v3;
 
-  v5 = [v4 accessory];
+  accessory = [v4 accessory];
 
-  v6 = [v5 uuid];
+  uuid = [accessory uuid];
 
-  return v6;
+  return uuid;
 }
 
 - (HMHome)containerHome
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -480,20 +480,20 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v4 = v3;
 
-  v5 = [v4 accessory];
+  accessory = [v4 accessory];
 
-  v6 = [v5 containerHome];
+  containerHome = [accessory containerHome];
 
-  return v6;
+  return containerHome;
 }
 
-- (void)setCapability:(unint64_t)a3
+- (void)setCapability:(unint64_t)capability
 {
-  v4 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = accessoryProfile;
   }
 
   else
@@ -503,16 +503,16 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v6 = v5;
 
-  [v6 setCapability:a3];
+  [v6 setCapability:capability];
 }
 
 - (unint64_t)capability
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -522,17 +522,17 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v4 = v3;
 
-  v5 = [v4 capability];
-  return v5;
+  capability = [v4 capability];
+  return capability;
 }
 
 - (NSString)routeUID
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -542,18 +542,18 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v4 = v3;
 
-  v5 = [v4 routeUID];
+  routeUID = [v4 routeUID];
 
-  return v5;
+  return routeUID;
 }
 
 - (HMMediaSession)mediaSession
 {
-  v2 = [(HMAccessoryProfile *)self accessoryProfile];
+  accessoryProfile = [(HMAccessoryProfile *)self accessoryProfile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = accessoryProfile;
   }
 
   else
@@ -563,28 +563,28 @@ void __61__HMMediaProfile_fetchAccessorySleepWakeStateWithCompletion___block_inv
 
   v4 = v3;
 
-  v5 = [v4 mediaSession];
+  mediaSession = [v4 mediaSession];
 
-  return v5;
+  return mediaSession;
 }
 
 - (HMAccessorySettings)settings
 {
-  v2 = [(HMAccessoryProfile *)self accessory];
-  v3 = [v2 settings];
+  accessory = [(HMAccessoryProfile *)self accessory];
+  settings = [accessory settings];
 
-  return v3;
+  return settings;
 }
 
-- (HMMediaProfile)initWithMediaProfile:(id)a3
+- (HMMediaProfile)initWithMediaProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v7.receiver = self;
   v7.super_class = HMMediaProfile;
-  v5 = [(HMAccessoryProfile *)&v7 initWithAccessoryProfile:v4];
+  v5 = [(HMAccessoryProfile *)&v7 initWithAccessoryProfile:profileCopy];
   if (v5)
   {
-    [v4 setDelegate:v5];
+    [profileCopy setDelegate:v5];
   }
 
   return v5;

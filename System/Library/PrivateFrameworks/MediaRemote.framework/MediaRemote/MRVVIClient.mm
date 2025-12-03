@@ -1,9 +1,9 @@
 @interface MRVVIClient
 + (id)sharedClient;
 - (MRVVIClient)init;
-- (void)_recordingStateChangedNotification:(id)a3;
+- (void)_recordingStateChangedNotification:(id)notification;
 - (void)dealloc;
-- (void)setRecordingStateCallback:(id)a3 forDeviceID:(unsigned int)a4;
+- (void)setRecordingStateCallback:(id)callback forDeviceID:(unsigned int)d;
 @end
 
 @implementation MRVVIClient
@@ -43,8 +43,8 @@ void __27__MRVVIClient_sharedClient__block_invoke()
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v6;
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v2 selector:sel__recordingStateChangedNotification_ name:@"kMRVirtualVoiceInputRecordingStateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__recordingStateChangedNotification_ name:@"kMRVirtualVoiceInputRecordingStateDidChangeNotification" object:0];
   }
 
   return v2;
@@ -52,17 +52,17 @@ void __27__MRVVIClient_sharedClient__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRVVIClient;
   [(MRVVIClient *)&v4 dealloc];
 }
 
-- (void)setRecordingStateCallback:(id)a3 forDeviceID:(unsigned int)a4
+- (void)setRecordingStateCallback:(id)callback forDeviceID:(unsigned int)d
 {
-  v6 = [a3 copy];
+  v6 = [callback copy];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -70,7 +70,7 @@ void __27__MRVVIClient_sharedClient__block_invoke()
   block[3] = &unk_1E769BD70;
   block[4] = self;
   v10 = v6;
-  v11 = a4;
+  dCopy = d;
   v8 = v6;
   dispatch_sync(serialQueue, block);
 }
@@ -93,17 +93,17 @@ void __53__MRVVIClient_setRecordingStateCallback_forDeviceID___block_invoke(uint
   }
 }
 
-- (void)_recordingStateChangedNotification:(id)a3
+- (void)_recordingStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__42;
   v18 = __Block_byref_object_dispose__42;
   v19 = 0;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"kMRVirtualVoiceInputDeviceIDUserInfoKey"];
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"kMRVirtualVoiceInputDeviceIDUserInfoKey"];
 
   if (v6)
   {
@@ -120,11 +120,11 @@ void __53__MRVVIClient_setRecordingStateCallback_forDeviceID___block_invoke(uint
 
   if (v15[5])
   {
-    v8 = [v4 userInfo];
-    v9 = [v8 objectForKey:@"kMRVirtualVoiceInputRecordingStateUserInfoKey"];
-    v10 = [v9 unsignedIntValue];
+    userInfo2 = [notificationCopy userInfo];
+    v9 = [userInfo2 objectForKey:@"kMRVirtualVoiceInputRecordingStateUserInfoKey"];
+    unsignedIntValue = [v9 unsignedIntValue];
 
-    (*(v15[5] + 16))(v15[5], [v6 unsignedIntValue], v10);
+    (*(v15[5] + 16))(v15[5], [v6 unsignedIntValue], unsignedIntValue);
   }
 
   _Block_object_dispose(&v14, 8);

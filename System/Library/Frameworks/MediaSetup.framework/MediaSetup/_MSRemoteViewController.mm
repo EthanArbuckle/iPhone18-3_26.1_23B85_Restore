@@ -7,8 +7,8 @@
 
 - (void)requestDismiss
 {
-  v2 = [(_MSRemoteViewController *)self host];
-  [v2 requestDismiss];
+  host = [(_MSRemoteViewController *)self host];
+  [host requestDismiss];
 }
 
 - (MSViewServiceHostProtocol)host

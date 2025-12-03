@@ -1,17 +1,17 @@
 @interface TSUTemporaryDocumentCacheManager
 + (id)baseDirectoryURL;
 + (id)sharedManager;
-- (id)newDirectoryForDocumentUUID:(id)a3;
-- (id)newDirectoryWithFilename:(id)a3;
+- (id)newDirectoryForDocumentUUID:(id)d;
+- (id)newDirectoryWithFilename:(id)filename;
 @end
 
 @implementation TSUTemporaryDocumentCacheManager
 
 + (id)baseDirectoryURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = 0;
-  v3 = [v2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v6];
+  v3 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v6];
 
   if (v3)
   {
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = sub_2770BCD84;
   block[3] = &unk_27A701A20;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A63D70 != -1)
   {
     dispatch_once(&qword_280A63D70, block);
@@ -48,19 +48,19 @@
   return v2;
 }
 
-- (id)newDirectoryForDocumentUUID:(id)a3
+- (id)newDirectoryForDocumentUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  v5 = [(TSUTemporaryDocumentCacheManager *)self newDirectoryWithFilename:v4];
+  uUIDString = [d UUIDString];
+  v5 = [(TSUTemporaryDocumentCacheManager *)self newDirectoryWithFilename:uUIDString];
 
   return v5;
 }
 
-- (id)newDirectoryWithFilename:(id)a3
+- (id)newDirectoryWithFilename:(id)filename
 {
   v4.receiver = self;
   v4.super_class = TSUTemporaryDocumentCacheManager;
-  return [(TSUTemporaryDirectoryManager *)&v4 newDirectoryWithFilename:a3];
+  return [(TSUTemporaryDirectoryManager *)&v4 newDirectoryWithFilename:filename];
 }
 
 @end

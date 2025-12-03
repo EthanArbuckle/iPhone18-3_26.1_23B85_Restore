@@ -1,29 +1,29 @@
 @interface VCPProtoLivePhotoKeyFrameResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)addFaceResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGlobalQualityScore:(BOOL)a3;
-- (void)setHasThumbnailScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFaceResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGlobalQualityScore:(BOOL)score;
+- (void)setHasThumbnailScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoKeyFrameResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"attributes"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     if (v5)
     {
       v6 = objc_alloc_init(VCPProtoLivePhotoKeyFrameResult);
@@ -119,14 +119,14 @@
 - (id)exportToLegacyDictionary
 {
   v40[10] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; [(VCPProtoLivePhotoKeyFrameResult *)self faceResultsCount]> i; ++i)
   {
-    v5 = [(VCPProtoLivePhotoKeyFrameResult *)self faceResults];
-    v6 = [v5 objectAtIndex:i];
+    faceResults = [(VCPProtoLivePhotoKeyFrameResult *)self faceResults];
+    v6 = [faceResults objectAtIndex:i];
 
-    v7 = [v6 exportToLegacyDictionary];
-    [v3 addObject:v7];
+    exportToLegacyDictionary = [v6 exportToLegacyDictionary];
+    [array addObject:exportToLegacyDictionary];
   }
 
   v8 = MEMORY[0x1E695DF90];
@@ -176,7 +176,7 @@
   v22 = [v21 numberWithFloat:?];
   v39[9] = @"FaceResults";
   v40[8] = v22;
-  v40[9] = v3;
+  v40[9] = array;
   v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:10];
   v24 = [v8 dictionaryWithDictionary:v23];
 
@@ -211,27 +211,27 @@
   return v31;
 }
 
-- (void)addFaceResults:(id)a3
+- (void)addFaceResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   faceResults = self->_faceResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!faceResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_faceResults;
     self->_faceResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     faceResults = self->_faceResults;
   }
 
-  [(NSMutableArray *)faceResults addObject:v4];
+  [(NSMutableArray *)faceResults addObject:resultsCopy];
 }
 
-- (void)setHasGlobalQualityScore:(BOOL)a3
+- (void)setHasGlobalQualityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }
@@ -244,9 +244,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasThumbnailScore:(BOOL)a3
+- (void)setHasThumbnailScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -265,8 +265,8 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoKeyFrameResult;
   v4 = [(VCPProtoLivePhotoKeyFrameResult *)&v8 description];
-  v5 = [(VCPProtoLivePhotoKeyFrameResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoKeyFrameResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -274,37 +274,37 @@
 - (id)dictionaryRepresentation
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-  [v3 setObject:v4 forKey:@"timestamp"];
+  [dictionary setObject:v4 forKey:@"timestamp"];
 
   *&v5 = self->_qualityScoreForLivePhoto;
   v6 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
-  [v3 setObject:v6 forKey:@"qualityScoreForLivePhoto"];
+  [dictionary setObject:v6 forKey:@"qualityScoreForLivePhoto"];
 
   *&v7 = self->_visualPleasingScore;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-  [v3 setObject:v8 forKey:@"visualPleasingScore"];
+  [dictionary setObject:v8 forKey:@"visualPleasingScore"];
 
   *&v9 = self->_overallFaceQualityScore;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-  [v3 setObject:v10 forKey:@"overallFaceQualityScore"];
+  [dictionary setObject:v10 forKey:@"overallFaceQualityScore"];
 
   *&v11 = self->_exposureScore;
   v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
-  [v3 setObject:v12 forKey:@"exposureScore"];
+  [dictionary setObject:v12 forKey:@"exposureScore"];
 
   *&v13 = self->_penaltyScore;
   v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
-  [v3 setObject:v14 forKey:@"penaltyScore"];
+  [dictionary setObject:v14 forKey:@"penaltyScore"];
 
   *&v15 = self->_textureScore;
   v16 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
-  [v3 setObject:v16 forKey:@"textureScore"];
+  [dictionary setObject:v16 forKey:@"textureScore"];
 
   *&v17 = self->_sharpness;
   v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
-  [v3 setObject:v18 forKey:@"sharpness"];
+  [dictionary setObject:v18 forKey:@"sharpness"];
 
   if ([(NSMutableArray *)self->_faceResults count])
   {
@@ -328,8 +328,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -338,7 +338,7 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKey:@"faceResults"];
+    [dictionary setObject:v20 forKey:@"faceResults"];
   }
 
   has = self->_has;
@@ -346,7 +346,7 @@
   {
     *&v19 = self->_globalQualityScore;
     v28 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
-    [v3 setObject:v28 forKey:@"globalQualityScore"];
+    [dictionary setObject:v28 forKey:@"globalQualityScore"];
 
     has = self->_has;
   }
@@ -355,27 +355,27 @@
   {
     *&v19 = self->_contentScore;
     v29 = [MEMORY[0x1E696AD98] numberWithFloat:v19];
-    [v3 setObject:v29 forKey:@"contentScore"];
+    [dictionary setObject:v29 forKey:@"contentScore"];
   }
 
   *&v19 = self->_expressionChangeScore;
   v30 = [MEMORY[0x1E696AD98] numberWithFloat:{v19, v34}];
-  [v3 setObject:v30 forKey:@"expressionChangeScore"];
+  [dictionary setObject:v30 forKey:@"expressionChangeScore"];
 
   if ((*&self->_has & 4) != 0)
   {
     *&v31 = self->_thumbnailScore;
     v32 = [MEMORY[0x1E696AD98] numberWithFloat:v31];
-    [v3 setObject:v32 forKey:@"thumbnailScore"];
+    [dictionary setObject:v32 forKey:@"thumbnailScore"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
@@ -431,25 +431,25 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[1] = *&self->_timestamp;
-  *(v4 + 13) = LODWORD(self->_qualityScoreForLivePhoto);
-  *(v4 + 17) = LODWORD(self->_visualPleasingScore);
-  *(v4 + 11) = LODWORD(self->_overallFaceQualityScore);
-  *(v4 + 5) = LODWORD(self->_exposureScore);
-  *(v4 + 12) = LODWORD(self->_penaltyScore);
-  *(v4 + 15) = LODWORD(self->_textureScore);
-  v10 = v4;
-  *(v4 + 14) = LODWORD(self->_sharpness);
+  toCopy = to;
+  toCopy[1] = *&self->_timestamp;
+  *(toCopy + 13) = LODWORD(self->_qualityScoreForLivePhoto);
+  *(toCopy + 17) = LODWORD(self->_visualPleasingScore);
+  *(toCopy + 11) = LODWORD(self->_overallFaceQualityScore);
+  *(toCopy + 5) = LODWORD(self->_exposureScore);
+  *(toCopy + 12) = LODWORD(self->_penaltyScore);
+  *(toCopy + 15) = LODWORD(self->_textureScore);
+  v10 = toCopy;
+  *(toCopy + 14) = LODWORD(self->_sharpness);
   if ([(VCPProtoLivePhotoKeyFrameResult *)self faceResultsCount])
   {
     [v10 clearFaceResults];
-    v5 = [(VCPProtoLivePhotoKeyFrameResult *)self faceResultsCount];
-    if (v5)
+    faceResultsCount = [(VCPProtoLivePhotoKeyFrameResult *)self faceResultsCount];
+    if (faceResultsCount)
     {
-      v6 = v5;
+      v6 = faceResultsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(VCPProtoLivePhotoKeyFrameResult *)self faceResultsAtIndex:i];
@@ -480,10 +480,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_timestamp;
   *(v5 + 52) = self->_qualityScoreForLivePhoto;
   *(v5 + 68) = self->_visualPleasingScore;
@@ -511,7 +511,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * i) copyWithZone:{zone, v14}];
         [v5 addFaceResults:v11];
       }
 
@@ -545,56 +545,56 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  if (self->_timestamp != *(v4 + 1))
+  if (self->_timestamp != *(equalCopy + 1))
   {
     goto LABEL_27;
   }
 
-  if (self->_qualityScoreForLivePhoto != *(v4 + 13))
+  if (self->_qualityScoreForLivePhoto != *(equalCopy + 13))
   {
     goto LABEL_27;
   }
 
-  if (self->_visualPleasingScore != *(v4 + 17))
+  if (self->_visualPleasingScore != *(equalCopy + 17))
   {
     goto LABEL_27;
   }
 
-  if (self->_overallFaceQualityScore != *(v4 + 11))
+  if (self->_overallFaceQualityScore != *(equalCopy + 11))
   {
     goto LABEL_27;
   }
 
-  if (self->_exposureScore != *(v4 + 5))
+  if (self->_exposureScore != *(equalCopy + 5))
   {
     goto LABEL_27;
   }
 
-  if (self->_penaltyScore != *(v4 + 12))
+  if (self->_penaltyScore != *(equalCopy + 12))
   {
     goto LABEL_27;
   }
 
-  if (self->_textureScore != *(v4 + 15))
+  if (self->_textureScore != *(equalCopy + 15))
   {
     goto LABEL_27;
   }
 
-  if (self->_sharpness != *(v4 + 14))
+  if (self->_sharpness != *(equalCopy + 14))
   {
     goto LABEL_27;
   }
 
   faceResults = self->_faceResults;
-  if (faceResults | *(v4 + 4))
+  if (faceResults | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)faceResults isEqual:?])
     {
@@ -604,41 +604,41 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_globalQualityScore != *(v4 + 10))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_globalQualityScore != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_contentScore != *(v4 + 4))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_contentScore != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_27;
   }
 
-  if (self->_expressionChangeScore != *(v4 + 6))
+  if (self->_expressionChangeScore != *(equalCopy + 6))
   {
 LABEL_27:
     v6 = 0;
     goto LABEL_28;
   }
 
-  v6 = (*(v4 + 72) & 4) == 0;
+  v6 = (*(equalCopy + 72) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_thumbnailScore != *(v4 + 16))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_thumbnailScore != *(equalCopy + 16))
     {
       goto LABEL_27;
     }
@@ -1019,23 +1019,23 @@ LABEL_75:
   return v21 ^ v14 ^ v28 ^ v35 ^ v42 ^ v49 ^ v56 ^ v62 ^ v63 ^ v68 ^ v75 ^ v82 ^ v83;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_timestamp = *(v4 + 1);
-  self->_qualityScoreForLivePhoto = *(v4 + 13);
-  self->_visualPleasingScore = *(v4 + 17);
-  self->_overallFaceQualityScore = *(v4 + 11);
-  self->_exposureScore = *(v4 + 5);
-  self->_penaltyScore = *(v4 + 12);
-  self->_textureScore = *(v4 + 15);
-  self->_sharpness = *(v4 + 14);
+  fromCopy = from;
+  self->_timestamp = *(fromCopy + 1);
+  self->_qualityScoreForLivePhoto = *(fromCopy + 13);
+  self->_visualPleasingScore = *(fromCopy + 17);
+  self->_overallFaceQualityScore = *(fromCopy + 11);
+  self->_exposureScore = *(fromCopy + 5);
+  self->_penaltyScore = *(fromCopy + 12);
+  self->_textureScore = *(fromCopy + 15);
+  self->_sharpness = *(fromCopy + 14);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -1059,24 +1059,24 @@ LABEL_75:
     while (v7);
   }
 
-  v10 = *(v4 + 72);
+  v10 = *(fromCopy + 72);
   if ((v10 & 2) != 0)
   {
-    self->_globalQualityScore = *(v4 + 10);
+    self->_globalQualityScore = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v10 = *(v4 + 72);
+    v10 = *(fromCopy + 72);
   }
 
   if (v10)
   {
-    self->_contentScore = *(v4 + 4);
+    self->_contentScore = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  self->_expressionChangeScore = *(v4 + 6);
-  if ((*(v4 + 72) & 4) != 0)
+  self->_expressionChangeScore = *(fromCopy + 6);
+  if ((*(fromCopy + 72) & 4) != 0)
   {
-    self->_thumbnailScore = *(v4 + 16);
+    self->_thumbnailScore = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 }

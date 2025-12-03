@@ -1,55 +1,55 @@
 @interface RTInferredMapItemFuser
-- (BOOL)initializeEntriesForNonAoiDedupedInferredMapItems:(id)a3 aoiDedupedInferredMapItems:(id)a4 nonAoiUUIDToLogProbMap:(id *)a5 aoiUUIDToProbArrayMap:(id *)a6 error:(id *)a7;
-- (BOOL)partitionDedupedInferredMapItems:(id)a3 intoNonAoiDedupedInferredMapItems:(id *)a4 aoiDedupedInferredMapItems:(id *)a5 error:(id *)a6;
-- (BOOL)updateAoiUUIDToProbArrayMap:(id)a3 aoiDedupedInferredMapItems:(id)a4 error:(id *)a5;
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 bluePOIDedupedInferredMapItems:(id)a4 error:(id *)a5;
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 nonAoiDedupedInferredMapItems:(id)a4 error:(id *)a5;
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 nonBluePOIDedupedInferredMapItems:(id)a4 error:(id *)a5;
-- (RTInferredMapItemFuser)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationStore:(id)a5;
-- (RTInferredMapItemFuser)initWithDistanceCalculator:(id)a3 parameters:(id)a4 learnedLocationStore:(id)a5;
-- (double)logSumExpOfLogProbMap:(id)a3 error:(id *)a4;
-- (id)bestFromFusedInferredMapItems:(id)a3;
-- (id)filterCandidates:(id)a3 referenceLocation:(id)a4 error:(id *)a5;
-- (id)filterLearnedPlaceCandidates:(id)a3 referenceLocation:(id)a4 error:(id *)a5;
-- (id)filterUnknownLearnedPlaceCandidates:(id)a3;
-- (id)fusedInferredMapItemsFromUUIDToProbMap:(id)a3 inferredMapItemDeduperState:(id)a4 uuidToFusedMapItemSourceMap:(id)a5 referenceLocation:(id)a6 error:(id *)a7;
-- (id)fusedInferredMapItemsUsingCandidates:(id)a3 referenceLocation:(id)a4 snapToBestKnownPlace:(BOOL)a5 snapToBestAoi:(BOOL)a6 error:(id *)a7;
-- (id)highestConfidenceAoiMapItemFromFusedInferredMapItems:(id)a3;
-- (id)normalizeNonAoiUUIDToLogProbMap:(id)a3 aoiUUIDToProbArrayMap:(id)a4 error:(id *)a5;
-- (id)populateMapItemSourceEntriesForDedupedInferredMapItems:(id)a3 error:(id *)a4;
-- (id)preprocessCandidates:(id)a3 referenceLocation:(id)a4 snapToBestKnownPlace:(BOOL)a5 snapToBestAoi:(BOOL)a6 error:(id *)a7;
-- (id)snapToBestAOICandidate:(id)a3 error:(id *)a4;
-- (id)snapToBestKnownPlaceType:(id)a3 error:(id *)a4;
-- (id)subtractMaxLogarithmFromLogProbMap:(id)a3 error:(id *)a4;
+- (BOOL)initializeEntriesForNonAoiDedupedInferredMapItems:(id)items aoiDedupedInferredMapItems:(id)mapItems nonAoiUUIDToLogProbMap:(id *)map aoiUUIDToProbArrayMap:(id *)arrayMap error:(id *)error;
+- (BOOL)partitionDedupedInferredMapItems:(id)items intoNonAoiDedupedInferredMapItems:(id *)mapItems aoiDedupedInferredMapItems:(id *)inferredMapItems error:(id *)error;
+- (BOOL)updateAoiUUIDToProbArrayMap:(id)map aoiDedupedInferredMapItems:(id)items error:(id *)error;
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map bluePOIDedupedInferredMapItems:(id)items error:(id *)error;
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map nonAoiDedupedInferredMapItems:(id)items error:(id *)error;
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map nonBluePOIDedupedInferredMapItems:(id)items error:(id *)error;
+- (RTInferredMapItemFuser)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationStore:(id)store;
+- (RTInferredMapItemFuser)initWithDistanceCalculator:(id)calculator parameters:(id)parameters learnedLocationStore:(id)store;
+- (double)logSumExpOfLogProbMap:(id)map error:(id *)error;
+- (id)bestFromFusedInferredMapItems:(id)items;
+- (id)filterCandidates:(id)candidates referenceLocation:(id)location error:(id *)error;
+- (id)filterLearnedPlaceCandidates:(id)candidates referenceLocation:(id)location error:(id *)error;
+- (id)filterUnknownLearnedPlaceCandidates:(id)candidates;
+- (id)fusedInferredMapItemsFromUUIDToProbMap:(id)map inferredMapItemDeduperState:(id)state uuidToFusedMapItemSourceMap:(id)sourceMap referenceLocation:(id)location error:(id *)error;
+- (id)fusedInferredMapItemsUsingCandidates:(id)candidates referenceLocation:(id)location snapToBestKnownPlace:(BOOL)place snapToBestAoi:(BOOL)aoi error:(id *)error;
+- (id)highestConfidenceAoiMapItemFromFusedInferredMapItems:(id)items;
+- (id)normalizeNonAoiUUIDToLogProbMap:(id)map aoiUUIDToProbArrayMap:(id)arrayMap error:(id *)error;
+- (id)populateMapItemSourceEntriesForDedupedInferredMapItems:(id)items error:(id *)error;
+- (id)preprocessCandidates:(id)candidates referenceLocation:(id)location snapToBestKnownPlace:(BOOL)place snapToBestAoi:(BOOL)aoi error:(id *)error;
+- (id)snapToBestAOICandidate:(id)candidate error:(id *)error;
+- (id)snapToBestKnownPlaceType:(id)type error:(id *)error;
+- (id)subtractMaxLogarithmFromLogProbMap:(id)map error:(id *)error;
 @end
 
 @implementation RTInferredMapItemFuser
 
-- (RTInferredMapItemFuser)initWithDefaultsManager:(id)a3 distanceCalculator:(id)a4 learnedLocationStore:(id)a5
+- (RTInferredMapItemFuser)initWithDefaultsManager:(id)manager distanceCalculator:(id)calculator learnedLocationStore:(id)store
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[RTInferredMapItemFuserParameters alloc] initWithDefaultsManager:v10];
+  storeCopy = store;
+  calculatorCopy = calculator;
+  managerCopy = manager;
+  v11 = [[RTInferredMapItemFuserParameters alloc] initWithDefaultsManager:managerCopy];
 
-  v12 = [(RTInferredMapItemFuser *)self initWithDistanceCalculator:v9 parameters:v11 learnedLocationStore:v8];
+  v12 = [(RTInferredMapItemFuser *)self initWithDistanceCalculator:calculatorCopy parameters:v11 learnedLocationStore:storeCopy];
   return v12;
 }
 
-- (RTInferredMapItemFuser)initWithDistanceCalculator:(id)a3 parameters:(id)a4 learnedLocationStore:(id)a5
+- (RTInferredMapItemFuser)initWithDistanceCalculator:(id)calculator parameters:(id)parameters learnedLocationStore:(id)store
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  calculatorCopy = calculator;
+  parametersCopy = parameters;
+  storeCopy = store;
+  if (!calculatorCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
 LABEL_12:
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_13;
     }
 
@@ -60,7 +60,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!parametersCopy)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -79,18 +79,18 @@ LABEL_15:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_distanceCalculator, a3);
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v12->_distanceCalculator, calculator);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     placeholderUUID = v13->_placeholderUUID;
-    v13->_placeholderUUID = v14;
+    v13->_placeholderUUID = uUID;
 
     v16 = [RTInferredMapItemDeduper alloc];
     v17 = [(RTInferredMapItemDeduper *)v16 initWithDeduperFunction:deduperFunctionGroupedLabelType];
     deduper = v13->_deduper;
     v13->_deduper = v17;
 
-    objc_storeStrong(&v13->_parameters, a4);
-    objc_storeStrong(&v13->_learnedLocationStore, a5);
+    objc_storeStrong(&v13->_parameters, parameters);
+    objc_storeStrong(&v13->_learnedLocationStore, store);
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v19 = _rt_log_facility_get_os_log(RTLogFacilityFusion);
@@ -98,27 +98,27 @@ LABEL_15:
       {
         parameters = v13->_parameters;
         *buf = 138412290;
-        v27 = parameters;
+        parametersCopy2 = parameters;
         _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "created fuser with parameters, %@", buf, 0xCu);
       }
     }
   }
 
   self = v13;
-  v21 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v21;
+  return selfCopy;
 }
 
-- (id)filterCandidates:(id)a3 referenceLocation:(id)a4 error:(id *)a5
+- (id)filterCandidates:(id)candidates referenceLocation:(id)location error:(id *)error
 {
   v115[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v82 = v6;
-  v85 = v7;
-  if (!v6)
+  candidatesCopy = candidates;
+  locationCopy = location;
+  v82 = candidatesCopy;
+  v85 = locationCopy;
+  if (!candidatesCopy)
   {
     v69 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
@@ -127,12 +127,12 @@ LABEL_13:
       _os_log_error_impl(&dword_2304B3000, v69, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", v100, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v70 = _RTErrorInvalidParameterCreate(@"candidates");
 LABEL_55:
       v68 = 0;
-      *a5 = v70;
+      *error = v70;
       goto LABEL_62;
     }
 
@@ -141,7 +141,7 @@ LABEL_56:
     goto LABEL_62;
   }
 
-  if (!v7)
+  if (!locationCopy)
   {
     v71 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
@@ -150,7 +150,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v71, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceLocation", v100, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v70 = _RTErrorInvalidParameterCreate(@"referenceLocation");
       goto LABEL_55;
@@ -159,12 +159,12 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  v88 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v88 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
   v109 = 0u;
   v110 = 0u;
   v107 = 0u;
   v108 = 0u;
-  obj = v6;
+  obj = candidatesCopy;
   v8 = [obj countByEnumeratingWithState:&v107 objects:v114 count:16];
   if (v8)
   {
@@ -184,8 +184,8 @@ LABEL_56:
         }
 
         v12 = *(*(&v107 + 1) + 8 * v11);
-        v13 = [v12 firstObject];
-        if ([v13 source] == 8)
+        firstObject = [v12 firstObject];
+        if ([firstObject source] == 8)
         {
 
 LABEL_11:
@@ -193,9 +193,9 @@ LABEL_11:
           goto LABEL_19;
         }
 
-        v14 = [v12 firstObject];
-        v15 = [v14 mapItem];
-        v16 = [v15 mapItemPlaceType] == 1;
+        firstObject2 = [v12 firstObject];
+        mapItem = [firstObject2 mapItem];
+        v16 = [mapItem mapItemPlaceType] == 1;
 
         if (v16)
         {
@@ -203,24 +203,24 @@ LABEL_11:
         }
 
         distanceCalculator = self->_distanceCalculator;
-        v18 = [v12 firstObject];
-        v19 = [v18 mapItem];
-        v20 = [v19 location];
+        firstObject3 = [v12 firstObject];
+        mapItem2 = [firstObject3 mapItem];
+        location = [mapItem2 location];
         v106 = 0;
-        [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v20 toLocation:v85 error:&v106];
+        [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location toLocation:v85 error:&v106];
         v22 = v21;
         v23 = v106;
 
         if (v23)
         {
           v72 = MEMORY[0x277CCA9B8];
-          v73 = [v23 userInfo];
-          v74 = [v72 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:v73];
+          userInfo = [v23 userInfo];
+          v74 = [v72 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:userInfo];
 
-          if (a5)
+          if (error)
           {
             v75 = v74;
-            *a5 = v74;
+            *error = v74;
           }
 
 LABEL_60:
@@ -232,7 +232,7 @@ LABEL_60:
         [(RTInferredMapItemFuserParameters *)self->_parameters distanceThreshold];
         if (v22 <= v24)
         {
-          v25 = 0;
+          firstObject4 = 0;
 LABEL_17:
           [v88 addObject:v12];
 LABEL_18:
@@ -240,16 +240,16 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v25 = [v12 firstObject];
-        v26 = [v25 mapItem];
-        if (([v26 source] & 0x2000) == 0)
+        firstObject4 = [v12 firstObject];
+        mapItem3 = [firstObject4 mapItem];
+        if (([mapItem3 source] & 0x2000) == 0)
         {
 
           goto LABEL_18;
         }
 
-        v27 = [(RTInferredMapItemFuser *)self learnedLocationStore];
-        v28 = v27 == 0;
+        learnedLocationStore = [(RTInferredMapItemFuser *)self learnedLocationStore];
+        v28 = learnedLocationStore == 0;
 
         if (!v28)
         {
@@ -266,9 +266,9 @@ LABEL_18:
           v98 = __Block_byref_object_dispose__173;
           v99 = 0;
           v29 = dispatch_semaphore_create(0);
-          v30 = [(RTInferredMapItemFuser *)self learnedLocationStore];
-          v31 = [v12 firstObject];
-          v32 = [v31 mapItem];
+          learnedLocationStore2 = [(RTInferredMapItemFuser *)self learnedLocationStore];
+          firstObject5 = [v12 firstObject];
+          mapItem4 = [firstObject5 mapItem];
           v90[0] = MEMORY[0x277D85DD0];
           v90[1] = 3221225472;
           v90[2] = __67__RTInferredMapItemFuser_filterCandidates_referenceLocation_error___block_invoke;
@@ -277,7 +277,7 @@ LABEL_18:
           v93 = &v94;
           v33 = v29;
           v91 = v33;
-          [v30 fetchLocationOfInterestWithMapItem:v32 handler:v90];
+          [learnedLocationStore2 fetchLocationOfInterestWithMapItem:mapItem4 handler:v90];
 
           dsema = v33;
           v34 = [MEMORY[0x277CBEAA8] now];
@@ -289,11 +289,11 @@ LABEL_18:
             v37 = v36;
             v38 = objc_opt_new();
             v39 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_210_0];
-            v40 = [MEMORY[0x277CCACC8] callStackSymbols];
-            v41 = [v40 filteredArrayUsingPredicate:v39];
-            v42 = [v41 firstObject];
+            callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+            v41 = [callStackSymbols filteredArrayUsingPredicate:v39];
+            firstObject6 = [v41 firstObject];
 
-            [v38 submitToCoreAnalytics:v42 type:1 duration:v37];
+            [v38 submitToCoreAnalytics:firstObject6 type:1 duration:v37];
             v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
             {
@@ -336,17 +336,17 @@ LABEL_29:
             if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
             {
               v63 = NSStringFromSelector(a2);
-              v64 = [v12 firstObject];
-              v65 = [v64 mapItem];
+              firstObject7 = [v12 firstObject];
+              mapItem5 = [firstObject7 mapItem];
               *buf = v77;
               *&buf[4] = v63;
               v112 = 2117;
-              v113 = v65;
+              v113 = mapItem5;
               _os_log_error_impl(&dword_2304B3000, v50, OS_LOG_TYPE_ERROR, "%@, Failed to fetch LOI with mapItem, %{sensitive}@", buf, 0x16u);
             }
 
 LABEL_35:
-            v25 = 0;
+            firstObject4 = 0;
             v51 = 0;
             v52 = 1;
           }
@@ -354,23 +354,23 @@ LABEL_35:
           else
           {
             v53 = self->_distanceCalculator;
-            v54 = [*(v101 + 5) location];
-            v55 = [v54 location];
+            location2 = [*(v101 + 5) location];
+            v54Location = [location2 location];
             v89 = 0;
-            [(RTDistanceCalculator *)v53 distanceFromLocation:v55 toLocation:v85 error:&v89];
+            [(RTDistanceCalculator *)v53 distanceFromLocation:v54Location toLocation:v85 error:&v89];
             v57 = v56;
-            v25 = v89;
+            firstObject4 = v89;
 
-            if (v25)
+            if (firstObject4)
             {
               v58 = MEMORY[0x277CCA9B8];
-              v59 = [v25 userInfo];
-              v60 = [v58 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:v59];
+              userInfo2 = [firstObject4 userInfo];
+              v60 = [v58 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:userInfo2];
 
-              if (a5)
+              if (error)
               {
                 v61 = v60;
-                *a5 = v60;
+                *error = v60;
               }
 
               v51 = 0;
@@ -385,7 +385,7 @@ LABEL_35:
                 goto LABEL_35;
               }
 
-              v25 = 0;
+              firstObject4 = 0;
               v52 = 0;
               v51 = 1;
             }
@@ -443,18 +443,18 @@ void __67__RTInferredMapItemFuser_filterCandidates_referenceLocation_error___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)snapToBestKnownPlaceType:(id)a3 error:(id *)a4
+- (id)snapToBestKnownPlaceType:(id)type error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (typeCopy)
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    v7 = [typeCopy countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (!v7)
     {
       goto LABEL_14;
@@ -474,19 +474,19 @@ void __67__RTInferredMapItemFuser_filterCandidates_referenceLocation_error___blo
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 secondObject];
-        v15 = [v14 unsignedIntegerValue];
+        secondObject = [v13 secondObject];
+        unsignedIntegerValue = [secondObject unsignedIntegerValue];
 
-        if (v15)
+        if (unsignedIntegerValue)
         {
-          v16 = [v13 firstObject];
-          [v16 confidence];
+          firstObject = [v13 firstObject];
+          [firstObject confidence];
           v18 = v17;
 
           if (v18 > v11)
           {
-            v19 = [v13 firstObject];
-            [v19 confidence];
+            firstObject2 = [v13 firstObject];
+            [firstObject2 confidence];
             v11 = v20;
 
             v21 = v13;
@@ -521,10 +521,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"candidates");
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else
@@ -536,18 +536,18 @@ LABEL_14:
   return v22;
 }
 
-- (id)snapToBestAOICandidate:(id)a3 error:(id *)a4
+- (id)snapToBestAOICandidate:(id)candidate error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  candidateCopy = candidate;
+  v6 = candidateCopy;
+  if (candidateCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    v7 = [candidateCopy countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (!v7)
     {
       goto LABEL_14;
@@ -567,22 +567,22 @@ LABEL_14:
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 firstObject];
-        v15 = [v14 mapItem];
-        v16 = [v15 mapItemPlaceType];
+        firstObject = [v13 firstObject];
+        mapItem = [firstObject mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
-        if (v16 == 1)
+        if (mapItemPlaceType == 1)
         {
-          v17 = [v13 firstObject];
-          [v17 confidence];
+          firstObject2 = [v13 firstObject];
+          [firstObject2 confidence];
           v19 = v18;
 
           if (v19 > v11)
           {
             v20 = v13;
 
-            v21 = [v20 firstObject];
-            [v21 confidence];
+            firstObject3 = [v20 firstObject];
+            [firstObject3 confidence];
             v11 = v22;
 
             v9 = v20;
@@ -616,10 +616,10 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"candidates");
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -631,13 +631,13 @@ LABEL_14:
   return v23;
 }
 
-- (id)filterLearnedPlaceCandidates:(id)a3 referenceLocation:(id)a4 error:(id *)a5
+- (id)filterLearnedPlaceCandidates:(id)candidates referenceLocation:(id)location error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  candidatesCopy = candidates;
+  locationCopy = location;
+  v9 = locationCopy;
+  if (!candidatesCopy)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -646,12 +646,12 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v39 = @"candidates";
 LABEL_26:
       _RTErrorInvalidParameterCreate(v39);
-      *a5 = v41 = 0;
+      *error = v41 = 0;
       goto LABEL_37;
     }
 
@@ -660,7 +660,7 @@ LABEL_30:
     goto LABEL_37;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -669,7 +669,7 @@ LABEL_30:
       _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceLocation", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v39 = @"referenceLocation";
       goto LABEL_26;
@@ -678,17 +678,17 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v47 = a5;
-  v50 = v8;
-  v10 = [MEMORY[0x277CBEB18] array];
+  errorCopy = error;
+  v50 = locationCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v48 = v7;
-  v11 = v7;
+  v48 = candidatesCopy;
+  v11 = candidatesCopy;
   v12 = [v11 countByEnumeratingWithState:&v53 objects:v59 count:16];
-  v49 = v10;
+  v49 = array;
   if (v12)
   {
     v13 = v12;
@@ -706,49 +706,49 @@ LABEL_30:
         }
 
         v19 = *(*(&v53 + 1) + 8 * i);
-        v20 = [v19 firstObject];
-        v21 = [v20 source];
+        firstObject = [v19 firstObject];
+        source = [firstObject source];
 
-        if ((v21 & 0x2000) != 0)
+        if ((source & 0x2000) != 0)
         {
           distanceCalculator = self->_distanceCalculator;
-          v23 = [v19 firstObject];
-          v24 = [v23 mapItem];
-          v25 = [v24 location];
+          firstObject2 = [v19 firstObject];
+          mapItem = [firstObject2 mapItem];
+          location = [mapItem location];
           v52 = 0;
-          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:v25 toLocation:v50 error:&v52];
+          [(RTDistanceCalculator *)distanceCalculator distanceFromLocation:location toLocation:v50 error:&v52];
           v27 = v26;
           v28 = v52;
 
           if (v28)
           {
             v42 = MEMORY[0x277CCA9B8];
-            v43 = [v28 userInfo];
-            v44 = [v42 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:v43];
+            userInfo = [v28 userInfo];
+            v44 = [v42 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:1 userInfo:userInfo];
 
-            if (v47)
+            if (errorCopy)
             {
               v45 = v44;
-              *v47 = v44;
+              *errorCopy = v44;
             }
 
             v41 = 0;
             goto LABEL_34;
           }
 
-          v29 = [v19 firstObject];
-          [v29 confidence];
+          firstObject3 = [v19 firstObject];
+          [firstObject3 confidence];
           v31 = v30;
 
-          v32 = [v19 firstObject];
-          [v32 confidence];
+          firstObject4 = [v19 firstObject];
+          [firstObject4 confidence];
           v34 = v33;
 
-          v10 = v49;
+          array = v49;
           if (v31 > v16 || v34 == v16 && v27 < v17)
           {
-            v35 = [v19 firstObject];
-            [v35 confidence];
+            firstObject5 = [v19 firstObject];
+            [firstObject5 confidence];
             v16 = v36;
 
             v37 = v19;
@@ -759,7 +759,7 @@ LABEL_30:
 
         else
         {
-          [v10 addObject:v19];
+          [array addObject:v19];
         }
       }
 
@@ -778,11 +778,11 @@ LABEL_30:
     v14 = 0;
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    v41 = v10;
+    v41 = array;
 LABEL_34:
-    v7 = v48;
+    candidatesCopy = v48;
     v9 = v50;
   }
 
@@ -792,13 +792,13 @@ LABEL_34:
     if (!v14)
     {
       v41 = MEMORY[0x277CBEBF8];
-      v7 = v48;
+      candidatesCopy = v48;
       goto LABEL_36;
     }
 
     v58 = v14;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v58 count:1];
-    v7 = v48;
+    candidatesCopy = v48;
   }
 
 LABEL_36:
@@ -807,12 +807,12 @@ LABEL_37:
   return v41;
 }
 
-- (id)filterUnknownLearnedPlaceCandidates:(id)a3
+- (id)filterUnknownLearnedPlaceCandidates:(id)candidates
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  candidatesCopy = candidates;
   v5 = [v3 predicateWithBlock:&__block_literal_global_141];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [candidatesCopy filteredArrayUsingPredicate:v5];
 
   return v6;
 }
@@ -835,15 +835,15 @@ BOOL __62__RTInferredMapItemFuser_filterUnknownLearnedPlaceCandidates___block_in
   return v4;
 }
 
-- (id)preprocessCandidates:(id)a3 referenceLocation:(id)a4 snapToBestKnownPlace:(BOOL)a5 snapToBestAoi:(BOOL)a6 error:(id *)a7
+- (id)preprocessCandidates:(id)candidates referenceLocation:(id)location snapToBestKnownPlace:(BOOL)place snapToBestAoi:(BOOL)aoi error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
+  aoiCopy = aoi;
+  placeCopy = place;
   v60 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = v14;
-  if (!v13)
+  candidatesCopy = candidates;
+  locationCopy = location;
+  v15 = locationCopy;
+  if (!candidatesCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -852,23 +852,23 @@ BOOL __62__RTInferredMapItemFuser_filterUnknownLearnedPlaceCandidates___block_in
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v22 = _RTErrorInvalidParameterCreate(@"candidates");
-      v13 = 0;
+      candidatesCopy = 0;
 LABEL_17:
       v20 = 0;
-      *a7 = v22;
+      *error = v22;
       goto LABEL_44;
     }
 
-    v13 = 0;
+    candidatesCopy = 0;
 LABEL_24:
     v20 = 0;
     goto LABEL_44;
   }
 
-  if (!v14)
+  if (!locationCopy)
   {
     v23 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -877,7 +877,7 @@ LABEL_24:
       _os_log_error_impl(&dword_2304B3000, v23, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceLocation", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v22 = _RTErrorInvalidParameterCreate(@"referenceLocation");
       goto LABEL_17;
@@ -886,10 +886,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if ([v13 count] > 1)
+  if ([candidatesCopy count] > 1)
   {
     v55 = 0;
-    v24 = [(RTInferredMapItemFuser *)self filterCandidates:v13 referenceLocation:v15 error:&v55];
+    v24 = [(RTInferredMapItemFuser *)self filterCandidates:candidatesCopy referenceLocation:v15 error:&v55];
     v25 = v55;
 
     if (v25)
@@ -905,11 +905,11 @@ LABEL_24:
         _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "%@, filter candidate error, %@", buf, 0x16u);
       }
 
-      if (a7)
+      if (error)
       {
         v27 = v25;
         v20 = 0;
-        *a7 = v25;
+        *error = v25;
       }
 
       else
@@ -917,7 +917,7 @@ LABEL_24:
         v20 = 0;
       }
 
-      v13 = v24;
+      candidatesCopy = v24;
       goto LABEL_43;
     }
 
@@ -929,54 +929,54 @@ LABEL_24:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           v29 = NSStringFromSelector(a2);
-          v30 = [v24 firstObject];
-          v31 = [v30 firstObject];
+          firstObject = [v24 firstObject];
+          v30FirstObject = [firstObject firstObject];
           *buf = 138412547;
           v57 = v29;
           v58 = 2117;
-          v59 = v31;
+          v59 = v30FirstObject;
           _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "%@, exiting after filtering based on location, fused map item, %{sensitive}@", buf, 0x16u);
         }
       }
 
       v32 = v24;
 LABEL_42:
-      v13 = v32;
+      candidatesCopy = v32;
       v20 = v32;
 LABEL_43:
 
       goto LABEL_44;
     }
 
-    if (!v9 && !v8)
+    if (!placeCopy && !aoiCopy)
     {
-      v13 = [(RTInferredMapItemFuser *)self filterUnknownLearnedPlaceCandidates:v24];
+      candidatesCopy = [(RTInferredMapItemFuser *)self filterUnknownLearnedPlaceCandidates:v24];
 
 LABEL_36:
-      if ([v13 count] <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([candidatesCopy count] <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v33 = _rt_log_facility_get_os_log(RTLogFacilityFusion);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
           v34 = NSStringFromSelector(a2);
-          v35 = [v13 firstObject];
-          v36 = [v35 firstObject];
+          firstObject2 = [candidatesCopy firstObject];
+          v35FirstObject = [firstObject2 firstObject];
           *buf = 138412547;
           v57 = v34;
           v58 = 2117;
-          v59 = v36;
+          v59 = v35FirstObject;
           _os_log_impl(&dword_2304B3000, v33, OS_LOG_TYPE_INFO, "%@, exiting after filtering learned place, fused map item, %{sensitive}@", buf, 0x16u);
         }
       }
 
-      v32 = v13;
+      v32 = candidatesCopy;
       goto LABEL_42;
     }
 
-    if (v9)
+    if (placeCopy)
     {
       v54 = 0;
-      v13 = [(RTInferredMapItemFuser *)self snapToBestKnownPlaceType:v24 error:&v54];
+      candidatesCopy = [(RTInferredMapItemFuser *)self snapToBestKnownPlaceType:v24 error:&v54];
       v38 = v54;
 
       if (v38)
@@ -996,7 +996,7 @@ LABEL_36:
         goto LABEL_78;
       }
 
-      if ([v13 count] <= 1)
+      if ([candidatesCopy count] <= 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -1004,12 +1004,12 @@ LABEL_36:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
           {
             v44 = NSStringFromSelector(a2);
-            v45 = [v13 firstObject];
-            v46 = [v45 firstObject];
+            firstObject3 = [candidatesCopy firstObject];
+            v45FirstObject = [firstObject3 firstObject];
             *buf = 138412547;
             v57 = v44;
             v58 = 2117;
-            v59 = v46;
+            v59 = v45FirstObject;
 LABEL_66:
             _os_log_impl(&dword_2304B3000, v43, OS_LOG_TYPE_INFO, "%@, fused early, fused map item, %{sensitive}@", buf, 0x16u);
 
@@ -1022,13 +1022,13 @@ LABEL_66:
         goto LABEL_68;
       }
 
-      v24 = v13;
+      v24 = candidatesCopy;
     }
 
-    if (v8)
+    if (aoiCopy)
     {
       v53 = 0;
-      v13 = [(RTInferredMapItemFuser *)self snapToBestAOICandidate:v24 error:&v53];
+      candidatesCopy = [(RTInferredMapItemFuser *)self snapToBestAOICandidate:v24 error:&v53];
       v38 = v53;
 
       if (v38)
@@ -1049,11 +1049,11 @@ LABEL_78:
         _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, v41, buf, 0x16u);
 
 LABEL_59:
-        if (a7)
+        if (error)
         {
           v47 = v38;
           v20 = 0;
-          *a7 = v38;
+          *error = v38;
         }
 
         else
@@ -1064,7 +1064,7 @@ LABEL_59:
         goto LABEL_69;
       }
 
-      if ([v13 count] <= 1)
+      if ([candidatesCopy count] <= 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -1072,12 +1072,12 @@ LABEL_59:
           if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
           {
             v44 = NSStringFromSelector(a2);
-            v45 = [v13 firstObject];
-            v46 = [v45 firstObject];
+            firstObject3 = [candidatesCopy firstObject];
+            v45FirstObject = [firstObject3 firstObject];
             *buf = 138412547;
             v57 = v44;
             v58 = 2117;
-            v59 = v46;
+            v59 = v45FirstObject;
             goto LABEL_66;
           }
 
@@ -1085,17 +1085,17 @@ LABEL_67:
         }
 
 LABEL_68:
-        v20 = v13;
+        v20 = candidatesCopy;
 LABEL_69:
 
         goto LABEL_43;
       }
 
-      v24 = v13;
+      v24 = candidatesCopy;
     }
 
     v52 = 0;
-    v13 = [(RTInferredMapItemFuser *)self filterLearnedPlaceCandidates:v24 referenceLocation:v15 error:&v52];
+    candidatesCopy = [(RTInferredMapItemFuser *)self filterLearnedPlaceCandidates:v24 referenceLocation:v15 error:&v52];
     v48 = v52;
 
     if (v48)
@@ -1111,10 +1111,10 @@ LABEL_69:
         _os_log_error_impl(&dword_2304B3000, v49, OS_LOG_TYPE_ERROR, "%@, filter learned place error, %@", buf, 0x16u);
       }
 
-      if (a7)
+      if (error)
       {
         v50 = v48;
-        *a7 = v48;
+        *error = v48;
       }
 
       v20 = 0;
@@ -1130,37 +1130,37 @@ LABEL_69:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = NSStringFromSelector(a2);
-      v18 = [v13 firstObject];
-      v19 = [v18 firstObject];
+      firstObject4 = [candidatesCopy firstObject];
+      v18FirstObject = [firstObject4 firstObject];
       *buf = 138412547;
       v57 = v17;
       v58 = 2117;
-      v59 = v19;
+      v59 = v18FirstObject;
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "%@, exiting before filtering based on location, fused map item, %{sensitive}@", buf, 0x16u);
     }
   }
 
-  v13 = v13;
-  v20 = v13;
+  candidatesCopy = candidatesCopy;
+  v20 = candidatesCopy;
 LABEL_44:
 
   return v20;
 }
 
-- (id)populateMapItemSourceEntriesForDedupedInferredMapItems:(id)a3 error:(id *)a4
+- (id)populateMapItemSourceEntriesForDedupedInferredMapItems:(id)items error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    v21 = self;
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    selfCopy = self;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v22 = v6;
-    obj = v6;
+    v22 = itemsCopy;
+    obj = itemsCopy;
     v8 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
@@ -1176,20 +1176,20 @@ LABEL_44:
           }
 
           v12 = *(*(&v24 + 1) + 8 * i);
-          v13 = [v12 mapItem];
-          v14 = [v13 identifier];
+          mapItem = [v12 mapItem];
+          identifier = [mapItem identifier];
 
-          v15 = [v7 objectForKeyedSubscript:v14];
+          v15 = [dictionary objectForKeyedSubscript:identifier];
 
           if (!v15)
           {
-            [v7 setObject:&unk_2845A0260 forKeyedSubscript:v14];
+            [dictionary setObject:&unk_2845A0260 forKeyedSubscript:identifier];
           }
 
           v16 = MEMORY[0x277CCABB0];
-          v17 = [v7 objectForKeyedSubscript:v14];
+          v17 = [dictionary objectForKeyedSubscript:identifier];
           v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v12, "source") | objc_msgSend(v17, "unsignedIntegerValue")}];
-          [v7 setObject:v18 forKeyedSubscript:v14];
+          [dictionary setObject:v18 forKeyedSubscript:identifier];
         }
 
         v9 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -1198,8 +1198,8 @@ LABEL_44:
       while (v9);
     }
 
-    [v7 setObject:&unk_2845A0260 forKeyedSubscript:v21->_placeholderUUID];
-    v6 = v22;
+    [dictionary setObject:&unk_2845A0260 forKeyedSubscript:selfCopy->_placeholderUUID];
+    itemsCopy = v22;
   }
 
   else
@@ -1211,26 +1211,26 @@ LABEL_44:
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dedupedInferredMapItems", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"dedupedInferredMapItems");
-      *a4 = v7 = 0;
+      *error = dictionary = 0;
     }
 
     else
     {
-      v7 = 0;
+      dictionary = 0;
     }
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (BOOL)partitionDedupedInferredMapItems:(id)a3 intoNonAoiDedupedInferredMapItems:(id *)a4 aoiDedupedInferredMapItems:(id *)a5 error:(id *)a6
+- (BOOL)partitionDedupedInferredMapItems:(id)items intoNonAoiDedupedInferredMapItems:(id *)mapItems aoiDedupedInferredMapItems:(id *)inferredMapItems error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (!v9)
+  itemsCopy = items;
+  if (!itemsCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1239,7 +1239,7 @@ LABEL_44:
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dedupedInferredMapItems", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -1248,7 +1248,7 @@ LABEL_44:
     goto LABEL_27;
   }
 
-  if (!a4)
+  if (!mapItems)
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -1257,7 +1257,7 @@ LABEL_44:
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outNonAoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_28;
     }
@@ -1265,11 +1265,11 @@ LABEL_44:
     v25 = @"outNonAoiDedupedInferredMapItems";
 LABEL_27:
     _RTErrorInvalidParameterCreate(v25);
-    *a6 = v23 = 0;
+    *error = v23 = 0;
     goto LABEL_29;
   }
 
-  if (!a5)
+  if (!inferredMapItems)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1278,7 +1278,7 @@ LABEL_27:
       _os_log_error_impl(&dword_2304B3000, v27, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outAoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       v25 = @"outAoiDedupedInferredMapItems";
       goto LABEL_27;
@@ -1289,15 +1289,15 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v29 = a5;
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
+  inferredMapItemsCopy = inferredMapItems;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = v9;
-  v12 = v9;
+  v30 = itemsCopy;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v13)
   {
@@ -1313,17 +1313,17 @@ LABEL_28:
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [v17 mapItem];
-        v19 = [v18 mapItemPlaceType];
+        mapItem = [v17 mapItem];
+        mapItemPlaceType = [mapItem mapItemPlaceType];
 
-        if (v19 == 1)
+        if (mapItemPlaceType == 1)
         {
-          v20 = v10;
+          v20 = array;
         }
 
         else
         {
-          v20 = v11;
+          v20 = array2;
         }
 
         [v20 addObject:v17];
@@ -1335,25 +1335,25 @@ LABEL_28:
     while (v14);
   }
 
-  v21 = v11;
-  *a4 = v11;
-  v22 = v10;
-  *v29 = v10;
+  v21 = array2;
+  *mapItems = array2;
+  v22 = array;
+  *inferredMapItemsCopy = array;
 
   v23 = 1;
-  v9 = v30;
+  itemsCopy = v30;
 LABEL_29:
 
   return v23;
 }
 
-- (BOOL)initializeEntriesForNonAoiDedupedInferredMapItems:(id)a3 aoiDedupedInferredMapItems:(id)a4 nonAoiUUIDToLogProbMap:(id *)a5 aoiUUIDToProbArrayMap:(id *)a6 error:(id *)a7
+- (BOOL)initializeEntriesForNonAoiDedupedInferredMapItems:(id)items aoiDedupedInferredMapItems:(id)mapItems nonAoiUUIDToLogProbMap:(id *)map aoiUUIDToProbArrayMap:(id *)arrayMap error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (!v12)
+  itemsCopy = items;
+  mapItemsCopy = mapItems;
+  v14 = mapItemsCopy;
+  if (!itemsCopy)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -1362,7 +1362,7 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v43, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -1371,7 +1371,7 @@ LABEL_29:
     goto LABEL_40;
   }
 
-  if (!v13)
+  if (!mapItemsCopy)
   {
     v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -1380,7 +1380,7 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v45, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -1389,7 +1389,7 @@ LABEL_29:
     goto LABEL_40;
   }
 
-  if (!a5)
+  if (!map)
   {
     v46 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -1398,7 +1398,7 @@ LABEL_29:
       _os_log_error_impl(&dword_2304B3000, v46, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outNonAoiUUIDToLogProbMap", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -1406,11 +1406,11 @@ LABEL_29:
     v44 = @"outNonAoiUUIDToLogProbMap";
 LABEL_40:
     _RTErrorInvalidParameterCreate(v44);
-    *a7 = v42 = 0;
+    *error = v42 = 0;
     goto LABEL_42;
   }
 
-  if (!a6)
+  if (!arrayMap)
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -1419,7 +1419,7 @@ LABEL_40:
       _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: outAoiUUIDToProbArrayMap", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       v44 = @"outAoiUUIDToProbArrayMap";
       goto LABEL_40;
@@ -1430,17 +1430,17 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  v49 = self;
-  v50 = a5;
-  v51 = a6;
-  v53 = v13;
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  selfCopy = self;
+  mapCopy = map;
+  arrayMapCopy = arrayMap;
+  v53 = mapItemsCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v52 = v12;
-  v16 = v12;
+  v52 = itemsCopy;
+  v16 = itemsCopy;
   v17 = [v16 countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v17)
   {
@@ -1456,15 +1456,15 @@ LABEL_41:
         }
 
         v21 = *(*(&v58 + 1) + 8 * i);
-        v22 = [v21 mapItem];
-        v23 = [v22 identifier];
-        v24 = [v15 objectForKeyedSubscript:v23];
+        mapItem = [v21 mapItem];
+        identifier = [mapItem identifier];
+        v24 = [dictionary objectForKeyedSubscript:identifier];
 
         if (!v24)
         {
-          v25 = [v21 mapItem];
-          v26 = [v25 identifier];
-          [v15 setObject:&unk_2845A0278 forKeyedSubscript:v26];
+          mapItem2 = [v21 mapItem];
+          identifier2 = [mapItem2 identifier];
+          [dictionary setObject:&unk_2845A0278 forKeyedSubscript:identifier2];
         }
       }
 
@@ -1474,8 +1474,8 @@ LABEL_41:
     while (v18);
   }
 
-  [v15 setObject:&unk_2845A0278 forKeyedSubscript:v49->_placeholderUUID];
-  v27 = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:&unk_2845A0278 forKeyedSubscript:selfCopy->_placeholderUUID];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -1496,16 +1496,16 @@ LABEL_41:
         }
 
         v33 = *(*(&v54 + 1) + 8 * j);
-        v34 = [v33 mapItem];
-        v35 = [v34 identifier];
-        v36 = [v27 objectForKeyedSubscript:v35];
+        mapItem3 = [v33 mapItem];
+        identifier3 = [mapItem3 identifier];
+        v36 = [dictionary2 objectForKeyedSubscript:identifier3];
 
         if (!v36)
         {
-          v37 = [MEMORY[0x277CBEB18] array];
-          v38 = [v33 mapItem];
-          v39 = [v38 identifier];
-          [v27 setObject:v37 forKeyedSubscript:v39];
+          array = [MEMORY[0x277CBEB18] array];
+          mapItem4 = [v33 mapItem];
+          identifier4 = [mapItem4 identifier];
+          [dictionary2 setObject:array forKeyedSubscript:identifier4];
         }
       }
 
@@ -1515,27 +1515,27 @@ LABEL_41:
     while (v30);
   }
 
-  v40 = v15;
-  *v50 = v15;
-  v41 = v27;
-  *v51 = v27;
+  v40 = dictionary;
+  *mapCopy = dictionary;
+  v41 = dictionary2;
+  *arrayMapCopy = dictionary2;
 
   v42 = 1;
-  v12 = v52;
+  itemsCopy = v52;
   v14 = v53;
 LABEL_42:
 
   return v42;
 }
 
-- (BOOL)updateAoiUUIDToProbArrayMap:(id)a3 aoiDedupedInferredMapItems:(id)a4 error:(id *)a5
+- (BOOL)updateAoiUUIDToProbArrayMap:(id)map aoiDedupedInferredMapItems:(id)items error:(id *)error
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  v42 = v8;
-  if (!v8)
+  mapCopy = map;
+  itemsCopy = items;
+  v10 = itemsCopy;
+  v42 = mapCopy;
+  if (!mapCopy)
   {
     v29 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -1544,12 +1544,12 @@ LABEL_42:
       _os_log_error_impl(&dword_2304B3000, v29, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aoiUUIDToProbArrayMap", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v30 = @"aoiUUIDToProbArrayMap";
 LABEL_20:
       _RTErrorInvalidParameterCreate(v30);
-      *a5 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_27;
     }
 
@@ -1558,7 +1558,7 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  if (!v9)
+  if (!itemsCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1567,7 +1567,7 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v30 = @"aoiDedupedInferredMapItems";
       goto LABEL_20;
@@ -1576,13 +1576,13 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v11 = [[_RTMap alloc] initWithInput:v9];
+  v11 = [[_RTMap alloc] initWithInput:itemsCopy];
   v12 = [(_RTMap *)v11 withBlock:&__block_literal_global_65];
 
   v13 = [MEMORY[0x277CBEB98] setWithArray:v12];
   v14 = MEMORY[0x277CBEB98];
-  v15 = [v8 allKeys];
-  v16 = [v14 setWithArray:v15];
+  allKeys = [mapCopy allKeys];
+  v16 = [v14 setWithArray:allKeys];
 
   v17 = [v13 isEqualToSet:v16];
   if (v17)
@@ -1611,9 +1611,9 @@ LABEL_21:
           }
 
           v23 = *(*(&v43 + 1) + 8 * i);
-          v24 = [v23 mapItem];
-          v25 = [v24 identifier];
-          v26 = [v42 objectForKeyedSubscript:v25];
+          mapItem = [v23 mapItem];
+          identifier = [mapItem identifier];
+          v26 = [v42 objectForKeyedSubscript:identifier];
           v27 = MEMORY[0x277CCABB0];
           [v23 confidence];
           v28 = [v27 numberWithDouble:?];
@@ -1650,10 +1650,10 @@ LABEL_21:
       _os_log_error_impl(&dword_2304B3000, v34, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v35 = v18;
-      *a5 = v18;
+      *error = v18;
     }
   }
 
@@ -1669,29 +1669,29 @@ id __87__RTInferredMapItemFuser_updateAoiUUIDToProbArrayMap_aoiDedupedInferredMa
   return v3;
 }
 
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 bluePOIDedupedInferredMapItems:(id)a4 error:(id *)a5
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map bluePOIDedupedInferredMapItems:(id)items error:(id *)error
 {
   v126[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  mapCopy = map;
+  itemsCopy = items;
+  v11 = itemsCopy;
+  if (mapCopy)
   {
-    if (v10)
+    if (itemsCopy)
     {
-      v12 = [v9 objectForKeyedSubscript:self->_placeholderUUID];
+      v12 = [mapCopy objectForKeyedSubscript:self->_placeholderUUID];
 
       if (v12)
       {
-        v95 = self;
+        selfCopy = self;
         v13 = [[_RTMap alloc] initWithInput:v11];
         v14 = [(_RTMap *)v13 withBlock:&__block_literal_global_81];
 
         v15 = [MEMORY[0x277CBEB98] setWithArray:v14];
         v16 = MEMORY[0x277CBEB98];
-        v96 = v9;
-        v17 = [v9 allKeys];
-        v18 = [v16 setWithArray:v17];
+        v96 = mapCopy;
+        allKeys = [mapCopy allKeys];
+        v18 = [v16 setWithArray:allKeys];
 
         if ([v15 isSubsetOfSet:v18])
         {
@@ -1748,20 +1748,20 @@ id __87__RTInferredMapItemFuser_updateAoiUUIDToProbArrayMap_aoiDedupedInferredMa
 
               v14 = v92;
               v18 = v94;
-              if (!a5)
+              if (!error)
               {
 LABEL_16:
                 v30 = 0;
 LABEL_66:
 
-                v9 = v96;
+                mapCopy = v96;
                 goto LABEL_67;
               }
 
 LABEL_35:
               v42 = v28;
               v30 = 0;
-              *a5 = v28;
+              *error = v28;
               goto LABEL_66;
             }
           }
@@ -1797,23 +1797,23 @@ LABEL_35:
                   }
 
                   v49 = *(*(&v105 + 1) + 8 * j);
-                  v50 = [v49 mapItem];
-                  v51 = [v50 identifier];
+                  mapItem = [v49 mapItem];
+                  identifier = [mapItem identifier];
 
-                  v52 = [v43 objectForKeyedSubscript:v51];
+                  v52 = [v43 objectForKeyedSubscript:identifier];
 
                   if (!v52)
                   {
-                    [v43 setObject:&unk_2845A2278 forKeyedSubscript:v51];
+                    [v43 setObject:&unk_2845A2278 forKeyedSubscript:identifier];
                   }
 
                   v53 = MEMORY[0x277CCABB0];
-                  v54 = [v43 objectForKeyedSubscript:v51];
+                  v54 = [v43 objectForKeyedSubscript:identifier];
                   [v54 doubleValue];
                   v56 = v55;
                   [v49 confidence];
                   v58 = [v53 numberWithDouble:v56 + v57];
-                  [v43 setObject:v58 forKeyedSubscript:v51];
+                  [v43 setObject:v58 forKeyedSubscript:identifier];
                 }
 
                 v46 = [v44 countByEnumeratingWithState:&v105 objects:v115 count:16];
@@ -1860,7 +1860,7 @@ LABEL_35:
             }
 
             [v90 count];
-            [(RTInferredMapItemFuserParameters *)v95->_parameters placeholderMultiplier];
+            [(RTInferredMapItemFuserParameters *)selfCopy->_parameters placeholderMultiplier];
             v97 = 0u;
             v98 = 0u;
             v99 = 0u;
@@ -1881,7 +1881,7 @@ LABEL_35:
                   }
 
                   v76 = *(*(&v97 + 1) + 8 * m);
-                  v77 = [v76 isEqual:v95->_placeholderUUID];
+                  v77 = [v76 isEqual:selfCopy->_placeholderUUID];
                   v78 = MEMORY[0x277CCABB0];
                   v79 = [v96 objectForKeyedSubscript:v76];
                   [v79 doubleValue];
@@ -1890,7 +1890,7 @@ LABEL_35:
                   v83 = v81 + v82;
                   if (v77)
                   {
-                    [(RTInferredMapItemFuserParameters *)v95->_parameters placeholderMultiplier];
+                    [(RTInferredMapItemFuserParameters *)selfCopy->_parameters placeholderMultiplier];
                     RTCommonSafeLog();
                     v83 = v83 + v84;
                   }
@@ -1938,7 +1938,7 @@ LABEL_35:
           _os_log_error_impl(&dword_2304B3000, v41, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_16;
         }
@@ -1963,10 +1963,10 @@ LABEL_35:
         _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      if (a5)
+      if (error)
       {
         v38 = v36;
-        *a5 = v36;
+        *error = v36;
       }
 
       goto LABEL_31;
@@ -1979,7 +1979,7 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: bluePOIDedupedInferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v32 = @"bluePOIDedupedInferredMapItems";
       goto LABEL_25;
@@ -1997,7 +1997,7 @@ LABEL_31:
     _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiUUIDToLogProbMap", buf, 2u);
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_31;
   }
@@ -2005,7 +2005,7 @@ LABEL_31:
   v32 = @"nonAoiUUIDToLogProbMap";
 LABEL_25:
   _RTErrorInvalidParameterCreate(v32);
-  *a5 = v30 = 0;
+  *error = v30 = 0;
 LABEL_67:
 
   return v30;
@@ -2019,13 +2019,13 @@ id __92__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_bluePOIDedupedInfer
   return v3;
 }
 
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 nonBluePOIDedupedInferredMapItems:(id)a4 error:(id *)a5
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map nonBluePOIDedupedInferredMapItems:(id)items error:(id *)error
 {
   v110[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  mapCopy = map;
+  itemsCopy = items;
+  v11 = itemsCopy;
+  if (!mapCopy)
   {
     v59 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -2034,7 +2034,7 @@ id __92__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_bluePOIDedupedInfer
       _os_log_error_impl(&dword_2304B3000, v59, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiUUIDToLogProbMap", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -2043,7 +2043,7 @@ id __92__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_bluePOIDedupedInfer
     goto LABEL_35;
   }
 
-  if (!v10)
+  if (!itemsCopy)
   {
     v61 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
@@ -2052,7 +2052,7 @@ id __92__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_bluePOIDedupedInfer
       _os_log_error_impl(&dword_2304B3000, v61, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonBluePOIDedupedInferredMapItems", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -2060,11 +2060,11 @@ id __92__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_bluePOIDedupedInfer
     v60 = @"nonBluePOIDedupedInferredMapItems";
 LABEL_35:
     _RTErrorInvalidParameterCreate(v60);
-    *a5 = v58 = 0;
+    *error = v58 = 0;
     goto LABEL_54;
   }
 
-  v12 = [v9 objectForKeyedSubscript:self->_placeholderUUID];
+  v12 = [mapCopy objectForKeyedSubscript:self->_placeholderUUID];
 
   if (!v12)
   {
@@ -2085,10 +2085,10 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v65, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v66 = v64;
-      *a5 = v64;
+      *error = v64;
     }
 
 LABEL_41:
@@ -2096,19 +2096,19 @@ LABEL_41:
     goto LABEL_54;
   }
 
-  v13 = self;
+  selfCopy = self;
   v14 = [[_RTMap alloc] initWithInput:v11];
   v15 = [(_RTMap *)v14 withBlock:&__block_literal_global_93];
 
   v16 = [MEMORY[0x277CBEB98] setWithArray:v15];
   v17 = MEMORY[0x277CBEB98];
-  v18 = [v9 allKeys];
-  v19 = [v17 setWithArray:v18];
+  allKeys = [mapCopy allKeys];
+  v19 = [v17 setWithArray:allKeys];
 
   if ([v16 isSubsetOfSet:v19])
   {
-    v20 = [v9 count];
-    [(RTInferredMapItemFuserParameters *)v13->_parameters placeholderMultiplier];
+    v20 = [mapCopy count];
+    [(RTInferredMapItemFuserParameters *)selfCopy->_parameters placeholderMultiplier];
     v22 = v21;
     v95 = 0u;
     v96 = 0u;
@@ -2121,13 +2121,13 @@ LABEL_41:
       v81 = v19;
       v82 = v16;
       aSelector = a2;
-      v80 = a5;
+      errorCopy = error;
       v83 = v15;
       v84 = v11;
       v86 = *v96;
       v23 = v22 + (v20 - 1) + -1.0;
       v24 = 0x277CCA000uLL;
-      v25 = v13;
+      v25 = selfCopy;
       while (2)
       {
         v26 = 0;
@@ -2139,8 +2139,8 @@ LABEL_41:
           }
 
           v27 = *(*(&v95 + 1) + 8 * v26);
-          v28 = [v27 mapItem];
-          v29 = [v28 identifier];
+          mapItem = [v27 mapItem];
+          identifier = [mapItem identifier];
 
           [v27 confidence];
           if ((1.0 - v30) / v23 < 0.0)
@@ -2162,10 +2162,10 @@ LABEL_41:
               _os_log_error_impl(&dword_2304B3000, v73, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
             }
 
-            if (v80)
+            if (errorCopy)
             {
               v74 = v72;
-              *v80 = v72;
+              *errorCopy = v72;
             }
 
             v58 = 0;
@@ -2177,8 +2177,8 @@ LABEL_41:
           v94 = 0u;
           v91 = 0u;
           v92 = 0u;
-          v90 = [v9 allKeys];
-          v31 = [v90 countByEnumeratingWithState:&v91 objects:v99 count:16];
+          allKeys2 = [mapCopy allKeys];
+          v31 = [allKeys2 countByEnumeratingWithState:&v91 objects:v99 count:16];
           if (v31)
           {
             v32 = v31;
@@ -2191,14 +2191,14 @@ LABEL_41:
               {
                 if (*v92 != v33)
                 {
-                  objc_enumerationMutation(v90);
+                  objc_enumerationMutation(allKeys2);
                 }
 
                 v35 = *(*(&v91 + 1) + 8 * v34);
-                if ([v35 isEqual:v29])
+                if ([v35 isEqual:identifier])
                 {
                   v36 = *(v24 + 2992);
-                  v37 = [v9 objectForKeyedSubscript:v35];
+                  v37 = [mapCopy objectForKeyedSubscript:v35];
                   [v37 doubleValue];
                   v39 = v38;
                   RTCommonSafeLog();
@@ -2208,9 +2208,9 @@ LABEL_41:
                 else
                 {
                   v42 = v33;
-                  v43 = v29;
+                  v43 = identifier;
                   v44 = [v35 isEqual:v25->_placeholderUUID];
-                  v45 = v9;
+                  v45 = mapCopy;
                   v46 = v25;
                   v47 = v44;
                   v48 = v24;
@@ -2237,20 +2237,20 @@ LABEL_41:
 
                   v41 = [v57 numberWithDouble:v56];
                   v25 = v46;
-                  v9 = v50;
+                  mapCopy = v50;
                   v24 = v48;
-                  v29 = v43;
+                  identifier = v43;
                   v33 = v42;
                   v32 = v89;
                 }
 
-                [v9 setObject:v41 forKeyedSubscript:v35];
+                [mapCopy setObject:v41 forKeyedSubscript:v35];
 
                 ++v34;
               }
 
               while (v32 != v34);
-              v32 = [v90 countByEnumeratingWithState:&v91 objects:v99 count:16];
+              v32 = [allKeys2 countByEnumeratingWithState:&v91 objects:v99 count:16];
             }
 
             while (v32);
@@ -2303,9 +2303,9 @@ LABEL_51:
     }
 
     v58 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = obj;
+      *error = obj;
     }
   }
 
@@ -2321,13 +2321,13 @@ id __95__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonBluePOIDedupedIn
   return v3;
 }
 
-- (BOOL)updateNonAoiUUIDToLogProbMap:(id)a3 nonAoiDedupedInferredMapItems:(id)a4 error:(id *)a5
+- (BOOL)updateNonAoiUUIDToLogProbMap:(id)map nonAoiDedupedInferredMapItems:(id)items error:(id *)error
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  mapCopy = map;
+  itemsCopy = items;
+  v11 = itemsCopy;
+  if (!mapCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2336,12 +2336,12 @@ id __95__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonBluePOIDedupedIn
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiUUIDToLogProbMap", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v20 = @"nonAoiUUIDToLogProbMap";
 LABEL_13:
       _RTErrorInvalidParameterCreate(v20);
-      *a5 = v22 = 0;
+      *error = v22 = 0;
       goto LABEL_42;
     }
 
@@ -2350,7 +2350,7 @@ LABEL_14:
     goto LABEL_42;
   }
 
-  if (!v10)
+  if (!itemsCopy)
   {
     v21 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -2359,7 +2359,7 @@ LABEL_14:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiDedupedInferredMapItems", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       v20 = @"nonAoiDedupedInferredMapItems";
       goto LABEL_13;
@@ -2375,8 +2375,8 @@ LABEL_14:
   v14 = [MEMORY[0x277CBEB58] setWithArray:v13];
   [v14 addObject:self->_placeholderUUID];
   v15 = MEMORY[0x277CBEB98];
-  v16 = [v9 allKeys];
-  v17 = [v15 setWithArray:v16];
+  allKeys = [mapCopy allKeys];
+  v17 = [v15 setWithArray:allKeys];
 
   if ([v14 isEqualToSet:v17])
   {
@@ -2406,11 +2406,11 @@ LABEL_14:
   objc_autoreleasePoolPop(context);
   if (v18)
   {
-    if (a5)
+    if (error)
     {
       v26 = v18;
       v22 = 0;
-      *a5 = v18;
+      *error = v18;
     }
 
     else
@@ -2422,8 +2422,8 @@ LABEL_14:
   else
   {
     contexta = self;
-    v27 = [MEMORY[0x277CBEB18] array];
-    v28 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
@@ -2446,12 +2446,12 @@ LABEL_14:
           v34 = *(*(&v47 + 1) + 8 * i);
           if ([v34 source] == 0x4000)
           {
-            v35 = v27;
+            v35 = array;
           }
 
           else
           {
-            v35 = v28;
+            v35 = array2;
           }
 
           [v35 addObject:v34];
@@ -2464,26 +2464,26 @@ LABEL_14:
     }
 
     v46 = 0;
-    v36 = [(RTInferredMapItemFuser *)contexta updateNonAoiUUIDToLogProbMap:v9 bluePOIDedupedInferredMapItems:v27 error:&v46];
+    v36 = [(RTInferredMapItemFuser *)contexta updateNonAoiUUIDToLogProbMap:mapCopy bluePOIDedupedInferredMapItems:array error:&v46];
     v37 = v46;
     v38 = v37;
     if (v36)
     {
       v45 = 0;
-      v22 = [(RTInferredMapItemFuser *)contexta updateNonAoiUUIDToLogProbMap:v9 nonBluePOIDedupedInferredMapItems:v28 error:&v45];
+      v22 = [(RTInferredMapItemFuser *)contexta updateNonAoiUUIDToLogProbMap:mapCopy nonBluePOIDedupedInferredMapItems:array2 error:&v45];
       v39 = v45;
-      if (a5 && !v22)
+      if (error && !v22)
       {
         v39 = v39;
-        *a5 = v39;
+        *error = v39;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v40 = v37;
       v22 = 0;
-      *a5 = v38;
+      *error = v38;
     }
 
     else
@@ -2506,14 +2506,14 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
   return v3;
 }
 
-- (id)subtractMaxLogarithmFromLogProbMap:(id)a3 error:(id *)a4
+- (id)subtractMaxLogarithmFromLogProbMap:(id)map error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  mapCopy = map;
+  v6 = mapCopy;
+  if (mapCopy)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(mapCopy, "count")}];
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
@@ -2564,8 +2564,8 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v21 = [v8 allKeys];
-    v22 = [v21 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    allKeys = [v8 allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v22)
     {
       v23 = v22;
@@ -2576,7 +2576,7 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
         {
           if (*v34 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v33 + 1) + 8 * j);
@@ -2587,7 +2587,7 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
           [v7 setObject:v30 forKeyedSubscript:v26];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v23);
@@ -2605,10 +2605,10 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
       _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: logProbMap", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"logProbMap");
-      *a4 = v7 = 0;
+      *error = v7 = 0;
     }
 
     else
@@ -2620,18 +2620,18 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
   return v7;
 }
 
-- (double)logSumExpOfLogProbMap:(id)a3 error:(id *)a4
+- (double)logSumExpOfLogProbMap:(id)map error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  mapCopy = map;
+  v6 = mapCopy;
+  if (mapCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v7 = [mapCopy countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2675,27 +2675,27 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
     }
 
     v15 = 0.0;
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"logProbMap");
+      *error = _RTErrorInvalidParameterCreate(@"logProbMap");
     }
   }
 
   return v15;
 }
 
-- (id)normalizeNonAoiUUIDToLogProbMap:(id)a3 aoiUUIDToProbArrayMap:(id)a4 error:(id *)a5
+- (id)normalizeNonAoiUUIDToLogProbMap:(id)map aoiUUIDToProbArrayMap:(id)arrayMap error:(id *)error
 {
   v90 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  mapCopy = map;
+  arrayMapCopy = arrayMap;
+  v11 = arrayMapCopy;
+  if (mapCopy)
   {
-    if (v10)
+    if (arrayMapCopy)
     {
       v80 = 0;
-      v12 = [(RTInferredMapItemFuser *)self subtractMaxLogarithmFromLogProbMap:v9 error:&v80];
+      v12 = [(RTInferredMapItemFuser *)self subtractMaxLogarithmFromLogProbMap:mapCopy error:&v80];
       v13 = v80;
 
       if (v13)
@@ -2711,11 +2711,11 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
           _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
         }
 
-        if (a5)
+        if (error)
         {
           v15 = v13;
           v16 = 0;
-          *a5 = v13;
+          *error = v13;
         }
 
         else
@@ -2743,11 +2743,11 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
             _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
           }
 
-          if (a5)
+          if (error)
           {
             v23 = v21;
             v16 = 0;
-            *a5 = v21;
+            *error = v21;
           }
 
           else
@@ -2759,7 +2759,7 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
         else
         {
           aSelector = a2;
-          v63 = a5;
+          errorCopy = error;
           v65 = v11;
           v24 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v11, "count") + objc_msgSend(v12, "count")}];
           v75 = 0u;
@@ -2841,10 +2841,10 @@ id __91__RTInferredMapItemFuser_updateNonAoiUUIDToLogProbMap_nonAoiDedupedInferr
 
                   v12 = v64;
                   v11 = v65;
-                  if (v63)
+                  if (errorCopy)
                   {
                     v57 = v55;
-                    *v63 = v55;
+                    *errorCopy = v55;
                   }
 
                   v16 = 0;
@@ -2920,10 +2920,10 @@ LABEL_56:
         _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: aoiUUIDToProbArrayMap", buf, 2u);
       }
 
-      if (a5)
+      if (error)
       {
         _RTErrorInvalidParameterCreate(@"aoiUUIDToProbArrayMap");
-        *a5 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -2931,7 +2931,7 @@ LABEL_56:
         v16 = 0;
       }
 
-      v12 = v9;
+      v12 = mapCopy;
     }
   }
 
@@ -2944,11 +2944,11 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: nonAoiUUIDToLogProbMap", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"nonAoiUUIDToLogProbMap");
       v12 = 0;
-      *a5 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -2961,15 +2961,15 @@ LABEL_56:
   return v16;
 }
 
-- (id)fusedInferredMapItemsFromUUIDToProbMap:(id)a3 inferredMapItemDeduperState:(id)a4 uuidToFusedMapItemSourceMap:(id)a5 referenceLocation:(id)a6 error:(id *)a7
+- (id)fusedInferredMapItemsFromUUIDToProbMap:(id)map inferredMapItemDeduperState:(id)state uuidToFusedMapItemSourceMap:(id)sourceMap referenceLocation:(id)location error:(id *)error
 {
   v98[1] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = v16;
-  if (!v13)
+  mapCopy = map;
+  stateCopy = state;
+  sourceMapCopy = sourceMap;
+  locationCopy = location;
+  v17 = locationCopy;
+  if (!mapCopy)
   {
     v45 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -2978,7 +2978,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v45, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: uuidToProbMap", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -2987,7 +2987,7 @@ LABEL_56:
     goto LABEL_35;
   }
 
-  if (!v14)
+  if (!stateCopy)
   {
     v47 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -2996,7 +2996,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v47, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItemDeduperState", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -3005,7 +3005,7 @@ LABEL_56:
     goto LABEL_35;
   }
 
-  if (!v15)
+  if (!sourceMapCopy)
   {
     v48 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -3014,7 +3014,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v48, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: uuidToFusedMapItemSourceMap", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -3023,7 +3023,7 @@ LABEL_56:
     goto LABEL_35;
   }
 
-  if (!v16)
+  if (!locationCopy)
   {
     v49 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
@@ -3032,7 +3032,7 @@ LABEL_56:
       _os_log_error_impl(&dword_2304B3000, v49, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceLocation", buf, 2u);
     }
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_41;
     }
@@ -3040,11 +3040,11 @@ LABEL_56:
     v46 = @"referenceLocation";
 LABEL_35:
     _RTErrorInvalidParameterCreate(v46);
-    *a7 = v44 = 0;
+    *error = v44 = 0;
     goto LABEL_59;
   }
 
-  v18 = [v13 objectForKeyedSubscript:self->_placeholderUUID];
+  v18 = [mapCopy objectForKeyedSubscript:self->_placeholderUUID];
 
   if (!v18)
   {
@@ -3065,10 +3065,10 @@ LABEL_35:
       _os_log_error_impl(&dword_2304B3000, v53, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a7)
+    if (error)
     {
       v54 = v52;
-      *a7 = v52;
+      *error = v52;
     }
 
 LABEL_41:
@@ -3078,12 +3078,12 @@ LABEL_41:
 
   aSelector = a2;
   v19 = MEMORY[0x277CBEB98];
-  v20 = [v13 allKeys];
-  v21 = [v19 setWithArray:v20];
+  allKeys = [mapCopy allKeys];
+  v21 = [v19 setWithArray:allKeys];
 
   v22 = MEMORY[0x277CBEB98];
-  v23 = [v15 allKeys];
-  v24 = [v22 setWithArray:v23];
+  allKeys2 = [sourceMapCopy allKeys];
+  v24 = [v22 setWithArray:allKeys2];
 
   if (([v21 isEqualToSet:v24] & 1) == 0)
   {
@@ -3104,11 +3104,11 @@ LABEL_41:
       _os_log_error_impl(&dword_2304B3000, v58, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
     }
 
-    if (a7)
+    if (error)
     {
       v59 = v57;
       v44 = 0;
-      *a7 = v57;
+      *error = v57;
     }
 
     else
@@ -3122,16 +3122,16 @@ LABEL_41:
 
   v75 = v24;
   v76 = v21;
-  v74 = a7;
+  errorCopy = error;
   v77 = v17;
-  v82 = v15;
-  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  v82 = sourceMapCopy;
+  v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v78 = v13;
-  v26 = v13;
+  v78 = mapCopy;
+  v26 = mapCopy;
   v27 = [v26 countByEnumeratingWithState:&v84 objects:v90 count:16];
   if (!v27)
   {
@@ -3155,14 +3155,14 @@ LABEL_41:
       if (([v31 isEqual:self->_placeholderUUID] & 1) == 0)
       {
         v83 = 0;
-        v32 = [v14 mapItemForDedupedUUID:v31 error:&v83];
+        v32 = [stateCopy mapItemForDedupedUUID:v31 error:&v83];
         v33 = v83;
         v34 = v33;
         if (v33)
         {
           v60 = MEMORY[0x277CCA9B8];
-          v61 = [v33 userInfo];
-          v62 = [v60 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:5 userInfo:v61];
+          userInfo = [v33 userInfo];
+          v62 = [v60 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:5 userInfo:userInfo];
 
           v63 = _rt_log_facility_get_os_log(RTLogFacilityFusion);
           if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
@@ -3176,11 +3176,11 @@ LABEL_41:
           }
 
           v17 = v77;
-          v13 = v78;
-          v15 = v82;
-          v64 = v74;
+          mapCopy = v78;
+          sourceMapCopy = v82;
+          v64 = errorCopy;
           v21 = v76;
-          if (!v74)
+          if (!errorCopy)
           {
             goto LABEL_57;
           }
@@ -3189,7 +3189,7 @@ LABEL_41:
         else
         {
           v35 = v28;
-          v36 = v14;
+          v36 = stateCopy;
           v37 = [RTFusedInferredMapItem alloc];
           v38 = [v26 objectForKeyedSubscript:v31];
           [v38 doubleValue];
@@ -3203,7 +3203,7 @@ LABEL_41:
             v25 = v81;
             [v81 addObject:v42];
 
-            v14 = v36;
+            stateCopy = v36;
             v26 = v80;
             v28 = v35;
             continue;
@@ -3227,13 +3227,13 @@ LABEL_41:
           }
 
           v17 = v77;
-          v13 = v78;
-          v14 = v36;
-          v15 = v82;
-          v64 = v74;
+          mapCopy = v78;
+          stateCopy = v36;
+          sourceMapCopy = v82;
+          v64 = errorCopy;
           v21 = v76;
           v34 = 0;
-          if (!v74)
+          if (!errorCopy)
           {
             v34 = 0;
             goto LABEL_57;
@@ -3265,8 +3265,8 @@ LABEL_18:
   [(RTInferredMapItemFuserParameters *)self->_parameters confidenceEqualityEpsilon];
   v17 = v77;
   v44 = [RTFusedInferredMapItem sortFusedInferredMapItems:v25 confidenceEqualityEpsilon:v77 referenceLocation:self->_distanceCalculator distanceCalculator:0 ascending:?];
-  v13 = v78;
-  v15 = v82;
+  mapCopy = v78;
+  sourceMapCopy = v82;
   v24 = v75;
   v21 = v76;
 LABEL_58:
@@ -3276,16 +3276,16 @@ LABEL_59:
   return v44;
 }
 
-- (id)fusedInferredMapItemsUsingCandidates:(id)a3 referenceLocation:(id)a4 snapToBestKnownPlace:(BOOL)a5 snapToBestAoi:(BOOL)a6 error:(id *)a7
+- (id)fusedInferredMapItemsUsingCandidates:(id)candidates referenceLocation:(id)location snapToBestKnownPlace:(BOOL)place snapToBestAoi:(BOOL)aoi error:(id *)error
 {
-  v8 = a6;
-  v9 = a5;
+  aoiCopy = aoi;
+  placeCopy = place;
   v127 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  if (v14)
+  candidatesCopy = candidates;
+  locationCopy = location;
+  if (locationCopy)
   {
-    if (v13)
+    if (candidatesCopy)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -3296,7 +3296,7 @@ LABEL_59:
           *buf = 138412546;
           v124 = v16;
           v125 = 2048;
-          v126 = [v13 count];
+          v126 = [candidatesCopy count];
           _os_log_impl(&dword_2304B3000, v15, OS_LOG_TYPE_INFO, "%@, original candidates count, %lu", buf, 0x16u);
         }
       }
@@ -3308,20 +3308,20 @@ LABEL_59:
         v121[2] = __122__RTInferredMapItemFuser_fusedInferredMapItemsUsingCandidates_referenceLocation_snapToBestKnownPlace_snapToBestAoi_error___block_invoke;
         v121[3] = &__block_descriptor_40_e23_v32__0__RTPair_8Q16_B24l;
         v121[4] = a2;
-        [v13 enumerateObjectsUsingBlock:v121];
+        [candidatesCopy enumerateObjectsUsingBlock:v121];
       }
 
       v120 = 0;
-      v17 = [(RTInferredMapItemFuser *)self preprocessCandidates:v13 referenceLocation:v14 snapToBestKnownPlace:v9 snapToBestAoi:v8 error:&v120];
+      v17 = [(RTInferredMapItemFuser *)self preprocessCandidates:candidatesCopy referenceLocation:locationCopy snapToBestKnownPlace:placeCopy snapToBestAoi:aoiCopy error:&v120];
       v18 = v120;
 
       if (v18)
       {
-        if (a7)
+        if (error)
         {
           v19 = v18;
           v20 = 0;
-          *a7 = v18;
+          *error = v18;
         }
 
         else
@@ -3383,8 +3383,8 @@ LABEL_106:
         v35 = v32;
         v36 = MEMORY[0x277CCA9B8];
         v37 = v33;
-        v38 = [v33 userInfo];
-        v39 = [v36 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:5 userInfo:v38];
+        userInfo = [v33 userInfo];
+        v39 = [v36 errorWithDomain:@"RTInferredMapItemFuserErrorDomain" code:5 userInfo:userInfo];
 
         v40 = _rt_log_facility_get_os_log(RTLogFacilityFusion);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -3397,12 +3397,12 @@ LABEL_106:
           _os_log_error_impl(&dword_2304B3000, v40, OS_LOG_TYPE_ERROR, "%@, deduping error, %@", buf, 0x16u);
         }
 
-        if (a7)
+        if (error)
         {
           v41 = v39;
           v42 = v39;
           v20 = 0;
-          *a7 = v39;
+          *error = v39;
           v34 = v37;
           v32 = v35;
         }
@@ -3438,12 +3438,12 @@ LABEL_106:
           v34 = 0;
         }
 
-        if (a7)
+        if (error)
         {
           v41 = v99;
           v44 = v99;
           v20 = 0;
-          *a7 = v99;
+          *error = v99;
         }
 
         else
@@ -3480,9 +3480,9 @@ LABEL_106:
 
         v32 = v96;
         v20 = 0;
-        if (a7)
+        if (error)
         {
-          *a7 = v97;
+          *error = v97;
         }
 
         v34 = 0;
@@ -3515,9 +3515,9 @@ LABEL_106:
         }
 
         v20 = 0;
-        if (a7)
+        if (error)
         {
-          *a7 = v93;
+          *error = v93;
         }
 
         v34 = 0;
@@ -3545,9 +3545,9 @@ LABEL_106:
         }
 
         v20 = 0;
-        if (a7)
+        if (error)
         {
-          *a7 = v89;
+          *error = v89;
         }
 
         v34 = 0;
@@ -3575,9 +3575,9 @@ LABEL_106:
 
         v34 = 0;
         v20 = 0;
-        if (a7)
+        if (error)
         {
-          *a7 = v88;
+          *error = v88;
         }
 
         v41 = 0;
@@ -3606,11 +3606,11 @@ LABEL_106:
         }
 
         v34 = 0;
-        if (a7)
+        if (error)
         {
           v57 = v55;
           v20 = 0;
-          *a7 = v55;
+          *error = v55;
         }
 
         else
@@ -3624,7 +3624,7 @@ LABEL_106:
       }
 
       v107 = 0;
-      v65 = [(RTInferredMapItemFuser *)self fusedInferredMapItemsFromUUIDToProbMap:v53 inferredMapItemDeduperState:v30 uuidToFusedMapItemSourceMap:v98 referenceLocation:v14 error:&v107];
+      v65 = [(RTInferredMapItemFuser *)self fusedInferredMapItemsFromUUIDToProbMap:v53 inferredMapItemDeduperState:v30 uuidToFusedMapItemSourceMap:v98 referenceLocation:locationCopy error:&v107];
       v84 = v107;
       v85 = v65;
       if (v84)
@@ -3643,12 +3643,12 @@ LABEL_106:
           v34 = 0;
         }
 
-        if (a7)
+        if (error)
         {
           v67 = v84;
           v68 = v84;
           v20 = 0;
-          *a7 = v84;
+          *error = v84;
           v41 = 0;
           v45 = v102;
 LABEL_98:
@@ -3747,11 +3747,11 @@ LABEL_105:
       _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: candidates", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"candidates");
       v17 = 0;
-      *a7 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -3770,10 +3770,10 @@ LABEL_105:
       _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: referenceLocation", buf, 2u);
     }
 
-    if (a7)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"referenceLocation");
-      *a7 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -3781,7 +3781,7 @@ LABEL_105:
       v20 = 0;
     }
 
-    v17 = v13;
+    v17 = candidatesCopy;
   }
 
 LABEL_107:
@@ -3842,17 +3842,17 @@ RTFusedInferredMapItem *__122__RTInferredMapItemFuser_fusedInferredMapItemsUsing
   return v5;
 }
 
-- (id)highestConfidenceAoiMapItemFromFusedInferredMapItems:(id)a3
+- (id)highestConfidenceAoiMapItemFromFusedInferredMapItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = v3;
+    v4 = itemsCopy;
     v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
@@ -3869,10 +3869,10 @@ RTFusedInferredMapItem *__122__RTInferredMapItemFuser_fusedInferredMapItemsUsing
           }
 
           v10 = *(*(&v18 + 1) + 8 * i);
-          v11 = [v10 mapItem];
-          v12 = [v11 mapItemPlaceType];
+          mapItem = [v10 mapItem];
+          mapItemPlaceType = [mapItem mapItemPlaceType];
 
-          if (v12 == 1)
+          if (mapItemPlaceType == 1)
           {
             if (v7)
             {
@@ -3914,26 +3914,26 @@ RTFusedInferredMapItem *__122__RTInferredMapItemFuser_fusedInferredMapItemsUsing
   return v7;
 }
 
-- (id)bestFromFusedInferredMapItems:(id)a3
+- (id)bestFromFusedInferredMapItems:(id)items
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (!itemsCopy)
   {
-    v14 = 0;
+    firstObject3 = 0;
     goto LABEL_13;
   }
 
-  v7 = [v5 firstObject];
+  firstObject = [itemsCopy firstObject];
 
-  if (!v7)
+  if (!firstObject)
   {
     goto LABEL_12;
   }
 
-  v8 = [v6 firstObject];
-  [v8 confidence];
+  firstObject2 = [v6 firstObject];
+  [firstObject2 confidence];
   v10 = v9;
   [(RTInferredMapItemFuserParameters *)self->_parameters aoiConsiderThreshold];
   v12 = v11;
@@ -3944,12 +3944,12 @@ RTFusedInferredMapItem *__122__RTInferredMapItemFuser_fusedInferredMapItemsUsing
   }
 
   v13 = [(RTInferredMapItemFuser *)self highestConfidenceAoiMapItemFromFusedInferredMapItems:v6];
-  v14 = v13;
+  firstObject3 = v13;
   if (!v13 || ([v13 confidence], v16 = v15, -[RTInferredMapItemFuserParameters aoiUseThreshold](self->_parameters, "aoiUseThreshold"), v16 <= v17))
   {
 
 LABEL_12:
-    v14 = [v6 firstObject];
+    firstObject3 = [v6 firstObject];
     goto LABEL_13;
   }
 
@@ -3962,14 +3962,14 @@ LABEL_12:
       v21 = 138412547;
       v22 = v19;
       v23 = 2117;
-      v24 = v14;
+      v24 = firstObject3;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%@, using AOI fusedInferredMapItem, %{sensitive}@", &v21, 0x16u);
     }
   }
 
 LABEL_13:
 
-  return v14;
+  return firstObject3;
 }
 
 @end

@@ -24,22 +24,22 @@
 
 - (BOOL)em_isMessageURL
 {
-  v1 = [a1 em_messageIDHeader];
-  v2 = v1 != 0;
+  em_messageIDHeader = [self em_messageIDHeader];
+  v2 = em_messageIDHeader != 0;
 
   return v2;
 }
 
 - (id)em_messageIDHeader
 {
-  if ([a1 ef_hasScheme:@"message"])
+  if ([self ef_hasScheme:@"message"])
   {
-    v2 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+    v2 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
     [v2 setQuery:0];
     v3 = [v2 URL];
-    v4 = [v3 absoluteString];
+    absoluteString = [v3 absoluteString];
 
-    v5 = [v4 substringFromIndex:{objc_msgSend(@"message", "length") + 1}];
+    v5 = [absoluteString substringFromIndex:{objc_msgSend(@"message", "length") + 1}];
     if ([v5 hasPrefix:@"//"])
     {
       v6 = [v5 substringFromIndex:{objc_msgSend(@"//", "length")}];
@@ -47,11 +47,11 @@
       v5 = v6;
     }
 
-    v7 = [v5 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v5 stringByRemovingPercentEncoding];
 
-    if ([(NSURL *)a1 _isValidMessageID:v7])
+    if ([(NSURL *)self _isValidMessageID:stringByRemovingPercentEncoding])
     {
-      v8 = v7;
+      v8 = stringByRemovingPercentEncoding;
     }
 
     else
@@ -72,8 +72,8 @@
 
 - (BOOL)em_isInternalMessageURL
 {
-  v1 = [(NSURL *)a1 _databaseID];
-  v2 = v1 != 0;
+  _databaseID = [(NSURL *)self _databaseID];
+  v2 = _databaseID != 0;
 
   return v2;
 }
@@ -81,49 +81,49 @@
 - (EMInternalMessageID)em_internalMessageID
 {
   v20 = *MEMORY[0x1E69E9840];
-  v2 = [(NSURL *)a1 _databaseID];
-  if (v2)
+  _databaseID = [(NSURL *)self _databaseID];
+  if (_databaseID)
   {
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:0];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:0];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [v3 queryItems];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
-    if (v5)
+    queryItems = [v3 queryItems];
+    value2 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+    if (value2)
     {
       v6 = *v16;
       while (2)
       {
-        for (i = 0; i != v5; i = i + 1)
+        for (i = 0; i != value2; i = i + 1)
         {
           if (*v16 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(queryItems);
           }
 
           v8 = *(*(&v15 + 1) + 8 * i);
-          v9 = [v8 name];
-          if ([v9 caseInsensitiveCompare:@"uuid"])
+          name = [v8 name];
+          if ([name caseInsensitiveCompare:@"uuid"])
           {
           }
 
           else
           {
-            v10 = [v8 value];
-            v11 = v10 == 0;
+            value = [v8 value];
+            v11 = value == 0;
 
             if (!v11)
             {
-              v5 = [v8 value];
+              value2 = [v8 value];
               goto LABEL_15;
             }
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
-        if (v5)
+        value2 = [queryItems countByEnumeratingWithState:&v15 objects:v19 count:16];
+        if (value2)
         {
           continue;
         }
@@ -134,7 +134,7 @@
 
 LABEL_15:
 
-    v12 = -[EMInternalMessageID initWithDatabaseID:externalID:]([EMInternalMessageID alloc], "initWithDatabaseID:externalID:", [v2 longLongValue], v5);
+    v12 = -[EMInternalMessageID initWithDatabaseID:externalID:]([EMInternalMessageID alloc], "initWithDatabaseID:externalID:", [_databaseID longLongValue], value2);
   }
 
   else
@@ -149,42 +149,42 @@ LABEL_15:
 
 - (BOOL)em_isAccountURL
 {
-  if (![(NSURL *)a1 _hasAccountScheme])
+  if (![(NSURL *)self _hasAccountScheme])
   {
     return 0;
   }
 
-  v2 = [a1 host];
-  v3 = [v2 length];
+  host = [self host];
+  v3 = [host length];
 
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [a1 pathComponents];
-  v5 = [v4 count] < 2;
+  pathComponents = [self pathComponents];
+  v5 = [pathComponents count] < 2;
 
   return v5;
 }
 
 - (BOOL)em_isMailboxURL
 {
-  if (![(NSURL *)a1 _hasAccountScheme])
+  if (![(NSURL *)self _hasAccountScheme])
   {
     return 0;
   }
 
-  v2 = [a1 host];
-  v3 = [v2 length];
+  host = [self host];
+  v3 = [host length];
 
   if (!v3)
   {
     return 0;
   }
 
-  v4 = [a1 pathComponents];
-  v5 = [v4 count] > 1;
+  pathComponents = [self pathComponents];
+  v5 = [pathComponents count] > 1;
 
   return v5;
 }

@@ -7,11 +7,11 @@
 
 - (void)start
 {
-  v4 = [(BluetoothScanController *)self checkPresence];
+  checkPresence = [(BluetoothScanController *)self checkPresence];
   if (([(BluetoothScanController *)self isCancelled]& 1) == 0)
   {
-    v3 = [(BluetoothScanController *)self result];
-    [v3 setStatusCode:v4];
+    result = [(BluetoothScanController *)self result];
+    [result setStatusCode:checkPresence];
   }
 
   [(BluetoothScanController *)self setFinished:1];

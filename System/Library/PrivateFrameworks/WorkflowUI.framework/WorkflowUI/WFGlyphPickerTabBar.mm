@@ -1,9 +1,9 @@
 @interface WFGlyphPickerTabBar
 - (UITabBar)tabBar;
-- (WFGlyphPickerTabBar)initWithTabNames:(id)a3 tabCharacters:(id)a4;
+- (WFGlyphPickerTabBar)initWithTabNames:(id)names tabCharacters:(id)characters;
 - (WFGlyphPickerTabBarDelegate)delegate;
-- (void)setSelectedTabIndex:(unint64_t)a3;
-- (void)tabBar:(id)a3 didSelectItem:(id)a4;
+- (void)setSelectedTabIndex:(unint64_t)index;
+- (void)tabBar:(id)bar didSelectItem:(id)item;
 @end
 
 @implementation WFGlyphPickerTabBar
@@ -22,36 +22,36 @@
   return WeakRetained;
 }
 
-- (void)tabBar:(id)a3 didSelectItem:(id)a4
+- (void)tabBar:(id)bar didSelectItem:(id)item
 {
-  v5 = a4;
-  self->_selectedTabIndex = [v5 tag];
-  v7 = [(WFGlyphPickerTabBar *)self delegate];
-  v6 = [v5 tag];
+  itemCopy = item;
+  self->_selectedTabIndex = [itemCopy tag];
+  delegate = [(WFGlyphPickerTabBar *)self delegate];
+  v6 = [itemCopy tag];
 
-  [v7 glyphPickerTabBar:self didSelectTabAtIndex:v6];
+  [delegate glyphPickerTabBar:self didSelectTabAtIndex:v6];
 }
 
-- (void)setSelectedTabIndex:(unint64_t)a3
+- (void)setSelectedTabIndex:(unint64_t)index
 {
-  self->_selectedTabIndex = a3;
-  v8 = [(WFGlyphPickerTabBar *)self tabBar];
-  v5 = [v8 items];
-  v6 = [v5 objectAtIndex:a3];
-  v7 = [(WFGlyphPickerTabBar *)self tabBar];
-  [v7 setSelectedItem:v6];
+  self->_selectedTabIndex = index;
+  tabBar = [(WFGlyphPickerTabBar *)self tabBar];
+  items = [tabBar items];
+  v6 = [items objectAtIndex:index];
+  tabBar2 = [(WFGlyphPickerTabBar *)self tabBar];
+  [tabBar2 setSelectedItem:v6];
 }
 
-- (WFGlyphPickerTabBar)initWithTabNames:(id)a3 tabCharacters:(id)a4
+- (WFGlyphPickerTabBar)initWithTabNames:(id)names tabCharacters:(id)characters
 {
   v43[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 count];
-  if (v9 != [v8 count])
+  namesCopy = names;
+  charactersCopy = characters;
+  v9 = [namesCopy count];
+  if (v9 != [charactersCopy count])
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"WFGlyphPickerTabBar.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"tabNames.count == tabCharacters.count"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFGlyphPickerTabBar.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"tabNames.count == tabCharacters.count"}];
   }
 
   v42.receiver = self;
@@ -73,43 +73,43 @@
     v39[2] = __54__WFGlyphPickerTabBar_initWithTabNames_tabCharacters___block_invoke;
     v39[3] = &unk_279EE7B00;
     v40 = v12;
-    v41 = v7;
+    v41 = namesCopy;
     v38 = v12;
-    v14 = [v8 if_map:v39];
+    v14 = [charactersCopy if_map:v39];
     [v13 setItems:v14];
 
-    v15 = [v13 items];
-    v16 = [v15 firstObject];
-    [v13 setSelectedItem:v16];
+    items = [v13 items];
+    firstObject = [items firstObject];
+    [v13 setSelectedItem:firstObject];
 
     [(WFGlyphPickerTabBar *)v10 addSubview:v13];
     objc_storeWeak(&v10->_tabBar, v13);
-    v17 = [(WFGlyphPickerTabBar *)v10 safeAreaLayoutGuide];
+    safeAreaLayoutGuide = [(WFGlyphPickerTabBar *)v10 safeAreaLayoutGuide];
     v31 = MEMORY[0x277CCAAD0];
-    v37 = [v13 leadingAnchor];
-    v36 = [v17 leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    leadingAnchor = [v13 leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v43[0] = v35;
-    v33 = [v13 trailingAnchor];
-    v34 = v17;
-    v32 = [v17 trailingAnchor];
-    v30 = [v33 constraintEqualToAnchor:v32];
+    trailingAnchor = [v13 trailingAnchor];
+    v34 = safeAreaLayoutGuide;
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v43[1] = v30;
-    v29 = [v13 bottomAnchor];
-    v18 = [v17 bottomAnchor];
-    v19 = [v29 constraintEqualToAnchor:v18];
+    bottomAnchor = [v13 bottomAnchor];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v43[2] = v19;
-    v20 = [(WFGlyphPickerTabBar *)v10 heightAnchor];
-    v21 = [v13 heightAnchor];
-    [v20 constraintEqualToAnchor:v21];
-    v22 = v8;
-    v24 = v23 = v7;
+    heightAnchor = [(WFGlyphPickerTabBar *)v10 heightAnchor];
+    heightAnchor2 = [v13 heightAnchor];
+    [heightAnchor constraintEqualToAnchor:heightAnchor2];
+    v22 = charactersCopy;
+    v24 = v23 = namesCopy;
     v43[3] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:4];
     [v31 activateConstraints:v25];
 
-    v7 = v23;
-    v8 = v22;
+    namesCopy = v23;
+    charactersCopy = v22;
 
     v26 = v10;
   }

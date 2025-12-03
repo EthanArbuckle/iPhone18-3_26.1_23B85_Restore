@@ -1,8 +1,8 @@
 @interface VisionCoreSemanticSegmentationEspressoInferenceNetworkDescriptorV4
-+ (id)objectClassOutputNameForObjectClassID:(unint64_t)a3 error:(id *)a4;
-+ (id)objectClassOutputNamesForObjectClassIDs:(unint64_t)a3 error:(id *)a4;
-+ (id)semanticSegmentationV4AndReturnError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectClassOutputNameForObjectClassID:(unint64_t)d error:(id *)error;
++ (id)objectClassOutputNamesForObjectClassIDs:(unint64_t)ds error:(id *)error;
++ (id)semanticSegmentationV4AndReturnError:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)humanAttributesMasksOutput;
 - (VisionCoreTensorDescriptor)glassesMaskOutput;
 - (VisionCoreTensorDescriptor)personsMaskOutput;
@@ -11,10 +11,10 @@
 
 @implementation VisionCoreSemanticSegmentationEspressoInferenceNetworkDescriptorV4
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -26,7 +26,7 @@
     {
       v7.receiver = self;
       v7.super_class = VisionCoreSemanticSegmentationEspressoInferenceNetworkDescriptorV4;
-      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:v4];
+      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:equalCopy];
     }
 
     else
@@ -40,16 +40,16 @@
 
 - (VisionCoreTensorDescriptor)glassesMaskOutput
 {
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"glasses:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"glasses:0"];
 
   return v3;
 }
 
 - (VisionCoreTensorDescriptor)skyMaskOutput
 {
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"sky:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"sky:0"];
 
   return v3;
 }
@@ -57,14 +57,14 @@
 - (NSArray)humanAttributesMasksOutput
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"skin:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"skin:0"];
   v9[0] = v3;
-  v4 = [v2 objectForKeyedSubscript:@"hair:0"];
+  v4 = [outputs objectForKeyedSubscript:@"hair:0"];
   v9[1] = v4;
-  v5 = [v2 objectForKeyedSubscript:@"semantics-estimator/split_channels_1__2"];
+  v5 = [outputs objectForKeyedSubscript:@"semantics-estimator/split_channels_1__2"];
   v9[2] = v5;
-  v6 = [v2 objectForKeyedSubscript:@"teeth:0"];
+  v6 = [outputs objectForKeyedSubscript:@"teeth:0"];
   v9[3] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:4];
 
@@ -73,13 +73,13 @@
 
 - (VisionCoreTensorDescriptor)personsMaskOutput
 {
-  v2 = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
-  v3 = [v2 objectForKeyedSubscript:@"person:0"];
+  outputs = [(VisionCoreInferenceNetworkDescriptor *)self outputs];
+  v3 = [outputs objectForKeyedSubscript:@"person:0"];
 
   return v3;
 }
 
-+ (id)semanticSegmentationV4AndReturnError:(id *)a3
++ (id)semanticSegmentationV4AndReturnError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = [[VisionCoreResourceVersion alloc] initWithMajor:1 minor:0 micro:0];
@@ -88,7 +88,7 @@
   v7 = @"image:0";
   v8 = &unk_1F59F94E0;
   objc_opt_self();
-  v9 = [VisionCoreEspressoUtils URLForModelNamed:@"personsemantics-u8-v4.espresso" error:a3];
+  v9 = [VisionCoreEspressoUtils URLForModelNamed:@"personsemantics-u8-v4.espresso" error:error];
   if (v9)
   {
     v10 = [&unk_1F59F94E0 count];
@@ -123,7 +123,7 @@
 
     v25 = 0;
     v26 = 0;
-    v17 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v26 outputTensorDescriptors:&v25 forNetworkModelFileURL:v9 inputBlobName:@"image:0" pixelFormatType:1111970369 outputBlobNamesWithTypes:v11 confidencesBlobNamesWithLabelsFiles:0 error:a3];
+    v17 = [VisionCoreEspressoUtils getInputImageTensorDescriptor:&v26 outputTensorDescriptors:&v25 forNetworkModelFileURL:v9 inputBlobName:@"image:0" pixelFormatType:1111970369 outputBlobNamesWithTypes:v11 confidencesBlobNamesWithLabelsFiles:0 error:error];
     v18 = v26;
     v19 = v25;
     v20 = 0;
@@ -131,8 +131,8 @@
     {
       v21 = [[VisionCoreProcessingDescriptorSpecifier alloc] initWithIdentifier:@"VisionCoreInferenceNetworkIdentifierSemanticSegmentationEspressoV4" version:v6];
       v22 = [VisionCoreSemanticSegmentationEspressoInferenceNetworkDescriptorV4 alloc];
-      v23 = [v19 allValues];
-      v20 = [(VisionCoreInferenceNetworkDescriptor *)v22 initWithURL:v9 specifier:v21 networkHeadVersions:0 inputImage:v18 outputs:v23 confidencesOutput:0];
+      allValues = [v19 allValues];
+      v20 = [(VisionCoreInferenceNetworkDescriptor *)v22 initWithURL:v9 specifier:v21 networkHeadVersions:0 inputImage:v18 outputs:allValues confidencesOutput:0];
     }
   }
 
@@ -144,7 +144,7 @@
   return v20;
 }
 
-+ (id)objectClassOutputNamesForObjectClassIDs:(unint64_t)a3 error:(id *)a4
++ (id)objectClassOutputNamesForObjectClassIDs:(unint64_t)ds error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -155,12 +155,12 @@
 
   v6 = _objectClassIDsToObjectOutputNames_objectClassIDsToObjectClassOutputNames;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [v6 allKeys];
+  allKeys = [v6 allKeys];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -171,28 +171,28 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        if (([v13 unsignedIntegerValue] & a3) != 0)
+        if (([v13 unsignedIntegerValue] & ds) != 0)
         {
           v14 = [v6 objectForKey:v13];
           [v7 addObject:v14];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
   }
 
   v15 = [v7 count];
-  if (a4 && !v15)
+  if (error && !v15)
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown object class ID %lu", a3];
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v16];
+    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown object class ID %lu", ds];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v16];
   }
 
   v17 = [v7 copy];
@@ -222,48 +222,48 @@ void __104__VisionCoreSemanticSegmentationEspressoInferenceNetworkDescriptorV4__
   _objectClassIDsToObjectOutputNames_objectClassIDsToObjectClassOutputNames = v0;
 }
 
-+ (id)objectClassOutputNameForObjectClassID:(unint64_t)a3 error:(id *)a4
++ (id)objectClassOutputNameForObjectClassID:(unint64_t)d error:(id *)error
 {
-  if (a3 > 383)
+  if (d > 383)
   {
-    if (a3 != 4095 && a3 != 384)
+    if (d != 4095 && d != 384)
     {
       goto LABEL_14;
     }
   }
 
-  else if (a3 != 12 && a3 != 60)
+  else if (d != 12 && d != 60)
   {
 LABEL_14:
-    v8 = [a1 objectClassOutputNamesForObjectClassIDs:a3 error:a4];
+    v8 = [self objectClassOutputNamesForObjectClassIDs:d error:error];
     v5 = v8;
     if (v8)
     {
-      v6 = [v8 firstObject];
+      firstObject = [v8 firstObject];
     }
 
     else
     {
-      v6 = 0;
+      firstObject = 0;
     }
 
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"This method accepts individual object class ID only %lu", a3];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"This method accepts individual object class ID only %lu", d];
     [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v5];
-    *a4 = v6 = 0;
+    *error = firstObject = 0;
 LABEL_9:
 
     goto LABEL_11;
   }
 
-  v6 = 0;
+  firstObject = 0;
 LABEL_11:
 
-  return v6;
+  return firstObject;
 }
 
 @end

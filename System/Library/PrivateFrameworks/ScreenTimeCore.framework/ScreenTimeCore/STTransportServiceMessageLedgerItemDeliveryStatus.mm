@@ -1,25 +1,25 @@
 @interface STTransportServiceMessageLedgerItemDeliveryStatus
-+ (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStatus:(id)a3;
-- (STTransportServiceMessageLedgerItemDeliveryStatus)initWithCoder:(id)a3;
++ (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStatus:(id)status;
+- (STTransportServiceMessageLedgerItemDeliveryStatus)initWithCoder:(id)coder;
 - (STTransportServiceMessageLedgerItemDeliveryStatus)statusWithIncrementedAttempts;
-- (STTransportServiceMessageLedgerItemDeliveryStatus)statusWithUpdatedState:(int64_t)a3;
-- (id)_initWithState:(int64_t)a3 numberOfAttempts:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (STTransportServiceMessageLedgerItemDeliveryStatus)statusWithUpdatedState:(int64_t)state;
+- (id)_initWithState:(int64_t)state numberOfAttempts:(int64_t)attempts;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STTransportServiceMessageLedgerItemDeliveryStatus
 
-- (id)_initWithState:(int64_t)a3 numberOfAttempts:(int64_t)a4
+- (id)_initWithState:(int64_t)state numberOfAttempts:(int64_t)attempts
 {
   v7.receiver = self;
   v7.super_class = STTransportServiceMessageLedgerItemDeliveryStatus;
   result = [(STTransportServiceMessageLedgerItemDeliveryStatus *)&v7 init];
-  *(result + 1) = a3;
-  *(result + 2) = a4;
+  *(result + 1) = state;
+  *(result + 2) = attempts;
   return result;
 }
 
@@ -40,11 +40,11 @@
   return [NSString stringWithFormat:@"<%@ { State: %@, Attempts: %ld }>", v3, v5, [(STTransportServiceMessageLedgerItemDeliveryStatus *)self numberOfAttempts]];
 }
 
-- (STTransportServiceMessageLedgerItemDeliveryStatus)statusWithUpdatedState:(int64_t)a3
+- (STTransportServiceMessageLedgerItemDeliveryStatus)statusWithUpdatedState:(int64_t)state
 {
-  if ([STTransportServiceMessageLedgerItemDeliveryStatus _canTransitionFromState:[(STTransportServiceMessageLedgerItemDeliveryStatus *)self state] toState:a3])
+  if ([STTransportServiceMessageLedgerItemDeliveryStatus _canTransitionFromState:[(STTransportServiceMessageLedgerItemDeliveryStatus *)self state] toState:state])
   {
-    v5 = [[STTransportServiceMessageLedgerItemDeliveryStatus alloc] _initWithState:a3 numberOfAttempts:[(STTransportServiceMessageLedgerItemDeliveryStatus *)self numberOfAttempts]];
+    v5 = [[STTransportServiceMessageLedgerItemDeliveryStatus alloc] _initWithState:state numberOfAttempts:[(STTransportServiceMessageLedgerItemDeliveryStatus *)self numberOfAttempts]];
   }
 
   else
@@ -62,53 +62,53 @@
   return v2;
 }
 
-+ (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4
++ (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  v4 = 0x18u >> a4;
-  if (a4 >= 6)
+  v4 = 0x18u >> toState;
+  if (toState >= 6)
   {
     LOBYTE(v4) = 0;
   }
 
-  v5 = 1u >> a4;
-  if (a4 >= 6)
+  v5 = 1u >> toState;
+  if (toState >= 6)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
     LOBYTE(v5) = 0;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
     LOBYTE(v4) = v5;
   }
 
-  v6 = 0xBu >> a4;
-  if (a4 >= 6)
+  v6 = 0xBu >> toState;
+  if (toState >= 6)
   {
     LOBYTE(v6) = 0;
   }
 
-  v7 = 0x1Cu >> a4;
-  if (a4 >= 6)
+  v7 = 0x1Cu >> toState;
+  if (toState >= 6)
   {
     LOBYTE(v7) = 0;
   }
 
-  if (a3 != 1)
+  if (state != 1)
   {
     LOBYTE(v7) = 0;
   }
 
-  if (a3)
+  if (state)
   {
     LOBYTE(v6) = v7;
   }
 
-  if (a3 <= 1)
+  if (state <= 1)
   {
     LOBYTE(v4) = v6;
   }
@@ -116,36 +116,36 @@
   return v4 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   state = self->_state;
   numberOfAttempts = self->_numberOfAttempts;
 
   return [v4 _initWithState:state numberOfAttempts:numberOfAttempts];
 }
 
-- (STTransportServiceMessageLedgerItemDeliveryStatus)initWithCoder:(id)a3
+- (STTransportServiceMessageLedgerItemDeliveryStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"state"];
-  v6 = [v4 decodeIntegerForKey:@"numberOfAttempts"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"state"];
+  v6 = [coderCopy decodeIntegerForKey:@"numberOfAttempts"];
 
   return [(STTransportServiceMessageLedgerItemDeliveryStatus *)self _initWithState:v5 numberOfAttempts:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"state"];
-  [v5 encodeInteger:self->_numberOfAttempts forKey:@"numberOfAttempts"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"state"];
+  [coderCopy encodeInteger:self->_numberOfAttempts forKey:@"numberOfAttempts"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -155,7 +155,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self isEqualToStatus:v4];
+      v5 = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self isEqualToStatus:equalCopy];
     }
 
     else
@@ -167,21 +167,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToStatus:(id)a3
+- (BOOL)isEqualToStatus:(id)status
 {
-  v4 = a3;
-  if (v4 == self)
+  statusCopy = status;
+  if (statusCopy == self)
   {
     v7 = 1;
   }
 
   else
   {
-    v5 = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self state];
-    if (v5 == [(STTransportServiceMessageLedgerItemDeliveryStatus *)v4 state])
+    state = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self state];
+    if (state == [(STTransportServiceMessageLedgerItemDeliveryStatus *)statusCopy state])
     {
-      v6 = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self numberOfAttempts];
-      v7 = v6 == [(STTransportServiceMessageLedgerItemDeliveryStatus *)v4 numberOfAttempts];
+      numberOfAttempts = [(STTransportServiceMessageLedgerItemDeliveryStatus *)self numberOfAttempts];
+      v7 = numberOfAttempts == [(STTransportServiceMessageLedgerItemDeliveryStatus *)statusCopy numberOfAttempts];
     }
 
     else

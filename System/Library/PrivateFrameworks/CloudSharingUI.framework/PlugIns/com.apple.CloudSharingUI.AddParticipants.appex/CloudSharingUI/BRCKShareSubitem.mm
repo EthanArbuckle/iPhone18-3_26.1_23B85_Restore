@@ -1,24 +1,24 @@
 @interface BRCKShareSubitem
-- (BRCKShareSubitem)initWithShare:(id)a3;
+- (BRCKShareSubitem)initWithShare:(id)share;
 @end
 
 @implementation BRCKShareSubitem
 
-- (BRCKShareSubitem)initWithShare:(id)a3
+- (BRCKShareSubitem)initWithShare:(id)share
 {
-  v5 = a3;
-  [v5 participants];
+  shareCopy = share;
+  [shareCopy participants];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v6 = v28 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
-  if (v7)
+  recordName = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  if (recordName)
   {
     v8 = *v26;
     while (2)
     {
-      for (i = 0; i != v7; i = (i + 1))
+      for (i = 0; i != recordName; i = (i + 1))
       {
         if (*v26 != v8)
         {
@@ -28,16 +28,16 @@
         v10 = *(*(&v25 + 1) + 8 * i);
         if ([v10 role] == 1)
         {
-          v11 = [v10 userIdentity];
-          v12 = [v11 userRecordID];
-          v7 = [v12 recordName];
+          userIdentity = [v10 userIdentity];
+          userRecordID = [userIdentity userRecordID];
+          recordName = [userRecordID recordName];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
-      if (v7)
+      recordName = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      if (recordName)
       {
         continue;
       }
@@ -49,9 +49,9 @@
 LABEL_11:
 
   v13 = [CKRecordZoneID alloc];
-  if (v7)
+  if (recordName)
   {
-    v14 = v7;
+    v14 = recordName;
   }
 
   else
@@ -70,15 +70,15 @@ LABEL_11:
     v19 = [v6 mutableCopy];
     [(BRCKShareSubitem *)v18 setAllParticipants:v19];
 
-    objc_storeStrong(&v18->_originalShare, a3);
-    v18->_publicPermission = [v5 publicPermission];
-    v20 = [v5 objectForKeyedSubscript:CKShareTitleKey];
+    objc_storeStrong(&v18->_originalShare, share);
+    v18->_publicPermission = [shareCopy publicPermission];
+    v20 = [shareCopy objectForKeyedSubscript:CKShareTitleKey];
     [(BRCKShareSubitem *)v18 setObject:v20 forKeyedSubscript:CKShareTitleKey];
 
-    v21 = [v5 objectForKeyedSubscript:CKShareTypeKey];
+    v21 = [shareCopy objectForKeyedSubscript:CKShareTypeKey];
     [(BRCKShareSubitem *)v18 setObject:v21 forKeyedSubscript:CKShareTypeKey];
 
-    v22 = [v5 objectForKeyedSubscript:CKShareThumbnailImageDataKey];
+    v22 = [shareCopy objectForKeyedSubscript:CKShareThumbnailImageDataKey];
     [(BRCKShareSubitem *)v18 setObject:v22 forKeyedSubscript:CKShareThumbnailImageDataKey];
   }
 

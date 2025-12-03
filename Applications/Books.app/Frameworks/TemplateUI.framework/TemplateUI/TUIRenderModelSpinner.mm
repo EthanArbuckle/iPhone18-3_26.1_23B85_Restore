@@ -1,25 +1,25 @@
 @interface TUIRenderModelSpinner
-- (BOOL)isEqualToRenderModel:(id)a3;
+- (BOOL)isEqualToRenderModel:(id)model;
 - (CGSize)size;
 - (NSString)description;
-- (TUIRenderModelSpinner)initWithReuseIdentifier:(id)a3 identifier:(id)a4;
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4;
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4;
+- (TUIRenderModelSpinner)initWithReuseIdentifier:(id)identifier identifier:(id)a4;
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update;
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests;
 - (unint64_t)hash;
 @end
 
 @implementation TUIRenderModelSpinner
 
-- (TUIRenderModelSpinner)initWithReuseIdentifier:(id)a3 identifier:(id)a4
+- (TUIRenderModelSpinner)initWithReuseIdentifier:(id)identifier identifier:(id)a4
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = a4;
   v14.receiver = self;
   v14.super_class = TUIRenderModelSpinner;
   v8 = [(TUIRenderModelSpinner *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     reuseIdentifier = v8->_reuseIdentifier;
     v8->_reuseIdentifier = v9;
 
@@ -31,17 +31,17 @@
   return v8;
 }
 
-- (BOOL)isEqualToRenderModel:(id)a3
+- (BOOL)isEqualToRenderModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, modelCopy);
 
   if (TUIRenderModelIsEqualToRenderModel(self, v6))
   {
-    v7 = [(TUIRenderModelSpinner *)self reuseIdentifier];
-    v8 = [v6 reuseIdentifier];
-    v9 = v7 == v8 || [v7 isEqualToString:v8];
+    reuseIdentifier = [(TUIRenderModelSpinner *)self reuseIdentifier];
+    reuseIdentifier2 = [v6 reuseIdentifier];
+    v9 = reuseIdentifier == reuseIdentifier2 || [reuseIdentifier isEqualToString:reuseIdentifier2];
   }
 
   else
@@ -52,26 +52,26 @@
   return v9;
 }
 
-- (id)newToContainerPlusDeletesWithUpdate:(id)a3 interests:(id)a4
+- (id)newToContainerPlusDeletesWithUpdate:(id)update interests:(id)interests
 {
   v5 = [objc_alloc(objc_opt_class()) initWithReuseIdentifier:self->_reuseIdentifier identifier:self->_identifier];
   TUIRenderModelCopyProperties(v5, self);
   return v5;
 }
 
-- (id)newCurrentContainerPlusInsertsWithCurrent:(id)a3 update:(id)a4
+- (id)newCurrentContainerPlusInsertsWithCurrent:(id)current update:(id)update
 {
-  v5 = a3;
+  currentCopy = current;
   v6 = [objc_alloc(objc_opt_class()) initWithReuseIdentifier:self->_reuseIdentifier identifier:self->_identifier];
-  TUIRenderModelCopyProperties(v6, v5);
+  TUIRenderModelCopyProperties(v6, currentCopy);
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(TUIRenderModelSpinner *)self identifier];
-  v3 = TUIIdentifierHash(v2);
+  identifier = [(TUIRenderModelSpinner *)self identifier];
+  v3 = TUIIdentifierHash(identifier);
 
   return v3;
 }

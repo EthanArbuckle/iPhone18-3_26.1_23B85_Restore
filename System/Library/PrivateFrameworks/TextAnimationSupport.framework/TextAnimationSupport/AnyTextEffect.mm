@@ -1,11 +1,11 @@
 @interface AnyTextEffect
 - (_TtC20TextAnimationSupport13AnyTextEffect)init;
-- (id)applyKeyframe:(id)a3 toContent:(id)a4;
+- (id)applyKeyframe:(id)keyframe toContent:(id)content;
 @end
 
 @implementation AnyTextEffect
 
-- (id)applyKeyframe:(id)a3 toContent:(id)a4
+- (id)applyKeyframe:(id)keyframe toContent:(id)content
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

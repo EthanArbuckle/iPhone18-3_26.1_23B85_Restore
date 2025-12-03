@@ -1,220 +1,220 @@
 @interface WBTableProperties
-+ (void)mapWordProperties:(void *)a3 reader:(id)a4 toProperties:(id)a5;
-+ (void)readFrom:(id)a3 wrdProperties:(void *)a4 tracked:(void *)a5 properties:(id)a6;
++ (void)mapWordProperties:(void *)properties reader:(id)reader toProperties:(id)toProperties;
++ (void)readFrom:(id)from wrdProperties:(void *)properties tracked:(void *)tracked properties:(id)a6;
 @end
 
 @implementation WBTableProperties
 
-+ (void)readFrom:(id)a3 wrdProperties:(void *)a4 tracked:(void *)a5 properties:(id)a6
++ (void)readFrom:(id)from wrdProperties:(void *)properties tracked:(void *)tracked properties:(id)a6
 {
-  v11 = a3;
+  fromCopy = from;
   v10 = a6;
   [v10 setResolveMode:0];
-  [a1 mapWordProperties:a4 reader:v11 toProperties:v10];
-  if (a5)
+  [self mapWordProperties:properties reader:fromCopy toProperties:v10];
+  if (tracked)
   {
     [v10 setResolveMode:1];
-    [a1 mapWordProperties:a5 reader:v11 toProperties:v10];
+    [self mapWordProperties:tracked reader:fromCopy toProperties:v10];
   }
 
   [v10 setResolveMode:2];
 }
 
-+ (void)mapWordProperties:(void *)a3 reader:(id)a4 toProperties:(id)a5
++ (void)mapWordProperties:(void *)properties reader:(id)reader toProperties:(id)toProperties
 {
-  v31 = a4;
-  v8 = a5;
-  v9 = *(a3 + 2);
+  readerCopy = reader;
+  toPropertiesCopy = toProperties;
+  v9 = *(properties + 2);
   if ((v9 & 0x20) != 0)
   {
-    TopBorderReference = WrdTableProperties::getTopBorderReference(a3);
-    v11 = [v8 mutableTopBorder];
-    [WBBorder readFrom:TopBorderReference to:v11];
+    TopBorderReference = WrdTableProperties::getTopBorderReference(properties);
+    mutableTopBorder = [toPropertiesCopy mutableTopBorder];
+    [WBBorder readFrom:TopBorderReference to:mutableTopBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x40) != 0)
   {
-    LeftBorderReference = WrdTableProperties::getLeftBorderReference(a3);
-    v13 = [v8 mutableLeftBorder];
-    [WBBorder readFrom:LeftBorderReference to:v13];
+    LeftBorderReference = WrdTableProperties::getLeftBorderReference(properties);
+    mutableLeftBorder = [toPropertiesCopy mutableLeftBorder];
+    [WBBorder readFrom:LeftBorderReference to:mutableLeftBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x80) != 0)
   {
-    BottomBorderReference = WrdTableProperties::getBottomBorderReference(a3);
-    v15 = [v8 mutableBottomBorder];
-    [WBBorder readFrom:BottomBorderReference to:v15];
+    BottomBorderReference = WrdTableProperties::getBottomBorderReference(properties);
+    mutableBottomBorder = [toPropertiesCopy mutableBottomBorder];
+    [WBBorder readFrom:BottomBorderReference to:mutableBottomBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x100) != 0)
   {
-    RightBorderReference = WrdTableProperties::getRightBorderReference(a3);
-    v17 = [v8 mutableRightBorder];
-    [WBBorder readFrom:RightBorderReference to:v17];
+    RightBorderReference = WrdTableProperties::getRightBorderReference(properties);
+    mutableRightBorder = [toPropertiesCopy mutableRightBorder];
+    [WBBorder readFrom:RightBorderReference to:mutableRightBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x200) != 0)
   {
-    InnerHorizontalBorderReference = WrdTableProperties::getInnerHorizontalBorderReference(a3);
-    v19 = [v8 mutableInsideHorizontalBorder];
-    [WBBorder readFrom:InnerHorizontalBorderReference to:v19];
+    InnerHorizontalBorderReference = WrdTableProperties::getInnerHorizontalBorderReference(properties);
+    mutableInsideHorizontalBorder = [toPropertiesCopy mutableInsideHorizontalBorder];
+    [WBBorder readFrom:InnerHorizontalBorderReference to:mutableInsideHorizontalBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x400) != 0)
   {
-    InnerVerticalBorderReference = WrdTableProperties::getInnerVerticalBorderReference(a3);
-    v21 = [v8 mutableInsideVerticalBorder];
-    [WBBorder readFrom:InnerVerticalBorderReference to:v21];
+    InnerVerticalBorderReference = WrdTableProperties::getInnerVerticalBorderReference(properties);
+    mutableInsideVerticalBorder = [toPropertiesCopy mutableInsideVerticalBorder];
+    [WBBorder readFrom:InnerVerticalBorderReference to:mutableInsideVerticalBorder];
 
-    v9 = *(a3 + 2);
+    v9 = *(properties + 2);
   }
 
   if ((v9 & 0x10) != 0)
   {
-    ShadingReference = WrdTableProperties::getShadingReference(a3);
-    v23 = [v8 mutableShading];
-    [WBShading readFrom:ShadingReference to:v23];
+    ShadingReference = WrdTableProperties::getShadingReference(properties);
+    mutableShading = [toPropertiesCopy mutableShading];
+    [WBShading readFrom:ShadingReference to:mutableShading];
   }
 
-  if ((*(a3 + 27) & 0x10) != 0)
+  if ((*(properties + 27) & 0x10) != 0)
   {
-    v24 = [v31 styleAtIndex:*(a3 + 164) expectedType:3];
+    v24 = [readerCopy styleAtIndex:*(properties + 164) expectedType:3];
     if (v24)
     {
-      [v8 setBaseStyle:v24];
+      [toPropertiesCopy setBaseStyle:v24];
     }
   }
 
-  v25 = *(a3 + 2);
+  v25 = *(properties + 2);
   if ((v25 & 0x4000) != 0)
   {
-    [v8 setJustification:*(a3 + 32)];
-    v25 = *(a3 + 2);
+    [toPropertiesCopy setJustification:*(properties + 32)];
+    v25 = *(properties + 2);
   }
 
   if ((v25 & 0x40000000000) != 0)
   {
-    [v8 setAlignment:*(a3 + 60)];
-    v25 = *(a3 + 2);
+    [toPropertiesCopy setAlignment:*(properties + 60)];
+    v25 = *(properties + 2);
   }
 
   if ((v25 & 0x200000000000000) != 0)
   {
-    [v8 setWidth:*(a3 + 168)];
-    v25 = *(a3 + 2);
+    [toPropertiesCopy setWidth:*(properties + 168)];
+    v25 = *(properties + 2);
   }
 
   if ((v25 & 0x8000) != 0)
   {
-    [v8 setWidthType:*(a3 + 33)];
-    v25 = *(a3 + 2);
+    [toPropertiesCopy setWidthType:*(properties + 33)];
+    v25 = *(properties + 2);
   }
 
   if ((v25 & 0x400000000000000) != 0)
   {
-    [v8 setIndent:*(a3 + 169)];
-    v25 = *(a3 + 2);
+    [toPropertiesCopy setIndent:*(properties + 169)];
+    v25 = *(properties + 2);
   }
 
   if ((v25 & 0x10000) != 0)
   {
-    [v8 setIndentType:*(a3 + 34)];
+    [toPropertiesCopy setIndentType:*(properties + 34)];
   }
 
-  if ((*(a3 + 24) & 0x80) != 0)
+  if ((*(properties + 24) & 0x80) != 0)
   {
-    [v8 setCellSpacing:*(a3 + 181)];
+    [toPropertiesCopy setCellSpacing:*(properties + 181)];
   }
 
-  v26 = *(a3 + 2);
+  v26 = *(properties + 2);
   if ((v26 & 0x8000000) != 0)
   {
-    [v8 setCellSpacing:*(a3 + 90)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setCellSpacing:*(properties + 90)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x8000000000) != 0)
   {
-    [v8 setVerticalAnchor:*(a3 + 57)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setVerticalAnchor:*(properties + 57)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x10000000000) != 0)
   {
-    [v8 setHorizontalAnchor:*(a3 + 58)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setHorizontalAnchor:*(properties + 58)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x400000000000) != 0)
   {
-    [v8 setVerticalPosition:*(a3 + 77)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setVerticalPosition:*(properties + 77)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x200000000000) != 0)
   {
-    [v8 setHorizontalPosition:*(a3 + 76)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setHorizontalPosition:*(properties + 76)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x800000000000) != 0)
   {
-    [v8 setLeftDistanceFromText:*(a3 + 78)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setLeftDistanceFromText:*(properties + 78)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x1000000000000) != 0)
   {
-    [v8 setTopDistanceFromText:*(a3 + 79)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setTopDistanceFromText:*(properties + 79)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x2000000000000) != 0)
   {
-    [v8 setRightDistanceFromText:*(a3 + 80)];
-    v26 = *(a3 + 2);
+    [toPropertiesCopy setRightDistanceFromText:*(properties + 80)];
+    v26 = *(properties + 2);
   }
 
   if ((v26 & 0x4000000000000) != 0)
   {
-    [v8 setBottomDistanceFromText:*(a3 + 81)];
+    [toPropertiesCopy setBottomDistanceFromText:*(properties + 81)];
   }
 
-  if ((*(a3 + 26) & 0x20) != 0)
+  if ((*(properties + 26) & 0x20) != 0)
   {
-    [v8 setBiDirectional:*(a3 + 388) != 0];
+    [toPropertiesCopy setBiDirectional:*(properties + 388) != 0];
   }
 
-  if (WrdTableProperties::doRevisionsExist(a3))
+  if (WrdTableProperties::doRevisionsExist(properties))
   {
-    v27 = *(a3 + 2);
+    v27 = *(properties + 2);
     if ((v27 & 2) != 0)
     {
-      [v8 setIndexToAuthorIDOfFormattingChange:*(a3 + 166)];
-      v27 = *(a3 + 2);
+      [toPropertiesCopy setIndexToAuthorIDOfFormattingChange:*(properties + 166)];
+      v27 = *(properties + 2);
     }
 
     if ((v27 & 4) != 0)
     {
-      v28 = [a1 formattingChangeDate:*(a3 + 15)];
-      [v8 setFormattingChangeDate:v28];
+      v28 = [self formattingChangeDate:*(properties + 15)];
+      [toPropertiesCopy setFormattingChangeDate:v28];
     }
 
-    if ([v8 isFormattingChangeDateOverridden] && objc_msgSend(v8, "isIndexToAuthorIDOfFormattingChangeOverridden"))
+    if ([toPropertiesCopy isFormattingChangeDateOverridden] && objc_msgSend(toPropertiesCopy, "isIndexToAuthorIDOfFormattingChangeOverridden"))
     {
-      v29 = [v8 document];
-      v30 = [v8 formattingChangeDate];
-      [v29 addChangeTrackingEditAtDate:v30 authorIndex:{objc_msgSend(v8, "indexToAuthorIDOfFormattingChange")}];
+      document = [toPropertiesCopy document];
+      formattingChangeDate = [toPropertiesCopy formattingChangeDate];
+      [document addChangeTrackingEditAtDate:formattingChangeDate authorIndex:{objc_msgSend(toPropertiesCopy, "indexToAuthorIDOfFormattingChange")}];
     }
   }
 }

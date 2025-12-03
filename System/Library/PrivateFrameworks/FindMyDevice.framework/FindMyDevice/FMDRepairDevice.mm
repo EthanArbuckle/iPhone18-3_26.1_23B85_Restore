@@ -1,51 +1,51 @@
 @interface FMDRepairDevice
-- (FMDRepairDevice)initWithClientIdentifier:(id)a3 isThisDevice:(BOOL)a4;
-- (FMDRepairDevice)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (FMDRepairDevice)initWithClientIdentifier:(id)identifier isThisDevice:(BOOL)device;
+- (FMDRepairDevice)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDRepairDevice
 
-- (FMDRepairDevice)initWithClientIdentifier:(id)a3 isThisDevice:(BOOL)a4
+- (FMDRepairDevice)initWithClientIdentifier:(id)identifier isThisDevice:(BOOL)device
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = FMDRepairDevice;
   v8 = [(FMDRepairDevice *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_identifier, a3);
-    v9->_isThisDevice = a4;
+    objc_storeStrong(&v8->_identifier, identifier);
+    v9->_isThisDevice = device;
   }
 
   return v9;
 }
 
-- (FMDRepairDevice)initWithCoder:(id)a3
+- (FMDRepairDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = FMDRepairDevice;
   v5 = [(FMDRepairDevice *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_isThisDevice = [v4 decodeBoolForKey:@"isThisDevice"];
+    v5->_isThisDevice = [coderCopy decodeBoolForKey:@"isThisDevice"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeBool:self->_isThisDevice forKey:@"isThisDevice"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeBool:self->_isThisDevice forKey:@"isThisDevice"];
 }
 
 @end

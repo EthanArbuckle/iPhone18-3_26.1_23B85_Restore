@@ -1,6 +1,6 @@
 @interface PFPhotoSharingOperation
-+ (BOOL)outputSupportedForTypeIdentifier:(id)a3;
-+ (id)operationErrorWithCode:(int64_t)a3 withDescription:(id)a4;
++ (BOOL)outputSupportedForTypeIdentifier:(id)identifier;
++ (id)operationErrorWithCode:(int64_t)code withDescription:(id)description;
 - (BOOL)shouldConvertToSRGB;
 - (BOOL)shouldStripAccessibilityDescription;
 - (BOOL)shouldStripCaption;
@@ -12,18 +12,18 @@
 - (NSString)customCaption;
 - (NSString)outputFilename;
 - (NSURL)outputDirectoryURL;
-- (PFPhotoSharingOperation)initWithImageURL:(id)a3 adjustmentData:(id)a4;
+- (PFPhotoSharingOperation)initWithImageURL:(id)l adjustmentData:(id)data;
 - (float)progress;
 - (void)main;
-- (void)setCustomAccessibilityLabel:(id)a3;
-- (void)setCustomCaption:(id)a3;
-- (void)setCustomLocation:(id)a3;
-- (void)setOutputDirectoryURL:(id)a3;
-- (void)setOutputFilename:(id)a3;
-- (void)setShouldConvertToSRGB:(BOOL)a3;
-- (void)setShouldStripAccessibilityDescription:(BOOL)a3;
-- (void)setShouldStripCaption:(BOOL)a3;
-- (void)setShouldStripLocation:(BOOL)a3;
+- (void)setCustomAccessibilityLabel:(id)label;
+- (void)setCustomCaption:(id)caption;
+- (void)setCustomLocation:(id)location;
+- (void)setOutputDirectoryURL:(id)l;
+- (void)setOutputFilename:(id)filename;
+- (void)setShouldConvertToSRGB:(BOOL)b;
+- (void)setShouldStripAccessibilityDescription:(BOOL)description;
+- (void)setShouldStripCaption:(BOOL)caption;
+- (void)setShouldStripLocation:(BOOL)location;
 @end
 
 @implementation PFPhotoSharingOperation
@@ -47,7 +47,7 @@
   return v3;
 }
 
-- (void)setShouldConvertToSRGB:(BOOL)a3
+- (void)setShouldConvertToSRGB:(BOOL)b
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -55,7 +55,7 @@
   v4[2] = __50__PFPhotoSharingOperation_setShouldConvertToSRGB___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  bCopy = b;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -90,7 +90,7 @@ uint64_t __50__PFPhotoSharingOperation_setShouldConvertToSRGB___block_invoke(uin
   return v3;
 }
 
-- (void)setShouldStripLocation:(BOOL)a3
+- (void)setShouldStripLocation:(BOOL)location
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -98,7 +98,7 @@ uint64_t __50__PFPhotoSharingOperation_setShouldConvertToSRGB___block_invoke(uin
   v4[2] = __50__PFPhotoSharingOperation_setShouldStripLocation___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  locationCopy = location;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -133,7 +133,7 @@ uint64_t __50__PFPhotoSharingOperation_setShouldStripLocation___block_invoke(uin
   return v3;
 }
 
-- (void)setShouldStripAccessibilityDescription:(BOOL)a3
+- (void)setShouldStripAccessibilityDescription:(BOOL)description
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -141,7 +141,7 @@ uint64_t __50__PFPhotoSharingOperation_setShouldStripLocation___block_invoke(uin
   v4[2] = __66__PFPhotoSharingOperation_setShouldStripAccessibilityDescription___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  descriptionCopy = description;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -176,7 +176,7 @@ uint64_t __66__PFPhotoSharingOperation_setShouldStripAccessibilityDescription___
   return v3;
 }
 
-- (void)setShouldStripCaption:(BOOL)a3
+- (void)setShouldStripCaption:(BOOL)caption
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -184,7 +184,7 @@ uint64_t __66__PFPhotoSharingOperation_setShouldStripAccessibilityDescription___
   v4[2] = __49__PFPhotoSharingOperation_setShouldStripCaption___block_invoke;
   v4[3] = &unk_1E7B66D70;
   v4[4] = self;
-  v5 = a3;
+  captionCopy = caption;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -222,17 +222,17 @@ uint64_t __49__PFPhotoSharingOperation_setShouldStripCaption___block_invoke(uint
   return v3;
 }
 
-- (void)setCustomAccessibilityLabel:(id)a3
+- (void)setCustomAccessibilityLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__PFPhotoSharingOperation_setCustomAccessibilityLabel___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = labelCopy;
+  v6 = labelCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -271,17 +271,17 @@ uint64_t __55__PFPhotoSharingOperation_setCustomAccessibilityLabel___block_invok
   return v3;
 }
 
-- (void)setCustomCaption:(id)a3
+- (void)setCustomCaption:(id)caption
 {
-  v4 = a3;
+  captionCopy = caption;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__PFPhotoSharingOperation_setCustomCaption___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = captionCopy;
+  v6 = captionCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -320,17 +320,17 @@ uint64_t __44__PFPhotoSharingOperation_setCustomCaption___block_invoke(uint64_t 
   return v3;
 }
 
-- (void)setCustomLocation:(id)a3
+- (void)setCustomLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFPhotoSharingOperation_setCustomLocation___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -369,17 +369,17 @@ uint64_t __45__PFPhotoSharingOperation_setCustomLocation___block_invoke(uint64_t
   return v3;
 }
 
-- (void)setOutputFilename:(id)a3
+- (void)setOutputFilename:(id)filename
 {
-  v4 = a3;
+  filenameCopy = filename;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PFPhotoSharingOperation_setOutputFilename___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = filenameCopy;
+  v6 = filenameCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -423,17 +423,17 @@ uint64_t __45__PFPhotoSharingOperation_setOutputFilename___block_invoke(uint64_t
   return v3;
 }
 
-- (void)setOutputDirectoryURL:(id)a3
+- (void)setOutputDirectoryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   externalIsolation = self->_externalIsolation;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PFPhotoSharingOperation_setOutputDirectoryURL___block_invoke;
   v7[3] = &unk_1E7B66D98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lCopy;
+  v6 = lCopy;
   dispatch_sync(externalIsolation, v7);
 }
 
@@ -527,7 +527,7 @@ uint64_t __49__PFPhotoSharingOperation_setOutputDirectoryURL___block_invoke(uint
 - (void)main
 {
   v118 = *MEMORY[0x1E69E9840];
-  v3 = [(PFPhotoSharingOperation *)self imageURL];
+  imageURL = [(PFPhotoSharingOperation *)self imageURL];
   v106 = 0;
   v107 = &v106;
   v108 = 0x3032000000;
@@ -602,9 +602,9 @@ uint64_t __49__PFPhotoSharingOperation_setOutputDirectoryURL___block_invoke(uint
   block[14] = &v60;
   block[15] = &v56;
   dispatch_sync(externalIsolation, block);
-  if (!v3 || !v107[5] || !v77[5])
+  if (!imageURL || !v107[5] || !v77[5])
   {
-    v21 = [objc_opt_class() operationErrorWithCode:2 withDescription:{@"Image URL, filename or output directory is missing. ImageURL: %@, filename: %@, outputDirectory: %@", v3, v107[5], v77[5]}];
+    v21 = [objc_opt_class() operationErrorWithCode:2 withDescription:{@"Image URL, filename or output directory is missing. ImageURL: %@, filename: %@, outputDirectory: %@", imageURL, v107[5], v77[5]}];
 LABEL_26:
     v20 = v21;
     v7 = 0;
@@ -614,18 +614,18 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v5 = CGImageSourceCreateWithURL(v3, 0);
+  v5 = CGImageSourceCreateWithURL(imageURL, 0);
   isrc = v5;
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v113 = v3;
+      v113 = imageURL;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFPhotoSharingOperation] Could not create imageSource from image URL: %@", buf, 0xCu);
     }
 
-    v21 = [objc_opt_class() operationErrorWithCode:3 withDescription:{@"Could not create imageSource from image URL: %@", v3}];
+    v21 = [objc_opt_class() operationErrorWithCode:3 withDescription:{@"Could not create imageSource from image URL: %@", imageURL}];
     goto LABEL_26;
   }
 
@@ -636,7 +636,7 @@ LABEL_26:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v113 = v3;
+      v113 = imageURL;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Could not determine the UTI type for file: %{public}@. Falling back to JPG.", buf, 0xCu);
     }
 
@@ -644,8 +644,8 @@ LABEL_26:
   }
 
   v8 = objc_opt_class();
-  v9 = [v7 identifier];
-  LOBYTE(v8) = [v8 outputSupportedForTypeIdentifier:v9];
+  identifier = [v7 identifier];
+  LOBYTE(v8) = [v8 outputSupportedForTypeIdentifier:identifier];
 
   if ((v8 & 1) == 0)
   {
@@ -654,7 +654,7 @@ LABEL_26:
       *buf = 138543618;
       v113 = v7;
       v114 = 2114;
-      v115 = v3;
+      v115 = imageURL;
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Output to file type: %{public}@ is not supported when performing metadata changes for file: %{public}@. Falling back to JPG.", buf, 0x16u);
     }
 
@@ -663,9 +663,9 @@ LABEL_26:
     v7 = v10;
   }
 
-  idst = [(__CFURL *)v3 pathExtension];
-  v11 = [v7 preferredFilenameExtension];
-  if (!v11)
+  idst = [(__CFURL *)imageURL pathExtension];
+  preferredFilenameExtension = [v7 preferredFilenameExtension];
+  if (!preferredFilenameExtension)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -674,21 +674,21 @@ LABEL_26:
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Could not determine the extension from type: %{public}@.", buf, 0xCu);
     }
 
-    v11 = idst;
+    preferredFilenameExtension = idst;
   }
 
-  v12 = [(__CFString *)v11 uppercaseString];
-  v13 = [v12 isEqualToString:@"JPEG"];
+  uppercaseString = [(__CFString *)preferredFilenameExtension uppercaseString];
+  v13 = [uppercaseString isEqualToString:@"JPEG"];
 
   if (v13)
   {
 
-    v11 = @"JPG";
+    preferredFilenameExtension = @"JPG";
   }
 
-  v14 = [(__CFString *)v11 uppercaseString];
+  uppercaseString2 = [(__CFString *)preferredFilenameExtension uppercaseString];
 
-  v15 = [v107[5] stringByAppendingPathExtension:v14];
+  v15 = [v107[5] stringByAppendingPathExtension:uppercaseString2];
   v16 = [v77[5] URLByAppendingPathComponent:v15];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -697,20 +697,20 @@ LABEL_26:
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Output file URL will be %{public}@", buf, 0xCu);
   }
 
-  v17 = [(__CFURL *)v16 path];
-  v18 = [MEMORY[0x1E696AC08] defaultManager];
-  v19 = [v18 fileExistsAtPath:v17];
+  path = [(__CFURL *)v16 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v19 = [defaultManager fileExistsAtPath:path];
 
   if (v19)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v113 = v17;
+      v113 = path;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFPhotoSharingOperation] Output file already exists at path: %{public}@. Aborting photo remaking.", buf, 0xCu);
     }
 
-    v20 = [objc_opt_class() operationErrorWithCode:4 withDescription:{@"Output file already exists at path: %@", v17}];
+    v20 = [objc_opt_class() operationErrorWithCode:4 withDescription:{@"Output file already exists at path: %@", path}];
   }
 
   else
@@ -725,8 +725,8 @@ LABEL_26:
     goto LABEL_100;
   }
 
-  v26 = [v7 identifier];
-  idsta = CGImageDestinationCreateWithURL(v16, v26, 1uLL, 0);
+  identifier2 = [v7 identifier];
+  idsta = CGImageDestinationCreateWithURL(v16, identifier2, 1uLL, 0);
 
   if (!idsta)
   {
@@ -743,7 +743,7 @@ LABEL_26:
     goto LABEL_99;
   }
 
-  v47 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(v65 + 24) == 1)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -752,7 +752,7 @@ LABEL_26:
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Stripping location", buf, 2u);
     }
 
-    [v47 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D3A0]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D3A0]];
   }
 
   if (*(v57 + 24) == 1)
@@ -763,7 +763,7 @@ LABEL_26:
       _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Converting to SRGB", buf, 2u);
     }
 
-    [v47 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D350]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D350]];
   }
 
   v45 = *(v61 + 24);
@@ -783,8 +783,8 @@ LABEL_26:
       v28 = [PFSharingUtilities gpsDictionaryForLocation:v27];
       if (v28)
       {
-        [v47 setObject:v28 forKeyedSubscript:*MEMORY[0x1E696DBF0]];
-        [v47 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
+        [dictionary setObject:v28 forKeyedSubscript:*MEMORY[0x1E696DBF0]];
+        [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
       }
     }
   }
@@ -808,16 +808,16 @@ LABEL_26:
     v33 = [(__CFDictionary *)v46 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
     v34 = [PFSharingUtilities addCreationDate:v95[5] toTIFFDictionary:v33];
 
-    [v47 setObject:v44 forKeyedSubscript:v30];
-    [v47 setObject:v34 forKeyedSubscript:v32];
-    [v47 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
+    [dictionary setObject:v44 forKeyedSubscript:v30];
+    [dictionary setObject:v34 forKeyedSubscript:v32];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
   }
 
   if ((v73[3] & 1) != 0 || v89[5] || v83[5])
   {
     v35 = *MEMORY[0x1E696DD90];
     v36 = [(__CFDictionary *)v46 objectForKeyedSubscript:*MEMORY[0x1E696DD90]];
-    v37 = [v36 mutableCopy];
+    dictionary2 = [v36 mutableCopy];
 
     if (*(v73 + 24) == 1)
     {
@@ -827,7 +827,7 @@ LABEL_26:
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Removing Caption from IPTC", buf, 2u);
       }
 
-      [v37 removeObjectForKey:*MEMORY[0x1E696DD68]];
+      [dictionary2 removeObjectForKey:*MEMORY[0x1E696DD68]];
     }
 
     else
@@ -842,12 +842,12 @@ LABEL_26:
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Applying Caption %{private}@ to IPTC", buf, 0xCu);
         }
 
-        if (!v37)
+        if (!dictionary2)
         {
-          v37 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        [v37 setObject:v89[5] forKeyedSubscript:*MEMORY[0x1E696DD68]];
+        [dictionary2 setObject:v89[5] forKeyedSubscript:*MEMORY[0x1E696DD68]];
       }
     }
 
@@ -859,7 +859,7 @@ LABEL_26:
         _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Removing Artwork Content Description from IPTC", buf, 2u);
       }
 
-      [v37 removeObjectForKey:*MEMORY[0x1E696DDA8]];
+      [dictionary2 removeObjectForKey:*MEMORY[0x1E696DDA8]];
     }
 
     else
@@ -874,33 +874,33 @@ LABEL_26:
           _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Applying Artwork Content Descrption %{private}@ to IPTC", buf, 0xCu);
         }
 
-        if (!v37)
+        if (!dictionary2)
         {
-          v37 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        [v37 setObject:v83[5] forKey:*MEMORY[0x1E696DDA8]];
+        [dictionary2 setObject:v83[5] forKey:*MEMORY[0x1E696DDA8]];
       }
     }
 
-    if (v37)
+    if (dictionary2)
     {
-      [v47 setObject:v37 forKeyedSubscript:v35];
-      [v47 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
+      [dictionary setObject:dictionary2 forKeyedSubscript:v35];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E696D340]];
     }
   }
 
   if ((v45 & 1) == 0)
   {
     PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(isrc);
-    CGImageDestinationAddImageFromSource(idsta, isrc, PrimaryImageIndex, v47);
+    CGImageDestinationAddImageFromSource(idsta, isrc, PrimaryImageIndex, dictionary);
     goto LABEL_87;
   }
 
   ImageAtIndex = CGImageSourceCreateImageAtIndex(isrc, 0, 0);
   if (ImageAtIndex)
   {
-    CGImageDestinationAddImage(idsta, ImageAtIndex, v47);
+    CGImageDestinationAddImage(idsta, ImageAtIndex, dictionary);
     CGImageRelease(ImageAtIndex);
 LABEL_87:
     LODWORD(ImageAtIndex) = 1;
@@ -909,11 +909,11 @@ LABEL_87:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
     *buf = 138543875;
-    v113 = v3;
+    v113 = imageURL;
     v114 = 2114;
     v115 = v16;
     v116 = 2113;
-    v117 = v47;
+    v117 = dictionary;
     _os_log_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "[PFPhotoSharingOperation] Finalizing image from source URL: %{public}@, Out URL: %{public}@. Applying destination options: %{private}@", buf, 0x20u);
   }
 
@@ -931,13 +931,13 @@ LABEL_87:
 
   else
   {
-    v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Source URL: %@ (Source type: %@), output Type: %@, output URL: %@", v3, v6, v7, v16];
+    v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Source URL: %@ (Source type: %@), output Type: %@, output URL: %@", imageURL, v6, v7, v16];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543619;
       v113 = v43;
       v114 = 2113;
-      v115 = v47;
+      v115 = dictionary;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[PFPhotoSharingOperation] Unable to finalize image destination. %{public}@. Destination options: %{private}@", buf, 0x16u);
     }
 
@@ -946,7 +946,7 @@ LABEL_87:
     v22 = 0;
   }
 
-  v20 = v47;
+  v20 = dictionary;
 LABEL_99:
 
   v20 = v38;
@@ -1040,18 +1040,18 @@ void __31__PFPhotoSharingOperation_main__block_invoke_31(uint64_t a1)
   }
 }
 
-- (PFPhotoSharingOperation)initWithImageURL:(id)a3 adjustmentData:(id)a4
+- (PFPhotoSharingOperation)initWithImageURL:(id)l adjustmentData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = PFPhotoSharingOperation;
   v8 = [(PFPhotoSharingOperation *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(PFPhotoSharingOperation *)v8 _setImageURL:v6];
-    [(PFPhotoSharingOperation *)v9 _setAdjustments:v7];
+    [(PFPhotoSharingOperation *)v8 _setImageURL:lCopy];
+    [(PFPhotoSharingOperation *)v9 _setAdjustments:dataCopy];
     v10 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v11 = dispatch_queue_create("com.apple.PFPhotoSharingOperation.isolationQueue", v10);
     externalIsolation = v9->_externalIsolation;
@@ -1061,13 +1061,13 @@ void __31__PFPhotoSharingOperation_main__block_invoke_31(uint64_t a1)
   return v9;
 }
 
-+ (id)operationErrorWithCode:(int64_t)a3 withDescription:(id)a4
++ (id)operationErrorWithCode:(int64_t)code withDescription:(id)description
 {
-  if (a4)
+  if (description)
   {
     v5 = MEMORY[0x1E696AEC0];
-    v6 = a4;
-    v7 = [[v5 alloc] initWithFormat:v6 arguments:&v12];
+    descriptionCopy = description;
+    v7 = [[v5 alloc] initWithFormat:descriptionCopy arguments:&v12];
   }
 
   else
@@ -1075,23 +1075,23 @@ void __31__PFPhotoSharingOperation_main__block_invoke_31(uint64_t a1)
     v7 = 0;
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  [v8 setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A578]];
-  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFPhotoSharingOperationErrorDomain" code:a3 userInfo:v8];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E696A578]];
+  v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PFPhotoSharingOperationErrorDomain" code:code userInfo:dictionary];
 
   return v9;
 }
 
-+ (BOOL)outputSupportedForTypeIdentifier:(id)a3
++ (BOOL)outputSupportedForTypeIdentifier:(id)identifier
 {
   v3 = outputSupportedForTypeIdentifier__onceToken;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&outputSupportedForTypeIdentifier__onceToken, &__block_literal_global_5193);
   }
 
-  v5 = [outputSupportedForTypeIdentifier__supportedImageDestinationTypeIdentifiers containsObject:v4];
+  v5 = [outputSupportedForTypeIdentifier__supportedImageDestinationTypeIdentifiers containsObject:identifierCopy];
 
   return v5;
 }

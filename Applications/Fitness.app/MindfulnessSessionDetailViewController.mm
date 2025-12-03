@@ -1,27 +1,27 @@
 @interface MindfulnessSessionDetailViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithCoder:(id)a3;
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithStyle:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithCoder:(id)coder;
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithStyle:(int64_t)style;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 - (void)didTapShareButton;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MindfulnessSessionDetailViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MindfulnessSessionDetailViewController();
   v4 = v8.receiver;
-  [(MindfulnessSessionDetailViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(MindfulnessSessionDetailViewController *)&v8 viewWillAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
+    v6 = navigationController;
     objc_opt_self();
     v7 = swift_dynamicCastObjCClass();
     if (!v7)
@@ -32,7 +32,7 @@
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -43,7 +43,7 @@
   return UITableViewAutomaticDimension;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
   v4 = type metadata accessor for IndexPath();
   v5 = *(v4 - 8);
@@ -56,11 +56,11 @@
 
 - (void)didTapShareButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_10034ABD8();
 }
 
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithCoder:(id)a3
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp38MindfulnessSessionDetailViewController_dataSource) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC10FitnessApp38MindfulnessSessionDetailViewController_sharingImage) = 0;
@@ -72,24 +72,24 @@
   return result;
 }
 
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithStyle:(int64_t)a3
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10FitnessApp38MindfulnessSessionDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_10034C26C();
 
   return v6;

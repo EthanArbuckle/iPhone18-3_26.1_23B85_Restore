@@ -1,33 +1,33 @@
 @interface NSFileManager
-- (uint64_t)_hd_removeDatabaseFilesAtDatabaseURL:(void *)a3 extensionSuffixes:(int)a4 preserveCopy:;
+- (uint64_t)_hd_removeDatabaseFilesAtDatabaseURL:(void *)l extensionSuffixes:(int)suffixes preserveCopy:;
 @end
 
 @implementation NSFileManager
 
-- (uint64_t)_hd_removeDatabaseFilesAtDatabaseURL:(void *)a3 extensionSuffixes:(int)a4 preserveCopy:
+- (uint64_t)_hd_removeDatabaseFilesAtDatabaseURL:(void *)l extensionSuffixes:(int)suffixes preserveCopy:
 {
   v59 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  v38 = v7;
+  lCopy = l;
+  v38 = lCopy;
   v39 = v6;
-  if (a1)
+  if (self)
   {
-    v8 = v7;
+    v8 = lCopy;
     if (!v6)
     {
-      v36 = [MEMORY[0x277CCA890] currentHandler];
-      [v36 handleFailureInMethod:sel__hd_removeDatabaseFilesAtDatabaseURL_extensionSuffixes_preserveCopy_ object:a1 file:@"NSFileManager+HealthDaemon.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"databaseURL != nil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel__hd_removeDatabaseFilesAtDatabaseURL_extensionSuffixes_preserveCopy_ object:self file:@"NSFileManager+HealthDaemon.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"databaseURL != nil"}];
     }
 
     if (![v8 count])
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
-      [v37 handleFailureInMethod:sel__hd_removeDatabaseFilesAtDatabaseURL_extensionSuffixes_preserveCopy_ object:a1 file:@"NSFileManager+HealthDaemon.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[extensionsSuffixes count] > 0"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__hd_removeDatabaseFilesAtDatabaseURL_extensionSuffixes_preserveCopy_ object:self file:@"NSFileManager+HealthDaemon.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"[extensionsSuffixes count] > 0"}];
     }
 
-    v9 = [v6 lastPathComponent];
-    v10 = [v6 URLByDeletingLastPathComponent];
+    lastPathComponent = [v6 lastPathComponent];
+    uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
     v11 = [MEMORY[0x277CBEB18] arrayWithObject:v6];
     v49 = 0u;
     v50 = 0u;
@@ -48,8 +48,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [v9 stringByAppendingString:*(*(&v49 + 1) + 8 * i)];
-          v18 = [v10 URLByAppendingPathComponent:v17];
+          v17 = [lastPathComponent stringByAppendingString:*(*(&v49 + 1) + 8 * i)];
+          v18 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v17];
           [v11 addObject:v18];
         }
 
@@ -80,13 +80,13 @@
           }
 
           v23 = *(*(&v45 + 1) + 8 * j);
-          if (a4)
+          if (suffixes)
           {
             v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lf.moved-aside", CFAbsoluteTimeGetCurrent()];
             v25 = [v23 URLByAppendingPathExtension:v24];
 
             v44 = 0;
-            LOBYTE(v24) = [a1 copyItemAtURL:v23 toURL:v25 error:&v44];
+            LOBYTE(v24) = [self copyItemAtURL:v23 toURL:v25 error:&v44];
             v26 = v44;
             v27 = v26;
             if ((v24 & 1) == 0 && ([v26 hk_isCocoaNoSuchFileError] & 1) == 0)
@@ -103,7 +103,7 @@
           }
 
           v43 = 0;
-          v29 = [a1 removeItemAtURL:v23 error:&v43];
+          v29 = [self removeItemAtURL:v23 error:&v43];
           v30 = v43;
           v31 = v30;
           if (v29)

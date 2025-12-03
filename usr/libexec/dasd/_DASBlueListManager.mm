@@ -1,20 +1,20 @@
 @interface _DASBlueListManager
-+ (id)managerWithContext:(id)a3;
-+ (int64_t)nextHoursBudgetWithPreviousBudget:(int64_t)a3;
++ (id)managerWithContext:(id)context;
++ (int64_t)nextHoursBudgetWithPreviousBudget:(int64_t)budget;
 - (BOOL)shouldBlueListPushes;
-- (_DASBlueListManager)initWithContext:(id)a3;
+- (_DASBlueListManager)initWithContext:(id)context;
 - (void)decrementPushBudgetRemaining;
 - (void)registerForBlueListNotifications;
 - (void)setupResetTimer;
 - (void)updateBudgetsForNextSlot;
-- (void)updateGlobalBudget:(int64_t)a3;
+- (void)updateGlobalBudget:(int64_t)budget;
 @end
 
 @implementation _DASBlueListManager
 
-+ (int64_t)nextHoursBudgetWithPreviousBudget:(int64_t)a3
++ (int64_t)nextHoursBudgetWithPreviousBudget:(int64_t)budget
 {
-  v3 = (a3 + 8);
+  v3 = (budget + 8);
   if (v3 > 12.0)
   {
     return 12.0;
@@ -23,24 +23,24 @@
   return v3;
 }
 
-+ (id)managerWithContext:(id)a3
++ (id)managerWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }
 
-- (_DASBlueListManager)initWithContext:(id)a3
+- (_DASBlueListManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = _DASBlueListManager;
   v6 = [(_DASBlueListManager *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v8 = [_CDContextualKeyPath keyPathWithKey:@"/push/bluelist"];
     blueListKeyPath = v7->_blueListKeyPath;
     v7->_blueListKeyPath = v8;
@@ -94,11 +94,11 @@
   return v7;
 }
 
-- (void)updateGlobalBudget:(int64_t)a3
+- (void)updateGlobalBudget:(int64_t)budget
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_pushBudget = a3 & ~(a3 >> 63);
+  obj->_pushBudget = budget & ~(budget >> 63);
   v4 = [NSNumber numberWithInteger:?];
   [(_CDLocalContext *)obj->_context setObject:v4 forKeyedSubscript:obj->_pushBudgetKeyPath];
 
@@ -146,9 +146,9 @@
   context = self->_context;
   v4 = +[_CDContextQueries keyPathForThermalPressureLevel];
   v5 = [(_CDLocalContext *)context objectForKeyedSubscript:v4];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 > 20 || self->_pushBudget < 1)
+  if (intValue > 20 || self->_pushBudget < 1)
   {
     v7 = 1;
   }
@@ -163,7 +163,7 @@
     v9 = self->_context;
     v10 = +[_CDContextQueries keyPathForBatteryLevel];
     v11 = [(_CDLocalContext *)v9 objectForKeyedSubscript:v10];
-    v12 = [v11 intValue];
+    intValue2 = [v11 intValue];
 
     v13 = self->_context;
     v14 = +[_CDContextQueries keyPathForWiFiConnectionQuality];
@@ -179,11 +179,11 @@
 
     v22 = [v15 integerValue] <= 49 && objc_msgSend(v18, "integerValue") <= 49 && objc_msgSend(v21, "integerValue") < 100;
     v23 = +[NSProcessInfo processInfo];
-    v24 = [v23 isLowPowerModeEnabled];
+    isLowPowerModeEnabled = [v23 isLowPowerModeEnabled];
 
-    if (v12 >= 21)
+    if (intValue2 >= 21)
     {
-      v7 = v22 | v24;
+      v7 = v22 | isLowPowerModeEnabled;
     }
 
     else

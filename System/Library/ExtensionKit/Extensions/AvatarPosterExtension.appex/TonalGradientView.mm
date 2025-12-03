@@ -1,12 +1,12 @@
 @interface TonalGradientView
-- (_TtC21AvatarPosterExtension17TonalGradientView)initWithCoder:(id)a3;
-- (_TtC21AvatarPosterExtension17TonalGradientView)initWithFrame:(CGRect)a3;
+- (_TtC21AvatarPosterExtension17TonalGradientView)initWithCoder:(id)coder;
+- (_TtC21AvatarPosterExtension17TonalGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation TonalGradientView
 
-- (_TtC21AvatarPosterExtension17TonalGradientView)initWithCoder:(id)a3
+- (_TtC21AvatarPosterExtension17TonalGradientView)initWithCoder:(id)coder
 {
   result = sub_10001A6FC();
   __break(1u);
@@ -24,7 +24,7 @@
   [v3 setFrame:?];
 }
 
-- (_TtC21AvatarPosterExtension17TonalGradientView)initWithFrame:(CGRect)a3
+- (_TtC21AvatarPosterExtension17TonalGradientView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

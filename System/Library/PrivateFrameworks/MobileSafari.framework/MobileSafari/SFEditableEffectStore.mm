@@ -6,11 +6,11 @@
 + (SFEditableEffectStore)defaultStore;
 - (NSURL)directoryURL;
 - (SFEditableEffectStore)init;
-- (SFEditableEffectStore)initWithDirectoryURL:(id)a3;
+- (SFEditableEffectStore)initWithDirectoryURL:(id)l;
 - (id)_directoryURL;
-- (void)deleteEffectNamed:(id)a3;
-- (void)loadEffectNamed:(NSString *)a3 completionHandler:(id)a4;
-- (void)saveEffect:(id)a3 withName:(id)a4;
+- (void)deleteEffectNamed:(id)named;
+- (void)loadEffectNamed:(NSString *)named completionHandler:(id)handler;
+- (void)saveEffect:(id)effect withName:(id)name;
 @end
 
 @implementation SFEditableEffectStore
@@ -55,7 +55,7 @@
   return v3;
 }
 
-- (SFEditableEffectStore)initWithDirectoryURL:(id)a3
+- (SFEditableEffectStore)initWithDirectoryURL:(id)l
 {
   v3 = sub_18BC1EA98();
   MEMORY[0x1EEE9AC00](v3 - 8);
@@ -80,8 +80,8 @@
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00](v3);
   v6 = &v11[-((v5 + 15) & 0xFFFFFFFFFFFFFFF0)];
-  v7 = self;
-  v8 = [(SFEditableEffectStore *)v7 _directoryURL];
+  selfCopy = self;
+  _directoryURL = [(SFEditableEffectStore *)selfCopy _directoryURL];
   sub_18BC218B8();
   swift_unknownObjectRelease();
 
@@ -92,22 +92,22 @@
   return v9;
 }
 
-- (void)deleteEffectNamed:(id)a3
+- (void)deleteEffectNamed:(id)named
 {
   v4 = sub_18BC20BD8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_18BAD6AEC(v4, v6);
 }
 
-- (void)loadEffectNamed:(NSString *)a3 completionHandler:(id)a4
+- (void)loadEffectNamed:(NSString *)named completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9DAE10);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = named;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_18BC20F48();
@@ -122,18 +122,18 @@
   v14[3] = 0;
   v14[4] = &unk_18BC4A550;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  namedCopy = named;
+  selfCopy = self;
   sub_18BC10FA8(0, 0, v9, &unk_18BC55D20, v14);
 }
 
-- (void)saveEffect:(id)a3 withName:(id)a4
+- (void)saveEffect:(id)effect withName:(id)name
 {
   v6 = sub_18BC20BD8();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
-  sub_18BAD7D90(v9, v6, v8);
+  effectCopy = effect;
+  selfCopy = self;
+  sub_18BAD7D90(effectCopy, v6, v8);
 }
 
 - (SFEditableEffectStore)init

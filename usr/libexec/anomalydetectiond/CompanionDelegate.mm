@@ -1,21 +1,21 @@
 @interface CompanionDelegate
-- (CompanionDelegate)initWithSilo:(id)a3 idsService:(id)a4;
-- (id)downgradeMsgToOlderType:(id)a3 type:(int *)a4;
+- (CompanionDelegate)initWithSilo:(id)silo idsService:(id)service;
+- (id)downgradeMsgToOlderType:(id)type type:(int *)a4;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 - (void)updateIDSStatus;
 @end
 
 @implementation CompanionDelegate
 
-- (CompanionDelegate)initWithSilo:(id)a3 idsService:(id)a4
+- (CompanionDelegate)initWithSilo:(id)silo idsService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_idsService, a4);
+  siloCopy = silo;
+  serviceCopy = service;
+  objc_storeStrong(&self->_idsService, service);
   idsService = self->_idsService;
-  v9 = [v6 queue];
-  [(IDSService *)idsService addDelegate:self queue:v9];
+  queue = [siloCopy queue];
+  [(IDSService *)idsService addDelegate:self queue:queue];
 
   if (qword_100456868 != -1)
   {
@@ -26,7 +26,7 @@
   if (os_log_type_enabled(qword_100456870, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v15 = v7;
+    v15 = serviceCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "IDSService Delegate initialized %p", buf, 0xCu);
   }
 
@@ -38,8 +38,8 @@
   v12[2] = sub_100348534;
   v12[3] = &unk_100435F28;
   objc_copyWeak(&v13, buf);
-  [v6 async:v12];
-  [(CompanionDelegate *)self setSilo:v6];
+  [siloCopy async:v12];
+  [(CompanionDelegate *)self setSilo:siloCopy];
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
 
@@ -76,7 +76,7 @@
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v59 = self;
+  selfCopy = self;
   obj = [(IDSService *)self->_idsService devices];
   v4 = [obj countByEnumeratingWithState:&v61 objects:v70 count:16];
   if (!v4)
@@ -104,31 +104,31 @@
       v8 = qword_100456870;
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v7 modelIdentifier];
-        v10 = [v7 productBuildVersion];
-        v11 = [v7 isNearby];
-        v12 = [v7 isConnected];
-        v13 = [v7 isLocallyPaired];
+        modelIdentifier = [v7 modelIdentifier];
+        productBuildVersion = [v7 productBuildVersion];
+        isNearby = [v7 isNearby];
+        isConnected = [v7 isConnected];
+        isLocallyPaired = [v7 isLocallyPaired];
         *buf = 68290307;
         *&buf[8] = 2082;
         *&buf[10] = "";
         *&buf[18] = 2113;
-        *&buf[20] = v9;
+        *&buf[20] = modelIdentifier;
         *&buf[28] = 2113;
-        *&buf[30] = v10;
+        *&buf[30] = productBuildVersion;
         *&buf[38] = 1026;
-        *&buf[40] = v11;
+        *&buf[40] = isNearby;
         v66 = 1026;
-        v67 = v12;
+        v67 = isConnected;
         v68 = 1026;
-        v69 = v13;
+        v69 = isLocallyPaired;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "{msg%{public}.0s:updateIDSStatus:, model:%{private, location:escape_only}@, build:%{private, location:escape_only}@, isNearby:%{public}hhd, isConnected:%{public}hhd, isLocallyPaired:%{public}hhd}", buf, 0x38u);
       }
 
       if ([v7 isDefaultPairedDevice] && objc_msgSend(v7, "isNearby"))
       {
-        v59->_isConnected = 1;
-        objc_storeStrong(&v59->_pairedDevice, v7);
+        selfCopy->_isConnected = 1;
+        objc_storeStrong(&selfCopy->_pairedDevice, v7);
         if (qword_100456868 != -1)
         {
           sub_10034BBF0();
@@ -137,28 +137,28 @@
         v14 = qword_100456870;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
-          v15 = [(IDSDevice *)v59->_pairedDevice modelIdentifier];
-          v16 = v15;
-          v17 = [v15 UTF8String];
+          modelIdentifier2 = [(IDSDevice *)selfCopy->_pairedDevice modelIdentifier];
+          v16 = modelIdentifier2;
+          uTF8String = [modelIdentifier2 UTF8String];
           *buf = 136315138;
-          *&buf[4] = v17;
+          *&buf[4] = uTF8String;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Companion model is %s", buf, 0xCu);
         }
 
         if (!_companionCompatibility)
         {
-          if (v59->_hasMsgVersion)
+          if (selfCopy->_hasMsgVersion)
           {
             _companionCompatibility = 1;
             goto LABEL_50;
           }
 
-          v18 = [(IDSDevice *)v59->_pairedDevice productBuildVersion];
+          productBuildVersion2 = [(IDSDevice *)selfCopy->_pairedDevice productBuildVersion];
           v19 = +[NSCharacterSet uppercaseLetterCharacterSet];
-          v20 = [v18 componentsSeparatedByCharactersInSet:v19];
+          v20 = [productBuildVersion2 componentsSeparatedByCharactersInSet:v19];
 
           v21 = [v20 objectAtIndexedSubscript:0];
-          v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%c", [v18 characterAtIndex:{objc_msgSend(v21, "length")}]);
+          v22 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%c", [productBuildVersion2 characterAtIndex:{objc_msgSend(v21, "length")}]);
 
           if (qword_100456868 != -1)
           {
@@ -168,13 +168,13 @@
           v23 = qword_100456870;
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
-            v24 = [(IDSDevice *)v59->_pairedDevice modelIdentifier];
-            v25 = v24;
-            v26 = [v24 UTF8String];
+            modelIdentifier3 = [(IDSDevice *)selfCopy->_pairedDevice modelIdentifier];
+            v25 = modelIdentifier3;
+            uTF8String2 = [modelIdentifier3 UTF8String];
             v27 = [v20 objectAtIndexedSubscript:0];
             v28 = [v20 objectAtIndexedSubscript:1];
             *buf = 136315906;
-            *&buf[4] = v26;
+            *&buf[4] = uTF8String2;
             *&buf[12] = 2112;
             *&buf[14] = v27;
             *&buf[22] = 2112;
@@ -184,7 +184,7 @@
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "build %s, number %@ %@, letter %@", buf, 0x2Au);
           }
 
-          if ([(IDSDevice *)v59->_pairedDevice deviceType]== 2)
+          if ([(IDSDevice *)selfCopy->_pairedDevice deviceType]== 2)
           {
             v29 = [v20 objectAtIndexedSubscript:0];
             v30 = [v29 intValue] > 20;
@@ -220,7 +220,7 @@ LABEL_45:
                   v44 = qword_100456870;
                   if (os_log_type_enabled(qword_100456870, OS_LOG_TYPE_DEBUG))
                   {
-                    hasMsgVersion = v59->_hasMsgVersion;
+                    hasMsgVersion = selfCopy->_hasMsgVersion;
                     *buf = 67109376;
                     *&buf[4] = hasMsgVersion;
                     *&buf[8] = 1024;
@@ -240,7 +240,7 @@ LABEL_43:
 
           else
           {
-            if ([(IDSDevice *)v59->_pairedDevice deviceType]!= 6)
+            if ([(IDSDevice *)selfCopy->_pairedDevice deviceType]!= 6)
             {
               goto LABEL_45;
             }
@@ -291,7 +291,7 @@ LABEL_43:
           }
 
           v34 = 1;
-          v59->_hasMsgVersion = 1;
+          selfCopy->_hasMsgVersion = 1;
           goto LABEL_44;
         }
       }
@@ -311,13 +311,13 @@ LABEL_43:
 
 LABEL_50:
 
-  v46 = v59;
-  if (isConnected != v59->_isConnected)
+  v46 = selfCopy;
+  if (isConnected != selfCopy->_isConnected)
   {
     if (qword_100456868 != -1)
     {
       sub_10034BBF0();
-      v46 = v59;
+      v46 = selfCopy;
     }
 
     v47 = qword_100456870;
@@ -338,7 +338,7 @@ LABEL_50:
       pairedDevice = v46->_pairedDevice;
       v52 = CFAbsoluteTimeGetCurrent();
       (statusHandler)[2](statusHandler, v50, pairedDevice, v52);
-      v46 = v59;
+      v46 = selfCopy;
     }
 
     else
@@ -346,7 +346,7 @@ LABEL_50:
       if (qword_100456868 != -1)
       {
         sub_10034BBF0();
-        v46 = v59;
+        v46 = selfCopy;
       }
 
       v53 = qword_100456870;
@@ -384,7 +384,7 @@ LABEL_50:
     {
       (companionStatusHandler[2])(companionStatusHandler, v57, v55, Current);
 LABEL_73:
-      v59->_lastUpdateSpuTs = v57;
+      selfCopy->_lastUpdateSpuTs = v57;
     }
   }
 
@@ -404,9 +404,9 @@ LABEL_73:
   }
 }
 
-- (id)downgradeMsgToOlderType:(id)a3 type:(int *)a4
+- (id)downgradeMsgToOlderType:(id)type type:(int *)a4
 {
-  v5 = a3;
+  typeCopy = type;
   if (qword_100456868 != -1)
   {
     sub_10034BBDC();
@@ -457,7 +457,7 @@ LABEL_73:
 
   *a4 = v8;
   *buf = 1;
-  [v5 getBytes:buf length:40];
+  [typeCopy getBytes:buf length:40];
   if (_companionCompatibility == 3)
   {
     v20 = v26;
@@ -498,22 +498,22 @@ LABEL_21:
   }
 
 LABEL_22:
-  v9 = v5;
+  v9 = typeCopy;
 LABEL_23:
   v18 = v9;
 
   return v18;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [v10 valueForKey:@"type"];
-  v14 = [v13 intValue];
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [messageCopy valueForKey:@"type"];
+  intValue = [v13 intValue];
 
-  v15 = [v10 valueForKey:@"payload"];
+  v15 = [messageCopy valueForKey:@"payload"];
   v16 = [[NSString alloc] initWithData:v15 encoding:4];
   if (qword_100456868 != -1)
   {
@@ -528,16 +528,16 @@ LABEL_23:
     v21 = 2112;
     v22 = v15;
     v23 = 2112;
-    v24 = v11;
+    v24 = dCopy;
     v25 = 2112;
-    v26 = v12;
+    v26 = contextCopy;
     v27 = 1024;
-    v28 = v14;
+    v28 = intValue;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Received string: %@ data: %@ from: %@ context: %@ type: %d", &v19, 0x30u);
   }
 
-  v18 = [v12 outgoingResponseIdentifier];
-  [(CompanionDelegate *)self receivedMessage:v14 data:v15 identifierString:v18];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+  [(CompanionDelegate *)self receivedMessage:intValue data:v15 identifierString:outgoingResponseIdentifier];
 }
 
 @end

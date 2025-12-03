@@ -1,34 +1,34 @@
 @interface PEPhotoStylePaletteSlider
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NSArray)colors;
 - (NSString)gradientCast;
 - (double)value;
 - (id)onValueChanged;
-- (void)setColors:(id)a3;
-- (void)setGradientCast:(id)a3;
-- (void)setValue:(double)a3;
-- (void)setValue:(double)a3 notifyObserver:(BOOL)a4;
+- (void)setColors:(id)colors;
+- (void)setGradientCast:(id)cast;
+- (void)setValue:(double)value;
+- (void)setValue:(double)value notifyObserver:(BOOL)observer;
 @end
 
 @implementation PEPhotoStylePaletteSlider
 
 - (double)value
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStylePaletteSlider.value.getter();
 
   return v3;
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  v4 = self;
-  PEPhotoStylePaletteSlider.value.setter(a3);
+  selfCopy = self;
+  PEPhotoStylePaletteSlider.value.setter(value);
 }
 
 - (NSArray)colors
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStylePaletteSlider.colors.getter();
 
   if (v3)
@@ -45,36 +45,36 @@
   return v4;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  if (a3)
+  if (colors)
   {
     sub_25E701520(0, &qword_27FD03BF0);
     sub_25E756D48();
   }
 
-  v4 = self;
+  selfCopy = self;
   PEPhotoStylePaletteSlider.colors.setter();
 }
 
 - (NSString)gradientCast
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStylePaletteSlider.gradientCast.getter();
 
   return v3;
 }
 
-- (void)setGradientCast:(id)a3
+- (void)setGradientCast:(id)cast
 {
-  v4 = a3;
-  v5 = self;
-  PEPhotoStylePaletteSlider.gradientCast.setter(v4);
+  castCopy = cast;
+  selfCopy = self;
+  PEPhotoStylePaletteSlider.gradientCast.setter(castCopy);
 }
 
 - (id)onValueChanged
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStylePaletteSlider.onValueChanged.getter();
   v5 = v4;
 
@@ -89,11 +89,11 @@
   return v6;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v10.value.super.isa = self;
   isa = v10.value.super.isa;
   LOBYTE(self) = PEPhotoStylePaletteSlider.point(inside:with:)(__PAIR128__(*&y, *&x), v10);
@@ -101,10 +101,10 @@
   return self & 1;
 }
 
-- (void)setValue:(double)a3 notifyObserver:(BOOL)a4
+- (void)setValue:(double)value notifyObserver:(BOOL)observer
 {
-  v6 = self;
-  PEPhotoStylePaletteSlider.setValue(_:notifyObserver:)(a3, a4);
+  selfCopy = self;
+  PEPhotoStylePaletteSlider.setValue(_:notifyObserver:)(value, observer);
 }
 
 @end

@@ -1,18 +1,18 @@
 @interface FigCaptureLogSmartCameraGating
 + (void)initialize;
-- (FigCaptureLogSmartCameraGating)initWithGateIdentifier:(int)a3;
+- (FigCaptureLogSmartCameraGating)initWithGateIdentifier:(int)identifier;
 - (void)dealloc;
 - (void)logGateClosed;
 - (void)logGateOpened;
-- (void)logSmartCamIsConfident:(BOOL)a3 presentedIdentifiers:(id)a4 presentedCount:(int)a5;
-- (void)logTracksCreated:(int)a3;
+- (void)logSmartCamIsConfident:(BOOL)confident presentedIdentifiers:(id)identifiers presentedCount:(int)count;
+- (void)logTracksCreated:(int)created;
 @end
 
 @implementation FigCaptureLogSmartCameraGating
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -21,14 +21,14 @@
   }
 }
 
-- (FigCaptureLogSmartCameraGating)initWithGateIdentifier:(int)a3
+- (FigCaptureLogSmartCameraGating)initWithGateIdentifier:(int)identifier
 {
   v5.receiver = self;
   v5.super_class = FigCaptureLogSmartCameraGating;
   result = [(FigCaptureLogSmartCameraGating *)&v5 init];
   if (result)
   {
-    result->_gateIdentifier = a3;
+    result->_gateIdentifier = identifier;
     result->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -62,25 +62,25 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)logTracksCreated:(int)a3
+- (void)logTracksCreated:(int)created
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_numTrackedRegions += a3;
+  self->_numTrackedRegions += created;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)logSmartCamIsConfident:(BOOL)a3 presentedIdentifiers:(id)a4 presentedCount:(int)a5
+- (void)logSmartCamIsConfident:(BOOL)confident presentedIdentifiers:(id)identifiers presentedCount:(int)count
 {
   os_unfair_lock_lock(&self->_lock);
-  if (a4)
+  if (identifiers)
   {
-    [a4 count];
+    [identifiers count];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v9 = [a4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+    v9 = [identifiers countByEnumeratingWithState:&v14 objects:v13 count:16];
     if (v9)
     {
       v10 = v9;
@@ -92,7 +92,7 @@
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(identifiers);
           }
 
           if (![(NSSet *)self->_currentPresentations containsObject:*(*(&v14 + 1) + 8 * v12)])
@@ -104,25 +104,25 @@
         }
 
         while (v10 != v12);
-        v10 = [a4 countByEnumeratingWithState:&v14 objects:v13 count:16];
+        v10 = [identifiers countByEnumeratingWithState:&v14 objects:v13 count:16];
       }
 
       while (v10);
     }
 
-    self->_currentPresentations = a4;
+    self->_currentPresentations = identifiers;
   }
 
   else
   {
-    self->_numBoxesPresented += a5;
+    self->_numBoxesPresented += count;
   }
 
   ++self->_numFrames;
-  if (!a5)
+  if (!count)
   {
     ++self->_numEmptyFrames;
-    if (a3)
+    if (confident)
     {
       goto LABEL_16;
     }
@@ -130,7 +130,7 @@
     goto LABEL_15;
   }
 
-  if (!a3)
+  if (!confident)
   {
 LABEL_15:
     ++self->_numClosingFrames;

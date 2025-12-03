@@ -1,16 +1,16 @@
 @interface PHAWallpaperSuggestionGenerationNightlyTask
-+ (BOOL)shouldRefreshGalleryWithLoggingConnection:(id)a3;
-+ (id)lastGalleryAppearanceDateWithError:(id *)a3;
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
-- (BOOL)shouldRunWithGraphManager:(id)a3;
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5;
++ (BOOL)shouldRefreshGalleryWithLoggingConnection:(id)connection;
++ (id)lastGalleryAppearanceDateWithError:(id *)error;
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
+- (BOOL)shouldRunWithGraphManager:(id)manager;
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAWallpaperSuggestionGenerationNightlyTask
 
-+ (id)lastGalleryAppearanceDateWithError:(id *)a3
++ (id)lastGalleryAppearanceDateWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -24,7 +24,7 @@
   v12[3] = __Block_byref_object_copy__3728;
   v12[4] = __Block_byref_object_dispose__3729;
   v13 = 0;
-  v3 = [MEMORY[0x277CEB530] sharedInstance];
+  mEMORY[0x277CEB530] = [MEMORY[0x277CEB530] sharedInstance];
   if (objc_opt_respondsToSelector())
   {
     v4 = dispatch_group_create();
@@ -37,7 +37,7 @@
     v11 = v12;
     v5 = v4;
     v9 = v5;
-    [v3 synchronousDateOfLastGalleryAppearanceWithCompletion:v8];
+    [mEMORY[0x277CEB530] synchronousDateOfLastGalleryAppearanceWithCompletion:v8];
     dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -66,19 +66,19 @@ void __82__PHAWallpaperSuggestionGenerationNightlyTask_lastGalleryAppearanceDate
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (BOOL)shouldRefreshGalleryWithLoggingConnection:(id)a3
++ (BOOL)shouldRefreshGalleryWithLoggingConnection:(id)connection
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v23 = 0;
-  v5 = [a1 lastGalleryAppearanceDateWithError:&v23];
+  v5 = [self lastGalleryAppearanceDateWithError:&v23];
   v6 = v23;
   v7 = +[PHAWallpaperSuggestionRefreshSession lastGalleryRefreshDate];
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [v8 persistentDomainForName:@"com.apple.mobileslideshow"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v9 = [standardUserDefaults persistentDomainForName:@"com.apple.mobileslideshow"];
 
   v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D3CA38]];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
     v25 = v5;
@@ -86,16 +86,16 @@ void __82__PHAWallpaperSuggestionGenerationNightlyTask_lastGalleryAppearanceDate
     v27 = v7;
     v28 = 2112;
     v29 = v10;
-    _os_log_impl(&dword_22FA28000, v4, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationNightlyTask] LastGalleryAppearanceDate: %@, LastGalleryRefreshDate: %@, LastWallpaperShelfViewedDate: %@", buf, 0x20u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationNightlyTask] LastGalleryAppearanceDate: %@, LastGalleryRefreshDate: %@, LastWallpaperShelfViewedDate: %@", buf, 0x20u);
   }
 
   if (v6)
   {
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v25 = v6;
-      _os_log_error_impl(&dword_22FA28000, v4, OS_LOG_TYPE_ERROR, "[PHAWallpaperSuggestionGenerationNightlyTask] Error getting LastGalleryAppearance date from Proactive: %@. Proceed with gallery refresh.", buf, 0xCu);
+      _os_log_error_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_ERROR, "[PHAWallpaperSuggestionGenerationNightlyTask] Error getting LastGalleryAppearance date from Proactive: %@. Proceed with gallery refresh.", buf, 0xCu);
     }
 
     goto LABEL_6;
@@ -104,26 +104,26 @@ void __82__PHAWallpaperSuggestionGenerationNightlyTask_lastGalleryAppearanceDate
   if (!v7)
   {
     v11 = 1;
-    if (!os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       goto LABEL_22;
     }
 
     *buf = 0;
     v16 = "[PHAWallpaperSuggestionGenerationNightlyTask] Should refresh wallpaper gallery. Last gallery refresh date is nil";
-    v17 = v4;
+    v17 = connectionCopy;
     v18 = 2;
     goto LABEL_18;
   }
 
   if (v10)
   {
-    v12 = [MEMORY[0x277CBEAA8] date];
-    [v12 timeIntervalSinceDate:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:v7];
     v14 = v13;
 
     v11 = v14 > 86400.0;
-    if (!os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    if (!os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO))
     {
       goto LABEL_22;
     }
@@ -145,7 +145,7 @@ void __82__PHAWallpaperSuggestionGenerationNightlyTask_lastGalleryAppearanceDate
     v32 = 2048;
     v33 = 0x40F5180000000000;
     v16 = "[PHAWallpaperSuggestionGenerationNightlyTask] %@ refresh wallpaper gallery. LastWallpaperShelfViewedDate: %@, LastGalleryRefreshDate: %@, timeSinceLastRefresh: %.2f > minRefreshPeriod: %.2f seconds";
-    v17 = v4;
+    v17 = connectionCopy;
     v18 = 52;
     goto LABEL_18;
   }
@@ -153,7 +153,7 @@ void __82__PHAWallpaperSuggestionGenerationNightlyTask_lastGalleryAppearanceDate
   v19 = [(__CFString *)v5 laterDate:v7];
   v20 = [v19 isEqualToDate:v5];
 
-  v21 = os_log_type_enabled(v4, OS_LOG_TYPE_INFO);
+  v21 = os_log_type_enabled(connectionCopy, OS_LOG_TYPE_INFO);
   if (v20)
   {
     if (!v21)
@@ -169,7 +169,7 @@ LABEL_6:
     v27 = v7;
     v16 = "[PHAWallpaperSuggestionGenerationNightlyTask] Should refresh wallpaper gallery. LastGalleryAppearanceDate: %@ is later than LastGalleryRefreshDate: %@";
     v11 = 1;
-    v17 = v4;
+    v17 = connectionCopy;
     v18 = 22;
 LABEL_18:
     _os_log_impl(&dword_22FA28000, v17, OS_LOG_TYPE_INFO, v16, buf, v18);
@@ -182,7 +182,7 @@ LABEL_18:
     v25 = v5;
     v26 = 2112;
     v27 = v7;
-    _os_log_impl(&dword_22FA28000, v4, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationNightlyTask] Skip refreshing wallpaper gallery. LastGalleryAppearanceDate: %@, LastGalleryRefreshDate: %@", buf, 0x16u);
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_INFO, "[PHAWallpaperSuggestionGenerationNightlyTask] Skip refreshing wallpaper gallery. LastGalleryAppearanceDate: %@, LastGalleryRefreshDate: %@", buf, 0x16u);
   }
 
   v11 = 0;
@@ -191,25 +191,25 @@ LABEL_22:
   return v11;
 }
 
-- (id)generateSuggestionsWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (id)generateSuggestionsWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
   v102 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (![v8 isCancelledWithProgress:0.0])
+  managerCopy = manager;
+  reporterCopy = reporter;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v11 = [v7 workingContextForSuggestions];
-    v12 = [v11 loggingConnection];
+    workingContextForSuggestions = [managerCopy workingContextForSuggestions];
+    loggingConnection = [workingContextForSuggestions loggingConnection];
 
     v13 = objc_alloc_init(MEMORY[0x277CCAAF8]);
-    v14 = [[PHAWallpaperSuggestionRefreshSession alloc] initWithGraphManager:v7];
+    v14 = [[PHAWallpaperSuggestionRefreshSession alloc] initWithGraphManager:managerCopy];
     v92 = 0;
-    LODWORD(v11) = [(PHAWallpaperSuggestionRefreshSession *)v14 prepareWithError:&v92];
+    LODWORD(workingContextForSuggestions) = [(PHAWallpaperSuggestionRefreshSession *)v14 prepareWithError:&v92];
     v68 = v92;
-    if (!v11)
+    if (!workingContextForSuggestions)
     {
-      v28 = v12;
+      v28 = loggingConnection;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_FAULT))
       {
         v46 = objc_opt_class();
@@ -218,12 +218,12 @@ LABEL_22:
         _os_log_fault_impl(&dword_22FA28000, v28, OS_LOG_TYPE_FAULT, "[PHAWallpaperSuggestionGenerationNightlyTask] Failed to create refresh session, %@ will not be able to run, bailing out", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v29 = v68;
         v30 = v68;
         v9 = 0;
-        *a5 = v68;
+        *error = v68;
       }
 
       else
@@ -236,31 +236,31 @@ LABEL_22:
     }
 
     v67 = v13;
-    v62 = v7;
-    v60 = a5;
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    v62 = managerCopy;
+    errorCopy = error;
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       *v101 = v14;
-      _os_log_impl(&dword_22FA28000, v12, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionGenerationNightlyTask] Successfully created refresh session %@", buf, 0xCu);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionGenerationNightlyTask] Successfully created refresh session %@", buf, 0xCu);
     }
 
     v15 = v14;
     v16 = dispatch_group_create();
     dispatch_group_enter(v16);
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v18 = [v8 progressReportersForParallelOperationsWithCount:3];
+    v18 = [reporterCopy progressReportersForParallelOperationsWithCount:3];
     dispatch_group_enter(v16);
-    v19 = [v18 firstObject];
-    v20 = v19;
-    if (v19)
+    firstObject = [v18 firstObject];
+    v20 = firstObject;
+    if (firstObject)
     {
-      v21 = v19;
+      v21 = firstObject;
     }
 
     else
     {
-      v21 = v8;
+      v21 = reporterCopy;
     }
 
     v22 = v21;
@@ -271,8 +271,8 @@ LABEL_22:
     v86[3] = &unk_2788B20B0;
     v65 = v67;
     v87 = v65;
-    v61 = v12;
-    v23 = v12;
+    v61 = loggingConnection;
+    v23 = loggingConnection;
     v88 = v23;
     v24 = v10;
     v89 = v24;
@@ -288,7 +288,7 @@ LABEL_22:
       dispatch_group_enter(v26);
       if ([v18 count] <= 1)
       {
-        v27 = v8;
+        v27 = reporterCopy;
       }
 
       else
@@ -312,7 +312,7 @@ LABEL_22:
     dispatch_group_enter(v26);
     if ([v18 count] <= 2)
     {
-      v32 = v8;
+      v32 = reporterCopy;
     }
 
     else
@@ -321,7 +321,7 @@ LABEL_22:
     }
 
     v33 = v32;
-    v7 = v62;
+    managerCopy = v62;
     v74[0] = MEMORY[0x277D85DD0];
     v74[1] = 3221225472;
     v74[2] = __106__PHAWallpaperSuggestionGenerationNightlyTask_generateSuggestionsWithGraphManager_progressReporter_error___block_invoke_287;
@@ -344,7 +344,7 @@ LABEL_22:
     v57 = v37;
     v39 = dispatch_group_wait(v37, v38);
     v66 = v34;
-    if ([v8 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       [v34 lock];
       v13 = v67;
@@ -354,7 +354,7 @@ LABEL_22:
         _os_log_impl(&dword_22FA28000, v35, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionGenerationNightlyTask] Wallpaper suggestions refresh was canceled", buf, 2u);
       }
 
-      v40 = v60;
+      v40 = errorCopy;
       if ([v63 count])
       {
         v98 = *MEMORY[0x277CCA578];
@@ -411,7 +411,7 @@ LABEL_22:
       {
         if ([v63 count])
         {
-          v40 = v60;
+          v40 = errorCopy;
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
             *buf = 0;
@@ -432,12 +432,12 @@ LABEL_22:
         v29 = v68;
       }
 
-      v40 = v60;
+      v40 = errorCopy;
     }
 
 LABEL_46:
-    v47 = [v8 throughputReportBlock];
-    if (v47)
+    throughputReportBlock = [reporterCopy throughputReportBlock];
+    if (throughputReportBlock)
     {
       v56 = v18;
       v69 = v29;
@@ -477,9 +477,9 @@ LABEL_46:
       }
 
       [v66 unlock];
-      v47[2](v47, v50, 0);
-      v40 = v60;
-      v12 = v61;
+      throughputReportBlock[2](throughputReportBlock, v50, 0);
+      v40 = errorCopy;
+      loggingConnection = v61;
       v13 = v67;
       v29 = v69;
       v14 = v64;
@@ -639,9 +639,9 @@ LABEL_8:
   dispatch_group_leave(*(a1 + 64));
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAWallpaperSuggestionGenerationNightlyTask timeoutFatal:]", "PHAWallpaperSuggestionGenerationNightlyTask.m", 93, "NO");
   }
@@ -653,40 +653,40 @@ LABEL_8:
   }
 }
 
-- (BOOL)runWithGraphManager:(id)a3 progressReporter:(id)a4 error:(id *)a5
+- (BOOL)runWithGraphManager:(id)manager progressReporter:(id)reporter error:(id *)error
 {
-  v5 = [(PHAWallpaperSuggestionGenerationNightlyTask *)self generateSuggestionsWithGraphManager:a3 progressReporter:a4 error:a5];
+  v5 = [(PHAWallpaperSuggestionGenerationNightlyTask *)self generateSuggestionsWithGraphManager:manager progressReporter:reporter error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-- (BOOL)shouldRunWithGraphManager:(id)a3
+- (BOOL)shouldRunWithGraphManager:(id)manager
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 photoLibrary];
-  v6 = [v5 isSystemPhotoLibrary];
+  managerCopy = manager;
+  photoLibrary = [managerCopy photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if ((v6 & 1) == 0)
+  if ((isSystemPhotoLibrary & 1) == 0)
   {
-    v7 = [v4 workingContext];
-    v8 = [v7 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHAWallpaperSuggestionGenerationNightlyTask *)self name];
-      v10 = [v4 photoLibrary];
-      v11 = [v10 debugDescription];
+      name = [(PHAWallpaperSuggestionGenerationNightlyTask *)self name];
+      photoLibrary2 = [managerCopy photoLibrary];
+      v11 = [photoLibrary2 debugDescription];
       v13 = 138412546;
-      v14 = v9;
+      v14 = name;
       v15 = 2112;
       v16 = v11;
-      _os_log_impl(&dword_22FA28000, v8, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v13, 0x16u);
+      _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "%@ is running on a non system photo library. Library: %@", &v13, 0x16u);
     }
   }
 
-  return v6;
+  return isSystemPhotoLibrary;
 }
 
 - (id)taskClassDependencies

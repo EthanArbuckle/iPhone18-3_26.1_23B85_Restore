@@ -1,30 +1,30 @@
 @interface REMAlarmVehicleTrigger
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmVehicleTrigger)initWithCoder:(id)a3;
-- (REMAlarmVehicleTrigger)initWithEvent:(int64_t)a3;
-- (REMAlarmVehicleTrigger)initWithObjectID:(id)a3 event:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmVehicleTrigger)initWithCoder:(id)coder;
+- (REMAlarmVehicleTrigger)initWithEvent:(int64_t)event;
+- (REMAlarmVehicleTrigger)initWithObjectID:(id)d event:(int64_t)event;
 - (id)_deepCopy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmVehicleTrigger
 
-- (REMAlarmVehicleTrigger)initWithObjectID:(id)a3 event:(int64_t)a4
+- (REMAlarmVehicleTrigger)initWithObjectID:(id)d event:(int64_t)event
 {
   v8.receiver = self;
   v8.super_class = REMAlarmVehicleTrigger;
-  v5 = [(REMAlarmTrigger *)&v8 initWithObjectID:a3];
+  v5 = [(REMAlarmTrigger *)&v8 initWithObjectID:d];
   v6 = v5;
   if (v5)
   {
-    [(REMAlarmVehicleTrigger *)v5 setEvent:a4];
+    [(REMAlarmVehicleTrigger *)v5 setEvent:event];
   }
 
   return v6;
 }
 
-- (REMAlarmVehicleTrigger)initWithEvent:(int64_t)a3
+- (REMAlarmVehicleTrigger)initWithEvent:(int64_t)event
 {
   v7.receiver = self;
   v7.super_class = REMAlarmVehicleTrigger;
@@ -32,21 +32,21 @@
   v5 = v4;
   if (v4)
   {
-    [(REMAlarmVehicleTrigger *)v4 setEvent:a3];
+    [(REMAlarmVehicleTrigger *)v4 setEvent:event];
   }
 
   return v5;
 }
 
-- (REMAlarmVehicleTrigger)initWithCoder:(id)a3
+- (REMAlarmVehicleTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMAlarmVehicleTrigger;
-  v5 = [(REMAlarmTrigger *)&v9 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"event"];
+    v6 = [coderCopy decodeIntegerForKey:@"event"];
     if (v6 >= 3)
     {
       v7 = os_log_create("com.apple.reminderkit", "default");
@@ -71,10 +71,10 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -84,8 +84,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMAlarmVehicleTrigger *)v4 event];
-      v6 = v5 == [(REMAlarmVehicleTrigger *)self event];
+      event = [(REMAlarmVehicleTrigger *)equalCopy event];
+      v6 = event == [(REMAlarmVehicleTrigger *)self event];
     }
 
     else
@@ -103,15 +103,15 @@
   v9.receiver = self;
   v9.super_class = REMAlarmVehicleTrigger;
   v4 = [(REMAlarmVehicleTrigger *)&v9 description];
-  v5 = [(REMAlarmVehicleTrigger *)self event];
-  if (v5 >= 3)
+  event = [(REMAlarmVehicleTrigger *)self event];
+  if (event >= 3)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown REMAlarmVehicleTriggerEvent %ld", v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown REMAlarmVehicleTriggerEvent %ld", event];
   }
 
   else
   {
-    v6 = off_1E75083D8[v5];
+    v6 = off_1E75083D8[event];
   }
 
   v7 = [v3 stringWithFormat:@"%@ {event = %@}", v4, v6];
@@ -119,13 +119,13 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = REMAlarmVehicleTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[REMAlarmVehicleTrigger event](self forKey:{"event", v5.receiver, v5.super_class), @"event"}];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[REMAlarmVehicleTrigger event](self forKey:{"event", v5.receiver, v5.super_class), @"event"}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

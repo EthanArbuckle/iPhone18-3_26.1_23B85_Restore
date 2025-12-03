@@ -1,9 +1,9 @@
 @interface TIRollingLog
 - (NSArray)currentEntries;
-- (TIRollingLog)initWithMaxCount:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addEntries:(id)a3;
-- (void)addEntry:(id)a3;
+- (TIRollingLog)initWithMaxCount:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addEntries:(id)entries;
+- (void)addEntry:(id)entry;
 @end
 
 @implementation TIRollingLog
@@ -17,15 +17,15 @@
   return v5;
 }
 
-- (void)addEntries:(id)a3
+- (void)addEntries:(id)entries
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [entriesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,25 +37,25 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entriesCopy);
         }
 
         [(TIRollingLog *)self addEntry:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [entriesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    [(NSMutableArray *)self->_entries setObject:a3 atIndexedSubscript:self->_nextIndex];
+    [(NSMutableArray *)self->_entries setObject:entry atIndexedSubscript:self->_nextIndex];
     count = self->_count;
     maxCount = self->_maxCount;
     if (count < maxCount)
@@ -78,12 +78,12 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSMutableArray *)self->_entries copyWithZone:a3];
+    v6 = [(NSMutableArray *)self->_entries copyWithZone:zone];
     v7 = v5[1];
     v5[1] = v6;
 
@@ -95,7 +95,7 @@
   return v5;
 }
 
-- (TIRollingLog)initWithMaxCount:(unint64_t)a3
+- (TIRollingLog)initWithMaxCount:(unint64_t)count
 {
   v9.receiver = self;
   v9.super_class = TIRollingLog;
@@ -103,8 +103,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxCount = a3;
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v4->_maxCount = count;
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
     entries = v5->_entries;
     v5->_entries = v6;
   }

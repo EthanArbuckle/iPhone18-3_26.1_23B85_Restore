@@ -1,29 +1,29 @@
 @interface SUUIItemOfferButtonAppearance
-- (SUUIItemOfferButtonAppearance)initWithColorScheme:(id)a3;
+- (SUUIItemOfferButtonAppearance)initWithColorScheme:(id)scheme;
 @end
 
 @implementation SUUIItemOfferButtonAppearance
 
-- (SUUIItemOfferButtonAppearance)initWithColorScheme:(id)a3
+- (SUUIItemOfferButtonAppearance)initWithColorScheme:(id)scheme
 {
-  v4 = a3;
-  if (v4)
+  schemeCopy = scheme;
+  if (schemeCopy)
   {
     v16.receiver = self;
     v16.super_class = SUUIItemOfferButtonAppearance;
     v5 = [(SUUIItemOfferButtonAppearance *)&v16 init];
     if (v5)
     {
-      v6 = [v4 secondaryTextColor];
+      secondaryTextColor = [schemeCopy secondaryTextColor];
       buttonColor = v5->_buttonColor;
-      v5->_buttonColor = v6;
+      v5->_buttonColor = secondaryTextColor;
 
-      v8 = [v4 schemeStyle];
-      if (v8 <= 1)
+      schemeStyle = [schemeCopy schemeStyle];
+      if (schemeStyle <= 1)
       {
-        if (v8)
+        if (schemeStyle)
         {
-          if (v8 != 1)
+          if (schemeStyle != 1)
           {
             goto LABEL_13;
           }
@@ -39,12 +39,12 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      if (v8 == 2)
+      if (schemeStyle == 2)
       {
         goto LABEL_11;
       }
 
-      if (v8 == 3)
+      if (schemeStyle == 3)
       {
 LABEL_10:
         v9 = MEMORY[0x277D75348];

@@ -17,16 +17,16 @@
 {
   v6[0] = a3;
   v6[1] = a4;
-  v4 = [a1 dataWithBytes:v6 length:16];
+  v4 = [self dataWithBytes:v6 length:16];
 
   return v4;
 }
 
 - (uint64_t)range
 {
-  if ([a1 length] == 16)
+  if ([self length] == 16)
   {
-    return *[a1 bytes];
+    return *[self bytes];
   }
 
   else
@@ -38,16 +38,16 @@
 + (id)dataWithPSN:()NSDataExtras
 {
   v5 = a3;
-  v3 = [a1 dataWithBytes:&v5 length:8];
+  v3 = [self dataWithBytes:&v5 length:8];
 
   return v3;
 }
 
 - (uint64_t)psn
 {
-  if ([a1 length] == 8)
+  if ([self length] == 8)
   {
-    return *[a1 bytes];
+    return *[self bytes];
   }
 
   else
@@ -62,18 +62,18 @@
   *&v7[1] = a3;
   *&v7[2] = a4;
   *&v7[3] = a5;
-  v5 = [a1 dataWithBytes:v7 length:32];
+  v5 = [self dataWithBytes:v7 length:32];
 
   return v5;
 }
 
 - (double)CGRectValue
 {
-  v2 = [a1 length];
+  v2 = [self length];
   result = 0.0;
   if (v2 == 32)
   {
-    return *[a1 bytes];
+    return *[self bytes];
   }
 
   return result;
@@ -83,18 +83,18 @@
 {
   *v5 = a2;
   *&v5[1] = a3;
-  v3 = [a1 dataWithBytes:v5 length:16];
+  v3 = [self dataWithBytes:v5 length:16];
 
   return v3;
 }
 
 - (double)CGSizeValue
 {
-  v2 = [a1 length];
+  v2 = [self length];
   result = 0.0;
   if (v2 == 16)
   {
-    return *[a1 bytes];
+    return *[self bytes];
   }
 
   return result;
@@ -104,18 +104,18 @@
 {
   *v5 = a2;
   *&v5[1] = a3;
-  v3 = [a1 dataWithBytes:v5 length:16];
+  v3 = [self dataWithBytes:v5 length:16];
 
   return v3;
 }
 
 - (double)CGPointValue
 {
-  v2 = [a1 length];
+  v2 = [self length];
   result = 0.0;
   if (v2 == 16)
   {
-    return *[a1 bytes];
+    return *[self bytes];
   }
 
   return result;

@@ -1,9 +1,9 @@
 @interface AlphonsoDecoder
 + (id)getInstance;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
 @end
 
 @implementation AlphonsoDecoder
@@ -27,27 +27,27 @@ uint64_t __30__AlphonsoDecoder_getInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"Supported";
   v11[0] = MEMORY[0x277CBEC38];
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:{1, a6, a7}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:{1, transceiver, error}];
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  moduleCopy = module;
+  packageCopy = package;
+  appletCopy = applet;
+  historyCopy = history;
   v15 = +[_TtC24AppletTranslationLibrary20AlphonsoSwiftDecoder getInstance];
-  v16 = [v15 getAppletStateAndHistory:v14 withApplet:v13 withPackage:v12 withModule:v11 withError:a7];
+  v16 = [v15 getAppletStateAndHistory:historyCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withError:error];
 
-  if (*a7 || ![v16 count])
+  if (*error || ![v16 count])
   {
     v17 = 0;
   }
@@ -60,17 +60,17 @@ uint64_t __30__AlphonsoDecoder_getInstance__block_invoke()
   return v17;
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  transceiverCopy = transceiver;
+  moduleCopy = module;
+  packageCopy = package;
+  appletCopy = applet;
+  eventCopy = event;
   v18 = +[_TtC24AppletTranslationLibrary20AlphonsoSwiftDecoder getInstance];
-  v19 = [v18 parseHCIEvent:v17 withApplet:v16 withPackage:v15 withModule:v14 withTransceiver:v13 withError:a8];
+  v19 = [v18 parseHCIEvent:eventCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withTransceiver:transceiverCopy withError:error];
 
-  if (*a8 || ![v19 count])
+  if (*error || ![v19 count])
   {
     v20 = 0;
   }
@@ -83,7 +83,7 @@ uint64_t __30__AlphonsoDecoder_getInstance__block_invoke()
   return v20;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v8 = ATLLogObject();
@@ -95,12 +95,12 @@ uint64_t __30__AlphonsoDecoder_getInstance__block_invoke()
 
   v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"AlphonsoDecoder doesn't expect processEndOfTransaction"];
   v10 = v9;
-  if (a7)
+  if (error)
   {
-    v11 = *a7;
+    v11 = *error;
     v12 = MEMORY[0x277CCA9B8];
     v13 = *MEMORY[0x277CCA450];
-    if (*a7)
+    if (*error)
     {
       v14 = *MEMORY[0x277CCA7E8];
       v23[0] = *MEMORY[0x277CCA450];
@@ -124,7 +124,7 @@ uint64_t __30__AlphonsoDecoder_getInstance__block_invoke()
     }
 
     v19 = [v15 dictionaryWithObjects:v16 forKeys:v17 count:v18];
-    *a7 = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
+    *error = [v12 errorWithDomain:@"ATL" code:7 userInfo:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];

@@ -1,21 +1,21 @@
 @interface _MFNewcastleAuthenticator
-- (_MFNewcastleAuthenticator)initWithAuthenticationScheme:(id)a3 account:(id)a4 connection:(id)a5;
-- (id)responseForServerData:(id)a3;
-- (id)responseForServerDataATOKEN2:(id)a3;
-- (id)responseForServerDataATOKEN:(id)a3;
+- (_MFNewcastleAuthenticator)initWithAuthenticationScheme:(id)scheme account:(id)account connection:(id)connection;
+- (id)responseForServerData:(id)data;
+- (id)responseForServerDataATOKEN2:(id)n2;
+- (id)responseForServerDataATOKEN:(id)n;
 @end
 
 @implementation _MFNewcastleAuthenticator
 
-- (_MFNewcastleAuthenticator)initWithAuthenticationScheme:(id)a3 account:(id)a4 connection:(id)a5
+- (_MFNewcastleAuthenticator)initWithAuthenticationScheme:(id)scheme account:(id)account connection:(id)connection
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  schemeCopy = scheme;
+  accountCopy = account;
+  connectionCopy = connection;
   v19.receiver = self;
   v19.super_class = _MFNewcastleAuthenticator;
-  v11 = [(ECSASLAuthenticator *)&v19 initWithAuthenticationScheme:v8 account:v9 connection:v10];
+  v11 = [(ECSASLAuthenticator *)&v19 initWithAuthenticationScheme:schemeCopy account:accountCopy connection:connectionCopy];
   if (!v11)
   {
     goto LABEL_12;
@@ -30,12 +30,12 @@
       goto LABEL_8;
     }
 
-    v14 = [v9 mailAccountIfAvailable];
+    mailAccountIfAvailable = [accountCopy mailAccountIfAvailable];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       castleAccount = v11->_castleAccount;
-      v11->_castleAccount = v14;
+      v11->_castleAccount = mailAccountIfAvailable;
       goto LABEL_4;
     }
 
@@ -43,7 +43,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v9;
+      v21 = accountCopy;
       _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "#Warning couldn't find our CastleAccount for our sending account: %@", buf, 0xCu);
     }
 
@@ -52,7 +52,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v12 = v9;
+  v12 = accountCopy;
   castleAccount = v11->_castleAccount;
   v11->_castleAccount = v12;
 LABEL_4:
@@ -65,14 +65,14 @@ LABEL_13:
   return v15;
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
-  v3 = [(_MFNewcastleAuthenticator *)self responseForServerDataATOKEN2:a3];
+  v3 = [(_MFNewcastleAuthenticator *)self responseForServerDataATOKEN2:data];
 
   return v3;
 }
 
-- (id)responseForServerDataATOKEN:(id)a3
+- (id)responseForServerDataATOKEN:(id)n
 {
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -94,26 +94,26 @@ LABEL_6:
     goto LABEL_22;
   }
 
-  v6 = [(_MFNewcastleAuthenticator *)self castleAccount];
-  v7 = [v6 personID];
-  v21 = [v7 dataUsingEncoding:4];
+  castleAccount = [(_MFNewcastleAuthenticator *)self castleAccount];
+  personID = [castleAccount personID];
+  v21 = [personID dataUsingEncoding:4];
 
-  v8 = [(_MFNewcastleAuthenticator *)self castleAccount];
-  v9 = [v8 authToken];
-  v10 = [v9 dataUsingEncoding:4];
+  castleAccount2 = [(_MFNewcastleAuthenticator *)self castleAccount];
+  authToken = [castleAccount2 authToken];
+  v10 = [authToken dataUsingEncoding:4];
 
   if (v10 && v21)
   {
-    v11 = [(_MFNewcastleAuthenticator *)self castleAccount];
-    v12 = [v11 anisetteDataWithError:0];
+    castleAccount3 = [(_MFNewcastleAuthenticator *)self castleAccount];
+    v12 = [castleAccount3 anisetteDataWithError:0];
 
     if (v12)
     {
-      v13 = [v12 machineID];
-      v14 = [v13 dataUsingEncoding:4];
+      machineID = [v12 machineID];
+      v14 = [machineID dataUsingEncoding:4];
 
-      v15 = [v12 oneTimePassword];
-      v16 = [v15 dataUsingEncoding:4];
+      oneTimePassword = [v12 oneTimePassword];
+      v16 = [oneTimePassword dataUsingEncoding:4];
     }
 
     else
@@ -124,9 +124,9 @@ LABEL_6:
 
     if ([v14 length] && objc_msgSend(v16, "length"))
     {
-      v17 = [(_MFNewcastleAuthenticator *)self castleAccount];
-      v18 = [v17 clientInfo];
-      v19 = [v18 dataUsingEncoding:4];
+      castleAccount4 = [(_MFNewcastleAuthenticator *)self castleAccount];
+      clientInfo = [castleAccount4 clientInfo];
+      v19 = [clientInfo dataUsingEncoding:4];
 
       if ([v19 length])
       {
@@ -170,7 +170,7 @@ LABEL_22:
   return v5;
 }
 
-- (id)responseForServerDataATOKEN2:(id)a3
+- (id)responseForServerDataATOKEN2:(id)n2
 {
   v4 = MFLogGeneral();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -192,18 +192,18 @@ LABEL_6:
     goto LABEL_18;
   }
 
-  v6 = [(_MFNewcastleAuthenticator *)self castleAccount];
+  castleAccount = [(_MFNewcastleAuthenticator *)self castleAccount];
 
-  if (v6)
+  if (castleAccount)
   {
-    v7 = [MEMORY[0x1E699B868] promise];
-    v8 = [(_MFNewcastleAuthenticator *)self castleAccount];
-    v9 = [v7 completionHandlerAdapter];
-    [v8 appleID2AuthWithCompletion:v9];
+    promise = [MEMORY[0x1E699B868] promise];
+    castleAccount2 = [(_MFNewcastleAuthenticator *)self castleAccount];
+    completionHandlerAdapter = [promise completionHandlerAdapter];
+    [castleAccount2 appleID2AuthWithCompletion:completionHandlerAdapter];
 
-    v10 = [v7 future];
+    future = [promise future];
     v14 = 0;
-    v5 = [v10 result:&v14];
+    v5 = [future result:&v14];
     v11 = v14;
 
     if (v5)
@@ -223,11 +223,11 @@ LABEL_6:
 
   else
   {
-    v7 = MFLogGeneral();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    promise = MFLogGeneral();
+    if (os_log_type_enabled(promise, OS_LOG_TYPE_DEFAULT))
     {
       *v15 = 0;
-      _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_DEFAULT, "Account type not CastleIMAPAccount", v15, 2u);
+      _os_log_impl(&dword_1B0389000, promise, OS_LOG_TYPE_DEFAULT, "Account type not CastleIMAPAccount", v15, 2u);
     }
 
     v5 = 0;

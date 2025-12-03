@@ -1,26 +1,26 @@
 @interface OAXColor
 + (id)presetColorEnumMap;
 + (id)presetColorRGBEnumMap;
-+ (id)readColorFromNode:(_xmlNode *)a3;
-+ (id)readColorFromParentXmlNode:(_xmlNode *)a3;
-+ (id)readHslColorFromXmlNode:(_xmlNode *)a3;
-+ (id)readPresetColorFromAttribute:(id)a3;
-+ (id)readPresetColorFromXmlNode:(_xmlNode *)a3;
-+ (id)readSRgbColorFromXmlNode:(_xmlNode *)a3 attribute:(const char *)a4;
-+ (id)readScRgbColorFromXmlNode:(_xmlNode *)a3;
-+ (id)readSchemeColorFromAttribute:(id)a3;
-+ (id)readSchemeColorFromXmlNode:(_xmlNode *)a3;
-+ (id)readSystemColorFromAttribute:(id)a3;
-+ (id)readSystemColorFromXmlNode:(_xmlNode *)a3;
++ (id)readColorFromNode:(_xmlNode *)node;
++ (id)readColorFromParentXmlNode:(_xmlNode *)node;
++ (id)readHslColorFromXmlNode:(_xmlNode *)node;
++ (id)readPresetColorFromAttribute:(id)attribute;
++ (id)readPresetColorFromXmlNode:(_xmlNode *)node;
++ (id)readSRgbColorFromXmlNode:(_xmlNode *)node attribute:(const char *)attribute;
++ (id)readScRgbColorFromXmlNode:(_xmlNode *)node;
++ (id)readSchemeColorFromAttribute:(id)attribute;
++ (id)readSchemeColorFromXmlNode:(_xmlNode *)node;
++ (id)readSystemColorFromAttribute:(id)attribute;
++ (id)readSystemColorFromXmlNode:(_xmlNode *)node;
 + (id)schemeColorEnumMap;
-+ (id)stringSRgbColor:(id)a3;
++ (id)stringSRgbColor:(id)color;
 + (id)systemColorEnumMap;
-+ (void)writeColor:(id)a3 to:(id)a4;
-+ (void)writePlaceholderColor:(id)a3 to:(id)a4;
-+ (void)writePresetColor:(id)a3 to:(id)a4;
-+ (void)writeRgbColor:(id)a3 to:(id)a4;
-+ (void)writeSchemeColor:(id)a3 to:(id)a4;
-+ (void)writeSystemColor:(id)a3 to:(id)a4;
++ (void)writeColor:(id)color to:(id)to;
++ (void)writePlaceholderColor:(id)color to:(id)to;
++ (void)writePresetColor:(id)color to:(id)to;
++ (void)writeRgbColor:(id)color to:(id)to;
++ (void)writeSchemeColor:(id)color to:(id)to;
++ (void)writeSystemColor:(id)color to:(id)to;
 @end
 
 @implementation OAXColor
@@ -61,15 +61,15 @@
   return v3;
 }
 
-+ (id)readColorFromParentXmlNode:(_xmlNode *)a3
++ (id)readColorFromParentXmlNode:(_xmlNode *)node
 {
-  v4 = OCXFirstChild(a3);
+  v4 = OCXFirstChild(node);
   v5 = 0;
   while (!v5 && v4)
   {
     if (v4->type == XML_ELEMENT_NODE)
     {
-      v5 = [a1 readColorFromNode:v4];
+      v5 = [self readColorFromNode:v4];
     }
 
     else
@@ -83,23 +83,23 @@
   return v5;
 }
 
-+ (id)readColorFromNode:(_xmlNode *)a3
++ (id)readColorFromNode:(_xmlNode *)node
 {
-  if (xmlStrEqual(a3->name, "scrgbClr"))
+  if (xmlStrEqual(node->name, "scrgbClr"))
   {
-    v5 = [a1 readScRgbColorFromXmlNode:a3];
+    v5 = [self readScRgbColorFromXmlNode:node];
     goto LABEL_7;
   }
 
-  if (xmlStrEqual(a3->name, "srgbClr"))
+  if (xmlStrEqual(node->name, "srgbClr"))
   {
-    v5 = [a1 readSRgbColorFromXmlNode:a3 attribute:"val"];
+    v5 = [self readSRgbColorFromXmlNode:node attribute:"val"];
     goto LABEL_7;
   }
 
-  if (xmlStrEqual(a3->name, "hslClr"))
+  if (xmlStrEqual(node->name, "hslClr"))
   {
-    v5 = [a1 readHslColorFromXmlNode:a3];
+    v5 = [self readHslColorFromXmlNode:node];
 LABEL_7:
     v6 = v5;
     if (!v5)
@@ -110,32 +110,32 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!xmlStrEqual(a3->name, "sysClr"))
+  if (!xmlStrEqual(node->name, "sysClr"))
   {
-    if (xmlStrEqual(a3->name, "schemeClr"))
+    if (xmlStrEqual(node->name, "schemeClr"))
     {
-      v5 = [a1 readSchemeColorFromXmlNode:a3];
+      v5 = [self readSchemeColorFromXmlNode:node];
     }
 
     else
     {
-      if (!xmlStrEqual(a3->name, "prstClr"))
+      if (!xmlStrEqual(node->name, "prstClr"))
       {
         v6 = 0;
         goto LABEL_12;
       }
 
-      v5 = [a1 readPresetColorFromXmlNode:a3];
+      v5 = [self readPresetColorFromXmlNode:node];
     }
 
     goto LABEL_7;
   }
 
-  v6 = [a1 readSystemColorFromXmlNode:a3];
-  v10 = CXDefaultStringAttribute(a3, CXNoNamespace, "lastClr", 0);
+  v6 = [self readSystemColorFromXmlNode:node];
+  v10 = CXDefaultStringAttribute(node, CXNoNamespace, "lastClr", 0);
   if ([v10 length])
   {
-    v11 = [a1 readSRgbColorFromXmlNode:a3 attribute:"lastClr"];
+    v11 = [self readSRgbColorFromXmlNode:node attribute:"lastClr"];
 
     v6 = v11;
   }
@@ -143,7 +143,7 @@ LABEL_7:
   if (v6)
   {
 LABEL_8:
-    v7 = [OAXColorTransform readColorTransformsFromXmlNode:a3];
+    v7 = [OAXColorTransform readColorTransformsFromXmlNode:node];
     v8 = v7;
     if (v7 && [v7 count])
     {
@@ -156,14 +156,14 @@ LABEL_12:
   return v6;
 }
 
-+ (id)readPresetColorFromAttribute:(id)a3
++ (id)readPresetColorFromAttribute:(id)attribute
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
-  v5 = [v4 firstObject];
-  if (v5 && ([a1 presetColorEnumMap], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "valueForString:", v5), v6, v7 != -130883970))
+  v4 = [attribute componentsSeparatedByString:@" "];
+  firstObject = [v4 firstObject];
+  if (firstObject && ([self presetColorEnumMap], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "valueForString:", firstObject), v6, v7 != -130883970))
   {
-    v9 = [a1 presetColorRGBEnumMap];
-    v10 = [v9 stringForValue:v7];
+    presetColorRGBEnumMap = [self presetColorRGBEnumMap];
+    v10 = [presetColorRGBEnumMap stringForValue:v7];
 
     v18 = 0;
     v11 = [MEMORY[0x277CCAC80] scannerWithString:v10];
@@ -185,11 +185,11 @@ LABEL_12:
   return v8;
 }
 
-+ (id)readSystemColorFromAttribute:(id)a3
++ (id)readSystemColorFromAttribute:(id)attribute
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
-  v5 = [v4 firstObject];
-  if (v5 && ([a1 systemColorEnumMap], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "valueForString:", v5), v6, v7 != -130883970))
+  v4 = [attribute componentsSeparatedByString:@" "];
+  firstObject = [v4 firstObject];
+  if (firstObject && ([self systemColorEnumMap], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "valueForString:", firstObject), v6, v7 != -130883970))
   {
     v8 = [[OADSystemColor alloc] initWithSystemColorID:v7];
   }
@@ -202,11 +202,11 @@ LABEL_12:
   return v8;
 }
 
-+ (id)readSchemeColorFromAttribute:(id)a3
++ (id)readSchemeColorFromAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [a1 schemeColorEnumMap];
-  v6 = [v5 valueForString:v4];
+  attributeCopy = attribute;
+  schemeColorEnumMap = [self schemeColorEnumMap];
+  v6 = [schemeColorEnumMap valueForString:attributeCopy];
 
   if (v6 == -130883970)
   {
@@ -232,127 +232,127 @@ LABEL_7:
   return v9;
 }
 
-+ (void)writePresetColor:(id)a3 to:(id)a4
++ (void)writePresetColor:(id)color to:(id)to
 {
-  v13 = a3;
-  v6 = a4;
-  [v6 startOAElement:@"prstClr"];
-  v7 = [a1 stringSRgbColor:v13];
-  v8 = [a1 presetColorRGBEnumMap];
-  v9 = [v8 valueForString:v7];
+  colorCopy = color;
+  toCopy = to;
+  [toCopy startOAElement:@"prstClr"];
+  v7 = [self stringSRgbColor:colorCopy];
+  presetColorRGBEnumMap = [self presetColorRGBEnumMap];
+  v9 = [presetColorRGBEnumMap valueForString:v7];
 
-  v10 = [a1 presetColorEnumMap];
-  v11 = [v10 stringForValue:v9];
+  presetColorEnumMap = [self presetColorEnumMap];
+  v11 = [presetColorEnumMap stringForValue:v9];
 
-  [v6 writeOAAttribute:@"val" content:v11];
-  v12 = [v13 transforms];
-  [OAXColorTransform write:v12 to:v6];
+  [toCopy writeOAAttribute:@"val" content:v11];
+  transforms = [colorCopy transforms];
+  [OAXColorTransform write:transforms to:toCopy];
 
-  [v6 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writeRgbColor:(id)a3 to:(id)a4
++ (void)writeRgbColor:(id)color to:(id)to
 {
-  v9 = a3;
-  v6 = a4;
-  [v6 startOAElement:@"srgbClr"];
-  v7 = [a1 stringSRgbColor:v9];
-  [v6 writeOAAttribute:@"val" content:v7];
-  v8 = [v9 transforms];
-  [OAXColorTransform write:v8 to:v6];
+  colorCopy = color;
+  toCopy = to;
+  [toCopy startOAElement:@"srgbClr"];
+  v7 = [self stringSRgbColor:colorCopy];
+  [toCopy writeOAAttribute:@"val" content:v7];
+  transforms = [colorCopy transforms];
+  [OAXColorTransform write:transforms to:toCopy];
 
-  [v6 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writeSchemeColor:(id)a3 to:(id)a4
++ (void)writeSchemeColor:(id)color to:(id)to
 {
-  v10 = a3;
-  v6 = a4;
-  [v6 startOAElement:@"schemeClr"];
-  v7 = [a1 schemeColorEnumMap];
-  v8 = [v7 stringForValue:{objc_msgSend(v10, "schemeColorIndex")}];
+  colorCopy = color;
+  toCopy = to;
+  [toCopy startOAElement:@"schemeClr"];
+  schemeColorEnumMap = [self schemeColorEnumMap];
+  v8 = [schemeColorEnumMap stringForValue:{objc_msgSend(colorCopy, "schemeColorIndex")}];
 
-  [v6 writeOAAttribute:@"val" content:v8];
-  v9 = [v10 transforms];
-  [OAXColorTransform write:v9 to:v6];
+  [toCopy writeOAAttribute:@"val" content:v8];
+  transforms = [colorCopy transforms];
+  [OAXColorTransform write:transforms to:toCopy];
 
-  [v6 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writeSystemColor:(id)a3 to:(id)a4
++ (void)writeSystemColor:(id)color to:(id)to
 {
-  v10 = a3;
-  v6 = a4;
-  [v6 startOAElement:@"sysClr"];
-  v7 = [a1 systemColorEnumMap];
-  v8 = [v7 stringForValue:{objc_msgSend(v10, "systemColorID")}];
+  colorCopy = color;
+  toCopy = to;
+  [toCopy startOAElement:@"sysClr"];
+  systemColorEnumMap = [self systemColorEnumMap];
+  v8 = [systemColorEnumMap stringForValue:{objc_msgSend(colorCopy, "systemColorID")}];
 
-  [v6 writeOAAttribute:@"val" content:v8];
-  v9 = [v10 transforms];
-  [OAXColorTransform write:v9 to:v6];
+  [toCopy writeOAAttribute:@"val" content:v8];
+  transforms = [colorCopy transforms];
+  [OAXColorTransform write:transforms to:toCopy];
 
-  [v6 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writePlaceholderColor:(id)a3 to:(id)a4
++ (void)writePlaceholderColor:(id)color to:(id)to
 {
-  v7 = a3;
-  v5 = a4;
-  [v5 startOAElement:@"schemeClr"];
-  [v5 writeOAAttribute:@"val" content:@"phClr"];
-  v6 = [v7 transforms];
-  [OAXColorTransform write:v6 to:v5];
+  colorCopy = color;
+  toCopy = to;
+  [toCopy startOAElement:@"schemeClr"];
+  [toCopy writeOAAttribute:@"val" content:@"phClr"];
+  transforms = [colorCopy transforms];
+  [OAXColorTransform write:transforms to:toCopy];
 
-  [v5 endElement];
+  [toCopy endElement];
 }
 
-+ (void)writeColor:(id)a3 to:(id)a4
++ (void)writeColor:(id)color to:(id)to
 {
-  v18 = a3;
-  v6 = a4;
+  colorCopy = color;
+  toCopy = to;
   v7 = objc_opt_class();
-  v8 = TSUDynamicCast(v7, v18);
+  v8 = TSUDynamicCast(v7, colorCopy);
   if (v8)
   {
-    [a1 writeRgbColor:v8 to:v6];
+    [self writeRgbColor:v8 to:toCopy];
   }
 
   else
   {
     v9 = objc_opt_class();
-    v10 = TSUDynamicCast(v9, v18);
+    v10 = TSUDynamicCast(v9, colorCopy);
     if (v10)
     {
-      [a1 writeSchemeColor:v10 to:v6];
+      [self writeSchemeColor:v10 to:toCopy];
     }
 
     else
     {
       v11 = objc_opt_class();
-      v12 = TSUDynamicCast(v11, v18);
+      v12 = TSUDynamicCast(v11, colorCopy);
       if (v12)
       {
-        [a1 writeSystemColor:v12 to:v6];
+        [self writeSystemColor:v12 to:toCopy];
       }
 
       else
       {
         v13 = objc_opt_class();
-        v14 = TSUDynamicCast(v13, v18);
+        v14 = TSUDynamicCast(v13, colorCopy);
         if (v14)
         {
-          [a1 writePlaceholderColor:v14 to:v6];
+          [self writePlaceholderColor:v14 to:toCopy];
         }
 
         else
         {
           v15 = objc_opt_class();
-          v16 = TSUDynamicCast(v15, v18);
+          v16 = TSUDynamicCast(v15, colorCopy);
 
           if (!v16)
           {
             v17 = objc_opt_class();
-            TSUDynamicCast(v17, v18);
+            TSUDynamicCast(v17, colorCopy);
           }
         }
       }
@@ -360,13 +360,13 @@ LABEL_7:
   }
 }
 
-+ (id)readScRgbColorFromXmlNode:(_xmlNode *)a3
++ (id)readScRgbColorFromXmlNode:(_xmlNode *)node
 {
-  [OAXBaseTypes readRequiredFractionFromXmlNode:a3 name:"r"];
+  [OAXBaseTypes readRequiredFractionFromXmlNode:node name:"r"];
   v5 = v4;
-  [OAXBaseTypes readRequiredFractionFromXmlNode:a3 name:"g"];
+  [OAXBaseTypes readRequiredFractionFromXmlNode:node name:"g"];
   v7 = v6;
-  [OAXBaseTypes readRequiredFractionFromXmlNode:a3 name:"b"];
+  [OAXBaseTypes readRequiredFractionFromXmlNode:node name:"b"];
   v9 = v8;
   v10 = [OADRgbColor alloc];
   LODWORD(v11) = v5;
@@ -377,9 +377,9 @@ LABEL_7:
   return v14;
 }
 
-+ (id)readSRgbColorFromXmlNode:(_xmlNode *)a3 attribute:(const char *)a4
++ (id)readSRgbColorFromXmlNode:(_xmlNode *)node attribute:(const char *)attribute
 {
-  v4 = CXDefaultStringAttribute(a3, CXNoNamespace, a4, 0);
+  v4 = CXDefaultStringAttribute(node, CXNoNamespace, attribute, 0);
   if ([v4 length] != 6)
   {
     [TCMessageException raise:OABadFormat];
@@ -401,19 +401,19 @@ LABEL_7:
   return v10;
 }
 
-+ (id)readHslColorFromXmlNode:(_xmlNode *)a3
++ (id)readHslColorFromXmlNode:(_xmlNode *)node
 {
   v3 = [[OADRgbColor alloc] initWithRed:0.0 green:0.0 blue:0.0];
 
   return v3;
 }
 
-+ (id)readPresetColorFromXmlNode:(_xmlNode *)a3
++ (id)readPresetColorFromXmlNode:(_xmlNode *)node
 {
-  v4 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+  v4 = CXRequiredStringAttribute(node, CXNoNamespace, "val");
   if (v4)
   {
-    v5 = [a1 readPresetColorFromAttribute:v4];
+    v5 = [self readPresetColorFromAttribute:v4];
   }
 
   else
@@ -424,12 +424,12 @@ LABEL_7:
   return v5;
 }
 
-+ (id)readSystemColorFromXmlNode:(_xmlNode *)a3
++ (id)readSystemColorFromXmlNode:(_xmlNode *)node
 {
-  v4 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+  v4 = CXRequiredStringAttribute(node, CXNoNamespace, "val");
   if (v4)
   {
-    v5 = [a1 readSystemColorFromAttribute:v4];
+    v5 = [self readSystemColorFromAttribute:v4];
   }
 
   else
@@ -440,12 +440,12 @@ LABEL_7:
   return v5;
 }
 
-+ (id)readSchemeColorFromXmlNode:(_xmlNode *)a3
++ (id)readSchemeColorFromXmlNode:(_xmlNode *)node
 {
-  v4 = CXRequiredStringAttribute(a3, CXNoNamespace, "val");
+  v4 = CXRequiredStringAttribute(node, CXNoNamespace, "val");
   if (v4)
   {
-    v5 = [a1 readSchemeColorFromAttribute:v4];
+    v5 = [self readSchemeColorFromAttribute:v4];
   }
 
   else
@@ -516,26 +516,26 @@ void __42__OAXColor_Private__presetColorRGBEnumMap__block_invoke()
   +[OAXColor(Private) presetColorRGBEnumMap]::presetColorRGBEnumMap = v0;
 }
 
-+ (id)stringSRgbColor:(id)a3
++ (id)stringSRgbColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 redByte];
-    v6 = [v4 greenByte];
-    v7 = [v4 blueByte];
+    v4 = colorCopy;
+    redByte = [v4 redByte];
+    greenByte = [v4 greenByte];
+    blueByte = [v4 blueByte];
   }
 
   else
   {
-    v6 = 0;
-    v7 = 0;
-    v5 = 0;
+    greenByte = 0;
+    blueByte = 0;
+    redByte = 0;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X%02X%02X", v5, v6, v7];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X%02X%02X", redByte, greenByte, blueByte];
 
   return v8;
 }

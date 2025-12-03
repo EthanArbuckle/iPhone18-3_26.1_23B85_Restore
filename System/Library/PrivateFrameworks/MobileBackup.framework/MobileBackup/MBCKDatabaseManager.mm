@@ -1,29 +1,29 @@
 @interface MBCKDatabaseManager
-+ (BOOL)fetchedSyncZoneWithAccount:(id)a3;
++ (BOOL)fetchedSyncZoneWithAccount:(id)account;
 + (CKRecordZoneID)defaultZoneID;
 + (CKRecordZoneID)syncZoneID;
-+ (id)zoneIDOfType:(unint64_t)a3;
-+ (void)_cacheSyncZoneFetchedWithAccount:(id)a3;
-+ (void)_clearSyncZoneFetchedWithAccount:(id)a3;
-- (BOOL)fetchDeviceToDeviceEncryptionSupportedByAccount:(BOOL *)a3 account:(id)a4 error:(id *)a5;
-- (BOOL)resetDatabaseWithAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 error:(id *)a6;
-- (BOOL)resetDatabaseWithError:(id *)a3;
-- (BOOL)setUpSyncZoneWithAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 error:(id *)a7;
++ (id)zoneIDOfType:(unint64_t)type;
++ (void)_cacheSyncZoneFetchedWithAccount:(id)account;
++ (void)_clearSyncZoneFetchedWithAccount:(id)account;
+- (BOOL)fetchDeviceToDeviceEncryptionSupportedByAccount:(BOOL *)account account:(id)a4 error:(id *)error;
+- (BOOL)resetDatabaseWithAccount:(id)account policy:(id)policy operationGroup:(id)group error:(id *)error;
+- (BOOL)resetDatabaseWithError:(id *)error;
+- (BOOL)setUpSyncZoneWithAccount:(id)account policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity error:(id *)error;
 - (BOOL)shouldSupportBudgeting;
 - (MBCKDatabaseManager)init;
-- (id)_configureModifyRecordsOperation:(id)a3 container:(id)a4;
-- (id)_createContainerWithSyncZoneForAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 error:(id *)a7;
-- (id)_makeContainerForAccount:(id)a3;
-- (void)_addDatabaseOperation:(id)a3 account:(id)a4 container:(id)a5 policy:(id)a6 operationGroup:(id)a7 xpcActivity:(id)a8;
-- (void)_configureCKOperation:(id)a3 container:(id)a4 policy:(id)a5 operationGroup:(id)a6 xpcActivity:(id)a7;
-- (void)_handleAccountChangeNotification:(id)a3;
-- (void)_removeContainerForPersonaIdentifier:(id)a3;
-- (void)_setUpSyncZoneWithContainer:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 completion:(id)a7;
-- (void)addDatabaseOperation:(id)a3 container:(id)a4 policy:(id)a5 operationGroup:(id)a6;
+- (id)_configureModifyRecordsOperation:(id)operation container:(id)container;
+- (id)_createContainerWithSyncZoneForAccount:(id)account policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity error:(id *)error;
+- (id)_makeContainerForAccount:(id)account;
+- (void)_addDatabaseOperation:(id)operation account:(id)account container:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity;
+- (void)_configureCKOperation:(id)operation container:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity;
+- (void)_handleAccountChangeNotification:(id)notification;
+- (void)_removeContainerForPersonaIdentifier:(id)identifier;
+- (void)_setUpSyncZoneWithContainer:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity completion:(id)completion;
+- (void)addDatabaseOperation:(id)operation container:(id)container policy:(id)policy operationGroup:(id)group;
 - (void)dealloc;
-- (void)fetchConfigurationWithAccount:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)setShouldSupportBudgeting:(BOOL)a3 account:(id)a4;
-- (void)submitCKEventMetric:(id)a3 account:(id)a4 completionHandler:(id)a5;
+- (void)fetchConfigurationWithAccount:(id)account configuration:(id)configuration completion:(id)completion;
+- (void)setShouldSupportBudgeting:(BOOL)budgeting account:(id)account;
+- (void)submitCKEventMetric:(id)metric account:(id)account completionHandler:(id)handler;
 @end
 
 @implementation MBCKDatabaseManager
@@ -81,72 +81,72 @@
   [(MBCKDatabaseManager *)&v4 dealloc];
 }
 
-- (void)_handleAccountChangeNotification:(id)a3
+- (void)_handleAccountChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412290;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received notification: %@", buf, 0xCu);
 
-    v8 = [v4 name];
+    name2 = [notificationCopy name];
     _MBLog();
   }
 
-  v7 = [(MBCKDatabaseManager *)self containersByPersonaIdentifier];
-  [v7 enumerateKeysAndObjectsUsingBlock:&stru_1003BF6E0];
+  containersByPersonaIdentifier = [(MBCKDatabaseManager *)self containersByPersonaIdentifier];
+  [containersByPersonaIdentifier enumerateKeysAndObjectsUsingBlock:&stru_1003BF6E0];
 }
 
-+ (void)_clearSyncZoneFetchedWithAccount:(id)a3
++ (void)_clearSyncZoneFetchedWithAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 accountIdentifier];
+    accountIdentifier = [accountCopy accountIdentifier];
     *buf = 138543618;
     v9 = @"SyncZoneFetched";
     v10 = 2114;
-    v11 = v5;
+    v11 = accountIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Clearing %{public}@ for account %{public}@", buf, 0x16u);
 
-    v7 = [v3 accountIdentifier];
+    accountIdentifier2 = [accountCopy accountIdentifier];
     _MBLog();
   }
 
-  v6 = [v3 persona];
-  [v6 setPreferencesValue:0 forKey:@"SyncZoneFetched"];
+  persona = [accountCopy persona];
+  [persona setPreferencesValue:0 forKey:@"SyncZoneFetched"];
 }
 
-+ (void)_cacheSyncZoneFetchedWithAccount:(id)a3
++ (void)_cacheSyncZoneFetchedWithAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 accountIdentifier];
+    accountIdentifier = [accountCopy accountIdentifier];
     *buf = 138543618;
     v9 = @"SyncZoneFetched";
     v10 = 2114;
-    v11 = v5;
+    v11 = accountIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Caching %{public}@ for account %{public}@", buf, 0x16u);
 
-    v7 = [v3 accountIdentifier];
+    accountIdentifier2 = [accountCopy accountIdentifier];
     _MBLog();
   }
 
-  v6 = [v3 persona];
-  [v6 setPreferencesValue:&__kCFBooleanTrue forKey:@"SyncZoneFetched"];
+  persona = [accountCopy persona];
+  [persona setPreferencesValue:&__kCFBooleanTrue forKey:@"SyncZoneFetched"];
 }
 
-+ (BOOL)fetchedSyncZoneWithAccount:(id)a3
++ (BOOL)fetchedSyncZoneWithAccount:(id)account
 {
   v7 = 0;
-  v3 = [a3 persona];
-  v4 = [v3 getBooleanValueForKey:@"SyncZoneFetched" keyExists:&v7];
+  persona = [account persona];
+  v4 = [persona getBooleanValueForKey:@"SyncZoneFetched" keyExists:&v7];
 
   if (v4)
   {
@@ -185,55 +185,55 @@
   return v3;
 }
 
-+ (id)zoneIDOfType:(unint64_t)a3
++ (id)zoneIDOfType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
-    v3 = [a1 syncZoneID];
+    syncZoneID = [self syncZoneID];
   }
 
   else
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       __assert_rtn("+[MBCKDatabaseManager zoneIDOfType:]", "MBCKDatabaseManager.m", 217, "0 && Unexpected call");
     }
 
-    v3 = [a1 defaultZoneID];
+    syncZoneID = [self defaultZoneID];
   }
 
-  return v3;
+  return syncZoneID;
 }
 
-- (void)setShouldSupportBudgeting:(BOOL)a3 account:(id)a4
+- (void)setShouldSupportBudgeting:(BOOL)budgeting account:(id)account
 {
-  v4 = a3;
-  v12 = a4;
+  budgetingCopy = budgeting;
+  accountCopy = account;
   v6 = [(MBCKDatabaseManager *)self _makeContainerForAccount:?];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 ckContainer];
-    if (!v8)
+    ckContainer = [v6 ckContainer];
+    if (!ckContainer)
     {
       __assert_rtn("[MBCKDatabaseManager setShouldSupportBudgeting:account:]", "MBCKDatabaseManager.m", 226, "ckContainer");
     }
 
-    v9 = v8;
-    v10 = self;
-    objc_sync_enter(v10);
-    if (v4)
+    v9 = ckContainer;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (budgetingCopy)
     {
-      v11 = [(MBCKDatabaseManager *)v10 requestsToSupportBudget]+ 1;
+      v11 = [(MBCKDatabaseManager *)selfCopy requestsToSupportBudget]+ 1;
     }
 
     else
     {
-      v11 = [(MBCKDatabaseManager *)v10 requestsToSupportBudget]- 1;
+      v11 = [(MBCKDatabaseManager *)selfCopy requestsToSupportBudget]- 1;
     }
 
-    [(MBCKDatabaseManager *)v10 setRequestsToSupportBudget:v11];
-    if ([(MBCKDatabaseManager *)v10 requestsToSupportBudget])
+    [(MBCKDatabaseManager *)selfCopy setRequestsToSupportBudget:v11];
+    if ([(MBCKDatabaseManager *)selfCopy requestsToSupportBudget])
     {
       [v9 setSourceApplicationSecondaryIdentifier:@"com.apple.icloud.restore"];
     }
@@ -243,62 +243,62 @@
       [v9 setSourceApplicationSecondaryIdentifier:0];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (BOOL)shouldSupportBudgeting
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MBCKDatabaseManager *)v2 requestsToSupportBudget]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MBCKDatabaseManager *)selfCopy requestsToSupportBudget]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_setUpSyncZoneWithContainer:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 completion:(id)a7
+- (void)_setUpSyncZoneWithContainer:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v37 = a7;
-  if (!v12)
+  containerCopy = container;
+  policyCopy = policy;
+  groupCopy = group;
+  activityCopy = activity;
+  completionCopy = completion;
+  if (!containerCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _setUpSyncZoneWithContainer:policy:operationGroup:xpcActivity:completion:]", "MBCKDatabaseManager.m", 251, "container");
   }
 
-  if (!v13)
+  if (!policyCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _setUpSyncZoneWithContainer:policy:operationGroup:xpcActivity:completion:]", "MBCKDatabaseManager.m", 252, "policy");
   }
 
-  v35 = v15;
-  v39 = [v12 account];
-  v38 = [v12 personaIdentifier];
+  v35 = activityCopy;
+  account = [containerCopy account];
+  personaIdentifier = [containerCopy personaIdentifier];
   v16 = MBGetDefaultLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v39 accountIdentifier];
+    accountIdentifier = [account accountIdentifier];
     *buf = 138543618;
-    *&buf[4] = v17;
+    *&buf[4] = accountIdentifier;
     *&buf[12] = 2114;
-    *&buf[14] = v38;
+    *&buf[14] = personaIdentifier;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Creating the sync zone for account %{public}@(%{public}@)", buf, 0x16u);
 
-    v33 = [v39 accountIdentifier];
+    accountIdentifier2 = [account accountIdentifier];
     _MBLog();
   }
 
-  v18 = [v12 ckDatabase];
-  if (!v18)
+  ckDatabase = [containerCopy ckDatabase];
+  if (!ckDatabase)
   {
     __assert_rtn("[MBCKDatabaseManager _setUpSyncZoneWithContainer:policy:operationGroup:xpcActivity:completion:]", "MBCKDatabaseManager.m", 259, "database");
   }
 
-  v19 = [objc_opt_class() syncZoneID];
-  if (!v19)
+  syncZoneID = [objc_opt_class() syncZoneID];
+  if (!syncZoneID)
   {
     __assert_rtn("[MBCKDatabaseManager _setUpSyncZoneWithContainer:policy:operationGroup:xpcActivity:completion:]", "MBCKDatabaseManager.m", 261, "syncZoneID");
   }
@@ -312,7 +312,7 @@
   v20 = dispatch_group_create();
   dispatch_group_enter(v20);
   v21 = [CKFetchRecordZonesOperation alloc];
-  v54 = v19;
+  v54 = syncZoneID;
   v22 = [NSArray arrayWithObjects:&v54 count:1];
   v23 = [v21 initWithRecordZoneIDs:v22];
 
@@ -320,21 +320,21 @@
   v44[1] = 3221225472;
   v44[2] = sub_100131820;
   v44[3] = &unk_1003BF798;
-  v34 = v19;
+  v34 = syncZoneID;
   v45 = v34;
   v53 = buf;
   v24 = v20;
   v46 = v24;
-  v47 = self;
-  v25 = v12;
+  selfCopy = self;
+  v25 = containerCopy;
   v48 = v25;
-  v26 = v13;
+  v26 = policyCopy;
   v49 = v26;
-  v27 = v14;
+  v27 = groupCopy;
   v50 = v27;
   v28 = v35;
   v51 = v28;
-  v29 = v18;
+  v29 = ckDatabase;
   v52 = v29;
   [v23 setFetchRecordZonesCompletionBlock:v44];
   [(MBCKDatabaseManager *)self _configureCKOperation:v23 container:v25 policy:v26 operationGroup:v27 xpcActivity:v28];
@@ -346,79 +346,79 @@
   block[2] = sub_100131D5C;
   block[3] = &unk_1003BF7C0;
   block[4] = self;
-  v41 = v39;
+  v41 = account;
   v43 = buf;
-  v42 = v37;
-  v31 = v37;
-  v32 = v39;
+  v42 = completionCopy;
+  v31 = completionCopy;
+  v32 = account;
   dispatch_group_notify(v24, v30, block);
 
   _Block_object_dispose(buf, 8);
 }
 
-- (BOOL)setUpSyncZoneWithAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 error:(id *)a7
+- (BOOL)setUpSyncZoneWithAccount:(id)account policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  accountCopy = account;
+  policyCopy = policy;
+  groupCopy = group;
+  activityCopy = activity;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager setUpSyncZoneWithAccount:policy:operationGroup:xpcActivity:error:]", "MBCKDatabaseManager.m", 315, "account");
   }
 
-  if (!a7)
+  if (!error)
   {
     __assert_rtn("[MBCKDatabaseManager setUpSyncZoneWithAccount:policy:operationGroup:xpcActivity:error:]", "MBCKDatabaseManager.m", 316, "error");
   }
 
-  v16 = v15;
-  [objc_opt_class() _clearSyncZoneFetchedWithAccount:v12];
-  v17 = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:v12 policy:v13 operationGroup:v14 xpcActivity:v16 error:a7];
+  v16 = activityCopy;
+  [objc_opt_class() _clearSyncZoneFetchedWithAccount:accountCopy];
+  v17 = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:accountCopy policy:policyCopy operationGroup:groupCopy xpcActivity:v16 error:error];
   v18 = v17 != 0;
 
   return v18;
 }
 
-- (BOOL)resetDatabaseWithAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 error:(id *)a6
+- (BOOL)resetDatabaseWithAccount:(id)account policy:(id)policy operationGroup:(id)group error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v35 = a5;
-  if (!v10)
+  accountCopy = account;
+  policyCopy = policy;
+  groupCopy = group;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager resetDatabaseWithAccount:policy:operationGroup:error:]", "MBCKDatabaseManager.m", 324, "account");
   }
 
-  if (!v11)
+  if (!policyCopy)
   {
     __assert_rtn("[MBCKDatabaseManager resetDatabaseWithAccount:policy:operationGroup:error:]", "MBCKDatabaseManager.m", 325, "policy");
   }
 
-  [objc_opt_class() _clearSyncZoneFetchedWithAccount:v10];
-  v12 = [[MBCKContainer alloc] initWithAccount:v10 error:a6];
+  [objc_opt_class() _clearSyncZoneFetchedWithAccount:accountCopy];
+  v12 = [[MBCKContainer alloc] initWithAccount:accountCopy error:error];
   if (v12)
   {
     v13 = v12;
-    v14 = [objc_opt_class() syncZoneID];
-    v46[0] = v14;
-    v15 = [objc_opt_class() defaultZoneID];
-    v46[1] = v15;
+    syncZoneID = [objc_opt_class() syncZoneID];
+    v46[0] = syncZoneID;
+    defaultZoneID = [objc_opt_class() defaultZoneID];
+    v46[1] = defaultZoneID;
     v16 = [NSArray arrayWithObjects:v46 count:2];
 
     v17 = MBGetDefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v10 persona];
-      v19 = [v18 personaIdentifier];
+      persona = [accountCopy persona];
+      personaIdentifier = [persona personaIdentifier];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = personaIdentifier;
       *&buf[12] = 2114;
       *&buf[14] = v16;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Deleting all CK zones for persona:%@: %{public}@", buf, 0x16u);
 
-      v20 = [v10 persona];
-      v34 = [v20 personaIdentifier];
+      persona2 = [accountCopy persona];
+      personaIdentifier2 = [persona2 personaIdentifier];
       _MBLog();
     }
 
@@ -430,40 +430,40 @@
     v45 = 0;
     v21 = dispatch_semaphore_create(0);
     v22 = [[CKModifyRecordZonesOperation alloc] initWithRecordZonesToSave:0 recordZoneIDsToDelete:v16];
-    v23 = [v22 operationID];
+    operationID = [v22 operationID];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_100132334;
     v37[3] = &unk_1003BF7E8;
     v24 = v16;
     v38 = v24;
-    v25 = v23;
+    v25 = operationID;
     v39 = v25;
     v41 = buf;
     v26 = v21;
     v40 = v26;
     [v22 setModifyRecordZonesCompletionBlock:v37];
-    [(MBCKDatabaseManager *)self addDatabaseOperation:v22 container:v13 policy:v11 operationGroup:v35];
+    [(MBCKDatabaseManager *)self addDatabaseOperation:v22 container:v13 policy:policyCopy operationGroup:groupCopy];
     MBSemaphoreWaitForever();
     v27 = *(*&buf[8] + 40);
     if (v27)
     {
       v28 = 0;
-      if (a6)
+      if (error)
       {
-        *a6 = v27;
+        *error = v27;
       }
     }
 
     else
     {
-      v29 = [v10 persona];
-      v30 = [v29 personaIdentifier];
-      [(MBCKDatabaseManager *)self _removeContainerForPersonaIdentifier:v30];
+      persona3 = [accountCopy persona];
+      personaIdentifier3 = [persona3 personaIdentifier];
+      [(MBCKDatabaseManager *)self _removeContainerForPersonaIdentifier:personaIdentifier3];
 
       v31 = (*&buf[8] + 40);
       obj = *(*&buf[8] + 40);
-      v32 = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:v10 policy:v11 operationGroup:v35 xpcActivity:0 error:&obj];
+      v32 = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:accountCopy policy:policyCopy operationGroup:groupCopy xpcActivity:0 error:&obj];
       objc_storeStrong(v31, obj);
 
       v28 = v32 != 0;
@@ -481,17 +481,17 @@
   return v28;
 }
 
-- (BOOL)resetDatabaseWithError:(id *)a3
+- (BOOL)resetDatabaseWithError:(id *)error
 {
   v5 = [MBServiceAccount alloc];
   v6 = +[UMUserPersona currentPersona];
-  v7 = [(MBServiceAccount *)v5 initWithPersona:v6 error:a3];
+  v7 = [(MBServiceAccount *)v5 initWithPersona:v6 error:error];
 
   if (v7)
   {
     v8 = +[MBCKOperationPolicy expensiveCellularPolicy];
     v9 = [v8 operationGroupWithName:@"resetDatabase" processName:0];
-    v10 = [(MBCKDatabaseManager *)self resetDatabaseWithAccount:v7 policy:v8 operationGroup:v9 error:a3];
+    v10 = [(MBCKDatabaseManager *)self resetDatabaseWithAccount:v7 policy:v8 operationGroup:v9 error:error];
   }
 
   else
@@ -510,22 +510,22 @@
   return v10;
 }
 
-- (id)_configureModifyRecordsOperation:(id)a3 container:(id)a4
+- (id)_configureModifyRecordsOperation:(id)operation container:(id)container
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  operationCopy = operation;
+  containerCopy = container;
+  if (!operationCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 392, "operation");
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = containerCopy;
+  if (!containerCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 393, "container");
   }
 
-  [v5 recordsToSave];
+  [operationCopy recordsToSave];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -534,12 +534,12 @@
   if (v9)
   {
     v10 = v9;
-    v11 = 0;
+    zoneID = 0;
     v12 = *v36;
     do
     {
       v13 = 0;
-      v14 = v11;
+      v14 = zoneID;
       do
       {
         if (*v36 != v12)
@@ -547,16 +547,16 @@
           objc_enumerationMutation(v8);
         }
 
-        v15 = [*(*(&v35 + 1) + 8 * v13) recordID];
-        v11 = [v15 zoneID];
+        recordID = [*(*(&v35 + 1) + 8 * v13) recordID];
+        zoneID = [recordID zoneID];
 
-        if (v14 && ([v14 isEqual:v11] & 1) == 0)
+        if (v14 && ([v14 isEqual:zoneID] & 1) == 0)
         {
           __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 400, "!saveZoneID || [saveZoneID isEqual:currentZoneID]");
         }
 
         v13 = v13 + 1;
-        v14 = v11;
+        v14 = zoneID;
       }
 
       while (v10 != v13);
@@ -568,15 +568,15 @@
 
   else
   {
-    v11 = 0;
+    zoneID = 0;
   }
 
-  if ([v8 count] && !v11)
+  if ([v8 count] && !zoneID)
   {
     __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 403, "!records.count || saveZoneID != nil");
   }
 
-  [v5 recordIDsToDelete];
+  [operationCopy recordIDsToDelete];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -585,12 +585,12 @@
   if (v17)
   {
     v18 = v17;
-    v19 = 0;
+    zoneID2 = 0;
     v20 = *v32;
     do
     {
       v21 = 0;
-      v22 = v19;
+      v22 = zoneID2;
       do
       {
         if (*v32 != v20)
@@ -598,14 +598,14 @@
           objc_enumerationMutation(v16);
         }
 
-        v19 = [*(*(&v31 + 1) + 8 * v21) zoneID];
-        if (v22 && ([v22 isEqual:v19] & 1) == 0)
+        zoneID2 = [*(*(&v31 + 1) + 8 * v21) zoneID];
+        if (v22 && ([v22 isEqual:zoneID2] & 1) == 0)
         {
           __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 410, "!deleteZoneID || [deleteZoneID isEqual:currentZoneID]");
         }
 
         v21 = v21 + 1;
-        v22 = v19;
+        v22 = zoneID2;
       }
 
       while (v18 != v21);
@@ -617,115 +617,115 @@
 
   else
   {
-    v19 = 0;
+    zoneID2 = 0;
   }
 
-  if ([v16 count] && !v19)
+  if ([v16 count] && !zoneID2)
   {
     __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 413, "!recordIDs.count || deleteZoneID != nil");
   }
 
-  if (v11 | v19)
+  if (zoneID | zoneID2)
   {
-    if (v11 && v19 && ([v11 isEqual:v19] & 1) == 0)
+    if (zoneID && zoneID2 && ([zoneID isEqual:zoneID2] & 1) == 0)
     {
       __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 423, "!saveZoneID || !deleteZoneID || [saveZoneID isEqual:deleteZoneID]");
     }
 
-    if (v11)
+    if (zoneID)
     {
-      v23 = v11;
+      v23 = zoneID;
     }
 
     else
     {
-      v23 = v19;
+      v23 = zoneID2;
     }
 
     v24 = v23;
-    v25 = [objc_opt_class() defaultZoneID];
-    v26 = [v24 isEqual:v25];
+    defaultZoneID = [objc_opt_class() defaultZoneID];
+    v26 = [v24 isEqual:defaultZoneID];
 
     if (v26)
     {
-      v27 = [v7 ckDatabaseWithZoneWidePCS];
-      [v5 setAtomic:0];
+      ckDatabaseWithZoneWidePCS = [v7 ckDatabaseWithZoneWidePCS];
+      [operationCopy setAtomic:0];
     }
 
     else
     {
-      v27 = [v7 ckDatabase];
+      ckDatabaseWithZoneWidePCS = [v7 ckDatabase];
     }
 
-    if (!v27)
+    if (!ckDatabaseWithZoneWidePCS)
     {
       __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 431, "database");
     }
 
-    [v5 setDatabase:v27];
-    v29 = v27;
+    [operationCopy setDatabase:ckDatabaseWithZoneWidePCS];
+    v29 = ckDatabaseWithZoneWidePCS;
   }
 
   else
   {
-    v28 = [v7 ckDatabase];
-    if (!v28)
+    ckDatabase = [v7 ckDatabase];
+    if (!ckDatabase)
     {
       __assert_rtn("[MBCKDatabaseManager _configureModifyRecordsOperation:container:]", "MBCKDatabaseManager.m", 419, "database");
     }
 
-    v29 = v28;
+    v29 = ckDatabase;
   }
 
   return v29;
 }
 
-- (void)_configureCKOperation:(id)a3 container:(id)a4 policy:(id)a5 operationGroup:(id)a6 xpcActivity:(id)a7
+- (void)_configureCKOperation:(id)operation container:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity
 {
-  v24 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v12)
+  operationCopy = operation;
+  containerCopy = container;
+  policyCopy = policy;
+  groupCopy = group;
+  activityCopy = activity;
+  if (!containerCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _configureCKOperation:container:policy:operationGroup:xpcActivity:]", "MBCKDatabaseManager.m", 437, "container");
   }
 
-  if (!v13)
+  if (!policyCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _configureCKOperation:container:policy:operationGroup:xpcActivity:]", "MBCKDatabaseManager.m", 438, "policy");
   }
 
-  v16 = v15;
+  v16 = activityCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [(MBCKDatabaseManager *)self _configureModifyRecordsOperation:v24 container:v12];
+    ckDatabase = [(MBCKDatabaseManager *)self _configureModifyRecordsOperation:operationCopy container:containerCopy];
   }
 
   else
   {
-    v17 = [v12 ckDatabase];
-    [v24 setDatabase:v17];
+    ckDatabase = [containerCopy ckDatabase];
+    [operationCopy setDatabase:ckDatabase];
   }
 
-  if (!v17)
+  if (!ckDatabase)
   {
     __assert_rtn("[MBCKDatabaseManager _configureCKOperation:container:policy:operationGroup:xpcActivity:]", "MBCKDatabaseManager.m", 446, "database");
   }
 
   v18 = objc_opt_new();
-  v19 = [v17 container];
-  [v18 setContainer:v19];
+  container = [ckDatabase container];
+  [v18 setContainer:container];
 
-  v20 = [v13 cellularAccess];
-  v21 = v20;
-  if (v20)
+  cellularAccess = [policyCopy cellularAccess];
+  v21 = cellularAccess;
+  if (cellularAccess)
   {
-    v22 = [v20 allowsExpensiveNetworkAccess];
+    allowsExpensiveNetworkAccess = [cellularAccess allowsExpensiveNetworkAccess];
     [v18 setAllowsCellularAccess:1];
-    [v18 setAllowsExpensiveNetworkAccess:v22];
+    [v18 setAllowsExpensiveNetworkAccess:allowsExpensiveNetworkAccess];
   }
 
   else
@@ -733,8 +733,8 @@
     [v18 setAllowsCellularAccess:0];
   }
 
-  [v18 setQualityOfService:{objc_msgSend(v13, "qualityOfService")}];
-  [v18 setAutomaticallyRetryNetworkFailures:{objc_msgSend(v13, "automaticallyRetryNetworkFailures")}];
+  [v18 setQualityOfService:{objc_msgSend(policyCopy, "qualityOfService")}];
+  [v18 setAutomaticallyRetryNetworkFailures:{objc_msgSend(policyCopy, "automaticallyRetryNetworkFailures")}];
   if (v16)
   {
     [v18 setXpcActivity:v16];
@@ -745,80 +745,80 @@
     [v18 setDiscretionaryNetworkBehavior:0];
   }
 
-  [v24 setConfiguration:v18];
-  if (v14)
+  [operationCopy setConfiguration:v18];
+  if (groupCopy)
   {
-    v23 = [v24 group];
+    group = [operationCopy group];
 
-    if (!v23)
+    if (!group)
     {
-      [v24 setGroup:v14];
+      [operationCopy setGroup:groupCopy];
     }
   }
 }
 
-- (void)_addDatabaseOperation:(id)a3 account:(id)a4 container:(id)a5 policy:(id)a6 operationGroup:(id)a7 xpcActivity:(id)a8
+- (void)_addDatabaseOperation:(id)operation account:(id)account container:(id)container policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v15)
+  operationCopy = operation;
+  accountCopy = account;
+  containerCopy = container;
+  policyCopy = policy;
+  groupCopy = group;
+  activityCopy = activity;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _addDatabaseOperation:account:container:policy:operationGroup:xpcActivity:]", "MBCKDatabaseManager.m", 471, "account");
   }
 
-  v20 = v19;
-  if (v16)
+  v20 = activityCopy;
+  if (containerCopy)
   {
     v21 = 0;
     v22 = 1;
 LABEL_6:
-    [(MBCKDatabaseManager *)self _configureCKOperation:v14 container:v16 policy:v17 operationGroup:v18 xpcActivity:v20];
+    [(MBCKDatabaseManager *)self _configureCKOperation:operationCopy container:containerCopy policy:policyCopy operationGroup:groupCopy xpcActivity:v20];
     if (MBIsInternalInstall())
     {
-      v46 = v17;
-      v24 = [v14 group];
-      v25 = [v24 name];
+      v46 = policyCopy;
+      group = [operationCopy group];
+      name = [group name];
 
-      if (v25)
+      if (name)
       {
-        v17 = v46;
+        policyCopy = v46;
       }
 
       else
       {
-        v17 = v46;
+        policyCopy = v46;
         if (!dword_1004217C0 && !atomic_fetch_add_explicit(&dword_1004217C0, 1u, memory_order_relaxed))
         {
           v26 = MBGetDefaultLog();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
           {
             v43 = objc_opt_class();
-            v27 = [v14 operationID];
-            [v14 group];
+            operationID = [operationCopy operationID];
+            [operationCopy group];
             v28 = v45 = v26;
             *buf = 138413058;
             v49 = v43;
             v50 = 2112;
-            v51 = v27;
+            v51 = operationID;
             v52 = 2112;
-            v53 = v18;
+            v53 = groupCopy;
             v54 = 2112;
             v55 = v28;
             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_FAULT, "%@(%@) doesn't have a group name: %@, %@", buf, 0x2Au);
 
             v44 = objc_opt_class();
-            v29 = [v14 operationID];
-            [v14 group];
-            v42 = v41 = v18;
+            operationID2 = [operationCopy operationID];
+            [operationCopy group];
+            v42 = v41 = groupCopy;
             v37 = v44;
-            v39 = v29;
+            v39 = operationID2;
             _MBLog();
 
-            v17 = v46;
+            policyCopy = v46;
             v26 = v45;
           }
         }
@@ -829,16 +829,16 @@ LABEL_6:
   }
 
   v47 = 0;
-  v16 = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:v15 policy:v17 operationGroup:v18 xpcActivity:v19 error:&v47];
+  containerCopy = [(MBCKDatabaseManager *)self _createContainerWithSyncZoneForAccount:accountCopy policy:policyCopy operationGroup:groupCopy xpcActivity:activityCopy error:&v47];
   v23 = v47;
   v22 = v23 == 0;
-  if (!(v16 | v23))
+  if (!(containerCopy | v23))
   {
     __assert_rtn("[MBCKDatabaseManager _addDatabaseOperation:account:container:policy:operationGroup:xpcActivity:]", "MBCKDatabaseManager.m", 475, "container || localError");
   }
 
   v21 = v23;
-  if (v16)
+  if (containerCopy)
   {
     goto LABEL_6;
   }
@@ -853,59 +853,59 @@ LABEL_14:
   v31 = v30;
   if (!v22)
   {
-    v32 = v17;
-    v33 = [v14 operationID];
-    v34 = [MBError errorWithCode:202 error:v21 format:@"Failed to configure operation %@", v33];
+    v32 = policyCopy;
+    operationID3 = [operationCopy operationID];
+    v34 = [MBError errorWithCode:202 error:v21 format:@"Failed to configure operation %@", operationID3];
 
     v35 = MBGetDefaultLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v14 operationID];
+      operationID4 = [operationCopy operationID];
       *buf = 138543618;
-      v49 = v36;
+      v49 = operationID4;
       v50 = 2114;
       v51 = v34;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Canceling operation %{public}@ since we don't have a container: %{public}@", buf, 0x16u);
 
-      v38 = [v14 operationID];
+      operationID5 = [operationCopy operationID];
       v40 = v34;
       _MBLog();
     }
 
-    [v14 cancelWithUnderlyingError:v34];
-    v17 = v32;
+    [operationCopy cancelWithUnderlyingError:v34];
+    policyCopy = v32;
   }
 
-  [v31 addOperation:{v14, v38, v40}];
+  [v31 addOperation:{operationCopy, operationID5, v40}];
 }
 
-- (void)addDatabaseOperation:(id)a3 container:(id)a4 policy:(id)a5 operationGroup:(id)a6
+- (void)addDatabaseOperation:(id)operation container:(id)container policy:(id)policy operationGroup:(id)group
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v12 account];
-  [(MBCKDatabaseManager *)self _addDatabaseOperation:v13 account:v14 container:v12 policy:v11 operationGroup:v10 xpcActivity:0];
+  groupCopy = group;
+  policyCopy = policy;
+  containerCopy = container;
+  operationCopy = operation;
+  account = [containerCopy account];
+  [(MBCKDatabaseManager *)self _addDatabaseOperation:operationCopy account:account container:containerCopy policy:policyCopy operationGroup:groupCopy xpcActivity:0];
 }
 
-- (void)submitCKEventMetric:(id)a3 account:(id)a4 completionHandler:(id)a5
+- (void)submitCKEventMetric:(id)metric account:(id)account completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  metricCopy = metric;
+  accountCopy = account;
+  handlerCopy = handler;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager submitCKEventMetric:account:completionHandler:]", "MBCKDatabaseManager.m", 504, "account");
   }
 
-  v10 = v9;
-  v11 = [(MBCKDatabaseManager *)self _makeContainerForAccount:v8];
+  v10 = handlerCopy;
+  v11 = [(MBCKDatabaseManager *)self _makeContainerForAccount:accountCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 ckContainer];
-    [v13 submitEventMetric:v14 completionHandler:v10];
+    ckContainer = [v11 ckContainer];
+    [ckContainer submitEventMetric:metricCopy completionHandler:v10];
   }
 
   else if (v10)
@@ -914,10 +914,10 @@ LABEL_14:
   }
 }
 
-- (BOOL)fetchDeviceToDeviceEncryptionSupportedByAccount:(BOOL *)a3 account:(id)a4 error:(id *)a5
+- (BOOL)fetchDeviceToDeviceEncryptionSupportedByAccount:(BOOL *)account account:(id)a4 error:(id *)error
 {
   v8 = a4;
-  if (!a3)
+  if (!account)
   {
     __assert_rtn("[MBCKDatabaseManager fetchDeviceToDeviceEncryptionSupportedByAccount:account:error:]", "MBCKDatabaseManager.m", 515, "enabled");
   }
@@ -928,7 +928,7 @@ LABEL_14:
     __assert_rtn("[MBCKDatabaseManager fetchDeviceToDeviceEncryptionSupportedByAccount:account:error:]", "MBCKDatabaseManager.m", 516, "account");
   }
 
-  if (!a5)
+  if (!error)
   {
     __assert_rtn("[MBCKDatabaseManager fetchDeviceToDeviceEncryptionSupportedByAccount:account:error:]", "MBCKDatabaseManager.m", 517, "error");
   }
@@ -938,11 +938,11 @@ LABEL_14:
   if (!v10)
   {
     [MBError errorWithCode:1 format:@"nil container"];
-    *a5 = v18 = 0;
+    *error = v18 = 0;
     goto LABEL_16;
   }
 
-  v12 = [v10 ckContainer];
+  ckContainer = [v10 ckContainer];
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -965,7 +965,7 @@ LABEL_14:
   v33 = &v34;
   v14 = v13;
   v31 = v14;
-  [v12 accountInfoWithCompletionHandler:v30];
+  [ckContainer accountInfoWithCompletionHandler:v30];
   MBGroupWaitForever();
   if (v41[5])
   {
@@ -1004,11 +1004,11 @@ LABEL_14:
         goto LABEL_11;
       }
 
-      v24 = [v35[5] deviceToDeviceEncryptionAvailability];
-      v19 = v24 & 1;
-      *a3 = v24 & 1;
+      deviceToDeviceEncryptionAvailability = [v35[5] deviceToDeviceEncryptionAvailability];
+      v19 = deviceToDeviceEncryptionAvailability & 1;
+      *account = deviceToDeviceEncryptionAvailability & 1;
       v18 = 1;
-      if (!*a5 || (v24 & 1) == 0)
+      if (!*error || (deviceToDeviceEncryptionAvailability & 1) == 0)
       {
         goto LABEL_12;
       }
@@ -1030,7 +1030,7 @@ LABEL_32:
     v17 = [MBError errorWithCode:1 format:@"nil CK account info"];
   }
 
-  *a5 = v17;
+  *error = v17;
   if (!v17)
   {
     v25 = "result || *error";
@@ -1041,7 +1041,7 @@ LABEL_32:
   v18 = 0;
 LABEL_11:
   v19 = 0;
-  *a3 = 0;
+  *account = 0;
 LABEL_12:
   v20 = MBGetDefaultLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1059,94 +1059,94 @@ LABEL_16:
   return v18;
 }
 
-- (id)_makeContainerForAccount:(id)a3
+- (id)_makeContainerForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 persona];
-  v6 = [v5 personaIdentifier];
+  accountCopy = account;
+  persona = [accountCopy persona];
+  personaIdentifier = [persona personaIdentifier];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(MBCKDatabaseManager *)v7 containersByPersonaIdentifier];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  containersByPersonaIdentifier = [(MBCKDatabaseManager *)selfCopy containersByPersonaIdentifier];
+  v9 = [containersByPersonaIdentifier objectForKeyedSubscript:personaIdentifier];
 
   if (!v9)
   {
     v13 = 0;
-    v9 = [[MBCKContainer alloc] initWithAccount:v4 error:&v13];
+    v9 = [[MBCKContainer alloc] initWithAccount:accountCopy error:&v13];
     v10 = v13;
     if (v9)
     {
-      v11 = [(MBCKDatabaseManager *)v7 containersByPersonaIdentifier];
-      [v11 setObject:v9 forKeyedSubscript:v6];
+      containersByPersonaIdentifier2 = [(MBCKDatabaseManager *)selfCopy containersByPersonaIdentifier];
+      [containersByPersonaIdentifier2 setObject:v9 forKeyedSubscript:personaIdentifier];
     }
 
     else
     {
-      v11 = MBGetDefaultLog();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      containersByPersonaIdentifier2 = MBGetDefaultLog();
+      if (os_log_type_enabled(containersByPersonaIdentifier2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v15 = v10;
-        _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Failed to make container for account: %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, containersByPersonaIdentifier2, OS_LOG_TYPE_ERROR, "Failed to make container for account: %@", buf, 0xCu);
         _MBLog();
       }
     }
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
-- (id)_createContainerWithSyncZoneForAccount:(id)a3 policy:(id)a4 operationGroup:(id)a5 xpcActivity:(id)a6 error:(id *)a7
+- (id)_createContainerWithSyncZoneForAccount:(id)account policy:(id)policy operationGroup:(id)group xpcActivity:(id)activity error:(id *)error
 {
-  v12 = a3;
-  v34 = a4;
-  v13 = a5;
-  v33 = a6;
-  if (!v12)
+  accountCopy = account;
+  policyCopy = policy;
+  groupCopy = group;
+  activityCopy = activity;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _createContainerWithSyncZoneForAccount:policy:operationGroup:xpcActivity:error:]", "MBCKDatabaseManager.m", 584, "account");
   }
 
-  if (!a7)
+  if (!error)
   {
     __assert_rtn("[MBCKDatabaseManager _createContainerWithSyncZoneForAccount:policy:operationGroup:xpcActivity:error:]", "MBCKDatabaseManager.m", 585, "error");
   }
 
-  v14 = [v12 persona];
-  v15 = [v14 personaIdentifier];
+  persona = [accountCopy persona];
+  personaIdentifier = [persona personaIdentifier];
 
-  if (!v15)
+  if (!personaIdentifier)
   {
     __assert_rtn("[MBCKDatabaseManager _createContainerWithSyncZoneForAccount:policy:operationGroup:xpcActivity:error:]", "MBCKDatabaseManager.m", 587, "personaIdentifier");
   }
 
-  v16 = self;
-  objc_sync_enter(v16);
-  v17 = [(MBCKDatabaseManager *)v16 containersByPersonaIdentifier];
-  v18 = [v17 objectForKeyedSubscript:v15];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  containersByPersonaIdentifier = [(MBCKDatabaseManager *)selfCopy containersByPersonaIdentifier];
+  v18 = [containersByPersonaIdentifier objectForKeyedSubscript:personaIdentifier];
 
-  if (v18 || (v18 = [[MBCKContainer alloc] initWithAccount:v12 error:a7]) != 0)
+  if (v18 || (v18 = [[MBCKContainer alloc] initWithAccount:accountCopy error:error]) != 0)
   {
     v19 = +[MBRemoteConfiguration sharedInstance];
-    v20 = [v19 shouldReloadConfigurationWithAccount:v12];
-    v21 = [(MBCKContainer *)v18 fetchedSyncZone];
-    if (v20 & 1 | ((v21 & 1) == 0))
+    v20 = [v19 shouldReloadConfigurationWithAccount:accountCopy];
+    fetchedSyncZone = [(MBCKContainer *)v18 fetchedSyncZone];
+    if (v20 & 1 | ((fetchedSyncZone & 1) == 0))
     {
       v22 = dispatch_group_create();
       if (v20)
       {
-        if (!v34)
+        if (!policyCopy)
         {
-          v34 = +[MBCKOperationPolicy expensiveCellularPolicy];
+          policyCopy = +[MBCKOperationPolicy expensiveCellularPolicy];
         }
 
-        v23 = v13;
-        if (!v13)
+        v23 = groupCopy;
+        if (!groupCopy)
         {
-          v23 = [v34 operationGroupWithName:@"setUpSyncZone" processName:0];
+          v23 = [policyCopy operationGroupWithName:@"setUpSyncZone" processName:0];
         }
 
         dispatch_group_enter(v22);
@@ -1155,8 +1155,8 @@ LABEL_16:
         v44[2] = sub_10013413C;
         v44[3] = &unk_1003BC010;
         v45 = v22;
-        v13 = v23;
-        [v19 loadConfigurationWithContainer:v18 databaseManager:v16 policy:v34 operationGroup:v23 completion:v44];
+        groupCopy = v23;
+        [v19 loadConfigurationWithContainer:v18 databaseManager:selfCopy policy:policyCopy operationGroup:v23 completion:v44];
       }
 
       v38 = 0;
@@ -1165,7 +1165,7 @@ LABEL_16:
       v41 = sub_100131808;
       v42 = sub_100131818;
       v43 = 0;
-      if (v21)
+      if (fetchedSyncZone)
       {
         v24 = MBGetDefaultLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -1173,28 +1173,28 @@ LABEL_16:
           v24 = v24;
           if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
           {
-            v25 = [objc_opt_class() syncZoneID];
+            syncZoneID = [objc_opt_class() syncZoneID];
             *buf = 138543362;
-            v47 = v25;
+            v47 = syncZoneID;
             _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Sync zone %{public}@ already exists", buf, 0xCu);
           }
 
-          v32 = [objc_opt_class() syncZoneID];
+          syncZoneID2 = [objc_opt_class() syncZoneID];
           _MBLog();
         }
       }
 
       else
       {
-        if (!v34)
+        if (!policyCopy)
         {
-          v34 = +[MBCKOperationPolicy expensiveCellularPolicy];
+          policyCopy = +[MBCKOperationPolicy expensiveCellularPolicy];
         }
 
-        v28 = v13;
-        if (!v13)
+        v28 = groupCopy;
+        if (!groupCopy)
         {
-          v28 = [v34 operationGroupWithName:@"setUpSyncZone" processName:0];
+          v28 = [policyCopy operationGroupWithName:@"setUpSyncZone" processName:0];
         }
 
         dispatch_group_enter(v22);
@@ -1204,8 +1204,8 @@ LABEL_16:
         v35[3] = &unk_1003BC160;
         v37 = &v38;
         v36 = v22;
-        v13 = v28;
-        [(MBCKDatabaseManager *)v16 _setUpSyncZoneWithContainer:v18 policy:v34 operationGroup:v28 xpcActivity:v33 completion:v35];
+        groupCopy = v28;
+        [(MBCKDatabaseManager *)selfCopy _setUpSyncZoneWithContainer:v18 policy:policyCopy operationGroup:v28 xpcActivity:activityCopy completion:v35];
         v24 = v36;
       }
 
@@ -1214,13 +1214,13 @@ LABEL_16:
       v27 = v29 == 0;
       if (v29)
       {
-        *a7 = v29;
+        *error = v29;
       }
 
       else
       {
-        v30 = [(MBCKDatabaseManager *)v16 containersByPersonaIdentifier];
-        [v30 setObject:v18 forKeyedSubscript:v15];
+        containersByPersonaIdentifier2 = [(MBCKDatabaseManager *)selfCopy containersByPersonaIdentifier];
+        [containersByPersonaIdentifier2 setObject:v18 forKeyedSubscript:personaIdentifier];
       }
 
       _Block_object_dispose(&v38, 8);
@@ -1234,7 +1234,7 @@ LABEL_16:
       v27 = 0;
     }
 
-    objc_sync_exit(v16);
+    objc_sync_exit(selfCopy);
     if (v27)
     {
       v18 = v18;
@@ -1244,7 +1244,7 @@ LABEL_16:
 
   else
   {
-    objc_sync_exit(v16);
+    objc_sync_exit(selfCopy);
 
     v26 = 0;
   }
@@ -1252,48 +1252,48 @@ LABEL_16:
   return v26;
 }
 
-- (void)_removeContainerForPersonaIdentifier:(id)a3
+- (void)_removeContainerForPersonaIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     __assert_rtn("[MBCKDatabaseManager _removeContainerForPersonaIdentifier:]", "MBCKDatabaseManager.m", 648, "personaIdentifier");
   }
 
-  v7 = v4;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MBCKDatabaseManager *)v5 containersByPersonaIdentifier];
-  [v6 removeObjectForKey:v7];
+  v7 = identifierCopy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  containersByPersonaIdentifier = [(MBCKDatabaseManager *)selfCopy containersByPersonaIdentifier];
+  [containersByPersonaIdentifier removeObjectForKey:v7];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fetchConfigurationWithAccount:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)fetchConfigurationWithAccount:(id)account configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  accountCopy = account;
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (!accountCopy)
   {
     __assert_rtn("[MBCKDatabaseManager fetchConfigurationWithAccount:configuration:completion:]", "MBCKDatabaseManager.m", 656, "account");
   }
 
-  if (!v9)
+  if (!configurationCopy)
   {
     __assert_rtn("[MBCKDatabaseManager fetchConfigurationWithAccount:configuration:completion:]", "MBCKDatabaseManager.m", 657, "configuration");
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = completionCopy;
+  if (!completionCopy)
   {
     __assert_rtn("[MBCKDatabaseManager fetchConfigurationWithAccount:configuration:completion:]", "MBCKDatabaseManager.m", 658, "completion");
   }
 
-  v12 = [v8 persona];
-  v13 = [v12 personaIdentifier];
+  persona = [accountCopy persona];
+  personaIdentifier = [persona personaIdentifier];
 
-  if (!v13)
+  if (!personaIdentifier)
   {
     __assert_rtn("[MBCKDatabaseManager fetchConfigurationWithAccount:configuration:completion:]", "MBCKDatabaseManager.m", 660, "personaIdentifier");
   }
@@ -1304,12 +1304,12 @@ LABEL_16:
   v18[2] = sub_10013440C;
   v18[3] = &unk_1003BF838;
   v18[4] = self;
-  v19 = v8;
-  v20 = v9;
+  v19 = accountCopy;
+  v20 = configurationCopy;
   v21 = v11;
-  v15 = v9;
+  v15 = configurationCopy;
   v16 = v11;
-  v17 = v8;
+  v17 = accountCopy;
   dispatch_async(v14, v18);
 }
 

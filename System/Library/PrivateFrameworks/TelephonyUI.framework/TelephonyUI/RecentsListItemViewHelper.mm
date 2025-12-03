@@ -1,6 +1,6 @@
 @interface RecentsListItemViewHelper
-- (void)didTapCallButtonWithSender:(id)a3;
-- (void)didTapDetailAccessoryButtonWithSender:(id)a3;
+- (void)didTapCallButtonWithSender:(id)sender;
+- (void)didTapDetailAccessoryButtonWithSender:(id)sender;
 - (void)updateForReducedTransparancy;
 @end
 
@@ -12,7 +12,7 @@
   sub_1B48E2B60();
 }
 
-- (void)didTapDetailAccessoryButtonWithSender:(id)a3
+- (void)didTapDetailAccessoryButtonWithSender:(id)sender
 {
   v3 = *(self->super.isa + 60);
 
@@ -30,7 +30,7 @@
   }
 }
 
-- (void)didTapCallButtonWithSender:(id)a3
+- (void)didTapCallButtonWithSender:(id)sender
 {
   v3 = *(self->super.isa + 63);
 

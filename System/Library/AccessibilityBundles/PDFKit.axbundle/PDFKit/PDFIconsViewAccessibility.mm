@@ -1,41 +1,41 @@
 @interface PDFIconsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)_updateScrubberForPageIndex:(int)a3 goToPage:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)_updateScrubberForPageIndex:(int)index goToPage:(BOOL)page;
 @end
 
 @implementation PDFIconsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PDFIconsView" hasInstanceMethod:@"_updateScrubberForPageIndex:goToPage:" withFullSignature:{"v", "i", "B", 0}];
-  [v3 validateClass:@"PDFThumbnailView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PDFIconsView" hasInstanceMethod:@"_updateScrubberForPageIndex:goToPage:" withFullSignature:{"v", "i", "B", 0}];
+  [validationsCopy validateClass:@"PDFThumbnailView"];
 }
 
-- (void)_updateScrubberForPageIndex:(int)a3 goToPage:(BOOL)a4
+- (void)_updateScrubberForPageIndex:(int)index goToPage:(BOOL)page
 {
   v14.receiver = self;
   v14.super_class = PDFIconsViewAccessibility;
-  [(PDFIconsViewAccessibility *)&v14 _updateScrubberForPageIndex:*&a3 goToPage:a4];
-  v5 = [(PDFIconsViewAccessibility *)self _accessibilityAnnouncementTimer];
-  if (!v5)
+  [(PDFIconsViewAccessibility *)&v14 _updateScrubberForPageIndex:*&index goToPage:page];
+  _accessibilityAnnouncementTimer = [(PDFIconsViewAccessibility *)self _accessibilityAnnouncementTimer];
+  if (!_accessibilityAnnouncementTimer)
   {
     v6 = objc_alloc(MEMORY[0x29EDBD6A0]);
-    v5 = [v6 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
-    [(PDFIconsViewAccessibility *)self _accessibilitySetAnnouncementTimer:v5];
+    _accessibilityAnnouncementTimer = [v6 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
+    [(PDFIconsViewAccessibility *)self _accessibilitySetAnnouncementTimer:_accessibilityAnnouncementTimer];
   }
 
   v7 = [(PDFIconsViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_0 startWithSelf:1];
-  v8 = [v7 accessibilityValue];
+  accessibilityValue = [v7 accessibilityValue];
   objc_initWeak(&location, v7);
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __66__PDFIconsViewAccessibility__updateScrubberForPageIndex_goToPage___block_invoke_2;
   v10[3] = &unk_29F2E08D8;
   objc_copyWeak(&v12, &location);
-  v9 = v8;
+  v9 = accessibilityValue;
   v11 = v9;
-  [v5 afterDelay:v10 processBlock:0.1];
+  [_accessibilityAnnouncementTimer afterDelay:v10 processBlock:0.1];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);

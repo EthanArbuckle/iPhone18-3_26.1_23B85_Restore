@@ -1,31 +1,31 @@
 @interface EMMailboxRepository
 + (OS_os_log)log;
 + (id)remoteInterface;
-- (EMMailboxRepository)initWithRemoteConnection:(id)a3 accountRepository:(id)a4;
+- (EMMailboxRepository)initWithRemoteConnection:(id)connection accountRepository:(id)repository;
 - (NSOrderedSet)mailboxesIfAvailable;
 - (NSSet)allMailboxObjectIDs;
-- (id)_filterIDsFromMailbox:(id)a3 withQuery:(id)a4;
+- (id)_filterIDsFromMailbox:(id)mailbox withQuery:(id)query;
 - (id)_mailboxesFuture;
-- (id)mailboxForObjectID:(id)a3;
-- (id)mailboxIfAvailableForObjectID:(id)a3;
-- (id)mailboxObjectIDsForMailboxType:(int64_t)a3;
-- (id)mailboxesForObjectIDs:(id)a3;
-- (id)mailboxesIfAvailableForObjectIDs:(id)a3;
-- (id)performMailboxChangeAction:(id)a3;
-- (id)performQuery:(id)a3 withObserver:(id)a4;
+- (id)mailboxForObjectID:(id)d;
+- (id)mailboxIfAvailableForObjectID:(id)d;
+- (id)mailboxObjectIDsForMailboxType:(int64_t)type;
+- (id)mailboxesForObjectIDs:(id)ds;
+- (id)mailboxesIfAvailableForObjectIDs:(id)ds;
+- (id)performMailboxChangeAction:(id)action;
+- (id)performQuery:(id)query withObserver:(id)observer;
 - (id)remoteAllMailboxObjectIDs;
-- (id)remoteMailboxObjectIDsForMailboxType:(int64_t)a3;
-- (int64_t)mailboxTypeForMailboxObjectID:(id)a3;
-- (int64_t)remoteMailboxTypeForMailboxObjectID:(id)a3;
-- (void)_prepareMailboxes:(id)a3;
+- (id)remoteMailboxObjectIDsForMailboxType:(int64_t)type;
+- (int64_t)mailboxTypeForMailboxObjectID:(id)d;
+- (int64_t)remoteMailboxTypeForMailboxObjectID:(id)d;
+- (void)_prepareMailboxes:(id)mailboxes;
 - (void)_startObservingMailboxChangesIfNecessary;
 - (void)dealloc;
-- (void)mailboxListChanged:(id)a3;
-- (void)performQuery:(id)a3 completionHandler:(id)a4;
-- (void)recordFrecencyEventWithMailboxIDs:(id)a3;
-- (void)recordFrecencyEventWithMailboxURLString:(id)a3;
-- (void)recordFrecencyEventWithMailboxesOfMessage:(id)a3;
-- (void)refreshMailboxList:(int64_t)a3;
+- (void)mailboxListChanged:(id)changed;
+- (void)performQuery:(id)query completionHandler:(id)handler;
+- (void)recordFrecencyEventWithMailboxIDs:(id)ds;
+- (void)recordFrecencyEventWithMailboxURLString:(id)string;
+- (void)recordFrecencyEventWithMailboxesOfMessage:(id)message;
+- (void)refreshMailboxList:(int64_t)list;
 - (void)testRecordFrecencyEventsForAllMailboxes;
 - (void)testResetFrecencyForAllMailboxes;
 @end
@@ -59,17 +59,17 @@
 
 - (void)_startObservingMailboxChangesIfNecessary
 {
-  v3 = [(EMMailboxRepository *)self registrationCancelable];
+  registrationCancelable = [(EMMailboxRepository *)self registrationCancelable];
 
-  if (!v3)
+  if (!registrationCancelable)
   {
-    v4 = [(EMRepository *)self connection];
+    connection = [(EMRepository *)self connection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __63__EMMailboxRepository__startObservingMailboxChangesIfNecessary__block_invoke;
     v18[3] = &unk_1E826D7A0;
     v18[4] = self;
-    v5 = [v4 remoteObjectProxyWithErrorHandler:v18];
+    v5 = [connection remoteObjectProxyWithErrorHandler:v18];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -95,8 +95,8 @@
 
 - (NSOrderedSet)mailboxesIfAvailable
 {
-  v2 = [(EMMailboxRepository *)self _mailboxesFuture];
-  v3 = [v2 resultIfAvailable:0];
+  _mailboxesFuture = [(EMMailboxRepository *)self _mailboxesFuture];
+  v3 = [_mailboxesFuture resultIfAvailable:0];
 
   return v3;
 }
@@ -104,12 +104,12 @@
 - (id)_mailboxesFuture
 {
   os_unfair_lock_lock(&self->_mailboxesPromiseLock);
-  v3 = [(EMMailboxRepository *)self mailboxesPromise];
-  v4 = [v3 future];
+  mailboxesPromise = [(EMMailboxRepository *)self mailboxesPromise];
+  future = [mailboxesPromise future];
 
   os_unfair_lock_unlock(&self->_mailboxesPromiseLock);
 
-  return v4;
+  return future;
 }
 
 + (OS_os_log)log
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = __26__EMMailboxRepository_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_20 != -1)
   {
     dispatch_once(&log_onceToken_20, block);
@@ -137,14 +137,14 @@ void __26__EMMailboxRepository_log__block_invoke(uint64_t a1)
   log_log_20 = v1;
 }
 
-- (EMMailboxRepository)initWithRemoteConnection:(id)a3 accountRepository:(id)a4
+- (EMMailboxRepository)initWithRemoteConnection:(id)connection accountRepository:(id)repository
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  repositoryCopy = repository;
   v23.receiver = self;
   v23.super_class = EMMailboxRepository;
-  v8 = [(EMRepository *)&v23 initWithRemoteConnection:v6];
+  v8 = [(EMRepository *)&v23 initWithRemoteConnection:connectionCopy];
   if (v8)
   {
     v24[0] = @"name";
@@ -153,18 +153,18 @@ void __26__EMMailboxRepository_log__block_invoke(uint64_t a1)
 
     v8->_mailboxesPromiseLock._os_unfair_lock_opaque = 0;
     v8->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_accountRepository, a4);
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    objc_storeStrong(&v8->_accountRepository, repository);
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     observerMap = v8->_observerMap;
-    v8->_observerMap = v10;
+    v8->_observerMap = strongToStrongObjectsMapTable;
 
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
     mailboxesByObjectID = v8->_mailboxesByObjectID;
     v8->_mailboxesByObjectID = v12;
 
-    v14 = [MEMORY[0x1E699B868] promise];
+    promise = [MEMORY[0x1E699B868] promise];
     mailboxesPromise = v8->_mailboxesPromise;
-    v8->_mailboxesPromise = v14;
+    v8->_mailboxesPromise = promise;
 
     objc_initWeak(&location, v8);
     v20[0] = MEMORY[0x1E69E9820];
@@ -172,13 +172,13 @@ void __26__EMMailboxRepository_log__block_invoke(uint64_t a1)
     v20[2] = __66__EMMailboxRepository_initWithRemoteConnection_accountRepository___block_invoke;
     v20[3] = &unk_1E826C070;
     objc_copyWeak(&v21, &location);
-    [v6 addResetHandler:v20];
+    [connectionCopy addResetHandler:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __66__EMMailboxRepository_initWithRemoteConnection_accountRepository___block_invoke_2;
     v18[3] = &unk_1E826C070;
     objc_copyWeak(&v19, &location);
-    [v6 addRecoveryHandler:v18];
+    [connectionCopy addRecoveryHandler:v18];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -225,28 +225,28 @@ void __63__EMMailboxRepository__startObservingMailboxChangesIfNecessary__block_i
   [v6 finishWithError:v7];
 }
 
-- (void)performQuery:(id)a3 completionHandler:(id)a4
+- (void)performQuery:(id)query completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  handlerCopy = handler;
   [(EMMailboxRepository *)self _startObservingMailboxChangesIfNecessary];
-  v8 = [(EMMailboxRepository *)self _mailboxesFuture];
+  _mailboxesFuture = [(EMMailboxRepository *)self _mailboxesFuture];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __54__EMMailboxRepository_performQuery_completionHandler___block_invoke;
   v14[3] = &unk_1E826D7C8;
-  v9 = v6;
+  v9 = queryCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v16 = v10;
-  [v8 addSuccessBlock:v14];
+  [_mailboxesFuture addSuccessBlock:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__EMMailboxRepository_performQuery_completionHandler___block_invoke_2;
   v12[3] = &unk_1E826C738;
   v11 = v10;
   v13 = v11;
-  [v8 addFailureBlock:v12];
+  [_mailboxesFuture addFailureBlock:v12];
 }
 
 void __54__EMMailboxRepository_performQuery_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -260,20 +260,20 @@ void __54__EMMailboxRepository_performQuery_completionHandler___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)performQuery:(id)a3 withObserver:(id)a4
+- (id)performQuery:(id)query withObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  observerCopy = observer;
   [(EMMailboxRepository *)self _startObservingMailboxChangesIfNecessary];
-  v8 = [(EMRepository *)self trampoliningObserverForObserver:v7];
+  v8 = [(EMRepository *)self trampoliningObserverForObserver:observerCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_observerMap setObject:v6 forKey:v8];
+  [(NSMapTable *)self->_observerMap setObject:queryCopy forKey:v8];
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [(EMMailboxRepository *)self mailboxesIfAvailable];
-  if (v9)
+  mailboxesIfAvailable = [(EMMailboxRepository *)self mailboxesIfAvailable];
+  if (mailboxesIfAvailable)
   {
-    v10 = [(EMMailboxRepository *)self _filterIDsFromMailbox:v9 withQuery:v6];
+    v10 = [(EMMailboxRepository *)self _filterIDsFromMailbox:mailboxesIfAvailable withQuery:queryCopy];
   }
 
   else
@@ -283,8 +283,8 @@ void __54__EMMailboxRepository_performQuery_completionHandler___block_invoke(uin
 
   if ([v10 count])
   {
-    v11 = [v10 array];
-    [v8 queryMatchedAddedObjectIDs:v11 before:0 extraInfo:0];
+    array = [v10 array];
+    [v8 queryMatchedAddedObjectIDs:array before:0 extraInfo:0];
 
     [v8 queryDidFinishInitialLoad];
   }
@@ -314,17 +314,17 @@ void __49__EMMailboxRepository_performQuery_withObserver___block_invoke(uint64_t
   os_unfair_lock_unlock(WeakRetained + 9);
 }
 
-- (void)_prepareMailboxes:(id)a3
+- (void)_prepareMailboxes:(id)mailboxes
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(EMRepository *)self prepareRepositoryObjects:v4];
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  mailboxesCopy = mailboxes;
+  [(EMRepository *)self prepareRepositoryObjects:mailboxesCopy];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(mailboxesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = mailboxesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -339,8 +339,8 @@ void __49__EMMailboxRepository_performQuery_withObserver___block_invoke(uint64_t
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 objectID];
-        [v5 setObject:v10 forKey:v11];
+        objectID = [v10 objectID];
+        [v5 setObject:v10 forKey:objectID];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -379,19 +379,19 @@ void __49__EMMailboxRepository_performQuery_withObserver___block_invoke(uint64_t
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)mailboxForObjectID:(id)a3
+- (id)mailboxForObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(EMMailboxRepository *)self _startObservingMailboxChangesIfNecessary];
-  v5 = [(EMMailboxRepository *)self _mailboxesFuture];
+  _mailboxesFuture = [(EMMailboxRepository *)self _mailboxesFuture];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__EMMailboxRepository_mailboxForObjectID___block_invoke;
   v9[3] = &unk_1E826D7F0;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
-  v11 = self;
-  v7 = [v5 then:v9];
+  selfCopy = self;
+  v7 = [_mailboxesFuture then:v9];
 
   return v7;
 }
@@ -416,14 +416,14 @@ id __42__EMMailboxRepository_mailboxForObjectID___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)mailboxesForObjectIDs:(id)a3
+- (id)mailboxesForObjectIDs:(id)ds
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__EMMailboxRepository_mailboxesForObjectIDs___block_invoke;
   v5[3] = &unk_1E826D818;
   v5[4] = self;
-  v3 = [a3 ef_map:v5];
+  v3 = [ds ef_map:v5];
 
   return v3;
 }
@@ -435,14 +435,14 @@ id __45__EMMailboxRepository_mailboxesForObjectIDs___block_invoke(uint64_t a1, u
   return v2;
 }
 
-- (id)mailboxIfAvailableForObjectID:(id)a3
+- (id)mailboxIfAvailableForObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_mailboxesByObjectID objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_mailboxesByObjectID objectForKeyedSubscript:dCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
@@ -454,14 +454,14 @@ id __45__EMMailboxRepository_mailboxesForObjectIDs___block_invoke(uint64_t a1, u
   return v5;
 }
 
-- (id)mailboxesIfAvailableForObjectIDs:(id)a3
+- (id)mailboxesIfAvailableForObjectIDs:(id)ds
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __56__EMMailboxRepository_mailboxesIfAvailableForObjectIDs___block_invoke;
   v5[3] = &unk_1E826D840;
   v5[4] = self;
-  v3 = [a3 ef_compactMap:v5];
+  v3 = [ds ef_compactMap:v5];
 
   return v3;
 }
@@ -473,30 +473,30 @@ id __56__EMMailboxRepository_mailboxesIfAvailableForObjectIDs___block_invoke(uin
   return v2;
 }
 
-- (void)refreshMailboxList:(int64_t)a3
+- (void)refreshMailboxList:(int64_t)list
 {
-  v5 = [(EMRepository *)self connection];
-  v4 = [v5 remoteObjectProxy];
-  [v4 refreshMailboxList:a3];
+  connection = [(EMRepository *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy refreshMailboxList:list];
 }
 
-- (id)performMailboxChangeAction:(id)a3
+- (id)performMailboxChangeAction:(id)action
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B868] promise];
-  v6 = [(EMRepository *)self connection];
-  v7 = [v6 reattemptingRemoteObjectProxy];
+  actionCopy = action;
+  promise = [MEMORY[0x1E699B868] promise];
+  connection = [(EMRepository *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__EMMailboxRepository_performMailboxChangeAction___block_invoke;
   v11[3] = &unk_1E826D868;
-  v8 = v5;
+  v8 = promise;
   v12 = v8;
-  [v7 performMailboxChangeAction:v4 completionHandler:v11];
+  [reattemptingRemoteObjectProxy performMailboxChangeAction:actionCopy completionHandler:v11];
 
-  v9 = [v8 future];
+  future = [v8 future];
 
-  return v9;
+  return future;
 }
 
 void __50__EMMailboxRepository_performMailboxChangeAction___block_invoke(uint64_t a1, uint64_t a2)
@@ -512,11 +512,11 @@ void __50__EMMailboxRepository_performMailboxChangeAction___block_invoke(uint64_
   if ([(NSMutableDictionary *)self->_mailboxesByObjectID count])
   {
     v3 = objc_alloc(MEMORY[0x1E695DFD8]);
-    v4 = [(NSMutableDictionary *)self->_mailboxesByObjectID allKeys];
-    v5 = [v3 initWithArray:v4];
+    allKeys = [(NSMutableDictionary *)self->_mailboxesByObjectID allKeys];
+    remoteAllMailboxObjectIDs = [v3 initWithArray:allKeys];
 
     os_unfair_lock_unlock(&self->_lock);
-    if (v5)
+    if (remoteAllMailboxObjectIDs)
     {
       goto LABEL_6;
     }
@@ -527,10 +527,10 @@ void __50__EMMailboxRepository_performMailboxChangeAction___block_invoke(uint64_
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v5 = [(EMMailboxRepository *)self remoteAllMailboxObjectIDs];
+  remoteAllMailboxObjectIDs = [(EMMailboxRepository *)self remoteAllMailboxObjectIDs];
 LABEL_6:
 
-  return v5;
+  return remoteAllMailboxObjectIDs;
 }
 
 - (id)remoteAllMailboxObjectIDs
@@ -541,8 +541,8 @@ LABEL_6:
   v10 = __Block_byref_object_copy__4;
   v11 = __Block_byref_object_dispose__4;
   v12 = 0;
-  v2 = [(EMRepository *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
+  connection = [(EMRepository *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_27];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__EMMailboxRepository_remoteAllMailboxObjectIDs__block_invoke_105;
@@ -566,7 +566,7 @@ void __48__EMMailboxRepository_remoteAllMailboxObjectIDs__block_invoke(uint64_t 
   }
 }
 
-- (id)mailboxObjectIDsForMailboxType:(int64_t)a3
+- (id)mailboxObjectIDsForMailboxType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableDictionary *)self->_mailboxesByObjectID count])
@@ -577,7 +577,7 @@ void __48__EMMailboxRepository_remoteAllMailboxObjectIDs__block_invoke(uint64_t 
     v10 = 3221225472;
     v11 = __54__EMMailboxRepository_mailboxObjectIDsForMailboxType___block_invoke;
     v12 = &unk_1E826D8B8;
-    v14 = a3;
+    typeCopy = type;
     v7 = v5;
     v13 = v7;
     [(NSMutableDictionary *)mailboxesByObjectID enumerateKeysAndObjectsUsingBlock:&v9];
@@ -594,7 +594,7 @@ void __48__EMMailboxRepository_remoteAllMailboxObjectIDs__block_invoke(uint64_t 
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  v7 = [(EMMailboxRepository *)self remoteMailboxObjectIDsForMailboxType:a3, v9, v10, v11, v12];
+  v7 = [(EMMailboxRepository *)self remoteMailboxObjectIDsForMailboxType:type, v9, v10, v11, v12];
 LABEL_6:
 
   return v7;
@@ -610,7 +610,7 @@ void __54__EMMailboxRepository_mailboxObjectIDsForMailboxType___block_invoke(uin
   }
 }
 
-- (id)remoteMailboxObjectIDsForMailboxType:(int64_t)a3
+- (id)remoteMailboxObjectIDsForMailboxType:(int64_t)type
 {
   v10 = 0;
   v11 = &v10;
@@ -618,19 +618,19 @@ void __54__EMMailboxRepository_mailboxObjectIDsForMailboxType___block_invoke(uin
   v13 = __Block_byref_object_copy__4;
   v14 = __Block_byref_object_dispose__4;
   v15 = 0;
-  v4 = [(EMRepository *)self connection];
+  connection = [(EMRepository *)self connection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__EMMailboxRepository_remoteMailboxObjectIDsForMailboxType___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v9[4] = type;
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__EMMailboxRepository_remoteMailboxObjectIDsForMailboxType___block_invoke_110;
   v8[3] = &unk_1E826D890;
   v8[4] = &v10;
-  [v5 mailboxObjectIDsForMailboxType:a3 completionHandler:v8];
+  [v5 mailboxObjectIDsForMailboxType:type completionHandler:v8];
 
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -648,15 +648,15 @@ void __60__EMMailboxRepository_remoteMailboxObjectIDsForMailboxType___block_invo
   }
 }
 
-- (int64_t)mailboxTypeForMailboxObjectID:(id)a3
+- (int64_t)mailboxTypeForMailboxObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableDictionary *)self->_mailboxesByObjectID count])
   {
-    v5 = [(NSMutableDictionary *)self->_mailboxesByObjectID objectForKey:v4];
-    v6 = [v5 type];
+    v5 = [(NSMutableDictionary *)self->_mailboxesByObjectID objectForKey:dCopy];
+    type = [v5 type];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -664,27 +664,27 @@ void __60__EMMailboxRepository_remoteMailboxObjectIDsForMailboxType___block_invo
   else
   {
     os_unfair_lock_unlock(&self->_lock);
-    v6 = [(EMMailboxRepository *)self remoteMailboxTypeForMailboxObjectID:v4];
+    type = [(EMMailboxRepository *)self remoteMailboxTypeForMailboxObjectID:dCopy];
   }
 
-  return v6;
+  return type;
 }
 
-- (int64_t)remoteMailboxTypeForMailboxObjectID:(id)a3
+- (int64_t)remoteMailboxTypeForMailboxObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = -500;
-  v5 = [(EMRepository *)self connection];
+  connection = [(EMRepository *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__EMMailboxRepository_remoteMailboxTypeForMailboxObjectID___block_invoke;
   v11[3] = &unk_1E826D7A0;
-  v6 = v4;
+  v6 = dCopy;
   v12 = v6;
-  v7 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __59__EMMailboxRepository_remoteMailboxTypeForMailboxObjectID___block_invoke_111;
@@ -708,11 +708,11 @@ void __59__EMMailboxRepository_remoteMailboxTypeForMailboxObjectID___block_invok
   }
 }
 
-- (id)_filterIDsFromMailbox:(id)a3 withQuery:(id)a4
+- (id)_filterIDsFromMailbox:(id)mailbox withQuery:(id)query
 {
-  v5 = a3;
-  v6 = [a4 predicate];
-  v7 = [v5 filteredOrderedSetUsingPredicate:v6];
+  mailboxCopy = mailbox;
+  predicate = [query predicate];
+  v7 = [mailboxCopy filteredOrderedSetUsingPredicate:predicate];
 
   v8 = [v7 ef_compactMap:&__block_literal_global_115];
 
@@ -726,32 +726,32 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
   return v2;
 }
 
-- (void)mailboxListChanged:(id)a3
+- (void)mailboxListChanged:(id)changed
 {
   v65 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  changedCopy = changed;
   v3 = +[EMMailboxRepository log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v64 = [v34 count];
+    v64 = [changedCopy count];
     _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "Received New Mailbox List count:%lu", buf, 0xCu);
   }
 
-  [(EMMailboxRepository *)self _prepareMailboxes:v34];
-  v35 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v34];
-  v4 = [(EMMailboxRepository *)self mailboxesIfAvailable];
+  [(EMMailboxRepository *)self _prepareMailboxes:changedCopy];
+  v35 = [MEMORY[0x1E695DFB8] orderedSetWithArray:changedCopy];
+  mailboxesIfAvailable = [(EMMailboxRepository *)self mailboxesIfAvailable];
   os_unfair_lock_lock(&self->_lock);
-  v39 = v4;
-  v40 = [v4 mutableCopy];
+  v39 = mailboxesIfAvailable;
+  v40 = [mailboxesIfAvailable mutableCopy];
   [v40 minusOrderedSet:v35];
   mailboxesByObjectID = self->_mailboxesByObjectID;
-  v6 = [v40 array];
-  v7 = [v6 ef_mapSelector:sel_objectID];
+  array = [v40 array];
+  v7 = [array ef_mapSelector:sel_objectID];
   [(NSMutableDictionary *)mailboxesByObjectID removeObjectsForKeys:v7];
 
   v41 = [v35 mutableCopy];
-  [v41 minusOrderedSet:v4];
+  [v41 minusOrderedSet:mailboxesIfAvailable];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
@@ -772,8 +772,8 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
 
         v11 = *(*(&v56 + 1) + 8 * i);
         v12 = self->_mailboxesByObjectID;
-        v13 = [v11 objectID];
-        [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:v13];
+        objectID = [v11 objectID];
+        [(NSMutableDictionary *)v12 setObject:v11 forKeyedSubscript:objectID];
       }
 
       v8 = [obj countByEnumeratingWithState:&v56 objects:v62 count:16];
@@ -812,7 +812,7 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
         {
           if (v39)
           {
-            v21 = [MEMORY[0x1E696AD50] indexSet];
+            indexSet = [MEMORY[0x1E696AD50] indexSet];
             v50 = 0u;
             v51 = 0u;
             v48 = 0u;
@@ -831,7 +831,7 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
                     objc_enumerationMutation(v22);
                   }
 
-                  [v21 addIndex:{objc_msgSend(v19, "indexOfObject:", *(*(&v48 + 1) + 8 * j))}];
+                  [indexSet addIndex:{objc_msgSend(v19, "indexOfObject:", *(*(&v48 + 1) + 8 * j))}];
                 }
 
                 v23 = [v22 countByEnumeratingWithState:&v48 objects:v60 count:16];
@@ -848,13 +848,13 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
             v45[3] = &unk_1E826D928;
             v46 = v19;
             v47 = v17;
-            [v21 enumerateRangesUsingBlock:v45];
+            [indexSet enumerateRangesUsingBlock:v45];
           }
 
           else
           {
-            v26 = [v44 array];
-            [v17 queryMatchedAddedObjectIDs:v26 before:0 extraInfo:0];
+            array2 = [v44 array];
+            [v17 queryMatchedAddedObjectIDs:array2 before:0 extraInfo:0];
 
             [v17 queryDidFinishInitialLoad];
           }
@@ -862,8 +862,8 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
 
         if ([v20 count])
         {
-          v27 = [v20 array];
-          [v17 queryMatchedDeletedObjectIDs:v27];
+          array3 = [v20 array];
+          [v17 queryMatchedDeletedObjectIDs:array3];
         }
 
         ++v16;
@@ -878,19 +878,19 @@ id __55__EMMailboxRepository__filterIDsFromMailbox_withQuery___block_invoke(uint
 
   os_unfair_lock_unlock(&self->_lock);
   os_unfair_lock_lock(&self->_mailboxesPromiseLock);
-  v28 = [(EMMailboxRepository *)self mailboxesPromise];
-  v29 = [v28 future];
-  v30 = [v29 isFinished];
+  mailboxesPromise = [(EMMailboxRepository *)self mailboxesPromise];
+  future = [mailboxesPromise future];
+  isFinished = [future isFinished];
 
-  if (v30)
+  if (isFinished)
   {
-    v31 = [MEMORY[0x1E699B868] promise];
-    [(EMMailboxRepository *)self setMailboxesPromise:v31];
+    promise = [MEMORY[0x1E699B868] promise];
+    [(EMMailboxRepository *)self setMailboxesPromise:promise];
   }
 
-  v32 = [(EMMailboxRepository *)self mailboxesPromise];
+  mailboxesPromise2 = [(EMMailboxRepository *)self mailboxesPromise];
   os_unfair_lock_unlock(&self->_mailboxesPromiseLock);
-  [v32 finishWithResult:obj];
+  [mailboxesPromise2 finishWithResult:obj];
 
   v33 = *MEMORY[0x1E69E9840];
 }
@@ -913,13 +913,13 @@ void __42__EMMailboxRepository_mailboxListChanged___block_invoke(uint64_t a1, ui
   [v6 queryMatchedAddedObjectIDs:v8 after:v9 extraInfo:0];
 }
 
-- (void)recordFrecencyEventWithMailboxURLString:(id)a3
+- (void)recordFrecencyEventWithMailboxURLString:(id)string
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+    v5 = [MEMORY[0x1E695DFF8] URLWithString:stringCopy];
     if (v5)
     {
       v6 = [[EMMailboxObjectID alloc] initWithURL:v5];
@@ -936,35 +936,35 @@ void __42__EMMailboxRepository_mailboxListChanged___block_invoke(uint64_t a1, ui
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)recordFrecencyEventWithMailboxesOfMessage:(id)a3
+- (void)recordFrecencyEventWithMailboxesOfMessage:(id)message
 {
-  v4 = [a3 mailboxObjectIDs];
+  mailboxObjectIDs = [message mailboxObjectIDs];
   [(EMMailboxRepository *)self recordFrecencyEventWithMailboxIDs:?];
 }
 
-- (void)recordFrecencyEventWithMailboxIDs:(id)a3
+- (void)recordFrecencyEventWithMailboxIDs:(id)ds
 {
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v4 = [(EMRepository *)self connection];
-    v5 = [v4 remoteObjectProxy];
-    [v5 recordFrecencyEventWithMailboxesWithIDs:v6];
+    connection = [(EMRepository *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    [remoteObjectProxy recordFrecencyEventWithMailboxesWithIDs:dsCopy];
   }
 }
 
 - (void)testRecordFrecencyEventsForAllMailboxes
 {
-  v3 = [(EMRepository *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 testRecordFrecencyEventsForAllMailboxes];
+  connection = [(EMRepository *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy testRecordFrecencyEventsForAllMailboxes];
 }
 
 - (void)testResetFrecencyForAllMailboxes
 {
-  v3 = [(EMRepository *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 testResetFrecencyForAllMailboxes];
+  connection = [(EMRepository *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy testResetFrecencyForAllMailboxes];
 }
 
 void __63__EMMailboxRepository__startObservingMailboxChangesIfNecessary__block_invoke_cold_1(uint64_t a1, NSObject *a2)

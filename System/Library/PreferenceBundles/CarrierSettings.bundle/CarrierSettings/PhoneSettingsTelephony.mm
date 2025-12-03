@@ -4,15 +4,15 @@
 - (BOOL)hasSubscriberIdentity;
 - (PhoneSettingsTelephony)init;
 - (__CTServerConnection)serverConnection;
-- (id)_callForwardingSettingsForForwardingReason:(id)a3;
-- (id)callForwardingNumber:(BOOL)a3 forReason:(id)a4;
+- (id)_callForwardingSettingsForForwardingReason:(id)reason;
+- (id)callForwardingNumber:(BOOL)number forReason:(id)reason;
 - (id)currentNetwork;
 - (id)descriptionDictionary;
-- (id)lastUsedForwardingNumberForReason:(id)a3;
+- (id)lastUsedForwardingNumberForReason:(id)reason;
 - (id)manuallySelectedNetworkDictionary;
 - (id)myNumber;
-- (id)pendingRequestForUniqueSettingType:(id)a3;
-- (id)pendingSaveForUniqueSettingType:(id)a3;
+- (id)pendingRequestForUniqueSettingType:(id)type;
+- (id)pendingSaveForUniqueSettingType:(id)type;
 - (id)unlockAttemptsRemainingString;
 - (int)currentNetworkSelectionState;
 - (int)networkSelectionMode;
@@ -20,50 +20,50 @@
 - (int)showCallWaiting;
 - (int)showCallerID;
 - (int)showSIMPIN;
-- (unsigned)callForwardingEnabled:(BOOL)a3 forReason:(id)a4;
-- (unsigned)callWaitingEnabled:(BOOL)a3;
-- (unsigned)callerIDMode:(BOOL)a3;
-- (unsigned)callerIDModifiable:(BOOL)a3;
-- (unsigned)simLocked:(BOOL)a3;
-- (void)_handleCallWaitingSettings:(id)a3;
+- (unsigned)callForwardingEnabled:(BOOL)enabled forReason:(id)reason;
+- (unsigned)callWaitingEnabled:(BOOL)enabled;
+- (unsigned)callerIDMode:(BOOL)mode;
+- (unsigned)callerIDModifiable:(BOOL)modifiable;
+- (unsigned)simLocked:(BOOL)locked;
+- (void)_handleCallWaitingSettings:(id)settings;
 - (void)_handleCallerIDChanged;
-- (void)_handleCallerIDSettings:(id)a3;
-- (void)_handleNetworkList:(id)a3;
-- (void)_handlePINSettings:(id)a3;
-- (void)_handleSIMLockSettings:(id)a3;
+- (void)_handleCallerIDSettings:(id)settings;
+- (void)_handleNetworkList:(id)list;
+- (void)_handlePINSettings:(id)settings;
+- (void)_handleSIMLockSettings:(id)settings;
 - (void)_invalidateSIMLockedSetting;
 - (void)_networkSettingsDisabled;
 - (void)_phoneBookSelected;
 - (void)_phoneNumberChanged;
-- (void)_phoneNumberSaveFinishedWithSuccess:(BOOL)a3;
+- (void)_phoneNumberSaveFinishedWithSuccess:(BOOL)success;
 - (void)_phoneNumberWritten;
-- (void)_requestCallForwardingSettingsForReason:(id)a3;
-- (void)_requestSettings:(id)a3;
+- (void)_requestCallForwardingSettingsForReason:(id)reason;
+- (void)_requestSettings:(id)settings;
 - (void)_reset;
 - (void)_resetCallerIDSettings;
-- (void)_saveCallForwardingEnabled:(BOOL)a3 number:(id)a4 forwardingReason:(id)a5;
-- (void)_saveSettings:(id)a3;
+- (void)_saveCallForwardingEnabled:(BOOL)enabled number:(id)number forwardingReason:(id)reason;
+- (void)_saveSettings:(id)settings;
 - (void)_simPUKLocked;
 - (void)_simRemoved;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)dealloc;
 - (void)destroyServerConnection;
 - (void)enableAutomaticNetworkSelection;
 - (void)hasSubscriberIdentity;
-- (void)postCallForwardingChangedNotificationForForwardingReason:(id)a3;
-- (void)receivedRequestResponseForUniqueSettingType:(id)a3;
-- (void)receivedSaveResponseForUniqueSettingType:(id)a3;
+- (void)postCallForwardingChangedNotificationForForwardingReason:(id)reason;
+- (void)receivedRequestResponseForUniqueSettingType:(id)type;
+- (void)receivedSaveResponseForUniqueSettingType:(id)type;
 - (void)requestNetworkList;
 - (void)resetCallForwardingSettings;
-- (void)resetLastUsedForwardingNumberForReason:(id)a3;
-- (void)selectManualNetwork:(id)a3;
-- (void)setCallForwardingNumber:(id)a3 forReason:(id)a4;
-- (void)setCallWaitingEnabled:(BOOL)a3;
-- (void)setCallerIDEnabled:(unsigned int)a3;
-- (void)setMyNumber:(id)a3;
-- (void)setPIN:(id)a3 password:(id)a4;
-- (void)setSIMLocked:(BOOL)a3 password:(id)a4;
+- (void)resetLastUsedForwardingNumberForReason:(id)reason;
+- (void)selectManualNetwork:(id)network;
+- (void)setCallForwardingNumber:(id)number forReason:(id)reason;
+- (void)setCallWaitingEnabled:(BOOL)enabled;
+- (void)setCallerIDEnabled:(unsigned int)enabled;
+- (void)setMyNumber:(id)number;
+- (void)setPIN:(id)n password:(id)password;
+- (void)setSIMLocked:(BOOL)locked password:(id)password;
 - (void)startWatching;
 - (void)stopWatching;
 @end
@@ -77,11 +77,11 @@
   v2 = [(PhoneSettingsTelephony *)&v26 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
 
     v5 = objc_alloc_init(PHForwardingSettings);
     callForwardingSettingsUnconditional = v2->_callForwardingSettingsUnconditional;
@@ -91,9 +91,9 @@
     v7 = CFPreferencesCopyAppValue(@"call-forwarding-number", @"com.apple.mobilephone.settings");
     [(PHForwardingSettings *)v2->_callForwardingSettingsUnconditional setDefaultCallForwardingNumber:v7];
 
-    v8 = [(PHForwardingSettings *)v2->_callForwardingSettingsUnconditional defaultCallForwardingNumber];
+    defaultCallForwardingNumber = [(PHForwardingSettings *)v2->_callForwardingSettingsUnconditional defaultCallForwardingNumber];
 
-    if (!v8)
+    if (!defaultCallForwardingNumber)
     {
       v9 = objc_alloc_init(MEMORY[0x277CCACA8]);
       [(PHForwardingSettings *)v2->_callForwardingSettingsUnconditional setDefaultCallForwardingNumber:v9];
@@ -107,9 +107,9 @@
     v12 = CFPreferencesCopyAppValue(@"call-forwarding-number-mobilebusy", @"com.apple.mobilephone.settings");
     [(PHForwardingSettings *)v2->_callForwardingSettingsMobileBusy setDefaultCallForwardingNumber:v12];
 
-    v13 = [(PHForwardingSettings *)v2->_callForwardingSettingsMobileBusy defaultCallForwardingNumber];
+    defaultCallForwardingNumber2 = [(PHForwardingSettings *)v2->_callForwardingSettingsMobileBusy defaultCallForwardingNumber];
 
-    if (!v13)
+    if (!defaultCallForwardingNumber2)
     {
       v14 = objc_alloc_init(MEMORY[0x277CCACA8]);
       [(PHForwardingSettings *)v2->_callForwardingSettingsMobileBusy setDefaultCallForwardingNumber:v14];
@@ -123,9 +123,9 @@
     v17 = CFPreferencesCopyAppValue(@"call-forwarding-number-noreply", @"com.apple.mobilephone.settings");
     [(PHForwardingSettings *)v2->_callForwardingSettingsNoReply setDefaultCallForwardingNumber:v17];
 
-    v18 = [(PHForwardingSettings *)v2->_callForwardingSettingsNoReply defaultCallForwardingNumber];
+    defaultCallForwardingNumber3 = [(PHForwardingSettings *)v2->_callForwardingSettingsNoReply defaultCallForwardingNumber];
 
-    if (!v18)
+    if (!defaultCallForwardingNumber3)
     {
       v19 = objc_alloc_init(MEMORY[0x277CCACA8]);
       [(PHForwardingSettings *)v2->_callForwardingSettingsNoReply setDefaultCallForwardingNumber:v19];
@@ -139,9 +139,9 @@
     v22 = CFPreferencesCopyAppValue(@"call-forwarding-number-notreachable", @"com.apple.mobilephone.settings");
     [(PHForwardingSettings *)v2->_callForwardingSettingsNotReachable setDefaultCallForwardingNumber:v22];
 
-    v23 = [(PHForwardingSettings *)v2->_callForwardingSettingsNotReachable defaultCallForwardingNumber];
+    defaultCallForwardingNumber4 = [(PHForwardingSettings *)v2->_callForwardingSettingsNotReachable defaultCallForwardingNumber];
 
-    if (!v23)
+    if (!defaultCallForwardingNumber4)
     {
       v24 = objc_alloc_init(MEMORY[0x277CCACA8]);
       [(PHForwardingSettings *)v2->_callForwardingSettingsNotReachable setDefaultCallForwardingNumber:v24];
@@ -153,8 +153,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PhoneSettingsTelephony *)self stopWatching];
   [(PhoneSettingsTelephony *)self destroyServerConnection];
@@ -330,15 +330,15 @@
   [(PhoneSettingsTelephony *)self _reset];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  backgroundCopy = background;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = backgroundCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -348,15 +348,15 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foregroundCopy = foreground;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = foregroundCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v7, 0xCu);
   }
 
@@ -371,10 +371,10 @@
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 stringWithFormat:@"%@.%@", v6, v8];
+    v9 = [v4 stringWithFormat:@"%@.%@", bundleIdentifier, v8];
 
     v10 = *MEMORY[0x277CBECE8];
     CFRunLoopGetMain();
@@ -488,17 +488,17 @@
   return v10;
 }
 
-- (void)setMyNumber:(id)a3
+- (void)setMyNumber:(id)number
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   v5 = UIUnformattedPhoneNumberFromString();
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = *(self + 112) & 1;
     v13 = 138412802;
-    v14 = v4;
+    v14 = numberCopy;
     v15 = 2112;
     v16 = v5;
     v17 = 1024;
@@ -532,8 +532,8 @@
   [(PhoneSettingsTelephony *)self serverConnection];
   if (_CTServerConnectionCopyMobileEquipmentInfo() >> 32)
   {
-    v2 = PHDefaultLog();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    allKeys = PHDefaultLog();
+    if (os_log_type_enabled(allKeys, OS_LOG_TYPE_ERROR))
     {
       [PhoneSettingsTelephony hasSubscriberIdentity];
     }
@@ -541,9 +541,9 @@
     goto LABEL_7;
   }
 
-  v2 = [0 allKeys];
+  allKeys = [0 allKeys];
   v3 = *MEMORY[0x277CC3B10];
-  if (![v2 containsObject:*MEMORY[0x277CC3B10]])
+  if (![allKeys containsObject:*MEMORY[0x277CC3B10]])
   {
 LABEL_7:
     LOBYTE(v6) = 0;
@@ -570,9 +570,9 @@ LABEL_10:
 {
   SIMStatus = CTSIMSupportGetSIMStatus();
   v3 = objc_alloc_init(MEMORY[0x277CEC5D0]);
-  v4 = [v3 airplaneMode];
+  airplaneMode = [v3 airplaneMode];
 
-  if (v4)
+  if (airplaneMode)
   {
     LOBYTE(v5) = 0;
   }
@@ -609,15 +609,15 @@ LABEL_10:
   CTRegistrationAutomaticallySelectNetwork();
 }
 
-- (void)selectManualNetwork:(id)a3
+- (void)selectManualNetwork:(id)network
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  networkCopy = network;
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = networkCopy;
     _os_log_impl(&dword_23C12D000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
@@ -625,69 +625,69 @@ LABEL_10:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)callForwardingEnabled:(BOOL)a3 forReason:(id)a4
+- (unsigned)callForwardingEnabled:(BOOL)enabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:v6];
+  enabledCopy = enabled;
+  reasonCopy = reason;
+  v7 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reasonCopy];
   v8 = v7;
-  if (v4 && (![v7 callForwardingState] || objc_msgSend(v8, "callForwardingState") == 1))
+  if (enabledCopy && (![v7 callForwardingState] || objc_msgSend(v8, "callForwardingState") == 1))
   {
     [v8 setCallForwardingState:1];
-    [(PhoneSettingsTelephony *)self _requestCallForwardingSettingsForReason:v6];
+    [(PhoneSettingsTelephony *)self _requestCallForwardingSettingsForReason:reasonCopy];
   }
 
-  v9 = [v8 callForwardingState];
+  callForwardingState = [v8 callForwardingState];
 
-  return v9 & 0xFFFFFFF7;
+  return callForwardingState & 0xFFFFFFF7;
 }
 
-- (id)callForwardingNumber:(BOOL)a3 forReason:(id)a4
+- (id)callForwardingNumber:(BOOL)number forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:v6];
+  numberCopy = number;
+  reasonCopy = reason;
+  v7 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reasonCopy];
   v8 = v7;
-  if (v4 && ![v7 callForwardingState])
+  if (numberCopy && ![v7 callForwardingState])
   {
     [v8 setCallForwardingState:1];
-    [(PhoneSettingsTelephony *)self _requestCallForwardingSettingsForReason:v6];
+    [(PhoneSettingsTelephony *)self _requestCallForwardingSettingsForReason:reasonCopy];
   }
 
-  v9 = [v8 callForwardingNumber];
+  callForwardingNumber = [v8 callForwardingNumber];
 
-  return v9;
+  return callForwardingNumber;
 }
 
-- (void)setCallForwardingNumber:(id)a3 forReason:(id)a4
+- (void)setCallForwardingNumber:(id)number forReason:(id)reason
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  reasonCopy = reason;
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = numberCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = reasonCopy;
     _os_log_impl(&dword_23C12D000, v8, OS_LOG_TYPE_DEFAULT, "Requested to set call forwarding number to %@ for reason %@", &v10, 0x16u);
   }
 
-  -[PhoneSettingsTelephony _saveCallForwardingEnabled:number:forwardingReason:](self, "_saveCallForwardingEnabled:number:forwardingReason:", [v6 length] != 0, v6, v7);
+  -[PhoneSettingsTelephony _saveCallForwardingEnabled:number:forwardingReason:](self, "_saveCallForwardingEnabled:number:forwardingReason:", [numberCopy length] != 0, numberCopy, reasonCopy);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)callWaitingEnabled:(BOOL)a3
+- (unsigned)callWaitingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v16 = *MEMORY[0x277D85DE8];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
     callWaitingEnabled = self->_callWaitingEnabled;
-    if (v3)
+    if (enabledCopy)
     {
       v6 = @"YES";
     }
@@ -699,7 +699,7 @@ LABEL_10:
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "[PhoneSettingsTelephony callWaitingEnabled:]: Request:%@, _callWaitingEnabledState is %d", buf, 0x12u);
   }
 
-  if (v3 && !self->_callWaitingEnabled)
+  if (enabledCopy && !self->_callWaitingEnabled)
   {
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -717,9 +717,9 @@ LABEL_10:
   return self->_callWaitingEnabled & 0xFFFFFFF7;
 }
 
-- (void)setCallWaitingEnabled:(BOOL)a3
+- (void)setCallWaitingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -728,12 +728,12 @@ LABEL_10:
     v12[0] = 67109376;
     v12[1] = callWaitingEnabled;
     v13 = 1024;
-    v14 = v3;
+    v14 = enabledCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "Requested to set call waiting enabled from %d to %d", v12, 0xEu);
   }
 
   v7 = self->_callWaitingEnabled;
-  if (v3)
+  if (enabledCopy)
   {
     if (v7 != 4)
     {
@@ -746,28 +746,28 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = *MEMORY[0x277CC4240];
-  [v8 setObject:*MEMORY[0x277CC4240] forKey:@"STSettingTypeUniqueIdentifier"];
-  [v8 setObject:v9 forKey:*MEMORY[0x277CC4230]];
-  [v8 setObject:*MEMORY[0x277CC4168] forKey:*MEMORY[0x277CC4160]];
+  [dictionary setObject:*MEMORY[0x277CC4240] forKey:@"STSettingTypeUniqueIdentifier"];
+  [dictionary setObject:v9 forKey:*MEMORY[0x277CC4230]];
+  [dictionary setObject:*MEMORY[0x277CC4168] forKey:*MEMORY[0x277CC4160]];
   v10 = MEMORY[0x277CBED28];
-  if (!v3)
+  if (!enabledCopy)
   {
     v10 = MEMORY[0x277CBED10];
   }
 
-  [v8 setObject:*v10 forKey:*MEMORY[0x277CC41E8]];
+  [dictionary setObject:*v10 forKey:*MEMORY[0x277CC41E8]];
   self->_callWaitingEnabled |= 1u;
-  [(PhoneSettingsTelephony *)self _saveSettings:v8];
+  [(PhoneSettingsTelephony *)self _saveSettings:dictionary];
 
 LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)callerIDModifiable:(BOOL)a3
+- (unsigned)callerIDModifiable:(BOOL)modifiable
 {
-  if (a3 && !self->_callerIDMode)
+  if (modifiable && !self->_callerIDMode)
   {
     [(PhoneSettingsTelephony *)self callerIDMode:1];
   }
@@ -775,9 +775,9 @@ LABEL_10:
   return self->_callerIDIsModifiable & 0xFFFFFFF7;
 }
 
-- (unsigned)callerIDMode:(BOOL)a3
+- (unsigned)callerIDMode:(BOOL)mode
 {
-  if (a3 && !self->_callerIDMode)
+  if (mode && !self->_callerIDMode)
   {
     self->_callerIDMode = 1;
     v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{@"STSettingTypeUniqueIdentifier", *MEMORY[0x277CC4248], *MEMORY[0x277CC4230], 0}];
@@ -787,18 +787,18 @@ LABEL_10:
   return self->_callerIDMode & 0xFFFFFFEF;
 }
 
-- (void)setCallerIDEnabled:(unsigned int)a3
+- (void)setCallerIDEnabled:(unsigned int)enabled
 {
-  if (self->_callerIDMode == a3)
+  if (self->_callerIDMode == enabled)
   {
 
     [(PhoneSettingsTelephony *)self _handleCallerIDSettings:0];
     return;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = *MEMORY[0x277CC41D8];
-  switch(a3)
+  switch(enabled)
   {
     case 2u:
       v6 = MEMORY[0x277CC41B0];
@@ -816,11 +816,11 @@ LABEL_11:
   }
 
   v8 = *MEMORY[0x277CC4248];
-  [v9 setObject:*MEMORY[0x277CC4248] forKey:@"STSettingTypeUniqueIdentifier"];
-  [v9 setObject:v8 forKey:*MEMORY[0x277CC4230]];
-  [v9 setObject:v5 forKey:*MEMORY[0x277CC41A8]];
+  [dictionary setObject:*MEMORY[0x277CC4248] forKey:@"STSettingTypeUniqueIdentifier"];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277CC4230]];
+  [dictionary setObject:v5 forKey:*MEMORY[0x277CC41A8]];
   self->_callerIDMode = 1;
-  [(PhoneSettingsTelephony *)self _saveSettings:v9];
+  [(PhoneSettingsTelephony *)self _saveSettings:dictionary];
 }
 
 - (void)requestNetworkList
@@ -866,9 +866,9 @@ LABEL_11:
   return v2;
 }
 
-- (unsigned)simLocked:(BOOL)a3
+- (unsigned)simLocked:(BOOL)locked
 {
-  if (a3 && !self->_simLocked)
+  if (locked && !self->_simLocked)
   {
     if (CTSIMSupportGetSIMStatus() == *MEMORY[0x277CC3EE8])
     {
@@ -886,13 +886,13 @@ LABEL_11:
   return self->_simLocked & 0xFFFFFFF7;
 }
 
-- (void)setSIMLocked:(BOOL)a3 password:(id)a4
+- (void)setSIMLocked:(BOOL)locked password:(id)password
 {
-  v4 = a3;
-  v6 = a4;
+  lockedCopy = locked;
+  passwordCopy = password;
   simLocked = self->_simLocked;
-  v13 = v6;
-  if (!v4)
+  v13 = passwordCopy;
+  if (!lockedCopy)
   {
     if (simLocked == 2)
     {
@@ -913,17 +913,17 @@ LABEL_12:
   v8 = 5;
 LABEL_6:
   self->_simLocked = v8;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = *MEMORY[0x277CC4258];
-  [v9 setObject:*MEMORY[0x277CC4258] forKey:@"STSettingTypeUniqueIdentifier"];
-  [v9 setObject:v10 forKey:*MEMORY[0x277CC4230]];
+  [dictionary setObject:*MEMORY[0x277CC4258] forKey:@"STSettingTypeUniqueIdentifier"];
+  [dictionary setObject:v10 forKey:*MEMORY[0x277CC4230]];
   v11 = MEMORY[0x277CBED28];
-  if (!v4)
+  if (!lockedCopy)
   {
     v11 = MEMORY[0x277CBED10];
   }
 
-  [v9 setObject:*v11 forKey:*MEMORY[0x277CC41E8]];
+  [dictionary setObject:*v11 forKey:*MEMORY[0x277CC41E8]];
   if (v13)
   {
     v12 = v13;
@@ -934,8 +934,8 @@ LABEL_6:
     v12 = &stru_284EE7748;
   }
 
-  [v9 setObject:v12 forKey:*MEMORY[0x277CC4200]];
-  [(PhoneSettingsTelephony *)self _saveSettings:v9];
+  [dictionary setObject:v12 forKey:*MEMORY[0x277CC4200]];
+  [(PhoneSettingsTelephony *)self _saveSettings:dictionary];
 
 LABEL_13:
 }
@@ -968,28 +968,28 @@ LABEL_13:
 
 - (BOOL)allowPINChange
 {
-  v3 = [(PhoneSettingsTelephony *)self allowSIMLock];
-  if (v3)
+  allowSIMLock = [(PhoneSettingsTelephony *)self allowSIMLock];
+  if (allowSIMLock)
   {
-    LOBYTE(v3) = [(PhoneSettingsTelephony *)self simLocked:0]== 2;
+    LOBYTE(allowSIMLock) = [(PhoneSettingsTelephony *)self simLocked:0]== 2;
   }
 
-  return v3;
+  return allowSIMLock;
 }
 
-- (void)setPIN:(id)a3 password:(id)a4
+- (void)setPIN:(id)n password:(id)password
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v10 = [v6 dictionary];
+  passwordCopy = password;
+  nCopy = n;
+  dictionary = [v6 dictionary];
   v9 = *MEMORY[0x277CC4250];
-  [v10 setObject:*MEMORY[0x277CC4250] forKey:*MEMORY[0x277CC4230]];
-  [v10 setObject:v9 forKey:@"STSettingTypeUniqueIdentifier"];
-  [v10 setObject:v8 forKey:*MEMORY[0x277CC41F8]];
+  [dictionary setObject:*MEMORY[0x277CC4250] forKey:*MEMORY[0x277CC4230]];
+  [dictionary setObject:v9 forKey:@"STSettingTypeUniqueIdentifier"];
+  [dictionary setObject:nCopy forKey:*MEMORY[0x277CC41F8]];
 
-  [v10 setObject:v7 forKey:*MEMORY[0x277CC4200]];
-  [(PhoneSettingsTelephony *)self _saveSettings:v10];
+  [dictionary setObject:passwordCopy forKey:*MEMORY[0x277CC4200]];
+  [(PhoneSettingsTelephony *)self _saveSettings:dictionary];
 }
 
 - (int)showCallForwarding
@@ -1040,77 +1040,77 @@ LABEL_13:
   return result;
 }
 
-- (id)pendingRequestForUniqueSettingType:(id)a3
+- (id)pendingRequestForUniqueSettingType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  typeCopy = type;
+  null = typeCopy;
+  if (!typeCopy)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = [(NSMutableDictionary *)self->_pendingRequests objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_pendingRequests objectForKey:null];
 
   return v6;
 }
 
-- (id)pendingSaveForUniqueSettingType:(id)a3
+- (id)pendingSaveForUniqueSettingType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  typeCopy = type;
+  null = typeCopy;
+  if (!typeCopy)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v6 = [(NSMutableDictionary *)self->_pendingSaves objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_pendingSaves objectForKey:null];
 
   return v6;
 }
 
-- (void)receivedRequestResponseForUniqueSettingType:(id)a3
+- (void)receivedRequestResponseForUniqueSettingType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (!typeCopy)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    typeCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  [(NSMutableDictionary *)self->_pendingRequests removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingRequests removeObjectForKey:typeCopy];
 }
 
-- (void)receivedSaveResponseForUniqueSettingType:(id)a3
+- (void)receivedSaveResponseForUniqueSettingType:(id)type
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  typeCopy = type;
+  v5 = typeCopy;
+  if (!typeCopy)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    typeCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  [(NSMutableDictionary *)self->_pendingSaves removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_pendingSaves removeObjectForKey:typeCopy];
 }
 
-- (id)_callForwardingSettingsForForwardingReason:(id)a3
+- (id)_callForwardingSettingsForForwardingReason:(id)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x277CC41A0]] & 1) == 0)
+  reasonCopy = reason;
+  if (([reasonCopy isEqualToString:*MEMORY[0x277CC41A0]] & 1) == 0)
   {
-    if ([v4 isEqualToString:*MEMORY[0x277CC4188]])
+    if ([reasonCopy isEqualToString:*MEMORY[0x277CC4188]])
     {
       v5 = 40;
       goto LABEL_9;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x277CC4190]])
+    if ([reasonCopy isEqualToString:*MEMORY[0x277CC4190]])
     {
       v5 = 48;
       goto LABEL_9;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x277CC4198]])
+    if ([reasonCopy isEqualToString:*MEMORY[0x277CC4198]])
     {
       v5 = 56;
       goto LABEL_9;
@@ -1120,7 +1120,7 @@ LABEL_13:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = reasonCopy;
       _os_log_impl(&dword_23C12D000, v10, OS_LOG_TYPE_DEFAULT, "[WARN] Was asked for call-forwarding settings for an unsupported reason (%@), returning unconditional", &v11, 0xCu);
     }
   }
@@ -1134,41 +1134,41 @@ LABEL_9:
   return v6;
 }
 
-- (void)postCallForwardingChangedNotificationForForwardingReason:(id)a3
+- (void)postCallForwardingChangedNotificationForForwardingReason:(id)reason
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277CC41A0]])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CC41A0]])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     v7 = @"SettingsTelephonyCallForwardingChanged";
 LABEL_9:
-    [v5 postNotificationName:v7 object:self];
+    [defaultCenter postNotificationName:v7 object:self];
 
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CC4188]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CC4188]])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     v7 = @"SettingsTelephonyCallForwardingChangedForMobileBusy";
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CC4190]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CC4190]])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     v7 = @"SettingsTelephonyCallForwardingChangedForNoReply";
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x277CC4198]])
+  if ([reasonCopy isEqualToString:*MEMORY[0x277CC4198]])
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = v5;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v6 = defaultCenter;
     v7 = @"SettingsTelephonyCallForwardingChangedForNotReachable";
     goto LABEL_9;
   }
@@ -1177,7 +1177,7 @@ LABEL_9:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = reasonCopy;
     _os_log_impl(&dword_23C12D000, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Was asked to post a notification for an unsupported reason (%@), doing nothing", &v10, 0xCu);
   }
 
@@ -1185,53 +1185,53 @@ LABEL_10:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastUsedForwardingNumberForReason:(id)a3
+- (id)lastUsedForwardingNumberForReason:(id)reason
 {
-  v3 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:a3];
+  v3 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reason];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 defaultCallForwardingNumber];
+    defaultCallForwardingNumber = [v3 defaultCallForwardingNumber];
   }
 
   else
   {
-    v5 = 0;
+    defaultCallForwardingNumber = 0;
   }
 
-  return v5;
+  return defaultCallForwardingNumber;
 }
 
-- (void)resetLastUsedForwardingNumberForReason:(id)a3
+- (void)resetLastUsedForwardingNumberForReason:(id)reason
 {
-  v3 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:a3];
+  v3 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reason];
   if (v3)
   {
     v5 = v3;
     [v3 setDefaultCallForwardingNumber:0];
-    v4 = [v5 defaultCallForwardingNumberPreferencesKey];
-    CFPreferencesSetAppValue(v4, 0, @"com.apple.mobilephone.settings");
+    defaultCallForwardingNumberPreferencesKey = [v5 defaultCallForwardingNumberPreferencesKey];
+    CFPreferencesSetAppValue(defaultCallForwardingNumberPreferencesKey, 0, @"com.apple.mobilephone.settings");
 
     CFPreferencesAppSynchronize(@"com.apple.mobilephone.settings");
     v3 = v5;
   }
 }
 
-- (void)_handleCallWaitingSettings:(id)a3
+- (void)_handleCallWaitingSettings:(id)settings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v4;
+    v15 = settingsCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "[PhoneSettingsTelephony _handleCallWaitingSettings]: Received a response for call-waiting request, userInfo is %@", &v14, 0xCu);
   }
 
-  if (v4)
+  if (settingsCopy)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x277CC41E8]];
+    v6 = [settingsCopy objectForKey:*MEMORY[0x277CC41E8]];
     if ([v6 BOOLValue])
     {
       v7 = 2;
@@ -1270,18 +1270,18 @@ LABEL_11:
     }
   }
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"SettingsTelephonyCallWaitingChanged" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonyCallWaitingChanged" object:self];
 
   self->_callWaitingEnabled &= ~8u;
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNetworkList:(id)a3
+- (void)_handleNetworkList:(id)list
 {
-  if (a3)
+  if (list)
   {
-    v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:@"SettingsTelephonyNetworkListParameter"];
+    v5 = [MEMORY[0x277CBEAC0] dictionaryWithObject:list forKey:@"SettingsTelephonyNetworkListParameter"];
   }
 
   else
@@ -1289,26 +1289,26 @@ LABEL_11:
     v5 = 0;
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SettingsTelephonyNetworksChanged" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonyNetworksChanged" object:self userInfo:v5];
 }
 
-- (void)_handleCallerIDSettings:(id)a3
+- (void)_handleCallerIDSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = settingsCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "%@", &v13, 0xCu);
   }
 
-  if (v4)
+  if (settingsCopy)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x277CC41C8]];
-    v7 = [v4 objectForKey:*MEMORY[0x277CC41A8]];
+    v6 = [settingsCopy objectForKey:*MEMORY[0x277CC41C8]];
+    v7 = [settingsCopy objectForKey:*MEMORY[0x277CC41A8]];
     if (v6)
     {
       if ([v6 isEqualToString:*MEMORY[0x277CC41C0]])
@@ -1350,8 +1350,8 @@ LABEL_11:
     *&self->_callerIDIsModifiable = v10;
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"SettingsTelephonyCallerIDChanged" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonyCallerIDChanged" object:self];
 
   *&self->_callerIDIsModifiable &= 0xFFFFFFF7FFFFFFF7;
   v12 = *MEMORY[0x277D85DE8];
@@ -1364,21 +1364,21 @@ LABEL_11:
   [(PhoneSettingsTelephony *)self _handleCallerIDSettings:0];
 }
 
-- (void)_handleSIMLockSettings:(id)a3
+- (void)_handleSIMLockSettings:(id)settings
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = settingsCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "Handling SIM lock settings changed with user info: %@", &v10, 0xCu);
   }
 
-  if (v4)
+  if (settingsCopy)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x277CC41E8]];
+    v6 = [settingsCopy objectForKey:*MEMORY[0x277CC41E8]];
     if ([v6 BOOLValue])
     {
       v7 = 2;
@@ -1397,24 +1397,24 @@ LABEL_11:
     self->_simLocked = self->_simLocked & 0xFFFFFFF6 | 8;
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"SettingsTelephonySIMLockChanged" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonySIMLockChanged" object:self];
 
   self->_simLocked &= ~8u;
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePINSettings:(id)a3
+- (void)_handlePINSettings:(id)settings
 {
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:a3 != 0];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:settings != 0];
   v7 = [v4 dictionaryWithObject:v5 forKey:@"success"];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SettingsTelephonyPINChangedNotification" object:self userInfo:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonyPINChangedNotification" object:self userInfo:v7];
 }
 
-- (void)_requestCallForwardingSettingsForReason:(id)a3
+- (void)_requestCallForwardingSettingsForReason:(id)reason
 {
   v4 = MEMORY[0x277CBEAC0];
   v5 = *MEMORY[0x277CC4238];
@@ -1422,53 +1422,53 @@ LABEL_11:
   v7 = *MEMORY[0x277CC4168];
   v8 = *MEMORY[0x277CC4160];
   v9 = *MEMORY[0x277CC4178];
-  v10 = a3;
-  v12 = [v4 dictionaryWithObjectsAndKeys:{v10, @"STSettingTypeUniqueIdentifier", v5, v6, v7, v8, v10, v9, 0}];
-  v11 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:v10];
+  reasonCopy = reason;
+  v12 = [v4 dictionaryWithObjectsAndKeys:{reasonCopy, @"STSettingTypeUniqueIdentifier", v5, v6, v7, v8, reasonCopy, v9, 0}];
+  v11 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reasonCopy];
 
   [v11 setCallForwardingState:1];
   [(PhoneSettingsTelephony *)self _requestSettings:v12];
 }
 
-- (void)_saveCallForwardingEnabled:(BOOL)a3 number:(id)a4 forwardingReason:(id)a5
+- (void)_saveCallForwardingEnabled:(BOOL)enabled number:(id)number forwardingReason:(id)reason
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = a4;
-  v13 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:v8];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  [v10 setObject:v8 forKey:@"STSettingTypeUniqueIdentifier"];
-  [v10 setObject:*MEMORY[0x277CC4238] forKey:*MEMORY[0x277CC4230]];
-  [v10 setObject:*MEMORY[0x277CC4168] forKey:*MEMORY[0x277CC4160]];
-  [v10 setObject:v8 forKey:*MEMORY[0x277CC4178]];
+  enabledCopy = enabled;
+  reasonCopy = reason;
+  numberCopy = number;
+  v13 = [(PhoneSettingsTelephony *)self _callForwardingSettingsForForwardingReason:reasonCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:reasonCopy forKey:@"STSettingTypeUniqueIdentifier"];
+  [dictionary setObject:*MEMORY[0x277CC4238] forKey:*MEMORY[0x277CC4230]];
+  [dictionary setObject:*MEMORY[0x277CC4168] forKey:*MEMORY[0x277CC4160]];
+  [dictionary setObject:reasonCopy forKey:*MEMORY[0x277CC4178]];
 
   v11 = MEMORY[0x277CBED28];
-  if (!v6)
+  if (!enabledCopy)
   {
     v11 = MEMORY[0x277CBED10];
   }
 
-  [v10 setObject:*v11 forKey:*MEMORY[0x277CC41E8]];
+  [dictionary setObject:*v11 forKey:*MEMORY[0x277CC41E8]];
   v12 = UIUnformattedPhoneNumberFromString();
 
   if (v12)
   {
-    [v10 setObject:v12 forKey:*MEMORY[0x277CC4170]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x277CC4170]];
   }
 
   [v13 setCallForwardingState:{objc_msgSend(v13, "callForwardingState") | 1}];
-  [(PhoneSettingsTelephony *)self _saveSettings:v10];
+  [(PhoneSettingsTelephony *)self _saveSettings:dictionary];
 }
 
-- (void)_requestSettings:(id)a3
+- (void)_requestSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = settingsCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "[PhoneSettingsTelephony _requestSettings:]: Settings dictionary requested is %@", &v11, 0xCu);
   }
 
@@ -1482,17 +1482,17 @@ LABEL_11:
     pendingRequests = self->_pendingRequests;
   }
 
-  v9 = [v4 objectForKey:@"STSettingTypeUniqueIdentifier"];
-  [(NSMutableDictionary *)pendingRequests setObject:v4 forKey:v9];
+  v9 = [settingsCopy objectForKey:@"STSettingTypeUniqueIdentifier"];
+  [(NSMutableDictionary *)pendingRequests setObject:settingsCopy forKey:v9];
 
   CTSettingRequest();
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveSettings:(id)a3
+- (void)_saveSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   pendingSaves = self->_pendingSaves;
   if (!pendingSaves)
   {
@@ -1503,14 +1503,14 @@ LABEL_11:
     pendingSaves = self->_pendingSaves;
   }
 
-  v8 = [v4 objectForKey:@"STSettingTypeUniqueIdentifier"];
-  [(NSMutableDictionary *)pendingSaves setObject:v4 forKey:v8];
+  v8 = [settingsCopy objectForKey:@"STSettingTypeUniqueIdentifier"];
+  [(NSMutableDictionary *)pendingSaves setObject:settingsCopy forKey:v8];
 
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v4;
+    v12 = settingsCopy;
     _os_log_impl(&dword_23C12D000, v9, OS_LOG_TYPE_DEFAULT, "SAVE SETTINGS: %@", &v11, 0xCu);
   }
 
@@ -1529,8 +1529,8 @@ LABEL_11:
     _os_log_impl(&dword_23C12D000, v3, OS_LOG_TYPE_DEFAULT, "Posting %@", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SettingsTelephonySIMRemoved" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonySIMRemoved" object:self];
 
   [(PhoneSettingsTelephony *)self _reset];
   v5 = *MEMORY[0x277D85DE8];
@@ -1547,8 +1547,8 @@ LABEL_11:
     _os_log_impl(&dword_23C12D000, v3, OS_LOG_TYPE_DEFAULT, "Posting %@", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SettingsTelephonySIMPUKLocked" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonySIMPUKLocked" object:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -1564,8 +1564,8 @@ LABEL_11:
     _os_log_impl(&dword_23C12D000, v3, OS_LOG_TYPE_DEFAULT, "Posting %@", &v6, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SettingsTelephonyNetworkSettingsDisabledNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SettingsTelephonyNetworkSettingsDisabledNotification" object:self];
 
   v5 = *MEMORY[0x277D85DE8];
 }
@@ -1596,21 +1596,21 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_phoneNumberSaveFinishedWithSuccess:(BOOL)a3
+- (void)_phoneNumberSaveFinishedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v21 = *MEMORY[0x277D85DE8];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 67109120;
-    LODWORD(v18) = v3;
+    LODWORD(v18) = successCopy;
     _os_log_impl(&dword_23C12D000, v5, OS_LOG_TYPE_DEFAULT, "Phone number save finished with success=%d", &v17, 8u);
   }
 
   *(self + 112) &= ~1u;
   newNumber = self->_newNumber;
-  if (v3)
+  if (successCopy)
   {
     if (newNumber)
     {
@@ -1666,8 +1666,8 @@ LABEL_11:
 
   self->_newNumber = 0;
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:v12 object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:v12 object:self];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -1718,10 +1718,10 @@ LABEL_11:
 
 - (id)descriptionDictionary
 {
-  v3 = [(PhoneSettingsTelephony *)self manuallySelectedNetworkDictionary];
+  manuallySelectedNetworkDictionary = [(PhoneSettingsTelephony *)self manuallySelectedNetworkDictionary];
   v4 = MEMORY[0x277CBEAC0];
-  v5 = v3;
-  if (!v3)
+  v5 = manuallySelectedNetworkDictionary;
+  if (!manuallySelectedNetworkDictionary)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"No Manual Network Dictionary"];
   }
@@ -1732,7 +1732,7 @@ LABEL_11:
   v9 = [v4 dictionaryWithObjectsAndKeys:{v5, @"ManuallySelectedNetworkDictionary", v6, @"NetworkSelectionMode", v8, @"CTRegistrationCopyLocalizedOperatorName", CTRegistrationGetStatus(), @"CTRegistrationGetStatus", 0}];
   v10 = [v4 dictionaryWithObject:v9 forKey:@"PhoneSettingsNetworkState"];
 
-  if (!v3)
+  if (!manuallySelectedNetworkDictionary)
   {
   }
 

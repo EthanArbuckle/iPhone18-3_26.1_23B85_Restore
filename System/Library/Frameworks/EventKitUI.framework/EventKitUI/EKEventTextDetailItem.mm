@@ -2,15 +2,15 @@
 + (id)textFromEventBlock;
 + (id)titleForCell;
 + (id)titleForExtendedViewController;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
 - (id)_createEventDetailCell;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)textForCopyAction;
 - (id)textForExtendedViewController;
 - (void)_updateCellIfNeeded;
 - (void)requestShowCellDetail;
 - (void)reset;
-- (void)setCellPosition:(int)a3;
+- (void)setCellPosition:(int)position;
 @end
 
 @implementation EKEventTextDetailItem
@@ -21,11 +21,11 @@
   self->_cell = 0;
 }
 
-- (void)setCellPosition:(int)a3
+- (void)setCellPosition:(int)position
 {
   v4.receiver = self;
   v4.super_class = EKEventTextDetailItem;
-  [(EKEventDetailItem *)&v4 setCellPosition:*&a3];
+  [(EKEventDetailItem *)&v4 setCellPosition:*&position];
   self->_cellNeedsUpdate = 1;
 }
 
@@ -41,11 +41,11 @@
   }
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
   if (self->_cell)
   {
-    if (a5)
+    if (update)
     {
       self->_cellNeedsUpdate = 1;
     }
@@ -55,7 +55,7 @@
 
   else
   {
-    v7 = [(EKEventTextDetailItem *)self cellForSubitemAtIndex:a3, a5];
+    update = [(EKEventTextDetailItem *)self cellForSubitemAtIndex:index, update];
   }
 
   if (!EKUIUnscaledCatalyst())
@@ -65,7 +65,7 @@
 
   LODWORD(v8) = 1148846080;
   LODWORD(v9) = 1112014848;
-  [(EKEventDetailCell *)self->_cell systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:v8, v9];
+  [(EKEventDetailCell *)self->_cell systemLayoutSizeFittingSize:width withHorizontalFittingPriority:*(MEMORY[0x1E69DE090] + 8) verticalFittingPriority:v8, v9];
   v11 = v10;
   +[EKEventDetailTextCell maxHeight];
   if (v11 < result)
@@ -76,13 +76,13 @@
   return result;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   if (!self->_cell)
   {
-    v4 = [(EKEventTextDetailItem *)self _createEventDetailCell];
+    _createEventDetailCell = [(EKEventTextDetailItem *)self _createEventDetailCell];
     cell = self->_cell;
-    self->_cell = v4;
+    self->_cell = _createEventDetailCell;
 
     self->_cellNeedsUpdate = 1;
   }
@@ -97,9 +97,9 @@
 {
   v3 = [EKEventDetailTextCell alloc];
   event = self->super._event;
-  v5 = [objc_opt_class() titleForCell];
-  v6 = [objc_opt_class() textFromEventBlock];
-  v7 = [(EKEventDetailTextCell *)v3 initWithEvent:event title:v5 textFromEventBlock:v6];
+  titleForCell = [objc_opt_class() titleForCell];
+  textFromEventBlock = [objc_opt_class() textFromEventBlock];
+  v7 = [(EKEventDetailTextCell *)v3 initWithEvent:event title:titleForCell textFromEventBlock:textFromEventBlock];
 
   [(EKEventDetailTextCell *)v7 setDelegate:self];
 
@@ -109,15 +109,15 @@
 - (void)requestShowCellDetail
 {
   v3 = [EKEventDetailExtendedTextViewController alloc];
-  v4 = [(EKEventTextDetailItem *)self textForExtendedViewController];
-  v5 = [objc_opt_class() titleForExtendedViewController];
+  textForExtendedViewController = [(EKEventTextDetailItem *)self textForExtendedViewController];
+  titleForExtendedViewController = [objc_opt_class() titleForExtendedViewController];
   event = self->super._event;
-  v7 = [(EKEventTextDetailItem *)self textForCopyAction];
-  v10 = [(EKEventDetailExtendedTextViewController *)v3 initWithText:v4 title:v5 event:event textForCopyAction:v7];
+  textForCopyAction = [(EKEventTextDetailItem *)self textForCopyAction];
+  v10 = [(EKEventDetailExtendedTextViewController *)v3 initWithText:textForExtendedViewController title:titleForExtendedViewController event:event textForCopyAction:textForCopyAction];
 
-  v8 = [(EKEventDetailItem *)self viewControllerToPresentFrom];
-  v9 = [v8 navigationDelegate];
-  [v9 pushViewController:v10 animated:1];
+  viewControllerToPresentFrom = [(EKEventDetailItem *)self viewControllerToPresentFrom];
+  navigationDelegate = [viewControllerToPresentFrom navigationDelegate];
+  [navigationDelegate pushViewController:v10 animated:1];
 }
 
 + (id)titleForExtendedViewController

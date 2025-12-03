@@ -1,41 +1,41 @@
 @interface _NFACReaderSession
-- (_NFACReaderSession)initWithRemoteObject:(id)a3 workQueue:(id)a4;
+- (_NFACReaderSession)initWithRemoteObject:(id)object workQueue:(id)queue;
 - (double)_getMaxRFTimeLimitOverride;
-- (id)_readTypeATagId:(id *)a3;
-- (id)_readTypeVTagId:(id *)a3;
-- (id)_send7816Command:(id)a3 error:(id *)a4;
-- (id)transceive:(id)a3 response:(id *)a4 maxTimeout:(double)a5;
+- (id)_readTypeATagId:(id *)id;
+- (id)_readTypeVTagId:(id *)id;
+- (id)_send7816Command:(id)command error:(id *)error;
+- (id)transceive:(id)transceive response:(id *)response maxTimeout:(double)timeout;
 - (id)willStartSession;
-- (void)_transceiveNTAG5VAccessoryCommand:(id)a3 callback:(id)a4;
-- (void)_transceiveTypeAAccessoryCommand:(id)a3 callback:(id)a4;
-- (void)checkNdefSupport:(id)a3;
-- (void)checkPresence:(id)a3;
+- (void)_transceiveNTAG5VAccessoryCommand:(id)command callback:(id)callback;
+- (void)_transceiveTypeAAccessoryCommand:(id)command callback:(id)callback;
+- (void)checkNdefSupport:(id)support;
+- (void)checkPresence:(id)presence;
 - (void)cleanup;
-- (void)connectTag:(id)a3 callback:(id)a4;
-- (void)didStartSession:(id)a3;
-- (void)disconnectTag:(id)a3;
-- (void)enableContinuousWave:(BOOL)a3 withFrequencySweep:(BOOL)a4 callback:(id)a5;
-- (void)handleFieldChanged:(BOOL)a3;
+- (void)connectTag:(id)tag callback:(id)callback;
+- (void)didStartSession:(id)session;
+- (void)disconnectTag:(id)tag;
+- (void)enableContinuousWave:(BOOL)wave withFrequencySweep:(BOOL)sweep callback:(id)callback;
+- (void)handleFieldChanged:(BOOL)changed;
 - (void)handleReaderBurnoutCleared;
 - (void)handleReaderBurnoutTimer;
-- (void)handleRemoteTagsDetected:(id)a3;
-- (void)readRawNdef:(id)a3;
-- (void)readTypeIdentifier:(id)a3;
-- (void)restartPolling:(id)a3;
-- (void)setTagDataRate:(int64_t)a3 callback:(id)a4;
-- (void)startPolling:(id)a3;
-- (void)stopPolling:(id)a3;
-- (void)transceive:(id)a3 callback:(id)a4;
-- (void)transceiveAccessoryCommand:(id)a3 callback:(id)a4;
+- (void)handleRemoteTagsDetected:(id)detected;
+- (void)readRawNdef:(id)ndef;
+- (void)readTypeIdentifier:(id)identifier;
+- (void)restartPolling:(id)polling;
+- (void)setTagDataRate:(int64_t)rate callback:(id)callback;
+- (void)startPolling:(id)polling;
+- (void)stopPolling:(id)polling;
+- (void)transceive:(id)transceive callback:(id)callback;
+- (void)transceiveAccessoryCommand:(id)command callback:(id)callback;
 @end
 
 @implementation _NFACReaderSession
 
-- (_NFACReaderSession)initWithRemoteObject:(id)a3 workQueue:(id)a4
+- (_NFACReaderSession)initWithRemoteObject:(id)object workQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = _NFACReaderSession;
-  result = [(_NFACSession *)&v5 initWithRemoteObject:a3 workQueue:a4];
+  result = [(_NFACSession *)&v5 initWithRemoteObject:object workQueue:queue];
   if (result)
   {
     result->_tagDataRate = 0;
@@ -93,14 +93,14 @@
 
   v16.receiver = self;
   v16.super_class = _NFACReaderSession;
-  v13 = [(_NFACSession *)&v16 willStartSession];
+  willStartSession = [(_NFACSession *)&v16 willStartSession];
 
-  return v13;
+  return willStartSession;
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
   {
@@ -156,10 +156,10 @@
 
   v35.receiver = self;
   v35.super_class = _NFACReaderSession;
-  [(_NFACSession *)&v35 didStartSession:v5];
-  v18 = [(_NFACSession *)self driverWrapper];
+  [(_NFACSession *)&v35 didStartSession:sessionCopy];
+  driverWrapper = [(_NFACSession *)self driverWrapper];
   v19 = sub_10004C268();
-  v20 = [v18 setRouting:v19];
+  v20 = [driverWrapper setRouting:v19];
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   v21 = NFLogGetLogger();
@@ -207,8 +207,8 @@
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Invoking didStartSessioncallback", buf, 0x22u);
   }
 
-  v32 = [(_NFACSession *)self remoteObject];
-  [v32 didStartSession:v5];
+  remoteObject = [(_NFACSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
 - (void)cleanup
@@ -269,16 +269,16 @@
     [(NFTimer *)self->_maxRFTimer stopTimer];
     if (self->_continuousWaveEnabled)
     {
-      v14 = [(_NFACSession *)self driverWrapper];
-      v15 = [v14 enableContinuousWave:0 withFrequencySweep:0];
+      driverWrapper = [(_NFACSession *)self driverWrapper];
+      v15 = [driverWrapper enableContinuousWave:0 withFrequencySweep:0];
 
       self->_continuousWaveEnabled = 0;
     }
 
     sub_1001AF894(self->_powerConsumptionReporter, self);
-    v16 = [(_NFACSession *)self driverWrapper];
+    driverWrapper2 = [(_NFACSession *)self driverWrapper];
     v17 = sub_10004C268();
-    v18 = [v16 setRouting:v17];
+    v18 = [driverWrapper2 setRouting:v17];
   }
 
   v21.receiver = self;
@@ -292,9 +292,9 @@
   }
 }
 
-- (void)handleRemoteTagsDetected:(id)a3
+- (void)handleRemoteTagsDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   v6 = NFSharedSignpostLog();
   if (os_signpost_enabled(v6))
   {
@@ -328,7 +328,7 @@
       v12 = 43;
     }
 
-    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v12, ClassName, Name, 156, v5);
+    v9(6, "%c[%{public}s %{public}s]:%i %{public}@", v12, ClassName, Name, 156, detectedCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -357,15 +357,15 @@
     v27 = 1024;
     v28 = 156;
     v29 = 2114;
-    v30 = v5;
+    v30 = detectedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
   }
 
-  v18 = [(_NFACSession *)self remoteObject];
-  [v18 didDetectTags:v5];
+  remoteObject = [(_NFACSession *)self remoteObject];
+  [remoteObject didDetectTags:detectedCopy];
 }
 
-- (void)handleFieldChanged:(BOOL)a3
+- (void)handleFieldChanged:(BOOL)changed
 {
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
@@ -412,43 +412,43 @@
   }
 }
 
-- (id)transceive:(id)a3 response:(id *)a4 maxTimeout:(double)a5
+- (id)transceive:(id)transceive response:(id *)response maxTimeout:(double)timeout
 {
-  v8 = a3;
-  v9 = [(_NFACSession *)self driverWrapper];
+  transceiveCopy = transceive;
+  driverWrapper = [(_NFACSession *)self driverWrapper];
   curTag = self->_curTag;
   v15 = 0;
-  v11 = [v9 transceive:v8 tag:curTag maxTimeout:&v15 error:a5];
+  v11 = [driverWrapper transceive:transceiveCopy tag:curTag maxTimeout:&v15 error:timeout];
 
   v12 = v15;
   v13 = v11;
-  *a4 = v11;
+  *response = v11;
 
   return v12;
 }
 
-- (void)enableContinuousWave:(BOOL)a3 withFrequencySweep:(BOOL)a4 callback:(id)a5
+- (void)enableContinuousWave:(BOOL)wave withFrequencySweep:(BOOL)sweep callback:(id)callback
 {
-  v9 = a5;
+  callbackCopy = callback;
   v17.receiver = self;
   v17.super_class = _NFACReaderSession;
-  v10 = [(_NFACSession *)&v17 workQueue];
+  workQueue = [(_NFACSession *)&v17 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100058EAC;
   v12[3] = &unk_1003166D8;
-  v13 = v9;
+  v13 = callbackCopy;
   v14 = a2;
-  v15 = a3;
-  v16 = a4;
+  waveCopy = wave;
+  sweepCopy = sweep;
   v12[4] = self;
-  v11 = v9;
-  dispatch_async(v10, v12);
+  v11 = callbackCopy;
+  dispatch_async(workQueue, v12);
 }
 
-- (void)startPolling:(id)a3
+- (void)startPolling:(id)polling
 {
-  v5 = a3;
+  pollingCopy = polling;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -495,20 +495,20 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100059588;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = pollingCopy;
+  v16 = pollingCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)stopPolling:(id)a3
+- (void)stopPolling:(id)polling
 {
-  v5 = a3;
+  pollingCopy = polling;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -555,20 +555,20 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100059C9C;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = pollingCopy;
+  v16 = pollingCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)restartPolling:(id)a3
+- (void)restartPolling:(id)polling
 {
-  v5 = a3;
+  pollingCopy = polling;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -615,21 +615,21 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100059FC8;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = pollingCopy;
+  v16 = pollingCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)connectTag:(id)a3 callback:(id)a4
+- (void)connectTag:(id)tag callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  tagCopy = tag;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -645,7 +645,7 @@
       v13 = 43;
     }
 
-    v10(6, "%c[%{public}s %{public}s]:%i tag: %{public}@", v13, ClassName, Name, 272, v7);
+    v10(6, "%c[%{public}s %{public}s]:%i tag: %{public}@", v13, ClassName, Name, 272, tagCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -672,29 +672,29 @@
     v33 = 1024;
     v34 = 272;
     v35 = 2114;
-    v36 = v7;
+    v36 = tagCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i tag: %{public}@", buf, 0x2Cu);
   }
 
   v26.receiver = self;
   v26.super_class = _NFACReaderSession;
-  v17 = [(_NFACSession *)&v26 workQueue];
+  workQueue = [(_NFACSession *)&v26 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005A340;
   block[3] = &unk_100316078;
   block[4] = self;
-  v23 = v7;
-  v24 = v8;
+  v23 = tagCopy;
+  v24 = callbackCopy;
   v25 = a2;
-  v18 = v8;
-  v19 = v7;
-  dispatch_async(v17, block);
+  v18 = callbackCopy;
+  v19 = tagCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)disconnectTag:(id)a3
+- (void)disconnectTag:(id)tag
 {
-  v5 = a3;
+  tagCopy = tag;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -741,20 +741,20 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005AB30;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = tagCopy;
+  v16 = tagCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)checkPresence:(id)a3
+- (void)checkPresence:(id)presence
 {
-  v5 = a3;
+  presenceCopy = presence;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -801,21 +801,21 @@
 
   v21.receiver = self;
   v21.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v21 workQueue];
+  workQueue = [(_NFACSession *)&v21 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005B0F0;
   block[3] = &unk_100316050;
   block[4] = self;
-  v19 = v5;
+  v19 = presenceCopy;
   v20 = a2;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v16 = presenceCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)checkNdefSupport:(id)a3
+- (void)checkNdefSupport:(id)support
 {
-  v5 = a3;
+  supportCopy = support;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -862,20 +862,20 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005B6F8;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = supportCopy;
+  v16 = supportCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)readRawNdef:(id)a3
+- (void)readRawNdef:(id)ndef
 {
-  v5 = a3;
+  ndefCopy = ndef;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -922,21 +922,21 @@
 
   v20.receiver = self;
   v20.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v20 workQueue];
+  workQueue = [(_NFACSession *)&v20 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005BA04;
   block[3] = &unk_100316700;
   block[4] = self;
-  v19 = v5;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v19 = ndefCopy;
+  v16 = ndefCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)transceive:(id)a3 callback:(id)a4
+- (void)transceive:(id)transceive callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  transceiveCopy = transceive;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -983,18 +983,18 @@
 
   v27.receiver = self;
   v27.super_class = _NFACReaderSession;
-  v18 = [(_NFACSession *)&v27 workQueue];
+  workQueue = [(_NFACSession *)&v27 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005BE6C;
   block[3] = &unk_100316078;
-  v23 = v7;
-  v24 = self;
-  v25 = v8;
+  v23 = transceiveCopy;
+  selfCopy = self;
+  v25 = callbackCopy;
   v26 = a2;
-  v19 = v8;
-  v20 = v7;
-  dispatch_async(v18, block);
+  v19 = callbackCopy;
+  v20 = transceiveCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (double)_getMaxRFTimeLimitOverride
@@ -1003,9 +1003,9 @@
   if (NFPlatformShouldLimitAccessoryReaderTime())
   {
     v5 = +[_NFACHardwareManager sharedHardwareManager];
-    v6 = [v5 isWalletAttached];
+    isWalletAttached = [v5 isWalletAttached];
 
-    if (v6)
+    if (isWalletAttached)
     {
       v4 = 10.0;
     }
@@ -1065,10 +1065,10 @@
   return v4;
 }
 
-- (void)_transceiveTypeAAccessoryCommand:(id)a3 callback:(id)a4
+- (void)_transceiveTypeAAccessoryCommand:(id)command callback:(id)callback
 {
-  v6 = a4;
-  v7 = a3;
+  callbackCopy = callback;
+  commandCopy = command;
   v8 = NFSharedSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -1078,24 +1078,24 @@
 
   v39 = 0;
   v38 = 43520;
-  v40 = bswap32([v7 length]) >> 16;
+  v40 = bswap32([commandCopy length]) >> 16;
   v9 = [[NSMutableData alloc] initWithBytes:&v38 length:7];
-  [v9 appendData:v7];
+  [v9 appendData:commandCopy];
 
   v37 = 0;
   [v9 appendBytes:&v37 length:2];
-  v10 = [(_NFACSession *)self driverWrapper];
+  driverWrapper = [(_NFACSession *)self driverWrapper];
   curTag = self->_curTag;
   v36 = 0;
-  v12 = [v10 transceive:v9 tag:curTag maxTimeout:&v36 error:2.0];
+  v12 = [driverWrapper transceive:v9 tag:curTag maxTimeout:&v36 error:2.0];
   v13 = v36;
 
   v14 = [NFResponseAPDU responseWithData:v12];
   v15 = v14;
   if (v14 && [v14 status] == 36864)
   {
-    v16 = [v15 response];
-    v6[2](v6, v16, 0);
+    response = [v15 response];
+    callbackCopy[2](callbackCopy, response, 0);
 
     v17 = v13;
   }
@@ -1160,7 +1160,7 @@
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Command failed: %{public}@   error:%{public}@", buf, 0x36u);
     }
 
-    (v6)[2](v6, 0, v17);
+    (callbackCopy)[2](callbackCopy, 0, v17);
   }
 
   v33 = NFSharedSignpostLog();
@@ -1171,10 +1171,10 @@
   }
 }
 
-- (void)_transceiveNTAG5VAccessoryCommand:(id)a3 callback:(id)a4
+- (void)_transceiveNTAG5VAccessoryCommand:(id)command callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1227,16 +1227,16 @@
   }
 
   v19 = [[NFAccessoryTagI2CBridge alloc] initWithType:0 delegate:self];
-  v20 = [(NFTagInternal *)self->_curTag tagID];
-  [v19 setTagUUID:v20];
+  tagID = [(NFTagInternal *)self->_curTag tagID];
+  [v19 setTagUUID:tagID];
 
   [v19 setSelected:self->_tagSelected];
   if (!self->_tagSelected)
   {
-    v21 = [v19 selectTag];
-    if (v21)
+    selectTag = [v19 selectTag];
+    if (selectTag)
     {
-      v22 = v21;
+      v22 = selectTag;
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v23 = NFLogGetLogger();
       if (v23)
@@ -1292,7 +1292,7 @@
       v96 = v35;
       v36 = [NSDictionary dictionaryWithObjects:&v96 forKeys:&v95 count:1];
       v37 = [v33 initWithDomain:v34 code:29 userInfo:v36];
-      v8[2](v8, 0, v37);
+      callbackCopy[2](callbackCopy, 0, v37);
 
       v38 = NFSharedSignpostLog();
       if (os_signpost_enabled(v38))
@@ -1308,10 +1308,10 @@
   }
 
   v90 = 0;
-  v39 = [v19 writeToBridge:v7 fragmentationSupport:1 response:&v90];
+  v39 = [v19 writeToBridge:commandCopy fragmentationSupport:1 response:&v90];
   v40 = v90;
   v38 = v40;
-  v88 = v8;
+  v88 = callbackCopy;
   if (v39)
   {
     v86 = v39;
@@ -1322,20 +1322,20 @@
     {
       v43 = v42;
       v44 = object_getClass(self);
-      v45 = v7;
+      v45 = commandCopy;
       v46 = class_isMetaClass(v44);
       v47 = object_getClassName(self);
       v48 = sel_getName(v41);
-      v49 = [v38 NF_asHexString];
+      nF_asHexString = [v38 NF_asHexString];
       v50 = !v46;
-      v7 = v45;
+      commandCopy = v45;
       v51 = 45;
       if (!v50)
       {
         v51 = 43;
       }
 
-      v43(3, "%c[%{public}s %{public}s]:%i Failed to write payload, status=0x%{public}@", v51, v47, v48, 529, v49);
+      v43(3, "%c[%{public}s %{public}s]:%i Failed to write payload, status=0x%{public}@", v51, v47, v48, 529, nF_asHexString);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1343,7 +1343,7 @@
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
       v53 = object_getClass(self);
-      v54 = v7;
+      v54 = commandCopy;
       if (class_isMetaClass(v53))
       {
         v55 = 43;
@@ -1356,10 +1356,10 @@
 
       v56 = object_getClassName(self);
       v57 = sel_getName(v41);
-      v58 = [v38 NF_asHexString];
+      nF_asHexString2 = [v38 NF_asHexString];
       *buf = 67110146;
       v98 = v55;
-      v7 = v54;
+      commandCopy = v54;
       v99 = 2082;
       v100 = v56;
       v101 = 2082;
@@ -1367,7 +1367,7 @@
       v103 = 1024;
       v104 = 529;
       v105 = 2114;
-      v106 = v58;
+      v106 = nF_asHexString2;
       _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Failed to write payload, status=0x%{public}@", buf, 0x2Cu);
     }
 
@@ -1388,7 +1388,7 @@
     }
 
     v22 = v86;
-    v8 = v88;
+    callbackCopy = v88;
   }
 
   else
@@ -1465,12 +1465,12 @@
       }
 
       v38 = v87;
-      v8 = v88;
+      callbackCopy = v88;
     }
 
     else
     {
-      (v8)[2](v8, v65, 0);
+      (callbackCopy)[2](callbackCopy, v65, 0);
       v64 = NFSharedSignpostLog();
       if (os_signpost_enabled(v64))
       {
@@ -1486,10 +1486,10 @@
 LABEL_56:
 }
 
-- (void)transceiveAccessoryCommand:(id)a3 callback:(id)a4
+- (void)transceiveAccessoryCommand:(id)command callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1536,27 +1536,27 @@ LABEL_56:
 
   v26.receiver = self;
   v26.super_class = _NFACReaderSession;
-  v18 = [(_NFACSession *)&v26 workQueue];
+  workQueue = [(_NFACSession *)&v26 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005D468;
   block[3] = &unk_1003165E8;
-  v24 = v8;
+  v24 = callbackCopy;
   v25 = a2;
   block[4] = self;
-  v23 = v7;
-  v19 = v7;
-  v20 = v8;
-  dispatch_async(v18, block);
+  v23 = commandCopy;
+  v19 = commandCopy;
+  v20 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (id)_readTypeVTagId:(id *)a3
+- (id)_readTypeVTagId:(id *)id
 {
   v5 = [NSData NF_dataWithHexString:@"02230003"];
-  v6 = [(_NFACSession *)self driverWrapper];
+  driverWrapper = [(_NFACSession *)self driverWrapper];
   curTag = self->_curTag;
   v19 = 0;
-  v8 = [v6 transceive:v5 tag:curTag maxTimeout:&v19 error:2.0];
+  v8 = [driverWrapper transceive:v5 tag:curTag maxTimeout:&v19 error:2.0];
   v9 = v19;
 
   if (v9)
@@ -1580,7 +1580,7 @@ LABEL_56:
     v15 = &v22;
 LABEL_7:
     v16 = [NSDictionary dictionaryWithObjects:v14 forKeys:v15 count:1];
-    *a3 = [v11 initWithDomain:v12 code:16 userInfo:v16];
+    *id = [v11 initWithDomain:v12 code:16 userInfo:v16];
 
     v17 = 0;
     goto LABEL_8;
@@ -1604,12 +1604,12 @@ LABEL_8:
   return v17;
 }
 
-- (id)_send7816Command:(id)a3 error:(id *)a4
+- (id)_send7816Command:(id)command error:(id *)error
 {
-  v6 = a3;
-  v7 = [NSData NF_dataWithHexString:v6];
-  v8 = [(_NFACSession *)self driverWrapper];
-  v9 = [v8 transceive:v7 tag:self->_curTag maxTimeout:a4 error:2.0];
+  commandCopy = command;
+  v7 = [NSData NF_dataWithHexString:commandCopy];
+  driverWrapper = [(_NFACSession *)self driverWrapper];
+  v9 = [driverWrapper transceive:v7 tag:self->_curTag maxTimeout:error error:2.0];
 
   v10 = [NFResponseAPDU responseWithData:v9];
   v11 = v10;
@@ -1620,7 +1620,7 @@ LABEL_8:
 
   else
   {
-    if (!*a4)
+    if (!*error)
     {
       v13 = [NSError alloc];
       v14 = [NSString stringWithUTF8String:"nfcd"];
@@ -1628,7 +1628,7 @@ LABEL_8:
       v15 = [NSString stringWithUTF8String:"Command Error"];
       v45 = v15;
       v16 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-      *a4 = [v13 initWithDomain:v14 code:16 userInfo:v16];
+      *error = [v13 initWithDomain:v14 code:16 userInfo:v16];
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1646,7 +1646,7 @@ LABEL_8:
         v23 = 43;
       }
 
-      v18(3, "%c[%{public}s %{public}s]:%i Command failed: %{public}@   error:%{public}@", v23, ClassName, Name, 622, v6, *a4);
+      v18(3, "%c[%{public}s %{public}s]:%i Command failed: %{public}@   error:%{public}@", v23, ClassName, Name, 622, commandCopy, *error);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1666,7 +1666,7 @@ LABEL_8:
 
       v27 = object_getClassName(self);
       v28 = sel_getName(a2);
-      v29 = *a4;
+      v29 = *error;
       *buf = 67110402;
       v33 = v26;
       v34 = 2082;
@@ -1676,7 +1676,7 @@ LABEL_8:
       v38 = 1024;
       v39 = 622;
       v40 = 2114;
-      v41 = v6;
+      v41 = commandCopy;
       v42 = 2114;
       v43 = v29;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%c[%{public}s %{public}s]:%i Command failed: %{public}@   error:%{public}@", buf, 0x36u);
@@ -1688,25 +1688,25 @@ LABEL_8:
   return v12;
 }
 
-- (id)_readTypeATagId:(id *)a3
+- (id)_readTypeATagId:(id *)id
 {
-  v3 = a3;
-  v6 = [(_NFACReaderSession *)self _send7816Command:@"00A4040007D276000085010100" error:a3];
+  idCopy = id;
+  v6 = [(_NFACReaderSession *)self _send7816Command:@"00A4040007D276000085010100" error:id];
   if (v6)
   {
     v7 = v6;
-    v8 = [(_NFACReaderSession *)self _send7816Command:@"00A4000C02E103" error:v3];
+    v8 = [(_NFACReaderSession *)self _send7816Command:@"00A4000C02E103" error:idCopy];
 
     if (v8)
     {
-      v9 = [(_NFACReaderSession *)self _send7816Command:@"00B0000000" error:v3];
+      v9 = [(_NFACReaderSession *)self _send7816Command:@"00B0000000" error:idCopy];
 
       if (v9)
       {
-        v10 = [v9 response];
-        if ([v10 length] >= 2 && (v11 = *(objc_msgSend(v10, "bytes") + 1), v11 >= 4) && objc_msgSend(v10, "length") >= v11)
+        response = [v9 response];
+        if ([response length] >= 2 && (v11 = *(objc_msgSend(response, "bytes") + 1), v11 >= 4) && objc_msgSend(response, "length") >= v11)
         {
-          v3 = [v10 subdataWithRange:{(v11 - 4), 4}];
+          idCopy = [response subdataWithRange:{(v11 - 4), 4}];
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
           Logger = NFLogGetLogger();
           if (Logger)
@@ -1722,7 +1722,7 @@ LABEL_8:
               v21 = 43;
             }
 
-            v18(6, "%c[%{public}s %{public}s]:%i id: %{public}@", v21, ClassName, Name, 656, v3);
+            v18(6, "%c[%{public}s %{public}s]:%i id: %{public}@", v21, ClassName, Name, 656, idCopy);
           }
 
           dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -1749,14 +1749,14 @@ LABEL_8:
             v34 = 1024;
             v35 = 656;
             v36 = 2114;
-            v37 = v3;
+            v37 = idCopy;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i id: %{public}@", buf, 0x2Cu);
           }
         }
 
         else
         {
-          if (!v3)
+          if (!idCopy)
           {
 LABEL_10:
 
@@ -1769,9 +1769,9 @@ LABEL_10:
           v14 = [NSString stringWithUTF8String:"Command Error"];
           v27 = v14;
           v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-          *v3 = [v12 initWithDomain:v13 code:16 userInfo:v15];
+          *idCopy = [v12 initWithDomain:v13 code:16 userInfo:v15];
 
-          v3 = 0;
+          idCopy = 0;
         }
 
         goto LABEL_10;
@@ -1779,15 +1779,15 @@ LABEL_10:
     }
   }
 
-  v3 = 0;
+  idCopy = 0;
 LABEL_12:
 
-  return v3;
+  return idCopy;
 }
 
-- (void)readTypeIdentifier:(id)a3
+- (void)readTypeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1834,21 +1834,21 @@ LABEL_12:
 
   v21.receiver = self;
   v21.super_class = _NFACReaderSession;
-  v15 = [(_NFACSession *)&v21 workQueue];
+  workQueue = [(_NFACSession *)&v21 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E25C;
   block[3] = &unk_100316050;
-  v19 = v5;
+  v19 = identifierCopy;
   v20 = a2;
   block[4] = self;
-  v16 = v5;
-  dispatch_async(v15, block);
+  v16 = identifierCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)setTagDataRate:(int64_t)a3 callback:(id)a4
+- (void)setTagDataRate:(int64_t)rate callback:(id)callback
 {
-  v7 = a4;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -1895,30 +1895,30 @@ LABEL_12:
 
   v24.receiver = self;
   v24.super_class = _NFACReaderSession;
-  v17 = [(_NFACSession *)&v24 workQueue];
+  workQueue = [(_NFACSession *)&v24 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E7F0;
   block[3] = &unk_1003169E0;
   v22 = a2;
-  v23 = a3;
+  rateCopy = rate;
   block[4] = self;
-  v21 = v7;
-  v18 = v7;
-  dispatch_async(v17, block);
+  v21 = callbackCopy;
+  v18 = callbackCopy;
+  dispatch_async(workQueue, block);
 }
 
 - (void)handleReaderBurnoutTimer
 {
   v5.receiver = self;
   v5.super_class = _NFACReaderSession;
-  v3 = [(_NFACSession *)&v5 workQueue];
+  workQueue = [(_NFACSession *)&v5 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005EB74;
   block[3] = &unk_100315F30;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)handleReaderBurnoutCleared

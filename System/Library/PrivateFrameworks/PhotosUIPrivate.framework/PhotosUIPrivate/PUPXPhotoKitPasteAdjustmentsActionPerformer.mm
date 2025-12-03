@@ -1,6 +1,6 @@
 @interface PUPXPhotoKitPasteAdjustmentsActionPerformer
-+ (BOOL)_canPasteOnAsset:(id)a3;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6;
++ (BOOL)_canPasteOnAsset:(id)asset;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v4 = PFFilter();
   if ([v4 count])
   {
@@ -17,7 +17,7 @@
     aBlock[2] = __73__PUPXPhotoKitPasteAdjustmentsActionPerformer_performUserInteractionTask__block_invoke_533;
     aBlock[3] = &unk_1E7B80088;
     v26 = v4;
-    v27 = self;
+    selfCopy = self;
     v5 = _Block_copy(aBlock);
     if (PFExists())
     {
@@ -152,51 +152,51 @@ uint64_t __73__PUPXPhotoKitPasteAdjustmentsActionPerformer_performUserInteractio
   return v3;
 }
 
-+ (BOOL)_canPasteOnAsset:(id)a3
++ (BOOL)_canPasteOnAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = +[PUPhotoEditProtoSettings sharedInstance];
-  v6 = [v5 enableSpatialMediaEditing];
+  enableSpatialMediaEditing = [v5 enableSpatialMediaEditing];
 
-  v7 = [v4 isSpatialMedia];
-  if (v7)
+  isSpatialMedia = [assetCopy isSpatialMedia];
+  if (isSpatialMedia)
   {
-    v8 = [v4 isVideo];
+    isVideo = [assetCopy isVideo];
   }
 
   else
   {
-    v8 = 0;
+    isVideo = 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___PUPXPhotoKitPasteAdjustmentsActionPerformer;
-  if (objc_msgSendSuper2(&v12, sel_canPerformBatchOnAsset_, v4) && ((v7 & ~v6 | v8) & 1) == 0 && [MEMORY[0x1E69C4320] canPerformEditOnAsset:v4])
+  if (objc_msgSendSuper2(&v12, sel_canPerformBatchOnAsset_, assetCopy) && ((isSpatialMedia & ~enableSpatialMediaEditing | isVideo) & 1) == 0 && [MEMORY[0x1E69C4320] canPerformEditOnAsset:assetCopy])
   {
-    v9 = [MEMORY[0x1E69C4220] sharedPresetManager];
-    v10 = [v9 hasPresetOnPasteboard];
+    mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+    hasPresetOnPasteboard = [mEMORY[0x1E69C4220] hasPresetOnPasteboard];
   }
 
   else
   {
-    v10 = 0;
+    hasPresetOnPasteboard = 0;
   }
 
-  return v10;
+  return hasPresetOnPasteboard;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5 error:(id *)a6
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E69C4220] sharedPresetManager];
-  if (([v13 hasPresetOnPasteboard] & 1) == 0)
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+  if (([mEMORY[0x1E69C4220] hasPresetOnPasteboard] & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] px_errorWithDomain:*MEMORY[0x1E69C4128] code:-2002 debugDescription:@"Cannot paste adjustments when none are on the pasteboard"];
-      *a6 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_8;
     }
 
@@ -205,13 +205,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v13 isBusyWithBatchAction])
+  if ([mEMORY[0x1E69C4220] isBusyWithBatchAction])
   {
     goto LABEL_7;
   }
 
-  v14 = [v10 selectedIndexPaths];
-  v15 = [v14 count];
+  selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+  v15 = [selectedIndexPaths count];
 
   if (!v15)
   {
@@ -227,8 +227,8 @@ LABEL_7:
   v18[2] = __104__PUPXPhotoKitPasteAdjustmentsActionPerformer_canPerformWithSelectionSnapshot_person_socialGroup_error___block_invoke;
   v18[3] = &unk_1E7B7A828;
   v18[4] = &v19;
-  v18[5] = a1;
-  [v10 enumerateSelectedObjectsUsingBlock:v18];
+  v18[5] = self;
+  [snapshotCopy enumerateSelectedObjectsUsingBlock:v18];
   v16 = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
 LABEL_8:

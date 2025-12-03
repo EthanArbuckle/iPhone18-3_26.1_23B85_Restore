@@ -8,8 +8,8 @@
 
 - (uint64_t)atx_isOpenableFaceTimeURL
 {
-  v1 = [a1 host];
-  v2 = [v1 isEqualToString:@"facetime.apple.com"];
+  host = [self host];
+  v2 = [host isEqualToString:@"facetime.apple.com"];
 
   if (v2)
   {
@@ -18,8 +18,8 @@
     v4 = v10;
     if (v3)
     {
-      v5 = [v3 applicationState];
-      if (-[NSObject isInstalled](v5, "isInstalled") && (-[NSObject isRestricted](v5, "isRestricted") & 1) == 0 && ([MEMORY[0x277D42590] isFaceTimeSupported] & 1) != 0)
+      applicationState = [v3 applicationState];
+      if (-[NSObject isInstalled](applicationState, "isInstalled") && (-[NSObject isRestricted](applicationState, "isRestricted") & 1) == 0 && ([MEMORY[0x277D42590] isFaceTimeSupported] & 1) != 0)
       {
         v6 = 1;
 LABEL_14:
@@ -37,8 +37,8 @@ LABEL_14:
 
     else
     {
-      v5 = __atxlog_handle_default();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      applicationState = __atxlog_handle_default();
+      if (os_log_type_enabled(applicationState, OS_LOG_TYPE_ERROR))
       {
         [(NSURL(ATX) *)v4 atx_isOpenableFaceTimeURL];
       }
@@ -53,22 +53,22 @@ LABEL_14:
 
 - (id)schemelessAbsoluteString
 {
-  v1 = [a1 resourceSpecifier];
-  if ([v1 hasPrefix:@"//"])
+  resourceSpecifier = [self resourceSpecifier];
+  if ([resourceSpecifier hasPrefix:@"//"])
   {
-    v2 = [v1 substringFromIndex:{objc_msgSend(@"//", "length")}];
+    v2 = [resourceSpecifier substringFromIndex:{objc_msgSend(@"//", "length")}];
 
-    v1 = v2;
+    resourceSpecifier = v2;
   }
 
-  return v1;
+  return resourceSpecifier;
 }
 
 - (void)atx_isOpenableFaceTimeURL
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_226368000, a2, OS_LOG_TYPE_ERROR, "isOpenableFaceTimeURL: could not obtain record: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

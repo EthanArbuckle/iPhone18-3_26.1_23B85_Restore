@@ -1,28 +1,28 @@
 @interface CMLPECConfig
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPECConfig:(id)a3;
-- (CMLPECConfig)initWithCoder:(id)a3;
-- (CMLPECConfig)initWithPECConfig:(id)a3 keyStatus:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPECConfig:(id)config;
+- (CMLPECConfig)initWithCoder:(id)coder;
+- (CMLPECConfig)initWithPECConfig:(id)config keyStatus:(id)status;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMLPECConfig
 
-- (CMLPECConfig)initWithPECConfig:(id)a3 keyStatus:(id)a4
+- (CMLPECConfig)initWithPECConfig:(id)config keyStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  statusCopy = status;
   v14.receiver = self;
   v14.super_class = CMLPECConfig;
   v8 = [(CMLPECConfig *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configCopy copy];
     serializedPECConfig = v8->_serializedPECConfig;
     v8->_serializedPECConfig = v9;
 
-    v11 = [v7 copy];
+    v11 = [statusCopy copy];
     serializedKeyStatus = v8->_serializedKeyStatus;
     v8->_serializedKeyStatus = v11;
   }
@@ -30,16 +30,16 @@
   return v8;
 }
 
-- (BOOL)isEqualToPECConfig:(id)a3
+- (BOOL)isEqualToPECConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(CMLPECConfig *)self serializedPECConfig];
-  v6 = [v4 serializedPECConfig];
-  if ([v5 isEqualToData:v6])
+  configCopy = config;
+  serializedPECConfig = [(CMLPECConfig *)self serializedPECConfig];
+  serializedPECConfig2 = [configCopy serializedPECConfig];
+  if ([serializedPECConfig isEqualToData:serializedPECConfig2])
   {
-    v7 = [(CMLPECConfig *)self serializedKeyStatus];
-    v8 = [v4 serializedKeyStatus];
-    v9 = [v7 isEqualToData:v8];
+    serializedKeyStatus = [(CMLPECConfig *)self serializedKeyStatus];
+    serializedKeyStatus2 = [configCopy serializedKeyStatus];
+    v9 = [serializedKeyStatus isEqualToData:serializedKeyStatus2];
   }
 
   else
@@ -50,18 +50,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLPECConfig *)self isEqualToPECConfig:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CMLPECConfig *)self isEqualToPECConfig:v5];
   }
 
   return v6;
@@ -69,32 +69,32 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CMLPECConfig *)self serializedPECConfig];
-  v4 = [v3 hash];
-  v5 = [(CMLPECConfig *)self serializedKeyStatus];
-  v6 = [v5 hash];
+  serializedPECConfig = [(CMLPECConfig *)self serializedPECConfig];
+  v4 = [serializedPECConfig hash];
+  serializedKeyStatus = [(CMLPECConfig *)self serializedKeyStatus];
+  v6 = [serializedKeyStatus hash];
 
   return v6 ^ v4;
 }
 
-- (CMLPECConfig)initWithCoder:(id)a3
+- (CMLPECConfig)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedPECConfig"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serializedKeyStatus"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedPECConfig"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedKeyStatus"];
 
   v7 = [(CMLPECConfig *)self initWithPECConfig:v5 keyStatus:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CMLPECConfig *)self serializedPECConfig];
-  [v4 encodeObject:v5 forKey:@"serializedPECConfig"];
+  coderCopy = coder;
+  serializedPECConfig = [(CMLPECConfig *)self serializedPECConfig];
+  [coderCopy encodeObject:serializedPECConfig forKey:@"serializedPECConfig"];
 
-  v6 = [(CMLPECConfig *)self serializedKeyStatus];
-  [v4 encodeObject:v6 forKey:@"serializedKeyStatus"];
+  serializedKeyStatus = [(CMLPECConfig *)self serializedKeyStatus];
+  [coderCopy encodeObject:serializedKeyStatus forKey:@"serializedKeyStatus"];
 }
 
 @end

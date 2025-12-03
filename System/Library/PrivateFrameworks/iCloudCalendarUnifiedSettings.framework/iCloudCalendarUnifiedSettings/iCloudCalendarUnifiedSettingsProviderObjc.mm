@@ -1,20 +1,20 @@
 @interface iCloudCalendarUnifiedSettingsProviderObjc
-- (iCloudCalendarUnifiedSettingsProviderObjc)initWithAccountManager:(id)a3 presenter:(id)a4;
-- (iCloudCalendarUnifiedSettingsProviderObjc)initWithPresenter:(id)a3;
+- (iCloudCalendarUnifiedSettingsProviderObjc)initWithAccountManager:(id)manager presenter:(id)presenter;
+- (iCloudCalendarUnifiedSettingsProviderObjc)initWithPresenter:(id)presenter;
 @end
 
 @implementation iCloudCalendarUnifiedSettingsProviderObjc
 
-- (iCloudCalendarUnifiedSettingsProviderObjc)initWithAccountManager:(id)a3 presenter:(id)a4
+- (iCloudCalendarUnifiedSettingsProviderObjc)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = iCloudCalendarUnifiedSettingsProviderObjc;
   v8 = [(iCloudCalendarUnifiedSettingsProviderObjc *)&v12 init];
   if (v8)
   {
-    v9 = [[iCloudCalendarUnifiedSettingsProvider alloc] initWithAccountManager:v6 presenter:v7];
+    v9 = [[iCloudCalendarUnifiedSettingsProvider alloc] initWithAccountManager:managerCopy presenter:presenterCopy];
     provider = v8->provider;
     v8->provider = v9;
   }
@@ -22,15 +22,15 @@
   return v8;
 }
 
-- (iCloudCalendarUnifiedSettingsProviderObjc)initWithPresenter:(id)a3
+- (iCloudCalendarUnifiedSettingsProviderObjc)initWithPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v9.receiver = self;
   v9.super_class = iCloudCalendarUnifiedSettingsProviderObjc;
   v5 = [(iCloudCalendarUnifiedSettingsProviderObjc *)&v9 init];
   if (v5)
   {
-    v6 = [[iCloudCalendarUnifiedSettingsProvider alloc] initWithPresenter:v4];
+    v6 = [[iCloudCalendarUnifiedSettingsProvider alloc] initWithPresenter:presenterCopy];
     provider = v5->provider;
     v5->provider = v6;
   }

@@ -1,20 +1,20 @@
 @interface SiriUIMessageContentTemplateView
 - (CGSize)_textBalloonViewBoundingSize;
-- (SiriUIMessageContentTemplateView)initWithDataSource:(id)a3;
+- (SiriUIMessageContentTemplateView)initWithDataSource:(id)source;
 - (double)desiredHeight;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 @end
 
 @implementation SiriUIMessageContentTemplateView
 
-- (SiriUIMessageContentTemplateView)initWithDataSource:(id)a3
+- (SiriUIMessageContentTemplateView)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = SiriUIMessageContentTemplateView;
-  v5 = [(SiriUIBaseTemplateView *)&v12 initWithDataSource:v4];
+  v5 = [(SiriUIBaseTemplateView *)&v12 initWithDataSource:sourceCopy];
   if (v5)
   {
     v14 = 0;
@@ -59,14 +59,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v11 templatedContentMargins];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templatedContentMargins];
 
-  v12 = [(SiriUIMessageContentTemplateView *)self semanticContentAttribute];
+  semanticContentAttribute = [(SiriUIMessageContentTemplateView *)self semanticContentAttribute];
   textBalloonView = self->_textBalloonView;
   [(SiriUIMessageContentTemplateView *)self _textBalloonViewBoundingSize];
   [textBalloonView sizeThatFits:?];
-  if (v12 != 4)
+  if (semanticContentAttribute != 4)
   {
     v15.origin.x = v4;
     v15.origin.y = v6;
@@ -79,11 +79,11 @@
   [self->_textBalloonView setFrame:?];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v4.receiver = self;
   v4.super_class = SiriUIMessageContentTemplateView;
-  [(SiriUIMessageContentTemplateView *)&v4 setSemanticContentAttribute:a3];
+  [(SiriUIMessageContentTemplateView *)&v4 setSemanticContentAttribute:attribute];
   [self->_textBalloonView setOrientation:{-[SiriUIMessageContentTemplateView semanticContentAttribute](self, "semanticContentAttribute") != 4}];
   [self->_textBalloonView prepareForDisplayIfNeeded];
 }
@@ -102,30 +102,30 @@
   v15.receiver = self;
   v15.super_class = SiriUIMessageContentTemplateView;
   [(SiriUIBaseTemplateView *)&v15 reloadData];
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
-  v4 = [v3 sentStatus];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  sentStatus = [dataSource sentStatus];
   textBalloonView = self->_textBalloonView;
   v5 = objc_alloc(MEMORY[0x277CCA898]);
-  v6 = [v3 content];
+  content = [dataSource content];
   v16[0] = *MEMORY[0x277D740A8];
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v17[0] = v7;
   v16[1] = *MEMORY[0x277D740C0];
-  if (v4)
+  if (sentStatus)
   {
-    v8 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     v9 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] blackColor];
+    whiteColor = [MEMORY[0x277D75348] blackColor];
     v9 = 4;
   }
 
-  if (v6)
+  if (content)
   {
-    v10 = v6;
+    v10 = content;
   }
 
   else
@@ -133,7 +133,7 @@
     v10 = &stru_2879FFD58;
   }
 
-  v17[1] = v8;
+  v17[1] = whiteColor;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:{2, textBalloonView}];
   v12 = [v5 initWithString:v10 attributes:v11];
   [v14 setAttributedText:v12];
@@ -148,8 +148,8 @@
   [(SiriUIMessageContentTemplateView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v7 templatedContentMargins];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templatedContentMargins];
   v9 = v8;
   v11 = v10;
   v13 = v12;

@@ -1,191 +1,191 @@
 @interface SecureBackupDaemon
 - (BOOL)_backupEnabled;
-- (BOOL)_restoreKeychainWithBackupPassword:(id)a3 keybagDigest:(id)a4 error:(id *)a5;
-- (BOOL)_restoreView:(id)a3 password:(id)a4 keybagDigest:(id)a5 restoredViews:(id)a6 error:(id *)a7;
+- (BOOL)_restoreKeychainWithBackupPassword:(id)password keybagDigest:(id)digest error:(id *)error;
+- (BOOL)_restoreView:(id)view password:(id)password keybagDigest:(id)digest restoredViews:(id)views error:(id *)error;
 - (BOOL)_usesEscrow;
 - (BOOL)backupAllowed;
-- (BOOL)backupSetConfirmedManifest:(id)a3 digest:(id)a4 manifest:(id)a5 error:(id *)a6;
-- (BOOL)backupSliceKeybagHasRecoveryKey:(id)a3;
-- (BOOL)backupWithChanges:(id)a3 error:(id *)a4 handler:(id)a5;
-- (BOOL)backupWithRegisteredBackupViewWithError:(id)a3 error:(id *)a4;
-- (BOOL)backupWithRegisteredBackupsWithError:(id *)a3 handler:(id)a4;
-- (BOOL)hasRecoveryKeyInKVS:(id)a3 error:(id *)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)registerSingleRecoverySecret:(id)a3 iCDP:(BOOL)a4 error:(id *)a5;
-- (BOOL)removeRecoveryKey:(id *)a3;
-- (BOOL)verifyRKWithKeyBag:(id)a3 password:(id)a4 error:(id *)a5;
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4;
+- (BOOL)backupSetConfirmedManifest:(id)manifest digest:(id)digest manifest:(id)a5 error:(id *)error;
+- (BOOL)backupSliceKeybagHasRecoveryKey:(id)key;
+- (BOOL)backupWithChanges:(id)changes error:(id *)error handler:(id)handler;
+- (BOOL)backupWithRegisteredBackupViewWithError:(id)error error:(id *)a4;
+- (BOOL)backupWithRegisteredBackupsWithError:(id *)error handler:(id)handler;
+- (BOOL)hasRecoveryKeyInKVS:(id)s error:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)registerSingleRecoverySecret:(id)secret iCDP:(BOOL)p error:(id *)error;
+- (BOOL)removeRecoveryKey:(id *)key;
+- (BOOL)verifyRKWithKeyBag:(id)bag password:(id)password error:(id *)error;
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error;
 - (NSString)cachedPassphrase;
 - (NSString)cachedRecordIDPassphrase;
 - (NSURL)cachedKeychainURL;
 - (NSURL)cachedManifestURL;
-- (SecureBackupDaemon)initWithOperationsLogger:(id)a3;
+- (SecureBackupDaemon)initWithOperationsLogger:(id)logger;
 - (id)_EMCSBackup;
-- (id)_EMCSBackupDictForKeybagDigest:(id)a3;
+- (id)_EMCSBackupDictForKeybagDigest:(id)digest;
 - (id)_KVSKeybag;
 - (id)_consumeBackupJournal;
-- (id)_consumeFullBackupForRecordID:(id)a3;
-- (id)_consumeViewBackup:(id)a3 recordID:(id)a4;
-- (id)_createBackupKeybagWithPassword:(id)a3;
-- (id)_gestaltValueForKey:(__CFString *)a3;
+- (id)_consumeFullBackupForRecordID:(id)d;
+- (id)_consumeViewBackup:(id)backup recordID:(id)d;
+- (id)_createBackupKeybagWithPassword:(id)password;
+- (id)_gestaltValueForKey:(__CFString *)key;
 - (id)_getDERBackupFromKVS;
-- (id)_getICDPBackupFromKVS:(id)a3 forView:(id)a4;
-- (id)_getKeychainItemForKey:(id)a3 status:(int *)a4;
+- (id)_getICDPBackupFromKVS:(id)s forView:(id)view;
+- (id)_getKeychainItemForKey:(id)key status:(int *)status;
 - (id)_getLastBackupTimestamp;
-- (id)_getProtectedKeychainAndKeybagDigestFromKVS:(id *)a3;
+- (id)_getProtectedKeychainAndKeybagDigestFromKVS:(id *)s;
 - (id)_metadata;
 - (id)_pushCachedKeychainToKVS;
-- (id)_pushCachedKeychainToKVSForView:(id)a3 recordID:(id)a4;
-- (id)_recordIDFromLabel:(id)a3 withPrefix:(id)a4 suffix:(id)a5;
+- (id)_pushCachedKeychainToKVSForView:(id)view recordID:(id)d;
+- (id)_recordIDFromLabel:(id)label withPrefix:(id)prefix suffix:(id)suffix;
 - (id)allViews;
-- (id)cachedPassphraseForFD:(int)a3;
+- (id)cachedPassphraseForFD:(int)d;
 - (id)cachedRecoveryKey;
 - (id)circleChangedNotification;
-- (id)copyBackupKeyForNewDeviceRecoverySecret:(id)a3 error:(id *)a4;
-- (id)copyEncodedData:(id)a3 error:(id *)a4;
+- (id)copyBackupKeyForNewDeviceRecoverySecret:(id)secret error:(id *)error;
+- (id)copyEncodedData:(id)data error:(id *)error;
 - (id)copyKVSState;
 - (id)copyMyPeerID;
-- (id)copyMyPeerIDWithError:(id *)a3;
-- (id)copyMyPeerInfo:(id *)a3;
-- (id)copyMyPeerWithNewDeviceRecoverySecret:(id)a3 error:(id *)a4;
-- (id)copyOSVersion:(id)a3;
-- (id)copyPeerID:(id)a3;
-- (id)createDERDataFromPlist:(id)a3;
-- (id)createEncodedDirectBackupSliceKeybagFromData:(id)a3 error:(id *)a4;
-- (id)createPeerInfoFromData:(id)a3 error:(id *)a4;
-- (id)createPlistFromDERData:(id)a3;
-- (id)createiCloudRecoveryPasswordWithError:(id *)a3;
+- (id)copyMyPeerIDWithError:(id *)error;
+- (id)copyMyPeerInfo:(id *)info;
+- (id)copyMyPeerWithNewDeviceRecoverySecret:(id)secret error:(id *)error;
+- (id)copyOSVersion:(id)version;
+- (id)copyPeerID:(id)d;
+- (id)createDERDataFromPlist:(id)plist;
+- (id)createEncodedDirectBackupSliceKeybagFromData:(id)data error:(id *)error;
+- (id)createPeerInfoFromData:(id)data error:(id *)error;
+- (id)createPlistFromDERData:(id)data;
+- (id)createiCloudRecoveryPasswordWithError:(id *)error;
 - (id)currentClientMetadata;
 - (id)currentMachineID;
 - (id)currentViews;
-- (id)derDataFromDict:(id)a3;
-- (id)encodedStatsForViews:(id)a3;
-- (id)ensureClientMetadata:(id)a3 forRequest:(id)a4;
-- (id)fetchPRK:(id *)a3;
-- (id)filteriCDPRecords:(id)a3;
-- (id)getPendingEscrowRequest:(id *)a3;
-- (id)keysOfEntriesContainingObject:(id)a3 backups:(id)a4;
+- (id)derDataFromDict:(id)dict;
+- (id)encodedStatsForViews:(id)views;
+- (id)ensureClientMetadata:(id)metadata forRequest:(id)request;
+- (id)fetchPRK:(id *)k;
+- (id)filteriCDPRecords:(id)records;
+- (id)getPendingEscrowRequest:(id *)request;
+- (id)keysOfEntriesContainingObject:(id)object backups:(id)backups;
 - (id)kvs;
-- (id)makeRecordCandidate:(id)a3 error:(id *)a4;
-- (id)massageIncomingMetadataFromInfo:(id)a3;
-- (id)massageOutgoingMetadataFromRequest:(id)a3;
-- (id)normalizeSMSTarget:(id)a3 error:(id *)a4;
-- (id)removeRKFromKeyBag:(id)a3 error:(id *)a4;
-- (id)restoreBackup:(id)a3 withName:(id)a4 keybagDigest:(id)a5 keybag:(id)a6 password:(id)a7;
-- (id)restoreEMCSBackup:(id)a3 keybag:(id)a4 password:(id)a5;
-- (id)restoreEMCSBackup:(id)a3 withPassword:(id)a4;
+- (id)makeRecordCandidate:(id)candidate error:(id *)error;
+- (id)massageIncomingMetadataFromInfo:(id)info;
+- (id)massageOutgoingMetadataFromRequest:(id)request;
+- (id)normalizeSMSTarget:(id)target error:(id *)error;
+- (id)removeRKFromKeyBag:(id)bag error:(id *)error;
+- (id)restoreBackup:(id)backup withName:(id)name keybagDigest:(id)digest keybag:(id)keybag password:(id)password;
+- (id)restoreEMCSBackup:(id)backup keybag:(id)keybag password:(id)password;
+- (id)restoreEMCSBackup:(id)backup withPassword:(id)password;
 - (id)secureBackups;
-- (id)sortRecordsByBottleID:(id)a3;
-- (id)tagStaleBottleRecords:(id)a3 suggestedBottles:(id)a4;
-- (int)getPasscodeRequestFlag:(unint64_t *)a3;
+- (id)sortRecordsByBottleID:(id)d;
+- (id)tagStaleBottleRecords:(id)records suggestedBottles:(id)bottles;
+- (int)getPasscodeRequestFlag:(unint64_t *)flag;
 - (int)notifyToken;
-- (int)setPasscodeRequestFlag:(unint64_t)a3;
-- (int)storeCachedPassphrase:(id)a3;
-- (int64_t)compare:(id)a3 with:(id)a4 backups:(id)a5;
-- (int64_t)compareEscrowDatesBetweenCurrentRecord:(id)a3 andCandidateRecord:(id)a4;
+- (int)setPasscodeRequestFlag:(unint64_t)flag;
+- (int)storeCachedPassphrase:(id)passphrase;
+- (int64_t)compare:(id)compare with:(id)with backups:(id)backups;
+- (int64_t)compareEscrowDatesBetweenCurrentRecord:(id)record andCandidateRecord:(id)candidateRecord;
 - (os_state_data_s)_stateCapture;
-- (void)_backupCloudIdentityKeychainViewAndPushToKVSCheckBackupEnabled:(BOOL)a3;
-- (void)_backupKeychainFully:(BOOL)a3 reply:(id)a4;
-- (void)_deleteAlliCDPRecordsWithContext:(id)a3;
+- (void)_backupCloudIdentityKeychainViewAndPushToKVSCheckBackupEnabled:(BOOL)enabled;
+- (void)_backupKeychainFully:(BOOL)fully reply:(id)reply;
+- (void)_deleteAlliCDPRecordsWithContext:(id)context;
 - (void)_disableBackup;
-- (void)_enumerateICDPBackupsUsingBlock:(id)a3;
-- (void)_fetchStingrayAccountStatusInDaemon:(id)a3 reply:(id)a4;
-- (void)_getAccountInfoWithRequest:(id)a3 reply:(id)a4;
-- (void)_recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8;
-- (void)_recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8;
-- (void)_recoverWithRequest:(id)a3 reply:(id)a4;
+- (void)_enumerateICDPBackupsUsingBlock:(id)block;
+- (void)_fetchStingrayAccountStatusInDaemon:(id)daemon reply:(id)reply;
+- (void)_getAccountInfoWithRequest:(id)request reply:(id)reply;
+- (void)_recoverSilentWithCDPContext:(id)context allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply;
+- (void)_recoverWithCDPContext:(id)context escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply;
+- (void)_recoverWithRequest:(id)request reply:(id)reply;
 - (void)_removeCachedKeychain;
 - (void)_removeKVSKeybag;
-- (void)_removeKeychainItemForKey:(id)a3;
+- (void)_removeKeychainItemForKey:(id)key;
 - (void)_removeMetadata;
 - (void)_removeProtectedKeychain;
 - (void)_removeUsesEscrow;
 - (void)_removeVeeTwoBackup;
-- (void)_restoreKeychainAsyncWithBackupBag:(id)a3 password:(id)a4 keybagDigest:(id)a5 haveBottledPeer:(BOOL)a6 restoredViews:(id)a7 viewsNotToBeRestored:(id)a8;
-- (void)_saveKeychainItem:(id)a3 forKey:(id)a4;
-- (void)_setAutobackupEnabledWithReply:(id)a3;
-- (void)_setEMCSBackup:(id)a3 keybag:(id)a4;
-- (void)_setKVSKeybag:(id)a3;
-- (void)_setMetadata:(id)a3;
-- (void)_stashRecoveryDataWithRequest:(id)a3 reply:(id)a4;
-- (void)_storeProtectedKeychainInKVS:(id)a3 keybagDigest:(id)a4;
-- (void)_storeVeeTwoBackupInKVS:(id)a3 forViewName:(id)a4 withKeyStore:(id)a5 manifestDigest:(id)a6 keybagDigest:(id)a7;
-- (void)backOffDateWithRequest:(id)a3 reply:(id)a4;
-- (void)backupForRecoveryKeyWithInfo:(id)a3 garbageCollect:(BOOL)a4 reply:(id)a5;
-- (void)backupWithInfo:(id)a3 garbageCollect:(BOOL)a4 reply:(id)a5;
-- (void)beginHSA2PasscodeRequest:(id)a3 desirePasscodeImmediately:(BOOL)a4 uuid:(id)a5 reason:(id)a6 reply:(id)a7;
-- (void)cachePassphraseWithRequest:(id)a3 reply:(id)a4;
-- (void)cacheRecoveryKeyWithRequest:(id)a3 reply:(id)a4;
-- (void)changeSMSTargetWithRequest:(id)a3 reply:(id)a4;
+- (void)_restoreKeychainAsyncWithBackupBag:(id)bag password:(id)password keybagDigest:(id)digest haveBottledPeer:(BOOL)peer restoredViews:(id)views viewsNotToBeRestored:(id)restored;
+- (void)_saveKeychainItem:(id)item forKey:(id)key;
+- (void)_setAutobackupEnabledWithReply:(id)reply;
+- (void)_setEMCSBackup:(id)backup keybag:(id)keybag;
+- (void)_setKVSKeybag:(id)keybag;
+- (void)_setMetadata:(id)metadata;
+- (void)_stashRecoveryDataWithRequest:(id)request reply:(id)reply;
+- (void)_storeProtectedKeychainInKVS:(id)s keybagDigest:(id)digest;
+- (void)_storeVeeTwoBackupInKVS:(id)s forViewName:(id)name withKeyStore:(id)store manifestDigest:(id)digest keybagDigest:(id)keybagDigest;
+- (void)backOffDateWithRequest:(id)request reply:(id)reply;
+- (void)backupForRecoveryKeyWithInfo:(id)info garbageCollect:(BOOL)collect reply:(id)reply;
+- (void)backupWithInfo:(id)info garbageCollect:(BOOL)collect reply:(id)reply;
+- (void)beginHSA2PasscodeRequest:(id)request desirePasscodeImmediately:(BOOL)immediately uuid:(id)uuid reason:(id)reason reply:(id)reply;
+- (void)cachePassphraseWithRequest:(id)request reply:(id)reply;
+- (void)cacheRecoveryKeyWithRequest:(id)request reply:(id)reply;
+- (void)changeSMSTargetWithRequest:(id)request reply:(id)reply;
 - (void)clearNotifyToken;
-- (void)createICDPRecordWithRequest:(id)a3 recordContents:(id)a4 reply:(id)a5;
-- (void)daemonPasscodeRequestOpinion:(id)a3;
-- (void)deleteAlliCDPRecordsWithRequest:(id)a3 reply:(id)a4;
-- (void)disableWithRequest:(id)a3 reply:(id)a4;
+- (void)createICDPRecordWithRequest:(id)request recordContents:(id)contents reply:(id)reply;
+- (void)daemonPasscodeRequestOpinion:(id)opinion;
+- (void)deleteAlliCDPRecordsWithRequest:(id)request reply:(id)reply;
+- (void)disableWithRequest:(id)request reply:(id)reply;
 - (void)disableiCDPBackup;
-- (void)doEnableEscrowMultiICSCWithRequest:(id)a3 reply:(id)a4;
-- (void)enableGuitarfishTokenWithRequest:(id)a3 reply:(id)a4;
-- (void)enableWithRequest:(id)a3 reply:(id)a4;
-- (void)fetchStingrayAccountStatusInDaemon:(id)a3 reply:(id)a4;
-- (void)garbageCollectEMCSBackupsExcluding:(id)a3;
-- (void)getAcceptedTermsForAltDSID:(id)a3 reply:(id)a4;
-- (void)getAccountInfoWithRequest:(id)a3 reply:(id)a4;
-- (void)getCertificatesWithRequest:(id)a3 reply:(id)a4;
-- (void)getCountrySMSCodesWithRequest:(id)a3 reply:(id)a4;
-- (void)handleEscrowStoreResults:(id)a3 escrowError:(id)a4 request:(id)a5 peerID:(id)a6 newRecordMetadata:(id)a7 backupKeybag:(id)a8 reply:(id)a9;
-- (void)handleNotification:(id)a3;
-- (void)isRecoveryKeySetInDaemon:(id)a3;
-- (void)knownICDPFederations:(id)a3;
-- (void)moveToFederationAllowed:(id)a3 altDSID:(id)a4 reply:(id)a5;
-- (void)notificationInfoWithReply:(id)a3;
-- (void)notificationOccurred:(id)a3;
-- (void)prepareHSA2EscrowRecordContents:(id)a3 usesComplexPassphrase:(BOOL)a4 reply:(id)a5;
-- (void)recordIDAndMetadataForSilentAttempt:(id)a3 passphraseLength:(unint64_t)a4 platform:(int)a5 reply:(id)a6;
-- (void)recordNotification:(id)a3 handled:(BOOL)a4;
-- (void)recoverEscrowWithRequest:(id)a3 reply:(id)a4;
-- (void)recoverGuitarfishTokenWithRequest:(id)a3 reply:(id)a4;
-- (void)recoverRecordContentsWithRequest:(id)a3 reply:(id)a4;
-- (void)recoverSilentWithCDPContextInDaemon:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8;
-- (void)recoverSilentWithCDPContextInDaemon:(id)a3 allRecords:(id)a4 reply:(id)a5;
-- (void)recoverWithCDPContextInDaemon:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8;
-- (void)recoverWithCDPContextInDaemon:(id)a3 escrowRecord:(id)a4 reply:(id)a5;
-- (void)recoverWithRequest:(id)a3 reply:(id)a4;
-- (void)registerForNotifyEvent:(id)a3;
-- (void)removeRecoveryKeyFromBackupInDaemon:(id)a3;
-- (void)restoreBackupName:(id)a3 peerID:(id)a4 keybag:(id)a5 password:(id)a6 backup:(id)a7 reply:(id)a8;
-- (void)restoreKeychainWithBackupPasswordInDaemon:(id)a3 reply:(id)a4;
-- (void)saveTermsAcceptance:(id)a3 reply:(id)a4;
-- (void)setBackOffDateWithRequest:(id)a3 reply:(id)a4;
-- (void)setCachedPassphrase:(id)a3;
-- (void)setCachedRecordIDPassphrase:(id)a3;
-- (void)setCachedRecoveryKey:(id)a3;
-- (void)setEMCSDict:(id)a3 backupKeybag:(id)a4 saveKeybag:(BOOL)a5 reply:(id)a6;
-- (void)setPasscodeMetadata:(id)a3 passphraseType:(int)a4;
+- (void)doEnableEscrowMultiICSCWithRequest:(id)request reply:(id)reply;
+- (void)enableGuitarfishTokenWithRequest:(id)request reply:(id)reply;
+- (void)enableWithRequest:(id)request reply:(id)reply;
+- (void)fetchStingrayAccountStatusInDaemon:(id)daemon reply:(id)reply;
+- (void)garbageCollectEMCSBackupsExcluding:(id)excluding;
+- (void)getAcceptedTermsForAltDSID:(id)d reply:(id)reply;
+- (void)getAccountInfoWithRequest:(id)request reply:(id)reply;
+- (void)getCertificatesWithRequest:(id)request reply:(id)reply;
+- (void)getCountrySMSCodesWithRequest:(id)request reply:(id)reply;
+- (void)handleEscrowStoreResults:(id)results escrowError:(id)error request:(id)request peerID:(id)d newRecordMetadata:(id)metadata backupKeybag:(id)keybag reply:(id)reply;
+- (void)handleNotification:(id)notification;
+- (void)isRecoveryKeySetInDaemon:(id)daemon;
+- (void)knownICDPFederations:(id)federations;
+- (void)moveToFederationAllowed:(id)allowed altDSID:(id)d reply:(id)reply;
+- (void)notificationInfoWithReply:(id)reply;
+- (void)notificationOccurred:(id)occurred;
+- (void)prepareHSA2EscrowRecordContents:(id)contents usesComplexPassphrase:(BOOL)passphrase reply:(id)reply;
+- (void)recordIDAndMetadataForSilentAttempt:(id)attempt passphraseLength:(unint64_t)length platform:(int)platform reply:(id)reply;
+- (void)recordNotification:(id)notification handled:(BOOL)handled;
+- (void)recoverEscrowWithRequest:(id)request reply:(id)reply;
+- (void)recoverGuitarfishTokenWithRequest:(id)request reply:(id)reply;
+- (void)recoverRecordContentsWithRequest:(id)request reply:(id)reply;
+- (void)recoverSilentWithCDPContextInDaemon:(id)daemon allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply;
+- (void)recoverSilentWithCDPContextInDaemon:(id)daemon allRecords:(id)records reply:(id)reply;
+- (void)recoverWithCDPContextInDaemon:(id)daemon escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply;
+- (void)recoverWithCDPContextInDaemon:(id)daemon escrowRecord:(id)record reply:(id)reply;
+- (void)recoverWithRequest:(id)request reply:(id)reply;
+- (void)registerForNotifyEvent:(id)event;
+- (void)removeRecoveryKeyFromBackupInDaemon:(id)daemon;
+- (void)restoreBackupName:(id)name peerID:(id)d keybag:(id)keybag password:(id)password backup:(id)backup reply:(id)reply;
+- (void)restoreKeychainWithBackupPasswordInDaemon:(id)daemon reply:(id)reply;
+- (void)saveTermsAcceptance:(id)acceptance reply:(id)reply;
+- (void)setBackOffDateWithRequest:(id)request reply:(id)reply;
+- (void)setCachedPassphrase:(id)passphrase;
+- (void)setCachedRecordIDPassphrase:(id)passphrase;
+- (void)setCachedRecoveryKey:(id)key;
+- (void)setEMCSDict:(id)dict backupKeybag:(id)keybag saveKeybag:(BOOL)saveKeybag reply:(id)reply;
+- (void)setPasscodeMetadata:(id)metadata passphraseType:(int)type;
 - (void)setupNotifyEvents;
-- (void)sortForMatchingPassphraseLengthAndPlatform:(id)a3 secureBackups:(id)a4 passphraseLength:(unint64_t)a5 platform:(unint64_t)a6 reply:(id)a7;
-- (void)startSMSChallengeWithRequest:(id)a3 reply:(id)a4;
-- (void)stashRecoveryDataWithRequest:(id)a3 reply:(id)a4;
-- (void)stateCaptureWithReply:(id)a3;
-- (void)storeDERBackupInKVS:(id)a3;
-- (void)synchronizeKVSWithHandler:(id)a3;
-- (void)uncachePassphraseWithRequest:(id)a3 reply:(id)a4;
+- (void)sortForMatchingPassphraseLengthAndPlatform:(id)platform secureBackups:(id)backups passphraseLength:(unint64_t)length platform:(unint64_t)a6 reply:(id)reply;
+- (void)startSMSChallengeWithRequest:(id)request reply:(id)reply;
+- (void)stashRecoveryDataWithRequest:(id)request reply:(id)reply;
+- (void)stateCaptureWithReply:(id)reply;
+- (void)storeDERBackupInKVS:(id)s;
+- (void)synchronizeKVSWithHandler:(id)handler;
+- (void)uncachePassphraseWithRequest:(id)request reply:(id)reply;
 - (void)uncacheRecordIDPassphrase;
-- (void)uncacheRecoveryKeyWithRequest:(id)a3 reply:(id)a4;
-- (void)unregisterForNotifyEvent:(id)a3;
-- (void)updateMetadataWithRequest:(id)a3 reply:(id)a4;
-- (void)verifyRecoveryKeyInDaemon:(id)a3 reply:(id)a4;
+- (void)uncacheRecoveryKeyWithRequest:(id)request reply:(id)reply;
+- (void)unregisterForNotifyEvent:(id)event;
+- (void)updateMetadataWithRequest:(id)request reply:(id)reply;
+- (void)verifyRecoveryKeyInDaemon:(id)daemon reply:(id)reply;
 @end
 
 @implementation SecureBackupDaemon
 
-- (id)_createBackupKeybagWithPassword:(id)a3
+- (id)_createBackupKeybagWithPassword:(id)password
 {
   v15 = -1;
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  passwordCopy = password;
+  bytes = [passwordCopy bytes];
+  v5 = [passwordCopy length];
 
-  v6 = sub_100047F88(v4, v5, 4, &v15);
+  v6 = sub_100047F88(bytes, v5, 4, &v15);
   if (v6)
   {
     v7 = v6;
@@ -236,11 +236,11 @@ LABEL_9:
   return v13;
 }
 
-- (void)_saveKeychainItem:(id)a3 forKey:(id)a4
+- (void)_saveKeychainItem:(id)item forKey:(id)key
 {
   v13[0] = kSecAttrAccount;
   v13[1] = kSecAttrService;
-  v14[0] = a4;
+  v14[0] = key;
   v14[1] = @"SecureBackupService";
   v13[2] = kSecClass;
   v13[3] = kSecAttrSynchronizable;
@@ -249,9 +249,9 @@ LABEL_9:
   v13[4] = kSecAttrAccessible;
   v13[5] = kSecValueData;
   v14[4] = kSecAttrAccessibleAfterFirstUnlock;
-  v14[5] = a3;
-  v5 = a4;
-  v6 = a3;
+  v14[5] = item;
+  keyCopy = key;
+  itemCopy = item;
   v7 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:6];
 
   v8 = SecItemAdd(v7, 0);
@@ -268,17 +268,17 @@ LABEL_9:
   }
 }
 
-- (void)_removeKeychainItemForKey:(id)a3
+- (void)_removeKeychainItemForKey:(id)key
 {
   v10[0] = kSecAttrAccount;
   v10[1] = kSecAttrService;
-  v11[0] = a3;
+  v11[0] = key;
   v11[1] = @"SecureBackupService";
   v10[2] = kSecClass;
   v10[3] = kSecAttrSynchronizable;
   v11[2] = kSecClassGenericPassword;
   v11[3] = &__kCFBooleanTrue;
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:4];
 
   v5 = SecItemDelete(v4);
@@ -295,13 +295,13 @@ LABEL_9:
   }
 }
 
-- (id)_getKeychainItemForKey:(id)a3 status:(int *)a4
+- (id)_getKeychainItemForKey:(id)key status:(int *)status
 {
-  v5 = a3;
+  keyCopy = key;
   result = 0;
   v15[0] = kSecAttrAccount;
   v15[1] = kSecAttrService;
-  v16[0] = v5;
+  v16[0] = keyCopy;
   v16[1] = @"SecureBackupService";
   v15[2] = kSecClass;
   v15[3] = kSecAttrSynchronizable;
@@ -312,9 +312,9 @@ LABEL_9:
   v6 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:5];
   v7 = SecItemCopyMatching(v6, &result);
   v8 = v7;
-  if (a4)
+  if (status)
   {
-    *a4 = v7;
+    *status = v7;
   }
 
   if (v7 != -25300 && v7)
@@ -338,10 +338,10 @@ LABEL_9:
   return v9;
 }
 
-- (void)_storeProtectedKeychainInKVS:(id)a3 keybagDigest:(id)a4
+- (void)_storeProtectedKeychainInKVS:(id)s keybagDigest:(id)digest
 {
-  v6 = a4;
-  v7 = a3;
+  digestCopy = digest;
+  sCopy = s;
   v8 = [(SecureBackupDaemon *)self kvs];
   v9 = +[CSDateUtilities posixDateFormatter];
   v10 = +[NSDate date];
@@ -357,26 +357,26 @@ LABEL_9:
 
   v13 = +[NSMutableDictionary dictionary];
   [v13 setObject:v11 forKeyedSubscript:kSecureBackupTimestampKey];
-  [v13 setObject:v7 forKeyedSubscript:@"com.apple.securebackup.keychain"];
+  [v13 setObject:sCopy forKeyedSubscript:@"com.apple.securebackup.keychain"];
 
-  [v13 setObject:v6 forKeyedSubscript:kSecureBackupKeybagDigestKey];
+  [v13 setObject:digestCopy forKeyedSubscript:kSecureBackupKeybagDigestKey];
   [v8 setDictionary:v13 forKey:@"com.apple.securebackup.record"];
 }
 
-- (void)_storeVeeTwoBackupInKVS:(id)a3 forViewName:(id)a4 withKeyStore:(id)a5 manifestDigest:(id)a6 keybagDigest:(id)a7
+- (void)_storeVeeTwoBackupInKVS:(id)s forViewName:(id)name withKeyStore:(id)store manifestDigest:(id)digest keybagDigest:(id)keybagDigest
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v34 = a7;
+  sCopy = s;
+  nameCopy = name;
+  storeCopy = store;
+  digestCopy = digest;
+  keybagDigestCopy = keybagDigest;
   context = objc_autoreleasePoolPush();
-  v15 = [[NSString alloc] initWithFormat:@"%@.%@", @"com.apple.icdp.backup", v12];
-  v32 = [v13 dictionaryForKey:v15];
+  nameCopy = [[NSString alloc] initWithFormat:@"%@.%@", @"com.apple.icdp.backup", nameCopy];
+  v32 = [storeCopy dictionaryForKey:nameCopy];
   v16 = [v32 objectForKeyedSubscript:@"com.apple.securebackup.keychain"];
-  v17 = [v11 objectForKeyedSubscript:@"keybag"];
+  v17 = [sCopy objectForKeyedSubscript:@"keybag"];
   v18 = [v16 objectForKeyedSubscript:@"backup"];
-  v19 = [v11 objectForKeyedSubscript:@"backup"];
+  v19 = [sCopy objectForKeyedSubscript:@"backup"];
   v31 = v17;
   if ([v18 isEqual:v19])
   {
@@ -389,7 +389,7 @@ LABEL_9:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v38 = v12;
+        v38 = nameCopy;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "skipping identical backup for %@", buf, 0xCu);
       }
 
@@ -402,13 +402,13 @@ LABEL_9:
   }
 
   v22 = objc_alloc_init(NSDate);
-  v23 = [v12 substringToIndex:{objc_msgSend(v12, "rangeOfString:", @"-tomb"}];
-  v30 = v14;
-  v24 = [v14 hexString];
-  v25 = [v24 substringToIndex:6];
+  v23 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "rangeOfString:", @"-tomb"}];
+  v30 = digestCopy;
+  hexString = [digestCopy hexString];
+  v25 = [hexString substringToIndex:6];
 
-  v26 = [v34 hexString];
-  v27 = [v26 substringToIndex:6];
+  hexString2 = [keybagDigestCopy hexString];
+  v27 = [hexString2 substringToIndex:6];
 
   v28 = CloudServicesLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -425,11 +425,11 @@ LABEL_9:
   v35[0] = kSecureBackupTimestampKey;
   v35[1] = @"com.apple.securebackup.keychain";
   v36[0] = v22;
-  v36[1] = v11;
+  v36[1] = sCopy;
   v29 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
-  [v13 setDictionary:v29 forKey:v15];
+  [storeCopy setDictionary:v29 forKey:nameCopy];
 
-  v14 = v30;
+  digestCopy = v30;
 LABEL_9:
 
   objc_autoreleasePoolPop(context);
@@ -437,14 +437,14 @@ LABEL_9:
 
 - (void)_removeCachedKeychain
 {
-  v3 = [(SecureBackupDaemon *)self cachedKeychainURL];
+  cachedKeychainURL = [(SecureBackupDaemon *)self cachedKeychainURL];
 
-  if (v3)
+  if (cachedKeychainURL)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [(SecureBackupDaemon *)self cachedKeychainURL];
+    cachedKeychainURL2 = [(SecureBackupDaemon *)self cachedKeychainURL];
     v9 = 0;
-    v6 = [v4 removeItemAtURL:v5 error:&v9];
+    v6 = [v4 removeItemAtURL:cachedKeychainURL2 error:&v9];
     v7 = v9;
 
     if ((v6 & 1) == 0 && [v7 code] != 4)
@@ -460,25 +460,25 @@ LABEL_9:
   }
 }
 
-- (id)derDataFromDict:(id)a3
+- (id)derDataFromDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100010150;
   v8[3] = &unk_1000751D0;
   v9 = objc_alloc_init(NSMutableDictionary);
   v5 = v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   v6 = [(SecureBackupDaemon *)self createDERDataFromPlist:v5];
 
   return v6;
 }
 
-- (void)storeDERBackupInKVS:(id)a3
+- (void)storeDERBackupInKVS:(id)s
 {
-  v4 = a3;
+  sCopy = s;
   v5 = [(SecureBackupDaemon *)self kvs];
   v6 = +[CSDateUtilities posixDateFormatter];
   v7 = +[NSDate date];
@@ -494,44 +494,44 @@ LABEL_9:
 
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:v8 forKeyedSubscript:kSecureBackupTimestampKey];
-  [v10 setObject:v4 forKeyedSubscript:@"com.apple.securebackup.keychain"];
+  [v10 setObject:sCopy forKeyedSubscript:@"com.apple.securebackup.keychain"];
 
   [v5 setDictionary:v10 forKey:@"DERBackup"];
 }
 
-- (id)_pushCachedKeychainToKVSForView:(id)a3 recordID:(id)a4
+- (id)_pushCachedKeychainToKVSForView:(id)view recordID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  dCopy = d;
   v8 = [(SecureBackupDaemon *)self kvs];
-  v9 = [[SecureBackupViewStore alloc] initWithViewName:v6 recordID:v7];
+  v9 = [[SecureBackupViewStore alloc] initWithViewName:viewCopy recordID:dCopy];
 
-  v10 = [(SecureBackupViewStore *)v9 backupData];
-  if (v10)
+  backupData = [(SecureBackupViewStore *)v9 backupData];
+  if (backupData)
   {
-    if ([v6 isEqualToString:@"KeychainV0-tomb"])
+    if ([viewCopy isEqualToString:@"KeychainV0-tomb"])
     {
       v11 = [(SecureBackupDaemon *)self _getProtectedKeychainAndKeybagDigestFromKVS:0];
-      v12 = [(SecureBackupViewStore *)v9 backupDict];
-      v13 = [(SecureBackupViewStore *)v9 keybagDigest];
-      v14 = v11;
-      v15 = v12;
-      if (v14 == v15)
+      backupDict = [(SecureBackupViewStore *)v9 backupDict];
+      keybagDigest = [(SecureBackupViewStore *)v9 keybagDigest];
+      keybag = v11;
+      v15 = backupDict;
+      if (keybag == v15)
       {
         goto LABEL_6;
       }
 
-      v16 = [v14 hash];
+      v16 = [keybag hash];
       if (v16 != [v15 hash])
       {
         goto LABEL_16;
       }
 
-      v17 = [v14 allKeys];
-      v30 = [NSSet setWithArray:v17];
+      allKeys = [keybag allKeys];
+      v30 = [NSSet setWithArray:allKeys];
 
-      v18 = [v15 allKeys];
-      v19 = [NSSet setWithArray:v18];
+      allKeys2 = [v15 allKeys];
+      v19 = [NSSet setWithArray:allKeys2];
 
       v29 = [v30 isEqualToSet:v19];
       if (v29)
@@ -543,30 +543,30 @@ LABEL_6:
       {
 LABEL_16:
 
-        [(SecureBackupDaemon *)self _storeProtectedKeychainInKVS:v15 keybagDigest:v13];
+        [(SecureBackupDaemon *)self _storeProtectedKeychainInKVS:v15 keybagDigest:keybagDigest];
       }
     }
 
     else
     {
-      v14 = [(SecureBackupViewStore *)v9 keybag];
-      v21 = [(SecureBackupViewStore *)v9 recordID];
-      v22 = v21;
-      if (v14 && v21)
+      keybag = [(SecureBackupViewStore *)v9 keybag];
+      recordID = [(SecureBackupViewStore *)v9 recordID];
+      v22 = recordID;
+      if (keybag && recordID)
       {
         v34[0] = @"backup";
         v34[1] = @"keybag";
-        v35[0] = v10;
-        v35[1] = v14;
+        v35[0] = backupData;
+        v35[1] = keybag;
         v34[2] = @"recordID";
-        v35[2] = v21;
+        v35[2] = recordID;
         v23 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
-        v24 = [(SecureBackupViewStore *)v9 manifestHash];
-        v25 = [v24 sha1Digest];
-        [v14 sha1Digest];
+        manifestHash = [(SecureBackupViewStore *)v9 manifestHash];
+        sha1Digest = [manifestHash sha1Digest];
+        [keybag sha1Digest];
         v31 = v22;
         v27 = v26 = v8;
-        [(SecureBackupDaemon *)self _storeVeeTwoBackupInKVS:v23 forViewName:v6 withKeyStore:v26 manifestDigest:v25 keybagDigest:v27];
+        [(SecureBackupDaemon *)self _storeVeeTwoBackupInKVS:v23 forViewName:viewCopy withKeyStore:v26 manifestDigest:sha1Digest keybagDigest:v27];
 
         v8 = v26;
         v22 = v31;
@@ -589,7 +589,7 @@ LABEL_16:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v6;
+      v33 = viewCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "skipping empty backup for view %@", buf, 0xCu);
     }
   }
@@ -625,12 +625,12 @@ LABEL_16:
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 sha1Digest];
+      sha1Digest = [v6 sha1Digest];
       v9 = CloudServicesLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v22 = v8;
+        v22 = sha1Digest;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "using backup key: %@", buf, 0xCu);
       }
     }
@@ -647,7 +647,7 @@ LABEL_16:
     v4 = @"unknown";
   }
 
-  v10 = [(SecureBackupDaemon *)self kvsQueue];
+  kvsQueue = [(SecureBackupDaemon *)self kvsQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100010A04;
@@ -656,7 +656,7 @@ LABEL_16:
   v16 = &v18;
   v14[4] = self;
   v11 = v4;
-  dispatch_sync(v10, v14);
+  dispatch_sync(kvsQueue, v14);
 
   v12 = *(v19[0] + 40);
   _Block_object_dispose(&v18, 8);
@@ -681,7 +681,7 @@ LABEL_16:
   [(SecureBackupDaemon *)self _removeCachedKeychain];
 }
 
-- (id)_getProtectedKeychainAndKeybagDigestFromKVS:(id *)a3
+- (id)_getProtectedKeychainAndKeybagDigestFromKVS:(id *)s
 {
   v4 = [(SecureBackupDaemon *)self kvs];
   v5 = [v4 dictionaryForKey:@"com.apple.securebackup.record"];
@@ -694,9 +694,9 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Retrieving keychain from @%@", &v10, 0xCu);
   }
 
-  if (a3)
+  if (s)
   {
-    *a3 = [v5 objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
+    *s = [v5 objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
   }
 
   v8 = [v5 objectForKeyedSubscript:@"com.apple.securebackup.keychain"];
@@ -704,29 +704,29 @@ LABEL_16:
   return v8;
 }
 
-- (id)_getICDPBackupFromKVS:(id)a3 forView:(id)a4
+- (id)_getICDPBackupFromKVS:(id)s forView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NSString alloc] initWithFormat:@"%@.%@-tomb", @"com.apple.icdp.backup", v5];
+  viewCopy = view;
+  sCopy = s;
+  viewCopy = [[NSString alloc] initWithFormat:@"%@.%@-tomb", @"com.apple.icdp.backup", viewCopy];
 
-  v8 = [v6 dictionaryForKey:v7];
+  v8 = [sCopy dictionaryForKey:viewCopy];
 
   return v8;
 }
 
-- (void)_enumerateICDPBackupsUsingBlock:(id)a3
+- (void)_enumerateICDPBackupsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SecureBackupDaemon *)self kvsQueue];
+  blockCopy = block;
+  kvsQueue = [(SecureBackupDaemon *)self kvsQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100010FA8;
   v7[3] = &unk_100075248;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_sync(kvsQueue, v7);
 }
 
 - (void)_removeVeeTwoBackup
@@ -817,9 +817,9 @@ LABEL_16:
   [v2 removeObjectForKey:@"BackupUsesEscrow"];
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = [(SecureBackupDaemon *)self kvs];
   v6 = CloudServicesLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -830,11 +830,11 @@ LABEL_16:
     v10 = 138412546;
     v11 = v9;
     v12 = 2112;
-    v13 = v4;
+    v13 = metadataCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Changing metadata old: %@\n\nnew: %@", &v10, 0x16u);
   }
 
-  [v5 setDictionary:v4 forKey:v8];
+  [v5 setDictionary:metadataCopy forKey:v8];
 }
 
 - (id)_metadata
@@ -862,9 +862,9 @@ LABEL_16:
   [v2 removeObjectForKey:v5];
 }
 
-- (void)_setKVSKeybag:(id)a3
+- (void)_setKVSKeybag:(id)keybag
 {
-  v4 = a3;
+  keybagCopy = keybag;
   v5 = [(SecureBackupDaemon *)self kvs];
   v6 = [v5 dataForKey:@"BackupKeybag"];
   if (v6)
@@ -872,9 +872,9 @@ LABEL_16:
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v6 sha1Digest];
+      sha1Digest = [v6 sha1Digest];
       v11 = 138412290;
-      v12 = v8;
+      v12 = sha1Digest;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Overwriting keybag in KVS! Old digest: %@", &v11, 0xCu);
     }
   }
@@ -882,13 +882,13 @@ LABEL_16:
   v9 = CloudServicesLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 sha1Digest];
+    sha1Digest2 = [keybagCopy sha1Digest];
     v11 = 138412290;
-    v12 = v10;
+    v12 = sha1Digest2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Saving keybag in KVS digest: %@", &v11, 0xCu);
   }
 
-  [v5 setData:v4 forKey:@"BackupKeybag"];
+  [v5 setData:keybagCopy forKey:@"BackupKeybag"];
 }
 
 - (id)_KVSKeybag
@@ -899,10 +899,10 @@ LABEL_16:
   return v3;
 }
 
-- (void)_setEMCSBackup:(id)a3 keybag:(id)a4
+- (void)_setEMCSBackup:(id)backup keybag:(id)keybag
 {
-  v6 = a3;
-  v7 = a4;
+  backupCopy = backup;
+  keybagCopy = keybag;
   v8 = [(SecureBackupDaemon *)self kvs];
   v9 = [[NSUbiquitousKeyValueStore alloc] initWithStoreIdentifier:@"com.apple.sbd.emcs" type:0];
   v10 = CloudServicesLog();
@@ -913,25 +913,25 @@ LABEL_16:
   }
 
   v11 = +[NSUUID UUID];
-  v12 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
-  CFPreferencesSetAppValue(@"EMCSBackupUUID", v12, SECURE_BACKUP_SERVICE_NAME);
-  [v9 setString:v12 forKey:@"EMCSBackupUUID"];
+  CFPreferencesSetAppValue(@"EMCSBackupUUID", uUIDString, SECURE_BACKUP_SERVICE_NAME);
+  [v9 setString:uUIDString forKey:@"EMCSBackupUUID"];
   v20[0] = @"backup";
   v20[1] = @"keybag";
-  v21[0] = v6;
-  v21[1] = v7;
+  v21[0] = backupCopy;
+  v21[1] = keybagCopy;
   v20[2] = @"timestamp";
   v13 = objc_alloc_init(NSDate);
   v20[3] = @"uuid";
   v21[2] = v13;
-  v21[3] = v12;
+  v21[3] = uUIDString;
   v14 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:4];
 
   v15 = [NSString alloc];
-  v16 = [v7 sha1Digest];
-  v17 = [v16 hexString];
-  v18 = [v15 initWithFormat:@"%@-%@", @"EMCSBackupDict", v17];
+  sha1Digest = [keybagCopy sha1Digest];
+  hexString = [sha1Digest hexString];
+  v18 = [v15 initWithFormat:@"%@-%@", @"EMCSBackupDict", hexString];
 
   [v8 setDictionary:v14 forKey:v18];
   [v8 setDictionary:v14 forKey:@"EMCSBackupDict"];
@@ -945,23 +945,23 @@ LABEL_16:
   return v3;
 }
 
-- (id)_EMCSBackupDictForKeybagDigest:(id)a3
+- (id)_EMCSBackupDictForKeybagDigest:(id)digest
 {
-  v4 = a3;
+  digestCopy = digest;
   v5 = [(SecureBackupDaemon *)self kvs];
   v6 = @"EMCSBackupDict";
-  if (v4)
+  if (digestCopy)
   {
     v7 = [NSString alloc];
-    v8 = [v4 hexString];
-    v6 = [v7 initWithFormat:@"%@-%@", @"EMCSBackupDict", v8];
+    hexString = [digestCopy hexString];
+    v6 = [v7 initWithFormat:@"%@-%@", @"EMCSBackupDict", hexString];
   }
 
   v9 = [v5 dictionaryForKey:v6];
   if (v9)
   {
     v10 = v9;
-    if (!v4)
+    if (!digestCopy)
     {
       goto LABEL_23;
     }
@@ -973,8 +973,8 @@ LABEL_16:
     {
       if (v12)
       {
-        v14 = [v12 sha1Digest];
-        v15 = [v4 isEqual:v14];
+        sha1Digest = [v12 sha1Digest];
+        v15 = [digestCopy isEqual:sha1Digest];
 
         if (v15)
         {
@@ -1042,16 +1042,16 @@ LABEL_23:
   return v10;
 }
 
-- (void)garbageCollectEMCSBackupsExcluding:(id)a3
+- (void)garbageCollectEMCSBackupsExcluding:(id)excluding
 {
-  v4 = a3;
+  excludingCopy = excluding;
   v5 = [(SecureBackupDaemon *)self kvs];
-  v6 = [v5 dictionaryRepresentation];
+  dictionaryRepresentation = [v5 dictionaryRepresentation];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v7 = [dictionaryRepresentation countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v7)
   {
     v9 = v7;
@@ -1064,11 +1064,11 @@ LABEL_23:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dictionaryRepresentation);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v12 isEqualToString:{@"EMCSBackupDict", v14}] & 1) == 0 && objc_msgSend(v12, "hasPrefix:", @"EMCSBackupDict") && (objc_msgSend(v12, "hasSuffix:", v4) & 1) == 0)
+        if (([v12 isEqualToString:{@"EMCSBackupDict", v14}] & 1) == 0 && objc_msgSend(v12, "hasPrefix:", @"EMCSBackupDict") && (objc_msgSend(v12, "hasSuffix:", excludingCopy) & 1) == 0)
         {
           v13 = CloudServicesLog();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1082,7 +1082,7 @@ LABEL_23:
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v9 = [dictionaryRepresentation countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v9);
@@ -1096,27 +1096,27 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = [v2 objectForKey:@"BackupKeybag"];
-    v5 = [v4 sha1Digest];
+    sha1Digest = [v4 sha1Digest];
     v6 = 138412290;
-    v7 = v5;
+    v7 = sha1Digest;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Removing keybag from KVS digest: %@", &v6, 0xCu);
   }
 
   [v2 removeObjectForKey:@"BackupKeybag"];
 }
 
-- (void)_setAutobackupEnabledWithReply:(id)a3
+- (void)_setAutobackupEnabledWithReply:(id)reply
 {
-  [(SecureBackupDaemon *)self _backupFullKeychainWithReply:a3];
-  v4 = [(SecureBackupDaemon *)self circleChangedNotification];
-  [(SecureBackupDaemon *)self unregisterForNotifyEvent:v4];
+  [(SecureBackupDaemon *)self _backupFullKeychainWithReply:reply];
+  circleChangedNotification = [(SecureBackupDaemon *)self circleChangedNotification];
+  [(SecureBackupDaemon *)self unregisterForNotifyEvent:circleChangedNotification];
 
   [(SecureBackupDaemon *)self setNeedInitialBackup:0];
 }
 
-- (void)_backupKeychainFully:(BOOL)a3 reply:(id)a4
+- (void)_backupKeychainFully:(BOOL)fully reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   if ([(SecureBackupDaemon *)self _backupEnabled])
   {
     v17[0] = 0;
@@ -1129,7 +1129,7 @@ LABEL_23:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = "";
-      if (!v6)
+      if (!replyCopy)
       {
         v8 = "a";
       }
@@ -1139,16 +1139,16 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "calling %ssynchronous backup", buf, 0xCu);
     }
 
-    v9 = [(SecureBackupDaemon *)self backupQueue];
+    backupQueue = [(SecureBackupDaemon *)self backupQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000127E4;
     v13[3] = &unk_100075270;
     v13[4] = self;
-    v16 = a3;
-    v14 = v6;
+    fullyCopy = fully;
+    v14 = replyCopy;
     v15 = v17;
-    dispatch_async(v9, v13);
+    dispatch_async(backupQueue, v13);
 
     _Block_object_dispose(v17, 8);
   }
@@ -1161,20 +1161,20 @@ LABEL_23:
       sub_100049FAC();
     }
 
-    if (v6)
+    if (replyCopy)
     {
       v21 = NSLocalizedDescriptionKey;
       v22 = @"Attempt to back up when backup not enabled";
       v11 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v12 = [NSError errorWithDomain:kSecureBackupErrorDomain code:16 userInfo:v11];
-      (*(v6 + 2))(v6, v12);
+      (*(replyCopy + 2))(replyCopy, v12);
     }
   }
 }
 
-- (void)_backupCloudIdentityKeychainViewAndPushToKVSCheckBackupEnabled:(BOOL)a3
+- (void)_backupCloudIdentityKeychainViewAndPushToKVSCheckBackupEnabled:(BOOL)enabled
 {
-  if (!a3)
+  if (!enabled)
   {
     v5 = CloudServicesLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1195,14 +1195,14 @@ LABEL_9:
     v11 = sub_1000109EC;
     v12 = sub_1000109FC;
     v13 = os_transaction_create();
-    v6 = [(SecureBackupDaemon *)self backupQueue];
+    backupQueue = [(SecureBackupDaemon *)self backupQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100012A74;
     v7[3] = &unk_100075298;
     v7[4] = self;
     v7[5] = buf;
-    dispatch_async(v6, v7);
+    dispatch_async(backupQueue, v7);
 
     _Block_object_dispose(buf, 8);
     return;
@@ -1215,15 +1215,15 @@ LABEL_9:
   }
 }
 
-- (id)_consumeViewBackup:(id)a3 recordID:(id)a4
+- (id)_consumeViewBackup:(id)backup recordID:(id)d
 {
-  v6 = a3;
-  v56 = a4;
+  backupCopy = backup;
+  dCopy = d;
   v7 = CloudServicesLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = backupCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "_consumeViewBackup: consuming backup for view %@", &buf, 0xCu);
   }
 
@@ -1253,7 +1253,7 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *v96 = 138412290;
-      v97 = v6;
+      v97 = backupCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_consumeViewBackup: calling SecItemBackupWithChanges() for viewname: %@", v96, 0xCu);
     }
 
@@ -1277,9 +1277,9 @@ LABEL_9:
     v61 = &v86;
     v62 = &v76;
     v63 = &v80;
-    v10 = v6;
+    v10 = backupCopy;
     v59 = v10;
-    v11 = v56;
+    v11 = dCopy;
     v60 = v11;
     p_buf = &buf;
     v65 = &v72;
@@ -1299,7 +1299,7 @@ LABEL_9:
       v17 = *(v73 + 6);
       v18 = *(v69 + 6);
       *v96 = 138413314;
-      v97 = v6;
+      v97 = backupCopy;
       v98 = 2080;
       v99 = v15;
       v100 = 1024;
@@ -1315,8 +1315,8 @@ LABEL_9:
     {
       if (v13)
       {
-        v26 = [v13 domain];
-        if ([v26 isEqualToString:NSPOSIXErrorDomain])
+        domain = [v13 domain];
+        if ([domain isEqualToString:NSPOSIXErrorDomain])
         {
           v27 = [v13 code] == 2;
 
@@ -1326,7 +1326,7 @@ LABEL_9:
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
               *v96 = 138412290;
-              v97 = v6;
+              v97 = backupCopy;
               _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "_consumeViewBackup: SecKeychainBackupWithChanges: no journal file, skipping %@", v96, 0xCu);
             }
 
@@ -1343,7 +1343,7 @@ LABEL_9:
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
         *v96 = 138412546;
-        v97 = v6;
+        v97 = backupCopy;
         v98 = 2112;
         v99 = v13;
         _os_log_error_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "_consumeViewBackup: SecKeychainBackupWithChanges for view %@ failed: %@", v96, 0x16u);
@@ -1374,7 +1374,7 @@ LABEL_9:
       {
         v49 = *(*(&buf + 1) + 40);
         *v96 = 138412546;
-        v97 = v6;
+        v97 = backupCopy;
         v98 = 2112;
         v99 = v49;
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "_consumeViewBackup: Handling events for view %@ failed: %@", v96, 0x16u);
@@ -1402,7 +1402,7 @@ LABEL_31:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       *v96 = 138412290;
-      v97 = v6;
+      v97 = backupCopy;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "_consumeViewBackup: Successfully handled event for view: %@", v96, 0xCu);
     }
 
@@ -1416,11 +1416,11 @@ LABEL_31:
       goto LABEL_33;
     }
 
-    v31 = [v30 keybagDigest];
-    v32 = [v81[5] manifestHash];
+    keybagDigest = [v30 keybagDigest];
+    manifestHash = [v81[5] manifestHash];
     v33 = *(&buf + 1);
     obj = *(*(&buf + 1) + 40);
-    v34 = [(SecureBackupDaemon *)self backupSetConfirmedManifest:v10 digest:v31 manifest:v32 error:&obj];
+    v34 = [(SecureBackupDaemon *)self backupSetConfirmedManifest:v10 digest:keybagDigest manifest:manifestHash error:&obj];
     objc_storeStrong((v33 + 40), obj);
 
     if ((v34 & 1) == 0)
@@ -1430,7 +1430,7 @@ LABEL_31:
       {
         v50 = *(*(&buf + 1) + 40);
         *v96 = 138412546;
-        v97 = v6;
+        v97 = backupCopy;
         v98 = 2112;
         v99 = v50;
         _os_log_error_impl(&_mh_execute_header, v41, OS_LOG_TYPE_ERROR, "_consumeViewBackup: SecItemBackupSetConfirmedManifest for view %@ failed: %@", v96, 0x16u);
@@ -1479,9 +1479,9 @@ LABEL_33:
   return v51;
 }
 
-- (id)_consumeFullBackupForRecordID:(id)a3
+- (id)_consumeFullBackupForRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1501,8 +1501,8 @@ LABEL_33:
   v18 = 3221225472;
   v19 = sub_100013E84;
   v20 = &unk_1000751F8;
-  v21 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = dCopy;
   v22 = v6;
   v7 = [(SecureBackupDaemon *)self backupWithRegisteredBackupsWithError:&v24 handler:&v17];
   v8 = v24;
@@ -1535,7 +1535,7 @@ LABEL_33:
     }
 
     v11 = objc_alloc_init(NSMutableDictionary);
-    [v11 setObject:v8 forKeyedSubscript:{NSUnderlyingErrorKey, v17, v18, v19, v20, v21}];
+    [v11 setObject:v8 forKeyedSubscript:{NSUnderlyingErrorKey, v17, v18, v19, v20, selfCopy}];
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v11];
     v14 = *(v26 + 5);
     *(v26 + 5) = v13;
@@ -1565,11 +1565,11 @@ LABEL_33:
   v17[2] = sub_10001423C;
   v17[3] = &unk_100075310;
   v20 = &v27;
-  v18 = self;
-  v3 = [(SecureBackupDaemon *)self copyMyPeerID];
-  v19 = v3;
+  selfCopy = self;
+  copyMyPeerID = [(SecureBackupDaemon *)self copyMyPeerID];
+  v19 = copyMyPeerID;
   v21 = &v23;
-  v4 = [(SecureBackupDaemon *)v18 backupWithRegisteredBackupsWithError:&v22 handler:v17];
+  v4 = [(SecureBackupDaemon *)selfCopy backupWithRegisteredBackupsWithError:&v22 handler:v17];
   v5 = v22;
   v6 = CloudServicesLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1609,9 +1609,9 @@ LABEL_33:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "forcing KVS push", buf, 2u);
     }
 
-    v13 = [(SecureBackupDaemon *)self _pushCachedKeychainToKVS];
+    _pushCachedKeychainToKVS = [(SecureBackupDaemon *)self _pushCachedKeychainToKVS];
     v14 = v28[5];
-    v28[5] = v13;
+    v28[5] = _pushCachedKeychainToKVS;
   }
 
   v15 = v28[5];
@@ -1641,28 +1641,28 @@ LABEL_33:
   [(SecureBackupDaemon *)self _setBackupEnabled:0 iCDP:1];
 }
 
-- (void)registerForNotifyEvent:(id)a3
+- (void)registerForNotifyEvent:(id)event
 {
-  v3 = [a3 UTF8String];
-  if (v3)
+  uTF8String = [event UTF8String];
+  if (uTF8String)
   {
-    v4 = v3;
+    v4 = uTF8String;
     v5 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_string(v5, "Notification", v4);
     xpc_set_event();
   }
 }
 
-- (void)unregisterForNotifyEvent:(id)a3
+- (void)unregisterForNotifyEvent:(id)event
 {
-  if ([a3 UTF8String])
+  if ([event UTF8String])
   {
 
     xpc_set_event();
   }
 }
 
-- (id)_gestaltValueForKey:(__CFString *)a3
+- (id)_gestaltValueForKey:(__CFString *)key
 {
   v11 = 0;
   v4 = MGCopyAnswerWithError();
@@ -1671,7 +1671,7 @@ LABEL_33:
     v5 = CloudServicesLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A4C8(a3, &v11);
+      sub_10004A4C8(key, &v11);
     }
 
     v6 = +[CloudServicesAnalytics logger];
@@ -1686,10 +1686,10 @@ LABEL_33:
   return v4;
 }
 
-- (id)normalizeSMSTarget:(id)a3 error:(id *)a4
+- (id)normalizeSMSTarget:(id)target error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 length];
+  targetCopy = target;
+  v6 = [targetCopy length];
   v7 = (2 * v6 + 15) & 0xFFFFFFFFFFFFFFF0;
   v8 = &v16 - v7;
   if (v6)
@@ -1698,19 +1698,19 @@ LABEL_33:
   }
 
   v9 = +[NSCharacterSet decimalDigitCharacterSet];
-  v10 = [v9 invertedSet];
+  invertedSet = [v9 invertedSet];
 
-  if ([v5 rangeOfCharacterFromSet:v10 options:2] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([targetCopy rangeOfCharacterFromSet:invertedSet options:2] == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v6)
     {
       for (i = 0; i != v6; i = i + 1)
       {
-        *&v8[2 * i] = u_charDigitValue([v5 characterAtIndex:i]) + 48;
+        *&v8[2 * i] = u_charDigitValue([targetCopy characterAtIndex:i]) + 48;
       }
     }
 
-    a4 = [NSString stringWithCharacters:v8 length:v6];
+    error = [NSString stringWithCharacters:v8 length:v6];
   }
 
   else
@@ -1721,31 +1721,31 @@ LABEL_33:
       sub_10004A548();
     }
 
-    if (a4)
+    if (error)
     {
       v13 = objc_alloc_init(NSMutableDictionary);
-      v14 = [[NSString alloc] initWithFormat:@"attempt to enable backup with non-decimal digits in SMS target: %@", v5];
-      [v13 setObject:v14 forKeyedSubscript:NSLocalizedDescriptionKey];
+      targetCopy = [[NSString alloc] initWithFormat:@"attempt to enable backup with non-decimal digits in SMS target: %@", targetCopy];
+      [v13 setObject:targetCopy forKeyedSubscript:NSLocalizedDescriptionKey];
 
-      *a4 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v13];
+      *error = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v13];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
-  return a4;
+  return error;
 }
 
-- (SecureBackupDaemon)initWithOperationsLogger:(id)a3
+- (SecureBackupDaemon)initWithOperationsLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v25.receiver = self;
   v25.super_class = SecureBackupDaemon;
   v6 = [(SecureBackupDaemon *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operationsLogger, a3);
+    objc_storeStrong(&v6->_operationsLogger, logger);
     v8 = +[NSFileManager defaultManager];
     v24 = 0;
     v9 = [v8 URLForDirectory:14 inDomain:1 appropriateForURL:0 create:0 error:&v24];
@@ -1787,20 +1787,20 @@ LABEL_33:
   [(SecureBackupDaemon *)self setIgnoredNotifications:v4];
 
   v5 = +[UMUserManager sharedManager];
-  v6 = [v5 isMultiUser];
+  isMultiUser = [v5 isMultiUser];
 
-  if (v6)
+  if (isMultiUser)
   {
     [(SecureBackupDaemon *)self registerForNotifyEvent:@"com.apple.security.keychainchanged"];
   }
 
-  v7 = [(SecureBackupDaemon *)self connectionQueue];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10001545C;
   handler[3] = &unk_100075360;
   handler[4] = self;
-  xpc_set_event_stream_handler("com.apple.notifyd.matching", v7, handler);
+  xpc_set_event_stream_handler("com.apple.notifyd.matching", connectionQueue, handler);
 }
 
 - (id)copyKVSState
@@ -1866,11 +1866,11 @@ LABEL_33:
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [(SecureBackupDaemon *)self copyKVSState];
-  if (v5)
+  copyKVSState = [(SecureBackupDaemon *)self copyKVSState];
+  if (copyKVSState)
   {
     v14 = 0;
-    v6 = [NSPropertyListSerialization dataWithPropertyList:v5 format:200 options:0 error:&v14];
+    v6 = [NSPropertyListSerialization dataWithPropertyList:copyKVSState format:200 options:0 error:&v14];
     v7 = v14;
     if (v6)
     {
@@ -1931,15 +1931,15 @@ LABEL_18:
 
 - (NSURL)cachedKeychainURL
 {
-  v3 = [(SecureBackupDaemon *)self cacheDirURL];
+  cacheDirURL = [(SecureBackupDaemon *)self cacheDirURL];
 
-  if (v3)
+  if (cacheDirURL)
   {
     v4 = sub_100002B84();
     if (v4)
     {
-      v5 = [(SecureBackupDaemon *)self cacheDirURL];
-      v6 = [v5 URLByAppendingPathComponent:v4];
+      cacheDirURL2 = [(SecureBackupDaemon *)self cacheDirURL];
+      v6 = [cacheDirURL2 URLByAppendingPathComponent:v4];
       v7 = [v6 URLByAppendingPathExtension:@"plist"];
     }
 
@@ -1966,15 +1966,15 @@ LABEL_18:
 
 - (NSURL)cachedManifestURL
 {
-  v3 = [(SecureBackupDaemon *)self cacheDirURL];
+  cacheDirURL = [(SecureBackupDaemon *)self cacheDirURL];
 
-  if (v3)
+  if (cacheDirURL)
   {
     v4 = sub_100002B84();
     if (v4)
     {
-      v5 = [(SecureBackupDaemon *)self cacheDirURL];
-      v6 = [v5 URLByAppendingPathComponent:v4];
+      cacheDirURL2 = [(SecureBackupDaemon *)self cacheDirURL];
+      v6 = [cacheDirURL2 URLByAppendingPathComponent:v4];
       v7 = [v6 URLByAppendingPathExtension:@"manifest"];
     }
 
@@ -1999,60 +1999,60 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 valueForEntitlement:@"application-identifier"];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [connectionCopy valueForEntitlement:@"application-identifier"];
   v9 = CloudServicesLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 processIdentifier];
-    v11 = [v6 serviceName];
+    processIdentifier = [connectionCopy processIdentifier];
+    serviceName = [listenerCopy serviceName];
     v24[0] = 67109634;
-    v24[1] = v10;
+    v24[1] = processIdentifier;
     v25 = 2112;
     v26 = v8;
     v27 = 2112;
-    v28 = v11;
+    v28 = serviceName;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "sbd listener begin from pid %d (%@) [%@]", v24, 0x1Cu);
   }
 
-  v12 = [v7 valueForEntitlement:@"com.apple.securebackupd.access"];
+  v12 = [connectionCopy valueForEntitlement:@"com.apple.securebackupd.access"];
 
   if (!v12)
   {
     v18 = CloudServicesLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A754(v7);
+      sub_10004A754(connectionCopy);
     }
 
     goto LABEL_13;
   }
 
-  v13 = [v6 serviceName];
-  v14 = [v13 isEqualToString:SECURE_BACKUP_SERVICE_NAME];
+  serviceName2 = [listenerCopy serviceName];
+  v14 = [serviceName2 isEqualToString:SECURE_BACKUP_SERVICE_NAME];
 
   if (!v14)
   {
-    v19 = [v6 serviceName];
-    v20 = [v19 isEqualToString:SECURE_BACKUP_CONCURRENT_SERVICE_NAME];
+    serviceName3 = [listenerCopy serviceName];
+    v20 = [serviceName3 isEqualToString:SECURE_BACKUP_CONCURRENT_SERVICE_NAME];
 
     if (v20)
     {
       v21 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SecureBackupConcurrentProtocol];
       v16 = SecureBackupSetupConcurrentProtocol();
 
-      [v7 setExportedInterface:v16];
-      [v7 setExportedObject:self];
+      [connectionCopy setExportedInterface:v16];
+      [connectionCopy setExportedObject:self];
       goto LABEL_10;
     }
 
     v18 = CloudServicesLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A6A0(v7, v6);
+      sub_10004A6A0(connectionCopy, listenerCopy);
     }
 
 LABEL_13:
@@ -2064,23 +2064,23 @@ LABEL_13:
   v15 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SecureBackupProtocol];
   v16 = SecureBackupSetupProtocol();
 
-  [v7 setExportedInterface:v16];
-  [v7 setExportedObject:self];
-  v17 = [(SecureBackupDaemon *)self connectionQueue];
-  [v7 _setQueue:v17];
+  [connectionCopy setExportedInterface:v16];
+  [connectionCopy setExportedObject:self];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [connectionCopy _setQueue:connectionQueue];
 
 LABEL_10:
-  [v7 resume];
+  [connectionCopy resume];
   v22 = 1;
 LABEL_14:
 
   return v22;
 }
 
-- (void)recordNotification:(id)a3 handled:(BOOL)a4
+- (void)recordNotification:(id)notification handled:(BOOL)handled
 {
-  v6 = a3;
-  if (a4)
+  notificationCopy = notification;
+  if (handled)
   {
     [(SecureBackupDaemon *)self handledNotifications];
   }
@@ -2090,24 +2090,24 @@ LABEL_14:
     [(SecureBackupDaemon *)self ignoredNotifications];
   }
   v9 = ;
-  v7 = [v9 objectForKeyedSubscript:v6];
+  v7 = [v9 objectForKeyedSubscript:notificationCopy];
   v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 integerValue] + 1);
-  [v9 setObject:v8 forKeyedSubscript:v6];
+  [v9 setObject:v8 forKeyedSubscript:notificationCopy];
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 isEqualToString:@"com.apple.security.itembackup"];
-  v6 = [v4 isEqualToString:@"com.apple.security.keychainchanged"];
-  v7 = [(SecureBackupDaemon *)self circleChangedNotification];
-  v8 = [v4 isEqualToString:v7];
+  notificationCopy = notification;
+  v5 = [notificationCopy isEqualToString:@"com.apple.security.itembackup"];
+  v6 = [notificationCopy isEqualToString:@"com.apple.security.keychainchanged"];
+  circleChangedNotification = [(SecureBackupDaemon *)self circleChangedNotification];
+  v8 = [notificationCopy isEqualToString:circleChangedNotification];
 
   if ((v5 & 1) == 0 && !v6)
   {
     if (!v8 || [(SecureBackupDaemon *)self needInitialBackup])
     {
-      [(SecureBackupDaemon *)self notificationOccurred:v4];
+      [(SecureBackupDaemon *)self notificationOccurred:notificationCopy];
       goto LABEL_16;
     }
 
@@ -2135,7 +2135,7 @@ LABEL_14:
 
 LABEL_15:
 
-    [(SecureBackupDaemon *)self recordNotification:v4 handled:0];
+    [(SecureBackupDaemon *)self recordNotification:notificationCopy handled:0];
     goto LABEL_16;
   }
 
@@ -2154,38 +2154,38 @@ LABEL_15:
   }
 
   v12 = dispatch_time(0, 5000000000);
-  v13 = [(SecureBackupDaemon *)self connectionQueue];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016410;
   block[3] = &unk_1000753B0;
   block[4] = self;
-  v15 = v4;
+  v15 = notificationCopy;
   v16 = v18;
-  dispatch_after(v12, v13, block);
+  dispatch_after(v12, connectionQueue, block);
 
   _Block_object_dispose(v18, 8);
 LABEL_16:
 }
 
-- (void)notificationOccurred:(id)a3
+- (void)notificationOccurred:(id)occurred
 {
-  v4 = a3;
-  [(SecureBackupDaemon *)self recordNotification:v4 handled:1];
+  occurredCopy = occurred;
+  [(SecureBackupDaemon *)self recordNotification:occurredCopy handled:1];
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v4;
+    v16 = occurredCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "got notification: %@", buf, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"com.apple.security.itembackup"])
+  if ([occurredCopy isEqualToString:@"com.apple.security.itembackup"])
   {
     [(SecureBackupDaemon *)self _backupKeychain];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.security.keychainchanged"])
+  else if ([occurredCopy isEqualToString:@"com.apple.security.keychainchanged"])
   {
     v6 = dispatch_semaphore_create(0);
     v7 = CloudServicesLog();
@@ -2207,8 +2207,8 @@ LABEL_16:
 
   else
   {
-    v9 = [(SecureBackupDaemon *)self circleChangedNotification];
-    v10 = [v4 isEqualToString:v9];
+    circleChangedNotification = [(SecureBackupDaemon *)self circleChangedNotification];
+    v10 = [occurredCopy isEqualToString:circleChangedNotification];
 
     if (v10)
     {
@@ -2222,27 +2222,27 @@ LABEL_16:
       [(SecureBackupDaemon *)self _setAutobackupEnabled];
     }
 
-    else if ([v4 isEqualToString:@"com.apple.sbd.kvstorechange"])
+    else if ([occurredCopy isEqualToString:@"com.apple.sbd.kvstorechange"])
     {
       v12 = CloudServicesLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = occurredCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "handling notification %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (id)massageIncomingMetadataFromInfo:(id)a3
+- (id)massageIncomingMetadataFromInfo:(id)info
 {
   v3 = kSecureBackupClientMetadataKey;
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:v3];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 objectForKeyedSubscript:kSecureBackupTimestampKey];
+  v7 = [infoCopy objectForKeyedSubscript:kSecureBackupTimestampKey];
 
   v8 = [v6 objectForKeyedSubscript:kSecureBackupMetadataTimestampKey];
   v9 = kSecureBackupUsesComplexPassphraseKey;
@@ -2272,14 +2272,14 @@ LABEL_11:
 
   v15 = kSecureBackupNumericPassphraseLengthKey;
   v16 = [v6 objectForKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
-  v17 = [v16 intValue];
+  intValue = [v16 intValue];
 
-  if (v17 == 6)
+  if (intValue == 6)
   {
     goto LABEL_7;
   }
 
-  if (v17 == 4)
+  if (intValue == 4)
   {
     [v6 setObject:&__kCFBooleanFalse forKeyedSubscript:v12];
     [v6 setObject:&off_10007A3C8 forKeyedSubscript:v15];
@@ -2303,9 +2303,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)filteriCDPRecords:(id)a3
+- (id)filteriCDPRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v36 = objc_alloc_init(NSMutableSet);
   v5 = [(SecureBackupDaemon *)self kvs];
   v6 = [(SecureBackupDaemon *)self _getICDPBackupFromKVS:v5 forView:@"iCloudIdentity"];
@@ -2329,13 +2329,13 @@ LABEL_12:
     v9 = +[CloudServicesAnalytics logger];
     [v9 logSuccessForEvent:CloudServicesAnalyticsiCDPKeybag];
 
-    v37 = [v8 backupKeyDigests];
+    backupKeyDigests = [v8 backupKeyDigests];
     v10 = CloudServicesLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 peerIDs];
+      peerIDs = [v8 peerIDs];
       *buf = 138412290;
-      v43 = v11;
+      v43 = peerIDs;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "iCloudIdentity backup keybag peers: %@", buf, 0xCu);
     }
 
@@ -2343,7 +2343,7 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v43 = v37;
+      v43 = backupKeyDigests;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "keybag contains key digests %@", buf, 0xCu);
     }
 
@@ -2351,14 +2351,14 @@ LABEL_12:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = v4;
+    v13 = recordsCopy;
     v14 = [v13 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v14)
     {
       v15 = v14;
       v32 = v8;
       v33 = v6;
-      v34 = v4;
+      v34 = recordsCopy;
       v16 = *v39;
       v17 = kSecureBackupKeybagDigestKey;
       do
@@ -2373,7 +2373,7 @@ LABEL_12:
           v19 = *(*(&v38 + 1) + 8 * i);
           v20 = [v19 objectForKeyedSubscript:@"metadata"];
           v21 = [v20 objectForKeyedSubscript:v17];
-          if (v21 && [v37 containsObject:v21])
+          if (v21 && [backupKeyDigests containsObject:v21])
           {
             [v36 addObject:v19];
           }
@@ -2384,12 +2384,12 @@ LABEL_12:
             if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
             {
               v35 = [v19 objectForKeyedSubscript:@"recordID"];
-              v23 = [v21 hexString];
+              hexString = [v21 hexString];
               *buf = 138412546;
               v43 = v35;
               v44 = 2112;
-              v45 = v23;
-              v24 = v23;
+              v45 = hexString;
+              v24 = hexString;
               _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "record id %@ cannot recover iCloudIdentity backup! (backup key digest: %@)", buf, 0x16u);
             }
           }
@@ -2401,7 +2401,7 @@ LABEL_12:
       while (v15);
 
       v6 = v33;
-      v4 = v34;
+      recordsCopy = v34;
       v8 = v32;
     }
 
@@ -2424,7 +2424,7 @@ LABEL_27:
       [v30 logUnrecoverableError:v29 forEvent:CloudServicesiCloudIdentity withAttributes:0];
     }
 
-    v28 = [v36 allObjects];
+    allObjects = [v36 allObjects];
     goto LABEL_31;
   }
 
@@ -2438,15 +2438,15 @@ LABEL_27:
   v27 = +[CloudServicesAnalytics logger];
   [v27 logUnrecoverableError:v26 forEvent:CloudServicesAnalyticsiCDPKeybag withAttributes:0];
 
-  v28 = &__NSArray0__struct;
+  allObjects = &__NSArray0__struct;
 LABEL_31:
 
-  return v28;
+  return allObjects;
 }
 
-- (BOOL)hasRecoveryKeyInKVS:(id)a3 error:(id *)a4
+- (BOOL)hasRecoveryKeyInKVS:(id)s error:(id *)error
 {
-  v6 = [(SecureBackupDaemon *)self _getICDPBackupFromKVS:a3 forView:@"iCloudIdentity"];
+  v6 = [(SecureBackupDaemon *)self _getICDPBackupFromKVS:s forView:@"iCloudIdentity"];
   v7 = v6;
   if (!v6)
   {
@@ -2458,11 +2458,11 @@ LABEL_31:
 
     v15 = [CloudServicesError errorWithCode:204 error:0 format:@"could not get iCloudIdentity backup!"];
     v9 = v15;
-    if (a4)
+    if (error)
     {
       v16 = v15;
       LOBYTE(v11) = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_16;
     }
 
@@ -2484,10 +2484,10 @@ LABEL_15:
 
     v18 = [CloudServicesError errorWithCode:211 error:0 format:@"no keybag found in for recovery key"];
     v9 = v18;
-    if (a4)
+    if (error)
     {
       v19 = v18;
-      *a4 = v9;
+      *error = v9;
     }
 
     v20 = +[CloudServicesAnalytics logger];
@@ -2503,9 +2503,9 @@ LABEL_15:
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v9 peerIDs];
+    peerIDs = [v9 peerIDs];
     v22 = 138412546;
-    v23 = v13;
+    v23 = peerIDs;
     v24 = 1024;
     v25 = v11;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "iCloudIdentity backup keybag peers: %@ -- returning %{BOOL}d", &v22, 0x12u);
@@ -2515,17 +2515,17 @@ LABEL_16:
   return v11;
 }
 
-- (id)_recordIDFromLabel:(id)a3 withPrefix:(id)a4 suffix:(id)a5
+- (id)_recordIDFromLabel:(id)label withPrefix:(id)prefix suffix:(id)suffix
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 length];
-  v10 = [v8 length];
+  labelCopy = label;
+  suffixCopy = suffix;
+  v9 = [prefix length];
+  v10 = [suffixCopy length];
 
   v11 = v10 + (v9 + 1);
-  if ([v7 length] > v11 && objc_msgSend(v7, "characterAtIndex:", v9) == 46)
+  if ([labelCopy length] > v11 && objc_msgSend(labelCopy, "characterAtIndex:", v9) == 46)
   {
-    v12 = [v7 substringWithRange:{v9 + 1, objc_msgSend(v7, "length") - v11}];
+    v12 = [labelCopy substringWithRange:{v9 + 1, objc_msgSend(labelCopy, "length") - v11}];
   }
 
   else
@@ -2536,10 +2536,10 @@ LABEL_16:
   return v12;
 }
 
-- (void)_getAccountInfoWithRequest:(id)a3 reply:(id)a4
+- (void)_getAccountInfoWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2549,8 +2549,8 @@ LABEL_16:
   }
 
   v9 = [EscrowService alloc];
-  v10 = [(SecureBackupDaemon *)self operationsLogger];
-  v11 = [(EscrowService *)v9 initWithOperationsLogger:v10];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  v11 = [(EscrowService *)v9 initWithOperationsLogger:operationsLogger];
 
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2563,20 +2563,20 @@ LABEL_16:
   v16[1] = 3221225472;
   v16[2] = sub_100017464;
   v16[3] = &unk_100075428;
-  v17 = v6;
-  v18 = self;
+  v17 = requestCopy;
+  selfCopy = self;
   v19 = v11;
-  v20 = v7;
+  v20 = replyCopy;
   v13 = v11;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = replyCopy;
   [(EscrowService *)v13 getAccountInfoWithRequest:v14 completionBlock:v16];
 }
 
-- (void)_fetchStingrayAccountStatusInDaemon:(id)a3 reply:(id)a4
+- (void)_fetchStingrayAccountStatusInDaemon:(id)daemon reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  daemonCopy = daemon;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2586,8 +2586,8 @@ LABEL_16:
   }
 
   v9 = [EscrowService alloc];
-  v10 = [(SecureBackupDaemon *)self operationsLogger];
-  v11 = [(EscrowService *)v9 initWithOperationsLogger:v10];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  v11 = [(EscrowService *)v9 initWithOperationsLogger:operationsLogger];
 
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2600,15 +2600,15 @@ LABEL_16:
   v14[1] = 3221225472;
   v14[2] = sub_100019400;
   v14[3] = &unk_100075450;
-  v15 = v6;
-  v13 = v6;
-  [(EscrowService *)v11 getAccountInfoWithRequest:v7 completionBlock:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [(EscrowService *)v11 getAccountInfoWithRequest:daemonCopy completionBlock:v14];
 }
 
-- (id)tagStaleBottleRecords:(id)a3 suggestedBottles:(id)a4
+- (id)tagStaleBottleRecords:(id)records suggestedBottles:(id)bottles
 {
-  v5 = a4;
-  [NSMutableArray arrayWithArray:a3];
+  bottlesCopy = bottles;
+  [NSMutableArray arrayWithArray:records];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -2639,20 +2639,20 @@ LABEL_16:
         v14 = [v13 objectForKeyedSubscript:v26];
         if (v14)
         {
-          v15 = [v5 preferredBottleIDs];
-          if ([v15 containsObject:v14])
+          preferredBottleIDs = [bottlesCopy preferredBottleIDs];
+          if ([preferredBottleIDs containsObject:v14])
           {
           }
 
           else
           {
-            [v5 partialRecoveryBottleIDs];
+            [bottlesCopy partialRecoveryBottleIDs];
             v16 = v7;
             v17 = v8;
-            v19 = v18 = v5;
+            v19 = v18 = bottlesCopy;
             v20 = [v19 containsObject:v14];
 
-            v5 = v18;
+            bottlesCopy = v18;
             v8 = v17;
             v7 = v16;
             v9 = v24;
@@ -2676,14 +2676,14 @@ LABEL_16:
   return obj;
 }
 
-- (id)sortRecordsByBottleID:(id)a3
+- (id)sortRecordsByBottleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = CloudServicesLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *v87 = [v4 count];
+    *v87 = [dCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sorting %d records", buf, 8u);
   }
 
@@ -2707,11 +2707,11 @@ LABEL_16:
     goto LABEL_47;
   }
 
-  v11 = [v8 preferredBottleIDs];
-  if (!v11 || (v12 = v11, [v8 preferredBottleIDs], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, !v14))
+  preferredBottleIDs = [v8 preferredBottleIDs];
+  if (!preferredBottleIDs || (v12 = preferredBottleIDs, [v8 preferredBottleIDs], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, !v14))
   {
-    v15 = [v8 partialRecoveryBottleIDs];
-    if (!v15 || (v16 = v15, [v8 partialRecoveryBottleIDs], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v16, !v18))
+    partialRecoveryBottleIDs = [v8 partialRecoveryBottleIDs];
+    if (!partialRecoveryBottleIDs || (v16 = partialRecoveryBottleIDs, [v8 partialRecoveryBottleIDs], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v16, !v18))
     {
       v64 = CloudServicesLog();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -2721,7 +2721,7 @@ LABEL_16:
 
 LABEL_47:
 
-      v65 = [(SecureBackupDaemon *)self tagStaleBottleRecords:v4 suggestedBottles:v8];
+      v65 = [(SecureBackupDaemon *)self tagStaleBottleRecords:dCopy suggestedBottles:v8];
       goto LABEL_52;
     }
   }
@@ -2729,10 +2729,10 @@ LABEL_47:
   v19 = CloudServicesLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [v8 preferredBottleIDs];
-    v21 = [v20 count];
-    v22 = [v8 partialRecoveryBottleIDs];
-    v23 = [v22 count];
+    preferredBottleIDs2 = [v8 preferredBottleIDs];
+    v21 = [preferredBottleIDs2 count];
+    partialRecoveryBottleIDs2 = [v8 partialRecoveryBottleIDs];
+    v23 = [partialRecoveryBottleIDs2 count];
     *buf = 67109376;
     *v87 = v21;
     *&v87[4] = 1024;
@@ -2741,16 +2741,16 @@ LABEL_47:
   }
 
   v24 = [NSMutableArray alloc];
-  v25 = [v8 preferredBottleIDs];
-  v26 = [v24 initWithCapacity:{objc_msgSend(v25, "count")}];
+  preferredBottleIDs3 = [v8 preferredBottleIDs];
+  v26 = [v24 initWithCapacity:{objc_msgSend(preferredBottleIDs3, "count")}];
 
   v27 = [NSMutableArray alloc];
-  v28 = [v8 partialRecoveryBottleIDs];
-  v72 = [v27 initWithCapacity:{objc_msgSend(v28, "count")}];
+  partialRecoveryBottleIDs3 = [v8 partialRecoveryBottleIDs];
+  v72 = [v27 initWithCapacity:{objc_msgSend(partialRecoveryBottleIDs3, "count")}];
 
   v69 = +[NSMutableArray array];
-  v29 = [v8 preferredBottleIDs];
-  v30 = [v29 count];
+  preferredBottleIDs4 = [v8 preferredBottleIDs];
+  v30 = [preferredBottleIDs4 count];
 
   if (v30)
   {
@@ -2758,8 +2758,8 @@ LABEL_47:
     do
     {
       [v26 setObject:&__NSDictionary0__struct atIndexedSubscript:v31++];
-      v32 = [v8 preferredBottleIDs];
-      v33 = [v32 count];
+      preferredBottleIDs5 = [v8 preferredBottleIDs];
+      v33 = [preferredBottleIDs5 count];
     }
 
     while (v31 < v33);
@@ -2767,9 +2767,9 @@ LABEL_47:
 
   v73 = v26;
   v70 = v6;
-  v68 = self;
-  v34 = [v8 partialRecoveryBottleIDs];
-  v35 = [v34 count];
+  selfCopy = self;
+  partialRecoveryBottleIDs4 = [v8 partialRecoveryBottleIDs];
+  v35 = [partialRecoveryBottleIDs4 count];
 
   if (v35)
   {
@@ -2777,8 +2777,8 @@ LABEL_47:
     do
     {
       [v72 setObject:&__NSDictionary0__struct atIndexedSubscript:v36++];
-      v37 = [v8 partialRecoveryBottleIDs];
-      v38 = [v37 count];
+      partialRecoveryBottleIDs5 = [v8 partialRecoveryBottleIDs];
+      v38 = [partialRecoveryBottleIDs5 count];
     }
 
     while (v36 < v38);
@@ -2788,8 +2788,8 @@ LABEL_47:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v71 = v4;
-  v39 = v4;
+  v71 = dCopy;
+  v39 = dCopy;
   v79 = [v39 countByEnumeratingWithState:&v80 objects:v85 count:16];
   if (v79)
   {
@@ -2833,12 +2833,12 @@ LABEL_30:
           goto LABEL_37;
         }
 
-        v48 = [v8 preferredBottleIDs];
-        v49 = [v48 indexOfObject:v47];
+        preferredBottleIDs6 = [v8 preferredBottleIDs];
+        v49 = [preferredBottleIDs6 indexOfObject:v47];
 
         v50 = v8;
-        v51 = [v8 partialRecoveryBottleIDs];
-        v52 = [v51 indexOfObject:v47];
+        partialRecoveryBottleIDs6 = [v8 partialRecoveryBottleIDs];
+        v52 = [partialRecoveryBottleIDs6 indexOfObject:v47];
 
         if (v49 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -2930,20 +2930,20 @@ LABEL_37:
       sub_10004A90C(v66);
     }
 
-    v63 = [(SecureBackupDaemon *)v68 tagStaleBottleRecords:v66 suggestedBottles:v8];
+    v63 = [(SecureBackupDaemon *)selfCopy tagStaleBottleRecords:v66 suggestedBottles:v8];
   }
 
   v65 = v63;
-  v4 = v71;
+  dCopy = v71;
 
 LABEL_52:
 
   return v65;
 }
 
-- (void)synchronizeKVSWithHandler:(id)a3
+- (void)synchronizeKVSWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (qword_100084A90 != -1)
   {
     sub_10004AA3C();
@@ -2996,7 +2996,7 @@ LABEL_52:
     v20 = v7;
     v21 = v9;
     v17[4] = self;
-    v19 = v4;
+    v19 = handlerCopy;
     v18 = v5;
     [v18 synchronizeWithCompletionHandler:v17];
   }
@@ -3007,35 +3007,35 @@ LABEL_52:
     v25 = @"KVS not available";
     v15 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v16 = [NSError errorWithDomain:kSecureBackupErrorDomain code:32 userInfo:v15];
-    (*(v4 + 2))(v4, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 }
 
-- (void)getAccountInfoWithRequest:(id)a3 reply:(id)a4
+- (void)getAccountInfoWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = os_transaction_create();
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10001AE6C;
   v20 = &unk_100075510;
-  v9 = v7;
+  v9 = replyCopy;
   v22 = v9;
   v10 = v8;
   v21 = v10;
   v11 = objc_retainBlock(&v17);
   v12 = [(SecureBackupDaemon *)self connectionQueue:v17];
-  [v6 setQueue:v12];
+  [requestCopy setQueue:v12];
 
-  v13 = [v6 error];
+  error = [requestCopy error];
 
-  if (v13)
+  if (error)
   {
     v14 = objc_alloc_init(NSMutableDictionary);
     [v14 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v15 = [v6 error];
-    [v14 setObject:v15 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v14 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v16 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v14];
     (v11[2])(v11, 0, v16);
@@ -3043,44 +3043,44 @@ LABEL_52:
 
   else
   {
-    [(SecureBackupDaemon *)self _getAccountInfoWithRequest:v6 reply:v11];
+    [(SecureBackupDaemon *)self _getAccountInfoWithRequest:requestCopy reply:v11];
   }
 }
 
-- (void)fetchStingrayAccountStatusInDaemon:(id)a3 reply:(id)a4
+- (void)fetchStingrayAccountStatusInDaemon:(id)daemon reply:(id)reply
 {
-  v13 = a3;
-  v6 = a4;
+  daemonCopy = daemon;
+  replyCopy = reply;
   v7 = os_transaction_create();
-  v8 = [(SecureBackupDaemon *)self connectionQueue];
-  [v13 setQueue:v8];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [daemonCopy setQueue:connectionQueue];
 
-  v9 = [v13 error];
+  error = [daemonCopy error];
 
-  if (v9)
+  if (error)
   {
     v10 = objc_alloc_init(NSMutableDictionary);
     [v10 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v11 = [v13 error];
-    [v10 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [daemonCopy error];
+    [v10 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v12 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v10];
-    v6[2](v6, 0, v12);
+    replyCopy[2](replyCopy, 0, v12);
   }
 
   else
   {
-    [(SecureBackupDaemon *)self _fetchStingrayAccountStatusInDaemon:v13 reply:v6];
+    [(SecureBackupDaemon *)self _fetchStingrayAccountStatusInDaemon:daemonCopy reply:replyCopy];
   }
 }
 
-- (id)massageOutgoingMetadataFromRequest:(id)a3
+- (id)massageOutgoingMetadataFromRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 mutableCopy];
+  requestCopy = request;
+  metadata = [requestCopy metadata];
+  v5 = [metadata mutableCopy];
 
-  if (v5 && ([v3 stingray] & 1) == 0 && (objc_msgSend(v3, "usesRandomPassphrase") & 1) == 0)
+  if (v5 && ([requestCopy stingray] & 1) == 0 && (objc_msgSend(requestCopy, "usesRandomPassphrase") & 1) == 0)
   {
     v6 = kSecureBackupUsesComplexPassphraseKey;
     v7 = [v5 objectForKeyedSubscript:kSecureBackupUsesComplexPassphraseKey];
@@ -3098,14 +3098,14 @@ LABEL_9:
     }
 
     v12 = [v5 objectForKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
-    v13 = [v12 intValue];
+    intValue = [v12 intValue];
 
-    if (v13 == 4)
+    if (intValue == 4)
     {
       goto LABEL_10;
     }
 
-    if (v13 == 6)
+    if (intValue == 6)
     {
       v10 = &__kCFBooleanTrue;
       v11 = v5;
@@ -3125,10 +3125,10 @@ LABEL_10:
   return v5;
 }
 
-- (void)_stashRecoveryDataWithRequest:(id)a3 reply:(id)a4
+- (void)_stashRecoveryDataWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3137,17 +3137,17 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (!v10)
+  if (!error)
   {
-    v15 = [v6 emcsMode];
+    emcsMode = [requestCopy emcsMode];
     v16 = CloudServicesLog();
     v17 = v16;
-    if (!v15)
+    if (!emcsMode)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
@@ -3170,9 +3170,9 @@ LABEL_10:
 
     v18 = objc_alloc_init(NSMutableDictionary);
     *buf = 0;
-    v19 = [v6 emcsDict];
-    v20 = [v6 emcsCred];
-    if (!(v19 | v20))
+    emcsDict = [requestCopy emcsDict];
+    emcsCred = [requestCopy emcsCred];
+    if (!(emcsDict | emcsCred))
     {
       v29 = CloudServicesLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -3183,14 +3183,14 @@ LABEL_10:
       v56 = NSLocalizedDescriptionKey;
       v30 = [[NSString alloc] initWithFormat:@"Missing parameter for SecEMCSCreateDerivedKey(): dict: %@nil, user credential: %@nil", &stru_1000767A0, &stru_1000767A0];
       v57 = v30;
-      v19 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
+      emcsDict = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
 
-      v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v19];
-      v7[2](v7, v11);
+      v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:emcsDict];
+      replyCopy[2](replyCopy, v11);
       goto LABEL_55;
     }
 
-    if (v19)
+    if (emcsDict)
     {
       v21 = SecEMCSCreateDerivedEMCSKey();
       if (v21)
@@ -3198,10 +3198,10 @@ LABEL_10:
         v22 = v21;
         [v18 setObject:v21 forKeyedSubscript:@"stashedEMCSKey"];
         v23 = kSecureBackupTimestampKey;
-        v24 = [v19 objectForKeyedSubscript:kSecureBackupTimestampKey];
+        v24 = [emcsDict objectForKeyedSubscript:kSecureBackupTimestampKey];
         [v18 setObject:v24 forKeyedSubscript:v23];
 
-        v25 = [v19 objectForKeyedSubscript:@"digest"];
+        v25 = [emcsDict objectForKeyedSubscript:@"digest"];
         if (v25)
         {
           v26 = @"digest";
@@ -3213,12 +3213,12 @@ LABEL_10:
         {
           v26 = @"stashedEMCSDict";
           v27 = v18;
-          v28 = v19;
+          v28 = emcsDict;
         }
 
         [v27 setObject:v28 forKeyedSubscript:v26];
-        v32 = v19;
-        v19 = v22;
+        v32 = emcsDict;
+        emcsDict = v22;
         goto LABEL_32;
       }
 
@@ -3244,7 +3244,7 @@ LABEL_10:
       v46[1] = 0;
       v32 = SecEMCSCreateNewiDMSKey();
       v33 = 0;
-      v19 = v33;
+      emcsDict = v33;
       if (v32)
       {
         if (!v33)
@@ -3259,9 +3259,9 @@ LABEL_10:
           v53 = @"SecEMCSCreateNewiDMSKey() returned nil EMCS key";
           v44 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
           v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v44];
-          v7[2](v7, v11);
+          replyCopy[2](replyCopy, v11);
 
-          v19 = v32;
+          emcsDict = v32;
           goto LABEL_55;
         }
 
@@ -3278,7 +3278,7 @@ LABEL_10:
           v51 = @"could not create backup keybag";
           v36 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
           v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:20 userInfo:v36];
-          v7[2](v7, v11);
+          replyCopy[2](replyCopy, v11);
           goto LABEL_53;
         }
 
@@ -3302,7 +3302,7 @@ LABEL_32:
 
           if (MKBUserSessionSetSecureBackupBlob())
           {
-            v7[2](v7, 0);
+            replyCopy[2](replyCopy, 0);
 LABEL_53:
 
             goto LABEL_54;
@@ -3334,7 +3334,7 @@ LABEL_53:
 
         v41 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v38];
 
-        v7[2](v7, v41);
+        replyCopy[2](replyCopy, v41);
         v11 = v41;
         goto LABEL_53;
       }
@@ -3351,7 +3351,7 @@ LABEL_53:
     }
 
     v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v32];
-    v7[2](v7, v11);
+    replyCopy[2](replyCopy, v11);
 LABEL_54:
 
 LABEL_55:
@@ -3360,39 +3360,39 @@ LABEL_55:
 
   v11 = objc_alloc_init(NSMutableDictionary);
   [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-  v12 = [v6 error];
-  [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+  error2 = [requestCopy error];
+  [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
   v13 = kSecureBackupErrorDomain;
   v14 = 5;
 LABEL_16:
   v18 = [NSError errorWithDomain:v13 code:v14 userInfo:v11];
-  v7[2](v7, v18);
+  replyCopy[2](replyCopy, v18);
 LABEL_17:
 }
 
-- (void)stashRecoveryDataWithRequest:(id)a3 reply:(id)a4
+- (void)stashRecoveryDataWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  requestCopy = request;
   kdebug_trace();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001BB38;
   v10[3] = &unk_100075538;
   v11 = os_transaction_create();
-  v12 = v6;
+  v12 = replyCopy;
   v8 = v11;
-  v9 = v6;
-  [(SecureBackupDaemon *)self _stashRecoveryDataWithRequest:v7 reply:v10];
+  v9 = replyCopy;
+  [(SecureBackupDaemon *)self _stashRecoveryDataWithRequest:requestCopy reply:v10];
 }
 
-- (void)setEMCSDict:(id)a3 backupKeybag:(id)a4 saveKeybag:(BOOL)a5 reply:(id)a6
+- (void)setEMCSDict:(id)dict backupKeybag:(id)keybag saveKeybag:(BOOL)saveKeybag reply:(id)reply
 {
-  v48 = a5;
-  v53 = a3;
-  v54 = a4;
-  v8 = a6;
+  saveKeybagCopy = saveKeybag;
+  dictCopy = dict;
+  keybagCopy = keybag;
+  replyCopy = reply;
   v9 = CloudServicesLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -3402,8 +3402,8 @@ LABEL_17:
   }
 
   v10 = +[UMUserManager sharedManager];
-  v11 = [v10 currentUser];
-  v12 = [v11 alternateDSID];
+  currentUser = [v10 currentUser];
+  alternateDSID = [currentUser alternateDSID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3411,15 +3411,15 @@ LABEL_17:
   v71 = sub_1000109EC;
   v72 = sub_1000109FC;
   v73 = 0;
-  if (v12)
+  if (alternateDSID)
   {
-    v13 = [v53 mutableCopy];
-    v14 = [v54 sha1Digest];
-    [v13 setObject:v14 forKeyedSubscript:@"digest"];
+    v13 = [dictCopy mutableCopy];
+    sha1Digest = [keybagCopy sha1Digest];
+    [v13 setObject:sha1Digest forKeyedSubscript:@"digest"];
     v15 = +[NSDate date];
     v47 = kSecureBackupTimestampKey;
     [v13 setObject:v15 forKeyedSubscript:?];
-    v50 = v14;
+    v50 = sha1Digest;
 
     v51 = objc_alloc_init(AKAppleIDAuthenticationController);
     v16 = dispatch_semaphore_create(0);
@@ -3451,8 +3451,8 @@ LABEL_17:
     p_buf = &buf;
     v24 = v16;
     v57 = v24;
-    v58 = self;
-    [v51 setConfigurationInfo:v13 forIdentifier:@"com.apple.idms.config.KCKey" forAltDSID:v12 completion:v56];
+    selfCopy = self;
+    [v51 setConfigurationInfo:v13 forIdentifier:@"com.apple.idms.config.KCKey" forAltDSID:alternateDSID completion:v56];
     dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
     kdebug_trace();
     Nanoseconds = _CloudServicesSignpostGetNanoseconds(v18, v20);
@@ -3481,12 +3481,12 @@ LABEL_17:
 
     if (*(*(&buf + 1) + 40))
     {
-      v8[2](v8);
+      replyCopy[2](replyCopy);
     }
 
     else
     {
-      if (v48)
+      if (saveKeybagCopy)
       {
         v34 = CloudServicesLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -3497,7 +3497,7 @@ LABEL_17:
 
         v35 = *(&buf + 1);
         obj = *(*(&buf + 1) + 40);
-        v36 = v54;
+        v36 = keybagCopy;
         v37 = sub_1000328A4();
         v74 = kSecValueData;
         *v62 = v36;
@@ -3513,7 +3513,7 @@ LABEL_17:
             sub_10004AE04(&buf + 1);
           }
 
-          (v8[2])(v8, *(*(&buf + 1) + 40));
+          (replyCopy[2])(replyCopy, *(*(&buf + 1) + 40));
           goto LABEL_30;
         }
 
@@ -3536,15 +3536,15 @@ LABEL_17:
         if (v39)
         {
           v44 = +[NSUUID UUID];
-          v45 = [v44 UUIDString];
-          sub_100002BE0(v45);
+          uUIDString = [v44 UUIDString];
+          sub_100002BE0(uUIDString);
         }
 
         [(SecureBackupDaemon *)self _setBackupEnabled:1 iCDP:0];
       }
 
       [(SecureBackupDaemon *)self setBackupAllowed:1];
-      [(SecureBackupDaemon *)self backupWithInfo:0 garbageCollect:1 reply:v8];
+      [(SecureBackupDaemon *)self backupWithInfo:0 garbageCollect:1 reply:replyCopy];
     }
 
 LABEL_30:
@@ -3565,21 +3565,21 @@ LABEL_30:
   v33 = *(*(&buf + 1) + 40);
   *(*(&buf + 1) + 40) = v32;
 
-  (v8[2])(v8, *(*(&buf + 1) + 40));
+  (replyCopy[2])(replyCopy, *(*(&buf + 1) + 40));
 LABEL_31:
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)enableWithRequest:(id)a3 reply:(id)a4
+- (void)enableWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 guitarfish] || !objc_msgSend(v6, "guitarfishToken"))
+  requestCopy = request;
+  replyCopy = reply;
+  if (![requestCopy guitarfish] || !objc_msgSend(requestCopy, "guitarfishToken"))
   {
-    if ([v6 guitarfishToken])
+    if ([requestCopy guitarfishToken])
     {
-      [(SecureBackupDaemon *)self enableGuitarfishTokenWithRequest:v6 reply:v7];
+      [(SecureBackupDaemon *)self enableGuitarfishTokenWithRequest:requestCopy reply:replyCopy];
       goto LABEL_180;
     }
 
@@ -3591,26 +3591,26 @@ LABEL_31:
     v14 = v13;
     if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
     {
-      v15 = [v6 activityLabel];
+      activityLabel = [requestCopy activityLabel];
       *buf = 138543362;
-      *v173 = v15;
+      *v173 = activityLabel;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v10, "EnableWithRequest", " enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0xCu);
     }
 
     v16 = _CloudServicesSignpostLogSystem();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v6 activityLabel];
+      activityLabel2 = [requestCopy activityLabel];
       *buf = 134218242;
       *v173 = v10;
       *&v173[8] = 2114;
-      v174 = v17;
+      v174 = activityLabel2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: EnableWithRequest  enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0x16u);
     }
 
-    v18 = [[SBEscrowOperationStartEvent alloc] initWithRequest:v6 type:100];
-    v19 = [(SecureBackupDaemon *)self operationsLogger];
-    [v19 updateStoreWithEvent:v18];
+    v18 = [[SBEscrowOperationStartEvent alloc] initWithRequest:requestCopy type:100];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    [operationsLogger updateStoreWithEvent:v18];
 
     v167[0] = _NSConcreteStackBlock;
     v167[1] = 3221225472;
@@ -3621,7 +3621,7 @@ LABEL_31:
     v167[4] = self;
     v20 = v18;
     v168 = v20;
-    v169 = v7;
+    v169 = replyCopy;
     v21 = objc_retainBlock(v167);
     v22 = CloudServicesLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -3631,17 +3631,17 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
     }
 
-    v23 = [(SecureBackupDaemon *)self connectionQueue];
-    [v6 setQueue:v23];
+    connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+    [requestCopy setQueue:connectionQueue];
 
-    v24 = [v6 error];
+    error = [requestCopy error];
 
-    if (v24)
+    if (error)
     {
       v25 = objc_alloc_init(NSMutableDictionary);
       [v25 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-      v26 = [v6 error];
-      [v25 setObject:v26 forKeyedSubscript:NSUnderlyingErrorKey];
+      error2 = [requestCopy error];
+      [v25 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
       v27 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v25];
       (v21[2])(v21, v27);
@@ -3650,15 +3650,15 @@ LABEL_179:
       goto LABEL_180;
     }
 
-    v28 = [v6 iCloudEnv];
-    [(SecureBackupDaemon *)self setICloudEnvironment:v28];
+    iCloudEnv = [requestCopy iCloudEnv];
+    [(SecureBackupDaemon *)self setICloudEnvironment:iCloudEnv];
 
-    if ([v6 emcsMode])
+    if ([requestCopy emcsMode])
     {
-      v155 = [v6 oldEMCSCred];
-      v156 = [v6 emcsCred];
-      v154 = [v6 emcsDict];
-      if (!v156)
+      oldEMCSCred = [requestCopy oldEMCSCred];
+      emcsCred = [requestCopy emcsCred];
+      emcsDict = [requestCopy emcsDict];
+      if (!emcsCred)
       {
         v53 = CloudServicesLog();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -3675,7 +3675,7 @@ LABEL_179:
 
       v29 = +[MCProfileConnection sharedConnection];
       v166 = 0;
-      v30 = [v29 changePasscodeFrom:v155 to:v156 outError:&v166];
+      v30 = [v29 changePasscodeFrom:oldEMCSCred to:emcsCred outError:&v166];
       v31 = v166;
 
       if ((v30 & 1) == 0)
@@ -3683,8 +3683,8 @@ LABEL_179:
         v57 = CloudServicesLog();
         if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
         {
-          v58 = [v31 localizedDescription];
-          sub_10004B0EC(v58, v179, v57);
+          localizedDescription = [v31 localizedDescription];
+          sub_10004B0EC(localizedDescription, v179, v57);
         }
 
         v54 = objc_alloc_init(NSMutableDictionary);
@@ -3698,9 +3698,9 @@ LABEL_179:
       }
 
       v32 = 0;
-      if (v155)
+      if (oldEMCSCred)
       {
-        if (v154)
+        if (emcsDict)
         {
           v32 = SecEMCSCreateDerivedEMCSKey();
           if (!v32)
@@ -3723,11 +3723,11 @@ LABEL_179:
       }
 
       v165[1] = 0;
-      v33 = SecEMCSCreateNewiDMSKey();
+      iCloudIdentityData2 = SecEMCSCreateNewiDMSKey();
       v34 = 0;
-      v35 = v34;
+      sha1Digest = v34;
       v153 = v32;
-      if (!v33)
+      if (!iCloudIdentityData2)
       {
         v67 = CloudServicesLog();
         if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -3764,11 +3764,11 @@ LABEL_179:
       v36 = [(SecureBackupDaemon *)self _createBackupKeybagWithPassword:v34];
       if (v36)
       {
-        [(SecureBackupDaemon *)self setEMCSDict:v33 backupKeybag:v36 saveKeybag:1 reply:v21];
+        [(SecureBackupDaemon *)self setEMCSDict:iCloudIdentityData2 backupKeybag:v36 saveKeybag:1 reply:v21];
 LABEL_163:
 
-        v77 = v33;
-        v33 = v35;
+        v77 = iCloudIdentityData2;
+        iCloudIdentityData2 = sha1Digest;
 LABEL_176:
 
 LABEL_177:
@@ -3796,12 +3796,12 @@ LABEL_162:
       goto LABEL_163;
     }
 
-    if (([v6 stingray] & 1) == 0 && (objc_msgSend(v6, "icdp") & 1) == 0)
+    if (([requestCopy stingray] & 1) == 0 && (objc_msgSend(requestCopy, "icdp") & 1) == 0)
     {
       if ([(SecureBackupDaemon *)self _backupEnabled])
       {
-        v37 = [v6 metadataHash];
-        v38 = v37 == 0;
+        metadataHash = [requestCopy metadataHash];
+        v38 = metadataHash == 0;
 
         if (v38)
         {
@@ -3819,14 +3819,14 @@ LABEL_162:
       }
     }
 
-    if (([v6 stingray] & 1) == 0 && objc_msgSend(v6, "usesRandomPassphrase") && (objc_msgSend(v6, "metadataHash"), v39 = objc_claimAutoreleasedReturnValue(), v40 = v39 == 0, v39, v40))
+    if (([requestCopy stingray] & 1) == 0 && objc_msgSend(requestCopy, "usesRandomPassphrase") && (objc_msgSend(requestCopy, "metadataHash"), v39 = objc_claimAutoreleasedReturnValue(), v40 = v39 == 0, v39, v40))
     {
       v149 = 0;
     }
 
     else
     {
-      if (([v6 stingray] & 1) == 0 && objc_msgSend(v6, "usesMultipleiCSC"))
+      if (([requestCopy stingray] & 1) == 0 && objc_msgSend(requestCopy, "usesMultipleiCSC"))
       {
         v41 = CloudServicesLog();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -3835,7 +3835,7 @@ LABEL_162:
           _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Heading down multi-icsc path", buf, 2u);
         }
 
-        [(SecureBackupDaemon *)self doEnableEscrowMultiICSCWithRequest:v6 reply:v21];
+        [(SecureBackupDaemon *)self doEnableEscrowMultiICSCWithRequest:requestCopy reply:v21];
         goto LABEL_179;
       }
 
@@ -3845,53 +3845,53 @@ LABEL_162:
     v42 = CloudServicesLog();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v43 = [v6 stingray];
-      v44 = [v6 usesRandomPassphrase];
-      v45 = [v6 usesMultipleiCSC];
+      stingray = [requestCopy stingray];
+      usesRandomPassphrase = [requestCopy usesRandomPassphrase];
+      usesMultipleiCSC = [requestCopy usesMultipleiCSC];
       *buf = 67109632;
-      *v173 = v43;
+      *v173 = stingray;
       *&v173[4] = 1024;
-      *&v173[6] = v44;
+      *&v173[6] = usesRandomPassphrase;
       LOWORD(v174) = 1024;
-      *(&v174 + 2) = v45;
+      *(&v174 + 2) = usesMultipleiCSC;
       _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Heading down spaghetti path: s: %d, uRP: %d, uMiCSC:%d", buf, 0x14u);
     }
 
-    v155 = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:v6];
-    v46 = [v6 metadataHash];
-    v156 = [v46 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
+    oldEMCSCred = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:requestCopy];
+    metadataHash2 = [requestCopy metadataHash];
+    emcsCred = [metadataHash2 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
 
-    v47 = [v6 metadataHash];
-    v154 = [v47 objectForKeyedSubscript:@"duplicateEncodedMetadata"];
+    metadataHash3 = [requestCopy metadataHash];
+    emcsDict = [metadataHash3 objectForKeyedSubscript:@"duplicateEncodedMetadata"];
 
     v153 = +[NSMutableDictionary dictionary];
-    if ([v6 stingray])
+    if ([requestCopy stingray])
     {
-      v48 = [v6 appleID];
-      if ([v48 length])
+      appleID = [requestCopy appleID];
+      if ([appleID length])
       {
-        v49 = [v6 iCloudPassword];
-        if ([v49 length])
+        iCloudPassword = [requestCopy iCloudPassword];
+        if ([iCloudPassword length])
         {
-          v50 = [v6 iCloudIdentityData];
-          v51 = [v50 length] == 0;
+          iCloudIdentityData = [requestCopy iCloudIdentityData];
+          v51 = [iCloudIdentityData length] == 0;
 
           if (!v51)
           {
-            v33 = [v6 iCloudIdentityData];
-            if ([v6 guitarfish])
+            iCloudIdentityData2 = [requestCopy iCloudIdentityData];
+            if ([requestCopy guitarfish])
             {
-              v52 = [v33 sha256Digest];
-              [v153 setObject:v52 forKeyedSubscript:kSecureBackupKeybagSHA256Key];
-              v140 = v52;
+              sha256Digest = [iCloudIdentityData2 sha256Digest];
+              [v153 setObject:sha256Digest forKeyedSubscript:kSecureBackupKeybagSHA256Key];
+              v140 = sha256Digest;
               v145 = 0;
-              v35 = 0;
+              sha1Digest = 0;
             }
 
             else
             {
-              v35 = [v33 sha1Digest];
-              [v153 setObject:v35 forKeyedSubscript:kSecureBackupKeybagDigestKey];
+              sha1Digest = [iCloudIdentityData2 sha1Digest];
+              [v153 setObject:sha1Digest forKeyedSubscript:kSecureBackupKeybagDigestKey];
               v140 = 0;
               v145 = 0;
             }
@@ -3904,12 +3904,12 @@ LABEL_76:
           v69 = CloudServicesLog();
           if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
           {
-            v118 = [v6 appleID];
-            v119 = [v6 iCloudPassword];
-            v120 = [v6 iCloudIdentityData];
-            v121 = v120;
+            appleID2 = [requestCopy appleID];
+            iCloudPassword2 = [requestCopy iCloudPassword];
+            iCloudIdentityData3 = [requestCopy iCloudIdentityData];
+            v121 = iCloudIdentityData3;
             v122 = @"non-";
-            if (v119)
+            if (iCloudPassword2)
             {
               v123 = @"non-";
             }
@@ -3920,10 +3920,10 @@ LABEL_76:
             }
 
             *buf = 138412802;
-            *v173 = v118;
+            *v173 = appleID2;
             v174 = v123;
             *&v173[8] = 2112;
-            if (!v120)
+            if (!iCloudIdentityData3)
             {
               v122 = &stru_1000767A0;
             }
@@ -3934,12 +3934,12 @@ LABEL_76:
           }
 
           v70 = [NSString alloc];
-          v71 = [v6 appleID];
-          v72 = [v6 iCloudPassword];
-          v73 = [v6 iCloudIdentityData];
-          v74 = v73;
+          appleID3 = [requestCopy appleID];
+          iCloudPassword3 = [requestCopy iCloudPassword];
+          iCloudIdentityData4 = [requestCopy iCloudIdentityData];
+          v74 = iCloudIdentityData4;
           v75 = @"non-";
-          if (v72)
+          if (iCloudPassword3)
           {
             v76 = @"non-";
           }
@@ -3949,15 +3949,15 @@ LABEL_76:
             v76 = &stru_1000767A0;
           }
 
-          if (!v73)
+          if (!iCloudIdentityData4)
           {
             v75 = &stru_1000767A0;
           }
 
-          v33 = [v70 initWithFormat:@"attempted to store stingray identities, with invalid parameters: %@, %@nil iCloud password, %@nil iCloud identity data", v71, v76, v75];
+          iCloudIdentityData2 = [v70 initWithFormat:@"attempted to store stingray identities, with invalid parameters: %@, %@nil iCloud password, %@nil iCloud identity data", appleID3, v76, v75];
 
           v77 = objc_alloc_init(NSMutableDictionary);
-          [v77 setObject:v33 forKeyedSubscript:NSLocalizedDescriptionKey];
+          [v77 setObject:iCloudIdentityData2 forKeyedSubscript:NSLocalizedDescriptionKey];
           v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v77];
           (v21[2])(v21, v31);
           goto LABEL_176;
@@ -3977,22 +3977,22 @@ LABEL_76:
       }
     }
 
-    v56 = [v6 passphrase];
-    if ([v56 length])
+    passphrase = [requestCopy passphrase];
+    if ([passphrase length])
     {
     }
 
     else
     {
-      v60 = [v6 useCachedPassphrase];
+      useCachedPassphrase = [requestCopy useCachedPassphrase];
 
-      if (v60)
+      if (useCachedPassphrase)
       {
-        v61 = [(SecureBackupDaemon *)self cachedPassphrase];
-        [v6 setPassphrase:v61];
+        cachedPassphrase = [(SecureBackupDaemon *)self cachedPassphrase];
+        [requestCopy setPassphrase:cachedPassphrase];
 
-        v62 = [v6 passphrase];
-        v63 = [v62 length] == 0;
+        passphrase2 = [requestCopy passphrase];
+        v63 = [passphrase2 length] == 0;
 
         if (v63)
         {
@@ -4002,25 +4002,25 @@ LABEL_76:
             sub_10004AFD0();
           }
 
-          v33 = objc_alloc_init(NSMutableDictionary);
-          [v33 setObject:@"Missing cached passphrase" forKeyedSubscript:NSLocalizedDescriptionKey];
-          v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:v33];
+          iCloudIdentityData2 = objc_alloc_init(NSMutableDictionary);
+          [iCloudIdentityData2 setObject:@"Missing cached passphrase" forKeyedSubscript:NSLocalizedDescriptionKey];
+          v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:iCloudIdentityData2];
           (v21[2])(v21, v31);
           goto LABEL_177;
         }
       }
     }
 
-    v64 = [v6 passphrase];
-    if ([v64 length])
+    passphrase3 = [requestCopy passphrase];
+    if ([passphrase3 length])
     {
       if (!v149)
       {
 
-        v66 = [v6 passphrase];
-        v33 = [v66 dataUsingEncoding:4];
+        passphrase4 = [requestCopy passphrase];
+        iCloudIdentityData2 = [passphrase4 dataUsingEncoding:4];
 
-        if (!v33)
+        if (!iCloudIdentityData2)
         {
           v102 = CloudServicesLog();
           if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
@@ -4028,9 +4028,9 @@ LABEL_76:
             sub_10004AF94();
           }
 
-          v33 = objc_alloc_init(NSMutableDictionary);
-          [v33 setObject:@"could not create backup bag password" forKeyedSubscript:NSLocalizedDescriptionKey];
-          v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v33];
+          iCloudIdentityData2 = objc_alloc_init(NSMutableDictionary);
+          [iCloudIdentityData2 setObject:@"could not create backup bag password" forKeyedSubscript:NSLocalizedDescriptionKey];
+          v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:iCloudIdentityData2];
           (v21[2])(v21, v31);
           goto LABEL_177;
         }
@@ -4039,16 +4039,16 @@ LABEL_76:
         goto LABEL_68;
       }
 
-      if ([v6 icdp])
+      if ([requestCopy icdp])
       {
 
 LABEL_64:
         v165[0] = 0;
         [(SecureBackupDaemon *)self createiCloudRecoveryPasswordWithError:v165];
-        v33 = v54 = v153;
+        iCloudIdentityData2 = v54 = v153;
         v65 = v165[0];
         v31 = v65;
-        if (!v33)
+        if (!iCloudIdentityData2)
         {
           (v21[2])(v21, v65);
 LABEL_178:
@@ -4058,7 +4058,7 @@ LABEL_178:
 
         v142 = v65;
 LABEL_68:
-        if ([v6 usesMultipleiCSC])
+        if ([requestCopy usesMultipleiCSC])
         {
           v140 = 0;
           v145 = 0;
@@ -4066,7 +4066,7 @@ LABEL_68:
 
         else
         {
-          v85 = [(SecureBackupDaemon *)self _createBackupKeybagWithPassword:v33];
+          v85 = [(SecureBackupDaemon *)self _createBackupKeybagWithPassword:iCloudIdentityData2];
           if (!v85)
           {
             v114 = CloudServicesLog();
@@ -4087,7 +4087,7 @@ LABEL_68:
           v140 = 0;
         }
 
-        v35 = 0;
+        sha1Digest = 0;
 LABEL_103:
         v141 = +[CSDateUtilities posixDateFormatter];
         v87 = +[NSDate date];
@@ -4095,10 +4095,10 @@ LABEL_103:
 
         v88 = kSecureBackupTimestampKey;
         [v153 setObject:v148 forKeyedSubscript:kSecureBackupTimestampKey];
-        if (v155)
+        if (oldEMCSCred)
         {
-          [v155 setObject:v148 forKeyedSubscript:kSecureBackupMetadataTimestampKey];
-          [v153 setObject:v155 forKeyedSubscript:kSecureBackupClientMetadataKey];
+          [oldEMCSCred setObject:v148 forKeyedSubscript:kSecureBackupMetadataTimestampKey];
+          [v153 setObject:oldEMCSCred forKeyedSubscript:kSecureBackupClientMetadataKey];
         }
 
         if (!v149)
@@ -4118,14 +4118,14 @@ LABEL_103:
             if (v97)
             {
               v98 = +[NSUUID UUID];
-              v99 = [v98 UUIDString];
-              sub_100002BE0(v99);
+              uUIDString = [v98 UUIDString];
+              sub_100002BE0(uUIDString);
             }
 
             [(SecureBackupDaemon *)self _setKVSKeybag:v145];
             [(SecureBackupDaemon *)self _removeProtectedKeychain];
-            -[SecureBackupDaemon _setBackupEnabled:iCDP:](self, "_setBackupEnabled:iCDP:", 1, [v6 icdp]);
-            if ([v6 synchronize])
+            -[SecureBackupDaemon _setBackupEnabled:iCDP:](self, "_setBackupEnabled:iCDP:", 1, [requestCopy icdp]);
+            if ([requestCopy synchronize])
             {
               [(SecureBackupDaemon *)self _setAutobackupEnabledWithReply:v21];
             }
@@ -4158,23 +4158,23 @@ LABEL_103:
 
         v139 = v88;
         v89 = [EscrowService alloc];
-        v90 = [(SecureBackupDaemon *)self operationsLogger];
-        v150 = [(EscrowService *)v89 initWithOperationsLogger:v90];
+        operationsLogger2 = [(SecureBackupDaemon *)self operationsLogger];
+        v150 = [(EscrowService *)v89 initWithOperationsLogger:operationsLogger2];
 
-        v91 = [v6 smsTarget];
+        smsTarget = [requestCopy smsTarget];
 
-        if (v91)
+        if (smsTarget)
         {
-          v92 = [v6 smsTarget];
+          smsTarget2 = [requestCopy smsTarget];
           v164 = v142;
-          v93 = [(SecureBackupDaemon *)self normalizeSMSTarget:v92 error:&v164];
+          v93 = [(SecureBackupDaemon *)self normalizeSMSTarget:smsTarget2 error:&v164];
           v31 = v164;
 
-          [v6 setSmsTarget:v93];
-          v94 = [v6 smsTarget];
-          LODWORD(v92) = v94 == 0;
+          [requestCopy setSmsTarget:v93];
+          smsTarget3 = [requestCopy smsTarget];
+          LODWORD(smsTarget2) = smsTarget3 == 0;
 
-          if (v92)
+          if (smsTarget2)
           {
             (v21[2])(v21, v31);
 LABEL_160:
@@ -4190,14 +4190,14 @@ LABEL_161:
           v31 = v142;
         }
 
-        if ([v6 stingray])
+        if ([requestCopy stingray])
         {
           v144 = v31;
         }
 
         else
         {
-          if ([v6 usesMultipleiCSC])
+          if ([requestCopy usesMultipleiCSC])
           {
             v112 = CloudServicesLog();
             if (os_log_type_enabled(v112, OS_LOG_TYPE_ERROR))
@@ -4211,9 +4211,9 @@ LABEL_161:
           }
 
           [v153 setObject:&__kCFBooleanFalse forKeyedSubscript:kSecureBackupUsesMultipleiCSCKey];
-          v115 = [v6 icdp];
+          icdp = [requestCopy icdp];
           v163 = v31;
-          v116 = [(SecureBackupDaemon *)self registerSingleRecoverySecret:v145 iCDP:v115 error:&v163];
+          v116 = [(SecureBackupDaemon *)self registerSingleRecoverySecret:v145 iCDP:icdp error:&v163];
           v144 = v163;
 
           if ((v116 & 1) == 0)
@@ -4234,41 +4234,41 @@ LABEL_161:
             goto LABEL_159;
           }
 
-          v117 = [v145 sha1Digest];
+          sha1Digest2 = [v145 sha1Digest];
 
-          [v153 setObject:v117 forKeyedSubscript:kSecureBackupKeybagDigestKey];
-          v35 = v117;
+          [v153 setObject:sha1Digest2 forKeyedSubscript:kSecureBackupKeybagDigestKey];
+          sha1Digest = sha1Digest2;
         }
 
         v106 = [[NSMutableDictionary alloc] initWithCapacity:5];
-        v107 = [v6 guitarfish];
-        if (v107)
+        guitarfish = [requestCopy guitarfish];
+        if (guitarfish)
         {
           v108 = v140;
         }
 
         else
         {
-          v108 = v35;
+          v108 = sha1Digest;
         }
 
         v109 = &kSecureBackupKeybagSHA256Key;
-        if (!v107)
+        if (!guitarfish)
         {
           v109 = &kSecureBackupKeybagDigestKey;
         }
 
         [v106 setObject:v108 forKeyedSubscript:*v109];
-        [v106 setObject:v33 forKeyedSubscript:kSecureBackupBagPasswordKey];
+        [v106 setObject:iCloudIdentityData2 forKeyedSubscript:kSecureBackupBagPasswordKey];
         [v106 setObject:@"1" forKeyedSubscript:@"BackupVersion"];
         [v106 setObject:v148 forKeyedSubscript:v139];
-        [v6 setEscrowRecord:v106];
-        [v6 setMetadata:v153];
-        [v6 setEncodedMetadata:v156];
-        [v6 setDuplicateEncodedMetadata:v154];
-        v110 = [v6 encodedMetadata];
+        [requestCopy setEscrowRecord:v106];
+        [requestCopy setMetadata:v153];
+        [requestCopy setEncodedMetadata:emcsCred];
+        [requestCopy setDuplicateEncodedMetadata:emcsDict];
+        encodedMetadata = [requestCopy encodedMetadata];
 
-        if (v110)
+        if (encodedMetadata)
         {
           v111 = CloudServicesLog();
           if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
@@ -4283,7 +4283,7 @@ LABEL_161:
         v158[2] = sub_10001E5DC;
         v158[3] = &unk_1000755B0;
         v158[4] = self;
-        v159 = v6;
+        v159 = requestCopy;
         v160 = v153;
         v161 = v145;
         v162 = v21;
@@ -4295,20 +4295,20 @@ LABEL_159:
         goto LABEL_160;
       }
 
-      v82 = [v6 countryDialCode];
-      if ([v82 length])
+      countryDialCode = [requestCopy countryDialCode];
+      if ([countryDialCode length])
       {
-        v83 = [v6 countryCode];
-        if ([v83 length])
+        countryCode = [requestCopy countryCode];
+        if ([countryCode length])
         {
-          v147 = [v6 smsTarget];
-          if ([v147 length])
+          smsTarget4 = [requestCopy smsTarget];
+          if ([smsTarget4 length])
           {
-            v146 = [v6 appleID];
-            if ([v146 length])
+            appleID4 = [requestCopy appleID];
+            if ([appleID4 length])
             {
-              v84 = [v6 iCloudPassword];
-              v143 = [v84 length] == 0;
+              iCloudPassword4 = [requestCopy iCloudPassword];
+              v143 = [iCloudPassword4 length] == 0;
 
               if (!v143)
               {
@@ -4319,8 +4319,8 @@ LABEL_169:
               v126 = CloudServicesLog();
               if (os_log_type_enabled(v126, OS_LOG_TYPE_ERROR))
               {
-                v134 = [v6 passphrase];
-                if (v134)
+                passphrase5 = [requestCopy passphrase];
+                if (passphrase5)
                 {
                   v135 = @"non-";
                 }
@@ -4330,11 +4330,11 @@ LABEL_169:
                   v135 = &stru_1000767A0;
                 }
 
-                v152 = [v6 smsTarget];
-                v136 = [v6 appleID];
-                v137 = [v6 iCloudPassword];
+                smsTarget5 = [requestCopy smsTarget];
+                appleID5 = [requestCopy appleID];
+                iCloudPassword5 = [requestCopy iCloudPassword];
                 v138 = @"non-";
-                if (!v137)
+                if (!iCloudPassword5)
                 {
                   v138 = &stru_1000767A0;
                 }
@@ -4342,17 +4342,17 @@ LABEL_169:
                 *buf = 138413058;
                 *v173 = v135;
                 *&v173[8] = 2112;
-                v174 = v152;
+                v174 = smsTarget5;
                 v175 = 2112;
-                v176 = v136;
+                v176 = appleID5;
                 v177 = 2112;
                 v178 = v138;
                 _os_log_error_impl(&_mh_execute_header, v126, OS_LOG_TYPE_ERROR, "attempted to enable backup, with invalid parameters: %@nil recovery password, %@, %@, %@nil iCloud password", buf, 0x2Au);
               }
 
               v127 = [NSString alloc];
-              v128 = [v6 passphrase];
-              if (v128)
+              passphrase6 = [requestCopy passphrase];
+              if (passphrase6)
               {
                 v129 = @"non-";
               }
@@ -4362,19 +4362,19 @@ LABEL_169:
                 v129 = &stru_1000767A0;
               }
 
-              v130 = [v6 smsTarget];
-              v131 = [v6 appleID];
-              v132 = [v6 iCloudPassword];
+              smsTarget6 = [requestCopy smsTarget];
+              appleID6 = [requestCopy appleID];
+              iCloudPassword6 = [requestCopy iCloudPassword];
               v133 = @"non-";
-              if (!v132)
+              if (!iCloudPassword6)
               {
                 v133 = &stru_1000767A0;
               }
 
-              v33 = [v127 initWithFormat:@"attempted to enable backup, with invalid parameters: %@nil recovery password, %@, %@, %@nil iCloud password", v129, v130, v131, v133];
+              iCloudIdentityData2 = [v127 initWithFormat:@"attempted to enable backup, with invalid parameters: %@nil recovery password, %@, %@, %@nil iCloud password", v129, smsTarget6, appleID6, v133];
 
               v77 = objc_alloc_init(NSMutableDictionary);
-              [v77 setObject:v33 forKeyedSubscript:NSLocalizedDescriptionKey];
+              [v77 setObject:iCloudIdentityData2 forKeyedSubscript:NSLocalizedDescriptionKey];
               v31 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v77];
               (v21[2])(v21, v31);
               goto LABEL_176;
@@ -4388,31 +4388,31 @@ LABEL_169:
   }
 
   v8 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:0];
-  (*(v7 + 2))(v7, v8);
+  (*(replyCopy + 2))(replyCopy, v8);
 
 LABEL_180:
 }
 
-- (void)handleEscrowStoreResults:(id)a3 escrowError:(id)a4 request:(id)a5 peerID:(id)a6 newRecordMetadata:(id)a7 backupKeybag:(id)a8 reply:(id)a9
+- (void)handleEscrowStoreResults:(id)results escrowError:(id)error request:(id)request peerID:(id)d newRecordMetadata:(id)metadata backupKeybag:(id)keybag reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (v15)
+  resultsCopy = results;
+  errorCopy = error;
+  requestCopy = request;
+  metadataCopy = metadata;
+  keybagCopy = keybag;
+  replyCopy = reply;
+  if (errorCopy)
   {
-    v20 = [v15 domain];
-    v21 = [v20 isEqualToString:kEscrowServiceErrorDomain];
+    domain = [errorCopy domain];
+    v21 = [domain isEqualToString:kEscrowServiceErrorDomain];
 
-    if (v21 && [v15 code] == -5012)
+    if (v21 && [errorCopy code] == -5012)
     {
       v22 = kSecureBackupErrorDomain;
-      v23 = [v15 userInfo];
-      v24 = [NSError errorWithDomain:v22 code:29 userInfo:v23];
+      userInfo = [errorCopy userInfo];
+      v24 = [NSError errorWithDomain:v22 code:29 userInfo:userInfo];
 
-      v15 = v24;
+      errorCopy = v24;
     }
 
     v25 = CloudServicesLog();
@@ -4421,7 +4421,7 @@ LABEL_180:
       sub_10004B20C();
     }
 
-    v19[2](v19, v15);
+    replyCopy[2](replyCopy, errorCopy);
   }
 
   else
@@ -4433,28 +4433,28 @@ LABEL_180:
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "escrowService storeRecordWithRequest: succeeded", buf, 2u);
     }
 
-    if (([v16 stingray] & 1) == 0)
+    if (([requestCopy stingray] & 1) == 0)
     {
       [(SecureBackupDaemon *)self _setUsesEscrow:1];
-      [(SecureBackupDaemon *)self _setMetadata:v17];
+      [(SecureBackupDaemon *)self _setMetadata:metadataCopy];
       v27 = sub_100002B84();
 
       if (!v27)
       {
         v28 = +[NSUUID UUID];
-        v29 = [v28 UUIDString];
-        sub_100002BE0(v29);
+        uUIDString = [v28 UUIDString];
+        sub_100002BE0(uUIDString);
       }
 
-      -[SecureBackupDaemon _setBackupEnabled:iCDP:](self, "_setBackupEnabled:iCDP:", 1, [v16 icdp]);
+      -[SecureBackupDaemon _setBackupEnabled:iCDP:](self, "_setBackupEnabled:iCDP:", 1, [requestCopy icdp]);
       [(SecureBackupDaemon *)self _removeProtectedKeychain];
-      if (v18)
+      if (keybagCopy)
       {
-        [(SecureBackupDaemon *)self _setKVSKeybag:v18];
+        [(SecureBackupDaemon *)self _setKVSKeybag:keybagCopy];
       }
 
       [(SecureBackupDaemon *)self _removeKeychainItemForKey:@"SecureBackupEscrowCert"];
-      v30 = [v14 objectForKeyedSubscript:@"EscrowServiceCertificate"];
+      v30 = [resultsCopy objectForKeyedSubscript:@"EscrowServiceCertificate"];
       [(SecureBackupDaemon *)self _saveKeychainItem:v30 forKey:@"SecureBackupEscrowCert"];
 
       [(SecureBackupDaemon *)self _backupCloudIdentityKeychainViewAndPushToKVS];
@@ -4468,7 +4468,7 @@ LABEL_180:
       [(SecureBackupDaemon *)self _setAutobackupEnabled];
     }
 
-    v19[2](v19, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
@@ -4484,9 +4484,9 @@ LABEL_180:
   return v3 != -1;
 }
 
-- (void)backupForRecoveryKeyWithInfo:(id)a3 garbageCollect:(BOOL)a4 reply:(id)a5
+- (void)backupForRecoveryKeyWithInfo:(id)info garbageCollect:(BOOL)collect reply:(id)reply
 {
-  v6 = a5;
+  replyCopy = reply;
   v7 = CloudServicesLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4496,13 +4496,13 @@ LABEL_180:
   }
 
   [(SecureBackupDaemon *)self _backupCloudIdentityKeychainViewAndPushToKVSForRecoveryKey];
-  v6[2](v6, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)backupWithInfo:(id)a3 garbageCollect:(BOOL)a4 reply:(id)a5
+- (void)backupWithInfo:(id)info garbageCollect:(BOOL)collect reply:(id)reply
 {
-  v5 = a4;
-  v7 = a5;
+  collectCopy = collect;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -4511,15 +4511,15 @@ LABEL_180:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", v34, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self _metadata];
-  v10 = [v9 objectForKeyedSubscript:kSecureBackupContainsEMCSDataKey];
+  _metadata = [(SecureBackupDaemon *)self _metadata];
+  v10 = [_metadata objectForKeyedSubscript:kSecureBackupContainsEMCSDataKey];
   v11 = [v10 isEqual:&__kCFBooleanTrue];
 
   if (!v11)
   {
     [(SecureBackupDaemon *)self _backupFullKeychain];
 LABEL_36:
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_37;
   }
 
@@ -4586,19 +4586,19 @@ LABEL_36:
     kdebug_trace();
     if (v21)
     {
-      v26 = [v9 objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
-      v27 = [v13 sha1Digest];
+      v26 = [_metadata objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
+      sha1Digest = [v13 sha1Digest];
       v28 = CloudServicesLog();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *v34 = 138412546;
-        *&v34[4] = v27;
+        *&v34[4] = sha1Digest;
         *&v34[12] = 2112;
         *&v34[14] = v26;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Pushing EMCS backup, keybag digest %@, metadata digest %@", v34, 0x16u);
       }
 
-      if (([v26 isEqual:v27]& 1) == 0)
+      if (([v26 isEqual:sha1Digest]& 1) == 0)
       {
         v29 = CloudServicesLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -4608,10 +4608,10 @@ LABEL_36:
       }
 
       [(SecureBackupDaemon *)self _setEMCSBackup:v21 keybag:v13, *v34];
-      if (v5)
+      if (collectCopy)
       {
-        v30 = [v27 hexString];
-        [(SecureBackupDaemon *)self garbageCollectEMCSBackupsExcluding:v30];
+        hexString = [sha1Digest hexString];
+        [(SecureBackupDaemon *)self garbageCollectEMCSBackupsExcluding:hexString];
       }
     }
 
@@ -4638,25 +4638,25 @@ LABEL_35:
   v38 = @"attempting to back up with no keybag";
   v32 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v33 = [NSError errorWithDomain:kSecureBackupErrorDomain code:22 userInfo:v32];
-  (v7)[2](v7, v33);
+  (replyCopy)[2](replyCopy, v33);
 
 LABEL_37:
 }
 
-- (id)restoreBackup:(id)a3 withName:(id)a4 keybagDigest:(id)a5 keybag:(id)a6 password:(id)a7
+- (id)restoreBackup:(id)backup withName:(id)name keybagDigest:(id)digest keybag:(id)keybag password:(id)password
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  backupCopy = backup;
+  nameCopy = name;
+  digestCopy = digest;
+  keybagCopy = keybag;
+  passwordCopy = password;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = sub_1000109EC;
   v36 = sub_1000109FC;
   v37 = 0;
-  v17 = [(SecureBackupDaemon *)self createPlistFromDERData:v12];
+  v17 = [(SecureBackupDaemon *)self createPlistFromDERData:backupCopy];
   if (v17)
   {
     objc_opt_class();
@@ -4674,30 +4674,30 @@ LABEL_37:
       }
     }
 
-    if ([v13 isEqualToString:@"KeychainV0-tomb"])
+    if ([nameCopy isEqualToString:@"KeychainV0-tomb"])
     {
       v21 = (v33 + 5);
       obj = v33[5];
-      v22 = [(SecureBackupDaemon *)self createEncodedDirectBackupSliceKeybagFromData:v15 error:&obj];
+      v22 = [(SecureBackupDaemon *)self createEncodedDirectBackupSliceKeybagFromData:keybagCopy error:&obj];
       objc_storeStrong(v21, obj);
 
-      v15 = v22;
+      keybagCopy = v22;
     }
 
     v23 = v33[5];
     if (!v23)
     {
-      v24 = [v15 peerIDForKeybagDigest:v14];
+      v24 = [keybagCopy peerIDForKeybagDigest:digestCopy];
       if (v24)
       {
         v25 = CloudServicesLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v15 peerIDs];
+          peerIDs = [keybagCopy peerIDs];
           *buf = 138412546;
           v39 = v24;
           v40 = 2112;
-          v41 = v26;
+          v41 = peerIDs;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "using peerID %@ from backup keybag peers: %@", buf, 0x16u);
         }
       }
@@ -4706,9 +4706,9 @@ LABEL_37:
       v28[1] = 3221225472;
       v28[2] = sub_10001F5FC;
       v28[3] = &unk_100075618;
-      v29 = v13;
+      v29 = nameCopy;
       v30 = &v32;
-      [(SecureBackupDaemon *)self restoreBackupName:v29 peerID:v24 keybag:v15 password:v16 backup:v12 reply:v28];
+      [(SecureBackupDaemon *)self restoreBackupName:v29 peerID:v24 keybag:keybagCopy password:passwordCopy backup:backupCopy reply:v28];
 
       v23 = v33[5];
     }
@@ -4729,9 +4729,9 @@ LABEL_37:
   return v19;
 }
 
-- (id)encodedStatsForViews:(id)a3
+- (id)encodedStatsForViews:(id)views
 {
-  v3 = a3;
+  viewsCopy = views;
   if (qword_100084AB0 != -1)
   {
     sub_10004B554();
@@ -4759,7 +4759,7 @@ LABEL_37:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [qword_100084AA0 objectForKeyedSubscript:{v10, v15}];
-        if (!v11 || (v12 = [v3 containsObject:v10], v13 = v11, (v12 & 1) == 0))
+        if (!v11 || (v12 = [viewsCopy containsObject:v10], v13 = v11, (v12 & 1) == 0))
         {
           v13 = @"_";
         }
@@ -4776,18 +4776,18 @@ LABEL_37:
   return v4;
 }
 
-- (BOOL)_restoreView:(id)a3 password:(id)a4 keybagDigest:(id)a5 restoredViews:(id)a6 error:(id *)a7
+- (BOOL)_restoreView:(id)view password:(id)password keybagDigest:(id)digest restoredViews:(id)views error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  viewCopy = view;
+  passwordCopy = password;
+  digestCopy = digest;
+  viewsCopy = views;
   v16 = [(SecureBackupDaemon *)self kvs];
-  v17 = [(SecureBackupDaemon *)self _getICDPBackupFromKVS:v16 forView:v12];
+  v17 = [(SecureBackupDaemon *)self _getICDPBackupFromKVS:v16 forView:viewCopy];
 
   if (!v17)
   {
-    if (a7)
+    if (error)
     {
       goto LABEL_17;
     }
@@ -4798,27 +4798,27 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  v36 = v15;
+  v36 = viewsCopy;
   v18 = [v17 objectForKeyedSubscript:@"com.apple.securebackup.keychain"];
   v19 = CloudServicesLog();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     [v17 objectForKeyedSubscript:kSecureBackupTimestampKey];
-    v21 = v20 = v14;
+    v21 = v20 = digestCopy;
     *buf = 138412546;
-    v38 = v12;
+    v38 = viewCopy;
     v39 = 2112;
     v40 = v21;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Retrieving backup for view %@ from %@", buf, 0x16u);
 
-    v14 = v20;
+    digestCopy = v20;
   }
 
   if (!v18)
   {
 
-    v15 = v36;
-    if (a7)
+    viewsCopy = v36;
+    if (error)
     {
       goto LABEL_17;
     }
@@ -4826,12 +4826,12 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v35 = v13;
+  v35 = passwordCopy;
   v22 = CloudServicesLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v38 = v12;
+    v38 = viewCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "restoring backup view %@", buf, 0xCu);
   }
 
@@ -4842,30 +4842,30 @@ LABEL_20:
   v27 = 0;
   if (v23 && v24)
   {
-    v28 = [[NSString alloc] initWithFormat:@"%@-tomb", v12];
-    v29 = v14;
-    v30 = v28;
-    v31 = self;
+    viewCopy = [[NSString alloc] initWithFormat:@"%@-tomb", viewCopy];
+    v29 = digestCopy;
+    v30 = viewCopy;
+    selfCopy = self;
     v32 = v29;
-    v27 = [SecureBackupDaemon restoreBackup:v31 withName:"restoreBackup:withName:keybagDigest:keybag:password:" keybagDigest:v25 keybag:v30 password:?];
+    v27 = [SecureBackupDaemon restoreBackup:selfCopy withName:"restoreBackup:withName:keybagDigest:keybag:password:" keybagDigest:v25 keybag:v30 password:?];
     v26 = v27 == 0;
     if (!v27)
     {
-      [v36 addObject:v12];
+      [v36 addObject:viewCopy];
     }
 
-    v14 = v32;
+    digestCopy = v32;
   }
 
-  if (!a7)
+  if (!error)
   {
-    v13 = v35;
-    v15 = v36;
+    passwordCopy = v35;
+    viewsCopy = v36;
     goto LABEL_22;
   }
 
-  v13 = v35;
-  v15 = v36;
+  passwordCopy = v35;
+  viewsCopy = v36;
   if (!v26)
   {
     if (v27)
@@ -4873,7 +4873,7 @@ LABEL_20:
 LABEL_18:
       v33 = v27;
       v26 = 0;
-      *a7 = v27;
+      *error = v27;
       goto LABEL_22;
     }
 
@@ -4887,44 +4887,44 @@ LABEL_22:
   return v26;
 }
 
-- (void)_restoreKeychainAsyncWithBackupBag:(id)a3 password:(id)a4 keybagDigest:(id)a5 haveBottledPeer:(BOOL)a6 restoredViews:(id)a7 viewsNotToBeRestored:(id)a8
+- (void)_restoreKeychainAsyncWithBackupBag:(id)bag password:(id)password keybagDigest:(id)digest haveBottledPeer:(BOOL)peer restoredViews:(id)views viewsNotToBeRestored:(id)restored
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
+  bagCopy = bag;
+  passwordCopy = password;
+  digestCopy = digest;
+  viewsCopy = views;
+  restoredCopy = restored;
   v33[0] = 0;
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v34 = 0;
-  v19 = [(SecureBackupDaemon *)self backupQueue];
+  backupQueue = [(SecureBackupDaemon *)self backupQueue];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10001FE70;
   v25[3] = &unk_100075660;
   v25[4] = self;
-  v26 = v16;
-  v30 = v14;
+  v26 = digestCopy;
+  v30 = bagCopy;
   v31 = v33;
-  v27 = v18;
-  v28 = v15;
-  v29 = v17;
-  v32 = a6;
-  v20 = v14;
-  v21 = v17;
-  v22 = v15;
-  v23 = v18;
-  v24 = v16;
-  dispatch_async(v19, v25);
+  v27 = restoredCopy;
+  v28 = passwordCopy;
+  v29 = viewsCopy;
+  peerCopy = peer;
+  v20 = bagCopy;
+  v21 = viewsCopy;
+  v22 = passwordCopy;
+  v23 = restoredCopy;
+  v24 = digestCopy;
+  dispatch_async(backupQueue, v25);
 
   _Block_object_dispose(v33, 8);
 }
 
-- (BOOL)_restoreKeychainWithBackupPassword:(id)a3 keybagDigest:(id)a4 error:(id *)a5
+- (BOOL)_restoreKeychainWithBackupPassword:(id)password keybagDigest:(id)digest error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  passwordCopy = password;
+  digestCopy = digest;
   v46 = 0;
   v47[0] = &v46;
   v47[1] = 0x3032000000;
@@ -4941,20 +4941,20 @@ LABEL_22:
   v37 = &v36;
   v38 = 0x2020000000;
   v39 = 0;
-  v10 = [(SecureBackupDaemon *)self backupQueue];
+  backupQueue = [(SecureBackupDaemon *)self backupQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002082C;
   block[3] = &unk_100075688;
   block[4] = self;
-  v11 = v8;
+  v11 = passwordCopy;
   v31 = v11;
-  v12 = v9;
+  v12 = digestCopy;
   v32 = v12;
   v33 = &v40;
   v34 = &v46;
   v35 = &v36;
-  dispatch_sync(v10, block);
+  dispatch_sync(backupQueue, block);
 
   v13 = CloudServicesLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -4972,7 +4972,7 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "kicking off async restore of the other keychain views", buf, 2u);
   }
 
-  v16 = [(SecureBackupDaemon *)self backupQueue];
+  backupQueue2 = [(SecureBackupDaemon *)self backupQueue];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10002094C;
@@ -4984,7 +4984,7 @@ LABEL_22:
   v18 = v11;
   v27 = v18;
   v29 = &v40;
-  dispatch_async(v16, v25);
+  dispatch_async(backupQueue2, v25);
 
   if (sub_1000029CC())
   {
@@ -5004,9 +5004,9 @@ LABEL_22:
       sub_10004B68C(v47);
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = *(v47[0] + 40);
+      *error = *(v47[0] + 40);
     }
   }
 
@@ -5040,15 +5040,15 @@ LABEL_22:
   return v3;
 }
 
-- (void)recordIDAndMetadataForSilentAttempt:(id)a3 passphraseLength:(unint64_t)a4 platform:(int)a5 reply:(id)a6
+- (void)recordIDAndMetadataForSilentAttempt:(id)attempt passphraseLength:(unint64_t)length platform:(int)platform reply:(id)reply
 {
-  v10 = a3;
-  v11 = a6;
+  attemptCopy = attempt;
+  replyCopy = reply;
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v21 = a4;
+    lengthCopy = length;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "looking for record for silent attempt of passphrase length %lu", buf, 0xCu);
   }
 
@@ -5056,21 +5056,21 @@ LABEL_22:
   v15[1] = 3221225472;
   v15[2] = sub_100020FC4;
   v15[3] = &unk_100075700;
-  v17 = v11;
-  v18 = a4;
+  v17 = replyCopy;
+  lengthCopy2 = length;
   v15[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v13 = v10;
-  v14 = v11;
+  v16 = attemptCopy;
+  platformCopy = platform;
+  v13 = attemptCopy;
+  v14 = replyCopy;
   [(SecureBackupDaemon *)self getAccountInfoWithRequest:v13 reply:v15];
 }
 
-- (id)restoreEMCSBackup:(id)a3 keybag:(id)a4 password:(id)a5
+- (id)restoreEMCSBackup:(id)backup keybag:(id)keybag password:(id)password
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  passwordCopy = password;
+  keybagCopy = keybag;
+  backupCopy = backup;
   kdebug_trace();
   v10 = _CloudServicesSignpostLogSystem();
   v11 = _CloudServicesSignpostCreate(v10);
@@ -5142,13 +5142,13 @@ LABEL_22:
   return v25;
 }
 
-- (id)restoreEMCSBackup:(id)a3 withPassword:(id)a4
+- (id)restoreEMCSBackup:(id)backup withPassword:(id)password
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SecureBackupDaemon *)self _metadata];
-  v9 = [v8 objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
-  v10 = [v6 objectForKeyedSubscript:@"timestamp"];
+  backupCopy = backup;
+  passwordCopy = password;
+  _metadata = [(SecureBackupDaemon *)self _metadata];
+  v9 = [_metadata objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
+  v10 = [backupCopy objectForKeyedSubscript:@"timestamp"];
   if (v10)
   {
     v11 = [CSDateUtilities localStringFromDate:v10];
@@ -5159,17 +5159,17 @@ LABEL_22:
     v11 = @"before we saved timestamps";
   }
 
-  v34 = [v6 objectForKeyedSubscript:@"backup"];
-  v12 = [v6 objectForKeyedSubscript:@"keybag"];
-  v35 = [v12 sha1Digest];
-  v13 = [v6 objectForKeyedSubscript:@"uuid"];
+  v34 = [backupCopy objectForKeyedSubscript:@"backup"];
+  v12 = [backupCopy objectForKeyedSubscript:@"keybag"];
+  sha1Digest = [v12 sha1Digest];
+  v13 = [backupCopy objectForKeyedSubscript:@"uuid"];
   v14 = CloudServicesLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
     v37 = v11;
     v38 = 2112;
-    v39 = v35;
+    v39 = sha1Digest;
     v40 = 2112;
     v41 = v9;
     v42 = 2112;
@@ -5182,15 +5182,15 @@ LABEL_22:
   {
     v32 = v10;
     v15 = v9;
-    v16 = v8;
-    v17 = v7;
+    v16 = _metadata;
+    v17 = passwordCopy;
     v18 = CFPreferencesCopyAppValue(@"EMCSBackupUUID", SECURE_BACKUP_SERVICE_NAME);
     v19 = [(__CFString *)v18 isEqualToString:v13];
     v20 = CloudServicesLog();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
     if (v19)
     {
-      v7 = v17;
+      passwordCopy = v17;
       if (v21)
       {
         *buf = 0;
@@ -5198,7 +5198,7 @@ LABEL_22:
       }
 
       v22 = 0;
-      v8 = v16;
+      _metadata = v16;
       v9 = v15;
       v10 = v32;
       goto LABEL_29;
@@ -5211,8 +5211,8 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Backup does not match this device's last backup uuid (%@)", buf, 0xCu);
     }
 
-    v7 = v17;
-    v8 = v16;
+    passwordCopy = v17;
+    _metadata = v16;
     v9 = v15;
     v10 = v32;
     v11 = v33;
@@ -5221,13 +5221,13 @@ LABEL_22:
   v23 = v34;
   if (v12 && v34)
   {
-    v22 = [(SecureBackupDaemon *)self restoreEMCSBackup:v34 keybag:v12 password:v7];
+    v22 = [(SecureBackupDaemon *)self restoreEMCSBackup:v34 keybag:v12 password:passwordCopy];
     goto LABEL_30;
   }
 
   v24 = CloudServicesLog();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
-  v31 = v7;
+  v31 = passwordCopy;
   if (v34)
   {
     v26 = @"non-";
@@ -5273,7 +5273,7 @@ LABEL_22:
 
   v22 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v28];
 
-  v7 = v31;
+  passwordCopy = v31;
 LABEL_29:
   v11 = v33;
   v23 = v34;
@@ -5282,10 +5282,10 @@ LABEL_30:
   return v22;
 }
 
-- (void)recoverEscrowWithRequest:(id)a3 reply:(id)a4
+- (void)recoverEscrowWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = _CloudServicesSignpostLogSystem();
   v9 = _CloudServicesSignpostCreate(v8);
   v11 = v10;
@@ -5294,38 +5294,38 @@ LABEL_30:
   v13 = v12;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v14 = [v6 activityLabel];
+    activityLabel = [requestCopy activityLabel];
     *buf = 138543362;
-    v42 = v14;
+    v42 = activityLabel;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "RecoverEscrowWithRequest", " enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0xCu);
   }
 
   v15 = _CloudServicesSignpostLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v6 activityLabel];
+    activityLabel2 = [requestCopy activityLabel];
     *buf = 134218242;
     v42 = v9;
     v43 = 2114;
-    v44 = v16;
+    v44 = activityLabel2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: RecoverEscrowWithRequest  enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0x16u);
   }
 
   v17 = CloudServicesLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v6 recordID];
-    v19 = [v6 metadata];
+    recordID = [requestCopy recordID];
+    metadata = [requestCopy metadata];
     *buf = 138412546;
-    v42 = v18;
+    v42 = recordID;
     v43 = 2112;
-    v44 = v19;
+    v44 = metadata;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Attempting recovery of record %@ with metadata: %@", buf, 0x16u);
   }
 
   v20 = [EscrowService alloc];
-  v21 = [(SecureBackupDaemon *)self operationsLogger];
-  v22 = [(EscrowService *)v20 initWithOperationsLogger:v21];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  v22 = [(EscrowService *)v20 initWithOperationsLogger:operationsLogger];
 
   v23 = _CloudServicesSignpostLogSystem();
   v24 = _CloudServicesSignpostCreate(v23);
@@ -5335,20 +5335,20 @@ LABEL_30:
   v28 = v27;
   if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
   {
-    v29 = [v6 activityLabel];
+    activityLabel3 = [requestCopy activityLabel];
     *buf = 138543362;
-    v42 = v29;
+    v42 = activityLabel3;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v28, OS_SIGNPOST_INTERVAL_BEGIN, v24, "RecoverRecordWithRequest", " enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0xCu);
   }
 
   v30 = _CloudServicesSignpostLogSystem();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v6 activityLabel];
+    activityLabel4 = [requestCopy activityLabel];
     *buf = 134218242;
     v42 = v24;
     v43 = 2114;
-    v44 = v31;
+    v44 = activityLabel4;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: RecoverRecordWithRequest  enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0x16u);
   }
 
@@ -5359,33 +5359,33 @@ LABEL_30:
   v38 = v26;
   v39 = v9;
   v40 = v11;
-  v36 = v7;
+  v36 = replyCopy;
   v37 = v24;
   v34[4] = self;
-  v35 = v6;
-  v32 = v6;
-  v33 = v7;
+  v35 = requestCopy;
+  v32 = requestCopy;
+  v33 = replyCopy;
   [(EscrowService *)v22 recoverRecordWithRequest:v32 completionBlock:v34];
 }
 
-- (id)keysOfEntriesContainingObject:(id)a3 backups:(id)a4
+- (id)keysOfEntriesContainingObject:(id)object backups:(id)backups
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100023098;
   v8[3] = &unk_100075110;
-  v9 = a3;
-  v5 = v9;
-  v6 = [a4 keysOfEntriesPassingTest:v8];
+  objectCopy = object;
+  v5 = objectCopy;
+  v6 = [backups keysOfEntriesPassingTest:v8];
 
   return v6;
 }
 
-- (int64_t)compareEscrowDatesBetweenCurrentRecord:(id)a3 andCandidateRecord:(id)a4
+- (int64_t)compareEscrowDatesBetweenCurrentRecord:(id)record andCandidateRecord:(id)candidateRecord
 {
-  v5 = a4;
-  v6 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [a3 creationDate]);
-  v7 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v5 creationDate]);
+  candidateRecordCopy = candidateRecord;
+  v6 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [record creationDate]);
+  v7 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [candidateRecordCopy creationDate]);
   v8 = [v6 compare:v7];
   v9 = CloudServicesLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -5393,9 +5393,9 @@ LABEL_30:
   {
     if (v10)
     {
-      v11 = [v5 recordId];
+      recordId = [candidateRecordCopy recordId];
       v14 = 138412290;
-      v15 = v11;
+      v15 = recordId;
       v12 = "candidate record (%@) is newer";
       goto LABEL_6;
     }
@@ -5403,9 +5403,9 @@ LABEL_30:
 
   else if (v10)
   {
-    v11 = [v5 recordId];
+    recordId = [candidateRecordCopy recordId];
     v14 = 138412290;
-    v15 = v11;
+    v15 = recordId;
     v12 = "candidate record (%@) is not newer";
 LABEL_6:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, v12, &v14, 0xCu);
@@ -5414,23 +5414,23 @@ LABEL_6:
   return v8;
 }
 
-- (int64_t)compare:(id)a3 with:(id)a4 backups:(id)a5
+- (int64_t)compare:(id)compare with:(id)with backups:(id)backups
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 escrowInformationMetadata];
-  v12 = [v11 backupKeybagDigest];
+  compareCopy = compare;
+  withCopy = with;
+  backupsCopy = backups;
+  escrowInformationMetadata = [compareCopy escrowInformationMetadata];
+  backupKeybagDigest = [escrowInformationMetadata backupKeybagDigest];
 
-  v13 = [v9 escrowInformationMetadata];
-  v14 = [v13 backupKeybagDigest];
+  escrowInformationMetadata2 = [withCopy escrowInformationMetadata];
+  backupKeybagDigest2 = [escrowInformationMetadata2 backupKeybagDigest];
 
-  v15 = [(SecureBackupDaemon *)self keysOfEntriesContainingObject:v12 backups:v10];
-  v44 = v14;
-  v16 = [(SecureBackupDaemon *)self keysOfEntriesContainingObject:v14 backups:v10];
-  v17 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v8 creationDate]);
-  v43 = v9;
-  v18 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v9 creationDate]);
+  v15 = [(SecureBackupDaemon *)self keysOfEntriesContainingObject:backupKeybagDigest backups:backupsCopy];
+  v44 = backupKeybagDigest2;
+  v16 = [(SecureBackupDaemon *)self keysOfEntriesContainingObject:backupKeybagDigest2 backups:backupsCopy];
+  v17 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [compareCopy creationDate]);
+  v43 = withCopy;
+  v18 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [withCopy creationDate]);
   v45 = v18;
   if ([v15 isEqualToSet:v16])
   {
@@ -5468,8 +5468,8 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v41 = v12;
-  v42 = v8;
+  v41 = backupKeybagDigest;
+  v42 = compareCopy;
   v48 = 0u;
   v49 = 0u;
   v46 = 0u;
@@ -5506,8 +5506,8 @@ LABEL_21:
         }
 
 LABEL_28:
-        v12 = v41;
-        v8 = v42;
+        backupKeybagDigest = v41;
+        compareCopy = v42;
         goto LABEL_29;
       }
 
@@ -5542,11 +5542,11 @@ LABEL_15:
   v33 = [v16 countOfObjectsWithPrefix:@"PCS"];
   if (v32 <= v33)
   {
-    v12 = v41;
+    backupKeybagDigest = v41;
     if (v32 >= v33)
     {
       v38 = [v15 count];
-      v8 = v42;
+      compareCopy = v42;
       if (v38 > [v16 count])
       {
         v20 = CloudServicesLog();
@@ -5612,7 +5612,7 @@ LABEL_22:
     else
     {
       v20 = CloudServicesLog();
-      v8 = v42;
+      compareCopy = v42;
       v23 = v44;
       v22 = v17;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -5629,8 +5629,8 @@ LABEL_33:
   }
 
   v20 = CloudServicesLog();
-  v12 = v41;
-  v8 = v42;
+  backupKeybagDigest = v41;
+  compareCopy = v42;
   v23 = v44;
   v22 = v17;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -5647,16 +5647,16 @@ LABEL_36:
   return v19;
 }
 
-- (void)sortForMatchingPassphraseLengthAndPlatform:(id)a3 secureBackups:(id)a4 passphraseLength:(unint64_t)a5 platform:(unint64_t)a6 reply:(id)a7
+- (void)sortForMatchingPassphraseLengthAndPlatform:(id)platform secureBackups:(id)backups passphraseLength:(unint64_t)length platform:(unint64_t)a6 reply:(id)reply
 {
-  v9 = a3;
-  v58 = a4;
-  v10 = a7;
+  platformCopy = platform;
+  backupsCopy = backups;
+  replyCopy = reply;
   v11 = CloudServicesLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v74 = a5;
+    lengthCopy = length;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "looking for record for silent attempt of passphrase length %llu", buf, 0xCu);
   }
 
@@ -5664,7 +5664,7 @@ LABEL_36:
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v12 = v9;
+  v12 = platformCopy;
   v13 = [v12 countByEnumeratingWithState:&v69 objects:v77 count:16];
   if (!v13)
   {
@@ -5672,17 +5672,17 @@ LABEL_36:
     v53 = 0;
     v64 = 0;
     v54 = v12;
-    v55 = a5;
+    lengthCopy2 = length;
     goto LABEL_83;
   }
 
   v14 = v13;
-  v57 = v10;
+  v57 = replyCopy;
   v64 = 0;
   v62 = 0;
   v63 = 0;
   v68 = *v70;
-  v67 = a5;
+  lengthCopy3 = length;
   v65 = v12;
   do
   {
@@ -5698,51 +5698,51 @@ LABEL_36:
       v16 = *(*(&v69 + 1) + 8 * v15);
       v17 = objc_autoreleasePoolPush();
       v18 = +[NSDate dateWithTimeIntervalSince1970:](NSDate, "dateWithTimeIntervalSince1970:", [v16 creationDate]);
-      v19 = [v16 recordId];
+      recordId = [v16 recordId];
       v20 = CloudServicesLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v21 = [CSDateUtilities localStringFromDate:v18];
         *buf = 138412546;
-        v74 = v19;
+        lengthCopy = recordId;
         v75 = 2112;
-        v76 = v21;
+        lengthCopy4 = v21;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "checking escrow record: %@ from %@", buf, 0x16u);
       }
 
-      v22 = [v16 remainingAttempts];
-      v23 = [v16 silentAttemptAllowed];
-      if (v22 == 10 && v23 != 0)
+      remainingAttempts = [v16 remainingAttempts];
+      silentAttemptAllowed = [v16 silentAttemptAllowed];
+      if (remainingAttempts == 10 && silentAttemptAllowed != 0)
       {
-        v27 = [v16 escrowInformationMetadata];
-        v28 = [v16 escrowInformationMetadata];
-        v29 = [v28 clientMetadata];
+        escrowInformationMetadata = [v16 escrowInformationMetadata];
+        escrowInformationMetadata2 = [v16 escrowInformationMetadata];
+        clientMetadata = [escrowInformationMetadata2 clientMetadata];
 
         v30 = CloudServicesLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v74 = v27;
+          lengthCopy = escrowInformationMetadata;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "metadata containing bottle: %@", buf, 0xCu);
         }
 
-        v32 = [v29 devicePlatform];
-        v33 = [v29 secureBackupUsesNumericPassphrase];
-        if (v32 == a6)
+        devicePlatform = [clientMetadata devicePlatform];
+        secureBackupUsesNumericPassphrase = [clientMetadata secureBackupUsesNumericPassphrase];
+        if (devicePlatform == a6)
         {
-          if (v33)
+          if (secureBackupUsesNumericPassphrase)
           {
-            v34 = [v29 secureBackupNumericPassphraseLength];
+            lengthCopy5 = [clientMetadata secureBackupNumericPassphraseLength];
             v35 = CloudServicesLog();
             v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT);
-            if (v34 > a5)
+            if (lengthCopy5 > length)
             {
               if (v36)
               {
                 *buf = 134218240;
-                v74 = v34;
+                lengthCopy = lengthCopy5;
                 v75 = 2048;
-                v76 = a5;
+                lengthCopy4 = length;
                 v37 = v35;
                 v38 = "escrow passphrase length (%llu) longer than silent attempt passphrase (%llu), skipping";
                 v39 = 22;
@@ -5755,7 +5755,7 @@ LABEL_36:
             if (v36)
             {
               *buf = 134217984;
-              v74 = v34;
+              lengthCopy = lengthCopy5;
               _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "found clean record with passwordLength: %llu", buf, 0xCu);
             }
 
@@ -5788,18 +5788,18 @@ LABEL_73:
               }
 
 LABEL_74:
-              v34 = v67;
+              lengthCopy5 = lengthCopy3;
 LABEL_66:
               v14 = v60;
 LABEL_67:
 
-              v67 = v34;
+              lengthCopy3 = lengthCopy5;
               v12 = v65;
               goto LABEL_68;
             }
 
             v43 = v64;
-            if (v64 && [(SecureBackupDaemon *)self compare:v64 with:v16 backups:v58]!= -1)
+            if (v64 && [(SecureBackupDaemon *)self compare:v64 with:v16 backups:backupsCopy]!= -1)
             {
               v35 = CloudServicesLog();
               if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -5821,16 +5821,16 @@ LABEL_67:
 
 LABEL_63:
               *buf = 138412290;
-              v74 = v45;
+              lengthCopy = v45;
               _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "found %@ candidate", buf, 0xCu);
             }
 
 LABEL_64:
 
             v49 = v16;
-            v47 = v19;
+            v47 = recordId;
 
-            v48 = v27;
+            v48 = escrowInformationMetadata;
             v35 = v63;
             v64 = v49;
 LABEL_65:
@@ -5869,7 +5869,7 @@ LABEL_65:
           else
           {
             v40 = v64;
-            if (!v64 || [(SecureBackupDaemon *)self compare:v64 with:v16 backups:v58]== -1)
+            if (!v64 || [(SecureBackupDaemon *)self compare:v64 with:v16 backups:backupsCopy]== -1)
             {
               v41 = CloudServicesLog();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -5882,19 +5882,19 @@ LABEL_65:
 
 LABEL_58:
                 *buf = 138412290;
-                v74 = v42;
+                lengthCopy = v42;
                 _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "found %@ candidate", buf, 0xCu);
               }
 
 LABEL_59:
 
               v46 = v16;
-              v47 = v19;
+              v47 = recordId;
 
-              v48 = v27;
+              v48 = escrowInformationMetadata;
               v35 = v63;
               v64 = v46;
-              v34 = a5;
+              lengthCopy5 = length;
               goto LABEL_65;
             }
 
@@ -5927,13 +5927,13 @@ LABEL_59:
 LABEL_29:
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, v38, buf, v39);
 LABEL_30:
-        v34 = v67;
+        lengthCopy5 = lengthCopy3;
         goto LABEL_67;
       }
 
-      v25 = v23;
-      v27 = CloudServicesLog();
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      v25 = silentAttemptAllowed;
+      escrowInformationMetadata = CloudServicesLog();
+      if (os_log_type_enabled(escrowInformationMetadata, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
         v26 = &stru_1000767A0;
@@ -5942,10 +5942,10 @@ LABEL_30:
           v26 = @"not ";
         }
 
-        v74 = v22;
+        lengthCopy = remainingAttempts;
         v75 = 2112;
-        v76 = v26;
-        _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "candidate not eligible: remaining attempts = %llu, silent attempt %@allowed", buf, 0x16u);
+        lengthCopy4 = v26;
+        _os_log_impl(&_mh_execute_header, escrowInformationMetadata, OS_LOG_TYPE_DEFAULT, "candidate not eligible: remaining attempts = %llu, silent attempt %@allowed", buf, 0x16u);
       }
 
 LABEL_68:
@@ -5965,7 +5965,7 @@ LABEL_68:
   if (v62)
   {
     v52 = CloudServicesLog();
-    v10 = v57;
+    replyCopy = v57;
     v53 = v63;
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
     {
@@ -5978,35 +5978,35 @@ LABEL_68:
       sub_10004BA3C(v64);
     }
 
-    v55 = v67;
+    lengthCopy2 = lengthCopy3;
 LABEL_83:
 
-    v56 = v55;
+    v56 = lengthCopy2;
   }
 
   else
   {
-    v10 = v57;
+    replyCopy = v57;
     v53 = v63;
-    v56 = v67;
+    v56 = lengthCopy3;
   }
 
-  v10[2](v10, v51, v53, v56);
+  replyCopy[2](replyCopy, v51, v53, v56);
 }
 
-- (void)_recoverSilentWithCDPContext:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8
+- (void)_recoverSilentWithCDPContext:(id)context allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply
 {
-  v68 = a3;
-  v62 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v66 = a8;
+  contextCopy = context;
+  recordsCopy = records;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  replyCopy = reply;
   LOBYTE(v59) = 1;
-  v63 = v14;
-  v64 = v15;
-  v65 = v16;
-  v67 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v14 flowID:v15 deviceSessionID:v16 eventName:@"com.apple.sbd.silentBurn" testsAreEnabled:0 canSendMetrics:v59 category:&off_10007A488];
+  v63 = dCopy;
+  v64 = iDCopy;
+  v65 = sessionIDCopy;
+  v67 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy eventName:@"com.apple.sbd.silentBurn" testsAreEnabled:0 canSendMetrics:v59 category:&off_10007A488];
   v17 = CloudServicesLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -6015,15 +6015,15 @@ LABEL_83:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "In %s", &buf, 0xCu);
   }
 
-  v69 = [OTEscrowTranslation CDPRecordContextToDictionary:v68];
+  v69 = [OTEscrowTranslation CDPRecordContextToDictionary:contextCopy];
   v18 = [[SecureBackup alloc] initWithUserActivityLabel:@"silent escrow recovery"];
   [v18 populateWithInfo:v69];
-  v19 = [(SecureBackupDaemon *)self connectionQueue];
-  [v18 setQueue:v19];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [v18 setQueue:connectionQueue];
 
-  v20 = [v18 error];
+  error = [v18 error];
 
-  if (!v20)
+  if (!error)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -6037,8 +6037,8 @@ LABEL_83:
       sub_10004BAC8();
     }
 
-    v25 = [v18 passphrase];
-    v26 = [v25 length] == 0;
+    passphrase = [v18 passphrase];
+    v26 = [passphrase length] == 0;
 
     if (!v26)
     {
@@ -6047,23 +6047,23 @@ LABEL_83:
 
     if ([v18 useCachedPassphrase])
     {
-      v51 = [(SecureBackupDaemon *)self cachedPassphrase];
-      [v18 setPassphrase:v51];
+      cachedPassphrase = [(SecureBackupDaemon *)self cachedPassphrase];
+      [v18 setPassphrase:cachedPassphrase];
 
-      v52 = [v18 passphrase];
-      v53 = [v52 length] == 0;
+      passphrase2 = [v18 passphrase];
+      v53 = [passphrase2 length] == 0;
 
       if (!v53)
       {
 LABEL_8:
-        v27 = [v18 passphrase];
-        v61 = [v27 length];
+        passphrase3 = [v18 passphrase];
+        v61 = [passphrase3 length];
 
         v90 = 0u;
         v91 = 0u;
         v88 = 0u;
         v89 = 0u;
-        v28 = v62;
+        v28 = recordsCopy;
         v29 = [v28 countByEnumeratingWithState:&v88 objects:v96 count:16];
         if (v29)
         {
@@ -6078,11 +6078,11 @@ LABEL_8:
               }
 
               v32 = *(*(&v88 + 1) + 8 * i);
-              v33 = [v32 recordId];
-              if (v33)
+              recordId = [v32 recordId];
+              if (recordId)
               {
-                v34 = [(SecureBackupDaemon *)self cachedRecordID];
-                v35 = [v34 isEqualToString:v33];
+                cachedRecordID = [(SecureBackupDaemon *)self cachedRecordID];
+                v35 = [cachedRecordID isEqualToString:recordId];
 
                 if (v35)
                 {
@@ -6092,39 +6092,39 @@ LABEL_8:
                   {
                     v43 = [CSDateUtilities localStringFromDate:v41];
                     *v92 = 138412546;
-                    v93 = v33;
+                    v93 = recordId;
                     v94 = 2112;
                     v95 = v43;
                     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "found preferred record: %@ from %@", v92, 0x16u);
                   }
 
-                  [v18 setRecordID:v33];
-                  v44 = [v32 escrowInformationMetadata];
-                  v45 = [OTEscrowTranslation metadataToDictionary:v44];
+                  [v18 setRecordID:recordId];
+                  escrowInformationMetadata = [v32 escrowInformationMetadata];
+                  v45 = [OTEscrowTranslation metadataToDictionary:escrowInformationMetadata];
                   [v18 setMetadata:v45];
 
                   v46 = CloudServicesLog();
                   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                   {
-                    v47 = [v18 metadata];
+                    metadata = [v18 metadata];
                     *v92 = 138412290;
-                    v93 = v47;
+                    v93 = metadata;
                     _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "using metadata :%@", v92, 0xCu);
                   }
 
-                  v48 = [(SecureBackupDaemon *)self cachedRecordID];
-                  v49 = [v48 isEqualToString:v33];
+                  cachedRecordID2 = [(SecureBackupDaemon *)self cachedRecordID];
+                  v49 = [cachedRecordID2 isEqualToString:recordId];
 
                   if (v49)
                   {
-                    v50 = [(SecureBackupDaemon *)self cachedRecordIDPassphrase];
-                    [v18 setPassphrase:v50];
+                    cachedRecordIDPassphrase = [(SecureBackupDaemon *)self cachedRecordIDPassphrase];
+                    [v18 setPassphrase:cachedRecordIDPassphrase];
                   }
 
                   else
                   {
-                    v50 = [v18 passphrase];
-                    v55 = [v50 substringToIndex:v61];
+                    cachedRecordIDPassphrase = [v18 passphrase];
+                    v55 = [cachedRecordIDPassphrase substringToIndex:v61];
                     [v18 setPassphrase:v55];
                   }
 
@@ -6136,11 +6136,11 @@ LABEL_8:
                   v56 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v63 flowID:v64 deviceSessionID:v65 eventName:@"com.apple.sbd.recoverEscrowWithRequest" testsAreEnabled:0 canSendMetrics:v60 category:&off_10007A488];
                   v84 = v56;
                   v85 = v67;
-                  v86 = v66;
+                  v86 = replyCopy;
                   p_buf = &buf;
                   [(SecureBackupDaemon *)self recoverEscrowWithRequest:v18 reply:v83];
 
-                  v37 = v28;
+                  secureBackups = v28;
                   goto LABEL_37;
                 }
               }
@@ -6163,25 +6163,25 @@ LABEL_8:
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "sorting through backups!", v92, 2u);
         }
 
-        v37 = [(SecureBackupDaemon *)self secureBackups];
-        if ([v37 count] || !OctagonPlatformSupportsSOS() || _os_feature_enabled_impl())
+        secureBackups = [(SecureBackupDaemon *)self secureBackups];
+        if ([secureBackups count] || !OctagonPlatformSupportsSOS() || _os_feature_enabled_impl())
         {
           LOBYTE(v60) = 1;
           v74[0] = _NSConcreteStackBlock;
           v74[1] = 3221225472;
           v74[2] = sub_100024FF8;
           v74[3] = &unk_100075778;
-          v33 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v63 flowID:v64 deviceSessionID:v65 eventName:@"com.apple.sbd.sortEscrowRecordsForMatchingPassphrase" testsAreEnabled:0 canSendMetrics:v60 category:&off_10007A488];
-          v75 = v33;
+          recordId = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v63 flowID:v64 deviceSessionID:v65 eventName:@"com.apple.sbd.sortEscrowRecordsForMatchingPassphrase" testsAreEnabled:0 canSendMetrics:v60 category:&off_10007A488];
+          v75 = recordId;
           v76 = v67;
-          v82[0] = v66;
+          v82[0] = replyCopy;
           v77 = v18;
-          v78 = self;
+          selfCopy = self;
           v79 = v63;
           v80 = v64;
           v81 = v65;
           v82[1] = &buf;
-          [(SecureBackupDaemon *)self sortForMatchingPassphraseLengthAndPlatform:v28 secureBackups:v37 passphraseLength:v61 platform:1 reply:v74];
+          [(SecureBackupDaemon *)self sortForMatchingPassphraseLengthAndPlatform:v28 secureBackups:secureBackups passphraseLength:v61 platform:1 reply:v74];
 
           v38 = &v75;
           v39 = &v76;
@@ -6201,10 +6201,10 @@ LABEL_8:
           v70[1] = 3221225472;
           v70[2] = sub_100025524;
           v70[3] = &unk_100075400;
-          v33 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v63 flowID:v64 deviceSessionID:v65 eventName:@"com.apple.sbd.recoverWithRequest" testsAreEnabled:0 canSendMetrics:v60 category:&off_10007A488];
-          v71 = v33;
+          recordId = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v63 flowID:v64 deviceSessionID:v65 eventName:@"com.apple.sbd.recoverWithRequest" testsAreEnabled:0 canSendMetrics:v60 category:&off_10007A488];
+          v71 = recordId;
           v72 = v67;
-          v73 = v66;
+          v73 = replyCopy;
           [(SecureBackupDaemon *)self _recoverWithRequest:v18 reply:v70];
           v38 = &v71;
           v39 = &v72;
@@ -6226,10 +6226,10 @@ LABEL_37:
 
       v99 = NSLocalizedDescriptionKey;
       v100 = @"Missing cached passphrase";
-      v37 = [NSDictionary dictionaryWithObjects:&v100 forKeys:&v99 count:1];
-      v33 = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:v37];
-      [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v67 success:0 error:v33];
-      (*(v66 + 2))(v66, 0, v33);
+      secureBackups = [NSDictionary dictionaryWithObjects:&v100 forKeys:&v99 count:1];
+      recordId = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:secureBackups];
+      [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v67 success:0 error:recordId];
+      (*(replyCopy + 2))(replyCopy, 0, recordId);
     }
 
     else
@@ -6243,10 +6243,10 @@ LABEL_37:
 
       v97 = NSLocalizedDescriptionKey;
       v98 = @"attempted to recover with empty passphrase";
-      v37 = [NSDictionary dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-      v33 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v37];
-      [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v67 success:0 error:v33];
-      (*(v66 + 2))(v66, 0, v33);
+      secureBackups = [NSDictionary dictionaryWithObjects:&v98 forKeys:&v97 count:1];
+      recordId = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:secureBackups];
+      [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v67 success:0 error:recordId];
+      (*(replyCopy + 2))(replyCopy, 0, recordId);
     }
 
 LABEL_41:
@@ -6257,24 +6257,24 @@ LABEL_41:
 
   v21 = objc_alloc_init(NSMutableDictionary);
   [v21 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-  v22 = [v18 error];
-  [v21 setObject:v22 forKeyedSubscript:NSUnderlyingErrorKey];
+  error2 = [v18 error];
+  [v21 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
   v23 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v21];
   [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v67 success:0 error:v23];
-  (*(v66 + 2))(v66, 0, v23);
+  (*(replyCopy + 2))(replyCopy, 0, v23);
 
 LABEL_42:
 }
 
-- (void)_recoverWithCDPContext:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8
+- (void)_recoverWithCDPContext:(id)context escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply
 {
-  v32 = a3;
-  v14 = a4;
-  v33 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  contextCopy = context;
+  recordCopy = record;
+  dCopy = d;
+  iDCopy = iD;
+  sessionIDCopy = sessionID;
+  replyCopy = reply;
   v18 = CloudServicesLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -6284,32 +6284,32 @@ LABEL_42:
   }
 
   LOBYTE(v31) = 1;
-  v19 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:v33 flowID:v15 deviceSessionID:v16 eventName:@"com.apple.sbd.remoteEscrowRestore" testsAreEnabled:0 canSendMetrics:v31 category:&off_10007A488];
+  v19 = [[AAFAnalyticsEventSecureBackup alloc] initWithMetrics:0 altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy eventName:@"com.apple.sbd.remoteEscrowRestore" testsAreEnabled:0 canSendMetrics:v31 category:&off_10007A488];
   v20 = [[SecureBackup alloc] initWithUserActivityLabel:@"escrow recovery"];
-  v21 = [OTEscrowTranslation CDPRecordContextToDictionary:v32];
+  v21 = [OTEscrowTranslation CDPRecordContextToDictionary:contextCopy];
   [v20 populateWithInfo:v21];
-  v22 = [v14 escrowInformationMetadata];
-  v23 = [OTEscrowTranslation metadataToDictionary:v22];
+  escrowInformationMetadata = [recordCopy escrowInformationMetadata];
+  v23 = [OTEscrowTranslation metadataToDictionary:escrowInformationMetadata];
   [v20 setMetadata:v23];
 
-  v24 = [v14 recordId];
-  [v20 setRecordID:v24];
+  recordId = [recordCopy recordId];
+  [v20 setRecordID:recordId];
 
-  v25 = [(SecureBackupDaemon *)self connectionQueue];
-  [v20 setQueue:v25];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [v20 setQueue:connectionQueue];
 
-  v26 = [v20 error];
+  error = [v20 error];
 
-  if (v26)
+  if (error)
   {
     v27 = objc_alloc_init(NSMutableDictionary);
     [v27 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v28 = [v20 error];
-    [v27 setObject:v28 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [v20 error];
+    [v27 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v29 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v27];
     [SecureBackupAnalyticsReporterRTC sendMetricWithEvent:v19 success:0 error:v29];
-    v17[2](v17, 0, v29);
+    replyCopy[2](replyCopy, 0, v29);
   }
 
   else
@@ -6331,7 +6331,7 @@ LABEL_42:
     v34[2] = sub_100025C1C;
     v34[3] = &unk_1000757A0;
     v35 = v19;
-    v36 = v17;
+    v36 = replyCopy;
     p_buf = &buf;
     [(SecureBackupDaemon *)self recoverEscrowWithRequest:v20 reply:v34];
 
@@ -6339,21 +6339,21 @@ LABEL_42:
   }
 }
 
-- (void)_recoverWithRequest:(id)a3 reply:(id)a4
+- (void)_recoverWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 guitarfish] && objc_msgSend(v6, "guitarfishToken"))
+  requestCopy = request;
+  replyCopy = reply;
+  if ([requestCopy guitarfish] && objc_msgSend(requestCopy, "guitarfishToken"))
   {
     v8 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:0];
-    v7[2](v7, 0, v8);
+    replyCopy[2](replyCopy, 0, v8);
 
     goto LABEL_10;
   }
 
-  if ([v6 guitarfishToken])
+  if ([requestCopy guitarfishToken])
   {
-    [(SecureBackupDaemon *)self recoverGuitarfishTokenWithRequest:v6 reply:v7];
+    [(SecureBackupDaemon *)self recoverGuitarfishTokenWithRequest:requestCopy reply:replyCopy];
     goto LABEL_10;
   }
 
@@ -6365,25 +6365,25 @@ LABEL_42:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "In %s", &buf, 0xCu);
   }
 
-  v10 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v10];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v11 = [v6 error];
+  error = [requestCopy error];
 
-  if (v11)
+  if (error)
   {
     v12 = objc_alloc_init(NSMutableDictionary);
     [v12 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v13 = [v6 error];
-    [v12 setObject:v13 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v12 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v14 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v12];
-    v7[2](v7, 0, v14);
+    replyCopy[2](replyCopy, 0, v14);
 
     goto LABEL_10;
   }
 
-  if ([v6 emcsMode])
+  if ([requestCopy emcsMode])
   {
     v15 = CloudServicesLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -6403,7 +6403,7 @@ LABEL_42:
 
 LABEL_17:
 
-      v7[2](v7, 0, 0);
+      replyCopy[2](replyCopy, 0, 0);
       goto LABEL_10;
     }
 
@@ -6431,12 +6431,12 @@ LABEL_17:
     [v30 setObject:v73 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v32 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v30];
-    v7[2](v7, 0, v32);
+    replyCopy[2](replyCopy, 0, v32);
   }
 
   else
   {
-    if ([v6 idmsRecovery])
+    if ([requestCopy idmsRecovery])
     {
       v17 = CloudServicesLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -6445,25 +6445,25 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Performing IDMS Recovery", &buf, 2u);
       }
 
-      [v6 setIcdp:1];
-      [v6 setUseRecoveryPET:1];
+      [requestCopy setIcdp:1];
+      [requestCopy setUseRecoveryPET:1];
       v18 = [EscrowService alloc];
-      v19 = [(SecureBackupDaemon *)self operationsLogger];
-      v20 = [(EscrowService *)v18 initWithOperationsLogger:v19];
+      operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+      v20 = [(EscrowService *)v18 initWithOperationsLogger:operationsLogger];
 
       v68[0] = _NSConcreteStackBlock;
       v68[1] = 3221225472;
       v68[2] = sub_100027A94;
       v68[3] = &unk_100075840;
-      v71 = v7;
-      v69 = v6;
-      v70 = self;
+      v71 = replyCopy;
+      v69 = requestCopy;
+      selfCopy = self;
       [(EscrowService *)v20 recoverRecordWithRequest:v69 completionBlock:v68];
 
       goto LABEL_10;
     }
 
-    if ([v6 fmipRecovery])
+    if ([requestCopy fmipRecovery])
     {
       v21 = CloudServicesLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -6472,22 +6472,22 @@ LABEL_17:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Performing FMIP recovery", &buf, 2u);
       }
 
-      [v6 setIcdp:1];
+      [requestCopy setIcdp:1];
       v22 = [EscrowService alloc];
-      v23 = [(SecureBackupDaemon *)self operationsLogger];
-      v24 = [(EscrowService *)v22 initWithOperationsLogger:v23];
+      operationsLogger2 = [(SecureBackupDaemon *)self operationsLogger];
+      v24 = [(EscrowService *)v22 initWithOperationsLogger:operationsLogger2];
 
       v66[0] = _NSConcreteStackBlock;
       v66[1] = 3221225472;
       v66[2] = sub_100028018;
       v66[3] = &unk_100075450;
-      v67 = v7;
-      [(EscrowService *)v24 recoverRecordWithRequest:v6 completionBlock:v66];
+      v67 = replyCopy;
+      [(EscrowService *)v24 recoverRecordWithRequest:requestCopy completionBlock:v66];
 
       goto LABEL_10;
     }
 
-    if ([v6 stingray])
+    if ([requestCopy stingray])
     {
       v25 = CloudServicesLog();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -6497,20 +6497,20 @@ LABEL_17:
       }
 
       v26 = [EscrowService alloc];
-      v27 = [(SecureBackupDaemon *)self operationsLogger];
-      v28 = [(EscrowService *)v26 initWithOperationsLogger:v27];
+      operationsLogger3 = [(SecureBackupDaemon *)self operationsLogger];
+      v28 = [(EscrowService *)v26 initWithOperationsLogger:operationsLogger3];
 
       v64[0] = _NSConcreteStackBlock;
       v64[1] = 3221225472;
       v64[2] = sub_10002838C;
       v64[3] = &unk_100075450;
-      v65 = v7;
-      [(EscrowService *)v28 recoverRecordWithRequest:v6 completionBlock:v64];
+      v65 = replyCopy;
+      [(EscrowService *)v28 recoverRecordWithRequest:requestCopy completionBlock:v64];
 
       goto LABEL_10;
     }
 
-    if (![v6 silent] || !objc_msgSend(v6, "usesRecoveryKey"))
+    if (![requestCopy silent] || !objc_msgSend(requestCopy, "usesRecoveryKey"))
     {
       goto LABEL_40;
     }
@@ -6522,21 +6522,21 @@ LABEL_17:
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Using cached recovery key", &buf, 2u);
     }
 
-    v34 = [(SecureBackupDaemon *)self cachedRecoveryKey];
-    [v6 setRecoveryKey:v34];
+    cachedRecoveryKey = [(SecureBackupDaemon *)self cachedRecoveryKey];
+    [requestCopy setRecoveryKey:cachedRecoveryKey];
 
-    v35 = [v6 recoveryKey];
-    LODWORD(v34) = v35 == 0;
+    recoveryKey = [requestCopy recoveryKey];
+    LODWORD(cachedRecoveryKey) = recoveryKey == 0;
 
-    if (!v34)
+    if (!cachedRecoveryKey)
     {
 LABEL_40:
-      v36 = [v6 passphrase];
-      v37 = [v36 length] == 0;
+      passphrase = [requestCopy passphrase];
+      v37 = [passphrase length] == 0;
 
       if (v37)
       {
-        if (![v6 useCachedPassphrase])
+        if (![requestCopy useCachedPassphrase])
         {
           v49 = CloudServicesLog();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -6549,16 +6549,16 @@ LABEL_40:
           v75 = @"attempted to recover with empty passphrase";
           v50 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
           v51 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v50];
-          v7[2](v7, 0, v51);
+          replyCopy[2](replyCopy, 0, v51);
 
           goto LABEL_10;
         }
 
-        v43 = [(SecureBackupDaemon *)self cachedPassphrase];
-        [v6 setPassphrase:v43];
+        cachedPassphrase = [(SecureBackupDaemon *)self cachedPassphrase];
+        [requestCopy setPassphrase:cachedPassphrase];
 
-        v44 = [v6 passphrase];
-        v45 = [v44 length] == 0;
+        passphrase2 = [requestCopy passphrase];
+        v45 = [passphrase2 length] == 0;
 
         if (v45)
         {
@@ -6573,7 +6573,7 @@ LABEL_40:
           v77 = @"Missing cached passphrase";
           v47 = [NSDictionary dictionaryWithObjects:&v77 forKeys:&v76 count:1];
           v48 = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:v47];
-          v7[2](v7, 0, v48);
+          replyCopy[2](replyCopy, 0, v48);
 
           goto LABEL_10;
         }
@@ -6585,9 +6585,9 @@ LABEL_40:
       v80 = sub_1000109EC;
       v81 = sub_1000109FC;
       v82 = os_transaction_create();
-      if (([v6 icdp] & 1) != 0 || -[SecureBackupDaemon _usesEscrow](self, "_usesEscrow"))
+      if (([requestCopy icdp] & 1) != 0 || -[SecureBackupDaemon _usesEscrow](self, "_usesEscrow"))
       {
-        if ([v6 icdp] && objc_msgSend(v6, "silent"))
+        if ([requestCopy icdp] && objc_msgSend(requestCopy, "silent"))
         {
           v38 = CloudServicesLog();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -6595,15 +6595,15 @@ LABEL_40:
             sub_10004BD5C();
           }
 
-          v39 = [v6 passphrase];
-          v40 = [v39 length];
+          passphrase3 = [requestCopy passphrase];
+          v40 = [passphrase3 length];
           v59[0] = _NSConcreteStackBlock;
           v59[1] = 3221225472;
           v59[2] = sub_100028870;
           v59[3] = &unk_100075890;
-          v62 = v7;
-          v60 = v6;
-          v61 = self;
+          v62 = replyCopy;
+          v60 = requestCopy;
+          selfCopy2 = self;
           p_buf = &buf;
           [(SecureBackupDaemon *)self recordIDAndMetadataForSilentAttempt:v60 passphraseLength:v40 platform:1 reply:v59];
 
@@ -6622,9 +6622,9 @@ LABEL_40:
           v56[1] = 3221225472;
           v56[2] = sub_100028AF0;
           v56[3] = &unk_100075868;
-          v57 = v7;
+          v57 = replyCopy;
           v58 = &buf;
-          [(SecureBackupDaemon *)self recoverEscrowWithRequest:v6 reply:v56];
+          [(SecureBackupDaemon *)self recoverEscrowWithRequest:requestCopy reply:v56];
           v41 = v57;
         }
       }
@@ -6637,7 +6637,7 @@ LABEL_40:
           sub_10004BCE4();
         }
 
-        v7[2](v7, 0, 0);
+        replyCopy[2](replyCopy, 0, 0);
         v41 = *(*(&buf + 1) + 40);
         *(*(&buf + 1) + 40) = 0;
       }
@@ -6655,125 +6655,125 @@ LABEL_40:
     v54 = objc_alloc_init(NSMutableDictionary);
     [v54 setObject:@"silent attempt with missing cached recovery key" forKeyedSubscript:NSLocalizedDescriptionKey];
     v55 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v54];
-    v7[2](v7, 0, v55);
+    replyCopy[2](replyCopy, 0, v55);
   }
 
 LABEL_10:
 }
 
-- (void)recoverWithRequest:(id)a3 reply:(id)a4
+- (void)recoverWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  requestCopy = request;
   kdebug_trace();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100028C30;
   v10[3] = &unk_100075510;
   v11 = os_transaction_create();
-  v12 = v6;
+  v12 = replyCopy;
   v8 = v11;
-  v9 = v6;
-  [(SecureBackupDaemon *)self _recoverWithRequest:v7 reply:v10];
+  v9 = replyCopy;
+  [(SecureBackupDaemon *)self _recoverWithRequest:requestCopy reply:v10];
 }
 
-- (void)recoverWithCDPContextInDaemon:(id)a3 escrowRecord:(id)a4 reply:(id)a5
+- (void)recoverWithCDPContextInDaemon:(id)daemon escrowRecord:(id)record reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  recordCopy = record;
+  daemonCopy = daemon;
   kdebug_trace();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100028DCC;
   v13[3] = &unk_100075510;
   v14 = os_transaction_create();
-  v15 = v8;
+  v15 = replyCopy;
   v11 = v14;
-  v12 = v8;
-  [(SecureBackupDaemon *)self _recoverWithCDPContext:v10 escrowRecord:v9 reply:v13];
+  v12 = replyCopy;
+  [(SecureBackupDaemon *)self _recoverWithCDPContext:daemonCopy escrowRecord:recordCopy reply:v13];
 }
 
-- (void)recoverWithCDPContextInDaemon:(id)a3 escrowRecord:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8
+- (void)recoverWithCDPContextInDaemon:(id)daemon escrowRecord:(id)record altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  replyCopy = reply;
+  sessionIDCopy = sessionID;
+  iDCopy = iD;
+  dCopy = d;
+  recordCopy = record;
+  daemonCopy = daemon;
   kdebug_trace();
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100028FAC;
   v22[3] = &unk_100075510;
   v23 = os_transaction_create();
-  v24 = v14;
+  v24 = replyCopy;
   v20 = v23;
-  v21 = v14;
-  [(SecureBackupDaemon *)self _recoverWithCDPContext:v19 escrowRecord:v18 altDSID:v17 flowID:v16 deviceSessionID:v15 reply:v22];
+  v21 = replyCopy;
+  [(SecureBackupDaemon *)self _recoverWithCDPContext:daemonCopy escrowRecord:recordCopy altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy reply:v22];
 }
 
-- (void)recoverSilentWithCDPContextInDaemon:(id)a3 allRecords:(id)a4 reply:(id)a5
+- (void)recoverSilentWithCDPContextInDaemon:(id)daemon allRecords:(id)records reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  recordsCopy = records;
+  daemonCopy = daemon;
   kdebug_trace();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100029148;
   v13[3] = &unk_100075510;
   v14 = os_transaction_create();
-  v15 = v8;
+  v15 = replyCopy;
   v11 = v14;
-  v12 = v8;
-  [(SecureBackupDaemon *)self _recoverSilentWithCDPContext:v10 allRecords:v9 reply:v13];
+  v12 = replyCopy;
+  [(SecureBackupDaemon *)self _recoverSilentWithCDPContext:daemonCopy allRecords:recordsCopy reply:v13];
 }
 
-- (void)recoverSilentWithCDPContextInDaemon:(id)a3 allRecords:(id)a4 altDSID:(id)a5 flowID:(id)a6 deviceSessionID:(id)a7 reply:(id)a8
+- (void)recoverSilentWithCDPContextInDaemon:(id)daemon allRecords:(id)records altDSID:(id)d flowID:(id)iD deviceSessionID:(id)sessionID reply:(id)reply
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  replyCopy = reply;
+  sessionIDCopy = sessionID;
+  iDCopy = iD;
+  dCopy = d;
+  recordsCopy = records;
+  daemonCopy = daemon;
   kdebug_trace();
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100029328;
   v22[3] = &unk_100075510;
   v23 = os_transaction_create();
-  v24 = v14;
+  v24 = replyCopy;
   v20 = v23;
-  v21 = v14;
-  [(SecureBackupDaemon *)self _recoverSilentWithCDPContext:v19 allRecords:v18 altDSID:v17 flowID:v16 deviceSessionID:v15 reply:v22];
+  v21 = replyCopy;
+  [(SecureBackupDaemon *)self _recoverSilentWithCDPContext:daemonCopy allRecords:recordsCopy altDSID:dCopy flowID:iDCopy deviceSessionID:sessionIDCopy reply:v22];
 }
 
-- (void)restoreKeychainWithBackupPasswordInDaemon:(id)a3 reply:(id)a4
+- (void)restoreKeychainWithBackupPasswordInDaemon:(id)daemon reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  daemonCopy = daemon;
   kdebug_trace();
   v10 = 0;
-  v8 = [(SecureBackupDaemon *)self _restoreKeychainWithBackupPassword:v7 keybagDigest:0 error:&v10];
+  v8 = [(SecureBackupDaemon *)self _restoreKeychainWithBackupPassword:daemonCopy keybagDigest:0 error:&v10];
 
   v9 = v10;
   kdebug_trace();
-  v6[2](v6, v8, v9);
+  replyCopy[2](replyCopy, v8, v9);
 }
 
-- (void)removeRecoveryKeyFromBackupInDaemon:(id)a3
+- (void)removeRecoveryKeyFromBackupInDaemon:(id)daemon
 {
   v7 = 0;
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = [(SecureBackupDaemon *)self removeRecoveryKey:&v7];
   v6 = v7;
-  v4[2](v4, v5, v6);
+  daemonCopy[2](daemonCopy, v5, v6);
 }
 
-- (BOOL)removeRecoveryKey:(id *)a3
+- (BOOL)removeRecoveryKey:(id *)key
 {
   v19 = 0;
   v20 = &v19;
@@ -6789,7 +6789,7 @@ LABEL_10:
   v14[0] = &v13;
   v14[1] = 0x2020000000;
   v15 = 0;
-  v5 = [(SecureBackupDaemon *)self kvsQueue];
+  kvsQueue = [(SecureBackupDaemon *)self kvsQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029758;
@@ -6798,7 +6798,7 @@ LABEL_10:
   block[5] = &v19;
   block[6] = &v16;
   block[7] = &v13;
-  dispatch_sync(v5, block);
+  dispatch_sync(kvsQueue, block);
 
   if (*(v17[0] + 24) == 1 && *(v14[0] + 24) == 1)
   {
@@ -6827,9 +6827,9 @@ LABEL_10:
     }
 
     v7 = 0;
-    if (a3)
+    if (key)
     {
-      *a3 = v20[5];
+      *key = v20[5];
     }
   }
 
@@ -6840,18 +6840,18 @@ LABEL_10:
   return v7;
 }
 
-- (void)verifyRecoveryKeyInDaemon:(id)a3 reply:(id)a4
+- (void)verifyRecoveryKeyInDaemon:(id)daemon reply:(id)reply
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(SecureBackupDaemon *)self verifyRecoveryKey:a3 error:&v9];
+  replyCopy = reply;
+  v7 = [(SecureBackupDaemon *)self verifyRecoveryKey:daemon error:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  replyCopy[2](replyCopy, v7, v8);
 }
 
-- (BOOL)verifyRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)verifyRecoveryKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -6866,18 +6866,18 @@ LABEL_10:
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  v7 = [(SecureBackupDaemon *)self backupQueue];
+  backupQueue = [(SecureBackupDaemon *)self backupQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A0AC;
   block[3] = &unk_1000758E0;
-  v8 = v6;
+  v8 = keyCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v18 = &v25;
   v19 = &v29;
   v20 = &v21;
-  dispatch_sync(v7, block);
+  dispatch_sync(backupQueue, block);
 
   if (v26[3])
   {
@@ -6930,13 +6930,13 @@ LABEL_7:
   }
 
   v11 = 0;
-  if (a4)
+  if (error)
   {
     v14 = v30[5];
     if (v14)
     {
       v11 = 0;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -6949,20 +6949,20 @@ LABEL_13:
   return v11;
 }
 
-- (void)isRecoveryKeySetInDaemon:(id)a3
+- (void)isRecoveryKeySetInDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v5 = +[NSUbiquitousKeyValueStore defaultStore];
   v8 = 0;
   v6 = [(SecureBackupDaemon *)self hasRecoveryKeyInKVS:v5 error:&v8];
   v7 = v8;
-  v4[2](v4, v6, v7);
+  daemonCopy[2](daemonCopy, v6, v7);
 }
 
-- (void)recoverRecordContentsWithRequest:(id)a3 reply:(id)a4
+- (void)recoverRecordContentsWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = os_transaction_create();
   v9 = CloudServicesLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6972,46 +6972,46 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v10 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v10];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v11 = [v6 error];
+  error = [requestCopy error];
 
-  if (v11)
+  if (error)
   {
     v12 = objc_alloc_init(NSMutableDictionary);
     [(EscrowService *)v12 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v13 = [v6 error];
-    [(EscrowService *)v12 setObject:v13 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [(EscrowService *)v12 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v14 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v12];
-    v7[2](v7, 0, v14);
+    replyCopy[2](replyCopy, 0, v14);
   }
 
   else
   {
     kdebug_trace();
     v15 = [EscrowService alloc];
-    v16 = [(SecureBackupDaemon *)self operationsLogger];
-    v12 = [(EscrowService *)v15 initWithOperationsLogger:v16];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v12 = [(EscrowService *)v15 initWithOperationsLogger:operationsLogger];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10002AA50;
     v17[3] = &unk_100075510;
-    v19 = v7;
+    v19 = replyCopy;
     v18 = v8;
-    [(EscrowService *)v12 recoverRecordWithRequest:v6 completionBlock:v17];
+    [(EscrowService *)v12 recoverRecordWithRequest:requestCopy completionBlock:v17];
 
     v14 = v19;
   }
 }
 
-- (void)createICDPRecordWithRequest:(id)a3 recordContents:(id)a4 reply:(id)a5
+- (void)createICDPRecordWithRequest:(id)request recordContents:(id)contents reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  contentsCopy = contents;
+  replyCopy = reply;
   v11 = os_transaction_create();
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -7038,25 +7038,25 @@ LABEL_13:
     goto LABEL_34;
   }
 
-  v13 = [(SecureBackupDaemon *)self connectionQueue];
-  [v8 setQueue:v13];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v14 = [v8 error];
+  error = [requestCopy error];
 
-  if (v14)
+  if (error)
   {
     v15 = objc_alloc_init(NSMutableDictionary);
     [v15 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v16 = [v8 error];
-    [v15 setObject:v16 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v15 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
 LABEL_35:
     v28 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v15];
-    v10[2](v10, v28);
+    replyCopy[2](replyCopy, v28);
     goto LABEL_36;
   }
 
-  if (![v8 icdp] || !objc_msgSend(v8, "usesMultipleiCSC"))
+  if (![requestCopy icdp] || !objc_msgSend(requestCopy, "usesMultipleiCSC"))
   {
 LABEL_23:
     v38 = CloudServicesLog();
@@ -7070,11 +7070,11 @@ LABEL_23:
     v39 = CloudServicesLog();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
     {
-      v46 = [v8 icdp];
-      v45 = [v8 usesMultipleiCSC];
-      v40 = [v8 passphrase];
+      icdp = [requestCopy icdp];
+      usesMultipleiCSC = [requestCopy usesMultipleiCSC];
+      passphrase = [requestCopy passphrase];
       v41 = v11;
-      if ([v40 length])
+      if ([passphrase length])
       {
         v42 = @"present";
       }
@@ -7084,9 +7084,9 @@ LABEL_23:
         v42 = @"not present";
       }
 
-      v43 = [v8 passcodeStashSecret];
+      passcodeStashSecret = [requestCopy passcodeStashSecret];
       *buf = 67109890;
-      if (v43)
+      if (passcodeStashSecret)
       {
         v44 = @"present";
       }
@@ -7096,9 +7096,9 @@ LABEL_23:
         v44 = @"not present";
       }
 
-      *v51 = v46;
+      *v51 = icdp;
       *&v51[4] = 1024;
-      *&v51[6] = v45;
+      *&v51[6] = usesMultipleiCSC;
       v52 = 2112;
       v53 = v42;
       v11 = v41;
@@ -7116,12 +7116,12 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v21 = [v8 passphrase];
-  if (![v21 length])
+  passphrase2 = [requestCopy passphrase];
+  if (![passphrase2 length])
   {
-    v22 = [v8 passcodeStashSecret];
+    passcodeStashSecret2 = [requestCopy passcodeStashSecret];
 
-    if (v22)
+    if (passcodeStashSecret2)
     {
       goto LABEL_14;
     }
@@ -7130,9 +7130,9 @@ LABEL_34:
   }
 
 LABEL_14:
-  v23 = [v8 dsid];
+  dsid = [requestCopy dsid];
 
-  if (!v23)
+  if (!dsid)
   {
     v24 = CloudServicesLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -7142,7 +7142,7 @@ LABEL_14:
     }
 
     v25 = sub_10000F044();
-    [v8 setDsid:v25];
+    [requestCopy setDsid:v25];
   }
 
   v15 = +[NSMutableDictionary dictionary];
@@ -7151,7 +7151,7 @@ LABEL_14:
   v27 = [CSDateUtilities localStringFromDate:v26];
   [v15 setObject:v27 forKeyedSubscript:kSecureBackupTimestampKey];
 
-  v28 = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:v8];
+  v28 = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:requestCopy];
   if (v28)
   {
     v29 = +[NSDate now];
@@ -7166,73 +7166,73 @@ LABEL_14:
   v31 = [(SecureBackupDaemon *)self _gestaltValueForKey:@"BuildVersion"];
   [v15 setObject:v31 forKeyedSubscript:kSecureBackupBuildVersionKey];
 
-  [v8 setMetadata:v15];
-  v32 = [v9 mutableCopy];
-  if ([v8 requiresDoubleEnrollment])
+  [requestCopy setMetadata:v15];
+  v32 = [contentsCopy mutableCopy];
+  if ([requestCopy requiresDoubleEnrollment])
   {
     v33 = +[NSUUID UUID];
-    v34 = [v33 UUIDString];
-    [v32 setObject:v34 forKeyedSubscript:@"DoubleEnrollmentPassword"];
+    uUIDString = [v33 UUIDString];
+    [v32 setObject:uUIDString forKeyedSubscript:@"DoubleEnrollmentPassword"];
 
     [v32 setObject:&off_10007A3E0 forKeyedSubscript:@"DoubleEnrollmentVersion"];
   }
 
-  [v8 setEscrowRecord:v32];
+  [requestCopy setEscrowRecord:v32];
   v35 = [EscrowService alloc];
-  v36 = [(SecureBackupDaemon *)self operationsLogger];
-  v37 = [(EscrowService *)v35 initWithOperationsLogger:v36];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  v37 = [(EscrowService *)v35 initWithOperationsLogger:operationsLogger];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
   v47[2] = sub_10002B25C;
   v47[3] = &unk_100075510;
-  v49 = v10;
+  v49 = replyCopy;
   v48 = v11;
-  [(EscrowService *)v37 storeRecordWithRequest:v8 completionBlock:v47];
+  [(EscrowService *)v37 storeRecordWithRequest:requestCopy completionBlock:v47];
 
 LABEL_36:
 }
 
-- (void)_deleteAlliCDPRecordsWithContext:(id)a3
+- (void)_deleteAlliCDPRecordsWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 recordIDs];
-  v6 = [v5 count];
+  contextCopy = context;
+  recordIDs = [contextCopy recordIDs];
+  v6 = [recordIDs count];
 
   if (v6)
   {
-    v7 = [v4 recordIDs];
-    v8 = [v7 objectAtIndex:0];
+    recordIDs2 = [contextCopy recordIDs];
+    v8 = [recordIDs2 objectAtIndex:0];
 
-    v9 = [v4 recordIDs];
-    [v9 removeObjectAtIndex:0];
+    recordIDs3 = [contextCopy recordIDs];
+    [recordIDs3 removeObjectAtIndex:0];
 
-    v10 = [v4 request];
-    [v10 setRecordID:v8];
+    request = [contextCopy request];
+    [request setRecordID:v8];
 
-    v11 = [v4 escrowService];
-    v12 = [v4 request];
+    escrowService = [contextCopy escrowService];
+    request2 = [contextCopy request];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10002B4B0;
     v15[3] = &unk_100075908;
-    v16 = v4;
-    v17 = self;
-    [v11 deleteRecordWithRequest:v12 completionBlock:v15];
+    v16 = contextCopy;
+    selfCopy = self;
+    [escrowService deleteRecordWithRequest:request2 completionBlock:v15];
   }
 
   else
   {
-    v13 = [v4 completionBlock];
-    v14 = [v4 deleteError];
-    (v13)[2](v13, v14);
+    completionBlock = [contextCopy completionBlock];
+    deleteError = [contextCopy deleteError];
+    (completionBlock)[2](completionBlock, deleteError);
   }
 }
 
-- (void)deleteAlliCDPRecordsWithRequest:(id)a3 reply:(id)a4
+- (void)deleteAlliCDPRecordsWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -7241,20 +7241,20 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
   }
 
   else
@@ -7263,19 +7263,19 @@ LABEL_36:
     v14[1] = 3221225472;
     v14[2] = sub_10002B794;
     v14[3] = &unk_100075840;
-    v17 = v7;
-    v15 = v6;
-    v16 = self;
+    v17 = replyCopy;
+    v15 = requestCopy;
+    selfCopy = self;
     [(SecureBackupDaemon *)self getAccountInfoWithRequest:v15 reply:v14];
 
     v11 = v17;
   }
 }
 
-- (void)backOffDateWithRequest:(id)a3 reply:(id)a4
+- (void)backOffDateWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -7284,20 +7284,20 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   else
@@ -7306,16 +7306,16 @@ LABEL_36:
     v14[1] = 3221225472;
     v14[2] = sub_10002BC24;
     v14[3] = &unk_100075450;
-    v15 = v7;
-    [(SecureBackupDaemon *)self getAccountInfoWithRequest:v6 reply:v14];
+    v15 = replyCopy;
+    [(SecureBackupDaemon *)self getAccountInfoWithRequest:requestCopy reply:v14];
     v11 = v15;
   }
 }
 
-- (void)setBackOffDateWithRequest:(id)a3 reply:(id)a4
+- (void)setBackOffDateWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -7324,30 +7324,30 @@ LABEL_36:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
   }
 
   else
   {
-    v14 = [v6 metadataHash];
-    v13 = [v14 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
+    metadataHash = [requestCopy metadataHash];
+    v13 = [metadataHash objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
 
-    v15 = [v6 backOffDate];
+    backOffDate = [requestCopy backOffDate];
 
-    if (v15 && v13)
+    if (backOffDate && v13)
     {
       v16 = [[NSData alloc] initWithBase64EncodedString:v13 options:0];
       if (v16)
@@ -7360,9 +7360,9 @@ LABEL_36:
           v18 = [v17 objectForKeyedSubscript:kSecureBackupClientMetadataKey];
           if (v18)
           {
-            [v6 setStingray:1];
-            [v6 setMetadata:v18];
-            [(SecureBackupDaemon *)self updateMetadataWithRequest:v6 reply:v7];
+            [requestCopy setStingray:1];
+            [requestCopy setMetadata:v18];
+            [(SecureBackupDaemon *)self updateMetadataWithRequest:requestCopy reply:replyCopy];
           }
 
           else
@@ -7378,7 +7378,7 @@ LABEL_36:
             v31 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
             v32 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v31];
 
-            v7[2](v7, v32);
+            replyCopy[2](replyCopy, v32);
             v11 = v32;
           }
         }
@@ -7398,7 +7398,7 @@ LABEL_36:
           v18 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:2];
           v29 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v18];
 
-          v7[2](v7, v29);
+          replyCopy[2](replyCopy, v29);
           v11 = v29;
         }
       }
@@ -7415,7 +7415,7 @@ LABEL_36:
         v40 = @"encodedMetadata not base64";
         v17 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
         v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v17];
-        v7[2](v7, v11);
+        replyCopy[2](replyCopy, v11);
       }
     }
 
@@ -7425,12 +7425,12 @@ LABEL_36:
       v19 = CloudServicesLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        sub_10004C4A4(v6, v19);
+        sub_10004C4A4(requestCopy, v19);
       }
 
       v20 = [NSString alloc];
-      v21 = [v6 metadataHash];
-      if (v21)
+      metadataHash2 = [requestCopy metadataHash];
+      if (metadataHash2)
       {
         v22 = @"have";
       }
@@ -7440,8 +7440,8 @@ LABEL_36:
         v22 = @"missing";
       }
 
-      v23 = [v6 backOffDate];
-      if (v23)
+      backOffDate2 = [requestCopy backOffDate];
+      if (backOffDate2)
       {
         v24 = @"have";
       }
@@ -7451,8 +7451,8 @@ LABEL_36:
         v24 = @"missing";
       }
 
-      v25 = [v6 encodedMetadata];
-      if (v25)
+      encodedMetadata = [requestCopy encodedMetadata];
+      if (encodedMetadata)
       {
         v26 = @"have";
       }
@@ -7468,16 +7468,16 @@ LABEL_36:
       v42 = v16;
       v17 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
       v11 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v17];
-      v7[2](v7, v11);
+      replyCopy[2](replyCopy, v11);
       v13 = v33;
     }
   }
 }
 
-- (void)disableWithRequest:(id)a3 reply:(id)a4
+- (void)disableWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = _CloudServicesSignpostLogSystem();
   v9 = _CloudServicesSignpostCreate(v8);
   v11 = v10;
@@ -7486,26 +7486,26 @@ LABEL_36:
   v13 = v12;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v14 = [v6 activityLabel];
+    activityLabel = [requestCopy activityLabel];
     *buf = 138543362;
-    v47 = v14;
+    v47 = activityLabel;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, v9, "DisableWithRequest", " enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0xCu);
   }
 
   v15 = _CloudServicesSignpostLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v6 activityLabel];
+    activityLabel2 = [requestCopy activityLabel];
     *buf = 134218242;
     v47 = v9;
     v48 = 2114;
-    v49 = v16;
+    v49 = activityLabel2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: DisableWithRequest  enableTelemetry=YES  Activity=%{public,signpost.telemetry:string1,name=Activity}@ ", buf, 0x16u);
   }
 
-  v17 = [[SBEscrowOperationStartEvent alloc] initWithRequest:v6 type:101];
-  v18 = [(SecureBackupDaemon *)self operationsLogger];
-  [v18 updateStoreWithEvent:v17];
+  v17 = [[SBEscrowOperationStartEvent alloc] initWithRequest:requestCopy type:101];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  [operationsLogger updateStoreWithEvent:v17];
 
   v41[0] = _NSConcreteStackBlock;
   v41[1] = 3221225472;
@@ -7516,7 +7516,7 @@ LABEL_36:
   v41[4] = self;
   v19 = v17;
   v42 = v19;
-  v20 = v7;
+  v20 = replyCopy;
   v43 = v20;
   v21 = objc_retainBlock(v41);
   v22 = CloudServicesLog();
@@ -7528,17 +7528,17 @@ LABEL_36:
   }
 
   v23 = os_transaction_create();
-  v24 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v24];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v25 = [v6 error];
+  error = [requestCopy error];
 
-  if (v25)
+  if (error)
   {
     v26 = objc_alloc_init(NSMutableDictionary);
     [v26 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v27 = [v6 error];
-    [v26 setObject:v27 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v26 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v28 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v26];
     (v21[2])(v21, v28);
@@ -7546,7 +7546,7 @@ LABEL_36:
     goto LABEL_18;
   }
 
-  if ([v6 icdp] && objc_msgSend(v6, "deleteAll"))
+  if ([requestCopy icdp] && objc_msgSend(requestCopy, "deleteAll"))
   {
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
@@ -7555,24 +7555,24 @@ LABEL_36:
     v38[4] = self;
     v40 = v21;
     v39 = v23;
-    [(SecureBackupDaemon *)self deleteAlliCDPRecordsWithRequest:v6 reply:v38];
+    [(SecureBackupDaemon *)self deleteAlliCDPRecordsWithRequest:requestCopy reply:v38];
 
     goto LABEL_18;
   }
 
-  if ([v6 stingray])
+  if ([requestCopy stingray])
   {
 LABEL_17:
     v30 = [EscrowService alloc];
-    v31 = [(SecureBackupDaemon *)self operationsLogger];
-    v32 = [(EscrowService *)v30 initWithOperationsLogger:v31];
+    operationsLogger2 = [(SecureBackupDaemon *)self operationsLogger];
+    v32 = [(EscrowService *)v30 initWithOperationsLogger:operationsLogger2];
 
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_10002CC30;
     v33[3] = &unk_100075958;
-    v34 = v6;
-    v35 = self;
+    v34 = requestCopy;
+    selfCopy = self;
     v37 = v21;
     v36 = v23;
     [(EscrowService *)v32 deleteRecordWithRequest:v34 completionBlock:v33];
@@ -7580,8 +7580,8 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v29 = [v6 recordID];
-  if (v29)
+  recordID = [requestCopy recordID];
+  if (recordID)
   {
 
     goto LABEL_17;
@@ -7601,10 +7601,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)updateMetadataWithRequest:(id)a3 reply:(id)a4
+- (void)updateMetadataWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -7613,30 +7613,30 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (!v10)
+  if (!error)
   {
-    v14 = [v6 metadataHash];
-    v46 = [v14 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
-    if (![v6 stingray])
+    metadataHash = [requestCopy metadataHash];
+    v46 = [metadataHash objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
+    if (![requestCopy stingray])
     {
-      if ([v6 icdp])
+      if ([requestCopy icdp])
       {
-        v29 = [v6 metadata];
-        if (v29)
+        metadata = [requestCopy metadata];
+        if (metadata)
         {
-          v30 = [v6 recordID];
-          v31 = !v30 || v46 == 0;
+          recordID = [requestCopy recordID];
+          v31 = !recordID || v46 == 0;
           v32 = v31;
 
           if (!v32)
           {
-            v38 = [v6 metadata];
-            v21 = [v38 mutableCopy];
+            metadata2 = [requestCopy metadata];
+            v21 = [metadata2 mutableCopy];
 
             goto LABEL_37;
           }
@@ -7646,9 +7646,9 @@ LABEL_18:
         v34 = CloudServicesLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [v6 recordID];
+          recordID2 = [requestCopy recordID];
           *buf = 138412546;
-          v50 = v35;
+          v50 = recordID2;
           v51 = 2112;
           v52 = v33;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "failed to update record metadata (%@): %@", buf, 0x16u);
@@ -7665,7 +7665,7 @@ LABEL_18:
         }
       }
 
-      v7[2](v7, v33);
+      replyCopy[2](replyCopy, v33);
       v21 = 0;
 LABEL_45:
 
@@ -7674,15 +7674,15 @@ LABEL_46:
     }
 
     v15 = kSecureBackupKeybagSHA256Key;
-    v45 = [v14 objectForKeyedSubscript:kSecureBackupKeybagSHA256Key];
+    v45 = [metadataHash objectForKeyedSubscript:kSecureBackupKeybagSHA256Key];
     v16 = kSecureBackupKeybagDigestKey;
-    v17 = [v14 objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
+    v17 = [metadataHash objectForKeyedSubscript:kSecureBackupKeybagDigestKey];
     v18 = kSecureBackupTimestampKey;
-    v44 = [v14 objectForKeyedSubscript:kSecureBackupTimestampKey];
+    v44 = [metadataHash objectForKeyedSubscript:kSecureBackupTimestampKey];
     v19 = kSecureBackupBackOffDateKey;
-    v43 = [v14 objectForKeyedSubscript:kSecureBackupBackOffDateKey];
-    v20 = [v6 metadata];
-    if (v20 && v45 | v17 && v44)
+    v43 = [metadataHash objectForKeyedSubscript:kSecureBackupBackOffDateKey];
+    metadata3 = [requestCopy metadata];
+    if (metadata3 && v45 | v17 && v44)
     {
 
       if (v46)
@@ -7691,21 +7691,21 @@ LABEL_46:
         [v21 setObject:v45 forKeyedSubscript:v15];
         [v21 setObject:v17 forKeyedSubscript:v16];
         [v21 setObject:v44 forKeyedSubscript:v18];
-        v22 = [v6 metadata];
-        [v21 setObject:v22 forKeyedSubscript:kSecureBackupClientMetadataKey];
+        metadata4 = [requestCopy metadata];
+        [v21 setObject:metadata4 forKeyedSubscript:kSecureBackupClientMetadataKey];
 
-        v23 = [v6 backOffDate];
+        backOffDate = [requestCopy backOffDate];
 
-        if (v23)
+        if (backOffDate)
         {
-          v24 = [v6 backOffDate];
-          [v24 timeIntervalSinceReferenceDate];
+          backOffDate2 = [requestCopy backOffDate];
+          [backOffDate2 timeIntervalSinceReferenceDate];
           v26 = v25 > 0.0;
 
           if (v26)
           {
-            v27 = [v6 backOffDate];
-            [v21 setObject:v27 forKeyedSubscript:v19];
+            backOffDate3 = [requestCopy backOffDate];
+            [v21 setObject:backOffDate3 forKeyedSubscript:v19];
             v28 = 1;
 LABEL_29:
 
@@ -7730,12 +7730,12 @@ LABEL_31:
 
 LABEL_37:
             v39 = [EscrowService alloc];
-            v40 = [(SecureBackupDaemon *)self operationsLogger];
-            v33 = [(EscrowService *)v39 initWithOperationsLogger:v40];
+            operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+            v33 = [(EscrowService *)v39 initWithOperationsLogger:operationsLogger];
 
-            [v6 setEncodedMetadata:v46];
-            [v6 setMetadata:v21];
-            if ([v6 stingray])
+            [requestCopy setEncodedMetadata:v46];
+            [requestCopy setMetadata:v21];
+            if ([requestCopy stingray])
             {
               v41 = CloudServicesLog();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -7747,15 +7747,15 @@ LABEL_37:
 
             else
             {
-              if (![v6 icdp])
+              if (![requestCopy icdp])
               {
 LABEL_44:
                 v47[0] = _NSConcreteStackBlock;
                 v47[1] = 3221225472;
                 v47[2] = sub_10002D65C;
                 v47[3] = &unk_100075450;
-                v48 = v7;
-                [(EscrowService *)v33 updateRecordMetadataWithRequest:v6 completionBlock:v47];
+                v48 = replyCopy;
+                [(EscrowService *)v33 updateRecordMetadataWithRequest:requestCopy completionBlock:v47];
 
                 goto LABEL_45;
               }
@@ -7763,9 +7763,9 @@ LABEL_44:
               v41 = CloudServicesLog();
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
               {
-                v42 = [v6 recordID];
+                recordID3 = [requestCopy recordID];
                 *buf = 138412290;
-                v50 = v42;
+                v50 = recordID3;
                 _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Attempting to update record metadata (%@)", buf, 0xCu);
               }
             }
@@ -7785,16 +7785,16 @@ LABEL_44:
     {
     }
 
-    v27 = [CloudServicesError errorWithDomain:kSecureBackupErrorDomain code:4 format:@"update stingray metadata with invalid parameters"];
+    backOffDate3 = [CloudServicesError errorWithDomain:kSecureBackupErrorDomain code:4 format:@"update stingray metadata with invalid parameters"];
     v36 = CloudServicesLog();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v50 = v27;
+      v50 = backOffDate3;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "failed to update record metadata: %@", buf, 0xCu);
     }
 
-    v7[2](v7, v27);
+    replyCopy[2](replyCopy, backOffDate3);
     v21 = 0;
     v28 = 0;
     goto LABEL_29;
@@ -7802,19 +7802,19 @@ LABEL_44:
 
   v11 = objc_alloc_init(NSMutableDictionary);
   [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-  v12 = [v6 error];
-  [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+  error2 = [requestCopy error];
+  [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
   v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-  v7[2](v7, v13);
+  replyCopy[2](replyCopy, v13);
 
 LABEL_47:
 }
 
-- (int)storeCachedPassphrase:(id)a3
+- (int)storeCachedPassphrase:(id)passphrase
 {
-  v3 = a3;
-  if (![v3 length])
+  passphraseCopy = passphrase;
+  if (![passphraseCopy length])
   {
     v22 = CloudServicesLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -7828,11 +7828,11 @@ LABEL_47:
   v4 = objc_autoreleasePoolPush();
   v5 = NSTemporaryDirectory();
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7];
-  v9 = [v8 fileSystemRepresentation];
+  uUIDString = [v6 UUIDString];
+  v8 = [v5 stringByAppendingPathComponent:uUIDString];
+  fileSystemRepresentation = [v8 fileSystemRepresentation];
 
-  v10 = open_dprotected_np(v9, 1794, 1, 0, 384);
+  v10 = open_dprotected_np(fileSystemRepresentation, 1794, 1, 0, 384);
   if (v10 < 0)
   {
     v23 = CloudServicesLog();
@@ -7846,7 +7846,7 @@ LABEL_47:
   }
 
   v11 = v10;
-  if (unlink(v9) < 0)
+  if (unlink(fileSystemRepresentation) < 0)
   {
     v16 = CloudServicesLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -7858,12 +7858,12 @@ LABEL_47:
   }
 
   v12 = +[NSUUID UUID];
-  v13 = [v12 UUIDString];
+  uUIDString2 = [v12 UUIDString];
 
   v28[0] = kSecureBackupPassphraseKey;
   v28[1] = @"uuid";
-  v29[0] = v3;
-  v29[1] = v13;
+  v29[0] = passphraseCopy;
+  v29[1] = uUIDString2;
   v14 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
   v25 = 0;
   v15 = [NSPropertyListSerialization dataWithPropertyList:v14 format:200 options:0 error:&v25];
@@ -7938,7 +7938,7 @@ LABEL_27:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v13;
+    v27 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "saving uuid %@", buf, 0xCu);
   }
 
@@ -7948,31 +7948,31 @@ LABEL_29:
   return v11;
 }
 
-- (void)setCachedPassphrase:(id)a3
+- (void)setCachedPassphrase:(id)passphrase
 {
-  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:a3];
+  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:passphrase];
 
   [(SecureBackupDaemon *)self setCachedPassphraseFD:v4];
 }
 
-- (void)setCachedRecordIDPassphrase:(id)a3
+- (void)setCachedRecordIDPassphrase:(id)passphrase
 {
-  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:a3];
+  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:passphrase];
 
   [(SecureBackupDaemon *)self setCachedRecordIDPassphraseFD:v4];
 }
 
-- (void)setCachedRecoveryKey:(id)a3
+- (void)setCachedRecoveryKey:(id)key
 {
-  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:a3];
+  v4 = [(SecureBackupDaemon *)self storeCachedPassphrase:key];
 
   [(SecureBackupDaemon *)self setCachedRecoveryKeyFD:v4];
 }
 
-- (id)cachedPassphraseForFD:(int)a3
+- (id)cachedPassphraseForFD:(int)d
 {
   v4 = objc_autoreleasePoolPush();
-  if (a3 < 0)
+  if (d < 0)
   {
     goto LABEL_13;
   }
@@ -7988,7 +7988,7 @@ LABEL_29:
   v19.st_mtimespec = v5;
   *&v19.st_dev = v5;
   *&v19.st_uid = v5;
-  if (fstat(a3, &v19) < 0)
+  if (fstat(d, &v19) < 0)
   {
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -8001,8 +8001,8 @@ LABEL_29:
 
   v6 = [NSMutableData alloc];
   v7 = [v6 initWithLength:v19.st_size];
-  v8 = [v7 mutableBytes];
-  v9 = pread(a3, v8, v19.st_size, 0);
+  mutableBytes = [v7 mutableBytes];
+  v9 = pread(d, mutableBytes, v19.st_size, 0);
   if (v9 < 0)
   {
     v10 = CloudServicesLog();
@@ -8075,23 +8075,23 @@ LABEL_15:
 
 - (NSString)cachedPassphrase
 {
-  v3 = [(SecureBackupDaemon *)self cachedPassphraseFD];
+  cachedPassphraseFD = [(SecureBackupDaemon *)self cachedPassphraseFD];
 
-  return [(SecureBackupDaemon *)self cachedPassphraseForFD:v3];
+  return [(SecureBackupDaemon *)self cachedPassphraseForFD:cachedPassphraseFD];
 }
 
 - (NSString)cachedRecordIDPassphrase
 {
-  v3 = [(SecureBackupDaemon *)self cachedRecordIDPassphraseFD];
+  cachedRecordIDPassphraseFD = [(SecureBackupDaemon *)self cachedRecordIDPassphraseFD];
 
-  return [(SecureBackupDaemon *)self cachedPassphraseForFD:v3];
+  return [(SecureBackupDaemon *)self cachedPassphraseForFD:cachedRecordIDPassphraseFD];
 }
 
 - (id)cachedRecoveryKey
 {
-  v3 = [(SecureBackupDaemon *)self cachedRecoveryKeyFD];
+  cachedRecoveryKeyFD = [(SecureBackupDaemon *)self cachedRecoveryKeyFD];
 
-  return [(SecureBackupDaemon *)self cachedPassphraseForFD:v3];
+  return [(SecureBackupDaemon *)self cachedPassphraseForFD:cachedRecoveryKeyFD];
 }
 
 - (void)uncacheRecordIDPassphrase
@@ -8099,9 +8099,9 @@ LABEL_15:
   v3 = CloudServicesLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SecureBackupDaemon *)self cachedRecordID];
+    cachedRecordID = [(SecureBackupDaemon *)self cachedRecordID];
     v6 = 138412290;
-    v7 = v4;
+    v7 = cachedRecordID;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "uncaching recordID %@", &v6, 0xCu);
   }
 
@@ -8121,10 +8121,10 @@ LABEL_15:
   }
 }
 
-- (void)cachePassphraseWithRequest:(id)a3 reply:(id)a4
+- (void)cachePassphraseWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8133,22 +8133,22 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", &v17, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
-    if (v7)
+    if (replyCopy)
     {
       v11 = objc_alloc_init(NSMutableDictionary);
       [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-      v12 = [v6 error];
-      [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+      error2 = [requestCopy error];
+      [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
       v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-      v7[2](v7, v13);
+      replyCopy[2](replyCopy, v13);
     }
   }
 
@@ -8161,20 +8161,20 @@ LABEL_15:
       qword_100084AB8 = v14;
     }
 
-    v16 = [v6 passphrase];
-    [(SecureBackupDaemon *)self setCachedPassphrase:v16];
+    passphrase = [requestCopy passphrase];
+    [(SecureBackupDaemon *)self setCachedPassphrase:passphrase];
 
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 }
 
-- (void)uncachePassphraseWithRequest:(id)a3 reply:(id)a4
+- (void)uncachePassphraseWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8183,22 +8183,22 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", &v15, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
-    if (v7)
+    if (replyCopy)
     {
       v11 = objc_alloc_init(NSMutableDictionary);
       [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-      v12 = [v6 error];
-      [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+      error2 = [requestCopy error];
+      [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
       v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-      v7[2](v7, v13);
+      replyCopy[2](replyCopy, v13);
 
 LABEL_14:
     }
@@ -8216,9 +8216,9 @@ LABEL_14:
     }
 
     [(SecureBackupDaemon *)self setCachedPassphraseFD:0xFFFFFFFFLL];
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     if (atomic_fetch_add_explicit(&dword_100084AC8, 0xFFFFFFFF, memory_order_relaxed) == 1)
@@ -8230,10 +8230,10 @@ LABEL_14:
   }
 }
 
-- (void)cacheRecoveryKeyWithRequest:(id)a3 reply:(id)a4
+- (void)cacheRecoveryKeyWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8242,22 +8242,22 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", &v17, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
-    if (v7)
+    if (replyCopy)
     {
       v11 = objc_alloc_init(NSMutableDictionary);
       [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-      v12 = [v6 error];
-      [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+      error2 = [requestCopy error];
+      [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
       v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-      v7[2](v7, v13);
+      replyCopy[2](replyCopy, v13);
     }
   }
 
@@ -8270,20 +8270,20 @@ LABEL_14:
       qword_100084AC0 = v14;
     }
 
-    v16 = [v6 recoveryKey];
-    [(SecureBackupDaemon *)self setCachedRecoveryKey:v16];
+    recoveryKey = [requestCopy recoveryKey];
+    [(SecureBackupDaemon *)self setCachedRecoveryKey:recoveryKey];
 
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 }
 
-- (void)uncacheRecoveryKeyWithRequest:(id)a3 reply:(id)a4
+- (void)uncacheRecoveryKeyWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8292,22 +8292,22 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", &v15, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
-    if (v7)
+    if (replyCopy)
     {
       v11 = objc_alloc_init(NSMutableDictionary);
       [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-      v12 = [v6 error];
-      [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+      error2 = [requestCopy error];
+      [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
       v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-      v7[2](v7, v13);
+      replyCopy[2](replyCopy, v13);
 
 LABEL_14:
     }
@@ -8325,9 +8325,9 @@ LABEL_14:
     }
 
     [(SecureBackupDaemon *)self setCachedRecoveryKeyFD:0xFFFFFFFFLL];
-    if (v7)
+    if (replyCopy)
     {
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
 
     if (atomic_fetch_add_explicit(&dword_100084ACC, 0xFFFFFFFF, memory_order_relaxed) == 1)
@@ -8339,10 +8339,10 @@ LABEL_14:
   }
 }
 
-- (void)startSMSChallengeWithRequest:(id)a3 reply:(id)a4
+- (void)startSMSChallengeWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8351,41 +8351,41 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   else
   {
     v14 = [EscrowService alloc];
-    v15 = [(SecureBackupDaemon *)self operationsLogger];
-    v16 = [(EscrowService *)v14 initWithOperationsLogger:v15];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v16 = [(EscrowService *)v14 initWithOperationsLogger:operationsLogger];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10002ED2C;
     v17[3] = &unk_100075450;
-    v18 = v7;
-    [(EscrowService *)v16 startSMSChallengeWithRequest:v6 completionBlock:v17];
+    v18 = replyCopy;
+    [(EscrowService *)v16 startSMSChallengeWithRequest:requestCopy completionBlock:v17];
   }
 }
 
-- (void)getCountrySMSCodesWithRequest:(id)a3 reply:(id)a4
+- (void)getCountrySMSCodesWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8394,41 +8394,41 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   else
   {
     v14 = [EscrowService alloc];
-    v15 = [(SecureBackupDaemon *)self operationsLogger];
-    v16 = [(EscrowService *)v14 initWithOperationsLogger:v15];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v16 = [(EscrowService *)v14 initWithOperationsLogger:operationsLogger];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10002F2A8;
     v17[3] = &unk_100075450;
-    v18 = v7;
-    [(EscrowService *)v16 getCountrySMSCodesWithRequest:v6 completionBlock:v17];
+    v18 = replyCopy;
+    [(EscrowService *)v16 getCountrySMSCodesWithRequest:requestCopy completionBlock:v17];
   }
 }
 
-- (void)changeSMSTargetWithRequest:(id)a3 reply:(id)a4
+- (void)changeSMSTargetWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -8437,20 +8437,20 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
 
     goto LABEL_31;
   }
@@ -8460,38 +8460,38 @@ LABEL_14:
     if ([(SecureBackupDaemon *)self _usesEscrow])
     {
       v14 = [EscrowService alloc];
-      v15 = [(SecureBackupDaemon *)self operationsLogger];
-      v16 = [(EscrowService *)v14 initWithOperationsLogger:v15];
+      operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+      v16 = [(EscrowService *)v14 initWithOperationsLogger:operationsLogger];
 
-      v17 = [v6 countryDialCode];
-      if ([v17 length])
+      countryDialCode = [requestCopy countryDialCode];
+      if ([countryDialCode length])
       {
-        v18 = [v6 countryCode];
-        if ([v18 length])
+        countryCode = [requestCopy countryCode];
+        if ([countryCode length])
         {
-          v19 = [v6 smsTarget];
-          if ([v19 length])
+          smsTarget = [requestCopy smsTarget];
+          if ([smsTarget length])
           {
-            v20 = [v6 appleID];
-            if ([v20 length])
+            appleID = [requestCopy appleID];
+            if ([appleID length])
             {
-              v21 = [v6 iCloudPassword];
-              v22 = [v21 length] == 0;
+              iCloudPassword = [requestCopy iCloudPassword];
+              v22 = [iCloudPassword length] == 0;
 
               if (!v22)
               {
-                v23 = [v6 smsTarget];
+                smsTarget2 = [requestCopy smsTarget];
                 v41 = 0;
-                v24 = [(SecureBackupDaemon *)self normalizeSMSTarget:v23 error:&v41];
+                v24 = [(SecureBackupDaemon *)self normalizeSMSTarget:smsTarget2 error:&v41];
                 v25 = v41;
-                [v6 setSmsTarget:v24];
+                [requestCopy setSmsTarget:v24];
 
-                v26 = [v6 smsTarget];
-                LODWORD(v23) = v26 == 0;
+                smsTarget3 = [requestCopy smsTarget];
+                LODWORD(smsTarget2) = smsTarget3 == 0;
 
-                if (v23)
+                if (smsTarget2)
                 {
-                  v7[2](v7, v25);
+                  replyCopy[2](replyCopy, v25);
                   goto LABEL_30;
                 }
 
@@ -8499,8 +8499,8 @@ LABEL_14:
                 v39[1] = 3221225472;
                 v39[2] = sub_10002FC30;
                 v39[3] = &unk_100075450;
-                v40 = v7;
-                [(EscrowService *)v16 changeSMSTargetWithRequest:v6 completionBlock:v39];
+                v40 = replyCopy;
+                [(EscrowService *)v16 changeSMSTargetWithRequest:requestCopy completionBlock:v39];
                 v27 = v40;
 LABEL_29:
 
@@ -8512,19 +8512,19 @@ LABEL_24:
               v34 = CloudServicesLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
               {
-                v35 = [v6 smsTarget];
-                v36 = [v6 appleID];
-                v37 = [v6 iCloudPassword];
+                smsTarget4 = [requestCopy smsTarget];
+                appleID2 = [requestCopy appleID];
+                iCloudPassword2 = [requestCopy iCloudPassword];
                 v38 = @"non-";
                 *buf = 138412802;
-                v45 = v35;
+                v45 = smsTarget4;
                 v46 = 2112;
-                if (!v37)
+                if (!iCloudPassword2)
                 {
                   v38 = &stru_1000767A0;
                 }
 
-                v47 = v36;
+                v47 = appleID2;
                 v48 = 2112;
                 v49 = v38;
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "attempted to change SMS target, with invalid parameters: %@, %@, %@nil iCloud password", buf, 0x20u);
@@ -8534,7 +8534,7 @@ LABEL_24:
               v43 = @"attempted to change SMS target with invalid parameters";
               v25 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
               v27 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v25];
-              v7[2](v7, v27);
+              replyCopy[2](replyCopy, v27);
               goto LABEL_29;
             }
           }
@@ -8555,7 +8555,7 @@ LABEL_24:
     v51 = @"attempted to change SMS target, but not using escrow";
     v32 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
     v33 = [NSError errorWithDomain:kSecureBackupErrorDomain code:10 userInfo:v32];
-    v7[2](v7, v33);
+    replyCopy[2](replyCopy, v33);
   }
 
   else
@@ -8571,22 +8571,22 @@ LABEL_24:
     v53 = @"attempted to change SMS target, but backup is not enabled";
     v29 = [NSDictionary dictionaryWithObjects:&v53 forKeys:&v52 count:1];
     v30 = [NSError errorWithDomain:kSecureBackupErrorDomain code:16 userInfo:v29];
-    v7[2](v7, v30);
+    replyCopy[2](replyCopy, v30);
   }
 
 LABEL_31:
 }
 
-- (void)notificationInfoWithReply:(id)a3
+- (void)notificationInfoWithReply:(id)reply
 {
-  v10 = a3;
+  replyCopy = reply;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(SecureBackupDaemon *)self handledNotifications];
-  [v5 setObject:v6 forKeyedSubscript:@"handled_notifications"];
+  handledNotifications = [(SecureBackupDaemon *)self handledNotifications];
+  [v5 setObject:handledNotifications forKeyedSubscript:@"handled_notifications"];
 
-  v7 = [(SecureBackupDaemon *)self ignoredNotifications];
-  [v5 setObject:v7 forKeyedSubscript:@"ignored_notifications"];
+  ignoredNotifications = [(SecureBackupDaemon *)self ignoredNotifications];
+  [v5 setObject:ignoredNotifications forKeyedSubscript:@"ignored_notifications"];
 
   v8 = xpc_copy_event();
   if (v8)
@@ -8595,28 +8595,28 @@ LABEL_31:
     [v5 setObject:v9 forKeyedSubscript:@"events"];
   }
 
-  v10[2](v10, v5, 0);
+  replyCopy[2](replyCopy, v5, 0);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)stateCaptureWithReply:(id)a3
+- (void)stateCaptureWithReply:(id)reply
 {
-  v6 = a3;
+  replyCopy = reply;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(SecureBackupDaemon *)self copyKVSState];
-  v6[2](v6, v5, 0);
+  copyKVSState = [(SecureBackupDaemon *)self copyKVSState];
+  replyCopy[2](replyCopy, copyKVSState, 0);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)getPendingEscrowRequest:(id *)a3
+- (id)getPendingEscrowRequest:(id *)request
 {
   v4 = [SecEscrowRequest request:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fetchRequestWaitingOnPasscode:a3];
+    v6 = [v4 fetchRequestWaitingOnPasscode:request];
   }
 
   else
@@ -8627,13 +8627,13 @@ LABEL_31:
   return v6;
 }
 
-- (void)beginHSA2PasscodeRequest:(id)a3 desirePasscodeImmediately:(BOOL)a4 uuid:(id)a5 reason:(id)a6 reply:(id)a7
+- (void)beginHSA2PasscodeRequest:(id)request desirePasscodeImmediately:(BOOL)immediately uuid:(id)uuid reason:(id)reason reply:(id)reply
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  immediatelyCopy = immediately;
+  requestCopy = request;
+  uuidCopy = uuid;
+  reasonCopy = reason;
+  replyCopy = reply;
   v16 = CloudServicesLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -8641,28 +8641,28 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "beginning an HSA2 passcode request", buf, 2u);
   }
 
-  v17 = [(SecureBackupDaemon *)self connectionQueue];
-  [v12 setQueue:v17];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  [v12 setIcdp:1];
-  if ([v14 reason] == 1)
+  [requestCopy setIcdp:1];
+  if ([reasonCopy reason] == 1)
   {
     v18 = CloudServicesLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v14 expectedFederationID];
+      expectedFederationID = [reasonCopy expectedFederationID];
       *buf = 138412290;
-      v39[0] = v19;
+      v39[0] = expectedFederationID;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "will attempt federation move to %@", buf, 0xCu);
     }
 
-    v20 = [v14 expectedFederationID];
-    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v20 integerValue]);
-    [v12 setSpecifiedFederation:v21];
+    expectedFederationID2 = [reasonCopy expectedFederationID];
+    v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [expectedFederationID2 integerValue]);
+    [requestCopy setSpecifiedFederation:v21];
   }
 
   v22 = os_transaction_create();
-  if (v10)
+  if (immediatelyCopy)
   {
     v23 = 2;
   }
@@ -8689,7 +8689,7 @@ LABEL_31:
     v41 = @"unable to set state for token";
     v28 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
     v29 = [NSError errorWithDomain:v27 code:24 userInfo:v28];
-    v15[2](v15, 0, v29);
+    replyCopy[2](replyCopy, 0, v29);
   }
 
   else
@@ -8699,24 +8699,24 @@ LABEL_31:
       *buf = 67109376;
       LODWORD(v39[0]) = v23;
       WORD2(v39[0]) = 1024;
-      *(v39 + 6) = v10;
+      *(v39 + 6) = immediatelyCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "successfully set notify state for request to %d (desire immediately: %d)", buf, 0xEu);
     }
 
     v30 = [EscrowService alloc];
-    v31 = [(SecureBackupDaemon *)self operationsLogger];
-    v32 = [(EscrowService *)v30 initWithOperationsLogger:v31];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v32 = [(EscrowService *)v30 initWithOperationsLogger:operationsLogger];
 
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_10003039C;
     v33[3] = &unk_100075980;
-    v37 = v15;
+    v37 = replyCopy;
     v34 = v32;
-    v35 = v13;
+    v35 = uuidCopy;
     v36 = v22;
     v28 = v32;
-    [(EscrowService *)v28 fetchCertificatesAndDuplicateRequest:v12 completionBlock:v33];
+    [(EscrowService *)v28 fetchCertificatesAndDuplicateRequest:requestCopy completionBlock:v33];
 
     v29 = v37;
   }
@@ -8724,8 +8724,8 @@ LABEL_31:
 
 - (int)notifyToken
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (dword_1000848B8 == -1)
   {
     v3 = notify_register_check([SecureBackupPasscodeRequestNotifyTokenName UTF8String], &dword_1000848B8);
@@ -8743,7 +8743,7 @@ LABEL_31:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return dword_1000848B8;
 }
@@ -8761,12 +8761,12 @@ LABEL_31:
   objc_sync_exit(obj);
 }
 
-- (int)setPasscodeRequestFlag:(unint64_t)a3
+- (int)setPasscodeRequestFlag:(unint64_t)flag
 {
-  v5 = [(SecureBackupDaemon *)self notifyToken];
-  if (v5 != -1)
+  notifyToken = [(SecureBackupDaemon *)self notifyToken];
+  if (notifyToken != -1)
   {
-    result = notify_set_state(v5, a3);
+    result = notify_set_state(notifyToken, flag);
     if (result != 2)
     {
       return result;
@@ -8778,12 +8778,12 @@ LABEL_31:
   return 2;
 }
 
-- (int)getPasscodeRequestFlag:(unint64_t *)a3
+- (int)getPasscodeRequestFlag:(unint64_t *)flag
 {
-  v5 = [(SecureBackupDaemon *)self notifyToken];
-  if (v5 != -1)
+  notifyToken = [(SecureBackupDaemon *)self notifyToken];
+  if (notifyToken != -1)
   {
-    result = notify_get_state(v5, a3);
+    result = notify_get_state(notifyToken, flag);
     if (result != 2)
     {
       return result;
@@ -8795,21 +8795,21 @@ LABEL_31:
   return 2;
 }
 
-- (void)prepareHSA2EscrowRecordContents:(id)a3 usesComplexPassphrase:(BOOL)a4 reply:(id)a5
+- (void)prepareHSA2EscrowRecordContents:(id)contents usesComplexPassphrase:(BOOL)passphrase reply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  passphraseCopy = passphrase;
+  contentsCopy = contents;
+  replyCopy = reply;
   v10 = CloudServicesLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v83 = v6;
+    v83 = passphraseCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "beginning an prepare HSA2 contents request: usesComplexPassphrase: %d", buf, 8u);
   }
 
-  v11 = [(SecureBackupDaemon *)self connectionQueue];
-  [v8 setQueue:v11];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [contentsCopy setQueue:connectionQueue];
 
   v12 = [(SecureBackupDaemon *)self setPasscodeRequestFlag:4];
   v13 = CloudServicesLog();
@@ -8834,9 +8834,9 @@ LABEL_31:
     sub_10004CF44();
   }
 
-  if (![v8 stingray])
+  if (![contentsCopy stingray])
   {
-    if ([v8 usesRandomPassphrase])
+    if ([contentsCopy usesRandomPassphrase])
     {
       v15 = kSecureBackupErrorDomain;
       v76 = NSLocalizedDescriptionKey;
@@ -8846,7 +8846,7 @@ LABEL_31:
       goto LABEL_13;
     }
 
-    if (([v8 usesMultipleiCSC] & 1) == 0)
+    if (([contentsCopy usesMultipleiCSC] & 1) == 0)
     {
       v20 = CloudServicesLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -8855,10 +8855,10 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "record preparation requires a multiple iCSC world, so do that", buf, 2u);
       }
 
-      [v8 setUsesMultipleiCSC:1];
+      [contentsCopy setUsesMultipleiCSC:1];
     }
 
-    if (([v8 icdp] & 1) == 0)
+    if (([contentsCopy icdp] & 1) == 0)
     {
       v21 = CloudServicesLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -8867,12 +8867,12 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "record preparation requires an ICDP world, so do that", buf, 2u);
       }
 
-      [v8 setIcdp:1];
+      [contentsCopy setIcdp:1];
     }
 
-    v22 = [v8 dsid];
+    dsid = [contentsCopy dsid];
 
-    if (!v22)
+    if (!dsid)
     {
       v23 = CloudServicesLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -8882,18 +8882,18 @@ LABEL_31:
       }
 
       v24 = sub_10000F044();
-      [v8 setDsid:v24];
+      [contentsCopy setDsid:v24];
     }
 
-    v25 = [v8 metadata];
+    metadata = [contentsCopy metadata];
     v26 = kSecureBackupUsesComplexPassphraseKey;
-    v18 = [v25 objectForKeyedSubscript:kSecureBackupUsesComplexPassphraseKey];
+    v18 = [metadata objectForKeyedSubscript:kSecureBackupUsesComplexPassphraseKey];
 
-    v27 = [v18 integerValue];
-    v28 = [v8 metadata];
-    v29 = [v28 mutableCopy];
+    integerValue = [v18 integerValue];
+    metadata2 = [contentsCopy metadata];
+    v29 = [metadata2 mutableCopy];
     v30 = v29;
-    if (v27 || v6)
+    if (integerValue || passphraseCopy)
     {
       if (v29)
       {
@@ -8928,12 +8928,12 @@ LABEL_31:
 
       [v33 setObject:&__kCFBooleanFalse forKeyedSubscript:v26];
       [v33 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecureBackupUsesNumericPassphraseKey];
-      v34 = [v8 passphrase];
-      v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v34 length]);
+      passphrase = [contentsCopy passphrase];
+      v35 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [passphrase length]);
       [v33 setObject:v35 forKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
     }
 
-    [v8 setMetadata:v33];
+    [contentsCopy setMetadata:v33];
 
     v73 = 0;
     v36 = [SecEscrowRequest request:&v73];
@@ -8947,7 +8947,7 @@ LABEL_31:
         sub_10004D220();
       }
 
-      v9[2](v9, v19);
+      replyCopy[2](replyCopy, v19);
       goto LABEL_84;
     }
 
@@ -8965,7 +8965,7 @@ LABEL_31:
 
       if (v39)
       {
-        v9[2](v9, v39);
+        replyCopy[2](replyCopy, v39);
       }
 
       else
@@ -8975,7 +8975,7 @@ LABEL_31:
         v75 = @"No outstanding escrow request";
         v45 = [NSDictionary dictionaryWithObjects:&v75 forKeys:&v74 count:1];
         v46 = [NSError errorWithDomain:v44 code:-1 userInfo:v45];
-        v9[2](v9, v46);
+        replyCopy[2](replyCopy, v46);
 
         v39 = 0;
       }
@@ -8986,7 +8986,7 @@ LABEL_31:
     v71 = 0;
     v40 = [(SecureBackupDaemon *)self fetchPRK:&v71];
     v39 = v71;
-    [v8 setIdmsData:v40];
+    [contentsCopy setIdmsData:v40];
 
     if (v39)
     {
@@ -8996,7 +8996,7 @@ LABEL_31:
         sub_10004CF80();
       }
 
-      v9[2](v9, v39);
+      replyCopy[2](replyCopy, v39);
 LABEL_83:
 
       v19 = v39;
@@ -9005,11 +9005,11 @@ LABEL_84:
       goto LABEL_14;
     }
 
-    v47 = [v8 idmsData];
+    idmsData = [contentsCopy idmsData];
 
     v48 = CloudServicesLog();
     v49 = os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT);
-    if (v47)
+    if (idmsData)
     {
       if (!v49)
       {
@@ -9035,7 +9035,7 @@ LABEL_84:
 LABEL_58:
 
     v70 = 0;
-    v51 = [(SecureBackupDaemon *)self makeRecordCandidate:v8 error:&v70];
+    v51 = [(SecureBackupDaemon *)self makeRecordCandidate:contentsCopy error:&v70];
     v52 = v70;
     v39 = v52;
     if (!v51 || v52)
@@ -9046,17 +9046,17 @@ LABEL_58:
         sub_10004D140();
       }
 
-      v9[2](v9, v39);
+      replyCopy[2](replyCopy, v39);
     }
 
     else
     {
       v53 = [EscrowService alloc];
-      v54 = [(SecureBackupDaemon *)self operationsLogger];
-      v55 = [(EscrowService *)v53 initWithOperationsLogger:v54];
+      operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+      v55 = [(EscrowService *)v53 initWithOperationsLogger:operationsLogger];
 
       v69 = 0;
-      v56 = [(EscrowService *)v55 fetchCachedCertificateWithRequest:v8 error:&v69];
+      v56 = [(EscrowService *)v55 fetchCachedCertificateWithRequest:contentsCopy error:&v69];
       v57 = v69;
       v39 = v57;
       if (!v56 || v57)
@@ -9067,14 +9067,14 @@ LABEL_58:
           sub_10004D0D0();
         }
 
-        v9[2](v9, v39);
+        replyCopy[2](replyCopy, v39);
       }
 
       else
       {
         v65 = v55;
         v68 = 0;
-        v58 = [EscrowPrerecord createPrerecordFromCandidate:v51 storedCertificate:v56 request:v8 error:&v68];
+        v58 = [EscrowPrerecord createPrerecordFromCandidate:v51 storedCertificate:v56 request:contentsCopy error:&v68];
         v39 = v68;
         v59 = CloudServicesLog();
         v60 = v59;
@@ -9086,7 +9086,7 @@ LABEL_58:
             sub_10004D060();
           }
 
-          v9[2](v9, v39);
+          replyCopy[2](replyCopy, v39);
           v55 = v65;
         }
 
@@ -9098,9 +9098,9 @@ LABEL_58:
             _os_log_impl(&_mh_execute_header, v60, OS_LOG_TYPE_DEFAULT, "Successfully made an escrow prerecord", buf, 2u);
           }
 
-          v61 = [v58 data];
+          data = [v58 data];
           v67 = 0;
-          [v36 cachePrerecord:v38 serializedPrerecord:v61 error:&v67];
+          [v36 cachePrerecord:v38 serializedPrerecord:data error:&v67];
           v39 = v67;
 
           v55 = v65;
@@ -9112,12 +9112,12 @@ LABEL_58:
               sub_10004CFF0();
             }
 
-            v9[2](v9, v39);
+            replyCopy[2](replyCopy, v39);
           }
 
           else
           {
-            v9[2](v9, 0);
+            replyCopy[2](replyCopy, 0);
           }
         }
       }
@@ -9134,11 +9134,11 @@ LABEL_58:
 LABEL_13:
   v18 = [NSDictionary dictionaryWithObjects:v16 forKeys:v17 count:1];
   v19 = [NSError errorWithDomain:v15 code:24 userInfo:v18];
-  v9[2](v9, v19);
+  replyCopy[2](replyCopy, v19);
 LABEL_14:
 }
 
-- (id)fetchPRK:(id *)a3
+- (id)fetchPRK:(id *)k
 {
   v3 = sub_100042638();
   v4 = v3;
@@ -9164,9 +9164,9 @@ LABEL_14:
   return v6;
 }
 
-- (void)daemonPasscodeRequestOpinion:(id)a3
+- (void)daemonPasscodeRequestOpinion:(id)opinion
 {
-  v4 = a3;
+  opinionCopy = opinion;
   v24 = 0;
   v5 = [SecEscrowRequest request:&v24];
   v6 = v24;
@@ -9185,7 +9185,7 @@ LABEL_14:
         sub_10004D2CC();
       }
 
-      v4[2](v4, 0, v9);
+      opinionCopy[2](opinionCopy, 0, v9);
     }
 
     else
@@ -9223,8 +9223,8 @@ LABEL_14:
           [(SecureBackupDaemon *)self setPasscodeRequestFlag:1];
         }
 
-        v16 = v4[2];
-        v17 = v4;
+        v16 = opinionCopy[2];
+        v17 = opinionCopy;
         v18 = 2;
       }
 
@@ -9252,8 +9252,8 @@ LABEL_14:
           sub_10004CF44();
         }
 
-        v16 = v4[2];
-        v17 = v4;
+        v16 = opinionCopy[2];
+        v17 = opinionCopy;
         v18 = 1;
       }
 
@@ -9269,15 +9269,15 @@ LABEL_14:
       sub_10004D3AC();
     }
 
-    v4[2](v4, 0, v7);
+    opinionCopy[2](opinionCopy, 0, v7);
     v9 = v7;
   }
 }
 
-- (void)getCertificatesWithRequest:(id)a3 reply:(id)a4
+- (void)getCertificatesWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  requestCopy = request;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -9286,26 +9286,26 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v7 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
   v10 = [EscrowService alloc];
-  v11 = [(SecureBackupDaemon *)self operationsLogger];
-  v12 = [(EscrowService *)v10 initWithOperationsLogger:v11];
+  operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+  v12 = [(EscrowService *)v10 initWithOperationsLogger:operationsLogger];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10003171C;
   v14[3] = &unk_1000759A8;
-  v15 = v6;
-  v13 = v6;
-  [(EscrowService *)v12 fetchCertificatesWithRequest:v7 completionBlock:v14];
+  v15 = replyCopy;
+  v13 = replyCopy;
+  [(EscrowService *)v12 fetchCertificatesWithRequest:requestCopy completionBlock:v14];
 }
 
-- (void)saveTermsAcceptance:(id)a3 reply:(id)a4
+- (void)saveTermsAcceptance:(id)acceptance reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  acceptanceCopy = acceptance;
+  replyCopy = reply;
   v7 = CloudServicesLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -9314,10 +9314,10 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v8 = [v5 altDSID];
-  if (v8)
+  altDSID = [acceptanceCopy altDSID];
+  if (altDSID)
   {
-    [CSCertOperations storeTerms:v5 withAltDSID:v8 reply:v6];
+    [CSCertOperations storeTerms:acceptanceCopy withAltDSID:altDSID reply:replyCopy];
   }
 
   else
@@ -9335,14 +9335,14 @@ LABEL_14:
     v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
     v12 = [NSError errorWithDomain:v10 code:4 userInfo:v11];
 
-    v6[2](v6, v12);
+    replyCopy[2](replyCopy, v12);
   }
 }
 
-- (void)getAcceptedTermsForAltDSID:(id)a3 reply:(id)a4
+- (void)getAcceptedTermsForAltDSID:(id)d reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  dCopy = d;
   v7 = CloudServicesLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -9355,24 +9355,24 @@ LABEL_14:
   v9[1] = 3221225472;
   v9[2] = sub_100031AC8;
   v9[3] = &unk_1000759D0;
-  v10 = v5;
-  v8 = v5;
-  [CSCertOperations fetchTermsWithAltDSID:v6 reply:v9];
+  v10 = replyCopy;
+  v8 = replyCopy;
+  [CSCertOperations fetchTermsWithAltDSID:dCopy reply:v9];
 }
 
-- (void)moveToFederationAllowed:(id)a3 altDSID:(id)a4 reply:(id)a5
+- (void)moveToFederationAllowed:(id)allowed altDSID:(id)d reply:(id)reply
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 integerValue]);
-  v9 = [CSCertOperations moveToFederationAllowed:v10 altDSID:v8];
+  replyCopy = reply;
+  dCopy = d;
+  v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [allowed integerValue]);
+  v9 = [CSCertOperations moveToFederationAllowed:v10 altDSID:dCopy];
 
-  v7[2](v7, v9 == 0, v9);
+  replyCopy[2](replyCopy, v9 == 0, v9);
 }
 
-- (void)knownICDPFederations:(id)a3
+- (void)knownICDPFederations:(id)federations
 {
-  v3 = a3;
+  federationsCopy = federations;
   v4 = CloudServicesLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -9382,13 +9382,13 @@ LABEL_14:
   }
 
   v5 = +[CSCertOperations knownICDPFederations];
-  v3[2](v3, v5, 0);
+  federationsCopy[2](federationsCopy, v5, 0);
 }
 
-- (void)enableGuitarfishTokenWithRequest:(id)a3 reply:(id)a4
+- (void)enableGuitarfishTokenWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -9397,35 +9397,35 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
   }
 
   else
   {
-    v14 = [v6 metadata];
-    v11 = [v14 mutableCopy];
+    metadata = [requestCopy metadata];
+    v11 = [metadata mutableCopy];
 
-    v15 = [v6 metadataHash];
-    v13 = [v15 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
+    metadataHash = [requestCopy metadataHash];
+    v13 = [metadataHash objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
 
     v16 = +[NSMutableDictionary dictionary];
-    v30 = [v6 iCloudIdentityData];
-    v17 = [v30 sha256Digest];
+    iCloudIdentityData = [requestCopy iCloudIdentityData];
+    sha256Digest = [iCloudIdentityData sha256Digest];
     v18 = kSecureBackupKeybagSHA256Key;
-    v31 = v17;
+    v31 = sha256Digest;
     [v16 setObject:? forKeyedSubscript:?];
     v19 = +[CSDateUtilities posixDateFormatter];
     v20 = +[NSDate date];
@@ -9441,20 +9441,20 @@ LABEL_14:
     }
 
     v23 = [EscrowService alloc];
-    v24 = [(SecureBackupDaemon *)self operationsLogger];
-    v28 = [(EscrowService *)v23 initWithOperationsLogger:v24];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v28 = [(EscrowService *)v23 initWithOperationsLogger:operationsLogger];
 
     v25 = [[NSMutableDictionary alloc] initWithCapacity:5];
     [v25 setObject:v31 forKeyedSubscript:v18];
-    [v25 setObject:v30 forKeyedSubscript:kSecureBackupBagPasswordKey];
+    [v25 setObject:iCloudIdentityData forKeyedSubscript:kSecureBackupBagPasswordKey];
     [v25 setObject:@"1" forKeyedSubscript:@"BackupVersion"];
     [v25 setObject:v21 forKeyedSubscript:v22];
-    [v6 setEscrowRecord:v25];
-    [v6 setMetadata:v16];
-    [v6 setEncodedMetadata:v13];
-    v26 = [v6 encodedMetadata];
+    [requestCopy setEscrowRecord:v25];
+    [requestCopy setMetadata:v16];
+    [requestCopy setEncodedMetadata:v13];
+    encodedMetadata = [requestCopy encodedMetadata];
 
-    if (v26)
+    if (encodedMetadata)
     {
       v27 = CloudServicesLog();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -9468,15 +9468,15 @@ LABEL_14:
     v32[1] = 3221225472;
     v32[2] = sub_100032108;
     v32[3] = &unk_100075450;
-    v33 = v7;
-    [(EscrowService *)v28 storeRecordWithRequest:v6 completionBlock:v32];
+    v33 = replyCopy;
+    [(EscrowService *)v28 storeRecordWithRequest:requestCopy completionBlock:v32];
   }
 }
 
-- (void)recoverGuitarfishTokenWithRequest:(id)a3 reply:(id)a4
+- (void)recoverGuitarfishTokenWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = CloudServicesLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -9485,20 +9485,20 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "In %s", buf, 0xCu);
   }
 
-  v9 = [(SecureBackupDaemon *)self connectionQueue];
-  [v6 setQueue:v9];
+  connectionQueue = [(SecureBackupDaemon *)self connectionQueue];
+  [requestCopy setQueue:connectionQueue];
 
-  v10 = [v6 error];
+  error = [requestCopy error];
 
-  if (v10)
+  if (error)
   {
     v11 = objc_alloc_init(NSMutableDictionary);
     [(EscrowService *)v11 setObject:@"error decoding request properties" forKeyedSubscript:NSLocalizedDescriptionKey];
-    v12 = [v6 error];
-    [(EscrowService *)v11 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
+    error2 = [requestCopy error];
+    [(EscrowService *)v11 setObject:error2 forKeyedSubscript:NSUnderlyingErrorKey];
 
     v13 = [NSError errorWithDomain:kSecureBackupErrorDomain code:5 userInfo:v11];
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
   }
 
   else
@@ -9511,15 +9511,15 @@ LABEL_14:
     }
 
     v15 = [EscrowService alloc];
-    v16 = [(SecureBackupDaemon *)self operationsLogger];
-    v11 = [(EscrowService *)v15 initWithOperationsLogger:v16];
+    operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+    v11 = [(EscrowService *)v15 initWithOperationsLogger:operationsLogger];
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_10003245C;
     v17[3] = &unk_100075450;
-    v18 = v7;
-    [(EscrowService *)v11 recoverRecordWithRequest:v6 completionBlock:v17];
+    v18 = replyCopy;
+    [(EscrowService *)v11 recoverRecordWithRequest:requestCopy completionBlock:v17];
     v13 = v18;
   }
 }
@@ -9547,14 +9547,14 @@ LABEL_8:
   return v2;
 }
 
-- (void)restoreBackupName:(id)a3 peerID:(id)a4 keybag:(id)a5 password:(id)a6 backup:(id)a7 reply:(id)a8
+- (void)restoreBackupName:(id)name peerID:(id)d keybag:(id)keybag password:(id)password backup:(id)backup reply:(id)reply
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  nameCopy = name;
+  replyCopy = reply;
+  backupCopy = backup;
+  passwordCopy = password;
+  keybagCopy = keybag;
+  dCopy = d;
   v19 = _CloudServicesSignpostLogSystem();
   v20 = _CloudServicesSignpostCreate(v19);
 
@@ -9574,16 +9574,16 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: BackupRestore  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v26 = v13;
-  v27 = v14;
-  v24 = v14;
-  v25 = v13;
+  v26 = nameCopy;
+  v27 = replyCopy;
+  v24 = replyCopy;
+  v25 = nameCopy;
   SecItemBackupRestore();
 }
 
-- (BOOL)verifyRKWithKeyBag:(id)a3 password:(id)a4 error:(id *)a5
+- (BOOL)verifyRKWithKeyBag:(id)bag password:(id)password error:(id *)error
 {
-  v6 = a4;
+  passwordCopy = password;
   v16 = 0;
   v7 = SOSBackupSliceKeyBagCreateFromData();
   if (v7)
@@ -9607,9 +9607,9 @@ LABEL_8:
 LABEL_13:
 
     v13 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = v16;
+      *error = v16;
     }
 
     goto LABEL_15;
@@ -9642,7 +9642,7 @@ LABEL_15:
   return v13;
 }
 
-- (id)removeRKFromKeyBag:(id)a3 error:(id *)a4
+- (id)removeRKFromKeyBag:(id)bag error:(id *)error
 {
   v16 = 0;
   v5 = SOSBackupSliceKeyBagCreateFromData();
@@ -9693,9 +9693,9 @@ LABEL_15:
         sub_10004E900(&v15);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = v15;
+        *error = v15;
       }
 
       CFRelease(v9);
@@ -9712,18 +9712,18 @@ LABEL_15:
     }
 
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v16;
+      *error = v16;
     }
   }
 
   return v8;
 }
 
-- (BOOL)backupWithRegisteredBackupsWithError:(id *)a3 handler:(id)a4
+- (BOOL)backupWithRegisteredBackupsWithError:(id *)error handler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = _CloudServicesSignpostLogSystem();
   v7 = _CloudServicesSignpostCreate(v6);
   v9 = v8;
@@ -9744,12 +9744,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: BackupWithRegisteredBackups  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v13 = v5;
+  v13 = handlerCopy;
   v14 = SecItemBackupWithRegisteredBackups();
   v15 = v14;
-  if (a3 && (v14 & 1) == 0)
+  if (error && (v14 & 1) == 0)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   Nanoseconds = _CloudServicesSignpostGetNanoseconds(v7, v9);
@@ -9777,9 +9777,9 @@ LABEL_15:
   return v15;
 }
 
-- (BOOL)backupWithRegisteredBackupViewWithError:(id)a3 error:(id *)a4
+- (BOOL)backupWithRegisteredBackupViewWithError:(id)error error:(id *)a4
 {
-  v5 = a3;
+  errorCopy = error;
   v6 = SecItemBackupWithRegisteredViewBackup();
   v7 = CloudServicesLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -9788,7 +9788,7 @@ LABEL_15:
     if (v8)
     {
       *buf = 138412290;
-      v11 = v5;
+      v11 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "registered view!! %@", buf, 0xCu);
     }
   }
@@ -9798,7 +9798,7 @@ LABEL_15:
     if (v8)
     {
       *buf = 138412290;
-      v11 = v5;
+      v11 = errorCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "failed to register view: %@", buf, 0xCu);
     }
 
@@ -9811,39 +9811,39 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)backupSetConfirmedManifest:(id)a3 digest:(id)a4 manifest:(id)a5 error:(id *)a6
+- (BOOL)backupSetConfirmedManifest:(id)manifest digest:(id)digest manifest:(id)a5 error:(id *)error
 {
-  v9 = a4;
+  digestCopy = digest;
   v10 = a5;
-  v11 = a3;
+  manifestCopy = manifest;
   v12 = CloudServicesLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 sha1Digest];
-    v14 = [v13 hexString];
-    v15 = [v9 hexString];
+    sha1Digest = [v10 sha1Digest];
+    hexString = [sha1Digest hexString];
+    hexString2 = [digestCopy hexString];
     *v18 = 138412546;
-    *&v18[4] = v14;
+    *&v18[4] = hexString;
     v19 = 2112;
-    v20 = v15;
+    v20 = hexString2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "setting manifest hash: %@, digest: %@", v18, 0x16u);
   }
 
   *v18 = 0;
   v16 = SecItemBackupSetConfirmedManifest();
 
-  if (a6 && (v16 & 1) == 0)
+  if (error && (v16 & 1) == 0)
   {
-    *a6 = *v18;
+    *error = *v18;
   }
 
   return v16;
 }
 
-- (BOOL)backupWithChanges:(id)a3 error:(id *)a4 handler:(id)a5
+- (BOOL)backupWithChanges:(id)changes error:(id *)error handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  changesCopy = changes;
+  handlerCopy = handler;
   v9 = _CloudServicesSignpostLogSystem();
   v10 = _CloudServicesSignpostCreate(v9);
   v12 = v11;
@@ -9864,12 +9864,12 @@ LABEL_15:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: BackupWithChanges  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  v16 = v8;
+  v16 = handlerCopy;
   v17 = SecItemBackupWithChanges();
   v18 = v17;
-  if (a4 && (v17 & 1) == 0)
+  if (error && (v17 & 1) == 0)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   Nanoseconds = _CloudServicesSignpostGetNanoseconds(v10, v12);
@@ -9878,7 +9878,7 @@ LABEL_15:
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
   {
     *buf = 138543618;
-    v25 = v7;
+    v25 = changesCopy;
     v26 = 1026;
     LODWORD(v27) = v18;
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_END, v10, "BackupWithChanges", " CloudServicesSignpostNameSecItemBackupWithChanges=%{public,signpost.telemetry:string1,name=CloudServicesSignpostNameSecItemBackupWithChanges}@  CloudServicesSignpostNameSecItemBackupWithChanges=%{public,signpost.telemetry:number1,name=CloudServicesSignpostNameSecItemBackupWithChanges}d ", buf, 0x12u);
@@ -9892,7 +9892,7 @@ LABEL_15:
     v26 = 2048;
     v27 = Nanoseconds / 1000000000.0;
     v28 = 2114;
-    v29 = v7;
+    v29 = changesCopy;
     v30 = 1026;
     v31 = v18;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: BackupWithChanges  CloudServicesSignpostNameSecItemBackupWithChanges=%{public,signpost.telemetry:string1,name=CloudServicesSignpostNameSecItemBackupWithChanges}@  CloudServicesSignpostNameSecItemBackupWithChanges=%{public,signpost.telemetry:number1,name=CloudServicesSignpostNameSecItemBackupWithChanges}d ", buf, 0x26u);
@@ -9901,19 +9901,19 @@ LABEL_15:
   return v18;
 }
 
-- (id)copyMyPeerInfo:(id *)a3
+- (id)copyMyPeerInfo:(id *)info
 {
   v4 = SOSCCCopyMyPeerInfo();
   v5 = v4;
-  if (a3 && !v4)
+  if (info && !v4)
   {
-    *a3 = 0;
+    *info = 0;
   }
 
   return v5;
 }
 
-- (id)copyPeerID:(id)a3
+- (id)copyPeerID:(id)d
 {
   result = SOSPeerInfoGetPeerID();
   if (result)
@@ -9949,7 +9949,7 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyMyPeerIDWithError:(id *)a3
+- (id)copyMyPeerIDWithError:(id *)error
 {
   v5 = [(SecureBackupDaemon *)self copyMyPeerInfo:?];
   if (v5)
@@ -9962,7 +9962,7 @@ LABEL_15:
     v7 = CloudServicesLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10004E9D4(a3);
+      sub_10004E9D4(error);
     }
 
     v6 = 0;
@@ -9971,67 +9971,67 @@ LABEL_15:
   return v6;
 }
 
-- (id)copyBackupKeyForNewDeviceRecoverySecret:(id)a3 error:(id *)a4
+- (id)copyBackupKeyForNewDeviceRecoverySecret:(id)secret error:(id *)error
 {
   v5 = SOSCopyDeviceBackupPublicKey();
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-- (id)copyMyPeerWithNewDeviceRecoverySecret:(id)a3 error:(id *)a4
+- (id)copyMyPeerWithNewDeviceRecoverySecret:(id)secret error:(id *)error
 {
   v5 = SOSCCCopyMyPeerWithNewDeviceRecoverySecret();
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-- (id)copyEncodedData:(id)a3 error:(id *)a4
+- (id)copyEncodedData:(id)data error:(id *)error
 {
   v5 = SOSPeerInfoCopyEncodedData();
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-- (BOOL)registerSingleRecoverySecret:(id)a3 iCDP:(BOOL)a4 error:(id *)a5
+- (BOOL)registerSingleRecoverySecret:(id)secret iCDP:(BOOL)p error:(id *)error
 {
   v6 = SOSCCRegisterSingleRecoverySecret();
   v7 = v6;
-  if (a5 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return v7;
 }
 
-- (id)createPeerInfoFromData:(id)a3 error:(id *)a4
+- (id)createPeerInfoFromData:(id)data error:(id *)error
 {
   v5 = SOSPeerInfoCreateFromData();
   v6 = v5;
-  if (a4 && !v5)
+  if (error && !v5)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v6;
 }
 
-- (id)copyOSVersion:(id)a3
+- (id)copyOSVersion:(id)version
 {
   result = SOSPeerInfoLookupGestaltValue();
   if (result)
@@ -10046,8 +10046,8 @@ LABEL_15:
 - (id)allViews
 {
   v2 = SOSViewCopyViewSet();
-  v3 = [v2 allObjects];
-  v4 = [v3 sortedArrayUsingSelector:"compare:"];
+  allObjects = [v2 allObjects];
+  v4 = [allObjects sortedArrayUsingSelector:"compare:"];
 
   return v4;
 }
@@ -10057,8 +10057,8 @@ LABEL_15:
   AllCurrent = SOSViewsGetAllCurrent();
   if (AllCurrent)
   {
-    v3 = [AllCurrent allObjects];
-    v4 = [v3 sortedArrayUsingSelector:"compare:"];
+    allObjects = [AllCurrent allObjects];
+    v4 = [allObjects sortedArrayUsingSelector:"compare:"];
   }
 
   else
@@ -10086,7 +10086,7 @@ LABEL_15:
   return v3;
 }
 
-- (id)createEncodedDirectBackupSliceKeybagFromData:(id)a3 error:(id *)a4
+- (id)createEncodedDirectBackupSliceKeybagFromData:(id)data error:(id *)error
 {
   v11 = 0;
   Direct = SOSBackupSliceKeyBagCreateDirect();
@@ -10115,13 +10115,13 @@ LABEL_15:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v8 = objc_alloc_init(NSMutableDictionary);
     v9 = v11;
     [v8 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
 
-    *a4 = [NSError errorWithDomain:kSecureBackupErrorDomain code:19 userInfo:v8];
+    *error = [NSError errorWithDomain:kSecureBackupErrorDomain code:19 userInfo:v8];
   }
 
   v6 = 0;
@@ -10130,10 +10130,10 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)backupSliceKeybagHasRecoveryKey:(id)a3
+- (BOOL)backupSliceKeybagHasRecoveryKey:(id)key
 {
-  v3 = [a3 bskb];
-  if (v3)
+  bskb = [key bskb];
+  if (bskb)
   {
     v4 = SOSBSKBHasRecoveryKey();
   }
@@ -10146,7 +10146,7 @@ LABEL_10:
   return v4;
 }
 
-- (id)createDERDataFromPlist:(id)a3
+- (id)createDERDataFromPlist:(id)plist
 {
   v12 = 0;
   DERData = CFPropertyListCreateDERData();
@@ -10162,7 +10162,7 @@ LABEL_10:
   return DERData;
 }
 
-- (id)createPlistFromDERData:(id)a3
+- (id)createPlistFromDERData:(id)data
 {
   v12 = 0;
   v3 = CFPropertyListCreateWithDERData();
@@ -10178,7 +10178,7 @@ LABEL_10:
   return v3;
 }
 
-- (id)createiCloudRecoveryPasswordWithError:(id *)a3
+- (id)createiCloudRecoveryPasswordWithError:(id *)error
 {
   v11 = 0;
   v4 = SecPasswordGenerate();
@@ -10201,9 +10201,9 @@ LABEL_10:
     v9 = v11;
     [v8 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
 
-    if (a3)
+    if (error)
     {
-      *a3 = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v8];
+      *error = [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v8];
     }
 
     v6 = 0;
@@ -10212,16 +10212,16 @@ LABEL_10:
   return v6;
 }
 
-- (void)doEnableEscrowMultiICSCWithRequest:(id)a3 reply:(id)a4
+- (void)doEnableEscrowMultiICSCWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:v6];
-  v9 = [v6 metadataHash];
-  v10 = [v9 objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
+  requestCopy = request;
+  replyCopy = reply;
+  v8 = [(SecureBackupDaemon *)self massageOutgoingMetadataFromRequest:requestCopy];
+  metadataHash = [requestCopy metadataHash];
+  v10 = [metadataHash objectForKeyedSubscript:kSecureBackupEncodedMetadataKey];
 
-  v11 = [v6 metadataHash];
-  v140 = [v11 objectForKeyedSubscript:@"duplicateEncodedMetadata"];
+  metadataHash2 = [requestCopy metadataHash];
+  v140 = [metadataHash2 objectForKeyedSubscript:@"duplicateEncodedMetadata"];
 
   v12 = +[NSMutableDictionary dictionary];
   if ([(SecureBackupDaemon *)self forceICDP])
@@ -10234,22 +10234,22 @@ LABEL_10:
     }
   }
 
-  v14 = [v6 passphrase];
-  if ([v14 length])
+  passphrase = [requestCopy passphrase];
+  if ([passphrase length])
   {
   }
 
   else
   {
-    v15 = [v6 useCachedPassphrase];
+    useCachedPassphrase = [requestCopy useCachedPassphrase];
 
-    if (v15)
+    if (useCachedPassphrase)
     {
-      v16 = [(SecureBackupDaemon *)self cachedPassphrase];
-      [v6 setPassphrase:v16];
+      cachedPassphrase = [(SecureBackupDaemon *)self cachedPassphrase];
+      [requestCopy setPassphrase:cachedPassphrase];
 
-      v17 = [v6 passphrase];
-      v18 = [v17 length];
+      passphrase2 = [requestCopy passphrase];
+      v18 = [passphrase2 length];
 
       if (!v18)
       {
@@ -10262,7 +10262,7 @@ LABEL_10:
         v27 = objc_alloc_init(NSMutableDictionary);
         [v27 setObject:@"Missing cached passphrase" forKeyedSubscript:NSLocalizedDescriptionKey];
         v76 = [NSError errorWithDomain:kSecureBackupErrorDomain code:9 userInfo:v27];
-        v7[2](v7, v76);
+        replyCopy[2](replyCopy, v76);
 
         v21 = v8;
         goto LABEL_117;
@@ -10270,50 +10270,50 @@ LABEL_10:
     }
   }
 
-  v19 = [v6 passphrase];
+  passphrase3 = [requestCopy passphrase];
   v139 = v12;
-  if ([v19 length])
+  if ([passphrase3 length])
   {
     goto LABEL_12;
   }
 
-  v20 = [v6 hsa2CachedPrerecordUUID];
-  if (v20)
+  hsa2CachedPrerecordUUID = [requestCopy hsa2CachedPrerecordUUID];
+  if (hsa2CachedPrerecordUUID)
   {
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  v70 = [v6 passcodeStashSecret];
+  passcodeStashSecret = [requestCopy passcodeStashSecret];
 
-  if (!v70)
+  if (!passcodeStashSecret)
   {
     goto LABEL_73;
   }
 
 LABEL_13:
-  if (([v6 icdp] & 1) == 0)
+  if (([requestCopy icdp] & 1) == 0)
   {
-    v34 = [v6 countryDialCode];
-    if ([v34 length])
+    countryDialCode = [requestCopy countryDialCode];
+    if ([countryDialCode length])
     {
-      v35 = [v6 countryCode];
-      if ([v35 length])
+      countryCode = [requestCopy countryCode];
+      if ([countryCode length])
       {
-        v36 = [v6 smsTarget];
-        if ([v36 length])
+        smsTarget = [requestCopy smsTarget];
+        if ([smsTarget length])
         {
-          v37 = [v6 appleID];
-          if ([v37 length])
+          appleID = [requestCopy appleID];
+          if ([appleID length])
           {
-            [v6 iCloudPassword];
-            v38 = v7;
+            [requestCopy iCloudPassword];
+            v38 = replyCopy;
             v40 = v39 = v8;
             v138 = [v40 length];
 
             v8 = v39;
-            v7 = v38;
+            replyCopy = v38;
 
             v12 = v139;
             if (v138)
@@ -10324,16 +10324,16 @@ LABEL_13:
 LABEL_73:
             v135 = v8;
             v137 = v10;
-            v81 = v7;
+            v81 = replyCopy;
             v82 = CloudServicesLog();
             if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
             {
-              sub_10004F0DC(v6, v82);
+              sub_10004F0DC(requestCopy, v82);
             }
 
             v83 = [NSString alloc];
-            v84 = [v6 passphrase];
-            if (v84)
+            passphrase4 = [requestCopy passphrase];
+            if (passphrase4)
             {
               v85 = @"non-";
             }
@@ -10343,10 +10343,10 @@ LABEL_73:
               v85 = &stru_1000767A0;
             }
 
-            v86 = [v6 smsTarget];
-            v87 = [v6 appleID];
-            v88 = [v6 iCloudPassword];
-            if (v88)
+            smsTarget2 = [requestCopy smsTarget];
+            appleID2 = [requestCopy appleID];
+            iCloudPassword = [requestCopy iCloudPassword];
+            if (iCloudPassword)
             {
               v89 = @"non-";
             }
@@ -10356,12 +10356,12 @@ LABEL_73:
               v89 = &stru_1000767A0;
             }
 
-            v27 = [v83 initWithFormat:@"attempted to enable backup, with invalid parameters: %@nil recovery password, %@, %@, %@nil iCloud password", v85, v86, v87, v89];
+            v27 = [v83 initWithFormat:@"attempted to enable backup, with invalid parameters: %@nil recovery password, %@, %@, %@nil iCloud password", v85, smsTarget2, appleID2, v89];
 
             v90 = objc_alloc_init(NSMutableDictionary);
             [v90 setObject:v27 forKeyedSubscript:NSLocalizedDescriptionKey];
             v91 = [NSError errorWithDomain:kSecureBackupErrorDomain code:4 userInfo:v90];
-            v7 = v81;
+            replyCopy = v81;
             v81[2](v81, v91);
 
             v21 = v135;
@@ -10375,26 +10375,26 @@ LABEL_73:
   }
 
 LABEL_14:
-  v21 = [(SecureBackupDaemon *)self ensureClientMetadata:v8 forRequest:v6];
+  v21 = [(SecureBackupDaemon *)self ensureClientMetadata:v8 forRequest:requestCopy];
 
-  v22 = [v6 hsa2CachedPrerecordUUID];
+  hsa2CachedPrerecordUUID2 = [requestCopy hsa2CachedPrerecordUUID];
 
   v23 = CloudServicesLog();
   v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-  if (v22)
+  if (hsa2CachedPrerecordUUID2)
   {
     if (v24)
     {
-      v25 = [v6 hsa2CachedPrerecordUUID];
+      hsa2CachedPrerecordUUID3 = [requestCopy hsa2CachedPrerecordUUID];
       *buf = 138412290;
-      v154 = v25;
+      v154 = hsa2CachedPrerecordUUID3;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "enableWithRequest to escrow a prerecord: %@", buf, 0xCu);
     }
 
     v152 = 0;
-    v26 = [SecEscrowRequest request:&v152];
+    recordContents = [SecEscrowRequest request:&v152];
     v27 = v152;
-    if (!v26)
+    if (!recordContents)
     {
       v71 = CloudServicesLog();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
@@ -10402,14 +10402,14 @@ LABEL_14:
         sub_10004ED24();
       }
 
-      v7[2](v7, v27);
+      replyCopy[2](replyCopy, v27);
       goto LABEL_116;
     }
 
     v137 = v10;
-    v28 = [v6 hsa2CachedPrerecordUUID];
+    hsa2CachedPrerecordUUID4 = [requestCopy hsa2CachedPrerecordUUID];
     v151 = v27;
-    v29 = [v26 fetchPrerecord:v28 error:&v151];
+    v29 = [recordContents fetchPrerecord:hsa2CachedPrerecordUUID4 error:&v151];
     v30 = v151;
 
     if (!v29 || v30)
@@ -10424,7 +10424,7 @@ LABEL_14:
       [v73 setObject:v30 forKeyedSubscript:NSUnderlyingErrorKey];
       [v73 setObject:@"unable to fetch a prerecord" forKeyedSubscript:NSLocalizedDescriptionKey];
       v74 = [NSError errorWithDomain:kSecureBackupErrorDomain code:38 userInfo:v73];
-      v7[2](v7, v74);
+      replyCopy[2](replyCopy, v74);
 
       v27 = v30;
       goto LABEL_115;
@@ -10440,14 +10440,14 @@ LABEL_14:
       }
 
       v93 = [NSError errorWithDomain:kSecureBackupErrorDomain code:38 userInfo:0];
-      v7[2](v7, v93);
+      replyCopy[2](replyCopy, v93);
 
-      v27 = v26;
+      v27 = recordContents;
       goto LABEL_115;
     }
 
     v32 = v31;
-    [v6 setPrerecord:v31];
+    [requestCopy setPrerecord:v31];
     -[SecureBackupDaemon setPasscodeMetadata:passphraseType:](self, "setPasscodeMetadata:passphraseType:", v21, [v32 passphraseType]);
     v33 = CloudServicesLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -10469,7 +10469,7 @@ LABEL_14:
     }
 
     v150 = 0;
-    v32 = [(SecureBackupDaemon *)self makeRecordCandidate:v6 error:&v150];
+    v32 = [(SecureBackupDaemon *)self makeRecordCandidate:requestCopy error:&v150];
     v41 = v150;
     v27 = v41;
     if (!v32)
@@ -10488,55 +10488,55 @@ LABEL_14:
         sub_10004F074();
       }
 
-      v7[2](v7, v27);
+      replyCopy[2](replyCopy, v27);
       goto LABEL_117;
     }
 
-    v26 = [v32 recordContents];
-    [v6 setEscrowRecord:v26];
+    recordContents = [v32 recordContents];
+    [requestCopy setEscrowRecord:recordContents];
   }
 
   v12 = v139;
   [v139 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecureBackupUsesMultipleiCSCKey];
-  v42 = [v32 timestamp];
-  [v139 setObject:v42 forKeyedSubscript:kSecureBackupTimestampKey];
+  timestamp = [v32 timestamp];
+  [v139 setObject:timestamp forKeyedSubscript:kSecureBackupTimestampKey];
 
-  v43 = [v32 sosBackupKeybagDigest];
+  sosBackupKeybagDigest = [v32 sosBackupKeybagDigest];
   v134 = kSecureBackupKeybagDigestKey;
-  [v139 setObject:v43 forKeyedSubscript:?];
+  [v139 setObject:sosBackupKeybagDigest forKeyedSubscript:?];
 
-  v44 = [v32 escrowedSPKI];
-  [v139 setObject:v44 forKeyedSubscript:kSecureBackupEscrowedSPKIKey];
+  escrowedSPKI = [v32 escrowedSPKI];
+  [v139 setObject:escrowedSPKI forKeyedSubscript:kSecureBackupEscrowedSPKIKey];
 
-  v45 = [v32 bottleID];
-  [v139 setObject:v45 forKeyedSubscript:kSecureBackupBottleIDKey];
+  bottleID = [v32 bottleID];
+  [v139 setObject:bottleID forKeyedSubscript:kSecureBackupBottleIDKey];
 
-  v46 = [v32 passcodeGeneration];
-  if (v46)
+  passcodeGeneration = [v32 passcodeGeneration];
+  if (passcodeGeneration)
   {
-    v47 = v46;
-    v48 = [v32 passcodeGeneration];
-    v49 = [v48 hasValue];
+    v47 = passcodeGeneration;
+    passcodeGeneration2 = [v32 passcodeGeneration];
+    hasValue = [passcodeGeneration2 hasValue];
 
-    if (v49)
+    if (hasValue)
     {
-      v50 = [v32 passcodeGeneration];
-      v51 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v50 value]);
+      passcodeGeneration3 = [v32 passcodeGeneration];
+      v51 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [passcodeGeneration3 value]);
       [v139 setObject:v51 forKeyedSubscript:kSecureBackupPasscodeGenerationKey];
     }
   }
 
   if (v21)
   {
-    v52 = [v32 timestamp];
-    [v21 setObject:v52 forKeyedSubscript:kSecureBackupMetadataTimestampKey];
+    timestamp2 = [v32 timestamp];
+    [v21 setObject:timestamp2 forKeyedSubscript:kSecureBackupMetadataTimestampKey];
 
     [v139 setObject:v21 forKeyedSubscript:kSecureBackupClientMetadataKey];
   }
 
-  v53 = [v6 smsTarget];
+  smsTarget3 = [requestCopy smsTarget];
 
-  if (!v53)
+  if (!smsTarget3)
   {
 LABEL_42:
     v58 = [(SecureBackupDaemon *)self _gestaltValueForKey:@"SerialNumber"];
@@ -10556,11 +10556,11 @@ LABEL_42:
       v146 = 0;
       v63 = [v62 cliqueMemberIdentifier:&v146];
       v64 = v146;
-      [v6 setRecordID:v63];
+      [requestCopy setRecordID:v63];
 
-      v65 = [v6 recordID];
+      recordID = [requestCopy recordID];
 
-      if (!v65 || v64)
+      if (!recordID || v64)
       {
         v79 = CloudServicesLog();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
@@ -10574,7 +10574,7 @@ LABEL_42:
           v64 = [NSError errorWithDomain:kSecureBackupErrorDomain code:44 userInfo:v80];
         }
 
-        v7[2](v7, v64);
+        replyCopy[2](replyCopy, v64);
 
         goto LABEL_114;
       }
@@ -10584,9 +10584,9 @@ LABEL_42:
       goto LABEL_47;
     }
 
-    v94 = [v32 sosBackupKeybagPassword];
+    sosBackupKeybagPassword = [v32 sosBackupKeybagPassword];
     v148 = 0;
-    v95 = [(SecureBackupDaemon *)self copyMyPeerWithNewDeviceRecoverySecret:v94 error:&v148];
+    v95 = [(SecureBackupDaemon *)self copyMyPeerWithNewDeviceRecoverySecret:sosBackupKeybagPassword error:&v148];
     v64 = v148;
 
     if (v95)
@@ -10596,15 +10596,15 @@ LABEL_42:
       {
         v60 = v96;
         v133 = v95;
-        [v6 setRecordID:v96];
-        v97 = [v32 sosPeerID];
-        if (v97)
+        [requestCopy setRecordID:v96];
+        sosPeerID = [v32 sosPeerID];
+        if (sosPeerID)
         {
-          v98 = v97;
-          v99 = [v32 sosPeerID];
+          v98 = sosPeerID;
+          sosPeerID2 = [v32 sosPeerID];
           v131 = v64;
-          v100 = v99;
-          v101 = v99 ? v99 : @"not possible";
+          v100 = sosPeerID2;
+          v101 = sosPeerID2 ? sosPeerID2 : @"not possible";
           v102 = [(__CFString *)v60 isEqualToString:v101];
 
           v64 = v131;
@@ -10621,9 +10621,9 @@ LABEL_42:
             v62 = v133;
             if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
             {
-              v105 = [v6 recordID];
+              recordID2 = [requestCopy recordID];
               *buf = 138412290;
-              v154 = v105;
+              v154 = recordID2;
               _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "Escrow record ID will be %@", buf, 0xCu);
 
               v64 = v131;
@@ -10633,14 +10633,14 @@ LABEL_42:
             v130 = v106;
             if (v106)
             {
-              v107 = [v106 sha1Digest];
-              v108 = [v32 sosBackupKeybagDigest];
-              v129 = v107;
-              LOBYTE(v107) = [v107 isEqual:v108];
+              sha1Digest = [v106 sha1Digest];
+              sosBackupKeybagDigest2 = [v32 sosBackupKeybagDigest];
+              v129 = sha1Digest;
+              LOBYTE(sha1Digest) = [sha1Digest isEqual:sosBackupKeybagDigest2];
 
               v109 = CloudServicesLog();
               v110 = v109;
-              if (v107)
+              if (sha1Digest)
               {
                 if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
                 {
@@ -10673,12 +10673,12 @@ LABEL_42:
                 }
 
 LABEL_47:
-                [v6 setMetadata:v139];
-                [v6 setEncodedMetadata:v137];
-                [v6 setDuplicateEncodedMetadata:v140];
+                [requestCopy setMetadata:v139];
+                [requestCopy setEncodedMetadata:v137];
+                [requestCopy setDuplicateEncodedMetadata:v140];
                 v67 = [EscrowService alloc];
-                v68 = [(SecureBackupDaemon *)self operationsLogger];
-                v69 = [(EscrowService *)v67 initWithOperationsLogger:v68];
+                operationsLogger = [(SecureBackupDaemon *)self operationsLogger];
+                v69 = [(EscrowService *)v67 initWithOperationsLogger:operationsLogger];
 
                 v64 = v69;
                 v141[0] = _NSConcreteStackBlock;
@@ -10686,10 +10686,10 @@ LABEL_47:
                 v141[2] = sub_100046CB8;
                 v141[3] = &unk_1000755B0;
                 v141[4] = self;
-                v142 = v6;
+                v142 = requestCopy;
                 v143 = v60;
                 v144 = v139;
-                v145 = v7;
+                v145 = replyCopy;
                 v60 = v60;
                 [(EscrowService *)v69 storeRecordWithRequest:v142 completionBlock:v141];
 
@@ -10732,7 +10732,7 @@ LABEL_116:
               v126 = [v125 initWithDomain:kSecureBackupErrorDomain code:20 userInfo:v124];
             }
 
-            v7[2](v7, v126);
+            replyCopy[2](replyCopy, v126);
             v27 = v126;
             goto LABEL_114;
           }
@@ -10751,7 +10751,7 @@ LABEL_116:
         v119 = [NSDictionary dictionaryWithObjects:&v162 forKeys:&v161 count:1];
         v120 = [NSError errorWithDomain:v118 code:24 userInfo:v119];
 
-        v7[2](v7, v120);
+        replyCopy[2](replyCopy, v120);
         v27 = v120;
         v95 = v133;
 LABEL_113:
@@ -10792,52 +10792,52 @@ LABEL_113:
     [v114 setObject:v116 forKeyedSubscript:v113];
     v122 = [NSError errorWithDomain:kSecureBackupErrorDomain code:17 userInfo:v112];
 
-    v7[2](v7, v122);
+    replyCopy[2](replyCopy, v122);
     v60 = 0;
     v27 = v122;
     goto LABEL_113;
   }
 
-  v54 = [v6 smsTarget];
+  smsTarget4 = [requestCopy smsTarget];
   v149 = v27;
-  v55 = [(SecureBackupDaemon *)self normalizeSMSTarget:v54 error:&v149];
+  v55 = [(SecureBackupDaemon *)self normalizeSMSTarget:smsTarget4 error:&v149];
   v56 = v149;
 
-  [v6 setSmsTarget:v55];
-  v57 = [v6 smsTarget];
+  [requestCopy setSmsTarget:v55];
+  smsTarget5 = [requestCopy smsTarget];
 
-  if (v57)
+  if (smsTarget5)
   {
     v27 = v56;
     goto LABEL_42;
   }
 
-  v7[2](v7, v56);
+  replyCopy[2](replyCopy, v56);
 
   v27 = v56;
   v10 = v137;
 LABEL_117:
 }
 
-- (void)setPasscodeMetadata:(id)a3 passphraseType:(int)a4
+- (void)setPasscodeMetadata:(id)metadata passphraseType:(int)type
 {
-  v5 = a3;
-  if (a4 <= 3)
+  metadataCopy = metadata;
+  if (type <= 3)
   {
-    v6 = *(&off_100076228 + a4);
-    v7 = *(&off_100076248 + a4);
-    v8 = off_100076268[a4];
-    v9 = v5;
-    [v5 setObject:v6 forKeyedSubscript:kSecureBackupUsesComplexPassphraseKey];
+    v6 = *(&off_100076228 + type);
+    v7 = *(&off_100076248 + type);
+    v8 = off_100076268[type];
+    v9 = metadataCopy;
+    [metadataCopy setObject:v6 forKeyedSubscript:kSecureBackupUsesComplexPassphraseKey];
     [v9 setObject:v7 forKeyedSubscript:kSecureBackupUsesNumericPassphraseKey];
     [v9 setObject:v8 forKeyedSubscript:kSecureBackupNumericPassphraseLengthKey];
-    v5 = v9;
+    metadataCopy = v9;
   }
 }
 
-- (id)makeRecordCandidate:(id)a3 error:(id *)a4
+- (id)makeRecordCandidate:(id)candidate error:(id *)error
 {
-  v6 = a3;
+  candidateCopy = candidate;
   v7 = objc_alloc_init(SecureBackupEscrowRecordCandidate);
   v68 = 0;
   v8 = [(SecureBackupDaemon *)self createiCloudRecoveryPasswordWithError:&v68];
@@ -10861,8 +10861,8 @@ LABEL_117:
     v46 = v67;
 
     [(SecureBackupEscrowRecordCandidate *)v7 setSosPeerID:v31];
-    v32 = [(SecureBackupEscrowRecordCandidate *)v7 sosPeerID];
-    if (v32)
+    sosPeerID = [(SecureBackupEscrowRecordCandidate *)v7 sosPeerID];
+    if (sosPeerID)
     {
       v33 = v46 == 0;
     }
@@ -10883,7 +10883,7 @@ LABEL_117:
         sub_10004F244();
       }
 
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc_init(NSMutableDictionary);
         [v17 setObject:@"SOSCopyPeerID() failed" forKeyedSubscript:NSLocalizedDescriptionKey];
@@ -10891,7 +10891,7 @@ LABEL_117:
         v37 = [NSError errorWithDomain:kSecureBackupErrorDomain code:17 userInfo:v17];
 LABEL_55:
         v18 = 0;
-        *a4 = v37;
+        *error = v37;
         goto LABEL_43;
       }
     }
@@ -10900,9 +10900,9 @@ LABEL_55:
     {
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
-        v40 = [(SecureBackupEscrowRecordCandidate *)v7 sosPeerID];
+        sosPeerID2 = [(SecureBackupEscrowRecordCandidate *)v7 sosPeerID];
         LODWORD(v73) = 138412290;
-        *(&v73 + 4) = v40;
+        *(&v73 + 4) = sosPeerID2;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Creating record candidate with SOS peerID %@", &v73, 0xCu);
       }
 
@@ -10911,8 +10911,8 @@ LABEL_55:
       v46 = v66;
       if (v41)
       {
-        v42 = [v41 sha1Digest];
-        [(SecureBackupEscrowRecordCandidate *)v7 setSosBackupKeybagDigest:v42];
+        sha1Digest = [v41 sha1Digest];
+        [(SecureBackupEscrowRecordCandidate *)v7 setSosBackupKeybagDigest:sha1Digest];
 
 LABEL_5:
         v13 = objc_alloc_init(OTConfigurationContext);
@@ -10957,11 +10957,11 @@ LABEL_5:
         v16 = v49[5];
         if (v16)
         {
-          if (a4)
+          if (error)
           {
             v17 = 0;
             v18 = 0;
-            *a4 = v16;
+            *error = v16;
 LABEL_42:
             _Block_object_dispose(&v48, 8);
 
@@ -11006,34 +11006,34 @@ LABEL_44:
                 v24 = objc_alloc_init(EscrowPrerecordPasscodeGeneration);
                 [(SecureBackupEscrowRecordCandidate *)v7 setPasscodeGeneration:v24];
 
-                v43 = [v23 unsignedLongLongValue];
-                v25 = [(SecureBackupEscrowRecordCandidate *)v7 passcodeGeneration];
-                [v25 setValue:v43];
+                unsignedLongLongValue = [v23 unsignedLongLongValue];
+                passcodeGeneration = [(SecureBackupEscrowRecordCandidate *)v7 passcodeGeneration];
+                [passcodeGeneration setValue:unsignedLongLongValue];
               }
             }
 
             v26 = [[NSMutableDictionary alloc] initWithCapacity:5];
-            v27 = [(SecureBackupEscrowRecordCandidate *)v7 sosBackupKeybagDigest];
-            [v26 setObject:v27 forKeyedSubscript:kSecureBackupKeybagDigestKey];
+            sosBackupKeybagDigest = [(SecureBackupEscrowRecordCandidate *)v7 sosBackupKeybagDigest];
+            [v26 setObject:sosBackupKeybagDigest forKeyedSubscript:kSecureBackupKeybagDigestKey];
 
             [v26 setObject:v8 forKeyedSubscript:kSecureBackupBagPasswordKey];
             [v26 setObject:@"1" forKeyedSubscript:@"BackupVersion"];
             [v26 setObject:v12 forKeyedSubscript:kSecureBackupTimestampKey];
-            if ([v6 requiresDoubleEnrollment])
+            if ([candidateCopy requiresDoubleEnrollment])
             {
               v44 = +[NSUUID UUID];
-              v28 = [v44 UUIDString];
-              [v26 setObject:v28 forKeyedSubscript:@"DoubleEnrollmentPassword"];
+              uUIDString = [v44 UUIDString];
+              [v26 setObject:uUIDString forKeyedSubscript:@"DoubleEnrollmentPassword"];
 
               [v26 setObject:&off_10007A458 forKeyedSubscript:@"DoubleEnrollmentVersion"];
             }
 
-            v29 = [v6 idmsData];
+            idmsData = [candidateCopy idmsData];
 
-            if (v29)
+            if (idmsData)
             {
-              v30 = [v6 idmsData];
-              [v26 setObject:v30 forKeyedSubscript:kSecureBackupIDMSDataKey];
+              idmsData2 = [candidateCopy idmsData];
+              [v26 setObject:idmsData2 forKeyedSubscript:kSecureBackupIDMSDataKey];
             }
 
             if (v17)
@@ -11047,11 +11047,11 @@ LABEL_44:
             goto LABEL_42;
           }
 
-          if (a4)
+          if (error)
           {
             v38 = objc_alloc_init(NSMutableDictionary);
             [v38 setObject:@"fetchEscrowContents failed" forKeyedSubscript:NSLocalizedDescriptionKey];
-            *a4 = [NSError errorWithDomain:kSecureBackupErrorDomain code:46 userInfo:v38];
+            *error = [NSError errorWithDomain:kSecureBackupErrorDomain code:46 userInfo:v38];
           }
         }
 
@@ -11060,7 +11060,7 @@ LABEL_44:
         goto LABEL_42;
       }
 
-      if (a4)
+      if (error)
       {
         v17 = objc_alloc_init(NSMutableDictionary);
         [v17 setObject:@"copyBackupKeyForNewDeviceRecoverySecret() failed" forKeyedSubscript:NSLocalizedDescriptionKey];
@@ -11082,10 +11082,10 @@ LABEL_44:
 
   v10 = objc_alloc_init(NSMutableDictionary);
   [v10 setObject:@"could not create backup bag password" forKeyedSubscript:NSLocalizedDescriptionKey];
-  if (a4)
+  if (error)
   {
     [NSError errorWithDomain:kSecureBackupErrorDomain code:24 userInfo:v10];
-    *a4 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -11098,15 +11098,15 @@ LABEL_45:
   return v18;
 }
 
-- (id)ensureClientMetadata:(id)a3 forRequest:(id)a4
+- (id)ensureClientMetadata:(id)metadata forRequest:(id)request
 {
-  v6 = a3;
-  if (v6)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     if (os_variant_has_internal_diagnostics())
     {
-      v7 = [(SecureBackupDaemon *)self currentClientMetadata];
-      if (([v7 isEqualToDictionary:v6] & 1) == 0)
+      currentClientMetadata = [(SecureBackupDaemon *)self currentClientMetadata];
+      if (([currentClientMetadata isEqualToDictionary:metadataCopy] & 1) == 0)
       {
         v8 = CloudServicesLog();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
@@ -11116,15 +11116,15 @@ LABEL_45:
       }
     }
 
-    v9 = v6;
+    currentClientMetadata2 = metadataCopy;
     goto LABEL_11;
   }
 
-  if ([a4 generateClientMetadata])
+  if ([request generateClientMetadata])
   {
-    v9 = [(SecureBackupDaemon *)self currentClientMetadata];
+    currentClientMetadata2 = [(SecureBackupDaemon *)self currentClientMetadata];
 LABEL_11:
-    v10 = v9;
+    v10 = currentClientMetadata2;
     goto LABEL_12;
   }
 
@@ -11190,8 +11190,8 @@ LABEL_12:
   v12 = MGCopyAnswer();
   [v3 setObject:v12 forKeyedSubscript:@"device_enclosure_color"];
 
-  v13 = [(SecureBackupDaemon *)self currentMachineID];
-  [v3 setObject:v13 forKeyedSubscript:@"device_mid"];
+  currentMachineID = [(SecureBackupDaemon *)self currentMachineID];
+  [v3 setObject:currentMachineID forKeyedSubscript:@"device_mid"];
 
   return v3;
 }
@@ -11204,7 +11204,7 @@ LABEL_12:
   v4 = v8;
   if (v3)
   {
-    v5 = [v3 machineID];
+    machineID = [v3 machineID];
   }
 
   else
@@ -11215,10 +11215,10 @@ LABEL_12:
       sub_10004F464();
     }
 
-    v5 = 0;
+    machineID = 0;
   }
 
-  return v5;
+  return machineID;
 }
 
 @end

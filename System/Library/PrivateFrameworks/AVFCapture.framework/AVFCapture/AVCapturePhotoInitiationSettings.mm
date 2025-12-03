@@ -1,19 +1,19 @@
 @interface AVCapturePhotoInitiationSettings
-+ (id)photoInitiationSettingsWithUserInitiatedRequestTimestamp:(unint64_t)a3;
-- (id)_initWithTimestamp:(unint64_t)a3;
++ (id)photoInitiationSettingsWithUserInitiatedRequestTimestamp:(unint64_t)timestamp;
+- (id)_initWithTimestamp:(unint64_t)timestamp;
 - (void)dealloc;
 @end
 
 @implementation AVCapturePhotoInitiationSettings
 
-+ (id)photoInitiationSettingsWithUserInitiatedRequestTimestamp:(unint64_t)a3
++ (id)photoInitiationSettingsWithUserInitiatedRequestTimestamp:(unint64_t)timestamp
 {
-  v3 = [[AVCapturePhotoInitiationSettings alloc] _initWithTimestamp:a3];
+  v3 = [[AVCapturePhotoInitiationSettings alloc] _initWithTimestamp:timestamp];
 
   return v3;
 }
 
-- (id)_initWithTimestamp:(unint64_t)a3
+- (id)_initWithTimestamp:(unint64_t)timestamp
 {
   v6.receiver = self;
   v6.super_class = AVCapturePhotoInitiationSettings;
@@ -22,7 +22,7 @@
   {
     v4->_internal = objc_alloc_init(AVCapturePhotoInitiationSettingsInternal);
     v4->_internal->uniqueID = +[AVCapturePhotoSettings uniqueID];
-    v4->_internal->timestamp = a3;
+    v4->_internal->timestamp = timestamp;
   }
 
   return v4;

@@ -1,7 +1,7 @@
 @interface _SFPageFormatMenuPrivacyReportController
 - (BOOL)_presentPromptToTurnOnTrackingProtection;
 - (_SFPageFormatMenuItemControllerDelegate)delegate;
-- (_SFPageFormatMenuPrivacyReportController)initWithDocument:(id)a3;
+- (_SFPageFormatMenuPrivacyReportController)initWithDocument:(id)document;
 - (_SFSettingsAlertItem)alertItem;
 - (void)_dismissPromptIfTrackerProtectionEnabled;
 - (void)_initializeManagedProfileConnection;
@@ -11,16 +11,16 @@
 
 @implementation _SFPageFormatMenuPrivacyReportController
 
-- (_SFPageFormatMenuPrivacyReportController)initWithDocument:(id)a3
+- (_SFPageFormatMenuPrivacyReportController)initWithDocument:(id)document
 {
-  v5 = a3;
+  documentCopy = document;
   v10.receiver = self;
   v10.super_class = _SFPageFormatMenuPrivacyReportController;
   v6 = [(_SFPageFormatMenuPrivacyReportController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_document, a3);
+    objc_storeStrong(&v6->_document, document);
     v8 = v7;
   }
 
@@ -61,19 +61,19 @@
   [v6 setAccessibilityIdentifier:@"ShowPrivacyReport"];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [(_SFBrowserDocument *)self->_document trackerInfo];
+    trackerInfo = [(_SFBrowserDocument *)self->_document trackerInfo];
     v8 = +[SFBrowserDocumentTrackerInfo trackingPreventionEnabled];
-    v9 = [MEMORY[0x1E69C9808] sharedManager];
-    v10 = [v9 isPrivacyProxyOnForEitherTier];
+    mEMORY[0x1E69C9808] = [MEMORY[0x1E69C9808] sharedManager];
+    isPrivacyProxyOnForEitherTier = [mEMORY[0x1E69C9808] isPrivacyProxyOnForEitherTier];
 
-    if (v8 || (v10) && v8)
+    if (v8 || (isPrivacyProxyOnForEitherTier) && v8)
     {
       [v6 setSubtitle:@" "];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __53___SFPageFormatMenuPrivacyReportController_alertItem__block_invoke_2;
       v17[3] = &unk_1E848F548;
-      v18 = v7;
+      v18 = trackerInfo;
       v12 = v6;
       v19 = v12;
       [v18 updateKnownTrackingThirdPartiesWithCompletionHandler:v17];
@@ -99,8 +99,8 @@
 
 - (BOOL)_presentPromptToTurnOnTrackingProtection
 {
-  v3 = [(_SFPageFormatMenuPrivacyReportController *)self delegate];
-  v4 = [v3 viewControllerForPresentationForItemController:self];
+  delegate = [(_SFPageFormatMenuPrivacyReportController *)self delegate];
+  v4 = [delegate viewControllerForPresentationForItemController:self];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -129,23 +129,23 @@
 - (void)_presentPrivacyReport
 {
   v3 = [SFPrivacyReportViewController alloc];
-  v4 = [(_SFBrowserDocument *)self->_document webView];
-  v5 = [(SFPrivacyReportViewController *)v3 initWithWebView:v4];
+  webView = [(_SFBrowserDocument *)self->_document webView];
+  v5 = [(SFPrivacyReportViewController *)v3 initWithWebView:webView];
 
   [(SFPrivacyReportViewController *)v5 setWebsiteDetailShouldSeparateBlockedTrackers:[(_SFBrowserDocument *)self->_document privacyReportShouldSeparateBlockedTrackers]];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v6 = [(_SFBrowserDocument *)self->_document allBrowserHistories];
-    [(SFPrivacyReportViewController *)v5 setHistories:v6];
+    allBrowserHistories = [(_SFBrowserDocument *)self->_document allBrowserHistories];
+    [(SFPrivacyReportViewController *)v5 setHistories:allBrowserHistories];
 
-    v7 = [(_SFBrowserDocument *)self->_document allBrowserProfileIdentifiers];
-    [(SFPrivacyReportViewController *)v5 setProfileIdentifiers:v7];
+    allBrowserProfileIdentifiers = [(_SFBrowserDocument *)self->_document allBrowserProfileIdentifiers];
+    [(SFPrivacyReportViewController *)v5 setProfileIdentifiers:allBrowserProfileIdentifiers];
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v5];
   [v8 setModalPresentationStyle:1];
-  v9 = [(_SFPageFormatMenuPrivacyReportController *)self delegate];
-  v10 = [v9 viewControllerForPresentationForItemController:self];
+  delegate = [(_SFPageFormatMenuPrivacyReportController *)self delegate];
+  v10 = [delegate viewControllerForPresentationForItemController:self];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -160,9 +160,9 @@
 
 - (void)_initializeManagedProfileConnection
 {
-  v3 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   profileConnection = self->_profileConnection;
-  self->_profileConnection = v3;
+  self->_profileConnection = mEMORY[0x1E69ADFB8];
 
   v5 = objc_opt_respondsToSelector();
   v6 = self->_profileConnection;

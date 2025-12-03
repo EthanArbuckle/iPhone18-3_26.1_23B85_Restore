@@ -1,10 +1,10 @@
 @interface CKCustomPluginNotificationViewController
-+ (id)customNotificationManagerForBalloonBundleID:(id)a3;
++ (id)customNotificationManagerForBalloonBundleID:(id)d;
 + (void)connectIfNeeded;
 - (CGSize)preferredContentSize;
 - (CKCustomPluginNotificationViewController)init;
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler;
 - (void)loadView;
 @end
 
@@ -49,11 +49,11 @@
   return result;
 }
 
-+ (id)customNotificationManagerForBalloonBundleID:(id)a3
++ (id)customNotificationManagerForBalloonBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [dCopy isEqualToString:v4];
 
   v6 = IMOSLoggingEnabled();
   if (v5)
@@ -64,7 +64,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = dCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Using AskTo custom notification manager for balloon bundle ID %@", &v11, 0xCu);
       }
     }
@@ -80,7 +80,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = dCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "No custom notification manager for balloon bundle ID %@", &v11, 0xCu);
       }
     }
@@ -91,14 +91,14 @@
   return v8;
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
+  v8 = [userInfo objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
   if (IMOSLoggingEnabled())
   {
     v9 = OSLogHandleForIMFoundationCategory();
@@ -111,7 +111,7 @@
   }
 
   v10 = [CKCustomPluginNotificationViewController customNotificationManagerForBalloonBundleID:v8];
-  v11 = [v10 notificationActionsFromNotification:v4];
+  v11 = [v10 notificationActionsFromNotification:notificationCopy];
   v12 = [v11 count] == 0;
   v13 = IMOSLoggingEnabled();
   if (v12)
@@ -144,21 +144,21 @@
       }
     }
 
-    v16 = [(CKCustomPluginNotificationViewController *)self extensionContext];
-    [v16 setNotificationActions:v11];
+    extensionContext = [(CKCustomPluginNotificationViewController *)self extensionContext];
+    [extensionContext setNotificationActions:v11];
   }
 }
 
-- (void)didReceiveNotificationResponse:(id)a3 completionHandler:(id)a4
+- (void)didReceiveNotificationResponse:(id)response completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 notification];
-  v8 = [v7 request];
-  v9 = [v8 content];
-  v10 = [v9 userInfo];
+  responseCopy = response;
+  handlerCopy = handler;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v11 = [v10 objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
+  v11 = [userInfo objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -171,7 +171,7 @@
   }
 
   v13 = [CKCustomPluginNotificationViewController customNotificationManagerForBalloonBundleID:v11];
-  [v13 handleResponse:v5 completion:v6];
+  [v13 handleResponse:responseCopy completion:handlerCopy];
 }
 
 @end

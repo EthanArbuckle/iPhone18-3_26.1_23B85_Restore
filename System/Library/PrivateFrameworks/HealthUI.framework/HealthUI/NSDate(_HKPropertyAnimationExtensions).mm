@@ -7,7 +7,7 @@
 - (uint64_t)hk_midPointToValue:()_HKPropertyAnimationExtensions percentage:
 {
   v6 = a4;
-  [a1 timeIntervalSinceReferenceDate];
+  [self timeIntervalSinceReferenceDate];
   v8 = v7;
   [v6 timeIntervalSinceReferenceDate];
   v10 = v9;

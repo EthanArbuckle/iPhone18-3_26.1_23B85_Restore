@@ -1,9 +1,9 @@
 @interface REResourceClientPorts
 - (REResourceClientPorts)init;
-- (REResourceClientPorts)initWithCoder:(id)a3;
+- (REResourceClientPorts)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REResourceClientPorts
@@ -29,9 +29,9 @@
   return [(REResourceClientPorts *)v5 initWithCoder:v6, v7];
 }
 
-- (REResourceClientPorts)initWithCoder:(id)a3
+- (REResourceClientPorts)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -40,7 +40,7 @@
     v5 = [(REResourceClientPorts *)&v10 init];
     if (v5)
     {
-      v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"taskIDToken"];
+      v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9EC0] forKey:@"taskIDToken"];
       v5->_taskIdentifierToken = xpc_mach_send_copy_right();
     }
 
@@ -69,14 +69,14 @@
   [(REResourceClientPorts *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v3 = xpc_mach_send_create();
-    [v6 encodeXPCObject:v3 forKey:@"taskIDToken"];
+    [coderCopy encodeXPCObject:v3 forKey:@"taskIDToken"];
   }
 
   else

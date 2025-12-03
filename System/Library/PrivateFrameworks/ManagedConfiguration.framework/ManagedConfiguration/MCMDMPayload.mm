@@ -1,13 +1,13 @@
 @interface MCMDMPayload
 - (BOOL)isUserEnrollment;
-- (MCMDMPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCMDMPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)localizedAccessRightDescriptions;
 - (NSString)managedAppleIDName;
 - (id)_invalidRightsError;
 - (id)_invalidTopicError;
-- (id)_nonHTTPSURLErrorForField:(id)a3;
+- (id)_nonHTTPSURLErrorForField:(id)field;
 - (id)installationWarnings;
-- (id)kvsForCertUUIDs:(id)a3 persistentRefs:(id)a4 labelKey:(id)a5;
+- (id)kvsForCertUUIDs:(id)ds persistentRefs:(id)refs labelKey:(id)key;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)subtitle1Label;
@@ -19,8 +19,8 @@
 - (id)_invalidRightsError
 {
   v2 = MEMORY[0x1E696ABC0];
-  v3 = [(MCPayload *)self friendlyName];
-  v11 = MCErrorArray(@"MDM_ERROR_INVALID_RIGHTS_P_NAME", v4, v5, v6, v7, v8, v9, v10, v3);
+  friendlyName = [(MCPayload *)self friendlyName];
+  v11 = MCErrorArray(@"MDM_ERROR_INVALID_RIGHTS_P_NAME", v4, v5, v6, v7, v8, v9, v10, friendlyName);
   v12 = [v2 MCErrorWithDomain:@"MCMDMErrorDomain" code:12000 descriptionArray:v11 errorType:@"MCFatalError"];
 
   return v12;
@@ -29,38 +29,38 @@
 - (id)_invalidTopicError
 {
   v2 = MEMORY[0x1E696ABC0];
-  v3 = [(MCPayload *)self friendlyName];
-  v11 = MCErrorArray(@"MDM_ERROR_INVALID_TOPIC_P_NAME", v4, v5, v6, v7, v8, v9, v10, v3);
+  friendlyName = [(MCPayload *)self friendlyName];
+  v11 = MCErrorArray(@"MDM_ERROR_INVALID_TOPIC_P_NAME", v4, v5, v6, v7, v8, v9, v10, friendlyName);
   v12 = [v2 MCErrorWithDomain:@"MCMDMErrorDomain" code:12022 descriptionArray:v11 errorType:@"MCFatalError"];
 
   return v12;
 }
 
-- (id)_nonHTTPSURLErrorForField:(id)a3
+- (id)_nonHTTPSURLErrorForField:(id)field
 {
   v8 = MEMORY[0x1E696ABC0];
-  v9 = MCErrorArray(@"MDM_ERROR_FIELD_NOT_HTTPS_P_FIELD", a2, a3, v3, v4, v5, v6, v7, a3);
+  v9 = MCErrorArray(@"MDM_ERROR_FIELD_NOT_HTTPS_P_FIELD", a2, field, v3, v4, v5, v6, v7, field);
   v10 = [v8 MCErrorWithDomain:@"MCMDMErrorDomain" code:12034 descriptionArray:v9 errorType:@"MCFatalError"];
 
   return v10;
 }
 
-- (MCMDMPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCMDMPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v179 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v174.receiver = self;
   v174.super_class = MCMDMPayload;
-  v10 = [(MCPayload *)&v174 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v174 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (v10)
   {
-    if ([v9 isStub])
+    if ([profileCopy isStub])
     {
       v11 = objc_opt_class();
       v12 = *MEMORY[0x1E69AD4D8];
       v173 = 0;
-      v13 = [v8 MCValidateAndRemoveObjectOfClass:v11 withKey:v12 isRequired:0 outError:&v173];
+      v13 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v11 withKey:v12 isRequired:0 outError:&v173];
       v14 = v173;
       identityPersistentID = v10->_identityPersistentID;
       v10->_identityPersistentID = v13;
@@ -72,7 +72,7 @@
 
       v16 = *MEMORY[0x1E69AD540];
       v172 = 0;
-      v17 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v16 isRequired:0 outError:&v172];
+      v17 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v16 isRequired:0 outError:&v172];
       v14 = v172;
       serverURLString = v10->_serverURLString;
       v10->_serverURLString = v17;
@@ -85,7 +85,7 @@
       v19 = objc_opt_class();
       v20 = *MEMORY[0x1E69AD530];
       v171 = 0;
-      v21 = [v8 MCValidateAndRemoveArrayOfClass:v19 withKey:v20 isRequired:0 outError:&v171];
+      v21 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v19 withKey:v20 isRequired:0 outError:&v171];
       v14 = v171;
       serverPinningPersistentRefs = v10->_serverPinningPersistentRefs;
       v10->_serverPinningPersistentRefs = v21;
@@ -98,7 +98,7 @@
       v23 = objc_opt_class();
       v24 = *MEMORY[0x1E69AD478];
       v170 = 0;
-      v25 = [v8 MCValidateAndRemoveArrayOfClass:v23 withKey:v24 isRequired:0 outError:&v170];
+      v25 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v23 withKey:v24 isRequired:0 outError:&v170];
       v14 = v170;
       checkInPinningPersistentRefs = v10->_checkInPinningPersistentRefs;
       v10->_checkInPinningPersistentRefs = v25;
@@ -111,7 +111,7 @@
       v27 = objc_opt_class();
       v28 = *MEMORY[0x1E69AD518];
       v169 = 0;
-      v29 = [v8 MCValidateAndRemoveObjectOfClass:v27 withKey:v28 isRequired:0 outError:&v169];
+      v29 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v27 withKey:v28 isRequired:0 outError:&v169];
       v14 = v169;
       pollingIntervalMinutes = v10->_pollingIntervalMinutes;
       v10->_pollingIntervalMinutes = v29;
@@ -123,7 +123,7 @@
 
       v31 = *MEMORY[0x1E69AD558];
       v168 = 0;
-      v32 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v31 isRequired:0 outError:&v168];
+      v32 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v31 isRequired:0 outError:&v168];
       v14 = v168;
       topic = v10->_topic;
       v10->_topic = v32;
@@ -136,7 +136,7 @@
       v34 = objc_opt_class();
       v35 = *MEMORY[0x1E69AD520];
       v167 = 0;
-      v36 = [v8 MCValidateAndRemoveObjectOfClass:v34 withKey:v35 isRequired:0 outError:&v167];
+      v36 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v34 withKey:v35 isRequired:0 outError:&v167];
       v14 = v167;
       requiredAppIDForMDM = v10->_requiredAppIDForMDM;
       v10->_requiredAppIDForMDM = v36;
@@ -149,7 +149,7 @@
       v38 = objc_opt_class();
       v39 = *MEMORY[0x1E69AD570];
       v166 = 0;
-      v14 = [v8 MCValidateAndRemoveObjectOfClass:v38 withKey:v39 isRequired:0 outError:&v166];
+      v14 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v38 withKey:v39 isRequired:0 outError:&v166];
       v40 = v166;
       v10->_isUserEnrollment = [v14 BOOLValue];
       if (v40)
@@ -159,7 +159,7 @@
 
       v41 = *MEMORY[0x1E69AD4B8];
       v165 = 0;
-      v137 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v41 isRequired:0 outError:&v165];
+      v137 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v41 isRequired:0 outError:&v165];
       v40 = v165;
       enrollmentMode = v10->_enrollmentMode;
       v10->_enrollmentMode = v137;
@@ -171,7 +171,7 @@
 
       v43 = *MEMORY[0x1E69AD508];
       v164 = 0;
-      v138 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v43 isRequired:0 outError:&v164];
+      v138 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v43 isRequired:0 outError:&v164];
       v40 = v164;
       personaID = v10->_personaID;
       v10->_personaID = v138;
@@ -183,7 +183,7 @@
 
       v45 = *MEMORY[0x1E69AD4A0];
       v163 = 0;
-      v139 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v45 isRequired:0 outError:&v163];
+      v139 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v45 isRequired:0 outError:&v163];
       v40 = v163;
       enrollmentID = v10->_enrollmentID;
       v10->_enrollmentID = v139;
@@ -195,7 +195,7 @@
 
       v47 = *MEMORY[0x1E69AD578];
       v162 = 0;
-      v140 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v47 isRequired:0 outError:&v162];
+      v140 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v47 isRequired:0 outError:&v162];
       v40 = v162;
       iCloudEnrollmentID = v10->_iCloudEnrollmentID;
       v10->_iCloudEnrollmentID = v140;
@@ -207,7 +207,7 @@
 
       v49 = *MEMORY[0x1E69AD498];
       v161 = 0;
-      v141 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v49 isRequired:0 outError:&v161];
+      v141 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v49 isRequired:0 outError:&v161];
       v40 = v161;
       easEnrollmentID = v10->_easEnrollmentID;
       v10->_easEnrollmentID = v141;
@@ -222,7 +222,7 @@
         v51 = objc_opt_class();
         v52 = *MEMORY[0x1E69AD468];
         v160 = 0;
-        v53 = [v8 MCValidateAndRemoveObjectOfClass:v51 withKey:v52 isRequired:0 outError:&v160];
+        v53 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v51 withKey:v52 isRequired:0 outError:&v160];
         v142 = v160;
         if (v142)
         {
@@ -242,7 +242,7 @@ LABEL_51:
     {
       v54 = *MEMORY[0x1E69AD4D0];
       v159 = 0;
-      v55 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v54 isRequired:1 outError:&v159];
+      v55 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v54 isRequired:1 outError:&v159];
       v14 = v159;
       identityUUID = v10->_identityUUID;
       v10->_identityUUID = v55;
@@ -254,7 +254,7 @@ LABEL_51:
 
       v16 = *MEMORY[0x1E69AD540];
       v158 = 0;
-      v57 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v16 isRequired:1 outError:&v158];
+      v57 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v16 isRequired:1 outError:&v158];
       v14 = v158;
       v58 = v10->_serverURLString;
       v10->_serverURLString = v57;
@@ -267,7 +267,7 @@ LABEL_51:
       v59 = objc_opt_class();
       v60 = *MEMORY[0x1E69AD538];
       v157 = 0;
-      v61 = [v8 MCValidateAndRemoveArrayOfClass:v59 withKey:v60 isRequired:0 outError:&v157];
+      v61 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v59 withKey:v60 isRequired:0 outError:&v157];
       v14 = v157;
       serverPinningUUIDs = v10->_serverPinningUUIDs;
       v10->_serverPinningUUIDs = v61;
@@ -280,7 +280,7 @@ LABEL_51:
       v63 = objc_opt_class();
       v64 = *MEMORY[0x1E69AD480];
       v156 = 0;
-      v65 = [v8 MCValidateAndRemoveArrayOfClass:v63 withKey:v64 isRequired:0 outError:&v156];
+      v65 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v63 withKey:v64 isRequired:0 outError:&v156];
       v66 = v156;
       checkInPinningUUIDs = v10->_checkInPinningUUIDs;
       v10->_checkInPinningUUIDs = v65;
@@ -288,7 +288,7 @@ LABEL_51:
       v68 = objc_opt_class();
       v69 = *MEMORY[0x1E69AD518];
       v155 = v66;
-      v70 = [v8 MCValidateAndRemoveObjectOfClass:v68 withKey:v69 isRequired:0 outError:&v155];
+      v70 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v68 withKey:v69 isRequired:0 outError:&v155];
       v14 = v155;
 
       v71 = v10->_pollingIntervalMinutes;
@@ -301,7 +301,7 @@ LABEL_51:
 
       v72 = *MEMORY[0x1E69AD558];
       v154 = 0;
-      v73 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v72 isRequired:0 outError:&v154];
+      v73 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v72 isRequired:0 outError:&v154];
       v14 = v154;
       v74 = v10->_topic;
       v10->_topic = v73;
@@ -313,7 +313,7 @@ LABEL_51:
 
       v75 = *MEMORY[0x1E69AD4E0];
       v153 = 0;
-      v76 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v75 isRequired:0 outError:&v153];
+      v76 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v75 isRequired:0 outError:&v153];
       v14 = v153;
       managedAppleID = v10->_managedAppleID;
       v10->_managedAppleID = v76;
@@ -325,7 +325,7 @@ LABEL_51:
 
       v78 = *MEMORY[0x1E69AD470];
       v152 = 0;
-      v79 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v78 isRequired:0 outError:&v152];
+      v79 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v78 isRequired:0 outError:&v152];
       v14 = v152;
       assignedManagedAppleID = v10->_assignedManagedAppleID;
       v10->_assignedManagedAppleID = v79;
@@ -337,7 +337,7 @@ LABEL_51:
 
       v81 = *MEMORY[0x1E69AD4B8];
       v151 = 0;
-      v82 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:v81 isRequired:0 outError:&v151];
+      v82 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:v81 isRequired:0 outError:&v151];
       v14 = v151;
       v83 = v10->_enrollmentMode;
       v10->_enrollmentMode = v82;
@@ -357,7 +357,7 @@ LABEL_51:
         v93 = objc_opt_class();
         v94 = *MEMORY[0x1E69AD520];
         v150 = 0;
-        v95 = [v8 MCValidateAndRemoveObjectOfClass:v93 withKey:v94 isRequired:0 outError:&v150];
+        v95 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v93 withKey:v94 isRequired:0 outError:&v150];
         v14 = v150;
         v96 = v10->_requiredAppIDForMDM;
         v10->_requiredAppIDForMDM = v95;
@@ -374,7 +374,7 @@ LABEL_38:
         v87 = objc_opt_class();
         v88 = *MEMORY[0x1E69AD560];
         v148 = 0;
-        v89 = [v8 MCValidateAndRemoveObjectOfClass:v87 withKey:v88 isRequired:0 outError:&v148];
+        v89 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v87 withKey:v88 isRequired:0 outError:&v148];
         v14 = v148;
         useDevelopmentAPNSNum = v10->_useDevelopmentAPNSNum;
         v10->_useDevelopmentAPNSNum = v89;
@@ -382,13 +382,13 @@ LABEL_38:
         if (v14)
         {
 LABEL_52:
-          v108 = [v14 MCCopyAsPrimaryError];
-          v109 = [(MCPayload *)v10 malformedPayloadErrorWithError:v108];
+          mCCopyAsPrimaryError = [v14 MCCopyAsPrimaryError];
+          v109 = [(MCPayload *)v10 malformedPayloadErrorWithError:mCCopyAsPrimaryError];
 
-          if (a5)
+          if (error)
           {
             v110 = v109;
-            *a5 = v109;
+            *error = v109;
           }
 
           v111 = _MCLogObjects;
@@ -397,11 +397,11 @@ LABEL_52:
             v112 = v111;
             v113 = objc_opt_class();
             v114 = v113;
-            v115 = [v109 MCVerboseDescription];
+            mCVerboseDescription = [v109 MCVerboseDescription];
             *buf = 138543618;
             v176 = v113;
             v177 = 2114;
-            v178 = v115;
+            v178 = mCVerboseDescription;
             _os_log_impl(&dword_1A795B000, v112, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
           }
 
@@ -415,7 +415,7 @@ LABEL_57:
         v91 = objc_opt_class();
         v92 = *MEMORY[0x1E69AD510];
         v147 = 0;
-        v14 = [v8 MCValidateAndRemoveObjectOfClass:v91 withKey:v92 isRequired:0 outError:&v147];
+        v14 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v91 withKey:v92 isRequired:0 outError:&v147];
         v86 = v147;
         if (v86)
         {
@@ -426,7 +426,7 @@ LABEL_57:
         v97 = objc_opt_class();
         v98 = *MEMORY[0x1E69AD550];
         v146 = 0;
-        v133 = [v8 MCValidateAndRemoveObjectOfClass:v97 withKey:v98 isRequired:0 outError:&v146];
+        v133 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v97 withKey:v98 isRequired:0 outError:&v146];
         v40 = v146;
         signMessageNum = v10->_signMessageNum;
         v10->_signMessageNum = v133;
@@ -440,7 +440,7 @@ LABEL_57:
         v100 = objc_opt_class();
         v101 = *MEMORY[0x1E69AD490];
         v145 = 0;
-        v134 = [v8 MCValidateAndRemoveObjectOfClass:v100 withKey:v101 isRequired:0 outError:&v145];
+        v134 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v100 withKey:v101 isRequired:0 outError:&v145];
         v40 = v145;
         checkOutWhenRemovedNum = v10->_checkOutWhenRemovedNum;
         v10->_checkOutWhenRemovedNum = v134;
@@ -454,7 +454,7 @@ LABEL_57:
         v103 = *MEMORY[0x1E69AD488];
         v144[1] = 0;
         v132 = v103;
-        v135 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:? isRequired:? outError:?];
+        v135 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:? isRequired:? outError:?];
         v40 = 0;
         checkInURLString = v10->_checkInURLString;
         v10->_checkInURLString = v135;
@@ -472,7 +472,7 @@ LABEL_57:
         v105 = objc_opt_class();
         v106 = *MEMORY[0x1E69AD528];
         v144[0] = 0;
-        v136 = [v8 MCValidateAndRemoveArrayOfClass:v105 withKey:v106 isRequired:0 outError:v144];
+        v136 = [dictionaryCopy MCValidateAndRemoveArrayOfClass:v105 withKey:v106 isRequired:0 outError:v144];
         v40 = v144[0];
         serverCapabilities = v10->_serverCapabilities;
         v10->_serverCapabilities = v136;
@@ -482,20 +482,20 @@ LABEL_57:
           goto LABEL_51;
         }
 
-        if ([v9 isStub])
+        if ([profileCopy isStub])
         {
 LABEL_60:
-          if ([v8 count])
+          if ([dictionaryCopy count])
           {
             v118 = _MCLogObjects;
             if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
             {
               v119 = v118;
-              v120 = [(MCPayload *)v10 friendlyName];
+              friendlyName = [(MCPayload *)v10 friendlyName];
               *buf = 138543618;
-              v176 = v120;
+              v176 = friendlyName;
               v177 = 2114;
-              v178 = v8;
+              v178 = dictionaryCopy;
               _os_log_impl(&dword_1A795B000, v119, OS_LOG_TYPE_INFO, "Payload “%{public}@” has fields that we are ignoring. They are: %{public}@", buf, 0x16u);
             }
           }
@@ -519,7 +519,7 @@ LABEL_60:
           {
             if ([(NSString *)v10->_topic rangeOfString:@"com.apple.mgmt." options:8]== 0x7FFFFFFFFFFFFFFFLL)
             {
-              v122 = [(MCMDMPayload *)v10 _invalidTopicError];
+              _invalidTopicError = [(MCMDMPayload *)v10 _invalidTopicError];
               goto LABEL_82;
             }
           }
@@ -527,20 +527,20 @@ LABEL_60:
           else if ((v10->_accessRights & 0xC) != 0)
           {
 LABEL_76:
-            v122 = [(MCMDMPayload *)v10 _invalidRightsError];
+            _invalidTopicError = [(MCMDMPayload *)v10 _invalidRightsError];
             goto LABEL_82;
           }
         }
 
         v124 = [MEMORY[0x1E695DFF8] URLWithString:v10->_serverURLString];
-        v125 = [v124 scheme];
-        v143 = [v125 isEqualToString:@"https"];
+        scheme = [v124 scheme];
+        v143 = [scheme isEqualToString:@"https"];
 
         if (v143)
         {
           v126 = [MEMORY[0x1E695DFF8] URLWithString:v10->_checkInURLString];
-          v127 = [v126 scheme];
-          v128 = [v127 isEqualToString:@"https"];
+          scheme2 = [v126 scheme];
+          v128 = [scheme2 isEqualToString:@"https"];
 
           if (v128)
           {
@@ -557,9 +557,9 @@ LABEL_76:
           v130 = v16;
         }
 
-        v122 = [(MCMDMPayload *)v129 _nonHTTPSURLErrorForField:v130];
+        _invalidTopicError = [(MCMDMPayload *)v129 _nonHTTPSURLErrorForField:v130];
 LABEL_82:
-        v131 = v122;
+        v131 = _invalidTopicError;
 
         v14 = v131;
         if (!v131)
@@ -573,7 +573,7 @@ LABEL_82:
       v84 = objc_opt_class();
       v85 = *MEMORY[0x1E69AD468];
       v149 = 0;
-      v14 = [v8 MCValidateAndRemoveObjectOfClass:v84 withKey:v85 isRequired:0 outError:&v149];
+      v14 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:v84 withKey:v85 isRequired:0 outError:&v149];
       v86 = v149;
       if (v86 || v14 && [(NSString *)v10->_enrollmentMode isEqualToString:*MEMORY[0x1E69AD4B0]]&& ([(MCMDMPayload *)v10 _invalidRightsError], (v86 = objc_claimAutoreleasedReturnValue()) != 0))
       {
@@ -598,40 +598,40 @@ LABEL_58:
 {
   v11.receiver = self;
   v11.super_class = MCMDMPayload;
-  v3 = [(MCPayload *)&v11 stubDictionary];
-  [v3 MCSetObjectIfNotNil:self->_identityPersistentID forKey:*MEMORY[0x1E69AD4D8]];
-  [v3 MCSetObjectIfNotNil:self->_serverURLString forKey:*MEMORY[0x1E69AD540]];
-  [v3 MCSetObjectIfNotNil:self->_serverPinningPersistentRefs forKey:*MEMORY[0x1E69AD530]];
-  [v3 MCSetObjectIfNotNil:self->_checkInURLString forKey:*MEMORY[0x1E69AD488]];
-  [v3 MCSetObjectIfNotNil:self->_checkInPinningPersistentRefs forKey:*MEMORY[0x1E69AD478]];
-  [v3 MCSetObjectIfNotNil:self->_topic forKey:*MEMORY[0x1E69AD558]];
-  [v3 MCSetObjectIfNotNil:self->_pollingIntervalMinutes forKey:*MEMORY[0x1E69AD518]];
-  [v3 MCSetObjectIfNotNil:self->_serverCapabilities forKey:*MEMORY[0x1E69AD528]];
-  [v3 MCSetObjectIfNotNil:self->_personaID forKey:*MEMORY[0x1E69AD508]];
-  [v3 MCSetObjectIfNotNil:self->_enrollmentID forKey:*MEMORY[0x1E69AD4A0]];
-  [v3 MCSetObjectIfNotNil:self->_iCloudEnrollmentID forKey:*MEMORY[0x1E69AD578]];
-  [v3 MCSetObjectIfNotNil:self->_easEnrollmentID forKey:*MEMORY[0x1E69AD498]];
-  [v3 MCSetObjectIfNotNil:self->_requiredAppIDForMDM forKey:*MEMORY[0x1E69AD520]];
-  [v3 MCSetObjectIfNotNil:self->_enrollmentMode forKey:*MEMORY[0x1E69AD4B8]];
+  stubDictionary = [(MCPayload *)&v11 stubDictionary];
+  [stubDictionary MCSetObjectIfNotNil:self->_identityPersistentID forKey:*MEMORY[0x1E69AD4D8]];
+  [stubDictionary MCSetObjectIfNotNil:self->_serverURLString forKey:*MEMORY[0x1E69AD540]];
+  [stubDictionary MCSetObjectIfNotNil:self->_serverPinningPersistentRefs forKey:*MEMORY[0x1E69AD530]];
+  [stubDictionary MCSetObjectIfNotNil:self->_checkInURLString forKey:*MEMORY[0x1E69AD488]];
+  [stubDictionary MCSetObjectIfNotNil:self->_checkInPinningPersistentRefs forKey:*MEMORY[0x1E69AD478]];
+  [stubDictionary MCSetObjectIfNotNil:self->_topic forKey:*MEMORY[0x1E69AD558]];
+  [stubDictionary MCSetObjectIfNotNil:self->_pollingIntervalMinutes forKey:*MEMORY[0x1E69AD518]];
+  [stubDictionary MCSetObjectIfNotNil:self->_serverCapabilities forKey:*MEMORY[0x1E69AD528]];
+  [stubDictionary MCSetObjectIfNotNil:self->_personaID forKey:*MEMORY[0x1E69AD508]];
+  [stubDictionary MCSetObjectIfNotNil:self->_enrollmentID forKey:*MEMORY[0x1E69AD4A0]];
+  [stubDictionary MCSetObjectIfNotNil:self->_iCloudEnrollmentID forKey:*MEMORY[0x1E69AD578]];
+  [stubDictionary MCSetObjectIfNotNil:self->_easEnrollmentID forKey:*MEMORY[0x1E69AD498]];
+  [stubDictionary MCSetObjectIfNotNil:self->_requiredAppIDForMDM forKey:*MEMORY[0x1E69AD520]];
+  [stubDictionary MCSetObjectIfNotNil:self->_enrollmentMode forKey:*MEMORY[0x1E69AD4B8]];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:self->_accessRights];
-  [v3 setObject:v4 forKey:*MEMORY[0x1E69AD468]];
+  [stubDictionary setObject:v4 forKey:*MEMORY[0x1E69AD468]];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_useDevelopmentAPNS];
-  [v3 setObject:v5 forKey:*MEMORY[0x1E69AD560]];
+  [stubDictionary setObject:v5 forKey:*MEMORY[0x1E69AD560]];
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_checkOutWhenRemoved];
-  [v3 setObject:v6 forKey:*MEMORY[0x1E69AD490]];
+  [stubDictionary setObject:v6 forKey:*MEMORY[0x1E69AD490]];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_signMessage];
-  [v3 setObject:v7 forKey:*MEMORY[0x1E69AD550]];
+  [stubDictionary setObject:v7 forKey:*MEMORY[0x1E69AD550]];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_pinningRevocationCheckRequired];
-  [v3 setObject:v8 forKey:*MEMORY[0x1E69AD510]];
+  [stubDictionary setObject:v8 forKey:*MEMORY[0x1E69AD510]];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isUserEnrollment];
-  [v3 setObject:v9 forKey:*MEMORY[0x1E69AD570]];
+  [stubDictionary setObject:v9 forKey:*MEMORY[0x1E69AD570]];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
@@ -640,8 +640,8 @@ LABEL_58:
   v3 = MEMORY[0x1E696AD60];
   v62.receiver = self;
   v62.super_class = MCMDMPayload;
-  v4 = [(MCPayload *)&v62 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v62 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   if (self->_identityUUID)
   {
@@ -651,8 +651,8 @@ LABEL_58:
   identityPersistentID = self->_identityPersistentID;
   if (identityPersistentID)
   {
-    v7 = [(NSData *)identityPersistentID MCHexString];
-    [v5 appendFormat:@"Persist ID  : %@\n", v7];
+    mCHexString = [(NSData *)identityPersistentID MCHexString];
+    [v5 appendFormat:@"Persist ID  : %@\n", mCHexString];
   }
 
   if (self->_topic)
@@ -744,8 +744,8 @@ LABEL_58:
             objc_enumerationMutation(v19);
           }
 
-          v25 = [*(*(&v54 + 1) + 8 * j) MCHexString];
-          [v5 appendFormat:v23, v25];
+          mCHexString2 = [*(*(&v54 + 1) + 8 * j) MCHexString];
+          [v5 appendFormat:v23, mCHexString2];
 
           v23 = @"                     : %@\n";
         }
@@ -816,8 +816,8 @@ LABEL_58:
             objc_enumerationMutation(v34);
           }
 
-          v40 = [*(*(&v46 + 1) + 8 * m) MCHexString];
-          [v5 appendFormat:v38, v40];
+          mCHexString3 = [*(*(&v46 + 1) + 8 * m) MCHexString];
+          [v5 appendFormat:v38, mCHexString3];
 
           v38 = @"                     : %@\n";
         }
@@ -1006,8 +1006,8 @@ LABEL_62:
 LABEL_63:
   if ([(MCMDMPayload *)self isUserEnrollment])
   {
-    v43 = [(MCMDMPayload *)self managedAppleIDName];
-    [v5 appendFormat:@"MAID        : %@\n", v43];
+    managedAppleIDName = [(MCMDMPayload *)self managedAppleIDName];
+    [v5 appendFormat:@"MAID        : %@\n", managedAppleIDName];
   }
 
   v44 = *MEMORY[0x1E69E9840];
@@ -1017,12 +1017,12 @@ LABEL_63:
 
 - (NSArray)localizedAccessRightDescriptions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   accessRights = self->_accessRights;
   if ((accessRights & 8) != 0)
   {
     v7 = MCLocalizedString(@"MDM_ERASE");
-    [v3 addObject:v7];
+    [array addObject:v7];
 
     accessRights = self->_accessRights;
     if ((accessRights & 4) == 0)
@@ -1043,7 +1043,7 @@ LABEL_3:
   }
 
   v8 = MCLocalizedString(@"MDM_REMOVE_PASSCODE_LOCK");
-  [v3 addObject:v8];
+  [array addObject:v8];
 
   accessRights = self->_accessRights;
   if ((accessRights & 1) == 0)
@@ -1059,7 +1059,7 @@ LABEL_4:
 
 LABEL_20:
   v9 = MCLocalizedString(@"MDM_INSPECT_PROFILE");
-  [v3 addObject:v9];
+  [array addObject:v9];
 
   accessRights = self->_accessRights;
   if ((accessRights & 2) == 0)
@@ -1075,7 +1075,7 @@ LABEL_5:
 
 LABEL_21:
   v10 = MCLocalizedString(@"MDM_INSTALL_REMOVE_PROFILE");
-  [v3 addObject:v10];
+  [array addObject:v10];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x40) == 0)
@@ -1091,7 +1091,7 @@ LABEL_6:
 
 LABEL_22:
   v11 = MCLocalizedString(@"MDM_LIST_PROV");
-  [v3 addObject:v11];
+  [array addObject:v11];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x80) == 0)
@@ -1107,7 +1107,7 @@ LABEL_7:
 
 LABEL_23:
   v12 = MCLocalizedString(@"MDM_INSTALL_REMOVE_PROV");
-  [v3 addObject:v12];
+  [array addObject:v12];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x10) == 0)
@@ -1123,7 +1123,7 @@ LABEL_8:
 
 LABEL_24:
   v13 = MCLocalizedString(@"MDM_QUERY_INFO");
-  [v3 addObject:v13];
+  [array addObject:v13];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x20) == 0)
@@ -1139,7 +1139,7 @@ LABEL_9:
 
 LABEL_25:
   v14 = MCLocalizedString(@"MDM_QUERY_INFO_NETWORK");
-  [v3 addObject:v14];
+  [array addObject:v14];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x100) == 0)
@@ -1155,7 +1155,7 @@ LABEL_10:
 
 LABEL_26:
   v15 = MCLocalizedString(@"MDM_LIST_APP");
-  [v3 addObject:v15];
+  [array addObject:v15];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x200) == 0)
@@ -1171,7 +1171,7 @@ LABEL_11:
 
 LABEL_27:
   v16 = MCLocalizedString(@"MDM_QUERY_RESTRICTIONS");
-  [v3 addObject:v16];
+  [array addObject:v16];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x400) == 0)
@@ -1187,7 +1187,7 @@ LABEL_12:
 
 LABEL_28:
   v17 = MCLocalizedString(@"MDM_QUERY_SECURITY");
-  [v3 addObject:v17];
+  [array addObject:v17];
 
   accessRights = self->_accessRights;
   if ((accessRights & 0x800) == 0)
@@ -1203,18 +1203,18 @@ LABEL_13:
 
 LABEL_29:
   v18 = MCLocalizedString(@"MDM_APPLY_SETTINGS");
-  [v3 addObject:v18];
+  [array addObject:v18];
 
   if ((self->_accessRights & 0x1000) != 0)
   {
 LABEL_14:
     v5 = MCLocalizedString(@"MDM_APP_INSTALL");
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
 LABEL_15:
 
-  return v3;
+  return array;
 }
 
 - (id)installationWarnings
@@ -1420,9 +1420,9 @@ LABEL_15:
   if (self->_requiredAppIDForMDM)
   {
     v34 = [MCKeyValue alloc];
-    v35 = [(NSNumber *)self->_requiredAppIDForMDM stringValue];
+    stringValue = [(NSNumber *)self->_requiredAppIDForMDM stringValue];
     v36 = MCLocalizedString(@"MDM_REQUIRED_APP_ID");
-    v37 = [(MCKeyValue *)v34 initWithLocalizedString:v35 localizedKey:v36];
+    v37 = [(MCKeyValue *)v34 initWithLocalizedString:stringValue localizedKey:v36];
 
     [v4 addObject:v37];
   }
@@ -1437,8 +1437,8 @@ LABEL_15:
   {
     v39 = MCLocalizedString(@"MDM_MANAGED_APPLE_ACCOUNT");
     v40 = [MCKeyValue alloc];
-    v41 = [(MCMDMPayload *)self managedAppleIDName];
-    v42 = [(MCKeyValue *)v40 initWithLocalizedString:v41 localizedKey:v39];
+    managedAppleIDName = [(MCMDMPayload *)self managedAppleIDName];
+    v42 = [(MCKeyValue *)v40 initWithLocalizedString:managedAppleIDName localizedKey:v39];
 
     [v4 addObject:v42];
     if ([(NSString *)self->_enrollmentID length])
@@ -1455,9 +1455,9 @@ LABEL_15:
 
   if (![(MCMDMPayload *)self isUserEnrollment])
   {
-    v47 = [(MCMDMPayload *)self localizedAccessRightDescriptions];
+    localizedAccessRightDescriptions = [(MCMDMPayload *)self localizedAccessRightDescriptions];
     v48 = MCLocalizedString(@"MDM_ACCESS_RIGHTS");
-    v49 = [MCKeyValueSection sectionWithLocalizedArray:v47 title:v48 footer:0];
+    v49 = [MCKeyValueSection sectionWithLocalizedArray:localizedAccessRightDescriptions title:v48 footer:0];
 
     [v3 addObject:v49];
   }
@@ -1537,24 +1537,24 @@ LABEL_31:
   return v3;
 }
 
-- (id)kvsForCertUUIDs:(id)a3 persistentRefs:(id)a4 labelKey:(id)a5
+- (id)kvsForCertUUIDs:(id)ds persistentRefs:(id)refs labelKey:(id)key
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v42 = a5;
-  v10 = [v8 count];
-  v11 = [v9 count] + v10;
+  dsCopy = ds;
+  refsCopy = refs;
+  keyCopy = key;
+  v10 = [dsCopy count];
+  v11 = [refsCopy count] + v10;
   if (v11)
   {
-    v41 = v9;
+    v41 = refsCopy;
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:v11];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v40 = v8;
-    v13 = v8;
+    v40 = dsCopy;
+    v13 = dsCopy;
     v14 = [v13 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v14)
     {
@@ -1571,8 +1571,8 @@ LABEL_31:
           }
 
           v19 = *(*(&v47 + 1) + 8 * i);
-          v20 = [(MCPayload *)self profile];
-          v21 = [v20 subjectSummaryFromCertificatePayloadWithUUID:v19];
+          profile = [(MCPayload *)self profile];
+          v21 = [profile subjectSummaryFromCertificatePayloadWithUUID:v19];
 
           if (v21)
           {
@@ -1580,7 +1580,7 @@ LABEL_31:
             v23 = v22;
             if (v17)
             {
-              v24 = MCLocalizedString(v42);
+              v24 = MCLocalizedString(keyCopy);
               v25 = [(MCKeyValue *)v23 initWithLocalizedString:v21 localizedKey:v24];
             }
 
@@ -1626,8 +1626,8 @@ LABEL_31:
           }
 
           v31 = *(*(&v43 + 1) + 8 * j);
-          v32 = [(MCPayload *)self profile];
-          v33 = [v32 subjectSummaryFromCertificateWithPersistentID:v31];
+          profile2 = [(MCPayload *)self profile];
+          v33 = [profile2 subjectSummaryFromCertificateWithPersistentID:v31];
 
           if (v33)
           {
@@ -1635,7 +1635,7 @@ LABEL_31:
             v35 = v34;
             if (v17)
             {
-              v36 = MCLocalizedString(v42);
+              v36 = MCLocalizedString(keyCopy);
               v37 = [(MCKeyValue *)v35 initWithLocalizedString:v33 localizedKey:v36];
             }
 
@@ -1656,8 +1656,8 @@ LABEL_31:
       while (v28);
     }
 
-    v8 = v40;
-    v9 = v41;
+    dsCopy = v40;
+    refsCopy = v41;
   }
 
   else

@@ -1,26 +1,26 @@
 @interface NTKUltraCubeImageContainerView
 - (NSArray)imageFilters;
-- (NTKUltraCubeImageContainerView)initWithFrame:(CGRect)a3;
-- (void)_generateMaskingLayerForImage:(id)a3;
+- (NTKUltraCubeImageContainerView)initWithFrame:(CGRect)frame;
+- (void)_generateMaskingLayerForImage:(id)image;
 - (void)_updateTransform;
-- (void)applyColorRamp:(id)a3 colorRampAmount:(double)a4 monochromeColorMatrix:(id)a5;
+- (void)applyColorRamp:(id)ramp colorRampAmount:(double)amount monochromeColorMatrix:(id)matrix;
 - (void)removeColorRamp;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentRoll:(double)a3 pitch:(double)a4;
-- (void)setContentScale:(double)a3;
-- (void)setContentsMultiplyByWhite:(double)a3 alpha:(double)a4;
-- (void)setImage:(id)a3;
-- (void)setImageBlur:(double)a3;
-- (void)setImageFilters:(id)a3;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentRoll:(double)roll pitch:(double)pitch;
+- (void)setContentScale:(double)scale;
+- (void)setContentsMultiplyByWhite:(double)white alpha:(double)alpha;
+- (void)setImage:(id)image;
+- (void)setImageBlur:(double)blur;
+- (void)setImageFilters:(id)filters;
 @end
 
 @implementation NTKUltraCubeImageContainerView
 
-- (NTKUltraCubeImageContainerView)initWithFrame:(CGRect)a3
+- (NTKUltraCubeImageContainerView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = NTKUltraCubeImageContainerView;
-  v3 = [(NTKUltraCubeImageContainerView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKUltraCubeImageContainerView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UIView alloc];
@@ -49,112 +49,112 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   imageView = self->_imageView;
-  v6 = a3;
-  v5 = [(UIImageView *)imageView layer];
-  [v5 setMask:0];
+  imageCopy = image;
+  layer = [(UIImageView *)imageView layer];
+  [layer setMask:0];
 
-  [(UIImageView *)self->_imageView setImage:v6];
-  [(NTKUltraCubeImageContainerView *)self _generateMaskingLayerForImage:v6];
+  [(UIImageView *)self->_imageView setImage:imageCopy];
+  [(NTKUltraCubeImageContainerView *)self _generateMaskingLayerForImage:imageCopy];
 }
 
-- (void)_generateMaskingLayerForImage:(id)a3
+- (void)_generateMaskingLayerForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v5 = +[CALayer layer];
   maskingImageLayer = self->_maskingImageLayer;
   self->_maskingImageLayer = v5;
 
   [(NTKUltraCubeImageContainerView *)self bounds];
   [(CALayer *)self->_maskingImageLayer setFrame:?];
-  v7 = [v4 CGImage];
+  cGImage = [imageCopy CGImage];
 
-  Copy = CGImageCreateCopy(v7);
+  Copy = CGImageCreateCopy(cGImage);
   [(CALayer *)self->_maskingImageLayer setContents:Copy];
 }
 
 - (NSArray)imageFilters
 {
-  v2 = [(UIImageView *)self->_imageView layer];
-  v3 = [v2 filters];
+  layer = [(UIImageView *)self->_imageView layer];
+  filters = [layer filters];
 
-  return v3;
+  return filters;
 }
 
-- (void)setImageFilters:(id)a3
+- (void)setImageFilters:(id)filters
 {
   imageView = self->_imageView;
-  v4 = a3;
-  v5 = [(UIImageView *)imageView layer];
-  [v5 setFilters:v4];
+  filtersCopy = filters;
+  layer = [(UIImageView *)imageView layer];
+  [layer setFilters:filtersCopy];
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(UIView *)self->_contentView setAlpha:?];
   }
 }
 
-- (void)setContentsMultiplyByWhite:(double)a3 alpha:(double)a4
+- (void)setContentsMultiplyByWhite:(double)white alpha:(double)alpha
 {
-  if (self->_contentsMultiplyWhite != a3 || self->_contentsMultiplyAlpha != a4)
+  if (self->_contentsMultiplyWhite != white || self->_contentsMultiplyAlpha != alpha)
   {
-    self->_contentsMultiplyWhite = a3;
-    self->_contentsMultiplyAlpha = a4;
+    self->_contentsMultiplyWhite = white;
+    self->_contentsMultiplyAlpha = alpha;
     v5 = [UIColor colorWithWhite:"colorWithWhite:alpha:" alpha:?];
-    v6 = [v5 CGColor];
+    cGColor = [v5 CGColor];
 
-    v7 = [(UIView *)self->_contentView layer];
-    [v7 setContentsMultiplyColor:v6];
+    layer = [(UIView *)self->_contentView layer];
+    [layer setContentsMultiplyColor:cGColor];
   }
 }
 
-- (void)setContentScale:(double)a3
+- (void)setContentScale:(double)scale
 {
-  if (self->_contentScale != a3)
+  if (self->_contentScale != scale)
   {
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     [(NTKUltraCubeImageContainerView *)self _updateTransform];
   }
 }
 
-- (void)setContentRoll:(double)a3 pitch:(double)a4
+- (void)setContentRoll:(double)roll pitch:(double)pitch
 {
-  if (self->_contentRoll != a3 || self->_contentPitch != a4)
+  if (self->_contentRoll != roll || self->_contentPitch != pitch)
   {
-    self->_contentRoll = a3;
-    self->_contentPitch = a4;
+    self->_contentRoll = roll;
+    self->_contentPitch = pitch;
     [(NTKUltraCubeImageContainerView *)self _updateTransform];
   }
 }
 
-- (void)applyColorRamp:(id)a3 colorRampAmount:(double)a4 monochromeColorMatrix:(id)a5
+- (void)applyColorRamp:(id)ramp colorRampAmount:(double)amount monochromeColorMatrix:(id)matrix
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = [(UIImageView *)self->_imageView layer];
-  v10 = [v9 mask];
+  rampCopy = ramp;
+  matrixCopy = matrix;
+  layer = [(UIImageView *)self->_imageView layer];
+  mask = [layer mask];
 
-  if (!v10)
+  if (!mask)
   {
     maskingImageLayer = self->_maskingImageLayer;
-    v12 = [(UIImageView *)self->_imageView layer];
-    [v12 setMask:maskingImageLayer];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    [layer2 setMask:maskingImageLayer];
   }
 
-  [NTKPhotosColorPalette applyColorRamp:v13 colorRampAmount:v8 monochromeColorMatrix:self->_imageView toView:a4];
+  [NTKPhotosColorPalette applyColorRamp:rampCopy colorRampAmount:matrixCopy monochromeColorMatrix:self->_imageView toView:amount];
 }
 
 - (void)removeColorRamp
 {
   [NTKPhotosColorPalette removeColorRampFromView:self->_imageView];
-  v3 = [(UIImageView *)self->_imageView layer];
-  [v3 setMask:0];
+  layer = [(UIImageView *)self->_imageView layer];
+  [layer setMask:0];
 }
 
 - (void)_updateTransform
@@ -184,19 +184,19 @@
   [(UIView *)contentView setTransform:&v9];
 }
 
-- (void)setImageBlur:(double)a3
+- (void)setImageBlur:(double)blur
 {
-  if (self->_imageBlur != a3)
+  if (self->_imageBlur != blur)
   {
-    self->_imageBlur = a3;
-    v4 = [(UIImageView *)self->_imageView layer];
-    v5 = [v4 filters];
+    self->_imageBlur = blur;
+    layer = [(UIImageView *)self->_imageView layer];
+    filters = [layer filters];
     v6 = objc_opt_new();
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = v5;
+    v7 = filters;
     v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
@@ -212,8 +212,8 @@
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 name];
-          v14 = [v13 isEqualToString:@"NTKUltraCubeContentViewBlurFilter"];
+          name = [v12 name];
+          v14 = [name isEqualToString:@"NTKUltraCubeContentViewBlurFilter"];
 
           if ((v14 & 1) == 0)
           {
@@ -227,7 +227,7 @@
       while (v9);
     }
 
-    if (fabs(a3) >= 0.00000011920929)
+    if (fabs(blur) >= 0.00000011920929)
     {
       v15 = [CAFilter filterWithType:kCAFilterGaussianBlur];
       [v15 setValue:&__kCFBooleanTrue forKey:@"inputHardEdges"];
@@ -235,13 +235,13 @@
       [v15 setValue:@"low" forKey:@"inputQuality"];
       [v15 setValue:@"low" forKey:@"inputIntermediateBitDepth"];
       [v15 setName:@"NTKUltraCubeContentViewBlurFilter"];
-      v16 = [NSNumber numberWithDouble:a3];
+      v16 = [NSNumber numberWithDouble:blur];
       [v15 setValue:v16 forKey:@"inputRadius"];
 
       [v6 addObject:v15];
     }
 
-    [v4 setFilters:{v6, v17}];
+    [layer setFilters:{v6, v17}];
   }
 }
 

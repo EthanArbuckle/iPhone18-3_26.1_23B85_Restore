@@ -1,47 +1,47 @@
 @interface VOTKeyboardManager
 + (void)initialize;
-- (BOOL)_dispatchCommandForKeyInfo:(id)a3 isRepeatedEvent:(BOOL)a4;
-- (BOOL)_handleArrowKeyEvent:(id)a3;
-- (BOOL)_handleBrailleKeyEvent:(id)a3;
-- (BOOL)_keyInfoIsModifierOnly:(id)a3;
+- (BOOL)_dispatchCommandForKeyInfo:(id)info isRepeatedEvent:(BOOL)event;
+- (BOOL)_handleArrowKeyEvent:(id)event;
+- (BOOL)_handleBrailleKeyEvent:(id)event;
+- (BOOL)_keyInfoIsModifierOnly:(id)only;
 - (VOTKeyboardManager)init;
-- (id)_characterStringRepresentationForKey:(id)a3;
-- (id)_localizeKeyboardString:(id)a3;
+- (id)_characterStringRepresentationForKey:(id)key;
+- (id)_localizeKeyboardString:(id)string;
 - (id)keyDownInfo;
-- (id)keyboardEventForKeyInfo:(id)a3;
-- (id)singleLetterCommandForKeyInfo:(id)a3;
+- (id)keyboardEventForKeyInfo:(id)info;
+- (id)singleLetterCommandForKeyInfo:(id)info;
 - (id)threadSafe_keyDownInfo;
 - (void)_axEndPassthroughTouch;
 - (void)_axStartPassthroughTouch;
-- (void)_dispatchEventRepresentationIntoSystem:(id)a3;
-- (void)_dispatchKeyEventIntoSystem:(id)a3;
-- (void)_handleAnnouncementsForKeyInfo:(id)a3;
-- (void)_handleCapsLockToggle:(id)a3;
-- (void)_handleKeyboardKeyEvent:(id)a3 isRepeatedEvent:(BOOL)a4;
-- (void)_handleModifierCapsLockBehavior:(id)a3;
-- (void)_handleNonPerkinsKeyboardKeyEvent:(id)a3 isRepeatedEvent:(BOOL)a4;
-- (void)_handleQuickNavDownArrowRepostPress:(id)a3;
-- (void)_handleQuickNavPress:(id)a3;
-- (void)_handleQuickNavPressTimer:(id)a3;
+- (void)_dispatchEventRepresentationIntoSystem:(id)system;
+- (void)_dispatchKeyEventIntoSystem:(id)system;
+- (void)_handleAnnouncementsForKeyInfo:(id)info;
+- (void)_handleCapsLockToggle:(id)toggle;
+- (void)_handleKeyboardKeyEvent:(id)event isRepeatedEvent:(BOOL)repeatedEvent;
+- (void)_handleModifierCapsLockBehavior:(id)behavior;
+- (void)_handleNonPerkinsKeyboardKeyEvent:(id)event isRepeatedEvent:(BOOL)repeatedEvent;
+- (void)_handleQuickNavDownArrowRepostPress:(id)press;
+- (void)_handleQuickNavPress:(id)press;
+- (void)_handleQuickNavPressTimer:(id)timer;
 - (void)_initializeQuickNav;
 - (void)_initializeThread;
-- (void)_keyRepeat:(id)a3;
-- (void)_postEvent:(id)a3;
-- (void)_postKeyboardKey:(id)a3 keyCode:(unsigned __int16)a4 eventFlags:(unsigned int)a5 keyFlags:(unsigned __int16)a6 keyDown:(BOOL)a7 source:(unsigned __int16)a8;
-- (void)_processVolumeButtonsForCurtainReset:(id)a3;
+- (void)_keyRepeat:(id)repeat;
+- (void)_postEvent:(id)event;
+- (void)_postKeyboardKey:(id)key keyCode:(unsigned __int16)code eventFlags:(unsigned int)flags keyFlags:(unsigned __int16)keyFlags keyDown:(BOOL)down source:(unsigned __int16)source;
+- (void)_processVolumeButtonsForCurtainReset:(id)reset;
 - (void)_resetSoundAndScreenCurtain;
-- (void)_sendEvent:(id)a3 withKeyInfo:(id)a4 arrowMask:(int64_t)a5;
-- (void)_sendEventForCommand:(id)a3 withKeyInfo:(id)a4 arrowMask:(int64_t)a5;
+- (void)_sendEvent:(id)event withKeyInfo:(id)info arrowMask:(int64_t)mask;
+- (void)_sendEventForCommand:(id)command withKeyInfo:(id)info arrowMask:(int64_t)mask;
 - (void)_speakCapsLockKey;
-- (void)_updateConsecutiveKeyCount:(id)a3;
-- (void)_updateEventFlags:(id)a3;
+- (void)_updateConsecutiveKeyCount:(id)count;
+- (void)_updateEventFlags:(id)flags;
 - (void)_verifyCorrectThread;
 - (void)clearConsecutiveKeyPressCount;
 - (void)dealloc;
-- (void)handleKeyboardKeyEvent:(id)a3 eventOrigin:(int64_t)a4;
+- (void)handleKeyboardKeyEvent:(id)event eventOrigin:(int64_t)origin;
 - (void)loadKeyboardMap;
-- (void)postEvent:(id)a3;
-- (void)setKeyDownInfo:(id)a3;
+- (void)postEvent:(id)event;
+- (void)setKeyDownInfo:(id)info;
 @end
 
 @implementation VOTKeyboardManager
@@ -117,7 +117,7 @@
   if (([VOTSharedWorkspace inUnitTestMode] & 1) == 0 && (-[SCRCThread _debug_currentlyRunningOnThisThread](self->_keyboardThread, "_debug_currentlyRunningOnThisThread") & 1) == 0)
   {
     v4 = +[NSThread currentThread];
-    v3 = [v4 name];
+    name = [v4 name];
     _AXAssert();
   }
 }
@@ -135,28 +135,28 @@
   self->_realCapsLockOn = v5;
 }
 
-- (void)handleKeyboardKeyEvent:(id)a3 eventOrigin:(int64_t)a4
+- (void)handleKeyboardKeyEvent:(id)event eventOrigin:(int64_t)origin
 {
-  v7 = a3;
+  eventCopy = event;
   if (!self->_lastLayout)
   {
     [(VOTKeyboardManager *)self loadKeyboardMap];
   }
 
-  v6 = [objc_allocWithZone(VOTKeyInfo) initWithEventRepresentation:v7];
-  [v6 setEventOrigin:a4];
+  v6 = [objc_allocWithZone(VOTKeyInfo) initWithEventRepresentation:eventCopy];
+  [v6 setEventOrigin:origin];
   [(SCRCThread *)self->_keyboardThread performSelector:"_handleKeyboardKeyEvent:" onTarget:self count:1 objects:v6];
 }
 
 - (void)loadKeyboardMap
 {
-  v3 = [VOTSharedWorkspace applicationForCurrentElement];
-  v4 = [v3 currentHardwareKeyboardLayout];
+  applicationForCurrentElement = [VOTSharedWorkspace applicationForCurrentElement];
+  currentHardwareKeyboardLayout = [applicationForCurrentElement currentHardwareKeyboardLayout];
 
   v5 = +[AXSubsystemVoiceOver sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemVoiceOver identifier];
     v8 = AXLoggerForFacility();
@@ -165,7 +165,7 @@
     if (os_log_type_enabled(v8, v9))
     {
       v10 = AXColorizeFormatLog();
-      v32 = v4;
+      v32 = currentHardwareKeyboardLayout;
       v11 = _AXStringForArgs();
       if (os_log_type_enabled(v8, v9))
       {
@@ -176,22 +176,22 @@
     }
   }
 
-  if (self->_lastLayout && ([v4 isEqualToString:?] & 1) != 0)
+  if (self->_lastLayout && ([currentHardwareKeyboardLayout isEqualToString:?] & 1) != 0)
   {
-    v12 = v4;
+    currentSoftwareKeyboardLayout = currentHardwareKeyboardLayout;
   }
 
   else
   {
-    if ([v4 isEqualToString:{@"Automatic", v32}])
+    if ([currentHardwareKeyboardLayout isEqualToString:{@"Automatic", v32}])
     {
-      v13 = [VOTSharedWorkspace applicationForCurrentElement];
-      v12 = [v13 currentSoftwareKeyboardLayout];
+      applicationForCurrentElement2 = [VOTSharedWorkspace applicationForCurrentElement];
+      currentSoftwareKeyboardLayout = [applicationForCurrentElement2 currentSoftwareKeyboardLayout];
 
       v14 = +[AXSubsystemVoiceOver sharedInstance];
-      LOBYTE(v13) = [v14 ignoreLogging];
+      LOBYTE(applicationForCurrentElement2) = [v14 ignoreLogging];
 
-      if ((v13 & 1) == 0)
+      if ((applicationForCurrentElement2 & 1) == 0)
       {
         v15 = +[AXSubsystemVoiceOver identifier];
         v16 = AXLoggerForFacility();
@@ -200,7 +200,7 @@
         if (os_log_type_enabled(v16, v17))
         {
           v18 = AXColorizeFormatLog();
-          v33 = v12;
+          v33 = currentSoftwareKeyboardLayout;
           v19 = _AXStringForArgs();
           if (os_log_type_enabled(v16, v17))
           {
@@ -214,7 +214,7 @@
 
     else
     {
-      v12 = v4;
+      currentSoftwareKeyboardLayout = currentHardwareKeyboardLayout;
     }
 
     layoutToKeyboardMap = self->_layoutToKeyboardMap;
@@ -230,7 +230,7 @@
       layoutToKeyboardMap = self->_layoutToKeyboardMap;
     }
 
-    v26 = [(NSDictionary *)layoutToKeyboardMap objectForKey:v12, v33];
+    v26 = [(NSDictionary *)layoutToKeyboardMap objectForKey:currentSoftwareKeyboardLayout, v33];
     if ([v26 length])
     {
       v27 = [NSDictionary alloc];
@@ -240,41 +240,41 @@
       keyboardMap = self->_keyboardMap;
       self->_keyboardMap = v30;
 
-      objc_storeStrong(&self->_lastLayout, v12);
+      objc_storeStrong(&self->_lastLayout, currentSoftwareKeyboardLayout);
     }
   }
 }
 
-- (id)_characterStringRepresentationForKey:(id)a3
+- (id)_characterStringRepresentationForKey:(id)key
 {
-  v4 = a3;
-  v5 = [v4 originalCharacters];
+  keyCopy = key;
+  originalCharacters = [keyCopy originalCharacters];
   v6 = +[NSCharacterSet controlCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  v7 = [originalCharacters stringByTrimmingCharactersInSet:v6];
   v8 = [(VOTKeyboardManager *)self _localizeKeyboardString:v7];
 
-  if ([v4 isShiftKeyPressed])
+  if ([keyCopy isShiftKeyPressed])
   {
-    v9 = [(__CFString *)v8 uppercaseString];
+    uppercaseString = [(__CFString *)v8 uppercaseString];
 
-    v8 = v9;
+    v8 = uppercaseString;
   }
 
   if (![(__CFString *)v8 length])
   {
-    v11 = [v4 keyCode];
-    v12 = [v4 eventRecord];
-    v13 = [v12 keyInfo];
-    v14 = [v13 alternativeKeyCode];
+    keyCode = [keyCopy keyCode];
+    eventRecord = [keyCopy eventRecord];
+    keyInfo = [eventRecord keyInfo];
+    alternativeKeyCode = [keyInfo alternativeKeyCode];
 
-    if (v14)
+    if (alternativeKeyCode)
     {
-      v15 = v14;
+      v15 = alternativeKeyCode;
     }
 
     else
     {
-      v15 = v11;
+      v15 = keyCode;
     }
 
     switch(v15)
@@ -348,34 +348,34 @@
         v8 = @"pagedown";
         break;
       case 'O':
-        v21 = [(VOTKeyboardManager *)self keyDownInfo];
-        v17 = [v21 isFNKeyPressed];
+        keyDownInfo = [(VOTKeyboardManager *)self keyDownInfo];
+        isFNKeyPressed = [keyDownInfo isFNKeyPressed];
 
         v18 = @"right";
         v19 = @"end";
         goto LABEL_33;
       case 'P':
-        v16 = [(VOTKeyboardManager *)self keyDownInfo];
-        v17 = [v16 isFNKeyPressed];
+        keyDownInfo2 = [(VOTKeyboardManager *)self keyDownInfo];
+        isFNKeyPressed = [keyDownInfo2 isFNKeyPressed];
 
         v18 = @"left";
         v19 = @"home";
         goto LABEL_33;
       case 'Q':
-        v20 = [(VOTKeyboardManager *)self keyDownInfo];
-        v17 = [v20 isFNKeyPressed];
+        keyDownInfo3 = [(VOTKeyboardManager *)self keyDownInfo];
+        isFNKeyPressed = [keyDownInfo3 isFNKeyPressed];
 
         v18 = @"down";
         v19 = @"pagedown";
         goto LABEL_33;
       case 'R':
-        v22 = [(VOTKeyboardManager *)self keyDownInfo];
-        v17 = [v22 isFNKeyPressed];
+        keyDownInfo4 = [(VOTKeyboardManager *)self keyDownInfo];
+        isFNKeyPressed = [keyDownInfo4 isFNKeyPressed];
 
         v18 = @"up";
         v19 = @"pageup";
 LABEL_33:
-        if (v17)
+        if (isFNKeyPressed)
         {
           v8 = v19;
         }
@@ -398,33 +398,33 @@ LABEL_33:
   return v8;
 }
 
-- (id)keyboardEventForKeyInfo:(id)a3
+- (id)keyboardEventForKeyInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(VOTKeyboardManager *)self _characterStringRepresentationForKey:v4];
+  infoCopy = info;
+  v5 = [(VOTKeyboardManager *)self _characterStringRepresentationForKey:infoCopy];
   v25 = [v5 copy];
-  if ([v4 isCommandKeyPressed])
+  if ([infoCopy isCommandKeyPressed])
   {
     v6 = [v5 stringByAppendingString:@"_command"];
 
     v5 = v6;
   }
 
-  if ([v4 isShiftKeyPressed] && ((objc_msgSend(v25, "isEqualToString:", @"home") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"end") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"pagedown") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"pageup") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"right") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"left") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"up") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"down") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"f3") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"f4") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"[") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"]") & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"-")))
+  if ([infoCopy isShiftKeyPressed] && ((objc_msgSend(v25, "isEqualToString:", @"home") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"end") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"pagedown") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"pageup") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"right") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"left") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"up") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"down") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"f3") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"f4") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"[") & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"]") & 1) != 0 || objc_msgSend(v25, "isEqualToString:", @"-")))
   {
     v7 = [v5 stringByAppendingString:@"_shift"];
 
     v5 = v7;
   }
 
-  if ([v4 isFNKeyPressed] && (objc_msgSend(v25, "isEqualToString:", @"home") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"end") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"pagedown") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"pageup") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"f11") & 1) == 0)
+  if ([infoCopy isFNKeyPressed] && (objc_msgSend(v25, "isEqualToString:", @"home") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"end") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"pagedown") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"pageup") & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", @"f11") & 1) == 0)
   {
     v8 = [v5 stringByAppendingString:@"_fn"];
 
     v5 = v8;
   }
 
-  v9 = [AXSSKeyChord keyboardShortcutKeyChordWithInfo:v4 characters:v5];
+  v9 = [AXSSKeyChord keyboardShortcutKeyChordWithInfo:infoCopy characters:v5];
   v10 = +[VOSCommandResolver resolverForCurrentHost];
   objc_initWeak(&location, self);
   v29[0] = _NSConcreteStackBlock;
@@ -443,8 +443,8 @@ LABEL_33:
   v27 = v11;
   [v10 setResolvingEventOccurredBlock:v26];
   v12 = [(VOSCommandManager *)self->_commandManager commandForKeyChord:v9 withResolver:v10];
-  v13 = [(__CFString *)v12 votEventCommandName];
-  v14 = v13 == 0;
+  votEventCommandName = [(__CFString *)v12 votEventCommandName];
+  v14 = votEventCommandName == 0;
 
   if (v14)
   {
@@ -454,10 +454,10 @@ LABEL_33:
       goto LABEL_38;
     }
 
-    v19 = [v4 isFNKeyPressed];
-    v20 = [v4 isShiftKeyPressed];
+    isFNKeyPressed = [infoCopy isFNKeyPressed];
+    isShiftKeyPressed = [infoCopy isShiftKeyPressed];
     v21 = @"NO";
-    if (v19)
+    if (isFNKeyPressed)
     {
       v22 = @"YES";
     }
@@ -471,7 +471,7 @@ LABEL_33:
     v33 = v11;
     v34 = 2112;
     v35 = v22;
-    if (v20)
+    if (isShiftKeyPressed)
     {
       v21 = @"YES";
     }
@@ -489,12 +489,12 @@ LABEL_33:
       goto LABEL_38;
     }
 
-    v16 = [v4 isFNKeyPressed];
+    isFNKeyPressed2 = [infoCopy isFNKeyPressed];
     v17 = @"NO";
     *buf = 138412802;
     v33 = v12;
     v34 = 2112;
-    if (v16)
+    if (isFNKeyPressed2)
     {
       v17 = @"YES";
     }
@@ -508,7 +508,7 @@ LABEL_33:
   _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, v18, buf, 0x20u);
 LABEL_38:
 
-  v23 = [(VOSCommandManager *)self->_commandManager eventForKeyChord:v9 resolver:v10 info:v4];
+  v23 = [(VOSCommandManager *)self->_commandManager eventForKeyChord:v9 resolver:v10 info:infoCopy];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v30);
@@ -517,18 +517,18 @@ LABEL_38:
   return v23;
 }
 
-- (id)singleLetterCommandForKeyInfo:(id)a3
+- (id)singleLetterCommandForKeyInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 characters];
-  v6 = [(VOTKeyboardManager *)self _localizeKeyboardString:v5];
+  infoCopy = info;
+  characters = [infoCopy characters];
+  v6 = [(VOTKeyboardManager *)self _localizeKeyboardString:characters];
 
-  LODWORD(v5) = [v4 isShiftKeyPressed];
-  if (v5)
+  LODWORD(characters) = [infoCopy isShiftKeyPressed];
+  if (characters)
   {
-    v7 = [v6 uppercaseString];
+    uppercaseString = [v6 uppercaseString];
 
-    v6 = v7;
+    v6 = uppercaseString;
   }
 
   v8 = [(NSDictionary *)self->_singleLetterCommandsTable objectForKey:v6];
@@ -536,10 +536,10 @@ LABEL_38:
   return v8;
 }
 
-- (void)postEvent:(id)a3
+- (void)postEvent:(id)event
 {
-  v4 = a3;
-  v5 = [objc_allocWithZone(VOTKeyInfo) initWithEventRepresentation:v4];
+  eventCopy = event;
+  v5 = [objc_allocWithZone(VOTKeyInfo) initWithEventRepresentation:eventCopy];
 
   [(SCRCThread *)self->_keyboardThread performSelector:"_postEvent:" onTarget:self count:1 objects:v5];
 }
@@ -561,12 +561,12 @@ LABEL_38:
   return keyDownInfo;
 }
 
-- (void)_updateConsecutiveKeyCount:(id)a3
+- (void)_updateConsecutiveKeyCount:(id)count
 {
-  v10 = a3;
-  if ([v10 keyDown])
+  countCopy = count;
+  if ([countCopy keyDown])
   {
-    v4 = [(VOTKeyboardManager *)self _characterStringRepresentationForKey:v10];
+    v4 = [(VOTKeyboardManager *)self _characterStringRepresentationForKey:countCopy];
     if ([v4 length])
     {
       v5 = [(VOTKeyboardManager *)self _characterStringRepresentationForKey:self->_lastKeyForTapCount];
@@ -583,7 +583,7 @@ LABEL_38:
       }
 
       self->_consecutiveKeyPressCount = v7;
-      v8 = [v10 copy];
+      v8 = [countCopy copy];
       lastKeyForTapCount = self->_lastKeyForTapCount;
       self->_lastKeyForTapCount = v8;
     }
@@ -592,23 +592,23 @@ LABEL_38:
   _objc_release_x2();
 }
 
-- (void)setKeyDownInfo:(id)a3
+- (void)setKeyDownInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(VOTKeyboardManager *)self _verifyCorrectThread];
   [(NSLock *)self->_keyDownLock lock];
-  if (self->_keyDownInfo != v5)
+  if (self->_keyDownInfo != infoCopy)
   {
-    objc_storeStrong(&self->_keyDownInfo, a3);
+    objc_storeStrong(&self->_keyDownInfo, info);
   }
 
   [(NSLock *)self->_keyDownLock unlock];
 }
 
-- (id)_localizeKeyboardString:(id)a3
+- (id)_localizeKeyboardString:(id)string
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_keyboardMap objectForKey:v4];
+  stringCopy = string;
+  v5 = [(NSDictionary *)self->_keyboardMap objectForKey:stringCopy];
   v6 = v5;
   if (v5)
   {
@@ -617,7 +617,7 @@ LABEL_38:
 
   else
   {
-    v7 = v4;
+    v7 = stringCopy;
   }
 
   v8 = v7;
@@ -625,45 +625,45 @@ LABEL_38:
   return v8;
 }
 
-- (BOOL)_dispatchCommandForKeyInfo:(id)a3 isRepeatedEvent:(BOOL)a4
+- (BOOL)_dispatchCommandForKeyInfo:(id)info isRepeatedEvent:(BOOL)event
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 keyDown])
+  eventCopy = event;
+  infoCopy = info;
+  if ([infoCopy keyDown])
   {
-    [(VOTKeyboardManager *)self setKeyDownInfo:v6];
+    [(VOTKeyboardManager *)self setKeyDownInfo:infoCopy];
   }
 
   v7 = +[VOTElement systemAppApplication];
-  v8 = [v7 isSystemSleeping];
+  isSystemSleeping = [v7 isSystemSleeping];
 
-  if (!v8)
+  if (!isSystemSleeping)
   {
-    if (self->_modifierToggleSpeakingKeyDown && ![v6 modifierState] && -[VOTKeyboardManager controlKeyToggleSpeakingAllowed](self, "controlKeyToggleSpeakingAllowed"))
+    if (self->_modifierToggleSpeakingKeyDown && ![infoCopy modifierState] && -[VOTKeyboardManager controlKeyToggleSpeakingAllowed](self, "controlKeyToggleSpeakingAllowed"))
     {
-      v10 = kVOTEventCommandToggleSpeaking;
+      command = kVOTEventCommandToggleSpeaking;
       v12 = 0;
       goto LABEL_56;
     }
 
     [(SCRCTargetSelectorTimer *)self->_keyRepeatTimer cancel];
-    if (self->_captureModeEnabled && [v6 keyCode] != 41)
+    if (self->_captureModeEnabled && [infoCopy keyCode] != 41)
     {
-      v12 = [VOTEvent keyEventWithCommand:0 keyInfo:v6];
+      v12 = [VOTEvent keyEventWithCommand:0 keyInfo:infoCopy];
       [VOTSharedWorkspace dispatchCommand:v12];
 LABEL_22:
-      v10 = 0;
+      command = 0;
       v11 = 1;
 LABEL_95:
 
       goto LABEL_96;
     }
 
-    if ([(VOTKeyboardManager *)self _handleArrowKeyEvent:v6])
+    if ([(VOTKeyboardManager *)self _handleArrowKeyEvent:infoCopy])
     {
-      if ([v6 keyDown] && _AXSKeyRepeatEnabled())
+      if ([infoCopy keyDown] && _AXSKeyRepeatEnabled())
       {
-        if (v4)
+        if (eventCopy)
         {
           _AXSKeyRepeatInterval();
         }
@@ -673,43 +673,43 @@ LABEL_95:
           _AXSKeyRepeatDelay();
         }
 
-        [(SCRCTargetSelectorTimer *)self->_keyRepeatTimer dispatchAfterDelay:v6 withObject:?];
+        [(SCRCTargetSelectorTimer *)self->_keyRepeatTimer dispatchAfterDelay:infoCopy withObject:?];
       }
 
       goto LABEL_55;
     }
 
-    if (sub_1000E1058(v6, self->_capsLockDown))
+    if (sub_1000E1058(infoCopy, self->_capsLockDown))
     {
-      if ([v6 keyDown])
+      if ([infoCopy keyDown])
       {
-        v13 = v6;
+        keyDownInfo = infoCopy;
       }
 
       else
       {
-        v13 = [(VOTKeyboardManager *)self keyDownInfo];
+        keyDownInfo = [(VOTKeyboardManager *)self keyDownInfo];
       }
 
-      v15 = v13;
-      v12 = [(VOTKeyboardManager *)self keyboardEventForKeyInfo:v13];
-      v10 = [v12 command];
-      v16 = [(VOTKeyboardManager *)self lastReleasedToSystemKeyEvent];
+      v15 = keyDownInfo;
+      v12 = [(VOTKeyboardManager *)self keyboardEventForKeyInfo:keyDownInfo];
+      command = [v12 command];
+      lastReleasedToSystemKeyEvent = [(VOTKeyboardManager *)self lastReleasedToSystemKeyEvent];
 
-      if (v16)
+      if (lastReleasedToSystemKeyEvent)
       {
-        if (([v6 isOptionKeyPressed] & 1) != 0 || objc_msgSend(v6, "isControlKeyPressed"))
+        if (([infoCopy isOptionKeyPressed] & 1) != 0 || objc_msgSend(infoCopy, "isControlKeyPressed"))
         {
-          v17 = [(VOTKeyboardManager *)self lastReleasedToSystemKeyEvent];
-          v18 = [v17 eventRecord];
-          v19 = [v18 copy];
+          lastReleasedToSystemKeyEvent2 = [(VOTKeyboardManager *)self lastReleasedToSystemKeyEvent];
+          eventRecord = [lastReleasedToSystemKeyEvent2 eventRecord];
+          v19 = [eventRecord copy];
 
-          v20 = [v19 keyInfo];
-          [v20 setKeyDown:0];
+          keyInfo = [v19 keyInfo];
+          [keyInfo setKeyDown:0];
 
           [v19 setType:11];
-          v21 = [v19 keyInfo];
-          [v21 setModifierState:0];
+          keyInfo2 = [v19 keyInfo];
+          [keyInfo2 setModifierState:0];
 
           v22 = [[VOTKeyInfo alloc] initWithEventRepresentation:v19];
           [(VOTKeyboardManager *)self _dispatchKeyEventIntoSystem:v22];
@@ -727,7 +727,7 @@ LABEL_95:
       }
 
       [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_axStartPassthroughTouch" object:0];
-      if (-[__CFString isEqualToString:](v10, "isEqualToString:", kVOTEventCommandSimpleTap) && [v6 keyDown])
+      if (-[__CFString isEqualToString:](command, "isEqualToString:", kVOTEventCommandSimpleTap) && [infoCopy keyDown])
       {
         [(VOTKeyboardManager *)self performSelector:"_axStartPassthroughTouch" withObject:0 afterDelay:0.5];
       }
@@ -737,14 +737,14 @@ LABEL_95:
         [(VOTKeyboardManager *)self _axEndPassthroughTouch];
       }
 
-      if ([v6 keyDown])
+      if ([infoCopy keyDown])
       {
 
         v12 = 0;
-        v10 = 0;
+        command = 0;
       }
 
-      if (!v10)
+      if (!command)
       {
         goto LABEL_42;
       }
@@ -754,38 +754,38 @@ LABEL_95:
 
     if ([VOTSharedWorkspace allowSingleLetterSearching])
     {
-      v14 = [v6 eventRecord];
-      [v14 originalType];
+      eventRecord2 = [infoCopy eventRecord];
+      [eventRecord2 originalType];
       if (!AXEventTypeIsVolumeButtonPress())
       {
-        if ([v6 eventOrigin] == 4)
+        if ([infoCopy eventOrigin] == 4)
         {
         }
 
         else
         {
-          v54 = [v6 eventOrigin];
+          eventOrigin = [infoCopy eventOrigin];
 
-          if (v54 != 1)
+          if (eventOrigin != 1)
           {
             goto LABEL_26;
           }
         }
 
-        v55 = [(VOTKeyboardManager *)self keyDownInfo];
-        v56 = v55;
-        if (!v55 || ([v55 isCommandKeyPressed] & 1) != 0 || (objc_msgSend(v56, "isControlKeyPressed") & 1) != 0)
+        keyDownInfo2 = [(VOTKeyboardManager *)self keyDownInfo];
+        v56 = keyDownInfo2;
+        if (!keyDownInfo2 || ([keyDownInfo2 isCommandKeyPressed] & 1) != 0 || (objc_msgSend(v56, "isControlKeyPressed") & 1) != 0)
         {
-          v10 = 0;
+          command = 0;
         }
 
         else
         {
-          if ([v6 isEscapeKey])
+          if ([infoCopy isEscapeKey])
           {
-            v57 = [v6 isShiftKeyPressed];
+            isShiftKeyPressed = [infoCopy isShiftKeyPressed];
             v58 = &kVOTEventCommandEscape;
-            if (v57)
+            if (isShiftKeyPressed)
             {
               v58 = &kVOTEventCommandShowSideApp;
             }
@@ -793,30 +793,30 @@ LABEL_95:
 
           else
           {
-            if (![v6 keyUp])
+            if (![infoCopy keyUp])
             {
 
 LABEL_55:
               v12 = 0;
-              v10 = &stru_1001CBF90;
+              command = &stru_1001CBF90;
               goto LABEL_56;
             }
 
             v58 = &kVOTEventCommandSingleLetterSearch;
           }
 
-          v10 = *v58;
+          command = *v58;
         }
 
         v12 = 0;
-        if (!v10)
+        if (!command)
         {
 LABEL_42:
-          if ([v6 keyUp] && objc_msgSend(v6, "keyCode") == 41)
+          if ([infoCopy keyUp] && objc_msgSend(infoCopy, "keyCode") == 41)
           {
-            v24 = [v6 isShiftKeyPressed];
+            isShiftKeyPressed2 = [infoCopy isShiftKeyPressed];
             v25 = &kVOTEventCommandShowSideApp;
-            if (!v24)
+            if (!isShiftKeyPressed2)
             {
               v25 = &kVOTEventCommandEscape;
             }
@@ -824,7 +824,7 @@ LABEL_42:
             v26 = *v25;
             if (v26)
             {
-              v10 = v26;
+              command = v26;
               goto LABEL_56;
             }
           }
@@ -832,42 +832,42 @@ LABEL_42:
           v27 = +[VOTCommandHelper commandHelper];
           if ([v27 helpEnabled])
           {
-            if ([v6 keyUp])
+            if ([infoCopy keyUp])
             {
 
 LABEL_98:
-              if (-[NSString isEqualToString:](self->_lastCommand, "isEqualToString:", kVOTEventCommandStartHelp) && [v6 modifiersChanged] && ((objc_msgSend(v6, "isOptionKeyPressed") & 1) != 0 || objc_msgSend(v6, "isControlKeyPressed")))
+              if (-[NSString isEqualToString:](self->_lastCommand, "isEqualToString:", kVOTEventCommandStartHelp) && [infoCopy modifiersChanged] && ((objc_msgSend(infoCopy, "isOptionKeyPressed") & 1) != 0 || objc_msgSend(infoCopy, "isControlKeyPressed")))
               {
                 lastCommand = self->_lastCommand;
                 self->_lastCommand = 0;
               }
 
-              else if ([v6 keyCode] != 57)
+              else if ([infoCopy keyCode] != 57)
               {
                 v47 = [VOTEvent keyEventWithCommand:0 keyInfo:0];
 
-                v48 = [(VOTKeyboardManager *)self keyDownInfo];
-                v49 = [v48 copy];
+                keyDownInfo3 = [(VOTKeyboardManager *)self keyDownInfo];
+                v49 = [keyDownInfo3 copy];
 
-                if ([v6 keyUp])
+                if ([infoCopy keyUp])
                 {
-                  [v49 setChangedModifiers:{objc_msgSend(v6, "changedModifiers")}];
+                  [v49 setChangedModifiers:{objc_msgSend(infoCopy, "changedModifiers")}];
                 }
 
-                if ([v6 keyUp])
+                if ([infoCopy keyUp])
                 {
                   v50 = v49;
                 }
 
                 else
                 {
-                  v50 = v6;
+                  v50 = infoCopy;
                 }
 
                 [v47 setKeyInfo:v50];
                 [VOTSharedWorkspace dispatchCommand:v47];
 
-                v10 = 0;
+                command = 0;
                 v11 = 1;
                 v12 = v47;
                 goto LABEL_95;
@@ -876,9 +876,9 @@ LABEL_98:
               goto LABEL_22;
             }
 
-            v45 = [v6 modifiersChanged];
+            modifiersChanged = [infoCopy modifiersChanged];
 
-            if (v45)
+            if (modifiersChanged)
             {
               goto LABEL_98;
             }
@@ -888,49 +888,49 @@ LABEL_98:
           {
           }
 
-          v10 = 0;
+          command = 0;
         }
 
 LABEL_56:
-        v28 = [v6 characters];
-        v29 = [v28 length];
+        characters = [infoCopy characters];
+        v29 = [characters length];
 
         if (v29)
         {
-          v30 = [v6 characters];
-          LODWORD(v29) = [v30 characterAtIndex:0];
+          characters2 = [infoCopy characters];
+          LODWORD(v29) = [characters2 characterAtIndex:0];
         }
 
         v31 = VOTLogKeyboard();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
         {
-          v51 = [v6 keyUp];
-          v52 = [v6 characters];
-          v53 = [VOTSharedWorkspace allowSingleLetterSearching];
+          keyUp = [infoCopy keyUp];
+          characters3 = [infoCopy characters];
+          allowSingleLetterSearching = [VOTSharedWorkspace allowSingleLetterSearching];
           v59 = 67110146;
-          *v60 = v51;
+          *v60 = keyUp;
           *&v60[4] = 2114;
-          *&v60[6] = v52;
+          *&v60[6] = characters3;
           v61 = 1024;
           v62 = v29;
           v63 = 2114;
-          v64 = v10;
+          v64 = command;
           v65 = 1024;
-          v66 = v53;
+          v66 = allowSingleLetterSearching;
           _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "Key State: %d, Character(s): %{public}@ [%d], Command: %{public}@, Single Letter State: %d", &v59, 0x28u);
         }
 
-        v32 = [VOTSharedWorkspace elementManager];
-        v33 = [VOTSharedWorkspace currentElement];
-        v34 = [v32 modifierKeyChoiceForElement:v33];
+        elementManager = [VOTSharedWorkspace elementManager];
+        currentElement = [VOTSharedWorkspace currentElement];
+        v34 = [elementManager modifierKeyChoiceForElement:currentElement];
 
         modifierToggleSpeakingKeyDown = self->_modifierToggleSpeakingKeyDown;
-        if ([v6 isControlKeyPressed] && self->_currentModifiers == 4)
+        if ([infoCopy isControlKeyPressed] && self->_currentModifiers == 4)
         {
           LOBYTE(v36) = 1;
         }
 
-        else if ([v6 keyCode] == 57)
+        else if ([infoCopy keyCode] == 57)
         {
           v36 = (v34 >> 1) & 1;
           if (self->_currentModifiers != 16)
@@ -945,15 +945,15 @@ LABEL_56:
         }
 
         self->_modifierToggleSpeakingKeyDown = v36;
-        objc_storeStrong(&self->_lastCommand, v10);
-        if (!v10)
+        objc_storeStrong(&self->_lastCommand, command);
+        if (!command)
         {
-          if (sub_1000E1058(v6, self->_capsLockDown))
+          if (sub_1000E1058(infoCopy, self->_capsLockDown))
           {
-            if ([v6 keyUp])
+            if ([infoCopy keyUp])
             {
-              v39 = [(VOTKeyInfo *)self->_keyDownInfo characters];
-              v40 = [v39 length];
+              characters4 = [(VOTKeyInfo *)self->_keyDownInfo characters];
+              v40 = [characters4 length];
 
               if (v40)
               {
@@ -974,38 +974,38 @@ LABEL_56:
           goto LABEL_84;
         }
 
-        v37 = [v6 keyUp];
+        keyUp2 = [infoCopy keyUp];
         if (v12)
         {
-          if ((v37 & 1) == 0)
+          if ((keyUp2 & 1) == 0)
           {
-            [(VOTKeyboardManager *)self _sendEvent:v12 withKeyInfo:v6 arrowMask:0];
+            [(VOTKeyboardManager *)self _sendEvent:v12 withKeyInfo:infoCopy arrowMask:0];
             goto LABEL_83;
           }
 
-          v38 = [(VOTKeyboardManager *)self keyDownInfo];
-          [(VOTKeyboardManager *)self _sendEvent:v12 withKeyInfo:v38 arrowMask:0];
+          keyDownInfo4 = [(VOTKeyboardManager *)self keyDownInfo];
+          [(VOTKeyboardManager *)self _sendEvent:v12 withKeyInfo:keyDownInfo4 arrowMask:0];
         }
 
         else
         {
-          if ((v37 & 1) == 0)
+          if ((keyUp2 & 1) == 0)
           {
-            [(VOTKeyboardManager *)self _sendEventForCommand:v10 withKeyInfo:v6 arrowMask:0];
+            [(VOTKeyboardManager *)self _sendEventForCommand:command withKeyInfo:infoCopy arrowMask:0];
             goto LABEL_83;
           }
 
-          v38 = [(VOTKeyboardManager *)self keyDownInfo];
-          [(VOTKeyboardManager *)self _sendEventForCommand:v10 withKeyInfo:v38 arrowMask:0];
+          keyDownInfo4 = [(VOTKeyboardManager *)self keyDownInfo];
+          [(VOTKeyboardManager *)self _sendEventForCommand:command withKeyInfo:keyDownInfo4 arrowMask:0];
         }
 
 LABEL_83:
         v11 = !modifierToggleSpeakingKeyDown;
         [(VOTKeyboardManager *)self setControlKeyToggleSpeakingAllowed:0];
 LABEL_84:
-        if ([v6 keyCode] == 57 && (v34 & 2) != 0)
+        if ([infoCopy keyCode] == 57 && (v34 & 2) != 0)
         {
-          if ([v6 keyDown])
+          if ([infoCopy keyDown])
           {
             v43 = +[AXBackBoardServer server];
             [v43 setCapsLockLightOn:self->_fakeCapsLockOn];
@@ -1014,12 +1014,12 @@ LABEL_84:
           v11 = 1;
         }
 
-        if (([v6 keyDown] & 1) == 0)
+        if (([infoCopy keyDown] & 1) == 0)
         {
           [(VOTKeyboardManager *)self setKeyDownInfo:0];
         }
 
-        if (!self->_currentModifiers && (([v6 keyUp] & 1) != 0 || objc_msgSend(v6, "modifiersChanged")))
+        if (!self->_currentModifiers && (([infoCopy keyUp] & 1) != 0 || objc_msgSend(infoCopy, "modifiersChanged")))
         {
           [(VOTKeyboardManager *)self setControlKeyToggleSpeakingAllowed:1];
         }
@@ -1040,8 +1040,8 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "VOT requesting system-app wake-up for key dispatch", &v59, 2u);
   }
 
-  v10 = +[AXSystemAppServer server];
-  [(__CFString *)v10 wakeUpDeviceIfNecessary];
+  command = +[AXSystemAppServer server];
+  [(__CFString *)command wakeUpDeviceIfNecessary];
   v11 = 0;
 LABEL_96:
 
@@ -1051,26 +1051,26 @@ LABEL_96:
 - (void)_axStartPassthroughTouch
 {
   self->_passthroughStart = CGPointZero;
-  v3 = [VOTSharedWorkspace currentElement];
-  if (v3)
+  currentElement = [VOTSharedWorkspace currentElement];
+  if (currentElement)
   {
-    v12 = v3;
-    v4 = [v3 windowContextId];
+    v12 = currentElement;
+    windowContextId = [currentElement windowContextId];
     v5 = +[VOTElement systemWideElement];
-    v6 = [VOTSharedWorkspace currentElement];
-    [v6 centerPoint];
-    [v5 convertPoint:v4 fromContextId:?];
+    currentElement2 = [VOTSharedWorkspace currentElement];
+    [currentElement2 centerPoint];
+    [v5 convertPoint:windowContextId fromContextId:?];
     self->_passthroughStart.x = v7;
     self->_passthroughStart.y = v8;
 
     v9 = +[VOTElement systemWideElement];
-    [v9 postFingerTouchAtPoint:v4 withForce:self->_passthroughStart.x withContextId:{self->_passthroughStart.y, 0.0}];
+    [v9 postFingerTouchAtPoint:windowContextId withForce:self->_passthroughStart.x withContextId:{self->_passthroughStart.y, 0.0}];
 
     v10 = +[VOTOutputManager outputManager];
     v11 = +[VOSOutputEvent DidBeginPassthrough];
     [v10 sendEvent:v11];
 
-    v3 = v12;
+    currentElement = v12;
   }
 }
 
@@ -1080,8 +1080,8 @@ LABEL_96:
   if (CGPointZero.x != self->_passthroughStart.x || CGPointZero.y != self->_passthroughStart.y)
   {
     v5 = +[VOTElement systemWideElement];
-    v6 = [VOTSharedWorkspace currentElement];
-    [v5 postFingerLiftAtPoint:objc_msgSend(v6 withContextId:{"windowContextId"), self->_passthroughStart.x, self->_passthroughStart.y}];
+    currentElement = [VOTSharedWorkspace currentElement];
+    [v5 postFingerLiftAtPoint:objc_msgSend(currentElement withContextId:{"windowContextId"), self->_passthroughStart.x, self->_passthroughStart.y}];
 
     *p_passthroughStart = CGPointZero;
   }
@@ -1113,21 +1113,21 @@ LABEL_96:
   *algn_1001FEE50 = xmmword_10017E640;
 }
 
-- (BOOL)_handleArrowKeyEvent:(id)a3
+- (BOOL)_handleArrowKeyEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 isArrowKey] && (sub_1000E1058(v4, self->_capsLockDown) & 1) == 0)
+  eventCopy = event;
+  if ([eventCopy isArrowKey] && (sub_1000E1058(eventCopy, self->_capsLockDown) & 1) == 0)
   {
-    v6 = *(&xmmword_1001FEE40 + [v4 keyCode] - 79);
+    v6 = *(&xmmword_1001FEE40 + [eventCopy keyCode] - 79);
     quickNavStateMask = self->_quickNavStateMask;
-    v8 = [v4 keyCode] == 79 || objc_msgSend(v4, "keyCode") == 80;
-    v9 = [v4 keyCode];
-    if ([v4 keyDown])
+    v8 = [eventCopy keyCode] == 79 || objc_msgSend(eventCopy, "keyCode") == 80;
+    keyCode = [eventCopy keyCode];
+    if ([eventCopy keyDown])
     {
       self->_quickNavStateMask |= v6;
       if (v8)
       {
-        v10 = v9 != 79;
+        v10 = keyCode != 79;
         if (self->_quickNavDownStateTime[v10] == 0.0)
         {
           self->_quickNavDownStateTime[v10] = CFAbsoluteTimeGetCurrent();
@@ -1135,7 +1135,7 @@ LABEL_96:
       }
     }
 
-    else if ([v4 keyUp])
+    else if ([eventCopy keyUp])
     {
       if (v8)
       {
@@ -1149,29 +1149,29 @@ LABEL_96:
           }
         }
 
-        self->_quickNavDownStateTime[v9 != 79] = 0.0;
+        self->_quickNavDownStateTime[keyCode != 79] = 0.0;
       }
 
       self->_quickNavStateMask &= ~v6;
     }
 
-    if ([v4 keyDown] && quickNavStateMask != self->_quickNavStateMask)
+    if ([eventCopy keyDown] && quickNavStateMask != self->_quickNavStateMask)
     {
       [(SCRCTargetSelectorTimer *)self->_quickNavKeyTimer cancel];
     }
 
-    if ([v4 keyDown])
+    if ([eventCopy keyDown])
     {
       v13 = self->_quickNavStateMask;
       self->_quickNavLastDownState = v13;
       if (quickNavStateMask == v13)
       {
-        [(VOTKeyboardManager *)self _handleQuickNavPress:v4];
+        [(VOTKeyboardManager *)self _handleQuickNavPress:eventCopy];
       }
 
       else
       {
-        [(SCRCTargetSelectorTimer *)self->_quickNavKeyTimer dispatchAfterDelay:v4 withObject:0.25];
+        [(SCRCTargetSelectorTimer *)self->_quickNavKeyTimer dispatchAfterDelay:eventCopy withObject:0.25];
       }
     }
 
@@ -1188,18 +1188,18 @@ LABEL_96:
     }
 
     v17 = [NSNumber numberWithShort:v16];
-    if ([v4 keyUp])
+    if ([eventCopy keyUp])
     {
       if (!self->_quickNavStateMask)
       {
         if (quickNavStateMask)
         {
           [(SCRCTargetSelectorTimer *)self->_quickNavKeyTimer cancel];
-          [(VOTKeyboardManager *)self _handleQuickNavPress:v4];
+          [(VOTKeyboardManager *)self _handleQuickNavPress:eventCopy];
           if (self->_isQuickNavOn && self->_quickNavDidSendDown)
           {
             self->_quickNavDidSendDown = 0;
-            -[VOTKeyboardManager _postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:](self, "_postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:", &stru_1001CBF90, [v17 unsignedShortValue], objc_msgSend(v4, "modifierState"), 0, 0, 1);
+            -[VOTKeyboardManager _postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:](self, "_postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:", &stru_1001CBF90, [v17 unsignedShortValue], objc_msgSend(eventCopy, "modifierState"), 0, 0, 1);
           }
         }
       }
@@ -1220,27 +1220,27 @@ LABEL_96:
           goto LABEL_39;
         }
 
-        if ([v4 keyDown])
+        if ([eventCopy keyDown])
         {
           if ([(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer isPending]&& ([(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer isCancelled]& 1) == 0)
           {
-            [(VOTKeyboardManager *)self _handleQuickNavDownArrowRepostPress:v4];
+            [(VOTKeyboardManager *)self _handleQuickNavDownArrowRepostPress:eventCopy];
           }
 
-          [(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer dispatchAfterDelay:v4 withObject:0.0799999982];
+          [(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer dispatchAfterDelay:eventCopy withObject:0.0799999982];
         }
 
-        else if ([v4 keyUp])
+        else if ([eventCopy keyUp])
         {
           if ([(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer isPending]&& ([(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer isCancelled]& 1) == 0)
           {
             [(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer cancel];
-            [(VOTKeyboardManager *)self _handleQuickNavDownArrowRepostPress:v4];
+            [(VOTKeyboardManager *)self _handleQuickNavDownArrowRepostPress:eventCopy];
           }
 
           self->_quickNavDidSendDown = 0;
           v5 = 1;
-          -[VOTKeyboardManager _postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:](self, "_postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:", &stru_1001CBF90, [v17 unsignedShortValue], objc_msgSend(v4, "modifierState"), 0, 0, 1);
+          -[VOTKeyboardManager _postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:](self, "_postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:", &stru_1001CBF90, [v17 unsignedShortValue], objc_msgSend(eventCopy, "modifierState"), 0, 0, 1);
           goto LABEL_39;
         }
       }
@@ -1278,16 +1278,16 @@ LABEL_40:
   [v6 speakSimpleString:v5];
 }
 
-- (void)_handleAnnouncementsForKeyInfo:(id)a3
+- (void)_handleAnnouncementsForKeyInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 keyDown])
+  infoCopy = info;
+  if ([infoCopy keyDown])
   {
-    if ([v3 keyCode] == 57)
+    if ([infoCopy keyCode] == 57)
     {
-      v4 = [VOTSharedWorkspace elementManager];
-      v5 = [VOTSharedWorkspace currentElement];
-      v6 = [v4 modifierKeyChoiceForElement:v5];
+      elementManager = [VOTSharedWorkspace elementManager];
+      currentElement = [VOTSharedWorkspace currentElement];
+      v6 = [elementManager modifierKeyChoiceForElement:currentElement];
 
       if ((v6 & 2) == 0)
       {
@@ -1297,19 +1297,19 @@ LABEL_40:
   }
 }
 
-- (void)_updateEventFlags:(id)a3
+- (void)_updateEventFlags:(id)flags
 {
-  v7 = a3;
-  v4 = [v7 modifierState];
-  self->_currentModifiers = v4;
+  flagsCopy = flags;
+  modifierState = [flagsCopy modifierState];
+  self->_currentModifiers = modifierState;
   keyboardHelpMask = self->_keyboardHelpMask;
-  if ((v4 & 8) != 0)
+  if ((modifierState & 8) != 0)
   {
     if ((keyboardHelpMask & 8) == 0)
     {
 LABEL_3:
       v6 = 8;
-      if ((v4 & 4) != 0)
+      if ((modifierState & 4) != 0)
       {
         goto LABEL_4;
       }
@@ -1324,7 +1324,7 @@ LABEL_3:
   }
 
   v6 = 0;
-  if ((v4 & 4) != 0)
+  if ((modifierState & 4) != 0)
   {
 LABEL_4:
     if ((keyboardHelpMask & 4) != 0)
@@ -1343,7 +1343,7 @@ LABEL_5:
   }
 
 LABEL_6:
-  if ((v4 & 0x40) != 0)
+  if ((modifierState & 0x40) != 0)
   {
     if ((keyboardHelpMask & 0x40) != 0)
     {
@@ -1360,7 +1360,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  if ((v4 & 2) != 0)
+  if ((modifierState & 2) != 0)
   {
     if ((keyboardHelpMask & 2) != 0)
     {
@@ -1377,7 +1377,7 @@ LABEL_19:
   }
 
 LABEL_20:
-  if (v4)
+  if (modifierState)
   {
     if (keyboardHelpMask)
     {
@@ -1394,7 +1394,7 @@ LABEL_24:
   }
 
 LABEL_25:
-  if ((v4 & 0x10) != 0)
+  if ((modifierState & 0x10) != 0)
   {
     if ((keyboardHelpMask & 0x10) != 0)
     {
@@ -1411,31 +1411,31 @@ LABEL_29:
   }
 
 LABEL_30:
-  self->_keyboardHelpMask = [v7 modifierState];
-  [v7 setChangedModifiers:v6];
+  self->_keyboardHelpMask = [flagsCopy modifierState];
+  [flagsCopy setChangedModifiers:v6];
 }
 
-- (void)_dispatchEventRepresentationIntoSystem:(id)a3
+- (void)_dispatchEventRepresentationIntoSystem:(id)system
 {
-  v4 = a3;
-  v5 = [[VOTKeyInfo alloc] initWithEventRepresentation:v4];
+  systemCopy = system;
+  v5 = [[VOTKeyInfo alloc] initWithEventRepresentation:systemCopy];
 
   [(VOTKeyboardManager *)self _dispatchKeyEventIntoSystem:v5];
 }
 
-- (void)_handleCapsLockToggle:(id)a3
+- (void)_handleCapsLockToggle:(id)toggle
 {
-  v23 = a3;
-  v4 = [VOTSharedWorkspace elementManager];
-  v5 = [VOTSharedWorkspace currentElement];
-  v6 = [v4 modifierKeyChoiceForElement:v5];
+  toggleCopy = toggle;
+  elementManager = [VOTSharedWorkspace elementManager];
+  currentElement = [VOTSharedWorkspace currentElement];
+  v6 = [elementManager modifierKeyChoiceForElement:currentElement];
 
   if ((v6 & 2) != 0)
   {
     self->_fakeCapsLockOn ^= 1u;
     v7 = [AXEventRepresentation keyRepresentationWithType:10];
-    v8 = [v7 keyInfo];
-    [v8 setKeyCode:57];
+    keyInfo = [v7 keyInfo];
+    [keyInfo setKeyCode:57];
 
     if (self->_fakeCapsLockOn)
     {
@@ -1447,26 +1447,26 @@ LABEL_30:
       v9 = 0;
     }
 
-    v10 = [v7 keyInfo];
-    [v10 setModifierState:v9];
+    keyInfo2 = [v7 keyInfo];
+    [keyInfo2 setModifierState:v9];
 
-    v11 = [VOTSharedWorkspace currentElement];
-    v12 = [v11 windowContextId];
-    v13 = [v23 eventRecord];
-    [v13 setContextId:v12];
+    currentElement2 = [VOTSharedWorkspace currentElement];
+    windowContextId = [currentElement2 windowContextId];
+    eventRecord = [toggleCopy eventRecord];
+    [eventRecord setContextId:windowContextId];
 
-    v14 = [v7 keyInfo];
-    [v14 setKeyDown:1];
+    keyInfo3 = [v7 keyInfo];
+    [keyInfo3 setKeyDown:1];
 
-    v15 = [v23 eventRecord];
-    v16 = [v15 clientId];
-    [v7 setClientId:v16];
+    eventRecord2 = [toggleCopy eventRecord];
+    clientId = [eventRecord2 clientId];
+    [v7 setClientId:clientId];
 
     [(VOTKeyboardManager *)self _dispatchEventRepresentationIntoSystem:v7];
     v17 = [v7 copy];
     [v17 setType:11];
-    v18 = [v17 keyInfo];
-    [v18 setKeyDown:0];
+    keyInfo4 = [v17 keyInfo];
+    [keyInfo4 setKeyDown:0];
 
     [(VOTKeyboardManager *)self _dispatchEventRepresentationIntoSystem:v17];
     v19 = +[VOTOutputManager outputManager];
@@ -1488,24 +1488,24 @@ LABEL_30:
   }
 }
 
-- (void)_handleModifierCapsLockBehavior:(id)a3
+- (void)_handleModifierCapsLockBehavior:(id)behavior
 {
-  v4 = a3;
-  if ([v4 isCapsLockKeyDown])
+  behaviorCopy = behavior;
+  if ([behaviorCopy isCapsLockKeyDown])
   {
     self->_capsLockDown = 1;
     goto LABEL_9;
   }
 
-  if (![v4 isCapsLockKeyUp])
+  if (![behaviorCopy isCapsLockKeyUp])
   {
     goto LABEL_8;
   }
 
   self->_capsLockDown = 0;
-  if (([v4 modifierState] & 1) != 0 || self->_capsLockTap1 > 0.0 && CFAbsoluteTimeGetCurrent() - self->_capsLockTap1 < 0.3)
+  if (([behaviorCopy modifierState] & 1) != 0 || self->_capsLockTap1 > 0.0 && CFAbsoluteTimeGetCurrent() - self->_capsLockTap1 < 0.3)
   {
-    [(VOTKeyboardManager *)self _handleCapsLockToggle:v4];
+    [(VOTKeyboardManager *)self _handleCapsLockToggle:behaviorCopy];
 LABEL_8:
     self->_capsLockTap1 = 0.0;
     goto LABEL_9;
@@ -1533,9 +1533,9 @@ LABEL_9:
   else
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 voiceOverSoundCurtain];
+    voiceOverSoundCurtain = [v4 voiceOverSoundCurtain];
 
-    if (!v5)
+    if (!voiceOverSoundCurtain)
     {
       return;
     }
@@ -1558,36 +1558,36 @@ LABEL_9:
   [v9 setVoiceOverSoundCurtain:0];
 
   v10 = sub_1000511CC(off_1001FDDD0, @"screen.and.sound.curtain.restored", 0);
-  v11 = [VOTSharedWorkspace selectedLanguage];
-  v12 = sub_1000095FC(v10, 0, v11);
+  selectedLanguage = [VOTSharedWorkspace selectedLanguage];
+  v12 = sub_1000095FC(v10, 0, selectedLanguage);
 }
 
-- (void)_processVolumeButtonsForCurtainReset:(id)a3
+- (void)_processVolumeButtonsForCurtainReset:(id)reset
 {
-  v4 = a3;
+  resetCopy = reset;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000E409C;
   v6[3] = &unk_1001C76E8;
   v6[4] = self;
   v5 = objc_retainBlock(v6);
-  if ([v4 type] == 1008)
+  if ([resetCopy type] == 1008)
   {
     [(VOTKeyboardManager *)self setLastVolumeDownButtonDownTime:CFAbsoluteTimeGetCurrent()];
   }
 
   else
   {
-    if ([v4 type] != 1006)
+    if ([resetCopy type] != 1006)
     {
-      if ([v4 type] == 1009)
+      if ([resetCopy type] == 1009)
       {
         [(VOTKeyboardManager *)self setLastVolumeDownButtonUpTime:CFAbsoluteTimeGetCurrent()];
       }
 
       else
       {
-        if ([v4 type] != 1007)
+        if ([resetCopy type] != 1007)
         {
           goto LABEL_10;
         }
@@ -1605,31 +1605,31 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_handleKeyboardKeyEvent:(id)a3 isRepeatedEvent:(BOOL)a4
+- (void)_handleKeyboardKeyEvent:(id)event isRepeatedEvent:(BOOL)repeatedEvent
 {
-  v4 = a4;
-  v8 = a3;
-  if (([VOTSharedWorkspace perkinsKeyboardInputEnabled] & 1) == 0 && !objc_msgSend(VOTSharedWorkspace, "keyboardBrailleUIEnabled") || objc_msgSend(v8, "eventOrigin") != 4 || self->_currentModifiers || (+[VOTBrailleManager manager](VOTBrailleManager, "manager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "handleKeyboardPerkinsInput:chordOnly:", v8, 0), v6, (v7 & 1) == 0))
+  repeatedEventCopy = repeatedEvent;
+  eventCopy = event;
+  if (([VOTSharedWorkspace perkinsKeyboardInputEnabled] & 1) == 0 && !objc_msgSend(VOTSharedWorkspace, "keyboardBrailleUIEnabled") || objc_msgSend(eventCopy, "eventOrigin") != 4 || self->_currentModifiers || (+[VOTBrailleManager manager](VOTBrailleManager, "manager"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "handleKeyboardPerkinsInput:chordOnly:", eventCopy, 0), v6, (v7 & 1) == 0))
   {
-    [(VOTKeyboardManager *)self _handleNonPerkinsKeyboardKeyEvent:v8 isRepeatedEvent:v4];
+    [(VOTKeyboardManager *)self _handleNonPerkinsKeyboardKeyEvent:eventCopy isRepeatedEvent:repeatedEventCopy];
   }
 }
 
-- (void)_handleNonPerkinsKeyboardKeyEvent:(id)a3 isRepeatedEvent:(BOOL)a4
+- (void)_handleNonPerkinsKeyboardKeyEvent:(id)event isRepeatedEvent:(BOOL)repeatedEvent
 {
-  v4 = a4;
-  v6 = a3;
+  repeatedEventCopy = repeatedEvent;
+  eventCopy = event;
   currentModifiers = self->_currentModifiers;
-  v23 = v6;
-  if (currentModifiers != [v6 modifierState])
+  v23 = eventCopy;
+  if (currentModifiers != [eventCopy modifierState])
   {
     [v23 setModifiersChanged:1];
   }
 
-  if (!v4)
+  if (!repeatedEventCopy)
   {
-    v8 = [v23 eventRecord];
-    [(VOTKeyboardManager *)self _processVolumeButtonsForCurtainReset:v8];
+    eventRecord = [v23 eventRecord];
+    [(VOTKeyboardManager *)self _processVolumeButtonsForCurtainReset:eventRecord];
   }
 
   [(VOTKeyboardManager *)self _handleModifierCapsLockBehavior:v23];
@@ -1637,24 +1637,24 @@ LABEL_10:
   [(VOTKeyboardManager *)self _handleAnnouncementsForKeyInfo:v23];
   [(VOTKeyboardManager *)self _updateConsecutiveKeyCount:v23];
   v9 = +[VOTBrailleManager manager];
-  v10 = [v9 hasActiveBrailleDisplay];
+  hasActiveBrailleDisplay = [v9 hasActiveBrailleDisplay];
 
-  if (v10 && [(VOTKeyboardManager *)self _handleBrailleKeyEvent:v23])
+  if (hasActiveBrailleDisplay && [(VOTKeyboardManager *)self _handleBrailleKeyEvent:v23])
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = [(VOTKeyboardManager *)self _dispatchCommandForKeyInfo:v23 isRepeatedEvent:v4];
+    v11 = [(VOTKeyboardManager *)self _dispatchCommandForKeyInfo:v23 isRepeatedEvent:repeatedEventCopy];
   }
 
   if ([v23 eventOrigin] == 4 && -[VOTKeyboardManager isQuickNavOn](self, "isQuickNavOn"))
   {
-    v12 = [(VOTKeyboardManager *)self keyDownInfo];
-    v13 = [v12 isArrowKey];
+    keyDownInfo = [(VOTKeyboardManager *)self keyDownInfo];
+    isArrowKey = [keyDownInfo isArrowKey];
 
-    if ((v13 | v11))
+    if ((isArrowKey | v11))
     {
       goto LABEL_25;
     }
@@ -1666,16 +1666,16 @@ LABEL_10:
   }
 
   v14 = +[VOTCommandHelper commandHelper];
-  v15 = [v14 helpEnabled];
+  helpEnabled = [v14 helpEnabled];
 
-  if ((v15 & 1) == 0)
+  if ((helpEnabled & 1) == 0)
   {
     if ([VOTSharedWorkspace playKeyboardClicksOnHWInput])
     {
-      v16 = [v23 eventRecord];
-      v17 = [v16 type];
+      eventRecord2 = [v23 eventRecord];
+      type = [eventRecord2 type];
 
-      if (v17 == 10)
+      if (type == 10)
       {
         v18 = +[VOTOutputManager outputManager];
         [v18 playSoundFast:@"KeyboardClick"];
@@ -1686,7 +1686,7 @@ LABEL_10:
     [(SCRCTargetSelectorTimer *)self->_keyRepeatTimer cancel];
     if ([v23 keyDown] && _AXSKeyRepeatEnabled() && !-[VOTKeyboardManager _keyInfoIsModifierOnly:](self, "_keyInfoIsModifierOnly:", v23))
     {
-      if (v4)
+      if (repeatedEventCopy)
       {
         _AXSKeyRepeatInterval();
       }
@@ -1701,13 +1701,13 @@ LABEL_10:
   }
 
 LABEL_25:
-  v19 = [(VOTKeyboardManager *)self testingProcessEventCallback];
+  testingProcessEventCallback = [(VOTKeyboardManager *)self testingProcessEventCallback];
 
   v21 = v23;
-  if (v19)
+  if (testingProcessEventCallback)
   {
-    v22 = [(VOTKeyboardManager *)self testingProcessEventCallback];
-    (v22)[2](v22, v23);
+    testingProcessEventCallback2 = [(VOTKeyboardManager *)self testingProcessEventCallback];
+    (testingProcessEventCallback2)[2](testingProcessEventCallback2, v23);
 
     v21 = v23;
   }
@@ -1715,19 +1715,19 @@ LABEL_25:
   _objc_release_x1(v20, v21);
 }
 
-- (BOOL)_handleBrailleKeyEvent:(id)a3
+- (BOOL)_handleBrailleKeyEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 keyCode] == 41 && !objc_msgSend(v3, "keyUp") || objc_msgSend(v3, "keyCode") != 41 && !objc_msgSend(v3, "keyDown"))
+  eventCopy = event;
+  if ([eventCopy keyCode] == 41 && !objc_msgSend(eventCopy, "keyUp") || objc_msgSend(eventCopy, "keyCode") != 41 && !objc_msgSend(eventCopy, "keyDown"))
   {
     goto LABEL_21;
   }
 
-  v4 = [v3 keyCode];
+  keyCode = [eventCopy keyCode];
   v5 = 0;
-  if (v4 > 76)
+  if (keyCode > 76)
   {
-    switch(v4)
+    switch(keyCode)
     {
       case 'M':
         v6 = &kVOTEventCommandLastElement;
@@ -1758,7 +1758,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  switch(v4)
+  switch(keyCode)
   {
     case '(':
       if ([VOTSharedWorkspace brailleInputActive])
@@ -1781,134 +1781,134 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)_keyInfoIsModifierOnly:(id)a3
+- (BOOL)_keyInfoIsModifierOnly:(id)only
 {
-  v3 = a3;
-  v4 = [v3 keyCode] == 227 || objc_msgSend(v3, "keyCode") == 231 || objc_msgSend(v3, "keyCode") == 225 || objc_msgSend(v3, "keyCode") == 229 || objc_msgSend(v3, "keyCode") == 224 || objc_msgSend(v3, "keyCode") == 228 || objc_msgSend(v3, "keyCode") == 226 || objc_msgSend(v3, "keyCode") == 230 || objc_msgSend(v3, "keyCode") == 57;
+  onlyCopy = only;
+  v4 = [onlyCopy keyCode] == 227 || objc_msgSend(onlyCopy, "keyCode") == 231 || objc_msgSend(onlyCopy, "keyCode") == 225 || objc_msgSend(onlyCopy, "keyCode") == 229 || objc_msgSend(onlyCopy, "keyCode") == 224 || objc_msgSend(onlyCopy, "keyCode") == 228 || objc_msgSend(onlyCopy, "keyCode") == 226 || objc_msgSend(onlyCopy, "keyCode") == 230 || objc_msgSend(onlyCopy, "keyCode") == 57;
 
   return v4;
 }
 
-- (void)_dispatchKeyEventIntoSystem:(id)a3
+- (void)_dispatchKeyEventIntoSystem:(id)system
 {
-  v24 = a3;
-  v4 = [VOTSharedWorkspace currentElement];
-  v5 = [v4 windowContextId];
-  v6 = [VOTSharedWorkspace elementManager];
-  v7 = [v6 isItemChooserVisible];
+  systemCopy = system;
+  currentElement = [VOTSharedWorkspace currentElement];
+  windowContextId = [currentElement windowContextId];
+  elementManager = [VOTSharedWorkspace elementManager];
+  isItemChooserVisible = [elementManager isItemChooserVisible];
 
-  if (v7)
+  if (isItemChooserVisible)
   {
-    if (v5)
+    if (windowContextId)
     {
-      v8 = [v24 eventRecord];
-      [v8 setClientId:0];
+      eventRecord = [systemCopy eventRecord];
+      [eventRecord setClientId:0];
     }
 
-    v9 = [v24 eventRecord];
-    [v9 setContextId:v5];
+    eventRecord2 = [systemCopy eventRecord];
+    [eventRecord2 setContextId:windowContextId];
   }
 
-  v10 = [v24 eventRecord];
-  v11 = [v10 contextId];
+  eventRecord3 = [systemCopy eventRecord];
+  contextId = [eventRecord3 contextId];
 
-  if (!v11)
+  if (!contextId)
   {
-    v12 = [v24 eventRecord];
-    [v12 setContextId:v5];
+    eventRecord4 = [systemCopy eventRecord];
+    [eventRecord4 setContextId:windowContextId];
   }
 
   v13 = +[VOTWorkspace sharedWorkspace];
-  v14 = [v13 inUnitTestMode];
+  inUnitTestMode = [v13 inUnitTestMode];
 
-  if (v14)
+  if (inUnitTestMode)
   {
     v15 = +[VOTWorkspace sharedWorkspace];
-    v16 = [v24 eventRecord];
-    [v15 notePostedEventForUnitTesting:v16];
+    eventRecord5 = [systemCopy eventRecord];
+    [v15 notePostedEventForUnitTesting:eventRecord5];
   }
 
-  [(VOTKeyboardManager *)self setLastReleasedToSystemKeyEvent:v24];
+  [(VOTKeyboardManager *)self setLastReleasedToSystemKeyEvent:systemCopy];
   [(VOTKeyboardManager *)self setLastReleasedToSystemKeyEventTime:CFAbsoluteTimeGetCurrent()];
-  v17 = [v24 keyCode];
-  if ([v24 keyCode] == 42 || -[VOTKeyInfo isEqual:](self->_lastKeyForTapCount, "isEqual:", v24) && self->_consecutiveKeyPressCount >= 2)
+  keyCode = [systemCopy keyCode];
+  if ([systemCopy keyCode] == 42 || -[VOTKeyInfo isEqual:](self->_lastKeyForTapCount, "isEqual:", systemCopy) && self->_consecutiveKeyPressCount >= 2)
   {
-    v18 = [v24 copy];
+    v18 = [systemCopy copy];
     [v18 setKeyDown:0];
     v19 = +[AXEventTapManager sharedManager];
-    v20 = [v18 eventRecord];
-    [v19 sendHIDSystemEvent:v20 repostCreatorHIDEvent:0 senderID:0x8000000817319373];
+    eventRecord6 = [v18 eventRecord];
+    [v19 sendHIDSystemEvent:eventRecord6 repostCreatorHIDEvent:0 senderID:0x8000000817319373];
   }
 
-  if (v17)
+  if (keyCode)
   {
-    v21 = +[AXEventTapManager sharedManager];
-    v22 = [v24 eventRecord];
-    [v21 sendHIDSystemEvent:v22 repostCreatorHIDEvent:0 senderID:0x8000000817319373];
+    eventRecord8 = +[AXEventTapManager sharedManager];
+    eventRecord7 = [systemCopy eventRecord];
+    [eventRecord8 sendHIDSystemEvent:eventRecord7 repostCreatorHIDEvent:0 senderID:0x8000000817319373];
   }
 
   else
   {
-    if ([v4 doesHaveTraits:kAXWebContentTrait])
+    if ([currentElement doesHaveTraits:kAXWebContentTrait])
     {
-      v23 = [v4 application];
+      application = [currentElement application];
 
-      v4 = v23;
+      currentElement = application;
     }
 
-    v21 = [v24 eventRecord];
-    [v4 dispatchKeyboardEvent:v21];
+    eventRecord8 = [systemCopy eventRecord];
+    [currentElement dispatchKeyboardEvent:eventRecord8];
   }
 }
 
-- (void)_keyRepeat:(id)a3
+- (void)_keyRepeat:(id)repeat
 {
-  v4 = a3;
+  repeatCopy = repeat;
   if (([(SCRCTargetSelectorTimer *)self->_keyRepeatTimer isCancelled]& 1) == 0)
   {
-    [(VOTKeyboardManager *)self _handleKeyboardKeyEvent:v4 isRepeatedEvent:1];
+    [(VOTKeyboardManager *)self _handleKeyboardKeyEvent:repeatCopy isRepeatedEvent:1];
   }
 }
 
-- (void)_sendEvent:(id)a3 withKeyInfo:(id)a4 arrowMask:(int64_t)a5
+- (void)_sendEvent:(id)event withKeyInfo:(id)info arrowMask:(int64_t)mask
 {
-  v12 = a3;
-  v8 = a4;
-  if (a5 >= 1)
+  eventCopy = event;
+  infoCopy = info;
+  if (mask >= 1)
   {
-    v9 = [NSNumber numberWithInteger:a5];
-    [v12 setObject:v9 forIndex:103];
+    v9 = [NSNumber numberWithInteger:mask];
+    [eventCopy setObject:v9 forIndex:103];
   }
 
-  v10 = [(VOTKeyboardManager *)self testingEventDispatchTap];
+  testingEventDispatchTap = [(VOTKeyboardManager *)self testingEventDispatchTap];
 
-  if (v10)
+  if (testingEventDispatchTap)
   {
-    v11 = [(VOTKeyboardManager *)self testingEventDispatchTap];
-    (v11)[2](v11, v12);
+    testingEventDispatchTap2 = [(VOTKeyboardManager *)self testingEventDispatchTap];
+    (testingEventDispatchTap2)[2](testingEventDispatchTap2, eventCopy);
   }
 
-  [VOTSharedWorkspace dispatchCommand:v12];
+  [VOTSharedWorkspace dispatchCommand:eventCopy];
 }
 
-- (void)_sendEventForCommand:(id)a3 withKeyInfo:(id)a4 arrowMask:(int64_t)a5
+- (void)_sendEventForCommand:(id)command withKeyInfo:(id)info arrowMask:(int64_t)mask
 {
-  v10 = a3;
-  v8 = a4;
-  if ([v10 length])
+  commandCopy = command;
+  infoCopy = info;
+  if ([commandCopy length])
   {
-    v9 = [VOTEvent keyEventWithCommand:v10 keyInfo:v8];
-    [(VOTKeyboardManager *)self _sendEvent:v9 withKeyInfo:v8 arrowMask:a5];
+    v9 = [VOTEvent keyEventWithCommand:commandCopy keyInfo:infoCopy];
+    [(VOTKeyboardManager *)self _sendEvent:v9 withKeyInfo:infoCopy arrowMask:mask];
   }
 }
 
-- (void)_postKeyboardKey:(id)a3 keyCode:(unsigned __int16)a4 eventFlags:(unsigned int)a5 keyFlags:(unsigned __int16)a6 keyDown:(BOOL)a7 source:(unsigned __int16)a8
+- (void)_postKeyboardKey:(id)key keyCode:(unsigned __int16)code eventFlags:(unsigned int)flags keyFlags:(unsigned __int16)keyFlags keyDown:(BOOL)down source:(unsigned __int16)source
 {
-  v8 = a7;
-  v9 = *&a5;
-  v10 = a4;
-  v18 = a3;
-  if (v8)
+  downCopy = down;
+  v9 = *&flags;
+  codeCopy = code;
+  keyCopy = key;
+  if (downCopy)
   {
     v12 = 10;
   }
@@ -1919,42 +1919,42 @@ LABEL_22:
   }
 
   v13 = [AXEventRepresentation keyRepresentationWithType:v12];
-  v14 = [v13 keyInfo];
-  [v14 setModifiedInput:v18];
-  [v14 setUnmodifiedInput:v18];
-  [v14 setKeyCode:v10];
-  [v14 setModifierState:v9];
-  [v14 setKeyDown:v8];
+  keyInfo = [v13 keyInfo];
+  [keyInfo setModifiedInput:keyCopy];
+  [keyInfo setUnmodifiedInput:keyCopy];
+  [keyInfo setKeyCode:codeCopy];
+  [keyInfo setModifierState:v9];
+  [keyInfo setKeyDown:downCopy];
   [(VOTKeyboardManager *)self setLastDispatchedKeyEvent:v13];
   [(VOTKeyboardManager *)self setLastDispatchedKeyEventTime:CFAbsoluteTimeGetCurrent()];
-  if ([v14 keyCode] && !objc_msgSend(v18, "length"))
+  if ([keyInfo keyCode] && !objc_msgSend(keyCopy, "length"))
   {
-    v16 = [VOTSharedWorkspace currentElement];
-    [v13 setContextId:{objc_msgSend(v16, "windowContextId")}];
+    currentElement = [VOTSharedWorkspace currentElement];
+    [v13 setContextId:{objc_msgSend(currentElement, "windowContextId")}];
 
-    v17 = [VOTSharedWorkspace currentElement];
-    [v13 setDisplayId:{objc_msgSend(v17, "displayId")}];
+    currentElement2 = [VOTSharedWorkspace currentElement];
+    [v13 setDisplayId:{objc_msgSend(currentElement2, "displayId")}];
 
     [(VOTKeyboardManager *)self _dispatchEventRepresentationIntoSystem:v13];
   }
 
   else
   {
-    v15 = [VOTSharedWorkspace currentElement];
-    [v15 dispatchKeyboardEvent:v13];
+    currentElement3 = [VOTSharedWorkspace currentElement];
+    [currentElement3 dispatchKeyboardEvent:v13];
   }
 }
 
-- (void)_handleQuickNavDownArrowRepostPress:(id)a3
+- (void)_handleQuickNavDownArrowRepostPress:(id)press
 {
-  v4 = a3;
-  if (v4)
+  pressCopy = press;
+  if (pressCopy)
   {
-    v8 = v4;
+    v8 = pressCopy;
     v5 = +[VOTCommandHelper commandHelper];
-    v6 = [v5 helpEnabled];
+    helpEnabled = [v5 helpEnabled];
 
-    if (v6)
+    if (helpEnabled)
     {
       v7 = [VOTEvent keyEventWithCommand:0 keyInfo:v8];
       [VOTSharedWorkspace dispatchCommand:v7];
@@ -1966,19 +1966,19 @@ LABEL_22:
       -[VOTKeyboardManager _postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:](self, "_postKeyboardKey:keyCode:eventFlags:keyFlags:keyDown:source:", &stru_1001CBF90, [v8 keyCode], objc_msgSend(v8, "modifierState"), 0, 1, 1);
     }
 
-    v4 = v8;
+    pressCopy = v8;
   }
 }
 
-- (void)_handleQuickNavPress:(id)a3
+- (void)_handleQuickNavPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if (self->_quickNavLastDownState == 0xFFFFFFFF00000000 && (quickNavLastRecordedActivation = self->_quickNavLastRecordedActivation, [(VOTKeyboardManager *)self quickNavDownDurationAllowedAcceptance], quickNavLastRecordedActivation < v6) && self->_quickNavLastRecordedActivation > 0.0)
   {
     [(SCRCTargetSelectorTimer *)self->_quickNavRepostTimer cancel];
     [(VOTKeyboardManager *)self updateQuickNavState:!self->_isQuickNavOn];
     self->_explictlyEnabledQuickNav = 1;
-    [(VOTKeyboardManager *)self _sendEventForCommand:kVOTEventCommandAnnounceQuickNav withKeyInfo:v4 arrowMask:3];
+    [(VOTKeyboardManager *)self _sendEventForCommand:kVOTEventCommandAnnounceQuickNav withKeyInfo:pressCopy arrowMask:3];
     self->_quickNavLastRecordedActivation = 0.0;
   }
 
@@ -2019,61 +2019,61 @@ LABEL_22:
         v10 = v9;
       }
 
-      v11 = [AXSSKeyChord quickNavKeyChordWithInfo:v4 arrowMask:v10];
+      v11 = [AXSSKeyChord quickNavKeyChordWithInfo:pressCopy arrowMask:v10];
       v12 = +[VOSCommandResolver resolverForCurrentHost];
       [v12 setKeyboardMode:1];
       v13 = [(VOSCommandManager *)self->_commandManager commandForKeyChord:v11 withResolver:v12];
-      v14 = [v13 votEventCommandName];
+      votEventCommandName = [v13 votEventCommandName];
 
-      v15 = VOTLogKeyboard();
-      v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-      if (v14)
+      votEventCommandName2 = VOTLogKeyboard();
+      v16 = os_log_type_enabled(votEventCommandName2, OS_LOG_TYPE_INFO);
+      if (votEventCommandName)
       {
         if (v16)
         {
-          v17 = [v11 displayValue];
+          displayValue = [v11 displayValue];
           v19 = 138412802;
           v20 = v13;
           v21 = 2112;
-          v22 = v17;
+          v22 = displayValue;
           v23 = 2112;
-          v24 = v4;
-          _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "✅ handling quickNav vosCommand: '%@' for keys '%@' info '%@'", &v19, 0x20u);
+          v24 = pressCopy;
+          _os_log_impl(&_mh_execute_header, votEventCommandName2, OS_LOG_TYPE_INFO, "✅ handling quickNav vosCommand: '%@' for keys '%@' info '%@'", &v19, 0x20u);
         }
 
-        v15 = [v13 votEventCommandName];
-        [(VOTKeyboardManager *)self _sendEventForCommand:v15 withKeyInfo:v4 arrowMask:v10];
+        votEventCommandName2 = [v13 votEventCommandName];
+        [(VOTKeyboardManager *)self _sendEventForCommand:votEventCommandName2 withKeyInfo:pressCopy arrowMask:v10];
       }
 
       else if (v16)
       {
-        v18 = [v11 displayValue];
+        displayValue2 = [v11 displayValue];
         v19 = 138412546;
-        v20 = v18;
+        v20 = displayValue2;
         v21 = 2112;
-        v22 = v4;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "❌ no customized quickNav command found for keys '%@' info '%@'", &v19, 0x16u);
+        v22 = pressCopy;
+        _os_log_impl(&_mh_execute_header, votEventCommandName2, OS_LOG_TYPE_INFO, "❌ no customized quickNav command found for keys '%@' info '%@'", &v19, 0x16u);
       }
     }
   }
 }
 
-- (void)_handleQuickNavPressTimer:(id)a3
+- (void)_handleQuickNavPressTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   if (([(SCRCTargetSelectorTimer *)self->_quickNavKeyTimer isCancelled]& 1) == 0)
   {
-    [(VOTKeyboardManager *)self _handleQuickNavPress:v4];
+    [(VOTKeyboardManager *)self _handleQuickNavPress:timerCopy];
   }
 }
 
-- (void)_postEvent:(id)a3
+- (void)_postEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v5 = +[VOTElement systemWideElement];
-  v4 = [v3 eventRecord];
+  eventRecord = [eventCopy eventRecord];
 
-  [v5 repostEvent:v4];
+  [v5 repostEvent:eventRecord];
 }
 
 - (void)clearConsecutiveKeyPressCount

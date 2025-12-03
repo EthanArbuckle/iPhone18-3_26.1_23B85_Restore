@@ -3,11 +3,11 @@
 - (BOOL)isPreArmAllowed;
 - (BOOL)isPreArmExternallySuppressed;
 - (SBWalletPreArmController)init;
-- (SBWalletPreArmController)initWithWalletPresentation:(id)a3 biometricResource:(id)a4;
-- (id)acquireSuppressPreArmAssertionOfType:(int64_t)a3 forReason:(id)a4;
+- (SBWalletPreArmController)initWithWalletPresentation:(id)presentation biometricResource:(id)resource;
+- (id)acquireSuppressPreArmAssertionOfType:(int64_t)type forReason:(id)reason;
 - (int64_t)_computeTriggerSource;
-- (void)_setNFDefaults:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_setNFDefaults:(id)defaults;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SBWalletPreArmController
@@ -34,27 +34,27 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
 - (SBWalletPreArmController)init
 {
   v3 = objc_alloc_init(MEMORY[0x277D2C8A8]);
-  v4 = [MEMORY[0x277D67C98] sharedInstance];
-  v5 = [(SBWalletPreArmController *)self initWithWalletPresentation:v3 biometricResource:v4];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  v5 = [(SBWalletPreArmController *)self initWithWalletPresentation:v3 biometricResource:mEMORY[0x277D67C98]];
 
   return v5;
 }
 
-- (SBWalletPreArmController)initWithWalletPresentation:(id)a3 biometricResource:(id)a4
+- (SBWalletPreArmController)initWithWalletPresentation:(id)presentation biometricResource:(id)resource
 {
-  v7 = a3;
-  v8 = a4;
+  presentationCopy = presentation;
+  resourceCopy = resource;
   v17.receiver = self;
   v17.super_class = SBWalletPreArmController;
   v9 = [(SBWalletPreArmController *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_walletPresentation, a3);
-    objc_storeStrong(&v10->_biometricResource, a4);
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v9->_walletPresentation, presentation);
+    objc_storeStrong(&v10->_biometricResource, resource);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     disabledPreArmAssertions = v10->_disabledPreArmAssertions;
-    v10->_disabledPreArmAssertions = v11;
+    v10->_disabledPreArmAssertions = weakObjectsHashTable;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     disabledPreArmAssertionsByType = v10->_disabledPreArmAssertionsByType;
@@ -71,13 +71,13 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
 
 - (BOOL)isPreArmAllowed
 {
-  v3 = [(SBWalletPreArmController *)self isPreArmAvailable];
-  if (v3)
+  isPreArmAvailable = [(SBWalletPreArmController *)self isPreArmAvailable];
+  if (isPreArmAvailable)
   {
-    LOBYTE(v3) = ![(SBWalletPreArmController *)self isPreArmSuppressed];
+    LOBYTE(isPreArmAvailable) = ![(SBWalletPreArmController *)self isPreArmSuppressed];
   }
 
-  return v3;
+  return isPreArmAvailable;
 }
 
 - (BOOL)isPreArmExternallySuppressed
@@ -88,10 +88,10 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)acquireSuppressPreArmAssertionOfType:(int64_t)a3 forReason:(id)a4
+- (id)acquireSuppressPreArmAssertionOfType:(int64_t)type forReason:(id)reason
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277CF0CE8]);
   v8 = MEMORY[0x277D85CD0];
@@ -100,10 +100,10 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
   v25[2] = __75__SBWalletPreArmController_acquireSuppressPreArmAssertionOfType_forReason___block_invoke;
   v25[3] = &unk_2783C3B58;
   objc_copyWeak(v28, &location);
-  v28[1] = a3;
-  v9 = v6;
+  v28[1] = type;
+  v9 = reasonCopy;
   v26 = v9;
-  v27 = self;
+  selfCopy = self;
   v10 = [v7 initWithIdentifier:@"DisableWalletPreArmAssertion" forReason:v9 queue:MEMORY[0x277D85CD0] invalidationBlock:v25];
 
   if (v10)
@@ -111,7 +111,7 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
     v11 = SBLogLockScreenBiometricCoordinator();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = SBWalletPreArmSuppressionAssertionTypeDescription(a3);
+      v12 = SBWalletPreArmSuppressionAssertionTypeDescription(type);
       *buf = 138412546;
       v31 = v12;
       v32 = 2112;
@@ -119,30 +119,30 @@ void __42__SBWalletPreArmController_sharedInstance__block_invoke()
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_INFO, "Added disable wallet pre-arm assertion of type %@ for reason: %@", buf, 0x16u);
     }
 
-    v13 = [(SBWalletPreArmController *)self isPreArmSuppressed];
+    isPreArmSuppressed = [(SBWalletPreArmController *)self isPreArmSuppressed];
     [(NSHashTable *)self->_disabledPreArmAssertions addObject:v10];
     disabledPreArmAssertionsByType = self->_disabledPreArmAssertionsByType;
-    v15 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v15 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v16 = [(NSMutableDictionary *)disabledPreArmAssertionsByType objectForKeyedSubscript:v15];
     LODWORD(disabledPreArmAssertionsByType) = v16 == 0;
 
     if (disabledPreArmAssertionsByType)
     {
-      v17 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v18 = self->_disabledPreArmAssertionsByType;
-      v19 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-      [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v19];
+      v19 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+      [(NSMutableDictionary *)v18 setObject:weakObjectsHashTable forKeyedSubscript:v19];
     }
 
     v20 = self->_disabledPreArmAssertionsByType;
-    v21 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v21 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
     [v22 addObject:v10];
 
-    if (!v13)
+    if (!isPreArmSuppressed)
     {
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v23 postNotificationName:@"SBWalletPreArmControllerPreArmSuppressionDidChange" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"SBWalletPreArmControllerPreArmSuppressionDidChange" object:self];
     }
   }
 
@@ -184,12 +184,12 @@ void __75__SBWalletPreArmController_acquireSuppressPreArmAssertionOfType_forReas
 
 - (int64_t)_computeTriggerSource
 {
-  v2 = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
+  hasPearlSupport = [(SBUIBiometricResource *)self->_biometricResource hasPearlSupport];
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 miscellaneousDefaults];
-  v5 = [v4 walletPreArmForceLockButton];
+  miscellaneousDefaults = [v3 miscellaneousDefaults];
+  walletPreArmForceLockButton = [miscellaneousDefaults walletPreArmForceLockButton];
 
-  if ((v5 | v2))
+  if ((walletPreArmForceLockButton | hasPearlSupport))
   {
     return 2;
   }
@@ -200,26 +200,26 @@ void __75__SBWalletPreArmController_acquireSuppressPreArmAssertionOfType_forReas
   }
 }
 
-- (void)_setNFDefaults:(id)a3
+- (void)_setNFDefaults:(id)defaults
 {
-  v5 = a3;
-  if (self->_nfDefaults != v5)
+  defaultsCopy = defaults;
+  if (self->_nfDefaults != defaultsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_nfDefaults, a3);
+    v6 = defaultsCopy;
+    objc_storeStrong(&self->_nfDefaults, defaults);
     self->_walletDoublePressConsumerAvailable = [(NSUserDefaults *)self->_nfDefaults BOOLForKey:@"walletDoubleButtonPressedConsumerAvailable"];
     [(NSUserDefaults *)self->_nfDefaults addObserver:self forKeyPath:@"walletDoubleButtonPressedConsumerAvailable" options:1 context:&self->_walletDoublePressConsumerAvailable];
-    v5 = v6;
+    defaultsCopy = v6;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v13 = *MEMORY[0x277D85DE8];
   p_walletDoublePressConsumerAvailable = &self->_walletDoublePressConsumerAvailable;
-  if ([a3 isEqualToString:{@"walletDoubleButtonPressedConsumerAvailable", a4, a5}])
+  if ([path isEqualToString:{@"walletDoubleButtonPressedConsumerAvailable", object, change}])
   {
-    v9 = p_walletDoublePressConsumerAvailable == a6;
+    v9 = p_walletDoublePressConsumerAvailable == context;
   }
 
   else

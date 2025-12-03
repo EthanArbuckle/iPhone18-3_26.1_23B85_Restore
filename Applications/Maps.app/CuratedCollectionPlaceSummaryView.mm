@@ -1,8 +1,8 @@
 @interface CuratedCollectionPlaceSummaryView
-- (CuratedCollectionPlaceSummaryView)initWithFrame:(CGRect)a3;
+- (CuratedCollectionPlaceSummaryView)initWithFrame:(CGRect)frame;
 - (void)_createSubviews;
 - (void)_setupConstraints;
-- (void)configureWithModel:(id)a3;
+- (void)configureWithModel:(id)model;
 @end
 
 @implementation CuratedCollectionPlaceSummaryView
@@ -19,57 +19,57 @@
     v3 = 1.0;
   }
 
-  v46 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  v45 = [v46 topAnchor];
-  v44 = [(CuratedCollectionPlaceSummaryView *)self topAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  titleLabel = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  topAnchor = [titleLabel topAnchor];
+  topAnchor2 = [(CuratedCollectionPlaceSummaryView *)self topAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[0] = v43;
-  v42 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  v41 = [v42 leadingAnchor];
-  v40 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  titleLabel2 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  leadingAnchor = [titleLabel2 leadingAnchor];
+  leadingAnchor2 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[1] = v39;
-  v38 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  v37 = [v38 trailingAnchor];
-  v36 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  titleLabel3 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  trailingAnchor = [titleLabel3 trailingAnchor];
+  trailingAnchor2 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v47[2] = v35;
-  v34 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  v32 = [v34 topAnchor];
-  v33 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  v31 = [v33 bottomAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:v3];
+  secondaryLabel = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  topAnchor3 = [secondaryLabel topAnchor];
+  titleLabel4 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  bottomAnchor = [titleLabel4 bottomAnchor];
+  v30 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:v3];
   v47[3] = v30;
-  v29 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  v28 = [v29 leadingAnchor];
-  v27 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  secondaryLabel2 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  leadingAnchor3 = [secondaryLabel2 leadingAnchor];
+  leadingAnchor4 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
+  v26 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v47[4] = v26;
-  v25 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  v24 = [v25 trailingAnchor];
-  v23 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23];
+  secondaryLabel3 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  trailingAnchor3 = [secondaryLabel3 trailingAnchor];
+  trailingAnchor4 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
+  v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v47[5] = v22;
-  v21 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  v19 = [v21 topAnchor];
-  v20 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  v18 = [v20 bottomAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18 constant:2.0];
+  tertiaryLabel = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  topAnchor4 = [tertiaryLabel topAnchor];
+  secondaryLabel4 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  bottomAnchor2 = [secondaryLabel4 bottomAnchor];
+  v17 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:2.0];
   v47[6] = v17;
-  v16 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  v15 = [v16 leadingAnchor];
-  v14 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
-  v4 = [v15 constraintEqualToAnchor:v14];
+  tertiaryLabel2 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  leadingAnchor5 = [tertiaryLabel2 leadingAnchor];
+  leadingAnchor6 = [(CuratedCollectionPlaceSummaryView *)self leadingAnchor];
+  v4 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v47[7] = v4;
-  v5 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  v6 = [v5 trailingAnchor];
-  v7 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  tertiaryLabel3 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  trailingAnchor5 = [tertiaryLabel3 trailingAnchor];
+  trailingAnchor6 = [(CuratedCollectionPlaceSummaryView *)self trailingAnchor];
+  v8 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v47[8] = v8;
-  v9 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  v10 = [v9 bottomAnchor];
-  v11 = [(CuratedCollectionPlaceSummaryView *)self bottomAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  tertiaryLabel4 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  bottomAnchor3 = [tertiaryLabel4 bottomAnchor];
+  bottomAnchor4 = [(CuratedCollectionPlaceSummaryView *)self bottomAnchor];
+  v12 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v47[9] = v12;
   v13 = [NSArray arrayWithObjects:v47 count:10];
   [NSLayoutConstraint activateConstraints:v13];
@@ -87,139 +87,139 @@
   v8 = [v4 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CuratedCollectionPlaceSummaryView *)self setTitleLabel:v8];
 
-  v9 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  [titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (sub_10000FA08(self) == 5)
   {
-    v10 = +[UIFont system20Semibold];
-    v11 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-    [v11 setFont:v10];
+    titleLabel3 = +[UIFont system20Semibold];
+    titleLabel2 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+    [titleLabel2 setFont:titleLabel3];
   }
 
   else
   {
-    v10 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-    [DynamicTypeWizard autorefreshLabel:v10 withFontProvider:&stru_10165DA68];
+    titleLabel3 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+    [DynamicTypeWizard autorefreshLabel:titleLabel3 withFontProvider:&stru_10165DA68];
   }
 
-  v12 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  [v12 setNumberOfLines:0];
+  titleLabel4 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  [titleLabel4 setNumberOfLines:0];
 
-  v13 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  [v13 setAccessibilityIdentifier:@"TitleLabel"];
+  titleLabel5 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  [titleLabel5 setAccessibilityIdentifier:@"TitleLabel"];
 
-  v14 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  [(CuratedCollectionPlaceSummaryView *)self addSubview:v14];
+  titleLabel6 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  [(CuratedCollectionPlaceSummaryView *)self addSubview:titleLabel6];
 
   v15 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CuratedCollectionPlaceSummaryView *)self setSecondaryLabel:v15];
 
-  v16 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  secondaryLabel = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  [secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (sub_10000FA08(self) == 5)
   {
-    v17 = +[UIFont system17Tall];
-    v18 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-    [v18 setFont:v17];
+    secondaryLabel3 = +[UIFont system17Tall];
+    secondaryLabel2 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+    [secondaryLabel2 setFont:secondaryLabel3];
   }
 
   else
   {
-    v17 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-    [DynamicTypeWizard autorefreshLabel:v17 withFontProvider:&stru_10165D908];
+    secondaryLabel3 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+    [DynamicTypeWizard autorefreshLabel:secondaryLabel3 withFontProvider:&stru_10165D908];
   }
 
   v19 = +[UIColor secondaryLabelColor];
-  v20 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  [v20 setTextColor:v19];
+  secondaryLabel4 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  [secondaryLabel4 setTextColor:v19];
 
-  v21 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  [v21 setAccessibilityIdentifier:@"SecondaryLabel"];
+  secondaryLabel5 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  [secondaryLabel5 setAccessibilityIdentifier:@"SecondaryLabel"];
 
-  v22 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  [(CuratedCollectionPlaceSummaryView *)self addSubview:v22];
+  secondaryLabel6 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  [(CuratedCollectionPlaceSummaryView *)self addSubview:secondaryLabel6];
 
   v23 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(CuratedCollectionPlaceSummaryView *)self setTertiaryLabel:v23];
 
-  v24 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tertiaryLabel = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  [tertiaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
   if (sub_10000FA08(self) == 5)
   {
-    v25 = +[UIFont system17Tall];
-    v26 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-    [v26 setFont:v25];
+    tertiaryLabel3 = +[UIFont system17Tall];
+    tertiaryLabel2 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+    [tertiaryLabel2 setFont:tertiaryLabel3];
   }
 
   else
   {
-    v25 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-    [DynamicTypeWizard autorefreshLabel:v25 withFontProvider:&stru_10165D908];
+    tertiaryLabel3 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+    [DynamicTypeWizard autorefreshLabel:tertiaryLabel3 withFontProvider:&stru_10165D908];
   }
 
   v27 = +[UIColor secondaryLabelColor];
-  v28 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  [v28 setTextColor:v27];
+  tertiaryLabel4 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  [tertiaryLabel4 setTextColor:v27];
 
-  v29 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  [v29 setAccessibilityIdentifier:@"TertiaryLabel"];
+  tertiaryLabel5 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  [tertiaryLabel5 setAccessibilityIdentifier:@"TertiaryLabel"];
 
-  v30 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  [(CuratedCollectionPlaceSummaryView *)self addSubview:v30];
+  tertiaryLabel6 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  [(CuratedCollectionPlaceSummaryView *)self addSubview:tertiaryLabel6];
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  v19 = a3;
-  v4 = [v19 title];
-  v5 = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
-  [v5 setText:v4];
+  modelCopy = model;
+  title = [modelCopy title];
+  titleLabel = [(CuratedCollectionPlaceSummaryView *)self titleLabel];
+  [titleLabel setText:title];
 
   v6 = +[NSMutableArray array];
-  v7 = [v19 category];
+  category = [modelCopy category];
 
-  if (v7)
+  if (category)
   {
-    v8 = [v19 category];
-    [v6 addObject:v8];
+    category2 = [modelCopy category];
+    [v6 addObject:category2];
   }
 
-  v9 = [v19 distance];
+  distance = [modelCopy distance];
 
-  if (v9)
+  if (distance)
   {
-    v10 = [v19 distance];
-    [v6 addObject:v10];
+    distance2 = [modelCopy distance];
+    [v6 addObject:distance2];
   }
 
-  v11 = [v19 price];
+  price = [modelCopy price];
 
-  if (v11)
+  if (price)
   {
-    v12 = [v19 price];
-    [v6 addObject:v12];
+    price2 = [modelCopy price];
+    [v6 addObject:price2];
   }
 
   v13 = +[NSBundle mainBundle];
   v14 = [v13 localizedStringForKey:@" · [List view details separator]" value:@"localized string not found" table:0];
 
   v15 = [v6 componentsJoinedByString:v14];
-  v16 = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
-  [v16 setText:v15];
+  secondaryLabel = [(CuratedCollectionPlaceSummaryView *)self secondaryLabel];
+  [secondaryLabel setText:v15];
 
-  v17 = [v19 hours];
-  v18 = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
-  [v18 setAttributedText:v17];
+  hours = [modelCopy hours];
+  tertiaryLabel = [(CuratedCollectionPlaceSummaryView *)self tertiaryLabel];
+  [tertiaryLabel setAttributedText:hours];
 }
 
-- (CuratedCollectionPlaceSummaryView)initWithFrame:(CGRect)a3
+- (CuratedCollectionPlaceSummaryView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CuratedCollectionPlaceSummaryView;
-  v3 = [(CuratedCollectionPlaceSummaryView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CuratedCollectionPlaceSummaryView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

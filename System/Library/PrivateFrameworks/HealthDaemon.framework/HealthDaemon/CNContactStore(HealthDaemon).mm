@@ -9,8 +9,8 @@
 + (id)hd_contactStoreWithHealthAppIdentity
 {
   v0 = objc_alloc_init(MEMORY[0x277CBDAC0]);
-  v1 = [objc_opt_class() _healthAppTCCIdentity];
-  [v0 setAssumedIdentity:v1];
+  _healthAppTCCIdentity = [objc_opt_class() _healthAppTCCIdentity];
+  [v0 setAssumedIdentity:_healthAppTCCIdentity];
 
   v2 = [objc_alloc(objc_opt_class()) initWithConfiguration:v0];
 
@@ -27,10 +27,10 @@
 
 + (uint64_t)hd_authorizationStatusForHealthApp
 {
-  v0 = [objc_opt_class() _healthAppTCCIdentity];
-  if (v0)
+  _healthAppTCCIdentity = [objc_opt_class() _healthAppTCCIdentity];
+  if (_healthAppTCCIdentity)
   {
-    v1 = [objc_opt_class() authorizationStatusForEntityType:0 assumedIdentity:v0];
+    v1 = [objc_opt_class() authorizationStatusForEntityType:0 assumedIdentity:_healthAppTCCIdentity];
   }
 
   else

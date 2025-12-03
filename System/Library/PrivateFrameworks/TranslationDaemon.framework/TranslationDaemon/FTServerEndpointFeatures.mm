@@ -1,26 +1,26 @@
 @interface FTServerEndpointFeatures
-- (FTServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const ServerEndpointFeatures *)a4 verify:(BOOL)a5;
+- (FTServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const ServerEndpointFeatures *)root verify:(BOOL)verify;
 - (NSArray)pause_counts;
 - (NSString)speech_id;
 - (NSString)task_name;
-- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)buffer;
 - (double)eos_likelihood;
 - (double)silence_posterior;
 - (id)flatbuffData;
-- (id)pause_counts_objectAtIndex:(unint64_t)a3;
+- (id)pause_counts_objectAtIndex:(unint64_t)index;
 - (int)num_of_words;
 - (int)processed_audio_duration_ms;
 - (int)trailing_silence_duration;
 - (unint64_t)pause_counts_count;
-- (void)pause_counts_enumerateObjectsUsingBlock:(id)a3;
+- (void)pause_counts_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTServerEndpointFeatures
 
-- (FTServerEndpointFeatures)initWithFlatbuffData:(id)a3 root:(const ServerEndpointFeatures *)a4 verify:(BOOL)a5
+- (FTServerEndpointFeatures)initWithFlatbuffData:(id)data root:(const ServerEndpointFeatures *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTServerEndpointFeatures;
   v10 = [(FTServerEndpointFeatures *)&v25 init];
@@ -29,35 +29,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -150,12 +150,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pause_counts"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__FTServerEndpointFeatures_pause_counts__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTServerEndpointFeatures *)self pause_counts_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"pause_counts"];
@@ -164,13 +164,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)pause_counts_objectAtIndex:(unint64_t)a3
+- (id)pause_counts_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pause_counts"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -183,7 +183,7 @@ LABEL_3:
     v11 = *v10[12].var0;
     if (v11)
     {
-      v7 = [MEMORY[0x277CCABB0] numberWithInt:*root[4 * a3 + 4 + v11 + *root[v11].var0].var0];
+      v7 = [MEMORY[0x277CCABB0] numberWithInt:*root[4 * index + 4 + v11 + *root[v11].var0].var0];
       goto LABEL_3;
     }
   }
@@ -221,14 +221,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)pause_counts_enumerateObjectsUsingBlock:(id)a3
+- (void)pause_counts_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"pause_counts"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -251,7 +251,7 @@ LABEL_8:
           do
           {
             v15 = [MEMORY[0x277CCABB0] numberWithInt:*(v13 + 4 * v12)];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -334,24 +334,24 @@ LABEL_8:
   return v6;
 }
 
-- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ServerEndpointFeatures>)addObjectToBuffer:(void *)buffer
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [(FTServerEndpointFeatures *)self processed_audio_duration_ms];
-  v6 = [(FTServerEndpointFeatures *)self num_of_words];
-  v7 = [(FTServerEndpointFeatures *)self trailing_silence_duration];
+  processed_audio_duration_ms = [(FTServerEndpointFeatures *)self processed_audio_duration_ms];
+  num_of_words = [(FTServerEndpointFeatures *)self num_of_words];
+  trailing_silence_duration = [(FTServerEndpointFeatures *)self trailing_silence_duration];
   [(FTServerEndpointFeatures *)self eos_likelihood];
   v9 = v8;
   memset(&v39, 0, sizeof(v39));
-  v10 = [(FTServerEndpointFeatures *)self pause_counts];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v39, [v10 count]);
+  pause_counts = [(FTServerEndpointFeatures *)self pause_counts];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v39, [pause_counts count]);
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v11 = [(FTServerEndpointFeatures *)self pause_counts];
-  v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  pause_counts2 = [(FTServerEndpointFeatures *)self pause_counts];
+  v12 = [pause_counts2 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v12)
   {
     v13 = *v36;
@@ -361,14 +361,14 @@ LABEL_8:
       {
         if (*v36 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(pause_counts2);
         }
 
-        v34 = [*(*(&v35 + 1) + 8 * i) intValue];
-        std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v39.__begin_, &v34);
+        intValue = [*(*(&v35 + 1) + 8 * i) intValue];
+        std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::push_back[abi:ne200100](&v39.__begin_, &intValue);
       }
 
-      v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v12 = [pause_counts2 countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v12);
@@ -384,44 +384,44 @@ LABEL_8:
     begin = v39.__begin_;
   }
 
-  v16 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<int>(a3, begin, v39.__end_ - v39.__begin_);
+  v16 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<int>(buffer, begin, v39.__end_ - v39.__begin_);
   [(FTServerEndpointFeatures *)self silence_posterior];
   v18 = v17;
-  v19 = [(FTServerEndpointFeatures *)self task_name];
-  v20 = v19;
-  if (!v19)
+  task_name = [(FTServerEndpointFeatures *)self task_name];
+  v20 = task_name;
+  if (!task_name)
   {
-    v19 = &stru_284834138;
+    task_name = &stru_284834138;
   }
 
-  v21 = [(__CFString *)v19 UTF8String];
-  v22 = strlen(v21);
-  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v21, v22);
+  uTF8String = [(__CFString *)task_name UTF8String];
+  v22 = strlen(uTF8String);
+  String = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String, v22);
 
-  v24 = [(FTServerEndpointFeatures *)self speech_id];
-  v25 = v24;
-  if (!v24)
+  speech_id = [(FTServerEndpointFeatures *)self speech_id];
+  v25 = speech_id;
+  if (!speech_id)
   {
-    v24 = &stru_284834138;
+    speech_id = &stru_284834138;
   }
 
-  v26 = [(__CFString *)v24 UTF8String];
-  v27 = strlen(v26);
-  LODWORD(v26) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(a3, v26, v27);
+  uTF8String2 = [(__CFString *)speech_id UTF8String];
+  v27 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateString(buffer, uTF8String2, v27);
 
-  *(a3 + 70) = 1;
-  v28 = *(a3 + 8);
-  v29 = *(a3 + 12);
-  v30 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 6, v6, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(a3, 8, v7, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 10, v9, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 12, v16);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(a3, 14, v18, 0.0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 16, String);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 18, v26);
-  v31.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v28 - v29 + v30);
+  *(buffer + 70) = 1;
+  v28 = *(buffer + 8);
+  v29 = *(buffer + 12);
+  v30 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 4, processed_audio_duration_ms, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 6, num_of_words, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned int>(buffer, 8, trailing_silence_duration, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 10, v9, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 12, v16);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<double>(buffer, 14, v18, 0.0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 16, String);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 18, uTF8String2);
+  v31.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v28 - v29 + v30);
   if (v39.__begin_)
   {
     v39.__end_ = v39.__begin_;

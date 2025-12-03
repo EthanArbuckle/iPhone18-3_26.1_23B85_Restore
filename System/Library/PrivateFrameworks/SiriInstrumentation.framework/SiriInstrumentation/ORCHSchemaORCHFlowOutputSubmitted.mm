@@ -1,51 +1,51 @@
 @interface ORCHSchemaORCHFlowOutputSubmitted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHFlowOutputSubmitted)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHFlowOutputSubmitted)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHFlowOutputSubmitted)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHFlowOutputSubmitted)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAceViewIds:(id)a3;
-- (void)setHasFlowCommandReceived:(BOOL)a3;
-- (void)setHasFlowCommandResponseError:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAceViewIds:(id)ids;
+- (void)setHasFlowCommandReceived:(BOOL)received;
+- (void)setHasFlowCommandResponseError:(BOOL)error;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHFlowOutputSubmitted
 
-- (ORCHSchemaORCHFlowOutputSubmitted)initWithDictionary:(id)a3
+- (ORCHSchemaORCHFlowOutputSubmitted)initWithDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = ORCHSchemaORCHFlowOutputSubmitted;
   v5 = [(ORCHSchemaORCHFlowOutputSubmitted *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"flowOutputSubmissionId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"flowOutputSubmissionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHFlowOutputSubmitted setFlowOutputSubmissionId:](v5, "setFlowOutputSubmissionId:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"flowCommandReceived"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"flowCommandReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHFlowOutputSubmitted setFlowCommandReceived:](v5, "setFlowCommandReceived:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"flowCommandResponseError"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"flowCommandResponseError"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHFlowOutputSubmitted setFlowCommandResponseError:](v5, "setFlowCommandResponseError:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"aceCommandId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"aceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,7 +53,7 @@
       [(ORCHSchemaORCHFlowOutputSubmitted *)v5 setAceCommandId:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"aceViewIds"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"aceViewIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       v8 = v24;
     }
 
-    v19 = [v4 objectForKeyedSubscript:{@"subRequestId", v23, v24, v25, v26, v27}];
+    v19 = [dictionaryCopy objectForKeyedSubscript:{@"subRequestId", v23, v24, v25, v26, v27}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,30 +114,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHFlowOutputSubmitted)initWithJSON:(id)a3
+- (ORCHSchemaORCHFlowOutputSubmitted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHFlowOutputSubmitted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHFlowOutputSubmitted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHFlowOutputSubmitted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -151,26 +151,26 @@
 - (id)dictionaryRepresentation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceCommandId)
   {
-    v4 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+    dictionaryRepresentation = [aceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aceCommandId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aceCommandId"];
     }
   }
 
   if ([(NSArray *)self->_aceViewIds count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -190,16 +190,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -209,14 +209,14 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"aceViewIds"];
+    [dictionary setObject:array forKeyedSubscript:@"aceViewIds"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHFlowOutputSubmitted flowCommandReceived](self, "flowCommandReceived")}];
-    [v3 setObject:v19 forKeyedSubscript:@"flowCommandReceived"];
+    [dictionary setObject:v19 forKeyedSubscript:@"flowCommandReceived"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -237,35 +237,35 @@ LABEL_20:
   }
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHFlowOutputSubmitted flowCommandResponseError](self, "flowCommandResponseError", v23)}];
-  [v3 setObject:v20 forKeyedSubscript:@"flowCommandResponseError"];
+  [dictionary setObject:v20 forKeyedSubscript:@"flowCommandResponseError"];
 
   if (*&self->_has)
   {
 LABEL_21:
     v16 = [MEMORY[0x1E696AD98] numberWithInt:{-[ORCHSchemaORCHFlowOutputSubmitted flowOutputSubmissionId](self, "flowOutputSubmissionId", v23)}];
-    [v3 setObject:v16 forKeyedSubscript:@"flowOutputSubmissionId"];
+    [dictionary setObject:v16 forKeyedSubscript:@"flowOutputSubmissionId"];
   }
 
 LABEL_22:
   if (self->_subRequestId)
   {
-    v17 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    subRequestId = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v23];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v23];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -311,16 +311,16 @@ LABEL_8:
   return v6 ^ v7 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_28;
@@ -329,13 +329,13 @@ LABEL_8:
   if (*&has)
   {
     flowOutputSubmissionId = self->_flowOutputSubmissionId;
-    if (flowOutputSubmissionId != [v4 flowOutputSubmissionId])
+    if (flowOutputSubmissionId != [equalCopy flowOutputSubmissionId])
     {
       goto LABEL_28;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -344,13 +344,13 @@ LABEL_8:
     if (v8)
     {
       flowCommandReceived = self->_flowCommandReceived;
-      if (flowCommandReceived != [v4 flowCommandReceived])
+      if (flowCommandReceived != [equalCopy flowCommandReceived])
       {
         goto LABEL_28;
       }
 
       has = self->_has;
-      v6 = v4[40];
+      v6 = equalCopy[40];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -362,26 +362,26 @@ LABEL_8:
     if (v10)
     {
       flowCommandResponseError = self->_flowCommandResponseError;
-      if (flowCommandResponseError != [v4 flowCommandResponseError])
+      if (flowCommandResponseError != [equalCopy flowCommandResponseError])
       {
         goto LABEL_28;
       }
     }
 
-    v12 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
-    v13 = [v4 aceCommandId];
-    if ((v12 != 0) == (v13 == 0))
+    aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+    aceCommandId2 = [equalCopy aceCommandId];
+    if ((aceCommandId != 0) == (aceCommandId2 == 0))
     {
       goto LABEL_27;
     }
 
-    v14 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
-    if (v14)
+    aceCommandId3 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+    if (aceCommandId3)
     {
-      v15 = v14;
-      v16 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
-      v17 = [v4 aceCommandId];
-      v18 = [v16 isEqual:v17];
+      v15 = aceCommandId3;
+      aceCommandId4 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+      aceCommandId5 = [equalCopy aceCommandId];
+      v18 = [aceCommandId4 isEqual:aceCommandId5];
 
       if (!v18)
       {
@@ -393,20 +393,20 @@ LABEL_8:
     {
     }
 
-    v12 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
-    v13 = [v4 aceViewIds];
-    if ((v12 != 0) == (v13 == 0))
+    aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
+    aceCommandId2 = [equalCopy aceViewIds];
+    if ((aceCommandId != 0) == (aceCommandId2 == 0))
     {
       goto LABEL_27;
     }
 
-    v19 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
-    if (v19)
+    aceViewIds = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
+    if (aceViewIds)
     {
-      v20 = v19;
-      v21 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
-      v22 = [v4 aceViewIds];
-      v23 = [v21 isEqual:v22];
+      v20 = aceViewIds;
+      aceViewIds2 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
+      aceViewIds3 = [equalCopy aceViewIds];
+      v23 = [aceViewIds2 isEqual:aceViewIds3];
 
       if (!v23)
       {
@@ -418,12 +418,12 @@ LABEL_8:
     {
     }
 
-    v12 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
-    v13 = [v4 subRequestId];
-    if ((v12 != 0) != (v13 == 0))
+    aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+    aceCommandId2 = [equalCopy subRequestId];
+    if ((aceCommandId != 0) != (aceCommandId2 == 0))
     {
-      v24 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
-      if (!v24)
+      subRequestId = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+      if (!subRequestId)
       {
 
 LABEL_31:
@@ -431,10 +431,10 @@ LABEL_31:
         goto LABEL_29;
       }
 
-      v25 = v24;
-      v26 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
-      v27 = [v4 subRequestId];
-      v28 = [v26 isEqual:v27];
+      v25 = subRequestId;
+      subRequestId2 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+      subRequestId3 = [equalCopy subRequestId];
+      v28 = [subRequestId2 isEqual:subRequestId3];
 
       if (v28)
       {
@@ -455,10 +455,10 @@ LABEL_29:
   return v29;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -489,11 +489,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v6 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+  aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
 
-  if (v6)
+  if (aceCommandId)
   {
-    v7 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+    aceCommandId2 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -525,36 +525,36 @@ LABEL_5:
     while (v10);
   }
 
-  v13 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+  subRequestId = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
 
-  if (v13)
+  if (subRequestId)
   {
-    v14 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+    subRequestId2 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addAceViewIds:(id)a3
+- (void)addAceViewIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   aceViewIds = self->_aceViewIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!aceViewIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_aceViewIds;
-    self->_aceViewIds = v6;
+    self->_aceViewIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     aceViewIds = self->_aceViewIds;
   }
 
-  [(NSArray *)aceViewIds addObject:v4];
+  [(NSArray *)aceViewIds addObject:idsCopy];
 }
 
-- (void)setHasFlowCommandResponseError:(BOOL)a3
+- (void)setHasFlowCommandResponseError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -567,9 +567,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasFlowCommandReceived:(BOOL)a3
+- (void)setHasFlowCommandReceived:(BOOL)received
 {
-  if (a3)
+  if (received)
   {
     v3 = 2;
   }
@@ -582,30 +582,30 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = ORCHSchemaORCHFlowOutputSubmitted;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  aceCommandId = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceCommandId];
+  v7 = [aceCommandId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHFlowOutputSubmitted *)self deleteAceCommandId];
   }
 
-  v9 = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  aceViewIds = [(ORCHSchemaORCHFlowOutputSubmitted *)self aceViewIds];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:aceViewIds underConditions:policyCopy];
   [(ORCHSchemaORCHFlowOutputSubmitted *)self setAceViewIds:v10];
 
-  v11 = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  subRequestId = [(ORCHSchemaORCHFlowOutputSubmitted *)self subRequestId];
+  v12 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(ORCHSchemaORCHFlowOutputSubmitted *)self deleteSubRequestId];
   }

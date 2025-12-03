@@ -10,14 +10,14 @@
   emojiSticker = self->_emojiSticker;
   if (!emojiSticker)
   {
-    v4 = [(CKAssociatedStickerChatItem *)self stickerUserInfo];
+    stickerUserInfo = [(CKAssociatedStickerChatItem *)self stickerUserInfo];
     v5 = objc_alloc(MEMORY[0x1E69A8058]);
-    v6 = [(CKEmojiStickerChatItem *)self IMEmojiStickerChatItem];
-    v7 = [v6 emojiString];
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
-    v9 = [(CKAssociatedStickerChatItem *)self mediaObject];
-    v10 = [v9 fileURL];
-    v11 = [v5 initWithEmojiString:v7 stickerPackID:v8 fileURL:v10];
+    iMEmojiStickerChatItem = [(CKEmojiStickerChatItem *)self IMEmojiStickerChatItem];
+    emojiString = [iMEmojiStickerChatItem emojiString];
+    v8 = [stickerUserInfo objectForKeyedSubscript:*MEMORY[0x1E69A7CB0]];
+    mediaObject = [(CKAssociatedStickerChatItem *)self mediaObject];
+    fileURL = [mediaObject fileURL];
+    v11 = [v5 initWithEmojiString:emojiString stickerPackID:v8 fileURL:fileURL];
     v12 = self->_emojiSticker;
     self->_emojiSticker = v11;
 

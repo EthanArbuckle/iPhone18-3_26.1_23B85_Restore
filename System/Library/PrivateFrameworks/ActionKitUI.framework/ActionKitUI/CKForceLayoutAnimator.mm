@@ -1,17 +1,17 @@
 @interface CKForceLayoutAnimator
-- (CKForceLayoutAnimator)initWithReferenceView:(id)a3;
+- (CKForceLayoutAnimator)initWithReferenceView:(id)view;
 - (UIColor)lineColor;
-- (void)addNode:(id)a3;
-- (void)fixNode:(id)a3 atPosition:(CGPoint)a4;
-- (void)linkNode:(id)a3 toNode:(id)a4;
+- (void)addNode:(id)node;
+- (void)fixNode:(id)node atPosition:(CGPoint)position;
+- (void)linkNode:(id)node toNode:(id)toNode;
 - (void)removeAllNodes;
-- (void)removeNode:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setLineColor:(id)a3;
+- (void)removeNode:(id)node;
+- (void)setAlpha:(double)alpha;
+- (void)setLineColor:(id)color;
 - (void)start;
 - (void)stop;
 - (void)tick;
-- (void)unlinkNode:(id)a3 fromNode:(id)a4;
+- (void)unlinkNode:(id)node fromNode:(id)fromNode;
 @end
 
 @implementation CKForceLayoutAnimator
@@ -48,8 +48,8 @@
     }
 
     v10 = [CKQuadTree alloc];
-    v11 = [(NSMutableSet *)self->_nodes allObjects];
-    v12 = [v11 valueForKey:@"center"];
+    allObjects = [(NSMutableSet *)self->_nodes allObjects];
+    v12 = [allObjects valueForKey:@"center"];
     v13 = [(CKQuadTree *)v10 initWithPoints:v12];
 
     v26 = 0;
@@ -66,8 +66,8 @@
     v25[5] = &v26;
     v14 = [v25 copy];
     objc_storeWeak(v27 + 5, v14);
-    v15 = [(CKQuadTree *)v13 rootNode];
-    (v14)[2](v14, v15);
+    rootNode = [(CKQuadTree *)v13 rootNode];
+    (v14)[2](v14, rootNode);
 
     v16 = self->_nodes;
     v23[0] = MEMORY[0x277D85DD0];
@@ -430,8 +430,8 @@ LABEL_16:
   v10[4] = self;
   [(NSMutableSet *)nodes enumerateObjectsUsingBlock:v10];
   self->_alpha = fmax(self->_alpha, 0.100000001);
-  v5 = [(UIView *)self->_referenceView layer];
-  [v5 insertSublayer:self->_linesLayer atIndex:0];
+  layer = [(UIView *)self->_referenceView layer];
+  [layer insertSublayer:self->_linesLayer atIndex:0];
 
   displayLink = self->_displayLink;
   if (!displayLink)
@@ -443,8 +443,8 @@ LABEL_16:
     displayLink = self->_displayLink;
   }
 
-  v9 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [(CADisplayLink *)displayLink addToRunLoop:v9 forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [(CADisplayLink *)displayLink addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 }
 
 void __30__CKForceLayoutAnimator_start__block_invoke(uint64_t a1, void *a2)
@@ -475,49 +475,49 @@ void __30__CKForceLayoutAnimator_start__block_invoke_2(uint64_t a1, void *a2)
   [v2 setObject:v5 forKey:v4];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   if (self->_alpha == 0.0)
   {
-    if (a3 > 0.0)
+    if (alpha > 0.0)
     {
-      self->_alpha = a3;
+      self->_alpha = alpha;
       [(CADisplayLink *)self->_displayLink setPaused:0];
     }
   }
 
   else
   {
-    self->_alpha = fmax(a3, 0.0);
+    self->_alpha = fmax(alpha, 0.0);
   }
 }
 
-- (void)fixNode:(id)a3 atPosition:(CGPoint)a4
+- (void)fixNode:(id)node atPosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
+  y = position.y;
+  x = position.x;
   fixedNodes = self->_fixedNodes;
-  v8 = a3;
-  [(NSMapTable *)fixedNodes setObject:MEMORY[0x277CBEC38] forKey:v8];
+  nodeCopy = node;
+  [(NSMapTable *)fixedNodes setObject:MEMORY[0x277CBEC38] forKey:nodeCopy];
   previousCenters = self->_previousCenters;
   v10 = [MEMORY[0x277CCAE60] valueWithCGPoint:{x, y}];
-  [(NSMapTable *)previousCenters setObject:v10 forKey:v8];
+  [(NSMapTable *)previousCenters setObject:v10 forKey:nodeCopy];
 }
 
-- (void)unlinkNode:(id)a3 fromNode:(id)a4
+- (void)unlinkNode:(id)node fromNode:(id)fromNode
 {
   links = self->_links;
-  v5 = [MEMORY[0x277CBEB98] setWithObjects:{a3, a4, 0}];
+  v5 = [MEMORY[0x277CBEB98] setWithObjects:{node, fromNode, 0}];
   [(NSMutableSet *)links removeObject:v5];
 }
 
-- (void)linkNode:(id)a3 toNode:(id)a4
+- (void)linkNode:(id)node toNode:(id)toNode
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  nodeCopy = node;
+  toNodeCopy = toNode;
+  if (nodeCopy)
   {
-    if (v7)
+    if (toNodeCopy)
     {
       goto LABEL_3;
     }
@@ -525,21 +525,21 @@ void __30__CKForceLayoutAnimator_start__block_invoke_2(uint64_t a1, void *a2)
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"firstNode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"firstNode"}];
 
-    if (v7)
+    if (toNodeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v11 = [MEMORY[0x277CCA890] currentHandler];
-  [v11 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"secondNode"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"secondNode"}];
 
 LABEL_3:
   links = self->_links;
-  v9 = [MEMORY[0x277CBEB98] setWithObjects:{v12, v7, 0}];
+  v9 = [MEMORY[0x277CBEB98] setWithObjects:{nodeCopy, toNodeCopy, 0}];
   [(NSMutableSet *)links addObject:v9];
 }
 
@@ -551,41 +551,41 @@ LABEL_3:
   [(NSMutableSet *)nodes removeAllObjects];
 }
 
-- (void)removeNode:(id)a3
+- (void)removeNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   links = self->_links;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__CKForceLayoutAnimator_removeNode___block_invoke;
   v8[3] = &unk_278C36378;
-  v9 = v4;
-  v6 = v4;
+  v9 = nodeCopy;
+  v6 = nodeCopy;
   v7 = [(NSMutableSet *)links objectsPassingTest:v8];
   [(NSMutableSet *)links minusSet:v7];
 
   [(NSMutableSet *)self->_nodes removeObject:v6];
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
-  v5 = a3;
-  v10 = v5;
-  if (!v5)
+  nodeCopy = node;
+  v10 = nodeCopy;
+  if (!nodeCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"node"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:80 description:{@"Invalid parameter not satisfying: %@", @"node"}];
 
-    v5 = 0;
+    nodeCopy = 0;
   }
 
-  v6 = [v5 superview];
-  v7 = [v6 isEqual:self->_referenceView];
+  superview = [nodeCopy superview];
+  v7 = [superview isEqual:self->_referenceView];
 
   if ((v7 & 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:81 description:@"Nodes must be direct children of the reference view"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:81 description:@"Nodes must be direct children of the reference view"];
   }
 
   [(NSMutableSet *)self->_nodes addObject:v10];
@@ -594,27 +594,27 @@ LABEL_3:
 - (UIColor)lineColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(CAShapeLayer *)self->_linesLayer strokeColor];
+  strokeColor = [(CAShapeLayer *)self->_linesLayer strokeColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:strokeColor];
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
   linesLayer = self->_linesLayer;
 
-  [(CAShapeLayer *)linesLayer setStrokeColor:v6];
+  [(CAShapeLayer *)linesLayer setStrokeColor:cGColor];
 }
 
-- (CKForceLayoutAnimator)initWithReferenceView:(id)a3
+- (CKForceLayoutAnimator)initWithReferenceView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"referenceView"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CKForceLayoutAnimator.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"referenceView"}];
   }
 
   v28.receiver = self;
@@ -623,7 +623,7 @@ LABEL_3:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_referenceView, a3);
+    objc_storeStrong(&v7->_referenceView, view);
     v9 = [MEMORY[0x277CBEB58] set];
     nodes = v8->_nodes;
     v8->_nodes = v9;
@@ -632,34 +632,34 @@ LABEL_3:
     links = v8->_links;
     v8->_links = v11;
 
-    v13 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     weights = v8->_weights;
-    v8->_weights = v13;
+    v8->_weights = weakToStrongObjectsMapTable;
 
-    v15 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     previousCenters = v8->_previousCenters;
-    v8->_previousCenters = v15;
+    v8->_previousCenters = weakToStrongObjectsMapTable2;
 
-    v17 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     fixedNodes = v8->_fixedNodes;
-    v8->_fixedNodes = v17;
+    v8->_fixedNodes = weakToStrongObjectsMapTable3;
 
     *&v8->_linkDistance = xmmword_23E3B2B90;
     *&v8->_friction = xmmword_23E3B2BA0;
     *&v8->_chargeDistance = xmmword_23E3B2BB0;
     v8->_gravity = 0.100000001;
-    v19 = [MEMORY[0x277CD9F90] layer];
+    layer = [MEMORY[0x277CD9F90] layer];
     linesLayer = v8->_linesLayer;
-    v8->_linesLayer = v19;
+    v8->_linesLayer = layer;
 
-    v21 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
     v22 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-    v23 = [v21 resolvedColorWithTraitCollection:v22];
+    v23 = [systemBlueColor resolvedColorWithTraitCollection:v22];
     v24 = [v23 colorWithAlphaComponent:0.4];
     -[CAShapeLayer setStrokeColor:](v8->_linesLayer, "setStrokeColor:", [v24 CGColor]);
 
-    v25 = [MEMORY[0x277D75348] clearColor];
-    -[CAShapeLayer setFillColor:](v8->_linesLayer, "setFillColor:", [v25 CGColor]);
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    -[CAShapeLayer setFillColor:](v8->_linesLayer, "setFillColor:", [clearColor CGColor]);
   }
 
   return v8;

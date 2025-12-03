@@ -1,16 +1,16 @@
 @interface ASDRequest
 + (id)_sharedBroker;
-+ (void)cancelAllRequestsWithErrorHandler:(id)a3;
++ (void)cancelAllRequestsWithErrorHandler:(id)handler;
 - (ASDRequest)init;
-- (ASDRequest)initWithCoder:(id)a3;
+- (ASDRequest)initWithCoder:(id)coder;
 - (ASDRequestObserver)observer;
 - (id)description;
-- (void)_callErrorHandler:(uint64_t)a1 withError:(void *)a2 orDefaultCode:(void *)a3;
-- (void)_callErrorHandler:(void *)a3 withError:;
-- (void)_cancelWithErrorHandler:(id)a3;
-- (void)_notifyObserverOfCompletionWithError:(void *)a1;
-- (void)_startWithErrorHandler:(id)a3;
-- (void)receiveResponse:(id)a3;
+- (void)_callErrorHandler:(uint64_t)handler withError:(void *)error orDefaultCode:(void *)code;
+- (void)_callErrorHandler:(void *)handler withError:;
+- (void)_cancelWithErrorHandler:(id)handler;
+- (void)_notifyObserverOfCompletionWithError:(void *)error;
+- (void)_startWithErrorHandler:(id)handler;
+- (void)receiveResponse:(id)response;
 @end
 
 @implementation ASDRequest
@@ -22,9 +22,9 @@
   v2 = [(ASDRequest *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     requestID = v2->_requestID;
-    v2->_requestID = v3;
+    v2->_requestID = uUID;
   }
 
   return v2;
@@ -55,33 +55,33 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
   v9.receiver = self;
   v9.super_class = ASDRequest;
   v4 = [(ASDRequest *)&v9 description];
-  v5 = [(ASDRequest *)self requestID];
-  v6 = [v5 UUIDString];
-  v7 = [v3 stringWithFormat:@"%@: %@", v4, v6];
+  requestID = [(ASDRequest *)self requestID];
+  uUIDString = [requestID UUIDString];
+  v7 = [v3 stringWithFormat:@"%@: %@", v4, uUIDString];
 
   return v7;
 }
 
-+ (void)cancelAllRequestsWithErrorHandler:(id)a3
++ (void)cancelAllRequestsWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [a1 _sharedBroker];
-  [v5 cancelAllRequestsWithErrorHandler:v4];
+  handlerCopy = handler;
+  _sharedBroker = [self _sharedBroker];
+  [_sharedBroker cancelAllRequestsWithErrorHandler:handlerCopy];
 }
 
-- (void)receiveResponse:(id)a3
+- (void)receiveResponse:(id)response
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v8 = 138543874;
     v9 = objc_opt_class();
     v10 = 2114;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = responseCopy;
     v7 = v9;
     _os_log_error_impl(&dword_1B8220000, v5, OS_LOG_TYPE_ERROR, "[%{public}@]: Request %{public}@ received unhandled response: %{public}@", &v8, 0x20u);
   }
@@ -89,15 +89,15 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (ASDRequest)initWithCoder:(id)a3
+- (ASDRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASDRequest;
   v5 = [(ASDRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
     requestID = v5->_requestID;
     v5->_requestID = v6;
   }
@@ -105,11 +105,11 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
   return v5;
 }
 
-- (void)_callErrorHandler:(void *)a3 withError:
+- (void)_callErrorHandler:(void *)handler withError:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1 && v5)
+  handlerCopy = handler;
+  if (self && v5)
   {
     v7 = dispatch_get_global_queue(21, 0);
     v8[0] = MEMORY[0x1E69E9820];
@@ -117,42 +117,42 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
     v8[2] = __42__ASDRequest__callErrorHandler_withError___block_invoke;
     v8[3] = &unk_1E7CDB890;
     v10 = v5;
-    v9 = v6;
+    v9 = handlerCopy;
     dispatch_async(v7, v8);
   }
 }
 
-- (void)_callErrorHandler:(uint64_t)a1 withError:(void *)a2 orDefaultCode:(void *)a3
+- (void)_callErrorHandler:(uint64_t)handler withError:(void *)error orDefaultCode:(void *)code
 {
-  v7 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  errorCopy = error;
+  codeCopy = code;
+  v6 = codeCopy;
+  if (handler)
   {
-    if (!v5)
+    if (!codeCopy)
     {
       v6 = ASDErrorWithUnderlyingErrorAndInfo(0, @"ASDErrorDomain", 508, @"Could not connect to helper daemon", 0, 0);
     }
 
-    [(ASDRequest *)a1 _callErrorHandler:v7 withError:v6];
+    [(ASDRequest *)handler _callErrorHandler:errorCopy withError:v6];
   }
 }
 
-- (void)_cancelWithErrorHandler:(id)a3
+- (void)_cancelWithErrorHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ASDRequest *)self proxy];
-  if (v5)
+  handlerCopy = handler;
+  proxy = [(ASDRequest *)self proxy];
+  if (proxy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __38__ASDRequest__cancelWithErrorHandler___block_invoke;
     v14[3] = &unk_1E7CDBAB8;
     v14[4] = self;
-    v6 = v4;
+    v6 = handlerCopy;
     v15 = v6;
-    v7 = [v5 remoteObjectProxyWithErrorHandler:v14];
+    v7 = [proxy remoteObjectProxyWithErrorHandler:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __38__ASDRequest__cancelWithErrorHandler___block_invoke_16;
@@ -162,7 +162,7 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
     [v7 cancelWithErrorHandler:v12];
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
     v8 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -174,7 +174,7 @@ uint64_t __27__ASDRequest__sharedBroker__block_invoke()
     }
 
     v9 = ASDErrorWithUnderlyingErrorAndInfo(0, @"ASDErrorDomain", 532, @"Request has not been started", 0, 0);
-    (*(v4 + 2))(v4, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -200,37 +200,37 @@ void __38__ASDRequest__cancelWithErrorHandler___block_invoke(uint64_t a1, void *
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyObserverOfCompletionWithError:(void *)a1
+- (void)_notifyObserverOfCompletionWithError:(void *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [a1 observer];
-    if (v4)
+    observer = [error observer];
+    if (observer)
     {
       v5 = dispatch_get_global_queue(21, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __51__ASDRequest__notifyObserverOfCompletionWithError___block_invoke;
       block[3] = &unk_1E7CDBA20;
-      v7 = v4;
-      v8 = a1;
+      v7 = observer;
+      errorCopy = error;
       v9 = v3;
       dispatch_async(v5, block);
     }
   }
 }
 
-- (void)_startWithErrorHandler:(id)a3
+- (void)_startWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __37__ASDRequest__startWithErrorHandler___block_invoke;
   v11 = &unk_1E7CDBAB8;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v5 = handlerCopy;
   v6 = &v8;
   if (self)
   {

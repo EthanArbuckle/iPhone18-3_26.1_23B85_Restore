@@ -1,28 +1,28 @@
 @interface NavigationController
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)hidesBottomBarWhenPushed;
-- (_TtC5TeaUI20NavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC5TeaUI20NavigationController)initWithRootViewController:(id)a3 navigationBarClass:(Class)a4;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
-- (id)popViewControllerAnimated:(BOOL)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHidesBottomBarWhenPushed:(BOOL)a3;
+- (_TtC5TeaUI20NavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC5TeaUI20NavigationController)initWithRootViewController:(id)controller navigationBarClass:(Class)class;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
+- (id)popViewControllerAnimated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHidesBottomBarWhenPushed:(BOOL)pushed;
 @end
 
 @implementation NavigationController
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D7E268E0(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D7E268E0(controllerCopy, animated);
 }
 
-- (_TtC5TeaUI20NavigationController)initWithRootViewController:(id)a3 navigationBarClass:(Class)a4
+- (_TtC5TeaUI20NavigationController)initWithRootViewController:(id)controller navigationBarClass:(Class)class
 {
-  if (a4)
+  if (class)
   {
     ObjCClassMetadata = swift_getObjCClassMetadata();
   }
@@ -32,22 +32,22 @@
     ObjCClassMetadata = 0;
   }
 
-  return NavigationController.init(rootViewController:navigationBarClass:)(a3, ObjCClassMetadata);
+  return NavigationController.init(rootViewController:navigationBarClass:)(controller, ObjCClassMetadata);
 }
 
-- (id)popViewControllerAnimated:(BOOL)a3
+- (id)popViewControllerAnimated:(BOOL)animated
 {
-  v4 = self;
-  v5 = sub_1D7F33E04(a3);
+  selfCopy = self;
+  v5 = sub_1D7F33E04(animated);
 
   return v5;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1D7F34164(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  v8 = sub_1D7F34164(controllerCopy, animated);
 
   if (v8)
   {
@@ -63,10 +63,10 @@
   return v9;
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v4 = self;
-  v5 = sub_1D7F34310(a3);
+  selfCopy = self;
+  v5 = sub_1D7F34310(animated);
 
   if (v5)
   {
@@ -84,41 +84,41 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1D7F344B8();
 
   return v3 & 1;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v6 = self;
-  sub_1D7F345C4(a3, a4);
+  selfCopy = self;
+  sub_1D7F345C4(editing, animated);
 }
 
-- (_TtC5TeaUI20NavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5TeaUI20NavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1D8190F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   NavigationController.init(nibName:bundle:)();
 }
 
 - (BOOL)hidesBottomBarWhenPushed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = NavigationController.hidesBottomBarWhenPushed.getter();
 
   return v3 & 1;
 }
 
-- (void)setHidesBottomBarWhenPushed:(BOOL)a3
+- (void)setHidesBottomBarWhenPushed:(BOOL)pushed
 {
-  v4 = self;
-  NavigationController.hidesBottomBarWhenPushed.setter(a3);
+  selfCopy = self;
+  NavigationController.hidesBottomBarWhenPushed.setter(pushed);
 }
 
 @end

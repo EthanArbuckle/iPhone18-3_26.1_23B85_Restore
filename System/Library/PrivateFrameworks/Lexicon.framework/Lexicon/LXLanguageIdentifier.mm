@@ -1,23 +1,23 @@
 @interface LXLanguageIdentifier
 - (LXLanguageIdentifier)init;
-- (id)_detectLanguagesInString:(id)a3 constraints:(id)a4 error:(id *)a5;
-- (id)detectLanguagesInString:(id)a3 constraints:(id)a4 error:(id *)a5;
-- (id)detectLanguagesInString:(id)a3 error:(id *)a4;
+- (id)_detectLanguagesInString:(id)string constraints:(id)constraints error:(id *)error;
+- (id)detectLanguagesInString:(id)string constraints:(id)constraints error:(id *)error;
+- (id)detectLanguagesInString:(id)string error:(id *)error;
 @end
 
 @implementation LXLanguageIdentifier
 
-- (id)detectLanguagesInString:(id)a3 constraints:(id)a4 error:(id *)a5
+- (id)detectLanguagesInString:(id)string constraints:(id)constraints error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(__CFString *)v8 length];
+  stringCopy = string;
+  constraintsCopy = constraints;
+  v10 = [(__CFString *)stringCopy length];
   v11 = MEMORY[0x1E695E0F0];
   if (v10)
   {
     v24 = 0;
-    v21 = sub_1B5D22A0C(v9);
-    sub_1B5D90848(&v22, self->_impl.__ptr_, v8, v21, &v24);
+    v21 = sub_1B5D22A0C(constraintsCopy);
+    sub_1B5D90848(&v22, self->_impl.__ptr_, stringCopy, v21, &v24);
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v13 = v22;
     for (i = v23; v13 != i; v13 += 32)
@@ -34,9 +34,9 @@
       [v12 addObject:v18];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v24;
+      *error = v24;
     }
 
     if (v12)
@@ -58,9 +58,9 @@
   return v11;
 }
 
-- (id)detectLanguagesInString:(id)a3 error:(id *)a4
+- (id)detectLanguagesInString:(id)string error:(id *)error
 {
-  v4 = [(LXLanguageIdentifier *)self detectLanguagesInString:a3 constraints:0 error:a4];
+  v4 = [(LXLanguageIdentifier *)self detectLanguagesInString:string constraints:0 error:error];
 
   return v4;
 }
@@ -79,17 +79,17 @@
   return v2;
 }
 
-- (id)_detectLanguagesInString:(id)a3 constraints:(id)a4 error:(id *)a5
+- (id)_detectLanguagesInString:(id)string constraints:(id)constraints error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(__CFString *)v8 length];
+  stringCopy = string;
+  constraintsCopy = constraints;
+  v10 = [(__CFString *)stringCopy length];
   v11 = MEMORY[0x1E695E0F0];
   if (v10)
   {
     v25 = 0;
-    v22 = sub_1B5D22A0C(v9);
-    sub_1B5D90848(&v23, self->_impl.__ptr_, v8, v22, &v25);
+    v22 = sub_1B5D22A0C(constraintsCopy);
+    sub_1B5D90848(&v23, self->_impl.__ptr_, stringCopy, v22, &v25);
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = v23;
     for (i = v24; v14 != i; v14 += 32)
@@ -107,9 +107,9 @@
       [v12 addObject:v19];
     }
 
-    if (a5)
+    if (error)
     {
-      *a5 = v25;
+      *error = v25;
     }
 
     if (v12)

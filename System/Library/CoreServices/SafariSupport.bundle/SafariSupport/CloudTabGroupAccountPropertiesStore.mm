@@ -1,19 +1,19 @@
 @interface CloudTabGroupAccountPropertiesStore
-- (CloudTabGroupAccountPropertiesStore)initWithAccountStore:(id)a3 collection:(id)a4;
+- (CloudTabGroupAccountPropertiesStore)initWithAccountStore:(id)store collection:(id)collection;
 @end
 
 @implementation CloudTabGroupAccountPropertiesStore
 
-- (CloudTabGroupAccountPropertiesStore)initWithAccountStore:(id)a3 collection:(id)a4
+- (CloudTabGroupAccountPropertiesStore)initWithAccountStore:(id)store collection:(id)collection
 {
-  v7 = a4;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = CloudTabGroupAccountPropertiesStore;
-  v8 = [(CloudBookmarkAccountPropertiesStore *)&v12 initWithAccountStore:a3];
+  v8 = [(CloudBookmarkAccountPropertiesStore *)&v12 initWithAccountStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_collection, a4);
+    objc_storeStrong(&v8->_collection, collection);
     v10 = v9;
   }
 

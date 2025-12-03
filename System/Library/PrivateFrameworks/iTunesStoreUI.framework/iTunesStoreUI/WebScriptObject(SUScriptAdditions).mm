@@ -11,7 +11,7 @@
 - (id)copyArrayValueWithValidator:()SUScriptAdditions context:
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [a1 webScriptValueAtIndex:0];
+  v8 = [self webScriptValueAtIndex:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -19,7 +19,7 @@
     while (!a3 || (a3(v8, a4) & 1) != 0)
     {
       [v7 addObject:v8];
-      v8 = [a1 webScriptValueAtIndex:v9];
+      v8 = [self webScriptValueAtIndex:v9];
       objc_opt_class();
       v9 = (v9 + 1);
       if (objc_opt_isKindOfClass())
@@ -37,7 +37,7 @@
 - (id)copyArrayOrDictionaryWithContext:()SUScriptAdditions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v1 = [a1 copyJSONDataWithContext:?];
+  v1 = [self copyJSONDataWithContext:?];
   if (!v1)
   {
     return 0;
@@ -48,19 +48,19 @@
   v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v1 options:0 error:&v12];
   if (!v3)
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v7 &= 2u;
     }
@@ -89,19 +89,19 @@
 
 - (uint64_t)copyDate
 {
-  v1 = [objc_msgSend(a1 "JSValue")];
+  v1 = [objc_msgSend(self "JSValue")];
 
   return [v1 copy];
 }
 
 - (uint64_t)copyJSONDataWithContext:()SUScriptAdditions
 {
-  v4 = [a1 JSObject];
+  jSObject = [self JSObject];
   v5 = 0;
   if (a3)
   {
-    v6 = v4;
-    if (v4)
+    v6 = jSObject;
+    if (jSObject)
     {
       v7 = JSStringCreateWithCFString(@"JSON.stringify(this);");
       if (v7)
@@ -143,7 +143,7 @@
   {
     do
     {
-      v12 = [a1 safeValueForKey:a3];
+      v12 = [self safeValueForKey:a3];
       if (v12)
       {
         [v11 setObject:v12 forKey:a3];

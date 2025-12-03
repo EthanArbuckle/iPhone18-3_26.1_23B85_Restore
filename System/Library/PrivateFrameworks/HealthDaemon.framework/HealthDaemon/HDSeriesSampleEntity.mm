@@ -1,16 +1,16 @@
 @interface HDSeriesSampleEntity
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (const)columnDefinitionsWithCount:(unint64_t *)count;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)foreignKeys;
-+ (id)freezeSeriesWithIdentifier:(id)a3 metadata:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
-+ (id)objectInsertionFilterForProfile:(id)a3;
-+ (id)seriesSampleWithID:(id)a3 profile:(id)a4 error:(id *)a5;
++ (id)freezeSeriesWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
++ (id)objectInsertionFilterForProfile:(id)profile;
++ (id)seriesSampleWithID:(id)d profile:(id)profile error:(id *)error;
 + (uint64_t)_insertionEra;
-- (BOOL)canAddDatumInDatabase:(id)a3 error:(id *)a4;
-- (BOOL)updateSampleCount:(int64_t)a3 withDatabase:(id)a4 error:(id *)a5;
-- (id)HFDKeyWithDatabase:(id)a3 error:(id *)a4;
-- (id)freezeWithTransaction:(id)a3 profile:(id)a4 error:(id *)a5;
+- (BOOL)canAddDatumInDatabase:(id)database error:(id *)error;
+- (BOOL)updateSampleCount:(int64_t)count withDatabase:(id)database error:(id *)error;
+- (id)HFDKeyWithDatabase:(id)database error:(id *)error;
+- (id)freezeWithTransaction:(id)transaction profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDSeriesSampleEntity
@@ -26,19 +26,19 @@
   return qword_280D67BE8;
 }
 
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3
++ (const)columnDefinitionsWithCount:(unint64_t *)count
 {
   {
-    v5 = a3;
-    a3 = v5;
+    countCopy = count;
+    count = countCopy;
     if (v4)
     {
       __cxa_atexit(__cxx_global_array_dtor_0, 0, &dword_228986000);
-      a3 = v5;
+      count = countCopy;
     }
   }
 
-  *a3 = 6;
+  *count = 6;
   return +[HDSeriesSampleEntity columnDefinitionsWithCount:]::columnDefinitions;
 }
 
@@ -55,27 +55,27 @@
   return v3;
 }
 
-+ (id)freezeSeriesWithIdentifier:(id)a3 metadata:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)freezeSeriesWithIdentifier:(id)identifier metadata:(id)metadata profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  profileCopy = profile;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__85;
   v36 = __Block_byref_object_dispose__85;
-  v13 = v10;
+  v13 = identifierCopy;
   v37 = v13;
-  v14 = [v12 database];
+  database = [profileCopy database];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __74__HDSeriesSampleEntity_freezeSeriesWithIdentifier_metadata_profile_error___block_invoke;
   v26[3] = &unk_27861FF40;
-  v31 = a1;
+  selfCopy = self;
   v27 = v13;
-  v28 = v12;
-  v29 = v11;
+  v28 = profileCopy;
+  v29 = metadataCopy;
   v30 = &v32;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
@@ -85,12 +85,12 @@
   v22 = v15;
   v16 = v29;
   v23 = v16;
-  v25 = a1;
+  selfCopy2 = self;
   v17 = v28;
   v24 = v17;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v14 error:a6 block:v26 inaccessibilityHandler:v21];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:v26 inaccessibilityHandler:v21];
 
-  if (a6)
+  if (error)
   {
     v18 = v33[5];
   }
@@ -249,11 +249,11 @@ uint64_t __74__HDSeriesSampleEntity_freezeSeriesWithIdentifier_metadata_profile_
   return v9;
 }
 
-+ (id)seriesSampleWithID:(id)a3 profile:(id)a4 error:(id *)a5
++ (id)seriesSampleWithID:(id)d profile:(id)profile error:(id *)error
 {
-  v8 = a3;
+  dCopy = d;
   v15 = 0;
-  v9 = [a1 objectWithID:v8 encodingOptions:0 profile:a4 error:&v15];
+  v9 = [self objectWithID:dCopy encodingOptions:0 profile:profile error:&v15];
   v10 = v15;
   v11 = v10;
   if (v9)
@@ -268,14 +268,14 @@ uint64_t __74__HDSeriesSampleEntity_freezeSeriesWithIdentifier_metadata_profile_
     goto LABEL_6;
   }
 
-  v11 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find series with ID %@", v8}];
+  v11 = [MEMORY[0x277CCA9B8] hk_error:100 format:{@"Could not find series with ID %@", dCopy}];
   if (v11)
   {
 LABEL_6:
-    if (a5)
+    if (error)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -289,14 +289,14 @@ LABEL_10:
   return v9;
 }
 
-- (id)freezeWithTransaction:(id)a3 profile:(id)a4 error:(id *)a5
+- (id)freezeWithTransaction:(id)transaction profile:(id)profile error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (BOOL)canAddDatumInDatabase:(id)a3 error:(id *)a4
+- (BOOL)canAddDatumInDatabase:(id)database error:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -312,7 +312,7 @@ LABEL_10:
   v6[1] = 3221225472;
   v6[2] = __52__HDSeriesSampleEntity_canAddDatumInDatabase_error___block_invoke_2;
   v6[3] = &unk_278615530;
-  [a3 executeSQL:@"SELECT frozen FROM data_series WHERE data_id = ?" error:a4 bindingHandler:v7 enumerationHandler:v6];
+  [database executeSQL:@"SELECT frozen FROM data_series WHERE data_id = ?" error:error bindingHandler:v7 enumerationHandler:v6];
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
   return v4;
@@ -335,29 +335,29 @@ uint64_t __52__HDSeriesSampleEntity_canAddDatumInDatabase_error___block_invoke_2
   return 0;
 }
 
-- (BOOL)updateSampleCount:(int64_t)a3 withDatabase:(id)a4 error:(id *)a5
+- (BOOL)updateSampleCount:(int64_t)count withDatabase:(id)database error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  databaseCopy = database;
   v13[0] = @"count";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__HDSeriesSampleEntity_updateSampleCount_withDatabase_error___block_invoke;
   v12[3] = &__block_descriptor_40_e34_v16__0__HDSQLiteStatementBinder__8l;
-  v12[4] = a3;
-  LOBYTE(a5) = [(HDSQLiteEntity *)self updateProperties:v9 database:v8 error:a5 bindingHandler:v12];
+  v12[4] = count;
+  LOBYTE(error) = [(HDSQLiteEntity *)self updateProperties:v9 database:databaseCopy error:error bindingHandler:v12];
 
   v10 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-+ (id)objectInsertionFilterForProfile:(id)a3
++ (id)objectInsertionFilterForProfile:(id)profile
 {
-  v4 = a3;
-  v11.receiver = a1;
+  profileCopy = profile;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___HDSeriesSampleEntity;
-  v5 = objc_msgSendSuper2(&v11, sel_objectInsertionFilterForProfile_, v4);
+  v5 = objc_msgSendSuper2(&v11, sel_objectInsertionFilterForProfile_, profileCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__HDSeriesSampleEntity_objectInsertionFilterForProfile___block_invoke;
@@ -395,20 +395,20 @@ uint64_t __56__HDSeriesSampleEntity_objectInsertionFilterForProfile___block_invo
   return v5;
 }
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
+  objectCopy = object;
+  dCopy = d;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __86__HDSeriesSampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
   v18[3] = &unk_27861FFE0;
-  v19 = v12;
-  v20 = v11;
-  v21 = a1;
-  v13 = v11;
-  v14 = v12;
-  if ([a5 executeSQL:@"INSERT INTO data_series (data_id error:frozen bindingHandler:count enumerationHandler:{insertion_era, hfd_key, series_location) VALUES (?, ?, ?, ?, (COALESCE((SELECT MAX(hfd_key) + 1 FROM data_series), 1)), 2)", a7, v18, 0}])
+  v19 = dCopy;
+  v20 = objectCopy;
+  selfCopy = self;
+  v13 = objectCopy;
+  v14 = dCopy;
+  if ([database executeSQL:@"INSERT INTO data_series (data_id error:frozen bindingHandler:count enumerationHandler:{insertion_era, hfd_key, series_location) VALUES (?, ?, ?, ?, (COALESCE((SELECT MAX(hfd_key) + 1 FROM data_series), 1)), 2)", error, v18, 0}])
   {
     v15 = v14;
   }
@@ -434,17 +434,17 @@ uint64_t __86__HDSeriesSampleEntity_insertDataObject_withProvenance_inDatabase_p
   return sqlite3_bind_int64(a2, 4, v5);
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)HFDKeyWithDatabase:(id)a3 error:(id *)a4
+- (id)HFDKeyWithDatabase:(id)database error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  databaseCopy = database;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -456,7 +456,7 @@ uint64_t __86__HDSeriesSampleEntity_insertDataObject_withProvenance_inDatabase_p
   v12[2] = __49__HDSeriesSampleEntity_HFDKeyWithDatabase_error___block_invoke;
   v12[3] = &unk_278620008;
   v12[4] = &v13;
-  v8 = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:v6 error:a4 handler:v12];
+  v8 = [(HDSQLiteEntity *)self getValuesForProperties:v7 database:databaseCopy error:error handler:v12];
 
   if (v8)
   {
@@ -466,7 +466,7 @@ uint64_t __86__HDSeriesSampleEntity_insertDataObject_withProvenance_inDatabase_p
       goto LABEL_6;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:100 format:{@"Unable to get %@ for %@ with persistentID %lld", @"hfd_key", objc_opt_class(), -[HDSQLiteEntity persistentID](self, "persistentID")}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Unable to get %@ for %@ with persistentID %lld", @"hfd_key", objc_opt_class(), -[HDSQLiteEntity persistentID](self, "persistentID")}];
   }
 
   v9 = 0;

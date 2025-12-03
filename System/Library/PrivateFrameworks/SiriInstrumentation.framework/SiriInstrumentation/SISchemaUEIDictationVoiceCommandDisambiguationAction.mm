@@ -1,28 +1,28 @@
 @interface SISchemaUEIDictationVoiceCommandDisambiguationAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithDictionary:(id)a3;
-- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithDictionary:(id)dictionary;
+- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDisambiguationIndex:(BOOL)a3;
-- (void)setHasTotalDisambiguationAlternatives:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDisambiguationIndex:(BOOL)index;
+- (void)setHasTotalDisambiguationAlternatives:(BOOL)alternatives;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaUEIDictationVoiceCommandDisambiguationAction
 
-- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithDictionary:(id)a3
+- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaUEIDictationVoiceCommandDisambiguationAction;
   v5 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"voiceCommandId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"voiceCommandId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,21 +30,21 @@
       [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)v5 setVoiceCommandId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"disambiguationType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandDisambiguationAction setDisambiguationType:](v5, "setDisambiguationType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"disambiguationIndex"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"disambiguationIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaUEIDictationVoiceCommandDisambiguationAction setDisambiguationIndex:](v5, "setDisambiguationIndex:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"totalDisambiguationAlternatives"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"totalDisambiguationAlternatives"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithJSON:(id)a3
+- (SISchemaUEIDictationVoiceCommandDisambiguationAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,12 +93,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandDisambiguationAction disambiguationIndex](self, "disambiguationIndex")}];
-    [v3 setObject:v8 forKeyedSubscript:@"disambiguationIndex"];
+    [dictionary setObject:v8 forKeyedSubscript:@"disambiguationIndex"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -118,14 +118,14 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v9 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self disambiguationType];
+  disambiguationType = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self disambiguationType];
   v10 = @"UEIVOICECOMMANDDISAMBIGUATIONTYPE_UNKNOWN";
-  if (v9 == 1)
+  if (disambiguationType == 1)
   {
     v10 = @"UEIVOICECOMMANDDISAMBIGUATIONTYPE_TAP";
   }
 
-  if (v9 == 2)
+  if (disambiguationType == 2)
   {
     v11 = @"UEIVOICECOMMANDDISAMBIGUATIONTYPE_GAZE";
   }
@@ -135,34 +135,34 @@ LABEL_3:
     v11 = v10;
   }
 
-  [v3 setObject:v11 forKeyedSubscript:@"disambiguationType"];
+  [dictionary setObject:v11 forKeyedSubscript:@"disambiguationType"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaUEIDictationVoiceCommandDisambiguationAction totalDisambiguationAlternatives](self, "totalDisambiguationAlternatives")}];
-    [v3 setObject:v5 forKeyedSubscript:@"totalDisambiguationAlternatives"];
+    [dictionary setObject:v5 forKeyedSubscript:@"totalDisambiguationAlternatives"];
   }
 
 LABEL_5:
   if (self->_voiceCommandId)
   {
-    v6 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    voiceCommandId = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+    dictionaryRepresentation = [voiceCommandId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"voiceCommandId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"voiceCommandId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"voiceCommandId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"voiceCommandId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -206,30 +206,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
-  v6 = [v4 voiceCommandId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+  voiceCommandId2 = [equalCopy voiceCommandId];
+  v7 = voiceCommandId2;
+  if ((voiceCommandId != 0) == (voiceCommandId2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
-  if (v8)
+  voiceCommandId3 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+  if (voiceCommandId3)
   {
-    v9 = v8;
-    v10 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
-    v11 = [v4 voiceCommandId];
-    v12 = [v10 isEqual:v11];
+    v9 = voiceCommandId3;
+    voiceCommandId4 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+    voiceCommandId5 = [equalCopy voiceCommandId];
+    v12 = [voiceCommandId4 isEqual:voiceCommandId5];
 
     if (!v12)
     {
@@ -242,7 +242,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -253,13 +253,13 @@ LABEL_20:
   if (*&has)
   {
     disambiguationType = self->_disambiguationType;
-    if (disambiguationType != [v4 disambiguationType])
+    if (disambiguationType != [equalCopy disambiguationType])
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -271,10 +271,10 @@ LABEL_20:
   if (v16)
   {
     disambiguationIndex = self->_disambiguationIndex;
-    if (disambiguationIndex == [v4 disambiguationIndex])
+    if (disambiguationIndex == [equalCopy disambiguationIndex])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -291,7 +291,7 @@ LABEL_16:
   if (v18)
   {
     totalDisambiguationAlternatives = self->_totalDisambiguationAlternatives;
-    if (totalDisambiguationAlternatives != [v4 totalDisambiguationAlternatives])
+    if (totalDisambiguationAlternatives != [equalCopy totalDisambiguationAlternatives])
     {
       goto LABEL_20;
     }
@@ -303,14 +303,14 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+  toCopy = to;
+  voiceCommandId = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
 
-  if (v4)
+  if (voiceCommandId)
   {
-    v5 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
+    voiceCommandId2 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -321,24 +321,24 @@ LABEL_21:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasTotalDisambiguationAlternatives:(BOOL)a3
+- (void)setHasTotalDisambiguationAlternatives:(BOOL)alternatives
 {
-  if (a3)
+  if (alternatives)
   {
     v3 = 4;
   }
@@ -351,9 +351,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasDisambiguationIndex:(BOOL)a3
+- (void)setHasDisambiguationIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -366,17 +366,17 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaUEIDictationVoiceCommandDisambiguationAction;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self voiceCommandId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaUEIDictationVoiceCommandDisambiguationAction *)self deleteVoiceCommandId];
   }

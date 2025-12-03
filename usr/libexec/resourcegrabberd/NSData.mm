@@ -1,7 +1,7 @@
 @interface NSData
 - (id)checksumData;
-- (void)checksum:(unsigned __int8)a3[32];
-- (void)checksumDataToChecksum:(unsigned __int8)a3[32];
+- (void)checksum:(unsigned __int8)checksum[32];
+- (void)checksumDataToChecksum:(unsigned __int8)checksum[32];
 @end
 
 @implementation NSData
@@ -14,20 +14,20 @@
   return v2;
 }
 
-- (void)checksum:(unsigned __int8)a3[32]
+- (void)checksum:(unsigned __int8)checksum[32]
 {
-  *a3 = 0u;
-  *(a3 + 1) = 0u;
-  v5 = [(NSData *)self bytes];
+  *checksum = 0u;
+  *(checksum + 1) = 0u;
+  bytes = [(NSData *)self bytes];
   v6 = [(NSData *)self length];
 
-  CC_SHA256(v5, v6, a3);
+  CC_SHA256(bytes, v6, checksum);
 }
 
-- (void)checksumDataToChecksum:(unsigned __int8)a3[32]
+- (void)checksumDataToChecksum:(unsigned __int8)checksum[32]
 {
-  *a3 = 0u;
-  *(a3 + 1) = 0u;
+  *checksum = 0u;
+  *(checksum + 1) = 0u;
   [NSData getBytes:"getBytes:length:" length:?];
 }
 

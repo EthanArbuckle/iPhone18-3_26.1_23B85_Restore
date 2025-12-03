@@ -1,10 +1,10 @@
 @interface InterventionViewController
 - (NSDictionary)contextDictionary;
 - (SCUIInterventionViewControllerDelegate)interventionDelegate;
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithCoder:(id)a3;
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithRootViewController:(id)a3;
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithCoder:(id)coder;
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithRootViewController:(id)controller;
 - (int64_t)workflow;
 @end
 
@@ -18,7 +18,7 @@
   return Strong;
 }
 
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithCoder:(id)a3
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_1BC75C3D0();
@@ -26,21 +26,21 @@
   return result;
 }
 
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithRootViewController:(id)a3
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26SensitiveContentAnalysisUI26InterventionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -49,7 +49,7 @@
 
 - (int64_t)workflow
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1BC6E4800();
 
   return v3;

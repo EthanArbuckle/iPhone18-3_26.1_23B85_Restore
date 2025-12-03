@@ -1,9 +1,9 @@
 @interface MapsSuggestionsRatingRequestSource
 + (BOOL)isEnabled;
-- (MapsSuggestionsRatingRequestSource)initWithMapsSync:(id)a3 routine:(id)a4 delegate:(id)a5 name:(id)a6;
-- (double)updateSuggestionEntriesWithHandler:(id)a3;
-- (id)initFromResourceDepot:(id)a3 name:(id)a4;
-- (void)_q_updateHistoryEntriesWithHandler:(uint64_t)a1;
+- (MapsSuggestionsRatingRequestSource)initWithMapsSync:(id)sync routine:(id)routine delegate:(id)delegate name:(id)name;
+- (double)updateSuggestionEntriesWithHandler:(id)handler;
+- (id)initFromResourceDepot:(id)depot name:(id)name;
+- (void)_q_updateHistoryEntriesWithHandler:(uint64_t)handler;
 @end
 
 @implementation MapsSuggestionsRatingRequestSource
@@ -19,15 +19,15 @@
   return BOOL;
 }
 
-- (MapsSuggestionsRatingRequestSource)initWithMapsSync:(id)a3 routine:(id)a4 delegate:(id)a5 name:(id)a6
+- (MapsSuggestionsRatingRequestSource)initWithMapsSync:(id)sync routine:(id)routine delegate:(id)delegate name:(id)name
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  syncCopy = sync;
+  routineCopy = routine;
+  delegateCopy = delegate;
+  nameCopy = name;
   v34.receiver = self;
   v34.super_class = MapsSuggestionsRatingRequestSource;
-  v15 = [(MapsSuggestionsBaseSource *)&v34 initWithDelegate:v13 name:v14];
+  v15 = [(MapsSuggestionsBaseSource *)&v34 initWithDelegate:delegateCopy name:nameCopy];
   if (v15)
   {
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -35,8 +35,8 @@
     queue = v15->_queue;
     v15->_queue = v17;
 
-    objc_storeStrong(&v15->_mapsSync, a3);
-    objc_storeStrong(&v15->_routine, a4);
+    objc_storeStrong(&v15->_mapsSync, sync);
+    objc_storeStrong(&v15->_routine, routine);
     v19 = [[MapsSuggestionsBudget alloc] initWithDelegate:v15 name:@"MapsSuggestionsRatingRequestSource"];
     budget = v15->_budget;
     v15->_budget = v19;
@@ -52,14 +52,14 @@
     location = (v26 * 1000000000.0);
     [(MapsSuggestionsBudget *)v24 addRollingWindowOfCount:v25 perDuration:&location name:@"Long"];
     objc_initWeak(&location, v15);
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v28 = *MEMORY[0x1E69A16A8];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __77__MapsSuggestionsRatingRequestSource_initWithMapsSync_routine_delegate_name___block_invoke;
     v31[3] = &unk_1E81F7DC8;
     objc_copyWeak(&v32, &location);
-    v29 = [v27 addObserverForName:v28 object:0 queue:0 usingBlock:v31];
+    v29 = [defaultCenter addObserverForName:v28 object:0 queue:0 usingBlock:v31];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&location);
@@ -122,12 +122,12 @@ LABEL_11:
 LABEL_13:
 }
 
-- (id)initFromResourceDepot:(id)a3 name:(id)a4
+- (id)initFromResourceDepot:(id)depot name:(id)name
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  depotCopy = depot;
+  nameCopy = name;
+  if (!depotCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -146,9 +146,9 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v8 = [v6 oneSourceDelegate];
+  oneSourceDelegate = [depotCopy oneSourceDelegate];
 
-  if (!v8)
+  if (!oneSourceDelegate)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -167,9 +167,9 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v9 = [v6 oneMapsSync];
+  oneMapsSync = [depotCopy oneMapsSync];
 
-  if (!v9)
+  if (!oneMapsSync)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -188,9 +188,9 @@ LABEL_13:
     goto LABEL_17;
   }
 
-  v10 = [v6 oneRoutine];
+  oneRoutine = [depotCopy oneRoutine];
 
-  if (!v10)
+  if (!oneRoutine)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -208,24 +208,24 @@ LABEL_13:
 
 LABEL_17:
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  v11 = [v6 oneMapsSync];
-  v12 = [v6 oneRoutine];
-  v13 = [v6 oneSourceDelegate];
-  self = [(MapsSuggestionsRatingRequestSource *)self initWithMapsSync:v11 routine:v12 delegate:v13 name:v7];
+  oneMapsSync2 = [depotCopy oneMapsSync];
+  oneRoutine2 = [depotCopy oneRoutine];
+  oneSourceDelegate2 = [depotCopy oneSourceDelegate];
+  self = [(MapsSuggestionsRatingRequestSource *)self initWithMapsSync:oneMapsSync2 routine:oneRoutine2 delegate:oneSourceDelegate2 name:nameCopy];
 
-  v14 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v14;
+  return selfCopy;
 }
 
-- (double)updateSuggestionEntriesWithHandler:(id)a3
+- (double)updateSuggestionEntriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -233,8 +233,8 @@ LABEL_18:
   block[2] = __73__MapsSuggestionsRatingRequestSource_updateSuggestionEntriesWithHandler___block_invoke;
   block[3] = &unk_1E81F5190;
   objc_copyWeak(&v12, &location);
-  v11 = v4;
-  v6 = v4;
+  v11 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, block);
   GEOConfigGetDouble();
   v8 = v7;
@@ -270,16 +270,16 @@ void __73__MapsSuggestionsRatingRequestSource_updateSuggestionEntriesWithHandler
   }
 }
 
-- (void)_q_updateHistoryEntriesWithHandler:(uint64_t)a1
+- (void)_q_updateHistoryEntriesWithHandler:(uint64_t)handler
 {
   v56 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!handler)
   {
     goto LABEL_17;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 24));
+  dispatch_assert_queue_V2(*(handler + 24));
   v4 = [MEMORY[0x1E69A22E8] activeStateForCohortId:*MEMORY[0x1E69A1A78]];
   if (v4 < 2)
   {
@@ -310,8 +310,8 @@ LABEL_3:
             _os_log_impl(&dword_1C5126000, v27, OS_LOG_TYPE_DEBUG, "Current location is nil", buf, 2u);
           }
 
-          objc_initWeak(buf, a1);
-          v28 = *(a1 + 24);
+          objc_initWeak(buf, handler);
+          v28 = *(handler + 24);
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __73__MapsSuggestionsRatingRequestSource__q_updateHistoryEntriesWithHandler___block_invoke_239;
@@ -329,11 +329,11 @@ LABEL_3:
           v14 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [a1 uniqueName];
+            uniqueName = [handler uniqueName];
             v16 = NSStringFromMapsSuggestionsEntryType(0x15uLL);
             v17 = NSStringFromMapsSuggestionsCurrentBestLocation();
             *buf = 138412802;
-            *&buf[4] = v15;
+            *&buf[4] = uniqueName;
             *&buf[12] = 2112;
             *&buf[14] = v16;
             *&buf[22] = 2112;
@@ -363,8 +363,8 @@ LABEL_3:
           v36[1] = v36;
           v36[2] = 0x2020000000;
           v37 = 0;
-          objc_initWeak(&location, a1);
-          v24 = *(a1 + 32);
+          objc_initWeak(&location, handler);
+          v24 = *(handler + 32);
           GEOConfigGetDouble();
           v26 = v25;
           v29[0] = MEMORY[0x1E69E9820];
@@ -398,8 +398,8 @@ LABEL_3:
           _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "User turned off Siri for Maps or is in coarse location", buf, 2u);
         }
 
-        objc_initWeak(buf, a1);
-        v6 = *(a1 + 24);
+        objc_initWeak(buf, handler);
+        v6 = *(handler + 24);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __73__MapsSuggestionsRatingRequestSource__q_updateHistoryEntriesWithHandler___block_invoke_238;
@@ -422,8 +422,8 @@ LABEL_3:
         _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "Laguna Beach Suggestions has been disabled in the Maps Settings!", buf, 2u);
       }
 
-      objc_initWeak(buf, a1);
-      v10 = *(a1 + 24);
+      objc_initWeak(buf, handler);
+      v10 = *(handler + 24);
       v46[0] = MEMORY[0x1E69E9820];
       v46[1] = 3221225472;
       v46[2] = __73__MapsSuggestionsRatingRequestSource__q_updateHistoryEntriesWithHandler___block_invoke_236;
@@ -446,8 +446,8 @@ LABEL_3:
     _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Maps is Offline. Not running Ratings Request Source.", buf, 2u);
   }
 
-  objc_initWeak(buf, a1);
-  v8 = *(a1 + 24);
+  objc_initWeak(buf, handler);
+  v8 = *(handler + 24);
   v49[0] = MEMORY[0x1E69E9820];
   v49[1] = 3221225472;
   v49[2] = __73__MapsSuggestionsRatingRequestSource__q_updateHistoryEntriesWithHandler___block_invoke;

@@ -1,17 +1,17 @@
 @interface CHCompanionHealthPlugin
-- (id)extensionForProfile:(id)a3;
+- (id)extensionForProfile:(id)profile;
 - (id)taskServerClasses;
 @end
 
 @implementation CHCompanionHealthPlugin
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v3 = a3;
-  if (objc_msgSend_profileType(v3, v4, v5) == 1)
+  profileCopy = profile;
+  if (objc_msgSend_profileType(profileCopy, v4, v5) == 1)
   {
     v6 = [CHCompanionHealthProfileExtension alloc];
-    v8 = objc_msgSend_initWithProfile_(v6, v7, v3);
+    v8 = objc_msgSend_initWithProfile_(v6, v7, profileCopy);
   }
 
   else

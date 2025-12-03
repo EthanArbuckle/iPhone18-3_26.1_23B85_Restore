@@ -1,17 +1,17 @@
 @interface CAFChargingRateObservable
 - (NSString)description;
-- (void)chargingRateService:(id)a3 didUpdateChargingSpeed:(id)a4;
-- (void)chargingRateService:(id)a3 didUpdatePower:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)chargingRateService:(id)service didUpdateChargingSpeed:(id)speed;
+- (void)chargingRateService:(id)service didUpdatePower:(id)power;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFChargingRateObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFChargingRateObservable.description.getter();
   v5 = v4;
 
@@ -20,7 +20,7 @@
   return v6;
 }
 
-- (void)chargingRateService:(id)a3 didUpdatePower:(id)a4
+- (void)chargingRateService:(id)service didUpdatePower:(id)power
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo11NSUnitPowerCGMd, _s10Foundation11MeasurementVySo11NSUnitPowerCGMR);
   v7 = *(v6 - 8);
@@ -29,20 +29,20 @@
   v10 = &v13 - v9;
   type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitPower, 0x277CCAE30);
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  CAFChargingRateObservable.chargingRateService(_:didUpdatePower:)(v12, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFChargingRateObservable.chargingRateService(_:didUpdatePower:)(selfCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)chargingRateService:(id)a3 didUpdateChargingSpeed:(id)a4
+- (void)chargingRateService:(id)service didUpdateChargingSpeed:(id)speed
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMd, &_s10Foundation11MeasurementVySo11NSUnitSpeedCGSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  if (a4)
+  if (speed)
   {
     type metadata accessor for CAFVehicleUnits(0, &lazy cache variable for type metadata for NSUnitSpeed, 0x277CCAE40);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -59,32 +59,32 @@
   }
 
   __swift_storeEnumTagSinglePayload(v12, v13, 1, v11);
-  v14 = a3;
-  v15 = self;
-  CAFChargingRateObservable.chargingRateService(_:didUpdateChargingSpeed:)(v15, v10);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFChargingRateObservable.chargingRateService(_:didUpdateChargingSpeed:)(selfCopy, v10);
 
   outlined destroy of Measurement<NSUnitSpeed>?(v10);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFChargingRateObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFChargingRateObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFChargingRateObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFChargingRateObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFChargingRateObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

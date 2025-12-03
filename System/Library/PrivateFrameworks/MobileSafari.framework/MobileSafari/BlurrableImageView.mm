@@ -1,46 +1,46 @@
 @interface BlurrableImageView
-- (_TtC12MobileSafari18BlurrableImageView)initWithCoder:(id)a3;
-- (_TtC12MobileSafari18BlurrableImageView)initWithFrame:(CGRect)a3;
-- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)a3;
-- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC12MobileSafari18BlurrableImageView)initWithCoder:(id)coder;
+- (_TtC12MobileSafari18BlurrableImageView)initWithFrame:(CGRect)frame;
+- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)image;
+- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation BlurrableImageView
 
-- (_TtC12MobileSafari18BlurrableImageView)initWithFrame:(CGRect)a3
+- (_TtC12MobileSafari18BlurrableImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari18BlurrableImageView____lazy_storage___blurRadius) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for BlurrableImageView();
-  v7 = [(BlurrableImageView *)&v9 initWithFrame:x, y, width, height];
+  height = [(BlurrableImageView *)&v9 initWithFrame:x, y, width, height];
   sub_18BC0F324();
 
-  return v7;
+  return height;
 }
 
-- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)a3
+- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)image
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari18BlurrableImageView____lazy_storage___blurRadius) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for BlurrableImageView();
-  v4 = a3;
-  v5 = [(BlurrableImageView *)&v7 initWithImage:v4];
+  imageCopy = image;
+  v5 = [(BlurrableImageView *)&v7 initWithImage:imageCopy];
   sub_18BC0F324();
 
   return v5;
 }
 
-- (_TtC12MobileSafari18BlurrableImageView)initWithCoder:(id)a3
+- (_TtC12MobileSafari18BlurrableImageView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12MobileSafari18BlurrableImageView____lazy_storage___blurRadius) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for BlurrableImageView();
-  v4 = a3;
-  v5 = [(BlurrableImageView *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BlurrableImageView *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -51,7 +51,7 @@
   return v6;
 }
 
-- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC12MobileSafari18BlurrableImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

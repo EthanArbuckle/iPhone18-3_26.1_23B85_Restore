@@ -1,23 +1,23 @@
 @interface VCConnectionStatisticsCollector
 - (VCConnectionStatisticsCollector)init;
-- (id)connectionBasedTopPacketCountsWithUpdateTickCounts:(unsigned int *)a3 isOutgoing:(BOOL)a4;
-- (void)addConnectionBasedTopPacketCountsTelemetry:(id)a3 reportingKey:(id)a4 mapLinkIDToLinkUUID:(id)a5 isOutgoing:(BOOL)a6;
-- (void)addConnectionBasedTopPacketCountsTelemetry:(id)a3 reportingKey:(id)a4 reportingTickCounts:(unsigned int)a5 mapLinkIDToLinkUUID:(id)a6 packetCountsPerConnection:(id)a7;
-- (void)copyCopyPacketCountCallbackForOutgoing:(BOOL)a3 withCallback:(id)a4;
+- (id)connectionBasedTopPacketCountsWithUpdateTickCounts:(unsigned int *)counts isOutgoing:(BOOL)outgoing;
+- (void)addConnectionBasedTopPacketCountsTelemetry:(id)telemetry reportingKey:(id)key mapLinkIDToLinkUUID:(id)d isOutgoing:(BOOL)outgoing;
+- (void)addConnectionBasedTopPacketCountsTelemetry:(id)telemetry reportingKey:(id)key reportingTickCounts:(unsigned int)counts mapLinkIDToLinkUUID:(id)d packetCountsPerConnection:(id)connection;
+- (void)copyCopyPacketCountCallbackForOutgoing:(BOOL)outgoing withCallback:(id)callback;
 - (void)dealloc;
-- (void)deallocCopyPacketCountCallBack:(BOOL)a3;
-- (void)startPeriodicUpdateHistory:(BOOL)a3 withCopyPacketCountCallback:(id)a4;
-- (void)startUpdateHistoryTimerForOutgoing:(BOOL)a3;
+- (void)deallocCopyPacketCountCallBack:(BOOL)back;
+- (void)startPeriodicUpdateHistory:(BOOL)history withCopyPacketCountCallback:(id)callback;
+- (void)startUpdateHistoryTimerForOutgoing:(BOOL)outgoing;
 - (void)stopPeriodicHistoryUpdate;
-- (void)updateHistory:(BOOL)a3;
+- (void)updateHistory:(BOOL)history;
 @end
 
 @implementation VCConnectionStatisticsCollector
 
-- (void)updateHistory:(BOOL)a3
+- (void)updateHistory:(BOOL)history
 {
   v4 = 1048;
-  if (a3)
+  if (history)
   {
     v4 = 24;
     v5 = 2072;
@@ -29,13 +29,13 @@
   }
 
   v6 = 16;
-  if (a3)
+  if (history)
   {
     v6 = 8;
   }
 
   v7 = 2104;
-  if (a3)
+  if (history)
   {
     v7 = 2096;
   }
@@ -84,9 +84,9 @@
   }
 }
 
-- (void)copyCopyPacketCountCallbackForOutgoing:(BOOL)a3 withCallback:(id)a4
+- (void)copyCopyPacketCountCallbackForOutgoing:(BOOL)outgoing withCallback:(id)callback
 {
-  if (a3)
+  if (outgoing)
   {
     v6 = 2096;
   }
@@ -97,12 +97,12 @@
   }
 
   _Block_release(*(&self->super.isa + v6));
-  *(&self->super.isa + v6) = _Block_copy(a4);
+  *(&self->super.isa + v6) = _Block_copy(callback);
 }
 
-- (void)deallocCopyPacketCountCallBack:(BOOL)a3
+- (void)deallocCopyPacketCountCallBack:(BOOL)back
 {
-  if (a3)
+  if (back)
   {
     copyPacketCountCallbackSend = self->_copyPacketCountCallbackSend;
     if (!copyPacketCountCallbackSend)
@@ -128,10 +128,10 @@
   *p_copyPacketCountCallbackSend = 0;
 }
 
-- (void)startUpdateHistoryTimerForOutgoing:(BOOL)a3
+- (void)startUpdateHistoryTimerForOutgoing:(BOOL)outgoing
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (outgoing)
   {
     v5 = 2080;
   }
@@ -154,7 +154,7 @@
     handler[2] = __70__VCConnectionStatisticsCollector_startUpdateHistoryTimerForOutgoing___block_invoke;
     handler[3] = &unk_1E85F37A0;
     handler[4] = self;
-    v14 = a3;
+    outgoingCopy = outgoing;
     dispatch_source_set_event_handler(v9, handler);
     v10 = *(&self->super.isa + v5);
     v11[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@
     v11[2] = __70__VCConnectionStatisticsCollector_startUpdateHistoryTimerForOutgoing___block_invoke_2;
     v11[3] = &unk_1E85F37A0;
     v11[4] = self;
-    v12 = a3;
+    outgoingCopy2 = outgoing;
     dispatch_source_set_cancel_handler(v10, v11);
     dispatch_resume(*(&self->super.isa + v5));
   }
@@ -199,15 +199,15 @@
   [(VCConnectionStatisticsCollector *)&v3 dealloc];
 }
 
-- (void)startPeriodicUpdateHistory:(BOOL)a3 withCopyPacketCountCallback:(id)a4
+- (void)startPeriodicUpdateHistory:(BOOL)history withCopyPacketCountCallback:(id)callback
 {
-  if (!a4)
+  if (!callback)
   {
     [VCConnectionStatisticsCollector startPeriodicUpdateHistory:withCopyPacketCountCallback:];
     return;
   }
 
-  if (a3)
+  if (history)
   {
     if (self->_periodicHistoryUpdateSentTimer)
     {
@@ -215,7 +215,7 @@
     }
 
     [(VCConnectionStatisticsCollector *)self copyCopyPacketCountCallbackForOutgoing:1 withCallback:?];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
   }
 
@@ -227,11 +227,11 @@
     }
 
     [(VCConnectionStatisticsCollector *)self copyCopyPacketCountCallbackForOutgoing:0 withCallback:?];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
-  [(VCConnectionStatisticsCollector *)v5 startUpdateHistoryTimerForOutgoing:v6];
+  [(VCConnectionStatisticsCollector *)selfCopy2 startUpdateHistoryTimerForOutgoing:v6];
 }
 
 - (void)stopPeriodicHistoryUpdate
@@ -261,23 +261,23 @@
   }
 }
 
-- (void)addConnectionBasedTopPacketCountsTelemetry:(id)a3 reportingKey:(id)a4 mapLinkIDToLinkUUID:(id)a5 isOutgoing:(BOOL)a6
+- (void)addConnectionBasedTopPacketCountsTelemetry:(id)telemetry reportingKey:(id)key mapLinkIDToLinkUUID:(id)d isOutgoing:(BOOL)outgoing
 {
-  v6 = a6;
+  outgoingCopy = outgoing;
   v13 = *MEMORY[0x1E69E9840];
   v12 = 0;
   pthread_rwlock_wrlock(&self->_historyStateRWlock);
-  v11 = [(VCConnectionStatisticsCollector *)self connectionBasedTopPacketCountsWithUpdateTickCounts:&v12 isOutgoing:v6];
-  [(VCConnectionStatisticsCollector *)self addConnectionBasedTopPacketCountsTelemetry:a3 reportingKey:a4 reportingTickCounts:v12 mapLinkIDToLinkUUID:a5 packetCountsPerConnection:v11];
+  v11 = [(VCConnectionStatisticsCollector *)self connectionBasedTopPacketCountsWithUpdateTickCounts:&v12 isOutgoing:outgoingCopy];
+  [(VCConnectionStatisticsCollector *)self addConnectionBasedTopPacketCountsTelemetry:telemetry reportingKey:key reportingTickCounts:v12 mapLinkIDToLinkUUID:d packetCountsPerConnection:v11];
   pthread_rwlock_unlock(&self->_historyStateRWlock);
 }
 
-- (id)connectionBasedTopPacketCountsWithUpdateTickCounts:(unsigned int *)a3 isOutgoing:(BOOL)a4
+- (id)connectionBasedTopPacketCountsWithUpdateTickCounts:(unsigned int *)counts isOutgoing:(BOOL)outgoing
 {
-  v4 = a4;
+  outgoingCopy = outgoing;
   v41 = *MEMORY[0x1E69E9840];
   v7 = 16;
-  if (a4)
+  if (outgoing)
   {
     v7 = 8;
   }
@@ -286,12 +286,12 @@
   if ([v8 count])
   {
     v9 = 2076;
-    if (v4)
+    if (outgoingCopy)
     {
       v9 = 2072;
     }
 
-    *a3 = *(&self->super.isa + v9);
+    *counts = *(&self->super.isa + v9);
     memset(&v26, 0, 32);
     v26.compare = _VCConnectionStatisticsCollector_ComparePacketCounts;
     v10 = CFBinaryHeapCreate(0, 256, &v26, 0);
@@ -408,17 +408,17 @@ LABEL_24:
   return v17;
 }
 
-- (void)addConnectionBasedTopPacketCountsTelemetry:(id)a3 reportingKey:(id)a4 reportingTickCounts:(unsigned int)a5 mapLinkIDToLinkUUID:(id)a6 packetCountsPerConnection:(id)a7
+- (void)addConnectionBasedTopPacketCountsTelemetry:(id)telemetry reportingKey:(id)key reportingTickCounts:(unsigned int)counts mapLinkIDToLinkUUID:(id)d packetCountsPerConnection:(id)connection
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (connection)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [a7 countByEnumeratingWithState:&v25 objects:v24 count:16];
+    v10 = [connection countByEnumeratingWithState:&v25 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -429,17 +429,17 @@ LABEL_24:
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(a7);
+            objc_enumerationMutation(connection);
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v14 integerValue];
-          v16 = [a6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v15)}];
-          v17 = [a7 objectForKeyedSubscript:v14];
+          integerValue = [v14 integerValue];
+          v16 = [d objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", integerValue)}];
+          v17 = [connection objectForKeyedSubscript:v14];
           [v9 appendString:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@.%@:", objc_msgSend(v16, "UUIDString"), objc_msgSend(v17, "componentsJoinedByString:", @", "))}];
         }
 
-        v11 = [a7 countByEnumeratingWithState:&v25 objects:v24 count:16];
+        v11 = [connection countByEnumeratingWithState:&v25 objects:v24 count:16];
       }
 
       while (v11);
@@ -450,10 +450,10 @@ LABEL_24:
       [v9 deleteCharactersInRange:{objc_msgSend(v9, "length") - 1, 1}];
     }
 
-    [a3 setObject:v9 forKeyedSubscript:a4];
+    [telemetry setObject:v9 forKeyedSubscript:key];
 
-    v18 = [a4 isEqual:@"ULPH"];
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:a5];
+    v18 = [key isEqual:@"ULPH"];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:counts];
     if (v18)
     {
       v20 = @"ULPI";
@@ -464,7 +464,7 @@ LABEL_24:
       v20 = @"DLPI";
     }
 
-    [a3 setObject:v19 forKeyedSubscript:v20];
+    [telemetry setObject:v19 forKeyedSubscript:v20];
   }
 
   else

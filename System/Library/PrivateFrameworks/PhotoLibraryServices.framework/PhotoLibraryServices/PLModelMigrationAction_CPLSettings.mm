@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_CPLSettings
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_CPLSettings
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = [(PLModelMigrationActionCore *)self pathManager:a3];
+  v5 = [(PLModelMigrationActionCore *)self pathManager:context];
   v6 = [PLCPLSettings settingsWithPathManager:v5];
 
   v22 = 0;
@@ -20,9 +20,9 @@
 
     if (v10)
     {
-      v11 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v11)
+      if (logger)
       {
         v56 = 0u;
         v57 = 0u;

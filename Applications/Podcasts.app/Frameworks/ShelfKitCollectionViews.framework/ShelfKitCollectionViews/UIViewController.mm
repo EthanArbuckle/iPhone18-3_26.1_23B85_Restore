@@ -7,12 +7,12 @@
 
 - (CGSize)pageContainerSize
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 view];
-  if (v3)
+  selfCopy = self;
+  view = [(UIViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v3;
-    [(UIView *)v3 bounds];
+    v6 = view;
+    [(UIView *)view bounds];
     v8 = v7;
     v10 = v9;
 
@@ -32,8 +32,8 @@
 
 - (UIEdgeInsets)pageMarginInsets
 {
-  v2 = self;
-  [(UIViewController *)v2 pageContainerSize];
+  selfCopy = self;
+  [(UIViewController *)selfCopy pageContainerSize];
   StandardGridSpec.basePageMargin(for:)();
   v4 = v3;
 

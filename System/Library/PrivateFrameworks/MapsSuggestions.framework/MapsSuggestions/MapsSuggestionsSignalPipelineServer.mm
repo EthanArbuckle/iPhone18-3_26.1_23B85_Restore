@@ -1,13 +1,13 @@
 @interface MapsSuggestionsSignalPipelineServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsSignalPipelineServer)initWithMemory:(id)a3;
+- (MapsSuggestionsSignalPipelineServer)initWithMemory:(id)memory;
 - (id).cxx_construct;
-- (void)_addConnection:(id)a3;
-- (void)_removeConnection:(id)a3;
-- (void)_removeConnectionSynchronously:(id)a3;
-- (void)_sendSignalPack:(id)a3 toConnection:(id)a4;
-- (void)signalPipelineUpdated:(id)a3;
+- (void)_addConnection:(id)connection;
+- (void)_removeConnection:(id)connection;
+- (void)_removeConnectionSynchronously:(id)synchronously;
+- (void)_sendSignalPack:(id)pack toConnection:(id)connection;
+- (void)signalPipelineUpdated:(id)updated;
 @end
 
 @implementation MapsSuggestionsSignalPipelineServer
@@ -19,9 +19,9 @@
   return WeakRetained;
 }
 
-- (MapsSuggestionsSignalPipelineServer)initWithMemory:(id)a3
+- (MapsSuggestionsSignalPipelineServer)initWithMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v24.receiver = self;
   v24.super_class = MapsSuggestionsSignalPipelineServer;
   v5 = [(MapsSuggestionsSignalPipelineServer *)&v24 init];
@@ -40,10 +40,10 @@
     name = v5->_queue._name;
     v5->_queue._name = v10;
 
-    v12 = [v4 signalPipeline];
-    [v12 setUpdaterDelegate:v5];
+    signalPipeline = [memoryCopy signalPipeline];
+    [signalPipeline setUpdaterDelegate:v5];
 
-    objc_storeWeak(&v5->_memory, v4);
+    objc_storeWeak(&v5->_memory, memoryCopy);
     v13 = objc_alloc_init(NSMutableArray);
     peers = v5->_peers;
     v5->_peers = v13;
@@ -76,36 +76,36 @@
   return v6;
 }
 
-- (void)_removeConnectionSynchronously:(id)a3
+- (void)_removeConnectionSynchronously:(id)synchronously
 {
-  v4 = a3;
+  synchronouslyCopy = synchronously;
   innerQueue = self->_queue._innerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001EB2C;
   v7[3] = &unk_100075230;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = synchronouslyCopy;
+  v6 = synchronouslyCopy;
   dispatch_sync(innerQueue, v7);
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "_removeConnection:%@", &v8, 0xCu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_memory);
   if (!WeakRetained)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    signalPipeline = GEOFindOrCreateLog();
+    if (os_log_type_enabled(signalPipeline, OS_LOG_TYPE_ERROR))
     {
       v8 = 136446722;
       v9 = "MapsSuggestionsSignalPipelineServer.mm";
@@ -113,41 +113,41 @@
       v11 = 190;
       v12 = 2082;
       v13 = "[MapsSuggestionsSignalPipelineServer _removeConnection:]";
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s:%{public}d: strongMemory went away in %{public}s", &v8, 0x1Cu);
+      _os_log_impl(&_mh_execute_header, signalPipeline, OS_LOG_TYPE_ERROR, "%{public}s:%{public}d: strongMemory went away in %{public}s", &v8, 0x1Cu);
     }
 
     goto LABEL_9;
   }
 
-  [(NSMutableArray *)self->_connections removeObject:v4];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
   if (![(NSMutableArray *)self->_connections count])
   {
-    v7 = [WeakRetained signalPipeline];
-    [v7 stop];
+    signalPipeline = [WeakRetained signalPipeline];
+    [signalPipeline stop];
 LABEL_9:
   }
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v20 = 138412290;
-      v21 = v4;
+      v21 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "_addConnection:%@", &v20, 0xCu);
     }
 
-    if ([(NSMutableArray *)self->_connections containsObject:v4])
+    if ([(NSMutableArray *)self->_connections containsObject:connectionCopy])
     {
       v6 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         v20 = 138412290;
-        v21 = v4;
+        v21 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "WARNING: already had connection %@", &v20, 0xCu);
       }
     }
@@ -164,7 +164,7 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Incoming connection comes from %@ (%llu)", &v20, 0x16u);
     }
 
-    [(NSMutableArray *)self->_connections addObject:v4];
+    [(NSMutableArray *)self->_connections addObject:connectionCopy];
     v10 = [(NSMutableArray *)self->_connections count];
     WeakRetained = objc_loadWeakRetained(&self->_memory);
     if (WeakRetained)
@@ -178,11 +178,11 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "This is the first connection", &v20, 2u);
         }
 
-        v13 = [WeakRetained signalPipeline];
-        [v13 start];
+        signalPipeline = [WeakRetained signalPipeline];
+        [signalPipeline start];
       }
 
-      v14 = [v4 remoteObjectProxy];
+      remoteObjectProxy = [connectionCopy remoteObjectProxy];
       v15 = objc_opt_respondsToSelector();
 
       if ((v15 & 1) == 0)
@@ -191,19 +191,19 @@ LABEL_9:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           v20 = 138412290;
-          v21 = v4;
+          v21 = connectionCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "For some weird reason, our connection is not right: %@", &v20, 0xCu);
         }
 
-        [v4 invalidate];
-        [(MapsSuggestionsSignalPipelineServer *)self _removeConnectionSynchronously:v4];
+        [connectionCopy invalidate];
+        [(MapsSuggestionsSignalPipelineServer *)self _removeConnectionSynchronously:connectionCopy];
         goto LABEL_29;
       }
 
-      v16 = [WeakRetained signalPipeline];
-      v17 = [v16 mergedCommonSignalPack];
+      signalPipeline2 = [WeakRetained signalPipeline];
+      mergedCommonSignalPack = [signalPipeline2 mergedCommonSignalPack];
 
-      if (v17)
+      if (mergedCommonSignalPack)
       {
         v18 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -212,14 +212,14 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Already sending the SignalPackData we have to the incoming connection", &v20, 2u);
         }
 
-        [(MapsSuggestionsSignalPipelineServer *)self _sendSignalPack:v17 toConnection:v4];
+        [(MapsSuggestionsSignalPipelineServer *)self _sendSignalPack:mergedCommonSignalPack toConnection:connectionCopy];
       }
     }
 
     else
     {
-      v17 = GEOFindOrCreateLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      mergedCommonSignalPack = GEOFindOrCreateLog();
+      if (os_log_type_enabled(mergedCommonSignalPack, OS_LOG_TYPE_ERROR))
       {
         v20 = 136446722;
         v21 = "MapsSuggestionsSignalPipelineServer.mm";
@@ -227,7 +227,7 @@ LABEL_9:
         *v23 = 219;
         *&v23[4] = 2082;
         *&v23[6] = "[MapsSuggestionsSignalPipelineServer _addConnection:]";
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%{public}s:%{public}d: strongMemory went away in %{public}s", &v20, 0x1Cu);
+        _os_log_impl(&_mh_execute_header, mergedCommonSignalPack, OS_LOG_TYPE_ERROR, "%{public}s:%{public}d: strongMemory went away in %{public}s", &v20, 0x1Cu);
       }
     }
 
@@ -252,22 +252,22 @@ LABEL_29:
 LABEL_30:
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  if (v5)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v36 = v5;
+      v36 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
     v7 = [MapsSuggestionsFeelerXPCPeer alloc];
-    v8 = [(MapsSuggestionsSignalPipelineServer *)self memory];
-    v9 = [(MapsSuggestionsFeelerXPCPeer *)v7 initWithXPCConnection:v5 memory:v8];
+    memory = [(MapsSuggestionsSignalPipelineServer *)self memory];
+    v9 = [(MapsSuggestionsFeelerXPCPeer *)v7 initWithXPCConnection:connectionCopy memory:memory];
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -278,14 +278,14 @@ LABEL_30:
     v34 = v10;
     dispatch_sync(self->_queue._innerQueue, block);
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsSignalPipelineProxy];
-    [v5 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
     v12 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsSignalPipelineUpdateProxy];
     v13 = [NSSet setWithObjects:objc_opt_class(), 0];
     [v12 setClasses:v13 forSelector:"signalPackUpdated:" argumentIndex:0 ofReply:0];
 
-    [v5 setRemoteObjectInterface:v12];
-    [v5 setExportedObject:v10];
+    [connectionCopy setRemoteObjectInterface:v12];
+    [connectionCopy setExportedObject:v10];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v10);
     v28[0] = _NSConcreteStackBlock;
@@ -294,7 +294,7 @@ LABEL_30:
     v28[3] = &unk_100075720;
     objc_copyWeak(&v30, buf);
     objc_copyWeak(&v31, &location);
-    v14 = v5;
+    v14 = connectionCopy;
     v29 = v14;
     [v14 setInvalidationHandler:v28];
     v24[0] = _NSConcreteStackBlock;
@@ -352,20 +352,20 @@ LABEL_30:
     }
   }
 
-  return v5 != 0;
+  return connectionCopy != 0;
 }
 
-- (void)_sendSignalPack:(id)a3 toConnection:(id)a4
+- (void)_sendSignalPack:(id)pack toConnection:(id)connection
 {
-  v7 = a3;
-  v5 = [a4 remoteObjectProxyWithErrorHandler:&stru_1000757C0];
+  packCopy = pack;
+  v5 = [connection remoteObjectProxyWithErrorHandler:&stru_1000757C0];
   v6 = NSDataFromMapsSuggestionsSignalPack();
   [v5 signalPackUpdated:v6];
 }
 
-- (void)signalPipelineUpdated:(id)a3
+- (void)signalPipelineUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   if (self->_queue._innerQueue)
   {
     objc_initWeak(location, self);
@@ -376,7 +376,7 @@ LABEL_30:
     v8[3] = &unk_100075060;
     v6 = innerQueue;
     objc_copyWeak(&v10, location);
-    v9 = v4;
+    v9 = updatedCopy;
     dispatch_async(v6, v8);
 
     objc_destroyWeak(&v10);

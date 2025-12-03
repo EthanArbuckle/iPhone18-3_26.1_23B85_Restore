@@ -1,22 +1,22 @@
 @interface AAUIModalSignInViewController
-- (AAUIModalSignInViewController)initWithCoder:(id)a3;
-- (AAUIModalSignInViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4;
+- (AAUIModalSignInViewController)initWithCoder:(id)coder;
+- (AAUIModalSignInViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller;
 - (id)serviceIcon;
-- (void)_handleiForgotActionURL:(id)a3;
-- (void)didCompleteSigningInWithAccount:(id)a3;
-- (void)handleAuthCompletionWithResults:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)willBeginAuthWithContext:(id)a3;
+- (void)_handleiForgotActionURL:(id)l;
+- (void)didCompleteSigningInWithAccount:(id)account;
+- (void)handleAuthCompletionWithResults:(id)results;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)willBeginAuthWithContext:(id)context;
 @end
 
 @implementation AAUIModalSignInViewController
 
-- (AAUIModalSignInViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AAUIModalSignInViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = AAUIModalSignInViewController;
-  v4 = [(AAUIModalSignInViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(AAUIModalSignInViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (AAUIModalSignInViewController)initWithCoder:(id)a3
+- (AAUIModalSignInViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUIModalSignInViewController;
-  v3 = [(AAUIModalSignInViewController *)&v6 initWithCoder:a3];
+  v3 = [(AAUIModalSignInViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -48,22 +48,22 @@
   return v3;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUIModalSignInViewController *)self viewIfLoaded];
-  v9 = [v8 window];
+  lCopy = l;
+  completionCopy = completion;
+  viewIfLoaded = [(AAUIModalSignInViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v9)
+  if (window)
   {
-    v10 = [v6 objectForKeyedSubscript:@"aaaction"];
+    v10 = [lCopy objectForKeyedSubscript:@"aaaction"];
     if ([v10 isEqual:@"resetPassword"])
     {
-      [(AAUIModalSignInViewController *)self _handleiForgotActionURL:v6];
-      if (v7)
+      [(AAUIModalSignInViewController *)self _handleiForgotActionURL:lCopy];
+      if (completionCopy)
       {
-        v7[2](v7);
+        completionCopy[2](completionCopy);
       }
     }
 
@@ -75,13 +75,13 @@
         *buf = 138412546;
         v15 = v10;
         v16 = 2112;
-        v17 = v6;
+        v17 = lCopy;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Unknown action (%@) sent to AAUIModalSignInViewController. %@", buf, 0x16u);
       }
 
       v12.receiver = self;
       v12.super_class = AAUIModalSignInViewController;
-      [(AAUIModalSignInViewController *)&v12 handleURL:v6 withCompletion:v7];
+      [(AAUIModalSignInViewController *)&v12 handleURL:lCopy withCompletion:completionCopy];
     }
   }
 
@@ -89,13 +89,13 @@
   {
     v13.receiver = self;
     v13.super_class = AAUIModalSignInViewController;
-    [(AAUIModalSignInViewController *)&v13 handleURL:v6 withCompletion:v7];
+    [(AAUIModalSignInViewController *)&v13 handleURL:lCopy withCompletion:completionCopy];
   }
 }
 
-- (void)_handleiForgotActionURL:(id)a3
+- (void)_handleiForgotActionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,17 +122,17 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)willBeginAuthWithContext:(id)a3
+- (void)willBeginAuthWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[ACAccountStore defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
 
-  if (!v6)
+  if (!aa_primaryAppleAccount)
   {
-    [v4 setShouldOfferSecurityUpgrade:1];
-    [v4 setAnticipateEscrowAttempt:1];
-    [v4 setSupportsPiggybacking:1];
+    [contextCopy setShouldOfferSecurityUpgrade:1];
+    [contextCopy setAnticipateEscrowAttempt:1];
+    [contextCopy setSupportsPiggybacking:1];
     v7 = _AAUILogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -141,22 +141,22 @@
     }
   }
 
-  [v4 setShouldUpdatePersistentServiceTokens:1];
-  [v4 setServiceType:1];
-  [v4 setShouldForceInteractiveAuth:1];
+  [contextCopy setShouldUpdatePersistentServiceTokens:1];
+  [contextCopy setServiceType:1];
+  [contextCopy setShouldForceInteractiveAuth:1];
   v8.receiver = self;
   v8.super_class = AAUIModalSignInViewController;
-  [(AAUIModalSignInViewController *)&v8 willBeginAuthWithContext:v4];
+  [(AAUIModalSignInViewController *)&v8 willBeginAuthWithContext:contextCopy];
 }
 
-- (void)handleAuthCompletionWithResults:(id)a3
+- (void)handleAuthCompletionWithResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v14.receiver = self;
   v14.super_class = AAUIModalSignInViewController;
-  [(AAUIModalSignInViewController *)&v14 handleAuthCompletionWithResults:v4];
-  v5 = [(AAUIModalSignInViewController *)self navigationController];
-  v6 = [(AAUIModalSignInViewController *)self _serviceContextWithResults:v4 parentViewController:v5];
+  [(AAUIModalSignInViewController *)&v14 handleAuthCompletionWithResults:resultsCopy];
+  navigationController = [(AAUIModalSignInViewController *)self navigationController];
+  v6 = [(AAUIModalSignInViewController *)self _serviceContextWithResults:resultsCopy parentViewController:navigationController];
 
   v7 = [AIDAServiceOwnersManager alloc];
   v8 = +[ACAccountStore defaultStore];
@@ -168,21 +168,21 @@
   v12[2] = sub_D9B8;
   v12[3] = &unk_59720;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = resultsCopy;
+  v11 = resultsCopy;
   [v9 signInService:v10 withContext:v6 completion:v12];
 }
 
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  resultsCopy = results;
   v8 = objc_alloc_init(AIDAMutableServiceContext);
-  [v8 setAuthenticationResults:v7];
+  [v8 setAuthenticationResults:resultsCopy];
 
-  [v8 setViewController:v6];
-  v9 = [v8 signInContexts];
-  v10 = [v9 mutableCopy];
+  [v8 setViewController:controllerCopy];
+  signInContexts = [v8 signInContexts];
+  v10 = [signInContexts mutableCopy];
   v11 = v10;
   if (v10)
   {
@@ -197,8 +197,8 @@
   v13 = v12;
 
   v14 = [AAUISignInFlowControllerDelegate alloc];
-  v15 = [v8 viewController];
-  v16 = [v14 initWithPresentingViewController:v15];
+  viewController = [v8 viewController];
+  v16 = [v14 initWithPresentingViewController:viewController];
   flowControllerDelegate = self->_flowControllerDelegate;
   self->_flowControllerDelegate = v16;
 
@@ -209,14 +209,14 @@
   return v18;
 }
 
-- (void)didCompleteSigningInWithAccount:(id)a3
+- (void)didCompleteSigningInWithAccount:(id)account
 {
-  v6 = a3;
+  accountCopy = account;
   WeakRetained = objc_loadWeakRetained(&self->PSAppleIDSplashViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [WeakRetained controller:self didFinishSettingUpAccount:v6];
+    [WeakRetained controller:self didFinishSettingUpAccount:accountCopy];
   }
 
   flowControllerDelegate = self->_flowControllerDelegate;

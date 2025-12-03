@@ -1,22 +1,22 @@
 @interface CSDRelayCall
-- (BOOL)canBeAnsweredWithAudioOrVideoRelayWithRequest:(id)a3;
-- (BOOL)canBeAnsweredWithRequest:(id)a3;
-- (BOOL)canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:(id)a3;
+- (BOOL)canBeAnsweredWithAudioOrVideoRelayWithRequest:(id)request;
+- (BOOL)canBeAnsweredWithRequest:(id)request;
+- (BOOL)canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:(id)request;
 - (BOOL)isConferenceActive;
 - (BOOL)isSendingAudio;
 - (BOOL)isUplinkMuted;
 - (BOOL)shouldOwnMuteHandler;
 - (BOOL)supportsDisplayingFaceTimeAudioCalls;
 - (BOOL)supportsScreening;
-- (CSDRelayCall)initWithRelayMessage:(id)a3 outgoing:(BOOL)a4;
+- (CSDRelayCall)initWithRelayMessage:(id)message outgoing:(BOOL)outgoing;
 - (CSDRelayCallDelegate)relayDelegate;
 - (NSSet)remoteParticipantHandles;
 - (TUCallProvider)localProvider;
 - (id)audioCategory;
 - (id)audioMode;
 - (id)getRelayConferenceInterfaceBlock;
-- (id)initOutgoingWithDialRequest:(id)a3;
-- (id)initOutgoingWithJoinConversationRequest:(id)a3;
+- (id)initOutgoingWithDialRequest:(id)request;
+- (id)initOutgoingWithJoinConversationRequest:(id)request;
 - (id)recordingAllowedError;
 - (id)recordingDisabledError;
 - (id)relayConferenceInterface;
@@ -27,66 +27,66 @@
 - (int64_t)inputAudioPowerSpectrumToken;
 - (int64_t)outputAudioPowerSpectrumToken;
 - (int64_t)spatialAudioSourceIdentifier;
-- (void)answerWithRequest:(id)a3;
+- (void)answerWithRequest:(id)request;
 - (void)becomeEndpointForPullFromRemoteDevice;
-- (void)dialWithRequest:(id)a3 displayContext:(id)a4;
-- (void)groupWithOtherCall:(id)a3;
+- (void)dialWithRequest:(id)request displayContext:(id)context;
+- (void)groupWithOtherCall:(id)call;
 - (void)hold;
-- (void)joinConversationWithRequest:(id)a3;
+- (void)joinConversationWithRequest:(id)request;
 - (void)sendHardPauseDigits;
-- (void)setAnnounceProviderIdentifier:(id)a3;
-- (void)setBluetoothAudioFormat:(int64_t)a3;
-- (void)setCallGroupUUID:(id)a3;
-- (void)setCallStatus:(int)a3;
-- (void)setCallerNameFromNetwork:(id)a3;
-- (void)setConversationGroupUUID:(id)a3;
-- (void)setEmergency:(BOOL)a3;
-- (void)setFailureExpected:(BOOL)a3;
-- (void)setHandle:(id)a3;
-- (void)setHardPauseDigits:(id)a3;
-- (void)setHardPauseDigitsState:(int)a3;
-- (void)setInjectingAudio:(BOOL)a3;
+- (void)setAnnounceProviderIdentifier:(id)identifier;
+- (void)setBluetoothAudioFormat:(int64_t)format;
+- (void)setCallGroupUUID:(id)d;
+- (void)setCallStatus:(int)status;
+- (void)setCallerNameFromNetwork:(id)network;
+- (void)setConversationGroupUUID:(id)d;
+- (void)setEmergency:(BOOL)emergency;
+- (void)setFailureExpected:(BOOL)expected;
+- (void)setHandle:(id)handle;
+- (void)setHardPauseDigits:(id)digits;
+- (void)setHardPauseDigitsState:(int)state;
+- (void)setInjectingAudio:(BOOL)audio;
 - (void)setLocallyConnected;
 - (void)setLocallyConnecting;
 - (void)setLocallyHasSentInvitation;
 - (void)setLocallyHasStartedOutgoing;
-- (void)setNeedsManualInCallSounds:(BOOL)a3;
-- (void)setRemoteUplinkMuted:(BOOL)a3;
-- (void)setScreenShareAttributes:(id)a3;
-- (void)setSupportsEmergencyFallback:(BOOL)a3;
-- (void)setSupportsTTYWithVoice:(BOOL)a3;
-- (void)setTtyType:(int)a3;
-- (void)startConferenceForAnsweredCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4;
-- (void)startConferenceForDialedCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4;
-- (void)startConferenceForPulledCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4;
+- (void)setNeedsManualInCallSounds:(BOOL)sounds;
+- (void)setRemoteUplinkMuted:(BOOL)muted;
+- (void)setScreenShareAttributes:(id)attributes;
+- (void)setSupportsEmergencyFallback:(BOOL)fallback;
+- (void)setSupportsTTYWithVoice:(BOOL)voice;
+- (void)setTtyType:(int)type;
+- (void)startConferenceForAnsweredCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary;
+- (void)startConferenceForDialedCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary;
+- (void)startConferenceForPulledCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary;
 - (void)stopConference;
 - (void)ungroup;
 - (void)unhold;
-- (void)updateWithOverrideCallProperties:(id)a3;
-- (void)updateWithRelayMessage:(id)a3;
+- (void)updateWithOverrideCallProperties:(id)properties;
+- (void)updateWithRelayMessage:(id)message;
 @end
 
 @implementation CSDRelayCall
 
-- (id)initOutgoingWithDialRequest:(id)a3
+- (id)initOutgoingWithDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
-  v6 = -[CSDRelayCall initWithUniqueProxyIdentifier:endpointOnCurrentDevice:](self, "initWithUniqueProxyIdentifier:endpointOnCurrentDevice:", v5, [v4 endpointOnCurrentDevice]);
+  requestCopy = request;
+  uniqueProxyIdentifier = [requestCopy uniqueProxyIdentifier];
+  v6 = -[CSDRelayCall initWithUniqueProxyIdentifier:endpointOnCurrentDevice:](self, "initWithUniqueProxyIdentifier:endpointOnCurrentDevice:", uniqueProxyIdentifier, [requestCopy endpointOnCurrentDevice]);
 
   if (v6)
   {
-    v7 = [v4 localSenderIdentityUUID];
+    localSenderIdentityUUID = [requestCopy localSenderIdentityUUID];
     localSenderIdentityUUID = v6->_localSenderIdentityUUID;
-    v6->_localSenderIdentityUUID = v7;
+    v6->_localSenderIdentityUUID = localSenderIdentityUUID;
 
-    v9 = [v4 localSenderIdentityAccountUUID];
+    localSenderIdentityAccountUUID = [requestCopy localSenderIdentityAccountUUID];
     localSenderIdentityAccountUUID = v6->_localSenderIdentityAccountUUID;
-    v6->_localSenderIdentityAccountUUID = v9;
+    v6->_localSenderIdentityAccountUUID = localSenderIdentityAccountUUID;
 
-    [v4 ttyType];
+    [requestCopy ttyType];
     v6->_ttyType = TUCallTTYTypeForTUDialRequestTTYType();
-    v11 = [(CSDRelayCall *)v6 featureFlags];
+    featureFlags = [(CSDRelayCall *)v6 featureFlags];
     [(CSDCall *)v6 setIsCallRecordingEnabled:TUCallRecordingEnabled()];
 
     [(CSDCall *)v6 setupInputMuteHandlerWithFeatureFlags:0];
@@ -95,26 +95,26 @@
   return v6;
 }
 
-- (id)initOutgoingWithJoinConversationRequest:(id)a3
+- (id)initOutgoingWithJoinConversationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 UUID];
-  v6 = [v5 UUIDString];
-  v7 = -[CSDRelayCall initWithUniqueProxyIdentifier:endpointOnCurrentDevice:](self, "initWithUniqueProxyIdentifier:endpointOnCurrentDevice:", v6, [v4 endpointOnCurrentDevice]);
+  requestCopy = request;
+  uUID = [requestCopy UUID];
+  uUIDString = [uUID UUIDString];
+  v7 = -[CSDRelayCall initWithUniqueProxyIdentifier:endpointOnCurrentDevice:](self, "initWithUniqueProxyIdentifier:endpointOnCurrentDevice:", uUIDString, [requestCopy endpointOnCurrentDevice]);
 
   if (v7)
   {
     [(CSDRelayCall *)v7 setConversation:1];
     v8 = [NSMutableSet alloc];
-    v9 = [v4 remoteMembers];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    remoteMembers = [requestCopy remoteMembers];
+    v10 = [v8 initWithCapacity:{objc_msgSend(remoteMembers, "count")}];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v11 = [v4 remoteMembers];
-    v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    remoteMembers2 = [requestCopy remoteMembers];
+    v12 = [remoteMembers2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v12)
     {
       v13 = v12;
@@ -126,18 +126,18 @@
         {
           if (*v22 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(remoteMembers2);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * v15) handles];
-          v17 = [v16 anyObject];
-          [(NSSet *)v10 addObject:v17];
+          handles = [*(*(&v21 + 1) + 8 * v15) handles];
+          anyObject = [handles anyObject];
+          [(NSSet *)v10 addObject:anyObject];
 
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v13 = [remoteMembers2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v13);
@@ -146,7 +146,7 @@
     remoteParticipantHandles = v7->_remoteParticipantHandles;
     v7->_remoteParticipantHandles = v10;
 
-    v19 = [(CSDRelayCall *)v7 featureFlags];
+    featureFlags = [(CSDRelayCall *)v7 featureFlags];
     [(CSDCall *)v7 setIsCallRecordingEnabled:TUCallRecordingEnabled()];
 
     [(CSDCall *)v7 setupInputMuteHandlerWithFeatureFlags:0];
@@ -155,40 +155,40 @@
   return v7;
 }
 
-- (CSDRelayCall)initWithRelayMessage:(id)a3 outgoing:(BOOL)a4
+- (CSDRelayCall)initWithRelayMessage:(id)message outgoing:(BOOL)outgoing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 uniqueProxyIdentifier];
-  v8 = [(CSDRelayCall *)self initWithUniqueProxyIdentifier:v7];
+  outgoingCopy = outgoing;
+  messageCopy = message;
+  uniqueProxyIdentifier = [messageCopy uniqueProxyIdentifier];
+  v8 = [(CSDRelayCall *)self initWithUniqueProxyIdentifier:uniqueProxyIdentifier];
 
   if (v8)
   {
-    v9 = [v6 tuHandle];
+    tuHandle = [messageCopy tuHandle];
     handle = v8->_handle;
-    v8->_handle = v9;
+    v8->_handle = tuHandle;
 
-    v11 = [v6 isoCountryCode];
-    v12 = [v11 copy];
+    isoCountryCode = [messageCopy isoCountryCode];
+    v12 = [isoCountryCode copy];
     isoCountryCode = v8->_isoCountryCode;
     v8->_isoCountryCode = v12;
 
-    v14 = [v6 callerNameFromNetwork];
-    v15 = [v14 copy];
+    callerNameFromNetwork = [messageCopy callerNameFromNetwork];
+    v15 = [callerNameFromNetwork copy];
     callerNameFromNetwork = v8->_callerNameFromNetwork;
     v8->_callerNameFromNetwork = v15;
 
-    v17 = [v6 tuProvider];
+    tuProvider = [messageCopy tuProvider];
     provider = v8->_provider;
-    v8->_provider = v17;
+    v8->_provider = tuProvider;
 
-    v8->_failureExpected = [v6 isFailureExpected];
-    v8->_supportsEmergencyFallback = [v6 supportsEmergencyFallback];
-    v8->_video = [v6 isVideo];
-    v8->_voicemail = [v6 isVoicemail];
-    v8->_needsManualInCallSounds = [v6 needsManualInCallSounds];
-    v8->_outgoing = v4;
-    if (v4)
+    v8->_failureExpected = [messageCopy isFailureExpected];
+    v8->_supportsEmergencyFallback = [messageCopy supportsEmergencyFallback];
+    v8->_video = [messageCopy isVideo];
+    v8->_voicemail = [messageCopy isVoicemail];
+    v8->_needsManualInCallSounds = [messageCopy needsManualInCallSounds];
+    v8->_outgoing = outgoingCopy;
+    if (outgoingCopy)
     {
       v19 = 3;
     }
@@ -199,46 +199,46 @@
     }
 
     v8->_callStatus = v19;
-    v20 = [v6 inviteData];
-    v21 = [v20 relayInviteDictionary];
-    v22 = [v21 copy];
+    inviteData = [messageCopy inviteData];
+    relayInviteDictionary = [inviteData relayInviteDictionary];
+    v22 = [relayInviteDictionary copy];
     remoteInviteDictionary = v8->_remoteInviteDictionary;
     v8->_remoteInviteDictionary = v22;
 
-    v8->_remoteUplinkMuted = [v6 isRemoteUplinkMuted];
-    v24 = [v6 localSenderIdentityUUID];
+    v8->_remoteUplinkMuted = [messageCopy isRemoteUplinkMuted];
+    localSenderIdentityUUID = [messageCopy localSenderIdentityUUID];
     localSenderIdentityUUID = v8->_localSenderIdentityUUID;
-    v8->_localSenderIdentityUUID = v24;
+    v8->_localSenderIdentityUUID = localSenderIdentityUUID;
 
-    v26 = [v6 localSenderIdentityAccountUUID];
+    localSenderIdentityAccountUUID = [messageCopy localSenderIdentityAccountUUID];
     localSenderIdentityAccountUUID = v8->_localSenderIdentityAccountUUID;
-    v8->_localSenderIdentityAccountUUID = v26;
+    v8->_localSenderIdentityAccountUUID = localSenderIdentityAccountUUID;
 
-    v28 = [v6 remoteParticipantTUHandles];
+    remoteParticipantTUHandles = [messageCopy remoteParticipantTUHandles];
     remoteParticipantHandles = v8->_remoteParticipantHandles;
-    v8->_remoteParticipantHandles = v28;
+    v8->_remoteParticipantHandles = remoteParticipantTUHandles;
 
-    v8->_ttyType = [v6 ttyType];
-    v8->_supportsTTYWithVoice = [v6 supportsTTYWithVoice];
-    v8->_relayHostCanScreen = [v6 relayHostCanScreen];
-    v8->_emergency = [v6 isEmergency];
-    -[CSDCall setSupportsDTMFUpdates:](v8, "setSupportsDTMFUpdates:", [v6 supportsDTMFUpdates]);
-    -[CSDRelayCall setConversation:](v8, "setConversation:", [v6 hasGroupUUIDString]);
+    v8->_ttyType = [messageCopy ttyType];
+    v8->_supportsTTYWithVoice = [messageCopy supportsTTYWithVoice];
+    v8->_relayHostCanScreen = [messageCopy relayHostCanScreen];
+    v8->_emergency = [messageCopy isEmergency];
+    -[CSDCall setSupportsDTMFUpdates:](v8, "setSupportsDTMFUpdates:", [messageCopy supportsDTMFUpdates]);
+    -[CSDRelayCall setConversation:](v8, "setConversation:", [messageCopy hasGroupUUIDString]);
     v30 = [NSUUID alloc];
-    v31 = [v6 groupUUIDString];
-    v32 = [v30 initWithUUIDString:v31];
+    groupUUIDString = [messageCopy groupUUIDString];
+    v32 = [v30 initWithUUIDString:groupUUIDString];
     [(CSDRelayCall *)v8 setCallGroupUUID:v32];
 
-    v33 = [v6 sourceIdentifier];
-    [(CSDRelayCall *)v8 setSourceIdentifier:v33];
+    sourceIdentifier = [messageCopy sourceIdentifier];
+    [(CSDRelayCall *)v8 setSourceIdentifier:sourceIdentifier];
 
-    -[CSDCall setSoundRegion:](v8, "setSoundRegion:", [v6 soundRegion]);
-    v34 = [v6 callModel];
-    [(CSDCall *)v8 setModel:v34];
+    -[CSDCall setSoundRegion:](v8, "setSoundRegion:", [messageCopy soundRegion]);
+    callModel = [messageCopy callModel];
+    [(CSDCall *)v8 setModel:callModel];
 
-    -[CSDRelayCall setReceptionistCapable:](v8, "setReceptionistCapable:", [v6 isReceptionistCapable]);
-    -[CSDCall setLocalUserInHomeCountry:](v8, "setLocalUserInHomeCountry:", [v6 isLocalUserInHomeCountry]);
-    v35 = [(CSDRelayCall *)v8 featureFlags];
+    -[CSDRelayCall setReceptionistCapable:](v8, "setReceptionistCapable:", [messageCopy isReceptionistCapable]);
+    -[CSDCall setLocalUserInHomeCountry:](v8, "setLocalUserInHomeCountry:", [messageCopy isLocalUserInHomeCountry]);
+    featureFlags = [(CSDRelayCall *)v8 featureFlags];
     [(CSDCall *)v8 setIsCallRecordingEnabled:TUCallRecordingEnabled()];
 
     [(CSDCall *)v8 setupInputMuteHandlerWithFeatureFlags:0];
@@ -247,61 +247,61 @@
   return v8;
 }
 
-- (void)updateWithRelayMessage:(id)a3
+- (void)updateWithRelayMessage:(id)message
 {
-  v18 = a3;
-  if ([v18 hasProtoProvider])
+  messageCopy = message;
+  if ([messageCopy hasProtoProvider])
   {
-    v4 = [v18 tuProvider];
-    [(CSDRelayCall *)self setProvider:v4];
+    tuProvider = [messageCopy tuProvider];
+    [(CSDRelayCall *)self setProvider:tuProvider];
   }
 
-  v5 = [v18 tuHandle];
-  [(CSDRelayCall *)self setHandle:v5];
+  tuHandle = [messageCopy tuHandle];
+  [(CSDRelayCall *)self setHandle:tuHandle];
 
-  v6 = [v18 isoCountryCode];
-  [(CSDRelayCall *)self setIsoCountryCode:v6];
+  isoCountryCode = [messageCopy isoCountryCode];
+  [(CSDRelayCall *)self setIsoCountryCode:isoCountryCode];
 
-  v7 = [v18 callerNameFromNetwork];
-  [(CSDRelayCall *)self setCallerNameFromNetwork:v7];
+  callerNameFromNetwork = [messageCopy callerNameFromNetwork];
+  [(CSDRelayCall *)self setCallerNameFromNetwork:callerNameFromNetwork];
 
-  -[CSDRelayCall setVideo:](self, "setVideo:", [v18 isVideo]);
-  -[CSDRelayCall setVoicemail:](self, "setVoicemail:", [v18 isVoicemail]);
-  -[CSDRelayCall setNeedsManualInCallSounds:](self, "setNeedsManualInCallSounds:", [v18 needsManualInCallSounds]);
-  -[CSDCall setSoundRegion:](self, "setSoundRegion:", [v18 soundRegion]);
-  v8 = [v18 sourceIdentifier];
-  [(CSDRelayCall *)self setSourceIdentifier:v8];
+  -[CSDRelayCall setVideo:](self, "setVideo:", [messageCopy isVideo]);
+  -[CSDRelayCall setVoicemail:](self, "setVoicemail:", [messageCopy isVoicemail]);
+  -[CSDRelayCall setNeedsManualInCallSounds:](self, "setNeedsManualInCallSounds:", [messageCopy needsManualInCallSounds]);
+  -[CSDCall setSoundRegion:](self, "setSoundRegion:", [messageCopy soundRegion]);
+  sourceIdentifier = [messageCopy sourceIdentifier];
+  [(CSDRelayCall *)self setSourceIdentifier:sourceIdentifier];
 
-  -[CSDRelayCall setEmergency:](self, "setEmergency:", [v18 isEmergency]);
-  -[CSDRelayCall setFailureExpected:](self, "setFailureExpected:", [v18 isFailureExpected]);
-  -[CSDRelayCall setSupportsEmergencyFallback:](self, "setSupportsEmergencyFallback:", [v18 supportsEmergencyFallback]);
-  -[CSDRelayCall setSOS:](self, "setSOS:", [v18 isSOS]);
-  -[CSDCall setSupportsDTMFUpdates:](self, "setSupportsDTMFUpdates:", [v18 supportsDTMFUpdates]);
-  v9 = [v18 callModel];
-  [(CSDCall *)self setModel:v9];
+  -[CSDRelayCall setEmergency:](self, "setEmergency:", [messageCopy isEmergency]);
+  -[CSDRelayCall setFailureExpected:](self, "setFailureExpected:", [messageCopy isFailureExpected]);
+  -[CSDRelayCall setSupportsEmergencyFallback:](self, "setSupportsEmergencyFallback:", [messageCopy supportsEmergencyFallback]);
+  -[CSDRelayCall setSOS:](self, "setSOS:", [messageCopy isSOS]);
+  -[CSDCall setSupportsDTMFUpdates:](self, "setSupportsDTMFUpdates:", [messageCopy supportsDTMFUpdates]);
+  callModel = [messageCopy callModel];
+  [(CSDCall *)self setModel:callModel];
 
-  v10 = [(CSDCall *)self displayContext];
-  v11 = [v18 displayContext];
-  v12 = [v10 displayContextByMergingWithDisplayContext:v11];
+  displayContext = [(CSDCall *)self displayContext];
+  displayContext2 = [messageCopy displayContext];
+  v12 = [displayContext displayContextByMergingWithDisplayContext:displayContext2];
   [(CSDCall *)self setDisplayContext:v12];
 
-  -[CSDRelayCall setRemoteUplinkMuted:](self, "setRemoteUplinkMuted:", [v18 isRemoteUplinkMuted]);
-  v13 = [v18 localSenderIdentityUUID];
-  [(CSDRelayCall *)self setLocalSenderIdentityUUID:v13];
+  -[CSDRelayCall setRemoteUplinkMuted:](self, "setRemoteUplinkMuted:", [messageCopy isRemoteUplinkMuted]);
+  localSenderIdentityUUID = [messageCopy localSenderIdentityUUID];
+  [(CSDRelayCall *)self setLocalSenderIdentityUUID:localSenderIdentityUUID];
 
-  v14 = [v18 localSenderIdentityAccountUUID];
-  [(CSDRelayCall *)self setLocalSenderIdentityAccountUUID:v14];
+  localSenderIdentityAccountUUID = [messageCopy localSenderIdentityAccountUUID];
+  [(CSDRelayCall *)self setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
 
-  -[CSDRelayCall setTtyType:](self, "setTtyType:", [v18 ttyType]);
-  -[CSDRelayCall setSupportsTTYWithVoice:](self, "setSupportsTTYWithVoice:", [v18 supportsTTYWithVoice]);
-  -[CSDRelayCall setOriginatingUIType:](self, "setOriginatingUIType:", [v18 originatingUIType]);
-  -[CSDRelayCall setConversation:](self, "setConversation:", [v18 hasGroupUUIDString]);
-  -[CSDRelayCall setReceptionistCapable:](self, "setReceptionistCapable:", [v18 isReceptionistCapable]);
-  if ([v18 hasGroupUUIDString])
+  -[CSDRelayCall setTtyType:](self, "setTtyType:", [messageCopy ttyType]);
+  -[CSDRelayCall setSupportsTTYWithVoice:](self, "setSupportsTTYWithVoice:", [messageCopy supportsTTYWithVoice]);
+  -[CSDRelayCall setOriginatingUIType:](self, "setOriginatingUIType:", [messageCopy originatingUIType]);
+  -[CSDRelayCall setConversation:](self, "setConversation:", [messageCopy hasGroupUUIDString]);
+  -[CSDRelayCall setReceptionistCapable:](self, "setReceptionistCapable:", [messageCopy isReceptionistCapable]);
+  if ([messageCopy hasGroupUUIDString])
   {
     v15 = [NSUUID alloc];
-    v16 = [v18 groupUUIDString];
-    v17 = [v15 initWithUUIDString:v16];
+    groupUUIDString = [messageCopy groupUUIDString];
+    v17 = [v15 initWithUUIDString:groupUUIDString];
     [(CSDRelayCall *)self setCallGroupUUID:v17];
   }
 }
@@ -332,10 +332,10 @@
 
 - (int)callRelaySupport
 {
-  v3 = [(CSDRelayCall *)self provider];
-  v4 = [v3 isSystemProvider];
+  provider = [(CSDRelayCall *)self provider];
+  isSystemProvider = [provider isSystemProvider];
 
-  if (!v4)
+  if (!isSystemProvider)
   {
     return 0;
   }
@@ -347,131 +347,131 @@
 
 - (BOOL)supportsScreening
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  if ([v3 LVMEverywhere])
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  if ([featureFlags LVMEverywhere])
   {
-    v4 = [(CSDRelayCall *)self relayHostCanScreen];
+    relayHostCanScreen = [(CSDRelayCall *)self relayHostCanScreen];
   }
 
   else
   {
-    v4 = 0;
+    relayHostCanScreen = 0;
   }
 
-  return v4;
+  return relayHostCanScreen;
 }
 
 - (id)recordingDisabledError
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  v4 = [v3 relayCallRecordingEnabled];
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  relayCallRecordingEnabled = [featureFlags relayCallRecordingEnabled];
 
-  if (v4)
+  if (relayCallRecordingEnabled)
   {
     v8.receiver = self;
     v8.super_class = CSDRelayCall;
-    v5 = [(CSDCall *)&v8 recordingDisabledError];
+    recordingDisabledError = [(CSDCall *)&v8 recordingDisabledError];
   }
 
   else
   {
     v6 = [NSError alloc];
-    v5 = [v6 initWithDomain:TUStartRecordingErrorDomain code:9 userInfo:0];
+    recordingDisabledError = [v6 initWithDomain:TUStartRecordingErrorDomain code:9 userInfo:0];
   }
 
-  return v5;
+  return recordingDisabledError;
 }
 
 - (id)recordingAllowedError
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  v4 = [v3 relayCallRecordingEnabled];
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  relayCallRecordingEnabled = [featureFlags relayCallRecordingEnabled];
 
-  if (v4)
+  if (relayCallRecordingEnabled)
   {
     v8.receiver = self;
     v8.super_class = CSDRelayCall;
-    v5 = [(CSDCall *)&v8 recordingAllowedError];
+    recordingAllowedError = [(CSDCall *)&v8 recordingAllowedError];
   }
 
   else
   {
     v6 = [NSError alloc];
-    v5 = [v6 initWithDomain:TUStartRecordingErrorDomain code:9 userInfo:0];
+    recordingAllowedError = [v6 initWithDomain:TUStartRecordingErrorDomain code:9 userInfo:0];
   }
 
-  return v5;
+  return recordingAllowedError;
 }
 
 - (id)translationAllowedError
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  v4 = [v3 relayCallTranslationEnabled];
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  relayCallTranslationEnabled = [featureFlags relayCallTranslationEnabled];
 
-  if (v4)
+  if (relayCallTranslationEnabled)
   {
     v8.receiver = self;
     v8.super_class = CSDRelayCall;
-    v5 = [(CSDCall *)&v8 translationAllowedError];
+    translationAllowedError = [(CSDCall *)&v8 translationAllowedError];
   }
 
   else
   {
     v6 = [NSError alloc];
-    v5 = [v6 initWithDomain:TUTranslationErrorDomain code:8 userInfo:0];
+    translationAllowedError = [v6 initWithDomain:TUTranslationErrorDomain code:8 userInfo:0];
   }
 
-  return v5;
+  return translationAllowedError;
 }
 
 - (id)translationDisabledError
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  v4 = [v3 relayCallTranslationEnabled];
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  relayCallTranslationEnabled = [featureFlags relayCallTranslationEnabled];
 
-  if (v4)
+  if (relayCallTranslationEnabled)
   {
     v8.receiver = self;
     v8.super_class = CSDRelayCall;
-    v5 = [(CSDCall *)&v8 translationDisabledError];
+    translationDisabledError = [(CSDCall *)&v8 translationDisabledError];
   }
 
   else
   {
     v6 = [NSError alloc];
-    v5 = [v6 initWithDomain:TUTranslationErrorDomain code:8 userInfo:0];
+    translationDisabledError = [v6 initWithDomain:TUTranslationErrorDomain code:8 userInfo:0];
   }
 
-  return v5;
+  return translationDisabledError;
 }
 
-- (BOOL)canBeAnsweredWithRequest:(id)a3
+- (BOOL)canBeAnsweredWithRequest:(id)request
 {
-  v4 = a3;
-  if ([(CSDRelayCall *)self canBeAnsweredWithAudioOrVideoRelayWithRequest:v4]|| [(CSDRelayCall *)self canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:v4])
+  requestCopy = request;
+  if ([(CSDRelayCall *)self canBeAnsweredWithAudioOrVideoRelayWithRequest:requestCopy]|| [(CSDRelayCall *)self canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:requestCopy])
   {
-    v5 = 1;
+    supportsDisplayingFaceTimeAudioCalls = 1;
   }
 
-  else if (-[CSDRelayCall isVideo](self, "isVideo") && [v4 behavior] == 4)
+  else if (-[CSDRelayCall isVideo](self, "isVideo") && [requestCopy behavior] == 4)
   {
-    v5 = [(CSDRelayCall *)self supportsDisplayingFaceTimeAudioCalls];
+    supportsDisplayingFaceTimeAudioCalls = [(CSDRelayCall *)self supportsDisplayingFaceTimeAudioCalls];
   }
 
   else
   {
-    v5 = 0;
+    supportsDisplayingFaceTimeAudioCalls = 0;
   }
 
-  return v5;
+  return supportsDisplayingFaceTimeAudioCalls;
 }
 
-- (BOOL)canBeAnsweredWithAudioOrVideoRelayWithRequest:(id)a3
+- (BOOL)canBeAnsweredWithAudioOrVideoRelayWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([(CSDRelayCall *)self hasRelaySupport:2])
   {
-    v5 = ![(CSDRelayCall *)self canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:v4];
+    v5 = ![(CSDRelayCall *)self canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:requestCopy];
   }
 
   else
@@ -482,9 +482,9 @@
   return v5;
 }
 
-- (BOOL)canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:(id)a3
+- (BOOL)canOnlyBeAnsweredWithoutAudioOrVideoRelayWithRequest:(id)request
 {
-  if ([a3 wantsHoldMusic])
+  if ([request wantsHoldMusic])
   {
     return 1;
   }
@@ -494,10 +494,10 @@
 
 - (TUCallProvider)localProvider
 {
-  v3 = [(CSDRelayCall *)self relayDelegate];
-  v4 = [(CSDRelayCall *)self provider];
-  v5 = [v4 identifier];
-  v6 = [v3 localProviderWithIdentifier:v5];
+  relayDelegate = [(CSDRelayCall *)self relayDelegate];
+  provider = [(CSDRelayCall *)self provider];
+  identifier = [provider identifier];
+  v6 = [relayDelegate localProviderWithIdentifier:identifier];
 
   return v6;
 }
@@ -508,17 +508,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    remoteParticipantHandles = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CSDRelayCall;
-    v5 = [(CSDRelayCall *)&v8 remoteParticipantHandles];
+    remoteParticipantHandles = [(CSDRelayCall *)&v8 remoteParticipantHandles];
   }
 
-  v6 = v5;
+  v6 = remoteParticipantHandles;
 
   return v6;
 }
@@ -526,16 +526,16 @@
 - (BOOL)supportsDisplayingFaceTimeAudioCalls
 {
   v2 = +[CSDCallCapabilities sharedInstance];
-  v3 = [v2 callCapabilitiesState];
-  v4 = [v3 supportsDisplayingFaceTimeAudioCalls];
+  callCapabilitiesState = [v2 callCapabilitiesState];
+  supportsDisplayingFaceTimeAudioCalls = [callCapabilitiesState supportsDisplayingFaceTimeAudioCalls];
 
-  return v4;
+  return supportsDisplayingFaceTimeAudioCalls;
 }
 
-- (void)setAnnounceProviderIdentifier:(id)a3
+- (void)setAnnounceProviderIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self announceProviderIdentifier];
+  identifierCopy = identifier;
+  announceProviderIdentifier = [(CSDRelayCall *)self announceProviderIdentifier];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -544,16 +544,16 @@
     v8 = 3221225472;
     v9 = sub_100119FF0;
     v10 = &unk_100619D88;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = identifierCopy;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)setCallStatus:(int)a3
+- (void)setCallStatus:(int)status
 {
-  if (self->_callStatus != a3)
+  if (self->_callStatus != status)
   {
     v8 = v3;
     v9 = v4;
@@ -562,15 +562,15 @@
     v6[2] = sub_10011A0A0;
     v6[3] = &unk_100619EF8;
     v6[4] = self;
-    v7 = a3;
+    statusCopy = status;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setFailureExpected:(BOOL)a3
+- (void)setFailureExpected:(BOOL)expected
 {
-  if (self->_failureExpected != a3)
+  if (self->_failureExpected != expected)
   {
     v8 = v3;
     v9 = v4;
@@ -579,15 +579,15 @@
     v6[2] = sub_10011A154;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    expectedCopy = expected;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setEmergency:(BOOL)a3
+- (void)setEmergency:(BOOL)emergency
 {
-  if (self->_emergency != a3)
+  if (self->_emergency != emergency)
   {
     v8 = v3;
     v9 = v4;
@@ -596,15 +596,15 @@
     v6[2] = sub_10011A208;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    emergencyCopy = emergency;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setSupportsEmergencyFallback:(BOOL)a3
+- (void)setSupportsEmergencyFallback:(BOOL)fallback
 {
-  if (self->_supportsEmergencyFallback != a3)
+  if (self->_supportsEmergencyFallback != fallback)
   {
     v8 = v3;
     v9 = v4;
@@ -613,15 +613,15 @@
     v6[2] = sub_10011A2BC;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    fallbackCopy = fallback;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setNeedsManualInCallSounds:(BOOL)a3
+- (void)setNeedsManualInCallSounds:(BOOL)sounds
 {
-  if (self->_needsManualInCallSounds != a3)
+  if (self->_needsManualInCallSounds != sounds)
   {
     v8 = v3;
     v9 = v4;
@@ -630,15 +630,15 @@
     v6[2] = sub_10011A370;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    soundsCopy = sounds;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setRemoteUplinkMuted:(BOOL)a3
+- (void)setRemoteUplinkMuted:(BOOL)muted
 {
-  if (self->_remoteUplinkMuted != a3)
+  if (self->_remoteUplinkMuted != muted)
   {
     v8 = v3;
     v9 = v4;
@@ -647,15 +647,15 @@
     v6[2] = sub_10011A424;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    mutedCopy = muted;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setTtyType:(int)a3
+- (void)setTtyType:(int)type
 {
-  if (self->_ttyType != a3)
+  if (self->_ttyType != type)
   {
     v8 = v3;
     v9 = v4;
@@ -664,15 +664,15 @@
     v6[2] = sub_10011A4D8;
     v6[3] = &unk_100619EF8;
     v6[4] = self;
-    v7 = a3;
+    typeCopy = type;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setSupportsTTYWithVoice:(BOOL)a3
+- (void)setSupportsTTYWithVoice:(BOOL)voice
 {
-  if (self->_supportsTTYWithVoice != a3)
+  if (self->_supportsTTYWithVoice != voice)
   {
     v8 = v3;
     v9 = v4;
@@ -681,15 +681,15 @@
     v6[2] = sub_10011A58C;
     v6[3] = &unk_100619EA8;
     v6[4] = self;
-    v7 = a3;
+    voiceCopy = voice;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setBluetoothAudioFormat:(int64_t)a3
+- (void)setBluetoothAudioFormat:(int64_t)format
 {
-  if (self->_bluetoothAudioFormat != a3)
+  if (self->_bluetoothAudioFormat != format)
   {
     v6[8] = v3;
     v6[9] = v4;
@@ -698,16 +698,16 @@
     v6[2] = sub_10011A63C;
     v6[3] = &unk_100619D60;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = format;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v6];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setHandle:(id)a3
+- (void)setHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self handle];
+  handleCopy = handle;
+  handle = [(CSDRelayCall *)self handle];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -716,17 +716,17 @@
     v8 = 3221225472;
     v9 = sub_10011A71C;
     v10 = &unk_100619D88;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = handleCopy;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)setCallerNameFromNetwork:(id)a3
+- (void)setCallerNameFromNetwork:(id)network
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self callerNameFromNetwork];
+  networkCopy = network;
+  callerNameFromNetwork = [(CSDRelayCall *)self callerNameFromNetwork];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -735,17 +735,17 @@
     v8 = 3221225472;
     v9 = sub_10011A7FC;
     v10 = &unk_100619D88;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = networkCopy;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)setCallGroupUUID:(id)a3
+- (void)setCallGroupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self callGroupUUID];
+  dCopy = d;
+  callGroupUUID = [(CSDRelayCall *)self callGroupUUID];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -754,17 +754,17 @@
     v8 = 3221225472;
     v9 = sub_10011A8DC;
     v10 = &unk_100619D88;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = dCopy;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)setConversationGroupUUID:(id)a3
+- (void)setConversationGroupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self conversationGroupUUID];
+  dCopy = d;
+  conversationGroupUUID = [(CSDRelayCall *)self conversationGroupUUID];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -773,32 +773,32 @@
     v8 = 3221225472;
     v9 = sub_10011A9BC;
     v10 = &unk_100619D88;
-    v11 = self;
-    v12 = v4;
+    selfCopy = self;
+    v12 = dCopy;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)setHardPauseDigitsState:(int)a3
+- (void)setHardPauseDigitsState:(int)state
 {
-  if ([(CSDRelayCall *)self hardPauseDigitsState]!= a3)
+  if ([(CSDRelayCall *)self hardPauseDigitsState]!= state)
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10011AA68;
     v5[3] = &unk_100619EF8;
-    v6 = a3;
+    stateCopy = state;
     v5[4] = self;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v5];
     [(CSDCall *)self propertiesChanged];
   }
 }
 
-- (void)setHardPauseDigits:(id)a3
+- (void)setHardPauseDigits:(id)digits
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self hardPauseDigits];
+  digitsCopy = digits;
+  hardPauseDigits = [(CSDRelayCall *)self hardPauseDigits];
   v6 = TUObjectsAreEqualOrNil();
 
   if ((v6 & 1) == 0)
@@ -807,56 +807,56 @@
     v8 = 3221225472;
     v9 = sub_10011AB70;
     v10 = &unk_100619D88;
-    v11 = v4;
-    v12 = self;
+    v11 = digitsCopy;
+    selfCopy = self;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v7];
     [(CSDCall *)self propertiesChanged:v7];
   }
 }
 
-- (void)groupWithOtherCall:(id)a3
+- (void)groupWithOtherCall:(id)call
 {
-  v4 = a3;
-  v5 = [(CSDRelayCall *)self callGroupUUID];
+  callCopy = call;
+  callGroupUUID = [(CSDRelayCall *)self callGroupUUID];
 
-  if (v5)
+  if (callGroupUUID)
   {
-    v6 = sub_100004778();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    relayDelegate = sub_100004778();
+    if (os_log_type_enabled(relayDelegate, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to group call because it is already grouped: %@", &v10, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, relayDelegate, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to group call because it is already grouped: %@", &v10, 0xCu);
     }
   }
 
   else
   {
-    v7 = [v4 callGroupUUID];
+    callGroupUUID2 = [callCopy callGroupUUID];
 
-    if (!v7)
+    if (!callGroupUUID2)
     {
       v8 = +[NSUUID UUID];
-      [v4 setCallGroupUUID:v8];
+      [callCopy setCallGroupUUID:v8];
     }
 
-    v9 = [v4 callGroupUUID];
-    [(CSDRelayCall *)self setCallGroupUUID:v9];
+    callGroupUUID3 = [callCopy callGroupUUID];
+    [(CSDRelayCall *)self setCallGroupUUID:callGroupUUID3];
 
-    v6 = [(CSDRelayCall *)self relayDelegate];
-    [v6 relayCall:self didGroupWithOtherCall:v4];
+    relayDelegate = [(CSDRelayCall *)self relayDelegate];
+    [relayDelegate relayCall:self didGroupWithOtherCall:callCopy];
   }
 }
 
 - (void)ungroup
 {
-  v3 = [(CSDRelayCall *)self callGroupUUID];
+  callGroupUUID = [(CSDRelayCall *)self callGroupUUID];
 
-  if (v3)
+  if (callGroupUUID)
   {
     [(CSDRelayCall *)self setCallGroupUUID:0];
-    v5 = [(CSDRelayCall *)self relayDelegate];
-    [v5 relayCallDidUngroup:self];
+    relayDelegate = [(CSDRelayCall *)self relayDelegate];
+    [relayDelegate relayCallDidUngroup:self];
   }
 
   else
@@ -865,7 +865,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to ungroup call because it isn't grouped: %@", buf, 0xCu);
     }
   }
@@ -885,9 +885,9 @@
     v4 = sub_100004778();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CSDRelayCall *)self uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
       *buf = 138412290;
-      v8 = v5;
+      v8 = uniqueProxyIdentifier;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Call with UPI %@ cannot handle mute control requests since it is a relay call without conference active", buf, 0xCu);
     }
 
@@ -897,9 +897,9 @@
 
 - (BOOL)isConferenceActive
 {
-  v3 = [(CSDRelayCall *)self relayConferenceInterface];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 activeConferenceConnectionForIdentifier:v4];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [relayConferenceInterface activeConferenceConnectionForIdentifier:uniqueProxyIdentifier];
   v6 = v5 != 0;
 
   return v6;
@@ -907,10 +907,10 @@
 
 - (BOOL)isUplinkMuted
 {
-  v3 = [(CSDRelayCall *)self featureFlags];
-  v4 = [v3 sessionBasedMutingEnabled];
+  featureFlags = [(CSDRelayCall *)self featureFlags];
+  sessionBasedMutingEnabled = [featureFlags sessionBasedMutingEnabled];
 
-  if (v4)
+  if (sessionBasedMutingEnabled)
   {
     v9.receiver = self;
     v9.super_class = CSDRelayCall;
@@ -919,9 +919,9 @@
 
   else
   {
-    v6 = [(CSDRelayCall *)self relayConferenceInterface];
-    v7 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-    v8 = [v6 isMutedForIdentifier:v7];
+    relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+    uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+    v8 = [relayConferenceInterface isMutedForIdentifier:uniqueProxyIdentifier];
 
     return v8;
   }
@@ -954,194 +954,194 @@
 
 - (id)relayConferenceInterface
 {
-  v2 = [(CSDRelayCall *)self getRelayConferenceInterfaceBlock];
-  v3 = v2[2]();
+  getRelayConferenceInterfaceBlock = [(CSDRelayCall *)self getRelayConferenceInterfaceBlock];
+  v3 = getRelayConferenceInterfaceBlock[2]();
 
   return v3;
 }
 
-- (void)setScreenShareAttributes:(id)a3
+- (void)setScreenShareAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = CSDRelayCall;
-  [(CSDCall *)&v12 setScreenShareAttributes:v4];
+  [(CSDCall *)&v12 setScreenShareAttributes:attributesCopy];
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_10011B394;
   v9 = &unk_100619D88;
-  v10 = self;
-  v11 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v11 = attributesCopy;
+  v5 = attributesCopy;
   [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:&v6];
   [(CSDCall *)self propertiesChanged:v6];
 }
 
-- (void)setInjectingAudio:(BOOL)a3
+- (void)setInjectingAudio:(BOOL)audio
 {
-  v3 = a3;
-  if ([(CSDRelayCall *)self isInjectingAudio]!= a3)
+  audioCopy = audio;
+  if ([(CSDRelayCall *)self isInjectingAudio]!= audio)
   {
-    self->_injectingAudio = v3;
+    self->_injectingAudio = audioCopy;
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 67109120;
-      v10 = v3;
+      v10 = audioCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setting injecting audio to %d", &v9, 8u);
     }
 
     v6 = sub_100004778();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(CSDRelayCall *)self isInjectingAudio];
+      isInjectingAudio = [(CSDRelayCall *)self isInjectingAudio];
       v9 = 67109378;
-      v10 = v7;
+      v10 = isInjectingAudio;
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Posting notification injecting audio changed: %d %@", &v9, 0x12u);
     }
 
-    v8 = [(CSDRelayCall *)self notificationCenter];
-    [v8 postNotificationName:@"CSDCallInjectingAudioChangedNotification" object:self];
+    notificationCenter = [(CSDRelayCall *)self notificationCenter];
+    [notificationCenter postNotificationName:@"CSDCallInjectingAudioChangedNotification" object:self];
   }
 }
 
 - (id)tokens
 {
   v3 = +[CSDRelayConferenceInterface sharedInstance];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 activeConferenceConnectionForIdentifier:v4];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [v3 activeConferenceConnectionForIdentifier:uniqueProxyIdentifier];
 
-  v6 = [v5 conference];
-  v7 = [v6 mediaTokens];
+  conference = [v5 conference];
+  mediaTokens = [conference mediaTokens];
 
-  return v7;
+  return mediaTokens;
 }
 
 - (BOOL)isSendingAudio
 {
-  v3 = [(CSDRelayCall *)self relayConferenceInterface];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 isSendingAudioForIdentifier:v4];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [relayConferenceInterface isSendingAudioForIdentifier:uniqueProxyIdentifier];
 
   return v5;
 }
 
 - (int64_t)inputAudioPowerSpectrumToken
 {
-  v3 = [(CSDRelayCall *)self relayConferenceInterface];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 inputAudioPowerSpectrumTokenForIdentifier:v4];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [relayConferenceInterface inputAudioPowerSpectrumTokenForIdentifier:uniqueProxyIdentifier];
 
   return v5;
 }
 
 - (int64_t)outputAudioPowerSpectrumToken
 {
-  v3 = [(CSDRelayCall *)self relayConferenceInterface];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 outputAudioPowerSpectrumTokenForIdentifier:v4];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [relayConferenceInterface outputAudioPowerSpectrumTokenForIdentifier:uniqueProxyIdentifier];
 
   return v5;
 }
 
 - (int64_t)spatialAudioSourceIdentifier
 {
-  v3 = [(CSDRelayCall *)self relayConferenceInterface];
-  v4 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  v5 = [v3 spatialAudioSourceIdentifierForIdentifier:v4];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  v5 = [relayConferenceInterface spatialAudioSourceIdentifierForIdentifier:uniqueProxyIdentifier];
 
   return v5;
 }
 
-- (void)dialWithRequest:(id)a3 displayContext:(id)a4
+- (void)dialWithRequest:(id)request displayContext:(id)context
 {
   v13.receiver = self;
   v13.super_class = CSDRelayCall;
-  v6 = a3;
-  [(CSDCall *)&v13 dialWithRequest:v6 displayContext:a4];
-  v7 = [v6 handle];
-  [(CSDRelayCall *)self setHandle:v7];
+  requestCopy = request;
+  [(CSDCall *)&v13 dialWithRequest:requestCopy displayContext:context];
+  handle = [requestCopy handle];
+  [(CSDRelayCall *)self setHandle:handle];
 
-  v8 = [v6 provider];
-  [(CSDRelayCall *)self setProvider:v8];
+  provider = [requestCopy provider];
+  [(CSDRelayCall *)self setProvider:provider];
 
-  v9 = [v6 localSenderIdentityUUID];
-  [(CSDRelayCall *)self setLocalSenderIdentityUUID:v9];
+  localSenderIdentityUUID = [requestCopy localSenderIdentityUUID];
+  [(CSDRelayCall *)self setLocalSenderIdentityUUID:localSenderIdentityUUID];
 
-  v10 = [v6 localSenderIdentityAccountUUID];
-  [(CSDRelayCall *)self setLocalSenderIdentityAccountUUID:v10];
+  localSenderIdentityAccountUUID = [requestCopy localSenderIdentityAccountUUID];
+  [(CSDRelayCall *)self setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
 
   [(CSDRelayCall *)self setCallStatus:3];
   [(CSDRelayCall *)self setOutgoing:1];
-  -[CSDRelayCall setVoicemail:](self, "setVoicemail:", [v6 dialType] == 2);
-  -[CSDRelayCall setEmergency:](self, "setEmergency:", [v6 dialType] == 1);
-  -[CSDRelayCall setSOS:](self, "setSOS:", [v6 isSOS]);
-  [v6 ttyType];
+  -[CSDRelayCall setVoicemail:](self, "setVoicemail:", [requestCopy dialType] == 2);
+  -[CSDRelayCall setEmergency:](self, "setEmergency:", [requestCopy dialType] == 1);
+  -[CSDRelayCall setSOS:](self, "setSOS:", [requestCopy isSOS]);
+  [requestCopy ttyType];
   [(CSDRelayCall *)self setTtyType:TUCallTTYTypeForTUDialRequestTTYType()];
-  v11 = [v6 originatingUIType];
+  originatingUIType = [requestCopy originatingUIType];
 
-  [(CSDRelayCall *)self setOriginatingUIType:v11];
-  v12 = [(CSDRelayCall *)self relayDelegate];
-  [v12 relayCallDidDial:self];
+  [(CSDRelayCall *)self setOriginatingUIType:originatingUIType];
+  relayDelegate = [(CSDRelayCall *)self relayDelegate];
+  [relayDelegate relayCallDidDial:self];
 
   [(CSDCall *)self propertiesChanged];
 }
 
-- (void)joinConversationWithRequest:(id)a3
+- (void)joinConversationWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = requestCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "CSDRelayCall joinConversationWithRequest: %@", &v9, 0xCu);
   }
 
-  [(CSDRelayCall *)self setJoinConversationRequest:v4];
+  [(CSDRelayCall *)self setJoinConversationRequest:requestCopy];
   [(CSDRelayCall *)self setCallStatus:3];
   [(CSDRelayCall *)self setOutgoing:1];
   [(CSDRelayCall *)self setVoicemail:0];
   [(CSDRelayCall *)self setEmergency:0];
   [(CSDRelayCall *)self setSOS:0];
   v6 = objc_alloc_init(TUCallProviderManager);
-  v7 = [v6 faceTimeProvider];
-  [(CSDRelayCall *)self setProvider:v7];
+  faceTimeProvider = [v6 faceTimeProvider];
+  [(CSDRelayCall *)self setProvider:faceTimeProvider];
 
-  -[CSDRelayCall setOriginatingUIType:](self, "setOriginatingUIType:", [v4 originatingUIType]);
-  v8 = [(CSDRelayCall *)self relayDelegate];
-  [v8 relayCallDidJoin:self];
+  -[CSDRelayCall setOriginatingUIType:](self, "setOriginatingUIType:", [requestCopy originatingUIType]);
+  relayDelegate = [(CSDRelayCall *)self relayDelegate];
+  [relayDelegate relayCallDidJoin:self];
 
   [(CSDCall *)self propertiesChanged];
 }
 
-- (void)answerWithRequest:(id)a3
+- (void)answerWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (([(CSDRelayCall *)self isConnecting]& 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = CSDRelayCall;
-    [(CSDRelayCall *)&v7 answerWithRequest:v4];
+    [(CSDRelayCall *)&v7 answerWithRequest:requestCopy];
 LABEL_10:
-    v5 = [(CSDRelayCall *)self relayDelegate];
-    [v5 relayCall:self didAnswerWithRequest:v4];
+    relayDelegate = [(CSDRelayCall *)self relayDelegate];
+    [relayDelegate relayCall:self didAnswerWithRequest:requestCopy];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v5 = [(CSDRelayCall *)self featureFlags];
-  if (![v5 LVMEverywhere] || (objc_msgSend(v4, "sendToScreening") & 1) != 0)
+  relayDelegate = [(CSDRelayCall *)self featureFlags];
+  if (![relayDelegate LVMEverywhere] || (objc_msgSend(requestCopy, "sendToScreening") & 1) != 0)
   {
     goto LABEL_11;
   }
 
-  v6 = [v4 screeningType];
+  screeningType = [requestCopy screeningType];
 
-  if (!v6)
+  if (!screeningType)
   {
     if ([(CSDRelayCall *)self isScreening]&& ![(CSDRelayCall *)self isHostedOnCurrentDevice])
     {
@@ -1155,12 +1155,12 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)startConferenceForAnsweredCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4
+- (void)startConferenceForAnsweredCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDRelayCall *)self relayConferenceInterface];
-  v9 = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  dictionaryCopy = dictionary;
+  transportCopy = transport;
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
   v10[4] = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1171,15 +1171,15 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_10011C3DC;
   v10[3] = &unk_10061A5D8;
-  [v8 startConferenceForIdentifier:v9 usingTransport:v7 remoteInviteDictionary:v6 didStartHandler:v11 didStopHandler:v10];
+  [relayConferenceInterface startConferenceForIdentifier:uniqueProxyIdentifier usingTransport:transportCopy remoteInviteDictionary:dictionaryCopy didStartHandler:v11 didStopHandler:v10];
 }
 
-- (void)startConferenceForDialedCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4
+- (void)startConferenceForDialedCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDRelayCall *)self relayConferenceInterface];
-  v9 = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  dictionaryCopy = dictionary;
+  transportCopy = transport;
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
   v10[4] = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1190,15 +1190,15 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_10011C730;
   v10[3] = &unk_10061A5D8;
-  [v8 startConferenceForIdentifier:v9 usingTransport:v7 remoteInviteDictionary:v6 didStartHandler:v11 didStopHandler:v10];
+  [relayConferenceInterface startConferenceForIdentifier:uniqueProxyIdentifier usingTransport:transportCopy remoteInviteDictionary:dictionaryCopy didStartHandler:v11 didStopHandler:v10];
 }
 
-- (void)startConferenceForPulledCallWithTransport:(id)a3 remoteInviteDictionary:(id)a4
+- (void)startConferenceForPulledCallWithTransport:(id)transport remoteInviteDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDRelayCall *)self relayConferenceInterface];
-  v9 = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  dictionaryCopy = dictionary;
+  transportCopy = transport;
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
   v10[4] = self;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1209,26 +1209,26 @@ LABEL_12:
   v10[1] = 3221225472;
   v10[2] = sub_10011CA50;
   v10[3] = &unk_10061A5D8;
-  [v8 startConferenceForIdentifier:v9 usingTransport:v7 remoteInviteDictionary:v6 didStartHandler:v11 didStopHandler:v10];
+  [relayConferenceInterface startConferenceForIdentifier:uniqueProxyIdentifier usingTransport:transportCopy remoteInviteDictionary:dictionaryCopy didStartHandler:v11 didStopHandler:v10];
 }
 
 - (void)stopConference
 {
-  v4 = [(CSDRelayCall *)self relayConferenceInterface];
-  v3 = [(CSDRelayCall *)self uniqueProxyIdentifier];
-  [v4 stopConferenceForIdentifier:v3];
+  relayConferenceInterface = [(CSDRelayCall *)self relayConferenceInterface];
+  uniqueProxyIdentifier = [(CSDRelayCall *)self uniqueProxyIdentifier];
+  [relayConferenceInterface stopConferenceForIdentifier:uniqueProxyIdentifier];
 }
 
 - (void)hold
 {
   if ([(CSDRelayCall *)self status]== 2)
   {
-    v3 = sub_100004778();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    relayDelegate = sub_100004778();
+    if (os_log_type_enabled(relayDelegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v6 = self;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to hold call because it is already held: %@", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, relayDelegate, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to hold call because it is already held: %@", buf, 0xCu);
     }
   }
 
@@ -1240,8 +1240,8 @@ LABEL_12:
     v4[3] = &unk_100619D38;
     v4[4] = self;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v4];
-    v3 = [(CSDRelayCall *)self relayDelegate];
-    [v3 relayCallDidHold:self];
+    relayDelegate = [(CSDRelayCall *)self relayDelegate];
+    [relayDelegate relayCallDidHold:self];
   }
 }
 
@@ -1255,55 +1255,55 @@ LABEL_12:
     v4[3] = &unk_100619D38;
     v4[4] = self;
     [(CSDCall *)self handleUpdatedPropertiesAfterChangesInBlock:v4];
-    v3 = [(CSDRelayCall *)self relayDelegate];
-    [v3 relayCallDidUnhold:self];
+    relayDelegate = [(CSDRelayCall *)self relayDelegate];
+    [relayDelegate relayCallDidUnhold:self];
   }
 
   else
   {
-    v3 = sub_100004778();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    relayDelegate = sub_100004778();
+    if (os_log_type_enabled(relayDelegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v6 = self;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to unhold call because it isn't held: %@", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&_mh_execute_header, relayDelegate, OS_LOG_TYPE_DEFAULT, "[WARN] Ignoring request to unhold call because it isn't held: %@", buf, 0xCu);
     }
   }
 }
 
 - (void)sendHardPauseDigits
 {
-  v3 = [(CSDRelayCall *)self relayDelegate];
-  [v3 relayCallDidSendHardPauseDigits:self];
+  relayDelegate = [(CSDRelayCall *)self relayDelegate];
+  [relayDelegate relayCallDidSendHardPauseDigits:self];
 }
 
 - (void)becomeEndpointForPullFromRemoteDevice
 {
   [(CSDCall *)self setEndpointOnCurrentDevice:1];
-  v3 = [(CSDRelayCall *)self relayDelegate];
-  [v3 relayCallDidBecomeEndpointForPull:self];
+  relayDelegate = [(CSDRelayCall *)self relayDelegate];
+  [relayDelegate relayCallDidBecomeEndpointForPull:self];
 }
 
-- (void)updateWithOverrideCallProperties:(id)a3
+- (void)updateWithOverrideCallProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = propertiesCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[CSDRelayCall] updateWithOverrideCallProperties: %@", buf, 0xCu);
   }
 
   v10.receiver = self;
   v10.super_class = CSDRelayCall;
-  [(CSDCall *)&v10 updateWithOverrideCallProperties:v4];
-  [v4 hasSet];
+  [(CSDCall *)&v10 updateWithOverrideCallProperties:propertiesCopy];
+  [propertiesCopy hasSet];
   if ((v6 & 2) != 0)
   {
-    v7 = [v4 isSharingScreen];
-    self->_sharingScreen = v7;
-    if ((v7 & 1) == 0)
+    isSharingScreen = [propertiesCopy isSharingScreen];
+    self->_sharingScreen = isSharingScreen;
+    if ((isSharingScreen & 1) == 0)
     {
       if (self->_screenShareAttributes)
       {
@@ -1327,9 +1327,9 @@ LABEL_12:
 {
   if ([(CSDRelayCall *)self isOutgoing])
   {
-    v3 = [(CSDCall *)self dateStartedOutgoing];
+    dateStartedOutgoing = [(CSDCall *)self dateStartedOutgoing];
 
-    if (!v3)
+    if (!dateStartedOutgoing)
     {
       v4 = +[NSDate date];
       [(CSDCall *)self setDateStartedOutgoing:v4];
@@ -1339,9 +1339,9 @@ LABEL_12:
 
 - (void)setLocallyHasSentInvitation
 {
-  v3 = [(CSDRelayCall *)self dateSentInvitation];
+  dateSentInvitation = [(CSDRelayCall *)self dateSentInvitation];
 
-  if (!v3)
+  if (!dateSentInvitation)
   {
     v4 = +[NSDate date];
     [(CSDCall *)self setDateSentInvitation:v4];
@@ -1351,9 +1351,9 @@ LABEL_12:
 - (void)setLocallyConnecting
 {
   [(CSDRelayCall *)self setCallStatus:1];
-  v3 = [(CSDRelayCall *)self dateStartedConnecting];
+  dateStartedConnecting = [(CSDRelayCall *)self dateStartedConnecting];
 
-  if (!v3)
+  if (!dateStartedConnecting)
   {
     v4 = +[NSDate date];
     [(CSDCall *)self setDateStartedConnecting:v4];
@@ -1363,9 +1363,9 @@ LABEL_12:
 - (void)setLocallyConnected
 {
   [(CSDRelayCall *)self setLocallyConnecting];
-  v3 = [(CSDRelayCall *)self dateConnected];
+  dateConnected = [(CSDRelayCall *)self dateConnected];
 
-  if (!v3)
+  if (!dateConnected)
   {
     v4 = +[NSDate date];
     [(CSDCall *)self setDateConnected:v4];

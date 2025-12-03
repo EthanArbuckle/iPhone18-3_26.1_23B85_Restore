@@ -10,7 +10,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFUInt8Characteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,10 +18,10 @@
 - (unsigned)uint8Value
 {
   objc_opt_class();
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3 && (objc_opt_isKindOfClass() & 1) != 0)
+  value = [(CAFCharacteristic *)self value];
+  if (value && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = value;
   }
 
   else
@@ -29,8 +29,8 @@
     v4 = 0;
   }
 
-  v5 = [v4 unsignedCharValue];
-  return v5;
+  unsignedCharValue = [v4 unsignedCharValue];
+  return unsignedCharValue;
 }
 
 - (CAFUInt8Range)range
@@ -39,8 +39,8 @@
   if (!range)
   {
     v4 = [CAFUInt8Range alloc];
-    v5 = [(CAFCharacteristic *)self metaData];
-    v6 = [(CAFRange *)v4 initWithMetaData:v5];
+    metaData = [(CAFCharacteristic *)self metaData];
+    v6 = [(CAFRange *)v4 initWithMetaData:metaData];
     v7 = self->_range;
     self->_range = v6;
 
@@ -52,8 +52,8 @@
 
 - (id)formattedValue
 {
-  v3 = [(CAFCharacteristic *)self value];
-  if (v3)
+  value = [(CAFCharacteristic *)self value];
+  if (value)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%hhu", -[CAFUInt8Characteristic uint8Value](self, "uint8Value")];
   }
@@ -71,8 +71,8 @@
 - (id)descriptionExtras
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(CAFUInt8Characteristic *)self range];
-  v4 = [v3 description];
+  range = [(CAFUInt8Characteristic *)self range];
+  v4 = [range description];
   v5 = [v2 stringWithFormat:@"range=%@", v4];
 
   return v5;

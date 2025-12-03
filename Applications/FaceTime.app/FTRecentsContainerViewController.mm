@@ -1,20 +1,20 @@
 @interface FTRecentsContainerViewController
 - (BOOL)hasRecentsListViewController;
-- (FTRecentsContainerViewController)initWithCoder:(id)a3;
-- (FTRecentsContainerViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (FTRecentsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (FTRecentsContainerViewController)initWithRootViewController:(id)a3;
+- (FTRecentsContainerViewController)initWithCoder:(id)coder;
+- (FTRecentsContainerViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (FTRecentsContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (FTRecentsContainerViewController)initWithRootViewController:(id)controller;
 - (UICollectionView)collectionView;
 - (id)presentScreenTimeShield;
-- (void)presentRecentsDetailsViewFor:(id)a3;
-- (void)setPresentScreenTimeShield:(id)a3;
-- (void)showLinkDetailViewControllerForPseudonym:(id)a3;
-- (void)showVideoPlayerForMessageWithUUID:(id)a3;
+- (void)presentRecentsDetailsViewFor:(id)for;
+- (void)setPresentScreenTimeShield:(id)shield;
+- (void)showLinkDetailViewControllerForPseudonym:(id)pseudonym;
+- (void)showVideoPlayerForMessageWithUUID:(id)d;
 @end
 
 @implementation FTRecentsContainerViewController
 
-- (FTRecentsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FTRecentsContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -24,10 +24,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -35,8 +35,8 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_100007408(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_100007408(v6, name, bundle);
 
   return v9;
 }
@@ -87,7 +87,7 @@
   return v4;
 }
 
-- (void)setPresentScreenTimeShield:(id)a3
+- (void)setPresentScreenTimeShield:(id)shield
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -97,7 +97,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(shield);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -110,11 +110,11 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_10009B320(v5, v6);
 }
 
-- (void)showLinkDetailViewControllerForPseudonym:(id)a3
+- (void)showLinkDetailViewControllerForPseudonym:(id)pseudonym
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -130,7 +130,7 @@
   if (v7)
   {
     v8 = v4;
-    v9 = self;
+    selfCopy = self;
     v10 = v7;
     v11._countAndFlagsBits = v8;
     v11._object = v6;
@@ -142,7 +142,7 @@
   }
 }
 
-- (void)showVideoPlayerForMessageWithUUID:(id)a3
+- (void)showVideoPlayerForMessageWithUUID:(id)d
 {
   v4 = type metadata accessor for UUID();
   v5 = *(v4 - 8);
@@ -160,7 +160,7 @@
   v8 = *(self + OBJC_IVAR___FTRecentsContainerViewController_recentsList);
   if (v8)
   {
-    v9 = self;
+    selfCopy = self;
     v10 = v8;
     RecentsListViewController.showVideoPlayerForMessage(withUUID:bypassSafety:)();
   }
@@ -168,7 +168,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)presentRecentsDetailsViewFor:(id)a3
+- (void)presentRecentsDetailsViewFor:(id)for
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -179,7 +179,7 @@
   }
 
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_10009B798();
 }
 
@@ -196,7 +196,7 @@
   v3 = *(self + OBJC_IVAR___FTRecentsContainerViewController_recentsList);
   if (v3)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = v3;
     v3 = dispatch thunk of RecentsListViewController.collectionView.getter();
   }
@@ -208,7 +208,7 @@
   return v3;
 }
 
-- (FTRecentsContainerViewController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (FTRecentsContainerViewController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -218,10 +218,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_5;
     }
@@ -232,7 +232,7 @@ LABEL_7:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_7;
   }
@@ -245,7 +245,7 @@ LABEL_8:
   return v8;
 }
 
-- (FTRecentsContainerViewController)initWithRootViewController:(id)a3
+- (FTRecentsContainerViewController)initWithRootViewController:(id)controller
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -262,12 +262,12 @@ LABEL_8:
   *(self + OBJC_IVAR___FTRecentsContainerViewController_content) = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RecentsContainerViewController();
-  v6 = [(FTRecentsContainerViewController *)&v8 initWithRootViewController:a3];
+  v6 = [(FTRecentsContainerViewController *)&v8 initWithRootViewController:controller];
 
   return v6;
 }
 
-- (FTRecentsContainerViewController)initWithCoder:(id)a3
+- (FTRecentsContainerViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -277,7 +277,7 @@ LABEL_8:
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_10009BD80(a3);
+  v4 = sub_10009BD80(coder);
 
   return v4;
 }

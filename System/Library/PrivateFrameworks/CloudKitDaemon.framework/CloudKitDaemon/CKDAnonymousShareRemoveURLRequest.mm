@@ -1,23 +1,23 @@
 @interface CKDAnonymousShareRemoveURLRequest
-- (CKDAnonymousShareRemoveURLRequest)initWithOperation:(id)a3 encryptedAnonymousSharesToRemove:(id)a4;
+- (CKDAnonymousShareRemoveURLRequest)initWithOperation:(id)operation encryptedAnonymousSharesToRemove:(id)remove;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
 @end
 
 @implementation CKDAnonymousShareRemoveURLRequest
 
-- (CKDAnonymousShareRemoveURLRequest)initWithOperation:(id)a3 encryptedAnonymousSharesToRemove:(id)a4
+- (CKDAnonymousShareRemoveURLRequest)initWithOperation:(id)operation encryptedAnonymousSharesToRemove:(id)remove
 {
-  v7 = a4;
+  removeCopy = remove;
   v13.receiver = self;
   v13.super_class = CKDAnonymousShareRemoveURLRequest;
-  v8 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_encryptedAnonymousSharesToRemove, a4);
+    objc_storeStrong(&v8->_encryptedAnonymousSharesToRemove, remove);
     v10 = objc_opt_new();
     encryptedAnonymousShareHashToRemoveByRequestID = v9->_encryptedAnonymousShareHashToRemoveByRequestID;
     v9->_encryptedAnonymousShareHashToRemoveByRequestID = v10;
@@ -26,18 +26,18 @@
   return v9;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v15.receiver = self;
   v15.super_class = CKDAnonymousShareRemoveURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v15 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CBEB98];
   v8 = objc_msgSend_encryptedAnonymousSharesToRemove(self, v6, v7, v15.receiver, v15.super_class);
   v11 = objc_msgSend_allKeys(v8, v9, v10);
   v13 = objc_msgSend_setWithArray_(v5, v12, v11);
 
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v14, v13, @"hashes");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v14, v13, @"hashes");
 }
 
 - (id)requestOperationClasses
@@ -107,11 +107,11 @@
   return v46;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_encryptedAnonymousShareHashToRemoveByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -120,7 +120,7 @@
   if (v18)
   {
     v21 = objc_msgSend_anonymousShareRemovedBlock(self, v19, v20);
-    v24 = objc_msgSend_result(v4, v22, v23);
+    v24 = objc_msgSend_result(objectCopy, v22, v23);
     (v21)[2](v21, v15, v24);
   }
 

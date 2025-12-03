@@ -1,35 +1,35 @@
 @interface SUSSoftwareUpdateTitleCell
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5 updateIcon:(id)a6 showLearnMore:(BOOL)a7 delegate:(id)a8;
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5 updateIcon:(id)a6 showLearnMore:(BOOL)a7 showSplomboNotes:(BOOL)a8 delegate:(id)a9;
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier updateIcon:(id)icon showLearnMore:(BOOL)more delegate:(id)delegate;
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier updateIcon:(id)icon showLearnMore:(BOOL)more showSplomboNotes:(BOOL)notes delegate:(id)delegate;
 - (SUSUISoftwareUpdateTitleCellDelegate)delegate;
 - (UIImage)gearBackgroundImage;
-- (double)preferredHeightWithTable:(id)a3;
+- (double)preferredHeightWithTable:(id)table;
 - (id)configureUpdateIcon;
 - (id)newLearnMoreLabel;
 - (id)newProgressBar;
 - (id)newSplomboNotesLabel;
 - (id)newUpdateStatusLabel;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)configureAnimatedGearViewFromImageSize:(CGSize)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)configureAnimatedGearViewFromImageSize:(CGSize)size;
 - (void)configureImageView;
-- (void)configureProgressBar:(BOOL)a3;
-- (void)configureReleaseNotesSummaryView:(BOOL)a3;
-- (void)configureUpdateImageViewFromImageSize:(CGSize)a3;
+- (void)configureProgressBar:(BOOL)bar;
+- (void)configureReleaseNotesSummaryView:(BOOL)view;
+- (void)configureUpdateImageViewFromImageSize:(CGSize)size;
 - (void)configureUpdateLabelsStackViewConstraints;
-- (void)configureUpdateNameLabel:(BOOL)a3;
-- (void)configureUpdateStatusLabel:(BOOL)a3;
-- (void)handleLearnMoreTap:(id)a3;
+- (void)configureUpdateNameLabel:(BOOL)label;
+- (void)configureUpdateStatusLabel:(BOOL)label;
+- (void)handleLearnMoreTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setAnimatingGearView:(BOOL)a3;
-- (void)setLearnMoreText:(id)a3;
-- (void)setProgressDisplayStyle:(int)a3;
-- (void)setPublisherText:(id)a3;
-- (void)setReleaseNotesSummary:(id)a3;
-- (void)setStatusMessage:(id)a3;
-- (void)setStatusMessage:(id)a3 symbolizingError:(BOOL)a4;
-- (void)setUpdateIcon:(id)a3;
-- (void)setUpdateName:(id)a3;
+- (void)setAnimatingGearView:(BOOL)view;
+- (void)setLearnMoreText:(id)text;
+- (void)setProgressDisplayStyle:(int)style;
+- (void)setPublisherText:(id)text;
+- (void)setReleaseNotesSummary:(id)summary;
+- (void)setStatusMessage:(id)message;
+- (void)setStatusMessage:(id)message symbolizingError:(BOOL)error;
+- (void)setUpdateIcon:(id)icon;
+- (void)setUpdateName:(id)name;
 - (void)setupViews;
 - (void)updateConstraints;
 - (void)updateProgressTintColor;
@@ -37,123 +37,123 @@
 
 @implementation SUSSoftwareUpdateTitleCell
 
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identifier);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v5 = v13;
-  v13 = 0;
-  v13 = [(SUSSoftwareUpdateTitleCell *)v5 initWithStyle:v11 reuseIdentifier:location specifier:v9 updateIcon:0 showLearnMore:1 showSplomboNotes:0 delegate:0];
-  v8 = MEMORY[0x277D82BE0](v13);
+  objc_storeStrong(&v9, specifier);
+  v5 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(SUSSoftwareUpdateTitleCell *)v5 initWithStyle:styleCopy reuseIdentifier:location specifier:v9 updateIcon:0 showLearnMore:1 showSplomboNotes:0 delegate:0];
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5 updateIcon:(id)a6 showLearnMore:(BOOL)a7 delegate:(id)a8
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier updateIcon:(id)icon showLearnMore:(BOOL)more delegate:(id)delegate
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identifier);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, specifier);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
-  v16 = a7;
+  objc_storeStrong(&v17, icon);
+  moreCopy = more;
   v15 = 0;
-  objc_storeStrong(&v15, a8);
-  v8 = v22;
-  v22 = 0;
-  v22 = [(SUSSoftwareUpdateTitleCell *)v8 initWithStyle:v20 reuseIdentifier:location specifier:v18 updateIcon:v17 showLearnMore:v16 showSplomboNotes:0 delegate:v15];
-  v14 = MEMORY[0x277D82BE0](v22);
+  objc_storeStrong(&v15, delegate);
+  v8 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(SUSSoftwareUpdateTitleCell *)v8 initWithStyle:styleCopy reuseIdentifier:location specifier:v18 updateIcon:v17 showLearnMore:moreCopy showSplomboNotes:0 delegate:v15];
+  v14 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v22, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v14;
 }
 
-- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5 updateIcon:(id)a6 showLearnMore:(BOOL)a7 showSplomboNotes:(BOOL)a8 delegate:(id)a9
+- (SUSSoftwareUpdateTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier updateIcon:(id)icon showLearnMore:(BOOL)more showSplomboNotes:(BOOL)notes delegate:(id)delegate
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
-  v24 = a3;
+  styleCopy = style;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, identifier);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, specifier);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
-  v20 = a7;
-  v19 = a8;
+  objc_storeStrong(&v21, icon);
+  moreCopy = more;
+  notesCopy = notes;
   v18 = 0;
-  objc_storeStrong(&v18, a9);
-  v9 = v26;
-  v26 = 0;
+  objc_storeStrong(&v18, delegate);
+  v9 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v9;
   v17.super_class = SUSSoftwareUpdateTitleCell;
-  v26 = [(PSTableCell *)&v17 initWithStyle:v24 reuseIdentifier:location specifier:v22];
-  objc_storeStrong(&v26, v26);
-  if (v26)
+  selfCopy = [(PSTableCell *)&v17 initWithStyle:styleCopy reuseIdentifier:location specifier:v22];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v26->_delegate, v18);
-    [(SUSSoftwareUpdateTitleCell *)v26 setSelectionStyle:0];
-    [(SUSSoftwareUpdateTitleCell *)v26 setHoverStyle:?];
-    objc_storeStrong(&v26->_updateIcon, v21);
-    v26->_showLearnMoreButton = v20;
-    objc_storeStrong(&v26->_updateIconContraints, 0);
-    v26->_showSplomboNotes = v19;
-    [(SUSSoftwareUpdateTitleCell *)v26 setupViews];
-    v12 = [(SUSSoftwareUpdateTitleCell *)v26 detailTextLabel];
-    [v12 setHidden:1];
-    MEMORY[0x277D82BD8](v12);
+    objc_storeWeak(&selfCopy->_delegate, v18);
+    [(SUSSoftwareUpdateTitleCell *)selfCopy setSelectionStyle:0];
+    [(SUSSoftwareUpdateTitleCell *)selfCopy setHoverStyle:?];
+    objc_storeStrong(&selfCopy->_updateIcon, v21);
+    selfCopy->_showLearnMoreButton = moreCopy;
+    objc_storeStrong(&selfCopy->_updateIconContraints, 0);
+    selfCopy->_showSplomboNotes = notesCopy;
+    [(SUSSoftwareUpdateTitleCell *)selfCopy setupViews];
+    detailTextLabel = [(SUSSoftwareUpdateTitleCell *)selfCopy detailTextLabel];
+    [detailTextLabel setHidden:1];
+    MEMORY[0x277D82BD8](detailTextLabel);
   }
 
-  v11 = MEMORY[0x277D82BE0](v26);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
 - (void)updateConstraints
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = SUSSoftwareUpdateTitleCell;
   [(SUSSoftwareUpdateTitleCell *)&v2 updateConstraints];
 }
 
-- (double)preferredHeightWithTable:(id)a3
+- (double)preferredHeightWithTable:(id)table
 {
-  v52 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUSSoftwareUpdateTitleCell *)v52 bounds];
+  objc_storeStrong(location, table);
+  [(SUSSoftwareUpdateTitleCell *)selfCopy bounds];
   v50 = v3;
-  v36 = [MEMORY[0x277D759A0] mainScreen];
-  [v36 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v37 = v4;
-  MEMORY[0x277D82BD8](v36);
+  MEMORY[0x277D82BD8](mainScreen);
   CGSizeMake_0();
   v48 = v5;
   v49 = v6;
-  if (v52->_learnMoreLabel)
+  if (selfCopy->_learnMoreLabel)
   {
-    [(UILabel *)v52->_learnMoreLabel sizeThatFits:v5, v6];
+    [(UILabel *)selfCopy->_learnMoreLabel sizeThatFits:v5, v6];
     v35 = v7 + 20.0;
   }
 
@@ -162,9 +162,9 @@
     v35 = 0.0;
   }
 
-  if (v52->_splomboNotes)
+  if (selfCopy->_splomboNotes)
   {
-    [(UILabel *)v52->_splomboNotes sizeThatFits:v48, v49];
+    [(UILabel *)selfCopy->_splomboNotes sizeThatFits:v48, v49];
     v34 = v8 + 8.0;
   }
 
@@ -173,36 +173,36 @@
     v34 = 0.0;
   }
 
-  v31 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-  v30 = [v31 scrollView];
-  [v30 contentOffset];
+  webView = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+  scrollView = [webView scrollView];
+  [scrollView contentOffset];
   v46 = v9;
   v47 = v10;
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  [(PSWebContainerView *)v52->_releaseNotesSummaryView heightForWidth:v50 - 0.0];
+  MEMORY[0x277D82BD8](scrollView);
+  MEMORY[0x277D82BD8](webView);
+  [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView heightForWidth:v50 - 0.0];
   v45 = v11;
-  v33 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-  v32 = [v33 scrollView];
-  [v32 setContentOffset:{v46, v47}];
-  MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
-  [(UILabel *)v52->_updateNameLabel sizeThatFits:v48, v49];
+  webView2 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+  scrollView2 = [webView2 scrollView];
+  [scrollView2 setContentOffset:{v46, v47}];
+  MEMORY[0x277D82BD8](scrollView2);
+  MEMORY[0x277D82BD8](webView2);
+  [(UILabel *)selfCopy->_updateNameLabel sizeThatFits:v48, v49];
   v44 = v12;
   v43[8] = 0;
-  *v43 = v52->_progressStyle == 0;
-  if (v52->_progressStyle)
+  *v43 = selfCopy->_progressStyle == 0;
+  if (selfCopy->_progressStyle)
   {
-    [(UIProgressView *)v52->_progressBar sizeThatFits:v48, v49];
+    [(UIProgressView *)selfCopy->_progressBar sizeThatFits:v48, v49];
     *&v43[1] = v13 + 3.0;
   }
 
-  [(UILabel *)v52->_updateStatusLabel sizeThatFits:v48, v49];
+  [(UILabel *)selfCopy->_updateStatusLabel sizeThatFits:v48, v49];
   v42 = v14 + 3.0;
-  v28 = [(UIImageView *)v52->_imageView image];
-  [(UIImage *)v28 size];
+  image = [(UIImageView *)selfCopy->_imageView image];
+  [(UIImage *)image size];
   v29 = v15;
-  MEMORY[0x277D82BD8](v28);
+  MEMORY[0x277D82BD8](image);
   v41 = v44 + *&v43[1] + v42;
   if (v41 < v29)
   {
@@ -223,50 +223,50 @@
   if (v40 >= v45)
   {
     v40 = v45;
-    v22 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
     v38 = 0;
     v23 = 1;
-    if (([v22 isEqualToString:*MEMORY[0x277D76818]] & 1) == 0)
+    if (([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76818]] & 1) == 0)
     {
-      v39 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
       v38 = 1;
-      v23 = [v39 isEqualToString:*MEMORY[0x277D767E8]];
+      v23 = [preferredContentSizeCategory2 isEqualToString:*MEMORY[0x277D767E8]];
     }
 
     if (v38)
     {
-      MEMORY[0x277D82BD8](v39);
+      MEMORY[0x277D82BD8](preferredContentSizeCategory2);
     }
 
-    *&v16 = MEMORY[0x277D82BD8](v22).n128_u64[0];
+    *&v16 = MEMORY[0x277D82BD8](preferredContentSizeCategory).n128_u64[0];
     if (v23)
     {
       v16 = v45 + 20.0;
       v40 = v45 + 20.0;
     }
 
-    v19 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-    v18 = [v19 scrollView];
-    [v18 setScrollEnabled:0];
-    MEMORY[0x277D82BD8](v18);
-    v21 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-    v20 = [v21 scrollView];
-    [v20 setBounces:0];
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
+    webView3 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+    scrollView3 = [webView3 scrollView];
+    [scrollView3 setScrollEnabled:0];
+    MEMORY[0x277D82BD8](scrollView3);
+    webView4 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+    scrollView4 = [webView4 scrollView];
+    [scrollView4 setBounces:0];
+    MEMORY[0x277D82BD8](scrollView4);
+    MEMORY[0x277D82BD8](webView4);
   }
 
   else
   {
-    v25 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-    v24 = [v25 scrollView];
-    [v24 setScrollEnabled:1];
-    MEMORY[0x277D82BD8](v24);
-    v27 = [(PSWebContainerView *)v52->_releaseNotesSummaryView webView];
-    v26 = [v27 scrollView];
-    [v26 setBounces:1];
-    MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    webView5 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+    scrollView5 = [webView5 scrollView];
+    [scrollView5 setScrollEnabled:1];
+    MEMORY[0x277D82BD8](scrollView5);
+    webView6 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView webView];
+    scrollView6 = [webView6 scrollView];
+    [scrollView6 setBounces:1];
+    MEMORY[0x277D82BD8](scrollView6);
+    MEMORY[0x277D82BD8](webView6);
   }
 
   objc_storeStrong(location, 0);
@@ -275,34 +275,34 @@
 
 - (void)layoutSubviews
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
-  [(SUSSoftwareUpdateTitleCell *)v9 configureUpdateNameLabel:IsAccessibilityCategory, MEMORY[0x277D82BD8](v4).n128_f64[0]];
-  [(SUSSoftwareUpdateTitleCell *)v9 configureUpdateStatusLabel:IsAccessibilityCategory];
-  v5 = [(SUSSoftwareUpdateTitleCell *)v9 contentView];
-  [v5 bringSubviewToFront:v9->_imageView];
-  v2 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  if (v9->_animatedGearView)
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  [(SUSSoftwareUpdateTitleCell *)selfCopy configureUpdateNameLabel:IsAccessibilityCategory, MEMORY[0x277D82BD8](preferredContentSizeCategory).n128_f64[0]];
+  [(SUSSoftwareUpdateTitleCell *)selfCopy configureUpdateStatusLabel:IsAccessibilityCategory];
+  contentView = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  [contentView bringSubviewToFront:selfCopy->_imageView];
+  v2 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+  if (selfCopy->_animatedGearView)
   {
-    v3 = [(SUSSoftwareUpdateTitleCell *)v9 contentView];
-    [v3 bringSubviewToFront:v9->_animatedGearView];
-    v2 = MEMORY[0x277D82BD8](v3).n128_u64[0];
+    contentView2 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+    [contentView2 bringSubviewToFront:selfCopy->_animatedGearView];
+    v2 = MEMORY[0x277D82BD8](contentView2).n128_u64[0];
   }
 
-  v6.receiver = v9;
+  v6.receiver = selfCopy;
   v6.super_class = SUSSoftwareUpdateTitleCell;
   [(PSTableCell *)&v6 layoutSubviews];
 }
 
 - (void)setupViews
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   [(SUSSoftwareUpdateTitleCell *)self configureImageView];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v8 = [currentDevice userInterfaceIdiom] == 1;
   location = [*MEMORY[0x277D76620] preferredContentSizeCategory];
   IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(location);
   v5 = 0;
@@ -316,15 +316,15 @@
     v5 = UIContentSizeCategoryCompareToCategory(location, *MEMORY[0x277D76840]) == NSOrderedDescending;
   }
 
-  [(SUSSoftwareUpdateTitleCell *)v10 configureUpdateLabelsStackViewConstraints];
+  [(SUSSoftwareUpdateTitleCell *)selfCopy configureUpdateLabelsStackViewConstraints];
   v2 = 1;
   if (!IsAccessibilityCategory)
   {
     v2 = v5;
   }
 
-  [(SUSSoftwareUpdateTitleCell *)v10 configureReleaseNotesSummaryView:v2 & 1, v10];
-  v4.receiver = v10;
+  [(SUSSoftwareUpdateTitleCell *)selfCopy configureReleaseNotesSummaryView:v2 & 1, selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = SUSSoftwareUpdateTitleCell;
   [(SUSSoftwareUpdateTitleCell *)&v4 updateConstraints];
   objc_storeStrong(&location, 0);
@@ -332,176 +332,176 @@
 
 - (void)configureImageView
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(SUSSoftwareUpdateTitleCell *)self configureUpdateIcon];
   v11 = 0;
-  if (v14->_updateIcon)
+  if (selfCopy->_updateIcon)
   {
-    updateIcon = v14->_updateIcon;
+    updateIcon = selfCopy->_updateIcon;
   }
 
   else
   {
-    v12 = [(SUSSoftwareUpdateTitleCell *)v14 gearBackgroundImage];
+    gearBackgroundImage = [(SUSSoftwareUpdateTitleCell *)selfCopy gearBackgroundImage];
     v11 = 1;
-    updateIcon = v12;
+    updateIcon = gearBackgroundImage;
   }
 
   [location[0] setImage:updateIcon];
   if (v11)
   {
-    MEMORY[0x277D82BD8](v12);
+    MEMORY[0x277D82BD8](gearBackgroundImage);
   }
 
-  v9 = [(SUSSoftwareUpdateTitleCell *)v14 contentView];
-  [v9 addSubview:location[0]];
-  MEMORY[0x277D82BD8](v9);
-  objc_storeStrong(&v14->_imageView, location[0]);
-  if (v14->_updateIcon)
+  contentView = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  [contentView addSubview:location[0]];
+  MEMORY[0x277D82BD8](contentView);
+  objc_storeStrong(&selfCopy->_imageView, location[0]);
+  if (selfCopy->_updateIcon)
   {
-    v8 = [(UIImageView *)v14->_imageView image];
-    [(UIImage *)v8 size];
-    [(SUSSoftwareUpdateTitleCell *)v14 configureUpdateImageViewFromImageSize:v2, v3];
-    v4 = MEMORY[0x277D82BD8](v8).n128_u64[0];
+    image = [(UIImageView *)selfCopy->_imageView image];
+    [(UIImage *)image size];
+    [(SUSSoftwareUpdateTitleCell *)selfCopy configureUpdateImageViewFromImageSize:v2, v3];
+    v4 = MEMORY[0x277D82BD8](image).n128_u64[0];
   }
 
   else
   {
-    v7 = [(UIImageView *)v14->_imageView image];
-    [(UIImage *)v7 size];
-    [(SUSSoftwareUpdateTitleCell *)v14 configureAnimatedGearViewFromImageSize:v5, v6];
-    v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+    image2 = [(UIImageView *)selfCopy->_imageView image];
+    [(UIImage *)image2 size];
+    [(SUSSoftwareUpdateTitleCell *)selfCopy configureAnimatedGearViewFromImageSize:v5, v6];
+    v4 = MEMORY[0x277D82BD8](image2).n128_u64[0];
   }
 
-  [(UIImageView *)v14->_imageView setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellIcon", *&v4];
+  [(UIImageView *)selfCopy->_imageView setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellIcon", *&v4];
   objc_storeStrong(location, 0);
 }
 
-- (void)configureAnimatedGearViewFromImageSize:(CGSize)a3
+- (void)configureAnimatedGearViewFromImageSize:(CGSize)size
 {
   v36[8] = *MEMORY[0x277D85DE8];
   v3 = [(SUSSoftwareUpdateTitleCell *)self newSoftwareUpdateAnimatedIconWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   animatedGearView = self->_animatedGearView;
   self->_animatedGearView = v3;
   [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](animatedGearView).n128_f64[0]];
-  v31 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  [v31 addSubview:self->_animatedGearView];
-  MEMORY[0x277D82BD8](v31);
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == 0.0 || a3.height == 0.0)
+  contentView = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  [contentView addSubview:self->_animatedGearView];
+  MEMORY[0x277D82BD8](contentView);
+  height = size.height;
+  width = size.width;
+  if (size.width == 0.0 || size.height == 0.0)
   {
     width = 60.0;
     height = 60.0;
   }
 
-  v30 = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView widthAnchor];
-  v29 = [v30 constraintEqualToConstant:width];
+  widthAnchor = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView widthAnchor];
+  v29 = [widthAnchor constraintEqualToConstant:width];
   v36[0] = v29;
-  v28 = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView heightAnchor];
-  v27 = [v28 constraintEqualToConstant:height];
+  heightAnchor = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView heightAnchor];
+  v27 = [heightAnchor constraintEqualToConstant:height];
   v36[1] = v27;
-  v26 = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView leadingAnchor];
-  v25 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v24 = [v25 leadingAnchor];
-  v23 = [v26 constraintEqualToAnchor:? constant:?];
+  leadingAnchor = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView leadingAnchor];
+  contentView2 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:? constant:?];
   v36[2] = v23;
-  v22 = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView topAnchor];
-  v21 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v20 = [v21 topAnchor];
-  v19 = [v22 constraintEqualToAnchor:17.0 constant:?];
+  topAnchor = [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView topAnchor];
+  contentView3 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:17.0 constant:?];
   v36[3] = v19;
-  v18 = [(UIImageView *)self->_imageView widthAnchor];
-  v17 = [v18 constraintEqualToConstant:width];
+  widthAnchor2 = [(UIImageView *)self->_imageView widthAnchor];
+  v17 = [widthAnchor2 constraintEqualToConstant:width];
   v36[4] = v17;
-  v16 = [(UIImageView *)self->_imageView heightAnchor];
-  v15 = [v16 constraintEqualToConstant:height];
+  heightAnchor2 = [(UIImageView *)self->_imageView heightAnchor];
+  v15 = [heightAnchor2 constraintEqualToConstant:height];
   v36[5] = v15;
-  v14 = [(UIImageView *)self->_imageView leadingAnchor];
-  v13 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v12 = [v13 leadingAnchor];
-  v11 = [v14 constraintEqualToAnchor:17.0 constant:?];
+  leadingAnchor3 = [(UIImageView *)self->_imageView leadingAnchor];
+  contentView4 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  leadingAnchor4 = [contentView4 leadingAnchor];
+  v11 = [leadingAnchor3 constraintEqualToAnchor:17.0 constant:?];
   v36[6] = v11;
-  v10 = [(UIImageView *)self->_imageView topAnchor];
-  v9 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v8 = [v9 topAnchor];
-  v7 = [v10 constraintEqualToAnchor:17.0 constant:?];
+  topAnchor3 = [(UIImageView *)self->_imageView topAnchor];
+  contentView5 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  topAnchor4 = [contentView5 topAnchor];
+  v7 = [topAnchor3 constraintEqualToAnchor:17.0 constant:?];
   v36[7] = v7;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:8];
   updateIconContraints = self->_updateIconContraints;
   self->_updateIconContraints = v5;
   MEMORY[0x277D82BD8](updateIconContraints);
   MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](topAnchor4);
+  MEMORY[0x277D82BD8](contentView5);
+  MEMORY[0x277D82BD8](topAnchor3);
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](contentView4);
+  MEMORY[0x277D82BD8](leadingAnchor3);
   MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  MEMORY[0x277D82BD8](heightAnchor2);
   MEMORY[0x277D82BD8](v17);
-  MEMORY[0x277D82BD8](v18);
+  MEMORY[0x277D82BD8](widthAnchor2);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](contentView3);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
-  MEMORY[0x277D82BD8](v26);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](contentView2);
+  MEMORY[0x277D82BD8](leadingAnchor);
   MEMORY[0x277D82BD8](v27);
-  MEMORY[0x277D82BD8](v28);
+  MEMORY[0x277D82BD8](heightAnchor);
   MEMORY[0x277D82BD8](v29);
-  [MEMORY[0x277CCAAD0] activateConstraints:{self->_updateIconContraints, MEMORY[0x277D82BD8](v30).n128_f64[0]}];
+  [MEMORY[0x277CCAAD0] activateConstraints:{self->_updateIconContraints, MEMORY[0x277D82BD8](widthAnchor).n128_f64[0]}];
   *MEMORY[0x277D85DE8];
 }
 
-- (void)configureUpdateImageViewFromImageSize:(CGSize)a3
+- (void)configureUpdateImageViewFromImageSize:(CGSize)size
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  width = a3.width;
-  height = a3.height;
-  if (a3.width == 0.0 || a3.height == 0.0)
+  width = size.width;
+  height = size.height;
+  if (size.width == 0.0 || size.height == 0.0)
   {
     width = 60.0;
     height = 60.0;
   }
 
-  v17 = [(UIImageView *)self->_imageView widthAnchor];
-  v16 = [v17 constraintEqualToConstant:width];
+  widthAnchor = [(UIImageView *)self->_imageView widthAnchor];
+  v16 = [widthAnchor constraintEqualToConstant:width];
   v21[0] = v16;
-  v15 = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) heightAnchor];
-  v14 = [v15 constraintEqualToConstant:height];
+  heightAnchor = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) heightAnchor];
+  v14 = [heightAnchor constraintEqualToConstant:height];
   v21[1] = v14;
-  v13 = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) leadingAnchor];
-  v12 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v11 = [v12 leadingAnchor];
-  v10 = [v13 constraintEqualToAnchor:? constant:?];
+  leadingAnchor = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) leadingAnchor];
+  contentView = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:? constant:?];
   v21[2] = v10;
-  v9 = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) topAnchor];
-  v8 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v7 = [v8 topAnchor];
-  v6 = [v9 constraintEqualToAnchor:17.0 constant:?];
+  topAnchor = [*(&self->super.super.super.super.super.isa + *(v5 + 3636)) topAnchor];
+  contentView2 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:17.0 constant:?];
   v21[3] = v6;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:4];
   updateIconContraints = self->_updateIconContraints;
   self->_updateIconContraints = v3;
   MEMORY[0x277D82BD8](updateIconContraints);
   MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  MEMORY[0x277D82BD8](v9);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](contentView2);
+  MEMORY[0x277D82BD8](topAnchor);
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](contentView);
+  MEMORY[0x277D82BD8](leadingAnchor);
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
+  MEMORY[0x277D82BD8](heightAnchor);
   MEMORY[0x277D82BD8](v16);
-  [MEMORY[0x277CCAAD0] activateConstraints:{self->_updateIconContraints, MEMORY[0x277D82BD8](v17).n128_f64[0]}];
+  [MEMORY[0x277CCAAD0] activateConstraints:{self->_updateIconContraints, MEMORY[0x277D82BD8](widthAnchor).n128_f64[0]}];
   *MEMORY[0x277D85DE8];
 }
 
@@ -522,9 +522,9 @@
 - (void)configureUpdateLabelsStackViewConstraints
 {
   v33[3] = *MEMORY[0x277D85DE8];
-  v30 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v30);
-  *&v2 = MEMORY[0x277D82BD8](v30).n128_u64[0];
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
+  *&v2 = MEMORY[0x277D82BD8](preferredContentSizeCategory).n128_u64[0];
   if (!self->_updateLabelsStackView)
   {
     v3 = objc_alloc_init(MEMORY[0x277D75A68]);
@@ -534,9 +534,9 @@
     [(UIStackView *)self->_updateLabelsStackView setAxis:1];
   }
 
-  v29 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  [v29 addSubview:self->_updateLabelsStackView];
-  *&v5 = MEMORY[0x277D82BD8](v29).n128_u64[0];
+  contentView = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  [contentView addSubview:self->_updateLabelsStackView];
+  *&v5 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
   if (self->_updateLabelsConstraints)
   {
     [MEMORY[0x277CCAAD0] deactivateConstraints:{self->_updateLabelsConstraints, v5}];
@@ -552,45 +552,45 @@
   }
 
   v17 = self->_updateLabelsConstraints;
-  v28 = [(UIStackView *)self->_updateLabelsStackView topAnchor];
-  v27 = [(UIImageView *)self->_imageView topAnchor];
-  v26 = [v28 constraintEqualToAnchor:?];
+  topAnchor = [(UIStackView *)self->_updateLabelsStackView topAnchor];
+  topAnchor2 = [(UIImageView *)self->_imageView topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:?];
   v33[0] = v26;
-  v25 = [(UIStackView *)self->_updateLabelsStackView leadingAnchor];
-  v24 = [(UIImageView *)self->_imageView trailingAnchor];
-  v23 = [v25 constraintEqualToAnchor:12.0 constant:?];
+  leadingAnchor = [(UIStackView *)self->_updateLabelsStackView leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_imageView trailingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:12.0 constant:?];
   v33[1] = v23;
-  v22 = [(UIStackView *)self->_updateLabelsStackView trailingAnchor];
-  v21 = [(SUSSoftwareUpdateTitleCell *)self contentView];
-  v20 = [v21 trailingAnchor];
-  v19 = [v22 constraintEqualToAnchor:-12.0 constant:?];
+  trailingAnchor2 = [(UIStackView *)self->_updateLabelsStackView trailingAnchor];
+  contentView2 = [(SUSSoftwareUpdateTitleCell *)self contentView];
+  trailingAnchor3 = [contentView2 trailingAnchor];
+  v19 = [trailingAnchor2 constraintEqualToAnchor:-12.0 constant:?];
   v33[2] = v19;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
   [(NSMutableArray *)v17 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v18);
   MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  MEMORY[0x277D82BD8](v22);
+  MEMORY[0x277D82BD8](trailingAnchor3);
+  MEMORY[0x277D82BD8](contentView2);
+  MEMORY[0x277D82BD8](trailingAnchor2);
   MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
-  MEMORY[0x277D82BD8](v25);
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](leadingAnchor);
   MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
-  *&v9 = MEMORY[0x277D82BD8](v28).n128_u64[0];
+  MEMORY[0x277D82BD8](topAnchor2);
+  *&v9 = MEMORY[0x277D82BD8](topAnchor).n128_u64[0];
   if (self->_progressStyle)
   {
     [(UIStackView *)self->_updateLabelsStackView setDistribution:4, v9];
     LODWORD(v10) = 1148846080;
     [(UIStackView *)self->_updateLabelsStackView setContentHuggingPriority:1 forAxis:v10];
     v13 = self->_updateLabelsConstraints;
-    v16 = [(UIStackView *)self->_updateLabelsStackView bottomAnchor];
-    v15 = [(UIImageView *)self->_imageView bottomAnchor];
-    v14 = [v16 constraintGreaterThanOrEqualToAnchor:?];
+    bottomAnchor = [(UIStackView *)self->_updateLabelsStackView bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)self->_imageView bottomAnchor];
+    v14 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:?];
     [(NSMutableArray *)v13 addObject:?];
     MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
-    *&v11 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    *&v11 = MEMORY[0x277D82BD8](bottomAnchor).n128_u64[0];
   }
 
   else
@@ -609,37 +609,37 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)configureUpdateNameLabel:(BOOL)a3
+- (void)configureUpdateNameLabel:(BOOL)label
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  labelCopy = label;
   location = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  if (!v9->_updateNameLabel)
+  if (!selfCopy->_updateNameLabel)
   {
     v3 = objc_alloc_init(MEMORY[0x277D756B8]);
-    updateNameLabel = v9->_updateNameLabel;
-    v9->_updateNameLabel = v3;
-    [(UILabel *)v9->_updateNameLabel setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](updateNameLabel).n128_f64[0]];
+    updateNameLabel = selfCopy->_updateNameLabel;
+    selfCopy->_updateNameLabel = v3;
+    [(UILabel *)selfCopy->_updateNameLabel setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](updateNameLabel).n128_f64[0]];
     LODWORD(v5) = 1148846080;
-    [(UILabel *)v9->_updateNameLabel setContentHuggingPriority:1 forAxis:v5];
-    [(UILabel *)v9->_updateNameLabel setNumberOfLines:0];
-    [(UILabel *)v9->_updateNameLabel setAdjustsFontForContentSizeCategory:1];
-    [(UILabel *)v9->_updateNameLabel setFont:location];
-    [(UIStackView *)v9->_updateLabelsStackView addArrangedSubview:v9->_updateNameLabel];
+    [(UILabel *)selfCopy->_updateNameLabel setContentHuggingPriority:1 forAxis:v5];
+    [(UILabel *)selfCopy->_updateNameLabel setNumberOfLines:0];
+    [(UILabel *)selfCopy->_updateNameLabel setAdjustsFontForContentSizeCategory:1];
+    [(UILabel *)selfCopy->_updateNameLabel setFont:location];
+    [(UIStackView *)selfCopy->_updateLabelsStackView addArrangedSubview:selfCopy->_updateNameLabel];
   }
 
-  [(UILabel *)v9->_updateNameLabel setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellUpdateName"];
+  [(UILabel *)selfCopy->_updateNameLabel setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellUpdateName"];
   objc_storeStrong(&location, 0);
 }
 
-- (void)configureUpdateStatusLabel:(BOOL)a3
+- (void)configureUpdateStatusLabel:(BOOL)label
 {
   if (!self->_updateStatusLabel)
   {
-    v3 = [(SUSSoftwareUpdateTitleCell *)self newUpdateStatusLabel];
+    newUpdateStatusLabel = [(SUSSoftwareUpdateTitleCell *)self newUpdateStatusLabel];
     updateStatusLabel = self->_updateStatusLabel;
-    self->_updateStatusLabel = v3;
+    self->_updateStatusLabel = newUpdateStatusLabel;
     [(UILabel *)self->_updateStatusLabel setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](updateStatusLabel).n128_f64[0]];
     LODWORD(v5) = 1148846080;
     [(UILabel *)self->_updateStatusLabel setContentHuggingPriority:1 forAxis:v5];
@@ -649,37 +649,37 @@
   [(UILabel *)self->_updateStatusLabel setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellUpdateStatus"];
 }
 
-- (void)configureReleaseNotesSummaryView:(BOOL)a3
+- (void)configureReleaseNotesSummaryView:(BOOL)view
 {
   v188[2] = *MEMORY[0x277D85DE8];
-  v179 = self;
+  selfCopy = self;
   v178 = a2;
-  v177 = a3;
+  viewCopy = view;
   if (!self->_releaseNotesSummaryView)
   {
     v3 = objc_alloc_init(MEMORY[0x277D3FBB0]);
-    releaseNotesSummaryView = v179->_releaseNotesSummaryView;
-    v179->_releaseNotesSummaryView = v3;
+    releaseNotesSummaryView = selfCopy->_releaseNotesSummaryView;
+    selfCopy->_releaseNotesSummaryView = v3;
     MEMORY[0x277D82BD8](releaseNotesSummaryView);
   }
 
-  if (!v179->_learnMoreLabel && (PSIsRunningInAssistant() & 1) == 0 && v179->_showLearnMoreButton)
+  if (!selfCopy->_learnMoreLabel && (PSIsRunningInAssistant() & 1) == 0 && selfCopy->_showLearnMoreButton)
   {
-    v5 = [(SUSSoftwareUpdateTitleCell *)v179 newLearnMoreLabel];
-    learnMoreLabel = v179->_learnMoreLabel;
-    v179->_learnMoreLabel = v5;
+    newLearnMoreLabel = [(SUSSoftwareUpdateTitleCell *)selfCopy newLearnMoreLabel];
+    learnMoreLabel = selfCopy->_learnMoreLabel;
+    selfCopy->_learnMoreLabel = newLearnMoreLabel;
     MEMORY[0x277D82BD8](learnMoreLabel);
   }
 
-  if (!v179->_splomboNotes && v179->_showSplomboNotes)
+  if (!selfCopy->_splomboNotes && selfCopy->_showSplomboNotes)
   {
-    v7 = [(SUSSoftwareUpdateTitleCell *)v179 newSplomboNotesLabel];
-    splomboNotes = v179->_splomboNotes;
-    v179->_splomboNotes = v7;
+    newSplomboNotesLabel = [(SUSSoftwareUpdateTitleCell *)selfCopy newSplomboNotesLabel];
+    splomboNotes = selfCopy->_splomboNotes;
+    selfCopy->_splomboNotes = newSplomboNotesLabel;
     MEMORY[0x277D82BD8](splomboNotes);
   }
 
-  if (v179->_learnMoreLabel && v179->_splomboNotes)
+  if (selfCopy->_learnMoreLabel && selfCopy->_splomboNotes)
   {
     v134 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
@@ -688,11 +688,11 @@
     v175[3] = v11;
     v175[4] = v12;
     v176 = [v134 initWithFrame:{*&v9, *&v10, *&v11, *&v12}];
-    v136 = [v176 heightAnchor];
-    v135 = [v136 constraintEqualToConstant:10.0];
+    heightAnchor = [v176 heightAnchor];
+    v135 = [heightAnchor constraintEqualToConstant:10.0];
     [v135 setActive:1];
     MEMORY[0x277D82BD8](v135);
-    MEMORY[0x277D82BD8](v136);
+    MEMORY[0x277D82BD8](heightAnchor);
     v137 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v174[1] = v13;
@@ -700,11 +700,11 @@
     v174[3] = v15;
     v174[4] = v16;
     v175[0] = [v137 initWithFrame:{*&v13, *&v14, *&v15, *&v16}];
-    v139 = [v175[0] heightAnchor];
-    v138 = [v139 constraintEqualToConstant:10.0];
+    heightAnchor2 = [v175[0] heightAnchor];
+    v138 = [heightAnchor2 constraintEqualToConstant:10.0];
     [v138 setActive:1];
     MEMORY[0x277D82BD8](v138);
-    MEMORY[0x277D82BD8](v139);
+    MEMORY[0x277D82BD8](heightAnchor2);
     v140 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v173[1] = v17;
@@ -712,14 +712,14 @@
     v173[3] = v19;
     v173[4] = v20;
     v174[0] = [v140 initWithFrame:{*&v17, *&v18, *&v19, *&v20}];
-    v142 = [v174[0] widthAnchor];
-    v141 = [v142 constraintEqualToConstant:8.0];
+    widthAnchor = [v174[0] widthAnchor];
+    v141 = [widthAnchor constraintEqualToConstant:8.0];
     [v141 setActive:1];
     MEMORY[0x277D82BD8](v141);
-    MEMORY[0x277D82BD8](v142);
+    MEMORY[0x277D82BD8](widthAnchor);
     v143 = objc_alloc(MEMORY[0x277D75A68]);
     v188[0] = v174[0];
-    v188[1] = v179->_learnMoreLabel;
+    v188[1] = selfCopy->_learnMoreLabel;
     v144 = [MEMORY[0x277CBEA60] arrayWithObjects:v188 count:?];
     v173[0] = [v143 initWithArrangedSubviews:?];
     *&v21 = MEMORY[0x277D82BD8](v144).n128_u64[0];
@@ -735,11 +735,11 @@
     v171[3] = v24;
     v171[4] = v25;
     v172 = [v145 initWithFrame:{*&v22, *&v23, *&v24, *&v25}];
-    v147 = [v172 heightAnchor];
-    v146 = [v147 constraintEqualToConstant:4.0];
+    heightAnchor3 = [v172 heightAnchor];
+    v146 = [heightAnchor3 constraintEqualToConstant:4.0];
     [v146 setActive:1];
     MEMORY[0x277D82BD8](v146);
-    MEMORY[0x277D82BD8](v147);
+    MEMORY[0x277D82BD8](heightAnchor3);
     v148 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v170[1] = v26;
@@ -747,11 +747,11 @@
     v170[3] = v28;
     v170[4] = v29;
     v171[0] = [v148 initWithFrame:{*&v26, *&v27, *&v28, *&v29}];
-    v150 = [v171[0] heightAnchor];
-    v149 = [v150 constraintEqualToConstant:4.0];
+    heightAnchor4 = [v171[0] heightAnchor];
+    v149 = [heightAnchor4 constraintEqualToConstant:4.0];
     [v149 setActive:1];
     MEMORY[0x277D82BD8](v149);
-    MEMORY[0x277D82BD8](v150);
+    MEMORY[0x277D82BD8](heightAnchor4);
     v151 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v169[1] = v30;
@@ -759,14 +759,14 @@
     v169[3] = v32;
     v169[4] = v33;
     v170[0] = [v151 initWithFrame:{*&v30, *&v31, *&v32, *&v33}];
-    v153 = [v170[0] widthAnchor];
-    v152 = [v153 constraintEqualToConstant:8.0];
+    widthAnchor2 = [v170[0] widthAnchor];
+    v152 = [widthAnchor2 constraintEqualToConstant:8.0];
     [v152 setActive:1];
     MEMORY[0x277D82BD8](v152);
-    MEMORY[0x277D82BD8](v153);
+    MEMORY[0x277D82BD8](widthAnchor2);
     v154 = objc_alloc(MEMORY[0x277D75A68]);
     v187[0] = v170[0];
-    v187[1] = v179->_splomboNotes;
+    v187[1] = selfCopy->_splomboNotes;
     v155 = [MEMORY[0x277CBEA60] arrayWithObjects:v187 count:2];
     v169[0] = [v154 initWithArrangedSubviews:?];
     *&v34 = MEMORY[0x277D82BD8](v155).n128_u64[0];
@@ -776,7 +776,7 @@
     [v169[0] setAlignment:1];
     [v169[0] setDistribution:0];
     v156 = objc_alloc(MEMORY[0x277D75A68]);
-    v186[0] = v179->_releaseNotesSummaryView;
+    v186[0] = selfCopy->_releaseNotesSummaryView;
     v186[1] = v171[0];
     v186[2] = v169[0];
     v186[3] = v175[0];
@@ -784,8 +784,8 @@
     v186[5] = v176;
     v157 = [MEMORY[0x277CBEA60] arrayWithObjects:v186 count:6];
     v35 = [v156 initWithArrangedSubviews:?];
-    releaseNotesStackView = v179->_releaseNotesStackView;
-    v179->_releaseNotesStackView = v35;
+    releaseNotesStackView = selfCopy->_releaseNotesStackView;
+    selfCopy->_releaseNotesStackView = v35;
     MEMORY[0x277D82BD8](releaseNotesStackView);
     MEMORY[0x277D82BD8](v157);
     objc_storeStrong(v169, 0);
@@ -798,7 +798,7 @@
     objc_storeStrong(&v176, 0);
   }
 
-  else if (v179->_learnMoreLabel)
+  else if (selfCopy->_learnMoreLabel)
   {
     v121 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
@@ -807,11 +807,11 @@
     v167[3] = v39;
     v167[4] = v40;
     v168 = [v121 initWithFrame:{*&v37, *&v38, *&v39, *&v40}];
-    v123 = [v168 heightAnchor];
-    v122 = [v123 constraintEqualToConstant:10.0];
+    heightAnchor5 = [v168 heightAnchor];
+    v122 = [heightAnchor5 constraintEqualToConstant:10.0];
     [v122 setActive:1];
     MEMORY[0x277D82BD8](v122);
-    MEMORY[0x277D82BD8](v123);
+    MEMORY[0x277D82BD8](heightAnchor5);
     v124 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v166[1] = v41;
@@ -819,11 +819,11 @@
     v166[3] = v43;
     v166[4] = v44;
     v167[0] = [v124 initWithFrame:{*&v41, *&v42, *&v43, *&v44}];
-    v126 = [v167[0] heightAnchor];
-    v125 = [v126 constraintEqualToConstant:10.0];
+    heightAnchor6 = [v167[0] heightAnchor];
+    v125 = [heightAnchor6 constraintEqualToConstant:10.0];
     [v125 setActive:1];
     MEMORY[0x277D82BD8](v125);
-    MEMORY[0x277D82BD8](v126);
+    MEMORY[0x277D82BD8](heightAnchor6);
     v127 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v165[1] = v45;
@@ -831,14 +831,14 @@
     v165[3] = v47;
     v165[4] = v48;
     v166[0] = [v127 initWithFrame:{*&v45, *&v46, *&v47, *&v48}];
-    v129 = [v166[0] widthAnchor];
-    v128 = [v129 constraintEqualToConstant:8.0];
+    widthAnchor3 = [v166[0] widthAnchor];
+    v128 = [widthAnchor3 constraintEqualToConstant:8.0];
     [v128 setActive:1];
     MEMORY[0x277D82BD8](v128);
-    MEMORY[0x277D82BD8](v129);
+    MEMORY[0x277D82BD8](widthAnchor3);
     v130 = objc_alloc(MEMORY[0x277D75A68]);
     v185[0] = v166[0];
-    v185[1] = v179->_learnMoreLabel;
+    v185[1] = selfCopy->_learnMoreLabel;
     v131 = [MEMORY[0x277CBEA60] arrayWithObjects:v185 count:2];
     v165[0] = [v130 initWithArrangedSubviews:?];
     *&v49 = MEMORY[0x277D82BD8](v131).n128_u64[0];
@@ -848,14 +848,14 @@
     [v165[0] setAlignment:1];
     [v165[0] setDistribution:0];
     v132 = objc_alloc(MEMORY[0x277D75A68]);
-    v184[0] = v179->_releaseNotesSummaryView;
+    v184[0] = selfCopy->_releaseNotesSummaryView;
     v184[1] = v167[0];
     v184[2] = v165[0];
     v184[3] = v168;
     v133 = [MEMORY[0x277CBEA60] arrayWithObjects:v184 count:4];
     v50 = [v132 initWithArrangedSubviews:?];
-    v51 = v179->_releaseNotesStackView;
-    v179->_releaseNotesStackView = v50;
+    v51 = selfCopy->_releaseNotesStackView;
+    selfCopy->_releaseNotesStackView = v50;
     MEMORY[0x277D82BD8](v51);
     MEMORY[0x277D82BD8](v133);
     objc_storeStrong(v165, 0);
@@ -864,7 +864,7 @@
     objc_storeStrong(&v168, 0);
   }
 
-  else if (v179->_splomboNotes)
+  else if (selfCopy->_splomboNotes)
   {
     v108 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
@@ -873,11 +873,11 @@
     v163[3] = v54;
     v163[4] = v55;
     v164 = [v108 initWithFrame:{*&v52, *&v53, *&v54, *&v55}];
-    v110 = [v164 heightAnchor];
-    v109 = [v110 constraintEqualToConstant:4.0];
+    heightAnchor7 = [v164 heightAnchor];
+    v109 = [heightAnchor7 constraintEqualToConstant:4.0];
     [v109 setActive:1];
     MEMORY[0x277D82BD8](v109);
-    MEMORY[0x277D82BD8](v110);
+    MEMORY[0x277D82BD8](heightAnchor7);
     v111 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v162[1] = v56;
@@ -885,11 +885,11 @@
     v162[3] = v58;
     v162[4] = v59;
     v163[0] = [v111 initWithFrame:{*&v56, *&v57, *&v58, *&v59}];
-    v113 = [v163[0] heightAnchor];
-    v112 = [v113 constraintEqualToConstant:4.0];
+    heightAnchor8 = [v163[0] heightAnchor];
+    v112 = [heightAnchor8 constraintEqualToConstant:4.0];
     [v112 setActive:1];
     MEMORY[0x277D82BD8](v112);
-    MEMORY[0x277D82BD8](v113);
+    MEMORY[0x277D82BD8](heightAnchor8);
     v114 = objc_alloc(MEMORY[0x277D75D18]);
     CGRectMake();
     v161[1] = v60;
@@ -897,14 +897,14 @@
     v161[3] = v62;
     v161[4] = v63;
     v162[0] = [v114 initWithFrame:{*&v60, *&v61, *&v62, *&v63}];
-    v116 = [v162[0] widthAnchor];
-    v115 = [v116 constraintEqualToConstant:8.0];
+    widthAnchor4 = [v162[0] widthAnchor];
+    v115 = [widthAnchor4 constraintEqualToConstant:8.0];
     [v115 setActive:1];
     MEMORY[0x277D82BD8](v115);
-    MEMORY[0x277D82BD8](v116);
+    MEMORY[0x277D82BD8](widthAnchor4);
     v117 = objc_alloc(MEMORY[0x277D75A68]);
     v183[0] = v162[0];
-    v183[1] = v179->_splomboNotes;
+    v183[1] = selfCopy->_splomboNotes;
     v118 = [MEMORY[0x277CBEA60] arrayWithObjects:v183 count:2];
     v161[0] = [v117 initWithArrangedSubviews:?];
     *&v64 = MEMORY[0x277D82BD8](v118).n128_u64[0];
@@ -914,14 +914,14 @@
     [v161[0] setAlignment:1];
     [v161[0] setDistribution:0];
     v119 = objc_alloc(MEMORY[0x277D75A68]);
-    v182[0] = v179->_releaseNotesSummaryView;
+    v182[0] = selfCopy->_releaseNotesSummaryView;
     v182[1] = v163[0];
     v182[2] = v161[0];
     v182[3] = v164;
     v120 = [MEMORY[0x277CBEA60] arrayWithObjects:v182 count:4];
     v65 = [v119 initWithArrangedSubviews:?];
-    v66 = v179->_releaseNotesStackView;
-    v179->_releaseNotesStackView = v65;
+    v66 = selfCopy->_releaseNotesStackView;
+    selfCopy->_releaseNotesStackView = v65;
     MEMORY[0x277D82BD8](v66);
     MEMORY[0x277D82BD8](v120);
     objc_storeStrong(v161, 0);
@@ -933,118 +933,118 @@
   else
   {
     v106 = objc_alloc(MEMORY[0x277D75A68]);
-    v181 = v179->_releaseNotesSummaryView;
+    v181 = selfCopy->_releaseNotesSummaryView;
     v107 = [MEMORY[0x277CBEA60] arrayWithObjects:&v181 count:1];
     v67 = [v106 initWithArrangedSubviews:?];
-    v68 = v179->_releaseNotesStackView;
-    v179->_releaseNotesStackView = v67;
+    v68 = selfCopy->_releaseNotesStackView;
+    selfCopy->_releaseNotesStackView = v67;
     MEMORY[0x277D82BD8](v68);
     MEMORY[0x277D82BD8](v107);
   }
 
-  [(UIStackView *)v179->_releaseNotesStackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UIStackView *)v179->_releaseNotesStackView setAutoresizesSubviews:0];
-  [(UIStackView *)v179->_releaseNotesStackView setAxis:?];
-  [(UIStackView *)v179->_releaseNotesStackView setAlignment:1];
-  [(UIStackView *)v179->_releaseNotesStackView setDistribution:0];
-  [(UIStackView *)v179->_releaseNotesStackView setLayoutMarginsRelativeArrangement:1];
-  v93 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  [v93 addSubview:v179->_releaseNotesStackView];
-  *&v69 = MEMORY[0x277D82BD8](v93).n128_u64[0];
-  v97 = [(UIStackView *)v179->_releaseNotesStackView leadingAnchor];
-  v96 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  v95 = [v96 leadingAnchor];
-  v94 = [v97 constraintEqualToAnchor:8.0 constant:?];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setAutoresizesSubviews:0];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setAxis:?];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setAlignment:1];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setDistribution:0];
+  [(UIStackView *)selfCopy->_releaseNotesStackView setLayoutMarginsRelativeArrangement:1];
+  contentView = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  [contentView addSubview:selfCopy->_releaseNotesStackView];
+  *&v69 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+  leadingAnchor = [(UIStackView *)selfCopy->_releaseNotesStackView leadingAnchor];
+  contentView2 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v94 = [leadingAnchor constraintEqualToAnchor:8.0 constant:?];
   [v94 setActive:1];
   MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
-  MEMORY[0x277D82BD8](v96);
-  *&v70 = MEMORY[0x277D82BD8](v97).n128_u64[0];
-  v101 = [(UIStackView *)v179->_releaseNotesStackView trailingAnchor];
-  v100 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  v99 = [v100 trailingAnchor];
-  v98 = [v101 constraintEqualToAnchor:-8.0 constant:?];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](contentView2);
+  *&v70 = MEMORY[0x277D82BD8](leadingAnchor).n128_u64[0];
+  trailingAnchor = [(UIStackView *)selfCopy->_releaseNotesStackView trailingAnchor];
+  contentView3 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v98 = [trailingAnchor constraintEqualToAnchor:-8.0 constant:?];
   [v98 setActive:1];
   MEMORY[0x277D82BD8](v98);
-  MEMORY[0x277D82BD8](v99);
-  MEMORY[0x277D82BD8](v100);
-  *&v71 = MEMORY[0x277D82BD8](v101).n128_u64[0];
-  v105 = [(UIStackView *)v179->_releaseNotesStackView bottomAnchor];
-  v104 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  v103 = [v104 bottomAnchor];
-  v102 = [v105 constraintEqualToAnchor:?];
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](contentView3);
+  *&v71 = MEMORY[0x277D82BD8](trailingAnchor).n128_u64[0];
+  bottomAnchor = [(UIStackView *)selfCopy->_releaseNotesStackView bottomAnchor];
+  contentView4 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v102 = [bottomAnchor constraintEqualToAnchor:?];
   [v102 setActive:1];
   MEMORY[0x277D82BD8](v102);
-  MEMORY[0x277D82BD8](v103);
-  MEMORY[0x277D82BD8](v104);
-  MEMORY[0x277D82BD8](v105);
-  if (v177)
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](contentView4);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  if (viewCopy)
   {
-    v72 = MEMORY[0x277D82BE0](v179->_releaseNotesStackView);
+    v72 = MEMORY[0x277D82BE0](selfCopy->_releaseNotesStackView);
   }
 
   else
   {
-    v72 = MEMORY[0x277D82BE0](v179->_releaseNotesSummaryView);
+    v72 = MEMORY[0x277D82BE0](selfCopy->_releaseNotesSummaryView);
   }
 
   v160 = v72;
-  v79 = [v72 topAnchor];
-  v78 = [(UIStackView *)v179->_updateLabelsStackView bottomAnchor];
-  v159 = [v79 constraintEqualToAnchor:? constant:?];
-  MEMORY[0x277D82BD8](v78);
-  v73 = MEMORY[0x277D82BD8](v79);
+  topAnchor = [v72 topAnchor];
+  bottomAnchor3 = [(UIStackView *)selfCopy->_updateLabelsStackView bottomAnchor];
+  v159 = [topAnchor constraintEqualToAnchor:? constant:?];
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  v73 = MEMORY[0x277D82BD8](topAnchor);
   v73.n128_u32[0] = 1144750080;
   [v159 setPriority:v73.n128_f64[0]];
   [v159 setActive:1];
-  v81 = [v160 topAnchor];
-  v80 = [(UIImageView *)v179->_imageView bottomAnchor];
-  v158 = [v81 constraintGreaterThanOrEqualToAnchor:4.0 constant:?];
-  MEMORY[0x277D82BD8](v80);
-  v74 = MEMORY[0x277D82BD8](v81);
+  topAnchor2 = [v160 topAnchor];
+  bottomAnchor4 = [(UIImageView *)selfCopy->_imageView bottomAnchor];
+  v158 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:4.0 constant:?];
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  v74 = MEMORY[0x277D82BD8](topAnchor2);
   v74.n128_u32[0] = 1148846080;
   [v158 setPriority:v74.n128_f64[0]];
   [v158 setActive:1];
-  v85 = [(PSWebContainerView *)v179->_releaseNotesSummaryView leadingAnchor];
-  v84 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  v83 = [v84 leadingAnchor];
-  v82 = [v85 constraintEqualToAnchor:8.0 constant:?];
+  leadingAnchor3 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView leadingAnchor];
+  contentView5 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v82 = [leadingAnchor3 constraintEqualToAnchor:8.0 constant:?];
   [v82 setActive:1];
   MEMORY[0x277D82BD8](v82);
-  MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  *&v75 = MEMORY[0x277D82BD8](v85).n128_u64[0];
-  v89 = [(PSWebContainerView *)v179->_releaseNotesSummaryView trailingAnchor];
-  v88 = [(SUSSoftwareUpdateTitleCell *)v179 contentView];
-  v87 = [v88 trailingAnchor];
-  v86 = [v89 constraintEqualToAnchor:-8.0 constant:?];
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  MEMORY[0x277D82BD8](contentView5);
+  *&v75 = MEMORY[0x277D82BD8](leadingAnchor3).n128_u64[0];
+  trailingAnchor3 = [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView trailingAnchor];
+  contentView6 = [(SUSSoftwareUpdateTitleCell *)selfCopy contentView];
+  trailingAnchor4 = [contentView6 trailingAnchor];
+  v86 = [trailingAnchor3 constraintEqualToAnchor:-8.0 constant:?];
   [v86 setActive:1];
   MEMORY[0x277D82BD8](v86);
-  MEMORY[0x277D82BD8](v87);
-  MEMORY[0x277D82BD8](v88);
-  *&v76 = MEMORY[0x277D82BD8](v89).n128_u64[0];
-  [(PSWebContainerView *)v179->_releaseNotesSummaryView setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellReleaseNotesSummary", v76];
-  v90 = v179->_releaseNotesSummaryView;
-  v92 = [(PSWebContainerView *)v90 webView];
-  v180 = v92;
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](contentView6);
+  *&v76 = MEMORY[0x277D82BD8](trailingAnchor3).n128_u64[0];
+  [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView setAccessibilityIdentifier:@"SUSSoftwareUpdateTitleCellReleaseNotesSummary", v76];
+  v90 = selfCopy->_releaseNotesSummaryView;
+  webView = [(PSWebContainerView *)v90 webView];
+  v180 = webView;
   v91 = [MEMORY[0x277CBEA60] arrayWithObjects:&v180 count:1];
   [(PSWebContainerView *)v90 setAccessibilityElements:?];
   MEMORY[0x277D82BD8](v91);
-  *&v77 = MEMORY[0x277D82BD8](v92).n128_u64[0];
-  [(PSWebContainerView *)v179->_releaseNotesSummaryView setAccessibilityContainerType:4, v77];
+  *&v77 = MEMORY[0x277D82BD8](webView).n128_u64[0];
+  [(PSWebContainerView *)selfCopy->_releaseNotesSummaryView setAccessibilityContainerType:4, v77];
   objc_storeStrong(&v158, 0);
   objc_storeStrong(&v159, 0);
   objc_storeStrong(&v160, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)configureProgressBar:(BOOL)a3
+- (void)configureProgressBar:(BOOL)bar
 {
   if (!self->_progressBar)
   {
-    v3 = [(SUSSoftwareUpdateTitleCell *)self newProgressBar];
+    newProgressBar = [(SUSSoftwareUpdateTitleCell *)self newProgressBar];
     progressBar = self->_progressBar;
-    self->_progressBar = v3;
+    self->_progressBar = newProgressBar;
     *&v5 = MEMORY[0x277D82BD8](progressBar).n128_u64[0];
     if (self->_progressStyle)
     {
@@ -1070,62 +1070,62 @@
   if (self->_progressStyle == 2)
   {
     progressBar = self->_progressBar;
-    v5 = [MEMORY[0x277D75348] grayColor];
+    grayColor = [MEMORY[0x277D75348] grayColor];
     [(UIProgressView *)progressBar setProgressTintColor:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](grayColor);
   }
 
   else if (self->_progressStyle == 1)
   {
     v2 = self->_progressBar;
-    v3 = [(SUSSoftwareUpdateTitleCell *)self tintColor];
+    tintColor = [(SUSSoftwareUpdateTitleCell *)self tintColor];
     [(UIProgressView *)v2 setProgressTintColor:?];
-    MEMORY[0x277D82BD8](v3);
+    MEMORY[0x277D82BD8](tintColor);
   }
 }
 
-- (void)setProgressDisplayStyle:(int)a3
+- (void)setProgressDisplayStyle:(int)style
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  if (self->_progressStyle != a3)
+  styleCopy = style;
+  if (self->_progressStyle != style)
   {
-    v20->_progressStyle = v18;
-    [(SUSSoftwareUpdateTitleCell *)v20 updateProgressTintColor];
-    if (v20->_progressStyle)
+    selfCopy->_progressStyle = styleCopy;
+    [(SUSSoftwareUpdateTitleCell *)selfCopy updateProgressTintColor];
+    if (selfCopy->_progressStyle)
     {
-      [(UIStackView *)v20->_updateLabelsStackView addArrangedSubview:v20->_progressBar];
-      [(UIProgressView *)v20->_progressBar setAlpha:1.0];
-      [(UIProgressView *)v20->_progressBar setHidden:0];
+      [(UIStackView *)selfCopy->_updateLabelsStackView addArrangedSubview:selfCopy->_progressBar];
+      [(UIProgressView *)selfCopy->_progressBar setAlpha:1.0];
+      [(UIProgressView *)selfCopy->_progressBar setHidden:0];
     }
 
     else
     {
-      [(UIProgressView *)v20->_progressBar removeFromSuperview];
-      [(UIProgressView *)v20->_progressBar setAlpha:0.0];
-      [(UIProgressView *)v20->_progressBar setHidden:1];
+      [(UIProgressView *)selfCopy->_progressBar removeFromSuperview];
+      [(UIProgressView *)selfCopy->_progressBar setAlpha:0.0];
+      [(UIProgressView *)selfCopy->_progressBar setHidden:1];
     }
 
-    [(SUSSoftwareUpdateTitleCell *)v20 configureUpdateLabelsStackViewConstraints];
-    v5 = [(SUSSoftwareUpdateTitleCell *)v20 superview];
-    *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-    if (v5)
+    [(SUSSoftwareUpdateTitleCell *)selfCopy configureUpdateLabelsStackViewConstraints];
+    superview = [(SUSSoftwareUpdateTitleCell *)selfCopy superview];
+    *&v3 = MEMORY[0x277D82BD8](superview).n128_u64[0];
+    if (superview)
     {
-      [(SUSSoftwareUpdateTitleCell *)v20 layoutIfNeeded];
+      [(SUSSoftwareUpdateTitleCell *)selfCopy layoutIfNeeded];
       v4 = MEMORY[0x277D75D18];
       v12 = MEMORY[0x277D85DD0];
       v13 = -1073741824;
       v14 = 0;
       v15 = __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke;
       v16 = &unk_279CB6E20;
-      v17 = MEMORY[0x277D82BE0](v20);
+      v17 = MEMORY[0x277D82BE0](selfCopy);
       v6 = MEMORY[0x277D85DD0];
       v7 = -1073741824;
       v8 = 0;
       v9 = __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke_2;
       v10 = &unk_279CB6E48;
-      v11 = MEMORY[0x277D82BE0](v20);
+      v11 = MEMORY[0x277D82BE0](selfCopy);
       [v4 animateWithDuration:&v12 animations:&v6 completion:0.3];
       objc_storeStrong(&v11, 0);
       objc_storeStrong(&v17, 0);
@@ -1133,7 +1133,7 @@
 
     else
     {
-      [(SUSSoftwareUpdateTitleCell *)v20 setNeedsUpdateConstraints];
+      [(SUSSoftwareUpdateTitleCell *)selfCopy setNeedsUpdateConstraints];
     }
   }
 }
@@ -1158,18 +1158,18 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   return result;
 }
 
-- (void)setReleaseNotesSummary:(id)a3
+- (void)setReleaseNotesSummary:(id)summary
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, summary);
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v3 initWithData:location[0] encoding:?];
   v5 = +[SUSReleaseNotesProcessor sharedInstance];
   v8 = [(SUSReleaseNotesProcessor *)v5 normalizeHtmlReleaseNotes:v9];
   *&v4 = MEMORY[0x277D82BD8](v5).n128_u64[0];
-  releaseNotesSummaryView = v11->_releaseNotesSummaryView;
+  releaseNotesSummaryView = selfCopy->_releaseNotesSummaryView;
   v7 = [v8 dataUsingEncoding:{4, v4}];
   [(PSWebContainerView *)releaseNotesSummaryView setContent:?];
   MEMORY[0x277D82BD8](v7);
@@ -1178,161 +1178,161 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   objc_storeStrong(location, 0);
 }
 
-- (void)setUpdateName:(id)a3
+- (void)setUpdateName:(id)name
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UILabel *)v4->_updateNameLabel setText:location[0]];
+  objc_storeStrong(location, name);
+  [(UILabel *)selfCopy->_updateNameLabel setText:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setStatusMessage:(id)a3
+- (void)setStatusMessage:(id)message
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UILabel *)v4->_updateStatusLabel setText:location[0]];
+  objc_storeStrong(location, message);
+  [(UILabel *)selfCopy->_updateStatusLabel setText:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setStatusMessage:(id)a3 symbolizingError:(BOOL)a4
+- (void)setStatusMessage:(id)message symbolizingError:(BOOL)error
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UILabel *)v12->_updateStatusLabel setText:location[0]];
-  updateStatusLabel = v12->_updateStatusLabel;
+  objc_storeStrong(location, message);
+  [(UILabel *)selfCopy->_updateStatusLabel setText:location[0]];
+  updateStatusLabel = selfCopy->_updateStatusLabel;
   v9 = 0;
   v7 = 0;
-  if (a4)
+  if (error)
   {
-    v10 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
     v9 = 1;
-    v4 = v10;
+    v4 = systemRedColor;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v7 = 1;
-    v4 = v8;
+    v4 = labelColor;
   }
 
   [(UILabel *)updateStatusLabel setTextColor:v4];
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](labelColor);
   }
 
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](systemRedColor);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setLearnMoreText:(id)a3
+- (void)setLearnMoreText:(id)text
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UILabel *)v4->_learnMoreLabel setText:location[0]];
+  objc_storeStrong(location, text);
+  [(UILabel *)selfCopy->_learnMoreLabel setText:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)setPublisherText:(id)a3
+- (void)setPublisherText:(id)text
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   objc_storeStrong(location, 0);
 }
 
-- (void)setAnimatingGearView:(BOOL)a3
+- (void)setAnimatingGearView:(BOOL)view
 {
   if (self->_animatedGearView)
   {
-    [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView setAnimating:a3];
+    [(SUSSoftwareUpdateAnimatedIcon *)self->_animatedGearView setAnimating:view];
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4 && v6->_animatingGearView)
+  objc_storeStrong(location, stop);
+  if (finished && selfCopy->_animatingGearView)
   {
-    [(SUSSoftwareUpdateTitleCell *)v6 setAnimatingGearView:1];
+    [(SUSSoftwareUpdateTitleCell *)selfCopy setAnimatingGearView:1];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setUpdateIcon:(id)a3
+- (void)setUpdateIcon:(id)icon
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (([(UIImage *)v16->_updateIcon isEqual:location[0]]& 1) == 0 && (v16->_updateIcon || location[0]))
+  objc_storeStrong(location, icon);
+  if (([(UIImage *)selfCopy->_updateIcon isEqual:location[0]]& 1) == 0 && (selfCopy->_updateIcon || location[0]))
   {
-    objc_storeStrong(&v16->_updateIcon, location[0]);
-    if (v16->_updateIconContraints)
+    objc_storeStrong(&selfCopy->_updateIcon, location[0]);
+    if (selfCopy->_updateIconContraints)
     {
-      [MEMORY[0x277CCAAD0] deactivateConstraints:v16->_updateIconContraints];
+      [MEMORY[0x277CCAAD0] deactivateConstraints:selfCopy->_updateIconContraints];
     }
 
-    if (v16->_animatedGearView)
+    if (selfCopy->_animatedGearView)
     {
-      [(SUSSoftwareUpdateAnimatedIcon *)v16->_animatedGearView removeFromSuperview];
-      objc_storeStrong(&v16->_animatedGearView, 0);
+      [(SUSSoftwareUpdateAnimatedIcon *)selfCopy->_animatedGearView removeFromSuperview];
+      objc_storeStrong(&selfCopy->_animatedGearView, 0);
     }
 
-    imageView = v16->_imageView;
+    imageView = selfCopy->_imageView;
     v13 = 0;
-    if (v16->_updateIcon)
+    if (selfCopy->_updateIcon)
     {
-      updateIcon = v16->_updateIcon;
+      updateIcon = selfCopy->_updateIcon;
     }
 
     else
     {
-      v14 = [(SUSSoftwareUpdateTitleCell *)v16 gearBackgroundImage];
+      gearBackgroundImage = [(SUSSoftwareUpdateTitleCell *)selfCopy gearBackgroundImage];
       v13 = 1;
-      updateIcon = v14;
+      updateIcon = gearBackgroundImage;
     }
 
     [(UIImageView *)imageView setImage:updateIcon];
     if (v13)
     {
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](gearBackgroundImage);
     }
 
-    if (v16->_updateIcon)
+    if (selfCopy->_updateIcon)
     {
-      v9 = v16;
-      v10 = [(UIImageView *)v16->_imageView image];
-      [(UIImage *)v10 size];
+      v9 = selfCopy;
+      image = [(UIImageView *)selfCopy->_imageView image];
+      [(UIImage *)image size];
       [(SUSSoftwareUpdateTitleCell *)v9 configureUpdateImageViewFromImageSize:v3, v4];
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](image);
     }
 
     else
     {
-      v7 = v16;
-      v8 = [(UIImageView *)v16->_imageView image];
-      [(UIImage *)v8 size];
+      v7 = selfCopy;
+      image2 = [(UIImageView *)selfCopy->_imageView image];
+      [(UIImage *)image2 size];
       [(SUSSoftwareUpdateTitleCell *)v7 configureAnimatedGearViewFromImageSize:v5, v6];
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](image2);
     }
   }
 
@@ -1364,18 +1364,18 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   CGAffineTransformMakeScale(&v13, 1.0, 0.75);
   [v6 setTransform:&v13];
   v7 = v14[0];
-  v9 = [v14[0] heightAnchor];
-  v8 = [v9 constraintEqualToConstant:6.0];
+  heightAnchor = [v14[0] heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:6.0];
   [v7 addConstraint:?];
   MEMORY[0x277D82BD8](v8);
-  *&v2 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-  v10 = [v14[0] layer];
+  *&v2 = MEMORY[0x277D82BD8](heightAnchor).n128_u64[0];
+  layer = [v14[0] layer];
   [v14[0] bounds];
-  [v10 setCornerRadius:v3 / 2.0];
-  *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  v11 = [v14[0] layer];
-  [v11 setMasksToBounds:1];
-  MEMORY[0x277D82BD8](v11);
+  [layer setCornerRadius:v3 / 2.0];
+  *&v4 = MEMORY[0x277D82BD8](layer).n128_u64[0];
+  layer2 = [v14[0] layer];
+  [layer2 setMasksToBounds:1];
+  MEMORY[0x277D82BD8](layer2);
   v12 = MEMORY[0x277D82BE0](v14[0]);
   objc_storeStrong(v14, 0);
   return v12;
@@ -1417,12 +1417,12 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v12 localizedStringForKey:@"SPLOMBO_UPDATE_INFO" value:&stru_287B74428 table:@"Software Update"];
   v16 = *MEMORY[0x277D740C0];
-  v10 = [MEMORY[0x277D75348] labelColor];
-  v17[0] = v10;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v17[0] = labelColor;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
   v14 = [v8 initWithString:v11 attributes:?];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](labelColor);
   MEMORY[0x277D82BD8](v11);
   *&v4 = MEMORY[0x277D82BD8](v12).n128_u64[0];
   [v15[0] setAttributedText:{v14, v4}];
@@ -1437,7 +1437,7 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
 - (id)newLearnMoreLabel
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v2 = objc_alloc(MEMORY[0x277D756B8]);
   v19[0] = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -1453,18 +1453,18 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v13 = [v14 localizedStringForKey:@"LEARN_MORE_LINK" value:&stru_287B74428 table:@"Software Update"];
   v21 = *MEMORY[0x277D740C0];
-  v12 = [MEMORY[0x277D75348] systemBlueColor];
-  v22[0] = v12;
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v22[0] = systemBlueColor;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
   v18 = [v10 initWithString:v13 attributes:?];
   MEMORY[0x277D82BD8](v11);
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](systemBlueColor);
   MEMORY[0x277D82BD8](v13);
   *&v4 = MEMORY[0x277D82BD8](v14).n128_u64[0];
   [v19[0] setUserInteractionEnabled:{1, v4}];
   v15 = v19[0];
   v5 = objc_alloc(MEMORY[0x277D75B80]);
-  v16 = [v5 initWithTarget:v20 action:sel_handleLearnMoreTap_];
+  v16 = [v5 initWithTarget:selfCopy action:sel_handleLearnMoreTap_];
   [v15 addGestureRecognizer:?];
   *&v6 = MEMORY[0x277D82BD8](v16).n128_u64[0];
   [v19[0] setAttributedText:{v18, v6}];
@@ -1476,18 +1476,18 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   return v17;
 }
 
-- (void)handleLearnMoreTap:(id)a3
+- (void)handleLearnMoreTap:(id)tap
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v9->_delegate);
+  objc_storeStrong(location, tap);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   v6 = 0;
   v5 = 0;
   if (WeakRetained)
   {
-    v7 = objc_loadWeakRetained(&v9->_delegate);
+    v7 = objc_loadWeakRetained(&selfCopy->_delegate);
     v6 = 1;
     v5 = objc_opt_respondsToSelector();
   }
@@ -1500,8 +1500,8 @@ uint64_t __54__SUSSoftwareUpdateTitleCell_setProgressDisplayStyle___block_invoke
   MEMORY[0x277D82BD8](WeakRetained);
   if (v5)
   {
-    v3 = objc_loadWeakRetained(&v9->_delegate);
-    [v3 titleCell:v9 learnMoreButtonTapped:v9->_learnMoreLabel];
+    v3 = objc_loadWeakRetained(&selfCopy->_delegate);
+    [v3 titleCell:selfCopy learnMoreButtonTapped:selfCopy->_learnMoreLabel];
     MEMORY[0x277D82BD8](v3);
   }
 

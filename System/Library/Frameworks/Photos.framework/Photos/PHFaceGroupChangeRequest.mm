@@ -1,61 +1,61 @@
 @interface PHFaceGroupChangeRequest
-+ (id)changeRequestForFaceGroup:(id)a3;
++ (id)changeRequestForFaceGroup:(id)group;
 + (id)creationRequestForFaceGroup;
-+ (void)deleteFaceGroups:(id)a3;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
-- (PHFaceGroupChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHFaceGroupChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
++ (void)deleteFaceGroups:(id)groups;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
+- (PHFaceGroupChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHFaceGroupChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedFaceGroup;
 - (id)_existentFaceObjectIDs;
 - (id)_mutableKeyFaceObjectIDsAndUUIDs;
 - (id)_mutableObjectIDsAndUUIDs;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (int64_t)personBuilderState;
 - (int64_t)unnamedFaceCount;
-- (void)_prefetchFacesAndPersonRelationship:(id)a3 inContext:(id)a4;
+- (void)_prefetchFacesAndPersonRelationship:(id)relationship inContext:(id)context;
 - (void)_prepareFacesHelperIfNeeded;
 - (void)_prepareKeyFaceHelperIfNeeded;
-- (void)addFaces:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
-- (void)removeFaces:(id)a3;
-- (void)setKeyFace:(id)a3;
-- (void)setPersonBuilderState:(int64_t)a3;
-- (void)setUnnamedFaceCount:(int64_t)a3;
+- (void)addFaces:(id)faces;
+- (void)encodeToXPCDict:(id)dict;
+- (void)removeFaces:(id)faces;
+- (void)setKeyFace:(id)face;
+- (void)setPersonBuilderState:(int64_t)state;
+- (void)setUnnamedFaceCount:(int64_t)count;
 @end
 
 @implementation PHFaceGroupChangeRequest
 
-- (void)setPersonBuilderState:(int64_t)a3
+- (void)setPersonBuilderState:(int64_t)state
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"personBuilderState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"personBuilderState"];
 }
 
 - (int64_t)personBuilderState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"personBuilderState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"personBuilderState"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setKeyFace:(id)a3
+- (void)setKeyFace:(id)face
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  faceCopy = face;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    if (!v5)
+    if (!faceCopy)
     {
       goto LABEL_10;
     }
@@ -63,59 +63,59 @@
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PHFaceGroupChangeRequest.m" lineNumber:305 description:{@"keyFace has incorrect class: %@", v5}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHFaceGroupChangeRequest.m" lineNumber:305 description:{@"keyFace has incorrect class: %@", faceCopy}];
 
-    if (!v5)
+    if (!faceCopy)
     {
       goto LABEL_10;
     }
   }
 
   [(PHChangeRequest *)self didMutate];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = PLObjectIDOrUUIDFromPHObject(v5);
-  [v6 addObject:v7];
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = PLObjectIDOrUUIDFromPHObject(faceCopy);
+  [array addObject:v7];
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [(PHFaceGroupChangeRequest *)self _existentFaceObjectIDs];
-  v10 = [v8 setWithArray:v9];
+  _existentFaceObjectIDs = [(PHFaceGroupChangeRequest *)self _existentFaceObjectIDs];
+  v10 = [v8 setWithArray:_existentFaceObjectIDs];
 
-  v11 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
-  if ([v11 count])
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
+  if ([mutableObjectIDsAndUUIDs count])
   {
-    v12 = [MEMORY[0x1E695DFD8] setWithArray:v11];
+    v12 = [MEMORY[0x1E695DFD8] setWithArray:mutableObjectIDsAndUUIDs];
     [v10 unionSet:v12];
   }
 
   if (([v10 containsObject:v7] & 1) == 0)
   {
-    v16[0] = v5;
+    v16[0] = faceCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [(PHFaceGroupChangeRequest *)self addFaces:v13];
   }
 
-  if (v6)
+  if (array)
   {
-    v14 = [(PHFaceGroupChangeRequest *)self _mutableKeyFaceObjectIDsAndUUIDs];
-    [v14 addObjectsFromArray:v6];
+    _mutableKeyFaceObjectIDsAndUUIDs = [(PHFaceGroupChangeRequest *)self _mutableKeyFaceObjectIDsAndUUIDs];
+    [_mutableKeyFaceObjectIDsAndUUIDs addObjectsFromArray:array];
   }
 
 LABEL_10:
 }
 
-- (void)removeFaces:(id)a3
+- (void)removeFaces:(id)faces
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facesCopy = faces;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [facesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v14;
     do
     {
@@ -123,45 +123,45 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(facesCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (!v7)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v7 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v11 = PLObjectIDOrUUIDFromPHObject(v10);
-        [v7 addObject:v11];
+        [array addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [facesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
-    if (v7)
+    if (array)
     {
-      v12 = [(PHFaceGroupChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v12 removeObjectsInArray:v7];
+      _mutableObjectIDsAndUUIDs = [(PHFaceGroupChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs removeObjectsInArray:array];
     }
   }
 }
 
-- (void)addFaces:(id)a3
+- (void)addFaces:(id)faces
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facesCopy = faces;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [facesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v14;
     do
     {
@@ -169,28 +169,28 @@ LABEL_10:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(facesCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if (!v7)
+        if (!array)
         {
           [(PHChangeRequest *)self didMutate];
-          v7 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
         v11 = PLObjectIDOrUUIDFromPHObject(v10);
-        [v7 addObject:v11];
+        [array addObject:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [facesCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
-    if (v7)
+    if (array)
     {
-      v12 = [(PHFaceGroupChangeRequest *)self _mutableObjectIDsAndUUIDs];
-      [v12 addObjectsFromArray:v7];
+      _mutableObjectIDsAndUUIDs = [(PHFaceGroupChangeRequest *)self _mutableObjectIDsAndUUIDs];
+      [_mutableObjectIDsAndUUIDs addObjectsFromArray:array];
     }
   }
 }
@@ -214,36 +214,36 @@ LABEL_10:
 - (void)_prepareFacesHelperIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
     if (self->_originalFaceGroup)
     {
-      v4 = [(PHFaceGroupChangeRequest *)self _existentFaceObjectIDs];
-      v5 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+      _existentFaceObjectIDs = [(PHFaceGroupChangeRequest *)self _existentFaceObjectIDs];
+      originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-      if (!v5)
+      if (!originalObjectIDs2)
       {
-        [(PHRelationshipChangeRequestHelper *)self->_facesHelper setOriginalObjectIDs:v4];
+        [(PHRelationshipChangeRequestHelper *)self->_facesHelper setOriginalObjectIDs:_existentFaceObjectIDs];
       }
     }
 
-    v6 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper originalObjectIDs];
 
-    if (!v6)
+    if (!originalObjectIDs3)
     {
       [(PHRelationshipChangeRequestHelper *)self->_facesHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
     }
   }
 
-  v7 = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_facesHelper mutableObjectIDsAndUUIDs];
 
-  if (!v7)
+  if (!mutableObjectIDsAndUUIDs)
   {
     facesHelper = self->_facesHelper;
-    v10 = [(PHRelationshipChangeRequestHelper *)facesHelper originalObjectIDs];
-    v9 = [v10 mutableCopy];
+    originalObjectIDs4 = [(PHRelationshipChangeRequestHelper *)facesHelper originalObjectIDs];
+    v9 = [originalObjectIDs4 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)facesHelper setMutableObjectIDsAndUUIDs:v9];
   }
 }
@@ -251,25 +251,25 @@ LABEL_10:
 - (void)_prepareKeyFaceHelperIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper originalObjectIDs];
 
-  if (!v3)
+  if (!originalObjectIDs)
   {
-    v4 = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper originalObjectIDs];
+    originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper originalObjectIDs];
 
-    if (!v4)
+    if (!originalObjectIDs2)
     {
       [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
     }
   }
 
-  v5 = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self->_keyFaceHelper mutableObjectIDsAndUUIDs];
 
-  if (!v5)
+  if (!mutableObjectIDsAndUUIDs)
   {
     keyFaceHelper = self->_keyFaceHelper;
-    v8 = [(PHRelationshipChangeRequestHelper *)keyFaceHelper originalObjectIDs];
-    v7 = [v8 mutableCopy];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)keyFaceHelper originalObjectIDs];
+    v7 = [originalObjectIDs3 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)keyFaceHelper setMutableObjectIDsAndUUIDs:v7];
   }
 }
@@ -278,34 +278,34 @@ LABEL_10:
 {
   if (self->_originalFaceGroup)
   {
-    v3 = [(PHChangeRequest *)self photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
+    photoLibrary = [(PHChangeRequest *)self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v4 setIncludedDetectionTypes:&unk_1F102DE50];
-    v5 = [PHQuery queryForFacesInFaceGroup:self->_originalFaceGroup options:v4];
-    v6 = [v5 executeQuery];
-    v7 = [v6 fetchedObjectIDs];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F102DE50];
+    v5 = [PHQuery queryForFacesInFaceGroup:self->_originalFaceGroup options:librarySpecificFetchOptions];
+    executeQuery = [v5 executeQuery];
+    fetchedObjectIDs = [executeQuery fetchedObjectIDs];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DEC8] array];
+    fetchedObjectIDs = [MEMORY[0x1E695DEC8] array];
   }
 
-  return v7;
+  return fetchedObjectIDs;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE3D8];
-  v7 = [a3 managedObjectContext];
-  v8 = [v6 insertInManagedObjectContext:v7];
+  managedObjectContext = [library managedObjectContext];
+  v8 = [v6 insertInManagedObjectContext:managedObjectContext];
 
-  if (!a4 || v8)
+  if (!error || v8)
   {
-    v12 = [(PHChangeRequest *)self uuid];
-    [v8 setUuid:v12];
+    uuid = [(PHChangeRequest *)self uuid];
+    [v8 setUuid:uuid];
   }
 
   else
@@ -315,24 +315,24 @@ LABEL_10:
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create face group"];
     v15[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a4 = [v9 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v11];
+    *error = [v9 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v11];
   }
 
   return v8;
 }
 
-- (void)_prefetchFacesAndPersonRelationship:(id)a3 inContext:(id)a4
+- (void)_prefetchFacesAndPersonRelationship:(id)relationship inContext:(id)context
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  relationshipCopy = relationship;
+  contextCopy = context;
   v7 = objc_autoreleasePoolPush();
   v8 = MEMORY[0x1E695D5E0];
-  v9 = [MEMORY[0x1E69BE3D0] entityName];
-  v10 = [v8 fetchRequestWithEntityName:v9];
+  entityName = [MEMORY[0x1E69BE3D0] entityName];
+  v10 = [v8 fetchRequestWithEntityName:entityName];
 
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v5];
-  [v10 setPredicate:v11];
+  relationshipCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", relationshipCopy];
+  [v10 setPredicate:relationshipCopy];
 
   v19[0] = @"personForFace";
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
@@ -340,7 +340,7 @@ LABEL_10:
 
   [v10 setReturnsObjectsAsFaults:0];
   v16 = 0;
-  v13 = [v6 executeFetchRequest:v10 error:&v16];
+  v13 = [contextCopy executeFetchRequest:v10 error:&v16];
   v14 = v16;
   if (!v13)
   {
@@ -356,48 +356,48 @@ LABEL_10:
   objc_autoreleasePoolPop(v7);
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  helper = [(PHChangeRequest *)self helper];
   v46 = 0;
-  v9 = [v8 applyMutationsToManagedObject:v7 error:&v46];
+  v9 = [helper applyMutationsToManagedObject:objectCopy error:&v46];
   v10 = v46;
 
   if (v9)
   {
-    v11 = [v7 associatedPerson];
-    if (!v11)
+    associatedPerson = [objectCopy associatedPerson];
+    if (!associatedPerson)
     {
-      [MEMORY[0x1E69BE608] createAssociatedPersonForFaceGroup:v7];
-      v11 = [v7 associatedPerson];
+      [MEMORY[0x1E69BE608] createAssociatedPersonForFaceGroup:objectCopy];
+      associatedPerson = [objectCopy associatedPerson];
     }
 
-    v12 = [(PHFaceGroupChangeRequest *)self facesHelper];
-    v13 = [v12 mutableObjectIDsAndUUIDs];
+    facesHelper = [(PHFaceGroupChangeRequest *)self facesHelper];
+    mutableObjectIDsAndUUIDs = [facesHelper mutableObjectIDsAndUUIDs];
 
-    if (v13)
+    if (mutableObjectIDsAndUUIDs)
     {
-      [v12 setAllowsInsert:1];
-      [v12 setAllowsMove:0];
-      [v12 setAllowsRemove:1];
-      [v12 setDestinationEntityName:@"DetectedFace"];
-      v14 = [v7 mutableDetectedFaces];
+      [facesHelper setAllowsInsert:1];
+      [facesHelper setAllowsMove:0];
+      [facesHelper setAllowsRemove:1];
+      [facesHelper setDestinationEntityName:@"DetectedFace"];
+      mutableDetectedFaces = [objectCopy mutableDetectedFaces];
       v45 = v10;
-      v38 = [v12 applyMutationsToManagedObject:v7 unorderedMutableChildren:v14 error:&v45];
+      v38 = [facesHelper applyMutationsToManagedObject:objectCopy unorderedMutableChildren:mutableDetectedFaces error:&v45];
       v39 = v45;
 
-      v15 = [v7 managedObjectContext];
-      [(PHFaceGroupChangeRequest *)self _prefetchFacesAndPersonRelationship:v14 inContext:v15];
+      managedObjectContext = [objectCopy managedObjectContext];
+      [(PHFaceGroupChangeRequest *)self _prefetchFacesAndPersonRelationship:mutableDetectedFaces inContext:managedObjectContext];
 
-      v16 = [v14 _pl_filter:&__block_literal_global_8122];
-      [v11 setDetectedFaces:v16];
+      v16 = [mutableDetectedFaces _pl_filter:&__block_literal_global_8122];
+      [associatedPerson setDetectedFaces:v16];
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v17 = v14;
+      v17 = mutableDetectedFaces;
       v18 = [v17 countByEnumeratingWithState:&v41 objects:v51 count:16];
       if (v18)
       {
@@ -421,7 +421,7 @@ LABEL_10:
         while (v19);
       }
 
-      v22 = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
+      keyFaceHelper = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
       if (!v38)
       {
         v23 = 0;
@@ -434,17 +434,17 @@ LABEL_10:
 
     else
     {
-      v22 = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
+      keyFaceHelper = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
     }
 
-    v24 = [v22 mutableObjectIDsAndUUIDs];
+    mutableObjectIDsAndUUIDs2 = [keyFaceHelper mutableObjectIDsAndUUIDs];
 
-    if (v24)
+    if (mutableObjectIDsAndUUIDs2)
     {
-      [v22 setAllowsInsert:1];
-      [v22 setDestinationEntityName:@"DetectedFace"];
+      [keyFaceHelper setAllowsInsert:1];
+      [keyFaceHelper setDestinationEntityName:@"DetectedFace"];
       v40 = v10;
-      v23 = [v22 applyMutationsToManagedObjectToOneRelationship:v7 error:&v40];
+      v23 = [keyFaceHelper applyMutationsToManagedObjectToOneRelationship:objectCopy error:&v40];
       v25 = v40;
 
       v10 = v25;
@@ -456,29 +456,29 @@ LABEL_10:
     }
 
 LABEL_21:
-    v26 = [v7 keyFace];
-    if (v26 && ([v11 detectedFaces], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "containsObject:", v26), v27, (v28 & 1) == 0))
+    keyFace = [objectCopy keyFace];
+    if (keyFace && ([associatedPerson detectedFaces], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "containsObject:", keyFace), v27, (v28 & 1) == 0))
     {
       v34 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v11 faceGroupDescription];
+        faceGroupDescription = [associatedPerson faceGroupDescription];
         *buf = 138412546;
-        v48 = v7;
+        v48 = objectCopy;
         v49 = 2112;
-        v50 = v35;
+        v50 = faceGroupDescription;
         _os_log_impl(&dword_19C86F000, v34, OS_LOG_TYPE_DEFAULT, "Cleearing key face for face group %@ and associated person : %@", buf, 0x16u);
       }
 
-      [v7 setKeyFace:0];
+      [objectCopy setKeyFace:0];
       v33 = 0;
     }
 
     else
     {
-      v29 = [v26 personBeingKeyFace];
+      personBeingKeyFace = [keyFace personBeingKeyFace];
 
-      if (v29)
+      if (personBeingKeyFace)
       {
         goto LABEL_33;
       }
@@ -487,30 +487,30 @@ LABEL_21:
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v48 = v7;
+        v48 = objectCopy;
         v49 = 2112;
-        v50 = v26;
+        v50 = keyFace;
         _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_DEBUG, "Face group should have key face: %@, %@", buf, 0x16u);
       }
 
       v31 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [v11 faceGroupDescription];
+        faceGroupDescription2 = [associatedPerson faceGroupDescription];
         *buf = 138412546;
-        v48 = v32;
+        v48 = faceGroupDescription2;
         v49 = 2112;
-        v50 = v26;
+        v50 = keyFace;
         _os_log_impl(&dword_19C86F000, v31, OS_LOG_TYPE_DEFAULT, "Setting key face of associated person %@ to face %@", buf, 0x16u);
       }
 
-      v33 = v26;
+      v33 = keyFace;
     }
 
-    [v11 setKeyFace:v33 pickSource:0];
+    [associatedPerson setKeyFace:v33 pickSource:0];
 LABEL_33:
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_36;
     }
@@ -519,7 +519,7 @@ LABEL_33:
   }
 
   v23 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_36;
   }
@@ -528,7 +528,7 @@ LABEL_34:
   if ((v23 & 1) == 0)
   {
     v36 = v10;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_36:
@@ -549,70 +549,70 @@ BOOL __77__PHFaceGroupChangeRequest_applyMutationsToManagedObject_photoLibrary_e
   return v2;
 }
 
-- (void)setUnnamedFaceCount:(int64_t)a3
+- (void)setUnnamedFaceCount:(int64_t)count
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"unnamedFaceCount"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:count];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"unnamedFaceCount"];
 }
 
 - (int64_t)unnamedFaceCount
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"unnamedFaceCount"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"unnamedFaceCount"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
 - (PHObjectPlaceholder)placeholderForCreatedFaceGroup
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  v6 = [(PHFaceGroupChangeRequest *)self facesHelper];
-  [v6 encodeToXPCDict:v4];
+  facesHelper = [(PHFaceGroupChangeRequest *)self facesHelper];
+  [facesHelper encodeToXPCDict:dictCopy];
 
-  v7 = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
-  [v7 encodeToXPCDict:v4];
+  keyFaceHelper = [(PHFaceGroupChangeRequest *)self keyFaceHelper];
+  [keyFaceHelper encodeToXPCDict:dictCopy];
 }
 
-- (PHFaceGroupChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHFaceGroupChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v19.receiver = self;
   v19.super_class = PHFaceGroupChangeRequest;
   v11 = [(PHChangeRequest *)&v19 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
     if (v12)
     {
-      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"faces" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v14 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"faces" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       facesHelper = v11->_facesHelper;
       v11->_facesHelper = v14;
 
-      v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"keyFace" xpcDict:v8 changeRequestHelper:v11->super._helper];
+      v16 = [[PHRelationshipChangeRequestHelper alloc] initWithRelationshipName:@"keyFace" xpcDict:dictCopy changeRequestHelper:v11->super._helper];
       keyFaceHelper = v11->_keyFaceHelper;
       v11->_keyFaceHelper = v16;
     }
@@ -621,16 +621,16 @@ BOOL __77__PHFaceGroupChangeRequest_applyMutationsToManagedObject_photoLibrary_e
   return v11;
 }
 
-- (PHFaceGroupChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHFaceGroupChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v16.receiver = self;
   v16.super_class = PHFaceGroupChangeRequest;
   v8 = [(PHChangeRequest *)&v16 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -669,19 +669,19 @@ BOOL __77__PHFaceGroupChangeRequest_applyMutationsToManagedObject_photoLibrary_e
   return v2;
 }
 
-+ (void)deleteFaceGroups:(id)a3
++ (void)deleteFaceGroups:(id)groups
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHFaceGroupDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  groupsCopy = groups;
+  v4 = [(PHObjectDeleteRequest *)PHFaceGroupDeleteRequest deleteRequestsForObjects:groupsCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)changeRequestForFaceGroup:(id)a3
++ (id)changeRequestForFaceGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v3 = a3;
-    v4 = [PHChangeRequestHelper changeRequestForObject:v3];
-    [v4 _setOriginalFaceGroup:v3];
+    groupCopy = group;
+    v4 = [PHChangeRequestHelper changeRequestForObject:groupCopy];
+    [v4 _setOriginalFaceGroup:groupCopy];
   }
 
   else
@@ -694,9 +694,9 @@ BOOL __77__PHFaceGroupChangeRequest_applyMutationsToManagedObject_photoLibrary_e
 
 + (id)creationRequestForFaceGroup
 {
-  v2 = [[PHFaceGroupChangeRequest alloc] initForNewObject];
+  initForNewObject = [[PHFaceGroupChangeRequest alloc] initForNewObject];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface DTNanoTimestampFormatter
-+ (id)stringForNanoseconds:(unint64_t)a3;
-- (id)stringForObjectValue:(id)a3;
++ (id)stringForNanoseconds:(unint64_t)nanoseconds;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation DTNanoTimestampFormatter
 
-+ (id)stringForNanoseconds:(unint64_t)a3
++ (id)stringForNanoseconds:(unint64_t)nanoseconds
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (nanoseconds == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = @"--:--.--";
   }
 
   else
   {
-    if (a3 < 0x34630B8A000)
+    if (nanoseconds < 0x34630B8A000)
     {
       snprintf(__str, 0xEuLL, "%02llu:%02llu.%03llu.%03llu");
     }
@@ -33,13 +33,13 @@
   return v3;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = objc_msgSend_unsignedLongLongValue(v4, v5, v6, v7, v8);
+    v9 = objc_msgSend_unsignedLongLongValue(valueCopy, v5, v6, v7, v8);
 
     v13 = objc_msgSend_stringForNanoseconds_(DTNanoTimestampFormatter, v10, v9, v11, v12);
   }
@@ -48,7 +48,7 @@
   {
     v15.receiver = self;
     v15.super_class = DTNanoTimestampFormatter;
-    v13 = [(DTNanoTimestampFormatter *)&v15 stringForObjectValue:v4];
+    v13 = [(DTNanoTimestampFormatter *)&v15 stringForObjectValue:valueCopy];
   }
 
   return v13;

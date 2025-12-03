@@ -12,29 +12,29 @@
 - (void)aaui_authenticateAccount:()TrustedContacts forceInteraction:presentingViewController:completion:
 {
   v10 = a6;
-  v11 = [a1 _authContextForAccount:a3 forceInteraction:a4 presentingViewController:a5];
-  [a1 authenticateWithContext:v11 completion:v10];
+  v11 = [self _authContextForAccount:a3 forceInteraction:a4 presentingViewController:a5];
+  [self authenticateWithContext:v11 completion:v10];
 }
 
 - (void)aaui_custodianAuthForAccount:()TrustedContacts presentingViewController:forceInteraction:completion:
 {
   v10 = a6;
-  v11 = [a1 _authContextForAccount:a3 forceInteraction:a5 verifyCredentialReason:2 presentingViewController:a4];
-  [a1 authenticateWithContext:v11 completion:v10];
+  v11 = [self _authContextForAccount:a3 forceInteraction:a5 verifyCredentialReason:2 presentingViewController:a4];
+  [self authenticateWithContext:v11 completion:v10];
 }
 
 - (void)aaui_beneficiaryAuthForAccount:()TrustedContacts presentingViewController:completion:
 {
   v8 = a5;
-  v9 = [a1 _authContextForAccount:a3 forceInteraction:1 verifyCredentialReason:1 presentingViewController:a4];
-  [a1 authenticateWithContext:v9 completion:v8];
+  v9 = [self _authContextForAccount:a3 forceInteraction:1 verifyCredentialReason:1 presentingViewController:a4];
+  [self authenticateWithContext:v9 completion:v8];
 }
 
 - (void)aaui_beneficiaryViewAccessKeyForAccount:()TrustedContacts presentingViewController:completion:
 {
   v8 = a5;
-  v9 = [a1 _authContextForAccount:a3 forceInteraction:1 verifyCredentialReason:4 presentingViewController:a4];
-  [a1 authenticateWithContext:v9 completion:v8];
+  v9 = [self _authContextForAccount:a3 forceInteraction:1 verifyCredentialReason:4 presentingViewController:a4];
+  [self authenticateWithContext:v9 completion:v8];
 }
 
 - (id)_authContextForAccount:()TrustedContacts forceInteraction:presentingViewController:
@@ -43,12 +43,12 @@
   v8 = a5;
   v9 = a3;
   v10 = objc_alloc_init(v7);
-  v11 = [v9 username];
-  [v10 setUsername:v11];
+  username = [v9 username];
+  [v10 setUsername:username];
 
-  v12 = [v9 aa_altDSID];
+  aa_altDSID = [v9 aa_altDSID];
 
-  [v10 setAltDSID:v12];
+  [v10 setAltDSID:aa_altDSID];
   [v10 setIsUsernameEditable:0];
   [v10 setServiceType:1];
   [v10 setPresentingViewController:v8];
@@ -63,7 +63,7 @@
 
 - (id)_authContextForAccount:()TrustedContacts forceInteraction:verifyCredentialReason:presentingViewController:
 {
-  v7 = [a1 _authContextForAccount:a3 forceInteraction:a4 presentingViewController:a6];
+  v7 = [self _authContextForAccount:a3 forceInteraction:a4 presentingViewController:a6];
   [v7 setVerifyCredentialReason:a5];
 
   return v7;

@@ -1,6 +1,6 @@
 @interface MacCollectionEditCoordinator
 - (CGRect)sourceRect;
-- (MacCollectionEditCoordinator)initWithCollection:(id)a3 presentingViewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7;
+- (MacCollectionEditCoordinator)initWithCollection:(id)collection presentingViewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion;
 - (UIView)sourceView;
 - (UIViewController)presentingViewController;
 - (void)_dismissDeleteConfirmation;
@@ -11,10 +11,10 @@
 - (void)_presentEditor;
 - (void)_presentPhotoPicker;
 - (void)_updateTitle;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)macCollectionEditViewControllerDelete:(id)a3;
-- (void)macCollectionEditViewControllerPickPhoto:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)macCollectionEditViewControllerDelete:(id)delete;
+- (void)macCollectionEditViewControllerPickPhoto:(id)photo;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation MacCollectionEditCoordinator
@@ -46,13 +46,13 @@
   return WeakRetained;
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a4;
-  v5 = [v6 objectForKeyedSubscript:UIImagePickerControllerEditedImage];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerEditedImage];
   if (!v5)
   {
-    v5 = [v6 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+    v5 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
   }
 
   [(CollectionHandler *)self->_collection updateImage:v5];
@@ -60,27 +60,27 @@
   [(MacCollectionEditCoordinator *)self _finish];
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
   editViewController = self->_editViewController;
-  v5 = a3;
-  v6 = [(MacCollectionEditViewController *)editViewController presentationController];
+  dismissCopy = dismiss;
+  presentationController = [(MacCollectionEditViewController *)editViewController presentationController];
 
-  if (v6 == v5)
+  if (presentationController == dismissCopy)
   {
 
     [(MacCollectionEditCoordinator *)self _finish];
   }
 }
 
-- (void)macCollectionEditViewControllerDelete:(id)a3
+- (void)macCollectionEditViewControllerDelete:(id)delete
 {
   [(MacCollectionEditCoordinator *)self _dismissEditor];
 
   [(MacCollectionEditCoordinator *)self _presentDeleteConfirmation];
 }
 
-- (void)macCollectionEditViewControllerPickPhoto:(id)a3
+- (void)macCollectionEditViewControllerPickPhoto:(id)photo
 {
   [(MacCollectionEditCoordinator *)self _dismissEditor];
 
@@ -89,22 +89,22 @@
 
 - (void)_updateTitle
 {
-  v6 = [(MacCollectionEditViewController *)self->_editViewController newTitle];
-  if ([(NSString *)v6 length])
+  newTitle = [(MacCollectionEditViewController *)self->_editViewController newTitle];
+  if ([(NSString *)newTitle length])
   {
-    v3 = [(CollectionHandler *)self->_collection title];
-    v4 = v3;
-    if (v3 == v6)
+    title = [(CollectionHandler *)self->_collection title];
+    v4 = title;
+    if (title == newTitle)
     {
     }
 
     else
     {
-      v5 = [(NSString *)v3 isEqual:v6];
+      v5 = [(NSString *)title isEqual:newTitle];
 
       if ((v5 & 1) == 0)
       {
-        [(CollectionHandler *)self->_collection updateTitle:v6];
+        [(CollectionHandler *)self->_collection updateTitle:newTitle];
       }
     }
   }
@@ -112,12 +112,12 @@
 
 - (void)_dismissPhotoPicker
 {
-  v3 = [(UIImagePickerController *)self->_imagePickerController presentingViewController];
+  presentingViewController = [(UIImagePickerController *)self->_imagePickerController presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(UIImagePickerController *)self->_imagePickerController presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController2 = [(UIImagePickerController *)self->_imagePickerController presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   imagePickerController = self->_imagePickerController;
@@ -137,15 +137,15 @@
   {
     [(UIImagePickerController *)self->_imagePickerController setModalPresentationStyle:7];
     WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-    v6 = [(UIImagePickerController *)self->_imagePickerController popoverPresentationController];
-    [v6 setSourceView:WeakRetained];
+    popoverPresentationController = [(UIImagePickerController *)self->_imagePickerController popoverPresentationController];
+    [popoverPresentationController setSourceView:WeakRetained];
 
     x = self->_sourceRect.origin.x;
     y = self->_sourceRect.origin.y;
     width = self->_sourceRect.size.width;
     height = self->_sourceRect.size.height;
-    v11 = [(UIImagePickerController *)self->_imagePickerController popoverPresentationController];
-    [v11 setSourceRect:{x, y, width, height}];
+    popoverPresentationController2 = [(UIImagePickerController *)self->_imagePickerController popoverPresentationController];
+    [popoverPresentationController2 setSourceRect:{x, y, width, height}];
   }
 
   v12 = objc_loadWeakRetained(&self->_presentingViewController);
@@ -156,12 +156,12 @@
 
 - (void)_dismissDeleteConfirmation
 {
-  v3 = [(UIAlertController *)self->_confirmDeleteViewController presentingViewController];
+  presentingViewController = [(UIAlertController *)self->_confirmDeleteViewController presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
-    v4 = [(UIAlertController *)self->_confirmDeleteViewController presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController2 = [(UIAlertController *)self->_confirmDeleteViewController presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   confirmDeleteViewController = self->_confirmDeleteViewController;
@@ -194,14 +194,14 @@
 
 - (void)_dismissEditor
 {
-  v3 = [(MacCollectionEditViewController *)self->_editViewController presentingViewController];
+  presentingViewController = [(MacCollectionEditViewController *)self->_editViewController presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
     [(MacCollectionEditCoordinator *)self _updateTitle];
     [(MacCollectionEditCoordinator *)self _save];
-    v4 = [(MacCollectionEditViewController *)self->_editViewController presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController2 = [(MacCollectionEditViewController *)self->_editViewController presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 
   editViewController = self->_editViewController;
@@ -216,21 +216,21 @@
 
   [(MacCollectionEditViewController *)self->_editViewController setModalPresentationStyle:7];
   WeakRetained = objc_loadWeakRetained(&self->_sourceView);
-  v6 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
-  [v6 setSourceView:WeakRetained];
+  popoverPresentationController = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
+  [popoverPresentationController setSourceView:WeakRetained];
 
   x = self->_sourceRect.origin.x;
   y = self->_sourceRect.origin.y;
   width = self->_sourceRect.size.width;
   height = self->_sourceRect.size.height;
-  v11 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
-  [v11 setSourceRect:{x, y, width, height}];
+  popoverPresentationController2 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{x, y, width, height}];
 
-  v12 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
-  [v12 setPermittedArrowDirections:12];
+  popoverPresentationController3 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
+  [popoverPresentationController3 setPermittedArrowDirections:12];
 
-  v13 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
-  [v13 setDelegate:self];
+  popoverPresentationController4 = [(MacCollectionEditViewController *)self->_editViewController popoverPresentationController];
+  [popoverPresentationController4 setDelegate:self];
 
   v14 = objc_loadWeakRetained(&self->_presentingViewController);
   [v14 presentViewController:self->_editViewController animated:1 completion:0];
@@ -254,30 +254,30 @@
   }
 }
 
-- (MacCollectionEditCoordinator)initWithCollection:(id)a3 presentingViewController:(id)a4 sourceView:(id)a5 sourceRect:(CGRect)a6 completion:(id)a7
+- (MacCollectionEditCoordinator)initWithCollection:(id)collection presentingViewController:(id)controller sourceView:(id)view sourceRect:(CGRect)rect completion:(id)completion
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  collectionCopy = collection;
+  controllerCopy = controller;
+  viewCopy = view;
+  completionCopy = completion;
   v25.receiver = self;
   v25.super_class = MacCollectionEditCoordinator;
   v20 = [(MacCollectionEditCoordinator *)&v25 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_collection, a3);
-    objc_storeWeak(&v21->_presentingViewController, v17);
-    objc_storeWeak(&v21->_sourceView, v18);
+    objc_storeStrong(&v20->_collection, collection);
+    objc_storeWeak(&v21->_presentingViewController, controllerCopy);
+    objc_storeWeak(&v21->_sourceView, viewCopy);
     v21->_sourceRect.origin.x = x;
     v21->_sourceRect.origin.y = y;
     v21->_sourceRect.size.width = width;
     v21->_sourceRect.size.height = height;
-    v22 = objc_retainBlock(v19);
+    v22 = objc_retainBlock(completionCopy);
     completion = v21->_completion;
     v21->_completion = v22;
   }

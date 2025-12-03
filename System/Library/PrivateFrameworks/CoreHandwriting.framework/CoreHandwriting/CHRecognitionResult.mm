@@ -1,5 +1,5 @@
 @interface CHRecognitionResult
-- (CHRecognitionResult)initWithScore:(double)a3;
+- (CHRecognitionResult)initWithScore:(double)score;
 - (id)description;
 @end
 
@@ -17,14 +17,14 @@
   return v22;
 }
 
-- (CHRecognitionResult)initWithScore:(double)a3
+- (CHRecognitionResult)initWithScore:(double)score
 {
   v5.receiver = self;
   v5.super_class = CHRecognitionResult;
   result = [(CHRecognitionResult *)&v5 init];
   if (result)
   {
-    result->_score = a3;
+    result->_score = score;
   }
 
   return result;

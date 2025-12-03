@@ -1,5 +1,5 @@
 @interface ICStoreFinanceItemMetadata
-- (ICStoreFinanceItemMetadata)initWithMetadataDictionary:(id)a3;
+- (ICStoreFinanceItemMetadata)initWithMetadataDictionary:(id)dictionary;
 - (NSDate)dateAdded;
 - (NSDate)releaseDate;
 - (NSNumber)artistID;
@@ -746,16 +746,16 @@ void __41__ICStoreFinanceItemMetadata_releaseDate__block_invoke()
   return v3;
 }
 
-- (ICStoreFinanceItemMetadata)initWithMetadataDictionary:(id)a3
+- (ICStoreFinanceItemMetadata)initWithMetadataDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStoreFinanceItemMetadata;
   v6 = [(ICStoreFinanceItemMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadataDictionary, a3);
+    objc_storeStrong(&v6->_metadataDictionary, dictionary);
   }
 
   return v7;

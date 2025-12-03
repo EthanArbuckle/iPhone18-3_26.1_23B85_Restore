@@ -1,16 +1,16 @@
 @interface NTKBigNumeralsAnalogColorPalette
-+ (double)timeColorOpacityForEditOption:(id)a3;
-+ (double)timeColorOpacityForFraction:(double)a3 fromEditOption:(id)a4 toEditOption:(id)a5;
-+ (id)multicolorAxialGradientLayerForColor:(unint64_t)a3 device:(id)a4;
++ (double)timeColorOpacityForEditOption:(id)option;
++ (double)timeColorOpacityForFraction:(double)fraction fromEditOption:(id)option toEditOption:(id)editOption;
++ (id)multicolorAxialGradientLayerForColor:(unint64_t)color device:(id)device;
 @end
 
 @implementation NTKBigNumeralsAnalogColorPalette
 
-+ (double)timeColorOpacityForEditOption:(id)a3
++ (double)timeColorOpacityForEditOption:(id)option
 {
-  v3 = [a3 isRainbowColor];
+  isRainbowColor = [option isRainbowColor];
   result = 1.0;
-  if (v3)
+  if (isRainbowColor)
   {
     return 0.0;
   }
@@ -18,30 +18,30 @@
   return result;
 }
 
-+ (double)timeColorOpacityForFraction:(double)a3 fromEditOption:(id)a4 toEditOption:(id)a5
++ (double)timeColorOpacityForFraction:(double)fraction fromEditOption:(id)option toEditOption:(id)editOption
 {
-  v7 = a5;
-  if (([a4 isRainbowColor] & 1) == 0)
+  editOptionCopy = editOption;
+  if (([option isRainbowColor] & 1) == 0)
   {
-    if ([v7 isRainbowColor])
+    if ([editOptionCopy isRainbowColor])
     {
-      a3 = 1.0 - a3;
+      fraction = 1.0 - fraction;
     }
 
     else
     {
-      a3 = 1.0;
+      fraction = 1.0;
     }
   }
 
-  return a3;
+  return fraction;
 }
 
-+ (id)multicolorAxialGradientLayerForColor:(unint64_t)a3 device:(id)a4
++ (id)multicolorAxialGradientLayerForColor:(unint64_t)color device:(id)device
 {
-  if (a3 == 3000)
+  if (color == 3000)
   {
-    v6 = [NTKPrideColorUtils axialColorGradientLayer:0 forDevice:a4, v4];
+    v6 = [NTKPrideColorUtils axialColorGradientLayer:0 forDevice:device, v4];
   }
 
   else

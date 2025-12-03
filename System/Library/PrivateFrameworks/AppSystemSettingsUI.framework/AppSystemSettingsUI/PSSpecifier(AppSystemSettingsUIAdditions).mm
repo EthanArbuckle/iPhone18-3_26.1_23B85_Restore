@@ -16,7 +16,7 @@
 - (id)au_image
 {
   objc_opt_class();
-  v2 = [a1 propertyForKey:*MEMORY[0x277D3FFC0]];
+  v2 = [self propertyForKey:*MEMORY[0x277D3FFC0]];
   if (objc_opt_isKindOfClass())
   {
     v3 = v2;
@@ -44,27 +44,27 @@
 
 - (id)au_titleString
 {
-  v2 = [a1 name];
-  v3 = [v2 length];
+  name = [self name];
+  v3 = [name length];
 
   if (v3)
   {
-    v4 = [a1 name];
-    v5 = [v4 copy];
+    name2 = [self name];
+    v5 = [name2 copy];
 LABEL_3:
     v6 = v5;
 
     goto LABEL_7;
   }
 
-  v7 = [a1 cellType];
-  if ((v7 > 0xD || ((1 << v7) & 0x200A) == 0) && [a1 hasValidGetter])
+  cellType = [self cellType];
+  if ((cellType > 0xD || ((1 << cellType) & 0x200A) == 0) && [self hasValidGetter])
   {
     objc_opt_class();
-    v4 = [a1 performGetter];
+    name2 = [self performGetter];
     if (objc_opt_isKindOfClass())
     {
-      v9 = v4;
+      v9 = name2;
     }
 
     else
@@ -84,31 +84,31 @@ LABEL_7:
 
 - (void)au_detailString
 {
-  if (![a1 hasValidGetter] || (objc_msgSend(a1, "performGetter"), (v2 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![self hasValidGetter] || (objc_msgSend(self, "performGetter"), (v2 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_14:
-    v3 = [a1 propertyForKey:*MEMORY[0x277D401A8]];
+    v3 = [self propertyForKey:*MEMORY[0x277D401A8]];
     goto LABEL_15;
   }
 
   v3 = v2;
-  if ([a1 cellType] == 9)
+  if ([self cellType] == 9)
   {
     goto LABEL_15;
   }
 
-  if ([a1 cellType] == 2 || objc_msgSend(a1, "cellType") == 4)
+  if ([self cellType] == 2 || objc_msgSend(self, "cellType") == 4)
   {
-    v4 = [a1 shortTitleDictionary];
+    shortTitleDictionary = [self shortTitleDictionary];
   }
 
   else
   {
-    v4 = [a1 titleDictionary];
+    shortTitleDictionary = [self titleDictionary];
   }
 
-  v5 = v4;
-  if (v4 && ([v4 objectForKeyedSubscript:v3], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  v5 = shortTitleDictionary;
+  if (shortTitleDictionary && ([shortTitleDictionary objectForKeyedSubscript:v3], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     objc_opt_class();
     v7 = [v5 objectForKeyedSubscript:v3];
@@ -155,7 +155,7 @@ LABEL_15:
 
 - (id)au_footerString
 {
-  if ([a1 cellType])
+  if ([self cellType])
   {
     v2 = 0;
   }
@@ -163,7 +163,7 @@ LABEL_15:
   else
   {
     objc_opt_class();
-    v3 = [a1 propertyForKey:*MEMORY[0x277D3FF88]];
+    v3 = [self propertyForKey:*MEMORY[0x277D3FF88]];
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;
@@ -182,14 +182,14 @@ LABEL_15:
 
 - (uint64_t)au_BOOLValue
 {
-  if ([a1 cellType] != 6 || !objc_msgSend(a1, "hasValidSetter") || !objc_msgSend(a1, "hasValidGetter"))
+  if ([self cellType] != 6 || !objc_msgSend(self, "hasValidSetter") || !objc_msgSend(self, "hasValidGetter"))
   {
     return 0;
   }
 
-  v2 = [a1 performGetter];
+  performGetter = [self performGetter];
   objc_opt_class();
-  v3 = v2;
+  v3 = performGetter;
   if (objc_opt_isKindOfClass())
   {
     v4 = v3;
@@ -204,7 +204,7 @@ LABEL_15:
 
   if (v5)
   {
-    v6 = NSBOOLFromString();
+    bOOLValue = NSBOOLFromString();
   }
 
   else
@@ -225,38 +225,38 @@ LABEL_15:
 
     if (v10)
     {
-      v6 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
     else
     {
-      v6 = 0;
+      bOOLValue = 0;
     }
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (uint64_t)setAu_BOOLValue:()AppSystemSettingsUIAdditions
 {
-  [a1 willChangeValueForKey:@"au_BOOLValue"];
+  [self willChangeValueForKey:@"au_BOOLValue"];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:a3];
-  [a1 performSetterWithValue:v5];
+  [self performSetterWithValue:v5];
 
-  return [a1 didChangeValueForKey:@"au_BOOLValue"];
+  return [self didChangeValueForKey:@"au_BOOLValue"];
 }
 
 - (uint64_t)au_prefersSubtitleAppearance
 {
-  v2 = [a1 propertyForKey:*MEMORY[0x277D3FE58]];
+  v2 = [self propertyForKey:*MEMORY[0x277D3FE58]];
   if (!v2)
   {
     return 0;
   }
 
   v3 = NSStringFromClass(v2);
-  v4 = [a1 identifier];
-  if ([@"NOTIFICATIONS" isEqualToString:v4])
+  identifier = [self identifier];
+  if ([@"NOTIFICATIONS" isEqualToString:identifier])
   {
     v5 = 1;
   }
@@ -271,38 +271,38 @@ LABEL_15:
 
 - (void)au_loadValueFromCell
 {
-  if ([a1 au_prefersSubtitleAppearance])
+  if ([self au_prefersSubtitleAppearance])
   {
-    v2 = [a1 au_createCellInstance];
-    if (v2)
+    au_createCellInstance = [self au_createCellInstance];
+    if (au_createCellInstance)
     {
-      v5 = v2;
-      [v2 refreshCellContentsWithSpecifier:a1];
-      v3 = [v5 detailTextLabel];
-      v4 = [v3 text];
+      v5 = au_createCellInstance;
+      [au_createCellInstance refreshCellContentsWithSpecifier:self];
+      detailTextLabel = [v5 detailTextLabel];
+      text = [detailTextLabel text];
 
-      if ([v4 length])
+      if ([text length])
       {
-        [a1 setProperty:v4 forKey:*MEMORY[0x277D401A8]];
+        [self setProperty:text forKey:*MEMORY[0x277D401A8]];
       }
 
-      v2 = v5;
+      au_createCellInstance = v5;
     }
   }
 }
 
 - (uint64_t)au_isUserInteractive
 {
-  if (![a1 controllerLoadAction] && (CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) || !*&a1[*MEMORY[0x277D3FC80]]) && !*&a1[*MEMORY[0x277D3FCB0]] && !*&a1[*MEMORY[0x277D3FCA0]] && !*&a1[*MEMORY[0x277D3FC98]])
+  if (![self controllerLoadAction] && (CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) || !*&self[*MEMORY[0x277D3FC80]]) && !*&self[*MEMORY[0x277D3FCB0]] && !*&self[*MEMORY[0x277D3FCA0]] && !*&self[*MEMORY[0x277D3FC98]])
   {
-    v2 = [a1 propertyForKey:*MEMORY[0x277D40000]];
-    if (v2 || ([a1 propertyForKey:*MEMORY[0x277D3FFC0]], (v2 = objc_claimAutoreleasedReturnValue()) != 0) || ((v3 = *&a1[*MEMORY[0x277D3FC90]], (v3 - 3) >= 2) ? (v4 = v3 == 13) : (v4 = 1), v4))
+    v2 = [self propertyForKey:*MEMORY[0x277D40000]];
+    if (v2 || ([self propertyForKey:*MEMORY[0x277D3FFC0]], (v2 = objc_claimAutoreleasedReturnValue()) != 0) || ((v3 = *&self[*MEMORY[0x277D3FC90]], (v3 - 3) >= 2) ? (v4 = v3 == 13) : (v4 = 1), v4))
     {
     }
 
     else if (v3 != 15)
     {
-      v12 = [a1 propertyForKey:@"ASBundleName"];
+      v12 = [self propertyForKey:@"ASBundleName"];
 
       if (!v12)
       {
@@ -313,7 +313,7 @@ LABEL_15:
 
   objc_opt_class();
   v5 = *MEMORY[0x277D3FF38];
-  v6 = [a1 propertyForKey:*MEMORY[0x277D3FF38]];
+  v6 = [self propertyForKey:*MEMORY[0x277D3FF38]];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -331,21 +331,21 @@ LABEL_15:
     return 1;
   }
 
-  v9 = [a1 propertyForKey:v5];
-  v10 = [v9 BOOLValue];
+  v9 = [self propertyForKey:v5];
+  bOOLValue = [v9 BOOLValue];
 
-  return v10;
+  return bOOLValue;
 }
 
 - (id)au_createCellInstance
 {
-  v2 = [MEMORY[0x277D3FB38] cellClassForSpecifier:a1];
+  v2 = [MEMORY[0x277D3FB38] cellClassForSpecifier:self];
   if ([(objc_class *)v2 isSubclassOfClass:objc_opt_class()])
   {
     v3 = [v2 alloc];
-    v4 = [(objc_class *)v2 cellStyle];
-    v5 = [(objc_class *)v2 reuseIdentifierForSpecifier:a1];
-    v6 = [v3 initWithStyle:v4 reuseIdentifier:v5 specifier:a1];
+    cellStyle = [(objc_class *)v2 cellStyle];
+    v5 = [(objc_class *)v2 reuseIdentifierForSpecifier:self];
+    v6 = [v3 initWithStyle:cellStyle reuseIdentifier:v5 specifier:self];
   }
 
   else

@@ -1,23 +1,23 @@
 @interface SearchHintsCollectionViewDelegate
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (_TtC20ProductPageExtension33SearchHintsCollectionViewDelegate)init;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation SearchHintsCollectionViewDelegate
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v6 = sub_10077164C();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v19 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = qword_100941388;
-  v11 = self;
+  selfCopy = self;
   if (v10 != -1)
   {
     swift_once();
@@ -43,72 +43,72 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_10075E11C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075E06C();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_10062E1F8(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_10062E1F8(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC20ProductPageExtension33SearchHintsCollectionViewDelegate_impressionsCalculator))
   {
-    v4 = a3;
-    v5 = self;
+    scrollCopy = scroll;
+    selfCopy = self;
 
-    [v4 bounds];
+    [scrollCopy bounds];
     sub_1007660FC();
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_10075E11C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075E06C();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_10062E5A4();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = sub_10075E11C();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075E06C();
-  v9 = self;
+  selfCopy = self;
   sub_10075E09C();
   sub_10076596C();
   (*(v6 + 8))(v8, v5);
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_10075E11C();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10075E06C();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  v15 = sub_10062E93C(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  v15 = sub_10062E93C(viewCopy);
   v17 = v16;
 
   (*(v9 + 8))(v11, v8);

@@ -1,6 +1,6 @@
 @interface MarketingDynamicOfferCoordinator
 - (_TtC10Blackbeard32MarketingDynamicOfferCoordinator)init;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation MarketingDynamicOfferCoordinator
@@ -15,7 +15,7 @@
   return [(MarketingDynamicOfferCoordinator *)&v4 init];
 }
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
   v7 = sub_1E65DB628();
   v8 = *(v7 - 8);
@@ -27,8 +27,8 @@
   {
     v13 = *(v12 + 1);
     swift_getObjectType();
-    v14 = a5;
-    v15 = self;
+    errorCopy = error;
+    selfCopy = self;
     sub_1E65DB618();
     sub_1E5FB96FC(&unk_1ED079C30, MEMORY[0x1E69CD580]);
     sub_1E65DDDE8();

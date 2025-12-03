@@ -3,7 +3,7 @@
 - (StateMachineController)init;
 - (void)gracefulExit;
 - (void)handleButtonWakeupEvent;
-- (void)handleIOMatchEvent:(id)a3;
+- (void)handleIOMatchEvent:(id)event;
 - (void)handleMigrationStartedEvent;
 - (void)handleMigrationTransferCompletedEvent;
 - (void)handleParingSuccessEvent;
@@ -22,9 +22,9 @@
 - (void)runListeningForWakeupEventAction;
 - (void)runScanningStoreServiceAction;
 - (void)runWaitingForMigrationDidFinishAction;
-- (void)setCleanupBlock:(id)a3;
+- (void)setCleanupBlock:(id)block;
 - (void)startRemoteDeviceDiscovery;
-- (void)transitionToState:(int64_t)a3;
+- (void)transitionToState:(int64_t)state;
 - (void)triggerSuccessFeedback;
 @end
 
@@ -79,41 +79,41 @@
   return v3;
 }
 
-- (void)handleIOMatchEvent:(id)a3
+- (void)handleIOMatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [NSString stringWithFormat:@"Handle IO event: %@", v4];
-  v7 = [(MDRBaseObject *)v5 logger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  eventCopy = event;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  eventCopy = [NSString stringWithFormat:@"Handle IO event: %@", eventCopy];
+  logger = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v6;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    v29 = eventCopy;
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  if (v5->_isRunning)
+  if (selfCopy->_isRunning)
   {
     v8 = [NSString stringWithFormat:@"Controller is already running, ignore it"];
-    v9 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    logger2 = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v29 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     goto LABEL_26;
   }
 
   v10 = +[DeviceUtility sharedInstance];
-  v11 = [v10 isBuddySetupDone];
+  isBuddySetupDone = [v10 isBuddySetupDone];
 
   v12 = +[MDRStateRecorder sharedInstance];
-  v13 = [v12 returnSavedState];
+  returnSavedState = [v12 returnSavedState];
 
-  if (v11)
+  if (isBuddySetupDone)
   {
     v14 = "YES";
   }
@@ -123,79 +123,79 @@
     v14 = "NO";
   }
 
-  v15 = sub_100008DF8(v13);
+  v15 = sub_100008DF8(returnSavedState);
   v16 = [NSString stringWithFormat:@"Buddy Setup Done: %s. My state is <%@>", v14, v15];
 
-  v17 = [(MDRBaseObject *)v5 logger];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+  logger3 = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v29 = v16;
-    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger3, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  if (v13 == 6)
+  if (returnSavedState == 6)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = v11;
+    v18 = isBuddySetupDone;
   }
 
   if (v18 == 1)
   {
     v19 = [NSString stringWithFormat:@"Not my business, exiting"];
-    v20 = [(MDRBaseObject *)v5 logger];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    logger4 = [(MDRBaseObject *)selfCopy logger];
+    if (os_log_type_enabled(logger4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v29 = v19;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger4, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    [(StateMachineController *)v5 gracefulExit];
-    v5->_isRunning = 1;
+    [(StateMachineController *)selfCopy gracefulExit];
+    selfCopy->_isRunning = 1;
     goto LABEL_25;
   }
 
-  v5->_isRunning = 1;
-  if (v13 != 6)
+  selfCopy->_isRunning = 1;
+  if (returnSavedState != 6)
   {
 LABEL_25:
-    [(StateMachineController *)v5 registerSignalHandle];
-    [(StateMachineController *)v5 startRemoteDeviceDiscovery];
+    [(StateMachineController *)selfCopy registerSignalHandle];
+    [(StateMachineController *)selfCopy startRemoteDeviceDiscovery];
     goto LABEL_26;
   }
 
   v21 = +[DeviceUtility sharedInstance];
-  v22 = [v21 isMigrationDone];
+  isMigrationDone = [v21 isMigrationDone];
 
   v23 = "NO";
-  if (v22)
+  if (isMigrationDone)
   {
     v23 = "YES";
   }
 
   v24 = [NSString stringWithFormat:@"Migration Done: %s", v23];
-  v25 = [(MDRBaseObject *)v5 logger];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+  logger5 = [(MDRBaseObject *)selfCopy logger];
+  if (os_log_type_enabled(logger5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v29 = v24;
-    _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
-  transitionQ = v5->_transitionQ;
+  transitionQ = selfCopy->_transitionQ;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000943C;
   block[3] = &unk_1000208A8;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(transitionQ, block);
 LABEL_26:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)registerSignalHandle
@@ -226,7 +226,7 @@ LABEL_26:
   v24 = sub_100009A64;
   v25 = 0;
   v4 = +[DeviceUtility sharedInstance];
-  v5 = [v4 getLocalProductType];
+  getLocalProductType = [v4 getLocalProductType];
 
   v18[0] = 0;
   v18[1] = v18;
@@ -234,22 +234,22 @@ LABEL_26:
   v18[3] = sub_100009A54;
   v18[4] = sub_100009A64;
   v19 = 0;
-  v6 = [NSString stringWithFormat:@"My ProductType is %@", v5];
-  v7 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  v6 = [NSString stringWithFormat:@"My ProductType is %@", getLocalProductType];
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v27 = v6;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   v8 = [NSString stringWithFormat:@"Start to browsing remote device ..."];
-  v9 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logger2 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v27 = v8;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   v10 = +[DeviceUtility sharedInstance];
@@ -264,7 +264,7 @@ LABEL_26:
 
   v13 = dispatch_get_global_queue(2, 0);
   v15 = v3;
-  v16 = v5;
+  v16 = getLocalProductType;
   started = remote_device_start_browsing();
 
   _Block_object_dispose(v18, 8);
@@ -304,7 +304,7 @@ LABEL_26:
   dispatch_async(transitionQ, block);
 }
 
-- (void)transitionToState:(int64_t)a3
+- (void)transitionToState:(int64_t)state
 {
   if (!self->_transaction)
   {
@@ -314,35 +314,35 @@ LABEL_26:
   }
 
   currentState = self->_currentState;
-  if (a3 && currentState == a3)
+  if (state && currentState == state)
   {
-    v8 = sub_100008DF8(a3);
+    v8 = sub_100008DF8(state);
     v9 = [NSString stringWithFormat:@"Staying in state <%@>", v8];
 
-    v10 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v20 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 
   else
   {
     v11 = sub_100008DF8(currentState);
-    v12 = sub_100008DF8(a3);
+    v12 = sub_100008DF8(state);
     v13 = [NSString stringWithFormat:@">>> Transitioning from <%@> to <%@>", v11, v12];
 
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v20 = v13;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    self->_currentState = a3;
+    self->_currentState = state;
     v15 = +[MDRStateRecorder sharedInstance];
     [v15 recordState:self->_currentState];
 
@@ -405,8 +405,8 @@ LABEL_26:
 - (void)runListeningForWakeupEventAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runListeningForWakeupEventAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -439,8 +439,8 @@ LABEL_26:
   if ((v10 & 1) == 0)
   {
     v13 = [NSString stringWithFormat:@"FATAL! Can't register wakeup event callback, exiting"];
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100013838();
     }
@@ -449,8 +449,8 @@ LABEL_26:
   }
 
   v11 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runListeningForWakeupEventAction]"];
-  v12 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  logger3 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -470,8 +470,8 @@ LABEL_26:
 - (void)runScanningStoreServiceAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runScanningStoreServiceAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -502,8 +502,8 @@ LABEL_26:
   [v9 registerServiceDetectCallback:v12];
 
   v10 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runScanningStoreServiceAction]"];
-  v11 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  logger2 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -523,16 +523,16 @@ LABEL_26:
 - (void)runListeningForParingEventAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runListeningForParingEventAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
 
   v5 = +[MDRStateRecorder sharedInstance];
-  v6 = [v5 returnSavedParingVersion];
+  returnSavedParingVersion = [v5 returnSavedParingVersion];
 
-  if (v6 == 2)
+  if (returnSavedParingVersion == 2)
   {
     [(StateMachineController *)self listeningForNFCParingEvent];
   }
@@ -543,8 +543,8 @@ LABEL_26:
   }
 
   v7 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runListeningForParingEventAction]"];
-  v8 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  logger2 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -553,8 +553,8 @@ LABEL_26:
 - (void)listeningForHIDParingEvent
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController listeningForHIDParingEvent]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -587,8 +587,8 @@ LABEL_26:
   if ((v10 & 1) == 0)
   {
     v13 = [NSString stringWithFormat:@"FATAL! Can't register paring event callback, exiting"];
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_1000138AC();
     }
@@ -597,8 +597,8 @@ LABEL_26:
   }
 
   v11 = [NSString stringWithFormat:@"%s exits", "[StateMachineController listeningForHIDParingEvent]"];
-  v12 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  logger3 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -607,8 +607,8 @@ LABEL_26:
 - (void)listeningForNFCParingEvent
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController listeningForNFCParingEvent]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -641,8 +641,8 @@ LABEL_26:
   if ((v10 & 1) == 0)
   {
     v13 = [NSString stringWithFormat:@"FATAL! Can't register paring event callback, exiting"];
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100013920();
     }
@@ -651,8 +651,8 @@ LABEL_26:
   }
 
   v11 = [NSString stringWithFormat:@"%s exits", "[StateMachineController listeningForNFCParingEvent]"];
-  v12 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  logger3 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -672,8 +672,8 @@ LABEL_26:
 - (void)runListeningForMigrationNotifAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runListeningForMigrationNotifAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -683,12 +683,12 @@ LABEL_26:
   v7 = [v5 stateForNotification:kMBTargetDeviceTransferProgressNotification];
 
   v8 = [NSString stringWithFormat:@"Current DataMigration Percentage is %lld", v7];
-  v9 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logger2 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v19 = v8;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
   if ((v7 - 2) > 0x62)
@@ -707,8 +707,8 @@ LABEL_26:
     if ((v12 & 1) == 0)
     {
       v15 = [NSString stringWithFormat:@"FATAL! Can't register notification, exiting"];
-      v16 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      logger3 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
       {
         sub_100013994();
       }
@@ -717,8 +717,8 @@ LABEL_26:
     }
 
     v13 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runListeningForMigrationNotifAction]"];
-    v14 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+    logger4 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger4, OS_LOG_TYPE_DEBUG))
     {
       sub_1000137D0();
     }
@@ -744,20 +744,20 @@ LABEL_26:
 - (void)runBroadcastingMigrationStatusAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runBroadcastingMigrationStatusAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
 
   v5 = +[MDRStateRecorder sharedInstance];
-  v6 = [v5 returnSavedDeviceID];
+  returnSavedDeviceID = [v5 returnSavedDeviceID];
 
-  if (!v6)
+  if (!returnSavedDeviceID)
   {
     v7 = [NSString stringWithFormat:@"Should not happen. Can't read device identifier"];
-    v8 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
     {
       sub_100013A08();
     }
@@ -781,8 +781,8 @@ LABEL_26:
   else
   {
     v12 = [NSString stringWithFormat:@"Should not happen. Invalid DataMigration Percentage %lld", v11];
-    v13 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    logger3 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_ERROR))
     {
       sub_100013A08();
     }
@@ -795,19 +795,19 @@ LABEL_26:
   v16 = [v14 stateForNotification:kMBTargetDeviceTransferMinutesRemainingNotification];
 
   v17 = [NSString stringWithFormat:@"Current DataMigration Percentage is %lld, MinsRemaining is %lld", v11, v16];
-  v18 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  logger4 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger4, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
     *(&buf + 4) = v17;
-    _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}@", &buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger4, OS_LOG_TYPE_DEFAULT, "%{public}@", &buf, 0xCu);
   }
 
   v19 = dispatch_block_create(0, &stru_100020D00);
   [(StateMachineController *)self setCleanupBlock:v19];
 
   v20 = +[MigrationBroadcaster sharedInstance];
-  [v20 setIdentifier:v6];
+  [v20 setIdentifier:returnSavedDeviceID];
 
   v21 = +[MigrationBroadcaster sharedInstance];
   [v21 setMigrationPercentage:v11 minsRemaining:v16 didFinish:0];
@@ -841,8 +841,8 @@ LABEL_26:
   if ((v24 & 1) == 0)
   {
     v29 = [NSString stringWithFormat:@"FATAL! Can't register notification, exiting"];
-    v30 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    logger5 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger5, OS_LOG_TYPE_ERROR))
     {
       sub_100013A08();
     }
@@ -865,8 +865,8 @@ LABEL_25:
   if ((v26 & 1) == 0)
   {
     v29 = [NSString stringWithFormat:@"FATAL! Can't register notification, exiting"];
-    v30 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    logger5 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger5, OS_LOG_TYPE_ERROR))
     {
       sub_100013A08();
     }
@@ -875,8 +875,8 @@ LABEL_25:
   }
 
   v27 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runBroadcastingMigrationStatusAction]"];
-  v28 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
+  logger6 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger6, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -900,25 +900,25 @@ LABEL_20:
 - (void)runWaitingForMigrationDidFinishAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runWaitingForMigrationDidFinishAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
 
   v5 = +[MDRStateRecorder sharedInstance];
-  v6 = [v5 returnSavedTimestamp];
+  returnSavedTimestamp = [v5 returnSavedTimestamp];
 
-  if (v6)
+  if (returnSavedTimestamp)
   {
     v7 = +[NSDate date];
-    [v7 timeIntervalSinceDate:v6];
+    [v7 timeIntervalSinceDate:returnSavedTimestamp];
     v9 = v8;
     if (v8 > 86400.0)
     {
       v10 = [NSString stringWithFormat:@"Record is expired, timeval: %.2f seconds", *&v8];
-      v11 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      logger2 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger2, OS_LOG_TYPE_ERROR))
       {
         sub_100013A7C();
       }
@@ -927,22 +927,22 @@ LABEL_20:
     }
 
     v12 = [NSString stringWithFormat:@"It takes %.2f seconds to be here after reboot", *&v9];
-    v13 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    logger3 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v53 = v12;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger3, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     v14 = +[MDRStateRecorder sharedInstance];
-    v15 = [v14 returnSavedDeviceID];
+    returnSavedDeviceID = [v14 returnSavedDeviceID];
 
-    if (!v15)
+    if (!returnSavedDeviceID)
     {
       v16 = [NSString stringWithFormat:@"Should not happen. Can't read device identifier"];
-      v17 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      logger4 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger4, OS_LOG_TYPE_ERROR))
       {
         sub_100013A7C();
       }
@@ -965,13 +965,13 @@ LABEL_20:
     if (dispatch_semaphore_wait(v20, v21))
     {
       v22 = +[DeviceUtility sharedInstance];
-      v23 = [v22 isMigrationDone];
+      isMigrationDone = [v22 isMigrationDone];
 
-      if (!v23)
+      if (!isMigrationDone)
       {
         v28 = [NSString stringWithFormat:@"Timeout waiting for migrationDidFinish"];
-        v29 = [(MDRBaseObject *)self logger];
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+        logger5 = [(MDRBaseObject *)self logger];
+        if (os_log_type_enabled(logger5, OS_LOG_TYPE_ERROR))
         {
           sub_100013A7C();
         }
@@ -981,21 +981,21 @@ LABEL_20:
       }
 
       v24 = [NSString stringWithFormat:@"(OK) Migration is done"];
-      v25 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      logger6 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v53 = v24;
 LABEL_22:
-        _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logger6, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
     }
 
     else
     {
       v24 = [NSString stringWithFormat:@"(OK) Received notification migrationDidFinish"];
-      v25 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      logger6 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v53 = v24;
@@ -1006,7 +1006,7 @@ LABEL_22:
 LABEL_27:
     v30 = dispatch_semaphore_create(0);
     v31 = +[MigrationBroadcaster sharedInstance];
-    [v31 setIdentifier:v15];
+    [v31 setIdentifier:returnSavedDeviceID];
 
     v32 = +[MigrationBroadcaster sharedInstance];
     [v32 setMigrationPercentage:100 minsRemaining:0 didFinish:1];
@@ -1024,8 +1024,8 @@ LABEL_27:
     if (dispatch_semaphore_wait(v34, v35))
     {
       v36 = [NSString stringWithFormat:@"Timeout waiting for advertising start, exiting"];
-      v37 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      logger7 = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger7, OS_LOG_TYPE_ERROR))
       {
         sub_100013A7C();
       }
@@ -1034,12 +1034,12 @@ LABEL_27:
     }
 
     v38 = [NSString stringWithFormat:@"(OK) Start advertising migrationDidFinish"];
-    v39 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    logger8 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v53 = v38;
-      _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger8, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     sleep(0x3Cu);
@@ -1047,18 +1047,18 @@ LABEL_27:
     [v40 stopAdvertising];
 
     v41 = [NSString stringWithFormat:@"Advertising migrationDidFinish completed, exiting"];
-    v42 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    logger9 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v53 = v41;
-      _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     [(StateMachineController *)self gracefulExit];
     v43 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runWaitingForMigrationDidFinishAction]", v45, v46, v47, v48];
-    v44 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
+    logger10 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger10, OS_LOG_TYPE_DEBUG))
     {
       sub_1000137D0();
     }
@@ -1071,12 +1071,12 @@ LABEL_27:
   [v26 recordTimestamp:v27];
 
   v7 = [NSString stringWithFormat:@"Nothing to do before reboot, return"];
-  v15 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  returnSavedDeviceID = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(returnSavedDeviceID, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
     v53 = v7;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, returnSavedDeviceID, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 
 LABEL_38:
@@ -1085,8 +1085,8 @@ LABEL_38:
 - (void)runInactiveAction
 {
   v3 = [NSString stringWithFormat:@"%s enter", "[StateMachineController runInactiveAction]"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -1109,8 +1109,8 @@ LABEL_38:
   }
 
   v9 = [NSString stringWithFormat:@"%s exits", "[StateMachineController runInactiveAction]"];
-  v10 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  logger2 = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEBUG))
   {
     sub_1000137D0();
   }
@@ -1120,23 +1120,23 @@ LABEL_38:
 {
   [(StateMachineController *)self transitionToState:0];
   v3 = [NSString stringWithFormat:@"Daemon will exit soon"];
-  v4 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
     v6 = v3;
-    _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v5, 0xCu);
   }
 
   exit(0);
 }
 
-- (void)setCleanupBlock:(id)a3
+- (void)setCleanupBlock:(id)block
 {
   obj = self;
-  v4 = a3;
+  blockCopy = block;
   objc_sync_enter(obj);
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(blockCopy);
 
   cleanupBlock = obj->_cleanupBlock;
   obj->_cleanupBlock = v5;

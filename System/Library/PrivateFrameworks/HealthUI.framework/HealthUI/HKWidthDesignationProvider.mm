@@ -1,38 +1,38 @@
 @interface HKWidthDesignationProvider
-+ (int64_t)widthDesignationFromViewWidth:(double)a3;
++ (int64_t)widthDesignationFromViewWidth:(double)width;
 @end
 
 @implementation HKWidthDesignationProvider
 
-+ (int64_t)widthDesignationFromViewWidth:(double)a3
++ (int64_t)widthDesignationFromViewWidth:(double)width
 {
-  v3 = a3;
-  if ((a3 - 320) < 0x37)
+  widthCopy = width;
+  if ((width - 320) < 0x37)
   {
     return 1;
   }
 
-  if (v3 > 1194)
+  if (widthCopy > 1194)
   {
     return 6;
   }
 
-  if ((v3 - 982) < 0xD5)
+  if ((widthCopy - 982) < 0xD5)
   {
     return 5;
   }
 
-  if ((v3 - 667) < 0x13B)
+  if ((widthCopy - 667) < 0x13B)
   {
     return 4;
   }
 
-  if ((v3 - 461) < 0xCE)
+  if ((widthCopy - 461) < 0xCE)
   {
     return 3;
   }
 
-  if ((v3 - 375) < 0x56)
+  if ((widthCopy - 375) < 0x56)
   {
     return 2;
   }
@@ -41,7 +41,7 @@
   v6 = *MEMORY[0x1E696B940];
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR))
   {
-    [(HKWidthDesignationProvider *)v6 widthDesignationFromViewWidth:a3];
+    [(HKWidthDesignationProvider *)v6 widthDesignationFromViewWidth:width];
   }
 
   return 1;

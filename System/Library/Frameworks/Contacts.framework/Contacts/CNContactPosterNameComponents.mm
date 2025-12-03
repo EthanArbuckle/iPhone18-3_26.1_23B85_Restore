@@ -33,9 +33,9 @@
   v5 = [v3 appendName:@"second" object:self->_secondNameComponent];
   v6 = [v3 appendName:@"emphasis" integerValue:self->_emphasizedNameComponentIndex];
   v7 = [v3 appendName:@"singleNameComponentIndex" integerValue:self->_singleNameComponentIndex];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 @end

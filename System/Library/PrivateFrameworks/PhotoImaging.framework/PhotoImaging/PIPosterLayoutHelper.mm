@@ -1,21 +1,21 @@
 @interface PIPosterLayoutHelper
 - (double)centerLayoutHorizontalTarget;
-- (id)intermediateWithAdaptiveStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithInactiveStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)intermediateWithZoomStrategy:(unint64_t)a3 intermediate:(id)a4;
-- (id)pixelBasedIntermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4 translationY:(double)a5;
-- (id)scoreIntermediate:(id)a3;
-- (void)initWithCIContext:(double)a3 matte:(double)a4 posterClassification:(double)a5 initialRect:(double)a6 imageSize:(double)a7 effectiveAcceptableRect:(uint64_t)a8 effectivePreferredRect:(void *)a9 validBoundsNormalized:(void *)a10 headroomFeasible:(uint64_t)a11 hasTopEdgeContact:(uint64_t)a12 shouldConstrainLayoutToBounds:(uint64_t)a13 computeSpatial:(char)a14 spatialPadding:(__int128)a15 layoutType:(uint64_t)a16 allowedLayoutStrategies:(uint64_t)a17 layoutConfiguration:(__int128)a18;
-- (void)initWithPosterClassification:(uint64_t)a3 initialRect:(uint64_t)a4 imageSize:(uint64_t)a5 effectiveAcceptableRect:(uint64_t)a6 effectivePreferredRect:(uint64_t)a7 validBoundsNormalized:(uint64_t)a8 headroomFeasible:(uint64_t)a9 hasTopEdgeContact:(uint64_t)a10 computeSpatial:(uint64_t)a11 spatialPadding:(uint64_t)a12 layoutType:(uint64_t)a13 allowedLayoutStrategies:(uint64_t)a14 layoutConfiguration:(uint64_t)a15;
+- (id)intermediateWithAdaptiveStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithInactiveStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)intermediateWithZoomStrategy:(unint64_t)strategy intermediate:(id)intermediate;
+- (id)pixelBasedIntermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate translationY:(double)y;
+- (id)scoreIntermediate:(id)intermediate;
+- (void)initWithCIContext:(double)context matte:(double)matte posterClassification:(double)classification initialRect:(double)rect imageSize:(double)size effectiveAcceptableRect:(uint64_t)acceptableRect effectivePreferredRect:(void *)preferredRect validBoundsNormalized:(void *)self0 headroomFeasible:(uint64_t)self1 hasTopEdgeContact:(uint64_t)self2 shouldConstrainLayoutToBounds:(uint64_t)self3 computeSpatial:(char)self4 spatialPadding:(__int128)self5 layoutType:(uint64_t)self6 allowedLayoutStrategies:(uint64_t)self7 layoutConfiguration:(__int128)self8;
+- (void)initWithPosterClassification:(uint64_t)classification initialRect:(uint64_t)rect imageSize:(uint64_t)size effectiveAcceptableRect:(uint64_t)acceptableRect effectivePreferredRect:(uint64_t)preferredRect validBoundsNormalized:(uint64_t)normalized headroomFeasible:(uint64_t)feasible hasTopEdgeContact:(uint64_t)self0 computeSpatial:(uint64_t)self1 spatialPadding:(uint64_t)self2 layoutType:(uint64_t)self3 allowedLayoutStrategies:(uint64_t)self4 layoutConfiguration:(uint64_t)self5;
 @end
 
 @implementation PIPosterLayoutHelper
 
-- (id)scoreIntermediate:(id)a3
+- (id)scoreIntermediate:(id)intermediate
 {
-  v4 = a3;
-  [(PFParallaxLayoutHelper *)self computeCropScoreForIntermediate:v4];
+  intermediateCopy = intermediate;
+  [(PFParallaxLayoutHelper *)self computeCropScoreForIntermediate:intermediateCopy];
   v78 = v5;
   v6 = self->_matte;
   v8 = *MEMORY[0x1E695EFF8];
@@ -32,7 +32,7 @@
 
   v11 = v9;
   v12 = v10;
-  [v4 visibleRect];
+  [intermediateCopy visibleRect];
   v17 = v16 - v8;
   v18 = 0.0;
   v19 = 0.0;
@@ -61,19 +61,19 @@
   v36 = v35;
   v87 = 0u;
   v88 = 0u;
-  v37 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-  [PISegmentationHelper computeClockLayerOrderWithVisibleFrame:v6 segmentationMatte:v37 layoutConfiguration:self->_context context:0 interactive:v23, v26, v27, v28];
+  layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+  [PISegmentationHelper computeClockLayerOrderWithVisibleFrame:v6 segmentationMatte:layoutConfiguration layoutConfiguration:self->_context context:0 interactive:v23, v26, v27, v28];
 
   [PISegmentationHelper computeMatteCoverageWithRect:v6 segmentationMatte:self->_context context:v30, v32, v34, v36];
   v39 = v38;
-  [v4 visibleRect];
+  [intermediateCopy visibleRect];
   [(PFParallaxLayoutHelper *)self unsafeAreaInImageSpaceWithVisibleFrame:?];
   v41 = v40;
   v43 = v42;
   v45 = v44;
   v47 = v46;
   v48 = v39;
-  if ([v4 overlapStrategy] == 4)
+  if ([intermediateCopy overlapStrategy] == 4)
   {
     [(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable];
     v50 = v49;
@@ -167,7 +167,7 @@ LABEL_46:
   }
 
 LABEL_47:
-  [(PFParallaxLayoutHelper *)self scoreAdjustmentWithUnscoredIntermediate:v4 unsafeAreaOverlap:v48 timeBottomOverlap:0.0 timeTopOverlap:0.0];
+  [(PFParallaxLayoutHelper *)self scoreAdjustmentWithUnscoredIntermediate:intermediateCopy unsafeAreaOverlap:v48 timeBottomOverlap:0.0 timeTopOverlap:0.0];
   v79[1] = 3221225472;
   v79[0] = MEMORY[0x1E69E9820];
   v79[2] = __42__PIPosterLayoutHelper_scoreIntermediate___block_invoke;
@@ -179,7 +179,7 @@ LABEL_47:
   v85 = v48;
   v86 = v39;
   v79[4] = self;
-  v75 = v4;
+  v75 = intermediateCopy;
   v80 = v75;
   v76 = [v75 updateWithConfiguration:v79];
 
@@ -201,35 +201,35 @@ void __42__PIPosterLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, vo
   [v4 setMaxClockShift:?];
 }
 
-- (id)intermediateWithAdaptiveStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithAdaptiveStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  if ([v6 overlapStrategy] == 5)
+  intermediateCopy = intermediate;
+  if ([intermediateCopy overlapStrategy] == 5)
   {
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __70__PIPosterLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___block_invoke;
     v72[3] = &unk_1E82ACB38;
-    v73 = v6;
-    a3 = [v73 updateWithConfiguration:v72];
+    v73 = intermediateCopy;
+    strategy = [v73 updateWithConfiguration:v72];
   }
 
   else
   {
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v6 headroomStrategy]);
-    if (a3)
+    -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
+    if (strategy)
     {
-      if (a3 == 2)
+      if (strategy == 2)
       {
         v17 = v15;
         v18 = v16;
         v19 = MEMORY[0x1E69C07A8];
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v67 = v21;
         v69 = v20;
         v23 = v22;
@@ -239,34 +239,34 @@ void __42__PIPosterLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, vo
         v29 = v28;
         v31 = v30;
         v33 = v32;
-        v34 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        v35 = [(PFParallaxLayoutHelper *)self classification];
+        layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        classification = [(PFParallaxLayoutHelper *)self classification];
         [(PFParallaxLayoutHelper *)self allowedClockStretch];
-        [v19 adaptiveFrameForVisibleFrame:v34 essentialRect:v35 originalImageSize:v69 layoutConfiguration:v67 classification:v23 maxClockStretchOverride:{v25, v27, v29, v31, v33, *&v17, *&v18, v36}];
+        [v19 adaptiveFrameForVisibleFrame:layoutConfiguration essentialRect:classification originalImageSize:v69 layoutConfiguration:v67 classification:v23 maxClockStretchOverride:{v25, v27, v29, v31, v33, *&v17, *&v18, v36}];
         v68 = v38;
         v70 = v37;
         v12 = v39;
         v14 = v40;
 
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v42 = v41;
         v44 = v43;
         v46 = v45;
         v48 = v47;
         matte = self->_matte;
-        v50 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:matte imageSize:0 segmentationMatte:v50 classicOverlap:self->_context layoutConfiguration:v42 context:v44, v46, v48, v17, v18];
+        layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:matte imageSize:0 segmentationMatte:layoutConfiguration2 classicOverlap:self->_context layoutConfiguration:v42 context:v44, v46, v48, v17, v18];
         v52 = v51;
 
-        v53 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        [v53 maxStrechAmountNormalized];
+        layoutConfiguration3 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        [layoutConfiguration3 maxStrechAmountNormalized];
         v55 = v54;
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v57 = v55 * v56;
         [(PFParallaxLayoutHelper *)self allowedClockStretch];
         v59 = v58 * v57;
 
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v61 = v59 - (v14 - v60);
         v10 = v68;
         v62 = v52 - v61;
@@ -276,7 +276,7 @@ void __42__PIPosterLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, vo
         }
 
         v63 = v52 - v62;
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v65 = v63 / v64;
         v8 = v70;
       }
@@ -294,13 +294,13 @@ void __42__PIPosterLayoutHelper_scoreIntermediate___block_invoke(uint64_t a1, vo
       v71[5] = v10;
       v71[6] = v12;
       *&v71[7] = v14;
-      v71[8] = a3;
+      v71[8] = strategy;
       *&v71[9] = v65;
-      a3 = [v6 updateWithConfiguration:v71];
+      strategy = [intermediateCopy updateWithConfiguration:v71];
     }
   }
 
-  return a3;
+  return strategy;
 }
 
 void __70__PIPosterLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -324,10 +324,10 @@ void __70__PIPosterLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___
   [v7 setMaxClockShift:*(a1 + 72)];
 }
 
-- (id)intermediateWithInactiveStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithInactiveStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
-  v6 = a4;
-  [v6 visibleRect];
+  intermediateCopy = intermediate;
+  [intermediateCopy visibleRect];
   x = v7;
   y = v9;
   width = v11;
@@ -335,19 +335,19 @@ void __70__PIPosterLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___
   v15 = *(MEMORY[0x1E695F050] + 16);
   v82 = *MEMORY[0x1E695F050];
   v83 = v15;
-  [v6 adaptiveVisibleRect];
-  if (a3)
+  [intermediateCopy adaptiveVisibleRect];
+  if (strategy)
   {
     v20 = v16;
     v21 = v17;
     v22 = v18;
     v23 = v19;
-    if (a3 != 2)
+    if (strategy != 2)
     {
       v24 = 0.0;
-      if (a3 == 1)
+      if (strategy == 1)
       {
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
       }
 
       else
@@ -366,24 +366,24 @@ void __70__PIPosterLayoutHelper_intermediateWithAdaptiveStrategy_intermediate___
     v29 = v28;
     v31 = v30;
     memset(v81, 0, sizeof(v81));
-    [v6 visibleRect];
+    [intermediateCopy visibleRect];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    v40 = [v6 headroomStrategy] == 2;
+    v40 = [intermediateCopy headroomStrategy] == 2;
     matte = self->_matte;
-    v42 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
     v70 = v29;
     v71 = v31;
-    [PISegmentationHelper computeInactiveFrameWithVisibleFrame:1 imageSize:v40 canUpdateVisibleRect:matte considerHeadroom:v42 segmentationMatte:self->_context layoutConfiguration:v33 context:v35, v37, v39, v29, v31];
+    [PISegmentationHelper computeInactiveFrameWithVisibleFrame:1 imageSize:v40 canUpdateVisibleRect:matte considerHeadroom:layoutConfiguration segmentationMatte:self->_context layoutConfiguration:v33 context:v35, v37, v39, v29, v31];
 
     v85.origin = 0u;
     v85.size = 0u;
     if (CGRectIsNull(v85) || CGRectIsNull(v81[0]))
     {
 LABEL_7:
-      a3 = 0;
+      strategy = 0;
       goto LABEL_10;
     }
 
@@ -393,18 +393,18 @@ LABEL_7:
     width = v81[0].size.width;
     v22 = v72;
     v20 = v73;
-    if ([v6 adaptiveStrategy] == 2)
+    if ([intermediateCopy adaptiveStrategy] == 2)
     {
-      [v6 adaptiveVisibleRect];
+      [intermediateCopy adaptiveVisibleRect];
       if (!CGRectIsNull(v86))
       {
         v44 = MEMORY[0x1E69C07A8];
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v46 = v45;
         v48 = v47;
         v50 = v49;
         v52 = v51;
-        [v6 adaptiveVisibleRect];
+        [intermediateCopy adaptiveVisibleRect];
         [v44 topFrameForVisibleRect:v46 adaptiveRect:{v48, v50, v52, v53, v54, v55, v56}];
         v58 = v57;
         v60 = v59;
@@ -414,10 +414,10 @@ LABEL_7:
         v79 = 0u;
         v78 = 0u;
         v77 = 0u;
-        v65 = [v6 headroomStrategy] == 2;
+        v65 = [intermediateCopy headroomStrategy] == 2;
         v66 = self->_matte;
-        v67 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-        [PISegmentationHelper computeInactiveFrameWithVisibleFrame:1 imageSize:v65 canUpdateVisibleRect:v66 considerHeadroom:v67 segmentationMatte:self->_context layoutConfiguration:v58 context:v60, v62, v64, v70, v71];
+        layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+        [PISegmentationHelper computeInactiveFrameWithVisibleFrame:1 imageSize:v65 canUpdateVisibleRect:v66 considerHeadroom:layoutConfiguration2 segmentationMatte:self->_context layoutConfiguration:v58 context:v60, v62, v64, v70, v71];
 
         if (CGRectIsNull(v81[1]) || CGRectIsNull(v81[0]))
         {
@@ -428,9 +428,9 @@ LABEL_7:
         v83 = v80;
         v20 = v77;
         v22 = v78;
-        [v6 adaptiveVisibleRect];
+        [intermediateCopy adaptiveVisibleRect];
         v21 = v68;
-        [v6 visibleRect];
+        [intermediateCopy visibleRect];
         v23 = *(&v77 + 1) + *(&v78 + 1) - v69;
       }
     }
@@ -448,7 +448,7 @@ LABEL_9:
     *&v74[5] = y;
     *&v74[6] = width;
     *&v74[7] = height;
-    v74[8] = a3;
+    v74[8] = strategy;
     *&v74[9] = v25;
     *&v74[10] = v26;
     *&v74[11] = v27;
@@ -459,12 +459,12 @@ LABEL_9:
     *&v74[16] = v23;
     v76 = v83;
     v75 = v82;
-    a3 = [v6 updateWithConfiguration:v74];
+    strategy = [intermediateCopy updateWithConfiguration:v74];
   }
 
 LABEL_10:
 
-  return a3;
+  return strategy;
 }
 
 void __70__PIPosterLayoutHelper_intermediateWithInactiveStrategy_intermediate___block_invoke(uint64_t a1, void *a2)
@@ -481,47 +481,47 @@ void __70__PIPosterLayoutHelper_intermediateWithInactiveStrategy_intermediate___
   [v7 setAdaptiveInactiveTopRect:{*(a1 + 136), *(a1 + 144), *(a1 + 152), *(a1 + 160)}];
 }
 
-- (id)intermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
   v104 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if ([v7 zoomStrategy] == 5)
+  intermediateCopy = intermediate;
+  if ([intermediateCopy zoomStrategy] == 5)
   {
     v8 = &__block_literal_global_28743;
 LABEL_3:
-    v9 = [v7 updateWithConfiguration:v8];
+    v9 = [intermediateCopy updateWithConfiguration:v8];
 LABEL_27:
     v4 = v9;
     goto LABEL_28;
   }
 
-  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v7 headroomStrategy]);
+  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
   v11 = v10;
   v13 = v12;
-  if (a3 <= 2)
+  if (strategy <= 2)
   {
-    if (a3 < 2)
+    if (strategy < 2)
     {
       v100.receiver = self;
       v100.super_class = PIPosterLayoutHelper;
-      [(PFParallaxLayoutHelper *)&v100 intermediateWithOverlapStrategy:a3 intermediate:v7];
+      [(PFParallaxLayoutHelper *)&v100 intermediateWithOverlapStrategy:strategy intermediate:intermediateCopy];
       v9 = LABEL_7:;
       goto LABEL_27;
     }
 
-    if (a3 == 2)
+    if (strategy == 2)
     {
-      [v7 visibleRect];
+      [intermediateCopy visibleRect];
       v57 = v56;
       v59 = v58;
       v61 = v60;
       v63 = v62;
       matte = self->_matte;
-      v65 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-      [PISegmentationHelper computeTargetOverlapYOffsetWithVisibleFrame:matte imageSize:v65 segmentationMatte:self->_context layoutConfiguration:v57 context:v59, v61, v63, v11, v13];
+      layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+      [PISegmentationHelper computeTargetOverlapYOffsetWithVisibleFrame:matte imageSize:layoutConfiguration segmentationMatte:self->_context layoutConfiguration:v57 context:v59, v61, v63, v11, v13];
       v67 = v66;
 
-      v68 = self;
+      selfCopy2 = self;
       v69 = 2;
       goto LABEL_26;
     }
@@ -531,53 +531,53 @@ LABEL_28:
     return v4;
   }
 
-  if (a3 == 3)
+  if (strategy == 3)
   {
     *buf = 0;
-    [v7 visibleRect];
+    [intermediateCopy visibleRect];
     v71 = v70;
     v73 = v72;
     v75 = v74;
     v77 = v76;
     v78 = self->_matte;
-    v79 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-    [PISegmentationHelper computeAvoidOverlapYOffsetWithVisibleFrame:v78 imageSize:v79 segmentationMatte:buf layoutConfiguration:self->_context outputUnsafeOverlap:v71 context:v73, v75, v77, v11, v13];
+    layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    [PISegmentationHelper computeAvoidOverlapYOffsetWithVisibleFrame:v78 imageSize:layoutConfiguration2 segmentationMatte:buf layoutConfiguration:self->_context outputUnsafeOverlap:v71 context:v73, v75, v77, v11, v13];
     v67 = v80;
 
     if (*buf > *MEMORY[0x1E69C0BB8] && ([(PFParallaxLayoutHelper *)self classification]== 1 || [(PFParallaxLayoutHelper *)self classification]== 2))
     {
       v99.receiver = self;
       v99.super_class = PIPosterLayoutHelper;
-      [(PFParallaxLayoutHelper *)&v99 intermediateWithOverlapStrategy:4 intermediate:v7];
+      [(PFParallaxLayoutHelper *)&v99 intermediateWithOverlapStrategy:4 intermediate:intermediateCopy];
       goto LABEL_7;
     }
 
-    v68 = self;
+    selfCopy2 = self;
     v69 = 3;
 LABEL_26:
-    v9 = [(PIPosterLayoutHelper *)v68 pixelBasedIntermediateWithOverlapStrategy:v69 intermediate:v7 translationY:v67];
+    v9 = [(PIPosterLayoutHelper *)selfCopy2 pixelBasedIntermediateWithOverlapStrategy:v69 intermediate:intermediateCopy translationY:v67];
     goto LABEL_27;
   }
 
-  if (a3 == 5)
+  if (strategy == 5)
   {
-    [v7 visibleRect];
+    [intermediateCopy visibleRect];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
     v22 = self->_matte;
-    v23 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-    [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:v22 imageSize:0 segmentationMatte:v23 classicOverlap:self->_context layoutConfiguration:v15 context:v17, v19, v21, v11, v13];
+    layoutConfiguration3 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    [PISegmentationHelper computeStretchOverlapYOffsetWithVisibleFrame:v22 imageSize:0 segmentationMatte:layoutConfiguration3 classicOverlap:self->_context layoutConfiguration:v15 context:v17, v19, v21, v11, v13];
     v25 = v24;
 
-    [v7 visibleRect];
+    [intermediateCopy visibleRect];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    v34 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-    [v34 maxStrechAmountNormalized];
+    layoutConfiguration4 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+    [layoutConfiguration4 maxStrechAmountNormalized];
     v36 = v33 * v35;
     [(PFParallaxLayoutHelper *)self allowedClockStretch];
     v38 = v36 * v37;
@@ -601,10 +601,10 @@ LABEL_26:
       v47 = v46;
       v49 = v48;
       v95 = v50;
-      v51 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+      layoutConfiguration5 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
       v52 = v49;
       v13 = v97;
-      [v42 widgetZoneAdjustmentForVisibleFrame:v51 essentialRect:v27 layoutConfiguration:{v40, v31, v33, v44, v47, v52, v95}];
+      [v42 widgetZoneAdjustmentForVisibleFrame:layoutConfiguration5 essentialRect:v27 layoutConfiguration:{v40, v31, v33, v44, v47, v52, v95}];
       v54 = v53;
 
       v40 = v40 - v54;
@@ -626,7 +626,7 @@ LABEL_26:
       goto LABEL_28;
     }
 
-    [v7 visibleRect];
+    [intermediateCopy visibleRect];
     v4 = 0;
     if (v41 / v55 >= 0.0 && fabs(v41 / v55) > 0.00000999999975)
     {
@@ -647,7 +647,7 @@ LABEL_26:
     goto LABEL_28;
   }
 
-  if (a3 != 4)
+  if (strategy != 4)
   {
     goto LABEL_28;
   }
@@ -672,8 +672,8 @@ LABEL_26:
       v90 = dispatch_get_specific(*v84);
       v91 = MEMORY[0x1E696AF00];
       v92 = v90;
-      v93 = [v91 callStackSymbols];
-      v94 = [v93 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v91 callStackSymbols];
+      v94 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v90;
       v102 = 2114;
@@ -684,8 +684,8 @@ LABEL_26:
 
   else if (v87)
   {
-    v88 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v89 = [v88 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v89 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     *&buf[4] = v89;
     _os_log_error_impl(&dword_1C7694000, v86, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -704,35 +704,35 @@ void __69__PIPosterLayoutHelper_intermediateWithOverlapStrategy_intermediate___b
   [v4 setVisibleRect:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
 }
 
-- (id)pixelBasedIntermediateWithOverlapStrategy:(unint64_t)a3 intermediate:(id)a4 translationY:(double)a5
+- (id)pixelBasedIntermediateWithOverlapStrategy:(unint64_t)strategy intermediate:(id)intermediate translationY:(double)y
 {
-  v8 = a4;
-  [v8 visibleRect];
+  intermediateCopy = intermediate;
+  [intermediateCopy visibleRect];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [v8 headroomStrategy]);
+  -[PFParallaxLayoutHelper imageSizeWithHeadroomStrategy:](self, "imageSizeWithHeadroomStrategy:", [intermediateCopy headroomStrategy]);
   v18 = v17;
   v20 = v19;
   v50.origin.x = v10;
   v50.origin.y = v12;
   v50.size.width = v14;
   v50.size.height = v16;
-  v21 = v20 - CGRectGetMaxY(v50);
-  if (v21 > a5)
+  yCopy = v20 - CGRectGetMaxY(v50);
+  if (yCopy > y)
   {
-    v21 = a5;
+    yCopy = y;
   }
 
-  if (v21 <= -v12)
+  if (yCopy <= -v12)
   {
     v22 = -v12;
   }
 
   else
   {
-    v22 = v21;
+    v22 = yCopy;
   }
 
   v51.origin.x = v10;
@@ -755,7 +755,7 @@ void __69__PIPosterLayoutHelper_intermediateWithOverlapStrategy_intermediate___b
   v30 = v29;
   rect = v31;
   v33 = v32;
-  if ([v8 headroomStrategy] == 2 || (v53.origin.x = v28, v53.origin.y = v30, v53.size.width = rect, v53.size.height = v33, CGRectIsNull(v53)))
+  if ([intermediateCopy headroomStrategy] == 2 || (v53.origin.x = v28, v53.origin.y = v30, v53.size.width = rect, v53.size.height = v33, CGRectIsNull(v53)))
   {
     v28 = 0.0;
     v30 = 0.0;
@@ -832,8 +832,8 @@ LABEL_33:
     *&v48[5] = y;
     *&v48[6] = width;
     *&v48[7] = height;
-    v48[8] = a3;
-    v44 = [v8 updateWithConfiguration:v48];
+    v48[8] = strategy;
+    v44 = [intermediateCopy updateWithConfiguration:v48];
   }
 
   return v44;
@@ -850,27 +850,27 @@ void __92__PIPosterLayoutHelper_pixelBasedIntermediateWithOverlapStrategy_interm
   [v7 setOverlapStrategy:*(a1 + 8)];
 }
 
-- (id)intermediateWithZoomStrategy:(unint64_t)a3 intermediate:(id)a4
+- (id)intermediateWithZoomStrategy:(unint64_t)strategy intermediate:(id)intermediate
 {
   v169 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3 - 1 < 3)
+  intermediateCopy = intermediate;
+  v7 = intermediateCopy;
+  if (strategy - 1 < 3)
   {
     v164.receiver = self;
     v164.super_class = PIPosterLayoutHelper;
-    [(PFParallaxLayoutHelper *)&v164 intermediateWithZoomStrategy:a3 intermediate:v6];
+    [(PFParallaxLayoutHelper *)&v164 intermediateWithZoomStrategy:strategy intermediate:intermediateCopy];
     v8 = LABEL_3:;
 LABEL_4:
     v9 = v8;
     goto LABEL_80;
   }
 
-  if (a3 != 4)
+  if (strategy != 4)
   {
-    if (a3 == 5)
+    if (strategy == 5)
     {
-      [v6 visibleRect];
+      [intermediateCopy visibleRect];
       if (v10 >= 1.0)
       {
         [(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable];
@@ -887,8 +887,8 @@ LABEL_4:
           v24 = v23;
           v26 = v25;
           matte = self->_matte;
-          v28 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-          [PISegmentationHelper computeCenterZoomAreaWithMidpoint:matte visibleFrame:v28 segmentationMatte:self->_context layoutConfiguration:v18 context:v20, v22, v24, v26];
+          layoutConfiguration = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+          [PISegmentationHelper computeCenterZoomAreaWithMidpoint:matte visibleFrame:layoutConfiguration segmentationMatte:self->_context layoutConfiguration:v18 context:v20, v22, v24, v26];
           v30 = v29;
           v32 = v31;
           v34 = v33;
@@ -1013,7 +1013,7 @@ LABEL_4:
     goto LABEL_79;
   }
 
-  [v6 visibleRect];
+  [intermediateCopy visibleRect];
   if (v66 >= 1.0)
   {
     [(PFParallaxLayoutHelper *)self pixelEffectiveAcceptable];
@@ -1106,8 +1106,8 @@ LABEL_4:
 
       buf[0] = 1;
       v105 = self->_matte;
-      v106 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
-      [PISegmentationHelper computeHeadroomZoomFactorWithVisibleFrame:buf zoomTowardsTop:v105 matte:v106 layoutConfiguration:self->_context context:v102, v104, v89, v91];
+      layoutConfiguration2 = [(PFParallaxLayoutHelper *)self layoutConfiguration];
+      [PISegmentationHelper computeHeadroomZoomFactorWithVisibleFrame:buf zoomTowardsTop:v105 matte:layoutConfiguration2 layoutConfiguration:self->_context context:v102, v104, v89, v91];
       v108 = v107;
 
       if (v108 < 1.0)
@@ -1259,8 +1259,8 @@ LABEL_49:
         v111 = MEMORY[0x1E696AF00];
         v112 = specific;
         v113 = v109;
-        v114 = [v111 callStackSymbols];
-        v115 = [v114 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v111 callStackSymbols];
+        v115 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v166 = specific;
         v167 = 2114;
@@ -1278,8 +1278,8 @@ LABEL_78:
     {
       v150 = MEMORY[0x1E696AF00];
       v151 = v136;
-      v152 = [v150 callStackSymbols];
-      v153 = [v152 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v150 callStackSymbols];
+      v153 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v166 = v153;
       _os_log_error_impl(&dword_1C7694000, v151, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1323,8 +1323,8 @@ void __66__PIPosterLayoutHelper_intermediateWithZoomStrategy_intermediate___bloc
 {
   [MEMORY[0x1E69C0798] targetCenterZoomFactorWithLayoutType:{-[PFParallaxLayoutHelper layoutType](self, "layoutType")}];
   v3 = v2;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 objectForKey:@"PICenterLayoutHorizontalTarget"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:@"PICenterLayoutHorizontalTarget"];
 
   if (v5)
   {
@@ -1335,7 +1335,7 @@ void __66__PIPosterLayoutHelper_intermediateWithZoomStrategy_intermediate___bloc
   return v3;
 }
 
-- (void)initWithPosterClassification:(uint64_t)a3 initialRect:(uint64_t)a4 imageSize:(uint64_t)a5 effectiveAcceptableRect:(uint64_t)a6 effectivePreferredRect:(uint64_t)a7 validBoundsNormalized:(uint64_t)a8 headroomFeasible:(uint64_t)a9 hasTopEdgeContact:(uint64_t)a10 computeSpatial:(uint64_t)a11 spatialPadding:(uint64_t)a12 layoutType:(uint64_t)a13 allowedLayoutStrategies:(uint64_t)a14 layoutConfiguration:(uint64_t)a15
+- (void)initWithPosterClassification:(uint64_t)classification initialRect:(uint64_t)rect imageSize:(uint64_t)size effectiveAcceptableRect:(uint64_t)acceptableRect effectivePreferredRect:(uint64_t)preferredRect validBoundsNormalized:(uint64_t)normalized headroomFeasible:(uint64_t)feasible hasTopEdgeContact:(uint64_t)self0 computeSpatial:(uint64_t)self1 spatialPadding:(uint64_t)self2 layoutType:(uint64_t)self3 allowedLayoutStrategies:(uint64_t)self4 layoutConfiguration:(uint64_t)self5
 {
   v51 = *MEMORY[0x1E69E9840];
   v23 = a22;
@@ -1377,8 +1377,8 @@ LABEL_11:
           v41 = MEMORY[0x1E696AF00];
           v42 = specific;
           v43 = v39;
-          v44 = [v41 callStackSymbols];
-          v45 = [v44 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v41 callStackSymbols];
+          v45 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v48 = specific;
           v49 = 2114;
@@ -1405,8 +1405,8 @@ LABEL_11:
     {
       v35 = MEMORY[0x1E696AF00];
       v36 = v34;
-      v37 = [v35 callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v35 callStackSymbols];
+      v38 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v48 = v38;
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1424,21 +1424,21 @@ LABEL_14:
   }
 }
 
-- (void)initWithCIContext:(double)a3 matte:(double)a4 posterClassification:(double)a5 initialRect:(double)a6 imageSize:(double)a7 effectiveAcceptableRect:(uint64_t)a8 effectivePreferredRect:(void *)a9 validBoundsNormalized:(void *)a10 headroomFeasible:(uint64_t)a11 hasTopEdgeContact:(uint64_t)a12 shouldConstrainLayoutToBounds:(uint64_t)a13 computeSpatial:(char)a14 spatialPadding:(__int128)a15 layoutType:(uint64_t)a16 allowedLayoutStrategies:(uint64_t)a17 layoutConfiguration:(__int128)a18
+- (void)initWithCIContext:(double)context matte:(double)matte posterClassification:(double)classification initialRect:(double)rect imageSize:(double)size effectiveAcceptableRect:(uint64_t)acceptableRect effectivePreferredRect:(void *)preferredRect validBoundsNormalized:(void *)self0 headroomFeasible:(uint64_t)self1 hasTopEdgeContact:(uint64_t)self2 shouldConstrainLayoutToBounds:(uint64_t)self3 computeSpatial:(char)self4 spatialPadding:(__int128)self5 layoutType:(uint64_t)self6 allowedLayoutStrategies:(uint64_t)self7 layoutConfiguration:(__int128)self8
 {
-  v35 = a9;
-  v36 = a10;
-  v46.receiver = a1;
+  preferredRectCopy = preferredRect;
+  normalizedCopy = normalized;
+  v46.receiver = self;
   v46.super_class = PIPosterLayoutHelper;
-  v37 = objc_msgSendSuper2(&v46, sel_initWithPosterClassification_initialRect_imageSize_effectiveAcceptableRect_effectivePreferredRect_validBoundsNormalized_headroomFeasible_hasTopEdgeContact_computeSpatial_spatialPadding_layoutType_allowedLayoutStrategies_layoutConfiguration_, a11, a12, a13, a23, a25, a26, a2, a3, a4, a5, a6, a7, a15, a16, a17, a18, a19, a20, a21, a22, a24, a27);
+  v37 = objc_msgSendSuper2(&v46, sel_initWithPosterClassification_initialRect_imageSize_effectiveAcceptableRect_effectivePreferredRect_validBoundsNormalized_headroomFeasible_hasTopEdgeContact_computeSpatial_spatialPadding_layoutType_allowedLayoutStrategies_layoutConfiguration_, feasible, contact, bounds, a23, a25, a26, a2, context, matte, classification, rect, size, padding, type, strategies, configuration, a19, a20, a21, a22, a24, a27);
   v38 = v37[26];
-  v37[26] = v35;
-  v39 = v35;
+  v37[26] = preferredRectCopy;
+  v39 = preferredRectCopy;
 
   v40 = v37[27];
-  v37[27] = v36;
+  v37[27] = normalizedCopy;
 
-  *(v37 + 224) = a14;
+  *(v37 + 224) = spatial;
   return v37;
 }
 

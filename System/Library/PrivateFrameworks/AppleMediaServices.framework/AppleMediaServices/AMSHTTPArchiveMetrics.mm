@@ -1,21 +1,21 @@
 @interface AMSHTTPArchiveMetrics
-- (AMSHTTPArchiveMetrics)initWithCoder:(id)a3;
-- (AMSHTTPArchiveMetrics)initWithTransactionMetrics:(id)a3;
-- (AMSHTTPArchiveMetrics)initWithURLSessionTaskMetrics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AMSHTTPArchiveMetrics)initWithCoder:(id)coder;
+- (AMSHTTPArchiveMetrics)initWithTransactionMetrics:(id)metrics;
+- (AMSHTTPArchiveMetrics)initWithURLSessionTaskMetrics:(id)metrics;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSHTTPArchiveMetrics
 
-- (AMSHTTPArchiveMetrics)initWithTransactionMetrics:(id)a3
+- (AMSHTTPArchiveMetrics)initWithTransactionMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v9.receiver = self;
   v9.super_class = AMSHTTPArchiveMetrics;
   v5 = [(AMSHTTPArchiveMetrics *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [metricsCopy copy];
     transactionMetrics = v5->_transactionMetrics;
     v5->_transactionMetrics = v6;
   }
@@ -23,17 +23,17 @@
   return v5;
 }
 
-- (AMSHTTPArchiveMetrics)initWithURLSessionTaskMetrics:(id)a3
+- (AMSHTTPArchiveMetrics)initWithURLSessionTaskMetrics:(id)metrics
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v4 transactionMetrics];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  transactionMetrics = [metricsCopy transactionMetrics];
+  v7 = [transactionMetrics countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -45,7 +45,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transactionMetrics);
         }
 
         v11 = [[AMSHTTPArchiveTransactionMetrics alloc] initWithURLSessionTaskTransactionMetrics:*(*(&v14 + 1) + 8 * v10)];
@@ -55,7 +55,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [transactionMetrics countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -65,20 +65,20 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AMSHTTPArchiveMetrics *)self transactionMetrics];
-  [v4 encodeObject:v5 forKey:@"kCodingKeyTransactionMetrics"];
+  coderCopy = coder;
+  transactionMetrics = [(AMSHTTPArchiveMetrics *)self transactionMetrics];
+  [coderCopy encodeObject:transactionMetrics forKey:@"kCodingKeyTransactionMetrics"];
 }
 
-- (AMSHTTPArchiveMetrics)initWithCoder:(id)a3
+- (AMSHTTPArchiveMetrics)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"kCodingKeyTransactionMetrics"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"kCodingKeyTransactionMetrics"];
 
   v9 = [(AMSHTTPArchiveMetrics *)self initWithTransactionMetrics:v8];
   return v9;

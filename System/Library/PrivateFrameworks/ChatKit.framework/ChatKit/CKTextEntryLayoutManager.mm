@@ -3,13 +3,13 @@
 - (CGSize)currentMentionOffset;
 - (CKTextEntryLayoutManager)init;
 - (CKTextEntryLayoutManagerMentionsDelegate)mentionsDelegate;
-- (void)drawAttributedMentionGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9;
+- (void)drawAttributedMentionGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context;
 - (void)startTimerIfNeeded;
-- (void)stopTimerRemovingAttribute:(BOOL)a3;
-- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)a3;
-- (void)updateMentionAttributes:(id)a3;
+- (void)stopTimerRemovingAttribute:(BOOL)attribute;
+- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)attribute;
+- (void)updateMentionAttributes:(id)attributes;
 - (void)updateMentionDisplay;
 @end
 
@@ -22,9 +22,9 @@
   v2 = [(EMKLayoutManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = *(v2 + 49);
-    *(v2 + 49) = v3;
+    *(v2 + 49) = dictionary;
 
     v5 = *(v2 + 46);
     *(v2 + 46) = 0;
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (void)updateMentionAttributes:(id)a3
+- (void)updateMentionAttributes:(id)attributes
 {
-  v4 = a3;
-  if (([(NSMutableAttributedString *)self->_mentionAttributes isEqualToAttributedString:v4]& 1) == 0)
+  attributesCopy = attributes;
+  if (([(NSMutableAttributedString *)self->_mentionAttributes isEqualToAttributedString:attributesCopy]& 1) == 0)
   {
-    v5 = [v4 mutableCopy];
+    v5 = [attributesCopy mutableCopy];
     mentionAttributes = self->_mentionAttributes;
     self->_mentionAttributes = v5;
 
@@ -92,9 +92,9 @@ void __52__CKTextEntryLayoutManager_updateMentionAttributes___block_invoke(uint6
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(CKTextEntryLayoutManager *)self mentionAttributes];
-  v4 = [(CKTextEntryLayoutManager *)self mentionAttributes];
-  v5 = [v4 length];
+  mentionAttributes = [(CKTextEntryLayoutManager *)self mentionAttributes];
+  mentionAttributes2 = [(CKTextEntryLayoutManager *)self mentionAttributes];
+  v5 = [mentionAttributes2 length];
   v6 = *MEMORY[0x1E69A70D0];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -102,7 +102,7 @@ void __52__CKTextEntryLayoutManager_updateMentionAttributes___block_invoke(uint6
   v10[3] = &unk_1E72F0AB0;
   v10[4] = self;
   v10[5] = &v11;
-  [v3 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{2, v10}];
+  [mentionAttributes enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{2, v10}];
 
   if (v12[3])
   {
@@ -111,8 +111,8 @@ void __52__CKTextEntryLayoutManager_updateMentionAttributes___block_invoke(uint6
 
   else
   {
-    v8 = [(CKTextEntryLayoutManager *)self animationsByIdentifier];
-    [v8 removeAllObjects];
+    animationsByIdentifier = [(CKTextEntryLayoutManager *)self animationsByIdentifier];
+    [animationsByIdentifier removeAllObjects];
 
     v7 = *(v12 + 24);
   }
@@ -150,24 +150,24 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
 
 - (void)startTimerIfNeeded
 {
-  v3 = [(CKTextEntryLayoutManager *)self mentionTimer];
+  mentionTimer = [(CKTextEntryLayoutManager *)self mentionTimer];
 
-  if (!v3)
+  if (!mentionTimer)
   {
     v4 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_updateMentionDisplay selector:0 userInfo:1 repeats:0.0166666667];
     [(CKTextEntryLayoutManager *)self setMentionTimer:v4];
   }
 
-  v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  v5 = [(CKTextEntryLayoutManager *)self mentionTimer];
-  [v6 addTimer:v5 forMode:*MEMORY[0x1E69DE760]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  mentionTimer2 = [(CKTextEntryLayoutManager *)self mentionTimer];
+  [mainRunLoop addTimer:mentionTimer2 forMode:*MEMORY[0x1E69DE760]];
 }
 
-- (void)stopTimerRemovingAttribute:(BOOL)a3
+- (void)stopTimerRemovingAttribute:(BOOL)attribute
 {
-  [(CKTextEntryLayoutManager *)self updateDisplayForMentionGlyphRangeRemovingAttribute:a3];
-  v4 = [(CKTextEntryLayoutManager *)self mentionTimer];
-  [v4 invalidate];
+  [(CKTextEntryLayoutManager *)self updateDisplayForMentionGlyphRangeRemovingAttribute:attribute];
+  mentionTimer = [(CKTextEntryLayoutManager *)self mentionTimer];
+  [mentionTimer invalidate];
 
   [(CKTextEntryLayoutManager *)self setMentionTimer:0];
 }
@@ -182,16 +182,16 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
   }
 }
 
-- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)a3
+- (void)updateDisplayForMentionGlyphRangeRemovingAttribute:(BOOL)attribute
 {
-  v3 = a3;
-  v5 = [(CKTextEntryLayoutManager *)self mentionAttributes];
-  v6 = [v5 copy];
+  attributeCopy = attribute;
+  mentionAttributes = [(CKTextEntryLayoutManager *)self mentionAttributes];
+  v6 = [mentionAttributes copy];
 
   v17 = 0;
   v18 = 0;
-  v7 = [(CKTextEntryLayoutManager *)self textStorage];
-  v8 = [v7 length];
+  textStorage = [(CKTextEntryLayoutManager *)self textStorage];
+  v8 = [textStorage length];
 
   v9 = [v6 length];
   if (v9)
@@ -204,10 +204,10 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
       v13 = [v6 attribute:v12 atIndex:v11 longestEffectiveRange:&v17 inRange:{v11, v10 - v11}];
       if ([v13 length] && v18 + v17 <= v8)
       {
-        if (v3)
+        if (attributeCopy)
         {
-          v14 = [(CKTextEntryLayoutManager *)self mentionsDelegate];
-          [v14 layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:v13];
+          mentionsDelegate = [(CKTextEntryLayoutManager *)self mentionsDelegate];
+          [mentionsDelegate layoutManagerDidFinishAnimatingMentionWithAnimationIdentifier:v13];
         }
 
         v15 = [CKTextEntryLayoutManager glyphRangeForCharacterRange:"glyphRangeForCharacterRange:actualCharacterRange:" actualCharacterRange:?];
@@ -221,14 +221,14 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
   }
 }
 
-- (void)drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v9 = [(CKTextEntryLayoutManager *)self mentionAttributes];
-  v10 = [v9 containsAttribute:*MEMORY[0x1E69A70D0]];
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  mentionAttributes = [(CKTextEntryLayoutManager *)self mentionAttributes];
+  v10 = [mentionAttributes containsAttribute:*MEMORY[0x1E69A70D0]];
 
   if (v10)
   {
@@ -244,18 +244,18 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
   }
 }
 
-- (void)drawAttributedMentionGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawAttributedMentionGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v8 = [(CKTextEntryLayoutManager *)self characterRangeForGlyphRange:a3.location actualGlyphRange:a3.length, 0];
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  v8 = [(CKTextEntryLayoutManager *)self characterRangeForGlyphRange:range.location actualGlyphRange:range.length, 0];
   v10 = v9;
   v39 = v8;
   v40 = 0;
-  v11 = [(CKTextEntryLayoutManager *)self mentionAttributes];
-  v12 = [v11 length];
+  mentionAttributes = [(CKTextEntryLayoutManager *)self mentionAttributes];
+  v12 = [mentionAttributes length];
 
   v30 = v8 + v10;
   v31 = v12;
@@ -285,9 +285,9 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
       v21 = v20;
       if ([v18 length])
       {
-        v22 = [(CKTextEntryLayoutManager *)self animationsByIdentifier];
+        animationsByIdentifier = [(CKTextEntryLayoutManager *)self animationsByIdentifier];
         v34 = v18;
-        v23 = [v22 objectForKeyedSubscript:v18];
+        v23 = [animationsByIdentifier objectForKeyedSubscript:v18];
 
         if (v21)
         {
@@ -295,13 +295,13 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
           {
             if (location <= v19 + i && v19 + i + 1 <= v14)
             {
-              v26 = [v23 currentTimeIndex];
-              v27 = [v23 currentColorForGlyphIndex:i numberOfGlyphs:v21 timeIndex:v26];
+              currentTimeIndex = [v23 currentTimeIndex];
+              v27 = [v23 currentColorForGlyphIndex:i numberOfGlyphs:v21 timeIndex:currentTimeIndex];
               [(CKTextEntryLayoutManager *)self setCurrentMentionColor:v27];
 
-              [v23 currentScaleForGlyphIndex:i numberOfGlyphs:v21 timeIndex:v26];
+              [v23 currentScaleForGlyphIndex:i numberOfGlyphs:v21 timeIndex:currentTimeIndex];
               [(CKTextEntryLayoutManager *)self setCurrentMentionScale:?];
-              [v23 currentOffsetForGlyphIndex:i numberOfGlyphs:v21 timeIndex:v26];
+              [v23 currentOffsetForGlyphIndex:i numberOfGlyphs:v21 timeIndex:currentTimeIndex];
               [(CKTextEntryLayoutManager *)self setCurrentMentionOffset:?];
               v38.receiver = self;
               v38.super_class = CKTextEntryLayoutManager;
@@ -340,24 +340,24 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
   }
 }
 
-- (void)showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9
+- (void)showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context
 {
-  v15 = a6;
-  v16 = a8;
-  v41 = *a4;
-  if (a5 == 1)
+  fontCopy = font;
+  attributesCopy = attributes;
+  v41 = *positions;
+  if (count == 1)
   {
-    [v15 pointSize];
+    [fontCopy pointSize];
     v18 = v17;
-    v19 = [(CKTextEntryLayoutManager *)self currentMentionShadowColor];
-    v21 = v18 <= 22.0 && v19 != 0;
+    currentMentionShadowColor = [(CKTextEntryLayoutManager *)self currentMentionShadowColor];
+    v21 = v18 <= 22.0 && currentMentionShadowColor != 0;
 
     [(CKTextEntryLayoutManager *)self currentMentionScale];
     if (v22 != 1.0 || ([(CKTextEntryLayoutManager *)self currentMentionOffset], v23 != 0.0) || ([(CKTextEntryLayoutManager *)self currentMentionOffset], v24 != 0.0))
     {
       [(CKTextEntryLayoutManager *)self currentMentionScale];
-      CGContextSetFontSize(a9, v18 * v25);
-      BoundingRectsForGlyphs = CTFontGetBoundingRectsForGlyphs(v15, kCTFontOrientationDefault, a3, 0, 1);
+      CGContextSetFontSize(context, v18 * v25);
+      BoundingRectsForGlyphs = CTFontGetBoundingRectsForGlyphs(fontCopy, kCTFontOrientationDefault, glyphs, 0, 1);
       width = BoundingRectsForGlyphs.size.width;
       [(CKTextEntryLayoutManager *)self currentMentionOffset:BoundingRectsForGlyphs.origin.x];
       v28 = v27;
@@ -365,43 +365,43 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
       v41.x = v41.x + v28 + width * (v29 + -1.0) * -0.5;
       [(CKTextEntryLayoutManager *)self currentMentionOffset];
       v41.y = v41.y - v30;
-      a4 = &v41;
+      positions = &v41;
     }
 
-    v31 = [(CKTextEntryLayoutManager *)self currentMentionColor];
+    currentMentionColor = [(CKTextEntryLayoutManager *)self currentMentionColor];
 
-    if (v31)
+    if (currentMentionColor)
     {
       [(UIColor *)self->_currentMentionColor set];
     }
 
     if (v21)
     {
-      v32 = [(CKTextEntryLayoutManager *)self currentMentionShadowColor];
-      v33 = [v32 CGColor];
+      currentMentionShadowColor2 = [(CKTextEntryLayoutManager *)self currentMentionShadowColor];
+      cGColor = [currentMentionShadowColor2 CGColor];
       v42.width = 0.25;
       v42.height = 0.0;
-      CGContextSetShadowWithColor(a9, v42, 0.0, v33);
+      CGContextSetShadowWithColor(context, v42, 0.0, cGColor);
 
       v40.receiver = self;
       v40.super_class = CKTextEntryLayoutManager;
-      v34 = *&a7->c;
-      v37 = *&a7->a;
+      v34 = *&matrix->c;
+      v37 = *&matrix->a;
       v38 = v34;
-      v39 = *&a7->tx;
-      [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:a3 positions:a4 count:1 font:v15 textMatrix:&v37 attributes:v16 inContext:a9];
-      CGContextSetShadowWithColor(a9, *MEMORY[0x1E695F060], 0.0, 0);
+      v39 = *&matrix->tx;
+      [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:glyphs positions:positions count:1 font:fontCopy textMatrix:&v37 attributes:attributesCopy inContext:context];
+      CGContextSetShadowWithColor(context, *MEMORY[0x1E695F060], 0.0, 0);
     }
 
     else
     {
       v40.receiver = self;
       v40.super_class = CKTextEntryLayoutManager;
-      v36 = *&a7->c;
-      v37 = *&a7->a;
+      v36 = *&matrix->c;
+      v37 = *&matrix->a;
       v38 = v36;
-      v39 = *&a7->tx;
-      [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:a3 positions:a4 count:1 font:v15 textMatrix:&v37 attributes:v16 inContext:a9];
+      v39 = *&matrix->tx;
+      [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:glyphs positions:positions count:1 font:fontCopy textMatrix:&v37 attributes:attributesCopy inContext:context];
     }
   }
 
@@ -409,11 +409,11 @@ void __55__CKTextEntryLayoutManager_isAnyMentionAnimationActive__block_invoke(ui
   {
     v40.receiver = self;
     v40.super_class = CKTextEntryLayoutManager;
-    v35 = *&a7->c;
-    v37 = *&a7->a;
+    v35 = *&matrix->c;
+    v37 = *&matrix->a;
     v38 = v35;
-    v39 = *&a7->tx;
-    [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:a3 positions:a4 count:a5 font:v15 textMatrix:&v37 attributes:v16 inContext:a9];
+    v39 = *&matrix->tx;
+    [(CKTextEntryLayoutManager *)&v40 showCGGlyphs:glyphs positions:positions count:count font:fontCopy textMatrix:&v37 attributes:attributesCopy inContext:context];
   }
 }
 

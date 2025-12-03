@@ -1,15 +1,15 @@
 @interface BlastDoorLiteMessageCompressor
 - (BlastDoorLiteMessageCompressor)init;
-- (id)compressData:(id)a3 codecID:(int64_t *)a4;
+- (id)compressData:(id)data codecID:(int64_t *)d;
 @end
 
 @implementation BlastDoorLiteMessageCompressor
 
-- (id)compressData:(id)a3 codecID:(int64_t *)a4
+- (id)compressData:(id)data codecID:(int64_t *)d
 {
-  v7 = a3;
-  v8 = self;
-  v9 = sub_258D11628(a3, a4);
+  dataCopy = data;
+  selfCopy = self;
+  v9 = sub_258D11628(data, d);
 
   return v9;
 }

@@ -3,7 +3,7 @@
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_cancelButtonTapped;
 - (void)_continueButtonTapped;
-- (void)_sendTravelEventMetricForRoaming:(BOOL)a3;
+- (void)_sendTravelEventMetricForRoaming:(BOOL)roaming;
 - (void)_setUpButtons;
 - (void)_setUpLearnMoreLink;
 - (void)viewDidLoad;
@@ -37,9 +37,9 @@
   v5.receiver = self;
   v5.super_class = TSRoamingEducationViewController;
   [(TSOBWelcomeController *)&v5 viewDidLoad];
-  v3 = [(TSRoamingEducationViewController *)self navigationController];
-  v4 = [v3 navigationItem];
-  [v4 setHidesBackButton:0];
+  navigationController = [(TSRoamingEducationViewController *)self navigationController];
+  navigationItem = [navigationController navigationItem];
+  [navigationItem setHidesBackButton:0];
 
   [(TSRoamingEducationViewController *)self _setUpButtons];
   [(TSRoamingEducationViewController *)self _setUpLearnMoreLink];
@@ -58,12 +58,12 @@
   [(SSOBBoldTrayButton *)v5 setTitle:v7 forState:0];
 
   [(OBBoldTrayButton *)self->_continueButton setEnabled:1];
-  v8 = [(TSRoamingEducationViewController *)self buttonTray];
-  [v8 addButton:self->_continueButton];
+  buttonTray = [(TSRoamingEducationViewController *)self buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
-  v9 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   skipButton = self->_skipButton;
-  self->_skipButton = v9;
+  self->_skipButton = linkButton;
 
   [(SSOBBoldTrayButton *)self->_skipButton setRole:2];
   v11 = self->_skipButton;
@@ -72,24 +72,24 @@
   [(SSOBBoldTrayButton *)v11 setTitle:v13 forState:0];
 
   [(SSOBBoldTrayButton *)self->_skipButton addTarget:self action:sel__cancelButtonTapped forControlEvents:64];
-  v14 = [(TSRoamingEducationViewController *)self buttonTray];
-  [v14 addButton:self->_skipButton];
+  buttonTray2 = [(TSRoamingEducationViewController *)self buttonTray];
+  [buttonTray2 addButton:self->_skipButton];
 
-  v15 = [(TSRoamingEducationViewController *)self buttonTray];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonTray3 = [(TSRoamingEducationViewController *)self buttonTray];
+  [buttonTray3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)_setUpLearnMoreLink
 {
-  v6 = [MEMORY[0x277D37638] accessoryButton];
+  accessoryButton = [MEMORY[0x277D37638] accessoryButton];
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"TRAVEL_LEARN_MORE" value:&stru_28753DF48 table:@"Localizable"];
-  [v6 setTitle:v4 forState:0];
+  [accessoryButton setTitle:v4 forState:0];
 
-  [v6 addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(TSRoamingEducationViewController *)self headerView];
-  [v5 addAccessoryButton:v6];
+  [accessoryButton addTarget:self action:sel__learnMoreButtonTapped forControlEvents:64];
+  [accessoryButton setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerView = [(TSRoamingEducationViewController *)self headerView];
+  [headerView addAccessoryButton:accessoryButton];
 }
 
 - (void)_cancelButtonTapped
@@ -106,13 +106,13 @@
   [WeakRetained viewControllerDidComplete:self];
 }
 
-- (void)_sendTravelEventMetricForRoaming:(BOOL)a3
+- (void)_sendTravelEventMetricForRoaming:(BOOL)roaming
 {
-  v3 = a3;
+  roamingCopy = roaming;
   v5 = objc_opt_new();
   [v5 setObject:@"roaming_education" forKey:@"notificationType"];
   v6 = &TSTravelActionRoamingEducationRoamingOff;
-  if (v3)
+  if (roamingCopy)
   {
     v6 = &TSTravelActionRoamingEducationRoamingOn;
   }

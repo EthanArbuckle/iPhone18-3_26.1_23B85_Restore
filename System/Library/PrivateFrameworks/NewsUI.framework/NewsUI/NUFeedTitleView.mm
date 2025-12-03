@@ -1,13 +1,13 @@
 @interface NUFeedTitleView
 - (BOOL)useCompactTitleViewUpdates;
-- (NUFeedTitleView)initWithFrame:(CGRect)a3;
+- (NUFeedTitleView)initWithFrame:(CGRect)frame;
 - (NUFeedTitleViewDelegate)delegate;
 - (NUTitleViewStyler)styler;
-- (unint64_t)titleViewAnimationForAnimation:(unint64_t)a3;
-- (void)applyTitleViewUpdate:(id)a3 animation:(unint64_t)a4;
+- (unint64_t)titleViewAnimationForAnimation:(unint64_t)animation;
+- (void)applyTitleViewUpdate:(id)update animation:(unint64_t)animation;
 - (void)layoutSubviews;
-- (void)setStyler:(id)a3;
-- (void)titleViewDidTapOnTitleView:(id)a3;
+- (void)setStyler:(id)styler;
+- (void)titleViewDidTapOnTitleView:(id)view;
 @end
 
 @implementation NUFeedTitleView
@@ -22,15 +22,15 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NUFeedTitleView *)self titleView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  titleView = [(NUFeedTitleView *)self titleView];
+  [titleView setFrame:{v4, v6, v8, v10}];
 }
 
-- (NUFeedTitleView)initWithFrame:(CGRect)a3
+- (NUFeedTitleView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = NUFeedTitleView;
-  v3 = [(NUFeedTitleView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NUFeedTitleView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(NUTitleViewStyler);
@@ -49,65 +49,65 @@
   return v3;
 }
 
-- (void)setStyler:(id)a3
+- (void)setStyler:(id)styler
 {
-  v4 = a3;
-  v5 = [(NUFeedTitleView *)self titleView];
-  [v5 setStyler:v4];
+  stylerCopy = styler;
+  titleView = [(NUFeedTitleView *)self titleView];
+  [titleView setStyler:stylerCopy];
 
   [(NUFeedTitleView *)self setLastQueuedTitleViewUpdate:0];
 }
 
 - (NUTitleViewStyler)styler
 {
-  v2 = [(NUFeedTitleView *)self titleView];
-  v3 = [v2 styler];
+  titleView = [(NUFeedTitleView *)self titleView];
+  styler = [titleView styler];
 
-  return v3;
+  return styler;
 }
 
-- (void)titleViewDidTapOnTitleView:(id)a3
+- (void)titleViewDidTapOnTitleView:(id)view
 {
-  v4 = [(NUFeedTitleView *)self delegate];
+  delegate = [(NUFeedTitleView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(NUFeedTitleView *)self delegate];
-    [v6 feedTitleViewDidTapOnTitleView:self];
+    delegate2 = [(NUFeedTitleView *)self delegate];
+    [delegate2 feedTitleViewDidTapOnTitleView:self];
   }
 }
 
 - (BOOL)useCompactTitleViewUpdates
 {
-  v2 = [(NUFeedTitleView *)self traitCollection];
-  v3 = [v2 horizontalSizeClass] == 1;
+  traitCollection = [(NUFeedTitleView *)self traitCollection];
+  v3 = [traitCollection horizontalSizeClass] == 1;
 
   return v3;
 }
 
-- (void)applyTitleViewUpdate:(id)a3 animation:(unint64_t)a4
+- (void)applyTitleViewUpdate:(id)update animation:(unint64_t)animation
 {
-  v11 = a3;
-  v6 = [(NUFeedTitleView *)self lastQueuedTitleViewUpdate];
-  if (!v6 || (v7 = v6, -[NUFeedTitleView lastQueuedTitleViewUpdate](self, "lastQueuedTitleViewUpdate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:v11], v8, v7, (v9 & 1) == 0))
+  updateCopy = update;
+  lastQueuedTitleViewUpdate = [(NUFeedTitleView *)self lastQueuedTitleViewUpdate];
+  if (!lastQueuedTitleViewUpdate || (v7 = lastQueuedTitleViewUpdate, -[NUFeedTitleView lastQueuedTitleViewUpdate](self, "lastQueuedTitleViewUpdate"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 isEqual:updateCopy], v8, v7, (v9 & 1) == 0))
   {
-    [(NUFeedTitleView *)self setLastQueuedTitleViewUpdate:v11];
-    v10 = [(NUFeedTitleView *)self titleView];
-    [v10 applyTitleViewUpdate:v11 animation:{-[NUFeedTitleView titleViewAnimationForAnimation:](self, "titleViewAnimationForAnimation:", a4)}];
+    [(NUFeedTitleView *)self setLastQueuedTitleViewUpdate:updateCopy];
+    titleView = [(NUFeedTitleView *)self titleView];
+    [titleView applyTitleViewUpdate:updateCopy animation:{-[NUFeedTitleView titleViewAnimationForAnimation:](self, "titleViewAnimationForAnimation:", animation)}];
   }
 }
 
-- (unint64_t)titleViewAnimationForAnimation:(unint64_t)a3
+- (unint64_t)titleViewAnimationForAnimation:(unint64_t)animation
 {
-  if (a3 - 1 > 2)
+  if (animation - 1 > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_25C311BA0[a3 - 1];
+    return qword_25C311BA0[animation - 1];
   }
 }
 

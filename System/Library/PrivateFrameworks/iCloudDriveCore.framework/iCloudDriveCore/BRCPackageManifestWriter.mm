@@ -1,12 +1,12 @@
 @interface BRCPackageManifestWriter
-- (BOOL)_cloneExcludedFromSyncItemsFromExistingContentsURL:(id)a3 toStageItemURL:(id)a4 error:(id *)a5;
-- (BOOL)_packageItem:(id)a3 matchesMode:(unsigned __int16)a4;
-- (BOOL)addItem:(id)a3;
-- (BOOL)addLocalItem:(id)a3;
-- (BOOL)stagePackageWithReader:(id)a3 package:(id)a4 xattrsPackage:(id)a5 stageItemURL:(id)a6 existingContentsURL:(id)a7 recordName:(id)a8 isDocumentModifiedByOtherUser:(BOOL)a9;
-- (BRCPackageManifestWriter)initWithZone:(id)a3 stageID:(id)a4 url:(id)a5;
-- (unsigned)_computedFileModeForPackageItem:(id)a3;
-- (void)_applyQuarantineMetadataWithManifestItem:(id)a3 isDocumentModifiedByOtherUser:(BOOL)a4 fd:(int)a5;
+- (BOOL)_cloneExcludedFromSyncItemsFromExistingContentsURL:(id)l toStageItemURL:(id)rL error:(id *)error;
+- (BOOL)_packageItem:(id)item matchesMode:(unsigned __int16)mode;
+- (BOOL)addItem:(id)item;
+- (BOOL)addLocalItem:(id)item;
+- (BOOL)stagePackageWithReader:(id)reader package:(id)package xattrsPackage:(id)xattrsPackage stageItemURL:(id)l existingContentsURL:(id)rL recordName:(id)name isDocumentModifiedByOtherUser:(BOOL)user;
+- (BRCPackageManifestWriter)initWithZone:(id)zone stageID:(id)d url:(id)url;
+- (unsigned)_computedFileModeForPackageItem:(id)item;
+- (void)_applyQuarantineMetadataWithManifestItem:(id)item isDocumentModifiedByOtherUser:(BOOL)user fd:(int)fd;
 - (void)_handleStreamError;
 @end
 
@@ -17,9 +17,9 @@
   stream = self->_stream;
   if (stream)
   {
-    v4 = [(NSOutputStream *)stream streamError];
+    streamError = [(NSOutputStream *)stream streamError];
     error = self->_error;
-    self->_error = v4;
+    self->_error = streamError;
 
     [(NSOutputStream *)self->_stream close];
     v6 = self->_stream;
@@ -30,21 +30,21 @@
   }
 }
 
-- (BRCPackageManifestWriter)initWithZone:(id)a3 stageID:(id)a4 url:(id)a5
+- (BRCPackageManifestWriter)initWithZone:(id)zone stageID:(id)d url:(id)url
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  zoneCopy = zone;
+  dCopy = d;
+  urlCopy = url;
   v20.receiver = self;
   v20.super_class = BRCPackageManifestWriter;
   v12 = [(BRCPackageManifestWriter *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientZone, a3);
-    objc_storeStrong(&v13->_stageID, a4);
-    objc_storeStrong(&v13->_url, a5);
-    v14 = [MEMORY[0x277CBEB78] outputStreamWithURL:v11 append:0];
+    objc_storeStrong(&v12->_clientZone, zone);
+    objc_storeStrong(&v13->_stageID, d);
+    objc_storeStrong(&v13->_url, url);
+    v14 = [MEMORY[0x277CBEB78] outputStreamWithURL:urlCopy append:0];
     stream = v13->_stream;
     v13->_stream = v14;
 
@@ -64,9 +64,9 @@
   return v13;
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -74,7 +74,7 @@
     [BRCPackageManifestWriter addItem:];
   }
 
-  v7 = [(PBMessageStreamWriter *)self->_writer writeMessage:v4];
+  v7 = [(PBMessageStreamWriter *)self->_writer writeMessage:itemCopy];
   if ((v7 & 1) == 0)
   {
     [(BRCPackageManifestWriter *)self _handleStreamError];
@@ -83,9 +83,9 @@
   return v7;
 }
 
-- (BOOL)addLocalItem:(id)a3
+- (BOOL)addLocalItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -93,7 +93,7 @@
     [BRCPackageManifestWriter addItem:];
   }
 
-  v7 = [(PBMessageStreamWriter *)self->_writer writeMessage:v4];
+  v7 = [(PBMessageStreamWriter *)self->_writer writeMessage:itemCopy];
   if ((v7 & 1) == 0)
   {
     [(BRCPackageManifestWriter *)self _handleStreamError];
@@ -102,25 +102,25 @@
   return v7;
 }
 
-- (void)_applyQuarantineMetadataWithManifestItem:(id)a3 isDocumentModifiedByOtherUser:(BOOL)a4 fd:(int)a5
+- (void)_applyQuarantineMetadataWithManifestItem:(id)item isDocumentModifiedByOtherUser:(BOOL)user fd:(int)fd
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 path];
-  v8 = [v6 quarantineInfo];
+  itemCopy = item;
+  path = [itemCopy path];
+  quarantineInfo = [itemCopy quarantineInfo];
 
   v13 = 0;
-  LOBYTE(v6) = BRCSetFakeQuarantineInfo(a5, v8, &v13);
+  LOBYTE(itemCopy) = BRCSetFakeQuarantineInfo(fd, quarantineInfo, &v13);
   v9 = v13;
 
-  if ((v6 & 1) == 0)
+  if ((itemCopy & 1) == 0)
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, 0x90u))
     {
       *buf = 138412802;
-      v15 = v7;
+      v15 = path;
       v16 = 2112;
       v17 = v9;
       v18 = 2112;
@@ -132,27 +132,27 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_packageItem:(id)a3 matchesMode:(unsigned __int16)a4
+- (BOOL)_packageItem:(id)item matchesMode:(unsigned __int16)mode
 {
-  v4 = a4;
-  v5 = a3;
-  if (((v4 & 0x80) == 0) == [v5 isWritable])
+  modeCopy = mode;
+  itemCopy = item;
+  if (((modeCopy & 0x80) == 0) == [itemCopy isWritable])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v6 = ((v4 & 0x40) == 0) ^ [v5 isExecutable];
+    v6 = ((modeCopy & 0x40) == 0) ^ [itemCopy isExecutable];
   }
 
   return v6;
 }
 
-- (unsigned)_computedFileModeForPackageItem:(id)a3
+- (unsigned)_computedFileModeForPackageItem:(id)item
 {
-  v3 = a3;
-  if ([v3 isWritable])
+  itemCopy = item;
+  if ([itemCopy isWritable])
   {
     v4 = 434;
   }
@@ -162,27 +162,27 @@
     v4 = 288;
   }
 
-  v5 = [v3 isExecutable];
+  isExecutable = [itemCopy isExecutable];
 
-  if (v5)
+  if (isExecutable)
   {
     v4 |= 0x49u;
   }
 
   v6 = [BRCUserDefaults defaultsForMangledID:0];
-  v7 = [v6 stageInPackageFileUmask];
+  stageInPackageFileUmask = [v6 stageInPackageFileUmask];
 
-  return v4 & ~v7;
+  return v4 & ~stageInPackageFileUmask;
 }
 
-- (BOOL)_cloneExcludedFromSyncItemsFromExistingContentsURL:(id)a3 toStageItemURL:(id)a4 error:(id *)a5
+- (BOOL)_cloneExcludedFromSyncItemsFromExistingContentsURL:(id)l toStageItemURL:(id)rL error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  lCopy = l;
+  rLCopy = rL;
+  v8 = rLCopy;
   v9 = 1;
-  if (v6 && v7)
+  if (lCopy && rLCopy)
   {
     v37 = 0;
     v38 = &v37;
@@ -190,34 +190,34 @@
     v40 = __Block_byref_object_copy__30;
     v41 = __Block_byref_object_dispose__30;
     v42 = 0;
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __100__BRCPackageManifestWriter__cloneExcludedFromSyncItemsFromExistingContentsURL_toStageItemURL_error___block_invoke;
     v36[3] = &unk_278500E40;
     v36[4] = &v37;
-    v11 = [v10 enumeratorAtURL:v6 includingPropertiesForKeys:0 options:16 errorHandler:v36];
-    for (i = 0; ; i = v13)
+    v11 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:16 errorHandler:v36];
+    for (i = 0; ; i = nextObject)
     {
 
-      v13 = [v11 nextObject];
+      nextObject = [v11 nextObject];
 
-      if (!v13)
+      if (!nextObject)
       {
         break;
       }
 
-      v14 = [v13 relativePath];
-      v15 = [v14 lastPathComponent];
-      v16 = [v15 br_isExcludedWithMaximumDepth:1];
+      relativePath = [nextObject relativePath];
+      lastPathComponent = [relativePath lastPathComponent];
+      v16 = [lastPathComponent br_isExcludedWithMaximumDepth:1];
 
       if (v16)
       {
-        v17 = [v6 URLByAppendingPathComponent:v14];
-        v18 = [v8 URLByAppendingPathComponent:v14];
+        v17 = [lCopy URLByAppendingPathComponent:relativePath];
+        v18 = [v8 URLByAppendingPathComponent:relativePath];
         v35 = 0;
         v19 = [BRCFileSystemWrapper cloneFromURL:v17 toURL:v18 error:&v35];
-        v10 = v35;
+        defaultManager = v35;
         if (v19)
         {
           v24 = brc_bread_crumbs();
@@ -227,7 +227,7 @@
             [BRCPackageManifestWriter _cloneExcludedFromSyncItemsFromExistingContentsURL:toStageItemURL:error:];
           }
 
-          v26 = v10;
+          v26 = defaultManager;
           if (v26)
           {
             v27 = brc_bread_crumbs();
@@ -238,7 +238,7 @@
               *buf = 136315906;
               v44 = "[BRCPackageManifestWriter _cloneExcludedFromSyncItemsFromExistingContentsURL:toStageItemURL:error:]";
               v45 = 2080;
-              if (!a5)
+              if (!error)
               {
                 v33 = "(ignored by caller)";
               }
@@ -252,10 +252,10 @@
             }
           }
 
-          if (a5)
+          if (error)
           {
             v29 = v26;
-            *a5 = v26;
+            *error = v26;
           }
 
           v9 = 0;
@@ -265,7 +265,7 @@
 
       else
       {
-        v10 = 0;
+        defaultManager = 0;
       }
     }
 
@@ -280,7 +280,7 @@
         *buf = 136315906;
         v44 = "[BRCPackageManifestWriter _cloneExcludedFromSyncItemsFromExistingContentsURL:toStageItemURL:error:]";
         v45 = 2080;
-        if (!a5)
+        if (!error)
         {
           v32 = "(ignored by caller)";
         }
@@ -294,10 +294,10 @@
       }
     }
 
-    if (a5)
+    if (error)
     {
       v23 = v20;
-      *a5 = v20;
+      *error = v20;
     }
 
     v9 = v38[5] == 0;
@@ -310,32 +310,32 @@ LABEL_24:
   return v9;
 }
 
-- (BOOL)stagePackageWithReader:(id)a3 package:(id)a4 xattrsPackage:(id)a5 stageItemURL:(id)a6 existingContentsURL:(id)a7 recordName:(id)a8 isDocumentModifiedByOtherUser:(BOOL)a9
+- (BOOL)stagePackageWithReader:(id)reader package:(id)package xattrsPackage:(id)xattrsPackage stageItemURL:(id)l existingContentsURL:(id)rL recordName:(id)name isDocumentModifiedByOtherUser:(BOOL)user
 {
   v200 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  readerCopy = reader;
+  packageCopy = package;
+  xattrsPackageCopy = xattrsPackage;
+  lCopy = l;
+  rLCopy = rL;
+  nameCopy = name;
   p_error = &self->_error;
   if (self->_error)
   {
-    v22 = 0;
+    done = 0;
     goto LABEL_125;
   }
 
-  v178 = v19;
-  if (v19)
+  v178 = rLCopy;
+  if (rLCopy)
   {
     v194 = 0;
-    v23 = +[BRCFileSystemWrapper openFileWithDirFd:filename:flags:error:](BRCFileSystemWrapper, "openFileWithDirFd:filename:flags:error:", 0xFFFFFFFFLL, [v19 fileSystemRepresentation], 33028, &v194);
+    v23 = +[BRCFileSystemWrapper openFileWithDirFd:filename:flags:error:](BRCFileSystemWrapper, "openFileWithDirFd:filename:flags:error:", 0xFFFFFFFFLL, [rLCopy fileSystemRepresentation], 33028, &v194);
     v24 = v194;
     if (v23 < 0)
     {
-      v22 = 0;
-      v28 = *p_error;
+      done = 0;
+      br_errorFromErrno = *p_error;
       *p_error = v24;
       goto LABEL_124;
     }
@@ -349,23 +349,23 @@ LABEL_24:
   }
 
   v25 = [BRCUserDefaults defaultsForMangledID:0];
-  v173 = [v25 stageInPackageDirectoryUmask];
+  stageInPackageDirectoryUmask = [v25 stageInPackageDirectoryUmask];
 
-  v175 = [v16 itemCount];
-  v26 = [MEMORY[0x277CCAA00] defaultManager];
+  itemCount = [packageCopy itemCount];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v193 = 0;
-  v27 = [v26 createDirectoryAtURL:v18 withIntermediateDirectories:1 attributes:0 error:&v193];
-  v28 = v193;
+  v27 = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v193];
+  br_errorFromErrno = v193;
 
-  v176 = v17;
+  v176 = xattrsPackageCopy;
   if (!v27)
   {
 LABEL_117:
     if (!*p_error)
     {
-      if (v28)
+      if (br_errorFromErrno)
       {
-        v117 = v28;
+        v117 = br_errorFromErrno;
       }
 
       else
@@ -377,36 +377,36 @@ LABEL_117:
       *p_error = v117;
     }
 
-    v119 = [v20 substringFromIndex:{objc_msgSend(@"documentContent/", "length")}];
+    v119 = [nameCopy substringFromIndex:{objc_msgSend(@"documentContent/", "length")}];
     [(BRCClientZone *)self->_clientZone mangledID];
-    v121 = v120 = v20;
-    v122 = [AppTelemetryTimeSeriesEvent newCorruptPackageDownloadEventWithZoneMangledID:v121 enhancedDrivePrivacyEnabled:[(BRCClientZone *)self->_clientZone enhancedDrivePrivacyEnabled] error:v28 itemIDString:v119];
+    v121 = v120 = nameCopy;
+    v122 = [AppTelemetryTimeSeriesEvent newCorruptPackageDownloadEventWithZoneMangledID:v121 enhancedDrivePrivacyEnabled:[(BRCClientZone *)self->_clientZone enhancedDrivePrivacyEnabled] error:br_errorFromErrno itemIDString:v119];
 
-    v123 = [(BRCClientZone *)self->_clientZone session];
-    [v123 analyticsReporter];
-    v125 = v124 = v16;
+    session = [(BRCClientZone *)self->_clientZone session];
+    [session analyticsReporter];
+    v125 = v124 = packageCopy;
     [v125 postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v122];
 
-    v16 = v124;
-    v20 = v120;
+    packageCopy = v124;
+    nameCopy = v120;
 
-    v17 = v176;
+    xattrsPackageCopy = v176;
     goto LABEL_123;
   }
 
-  v29 = [v18 fileSystemRepresentation];
-  v177 = BRCOpenAt(0xFFFFFFFFLL, v29, 33028, v30, v31, v32, v33, v34, v152);
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  v177 = BRCOpenAt(0xFFFFFFFFLL, fileSystemRepresentation, 33028, v30, v31, v32, v33, v34, v152);
   if ((v177 & 0x80000000) != 0)
   {
     v78 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:*__error()];
 
-    v28 = v78;
+    br_errorFromErrno = v78;
     goto LABEL_117;
   }
 
-  if (!v15)
+  if (!readerCopy)
   {
-    v79 = v20;
+    v79 = nameCopy;
     v80 = brc_bread_crumbs();
     v81 = brc_default_log();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_FAULT))
@@ -416,12 +416,12 @@ LABEL_117:
 
     v82 = MEMORY[0x277CCA9B8];
     v83 = *MEMORY[0x277CFACB0];
-    v84 = [v18 path];
-    v85 = [v82 br_errorWithDomain:v83 code:15 description:{@"unreachable: No reader to stage package at %s", objc_msgSend(v84, "UTF8String")}];
+    path = [lCopy path];
+    v85 = [v82 br_errorWithDomain:v83 code:15 description:{@"unreachable: No reader to stage package at %s", objc_msgSend(path, "UTF8String")}];
 
     close(v177);
-    v28 = v85;
-    v20 = v79;
+    br_errorFromErrno = v85;
+    nameCopy = v79;
     goto LABEL_117;
   }
 
@@ -429,9 +429,9 @@ LABEL_117:
   v192 = 0u;
   v189 = 0u;
   v190 = 0u;
-  v35 = v15;
+  v35 = readerCopy;
   v169 = [v35 countByEnumeratingWithState:&v189 objects:v199 count:16];
-  v162 = v20;
+  v162 = nameCopy;
   if (!v169)
   {
     v174 = 0;
@@ -440,10 +440,10 @@ LABEL_117:
 
   v174 = 0;
   v170 = *v190;
-  v157 = v16;
+  v157 = packageCopy;
   v158 = v35;
-  v171 = v15;
-  v156 = v18;
+  v171 = readerCopy;
+  v156 = lCopy;
   while (2)
   {
     for (i = 0; i != v169; ++i)
@@ -462,56 +462,56 @@ LABEL_117:
       v184 = 0;
       if ([v37 type] == 4)
       {
-        if (v174 >= v175)
+        if (v174 >= itemCount)
         {
           v161 = v38;
           v90 = brc_bread_crumbs();
           v91 = brc_default_log();
-          v15 = v171;
+          readerCopy = v171;
           if (os_log_type_enabled(v91, OS_LOG_TYPE_FAULT))
           {
             *buf = 134218754;
             v196 = v174;
             v197 = 2048;
-            *v198 = v175;
+            *v198 = itemCount;
             *&v198[8] = 2112;
-            *&v198[10] = v16;
+            *&v198[10] = packageCopy;
             *&v198[18] = 2112;
             *&v198[20] = v90;
             _os_log_fault_impl(&dword_223E7A000, v91, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Package has been corrupted on the serverAsking for asset index out of bounds %lu vs %lu in package: %@%@", buf, 0x2Au);
           }
 
-          v92 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Package has been corrupted on the serverAsking for asset index out of bounds %lu vs %lu in package: %@", v174, v175, v16}];
+          v92 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Package has been corrupted on the serverAsking for asset index out of bounds %lu vs %lu in package: %@", v174, itemCount, packageCopy}];
 
-          v18 = v156;
+          lCopy = v156;
           if ([(BRCClientZone *)self->_clientZone isPrivateZone])
           {
-            v45 = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
-            [(BRFieldPkgLocalItem *)v45 reportProblemWithType:9 recordName:v20];
-            v28 = v92;
+            asPrivateClientZone = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
+            [(BRFieldPkgLocalItem *)asPrivateClientZone reportProblemWithType:9 recordName:nameCopy];
+            br_errorFromErrno = v92;
             v35 = v158;
             v93 = v161;
             goto LABEL_115;
           }
 
-          v28 = v92;
+          br_errorFromErrno = v92;
           v35 = v158;
           v93 = v161;
           goto LABEL_116;
         }
 
         ++v174;
-        v15 = v171;
+        readerCopy = v171;
         goto LABEL_60;
       }
 
-      v163 = v28;
+      v163 = br_errorFromErrno;
       v39 = v35;
       v40 = objc_alloc_init(BRFieldPkgLocalItem);
-      v41 = [v37 path];
-      v42 = [v41 fileSystemRepresentation];
-      v168 = v41;
-      if (!v41)
+      path2 = [v37 path];
+      fileSystemRepresentation2 = [path2 fileSystemRepresentation];
+      v168 = path2;
+      if (!path2)
       {
         v167 = v40;
         v52 = v38;
@@ -524,15 +524,15 @@ LABEL_117:
 
 LABEL_111:
 
-        v15 = v171;
-        v18 = v156;
-        v20 = v162;
-        v28 = v163;
+        readerCopy = v171;
+        lCopy = v156;
+        nameCopy = v162;
+        br_errorFromErrno = v163;
         goto LABEL_112;
       }
 
-      v43 = v42;
-      if (!getattrlistat(v177, v42, &v187, &v184, 0x18uLL, 0x21uLL))
+      v43 = fileSystemRepresentation2;
+      if (!getattrlistat(v177, fileSystemRepresentation2, &v187, &v184, 0x18uLL, 0x21uLL))
       {
         v96 = v38;
         v97 = brc_bread_crumbs();
@@ -550,28 +550,28 @@ LABEL_111:
         }
 
         objc_autoreleasePoolPop(v96);
-        v15 = v171;
-        v17 = v176;
-        v18 = v156;
+        readerCopy = v171;
+        xattrsPackageCopy = v176;
+        lCopy = v156;
         v35 = v158;
-        v28 = v163;
+        br_errorFromErrno = v163;
         goto LABEL_69;
       }
 
-      v44 = [v37 type];
-      if (v44 != 3)
+      type = [v37 type];
+      if (type != 3)
       {
-        if (v44 != 2)
+        if (type != 2)
         {
-          if (v44 == 1)
+          if (type == 1)
           {
             v35 = v39;
-            v45 = v40;
-            if (mkdirat(v177, v43, ~v173 & 0x1FF) && *__error() != 17)
+            asPrivateClientZone = v40;
+            if (mkdirat(v177, v43, ~stageInPackageDirectoryUmask & 0x1FF) && *__error() != 17)
             {
               v167 = v40;
               v52 = v38;
-              v28 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+              br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
 
               v133 = brc_bread_crumbs();
               v134 = brc_default_log();
@@ -607,33 +607,33 @@ LABEL_111:
         }
 
         v159 = v38;
-        if (v174 >= v175)
+        if (v174 >= itemCount)
         {
           v128 = brc_bread_crumbs();
           v129 = brc_default_log();
-          v20 = v162;
-          v45 = v40;
+          nameCopy = v162;
+          asPrivateClientZone = v40;
           if (os_log_type_enabled(v129, OS_LOG_TYPE_FAULT))
           {
             *buf = 134218754;
             v196 = v174;
             v197 = 2048;
-            *v198 = v175;
+            *v198 = itemCount;
             *&v198[8] = 2112;
-            *&v198[10] = v16;
+            *&v198[10] = packageCopy;
             *&v198[18] = 2112;
             *&v198[20] = v128;
             _os_log_fault_impl(&dword_223E7A000, v129, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: Package has been corrupted in the cloudAsking for asset index out of bounds %lu vs %lu in package: %@%@", buf, 0x2Au);
           }
 
-          v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Package has been corrupted in the cloudAsking for asset index out of bounds %lu vs %lu in package: %@", v174, v175, v16}];
+          br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Package has been corrupted in the cloudAsking for asset index out of bounds %lu vs %lu in package: %@", v174, itemCount, packageCopy}];
 
-          v15 = v171;
-          v18 = v156;
+          readerCopy = v171;
+          lCopy = v156;
           if ([(BRCClientZone *)self->_clientZone isPrivateZone])
           {
-            v130 = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
-            [v130 reportProblemWithType:9 recordName:v162];
+            asPrivateClientZone2 = [(BRCClientZone *)self->_clientZone asPrivateClientZone];
+            [asPrivateClientZone2 reportProblemWithType:9 recordName:v162];
           }
 
           goto LABEL_150;
@@ -641,17 +641,17 @@ LABEL_111:
 
         v35 = v39;
         v183 = v163;
-        v46 = [v16 itemAtIndex:? error:?];
+        v46 = [packageCopy itemAtIndex:? error:?];
         v166 = v183;
 
-        v45 = v40;
+        asPrivateClientZone = v40;
         if (!v46)
         {
-          v28 = v166;
-          v15 = v171;
-          v18 = v156;
+          br_errorFromErrno = v166;
+          readerCopy = v171;
+          lCopy = v156;
           v93 = v159;
-          v20 = v162;
+          nameCopy = v162;
           if (v166)
           {
             goto LABEL_114;
@@ -664,22 +664,22 @@ LABEL_111:
             [BRCPackageManifestWriter stagePackageWithReader:package:xattrsPackage:stageItemURL:existingContentsURL:recordName:isDocumentModifiedByOtherUser:];
           }
 
-          v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't find item at index %ld", v174}];
+          br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't find item at index %ld", v174}];
 LABEL_150:
           v35 = v158;
           v93 = v159;
           goto LABEL_114;
         }
 
-        v47 = [v46 fileURL];
-        v48 = [v47 path];
+        fileURL = [v46 fileURL];
+        path3 = [fileURL path];
 
-        if (v48)
+        if (path3)
         {
-          v164 = v48;
-          if (!BRCRenameAt(-1, v48, v177, v168, 0))
+          v164 = path3;
+          if (!BRCRenameAt(-1, path3, v177, v168, 0))
           {
-            v49 = v16;
+            v49 = packageCopy;
             v50 = brc_bread_crumbs();
             v51 = brc_default_log();
             if (os_log_type_enabled(v51, OS_LOG_TYPE_DEBUG))
@@ -696,13 +696,13 @@ LABEL_150:
               _os_log_debug_impl(&dword_223E7A000, v51, OS_LOG_TYPE_DEBUG, "[DEBUG] staged from %@ to %@ in %@%@", buf, 0x2Au);
             }
 
-            [(BRCPackageManifestWriter *)self _applyFileMetadataWithManifestItem:v37 isDocumentModifiedByOtherUser:a9 packageRootFD:v177];
-            v16 = v49;
-            v48 = v164;
+            [(BRCPackageManifestWriter *)self _applyFileMetadataWithManifestItem:v37 isDocumentModifiedByOtherUser:user packageRootFD:v177];
+            packageCopy = v49;
+            path3 = v164;
             goto LABEL_40;
           }
 
-          v135 = v45;
+          v135 = asPrivateClientZone;
           v136 = *__error();
           v137 = brc_bread_crumbs();
           v138 = brc_default_log();
@@ -724,10 +724,10 @@ LABEL_150:
           *__error() = v136;
           [MEMORY[0x277CCA9B8] br_errorFromErrno];
           v166 = v139 = v166;
-          v15 = v171;
-          v18 = v156;
-          v45 = v135;
-          v48 = v164;
+          readerCopy = v171;
+          lCopy = v156;
+          asPrivateClientZone = v135;
+          path3 = v164;
         }
 
         else
@@ -738,17 +738,17 @@ LABEL_150:
             {
 LABEL_40:
               ++v174;
-              v55 = [v46 signature];
-              [v37 setSignature:v55];
+              signature = [v46 signature];
+              [v37 setSignature:signature];
 
-              v28 = v166;
+              br_errorFromErrno = v166;
               v35 = v158;
               v38 = v159;
               goto LABEL_41;
             }
 
-            v15 = v171;
-            v18 = v156;
+            readerCopy = v171;
+            lCopy = v156;
             goto LABEL_149;
           }
 
@@ -759,41 +759,41 @@ LABEL_40:
             [BRCPackageManifestWriter stagePackageWithReader:package:xattrsPackage:stageItemURL:existingContentsURL:recordName:isDocumentModifiedByOtherUser:];
           }
 
-          v15 = v171;
-          v18 = v156;
+          readerCopy = v171;
+          lCopy = v156;
         }
 
 LABEL_149:
-        v20 = v162;
+        nameCopy = v162;
 
-        v28 = v166;
+        br_errorFromErrno = v166;
         goto LABEL_150;
       }
 
       v167 = v40;
       v52 = v38;
-      v53 = [v37 symlinkContent];
-      v54 = symlinkat([v53 fileSystemRepresentation], v177, v43);
+      symlinkContent = [v37 symlinkContent];
+      v54 = symlinkat([symlinkContent fileSystemRepresentation], v177, v43);
 
       if (v54 < 0)
       {
-        v28 = v163;
+        br_errorFromErrno = v163;
         if (*__error() == 17)
         {
           v38 = v52;
           v35 = v158;
-          v45 = v167;
+          asPrivateClientZone = v167;
           goto LABEL_41;
         }
 
-        v140 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+        br_errorFromErrno2 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
 
         v141 = brc_bread_crumbs();
         v142 = brc_default_log();
         if (os_log_type_enabled(v142, 0x90u))
         {
           [v37 symlinkContent];
-          v150 = v149 = v16;
+          v150 = v149 = packageCopy;
           v151 = self->_stageID;
           *buf = 138413058;
           v196 = v168;
@@ -805,14 +805,14 @@ LABEL_149:
           *&v198[20] = v141;
           _os_log_error_impl(&dword_223E7A000, v142, 0x90u, "[ERROR] Failed to create symlink %@ -> %@ for package %@%@", buf, 0x2Au);
 
-          v16 = v149;
+          packageCopy = v149;
         }
 
-        v28 = v140;
+        br_errorFromErrno = br_errorFromErrno2;
 LABEL_143:
-        v15 = v171;
-        v18 = v156;
-        v20 = v162;
+        readerCopy = v171;
+        lCopy = v156;
+        nameCopy = v162;
 LABEL_112:
         v35 = v158;
         v93 = v52;
@@ -821,27 +821,27 @@ LABEL_112:
 
       v35 = v158;
       v38 = v52;
-      v45 = v40;
+      asPrivateClientZone = v40;
 LABEL_35:
-      v28 = v163;
+      br_errorFromErrno = v163;
 LABEL_41:
       if ([v37 hasXattrIndex])
       {
-        v167 = v45;
+        v167 = asPrivateClientZone;
         v160 = v38;
         if ([v37 xattrIndex] < 0 || (v56 = objc_msgSend(v37, "xattrIndex"), v56 >= objc_msgSend(v176, "itemCount")))
         {
           v99 = brc_bread_crumbs();
           v100 = brc_default_log();
-          v18 = v156;
+          lCopy = v156;
           if (os_log_type_enabled(v100, OS_LOG_TYPE_FAULT))
           {
-            v145 = [v37 xattrIndex];
-            v146 = [v176 itemCount];
+            xattrIndex = [v37 xattrIndex];
+            itemCount2 = [v176 itemCount];
             *buf = 134218498;
-            v196 = v145;
+            v196 = xattrIndex;
             v197 = 2048;
-            *v198 = v146;
+            *v198 = itemCount2;
             *&v198[8] = 2112;
             *&v198[10] = v99;
             _os_log_fault_impl(&dword_223E7A000, v100, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: xattr index is out of bounds %ld of total %ld%@", buf, 0x20u);
@@ -849,23 +849,23 @@ LABEL_41:
 
           v101 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: xattr index is out of bounds %ld of total %ld", objc_msgSend(v37, "xattrIndex"), objc_msgSend(v176, "itemCount")}];
 
-          v28 = v101;
-          v15 = v171;
+          br_errorFromErrno = v101;
+          readerCopy = v171;
           goto LABEL_88;
         }
 
-        v57 = [v37 xattrIndex];
-        v182 = v28;
-        v58 = [v176 itemAtIndex:v57 error:&v182];
+        xattrIndex2 = [v37 xattrIndex];
+        v182 = br_errorFromErrno;
+        v58 = [v176 itemAtIndex:xattrIndex2 error:&v182];
         v59 = v182;
 
         if (v59)
         {
 
-          v28 = v59;
-          v15 = v171;
-          v18 = v156;
-          v20 = v162;
+          br_errorFromErrno = v59;
+          readerCopy = v171;
+          lCopy = v156;
+          nameCopy = v162;
           goto LABEL_105;
         }
 
@@ -873,48 +873,48 @@ LABEL_41:
         {
           v108 = brc_bread_crumbs();
           v109 = brc_default_log();
-          v18 = v156;
-          v20 = v162;
+          lCopy = v156;
+          nameCopy = v162;
           if (os_log_type_enabled(v109, OS_LOG_TYPE_FAULT))
           {
             [BRCPackageManifestWriter stagePackageWithReader:package:xattrsPackage:stageItemURL:existingContentsURL:recordName:isDocumentModifiedByOtherUser:];
           }
 
-          v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't find xattr at index %ld", objc_msgSend(v37, "xattrIndex")}];
-          v15 = v171;
+          br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:15 description:{@"unreachable: Can't find xattr at index %ld", objc_msgSend(v37, "xattrIndex")}];
+          readerCopy = v171;
           goto LABEL_104;
         }
 
         v60 = MEMORY[0x277CBEA90];
-        v61 = [v58 fileURL];
+        fileURL2 = [v58 fileURL];
         v181 = 0;
-        v62 = [v60 dataWithContentsOfURL:v61 options:0 error:&v181];
-        v28 = v181;
+        v62 = [v60 dataWithContentsOfURL:fileURL2 options:0 error:&v181];
+        br_errorFromErrno = v181;
 
-        v63 = [v58 fileURL];
+        fileURL3 = [v58 fileURL];
 
-        if (v63)
+        if (fileURL3)
         {
-          v69 = [MEMORY[0x277CCAA00] defaultManager];
-          v70 = [v58 fileURL];
-          [v69 removeItemAtURL:v70 error:0];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          fileURL4 = [v58 fileURL];
+          [defaultManager2 removeItemAtURL:fileURL4 error:0];
         }
 
         v165 = v58;
-        if (!v62 || v28)
+        if (!v62 || br_errorFromErrno)
         {
           v110 = v62;
-          if (!v28)
+          if (!br_errorFromErrno)
           {
-            v28 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:15 description:@"Can't load xattr"];
+            br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFABD0] code:15 description:@"Can't load xattr"];
           }
 
           v111 = brc_bread_crumbs();
           v112 = brc_default_log();
-          v15 = v171;
-          v18 = v156;
-          v16 = v157;
-          v20 = v162;
+          readerCopy = v171;
+          lCopy = v156;
+          packageCopy = v157;
+          nameCopy = v162;
           if (os_log_type_enabled(v112, 0x90u))
           {
             [BRCPackageManifestWriter stagePackageWithReader:package:xattrsPackage:stageItemURL:existingContentsURL:recordName:isDocumentModifiedByOtherUser:];
@@ -926,7 +926,7 @@ LABEL_104:
 LABEL_105:
           v93 = v160;
 LABEL_113:
-          v45 = v167;
+          asPrivateClientZone = v167;
 LABEL_114:
 
           goto LABEL_115;
@@ -936,11 +936,11 @@ LABEL_114:
         if ((v71 & 0x80000000) != 0)
         {
           v110 = v62;
-          v28 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-          v15 = v171;
-          v18 = v156;
-          v16 = v157;
-          v20 = v162;
+          br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+          readerCopy = v171;
+          lCopy = v156;
+          packageCopy = v157;
+          nameCopy = v162;
           goto LABEL_103;
         }
 
@@ -948,7 +948,7 @@ LABEL_114:
         v73 = [[BRFieldXattrBlob alloc] initWithData:v62];
         v180 = 0;
         v74 = [(BRFieldXattrBlob *)v73 applyToFileDescriptor:v72 error:&v180];
-        v28 = v180;
+        br_errorFromErrno = v180;
         if (!v74)
         {
           v115 = brc_bread_crumbs();
@@ -956,20 +956,20 @@ LABEL_114:
           if (os_log_type_enabled(v116, 0x90u))
           {
             *buf = 138412546;
-            v196 = v28;
+            v196 = br_errorFromErrno;
             v197 = 2112;
             *v198 = v115;
             _os_log_error_impl(&dword_223E7A000, v116, 0x90u, "[ERROR] Failed to apply xattrs to file descriptor: %@%@", buf, 0x16u);
           }
 
           close(v72);
-          v15 = v171;
-          v18 = v156;
-          v16 = v157;
+          readerCopy = v171;
+          lCopy = v156;
+          packageCopy = v157;
           v93 = v160;
-          v20 = v162;
+          nameCopy = v162;
           v35 = v158;
-          v45 = v167;
+          asPrivateClientZone = v167;
 LABEL_115:
 
 LABEL_116:
@@ -985,33 +985,33 @@ LABEL_116:
         v76 = brc_default_log();
         if (os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG))
         {
-          v155 = [(BRFieldXattrBlob *)v73 shortDescription];
-          v154 = [v37 path];
+          shortDescription = [(BRFieldXattrBlob *)v73 shortDescription];
+          path4 = [v37 path];
           *buf = 138412802;
-          v196 = v155;
+          v196 = shortDescription;
           v197 = 2112;
-          *v198 = v154;
+          *v198 = path4;
           *&v198[8] = 2112;
           *&v198[10] = v75;
           _os_log_debug_impl(&dword_223E7A000, v76, OS_LOG_TYPE_DEBUG, "[DEBUG] Successfully applied xattrs %@ to package item %@%@", buf, 0x20u);
         }
 
-        v16 = v157;
+        packageCopy = v157;
         v35 = v158;
         v38 = v160;
-        v45 = v167;
+        asPrivateClientZone = v167;
       }
 
       if (getattrlistat(v177, v43, &v187, &v184, 0x18uLL, 0x21uLL))
       {
-        v167 = v45;
+        v167 = asPrivateClientZone;
         v160 = v38;
-        v102 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+        br_errorFromErrno3 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
 
         v103 = *__error();
         v104 = brc_bread_crumbs();
         v105 = brc_default_log();
-        v15 = v171;
+        readerCopy = v171;
         if (os_log_type_enabled(v105, 0x90u))
         {
           v147 = self->_stageID;
@@ -1027,26 +1027,26 @@ LABEL_116:
         }
 
         *__error() = v103;
-        v28 = v102;
-        v18 = v156;
+        br_errorFromErrno = br_errorFromErrno3;
+        lCopy = v156;
 LABEL_88:
-        v20 = v162;
+        nameCopy = v162;
         goto LABEL_104;
       }
 
-      [(BRFieldPkgLocalItem *)v45 setItem:v37];
-      [(BRFieldPkgLocalItem *)v45 setFileID:v185];
+      [(BRFieldPkgLocalItem *)asPrivateClientZone setItem:v37];
+      [(BRFieldPkgLocalItem *)asPrivateClientZone setFileID:v185];
       if ([v37 type] == 2)
       {
-        [(BRFieldPkgLocalItem *)v45 setGenerationID:HIDWORD(v184)];
-        [(BRFieldPkgLocalItem *)v45 setSize:v186];
+        [(BRFieldPkgLocalItem *)asPrivateClientZone setGenerationID:HIDWORD(v184)];
+        [(BRFieldPkgLocalItem *)asPrivateClientZone setSize:v186];
       }
 
-      v15 = v171;
-      v20 = v162;
-      if (![(BRCPackageManifestWriter *)self addLocalItem:v45])
+      readerCopy = v171;
+      nameCopy = v162;
+      if (![(BRCPackageManifestWriter *)self addLocalItem:asPrivateClientZone])
       {
-        v167 = v45;
+        v167 = asPrivateClientZone;
         v52 = v38;
         v106 = brc_bread_crumbs();
         v107 = brc_default_log();
@@ -1055,7 +1055,7 @@ LABEL_88:
           [BRCPackageManifestWriter stagePackageWithReader:? package:? xattrsPackage:? stageItemURL:? existingContentsURL:? recordName:? isDocumentModifiedByOtherUser:?];
         }
 
-        v18 = v156;
+        lCopy = v156;
         goto LABEL_112;
       }
 
@@ -1063,8 +1063,8 @@ LABEL_60:
       objc_autoreleasePoolPop(v38);
     }
 
-    v17 = v176;
-    v18 = v156;
+    xattrsPackageCopy = v176;
+    lCopy = v156;
     v169 = [v35 countByEnumeratingWithState:&v189 objects:v199 count:16];
     if (v169)
     {
@@ -1076,8 +1076,8 @@ LABEL_60:
 
 LABEL_69:
 
-  v179 = v28;
-  [(BRCPackageManifestWriter *)self _cloneExcludedFromSyncItemsFromExistingContentsURL:v178 toStageItemURL:v18 error:&v179];
+  v179 = br_errorFromErrno;
+  [(BRCPackageManifestWriter *)self _cloneExcludedFromSyncItemsFromExistingContentsURL:v178 toStageItemURL:lCopy error:&v179];
   v86 = v179;
 
   brc_bread_crumbs();
@@ -1085,40 +1085,40 @@ LABEL_69:
   v89 = brc_default_log();
   if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
   {
-    [v18 path];
-    v114 = v113 = v16;
+    [lCopy path];
+    v114 = v113 = packageCopy;
     *buf = 138413058;
     v196 = v114;
     v197 = 2048;
-    *v198 = v175;
+    *v198 = itemCount;
     *&v198[8] = 2048;
     *&v198[10] = v174;
     *&v198[18] = 2112;
     *&v198[20] = v88;
     _os_log_debug_impl(&dword_223E7A000, v89, OS_LOG_TYPE_DEBUG, "[DEBUG] Finished staging package for %@. Item count:%lu.  Asset index:%lu%@", buf, 0x2Au);
 
-    v16 = v113;
-    v17 = v176;
+    packageCopy = v113;
+    xattrsPackageCopy = v176;
   }
 
-  v28 = [v87 error];
+  br_errorFromErrno = [v87 error];
 
   close(v177);
-  v20 = v162;
-  if (v28)
+  nameCopy = v162;
+  if (br_errorFromErrno)
   {
     goto LABEL_117;
   }
 
 LABEL_123:
-  v22 = [(BRCPackageManifestWriter *)self done];
+  done = [(BRCPackageManifestWriter *)self done];
 LABEL_124:
 
-  v19 = v178;
+  rLCopy = v178;
 LABEL_125:
 
   v126 = *MEMORY[0x277D85DE8];
-  return v22;
+  return done;
 }
 
 - (void)addItem:.cold.1()

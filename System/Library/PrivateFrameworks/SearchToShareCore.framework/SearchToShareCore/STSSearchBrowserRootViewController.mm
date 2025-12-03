@@ -1,53 +1,53 @@
 @interface STSSearchBrowserRootViewController
 - (BOOL)isPickerVisible;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (STSPickerSelectionDelegate)pickerSelectionDelegate;
 - (STSSearchBrowserHeaderView)searchHeaderView;
-- (STSSearchBrowserRootViewController)initWithSearchModel:(id)a3;
+- (STSSearchBrowserRootViewController)initWithSearchModel:(id)model;
 - (STSSearchBrowserRootViewControllerDelegate)selectionDelegate;
-- (void)_addQueryToRecents:(id)a3;
+- (void)_addQueryToRecents:(id)recents;
 - (void)_clearRecents;
 - (void)_clearSuggestions;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_keyboardWillShow:(id)show;
 - (void)_showLegalNotice;
-- (void)_transitionContentFromViewController:(id)a3 toViewController:(id)a4 completion:(id)a5;
+- (void)_transitionContentFromViewController:(id)controller toViewController:(id)viewController completion:(id)completion;
 - (void)_updateContentInsets;
-- (void)categoryViewController:(id)a3 didSelectCategory:(id)a4 suggested:(BOOL)a5;
-- (void)categoryViewController:(id)a3 didSelectRecent:(id)a4;
-- (void)categoryViewControllerDidSelectClearRecentsButton:(id)a3;
-- (void)categoryViewControllerScrollViewWillBeginDragging:(id)a3;
+- (void)categoryViewController:(id)controller didSelectCategory:(id)category suggested:(BOOL)suggested;
+- (void)categoryViewController:(id)controller didSelectRecent:(id)recent;
+- (void)categoryViewControllerDidSelectClearRecentsButton:(id)button;
+- (void)categoryViewControllerScrollViewWillBeginDragging:(id)dragging;
 - (void)dealloc;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)loadView;
 - (void)resetContentOffset;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
 - (void)sendVisibleResultsFeedback;
-- (void)setBottomInset:(double)a3;
-- (void)setPickerSelectionDelegate:(id)a3;
-- (void)setTopInset:(double)a3;
+- (void)setBottomInset:(double)inset;
+- (void)setPickerSelectionDelegate:(id)delegate;
+- (void)setTopInset:(double)inset;
 - (void)showCategories;
-- (void)showPickerAndPerformQuery:(id)a3 requestType:(int64_t)a4;
+- (void)showPickerAndPerformQuery:(id)query requestType:(int64_t)type;
 - (void)showSuggestions;
-- (void)suggestionViewController:(id)a3 didSelectSuggestionAtIndex:(unint64_t)a4;
-- (void)suggestionViewControllerDidTapLogo:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)suggestionViewController:(id)controller didSelectSuggestionAtIndex:(unint64_t)index;
+- (void)suggestionViewControllerDidTapLogo:(id)logo;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STSSearchBrowserRootViewController
 
-- (STSSearchBrowserRootViewController)initWithSearchModel:(id)a3
+- (STSSearchBrowserRootViewController)initWithSearchModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v23.receiver = self;
   v23.super_class = STSSearchBrowserRootViewController;
   v6 = [(STSSearchBrowserRootViewController *)&v23 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchModel, a3);
+    objc_storeStrong(&v6->_searchModel, model);
     v8 = objc_alloc_init(STSSuggestionViewController);
     suggestionViewController = v7->_suggestionViewController;
     v7->_suggestionViewController = v8;
@@ -67,14 +67,14 @@
 
     [(STSCategoryViewController *)v7->_categoryViewController setSelectionDelegate:v7];
     [(STSCategoryViewController *)v7->_categoryViewController setSearchModel:v7->_searchModel];
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
 
-    v16 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v17 = [v16 objectForKey:@"STSRecentQueries"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v17 = [standardUserDefaults objectForKey:@"STSRecentQueries"];
     v18 = [v17 mutableCopy];
     recentQueries = v7->_recentQueries;
     v7->_recentQueries = v18;
@@ -95,8 +95,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = STSSearchBrowserRootViewController;
@@ -108,46 +108,46 @@
   v5 = objc_alloc_init(STSSearchBrowserRootView);
   v3 = objc_alloc_init(STSSearchBrowserHeaderView);
   [(STSSearchBrowserHeaderView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(STSSearchBrowserHeaderView *)v3 searchBar];
-  [v4 setDelegate:self];
+  searchBar = [(STSSearchBrowserHeaderView *)v3 searchBar];
+  [searchBar setDelegate:self];
 
   [(STSSearchBrowserRootView *)v5 setHeaderView:v3];
   [(STSSearchBrowserRootViewController *)self setView:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(STSSearchBrowserRootViewController *)self _updateContentInsets];
   v28.receiver = self;
   v28.super_class = STSSearchBrowserRootViewController;
-  [(STSSearchBrowserRootViewController *)&v28 viewWillAppear:v3];
-  v5 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v6 = [v5 searchBar];
-  v7 = [v6 text];
-  v8 = [v7 length];
+  [(STSSearchBrowserRootViewController *)&v28 viewWillAppear:appearCopy];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  text = [searchBar text];
+  v8 = [text length];
 
   if (v8 && (-[STSSearchBrowserRootViewController searchHeaderView](self, "searchHeaderView"), v9 = objc_claimAutoreleasedReturnValue(), [v9 searchBar], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "text"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "length"), v11, v10, v9, v12))
   {
-    v13 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v14 = [v13 searchBar];
-    v15 = [v14 searchTextField];
-    v16 = [v15 endOfDocument];
+    searchHeaderView2 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar2 = [searchHeaderView2 searchBar];
+    searchTextField = [searchBar2 searchTextField];
+    endOfDocument = [searchTextField endOfDocument];
 
-    v17 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v18 = [v17 searchBar];
-    v19 = [v18 searchTextField];
-    v20 = [v19 endOfDocument];
+    searchHeaderView3 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar3 = [searchHeaderView3 searchBar];
+    searchTextField2 = [searchBar3 searchTextField];
+    endOfDocument2 = [searchTextField2 endOfDocument];
 
-    v21 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v22 = [v21 searchBar];
-    v23 = [v22 searchTextField];
-    v24 = [v23 textRangeFromPosition:v16 toPosition:v20];
+    searchHeaderView4 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar4 = [searchHeaderView4 searchBar];
+    searchTextField3 = [searchBar4 searchTextField];
+    v24 = [searchTextField3 textRangeFromPosition:endOfDocument toPosition:endOfDocument2];
 
-    v25 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v26 = [v25 searchBar];
-    v27 = [v26 searchTextField];
-    [v27 setSelectedTextRange:v24];
+    searchHeaderView5 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar5 = [searchHeaderView5 searchBar];
+    searchTextField4 = [searchBar5 searchTextField];
+    [searchTextField4 setSelectedTextRange:v24];
   }
 
   else
@@ -156,29 +156,29 @@
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v3.receiver = self;
   v3.super_class = STSSearchBrowserRootViewController;
-  [(STSSearchBrowserRootViewController *)&v3 didMoveToParentViewController:a3];
+  [(STSSearchBrowserRootViewController *)&v3 didMoveToParentViewController:controller];
 }
 
-- (void)suggestionViewController:(id)a3 didSelectSuggestionAtIndex:(unint64_t)a4
+- (void)suggestionViewController:(id)controller didSelectSuggestionAtIndex:(unint64_t)index
 {
-  v6 = [(STSPicker *)self->_pickerViewController querySuggestions];
-  v14 = [v6 objectAtIndex:a4];
+  querySuggestions = [(STSPicker *)self->_pickerViewController querySuggestions];
+  v14 = [querySuggestions objectAtIndex:index];
 
-  v7 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v8 = [v7 searchBar];
-  v9 = [v14 suggestion];
-  [v8 setText:v9];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  suggestion = [v14 suggestion];
+  [searchBar setText:suggestion];
 
-  v10 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v11 = [v10 searchBar];
-  [v11 resignFirstResponder];
+  searchHeaderView2 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar2 = [searchHeaderView2 searchBar];
+  [searchBar2 resignFirstResponder];
 
-  v12 = [v14 suggestion];
-  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:v12 requestType:2];
+  suggestion2 = [v14 suggestion];
+  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:suggestion2 requestType:2];
 
   v13 = +[STSFeedbackReporter sharedInstance];
   [v13 didSearchWithSuggestedQuery:v14];
@@ -186,14 +186,14 @@
   [(STSSearchBrowserRootViewController *)self _clearSuggestions];
 }
 
-- (void)suggestionViewControllerDidTapLogo:(id)a3
+- (void)suggestionViewControllerDidTapLogo:(id)logo
 {
-  v4 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v5 = [v4 searchBar];
-  v13 = [v5 text];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  text = [searchBar text];
 
-  v6 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v7 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v7 = [text stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
 
   v8 = MEMORY[0x277CBEBC0];
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://www.bing.com/images/search?q=%@", v7];
@@ -202,23 +202,23 @@
   v11 = +[STSFeedbackReporter sharedInstance];
   [v11 didEngageProviderLogo];
 
-  v12 = [(STSSearchBrowserRootViewController *)self extensionContext];
-  [v12 openURL:v10 completionHandler:0];
+  extensionContext = [(STSSearchBrowserRootViewController *)self extensionContext];
+  [extensionContext openURL:v10 completionHandler:0];
 }
 
-- (void)categoryViewController:(id)a3 didSelectCategory:(id)a4 suggested:(BOOL)a5
+- (void)categoryViewController:(id)controller didSelectCategory:(id)category suggested:(BOOL)suggested
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v9 = [v8 searchBar];
-  [v9 setText:v7];
+  suggestedCopy = suggested;
+  categoryCopy = category;
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  [searchBar setText:categoryCopy];
 
-  v10 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v11 = [v10 searchBar];
-  [v11 resignFirstResponder];
+  searchHeaderView2 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar2 = [searchHeaderView2 searchBar];
+  [searchBar2 resignFirstResponder];
 
-  if (v5)
+  if (suggestedCopy)
   {
     v12 = 3;
   }
@@ -228,45 +228,45 @@
     v12 = 5;
   }
 
-  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:v7 requestType:v12];
+  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:categoryCopy requestType:v12];
 
   [(STSSearchBrowserRootViewController *)self _clearSuggestions];
 }
 
-- (void)categoryViewController:(id)a3 didSelectRecent:(id)a4
+- (void)categoryViewController:(id)controller didSelectRecent:(id)recent
 {
-  v5 = a4;
-  v6 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v7 = [v6 searchBar];
-  [v7 setText:v5];
+  recentCopy = recent;
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  [searchBar setText:recentCopy];
 
-  v8 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v9 = [v8 searchBar];
-  [v9 resignFirstResponder];
+  searchHeaderView2 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar2 = [searchHeaderView2 searchBar];
+  [searchBar2 resignFirstResponder];
 
-  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:v5 requestType:6];
+  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:recentCopy requestType:6];
 
   [(STSSearchBrowserRootViewController *)self _clearSuggestions];
 }
 
-- (void)categoryViewControllerDidSelectClearRecentsButton:(id)a3
+- (void)categoryViewControllerDidSelectClearRecentsButton:(id)button
 {
   [(STSSearchBrowserRootViewController *)self _clearRecents];
   v3 = +[STSFeedbackReporter sharedInstance];
   [v3 didClearRecents];
 }
 
-- (void)categoryViewControllerScrollViewWillBeginDragging:(id)a3
+- (void)categoryViewControllerScrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v3 = [v4 searchBar];
-  [v3 resignFirstResponder];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  [searchBar resignFirstResponder];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   [(STSCategoryViewController *)self->_categoryViewController sendVisibleResultsFeedback];
-  v4 = [(STSSearchBrowserRootViewController *)self selectionDelegate];
+  selectionDelegate = [(STSSearchBrowserRootViewController *)self selectionDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -274,17 +274,17 @@
     return 1;
   }
 
-  v6 = [(STSSearchBrowserRootViewController *)self selectionDelegate];
-  v7 = [v6 searchBrowserRootViewControllerSearchBarShouldBeginEditing:self];
+  selectionDelegate2 = [(STSSearchBrowserRootViewController *)self selectionDelegate];
+  v7 = [selectionDelegate2 searchBrowserRootViewControllerSearchBarShouldBeginEditing:self];
 
   return v7;
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v11 = a3;
-  v4 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-  [v4 cancelImageDownloads];
+  editingCopy = editing;
+  pickerViewController = [(STSSearchBrowserRootViewController *)self pickerViewController];
+  [pickerViewController cancelImageDownloads];
 
   currentChildViewController = self->_currentChildViewController;
   WeakRetained = objc_loadWeakRetained(&self->_legalNoticeViewController);
@@ -292,14 +292,14 @@
 
   if ((currentChildViewController & 1) == 0)
   {
-    v7 = [v11 text];
-    v8 = [v7 length];
+    text = [editingCopy text];
+    v8 = [text length];
 
     if (v8)
     {
-      v9 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-      v10 = [v11 text];
-      [v9 performSearchWithQueryString:v10 requestType:0];
+      pickerViewController2 = [(STSSearchBrowserRootViewController *)self pickerViewController];
+      text2 = [editingCopy text];
+      [pickerViewController2 performSearchWithQueryString:text2 requestType:0];
 
       [(STSSearchBrowserRootViewController *)self showSuggestions];
     }
@@ -311,54 +311,54 @@
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-  [v4 cancelImageDownloads];
+  pickerViewController = [(STSSearchBrowserRootViewController *)self pickerViewController];
+  [pickerViewController cancelImageDownloads];
 
-  v5 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-  [v5 resetContent];
+  pickerViewController2 = [(STSSearchBrowserRootViewController *)self pickerViewController];
+  [pickerViewController2 resetContent];
 
-  v6 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v7 = [v6 searchBar];
-  [v7 setText:0];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  [searchBar setText:0];
 
   [(STSSearchBrowserRootViewController *)self _clearSuggestions];
-  v8 = [(STSSearchBrowserRootViewController *)self selectionDelegate];
-  [v8 searchBrowserRootViewControllerDidSelectCancel:self];
+  selectionDelegate = [(STSSearchBrowserRootViewController *)self selectionDelegate];
+  [selectionDelegate searchBrowserRootViewControllerDidSelectCancel:self];
 
   v9 = +[STSFeedbackReporter sharedInstance];
   [v9 searchBarDidCancel];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-  [v5 resetContent];
+  clickedCopy = clicked;
+  pickerViewController = [(STSSearchBrowserRootViewController *)self pickerViewController];
+  [pickerViewController resetContent];
 
-  [v4 resignFirstResponder];
-  v7 = [v4 text];
+  [clickedCopy resignFirstResponder];
+  text = [clickedCopy text];
 
-  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:v7 requestType:8];
+  [(STSSearchBrowserRootViewController *)self showPickerAndPerformQuery:text requestType:8];
   v6 = +[STSFeedbackReporter sharedInstance];
-  [v6 didSearchWithCustomQuery:v7];
+  [v6 didSearchWithCustomQuery:text];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v6 length] <= 0xC7)
+  barCopy = bar;
+  changeCopy = change;
+  if ([changeCopy length] <= 0xC7)
   {
-    v7 = [v12 searchTextField];
-    v8 = [v7 text];
-    v9 = [v8 length];
+    searchTextField = [barCopy searchTextField];
+    text = [searchTextField text];
+    v9 = [text length];
 
     if (v9)
     {
-      v10 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-      [v10 performSearchWithQueryString:v6 requestType:0];
+      pickerViewController = [(STSSearchBrowserRootViewController *)self pickerViewController];
+      [pickerViewController performSearchWithQueryString:changeCopy requestType:0];
 
       [(STSSearchBrowserRootViewController *)self showSuggestions];
     }
@@ -377,22 +377,22 @@
 
 - (void)_clearSuggestions
 {
-  v2 = [(STSSearchBrowserRootViewController *)self suggestionViewController];
-  [v2 clearSuggestions];
+  suggestionViewController = [(STSSearchBrowserRootViewController *)self suggestionViewController];
+  [suggestionViewController clearSuggestions];
 }
 
-- (void)showPickerAndPerformQuery:(id)a3 requestType:(int64_t)a4
+- (void)showPickerAndPerformQuery:(id)query requestType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-  [v7 resetContent];
+  queryCopy = query;
+  pickerViewController = [(STSSearchBrowserRootViewController *)self pickerViewController];
+  [pickerViewController resetContent];
 
-  [(STSSearchBrowserRootViewController *)self _addQueryToRecents:v6];
-  if (a4 == 3 && ([MEMORY[0x277CBEBD0] standardUserDefaults], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "sts_legalNoticeCount"), v8, v9 < 3))
+  [(STSSearchBrowserRootViewController *)self _addQueryToRecents:queryCopy];
+  if (type == 3 && ([MEMORY[0x277CBEBD0] standardUserDefaults], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "sts_legalNoticeCount"), v8, v9 < 3))
   {
-    v10 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v11 = [v10 searchBar];
-    [v11 setText:v6];
+    searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar = [searchHeaderView searchBar];
+    [searchBar setText:queryCopy];
 
     [(STSSearchBrowserRootViewController *)self _showLegalNotice];
   }
@@ -401,10 +401,10 @@
   {
     if (([(UIViewController *)self->_currentChildViewController isEqual:self->_pickerViewController]& 1) != 0)
     {
-      if (v6)
+      if (queryCopy)
       {
-        v12 = [(STSSearchBrowserRootViewController *)self pickerViewController];
-        [v12 performSearchWithQueryString:v6 requestType:a4];
+        pickerViewController2 = [(STSSearchBrowserRootViewController *)self pickerViewController];
+        [pickerViewController2 performSearchWithQueryString:queryCopy requestType:type];
       }
     }
 
@@ -416,15 +416,15 @@
       v17[1] = 3221225472;
       v17[2] = __76__STSSearchBrowserRootViewController_showPickerAndPerformQuery_requestType___block_invoke;
       v17[3] = &unk_279B8B008;
-      v18 = v6;
-      v19 = self;
-      v20 = a4;
+      v18 = queryCopy;
+      selfCopy = self;
+      typeCopy = type;
       [(STSSearchBrowserRootViewController *)self _transitionContentFromViewController:currentChildViewController toViewController:pickerViewController completion:v17];
     }
 
-    v15 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-    v16 = [v15 searchBar];
-    [v16 setText:v6];
+    searchHeaderView2 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+    searchBar2 = [searchHeaderView2 searchBar];
+    [searchBar2 setText:queryCopy];
   }
 }
 
@@ -439,10 +439,10 @@ void __76__STSSearchBrowserRootViewController_showPickerAndPerformQuery_requestT
 
 - (void)showCategories
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 sts_legalNoticeCount];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  sts_legalNoticeCount = [standardUserDefaults sts_legalNoticeCount];
 
-  if (v4 >= 3)
+  if (sts_legalNoticeCount >= 3)
   {
     categoryViewController = self->_categoryViewController;
     if (self->_currentChildViewController == categoryViewController)
@@ -604,11 +604,11 @@ void __53__STSSearchBrowserRootViewController_showSuggestions__block_invoke_4(ui
 
   if ((currentChildViewController & 1) == 0)
   {
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6 = [v5 sts_legalNoticeCount];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    sts_legalNoticeCount = [standardUserDefaults sts_legalNoticeCount];
 
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v7 sts_setLegalNoticeCount:v6 + 1];
+    standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults2 sts_setLegalNoticeCount:sts_legalNoticeCount + 1];
 
     v8 = [objc_alloc(MEMORY[0x277D75D28]) initWithNibName:0 bundle:0];
     v9 = objc_alloc_init(STSSearchNoticeView);
@@ -658,21 +658,21 @@ void __54__STSSearchBrowserRootViewController__showLegalNotice__block_invoke(uin
   }
 }
 
-- (void)_transitionContentFromViewController:(id)a3 toViewController:(id)a4 completion:(id)a5
+- (void)_transitionContentFromViewController:(id)controller toViewController:(id)viewController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   self->_didSendCategoryResultFeedback = 0;
-  if (self->_currentChildViewController != v9)
+  if (self->_currentChildViewController != viewControllerCopy)
   {
-    objc_storeStrong(&self->_currentChildViewController, a4);
-    [(STSSearchBrowserRootViewController *)self addChildViewController:v9];
-    v11 = [v8 parentViewController];
+    objc_storeStrong(&self->_currentChildViewController, viewController);
+    [(STSSearchBrowserRootViewController *)self addChildViewController:viewControllerCopy];
+    parentViewController = [controllerCopy parentViewController];
 
-    if (v11)
+    if (parentViewController)
     {
-      [v8 willMoveToParentViewController:0];
+      [controllerCopy willMoveToParentViewController:0];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __103__STSSearchBrowserRootViewController__transitionContentFromViewController_toViewController_completion___block_invoke;
@@ -682,30 +682,30 @@ void __54__STSSearchBrowserRootViewController__showLegalNotice__block_invoke(uin
       v15[1] = 3221225472;
       v15[2] = __103__STSSearchBrowserRootViewController__transitionContentFromViewController_toViewController_completion___block_invoke_2;
       v15[3] = &unk_279B8B2A0;
-      v16 = v8;
-      v17 = self;
-      v18 = v9;
-      v19 = v10;
+      v16 = controllerCopy;
+      selfCopy = self;
+      v18 = viewControllerCopy;
+      v19 = completionCopy;
       [(STSSearchBrowserRootViewController *)self transitionFromViewController:v16 toViewController:v18 duration:5242880 options:v20 animations:v15 completion:0.0];
 
       goto LABEL_7;
     }
 
-    v12 = [(STSSearchBrowserRootViewController *)self view];
-    v13 = [(UIViewController *)v9 view];
-    [v12 setContentView:v13];
+    view = [(STSSearchBrowserRootViewController *)self view];
+    view2 = [(UIViewController *)viewControllerCopy view];
+    [view setContentView:view2];
 
-    [(STSSearchBrowserRootViewController *)self addChildViewController:v9];
-    [(UIViewController *)v9 didMoveToParentViewController:self];
-    v14 = [(STSSearchBrowserRootViewController *)self view];
-    [v14 setNeedsLayout];
+    [(STSSearchBrowserRootViewController *)self addChildViewController:viewControllerCopy];
+    [(UIViewController *)viewControllerCopy didMoveToParentViewController:self];
+    view3 = [(STSSearchBrowserRootViewController *)self view];
+    [view3 setNeedsLayout];
 
     [(STSSearchBrowserRootViewController *)self _updateContentInsets];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_7:
@@ -738,15 +738,15 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
 
 - (STSSearchBrowserHeaderView)searchHeaderView
 {
-  v2 = [(STSSearchBrowserRootViewController *)self view];
-  v3 = [v2 headerView];
+  view = [(STSSearchBrowserRootViewController *)self view];
+  headerView = [view headerView];
 
-  return v3;
+  return headerView;
 }
 
-- (void)setPickerSelectionDelegate:(id)a3
+- (void)setPickerSelectionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_pickerSelectionDelegate);
 
   if (WeakRetained != obj)
@@ -758,32 +758,32 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
-  v36 = a3;
-  v4 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  v5 = [v4 searchBar];
-  v6 = [v5 isFirstResponder];
+  showCopy = show;
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  searchBar = [searchHeaderView searchBar];
+  isFirstResponder = [searchBar isFirstResponder];
 
-  if (v6)
+  if (isFirstResponder)
   {
-    v7 = [(STSSearchBrowserRootViewController *)self view];
-    [v7 bounds];
+    view = [(STSSearchBrowserRootViewController *)self view];
+    [view bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [v36 userInfo];
-    v17 = [v16 objectForKey:*MEMORY[0x277D76BB8]];
+    userInfo = [showCopy userInfo];
+    v17 = [userInfo objectForKey:*MEMORY[0x277D76BB8]];
     [v17 CGRectValue];
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
 
-    v26 = [(STSSearchBrowserRootViewController *)self view];
-    [v26 convertRect:0 fromView:{v19, v21, v23, v25}];
+    view2 = [(STSSearchBrowserRootViewController *)self view];
+    [view2 convertRect:0 fromView:{v19, v21, v23, v25}];
     v28 = v27;
     v30 = v29;
     v32 = v31;
@@ -803,20 +803,20 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
   }
 }
 
-- (void)setTopInset:(double)a3
+- (void)setTopInset:(double)inset
 {
-  if (self->_topInset != a3)
+  if (self->_topInset != inset)
   {
-    self->_topInset = a3;
+    self->_topInset = inset;
     [(STSSearchBrowserRootViewController *)self _updateContentInsets];
   }
 }
 
-- (void)setBottomInset:(double)a3
+- (void)setBottomInset:(double)inset
 {
-  if (self->_bottomInset != a3)
+  if (self->_bottomInset != inset)
   {
-    self->_bottomInset = a3;
+    self->_bottomInset = inset;
     [(STSSearchBrowserRootViewController *)self _updateContentInsets];
   }
 }
@@ -833,8 +833,8 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
 
 - (BOOL)isPickerVisible
 {
-  v3 = [(STSSearchBrowserRootViewController *)self childViewControllers];
-  v4 = [v3 firstObject];
+  childViewControllers = [(STSSearchBrowserRootViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -843,8 +843,8 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
 
   else
   {
-    v6 = [(STSSearchBrowserRootViewController *)self childViewControllers];
-    v7 = [v6 firstObject];
+    childViewControllers2 = [(STSSearchBrowserRootViewController *)self childViewControllers];
+    firstObject2 = [childViewControllers2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -854,15 +854,15 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
 
 - (void)_updateContentInsets
 {
-  v3 = [(STSSearchBrowserRootViewController *)self searchHeaderView];
-  [v3 frame];
+  searchHeaderView = [(STSSearchBrowserRootViewController *)self searchHeaderView];
+  [searchHeaderView frame];
   CGRectGetHeight(v38);
 
   WeakRetained = objc_loadWeakRetained(&self->_legalNoticeViewController);
   if (WeakRetained)
   {
-    v5 = [(STSSearchBrowserRootViewController *)self view];
-    [v5 bounds];
+    view = [(STSSearchBrowserRootViewController *)self view];
+    [view bounds];
     v7 = *&v6;
     v34 = v8;
     v35 = v6;
@@ -875,13 +875,13 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
     v39.size.width = v11;
     v39.size.height = v13;
     CGRectGetHeight(v39);
-    v14 = [(STSSearchBrowserRootViewController *)self view];
+    view2 = [(STSSearchBrowserRootViewController *)self view];
     UIFloorToViewScale();
     v16 = v15;
 
-    v17 = [(STSSearchBrowserRootViewController *)self view];
-    v18 = [v17 readableContentGuide];
-    [v18 layoutFrame];
+    view3 = [(STSSearchBrowserRootViewController *)self view];
+    readableContentGuide = [view3 readableContentGuide];
+    [readableContentGuide layoutFrame];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -933,18 +933,18 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
     }
 
     v33 = objc_loadWeakRetained(&self->_legalNoticeViewController);
-    v36 = [v33 view];
+    view4 = [v33 view];
 
-    [v36 setContentInsets:{v32, v30, 30.0, v31}];
+    [view4 setContentInsets:{v32, v30, 30.0, v31}];
   }
 }
 
-- (void)_addQueryToRecents:(id)a3
+- (void)_addQueryToRecents:(id)recents
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  recentsCopy = recents;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [recentsCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v7 length])
   {
@@ -973,25 +973,25 @@ uint64_t __103__STSSearchBrowserRootViewController__transitionContentFromViewCon
       [(NSMutableArray *)self->_recentQueries insertObject:v12 atIndex:0];
     }
 
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v13 setObject:self->_recentQueries forKey:@"STSRecentQueries"];
-    [v13 synchronize];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:self->_recentQueries forKey:@"STSRecentQueries"];
+    [standardUserDefaults synchronize];
   }
 }
 
 - (void)_clearRecents
 {
   [(NSMutableArray *)self->_recentQueries removeAllObjects];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v3 setObject:self->_recentQueries forKey:@"STSRecentQueries"];
-  [v3 synchronize];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:self->_recentQueries forKey:@"STSRecentQueries"];
+  [standardUserDefaults synchronize];
 }
 
 - (void)sendVisibleResultsFeedback
 {
-  v3 = [(STSPicker *)self->_pickerViewController parentViewController];
+  parentViewController = [(STSPicker *)self->_pickerViewController parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
     pickerViewController = self->_pickerViewController;
 

@@ -1,27 +1,27 @@
 @interface TSWPFontCacheValue
-+ (id)cacheValueWithCTFont:(__CTFont *)a3;
-- (TSWPFontCacheValue)initWithCTFont:(__CTFont *)a3;
++ (id)cacheValueWithCTFont:(__CTFont *)font;
+- (TSWPFontCacheValue)initWithCTFont:(__CTFont *)font;
 - (void)dealloc;
 @end
 
 @implementation TSWPFontCacheValue
 
-+ (id)cacheValueWithCTFont:(__CTFont *)a3
++ (id)cacheValueWithCTFont:(__CTFont *)font
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithCTFont:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithCTFont:font];
 
   return v3;
 }
 
-- (TSWPFontCacheValue)initWithCTFont:(__CTFont *)a3
+- (TSWPFontCacheValue)initWithCTFont:(__CTFont *)font
 {
   v7.receiver = self;
   v7.super_class = TSWPFontCacheValue;
   v4 = [(TSWPFontCacheValue *)&v7 init];
   v5 = v4;
-  if (a3 && v4)
+  if (font && v4)
   {
-    v4->_ctFont = CFRetain(a3);
+    v4->_ctFont = CFRetain(font);
   }
 
   return v5;

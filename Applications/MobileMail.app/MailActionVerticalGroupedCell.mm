@@ -1,23 +1,23 @@
 @interface MailActionVerticalGroupedCell
-- (MailActionVerticalGroupedCell)initWithFrame:(CGRect)a3;
+- (MailActionVerticalGroupedCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
-- (void)setVerticalGroupedCellType:(unint64_t)a3;
+- (void)setVerticalGroupedCellType:(unint64_t)type;
 @end
 
 @implementation MailActionVerticalGroupedCell
 
-- (MailActionVerticalGroupedCell)initWithFrame:(CGRect)a3
+- (MailActionVerticalGroupedCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MailActionVerticalGroupedCell;
-  v3 = [(MailActionCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailActionCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MailActionVerticalGroupedCell *)v3 contentView];
+    contentView = [(MailActionVerticalGroupedCell *)v3 contentView];
     v6 = objc_opt_new();
-    v7 = [v5 heightAnchor];
-    v8 = [v7 constraintGreaterThanOrEqualToConstant:26.0 + 26.0];
+    heightAnchor = [contentView heightAnchor];
+    v8 = [heightAnchor constraintGreaterThanOrEqualToConstant:26.0 + 26.0];
     [v6 addObject:v8];
 
     [NSLayoutConstraint activateConstraints:v6];
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (void)setVerticalGroupedCellType:(unint64_t)a3
+- (void)setVerticalGroupedCellType:(unint64_t)type
 {
-  self->_verticalGroupedCellType = a3;
-  v4 = [(MailActionVerticalGroupedCell *)self contentView];
-  v8 = [v4 superview];
+  self->_verticalGroupedCellType = type;
+  contentView = [(MailActionVerticalGroupedCell *)self contentView];
+  superview = [contentView superview];
 
   verticalGroupedCellType = self->_verticalGroupedCellType;
   if (verticalGroupedCellType > 1)
@@ -43,15 +43,15 @@
         goto LABEL_15;
       }
 
-      v6 = [v8 layer];
-      [v6 setMaskedCorners:12];
+      layer = [superview layer];
+      [layer setMaskedCorners:12];
       goto LABEL_14;
     }
 
     if (verticalGroupedCellType == 3 && (MUISolariumFeatureEnabled() & 1) == 0)
     {
-      v6 = [v8 layer];
-      [v6 setMaskedCorners:0];
+      layer = [superview layer];
+      [layer setMaskedCorners:0];
       goto LABEL_14;
     }
   }
@@ -65,18 +65,18 @@
         goto LABEL_15;
       }
 
-      v7 = [v8 layer];
-      [v7 setCornerRadius:10.0];
+      layer2 = [superview layer];
+      [layer2 setCornerRadius:10.0];
 
-      v6 = [v8 layer];
-      [v6 setMaskedCorners:15];
+      layer = [superview layer];
+      [layer setMaskedCorners:15];
       goto LABEL_14;
     }
 
     if (verticalGroupedCellType == 1 && (MUISolariumFeatureEnabled() & 1) == 0)
     {
-      v6 = [v8 layer];
-      [v6 setMaskedCorners:3];
+      layer = [superview layer];
+      [layer setMaskedCorners:3];
 LABEL_14:
     }
   }

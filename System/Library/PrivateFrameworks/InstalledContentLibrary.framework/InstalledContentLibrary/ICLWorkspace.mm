@@ -1,18 +1,18 @@
 @interface ICLWorkspace
-+ (id)_connectionToInstallationDaemonWithError:(id *)a3;
++ (id)_connectionToInstallationDaemonWithError:(id *)error;
 + (id)defaultWorkspace;
-- (BOOL)enumerateBuiltInSystemContentWithBlock:(id)a3 error:(id *)a4;
-- (BOOL)enumerateCryptexContentWithBlock:(id)a3 error:(id *)a4;
-- (BOOL)triggerRegistrationForContainerizedContentWithOptions:(id)a3 withError:(id *)a4;
+- (BOOL)enumerateBuiltInSystemContentWithBlock:(id)block error:(id *)error;
+- (BOOL)enumerateCryptexContentWithBlock:(id)block error:(id *)error;
+- (BOOL)triggerRegistrationForContainerizedContentWithOptions:(id)options withError:(id *)error;
 - (ICLWorkspace)init;
-- (id)bundleIDsForContainerizedContentWithError:(id *)a3;
-- (id)bundleRecordsForLaunchServicesWithWrapperURL:(id)a3 forBundleIdentifier:(id)a4 withError:(id *)a5;
-- (id)bundleRecordsWithFrameworkURL:(id)a3 options:(id)a4 withError:(id *)a5;
-- (id)containerizedAppBundleRecordsForIdentity:(id)a3 inDomain:(unint64_t)a4 options:(id)a5 withError:(id *)a6;
-- (id)diskUsageForLaunchServicesWithBundleIDs:(id)a3 options:(id)a4 withError:(id *)a5;
-- (id)infoForLaunchServicesWithWrapperURL:(id)a3 forBundleIdentifier:(id)a4 withError:(id *)a5;
-- (void)triggerRegistrationForContainerizedContentWithOptions:(id)a3 completion:(id)a4;
-- (void)triggerRegistrationForDiskImageContentWithOptions:(id)a3 completion:(id)a4;
+- (id)bundleIDsForContainerizedContentWithError:(id *)error;
+- (id)bundleRecordsForLaunchServicesWithWrapperURL:(id)l forBundleIdentifier:(id)identifier withError:(id *)error;
+- (id)bundleRecordsWithFrameworkURL:(id)l options:(id)options withError:(id *)error;
+- (id)containerizedAppBundleRecordsForIdentity:(id)identity inDomain:(unint64_t)domain options:(id)options withError:(id *)error;
+- (id)diskUsageForLaunchServicesWithBundleIDs:(id)ds options:(id)options withError:(id *)error;
+- (id)infoForLaunchServicesWithWrapperURL:(id)l forBundleIdentifier:(id)identifier withError:(id *)error;
+- (void)triggerRegistrationForContainerizedContentWithOptions:(id)options completion:(id)completion;
+- (void)triggerRegistrationForDiskImageContentWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation ICLWorkspace
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __32__ICLWorkspace_defaultWorkspace__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultWorkspace_onceToken != -1)
   {
     dispatch_once(&defaultWorkspace_onceToken, block);
@@ -48,9 +48,9 @@ uint64_t __32__ICLWorkspace_defaultWorkspace__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)enumerateBuiltInSystemContentWithBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateBuiltInSystemContentWithBlock:(id)block error:(id *)error
 {
-  v5 = a3;
+  blockCopy = block;
   v17 = 1;
   if ((container_invalidate_code_signing_cache() & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
   {
@@ -62,17 +62,17 @@ uint64_t __32__ICLWorkspace_defaultWorkspace__block_invoke()
   v15[1] = 3221225472;
   v15[2] = __61__ICLWorkspace_enumerateBuiltInSystemContentWithBlock_error___block_invoke;
   v15[3] = &unk_1E7AE1E10;
-  v7 = v5;
+  v7 = blockCopy;
   v16 = v7;
   v8 = [(MILaunchServicesDatabaseGatherer *)v6 initWithOptions:2 enumerator:v15];
   v14 = 0;
   v9 = [(MILaunchServicesDatabaseGatherer *)v8 performGatherWithError:&v14];
   v10 = v14;
   v11 = v10;
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
@@ -96,7 +96,7 @@ void __61__ICLWorkspace_enumerateBuiltInSystemContentWithBlock_error___block_inv
   }
 }
 
-- (id)bundleIDsForContainerizedContentWithError:(id *)a3
+- (id)bundleIDsForContainerizedContentWithError:(id *)error
 {
   v4 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
@@ -112,10 +112,10 @@ void __61__ICLWorkspace_enumerateBuiltInSystemContentWithBlock_error___block_inv
     v5 = 0;
   }
 
-  if (a3 && !v5)
+  if (error && !v5)
   {
     v7 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v8 = [v5 copy];
@@ -132,13 +132,13 @@ uint64_t __58__ICLWorkspace_bundleIDsForContainerizedContentWithError___block_in
   return 1;
 }
 
-+ (id)_connectionToInstallationDaemonWithError:(id *)a3
++ (id)_connectionToInstallationDaemonWithError:(id *)error
 {
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.mobile.installd" options:0];
   if (!v4)
   {
     v10 = _CreateAndLogError("+[ICLWorkspace _connectionToInstallationDaemonWithError:]", 136, ICLWorkspaceErrorDomain[0], 2, 0, 0, @"Failed to create connection to %@", v5, @"com.apple.mobile.installd");
-    if (!a3)
+    if (!error)
     {
       goto LABEL_5;
     }
@@ -146,7 +146,7 @@ uint64_t __58__ICLWorkspace_bundleIDsForContainerizedContentWithError___block_in
 LABEL_7:
     v11 = v10;
     v6 = 0;
-    *a3 = v10;
+    *error = v10;
     goto LABEL_10;
   }
 
@@ -162,7 +162,7 @@ LABEL_7:
       xpc_strerror();
       v10 = _CreateAndLogError("+[ICLWorkspace _connectionToInstallationDaemonWithError:]", 147, v8, 2, 0, 0, @"xpc_user_sessions_get_foreground_uid() failed with error %d - %s", v9, 0);
 
-      if (!a3)
+      if (!error)
       {
 LABEL_5:
         v6 = 0;
@@ -172,7 +172,7 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v12 = [v6 _xpcConnection];
+    _xpcConnection = [v6 _xpcConnection];
     xpc_connection_set_target_user_session_uid();
   }
 
@@ -183,10 +183,10 @@ LABEL_10:
   return v6;
 }
 
-- (void)triggerRegistrationForContainerizedContentWithOptions:(id)a3 completion:(id)a4
+- (void)triggerRegistrationForContainerizedContentWithOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v21 = 0;
   v7 = [objc_opt_class() _connectionToInstallationDaemonWithError:&v21];
   v8 = v21;
@@ -198,7 +198,7 @@ LABEL_10:
     v18[3] = &unk_1E7AE1E60;
     v9 = v7;
     v19 = v9;
-    v20 = v6;
+    v20 = completionCopy;
     v10 = MEMORY[0x1B2733890](v18);
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
@@ -207,12 +207,12 @@ LABEL_10:
     v17 = v10;
     v11 = v10;
     v12 = [v9 remoteObjectProxyWithErrorHandler:&v13];
-    [v12 triggerRegistrationForContainerizedContentForOptions:v5 withCompletion:{v11, v13, v14, v15, v16}];
+    [v12 triggerRegistrationForContainerizedContentForOptions:optionsCopy withCompletion:{v11, v13, v14, v15, v16}];
   }
 
   else
   {
-    (*(v6 + 2))(v6, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -224,9 +224,9 @@ void __81__ICLWorkspace_triggerRegistrationForContainerizedContentWithOptions_co
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)triggerRegistrationForContainerizedContentWithOptions:(id)a3 withError:(id *)a4
+- (BOOL)triggerRegistrationForContainerizedContentWithOptions:(id)options withError:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -256,15 +256,15 @@ void __81__ICLWorkspace_triggerRegistrationForContainerizedContentWithOptions_co
     v12[3] = &unk_1E7AE1ED8;
     v12[4] = &v19;
     v12[5] = &v15;
-    [v9 triggerRegistrationForContainerizedContentForOptions:v5 withCompletion:v12];
+    [v9 triggerRegistrationForContainerizedContentForOptions:optionsCopy withCompletion:v12];
 
     [v8 invalidate];
   }
 
   v10 = *(v16 + 24);
-  if (a4 && (v16[3] & 1) == 0)
+  if (error && (v16[3] & 1) == 0)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v10 = *(v16 + 24);
   }
 
@@ -290,10 +290,10 @@ void __80__ICLWorkspace_triggerRegistrationForContainerizedContentWithOptions_wi
   }
 }
 
-- (void)triggerRegistrationForDiskImageContentWithOptions:(id)a3 completion:(id)a4
+- (void)triggerRegistrationForDiskImageContentWithOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v21 = 0;
   v7 = [objc_opt_class() _connectionToInstallationDaemonWithError:&v21];
   v8 = v21;
@@ -305,7 +305,7 @@ void __80__ICLWorkspace_triggerRegistrationForContainerizedContentWithOptions_wi
     v18[3] = &unk_1E7AE1E60;
     v9 = v7;
     v19 = v9;
-    v20 = v6;
+    v20 = completionCopy;
     v10 = MEMORY[0x1B2733890](v18);
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
@@ -314,12 +314,12 @@ void __80__ICLWorkspace_triggerRegistrationForContainerizedContentWithOptions_wi
     v17 = v10;
     v11 = v10;
     v12 = [v9 remoteObjectProxyWithErrorHandler:&v13];
-    [v12 triggerRegistrationForDiskImageContentForOptions:v5 withCompletion:{v11, v13, v14, v15, v16}];
+    [v12 triggerRegistrationForDiskImageContentForOptions:optionsCopy withCompletion:{v11, v13, v14, v15, v16}];
   }
 
   else
   {
-    (*(v6 + 2))(v6, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
@@ -331,45 +331,45 @@ void __77__ICLWorkspace_triggerRegistrationForDiskImageContentWithOptions_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)infoForLaunchServicesWithWrapperURL:(id)a3 forBundleIdentifier:(id)a4 withError:(id *)a5
+- (id)infoForLaunchServicesWithWrapperURL:(id)l forBundleIdentifier:(id)identifier withError:(id *)error
 {
-  v5 = [(ICLWorkspace *)self bundleRecordsForLaunchServicesWithWrapperURL:a3 forBundleIdentifier:a4 withError:a5];
+  v5 = [(ICLWorkspace *)self bundleRecordsForLaunchServicesWithWrapperURL:l forBundleIdentifier:identifier withError:error];
   v6 = [ICLBundleRecord bundleRecordArrayToInfoDictionaryArray:v5];
 
   return v6;
 }
 
-- (id)bundleRecordsForLaunchServicesWithWrapperURL:(id)a3 forBundleIdentifier:(id)a4 withError:(id *)a5
+- (id)bundleRecordsForLaunchServicesWithWrapperURL:(id)l forBundleIdentifier:(id)identifier withError:(id *)error
 {
   v7 = _CreateAndLogError("[ICLWorkspace bundleRecordsForLaunchServicesWithWrapperURL:forBundleIdentifier:withError:]", 307, ICLWorkspaceErrorDomain[0], 4, 0, 0, @"%s is unavailable on this platform", v5, "[ICLWorkspace bundleRecordsForLaunchServicesWithWrapperURL:forBundleIdentifier:withError:]");
-  if (a5)
+  if (error)
   {
     v7 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (BOOL)enumerateCryptexContentWithBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateCryptexContentWithBlock:(id)block error:(id *)error
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = [MILaunchServicesDatabaseGatherer alloc];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __55__ICLWorkspace_enumerateCryptexContentWithBlock_error___block_invoke;
   v15[3] = &unk_1E7AE1E10;
-  v7 = v5;
+  v7 = blockCopy;
   v16 = v7;
   v8 = [(MILaunchServicesDatabaseGatherer *)v6 initWithOptions:8 enumerator:v15];
   v14 = 0;
   v9 = [(MILaunchServicesDatabaseGatherer *)v8 performGatherWithError:&v14];
   v10 = v14;
   v11 = v10;
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v12 = v10;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v9;
@@ -393,14 +393,14 @@ void __55__ICLWorkspace_enumerateCryptexContentWithBlock_error___block_invoke(ui
   }
 }
 
-- (id)bundleRecordsWithFrameworkURL:(id)a3 options:(id)a4 withError:(id *)a5
+- (id)bundleRecordsWithFrameworkURL:(id)l options:(id)options withError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   objc_opt_class();
-  v11 = v7;
+  v11 = lCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -413,23 +413,23 @@ void __55__ICLWorkspace_enumerateCryptexContentWithBlock_error___block_invoke(ui
 
   if (!v12)
   {
-    v16 = _CreateAndLogError("[ICLWorkspace bundleRecordsWithFrameworkURL:options:withError:]", 363, @"MIInstallerErrorDomain", 25, 0, 0, @"frameworkBundleURL parameter was not a valid URL", v13, v29);
+    v16 = _CreateAndLogError("[ICLWorkspace bundleRecordsWithFrameworkURL:options:withError:]", 363, @"MIInstallerErrorDomain", 25, 0, 0, @"frameworkBundleURL parameter was not a valid URL", v13, path);
     goto LABEL_18;
   }
 
-  if (v8)
+  if (optionsCopy)
   {
     objc_opt_class();
-    v14 = v8;
+    v14 = optionsCopy;
     v15 = (objc_opt_isKindOfClass() & 1) != 0 ? v14 : 0;
 
     if (!v15)
     {
-      v16 = _CreateAndLogError("[ICLWorkspace bundleRecordsWithFrameworkURL:options:withError:]", 368, @"MIInstallerErrorDomain", 25, 0, 0, @"options parameter was not a dictionary", v17, v29);
+      v16 = _CreateAndLogError("[ICLWorkspace bundleRecordsWithFrameworkURL:options:withError:]", 368, @"MIInstallerErrorDomain", 25, 0, 0, @"options parameter was not a dictionary", v17, path);
       v12 = 0;
 LABEL_20:
       v25 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -440,13 +440,13 @@ LABEL_20:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 5)
   {
-    v29 = [v11 path];
-    v30 = v8;
+    path = [v11 path];
+    v30 = optionsCopy;
     MOLogWrite();
   }
 
   v40 = 0;
-  v12 = [(MIBundle *)MIExecutableBundle bundleForURL:v11 error:&v40, v29, v30];
+  v12 = [(MIBundle *)MIExecutableBundle bundleForURL:v11 error:&v40, path, v30];
   v16 = v40;
   if (!v12)
   {
@@ -457,17 +457,17 @@ LABEL_18:
 
   v33 = v10;
   v34 = v9;
-  v32 = a5;
+  errorCopy = error;
   v18 = +[MIGlobalConfiguration sharedInstance];
-  v19 = [v18 primaryPersonaString];
+  primaryPersonaString = [v18 primaryPersonaString];
   v39 = v16;
-  v15 = [MILaunchServicesDatabaseGatherer entryForBundle:v12 inContainer:0 forPersona:v19 withError:&v39];
+  v15 = [MILaunchServicesDatabaseGatherer entryForBundle:v12 inContainer:0 forPersona:primaryPersonaString withError:&v39];
   v20 = v39;
 
   if (v15)
   {
-    v21 = [v12 identifier];
-    [v10 setObject:v15 forKeyedSubscript:v21];
+    identifier = [v12 identifier];
+    [v10 setObject:v15 forKeyedSubscript:identifier];
 
     [v34 addObject:v15];
     v36[0] = MEMORY[0x1E69E9820];
@@ -479,12 +479,12 @@ LABEL_18:
     v38 = v31;
     v22 = MEMORY[0x1B2733890](v36);
     v23 = +[MIGlobalConfiguration sharedInstance];
-    v24 = [v23 primaryPersonaString];
+    primaryPersonaString2 = [v23 primaryPersonaString];
     v35 = v20;
-    LODWORD(v21) = [MILaunchServicesDatabaseGatherer enumerateAppExtensionsInBundle:v12 forPersona:v24 updatingAppExtensionParentID:0 ensureAppExtensionsAreExecutable:0 installProfiles:0 error:&v35 enumerator:v22];
+    LODWORD(identifier) = [MILaunchServicesDatabaseGatherer enumerateAppExtensionsInBundle:v12 forPersona:primaryPersonaString2 updatingAppExtensionParentID:0 ensureAppExtensionsAreExecutable:0 installProfiles:0 error:&v35 enumerator:v22];
     v16 = v35;
 
-    if (v21)
+    if (identifier)
     {
       v25 = [v31 copy];
     }
@@ -501,16 +501,16 @@ LABEL_18:
     v16 = v20;
   }
 
-  a5 = v32;
+  error = errorCopy;
   v10 = v33;
   v9 = v34;
-  if (v32)
+  if (errorCopy)
   {
 LABEL_25:
     if (!v25)
     {
       v26 = v16;
-      *a5 = v16;
+      *error = v16;
     }
   }
 
@@ -546,10 +546,10 @@ void __64__ICLWorkspace_bundleRecordsWithFrameworkURL_options_withError___block_
   }
 }
 
-- (id)containerizedAppBundleRecordsForIdentity:(id)a3 inDomain:(unint64_t)a4 options:(id)a5 withError:(id *)a6
+- (id)containerizedAppBundleRecordsForIdentity:(id)identity inDomain:(unint64_t)domain options:(id)options withError:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  identityCopy = identity;
+  optionsCopy = options;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -581,15 +581,15 @@ void __64__ICLWorkspace_bundleRecordsWithFrameworkURL_options_withError___block_
     v18[3] = &unk_1E7AE1F28;
     v18[4] = &v21;
     v18[5] = &v27;
-    [v14 fetchInfoForContainerizedAppWithIdentity:v9 inDomain:a4 options:v10 completion:v18];
+    [v14 fetchInfoForContainerizedAppWithIdentity:identityCopy inDomain:domain options:optionsCopy completion:v18];
 
     [v13 invalidate];
   }
 
   v15 = v28[5];
-  if (a6 && !v15)
+  if (error && !v15)
   {
-    *a6 = v22[5];
+    *error = v22[5];
     v15 = v28[5];
   }
 
@@ -623,10 +623,10 @@ void __84__ICLWorkspace_containerizedAppBundleRecordsForIdentity_inDomain_option
   *(v8 + 40) = v9;
 }
 
-- (id)diskUsageForLaunchServicesWithBundleIDs:(id)a3 options:(id)a4 withError:(id *)a5
+- (id)diskUsageForLaunchServicesWithBundleIDs:(id)ds options:(id)options withError:(id *)error
 {
-  v7 = a3;
-  v9 = a4;
+  dsCopy = ds;
+  optionsCopy = options;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -639,7 +639,7 @@ void __84__ICLWorkspace_containerizedAppBundleRecordsForIdentity_inDomain_option
   v25 = __Block_byref_object_copy__7;
   v26 = __Block_byref_object_dispose__7;
   v27 = 0;
-  if (v9)
+  if (optionsCopy)
   {
     v10 = objc_opt_class();
     v11 = (v23 + 5);
@@ -660,7 +660,7 @@ void __84__ICLWorkspace_containerizedAppBundleRecordsForIdentity_inDomain_option
       v19[3] = &unk_1E7AE1F50;
       v19[4] = &v22;
       v19[5] = &v28;
-      [v13 fetchDiskUsageForIdentifiers:v7 withOptions:v9 completion:v19];
+      [v13 fetchDiskUsageForIdentifiers:dsCopy withOptions:optionsCopy completion:v19];
 
       [v12 invalidate];
     }
@@ -676,9 +676,9 @@ void __84__ICLWorkspace_containerizedAppBundleRecordsForIdentity_inDomain_option
   }
 
   v16 = v29[5];
-  if (a5 && !v16)
+  if (error && !v16)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v16 = v29[5];
   }
 

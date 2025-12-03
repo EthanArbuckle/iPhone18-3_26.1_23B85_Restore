@@ -1,17 +1,17 @@
 @interface NSCloudKitMirroringAcceptShareInvitationsRequest
-- (NSCloudKitMirroringAcceptShareInvitationsRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCloudKitMirroringAcceptShareInvitationsRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation NSCloudKitMirroringAcceptShareInvitationsRequest
 
-- (NSCloudKitMirroringAcceptShareInvitationsRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringAcceptShareInvitationsRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringAcceptShareInvitationsRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:a3 completionBlock:a4];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:options completionBlock:block];
   if (v4)
   {
     v4->_shareURLsToAccept = NSArray_EmptyArray;
@@ -40,11 +40,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringAcceptShareInvitationsRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
   v4[10] = [(NSArray *)self->_shareURLsToAccept copy];
   v4[11] = [(NSArray *)self->_shareMetadatasToAccept copy];
   return v4;

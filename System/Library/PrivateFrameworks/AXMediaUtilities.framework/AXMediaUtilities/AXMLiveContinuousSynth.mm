@@ -1,68 +1,68 @@
 @interface AXMLiveContinuousSynth
-- (void)renderInBuffer:(void *)a3 atFrame:(unint64_t)a4 numSamples:(unint64_t)a5;
+- (void)renderInBuffer:(void *)buffer atFrame:(unint64_t)frame numSamples:(unint64_t)samples;
 - (void)startRelease;
 @end
 
 @implementation AXMLiveContinuousSynth
 
-- (void)renderInBuffer:(void *)a3 atFrame:(unint64_t)a4 numSamples:(unint64_t)a5
+- (void)renderInBuffer:(void *)buffer atFrame:(unint64_t)frame numSamples:(unint64_t)samples
 {
   [(AXMSynth *)self bypassEnvelopes];
-  v9 = [(AXMSynth *)self mainOscillator];
-  [v9 updateCache];
+  mainOscillator = [(AXMSynth *)self mainOscillator];
+  [mainOscillator updateCache];
 
-  v10 = [(AXMSynth *)self mainOscillator];
-  v11 = [v10 isBypassed];
+  mainOscillator2 = [(AXMSynth *)self mainOscillator];
+  isBypassed = [mainOscillator2 isBypassed];
 
-  if ((v11 & 1) == 0 && a5 + a4 > a4)
+  if ((isBypassed & 1) == 0 && samples + frame > frame)
   {
     do
     {
-      v12 = [(AXMSynth *)self mainOscillator];
-      [v12 getNextSample];
+      mainOscillator3 = [(AXMSynth *)self mainOscillator];
+      [mainOscillator3 getNextSample];
       v14 = v13;
 
-      v15 = [(AXMLiveContinuousSynth *)self framesRendered];
+      framesRendered = [(AXMLiveContinuousSynth *)self framesRendered];
       [(AXMSynth *)self sampleRate];
       v17 = v16;
-      v18 = [(AXMSynth *)self envelope];
-      [v18 attackMS];
+      envelope = [(AXMSynth *)self envelope];
+      [envelope attackMS];
       v20 = v19;
-      v21 = v15 / v17 * 1000.0;
+      v21 = framesRendered / v17 * 1000.0;
 
       if (v21 < v20)
       {
-        v22 = [(AXMSynth *)self envelope];
-        [v22 levelForTime:v21];
+        envelope2 = [(AXMSynth *)self envelope];
+        [envelope2 levelForTime:v21];
         v14 = v14 * v23;
       }
 
       if ([(AXMLiveContinuousSynth *)self releasing])
       {
-        v24 = [(AXMLiveContinuousSynth *)self framesRendered];
-        v25 = [(AXMLiveContinuousSynth *)self releaseFrame];
+        framesRendered2 = [(AXMLiveContinuousSynth *)self framesRendered];
+        releaseFrame = [(AXMLiveContinuousSynth *)self releaseFrame];
         [(AXMSynth *)self sampleRate];
         v27 = v26;
-        v28 = [(AXMSynth *)self envelope];
-        [v28 releaseMS];
+        envelope3 = [(AXMSynth *)self envelope];
+        [envelope3 releaseMS];
         v30 = v29;
-        v31 = (v24 - v25) / v27 * 1000.0;
+        v31 = (framesRendered2 - releaseFrame) / v27 * 1000.0;
 
         v32 = 0.0;
         if (v31 <= v30)
         {
-          v33 = [(AXMSynth *)self envelope];
-          [v33 attackMS];
+          envelope4 = [(AXMSynth *)self envelope];
+          [envelope4 attackMS];
           v35 = v34;
-          v36 = [(AXMSynth *)self envelope];
-          [v36 decayMS];
+          envelope5 = [(AXMSynth *)self envelope];
+          [envelope5 decayMS];
           v38 = v37;
-          v39 = [(AXMSynth *)self envelope];
-          [v39 sustainMS];
+          envelope6 = [(AXMSynth *)self envelope];
+          [envelope6 sustainMS];
           v41 = v35 + v38 + v40;
 
-          v42 = [(AXMSynth *)self envelope];
-          [v42 levelForTime:v31 + v41];
+          envelope7 = [(AXMSynth *)self envelope];
+          [envelope7 levelForTime:v31 + v41];
           v32 = v14 * v43;
         }
       }
@@ -77,19 +77,19 @@
         v32 = v14;
       }
 
-      v44 = a4 % ((*(a3 + 1) - *a3) >> 2);
+      v44 = frame % ((*(buffer + 1) - *buffer) >> 2);
       [(AXMSynth *)self gain];
-      *(*a3 + 4 * v44) += (v32 * 32500.0 * v45);
+      *(*buffer + 4 * v44) += (v32 * 32500.0 * v45);
       if (![(AXMLiveContinuousSynth *)self muted]|| [(AXMLiveContinuousSynth *)self releasing])
       {
         [(AXMLiveContinuousSynth *)self setFramesRendered:[(AXMLiveContinuousSynth *)self framesRendered]+ 1];
       }
 
-      ++a4;
-      --a5;
+      ++frame;
+      --samples;
     }
 
-    while (a5);
+    while (samples);
   }
 }
 

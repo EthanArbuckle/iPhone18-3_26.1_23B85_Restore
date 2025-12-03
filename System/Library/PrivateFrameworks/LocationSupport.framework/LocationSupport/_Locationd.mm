@@ -1,22 +1,22 @@
 @interface _Locationd
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
-+ (void)performSyncOnSilo:(id)a3 invoker:(id)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
++ (void)performSyncOnSilo:(id)silo invoker:(id)invoker;
 @end
 
 @implementation _Locationd
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  blockedCopy = blocked;
+  v6 = blockedCopy;
   if ((byte_1ED5FAD98 & 1) == 0)
   {
     _Exit(0);
   }
 
-  v7 = a4 + 1;
-  if (v7 < [v5 count])
+  v7 = index + 1;
+  if (v7 < [blockedCopy count])
   {
     if (qword_1ED5FAD40 != -1)
     {
@@ -70,11 +70,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)performSyncOnSilo:(id)a3 invoker:(id)a4
++ (void)performSyncOnSilo:(id)silo invoker:(id)invoker
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  siloCopy = silo;
+  invokerCopy = invoker;
   if (qword_1ED5FAD40 != -1)
   {
     goto LABEL_11;

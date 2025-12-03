@@ -1,7 +1,7 @@
 @interface CarFocusContainerGuide
-+ (id)focusContainerGuideInstalledInView:(id)a3;
++ (id)focusContainerGuideInstalledInView:(id)view;
 - (CarFocusContainerGuide)init;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CarFocusContainerGuide
@@ -26,8 +26,8 @@
       [(UIView *)v2->_debugView setTranslatesAutoresizingMaskIntoConstraints:0];
       LODWORD(v8) = 1148846080;
       v9 = [(UIView *)v2->_debugView _maps_constraintsEqualToEdgesOfLayoutGuide:v2 insets:UIEdgeInsetsZero.top priority:UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right, v8];
-      v10 = [v9 allConstraints];
-      [v3 addObjectsFromArray:v10];
+      allConstraints = [v9 allConstraints];
+      [v3 addObjectsFromArray:allConstraints];
     }
 
     v11 = [v3 copy];
@@ -38,29 +38,29 @@
   return v2;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = CarFocusContainerGuide;
   [(CarFocusContainerGuide *)&v6 setEnabled:?];
-  v5 = [(CarFocusContainerGuide *)self debugView];
-  [v5 setUserInteractionEnabled:v3];
+  debugView = [(CarFocusContainerGuide *)self debugView];
+  [debugView setUserInteractionEnabled:enabledCopy];
 }
 
-+ (id)focusContainerGuideInstalledInView:(id)a3
++ (id)focusContainerGuideInstalledInView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = objc_alloc_init(CarFocusContainerGuide);
   v5 = +[NSMutableArray array];
   LODWORD(v6) = 1148846080;
-  v7 = [(CarFocusContainerGuide *)v4 _maps_constraintsEqualToEdgesOfView:v3 priority:v6];
+  v7 = [(CarFocusContainerGuide *)v4 _maps_constraintsEqualToEdgesOfView:viewCopy priority:v6];
 
-  v8 = [v7 allConstraints];
-  [v5 addObjectsFromArray:v8];
+  allConstraints = [v7 allConstraints];
+  [v5 addObjectsFromArray:allConstraints];
 
-  v9 = [(CarFocusContainerGuide *)v4 activationConstraints];
-  v10 = [v9 arrayByAddingObjectsFromArray:v5];
+  activationConstraints = [(CarFocusContainerGuide *)v4 activationConstraints];
+  v10 = [activationConstraints arrayByAddingObjectsFromArray:v5];
   [(CarFocusContainerGuide *)v4 setActivationConstraints:v10];
 
   return v4;

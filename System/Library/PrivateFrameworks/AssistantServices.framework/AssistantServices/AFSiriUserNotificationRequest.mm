@@ -1,21 +1,21 @@
 @interface AFSiriUserNotificationRequest
 + (BOOL)canBeHandled;
 + (BOOL)supportedOnPlatform;
-- (AFSiriUserNotificationRequest)initWithUserNotification:(id)a3 sourceAppId:(id)a4 platform:(int64_t)a5 summaryDecision:(int64_t)a6 summary:(id)a7;
-- (void)deactivateRequestForReason:(int64_t)a3 completion:(id)a4;
-- (void)deliverSummary:(id)a3 completion:(id)a4;
-- (void)performRequestWithCompletion:(id)a3;
-- (void)withdrawalRequestWithCompletion:(id)a3;
+- (AFSiriUserNotificationRequest)initWithUserNotification:(id)notification sourceAppId:(id)id platform:(int64_t)platform summaryDecision:(int64_t)decision summary:(id)summary;
+- (void)deactivateRequestForReason:(int64_t)reason completion:(id)completion;
+- (void)deliverSummary:(id)summary completion:(id)completion;
+- (void)performRequestWithCompletion:(id)completion;
+- (void)withdrawalRequestWithCompletion:(id)completion;
 @end
 
 @implementation AFSiriUserNotificationRequest
 
-- (void)deliverSummary:(id)a3 completion:(id)a4
+- (void)deliverSummary:(id)summary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  completionCopy = completion;
   v34 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v34];
+  v8 = [NSKeyedArchiver archivedDataWithRootObject:summaryCopy requiringSecureCoding:1 error:&v34];
   v9 = v34;
   if (v9)
   {
@@ -50,7 +50,7 @@
         _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%s Failed to serialize notification %@: %@", keys, 0x20u);
       }
 
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       v21 = 0;
       v12 = 0;
       goto LABEL_26;
@@ -79,7 +79,7 @@
         *buf = 136315394;
         v36 = "[AFSiriUserNotificationRequest deliverSummary:completion:]";
         v37 = 2112;
-        v38 = v6;
+        v38 = summaryCopy;
         _os_log_debug_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "%s Sending xpc message for %@", buf, 0x16u);
       }
 
@@ -87,7 +87,7 @@
       handler[1] = 3221225472;
       handler[2] = sub_1002393EC;
       handler[3] = &unk_10051E228;
-      v32 = v7;
+      v32 = completionCopy;
       v31 = v24;
       xpc_connection_send_message_with_reply(v31, v22, 0, handler);
 
@@ -106,9 +106,9 @@ LABEL_26:
       *buf = 136315394;
       v36 = "[AFSiriUserNotificationRequest deliverSummary:completion:]";
       v37 = 2112;
-      v38 = v6;
+      v38 = summaryCopy;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Unable to send xpc message for %@", buf, 0x16u);
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_22:
         if (v24)
@@ -120,12 +120,12 @@ LABEL_22:
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_22;
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_22;
   }
 
@@ -135,20 +135,20 @@ LABEL_22:
     *keys = 136315650;
     *&keys[4] = "[AFSiriUserNotificationRequest deliverSummary:completion:]";
     *&keys[12] = 2112;
-    *&keys[14] = v6;
+    *&keys[14] = summaryCopy;
     *&keys[22] = 2112;
     v41 = v9;
     _os_log_error_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%s Failed to serialize summary %@: %@", keys, 0x20u);
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
   v12 = 0;
 LABEL_27:
 }
 
-- (void)withdrawalRequestWithCompletion:(id)a3
+- (void)withdrawalRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -193,7 +193,7 @@ LABEL_27:
       handler[1] = 3221225472;
       handler[2] = sub_100239830;
       handler[3] = &unk_10051E228;
-      v24 = v4;
+      v24 = completionCopy;
       v23 = v14;
       xpc_connection_send_message_with_reply(v23, v12, 0, handler);
 
@@ -213,7 +213,7 @@ LABEL_18:
       v30 = 2112;
       v31 = v20;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Unable to send xpc message for %@", buf, 0x16u);
-      if (!v4)
+      if (!completionCopy)
       {
 LABEL_16:
         if (v14)
@@ -225,12 +225,12 @@ LABEL_16:
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_16;
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_16;
   }
 
@@ -247,14 +247,14 @@ LABEL_16:
     _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s Failed to serialize notification %@: %@", buf, 0x20u);
   }
 
-  (*(v4 + 2))(v4, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
   v11 = 0;
 LABEL_20:
 }
 
-- (void)deactivateRequestForReason:(int64_t)a3 completion:(id)a4
+- (void)deactivateRequestForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -289,7 +289,7 @@ LABEL_20:
         values[1] = v13;
         values[2] = xpc_string_create([(NSString *)self->_sourceAppId UTF8String]);
         values[3] = xpc_int64_create(self->_platform);
-        values[4] = xpc_int64_create(a3);
+        values[4] = xpc_int64_create(reason);
         v14 = xpc_dictionary_create(keys, values, 5uLL);
         v15 = _ExternalRequestConnection();
         v16 = v15;
@@ -307,7 +307,7 @@ LABEL_20:
           handler[1] = 3221225472;
           handler[2] = sub_100239E1C;
           handler[3] = &unk_10051E228;
-          v27 = v6;
+          v27 = completionCopy;
           v26 = v16;
           xpc_connection_send_message_with_reply(v26, v14, 0, handler);
 
@@ -324,7 +324,7 @@ LABEL_27:
           *buf = 136315138;
           v30 = "[AFSiriUserNotificationRequest deactivateRequestForReason:completion:]";
           _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Unable to send xpc message for request deactivation.", buf, 0xCu);
-          if (!v6)
+          if (!completionCopy)
           {
 LABEL_25:
             if (v16)
@@ -336,12 +336,12 @@ LABEL_25:
           }
         }
 
-        else if (!v6)
+        else if (!completionCopy)
         {
           goto LABEL_25;
         }
 
-        (*(v6 + 2))(v6, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
         goto LABEL_25;
       }
 
@@ -356,13 +356,13 @@ LABEL_25:
         *&keys[22] = 2112;
         v33 = v10;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s Failed to serialize notification %@: %@", keys, 0x20u);
-        if (!v6)
+        if (!completionCopy)
         {
           goto LABEL_21;
         }
       }
 
-      else if (!v6)
+      else if (!completionCopy)
       {
 LABEL_21:
         v13 = 0;
@@ -371,7 +371,7 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_21;
     }
 
@@ -381,15 +381,15 @@ LABEL_29:
       *keys = 136315394;
       *&keys[4] = "[AFSiriUserNotificationRequest deactivateRequestForReason:completion:]";
       *&keys[12] = 2048;
-      *&keys[14] = a3;
+      *&keys[14] = reason;
       _os_log_debug_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%s unspecified deactivation reason %li. Ignoring.", keys, 0x16u);
-      if (!v6)
+      if (!completionCopy)
       {
         goto LABEL_30;
       }
     }
 
-    else if (!v6)
+    else if (!completionCopy)
     {
       goto LABEL_30;
     }
@@ -403,7 +403,7 @@ LABEL_29:
     *keys = 136315138;
     *&keys[4] = "[AFSiriUserNotificationRequest deactivateRequestForReason:completion:]";
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s deactivation requests are currently only supported for CarPlay.", keys, 0xCu);
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_30;
     }
@@ -411,18 +411,18 @@ LABEL_29:
     goto LABEL_14;
   }
 
-  if (v6)
+  if (completionCopy)
   {
 LABEL_14:
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_30:
 }
 
-- (void)performRequestWithCompletion:(id)a3
+- (void)performRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEBUG))
   {
@@ -461,7 +461,7 @@ LABEL_30:
         _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s Failed to serialize summary %@: %@", keys, 0x20u);
       }
 
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
       v14 = 0;
       goto LABEL_25;
     }
@@ -501,7 +501,7 @@ LABEL_30:
       handler[1] = 3221225472;
       handler[2] = sub_10023A410;
       handler[3] = &unk_10051E228;
-      v31 = v4;
+      v31 = completionCopy;
       v30 = v16;
       xpc_connection_send_message_with_reply(v30, message, 0, handler);
 
@@ -523,7 +523,7 @@ LABEL_25:
       v36 = 2112;
       v37 = v24;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Unable to send xpc message for %@", buf, 0x16u);
-      if (!v4)
+      if (!completionCopy)
       {
 LABEL_21:
         if (v16)
@@ -535,12 +535,12 @@ LABEL_21:
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
       goto LABEL_21;
     }
 
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_21;
   }
 
@@ -557,27 +557,27 @@ LABEL_21:
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Failed to serialize notification %@: %@", keys, 0x20u);
   }
 
-  v4[2](v4, 0);
+  completionCopy[2](completionCopy, 0);
   v10 = 0;
 LABEL_26:
 }
 
-- (AFSiriUserNotificationRequest)initWithUserNotification:(id)a3 sourceAppId:(id)a4 platform:(int64_t)a5 summaryDecision:(int64_t)a6 summary:(id)a7
+- (AFSiriUserNotificationRequest)initWithUserNotification:(id)notification sourceAppId:(id)id platform:(int64_t)platform summaryDecision:(int64_t)decision summary:(id)summary
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
+  notificationCopy = notification;
+  idCopy = id;
+  summaryCopy = summary;
   v19.receiver = self;
   v19.super_class = AFSiriUserNotificationRequest;
   v16 = [(AFSiriUserNotificationRequest *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_notification, a3);
-    objc_storeStrong(&v17->_sourceAppId, a4);
-    v17->_platform = a5;
-    v17->_summaryDecision = a6;
-    objc_storeStrong(&v17->_summary, a7);
+    objc_storeStrong(&v16->_notification, notification);
+    objc_storeStrong(&v17->_sourceAppId, id);
+    v17->_platform = platform;
+    v17->_summaryDecision = decision;
+    objc_storeStrong(&v17->_summary, summary);
   }
 
   return v17;
@@ -586,17 +586,17 @@ LABEL_26:
 + (BOOL)supportedOnPlatform
 {
   v2 = +[AFSiriUserNotificationRequestCapabilityManager sharedManager];
-  v3 = [v2 hasEligibleSetup];
+  hasEligibleSetup = [v2 hasEligibleSetup];
 
-  return v3;
+  return hasEligibleSetup;
 }
 
 + (BOOL)canBeHandled
 {
   v2 = +[AFSiriUserNotificationRequestCapabilityManager sharedManager];
-  v3 = [v2 requestCanBeHandled];
+  requestCanBeHandled = [v2 requestCanBeHandled];
 
-  return v3;
+  return requestCanBeHandled;
 }
 
 @end

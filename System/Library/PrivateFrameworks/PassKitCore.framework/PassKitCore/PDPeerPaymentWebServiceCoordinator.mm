@@ -9,9 +9,9 @@
 {
   if (!self->_currentAccountFetchRequest)
   {
-    v3 = [(NSMutableArray *)self->_accountFetchRequests firstObject];
+    firstObject = [(NSMutableArray *)self->_accountFetchRequests firstObject];
     currentAccountFetchRequest = self->_currentAccountFetchRequest;
-    self->_currentAccountFetchRequest = v3;
+    self->_currentAccountFetchRequest = firstObject;
 
     if (self->_currentAccountFetchRequest)
     {
@@ -26,10 +26,10 @@
       }
 
       sharedPeerPaymentWebService = self->_sharedPeerPaymentWebService;
-      v8 = [(PDPeerPaymentWebServiceAccountFetch *)self->_currentAccountFetchRequest diagnosticReasonString];
-      [(PKPeerPaymentWebService *)sharedPeerPaymentWebService addDiagnosticReason:v8];
+      diagnosticReasonString = [(PDPeerPaymentWebServiceAccountFetch *)self->_currentAccountFetchRequest diagnosticReasonString];
+      [(PKPeerPaymentWebService *)sharedPeerPaymentWebService addDiagnosticReason:diagnosticReasonString];
 
-      v9 = [(PKPeerPaymentAccount *)self->_account identifier];
+      identifier = [(PKPeerPaymentAccount *)self->_account identifier];
       v10 = objc_alloc_init(PKAsyncUnaryOperationComposer);
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -40,7 +40,7 @@
       v19[2] = sub_10000CF54;
       v19[3] = &unk_10083E620;
       v19[4] = self;
-      v11 = v9;
+      v11 = identifier;
       v20 = v11;
       p_buf = &buf;
       [v10 addOperation:v19];
@@ -71,14 +71,14 @@
 - (BOOL)_hasAssociatedPeerPaymentPassSetup
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v4 = [(PKPeerPaymentAccount *)self->_account associatedPassUniqueID];
-  v5 = [WeakRetained passWithUniqueIdentifier:v4];
-  v6 = [v5 paymentPass];
+  associatedPassUniqueID = [(PKPeerPaymentAccount *)self->_account associatedPassUniqueID];
+  v5 = [WeakRetained passWithUniqueIdentifier:associatedPassUniqueID];
+  paymentPass = [v5 paymentPass];
 
-  if (v6)
+  if (paymentPass)
   {
-    v7 = [v6 devicePrimaryPaymentApplication];
-    v8 = v7 != 0;
+    devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+    v8 = devicePrimaryPaymentApplication != 0;
   }
 
   else

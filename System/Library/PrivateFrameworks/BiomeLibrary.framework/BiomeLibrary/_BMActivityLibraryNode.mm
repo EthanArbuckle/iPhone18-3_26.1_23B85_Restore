@@ -2,7 +2,7 @@
 + (id)Level;
 + (id)configurationForLevel;
 + (id)storeConfigurationForLevel;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -19,7 +19,7 @@
 + (id)Level
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForLevel];
+  configurationForLevel = [self configurationForLevel];
   v3 = +[BMActivityLevel columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -31,7 +31,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Activity.Level" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Activity.Level" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Activity.Level" schema:v9 configuration:configurationForLevel];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -40,30 +40,30 @@
 
 + (id)configurationForLevel
 {
-  v3 = [a1 storeConfigurationForLevel];
-  v4 = [a1 syncPolicyForLevel];
+  storeConfigurationForLevel = [self storeConfigurationForLevel];
+  syncPolicyForLevel = [self syncPolicyForLevel];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"867963E1-D220-4C90-A75A-50F26902B44B"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Activity.Level" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Activity.Level" eventClass:objc_opt_class() storeConfig:storeConfigurationForLevel syncPolicy:syncPolicyForLevel legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"Level"])
+  if ([name isEqualToString:@"Level"])
   {
-    v4 = [a1 Level];
+    level = [self Level];
   }
 
   else
   {
-    v4 = 0;
+    level = 0;
   }
 
-  return v4;
+  return level;
 }
 
 + (id)validKeyPaths

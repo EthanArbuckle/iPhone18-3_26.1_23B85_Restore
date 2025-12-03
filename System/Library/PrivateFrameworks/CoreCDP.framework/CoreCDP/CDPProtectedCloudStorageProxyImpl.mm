@@ -1,21 +1,21 @@
 @interface CDPProtectedCloudStorageProxyImpl
-- (BOOL)_performPCSBlock:(id)a3 error:(id *)a4;
-- (BOOL)isWalrusEnabledWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)pcsIdentityMigrateToiCDPWithInfo:(id)a3 error:(id *)a4;
-- (BOOL)pcsIdentitySetCompanionInCircle:(_PCSIdentitySetData *)a3 error:(id *)a4;
-- (BOOL)pcsIdentitySetIsInICDPLocal:(_PCSIdentitySetData *)a3 error:(id *)a4;
-- (BOOL)pcsIdentitySetIsInICDPNetwork:(_PCSIdentitySetData *)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)pcsRestoreLocalBackup:(id)a3 error:(id *)a4;
-- (BOOL)pcsSynchronizeKeysWithInfo:(id)a3 error:(id *)a4;
-- (BOOL)repairWalrusWithAccountIdentifier:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)setWalrusEnabled:(BOOL)a3 accountIdentifier:(id)a4 options:(id)a5 error:(id *)a6;
-- (_PCSIdentitySetData)pcsIdentityCreateWithInfo:(id)a3 error:(id *)a4;
-- (_PCSIdentitySetData)pcsIdentitySetupWithInfo:(id)a3 error:(id *)a4;
+- (BOOL)_performPCSBlock:(id)block error:(id *)error;
+- (BOOL)isWalrusEnabledWithOptions:(id)options error:(id *)error;
+- (BOOL)pcsIdentityMigrateToiCDPWithInfo:(id)info error:(id *)error;
+- (BOOL)pcsIdentitySetCompanionInCircle:(_PCSIdentitySetData *)circle error:(id *)error;
+- (BOOL)pcsIdentitySetIsInICDPLocal:(_PCSIdentitySetData *)local error:(id *)error;
+- (BOOL)pcsIdentitySetIsInICDPNetwork:(_PCSIdentitySetData *)network options:(id)options error:(id *)error;
+- (BOOL)pcsRestoreLocalBackup:(id)backup error:(id *)error;
+- (BOOL)pcsSynchronizeKeysWithInfo:(id)info error:(id *)error;
+- (BOOL)repairWalrusWithAccountIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (BOOL)setWalrusEnabled:(BOOL)enabled accountIdentifier:(id)identifier options:(id)options error:(id *)error;
+- (_PCSIdentitySetData)pcsIdentityCreateWithInfo:(id)info error:(id *)error;
+- (_PCSIdentitySetData)pcsIdentitySetupWithInfo:(id)info error:(id *)error;
 @end
 
 @implementation CDPProtectedCloudStorageProxyImpl
 
-- (BOOL)pcsIdentitySetCompanionInCircle:(_PCSIdentitySetData *)a3 error:(id *)a4
+- (BOOL)pcsIdentitySetCompanionInCircle:(_PCSIdentitySetData *)circle error:(id *)error
 {
   if (+[CDPUtilities hasFullCDPSupport])
   {
@@ -33,13 +33,13 @@
   v9[1] = 3221225472;
   v9[2] = __75__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetCompanionInCircle_error___block_invoke;
   v9[3] = &__block_descriptor_40_e20_B16__0_____CFError_8l;
-  v9[4] = a3;
-  return [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v9 error:a4];
+  v9[4] = circle;
+  return [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v9 error:error];
 }
 
-- (_PCSIdentitySetData)pcsIdentityCreateWithInfo:(id)a3 error:(id *)a4
+- (_PCSIdentitySetData)pcsIdentityCreateWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -49,9 +49,9 @@
   v10[2] = __69__CDPProtectedCloudStorageProxyImpl_pcsIdentityCreateWithInfo_error___block_invoke;
   v10[3] = &unk_1E869D140;
   v12 = &v13;
-  v7 = v6;
+  v7 = infoCopy;
   v11 = v7;
-  [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:a4];
+  [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:error];
   v8 = v14[3];
 
   _Block_object_dispose(&v13, 8);
@@ -65,34 +65,34 @@ uint64_t __69__CDPProtectedCloudStorageProxyImpl_pcsIdentityCreateWithInfo_error
   return 1;
 }
 
-- (BOOL)pcsIdentitySetIsInICDPNetwork:(_PCSIdentitySetData *)a3 options:(id)a4 error:(id *)a5
+- (BOOL)pcsIdentitySetIsInICDPNetwork:(_PCSIdentitySetData *)network options:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetIsInICDPNetwork_options_error___block_invoke;
   v11[3] = &unk_1E869D168;
-  v12 = v8;
-  v13 = a3;
-  v9 = v8;
-  LOBYTE(a5) = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v11 error:a5];
+  v12 = optionsCopy;
+  networkCopy = network;
+  v9 = optionsCopy;
+  LOBYTE(error) = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v11 error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)pcsIdentitySetIsInICDPLocal:(_PCSIdentitySetData *)a3 error:(id *)a4
+- (BOOL)pcsIdentitySetIsInICDPLocal:(_PCSIdentitySetData *)local error:(id *)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetIsInICDPLocal_error___block_invoke;
   v5[3] = &__block_descriptor_40_e20_B16__0_____CFError_8l;
-  v5[4] = a3;
-  return [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v5 error:a4];
+  v5[4] = local;
+  return [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v5 error:error];
 }
 
-- (_PCSIdentitySetData)pcsIdentitySetupWithInfo:(id)a3 error:(id *)a4
+- (_PCSIdentitySetData)pcsIdentitySetupWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   if (+[CDPUtilities hasFullCDPSupport])
   {
     v7 = _CDPLogSystem();
@@ -111,8 +111,8 @@ uint64_t __69__CDPProtectedCloudStorageProxyImpl_pcsIdentityCreateWithInfo_error
     v10[2] = __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error___block_invoke;
     v10[3] = &unk_1E869D140;
     v12 = buf;
-    v11 = v6;
-    [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:a4];
+    v11 = infoCopy;
+    [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:error];
     v8 = *(v14 + 3);
 
     _Block_object_dispose(buf, 8);
@@ -133,9 +133,9 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
   return 1;
 }
 
-- (BOOL)pcsIdentityMigrateToiCDPWithInfo:(id)a3 error:(id *)a4
+- (BOOL)pcsIdentityMigrateToiCDPWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   if (+[CDPUtilities hasFullCDPSupport])
   {
     v7 = _CDPLogSystem();
@@ -149,8 +149,8 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
     v10[1] = 3221225472;
     v10[2] = __76__CDPProtectedCloudStorageProxyImpl_pcsIdentityMigrateToiCDPWithInfo_error___block_invoke;
     v10[3] = &unk_1E869D190;
-    v11 = v6;
-    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:a4];
+    v11 = infoCopy;
+    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:error];
   }
 
   else
@@ -161,9 +161,9 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
   return v8;
 }
 
-- (BOOL)pcsSynchronizeKeysWithInfo:(id)a3 error:(id *)a4
+- (BOOL)pcsSynchronizeKeysWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   if (+[CDPUtilities hasFullCDPSupport])
   {
     v7 = _CDPLogSystem();
@@ -177,8 +177,8 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
     v10[1] = 3221225472;
     v10[2] = __70__CDPProtectedCloudStorageProxyImpl_pcsSynchronizeKeysWithInfo_error___block_invoke;
     v10[3] = &unk_1E869D190;
-    v11 = v6;
-    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:a4];
+    v11 = infoCopy;
+    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:error];
   }
 
   else
@@ -189,9 +189,9 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
   return v8;
 }
 
-- (BOOL)pcsRestoreLocalBackup:(id)a3 error:(id *)a4
+- (BOOL)pcsRestoreLocalBackup:(id)backup error:(id *)error
 {
-  v6 = a3;
+  backupCopy = backup;
   if (+[CDPUtilities hasFullCDPSupport])
   {
     v7 = _CDPLogSystem();
@@ -205,8 +205,8 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
     v10[1] = 3221225472;
     v10[2] = __65__CDPProtectedCloudStorageProxyImpl_pcsRestoreLocalBackup_error___block_invoke;
     v10[3] = &unk_1E869D190;
-    v11 = v6;
-    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:a4];
+    v11 = backupCopy;
+    v8 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v10 error:error];
   }
 
   else
@@ -217,16 +217,16 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
   return v8;
 }
 
-- (BOOL)isWalrusEnabledWithOptions:(id)a3 error:(id *)a4
+- (BOOL)isWalrusEnabledWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDPProtectedCloudStorageProxyImpl *)self pcsIdentityCreateWithInfo:v6 error:a4];
-  if (*a4)
+  optionsCopy = options;
+  v7 = [(CDPProtectedCloudStorageProxyImpl *)self pcsIdentityCreateWithInfo:optionsCopy error:error];
+  if (*error)
   {
     v8 = _CDPLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [CDPProtectedCloudStorageProxyImpl isWalrusEnabledWithOptions:a4 error:?];
+      [CDPProtectedCloudStorageProxyImpl isWalrusEnabledWithOptions:error error:?];
     }
 
     v9 = 0;
@@ -239,8 +239,8 @@ uint64_t __68__CDPProtectedCloudStorageProxyImpl_pcsIdentitySetupWithInfo_error_
     v11[2] = __70__CDPProtectedCloudStorageProxyImpl_isWalrusEnabledWithOptions_error___block_invoke;
     v11[3] = &unk_1E869D168;
     v13 = v7;
-    v12 = v6;
-    v9 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v11 error:a4];
+    v12 = optionsCopy;
+    v9 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v11 error:error];
     v8 = v12;
   }
 
@@ -261,16 +261,16 @@ uint64_t __70__CDPProtectedCloudStorageProxyImpl_isWalrusEnabledWithOptions_erro
   return v4;
 }
 
-- (BOOL)repairWalrusWithAccountIdentifier:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)repairWalrusWithAccountIdentifier:(id)identifier options:(id)options error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CDPProtectedCloudStorageProxyImpl *)self pcsIdentityCreateWithInfo:v9 error:a5];
-  if (!*a5)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  v10 = [(CDPProtectedCloudStorageProxyImpl *)self pcsIdentityCreateWithInfo:optionsCopy error:error];
+  if (!*error)
   {
     v13 = v10;
-    if (![(CDPProtectedCloudStorageProxyImpl *)self isWalrusEnabledWithOptions:v9 error:a5])
+    if (![(CDPProtectedCloudStorageProxyImpl *)self isWalrusEnabledWithOptions:optionsCopy error:error])
     {
       goto LABEL_14;
     }
@@ -280,7 +280,7 @@ uint64_t __70__CDPProtectedCloudStorageProxyImpl_isWalrusEnabledWithOptions_erro
     v26[2] = __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifier_options_error___block_invoke;
     v26[3] = &__block_descriptor_40_e20_B16__0_____CFError_8l;
     v26[4] = v13;
-    v14 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v26 error:a5];
+    v14 = [(CDPProtectedCloudStorageProxyImpl *)self _performPCSBlock:v26 error:error];
     v15 = _CDPLogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -307,9 +307,9 @@ LABEL_15:
       [CDPProtectedCloudStorageProxyImpl repairWalrusWithAccountIdentifier:v16 options:? error:?];
     }
 
-    [(CDPProtectedCloudStorageProxyImpl *)self setWalrusEnabled:1 accountIdentifier:v8 options:v9 error:a5];
-    v17 = *a5;
-    v12 = *a5 == 0;
+    [(CDPProtectedCloudStorageProxyImpl *)self setWalrusEnabled:1 accountIdentifier:identifierCopy options:optionsCopy error:error];
+    v17 = *error;
+    v12 = *error == 0;
     v18 = _CDPLogSystem();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
     if (v17)
@@ -319,7 +319,7 @@ LABEL_15:
         goto LABEL_20;
       }
 
-      v20 = *a5;
+      v20 = *error;
       *buf = 138412290;
       v28 = v20;
       v21 = "Walrus repair failed: %@";
@@ -354,7 +354,7 @@ LABEL_20:
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [CDPProtectedCloudStorageProxyImpl isWalrusEnabledWithOptions:a5 error:?];
+    [CDPProtectedCloudStorageProxyImpl isWalrusEnabledWithOptions:error error:?];
   }
 
   v12 = 0;
@@ -394,12 +394,12 @@ uint64_t __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifi
   return v4(v3, 1, a2);
 }
 
-- (BOOL)setWalrusEnabled:(BOOL)a3 accountIdentifier:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)setWalrusEnabled:(BOOL)enabled accountIdentifier:(id)identifier options:(id)options error:(id *)error
 {
-  v8 = a3;
+  enabledCopy = enabled;
   v42 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
   v11 = _CDPSignpostLogSystem();
   v12 = _CDPSignpostCreate(v11);
   v14 = v13;
@@ -420,7 +420,7 @@ uint64_t __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifi
     _os_log_impl(&dword_1DED99000, v17, OS_LOG_TYPE_DEFAULT, "BEGIN [%lld]: UpdateAccountCleanupStatus  enableTelemetry=YES ", buf, 0xCu);
   }
 
-  if (v8)
+  if (enabledCopy)
   {
     v34 = 0;
     v18 = &v34;
@@ -437,10 +437,10 @@ uint64_t __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifi
   v20 = v19;
   v21 = *v18;
   v22 = v21;
-  if (a6)
+  if (error)
   {
     v23 = v21;
-    *a6 = v22;
+    *error = v22;
   }
 
   Nanoseconds = _CDPSignpostGetNanoseconds(v12, v14);
@@ -448,26 +448,26 @@ uint64_t __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifi
   v26 = v25;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v25))
   {
-    v27 = [v22 code];
+    code = [v22 code];
     *buf = 67240448;
-    *v36 = v8;
+    *v36 = enabledCopy;
     *&v36[4] = 1026;
-    *&v36[6] = v27;
+    *&v36[6] = code;
     _os_signpost_emit_with_name_impl(&dword_1DED99000, v26, OS_SIGNPOST_INTERVAL_END, v12, "UpdateAccountCleanupStatus", " isEnabled=%{public,signpost.telemetry:number1,name=isEnabled}d  Error=%{public,signpost.telemetry:number2,name=Error}d ", buf, 0xEu);
   }
 
   v28 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [v22 code];
+    code2 = [v22 code];
     *buf = 134218752;
     *v36 = v12;
     *&v36[8] = 2048;
     v37 = Nanoseconds / 1000000000.0;
     v38 = 1026;
-    v39 = v8;
+    v39 = enabledCopy;
     v40 = 1026;
-    v41 = v29;
+    v41 = code2;
     _os_log_impl(&dword_1DED99000, v28, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: UpdateAccountCleanupStatus  isEnabled=%{public,signpost.telemetry:number1,name=isEnabled}d  Error=%{public,signpost.telemetry:number2,name=Error}d ", buf, 0x22u);
   }
 
@@ -484,13 +484,13 @@ uint64_t __85__CDPProtectedCloudStorageProxyImpl_repairWalrusWithAccountIdentifi
   return v20;
 }
 
-- (BOOL)_performPCSBlock:(id)a3 error:(id *)a4
+- (BOOL)_performPCSBlock:(id)block error:(id *)error
 {
   v7 = 0;
-  v5 = (*(a3 + 2))(a3, &v7);
-  if (a4)
+  v5 = (*(block + 2))(block, &v7);
+  if (error)
   {
-    *a4 = v7;
+    *error = v7;
   }
 
   else if (v7)

@@ -1,12 +1,12 @@
 @interface CRFeatureAvailability
-- (BOOL)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4;
+- (BOOL)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier;
 - (BOOL)isCarPlayAllowed;
-- (BOOL)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5;
+- (BOOL)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier;
 - (CRFeatureAvailability)init;
-- (id)supportedAirPlayFeaturesForVehicleIdentifier:(id)a3;
+- (id)supportedAirPlayFeaturesForVehicleIdentifier:(id)identifier;
 - (unint64_t)deviceSupportedCarPlayFeatures;
-- (unint64_t)supportedCarPlayFeaturesForSession:(id)a3;
-- (void)fetchSupportedAirPlayFeaturesForVehicleIdentifier:(id)a3 completion:(id)a4;
+- (unint64_t)supportedCarPlayFeaturesForSession:(id)session;
+- (void)fetchSupportedAirPlayFeaturesForVehicleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CRFeatureAvailability
@@ -37,17 +37,17 @@
     [CRFeatureAvailability isCarPlayAllowed];
   }
 
-  v4 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __41__CRFeatureAvailability_isCarPlayAllowed__block_invoke;
   v6[3] = &unk_1E82FC008;
   v6[4] = &v7;
-  [v4 performSynchronousServiceBlock:v6 errorHandler:&__block_literal_global_2];
+  [serviceClient performSynchronousServiceBlock:v6 errorHandler:&__block_literal_global_2];
 
-  LOBYTE(v4) = *(v8 + 24);
+  LOBYTE(serviceClient) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return v4;
+  return serviceClient;
 }
 
 uint64_t __41__CRFeatureAvailability_isCarPlayAllowed__block_invoke(uint64_t a1, void *a2)
@@ -105,13 +105,13 @@ void __41__CRFeatureAvailability_isCarPlayAllowed__block_invoke_27(uint64_t a1, 
     [CRFeatureAvailability deviceSupportedCarPlayFeatures];
   }
 
-  v4 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__CRFeatureAvailability_deviceSupportedCarPlayFeatures__block_invoke;
   v7[3] = &unk_1E82FC008;
   v7[4] = &v8;
-  [v4 performSynchronousServiceBlock:v7 errorHandler:&__block_literal_global_32];
+  [serviceClient performSynchronousServiceBlock:v7 errorHandler:&__block_literal_global_32];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -165,9 +165,9 @@ void __55__CRFeatureAvailability_deviceSupportedCarPlayFeatures__block_invoke_30
   }
 }
 
-- (BOOL)disablesCarPlayFeatures:(unint64_t)a3 forVehicleIdentifier:(id)a4
+- (BOOL)disablesCarPlayFeatures:(unint64_t)features forVehicleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -175,19 +175,19 @@ void __55__CRFeatureAvailability_deviceSupportedCarPlayFeatures__block_invoke_30
   v7 = CarGeneralLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(CRFeatureAvailability *)v6 disablesCarPlayFeatures:a3 forVehicleIdentifier:v7];
+    [(CRFeatureAvailability *)identifierCopy disablesCarPlayFeatures:features forVehicleIdentifier:v7];
   }
 
-  v8 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__CRFeatureAvailability_disablesCarPlayFeatures_forVehicleIdentifier___block_invoke;
   v12[3] = &unk_1E82FC080;
-  v15 = a3;
-  v9 = v6;
+  featuresCopy = features;
+  v9 = identifierCopy;
   v13 = v9;
   v14 = &v16;
-  [v8 performSynchronousServiceBlock:v12 errorHandler:&__block_literal_global_35];
+  [serviceClient performSynchronousServiceBlock:v12 errorHandler:&__block_literal_global_35];
 
   v10 = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -253,17 +253,17 @@ void __70__CRFeatureAvailability_disablesCarPlayFeatures_forVehicleIdentifier___
   }
 }
 
-- (BOOL)setCarPlayFeatures:(unint64_t)a3 disabled:(BOOL)a4 forVehicleIdentifier:(id)a5
+- (BOOL)setCarPlayFeatures:(unint64_t)features disabled:(BOOL)disabled forVehicleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  identifierCopy = identifier;
   v9 = CarGeneralLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349314;
-    *&buf[4] = a3;
+    *&buf[4] = features;
     *&buf[12] = 2112;
-    *&buf[14] = v8;
+    *&buf[14] = identifierCopy;
     _os_log_impl(&dword_1C81FC000, v9, OS_LOG_TYPE_DEFAULT, "CRFeatureAvailability setCarPlayFeaturesDisabled: %{public}lu vehicleID: %@", buf, 0x16u);
   }
 
@@ -271,14 +271,14 @@ void __70__CRFeatureAvailability_disablesCarPlayFeatures_forVehicleIdentifier___
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v21 = 0;
-  v10 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__CRFeatureAvailability_setCarPlayFeatures_disabled_forVehicleIdentifier___block_invoke;
   v15[3] = &unk_1E82FC0A8;
-  v18 = a3;
-  v19 = a4;
-  v11 = v8;
+  featuresCopy = features;
+  disabledCopy = disabled;
+  v11 = identifierCopy;
   v16 = v11;
   v17 = buf;
   v14[0] = MEMORY[0x1E69E9820];
@@ -286,7 +286,7 @@ void __70__CRFeatureAvailability_disablesCarPlayFeatures_forVehicleIdentifier___
   v14[2] = __74__CRFeatureAvailability_setCarPlayFeatures_disabled_forVehicleIdentifier___block_invoke_36;
   v14[3] = &unk_1E82FC0D0;
   v14[4] = buf;
-  [v10 performSynchronousServiceBlock:v15 errorHandler:v14];
+  [serviceClient performSynchronousServiceBlock:v15 errorHandler:v14];
 
   v12 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -347,9 +347,9 @@ void __74__CRFeatureAvailability_setCarPlayFeatures_disabled_forVehicleIdentifie
   *(*(*(a1 + 32) + 8) + 24) = 0;
 }
 
-- (unint64_t)supportedCarPlayFeaturesForSession:(id)a3
+- (unint64_t)supportedCarPlayFeaturesForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -360,16 +360,16 @@ void __74__CRFeatureAvailability_setCarPlayFeatures_disabled_forVehicleIdentifie
     [CRFeatureAvailability supportedCarPlayFeaturesForSession:];
   }
 
-  v6 = [v4 MFiCertificateSerialNumber];
-  v7 = [(CRFeatureAvailability *)self serviceClient];
+  mFiCertificateSerialNumber = [sessionCopy MFiCertificateSerialNumber];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__CRFeatureAvailability_supportedCarPlayFeaturesForSession___block_invoke;
   v11[3] = &unk_1E82FC0F8;
-  v8 = v6;
+  v8 = mFiCertificateSerialNumber;
   v12 = v8;
   v13 = &v14;
-  [v7 performSynchronousServiceBlock:v11 errorHandler:&__block_literal_global_39];
+  [serviceClient performSynchronousServiceBlock:v11 errorHandler:&__block_literal_global_39];
 
   v9 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -425,10 +425,10 @@ void __60__CRFeatureAvailability_supportedCarPlayFeaturesForSession___block_invo
   }
 }
 
-- (id)supportedAirPlayFeaturesForVehicleIdentifier:(id)a3
+- (id)supportedAirPlayFeaturesForVehicleIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -441,15 +441,15 @@ void __60__CRFeatureAvailability_supportedCarPlayFeaturesForSession___block_invo
     [CRFeatureAvailability supportedAirPlayFeaturesForVehicleIdentifier:];
   }
 
-  v6 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__CRFeatureAvailability_supportedAirPlayFeaturesForVehicleIdentifier___block_invoke;
   v12[3] = &unk_1E82FC0F8;
-  v7 = v4;
+  v7 = identifierCopy;
   v13 = v7;
   v14 = &v15;
-  [v6 performSynchronousServiceBlock:v12 errorHandler:&__block_literal_global_43];
+  [serviceClient performSynchronousServiceBlock:v12 errorHandler:&__block_literal_global_43];
 
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -506,31 +506,31 @@ void __70__CRFeatureAvailability_supportedAirPlayFeaturesForVehicleIdentifier___
   }
 }
 
-- (void)fetchSupportedAirPlayFeaturesForVehicleIdentifier:(id)a3 completion:(id)a4
+- (void)fetchSupportedAirPlayFeaturesForVehicleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [CRFeatureAvailability fetchSupportedAirPlayFeaturesForVehicleIdentifier:completion:];
   }
 
-  v9 = [(CRFeatureAvailability *)self serviceClient];
+  serviceClient = [(CRFeatureAvailability *)self serviceClient];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__CRFeatureAvailability_fetchSupportedAirPlayFeaturesForVehicleIdentifier_completion___block_invoke;
   v14[3] = &unk_1E82FC170;
-  v15 = v6;
-  v16 = v7;
+  v15 = identifierCopy;
+  v16 = completionCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__CRFeatureAvailability_fetchSupportedAirPlayFeaturesForVehicleIdentifier_completion___block_invoke_44;
   v12[3] = &unk_1E82FBF48;
   v13 = v16;
   v10 = v16;
-  v11 = v6;
-  [v9 performServiceBlock:v14 errorHandler:v12];
+  v11 = identifierCopy;
+  [serviceClient performServiceBlock:v14 errorHandler:v12];
 }
 
 void __86__CRFeatureAvailability_fetchSupportedAirPlayFeaturesForVehicleIdentifier_completion___block_invoke(uint64_t a1, void *a2)

@@ -3,11 +3,11 @@
 + (id)dateType;
 + (id)integerType;
 + (id)stringType;
-- (CPLPrequeliteType)initWithTypeName:(const char *)a3 defaultValue:(id)a4 objcClass:(Class)a5;
+- (CPLPrequeliteType)initWithTypeName:(const char *)name defaultValue:(id)value objcClass:(Class)class;
 - (NSString)description;
-- (id)_bindableValueForValue:(id)a3;
-- (id)_valueForBindableValue:(id)a3;
-- (id)rawInjectionForValue:(id)a3;
+- (id)_bindableValueForValue:(id)value;
+- (id)_valueForBindableValue:(id)value;
+- (id)rawInjectionForValue:(id)value;
 @end
 
 @implementation CPLPrequeliteType
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_10015F688;
   block[3] = &unk_1002724F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D2B88 != -1)
   {
     dispatch_once(&qword_1002D2B88, block);
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = sub_10015F794;
   block[3] = &unk_1002724F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D2B98 != -1)
   {
     dispatch_once(&qword_1002D2B98, block);
@@ -52,7 +52,7 @@
   block[1] = 3221225472;
   block[2] = sub_10015F89C;
   block[3] = &unk_1002724F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D2BA8 != -1)
   {
     dispatch_once(&qword_1002D2BA8, block);
@@ -75,20 +75,20 @@
   return v3;
 }
 
-- (CPLPrequeliteType)initWithTypeName:(const char *)a3 defaultValue:(id)a4 objcClass:(Class)a5
+- (CPLPrequeliteType)initWithTypeName:(const char *)name defaultValue:(id)value objcClass:(Class)class
 {
-  v9 = a4;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = CPLPrequeliteType;
   v10 = [(CPLPrequeliteType *)&v14 init];
   if (v10)
   {
-    v11 = [PQLRawInjection rawInjection:a3 length:strlen(a3)];
+    v11 = [PQLRawInjection rawInjection:name length:strlen(name)];
     injection = v10->_injection;
     v10->_injection = v11;
 
-    v10->_objcClass = a5;
-    objc_storeStrong(&v10->_defaultValue, a4);
+    v10->_objcClass = class;
+    objc_storeStrong(&v10->_defaultValue, value);
   }
 
   return v10;
@@ -104,10 +104,10 @@
   return v6;
 }
 
-- (id)_bindableValueForValue:(id)a3
+- (id)_bindableValueForValue:(id)value
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
     objcClass = self->_objcClass;
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -119,13 +119,13 @@
         {
           v9 = self->_objcClass;
           *buf = 138413058;
-          v14 = self;
+          selfCopy = self;
           v15 = 2112;
           v16 = v9;
           v17 = 2112;
           v18 = objc_opt_class();
           v19 = 2112;
-          v20 = v5;
+          v20 = valueCopy;
           v10 = v18;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Invalid value for %@ (%@): %@ '%@'", buf, 0x2Au);
         }
@@ -133,19 +133,19 @@
 
       v11 = +[NSAssertionHandler currentHandler];
       v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/PrequeliteStore/CPLPrequeliteUtilites.m"];
-      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:108 description:{@"Invalid value for %@ (%@): %@ '%@'", self, self->_objcClass, objc_opt_class(), v5}];
+      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:108 description:{@"Invalid value for %@ (%@): %@ '%@'", self, self->_objcClass, objc_opt_class(), valueCopy}];
 
       abort();
     }
   }
 
-  return v5;
+  return valueCopy;
 }
 
-- (id)_valueForBindableValue:(id)a3
+- (id)_valueForBindableValue:(id)value
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
     objcClass = self->_objcClass;
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -157,13 +157,13 @@
         {
           v9 = self->_objcClass;
           *buf = 138413058;
-          v14 = self;
+          selfCopy = self;
           v15 = 2112;
           v16 = v9;
           v17 = 2112;
           v18 = objc_opt_class();
           v19 = 2112;
-          v20 = v5;
+          v20 = valueCopy;
           v10 = v18;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Invalid value for %@ (%@): %@ '%@'", buf, 0x2Au);
         }
@@ -171,24 +171,24 @@
 
       v11 = +[NSAssertionHandler currentHandler];
       v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/PrequeliteStore/CPLPrequeliteUtilites.m"];
-      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:113 description:{@"Invalid value for %@ (%@): %@ '%@'", self, self->_objcClass, objc_opt_class(), v5}];
+      [v11 handleFailureInMethod:a2 object:self file:v12 lineNumber:113 description:{@"Invalid value for %@ (%@): %@ '%@'", self, self->_objcClass, objc_opt_class(), valueCopy}];
 
       abort();
     }
   }
 
-  return v5;
+  return valueCopy;
 }
 
-- (id)rawInjectionForValue:(id)a3
+- (id)rawInjectionForValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   if ([(objc_class *)self->_objcClass isSubclassOfClass:objc_opt_class()])
   {
     sub_1001BF7A8(a2, self);
   }
 
-  v6 = [(CPLPrequeliteType *)self _bindableValueForValue:v5];
+  v6 = [(CPLPrequeliteType *)self _bindableValueForValue:valueCopy];
 
   objcClass = self->_objcClass;
   if (objcClass == objc_opt_class())

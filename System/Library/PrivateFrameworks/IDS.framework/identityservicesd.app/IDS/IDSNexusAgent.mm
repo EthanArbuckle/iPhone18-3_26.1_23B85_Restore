@@ -1,17 +1,17 @@
 @interface IDSNexusAgent
-+ (id)agentFromData:(id)a3;
-- (BOOL)assertAgentWithOptions:(id)a3;
-- (BOOL)requestNexusWithOptions:(id)a3;
-- (BOOL)startAgentWithOptions:(id)a3;
++ (id)agentFromData:(id)data;
+- (BOOL)assertAgentWithOptions:(id)options;
+- (BOOL)requestNexusWithOptions:(id)options;
+- (BOOL)startAgentWithOptions:(id)options;
 - (NSString)agentDescription;
 - (id)copyAgentData;
-- (void)closeNexusWithOptions:(id)a3;
-- (void)unassertAgentWithOptions:(id)a3;
+- (void)closeNexusWithOptions:(id)options;
+- (void)unassertAgentWithOptions:(id)options;
 @end
 
 @implementation IDSNexusAgent
 
-+ (id)agentFromData:(id)a3
++ (id)agentFromData:(id)data
 {
   v3 = objc_alloc_init(IDSNexusAgent);
 
@@ -41,16 +41,16 @@
 
 - (NSString)agentDescription
 {
-  v2 = [objc_opt_class() agentDomain];
-  v3 = [objc_opt_class() agentType];
-  v4 = [NSString stringWithFormat:@"IDSNexusAgent %@ : %@", v2, v3];
+  agentDomain = [objc_opt_class() agentDomain];
+  agentType = [objc_opt_class() agentType];
+  v4 = [NSString stringWithFormat:@"IDSNexusAgent %@ : %@", agentDomain, agentType];
 
   return v4;
 }
 
-- (BOOL)requestNexusWithOptions:(id)a3
+- (BOOL)requestNexusWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog ClientChannelAgent];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -65,9 +65,9 @@
   return v6;
 }
 
-- (void)closeNexusWithOptions:(id)a3
+- (void)closeNexusWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog ClientChannelAgent];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -80,9 +80,9 @@
   [v5 removeClient:v3];
 }
 
-- (BOOL)startAgentWithOptions:(id)a3
+- (BOOL)startAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog ClientChannelAgent];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,9 +94,9 @@
   return 1;
 }
 
-- (BOOL)assertAgentWithOptions:(id)a3
+- (BOOL)assertAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog ClientChannelAgent];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -108,9 +108,9 @@
   return 1;
 }
 
-- (void)unassertAgentWithOptions:(id)a3
+- (void)unassertAgentWithOptions:(id)options
 {
-  v3 = [a3 objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
+  v3 = [options objectForKeyedSubscript:NWNetworkAgentStartOptionClientUUID];
   v4 = +[IDSFoundationLog ClientChannelAgent];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {

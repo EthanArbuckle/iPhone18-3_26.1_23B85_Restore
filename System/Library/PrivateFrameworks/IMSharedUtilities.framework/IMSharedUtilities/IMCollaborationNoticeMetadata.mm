@@ -1,75 +1,75 @@
 @interface IMCollaborationNoticeMetadata
-+ (id)metadataWithType:(int64_t)a3 bundleIdentifier:(id)a4 contentURL:(id)a5 contentTitle:(id)a6 contentType:(id)a7 messageGUID:(id)a8 targetChatGUIDs:(id)a9;
-- (BOOL)isEqual:(id)a3;
-- (IMCollaborationNoticeMetadata)initWithCoder:(id)a3;
-- (IMCollaborationNoticeMetadata)initWithNoticeType:(int64_t)a3 bundleIdentifier:(id)a4 contentURL:(id)a5 contentTitle:(id)a6 contentType:(id)a7 messageGUID:(id)a8 targetChatGUIDs:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)metadataWithType:(int64_t)type bundleIdentifier:(id)identifier contentURL:(id)l contentTitle:(id)title contentType:(id)contentType messageGUID:(id)d targetChatGUIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
+- (IMCollaborationNoticeMetadata)initWithCoder:(id)coder;
+- (IMCollaborationNoticeMetadata)initWithNoticeType:(int64_t)type bundleIdentifier:(id)identifier contentURL:(id)l contentTitle:(id)title contentType:(id)contentType messageGUID:(id)d targetChatGUIDs:(id)ds;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation IMCollaborationNoticeMetadata
 
-+ (id)metadataWithType:(int64_t)a3 bundleIdentifier:(id)a4 contentURL:(id)a5 contentTitle:(id)a6 contentType:(id)a7 messageGUID:(id)a8 targetChatGUIDs:(id)a9
++ (id)metadataWithType:(int64_t)type bundleIdentifier:(id)identifier contentURL:(id)l contentTitle:(id)title contentType:(id)contentType messageGUID:(id)d targetChatGUIDs:(id)ds
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  v21 = [[IMCollaborationNoticeMetadata alloc] initWithNoticeType:a3 bundleIdentifier:v20 contentURL:v19 contentTitle:v18 contentType:v17 messageGUID:v16 targetChatGUIDs:v15];
+  dsCopy = ds;
+  dCopy = d;
+  contentTypeCopy = contentType;
+  titleCopy = title;
+  lCopy = l;
+  identifierCopy = identifier;
+  v21 = [[IMCollaborationNoticeMetadata alloc] initWithNoticeType:type bundleIdentifier:identifierCopy contentURL:lCopy contentTitle:titleCopy contentType:contentTypeCopy messageGUID:dCopy targetChatGUIDs:dsCopy];
 
   return v21;
 }
 
-- (IMCollaborationNoticeMetadata)initWithNoticeType:(int64_t)a3 bundleIdentifier:(id)a4 contentURL:(id)a5 contentTitle:(id)a6 contentType:(id)a7 messageGUID:(id)a8 targetChatGUIDs:(id)a9
+- (IMCollaborationNoticeMetadata)initWithNoticeType:(int64_t)type bundleIdentifier:(id)identifier contentURL:(id)l contentTitle:(id)title contentType:(id)contentType messageGUID:(id)d targetChatGUIDs:(id)ds
 {
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  lCopy = l;
+  titleCopy = title;
+  contentTypeCopy = contentType;
+  dCopy = d;
+  dsCopy = ds;
   v28.receiver = self;
   v28.super_class = IMCollaborationNoticeMetadata;
   v18 = [(IMCollaborationNoticeMetadata *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    if (a3 >= 0xA)
+    if (type >= 0xA)
     {
-      v20 = -1;
+      typeCopy = -1;
     }
 
     else
     {
-      v20 = a3;
+      typeCopy = type;
     }
 
-    v18->_type = v20;
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:{v24, v25, v26, v27}];
+    v18->_type = typeCopy;
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:{contentTypeCopy, titleCopy, lCopy, identifierCopy}];
     typeNumber = v19->_typeNumber;
     v19->_typeNumber = v21;
 
-    objc_storeStrong(&v19->_bundleIdentifier, a4);
-    objc_storeStrong(&v19->_contentURL, a5);
-    objc_storeStrong(&v19->_contentTitle, a6);
-    objc_storeStrong(&v19->_contentType, a7);
-    objc_storeStrong(&v19->_messageGUID, a8);
-    objc_storeStrong(&v19->_targetChatGUIDs, a9);
+    objc_storeStrong(&v19->_bundleIdentifier, identifier);
+    objc_storeStrong(&v19->_contentURL, l);
+    objc_storeStrong(&v19->_contentTitle, title);
+    objc_storeStrong(&v19->_contentType, contentType);
+    objc_storeStrong(&v19->_messageGUID, d);
+    objc_storeStrong(&v19->_targetChatGUIDs, ds);
   }
 
   return v19;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     self->_typeNumber = v5;
 
@@ -77,10 +77,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -90,20 +90,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IMCollaborationNoticeMetadata *)self type];
-      if (v6 == [(IMCollaborationNoticeMetadata *)v5 type])
+      v5 = equalCopy;
+      type = [(IMCollaborationNoticeMetadata *)self type];
+      if (type == [(IMCollaborationNoticeMetadata *)v5 type])
       {
-        v7 = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
-        v8 = [(IMCollaborationNoticeMetadata *)v5 bundleIdentifier];
-        v9 = v8;
-        if (v7 == v8)
+        bundleIdentifier = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
+        bundleIdentifier2 = [(IMCollaborationNoticeMetadata *)v5 bundleIdentifier];
+        v9 = bundleIdentifier2;
+        if (bundleIdentifier == bundleIdentifier2)
         {
         }
 
         else
         {
-          v10 = [v7 isEqual:v8];
+          v10 = [bundleIdentifier isEqual:bundleIdentifier2];
 
           if (!v10)
           {
@@ -111,16 +111,16 @@
           }
         }
 
-        v12 = [(IMCollaborationNoticeMetadata *)self contentURL];
-        v13 = [(IMCollaborationNoticeMetadata *)v5 contentURL];
-        v14 = v13;
-        if (v12 == v13)
+        contentURL = [(IMCollaborationNoticeMetadata *)self contentURL];
+        contentURL2 = [(IMCollaborationNoticeMetadata *)v5 contentURL];
+        v14 = contentURL2;
+        if (contentURL == contentURL2)
         {
         }
 
         else
         {
-          v15 = [v12 isEqual:v13];
+          v15 = [contentURL isEqual:contentURL2];
 
           if (!v15)
           {
@@ -128,16 +128,16 @@
           }
         }
 
-        v16 = [(IMCollaborationNoticeMetadata *)self contentTitle];
-        v17 = [(IMCollaborationNoticeMetadata *)v5 contentTitle];
-        v18 = v17;
-        if (v16 == v17)
+        contentTitle = [(IMCollaborationNoticeMetadata *)self contentTitle];
+        contentTitle2 = [(IMCollaborationNoticeMetadata *)v5 contentTitle];
+        v18 = contentTitle2;
+        if (contentTitle == contentTitle2)
         {
         }
 
         else
         {
-          v19 = [v16 isEqual:v17];
+          v19 = [contentTitle isEqual:contentTitle2];
 
           if (!v19)
           {
@@ -145,16 +145,16 @@
           }
         }
 
-        v20 = [(IMCollaborationNoticeMetadata *)self contentType];
-        v21 = [(IMCollaborationNoticeMetadata *)v5 contentType];
-        v22 = v21;
-        if (v20 == v21)
+        contentType = [(IMCollaborationNoticeMetadata *)self contentType];
+        contentType2 = [(IMCollaborationNoticeMetadata *)v5 contentType];
+        v22 = contentType2;
+        if (contentType == contentType2)
         {
         }
 
         else
         {
-          v23 = [v20 isEqual:v21];
+          v23 = [contentType isEqual:contentType2];
 
           if (!v23)
           {
@@ -162,16 +162,16 @@
           }
         }
 
-        v24 = [(IMCollaborationNoticeMetadata *)self messageGUID];
-        v25 = [(IMCollaborationNoticeMetadata *)v5 messageGUID];
-        v26 = v25;
-        if (v24 == v25)
+        messageGUID = [(IMCollaborationNoticeMetadata *)self messageGUID];
+        messageGUID2 = [(IMCollaborationNoticeMetadata *)v5 messageGUID];
+        v26 = messageGUID2;
+        if (messageGUID == messageGUID2)
         {
         }
 
         else
         {
-          v27 = [v24 isEqual:v25];
+          v27 = [messageGUID isEqual:messageGUID2];
 
           if (!v27)
           {
@@ -179,16 +179,16 @@
           }
         }
 
-        v29 = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
-        v30 = [(IMCollaborationNoticeMetadata *)v5 targetChatGUIDs];
-        if (v29 == v30)
+        targetChatGUIDs = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
+        targetChatGUIDs2 = [(IMCollaborationNoticeMetadata *)v5 targetChatGUIDs];
+        if (targetChatGUIDs == targetChatGUIDs2)
         {
           v11 = 1;
         }
 
         else
         {
-          v11 = [v29 isEqual:v30];
+          v11 = [targetChatGUIDs isEqual:targetChatGUIDs2];
         }
 
         goto LABEL_25;
@@ -211,20 +211,20 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(IMCollaborationNoticeMetadata *)self typeNumber];
-  v4 = [v3 hash];
-  v5 = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(IMCollaborationNoticeMetadata *)self contentURL];
-  v8 = [v7 hash];
-  v9 = [(IMCollaborationNoticeMetadata *)self contentTitle];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(IMCollaborationNoticeMetadata *)self contentType];
-  v12 = [v11 hash];
-  v13 = [(IMCollaborationNoticeMetadata *)self messageGUID];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
-  v16 = v14 ^ [v15 hash];
+  typeNumber = [(IMCollaborationNoticeMetadata *)self typeNumber];
+  v4 = [typeNumber hash];
+  bundleIdentifier = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash] ^ v4;
+  contentURL = [(IMCollaborationNoticeMetadata *)self contentURL];
+  v8 = [contentURL hash];
+  contentTitle = [(IMCollaborationNoticeMetadata *)self contentTitle];
+  v10 = v6 ^ v8 ^ [contentTitle hash];
+  contentType = [(IMCollaborationNoticeMetadata *)self contentType];
+  v12 = [contentType hash];
+  messageGUID = [(IMCollaborationNoticeMetadata *)self messageGUID];
+  v14 = v12 ^ [messageGUID hash];
+  targetChatGUIDs = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
+  v16 = v14 ^ [targetChatGUIDs hash];
 
   return v10 ^ v16;
 }
@@ -233,95 +233,95 @@ LABEL_26:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IMCollaborationNoticeMetadata type](self, "type")}];
-  v5 = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
-  v6 = [(IMCollaborationNoticeMetadata *)self contentURL];
-  v7 = [(IMCollaborationNoticeMetadata *)self contentTitle];
-  v8 = [(IMCollaborationNoticeMetadata *)self contentType];
-  v9 = [(IMCollaborationNoticeMetadata *)self messageGUID];
-  v10 = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
-  v11 = [v3 stringWithFormat:@"type: %@, bundleIdentifier: %@, contentURL: %@, contentTitle: %@, contentType: %@, messageGUID: %@, targetChatGUIDs: %@", v4, v5, v6, v7, v8, v9, v10];
+  bundleIdentifier = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
+  contentURL = [(IMCollaborationNoticeMetadata *)self contentURL];
+  contentTitle = [(IMCollaborationNoticeMetadata *)self contentTitle];
+  contentType = [(IMCollaborationNoticeMetadata *)self contentType];
+  messageGUID = [(IMCollaborationNoticeMetadata *)self messageGUID];
+  targetChatGUIDs = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
+  v11 = [v3 stringWithFormat:@"type: %@, bundleIdentifier: %@, contentURL: %@, contentTitle: %@, contentType: %@, messageGUID: %@, targetChatGUIDs: %@", v4, bundleIdentifier, contentURL, contentTitle, contentType, messageGUID, targetChatGUIDs];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[IMCollaborationNoticeMetadata type](self forKey:{"type"), @"t"}];
-  v5 = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"b"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[IMCollaborationNoticeMetadata type](self forKey:{"type"), @"t"}];
+  bundleIdentifier = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"b"];
 
-  v6 = [(IMCollaborationNoticeMetadata *)self contentURL];
-  [v4 encodeObject:v6 forKey:@"u"];
+  contentURL = [(IMCollaborationNoticeMetadata *)self contentURL];
+  [coderCopy encodeObject:contentURL forKey:@"u"];
 
-  v7 = [(IMCollaborationNoticeMetadata *)self contentTitle];
-  [v4 encodeObject:v7 forKey:@"c"];
+  contentTitle = [(IMCollaborationNoticeMetadata *)self contentTitle];
+  [coderCopy encodeObject:contentTitle forKey:@"c"];
 
-  v8 = [(IMCollaborationNoticeMetadata *)self contentType];
-  [v4 encodeObject:v8 forKey:@"y"];
+  contentType = [(IMCollaborationNoticeMetadata *)self contentType];
+  [coderCopy encodeObject:contentType forKey:@"y"];
 
-  v9 = [(IMCollaborationNoticeMetadata *)self messageGUID];
-  [v4 encodeObject:v9 forKey:@"m"];
+  messageGUID = [(IMCollaborationNoticeMetadata *)self messageGUID];
+  [coderCopy encodeObject:messageGUID forKey:@"m"];
 
-  v10 = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
-  [v4 encodeObject:v10 forKey:@"g"];
+  targetChatGUIDs = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
+  [coderCopy encodeObject:targetChatGUIDs forKey:@"g"];
 }
 
-- (IMCollaborationNoticeMetadata)initWithCoder:(id)a3
+- (IMCollaborationNoticeMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = IMCollaborationNoticeMetadata;
   v5 = [(IMCollaborationNoticeMetadata *)&v16 init];
   if (v5)
   {
-    -[IMCollaborationNoticeMetadata setType:](v5, "setType:", [v4 decodeIntegerForKey:@"t"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"b"];
+    -[IMCollaborationNoticeMetadata setType:](v5, "setType:", [coderCopy decodeIntegerForKey:@"t"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"b"];
     [(IMCollaborationNoticeMetadata *)v5 setBundleIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
     [(IMCollaborationNoticeMetadata *)v5 setContentURL:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
     [(IMCollaborationNoticeMetadata *)v5 setContentTitle:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"y"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"y"];
     [(IMCollaborationNoticeMetadata *)v5 setContentType:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"m"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"m"];
     [(IMCollaborationNoticeMetadata *)v5 setMessageGUID:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"g"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"g"];
     [(IMCollaborationNoticeMetadata *)v5 setTargetChatGUIDs:v14];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setType:{-[IMCollaborationNoticeMetadata type](self, "type")}];
-  v5 = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
-  [v4 setBundleIdentifier:v5];
+  bundleIdentifier = [(IMCollaborationNoticeMetadata *)self bundleIdentifier];
+  [v4 setBundleIdentifier:bundleIdentifier];
 
-  v6 = [(IMCollaborationNoticeMetadata *)self contentURL];
-  [v4 setContentURL:v6];
+  contentURL = [(IMCollaborationNoticeMetadata *)self contentURL];
+  [v4 setContentURL:contentURL];
 
-  v7 = [(IMCollaborationNoticeMetadata *)self contentTitle];
-  [v4 setContentTitle:v7];
+  contentTitle = [(IMCollaborationNoticeMetadata *)self contentTitle];
+  [v4 setContentTitle:contentTitle];
 
-  v8 = [(IMCollaborationNoticeMetadata *)self contentType];
-  [v4 setContentType:v8];
+  contentType = [(IMCollaborationNoticeMetadata *)self contentType];
+  [v4 setContentType:contentType];
 
-  v9 = [(IMCollaborationNoticeMetadata *)self messageGUID];
-  [v4 setMessageGUID:v9];
+  messageGUID = [(IMCollaborationNoticeMetadata *)self messageGUID];
+  [v4 setMessageGUID:messageGUID];
 
-  v10 = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
-  [v4 setTargetChatGUIDs:v10];
+  targetChatGUIDs = [(IMCollaborationNoticeMetadata *)self targetChatGUIDs];
+  [v4 setTargetChatGUIDs:targetChatGUIDs];
 
   return v4;
 }

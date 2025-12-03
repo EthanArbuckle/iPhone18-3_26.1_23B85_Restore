@@ -1,23 +1,23 @@
 @interface ESStoreAudioData
-- (BOOL)_moveAudioToVarMobile:(id)a3;
-- (BOOL)_saveAudioToCache:(id)a3;
-- (ESStoreAudioData)initWithUUIDString:(id)a3 language:(id)a4 task:(id)a5 codec:(id)a6 samplingRate:(unint64_t)a7 inferenceSpeakerCode:(id)a8 numTrainedFrames:(id)a9 trainingNnetVersion:(id)a10 isSpeakerCodeUsed:(BOOL)a11 isSamplingForDictation:(BOOL)a12 selfLogger:(id)a13;
+- (BOOL)_moveAudioToVarMobile:(id)mobile;
+- (BOOL)_saveAudioToCache:(id)cache;
+- (ESStoreAudioData)initWithUUIDString:(id)string language:(id)language task:(id)task codec:(id)codec samplingRate:(unint64_t)rate inferenceSpeakerCode:(id)code numTrainedFrames:(id)frames trainingNnetVersion:(id)self0 isSpeakerCodeUsed:(BOOL)self1 isSamplingForDictation:(BOOL)self2 selfLogger:(id)self3;
 - (id)_createAudioFilePath;
 - (id)_createCachesDirectoryIfItDoesNotExist;
-- (void)_cleanupCacheAndReset:(id)a3;
-- (void)_deleteItemAtPath:(id)a3;
-- (void)_logAudioSampledEventsWithStatus:(int64_t)a3 error:(id)a4 customReasonForFailure:(int64_t)a5;
-- (void)_saveAudioMetadataToFilePath:(id)a3;
-- (void)addAudioPacket:(id)a3;
+- (void)_cleanupCacheAndReset:(id)reset;
+- (void)_deleteItemAtPath:(id)path;
+- (void)_logAudioSampledEventsWithStatus:(int64_t)status error:(id)error customReasonForFailure:(int64_t)failure;
+- (void)_saveAudioMetadataToFilePath:(id)path;
+- (void)addAudioPacket:(id)packet;
 - (void)dealloc;
 - (void)saveAudioToDisk;
 @end
 
 @implementation ESStoreAudioData
 
-- (void)_logAudioSampledEventsWithStatus:(int64_t)a3 error:(id)a4 customReasonForFailure:(int64_t)a5
+- (void)_logAudioSampledEventsWithStatus:(int64_t)status error:(id)error customReasonForFailure:(int64_t)failure
 {
-  v8 = a4;
+  errorCopy = error;
   if (self->_isSamplingForDictation)
   {
     v9 = [NSMutableDictionary alloc];
@@ -45,9 +45,9 @@
     v15 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:3];
     v16 = [v9 initWithDictionary:v15];
 
-    if (a3)
+    if (status)
     {
-      if (a3 == 1)
+      if (status == 1)
       {
         v17 = @"success";
       }
@@ -60,16 +60,16 @@
       goto LABEL_37;
     }
 
-    if (v8)
+    if (errorCopy)
     {
-      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+      v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
       [v16 setObject:v18 forKeyedSubscript:@"errorCode"];
 
-      v19 = [v8 domain];
-      v20 = v19;
-      if (v19)
+      domain = [errorCopy domain];
+      v20 = domain;
+      if (domain)
       {
-        v21 = v19;
+        v21 = domain;
       }
 
       else
@@ -79,11 +79,11 @@
 
       [v16 setObject:v21 forKeyedSubscript:@"errorDomain"];
 
-      v22 = [v8 localizedDescription];
-      v23 = v22;
-      if (v22)
+      localizedDescription = [errorCopy localizedDescription];
+      v23 = localizedDescription;
+      if (localizedDescription)
       {
-        v24 = v22;
+        v24 = localizedDescription;
       }
 
       else
@@ -93,19 +93,19 @@
 
       [v16 setObject:v24 forKeyedSubscript:@"description"];
 
-      v25 = [v8 userInfo];
-      v26 = [v25 objectForKey:NSUnderlyingErrorKey];
+      userInfo = [errorCopy userInfo];
+      v26 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
       if (v26)
       {
         v27 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v26 code]);
         [v16 setObject:v27 forKeyedSubscript:@"underlyingErrorCode"];
 
-        v28 = [v26 domain];
-        v29 = v28;
-        if (v28)
+        domain2 = [v26 domain];
+        v29 = domain2;
+        if (domain2)
         {
-          v30 = v28;
+          v30 = domain2;
         }
 
         else
@@ -120,15 +120,15 @@
     }
 
     v17 = @"failed";
-    if (a5 > 2)
+    if (failure > 2)
     {
-      if (a5 == 3)
+      if (failure == 3)
       {
         v31 = @"Unable to create sampling directory";
         goto LABEL_35;
       }
 
-      if (a5 == 4)
+      if (failure == 4)
       {
         v31 = @"Unable to create dated directory";
         goto LABEL_35;
@@ -137,13 +137,13 @@
 
     else
     {
-      if (a5 == 1)
+      if (failure == 1)
       {
         v31 = @"Audio file to be moved nil";
         goto LABEL_35;
       }
 
-      if (a5 == 2)
+      if (failure == 2)
       {
         v31 = @"Sampling Date is nil";
 LABEL_35:
@@ -161,9 +161,9 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  if (a3)
+  if (status)
   {
-    if (a3 == 1)
+    if (status == 1)
     {
       [(ESSelfHelper *)self->_selfLogger logSampledAudioFileStoredSuccessfully];
     }
@@ -171,7 +171,7 @@ LABEL_37:
 
   else
   {
-    [(ESSelfHelper *)self->_selfLogger logSampledAudioFileStoredWithError:v8 customFailureReason:a5];
+    [(ESSelfHelper *)self->_selfLogger logSampledAudioFileStoredWithError:errorCopy customFailureReason:failure];
   }
 
 LABEL_38:
@@ -180,7 +180,7 @@ LABEL_38:
 - (id)_createCachesDirectoryIfItDoesNotExist
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
   v5 = AFDictationSamplingUtilities_ptr;
   if (!self->_isSamplingForDictation)
@@ -188,8 +188,8 @@ LABEL_38:
     v5 = AFAssistantSamplingUtilities_ptr;
   }
 
-  v6 = [*v5 sampledCachesSubDirectoryPath];
-  v7 = [v4 stringByAppendingPathComponent:v6];
+  sampledCachesSubDirectoryPath = [*v5 sampledCachesSubDirectoryPath];
+  v7 = [firstObject stringByAppendingPathComponent:sampledCachesSubDirectoryPath];
 
   v8 = AFCreateDirectoryWithPath();
 
@@ -198,8 +198,8 @@ LABEL_38:
 
 - (id)_createAudioFilePath
 {
-  v3 = [(ESStoreAudioData *)self _createCachesDirectoryIfItDoesNotExist];
-  if (v3)
+  _createCachesDirectoryIfItDoesNotExist = [(ESStoreAudioData *)self _createCachesDirectoryIfItDoesNotExist];
+  if (_createCachesDirectoryIfItDoesNotExist)
   {
     v4 = AFDictationSamplingUtilities_ptr;
     if (!self->_isSamplingForDictation)
@@ -207,8 +207,8 @@ LABEL_38:
       v4 = AFAssistantSamplingUtilities_ptr;
     }
 
-    v5 = [*v4 samplingDateAsString];
-    if (v5)
+    samplingDateAsString = [*v4 samplingDateAsString];
+    if (samplingDateAsString)
     {
       v6 = +[NSDate date];
       [v6 timeIntervalSince1970];
@@ -219,8 +219,8 @@ LABEL_38:
       v11 = [NSNumber numberWithDouble:v8];
       [(NSMutableDictionary *)audioMetadata setObject:v11 forKey:@"samplingTimestamp"];
 
-      v12 = [NSString stringWithFormat:@"%@_%@_%@.pcm", self->_UUIDString, v5, v9];
-      v13 = [v3 stringByAppendingPathComponent:v12];
+      v12 = [NSString stringWithFormat:@"%@_%@_%@.pcm", self->_UUIDString, samplingDateAsString, v9];
+      v13 = [_createCachesDirectoryIfItDoesNotExist stringByAppendingPathComponent:v12];
     }
 
     else
@@ -248,9 +248,9 @@ LABEL_38:
   return v13;
 }
 
-- (void)_saveAudioMetadataToFilePath:(id)a3
+- (void)_saveAudioMetadataToFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self->_isSamplingForDictation)
   {
     v5 = @"dictationUIInteractionIdentifier";
@@ -294,12 +294,12 @@ LABEL_38:
   if (selfLogger)
   {
     v13 = self->_audioMetadata;
-    v14 = [(ESSelfHelper *)selfLogger asrId];
-    v15 = [v14 UUIDString];
-    [(NSMutableDictionary *)v13 setObject:v15 forKey:@"asrSelfComponentIdentifier"];
+    asrId = [(ESSelfHelper *)selfLogger asrId];
+    uUIDString = [asrId UUIDString];
+    [(NSMutableDictionary *)v13 setObject:uUIDString forKey:@"asrSelfComponentIdentifier"];
   }
 
-  if (([(NSMutableDictionary *)self->_audioMetadata writeToFile:v4 atomically:1]& 1) == 0)
+  if (([(NSMutableDictionary *)self->_audioMetadata writeToFile:pathCopy atomically:1]& 1) == 0)
   {
     v16 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -310,19 +310,19 @@ LABEL_38:
       v20 = 2112;
       v21 = logPrefix;
       v22 = 2112;
-      v23 = v4;
+      v23 = pathCopy;
       _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s %@ Sampling: Error while writing audio metadata dict to plist - %@", &v18, 0x20u);
     }
   }
 }
 
-- (BOOL)_moveAudioToVarMobile:(id)a3
+- (BOOL)_moveAudioToVarMobile:(id)mobile
 {
-  v4 = a3;
-  v5 = [v4 pathComponents];
-  v6 = [v5 lastObject];
+  mobileCopy = mobile;
+  pathComponents = [mobileCopy pathComponents];
+  lastObject = [pathComponents lastObject];
 
-  if (v6)
+  if (lastObject)
   {
     if (self->_isSamplingForDictation)
     {
@@ -334,8 +334,8 @@ LABEL_38:
       v7 = AFAssistantSamplingUtilities_ptr;
     }
 
-    v8 = [*v7 samplingDateAsString];
-    if (v8)
+    samplingDateAsString = [*v7 samplingDateAsString];
+    if (samplingDateAsString)
     {
       if (self->_isSamplingForDictation)
       {
@@ -347,11 +347,11 @@ LABEL_38:
         v9 = AFAssistantSamplingUtilities_ptr;
       }
 
-      v10 = [*v9 createSamplingDirectory];
-      if (v10)
+      createSamplingDirectory = [*v9 createSamplingDirectory];
+      if (createSamplingDirectory)
       {
         v11 = +[NSFileManager defaultManager];
-        v12 = [v10 stringByAppendingPathComponent:v8];
+        v12 = [createSamplingDirectory stringByAppendingPathComponent:samplingDateAsString];
         if (self->_isSamplingForDictation && (AFIsInternalInstall() & 1) == 0)
         {
           buf[0] = 0;
@@ -368,9 +368,9 @@ LABEL_38:
 
         if (v13)
         {
-          v14 = [v13 stringByAppendingPathComponent:v6];
+          v14 = [v13 stringByAppendingPathComponent:lastObject];
           v35 = 0;
-          v15 = [v11 moveItemAtPath:v4 toPath:v14 error:&v35];
+          v15 = [v11 moveItemAtPath:mobileCopy toPath:v14 error:&v35];
           v34 = v35;
           v16 = AFSiriLogContextSpeech;
           if (v15)
@@ -388,8 +388,8 @@ LABEL_38:
               _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s %@ Sampling: Successfully moved audio file to var/mobile/Library dir, path=%@", buf, 0x20u);
             }
 
-            v18 = [v6 stringByDeletingPathExtension];
-            v19 = [NSString stringWithFormat:@"%@.plist", v18];
+            stringByDeletingPathExtension = [lastObject stringByDeletingPathExtension];
+            v19 = [NSString stringWithFormat:@"%@.plist", stringByDeletingPathExtension];
 
             v20 = [v13 stringByAppendingPathComponent:v19];
             [(ESStoreAudioData *)self _saveAudioMetadataToFilePath:v20];
@@ -412,9 +412,9 @@ LABEL_38:
               _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s %@ Sampling: Error while moving file from cache directory to var/mobile/Library - %@", buf, 0x20u);
             }
 
-            v26 = self;
+            selfCopy = self;
             v21 = v34;
-            [(ESStoreAudioData *)v26 _logAudioSampledEventsWithStatus:0 error:v34 customReasonForFailure:0];
+            [(ESStoreAudioData *)selfCopy _logAudioSampledEventsWithStatus:0 error:v34 customReasonForFailure:0];
           }
         }
 
@@ -429,9 +429,9 @@ LABEL_38:
             v38 = 2112;
             v39 = v31;
             v40 = 2112;
-            v41 = v10;
+            v41 = createSamplingDirectory;
             v42 = 2112;
-            v43 = v8;
+            v43 = samplingDateAsString;
             _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s %@ Sampling: Error while creating dated Sampled directory in %@ with date - %@", buf, 0x2Au);
           }
 
@@ -496,12 +496,12 @@ LABEL_38:
   return v15;
 }
 
-- (BOOL)_saveAudioToCache:(id)a3
+- (BOOL)_saveAudioToCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   audioPackets = self->_audioPackets;
   v12 = 0;
-  v6 = [(NSMutableData *)audioPackets writeToFile:v4 options:0x40000000 error:&v12];
+  v6 = [(NSMutableData *)audioPackets writeToFile:cacheCopy options:0x40000000 error:&v12];
   v7 = v12;
   v8 = AFSiriLogContextSpeech;
   if (v6)
@@ -514,7 +514,7 @@ LABEL_38:
       v15 = 2112;
       v16 = logPrefix;
       v17 = 2112;
-      v18 = v4;
+      v18 = cacheCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %@ Sampling: Successfully saved audio file to cache dir, path=%@", buf, 0x20u);
     }
   }
@@ -547,10 +547,10 @@ LABEL_38:
   [(ESStoreAudioData *)&v3 dealloc];
 }
 
-- (void)_cleanupCacheAndReset:(id)a3
+- (void)_cleanupCacheAndReset:(id)reset
 {
-  v4 = a3;
-  [(ESStoreAudioData *)self _deleteItemAtPath:v4];
+  resetCopy = reset;
+  [(ESStoreAudioData *)self _deleteItemAtPath:resetCopy];
   v5 = objc_alloc_init(NSMutableData);
   audioPackets = self->_audioPackets;
   self->_audioPackets = v5;
@@ -565,15 +565,15 @@ LABEL_38:
     v11 = 2112;
     v12 = logPrefix;
     v13 = 2112;
-    v14 = v4;
+    v14 = resetCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %@ Sampling: Done with cleanup of audioFile=%@ and reset of variables.", &v9, 0x20u);
   }
 }
 
-- (void)_deleteItemAtPath:(id)a3
+- (void)_deleteItemAtPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if (self->_isSamplingForDictation)
     {
@@ -585,7 +585,7 @@ LABEL_38:
       v5 = AFAssistantSamplingUtilities;
     }
 
-    v8 = [v5 deleteItemAtFilePath:v4];
+    v8 = [v5 deleteItemAtFilePath:pathCopy];
   }
 
   else
@@ -622,9 +622,9 @@ LABEL_38:
     goto LABEL_14;
   }
 
-  v3 = [(ESStoreAudioData *)self _createAudioFilePath];
+  _createAudioFilePath = [(ESStoreAudioData *)self _createAudioFilePath];
   currentAudioFilePath = self->_currentAudioFilePath;
-  self->_currentAudioFilePath = v3;
+  self->_currentAudioFilePath = _createAudioFilePath;
 
   if (!self->_currentAudioFilePath)
   {
@@ -652,30 +652,30 @@ LABEL_14:
   }
 }
 
-- (void)addAudioPacket:(id)a3
+- (void)addAudioPacket:(id)packet
 {
   if (self->_collectedAudioDurationMS <= 60000.0)
   {
     audioPackets = self->_audioPackets;
-    v5 = a3;
-    [(NSMutableData *)audioPackets appendData:v5];
-    v6 = [v5 length];
+    packetCopy = packet;
+    [(NSMutableData *)audioPackets appendData:packetCopy];
+    v6 = [packetCopy length];
 
     self->_collectedAudioDurationMS = self->_collectedAudioDurationMS + (v6 >> 1) / self->_samplingRate * 1000.0;
   }
 }
 
-- (ESStoreAudioData)initWithUUIDString:(id)a3 language:(id)a4 task:(id)a5 codec:(id)a6 samplingRate:(unint64_t)a7 inferenceSpeakerCode:(id)a8 numTrainedFrames:(id)a9 trainingNnetVersion:(id)a10 isSpeakerCodeUsed:(BOOL)a11 isSamplingForDictation:(BOOL)a12 selfLogger:(id)a13
+- (ESStoreAudioData)initWithUUIDString:(id)string language:(id)language task:(id)task codec:(id)codec samplingRate:(unint64_t)rate inferenceSpeakerCode:(id)code numTrainedFrames:(id)frames trainingNnetVersion:(id)self0 isSpeakerCodeUsed:(BOOL)self1 isSamplingForDictation:(BOOL)self2 selfLogger:(id)self3
 {
-  v18 = a3;
-  v19 = a4;
-  v40 = a5;
-  v39 = a6;
-  v20 = a8;
-  v21 = a9;
-  v38 = a10;
-  v37 = a13;
-  if ([v18 length])
+  stringCopy = string;
+  languageCopy = language;
+  taskCopy = task;
+  codecCopy = codec;
+  codeCopy = code;
+  framesCopy = frames;
+  versionCopy = version;
+  loggerCopy = logger;
+  if ([stringCopy length])
   {
     v41.receiver = self;
     v41.super_class = ESStoreAudioData;
@@ -683,18 +683,18 @@ LABEL_14:
     v23 = v22;
     if (v22)
     {
-      [(ESStoreAudioData *)v22 setUUIDString:v18];
-      [(ESStoreAudioData *)v23 setLanguage:v19];
-      objc_storeStrong(&v23->_task, a5);
-      objc_storeStrong(&v23->_codec, a6);
-      v23->_samplingRate = a7;
-      v24 = [v20 copy];
+      [(ESStoreAudioData *)v22 setUUIDString:stringCopy];
+      [(ESStoreAudioData *)v23 setLanguage:languageCopy];
+      objc_storeStrong(&v23->_task, task);
+      objc_storeStrong(&v23->_codec, codec);
+      v23->_samplingRate = rate;
+      v24 = [codeCopy copy];
       inferenceSpeakerCode = v23->_inferenceSpeakerCode;
       v23->_inferenceSpeakerCode = v24;
 
-      objc_storeStrong(&v23->_numTrainedFrames, a9);
-      objc_storeStrong(&v23->_trainingNnetVersion, a10);
-      v23->_isSpeakerCodeUsed = a11;
+      objc_storeStrong(&v23->_numTrainedFrames, frames);
+      objc_storeStrong(&v23->_trainingNnetVersion, version);
+      v23->_isSpeakerCodeUsed = used;
       v26 = objc_alloc_init(NSMutableData);
       audioPackets = v23->_audioPackets;
       v23->_audioPackets = v26;
@@ -703,21 +703,21 @@ LABEL_14:
       audioMetadata = v23->_audioMetadata;
       v23->_audioMetadata = v28;
 
-      v23->_isSamplingForDictation = a12;
-      objc_storeStrong(&v23->_selfLogger, a13);
+      v23->_isSamplingForDictation = dictation;
+      objc_storeStrong(&v23->_selfLogger, logger);
       v30 = AFDictationSamplingUtilities_ptr;
       if (!v23->_isSamplingForDictation)
       {
         v30 = AFAssistantSamplingUtilities_ptr;
       }
 
-      v31 = [*v30 component];
+      component = [*v30 component];
       logPrefix = v23->_logPrefix;
-      v23->_logPrefix = v31;
+      v23->_logPrefix = component;
     }
 
     self = v23;
-    v33 = self;
+    selfCopy = self;
   }
 
   else
@@ -730,10 +730,10 @@ LABEL_14:
       _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "%s Sampling: Error while initializing ESStoreAudioData because uuid is invalid.", buf, 0xCu);
     }
 
-    v33 = 0;
+    selfCopy = 0;
   }
 
-  return v33;
+  return selfCopy;
 }
 
 @end

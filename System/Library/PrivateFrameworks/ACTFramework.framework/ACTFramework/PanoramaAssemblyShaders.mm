@@ -1,12 +1,12 @@
 @interface PanoramaAssemblyShaders
-- (PanoramaAssemblyShaders)initWithContext:(id)a3;
+- (PanoramaAssemblyShaders)initWithContext:(id)context;
 @end
 
 @implementation PanoramaAssemblyShaders
 
-- (PanoramaAssemblyShaders)initWithContext:(id)a3
+- (PanoramaAssemblyShaders)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v44.receiver = self;
   v44.super_class = PanoramaAssemblyShaders;
   v5 = [(PanoramaAssemblyShaders *)&v44 init];

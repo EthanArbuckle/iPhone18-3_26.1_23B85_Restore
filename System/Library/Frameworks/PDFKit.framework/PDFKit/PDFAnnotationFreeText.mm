@@ -2,13 +2,13 @@
 - (NSColor)fontColor;
 - (NSFont)font;
 - (NSTextAlignment)alignment;
-- (PDFAnnotationFreeText)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forPage:(id)a4;
-- (PDFAnnotationFreeText)initWithCoder:(id)a3;
+- (PDFAnnotationFreeText)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forPage:(id)page;
+- (PDFAnnotationFreeText)initWithCoder:(id)coder;
 - (__CFDictionary)commonCreateDictionaryRef;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)commonInit;
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAlignment:(NSTextAlignment)alignment;
 - (void)setFont:(NSFont *)font;
 - (void)setFontColor:(NSColor *)color;
@@ -16,11 +16,11 @@
 
 @implementation PDFAnnotationFreeText
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = PDFAnnotationFreeText;
-  v3 = [(PDFAnnotation *)&v7 copyWithZone:a3];
+  v3 = [(PDFAnnotation *)&v7 copyWithZone:zone];
   if (v3)
   {
     v4 = objc_alloc_init(PDFAnnotationFreeTextPrivateVars);
@@ -31,14 +31,14 @@
   return v3;
 }
 
-- (PDFAnnotationFreeText)initWithCoder:(id)a3
+- (PDFAnnotationFreeText)initWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v10.receiver = self;
     v10.super_class = PDFAnnotationFreeText;
-    self = [(PDFAnnotation *)&v10 initWithCoder:v5];
+    self = [(PDFAnnotation *)&v10 initWithCoder:coderCopy];
   }
 
   else
@@ -52,20 +52,20 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = PDFAnnotationFreeText;
-  [(PDFAnnotation *)&v3 encodeWithCoder:a3];
+  [(PDFAnnotation *)&v3 encodeWithCoder:coder];
 }
 
 - (NSFont)font
 {
   v4.receiver = self;
   v4.super_class = PDFAnnotationFreeText;
-  v2 = [(PDFAnnotation *)&v4 font];
+  font = [(PDFAnnotation *)&v4 font];
 
-  return v2;
+  return font;
 }
 
 - (void)setFont:(NSFont *)font
@@ -79,9 +79,9 @@
 {
   v4.receiver = self;
   v4.super_class = PDFAnnotationFreeText;
-  v2 = [(PDFAnnotation *)&v4 fontColor];
+  fontColor = [(PDFAnnotation *)&v4 fontColor];
 
-  return v2;
+  return fontColor;
 }
 
 - (void)setFontColor:(NSColor *)color
@@ -94,9 +94,9 @@
 - (NSTextAlignment)alignment
 {
   v2 = [(PDFAnnotation *)self valueForAnnotationKey:@"/Q"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)setAlignment:(NSTextAlignment)alignment
@@ -105,11 +105,11 @@
   [(PDFAnnotation *)self setValue:v4 forAnnotationKey:@"/Q"];
 }
 
-- (PDFAnnotationFreeText)initWithAnnotationDictionary:(CGPDFDictionary *)a3 forPage:(id)a4
+- (PDFAnnotationFreeText)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary forPage:(id)page
 {
   v5.receiver = self;
   v5.super_class = PDFAnnotationFreeText;
-  return [(PDFAnnotation *)&v5 initWithAnnotationDictionary:a3 forPage:a4];
+  return [(PDFAnnotation *)&v5 initWithAnnotationDictionary:dictionary forPage:page];
 }
 
 - (void)commonInit
@@ -133,11 +133,11 @@
   return [(PDFAnnotation *)&v3 commonCreateDictionaryRef];
 }
 
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context
 {
   v4.receiver = self;
   v4.super_class = PDFAnnotationFreeText;
-  [(PDFAnnotation *)&v4 drawWithBox:a3 inContext:a4];
+  [(PDFAnnotation *)&v4 drawWithBox:box inContext:context];
 }
 
 @end

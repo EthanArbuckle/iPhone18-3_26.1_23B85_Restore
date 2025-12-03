@@ -1,22 +1,22 @@
 @interface QLMarkupItemViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axPhotoDescriptionFromContext:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axPhotoDescriptionFromContext:(id)context;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation QLMarkupItemViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"QLMarkupItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
-  [v3 validateClass:@"QLMarkupItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"QLMarkupItemViewController" isKindOfClass:@"QLItemViewController"];
-  [v3 validateClass:@"QLItemViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"QLMarkupItemViewController" hasInstanceMethod:@"loadPreviewControllerWithContents:context:completionHandler:" withFullSignature:{"v", "@", "@", "@?", 0}];
+  [validationsCopy validateClass:@"QLMarkupItemViewController" hasInstanceMethod:@"previewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"QLMarkupItemViewController" isKindOfClass:@"QLItemViewController"];
+  [validationsCopy validateClass:@"QLItemViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLItemViewController" hasInstanceMethod:@"context" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"QLPreviewContext" hasInstanceMethod:@"previewTitle" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,11 +42,11 @@ uint64_t __85__QLMarkupItemViewControllerAccessibility__accessibilityLoadAccessi
   return isKindOfClass & 1;
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
   v6.receiver = self;
   v6.super_class = QLMarkupItemViewControllerAccessibility;
-  [(QLMarkupItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:a3 context:a4 completionHandler:a5];
+  [(QLMarkupItemViewControllerAccessibility *)&v6 loadPreviewControllerWithContents:contents context:context completionHandler:handler];
   [(QLMarkupItemViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -59,16 +59,16 @@ uint64_t __85__QLMarkupItemViewControllerAccessibility__accessibilityLoadAccessi
   [v3 setAccessibilityViewIsModal:1];
 }
 
-- (id)_axPhotoDescriptionFromContext:(id)a3
+- (id)_axPhotoDescriptionFromContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 accessibilityLabel];
-  if (!v4)
+  contextCopy = context;
+  accessibilityLabel = [contextCopy accessibilityLabel];
+  if (!accessibilityLabel)
   {
-    v4 = [v3 safeValueForKey:@"previewTitle"];
+    accessibilityLabel = [contextCopy safeValueForKey:@"previewTitle"];
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

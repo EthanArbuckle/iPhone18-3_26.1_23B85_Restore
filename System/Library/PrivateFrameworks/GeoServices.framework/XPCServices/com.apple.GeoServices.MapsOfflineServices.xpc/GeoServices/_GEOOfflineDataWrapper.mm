@@ -1,18 +1,18 @@
 @interface _GEOOfflineDataWrapper
-- (BOOL)hasDataForKey:(id)a3;
-- (id)getDataFileURLSync:(id)a3 sandboxExtensionOwner:(id *)a4;
-- (id)getDataSync:(id)a3;
-- (void)getAvailableRegionsWithCallback:(id)a3;
-- (void)getDataAsync:(id)a3 callback:(id)a4;
-- (void)getDataFileURLAsync:(id)a3 callback:(id)a4;
-- (void)hasDataForKey:(id)a3 callback:(id)a4;
+- (BOOL)hasDataForKey:(id)key;
+- (id)getDataFileURLSync:(id)sync sandboxExtensionOwner:(id *)owner;
+- (id)getDataSync:(id)sync;
+- (void)getAvailableRegionsWithCallback:(id)callback;
+- (void)getDataAsync:(id)async callback:(id)callback;
+- (void)getDataFileURLAsync:(id)async callback:(id)callback;
+- (void)hasDataForKey:(id)key callback:(id)callback;
 @end
 
 @implementation _GEOOfflineDataWrapper
 
-- (void)getAvailableRegionsWithCallback:(id)a3
+- (void)getAvailableRegionsWithCallback:(id)callback
 {
-  v3 = a3;
+  callbackCopy = callback;
   v4 = +[GEOOfflineDataAccess sharedInstance];
   qos_class_self();
   global_queue = geo_get_global_queue();
@@ -20,34 +20,34 @@
   v7[1] = 3221225472;
   v7[2] = sub_1000013D8;
   v7[3] = &unk_100008300;
-  v8 = v3;
-  v6 = v3;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   [v4 getFullyDownloadedRegionsWithCallbackQueue:global_queue callback:v7];
 }
 
-- (BOOL)hasDataForKey:(id)a3
+- (BOOL)hasDataForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [GEOOfflineDataKey alloc];
-  v5 = [v3 layer];
-  v6 = [v3 serviceKey];
+  layer = [keyCopy layer];
+  serviceKey = [keyCopy serviceKey];
 
-  v7 = [v4 initWithLayer:v5 serviceKey:v6];
+  v7 = [v4 initWithLayer:layer serviceKey:serviceKey];
   v8 = +[GEOOfflineDataAccess sharedInstance];
-  LOBYTE(v5) = [v8 hasDataForKey:v7 error:0];
+  LOBYTE(layer) = [v8 hasDataForKey:v7 error:0];
 
-  return v5;
+  return layer;
 }
 
-- (void)hasDataForKey:(id)a3 callback:(id)a4
+- (void)hasDataForKey:(id)key callback:(id)callback
 {
-  v5 = a4;
-  v6 = a3;
+  callbackCopy = callback;
+  keyCopy = key;
   v7 = [GEOOfflineDataKey alloc];
-  v8 = [v6 layer];
-  v9 = [v6 serviceKey];
+  layer = [keyCopy layer];
+  serviceKey = [keyCopy serviceKey];
 
-  v10 = [v7 initWithLayer:v8 serviceKey:v9];
+  v10 = [v7 initWithLayer:layer serviceKey:serviceKey];
   v11 = +[GEOOfflineDataAccess sharedInstance];
   qos_class_self();
   global_queue = geo_get_global_queue();
@@ -55,22 +55,22 @@
   v14[1] = 3221225472;
   v14[2] = sub_100001918;
   v14[3] = &unk_100008270;
-  v15 = v5;
-  v13 = v5;
+  v15 = callbackCopy;
+  v13 = callbackCopy;
   [v11 hasDataForKey:v10 callbackQueue:global_queue callback:v14];
 }
 
-- (id)getDataFileURLSync:(id)a3 sandboxExtensionOwner:(id *)a4
+- (id)getDataFileURLSync:(id)sync sandboxExtensionOwner:(id *)owner
 {
-  v5 = a3;
-  if ([v5 layer] == 12)
+  syncCopy = sync;
+  if ([syncCopy layer] == 12)
   {
-    if (a4)
+    if (owner)
     {
       v6 = [GEOOfflineDataKey alloc];
-      v7 = [v5 layer];
-      v8 = [v5 serviceKey];
-      v9 = [v6 initWithLayer:v7 serviceKey:v8];
+      layer = [syncCopy layer];
+      serviceKey = [syncCopy serviceKey];
+      v9 = [v6 initWithLayer:layer serviceKey:serviceKey];
 
       v10 = +[GEOOfflineDataAccess sharedInstance];
       v23 = 0;
@@ -79,12 +79,12 @@
 
       if (v11)
       {
-        v13 = [v11 fileURL];
-        if (v13)
+        fileURL = [v11 fileURL];
+        if (fileURL)
         {
-          v14 = v13;
+          v14 = fileURL;
           v15 = v11;
-          *a4 = v11;
+          *owner = v11;
           v16 = v14;
           v17 = v16;
 LABEL_16:
@@ -96,7 +96,7 @@ LABEL_16:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
           *buf = 138477827;
-          v25 = v5;
+          v25 = syncCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Expected filesystem-backed data for key %{private}@", buf, 0xCu);
         }
 
@@ -105,10 +105,10 @@ LABEL_16:
 
       else
       {
-        v18 = [v12 domain];
+        domain = [v12 domain];
         v19 = GEOErrorDomain();
         v20 = OS_LOG_TYPE_ERROR;
-        if ([v18 isEqual:v19])
+        if ([domain isEqual:v19])
         {
           if ([v12 code] == -8)
           {
@@ -125,7 +125,7 @@ LABEL_16:
         if (os_log_type_enabled(v16, v20))
         {
           *buf = 138478083;
-          v25 = v5;
+          v25 = syncCopy;
           v26 = 2114;
           v27 = v12;
           _os_log_impl(&_mh_execute_header, v16, v20, "Failed to fetch key %{private}@: %{public}@", buf, 0x16u);
@@ -149,16 +149,16 @@ LABEL_17:
   return v17;
 }
 
-- (void)getDataFileURLAsync:(id)a3 callback:(id)a4
+- (void)getDataFileURLAsync:(id)async callback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 layer] == 12)
+  asyncCopy = async;
+  callbackCopy = callback;
+  if ([asyncCopy layer] == 12)
   {
     v7 = [GEOOfflineDataKey alloc];
-    v8 = [v5 layer];
-    v9 = [v5 serviceKey];
-    v10 = [v7 initWithLayer:v8 serviceKey:v9];
+    layer = [asyncCopy layer];
+    serviceKey = [asyncCopy serviceKey];
+    v10 = [v7 initWithLayer:layer serviceKey:serviceKey];
 
     v11 = +[GEOOfflineDataAccess sharedInstance];
     qos_class_self();
@@ -167,15 +167,15 @@ LABEL_17:
     v15[1] = 3221225472;
     v15[2] = sub_100001DBC;
     v15[3] = &unk_100008220;
-    v16 = v5;
-    v17 = v6;
+    v16 = asyncCopy;
+    v17 = callbackCopy;
     [v11 getDataForKey:v10 callbackQueue:global_queue callback:v15];
 
 LABEL_3:
     goto LABEL_4;
   }
 
-  if (v6)
+  if (callbackCopy)
   {
     qos_class_self();
     v13 = geo_get_global_queue();
@@ -188,7 +188,7 @@ LABEL_3:
       block[1] = 3221225472;
       block[2] = sub_100001DA4;
       block[3] = &unk_100008248;
-      v19 = v6;
+      v19 = callbackCopy;
       dispatch_async(v14, block);
 
       v10 = v19;
@@ -199,14 +199,14 @@ LABEL_3:
 LABEL_4:
 }
 
-- (id)getDataSync:(id)a3
+- (id)getDataSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = [GEOOfflineDataKey alloc];
-  v5 = [v3 layer];
-  v6 = [v3 serviceKey];
+  layer = [syncCopy layer];
+  serviceKey = [syncCopy serviceKey];
 
-  v7 = [v4 initWithLayer:v5 serviceKey:v6];
+  v7 = [v4 initWithLayer:layer serviceKey:serviceKey];
   v8 = +[GEOOfflineDataAccess sharedInstance];
   v15 = 0;
   v9 = [v8 dataForKey:v7 error:&v15];
@@ -229,14 +229,14 @@ LABEL_4:
   return v11;
 }
 
-- (void)getDataAsync:(id)a3 callback:(id)a4
+- (void)getDataAsync:(id)async callback:(id)callback
 {
-  v5 = a3;
-  v6 = a4;
+  asyncCopy = async;
+  callbackCopy = callback;
   v7 = [GEOOfflineDataKey alloc];
-  v8 = [v5 layer];
-  v9 = [v5 serviceKey];
-  v10 = [v7 initWithLayer:v8 serviceKey:v9];
+  layer = [asyncCopy layer];
+  serviceKey = [asyncCopy serviceKey];
+  v10 = [v7 initWithLayer:layer serviceKey:serviceKey];
 
   v11 = +[GEOOfflineDataAccess sharedInstance];
   qos_class_self();
@@ -245,10 +245,10 @@ LABEL_4:
   v15[1] = 3221225472;
   v15[2] = sub_100002204;
   v15[3] = &unk_100008220;
-  v16 = v5;
-  v17 = v6;
-  v13 = v6;
-  v14 = v5;
+  v16 = asyncCopy;
+  v17 = callbackCopy;
+  v13 = callbackCopy;
+  v14 = asyncCopy;
   [v11 getDataForKey:v10 callbackQueue:global_queue callback:v15];
 }
 

@@ -1,6 +1,6 @@
 @interface DTProcessorTraceConfigurationState
 + (DTProcessorTraceConfigurationState)shared;
-- (BOOL)setBufferEnabled:(BOOL)a3;
+- (BOOL)setBufferEnabled:(BOOL)enabled;
 - (DTProcessorTraceConfigurationState)init;
 - (void)dealloc;
 @end
@@ -52,20 +52,20 @@ LABEL_14:
     v10 = [v8 objectForKeyedSubscript:@"DevelopmentTrace"];
     if ([v9 BOOLValue])
     {
-      v11 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v11 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
-    v2->_hardwareSupported = v11;
+    v2->_hardwareSupported = bOOLValue;
     v2->_hardwareConfigured = [CFProperty unsignedLongLongValue] != 0;
     v12 = [v8 objectForKeyedSubscript:@"FeatureFlags"];
-    v13 = [v12 unsignedIntegerValue];
-    v2->_supportsStreaming = (v13 & 8) != 0;
-    v2->_supportsVirtualBuffer = (v13 & 4) != 0;
+    unsignedIntegerValue = [v12 unsignedIntegerValue];
+    v2->_supportsStreaming = (unsignedIntegerValue & 8) != 0;
+    v2->_supportsVirtualBuffer = (unsignedIntegerValue & 4) != 0;
     IOObjectRelease(v5);
 
     goto LABEL_14;
@@ -92,11 +92,11 @@ LABEL_15:
   [(DTProcessorTraceConfigurationState *)&v3 dealloc];
 }
 
-- (BOOL)setBufferEnabled:(BOOL)a3
+- (BOOL)setBufferEnabled:(BOOL)enabled
 {
   v5 = 0;
   v6 = -1;
-  if (a3)
+  if (enabled)
   {
     v3 = &v6;
   }

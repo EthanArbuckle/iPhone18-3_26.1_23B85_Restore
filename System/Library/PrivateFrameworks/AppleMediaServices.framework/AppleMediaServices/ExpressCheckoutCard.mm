@@ -1,14 +1,14 @@
 @interface ExpressCheckoutCard
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ExpressCheckoutCard
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_192C9C478(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_192C9C478(coderCopy);
 }
 
 @end

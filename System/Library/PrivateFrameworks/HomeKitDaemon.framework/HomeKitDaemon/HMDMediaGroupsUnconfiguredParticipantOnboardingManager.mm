@@ -1,15 +1,15 @@
 @interface HMDMediaGroupsUnconfiguredParticipantOnboardingManager
 + (id)logCategory;
-- (HMDMediaGroupsUnconfiguredParticipantOnboardingManager)initWithIdentifier:(id)a3;
+- (HMDMediaGroupsUnconfiguredParticipantOnboardingManager)initWithIdentifier:(id)identifier;
 - (HMDMediaGroupsUnconfiguredParticipantOnboardingManagerDataSource)dataSource;
-- (id)dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)a3;
+- (id)dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)d;
 - (id)logIdentifier;
-- (id)mediaDestinationManagerWithParticipantAccessoryUUID:(id)a3;
+- (id)mediaDestinationManagerWithParticipantAccessoryUUID:(id)d;
 - (id)queuedParticipantAccessoryUUIDs;
-- (void)attemptOnboardingForParticipantAccessoryUUID:(id)a3;
+- (void)attemptOnboardingForParticipantAccessoryUUID:(id)d;
 - (void)dequeueAvailableOnboadedParticipants;
-- (void)queueOnboardingParticipantWithAccessoryUUID:(id)a3 withAssociatedGroupIdentifier:(id)a4;
-- (void)setQueuedAssociatedGroupIdentifier:(id)a3 forParticipantAccessoryUUID:(id)a4;
+- (void)queueOnboardingParticipantWithAccessoryUUID:(id)d withAssociatedGroupIdentifier:(id)identifier;
+- (void)setQueuedAssociatedGroupIdentifier:(id)identifier forParticipantAccessoryUUID:(id)d;
 @end
 
 @implementation HMDMediaGroupsUnconfiguredParticipantOnboardingManager
@@ -23,27 +23,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (id)mediaDestinationManagerWithParticipantAccessoryUUID:(id)a3
+- (id)mediaDestinationManagerWithParticipantAccessoryUUID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self dataSource];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  dataSource = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 mediaDestinationManagerWithParticipantAccessoryUUID:v4 forMediaGroupsUnconfiguredParticipantOnboardingManager:self];
+    v7 = [dataSource mediaDestinationManagerWithParticipantAccessoryUUID:dCopy forMediaGroupsUnconfiguredParticipantOnboardingManager:self];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -51,7 +51,7 @@
       v14 = 138543618;
       v15 = v11;
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to get media destination manager with participant accessory uuid: %@ due to no data source", &v14, 0x16u);
     }
 
@@ -64,14 +64,14 @@
   return v7;
 }
 
-- (id)dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)a3
+- (id)dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v5 = [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers objectForKey:dCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers removeObjectForKey:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -82,46 +82,46 @@
 - (id)queuedParticipantAccessoryUUIDs
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers allKeys];
+  allKeys = [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)setQueuedAssociatedGroupIdentifier:(id)a3 forParticipantAccessoryUUID:(id)a4
+- (void)setQueuedAssociatedGroupIdentifier:(id)identifier forParticipantAccessoryUUID:(id)d
 {
-  v7 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->_queuedAssociatedGroupIdentifiers setObject:identifierCopy forKey:dCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)attemptOnboardingForParticipantAccessoryUUID:(id)a3
+- (void)attemptOnboardingForParticipantAccessoryUUID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self mediaDestinationManagerWithParticipantAccessoryUUID:v4];
+  dCopy = d;
+  v5 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self mediaDestinationManagerWithParticipantAccessoryUUID:dCopy];
   if (v5)
   {
-    v6 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:v4];
+    v6 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self dequeuedAssociatedGroupIdentifierForParticipantAccessoryUUID:dCopy];
     if (v6)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [v5 identifier];
+        identifier = [v5 identifier];
         *buf = 138544130;
         v16 = v10;
         v17 = 2112;
         v18 = v6;
         v19 = 2112;
-        v20 = v4;
+        v20 = dCopy;
         v21 = 2112;
-        v22 = v11;
+        v22 = identifier;
         _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Sending request to update audio group identifier: %@ for participant accessory identifier: %@ destination: %@", buf, 0x2Au);
       }
 
@@ -130,8 +130,8 @@
       v13[1] = 3221225472;
       v13[2] = __103__HMDMediaGroupsUnconfiguredParticipantOnboardingManager_attemptOnboardingForParticipantAccessoryUUID___block_invoke;
       v13[3] = &unk_27868A1D8;
-      v13[4] = v8;
-      v14 = v4;
+      v13[4] = selfCopy;
+      v14 = dCopy;
       [v5 requestToUpdateAudioGroupIdentifier:v6 completion:v13];
     }
   }
@@ -190,11 +190,11 @@ LABEL_6:
 - (void)dequeueAvailableOnboadedParticipants
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self queuedParticipantAccessoryUUIDs];
-  if ([v3 count])
+  queuedParticipantAccessoryUUIDs = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)self queuedParticipantAccessoryUUIDs];
+  if ([queuedParticipantAccessoryUUIDs count])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -202,7 +202,7 @@ LABEL_6:
       *buf = 138543618;
       v11 = v7;
       v12 = 2112;
-      v13 = v3;
+      v13 = queuedParticipantAccessoryUUIDs;
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Attempting onboarding for participant accessory uuids: %@", buf, 0x16u);
     }
 
@@ -211,20 +211,20 @@ LABEL_6:
     v9[1] = 3221225472;
     v9[2] = __94__HMDMediaGroupsUnconfiguredParticipantOnboardingManager_dequeueAvailableOnboadedParticipants__block_invoke;
     v9[3] = &unk_278682498;
-    v9[4] = v5;
-    [v3 na_each:v9];
+    v9[4] = selfCopy;
+    [queuedParticipantAccessoryUUIDs na_each:v9];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueOnboardingParticipantWithAccessoryUUID:(id)a3 withAssociatedGroupIdentifier:(id)a4
+- (void)queueOnboardingParticipantWithAccessoryUUID:(id)d withAssociatedGroupIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -232,25 +232,25 @@ LABEL_6:
     v13 = 138543874;
     v14 = v11;
     v15 = 2112;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = identifierCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Queueing onboarding for participant accessory uuid: %@ associated group identifier: %@", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)v9 setQueuedAssociatedGroupIdentifier:v7 forParticipantAccessoryUUID:v6];
-  [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)v9 dequeueAvailableOnboadedParticipants];
+  [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)selfCopy setQueuedAssociatedGroupIdentifier:identifierCopy forParticipantAccessoryUUID:dCopy];
+  [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)selfCopy dequeueAvailableOnboadedParticipants];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaGroupsUnconfiguredParticipantOnboardingManager)initWithIdentifier:(id)a3
+- (HMDMediaGroupsUnconfiguredParticipantOnboardingManager)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v6 = v5;
+    v6 = identifierCopy;
     v14.receiver = self;
     v14.super_class = HMDMediaGroupsUnconfiguredParticipantOnboardingManager;
     v7 = [(HMDMediaGroupsUnconfiguredParticipantOnboardingManager *)&v14 init];
@@ -258,10 +258,10 @@ LABEL_6:
     if (v7)
     {
       v7->_lock._os_unfair_lock_opaque = 0;
-      objc_storeStrong(&v7->_identifier, a3);
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      objc_storeStrong(&v7->_identifier, identifier);
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       queuedAssociatedGroupIdentifiers = v8->_queuedAssociatedGroupIdentifiers;
-      v8->_queuedAssociatedGroupIdentifiers = v9;
+      v8->_queuedAssociatedGroupIdentifiers = dictionary;
     }
 
     return v8;

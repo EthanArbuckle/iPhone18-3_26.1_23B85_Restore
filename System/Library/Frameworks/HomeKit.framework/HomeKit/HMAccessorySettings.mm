@@ -1,30 +1,30 @@
 @interface HMAccessorySettings
-+ (id)localizationKeyForKeyPath:(id)a3;
++ (id)localizationKeyForKeyPath:(id)path;
 + (id)logCategory;
 - (BOOL)isControllable;
-- (BOOL)mergeFromNewObject:(id)a3;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMAccessory)accessory;
-- (HMAccessorySettings)initWithSettingsContainer:(id)a3 settingsControl:(id)a4 rootGroup:(id)a5;
+- (HMAccessorySettings)initWithSettingsContainer:(id)container settingsControl:(id)control rootGroup:(id)group;
 - (HMAccessorySettingsContainerInternal)settingsContainerInternal;
 - (HMAccessorySettingsDelegate)delegate;
 - (HMControllable)settingsControl;
-- (void)_configureWithContext:(id)a3;
-- (void)_notifyDelegateDidUpdateKeyPath:(id)a3;
-- (void)_updateSettingsWithBlock:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSettingsContainerInternal:(id)a3;
-- (void)setSettingsControl:(id)a3;
+- (void)_configureWithContext:(id)context;
+- (void)_notifyDelegateDidUpdateKeyPath:(id)path;
+- (void)_updateSettingsWithBlock:(id)block;
+- (void)setDelegate:(id)delegate;
+- (void)setSettingsContainerInternal:(id)internal;
+- (void)setSettingsControl:(id)control;
 @end
 
 @implementation HMAccessorySettings
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -36,9 +36,9 @@
 
   if (v6)
   {
-    v7 = [(HMAccessorySettings *)self rootGroup];
-    v8 = [v6 rootGroup];
-    v9 = [v7 isEqual:v8];
+    rootGroup = [(HMAccessorySettings *)self rootGroup];
+    rootGroup2 = [v6 rootGroup];
+    v9 = [rootGroup isEqual:rootGroup2];
 
     if ((v9 & 1) == 0)
     {
@@ -48,7 +48,7 @@
       v17[2] = __42__HMAccessorySettings_mergeFromNewObject___block_invoke;
       v17[3] = &unk_1E754A2B8;
       objc_copyWeak(&v20, &location);
-      v18 = v7;
+      v18 = rootGroup;
       v19 = v6;
       [(HMAccessorySettings *)self _updateSettingsWithBlock:v17];
 
@@ -56,8 +56,8 @@
       objc_destroyWeak(&location);
     }
 
-    v10 = [v6 rootGroup];
-    v11 = [v7 isReflectedEqual:v10];
+    rootGroup3 = [v6 rootGroup];
+    v11 = [rootGroup isReflectedEqual:rootGroup3];
 
     if (v11)
     {
@@ -70,7 +70,7 @@
       v14[1] = 3221225472;
       v14[2] = __42__HMAccessorySettings_mergeFromNewObject___block_invoke_24;
       v14[3] = &unk_1E754E5C0;
-      v15 = v7;
+      v15 = rootGroup;
       v16 = v6;
       [(HMAccessorySettings *)self _updateSettingsWithBlock:v14];
 
@@ -121,20 +121,20 @@ void __42__HMAccessorySettings_mergeFromNewObject___block_invoke_24(uint64_t a1)
   [v1 mergeReflected:v2];
 }
 
-- (void)_notifyDelegateDidUpdateKeyPath:(id)a3
+- (void)_notifyDelegateDidUpdateKeyPath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessorySettings *)self rootGroup];
-  v6 = [v5 internal];
-  v7 = [v6 context];
-  v8 = [v7 delegateCaller];
+  pathCopy = path;
+  rootGroup = [(HMAccessorySettings *)self rootGroup];
+  internal = [rootGroup internal];
+  context = [internal context];
+  delegateCaller = [context delegateCaller];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (delegateCaller)
   {
     if (v12)
     {
@@ -145,14 +145,14 @@ void __42__HMAccessorySettings_mergeFromNewObject___block_invoke_24(uint64_t a1)
     }
 
     objc_autoreleasePoolPop(v9);
-    objc_initWeak(buf, v10);
+    objc_initWeak(buf, selfCopy);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __55__HMAccessorySettings__notifyDelegateDidUpdateKeyPath___block_invoke;
     v16[3] = &unk_1E754D848;
     objc_copyWeak(&v18, buf);
-    v17 = v4;
-    [v8 invokeBlock:v16];
+    v17 = pathCopy;
+    [delegateCaller invokeBlock:v16];
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
@@ -210,30 +210,30 @@ void __55__HMAccessorySettings__notifyDelegateDidUpdateKeyPath___block_invoke(ui
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSettingsWithBlock:(id)a3
+- (void)_updateSettingsWithBlock:(id)block
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v19 = __48__HMAccessorySettings__updateSettingsWithBlock___block_invoke;
   v20 = &unk_1E754E458;
-  v21 = self;
-  v22 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v22 = blockCopy;
+  v5 = blockCopy;
   v6 = v18;
   if (self)
   {
-    v7 = [(HMAccessorySettings *)self rootGroup];
-    v8 = [v7 internal];
-    v9 = [v8 context];
-    v10 = [v9 delegateCaller];
+    rootGroup = [(HMAccessorySettings *)self rootGroup];
+    internal = [rootGroup internal];
+    context = [internal context];
+    delegateCaller = [context delegateCaller];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (delegateCaller)
     {
       if (v14)
       {
@@ -244,14 +244,14 @@ void __55__HMAccessorySettings__notifyDelegateDidUpdateKeyPath___block_invoke(ui
       }
 
       objc_autoreleasePoolPop(v11);
-      objc_initWeak(&location, v12);
+      objc_initWeak(&location, selfCopy2);
       *&buf = MEMORY[0x1E69E9820];
       *(&buf + 1) = 3221225472;
       v25 = __79__HMAccessorySettings___notifyDelegateSettingsWillUpdateWithCompletionHandler___block_invoke;
       v26 = &unk_1E754A290;
       objc_copyWeak(v28, &location);
       v27 = v6;
-      [v10 invokeBlock:&buf];
+      [delegateCaller invokeBlock:&buf];
 
       objc_destroyWeak(v28);
       objc_destroyWeak(&location);
@@ -427,10 +427,10 @@ void __56__HMAccessorySettings___notifyDelegateSettingsDidUpdate__block_invoke(u
 
 - (BOOL)isControllable
 {
-  v2 = [(HMAccessorySettings *)self settingsControl];
-  v3 = [v2 isControllable];
+  settingsControl = [(HMAccessorySettings *)self settingsControl];
+  isControllable = [settingsControl isControllable];
 
-  return v3;
+  return isControllable;
 }
 
 - (HMAccessorySettingsDelegate)delegate
@@ -440,40 +440,40 @@ void __56__HMAccessorySettings___notifyDelegateSettingsDidUpdate__block_invoke(u
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMAccessorySettings *)v6 rootGroup];
-    v10 = [(HMAccessorySettings *)v6 settingsContainer];
+    rootGroup = [(HMAccessorySettings *)selfCopy rootGroup];
+    settingsContainer = [(HMAccessorySettings *)selfCopy settingsContainer];
     v12 = 138544130;
     v13 = v8;
     v14 = 2112;
-    v15 = v4;
+    v15 = delegateCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = rootGroup;
     v18 = 2112;
-    v19 = v10;
+    v19 = settingsContainer;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Setting delegate %@ on settings %@ for %@", &v12, 0x2Au);
   }
 
   objc_autoreleasePoolPop(v5);
-  objc_storeWeak(&v6->_delegate, v4);
+  objc_storeWeak(&selfCopy->_delegate, delegateCopy);
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSettingsControl:(id)a3
+- (void)setSettingsControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_settingsControl, v4);
+  objc_storeWeak(&self->_settingsControl, controlCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -487,11 +487,11 @@ void __56__HMAccessorySettings___notifyDelegateSettingsDidUpdate__block_invoke(u
   return WeakRetained;
 }
 
-- (void)setSettingsContainerInternal:(id)a3
+- (void)setSettingsContainerInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_settingsContainerInternal, v4);
+  objc_storeWeak(&self->_settingsContainerInternal, internalCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -507,11 +507,11 @@ void __56__HMAccessorySettings___notifyDelegateSettingsDidUpdate__block_invoke(u
 
 - (HMAccessory)accessory
 {
-  v2 = [(HMAccessorySettings *)self settingsContainer];
+  settingsContainer = [(HMAccessorySettings *)self settingsContainer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = settingsContainer;
   }
 
   else
@@ -524,29 +524,29 @@ void __56__HMAccessorySettings___notifyDelegateSettingsDidUpdate__block_invoke(u
   return v3;
 }
 
-- (void)_configureWithContext:(id)a3
+- (void)_configureWithContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
-  v5 = a3;
-  v7 = [(HMAccessorySettings *)self rootGroup];
-  v6 = [v7 internal];
-  [v6 configureWithAccessorySettings:self context:v5];
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
+  rootGroup = [(HMAccessorySettings *)self rootGroup];
+  internal = [rootGroup internal];
+  [internal configureWithAccessorySettings:self context:contextCopy];
 }
 
-- (HMAccessorySettings)initWithSettingsContainer:(id)a3 settingsControl:(id)a4 rootGroup:(id)a5
+- (HMAccessorySettings)initWithSettingsContainer:(id)container settingsControl:(id)control rootGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  controlCopy = control;
+  groupCopy = group;
   v14.receiver = self;
   v14.super_class = HMAccessorySettings;
   v11 = [(HMAccessorySettings *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_settingsContainerInternal, v8);
-    objc_storeWeak(&v12->_settingsControl, v9);
-    objc_storeStrong(&v12->_rootGroup, a5);
+    objc_storeWeak(&v11->_settingsContainerInternal, containerCopy);
+    objc_storeWeak(&v12->_settingsControl, controlCopy);
+    objc_storeStrong(&v12->_rootGroup, group);
   }
 
   return v12;
@@ -574,14 +574,14 @@ uint64_t __34__HMAccessorySettings_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)localizationKeyForKeyPath:(id)a3
++ (id)localizationKeyForKeyPath:(id)path
 {
-  v3 = [a3 mutableCopy];
+  v3 = [path mutableCopy];
   [v3 replaceOccurrencesOfString:@" " withString:&stru_1F0E92498 options:1 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"." withString:@"_" options:1 range:{0, objc_msgSend(v3, "length")}];
-  v4 = [v3 uppercaseString];
+  uppercaseString = [v3 uppercaseString];
 
-  return v4;
+  return uppercaseString;
 }
 
 @end

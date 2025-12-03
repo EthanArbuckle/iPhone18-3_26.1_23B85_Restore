@@ -1,74 +1,74 @@
 @interface MORoutineServiceManager
-+ (id)_timeZoneFromLocation:(id)a3;
-- (BOOL)_shouldMarkAsPreOnboardedVisit:(id)a3;
-- (BOOL)_visitAlreadyHaveValidEvent:(id)a3 Events:(id)a4;
-- (MORoutineServiceManager)initWithUniverse:(id)a3;
++ (id)_timeZoneFromLocation:(id)location;
+- (BOOL)_shouldMarkAsPreOnboardedVisit:(id)visit;
+- (BOOL)_visitAlreadyHaveValidEvent:(id)event Events:(id)events;
+- (MORoutineServiceManager)initWithUniverse:(id)universe;
 - (RTLocation)homeLOI;
 - (RTRoutineManager)routineManager;
-- (double)_findMatchingFamiliarityIndexValue:(id)a3 forVisit:(id)a4;
-- (id)_calculateDistanceFromHome:(id)a3;
-- (id)_createEventFromVisit:(id)a3;
-- (id)_findMatchingEventFor:(id)a3 inEvents:(id)a4;
-- (id)_getLoiInfo:(id)a3;
-- (id)_getVisitInfo:(id)a3;
-- (id)_redactString:(id)a3;
-- (id)_rehydrateStoreEvents:(id)a3 withVisits:(id)a4 familiarityIndex:(id)a5;
+- (double)_findMatchingFamiliarityIndexValue:(id)value forVisit:(id)visit;
+- (id)_calculateDistanceFromHome:(id)home;
+- (id)_createEventFromVisit:(id)visit;
+- (id)_findMatchingEventFor:(id)for inEvents:(id)events;
+- (id)_getLoiInfo:(id)info;
+- (id)_getVisitInfo:(id)info;
+- (id)_redactString:(id)string;
+- (id)_rehydrateStoreEvents:(id)events withVisits:(id)visits familiarityIndex:(id)index;
 - (id)fetchHomeLOI;
-- (id)findMatchingVisitFor:(id)a3 inVisits:(id)a4;
-- (id)getPhotosCloseToHome:(id)a3 withDistance:(double)a4;
-- (unint64_t)_placeInferencePlaceTypeFromMapItemPlaceType:(unint64_t)a3;
-- (void)_checkAndFetchInvalidEvents:(id)a3 Events:(id)a4 handler:(id)a5;
-- (void)_createEventsFromVisits:(id)a3 familiarityIndex:(id)a4 handler:(id)a5;
-- (void)_createNewEventsFromVisits:(id)a3 familiarityIndex:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_detectHindsightVisitsWithCompletionHandler:(id)a3;
-- (void)_fetchDeviceLocationsFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_fetchEarliestVisitDateInRoutineWithHandler:(id)a3;
-- (void)_fetchFamiliarityIndexesLOIForDateInterval:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchGeoMapItemFromHandler:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchRealTimeVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_fetchRealTimeVisitsForStartDate:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchStitchedVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)_fetchVisitsBetweenStartDate:(id)a3 CompletionHandler:(id)a4;
-- (void)_fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)_rehydrateVisits:(id)a3 handler:(id)a4;
-- (void)_setDynamicProperties:(id)a3 familiarityIndexResultsLOIs:(id)a4 visit:(id)a5;
-- (void)_setDynamicProperties:(id)a3 visit:(id)a4;
-- (void)detectHindsightVisitsWithCompletionHandler:(id)a3;
-- (void)fetchConsolidatedEvents:(id)a3 withStored:(id)a4 handler:(id)a5;
-- (void)fetchDeviceLocationsFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchEarliestVisitDateInRoutineWithHandler:(id)a3;
+- (id)findMatchingVisitFor:(id)for inVisits:(id)visits;
+- (id)getPhotosCloseToHome:(id)home withDistance:(double)distance;
+- (unint64_t)_placeInferencePlaceTypeFromMapItemPlaceType:(unint64_t)type;
+- (void)_checkAndFetchInvalidEvents:(id)events Events:(id)a4 handler:(id)handler;
+- (void)_createEventsFromVisits:(id)visits familiarityIndex:(id)index handler:(id)handler;
+- (void)_createNewEventsFromVisits:(id)visits familiarityIndex:(id)index withStoredEvents:(id)events handler:(id)handler;
+- (void)_detectHindsightVisitsWithCompletionHandler:(id)handler;
+- (void)_fetchDeviceLocationsFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_fetchEarliestVisitDateInRoutineWithHandler:(id)handler;
+- (void)_fetchFamiliarityIndexesLOIForDateInterval:(id)interval CompletionHandler:(id)handler;
+- (void)_fetchGeoMapItemFromHandler:(id)handler CompletionHandler:(id)completionHandler;
+- (void)_fetchRealTimeVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_fetchRealTimeVisitsForStartDate:(id)date CompletionHandler:(id)handler;
+- (void)_fetchStitchedVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)_fetchVisitsBetweenStartDate:(id)date CompletionHandler:(id)handler;
+- (void)_fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)_rehydrateVisits:(id)visits handler:(id)handler;
+- (void)_setDynamicProperties:(id)properties familiarityIndexResultsLOIs:(id)is visit:(id)visit;
+- (void)_setDynamicProperties:(id)properties visit:(id)visit;
+- (void)detectHindsightVisitsWithCompletionHandler:(id)handler;
+- (void)fetchConsolidatedEvents:(id)events withStored:(id)stored handler:(id)handler;
+- (void)fetchDeviceLocationsFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchEarliestVisitDateInRoutineWithHandler:(id)handler;
 - (void)fetchHomeLOI;
-- (void)fetchStitchedVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5;
-- (void)fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6;
-- (void)rehydrateVisits:(id)a3 handler:(id)a4;
+- (void)fetchStitchedVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler;
+- (void)fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler;
+- (void)rehydrateVisits:(id)visits handler:(id)handler;
 @end
 
 @implementation MORoutineServiceManager
 
 - (RTLocation)homeLOI
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_homeLOI)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_homeLOI)
   {
-    v3 = [(MORoutineServiceManager *)v2 fetchHomeLOI];
-    homeLOI = v2->_homeLOI;
-    v2->_homeLOI = v3;
+    fetchHomeLOI = [(MORoutineServiceManager *)selfCopy fetchHomeLOI];
+    homeLOI = selfCopy->_homeLOI;
+    selfCopy->_homeLOI = fetchHomeLOI;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_homeLOI;
+  v5 = selfCopy->_homeLOI;
 
   return v5;
 }
 
-- (MORoutineServiceManager)initWithUniverse:(id)a3
+- (MORoutineServiceManager)initWithUniverse:(id)universe
 {
-  v6 = a3;
+  universeCopy = universe;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [v6 getService:v8];
+  v9 = [universeCopy getService:v8];
 
   if (!v9)
   {
@@ -85,7 +85,7 @@
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v6 getService:v11];
+  v12 = [universeCopy getService:v11];
 
   if (!v12)
   {
@@ -99,7 +99,7 @@
     [v25 handleFailureInMethod:a2 object:self file:@"MORoutineServiceManager.m" lineNumber:93 description:@"Invalid parameter not satisfying: eventStore"];
 
 LABEL_12:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -119,7 +119,7 @@ LABEL_12:
     mapServiceManager = v13->_mapServiceManager;
     v13->_mapServiceManager = v17;
 
-    objc_storeStrong(&v13->_universe, a3);
+    objc_storeStrong(&v13->_universe, universe);
     v28[0] = GEOPOICategoryAirport;
     v28[1] = GEOPOICategoryAirportGate;
     v28[2] = GEOPOICategoryAirportTerminal;
@@ -130,10 +130,10 @@ LABEL_12:
   }
 
   self = v13;
-  v22 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v22;
+  return selfCopy;
 }
 
 - (RTRoutineManager)routineManager
@@ -167,95 +167,95 @@ uint64_t __41__MORoutineServiceManager_routineManager__block_invoke(uint64_t a1)
   return _objc_release_x1(v2, v4);
 }
 
-- (void)fetchStitchedVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)fetchStitchedVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MORoutineServiceManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __89__MORoutineServiceManager_fetchStitchedVisitsBetweenStartDate_EndDate_CompletionHandler___block_invoke;
   v15[3] = &unk_1003361C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = dateCopy;
+  v17 = endDateCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_fetchStitchedVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchStitchedVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v10);
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v16 && v8)
+  if (dateCopy && endDateCopy)
   {
-    v11 = [[NSDateInterval alloc] initWithStartDate:v16 endDate:v8];
+    v11 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
     v12 = [[NSSet alloc] initWithObjects:{&off_10036A900, 0}];
     v13 = [RTStoredVisitFetchOptions alloc];
     v14 = [NSNumber numberWithDouble:RTVisitConfidenceHigh];
     v15 = [v13 initWithAscending:1 confidence:v14 dateInterval:v11 labelVisit:1 limit:0 sources:v12];
 
-    [(MORoutineServiceManager *)self _fetchVisitsBetweenStartDate:v15 CompletionHandler:v9];
+    [(MORoutineServiceManager *)self _fetchVisitsBetweenStartDate:v15 CompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)_fetchRealTimeVisitsBetweenStartDate:(id)a3 EndDate:(id)a4 CompletionHandler:(id)a5
+- (void)_fetchRealTimeVisitsBetweenStartDate:(id)date EndDate:(id)endDate CompletionHandler:(id)handler
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v10);
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v16 && v8)
+  if (dateCopy && endDateCopy)
   {
-    v11 = [[NSDateInterval alloc] initWithStartDate:v16 endDate:v8];
+    v11 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
     v12 = [[NSSet alloc] initWithObjects:{&off_10036A918, 0}];
     v13 = [RTStoredVisitFetchOptions alloc];
     v14 = [NSNumber numberWithDouble:RTVisitConfidenceHigh];
     v15 = [v13 initWithAscending:1 confidence:v14 dateInterval:v11 labelVisit:1 limit:0 sources:v12];
 
-    [(MORoutineServiceManager *)self _fetchRealTimeVisitsForStartDate:v15 CompletionHandler:v9];
+    [(MORoutineServiceManager *)self _fetchRealTimeVisitsForStartDate:v15 CompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)detectHindsightVisitsWithCompletionHandler:(id)a3
+- (void)detectHindsightVisitsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MORoutineServiceManager *)self queue];
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __70__MORoutineServiceManager_detectHindsightVisitsWithCompletionHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_detectHindsightVisitsWithCompletionHandler:(id)a3
+- (void)_detectHindsightVisitsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v6))
@@ -266,16 +266,16 @@ uint64_t __41__MORoutineServiceManager_routineManager__block_invoke(uint64_t a1)
 
   v7 = [[MOPerformanceMeasurement alloc] initWithName:@"RoutineVisitTraining" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v7 startSession];
-  v8 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __71__MORoutineServiceManager__detectHindsightVisitsWithCompletionHandler___block_invoke;
   v11[3] = &unk_10033B210;
   v12 = v7;
-  v13 = v4;
+  v13 = handlerCopy;
   v9 = v7;
-  v10 = v4;
-  [v8 processHindsightVisitsWithHandler:v11];
+  v10 = handlerCopy;
+  [routineManager processHindsightVisitsWithHandler:v11];
 }
 
 void __71__MORoutineServiceManager__detectHindsightVisitsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -313,38 +313,38 @@ void __71__MORoutineServiceManager__detectHindsightVisitsWithCompletionHandler__
   [*(a1 + 32) endSession];
 }
 
-- (void)fetchDeviceLocationsFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchDeviceLocationsFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_not_V2(v11);
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v12 = [(MORoutineServiceManager *)self queue];
+  queue2 = [(MORoutineServiceManager *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __77__MORoutineServiceManager_fetchDeviceLocationsFromStartDate_endDate_handler___block_invoke;
   v16[3] = &unk_1003361C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = dateCopy;
+  v18 = endDateCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = endDateCopy;
+  v15 = dateCopy;
+  dispatch_async(queue2, v16);
 }
 
-- (void)_fetchDeviceLocationsFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchDeviceLocationsFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v11);
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [[NSDateInterval alloc] initWithStartDate:v8 endDate:v9];
+  v12 = [[NSDateInterval alloc] initWithStartDate:dateCopy endDate:endDateCopy];
   LOBYTE(v18) = 1;
   v13 = [[RTStoredLocationEnumerationOptions alloc] initWithDateInterval:v12 horizontalAccuracy:20 batchSize:0 boundingBoxLocation:14 type:1 smoothingRequired:1 downsampleRequired:60.0 smoothingErrorThreshold:5.0 ascending:v18];
   v14 = objc_opt_new();
@@ -354,7 +354,7 @@ void __71__MORoutineServiceManager__detectHindsightVisitsWithCompletionHandler__
   v26 = __Block_byref_object_copy__28;
   v27 = __Block_byref_object_dispose__28;
   v28 = 0;
-  v15 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = __78__MORoutineServiceManager__fetchDeviceLocationsFromStartDate_endDate_handler___block_invoke;
@@ -364,9 +364,9 @@ void __71__MORoutineServiceManager__detectHindsightVisitsWithCompletionHandler__
   v17 = v14;
   v21 = v17;
   v22 = &v23;
-  [v15 enumerateStoredLocationsWithOptions:v13 usingBlock:v19];
+  [routineManager enumerateStoredLocationsWithOptions:v13 usingBlock:v19];
 
-  v10[2](v10, v17, v24[5]);
+  handlerCopy[2](handlerCopy, v17, v24[5]);
   _Block_object_dispose(&v23, 8);
 }
 
@@ -424,23 +424,23 @@ void __78__MORoutineServiceManager__fetchDeviceLocationsFromStartDate_endDate_ha
   }
 }
 
-- (void)_fetchVisitsBetweenStartDate:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchVisitsBetweenStartDate:(id)date CompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v9);
+  handlerCopy = handler;
+  dateCopy = date;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __74__MORoutineServiceManager__fetchVisitsBetweenStartDate_CompletionHandler___block_invoke;
   v12[3] = &unk_10033CEC0;
-  v13 = v7;
+  v13 = handlerCopy;
   v14 = a2;
   v12[4] = self;
-  v11 = v7;
-  [v10 fetchStoredVisitsWithOptions:v8 handler:v12];
+  v11 = handlerCopy;
+  [routineManager fetchStoredVisitsWithOptions:dateCopy handler:v12];
 }
 
 void __74__MORoutineServiceManager__fetchVisitsBetweenStartDate_CompletionHandler___block_invoke(void *a1, void *a2, void *a3)
@@ -527,21 +527,21 @@ LABEL_9:
   return v9;
 }
 
-- (void)_fetchRealTimeVisitsForStartDate:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchRealTimeVisitsForStartDate:(id)date CompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  dateCopy = date;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __78__MORoutineServiceManager__fetchRealTimeVisitsForStartDate_CompletionHandler___block_invoke;
   v11[3] = &unk_1003369E0;
-  v12 = v6;
-  v10 = v6;
-  [v9 fetchStoredVisitsWithOptions:v7 handler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [routineManager fetchStoredVisitsWithOptions:dateCopy handler:v11];
 }
 
 void __78__MORoutineServiceManager__fetchRealTimeVisitsForStartDate_CompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -580,21 +580,21 @@ void __78__MORoutineServiceManager__fetchRealTimeVisitsForStartDate_CompletionHa
   }
 }
 
-- (void)_fetchGeoMapItemFromHandler:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchGeoMapItemFromHandler:(id)handler CompletionHandler:(id)completionHandler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v8);
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   mapServiceManager = self->_mapServiceManager;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler___block_invoke;
   v11[3] = &unk_10033CEE8;
-  v12 = v6;
-  v10 = v6;
-  [(GEOMapService *)mapServiceManager resolveMapItemFromHandle:v7 completionHandler:v11];
+  v12 = completionHandlerCopy;
+  v10 = completionHandlerCopy;
+  [(GEOMapService *)mapServiceManager resolveMapItemFromHandle:handlerCopy completionHandler:v11];
 }
 
 void __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -619,32 +619,32 @@ void __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler
   v6();
 }
 
-- (unint64_t)_placeInferencePlaceTypeFromMapItemPlaceType:(unint64_t)a3
+- (unint64_t)_placeInferencePlaceTypeFromMapItemPlaceType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 4;
   }
 
   else
   {
-    return qword_100323170[a3];
+    return qword_100323170[type];
   }
 }
 
-- (BOOL)_shouldMarkAsPreOnboardedVisit:(id)a3
+- (BOOL)_shouldMarkAsPreOnboardedVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   LODWORD(v5) = 14.0;
   [(MOConfigurationManagerBase *)self->_configurationManager getFloatSettingForKey:@"Visit_PreOnboardingLookBackWindow" withFallback:v5];
   self->_maxAllowedDaysForVisitLookback = v6;
-  v7 = [(MOConfigurationManagerBase *)self->_configurationManager fDefaultsManager];
-  v8 = [v7 objectForKey:@"OnboardingDate"];
+  fDefaultsManager = [(MOConfigurationManagerBase *)self->_configurationManager fDefaultsManager];
+  v8 = [fDefaultsManager objectForKey:@"OnboardingDate"];
 
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = v8;
-    v10 = [v4 isBeforeDate:v9];
+    v10 = [visitCopy isBeforeDate:v9];
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -673,13 +673,13 @@ void __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler
   return v10;
 }
 
-+ (id)_timeZoneFromLocation:(id)a3
++ (id)_timeZoneFromLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = [CLLocation alloc];
-  [v3 latitude];
+  [locationCopy latitude];
   v6 = v5;
-  [v3 longitude];
+  [locationCopy longitude];
   v8 = v7;
 
   v9 = [v4 initWithLatitude:v6 longitude:v8];
@@ -688,16 +688,16 @@ void __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler
   return v10;
 }
 
-- (void)_setDynamicProperties:(id)a3 visit:(id)a4
+- (void)_setDynamicProperties:(id)properties visit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 getPlaceName];
-  v9 = [v7 placeInference];
-  v10 = [v9 mapItem];
+  propertiesCopy = properties;
+  visitCopy = visit;
+  getPlaceName = [visitCopy getPlaceName];
+  placeInference = [visitCopy placeInference];
+  mapItem = [placeInference mapItem];
 
-  v11 = [v7 placeInference];
-  [v11 confidence];
+  placeInference2 = [visitCopy placeInference];
+  [placeInference2 confidence];
   v13 = v12;
 
   HIDWORD(v14) = 1072483532;
@@ -707,20 +707,20 @@ void __73__MORoutineServiceManager__fetchGeoMapItemFromHandler_CompletionHandler
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [(MORoutineServiceManager *)a2 _setDynamicProperties:v7 visit:v17];
+    [(MORoutineServiceManager *)a2 _setDynamicProperties:visitCopy visit:v17];
   }
 
-  v18 = [v7 placeInference];
-  v19 = [v18 finerGranularityMapItem];
-  v136 = self;
-  if (!v19)
+  placeInference3 = [visitCopy placeInference];
+  finerGranularityMapItem = [placeInference3 finerGranularityMapItem];
+  selfCopy = self;
+  if (!finerGranularityMapItem)
   {
     goto LABEL_6;
   }
 
-  v20 = v19;
-  v21 = [v7 placeInference];
-  [v21 finerGranularityMapItemConfidence];
+  v20 = finerGranularityMapItem;
+  placeInference4 = [visitCopy placeInference];
+  [placeInference4 finerGranularityMapItemConfidence];
   if (v22 < v16)
   {
 
@@ -731,33 +731,33 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v130 = v8;
+  v130 = getPlaceName;
   airportCategories = self->_airportCategories;
-  v87 = [v7 placeInference];
-  v88 = [v87 mapItem];
-  v89 = [v88 category];
-  LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:v89];
+  placeInference5 = [visitCopy placeInference];
+  mapItem2 = [placeInference5 mapItem];
+  category = [mapItem2 category];
+  LOBYTE(airportCategories) = [(NSSet *)airportCategories containsObject:category];
 
   if ((airportCategories & 1) == 0)
   {
-    v93 = [v7 getFinerGranularityPlaceName];
+    getFinerGranularityPlaceName = [visitCopy getFinerGranularityPlaceName];
 
-    v94 = [v7 placeInference];
-    v95 = [v94 finerGranularityMapItem];
+    placeInference6 = [visitCopy placeInference];
+    finerGranularityMapItem2 = [placeInference6 finerGranularityMapItem];
 
-    v18 = [v7 placeInference];
-    [v18 finerGranularityMapItemConfidence];
+    placeInference3 = [visitCopy placeInference];
+    [placeInference3 finerGranularityMapItemConfidence];
     v13 = v96;
     v134 = 1;
-    v10 = v95;
-    v8 = v93;
-    self = v136;
+    mapItem = finerGranularityMapItem2;
+    getPlaceName = getFinerGranularityPlaceName;
+    self = selfCopy;
     goto LABEL_7;
   }
 
   v134 = 0;
-  v8 = v130;
-  self = v136;
+  getPlaceName = v130;
+  self = selfCopy;
 LABEL_8:
   v23 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -768,67 +768,67 @@ LABEL_8:
   v24 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    [MORoutineServiceManager _setDynamicProperties:v10 visit:?];
+    [MORoutineServiceManager _setDynamicProperties:mapItem visit:?];
   }
 
-  v25 = [v6 routineEvent];
-  v26 = v8;
-  [v25 setPlaceName:v8];
+  routineEvent = [propertiesCopy routineEvent];
+  v26 = getPlaceName;
+  [routineEvent setPlaceName:getPlaceName];
 
-  v27 = [v7 getLocation];
-  v28 = [v6 routineEvent];
-  [v28 setLocation:v27];
+  getLocation = [visitCopy getLocation];
+  routineEvent2 = [propertiesCopy routineEvent];
+  [routineEvent2 setLocation:getLocation];
 
-  v29 = [v7 placeInference];
-  v30 = [v29 userType];
-  v31 = [v6 routineEvent];
-  [v31 setPlaceUserType:v30];
+  placeInference7 = [visitCopy placeInference];
+  userType = [placeInference7 userType];
+  routineEvent3 = [propertiesCopy routineEvent];
+  [routineEvent3 setPlaceUserType:userType];
 
-  v32 = [v6 routineEvent];
-  [v32 setPlaceNameConfidence:v13];
+  routineEvent4 = [propertiesCopy routineEvent];
+  [routineEvent4 setPlaceNameConfidence:v13];
 
-  v33 = [v10 geoMapItemHandle];
-  v34 = [v6 routineEvent];
-  [v34 setPlaceMapItem:v33];
+  geoMapItemHandle = [mapItem geoMapItemHandle];
+  routineEvent5 = [propertiesCopy routineEvent];
+  [routineEvent5 setPlaceMapItem:geoMapItemHandle];
 
-  v35 = [v10 source];
-  v36 = [v6 routineEvent];
-  [v36 setPlaceSource:v35];
+  source = [mapItem source];
+  routineEvent6 = [propertiesCopy routineEvent];
+  [routineEvent6 setPlaceSource:source];
 
-  v37 = [v10 mapItemPlaceType];
-  v38 = [v6 routineEvent];
-  [v38 setMapItemPlaceType:v37];
+  mapItemPlaceType = [mapItem mapItemPlaceType];
+  routineEvent7 = [propertiesCopy routineEvent];
+  [routineEvent7 setMapItemPlaceType:mapItemPlaceType];
 
-  v39 = [v10 location];
-  v40 = [v6 routineEvent];
-  [v40 setMapItemLocation:v39];
+  location = [mapItem location];
+  routineEvent8 = [propertiesCopy routineEvent];
+  [routineEvent8 setMapItemLocation:location];
 
-  v41 = [v10 categoryMUID];
-  v42 = [v6 routineEvent];
-  [v42 setCategoryMuid:v41];
+  categoryMUID = [mapItem categoryMUID];
+  routineEvent9 = [propertiesCopy routineEvent];
+  [routineEvent9 setCategoryMuid:categoryMUID];
 
-  v43 = [v10 muid];
-  v44 = [v6 routineEvent];
-  [v44 setMapItemID:v43];
+  muid = [mapItem muid];
+  routineEvent10 = [propertiesCopy routineEvent];
+  [routineEvent10 setMapItemID:muid];
 
-  v45 = [v7 placeInference];
-  if ([v45 placeType] == 4)
+  placeInference8 = [visitCopy placeInference];
+  if ([placeInference8 placeType] == 4)
   {
     goto LABEL_15;
   }
 
-  v46 = [v6 routineEvent];
-  if ([v46 placeSource] == 1)
+  routineEvent11 = [propertiesCopy routineEvent];
+  if ([routineEvent11 placeSource] == 1)
   {
 
 LABEL_15:
 LABEL_16:
-    v47 = -[MORoutineServiceManager _placeInferencePlaceTypeFromMapItemPlaceType:](self, "_placeInferencePlaceTypeFromMapItemPlaceType:", [v10 mapItemPlaceType]);
+    placeType = -[MORoutineServiceManager _placeInferencePlaceTypeFromMapItemPlaceType:](self, "_placeInferencePlaceTypeFromMapItemPlaceType:", [mapItem mapItemPlaceType]);
     goto LABEL_17;
   }
 
-  v90 = [v6 routineEvent];
-  if ([v90 placeSource] == 2)
+  routineEvent12 = [propertiesCopy routineEvent];
+  if ([routineEvent12 placeSource] == 2)
   {
     v91 = 1;
   }
@@ -843,103 +843,103 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v92 = [v7 placeInference];
-  v47 = [v92 placeType];
+  placeInference9 = [visitCopy placeInference];
+  placeType = [placeInference9 placeType];
 
 LABEL_17:
-  v48 = [v6 routineEvent];
-  [v48 setPlaceType:v47];
+  routineEvent13 = [propertiesCopy routineEvent];
+  [routineEvent13 setPlaceType:placeType];
 
-  v49 = [v10 category];
-  v50 = [v6 routineEvent];
-  [v50 setPoiCategory:v49];
+  category2 = [mapItem category];
+  routineEvent14 = [propertiesCopy routineEvent];
+  [routineEvent14 setPoiCategory:category2];
 
-  v51 = [v6 routineEvent];
-  v52 = [v51 location];
-  if (!v52)
+  routineEvent15 = [propertiesCopy routineEvent];
+  location2 = [routineEvent15 location];
+  if (!location2)
   {
 
     goto LABEL_22;
   }
 
-  v53 = v52;
-  v54 = [v10 location];
+  v53 = location2;
+  location3 = [mapItem location];
 
-  if (!v54)
+  if (!location3)
   {
 LABEL_22:
     v59 = -1.0;
-    v64 = v136;
+    v64 = selfCopy;
     goto LABEL_23;
   }
 
-  v55 = [v10 location];
-  v56 = [v6 routineEvent];
-  v57 = [v56 location];
-  [v55 distanceFromLocation:v57];
+  location4 = [mapItem location];
+  routineEvent16 = [propertiesCopy routineEvent];
+  location5 = [routineEvent16 location];
+  [location4 distanceFromLocation:location5];
   v59 = v58;
 
-  v60 = [v6 routineEvent];
-  v61 = [v60 location];
-  [v61 horizontalUncertainty];
+  routineEvent17 = [propertiesCopy routineEvent];
+  location6 = [routineEvent17 location];
+  [location6 horizontalUncertainty];
   v63 = v62;
 
-  v64 = v136;
+  v64 = selfCopy;
   if (v63 > 0.0)
   {
-    v65 = [v6 routineEvent];
-    v66 = [v65 location];
-    [v66 horizontalUncertainty];
+    routineEvent18 = [propertiesCopy routineEvent];
+    location7 = [routineEvent18 location];
+    [location7 horizontalUncertainty];
     v68 = v59 - v67;
 
     v59 = fmax(v68, 0.0);
   }
 
 LABEL_23:
-  v69 = [v6 routineEvent];
-  [v69 setDistanceFromVisitToPlace:v59];
+  routineEvent19 = [propertiesCopy routineEvent];
+  [routineEvent19 setDistanceFromVisitToPlace:v59];
 
-  v70 = [v7 placeInference];
-  if (!v70 || !v10)
+  placeInference10 = [visitCopy placeInference];
+  if (!placeInference10 || !mapItem)
   {
     goto LABEL_38;
   }
 
-  v71 = [v10 address];
+  address = [mapItem address];
 
-  if (!v71)
+  if (!address)
   {
     goto LABEL_39;
   }
 
-  v72 = [v10 address];
-  v73 = [v6 routineEvent];
-  [v73 setAddress:v72];
+  address2 = [mapItem address];
+  routineEvent20 = [propertiesCopy routineEvent];
+  [routineEvent20 setAddress:address2];
 
-  v74 = [v6 routineEvent];
-  v75 = [v74 address];
-  v76 = [v75 geoAddressObject];
-  v77 = [v6 routineEvent];
-  [v77 setGeoAddressObject:v76];
+  routineEvent21 = [propertiesCopy routineEvent];
+  address3 = [routineEvent21 address];
+  geoAddressObject = [address3 geoAddressObject];
+  routineEvent22 = [propertiesCopy routineEvent];
+  [routineEvent22 setGeoAddressObject:geoAddressObject];
 
-  v78 = [v6 routineEvent];
-  v79 = [v78 address];
-  v80 = [v79 geoAddressData];
+  routineEvent23 = [propertiesCopy routineEvent];
+  address4 = [routineEvent23 address];
+  geoAddressData = [address4 geoAddressData];
 
-  v70 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
-  v81 = os_log_type_enabled(v70, OS_LOG_TYPE_DEBUG);
-  if (v80)
+  placeInference10 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
+  v81 = os_log_type_enabled(placeInference10, OS_LOG_TYPE_DEBUG);
+  if (geoAddressData)
   {
     if (v81)
     {
       v125 = NSStringFromSelector(a2);
-      v129 = [v6 routineEvent];
-      v127 = [v129 placeName];
-      v121 = [(MORoutineServiceManager *)v64 _redactString:v127];
-      v123 = [v6 routineEvent];
-      v82 = [v123 geoAddressObject];
-      v83 = [v82 shortAddress];
-      [(MORoutineServiceManager *)v136 _redactString:v83];
+      routineEvent24 = [propertiesCopy routineEvent];
+      placeName = [routineEvent24 placeName];
+      v121 = [(MORoutineServiceManager *)v64 _redactString:placeName];
+      routineEvent25 = [propertiesCopy routineEvent];
+      geoAddressObject2 = [routineEvent25 geoAddressObject];
+      shortAddress = [geoAddressObject2 shortAddress];
+      [(MORoutineServiceManager *)selfCopy _redactString:shortAddress];
       *buf = 138412802;
       v139 = v125;
       v140 = 2112;
@@ -948,22 +948,22 @@ LABEL_23:
       v84 = v143;
       v85 = "%@, using routine cached GEOAddressObject value for map item, %@, address, %@";
 LABEL_45:
-      _os_log_debug_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEBUG, v85, buf, 0x20u);
+      _os_log_debug_impl(&_mh_execute_header, placeInference10, OS_LOG_TYPE_DEBUG, v85, buf, 0x20u);
 
-      v64 = v136;
+      v64 = selfCopy;
     }
   }
 
   else if (v81)
   {
     v125 = NSStringFromSelector(a2);
-    v129 = [v6 routineEvent];
-    v127 = [v129 placeName];
-    v121 = [(MORoutineServiceManager *)v64 _redactString:v127];
-    v123 = [v6 routineEvent];
-    v82 = [v123 geoAddressObject];
-    v83 = [v82 shortAddress];
-    [(MORoutineServiceManager *)v136 _redactString:v83];
+    routineEvent24 = [propertiesCopy routineEvent];
+    placeName = [routineEvent24 placeName];
+    v121 = [(MORoutineServiceManager *)v64 _redactString:placeName];
+    routineEvent25 = [propertiesCopy routineEvent];
+    geoAddressObject2 = [routineEvent25 geoAddressObject];
+    shortAddress = [geoAddressObject2 shortAddress];
+    [(MORoutineServiceManager *)selfCopy _redactString:shortAddress];
     *buf = 138412802;
     v139 = v125;
     v140 = 2112;
@@ -978,23 +978,23 @@ LABEL_38:
 
 LABEL_39:
   v97 = objc_opt_class();
-  v98 = [v6 routineEvent];
-  v99 = [v98 location];
-  v100 = [v97 _timeZoneFromLocation:v99];
-  [v6 setTimeZone:v100];
+  routineEvent26 = [propertiesCopy routineEvent];
+  location8 = [routineEvent26 location];
+  v100 = [v97 _timeZoneFromLocation:location8];
+  [propertiesCopy setTimeZone:v100];
 
-  v101 = [v7 entry];
-  v102 = [(MORoutineServiceManager *)v64 _shouldMarkAsPreOnboardedVisit:v101];
-  v103 = [v6 routineEvent];
-  [v103 setIsPreOnboardedVisit:v102];
+  entry = [visitCopy entry];
+  v102 = [(MORoutineServiceManager *)v64 _shouldMarkAsPreOnboardedVisit:entry];
+  routineEvent27 = [propertiesCopy routineEvent];
+  [routineEvent27 setIsPreOnboardedVisit:v102];
 
   v104 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
   if (os_log_type_enabled(v104, OS_LOG_TYPE_DEBUG))
   {
     v137 = NSStringFromSelector(a2);
-    aSelectora = [v6 eventIdentifier];
-    v126 = [v7 placeInference];
-    v128 = [v126 loiIdentifier];
+    aSelectora = [propertiesCopy eventIdentifier];
+    placeInference11 = [visitCopy placeInference];
+    loiIdentifier = [placeInference11 loiIdentifier];
     v105 = @"NO";
     if (v134)
     {
@@ -1002,34 +1002,34 @@ LABEL_39:
     }
 
     v120 = v105;
-    v119 = [v10 identifier];
-    v124 = [v10 geoMapItemHandle];
-    v117 = [v124 length];
-    v135 = [MOEventRoutine stringOfPlaceInferencePlaceType:v47];
-    v131 = +[MOEventRoutine stringOfMapItemPlaceType:](MOEventRoutine, "stringOfMapItemPlaceType:", [v10 mapItemPlaceType]);
-    v122 = [v7 placeInference];
-    v106 = [v122 userType];
+    identifier = [mapItem identifier];
+    geoMapItemHandle2 = [mapItem geoMapItemHandle];
+    v117 = [geoMapItemHandle2 length];
+    v135 = [MOEventRoutine stringOfPlaceInferencePlaceType:placeType];
+    v131 = +[MOEventRoutine stringOfMapItemPlaceType:](MOEventRoutine, "stringOfMapItemPlaceType:", [mapItem mapItemPlaceType]);
+    placeInference12 = [visitCopy placeInference];
+    userType2 = [placeInference12 userType];
     v107 = [(MORoutineServiceManager *)v64 _redactString:v26];
-    v115 = [v10 category];
-    v114 = [v10 source];
-    v118 = [v10 extendedAttributes];
-    v113 = [v118 wifiFingerprintLabelType];
-    v116 = [v6 routineEvent];
-    v112 = [v116 isPreOnboardedVisit];
-    v108 = [v6 routineEvent];
-    [v108 distanceFromVisitToPlace];
+    category3 = [mapItem category];
+    source2 = [mapItem source];
+    extendedAttributes = [mapItem extendedAttributes];
+    wifiFingerprintLabelType = [extendedAttributes wifiFingerprintLabelType];
+    routineEvent28 = [propertiesCopy routineEvent];
+    isPreOnboardedVisit = [routineEvent28 isPreOnboardedVisit];
+    routineEvent29 = [propertiesCopy routineEvent];
+    [routineEvent29 distanceFromVisitToPlace];
     v110 = v109;
-    v111 = [v6 timeZone];
+    timeZone = [propertiesCopy timeZone];
     *buf = 138416386;
     v139 = v137;
     v140 = 2112;
     v141 = aSelectora;
     v142 = 2112;
-    v143 = v128;
+    v143 = loiIdentifier;
     v144 = 2112;
     v145 = v120;
     v146 = 2112;
-    v147 = v119;
+    v147 = identifier;
     v148 = 2048;
     v149 = v117;
     v150 = 2112;
@@ -1037,40 +1037,40 @@ LABEL_39:
     v152 = 2112;
     v153 = v131;
     v154 = 2048;
-    v155 = v106;
+    v155 = userType2;
     v156 = 2112;
     v157 = v107;
     v158 = 2112;
-    v159 = v115;
+    v159 = category3;
     v160 = 2048;
-    v161 = v114;
+    v161 = source2;
     v162 = 2048;
-    v163 = v113;
+    v163 = wifiFingerprintLabelType;
     v164 = 2048;
     v165 = v13;
     v166 = 1024;
-    v167 = v112;
+    v167 = isPreOnboardedVisit;
     v168 = 2048;
     v169 = v110;
     v170 = 2112;
-    v171 = v111;
+    v171 = timeZone;
     _os_log_debug_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEBUG, "%@, event.id, %@, loi, %@, using Finer Granularity Map Item, %@, mapItem, %@, mapItem.length, %lu, placeType, %@, mapItemPlaceType, %@, userType, %lu, name, %@, category, %@, source, %lu, wifiLabelType, %lu, confidence, %f, isPreOnboardedVisit, %d, distanceFromVisitToPlace, %f, timezone, %@", buf, 0xA8u);
   }
 }
 
-- (void)_setDynamicProperties:(id)a3 familiarityIndexResultsLOIs:(id)a4 visit:(id)a5
+- (void)_setDynamicProperties:(id)properties familiarityIndexResultsLOIs:(id)is visit:(id)visit
 {
-  v14 = a4;
-  v8 = a5;
-  v9 = a3;
-  if (v14)
+  isCopy = is;
+  visitCopy = visit;
+  propertiesCopy = properties;
+  if (isCopy)
   {
-    v10 = [v8 entry];
-    v11 = [(MORoutineServiceManager *)self _shouldMarkAsPreOnboardedVisit:v10];
-    v12 = [v9 routineEvent];
-    [v12 setIsPreOnboardedVisit:v11];
+    entry = [visitCopy entry];
+    v11 = [(MORoutineServiceManager *)self _shouldMarkAsPreOnboardedVisit:entry];
+    routineEvent = [propertiesCopy routineEvent];
+    [routineEvent setIsPreOnboardedVisit:v11];
 
-    [(MORoutineServiceManager *)self _findMatchingFamiliarityIndexValue:v14 forVisit:v8];
+    [(MORoutineServiceManager *)self _findMatchingFamiliarityIndexValue:isCopy forVisit:visitCopy];
   }
 
   else
@@ -1078,56 +1078,56 @@ LABEL_39:
     v13 = -1.0;
   }
 
-  [v9 setFamiliarityIndexLOI:v13];
+  [propertiesCopy setFamiliarityIndexLOI:v13];
 }
 
-- (id)_createEventFromVisit:(id)a3
+- (id)_createEventFromVisit:(id)visit
 {
-  v4 = a3;
+  visitCopy = visit;
   v5 = [MOEvent alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v4 entry];
-  v8 = [v4 exit];
-  v9 = v8;
-  if (!v8)
+  entry = [visitCopy entry];
+  exit = [visitCopy exit];
+  v9 = exit;
+  if (!exit)
   {
     v9 = +[NSDate date];
   }
 
   v10 = +[NSDate date];
-  v11 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:v7 endDate:v9 creationDate:v10 provider:4 category:1];
+  v11 = [(MOEvent *)v5 initWithEventIdentifier:v6 startDate:entry endDate:v9 creationDate:v10 provider:4 category:1];
 
-  if (!v8)
+  if (!exit)
   {
   }
 
-  v12 = [v4 exit];
-  v13 = [(MORoutineServiceManager *)self configurationManager];
+  exit2 = [visitCopy exit];
+  configurationManager = [(MORoutineServiceManager *)self configurationManager];
   LODWORD(v14) = 1242802176;
-  [v13 getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v14];
-  v16 = [v12 dateByAddingTimeInterval:v15];
+  [configurationManager getFloatSettingForKey:@"EventManagerOverrideMaximumEventAge" withFallback:v14];
+  v16 = [exit2 dateByAddingTimeInterval:v15];
   [(MOEvent *)v11 setExpirationDate:v16];
 
-  v17 = [v4 date];
-  [(MOEvent *)v11 setSourceCreationDate:v17];
+  date = [visitCopy date];
+  [(MOEvent *)v11 setSourceCreationDate:date];
 
-  [(MORoutineServiceManager *)self _setDynamicProperties:v11 visit:v4];
+  [(MORoutineServiceManager *)self _setDynamicProperties:v11 visit:visitCopy];
 
   return v11;
 }
 
-- (BOOL)_visitAlreadyHaveValidEvent:(id)a3 Events:(id)a4
+- (BOOL)_visitAlreadyHaveValidEvent:(id)event Events:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  eventCopy = event;
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (eventsCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = v6;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
@@ -1141,7 +1141,7 @@ LABEL_39:
             objc_enumerationMutation(v8);
           }
 
-          if ([v5 isEqualToVisitMoment:{*(*(&v13 + 1) + 8 * i), v13}])
+          if ([eventCopy isEqualToVisitMoment:{*(*(&v13 + 1) + 8 * i), v13}])
           {
             LOBYTE(v9) = 1;
             goto LABEL_12;
@@ -1169,14 +1169,14 @@ LABEL_12:
   return v9;
 }
 
-- (void)_checkAndFetchInvalidEvents:(id)a3 Events:(id)a4 handler:(id)a5
+- (void)_checkAndFetchInvalidEvents:(id)events Events:(id)a4 handler:(id)handler
 {
-  v8 = a3;
+  eventsCopy = events;
   v9 = a4;
-  v10 = a5;
-  if (v8 && [v8 count] && v9 && objc_msgSend(v9, "count"))
+  handlerCopy = handler;
+  if (eventsCopy && [eventsCopy count] && v9 && objc_msgSend(v9, "count"))
   {
-    v21 = v10;
+    v21 = handlerCopy;
     v11 = objc_opt_new();
     v12 = objc_opt_new();
     v23 = 0u;
@@ -1200,7 +1200,7 @@ LABEL_12:
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          v19 = [(MORoutineServiceManager *)self findMatchingVisitFor:v18 inVisits:v8, v21];
+          v19 = [(MORoutineServiceManager *)self findMatchingVisitFor:v18 inVisits:eventsCopy, v21];
           v20 = v12;
           if (!v19)
           {
@@ -1217,7 +1217,7 @@ LABEL_12:
       while (v15);
     }
 
-    v10 = v21;
+    handlerCopy = v21;
     v21[2](v21, v11, v12);
 
     v9 = v22;
@@ -1225,32 +1225,32 @@ LABEL_12:
 
   else
   {
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
-- (void)rehydrateVisits:(id)a3 handler:(id)a4
+- (void)rehydrateVisits:(id)visits handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MORoutineServiceManager *)self queue];
+  visitsCopy = visits;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__MORoutineServiceManager_rehydrateVisits_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = visitsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = visitsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_rehydrateVisits:(id)a3 handler:(id)a4
+- (void)_rehydrateVisits:(id)visits handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 getDurationOfMOEventArray];
+  visitsCopy = visits;
+  handlerCopy = handler;
+  getDurationOfMOEventArray = [visitsCopy getDurationOfMOEventArray];
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
   v42[0] = 0;
@@ -1265,8 +1265,8 @@ LABEL_12:
   v40[3] = __Block_byref_object_copy__28;
   v40[4] = __Block_byref_object_dispose__28;
   v41 = &__NSArray0__struct;
-  v10 = [v8 startDate];
-  v11 = [v8 endDate];
+  startDate = [getDurationOfMOEventArray startDate];
+  endDate = [getDurationOfMOEventArray endDate];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = __52__MORoutineServiceManager__rehydrateVisits_handler___block_invoke;
@@ -1275,12 +1275,12 @@ LABEL_12:
   v39 = v42;
   v12 = v9;
   v37 = v12;
-  [(MORoutineServiceManager *)self _fetchStitchedVisitsBetweenStartDate:v10 EndDate:v11 CompletionHandler:v36];
+  [(MORoutineServiceManager *)self _fetchStitchedVisitsBetweenStartDate:startDate EndDate:endDate CompletionHandler:v36];
 
   v13 = [NSDateInterval alloc];
-  v14 = [v8 startDate];
-  v15 = [v8 endDate];
-  v16 = [v13 initWithStartDate:v14 endDate:v15];
+  startDate2 = [getDurationOfMOEventArray startDate];
+  endDate2 = [getDurationOfMOEventArray endDate];
+  v16 = [v13 initWithStartDate:startDate2 endDate:endDate2];
 
   dispatch_group_enter(v12);
   v34[0] = 0;
@@ -1304,20 +1304,20 @@ LABEL_12:
   v17 = v12;
   v29 = v17;
   [(MORoutineServiceManager *)self _fetchFamiliarityIndexesLOIForDateInterval:v16 CompletionHandler:v28];
-  v18 = [(MORoutineServiceManager *)self queue];
+  queue = [(MORoutineServiceManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__MORoutineServiceManager__rehydrateVisits_handler___block_invoke_3;
   block[3] = &unk_10033CF38;
-  v24 = v7;
+  v24 = handlerCopy;
   v25 = v42;
-  v22 = v6;
-  v23 = self;
+  v22 = visitsCopy;
+  selfCopy = self;
   v26 = v40;
   v27 = v32;
-  v19 = v7;
-  v20 = v6;
-  dispatch_group_notify(v17, v18, block);
+  v19 = handlerCopy;
+  v20 = visitsCopy;
+  dispatch_group_notify(v17, queue, block);
 
   _Block_object_dispose(v32, 8);
   _Block_object_dispose(v34, 8);
@@ -1400,12 +1400,12 @@ void __52__MORoutineServiceManager__rehydrateVisits_handler___block_invoke_3(uin
   }
 }
 
-- (id)_rehydrateStoreEvents:(id)a3 withVisits:(id)a4 familiarityIndex:(id)a5
+- (id)_rehydrateStoreEvents:(id)events withVisits:(id)visits familiarityIndex:(id)index
 {
-  v8 = a3;
-  v9 = a4;
-  v31 = a5;
-  if (![v8 count])
+  eventsCopy = events;
+  visitsCopy = visits;
+  indexCopy = index;
+  if (![eventsCopy count])
   {
     v27 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
     if (os_log_type_enabled(&v27->super.super, OS_LOG_TYPE_ERROR))
@@ -1416,7 +1416,7 @@ void __52__MORoutineServiceManager__rehydrateVisits_handler___block_invoke_3(uin
     goto LABEL_22;
   }
 
-  if (![v9 count])
+  if (![visitsCopy count])
   {
     v28 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1424,7 +1424,7 @@ void __52__MORoutineServiceManager__rehydrateVisits_handler___block_invoke_3(uin
       [MORoutineServiceManager _rehydrateStoreEvents:a2 withVisits:? familiarityIndex:?];
     }
 
-    v27 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 1, 4, 1, 0, [v8 count], 3, objc_msgSend(v8, "count"), 0.0);
+    v27 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:]([MORehydrationMetrics alloc], "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", 1, 4, 1, 0, [eventsCopy count], 3, objc_msgSend(eventsCopy, "count"), 0.0);
     v40 = 0;
     [(MORehydrationMetrics *)v27 submitMetricsWithError:&v40];
 LABEL_22:
@@ -1437,11 +1437,11 @@ LABEL_22:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v30 = v8;
-  v10 = v8;
+  v30 = eventsCopy;
+  v10 = eventsCopy;
   v11 = [v10 countByEnumeratingWithState:&v36 objects:v45 count:16];
-  v12 = v31;
-  v34 = v9;
+  v12 = indexCopy;
+  v34 = visitsCopy;
   if (v11)
   {
     v13 = v11;
@@ -1467,10 +1467,10 @@ LABEL_22:
           v44 = v16;
           _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%@, event, %@", buf, 0x16u);
 
-          v9 = v34;
+          visitsCopy = v34;
         }
 
-        v18 = [(MORoutineServiceManager *)self findMatchingVisitFor:v16 inVisits:v9];
+        v18 = [(MORoutineServiceManager *)self findMatchingVisitFor:v16 inVisits:visitsCopy];
         if (v18)
         {
           v19 = [v16 copy];
@@ -1486,11 +1486,11 @@ LABEL_22:
             v44 = v19;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%@, found matching visit, rehydrated event, %@", buf, 0x16u);
 
-            v12 = v31;
+            v12 = indexCopy;
           }
 
           [v33 addObject:v19];
-          v9 = v34;
+          visitsCopy = v34;
         }
 
         v15 = v15 + 1;
@@ -1504,26 +1504,26 @@ LABEL_22:
   }
 
   v23 = [MORehydrationMetrics alloc];
-  v24 = [v10 firstObject];
-  v25 = [v24 category];
-  v26 = [v10 firstObject];
-  v27 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v23, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", v25, [v26 provider], 1, 0, objc_msgSend(v10, "count"), 3, (objc_msgSend(v10, "count") - objc_msgSend(v33, "count")), 0.0);
+  firstObject = [v10 firstObject];
+  category = [firstObject category];
+  firstObject2 = [v10 firstObject];
+  v27 = -[MORehydrationMetrics initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:](v23, "initWithCategory:provider:spiSuccess:spiError:failCount:successAfterPreFailCount:totalCount:rehydrationTrigger:", category, [firstObject2 provider], 1, 0, objc_msgSend(v10, "count"), 3, (objc_msgSend(v10, "count") - objc_msgSend(v33, "count")), 0.0);
 
-  v9 = v34;
+  visitsCopy = v34;
   v35 = 0;
   [(MORehydrationMetrics *)v27 submitMetricsWithError:&v35];
-  v8 = v30;
+  eventsCopy = v30;
 LABEL_23:
 
   return v33;
 }
 
-- (id)findMatchingVisitFor:(id)a3 inVisits:(id)a4
+- (id)findMatchingVisitFor:(id)for inVisits:(id)visits
 {
-  v5 = a3;
-  v6 = a4;
+  forCopy = for;
+  visitsCopy = visits;
   v7 = [NSPredicate predicateWithFormat:@"(type == %lu)", 3];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [visitsCopy filteredArrayUsingPredicate:v7];
 
   if (v8 && [v8 count])
   {
@@ -1538,7 +1538,7 @@ LABEL_23:
       }
 
       v12 = [v8 objectAtIndexedSubscript:&v9[(v10 - v9) >> 1]];
-      v13 = [v12 isEqualToVisitMoment:v5];
+      v13 = [v12 isEqualToVisitMoment:forCopy];
 
       if (v13)
       {
@@ -1546,10 +1546,10 @@ LABEL_23:
         goto LABEL_11;
       }
 
-      v14 = [v5 startDate];
+      startDate = [forCopy startDate];
       v15 = [v8 objectAtIndexedSubscript:&v9[(v10 - v9) >> 1]];
-      v16 = [v15 entry];
-      v17 = [v14 isBeforeDate:v16];
+      entry = [v15 entry];
+      v17 = [startDate isBeforeDate:entry];
 
       if (v17)
       {
@@ -1571,12 +1571,12 @@ LABEL_11:
   return v18;
 }
 
-- (id)_findMatchingEventFor:(id)a3 inEvents:(id)a4
+- (id)_findMatchingEventFor:(id)for inEvents:(id)events
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 count])
+  forCopy = for;
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (eventsCopy && [eventsCopy count])
   {
     v8 = 0;
     v9 = [v7 count] - 1;
@@ -1588,15 +1588,15 @@ LABEL_11:
         break;
       }
 
-      v11 = [v5 entry];
+      entry = [forCopy entry];
       v12 = [v7 objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
-      v13 = [v12 startDate];
-      v14 = [v11 isEqualToDate:v13];
+      startDate = [v12 startDate];
+      v14 = [entry isEqualToDate:startDate];
 
-      v15 = [v5 exit];
+      exit = [forCopy exit];
       v16 = [v7 objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
-      v17 = [v16 endDate];
-      v18 = [v15 isEqualToDate:v17];
+      endDate = [v16 endDate];
+      v18 = [exit isEqualToDate:endDate];
 
       if (v14 && v18)
       {
@@ -1604,10 +1604,10 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v19 = [v5 entry];
+      entry2 = [forCopy entry];
       v20 = [v7 objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
-      v21 = [v20 startDate];
-      v22 = [v19 isBeforeDate:v21];
+      startDate2 = [v20 startDate];
+      v22 = [entry2 isBeforeDate:startDate2];
 
       if (v22)
       {
@@ -1629,36 +1629,36 @@ LABEL_12:
   return v23;
 }
 
-- (double)_findMatchingFamiliarityIndexValue:(id)a3 forVisit:(id)a4
+- (double)_findMatchingFamiliarityIndexValue:(id)value forVisit:(id)visit
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  visitCopy = visit;
   v7 = -1.0;
-  if (v5 && [v5 count])
+  if (valueCopy && [valueCopy count])
   {
     v8 = 0;
-    v9 = [v5 count] - 1;
+    v9 = [valueCopy count] - 1;
     do
     {
       v10 = &v8[(v9 - v8) >> 1];
-      if (v10 > [v5 count] - 1)
+      if (v10 > [valueCopy count] - 1)
       {
         break;
       }
 
-      v11 = [v5 objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
-      v12 = [v11 dateInterval];
+      v11 = [valueCopy objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
+      dateInterval = [v11 dateInterval];
 
-      v13 = [v6 entry];
-      v14 = [v12 startDate];
-      if ([v13 isEqualToDate:v14])
+      entry = [visitCopy entry];
+      startDate = [dateInterval startDate];
+      if ([entry isEqualToDate:startDate])
       {
-        v15 = [v6 exit];
-        [v12 endDate];
-        v17 = v16 = v5;
-        v24 = [v15 isEqualToDate:v17];
+        exit = [visitCopy exit];
+        [dateInterval endDate];
+        v17 = v16 = valueCopy;
+        v24 = [exit isEqualToDate:v17];
 
-        v5 = v16;
+        valueCopy = v16;
         if (v24)
         {
           v21 = [v16 objectAtIndexedSubscript:&v8[(v9 - v8) >> 1]];
@@ -1673,9 +1673,9 @@ LABEL_12:
       {
       }
 
-      v18 = [v6 entry];
-      v19 = [v12 startDate];
-      v20 = [v18 isBeforeDate:v19];
+      entry2 = [visitCopy entry];
+      startDate2 = [dateInterval startDate];
+      v20 = [entry2 isBeforeDate:startDate2];
 
       if (v20)
       {
@@ -1694,23 +1694,23 @@ LABEL_12:
   return v7;
 }
 
-- (void)_fetchFamiliarityIndexesLOIForDateInterval:(id)a3 CompletionHandler:(id)a4
+- (void)_fetchFamiliarityIndexesLOIForDateInterval:(id)interval CompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[RTFamiliarityIndexOptions alloc] initWithDateInterval:v7 spatialGranularity:1];
+  handlerCopy = handler;
+  intervalCopy = interval;
+  v8 = [[RTFamiliarityIndexOptions alloc] initWithDateInterval:intervalCopy spatialGranularity:1];
 
-  v9 = [(MORoutineServiceManager *)self queue];
-  dispatch_assert_queue_V2(v9);
+  queue = [(MORoutineServiceManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_CompletionHandler___block_invoke;
   v12[3] = &unk_1003369E0;
-  v13 = v6;
-  v11 = v6;
-  [v10 fetchFamiliarityIndexResultsWithOptions:v8 handler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [routineManager fetchFamiliarityIndexResultsWithOptions:v8 handler:v12];
 }
 
 void __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_CompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1751,26 +1751,26 @@ void __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_Co
   }
 }
 
-- (id)_getLoiInfo:(id)a3
+- (id)_getLoiInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 preferredName];
-  v7 = [(MORoutineServiceManager *)self _redactString:v6];
-  [v4 confidence];
+  infoCopy = info;
+  identifier = [infoCopy identifier];
+  preferredName = [infoCopy preferredName];
+  v7 = [(MORoutineServiceManager *)self _redactString:preferredName];
+  [infoCopy confidence];
   v9 = v8;
 
-  v10 = [NSString stringWithFormat:@"%@, place, %@, confidence, %f", v5, v7, v9];
+  v10 = [NSString stringWithFormat:@"%@, place, %@, confidence, %f", identifier, v7, v9];
 
   return v10;
 }
 
-- (id)_getVisitInfo:(id)a3
+- (id)_getVisitInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 getPlaceName];
-  v6 = [(MORoutineServiceManager *)self _redactString:v5];
-  [v4 confidence];
+  infoCopy = info;
+  getPlaceName = [infoCopy getPlaceName];
+  v6 = [(MORoutineServiceManager *)self _redactString:getPlaceName];
+  [infoCopy confidence];
   v8 = v7;
 
   v9 = [NSString stringWithFormat:@"%@, confidence, %f", v6, v8];
@@ -1778,11 +1778,11 @@ void __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_Co
   return v9;
 }
 
-- (id)_redactString:(id)a3
+- (id)_redactString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v5 = [v4 length];
     if (v5 >> 1 >= 5)
@@ -1816,7 +1816,7 @@ void __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_Co
   v23 = __Block_byref_object_dispose__28;
   v24 = +[NSArray array];
   v3 = dispatch_semaphore_create(0);
-  v4 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __39__MORoutineServiceManager_fetchHomeLOI__block_invoke;
@@ -1824,7 +1824,7 @@ void __88__MORoutineServiceManager__fetchFamiliarityIndexesLOIForDateInterval_Co
   v18 = &v19;
   v5 = v3;
   v17 = v5;
-  [v4 fetchLocationsOfInterestOfType:0 withHandler:v16];
+  [routineManager fetchLocationsOfInterestOfType:0 withHandler:v16];
 
   v6 = [NSString stringWithFormat:@"%@ - [%s] - %d - %s", @"MOSemaphoreWait", "/Library/Caches/com.apple.xbs/Sources/Moments/momentsd/PromptEngine/PromptSource/Routine/MORoutineServiceManager.m", 767, "[MORoutineServiceManager fetchHomeLOI]"];
   v15 = 0;
@@ -1875,44 +1875,44 @@ void __39__MORoutineServiceManager_fetchHomeLOI__block_invoke(uint64_t a1, void 
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_calculateDistanceFromHome:(id)a3
+- (id)_calculateDistanceFromHome:(id)home
 {
-  v4 = a3;
-  v5 = [(MORoutineServiceManager *)self homeLOI];
+  homeCopy = home;
+  homeLOI = [(MORoutineServiceManager *)self homeLOI];
   v6 = [RTLocation alloc];
-  [v4 coordinate];
+  [homeCopy coordinate];
   v8 = v7;
-  [v4 coordinate];
+  [homeCopy coordinate];
   v10 = v9;
-  [v4 horizontalAccuracy];
+  [homeCopy horizontalAccuracy];
   v12 = v11;
 
   v13 = [v6 initWithLatitude:0 longitude:v8 horizontalUncertainty:v10 date:v12];
   v14 = v13;
   v15 = 0;
-  if (v5 && v13)
+  if (homeLOI && v13)
   {
-    [v5 distanceFromLocation:v13];
+    [homeLOI distanceFromLocation:v13];
     v15 = [NSNumber numberWithDouble:?];
   }
 
   return v15;
 }
 
-- (id)getPhotosCloseToHome:(id)a3 withDistance:(double)a4
+- (id)getPhotosCloseToHome:(id)home withDistance:(double)distance
 {
-  v6 = a3;
+  homeCopy = home;
   v7 = objc_opt_new();
-  v8 = [(MORoutineServiceManager *)self homeLOI];
+  homeLOI = [(MORoutineServiceManager *)self homeLOI];
 
-  if (v8)
+  if (homeLOI)
   {
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v32 = v6;
-    obj = v6;
+    v32 = homeCopy;
+    obj = homeCopy;
     v9 = [obj countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (!v9)
     {
@@ -1937,17 +1937,17 @@ void __39__MORoutineServiceManager_fetchHomeLOI__block_invoke(uint64_t a1, void 
           continue;
         }
 
-        v14 = [v13 assets];
-        v15 = [MOContextAnnotationUtilities fetchAssetUsingID:v14 universe:self->_universe];
+        assets = [v13 assets];
+        v15 = [MOContextAnnotationUtilities fetchAssetUsingID:assets universe:self->_universe];
         v16 = v15;
         if (v15)
         {
-          v17 = [v15 location];
+          location = [v15 location];
 
-          if (v17)
+          if (location)
           {
-            v18 = [v16 location];
-            v19 = [(MORoutineServiceManager *)self _calculateDistanceFromHome:v18];
+            location2 = [v16 location];
+            v19 = [(MORoutineServiceManager *)self _calculateDistanceFromHome:location2];
 
             v20 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
             v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
@@ -1964,7 +1964,7 @@ void __39__MORoutineServiceManager_fetchHomeLOI__block_invoke(uint64_t a1, void 
               }
 
               [v19 doubleValue];
-              if (v23 < a4)
+              if (v23 < distance)
               {
                 [v7 addObject:v13];
                 v20 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
@@ -2040,7 +2040,7 @@ LABEL_27:
 LABEL_30:
 
         v29 = v7;
-        v6 = v32;
+        homeCopy = v32;
         goto LABEL_34;
       }
     }
@@ -2059,35 +2059,35 @@ LABEL_34:
   return v29;
 }
 
-- (void)fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MORoutineServiceManager *)self queue];
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __88__MORoutineServiceManager_fetchVisitsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke;
   block[3] = &unk_100336C98;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = dateCopy;
+  v21 = endDateCopy;
+  v22 = eventsCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = eventsCopy;
+  v17 = endDateCopy;
+  v18 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchVisitsBetweenStartDate:(id)a3 endDate:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_fetchVisitsBetweenStartDate:(id)date endDate:(id)endDate withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v42 = a5;
-  v39 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  eventsCopy = events;
+  handlerCopy = handler;
   v44 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 1];
   v43 = [NSPredicate predicateWithFormat:@"%K = %lu", @"provider", 4];
   v92[0] = v44;
@@ -2095,7 +2095,7 @@ LABEL_34:
   v12 = [NSArray arrayWithObjects:v92 count:2];
   v41 = [NSCompoundPredicate andPredicateWithSubpredicates:v12];
 
-  v45 = [v42 filteredArrayUsingPredicate:v41];
+  v45 = [eventsCopy filteredArrayUsingPredicate:v41];
   v13 = dispatch_group_create();
   v14 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v14))
@@ -2119,18 +2119,18 @@ LABEL_34:
   v84[3] = __Block_byref_object_copy__28;
   v84[4] = __Block_byref_object_dispose__28;
   v85 = &__NSArray0__struct;
-  v16 = v10;
-  v17 = v16;
+  v16 = dateCopy;
+  startDate2 = v16;
   if ([v45 count])
   {
-    v18 = [v45 getDurationOfMOEventArray];
-    v19 = [v18 startDate];
-    v20 = [v19 isBeforeDate:v16];
+    getDurationOfMOEventArray = [v45 getDurationOfMOEventArray];
+    startDate = [getDurationOfMOEventArray startDate];
+    v20 = [startDate isBeforeDate:v16];
 
-    v17 = v16;
+    startDate2 = v16;
     if (v20)
     {
-      v17 = [v18 startDate];
+      startDate2 = [getDurationOfMOEventArray startDate];
     }
   }
 
@@ -2144,7 +2144,7 @@ LABEL_34:
   v80 = v21;
   v37 = v15;
   v81 = v37;
-  [(MORoutineServiceManager *)self _fetchStitchedVisitsBetweenStartDate:v17 EndDate:v11 CompletionHandler:v79];
+  [(MORoutineServiceManager *)self _fetchStitchedVisitsBetweenStartDate:startDate2 EndDate:endDateCopy CompletionHandler:v79];
   v22 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v22))
   {
@@ -2171,7 +2171,7 @@ LABEL_34:
   v69 = v24;
   v38 = v23;
   v70 = v38;
-  [(MORoutineServiceManager *)self _fetchRealTimeVisitsBetweenStartDate:v16 EndDate:v11 CompletionHandler:v68];
+  [(MORoutineServiceManager *)self _fetchRealTimeVisitsBetweenStartDate:v16 EndDate:endDateCopy CompletionHandler:v68];
   v25 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   if (os_signpost_enabled(v25))
   {
@@ -2184,7 +2184,7 @@ LABEL_34:
   v27 = +[NSDate date];
   v40 = [v27 dateByAddingTimeInterval:-2419200.0];
 
-  v28 = [[NSDateInterval alloc] initWithStartDate:v40 endDate:v11];
+  v28 = [[NSDateInterval alloc] initWithStartDate:v40 endDate:endDateCopy];
   dispatch_group_enter(v24);
   *v62 = 0;
   v63 = v62;
@@ -2203,7 +2203,7 @@ LABEL_34:
   v30 = v26;
   v59 = v30;
   [(MORoutineServiceManager *)self _fetchFamiliarityIndexesLOIForDateInterval:v28 CompletionHandler:v57];
-  v31 = [(MORoutineServiceManager *)self queue];
+  queue = [(MORoutineServiceManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __89__MORoutineServiceManager__fetchVisitsBetweenStartDate_endDate_withStoredEvents_handler___block_invoke_242;
@@ -2211,19 +2211,19 @@ LABEL_34:
   v53 = buf;
   v54 = v84;
   v47 = v45;
-  v48 = self;
+  selfCopy = self;
   v55 = v73;
   v56 = v62;
   v49 = v16;
-  v50 = v17;
-  v51 = v11;
-  v52 = v39;
-  v36 = v11;
-  v32 = v17;
+  v50 = startDate2;
+  v51 = endDateCopy;
+  v52 = handlerCopy;
+  v36 = endDateCopy;
+  v32 = startDate2;
   v33 = v16;
-  v34 = v39;
+  v34 = handlerCopy;
   v35 = v45;
-  dispatch_group_notify(v29, v31, block);
+  dispatch_group_notify(v29, queue, block);
 
   _Block_object_dispose(v62, 8);
   _Block_object_dispose(v73, 8);
@@ -2404,13 +2404,13 @@ void __89__MORoutineServiceManager__fetchVisitsBetweenStartDate_endDate_withStor
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)_createNewEventsFromVisits:(id)a3 familiarityIndex:(id)a4 withStoredEvents:(id)a5 handler:(id)a6
+- (void)_createNewEventsFromVisits:(id)visits familiarityIndex:(id)index withStoredEvents:(id)events handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v10 count])
+  visitsCopy = visits;
+  indexCopy = index;
+  eventsCopy = events;
+  handlerCopy = handler;
+  if (![visitsCopy count])
   {
     v14 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2420,15 +2420,15 @@ void __89__MORoutineServiceManager__fetchVisitsBetweenStartDate_endDate_withStor
   }
 
   v15 = objc_opt_new();
-  if ([v12 count])
+  if ([eventsCopy count])
   {
-    v24 = v13;
-    v25 = v11;
+    v24 = handlerCopy;
+    v25 = indexCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v16 = v10;
+    v16 = visitsCopy;
     v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v17)
     {
@@ -2444,7 +2444,7 @@ void __89__MORoutineServiceManager__fetchVisitsBetweenStartDate_endDate_withStor
           }
 
           v21 = *(*(&v28 + 1) + 8 * i);
-          v22 = [(MORoutineServiceManager *)self _findMatchingEventFor:v21 inEvents:v12];
+          v22 = [(MORoutineServiceManager *)self _findMatchingEventFor:v21 inEvents:eventsCopy];
           if (!v22)
           {
             [v15 addObject:v21];
@@ -2457,22 +2457,22 @@ void __89__MORoutineServiceManager__fetchVisitsBetweenStartDate_endDate_withStor
       while (v18);
     }
 
-    v13 = v24;
-    v11 = v25;
+    handlerCopy = v24;
+    indexCopy = v25;
   }
 
   else
   {
-    [v15 addObjectsFromArray:v10];
+    [v15 addObjectsFromArray:visitsCopy];
   }
 
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = __96__MORoutineServiceManager__createNewEventsFromVisits_familiarityIndex_withStoredEvents_handler___block_invoke;
   v26[3] = &unk_1003369E0;
-  v27 = v13;
-  v23 = v13;
-  [(MORoutineServiceManager *)self _createEventsFromVisits:v15 familiarityIndex:v11 handler:v26];
+  v27 = handlerCopy;
+  v23 = handlerCopy;
+  [(MORoutineServiceManager *)self _createEventsFromVisits:v15 familiarityIndex:indexCopy handler:v26];
 }
 
 void __96__MORoutineServiceManager__createNewEventsFromVisits_familiarityIndex_withStoredEvents_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2490,22 +2490,22 @@ void __96__MORoutineServiceManager__createNewEventsFromVisits_familiarityIndex_w
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_createEventsFromVisits:(id)a3 familiarityIndex:(id)a4 handler:(id)a5
+- (void)_createEventsFromVisits:(id)visits familiarityIndex:(id)index handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v27 = a5;
+  visitsCopy = visits;
+  indexCopy = index;
+  handlerCopy = handler;
   v10 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
+  obj = visitsCopy;
   v32 = [obj countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v32)
   {
     v11 = *v34;
-    v29 = v9;
+    v29 = indexCopy;
     do
     {
       v12 = 0;
@@ -2518,26 +2518,26 @@ void __96__MORoutineServiceManager__createNewEventsFromVisits_familiarityIndex_w
 
         v13 = *(*(&v33 + 1) + 8 * v12);
         v14 = [(MORoutineServiceManager *)self _createEventFromVisit:v13];
-        v15 = [v14 startDate];
-        if (v15)
+        startDate = [v14 startDate];
+        if (startDate)
         {
-          v16 = v15;
-          v17 = [v14 endDate];
-          if (v17)
+          v16 = startDate;
+          endDate = [v14 endDate];
+          if (endDate)
           {
-            v18 = v17;
-            v19 = [v14 startDate];
+            v18 = endDate;
+            startDate2 = [v14 startDate];
             [v14 endDate];
             v20 = v11;
-            v21 = self;
+            selfCopy = self;
             v23 = v22 = v10;
-            v31 = [v19 isOnOrAfter:v23];
+            v31 = [startDate2 isOnOrAfter:v23];
 
             v10 = v22;
-            self = v21;
+            self = selfCopy;
             v11 = v20;
 
-            v9 = v29;
+            indexCopy = v29;
             if (v31)
             {
               v24 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
@@ -2561,7 +2561,7 @@ void __96__MORoutineServiceManager__createNewEventsFromVisits_familiarityIndex_w
           }
         }
 
-        [(MORoutineServiceManager *)self _setDynamicProperties:v14 familiarityIndexResultsLOIs:v9 visit:v13];
+        [(MORoutineServiceManager *)self _setDynamicProperties:v14 familiarityIndexResultsLOIs:indexCopy visit:v13];
         [v14 setMode:0];
         [v14 setIsHighConfidence:{objc_msgSend(v13, "source") == 3}];
         [v10 addObject:v14];
@@ -2591,12 +2591,12 @@ LABEL_13:
     while (v26);
   }
 
-  v27[2](v27, v10, 0);
+  handlerCopy[2](handlerCopy, v10, 0);
 }
 
-- (void)_fetchEarliestVisitDateInRoutineWithHandler:(id)a3
+- (void)_fetchEarliestVisitDateInRoutineWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -2619,16 +2619,16 @@ LABEL_13:
   v11 = [NSNumber numberWithDouble:RTVisitConfidenceHigh];
   v12 = [v10 initWithAscending:1 confidence:v11 dateInterval:v9 labelVisit:0 limit:0 sources:v5];
 
-  v13 = [(MORoutineServiceManager *)self routineManager];
+  routineManager = [(MORoutineServiceManager *)self routineManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __71__MORoutineServiceManager__fetchEarliestVisitDateInRoutineWithHandler___block_invoke;
   v15[3] = &unk_10033CFC8;
   v17 = v19;
   v18 = v21;
-  v14 = v4;
+  v14 = handlerCopy;
   v16 = v14;
-  [v13 fetchStoredVisitsWithOptions:v12 handler:v15];
+  [routineManager fetchStoredVisitsWithOptions:v12 handler:v15];
 
   _Block_object_dispose(v19, 8);
   _Block_object_dispose(v21, 8);
@@ -2704,18 +2704,18 @@ LABEL_9:
   }
 }
 
-- (void)fetchEarliestVisitDateInRoutineWithHandler:(id)a3
+- (void)fetchEarliestVisitDateInRoutineWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MORoutineServiceManager *)self queue];
+  handlerCopy = handler;
+  queue = [(MORoutineServiceManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __70__MORoutineServiceManager_fetchEarliestVisitDateInRoutineWithHandler___block_invoke;
   v7[3] = &unk_100337B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 void __70__MORoutineServiceManager_fetchEarliestVisitDateInRoutineWithHandler___block_invoke(uint64_t a1)
@@ -2740,15 +2740,15 @@ uint64_t __70__MORoutineServiceManager_fetchEarliestVisitDateInRoutineWithHandle
   return result;
 }
 
-- (void)fetchConsolidatedEvents:(id)a3 withStored:(id)a4 handler:(id)a5
+- (void)fetchConsolidatedEvents:(id)events withStored:(id)stored handler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
+  storedCopy = stored;
   v50 = [NSString stringWithFormat:@"%@%@", @"%K = %lu", @" AND %K = %lu"];
   [NSPredicate predicateWithFormat:@"category", 1, @"placeUserType", 1];
-  v46 = v52 = v7;
-  v10 = [v7 filteredArrayUsingPredicate:?];
+  v46 = v52 = eventsCopy;
+  v10 = [eventsCopy filteredArrayUsingPredicate:?];
   v11 = [NSPredicate predicateWithFormat:@"%K = %lu", @"isHighConfidence", 1];
   v12 = [v10 filteredArrayUsingPredicate:v11];
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
@@ -2784,7 +2784,7 @@ uint64_t __70__MORoutineServiceManager_fetchEarliestVisitDateInRoutineWithHandle
   v21 = [NSCompoundPredicate andPredicateWithSubpredicates:v20];
 
   v42 = v21;
-  v22 = [v9 filteredArrayUsingPredicate:v21];
+  v22 = [storedCopy filteredArrayUsingPredicate:v21];
 
   v23 = _mo_log_facility_get_os_log(&MOLogFacilityRoutine);
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -2819,7 +2819,7 @@ uint64_t __70__MORoutineServiceManager_fetchEarliestVisitDateInRoutineWithHandle
 
   v28 = 1;
 LABEL_13:
-  v29 = v8;
+  v29 = handlerCopy;
   v51 = v12;
   if ([v15 count])
   {

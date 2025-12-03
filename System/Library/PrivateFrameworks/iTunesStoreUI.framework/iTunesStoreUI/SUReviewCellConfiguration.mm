@@ -1,8 +1,8 @@
 @interface SUReviewCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6;
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4;
-- (id)fontForLabelAtIndex:(unint64_t)a3;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers;
+- (id)fontForLabelAtIndex:(unint64_t)index;
 - (void)reloadImages;
 - (void)reloadLayoutInformation;
 - (void)reloadStrings;
@@ -10,20 +10,20 @@
 
 @implementation SUReviewCellConfiguration
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
   [objc_msgSend(MEMORY[0x1E69DCEB0] "mainScreen")];
   v7 = v6 + -8.0 + -8.0;
-  v8 = [a4 humanReadableDescription];
-  [a3 sizeForString:v8 font:objc_msgSend(MEMORY[0x1E69DB878] constrainedToSize:{"systemFontOfSize:", 13.0), v7, 1.79769313e308}];
+  humanReadableDescription = [object humanReadableDescription];
+  [context sizeForString:humanReadableDescription font:objc_msgSend(MEMORY[0x1E69DB878] constrainedToSize:{"systemFontOfSize:", 13.0), v7, 1.79769313e308}];
   return v9 + 43.0 + 7.0;
 }
 
-- (id)colorForLabelAtIndex:(unint64_t)a3 withModifiers:(unint64_t)a4
+- (id)colorForLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a3 == 2)
+  if (index == 2)
   {
-    return [MEMORY[0x1E69DC888] colorWithRed:2 green:a4 blue:0.392156863 alpha:{0.396078431, 0.4, 1.0}];
+    return [MEMORY[0x1E69DC888] colorWithRed:2 green:modifiers blue:0.392156863 alpha:{0.396078431, 0.4, 1.0}];
   }
 
   else
@@ -32,9 +32,9 @@
   }
 }
 
-- (id)fontForLabelAtIndex:(unint64_t)a3
+- (id)fontForLabelAtIndex:(unint64_t)index
 {
-  switch(a3)
+  switch(index)
   {
     case 2uLL:
       v3 = MEMORY[0x1E69DB878];
@@ -51,15 +51,15 @@
   return 0;
 }
 
-- (BOOL)getShadowColor:(id *)a3 offset:(CGSize *)a4 forLabelAtIndex:(unint64_t)a5 withModifiers:(unint64_t)a6
+- (BOOL)getShadowColor:(id *)color offset:(CGSize *)offset forLabelAtIndex:(unint64_t)index withModifiers:(unint64_t)modifiers
 {
-  if (a5 == 1)
+  if (index == 1)
   {
-    *a3 = [MEMORY[0x1E69DC888] colorWithWhite:a3 alpha:{a4, 1, a6, 0.760784314, 1.0}];
-    *a4 = xmmword_1C2339F90;
+    *color = [MEMORY[0x1E69DC888] colorWithWhite:color alpha:{offset, 1, modifiers, 0.760784314, 1.0}];
+    *offset = xmmword_1C2339F90;
   }
 
-  return a5 == 1;
+  return index == 1;
 }
 
 - (void)reloadImages
@@ -97,21 +97,21 @@
 
 - (void)reloadStrings
 {
-  v3 = [self->super.super.super.super._representedObject title];
+  title = [self->super.super.super.super._representedObject title];
 
-  v4 = [v3 length];
+  v4 = [title length];
   if (v4)
   {
-    v4 = v3;
+    v4 = title;
   }
 
   *(self->super.super.super._strings + 1) = v4;
-  v5 = [self->super.super.super.super._representedObject humanReadableDescription];
+  humanReadableDescription = [self->super.super.super.super._representedObject humanReadableDescription];
 
-  v6 = [v5 length];
+  v6 = [humanReadableDescription length];
   if (v6)
   {
-    v6 = v5;
+    v6 = humanReadableDescription;
   }
 
   *self->super.super.super._strings = v6;

@@ -1,29 +1,29 @@
 @interface HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface
-- (id)copyMRAVEndpointOutputDevices:(id)a3;
+- (id)copyMRAVEndpointOutputDevices:(id)devices;
 - (id)createAssistantConnection;
 - (id)createAssistantDiscovery;
-- (id)getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5;
-- (id)setMRAVOutputDeviceVolume:(float)a3 endpoint:(id)a4 outputDeviceUID:(id)a5 queue:(id)a6;
+- (id)getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:(id)endpoint outputDeviceUID:(id)d queue:(id)queue;
+- (id)setMRAVOutputDeviceVolume:(float)volume endpoint:(id)endpoint outputDeviceUID:(id)d queue:(id)queue;
 @end
 
 @implementation HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface
 
-- (id)getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5
+- (id)getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint:(id)endpoint outputDeviceUID:(id)d queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  dCopy = d;
+  queueCopy = queue;
   v10 = MEMORY[0x277D2C900];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __154__HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface_getMRAVEndpointOutputDeviceUIDVolumeControlCapabilitiesForEndpoint_outputDeviceUID_queue___block_invoke;
   v16[3] = &unk_2786723E0;
-  v17 = v7;
-  v18 = v8;
-  v19 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v17 = endpointCopy;
+  v18 = dCopy;
+  v19 = queueCopy;
+  v11 = queueCopy;
+  v12 = dCopy;
+  v13 = endpointCopy;
   v14 = [v10 futureWithCompletionHandlerAdapterBlock:v16];
 
   return v14;
@@ -47,23 +47,23 @@ void __154__HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface_getMRA
   (*(v4 + 16))(v4, v5, a3);
 }
 
-- (id)setMRAVOutputDeviceVolume:(float)a3 endpoint:(id)a4 outputDeviceUID:(id)a5 queue:(id)a6
+- (id)setMRAVOutputDeviceVolume:(float)volume endpoint:(id)endpoint outputDeviceUID:(id)d queue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  endpointCopy = endpoint;
+  dCopy = d;
+  queueCopy = queue;
   v12 = MEMORY[0x277D2C900];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __122__HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface_setMRAVOutputDeviceVolume_endpoint_outputDeviceUID_queue___block_invoke;
   v18[3] = &unk_278672390;
-  v19 = v9;
-  v20 = v10;
-  v22 = a3;
-  v21 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v19 = endpointCopy;
+  v20 = dCopy;
+  volumeCopy = volume;
+  v21 = queueCopy;
+  v13 = queueCopy;
+  v14 = dCopy;
+  v15 = endpointCopy;
   v16 = [v12 futureWithErrorOnlyHandlerAdapterBlock:v18];
 
   return v16;
@@ -81,11 +81,11 @@ void __122__HMDMRSetEndpointVolumeOperationDefaultExternalObjectInterface_setMRA
   MRAVEndpointSetOutputDeviceUIDVolume();
 }
 
-- (id)copyMRAVEndpointOutputDevices:(id)a3
+- (id)copyMRAVEndpointOutputDevices:(id)devices
 {
-  v3 = [a3 mravEndpoint];
+  mravEndpoint = [devices mravEndpoint];
 
-  return MEMORY[0x282185598](v3);
+  return MEMORY[0x282185598](mravEndpoint);
 }
 
 - (id)createAssistantConnection

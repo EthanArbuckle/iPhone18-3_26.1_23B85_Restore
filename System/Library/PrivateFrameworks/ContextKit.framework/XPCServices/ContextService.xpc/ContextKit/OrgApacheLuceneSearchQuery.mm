@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneSearchQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -11,14 +11,14 @@
 {
   v4.receiver = self;
   v4.super_class = OrgApacheLuceneSearchQuery;
-  v2 = [(OrgApacheLuceneSearchQuery *)&v4 clone];
+  clone = [(OrgApacheLuceneSearchQuery *)&v4 clone];
   objc_opt_class();
-  if (v2 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  return v2;
+  return clone;
 }
 
 - (unint64_t)hash
@@ -28,20 +28,20 @@
   return (v4 ^ [-[OrgApacheLuceneSearchQuery getClass](self "getClass")]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v5 = [(OrgApacheLuceneSearchQuery *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneSearchQuery *)self getClass];
+  if (getClass != [equal getClass])
   {
     return 0;
   }
@@ -53,14 +53,14 @@
   }
 
   v7 = JavaLangFloat_floatToIntBitsWithFloat_(self->boost_);
-  return v7 == JavaLangFloat_floatToIntBitsWithFloat_(*(a3 + 2));
+  return v7 == JavaLangFloat_floatToIntBitsWithFloat_(*(equal + 2));
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneSearchQuery *)self clone];
+  clone = [(OrgApacheLuceneSearchQuery *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

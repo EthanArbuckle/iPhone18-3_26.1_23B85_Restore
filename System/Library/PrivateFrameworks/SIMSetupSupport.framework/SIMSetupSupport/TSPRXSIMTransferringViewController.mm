@@ -1,21 +1,21 @@
 @interface TSPRXSIMTransferringViewController
-- (TSPRXSIMTransferringViewController)initWithTitle:(id)a3 subtitle:(id)a4 otpDetectorNeeded:(BOOL)a5;
+- (TSPRXSIMTransferringViewController)initWithTitle:(id)title subtitle:(id)subtitle otpDetectorNeeded:(BOOL)needed;
 - (void)_maybeEnableOneTimeCodeCheck;
 - (void)_setupOneTimeCodeDetection;
 @end
 
 @implementation TSPRXSIMTransferringViewController
 
-- (TSPRXSIMTransferringViewController)initWithTitle:(id)a3 subtitle:(id)a4 otpDetectorNeeded:(BOOL)a5
+- (TSPRXSIMTransferringViewController)initWithTitle:(id)title subtitle:(id)subtitle otpDetectorNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v10.receiver = self;
   v10.super_class = TSPRXSIMTransferringViewController;
-  v6 = [(TSIDSSimTransferringViewController *)&v10 initWithTitle:a3 subtitle:a4];
+  v6 = [(TSIDSSimTransferringViewController *)&v10 initWithTitle:title subtitle:subtitle];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (neededCopy)
     {
       [(TSPRXSIMTransferringViewController *)v6 _maybeEnableOneTimeCodeCheck];
     }

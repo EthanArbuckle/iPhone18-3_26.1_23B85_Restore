@@ -1,58 +1,58 @@
 @interface CUIKEventHeuristics
-+ (BOOL)_shouldFilterEvent:(id)a3 filterOptions:(unint64_t)a4;
-+ (id)_sortedAndFilteredEventsForPredicate:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6;
-+ (id)_sortedEvents:(id)a3 withMethod:(unint64_t)a4;
-+ (id)todaysEventsInCalendars:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6;
-+ (id)tomorrowsEventsInCalendars:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6;
-+ (id)upcomingEventsInCalendars:(id)a3 onlyReturnFirstEvents:(BOOL)a4 filterOptions:(unint64_t)a5 sortMethod:(unint64_t)a6 eventStore:(id)a7;
++ (BOOL)_shouldFilterEvent:(id)event filterOptions:(unint64_t)options;
++ (id)_sortedAndFilteredEventsForPredicate:(id)predicate filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store;
++ (id)_sortedEvents:(id)events withMethod:(unint64_t)method;
++ (id)todaysEventsInCalendars:(id)calendars filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store;
++ (id)tomorrowsEventsInCalendars:(id)calendars filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store;
++ (id)upcomingEventsInCalendars:(id)calendars onlyReturnFirstEvents:(BOOL)events filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store;
 @end
 
 @implementation CUIKEventHeuristics
 
-+ (id)todaysEventsInCalendars:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6
++ (id)todaysEventsInCalendars:(id)calendars filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a3;
-  v13 = [v10 CalDateForBeginningOfToday];
-  v14 = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
-  v15 = [v11 predicateForEventsWithStartDate:v13 endDate:v14 calendars:v12];
+  storeCopy = store;
+  calendarsCopy = calendars;
+  calDateForBeginningOfToday = [v10 CalDateForBeginningOfToday];
+  calDateForEndOfToday = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
+  v15 = [storeCopy predicateForEventsWithStartDate:calDateForBeginningOfToday endDate:calDateForEndOfToday calendars:calendarsCopy];
 
-  v16 = [a1 _sortedAndFilteredEventsForPredicate:v15 filterOptions:a4 sortMethod:a5 eventStore:v11];
+  v16 = [self _sortedAndFilteredEventsForPredicate:v15 filterOptions:options sortMethod:method eventStore:storeCopy];
 
   return v16;
 }
 
-+ (id)tomorrowsEventsInCalendars:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6
++ (id)tomorrowsEventsInCalendars:(id)calendars filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store
 {
   v10 = MEMORY[0x1E695DF00];
-  v11 = a6;
-  v12 = a3;
-  v13 = [v10 CalDateForBeginningOfTomorrow];
-  v14 = [MEMORY[0x1E695DF00] CalDateForEndOfTomorrow];
-  v15 = [v11 predicateForEventsWithStartDate:v13 endDate:v14 calendars:v12];
+  storeCopy = store;
+  calendarsCopy = calendars;
+  calDateForBeginningOfTomorrow = [v10 CalDateForBeginningOfTomorrow];
+  calDateForEndOfTomorrow = [MEMORY[0x1E695DF00] CalDateForEndOfTomorrow];
+  v15 = [storeCopy predicateForEventsWithStartDate:calDateForBeginningOfTomorrow endDate:calDateForEndOfTomorrow calendars:calendarsCopy];
 
-  v16 = [a1 _sortedAndFilteredEventsForPredicate:v15 filterOptions:a4 sortMethod:a5 eventStore:v11];
+  v16 = [self _sortedAndFilteredEventsForPredicate:v15 filterOptions:options sortMethod:method eventStore:storeCopy];
 
   return v16;
 }
 
-+ (id)upcomingEventsInCalendars:(id)a3 onlyReturnFirstEvents:(BOOL)a4 filterOptions:(unint64_t)a5 sortMethod:(unint64_t)a6 eventStore:(id)a7
++ (id)upcomingEventsInCalendars:(id)calendars onlyReturnFirstEvents:(BOOL)events filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store
 {
-  v10 = a4;
+  eventsCopy = events;
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
-  v14 = [MEMORY[0x1E695DF00] CalDateForNow];
-  v15 = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
-  v16 = [v13 predicateForEventsWithStartDate:v14 endDate:v15 calendars:v12];
+  calendarsCopy = calendars;
+  storeCopy = store;
+  calDateForNow = [MEMORY[0x1E695DF00] CalDateForNow];
+  calDateForEndOfToday = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
+  v16 = [storeCopy predicateForEventsWithStartDate:calDateForNow endDate:calDateForEndOfToday calendars:calendarsCopy];
 
   v30 = v16;
-  v17 = [a1 _sortedAndFilteredEventsForPredicate:v16 filterOptions:a5 sortMethod:a6 eventStore:v13];
+  v17 = [self _sortedAndFilteredEventsForPredicate:v16 filterOptions:options sortMethod:method eventStore:storeCopy];
   v18 = v17;
-  v31 = v13;
-  v32 = v12;
-  if (v10)
+  v31 = storeCopy;
+  v32 = calendarsCopy;
+  if (eventsCopy)
   {
     v35 = 0u;
     v36 = 0u;
@@ -76,10 +76,10 @@
           v24 = *(*(&v33 + 1) + 8 * i);
           if (v21)
           {
-            v25 = [v21 lastObject];
-            v26 = [v24 startDate];
-            v27 = [v25 startDate];
-            v28 = [v26 isEqualToDate:v27];
+            lastObject = [v21 lastObject];
+            startDate = [v24 startDate];
+            startDate2 = [lastObject startDate];
+            v28 = [startDate isEqualToDate:startDate2];
 
             if (v28)
             {
@@ -114,12 +114,12 @@
   return v21;
 }
 
-+ (id)_sortedAndFilteredEventsForPredicate:(id)a3 filterOptions:(unint64_t)a4 sortMethod:(unint64_t)a5 eventStore:(id)a6
++ (id)_sortedAndFilteredEventsForPredicate:(id)predicate filterOptions:(unint64_t)options sortMethod:(unint64_t)method eventStore:(id)store
 {
   v25 = *MEMORY[0x1E69E9840];
-  v9 = [a6 eventsMatchingPredicate:a3];
-  v10 = [a1 _sortedEvents:v9 withMethod:a5];
-  v11 = [MEMORY[0x1E695DF70] array];
+  v9 = [store eventsMatchingPredicate:predicate];
+  v10 = [self _sortedEvents:v9 withMethod:method];
+  array = [MEMORY[0x1E695DF70] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -140,9 +140,9 @@
         }
 
         v17 = *(*(&v20 + 1) + 8 * i);
-        if (([a1 _shouldFilterEvent:v17 filterOptions:{a4, v20}] & 1) == 0)
+        if (([self _shouldFilterEvent:v17 filterOptions:{options, v20}] & 1) == 0)
         {
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -152,22 +152,22 @@
     while (v14);
   }
 
-  v18 = [MEMORY[0x1E695DEC8] arrayWithArray:v11];
+  v18 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v18;
 }
 
-+ (id)_sortedEvents:(id)a3 withMethod:(unint64_t)a4
++ (id)_sortedEvents:(id)events withMethod:(unint64_t)method
 {
-  v5 = a3;
-  v6 = [v5 count];
-  v7 = v5;
-  if (a4 == 1)
+  eventsCopy = events;
+  v6 = [eventsCopy count];
+  v7 = eventsCopy;
+  if (method == 1)
   {
-    v7 = v5;
+    v7 = eventsCopy;
     if (v6)
     {
-      v7 = [v5 sortedArrayUsingComparator:&__block_literal_global_17];
+      v7 = [eventsCopy sortedArrayUsingComparator:&__block_literal_global_17];
     }
   }
 
@@ -184,33 +184,33 @@ uint64_t __48__CUIKEventHeuristics__sortedEvents_withMethod___block_invoke(uint6
   return v5;
 }
 
-+ (BOOL)_shouldFilterEvent:(id)a3 filterOptions:(unint64_t)a4
++ (BOOL)_shouldFilterEvent:(id)event filterOptions:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 calendar];
-  v7 = ([v6 type] == 4) & (v4 >> 1);
+  optionsCopy = options;
+  eventCopy = event;
+  calendar = [eventCopy calendar];
+  v7 = ([calendar type] == 4) & (optionsCopy >> 1);
 
-  LODWORD(v6) = ((v4 & 4) != 0) & [v5 isAllDay];
-  v8 = v4 & ([v5 status] == 3) | v6 | v7;
-  if ([v5 hasAttendees])
+  LODWORD(calendar) = ((optionsCopy & 4) != 0) & [eventCopy isAllDay];
+  v8 = optionsCopy & ([eventCopy status] == 3) | calendar | v7;
+  if ([eventCopy hasAttendees])
   {
-    v9 = [v5 organizer];
-    if (([v9 isCurrentUser] & 1) == 0)
+    organizer = [eventCopy organizer];
+    if (([organizer isCurrentUser] & 1) == 0)
     {
-      v10 = [v5 selfAttendee];
-      v11 = ([v10 participantStatus] == 3) & (v4 >> 3);
+      selfAttendee = [eventCopy selfAttendee];
+      v11 = ([selfAttendee participantStatus] == 3) & (optionsCopy >> 3);
 
       LOBYTE(v8) = v11 | v8;
     }
   }
 
-  if ((v4 & 0x10) != 0 && (v8 & 1) == 0)
+  if ((optionsCopy & 0x10) != 0 && (v8 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
-    v13 = [MEMORY[0x1E6992F70] rangeWithStartDate:v12 endDate:v12];
+    calDateForEndOfToday = [MEMORY[0x1E695DF00] CalDateForEndOfToday];
+    v13 = [MEMORY[0x1E6992F70] rangeWithStartDate:calDateForEndOfToday endDate:calDateForEndOfToday];
 
-    LOBYTE(v8) = [v13 intersectsRange:v5];
+    LOBYTE(v8) = [v13 intersectsRange:eventCopy];
   }
 
   return v8 & 1;

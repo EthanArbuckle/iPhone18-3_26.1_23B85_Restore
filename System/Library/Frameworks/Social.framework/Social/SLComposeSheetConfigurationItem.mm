@@ -18,22 +18,22 @@
 - (void)setTitle:(NSString *)title
 {
   objc_storeStrong(&self->_title, title);
-  v4 = [(SLComposeSheetConfigurationItem *)self changeObserver];
-  [v4 configurationItemDidChange:self];
+  changeObserver = [(SLComposeSheetConfigurationItem *)self changeObserver];
+  [changeObserver configurationItemDidChange:self];
 }
 
 - (void)setValue:(NSString *)value
 {
   objc_storeStrong(&self->_value, value);
-  v4 = [(SLComposeSheetConfigurationItem *)self changeObserver];
-  [v4 configurationItemDidChange:self];
+  changeObserver = [(SLComposeSheetConfigurationItem *)self changeObserver];
+  [changeObserver configurationItemDidChange:self];
 }
 
 - (void)setValuePending:(BOOL)valuePending
 {
   self->_valuePending = valuePending;
-  v4 = [(SLComposeSheetConfigurationItem *)self changeObserver];
-  [v4 configurationItemDidChange:self];
+  changeObserver = [(SLComposeSheetConfigurationItem *)self changeObserver];
+  [changeObserver configurationItemDidChange:self];
 }
 
 - (id)changeObserver

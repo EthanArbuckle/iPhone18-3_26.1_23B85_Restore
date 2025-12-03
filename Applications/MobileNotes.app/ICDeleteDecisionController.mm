@@ -1,81 +1,81 @@
 @interface ICDeleteDecisionController
-+ (void)deleteHTMLFoldersIfNeeded:(id)a3 eventReporter:(id)a4;
-+ (void)deleteHTMLNotesIfNeeded:(id)a3 eventReporter:(id)a4;
-+ (void)deleteModernFoldersIfNeeded:(id)a3 eventReporter:(id)a4 completion:(id)a5;
-+ (void)deleteModernNotesIfNeeded:(id)a3 eventReporter:(id)a4 completion:(id)a5;
-+ (void)deleteSharesInFolder:(id)a3 completion:(id)a4;
++ (void)deleteHTMLFoldersIfNeeded:(id)needed eventReporter:(id)reporter;
++ (void)deleteHTMLNotesIfNeeded:(id)needed eventReporter:(id)reporter;
++ (void)deleteModernFoldersIfNeeded:(id)needed eventReporter:(id)reporter completion:(id)completion;
++ (void)deleteModernNotesIfNeeded:(id)needed eventReporter:(id)reporter completion:(id)completion;
++ (void)deleteSharesInFolder:(id)folder completion:(id)completion;
 - (BOOL)allowsRecentlyDeletedFolderAlert;
-- (ICDeleteDecisionController)initWithSourceObjects:(id)a3 allowsRecentlyDeletedFolderAlert:(BOOL)a4 window:(id)a5 sender:(id)a6 eventReporter:(id)a7;
-- (ICDeleteDecisionController)initWithSourceObjects:(id)a3 presenter:(id)a4 eventReporter:(id)a5 options:(unint64_t)a6;
+- (ICDeleteDecisionController)initWithSourceObjects:(id)objects allowsRecentlyDeletedFolderAlert:(BOOL)alert window:(id)window sender:(id)sender eventReporter:(id)reporter;
+- (ICDeleteDecisionController)initWithSourceObjects:(id)objects presenter:(id)presenter eventReporter:(id)reporter options:(unint64_t)options;
 - (ICNAEventReporter)eventReporter;
 - (NSString)actionName;
 - (UIWindow)window;
 - (id)sender;
-- (void)authenticateIfNeededWithCompletion:(id)a3;
-- (void)commonInitWithSourceObjects:(id)a3 presenter:(id)a4 options:(unint64_t)a5;
+- (void)authenticateIfNeededWithCompletion:(id)completion;
+- (void)commonInitWithSourceObjects:(id)objects presenter:(id)presenter options:(unint64_t)options;
 - (void)deleteHTMLFoldersIfNeeded;
 - (void)deleteHTMLNotesIfNeeded;
-- (void)deleteModernFoldersIfNeeded:(id)a3;
-- (void)deleteModernNotesIfNeeded:(id)a3;
+- (void)deleteModernFoldersIfNeeded:(id)needed;
+- (void)deleteModernNotesIfNeeded:(id)needed;
 - (void)deleteObjects;
-- (void)eventReporterLostSession:(id)a3;
-- (void)performAdditionalStepWithCompletion:(id)a3;
-- (void)performDecisionWithCompletion:(id)a3;
+- (void)eventReporterLostSession:(id)session;
+- (void)performAdditionalStepWithCompletion:(id)completion;
+- (void)performDecisionWithCompletion:(id)completion;
 @end
 
 @implementation ICDeleteDecisionController
 
-- (ICDeleteDecisionController)initWithSourceObjects:(id)a3 presenter:(id)a4 eventReporter:(id)a5 options:(unint64_t)a6
+- (ICDeleteDecisionController)initWithSourceObjects:(id)objects presenter:(id)presenter eventReporter:(id)reporter options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  objectsCopy = objects;
+  presenterCopy = presenter;
+  reporterCopy = reporter;
   v16.receiver = self;
   v16.super_class = ICDeleteDecisionController;
   v13 = [(ICDeleteDecisionController *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_eventReporter, a5);
-    [(ICDeleteDecisionController *)v14 commonInitWithSourceObjects:v10 presenter:v11 options:a6];
+    objc_storeStrong(&v13->_eventReporter, reporter);
+    [(ICDeleteDecisionController *)v14 commonInitWithSourceObjects:objectsCopy presenter:presenterCopy options:options];
   }
 
   return v14;
 }
 
-- (void)commonInitWithSourceObjects:(id)a3 presenter:(id)a4 options:(unint64_t)a5
+- (void)commonInitWithSourceObjects:(id)objects presenter:(id)presenter options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
+  objectsCopy = objects;
+  presenterCopy = presenter;
   self->_didAuthenticate = 0;
   sourceObjects = self->_sourceObjects;
-  self->_sourceObjects = v8;
-  v14 = v8;
+  self->_sourceObjects = objectsCopy;
+  v14 = objectsCopy;
 
-  v11 = [[ICDeleteDecision alloc] initWithSourceObjects:v14 options:a5];
+  v11 = [[ICDeleteDecision alloc] initWithSourceObjects:v14 options:options];
   deleteDecision = self->_deleteDecision;
   self->_deleteDecision = v11;
 
   alertPresenter = self->_alertPresenter;
-  self->_alertPresenter = v9;
+  self->_alertPresenter = presenterCopy;
 }
 
-- (ICDeleteDecisionController)initWithSourceObjects:(id)a3 allowsRecentlyDeletedFolderAlert:(BOOL)a4 window:(id)a5 sender:(id)a6 eventReporter:(id)a7
+- (ICDeleteDecisionController)initWithSourceObjects:(id)objects allowsRecentlyDeletedFolderAlert:(BOOL)alert window:(id)window sender:(id)sender eventReporter:(id)reporter
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  alertCopy = alert;
+  objectsCopy = objects;
+  windowCopy = window;
+  senderCopy = sender;
+  reporterCopy = reporter;
   v19.receiver = self;
   v19.super_class = ICDeleteDecisionController;
   v16 = [(ICDeleteDecisionController *)&v19 init];
   if (v16)
   {
-    v17 = [[ICWindowDeletionAlertPresenter alloc] initWithWindow:v13 sender:v14];
-    [(ICDeleteDecisionController *)v16 commonInitWithSourceObjects:v12 presenter:v17 options:!v10];
-    objc_storeWeak(&v16->_sender, v14);
-    objc_storeStrong(&v16->_eventReporter, a7);
+    v17 = [[ICWindowDeletionAlertPresenter alloc] initWithWindow:windowCopy sender:senderCopy];
+    [(ICDeleteDecisionController *)v16 commonInitWithSourceObjects:objectsCopy presenter:v17 options:!alertCopy];
+    objc_storeWeak(&v16->_sender, senderCopy);
+    objc_storeStrong(&v16->_eventReporter, reporter);
   }
 
   return v16;
@@ -84,87 +84,87 @@
 - (UIWindow)window
 {
   objc_opt_class();
-  v3 = [(ICDeleteDecisionController *)self alertPresenter];
+  alertPresenter = [(ICDeleteDecisionController *)self alertPresenter];
   v4 = ICDynamicCast();
-  v5 = [v4 window];
+  window = [v4 window];
 
-  return v5;
+  return window;
 }
 
 - (BOOL)allowsRecentlyDeletedFolderAlert
 {
-  v2 = [(ICDeleteDecisionController *)self deleteDecision];
-  v3 = [v2 allowsRecentlyDeletedFolderAlert];
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  allowsRecentlyDeletedFolderAlert = [deleteDecision allowsRecentlyDeletedFolderAlert];
 
-  return v3;
+  return allowsRecentlyDeletedFolderAlert;
 }
 
-- (void)performDecisionWithCompletion:(id)a3
+- (void)performDecisionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICDeleteDecisionController *)self deleteDecision];
-  v6 = [v5 type];
+  completionCopy = completion;
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  type = [deleteDecision type];
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
-  else if (v6 == 1)
+  else if (type == 1)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1000A9CD8;
     v7[3] = &unk_100647F90;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(ICDeleteDecisionController *)self performAdditionalStepWithCompletion:v7];
   }
 
-  else if (!v6)
+  else if (!type)
   {
     [(ICDeleteDecisionController *)self deleteObjects];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 }
 
-+ (void)deleteSharesInFolder:(id)a3 completion:(id)a4
++ (void)deleteSharesInFolder:(id)folder completion:(id)completion
 {
-  v11 = a3;
-  v5 = a4;
-  if ([v11 isSmartFolder])
+  folderCopy = folder;
+  completionCopy = completion;
+  if ([folderCopy isSmartFolder])
   {
-    if (v5)
+    if (completionCopy)
     {
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
     v6 = +[NSMutableArray array];
-    v7 = [v11 rootSharedFoldersInDescendantsIncludingSelf];
-    [v6 addObjectsFromArray:v7];
+    rootSharedFoldersInDescendantsIncludingSelf = [folderCopy rootSharedFoldersInDescendantsIncludingSelf];
+    [v6 addObjectsFromArray:rootSharedFoldersInDescendantsIncludingSelf];
 
-    v8 = [v11 rootSharedNotesIncludingChildFolders];
-    [v6 addObjectsFromArray:v8];
+    rootSharedNotesIncludingChildFolders = [folderCopy rootSharedNotesIncludingChildFolders];
+    [v6 addObjectsFromArray:rootSharedNotesIncludingChildFolders];
 
     if ([v6 count])
     {
       v9 = +[ICCloudContext sharedContext];
       v10 = [v6 copy];
-      [v9 deleteSharesForObjects:v10 completionHandler:v5];
+      [v9 deleteSharesForObjects:v10 completionHandler:completionCopy];
     }
 
-    else if (v5)
+    else if (completionCopy)
     {
-      v5[2](v5, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
@@ -175,8 +175,8 @@
   {
     v3 = [ICNAEventReporter alloc];
     v4 = kICNASubtrackerNameDeleteDecisionController;
-    v5 = [(ICDeleteDecisionController *)self window];
-    v6 = [v3 initWithSubTrackerName:v4 window:v5];
+    window = [(ICDeleteDecisionController *)self window];
+    v6 = [v3 initWithSubTrackerName:v4 window:window];
     eventReporter = self->_eventReporter;
     self->_eventReporter = v6;
 
@@ -189,46 +189,46 @@
   return v9;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
   v8 = +[NSNotificationCenter defaultCenter];
   v6 = ICNAEventReporterLostSessionNotification;
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [v8 removeObserver:self name:v6 object:object];
 }
 
 - (NSString)actionName
 {
-  v2 = [(ICDeleteDecisionController *)self deleteDecision];
-  v3 = [v2 modernFolders];
-  if ([v3 count])
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  modernFolders = [deleteDecision modernFolders];
+  if ([modernFolders count])
   {
   }
 
   else
   {
-    v4 = [v2 htmlFolders];
-    v5 = [v4 count];
+    htmlFolders = [deleteDecision htmlFolders];
+    v5 = [htmlFolders count];
 
     if (!v5)
     {
-      v9 = [v2 htmlNotes];
-      v10 = [v9 count];
+      htmlNotes = [deleteDecision htmlNotes];
+      v10 = [htmlNotes count];
 
-      v11 = [v2 modernNotes];
-      v12 = [v11 count];
+      modernNotes = [deleteDecision modernNotes];
+      v12 = [modernNotes count];
 
-      v13 = [v2 modernNotes];
-      v14 = [v13 firstObject];
-      v15 = [v14 folder];
-      v16 = [v15 isTrashFolder];
+      modernNotes2 = [deleteDecision modernNotes];
+      firstObject = [modernNotes2 firstObject];
+      folder = [firstObject folder];
+      isTrashFolder = [folder isTrashFolder];
 
-      v17 = (v10 != 0) | v16;
+      v17 = (v10 != 0) | isTrashFolder;
       if (v10)
       {
         v18 = v10;
@@ -239,7 +239,7 @@
         v18 = v12;
       }
 
-      if ((v10 != 0) | v16 & 1)
+      if ((v10 != 0) | isTrashFolder & 1)
       {
         v19 = @"Delete %lu Notes";
       }
@@ -274,72 +274,72 @@ LABEL_5:
   return v7;
 }
 
-- (void)authenticateIfNeededWithCompletion:(id)a3
+- (void)authenticateIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICDeleteDecisionController *)self deleteDecision];
-  v6 = [v5 modernSourceObjects];
-  if (![v6 count])
+  completionCopy = completion;
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  modernSourceObjects = [deleteDecision modernSourceObjects];
+  if (![modernSourceObjects count])
   {
 
     goto LABEL_7;
   }
 
-  v7 = [(ICDeleteDecisionController *)self didAuthenticate];
+  didAuthenticate = [(ICDeleteDecisionController *)self didAuthenticate];
 
-  if (v7)
+  if (didAuthenticate)
   {
 LABEL_7:
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
     goto LABEL_19;
   }
 
-  v8 = [(ICDeleteDecisionController *)self deleteDecision];
-  v9 = [v8 modernFolders];
+  deleteDecision2 = [(ICDeleteDecisionController *)self deleteDecision];
+  modernFolders = [deleteDecision2 modernFolders];
 
-  if ([v9 count] && objc_msgSend(v9, "ic_allSatisfy:", &stru_100647FD0))
+  if ([modernFolders count] && objc_msgSend(modernFolders, "ic_allSatisfy:", &stru_100647FD0))
   {
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
   {
-    v10 = [(ICDeleteDecisionController *)self deleteDecision];
-    v11 = [v10 modernNotes];
+    deleteDecision3 = [(ICDeleteDecisionController *)self deleteDecision];
+    modernNotes = [deleteDecision3 modernNotes];
 
-    if (![v11 count])
+    if (![modernNotes count])
     {
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v12 = [(ICDeleteDecisionController *)self deleteDecision];
-      v13 = [v12 modernFolders];
+      deleteDecision4 = [(ICDeleteDecisionController *)self deleteDecision];
+      modernFolders2 = [deleteDecision4 modernFolders];
 
-      v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v14 = [modernFolders2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v14)
       {
         v15 = *v27;
         do
         {
           v16 = 0;
-          v17 = v11;
+          v17 = modernNotes;
           do
           {
             if (*v27 != v15)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(modernFolders2);
             }
 
-            v18 = [*(*(&v26 + 1) + 8 * v16) visibleNotesIncludingChildFolders];
-            v11 = [v17 ic_arrayByAddingObjectsFromNonNilArray:v18];
+            visibleNotesIncludingChildFolders = [*(*(&v26 + 1) + 8 * v16) visibleNotesIncludingChildFolders];
+            modernNotes = [v17 ic_arrayByAddingObjectsFromNonNilArray:visibleNotesIncludingChildFolders];
 
             v16 = v16 + 1;
-            v17 = v11;
+            v17 = modernNotes;
           }
 
           while (v14 != v16);
-          v14 = [v13 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v14 = [modernFolders2 countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v14);
@@ -347,16 +347,16 @@ LABEL_7:
     }
 
     objc_initWeak(&location, self);
-    v19 = [ICAuthenticationPrompt promptForDeletingNotes:v11];
+    v19 = [ICAuthenticationPrompt promptForDeletingNotes:modernNotes];
     v20 = +[ICAuthentication shared];
-    v21 = [(ICDeleteDecisionController *)self window];
+    window = [(ICDeleteDecisionController *)self window];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_1000AA5BC;
     v22[3] = &unk_100647FF8;
     objc_copyWeak(&v24, &location);
-    v23 = v4;
-    [v20 authenticateWithPrompt:v19 displayWindow:v21 completionHandler:v22];
+    v23 = completionCopy;
+    [v20 authenticateWithPrompt:v19 displayWindow:window completionHandler:v22];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -377,11 +377,11 @@ LABEL_19:
 
   [(ICDeleteDecisionController *)self setDidAuthenticate:0];
   v4 = +[ICAppDelegate sharedInstance];
-  v5 = [v4 undoManager];
+  undoManager = [v4 undoManager];
 
-  [v5 beginUndoGrouping];
-  v6 = [(ICDeleteDecisionController *)self actionName];
-  [v5 setActionName:v6];
+  [undoManager beginUndoGrouping];
+  actionName = [(ICDeleteDecisionController *)self actionName];
+  [undoManager setActionName:actionName];
 
   [(ICDeleteDecisionController *)self deleteHTMLNotesIfNeeded];
   [(ICDeleteDecisionController *)self deleteHTMLFoldersIfNeeded];
@@ -390,32 +390,32 @@ LABEL_19:
   v8[2] = sub_1000AA7A0;
   v8[3] = &unk_100645BA0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = undoManager;
+  v7 = undoManager;
   [(ICDeleteDecisionController *)self deleteModernNotesIfNeeded:v8];
 }
 
 - (void)deleteHTMLNotesIfNeeded
 {
   v3 = objc_opt_class();
-  v6 = [(ICDeleteDecisionController *)self deleteDecision];
-  v4 = [v6 htmlNotes];
-  v5 = [(ICDeleteDecisionController *)self eventReporter];
-  [v3 deleteHTMLNotesIfNeeded:v4 eventReporter:v5];
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  htmlNotes = [deleteDecision htmlNotes];
+  eventReporter = [(ICDeleteDecisionController *)self eventReporter];
+  [v3 deleteHTMLNotesIfNeeded:htmlNotes eventReporter:eventReporter];
 }
 
-+ (void)deleteHTMLNotesIfNeeded:(id)a3 eventReporter:(id)a4
++ (void)deleteHTMLNotesIfNeeded:(id)needed eventReporter:(id)reporter
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  neededCopy = needed;
+  reporterCopy = reporter;
+  if ([neededCopy count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v19 = v5;
-    obj = v5;
+    v19 = neededCopy;
+    obj = neededCopy;
     v7 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v7)
     {
@@ -442,15 +442,15 @@ LABEL_19:
           objc_opt_class();
           v13 = ICDynamicCast();
           v14 = +[NotesApp sharedNotesApp];
-          v15 = [v14 noteContext];
-          [v15 deleteNote:v13];
+          noteContext = [v14 noteContext];
+          [noteContext deleteNote:v13];
 
           v16 = +[NotesApp sharedNotesApp];
-          v17 = [v16 noteContext];
-          v18 = [v17 managedObjectContext];
-          [v18 ic_save];
+          noteContext2 = [v16 noteContext];
+          managedObjectContext = [noteContext2 managedObjectContext];
+          [managedObjectContext ic_save];
 
-          [v6 submitNoteDeleteEventForHTMLNote:v13];
+          [reporterCopy submitNoteDeleteEventForHTMLNote:v13];
         }
 
         v8 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
@@ -459,30 +459,30 @@ LABEL_19:
       while (v8);
     }
 
-    v5 = v19;
+    neededCopy = v19;
   }
 }
 
 - (void)deleteHTMLFoldersIfNeeded
 {
   v3 = objc_opt_class();
-  v6 = [(ICDeleteDecisionController *)self deleteDecision];
-  v4 = [v6 htmlFolders];
-  v5 = [(ICDeleteDecisionController *)self eventReporter];
-  [v3 deleteHTMLFoldersIfNeeded:v4 eventReporter:v5];
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  htmlFolders = [deleteDecision htmlFolders];
+  eventReporter = [(ICDeleteDecisionController *)self eventReporter];
+  [v3 deleteHTMLFoldersIfNeeded:htmlFolders eventReporter:eventReporter];
 }
 
-+ (void)deleteHTMLFoldersIfNeeded:(id)a3 eventReporter:(id)a4
++ (void)deleteHTMLFoldersIfNeeded:(id)needed eventReporter:(id)reporter
 {
-  v4 = a3;
-  if ([v4 count])
+  neededCopy = needed;
+  if ([neededCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v13 = v4;
-    v5 = v4;
+    v13 = neededCopy;
+    v5 = neededCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -520,30 +520,30 @@ LABEL_19:
       while (v7);
     }
 
-    v4 = v13;
+    neededCopy = v13;
   }
 }
 
-- (void)deleteModernNotesIfNeeded:(id)a3
+- (void)deleteModernNotesIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = objc_opt_class();
-  v8 = [(ICDeleteDecisionController *)self deleteDecision];
-  v6 = [v8 modernNotes];
-  v7 = [(ICDeleteDecisionController *)self eventReporter];
-  [v5 deleteModernNotesIfNeeded:v6 eventReporter:v7 completion:v4];
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  modernNotes = [deleteDecision modernNotes];
+  eventReporter = [(ICDeleteDecisionController *)self eventReporter];
+  [v5 deleteModernNotesIfNeeded:modernNotes eventReporter:eventReporter completion:neededCopy];
 }
 
-+ (void)deleteModernNotesIfNeeded:(id)a3 eventReporter:(id)a4 completion:(id)a5
++ (void)deleteModernNotesIfNeeded:(id)needed eventReporter:(id)reporter completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  neededCopy = needed;
+  reporterCopy = reporter;
+  completionCopy = completion;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [neededCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -555,15 +555,15 @@ LABEL_19:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(neededCopy);
         }
 
-        [v8 submitNoteDeleteEventForModernNote:*(*(&v20 + 1) + 8 * v13)];
+        [reporterCopy submitNoteDeleteEventForModernNote:*(*(&v20 + 1) + 8 * v13)];
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [neededCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -574,34 +574,34 @@ LABEL_19:
   v17[1] = 3221225472;
   v17[2] = sub_1000AB008;
   v17[3] = &unk_100645570;
-  v18 = v7;
-  v19 = v9;
-  v15 = v9;
-  v16 = v7;
+  v18 = neededCopy;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = neededCopy;
   [v14 deleteSharesForObjects:v16 completionHandler:v17];
 }
 
-- (void)deleteModernFoldersIfNeeded:(id)a3
+- (void)deleteModernFoldersIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = objc_opt_class();
-  v8 = [(ICDeleteDecisionController *)self deleteDecision];
-  v6 = [v8 modernFolders];
-  v7 = [(ICDeleteDecisionController *)self eventReporter];
-  [v5 deleteModernFoldersIfNeeded:v6 eventReporter:v7 completion:v4];
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  modernFolders = [deleteDecision modernFolders];
+  eventReporter = [(ICDeleteDecisionController *)self eventReporter];
+  [v5 deleteModernFoldersIfNeeded:modernFolders eventReporter:eventReporter completion:neededCopy];
 }
 
-+ (void)deleteModernFoldersIfNeeded:(id)a3 eventReporter:(id)a4 completion:(id)a5
++ (void)deleteModernFoldersIfNeeded:(id)needed eventReporter:(id)reporter completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v18 = a5;
+  neededCopy = needed;
+  reporterCopy = reporter;
+  completionCopy = completion;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v7;
-  v9 = [v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  obj = neededCopy;
+  v9 = [neededCopy countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
     v10 = *v35;
@@ -615,7 +615,7 @@ LABEL_19:
           objc_enumerationMutation(obj);
         }
 
-        [v8 submitFolderDeleteEventForModernFolder:*(*(&v34 + 1) + 8 * v11)];
+        [reporterCopy submitFolderDeleteEventForModernFolder:*(*(&v34 + 1) + 8 * v11)];
         v11 = v11 + 1;
       }
 
@@ -679,33 +679,33 @@ LABEL_19:
     block[1] = 3221225472;
     block[2] = sub_1000AB764;
     block[3] = &unk_100645CC8;
-    v22 = v18;
+    v22 = completionCopy;
     dispatch_group_notify(v12, &_dispatch_main_q, block);
 
     _Block_object_dispose(&v30, 8);
   }
 
-  else if (v18)
+  else if (completionCopy)
   {
-    v18[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)performAdditionalStepWithCompletion:(id)a3
+- (void)performAdditionalStepWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICDeleteDecisionController *)self deleteDecision];
-  v6 = [v5 additionalStep];
+  completionCopy = completion;
+  deleteDecision = [(ICDeleteDecisionController *)self deleteDecision];
+  additionalStep = [deleteDecision additionalStep];
 
-  switch(v6)
+  switch(additionalStep)
   {
     case 0uLL:
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_42;
     case 1uLL:
-      v19 = [(ICDeleteDecisionController *)self deleteDecision];
-      v20 = [v19 modernNotes];
-      v21 = [v20 count];
+      deleteDecision2 = [(ICDeleteDecisionController *)self deleteDecision];
+      modernNotes = [deleteDecision2 modernNotes];
+      v21 = [modernNotes count];
 
       if (v21 == 1)
       {
@@ -713,10 +713,10 @@ LABEL_19:
         goto LABEL_32;
       }
 
-      v33 = [(ICDeleteDecisionController *)self deleteDecision];
-      v34 = [v33 containsUnsharedObjects];
+      deleteDecision3 = [(ICDeleteDecisionController *)self deleteDecision];
+      containsUnsharedObjects = [deleteDecision3 containsUnsharedObjects];
 
-      v31 = v34 == 0;
+      v31 = containsUnsharedObjects == 0;
       v32 = 1;
       goto LABEL_29;
     case 2uLL:
@@ -729,9 +729,9 @@ LABEL_19:
       v14 = 3;
       goto LABEL_34;
     case 3uLL:
-      v15 = [(ICDeleteDecisionController *)self deleteDecision];
-      v16 = [v15 modernNotes];
-      v17 = [v16 count];
+      deleteDecision4 = [(ICDeleteDecisionController *)self deleteDecision];
+      modernNotes2 = [deleteDecision4 modernNotes];
+      v17 = [modernNotes2 count];
 
       if (v17 == 1)
       {
@@ -740,10 +740,10 @@ LABEL_19:
 
       else
       {
-        v29 = [(ICDeleteDecisionController *)self deleteDecision];
-        v30 = [v29 containsUnsharedObjects];
+        deleteDecision5 = [(ICDeleteDecisionController *)self deleteDecision];
+        containsUnsharedObjects2 = [deleteDecision5 containsUnsharedObjects];
 
-        v31 = v30 == 0;
+        v31 = containsUnsharedObjects2 == 0;
         v32 = 5;
 LABEL_29:
         if (v31)
@@ -759,9 +759,9 @@ LABEL_29:
 
 LABEL_32:
       v35 = [ICDeleteAlert alloc];
-      v36 = [(ICDeleteDecisionController *)self deleteDecision];
-      v37 = [v36 modernNotes];
-      v27 = -[ICDeleteAlert initWithAlertType:count:](v35, "initWithAlertType:count:", v18, [v37 count]);
+      deleteDecision6 = [(ICDeleteDecisionController *)self deleteDecision];
+      modernNotes3 = [deleteDecision6 modernNotes];
+      v27 = -[ICDeleteAlert initWithAlertType:count:](v35, "initWithAlertType:count:", v18, [modernNotes3 count]);
 
       goto LABEL_35;
     case 4uLL:
@@ -774,9 +774,9 @@ LABEL_32:
       v14 = 7;
       goto LABEL_34;
     case 5uLL:
-      v22 = [(ICDeleteDecisionController *)self deleteDecision];
-      v23 = [v22 guiltyObjects];
-      if ([v23 count] == 1)
+      deleteDecision7 = [(ICDeleteDecisionController *)self deleteDecision];
+      guiltyObjects = [deleteDecision7 guiltyObjects];
+      if ([guiltyObjects count] == 1)
       {
         v24 = 8;
       }
@@ -787,16 +787,16 @@ LABEL_32:
       }
 
       v25 = [ICDeleteAlert alloc];
-      v8 = [(ICDeleteDecisionController *)self deleteDecision];
-      v26 = [v8 guiltyObjects];
-      v27 = -[ICDeleteAlert initWithAlertType:count:](v25, "initWithAlertType:count:", v24, [v26 count]);
+      deleteDecision8 = [(ICDeleteDecisionController *)self deleteDecision];
+      guiltyObjects2 = [deleteDecision8 guiltyObjects];
+      v27 = -[ICDeleteAlert initWithAlertType:count:](v25, "initWithAlertType:count:", v24, [guiltyObjects2 count]);
 
       goto LABEL_26;
     case 6uLL:
       if ([(ICDeleteDecisionController *)self shouldBypassDeleteFolderAlerts])
       {
 LABEL_21:
-        v4[2](v4, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       else
@@ -811,7 +811,7 @@ LABEL_35:
           alertPresenter = self->_alertPresenter;
           if (alertPresenter)
           {
-            [(ICDeletionAlertPresenter *)alertPresenter presentAlert:v27 withCompletion:v4];
+            [(ICDeletionAlertPresenter *)alertPresenter presentAlert:v27 withCompletion:completionCopy];
           }
 
           else
@@ -834,9 +834,9 @@ LABEL_42:
       goto LABEL_34;
     case 8uLL:
       v28 = [ICDeleteAlert alloc];
-      v8 = [(ICDeleteDecisionController *)self deleteDecision];
-      v9 = [v8 guiltyObjects];
-      v10 = [v9 count];
+      deleteDecision8 = [(ICDeleteDecisionController *)self deleteDecision];
+      guiltyObjects3 = [deleteDecision8 guiltyObjects];
+      v10 = [guiltyObjects3 count];
       v11 = v28;
       v12 = 11;
       goto LABEL_25;
@@ -850,16 +850,16 @@ LABEL_42:
       v40[2] = sub_1000ABBF0;
       v40[3] = &unk_100647F90;
       v40[4] = self;
-      v41 = v4;
+      v41 = completionCopy;
       [(ICDeleteDecisionController *)self authenticateIfNeededWithCompletion:v40];
 
       goto LABEL_42;
     case 0xBuLL:
       [ICDeleteDecision setDidShowMoveToRecentlyDeletedFolderAlert:1];
       v7 = [ICDeleteAlert alloc];
-      v8 = [(ICDeleteDecisionController *)self deleteDecision];
-      v9 = [v8 guiltyObjects];
-      v10 = [v9 count];
+      deleteDecision8 = [(ICDeleteDecisionController *)self deleteDecision];
+      guiltyObjects3 = [deleteDecision8 guiltyObjects];
+      v10 = [guiltyObjects3 count];
       v11 = v7;
       v12 = 15;
 LABEL_25:
@@ -872,7 +872,7 @@ LABEL_26:
       v14 = 17;
       goto LABEL_34;
     case 0xDuLL:
-      [(ICDeleteDecisionController *)self authenticateIfNeededWithCompletion:v4];
+      [(ICDeleteDecisionController *)self authenticateIfNeededWithCompletion:completionCopy];
       goto LABEL_42;
     default:
       goto LABEL_42;

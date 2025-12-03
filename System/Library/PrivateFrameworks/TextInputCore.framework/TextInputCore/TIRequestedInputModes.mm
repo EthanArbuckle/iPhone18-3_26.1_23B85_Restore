@@ -1,77 +1,77 @@
 @interface TIRequestedInputModes
 + (id)defaultDatabaseURL;
 - (TIRequestedInputModes)init;
-- (TIRequestedInputModes)initWithURL:(id)a3;
+- (TIRequestedInputModes)initWithURL:(id)l;
 - (id)_inputModes;
-- (void)_addInputMode:(id)a3 date:(id)a4 handler:(id)a5;
-- (void)_inputModes:(id)a3;
-- (void)_loadIfNecessaryWithCompletion:(id)a3;
-- (void)_removeAllInputModes:(id)a3;
-- (void)_removeInputModesBeforeDate:(id)a3 handler:(id)a4;
+- (void)_addInputMode:(id)mode date:(id)date handler:(id)handler;
+- (void)_inputModes:(id)modes;
+- (void)_loadIfNecessaryWithCompletion:(id)completion;
+- (void)_removeAllInputModes:(id)modes;
+- (void)_removeInputModesBeforeDate:(id)date handler:(id)handler;
 - (void)_saveInputModes;
-- (void)addInputMode:(id)a3 date:(id)a4 handler:(id)a5;
-- (void)inputModes:(id)a3;
-- (void)removeAllInputModes:(id)a3;
-- (void)removeInputModesBeforeDate:(id)a3 handler:(id)a4;
+- (void)addInputMode:(id)mode date:(id)date handler:(id)handler;
+- (void)inputModes:(id)modes;
+- (void)removeAllInputModes:(id)modes;
+- (void)removeInputModesBeforeDate:(id)date handler:(id)handler;
 @end
 
 @implementation TIRequestedInputModes
 
-- (void)removeAllInputModes:(id)a3
+- (void)removeAllInputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   dispatchQueue = self->_dispatchQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = modesCopy;
+  v6 = modesCopy;
   TIDispatchAsync();
 }
 
-- (void)removeInputModesBeforeDate:(id)a3 handler:(id)a4
+- (void)removeInputModesBeforeDate:(id)date handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = dateCopy;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dateCopy;
   TIDispatchAsync();
 }
 
-- (void)addInputMode:(id)a3 date:(id)a4 handler:(id)a5
+- (void)addInputMode:(id)mode date:(id)date handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modeCopy = mode;
+  dateCopy = date;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v15 = modeCopy;
+  v16 = dateCopy;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dateCopy;
+  v14 = modeCopy;
   TIDispatchAsync();
 }
 
-- (void)inputModes:(id)a3
+- (void)inputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   dispatchQueue = self->_dispatchQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = modesCopy;
+  v6 = modesCopy;
   TIDispatchAsync();
 }
 
-- (void)_removeAllInputModes:(id)a3
+- (void)_removeAllInputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46__TIRequestedInputModes__removeAllInputModes___block_invoke;
   v6[3] = &unk_278732E30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = modesCopy;
+  v5 = modesCopy;
   [(TIRequestedInputModes *)self _loadIfNecessaryWithCompletion:v6];
 }
 
@@ -84,19 +84,19 @@ uint64_t __46__TIRequestedInputModes__removeAllInputModes___block_invoke(uint64_
   return v2();
 }
 
-- (void)_removeInputModesBeforeDate:(id)a3 handler:(id)a4
+- (void)_removeInputModesBeforeDate:(id)date handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__TIRequestedInputModes__removeInputModesBeforeDate_handler___block_invoke;
   v10[3] = &unk_278733820;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dateCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = dateCopy;
   [(TIRequestedInputModes *)self _loadIfNecessaryWithCompletion:v10];
 }
 
@@ -132,22 +132,22 @@ BOOL __61__TIRequestedInputModes__removeInputModesBeforeDate_handler___block_inv
   return v5 == v4;
 }
 
-- (void)_addInputMode:(id)a3 date:(id)a4 handler:(id)a5
+- (void)_addInputMode:(id)mode date:(id)date handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modeCopy = mode;
+  dateCopy = date;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __52__TIRequestedInputModes__addInputMode_date_handler___block_invoke;
   v14[3] = &unk_278732940;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = modeCopy;
+  v16 = dateCopy;
+  v17 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = dateCopy;
+  v13 = modeCopy;
   [(TIRequestedInputModes *)self _loadIfNecessaryWithCompletion:v14];
 }
 
@@ -165,16 +165,16 @@ void __52__TIRequestedInputModes__addInputMode_date_handler___block_invoke(uint6
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)_inputModes:(id)a3
+- (void)_inputModes:(id)modes
 {
-  v4 = a3;
+  modesCopy = modes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__TIRequestedInputModes__inputModes___block_invoke;
   v6[3] = &unk_278732E30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = modesCopy;
+  v5 = modesCopy;
   [(TIRequestedInputModes *)self _loadIfNecessaryWithCompletion:v6];
 }
 
@@ -187,8 +187,8 @@ void __37__TIRequestedInputModes__inputModes___block_invoke(uint64_t a1)
 
 - (id)_inputModes
 {
-  v2 = [(NSMutableDictionary *)self->_inputModesByDate allKeys];
-  v3 = [v2 copy];
+  allKeys = [(NSMutableDictionary *)self->_inputModesByDate allKeys];
+  v3 = [allKeys copy];
 
   return v3;
 }
@@ -205,10 +205,10 @@ void __37__TIRequestedInputModes__inputModes___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_loadIfNecessaryWithCompletion:(id)a3
+- (void)_loadIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v11 = v4;
+  completionCopy = completion;
+  v11 = completionCopy;
   if (!self->_didLoad)
   {
     self->_didLoad = 1;
@@ -224,26 +224,26 @@ void __37__TIRequestedInputModes__inputModes___block_invoke(uint64_t a1)
 
       v8 = v7;
 
-      v9 = [v8 mutableCopy];
+      dictionary = [v8 mutableCopy];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     inputModesByDate = self->_inputModesByDate;
-    self->_inputModesByDate = v9;
+    self->_inputModesByDate = dictionary;
 
-    v4 = v11;
+    completionCopy = v11;
   }
 
-  (*(v4 + 2))();
+  (*(completionCopy + 2))();
 }
 
-- (TIRequestedInputModes)initWithURL:(id)a3
+- (TIRequestedInputModes)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = TIRequestedInputModes;
   v5 = [(TIRequestedInputModes *)&v13 init];
@@ -251,7 +251,7 @@ void __37__TIRequestedInputModes__inputModes___block_invoke(uint64_t a1)
   if (v5)
   {
     v5->_didLoad = 0;
-    v7 = [v4 copy];
+    v7 = [lCopy copy];
     databaseURL = v6->_databaseURL;
     v6->_databaseURL = v7;
 

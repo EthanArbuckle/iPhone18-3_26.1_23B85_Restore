@@ -1,6 +1,6 @@
 @interface UIDebuggingInformationContainerView
 - (void)layoutSubviews;
-- (void)setShadowHidden:(BOOL)a3;
+- (void)setShadowHidden:(BOOL)hidden;
 @end
 
 @implementation UIDebuggingInformationContainerView
@@ -17,26 +17,26 @@
     v5 = +[UIColor whiteColor];
     [(UIView *)v4 setBackgroundColor:v5];
 
-    v6 = [(UIView *)v4 layer];
-    [v6 setCornerRadius:23.0];
+    layer = [(UIView *)v4 layer];
+    [layer setCornerRadius:23.0];
 
     v7 = +[UIColor blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(UIView *)v4 layer];
-    [v9 setShadowColor:v8];
+    cGColor = [v7 CGColor];
+    layer2 = [(UIView *)v4 layer];
+    [layer2 setShadowColor:cGColor];
 
-    v10 = [(UIView *)v4 layer];
+    layer3 = [(UIView *)v4 layer];
     LODWORD(v11) = 1053609165;
-    [v10 setShadowOpacity:v11];
+    [layer3 setShadowOpacity:v11];
 
-    v12 = [(UIView *)v4 layer];
-    [v12 setShadowRadius:17.0];
+    layer4 = [(UIView *)v4 layer];
+    [layer4 setShadowRadius:17.0];
 
-    v13 = [(UIView *)v4 layer];
-    [v13 setShadowOffset:{0.0, 4.0}];
+    layer5 = [(UIView *)v4 layer];
+    [layer5 setShadowOffset:{0.0, 4.0}];
 
-    v14 = [(UIView *)v4 layer];
-    [v14 setMasksToBounds:0];
+    layer6 = [(UIView *)v4 layer];
+    [layer6 setMasksToBounds:0];
 
     v15 = self->_shadowView;
     self->_shadowView = v4;
@@ -55,10 +55,10 @@
   [(UIView *)v18 setFrame:v21.origin.x, v21.origin.y, v21.size.width, v21.size.height];
 }
 
-- (void)setShadowHidden:(BOOL)a3
+- (void)setShadowHidden:(BOOL)hidden
 {
-  self->_shadowHidden = a3;
-  if (a3)
+  self->_shadowHidden = hidden;
+  if (hidden)
   {
     v3 = 0.0;
   }
@@ -68,9 +68,9 @@
     v3 = 1.0;
   }
 
-  v5 = [(UIView *)self->_shadowView layer];
+  layer = [(UIView *)self->_shadowView layer];
   *&v4 = v3;
-  [v5 setOpacity:v4];
+  [layer setOpacity:v4];
 }
 
 @end

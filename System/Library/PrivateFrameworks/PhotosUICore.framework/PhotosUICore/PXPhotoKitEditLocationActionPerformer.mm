@@ -1,22 +1,22 @@
 @interface PXPhotoKitEditLocationActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-- (void)_presentLocationEditViewControllerWithAssets:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
+- (void)_presentLocationEditViewControllerWithAssets:(id)assets;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitEditLocationActionPerformer
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v6 = a3;
-  if ([v6 canPerformEditOperation:3] && !objc_msgSend(v6, "isTrashed"))
+  assetCopy = asset;
+  if ([assetCopy canPerformEditOperation:3] && !objc_msgSend(assetCopy, "isTrashed"))
   {
     LOBYTE(v7) = 1;
   }
 
-  else if ([v6 px_isUnsavedSyndicatedAsset])
+  else if ([assetCopy px_isUnsavedSyndicatedAsset])
   {
-    v7 = [v6 px_isSyndicationPhotoLibraryAsset] ^ 1;
+    v7 = [assetCopy px_isSyndicationPhotoLibraryAsset] ^ 1;
   }
 
   else
@@ -30,14 +30,14 @@
 - (void)performUserInteractionTask
 {
   objc_initWeak(&location, self);
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  v4 = [(PXActionPerformer *)self presentationEnvironment];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  presentationEnvironment = [(PXActionPerformer *)self presentationEnvironment];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__PXPhotoKitEditLocationActionPerformer_performUserInteractionTask__block_invoke;
   v5[3] = &unk_1E77482C8;
   objc_copyWeak(&v6, &location);
-  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(v3, v4, v5);
+  PXPromptToSaveUnsavedSyndicatedAssetsIfNecessary(assets, presentationEnvironment, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -61,10 +61,10 @@ void __67__PXPhotoKitEditLocationActionPerformer_performUserInteractionTask__blo
   }
 }
 
-- (void)_presentLocationEditViewControllerWithAssets:(id)a3
+- (void)_presentLocationEditViewControllerWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:v4 title:0];
+  assetsCopy = assets;
+  v5 = [MEMORY[0x1E6978650] transientAssetCollectionWithAssets:assetsCopy title:0];
   v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v5 options:0];
   objc_initWeak(&location, self);
   v9 = MEMORY[0x1E69E9820];

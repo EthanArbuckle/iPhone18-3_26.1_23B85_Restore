@@ -1,15 +1,15 @@
 @interface SBHomeGrabberViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SBHomeGrabberViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHomeGrabberView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"SBHomeGrabberView" hasInstanceVariable:@"_touchState" withType:"q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHomeGrabberView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"SBHomeGrabberView" hasInstanceVariable:@"_touchState" withType:"q"];
 }
 
 - (unint64_t)accessibilityTraits

@@ -3,10 +3,10 @@
 - (BOOL)hasUnsealedComponents;
 - (PSListController)parentViewController;
 - (SystemHealthUI)init;
-- (id)_createFinishRepairSpecifierFor:(id)a3 detailView:(Class)a4 moduleName:(id)a5;
-- (id)_createUnknownSpecifierFor:(id)a3 detailView:(Class)a4 moduleName:(id)a5;
-- (id)constructSpecifiersWithPrivacySpecifier:(BOOL)a3 rchlHistory:(id)a4 caaHistory:(id)a5 srvp:(id)a6;
-- (id)findSpecifierToInsertAfter:(id)a3;
+- (id)_createFinishRepairSpecifierFor:(id)for detailView:(Class)view moduleName:(id)name;
+- (id)_createUnknownSpecifierFor:(id)for detailView:(Class)view moduleName:(id)name;
+- (id)constructSpecifiersWithPrivacySpecifier:(BOOL)specifier rchlHistory:(id)history caaHistory:(id)caaHistory srvp:(id)srvp;
+- (id)findSpecifierToInsertAfter:(id)after;
 - (id)getNetworkAlert;
 - (id)getOSUpdateAlert;
 - (id)getPreFlightFailedAlert;
@@ -18,30 +18,30 @@
 - (id)valueForSpecifierService;
 - (id)valueForSpecifierUnknown;
 - (id)valueForSpecifierUsed;
-- (void)_updateSpecifiers:(id)a3 specifierToInsertAfter:(id)a4 withUpdates:(id)a5;
+- (void)_updateSpecifiers:(id)specifiers specifierToInsertAfter:(id)after withUpdates:(id)updates;
 - (void)extractAudioSpecifiers;
-- (void)extractBackGlassSpecifiers:(id)a3 configurationSpecifiers:(id)a4 caaRepairHistory:(id)a5 rchlHistory:(id)a6;
-- (void)extractBasebandSpecifiers:(id)a3;
-- (void)extractBatterySpecifiers:(id)a3 configurationSpecifiers:(id)a4;
+- (void)extractBackGlassSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory;
+- (void)extractBasebandSpecifiers:(id)specifiers;
+- (void)extractBatterySpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers;
 - (void)extractBluetoohSpecifiers;
-- (void)extractCameraSpecifiers:(id)a3 componentsInfoSpecifiers:(id)a4 configurationSpecifiers:(id)a5;
-- (void)extractCoverGlassSpecifiers:(id)a3;
-- (void)extractDisplaySpecifiers:(id)a3 configurationSpecifiers:(id)a4;
-- (void)extractEnclosureSpecifiers:(id)a3 caaRepairHistory:(id)a4 rchlHistory:(id)a5;
-- (void)extractFaceIDSpecifiers:(id)a3 configurationSpecifiers:(id)a4;
-- (void)extractMtubSpecifiers:(id)a3 caaRepairHistory:(id)a4 srvp:(id)a5 rchlHistory:(id)a6;
-- (void)extractNFCSpecifiers:(id)a3;
+- (void)extractCameraSpecifiers:(id)specifiers componentsInfoSpecifiers:(id)infoSpecifiers configurationSpecifiers:(id)configurationSpecifiers;
+- (void)extractCoverGlassSpecifiers:(id)specifiers;
+- (void)extractDisplaySpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers;
+- (void)extractEnclosureSpecifiers:(id)specifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory;
+- (void)extractFaceIDSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers;
+- (void)extractMtubSpecifiers:(id)specifiers caaRepairHistory:(id)history srvp:(id)srvp rchlHistory:(id)rchlHistory;
+- (void)extractNFCSpecifiers:(id)specifiers;
 - (void)extractRCameraHWFailureSpecifiers;
-- (void)extractTouchIDSpecifiers:(id)a3 configurationSpecifiers:(id)a4;
-- (void)extractUWBSpecifiers:(id)a3;
-- (void)extractVolumeButtonSpecifiers:(id)a3;
+- (void)extractTouchIDSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers;
+- (void)extractUWBSpecifiers:(id)specifiers;
+- (void)extractVolumeButtonSpecifiers:(id)specifiers;
 - (void)extractWifiSpecifiers;
-- (void)extractiPadBatterySpecifiers:(id)a3;
-- (void)extractiPadCameraSpecifiers:(id)a3 componentsInfoSpecifiers:(id)a4 configurationSpecifiers:(id)a5 caaRepairHistory:(id)a6 rchlHistory:(id)a7;
-- (void)performInteractivePreflightWithSpecifier:(id)a3;
-- (void)setupPrivacyFooterFor:(id)a3 withPrivacySpecifier:(BOOL)a4;
-- (void)showActionSheets:(id)a3;
-- (void)updateSpecifiersWithCompletionHandler:(id)a3;
+- (void)extractiPadBatterySpecifiers:(id)specifiers;
+- (void)extractiPadCameraSpecifiers:(id)specifiers componentsInfoSpecifiers:(id)infoSpecifiers configurationSpecifiers:(id)configurationSpecifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory;
+- (void)performInteractivePreflightWithSpecifier:(id)specifier;
+- (void)setupPrivacyFooterFor:(id)for withPrivacySpecifier:(BOOL)specifier;
+- (void)showActionSheets:(id)sheets;
+- (void)updateSpecifiersWithCompletionHandler:(id)handler;
 @end
 
 @implementation SystemHealthUI
@@ -101,9 +101,9 @@ uint64_t __32__SystemHealthUI_sharedInstance__block_invoke()
     v12 = MGCopyAnswer();
     v3->deviceClass = [v12 intValue];
 
-    v13 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     cachedSpecifiers = v3->cachedSpecifiers;
-    v3->cachedSpecifiers = v13;
+    v3->cachedSpecifiers = array;
 
     systemHealth = v3->systemHealth;
     v3->systemHealth = 0;
@@ -119,34 +119,34 @@ uint64_t __32__SystemHealthUI_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)_createFinishRepairSpecifierFor:(id)a3 detailView:(Class)a4 moduleName:(id)a5
+- (id)_createFinishRepairSpecifierFor:(id)for detailView:(Class)view moduleName:(id)name
 {
   v8 = MEMORY[0x277D3FAD8];
-  v9 = a5;
-  v10 = [v8 preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:a4 cell:2 edit:0];
-  v11 = [v9 stringByAppendingString:@"FinishRepair"];
+  nameCopy = name;
+  v10 = [v8 preferenceSpecifierNamed:for target:self set:0 get:0 detail:view cell:2 edit:0];
+  v11 = [nameCopy stringByAppendingString:@"FinishRepair"];
   [v10 setProperty:v11 forKey:*MEMORY[0x277D3FFB8]];
 
   [v10 setIdentifier:@"finishRepairId"];
-  v12 = [(SystemHealthUI *)self valueForSpecifierFinishRepair];
-  [v10 setProperty:v12 forKey:@"CRImageAlertKey"];
+  valueForSpecifierFinishRepair = [(SystemHealthUI *)self valueForSpecifierFinishRepair];
+  [v10 setProperty:valueForSpecifierFinishRepair forKey:@"CRImageAlertKey"];
 
   [v10 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"FinishRepair" moduleName:v9];
+  [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"FinishRepair" moduleName:nameCopy];
 
   return v10;
 }
 
-- (id)_createUnknownSpecifierFor:(id)a3 detailView:(Class)a4 moduleName:(id)a5
+- (id)_createUnknownSpecifierFor:(id)for detailView:(Class)view moduleName:(id)name
 {
   v8 = MEMORY[0x277D3FAD8];
-  v9 = a5;
-  v10 = [v8 preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:a4 cell:2 edit:0];
+  nameCopy = name;
+  v10 = [v8 preferenceSpecifierNamed:for target:self set:0 get:0 detail:view cell:2 edit:0];
   [v10 setIdentifier:@"warningId"];
-  v11 = [(SystemHealthUI *)self valueForSpecifierUnknown];
-  [v10 setProperty:v11 forKey:@"CRImageAlertKey"];
+  valueForSpecifierUnknown = [(SystemHealthUI *)self valueForSpecifierUnknown];
+  [v10 setProperty:valueForSpecifierUnknown forKey:@"CRImageAlertKey"];
 
-  [v10 setProperty:v9 forKey:*MEMORY[0x277D3FFB8]];
+  [v10 setProperty:nameCopy forKey:*MEMORY[0x277D3FFB8]];
   [v10 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
   ++self->failedComponentsCount;
 
@@ -242,17 +242,17 @@ void __34__SystemHealthUI_getOSUpdateAlert__block_invoke()
   [v1 openSensitiveURL:v0 withOptions:0];
 }
 
-- (void)performInteractivePreflightWithSpecifier:(id)a3
+- (void)performInteractivePreflightWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   utils = self->utils;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__SystemHealthUI_performInteractivePreflightWithSpecifier___block_invoke;
   v7[3] = &unk_278EB1D00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = specifierCopy;
+  v6 = specifierCopy;
   [(CoreRepairUIUtils *)utils performInteractiveMiniPreflightWith:v7];
 }
 
@@ -290,12 +290,12 @@ void __59__SystemHealthUI_performInteractivePreflightWithSpecifier___block_invok
   [*(a1 + 32) configureSpin:0 ofCellForSpecifier:*(a1 + 40) setEnabled:0];
 }
 
-- (void)showActionSheets:(id)a3
+- (void)showActionSheets:(id)sheets
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(SystemHealthUI *)v5 configureSpin:1 ofCellForSpecifier:v4 setEnabled:0];
+  sheetsCopy = sheets;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SystemHealthUI *)selfCopy configureSpin:1 ofCellForSpecifier:sheetsCopy setEnabled:0];
   v6 = objc_opt_new();
   v7 = [MEMORY[0x277D75108] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v8 = MEMORY[0x277D75100];
@@ -304,31 +304,31 @@ void __59__SystemHealthUI_performInteractivePreflightWithSpecifier___block_invok
   v23[1] = 3221225472;
   v23[2] = __35__SystemHealthUI_showActionSheets___block_invoke;
   v23[3] = &unk_278EB1D28;
-  v23[4] = v5;
-  v10 = v4;
+  v23[4] = selfCopy;
+  v10 = sheetsCopy;
   v24 = v10;
   v11 = [v8 actionWithTitle:v9 style:2 handler:v23];
   [v7 addAction:v11];
 
   v12 = MEMORY[0x277D75100];
-  v13 = [(MRLocalization *)v5->locale localizedStringWithKey:@"NOT_NOW" defaultString:@"NOT_NOW"];
+  v13 = [(MRLocalization *)selfCopy->locale localizedStringWithKey:@"NOT_NOW" defaultString:@"NOT_NOW"];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __35__SystemHealthUI_showActionSheets___block_invoke_75;
   v20 = &unk_278EB1D28;
-  v21 = v5;
+  v21 = selfCopy;
   v14 = v10;
   v22 = v14;
   v15 = [v12 actionWithTitle:v13 style:1 handler:&v17];
   [v7 addAction:{v15, v17, v18, v19, v20, v21}];
 
-  v16 = [(SystemHealthUI *)v5 parentViewController];
-  [v16 presentViewController:v7 animated:1 completion:0];
+  parentViewController = [(SystemHealthUI *)selfCopy parentViewController];
+  [parentViewController presentViewController:v7 animated:1 completion:0];
 
-  [(CRUIAnalytics *)v5->analytics sendAsyncAnalyticsForEvent:@"RestartInitiated" moduleName:@"PartsAndServiceHistory"];
-  [(CoreRepairUIUtils *)v5->utils clearFollowUpForkey:@"clearFinishRepairFollowup"];
+  [(CRUIAnalytics *)selfCopy->analytics sendAsyncAnalyticsForEvent:@"RestartInitiated" moduleName:@"PartsAndServiceHistory"];
+  [(CoreRepairUIUtils *)selfCopy->utils clearFollowUpForkey:@"clearFinishRepairFollowup"];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __35__SystemHealthUI_showActionSheets___block_invoke(uint64_t a1)
@@ -382,8 +382,8 @@ void __35__SystemHealthUI_showActionSheets___block_invoke(uint64_t a1)
   v2 = [(MRLocalization *)self->locale localizedStringWithKey:@"UNKNOWN" defaultString:@"UNKNOWN"];
   v3 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v2];
   v4 = [MEMORY[0x277D755B0] systemImageNamed:@"exclamationmark.triangle.fill"];
-  v5 = [MEMORY[0x277D75340] systemGrayColor];
-  v6 = [v4 imageWithTintColor:v5];
+  systemGrayColor = [MEMORY[0x277D75340] systemGrayColor];
+  v6 = [v4 imageWithTintColor:systemGrayColor];
 
   v7 = [v6 imageWithRenderingMode:1];
 
@@ -447,15 +447,15 @@ void __35__SystemHealthUI_showActionSheets___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)extractMtubSpecifiers:(id)a3 caaRepairHistory:(id)a4 srvp:(id)a5 rchlHistory:(id)a6
+- (void)extractMtubSpecifiers:(id)specifiers caaRepairHistory:(id)history srvp:(id)srvp rchlHistory:(id)rchlHistory
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  specifiersCopy = specifiers;
+  historyCopy = history;
+  srvpCopy = srvp;
+  rchlHistoryCopy = rchlHistory;
   if (self->isRCHLDevice)
   {
-    if (([(CRRepairHistory *)self->localRepairHistory hasHadRCHLBasedRepairForComponent:1029 withHistory:v13]& 1) == 0 && (!_os_feature_enabled_impl() || !_os_feature_enabled_impl()))
+    if (([(CRRepairHistory *)self->localRepairHistory hasHadRCHLBasedRepairForComponent:1029 withHistory:rchlHistoryCopy]& 1) == 0 && (!_os_feature_enabled_impl() || !_os_feature_enabled_impl()))
     {
       goto LABEL_22;
     }
@@ -467,11 +467,11 @@ void __35__SystemHealthUI_showActionSheets___block_invoke(uint64_t a1)
     v17 = [@"MTUB" stringByAppendingString:@"Repair"];
     [v16 setProperty:v17 forKey:*MEMORY[0x277D3FFB8]];
 
-    v18 = [(SystemHealthUI *)self valueForSpecifierRepaired];
-    [v16 setProperty:v18 forKey:@"CRImageAlertKey"];
+    valueForSpecifierRepaired = [(SystemHealthUI *)self valueForSpecifierRepaired];
+    [v16 setProperty:valueForSpecifierRepaired forKey:@"CRImageAlertKey"];
 
     [v16 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v10 addObject:v16];
+    [specifiersCopy addObject:v16];
     analytics = self->analytics;
     v20 = [@"MTUB" stringByAppendingString:@"Repair"];
     [(CRUIAnalytics *)analytics sendAsyncAnalyticsForEventIfNeeded:@"RepairUsingRCHL" moduleName:v20];
@@ -481,9 +481,9 @@ LABEL_21:
   }
 
   deviceFDRVersion1 = self->deviceFDRVersion1;
-  if (v11 && !self->deviceFDRVersion1)
+  if (historyCopy && !self->deviceFDRVersion1)
   {
-    v22 = [v11 objectForKeyedSubscript:@"SrvP"];
+    v22 = [historyCopy objectForKeyedSubscript:@"SrvP"];
 
     if (v22)
     {
@@ -504,7 +504,7 @@ LABEL_19:
     deviceFDRVersion1 = self->deviceFDRVersion1;
   }
 
-  if (!deviceFDRVersion1 && ([v12 isEqualToString:@"0"] & 1) != 0 || _os_feature_enabled_impl() && _os_feature_enabled_impl())
+  if (!deviceFDRVersion1 && ([srvpCopy isEqualToString:@"0"] & 1) != 0 || _os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
     v23 = handleForCategory(0);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -524,33 +524,33 @@ LABEL_20:
     v28 = [@"MTUB" stringByAppendingString:@"Repair"];
     [v16 setProperty:v28 forKey:*MEMORY[0x277D3FFB8]];
 
-    v29 = [(SystemHealthUI *)self valueForSpecifierRepaired];
-    [v16 setProperty:v29 forKey:@"CRImageAlertKey"];
+    valueForSpecifierRepaired2 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+    [v16 setProperty:valueForSpecifierRepaired2 forKey:@"CRImageAlertKey"];
 
     [v16 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v10 addObject:v16];
+    [specifiersCopy addObject:v16];
     goto LABEL_21;
   }
 
 LABEL_22:
 }
 
-- (void)extractCameraSpecifiers:(id)a3 componentsInfoSpecifiers:(id)a4 configurationSpecifiers:(id)a5
+- (void)extractCameraSpecifiers:(id)specifiers componentsInfoSpecifiers:(id)infoSpecifiers configurationSpecifiers:(id)configurationSpecifiers
 {
-  v26 = a3;
-  v8 = a4;
-  v9 = a5;
+  specifiersCopy = specifiers;
+  infoSpecifiersCopy = infoSpecifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v10 = _os_feature_enabled_impl();
   v11 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Camera"];
-  v12 = [v11 intValue];
+  intValue = [v11 intValue];
 
   v13 = _os_feature_enabled_impl();
-  if (v12 == -3)
+  if (intValue == -3)
   {
-    v14 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v26 detailView:objc_opt_class() moduleName:@"Camera"];
+    v14 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:specifiersCopy detailView:objc_opt_class() moduleName:@"Camera"];
     if (v14)
     {
-      v15 = v9;
+      v15 = configurationSpecifiersCopy;
 LABEL_9:
       [v15 addObject:v14];
       goto LABEL_10;
@@ -565,12 +565,12 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v12 == -1 || (_os_feature_enabled_impl() & v10) == 1)
+  if (intValue == -1 || (_os_feature_enabled_impl() & v10) == 1)
   {
-    v14 = [(SystemHealthUI *)self _createUnknownSpecifierFor:v26 detailView:objc_opt_class() moduleName:@"Camera"];
+    v14 = [(SystemHealthUI *)self _createUnknownSpecifierFor:specifiersCopy detailView:objc_opt_class() moduleName:@"Camera"];
     if (v14)
     {
-      v15 = v8;
+      v15 = infoSpecifiersCopy;
       goto LABEL_9;
     }
 
@@ -579,7 +579,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v12 == 1)
+  if (intValue == 1)
   {
     repairHistoryItems = self->repairHistoryItems;
     if (repairHistoryItems)
@@ -589,30 +589,30 @@ LABEL_10:
       if (v18 && [v18 isRepaired])
       {
         v19 = v16 & v10;
-        v20 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v26 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+        v20 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:specifiersCopy target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
         v21 = [@"Camera" stringByAppendingString:@"Repair"];
         [v20 setProperty:v21 forKey:*MEMORY[0x277D3FFB8]];
 
         if (([v14 isUsed] | v19))
         {
-          v22 = [(SystemHealthUI *)self valueForSpecifierUsed];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierUsed];
           v23 = @"Used";
         }
 
         else
         {
-          v22 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierRepaired];
           v23 = @"Repair";
         }
 
-        [v20 setProperty:v22 forKey:@"CRImageAlertKey"];
+        [v20 setProperty:valueForSpecifierUsed forKey:@"CRImageAlertKey"];
 
         analytics = self->analytics;
         v25 = [@"Camera" stringByAppendingString:v23];
         [(CRUIAnalytics *)analytics sendAsyncAnalyticsForEventIfNeeded:@"Repair" moduleName:v25];
 
         [v20 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-        [v8 addObject:v20];
+        [infoSpecifiersCopy addObject:v20];
       }
 
       goto LABEL_10;
@@ -622,45 +622,45 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)extractiPadCameraSpecifiers:(id)a3 componentsInfoSpecifiers:(id)a4 configurationSpecifiers:(id)a5 caaRepairHistory:(id)a6 rchlHistory:(id)a7
+- (void)extractiPadCameraSpecifiers:(id)specifiers componentsInfoSpecifiers:(id)infoSpecifiers configurationSpecifiers:(id)configurationSpecifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory
 {
-  v13 = a3;
-  v9 = a5;
+  specifiersCopy = specifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v10 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Camera"];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
-  if (v11 == -3)
+  if (intValue == -3)
   {
-    v12 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v13 detailView:objc_opt_class() moduleName:@"Camera"];
+    v12 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:specifiersCopy detailView:objc_opt_class() moduleName:@"Camera"];
     if (v12)
     {
-      [v9 addObject:v12];
+      [configurationSpecifiersCopy addObject:v12];
     }
   }
 }
 
-- (void)extractFaceIDSpecifiers:(id)a3 configurationSpecifiers:(id)a4
+- (void)extractFaceIDSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers
 {
-  v23 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"FACEID_COMPONENT" defaultString:@"FACEID_COMPONENT"];
   v8 = [(MRLocalization *)self->locale localizedStringWithFormat:@"%@_COMPONENT" component:1027];
   v9 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"FaceID"];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
   v11 = _os_feature_enabled_impl();
   v12 = _os_feature_enabled_impl();
-  if (v10 == -1)
+  if (intValue == -1)
   {
     goto LABEL_6;
   }
 
-  if (v10 == -3)
+  if (intValue == -3)
   {
     v13 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v8 detailView:objc_opt_class() moduleName:@"FaceID"];
     if (v13)
     {
-      [v6 addObject:v13];
+      [configurationSpecifiersCopy addObject:v13];
     }
 
     goto LABEL_7;
@@ -672,11 +672,11 @@ LABEL_11:
 LABEL_6:
     v13 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
     [v13 setProperty:@"FaceID" forKey:*MEMORY[0x277D3FFB8]];
-    v15 = [(SystemHealthUI *)self valueForSpecifierIssue];
-    [v13 setProperty:v15 forKey:@"CRImageAlertKey"];
+    valueForSpecifierIssue = [(SystemHealthUI *)self valueForSpecifierIssue];
+    [v13 setProperty:valueForSpecifierIssue forKey:@"CRImageAlertKey"];
 
     [v13 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v23 addObject:v13];
+    [specifiersCopy addObject:v13];
     [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"SGAViewSeen" moduleName:@"FaceID"];
     ++self->failedComponentsCount;
 LABEL_7:
@@ -684,7 +684,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10 == 1)
+  if (intValue == 1)
   {
     repairHistoryItems = self->repairHistoryItems;
     if (repairHistoryItems)
@@ -700,21 +700,21 @@ LABEL_7:
 
         if (([v13 isUsed] | v18))
         {
-          v21 = [(SystemHealthUI *)self valueForSpecifierUsed];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierUsed];
           v22 = @"Used";
         }
 
         else
         {
-          v21 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierRepaired];
           v22 = @"Repair";
         }
 
-        [v19 setProperty:v21 forKey:@"CRImageAlertKey"];
+        [v19 setProperty:valueForSpecifierUsed forKey:@"CRImageAlertKey"];
 
         [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:v22 moduleName:@"FaceID"];
         [v19 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-        [v23 addObject:v19];
+        [specifiersCopy addObject:v19];
       }
 
       goto LABEL_7;
@@ -724,27 +724,27 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)extractTouchIDSpecifiers:(id)a3 configurationSpecifiers:(id)a4
+- (void)extractTouchIDSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers
 {
-  v24 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"TOUCH_ID_COMPONENT" defaultString:@"TOUCH_ID_COMPONENT"];
   v8 = _os_feature_enabled_impl();
   v9 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"TouchID"];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
   v11 = _os_feature_enabled_impl();
-  if (v10 == -1)
+  if (intValue == -1)
   {
     goto LABEL_6;
   }
 
-  if (v10 == -3)
+  if (intValue == -3)
   {
     v12 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v7 detailView:objc_opt_class() moduleName:@"TouchID"];
     if (v12)
     {
-      [v6 addObject:v12];
+      [configurationSpecifiersCopy addObject:v12];
     }
 
     goto LABEL_7;
@@ -756,11 +756,11 @@ LABEL_8:
 LABEL_6:
     v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
     [v12 setProperty:@"TouchID" forKey:*MEMORY[0x277D3FFB8]];
-    v14 = [(SystemHealthUI *)self valueForSpecifierIssue];
-    [v12 setProperty:v14 forKey:@"CRImageAlertKey"];
+    valueForSpecifierIssue = [(SystemHealthUI *)self valueForSpecifierIssue];
+    [v12 setProperty:valueForSpecifierIssue forKey:@"CRImageAlertKey"];
 
     [v12 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v24 addObject:v12];
+    [specifiersCopy addObject:v12];
     [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"SGAViewSeen" moduleName:@"TouchID"];
     ++self->failedComponentsCount;
 LABEL_7:
@@ -768,7 +768,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v10 == 1)
+  if (intValue == 1)
   {
     repairHistoryItems = self->repairHistoryItems;
     if (repairHistoryItems)
@@ -787,21 +787,21 @@ LABEL_7:
 
         if (([v12 isUsed] | v17))
         {
-          v22 = [(SystemHealthUI *)self valueForSpecifierUsed];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierUsed];
           v23 = @"Used";
         }
 
         else
         {
-          v22 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierRepaired];
           v23 = @"Repair";
         }
 
-        [v20 setProperty:v22 forKey:@"CRImageAlertKey"];
+        [v20 setProperty:valueForSpecifierUsed forKey:@"CRImageAlertKey"];
 
         [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:v23 moduleName:@"TouchID"];
         [v20 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-        [v24 addObject:v20];
+        [specifiersCopy addObject:v20];
       }
 
       goto LABEL_7;
@@ -814,30 +814,30 @@ LABEL_8:
 - (void)extractWifiSpecifiers
 {
   v3 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Wifi"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == -1)
+  if (intValue == -1)
   {
     ++self->failedComponentsCount;
   }
 }
 
-- (void)extractDisplaySpecifiers:(id)a3 configurationSpecifiers:(id)a4
+- (void)extractDisplaySpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers
 {
-  v24 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"Display" defaultString:@"Display"];
   v8 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Display"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = _os_feature_enabled_impl();
   v11 = _os_feature_enabled_impl();
-  if (v9 == -3)
+  if (intValue == -3)
   {
     v12 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v7 detailView:objc_opt_class() moduleName:@"Display"];
     if (v12)
     {
-      v13 = v6;
+      v13 = configurationSpecifiersCopy;
 LABEL_9:
       [v13 addObject:v12];
       goto LABEL_10;
@@ -852,12 +852,12 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v9 == -1 || (_os_feature_enabled_impl() & v10) == 1)
+  if (intValue == -1 || (_os_feature_enabled_impl() & v10) == 1)
   {
     v12 = [(SystemHealthUI *)self _createUnknownSpecifierFor:v7 detailView:objc_opt_class() moduleName:@"TouchController"];
     if (v12)
     {
-      v13 = v24;
+      v13 = specifiersCopy;
       goto LABEL_9;
     }
 
@@ -866,7 +866,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v9 == 1)
+  if (intValue == 1)
   {
     repairHistoryItems = self->repairHistoryItems;
     if (repairHistoryItems)
@@ -882,24 +882,24 @@ LABEL_10:
 
         if (([v12 isUsed] | v17))
         {
-          v20 = [(SystemHealthUI *)self valueForSpecifierUsed];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierUsed];
           v21 = @"Used";
         }
 
         else
         {
-          v20 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierRepaired];
           v21 = @"Repair";
         }
 
-        [v18 setProperty:v20 forKey:@"CRImageAlertKey"];
+        [v18 setProperty:valueForSpecifierUsed forKey:@"CRImageAlertKey"];
 
         analytics = self->analytics;
         v23 = [@"Display" stringByAppendingString:v21];
         [(CRUIAnalytics *)analytics sendAsyncAnalyticsForEventIfNeeded:@"Repair" moduleName:v23];
 
         [v18 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-        [v24 addObject:v18];
+        [specifiersCopy addObject:v18];
       }
 
       goto LABEL_10;
@@ -909,31 +909,31 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)extractiPadBatterySpecifiers:(id)a3
+- (void)extractiPadBatterySpecifiers:(id)specifiers
 {
-  v7 = a3;
+  specifiersCopy = specifiers;
   v4 = [(MRLocalization *)self->locale localizedStringWithKey:@"Battery" defaultString:@"Battery"];
   if ([(CoreRepairUIUtils *)self->utils isBatteryInServiceState])
   {
     v5 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v4 target:self set:0 get:0 detail:0 cell:4 edit:0];
     [v5 setIdentifier:@"NeedsService"];
-    v6 = [(SystemHealthUI *)self valueForSpecifierService];
-    [v5 setProperty:v6 forKey:@"CRImageAlertKey"];
+    valueForSpecifierService = [(SystemHealthUI *)self valueForSpecifierService];
+    [v5 setProperty:valueForSpecifierService forKey:@"CRImageAlertKey"];
 
     [v5 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [v5 setProperty:@"NeedsService" forKey:*MEMORY[0x277D3FFB8]];
     [v5 setProperty:&unk_28597F128 forKey:*MEMORY[0x277D3FD68]];
-    [v7 addObject:v5];
+    [specifiersCopy addObject:v5];
   }
 }
 
-- (void)extractBatterySpecifiers:(id)a3 configurationSpecifiers:(id)a4
+- (void)extractBatterySpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers
 {
-  v23 = a3;
-  v6 = a4;
+  specifiersCopy = specifiers;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"Battery" defaultString:@"Battery"];
   v8 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Battery"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = _os_feature_enabled_impl();
   if (v10)
@@ -946,12 +946,12 @@ LABEL_11:
     v11 = 0;
   }
 
-  if (v9 == -1)
+  if (intValue == -1)
   {
     goto LABEL_9;
   }
 
-  if (v9 == -3)
+  if (intValue == -3)
   {
     v12 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v7 detailView:objc_opt_class() moduleName:@"Battery"];
     if (!v12)
@@ -961,7 +961,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v13 = v6;
+    v13 = configurationSpecifiersCopy;
 LABEL_14:
     [v13 addObject:v12];
     goto LABEL_15;
@@ -983,18 +983,18 @@ LABEL_9:
   {
     v12 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:4 edit:0];
     [v12 setIdentifier:@"NeedsService"];
-    v14 = [(SystemHealthUI *)self valueForSpecifierService];
-    [v12 setProperty:v14 forKey:@"CRImageAlertKey"];
+    valueForSpecifierService = [(SystemHealthUI *)self valueForSpecifierService];
+    [v12 setProperty:valueForSpecifierService forKey:@"CRImageAlertKey"];
 
     [v12 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
     [v12 setProperty:@"NeedsService" forKey:*MEMORY[0x277D3FFB8]];
     [v12 setProperty:&unk_28597F128 forKey:*MEMORY[0x277D3FD68]];
 LABEL_13:
-    v13 = v23;
+    v13 = specifiersCopy;
     goto LABEL_14;
   }
 
-  if (v9 == 1)
+  if (intValue == 1)
   {
     repairHistoryItems = self->repairHistoryItems;
     if (repairHistoryItems)
@@ -1009,24 +1009,24 @@ LABEL_13:
 
         if ((v11 | [v12 isUsed]) == 1)
         {
-          v19 = [(SystemHealthUI *)self valueForSpecifierUsed];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierUsed];
           v20 = @"Used";
         }
 
         else
         {
-          v19 = [(SystemHealthUI *)self valueForSpecifierRepaired];
+          valueForSpecifierUsed = [(SystemHealthUI *)self valueForSpecifierRepaired];
           v20 = @"Repair";
         }
 
-        [v17 setProperty:v19 forKey:@"CRImageAlertKey"];
+        [v17 setProperty:valueForSpecifierUsed forKey:@"CRImageAlertKey"];
 
         analytics = self->analytics;
         v22 = [@"Battery" stringByAppendingString:v20];
         [(CRUIAnalytics *)analytics sendAsyncAnalyticsForEventIfNeeded:@"Repair" moduleName:v22];
 
         [v17 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-        [v23 addObject:v17];
+        [specifiersCopy addObject:v17];
       }
 
       goto LABEL_15;
@@ -1039,17 +1039,17 @@ LABEL_16:
 - (void)extractAudioSpecifiers
 {
   v3 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Audio"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == -1)
+  if (intValue == -1)
   {
     ++self->failedComponentsCount;
   }
 
   v5 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"AudioCodec"];
-  v6 = [v5 intValue];
+  intValue2 = [v5 intValue];
 
-  if (v6 == -1)
+  if (intValue2 == -1)
   {
     ++self->failedComponentsCount;
   }
@@ -1058,9 +1058,9 @@ LABEL_16:
 - (void)extractRCameraHWFailureSpecifiers
 {
   v3 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"RCameraFailed"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == -1)
+  if (intValue == -1)
   {
     ++self->failedComponentsCount;
   }
@@ -1069,142 +1069,142 @@ LABEL_16:
 - (void)extractBluetoohSpecifiers
 {
   v3 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Bluetooth"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 == -1)
+  if (intValue == -1)
   {
     ++self->failedComponentsCount;
   }
 }
 
-- (void)extractBasebandSpecifiers:(id)a3
+- (void)extractBasebandSpecifiers:(id)specifiers
 {
-  v10 = a3;
+  specifiersCopy = specifiers;
   v4 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Baseband"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5 == -1)
+  if (intValue == -1)
   {
     v6 = MEMORY[0x277D3FAD8];
     v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"Baseband" defaultString:@"Baseband"];
     v8 = [v6 preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
     [v8 setProperty:@"Baseband" forKey:*MEMORY[0x277D3FFB8]];
-    v9 = [(SystemHealthUI *)self valueForSpecifierIssue];
-    [v8 setProperty:v9 forKey:@"CRImageAlertKey"];
+    valueForSpecifierIssue = [(SystemHealthUI *)self valueForSpecifierIssue];
+    [v8 setProperty:valueForSpecifierIssue forKey:@"CRImageAlertKey"];
 
     [v8 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v10 addObject:v8];
+    [specifiersCopy addObject:v8];
     [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"SGAViewSeen" moduleName:@"Baseband"];
     ++self->failedComponentsCount;
   }
 }
 
-- (void)extractBackGlassSpecifiers:(id)a3 configurationSpecifiers:(id)a4 caaRepairHistory:(id)a5 rchlHistory:(id)a6
+- (void)extractBackGlassSpecifiers:(id)specifiers configurationSpecifiers:(id)configurationSpecifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory
 {
-  v11 = a4;
+  configurationSpecifiersCopy = configurationSpecifiers;
   v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"BACK_GLASS" defaultString:@"BACK_GLASS"];
   v8 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"BackGlass"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
-  if (v9 == -3)
+  if (intValue == -3)
   {
     v10 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v7 detailView:objc_opt_class() moduleName:@"BackGlass"];
     if (v10)
     {
-      [v11 addObject:v10];
+      [configurationSpecifiersCopy addObject:v10];
     }
   }
 }
 
-- (void)extractVolumeButtonSpecifiers:(id)a3
+- (void)extractVolumeButtonSpecifiers:(id)specifiers
 {
-  v8 = a3;
+  specifiersCopy = specifiers;
   v4 = [(MRLocalization *)self->locale localizedStringWithKey:@"VOLUME_BUTTON" defaultString:@"VOLUME_BUTTON"];
   v5 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"VolumeButton"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 == -3)
+  if (intValue == -3)
   {
     v7 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v4 detailView:objc_opt_class() moduleName:@"VolumeButton"];
     if (v7)
     {
-      [v8 addObject:v7];
+      [specifiersCopy addObject:v7];
     }
   }
 }
 
-- (void)extractCoverGlassSpecifiers:(id)a3
+- (void)extractCoverGlassSpecifiers:(id)specifiers
 {
-  v8 = a3;
+  specifiersCopy = specifiers;
   v4 = [(MRLocalization *)self->locale localizedStringWithKey:@"COVER_GLASS" defaultString:@"COVER_GLASS"];
   v5 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"CoverGlass"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 == -3)
+  if (intValue == -3)
   {
     v7 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v4 detailView:objc_opt_class() moduleName:@"CoverGlass"];
     if (v7)
     {
-      [v8 addObject:v7];
+      [specifiersCopy addObject:v7];
     }
   }
 }
 
-- (void)extractEnclosureSpecifiers:(id)a3 caaRepairHistory:(id)a4 rchlHistory:(id)a5
+- (void)extractEnclosureSpecifiers:(id)specifiers caaRepairHistory:(id)history rchlHistory:(id)rchlHistory
 {
-  v10 = a3;
+  specifiersCopy = specifiers;
   v6 = [(MRLocalization *)self->locale localizedStringWithKey:@"ENCLOSURE" defaultString:@"ENCLOSURE"];
   v7 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"Enclosure"];
-  v8 = [v7 intValue];
+  intValue = [v7 intValue];
 
-  if (v8 == -3)
+  if (intValue == -3)
   {
     v9 = [(SystemHealthUI *)self _createFinishRepairSpecifierFor:v6 detailView:objc_opt_class() moduleName:@"Enclosure"];
     if (v9)
     {
-      [v10 addObject:v9];
+      [specifiersCopy addObject:v9];
     }
   }
 }
 
-- (void)extractNFCSpecifiers:(id)a3
+- (void)extractNFCSpecifiers:(id)specifiers
 {
-  v9 = a3;
+  specifiersCopy = specifiers;
   v4 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"NFC"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5 == -1)
+  if (intValue == -1)
   {
     v6 = [(MRLocalization *)self->locale localizedStringWithKey:@"NFC" defaultString:@"NFC"];
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
     [v7 setProperty:@"NFC" forKey:*MEMORY[0x277D3FFB8]];
-    v8 = [(SystemHealthUI *)self valueForSpecifierIssue];
-    [v7 setProperty:v8 forKey:@"CRImageAlertKey"];
+    valueForSpecifierIssue = [(SystemHealthUI *)self valueForSpecifierIssue];
+    [v7 setProperty:valueForSpecifierIssue forKey:@"CRImageAlertKey"];
 
     [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v9 addObject:v7];
+    [specifiersCopy addObject:v7];
     [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"SGAViewSeen" moduleName:@"NFC"];
     ++self->failedComponentsCount;
   }
 }
 
-- (void)extractUWBSpecifiers:(id)a3
+- (void)extractUWBSpecifiers:(id)specifiers
 {
-  v9 = a3;
+  specifiersCopy = specifiers;
   v4 = [(NSDictionary *)self->systemHealth objectForKeyedSubscript:@"UWB"];
-  v5 = [v4 intValue];
+  intValue = [v4 intValue];
 
-  if (v5 == -1)
+  if (intValue == -1)
   {
     v6 = [(MRLocalization *)self->locale localizedStringWithKey:@"UWB" defaultString:@"UWB"];
     v7 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
     [v7 setProperty:@"UWB" forKey:*MEMORY[0x277D3FFB8]];
-    v8 = [(SystemHealthUI *)self valueForSpecifierIssue];
-    [v7 setProperty:v8 forKey:@"CRImageAlertKey"];
+    valueForSpecifierIssue = [(SystemHealthUI *)self valueForSpecifierIssue];
+    [v7 setProperty:valueForSpecifierIssue forKey:@"CRImageAlertKey"];
 
     [v7 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-    [v9 addObject:v7];
+    [specifiersCopy addObject:v7];
     [(CRUIAnalytics *)self->analytics sendAsyncAnalyticsForEventIfNeeded:@"SGAViewSeen" moduleName:@"UWB"];
     ++self->failedComponentsCount;
   }
@@ -1312,7 +1312,7 @@ LABEL_16:
 
 - (id)reloadCurrentSystemHealthInfoSpecifiers
 {
-  v3 = [(CRRepairHistory *)self->localRepairHistory hasInvalidRCHL];
+  hasInvalidRCHL = [(CRRepairHistory *)self->localRepairHistory hasInvalidRCHL];
   if ([(CRRepairHistory *)self->localRepairHistory isSupportedIPad])
   {
     v4 = handleForCategory(0);
@@ -1327,21 +1327,21 @@ LABEL_6:
     v6 = [(SystemHealthUI *)self getCurrentDetailsWithPrivacySpecifier:0];
     if ([v6 count])
     {
-      v7 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+      emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
       v8 = *MEMORY[0x277D3FFB8];
-      [v7 setObject:@"PARTS_AND_SERVICE_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+      [emptyGroupSpecifier setObject:@"PARTS_AND_SERVICE_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
       v9 = MEMORY[0x277D3FAD8];
       v10 = [(MRLocalization *)self->locale localizedStringWithKey:@"PARTS_AND_SERVICE_HISTORY" defaultString:@"PARTS_AND_SERVICE_HISTORY"];
       v11 = [v9 preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
       [v11 setObject:@"MAIN_PARTS_AND_SERVICE" forKeyedSubscript:v8];
-      [v5 addObject:v7];
+      [v5 addObject:emptyGroupSpecifier];
       [v5 addObject:v11];
     }
 
     else
     {
-      if (!self->isRCHLDevice && (self->isRepaired & v3 & 1) != 0 && [MEMORY[0x277D01048] shouldShowDataCollectionNoticeForComponent:10])
+      if (!self->isRCHLDevice && (self->isRepaired & hasInvalidRCHL & 1) != 0 && [MEMORY[0x277D01048] shouldShowDataCollectionNoticeForComponent:10])
       {
         v12 = handleForCategory(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1350,17 +1350,17 @@ LABEL_6:
           _os_log_impl(&dword_247875000, v12, OS_LOG_TYPE_DEFAULT, "Handling ACRZ case", v22, 2u);
         }
 
-        v13 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+        emptyGroupSpecifier2 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
         v14 = *MEMORY[0x277D3FFB8];
-        [v13 setObject:@"PARTS_AND_SERVICE_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+        [emptyGroupSpecifier2 setObject:@"PARTS_AND_SERVICE_GROUP" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
         v15 = MEMORY[0x277D3FAD8];
         v16 = [(MRLocalization *)self->locale localizedStringWithKey:@"PARTS_AND_SERVICE_HISTORY" defaultString:@"PARTS_AND_SERVICE_HISTORY"];
         v17 = [v15 preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:4 edit:0];
 
         [v17 setObject:@"MAIN_PARTS_AND_SERVICE" forKeyedSubscript:v14];
         [v17 setProperty:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277D3FF38]];
-        [(SystemHealthUI *)self setupPrivacyFooterFor:v13 withPrivacySpecifier:1];
-        [v5 addObject:v13];
+        [(SystemHealthUI *)self setupPrivacyFooterFor:emptyGroupSpecifier2 withPrivacySpecifier:1];
+        [v5 addObject:emptyGroupSpecifier2];
         [v5 addObject:v17];
       }
 
@@ -1372,7 +1372,7 @@ LABEL_6:
       utils = self->utils;
       v21 = 0;
       [(CoreRepairUIUtils *)utils setupCAARetry:&v21];
-      v7 = v21;
+      emptyGroupSpecifier = v21;
     }
 
 LABEL_17:
@@ -1392,20 +1392,20 @@ LABEL_19:
   return v19;
 }
 
-- (void)setupPrivacyFooterFor:(id)a3 withPrivacySpecifier:(BOOL)a4
+- (void)setupPrivacyFooterFor:(id)for withPrivacySpecifier:(BOOL)specifier
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && [MEMORY[0x277D01048] shouldShowDataCollectionNoticeForComponent:10])
+  specifierCopy = specifier;
+  forCopy = for;
+  if (specifierCopy && [MEMORY[0x277D01048] shouldShowDataCollectionNoticeForComponent:10])
   {
     v7 = [(MRLocalization *)self->locale localizedStringWithKey:@"INFORMATION_COLLECTION_TEXT" defaultString:@"INFORMATION_COLLECTION_TEXT"];
     v8 = *MEMORY[0x277D3FF88];
-    [v6 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
+    [forCopy setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
 
     if (self->deviceClass == 3)
     {
       v9 = [(MRLocalization *)self->locale localizedStringWithKey:@"INFORMATION_COLLECTION_TEXT_IPAD" defaultString:@"INFORMATION_COLLECTION_TEXT_IPAD"];
-      [v6 setProperty:v9 forKey:v8];
+      [forCopy setProperty:v9 forKey:v8];
     }
 
     [MEMORY[0x277D01048] didShowDataCollectionNoticeForComponent:10];
@@ -1510,17 +1510,17 @@ uint64_t __56__SystemHealthUI_getCurrentDetailsWithPrivacySpecifier___block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)constructSpecifiersWithPrivacySpecifier:(BOOL)a3 rchlHistory:(id)a4 caaHistory:(id)a5 srvp:(id)a6
+- (id)constructSpecifiersWithPrivacySpecifier:(BOOL)specifier rchlHistory:(id)history caaHistory:(id)caaHistory srvp:(id)srvp
 {
-  v38 = a3;
-  v40 = a4;
-  v9 = a5;
-  v10 = a6;
+  specifierCopy = specifier;
+  historyCopy = history;
+  caaHistoryCopy = caaHistory;
+  srvpCopy = srvp;
   v11 = objc_opt_new();
   v12 = objc_opt_new();
   v43 = objc_opt_new();
   v42 = [(MRLocalization *)self->locale localizedStringWithKey:@"Camera" defaultString:@"Camera"];
-  v41 = [(SystemHealthUI *)self setupGroupSpecifer];
+  setupGroupSpecifer = [(SystemHealthUI *)self setupGroupSpecifer];
   v13 = MEMORY[0x277D3FAD8];
   v14 = [(MRLocalization *)self->locale localizedStringWithKey:@"CONFIGURATION_AVAILABLE" defaultString:@"CONFIGURATION_AVAILABLE"];
   v15 = [v13 groupSpecifierWithName:v14];
@@ -1531,14 +1531,14 @@ uint64_t __56__SystemHealthUI_getCurrentDetailsWithPrivacySpecifier___block_invo
   v18 = +[SystemHealthUI sharedInstance];
   v19 = [v16 preferenceSpecifierNamed:v17 target:v18 set:0 get:0 detail:0 cell:13 edit:0];
 
-  v20 = v40;
+  v20 = historyCopy;
   [v19 setIdentifier:@"PARTSBUTTON"];
   if (self->deviceClass == 1)
   {
     [(SystemHealthUI *)self extractBatterySpecifiers:v11 configurationSpecifiers:v12];
-    [(SystemHealthUI *)self extractBackGlassSpecifiers:v11 configurationSpecifiers:v12 caaRepairHistory:v9 rchlHistory:v40];
-    [(SystemHealthUI *)self extractEnclosureSpecifiers:v12 caaRepairHistory:v9 rchlHistory:v40];
-    [(SystemHealthUI *)self extractMtubSpecifiers:v11 caaRepairHistory:v9 srvp:v10 rchlHistory:v40];
+    [(SystemHealthUI *)self extractBackGlassSpecifiers:v11 configurationSpecifiers:v12 caaRepairHistory:caaHistoryCopy rchlHistory:historyCopy];
+    [(SystemHealthUI *)self extractEnclosureSpecifiers:v12 caaRepairHistory:caaHistoryCopy rchlHistory:historyCopy];
+    [(SystemHealthUI *)self extractMtubSpecifiers:v11 caaRepairHistory:caaHistoryCopy srvp:srvpCopy rchlHistory:historyCopy];
     [(SystemHealthUI *)self extractCameraSpecifiers:v42 componentsInfoSpecifiers:v11 configurationSpecifiers:v12];
   }
 
@@ -1559,7 +1559,7 @@ uint64_t __56__SystemHealthUI_getCurrentDetailsWithPrivacySpecifier___block_invo
   if (self->deviceClass == 3)
   {
     [(SystemHealthUI *)self extractiPadBatterySpecifiers:v11];
-    [(SystemHealthUI *)self extractiPadCameraSpecifiers:v42 componentsInfoSpecifiers:v11 configurationSpecifiers:v12 caaRepairHistory:v9 rchlHistory:v40];
+    [(SystemHealthUI *)self extractiPadCameraSpecifiers:v42 componentsInfoSpecifiers:v11 configurationSpecifiers:v12 caaRepairHistory:caaHistoryCopy rchlHistory:historyCopy];
     [(SystemHealthUI *)self extractCoverGlassSpecifiers:v12];
     if (MGGetBoolAnswer())
     {
@@ -1588,34 +1588,34 @@ uint64_t __56__SystemHealthUI_getCurrentDetailsWithPrivacySpecifier___block_invo
         }
       }
 
-      [(SystemHealthUI *)self setupPrivacyFooterFor:v15 withPrivacySpecifier:v38];
+      [(SystemHealthUI *)self setupPrivacyFooterFor:v15 withPrivacySpecifier:specifierCopy];
       [v43 addObject:v15];
       if ([v12 count] == 1 && (objc_msgSend(v12, "objectAtIndexedSubscript:", 0), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "detailControllerClass"), v25, v26))
       {
-        v39 = v10;
+        v39 = srvpCopy;
         v27 = [v12 objectAtIndexedSubscript:0];
         [v27 detailControllerClass];
         v28 = objc_opt_new();
 
-        v29 = [v28 componentName];
-        [v28 setTitleText:v29];
+        componentName = [v28 componentName];
+        [v28 setTitleText:componentName];
 
         v30 = [(MRLocalization *)self->locale localizedStringWithKey:@"LEARN_MORE_ELLIPSE" defaultString:@"LEARN_MORE_ELLIPSE"];
         v31 = MEMORY[0x277CCACA8];
-        v32 = [v28 informativeText];
-        v33 = [v31 stringWithFormat:@"%@ %@", v32, v30];
+        informativeText = [v28 informativeText];
+        v33 = [v31 stringWithFormat:@"%@ %@", informativeText, v30];
         [v28 setInformativeText:v33];
 
         [v28 setFooterText:0];
-        v34 = [v28 specifiers];
+        specifiers = [v28 specifiers];
         v21 = v43;
-        if (v34)
+        if (specifiers)
         {
-          [v43 addObjectsFromArray:v34];
+          [v43 addObjectsFromArray:specifiers];
         }
 
-        v10 = v39;
-        v20 = v40;
+        srvpCopy = v39;
+        v20 = historyCopy;
       }
 
       else
@@ -1642,10 +1642,10 @@ LABEL_26:
         goto LABEL_27;
       }
 
-      [(SystemHealthUI *)self setupPrivacyFooterFor:v41 withPrivacySpecifier:v38];
+      [(SystemHealthUI *)self setupPrivacyFooterFor:setupGroupSpecifer withPrivacySpecifier:specifierCopy];
     }
 
-    [v21 addObject:v41];
+    [v21 addObject:setupGroupSpecifer];
     [v21 addObjectsFromArray:v11];
     goto LABEL_26;
   }
@@ -1660,9 +1660,9 @@ LABEL_27:
   return v21;
 }
 
-- (void)updateSpecifiersWithCompletionHandler:(id)a3
+- (void)updateSpecifiersWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = handleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1677,8 +1677,8 @@ LABEL_27:
   v8[2] = __56__SystemHealthUI_updateSpecifiersWithCompletionHandler___block_invoke;
   v8[3] = &unk_278EB1E18;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(v6, v8);
 
   objc_destroyWeak(&v10);
@@ -1791,17 +1791,17 @@ uint64_t __56__SystemHealthUI_updateSpecifiersWithCompletionHandler___block_invo
   return result;
 }
 
-- (id)findSpecifierToInsertAfter:(id)a3
+- (id)findSpecifierToInsertAfter:(id)after
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  afterCopy = after;
+  v5 = afterCopy;
+  if (!afterCopy)
   {
-    v12 = [(SystemHealthUI *)self parentViewController];
-    v6 = [v12 specifiers];
+    parentViewController = [(SystemHealthUI *)self parentViewController];
+    specifiers = [parentViewController specifiers];
 
-    if (v6)
+    if (specifiers)
     {
       goto LABEL_3;
     }
@@ -1817,14 +1817,14 @@ LABEL_11:
     goto LABEL_23;
   }
 
-  v6 = [v4 specifiers];
-  if (!v6)
+  specifiers = [afterCopy specifiers];
+  if (!specifiers)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (![v6 count])
+  if (![specifiers count])
   {
 LABEL_20:
     v7 = 0;
@@ -1834,21 +1834,21 @@ LABEL_20:
   v7 = 0;
   while (1)
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [specifiers objectAtIndexedSubscript:v7];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v9 = [v8 identifier];
-    if ([v9 isEqualToString:@"INFORMATION_GROUP"])
+    identifier = [v8 identifier];
+    if ([identifier isEqualToString:@"INFORMATION_GROUP"])
     {
       break;
     }
 
-    v10 = [v8 identifier];
-    v11 = [v10 isEqualToString:@"PARTS_AND_SERVICE_GROUP"];
+    identifier2 = [v8 identifier];
+    v11 = [identifier2 isEqualToString:@"PARTS_AND_SERVICE_GROUP"];
 
     if (v11)
     {
@@ -1857,7 +1857,7 @@ LABEL_20:
 
 LABEL_8:
 
-    if (++v7 >= [v6 count])
+    if (++v7 >= [specifiers count])
     {
       goto LABEL_18;
     }
@@ -1879,7 +1879,7 @@ LABEL_15:
 
 LABEL_18:
   v15 = v7 - 1;
-  v16 = [v6 objectAtIndexedSubscript:v15];
+  v16 = [specifiers objectAtIndexedSubscript:v15];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1888,7 +1888,7 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v7 = [v6 objectAtIndexedSubscript:v15];
+  v7 = [specifiers objectAtIndexedSubscript:v15];
 LABEL_21:
   v13 = handleForCategory(0);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1905,12 +1905,12 @@ LABEL_23:
   return v7;
 }
 
-- (void)_updateSpecifiers:(id)a3 specifierToInsertAfter:(id)a4 withUpdates:(id)a5
+- (void)_updateSpecifiers:(id)specifiers specifierToInsertAfter:(id)after withUpdates:(id)updates
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  specifiersCopy = specifiers;
+  updatesCopy = updates;
+  afterCopy = after;
   v11 = handleForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1918,26 +1918,26 @@ LABEL_23:
     v16 = 138412546;
     v17 = cachedSpecifiers;
     v18 = 2112;
-    v19 = v8;
+    v19 = specifiersCopy;
     _os_log_impl(&dword_247875000, v11, OS_LOG_TYPE_DEFAULT, "Updating specifiers: %@ -> %@", &v16, 0x16u);
   }
 
-  [v9 removeSpecifierWithID:@"PARTS_AND_SERVICE_GROUP"];
-  [v9 removeSpecifierWithID:@"MAIN_PARTS_AND_SERVICE"];
-  [v9 insertContiguousSpecifiers:v8 afterSpecifier:v10];
+  [updatesCopy removeSpecifierWithID:@"PARTS_AND_SERVICE_GROUP"];
+  [updatesCopy removeSpecifierWithID:@"MAIN_PARTS_AND_SERVICE"];
+  [updatesCopy insertContiguousSpecifiers:specifiersCopy afterSpecifier:afterCopy];
 
-  if (v8)
+  if (specifiersCopy)
   {
-    v13 = v8;
+    array = specifiersCopy;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
   v14 = self->cachedSpecifiers;
-  self->cachedSpecifiers = v13;
+  self->cachedSpecifiers = array;
 
   v15 = *MEMORY[0x277D85DE8];
 }

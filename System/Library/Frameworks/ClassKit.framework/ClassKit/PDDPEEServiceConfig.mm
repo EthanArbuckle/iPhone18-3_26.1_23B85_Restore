@@ -1,67 +1,67 @@
 @interface PDDPEEServiceConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDefaultSyncZoneNames:(id)a3;
-- (void)addServiceBag:(id)a3;
-- (void)addZoneSubscriptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllowSharingOutsideOrg:(BOOL)a3;
-- (void)setHasAnalyticsOptedIn:(BOOL)a3;
-- (void)setHasClassroomClassicAdHocModeEnabled:(BOOL)a3;
-- (void)setHasDisableRosterSync:(BOOL)a3;
-- (void)setHasIsRosterSearchAllowed:(BOOL)a3;
-- (void)setHasSearchCacheTtl:(BOOL)a3;
-- (void)setHasSearchLimitForGroupMemberSearch:(BOOL)a3;
-- (void)setHasSyncFetchInterval:(BOOL)a3;
-- (void)setHasUseServerForRosterSearch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDefaultSyncZoneNames:(id)names;
+- (void)addServiceBag:(id)bag;
+- (void)addZoneSubscriptions:(id)subscriptions;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllowSharingOutsideOrg:(BOOL)org;
+- (void)setHasAnalyticsOptedIn:(BOOL)in;
+- (void)setHasClassroomClassicAdHocModeEnabled:(BOOL)enabled;
+- (void)setHasDisableRosterSync:(BOOL)sync;
+- (void)setHasIsRosterSearchAllowed:(BOOL)allowed;
+- (void)setHasSearchCacheTtl:(BOOL)ttl;
+- (void)setHasSearchLimitForGroupMemberSearch:(BOOL)search;
+- (void)setHasSyncFetchInterval:(BOOL)interval;
+- (void)setHasUseServerForRosterSearch:(BOOL)search;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEEServiceConfig
 
-- (void)addZoneSubscriptions:(id)a3
+- (void)addZoneSubscriptions:(id)subscriptions
 {
-  v4 = a3;
+  subscriptionsCopy = subscriptions;
   zoneSubscriptions = self->_zoneSubscriptions;
-  v8 = v4;
+  v8 = subscriptionsCopy;
   if (!zoneSubscriptions)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_zoneSubscriptions;
     self->_zoneSubscriptions = v6;
 
-    v4 = v8;
+    subscriptionsCopy = v8;
     zoneSubscriptions = self->_zoneSubscriptions;
   }
 
-  [(NSMutableArray *)zoneSubscriptions addObject:v4];
+  [(NSMutableArray *)zoneSubscriptions addObject:subscriptionsCopy];
 }
 
-- (void)addServiceBag:(id)a3
+- (void)addServiceBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   serviceBags = self->_serviceBags;
-  v8 = v4;
+  v8 = bagCopy;
   if (!serviceBags)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_serviceBags;
     self->_serviceBags = v6;
 
-    v4 = v8;
+    bagCopy = v8;
     serviceBags = self->_serviceBags;
   }
 
-  [(NSMutableArray *)serviceBags addObject:v4];
+  [(NSMutableArray *)serviceBags addObject:bagCopy];
 }
 
-- (void)setHasIsRosterSearchAllowed:(BOOL)a3
+- (void)setHasIsRosterSearchAllowed:(BOOL)allowed
 {
-  if (a3)
+  if (allowed)
   {
     v3 = 256;
   }
@@ -74,9 +74,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasUseServerForRosterSearch:(BOOL)a3
+- (void)setHasUseServerForRosterSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 512;
   }
@@ -89,27 +89,27 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)addDefaultSyncZoneNames:(id)a3
+- (void)addDefaultSyncZoneNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   defaultSyncZoneNames = self->_defaultSyncZoneNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!defaultSyncZoneNames)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_defaultSyncZoneNames;
     self->_defaultSyncZoneNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     defaultSyncZoneNames = self->_defaultSyncZoneNames;
   }
 
-  [(NSMutableArray *)defaultSyncZoneNames addObject:v4];
+  [(NSMutableArray *)defaultSyncZoneNames addObject:namesCopy];
 }
 
-- (void)setHasSyncFetchInterval:(BOOL)a3
+- (void)setHasSyncFetchInterval:(BOOL)interval
 {
-  if (a3)
+  if (interval)
   {
     v3 = 8;
   }
@@ -122,9 +122,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSearchCacheTtl:(BOOL)a3
+- (void)setHasSearchCacheTtl:(BOOL)ttl
 {
-  if (a3)
+  if (ttl)
   {
     v3 = 2;
   }
@@ -137,9 +137,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasAnalyticsOptedIn:(BOOL)a3
+- (void)setHasAnalyticsOptedIn:(BOOL)in
 {
-  if (a3)
+  if (in)
   {
     v3 = 32;
   }
@@ -152,9 +152,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasAllowSharingOutsideOrg:(BOOL)a3
+- (void)setHasAllowSharingOutsideOrg:(BOOL)org
 {
-  if (a3)
+  if (org)
   {
     v3 = 16;
   }
@@ -167,9 +167,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasClassroomClassicAdHocModeEnabled:(BOOL)a3
+- (void)setHasClassroomClassicAdHocModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -182,9 +182,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSearchLimitForGroupMemberSearch:(BOOL)a3
+- (void)setHasSearchLimitForGroupMemberSearch:(BOOL)search
 {
-  if (a3)
+  if (search)
   {
     v3 = 4;
   }
@@ -197,9 +197,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDisableRosterSync:(BOOL)a3
+- (void)setHasDisableRosterSync:(BOOL)sync
 {
-  if (a3)
+  if (sync)
   {
     v3 = 128;
   }
@@ -217,8 +217,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEEServiceConfig;
   v3 = [(PDDPEEServiceConfig *)&v7 description];
-  v4 = [(PDDPEEServiceConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEEServiceConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -267,8 +267,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -424,9 +424,9 @@ LABEL_30:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_serviceId)
   {
     PBDataWriterWriteStringField();
@@ -652,45 +652,45 @@ LABEL_37:
 LABEL_38:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   if (self->_serviceId)
   {
-    [v18 setServiceId:?];
+    [toCopy setServiceId:?];
   }
 
   if (self->_personlinkServiceContext)
   {
-    [v18 setPersonlinkServiceContext:?];
+    [toCopy setPersonlinkServiceContext:?];
   }
 
   if ([(PDDPEEServiceConfig *)self zoneSubscriptionsCount])
   {
-    [v18 clearZoneSubscriptions];
-    v4 = [(PDDPEEServiceConfig *)self zoneSubscriptionsCount];
-    if (v4)
+    [toCopy clearZoneSubscriptions];
+    zoneSubscriptionsCount = [(PDDPEEServiceConfig *)self zoneSubscriptionsCount];
+    if (zoneSubscriptionsCount)
     {
-      v5 = v4;
+      v5 = zoneSubscriptionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPEEServiceConfig *)self zoneSubscriptionsAtIndex:i];
-        [v18 addZoneSubscriptions:v7];
+        [toCopy addZoneSubscriptions:v7];
       }
     }
   }
 
   if ([(PDDPEEServiceConfig *)self serviceBagsCount])
   {
-    [v18 clearServiceBags];
-    v8 = [(PDDPEEServiceConfig *)self serviceBagsCount];
-    if (v8)
+    [toCopy clearServiceBags];
+    serviceBagsCount = [(PDDPEEServiceConfig *)self serviceBagsCount];
+    if (serviceBagsCount)
     {
-      v9 = v8;
+      v9 = serviceBagsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PDDPEEServiceConfig *)self serviceBagAtIndex:j];
-        [v18 addServiceBag:v11];
+        [toCopy addServiceBag:v11];
       }
     }
   }
@@ -704,8 +704,8 @@ LABEL_38:
     }
 
 LABEL_33:
-    *(v18 + 4) = self->_minimumSearchKeyLength;
-    *(v18 + 40) |= 1u;
+    *(toCopy + 4) = self->_minimumSearchKeyLength;
+    *(toCopy + 40) |= 1u;
     if ((*&self->_has & 0x200) == 0)
     {
       goto LABEL_17;
@@ -714,8 +714,8 @@ LABEL_33:
     goto LABEL_16;
   }
 
-  *(v18 + 76) = self->_isRosterSearchAllowed;
-  *(v18 + 40) |= 0x100u;
+  *(toCopy + 76) = self->_isRosterSearchAllowed;
+  *(toCopy + 40) |= 0x100u;
   has = self->_has;
   if (has)
   {
@@ -726,22 +726,22 @@ LABEL_15:
   if ((has & 0x200) != 0)
   {
 LABEL_16:
-    *(v18 + 77) = self->_useServerForRosterSearch;
-    *(v18 + 40) |= 0x200u;
+    *(toCopy + 77) = self->_useServerForRosterSearch;
+    *(toCopy + 40) |= 0x200u;
   }
 
 LABEL_17:
   if ([(PDDPEEServiceConfig *)self defaultSyncZoneNamesCount])
   {
-    [v18 clearDefaultSyncZoneNames];
-    v13 = [(PDDPEEServiceConfig *)self defaultSyncZoneNamesCount];
-    if (v13)
+    [toCopy clearDefaultSyncZoneNames];
+    defaultSyncZoneNamesCount = [(PDDPEEServiceConfig *)self defaultSyncZoneNamesCount];
+    if (defaultSyncZoneNamesCount)
     {
-      v14 = v13;
+      v14 = defaultSyncZoneNamesCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(PDDPEEServiceConfig *)self defaultSyncZoneNamesAtIndex:k];
-        [v18 addDefaultSyncZoneNames:v16];
+        [toCopy addDefaultSyncZoneNames:v16];
       }
     }
   }
@@ -749,8 +749,8 @@ LABEL_17:
   v17 = self->_has;
   if ((v17 & 8) != 0)
   {
-    *(v18 + 14) = self->_syncFetchInterval;
-    *(v18 + 40) |= 8u;
+    *(toCopy + 14) = self->_syncFetchInterval;
+    *(toCopy + 40) |= 8u;
     v17 = self->_has;
     if ((v17 & 2) == 0)
     {
@@ -769,8 +769,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(v18 + 8) = self->_searchCacheTtl;
-  *(v18 + 40) |= 2u;
+  *(toCopy + 8) = self->_searchCacheTtl;
+  *(toCopy + 40) |= 2u;
   v17 = self->_has;
   if ((v17 & 0x20) == 0)
   {
@@ -784,8 +784,8 @@ LABEL_24:
   }
 
 LABEL_37:
-  *(v18 + 73) = self->_analyticsOptedIn;
-  *(v18 + 40) |= 0x20u;
+  *(toCopy + 73) = self->_analyticsOptedIn;
+  *(toCopy + 40) |= 0x20u;
   v17 = self->_has;
   if ((v17 & 0x10) == 0)
   {
@@ -799,8 +799,8 @@ LABEL_25:
   }
 
 LABEL_38:
-  *(v18 + 72) = self->_allowSharingOutsideOrg;
-  *(v18 + 40) |= 0x10u;
+  *(toCopy + 72) = self->_allowSharingOutsideOrg;
+  *(toCopy + 40) |= 0x10u;
   v17 = self->_has;
   if ((v17 & 0x40) == 0)
   {
@@ -814,8 +814,8 @@ LABEL_26:
   }
 
 LABEL_39:
-  *(v18 + 74) = self->_classroomClassicAdHocModeEnabled;
-  *(v18 + 40) |= 0x40u;
+  *(toCopy + 74) = self->_classroomClassicAdHocModeEnabled;
+  *(toCopy + 40) |= 0x40u;
   v17 = self->_has;
   if ((v17 & 4) == 0)
   {
@@ -829,26 +829,26 @@ LABEL_27:
   }
 
 LABEL_40:
-  *(v18 + 9) = self->_searchLimitForGroupMemberSearch;
-  *(v18 + 40) |= 4u;
+  *(toCopy + 9) = self->_searchLimitForGroupMemberSearch;
+  *(toCopy + 40) |= 4u;
   if ((*&self->_has & 0x80) != 0)
   {
 LABEL_28:
-    *(v18 + 75) = self->_disableRosterSync;
-    *(v18 + 40) |= 0x80u;
+    *(toCopy + 75) = self->_disableRosterSync;
+    *(toCopy + 40) |= 0x80u;
   }
 
 LABEL_29:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceId copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [(NSString *)self->_personlinkServiceContext copyWithZone:a3];
+  v8 = [(NSString *)self->_personlinkServiceContext copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
@@ -871,7 +871,7 @@ LABEL_29:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v39 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v39 + 1) + 8 * i) copyWithZone:zone];
         [v5 addZoneSubscriptions:v15];
       }
 
@@ -900,7 +900,7 @@ LABEL_29:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v35 + 1) + 8 * j) copyWithZone:a3];
+        v21 = [*(*(&v35 + 1) + 8 * j) copyWithZone:zone];
         [v5 addServiceBag:v21];
       }
 
@@ -962,7 +962,7 @@ LABEL_19:
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * k) copyWithZone:{a3, v31}];
+        v28 = [*(*(&v31 + 1) + 8 * k) copyWithZone:{zone, v31}];
         [v5 addDefaultSyncZoneNames:v28];
       }
 
@@ -1067,16 +1067,16 @@ LABEL_33:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_76;
   }
 
   serviceId = self->_serviceId;
-  if (serviceId | *(v4 + 6))
+  if (serviceId | *(equalCopy + 6))
   {
     if (![(NSString *)serviceId isEqual:?])
     {
@@ -1085,7 +1085,7 @@ LABEL_33:
   }
 
   personlinkServiceContext = self->_personlinkServiceContext;
-  if (personlinkServiceContext | *(v4 + 3))
+  if (personlinkServiceContext | *(equalCopy + 3))
   {
     if (![(NSString *)personlinkServiceContext isEqual:?])
     {
@@ -1094,7 +1094,7 @@ LABEL_33:
   }
 
   zoneSubscriptions = self->_zoneSubscriptions;
-  if (zoneSubscriptions | *(v4 + 8))
+  if (zoneSubscriptions | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)zoneSubscriptions isEqual:?])
     {
@@ -1103,7 +1103,7 @@ LABEL_33:
   }
 
   serviceBags = self->_serviceBags;
-  if (serviceBags | *(v4 + 5))
+  if (serviceBags | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)serviceBags isEqual:?])
     {
@@ -1112,37 +1112,37 @@ LABEL_33:
   }
 
   has = self->_has;
-  v10 = *(v4 + 40);
+  v10 = *(equalCopy + 40);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 40) & 0x100) == 0)
+    if ((*(equalCopy + 40) & 0x100) == 0)
     {
       goto LABEL_76;
     }
 
-    v11 = *(v4 + 76);
+    v11 = *(equalCopy + 76);
     if (self->_isRosterSearchAllowed)
     {
-      if ((*(v4 + 76) & 1) == 0)
+      if ((*(equalCopy + 76) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 76))
+    else if (*(equalCopy + 76))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 40) & 0x100) != 0)
+  else if ((*(equalCopy + 40) & 0x100) != 0)
   {
     goto LABEL_76;
   }
 
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_minimumSearchKeyLength != *(v4 + 4))
+    if ((v10 & 1) == 0 || self->_minimumSearchKeyLength != *(equalCopy + 4))
     {
       goto LABEL_76;
     }
@@ -1155,33 +1155,33 @@ LABEL_33:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 40) & 0x200) == 0)
+    if ((*(equalCopy + 40) & 0x200) == 0)
     {
       goto LABEL_76;
     }
 
-    v13 = *(v4 + 77);
+    v13 = *(equalCopy + 77);
     if (self->_useServerForRosterSearch)
     {
-      if ((*(v4 + 77) & 1) == 0)
+      if ((*(equalCopy + 77) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 77))
+    else if (*(equalCopy + 77))
     {
       goto LABEL_76;
     }
   }
 
-  else if ((*(v4 + 40) & 0x200) != 0)
+  else if ((*(equalCopy + 40) & 0x200) != 0)
   {
     goto LABEL_76;
   }
 
   defaultSyncZoneNames = self->_defaultSyncZoneNames;
-  if (defaultSyncZoneNames | *(v4 + 1))
+  if (defaultSyncZoneNames | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)defaultSyncZoneNames isEqual:?])
     {
@@ -1189,12 +1189,12 @@ LABEL_33:
     }
 
     has = self->_has;
-    v10 = *(v4 + 40);
+    v10 = *(equalCopy + 40);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_syncFetchInterval != *(v4 + 14))
+    if ((v10 & 8) == 0 || self->_syncFetchInterval != *(equalCopy + 14))
     {
       goto LABEL_76;
     }
@@ -1207,7 +1207,7 @@ LABEL_33:
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_searchCacheTtl != *(v4 + 8))
+    if ((v10 & 2) == 0 || self->_searchCacheTtl != *(equalCopy + 8))
     {
       goto LABEL_76;
     }
@@ -1225,16 +1225,16 @@ LABEL_33:
       goto LABEL_76;
     }
 
-    v14 = *(v4 + 73);
+    v14 = *(equalCopy + 73);
     if (self->_analyticsOptedIn)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_76;
     }
@@ -1252,16 +1252,16 @@ LABEL_33:
       goto LABEL_76;
     }
 
-    v15 = *(v4 + 72);
+    v15 = *(equalCopy + 72);
     if (self->_allowSharingOutsideOrg)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_76;
     }
@@ -1279,16 +1279,16 @@ LABEL_33:
       goto LABEL_76;
     }
 
-    v16 = *(v4 + 74);
+    v16 = *(equalCopy + 74);
     if (self->_classroomClassicAdHocModeEnabled)
     {
-      if ((*(v4 + 74) & 1) == 0)
+      if ((*(equalCopy + 74) & 1) == 0)
       {
         goto LABEL_76;
       }
     }
 
-    else if (*(v4 + 74))
+    else if (*(equalCopy + 74))
     {
       goto LABEL_76;
     }
@@ -1301,7 +1301,7 @@ LABEL_33:
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_searchLimitForGroupMemberSearch != *(v4 + 9))
+    if ((v10 & 4) == 0 || self->_searchLimitForGroupMemberSearch != *(equalCopy + 9))
     {
       goto LABEL_76;
     }
@@ -1318,13 +1318,13 @@ LABEL_33:
     {
       if (self->_disableRosterSync)
       {
-        if ((*(v4 + 75) & 1) == 0)
+        if ((*(equalCopy + 75) & 1) == 0)
         {
           goto LABEL_76;
         }
       }
 
-      else if (*(v4 + 75))
+      else if (*(equalCopy + 75))
       {
         goto LABEL_76;
       }
@@ -1483,15 +1483,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(PDDPEEServiceConfig *)self setServiceId:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PDDPEEServiceConfig *)self setPersonlinkServiceContext:?];
   }
@@ -1500,7 +1500,7 @@ LABEL_15:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = *(v4 + 8);
+  v5 = *(fromCopy + 8);
   v6 = [v5 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v6)
   {
@@ -1528,7 +1528,7 @@ LABEL_15:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v11)
   {
@@ -1552,12 +1552,12 @@ LABEL_15:
     while (v12);
   }
 
-  v15 = *(v4 + 40);
+  v15 = *(fromCopy + 40);
   if ((v15 & 0x100) != 0)
   {
-    self->_isRosterSearchAllowed = *(v4 + 76);
+    self->_isRosterSearchAllowed = *(fromCopy + 76);
     *&self->_has |= 0x100u;
-    v15 = *(v4 + 40);
+    v15 = *(fromCopy + 40);
     if ((v15 & 1) == 0)
     {
 LABEL_21:
@@ -1575,12 +1575,12 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  self->_minimumSearchKeyLength = *(v4 + 4);
+  self->_minimumSearchKeyLength = *(fromCopy + 4);
   *&self->_has |= 1u;
-  if ((*(v4 + 40) & 0x200) != 0)
+  if ((*(fromCopy + 40) & 0x200) != 0)
   {
 LABEL_22:
-    self->_useServerForRosterSearch = *(v4 + 77);
+    self->_useServerForRosterSearch = *(fromCopy + 77);
     *&self->_has |= 0x200u;
   }
 
@@ -1589,7 +1589,7 @@ LABEL_23:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = *(v4 + 1);
+  v16 = *(fromCopy + 1);
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v34 count:16];
   if (v17)
   {
@@ -1613,12 +1613,12 @@ LABEL_23:
     while (v18);
   }
 
-  v21 = *(v4 + 40);
+  v21 = *(fromCopy + 40);
   if ((v21 & 8) != 0)
   {
-    self->_syncFetchInterval = *(v4 + 14);
+    self->_syncFetchInterval = *(fromCopy + 14);
     *&self->_has |= 8u;
-    v21 = *(v4 + 40);
+    v21 = *(fromCopy + 40);
     if ((v21 & 2) == 0)
     {
 LABEL_32:
@@ -1636,9 +1636,9 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  self->_searchCacheTtl = *(v4 + 8);
+  self->_searchCacheTtl = *(fromCopy + 8);
   *&self->_has |= 2u;
-  v21 = *(v4 + 40);
+  v21 = *(fromCopy + 40);
   if ((v21 & 0x20) == 0)
   {
 LABEL_33:
@@ -1651,9 +1651,9 @@ LABEL_33:
   }
 
 LABEL_44:
-  self->_analyticsOptedIn = *(v4 + 73);
+  self->_analyticsOptedIn = *(fromCopy + 73);
   *&self->_has |= 0x20u;
-  v21 = *(v4 + 40);
+  v21 = *(fromCopy + 40);
   if ((v21 & 0x10) == 0)
   {
 LABEL_34:
@@ -1666,9 +1666,9 @@ LABEL_34:
   }
 
 LABEL_45:
-  self->_allowSharingOutsideOrg = *(v4 + 72);
+  self->_allowSharingOutsideOrg = *(fromCopy + 72);
   *&self->_has |= 0x10u;
-  v21 = *(v4 + 40);
+  v21 = *(fromCopy + 40);
   if ((v21 & 0x40) == 0)
   {
 LABEL_35:
@@ -1678,9 +1678,9 @@ LABEL_35:
     }
 
 LABEL_47:
-    self->_searchLimitForGroupMemberSearch = *(v4 + 9);
+    self->_searchLimitForGroupMemberSearch = *(fromCopy + 9);
     *&self->_has |= 4u;
-    if ((*(v4 + 40) & 0x80) == 0)
+    if ((*(fromCopy + 40) & 0x80) == 0)
     {
       goto LABEL_38;
     }
@@ -1689,9 +1689,9 @@ LABEL_47:
   }
 
 LABEL_46:
-  self->_classroomClassicAdHocModeEnabled = *(v4 + 74);
+  self->_classroomClassicAdHocModeEnabled = *(fromCopy + 74);
   *&self->_has |= 0x40u;
-  v21 = *(v4 + 40);
+  v21 = *(fromCopy + 40);
   if ((v21 & 4) != 0)
   {
     goto LABEL_47;
@@ -1701,7 +1701,7 @@ LABEL_36:
   if ((v21 & 0x80) != 0)
   {
 LABEL_37:
-    self->_disableRosterSync = *(v4 + 75);
+    self->_disableRosterSync = *(fromCopy + 75);
     *&self->_has |= 0x80u;
   }
 

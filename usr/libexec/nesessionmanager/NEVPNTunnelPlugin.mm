@@ -1,87 +1,87 @@
 @interface NEVPNTunnelPlugin
-- (NEVPNTunnelPlugin)initWithAgent:(id)a3 delegateQueue:(id)a4 andDelegate:(id)a5;
-- (void)createVirtualInterfaceWithParameters:(id)a3 completionHandler:(id)a4;
+- (NEVPNTunnelPlugin)initWithAgent:(id)agent delegateQueue:(id)queue andDelegate:(id)delegate;
+- (void)createVirtualInterfaceWithParameters:(id)parameters completionHandler:(id)handler;
 - (void)handleIPCDetached;
-- (void)handlePluginFailedWithError:(id)a3;
-- (void)setStatus:(int)a3 error:(id)a4;
-- (void)setTunnelNetworkSettings:(id)a3 completionHandler:(id)a4;
+- (void)handlePluginFailedWithError:(id)error;
+- (void)setStatus:(int)status error:(id)error;
+- (void)setTunnelNetworkSettings:(id)settings completionHandler:(id)handler;
 @end
 
 @implementation NEVPNTunnelPlugin
 
-- (void)setTunnelNetworkSettings:(id)a3 completionHandler:(id)a4
+- (void)setTunnelNetworkSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEPlugin *)self delegateQueue];
+  settingsCopy = settings;
+  handlerCopy = handler;
+  delegateQueue = [(NEPlugin *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016830;
   block[3] = &unk_1000EB2E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = settingsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = settingsCopy;
+  dispatch_async(delegateQueue, block);
 }
 
-- (void)setStatus:(int)a3 error:(id)a4
+- (void)setStatus:(int)status error:(id)error
 {
-  v6 = a4;
-  v7 = [(NEPlugin *)self delegateQueue];
+  errorCopy = error;
+  delegateQueue = [(NEPlugin *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016A38;
   block[3] = &unk_1000EB360;
-  v11 = a3;
+  statusCopy = status;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = errorCopy;
+  v8 = errorCopy;
+  dispatch_async(delegateQueue, block);
 }
 
 - (void)handleIPCDetached
 {
-  v3 = [(NEPlugin *)self delegateQueue];
+  delegateQueue = [(NEPlugin *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016B58;
   block[3] = &unk_1000EB1C0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(delegateQueue, block);
 }
 
-- (void)createVirtualInterfaceWithParameters:(id)a3 completionHandler:(id)a4
+- (void)createVirtualInterfaceWithParameters:(id)parameters completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NEPlugin *)self delegateQueue];
+  parametersCopy = parameters;
+  handlerCopy = handler;
+  delegateQueue = [(NEPlugin *)self delegateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016C84;
   block[3] = &unk_1000EB2E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = parametersCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = parametersCopy;
+  dispatch_async(delegateQueue, block);
 }
 
-- (void)handlePluginFailedWithError:(id)a3
+- (void)handlePluginFailedWithError:(id)error
 {
   self->_pluginStatus = 0;
-  v4 = a3;
-  v5 = [(NEPlugin *)self delegate];
-  [v5 plugin:self didSetStatus:0 andDisconnectError:v4];
+  errorCopy = error;
+  delegate = [(NEPlugin *)self delegate];
+  [delegate plugin:self didSetStatus:0 andDisconnectError:errorCopy];
 }
 
-- (NEVPNTunnelPlugin)initWithAgent:(id)a3 delegateQueue:(id)a4 andDelegate:(id)a5
+- (NEVPNTunnelPlugin)initWithAgent:(id)agent delegateQueue:(id)queue andDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = NEVPNTunnelPlugin;
-  result = [(NEPlugin *)&v6 initWithAgent:a3 delegateQueue:a4 andDelegate:a5];
+  result = [(NEPlugin *)&v6 initWithAgent:agent delegateQueue:queue andDelegate:delegate];
   if (result)
   {
     result->_pluginStatus = 0;

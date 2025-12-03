@@ -1,75 +1,75 @@
 @interface _UIPhysicalButtonBehaviorOptions
 + (id)behaviorOptions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIPhysicalButtonBehaviorOptions)init;
-- (_UIPhysicalButtonBehaviorOptions)initWithBSXPCCoder:(id)a3;
-- (_UIPhysicalButtonBehaviorOptions)initWithCoder:(id)a3;
-- (_UIPhysicalButtonBehaviorOptions)initWithXPCDictionary:(id)a3;
-- (id)_initWithBehavior:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_UIPhysicalButtonBehaviorOptions)initWithBSXPCCoder:(id)coder;
+- (_UIPhysicalButtonBehaviorOptions)initWithCoder:(id)coder;
+- (_UIPhysicalButtonBehaviorOptions)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithBehavior:(unint64_t)behavior;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation _UIPhysicalButtonBehaviorOptions
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:self->_behavior];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:self->_behavior];
+  v5 = [builder hash];
 
   return v5;
 }
 
 + (id)behaviorOptions
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"_UIPhysicalButton.m" lineNumber:305 description:{@"%s: behaviorOptions is not allowed on %@", "+[_UIPhysicalButtonBehaviorOptions behaviorOptions]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:305 description:{@"%s: behaviorOptions is not allowed on %@", "+[_UIPhysicalButtonBehaviorOptions behaviorOptions]", objc_opt_class()}];
 
   return 0;
 }
 
 - (_UIPhysicalButtonBehaviorOptions)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:310 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonBehaviorOptions init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:310 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonBehaviorOptions init]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)_initWithBehavior:(unint64_t)a3
+- (id)_initWithBehavior:(unint64_t)behavior
 {
-  if (a3 >= 3)
+  if (behavior >= 3)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:316 description:{@"Invalid behavior: %lu", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:316 description:{@"Invalid behavior: %lu", behavior}];
   }
 
   v6 = objc_opt_class();
-  if (v6 != _UIPhysicalButtonBehaviorOptionsClassForBehavior(a3))
+  if (v6 != _UIPhysicalButtonBehaviorOptionsClassForBehavior(behavior))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = NSStringFromClass(v6);
     v11 = v10;
-    if (a3 > 2)
+    if (behavior > 2)
     {
       v12 = &stru_1EFB14550;
     }
 
     else
     {
-      v12 = off_1E70F48B8[a3];
+      v12 = off_1E70F48B8[behavior];
     }
 
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:320 description:{@"Invalid behavior options class for button behavior: class: %@; behavior: %@", v10, v12}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:320 description:{@"Invalid behavior options class for button behavior: class: %@; behavior: %@", v10, v12}];
   }
 
   v13.receiver = self;
@@ -77,37 +77,37 @@
   result = [(_UIPhysicalButtonBehaviorOptions *)&v13 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = behavior;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3 || !_NSIsNSObject())
+  if (!equal || !_NSIsNSObject())
   {
     return 0;
   }
 
-  v5 = a3;
+  equalCopy = equal;
   v6 = objc_opt_class();
-  v8 = v6 == objc_opt_class() && (v7 = -[_UIPhysicalButtonBehaviorOptions hash](self, "hash"), v7 == [v5 hash]) && self->_behavior == v5[1];
+  v8 = v6 == objc_opt_class() && (v7 = -[_UIPhysicalButtonBehaviorOptions hash](self, "hash"), v7 == [equalCopy hash]) && self->_behavior == equalCopy[1];
 
   return v8;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonBehaviorOptions *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonBehaviorOptions *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -130,26 +130,26 @@
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonBehaviorOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonBehaviorOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonBehaviorOptions *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonBehaviorOptions *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   behavior = self->_behavior;
   if (behavior > 2)
   {
@@ -166,7 +166,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_UIPhysicalButtonBehaviorOptions alloc];
   behavior = self->_behavior;
@@ -174,15 +174,15 @@
   return [(_UIPhysicalButtonBehaviorOptions *)v4 _initWithBehavior:behavior];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_behavior];
-  [a3 encodeObject:v4 forKey:@"behavior"];
+  [coder encodeObject:v4 forKey:@"behavior"];
 }
 
-- (_UIPhysicalButtonBehaviorOptions)initWithCoder:(id)a3
+- (_UIPhysicalButtonBehaviorOptions)initWithCoder:(id)coder
 {
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
   if (v6)
   {
     v11.receiver = self;
@@ -194,50 +194,50 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:407 description:{@"Invalid encoded behavior options: %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:407 description:{@"Invalid encoded behavior options: %@", coder}];
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v5 = [@"behavior" UTF8String];
+  uTF8String = [@"behavior" UTF8String];
   behavior = self->_behavior;
 
-  xpc_dictionary_set_uint64(a3, v5, behavior);
+  xpc_dictionary_set_uint64(dictionary, uTF8String, behavior);
 }
 
-- (_UIPhysicalButtonBehaviorOptions)initWithXPCDictionary:(id)a3
+- (_UIPhysicalButtonBehaviorOptions)initWithXPCDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = _UIPhysicalButtonBehaviorOptions;
   v4 = [(_UIPhysicalButtonBehaviorOptions *)&v6 init];
   if (v4)
   {
-    v4->_behavior = xpc_dictionary_get_uint64(a3, [@"behavior" UTF8String]);
+    v4->_behavior = xpc_dictionary_get_uint64(dictionary, [@"behavior" UTF8String]);
   }
 
   return v4;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_behavior];
-  [a3 encodeObject:v4 forKey:@"behavior"];
+  [coder encodeObject:v4 forKey:@"behavior"];
 }
 
-- (_UIPhysicalButtonBehaviorOptions)initWithBSXPCCoder:(id)a3
+- (_UIPhysicalButtonBehaviorOptions)initWithBSXPCCoder:(id)coder
 {
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"behavior"];
   if (v6)
   {
     v11.receiver = self;
@@ -249,18 +249,18 @@
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:448 description:{@"Invalid encoded behavior options: %@", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButton.m" lineNumber:448 description:{@"Invalid encoded behavior options: %@", coder}];
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

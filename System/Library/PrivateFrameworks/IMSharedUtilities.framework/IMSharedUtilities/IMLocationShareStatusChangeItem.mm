@@ -1,12 +1,12 @@
 @interface IMLocationShareStatusChangeItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IMLocationShareStatusChangeItem)init;
-- (IMLocationShareStatusChangeItem)initWithCoder:(id)a3;
-- (IMLocationShareStatusChangeItem)initWithDictionary:(id)a3;
+- (IMLocationShareStatusChangeItem)initWithCoder:(id)coder;
+- (IMLocationShareStatusChangeItem)initWithDictionary:(id)dictionary;
 - (id)copyDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IMLocationShareStatusChangeItem
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = IMLocationShareStatusChangeItem;
-  v4 = [(IMItem *)&v6 copyWithZone:a3];
+  v4 = [(IMItem *)&v6 copyWithZone:zone];
   [v4 setOtherUnformattedID:{-[IMLocationShareStatusChangeItem otherUnformattedID](self, "otherUnformattedID")}];
   [v4 setOtherHandle:{-[IMLocationShareStatusChangeItem otherHandle](self, "otherHandle")}];
   [v4 setOtherCountryCode:{-[IMLocationShareStatusChangeItem otherCountryCode](self, "otherCountryCode")}];
@@ -48,38 +48,38 @@
   return v4;
 }
 
-- (IMLocationShareStatusChangeItem)initWithCoder:(id)a3
+- (IMLocationShareStatusChangeItem)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = IMLocationShareStatusChangeItem;
   v4 = [(IMItem *)&v6 initWithCoder:?];
   if (v4)
   {
-    -[IMLocationShareStatusChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"]);
-    -[IMLocationShareStatusChangeItem setOtherHandle:](v4, "setOtherHandle:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"]);
-    -[IMLocationShareStatusChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"]);
-    v4->_status = [a3 decodeInt64ForKey:@"status"];
-    v4->_direction = [a3 decodeInt64ForKey:@"direction"];
+    -[IMLocationShareStatusChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherCountryCode"]);
+    -[IMLocationShareStatusChangeItem setOtherHandle:](v4, "setOtherHandle:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherHandle"]);
+    -[IMLocationShareStatusChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"otherUnformattedID"]);
+    v4->_status = [coder decodeInt64ForKey:@"status"];
+    v4->_direction = [coder decodeInt64ForKey:@"direction"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = IMLocationShareStatusChangeItem;
   [(IMItem *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:-[IMLocationShareStatusChangeItem otherCountryCode](self forKey:{"otherCountryCode"), @"otherCountryCode"}];
-  [a3 encodeObject:-[IMLocationShareStatusChangeItem otherHandle](self forKey:{"otherHandle"), @"otherHandle"}];
-  [a3 encodeObject:-[IMLocationShareStatusChangeItem otherUnformattedID](self forKey:{"otherUnformattedID"), @"otherUnformattedID"}];
-  [a3 encodeInt64:self->_status forKey:@"status"];
-  [a3 encodeInt64:self->_direction forKey:@"direction"];
+  [coder encodeObject:-[IMLocationShareStatusChangeItem otherCountryCode](self forKey:{"otherCountryCode"), @"otherCountryCode"}];
+  [coder encodeObject:-[IMLocationShareStatusChangeItem otherHandle](self forKey:{"otherHandle"), @"otherHandle"}];
+  [coder encodeObject:-[IMLocationShareStatusChangeItem otherUnformattedID](self forKey:{"otherUnformattedID"), @"otherUnformattedID"}];
+  [coder encodeInt64:self->_status forKey:@"status"];
+  [coder encodeInt64:self->_direction forKey:@"direction"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -93,20 +93,20 @@
     {
       v15.receiver = self;
       v15.super_class = IMLocationShareStatusChangeItem;
-      v7 = [(IMItem *)&v15 isEqual:a3];
+      v7 = [(IMItem *)&v15 isEqual:equal];
       if (v7)
       {
         status = self->_status;
-        if (status == [a3 status] && (direction = self->_direction, direction == objc_msgSend(a3, "direction")))
+        if (status == [equal status] && (direction = self->_direction, direction == objc_msgSend(equal, "direction")))
         {
           otherCountryCode = self->_otherCountryCode;
-          if (otherCountryCode == [a3 otherCountryCode] || (v7 = -[NSString isEqualToString:](self->_otherCountryCode, "isEqualToString:", objc_msgSend(a3, "otherCountryCode"))))
+          if (otherCountryCode == [equal otherCountryCode] || (v7 = -[NSString isEqualToString:](self->_otherCountryCode, "isEqualToString:", objc_msgSend(equal, "otherCountryCode"))))
           {
             otherHandle = self->_otherHandle;
-            if (otherHandle == [a3 otherHandle] || (v7 = -[NSString isEqualToString:](self->_otherHandle, "isEqualToString:", objc_msgSend(a3, "otherHandle"))))
+            if (otherHandle == [equal otherHandle] || (v7 = -[NSString isEqualToString:](self->_otherHandle, "isEqualToString:", objc_msgSend(equal, "otherHandle"))))
             {
               otherUnformattedID = self->_otherUnformattedID;
-              LOBYTE(v7) = otherUnformattedID == [a3 otherUnformattedID] || -[NSString isEqualToString:](self->_otherUnformattedID, "isEqualToString:", objc_msgSend(a3, "otherUnformattedID"));
+              LOBYTE(v7) = otherUnformattedID == [equal otherUnformattedID] || -[NSString isEqualToString:](self->_otherUnformattedID, "isEqualToString:", objc_msgSend(equal, "otherUnformattedID"));
             }
           }
         }
@@ -122,25 +122,25 @@
     {
       v14.receiver = self;
       v14.super_class = IMLocationShareStatusChangeItem;
-      LOBYTE(v7) = [(IMItem *)&v14 isEqual:a3];
+      LOBYTE(v7) = [(IMItem *)&v14 isEqual:equal];
     }
   }
 
   return v7;
 }
 
-- (IMLocationShareStatusChangeItem)initWithDictionary:(id)a3
+- (IMLocationShareStatusChangeItem)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = IMLocationShareStatusChangeItem;
   v4 = [(IMItem *)&v6 initWithDictionary:?];
   if (v4)
   {
-    -[IMLocationShareStatusChangeItem setStatus:](v4, "setStatus:", [objc_msgSend(a3 objectForKey:{@"status", "longLongValue"}]);
-    -[IMLocationShareStatusChangeItem setDirection:](v4, "setDirection:", [objc_msgSend(a3 objectForKey:{@"direction", "longLongValue"}]);
-    -[IMLocationShareStatusChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [a3 objectForKey:@"otherCountryCode"]);
-    -[IMLocationShareStatusChangeItem setOtherHandle:](v4, "setOtherHandle:", [a3 objectForKey:@"otherHandle"]);
-    -[IMLocationShareStatusChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [a3 objectForKey:@"otherUnformattedID"]);
+    -[IMLocationShareStatusChangeItem setStatus:](v4, "setStatus:", [objc_msgSend(dictionary objectForKey:{@"status", "longLongValue"}]);
+    -[IMLocationShareStatusChangeItem setDirection:](v4, "setDirection:", [objc_msgSend(dictionary objectForKey:{@"direction", "longLongValue"}]);
+    -[IMLocationShareStatusChangeItem setOtherCountryCode:](v4, "setOtherCountryCode:", [dictionary objectForKey:@"otherCountryCode"]);
+    -[IMLocationShareStatusChangeItem setOtherHandle:](v4, "setOtherHandle:", [dictionary objectForKey:@"otherHandle"]);
+    -[IMLocationShareStatusChangeItem setOtherUnformattedID:](v4, "setOtherUnformattedID:", [dictionary objectForKey:@"otherUnformattedID"]);
   }
 
   return v4;
@@ -150,40 +150,40 @@
 {
   v11.receiver = self;
   v11.super_class = IMLocationShareStatusChangeItem;
-  v3 = [(IMItem *)&v11 copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IMItem *)&v11 copyDictionaryRepresentation];
   v4 = objc_autoreleasePoolPush();
   otherCountryCode = self->_otherCountryCode;
   if (otherCountryCode)
   {
-    CFDictionarySetValue(v3, @"otherCountryCode", otherCountryCode);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherCountryCode", otherCountryCode);
   }
 
   otherHandle = self->_otherHandle;
   if (otherHandle)
   {
-    CFDictionarySetValue(v3, @"otherHandle", otherHandle);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherHandle", otherHandle);
   }
 
   otherUnformattedID = self->_otherUnformattedID;
   if (otherUnformattedID)
   {
-    CFDictionarySetValue(v3, @"otherUnformattedID", otherUnformattedID);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"otherUnformattedID", otherUnformattedID);
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_status];
   if (v8)
   {
-    CFDictionarySetValue(v3, @"status", v8);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"status", v8);
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_direction];
   if (v9)
   {
-    CFDictionarySetValue(v3, @"direction", v9);
+    CFDictionarySetValue(copyDictionaryRepresentation, @"direction", v9);
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return copyDictionaryRepresentation;
 }
 
 @end

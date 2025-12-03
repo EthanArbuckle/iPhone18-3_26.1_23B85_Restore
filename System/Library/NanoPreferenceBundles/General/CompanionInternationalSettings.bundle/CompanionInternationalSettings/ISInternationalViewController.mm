@@ -1,31 +1,31 @@
 @interface ISInternationalViewController
-+ (id)deviceLanguageFrom:(id)a3;
++ (id)deviceLanguageFrom:(id)from;
 + (id)localizedRestartStringForCurrentDevice;
-- (BOOL)canEditLanguageAtIndexPath:(id)a3 tableView:(id)a4;
-- (BOOL)indexPathIsInPreferredLanguagesGroup:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
+- (BOOL)canEditLanguageAtIndexPath:(id)path tableView:(id)view;
+- (BOOL)indexPathIsInPreferredLanguagesGroup:(id)group;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
 - (ISInternationalViewController)init;
-- (id)numberingSystem:(id)a3;
+- (id)numberingSystem:(id)system;
 - (id)numberingSystemsShortTitles;
 - (id)numberingSystemsTitles;
 - (id)numberingSystemsValues;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)topLanguageFromArray:(id)a3;
-- (unint64_t)sectionIndexForTableView:(id)a3 fromSuperSectionIndex:(unint64_t)a4;
-- (void)addLanguagesToSpecifiers:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)topLanguageFromArray:(id)array;
+- (unint64_t)sectionIndexForTableView:(id)view fromSuperSectionIndex:(unint64_t)index;
+- (void)addLanguagesToSpecifiers:(id)specifiers;
 - (void)cancelEdits;
 - (void)initializeUpdatedAppleLanguagesIfNeeded;
-- (void)moveSpecifierAtIndexPath:(id)a3 toIndexPath:(id)a4 moveRow:(BOOL)a5;
-- (void)setNumberingSystem:(id)a3 specifier:(id)a4;
-- (void)showLanguageSheet:(id)a3;
-- (void)showLocaleSheet:(id)a3;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)moveSpecifierAtIndexPath:(id)path toIndexPath:(id)indexPath moveRow:(BOOL)row;
+- (void)setNumberingSystem:(id)system specifier:(id)specifier;
+- (void)showLanguageSheet:(id)sheet;
+- (void)showLocaleSheet:(id)sheet;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)toggleEdit;
-- (void)updateCell:(id)a3 forPreferredLanguageAtIndex:(unint64_t)a4;
-- (void)updateSpecifiersForLocaleRegionChange:(id)a3;
+- (void)updateCell:(id)cell forPreferredLanguageAtIndex:(unint64_t)index;
+- (void)updateSpecifiersForLocaleRegionChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -36,14 +36,14 @@
   v8.receiver = self;
   v8.super_class = ISInternationalViewController;
   v2 = [(ISInternationalViewController *)&v8 init];
-  v3 = [objc_opt_class() preferredLanguages];
-  v4 = [v3 count];
+  preferredLanguages = [objc_opt_class() preferredLanguages];
+  v4 = [preferredLanguages count];
 
   if (v4 >= 2)
   {
-    v5 = [(ISInternationalViewController *)v2 editButtonItem];
-    v6 = [(ISInternationalViewController *)v2 navigationItem];
-    [v6 setRightBarButtonItem:v5];
+    editButtonItem = [(ISInternationalViewController *)v2 editButtonItem];
+    navigationItem = [(ISInternationalViewController *)v2 navigationItem];
+    [navigationItem setRightBarButtonItem:editButtonItem];
   }
 
   dispatch_async(&_dispatch_main_q, &stru_28B58);
@@ -55,95 +55,95 @@
   v4.receiver = self;
   v4.super_class = ISInternationalViewController;
   [(ISInternationalViewController *)&v4 viewDidLoad];
-  v3 = [(ISInternationalViewController *)self table];
-  [v3 _setAllowsReorderingWhenNotEditing:1];
+  table = [(ISInternationalViewController *)self table];
+  [table _setAllowsReorderingWhenNotEditing:1];
 }
 
-+ (id)deviceLanguageFrom:(id)a3
++ (id)deviceLanguageFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = [NSBundle bundleWithIdentifier:@"com.apple.Foundation"];
-  v5 = [v4 localizations];
+  localizations = [v4 localizations];
 
-  v6 = [NSBundle preferredLocalizationsFromArray:v5 forPreferences:v3];
+  v6 = [NSBundle preferredLocalizationsFromArray:localizations forPreferences:fromCopy];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  v8 = [NSLocale canonicalLanguageIdentifierFromString:v7];
+  v8 = [NSLocale canonicalLanguageIdentifierFromString:firstObject];
 
   return v8;
 }
 
-- (id)topLanguageFromArray:(id)a3
+- (id)topLanguageFromArray:(id)array
 {
-  v3 = [a3 firstObject];
-  if (v3)
+  firstObject = [array firstObject];
+  if (firstObject)
   {
     v4 = +[NSLocale renderableUILanguages];
-    v5 = [v4 containsObject:v3];
+    v5 = [v4 containsObject:firstObject];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [NSLocale baseLanguageFromLanguage:v3];
+      v6 = [NSLocale baseLanguageFromLanguage:firstObject];
 
-      v3 = v6;
+      firstObject = v6;
     }
   }
 
-  return v3;
+  return firstObject;
 }
 
-- (void)addLanguagesToSpecifiers:(id)a3
+- (void)addLanguagesToSpecifiers:(id)specifiers
 {
-  v21 = a3;
-  v4 = [objc_opt_class() preferredLanguages];
+  specifiersCopy = specifiers;
+  preferredLanguages = [objc_opt_class() preferredLanguages];
   if ([(ISInternationalViewController *)self isEditing])
   {
-    v5 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
 
-    if (v5)
+    if (updatedAppleLanguages)
     {
-      v6 = [(ISInternationalViewController *)self updatedAppleLanguages];
+      updatedAppleLanguages2 = [(ISInternationalViewController *)self updatedAppleLanguages];
 
-      v4 = v6;
+      preferredLanguages = updatedAppleLanguages2;
     }
   }
 
-  if ([v4 count] >= 2 && (-[ISInternationalViewController isEditing](self, "isEditing") & 1) == 0)
+  if ([preferredLanguages count] >= 2 && (-[ISInternationalViewController isEditing](self, "isEditing") & 1) == 0)
   {
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:2 target:self action:"toggleEdit"];
-    v8 = [(ISInternationalViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem = [(ISInternationalViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
   }
 
-  v20 = [v21 indexOfSpecifierWithID:@"PREFERRED_LANGUAGE_GROUP"];
+  v20 = [specifiersCopy indexOfSpecifierWithID:@"PREFERRED_LANGUAGE_GROUP"];
   if (v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v4 count];
+    v9 = [preferredLanguages count];
     if (v9 >= 1)
     {
       v10 = v9 + 1;
       v19 = PSCellClassKey;
       do
       {
-        v11 = [v4 objectAtIndexedSubscript:v10 - 2];
+        v11 = [preferredLanguages objectAtIndexedSubscript:v10 - 2];
         v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:0 get:0 detail:0 cell:4 edit:0];
 
-        v13 = [v4 objectAtIndexedSubscript:v10 - 2];
+        v13 = [preferredLanguages objectAtIndexedSubscript:v10 - 2];
         v14 = [NSLocale localeWithLocaleIdentifier:v13];
-        v15 = [v14 selectableScriptCodes];
-        v16 = [v15 count];
+        selectableScriptCodes = [v14 selectableScriptCodes];
+        v16 = [selectableScriptCodes count];
 
         if (v16 >= 2)
         {
-          v17 = [v4 objectAtIndexedSubscript:v10 - 2];
+          v17 = [preferredLanguages objectAtIndexedSubscript:v10 - 2];
           v18 = [PSSpecifier preferenceSpecifierNamed:v17 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
           v12 = v18;
         }
 
         [v12 setProperty:objc_opt_class() forKey:v19];
-        [v21 insertObject:v12 atIndex:v20 + 1];
+        [specifiersCopy insertObject:v12 atIndex:v20 + 1];
 
         --v10;
       }
@@ -153,49 +153,49 @@
   }
 }
 
-- (BOOL)indexPathIsInPreferredLanguagesGroup:(id)a3
+- (BOOL)indexPathIsInPreferredLanguagesGroup:(id)group
 {
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  v4 = a3;
+  groupCopy = group;
   [(ISInternationalViewController *)self getGroup:&v7 row:0 ofSpecifierID:@"PREFERRED_LANGUAGE_GROUP"];
-  v5 = [v4 section];
+  section = [groupCopy section];
 
-  return v5 == v7;
+  return section == v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (([(ISInternationalViewController *)self isEditing]& 1) != 0)
   {
-    v8 = [v7 row];
+    v8 = [pathCopy row];
     v9 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"Cell"];
     [(ISInternationalViewController *)self updateCell:v9 forPreferredLanguageAtIndex:v8];
   }
 
   else
   {
-    v10 = [(ISInternationalViewController *)self indexForIndexPath:v7];
+    v10 = [(ISInternationalViewController *)self indexForIndexPath:pathCopy];
     v11 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v10];
-    if ([(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:v7])
+    if ([(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:pathCopy])
     {
       v18.receiver = self;
       v18.super_class = ISInternationalViewController;
-      v9 = [(ISInternationalViewController *)&v18 tableView:v6 cellForRowAtIndexPath:v7];
-      v12 = [v11 identifier];
-      v13 = [v12 isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
+      v9 = [(ISInternationalViewController *)&v18 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+      identifier = [v11 identifier];
+      v13 = [identifier isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
 
       if (v13)
       {
-        v14 = [v11 name];
-        v15 = [v9 textLabel];
-        [v15 setText:v14];
+        name = [v11 name];
+        textLabel = [v9 textLabel];
+        [textLabel setText:name];
       }
 
       else
       {
-        -[ISInternationalViewController updateCell:forPreferredLanguageAtIndex:](self, "updateCell:forPreferredLanguageAtIndex:", v9, [v7 indexAtPosition:1]);
+        -[ISInternationalViewController updateCell:forPreferredLanguageAtIndex:](self, "updateCell:forPreferredLanguageAtIndex:", v9, [pathCopy indexAtPosition:1]);
       }
     }
 
@@ -204,48 +204,48 @@
 
       v17.receiver = self;
       v17.super_class = ISInternationalViewController;
-      v9 = [(ISInternationalViewController *)&v17 tableView:v6 cellForRowAtIndexPath:v7];
+      v9 = [(ISInternationalViewController *)&v17 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     }
   }
 
   return v9;
 }
 
-- (void)updateCell:(id)a3 forPreferredLanguageAtIndex:(unint64_t)a4
+- (void)updateCell:(id)cell forPreferredLanguageAtIndex:(unint64_t)index
 {
-  v65 = a3;
-  v6 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  if (!v6)
+  cellCopy = cell;
+  updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+  if (!updatedAppleLanguages)
   {
-    v6 = [objc_opt_class() preferredLanguages];
+    updatedAppleLanguages = [objc_opt_class() preferredLanguages];
   }
 
-  if ([v6 count] > a4)
+  if ([updatedAppleLanguages count] > index)
   {
-    v7 = [v6 objectAtIndexedSubscript:a4];
-    v8 = [objc_opt_class() currentLocale];
-    v9 = [v8 regionCode];
+    v7 = [updatedAppleLanguages objectAtIndexedSubscript:index];
+    currentLocale = [objc_opt_class() currentLocale];
+    regionCode = [currentLocale regionCode];
 
     v10 = [NSLocale localeWithLocaleIdentifier:v7];
-    v11 = [v10 regionCode];
+    regionCode2 = [v10 regionCode];
 
     v63 = v10;
-    if (v11)
+    if (regionCode2)
     {
-      v12 = [v10 regionCode];
+      regionCode3 = [v10 regionCode];
     }
 
     else
     {
-      v12 = v9;
+      regionCode3 = regionCode;
     }
 
-    v13 = v12;
+    v13 = regionCode3;
     v14 = v7;
     v62 = v13;
-    v64 = v9;
+    v64 = regionCode;
     v15 = v14;
-    if ([v13 isEqualToString:v9])
+    if ([v13 isEqualToString:regionCode])
     {
       v15 = [NSLocale baseLanguageFromLanguage:v14];
     }
@@ -272,24 +272,24 @@
     v18 = [v17 localizedStringForLanguage:v15 context:v16];
 
     v19 = [NSMutableDictionary dictionaryWithObject:v14 forKey:kCTLanguageAttributeName];
-    v20 = [objc_opt_class() textColor];
+    textColor = [objc_opt_class() textColor];
 
-    if (v20)
+    if (textColor)
     {
-      v21 = [objc_opt_class() textColor];
-      [v19 setObject:v21 forKeyedSubscript:NSForegroundColorAttributeName];
+      textColor2 = [objc_opt_class() textColor];
+      [v19 setObject:textColor2 forKeyedSubscript:NSForegroundColorAttributeName];
     }
 
     v60 = v19;
     v61 = v18;
     v22 = [[NSAttributedString alloc] initWithString:v18 attributes:v19];
-    v23 = [v65 textLabel];
+    textLabel = [cellCopy textLabel];
     v59 = v22;
-    [v23 setAttributedText:v22];
+    [textLabel setAttributedText:v22];
 
     v24 = [NSLocale baseLanguageFromLanguage:v15];
     deviceLanguageIndex = self->_deviceLanguageIndex;
-    if (deviceLanguageIndex >= a4)
+    if (deviceLanguageIndex >= index)
     {
       v26 = +[NSLocale systemLanguages];
       v27 = [v26 containsObject:v15];
@@ -298,27 +298,27 @@
       {
         if (([v24 isEqualToString:v15] & 1) == 0)
         {
-          v34 = [objc_opt_class() deviceLanguageIdentifier];
-          if ([v24 isEqualToString:v34])
+          deviceLanguageIdentifier = [objc_opt_class() deviceLanguageIdentifier];
+          if ([v24 isEqualToString:deviceLanguageIdentifier])
           {
             v35 = v24;
             v36 = self->_deviceLanguageIndex;
 
-            v37 = v36 >= a4;
+            v37 = v36 >= index;
             v24 = v35;
             if (v37)
             {
               v38 = [IPLanguage languageWithIdentifier:v35];
-              v55 = [v38 localizedStringForName];
+              localizedStringForName = [v38 localizedStringForName];
 
               v58 = [NSBundle bundleForClass:objc_opt_class()];
               v56 = [objc_opt_class() modelSpecificLocalizedStringKeyForKey:@"DEVICE_LANGUAGE_%@"];
               v39 = [v58 localizedStringForKey:v56 value:&stru_28F98 table:@"InternationalSettings"];
-              v40 = [NSString stringWithFormat:v55];
-              v41 = [v65 detailTextLabel];
-              [v41 setText:v40];
+              v40 = [NSString stringWithFormat:localizedStringForName];
+              detailTextLabel = [cellCopy detailTextLabel];
+              [detailTextLabel setText:v40];
 
-              self->_deviceLanguageIndex = a4;
+              self->_deviceLanguageIndex = index;
             }
           }
 
@@ -328,11 +328,11 @@
         }
 
 LABEL_28:
-        v42 = [v65 detailTextLabel];
-        v43 = [v42 text];
-        if (v43)
+        detailTextLabel2 = [cellCopy detailTextLabel];
+        text = [detailTextLabel2 text];
+        if (text)
         {
-          v44 = v43;
+          textColor4 = text;
           v45 = v61;
         }
 
@@ -351,32 +351,32 @@ LABEL_28:
           }
 
           v50 = [IPLanguage languageWithIdentifier:v15];
-          v42 = [v50 localizedStringForName];
+          detailTextLabel2 = [v50 localizedStringForName];
 
-          if ([v61 isEqualToString:v42])
+          if ([v61 isEqualToString:detailTextLabel2])
           {
             v51 = 0;
           }
 
           else
           {
-            v51 = v42;
+            v51 = detailTextLabel2;
           }
 
-          v52 = [v65 detailTextLabel];
-          [v52 setText:v51];
+          detailTextLabel3 = [cellCopy detailTextLabel];
+          [detailTextLabel3 setText:v51];
 
-          v53 = [objc_opt_class() textColor];
+          textColor3 = [objc_opt_class() textColor];
 
-          if (!v53)
+          if (!textColor3)
           {
             v24 = v46;
             goto LABEL_31;
           }
 
-          v44 = [objc_opt_class() textColor];
-          v54 = [v65 detailTextLabel];
-          [v54 setTextColor:v44];
+          textColor4 = [objc_opt_class() textColor];
+          detailTextLabel4 = [cellCopy detailTextLabel];
+          [detailTextLabel4 setTextColor:textColor4];
 
           v24 = v46;
         }
@@ -390,10 +390,10 @@ LABEL_32:
       deviceLanguageIndex = self->_deviceLanguageIndex;
     }
 
-    if (deviceLanguageIndex >= a4)
+    if (deviceLanguageIndex >= index)
     {
-      v28 = [objc_opt_class() deviceLanguageIdentifier];
-      v29 = [v15 isEqualToString:v28];
+      deviceLanguageIdentifier2 = [objc_opt_class() deviceLanguageIdentifier];
+      v29 = [v15 isEqualToString:deviceLanguageIdentifier2];
 
       if (v29)
       {
@@ -401,11 +401,11 @@ LABEL_32:
         v30 = [objc_opt_class() modelSpecificLocalizedStringKeyForKey:@"DEVICE_LANGUAGE"];
         [v57 localizedStringForKey:v30 value:&stru_28F98 table:@"InternationalSettings"];
         v32 = v31 = v24;
-        v33 = [v65 detailTextLabel];
-        [v33 setText:v32];
+        detailTextLabel5 = [cellCopy detailTextLabel];
+        [detailTextLabel5 setText:v32];
 
         v24 = v31;
-        self->_deviceLanguageIndex = a4;
+        self->_deviceLanguageIndex = index;
       }
     }
 
@@ -415,9 +415,9 @@ LABEL_32:
 LABEL_33:
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (([(ISInternationalViewController *)self isEditing]& 1) != 0)
   {
     v6 = 1;
@@ -425,28 +425,28 @@ LABEL_33:
 
   else
   {
-    v7 = [(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:v5];
-    v8 = [(ISInternationalViewController *)self specifierAtIndexPath:v5];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
+    v7 = [(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:pathCopy];
+    v8 = [(ISInternationalViewController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v8 identifier];
+    v10 = [identifier isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
 
     v6 = 0;
     if (v7 && (v10 & 1) == 0)
     {
-      v11 = [objc_opt_class() preferredLanguages];
-      v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+      preferredLanguages = [objc_opt_class() preferredLanguages];
+      v12 = [preferredLanguages objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v15 = v12;
       v13 = [NSArray arrayWithObjects:&v15 count:1];
-      v6 = [IPLanguageListManager canRemoveLanguages:v13 fromPreferredLanguages:v11];
+      v6 = [IPLanguageListManager canRemoveLanguages:v13 fromPreferredLanguages:preferredLanguages];
     }
   }
 
   return v6;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   if (([(ISInternationalViewController *)self isEditing]& 1) != 0)
   {
     v6 = 1;
@@ -454,10 +454,10 @@ LABEL_33:
 
   else
   {
-    v7 = [(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:v5];
-    v8 = [(ISInternationalViewController *)self specifierAtIndexPath:v5];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
+    v7 = [(ISInternationalViewController *)self indexPathIsInPreferredLanguagesGroup:pathCopy];
+    v8 = [(ISInternationalViewController *)self specifierAtIndexPath:pathCopy];
+    identifier = [v8 identifier];
+    v10 = [identifier isEqualToString:@"ADD_PREFERRED_LANGUAGE"];
 
     v6 = v7 & (v10 ^ 1);
   }
@@ -467,40 +467,40 @@ LABEL_33:
 
 - (void)initializeUpdatedAppleLanguagesIfNeeded
 {
-  v3 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v4 = [v3 count];
+  updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+  v4 = [updatedAppleLanguages count];
 
   if (!v4)
   {
-    v6 = [objc_opt_class() preferredLanguages];
-    if (![v6 count])
+    preferredLanguages = [objc_opt_class() preferredLanguages];
+    if (![preferredLanguages count])
     {
       sub_1A5B4();
     }
 
-    v5 = [v6 mutableCopy];
+    v5 = [preferredLanguages mutableCopy];
     [(ISInternationalViewController *)self setUpdatedAppleLanguages:v5];
   }
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v6 = a5;
+  indexPathCopy = indexPath;
   [(ISInternationalViewController *)self initializeUpdatedAppleLanguagesIfNeeded];
   v19 = 0x7FFFFFFFFFFFFFFFLL;
   [(ISInternationalViewController *)self getGroup:&v19 row:0 ofSpecifierID:@"PREFERRED_LANGUAGE_GROUP"];
-  v7 = [v6 section];
-  if (v7 == v19)
+  section = [indexPathCopy section];
+  if (section == v19)
   {
-    v8 = [v6 row];
+    v8 = [indexPathCopy row];
 
-    v9 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v10 = [v9 count];
+    updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+    v10 = [updatedAppleLanguages count];
 
     if (v8 >= v10)
     {
-      v11 = [(ISInternationalViewController *)self updatedAppleLanguages];
-      v8 = [v11 count] - 1;
+      updatedAppleLanguages2 = [(ISInternationalViewController *)self updatedAppleLanguages];
+      v8 = [updatedAppleLanguages2 count] - 1;
     }
 
     v12 = v19;
@@ -508,10 +508,10 @@ LABEL_33:
     goto LABEL_7;
   }
 
-  v14 = [v6 section];
+  section2 = [indexPathCopy section];
 
   v12 = v19;
-  if (v14 < v19)
+  if (section2 < v19)
   {
     v13 = 0;
 LABEL_7:
@@ -519,8 +519,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v16 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v17 = [v16 count];
+  updatedAppleLanguages3 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  v17 = [updatedAppleLanguages3 count];
   v15 = [NSIndexPath indexPathForRow:v17 - 1 inSection:v19];
 
 LABEL_9:
@@ -528,12 +528,12 @@ LABEL_9:
   return v15;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  [(ISInternationalViewController *)self moveSpecifierAtIndexPath:v7 toIndexPath:v8 moveRow:0];
-  if ((-[ISInternationalViewController isEditing](self, "isEditing") & 1) == 0 && ([v8 isEqual:v7] & 1) == 0)
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  [(ISInternationalViewController *)self moveSpecifierAtIndexPath:pathCopy toIndexPath:indexPathCopy moveRow:0];
+  if ((-[ISInternationalViewController isEditing](self, "isEditing") & 1) == 0 && ([indexPathCopy isEqual:pathCopy] & 1) == 0)
   {
     v9 = +[ISInternationalViewController localizedRestartStringForCurrentDevice];
     v10 = +[UIDevice currentDevice];
@@ -546,8 +546,8 @@ LABEL_9:
     v19[2] = sub_4A9C;
     v19[3] = &unk_28B80;
     v19[4] = self;
-    v20 = v8;
-    v21 = v7;
+    v20 = indexPathCopy;
+    v21 = pathCopy;
     v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:v19];
 
     v15 = [NSBundle bundleForClass:objc_opt_class()];
@@ -565,61 +565,61 @@ LABEL_9:
   }
 }
 
-- (void)moveSpecifierAtIndexPath:(id)a3 toIndexPath:(id)a4 moveRow:(BOOL)a5
+- (void)moveSpecifierAtIndexPath:(id)path toIndexPath:(id)indexPath moveRow:(BOOL)row
 {
-  v5 = a5;
-  v27 = a3;
-  v8 = a4;
+  rowCopy = row;
+  pathCopy = path;
+  indexPathCopy = indexPath;
   [(ISInternationalViewController *)self initializeUpdatedAppleLanguagesIfNeeded];
-  v9 = [v27 row];
-  v10 = [v8 row];
-  v11 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v12 = [v11 count];
+  v9 = [pathCopy row];
+  v10 = [indexPathCopy row];
+  updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+  v12 = [updatedAppleLanguages count];
 
   if (!v12)
   {
     goto LABEL_21;
   }
 
-  v13 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  if (v9 >= [v13 count])
+  updatedAppleLanguages2 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  if (v9 >= [updatedAppleLanguages2 count])
   {
     sub_1A5E0();
   }
 
-  v14 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  if (v10 >= [v14 count])
+  updatedAppleLanguages3 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  if (v10 >= [updatedAppleLanguages3 count])
   {
     sub_1A60C();
   }
 
-  v15 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  if (v9 < [v15 count])
+  updatedAppleLanguages4 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  if (v9 < [updatedAppleLanguages4 count])
   {
-    v16 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v17 = [v16 count];
+    updatedAppleLanguages5 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    v17 = [updatedAppleLanguages5 count];
 
     if (v10 >= v17)
     {
       goto LABEL_8;
     }
 
-    v18 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v15 = [v18 objectAtIndexedSubscript:v9];
+    updatedAppleLanguages6 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    updatedAppleLanguages4 = [updatedAppleLanguages6 objectAtIndexedSubscript:v9];
 
-    v19 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    [v19 removeObjectAtIndex:v9];
+    updatedAppleLanguages7 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    [updatedAppleLanguages7 removeObjectAtIndex:v9];
 
-    v20 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    [v20 insertObject:v15 atIndex:v10];
+    updatedAppleLanguages8 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    [updatedAppleLanguages8 insertObject:updatedAppleLanguages4 atIndex:v10];
   }
 
 LABEL_8:
   v21 = OBJC_IVAR___PSListController__specifiers;
   if ([*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] count])
   {
-    v22 = [(ISInternationalViewController *)self indexForIndexPath:v27];
-    v23 = [(ISInternationalViewController *)self indexForIndexPath:v8];
+    v22 = [(ISInternationalViewController *)self indexForIndexPath:pathCopy];
+    v23 = [(ISInternationalViewController *)self indexForIndexPath:indexPathCopy];
     if (v22 >= [*&self->PSListController_opaque[v21] count])
     {
       sub_1A638();
@@ -637,7 +637,7 @@ LABEL_8:
         }
 
         v26 = [v25 count];
-        if (v5)
+        if (rowCopy)
         {
           if (v23 < v26)
           {
@@ -663,88 +663,88 @@ LABEL_8:
 LABEL_21:
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"DELETE" value:&stru_28F98 table:@"InternationalSettings"];
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_4F28;
   v16 = &unk_28C20;
-  v17 = self;
-  v18 = v5;
-  v8 = v5;
+  selfCopy = self;
+  v18 = pathCopy;
+  v8 = pathCopy;
   v9 = [UIContextualAction contextualActionWithStyle:1 title:v7 handler:&v13];
 
   v19 = v9;
-  v10 = [NSArray arrayWithObjects:&v19 count:1, v13, v14, v15, v16, v17];
-  v11 = [UISwipeActionsConfiguration configurationWithActions:v10];
+  selfCopy = [NSArray arrayWithObjects:&v19 count:1, v13, v14, v15, v16, selfCopy];
+  v11 = [UISwipeActionsConfiguration configurationWithActions:selfCopy];
 
   return v11;
 }
 
-- (BOOL)canEditLanguageAtIndexPath:(id)a3 tableView:(id)a4
+- (BOOL)canEditLanguageAtIndexPath:(id)path tableView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  viewCopy = view;
   if ([(ISInternationalViewController *)self isEditing]&& ([(ISInternationalViewController *)self updatedAppleLanguages], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
   }
 
   else
   {
-    v10 = [objc_opt_class() preferredLanguages];
+    updatedAppleLanguages = [objc_opt_class() preferredLanguages];
   }
 
-  v11 = [v6 row];
-  if (v11 >= [v10 count])
+  v11 = [pathCopy row];
+  if (v11 >= [updatedAppleLanguages count])
   {
     sub_1A6BC();
   }
 
-  v12 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+  v12 = [updatedAppleLanguages objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v16 = v12;
   v13 = [NSArray arrayWithObjects:&v16 count:1];
-  v14 = [IPLanguageListManager canRemoveLanguages:v13 fromPreferredLanguages:v10];
+  v14 = [IPLanguageListManager canRemoveLanguages:v13 fromPreferredLanguages:updatedAppleLanguages];
 
   return v14;
 }
 
 - (void)toggleEdit
 {
-  v3 = [(ISInternationalViewController *)self table];
-  v4 = [v3 isEditing];
+  table = [(ISInternationalViewController *)self table];
+  isEditing = [table isEditing];
 
-  v5 = self;
-  if (!v4)
+  selfCopy2 = self;
+  if (!isEditing)
   {
     v11 = 1;
 LABEL_8:
-    [(ISInternationalViewController *)v5 setEditing:v11 animated:1];
+    [(ISInternationalViewController *)selfCopy2 setEditing:v11 animated:1];
     goto LABEL_26;
   }
 
-  v6 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v7 = [v6 count];
+  updatedAppleLanguages = [(ISInternationalViewController *)self updatedAppleLanguages];
+  v7 = [updatedAppleLanguages count];
 
-  v5 = self;
+  selfCopy2 = self;
   if (!v7)
   {
     v11 = 0;
     goto LABEL_8;
   }
 
-  v8 = [objc_opt_class() preferredLanguages];
-  if (![v8 count])
+  preferredLanguages = [objc_opt_class() preferredLanguages];
+  if (![preferredLanguages count])
   {
     sub_1A6E8();
   }
 
-  v9 = [(ISInternationalViewController *)self updatedAppleLanguages];
-  v10 = [v8 isEqualToArray:v9];
+  updatedAppleLanguages2 = [(ISInternationalViewController *)self updatedAppleLanguages];
+  v10 = [preferredLanguages isEqualToArray:updatedAppleLanguages2];
 
   if (v10)
   {
@@ -754,19 +754,19 @@ LABEL_8:
   else
   {
     v12 = [IPLanguageListManager alloc];
-    v13 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v14 = [v12 initWithPreferredLanguages:v13];
-    v54 = [v14 systemDisplayLanguage];
+    updatedAppleLanguages3 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    v14 = [v12 initWithPreferredLanguages:updatedAppleLanguages3];
+    systemDisplayLanguage = [v14 systemDisplayLanguage];
 
     v15 = objc_opt_class();
-    v16 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v17 = [v15 deviceLanguageFrom:v16];
+    updatedAppleLanguages4 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    v17 = [v15 deviceLanguageFrom:updatedAppleLanguages4];
 
-    v18 = [objc_opt_class() deviceLanguageIdentifier];
-    v19 = [(ISInternationalViewController *)self updatedAppleLanguages];
-    v20 = [(ISInternationalViewController *)self topLanguageFromArray:v19];
+    deviceLanguageIdentifier = [objc_opt_class() deviceLanguageIdentifier];
+    updatedAppleLanguages5 = [(ISInternationalViewController *)self updatedAppleLanguages];
+    v20 = [(ISInternationalViewController *)self topLanguageFromArray:updatedAppleLanguages5];
 
-    v21 = [(ISInternationalViewController *)self topLanguageFromArray:v8];
+    v21 = [(ISInternationalViewController *)self topLanguageFromArray:preferredLanguages];
     v22 = v21;
     v23 = &stru_28F98;
     if (v21)
@@ -776,9 +776,9 @@ LABEL_8:
 
     v24 = v23;
 
-    v52 = v18;
+    v52 = deviceLanguageIdentifier;
     v53 = v17;
-    v51 = [v17 isEqualToString:v18];
+    v51 = [v17 isEqualToString:deviceLanguageIdentifier];
     v25 = [v20 isEqualToString:v24];
 
     v26 = +[NSLocale systemLanguages];
@@ -794,7 +794,7 @@ LABEL_8:
       v32 = [NSBundle bundleForClass:objc_opt_class()];
       v33 = [objc_opt_class() modelSpecificLocalizedStringKeyForKey:@"%@_IS_UNSUPPORTED_DEVICE_WILL_FALLBACK_TO_%@_WHERE_%@_IS_NOT_SUPPORTED"];
       v34 = [v32 localizedStringForKey:v33 value:&stru_28F98 table:@"InternationalSettings"];
-      v31 = [NSLocale string:v34 withCapitalizedDisplayNamesForFirstLanguageIdentifier:v20 secondLanguageIdentifier:v54 thirdLanguageIdentifier:v20];
+      v31 = [NSLocale string:v34 withCapitalizedDisplayNamesForFirstLanguageIdentifier:v20 secondLanguageIdentifier:systemDisplayLanguage thirdLanguageIdentifier:v20];
     }
 
     v35 = [PSConfirmationSpecifier preferenceSpecifierNamed:v31 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -806,14 +806,14 @@ LABEL_8:
     v39 = [v38 mutableCopy];
 
     v40 = +[UIDevice currentDevice];
-    v41 = [v40 sf_isiPad];
+    sf_isiPad = [v40 sf_isiPad];
 
-    if (!v31 || (v41 & 1) != 0)
+    if (!v31 || (sf_isiPad & 1) != 0)
     {
       v45 = [NSBundle bundleForClass:objc_opt_class()];
       v46 = [objc_opt_class() modelSpecificLocalizedStringKeyForKey:@"%@_WILL_BE_USED_AS_DEVICE_LANGUAGE"];
       v47 = [v45 localizedStringForKey:v46 value:&stru_28F98 table:@"InternationalSettings"];
-      v42 = [NSLocale string:v47 withCapitalizedDisplayNamesForFirstLanguageIdentifier:v54 secondLanguageIdentifier:0 thirdLanguageIdentifier:0];
+      v42 = [NSLocale string:v47 withCapitalizedDisplayNamesForFirstLanguageIdentifier:systemDisplayLanguage secondLanguageIdentifier:0 thirdLanguageIdentifier:0];
 
       if (v51)
       {
@@ -859,12 +859,12 @@ LABEL_26:
   [(ISInternationalViewController *)self endUpdates];
 }
 
-- (void)updateSpecifiersForLocaleRegionChange:(id)a3
+- (void)updateSpecifiersForLocaleRegionChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = [(ISInternationalViewController *)self specifierForID:@"LOCALE"];
-  [v5 setProperty:v4 forKey:PSValueKey];
-  [v5 setProperty:v4 forKey:@"country"];
+  [v5 setProperty:changeCopy forKey:PSValueKey];
+  [v5 setProperty:changeCopy forKey:@"country"];
 
   v6 = [(ISInternationalViewController *)self specifierForID:@"LOCALE"];
   v10 = v6;
@@ -874,55 +874,55 @@ LABEL_26:
   [(ISInternationalViewController *)self replaceContiguousSpecifiers:v7 withSpecifiers:v8];
 }
 
-- (unint64_t)sectionIndexForTableView:(id)a3 fromSuperSectionIndex:(unint64_t)a4
+- (unint64_t)sectionIndexForTableView:(id)view fromSuperSectionIndex:(unint64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   if (([(ISInternationalViewController *)self isEditing]& 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = ISInternationalViewController;
-    a4 -= [(ISInternationalViewController *)&v8 numberOfSectionsInTableView:v6];
+    index -= [(ISInternationalViewController *)&v8 numberOfSectionsInTableView:viewCopy];
   }
 
-  return a4;
+  return index;
 }
 
 - (void)cancelEdits
 {
   [(ISInternationalViewController *)self setUpdatedAppleLanguages:0];
-  v3 = [(ISInternationalViewController *)self navigationItem];
-  [v3 setHidesBackButton:0 animated:1];
+  navigationItem = [(ISInternationalViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:0 animated:1];
 
   v6.receiver = self;
   v6.super_class = ISInternationalViewController;
   [(ISInternationalViewController *)&v6 setEditing:0 animated:1];
-  v4 = [(ISInternationalViewController *)self table];
-  [v4 setEditing:0 animated:1];
+  table = [(ISInternationalViewController *)self table];
+  [table setEditing:0 animated:1];
 
-  v5 = [(ISInternationalViewController *)self navigationItem];
-  [v5 setLeftBarButtonItem:0];
+  navigationItem2 = [(ISInternationalViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:0];
 
   [(ISInternationalViewController *)self reloadSpecifiers];
 }
 
-- (void)showLanguageSheet:(id)a3
+- (void)showLanguageSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   v5 = objc_alloc_init(ISLanguageSetupController);
   [(ISLanguageSetupController *)v5 setParentController:self];
-  [(ISLanguageSetupController *)v5 setSpecifier:v4];
-  objc_storeWeak(&v4[OBJC_IVAR___PSSpecifier_target], self);
+  [(ISLanguageSetupController *)v5 setSpecifier:sheetCopy];
+  objc_storeWeak(&sheetCopy[OBJC_IVAR___PSSpecifier_target], self);
 
   [(ISInternationalViewController *)self showController:v5];
 }
 
-- (void)showLocaleSheet:(id)a3
+- (void)showLocaleSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   v5 = objc_alloc_init(ISLocaleSetupController);
   [(ISLocaleSetupController *)v5 setParentController:self];
-  [(ISLocaleSetupController *)v5 setSpecifier:v4];
-  objc_storeWeak(&v4[OBJC_IVAR___PSSpecifier_target], self);
+  [(ISLocaleSetupController *)v5 setSpecifier:sheetCopy];
+  objc_storeWeak(&sheetCopy[OBJC_IVAR___PSSpecifier_target], self);
 
   [(ISInternationalViewController *)self showController:v5];
 }
@@ -936,11 +936,11 @@ LABEL_26:
   if (COSActivePairingIsTinker() && (+[BPSTinkerSupport sharedInstance](BPSTinkerSupport, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), [v5 cachedTinkerFamilyMemeber], v6 = objc_claimAutoreleasedReturnValue(), v5, v6))
   {
     v7 = objc_alloc_init(NSPersonNameComponents);
-    v8 = [v6 firstName];
-    [v7 setGivenName:v8];
+    firstName = [v6 firstName];
+    [v7 setGivenName:firstName];
 
-    v9 = [v6 lastName];
-    [v7 setFamilyName:v9];
+    lastName = [v6 lastName];
+    [v7 setFamilyName:lastName];
 
     v10 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v7 style:1 options:0];
     v11 = [NSBundle bundleForClass:objc_opt_class()];
@@ -956,47 +956,47 @@ LABEL_26:
   return v13;
 }
 
-- (id)numberingSystem:(id)a3
+- (id)numberingSystem:(id)system
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [system propertyForKey:PSValueKey];
   if (!v3)
   {
-    v4 = [objc_opt_class() currentLocale];
-    v5 = [v4 localeIdentifier];
+    currentLocale = [objc_opt_class() currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v6 = [NSLocale componentsFromLocaleIdentifier:v5];
+    v6 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
     v3 = [v6 objectForKey:@"numbers"];
     if (!v3)
     {
-      v3 = [IntlUtility defaultNumberingSystemForLocaleID:v5];
+      v3 = [IntlUtility defaultNumberingSystemForLocaleID:localeIdentifier];
     }
   }
 
   return v3;
 }
 
-- (void)setNumberingSystem:(id)a3 specifier:(id)a4
+- (void)setNumberingSystem:(id)system specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() currentLocale];
-  v9 = [v8 localeIdentifier];
+  systemCopy = system;
+  specifierCopy = specifier;
+  currentLocale = [objc_opt_class() currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v10 = [NSLocale componentsFromLocaleIdentifier:v9];
+  v10 = [NSLocale componentsFromLocaleIdentifier:localeIdentifier];
   v11 = [NSMutableDictionary dictionaryWithDictionary:v10];
   v12 = [NSMutableDictionary dictionaryWithDictionary:v10];
   [v12 removeObjectForKey:@"numbers"];
   v13 = [NSLocale localeIdentifierFromComponents:v12];
   v14 = [IntlUtility defaultNumberingSystemForLocaleID:v13];
 
-  if ([v14 isEqual:v6])
+  if ([v14 isEqual:systemCopy])
   {
     [v11 removeObjectForKey:@"numbers"];
   }
 
   else
   {
-    [v11 setObject:v6 forKey:@"numbers"];
+    [v11 setObject:systemCopy forKey:@"numbers"];
   }
 
   if (([v10 isEqual:v11] & 1) == 0)
@@ -1004,7 +1004,7 @@ LABEL_26:
     v15 = [NSLocale canonicalLocaleIdentifierFromComponents:v11];
 
     [(ISInternationalViewController *)self setLocaleOnly:v15];
-    v9 = v15;
+    localeIdentifier = v15;
   }
 
   v20 = 0;
@@ -1025,22 +1025,22 @@ LABEL_26:
 
   v17 = v16;
   _Block_object_dispose(&v20, 8);
-  v18 = [v16 sharedCloudSettingsManager];
-  [v18 writeToCloudSettings:&off_29C70 forStore:@"com.apple.cloudsettings.international"];
+  sharedCloudSettingsManager = [v16 sharedCloudSettingsManager];
+  [sharedCloudSettingsManager writeToCloudSettings:&off_29C70 forStore:@"com.apple.cloudsettings.international"];
 }
 
 - (id)numberingSystemsTitles
 {
   v3 = +[NSMutableArray array];
-  v4 = [objc_opt_class() currentLocale];
-  v5 = [v4 localeIdentifier];
+  currentLocale = [objc_opt_class() currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v6 = [(ISInternationalViewController *)self numberingSystemsValues];
+  numberingSystemsValues = [(ISInternationalViewController *)self numberingSystemsValues];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [numberingSystemsValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1051,17 +1051,17 @@ LABEL_26:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(numberingSystemsValues);
         }
 
-        v11 = [IntlUtility displayNameForNumberingSystemWithIdentifier:*(*(&v13 + 1) + 8 * i) localeIdentifier:v5];
+        v11 = [IntlUtility displayNameForNumberingSystemWithIdentifier:*(*(&v13 + 1) + 8 * i) localeIdentifier:localeIdentifier];
         if (v11)
         {
           [v3 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [numberingSystemsValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -1073,10 +1073,10 @@ LABEL_26:
 - (id)numberingSystemsShortTitles
 {
   v2 = +[NSMutableArray array];
-  v3 = [objc_opt_class() currentLocale];
-  v4 = [v3 localeIdentifier];
+  currentLocale = [objc_opt_class() currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
-  v5 = [IntlUtility numberingSystemsForLocaleID:v4];
+  v5 = [IntlUtility numberingSystemsForLocaleID:localeIdentifier];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1095,7 +1095,7 @@ LABEL_26:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [IntlUtility shortDisplayNameForNumberingSystemWithIdentifier:*(*(&v12 + 1) + 8 * i) localeIdentifier:v4];
+        v10 = [IntlUtility shortDisplayNameForNumberingSystemWithIdentifier:*(*(&v12 + 1) + 8 * i) localeIdentifier:localeIdentifier];
         if (v10)
         {
           [v2 addObject:v10];
@@ -1113,9 +1113,9 @@ LABEL_26:
 
 - (id)numberingSystemsValues
 {
-  v2 = [objc_opt_class() currentLocale];
-  v3 = [v2 localeIdentifier];
-  v4 = [IntlUtility numberingSystemsForLocaleID:v3];
+  currentLocale = [objc_opt_class() currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v4 = [IntlUtility numberingSystemsForLocaleID:localeIdentifier];
 
   return v4;
 }

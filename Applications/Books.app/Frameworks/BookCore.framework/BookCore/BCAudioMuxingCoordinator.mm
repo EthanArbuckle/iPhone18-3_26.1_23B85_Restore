@@ -1,10 +1,10 @@
 @interface BCAudioMuxingCoordinator
 + (id)sharedInstance;
 - (BCAudioMuxingCoordinator)init;
-- (void)addAudioMuxingObserver:(id)a3;
-- (void)beginLongAudioSessionWithIdentifier:(id)a3 completion:(id)a4;
-- (void)notifyPlaybackWillStart:(id)a3;
-- (void)removeAudioMuxingObserver:(id)a3;
+- (void)addAudioMuxingObserver:(id)observer;
+- (void)beginLongAudioSessionWithIdentifier:(id)identifier completion:(id)completion;
+- (void)notifyPlaybackWillStart:(id)start;
+- (void)removeAudioMuxingObserver:(id)observer;
 @end
 
 @implementation BCAudioMuxingCoordinator
@@ -38,41 +38,41 @@
   return v3;
 }
 
-- (void)addAudioMuxingObserver:(id)a3
+- (void)addAudioMuxingObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_981EC;
     v6[3] = &unk_2C7BE8;
     v6[4] = self;
-    v7 = v4;
+    v7 = observerCopy;
     os_unfair_lock_lock(&self->_lock);
     sub_981EC(v6);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)removeAudioMuxingObserver:(id)a3
+- (void)removeAudioMuxingObserver:(id)observer
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_982A4;
   v5[3] = &unk_2C7BE8;
-  v6 = self;
-  v7 = a3;
-  v4 = v7;
-  os_unfair_lock_lock(&v6->_lock);
+  selfCopy = self;
+  observerCopy = observer;
+  v4 = observerCopy;
+  os_unfair_lock_lock(&selfCopy->_lock);
   sub_982A4(v5);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyPlaybackWillStart:(id)a3
+- (void)notifyPlaybackWillStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -83,7 +83,7 @@
   v14[1] = 3221225472;
   v15 = sub_984B8;
   v16 = &unk_2C7AE0;
-  v17 = self;
+  selfCopy = self;
   v18 = &v19;
   v5 = v14;
   os_unfair_lock_lock(&self->_lock);
@@ -109,7 +109,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) audioPlaybackWillStart:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) audioPlaybackWillStart:{startCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -123,9 +123,9 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)beginLongAudioSessionWithIdentifier:(id)a3 completion:(id)a4
+- (void)beginLongAudioSessionWithIdentifier:(id)identifier completion:(id)completion
 {
-  v4 = objc_retainBlock(a4);
+  v4 = objc_retainBlock(completion);
   if (v4)
   {
     v5 = v4;

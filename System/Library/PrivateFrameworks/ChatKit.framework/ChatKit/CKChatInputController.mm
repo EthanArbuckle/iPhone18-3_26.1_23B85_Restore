@@ -4,16 +4,16 @@
 - (BOOL)_isBusinessConversation;
 - (BOOL)_isCombinedStickersApp;
 - (BOOL)_isiMessageConversation;
-- (BOOL)_pluginCanMessageAPI:(id)a3;
-- (BOOL)_presentPluginIfNecessaryWithPayload:(id)a3 withPayloadID:(id)a4;
-- (BOOL)_shouldSendTypingIndicatorDataForPluginIdentifier:(id)a3;
+- (BOOL)_pluginCanMessageAPI:(id)i;
+- (BOOL)_presentPluginIfNecessaryWithPayload:(id)payload withPayloadID:(id)d;
+- (BOOL)_shouldSendTypingIndicatorDataForPluginIdentifier:(id)identifier;
 - (BOOL)_shouldShowHandwriting;
 - (BOOL)_switcherPluginCanMessageAPI;
 - (BOOL)appManagerIsDisplayed;
 - (BOOL)appModalIsDisplayed;
 - (BOOL)appStoreIsDisplayed;
 - (BOOL)browserShouldAutorotate;
-- (BOOL)commitPayloadBypassingValidation:(id)a3 forPlugin:(id)a4;
+- (BOOL)commitPayloadBypassingValidation:(id)validation forPlugin:(id)plugin;
 - (BOOL)currentPluginIsDT;
 - (BOOL)currentPluginIsGenerativePlayground;
 - (BOOL)currentPluginIsPhotos;
@@ -25,20 +25,20 @@
 - (BOOL)isEntryViewFirstResponder;
 - (BOOL)isHandwritingLandscape;
 - (BOOL)isKeyboardSnapshotted;
-- (BOOL)isPresentingAppCardForMessageEntryView:(id)a3;
-- (BOOL)isPresentingBarelyVisibleAppCardForMessageEntryView:(id)a3;
+- (BOOL)isPresentingAppCardForMessageEntryView:(id)view;
+- (BOOL)isPresentingBarelyVisibleAppCardForMessageEntryView:(id)view;
 - (BOOL)isPresentingStickerPicker;
-- (BOOL)isShowingAppCardForExtensionIdentifier:(id)a3;
-- (BOOL)messageEntryShouldHideCaret:(id)a3;
-- (BOOL)messageEntryViewShouldResignFirstResponder:(id)a3;
-- (BOOL)messageEntryViewShouldVerticallyInsetForPresentedAppCard:(id)a3;
+- (BOOL)isShowingAppCardForExtensionIdentifier:(id)identifier;
+- (BOOL)messageEntryShouldHideCaret:(id)caret;
+- (BOOL)messageEntryViewShouldResignFirstResponder:(id)responder;
+- (BOOL)messageEntryViewShouldVerticallyInsetForPresentedAppCard:(id)card;
 - (BOOL)presentedAppBypassesSendMenu;
 - (BOOL)shouldBlurForMessageEditing;
-- (BOOL)shouldInterfaceBeRestrictedToPortraitForPluginID:(id)a3;
-- (BOOL)shouldLaunchPhotosAppForPlusButtonLongPressInMessageEntryView:(id)a3;
-- (BOOL)shouldPreventAppFromDisplayingForBundleIdentifier:(id)a3;
-- (BOOL)shouldShowMoneyActionWithAmount:(id)a3 currencies:(id)a4;
-- (BOOL)switcherPluginCanMessageAPIOnBehalfOfPlugin:(id)a3;
+- (BOOL)shouldInterfaceBeRestrictedToPortraitForPluginID:(id)d;
+- (BOOL)shouldLaunchPhotosAppForPlusButtonLongPressInMessageEntryView:(id)view;
+- (BOOL)shouldPreventAppFromDisplayingForBundleIdentifier:(id)identifier;
+- (BOOL)shouldShowMoneyActionWithAmount:(id)amount currencies:(id)currencies;
+- (BOOL)switcherPluginCanMessageAPIOnBehalfOfPlugin:(id)plugin;
 - (CKAppCardPresentationOverseer)appCardPresentationOverseer;
 - (CKBrowserSwitcherViewController)browserSwitcher;
 - (CKChatInputController)init;
@@ -50,194 +50,194 @@
 - (UITextInputPayloadController)textInputPayloadController;
 - (double)_appCardHeightWithSafeArea;
 - (double)appCardOverseerCompactHeightExcludingSafeArea;
-- (id)_adamIDFromPluginPayloadData:(id)a3;
+- (id)_adamIDFromPluginPayloadData:(id)data;
 - (id)_browserViewControllerForInterfaceOrientationMethods;
-- (id)_formattedPayload:(id)a3 forPayloadID:(id)a4;
+- (id)_formattedPayload:(id)payload forPayloadID:(id)d;
 - (id)_stickerPickerPlugin;
 - (id)activeSendMenuPresentationForAppCardOverseer;
 - (id)appIconOverride;
 - (id)appTitleOverride;
-- (id)balloonPluginForIndexPath:(id)a3;
-- (id)configurePhotosDraftAssetArchivesWithConversationID:(id)a3;
+- (id)balloonPluginForIndexPath:(id)path;
+- (id)configurePhotosDraftAssetArchivesWithConversationID:(id)d;
 - (id)dragControllerTranscriptDelegate;
 - (id)inputViewController;
-- (id)localizedTitleForClientActionFromUrl:(id)a3 context:(id)a4;
+- (id)localizedTitleForClientActionFromUrl:(id)url context:(id)context;
 - (id)participantHandles;
 - (id)pluginBundleID;
-- (id)pluginContextForPlugin:(id)a3;
+- (id)pluginContextForPlugin:(id)plugin;
 - (id)sendLaterPluginInfo;
-- (id)workingDraftDirForPluginIdentifier:(id)a3;
-- (int64_t)determineSendMenuPresentationStyleCompatibleWithTraitCollection:(id)a3;
-- (unint64_t)appPresentationStyleForShowingPluginID:(id)a3;
+- (id)workingDraftDirForPluginIdentifier:(id)identifier;
+- (int64_t)determineSendMenuPresentationStyleCompatibleWithTraitCollection:(id)collection;
+- (unint64_t)appPresentationStyleForShowingPluginID:(id)d;
 - (unint64_t)browserSupportedInterfaceOrientations;
-- (unint64_t)presentationStyleInOrientation:(int64_t)a3 inPopover:(BOOL)a4 forPluginID:(id)a5;
-- (void)_beginPreviewCreationWithFileURL:(id)a3;
-- (void)_deferredCommitSticker:(id)a3;
-- (void)_deferredDismissToKeyboardAndFocusEntryView:(id)a3;
-- (void)_deferredRequestFullScreenModalForPluginIdentifier:(id)a3 dataSource:(id)a4 preferredContentSize:(CGSize)a5;
-- (void)_deferredRequestPresentationStyleExpanded:(id)a3;
-- (void)_dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:(BOOL)a3 overrideExceptions:(BOOL)a4 focusEntryView:(BOOL)a5;
-- (void)_dismissBrowserViewControllerAndReloadInputViews:(BOOL)a3;
-- (void)_evaluateMetricsForKeyboardSuggestionWithBundleIdentifier:(id)a3;
+- (unint64_t)presentationStyleInOrientation:(int64_t)orientation inPopover:(BOOL)popover forPluginID:(id)d;
+- (void)_beginPreviewCreationWithFileURL:(id)l;
+- (void)_deferredCommitSticker:(id)sticker;
+- (void)_deferredDismissToKeyboardAndFocusEntryView:(id)view;
+- (void)_deferredRequestFullScreenModalForPluginIdentifier:(id)identifier dataSource:(id)source preferredContentSize:(CGSize)size;
+- (void)_deferredRequestPresentationStyleExpanded:(id)expanded;
+- (void)_dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:(BOOL)prevention overrideExceptions:(BOOL)exceptions focusEntryView:(BOOL)view;
+- (void)_dismissBrowserViewControllerAndReloadInputViews:(BOOL)views;
+- (void)_evaluateMetricsForKeyboardSuggestionWithBundleIdentifier:(id)identifier;
 - (void)_handleOrientation;
-- (void)_handleSelectionOfExtensionWithIdentifier:(id)a3;
-- (void)_informDelegateOfUpdatedAppCardHeightAnimated:(BOOL)a3;
-- (void)_insertUISticker:(id)a3;
-- (void)_insertUIStickerAsAdaptiveImageGlyph:(id)a3;
+- (void)_handleSelectionOfExtensionWithIdentifier:(id)identifier;
+- (void)_informDelegateOfUpdatedAppCardHeightAnimated:(BOOL)animated;
+- (void)_insertUISticker:(id)sticker;
+- (void)_insertUIStickerAsAdaptiveImageGlyph:(id)glyph;
 - (void)_launchAppExtensionForDebugging;
-- (void)_loadPhotosBrowserCollapsingEntryField:(BOOL)a3;
-- (void)_openContainingBundleID:(id)a3 applicationService:(id)a4 withURL:(id)a5 pluginID:(id)a6 completionHandler:(id)a7;
-- (void)_presentFullScreenModalBrowserForPlugin:(id)a3 dataSource:(id)a4;
-- (void)_presentPluginWithBundleID:(id)a3 sendingTextInputPayload:(id)a4 withPayloadID:(id)a5 style:(unint64_t)a6;
-- (void)_presentSendLaterUnsupportedAlertForIdentifier:(id)a3 handler:(id)a4;
-- (void)_presentSendMenuForAppCardContentViewController:(id)a3 appCardPresentationStyle:(unint64_t)a4;
+- (void)_loadPhotosBrowserCollapsingEntryField:(BOOL)field;
+- (void)_openContainingBundleID:(id)d applicationService:(id)service withURL:(id)l pluginID:(id)iD completionHandler:(id)handler;
+- (void)_presentFullScreenModalBrowserForPlugin:(id)plugin dataSource:(id)source;
+- (void)_presentPluginWithBundleID:(id)d sendingTextInputPayload:(id)payload withPayloadID:(id)iD style:(unint64_t)style;
+- (void)_presentSendLaterUnsupportedAlertForIdentifier:(id)identifier handler:(id)handler;
+- (void)_presentSendMenuForAppCardContentViewController:(id)controller appCardPresentationStyle:(unint64_t)style;
 - (void)_reconfigurePluginDataSourceWithBalloonControllerIfNecessary;
-- (void)_sendLaterSelectedFromSendMenuWithPresentation:(id)a3;
+- (void)_sendLaterSelectedFromSendMenuWithPresentation:(id)presentation;
 - (void)_setupObserverForLaunchAppExtensionForDebugging;
-- (void)_stageStickerWithFileURL:(id)a3 accessibilityLabel:(id)a4;
-- (void)_startEditingPayload:(id)a3;
+- (void)_stageStickerWithFileURL:(id)l accessibilityLabel:(id)label;
+- (void)_startEditingPayload:(id)payload;
 - (void)_stickerPickerPlugin;
-- (void)adjustSupportedInterfaceOrientationForPluginID:(id)a3 requiredPortrait:(BOOL *)a4;
-- (void)appCardDidMoveToWindow:(id)a3;
-- (void)appCardOverseerCardDidChangeHeight:(double)a3 isBelowKeyboardDetent:(BOOL)a4 isDragging:(BOOL)a5 isGeneratingEndOfDragAnimations:(BOOL)a6;
+- (void)adjustSupportedInterfaceOrientationForPluginID:(id)d requiredPortrait:(BOOL *)portrait;
+- (void)appCardDidMoveToWindow:(id)window;
+- (void)appCardOverseerCardDidChangeHeight:(double)height isBelowKeyboardDetent:(BOOL)detent isDragging:(BOOL)dragging isGeneratingEndOfDragAnimations:(BOOL)animations;
 - (void)appCardOverseerDidDismissAppCard;
 - (void)appCardOverseerDidPresentAppCard;
-- (void)appCardOverseerViewStateDidChange:(BOOL)a3;
+- (void)appCardOverseerViewStateDidChange:(BOOL)change;
 - (void)appCardOverseerWillDismissAppCard;
 - (void)appCardOverseerWillPresentAppCard;
-- (void)appSelectionInterfaceSelectedItem:(id)a3;
-- (void)appendMediaPayloadToText:(id)a3;
-- (void)applicationWillAddDeactivationReasonNotification:(id)a3;
-- (void)beginStickerReactionSessionWithChatItem:(id)a3 cell:(id)a4;
-- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4;
+- (void)appSelectionInterfaceSelectedItem:(id)item;
+- (void)appendMediaPayloadToText:(id)text;
+- (void)applicationWillAddDeactivationReasonNotification:(id)notification;
+- (void)beginStickerReactionSessionWithChatItem:(id)item cell:(id)cell;
+- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason;
 - (void)browserWillDismiss;
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4;
-- (void)chatControllerReceivedKeyboardDidHideNotification:(id)a3;
-- (void)chatControllerReceivedKeyboardDidShowNotification:(id)a3;
-- (void)chatControllerReceivedKeyboardWillHideNotification:(id)a3;
-- (void)chatControllerReceivedKeyboardWillShowNotification:(id)a3;
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3;
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion;
+- (void)chatControllerReceivedKeyboardDidHideNotification:(id)notification;
+- (void)chatControllerReceivedKeyboardDidShowNotification:(id)notification;
+- (void)chatControllerReceivedKeyboardWillHideNotification:(id)notification;
+- (void)chatControllerReceivedKeyboardWillShowNotification:(id)notification;
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion;
 - (void)clearBrowserViewControllerIfNecessary;
-- (void)commitPayload:(CKBrowserItemPayload *)a3 forPlugin:(NSString *)a4 allowAllCommits:(BOOL)a5 completionHandler:(id)a6;
-- (void)commitSticker:(id)a3 atScreenCoordinate:(CGPoint)a4 scale:(double)a5 rotation:(double)a6 stickerFrame:(CGRect)a7;
-- (void)commitSticker:(id)a3 forPlugin:(id)a4 bypassValidation:(BOOL)a5 stickerFrame:(CGRect)a6;
-- (void)commitSticker:(id)a3 forPlugin:(id)a4 stickerFrame:(CGRect)a5;
-- (void)commitSticker:(id)a3 stickerFrame:(CGRect)a4;
-- (void)commitSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5;
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3;
+- (void)commitPayload:(CKBrowserItemPayload *)payload forPlugin:(NSString *)plugin allowAllCommits:(BOOL)commits completionHandler:(id)handler;
+- (void)commitSticker:(id)sticker atScreenCoordinate:(CGPoint)coordinate scale:(double)scale rotation:(double)rotation stickerFrame:(CGRect)frame;
+- (void)commitSticker:(id)sticker forPlugin:(id)plugin bypassValidation:(BOOL)validation stickerFrame:(CGRect)frame;
+- (void)commitSticker:(id)sticker forPlugin:(id)plugin stickerFrame:(CGRect)frame;
+- (void)commitSticker:(id)sticker stickerFrame:(CGRect)frame;
+- (void)commitSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker;
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder;
 - (void)dealloc;
-- (void)deferredCommitPayload:(id)a3;
-- (void)deviceOrientationManager:(id)a3 orientationDidChange:(int64_t)a4;
-- (void)didBeginInstallingAppWithBundleIdentifier:(id)a3;
-- (void)didSelectPlugin:(id)a3;
-- (void)didStageAssetArchive:(id)a3 identifier:(id)a4;
-- (void)dismissAndReloadInputViews:(BOOL)a3 forPlugin:(id)a4;
-- (void)dismissAppCardIfNecessaryAnimated:(BOOL)a3 isFocusingKeyboard:(BOOL)a4 overrideExceptions:(BOOL)a5 completion:(id)a6;
+- (void)deferredCommitPayload:(id)payload;
+- (void)deviceOrientationManager:(id)manager orientationDidChange:(int64_t)change;
+- (void)didBeginInstallingAppWithBundleIdentifier:(id)identifier;
+- (void)didSelectPlugin:(id)plugin;
+- (void)didStageAssetArchive:(id)archive identifier:(id)identifier;
+- (void)dismissAndReloadInputViews:(BOOL)views forPlugin:(id)plugin;
+- (void)dismissAppCardIfNecessaryAnimated:(BOOL)animated isFocusingKeyboard:(BOOL)keyboard overrideExceptions:(BOOL)exceptions completion:(id)completion;
 - (void)dismissBrowserViewController;
 - (void)dismissEntryViewShelf;
 - (void)dismissOrHideHandwritingBrowser;
 - (void)dismissPlugin;
 - (void)dismissPluginAppAfterReplaceAlertInteractedWithIfNeeded;
 - (void)dismissSendMenuAndPresentFunCamera;
-- (void)dismissStickerPickerPreservingChatItem:(BOOL)a3 completion:(id)a4;
-- (void)eagerUploadPayload:(id)a3 identifier:(id)a4 replace:(BOOL)a5;
+- (void)dismissStickerPickerPreservingChatItem:(BOOL)item completion:(id)completion;
+- (void)eagerUploadPayload:(id)payload identifier:(id)identifier replace:(BOOL)replace;
 - (void)endStickerReactionSession;
 - (void)entryViewDidChangeSize;
-- (void)extensionRemoteConnectionWasInterrupted:(id)a3;
+- (void)extensionRemoteConnectionWasInterrupted:(id)interrupted;
 - (void)forceDismissBrowserWithoutAnimation;
-- (void)generatePreviewAndStoreInCacheForSendingPhotoFromPayload:(id)a3;
-- (void)handleClientActionFromUrl:(id)a3 context:(id)a4;
-- (void)handleMoneyActionWithAmount:(id)a3 currencies:(id)a4;
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4;
-- (void)handleTextInputPayload:(id)a3 withPayloadID:(id)a4 forPlugin:(id)a5;
-- (void)handwritingPresentationControllerDidShowHandwriting:(id)a3;
-- (void)handwritingPresentationControllerWillHideHandwriting:(id)a3;
-- (void)insertUIStickerAsAdaptiveImageGlyph:(id)a3;
-- (void)launchAndShowBrowserForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6;
-- (void)messageEntryView:(id)a3 didLongPressPlusButton:(id)a4;
-- (void)messageEntryView:(id)a3 didReceiveInputSuggestion:(id)a4;
-- (void)messageEntryView:(id)a3 didSelectPluginAtIndex:(id)a4;
-- (void)messageEntryView:(id)a3 didSelectPlusButton:(id)a4;
-- (void)messageEntryView:(id)a3 touchCancelForPlusButton:(id)a4;
-- (void)messageEntryView:(id)a3 touchDragExitForPlusButton:(id)a4;
-- (void)messageEntryView:(id)a3 touchUpOutsidePlusButton:(id)a4;
-- (void)messageEntryViewDidExpand:(id)a3;
-- (void)messageEntryViewInputDidTakeFocus:(id)a3;
-- (void)notifyActiveBrowserAssetArchiveWasRemoved:(id)a3;
-- (void)notifyBrowserViewControllerOfMatchingNewMessages:(id)a3;
-- (void)openAppExtensionWithAdamID:(id)a3;
-- (void)openURL:(id)a3 applicationIdentifier:(id)a4 pluginID:(id)a5 completionHandler:(id)a6;
-- (void)openURL:(id)a3 pluginID:(id)a4 completionHandler:(id)a5;
+- (void)generatePreviewAndStoreInCacheForSendingPhotoFromPayload:(id)payload;
+- (void)handleClientActionFromUrl:(id)url context:(id)context;
+- (void)handleMoneyActionWithAmount:(id)amount currencies:(id)currencies;
+- (void)handlePayload:(id)payload withPayloadId:(id)id;
+- (void)handleTextInputPayload:(id)payload withPayloadID:(id)d forPlugin:(id)plugin;
+- (void)handwritingPresentationControllerDidShowHandwriting:(id)handwriting;
+- (void)handwritingPresentationControllerWillHideHandwriting:(id)handwriting;
+- (void)insertUIStickerAsAdaptiveImageGlyph:(id)glyph;
+- (void)launchAndShowBrowserForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration;
+- (void)messageEntryView:(id)view didLongPressPlusButton:(id)button;
+- (void)messageEntryView:(id)view didReceiveInputSuggestion:(id)suggestion;
+- (void)messageEntryView:(id)view didSelectPluginAtIndex:(id)index;
+- (void)messageEntryView:(id)view didSelectPlusButton:(id)button;
+- (void)messageEntryView:(id)view touchCancelForPlusButton:(id)button;
+- (void)messageEntryView:(id)view touchDragExitForPlusButton:(id)button;
+- (void)messageEntryView:(id)view touchUpOutsidePlusButton:(id)button;
+- (void)messageEntryViewDidExpand:(id)expand;
+- (void)messageEntryViewInputDidTakeFocus:(id)focus;
+- (void)notifyActiveBrowserAssetArchiveWasRemoved:(id)removed;
+- (void)notifyBrowserViewControllerOfMatchingNewMessages:(id)messages;
+- (void)openAppExtensionWithAdamID:(id)d;
+- (void)openURL:(id)l applicationIdentifier:(id)identifier pluginID:(id)d completionHandler:(id)handler;
+- (void)openURL:(id)l pluginID:(id)d completionHandler:(id)handler;
 - (void)prepareForSuspend;
 - (void)presentAppManager;
-- (void)presentAppStoreForAdamID:(id)a3;
-- (void)presentAppStoreForURL:(id)a3 fromSourceApplication:(id)a4;
-- (void)presentModernCardForPlugin:(id)a3 dataSource:(id)a4 presentationStyle:(unint64_t)a5;
-- (void)presentPluginWithBundleID:(id)a3 appLaunchPayload:(id)a4;
-- (void)presentViewControllerWithPluginChatItem:(id)a3 presentationStyle:(unint64_t)a4 presentationConfiguration:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)registerForTextInputPayloadHandling:(BOOL)a3 isGroupChat:(BOOL)a4;
-- (void)registerForTextInputPayloadHandlingForSenderHandleID:(id)a3 receiverHandleID:(id)a4;
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)requestPhotoBrowserInitFromDraft:(id)a3;
+- (void)presentAppStoreForAdamID:(id)d;
+- (void)presentAppStoreForURL:(id)l fromSourceApplication:(id)application;
+- (void)presentModernCardForPlugin:(id)plugin dataSource:(id)source presentationStyle:(unint64_t)style;
+- (void)presentPluginWithBundleID:(id)d appLaunchPayload:(id)payload;
+- (void)presentViewControllerWithPluginChatItem:(id)item presentationStyle:(unint64_t)style presentationConfiguration:(id)configuration;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)registerForTextInputPayloadHandling:(BOOL)handling isGroupChat:(BOOL)chat;
+- (void)registerForTextInputPayloadHandlingForSenderHandleID:(id)d receiverHandleID:(id)iD;
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)requestPhotoBrowserInitFromDraft:(id)draft;
 - (void)requestPhotoBrowserToAppendFinalImagesToComposition;
-- (void)requestPhotoBrowserToEnumerateSelectedImagesUsingBlock:(id)a3;
-- (void)requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:(BOOL)a3;
+- (void)requestPhotoBrowserToEnumerateSelectedImagesUsingBlock:(id)block;
+- (void)requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:(BOOL)controller;
 - (void)requestPhotoBrowserToUnstageAllImages;
-- (void)requestPhotoBrowserToUnstageImages:(id)a3;
-- (void)requestPollPluginToPrepareForDraftWithCompletion:(id)a3;
-- (void)requestPresentationStyleExpanded:(BOOL)a3 forPlugin:(id)a4;
-- (void)requestPresentationStyleFullScreenModalForPlugin:(id)a3 dataSource:(id)a4 preferredContentSize:(CGSize)a5 skipValidation:(BOOL)a6;
-- (void)requestTransitionPluginFromFullScreen:(id)a3 toExpanded:(BOOL)a4;
+- (void)requestPhotoBrowserToUnstageImages:(id)images;
+- (void)requestPollPluginToPrepareForDraftWithCompletion:(id)completion;
+- (void)requestPresentationStyleExpanded:(BOOL)expanded forPlugin:(id)plugin;
+- (void)requestPresentationStyleFullScreenModalForPlugin:(id)plugin dataSource:(id)source preferredContentSize:(CGSize)size skipValidation:(BOOL)validation;
+- (void)requestTransitionPluginFromFullScreen:(id)screen toExpanded:(BOOL)expanded;
 - (void)sendLaterPluginInfoUpdated;
-- (void)sendMenuDidAppear:(id)a3 presentationStyle:(int64_t)a4;
-- (void)sendMenuViewControllerDidFinishDismissAnimation:(id)a3;
-- (void)sendMenuViewControllerRequestDismiss:(id)a3;
-- (void)sendMenuViewControllerWillPerformFullScreenDismissAnimation:(id)a3;
-- (void)setAppCardDismissPadding:(double)a3;
-- (void)setBrowserPlugin:(id)a3;
-- (void)setConversationAndRecipientsForBrowser:(id)a3;
-- (void)setCurrentInputViewController:(id)a3;
-- (void)setEntryView:(id)a3;
-- (void)setInputViewVisible:(BOOL)a3;
-- (void)setInputViewVisible:(BOOL)a3 entryFieldCollapsed:(BOOL)a4 animated:(BOOL)a5 messageDelegate:(BOOL)a6;
-- (void)setLocalUserIsTyping:(BOOL)a3;
-- (void)setShouldBlurForMessageEditing:(BOOL)a3;
-- (void)showBrowserForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6;
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5;
-- (void)showBrowserPopoverForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6;
+- (void)sendMenuDidAppear:(id)appear presentationStyle:(int64_t)style;
+- (void)sendMenuViewControllerDidFinishDismissAnimation:(id)animation;
+- (void)sendMenuViewControllerRequestDismiss:(id)dismiss;
+- (void)sendMenuViewControllerWillPerformFullScreenDismissAnimation:(id)animation;
+- (void)setAppCardDismissPadding:(double)padding;
+- (void)setBrowserPlugin:(id)plugin;
+- (void)setConversationAndRecipientsForBrowser:(id)browser;
+- (void)setCurrentInputViewController:(id)controller;
+- (void)setEntryView:(id)view;
+- (void)setInputViewVisible:(BOOL)visible;
+- (void)setInputViewVisible:(BOOL)visible entryFieldCollapsed:(BOOL)collapsed animated:(BOOL)animated messageDelegate:(BOOL)delegate;
+- (void)setLocalUserIsTyping:(BOOL)typing;
+- (void)setShouldBlurForMessageEditing:(BOOL)editing;
+- (void)showBrowserForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration;
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion;
+- (void)showBrowserPopoverForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration;
 - (void)showDTCompose;
-- (void)showEntryViewPhotosShelf:(id)a3 completion:(id)a4;
-- (void)showExpandedBrowserPopover:(id)a3 presentationConfiguration:(id)a4;
+- (void)showEntryViewPhotosShelf:(id)shelf completion:(id)completion;
+- (void)showExpandedBrowserPopover:(id)popover presentationConfiguration:(id)configuration;
 - (void)showFindMyPlugin;
 - (void)showFunCamera;
-- (void)showFunCamera:(id)a3;
-- (void)showHandwritingBrowserWithExistingPayload:(id)a3;
+- (void)showFunCamera:(id)camera;
+- (void)showHandwritingBrowserWithExistingPayload:(id)payload;
 - (void)showKeyboard;
 - (void)showLocationPlugin;
-- (void)showModalViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)showModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)showPhotosBrowser;
-- (void)showPhotosBrowserCollapsingEntryField:(BOOL)a3;
+- (void)showPhotosBrowserCollapsingEntryField:(BOOL)field;
 - (void)showPhotosExtension;
-- (void)showPluginWithExtensionIdentifier:(id)a3 sourceView:(id)a4;
+- (void)showPluginWithExtensionIdentifier:(id)identifier sourceView:(id)view;
 - (void)showSendLater;
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5;
-- (void)startEditingPayload:(id)a3;
-- (void)startEditingPayload:(id)a3 dismiss:(BOOL)a4 forPlugin:(id)a5 completion:(id)a6;
-- (void)startEditingPayloadBypassingValidation:(id)a3 forPlugin:(id)a4 completion:(id)a5;
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler;
+- (void)startEditingPayload:(id)payload;
+- (void)startEditingPayload:(id)payload dismiss:(BOOL)dismiss forPlugin:(id)plugin completion:(id)completion;
+- (void)startEditingPayloadBypassingValidation:(id)validation forPlugin:(id)plugin completion:(id)completion;
 - (void)stickerDropAnimationFinished;
 - (void)stickerDruidDragStarted;
-- (void)stickerPickerWasHiddenPreservingChatItem:(BOOL)a3;
+- (void)stickerPickerWasHiddenPreservingChatItem:(BOOL)item;
 - (void)swipeDismissBrowser;
-- (void)switcherViewControllerDidCollapse:(id)a3;
-- (void)switcherViewControllerDidSelectAppManager:(id)a3 shouldRestoreAppSwitcher:(BOOL)a4;
-- (void)switcherViewControllerDidSelectAppStore:(id)a3 shouldRestoreAppSwitcher:(BOOL)a4;
-- (void)switcherViewControllerWillAppear:(id)a3;
-- (void)switcherViewControllerWillDisappear:(id)a3;
+- (void)switcherViewControllerDidCollapse:(id)collapse;
+- (void)switcherViewControllerDidSelectAppManager:(id)manager shouldRestoreAppSwitcher:(BOOL)switcher;
+- (void)switcherViewControllerDidSelectAppStore:(id)store shouldRestoreAppSwitcher:(BOOL)switcher;
+- (void)switcherViewControllerWillAppear:(id)appear;
+- (void)switcherViewControllerWillDisappear:(id)disappear;
 - (void)unregisterForTextInputPayloadHandling;
 @end
 
@@ -247,15 +247,15 @@
 {
   if ([(CKChatInputController *)self isInputViewVisible])
   {
-    v3 = [(CKChatInputController *)self currentInputViewController];
+    currentInputViewController = [(CKChatInputController *)self currentInputViewController];
   }
 
   else
   {
-    v3 = 0;
+    currentInputViewController = 0;
   }
 
-  return v3;
+  return currentInputViewController;
 }
 
 - (CKAppCardPresentationOverseer)appCardPresentationOverseer
@@ -264,9 +264,9 @@
   if (!appCardPresentationOverseer)
   {
     v4 = [CKAppCardPresentationOverseer alloc];
-    v5 = [(CKChatInputController *)self delegate];
-    v6 = [v5 viewControllerForChatInputModalPresentation];
-    v7 = [(CKAppCardPresentationOverseer *)v4 initWithPresentingViewController:v6 sendDelegate:self];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+    v7 = [(CKAppCardPresentationOverseer *)v4 initWithPresentingViewController:viewControllerForChatInputModalPresentation sendDelegate:self];
     v8 = self->_appCardPresentationOverseer;
     self->_appCardPresentationOverseer = v7;
 
@@ -289,10 +289,10 @@
   v3 = CKIsAppCardsEnabled();
   if (v3)
   {
-    v4 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v5 = [v4 isPresentingCard];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isPresentingCard;
   }
 
   return v3;
@@ -300,24 +300,24 @@
 
 - (BOOL)isAppCardUsingSheetPresentation
 {
-  v2 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v3 = [v2 isPresentingInSheetController];
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isPresentingInSheetController = [appCardPresentationOverseer isPresentingInSheetController];
 
-  return v3;
+  return isPresentingInSheetController;
 }
 
 - (id)activeSendMenuPresentationForAppCardOverseer
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v4 = [v3 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v4 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   return v4;
 }
 
 - (BOOL)hasStickerReactionSession
 {
-  v2 = [(CKChatInputController *)self stickerReactionSession];
-  v3 = v2 != 0;
+  stickerReactionSession = [(CKChatInputController *)self stickerReactionSession];
+  v3 = stickerReactionSession != 0;
 
   return v3;
 }
@@ -327,9 +327,9 @@
   textInputPayloadController = self->_textInputPayloadController;
   if (!textInputPayloadController)
   {
-    v4 = [MEMORY[0x1E69DD0F0] sharedInstance];
+    mEMORY[0x1E69DD0F0] = [MEMORY[0x1E69DD0F0] sharedInstance];
     v5 = self->_textInputPayloadController;
-    self->_textInputPayloadController = v4;
+    self->_textInputPayloadController = mEMORY[0x1E69DD0F0];
 
     textInputPayloadController = self->_textInputPayloadController;
   }
@@ -341,27 +341,27 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.MobileSMS.CKAppExtension.launch", 0);
-  v4 = [(CKChatInputController *)self textInputPayloadController];
-  v5 = [v4 payloadDelegate];
+  textInputPayloadController = [(CKChatInputController *)self textInputPayloadController];
+  payloadDelegate = [textInputPayloadController payloadDelegate];
 
-  if (v5 == self)
+  if (payloadDelegate == self)
   {
-    [v4 setPayloadDelegate:0];
-    [v4 setSupportedPayloadIds:MEMORY[0x1E695E0F0]];
+    [textInputPayloadController setPayloadDelegate:0];
+    [textInputPayloadController setSupportedPayloadIds:MEMORY[0x1E695E0F0]];
   }
 
-  v6 = [__DDActionClass() clientActionsDelegate];
+  clientActionsDelegate = [__DDActionClass() clientActionsDelegate];
 
-  if (v6 == self)
+  if (clientActionsDelegate == self)
   {
     [__DDActionClass() setClientActionsDelegate:0];
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v8 = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
-  [v8 dismissCurrentFullScreenModalAnimated:0 completion:0];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
+  [transitionCoordinator dismissCurrentFullScreenModalAnimated:0 completion:0];
 
   [(CKScheduledUpdater *)self->_orientationUpdater invalidate];
   [(CKDeviceOrientationManager *)self->_orientationManager setDelegate:0];
@@ -382,10 +382,10 @@
   if (v2)
   {
     v2->_isAppCardDraggingBelowKeyboardDetent = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_applicationWillAddDeactivationReasonNotification_ name:*MEMORY[0x1E69DE878] object:0];
-    [v4 addObserver:v3 selector:sel_composeRecipientViewDidBecomeFirstResponder_ name:@"com.apple.ChatKit.CKComposeRecipientView.BecameFirstResponder" object:0];
-    [v4 addObserver:v3 selector:sel_extensionRemoteConnectionWasInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_applicationWillAddDeactivationReasonNotification_ name:*MEMORY[0x1E69DE878] object:0];
+    [defaultCenter addObserver:v3 selector:sel_composeRecipientViewDidBecomeFirstResponder_ name:@"com.apple.ChatKit.CKComposeRecipientView.BecameFirstResponder" object:0];
+    [defaultCenter addObserver:v3 selector:sel_extensionRemoteConnectionWasInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
     v5 = [objc_alloc(MEMORY[0x1E69A6158]) initWithTarget:0 action:0];
     dismissEntryViewShelfUpdater = v3->_dismissEntryViewShelfUpdater;
     v3->_dismissEntryViewShelfUpdater = v5;
@@ -418,24 +418,24 @@
   return v3;
 }
 
-- (void)setEntryView:(id)a3
+- (void)setEntryView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CKMessageEntryView *)self->_entryView setInputDelegate:0];
   entryView = self->_entryView;
-  self->_entryView = v4;
-  v6 = v4;
+  self->_entryView = viewCopy;
+  v6 = viewCopy;
 
   [(CKMessageEntryView *)self->_entryView setInputDelegate:self];
   if (v6)
   {
-    v7 = [(CKChatInputController *)self deferredComposition];
+    deferredComposition = [(CKChatInputController *)self deferredComposition];
 
-    if (v7)
+    if (deferredComposition)
     {
-      v8 = [(CKChatInputController *)self entryView];
-      v9 = [(CKChatInputController *)self deferredComposition];
-      [v8 setComposition:v9];
+      entryView = [(CKChatInputController *)self entryView];
+      deferredComposition2 = [(CKChatInputController *)self deferredComposition];
+      [entryView setComposition:deferredComposition2];
 
       [(CKChatInputController *)self setDeferredComposition:0];
     }
@@ -451,13 +451,13 @@
   }
 }
 
-- (void)_loadPhotosBrowserCollapsingEntryField:(BOOL)a3
+- (void)_loadPhotosBrowserCollapsingEntryField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   if (self->_switcherInputViewController)
   {
-    v5 = [(CKChatInputController *)self browserSwitcher];
-    [v5 unloadRemoteViewControllers];
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    [browserSwitcher unloadRemoteViewControllers];
 
     [(CKChatInputController *)self setBrowserSwitcher:0];
     [(CKChatInputController *)self setSwitcherInputViewController:0];
@@ -480,25 +480,25 @@
   else
   {
     v7 = +[CKBalloonPluginManager sharedInstance];
-    v13 = [v7 existingPhotoBrowserViewController];
+    existingPhotoBrowserViewController = [v7 existingPhotoBrowserViewController];
 
-    if (!v13)
+    if (!existingPhotoBrowserViewController)
     {
       v8 = +[CKBalloonPluginManager sharedInstance];
-      v13 = [v8 photosBrowserViewControllerWithPluginPayloads:0];
+      existingPhotoBrowserViewController = [v8 photosBrowserViewControllerWithPluginPayloads:0];
     }
 
-    [v13 setSendDelegate:self];
-    v9 = [v13 balloonPlugin];
-    [(CKChatInputController *)self setBrowserPlugin:v9];
+    [existingPhotoBrowserViewController setSendDelegate:self];
+    balloonPlugin = [existingPhotoBrowserViewController balloonPlugin];
+    [(CKChatInputController *)self setBrowserPlugin:balloonPlugin];
 
     v10 = [CKKeyboardContentViewController alloc];
-    v11 = [(CKKeyboardContentViewController *)v10 initWithViewController:v13 identifier:*MEMORY[0x1E69A6A00]];
-    v12 = [(CKKeyboardContentViewController *)v11 view];
-    [v13 setDragTargetView:v12];
+    v11 = [(CKKeyboardContentViewController *)v10 initWithViewController:existingPhotoBrowserViewController identifier:*MEMORY[0x1E69A6A00]];
+    view = [(CKKeyboardContentViewController *)v11 view];
+    [existingPhotoBrowserViewController setDragTargetView:view];
 
     [(CKChatInputController *)self setCurrentInputViewController:v11];
-    [(CKChatInputController *)self setInputViewVisible:1 entryFieldCollapsed:v3 animated:1];
+    [(CKChatInputController *)self setInputViewVisible:1 entryFieldCollapsed:fieldCopy animated:1];
   }
 }
 
@@ -511,25 +511,25 @@
 - (void)showPhotosBrowser
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v3 isAccessibilityPreferredContentSizeCategory];
 
-  [(CKChatInputController *)self showPhotosBrowserCollapsingEntryField:v4 ^ 1u];
+  [(CKChatInputController *)self showPhotosBrowserCollapsingEntryField:isAccessibilityPreferredContentSizeCategory ^ 1u];
 }
 
-- (void)showPhotosBrowserCollapsingEntryField:(BOOL)a3
+- (void)showPhotosBrowserCollapsingEntryField:(BOOL)field
 {
-  v3 = a3;
+  fieldCopy = field;
   if ([(CKChatInputController *)self isInputViewVisible])
   {
-    v5 = [(CKChatInputController *)self currentInputViewController];
+    currentInputViewController = [(CKChatInputController *)self currentInputViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(CKChatInputController *)self currentInputViewController];
-      v7 = [v9 identifier];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E69A6A00]];
+      currentInputViewController2 = [(CKChatInputController *)self currentInputViewController];
+      identifier = [currentInputViewController2 identifier];
+      v8 = [identifier isEqualToString:*MEMORY[0x1E69A6A00]];
 
       if (v8)
       {
@@ -542,15 +542,15 @@
     }
   }
 
-  [(CKChatInputController *)self _loadPhotosBrowserCollapsingEntryField:v3];
+  [(CKChatInputController *)self _loadPhotosBrowserCollapsingEntryField:fieldCopy];
 }
 
 - (void)showFunCamera
 {
   if (+[CKFunCameraUserConsentManager shouldPromptUserForFunCameraConsent])
   {
-    v3 = [(CKChatInputController *)self delegate];
-    v4 = [v3 activeSendMenuPresentationForChatInputController:self];
+    delegate = [(CKChatInputController *)self delegate];
+    v4 = [delegate activeSendMenuPresentationForChatInputController:self];
 
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -561,8 +561,8 @@
     v5 = v4;
     v10 = v5;
     v6 = _Block_copy(aBlock);
-    v7 = [v5 sendMenuViewController];
-    [CKFunCameraUserConsentManager presentFromViewController:v7 presentedBlock:&__block_literal_global_197 confirmBlock:v6 cancelBlock:0];
+    sendMenuViewController = [v5 sendMenuViewController];
+    [CKFunCameraUserConsentManager presentFromViewController:sendMenuViewController presentedBlock:&__block_literal_global_197 confirmBlock:v6 cancelBlock:0];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -570,8 +570,8 @@
 
   else
   {
-    v8 = [(CKChatInputController *)self entryView];
-    [(CKChatInputController *)self showFunCamera:v8];
+    entryView = [(CKChatInputController *)self entryView];
+    [(CKChatInputController *)self showFunCamera:entryView];
   }
 }
 
@@ -591,9 +591,9 @@ void __38__CKChatInputController_showFunCamera__block_invoke(uint64_t a1)
   }
 }
 
-- (void)showFunCamera:(id)a3
+- (void)showFunCamera:(id)camera
 {
-  v4 = a3;
+  cameraCopy = camera;
   if ([(CKChatInputController *)self _isiMessageConversation])
   {
     if (IMOSLoggingEnabled())
@@ -606,12 +606,12 @@ void __38__CKChatInputController_showFunCamera__block_invoke(uint64_t a1)
       }
     }
 
-    v6 = [MEMORY[0x1E69A5B80] sharedInstance];
-    [v6 preWarmConnection];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+    [mEMORY[0x1E69A5B80] preWarmConnection];
   }
 
-  v7 = [(CKChatInputController *)self delegate];
-  v8 = [v7 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v8 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   if (v8)
   {
@@ -623,10 +623,10 @@ void __38__CKChatInputController_showFunCamera__block_invoke(uint64_t a1)
     v9 = 0;
   }
 
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v11)
+  if (isPopoverSendMenuEnabled)
   {
     [(CKChatInputController *)self dismissSendMenuAndPresentFunCamera];
   }
@@ -649,8 +649,8 @@ void __38__CKChatInputController_showFunCamera__block_invoke(uint64_t a1)
     {
       if (![(CKChatInputController *)self isAppCardPresented])
       {
-        v13 = [(CKChatInputController *)self delegate];
-        [v13 chatInputControllerDidSelectFunCamera:self];
+        delegate2 = [(CKChatInputController *)self delegate];
+        [delegate2 chatInputControllerDidSelectFunCamera:self];
 
         goto LABEL_18;
       }
@@ -691,8 +691,8 @@ void __39__CKChatInputController_showFunCamera___block_invoke_2(uint64_t a1)
 
 - (void)dismissSendMenuAndPresentFunCamera
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v4 = [v3 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v4 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   [v4 dismissAnimated:1 completion:0];
   if ([(CKChatInputController *)self isAppCardPresented])
@@ -710,8 +710,8 @@ void __39__CKChatInputController_showFunCamera___block_invoke_2(uint64_t a1)
 
   else
   {
-    v5 = [(CKChatInputController *)self delegate];
-    [v5 chatInputControllerDidSelectFunCamera:self];
+    delegate2 = [(CKChatInputController *)self delegate];
+    [delegate2 chatInputControllerDidSelectFunCamera:self];
   }
 }
 
@@ -724,34 +724,34 @@ void __59__CKChatInputController_dismissSendMenuAndPresentFunCamera__block_invok
 
 - (void)showDTCompose
 {
-  v3 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v4 = [v3 balloonPluginForBundleID:*MEMORY[0x1E69A69A8]];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v4 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:*MEMORY[0x1E69A69A8]];
 
   [(CKChatInputController *)self showBrowserForPlugin:v4 dataSource:0 style:0];
 }
 
 - (void)showSendLater
 {
-  v3 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v11 = [v3 balloonPluginForBundleID:*MEMORY[0x1E69A6A28]];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v11 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:*MEMORY[0x1E69A6A28]];
 
   if (IMSharedHelperDeviceIsiPad())
   {
-    v4 = [(CKChatInputController *)self entryView];
-    v5 = [v4 contentView];
-    v6 = [v5 sendLaterView];
-    v7 = v6;
-    if (v6)
+    entryView = [(CKChatInputController *)self entryView];
+    contentView = [entryView contentView];
+    sendLaterView = [contentView sendLaterView];
+    v7 = sendLaterView;
+    if (sendLaterView)
     {
-      v8 = v6;
+      entryView2 = sendLaterView;
     }
 
     else
     {
-      v8 = [(CKChatInputController *)self entryView];
+      entryView2 = [(CKChatInputController *)self entryView];
     }
 
-    v10 = v8;
+    v10 = entryView2;
 
     v9 = [[CKTranscriptPluginPresentationConfiguration alloc] initWithSourceView:v10 permittedArrowDirections:2 shouldDisableSnapshotView:0];
   }
@@ -764,34 +764,34 @@ void __59__CKChatInputController_dismissSendMenuAndPresentFunCamera__block_invok
   [(CKChatInputController *)self showBrowserForPlugin:v11 dataSource:0 style:0 presentationConfiguration:v9];
 }
 
-- (void)_sendLaterSelectedFromSendMenuWithPresentation:(id)a3
+- (void)_sendLaterSelectedFromSendMenuWithPresentation:(id)presentation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v6 = [v5 balloonPluginForBundleID:*MEMORY[0x1E69A6A28]];
+  presentationCopy = presentation;
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v6 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:*MEMORY[0x1E69A6A28]];
 
-  v7 = [(CKChatInputController *)self entryView];
-  v8 = [v7 composition];
-  v9 = [v8 hasContent];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
+  hasContent = [composition hasContent];
 
-  v10 = [(CKChatInputController *)self browserPlugin];
-  v11 = [v10 identifier];
-  v12 = [v6 identifier];
-  v13 = [v11 isEqualToString:v12];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  identifier2 = [v6 identifier];
+  v13 = [identifier isEqualToString:identifier2];
 
-  LOBYTE(v12) = [v4 presentationStyle] == 1;
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LOBYTE(v11) = [v14 isPopoverSendMenuEnabled];
+  LOBYTE(identifier2) = [presentationCopy presentationStyle] == 1;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LOBYTE(identifier) = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  v15 = v11 | v12;
+  v15 = identifier | identifier2;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 67109632;
-      v25 = v9;
+      v25 = hasContent;
       v26 = 1024;
       v27 = v13;
       v28 = 1024;
@@ -800,7 +800,7 @@ void __59__CKChatInputController_dismissSendMenuAndPresentFunCamera__block_invok
     }
   }
 
-  if (v9)
+  if (hasContent)
   {
     if ((v13 & 1) == 0)
     {
@@ -811,7 +811,7 @@ void __59__CKChatInputController_dismissSendMenuAndPresentFunCamera__block_invok
         v23[2] = __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentation___block_invoke;
         v23[3] = &unk_1E72EB9C8;
         v23[4] = self;
-        [v4 dismissAnimated:1 completion:v23];
+        [presentationCopy dismissAnimated:1 completion:v23];
       }
 
       else
@@ -831,8 +831,8 @@ void __59__CKChatInputController_dismissSendMenuAndPresentFunCamera__block_invok
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(CKChatInputController *)self entryView];
-      [v18 setSendLaterPluginInfo:v17 animated:1];
+      entryView2 = [(CKChatInputController *)self entryView];
+      [entryView2 setSendLaterPluginInfo:v17 animated:1];
     }
   }
 
@@ -855,7 +855,7 @@ LABEL_14:
 
   v20 = 1;
 LABEL_20:
-  if (v9 & 1 | ((v15 & 1) == 0))
+  if (hasContent & 1 | ((v15 & 1) == 0))
   {
     if (v20)
     {
@@ -871,7 +871,7 @@ LABEL_20:
     v21[3] = &unk_1E72F3BE8;
     v22 = v20;
     v21[4] = self;
-    [v4 dismissAnimated:1 completion:v21];
+    [presentationCopy dismissAnimated:1 completion:v21];
   }
 
 LABEL_24:
@@ -889,10 +889,10 @@ uint64_t __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentat
 
 - (void)sendLaterPluginInfoUpdated
 {
-  v3 = [(CKChatInputController *)self entryView];
-  v4 = [v3 sendLaterPluginInfo];
+  entryView = [(CKChatInputController *)self entryView];
+  sendLaterPluginInfo = [entryView sendLaterPluginInfo];
 
-  if (!v4)
+  if (!sendLaterPluginInfo)
   {
     if (IMSharedHelperDeviceIsiPad() && (-[CKChatInputController browserPlugin](self, "browserPlugin"), v5 = objc_claimAutoreleasedReturnValue(), [v5 identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E69A6A28]), v6, v5, v7))
     {
@@ -902,15 +902,15 @@ uint64_t __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentat
 
     else
     {
-      v14 = [(CKChatInputController *)self appCardPresentationOverseer];
-      v8 = [v14 browserViewController];
-      if (v8)
+      appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+      browserViewController = [appCardPresentationOverseer browserViewController];
+      if (browserViewController)
       {
-        v9 = v8;
-        v10 = [v14 browserViewController];
-        v11 = [v10 balloonPlugin];
-        v12 = [v11 identifier];
-        v13 = [v12 isEqualToString:*MEMORY[0x1E69A6A28]];
+        v9 = browserViewController;
+        browserViewController2 = [appCardPresentationOverseer browserViewController];
+        balloonPlugin = [browserViewController2 balloonPlugin];
+        identifier = [balloonPlugin identifier];
+        v13 = [identifier isEqualToString:*MEMORY[0x1E69A6A28]];
 
         if (v13)
         {
@@ -929,28 +929,28 @@ uint64_t __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentat
   }
 }
 
-- (void)appSelectionInterfaceSelectedItem:(id)a3
+- (void)appSelectionInterfaceSelectedItem:(id)item
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v6 = [v4 identifier];
-  v7 = [v5 balloonPluginForBundleID:v6];
+  itemCopy = item;
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  identifier = [itemCopy identifier];
+  v7 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:identifier];
 
-  v8 = [v4 identifier];
-  v9 = [v8 isEqualToString:@"kAppMenuAudio"];
+  identifier2 = [itemCopy identifier];
+  v9 = [identifier2 isEqualToString:@"kAppMenuAudio"];
 
-  v10 = [v4 identifier];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69A6A28]];
+  identifier3 = [itemCopy identifier];
+  v11 = [identifier3 isEqualToString:*MEMORY[0x1E69A6A28]];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isPollsEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPollsEnabled = [mEMORY[0x1E69A8070] isPollsEnabled];
 
-  if (v13)
+  if (isPollsEnabled)
   {
-    v14 = [v4 identifier];
+    identifier4 = [itemCopy identifier];
     v15 = IMBalloonExtensionIDWithSuffix();
-    v16 = [v14 isEqualToString:v15];
+    v16 = [identifier4 isEqualToString:v15];
   }
 
   else
@@ -958,9 +958,9 @@ uint64_t __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentat
     v16 = 0;
   }
 
-  v17 = [v4 identifier];
+  identifier5 = [itemCopy identifier];
   v18 = IMBalloonExtensionIDWithSuffix();
-  v19 = [v17 isEqualToString:v18];
+  v19 = [identifier5 isEqualToString:v18];
 
   if (v19)
   {
@@ -969,8 +969,8 @@ uint64_t __72__CKChatInputController__sendLaterSelectedFromSendMenuWithPresentat
 
   if (v16)
   {
-    v21 = IMBalloonExtensionIDWithSuffix();
-    [(CKChatInputController *)self _handleSelectionOfExtensionWithIdentifier:v21];
+    entryView = IMBalloonExtensionIDWithSuffix();
+    [(CKChatInputController *)self _handleSelectionOfExtensionWithIdentifier:entryView];
 LABEL_11:
 
     goto LABEL_12;
@@ -978,58 +978,58 @@ LABEL_11:
 
   if (v7)
   {
-    v21 = [(CKChatInputController *)self entryView];
-    v22 = [v21 sendMenuSourceView];
-    v23 = [[CKTranscriptPluginPresentationConfiguration alloc] initWithSourceView:v22 permittedArrowDirections:8 shouldDisableSnapshotView:0];
+    entryView = [(CKChatInputController *)self entryView];
+    sendMenuSourceView = [entryView sendMenuSourceView];
+    v23 = [[CKTranscriptPluginPresentationConfiguration alloc] initWithSourceView:sendMenuSourceView permittedArrowDirections:8 shouldDisableSnapshotView:0];
     [(CKChatInputController *)self showBrowserForPlugin:v7 dataSource:0 style:1 presentationConfiguration:v23];
 
     goto LABEL_11;
   }
 
-  v24 = [v4 identifier];
+  identifier6 = [itemCopy identifier];
   v25 = IMBalloonExtensionIDWithSuffix();
-  v26 = [v24 isEqualToString:v25];
+  v26 = [identifier6 isEqualToString:v25];
 
   if (v26)
   {
 LABEL_5:
-    v20 = [(CKChatInputController *)self delegate];
-    [v20 chatInputDidSelectGenmojiApp];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputDidSelectGenmojiApp];
 LABEL_6:
 
     goto LABEL_12;
   }
 
-  v27 = [v4 identifier];
-  v28 = [v27 isEqualToString:@"kAppMenuPhotosItemIdentifier"];
+  identifier7 = [itemCopy identifier];
+  v28 = [identifier7 isEqualToString:@"kAppMenuPhotosItemIdentifier"];
 
   if (v28)
   {
-    v20 = [(CKChatInputController *)self delegate];
-    [v20 chatInputDidSelectPhotoPicker];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputDidSelectPhotoPicker];
     goto LABEL_6;
   }
 
-  v29 = [v4 identifier];
-  v30 = [v29 isEqualToString:@"kAppMenuEffectsItemIdentifier"];
+  identifier8 = [itemCopy identifier];
+  v30 = [identifier8 isEqualToString:@"kAppMenuEffectsItemIdentifier"];
 
   if (v30)
   {
-    v20 = [(CKChatInputController *)self delegate];
-    [v20 chatInputDidSelectEffectPicker];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputDidSelectEffectPicker];
     goto LABEL_6;
   }
 
-  v31 = [v4 identifier];
-  if ([v31 isEqualToString:@"kAppMenuEmoji"])
+  identifier9 = [itemCopy identifier];
+  if ([identifier9 isEqualToString:@"kAppMenuEmoji"])
   {
-    v32 = [(CKChatInputController *)self delegate];
+    delegate2 = [(CKChatInputController *)self delegate];
     v33 = objc_opt_respondsToSelector();
 
     if (v33)
     {
-      v20 = [(CKChatInputController *)self delegate];
-      [v20 chatInputDidSelectEmojiPicker];
+      delegate = [(CKChatInputController *)self delegate];
+      [delegate chatInputDidSelectEmojiPicker];
       goto LABEL_6;
     }
   }
@@ -1040,40 +1040,40 @@ LABEL_6:
 
   if (v9)
   {
-    v20 = [(CKChatInputController *)self entryView];
-    [v20 startRecordingForAudioButtonInEntryView];
+    delegate = [(CKChatInputController *)self entryView];
+    [delegate startRecordingForAudioButtonInEntryView];
     goto LABEL_6;
   }
 
   if (v11)
   {
-    v34 = [(CKChatInputController *)self entryView];
-    v35 = [v34 composition];
-    v36 = [v35 shelfPluginPayload];
+    entryView2 = [(CKChatInputController *)self entryView];
+    composition = [entryView2 composition];
+    shelfPluginPayload = [composition shelfPluginPayload];
 
-    if (v36 && ([v36 supportsSendLater] & 1) == 0)
+    if (shelfPluginPayload && ([shelfPluginPayload supportsSendLater] & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
         v41 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
         {
-          v42 = [v36 pluginBundleID];
+          pluginBundleID = [shelfPluginPayload pluginBundleID];
           v44 = 138412290;
-          v45 = v42;
+          v45 = pluginBundleID;
           _os_log_impl(&dword_19020E000, v41, OS_LOG_TYPE_INFO, "User selected send later, but the currently staged plugin payload (%@) does not allow presentation alongside Send Later. Presenting unsupported item alert and aborting.", &v44, 0xCu);
         }
       }
 
-      v43 = [v36 pluginBundleID];
-      [(CKChatInputController *)self _presentSendLaterUnsupportedAlertForIdentifier:v43 handler:0];
+      pluginBundleID2 = [shelfPluginPayload pluginBundleID];
+      [(CKChatInputController *)self _presentSendLaterUnsupportedAlertForIdentifier:pluginBundleID2 handler:0];
     }
 
     else
     {
-      v37 = [(CKChatInputController *)self sendLaterPluginInfo];
-      v38 = [(CKChatInputController *)self entryView];
-      [v38 setSendLaterPluginInfo:v37 animated:1];
+      sendLaterPluginInfo = [(CKChatInputController *)self sendLaterPluginInfo];
+      entryView3 = [(CKChatInputController *)self entryView];
+      [entryView3 setSendLaterPluginInfo:sendLaterPluginInfo animated:1];
     }
   }
 
@@ -1082,9 +1082,9 @@ LABEL_6:
     v39 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
-      v40 = [v4 identifier];
+      identifier10 = [itemCopy identifier];
       v44 = 138412290;
-      v45 = v40;
+      v45 = identifier10;
       _os_log_impl(&dword_19020E000, v39, OS_LOG_TYPE_INFO, "unknown CKAppMenuItem:  %@", &v44, 0xCu);
     }
   }
@@ -1095,40 +1095,40 @@ LABEL_12:
 - (void)swipeDismissBrowser
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v3 isAccessibilityPreferredContentSizeCategory];
 
-  [(CKChatInputController *)self setInputViewVisible:0 entryFieldCollapsed:v4 ^ 1u animated:0 messageDelegate:0];
+  [(CKChatInputController *)self setInputViewVisible:0 entryFieldCollapsed:isAccessibilityPreferredContentSizeCategory ^ 1u animated:0 messageDelegate:0];
 }
 
-- (void)dismissAppCardIfNecessaryAnimated:(BOOL)a3 isFocusingKeyboard:(BOOL)a4 overrideExceptions:(BOOL)a5 completion:(id)a6
+- (void)dismissAppCardIfNecessaryAnimated:(BOOL)animated isFocusingKeyboard:(BOOL)keyboard overrideExceptions:(BOOL)exceptions completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
+  exceptionsCopy = exceptions;
+  keyboardCopy = keyboard;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (CKIsAppCardsEnabled())
   {
-    v11 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v12 = [v11 isPresentingCard];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-    if (v12)
+    if (isPresentingCard)
     {
-      if ([(CKChatInputController *)self isDismissingAppCardForKeyboardPresentation]|| v7)
+      if ([(CKChatInputController *)self isDismissingAppCardForKeyboardPresentation]|| keyboardCopy)
       {
-        v13 = [(CKChatInputController *)self appCardPresentationOverseer];
-        v7 = [v13 shouldAnimateDismissal] ^ 1;
+        appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+        keyboardCopy = [appCardPresentationOverseer2 shouldAnimateDismissal] ^ 1;
       }
 
-      [(CKChatInputController *)self setIsDismissingAppCardForKeyboardPresentation:v7];
+      [(CKChatInputController *)self setIsDismissingAppCardForKeyboardPresentation:keyboardCopy];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __108__CKChatInputController_dismissAppCardIfNecessaryAnimated_isFocusingKeyboard_overrideExceptions_completion___block_invoke;
       aBlock[3] = &unk_1E72ED8D8;
-      v29 = v7;
+      v29 = keyboardCopy;
       aBlock[4] = self;
       v14 = _Block_copy(aBlock);
-      v15 = [(CKChatInputController *)self activeSendMenuPresentationForAppCardOverseer];
-      if (v15 && (v16 = v15, -[CKChatInputController activeSendMenuPresentationForAppCardOverseer](self, "activeSendMenuPresentationForAppCardOverseer"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 presentationStyle], v17, v16, v18 == 1))
+      activeSendMenuPresentationForAppCardOverseer = [(CKChatInputController *)self activeSendMenuPresentationForAppCardOverseer];
+      if (activeSendMenuPresentationForAppCardOverseer && (v16 = activeSendMenuPresentationForAppCardOverseer, -[CKChatInputController activeSendMenuPresentationForAppCardOverseer](self, "activeSendMenuPresentationForAppCardOverseer"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 presentationStyle], v17, v16, v18 == 1))
       {
         v19 = 1;
       }
@@ -1139,16 +1139,16 @@ LABEL_12:
         v19 = 0;
       }
 
-      v21 = [(CKChatInputController *)self appCardPresentationOverseer];
+      appCardPresentationOverseer3 = [(CKChatInputController *)self appCardPresentationOverseer];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __108__CKChatInputController_dismissAppCardIfNecessaryAnimated_isFocusingKeyboard_overrideExceptions_completion___block_invoke_2;
       v24[3] = &unk_1E72EF578;
       v27 = v19;
       v25 = v14;
-      v26 = v10;
+      v26 = completionCopy;
       v22 = v14;
-      [v21 dismissCardAnimated:v8 overrideExceptions:v6 completion:v24];
+      [appCardPresentationOverseer3 dismissCardAnimated:animatedCopy overrideExceptions:exceptionsCopy completion:v24];
     }
 
     else if (IMOSLoggingEnabled())
@@ -1190,13 +1190,13 @@ uint64_t __108__CKChatInputController_dismissAppCardIfNecessaryAnimated_isFocusi
   return result;
 }
 
-- (void)setAppCardDismissPadding:(double)a3
+- (void)setAppCardDismissPadding:(double)padding
 {
-  self->_appCardDismissPadding = a3;
+  self->_appCardDismissPadding = padding;
   if (CKIsAppCardsEnabled())
   {
-    v5 = [(CKChatInputController *)self appCardPresentationOverseer];
-    [v5 setAppCardDismissPadding:a3];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    [appCardPresentationOverseer setAppCardDismissPadding:padding];
   }
 }
 
@@ -1205,21 +1205,21 @@ uint64_t __108__CKChatInputController_dismissAppCardIfNecessaryAnimated_isFocusi
   v3 = CKIsAppCardsEnabled();
   if (v3)
   {
-    v4 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v5 = [v4 presentedAppBypassesSendMenu];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    presentedAppBypassesSendMenu = [appCardPresentationOverseer presentedAppBypassesSendMenu];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = presentedAppBypassesSendMenu;
   }
 
   return v3;
 }
 
-- (id)_adamIDFromPluginPayloadData:(id)a3
+- (id)_adamIDFromPluginPayloadData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v12 = 0;
-  v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v12];
+  v4 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v12];
   v5 = v12;
   if (objc_opt_respondsToSelector())
   {
@@ -1263,52 +1263,52 @@ uint64_t __108__CKChatInputController_dismissAppCardIfNecessaryAnimated_isFocusi
   return v9;
 }
 
-- (void)presentViewControllerWithPluginChatItem:(id)a3 presentationStyle:(unint64_t)a4 presentationConfiguration:(id)a5
+- (void)presentViewControllerWithPluginChatItem:(id)item presentationStyle:(unint64_t)style presentationConfiguration:(id)configuration
 {
-  v21 = a5;
-  v8 = [a3 IMChatItem];
-  v9 = [v8 dataSource];
+  configurationCopy = configuration;
+  iMChatItem = [item IMChatItem];
+  dataSource = [iMChatItem dataSource];
 
-  v10 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v11 = [v9 bundleID];
-  v12 = [v10 balloonPluginForBundleID:v11];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  bundleID = [dataSource bundleID];
+  v12 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:bundleID];
 
-  v13 = [(CKChatInputController *)self browserPluginDataSource];
-  v14 = v13;
-  if (v13 != v9)
+  browserPluginDataSource = [(CKChatInputController *)self browserPluginDataSource];
+  v14 = browserPluginDataSource;
+  if (browserPluginDataSource != dataSource)
   {
 
     goto LABEL_3;
   }
 
-  v20 = [(CKChatInputController *)self browserPlugin];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
 
-  if (a4 == 2 || v20 != v12)
+  if (style == 2 || browserPlugin != v12)
   {
 LABEL_3:
-    v15 = [v12 identifier];
-    if ([v15 isEqualToString:*MEMORY[0x1E69A69F0]])
+    identifier = [v12 identifier];
+    if ([identifier isEqualToString:*MEMORY[0x1E69A69F0]])
     {
-      v16 = [v9 pluginPayload];
-      v17 = [v16 data];
+      pluginPayload = [dataSource pluginPayload];
+      data = [pluginPayload data];
 
-      v18 = [(CKChatInputController *)self _adamIDFromPluginPayloadData:v17];
-      [(CKChatInputController *)self setDeferredPluginDataSource:v9];
+      v18 = [(CKChatInputController *)self _adamIDFromPluginPayloadData:data];
+      [(CKChatInputController *)self setDeferredPluginDataSource:dataSource];
       [(CKChatInputController *)self presentAppStoreForAdamID:v18];
-      v19 = [MEMORY[0x1E69A8168] sharedInstance];
-      [v19 trackEvent:*MEMORY[0x1E69A72F8]];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+      [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A72F8]];
     }
 
     else
     {
-      [(CKChatInputController *)self launchAndShowBrowserForPlugin:v12 dataSource:v9 style:a4 presentationConfiguration:v21];
+      [(CKChatInputController *)self launchAndShowBrowserForPlugin:v12 dataSource:dataSource style:style presentationConfiguration:configurationCopy];
     }
   }
 }
 
-- (void)presentAppStoreForAdamID:(id)a3
+- (void)presentAppStoreForAdamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[CKBalloonPluginManager sharedInstance];
   v6 = *MEMORY[0x1E69A6988];
   v7 = [v5 viewControllerForPluginIdentifier:*MEMORY[0x1E69A6988] dataSource:0];
@@ -1317,11 +1317,11 @@ LABEL_3:
   {
     if (objc_opt_respondsToSelector())
     {
-      [v7 setAdamID:v4];
+      [v7 setAdamID:dCopy];
     }
 
-    v8 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v9 = [v8 balloonPluginForBundleID:v6];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    v9 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v6];
 
     [(CKChatInputController *)self showBrowserForPlugin:v9 dataSource:0 style:1];
   }
@@ -1337,10 +1337,10 @@ LABEL_3:
   }
 }
 
-- (void)presentAppStoreForURL:(id)a3 fromSourceApplication:(id)a4
+- (void)presentAppStoreForURL:(id)l fromSourceApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  applicationCopy = application;
   v8 = +[CKBalloonPluginManager sharedInstance];
   v9 = *MEMORY[0x1E69A6988];
   v10 = [v8 viewControllerForPluginIdentifier:*MEMORY[0x1E69A6988] dataSource:0];
@@ -1348,13 +1348,13 @@ LABEL_3:
   if (v10)
   {
     [v10 setSendDelegate:self];
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (lCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v10 setStoreLaunchURL:v6 sourceApplication:v7];
+      [v10 setStoreLaunchURL:lCopy sourceApplication:applicationCopy];
     }
 
-    v11 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v12 = [v11 balloonPluginForBundleID:v9];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    v12 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:v9];
 
     [(CKChatInputController *)self showBrowserForPlugin:v12 dataSource:0 style:1];
   }
@@ -1383,14 +1383,14 @@ LABEL_3:
 
   if (v4)
   {
-    v5 = [v4 balloonPlugin];
-    [(CKChatInputController *)self setBrowserPlugin:v5];
+    balloonPlugin = [v4 balloonPlugin];
+    [(CKChatInputController *)self setBrowserPlugin:balloonPlugin];
 
     [v4 setSendDelegate:self];
     [v4 setModalPresentationStyle:2];
-    v6 = [(CKChatInputController *)self delegate];
-    v7 = [v6 viewControllerForChatInputModalPresentation];
-    [v7 presentViewController:v4 animated:1 completion:0];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+    [viewControllerForChatInputModalPresentation presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -1400,26 +1400,26 @@ LABEL_3:
       goto LABEL_6;
     }
 
-    v6 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    delegate = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_INFO))
     {
       *v8 = 0;
-      _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Not launching the app manager, got nil back for the VC", v8, 2u);
+      _os_log_impl(&dword_19020E000, delegate, OS_LOG_TYPE_INFO, "Not launching the app manager, got nil back for the VC", v8, 2u);
     }
   }
 
 LABEL_6:
 }
 
-- (void)notifyBrowserViewControllerOfMatchingNewMessages:(id)a3
+- (void)notifyBrowserViewControllerOfMatchingNewMessages:(id)messages
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [messagesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1431,7 +1431,7 @@ LABEL_6:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(messagesCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * v8);
@@ -1439,21 +1439,21 @@ LABEL_6:
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 dataSource];
-          v12 = [v11 bundleID];
+          dataSource = [v10 dataSource];
+          bundleID = [dataSource bundleID];
 
-          v13 = [(CKChatInputController *)self pluginBundleID];
-          v14 = [v12 isEqualToString:v13];
+          pluginBundleID = [(CKChatInputController *)self pluginBundleID];
+          v14 = [bundleID isEqualToString:pluginBundleID];
 
           if (v14)
           {
-            v15 = [(CKChatInputController *)self browserSwitcher];
-            v16 = [v15 currentViewController];
+            browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+            currentViewController = [browserSwitcher currentViewController];
 
             if (objc_opt_respondsToSelector())
             {
-              v17 = [v10 dataSource];
-              [v16 messageAddedWithDataSource:v17];
+              dataSource2 = [v10 dataSource];
+              [currentViewController messageAddedWithDataSource:dataSource2];
             }
           }
         }
@@ -1462,7 +1462,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [messagesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -1472,16 +1472,16 @@ LABEL_6:
 - (void)requestPhotoBrowserToAppendFinalImagesToComposition
 {
   v3 = +[CKBalloonPluginManager sharedInstance];
-  v20 = [v3 existingPhotoBrowserViewController];
+  existingPhotoBrowserViewController = [v3 existingPhotoBrowserViewController];
 
-  v4 = [(CKChatInputController *)self entryView];
-  v5 = [v4 composition];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
 
-  v6 = [v5 shelfPluginPayload];
-  v7 = [v6 pluginBundleID];
-  if (v20)
+  shelfPluginPayload = [composition shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  if (existingPhotoBrowserViewController)
   {
-    v8 = v6 == 0;
+    v8 = shelfPluginPayload == 0;
   }
 
   else
@@ -1489,10 +1489,10 @@ LABEL_6:
     v8 = 1;
   }
 
-  if (v8 || ![v7 isEqualToString:*MEMORY[0x1E69A6A00]])
+  if (v8 || ![pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
   {
     v12 = IMBalloonExtensionIDWithSuffix();
-    v13 = [v7 isEqualToString:v12];
+    v13 = [pluginBundleID isEqualToString:v12];
 
     if (!v13)
     {
@@ -1500,16 +1500,16 @@ LABEL_6:
     }
 
     v14 = +[CKBalloonPluginManager sharedInstance];
-    v9 = [v14 viewControllerForPluginIdentifier:v7];
+    v9 = [v14 viewControllerForPluginIdentifier:pluginBundleID];
 
     [v9 setSendDelegate:self];
-    v11 = v6;
-    v15 = [v11 photoShelfViewController];
+    v11 = shelfPluginPayload;
+    photoShelfViewController = [v11 photoShelfViewController];
 
-    if (v15)
+    if (photoShelfViewController)
     {
-      v16 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-      [v16 beginHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
+      dismissEntryViewShelfUpdater = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+      [dismissEntryViewShelfUpdater beginHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
 
       if (objc_opt_respondsToSelector())
       {
@@ -1521,8 +1521,8 @@ LABEL_6:
         v17 = 0;
       }
 
-      v19 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-      [v19 endHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
+      dismissEntryViewShelfUpdater2 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+      [dismissEntryViewShelfUpdater2 endHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
 
       [v11 setAttachments:v17];
     }
@@ -1530,9 +1530,9 @@ LABEL_6:
 
   else
   {
-    v9 = v20;
-    v10 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-    [v10 beginHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
+    v9 = existingPhotoBrowserViewController;
+    dismissEntryViewShelfUpdater3 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+    [dismissEntryViewShelfUpdater3 beginHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
 
     if (objc_opt_respondsToSelector())
     {
@@ -1544,45 +1544,45 @@ LABEL_6:
       v11 = 0;
     }
 
-    v18 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-    [v18 endHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
+    dismissEntryViewShelfUpdater4 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+    [dismissEntryViewShelfUpdater4 endHoldingUpdatesForKey:_kHoldShelfUpdateForSend];
 
-    [v6 setAttachments:v11];
+    [shelfPluginPayload setAttachments:v11];
   }
 
 LABEL_17:
 }
 
-- (void)requestPollPluginToPrepareForDraftWithCompletion:(id)a3
+- (void)requestPollPluginToPrepareForDraftWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self entryView];
-  v6 = [v5 composition];
+  completionCopy = completion;
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
 
-  v7 = [v6 shelfPluginPayload];
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isPollsEnabled];
+  shelfPluginPayload = [composition shelfPluginPayload];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPollsEnabled = [mEMORY[0x1E69A8070] isPollsEnabled];
 
-  if (v9 && ([v7 pluginBundleID], v10 = objc_claimAutoreleasedReturnValue(), IMBalloonExtensionIDWithSuffix(), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, (v12 & 1) != 0))
+  if (isPollsEnabled && ([shelfPluginPayload pluginBundleID], v10 = objc_claimAutoreleasedReturnValue(), IMBalloonExtensionIDWithSuffix(), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "isEqualToString:", v11), v11, v10, (v12 & 1) != 0))
   {
-    v13 = [(CKChatInputController *)self entryView];
-    v14 = [v13 contentView];
-    v15 = [v14 pluginEntryViewController];
+    entryView2 = [(CKChatInputController *)self entryView];
+    contentView = [entryView2 contentView];
+    pluginEntryViewController = [contentView pluginEntryViewController];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__CKChatInputController_requestPollPluginToPrepareForDraftWithCompletion___block_invoke;
     v16[3] = &unk_1E72F5668;
-    v17 = v7;
-    v18 = v6;
-    v19 = self;
-    v20 = v4;
-    [v15 fetchInternalMessageStateForDraft:1 completion:v16];
+    v17 = shelfPluginPayload;
+    v18 = composition;
+    selfCopy = self;
+    v20 = completionCopy;
+    [pluginEntryViewController fetchInternalMessageStateForDraft:1 completion:v16];
   }
 
   else
   {
-    (*(v4 + 2))(v4, v6);
+    (*(completionCopy + 2))(completionCopy, composition);
   }
 }
 
@@ -1610,19 +1610,19 @@ void __74__CKChatInputController_requestPollPluginToPrepareForDraftWithCompletio
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:(BOOL)a3
+- (void)requestPhotoBrowserToPrepareForDraftClearingPhotoShelfViewController:(BOOL)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v5 = +[CKBalloonPluginManager sharedInstance];
-  v21 = [v5 existingPhotoBrowserViewController];
+  existingPhotoBrowserViewController = [v5 existingPhotoBrowserViewController];
 
-  v6 = [(CKChatInputController *)self entryView];
-  v7 = [v6 composition];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
 
-  v8 = [v7 shelfPluginPayload];
-  if (v21)
+  shelfPluginPayload = [composition shelfPluginPayload];
+  if (existingPhotoBrowserViewController)
   {
-    v9 = v8 == 0;
+    v9 = shelfPluginPayload == 0;
   }
 
   else
@@ -1630,11 +1630,11 @@ void __74__CKChatInputController_requestPollPluginToPrepareForDraftWithCompletio
     v9 = 1;
   }
 
-  if (v9 || ([v8 pluginBundleID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x1E69A6A00]), v10, !v11))
+  if (v9 || ([shelfPluginPayload pluginBundleID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqualToString:", *MEMORY[0x1E69A6A00]), v10, !v11))
   {
-    v13 = [v8 pluginBundleID];
+    pluginBundleID = [shelfPluginPayload pluginBundleID];
     v14 = IMBalloonExtensionIDWithSuffix();
-    v15 = [v13 isEqualToString:v14];
+    v15 = [pluginBundleID isEqualToString:v14];
 
     if (!v15)
     {
@@ -1642,19 +1642,19 @@ void __74__CKChatInputController_requestPollPluginToPrepareForDraftWithCompletio
     }
 
     v16 = +[CKBalloonPluginManager sharedInstance];
-    v17 = [v8 pluginBundleID];
-    v12 = [v16 viewControllerForPluginIdentifier:v17];
+    pluginBundleID2 = [shelfPluginPayload pluginBundleID];
+    v12 = [v16 viewControllerForPluginIdentifier:pluginBundleID2];
 
     [v12 setSendDelegate:self];
   }
 
   else
   {
-    v12 = v21;
+    v12 = existingPhotoBrowserViewController;
   }
 
-  v18 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-  [v18 beginHoldingUpdatesForKey:_kHoldShelfUpdateForDraft];
+  dismissEntryViewShelfUpdater = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+  [dismissEntryViewShelfUpdater beginHoldingUpdatesForKey:_kHoldShelfUpdateForDraft];
 
   if (objc_opt_respondsToSelector())
   {
@@ -1666,43 +1666,43 @@ void __74__CKChatInputController_requestPollPluginToPrepareForDraftWithCompletio
     v19 = 0;
   }
 
-  v20 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-  [v20 endHoldingUpdatesForKey:_kHoldShelfUpdateForDraft];
+  dismissEntryViewShelfUpdater2 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+  [dismissEntryViewShelfUpdater2 endHoldingUpdatesForKey:_kHoldShelfUpdateForDraft];
 
-  [v8 setAttachments:v19];
-  if (v3)
+  [shelfPluginPayload setAttachments:v19];
+  if (controllerCopy)
   {
-    [v8 setPhotoShelfViewController:0];
+    [shelfPluginPayload setPhotoShelfViewController:0];
   }
 
 LABEL_15:
 }
 
-- (void)requestPhotoBrowserInitFromDraft:(id)a3
+- (void)requestPhotoBrowserInitFromDraft:(id)draft
 {
-  v4 = a3;
-  v5 = [v4 shelfPluginPayload];
-  v6 = [v5 pluginBundleID];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69A6A00]];
+  draftCopy = draft;
+  shelfPluginPayload = [draftCopy shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  v7 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]];
 
   if (v7)
   {
     v8 = +[CKBalloonPluginManager sharedInstance];
-    v9 = [v5 attachments];
-    v10 = [v8 photosBrowserViewControllerWithPluginPayloads:v9];
+    attachments = [shelfPluginPayload attachments];
+    v10 = [v8 photosBrowserViewControllerWithPluginPayloads:attachments];
 
     [v10 setSendDelegate:self];
-    v11 = [v10 balloonPlugin];
-    [(CKChatInputController *)self setBrowserPlugin:v11];
+    balloonPlugin = [v10 balloonPlugin];
+    [(CKChatInputController *)self setBrowserPlugin:balloonPlugin];
 
-    [v5 setAttachments:0];
+    [shelfPluginPayload setAttachments:0];
   }
 
   else
   {
-    v12 = [v5 pluginBundleID];
+    pluginBundleID2 = [shelfPluginPayload pluginBundleID];
     v13 = IMBalloonExtensionIDWithSuffix();
-    v14 = [v12 isEqualToString:v13];
+    v14 = [pluginBundleID2 isEqualToString:v13];
 
     if (v14)
     {
@@ -1710,14 +1710,14 @@ LABEL_15:
       [v15 invalidatePhotosViewController];
 
       v16 = +[CKBalloonPluginManager sharedInstance];
-      v17 = [v5 pluginBundleID];
-      v18 = [v16 viewControllerForPluginIdentifier:v17];
+      pluginBundleID3 = [shelfPluginPayload pluginBundleID];
+      v18 = [v16 viewControllerForPluginIdentifier:pluginBundleID3];
 
       if (v18)
       {
-        v19 = v5;
-        v20 = [v19 attachments];
-        v21 = [v20 count];
+        v19 = shelfPluginPayload;
+        attachments2 = [v19 attachments];
+        v21 = [attachments2 count];
 
         if (v21)
         {
@@ -1737,14 +1737,14 @@ LABEL_15:
             [v18 restoreDraftStateFromPayload:v19];
           }
 
-          v23 = [v18 balloonPlugin];
-          [(CKChatInputController *)self setBrowserPlugin:v23];
+          balloonPlugin2 = [v18 balloonPlugin];
+          [(CKChatInputController *)self setBrowserPlugin:balloonPlugin2];
         }
 
         else
         {
-          v23 = IMLogHandleForCategory();
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+          balloonPlugin2 = IMLogHandleForCategory();
+          if (os_log_type_enabled(balloonPlugin2, OS_LOG_TYPE_ERROR))
           {
             [CKChatInputController requestPhotoBrowserInitFromDraft:];
           }
@@ -1763,21 +1763,21 @@ LABEL_15:
   }
 }
 
-- (void)requestPhotoBrowserToEnumerateSelectedImagesUsingBlock:(id)a3
+- (void)requestPhotoBrowserToEnumerateSelectedImagesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CKBalloonPluginManager sharedInstance];
-  v6 = [v5 existingPhotoBrowserViewController];
+  existingPhotoBrowserViewController = [v5 existingPhotoBrowserViewController];
 
-  v7 = [(CKChatInputController *)self entryView];
-  v8 = [v7 composition];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
 
-  v9 = [v8 shelfPluginPayload];
-  v10 = [v9 pluginBundleID];
-  v11 = v10;
-  if (v6)
+  shelfPluginPayload = [composition shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  v11 = pluginBundleID;
+  if (existingPhotoBrowserViewController)
   {
-    v12 = v9 == 0;
+    v12 = shelfPluginPayload == 0;
   }
 
   else
@@ -1785,28 +1785,28 @@ LABEL_15:
     v12 = 1;
   }
 
-  if (!v12 && [v10 isEqualToString:*MEMORY[0x1E69A6A00]])
+  if (!v12 && [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
   {
-    v13 = v6;
+    v13 = existingPhotoBrowserViewController;
 LABEL_10:
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v13 fetchPluginPayloadsAndClear:0];
+      photoShelfViewController = [v13 fetchPluginPayloadsAndClear:0];
     }
 
     else
     {
-      v14 = 0;
+      photoShelfViewController = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v13 fetchPluginStagedIdentifiers];
+      fetchPluginStagedIdentifiers = [v13 fetchPluginStagedIdentifiers];
     }
 
     else
     {
-      v16 = 0;
+      fetchPluginStagedIdentifiers = 0;
     }
 
     goto LABEL_17;
@@ -1815,11 +1815,11 @@ LABEL_10:
   v13 = IMBalloonExtensionIDWithSuffix();
   if ([v11 isEqualToString:v13])
   {
-    v14 = [v9 photoShelfViewController];
+    photoShelfViewController = [shelfPluginPayload photoShelfViewController];
 
-    if (!v14)
+    if (!photoShelfViewController)
     {
-      v16 = 0;
+      fetchPluginStagedIdentifiers = 0;
       goto LABEL_18;
     }
 
@@ -1829,22 +1829,22 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v16 = 0;
-  v14 = 0;
+  fetchPluginStagedIdentifiers = 0;
+  photoShelfViewController = 0;
 LABEL_17:
 
 LABEL_18:
-  v17 = [v16 count];
+  v17 = [fetchPluginStagedIdentifiers count];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__CKChatInputController_requestPhotoBrowserToEnumerateSelectedImagesUsingBlock___block_invoke;
   v20[3] = &unk_1E72F5690;
-  v22 = v4;
+  v22 = blockCopy;
   v23 = v17;
-  v21 = v16;
-  v18 = v4;
-  v19 = v16;
-  [v14 enumerateObjectsUsingBlock:v20];
+  v21 = fetchPluginStagedIdentifiers;
+  v18 = blockCopy;
+  v19 = fetchPluginStagedIdentifiers;
+  [photoShelfViewController enumerateObjectsUsingBlock:v20];
 }
 
 void __80__CKChatInputController_requestPhotoBrowserToEnumerateSelectedImagesUsingBlock___block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -1867,23 +1867,23 @@ void __80__CKChatInputController_requestPhotoBrowserToEnumerateSelectedImagesUsi
   }
 }
 
-- (void)requestPhotoBrowserToUnstageImages:(id)a3
+- (void)requestPhotoBrowserToUnstageImages:(id)images
 {
-  v14 = a3;
-  if ([v14 count])
+  imagesCopy = images;
+  if ([imagesCopy count])
   {
     v4 = +[CKBalloonPluginManager sharedInstance];
-    v5 = [v4 existingPhotoBrowserViewController];
+    existingPhotoBrowserViewController = [v4 existingPhotoBrowserViewController];
 
-    v6 = [(CKChatInputController *)self entryView];
-    v7 = [v6 composition];
+    entryView = [(CKChatInputController *)self entryView];
+    composition = [entryView composition];
 
-    v8 = [v7 shelfPluginPayload];
-    v9 = [v8 pluginBundleID];
-    v10 = v9;
-    if (v5 && v8 && [v9 isEqualToString:*MEMORY[0x1E69A6A00]])
+    shelfPluginPayload = [composition shelfPluginPayload];
+    pluginBundleID = [shelfPluginPayload pluginBundleID];
+    v10 = pluginBundleID;
+    if (existingPhotoBrowserViewController && shelfPluginPayload && [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
     {
-      v11 = v5;
+      v11 = existingPhotoBrowserViewController;
     }
 
     else
@@ -1896,9 +1896,9 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v12 = [v8 photoShelfViewController];
+      photoShelfViewController = [shelfPluginPayload photoShelfViewController];
 
-      if (!v12)
+      if (!photoShelfViewController)
       {
 LABEL_12:
 
@@ -1911,7 +1911,7 @@ LABEL_12:
 
     if (objc_opt_respondsToSelector())
     {
-      [v11 clearPluginPackagesWithIdentifiers:v14];
+      [v11 clearPluginPackagesWithIdentifiers:imagesCopy];
     }
 
     goto LABEL_11;
@@ -1923,16 +1923,16 @@ LABEL_13:
 - (void)requestPhotoBrowserToUnstageAllImages
 {
   v3 = +[CKBalloonPluginManager sharedInstance];
-  v12 = [v3 existingPhotoBrowserViewController];
+  existingPhotoBrowserViewController = [v3 existingPhotoBrowserViewController];
 
-  v4 = [(CKChatInputController *)self entryView];
-  v5 = [v4 composition];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
 
-  v6 = [v5 shelfPluginPayload];
-  v7 = [v6 pluginBundleID];
-  if (v12)
+  shelfPluginPayload = [composition shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  if (existingPhotoBrowserViewController)
   {
-    v8 = v6 == 0;
+    v8 = shelfPluginPayload == 0;
   }
 
   else
@@ -1940,9 +1940,9 @@ LABEL_13:
     v8 = 1;
   }
 
-  if (!v8 && [v7 isEqualToString:*MEMORY[0x1E69A6A00]])
+  if (!v8 && [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]])
   {
-    v9 = v12;
+    v9 = existingPhotoBrowserViewController;
 LABEL_10:
     if (objc_opt_respondsToSelector())
     {
@@ -1953,17 +1953,17 @@ LABEL_10:
   }
 
   v9 = IMBalloonExtensionIDWithSuffix();
-  if ([v7 isEqualToString:v9])
+  if ([pluginBundleID isEqualToString:v9])
   {
-    v10 = [v6 photoShelfViewController];
+    photoShelfViewController = [shelfPluginPayload photoShelfViewController];
 
-    if (!v10)
+    if (!photoShelfViewController)
     {
       goto LABEL_13;
     }
 
     v11 = +[CKBalloonPluginManager sharedInstance];
-    v9 = [v11 viewControllerForPluginIdentifier:v7];
+    v9 = [v11 viewControllerForPluginIdentifier:pluginBundleID];
 
     goto LABEL_10;
   }
@@ -1976,9 +1976,9 @@ LABEL_13:
 - (void)prepareForSuspend
 {
   v3 = +[CKPluginExtensionStateObserver sharedInstance];
-  v4 = [v3 passKitUIPresented];
+  passKitUIPresented = [v3 passKitUIPresented];
 
-  if (v4)
+  if (passKitUIPresented)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -2002,9 +2002,9 @@ LABEL_10:
   }
 
   v8 = +[CKPluginExtensionStateObserver sharedInstance];
-  v9 = [v8 iTunesStoreDialogPresented];
+  iTunesStoreDialogPresented = [v8 iTunesStoreDialogPresented];
 
-  if (v9)
+  if (iTunesStoreDialogPresented)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -2023,40 +2023,40 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v10 = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
-  [v10 dismissCurrentFullScreenModalAnimated:0 completion:0];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
+  [transitionCoordinator dismissCurrentFullScreenModalAnimated:0 completion:0];
 
   [(CKChatInputController *)self dismiss];
   [(CKChatInputController *)self dismissBrowserViewController];
-  v11 = [(CKChatInputController *)self currentInputViewController];
-  [v11 setViewController:0];
+  currentInputViewController = [(CKChatInputController *)self currentInputViewController];
+  [currentInputViewController setViewController:0];
 
   [(CKChatInputController *)self setBrowserSwitcher:0];
 
   [(CKChatInputController *)self setSwitcherInputViewController:0];
 }
 
-- (void)applicationWillAddDeactivationReasonNotification:(id)a3
+- (void)applicationWillAddDeactivationReasonNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self browserPlugin];
-  if (v5)
+  notificationCopy = notification;
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  if (browserPlugin)
   {
-    v6 = v5;
+    v6 = browserPlugin;
     v7 = CKIsRunningInMacCatalyst();
 
     if (!v7)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKey:*MEMORY[0x1E69DE838]];
-      v10 = [v9 longLongValue];
+      userInfo = [notificationCopy userInfo];
+      v9 = [userInfo objectForKey:*MEMORY[0x1E69DE838]];
+      longLongValue = [v9 longLongValue];
 
-      if (v10 == 11)
+      if (longLongValue == 11)
       {
         v11 = +[CKPluginExtensionStateObserver sharedInstance];
-        v12 = [v11 passKitUIPresented];
+        passKitUIPresented = [v11 passKitUIPresented];
 
-        if (v12)
+        if (passKitUIPresented)
         {
           if (IMOSLoggingEnabled())
           {
@@ -2078,9 +2078,9 @@ LABEL_12:
         else
         {
           v16 = +[CKPluginExtensionStateObserver sharedInstance];
-          v17 = [v16 iTunesStoreDialogPresented];
+          iTunesStoreDialogPresented = [v16 iTunesStoreDialogPresented];
 
-          if (!v17)
+          if (!iTunesStoreDialogPresented)
           {
             [(CKChatInputController *)self setShouldRestoreAppSwitcher:0];
             [(CKChatInputController *)self dismiss];
@@ -2108,17 +2108,17 @@ LABEL_13:
 LABEL_15:
 }
 
-- (void)chatControllerReceivedKeyboardWillHideNotification:(id)a3
+- (void)chatControllerReceivedKeyboardWillHideNotification:(id)notification
 {
   [(CKChatInputController *)self setKeyboardIsHiding:1];
   [(CKChatInputController *)self stickerPickerWasHidden];
-  v4 = [(CKChatInputController *)self delegate];
-  [v4 updateActiveEntryViewPositioningGuide];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate updateActiveEntryViewPositioningGuide];
 }
 
-- (void)chatControllerReceivedKeyboardDidHideNotification:(id)a3
+- (void)chatControllerReceivedKeyboardDidHideNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -2131,22 +2131,22 @@ LABEL_15:
 
   [(CKChatInputController *)self setKeyboardIsHiding:0];
   [(CKChatInputController *)self setKeyboardIsVisible:0];
-  v6 = [(CKChatInputController *)self orientationManager];
-  [v6 endListeningForOrientationEventsWithKey:@"KeyboardVisible"];
+  orientationManager = [(CKChatInputController *)self orientationManager];
+  [orientationManager endListeningForOrientationEventsWithKey:@"KeyboardVisible"];
 }
 
-- (void)chatControllerReceivedKeyboardWillShowNotification:(id)a3
+- (void)chatControllerReceivedKeyboardWillShowNotification:(id)notification
 {
-  v4 = [(CKChatInputController *)self orientationManager];
-  [v4 beginListeningForOrientationEventsWithKey:@"KeyboardVisible"];
+  orientationManager = [(CKChatInputController *)self orientationManager];
+  [orientationManager beginListeningForOrientationEventsWithKey:@"KeyboardVisible"];
 
-  v5 = [(CKChatInputController *)self delegate];
-  [v5 updateActiveEntryViewPositioningGuide];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate updateActiveEntryViewPositioningGuide];
 }
 
-- (void)chatControllerReceivedKeyboardDidShowNotification:(id)a3
+- (void)chatControllerReceivedKeyboardDidShowNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -2158,19 +2158,19 @@ LABEL_15:
   }
 
   [(CKChatInputController *)self setKeyboardIsVisible:1];
-  v6 = [(CKChatInputController *)self appCardPresentationOverseer];
-  if ([v6 isPresentingCard] && (objc_msgSend(v6, "isPresentingInSendMenuPopover") & 1) == 0 && (objc_msgSend(v6, "isExpanded") & 1) == 0 && -[CKChatInputController isEntryViewFirstResponder](self, "isEntryViewFirstResponder"))
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  if ([appCardPresentationOverseer isPresentingCard] && (objc_msgSend(appCardPresentationOverseer, "isPresentingInSendMenuPopover") & 1) == 0 && (objc_msgSend(appCardPresentationOverseer, "isExpanded") & 1) == 0 && -[CKChatInputController isEntryViewFirstResponder](self, "isEntryViewFirstResponder"))
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __75__CKChatInputController_chatControllerReceivedKeyboardDidShowNotification___block_invoke;
     v7[3] = &unk_1E72EBA18;
-    v8 = v6;
+    v8 = appCardPresentationOverseer;
     [v8 fadeOutCardWithCompletion:v7];
   }
 }
 
-- (void)composeRecipientViewDidBecomeFirstResponder:(id)a3
+- (void)composeRecipientViewDidBecomeFirstResponder:(id)responder
 {
   if (!CKIsRunningInMacCatalyst())
   {
@@ -2183,70 +2183,70 @@ LABEL_15:
 
 - (BOOL)isHandwritingLandscape
 {
-  v2 = [(CKChatInputController *)self handwritingPresentationController];
-  v3 = [v2 isHandwritingLandscape];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
+  isHandwritingLandscape = [handwritingPresentationController isHandwritingLandscape];
 
-  return v3;
+  return isHandwritingLandscape;
 }
 
-- (void)setBrowserPlugin:(id)a3
+- (void)setBrowserPlugin:(id)plugin
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pluginCopy = plugin;
   browserPlugin = self->_browserPlugin;
   p_browserPlugin = &self->_browserPlugin;
-  if (browserPlugin != v5)
+  if (browserPlugin != pluginCopy)
   {
     if (IMOSLoggingEnabled())
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [(IMBalloonPlugin *)*p_browserPlugin identifier];
-        v10 = [(IMBalloonPlugin *)v5 identifier];
+        identifier = [(IMBalloonPlugin *)*p_browserPlugin identifier];
+        identifier2 = [(IMBalloonPlugin *)pluginCopy identifier];
         v11 = 138412546;
-        v12 = v9;
+        v12 = identifier;
         v13 = 2112;
-        v14 = v10;
+        v14 = identifier2;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "CKChatInputController browserPlugin changing from %@ to %@", &v11, 0x16u);
       }
     }
 
-    objc_storeStrong(p_browserPlugin, a3);
+    objc_storeStrong(p_browserPlugin, plugin);
   }
 }
 
-- (void)setInputViewVisible:(BOOL)a3
+- (void)setInputViewVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 isAccessibilityPreferredContentSizeCategory];
+  isAccessibilityPreferredContentSizeCategory = [v5 isAccessibilityPreferredContentSizeCategory];
 
-  [(CKChatInputController *)self setInputViewVisible:v3 entryFieldCollapsed:v6 ^ 1u animated:1];
+  [(CKChatInputController *)self setInputViewVisible:visibleCopy entryFieldCollapsed:isAccessibilityPreferredContentSizeCategory ^ 1u animated:1];
 }
 
-- (void)setInputViewVisible:(BOOL)a3 entryFieldCollapsed:(BOOL)a4 animated:(BOOL)a5 messageDelegate:(BOOL)a6
+- (void)setInputViewVisible:(BOOL)visible entryFieldCollapsed:(BOOL)collapsed animated:(BOOL)animated messageDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v11 = [(CKChatInputController *)self delegate];
-  v12 = [v11 keyboardIsVisibleForChatInputController:self];
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  collapsedCopy = collapsed;
+  visibleCopy = visible;
+  delegate = [(CKChatInputController *)self delegate];
+  v12 = [delegate keyboardIsVisibleForChatInputController:self];
 
-  if (self->_inputViewVisible != v9 || v9 & ~v12)
+  if (self->_inputViewVisible != visibleCopy || visibleCopy & ~v12)
   {
-    self->_inputViewVisible = v9;
-    if (v6)
+    self->_inputViewVisible = visibleCopy;
+    if (delegateCopy)
     {
-      v14 = [(CKChatInputController *)self delegate];
-      [v14 chatInputDidUpdateInputViewShowingBrowser:v9 entryFieldCollapsed:v8 animated:v7];
+      delegate2 = [(CKChatInputController *)self delegate];
+      [delegate2 chatInputDidUpdateInputViewShowingBrowser:visibleCopy entryFieldCollapsed:collapsedCopy animated:animatedCopy];
     }
 
-    v15 = [(CKChatInputController *)self entryView];
-    [v15 setNeedsLayout];
+    entryView = [(CKChatInputController *)self entryView];
+    [entryView setNeedsLayout];
 
-    if (!v9)
+    if (!visibleCopy)
     {
       v16 = +[CKBalloonPluginManager sharedInstance];
       [v16 commitInteractionTimeOrderingChanges];
@@ -2254,21 +2254,21 @@ LABEL_15:
   }
 }
 
-- (void)setCurrentInputViewController:(id)a3
+- (void)setCurrentInputViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_currentInputViewController != v5)
+  controllerCopy = controller;
+  if (self->_currentInputViewController != controllerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_currentInputViewController, a3);
-    v6 = [(CKChatInputController *)self isInputViewVisible];
-    v5 = v8;
-    if (v6)
+    v8 = controllerCopy;
+    objc_storeStrong(&self->_currentInputViewController, controller);
+    isInputViewVisible = [(CKChatInputController *)self isInputViewVisible];
+    controllerCopy = v8;
+    if (isInputViewVisible)
     {
-      v7 = [(CKChatInputController *)self delegate];
-      [v7 chatInputDidUpdateWithNewInputViewController:self->_currentInputViewController];
+      delegate = [(CKChatInputController *)self delegate];
+      [delegate chatInputDidUpdateWithNewInputViewController:self->_currentInputViewController];
 
-      v5 = v8;
+      controllerCopy = v8;
     }
   }
 }
@@ -2279,10 +2279,10 @@ LABEL_15:
   if (!browserSwitcher)
   {
     v4 = [CKBrowserSwitcherViewController alloc];
-    v5 = [(CKChatInputController *)self targetConversation];
-    v6 = [(CKChatInputController *)self delegate];
-    v7 = [v6 viewControllerForChatInputModalPresentation];
-    v8 = [(CKBrowserSwitcherViewController *)v4 initWithConversation:v5 sendDelegate:self presentingViewController:v7];
+    targetConversation = [(CKChatInputController *)self targetConversation];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+    v8 = [(CKBrowserSwitcherViewController *)v4 initWithConversation:targetConversation sendDelegate:self presentingViewController:viewControllerForChatInputModalPresentation];
     v9 = self->_browserSwitcher;
     self->_browserSwitcher = v8;
 
@@ -2299,13 +2299,13 @@ LABEL_15:
   if (!switcherInputViewController || ([(CKKeyboardContentViewController *)switcherInputViewController viewController], v4 = objc_claimAutoreleasedReturnValue(), browserSwitcher = self->_browserSwitcher, v4, v4 != browserSwitcher))
   {
     v6 = [CKKeyboardContentViewController alloc];
-    v7 = [(CKChatInputController *)self browserSwitcher];
-    v8 = [(CKKeyboardContentViewController *)v6 initWithViewController:v7 identifier:@"Switcher"];
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    v8 = [(CKKeyboardContentViewController *)v6 initWithViewController:browserSwitcher identifier:@"Switcher"];
     v9 = self->_switcherInputViewController;
     self->_switcherInputViewController = v8;
 
-    v10 = [(CKKeyboardContentViewController *)self->_switcherInputViewController view];
-    [v10 intrinsicContentSize];
+    view = [(CKKeyboardContentViewController *)self->_switcherInputViewController view];
+    [view intrinsicContentSize];
   }
 
   v11 = self->_switcherInputViewController;
@@ -2315,36 +2315,36 @@ LABEL_15:
 
 - (CKConversation)targetConversation
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v4 = [v3 targetConversationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v4 = [delegate targetConversationForChatInputController:self];
 
   return v4;
 }
 
 - (BOOL)_isiMessageConversation
 {
-  v2 = [(CKChatInputController *)self targetConversation];
-  v3 = [v2 sendingService];
-  v4 = [v3 __ck_isiMessage];
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  sendingService = [targetConversation sendingService];
+  __ck_isiMessage = [sendingService __ck_isiMessage];
 
-  return v4;
+  return __ck_isiMessage;
 }
 
 - (BOOL)_isBusinessConversation
 {
-  v2 = [(CKChatInputController *)self targetConversation];
-  v3 = [v2 isBusinessConversation];
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  isBusinessConversation = [targetConversation isBusinessConversation];
 
-  return v3;
+  return isBusinessConversation;
 }
 
-- (void)beginStickerReactionSessionWithChatItem:(id)a3 cell:(id)a4
+- (void)beginStickerReactionSessionWithChatItem:(id)item cell:(id)cell
 {
-  v6 = a4;
-  v7 = a3;
+  cellCopy = cell;
+  itemCopy = item;
   v8 = [CKStickerReactionSession alloc];
-  v10 = [(CKChatInputController *)self targetConversation];
-  v9 = [(CKStickerReactionSession *)v8 initWithConversation:v10 chatItem:v7 cell:v6];
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  v9 = [(CKStickerReactionSession *)v8 initWithConversation:targetConversation chatItem:itemCopy cell:cellCopy];
 
   [(CKChatInputController *)self setStickerReactionSession:v9];
 }
@@ -2363,12 +2363,12 @@ LABEL_15:
   [(CKChatInputController *)self setIsDismissingAppCardForKeyboardPresentation:0];
   if (![(CKChatInputController *)self hasStickerReactionSession])
   {
-    v3 = [(CKChatInputController *)self delegate];
-    [v3 updateActiveEntryViewPositioningGuide];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate updateActiveEntryViewPositioningGuide];
   }
 
-  v4 = [(CKChatInputController *)self delegate];
-  [v4 appCardDidDismiss];
+  delegate2 = [(CKChatInputController *)self delegate];
+  [delegate2 appCardDidDismiss];
 
   self->_isAppCardDraggingBelowKeyboardDetent = 0;
 }
@@ -2378,45 +2378,45 @@ LABEL_15:
   self->_isAppCardDismissing = 1;
   if (![(CKChatInputController *)self hasStickerReactionSession])
   {
-    v3 = [(CKChatInputController *)self delegate];
-    [v3 updateActiveEntryViewPositioningGuide];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate updateActiveEntryViewPositioningGuide];
   }
 }
 
-- (void)appCardDidMoveToWindow:(id)a3
+- (void)appCardDidMoveToWindow:(id)window
 {
-  v3 = [(CKChatInputController *)self delegate];
-  [v3 enforceSendMenuOrderingInWindowSubviews];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate enforceSendMenuOrderingInWindowSubviews];
 }
 
 - (void)appCardOverseerWillPresentAppCard
 {
   self->_isAppCardAppearing = 1;
-  v2 = [(CKChatInputController *)self delegate];
-  [v2 updateActiveEntryViewPositioningGuide];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate updateActiveEntryViewPositioningGuide];
 }
 
 - (void)appCardOverseerDidPresentAppCard
 {
   self->_isAppCardAppearing = 0;
   [(CKChatInputController *)self _informDelegateOfUpdatedAppCardHeightAnimated:1];
-  v3 = [(CKChatInputController *)self delegate];
-  [v3 updateActiveEntryViewPositioningGuide];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate updateActiveEntryViewPositioningGuide];
 }
 
-- (void)appCardOverseerCardDidChangeHeight:(double)a3 isBelowKeyboardDetent:(BOOL)a4 isDragging:(BOOL)a5 isGeneratingEndOfDragAnimations:(BOOL)a6
+- (void)appCardOverseerCardDidChangeHeight:(double)height isBelowKeyboardDetent:(BOOL)detent isDragging:(BOOL)dragging isGeneratingEndOfDragAnimations:(BOOL)animations
 {
-  v6 = a6;
-  v7 = a5;
-  if (a5)
+  animationsCopy = animations;
+  draggingCopy = dragging;
+  if (dragging)
   {
-    self->_isAppCardDraggingBelowKeyboardDetent = a4;
+    self->_isAppCardDraggingBelowKeyboardDetent = detent;
   }
 
-  if (a4 && ![(CKChatInputController *)self preventResignFirstResponder])
+  if (detent && ![(CKChatInputController *)self preventResignFirstResponder])
   {
-    v10 = [(CKChatInputController *)self delegate];
-    [v10 appCardDidChangeEntryViewAlignmentHeight:!v7 | v6 animated:a3];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate appCardDidChangeEntryViewAlignmentHeight:!draggingCopy | animationsCopy animated:height];
   }
 }
 
@@ -2424,22 +2424,22 @@ LABEL_15:
 {
   v28 = *MEMORY[0x1E69E9840];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 keyboardSizeDeterminesAppCardDetentHeight];
+  keyboardSizeDeterminesAppCardDetentHeight = [v3 keyboardSizeDeterminesAppCardDetentHeight];
 
-  if (v4)
+  if (keyboardSizeDeterminesAppCardDetentHeight)
   {
     v5 = CKNonFlatDeviceOrientation();
-    v6 = [(CKChatInputController *)self entryView];
-    v7 = [v6 contentView];
-    v8 = [v7 textView];
+    entryView = [(CKChatInputController *)self entryView];
+    contentView = [entryView contentView];
+    textView = [contentView textView];
 
-    [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:v5 inputDelegate:v8];
+    [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:v5 inputDelegate:textView];
     v10 = v9;
-    v11 = [(CKChatInputController *)self delegate];
-    v12 = [v11 viewControllerForChatInputModalPresentation];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
 
-    v13 = [v12 view];
-    [v13 safeAreaInsets];
+    view = [viewControllerForChatInputModalPresentation view];
+    [view safeAreaInsets];
     v15 = v14;
 
     v16 = v10 - v15;
@@ -2457,31 +2457,31 @@ LABEL_15:
 
   else
   {
-    v18 = [(CKChatInputController *)self delegate];
-    v19 = [v18 viewControllerForChatInputModalPresentation];
+    delegate2 = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation2 = [delegate2 viewControllerForChatInputModalPresentation];
 
-    v20 = [v19 view];
-    [v20 frame];
+    view2 = [viewControllerForChatInputModalPresentation2 view];
+    [view2 frame];
     v22 = v21;
 
-    v23 = [v19 traitCollection];
-    [v23 displayScale];
+    traitCollection = [viewControllerForChatInputModalPresentation2 traitCollection];
+    [traitCollection displayScale];
     v16 = round(v22 * 0.4 * v24) / v24;
   }
 
   return v16;
 }
 
-- (void)appCardOverseerViewStateDidChange:(BOOL)a3
+- (void)appCardOverseerViewStateDidChange:(BOOL)change
 {
-  v3 = a3;
-  v4 = [(CKChatInputController *)self delegate];
-  [v4 appCardViewStateDidChange:v3];
+  changeCopy = change;
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate appCardViewStateDidChange:changeCopy];
 }
 
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason
 {
-  v6 = a3;
+  fullscreenCopy = fullscreen;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -2492,62 +2492,62 @@ LABEL_15:
     }
   }
 
-  v8 = [(CKChatInputController *)self entryView];
-  [v8 setHidden:1];
+  entryView = [(CKChatInputController *)self entryView];
+  [entryView setHidden:1];
 
-  if (!a4)
+  if (!reason)
   {
     [(CKChatInputController *)self setInCollapseOrExpandAnimation:1];
-    v9 = [(CKChatInputController *)self delegate];
-    [v9 chatInputControllerWillTransitionExpanded:self];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputControllerWillTransitionExpanded:self];
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (reason == 2)
   {
-    v9 = [(CKChatInputController *)self delegate];
-    [v9 chatInputControllerWillPresentModalBrowserViewController:self];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputControllerWillPresentModalBrowserViewController:self];
 LABEL_9:
   }
 }
 
-- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorDidTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason
 {
-  v6 = [(CKChatInputController *)self entryView];
-  [v6 setHidden:0];
+  entryView = [(CKChatInputController *)self entryView];
+  [entryView setHidden:0];
 
-  if (a4)
+  if (reason)
   {
-    if (a4 != 2)
+    if (reason != 2)
     {
       goto LABEL_6;
     }
 
-    v7 = [(CKChatInputController *)self delegate];
-    [v7 chatInputControllerDidPresentModalBrowserViewController:self];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputControllerDidPresentModalBrowserViewController:self];
   }
 
   else
   {
     [(CKChatInputController *)self setInCollapseOrExpandAnimation:0];
-    v7 = [(CKChatInputController *)self delegate];
-    [v7 chatInputControllerDidTransitionExpanded:self];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputControllerDidTransitionExpanded:self];
   }
 
 LABEL_6:
-  v8 = [(CKChatInputController *)self browserPlugin];
-  v9 = [v8 identifier];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
 
-  [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:v9 requiredPortrait:0];
+  [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:identifier requiredPortrait:0];
 }
 
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason
 {
-  v6 = a3;
-  if (a4 != 5)
+  dismissCopy = dismiss;
+  if (reason != 5)
   {
     [(CKChatInputController *)self _reconfigurePluginDataSourceWithBalloonControllerIfNecessary];
-    if (a4 == 3)
+    if (reason == 3)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -2555,13 +2555,13 @@ LABEL_6:
       v9[3] = &unk_1E72EBA18;
       v9[4] = self;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v9];
-      v7 = [(CKChatInputController *)self delegate];
-      [v7 chatInputControllerWillDismissModalBrowserViewController:self];
+      delegate = [(CKChatInputController *)self delegate];
+      [delegate chatInputControllerWillDismissModalBrowserViewController:self];
     }
 
     else
     {
-      if (a4 != 1)
+      if (reason != 1)
       {
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
@@ -2578,8 +2578,8 @@ LABEL_6:
       v10[3] = &unk_1E72EBA18;
       v10[4] = self;
       [MEMORY[0x1E69DD250] performWithoutAnimation:v10];
-      v7 = [(CKChatInputController *)self delegate];
-      [v7 chatInputControllerWillTransitionCollapsed:self];
+      delegate = [(CKChatInputController *)self delegate];
+      [delegate chatInputControllerWillTransitionCollapsed:self];
     }
   }
 
@@ -2626,23 +2626,23 @@ uint64_t __86__CKChatInputController_browserTransitionCoordinatorWillCollapseOrD
 {
   if ([(CKChatInputController *)self currentPluginIsDT])
   {
-    v8 = [(CKChatInputController *)self browserPluginDataSource];
-    v3 = [(CKChatInputController *)self delegate];
-    v4 = [v3 chatInputTranscriptIdentifier];
+    browserPluginDataSource = [(CKChatInputController *)self browserPluginDataSource];
+    delegate = [(CKChatInputController *)self delegate];
+    chatInputTranscriptIdentifier = [delegate chatInputTranscriptIdentifier];
 
-    v5 = [(CKChatInputController *)self browserPlugin];
-    v6 = [v8 messageGUID];
-    v7 = [v5 existingBalloonControllerWithMessageGUID:v6 contextIdentifier:v4];
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    messageGUID = [browserPluginDataSource messageGUID];
+    v7 = [browserPlugin existingBalloonControllerWithMessageGUID:messageGUID contextIdentifier:chatInputTranscriptIdentifier];
 
-    [v7 setDataSource:v8];
+    [v7 setDataSource:browserPluginDataSource];
     [(CKChatInputController *)self setBrowserPluginDataSource:0];
   }
 }
 
-- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorDidCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason
 {
-  v6 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  dismissCopy = dismiss;
+  if ((reason & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [(CKChatInputController *)self setInCollapseOrExpandAnimation:0];
     block[0] = MEMORY[0x1E69E9820];
@@ -2653,10 +2653,10 @@ uint64_t __86__CKChatInputController_browserTransitionCoordinatorWillCollapseOrD
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  else if (a4 == 3)
+  else if (reason == 3)
   {
-    v7 = [(CKChatInputController *)self delegate];
-    [v7 chatInputControllerDidDismissModalBrowserViewController:self];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputControllerDidDismissModalBrowserViewController:self];
 
     [(CKChatInputController *)self setBrowserPlugin:0];
     [(CKChatInputController *)self setInputViewVisible:0];
@@ -2674,35 +2674,35 @@ void __85__CKChatInputController_browserTransitionCoordinatorDidCollapseOrDismis
 
 - (id)appTitleOverride
 {
-  v2 = [(CKChatInputController *)self targetConversation];
-  if ([v2 isBusinessConversation])
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  if ([targetConversation isBusinessConversation])
   {
-    v3 = [v2 chat];
-    v4 = [v3 recipient];
-    v5 = [v4 name];
+    chat = [targetConversation chat];
+    recipient = [chat recipient];
+    name = [recipient name];
   }
 
   else
   {
-    v5 = 0;
+    name = 0;
   }
 
-  return v5;
+  return name;
 }
 
 - (id)appIconOverride
 {
-  v2 = [(CKChatInputController *)self targetConversation];
-  if ([v2 isBusinessConversation])
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  if ([targetConversation isBusinessConversation])
   {
-    v3 = [v2 chat];
-    v4 = [v3 recipient];
+    chat = [targetConversation chat];
+    recipient = [chat recipient];
 
     v5 = MEMORY[0x1E69DCAB8];
-    v6 = [v4 brandSquareLogoImageData];
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 scale];
-    v8 = [v5 imageWithData:v6 scale:?];
+    brandSquareLogoImageData = [recipient brandSquareLogoImageData];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
+    v8 = [v5 imageWithData:brandSquareLogoImageData scale:?];
   }
 
   else
@@ -2713,97 +2713,97 @@ void __85__CKChatInputController_browserTransitionCoordinatorDidCollapseOrDismis
   return v8;
 }
 
-- (void)switcherViewControllerWillAppear:(id)a3
+- (void)switcherViewControllerWillAppear:(id)appear
 {
-  v4 = [a3 balloonPlugin];
-  v5 = [v4 identifier];
+  balloonPlugin = [appear balloonPlugin];
+  identifier = [balloonPlugin identifier];
 
-  [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:v5 requiredPortrait:0];
+  [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:identifier requiredPortrait:0];
 }
 
-- (void)switcherViewControllerWillDisappear:(id)a3
+- (void)switcherViewControllerWillDisappear:(id)disappear
 {
-  v3 = [(CKChatInputController *)self delegate];
-  [v3 stopForcingOrientation];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate stopForcingOrientation];
 }
 
-- (void)setConversationAndRecipientsForBrowser:(id)a3
+- (void)setConversationAndRecipientsForBrowser:(id)browser
 {
-  v16 = a3;
-  v4 = [(CKChatInputController *)self appManagerIsDisplayed];
-  v5 = v16;
-  if (v16 && !v4)
+  browserCopy = browser;
+  appManagerIsDisplayed = [(CKChatInputController *)self appManagerIsDisplayed];
+  v5 = browserCopy;
+  if (browserCopy && !appManagerIsDisplayed)
   {
-    v6 = [(CKChatInputController *)self targetConversation];
+    targetConversation = [(CKChatInputController *)self targetConversation];
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 senderIdentifier];
-      [v16 setSender:v7];
+      senderIdentifier = [targetConversation senderIdentifier];
+      [browserCopy setSender:senderIdentifier];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 recipientStrings];
-      [v16 setRecipients:v8];
+      recipientStrings = [targetConversation recipientStrings];
+      [browserCopy setRecipients:recipientStrings];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(CKChatInputController *)self delegate];
-      v10 = [v9 generatedSummary];
-      [v16 setGeneratedSummary:v10];
+      delegate = [(CKChatInputController *)self delegate];
+      generatedSummary = [delegate generatedSummary];
+      [browserCopy setGeneratedSummary:generatedSummary];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CKChatInputController *)self delegate];
-      v12 = [v11 generativeContext];
-      [v16 setGenerativeContext:v12];
+      delegate2 = [(CKChatInputController *)self delegate];
+      generativeContext = [delegate2 generativeContext];
+      [browserCopy setGenerativeContext:generativeContext];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v16 setIsiMessage:{-[CKChatInputController _isiMessageConversation](self, "_isiMessageConversation")}];
+      [browserCopy setIsiMessage:{-[CKChatInputController _isiMessageConversation](self, "_isiMessageConversation")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v16 setIsBusiness:{-[CKChatInputController _isBusinessConversation](self, "_isBusinessConversation")}];
+      [browserCopy setIsBusiness:{-[CKChatInputController _isBusinessConversation](self, "_isBusinessConversation")}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v6 chat];
-      v14 = [v13 guid];
-      [v16 setConversationID:v14];
+      chat = [targetConversation chat];
+      guid = [chat guid];
+      [browserCopy setConversationID:guid];
     }
 
-    v15 = [v16 balloonPlugin];
-    [(CKChatInputController *)self setBrowserPlugin:v15];
+    balloonPlugin = [browserCopy balloonPlugin];
+    [(CKChatInputController *)self setBrowserPlugin:balloonPlugin];
 
-    v5 = v16;
+    v5 = browserCopy;
   }
 }
 
-- (void)switcherViewControllerDidCollapse:(id)a3
+- (void)switcherViewControllerDidCollapse:(id)collapse
 {
-  v4 = [(CKChatInputController *)self switcherInputViewController];
-  [(CKChatInputController *)self setCurrentInputViewController:v4];
+  switcherInputViewController = [(CKChatInputController *)self switcherInputViewController];
+  [(CKChatInputController *)self setCurrentInputViewController:switcherInputViewController];
 
   [(CKChatInputController *)self setInputViewVisible:1];
 }
 
-- (void)switcherViewControllerDidSelectAppStore:(id)a3 shouldRestoreAppSwitcher:(BOOL)a4
+- (void)switcherViewControllerDidSelectAppStore:(id)store shouldRestoreAppSwitcher:(BOOL)switcher
 {
-  [(CKChatInputController *)self setShouldRestoreAppSwitcher:a4];
+  [(CKChatInputController *)self setShouldRestoreAppSwitcher:switcher];
   [(CKChatInputController *)self presentAppStoreForAdamID:0];
-  v5 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v5 trackEvent:*MEMORY[0x1E69A7308]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7308]];
 }
 
-- (void)switcherViewControllerDidSelectAppManager:(id)a3 shouldRestoreAppSwitcher:(BOOL)a4
+- (void)switcherViewControllerDidSelectAppManager:(id)manager shouldRestoreAppSwitcher:(BOOL)switcher
 {
-  [(CKChatInputController *)self setShouldRestoreAppSwitcher:a4];
+  [(CKChatInputController *)self setShouldRestoreAppSwitcher:switcher];
 
   [(CKChatInputController *)self presentAppManager];
 }
@@ -2820,10 +2820,10 @@ void __85__CKChatInputController_browserTransitionCoordinatorDidCollapseOrDismis
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v6 = [v5 allPlugins];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    allPlugins = [mEMORY[0x1E69A5AD0] allPlugins];
 
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v7 = [allPlugins countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2834,15 +2834,15 @@ LABEL_4:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allPlugins);
         }
 
         v11 = *(*(&v18 + 1) + 8 * v10);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 identifier];
-          v13 = [v12 containsString:v4];
+          identifier = [v11 identifier];
+          v13 = [identifier containsString:v4];
 
           if (v13)
           {
@@ -2852,7 +2852,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v8 = [allPlugins countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -2870,11 +2870,11 @@ LABEL_4:
       }
 
       [(CKChatInputController *)self showBrowserForPlugin:v14 dataSource:0 style:0];
-      v15 = [(CKChatInputController *)self browserSwitcher];
-      [v15 showPlugin:v14];
+      browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+      [browserSwitcher showPlugin:v14];
 
-      v16 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v16 removeObserver:self name:*MEMORY[0x1E69A56D8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E69A56D8] object:0];
     }
 
     else
@@ -2911,52 +2911,52 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
   }
 }
 
-- (void)launchAndShowBrowserForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6
+- (void)launchAndShowBrowserForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a6;
+  pluginCopy = plugin;
+  sourceCopy = source;
+  configurationCopy = configuration;
   v12 = +[CKBalloonPluginManager sharedInstance];
-  v13 = [v19 identifier];
-  v14 = [v12 isPluginEnabled:v13];
+  identifier = [pluginCopy identifier];
+  v14 = [v12 isPluginEnabled:identifier];
 
   if ((v14 & 1) == 0)
   {
-    v15 = [v19 identifier];
-    [v12 setEnabled:1 forPlugin:v15];
+    identifier2 = [pluginCopy identifier];
+    [v12 setEnabled:1 forPlugin:identifier2];
   }
 
-  v16 = [v12 visibleDrawerPlugins];
-  v17 = [v16 containsObject:v19];
+  visibleDrawerPlugins = [v12 visibleDrawerPlugins];
+  v17 = [visibleDrawerPlugins containsObject:pluginCopy];
 
   if ((v17 & 1) == 0)
   {
-    v18 = [v19 identifier];
-    [v12 updateInteractionTimeForPlugin:v18];
+    identifier3 = [pluginCopy identifier];
+    [v12 updateInteractionTimeForPlugin:identifier3];
 
     [v12 commitInteractionTimeOrderingChanges];
   }
 
-  [(CKChatInputController *)self showBrowserForPlugin:v19 dataSource:v10 style:a5 presentationConfiguration:v11];
+  [(CKChatInputController *)self showBrowserForPlugin:pluginCopy dataSource:sourceCopy style:style presentationConfiguration:configurationCopy];
 }
 
-- (void)showBrowserPopoverForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6
+- (void)showBrowserPopoverForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration
 {
-  v31 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v31 browserClass];
-  if (a5 > 1)
+  pluginCopy = plugin;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  browserClass = [pluginCopy browserClass];
+  if (style > 1)
   {
     _IMLog();
   }
 
   else
   {
-    v13 = [[v12 alloc] initWithBalloonPlugin:v31 dataSource:v10];
-    v14 = [v31 identifier];
+    v13 = [[browserClass alloc] initWithBalloonPlugin:pluginCopy dataSource:sourceCopy];
+    identifier = [pluginCopy identifier];
     v15 = IMBalloonExtensionIDWithSuffix();
-    v16 = [v14 isEqualToString:v15];
+    v16 = [identifier isEqualToString:v15];
 
     if (v16)
     {
@@ -2966,9 +2966,9 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
 
     else
     {
-      v19 = [v31 identifier];
+      identifier2 = [pluginCopy identifier];
       v20 = IMBalloonExtensionIDWithSuffix();
-      v21 = [v19 isEqualToString:v20];
+      v21 = [identifier2 isEqualToString:v20];
 
       if (v21)
       {
@@ -2987,13 +2987,13 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
 
     [v13 setPreferredContentSize:{v18, v17}];
     v25 = objc_alloc_init(CKBrowserTransitionCoordinator);
-    v26 = [(CKChatInputController *)self targetConversation];
-    [(CKBrowserTransitionCoordinator *)v25 setConversation:v26];
+    targetConversation = [(CKChatInputController *)self targetConversation];
+    [(CKBrowserTransitionCoordinator *)v25 setConversation:targetConversation];
 
     [(CKBrowserTransitionCoordinator *)v25 updateBrowser:v13];
-    v27 = [(CKChatInputController *)self pluginContextForPlugin:v31];
-    v28 = [v31 identifier];
-    v29 = [v28 isEqual:*MEMORY[0x1E69A6A28]];
+    v27 = [(CKChatInputController *)self pluginContextForPlugin:pluginCopy];
+    identifier3 = [pluginCopy identifier];
+    v29 = [identifier3 isEqual:*MEMORY[0x1E69A6A28]];
 
     if (v29)
     {
@@ -3007,48 +3007,48 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v30 = [(CKChatInputController *)self entryView];
-          [v30 setSendLaterPluginInfo:v27 animated:1];
+          entryView = [(CKChatInputController *)self entryView];
+          [entryView setSendLaterPluginInfo:v27 animated:1];
         }
       }
     }
 
-    [(CKChatInputController *)self showExpandedBrowserPopover:v13 presentationConfiguration:v11];
+    [(CKChatInputController *)self showExpandedBrowserPopover:v13 presentationConfiguration:configurationCopy];
   }
 }
 
-- (void)showExpandedBrowserPopover:(id)a3 presentationConfiguration:(id)a4
+- (void)showExpandedBrowserPopover:(id)popover presentationConfiguration:(id)configuration
 {
-  v14 = a3;
-  v6 = a4;
-  if (v6)
+  popoverCopy = popover;
+  configurationCopy = configuration;
+  if (configurationCopy)
   {
-    [v14 setSendDelegate:self];
+    [popoverCopy setSendDelegate:self];
     if (objc_opt_respondsToSelector())
     {
-      [v14 setCurrentBrowserConsumer:2];
+      [popoverCopy setCurrentBrowserConsumer:2];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v14 setShouldDisableSnapshotView:{objc_msgSend(v6, "shouldDisableSnapshotView")}];
+      [popoverCopy setShouldDisableSnapshotView:{objc_msgSend(configurationCopy, "shouldDisableSnapshotView")}];
     }
 
-    [v14 setModalPresentationStyle:7];
-    v7 = [(CKChatInputController *)self delegate];
-    v8 = [v7 viewControllerForChatInputModalPresentation];
-    [v8 presentViewController:v14 animated:1 completion:0];
+    [popoverCopy setModalPresentationStyle:7];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+    [viewControllerForChatInputModalPresentation presentViewController:popoverCopy animated:1 completion:0];
 
-    v9 = [v6 sourceView];
-    v10 = [v14 popoverPresentationController];
-    [v10 setSourceView:v9];
+    sourceView = [configurationCopy sourceView];
+    popoverPresentationController = [popoverCopy popoverPresentationController];
+    [popoverPresentationController setSourceView:sourceView];
 
-    v11 = [v6 permittedArrowDirections];
-    v12 = [v14 popoverPresentationController];
-    [v12 setPermittedArrowDirections:v11];
+    permittedArrowDirections = [configurationCopy permittedArrowDirections];
+    popoverPresentationController2 = [popoverCopy popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:permittedArrowDirections];
 
-    v13 = [v14 popoverPresentationController];
-    [v13 setDelegate:self];
+    popoverPresentationController3 = [popoverCopy popoverPresentationController];
+    [popoverPresentationController3 setDelegate:self];
   }
 
   else
@@ -3057,15 +3057,15 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
   }
 }
 
-- (BOOL)isShowingAppCardForExtensionIdentifier:(id)a3
+- (BOOL)isShowingAppCardForExtensionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (CKIsAppCardsEnabled() && (-[CKChatInputController appCardPresentationOverseer](self, "appCardPresentationOverseer"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPresentingCard], v5, v6))
   {
-    v7 = [(CKChatInputController *)self browserPlugin];
-    v8 = [v7 extensionIdentifier];
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    extensionIdentifier = [browserPlugin extensionIdentifier];
 
-    v9 = [v8 isEqualToString:v4];
+    v9 = [extensionIdentifier isEqualToString:identifierCopy];
   }
 
   else
@@ -3076,46 +3076,46 @@ void __56__CKChatInputController__launchAppExtensionForDebugging__block_invoke(u
   return v9;
 }
 
-- (void)showBrowserForPlugin:(id)a3 dataSource:(id)a4 style:(unint64_t)a5 presentationConfiguration:(id)a6
+- (void)showBrowserForPlugin:(id)plugin dataSource:(id)source style:(unint64_t)style presentationConfiguration:(id)configuration
 {
   v52 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v9 appBundle];
-  v13 = [v12 bundleIdentifier];
-  v14 = [(CKChatInputController *)self shouldPreventAppFromDisplayingForBundleIdentifier:v13];
+  pluginCopy = plugin;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  appBundle = [pluginCopy appBundle];
+  bundleIdentifier = [appBundle bundleIdentifier];
+  v14 = [(CKChatInputController *)self shouldPreventAppFromDisplayingForBundleIdentifier:bundleIdentifier];
 
   if (!v14)
   {
-    v18 = [v9 identifier];
-    v19 = [v18 isEqualToString:*MEMORY[0x1E69A6A28]];
+    identifier = [pluginCopy identifier];
+    v19 = [identifier isEqualToString:*MEMORY[0x1E69A6A28]];
 
-    v20 = [(CKChatInputController *)self entryView];
-    v21 = [v20 composition];
-    v22 = [v21 shelfPluginPayload];
+    entryView = [(CKChatInputController *)self entryView];
+    composition = [entryView composition];
+    shelfPluginPayload = [composition shelfPluginPayload];
 
-    if (v22)
+    if (shelfPluginPayload)
     {
-      v23 = [v22 supportsSendLater];
+      supportsSendLater = [shelfPluginPayload supportsSendLater];
       if (v19)
       {
-        if ((v23 & 1) == 0)
+        if ((supportsSendLater & 1) == 0)
         {
           if (IMOSLoggingEnabled())
           {
             v24 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
-              v25 = [v22 pluginBundleID];
+              pluginBundleID = [shelfPluginPayload pluginBundleID];
               *buf = 138412290;
-              v51 = v25;
+              v51 = pluginBundleID;
               _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "showBrowserForPlugin: User selected send later, but the currently staged plugin payload (%@) does not allow presentation alongside Send Later. Presenting unsupported item alert and aborting.", buf, 0xCu);
             }
           }
 
-          v26 = [v22 pluginBundleID];
-          [(CKChatInputController *)self _presentSendLaterUnsupportedAlertForIdentifier:v26 handler:0];
+          pluginBundleID2 = [shelfPluginPayload pluginBundleID];
+          [(CKChatInputController *)self _presentSendLaterUnsupportedAlertForIdentifier:pluginBundleID2 handler:0];
 
 LABEL_43:
           goto LABEL_44;
@@ -3123,62 +3123,62 @@ LABEL_43:
       }
     }
 
-    v27 = v10;
-    v28 = self;
-    if (v11)
+    v27 = sourceCopy;
+    selfCopy2 = self;
+    if (configurationCopy)
     {
-      v29 = v11;
+      v29 = configurationCopy;
     }
 
     else
     {
       [(CKChatInputController *)self setStickerPickerMessagePartChatItem:0];
       [(CKChatInputController *)self setStickerPickerMessagePartParentChatItem:0];
-      v28 = self;
+      selfCopy2 = self;
       v29 = 0;
     }
 
-    [(CKChatInputController *)v28 setCurrentPresentationConfig:v29];
+    [(CKChatInputController *)selfCopy2 setCurrentPresentationConfig:v29];
     if (CKIsAppCardsEnabled())
     {
-      v30 = [(CKChatInputController *)self browserPlugin];
-      v31 = [v30 identifier];
-      v32 = [v9 identifier];
-      if ([v31 isEqualToString:v32])
+      browserPlugin = [(CKChatInputController *)self browserPlugin];
+      identifier2 = [browserPlugin identifier];
+      identifier3 = [pluginCopy identifier];
+      if ([identifier2 isEqualToString:identifier3])
       {
-        v33 = [(CKChatInputController *)self appCardPresentationOverseer];
-        v34 = [v33 isPresentingCard];
+        appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+        isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-        if (v34)
+        if (isPresentingCard)
         {
-          v10 = v27;
+          sourceCopy = v27;
           if (IMOSLoggingEnabled())
           {
             v35 = OSLogHandleForIMFoundationCategory();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
             {
-              v36 = [v9 identifier];
+              identifier4 = [pluginCopy identifier];
               *buf = 138412290;
-              v51 = v36;
+              v51 = identifier4;
               _os_log_impl(&dword_19020E000, v35, OS_LOG_TYPE_INFO, "presentModernCardForPlugin identifier is already the current plugin: %@. Doing nothing.", buf, 0xCu);
             }
           }
 
-          v37 = [(CKChatInputController *)self browserPluginDataSource];
-          v38 = v37;
-          if (v37 == v27)
+          browserPluginDataSource = [(CKChatInputController *)self browserPluginDataSource];
+          v38 = browserPluginDataSource;
+          if (browserPluginDataSource == v27)
           {
           }
 
           else
           {
-            v39 = [(CKChatInputController *)self appCardPresentationOverseer];
-            v40 = [v39 updateCurrentBrowserWithDataSource:v27];
+            appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+            v40 = [appCardPresentationOverseer2 updateCurrentBrowserWithDataSource:v27];
 
             if (v40)
             {
-              v41 = [(CKChatInputController *)self appCardPresentationOverseer];
-              [v41 requestPresentationStyle:a5 animated:1];
+              appCardPresentationOverseer3 = [(CKChatInputController *)self appCardPresentationOverseer];
+              [appCardPresentationOverseer3 requestPresentationStyle:style animated:1];
 
               [(CKChatInputController *)self setBrowserPluginDataSource:v27];
             }
@@ -3193,33 +3193,33 @@ LABEL_43:
       }
     }
 
-    v10 = v27;
-    if (a5 != 3)
+    sourceCopy = v27;
+    if (style != 3)
     {
-      if (a5 == 2)
+      if (style == 2)
       {
-        [(CKChatInputController *)self _presentFullScreenModalBrowserForPlugin:v9 dataSource:v27];
+        [(CKChatInputController *)self _presentFullScreenModalBrowserForPlugin:pluginCopy dataSource:v27];
       }
 
       else
       {
-        [(CKChatInputController *)self setBrowserPlugin:v9];
+        [(CKChatInputController *)self setBrowserPlugin:pluginCopy];
         [(CKChatInputController *)self setBrowserPluginDataSource:v27];
-        v42 = [(CKChatInputController *)self delegate];
-        v43 = [v42 viewControllerForChatInputModalPresentation];
-        v44 = [v43 traitCollection];
+        delegate = [(CKChatInputController *)self delegate];
+        viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+        traitCollection = [viewControllerForChatInputModalPresentation traitCollection];
 
-        v45 = [(CKChatInputController *)self determineSendMenuPresentationStyleCompatibleWithTraitCollection:v44];
+        v45 = [(CKChatInputController *)self determineSendMenuPresentationStyleCompatibleWithTraitCollection:traitCollection];
         v46 = CKIsRunningInMacCatalyst();
-        v47 = v45 == 1 && v11 != 0;
+        v47 = v45 == 1 && configurationCopy != 0;
         if (v46 || v47)
         {
-          [(CKChatInputController *)self showBrowserPopoverForPlugin:v9 dataSource:v10 style:a5 presentationConfiguration:v11];
+          [(CKChatInputController *)self showBrowserPopoverForPlugin:pluginCopy dataSource:sourceCopy style:style presentationConfiguration:configurationCopy];
         }
 
         else if (CKIsAppCardsEnabled())
         {
-          [(CKChatInputController *)self presentModernCardForPlugin:v9 dataSource:v10 presentationStyle:a5];
+          [(CKChatInputController *)self presentModernCardForPlugin:pluginCopy dataSource:sourceCopy presentationStyle:style];
         }
 
         else
@@ -3242,10 +3242,10 @@ LABEL_43:
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v9 appBundle];
-      v17 = [v16 bundleIdentifier];
+      appBundle2 = [pluginCopy appBundle];
+      bundleIdentifier2 = [appBundle2 bundleIdentifier];
       *buf = 138412290;
-      v51 = v17;
+      v51 = bundleIdentifier2;
       _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Dismissing App Browser: User attempted to open a plugin that is not allowed by App Limits with Bundle ID%@", buf, 0xCu);
     }
   }
@@ -3253,22 +3253,22 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)_presentFullScreenModalBrowserForPlugin:(id)a3 dataSource:(id)a4
+- (void)_presentFullScreenModalBrowserForPlugin:(id)plugin dataSource:(id)source
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CKChatInputController *)self browserPlugin];
-  v9 = [v6 identifier];
-  v10 = [v8 identifier];
-  v11 = [v9 isEqualToString:v10];
+  pluginCopy = plugin;
+  sourceCopy = source;
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [pluginCopy identifier];
+  identifier2 = [browserPlugin identifier];
+  v11 = [identifier isEqualToString:identifier2];
 
-  [(CKChatInputController *)self setBrowserPlugin:v6];
-  [(CKChatInputController *)self setBrowserPluginDataSource:v7];
+  [(CKChatInputController *)self setBrowserPlugin:pluginCopy];
+  [(CKChatInputController *)self setBrowserPluginDataSource:sourceCopy];
   if (![(CKChatInputController *)self isAppCardPresented]|| (v11 & 1) != 0)
   {
-    v16 = [v6 identifier];
-    [(CKChatInputController *)self requestPresentationStyleFullScreenModalForPlugin:v16 dataSource:v7 skipValidation:1];
+    identifier3 = [pluginCopy identifier];
+    [(CKChatInputController *)self requestPresentationStyleFullScreenModalForPlugin:identifier3 dataSource:sourceCopy skipValidation:1];
   }
 
   else
@@ -3278,26 +3278,26 @@ LABEL_44:
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v13 = [v8 identifier];
-        v14 = [v6 identifier];
+        identifier4 = [browserPlugin identifier];
+        identifier5 = [pluginCopy identifier];
         *buf = 138412546;
-        v22 = v13;
+        v22 = identifier4;
         v23 = 2112;
-        v24 = v14;
+        v24 = identifier5;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "_presentFullScreenModalBrowserForPlugin: dismissing Send Menu presentation for outgoing plugin: %@, new plugin: %@", buf, 0x16u);
       }
     }
 
     objc_initWeak(buf, self);
-    v15 = [(CKChatInputController *)self appCardPresentationOverseer];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __76__CKChatInputController__presentFullScreenModalBrowserForPlugin_dataSource___block_invoke;
     v17[3] = &unk_1E72ED950;
     objc_copyWeak(&v20, buf);
-    v18 = v6;
-    v19 = v7;
-    [v15 dismissCardAnimated:1 completion:v17];
+    v18 = pluginCopy;
+    v19 = sourceCopy;
+    [appCardPresentationOverseer dismissCardAnimated:1 completion:v17];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -3311,10 +3311,10 @@ void __76__CKChatInputController__presentFullScreenModalBrowserForPlugin_dataSou
   [WeakRetained requestPresentationStyleFullScreenModalForPlugin:v2 dataSource:*(a1 + 40) skipValidation:1];
 }
 
-- (void)_presentSendLaterUnsupportedAlertForIdentifier:(id)a3 handler:(id)a4
+- (void)_presentSendLaterUnsupportedAlertForIdentifier:(id)identifier handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v8 = CKFrameworkBundle();
   v9 = [v8 localizedStringForKey:@"SHELF_SEND_LATER_UNSUPPORTED_ITEM_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
 
@@ -3322,7 +3322,7 @@ void __76__CKChatInputController__presentFullScreenModalBrowserForPlugin_dataSou
   v11 = [v10 localizedStringForKey:@"SHELF_SEND_LATER_UNSUPPORTED_ITEM" value:&stru_1F04268F8 table:@"ChatKit"];
 
   v12 = IMBalloonExtensionIDWithSuffix();
-  v13 = [v7 isEqualToString:v12];
+  v13 = [identifierCopy isEqualToString:v12];
 
   if (v13)
   {
@@ -3343,15 +3343,15 @@ void __76__CKChatInputController__presentFullScreenModalBrowserForPlugin_dataSou
   v25 = 3221225472;
   v26 = __80__CKChatInputController__presentSendLaterUnsupportedAlertForIdentifier_handler___block_invoke;
   v27 = &unk_1E72F35C8;
-  v28 = self;
-  v29 = v6;
-  v21 = v6;
+  selfCopy = self;
+  v29 = handlerCopy;
+  v21 = handlerCopy;
   v22 = [CKAlertAction actionWithTitle:v20 style:0 handler:&v24];
-  [v18 addAction:{v22, v24, v25, v26, v27, v28}];
+  [v18 addAction:{v22, v24, v25, v26, v27, selfCopy}];
 
   [(CKChatInputController *)self setIsDisplayingReplaceCompositionAlert:1];
-  v23 = [(CKChatInputController *)self delegate];
-  [v18 presentFromViewController:v23 animated:1 completion:0];
+  delegate = [(CKChatInputController *)self delegate];
+  [v18 presentFromViewController:delegate animated:1 completion:0];
 }
 
 uint64_t __80__CKChatInputController__presentSendLaterUnsupportedAlertForIdentifier_handler___block_invoke(uint64_t a1)
@@ -3370,20 +3370,20 @@ uint64_t __80__CKChatInputController__presentSendLaterUnsupportedAlertForIdentif
 
 - (id)sendLaterPluginInfo
 {
-  v3 = [(CKChatInputController *)self entryView];
-  v4 = [v3 sendLaterPluginInfo];
-  if (v4)
+  entryView = [(CKChatInputController *)self entryView];
+  sendLaterPluginInfo = [entryView sendLaterPluginInfo];
+  if (sendLaterPluginInfo)
   {
-    v5 = v4;
-    v6 = [(CKChatInputController *)self entryView];
-    v7 = [v6 sendLaterPluginInfo];
+    v5 = sendLaterPluginInfo;
+    entryView2 = [(CKChatInputController *)self entryView];
+    sendLaterPluginInfo2 = [entryView2 sendLaterPluginInfo];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(CKChatInputController *)self entryView];
-      v10 = [v9 sendLaterPluginInfo];
+      entryView3 = [(CKChatInputController *)self entryView];
+      sendLaterPluginInfo3 = [entryView3 sendLaterPluginInfo];
       goto LABEL_6;
     }
   }
@@ -3393,24 +3393,24 @@ uint64_t __80__CKChatInputController__presentSendLaterUnsupportedAlertForIdentif
   }
 
   v11 = [CKSendLaterPluginInfo alloc];
-  v9 = [(CKChatInputController *)self targetConversation];
-  v10 = [(CKSendLaterPluginInfo *)v11 initWithConversation:v9];
+  entryView3 = [(CKChatInputController *)self targetConversation];
+  sendLaterPluginInfo3 = [(CKSendLaterPluginInfo *)v11 initWithConversation:entryView3];
 LABEL_6:
-  v12 = v10;
+  v12 = sendLaterPluginInfo3;
 
   return v12;
 }
 
-- (id)pluginContextForPlugin:(id)a3
+- (id)pluginContextForPlugin:(id)plugin
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69A6A28]];
+  pluginCopy = plugin;
+  identifier = [pluginCopy identifier];
+  v6 = [identifier isEqualToString:*MEMORY[0x1E69A6A28]];
 
   if (v6)
   {
-    v7 = [(CKChatInputController *)self sendLaterPluginInfo];
+    sendLaterPluginInfo = [(CKChatInputController *)self sendLaterPluginInfo];
   }
 
   else
@@ -3421,68 +3421,68 @@ LABEL_6:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = pluginCopy;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "No pluginContext type known for plugin: %@", &v10, 0xCu);
       }
     }
 
-    v7 = 0;
+    sendLaterPluginInfo = 0;
   }
 
-  return v7;
+  return sendLaterPluginInfo;
 }
 
-- (void)presentModernCardForPlugin:(id)a3 dataSource:(id)a4 presentationStyle:(unint64_t)a5
+- (void)presentModernCardForPlugin:(id)plugin dataSource:(id)source presentationStyle:(unint64_t)style
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v11 = [(CKChatInputController *)self pluginContextForPlugin:v9];
-  v12 = [v10 updateCurrentBrowserForPlugin:v9 dataSource:v8 pluginContext:v11];
+  sourceCopy = source;
+  pluginCopy = plugin;
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  v11 = [(CKChatInputController *)self pluginContextForPlugin:pluginCopy];
+  v12 = [appCardPresentationOverseer updateCurrentBrowserForPlugin:pluginCopy dataSource:sourceCopy pluginContext:v11];
 
   if (v11)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(CKChatInputController *)self entryView];
-      [v13 setSendLaterPluginInfo:v11 animated:1];
+      entryView = [(CKChatInputController *)self entryView];
+      [entryView setSendLaterPluginInfo:v11 animated:1];
     }
   }
 
   [(CKChatInputController *)self setConversationAndRecipientsForBrowser:v12];
-  if (([v10 isPresentingInSendMenuPopover] & 1) == 0)
+  if (([appCardPresentationOverseer isPresentingInSendMenuPopover] & 1) == 0)
   {
-    v14 = [(CKChatInputController *)self delegate];
-    v15 = [v14 isKeyboardVisible];
+    delegate = [(CKChatInputController *)self delegate];
+    isKeyboardVisible = [delegate isKeyboardVisible];
 
-    if (v15)
+    if (isKeyboardVisible)
     {
       [(CKChatInputController *)self setPreventResignFirstResponder:1];
     }
   }
 
-  v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v17 = [v16 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v17)
+  if (isPopoverSendMenuEnabled)
   {
     v18 = 0;
   }
 
   else
   {
-    v19 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v18 = [v19 shouldAnimatePresentationForPresentationStyle:a5];
+    appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+    v18 = [appCardPresentationOverseer2 shouldAnimatePresentationForPresentationStyle:style];
   }
 
-  v20 = v10;
-  [v20 presentCardWithStyle:a5 animated:? completion:?];
+  v20 = appCardPresentationOverseer;
+  [v20 presentCardWithStyle:style animated:? completion:?];
   if (v18)
   {
     [(CKChatInputController *)self setPreventResignFirstResponder:0];
-    v21 = [(CKChatInputController *)self delegate];
-    [v21 dismissKeyboard];
+    delegate2 = [(CKChatInputController *)self delegate];
+    [delegate2 dismissKeyboard];
   }
 }
 
@@ -3508,10 +3508,10 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
   }
 }
 
-- (void)extensionRemoteConnectionWasInterrupted:(id)a3
+- (void)extensionRemoteConnectionWasInterrupted:(id)interrupted
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 _stringForKey:*MEMORY[0x1E69A6F20]];
+  userInfo = [interrupted userInfo];
+  v8 = [userInfo _stringForKey:*MEMORY[0x1E69A6F20]];
 
   v5 = IMStickersExtensionIdentifier();
   v6 = IMBalloonExtensionIDWithSuffix();
@@ -3523,23 +3523,23 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
   }
 }
 
-- (void)_informDelegateOfUpdatedAppCardHeightAnimated:(BOOL)a3
+- (void)_informDelegateOfUpdatedAppCardHeightAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CKChatInputController *)self delegate];
+  animatedCopy = animated;
+  delegate = [(CKChatInputController *)self delegate];
   [(CKChatInputController *)self _appCardHeightWithSafeArea];
-  [v5 appCardDidChangeEntryViewAlignmentHeight:v3 animated:?];
+  [delegate appCardDidChangeEntryViewAlignmentHeight:animatedCopy animated:?];
 }
 
 - (double)_appCardHeightWithSafeArea
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v4 = [v3 viewControllerForChatInputModalPresentation];
+  delegate = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
 
   [(CKChatInputController *)self appCardOverseerCompactHeightExcludingSafeArea];
   v6 = v5;
-  v7 = [v4 view];
-  [v7 safeAreaInsets];
+  view = [viewControllerForChatInputModalPresentation view];
+  [view safeAreaInsets];
   v9 = v6 + v8;
 
   return v9;
@@ -3547,10 +3547,10 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
 
 - (BOOL)isAppCardPresentationStyleExpanded
 {
-  v2 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v3 = [v2 isExpanded];
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isExpanded = [appCardPresentationOverseer isExpanded];
 
-  return v3;
+  return isExpanded;
 }
 
 - (void)dismissBrowserViewController
@@ -3560,9 +3560,9 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
   [(CKChatInputController *)self _dismissBrowserViewControllerAndReloadInputViews:0];
 }
 
-- (void)_dismissBrowserViewControllerAndReloadInputViews:(BOOL)a3
+- (void)_dismissBrowserViewControllerAndReloadInputViews:(BOOL)views
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:views];
   [(CKChatInputController *)self _deferredDismissToKeyboardAndFocusEntryView:v4];
 }
 
@@ -3573,10 +3573,10 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
     [(CKChatInputController *)self dismissBrowserViewController];
   }
 
-  v3 = [(CKChatInputController *)self entryView];
-  v4 = [v3 contentView];
-  v5 = [v4 textView];
-  [v5 becomeFirstResponder];
+  entryView = [(CKChatInputController *)self entryView];
+  contentView = [entryView contentView];
+  textView = [contentView textView];
+  [textView becomeFirstResponder];
 
   if (IMOSLoggingEnabled())
   {
@@ -3591,61 +3591,61 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
 
 - (BOOL)isEntryViewFirstResponder
 {
-  v3 = [(CKChatInputController *)self entryView];
-  v4 = [v3 contentView];
-  v5 = [v4 subjectView];
-  v6 = [v5 isFirstResponder];
+  entryView = [(CKChatInputController *)self entryView];
+  contentView = [entryView contentView];
+  subjectView = [contentView subjectView];
+  isFirstResponder = [subjectView isFirstResponder];
 
-  v7 = [(CKChatInputController *)self entryView];
-  v8 = [v7 contentView];
-  v9 = [v8 textView];
-  LOBYTE(v5) = [v9 isFirstResponder];
+  entryView2 = [(CKChatInputController *)self entryView];
+  contentView2 = [entryView2 contentView];
+  textView = [contentView2 textView];
+  LOBYTE(subjectView) = [textView isFirstResponder];
 
-  return (v6 | v5) & 1;
+  return (isFirstResponder | subjectView) & 1;
 }
 
 - (BOOL)currentPluginIsDT
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A69A8]];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69A69A8]];
 
   return v4;
 }
 
 - (BOOL)currentPluginIsPhotos
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A6A00]];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69A6A00]];
 
   return v4;
 }
 
 - (BOOL)currentPluginIsGenerativePlayground
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   return v5;
 }
 
-- (BOOL)switcherPluginCanMessageAPIOnBehalfOfPlugin:(id)a3
+- (BOOL)switcherPluginCanMessageAPIOnBehalfOfPlugin:(id)plugin
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[CKChatInputController _isCombinedStickersApp](self, "_isCombinedStickersApp") || ![v4 length] || (-[CKChatInputController browserPlugin](self, "browserPlugin"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", v4), v6, v5, (v7 & 1) != 0))
+  pluginCopy = plugin;
+  if (-[CKChatInputController _isCombinedStickersApp](self, "_isCombinedStickersApp") || ![pluginCopy length] || (-[CKChatInputController browserPlugin](self, "browserPlugin"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", pluginCopy), v6, v5, (v7 & 1) != 0))
   {
     if (CKIsRunningInMacCatalyst())
     {
-      v8 = 1;
+      _switcherPluginCanMessageAPI = 1;
     }
 
     else
     {
-      v8 = [(CKChatInputController *)self _switcherPluginCanMessageAPI];
+      _switcherPluginCanMessageAPI = [(CKChatInputController *)self _switcherPluginCanMessageAPI];
     }
   }
 
@@ -3656,37 +3656,37 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(CKBrowserSwitcherViewController *)self->_browserSwitcher balloonPlugin];
-        v11 = [v10 identifier];
+        balloonPlugin = [(CKBrowserSwitcherViewController *)self->_browserSwitcher balloonPlugin];
+        identifier = [balloonPlugin identifier];
         v13 = 138412546;
-        v14 = v4;
+        v14 = pluginCopy;
         v15 = 2112;
-        v16 = v11;
+        v16 = identifier;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Denying action for plugin %@ (the current plugin is %@)", &v13, 0x16u);
       }
     }
 
-    v8 = 0;
+    _switcherPluginCanMessageAPI = 0;
   }
 
-  return v8;
+  return _switcherPluginCanMessageAPI;
 }
 
-- (BOOL)_pluginCanMessageAPI:(id)a3
+- (BOOL)_pluginCanMessageAPI:(id)i
 {
-  v3 = a3;
-  if ([v3 length])
+  iCopy = i;
+  if ([iCopy length])
   {
     v4 = IMBalloonExtensionIDWithSuffix();
-    v5 = [v3 isEqualToString:v4];
+    v5 = [iCopy isEqualToString:v4];
 
-    v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v7 = [v6 isZelkovaEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isZelkovaEnabled = [mEMORY[0x1E69A8070] isZelkovaEnabled];
 
-    if (v7)
+    if (isZelkovaEnabled)
     {
       v8 = IMBalloonExtensionIDWithSuffix();
-      v9 = [v3 isEqualToString:v8];
+      v9 = [iCopy isEqualToString:v8];
     }
 
     else
@@ -3694,13 +3694,13 @@ void __81__CKChatInputController_presentModernCardForPlugin_dataSource_presentat
       v9 = 0;
     }
 
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v12 = [v11 isPollsEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isPollsEnabled = [mEMORY[0x1E69A8070]2 isPollsEnabled];
 
-    if (v12)
+    if (isPollsEnabled)
     {
       v13 = IMBalloonExtensionIDWithSuffix();
-      v14 = [v3 isEqualToString:v13];
+      v14 = [iCopy isEqualToString:v13];
 
       if ((v5 & 1) == 0)
       {
@@ -3731,9 +3731,9 @@ LABEL_11:
 
 - (BOOL)_isCombinedStickersApp
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
-  v4 = [v3 hasSuffix:*MEMORY[0x1E69A68F8]];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  v4 = [identifier hasSuffix:*MEMORY[0x1E69A68F8]];
 
   return v4;
 }
@@ -3747,12 +3747,12 @@ LABEL_11:
       return 0;
     }
 
-    v4 = [(CKChatInputController *)self browserSwitcher];
-    if (([v4 isBrowserReadyForUserInteraction] & 1) == 0)
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    if (([browserSwitcher isBrowserReadyForUserInteraction] & 1) == 0)
     {
-      v5 = [(CKChatInputController *)self browserSwitcher];
-      v6 = [v5 transitionCoordinator];
-      v3 = [v6 currentConsumer] == 2;
+      browserSwitcher2 = [(CKChatInputController *)self browserSwitcher];
+      transitionCoordinator = [browserSwitcher2 transitionCoordinator];
+      v3 = [transitionCoordinator currentConsumer] == 2;
 
 LABEL_13:
       return v3;
@@ -3765,20 +3765,20 @@ LABEL_8:
 
   if (![(CKChatInputController *)self appModalIsDisplayed])
   {
-    v7 = [(CKChatInputController *)self stickerReactionSession];
+    stickerReactionSession = [(CKChatInputController *)self stickerReactionSession];
 
-    v4 = [(CKChatInputController *)self appCardPresentationOverseer];
-    if (([v4 isPresentingCard] & 1) == 0)
+    browserSwitcher = [(CKChatInputController *)self appCardPresentationOverseer];
+    if (([browserSwitcher isPresentingCard] & 1) == 0)
     {
-      v8 = [v4 presentationBegan];
-      if (v7)
+      presentationBegan = [browserSwitcher presentationBegan];
+      if (stickerReactionSession)
       {
         v3 = 1;
       }
 
       else
       {
-        v3 = v8;
+        v3 = presentationBegan;
       }
 
       goto LABEL_13;
@@ -3792,27 +3792,27 @@ LABEL_8:
 
 - (BOOL)_shouldShowHandwriting
 {
-  v2 = self;
-  v3 = [(CKChatInputController *)self delegate];
-  LOBYTE(v2) = [v3 chatInputControllerShouldShowHandwriting:v2];
+  selfCopy = self;
+  delegate = [(CKChatInputController *)self delegate];
+  LOBYTE(selfCopy) = [delegate chatInputControllerShouldShowHandwriting:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)showHandwritingBrowserWithExistingPayload:(id)a3
+- (void)showHandwritingBrowserWithExistingPayload:(id)payload
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  payloadCopy = payload;
   if ([(CKChatInputController *)self _shouldShowHandwriting])
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6)
+    if (userInterfaceIdiom)
     {
-      if (v4)
+      if (payloadCopy)
       {
-        v28[0] = v4;
+        v28[0] = payloadCopy;
         v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
       }
 
@@ -3825,8 +3825,8 @@ LABEL_8:
       v22 = [v21 handwritingViewControllerWithPluginPayloads:v7];
 
       [v22 setSendDelegate:self];
-      v23 = [v22 balloonPlugin];
-      [(CKChatInputController *)self setBrowserPlugin:v23];
+      balloonPlugin = [v22 balloonPlugin];
+      [(CKChatInputController *)self setBrowserPlugin:balloonPlugin];
 
       v24 = [CKKeyboardContentViewController alloc];
       v25 = [(CKKeyboardContentViewController *)v24 initWithViewController:v22 identifier:*MEMORY[0x1E69A69E0]];
@@ -3836,46 +3836,46 @@ LABEL_8:
 
     else
     {
-      v8 = [(CKChatInputController *)self orientationManager];
-      [v8 beginListeningForOrientationEventsWithKey:@"HandwritingOnscreen"];
+      orientationManager = [(CKChatInputController *)self orientationManager];
+      [orientationManager beginListeningForOrientationEventsWithKey:@"HandwritingOnscreen"];
 
-      v9 = [(CKChatInputController *)self handwritingPresentationController];
+      handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-      if (!v9)
+      if (!handwritingPresentationController)
       {
         v10 = objc_alloc_init(CKHandwritingPresentationController);
         [(CKChatInputController *)self setHandwritingPresentationController:v10];
 
-        v11 = [(CKChatInputController *)self handwritingPresentationController];
-        [v11 setDelegate:self];
+        handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+        [handwritingPresentationController2 setDelegate:self];
 
-        v12 = [(CKChatInputController *)self handwritingPresentationController];
-        [v12 setSendDelegate:self];
+        handwritingPresentationController3 = [(CKChatInputController *)self handwritingPresentationController];
+        [handwritingPresentationController3 setSendDelegate:self];
 
-        v13 = [(CKChatInputController *)self orientationManager];
-        v14 = [(CKChatInputController *)self handwritingPresentationController];
-        [v14 setDeviceOrientationManager:v13];
+        orientationManager2 = [(CKChatInputController *)self orientationManager];
+        handwritingPresentationController4 = [(CKChatInputController *)self handwritingPresentationController];
+        [handwritingPresentationController4 setDeviceOrientationManager:orientationManager2];
       }
 
-      v15 = [(CKChatInputController *)self handwritingPresentationController];
-      [v15 setPluginPayload:v4];
+      handwritingPresentationController5 = [(CKChatInputController *)self handwritingPresentationController];
+      [handwritingPresentationController5 setPluginPayload:payloadCopy];
 
-      v16 = [(CKChatInputController *)self orientationManager];
-      v17 = [v16 isListeningForOrientationEvents];
+      orientationManager3 = [(CKChatInputController *)self orientationManager];
+      isListeningForOrientationEvents = [orientationManager3 isListeningForOrientationEvents];
 
-      if (v17)
+      if (isListeningForOrientationEvents)
       {
-        v18 = [(CKChatInputController *)self orientationManager];
-        v19 = [v18 currentDeviceOrientation];
+        orientationManager4 = [(CKChatInputController *)self orientationManager];
+        currentDeviceOrientation = [orientationManager4 currentDeviceOrientation];
 
-        if (v19 == 3)
+        if (currentDeviceOrientation == 3)
         {
           v20 = 3;
         }
 
         else
         {
-          v20 = 4 * (v19 == 4);
+          v20 = 4 * (currentDeviceOrientation == 4);
         }
       }
 
@@ -3884,198 +3884,198 @@ LABEL_8:
         v20 = 0;
       }
 
-      v26 = [(CKChatInputController *)self handwritingPresentationController];
-      [v26 setInitialInterfaceOrientation:v20];
+      handwritingPresentationController6 = [(CKChatInputController *)self handwritingPresentationController];
+      [handwritingPresentationController6 setInitialInterfaceOrientation:v20];
 
-      v27 = [(CKChatInputController *)self handwritingPresentationController];
-      [v27 setVisible:1 animated:1];
+      handwritingPresentationController7 = [(CKChatInputController *)self handwritingPresentationController];
+      [handwritingPresentationController7 setVisible:1 animated:1];
     }
   }
 }
 
 - (BOOL)handwritingIsDisplayed
 {
-  v3 = [(CKChatInputController *)self browserPlugin];
-  v4 = [v3 identifier];
-  if ([v4 isEqualToString:*MEMORY[0x1E69A69E0]])
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E69A69E0]])
   {
-    v5 = 1;
+    visible = 1;
   }
 
   else
   {
-    v6 = [(CKChatInputController *)self handwritingPresentationController];
-    v5 = [v6 visible];
+    handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
+    visible = [handwritingPresentationController visible];
   }
 
-  return v5;
+  return visible;
 }
 
 - (BOOL)appStoreIsDisplayed
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A6988]];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x1E69A6988]];
 
   return v4;
 }
 
 - (BOOL)appManagerIsDisplayed
 {
-  v2 = [(CKChatInputController *)self browserPlugin];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:@"com.apple.messages.browser.MorePlugin"];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
+  v4 = [identifier isEqualToString:@"com.apple.messages.browser.MorePlugin"];
 
   return v4;
 }
 
 - (BOOL)appModalIsDisplayed
 {
-  v2 = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
-  v3 = [v2 isPresentingFullScreenModal];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
+  isPresentingFullScreenModal = [transitionCoordinator isPresentingFullScreenModal];
 
-  return v3;
+  return isPresentingFullScreenModal;
 }
 
 - (id)_browserViewControllerForInterfaceOrientationMethods
 {
-  v3 = [(CKChatInputController *)self inputViewController];
-  v4 = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
-  v5 = [v4 isExpanded];
+  inputViewController = [(CKChatInputController *)self inputViewController];
+  transitionCoordinator = [(CKBrowserSwitcherViewController *)self->_browserSwitcher transitionCoordinator];
+  isExpanded = [transitionCoordinator isExpanded];
 
-  if ((v5 & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((isExpanded & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v6 = 0;
+    viewController = 0;
   }
 
   else
   {
-    v6 = [v3 viewController];
+    viewController = [inputViewController viewController];
 
-    if (v6)
+    if (viewController)
     {
-      v6 = [v3 viewController];
+      viewController = [inputViewController viewController];
     }
   }
 
-  return v6;
+  return viewController;
 }
 
 - (BOOL)browserShouldAutorotate
 {
-  v2 = [(CKChatInputController *)self _browserViewControllerForInterfaceOrientationMethods];
-  v3 = v2;
-  if (v2)
+  _browserViewControllerForInterfaceOrientationMethods = [(CKChatInputController *)self _browserViewControllerForInterfaceOrientationMethods];
+  v3 = _browserViewControllerForInterfaceOrientationMethods;
+  if (_browserViewControllerForInterfaceOrientationMethods)
   {
-    v4 = [v2 shouldAutorotate];
+    shouldAutorotate = [_browserViewControllerForInterfaceOrientationMethods shouldAutorotate];
   }
 
   else
   {
-    v4 = 1;
+    shouldAutorotate = 1;
   }
 
-  return v4;
+  return shouldAutorotate;
 }
 
 - (unint64_t)browserSupportedInterfaceOrientations
 {
-  v2 = [(CKChatInputController *)self _browserViewControllerForInterfaceOrientationMethods];
-  v3 = v2;
-  if (v2)
+  _browserViewControllerForInterfaceOrientationMethods = [(CKChatInputController *)self _browserViewControllerForInterfaceOrientationMethods];
+  v3 = _browserViewControllerForInterfaceOrientationMethods;
+  if (_browserViewControllerForInterfaceOrientationMethods)
   {
-    v4 = [v2 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [_browserViewControllerForInterfaceOrientationMethods supportedInterfaceOrientations];
   }
 
   else
   {
-    v4 = 30;
+    supportedInterfaceOrientations = 30;
   }
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
 - (void)_handleOrientation
 {
-  v3 = [(CKChatInputController *)self orientationManager];
-  v4 = [v3 currentDeviceOrientation];
+  orientationManager = [(CKChatInputController *)self orientationManager];
+  currentDeviceOrientation = [orientationManager currentDeviceOrientation];
 
   if ([(CKChatInputController *)self lastSeenOrientation])
   {
-    if (v4 != [(CKChatInputController *)self lastSeenOrientation])
+    if (currentDeviceOrientation != [(CKChatInputController *)self lastSeenOrientation])
     {
-      v5 = [MEMORY[0x1E69DC938] currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (!v6 && (v4 - 1) <= 1 && [(CKChatInputController *)self handwritingIsDisplayed])
+      if (!userInterfaceIdiom && (currentDeviceOrientation - 1) <= 1 && [(CKChatInputController *)self handwritingIsDisplayed])
       {
-        v7 = [(CKChatInputController *)self handwritingPresentationController];
-        v8 = [v7 pluginPayload];
+        handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
+        pluginPayload = [handwritingPresentationController pluginPayload];
 
-        if (v8)
+        if (pluginPayload)
         {
-          [(CKChatInputController *)self startEditingPayload:v8 dismiss:1];
+          [(CKChatInputController *)self startEditingPayload:pluginPayload dismiss:1];
         }
 
         else
         {
-          v9 = [(CKChatInputController *)self handwritingPresentationController];
-          [v9 setVisible:0 animated:1];
+          handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+          [handwritingPresentationController2 setVisible:0 animated:1];
         }
       }
     }
   }
 
-  [(CKChatInputController *)self setLastSeenOrientation:v4];
+  [(CKChatInputController *)self setLastSeenOrientation:currentDeviceOrientation];
 }
 
-- (void)setShouldBlurForMessageEditing:(BOOL)a3
+- (void)setShouldBlurForMessageEditing:(BOOL)editing
 {
-  v3 = a3;
-  v4 = [(CKChatInputController *)self entryView];
-  [v4 setShouldBlurForMessageEditing:v3];
+  editingCopy = editing;
+  entryView = [(CKChatInputController *)self entryView];
+  [entryView setShouldBlurForMessageEditing:editingCopy];
 }
 
 - (BOOL)shouldBlurForMessageEditing
 {
-  v2 = [(CKChatInputController *)self entryView];
-  v3 = [v2 shouldBlurForMessageEditing];
+  entryView = [(CKChatInputController *)self entryView];
+  shouldBlurForMessageEditing = [entryView shouldBlurForMessageEditing];
 
-  return v3;
+  return shouldBlurForMessageEditing;
 }
 
-- (int64_t)determineSendMenuPresentationStyleCompatibleWithTraitCollection:(id)a3
+- (int64_t)determineSendMenuPresentationStyleCompatibleWithTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  collectionCopy = collection;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v6 = (v5 & 0xFFFFFFFFFFFFFFFBLL) == 1 && [v3 horizontalSizeClass] == 2;
+  v6 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && [collectionCopy horizontalSizeClass] == 2;
   return v6;
 }
 
-- (void)handleTextInputPayload:(id)a3 withPayloadID:(id)a4 forPlugin:(id)a5
+- (void)handleTextInputPayload:(id)payload withPayloadID:(id)d forPlugin:(id)plugin
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 length])
+  payloadCopy = payload;
+  dCopy = d;
+  pluginCopy = plugin;
+  if ([pluginCopy length])
   {
     v11 = +[CKBalloonPluginManager sharedInstance];
-    v12 = [v11 viewControllerForPluginIdentifier:v10];
+    v12 = [v11 viewControllerForPluginIdentifier:pluginCopy];
 
-    if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (dCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
       [v12 setSendDelegate:self];
-      v13 = [v8 mutableCopy];
+      v13 = [payloadCopy mutableCopy];
       [v13 setObject:&unk_1F04E8088 forKeyedSubscript:@"sessionStartEntryType"];
       v14 = [v13 copy];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __72__CKChatInputController_handleTextInputPayload_withPayloadID_forPlugin___block_invoke;
       v15[3] = &unk_1E72EB9C8;
-      v16 = v10;
-      [v12 handleTextInputPayload:v14 withPayloadID:v9 completion:v15];
+      v16 = pluginCopy;
+      [v12 handleTextInputPayload:v14 withPayloadID:dCopy completion:v15];
     }
   }
 }
@@ -4100,8 +4100,8 @@ void __72__CKChatInputController_handleTextInputPayload_withPayloadID_forPlugin_
 
 - (void)showLocationPlugin
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v10 = [v3 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v10 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   v4 = +[CKBalloonPluginManager sharedInstance];
   v5 = IMBalloonExtensionIDWithSuffix();
@@ -4109,29 +4109,29 @@ void __72__CKChatInputController_handleTextInputPayload_withPayloadID_forPlugin_
   if (v6)
   {
     v7 = [v10 presentationStyle] == 1;
-    v8 = [(CKChatInputController *)self delegate];
-    v9 = [v8 sceneInterfaceOrientation];
+    delegate2 = [(CKChatInputController *)self delegate];
+    sceneInterfaceOrientation = [delegate2 sceneInterfaceOrientation];
 
-    [(CKChatInputController *)self showBrowserForPlugin:v6 dataSource:0 style:[(CKChatInputController *)self presentationStyleInOrientation:v9 inPopover:v7 forPluginID:v5]];
+    [(CKChatInputController *)self showBrowserForPlugin:v6 dataSource:0 style:[(CKChatInputController *)self presentationStyleInOrientation:sceneInterfaceOrientation inPopover:v7 forPluginID:v5]];
   }
 }
 
-- (void)_handleSelectionOfExtensionWithIdentifier:(id)a3
+- (void)_handleSelectionOfExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self delegate];
-  v6 = [v5 activeSendMenuPresentationForChatInputController:self];
+  identifierCopy = identifier;
+  delegate = [(CKChatInputController *)self delegate];
+  v6 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   v7 = IMBalloonExtensionIDWithSuffix();
-  v8 = [v4 isEqualToString:v7];
+  v8 = [identifierCopy isEqualToString:v7];
 
   if (v8)
   {
     [(CKChatInputController *)self showFunCamera];
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isPopoverSendMenuEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-    if (v10)
+    if (isPopoverSendMenuEnabled)
     {
       goto LABEL_34;
     }
@@ -4140,37 +4140,37 @@ void __72__CKChatInputController_handleTextInputPayload_withPayloadID_forPlugin_
   }
 
   v11 = IMBalloonExtensionIDWithSuffix();
-  if ([v4 isEqualToString:v11])
+  if ([identifierCopy isEqualToString:v11])
   {
-    v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v13 = [v12 isZelkovaEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isZelkovaEnabled = [mEMORY[0x1E69A8070]2 isZelkovaEnabled];
 
-    if (v13)
+    if (isZelkovaEnabled)
     {
-      v14 = [MEMORY[0x1E69A8218] sharedCoordinator];
-      v15 = [v14 appPayloadID];
+      mEMORY[0x1E69A8218] = [MEMORY[0x1E69A8218] sharedCoordinator];
+      appPayloadID = [mEMORY[0x1E69A8218] appPayloadID];
 
       v16 = +[CKBalloonPluginManager sharedInstance];
-      v17 = [v16 viewControllerForPluginIdentifier:v4];
+      appPayloadID2 = [v16 viewControllerForPluginIdentifier:identifierCopy];
 
-      v18 = [MEMORY[0x1E69A8218] sharedCoordinator];
-      v19 = [v18 appPayload];
+      mEMORY[0x1E69A8218]2 = [MEMORY[0x1E69A8218] sharedCoordinator];
+      appPayload = [mEMORY[0x1E69A8218]2 appPayload];
 
-      if (!v15 || (objc_opt_respondsToSelector() & 1) == 0)
+      if (!appPayloadID || (objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_17;
       }
 
-      [v17 setSendDelegate:self];
-      v20 = [v19 mutableCopy];
-      [v20 setObject:&unk_1F04E80A0 forKeyedSubscript:@"sessionStartEntryType"];
-      v21 = [v20 copy];
+      [appPayloadID2 setSendDelegate:self];
+      appPayload2 = [appPayload mutableCopy];
+      [appPayload2 setObject:&unk_1F04E80A0 forKeyedSubscript:@"sessionStartEntryType"];
+      v21 = [appPayload2 copy];
       v64[0] = MEMORY[0x1E69E9820];
       v64[1] = 3221225472;
       v64[2] = __67__CKChatInputController__handleSelectionOfExtensionWithIdentifier___block_invoke;
       v64[3] = &unk_1E72EB9C8;
-      v65 = v4;
-      [v17 handleTextInputPayload:v21 withPayloadID:v15 completion:v64];
+      v65 = identifierCopy;
+      [appPayloadID2 handleTextInputPayload:v21 withPayloadID:appPayloadID completion:v64];
 
 LABEL_16:
 LABEL_17:
@@ -4185,30 +4185,30 @@ LABEL_18:
   }
 
   v22 = IMBalloonExtensionIDWithSuffix();
-  if (([v4 isEqualToString:v22] & 1) == 0)
+  if (([identifierCopy isEqualToString:v22] & 1) == 0)
   {
 
     goto LABEL_21;
   }
 
-  v23 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v24 = [v23 isPollsEnabled];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPollsEnabled = [mEMORY[0x1E69A8070]3 isPollsEnabled];
 
-  if (!v24)
+  if (!isPollsEnabled)
   {
 LABEL_21:
     v34 = IMBalloonExtensionIDWithSuffix();
-    v35 = [v4 isEqualToString:v34];
+    v35 = [identifierCopy isEqualToString:v34];
 
     if (v35)
     {
-      v36 = [(CKChatInputController *)self entryView];
-      [v36 startRecordingForAudioButtonInEntryView];
+      entryView = [(CKChatInputController *)self entryView];
+      [entryView startRecordingForAudioButtonInEntryView];
 
-      v37 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v38 = [v37 isPopoverSendMenuEnabled];
+      mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isPopoverSendMenuEnabled2 = [mEMORY[0x1E69A8070]4 isPopoverSendMenuEnabled];
 
-      if (v38 || [v6 presentationStyle] == 1)
+      if (isPopoverSendMenuEnabled2 || [v6 presentationStyle] == 1)
       {
         [v6 dismissAnimated:1 completion:0];
       }
@@ -4217,7 +4217,7 @@ LABEL_21:
     }
 
     v39 = IMBalloonExtensionIDWithSuffix();
-    v40 = [v4 isEqualToString:v39];
+    v40 = [identifierCopy isEqualToString:v39];
 
     if (v40)
     {
@@ -4226,15 +4226,15 @@ LABEL_21:
     }
 
     v44 = IMBalloonExtensionIDWithSuffix();
-    v45 = [v4 isEqualToString:v44];
+    v45 = [identifierCopy isEqualToString:v44];
 
     if (v45)
     {
       v46 = [v6 presentationStyle] == 1;
-      v47 = [(CKChatInputController *)self delegate];
-      v48 = [v47 sceneInterfaceOrientation];
+      delegate2 = [(CKChatInputController *)self delegate];
+      sceneInterfaceOrientation = [delegate2 sceneInterfaceOrientation];
 
-      v49 = [(CKChatInputController *)self presentationStyleInOrientation:v48 inPopover:v46 forPluginID:v4];
+      v49 = [(CKChatInputController *)self presentationStyleInOrientation:sceneInterfaceOrientation inPopover:v46 forPluginID:identifierCopy];
       v50 = IMSharedHelperDeviceIsiPad();
       if (v49 == 1)
       {
@@ -4249,16 +4249,16 @@ LABEL_21:
       goto LABEL_28;
     }
 
-    v15 = +[CKBalloonPluginManager sharedInstance];
-    v17 = [v15 pluginForExtensionIdentifier:v4];
-    if (v17)
+    appPayloadID = +[CKBalloonPluginManager sharedInstance];
+    appPayloadID2 = [appPayloadID pluginForExtensionIdentifier:identifierCopy];
+    if (appPayloadID2)
     {
       v51 = [v6 presentationStyle] == 1;
-      v52 = [(CKChatInputController *)self delegate];
-      v53 = [v52 sceneInterfaceOrientation];
+      delegate3 = [(CKChatInputController *)self delegate];
+      sceneInterfaceOrientation2 = [delegate3 sceneInterfaceOrientation];
 
-      v54 = [(CKChatInputController *)self presentationStyleInOrientation:v53 inPopover:v51 forPluginID:v4];
-      [(CKChatInputController *)self showBrowserForPlugin:v17 dataSource:0 style:v54];
+      v54 = [(CKChatInputController *)self presentationStyleInOrientation:sceneInterfaceOrientation2 inPopover:v51 forPluginID:identifierCopy];
+      [(CKChatInputController *)self showBrowserForPlugin:appPayloadID2 dataSource:0 style:v54];
       v55 = IMSharedHelperDeviceIsiPad();
       if (v54 == 2)
       {
@@ -4272,37 +4272,37 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v25 = [(CKChatInputController *)self entryView];
-  v26 = [v25 composition];
-  v27 = [v26 shelfPluginPayload];
-  v15 = [v27 pluginBundleID];
+  entryView2 = [(CKChatInputController *)self entryView];
+  composition = [entryView2 composition];
+  shelfPluginPayload = [composition shelfPluginPayload];
+  appPayloadID = [shelfPluginPayload pluginBundleID];
 
   v28 = IMBalloonExtensionIDWithSuffix();
-  LOBYTE(v25) = [v15 isEqualToString:v28];
+  LOBYTE(entryView2) = [appPayloadID isEqualToString:v28];
 
-  if ((v25 & 1) == 0)
+  if ((entryView2 & 1) == 0)
   {
-    v29 = [MEMORY[0x1E69A8218] sharedCoordinator];
-    v17 = [v29 appPayloadID];
+    mEMORY[0x1E69A8218]3 = [MEMORY[0x1E69A8218] sharedCoordinator];
+    appPayloadID2 = [mEMORY[0x1E69A8218]3 appPayloadID];
 
     v30 = +[CKBalloonPluginManager sharedInstance];
-    v19 = [v30 viewControllerForPluginIdentifier:v4];
+    appPayload = [v30 viewControllerForPluginIdentifier:identifierCopy];
 
-    v31 = [MEMORY[0x1E69A8218] sharedCoordinator];
-    v20 = [v31 appPayload];
+    mEMORY[0x1E69A8218]4 = [MEMORY[0x1E69A8218] sharedCoordinator];
+    appPayload2 = [mEMORY[0x1E69A8218]4 appPayload];
 
-    if (v17 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (appPayloadID2 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v19 setSendDelegate:self];
-      v32 = [v20 mutableCopy];
+      [appPayload setSendDelegate:self];
+      v32 = [appPayload2 mutableCopy];
       [v32 setObject:&unk_1F04E80A0 forKeyedSubscript:@"sessionStartEntryType"];
       v33 = [v32 copy];
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __67__CKChatInputController__handleSelectionOfExtensionWithIdentifier___block_invoke_382;
       v62[3] = &unk_1E72EB9C8;
-      v63 = v4;
-      [v19 handleTextInputPayload:v33 withPayloadID:v17 completion:v62];
+      v63 = identifierCopy;
+      [appPayload handleTextInputPayload:v33 withPayloadID:appPayloadID2 completion:v62];
     }
 
     goto LABEL_16;
@@ -4317,8 +4317,8 @@ LABEL_28:
   v57 = 3221225472;
   v58 = __67__CKChatInputController__handleSelectionOfExtensionWithIdentifier___block_invoke_383;
   v59 = &unk_1E72ECCA8;
-  v60 = v4;
-  v61 = self;
+  v60 = identifierCopy;
+  selfCopy = self;
   v42 = _Block_copy(&v56);
   if (v41 || (v43 = [v6 presentationStyle]) == 0)
   {
@@ -4402,79 +4402,79 @@ void __67__CKChatInputController__handleSelectionOfExtensionWithIdentifier___blo
   }
 }
 
-- (void)sendMenuViewControllerRequestDismiss:(id)a3
+- (void)sendMenuViewControllerRequestDismiss:(id)dismiss
 {
-  v4 = [(CKChatInputController *)self delegate];
-  v5 = [v4 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v5 = [delegate activeSendMenuPresentationForChatInputController:self];
 
   [v5 dismissAnimated:1 completion:0];
 }
 
-- (void)sendMenuViewControllerWillPerformFullScreenDismissAnimation:(id)a3
+- (void)sendMenuViewControllerWillPerformFullScreenDismissAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self entryView];
-  [v5 endSendMenuPresentation];
+  animationCopy = animation;
+  entryView = [(CKChatInputController *)self entryView];
+  [entryView endSendMenuPresentation];
 
   [(CKChatInputController *)self setShouldSuppressStatusBarForSendMenu:0];
-  v6 = [(CKChatInputController *)self delegate];
-  [v6 chatInputController:self willBeginFullScreenDismissAnimationForSendMenuViewController:v4];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputController:self willBeginFullScreenDismissAnimationForSendMenuViewController:animationCopy];
 }
 
-- (void)sendMenuDidAppear:(id)a3 presentationStyle:(int64_t)a4
+- (void)sendMenuDidAppear:(id)appear presentationStyle:(int64_t)style
 {
-  v5 = [(CKChatInputController *)self entryView];
-  if (a4 == 1)
+  entryView = [(CKChatInputController *)self entryView];
+  if (style == 1)
   {
-    v6 = v5;
-    [v5 beginSendMenuPopoverPresentation];
+    v6 = entryView;
+    [entryView beginSendMenuPopoverPresentation];
   }
 
   else
   {
-    if (a4)
+    if (style)
     {
       goto LABEL_6;
     }
 
-    v6 = v5;
-    [v5 beginSendMenuFullScreenPresentation];
+    v6 = entryView;
+    [entryView beginSendMenuFullScreenPresentation];
   }
 
-  v5 = v6;
+  entryView = v6;
 LABEL_6:
 }
 
-- (void)sendMenuViewControllerDidFinishDismissAnimation:(id)a3
+- (void)sendMenuViewControllerDidFinishDismissAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   [(CKChatInputController *)self setShouldSuppressStatusBarForSendMenu:0];
-  v5 = [(CKChatInputController *)self delegate];
-  [v5 chatInputController:self didFinishDismissAnimationForSendMenuViewController:v4];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputController:self didFinishDismissAnimationForSendMenuViewController:animationCopy];
 }
 
 - (BOOL)isKeyboardSnapshotted
 {
-  v2 = [(CKChatInputController *)self delegate];
-  v3 = [v2 isKeyboardSnapshotted];
+  delegate = [(CKChatInputController *)self delegate];
+  isKeyboardSnapshotted = [delegate isKeyboardSnapshotted];
 
-  return v3;
+  return isKeyboardSnapshotted;
 }
 
-- (void)messageEntryViewDidExpand:(id)a3
+- (void)messageEntryViewDidExpand:(id)expand
 {
-  v4 = [(CKChatInputController *)self insertPayloadCompletionHandler];
+  insertPayloadCompletionHandler = [(CKChatInputController *)self insertPayloadCompletionHandler];
 
-  if (v4)
+  if (insertPayloadCompletionHandler)
   {
-    v5 = [(CKChatInputController *)self insertPayloadCompletionHandler];
-    v5[2](v5, 0);
+    insertPayloadCompletionHandler2 = [(CKChatInputController *)self insertPayloadCompletionHandler];
+    insertPayloadCompletionHandler2[2](insertPayloadCompletionHandler2, 0);
 
     [(CKChatInputController *)self setInsertPayloadCompletionHandler:0];
   }
 }
 
-- (void)messageEntryViewInputDidTakeFocus:(id)a3
+- (void)messageEntryViewInputDidTakeFocus:(id)focus
 {
   if (!CKIsAppCardsEnabled())
   {
@@ -4491,25 +4491,25 @@ LABEL_6:
   [(CKChatInputController *)self setBrowserPluginDataSource:0];
 }
 
-- (void)messageEntryView:(id)a3 touchUpOutsidePlusButton:(id)a4
+- (void)messageEntryView:(id)view touchUpOutsidePlusButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained chatInputControllerShouldEndDeferringSystemNavigationPopGestureForPlusButton:self];
 }
 
-- (void)messageEntryView:(id)a3 touchCancelForPlusButton:(id)a4
+- (void)messageEntryView:(id)view touchCancelForPlusButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained chatInputControllerShouldEndDeferringSystemNavigationPopGestureForPlusButton:self];
 }
 
-- (void)messageEntryView:(id)a3 touchDragExitForPlusButton:(id)a4
+- (void)messageEntryView:(id)view touchDragExitForPlusButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained chatInputControllerShouldEndDeferringSystemNavigationPopGestureForPlusButton:self];
 }
 
-- (void)messageEntryView:(id)a3 didLongPressPlusButton:(id)a4
+- (void)messageEntryView:(id)view didLongPressPlusButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained chatInputControllerShouldEndDeferringSystemNavigationPopGestureForPlusButton:self];
@@ -4517,18 +4517,18 @@ LABEL_6:
   [(CKChatInputController *)self showPhotosExtension];
 }
 
-- (void)messageEntryView:(id)a3 didReceiveInputSuggestion:(id)a4
+- (void)messageEntryView:(id)view didReceiveInputSuggestion:(id)suggestion
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  if ([v7 isPollsIntelligentCreationEnabled])
+  viewCopy = view;
+  suggestionCopy = suggestion;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  if ([mEMORY[0x1E69A8070] isPollsIntelligentCreationEnabled])
   {
-    v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v9 = [v8 isPollsEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isPollsEnabled = [mEMORY[0x1E69A8070]2 isPollsEnabled];
 
-    if (v9)
+    if (isPollsEnabled)
     {
       v10 = *MEMORY[0x1E69A6928];
       v33 = IMBalloonExtensionIDWithSuffix();
@@ -4545,19 +4545,19 @@ LABEL_6:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v39 = v6;
+            v39 = suggestionCopy;
             _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Input suggestion using new IP path: %@", buf, 0xCu);
           }
         }
 
-        v13 = v6;
-        v14 = [MEMORY[0x1E695DF90] dictionary];
-        [v14 setObject:&unk_1F04E80B8 forKeyedSubscript:@"sessionStartEntryType"];
-        v15 = [v13 title];
-        [v14 setObject:v15 forKeyedSubscript:@"pollTitle"];
+        v13 = suggestionCopy;
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:&unk_1F04E80B8 forKeyedSubscript:@"sessionStartEntryType"];
+        title = [v13 title];
+        [dictionary setObject:title forKeyedSubscript:@"pollTitle"];
 
-        v16 = [v13 options];
-        v17 = [v16 count] == 0;
+        options = [v13 options];
+        v17 = [options count] == 0;
 
         if (!v17)
         {
@@ -4565,18 +4565,18 @@ LABEL_6:
           do
           {
             v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pollOption%02lu", v18];
-            v20 = [v13 options];
-            v21 = [v20 objectAtIndex:v18];
+            options2 = [v13 options];
+            v21 = [options2 objectAtIndex:v18];
 
-            v22 = [v21 option];
-            v23 = v22;
-            if (v19 && v22)
+            option = [v21 option];
+            v23 = option;
+            if (v19 && option)
             {
-              [v14 setValue:v22 forKey:v19];
+              [dictionary setValue:option forKey:v19];
             }
 
-            v24 = [v13 options];
-            v25 = [v24 count];
+            options3 = [v13 options];
+            v25 = [options3 count];
 
             ++v18;
           }
@@ -4590,12 +4590,12 @@ LABEL_6:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v39 = v14;
+            v39 = dictionary;
             _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "Created payload: %@", buf, 0xCu);
           }
         }
 
-        if (!v14)
+        if (!dictionary)
         {
           goto LABEL_39;
         }
@@ -4605,7 +4605,7 @@ LABEL_6:
       {
         if ((objc_opt_respondsToSelector() & 1) == 0)
         {
-          v14 = 0;
+          dictionary = 0;
 LABEL_39:
 
           goto LABEL_40;
@@ -4621,8 +4621,8 @@ LABEL_39:
           }
         }
 
-        v14 = [v6 smartActionResponse];
-        if (!v14)
+        dictionary = [suggestionCopy smartActionResponse];
+        if (!dictionary)
         {
           goto LABEL_39;
         }
@@ -4637,18 +4637,18 @@ LABEL_39:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v39 = v14;
+            v39 = dictionary;
             _os_log_impl(&dword_19020E000, v29, OS_LOG_TYPE_INFO, "Payload %@", buf, 0xCu);
           }
         }
 
-        v30 = [v14 copy];
+        v30 = [dictionary copy];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___block_invoke;
         v35[3] = &unk_1E72ECCA8;
         v36 = v33;
-        v37 = self;
+        selfCopy = self;
         [v31 handleTextInputPayload:v30 withPayloadID:v32 completion:v35];
       }
 
@@ -4696,19 +4696,19 @@ void __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___bl
   }
 }
 
-- (void)_evaluateMetricsForKeyboardSuggestionWithBundleIdentifier:(id)a3
+- (void)_evaluateMetricsForKeyboardSuggestionWithBundleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v3);
   [v6 setValue:&unk_1F04E80D0 forKey:*MEMORY[0x1E69A77A0]];
-  [v6 setValue:v4 forKey:*MEMORY[0x1E69A77A8]];
+  [v6 setValue:identifierCopy forKey:*MEMORY[0x1E69A77A8]];
 
-  v5 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v5 trackEvent:*MEMORY[0x1E69A7570] withDictionary:v6];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7570] withDictionary:v6];
 }
 
-- (BOOL)shouldLaunchPhotosAppForPlusButtonLongPressInMessageEntryView:(id)a3
+- (BOOL)shouldLaunchPhotosAppForPlusButtonLongPressInMessageEntryView:(id)view
 {
   v4 = IMBalloonExtensionIDWithSuffix();
   v5 = [(CKChatInputController *)self isShowingAppCardForExtensionIdentifier:v4];
@@ -4724,7 +4724,7 @@ void __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___bl
   return !v5;
 }
 
-- (void)messageEntryView:(id)a3 didSelectPlusButton:(id)a4
+- (void)messageEntryView:(id)view didSelectPlusButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained chatInputControllerShouldEndDeferringSystemNavigationPopGestureForPlusButton:self];
@@ -4732,44 +4732,44 @@ void __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___bl
   [(CKChatInputController *)self _presentSendMenuForAppCardContentViewController:0 appCardPresentationStyle:0];
 }
 
-- (void)_presentSendMenuForAppCardContentViewController:(id)a3 appCardPresentationStyle:(unint64_t)a4
+- (void)_presentSendMenuForAppCardContentViewController:(id)controller appCardPresentationStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  controllerCopy = controller;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v9 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v10 = [v9 firstResponder];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    firstResponder = [keyWindow firstResponder];
 
-    v11 = [(CKChatInputController *)self entryView];
-    v12 = [v11 contentView];
-    v13 = [v12 textView];
+    entryView = [(CKChatInputController *)self entryView];
+    contentView = [entryView contentView];
+    textView = [contentView textView];
 
-    v14 = [(CKChatInputController *)self entryView];
-    v15 = [v14 contentView];
-    v16 = [v15 textView];
-    v17 = v16;
-    if (v16 == v10)
+    entryView2 = [(CKChatInputController *)self entryView];
+    contentView2 = [entryView2 contentView];
+    textView2 = [contentView2 textView];
+    v17 = textView2;
+    if (textView2 == firstResponder)
     {
     }
 
     else
     {
-      v18 = [(CKChatInputController *)self keyboardIsVisible];
+      keyboardIsVisible = [(CKChatInputController *)self keyboardIsVisible];
 
-      if (v18)
+      if (keyboardIsVisible)
       {
         [(CKChatInputController *)self showKeyboard];
       }
     }
 
-    if (v13 == v10)
+    if (textView == firstResponder)
     {
-      v20 = [MEMORY[0x1E69DD2E8] keyWindow];
-      v21 = [v20 firstResponder];
-      [v21 resignFirstResponder];
+      keyWindow2 = [MEMORY[0x1E69DD2E8] keyWindow];
+      firstResponder2 = [keyWindow2 firstResponder];
+      [firstResponder2 resignFirstResponder];
     }
 
     else
@@ -4784,16 +4784,16 @@ void __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___bl
     }
   }
 
-  v22 = [(CKChatInputController *)self delegate];
-  v23 = [v22 viewControllerForChatInputModalPresentation];
+  delegate = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
 
   v24 = [CKDefaultSceneOverlayPresentationContext alloc];
-  v25 = [v23 traitCollection];
-  v26 = [(CKDefaultSceneOverlayPresentationContext *)v24 initWithChatInputController:self initialTraitCollection:v25];
+  traitCollection = [viewControllerForChatInputModalPresentation traitCollection];
+  v26 = [(CKDefaultSceneOverlayPresentationContext *)v24 initWithChatInputController:self initialTraitCollection:traitCollection];
 
-  if (v6)
+  if (controllerCopy)
   {
-    v27 = [CKSendMenuPresentationRequest requestWithPresentationContext:v26 appCardContentViewController:v6 resolvedAppCardPresentationStyle:a4 completion:&__block_literal_global_409_2];
+    v27 = [CKSendMenuPresentationRequest requestWithPresentationContext:v26 appCardContentViewController:controllerCopy resolvedAppCardPresentationStyle:style completion:&__block_literal_global_409_2];
   }
 
   else
@@ -4804,8 +4804,8 @@ void __68__CKChatInputController_messageEntryView_didReceiveInputSuggestion___bl
     v27 = [CKSendMenuPresentationRequest requestWithPresentationContext:v26 sendMenuViewController:v28 completion:&__block_literal_global_407_1];
   }
 
-  v29 = [(CKChatInputController *)self delegate];
-  [v29 chatInputController:self requestPresentSendMenu:v27];
+  delegate2 = [(CKChatInputController *)self delegate];
+  [delegate2 chatInputController:self requestPresentSendMenu:v27];
 }
 
 void __98__CKChatInputController__presentSendMenuForAppCardContentViewController_appCardPresentationStyle___block_invoke(uint64_t a1)
@@ -4824,10 +4824,10 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
   }
 }
 
-- (BOOL)messageEntryViewShouldResignFirstResponder:(id)a3
+- (BOOL)messageEntryViewShouldResignFirstResponder:(id)responder
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responderCopy = responder;
   if ([MEMORY[0x1E69DCBB8] usesInputSystemUI])
   {
     if (IMOSLoggingEnabled())
@@ -4852,79 +4852,79 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
   return v6;
 }
 
-- (BOOL)messageEntryShouldHideCaret:(id)a3
+- (BOOL)messageEntryShouldHideCaret:(id)caret
 {
-  v3 = [(CKChatInputController *)self inputViewController];
-  v4 = v3 != 0;
+  inputViewController = [(CKChatInputController *)self inputViewController];
+  v4 = inputViewController != 0;
 
   return v4;
 }
 
-- (BOOL)shouldPreventAppFromDisplayingForBundleIdentifier:(id)a3
+- (BOOL)shouldPreventAppFromDisplayingForBundleIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = IMSharedDowntimeController();
-  v5 = [v4 allowedToShowAppExtensionWithBundleIdentifier:v3];
+  v5 = [v4 allowedToShowAppExtensionWithBundleIdentifier:identifierCopy];
 
   return v5 ^ 1;
 }
 
-- (void)didSelectPlugin:(id)a3
+- (void)didSelectPlugin:(id)plugin
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pluginCopy = plugin;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 identifier];
+      identifier = [pluginCopy identifier];
       *buf = 138412290;
-      v23 = v6;
+      v23 = identifier;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Entry view selected plugin: %@", buf, 0xCu);
     }
   }
 
   v7 = +[CKBalloonPluginManager sharedInstance];
-  [v7 updateLaunchTimeForPlugin:v4];
+  [v7 updateLaunchTimeForPlugin:pluginCopy];
 
-  v8 = [(CKChatInputController *)self delegate];
-  v9 = [v8 sceneInterfaceOrientation];
+  delegate = [(CKChatInputController *)self delegate];
+  sceneInterfaceOrientation = [delegate sceneInterfaceOrientation];
 
-  v10 = [v4 identifier];
-  v11 = [v10 isEqualToString:@"com.apple.messages.browser.MorePlugin"];
+  identifier2 = [pluginCopy identifier];
+  v11 = [identifier2 isEqualToString:@"com.apple.messages.browser.MorePlugin"];
 
   if (v11)
   {
     [(CKChatInputController *)self dismissBrowserViewController];
-    v12 = [(CKChatInputController *)self browserSwitcher];
-    [(CKChatInputController *)self switcherViewControllerDidSelectAppManager:v12 shouldRestoreAppSwitcher:0];
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    [(CKChatInputController *)self switcherViewControllerDidSelectAppManager:browserSwitcher shouldRestoreAppSwitcher:0];
   }
 
   else
   {
-    v13 = [v4 identifier];
-    v14 = [(CKChatInputController *)self presentationStyleInOrientation:v9 inPopover:0 forPluginID:v13];
+    identifier3 = [pluginCopy identifier];
+    v14 = [(CKChatInputController *)self presentationStyleInOrientation:sceneInterfaceOrientation inPopover:0 forPluginID:identifier3];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __41__CKChatInputController_didSelectPlugin___block_invoke;
     aBlock[3] = &unk_1E72EBC38;
     aBlock[4] = self;
-    v15 = v4;
+    v15 = pluginCopy;
     v20 = v15;
     v21 = v14;
     v16 = _Block_copy(aBlock);
     buf[0] = 0;
-    v17 = [v15 identifier];
-    [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:v17 requiredPortrait:buf];
+    identifier4 = [v15 identifier];
+    [(CKChatInputController *)self adjustSupportedInterfaceOrientationForPluginID:identifier4 requiredPortrait:buf];
 
-    if (buf[0] == 1 && (v9 - 3) <= 1)
+    if (buf[0] == 1 && (sceneInterfaceOrientation - 3) <= 1)
     {
       v18 = dispatch_time(0, 50000000);
       dispatch_after(v18, MEMORY[0x1E69E96A0], v16);
@@ -4937,76 +4937,76 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
   }
 }
 
-- (BOOL)messageEntryViewShouldVerticallyInsetForPresentedAppCard:(id)a3
+- (BOOL)messageEntryViewShouldVerticallyInsetForPresentedAppCard:(id)card
 {
-  v4 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v5 = [v4 isPresentingCard];
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-  return v5 && !self->_isAppCardDraggingBelowKeyboardDetent;
+  return isPresentingCard && !self->_isAppCardDraggingBelowKeyboardDetent;
 }
 
-- (BOOL)isPresentingAppCardForMessageEntryView:(id)a3
+- (BOOL)isPresentingAppCardForMessageEntryView:(id)view
 {
-  v3 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v4 = [v3 isPresentingCard];
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-  return v4;
+  return isPresentingCard;
 }
 
-- (BOOL)isPresentingBarelyVisibleAppCardForMessageEntryView:(id)a3
+- (BOOL)isPresentingBarelyVisibleAppCardForMessageEntryView:(id)view
 {
-  v4 = [(CKChatInputController *)self isPresentingAppCardForMessageEntryView:a3];
+  v4 = [(CKChatInputController *)self isPresentingAppCardForMessageEntryView:view];
   if (v4)
   {
-    v5 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v6 = [v5 isPresentingBarelyVisibleAppCard];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    isPresentingBarelyVisibleAppCard = [appCardPresentationOverseer isPresentingBarelyVisibleAppCard];
 
-    LOBYTE(v4) = v6;
+    LOBYTE(v4) = isPresentingBarelyVisibleAppCard;
   }
 
   return v4;
 }
 
-- (void)adjustSupportedInterfaceOrientationForPluginID:(id)a3 requiredPortrait:(BOOL *)a4
+- (void)adjustSupportedInterfaceOrientationForPluginID:(id)d requiredPortrait:(BOOL *)portrait
 {
   v7 = [(CKChatInputController *)self shouldInterfaceBeRestrictedToPortraitForPluginID:?];
-  if (a3)
+  if (d)
   {
     v8 = v7;
-    if (a4)
+    if (portrait)
     {
-      *a4 = v7;
+      *portrait = v7;
     }
 
-    v9 = [(CKChatInputController *)self delegate];
-    v10 = v9;
+    delegate = [(CKChatInputController *)self delegate];
+    v10 = delegate;
     if (v8)
     {
-      [v9 updateSupportedInterfaceOrientations:2];
+      [delegate updateSupportedInterfaceOrientations:2];
     }
 
     else
     {
-      [v9 stopForcingOrientation];
+      [delegate stopForcingOrientation];
     }
   }
 }
 
-- (BOOL)shouldInterfaceBeRestrictedToPortraitForPluginID:(id)a3
+- (BOOL)shouldInterfaceBeRestrictedToPortraitForPluginID:(id)d
 {
   v3 = *MEMORY[0x1E69A6988];
-  v4 = a3;
-  LOBYTE(v3) = [v4 isEqualToString:v3];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69A69A8]];
+  dCopy = d;
+  LOBYTE(v3) = [dCopy isEqualToString:v3];
+  v5 = [dCopy isEqualToString:*MEMORY[0x1E69A69A8]];
 
   return (v3 | v5) & 1;
 }
 
-- (unint64_t)presentationStyleInOrientation:(int64_t)a3 inPopover:(BOOL)a4 forPluginID:(id)a5
+- (unint64_t)presentationStyleInOrientation:(int64_t)orientation inPopover:(BOOL)popover forPluginID:(id)d
 {
-  v5 = a4;
-  v7 = a5;
-  if ([v7 isEqualToString:*MEMORY[0x1E69A6988]] & 1) != 0 || (IMBalloonExtensionIDWithSuffix(), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, (v9))
+  popoverCopy = popover;
+  dCopy = d;
+  if ([dCopy isEqualToString:*MEMORY[0x1E69A6988]] & 1) != 0 || (IMBalloonExtensionIDWithSuffix(), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(dCopy, "isEqualToString:", v8), v8, (v9))
   {
     v10 = 1;
   }
@@ -5014,7 +5014,7 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
   else
   {
     v12 = IMBalloonExtensionIDWithSuffix();
-    v13 = [v7 isEqualToString:v12];
+    v13 = [dCopy isEqualToString:v12];
 
     if (v13)
     {
@@ -5023,23 +5023,23 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
 
     else
     {
-      v14 = [MEMORY[0x1E69DC938] currentDevice];
-      v15 = [v14 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v15 & 0xFFFFFFFFFFFFFFFBLL) == 1 && v5)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1 && popoverCopy)
       {
-        v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v17 = [v16 isSendMenuEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isSendMenuEnabled = [mEMORY[0x1E69A8070] isSendMenuEnabled];
 
-        v10 = v17;
+        v10 = isSendMenuEnabled;
       }
 
       else
       {
-        v18 = [MEMORY[0x1E69DC938] currentDevice];
-        v19 = [v18 userInterfaceIdiom];
+        currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-        v10 = (a3 - 3) < 2 && (v19 & 0xFFFFFFFFFFFFFFFBLL) != 1;
+        v10 = (orientation - 3) < 2 && (userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1;
       }
     }
   }
@@ -5047,14 +5047,14 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
   return v10;
 }
 
-- (id)balloonPluginForIndexPath:(id)a3
+- (id)balloonPluginForIndexPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 item];
+  pathCopy = path;
+  item = [pathCopy item];
   v5 = +[CKBalloonPluginManager sharedInstance];
-  v6 = [v5 visibleDrawerPlugins];
+  visibleDrawerPlugins = [v5 visibleDrawerPlugins];
 
-  if ([v6 count] <= v4)
+  if ([visibleDrawerPlugins count] <= item)
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -5067,26 +5067,26 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
 
   else
   {
-    v7 = [v6 objectAtIndexedSubscript:v4];
+    v7 = [visibleDrawerPlugins objectAtIndexedSubscript:item];
   }
 
   return v7;
 }
 
-- (void)messageEntryView:(id)a3 didSelectPluginAtIndex:(id)a4
+- (void)messageEntryView:(id)view didSelectPluginAtIndex:(id)index
 {
-  v5 = a4;
-  v6 = [(CKChatInputController *)self balloonPluginForIndexPath:v5];
+  indexCopy = index;
+  v6 = [(CKChatInputController *)self balloonPluginForIndexPath:indexCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 appBundle];
-    v9 = [v8 bundleIdentifier];
+    appBundle = [v6 appBundle];
+    bundleIdentifier = [appBundle bundleIdentifier];
 
-    if ([(CKChatInputController *)self shouldPreventAppFromDisplayingForBundleIdentifier:v9])
+    if ([(CKChatInputController *)self shouldPreventAppFromDisplayingForBundleIdentifier:bundleIdentifier])
     {
-      v10 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v10 postNotificationName:@"com.apple.messages.CKScreenTimeDidEnterCurrentAppRestrictionNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"com.apple.messages.CKScreenTimeDidEnterCurrentAppRestrictionNotification" object:0];
     }
 
     else
@@ -5097,28 +5097,28 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
 
   else
   {
-    v9 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = IMLogHandleForCategory();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [CKChatInputController messageEntryView:v5 didSelectPluginAtIndex:v9];
+      [CKChatInputController messageEntryView:indexCopy didSelectPluginAtIndex:bundleIdentifier];
     }
   }
 }
 
 - (void)entryViewDidChangeSize
 {
-  v2 = [(CKChatInputController *)self delegate];
-  [v2 chatInputDidChangeSize];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputDidChangeSize];
 }
 
-- (void)openURL:(id)a3 pluginID:(id)a4 completionHandler:(id)a5
+- (void)openURL:(id)l pluginID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v9])
+  lCopy = l;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:dCopy])
   {
-    if (v8)
+    if (lCopy)
     {
       v11 = dispatch_get_global_queue(2, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -5126,8 +5126,8 @@ void __98__CKChatInputController__presentSendMenuForAppCardContentViewController
       block[2] = __60__CKChatInputController_openURL_pluginID_completionHandler___block_invoke_3;
       block[3] = &unk_1E72F21A8;
       v12 = v18;
-      v18[0] = v8;
-      v13 = v10;
+      v18[0] = lCopy;
+      v13 = handlerCopy;
       v18[1] = self;
       v19 = v13;
       dispatch_async(v11, block);
@@ -5136,14 +5136,14 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __60__CKChatInputController_openURL_pluginID_completionHandler___block_invoke_2;
       v20[3] = &unk_1E72EBDB8;
       v12 = &v21;
-      v21 = v10;
+      v21 = handlerCopy;
       v15 = MEMORY[0x1E69E96A0];
       v16 = v20;
       goto LABEL_15;
@@ -5168,14 +5168,14 @@ LABEL_16:
       _CKLogExternal();
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __60__CKChatInputController_openURL_pluginID_completionHandler___block_invoke;
       v22[3] = &unk_1E72EBDB8;
       v12 = &v23;
-      v23 = v10;
+      v23 = handlerCopy;
       v15 = MEMORY[0x1E69E96A0];
       v16 = v22;
 LABEL_15:
@@ -5265,25 +5265,25 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
   return (*(*(a1 + 56) + 16))(*(a1 + 56), *(a1 + 48) != 0);
 }
 
-- (void)openURL:(id)a3 applicationIdentifier:(id)a4 pluginID:(id)a5 completionHandler:(id)a6
+- (void)openURL:(id)l applicationIdentifier:(id)identifier pluginID:(id)d completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  dCopy = d;
+  identifierCopy = identifier;
+  lCopy = l;
   v14 = objc_alloc_init(MEMORY[0x193AF5EC0](@"FBSOpenApplicationService", @"FrontBoardServices"));
-  [(CKChatInputController *)self _openContainingBundleID:v12 applicationService:v14 withURL:v13 pluginID:v11 completionHandler:v10];
+  [(CKChatInputController *)self _openContainingBundleID:identifierCopy applicationService:v14 withURL:lCopy pluginID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)_openContainingBundleID:(id)a3 applicationService:(id)a4 withURL:(id)a5 pluginID:(id)a6 completionHandler:(id)a7
+- (void)_openContainingBundleID:(id)d applicationService:(id)service withURL:(id)l pluginID:(id)iD completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v15];
+  dCopy = d;
+  serviceCopy = service;
+  lCopy = l;
+  iDCopy = iD;
+  handlerCopy = handler;
+  v17 = [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:iDCopy];
   v18 = IMOSLoggingEnabled();
   if (v17)
   {
@@ -5293,11 +5293,11 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
       v19 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = _Block_copy(v16);
+        v20 = _Block_copy(handlerCopy);
         *buf = 138412802;
-        v40 = self;
+        selfCopy = self;
         v41 = 2112;
-        v42 = v14;
+        v42 = lCopy;
         v43 = 2112;
         v44 = v20;
         _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "_openURL %@ URL %@ completionHandler %@", buf, 0x20u);
@@ -5306,11 +5306,11 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
 
     if (os_log_shim_legacy_logging_enabled() && _CKShouldLogExternal())
     {
-      v29 = _Block_copy(v16);
+      v29 = _Block_copy(handlerCopy);
       _CKLogExternal();
     }
 
-    if (v14)
+    if (lCopy)
     {
       if (IMOSLoggingEnabled())
       {
@@ -5319,7 +5319,7 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v40 = v12;
+          selfCopy = dCopy;
           _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "_openURL containingBundleID: %@", buf, 0xCu);
         }
       }
@@ -5347,7 +5347,7 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
         v22 = _openContainingBundleID_applicationService_withURL_pluginID_completionHandler____FBSOpenApplicationOptionKeyPayloadURL;
       }
 
-      v27 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v14, v22, 0, v29}];
+      v27 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{lCopy, v22, 0, v29}];
       if (__FBSOpenApplicationOptionsClass_onceToken != -1)
       {
         [CKChatInputController _openContainingBundleID:applicationService:withURL:pluginID:completionHandler:];
@@ -5358,12 +5358,12 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
       v30[1] = 3221225472;
       v30[2] = __103__CKChatInputController__openContainingBundleID_applicationService_withURL_pluginID_completionHandler___block_invoke_435;
       v30[3] = &unk_1E72F56E0;
-      v31 = v14;
-      v32 = v12;
+      v31 = lCopy;
+      v32 = dCopy;
       v33 = v27;
-      v34 = v16;
+      v34 = handlerCopy;
       v28 = v27;
-      [v13 openApplication:v32 withOptions:v26 completion:v30];
+      [serviceCopy openApplication:v32 withOptions:v26 completion:v30];
     }
 
     else
@@ -5372,7 +5372,7 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
       v35[1] = 3221225472;
       v35[2] = __103__CKChatInputController__openContainingBundleID_applicationService_withURL_pluginID_completionHandler___block_invoke_427;
       v35[3] = &unk_1E72EBDB8;
-      v36 = v16;
+      v36 = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v35);
       v26 = v36;
     }
@@ -5396,13 +5396,13 @@ uint64_t __60__CKChatInputController_openURL_pluginID_completionHandler___block_
     _CKLogExternal();
   }
 
-  if (v16)
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __103__CKChatInputController__openContainingBundleID_applicationService_withURL_pluginID_completionHandler___block_invoke;
     block[3] = &unk_1E72EBDB8;
-    v38 = v16;
+    v38 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v26 = v38;
 LABEL_35:
@@ -5474,79 +5474,79 @@ uint64_t __103__CKChatInputController__openContainingBundleID_applicationService
   return result;
 }
 
-- (BOOL)commitPayloadBypassingValidation:(id)a3 forPlugin:(id)a4
+- (BOOL)commitPayloadBypassingValidation:(id)validation forPlugin:(id)plugin
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 setUseDirectSend:1];
-  v8 = [v6 pluginBundleID];
+  validationCopy = validation;
+  pluginCopy = plugin;
+  [validationCopy setUseDirectSend:1];
+  pluginBundleID = [validationCopy pluginBundleID];
 
-  if (!v8)
+  if (!pluginBundleID)
   {
-    [v6 setPluginBundleID:v7];
+    [validationCopy setPluginBundleID:pluginCopy];
   }
 
-  [(CKChatInputController *)self performSelector:sel_deferredCommitPayload_ withObject:v6 afterDelay:0.1];
+  [(CKChatInputController *)self performSelector:sel_deferredCommitPayload_ withObject:validationCopy afterDelay:0.1];
 
   return 1;
 }
 
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self appCardPresentationOverseer];
-  [v5 checkForTouchInExtensionWithCompletion:v4];
+  completionCopy = completion;
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  [appCardPresentationOverseer checkForTouchInExtensionWithCompletion:completionCopy];
 }
 
-- (void)deferredCommitPayload:(id)a3
+- (void)deferredCommitPayload:(id)payload
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 setIsFromMe:1];
-  if ([v4 isUpdate])
+  payloadCopy = payload;
+  [payloadCopy setIsFromMe:1];
+  if ([payloadCopy isUpdate])
   {
-    v5 = [(CKChatInputController *)self browserPluginDataSource];
-    v6 = [v4 datasource];
-    v7 = v6;
-    if (v6)
+    browserPluginDataSource = [(CKChatInputController *)self browserPluginDataSource];
+    datasource = [payloadCopy datasource];
+    v7 = datasource;
+    if (datasource)
     {
-      v8 = v6;
+      v8 = datasource;
     }
 
     else
     {
-      v8 = v5;
+      v8 = browserPluginDataSource;
     }
 
-    [v4 setDatasource:v8];
+    [payloadCopy setDatasource:v8];
 
-    v9 = [v4 messageGUID];
-    if (v9)
+    messageGUID = [payloadCopy messageGUID];
+    if (messageGUID)
     {
-      [v4 setMessageGUID:v9];
+      [payloadCopy setMessageGUID:messageGUID];
     }
 
     else
     {
-      v10 = [v5 messageGUID];
-      [v4 setMessageGUID:v10];
+      messageGUID2 = [browserPluginDataSource messageGUID];
+      [payloadCopy setMessageGUID:messageGUID2];
     }
   }
 
-  v11 = [(CKChatInputController *)self handwritingIsDisplayed];
-  v12 = [(CKChatInputController *)self handwritingPresentationController];
+  handwritingIsDisplayed = [(CKChatInputController *)self handwritingIsDisplayed];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-  if (v12)
+  if (handwritingPresentationController)
   {
-    v13 = [(CKChatInputController *)self handwritingPresentationController];
-    [v13 setVisible:0 animated:1];
+    handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+    [handwritingPresentationController2 setVisible:0 animated:1];
   }
 
-  if (v4 && ([v4 pluginBundleID], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  if (payloadCopy && ([payloadCopy pluginBundleID], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    if ([v4 shouldExpire])
+    if ([payloadCopy shouldExpire])
     {
-      v15 = [CKComposition newExpirableCompositionWithText:0 subject:0 shelfPluginPayload:v4];
+      v15 = [CKComposition newExpirableCompositionWithText:0 subject:0 shelfPluginPayload:payloadCopy];
     }
 
     else
@@ -5559,7 +5559,7 @@ uint64_t __103__CKChatInputController__openContainingBundleID_applicationService
     aBlock[2] = __47__CKChatInputController_deferredCommitPayload___block_invoke;
     aBlock[3] = &unk_1E72EE588;
     aBlock[4] = self;
-    v18 = v4;
+    v18 = payloadCopy;
     v25 = v18;
     v19 = _Block_copy(aBlock);
     v20 = v19;
@@ -5587,14 +5587,14 @@ uint64_t __103__CKChatInputController__openContainingBundleID_applicationService
       v16 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [(CKChatInputController *)self pluginBundleID];
+        pluginBundleID = [(CKChatInputController *)self pluginBundleID];
         *buf = 138412290;
-        v27 = v17;
+        v27 = pluginBundleID;
         _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Attempting to commit nil payload or payload with no identifier; current visible plugin is %@", buf, 0xCu);
       }
     }
 
-    if (v11)
+    if (handwritingIsDisplayed)
     {
       [(CKChatInputController *)self dismissBrowserViewController];
     }
@@ -5621,11 +5621,11 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
   v2 = IMStickersExtensionIdentifier();
   v3 = IMBalloonExtensionIDWithSuffix();
 
-  v4 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  [v4 loadExtensionWithIdentifierIfNeeded:v3];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  [mEMORY[0x1E69A5AD0] loadExtensionWithIdentifierIfNeeded:v3];
 
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v6 = [v5 balloonPluginForBundleID:v3];
+  mEMORY[0x1E69A5AD0]2 = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v6 = [mEMORY[0x1E69A5AD0]2 balloonPluginForBundleID:v3];
 
   if (!v6)
   {
@@ -5645,15 +5645,15 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
   return v6;
 }
 
-- (void)dismissStickerPickerPreservingChatItem:(BOOL)a3 completion:(id)a4
+- (void)dismissStickerPickerPreservingChatItem:(BOOL)item completion:(id)completion
 {
-  v4 = a3;
-  block = a4;
-  v6 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
+  itemCopy = item;
+  block = completion;
+  stickerPickerMessagePartChatItem = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
 
-  if (v6)
+  if (stickerPickerMessagePartChatItem)
   {
-    if (!v4)
+    if (!itemCopy)
     {
       [(CKChatInputController *)self setStickerPickerMessagePartChatItem:0];
       [(CKChatInputController *)self setStickerPickerMessagePartParentChatItem:0];
@@ -5662,9 +5662,9 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
 
     if (CKIsAppCardsEnabled())
     {
-      v7 = [(CKChatInputController *)self delegate];
-      v8 = [v7 viewControllerForChatInputModalPresentation];
-      [v8 dismissViewControllerAnimated:1 completion:block];
+      delegate = [(CKChatInputController *)self delegate];
+      viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+      [viewControllerForChatInputModalPresentation dismissViewControllerAnimated:1 completion:block];
 
       [(CKChatInputController *)self forceDismissBrowserWithoutAnimation];
     }
@@ -5672,10 +5672,10 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
     else
     {
       [(CKChatInputController *)self dismissBrowserViewController];
-      v9 = [(CKChatInputController *)self entryView];
-      v10 = [v9 contentView];
-      v11 = [v10 textView];
-      [v11 resignFirstResponder];
+      entryView = [(CKChatInputController *)self entryView];
+      contentView = [entryView contentView];
+      textView = [contentView textView];
+      [textView resignFirstResponder];
 
       if (block)
       {
@@ -5685,34 +5685,34 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
     }
 
     [(CKChatInputController *)self setBrowserPlugin:0];
-    [(CKChatInputController *)self stickerPickerWasHiddenPreservingChatItem:v4];
+    [(CKChatInputController *)self stickerPickerWasHiddenPreservingChatItem:itemCopy];
   }
 }
 
 - (BOOL)isPresentingStickerPicker
 {
-  v2 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
-  v3 = v2 != 0;
+  stickerPickerMessagePartChatItem = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
+  v3 = stickerPickerMessagePartChatItem != 0;
 
   return v3;
 }
 
-- (void)stickerPickerWasHiddenPreservingChatItem:(BOOL)a3
+- (void)stickerPickerWasHiddenPreservingChatItem:(BOOL)item
 {
-  v5 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
+  stickerPickerMessagePartChatItem = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
 
-  if (v5)
+  if (stickerPickerMessagePartChatItem)
   {
-    v6 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
-    if (!a3)
+    stickerPickerMessagePartChatItem2 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
+    if (!item)
     {
       [(CKChatInputController *)self setStickerPickerMessagePartChatItem:0];
       [(CKChatInputController *)self setStickerPickerMessagePartParentChatItem:0];
       [(CKChatInputController *)self endStickerReactionSession];
     }
 
-    v7 = [(CKChatInputController *)self delegate];
-    [v7 chatInputController:self didPresentStickerPickerForChatItem:v6];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate chatInputController:self didPresentStickerPickerForChatItem:stickerPickerMessagePartChatItem2];
 
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -5722,61 +5722,61 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
   }
 }
 
-- (void)commitSticker:(id)a3 forPlugin:(id)a4 stickerFrame:(CGRect)a5
+- (void)commitSticker:(id)sticker forPlugin:(id)plugin stickerFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKChatInputController *)self delegate];
-  v14 = [v13 viewControllerForChatInputModalPresentation];
-  v15 = [v14 presentedViewController];
-  v29 = [v15 view];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  pluginCopy = plugin;
+  stickerCopy = sticker;
+  delegate = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+  presentedViewController = [viewControllerForChatInputModalPresentation presentedViewController];
+  view = [presentedViewController view];
 
-  v16 = [(CKChatInputController *)self delegate];
-  v17 = [v16 viewControllerForChatInputModalPresentation];
-  v18 = [v17 view];
-  v19 = [v18 window];
-  v20 = [v19 coordinateSpace];
-  [v29 convertRect:v20 toCoordinateSpace:{x, y, width, height}];
+  delegate2 = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation2 = [delegate2 viewControllerForChatInputModalPresentation];
+  view2 = [viewControllerForChatInputModalPresentation2 view];
+  window = [view2 window];
+  coordinateSpace = [window coordinateSpace];
+  [view convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  [(CKChatInputController *)self commitSticker:v12 forPlugin:v11 bypassValidation:0 stickerFrame:v22, v24, v26, v28];
+  [(CKChatInputController *)self commitSticker:stickerCopy forPlugin:pluginCopy bypassValidation:0 stickerFrame:v22, v24, v26, v28];
 }
 
-- (void)commitSticker:(id)a3 forPlugin:(id)a4 bypassValidation:(BOOL)a5 stickerFrame:(CGRect)a6
+- (void)commitSticker:(id)sticker forPlugin:(id)plugin bypassValidation:(BOOL)validation stickerFrame:(CGRect)frame
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v31 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = [(CKChatInputController *)self delegate];
+  stickerCopy = sticker;
+  pluginCopy = plugin;
+  delegate = [(CKChatInputController *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [MEMORY[0x1E69DD2E8] keyWindow];
-    v18 = [v17 firstResponder];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    firstResponder = [keyWindow firstResponder];
     v19 = IMLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v27 = 138412546;
-      v28 = v17;
+      v28 = keyWindow;
       v29 = 2048;
-      v30 = v18;
+      v30 = firstResponder;
       _os_log_impl(&dword_19020E000, v19, OS_LOG_TYPE_INFO, "Current keyWindow:%@ firstResponder: %p", &v27, 0x16u);
     }
 
-    v20 = [(CKChatInputController *)self delegate];
-    v21 = [v20 commitStickerAsTapback:v13];
+    delegate2 = [(CKChatInputController *)self delegate];
+    v21 = [delegate2 commitStickerAsTapback:stickerCopy];
 
     if (v21)
     {
@@ -5784,7 +5784,7 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         v27 = 138412290;
-        v28 = v13;
+        v28 = stickerCopy;
         _os_log_impl(&dword_19020E000, v22, OS_LOG_TYPE_INFO, "Committed sticker as tapback: %@", &v27, 0xCu);
       }
 
@@ -5792,61 +5792,61 @@ void __47__CKChatInputController_deferredCommitPayload___block_invoke(uint64_t a
     }
   }
 
-  v17 = [(CKChatInputController *)self stickerReactionSession];
-  if (v17)
+  keyWindow = [(CKChatInputController *)self stickerReactionSession];
+  if (keyWindow)
   {
-    v18 = [(CKChatInputController *)self delegate];
-    v23 = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
-    v24 = [(CKChatInputController *)self stickerPickerMessagePartParentChatItem];
-    [v18 sendAutomaticallyPlacedSticker:v13 stickerReactionSession:v17 forChatItem:v23 forParentChatItem:v24 stickerFrame:0 animationCompletionHandler:{x, y, width, height}];
+    firstResponder = [(CKChatInputController *)self delegate];
+    stickerPickerMessagePartChatItem = [(CKChatInputController *)self stickerPickerMessagePartChatItem];
+    stickerPickerMessagePartParentChatItem = [(CKChatInputController *)self stickerPickerMessagePartParentChatItem];
+    [firstResponder sendAutomaticallyPlacedSticker:stickerCopy stickerReactionSession:keyWindow forChatItem:stickerPickerMessagePartChatItem forParentChatItem:stickerPickerMessagePartParentChatItem stickerFrame:0 animationCompletionHandler:{x, y, width, height}];
 
 LABEL_15:
     goto LABEL_16;
   }
 
-  if (a5 || -[CKChatInputController switcherPluginCanMessageAPIOnBehalfOfPlugin:](self, "switcherPluginCanMessageAPIOnBehalfOfPlugin:", v14) || (IMBalloonExtensionIDWithSuffix(), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v14 isEqualToString:v25], v25, v26))
+  if (validation || -[CKChatInputController switcherPluginCanMessageAPIOnBehalfOfPlugin:](self, "switcherPluginCanMessageAPIOnBehalfOfPlugin:", pluginCopy) || (IMBalloonExtensionIDWithSuffix(), v25 = objc_claimAutoreleasedReturnValue(), v26 = [pluginCopy isEqualToString:v25], v25, v26))
   {
-    [(CKChatInputController *)self performSelector:sel__deferredCommitSticker_ withObject:v13 afterDelay:0.1];
-    v18 = +[CKBalloonPluginManager sharedInstance];
-    [v18 updateInteractionTimeForPlugin:v14];
+    [(CKChatInputController *)self performSelector:sel__deferredCommitSticker_ withObject:stickerCopy afterDelay:0.1];
+    firstResponder = +[CKBalloonPluginManager sharedInstance];
+    [firstResponder updateInteractionTimeForPlugin:pluginCopy];
     goto LABEL_15;
   }
 
 LABEL_16:
 }
 
-- (void)commitSticker:(id)a3 stickerFrame:(CGRect)a4
+- (void)commitSticker:(id)sticker stickerFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(CKChatInputController *)self browserPlugin];
-  v12 = [v10 identifier];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stickerCopy = sticker;
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
 
   v11 = +[CKBalloonPluginManager sharedInstance];
-  [v11 updateInteractionTimeForPlugin:v12];
+  [v11 updateInteractionTimeForPlugin:identifier];
 
-  [(CKChatInputController *)self commitSticker:v9 forPlugin:0 stickerFrame:x, y, width, height];
+  [(CKChatInputController *)self commitSticker:stickerCopy forPlugin:0 stickerFrame:x, y, width, height];
 }
 
-- (void)_deferredCommitSticker:(id)a3
+- (void)_deferredCommitSticker:(id)sticker
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stickerCopy = sticker;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v10 = v4;
+    v10 = stickerCopy;
     _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Deferred Committing sticker: %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v6 trackEvent:*MEMORY[0x1E69A7748]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7748]];
 
-  v7 = [v4 uiSticker];
+  uiSticker = [stickerCopy uiSticker];
   if (objc_opt_respondsToSelector())
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -5854,12 +5854,12 @@ LABEL_16:
     v8[2] = __48__CKChatInputController__deferredCommitSticker___block_invoke;
     v8[3] = &unk_1E72EFB88;
     v8[4] = self;
-    [v7 stk_renderBakedInRepIfNecessaryWithCompletion:v8];
+    [uiSticker stk_renderBakedInRepIfNecessaryWithCompletion:v8];
   }
 
   else
   {
-    [(CKChatInputController *)self _insertUISticker:v7];
+    [(CKChatInputController *)self _insertUISticker:uiSticker];
   }
 }
 
@@ -5876,11 +5876,11 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_insertUISticker:(id)a3
+- (void)_insertUISticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [v4 _ck_plainStringEmojiText];
-  if ([v5 length])
+  stickerCopy = sticker;
+  _ck_plainStringEmojiText = [stickerCopy _ck_plainStringEmojiText];
+  if ([_ck_plainStringEmojiText length])
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -5889,22 +5889,22 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Handling sticker app sticker insertion as plain string system emoji text", buf, 2u);
     }
 
-    v7 = [(CKChatInputController *)self entryView];
-    v8 = [v7 contentView];
-    v9 = [v8 textView];
+    entryView = [(CKChatInputController *)self entryView];
+    contentView = [entryView contentView];
+    textView = [contentView textView];
 
-    [v9 insertText:v5];
+    [textView insertText:_ck_plainStringEmojiText];
   }
 
   else
   {
-    v10 = [(CKChatInputController *)self targetConversation];
-    v11 = [v10 supportsInlineAdaptiveImageGlyphs];
+    targetConversation = [(CKChatInputController *)self targetConversation];
+    supportsInlineAdaptiveImageGlyphs = [targetConversation supportsInlineAdaptiveImageGlyphs];
 
-    v12 = [v4 _ck_shouldInsertInCompositionAsAdaptiveImageGlyph];
+    _ck_shouldInsertInCompositionAsAdaptiveImageGlyph = [stickerCopy _ck_shouldInsertInCompositionAsAdaptiveImageGlyph];
     v13 = IMLogHandleForCategory();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-    if (v11 && v12)
+    if (supportsInlineAdaptiveImageGlyphs && _ck_shouldInsertInCompositionAsAdaptiveImageGlyph)
     {
       if (v14)
       {
@@ -5912,7 +5912,7 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Handling sticker app sticker insertion as adaptive image glyph", v18, 2u);
       }
 
-      [(CKChatInputController *)self insertUIStickerAsAdaptiveImageGlyph:v4];
+      [(CKChatInputController *)self insertUIStickerAsAdaptiveImageGlyph:stickerCopy];
     }
 
     else
@@ -5923,47 +5923,47 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
         _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Handling sticker app sticker insertion as sticker added to shelf", v17, 2u);
       }
 
-      v15 = [objc_alloc(MEMORY[0x1E69A82C0]) initWithUISticker:v4 adaptiveImageGlyph:0];
+      v15 = [objc_alloc(MEMORY[0x1E69A82C0]) initWithUISticker:stickerCopy adaptiveImageGlyph:0];
       v16 = [CKBrowserItemPayload browserItemFromSticker:v15];
       [(CKChatInputController *)self startEditingPayload:v16];
     }
   }
 }
 
-- (void)commitSticker:(id)a3 withDragTarget:(id)a4 draggedSticker:(id)a5
+- (void)commitSticker:(id)sticker withDragTarget:(id)target draggedSticker:(id)draggedSticker
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stickerCopy = sticker;
+  targetCopy = target;
+  draggedStickerCopy = draggedSticker;
   v11 = IMLogHandleForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v9 description];
+    v12 = [targetCopy description];
     v20 = 138412546;
-    v21 = v8;
+    v21 = stickerCopy;
     v22 = 2112;
     v23 = v12;
     _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Committing sticker: %@, for drag target: %@", &v20, 0x16u);
   }
 
-  v13 = [(CKChatInputController *)self stickerReactionSession];
-  v14 = [v13 didSendSticker];
+  stickerReactionSession = [(CKChatInputController *)self stickerReactionSession];
+  didSendSticker = [stickerReactionSession didSendSticker];
 
-  if ((v14 & 1) == 0)
+  if ((didSendSticker & 1) == 0)
   {
-    v15 = [(CKChatInputController *)self browserPlugin];
-    v16 = [v15 identifier];
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    identifier = [browserPlugin identifier];
 
     v17 = +[CKBalloonPluginManager sharedInstance];
-    [v17 updateInteractionTimeForPlugin:v16];
+    [v17 updateInteractionTimeForPlugin:identifier];
 
-    v18 = [(CKChatInputController *)self delegate];
-    [v18 sendSticker:v8 withDragTarget:v9 draggedSticker:v10];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate sendSticker:stickerCopy withDragTarget:targetCopy draggedSticker:draggedStickerCopy];
 
-    v19 = [(CKChatInputController *)self stickerReactionSession];
+    stickerReactionSession2 = [(CKChatInputController *)self stickerReactionSession];
 
-    if (v19)
+    if (stickerReactionSession2)
     {
       [(CKChatInputController *)self endStickerReactionSession];
       [(CKChatInputController *)self dismissStickerPickerPreservingChatItem:0 completion:0];
@@ -5976,50 +5976,50 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
   if ([(CKChatInputController *)self didDismissAppCardForStickerDrag])
   {
     [(CKChatInputController *)self setDidDismissAppCardForStickerDrag:0];
-    v12 = [(CKChatInputController *)self pluginToResumeForStickerDrag];
-    if (!v12)
+    pluginToResumeForStickerDrag = [(CKChatInputController *)self pluginToResumeForStickerDrag];
+    if (!pluginToResumeForStickerDrag)
     {
       v3 = +[CKBalloonPluginManager sharedInstance];
       v4 = IMStickersExtensionIdentifier();
       v5 = IMBalloonExtensionIDWithSuffix();
-      v12 = [v3 pluginForIdentifier:v5];
+      pluginToResumeForStickerDrag = [v3 pluginForIdentifier:v5];
     }
 
     [(CKChatInputController *)self setPluginToResumeForStickerDrag:0];
-    [(CKChatInputController *)self showBrowserForPlugin:v12 dataSource:0 style:[(CKChatInputController *)self savedStyleForDragCompletion]];
+    [(CKChatInputController *)self showBrowserForPlugin:pluginToResumeForStickerDrag dataSource:0 style:[(CKChatInputController *)self savedStyleForDragCompletion]];
     [(CKChatInputController *)self setSavedStyleForDragCompletion:0];
   }
 
   else
   {
-    v6 = [(CKChatInputController *)self currentPresentationConfig];
-    if (!v6)
+    currentPresentationConfig = [(CKChatInputController *)self currentPresentationConfig];
+    if (!currentPresentationConfig)
     {
       return;
     }
 
-    v7 = v6;
-    v8 = [(CKChatInputController *)self stickerReactionSession];
+    v7 = currentPresentationConfig;
+    stickerReactionSession = [(CKChatInputController *)self stickerReactionSession];
 
-    if (!v8)
+    if (!stickerReactionSession)
     {
       return;
     }
 
-    v12 = IMStickersExtensionIdentifier();
+    pluginToResumeForStickerDrag = IMStickersExtensionIdentifier();
     v9 = IMBalloonExtensionIDWithSuffix();
-    v10 = [(CKChatInputController *)self currentPresentationConfig];
-    v11 = [v10 sourceView];
-    [(CKChatInputController *)self showPluginWithExtensionIdentifier:v9 sourceView:v11];
+    currentPresentationConfig2 = [(CKChatInputController *)self currentPresentationConfig];
+    sourceView = [currentPresentationConfig2 sourceView];
+    [(CKChatInputController *)self showPluginWithExtensionIdentifier:v9 sourceView:sourceView];
   }
 }
 
-- (void)commitSticker:(id)a3 atScreenCoordinate:(CGPoint)a4 scale:(double)a5 rotation:(double)a6 stickerFrame:(CGRect)a7
+- (void)commitSticker:(id)sticker atScreenCoordinate:(CGPoint)coordinate scale:(double)scale rotation:(double)rotation stickerFrame:(CGRect)frame
 {
-  y = a4.y;
-  x = a4.x;
+  y = coordinate.y;
+  x = coordinate.x;
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  stickerCopy = sticker;
   v13 = IMLogHandleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -6027,49 +6027,49 @@ void __48__CKChatInputController__deferredCommitSticker___block_invoke(uint64_t 
     v29.y = y;
     v14 = NSStringFromPoint(v29);
     v20 = 138413058;
-    v21 = v12;
+    v21 = stickerCopy;
     v22 = 2112;
     v23 = v14;
     v24 = 2048;
-    v25 = a5;
+    scaleCopy = scale;
     v26 = 2048;
-    v27 = a6;
+    rotationCopy = rotation;
     _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "Committing sticker %@ at screen coordinate: %@, scale: %f, rotation: %f", &v20, 0x2Au);
   }
 
-  v15 = [CKBrowserDragControllerTarget targetWithScreenCoordinate:0 initialSize:x scale:y meshScaleFactor:*MEMORY[0x1E695F060] rotation:*(MEMORY[0x1E695F060] + 8) associatedLayoutIntent:a5, 0.4, a6];
-  v16 = [(CKChatInputController *)self browserPlugin];
-  v17 = [v16 identifier];
+  rotation = [CKBrowserDragControllerTarget targetWithScreenCoordinate:0 initialSize:x scale:y meshScaleFactor:*MEMORY[0x1E695F060] rotation:*(MEMORY[0x1E695F060] + 8) associatedLayoutIntent:scale, 0.4, rotation];
+  browserPlugin = [(CKChatInputController *)self browserPlugin];
+  identifier = [browserPlugin identifier];
 
   v18 = +[CKBalloonPluginManager sharedInstance];
-  [v18 updateInteractionTimeForPlugin:v17];
+  [v18 updateInteractionTimeForPlugin:identifier];
 
-  v19 = [(CKChatInputController *)self delegate];
-  [v19 sendSticker:v12 withDragTarget:v15 draggedSticker:0];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate sendSticker:stickerCopy withDragTarget:rotation draggedSticker:0];
 
   [(CKChatInputController *)self dismissStickerPickerPreservingChatItem:0 completion:0];
 }
 
 - (id)dragControllerTranscriptDelegate
 {
-  v2 = [(CKChatInputController *)self delegate];
-  v3 = [v2 dragControllerTranscriptDelegate];
+  delegate = [(CKChatInputController *)self delegate];
+  dragControllerTranscriptDelegate = [delegate dragControllerTranscriptDelegate];
 
-  return v3;
+  return dragControllerTranscriptDelegate;
 }
 
-- (void)dismissAndReloadInputViews:(BOOL)a3 forPlugin:(id)a4
+- (void)dismissAndReloadInputViews:(BOOL)views forPlugin:(id)plugin
 {
-  v6 = a4;
+  pluginCopy = plugin;
   v7 = dispatch_time(0, 100000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__CKChatInputController_dismissAndReloadInputViews_forPlugin___block_invoke;
   block[3] = &unk_1E72EBBC0;
-  v11 = a3;
+  viewsCopy = views;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = pluginCopy;
+  v8 = pluginCopy;
   dispatch_after(v7, MEMORY[0x1E69E96A0], block);
 }
 
@@ -6129,12 +6129,12 @@ LABEL_6:
 
 - (void)dismissOrHideHandwritingBrowser
 {
-  v3 = [(CKChatInputController *)self handwritingPresentationController];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-  if (v3)
+  if (handwritingPresentationController)
   {
-    v4 = [(CKChatInputController *)self handwritingPresentationController];
-    [v4 setVisible:0 animated:1];
+    handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+    [handwritingPresentationController2 setVisible:0 animated:1];
   }
 
   else
@@ -6144,9 +6144,9 @@ LABEL_6:
   }
 }
 
-- (void)_deferredDismissToKeyboardAndFocusEntryView:(id)a3
+- (void)_deferredDismissToKeyboardAndFocusEntryView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(CKChatInputController *)self isDisplayingReplaceCompositionAlert])
   {
     self->_dismissPluginAfterReplaceAlertInteractedWith = 1;
@@ -6154,36 +6154,36 @@ LABEL_6:
   }
 
   [(CKChatInputController *)self setIsDisplayingReplaceCompositionAlert:0];
-  v5 = [(CKChatInputController *)self handwritingPresentationController];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-  if (v5)
+  if (handwritingPresentationController)
   {
-    v6 = [(CKChatInputController *)self handwritingPresentationController];
-    [v6 setVisible:0 animated:1];
+    handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+    [handwritingPresentationController2 setVisible:0 animated:1];
   }
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v9 = 1;
+    shouldAnimateDismissal = 1;
   }
 
   else
   {
-    v10 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v9 = [v10 shouldAnimateDismissal];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    shouldAnimateDismissal = [appCardPresentationOverseer shouldAnimateDismissal];
   }
 
-  v11 = [v4 BOOLValue];
+  bOOLValue = [viewCopy BOOLValue];
   if ([(CKChatInputController *)self appModalIsDisplayed])
   {
     self->_isDismissingAppModal = 1;
-    v12 = [(CKChatInputController *)self browserSwitcher];
-    v13 = [v12 transitionCoordinator];
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    transitionCoordinator = [browserSwitcher transitionCoordinator];
 
-    if (v11)
+    if (bOOLValue)
     {
       [(CKChatInputController *)self setInputViewVisible:0];
       [(CKChatInputController *)self setBrowserSwitcher:0];
@@ -6212,7 +6212,7 @@ LABEL_6:
     v28[2] = __69__CKChatInputController__deferredDismissToKeyboardAndFocusEntryView___block_invoke_3;
     v28[3] = &unk_1E72EBA18;
     v28[4] = self;
-    [v13 dismissCurrentFullScreenModalAnimated:1 completion:v28];
+    [transitionCoordinator dismissCurrentFullScreenModalAnimated:1 completion:v28];
 
     goto LABEL_34;
   }
@@ -6222,14 +6222,14 @@ LABEL_6:
     v14 = +[CKUIBehavior sharedBehaviors];
     if ([v14 canPresentOverKeyboard])
     {
-      v15 = [(CKChatInputController *)self isInputViewVisible];
+      isInputViewVisible = [(CKChatInputController *)self isInputViewVisible];
 
-      if (v15)
+      if (isInputViewVisible)
       {
         [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:CKNonFlatDeviceOrientation() ignoreInputView:1];
         v17 = v16;
-        v18 = [(CKChatInputController *)self delegate];
-        [v18 chatInputWillChangeHeightForCompactPresentation:v17];
+        delegate = [(CKChatInputController *)self delegate];
+        [delegate chatInputWillChangeHeightForCompactPresentation:v17];
         goto LABEL_33;
       }
     }
@@ -6246,7 +6246,7 @@ LABEL_6:
     [(CKChatInputController *)self setBrowserPluginDataSource:0];
     if (CKIsAppCardsEnabled())
     {
-      [(CKChatInputController *)self _dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:v9 overrideExceptions:1 focusEntryView:v11];
+      [(CKChatInputController *)self _dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:shouldAnimateDismissal overrideExceptions:1 focusEntryView:bOOLValue];
     }
 
     if (!CKIsRunningInMacCatalyst())
@@ -6254,50 +6254,50 @@ LABEL_6:
       goto LABEL_34;
     }
 
-    v19 = [(CKChatInputController *)self delegate];
-    v18 = [v19 viewControllerForChatInputModalPresentation];
+    delegate2 = [(CKChatInputController *)self delegate];
+    delegate = [delegate2 viewControllerForChatInputModalPresentation];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v18 isModal];
+      isModal = [delegate isModal];
     }
 
     else
     {
-      v20 = 0;
+      isModal = 0;
     }
 
-    v21 = [v18 presentedViewController];
+    presentedViewController = [delegate presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    if ((isKindOfClass & 1) == 0 && (v20 & 1) == 0)
+    if ((isKindOfClass & 1) == 0 && (isModal & 1) == 0)
     {
-      [v18 dismissViewControllerAnimated:1 completion:0];
+      [delegate dismissViewControllerAnimated:1 completion:0];
     }
 
     goto LABEL_33;
   }
 
-  if (v11)
+  if (bOOLValue)
   {
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __69__CKChatInputController__deferredDismissToKeyboardAndFocusEntryView___block_invoke_4;
     v26 = &unk_1E72EBA18;
-    v27 = self;
+    selfCopy = self;
     im_dispatch_after();
   }
 
   if (CKIsAppCardsEnabled())
   {
-    [(CKChatInputController *)self _dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:v9 overrideExceptions:1 focusEntryView:v11];
+    [(CKChatInputController *)self _dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:shouldAnimateDismissal overrideExceptions:1 focusEntryView:bOOLValue];
     goto LABEL_34;
   }
 
-  v18 = IMLogHandleForCategory();
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  delegate = IMLogHandleForCategory();
+  if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
   {
     [CKChatInputController _deferredDismissToKeyboardAndFocusEntryView:];
   }
@@ -6368,12 +6368,12 @@ void __69__CKChatInputController__deferredDismissToKeyboardAndFocusEntryView___b
   [v2 chatInputControllerRequestInputViewFocusFromFullscreen:*(a1 + 32)];
 }
 
-- (void)_dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:(BOOL)a3 overrideExceptions:(BOOL)a4 focusEntryView:(BOOL)a5
+- (void)_dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention:(BOOL)prevention overrideExceptions:(BOOL)exceptions focusEntryView:(BOOL)view
 {
-  v9 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v10 = [v9 isPresentingCard];
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-  if (v10)
+  if (isPresentingCard)
   {
     v11 = dispatch_time(0, 150000000);
     v13[0] = MEMORY[0x1E69E9820];
@@ -6381,9 +6381,9 @@ void __69__CKChatInputController__deferredDismissToKeyboardAndFocusEntryView___b
     v13[2] = __126__CKChatInputController__dismissAppCardIfNecessaryAnimatedAndResetFirstResponderPrevention_overrideExceptions_focusEntryView___block_invoke;
     v13[3] = &unk_1E72F0310;
     v13[4] = self;
-    v14 = a3;
-    v15 = a5;
-    v16 = a4;
+    preventionCopy = prevention;
+    viewCopy = view;
+    exceptionsCopy = exceptions;
     dispatch_after(v11, MEMORY[0x1E69E96A0], v13);
   }
 
@@ -6422,11 +6422,11 @@ uint64_t __126__CKChatInputController__dismissAppCardIfNecessaryAnimatedAndReset
 
 - (void)stickerDruidDragStarted
 {
-  v3 = [(CKChatInputController *)self delegate];
-  v17 = [v3 activeSendMenuPresentationForChatInputController:self];
+  delegate = [(CKChatInputController *)self delegate];
+  v17 = [delegate activeSendMenuPresentationForChatInputController:self];
 
-  v4 = [(CKChatInputController *)self delegate];
-  v5 = [v4 viewControllerForChatInputModalPresentation];
+  delegate2 = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation = [delegate2 viewControllerForChatInputModalPresentation];
 
   if (v17)
   {
@@ -6434,19 +6434,19 @@ uint64_t __126__CKChatInputController__dismissAppCardIfNecessaryAnimatedAndReset
     goto LABEL_12;
   }
 
-  v6 = [(CKChatInputController *)self appCardPresentationOverseer];
-  if ([v6 isPresentingCard])
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  if ([appCardPresentationOverseer isPresentingCard])
   {
-    v7 = [v5 traitCollection];
-    v8 = [v7 verticalSizeClass];
+    traitCollection = [viewControllerForChatInputModalPresentation traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v8 == 1)
+    if (verticalSizeClass == 1)
     {
-      v9 = [(CKChatInputController *)self appCardPresentationOverseer];
-      v10 = v9;
+      appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+      v10 = appCardPresentationOverseer2;
       v11 = &__block_literal_global_461_2;
 LABEL_9:
-      [v9 dismissCardAnimated:1 completion:v11];
+      [appCardPresentationOverseer2 dismissCardAnimated:1 completion:v11];
 
       goto LABEL_12;
     }
@@ -6456,27 +6456,27 @@ LABEL_9:
   {
   }
 
-  v12 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v13 = [v12 isExpanded];
+  appCardPresentationOverseer3 = [(CKChatInputController *)self appCardPresentationOverseer];
+  isExpanded = [appCardPresentationOverseer3 isExpanded];
 
-  if (v13)
+  if (isExpanded)
   {
     [(CKChatInputController *)self setDidDismissAppCardForStickerDrag:1];
-    v14 = [(CKChatInputController *)self browserPlugin];
-    [(CKChatInputController *)self setPluginToResumeForStickerDrag:v14];
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    [(CKChatInputController *)self setPluginToResumeForStickerDrag:browserPlugin];
 
-    v15 = [(CKChatInputController *)self appCardPresentationOverseer];
-    -[CKChatInputController setSavedStyleForDragCompletion:](self, "setSavedStyleForDragCompletion:", [v15 isExpanded]);
+    appCardPresentationOverseer4 = [(CKChatInputController *)self appCardPresentationOverseer];
+    -[CKChatInputController setSavedStyleForDragCompletion:](self, "setSavedStyleForDragCompletion:", [appCardPresentationOverseer4 isExpanded]);
 
-    v9 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v10 = v9;
+    appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+    v10 = appCardPresentationOverseer2;
     v11 = &__block_literal_global_463_2;
     goto LABEL_9;
   }
 
-  v16 = [(CKChatInputController *)self stickerReactionSession];
+  stickerReactionSession = [(CKChatInputController *)self stickerReactionSession];
 
-  if (v16)
+  if (stickerReactionSession)
   {
     [(CKChatInputController *)self dismissStickerPickerPreservingChatItem:1 completion:0];
   }
@@ -6484,13 +6484,13 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)canShowBrowserForPluginIdentifier:(id)a3 completion:(id)a4
+- (void)canShowBrowserForPluginIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v8])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:identifierCopy])
   {
-    v7 = [v8 isEqualToString:*MEMORY[0x1E69A6988]];
+    v7 = [identifierCopy isEqualToString:*MEMORY[0x1E69A6988]];
   }
 
   else
@@ -6498,52 +6498,52 @@ LABEL_12:
     v7 = 0;
   }
 
-  v6[2](v6, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (void)showBrowserForPluginIdentifier:(id)a3 style:(unint64_t)a4 completion:(id)a5
+- (void)showBrowserForPluginIdentifier:(id)identifier style:(unint64_t)style completion:(id)completion
 {
-  v8 = a3;
-  v7 = a5;
-  if (-[CKChatInputController switcherPluginCanMessageAPIOnBehalfOfPlugin:](self, "switcherPluginCanMessageAPIOnBehalfOfPlugin:", v8) && [v8 isEqualToString:*MEMORY[0x1E69A6988]])
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (-[CKChatInputController switcherPluginCanMessageAPIOnBehalfOfPlugin:](self, "switcherPluginCanMessageAPIOnBehalfOfPlugin:", identifierCopy) && [identifierCopy isEqualToString:*MEMORY[0x1E69A6988]])
   {
     [(CKChatInputController *)self presentAppStoreForURL:0];
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)requestPresentationStyleExpanded:(BOOL)a3 forPlugin:(id)a4
+- (void)requestPresentationStyleExpanded:(BOOL)expanded forPlugin:(id)plugin
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  expandedCopy = expanded;
+  pluginCopy = plugin;
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:expandedCopy];
   if ([(CKChatInputController *)self currentPluginIsDT])
   {
     [(CKChatInputController *)self _deferredRequestPresentationStyleExpanded:v6];
   }
 
-  else if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v7])
+  else if ([(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:pluginCopy])
   {
     [(CKChatInputController *)self performSelector:sel__deferredRequestPresentationStyleExpanded_ withObject:v6 afterDelay:0.1];
   }
 }
 
-- (void)requestTransitionPluginFromFullScreen:(id)a3 toExpanded:(BOOL)a4
+- (void)requestTransitionPluginFromFullScreen:(id)screen toExpanded:(BOOL)expanded
 {
-  v6 = a3;
+  screenCopy = screen;
   [(CKChatInputController *)self _deferredDismissToKeyboardAndFocusEntryView:MEMORY[0x1E695E110]];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpanded___block_invoke;
   block[3] = &unk_1E72EBBC0;
-  v11 = a4;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
+  expandedCopy = expanded;
+  v9 = screenCopy;
+  selfCopy = self;
+  v7 = screenCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -6555,13 +6555,13 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
   [*(a1 + 40) showBrowserForPlugin:v3 dataSource:0 style:v2];
 }
 
-- (void)requestPresentationStyleFullScreenModalForPlugin:(id)a3 dataSource:(id)a4 preferredContentSize:(CGSize)a5 skipValidation:(BOOL)a6
+- (void)requestPresentationStyleFullScreenModalForPlugin:(id)plugin dataSource:(id)source preferredContentSize:(CGSize)size skipValidation:(BOOL)validation
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  if (a6 || [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v11])
+  height = size.height;
+  width = size.width;
+  pluginCopy = plugin;
+  sourceCopy = source;
+  if (validation || [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:pluginCopy])
   {
     v13 = dispatch_time(0, 100000000);
     block[0] = MEMORY[0x1E69E9820];
@@ -6569,92 +6569,92 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
     block[2] = __121__CKChatInputController_requestPresentationStyleFullScreenModalForPlugin_dataSource_preferredContentSize_skipValidation___block_invoke;
     block[3] = &unk_1E72F5708;
     block[4] = self;
-    v15 = v11;
-    v16 = v12;
+    v15 = pluginCopy;
+    v16 = sourceCopy;
     v17 = width;
     v18 = height;
     dispatch_after(v13, MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_deferredRequestPresentationStyleExpanded:(id)a3
+- (void)_deferredRequestPresentationStyleExpanded:(id)expanded
 {
-  v4 = a3;
+  expandedCopy = expanded;
   if (CKIsAppCardsEnabled())
   {
-    v5 = [v4 BOOLValue];
-    v6 = [(CKChatInputController *)self appCardPresentationOverseer];
-    [v6 requestPresentationStyle:v5 animated:1];
+    bOOLValue = [expandedCopy BOOLValue];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    [appCardPresentationOverseer requestPresentationStyle:bOOLValue animated:1];
   }
 
   else
   {
-    v6 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    appCardPresentationOverseer = IMLogHandleForCategory();
+    if (os_log_type_enabled(appCardPresentationOverseer, OS_LOG_TYPE_ERROR))
     {
       [CKChatInputController _deferredRequestPresentationStyleExpanded:];
     }
   }
 }
 
-- (void)_deferredRequestFullScreenModalForPluginIdentifier:(id)a3 dataSource:(id)a4 preferredContentSize:(CGSize)a5
+- (void)_deferredRequestFullScreenModalForPluginIdentifier:(id)identifier dataSource:(id)source preferredContentSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v10 = a3;
+  height = size.height;
+  width = size.width;
+  sourceCopy = source;
+  identifierCopy = identifier;
   if (CKIsRunningInMacCatalyst())
   {
-    v11 = [(CKChatInputController *)self delegate];
-    v12 = [v11 viewControllerForChatInputModalPresentation];
-    v13 = [v12 presentedViewController];
+    delegate = [(CKChatInputController *)self delegate];
+    viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+    presentedViewController = [viewControllerForChatInputModalPresentation presentedViewController];
 
-    if ([v13 conformsToProtocol:&unk_1F05AEEC8])
+    if ([presentedViewController conformsToProtocol:&unk_1F05AEEC8])
     {
-      [(CKChatInputController *)self setMacBrowserViewController:v13];
+      [(CKChatInputController *)self setMacBrowserViewController:presentedViewController];
     }
   }
 
-  v14 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v16 = [v14 balloonPluginForBundleID:v10];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v16 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:identifierCopy];
 
-  v15 = [(CKChatInputController *)self browserSwitcher];
-  [v15 showBrowserFullscreenModalForPlugin:v16 datasource:v9 preferredContentSize:{width, height}];
+  browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+  [browserSwitcher showBrowserFullscreenModalForPlugin:v16 datasource:sourceCopy preferredContentSize:{width, height}];
 }
 
 - (BOOL)_isAppBrowserFullScreen
 {
   if (CKIsAppCardsEnabled())
   {
-    v3 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v4 = [v3 isExpanded];
+    appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+    isExpanded = [appCardPresentationOverseer isExpanded];
   }
 
   else
   {
-    v3 = [(CKChatInputController *)self browserSwitcher];
-    v5 = [v3 transitionCoordinator];
-    v4 = [v5 currentConsumer] == 2;
+    appCardPresentationOverseer = [(CKChatInputController *)self browserSwitcher];
+    transitionCoordinator = [appCardPresentationOverseer transitionCoordinator];
+    isExpanded = [transitionCoordinator currentConsumer] == 2;
   }
 
-  return v4;
+  return isExpanded;
 }
 
-- (void)startEditingPayloadBypassingValidation:(id)a3 forPlugin:(id)a4 completion:(id)a5
+- (void)startEditingPayloadBypassingValidation:(id)validation forPlugin:(id)plugin completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  validationCopy = validation;
+  pluginCopy = plugin;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(CKChatInputController *)self _shouldDeferCallbackForInsertingPayload])
     {
-      [(CKChatInputController *)self setInsertPayloadCompletionHandler:v10];
+      [(CKChatInputController *)self setInsertPayloadCompletionHandler:completionCopy];
     }
 
     else
     {
-      v10[2](v10, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -6663,54 +6663,54 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
   v15 = 3221225472;
   v16 = __85__CKChatInputController_startEditingPayloadBypassingValidation_forPlugin_completion___block_invoke;
   v17 = &unk_1E72EB8D0;
-  v18 = self;
-  v19 = v8;
-  v12 = v8;
+  selfCopy = self;
+  v19 = validationCopy;
+  v12 = validationCopy;
   dispatch_after(v11, MEMORY[0x1E69E96A0], &v14);
   v13 = [CKBalloonPluginManager sharedInstance:v14];
-  [v13 updateInteractionTimeForPlugin:v9];
+  [v13 updateInteractionTimeForPlugin:pluginCopy];
 }
 
-- (void)appendMediaPayloadToText:(id)a3
+- (void)appendMediaPayloadToText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self delegate];
-  [v5 chatInputController:self didRequestAppendToCompositionForPayload:v4];
+  textCopy = text;
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputController:self didRequestAppendToCompositionForPayload:textCopy];
 }
 
-- (void)startEditingPayload:(id)a3
+- (void)startEditingPayload:(id)payload
 {
-  v6 = a3;
-  v4 = [(CKChatInputController *)self entryView];
-  v5 = [v4 contentView];
-  [v5 prepareForShelfPayloadAnimation];
+  payloadCopy = payload;
+  entryView = [(CKChatInputController *)self entryView];
+  contentView = [entryView contentView];
+  [contentView prepareForShelfPayloadAnimation];
 
-  [(CKChatInputController *)self _startEditingPayload:v6];
+  [(CKChatInputController *)self _startEditingPayload:payloadCopy];
 }
 
-- (void)startEditingPayload:(id)a3 dismiss:(BOOL)a4 forPlugin:(id)a5 completion:(id)a6
+- (void)startEditingPayload:(id)payload dismiss:(BOOL)dismiss forPlugin:(id)plugin completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dismissCopy = dismiss;
+  payloadCopy = payload;
+  pluginCopy = plugin;
+  completionCopy = completion;
   if ([(CKChatInputController *)self currentPluginIsDT]|| [(CKChatInputController *)self handwritingIsDisplayed])
   {
-    [(CKChatInputController *)self startEditingPayload:v10];
+    [(CKChatInputController *)self startEditingPayload:payloadCopy];
   }
 
-  else if ([(CKChatInputController *)self _pluginCanMessageAPI:v11]|| [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:v11])
+  else if ([(CKChatInputController *)self _pluginCanMessageAPI:pluginCopy]|| [(CKChatInputController *)self switcherPluginCanMessageAPIOnBehalfOfPlugin:pluginCopy])
   {
-    if (v12)
+    if (completionCopy)
     {
       if ([(CKChatInputController *)self _shouldDeferCallbackForInsertingPayload])
       {
-        [(CKChatInputController *)self setInsertPayloadCompletionHandler:v12];
+        [(CKChatInputController *)self setInsertPayloadCompletionHandler:completionCopy];
       }
 
       else
       {
-        v12[2](v12, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -6719,44 +6719,44 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
     v18 = 3221225472;
     v19 = __74__CKChatInputController_startEditingPayload_dismiss_forPlugin_completion___block_invoke;
     v20 = &unk_1E72EB8D0;
-    v21 = self;
-    v22 = v10;
+    selfCopy = self;
+    v22 = payloadCopy;
     dispatch_after(v16, MEMORY[0x1E69E96A0], &v17);
   }
 
   v13 = [CKBalloonPluginManager sharedInstance:v17];
-  [v13 updateInteractionTimeForPlugin:v11];
+  [v13 updateInteractionTimeForPlugin:pluginCopy];
 
-  if (v8)
+  if (dismissCopy)
   {
     [(CKChatInputController *)self dismiss];
-    v14 = [(CKChatInputController *)self handwritingPresentationController];
+    handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-    if (v14)
+    if (handwritingPresentationController)
     {
-      v15 = [(CKChatInputController *)self handwritingPresentationController];
-      [v15 setVisible:0 animated:1];
+      handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+      [handwritingPresentationController2 setVisible:0 animated:1];
     }
   }
 }
 
-- (void)_startEditingPayload:(id)a3
+- (void)_startEditingPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 pluginBundleID];
+  payloadCopy = payload;
+  pluginBundleID = [payloadCopy pluginBundleID];
 
-  if (!v5)
+  if (!pluginBundleID)
   {
-    v6 = [(CKChatInputController *)self pluginBundleID];
-    [v4 setPluginBundleID:v6];
+    pluginBundleID2 = [(CKChatInputController *)self pluginBundleID];
+    [payloadCopy setPluginBundleID:pluginBundleID2];
   }
 
-  [v4 setIsFromMe:1];
-  if (v4)
+  [payloadCopy setIsFromMe:1];
+  if (payloadCopy)
   {
-    if ([v4 shouldExpire])
+    if ([payloadCopy shouldExpire])
     {
-      v7 = [CKComposition newExpirableCompositionWithText:0 subject:0 shelfPluginPayload:v4];
+      v7 = [CKComposition newExpirableCompositionWithText:0 subject:0 shelfPluginPayload:payloadCopy];
     }
 
     else
@@ -6769,8 +6769,8 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
     v12 = 3221225472;
     v13 = __46__CKChatInputController__startEditingPayload___block_invoke;
     v14 = &unk_1E72EE588;
-    v15 = self;
-    v8 = v4;
+    selfCopy = self;
+    v8 = payloadCopy;
     v16 = v8;
     v9 = _Block_copy(&v11);
     v10 = v9;
@@ -6781,7 +6781,7 @@ void __74__CKChatInputController_requestTransitionPluginFromFullScreen_toExpande
 
     else
     {
-      [CKComposition compositionWithShelfPluginPayload:v8 completionHandler:v9, v11, v12, v13, v14, v15];
+      [CKComposition compositionWithShelfPluginPayload:v8 completionHandler:v9, v11, v12, v13, v14, selfCopy];
     }
   }
 
@@ -7016,12 +7016,12 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
   }
 }
 
-- (BOOL)_shouldSendTypingIndicatorDataForPluginIdentifier:(id)a3
+- (BOOL)_shouldSendTypingIndicatorDataForPluginIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v4 = [v3 rangeOfString:*MEMORY[0x1E69A69F0]] != 0x7FFFFFFFFFFFFFFFLL;
+    v4 = [identifierCopy rangeOfString:*MEMORY[0x1E69A69F0]] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -7034,35 +7034,35 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
 
 - (id)pluginBundleID
 {
-  v3 = [(CKChatInputController *)self handwritingPresentationController];
-  v4 = [v3 visible];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
+  visible = [handwritingPresentationController visible];
 
-  if (v4)
+  if (visible)
   {
-    v5 = [(CKChatInputController *)self handwritingPresentationController];
-    [v5 pluginBundleID];
+    handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+    [handwritingPresentationController2 pluginBundleID];
   }
 
   else
   {
-    v5 = [(CKChatInputController *)self browserPlugin];
-    [v5 identifier];
+    handwritingPresentationController2 = [(CKChatInputController *)self browserPlugin];
+    [handwritingPresentationController2 identifier];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)setLocalUserIsTyping:(BOOL)a3
+- (void)setLocalUserIsTyping:(BOOL)typing
 {
-  v3 = a3;
-  v5 = [(CKChatInputController *)self pluginBundleID];
-  v6 = [(CKChatInputController *)self _shouldSendTypingIndicatorDataForPluginIdentifier:v5];
+  typingCopy = typing;
+  pluginBundleID = [(CKChatInputController *)self pluginBundleID];
+  v6 = [(CKChatInputController *)self _shouldSendTypingIndicatorDataForPluginIdentifier:pluginBundleID];
 
   if (v6)
   {
-    v7 = [(CKChatInputController *)self browserPlugin];
-    v10 = [v7 __ck_statusJPEGImageDataForTransportWithCompressionFactor:0.2];
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    v10 = [browserPlugin __ck_statusJPEGImageDataForTransportWithCompressionFactor:0.2];
   }
 
   else
@@ -7070,55 +7070,55 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     v10 = 0;
   }
 
-  v8 = [(CKChatInputController *)self delegate];
-  v9 = [(CKChatInputController *)self pluginBundleID];
-  [v8 setLocalUserIsComposing:v3 withPluginBundleID:v9 typingIndicatorData:v10];
+  delegate = [(CKChatInputController *)self delegate];
+  pluginBundleID2 = [(CKChatInputController *)self pluginBundleID];
+  [delegate setLocalUserIsComposing:typingCopy withPluginBundleID:pluginBundleID2 typingIndicatorData:v10];
 }
 
-- (void)showEntryViewPhotosShelf:(id)a3 completion:(id)a4
+- (void)showEntryViewPhotosShelf:(id)shelf completion:(id)completion
 {
-  v47 = a3;
-  v6 = a4;
+  shelfCopy = shelf;
+  completionCopy = completion;
   v7 = IMBalloonExtensionIDWithSuffix();
-  v8 = [(CKChatInputController *)self entryView];
-  v9 = [v8 composition];
-  v10 = [v9 shelfPluginPayload];
+  entryView = [(CKChatInputController *)self entryView];
+  composition = [entryView composition];
+  shelfPluginPayload = [composition shelfPluginPayload];
 
-  v11 = [v10 pluginBundleID];
-  v46 = [v11 isEqualToString:*MEMORY[0x1E69A6A00]];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  v46 = [pluginBundleID isEqualToString:*MEMORY[0x1E69A6A00]];
   if (v7)
   {
-    v12 = IMBalloonExtensionIDWithSuffix();
-    v13 = [v7 isEqualToString:v12];
+    pluginBundleID2 = IMBalloonExtensionIDWithSuffix();
+    shouldSendAsMediaObject = [v7 isEqualToString:pluginBundleID2];
   }
 
   else
   {
-    v14 = v11;
-    v12 = [v10 pluginBundleID];
+    v14 = pluginBundleID;
+    pluginBundleID2 = [shelfPluginPayload pluginBundleID];
     v15 = IMBalloonExtensionIDWithSuffix();
-    if ([v12 isEqualToString:v15])
+    if ([pluginBundleID2 isEqualToString:v15])
     {
-      v13 = [v10 shouldSendAsMediaObject];
+      shouldSendAsMediaObject = [shelfPluginPayload shouldSendAsMediaObject];
     }
 
     else
     {
-      v13 = 0;
+      shouldSendAsMediaObject = 0;
     }
 
-    v11 = v14;
+    pluginBundleID = v14;
   }
 
   v16 = objc_alloc_init(CKBrowserItemPayload);
   v45 = v7;
   [(CKBrowserItemPayload *)v16 setPluginBundleID:v7];
-  [(CKBrowserItemPayload *)v16 setPhotoShelfViewController:v47];
+  [(CKBrowserItemPayload *)v16 setPhotoShelfViewController:shelfCopy];
   v17 = [CKComposition compositionWithShelfPluginPayload:v16];
-  v18 = [(CKChatInputController *)self entryView];
-  v19 = [v18 composition];
+  entryView2 = [(CKChatInputController *)self entryView];
+  composition2 = [entryView2 composition];
 
-  v20 = [v19 shelfPluginPayload];
+  shelfPluginPayload2 = [composition2 shelfPluginPayload];
 
   if ([(CKChatInputController *)self _isiMessageConversation])
   {
@@ -7132,14 +7132,14 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
       }
     }
 
-    v22 = [MEMORY[0x1E69A5B80] sharedInstance];
-    [v22 preWarmConnection];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+    [mEMORY[0x1E69A5B80] preWarmConnection];
   }
 
   v44 = v17;
-  if (v19)
+  if (composition2)
   {
-    v23 = [v19 compositionByAppendingComposition:v17];
+    v23 = [composition2 compositionByAppendingComposition:v17];
   }
 
   else
@@ -7147,14 +7147,14 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     v23 = v17;
   }
 
-  if ((v20 == 0) | v46 & 1 | v13 & 1)
+  if ((shelfPluginPayload2 == 0) | v46 & 1 | shouldSendAsMediaObject & 1)
   {
-    v24 = [(CKChatInputController *)self entryView];
+    entryView3 = [(CKChatInputController *)self entryView];
 
-    if (v24)
+    if (entryView3)
     {
-      v25 = [(CKChatInputController *)self entryView];
-      [v25 setComposition:v23];
+      entryView4 = [(CKChatInputController *)self entryView];
+      [entryView4 setComposition:v23];
     }
 
     else
@@ -7163,9 +7163,9 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     }
 
     v41 = v45;
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -7174,9 +7174,9 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     v26 = CKFrameworkBundle();
     v42 = v16;
     [v26 localizedStringForKey:@"SHELF_REPLACE_ITEM_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
-    v27 = v43 = v11;
+    v27 = v43 = pluginBundleID;
     CKFrameworkBundle();
-    v29 = v28 = v6;
+    v29 = v28 = completionCopy;
     v30 = [v29 localizedStringForKey:@"SHELF_REPLACE_ITEM" value:&stru_1F04268F8 table:@"ChatKit"];
     v31 = [CKAlertController alertControllerWithTitle:v27 message:v30 preferredStyle:1];
 
@@ -7193,7 +7193,7 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     v35 = [CKAlertAction actionWithTitle:v33 style:0 handler:v51];
     [v31 addAction:v35];
 
-    v6 = v28;
+    completionCopy = v28;
     v36 = CKFrameworkBundle();
     v37 = [v36 localizedStringForKey:@"SHELF_REPLACE_ITEM_CANCEL_ACTION_TITLE" value:&stru_1F04268F8 table:@"ChatKit"];
     v48[0] = MEMORY[0x1E69E9820];
@@ -7203,14 +7203,14 @@ uint64_t __46__CKChatInputController__startEditingPayload___block_invoke_2_708(u
     v50 = v46;
     v48[4] = self;
     v38 = v34;
-    v11 = v43;
+    pluginBundleID = v43;
     v49 = v38;
     v39 = [CKAlertAction actionWithTitle:v37 style:0 handler:v48];
     [v31 addAction:v39];
 
     v16 = v42;
-    v40 = [(CKChatInputController *)self delegate];
-    [v31 presentFromViewController:v40 animated:1 completion:0];
+    delegate = [(CKChatInputController *)self delegate];
+    [v31 presentFromViewController:delegate animated:1 completion:0];
 
     v41 = v45;
   }
@@ -7250,10 +7250,10 @@ void __61__CKChatInputController_showEntryViewPhotosShelf_completion___block_inv
   }
 }
 
-- (void)generatePreviewAndStoreInCacheForSendingPhotoFromPayload:(id)a3
+- (void)generatePreviewAndStoreInCacheForSendingPhotoFromPayload:(id)payload
 {
-  v4 = [a3 fileURL];
-  [(CKChatInputController *)self _beginPreviewCreationWithFileURL:v4];
+  fileURL = [payload fileURL];
+  [(CKChatInputController *)self _beginPreviewCreationWithFileURL:fileURL];
 }
 
 + (id)previewQueue
@@ -7280,20 +7280,20 @@ uint64_t __37__CKChatInputController_previewQueue__block_invoke()
   return [v2 setMaxConcurrentOperationCount:-1];
 }
 
-- (void)_beginPreviewCreationWithFileURL:(id)a3
+- (void)_beginPreviewCreationWithFileURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = [[CKDBFileTransfer alloc] initWithFileURL:v4 transcoderUserInfo:0 attributionInfo:0 hideAttachment:0];
-    v6 = [v4 lastPathComponent];
-    [(CKDBFileTransfer *)v5 setFilename:v6];
+    v5 = [[CKDBFileTransfer alloc] initWithFileURL:lCopy transcoderUserInfo:0 attributionInfo:0 hideAttachment:0];
+    lastPathComponent = [lCopy lastPathComponent];
+    [(CKDBFileTransfer *)v5 setFilename:lastPathComponent];
 
     [(CKDBFileTransfer *)v5 setTransferState:5];
     [(CKDBFileTransfer *)v5 setPreviewGenerationState:1];
     v7 = +[CKMediaObjectManager sharedInstance];
-    v8 = [(CKDBFileTransfer *)v5 filename];
-    v9 = [v7 classForFilename:v8];
+    filename = [(CKDBFileTransfer *)v5 filename];
+    v9 = [v7 classForFilename:filename];
 
     v10 = +[CKMessageContext selfContext];
     v11 = [[v9 alloc] initWithTransfer:v5 context:v10 forceInlinePreview:1];
@@ -7302,9 +7302,9 @@ uint64_t __37__CKChatInputController_previewQueue__block_invoke()
     v14 = v13;
 
     v15 = [v11 previewCacheKeyWithOrientation:1];
-    v16 = [(CKChatInputController *)self delegate];
-    v17 = [v16 fileURLKeyToGuidMapping];
-    [v17 setObject:v15 forKey:v4];
+    delegate = [(CKChatInputController *)self delegate];
+    fileURLKeyToGuidMapping = [delegate fileURLKeyToGuidMapping];
+    [fileURLKeyToGuidMapping setObject:v15 forKey:lCopy];
 
     if (([v11 needsAnimation] & 1) == 0)
     {
@@ -7329,65 +7329,65 @@ uint64_t __37__CKChatInputController_previewQueue__block_invoke()
   }
 }
 
-- (void)showModalViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showModalViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CKChatInputController *)self appCardPresentationOverseer];
-  v11 = [v10 isPresentingCard];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  appCardPresentationOverseer = [(CKChatInputController *)self appCardPresentationOverseer];
+  isPresentingCard = [appCardPresentationOverseer isPresentingCard];
 
-  if (v11)
+  if (isPresentingCard)
   {
-    v13 = [(CKChatInputController *)self appCardPresentationOverseer];
-    v12 = [v13 containerViewController];
-    [v12 presentViewController:v9 animated:v5 completion:v8];
+    appCardPresentationOverseer2 = [(CKChatInputController *)self appCardPresentationOverseer];
+    containerViewController = [appCardPresentationOverseer2 containerViewController];
+    [containerViewController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-    v8 = v9;
-    v9 = v12;
+    completionCopy = controllerCopy;
+    controllerCopy = containerViewController;
   }
 
   else
   {
-    v13 = [(CKChatInputController *)self delegate];
-    [v13 chatInputController:self presentShelfModal:v9 animated:v5 completion:v8];
+    appCardPresentationOverseer2 = [(CKChatInputController *)self delegate];
+    [appCardPresentationOverseer2 chatInputController:self presentShelfModal:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 }
 
 - (void)dismissEntryViewShelf
 {
-  v3 = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
-  v4 = [v3 isHoldingUpdates];
+  dismissEntryViewShelfUpdater = [(CKChatInputController *)self dismissEntryViewShelfUpdater];
+  isHoldingUpdates = [dismissEntryViewShelfUpdater isHoldingUpdates];
 
-  if ((v4 & 1) == 0)
+  if ((isHoldingUpdates & 1) == 0)
   {
-    v5 = [(CKChatInputController *)self entryView];
-    [v5 invalidateCompositionForReason:2];
+    entryView = [(CKChatInputController *)self entryView];
+    [entryView invalidateCompositionForReason:2];
   }
 }
 
-- (id)workingDraftDirForPluginIdentifier:(id)a3
+- (id)workingDraftDirForPluginIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKChatInputController *)self targetConversation];
-  if (v5)
+  identifierCopy = identifier;
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  if (targetConversation)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = @"Pending";
+      uniqueIdentifier = @"Pending";
       goto LABEL_6;
     }
 
-    v6 = [v5 uniqueIdentifier];
-    if (v6)
+    uniqueIdentifier = [targetConversation uniqueIdentifier];
+    if (uniqueIdentifier)
     {
 LABEL_6:
-      v8 = CKPluginTmpSubDirectoryURL(v6, v4);
-      v9 = [MEMORY[0x1E696AC08] defaultManager];
+      v8 = CKPluginTmpSubDirectoryURL(uniqueIdentifier, identifierCopy);
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v15 = 0;
-      [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
+      [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v15];
       v7 = v15;
 
       if (v8)
@@ -7404,7 +7404,7 @@ LABEL_6:
   else
   {
     v7 = 0;
-    v6 = 0;
+    uniqueIdentifier = 0;
   }
 
 LABEL_9:
@@ -7420,7 +7420,7 @@ LABEL_9:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v17 = v6;
+      v17 = uniqueIdentifier;
       v18 = 2112;
       v19 = v7;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Failure info - guid: %@, error: %@", buf, 0x16u);
@@ -7432,9 +7432,9 @@ LABEL_9:
     v12 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(CKChatInputController *)self entryView];
+      entryView = [(CKChatInputController *)self entryView];
       *buf = 138412290;
-      v17 = v13;
+      v17 = entryView;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Failure info - entryView: %@", buf, 0xCu);
     }
   }
@@ -7445,11 +7445,11 @@ LABEL_20:
   return v8;
 }
 
-- (void)stageAssetArchive:(id)a3 skipShelf:(BOOL)a4 completionHandler:(id)a5
+- (void)stageAssetArchive:(id)archive skipShelf:(BOOL)shelf completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  shelfCopy = shelf;
+  archiveCopy = archive;
+  handlerCopy = handler;
   v10 = IMBalloonExtensionIDWithSuffix();
   v11 = +[CKBalloonPluginManager sharedInstance];
   v12 = [v11 viewControllerForPluginIdentifier:v10];
@@ -7457,7 +7457,7 @@ LABEL_20:
   [v12 setSendDelegate:self];
   if (objc_opt_respondsToSelector())
   {
-    [v12 _stageAssetArchive:v8 skipShelf:v6 completionHandler:v9];
+    [v12 _stageAssetArchive:archiveCopy skipShelf:shelfCopy completionHandler:handlerCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -7471,10 +7471,10 @@ LABEL_20:
   }
 }
 
-- (void)removeAssetArchiveWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeAssetArchiveWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v8 = IMBalloonExtensionIDWithSuffix();
   v9 = +[CKBalloonPluginManager sharedInstance];
   v10 = [v9 viewControllerForPluginIdentifier:v8];
@@ -7482,7 +7482,7 @@ LABEL_20:
   [v10 setSendDelegate:self];
   if (objc_opt_respondsToSelector())
   {
-    [v10 _removeAssetArchiveWithIdentifier:v6 completionHandler:v7];
+    [v10 _removeAssetArchiveWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 
   else if (IMOSLoggingEnabled())
@@ -7496,9 +7496,9 @@ LABEL_20:
   }
 }
 
-- (void)notifyActiveBrowserAssetArchiveWasRemoved:(id)a3
+- (void)notifyActiveBrowserAssetArchiveWasRemoved:(id)removed
 {
-  v8 = a3;
+  removedCopy = removed;
   if ([(CKChatInputController *)self currentPluginIsPhotos]|| [(CKChatInputController *)self currentPluginIsGenerativePlayground])
   {
     v4 = IMBalloonExtensionIDWithSuffix();
@@ -7508,14 +7508,14 @@ LABEL_20:
       v6 = +[CKBalloonPluginManager sharedInstance];
       v7 = [v6 viewControllerForPluginIdentifier:v5];
 
-      [v7 _assetArchiveRemoved:v8];
+      [v7 _assetArchiveRemoved:removedCopy];
     }
   }
 }
 
-- (id)configurePhotosDraftAssetArchivesWithConversationID:(id)a3
+- (id)configurePhotosDraftAssetArchivesWithConversationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = IMBalloonExtensionIDWithSuffix();
   v6 = +[CKBalloonPluginManager sharedInstance];
   v7 = [v6 viewControllerForPluginIdentifier:v5];
@@ -7523,7 +7523,7 @@ LABEL_20:
   [v7 setSendDelegate:self];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 _configurePhotosDraftAssetArchivesWithConversationID:v4];
+    v8 = [v7 _configurePhotosDraftAssetArchivesWithConversationID:dCopy];
   }
 
   else
@@ -7544,29 +7544,29 @@ LABEL_20:
   return v8;
 }
 
-- (void)didStageAssetArchive:(id)a3 identifier:(id)a4
+- (void)didStageAssetArchive:(id)archive identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A7FC8] sharedManager];
-  if ([v8 checksForSensitivityOnSend])
+  archiveCopy = archive;
+  identifierCopy = identifier;
+  mEMORY[0x1E69A7FC8] = [MEMORY[0x1E69A7FC8] sharedManager];
+  if ([mEMORY[0x1E69A7FC8] checksForSensitivityOnSend])
   {
-    v9 = [v6 mediaObjectFromPayload];
-    v10 = [MEMORY[0x1E69A7FC0] sharedManager];
-    v11 = [v9 fileURL];
-    v12 = [(CKChatInputController *)self targetConversation];
-    v13 = [v12 chat];
-    v14 = [v13 chatIdentifier];
+    mediaObjectFromPayload = [archiveCopy mediaObjectFromPayload];
+    mEMORY[0x1E69A7FC0] = [MEMORY[0x1E69A7FC0] sharedManager];
+    fileURL = [mediaObjectFromPayload fileURL];
+    targetConversation = [(CKChatInputController *)self targetConversation];
+    chat = [targetConversation chat];
+    chatIdentifier = [chat chatIdentifier];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __57__CKChatInputController_didStageAssetArchive_identifier___block_invoke;
     v16[3] = &unk_1E72EC088;
-    v17 = v9;
-    v15 = v9;
-    [v10 isSensitiveContent:v11 withChatID:v14 completionHandler:v16];
+    v17 = mediaObjectFromPayload;
+    v15 = mediaObjectFromPayload;
+    [mEMORY[0x1E69A7FC0] isSensitiveContent:fileURL withChatID:chatIdentifier completionHandler:v16];
   }
 
-  [(CKChatInputController *)self eagerUploadPayload:v6 identifier:v7 replace:0];
+  [(CKChatInputController *)self eagerUploadPayload:archiveCopy identifier:identifierCopy replace:0];
 }
 
 void __57__CKChatInputController_didStageAssetArchive_identifier___block_invoke(uint64_t a1, int a2, void *a3)
@@ -7599,53 +7599,53 @@ void __57__CKChatInputController_didStageAssetArchive_identifier___block_invoke(
 {
   [(CKChatInputController *)self dismiss];
   [(CKChatInputController *)self dismissBrowserViewController];
-  v3 = [(CKChatInputController *)self handwritingPresentationController];
+  handwritingPresentationController = [(CKChatInputController *)self handwritingPresentationController];
 
-  if (v3)
+  if (handwritingPresentationController)
   {
-    v4 = [(CKChatInputController *)self handwritingPresentationController];
-    [v4 setVisible:0 animated:1];
+    handwritingPresentationController2 = [(CKChatInputController *)self handwritingPresentationController];
+    [handwritingPresentationController2 setVisible:0 animated:1];
   }
 }
 
-- (void)handwritingPresentationControllerDidShowHandwriting:(id)a3
+- (void)handwritingPresentationControllerDidShowHandwriting:(id)handwriting
 {
   [(CKChatInputController *)self setShouldSuppressStatusBarForHandwriting:1];
-  v4 = [(CKChatInputController *)self delegate];
-  [v4 chatInputControllerDidShowHandwriting:self];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputControllerDidShowHandwriting:self];
 }
 
-- (void)handwritingPresentationControllerWillHideHandwriting:(id)a3
+- (void)handwritingPresentationControllerWillHideHandwriting:(id)handwriting
 {
   [(CKChatInputController *)self setShouldSuppressStatusBarForHandwriting:0];
-  v4 = [(CKChatInputController *)self delegate];
-  [v4 chatInputControllerWillHideHandwriting:self];
+  delegate = [(CKChatInputController *)self delegate];
+  [delegate chatInputControllerWillHideHandwriting:self];
 }
 
-- (void)didBeginInstallingAppWithBundleIdentifier:(id)a3
+- (void)didBeginInstallingAppWithBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  if (!v6)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(CKChatInputController *)a2 didBeginInstallingAppWithBundleIdentifier:?];
   }
 
   v5 = +[CKAppInstallationWatcher sharedInstance];
-  [v5 startListeningForAppBundleIdentifier:v6];
+  [v5 startListeningForAppBundleIdentifier:identifierCopy];
 }
 
-- (void)openAppExtensionWithAdamID:(id)a3
+- (void)openAppExtensionWithAdamID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v6 = [v5 allPlugins];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  allPlugins = [mEMORY[0x1E69A5AD0] allPlugins];
 
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  v7 = [allPlugins countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v7)
   {
     v8 = *v20;
@@ -7655,15 +7655,15 @@ LABEL_3:
     {
       if (*v20 != v8)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allPlugins);
       }
 
       v10 = *(*(&v19 + 1) + 8 * v9);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v10 adamID];
-        v12 = [v11 isEqualToNumber:v4];
+        adamID = [v10 adamID];
+        v12 = [adamID isEqualToNumber:dCopy];
 
         if (v12)
         {
@@ -7673,7 +7673,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v7 = [allPlugins countByEnumeratingWithState:&v19 objects:v25 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -7690,12 +7690,12 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v14 = [(CKChatInputController *)self browserSwitcher];
-    v15 = [v14 transitionCoordinator];
-    v16 = [v15 isExpanded];
+    browserSwitcher = [(CKChatInputController *)self browserSwitcher];
+    transitionCoordinator = [browserSwitcher transitionCoordinator];
+    isExpanded = [transitionCoordinator isExpanded];
 
-    v17 = [(CKChatInputController *)self deferredPluginDataSource];
-    [(CKChatInputController *)self showBrowserForPlugin:v13 dataSource:v17 style:v16];
+    deferredPluginDataSource = [(CKChatInputController *)self deferredPluginDataSource];
+    [(CKChatInputController *)self showBrowserForPlugin:v13 dataSource:deferredPluginDataSource style:isExpanded];
 
     [(CKChatInputController *)self setDeferredPluginDataSource:0];
   }
@@ -7711,16 +7711,16 @@ LABEL_13:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v24 = v4;
+        v24 = dCopy;
         _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Failed to find and open app with adam ID: %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)deviceOrientationManager:(id)a3 orientationDidChange:(int64_t)a4
+- (void)deviceOrientationManager:(id)manager orientationDidChange:(int64_t)change
 {
-  v4 = [(CKChatInputController *)self orientationUpdater:a3];
+  v4 = [(CKChatInputController *)self orientationUpdater:manager];
   [v4 setNeedsUpdate];
 }
 
@@ -7730,29 +7730,29 @@ LABEL_13:
   [(CKChatInputController *)self showPluginWithExtensionIdentifier:v3];
 }
 
-- (unint64_t)appPresentationStyleForShowingPluginID:(id)a3
+- (unint64_t)appPresentationStyleForShowingPluginID:(id)d
 {
-  v4 = a3;
-  v5 = [(CKChatInputController *)self delegate];
-  v6 = [v5 viewControllerForChatInputModalPresentation];
-  v7 = [v6 traitCollection];
+  dCopy = d;
+  delegate = [(CKChatInputController *)self delegate];
+  viewControllerForChatInputModalPresentation = [delegate viewControllerForChatInputModalPresentation];
+  traitCollection = [viewControllerForChatInputModalPresentation traitCollection];
 
-  v8 = -[CKChatInputController presentationStyleInOrientation:inPopover:forPluginID:](self, "presentationStyleInOrientation:inPopover:forPluginID:", [v5 sceneInterfaceOrientation], -[CKChatInputController determineSendMenuPresentationStyleCompatibleWithTraitCollection:](self, "determineSendMenuPresentationStyleCompatibleWithTraitCollection:", v7) == 1, v4);
+  v8 = -[CKChatInputController presentationStyleInOrientation:inPopover:forPluginID:](self, "presentationStyleInOrientation:inPopover:forPluginID:", [delegate sceneInterfaceOrientation], -[CKChatInputController determineSendMenuPresentationStyleCompatibleWithTraitCollection:](self, "determineSendMenuPresentationStyleCompatibleWithTraitCollection:", traitCollection) == 1, dCopy);
   return v8;
 }
 
-- (void)showPluginWithExtensionIdentifier:(id)a3 sourceView:(id)a4
+- (void)showPluginWithExtensionIdentifier:(id)identifier sourceView:(id)view
 {
-  v11 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  viewCopy = view;
   v7 = +[CKBalloonPluginManager sharedInstance];
-  v8 = [v7 pluginForExtensionIdentifier:v11];
+  v8 = [v7 pluginForExtensionIdentifier:identifierCopy];
   if (v8)
   {
-    v9 = [(CKChatInputController *)self appPresentationStyleForShowingPluginID:v11];
-    if (v6)
+    v9 = [(CKChatInputController *)self appPresentationStyleForShowingPluginID:identifierCopy];
+    if (viewCopy)
     {
-      v10 = [[CKTranscriptPluginPresentationConfiguration alloc] initWithSourceView:v6 permittedArrowDirections:15 shouldDisableSnapshotView:0];
+      v10 = [[CKTranscriptPluginPresentationConfiguration alloc] initWithSourceView:viewCopy permittedArrowDirections:15 shouldDisableSnapshotView:0];
     }
 
     else
@@ -7764,32 +7764,32 @@ LABEL_13:
   }
 }
 
-- (void)eagerUploadPayload:(id)a3 identifier:(id)a4 replace:(BOOL)a5
+- (void)eagerUploadPayload:(id)payload identifier:(id)identifier replace:(BOOL)replace
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  replaceCopy = replace;
+  payloadCopy = payload;
+  identifierCopy = identifier;
   if ([(CKChatInputController *)self _isiMessageConversation])
   {
-    v10 = [(CKChatInputController *)self targetConversation];
-    if (([v10 isBusinessConversation] & 1) == 0)
+    targetConversation = [(CKChatInputController *)self targetConversation];
+    if (([targetConversation isBusinessConversation] & 1) == 0)
     {
       v11 = _os_activity_create(&dword_19020E000, "com.apple.messages.iMessageAttachmentEagerUpload", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
       v20.opaque[0] = 0;
       v20.opaque[1] = 0;
       os_activity_scope_enter(v11, &v20);
-      v12 = [v8 mediaObjectFromPayload];
+      mediaObjectFromPayload = [payloadCopy mediaObjectFromPayload];
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) == 0 || ([v12 duration], v14 = v13, objc_msgSend(v10, "maxTrimDurationForMedia:", v12), v14 <= v15))
+      if ((objc_opt_isKindOfClass() & 1) == 0 || ([mediaObjectFromPayload duration], v14 = v13, objc_msgSend(targetConversation, "maxTrimDurationForMedia:", mediaObjectFromPayload), v14 <= v15))
       {
-        v16 = [v12 transfer];
-        v17 = CKFileSizeEligibleForEagerUpload([v16 totalBytes]);
+        transfer = [mediaObjectFromPayload transfer];
+        v17 = CKFileSizeEligibleForEagerUpload([transfer totalBytes]);
 
         if (v17)
         {
           eagerUploadController = self->_eagerUploadController;
-          v19 = [(CKChatInputController *)self participantHandles];
-          [(CKChatEagerUploadController *)eagerUploadController uploadPayload:v8 identifier:v9 replace:v5 recipients:v19];
+          participantHandles = [(CKChatInputController *)self participantHandles];
+          [(CKChatEagerUploadController *)eagerUploadController uploadPayload:payloadCopy identifier:identifierCopy replace:replaceCopy recipients:participantHandles];
         }
       }
 
@@ -7800,15 +7800,15 @@ LABEL_13:
 
 - (id)participantHandles
 {
-  v2 = [(CKChatInputController *)self targetConversation];
-  v3 = [v2 senderIdentifier];
+  targetConversation = [(CKChatInputController *)self targetConversation];
+  senderIdentifier = [targetConversation senderIdentifier];
   v4 = IMChatCanonicalIDSIDsForAddress();
 
   if (v4)
   {
-    v5 = [v2 recipients];
-    v6 = [v5 __im_canonicalIDSAddressesFromEntities];
-    v7 = [v6 arrayByAddingObject:v4];
+    recipients = [targetConversation recipients];
+    __im_canonicalIDSAddressesFromEntities = [recipients __im_canonicalIDSAddressesFromEntities];
+    __im_canonicalIDSAddressesFromEntities2 = [__im_canonicalIDSAddressesFromEntities arrayByAddingObject:v4];
   }
 
   else
@@ -7823,38 +7823,38 @@ LABEL_13:
       }
     }
 
-    v5 = [v2 recipients];
-    v7 = [v5 __im_canonicalIDSAddressesFromEntities];
+    recipients = [targetConversation recipients];
+    __im_canonicalIDSAddressesFromEntities2 = [recipients __im_canonicalIDSAddressesFromEntities];
   }
 
-  return v7;
+  return __im_canonicalIDSAddressesFromEntities2;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v5 = a3;
+  dismissCopy = dismiss;
   if ([(CKChatInputController *)self isPresentingStickerPicker])
   {
-    v4 = [(CKChatInputController *)self delegate];
-    [v4 inputController:self willDismissPresentationController:v5];
+    delegate = [(CKChatInputController *)self delegate];
+    [delegate inputController:self willDismissPresentationController:dismissCopy];
 
     [(CKChatInputController *)self endStickerReactionSession];
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v7 = a3;
-  v4 = [v7 presentedViewController];
-  v5 = [v4 conformsToProtocol:&unk_1F05AEEC8];
+  dismissCopy = dismiss;
+  presentedViewController = [dismissCopy presentedViewController];
+  v5 = [presentedViewController conformsToProtocol:&unk_1F05AEEC8];
 
   if (v5 && CKIsRunningInMacCatalyst() && ![(CKChatInputController *)self appModalIsDisplayed])
   {
     [(CKChatInputController *)self browserWillDismiss];
-    v6 = [v7 presentedViewController];
+    presentedViewController2 = [dismissCopy presentedViewController];
     if (objc_opt_respondsToSelector())
     {
-      [v6 deferredForceTearDownRemoteView];
+      [presentedViewController2 deferredForceTearDownRemoteView];
     }
   }
 }
@@ -7873,10 +7873,10 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)registerForTextInputPayloadHandling:(BOOL)a3 isGroupChat:(BOOL)a4
+- (void)registerForTextInputPayloadHandling:(BOOL)handling isGroupChat:(BOOL)chat
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = [(CKChatInputController *)self textInputPayloadController];
+  textInputPayloadController = [(CKChatInputController *)self textInputPayloadController];
   if (CKIsRunningInMessagesViewService())
   {
     v12[0] = @"com.apple.messages.stageSticker";
@@ -7895,11 +7895,11 @@ LABEL_13:
       v8 = v9;
     }
 
-    if (!a3)
+    if (!handling)
     {
       v10 = [v8 arrayByAddingObject:@"com.apple.messages.photos"];
 
-      if (!CKShouldShowSURF() || a4)
+      if (!CKShouldShowSURF() || chat)
       {
         v8 = v10;
       }
@@ -7913,28 +7913,28 @@ LABEL_13:
     [getDDActionClass() setClientActionsDelegate:self];
   }
 
-  [v7 setSupportedPayloadIds:v8];
-  [v7 setPayloadDelegate:self];
+  [textInputPayloadController setSupportedPayloadIds:v8];
+  [textInputPayloadController setPayloadDelegate:self];
 }
 
-- (void)registerForTextInputPayloadHandlingForSenderHandleID:(id)a3 receiverHandleID:(id)a4
+- (void)registerForTextInputPayloadHandlingForSenderHandleID:(id)d receiverHandleID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isZelkovaEnabled];
+  dCopy = d;
+  iDCopy = iD;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isZelkovaEnabled = [mEMORY[0x1E69A8070] isZelkovaEnabled];
 
-  if (v9)
+  if (isZelkovaEnabled)
   {
-    v10 = [MEMORY[0x1E69A8218] sharedCoordinator];
+    mEMORY[0x1E69A8218] = [MEMORY[0x1E69A8218] sharedCoordinator];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __114__CKChatInputController_TextInputPayloads__registerForTextInputPayloadHandlingForSenderHandleID_receiverHandleID___block_invoke;
     v11[3] = &unk_1E72F0360;
     v11[4] = self;
-    v12 = v6;
-    v13 = v7;
-    [v10 shouldShowKeyboardSuggestionForInitiator:v12 andReceiver:v13 completion:v11];
+    v12 = dCopy;
+    v13 = iDCopy;
+    [mEMORY[0x1E69A8218] shouldShowKeyboardSuggestionForInitiator:v12 andReceiver:v13 completion:v11];
   }
 }
 
@@ -7985,28 +7985,28 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
 
 - (void)unregisterForTextInputPayloadHandling
 {
-  v5 = [(CKChatInputController *)self textInputPayloadController];
-  v3 = [v5 payloadDelegate];
+  textInputPayloadController = [(CKChatInputController *)self textInputPayloadController];
+  payloadDelegate = [textInputPayloadController payloadDelegate];
 
-  if (v3 == self)
+  if (payloadDelegate == self)
   {
-    [v5 setPayloadDelegate:0];
-    [v5 setSupportedPayloadIds:MEMORY[0x1E695E0F0]];
+    [textInputPayloadController setPayloadDelegate:0];
+    [textInputPayloadController setSupportedPayloadIds:MEMORY[0x1E695E0F0]];
   }
 
-  v4 = [getDDActionClass() clientActionsDelegate];
+  clientActionsDelegate = [getDDActionClass() clientActionsDelegate];
 
-  if (v4 == self)
+  if (clientActionsDelegate == self)
   {
     [getDDActionClass() setClientActionsDelegate:0];
   }
 }
 
-- (void)presentPluginWithBundleID:(id)a3 appLaunchPayload:(id)a4
+- (void)presentPluginWithBundleID:(id)d appLaunchPayload:(id)payload
 {
-  v6 = a4;
-  v8 = a3;
-  if ([v6 count])
+  payloadCopy = payload;
+  dCopy = d;
+  if ([payloadCopy count])
   {
     v7 = @"com.apple.messages.appLaunchURLPluginPayload";
   }
@@ -8016,31 +8016,31 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
     v7 = 0;
   }
 
-  [(CKChatInputController *)self _presentPluginWithBundleID:v8 sendingTextInputPayload:v6 withPayloadID:v7];
+  [(CKChatInputController *)self _presentPluginWithBundleID:dCopy sendingTextInputPayload:payloadCopy withPayloadID:v7];
 }
 
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4
+- (void)handlePayload:(id)payload withPayloadId:(id)id
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  payloadCopy = payload;
+  idCopy = id;
+  appPayloadID = idCopy;
+  if (idCopy)
   {
-    if ([v7 isEqualToString:@"com.apple.messages.currentLocation"])
+    if ([idCopy isEqualToString:@"com.apple.messages.currentLocation"])
     {
-      v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v10 = [v9 isWaldoEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isWaldoEnabled = [mEMORY[0x1E69A8070] isWaldoEnabled];
 
-      if (v10)
+      if (isWaldoEnabled)
       {
-        v11 = [v6 valueForKey:@"shouldSendRequestLocation"];
-        v12 = [v6 valueForKey:@"shouldSendCurrentLocation"];
+        v11 = [payloadCopy valueForKey:@"shouldSendRequestLocation"];
+        v12 = [payloadCopy valueForKey:@"shouldSendCurrentLocation"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 BOOLValue])
         {
-          v13 = [(CKChatInputController *)self delegate];
-          [v13 chatInputControllerDidSelectRequestLocation:self];
+          delegate = [(CKChatInputController *)self delegate];
+          [delegate chatInputControllerDidSelectRequestLocation:self];
         }
 
         else
@@ -8055,21 +8055,21 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
 
       else
       {
-        v26 = [(CKChatInputController *)self delegate];
-        [v26 sendCurrentLocation];
+        delegate2 = [(CKChatInputController *)self delegate];
+        [delegate2 sendCurrentLocation];
       }
     }
 
     else
     {
-      if ([v8 isEqualToString:*MEMORY[0x1E69A6930]])
+      if ([appPayloadID isEqualToString:*MEMORY[0x1E69A6930]])
       {
         v14 = *MEMORY[0x1E69A69F0];
-        v15 = v8;
+        v15 = appPayloadID;
         v16 = [v14 stringByAppendingFormat:@":%@:%@", @"0000000000", v15];
-        v17 = [MEMORY[0x1E69A8218] sharedCoordinator];
+        mEMORY[0x1E69A8218] = [MEMORY[0x1E69A8218] sharedCoordinator];
 
-        v8 = [v17 appPayloadID];
+        appPayloadID = [mEMORY[0x1E69A8218] appPayloadID];
 
         v18 = +[CKBalloonPluginManager sharedInstance];
         v19 = [v18 viewControllerForPluginIdentifier:v16];
@@ -8077,55 +8077,55 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
         if (objc_opt_respondsToSelector())
         {
           [v19 setSendDelegate:self];
-          v20 = [v6 mutableCopy];
+          v20 = [payloadCopy mutableCopy];
           [v20 setObject:&unk_1F04E8568 forKeyedSubscript:@"sessionStartEntryType"];
           v21 = [v20 copy];
           v49[0] = MEMORY[0x1E69E9820];
           v49[1] = 3221225472;
           v49[2] = __72__CKChatInputController_TextInputPayloads__handlePayload_withPayloadId___block_invoke;
           v49[3] = &unk_1E72ECCA8;
-          v50 = v8;
-          v51 = self;
+          v50 = appPayloadID;
+          selfCopy = self;
           [v19 handleTextInputPayload:v21 withPayloadID:v50 completion:v49];
         }
       }
 
-      if ([v8 isEqualToString:@"com.apple.messages.mentions"])
+      if ([appPayloadID isEqualToString:@"com.apple.messages.mentions"])
       {
         if (+[CKMentionsUtilities supportsSupplementalLexiconMentions])
         {
-          v22 = [v6 objectForKeyedSubscript:@"name"];
+          v22 = [payloadCopy objectForKeyedSubscript:@"name"];
           if ([v22 length])
           {
-            v23 = [(CKChatInputController *)self entryView];
-            v24 = [v23 contentView];
-            v25 = [v24 textView];
-            [v25 insertMentionByName:v22];
+            entryView = [(CKChatInputController *)self entryView];
+            contentView = [entryView contentView];
+            textView = [contentView textView];
+            [textView insertMentionByName:v22];
           }
         }
       }
 
-      else if (![(CKChatInputController *)self _presentPluginIfNecessaryWithPayload:v6 withPayloadID:v8])
+      else if (![(CKChatInputController *)self _presentPluginIfNecessaryWithPayload:payloadCopy withPayloadID:appPayloadID])
       {
-        if ([v8 isEqualToString:@"com.apple.messages.stageSticker"])
+        if ([appPayloadID isEqualToString:@"com.apple.messages.stageSticker"])
         {
           v27 = _UIStickerCreateStickerFromTextInputPayload();
-          v28 = [v27 representations];
-          v29 = [v28 count] == 0;
+          representations = [v27 representations];
+          v29 = [representations count] == 0;
 
           if (v29)
           {
-            v30 = IMLogHandleForCategory();
-            if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+            _ck_plainStringEmojiText = IMLogHandleForCategory();
+            if (os_log_type_enabled(_ck_plainStringEmojiText, OS_LOG_TYPE_ERROR))
             {
-              [(CKNotificationChatController(TextInputPayloadsInternal) *)v30 _handleStickerTextInputPayload:v36, v37, v38, v39, v40, v41, v42];
+              [(CKNotificationChatController(TextInputPayloadsInternal) *)_ck_plainStringEmojiText _handleStickerTextInputPayload:v36, v37, v38, v39, v40, v41, v42];
             }
           }
 
           else
           {
-            v30 = [v27 _ck_plainStringEmojiText];
-            if ([v30 length])
+            _ck_plainStringEmojiText = [v27 _ck_plainStringEmojiText];
+            if ([_ck_plainStringEmojiText length])
             {
               v31 = IMLogHandleForCategory();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -8134,22 +8134,22 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
                 _os_log_impl(&dword_19020E000, v31, OS_LOG_TYPE_INFO, "Handling received sticker payload as plain string system emoji text", buf, 2u);
               }
 
-              v32 = [(CKChatInputController *)self entryView];
-              v33 = [v32 contentView];
-              v34 = [v33 textView];
+              entryView2 = [(CKChatInputController *)self entryView];
+              contentView2 = [entryView2 contentView];
+              textView2 = [contentView2 textView];
 
-              [v34 insertText:v30];
+              [textView2 insertText:_ck_plainStringEmojiText];
             }
 
             else
             {
-              v43 = [(CKChatInputController *)self targetConversation];
-              v44 = [v43 supportsInlineAdaptiveImageGlyphs];
+              targetConversation = [(CKChatInputController *)self targetConversation];
+              supportsInlineAdaptiveImageGlyphs = [targetConversation supportsInlineAdaptiveImageGlyphs];
 
-              v45 = [v27 _ck_shouldInsertInCompositionAsAdaptiveImageGlyph];
+              _ck_shouldInsertInCompositionAsAdaptiveImageGlyph = [v27 _ck_shouldInsertInCompositionAsAdaptiveImageGlyph];
               v46 = IMLogHandleForCategory();
               v47 = os_log_type_enabled(v46, OS_LOG_TYPE_INFO);
-              if ((v44 & v45) != 0)
+              if ((supportsInlineAdaptiveImageGlyphs & _ck_shouldInsertInCompositionAsAdaptiveImageGlyph) != 0)
               {
                 if (v47)
                 {
@@ -8181,7 +8181,7 @@ void __114__CKChatInputController_TextInputPayloads__registerForTextInputPayload
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v53 = v8;
+            v53 = appPayloadID;
             _os_log_impl(&dword_19020E000, v35, OS_LOG_TYPE_INFO, "Unhandled text input payload ID: %@", buf, 0xCu);
           }
         }
@@ -8241,9 +8241,9 @@ void __72__CKChatInputController_TextInputPayloads__handlePayload_withPayloadId_
   [v1 setSupportedPayloadIds:v5];
 }
 
-- (void)insertUIStickerAsAdaptiveImageGlyph:(id)a3
+- (void)insertUIStickerAsAdaptiveImageGlyph:(id)glyph
 {
-  v4 = a3;
+  glyphCopy = glyph;
   if (objc_opt_respondsToSelector())
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -8251,12 +8251,12 @@ void __72__CKChatInputController_TextInputPayloads__handlePayload_withPayloadId_
     v5[2] = __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveImageGlyph___block_invoke;
     v5[3] = &unk_1E72EFB88;
     v5[4] = self;
-    [v4 stk_renderBakedInRepIfNecessaryWithCompletion:v5];
+    [glyphCopy stk_renderBakedInRepIfNecessaryWithCompletion:v5];
   }
 
   else
   {
-    [(CKChatInputController *)self _insertUIStickerAsAdaptiveImageGlyph:v4];
+    [(CKChatInputController *)self _insertUIStickerAsAdaptiveImageGlyph:glyphCopy];
   }
 }
 
@@ -8273,24 +8273,24 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
   dispatch_async(MEMORY[0x1E69E96A0], v5);
 }
 
-- (void)_insertUIStickerAsAdaptiveImageGlyph:(id)a3
+- (void)_insertUIStickerAsAdaptiveImageGlyph:(id)glyph
 {
-  v4 = a3;
+  glyphCopy = glyph;
   v5 = _UIStickerCreateAdaptiveImageGlyphFromSticker();
   if (v5)
   {
-    v6 = [(CKChatInputController *)self entryView];
-    v7 = [v6 contentView];
-    v8 = [v7 textView];
+    entryView = [(CKChatInputController *)self entryView];
+    contentView = [entryView contentView];
+    textView = [contentView textView];
 
-    v9 = [v8 existingMediaObjectMatchingAdaptiveImageGlyph:v5];
+    v9 = [textView existingMediaObjectMatchingAdaptiveImageGlyph:v5];
     if (!v9)
     {
-      v10 = [objc_alloc(MEMORY[0x1E69A82C0]) initWithUISticker:v4 adaptiveImageGlyph:v5];
+      v10 = [objc_alloc(MEMORY[0x1E69A82C0]) initWithUISticker:glyphCopy adaptiveImageGlyph:v5];
       v11 = +[CKMediaObjectManager sharedInstance];
       v12 = MEMORY[0x1E69A82C0];
-      v13 = [v10 getSafeExternalURI];
-      v14 = [v12 userInfoDictionaryWithExternalURI:v13];
+      getSafeExternalURI = [v10 getSafeExternalURI];
+      v14 = [v12 userInfoDictionaryWithExternalURI:getSafeExternalURI];
       v15 = [v11 mediaObjectWithSticker:v10 stickerUserInfo:v14];
 
       objc_opt_class();
@@ -8311,24 +8311,24 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
       }
     }
 
-    [v8 insertAdaptiveImageGlyph:v5 withMediaObject:v9];
+    [textView insertAdaptiveImageGlyph:v5 withMediaObject:v9];
   }
 
   else
   {
-    v8 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    textView = IMLogHandleForCategory();
+    if (os_log_type_enabled(textView, OS_LOG_TYPE_ERROR))
     {
-      [(CKNotificationChatController(TextInputPayloadsInternal) *)v8 _insertUIStickerAsAdaptiveImageGlyph:v16, v17, v18, v19, v20, v21, v22];
+      [(CKNotificationChatController(TextInputPayloadsInternal) *)textView _insertUIStickerAsAdaptiveImageGlyph:v16, v17, v18, v19, v20, v21, v22];
     }
   }
 }
 
-- (BOOL)_presentPluginIfNecessaryWithPayload:(id)a3 withPayloadID:(id)a4
+- (BOOL)_presentPluginIfNecessaryWithPayload:(id)payload withPayloadID:(id)d
 {
   v17[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  dCopy = d;
   v8 = *MEMORY[0x1E69A6A38];
   v16[0] = @"com.apple.messages.surf";
   v16[1] = @"com.apple.messages.photos";
@@ -8345,40 +8345,40 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
   v17[4] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:5];
 
-  v13 = [v12 objectForKeyedSubscript:v7];
+  v13 = [v12 objectForKeyedSubscript:dCopy];
   if (v13)
   {
-    v14 = [(CKChatInputController *)self _formattedPayload:v6 forPayloadID:v7];
-    -[CKChatInputController _presentPluginWithBundleID:sendingTextInputPayload:withPayloadID:style:](self, "_presentPluginWithBundleID:sendingTextInputPayload:withPayloadID:style:", v13, v14, v7, [v13 isEqualToString:v9]);
+    v14 = [(CKChatInputController *)self _formattedPayload:payloadCopy forPayloadID:dCopy];
+    -[CKChatInputController _presentPluginWithBundleID:sendingTextInputPayload:withPayloadID:style:](self, "_presentPluginWithBundleID:sendingTextInputPayload:withPayloadID:style:", v13, v14, dCopy, [v13 isEqualToString:v9]);
   }
 
   return v13 != 0;
 }
 
-- (void)_stageStickerWithFileURL:(id)a3 accessibilityLabel:(id)a4
+- (void)_stageStickerWithFileURL:(id)l accessibilityLabel:(id)label
 {
   v6 = MEMORY[0x1E69A82C0];
-  v7 = a4;
-  v8 = a3;
+  labelCopy = label;
+  lCopy = l;
   v9 = [v6 alloc];
-  v10 = [v8 lastPathComponent];
+  lastPathComponent = [lCopy lastPathComponent];
   v11 = *MEMORY[0x1E69A6980];
-  v12 = [v9 initWithStickerID:v10 stickerPackID:*MEMORY[0x1E69A6980] fileURL:v8 accessibilityLabel:v7 accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:0 stickerName:0];
+  v12 = [v9 initWithStickerID:lastPathComponent stickerPackID:*MEMORY[0x1E69A6980] fileURL:lCopy accessibilityLabel:labelCopy accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:0 stickerName:0];
 
   [(CKChatInputController *)self commitStickerBypassingValidation:v12 forPlugin:v11 stickerFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 }
 
-- (id)_formattedPayload:(id)a3 forPayloadID:(id)a4
+- (id)_formattedPayload:(id)payload forPayloadID:(id)d
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  payloadCopy = payload;
+  dCopy = d;
+  v7 = payloadCopy;
   v8 = v7;
-  if (([v6 isEqualToString:@"com.apple.messages.surf"] & 1) == 0)
+  if (([dCopy isEqualToString:@"com.apple.messages.surf"] & 1) == 0)
   {
     v8 = v7;
-    if ([v6 isEqualToString:@"com.apple.messages.photos"])
+    if ([dCopy isEqualToString:@"com.apple.messages.photos"])
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v10 = [v7 objectForKeyedSubscript:@"message"];
@@ -8399,24 +8399,24 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
   return v8;
 }
 
-- (void)_presentPluginWithBundleID:(id)a3 sendingTextInputPayload:(id)a4 withPayloadID:(id)a5 style:(unint64_t)a6
+- (void)_presentPluginWithBundleID:(id)d sendingTextInputPayload:(id)payload withPayloadID:(id)iD style:(unint64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  payloadCopy = payload;
+  iDCopy = iD;
   v13 = +[CKBalloonPluginManager sharedInstance];
-  v14 = [v13 balloonPluginIdentifierForAppExtensionBundleIdentifier:v10];
+  v14 = [v13 balloonPluginIdentifierForAppExtensionBundleIdentifier:dCopy];
 
   if (!v14)
   {
-    if ([v10 isEqualToString:*MEMORY[0x1E69A6A38]])
+    if ([dCopy isEqualToString:*MEMORY[0x1E69A6A38]])
     {
       v15 = *MEMORY[0x1E69A6A40];
 
       v16 = +[CKBalloonPluginManager sharedInstance];
       v14 = [v16 balloonPluginIdentifierForAppExtensionBundleIdentifier:v15];
 
-      v10 = v15;
+      dCopy = v15;
     }
 
     else
@@ -8425,29 +8425,29 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
     }
   }
 
-  if ([v10 containsString:*MEMORY[0x1E69A6930]])
+  if ([dCopy containsString:*MEMORY[0x1E69A6930]])
   {
-    v17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v18 = [v17 isZelkovaEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isZelkovaEnabled = [mEMORY[0x1E69A8070] isZelkovaEnabled];
 
-    if (v18)
+    if (isZelkovaEnabled)
     {
-      v19 = [v12 length];
-      v20 = v10;
+      v19 = [iDCopy length];
+      v20 = dCopy;
 
-      v10 = v20;
+      dCopy = v20;
       if (!v19)
       {
-        v10 = [v20 stringByReplacingOccurrencesOfString:@".NewMessage" withString:&stru_1F04268F8];
+        dCopy = [v20 stringByReplacingOccurrencesOfString:@".NewMessage" withString:&stru_1F04268F8];
       }
 
       v21 = +[CKBalloonPluginManager sharedInstance];
-      v22 = [v21 balloonPluginIdentifierForAppExtensionBundleIdentifier:v10];
+      v22 = [v21 balloonPluginIdentifierForAppExtensionBundleIdentifier:dCopy];
 
-      if (!v11)
+      if (!payloadCopy)
       {
-        v23 = [MEMORY[0x1E69A8218] sharedCoordinator];
-        v11 = [v23 appPayload];
+        mEMORY[0x1E69A8218] = [MEMORY[0x1E69A8218] sharedCoordinator];
+        payloadCopy = [mEMORY[0x1E69A8218] appPayload];
       }
 
       v24 = +[CKBalloonPluginManager sharedInstance];
@@ -8456,7 +8456,7 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         v14 = v22;
-        v12 = v20;
+        iDCopy = v20;
         goto LABEL_31;
       }
 
@@ -8468,8 +8468,8 @@ void __80__CKChatInputController_TextInputPayloads__insertUIStickerAsAdaptiveIma
       v26 = &v38;
       v14 = v22;
       v38 = v14;
-      [v25 handleTextInputPayload:v11 withPayloadID:v20 completion:v37];
-      v12 = v20;
+      [v25 handleTextInputPayload:payloadCopy withPayloadID:v20 completion:v37];
+      iDCopy = v20;
 LABEL_29:
 
 LABEL_31:
@@ -8477,22 +8477,22 @@ LABEL_31:
     }
   }
 
-  if (v14 || [v10 isEqualToString:*MEMORY[0x1E69A6990]] && (+[CKBalloonPluginManager sharedInstance](CKBalloonPluginManager, "sharedInstance"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "balloonPluginIdentifierForAppExtensionBundleIdentifier:", v10), v14 = objc_claimAutoreleasedReturnValue(), v31, v14))
+  if (v14 || [dCopy isEqualToString:*MEMORY[0x1E69A6990]] && (+[CKBalloonPluginManager sharedInstance](CKBalloonPluginManager, "sharedInstance"), v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "balloonPluginIdentifierForAppExtensionBundleIdentifier:", dCopy), v14 = objc_claimAutoreleasedReturnValue(), v31, v14))
   {
     v27 = +[CKBalloonPluginManager sharedInstance];
     v25 = [v27 viewControllerForPluginIdentifier:v14];
 
-    v28 = [(CKChatInputController *)self browserPlugin];
-    v29 = [v28 identifier];
-    if ([v29 isEqualToString:v14])
+    browserPlugin = [(CKChatInputController *)self browserPlugin];
+    identifier = [browserPlugin identifier];
+    if ([identifier isEqualToString:v14])
     {
-      v30 = [(CKChatInputController *)self isInputViewVisible];
+      isInputViewVisible = [(CKChatInputController *)self isInputViewVisible];
 
-      if (v30)
+      if (isInputViewVisible)
       {
 LABEL_25:
-        v34 = [v11 count];
-        if (!v12 || !v34 || (objc_opt_respondsToSelector() & 1) == 0)
+        v34 = [payloadCopy count];
+        if (!iDCopy || !v34 || (objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_31;
         }
@@ -8505,7 +8505,7 @@ LABEL_25:
         v26 = &v36;
         v14 = v14;
         v36 = v14;
-        [v25 handleTextInputPayload:v11 withPayloadID:v12 completion:v35];
+        [v25 handleTextInputPayload:payloadCopy withPayloadID:iDCopy completion:v35];
         goto LABEL_29;
       }
     }
@@ -8514,11 +8514,11 @@ LABEL_25:
     {
     }
 
-    v32 = [v25 balloonPlugin];
-    if ((CKIsSendMenuEnabled() & 1) != 0 || [v32 showInBrowser])
+    balloonPlugin = [v25 balloonPlugin];
+    if ((CKIsSendMenuEnabled() & 1) != 0 || [balloonPlugin showInBrowser])
     {
-      v33 = [v25 balloonPluginDataSource];
-      [(CKChatInputController *)self launchAndShowBrowserForPlugin:v32 dataSource:v33 style:a6];
+      balloonPluginDataSource = [v25 balloonPluginDataSource];
+      [(CKChatInputController *)self launchAndShowBrowserForPlugin:balloonPlugin dataSource:balloonPluginDataSource style:style];
     }
 
     goto LABEL_25;
@@ -8563,7 +8563,7 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
   }
 }
 
-- (id)localizedTitleForClientActionFromUrl:(id)a3 context:(id)a4
+- (id)localizedTitleForClientActionFromUrl:(id)url context:(id)context
 {
   v4 = CKFrameworkBundle();
   v5 = [v4 localizedStringForKey:@"DATA_DETECTORS_PHOTOS_ACTION" value:&stru_1F04268F8 table:@"ChatKit"];
@@ -8571,11 +8571,11 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
   return v5;
 }
 
-- (void)handleClientActionFromUrl:(id)a3 context:(id)a4
+- (void)handleClientActionFromUrl:(id)url context:(id)context
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v6 = a4;
+  urlCopy = url;
+  contextCopy = context;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27 = 0;
   v28 = &v27;
@@ -8596,8 +8596,8 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
     [CKChatInputController(DDClientActionsDelegate) handleClientActionFromUrl:context:];
   }
 
-  v25 = self;
-  v10 = [v6 objectForKeyedSubscript:*v8];
+  selfCopy = self;
+  v10 = [contextCopy objectForKeyedSubscript:*v8];
   if (v10)
   {
     [v7 setObject:v10 forKeyedSubscript:@"Timestamp"];
@@ -8623,7 +8623,7 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
     [CKChatInputController(DDClientActionsDelegate) handleClientActionFromUrl:context:];
   }
 
-  v14 = [v6 objectForKeyedSubscript:*v12];
+  v14 = [contextCopy objectForKeyedSubscript:*v12];
   if (v14)
   {
     [v11 appendString:v14];
@@ -8648,7 +8648,7 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
     [CKChatInputController(DDClientActionsDelegate) handleClientActionFromUrl:context:];
   }
 
-  v17 = [v6 objectForKeyedSubscript:*v15];
+  v17 = [contextCopy objectForKeyedSubscript:*v15];
   if (v17)
   {
     [v11 appendString:v17];
@@ -8673,7 +8673,7 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
     [CKChatInputController(DDClientActionsDelegate) handleClientActionFromUrl:context:];
   }
 
-  v20 = [v6 objectForKeyedSubscript:*v18];
+  v20 = [contextCopy objectForKeyedSubscript:*v18];
   if (v20)
   {
     [v11 appendString:v20];
@@ -8692,28 +8692,28 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
   v33[0] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
 
-  [(CKChatInputController *)v25 _presentPluginWithBundleID:*MEMORY[0x1E69A6A08] sendingTextInputPayload:v24 withPayloadID:@"com.apple.messages.datadetectors.photos" style:1];
+  [(CKChatInputController *)selfCopy _presentPluginWithBundleID:*MEMORY[0x1E69A6A08] sendingTextInputPayload:v24 withPayloadID:@"com.apple.messages.datadetectors.photos" style:1];
 }
 
-- (BOOL)shouldShowMoneyActionWithAmount:(id)a3 currencies:(id)a4
+- (BOOL)shouldShowMoneyActionWithAmount:(id)amount currencies:(id)currencies
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  amountCopy = amount;
+  currenciesCopy = currencies;
+  v8 = currenciesCopy;
+  if (!amountCopy)
   {
     goto LABEL_9;
   }
 
-  if (![v7 count])
+  if (![currenciesCopy count])
   {
     goto LABEL_9;
   }
 
-  v9 = [(CKChatInputController *)self delegate];
-  v10 = [v9 recipientsCount];
+  delegate = [(CKChatInputController *)self delegate];
+  recipientsCount = [delegate recipientsCount];
 
-  if (!v10 || !CKShouldShowSURF())
+  if (!recipientsCount || !CKShouldShowSURF())
   {
     goto LABEL_9;
   }
@@ -8723,7 +8723,7 @@ void __115__CKChatInputController_TextInputPayloads___presentPluginWithBundleID_
     [CKChatInputController(DDClientActionsDelegate) shouldShowMoneyActionWithAmount:currencies:];
   }
 
-  v11 = [v8 firstObject];
+  firstObject = [v8 firstObject];
   ShouldDisplayResultForDetectedAmount = PKPeerPaymentShouldDisplayResultForDetectedAmount();
 
   if (ShouldDisplayResultForDetectedAmount)
@@ -8747,31 +8747,31 @@ uint64_t __93__CKChatInputController_DDClientActionsDelegate__shouldShowMoneyAct
   return result;
 }
 
-- (void)handleMoneyActionWithAmount:(id)a3 currencies:(id)a4
+- (void)handleMoneyActionWithAmount:(id)amount currencies:(id)currencies
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && [v7 count])
+  amountCopy = amount;
+  currenciesCopy = currencies;
+  v8 = currenciesCopy;
+  if (amountCopy && [currenciesCopy count])
   {
-    v24 = [v6 stringValue];
+    stringValue = [amountCopy stringValue];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [(CKChatInputController *)self lastTappedChatItemWithDataDetector];
+    lastTappedChatItemWithDataDetector = [(CKChatInputController *)self lastTappedChatItemWithDataDetector];
 
-    v23 = self;
-    if (v10)
+    selfCopy = self;
+    if (lastTappedChatItemWithDataDetector)
     {
-      v11 = [(CKChatInputController *)self lastTappedChatItemWithDataDetector];
-      v12 = [v11 sender];
-      v13 = [v12 displayID];
+      lastTappedChatItemWithDataDetector2 = [(CKChatInputController *)self lastTappedChatItemWithDataDetector];
+      sender = [lastTappedChatItemWithDataDetector2 sender];
+      displayID = [sender displayID];
 
       [(CKChatInputController *)self setLastTappedChatItemWithDataDetector:0];
     }
 
     else
     {
-      v13 = &stru_1F04268F8;
+      displayID = &stru_1F04268F8;
     }
 
     v27 = 0u;
@@ -8797,10 +8797,10 @@ uint64_t __93__CKChatInputController_DDClientActionsDelegate__shouldShowMoneyAct
           v31[0] = @"CurrencyType";
           v31[1] = @"CurrencyValue";
           v32[0] = v19;
-          v32[1] = v24;
+          v32[1] = stringValue;
           v31[2] = @"SenderHandle";
-          v32[2] = v13;
-          v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:{3, v23}];
+          v32[2] = displayID;
+          v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:{3, selfCopy}];
           [v9 addObject:v20];
         }
 
@@ -8815,20 +8815,20 @@ uint64_t __93__CKChatInputController_DDClientActionsDelegate__shouldShowMoneyAct
     v30 = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-    [(CKChatInputController *)v23 _presentPluginWithBundleID:*MEMORY[0x1E69A6A38] sendingTextInputPayload:v22 withPayloadID:@"com.apple.messages.datadetectors.currency"];
+    [(CKChatInputController *)selfCopy _presentPluginWithBundleID:*MEMORY[0x1E69A6A38] sendingTextInputPayload:v22 withPayloadID:@"com.apple.messages.datadetectors.currency"];
   }
 }
 
-- (void)commitPayload:(CKBrowserItemPayload *)a3 forPlugin:(NSString *)a4 allowAllCommits:(BOOL)a5 completionHandler:(id)a6
+- (void)commitPayload:(CKBrowserItemPayload *)payload forPlugin:(NSString *)plugin allowAllCommits:(BOOL)commits completionHandler:(id)handler
 {
   v11 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAD5BAF0);
   MEMORY[0x1EEE9AC00](v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  *(v15 + 16) = a3;
-  *(v15 + 24) = a4;
-  *(v15 + 32) = a5;
+  *(v15 + 16) = payload;
+  *(v15 + 24) = plugin;
+  *(v15 + 32) = commits;
   *(v15 + 40) = v14;
   *(v15 + 48) = self;
   v16 = sub_190D572E0();
@@ -8843,9 +8843,9 @@ uint64_t __93__CKChatInputController_DDClientActionsDelegate__shouldShowMoneyAct
   v18[3] = 0;
   v18[4] = &unk_190DD75C0;
   v18[5] = v17;
-  v19 = a3;
-  v20 = a4;
-  v21 = self;
+  payloadCopy = payload;
+  pluginCopy = plugin;
+  selfCopy = self;
   sub_190C798DC(0, 0, v13, &unk_190DD75C8, v18);
 }
 

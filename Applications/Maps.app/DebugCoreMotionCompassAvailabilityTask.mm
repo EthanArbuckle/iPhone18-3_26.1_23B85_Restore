@@ -1,5 +1,5 @@
 @interface DebugCoreMotionCompassAvailabilityTask
-- (DebugCoreMotionCompassAvailabilityTask)initWithPlatformController:(id)a3;
+- (DebugCoreMotionCompassAvailabilityTask)initWithPlatformController:(id)controller;
 - (PlatformController)platformController;
 - (void)dealloc;
 @end
@@ -19,7 +19,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -28,9 +28,9 @@
   [(DebugCoreMotionCompassAvailabilityTask *)&v4 dealloc];
 }
 
-- (DebugCoreMotionCompassAvailabilityTask)initWithPlatformController:(id)a3
+- (DebugCoreMotionCompassAvailabilityTask)initWithPlatformController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v23.receiver = self;
   v23.super_class = DebugCoreMotionCompassAvailabilityTask;
   v5 = [(DebugCoreMotionCompassAvailabilityTask *)&v23 init];
@@ -44,15 +44,15 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = objc_alloc_init(CMMotionManager);
     motionManager = v5->_motionManager;
     v5->_motionManager = v7;
 
-    v9 = [(CMMotionManager *)v5->_motionManager isDeviceMotionAvailable];
+    isDeviceMotionAvailable = [(CMMotionManager *)v5->_motionManager isDeviceMotionAvailable];
     v10 = sub_100DF8F14();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-    if (v9)
+    if (isDeviceMotionAvailable)
     {
       if (v11)
       {
@@ -62,13 +62,13 @@
       }
 
       v12 = +[NSBundle mainBundle];
-      v13 = [v12 bundleIdentifier];
-      v10 = [NSString stringWithFormat:@"%@.%@.deviceMotionUpdatesQueue.%p", v13, objc_opt_class(), v5];
+      bundleIdentifier = [v12 bundleIdentifier];
+      v10 = [NSString stringWithFormat:@"%@.%@.deviceMotionUpdatesQueue.%p", bundleIdentifier, objc_opt_class(), v5];
 
       v14 = v10;
-      v15 = [v10 UTF8String];
+      uTF8String = [v10 UTF8String];
       v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v17 = dispatch_queue_create(v15, v16);
+      v17 = dispatch_queue_create(uTF8String, v16);
 
       v18 = objc_opt_new();
       [v18 setUnderlyingQueue:v17];

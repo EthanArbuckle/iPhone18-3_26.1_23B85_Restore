@@ -1,42 +1,42 @@
 @interface UIImageView
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)_canDrawContent;
-- (BOOL)_getDrawModeCompositeOperation:(int *)a3 whiteComponent:(double *)a4 drawingAlpha:(double *)a5;
-- (BOOL)_getDrawModeCompositeOperation:(int *)a3 whiteComponent:(double *)a4 drawingAlpha:(double *)a5 forDrawMode:(unsigned int)a6;
+- (BOOL)_getDrawModeCompositeOperation:(int *)operation whiteComponent:(double *)component drawingAlpha:(double *)alpha;
+- (BOOL)_getDrawModeCompositeOperation:(int *)operation whiteComponent:(double *)component drawingAlpha:(double *)alpha forDrawMode:(unsigned int)mode;
 - (BOOL)_hasBaseline;
 - (BOOL)_hasInstalledContentsAnimation;
 - (BOOL)_hasNonDefaultSymbolAnimatorState;
-- (BOOL)_hasReasonToUseRBSymbolLayerForImage:(id)a3;
-- (BOOL)_imageSupportsMaterials:(id)a3 allowingHierarchical:(BOOL)a4;
-- (BOOL)_imageSupportsMaterials:(id)a3 symbolConfiguration:(id)a4 allowingHierarchical:(BOOL)a5;
-- (BOOL)_needsBoldEffectForImage:(id)a3 symbolConfiguration:(id)a4;
-- (BOOL)_needsBoldEffectForImage:(id)a3 symbolConfiguration:(id)a4 withBaseColor:(id)a5 withEffects:(id)a6;
-- (BOOL)_needsImageEffectsForImage:(id)a3;
-- (BOOL)_needsImageEffectsForImage:(id)a3 symbolConfiguration:(id)a4;
+- (BOOL)_hasReasonToUseRBSymbolLayerForImage:(id)image;
+- (BOOL)_imageSupportsMaterials:(id)materials allowingHierarchical:(BOOL)hierarchical;
+- (BOOL)_imageSupportsMaterials:(id)materials symbolConfiguration:(id)configuration allowingHierarchical:(BOOL)hierarchical;
+- (BOOL)_needsBoldEffectForImage:(id)image symbolConfiguration:(id)configuration;
+- (BOOL)_needsBoldEffectForImage:(id)image symbolConfiguration:(id)configuration withBaseColor:(id)color withEffects:(id)effects;
+- (BOOL)_needsImageEffectsForImage:(id)image;
+- (BOOL)_needsImageEffectsForImage:(id)image symbolConfiguration:(id)configuration;
 - (BOOL)_recomputePretilingState;
-- (BOOL)_resolveImagesWithPreviouslyDisplayedImage:(id)a3;
-- (BOOL)_setImageViewContents:(id)a3;
-- (BOOL)_setImageViewContentsForAnimatedImage:(id)a3;
-- (BOOL)_setImageViewContentsForCIImageBackedImage:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)_shouldTreatImageAsTemplate:(id)a3;
-- (BOOL)_shouldTreatImageAsTemplate:(id)a3 symbolConfiguration:(id)a4;
-- (BOOL)_usesRenderBoxToRenderImage:(id)a3 withLayout:(id)a4;
+- (BOOL)_resolveImagesWithPreviouslyDisplayedImage:(id)image;
+- (BOOL)_setImageViewContents:(id)contents;
+- (BOOL)_setImageViewContentsForAnimatedImage:(id)image;
+- (BOOL)_setImageViewContentsForCIImageBackedImage:(id)image;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)_shouldTreatImageAsTemplate:(id)template;
+- (BOOL)_shouldTreatImageAsTemplate:(id)template symbolConfiguration:(id)configuration;
+- (BOOL)_usesRenderBoxToRenderImage:(id)image withLayout:(id)layout;
 - (BOOL)isTransparentFocusItem;
 - (BOOL)scalesLargeContentImage;
 - (CGImage)imageRef;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (Class)_intelligenceBaseClass;
 - (NSArray)animationImages;
 - (NSArray)highlightedAnimationImages;
 - (NSString)description;
-- (UIEdgeInsets)_additionalAlignmentRectInsetsForRenderingSource:(id)a3;
+- (UIEdgeInsets)_additionalAlignmentRectInsetsForRenderingSource:(id)source;
 - (UIEdgeInsets)_edgeInsetsForEffects;
-- (UIEdgeInsets)_edgeInsetsForEffectsForImage:(id)a3;
+- (UIEdgeInsets)_edgeInsetsForEffectsForImage:(id)image;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIImageDynamicRange)imageDynamicRange;
-- (UIImageView)initWithCoder:(id)a3;
-- (UIImageView)initWithFrame:(CGRect)a3;
+- (UIImageView)initWithCoder:(id)coder;
+- (UIImageView)initWithFrame:(CGRect)frame;
 - (UIImageView)initWithImage:(UIImage *)image;
 - (UIImageView)initWithImage:(UIImage *)image highlightedImage:(UIImage *)highlightedImage;
 - (UIView)overlayContentView;
@@ -45,94 +45,94 @@
 - (double)_baselineOffsetFromBottom;
 - (double)_firstBaselineOffsetFromTop;
 - (double)_layeredImageCornerRadius;
-- (double)_maximumEDRForDynamicRange:(int64_t)a3;
+- (double)_maximumEDRForDynamicRange:(int64_t)range;
 - (double)_scaleFactorForImage;
 - (double)preferredContentScaleFactor;
 - (id)_activeImage;
-- (id)_adaptiveImageForImage:(id)a3 assignedImage:(id)a4 currentImage:(id)a5 hasAdapted:(BOOL *)a6;
-- (id)_animationConfigurationForEffect:(id)a3 forAddingEffect:(BOOL)a4 options:(id)a5 clientCompletionHandler:(id)a6 needsAnimationCompletion:(BOOL)a7;
-- (id)_applyImageEffectsToCIImage:(id)a3 multiplyColor:(id)a4;
-- (id)_baseMultiplyColorWithImage:(id)a3 symbolConfiguration:(id)a4 shouldResolveDynamicColors:(BOOL)a5;
-- (id)_cachedPretiledImageForImage:(id)a3;
-- (id)_checkHighlightedImageForAdaptation:(id)a3 hadAdapted:(BOOL *)a4;
-- (id)_checkImageForAdaptation:(id)a3 hasAdapted:(BOOL *)a4;
-- (id)_colorByApplyingDrawMode:(unsigned int)a3 toColor:(id)a4;
-- (id)_colorByApplyingDrawModeToColor:(id)a3;
+- (id)_adaptiveImageForImage:(id)image assignedImage:(id)assignedImage currentImage:(id)currentImage hasAdapted:(BOOL *)adapted;
+- (id)_animationConfigurationForEffect:(id)effect forAddingEffect:(BOOL)addingEffect options:(id)options clientCompletionHandler:(id)handler needsAnimationCompletion:(BOOL)completion;
+- (id)_applyImageEffectsToCIImage:(id)image multiplyColor:(id)color;
+- (id)_baseMultiplyColorWithImage:(id)image symbolConfiguration:(id)configuration shouldResolveDynamicColors:(BOOL)colors;
+- (id)_cachedPretiledImageForImage:(id)image;
+- (id)_checkHighlightedImageForAdaptation:(id)adaptation hadAdapted:(BOOL *)adapted;
+- (id)_checkImageForAdaptation:(id)adaptation hasAdapted:(BOOL *)adapted;
+- (id)_colorByApplyingDrawMode:(unsigned int)mode toColor:(id)color;
+- (id)_colorByApplyingDrawModeToColor:(id)color;
 - (id)_currentAnimationKeyframeImage;
 - (id)_currentHighlightedImage;
 - (id)_currentImage;
-- (id)_decompressingImageForType:(unint64_t)a3;
-- (id)_effectiveContentEffectsWithImage:(id)a3 symbolConfiguration:(id)a4;
+- (id)_decompressingImageForType:(unint64_t)type;
+- (id)_effectiveContentEffectsWithImage:(id)image symbolConfiguration:(id)configuration;
 - (id)_effectiveImageViewTraitCollectionForResolvingImages;
 - (id)_effectiveSymbolContentTransitionContainerView;
-- (id)_effectsForRenderingSource:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5 renditionContext:(id)a6;
-- (id)_imageContentGuideAllowingCreation:(BOOL)a3;
-- (id)_initialValueForKey:(id)a3;
-- (id)_layoutForImage:(id)a3 inSize:(CGSize)a4 cachePerSize:(BOOL)a5 forBaselineOffset:(BOOL)a6;
-- (id)_materialForImage:(id)a3 symbolConfiguration:(id)a4;
-- (id)_renditionForSource:(id)a3 effects:(id)a4 size:(CGSize)a5 symbolConfiguration:(id)a6 withContentProvider:(id)a7;
-- (id)_resolvedImageFromImage:(id)a3;
-- (id)_resolvedImageFromImage:(void *)a3 withImageViewTrait:;
-- (id)_symbolConfigurationForImage:(id)a3;
+- (id)_effectsForRenderingSource:(id)source size:(CGSize)size symbolConfiguration:(id)configuration renditionContext:(id)context;
+- (id)_imageContentGuideAllowingCreation:(BOOL)creation;
+- (id)_initialValueForKey:(id)key;
+- (id)_layoutForImage:(id)image inSize:(CGSize)size cachePerSize:(BOOL)perSize forBaselineOffset:(BOOL)offset;
+- (id)_materialForImage:(id)image symbolConfiguration:(id)configuration;
+- (id)_renditionForSource:(id)source effects:(id)effects size:(CGSize)size symbolConfiguration:(id)configuration withContentProvider:(id)provider;
+- (id)_resolvedImageFromImage:(id)image;
+- (id)_resolvedImageFromImage:(void *)image withImageViewTrait:;
+- (id)_symbolConfigurationForImage:(id)image;
 - (id)largeContentImage;
-- (int64_t)_effectiveRenderingModeForSource:(id)a3 symbolConfiguration:(id)a4;
+- (int64_t)_effectiveRenderingModeForSource:(id)source symbolConfiguration:(id)configuration;
 - (unint64_t)defaultAccessibilityTraits;
-- (void)_addSymbolEffect:(id)a3 animated:(BOOL)a4;
-- (void)_ancestorWillUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)_applyEffectsFromLayout:(id)a3;
-- (void)_applyImageLayout:(id)a3 toLayer:(id)a4;
-- (void)_applySettingsForLegibilityStyle:(int64_t)a3;
-- (void)_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:(BOOL)a3;
+- (void)_addSymbolEffect:(id)effect animated:(BOOL)animated;
+- (void)_ancestorWillUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)_applyEffectsFromLayout:(id)layout;
+- (void)_applyImageLayout:(id)layout toLayer:(id)layer;
+- (void)_applySettingsForLegibilityStyle:(int64_t)style;
+- (void)_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:(BOOL)changed;
 - (void)_cleanUpForStopAnimating;
-- (void)_clearPretiledImageCacheForImage:(id)a3;
-- (void)_decodeQ_imageLoader:(id)a3 decodeImage:(id)a4 layout:(id)a5;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_generateDeferredAnimations:(id)a3;
+- (void)_clearPretiledImageCacheForImage:(id)image;
+- (void)_decodeQ_imageLoader:(id)loader decodeImage:(id)image layout:(id)layout;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_generateDeferredAnimations:(id)animations;
 - (void)_imageContentParametersDidChange;
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4;
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector;
 - (void)_invalidateCachedSymbolConfiguration;
 - (void)_invalidateImageLayouts;
 - (void)_invalidateResolvedImages;
-- (void)_kickoffQ_beginLoadingWithImageLoader:(id)a3;
-- (void)_loadImage:(id)a3 delegate:(id)a4;
-- (void)_loadImageWithURL:(id)a3;
+- (void)_kickoffQ_beginLoadingWithImageLoader:(id)loader;
+- (void)_loadImage:(id)image delegate:(id)delegate;
+- (void)_loadImageWithURL:(id)l;
 - (void)_mainQ_beginLoadingIfApplicable;
-- (void)_mainQ_imageLoader:(id)a3 finishedOrSkippedDecodingImage:(id)a4 layout:(id)a5;
-- (void)_mainQ_imageLoader:(id)a3 finishedWithImage:(id)a4 error:(id)a5;
-- (void)_mainQ_resetForLoader:(id)a3 delegate:(id)a4;
+- (void)_mainQ_imageLoader:(id)loader finishedOrSkippedDecodingImage:(id)image layout:(id)layout;
+- (void)_mainQ_imageLoader:(id)loader finishedWithImage:(id)image error:(id)error;
+- (void)_mainQ_resetForLoader:(id)loader delegate:(id)delegate;
 - (void)_monochromaticTreatmentStateDidChange;
-- (void)_removeAllSymbolEffectsAnimated:(BOOL)a3;
+- (void)_removeAllSymbolEffectsAnimated:(BOOL)animated;
 - (void)_removeLayerAnimations;
-- (void)_removeSymbolEffect:(id)a3 animated:(BOOL)a4;
-- (void)_renderDrawModeEffectInRect:(CGRect)a3;
-- (void)_runSymbolEffectCompletion:(id)a3 contextConfigurator:(id)a4;
-- (void)_setDecompressingImage:(id)a3 forType:(unint64_t)a4;
-- (void)_setDefaultRenderingMode:(int64_t)a3;
-- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)a3;
-- (void)_setImage:(id)a3 invalidatingPendingSymbolTransitions:(BOOL)a4;
-- (void)_setLayerAllowsEdgeAntialiasing:(BOOL)a3;
-- (void)_setLayeredImageCornerRadius:(double)a3;
-- (void)_setMasksTemplateImages:(BOOL)a3;
+- (void)_removeSymbolEffect:(id)effect animated:(BOOL)animated;
+- (void)_renderDrawModeEffectInRect:(CGRect)rect;
+- (void)_runSymbolEffectCompletion:(id)completion contextConfigurator:(id)configurator;
+- (void)_setDecompressingImage:(id)image forType:(unint64_t)type;
+- (void)_setDefaultRenderingMode:(int64_t)mode;
+- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)calculation;
+- (void)_setImage:(id)image invalidatingPendingSymbolTransitions:(BOOL)transitions;
+- (void)_setLayerAllowsEdgeAntialiasing:(BOOL)antialiasing;
+- (void)_setLayeredImageCornerRadius:(double)radius;
+- (void)_setMasksTemplateImages:(BOOL)images;
 - (void)_setNeedsUpdateState;
-- (void)_setOverlayContentView:(id)a3;
-- (void)_setOverridingSymbolConfiguration:(id)a3;
-- (void)_setPlaceholderView:(id)a3;
-- (void)_setPreferredSymbolVariant:(id)a3;
-- (void)_setSymbolImage:(id)a3 withSymbolTransition:(id)a4;
-- (void)_setViewGeometry:(CGRect)a3 forMetric:(int)a4;
-- (void)_setupRBSymbolLayerWithSymbolImageLayout:(id)a3;
-- (void)_setupSymbolLayerForCurrentSymbolImageLayout:(id)a3;
+- (void)_setOverlayContentView:(id)view;
+- (void)_setOverridingSymbolConfiguration:(id)configuration;
+- (void)_setPlaceholderView:(id)view;
+- (void)_setPreferredSymbolVariant:(id)variant;
+- (void)_setSymbolImage:(id)image withSymbolTransition:(id)transition;
+- (void)_setViewGeometry:(CGRect)geometry forMetric:(int)metric;
+- (void)_setupRBSymbolLayerWithSymbolImageLayout:(id)layout;
+- (void)_setupSymbolLayerForCurrentSymbolImageLayout:(id)layout;
 - (void)_stopLoading;
 - (void)_systemIconAppearanceDidChange;
 - (void)_teardownLayeredImage;
 - (void)_teardownRBSymbolLayerIfNeeded;
 - (void)_templateSettingsDidChange;
-- (void)_updateHDRFlags:(BOOL)a3;
-- (void)_updateImageViewForOldImage:(id)a3 newImage:(id)a4;
-- (void)_updateLayeredImageIsFocusedWithFocusedView:(id)a3 focusAnimationCoordinator:(id)a4;
+- (void)_updateHDRFlags:(BOOL)flags;
+- (void)_updateImageViewForOldImage:(id)image newImage:(id)newImage;
+- (void)_updateLayeredImageIsFocusedWithFocusedView:(id)view focusAnimationCoordinator:(id)coordinator;
 - (void)_updateMasking;
 - (void)_updateOverlayContentView;
-- (void)_updatePretiledImageCacheForImage:(id)a3;
+- (void)_updatePretiledImageCacheForImage:(id)image;
 - (void)_updateProperties;
 - (void)_updateRBSymbolLayerPositionIfNeededForContentTransitionPendingLayoutPass;
 - (void)_updateResolvedImages;
@@ -142,47 +142,47 @@
 - (void)_updateVisibilityAndFrameOfPlaceholderView;
 - (void)addSymbolEffect:(NSSymbolEffect *)symbolEffect;
 - (void)addSymbolEffect:(NSSymbolEffect *)symbolEffect options:(NSSymbolEffectOptions *)options animated:(BOOL)animated completion:(UISymbolEffectCompletion)completionHandler;
-- (void)animationPresetManager:(id)a3 addEffect:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)animationPresetManager:(id)a3 didDiscardPendingContentTransition:(id)a4;
-- (void)animationPresetManager:(id)a3 didSetHiddenness:(BOOL)a4 usingEffect:(id)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8;
-- (void)animationPresetManager:(id)a3 didSetScale:(int)a4 usingEffect:(id)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8;
-- (void)animationPresetManager:(id)a3 removeEffect:(id)a4 wasActive:(BOOL)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8;
+- (void)animationPresetManager:(id)manager addEffect:(id)effect options:(id)options completion:(id)completion;
+- (void)animationPresetManager:(id)manager didDiscardPendingContentTransition:(id)transition;
+- (void)animationPresetManager:(id)manager didSetHiddenness:(BOOL)hiddenness usingEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion;
+- (void)animationPresetManager:(id)manager didSetScale:(int)scale usingEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion;
+- (void)animationPresetManager:(id)manager removeEffect:(id)effect wasActive:(BOOL)active options:(id)options animated:(BOOL)animated completion:(id)completion;
 - (void)dealloc;
-- (void)decodeRestorableStateWithCoder:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)encodeRestorableStateWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)decodeRestorableStateWithCoder:(id)coder;
+- (void)drawRect:(CGRect)rect;
+- (void)encodeRestorableStateWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)removeAllSymbolEffects;
 - (void)removeAllSymbolEffectsWithOptions:(NSSymbolEffectOptions *)options animated:(BOOL)animated;
 - (void)removeSymbolEffectOfType:(NSSymbolEffect *)symbolEffect;
 - (void)removeSymbolEffectOfType:(NSSymbolEffect *)symbolEffect options:(NSSymbolEffectOptions *)options animated:(BOOL)animated completion:(UISymbolEffectCompletion)completionHandler;
-- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)a3;
-- (void)setAnimating:(BOOL)a3;
+- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)category;
+- (void)setAnimating:(BOOL)animating;
 - (void)setAnimationDuration:(NSTimeInterval)animationDuration;
 - (void)setAnimationImages:(NSArray *)animationImages;
 - (void)setAnimationRepeatCount:(NSInteger)animationRepeatCount;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCGImageRef:(CGImage *)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentScaleFactor:(double)a3;
-- (void)setDrawMode:(unsigned int)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCGImageRef:(CGImage *)ref;
+- (void)setCenter:(CGPoint)center;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentScaleFactor:(double)factor;
+- (void)setDrawMode:(unsigned int)mode;
+- (void)setHidden:(BOOL)hidden;
 - (void)setHighlighted:(BOOL)highlighted;
 - (void)setHighlightedAnimationImages:(NSArray *)highlightedAnimationImages;
 - (void)setHighlightedImage:(UIImage *)highlightedImage;
 - (void)setPreferredImageDynamicRange:(UIImageDynamicRange)preferredImageDynamicRange;
 - (void)setPreferredSymbolConfiguration:(UIImageSymbolConfiguration *)preferredSymbolConfiguration;
-- (void)setScrollPocketInteraction:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
+- (void)setScrollPocketInteraction:(id)interaction;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
 - (void)setSymbolImage:(UIImage *)symbolImage withContentTransition:(NSSymbolContentTransition *)transition;
 - (void)setSymbolImage:(UIImage *)symbolImage withContentTransition:(NSSymbolContentTransition *)transition options:(NSSymbolEffectOptions *)options completion:(UISymbolEffectCompletion)completionHandler;
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3;
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints;
 - (void)startAnimating;
 - (void)stopAnimating;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIImageView
@@ -192,8 +192,8 @@
   imageViewFlags = self->_imageViewFlags;
   if ((imageViewFlags & 1) == 0)
   {
-    v4 = self;
-    if ([(UIView *)v4 contentMode]>= UIViewContentModeCenter)
+    selfCopy = self;
+    if ([(UIView *)selfCopy contentMode]>= UIViewContentModeCenter)
     {
 LABEL_18:
 
@@ -206,35 +206,35 @@ LABEL_20:
       return (imageViewFlags >> 1) & 1;
     }
 
-    v5 = [(UIImageView *)v4 _currentImage];
-    if ([(UIImageView *)v4 isHighlighted])
+    _currentImage = [(UIImageView *)selfCopy _currentImage];
+    if ([(UIImageView *)selfCopy isHighlighted])
     {
-      if (!v5)
+      if (!_currentImage)
       {
         goto LABEL_13;
       }
 
-      v6 = v5;
-      v7 = [v6 CIImage];
+      v6 = _currentImage;
+      cIImage = [v6 CIImage];
 
-      if (!v7)
+      if (!cIImage)
       {
 
         goto LABEL_13;
       }
 
-      v8 = [v6 _representsCIImageWhichSupportsIOSurfaceRendering];
+      _representsCIImageWhichSupportsIOSurfaceRendering = [v6 _representsCIImageWhichSupportsIOSurfaceRendering];
 
-      if (v8)
+      if (_representsCIImageWhichSupportsIOSurfaceRendering)
       {
 LABEL_13:
-        v13 = [(UIImageView *)v4 _currentHighlightedImage];
-        v9 = v13;
-        if (v13)
+        _currentHighlightedImage = [(UIImageView *)selfCopy _currentHighlightedImage];
+        v9 = _currentHighlightedImage;
+        if (_currentHighlightedImage)
         {
-          v14 = [v13 CIImage];
+          cIImage2 = [_currentHighlightedImage CIImage];
 
-          if (!v14 || [v9 _representsCIImageWhichSupportsIOSurfaceRendering])
+          if (!cIImage2 || [v9 _representsCIImageWhichSupportsIOSurfaceRendering])
           {
             goto LABEL_16;
           }
@@ -254,24 +254,24 @@ LABEL_23:
 
     else
     {
-      if (!v5)
+      if (!_currentImage)
       {
         goto LABEL_17;
       }
 
-      v9 = v5;
-      v10 = [v9 CIImage];
+      v9 = _currentImage;
+      cIImage3 = [v9 CIImage];
 
-      if (!v10)
+      if (!cIImage3)
       {
 LABEL_16:
 
         goto LABEL_17;
       }
 
-      v11 = [v9 _representsCIImageWhichSupportsIOSurfaceRendering];
+      _representsCIImageWhichSupportsIOSurfaceRendering2 = [v9 _representsCIImageWhichSupportsIOSurfaceRendering];
 
-      if (v11)
+      if (_representsCIImageWhichSupportsIOSurfaceRendering2)
       {
 LABEL_17:
 
@@ -288,36 +288,36 @@ LABEL_17:
 
 - (id)_currentImage
 {
-  v3 = [(_UIImageViewStorage *)self->_storage resolvedImage];
-  v4 = v3;
-  if (v3)
+  resolvedImage = [(_UIImageViewStorage *)self->_storage resolvedImage];
+  v4 = resolvedImage;
+  if (resolvedImage)
   {
-    v5 = v3;
+    image = resolvedImage;
   }
 
   else
   {
-    v5 = [(_UIImageViewStorage *)self->_storage image];
+    image = [(_UIImageViewStorage *)self->_storage image];
   }
 
-  v6 = v5;
+  v6 = image;
 
   return v6;
 }
 
 - (void)_updateRBSymbolLayerPositionIfNeededForContentTransitionPendingLayoutPass
 {
-  v3 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-  v4 = [v3 hasPendingContentTransition];
+  animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  hasPendingContentTransition = [animationPresetManager hasPendingContentTransition];
 
-  if (v4)
+  if (hasPendingContentTransition)
   {
-    v13 = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
-    v5 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-    v6 = [(UIImageView *)self image];
-    v7 = [v5 pendingSymbolContentTransitionForSettingSymbolImage:v6];
+    _effectiveSymbolContentTransitionContainerView = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
+    animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+    image = [(UIImageView *)self image];
+    v7 = [animationPresetManager2 pendingSymbolContentTransitionForSettingSymbolImage:image];
 
-    if (v13)
+    if (_effectiveSymbolContentTransitionContainerView)
     {
       if (v7)
       {
@@ -328,11 +328,11 @@ LABEL_17:
           {
             [MEMORY[0x1E6979518] setDisableActions:1];
             [v7 initialSymbolAbsoluteRect];
-            [(UIView *)self convertRect:v13 fromView:?];
+            [(UIView *)self convertRect:_effectiveSymbolContentTransitionContainerView fromView:?];
             v9 = v8;
             v11 = v10;
-            v12 = [(UIImageView *)self _rbSymbolLayer];
-            [v12 setPosition:{v9, v11}];
+            _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+            [_rbSymbolLayer setPosition:{v9, v11}];
 
             [MEMORY[0x1E6979518] setDisableActions:0];
           }
@@ -344,31 +344,31 @@ LABEL_17:
 
 - (id)_currentHighlightedImage
 {
-  v3 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
-  v4 = v3;
-  if (v3)
+  resolvedHighlightedImage = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
+  v4 = resolvedHighlightedImage;
+  if (resolvedHighlightedImage)
   {
-    v5 = v3;
+    highlightedImage = resolvedHighlightedImage;
   }
 
   else
   {
-    v5 = [(_UIImageViewStorage *)self->_storage highlightedImage];
+    highlightedImage = [(_UIImageViewStorage *)self->_storage highlightedImage];
   }
 
-  v6 = v5;
+  v6 = highlightedImage;
 
   return v6;
 }
 
 - (id)_activeImage
 {
-  if (![(UIImageView *)self isHighlighted]|| ([(UIImageView *)self _currentHighlightedImage], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![(UIImageView *)self isHighlighted]|| ([(UIImageView *)self _currentHighlightedImage], (_currentImage = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v3 = [(UIImageView *)self _currentImage];
+    _currentImage = [(UIImageView *)self _currentImage];
   }
 
-  return v3;
+  return _currentImage;
 }
 
 - (void)_invalidateResolvedImages
@@ -379,11 +379,11 @@ LABEL_17:
   self->_lastResolvedImageViewTraitCollection = 0;
 
   [(UIImageView *)self _invalidateCachedSymbolConfiguration];
-  v4 = [(_UIImageViewStorage *)self->_storage image];
-  v5 = [v4 content];
-  v6 = [v5 isCIImage];
+  image = [(_UIImageViewStorage *)self->_storage image];
+  content = [image content];
+  isCIImage = [content isCIImage];
 
-  if ((v6 & 1) == 0)
+  if ((isCIImage & 1) == 0)
   {
     storage = self->_storage;
 
@@ -393,21 +393,21 @@ LABEL_17:
 
 - (void)_teardownRBSymbolLayerIfNeeded
 {
-  v3 = [(UIImageView *)self _rbSymbolLayer];
-  if (v3)
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  if (_rbSymbolLayer)
   {
-    v7 = v3;
-    [v3 removeFromSuperlayer];
+    v7 = _rbSymbolLayer;
+    [_rbSymbolLayer removeFromSuperlayer];
     [v7 setAnimator:0];
     [(UIImageView *)self _setRBSymbolLayer:0];
-    v4 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-    v5 = [MEMORY[0x1E6982278] options];
-    [v4 removeAllSymbolEffectsWithOptions:v5 animated:0];
+    animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+    options = [MEMORY[0x1E6982278] options];
+    [animationPresetManager removeAllSymbolEffectsWithOptions:options animated:0];
 
-    v6 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-    [v6 discardPendingSymbolContentTransitions];
+    animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+    [animationPresetManager2 discardPendingSymbolContentTransitions];
 
-    v3 = v7;
+    _rbSymbolLayer = v7;
   }
 }
 
@@ -457,8 +457,8 @@ LABEL_24:
   }
 
 LABEL_2:
-  v4 = [(_UIImageViewStorage *)self->_storage layouts];
-  v5 = [v4 count];
+  layouts = [(_UIImageViewStorage *)self->_storage layouts];
+  v5 = [layouts count];
 
   if (v5)
   {
@@ -468,19 +468,19 @@ LABEL_2:
     self->_previousFirstBaselineOffsetFromTop = v7;
   }
 
-  v8 = [(_UIImageViewStorage *)self->_storage imageBeingSetByLoader];
-  if (v8)
+  imageBeingSetByLoader = [(_UIImageViewStorage *)self->_storage imageBeingSetByLoader];
+  if (imageBeingSetByLoader)
   {
-    v9 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-    v25 = self;
-    v10 = [(_UIImageViewStorage *)self->_storage layouts];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    selfCopy = self;
+    layouts2 = [(_UIImageViewStorage *)self->_storage layouts];
     objc_opt_class();
     objc_opt_class();
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v10;
+    v11 = layouts2;
     v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
@@ -496,7 +496,7 @@ LABEL_2:
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          if ((objc_opt_isKindOfClass() & 1) == 0 || v16 != v8)
+          if ((objc_opt_isKindOfClass() & 1) == 0 || v16 != imageBeingSetByLoader)
           {
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
@@ -505,14 +505,14 @@ LABEL_2:
 
             v18 = [v16 objectAtIndexedSubscript:0];
 
-            if (v18 != v8)
+            if (v18 != imageBeingSetByLoader)
             {
               continue;
             }
           }
 
           v17 = [v11 objectForKey:v16];
-          [v9 setObject:v17 forKey:v16];
+          [weakToStrongObjectsMapTable setObject:v17 forKey:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -521,13 +521,13 @@ LABEL_2:
       while (v13);
     }
 
-    [(_UIImageViewStorage *)v25->_storage setLayouts:v9];
+    [(_UIImageViewStorage *)selfCopy->_storage setLayouts:weakToStrongObjectsMapTable];
   }
 
   else
   {
-    v9 = [(_UIImageViewStorage *)self->_storage layouts];
-    [v9 removeAllObjects];
+    weakToStrongObjectsMapTable = [(_UIImageViewStorage *)self->_storage layouts];
+    [weakToStrongObjectsMapTable removeAllObjects];
   }
 }
 
@@ -537,22 +537,22 @@ LABEL_2:
   if (v3)
   {
     v65 = v3;
-    v4 = [(UIImageView *)self _currentImage];
-    v5 = v4;
-    if (!v4)
+    _currentImage = [(UIImageView *)self _currentImage];
+    _currentHighlightedImage = _currentImage;
+    if (!_currentImage)
     {
-      v5 = [(UIImageView *)self _currentHighlightedImage];
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
     }
 
     [(UIView *)self bounds];
-    v8 = [(UIImageView *)self _layoutForImage:v5 inSize:v6, v7];
+    v8 = [(UIImageView *)self _layoutForImage:_currentHighlightedImage inSize:v6, v7];
     [v8 contentInsets];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
-    if (!v4)
+    if (!_currentImage)
     {
     }
 
@@ -561,37 +561,37 @@ LABEL_2:
     v20 = v12 - v19;
     v22 = v14 - v21;
     v24 = v16 - v23;
-    v25 = [(UIView *)self superview];
-    v26 = v25;
-    if (v25 && (*(v25 + 95) & 8) != 0)
+    superview = [(UIView *)self superview];
+    v26 = superview;
+    if (superview && (*(superview + 95) & 8) != 0)
     {
       v63 = v22;
-      v27 = [v65 _systemConstraints];
-      v28 = [v27 objectAtIndexedSubscript:0];
+      _systemConstraints = [v65 _systemConstraints];
+      v28 = [_systemConstraints objectAtIndexedSubscript:0];
       [v28 constant];
       v62 = v29;
-      v30 = [v65 _systemConstraints];
-      v31 = [v30 objectAtIndexedSubscript:1];
+      _systemConstraints2 = [v65 _systemConstraints];
+      v31 = [_systemConstraints2 objectAtIndexedSubscript:1];
       [v31 constant];
       v33 = v32;
-      v34 = [v65 _systemConstraints];
-      v35 = [v34 objectAtIndexedSubscript:2];
+      _systemConstraints3 = [v65 _systemConstraints];
+      v35 = [_systemConstraints3 objectAtIndexedSubscript:2];
       [v35 constant];
       v60 = v36;
-      v37 = [v65 _systemConstraints];
-      v38 = [v37 objectAtIndexedSubscript:3];
+      _systemConstraints4 = [v65 _systemConstraints];
+      v38 = [_systemConstraints4 objectAtIndexedSubscript:3];
       [v38 constant];
       v64 = v39;
 
-      v40 = [(UIView *)self _layoutEngine];
+      _layoutEngine = [(UIView *)self _layoutEngine];
       objc_opt_self();
       [(UIView *)self bounds];
       v42 = v41;
       v61 = v43;
       [(UIView *)self _currentScreenScale];
       v45 = 1.0 / v44;
-      v46 = [(UIView *)self nsli_boundsWidthVariable];
-      [v40 valueForVariable:v46];
+      nsli_boundsWidthVariable = [(UIView *)self nsli_boundsWidthVariable];
+      [_layoutEngine valueForVariable:nsli_boundsWidthVariable];
       v48 = v47;
 
       if ((round(vabdd_f64(v33, v20) - v45) == 0.0 || round(vabdd_f64(v64, v24) - v45) == 0.0) && round(vabdd_f64(v48 / 360.0, v42) - v45) == 0.0)
@@ -601,8 +601,8 @@ LABEL_2:
       }
 
       v22 = v63;
-      v49 = [(UIView *)self nsli_boundsHeightVariable];
-      [v40 valueForVariable:v49];
+      nsli_boundsHeightVariable = [(UIView *)self nsli_boundsHeightVariable];
+      [_layoutEngine valueForVariable:nsli_boundsHeightVariable];
       v51 = v50;
 
       if ((round(vabdd_f64(v62, v18) - v45) == 0.0 || round(vabdd_f64(v60, v63) - v45) == 0.0) && round(vabdd_f64(v51 / 360.0, v61) - v45) == 0.0)
@@ -612,20 +612,20 @@ LABEL_2:
       }
     }
 
-    v52 = [v65 _systemConstraints];
-    v53 = [v52 objectAtIndexedSubscript:0];
+    _systemConstraints5 = [v65 _systemConstraints];
+    v53 = [_systemConstraints5 objectAtIndexedSubscript:0];
 
     [v53 setConstant:v18];
-    v54 = [v65 _systemConstraints];
-    v55 = [v54 objectAtIndexedSubscript:1];
+    _systemConstraints6 = [v65 _systemConstraints];
+    v55 = [_systemConstraints6 objectAtIndexedSubscript:1];
 
     [v55 setConstant:v20];
-    v56 = [v65 _systemConstraints];
-    v57 = [v56 objectAtIndexedSubscript:2];
+    _systemConstraints7 = [v65 _systemConstraints];
+    v57 = [_systemConstraints7 objectAtIndexedSubscript:2];
 
     [v57 setConstant:v22];
-    v58 = [v65 _systemConstraints];
-    v59 = [v58 objectAtIndexedSubscript:3];
+    _systemConstraints8 = [v65 _systemConstraints];
+    v59 = [_systemConstraints8 objectAtIndexedSubscript:3];
 
     [v59 setConstant:v24];
     v3 = v65;
@@ -643,50 +643,50 @@ LABEL_2:
   if ([(UIImageView *)self _canDrawContent])
   {
     [(UIView *)self setNeedsDisplay];
-    v3 = 0;
+    isHighDynamicRange = 0;
 LABEL_4:
 
-    [(UIImageView *)self _updateHDRFlags:v3];
+    [(UIImageView *)self _updateHDRFlags:isHighDynamicRange];
     return;
   }
 
   [(UIImageView *)self _invalidateImageLayouts];
-  v19 = [(UIImageView *)self _currentImage];
+  _currentImage = [(UIImageView *)self _currentImage];
   if ([(UIImageView *)self isHighlighted])
   {
-    v4 = [(UIImageView *)self _currentHighlightedImage];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   }
 
   else
   {
-    v4 = 0;
+    _currentHighlightedImage = 0;
   }
 
-  if ([(UIImageView *)self isHighlighted]&& ([(UIImageView *)self isAnimating]|| !v4))
+  if ([(UIImageView *)self isHighlighted]&& ([(UIImageView *)self isAnimating]|| !_currentHighlightedImage))
   {
-    v5 = [(UIImageView *)self highlightedAnimationImages];
-    v6 = [v5 count];
+    highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
+    v6 = [highlightedAnimationImages count];
 
     if (v6)
     {
-      v7 = [(UIImageView *)self highlightedAnimationImages];
+      highlightedAnimationImages2 = [(UIImageView *)self highlightedAnimationImages];
 LABEL_19:
-      v10 = v7;
-      v11 = [v7 objectAtIndex:0];
+      v10 = highlightedAnimationImages2;
+      v11 = [highlightedAnimationImages2 objectAtIndex:0];
       _setContentStretchForImage(self, v11);
 
       goto LABEL_20;
     }
   }
 
-  if ([(UIImageView *)self isAnimating]|| !v19)
+  if ([(UIImageView *)self isAnimating]|| !_currentImage)
   {
-    v8 = [(UIImageView *)self animationImages];
-    v9 = [v8 count];
+    animationImages = [(UIImageView *)self animationImages];
+    v9 = [animationImages count];
 
     if (v9)
     {
-      v7 = [(UIImageView *)self animationImages];
+      highlightedAnimationImages2 = [(UIImageView *)self animationImages];
       goto LABEL_19;
     }
   }
@@ -696,36 +696,36 @@ LABEL_20:
   {
     if ([(UIImageView *)self isHighlighted])
     {
-      if (v4)
+      if (_currentHighlightedImage)
       {
-        v12 = v4;
+        v12 = _currentHighlightedImage;
       }
 
       else
       {
-        v12 = v19;
+        v12 = _currentImage;
       }
 
       v13 = v12;
       v14 = [(UIImageView *)self _setImageViewContents:v13];
       if (v14)
       {
-        v3 = [v13 isHighDynamicRange];
+        isHighDynamicRange = [v13 isHighDynamicRange];
       }
 
       else
       {
-        v3 = 0;
+        isHighDynamicRange = 0;
       }
     }
 
     else
     {
       v14 = 0;
-      v3 = 0;
+      isHighDynamicRange = 0;
     }
 
-    v15 = [(UIImageView *)self _displayImageAsLayered:v19];
+    v15 = [(UIImageView *)self _displayImageAsLayered:_currentImage];
     v16 = v15;
     if (v14 || v15)
     {
@@ -734,19 +734,19 @@ LABEL_20:
         goto LABEL_39;
       }
 
-      [(UIImageView *)self _configureForLayeredImage:v19];
+      [(UIImageView *)self _configureForLayeredImage:_currentImage];
     }
 
     else
     {
-      [(UIImageView *)self _setImageViewContents:v19];
-      v3 = [v19 isHighDynamicRange];
+      [(UIImageView *)self _setImageViewContents:_currentImage];
+      isHighDynamicRange = [_currentImage isHighDynamicRange];
     }
 
     v14 = 1;
 LABEL_39:
-    v17 = [(UIImageView *)self _layeredImageContainer];
-    v18 = v17 == 0 || v16;
+    _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+    v18 = _layeredImageContainer == 0 || v16;
 
     if (v18)
     {
@@ -773,14 +773,14 @@ LABEL_39:
 
 - (BOOL)_hasInstalledContentsAnimation
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 animationForKey:@"contents"];
+  layer = [(UIView *)self layer];
+  v4 = [layer animationForKey:@"contents"];
 
-  v5 = [v4 delegate];
+  delegate = [v4 delegate];
   v6 = 0;
-  if (v4 && v5)
+  if (v4 && delegate)
   {
-    v6 = v5 == self->_storage;
+    v6 = delegate == self->_storage;
   }
 
   return v6;
@@ -788,50 +788,50 @@ LABEL_39:
 
 - (id)_effectiveImageViewTraitCollectionForResolvingImages
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    if (!v2)
+    traitCollection = [self traitCollection];
+    if (!traitCollection)
     {
       if (dyld_program_sdk_at_least())
       {
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"BUG IN CLIENT: UIImageView trait collection unexpectedly found nil. Did you override traitCollection to return nil? That's illegal. imageView = %@", v1}];
-        v2 = 0;
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"BUG IN CLIENT: UIImageView trait collection unexpectedly found nil. Did you override traitCollection to return nil? That's illegal. imageView = %@", selfCopy}];
+        traitCollection = 0;
       }
 
       else
       {
-        v3 = [objc_opt_self() mainScreen];
-        v2 = [v3 traitCollection];
+        mainScreen = [objc_opt_self() mainScreen];
+        traitCollection = [mainScreen traitCollection];
       }
     }
 
-    v1 = [v2 _traitCollectionByReplacingNSIntegerValue:objc_msgSend(v1 forTraitToken:{"effectiveUserInterfaceLayoutDirection"), 0x1EFE323C8}];
+    selfCopy = [traitCollection _traitCollectionByReplacingNSIntegerValue:objc_msgSend(selfCopy forTraitToken:{"effectiveUserInterfaceLayoutDirection"), 0x1EFE323C8}];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_updateVisibilityAndFrameOfPlaceholderView
 {
-  v3 = [(_UIImageViewStorage *)self->_storage placeholderView];
-  if (v3)
+  placeholderView = [(_UIImageViewStorage *)self->_storage placeholderView];
+  if (placeholderView)
   {
-    v5 = v3;
-    v4 = [(UIImageView *)self _currentImage];
-    [v5 setHidden:v4 != 0];
+    v5 = placeholderView;
+    _currentImage = [(UIImageView *)self _currentImage];
+    [v5 setHidden:_currentImage != 0];
 
     [(UIView *)self bounds];
     [v5 setFrame:?];
-    v3 = v5;
+    placeholderView = v5;
   }
 }
 
 - (double)preferredContentScaleFactor
 {
-  v2 = [(UIView *)self traitCollection];
-  [v2 displayScale];
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   v4 = v3;
 
   return v4;
@@ -841,14 +841,14 @@ LABEL_39:
 {
   if ([(UIImageView *)self _masksTemplateImages])
   {
-    v11 = [(UIView *)self layer];
-    v3 = [v11 compositingFilter];
-    v4 = v3;
+    layer = [(UIView *)self layer];
+    compositingFilter = [layer compositingFilter];
+    v4 = compositingFilter;
     v5 = MEMORY[0x1E6979D98];
-    if (v3)
+    if (compositingFilter)
     {
-      v6 = [v3 type];
-      v7 = [v6 isEqualToString:*v5];
+      type = [compositingFilter type];
+      v7 = [type isEqualToString:*v5];
     }
 
     else
@@ -856,29 +856,29 @@ LABEL_39:
       v7 = 0;
     }
 
-    v8 = [(UIImageView *)self _activeImage];
-    v9 = [(UIImageView *)self _shouldTreatImageAsTemplate:v8];
+    _activeImage = [(UIImageView *)self _activeImage];
+    v9 = [(UIImageView *)self _shouldTreatImageAsTemplate:_activeImage];
 
     if ((v7 & 1) != 0 || !v9)
     {
       if (!v9 && (v7 & 1) != 0)
       {
-        [v11 setCompositingFilter:0];
+        [layer setCompositingFilter:0];
       }
     }
 
     else
     {
       v10 = [MEMORY[0x1E6979378] filterWithType:*v5];
-      [v11 setCompositingFilter:v10];
+      [layer setCompositingFilter:v10];
     }
   }
 }
 
 - (NSArray)animationImages
 {
-  v2 = [(_UIImageViewStorage *)self->_storage animationImages];
-  v3 = [v2 copy];
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
+  v3 = [animationImages copy];
 
   return v3;
 }
@@ -888,8 +888,8 @@ LABEL_39:
   v4.receiver = self;
   v4.super_class = UIImageView;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UIImageView *)self _activeImage];
-  if (-[UIImageView _shouldTreatImageAsTemplate:](self, "_shouldTreatImageAsTemplate:", v3) || [v3 isSymbolImage])
+  _activeImage = [(UIImageView *)self _activeImage];
+  if (-[UIImageView _shouldTreatImageAsTemplate:](self, "_shouldTreatImageAsTemplate:", _activeImage) || [_activeImage isSymbolImage])
   {
     [(UIImageView *)self _invalidateCachedSymbolConfiguration];
     [(UIImageView *)self _updateState];
@@ -898,8 +898,8 @@ LABEL_39:
 
 - (void)_updateResolvedImages
 {
-  v3 = [(UIImageView *)self _activeImage];
-  [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:v3];
+  _activeImage = [(UIImageView *)self _activeImage];
+  [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:_activeImage];
 }
 
 - (void)_mainQ_beginLoadingIfApplicable
@@ -909,23 +909,23 @@ LABEL_39:
   {
     dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
 LABEL_4:
-    v3 = [(_UIImageViewStorage *)self->_storage imageLoader];
-    if (v3)
+    imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+    if (imageLoader)
     {
       if (![(_UIImageViewStorage *)self->_storage isStartingLoad])
       {
-        v4 = [(UIView *)self window];
-        if (v4)
+        window = [(UIView *)self window];
+        if (window)
         {
-          v5 = [(UIView *)self isHidden];
+          isHidden = [(UIView *)self isHidden];
 
-          if (!v5)
+          if (!isHidden)
           {
             [(_UIImageViewStorage *)self->_storage setStartingLoad:1];
-            v6 = [(_UIImageViewStorage *)self->_storage loadingDelegate];
+            loadingDelegate = [(_UIImageViewStorage *)self->_storage loadingDelegate];
             if (objc_opt_respondsToSelector())
             {
-              v7 = [v6 _imageViewShouldBeginLoading:self];
+              v7 = [loadingDelegate _imageViewShouldBeginLoading:self];
             }
 
             else
@@ -945,15 +945,15 @@ LABEL_4:
               if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
               {
                 *buf = 134218240;
-                v16 = self;
+                selfCopy2 = self;
                 v17 = 2048;
-                v18 = v3;
+                v18 = imageLoader;
                 _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_INFO, "Image view %p is loading from loader=%p", buf, 0x16u);
               }
 
               objc_initWeak(buf, self);
-              v9 = [(_UIImageViewStorage *)self->_storage imageLoader];
-              objc_initWeak(&location, v9);
+              imageLoader2 = [(_UIImageViewStorage *)self->_storage imageLoader];
+              objc_initWeak(&location, imageLoader2);
 
               if (qword_1ED498000 != -1)
               {
@@ -987,12 +987,12 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v3 = _UIImageLoadingLog();
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+  imageLoader = _UIImageLoadingLog();
+  if (os_log_type_enabled(imageLoader, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v16 = self;
-    _os_log_error_impl(&dword_188A29000, v3, OS_LOG_TYPE_ERROR, "Image view %p is being used from a non-main thread. It is illegal to use UIView on a background thread.", buf, 0xCu);
+    selfCopy2 = self;
+    _os_log_error_impl(&dword_188A29000, imageLoader, OS_LOG_TYPE_ERROR, "Image view %p is being used from a non-main thread. It is illegal to use UIView on a background thread.", buf, 0xCu);
   }
 
 LABEL_20:
@@ -1000,19 +1000,19 @@ LABEL_20:
 
 - (double)_baselineOffsetFromBottom
 {
-  v3 = [(UIImageView *)self _currentImage];
-  v4 = v3;
-  if (v3)
+  _currentImage = [(UIImageView *)self _currentImage];
+  v4 = _currentImage;
+  if (_currentImage)
   {
-    v5 = v3;
+    _currentHighlightedImage = _currentImage;
   }
 
   else
   {
-    v5 = [(UIImageView *)self _currentHighlightedImage];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   }
 
-  v6 = v5;
+  v6 = _currentHighlightedImage;
 
   if ([v6 hasBaseline])
   {
@@ -1030,8 +1030,8 @@ LABEL_20:
 
     else
     {
-      v13 = [(UIImageView *)self _layoutForImage:v6 inSize:0 cachePerSize:1 forBaselineOffset:width, height];
-      [v13 baselineOffsetFromBottom];
+      height = [(UIImageView *)self _layoutForImage:v6 inSize:0 cachePerSize:1 forBaselineOffset:width, height];
+      [height baselineOffsetFromBottom];
       v15 = v14;
       [(UIImageView *)self alignmentRectInsets];
       previousBaselineOffsetFromBottom = v15 - v16;
@@ -1051,9 +1051,9 @@ LABEL_20:
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(UIImageView *)self _activeImage];
+  _activeImage = [(UIImageView *)self _activeImage];
   [(UIView *)self bounds];
-  v6 = [(UIImageView *)self _layoutForImage:v3 inSize:0 cachePerSize:1 forBaselineOffset:v4, v5];
+  v6 = [(UIImageView *)self _layoutForImage:_activeImage inSize:0 cachePerSize:1 forBaselineOffset:v4, v5];
 
   [v6 alignmentRectInsets];
   v8 = v7;
@@ -1081,8 +1081,8 @@ LABEL_20:
 
 - (NSArray)highlightedAnimationImages
 {
-  v2 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
-  v3 = [v2 copy];
+  highlightedAnimationImages = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+  v3 = [highlightedAnimationImages copy];
 
   return v3;
 }
@@ -1094,10 +1094,10 @@ LABEL_20:
     p_cachedEdgeInsetsForEffects = &self->_cachedEdgeInsetsForEffects;
     *&self->_cachedEdgeInsetsForEffects.top = 0u;
     *&self->_cachedEdgeInsetsForEffects.bottom = 0u;
-    v4 = [(UIImageView *)self _activeImage];
-    if (v4)
+    _activeImage = [(UIImageView *)self _activeImage];
+    if (_activeImage)
     {
-      [(UIImageView *)self _edgeInsetsForEffectsForImage:v4];
+      [(UIImageView *)self _edgeInsetsForEffectsForImage:_activeImage];
       p_cachedEdgeInsetsForEffects->top = v5;
       p_cachedEdgeInsetsForEffects->left = v6;
       p_cachedEdgeInsetsForEffects->bottom = v7;
@@ -1120,19 +1120,19 @@ LABEL_20:
 
 - (double)_firstBaselineOffsetFromTop
 {
-  v3 = [(UIImageView *)self _currentImage];
-  v4 = v3;
-  if (v3)
+  _currentImage = [(UIImageView *)self _currentImage];
+  v4 = _currentImage;
+  if (_currentImage)
   {
-    v5 = v3;
+    _currentHighlightedImage = _currentImage;
   }
 
   else
   {
-    v5 = [(UIImageView *)self _currentHighlightedImage];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   }
 
-  v6 = v5;
+  v6 = _currentHighlightedImage;
 
   if ([v6 hasBaseline])
   {
@@ -1150,11 +1150,11 @@ LABEL_20:
 
     else
     {
-      v13 = [(UIImageView *)self _layoutForImage:v6 inSize:0 cachePerSize:1 forBaselineOffset:width, height];
-      v14 = v13;
-      if (v13)
+      height = [(UIImageView *)self _layoutForImage:v6 inSize:0 cachePerSize:1 forBaselineOffset:width, height];
+      v14 = height;
+      if (height)
       {
-        v15 = *(v13 + 72);
+        v15 = *(height + 72);
       }
 
       else
@@ -1195,9 +1195,9 @@ LABEL_20:
   }
 
   [(UIImageView *)self _updateVisibilityAndFrameOfPlaceholderView];
-  v5 = [(UIImageView *)self _layeredImageContainer];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
   [(UIView *)self bounds];
-  [v5 setFrame:?];
+  [_layeredImageContainer setFrame:?];
 
   v6.receiver = self;
   v6.super_class = UIImageView;
@@ -1206,12 +1206,12 @@ LABEL_20:
 
 - (BOOL)_hasNonDefaultSymbolAnimatorState
 {
-  v2 = [(UIImageView *)self _rbSymbolLayer];
-  v3 = [v2 animator];
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
 
-  if (v3)
+  if (animator)
   {
-    v4 = ([v3 isHidden] & 1) != 0 || objc_msgSend(v3, "scaleLevel") != 0;
+    v4 = ([animator isHidden] & 1) != 0 || objc_msgSend(animator, "scaleLevel") != 0;
   }
 
   else
@@ -1225,27 +1225,27 @@ LABEL_20:
 - (BOOL)_recomputePretilingState
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(UIImageView *)self _currentImage];
-  v4 = [(UIImageView *)self _currentHighlightedImage];
+  _currentImage = [(UIImageView *)self _currentImage];
+  _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   if ([(UIImageView *)self isAnimating])
   {
     goto LABEL_8;
   }
 
-  v5 = [v3 images];
-  if (v5 && ![(UIImageView *)self isHighlighted])
+  images = [_currentImage images];
+  if (images && ![(UIImageView *)self isHighlighted])
   {
 
     goto LABEL_8;
   }
 
-  v6 = [v4 images];
-  if (v6)
+  images2 = [_currentHighlightedImage images];
+  if (images2)
   {
-    v7 = v6;
-    v8 = [(UIImageView *)self isHighlighted];
+    v7 = images2;
+    isHighlighted = [(UIImageView *)self isHighlighted];
 
-    if (!v8)
+    if (!isHighlighted)
     {
       goto LABEL_10;
     }
@@ -1256,14 +1256,14 @@ LABEL_8:
   }
 
 LABEL_10:
-  [(UIImageView *)self _updatePretiledImageCacheForImage:v3];
-  [(UIImageView *)self _updatePretiledImageCacheForImage:v4];
+  [(UIImageView *)self _updatePretiledImageCacheForImage:_currentImage];
+  [(UIImageView *)self _updatePretiledImageCacheForImage:_currentHighlightedImage];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [(UIImageView *)self animationImages];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  animationImages = [(UIImageView *)self animationImages];
+  v11 = [animationImages countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1274,13 +1274,13 @@ LABEL_10:
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(animationImages);
         }
 
         [(UIImageView *)self _updatePretiledImageCacheForImage:*(*(&v25 + 1) + 8 * i)];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v12 = [animationImages countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v12);
@@ -1290,8 +1290,8 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = [(UIImageView *)self highlightedAnimationImages];
-  v16 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
+  v16 = [highlightedAnimationImages countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1302,13 +1302,13 @@ LABEL_10:
       {
         if (*v22 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(highlightedAnimationImages);
         }
 
         [(UIImageView *)self _updatePretiledImageCacheForImage:*(*(&v21 + 1) + 8 * j)];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v17 = [highlightedAnimationImages countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v17);
@@ -1328,24 +1328,24 @@ LABEL_25:
     [(UIImageView *)self _removeLayerAnimations];
   }
 
-  v3 = [(_UIImageViewStorage *)self->_storage image];
-  [(UIImageView *)self _clearPretiledImageCacheForImage:v3];
+  image = [(_UIImageViewStorage *)self->_storage image];
+  [(UIImageView *)self _clearPretiledImageCacheForImage:image];
 
-  v4 = [(_UIImageViewStorage *)self->_storage highlightedImage];
-  [(UIImageView *)self _clearPretiledImageCacheForImage:v4];
+  highlightedImage = [(_UIImageViewStorage *)self->_storage highlightedImage];
+  [(UIImageView *)self _clearPretiledImageCacheForImage:highlightedImage];
 
-  v5 = [(_UIImageViewStorage *)self->_storage resolvedImage];
-  [(UIImageView *)self _clearPretiledImageCacheForImage:v5];
+  resolvedImage = [(_UIImageViewStorage *)self->_storage resolvedImage];
+  [(UIImageView *)self _clearPretiledImageCacheForImage:resolvedImage];
 
-  v6 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
-  [(UIImageView *)self _clearPretiledImageCacheForImage:v6];
+  resolvedHighlightedImage = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
+  [(UIImageView *)self _clearPretiledImageCacheForImage:resolvedHighlightedImage];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(_UIImageViewStorage *)self->_storage animationImages];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
+  v8 = [animationImages countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1357,14 +1357,14 @@ LABEL_25:
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(animationImages);
         }
 
         [(UIImageView *)self _clearPretiledImageCacheForImage:*(*(&v22 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v9 = [animationImages countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v9);
@@ -1374,8 +1374,8 @@ LABEL_25:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  highlightedAnimationImages = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+  v13 = [highlightedAnimationImages countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1387,14 +1387,14 @@ LABEL_25:
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(highlightedAnimationImages);
         }
 
         [(UIImageView *)self _clearPretiledImageCacheForImage:*(*(&v18 + 1) + 8 * v16++)];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v14 = [highlightedAnimationImages countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v14);
@@ -1407,8 +1407,8 @@ LABEL_25:
 
 - (void)_monochromaticTreatmentStateDidChange
 {
-  v3 = [(UIImageView *)self _currentImage];
-  v4 = [(UIImageView *)self _imageSupportsMaterials:v3 allowingHierarchical:1];
+  _currentImage = [(UIImageView *)self _currentImage];
+  v4 = [(UIImageView *)self _imageSupportsMaterials:_currentImage allowingHierarchical:1];
 
   if (v4)
   {
@@ -1419,20 +1419,20 @@ LABEL_25:
 
 - (BOOL)_hasBaseline
 {
-  v3 = [(UIImageView *)self _currentImage];
-  v4 = v3;
-  if (v3)
+  _currentImage = [(UIImageView *)self _currentImage];
+  v4 = _currentImage;
+  if (_currentImage)
   {
-    v5 = [v3 hasBaseline];
+    hasBaseline = [_currentImage hasBaseline];
   }
 
   else
   {
-    v6 = [(UIImageView *)self _currentHighlightedImage];
-    v5 = [v6 hasBaseline];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+    hasBaseline = [_currentHighlightedImage hasBaseline];
   }
 
-  return v5;
+  return hasBaseline;
 }
 
 - (void)startAnimating
@@ -1443,42 +1443,42 @@ LABEL_25:
     return;
   }
 
-  v3 = [(UIImageView *)self isHighlighted];
+  isHighlighted = [(UIImageView *)self isHighlighted];
   storage = self->_storage;
-  if (!v3)
+  if (!isHighlighted)
   {
     goto LABEL_6;
   }
 
-  v5 = [(_UIImageViewStorage *)storage highlightedAnimationImages];
-  if (!v5)
+  highlightedAnimationImages = [(_UIImageViewStorage *)storage highlightedAnimationImages];
+  if (!highlightedAnimationImages)
   {
-    v6 = [(UIImageView *)self _currentHighlightedImage];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
 
-    if (v6)
+    if (_currentHighlightedImage)
     {
       return;
     }
 
     storage = self->_storage;
 LABEL_6:
-    v5 = [(_UIImageViewStorage *)storage animationImages];
-    if (!v5)
+    highlightedAnimationImages = [(_UIImageViewStorage *)storage animationImages];
+    if (!highlightedAnimationImages)
     {
       return;
     }
   }
 
-  v7 = v5;
-  v8 = [v5 count];
+  v7 = highlightedAnimationImages;
+  v8 = [highlightedAnimationImages count];
   if ([(_UIImageViewStorage *)self->_storage animationRepeatCount]< 1)
   {
-    v9 = 2147500000.0;
+    animationRepeatCount = 2147500000.0;
   }
 
   else
   {
-    v9 = [(_UIImageViewStorage *)self->_storage animationRepeatCount];
+    animationRepeatCount = [(_UIImageViewStorage *)self->_storage animationRepeatCount];
   }
 
   [(_UIImageViewStorage *)self->_storage animationDuration];
@@ -1541,38 +1541,38 @@ LABEL_6:
   [v23 setValues:v13];
   v24 = *MEMORY[0x1E69795A0];
   [v23 setCalculationMode:*MEMORY[0x1E69795A0]];
-  *&v25 = v9;
+  *&v25 = animationRepeatCount;
   [v23 setRepeatCount:v25];
   [v23 setDuration:v12];
   [v23 setDelegate:self->_storage];
   v26 = *MEMORY[0x1E69797E8];
   [v23 setFillMode:*MEMORY[0x1E69797E8]];
   [v23 setRemovedOnCompletion:0];
-  v27 = [(UIView *)self layer];
-  [v27 addAnimation:v23 forKey:@"contents"];
+  layer = [(UIView *)self layer];
+  [layer addAnimation:v23 forKey:@"contents"];
   v28 = objc_alloc_init(MEMORY[0x1E6979390]);
   [v28 setKeyPath:@"contentsMultiplyColor"];
   v29 = +[UIColor whiteColor];
-  v36 = [v29 CGColor];
-  v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
+  cGColor = [v29 CGColor];
+  v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:&cGColor count:1];
   [v28 setValues:v30];
 
   [v28 setCalculationMode:v24];
-  *&v31 = v9;
+  *&v31 = animationRepeatCount;
   [v28 setRepeatCount:v31];
   [v28 setDuration:v12];
   [v28 setFillMode:v26];
   [v28 setRemovedOnCompletion:0];
-  [v27 addAnimation:v28 forKey:@"contentsMultiplyColor"];
-  [v27 setContentsSwizzle:*MEMORY[0x1E6979E38]];
+  [layer addAnimation:v28 forKey:@"contentsMultiplyColor"];
+  [layer setContentsSwizzle:*MEMORY[0x1E6979E38]];
 }
 
 - (void)stopAnimating
 {
   if ([(UIImageView *)self isAnimating])
   {
-    v3 = [(UIView *)self layer];
-    [v3 removeAnimationForKey:@"contents"];
+    layer = [(UIView *)self layer];
+    [layer removeAnimationForKey:@"contents"];
 
     if (![(_UIImageViewStorage *)self->_storage animationRepeatCount])
     {
@@ -1584,14 +1584,14 @@ LABEL_6:
 
 - (id)_currentAnimationKeyframeImage
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 animationForKey:@"contents"];
+  layer = [(UIView *)self layer];
+  v4 = [layer animationForKey:@"contents"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (-[UIView layer](self, "layer"), v5 = objc_claimAutoreleasedReturnValue(), [v5 presentationLayer], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "contents"), v6, v5, v7))
   {
-    v8 = [v4 values];
-    v9 = [v8 indexOfObject:v7];
+    values = [v4 values];
+    v9 = [values indexOfObject:v7];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
@@ -1602,29 +1602,29 @@ LABEL_6:
       v11 = v9;
       if ([(UIImageView *)self isHighlighted])
       {
-        v12 = [(UIImageView *)self highlightedAnimationImages];
+        highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
       }
 
       else
       {
-        v12 = 0;
+        highlightedAnimationImages = 0;
       }
 
-      if (![v12 count])
+      if (![highlightedAnimationImages count])
       {
-        v13 = [(UIImageView *)self animationImages];
+        animationImages = [(UIImageView *)self animationImages];
 
-        v12 = v13;
+        highlightedAnimationImages = animationImages;
       }
 
-      if (v11 >= [v12 count])
+      if (v11 >= [highlightedAnimationImages count])
       {
         v10 = 0;
       }
 
       else
       {
-        v10 = [v12 objectAtIndex:v11];
+        v10 = [highlightedAnimationImages objectAtIndex:v11];
       }
     }
   }
@@ -1639,9 +1639,9 @@ LABEL_6:
 
 - (void)_removeLayerAnimations
 {
-  v2 = [(UIView *)self layer];
-  [v2 removeAnimationForKey:@"contents"];
-  [v2 removeAnimationForKey:@"contentsMultiplyColor"];
+  layer = [(UIView *)self layer];
+  [layer removeAnimationForKey:@"contents"];
+  [layer removeAnimationForKey:@"contentsMultiplyColor"];
 }
 
 - (void)_cleanUpForStopAnimating
@@ -1653,10 +1653,10 @@ LABEL_6:
 
 - (BOOL)isTransparentFocusItem
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 supportsViewTransparency];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  supportsViewTransparency = [_focusBehavior supportsViewTransparency];
 
-  if (v4)
+  if (supportsViewTransparency)
   {
     v10.receiver = self;
     v10.super_class = UIImageView;
@@ -1667,16 +1667,16 @@ LABEL_6:
 
     else
     {
-      v6 = [(UIImageView *)self image];
-      if (v6)
+      image = [(UIImageView *)self image];
+      if (image)
       {
-        v7 = [(UIImageView *)self image];
-        v5 = [v7 _probeIsSeeThrough];
+        image2 = [(UIImageView *)self image];
+        _probeIsSeeThrough = [image2 _probeIsSeeThrough];
       }
 
       else
       {
-        v5 = 1;
+        _probeIsSeeThrough = 1;
       }
     }
   }
@@ -1688,51 +1688,51 @@ LABEL_6:
     return [(UIView *)&v9 isTransparentFocusItem];
   }
 
-  return v5;
+  return _probeIsSeeThrough;
 }
 
-- (void)_intelligenceCollectContentIn:(CGRect)a3 collector:(id)a4
+- (void)_intelligenceCollectContentIn:(CGRect)in collector:(id)collector
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = self;
-  UIImageView._intelligenceCollectContent(in:collector:)(v9, x, y, width, height);
+  height = in.size.height;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
+  collectorCopy = collector;
+  selfCopy = self;
+  UIImageView._intelligenceCollectContent(in:collector:)(collectorCopy, x, y, width, height);
 }
 
 - (_UIScrollPocketInteraction)scrollPocketInteraction
 {
-  v2 = self;
-  v3 = [(UIView *)v2 _typedStorage];
+  selfCopy = self;
+  _typedStorage = [(UIView *)selfCopy _typedStorage];
   v4 = sub_18901F244();
 
   return v4;
 }
 
-- (void)setScrollPocketInteraction:(id)a3
+- (void)setScrollPocketInteraction:(id)interaction
 {
-  v5 = a3;
-  v6 = self;
-  v7 = [(UIView *)v6 _typedStorage];
+  interactionCopy = interaction;
+  selfCopy = self;
+  _typedStorage = [(UIView *)selfCopy _typedStorage];
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA937088);
   v8 = swift_allocObject();
-  *(v8 + 16) = a3;
+  *(v8 + 16) = interaction;
   v9 = OBJC_IVAR____UITypedStorage_storage;
   swift_beginAccess();
-  v10 = v5;
+  v10 = interactionCopy;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
-  v12 = *(&v7->super.isa + v9);
-  *(&v7->super.isa + v9) = 0x8000000000000000;
+  v12 = *(&_typedStorage->super.isa + v9);
+  *(&_typedStorage->super.isa + v9) = 0x8000000000000000;
   sub_188A40430(v8, &_s26ScrollPocketInteractionKeyVN_0, isUniquelyReferenced_nonNull_native);
-  *(&v7->super.isa + v9) = v12;
+  *(&_typedStorage->super.isa + v9) = v12;
   swift_endAccess();
 }
 
 - (void)_updateScrollPocketInteraction
 {
-  v2 = self;
+  selfCopy = self;
   sub_188F619C4();
 }
 
@@ -1750,51 +1750,51 @@ LABEL_6:
   return [&v3 defaultAccessibilityTraits]| 4;
 }
 
-- (void)_applySettingsForLegibilityStyle:(int64_t)a3
+- (void)_applySettingsForLegibilityStyle:(int64_t)style
 {
-  v4 = [_UILegibilitySettings sharedInstanceForStyle:a3];
+  v4 = [_UILegibilitySettings sharedInstanceForStyle:style];
   if (v4)
   {
-    v5 = [v4 shadowCompositingFilterName];
+    shadowCompositingFilterName = [v4 shadowCompositingFilterName];
   }
 
   else
   {
-    v5 = *MEMORY[0x1E6979CC0];
+    shadowCompositingFilterName = *MEMORY[0x1E6979CC0];
   }
 
-  [(CALayer *)[(UIView *)self layer] setCompositingFilter:v5];
-  v6 = [(UIView *)self layer];
+  [(CALayer *)[(UIView *)self layer] setCompositingFilter:shadowCompositingFilterName];
+  layer = [(UIView *)self layer];
 
-  [(CALayer *)v6 setAllowsGroupBlending:0];
+  [(CALayer *)layer setAllowsGroupBlending:0];
 }
 
 - (id)largeContentImage
 {
-  v3 = [(UIView *)self _largeContentStoredProperties];
-  v4 = [v3 didSetLargeContentImage];
+  _largeContentStoredProperties = [(UIView *)self _largeContentStoredProperties];
+  didSetLargeContentImage = [_largeContentStoredProperties didSetLargeContentImage];
 
-  if (v4)
+  if (didSetLargeContentImage)
   {
     v7.receiver = self;
     v7.super_class = UIImageView;
-    v5 = [(UIView *)&v7 largeContentImage];
+    largeContentImage = [(UIView *)&v7 largeContentImage];
   }
 
   else
   {
-    v5 = [(UIImageView *)self image];
+    largeContentImage = [(UIImageView *)self image];
   }
 
-  return v5;
+  return largeContentImage;
 }
 
 - (BOOL)scalesLargeContentImage
 {
-  v3 = [(UIView *)self _largeContentStoredProperties];
-  v4 = [v3 didSetScalesLargeContentImage];
+  _largeContentStoredProperties = [(UIView *)self _largeContentStoredProperties];
+  didSetScalesLargeContentImage = [_largeContentStoredProperties didSetScalesLargeContentImage];
 
-  if (!v4)
+  if (!didSetScalesLargeContentImage)
   {
     return 1;
   }
@@ -1812,12 +1812,12 @@ LABEL_6:
   v4 = [v3 mutableCopy];
 
   v5 = objc_opt_new();
-  v6 = [(UIImageView *)self _currentImage];
-  v7 = _UIImageName(v6);
+  _currentImage = [(UIImageView *)self _currentImage];
+  v7 = _UIImageName(_currentImage);
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v6 content];
-  v11 = [v10 typeName];
+  content = [_currentImage content];
+  typeName = [content typeName];
   if (v7)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v7];
@@ -1828,37 +1828,37 @@ LABEL_6:
     v12 = @"anonymous";
   }
 
-  [v6 size];
+  [_currentImage size];
   v14 = v13;
-  [v6 size];
+  [_currentImage size];
   v16 = v15;
-  v17 = [v6 content];
-  [v17 scale];
-  [v5 appendFormat:@"; image = <%@:%p %@ %@; (%0.0f %0.0f)@%0.f", v9, v6, v11, v12, v14, v16, v18];
+  content2 = [_currentImage content];
+  [content2 scale];
+  [v5 appendFormat:@"; image = <%@:%p %@ %@; (%0.0f %0.0f)@%0.f", v9, _currentImage, typeName, v12, v14, v16, v18];
 
   if (v7)
   {
   }
 
-  v19 = [v6 content];
-  [v19 vectorScale];
+  content3 = [_currentImage content];
+  [content3 vectorScale];
   v21 = v20;
-  v22 = [v6 content];
-  [v22 scale];
+  content4 = [_currentImage content];
+  [content4 scale];
   v24 = v23;
 
   if (v21 != v24)
   {
-    v25 = [v6 content];
-    [v25 vectorScale];
+    content5 = [_currentImage content];
+    [content5 vectorScale];
     [v5 appendFormat:@"{%0.0f}", v26];
   }
 
-  v27 = [v6 content];
-  if ([v27 isVectorGlyph])
+  content6 = [_currentImage content];
+  if ([content6 isVectorGlyph])
   {
-    v28 = [v6 content];
-    [v28 variableValue];
+    content7 = [_currentImage content];
+    [content7 variableValue];
     v30 = v29;
 
     if (v30 == INFINITY)
@@ -1866,8 +1866,8 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    v27 = [v6 content];
-    [v27 variableValue];
+    content6 = [_currentImage content];
+    [content6 variableValue];
     [v5 appendFormat:@", value=%0.0f", v31];
   }
 
@@ -1879,12 +1879,12 @@ LABEL_12:
   return v32;
 }
 
-- (id)_layoutForImage:(id)a3 inSize:(CGSize)a4 cachePerSize:(BOOL)a5 forBaselineOffset:(BOOL)a6
+- (id)_layoutForImage:(id)image inSize:(CGSize)size cachePerSize:(BOOL)perSize forBaselineOffset:(BOOL)offset
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v32 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  imageCopy = image;
   if (pthread_main_np() == 1)
   {
     goto LABEL_2;
@@ -1929,42 +1929,42 @@ LABEL_12:
 
 LABEL_17:
 LABEL_2:
-  if (a5)
+  if (perSize)
   {
-    v13 = [MEMORY[0x1E696B098] valueWithSize:{width, height, v12}];
+    v13 = [MEMORY[0x1E696B098] valueWithSize:{width, height, imageCopy}];
     v27[1] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   }
 
   else
   {
-    v14 = v12;
+    v14 = imageCopy;
   }
 
-  v15 = [(_UIImageViewStorage *)self->_storage layouts];
-  v16 = [v15 objectForKey:v14];
+  layouts = [(_UIImageViewStorage *)self->_storage layouts];
+  height = [layouts objectForKey:v14];
 
-  if (!v16)
+  if (!height)
   {
-    v16 = [_UIImageContentLayout layoutForSource:v12 inTarget:self withSize:width, height];
-    v17 = [(_UIImageViewStorage *)self->_storage layouts];
+    height = [_UIImageContentLayout layoutForSource:imageCopy inTarget:self withSize:width, height];
+    layouts2 = [(_UIImageViewStorage *)self->_storage layouts];
 
-    if (!v17)
+    if (!layouts2)
     {
-      v18 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
-      [(_UIImageViewStorage *)self->_storage setLayouts:v18];
+      weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+      [(_UIImageViewStorage *)self->_storage setLayouts:weakToStrongObjectsMapTable];
     }
 
-    v19 = [(_UIImageViewStorage *)self->_storage layouts];
-    [v19 setObject:v16 forKey:v14];
+    layouts3 = [(_UIImageViewStorage *)self->_storage layouts];
+    [layouts3 setObject:height forKey:v14];
 
-    if (!a6)
+    if (!offset)
     {
       [(UIImageView *)self _baselineOffsetParametersDidChangeHasBaselinePropertyChanged:0];
     }
   }
 
-  return v16;
+  return height;
 }
 
 - (void)_invalidateCachedSymbolConfiguration
@@ -1975,14 +1975,14 @@ LABEL_2:
   objc_storeWeak(&self->_cachedSymbolConfigurationImage, 0);
 }
 
-- (BOOL)_setImageViewContents:(id)a3
+- (BOOL)_setImageViewContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(UIView *)self layer];
-  [v5 removeAnimationForKey:@"UIImageAnimationContents"];
-  [v5 removeAnimationForKey:@"UIImageAnimationContentsTransform"];
-  [v5 removeAnimationForKey:@"UIImageAnimationContentsMultiplyColor"];
-  [v5 setContentsAlignsToPixels:0];
+  contentsCopy = contents;
+  layer = [(UIView *)self layer];
+  [layer removeAnimationForKey:@"UIImageAnimationContents"];
+  [layer removeAnimationForKey:@"UIImageAnimationContentsTransform"];
+  [layer removeAnimationForKey:@"UIImageAnimationContentsMultiplyColor"];
+  [layer setContentsAlignsToPixels:0];
   [(UIImageView *)self _setLayerAllowsEdgeAntialiasing:0];
   if (os_variant_has_internal_diagnostics())
   {
@@ -2008,12 +2008,12 @@ LABEL_2:
   }
 
   v6 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v7 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v7];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v8 = _UISetCurrentFallbackEnvironment(self);
-  [v4 size];
-  if (v4 && v9 > 0.0)
+  [contentsCopy size];
+  if (contentsCopy && v9 > 0.0)
   {
     v11 = v10;
     v12 = v10 > 0.0;
@@ -2026,7 +2026,7 @@ LABEL_2:
       }
 
 LABEL_28:
-      [v5 setContents:0];
+      [layer setContents:0];
       goto LABEL_31;
     }
   }
@@ -2046,12 +2046,12 @@ LABEL_28:
   v13 = v12 && !v16;
   if (!v12 || !v16)
   {
-    [v5 setContents:0];
+    [layer setContents:0];
     goto LABEL_30;
   }
 
 LABEL_15:
-  if ([v4 _representsCIImageWhichSupportsIOSurfaceRendering] && -[UIImageView _setImageViewContentsForCIImageBackedImage:](self, "_setImageViewContentsForCIImageBackedImage:", v4))
+  if ([contentsCopy _representsCIImageWhichSupportsIOSurfaceRendering] && -[UIImageView _setImageViewContentsForCIImageBackedImage:](self, "_setImageViewContentsForCIImageBackedImage:", contentsCopy))
   {
 LABEL_30:
     if (v13)
@@ -2064,31 +2064,31 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  [v4 duration];
+  [contentsCopy duration];
   if (v17 > 0.0)
   {
-    v18 = [v4 images];
+    images = [contentsCopy images];
 
-    if (v18)
+    if (images)
     {
-      if (![(UIImageView *)self _setImageViewContentsForAnimatedImage:v4])
+      if (![(UIImageView *)self _setImageViewContentsForAnimatedImage:contentsCopy])
       {
-        v19 = [v4 images];
-        v20 = [v19 firstObject];
-        v21 = v20;
-        if (v20)
+        images2 = [contentsCopy images];
+        firstObject = [images2 firstObject];
+        v21 = firstObject;
+        if (firstObject)
         {
-          v22 = v20;
+          v22 = firstObject;
         }
 
         else
         {
-          v22 = v4;
+          v22 = contentsCopy;
         }
 
         v23 = v22;
 
-        v4 = v23;
+        contentsCopy = v23;
         goto LABEL_24;
       }
 
@@ -2097,26 +2097,26 @@ LABEL_31:
   }
 
 LABEL_24:
-  v24 = [(UIImageView *)self _cachedPretiledImageForImage:v4];
+  v24 = [(UIImageView *)self _cachedPretiledImageForImage:contentsCopy];
   v25 = v24;
   if (v24)
   {
     v26 = v24;
 
-    v4 = v26;
+    contentsCopy = v26;
   }
 
   [(UIView *)self bounds];
-  v29 = [(UIImageView *)self _layoutForImage:v4 inSize:v27, v28];
+  v29 = [(UIImageView *)self _layoutForImage:contentsCopy inSize:v27, v28];
   if ([v29 hasContents])
   {
-    [(UIImageView *)self _applyImageLayout:v29 toLayer:v5];
-    _setContentStretchForImage(self, v4);
+    [(UIImageView *)self _applyImageLayout:v29 toLayer:layer];
+    _setContentStretchForImage(self, contentsCopy);
   }
 
   else
   {
-    [v5 setContents:0];
+    [layer setContents:0];
     [(UIImageView *)self _teardownRBSymbolLayerIfNeeded];
   }
 
@@ -2127,14 +2127,14 @@ LABEL_34:
   return 1;
 }
 
-- (BOOL)_usesRenderBoxToRenderImage:(id)a3 withLayout:(id)a4
+- (BOOL)_usesRenderBoxToRenderImage:(id)image withLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isSymbolImage] && -[UIImageView _hasReasonToUseRBSymbolLayerForImage:](self, "_hasReasonToUseRBSymbolLayerForImage:", v6))
+  imageCopy = image;
+  layoutCopy = layout;
+  if ([imageCopy isSymbolImage] && -[UIImageView _hasReasonToUseRBSymbolLayerForImage:](self, "_hasReasonToUseRBSymbolLayerForImage:", imageCopy))
   {
-    v8 = [v7 rbSymbolConfiguration];
-    v9 = v8 != 0;
+    rbSymbolConfiguration = [layoutCopy rbSymbolConfiguration];
+    v9 = rbSymbolConfiguration != 0;
   }
 
   else
@@ -2145,50 +2145,50 @@ LABEL_34:
   return v9;
 }
 
-- (void)_applyImageLayout:(id)a3 toLayer:(id)a4
+- (void)_applyImageLayout:(id)layout toLayer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIImageView *)self image];
-  v9 = [(UIImageView *)self _usesRenderBoxToRenderImage:v8 withLayout:v6];
+  layoutCopy = layout;
+  layerCopy = layer;
+  image = [(UIImageView *)self image];
+  v9 = [(UIImageView *)self _usesRenderBoxToRenderImage:image withLayout:layoutCopy];
 
   if (v9)
   {
-    [v7 setContents:0];
-    v10 = [(UIImageView *)self _rbSymbolLayer];
-    if (!v10)
+    [layerCopy setContents:0];
+    _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+    if (!_rbSymbolLayer)
     {
-      v10 = [MEMORY[0x1E69C7110] layer];
+      _rbSymbolLayer = [MEMORY[0x1E69C7110] layer];
       v11 = *MEMORY[0x1E695EFF8];
       v12 = *(MEMORY[0x1E695EFF8] + 8);
-      [v10 setAnchorPoint:{*MEMORY[0x1E695EFF8], v12}];
-      v13 = [(UIView *)self layer];
-      [v13 addSublayer:v10];
+      [_rbSymbolLayer setAnchorPoint:{*MEMORY[0x1E695EFF8], v12}];
+      layer = [(UIView *)self layer];
+      [layer addSublayer:_rbSymbolLayer];
 
       v14 = objc_opt_new();
       [v14 setAnchorPoint:{v11, v12}];
-      [v10 setAnimator:v14];
-      [(UIImageView *)self _setRBSymbolLayer:v10];
+      [_rbSymbolLayer setAnimator:v14];
+      [(UIImageView *)self _setRBSymbolLayer:_rbSymbolLayer];
     }
 
-    v15 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-    v16 = [(UIImageView *)self image];
-    v17 = [v15 pendingSymbolContentTransitionForSettingSymbolImage:v16];
+    animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+    image2 = [(UIImageView *)self image];
+    v17 = [animationPresetManager pendingSymbolContentTransitionForSettingSymbolImage:image2];
 
     if (v17)
     {
       if (([v17 isPendingLayoutPass] & 1) == 0)
       {
-        v18 = [v17 sourceSymbolImage];
+        sourceSymbolImage = [v17 sourceSymbolImage];
         [(UIView *)self bounds];
-        v21 = [(UIImageView *)self _layoutForImage:v18 inSize:v19, v20];
+        v21 = [(UIImageView *)self _layoutForImage:sourceSymbolImage inSize:v19, v20];
         [(UIImageView *)self _setupRBSymbolLayerWithSymbolImageLayout:v21];
         [v17 setPendingLayoutPass:1];
-        v22 = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
-        if (v22)
+        _effectiveSymbolContentTransitionContainerView = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
+        if (_effectiveSymbolContentTransitionContainerView)
         {
           [(UIView *)self bounds];
-          [(UIView *)self convertRect:v22 toView:?];
+          [(UIView *)self convertRect:_effectiveSymbolContentTransitionContainerView toView:?];
           [v17 setInitialSymbolAbsoluteRect:?];
         }
 
@@ -2198,30 +2198,30 @@ LABEL_34:
         v33[2] = __41__UIImageView__applyImageLayout_toLayer___block_invoke;
         v33[3] = &unk_1E70F6B40;
         v34 = v17;
-        v35 = self;
-        v36 = v18;
-        v37 = v10;
-        v24 = v18;
+        selfCopy = self;
+        v36 = sourceSymbolImage;
+        v37 = _rbSymbolLayer;
+        v24 = sourceSymbolImage;
         [v23 _performBlockAfterCATransactionCommits:v33];
       }
     }
 
     else
     {
-      [(UIImageView *)self _setupSymbolLayerForCurrentSymbolImageLayout:v6];
+      [(UIImageView *)self _setupSymbolLayerForCurrentSymbolImageLayout:layoutCopy];
     }
   }
 
   else
   {
     [(UIImageView *)self _teardownRBSymbolLayerIfNeeded];
-    v25 = [v6 contents];
-    [v7 setContents:v25];
+    contents = [layoutCopy contents];
+    [layerCopy setContents:contents];
 
-    [(UIImageView *)self _applyEffectsFromLayout:v6];
-    if (v6)
+    [(UIImageView *)self _applyEffectsFromLayout:layoutCopy];
+    if (layoutCopy)
     {
-      [v6 contentsTransform];
+      [layoutCopy contentsTransform];
     }
 
     else
@@ -2234,8 +2234,8 @@ LABEL_34:
     v29[0] = v30;
     v29[1] = v31;
     v29[2] = v32;
-    [v7 setContentsTransform:v29];
-    [v6 contentsScaleFactor];
+    [layerCopy setContentsTransform:v29];
+    [layoutCopy contentsScaleFactor];
     [(UIImageView *)self setContentScaleFactor:?];
     if (qword_1ED497FF0 != -1)
     {
@@ -2245,11 +2245,11 @@ LABEL_34:
     if (byte_1ED497FDA == 1)
     {
       imageViewFlags = self->_imageViewFlags;
-      v10 = [(UIImageView *)self image];
-      v27 = [v10 isSymbolImage];
+      _rbSymbolLayer = [(UIImageView *)self image];
+      isSymbolImage = [_rbSymbolLayer isSymbolImage];
       if ((imageViewFlags & 0x20) != 0)
       {
-        if (v27)
+        if (isSymbolImage)
         {
           v28 = 64;
         }
@@ -2264,34 +2264,34 @@ LABEL_34:
 
       else
       {
-        [v7 setContentsAlignsToPixels:v27];
+        [layerCopy setContentsAlignsToPixels:isSymbolImage];
       }
     }
 
     else
     {
-      v10 = [(UIImageView *)self image];
-      -[UIImageView _setLayerAllowsEdgeAntialiasing:](self, "_setLayerAllowsEdgeAntialiasing:", [v10 isSymbolImage]);
+      _rbSymbolLayer = [(UIImageView *)self image];
+      -[UIImageView _setLayerAllowsEdgeAntialiasing:](self, "_setLayerAllowsEdgeAntialiasing:", [_rbSymbolLayer isSymbolImage]);
     }
   }
 }
 
 - (id)_effectiveSymbolContentTransitionContainerView
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &_UIImageViewSymbolContentTransitionContainerViewProviderKey);
+    v2 = objc_getAssociatedObject(self, &_UIImageViewSymbolContentTransitionContainerViewProviderKey);
     v3 = v2;
-    if (!v2 || ((*(v2 + 16))(v2, a1), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!v2 || ((*(v2 + 16))(v2, self), (_enclosingScrollableScrollerIncludingSelf = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v4 = [a1 _enclosingScrollableScrollerIncludingSelf];
-      if (!v4)
+      _enclosingScrollableScrollerIncludingSelf = [self _enclosingScrollableScrollerIncludingSelf];
+      if (!_enclosingScrollableScrollerIncludingSelf)
       {
-        v4 = [a1 window];
+        _enclosingScrollableScrollerIncludingSelf = [self window];
       }
     }
 
-    v5 = v4;
+    v5 = _enclosingScrollableScrollerIncludingSelf;
   }
 
   else
@@ -2374,39 +2374,39 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
   [v4 setContentTransition:*(a1 + 32)];
 }
 
-- (void)_setupSymbolLayerForCurrentSymbolImageLayout:(id)a3
+- (void)_setupSymbolLayerForCurrentSymbolImageLayout:(id)layout
 {
   storage = self->_storage;
-  v5 = a3;
-  v6 = [(_UIImageViewStorage *)storage animationPresetManager];
-  [v6 discardPendingSymbolContentTransitions];
+  layoutCopy = layout;
+  animationPresetManager = [(_UIImageViewStorage *)storage animationPresetManager];
+  [animationPresetManager discardPendingSymbolContentTransitions];
 
-  [(UIImageView *)self _setupRBSymbolLayerWithSymbolImageLayout:v5];
-  v7 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-  [v7 activatePendingSymbolEffects];
+  [(UIImageView *)self _setupRBSymbolLayerWithSymbolImageLayout:layoutCopy];
+  animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  [animationPresetManager2 activatePendingSymbolEffects];
 }
 
-- (BOOL)_needsBoldEffectForImage:(id)a3 symbolConfiguration:(id)a4
+- (BOOL)_needsBoldEffectForImage:(id)image symbolConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIImageView *)self _baseMultiplyColorWithImage:v7 symbolConfiguration:v6];
-  v9 = [(UIImageView *)self _effectiveContentEffectsWithImage:v7 symbolConfiguration:v6];
-  LOBYTE(self) = [(UIImageView *)self _needsBoldEffectForImage:v7 symbolConfiguration:v6 withBaseColor:v8 withEffects:v9];
+  configurationCopy = configuration;
+  imageCopy = image;
+  v8 = [(UIImageView *)self _baseMultiplyColorWithImage:imageCopy symbolConfiguration:configurationCopy];
+  v9 = [(UIImageView *)self _effectiveContentEffectsWithImage:imageCopy symbolConfiguration:configurationCopy];
+  LOBYTE(self) = [(UIImageView *)self _needsBoldEffectForImage:imageCopy symbolConfiguration:configurationCopy withBaseColor:v8 withEffects:v9];
 
   return self;
 }
 
-- (BOOL)_needsBoldEffectForImage:(id)a3 symbolConfiguration:(id)a4 withBaseColor:(id)a5 withEffects:(id)a6
+- (BOOL)_needsBoldEffectForImage:(id)image symbolConfiguration:(id)configuration withBaseColor:(id)color withEffects:(id)effects
 {
-  v9 = a3;
-  v10 = [a6 count];
-  v11 = [(UIView *)self traitCollection];
-  v12 = [v11 legibilityWeight];
+  imageCopy = image;
+  v10 = [effects count];
+  traitCollection = [(UIView *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
 
-  if (v12 == 1)
+  if (legibilityWeight == 1)
   {
-    v13 = (a5 != 0) & ~[v9 _suppressesAccessibilityHairlineThickening];
+    v13 = (color != 0) & ~[imageCopy _suppressesAccessibilityHairlineThickening];
     if (v10)
     {
       v14 = 0;
@@ -2426,20 +2426,20 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
   return v14;
 }
 
-- (void)_setupRBSymbolLayerWithSymbolImageLayout:(id)a3
+- (void)_setupRBSymbolLayerWithSymbolImageLayout:(id)layout
 {
   v98 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIImageView *)self _rbSymbolLayer];
-  v6 = v5;
-  if (v5)
+  layoutCopy = layout;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  v6 = _rbSymbolLayer;
+  if (_rbSymbolLayer)
   {
-    v7 = [v5 animator];
+    animator = [_rbSymbolLayer animator];
 
-    if (v7)
+    if (animator)
     {
       [MEMORY[0x1E6979518] setDisableActions:1];
-      [v4 contentsSize];
+      [layoutCopy contentsSize];
       v9 = v8;
       v11 = v10;
       [(UIView *)self bounds];
@@ -2451,14 +2451,14 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
       v20 = *MEMORY[0x1E695EFF8];
       v21 = *(MEMORY[0x1E695EFF8] + 8);
       [v6 setPosition:{*MEMORY[0x1E695EFF8], v21}];
-      [v4 contentsScaleFactor];
+      [layoutCopy contentsScaleFactor];
       [v6 setContentsScale:?];
-      [v4 contentsScaleFactor];
+      [layoutCopy contentsScaleFactor];
       [v6 setRasterizationScale:?];
       [MEMORY[0x1E6979518] setDisableActions:0];
-      v22 = [v4 rbSymbolConfiguration];
-      v23 = v22;
-      if (v22)
+      rbSymbolConfiguration = [layoutCopy rbSymbolConfiguration];
+      v23 = rbSymbolConfiguration;
+      if (rbSymbolConfiguration)
       {
         v82 = v19;
         v83 = v17;
@@ -2468,28 +2468,28 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
         v87 = v9;
         v79 = v21;
         v80 = v20;
-        v24 = *(v22 + 32);
+        v24 = *(rbSymbolConfiguration + 32);
         [v6 setStyleResolver:v24];
 
         WeakRetained = objc_loadWeakRetained((v23 + 16));
-        v26 = [v6 animator];
-        [v26 setGlyph:WeakRetained];
+        animator2 = [v6 animator];
+        [animator2 setGlyph:WeakRetained];
 
         v27 = *(v23 + 8);
-        v28 = [v6 animator];
-        [v28 setRenderingMode:v27];
+        animator3 = [v6 animator];
+        [animator3 setRenderingMode:v27];
 
         v29 = *(v23 + 12);
-        v30 = [v6 animator];
-        [v30 setRenderingOptions:v29];
+        animator4 = [v6 animator];
+        [animator4 setRenderingOptions:v29];
 
         v31 = *(v23 + 40);
-        v32 = [v6 animator];
-        [v32 setVariableValue:v31];
+        animator5 = [v6 animator];
+        [animator5 setVariableValue:v31];
 
-        v33 = [v4 symbolLayerNeedsHorizontalFlip];
-        v34 = [v6 animator];
-        [v34 setFlipsRightToLeft:v33];
+        symbolLayerNeedsHorizontalFlip = [layoutCopy symbolLayerNeedsHorizontalFlip];
+        animator6 = [v6 animator];
+        [animator6 setFlipsRightToLeft:symbolLayerNeedsHorizontalFlip];
 
         v95 = 0u;
         v96 = 0u;
@@ -2514,21 +2514,21 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
                 objc_enumerationMutation(v35);
               }
 
-              v44 = [*(*(&v93 + 1) + 8 * i) unsignedIntValue];
+              unsignedIntValue = [*(*(&v93 + 1) + 8 * i) unsignedIntValue];
               v45 = *(v23 + 32);
-              v46 = v45[2](v45, v44, 0);
+              v46 = v45[2](v45, unsignedIntValue, 0);
               v48 = v47;
               v50 = v49;
               v52 = v51;
 
               if (v46 != v39 || v48 != v40 || v50 != v41 || v52 != v42)
               {
-                v56 = [v6 animator];
+                animator7 = [v6 animator];
                 *&v57 = v46;
                 *&v58 = v48;
                 *&v59 = v50;
                 *&v60 = v52;
-                [v56 setColor:v44 forStyle:{v57, v58, v59, v60}];
+                [animator7 setColor:unsignedIntValue forStyle:{v57, v58, v59, v60}];
               }
             }
 
@@ -2552,10 +2552,10 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
         v92 = *&v91.b;
         v65 = *&v91.d;
         ty = v91.ty;
-        if (v4)
+        if (layoutCopy)
         {
           v88 = *&v91.d;
-          [v4 symbolLayerPositionTransform];
+          [layoutCopy symbolLayerPositionTransform];
           v65 = v88;
         }
 
@@ -2573,91 +2573,91 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
         d = v91.d;
         tx = v91.tx;
         v70 = v91.ty;
-        v71 = [v6 animator];
-        [v71 setTransform:{v67, d, tx, v70}];
+        animator8 = [v6 animator];
+        [animator8 setTransform:{v67, d, tx, v70}];
 
-        v72 = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
-        if (v72)
+        _effectiveSymbolContentTransitionContainerView = [(UIImageView *)self _effectiveSymbolContentTransitionContainerView];
+        if (_effectiveSymbolContentTransitionContainerView)
         {
-          [(UIView *)self convertPoint:v72 toView:v80, v79];
+          [(UIView *)self convertPoint:_effectiveSymbolContentTransitionContainerView toView:v80, v79];
           v74 = v73;
           v76 = v75;
-          v77 = [v6 animator];
-          [v77 setPosition:{v74, v76}];
+          animator9 = [v6 animator];
+          [animator9 setPosition:{v74, v76}];
 
-          v78 = [v6 animator];
-          [v78 setPresentationPosition:{v74, v76}];
+          animator10 = [v6 animator];
+          [animator10 setPresentationPosition:{v74, v76}];
         }
       }
     }
   }
 }
 
-- (void)_applyEffectsFromLayout:(id)a3
+- (void)_applyEffectsFromLayout:(id)layout
 {
-  v15 = a3;
-  v4 = [v15 contentEffects];
-  [(UIView *)self mt_setContentEffects:v4];
-  v5 = [v15 contentsMultiplyColor];
-  v6 = [(UIView *)self _overrideTintColor];
-  v7 = v6;
-  if (v6)
+  layoutCopy = layout;
+  contentEffects = [layoutCopy contentEffects];
+  [(UIView *)self mt_setContentEffects:contentEffects];
+  contentsMultiplyColor = [layoutCopy contentsMultiplyColor];
+  _overrideTintColor = [(UIView *)self _overrideTintColor];
+  v7 = _overrideTintColor;
+  if (_overrideTintColor)
   {
-    v8 = v6;
+    v8 = _overrideTintColor;
 
-    v5 = v8;
+    contentsMultiplyColor = v8;
   }
 
-  v9 = [v15 contentDrawMode];
-  if (v9)
+  contentDrawMode = [layoutCopy contentDrawMode];
+  if (contentDrawMode)
   {
-    v10 = v9;
-    if (!v5)
+    v10 = contentDrawMode;
+    if (!contentsMultiplyColor)
     {
-      v5 = +[UIColor clearColor];
+      contentsMultiplyColor = +[UIColor clearColor];
     }
 
-    v11 = [(UIImageView *)self _colorByApplyingDrawMode:v10 toColor:v5];
+    v11 = [(UIImageView *)self _colorByApplyingDrawMode:v10 toColor:contentsMultiplyColor];
 
-    v5 = v11;
+    contentsMultiplyColor = v11;
   }
 
-  v12 = [(UIView *)self layer];
-  if (v5 && ![(UIImageView *)self isAnimating])
+  layer = [(UIView *)self layer];
+  if (contentsMultiplyColor && ![(UIImageView *)self isAnimating])
   {
-    v13 = [v5 CGColor];
+    cGColor = [contentsMultiplyColor CGColor];
     v14 = MEMORY[0x1E6979E30];
   }
 
   else
   {
-    v13 = 0;
+    cGColor = 0;
     v14 = MEMORY[0x1E6979E38];
   }
 
-  [v12 setContentsMultiplyColor:v13];
-  [v12 setContentsSwizzle:*v14];
+  [layer setContentsMultiplyColor:cGColor];
+  [layer setContentsSwizzle:*v14];
 }
 
-- (BOOL)_setImageViewContentsForAnimatedImage:(id)a3
+- (BOOL)_setImageViewContentsForAnimatedImage:(id)image
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v35 = [(UIView *)self layer];
+  imageCopy = image;
+  layer = [(UIView *)self layer];
   [(UIView *)self bounds];
-  v36 = v4;
-  v5 = [v4 images];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v41 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
-  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  v36 = imageCopy;
+  images = [imageCopy images];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(images, "count")}];
+  v41 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(images, "count")}];
+  v40 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(images, "count")}];
   v42 = *MEMORY[0x1E6979E38];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  obj = v5;
+  obj = images;
   v7 = [obj countByEnumeratingWithState:&v51 objects:v55 count:16];
-  v39 = self;
+  selfCopy = self;
   if (v7)
   {
     v8 = v7;
@@ -2675,9 +2675,9 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
         }
 
         v11 = *(*(&v51 + 1) + 8 * v10);
-        v12 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
 
-        if (v11 != v12)
+        if (v11 != null)
         {
           v13 = [(UIImageView *)self _cachedPretiledImageForImage:v11];
           v14 = v13;
@@ -2723,11 +2723,11 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
           [v41 addObject:v22];
 
           v23 = +[UIColor whiteColor];
-          v24 = [v18 contentsMultiplyColor];
+          contentsMultiplyColor = [v18 contentsMultiplyColor];
 
-          if (v24)
+          if (contentsMultiplyColor)
           {
-            v25 = [v18 contentsMultiplyColor];
+            contentsMultiplyColor2 = [v18 contentsMultiplyColor];
 
             v23 = v42;
             v42 = v37;
@@ -2735,10 +2735,10 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
 
           else
           {
-            v25 = +[UIColor whiteColor];
+            contentsMultiplyColor2 = +[UIColor whiteColor];
           }
 
-          [v40 addObject:{objc_msgSend(v25, "CGColor")}];
+          [v40 addObject:{objc_msgSend(contentsMultiplyColor2, "CGColor")}];
           if (v9 == 0.0)
           {
             [v18 contentsScaleFactor];
@@ -2746,7 +2746,7 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
           }
 
           v6 = v20;
-          self = v39;
+          self = selfCopy;
         }
 
         ++v10;
@@ -2769,19 +2769,19 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
     aBlock[2] = __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke;
     aBlock[3] = &unk_1E712AD00;
     aBlock[5] = v29;
-    aBlock[4] = v35;
+    aBlock[4] = layer;
     v30 = _Block_copy(aBlock);
     v30[2](v30, @"UIImageAnimationContents", @"contents", v6);
     v30[2](v30, @"UIImageAnimationContentsTransform", @"contentsTransform", v41);
     v30[2](v30, @"UIImageAnimationContentsMultiplyColor", @"contentsMultiplyColor", v40);
-    v31 = [v6 firstObject];
-    [v35 setContents:v31];
+    firstObject = [v6 firstObject];
+    [layer setContents:firstObject];
 
-    v32 = [v41 firstObject];
-    v33 = v32;
-    if (v32)
+    firstObject2 = [v41 firstObject];
+    v33 = firstObject2;
+    if (firstObject2)
     {
-      [v32 CGAffineTransformValue];
+      [firstObject2 CGAffineTransformValue];
     }
 
     else
@@ -2794,11 +2794,11 @@ void __41__UIImageView__applyImageLayout_toLayer___block_invoke_3(uint64_t a1, v
     v48 = v44;
     v49 = v45;
     v50 = v46;
-    [v35 setContentsTransform:&v48];
+    [layer setContentsTransform:&v48];
 
-    [v35 setContentsMultiplyColor:{objc_msgSend(v40, "firstObject")}];
-    [v35 setContentsSwizzle:v42];
-    _setContentStretchForImage(v39, v36);
+    [layer setContentsMultiplyColor:{objc_msgSend(v40, "firstObject")}];
+    [layer setContentsSwizzle:v42];
+    _setContentStretchForImage(selfCopy, v36);
   }
 
   return v28 != 0;
@@ -2820,11 +2820,11 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
   [*(a1 + 32) addAnimation:v11 forKey:v9];
 }
 
-- (void)_setLayerAllowsEdgeAntialiasing:(BOOL)a3
+- (void)_setLayerAllowsEdgeAntialiasing:(BOOL)antialiasing
 {
-  v3 = a3;
-  v5 = [(UIView *)self layer];
-  v6 = [v5 allowsEdgeAntialiasing] ^ ((*&self->_imageViewFlags & 0x80) == 0);
+  antialiasingCopy = antialiasing;
+  layer = [(UIView *)self layer];
+  v6 = [layer allowsEdgeAntialiasing] ^ ((*&self->_imageViewFlags & 0x80) == 0);
 
   imageViewFlags = self->_imageViewFlags;
   if (!v6)
@@ -2832,7 +2832,7 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
     imageViewFlags |= 0x100u;
   }
 
-  if (v3)
+  if (antialiasingCopy)
   {
     v8 = 128;
   }
@@ -2845,14 +2845,14 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
   *&self->_imageViewFlags = imageViewFlags & 0xFF7F | v8;
   if ((imageViewFlags & 0x100) == 0)
   {
-    v9 = [(UIView *)self layer];
-    [v9 setAllowsEdgeAntialiasing:v3];
+    layer2 = [(UIView *)self layer];
+    [layer2 setAllowsEdgeAntialiasing:antialiasingCopy];
   }
 }
 
-- (UIEdgeInsets)_additionalAlignmentRectInsetsForRenderingSource:(id)a3
+- (UIEdgeInsets)_additionalAlignmentRectInsetsForRenderingSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_class();
   v5 = 0.0;
   v6 = 0.0;
@@ -2860,7 +2860,7 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
   v8 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    [(UIImageView *)self _edgeInsetsForEffectsForImage:v4];
+    [(UIImageView *)self _edgeInsetsForEffectsForImage:sourceCopy];
     v5 = v9;
     v6 = v10;
     v7 = v11;
@@ -2878,27 +2878,27 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
   return result;
 }
 
-- (id)_effectsForRenderingSource:(id)a3 size:(CGSize)a4 symbolConfiguration:(id)a5 renditionContext:(id)a6
+- (id)_effectsForRenderingSource:(id)source size:(CGSize)size symbolConfiguration:(id)configuration renditionContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  configurationCopy = configuration;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v16 = 0;
-    v17 = 0;
+    drawMode = 0;
     v18 = 0;
     v19 = 0;
     goto LABEL_13;
   }
 
-  v12 = v9;
-  v13 = [(UIImageView *)self _baseMultiplyColorWithImage:v12 symbolConfiguration:v10 shouldResolveDynamicColors:0];
-  v14 = [v12 _colorForFlattening];
-  if (v13 | v14)
+  v12 = sourceCopy;
+  v13 = [(UIImageView *)self _baseMultiplyColorWithImage:v12 symbolConfiguration:configurationCopy shouldResolveDynamicColors:0];
+  _colorForFlattening = [v12 _colorForFlattening];
+  if (v13 | _colorForFlattening)
   {
-    if ([(UIImageView *)self _shouldTreatImageAsTemplate:v12 symbolConfiguration:v10])
+    if ([(UIImageView *)self _shouldTreatImageAsTemplate:v12 symbolConfiguration:configurationCopy])
     {
       if (v13)
       {
@@ -2907,14 +2907,14 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
 
       else
       {
-        v15 = v14;
+        v15 = _colorForFlattening;
       }
     }
 
     else
     {
-      v15 = v14;
-      if (!v14)
+      v15 = _colorForFlattening;
+      if (!_colorForFlattening)
       {
         v20 = 0;
         goto LABEL_11;
@@ -2923,43 +2923,43 @@ void __53__UIImageView__setImageViewContentsForAnimatedImage___block_invoke(uint
 
     v20 = v15;
 LABEL_11:
-    v21 = [(_UIImageContentRenditionContext *)v11 traitCollectionForResolvingDynamicColors];
-    v19 = [v20 resolvedColorWithTraitCollection:v21];
+    traitCollectionForResolvingDynamicColors = [(_UIImageContentRenditionContext *)contextCopy traitCollectionForResolvingDynamicColors];
+    v19 = [v20 resolvedColorWithTraitCollection:traitCollectionForResolvingDynamicColors];
 
     goto LABEL_12;
   }
 
   v19 = 0;
 LABEL_12:
-  v18 = [(UIImageView *)self _effectiveContentEffectsWithImage:v12 symbolConfiguration:v10];
-  v17 = [(UIImageView *)self drawMode];
-  v16 = [(UIImageView *)self _needsBoldEffectForImage:v12 symbolConfiguration:v10 withBaseColor:v19 withEffects:v18];
+  v18 = [(UIImageView *)self _effectiveContentEffectsWithImage:v12 symbolConfiguration:configurationCopy];
+  drawMode = [(UIImageView *)self drawMode];
+  v16 = [(UIImageView *)self _needsBoldEffectForImage:v12 symbolConfiguration:configurationCopy withBaseColor:v19 withEffects:v18];
 
 LABEL_13:
-  v22 = [_UIImageContentRenditionEffects effectsWithTintColor:v19 visualEffects:v18 drawMode:v17 bold:v16];
+  v22 = [_UIImageContentRenditionEffects effectsWithTintColor:v19 visualEffects:v18 drawMode:drawMode bold:v16];
 
   return v22;
 }
 
-- (id)_renditionForSource:(id)a3 effects:(id)a4 size:(CGSize)a5 symbolConfiguration:(id)a6 withContentProvider:(id)a7
+- (id)_renditionForSource:(id)source effects:(id)effects size:(CGSize)size symbolConfiguration:(id)configuration withContentProvider:(id)provider
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v66[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  sourceCopy = source;
+  effectsCopy = effects;
+  configurationCopy = configuration;
+  providerCopy = provider;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [_UIImageContentRendition renditionWithContentProvider:v16];
+    v24 = [_UIImageContentRendition renditionWithContentProvider:providerCopy];
     goto LABEL_40;
   }
 
-  v63 = v13;
-  v62 = [v15 traitCollection];
-  if (!v14)
+  v63 = sourceCopy;
+  traitCollection = [configurationCopy traitCollection];
+  if (!effectsCopy)
   {
     v19 = 0;
     v22 = 0;
@@ -2969,14 +2969,14 @@ LABEL_13:
     v32 = v31;
     if ([v32 count])
     {
-      if (v14)
+      if (effectsCopy)
       {
-        v33 = v14[3];
+        v33 = effectsCopy[3];
 
         if (v33)
         {
-          v34 = v14[3];
-          v14[3] = 0;
+          v34 = effectsCopy[3];
+          effectsCopy[3] = 0;
         }
 
         else
@@ -2994,10 +2994,10 @@ LABEL_13:
     {
 
       v34 = 0;
-      if (v14)
+      if (effectsCopy)
       {
 LABEL_20:
-        v35 = *(v14 + 2);
+        v35 = *(effectsCopy + 2);
         goto LABEL_21;
       }
     }
@@ -3008,14 +3008,14 @@ LABEL_21:
 
     if (v36)
     {
-      if (v14)
+      if (effectsCopy)
       {
-        v37 = v14[3];
-        v38 = *(v14 + 2);
+        v37 = effectsCopy[3];
+        v38 = *(effectsCopy + 2);
         v39 = [(UIImageView *)self _colorByApplyingDrawMode:v37 toColor:v38];
-        [(UIBackgroundConfiguration *)v14 _setCustomView:v39];
+        [(UIBackgroundConfiguration *)effectsCopy _setCustomView:v39];
 
-        v14[3] = 0;
+        effectsCopy[3] = 0;
         if (!v19)
         {
           goto LABEL_32;
@@ -3036,20 +3036,20 @@ LABEL_21:
 
     else
     {
-      if (v14 && v14[3])
+      if (effectsCopy && effectsCopy[3])
       {
         v60 = v34;
         if (!v19)
         {
-          v40 = [(_UIImageContentProvider *)v16 CGImageProvider];
-          v19 = [UIImage imageWithCGImage:v40[2]()];
+          cGImageProvider = [(_UIImageContentProvider *)providerCopy CGImageProvider];
+          v19 = [UIImage imageWithCGImage:cGImageProvider[2]()];
         }
 
-        v41 = [v19 CGImage];
+        cGImage = [v19 CGImage];
         [v19 scale];
         v43 = v42;
-        v44 = CGImageGetWidth(v41) / v42;
-        v45 = CGImageGetHeight(v41) / v43;
+        v44 = CGImageGetWidth(cGImage) / v42;
+        v45 = CGImageGetHeight(cGImage) / v43;
         v46 = +[UIGraphicsImageRendererFormat preferredFormat];
         [v46 setScale:v43];
         v47 = [[UIGraphicsImageRenderer alloc] initWithSize:v46 format:v44, v45];
@@ -3059,7 +3059,7 @@ LABEL_21:
         v65[3] = &unk_1E7106F60;
         *&v65[5] = v44;
         *&v65[6] = v45;
-        v65[7] = v41;
+        v65[7] = cGImage;
         v65[4] = self;
         v48 = [(UIGraphicsImageRenderer *)v47 imageWithActions:v65];
 
@@ -3080,14 +3080,14 @@ LABEL_21:
     v64[2] = __88__UIImageView__renditionForSource_effects_size_symbolConfiguration_withContentProvider___block_invoke_2;
     v64[3] = &__block_descriptor_40_e15___CGImage__8__0l;
     v64[4] = v50;
-    v51 = [(_UIImageContentProvider *)v16 providerWithCGImageProvider:v64];
+    v51 = [(_UIImageContentProvider *)providerCopy providerWithCGImageProvider:v64];
 
-    v16 = v51;
+    providerCopy = v51;
 LABEL_32:
-    if (v14)
+    if (effectsCopy)
     {
-      v52 = *(v14 + 2);
-      v53 = *(v14 + 3);
+      v52 = *(effectsCopy + 2);
+      v53 = *(effectsCopy + 3);
     }
 
     else
@@ -3097,15 +3097,15 @@ LABEL_32:
     }
 
     v54 = v53;
-    v24 = [_UIImageContentRendition renditionWithContentProvider:v16 color:v52 effects:v54 drawMode:v34];
+    v24 = [_UIImageContentRendition renditionWithContentProvider:providerCopy color:v52 effects:v54 drawMode:v34];
 
     if (v22)
     {
-      v21 = v62;
+      v21 = traitCollection;
       v25 = v63;
-      if (v14)
+      if (effectsCopy)
       {
-        v55 = *(v14 + 8);
+        v55 = *(effectsCopy + 8);
       }
 
       else
@@ -3113,31 +3113,31 @@ LABEL_32:
         v55 = 0;
       }
 
-      v56 = [(_UIImageContentRenditionCacheKey *)width keyWithSize:_UIImageContentRenditionCacheKey unresolvedTintColor:v22 traitCollection:v62 bold:v55 & 1 drawMode:v61];
+      v56 = [(_UIImageContentRenditionCacheKey *)width keyWithSize:_UIImageContentRenditionCacheKey unresolvedTintColor:v22 traitCollection:traitCollection bold:v55 & 1 drawMode:v61];
       [v63 _cacheRendition:v24 forKey:v56];
     }
 
     else
     {
-      v21 = v62;
+      v21 = traitCollection;
       v25 = v63;
     }
 
     goto LABEL_39;
   }
 
-  v17 = v14[3];
-  if (*(v14 + 8) != 1)
+  v17 = effectsCopy[3];
+  if (*(effectsCopy + 8) != 1)
   {
-    v61 = v14[3];
+    v61 = effectsCopy[3];
     v22 = 0;
     v19 = 0;
 LABEL_12:
-    v31 = *(v14 + 3);
+    v31 = *(effectsCopy + 3);
     goto LABEL_13;
   }
 
-  v18 = *(v14 + 2);
+  v18 = *(effectsCopy + 2);
 
   if (!v18)
   {
@@ -3145,32 +3145,32 @@ LABEL_12:
     v22 = 0;
     v19 = 0;
 LABEL_11:
-    *(v14 + 8) = 0;
+    *(effectsCopy + 8) = 0;
     goto LABEL_12;
   }
 
-  v59 = self;
+  selfCopy = self;
   v66[0] = @"_UIKitBoldTintStyle";
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:1];
-  v20 = *(v14 + 2);
-  v21 = v62;
-  v22 = [(_UIImageContentRenditionCacheKey *)width keyWithSize:_UIImageContentRenditionCacheKey unresolvedTintColor:v20 traitCollection:v62 bold:*(v14 + 8) drawMode:v17];
+  v20 = *(effectsCopy + 2);
+  v21 = traitCollection;
+  v22 = [(_UIImageContentRenditionCacheKey *)width keyWithSize:_UIImageContentRenditionCacheKey unresolvedTintColor:v20 traitCollection:traitCollection bold:*(effectsCopy + 8) drawMode:v17];
 
   v23 = [v63 _cachedRenditionForKey:v22];
   if (!v23)
   {
     v61 = v17;
-    v26 = [(_UIImageContentProvider *)v16 CGImageProvider];
-    v27 = [UIImage imageWithCGImage:v26[2]()];
-    v28 = *(v14 + 2);
-    v29 = [v27 _imageWithStylePresets:v19 tintColor:v28 traitCollection:v62];
+    cGImageProvider2 = [(_UIImageContentProvider *)providerCopy CGImageProvider];
+    v27 = [UIImage imageWithCGImage:cGImageProvider2[2]()];
+    v28 = *(effectsCopy + 2);
+    v29 = [v27 _imageWithStylePresets:v19 tintColor:v28 traitCollection:traitCollection];
 
-    v30 = *(v14 + 2);
-    [(UIBackgroundConfiguration *)v14 _setCustomView:?];
+    v30 = *(effectsCopy + 2);
+    [(UIBackgroundConfiguration *)effectsCopy _setCustomView:?];
 
     v22 = v30;
     v19 = v29;
-    self = v59;
+    self = selfCopy;
     goto LABEL_11;
   }
 
@@ -3232,11 +3232,11 @@ void __35__UIImageView__setNeedsUpdateState__block_invoke(uint64_t a1)
   }
 }
 
-- (UIImageView)initWithFrame:(CGRect)a3
+- (UIImageView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIImageView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -3319,29 +3319,29 @@ void __35__UIImageView__setNeedsUpdateState__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (UIImageView)initWithCoder:(id)a3
+- (UIImageView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v61.receiver = self;
   v61.super_class = UIImageView;
-  v5 = [(UIView *)&v61 initWithCoder:v4];
+  v5 = [(UIView *)&v61 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     _UIImageViewCommonInit(v5);
-    v7 = [v4 decodeObjectForKey:@"UIImage"];
+    v7 = [coderCopy decodeObjectForKey:@"UIImage"];
     if (v7)
     {
-      v8 = [(UIView *)v6 layer];
-      [v8 contentsCenter];
+      layer = [(UIView *)v6 layer];
+      [layer contentsCenter];
       v10 = v9;
       v12 = v11;
       v14 = v13;
       v16 = v15;
 
       _setContentStretchForImage(v6, v7);
-      v17 = [(UIView *)v6 layer];
-      [v17 contentsCenter];
+      layer2 = [(UIView *)v6 layer];
+      [layer2 contentsCenter];
       v63.origin.x = v18;
       v63.origin.y = v19;
       v63.size.width = v20;
@@ -3354,20 +3354,20 @@ void __35__UIImageView__setNeedsUpdateState__block_invoke(uint64_t a1)
 
       if (!v22)
       {
-        v23 = [(UIView *)v6 layer];
-        [v23 setContentsCenter:{v10, v12, v14, v16}];
+        layer3 = [(UIView *)v6 layer];
+        [layer3 setContentsCenter:{v10, v12, v14, v16}];
       }
     }
 
-    v24 = [v4 decodeObjectForKey:@"UIHighlightedImage"];
-    v25 = [v4 decodeObjectForKey:@"UIAnimationImages"];
-    v26 = [v4 decodeObjectForKey:@"UIHighlightedAnimationImages"];
-    [v4 decodeDoubleForKey:@"UIAnimationDuration"];
+    v24 = [coderCopy decodeObjectForKey:@"UIHighlightedImage"];
+    v25 = [coderCopy decodeObjectForKey:@"UIAnimationImages"];
+    v26 = [coderCopy decodeObjectForKey:@"UIHighlightedAnimationImages"];
+    [coderCopy decodeDoubleForKey:@"UIAnimationDuration"];
     v28 = v27;
-    v59 = [v4 decodeIntegerForKey:@"UIAnimationRepeatCount"];
-    v29 = [v4 decodeBoolForKey:@"UIHighlighted"];
-    v30 = [v4 decodeBoolForKey:@"UIAdjustsImageSizeForAccessibilityContentSizeCategory"];
-    v31 = [v4 decodeObjectForKey:@"UIPreferredSymbolConfiguration"];
+    v59 = [coderCopy decodeIntegerForKey:@"UIAnimationRepeatCount"];
+    v29 = [coderCopy decodeBoolForKey:@"UIHighlighted"];
+    v30 = [coderCopy decodeBoolForKey:@"UIAdjustsImageSizeForAccessibilityContentSizeCategory"];
+    v31 = [coderCopy decodeObjectForKey:@"UIPreferredSymbolConfiguration"];
     [(_UIImageViewStorage *)v6->_storage setImage:v7];
     v60 = v24;
     [(_UIImageViewStorage *)v6->_storage setHighlightedImage:v24];
@@ -3389,13 +3389,13 @@ void __35__UIImageView__setNeedsUpdateState__block_invoke(uint64_t a1)
     }
 
     v35 = v7;
-    v36 = [v35 CIImage];
+    cIImage = [v35 CIImage];
 
-    if (v36)
+    if (cIImage)
     {
-      v37 = [v35 _representsCIImageWhichSupportsIOSurfaceRendering];
+      _representsCIImageWhichSupportsIOSurfaceRendering = [v35 _representsCIImageWhichSupportsIOSurfaceRendering];
 
-      if (!v37)
+      if (!_representsCIImageWhichSupportsIOSurfaceRendering)
       {
 LABEL_22:
         [v35 scale];
@@ -3416,14 +3416,14 @@ LABEL_23:
       v40 = [(UIImageView *)v6 _layoutForImage:v35 inSize:v38, v39];
       if ([v40 hasContents])
       {
-        v41 = [v40 contents];
+        contents = [v40 contents];
 
-        v42 = v41;
-        if (v41)
+        cGImage = contents;
+        if (contents)
         {
 LABEL_16:
-          v43 = [(UIView *)v6 layer];
-          [v43 setContents:v42];
+          layer4 = [(UIView *)v6 layer];
+          [layer4 setContents:cGImage];
 
           -[UIImageView _updateHDRFlags:](v6, "_updateHDRFlags:", [v35 isHighDynamicRange]);
           if ([v35 _isResizable])
@@ -3454,8 +3454,8 @@ LABEL_16:
       }
     }
 
-    v42 = [v35 CGImage];
-    v41 = 0;
+    cGImage = [v35 CGImage];
+    contents = 0;
     goto LABEL_16;
   }
 
@@ -3464,86 +3464,86 @@ LABEL_24:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = UIImageView;
-  [(UIView *)&v14 encodeWithCoder:v4];
-  v5 = [(UIImageView *)self image];
-  if (v5)
+  [(UIView *)&v14 encodeWithCoder:coderCopy];
+  image = [(UIImageView *)self image];
+  if (image)
   {
-    [v4 encodeObject:v5 forKey:@"UIImage"];
+    [coderCopy encodeObject:image forKey:@"UIImage"];
   }
 
-  v6 = [(UIImageView *)self highlightedImage];
-  if (v6)
+  highlightedImage = [(UIImageView *)self highlightedImage];
+  if (highlightedImage)
   {
-    [v4 encodeObject:v6 forKey:@"UIHighlightedImage"];
+    [coderCopy encodeObject:highlightedImage forKey:@"UIHighlightedImage"];
   }
 
-  v7 = [(_UIImageViewStorage *)self->_storage animationImages];
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
 
-  if (v7)
+  if (animationImages)
   {
-    v8 = [(_UIImageViewStorage *)self->_storage animationImages];
-    [v4 encodeObject:v8 forKey:@"UIAnimationImages"];
+    animationImages2 = [(_UIImageViewStorage *)self->_storage animationImages];
+    [coderCopy encodeObject:animationImages2 forKey:@"UIAnimationImages"];
   }
 
-  v9 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+  highlightedAnimationImages = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
 
-  if (v9)
+  if (highlightedAnimationImages)
   {
-    v10 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
-    [v4 encodeObject:v10 forKey:@"UIHighlightedAnimationImages"];
+    highlightedAnimationImages2 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+    [coderCopy encodeObject:highlightedAnimationImages2 forKey:@"UIHighlightedAnimationImages"];
   }
 
   [(_UIImageViewStorage *)self->_storage animationDuration];
   if (v11 != 0.0)
   {
     [(_UIImageViewStorage *)self->_storage animationDuration];
-    [v4 encodeDouble:@"UIAnimationDuration" forKey:?];
+    [coderCopy encodeDouble:@"UIAnimationDuration" forKey:?];
   }
 
   if ([(_UIImageViewStorage *)self->_storage animationRepeatCount])
   {
-    [v4 encodeInteger:-[_UIImageViewStorage animationRepeatCount](self->_storage forKey:{"animationRepeatCount"), @"UIAnimationRepeatCount"}];
+    [coderCopy encodeInteger:-[_UIImageViewStorage animationRepeatCount](self->_storage forKey:{"animationRepeatCount"), @"UIAnimationRepeatCount"}];
   }
 
   if ([(_UIImageViewStorage *)self->_storage isHighlighted])
   {
-    [v4 encodeDouble:@"UIHighlighted" forKey:{-[_UIImageViewStorage isHighlighted](self->_storage, "isHighlighted")}];
+    [coderCopy encodeDouble:@"UIHighlighted" forKey:{-[_UIImageViewStorage isHighlighted](self->_storage, "isHighlighted")}];
   }
 
   if ([(_UIImageViewStorage *)self->_storage adjustsImageSizeForAccessibilityContentSizeCategory])
   {
-    [v4 encodeBool:-[_UIImageViewStorage adjustsImageSizeForAccessibilityContentSizeCategory](self->_storage forKey:{"adjustsImageSizeForAccessibilityContentSizeCategory"), @"UIAdjustsImageSizeForAccessibilityContentSizeCategory"}];
+    [coderCopy encodeBool:-[_UIImageViewStorage adjustsImageSizeForAccessibilityContentSizeCategory](self->_storage forKey:{"adjustsImageSizeForAccessibilityContentSizeCategory"), @"UIAdjustsImageSizeForAccessibilityContentSizeCategory"}];
   }
 
-  v12 = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
+  preferredSymbolConfiguration = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
 
-  if (v12)
+  if (preferredSymbolConfiguration)
   {
-    v13 = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
-    [v4 encodeObject:v13 forKey:@"UIPreferredSymbolConfiguration"];
+    preferredSymbolConfiguration2 = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
+    [coderCopy encodeObject:preferredSymbolConfiguration2 forKey:@"UIPreferredSymbolConfiguration"];
   }
 }
 
-- (void)_setImage:(id)a3 invalidatingPendingSymbolTransitions:(BOOL)a4
+- (void)_setImage:(id)image invalidatingPendingSymbolTransitions:(BOOL)transitions
 {
-  v4 = a4;
+  transitionsCopy = transitions;
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  imageCopy = image;
   if (!self || (*(&self->super._viewFlags + 1) & 8) == 0)
   {
-    if (v4)
+    if (transitionsCopy)
     {
-      v7 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-      v8 = [v7 pendingSymbolContentTransitionForSettingSymbolImage:v6];
+      animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+      v8 = [animationPresetManager pendingSymbolContentTransitionForSettingSymbolImage:imageCopy];
       v9 = v8 != 0;
 
-      v10 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-      [v10 discardPendingSymbolContentTransitions];
+      animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+      [animationPresetManager2 discardPendingSymbolContentTransitions];
     }
 
     else
@@ -3551,10 +3551,10 @@ LABEL_24:
       v9 = 0;
     }
 
-    v11 = [(UIImageView *)self _activeImage];
-    v12 = [(_UIImageViewStorage *)self->_storage image];
-    v13 = v6;
-    v14 = v12;
+    _activeImage = [(UIImageView *)self _activeImage];
+    image = [(_UIImageViewStorage *)self->_storage image];
+    v13 = imageCopy;
+    v14 = image;
     v15 = v14;
     if (v14 == v13)
     {
@@ -3576,17 +3576,17 @@ LABEL_15:
         [(_UIImageViewStorage *)self->_storage setImage:v13];
         *&self->_imageViewFlags &= ~1u;
         [(UIImageView *)self _invalidateResolvedImages];
-        if (_UISolariumEnabled() && (!v13 || !v11))
+        if (_UISolariumEnabled() && (!v13 || !_activeImage))
         {
           [(UIView *)self setNeedsUpdateProperties];
         }
 
-        v17 = [v13 _isIconImage];
-        v18 = [(_UIImageViewStorage *)self->_storage systemIconAppearanceTraitRegistration];
+        _isIconImage = [v13 _isIconImage];
+        systemIconAppearanceTraitRegistration = [(_UIImageViewStorage *)self->_storage systemIconAppearanceTraitRegistration];
 
-        if (v17)
+        if (_isIconImage)
         {
-          if (!v18)
+          if (!systemIconAppearanceTraitRegistration)
           {
             v19 = objc_opt_self();
             v23[0] = v19;
@@ -3596,10 +3596,10 @@ LABEL_15:
           }
         }
 
-        else if (v18)
+        else if (systemIconAppearanceTraitRegistration)
         {
-          v22 = [(_UIImageViewStorage *)self->_storage systemIconAppearanceTraitRegistration];
-          [(UIView *)self unregisterForTraitChanges:v22];
+          systemIconAppearanceTraitRegistration2 = [(_UIImageViewStorage *)self->_storage systemIconAppearanceTraitRegistration];
+          [(UIView *)self unregisterForTraitChanges:systemIconAppearanceTraitRegistration2];
 
           [(_UIImageViewStorage *)self->_storage setSystemIconAppearanceTraitRegistration:0];
         }
@@ -3616,9 +3616,9 @@ LABEL_26:
     }
 
 LABEL_24:
-    if (![(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:v11])
+    if (![(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:_activeImage])
     {
-      [(UIImageView *)self _updateImageViewForOldImage:v11 newImage:v13];
+      [(UIImageView *)self _updateImageViewForOldImage:_activeImage newImage:v13];
     }
 
     goto LABEL_26;
@@ -3630,23 +3630,23 @@ LABEL_27:
 - (void)setHighlightedImage:(UIImage *)highlightedImage
 {
   v4 = highlightedImage;
-  v5 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
-  v6 = v5;
-  if (v5)
+  resolvedHighlightedImage = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
+  v6 = resolvedHighlightedImage;
+  if (resolvedHighlightedImage)
   {
-    v7 = v5;
+    highlightedImage = resolvedHighlightedImage;
   }
 
   else
   {
-    v7 = [(_UIImageViewStorage *)self->_storage highlightedImage];
+    highlightedImage = [(_UIImageViewStorage *)self->_storage highlightedImage];
   }
 
-  v8 = v7;
+  v8 = highlightedImage;
 
-  v9 = [(_UIImageViewStorage *)self->_storage highlightedImage];
+  highlightedImage2 = [(_UIImageViewStorage *)self->_storage highlightedImage];
   v16 = v4;
-  v10 = v9;
+  v10 = highlightedImage2;
   if (v10 == v16)
   {
   }
@@ -3667,16 +3667,16 @@ LABEL_27:
     {
     }
 
-    v12 = [(_UIImageViewStorage *)self->_storage highlightedImage];
+    highlightedImage3 = [(_UIImageViewStorage *)self->_storage highlightedImage];
 
-    if (v12)
+    if (highlightedImage3)
     {
-      v13 = [(_UIImageViewStorage *)self->_storage highlightedImage];
-      [(UIImageView *)self _clearPretiledImageCacheForImage:v13];
+      highlightedImage4 = [(_UIImageViewStorage *)self->_storage highlightedImage];
+      [(UIImageView *)self _clearPretiledImageCacheForImage:highlightedImage4];
     }
 
-    v14 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
-    [(UIImageView *)self _clearPretiledImageCacheForImage:v14];
+    resolvedHighlightedImage2 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
+    [(UIImageView *)self _clearPretiledImageCacheForImage:resolvedHighlightedImage2];
 
     [(UIImageView *)self _updatePretiledImageCacheForImage:v16];
     [(_UIImageViewStorage *)self->_storage setHighlightedImage:v16];
@@ -3687,9 +3687,9 @@ LABEL_27:
 LABEL_14:
   if ([(UIImageView *)self isHighlighted])
   {
-    v15 = [(UIImageView *)self _currentImage];
+    _currentImage = [(UIImageView *)self _currentImage];
 
-    if (!v15)
+    if (!_currentImage)
     {
       [(UIImageView *)self _updateImageViewForOldImage:v8 newImage:v16];
     }
@@ -3703,13 +3703,13 @@ LABEL_14:
   {
     [(_UIImageViewStorage *)self->_storage setHighlighted:v3];
     *&self->_imageViewFlags &= ~1u;
-    v5 = [(UIImageView *)self _currentImage];
-    v6 = [(UIImageView *)self _displayImageAsLayered:v5];
+    _currentImage = [(UIImageView *)self _currentImage];
+    v6 = [(UIImageView *)self _displayImageAsLayered:_currentImage];
 
     if (v6)
     {
-      v7 = [(UIImageView *)self _layeredImageContainer];
-      [v7 setPressed:v3];
+      _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+      [_layeredImageContainer setPressed:v3];
     }
 
     else
@@ -3726,36 +3726,36 @@ LABEL_14:
   }
 }
 
-- (void)_setViewGeometry:(CGRect)a3 forMetric:(int)a4
+- (void)_setViewGeometry:(CGRect)geometry forMetric:(int)metric
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = geometry.size.height;
+  width = geometry.size.width;
+  y = geometry.origin.y;
+  x = geometry.origin.x;
   [(UIView *)self bounds];
   v11 = v10;
   v13 = v12;
-  if (a4 == 1)
+  if (metric == 1)
   {
-    v32 = self;
+    selfCopy = self;
     v14 = &selRef_setBounds_;
-    v15 = &v32;
+    v15 = &selfCopy;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!metric)
   {
-    v33 = self;
+    selfCopy2 = self;
     v14 = &selRef_setFrame_;
-    v15 = &v33;
+    v15 = &selfCopy2;
 LABEL_5:
     v15[1] = UIImageView;
-    objc_msgSendSuper2(v15, *v14, x, y, width, height, v32);
+    objc_msgSendSuper2(v15, *v14, x, y, width, height, selfCopy);
   }
 
   [(UIImageView *)self _updateRBSymbolLayerPositionIfNeededForContentTransitionPendingLayoutPass];
-  v16 = [(UIImageView *)self _currentImage];
-  v17 = [(UIImageView *)self _currentHighlightedImage];
+  _currentImage = [(UIImageView *)self _currentImage];
+  _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   if (width != v11 || height != v13)
   {
     if ([(UIImageView *)self _canDrawContent])
@@ -3767,49 +3767,49 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v18 = [v16 content];
-    if ([v18 canScaleImageToTargetResolution])
+    content = [_currentImage content];
+    if ([content canScaleImageToTargetResolution])
     {
     }
 
     else
     {
-      v19 = [v17 content];
-      v20 = [v19 canScaleImageToTargetResolution];
+      content2 = [_currentHighlightedImage content];
+      canScaleImageToTargetResolution = [content2 canScaleImageToTargetResolution];
 
-      if (!v20)
+      if (!canScaleImageToTargetResolution)
       {
-        v22 = [v16 content];
-        if ([v22 isCGImage])
+        content3 = [_currentImage content];
+        if ([content3 isCGImage])
         {
         }
 
         else
         {
-          v23 = [v17 content];
-          v24 = [v23 isCGImage];
+          content4 = [_currentHighlightedImage content];
+          isCGImage = [content4 isCGImage];
 
-          if (!v24)
+          if (!isCGImage)
           {
             goto LABEL_9;
           }
         }
 
-        v25 = [(UIImageView *)self _recomputePretilingState];
-        v26 = v25;
-        if (v25)
+        _recomputePretilingState = [(UIImageView *)self _recomputePretilingState];
+        v26 = _recomputePretilingState;
+        if (_recomputePretilingState)
         {
           [(UIImageView *)self _updateState];
         }
 
-        v27 = [(UIView *)self layer];
-        v28 = [v27 contentsScaling];
+        layer = [(UIView *)self layer];
+        contentsScaling = [layer contentsScaling];
         v29 = *MEMORY[0x1E6979670];
 
         [(UIView *)self bounds];
-        if ((((v28 != v29) ^ [v16 _isTiledWhenStretchedToSize:{v30, v31}]) & 1) == 0)
+        if ((((contentsScaling != v29) ^ [_currentImage _isTiledWhenStretchedToSize:{v30, v31}]) & 1) == 0)
         {
-          _setContentStretchForImage(self, v16);
+          _setContentStretchForImage(self, _currentImage);
         }
 
         if (v26)
@@ -3821,32 +3821,32 @@ LABEL_14:
       }
     }
 
-    v21 = [(UIImageView *)self _animatesContents];
+    _animatesContents = [(UIImageView *)self _animatesContents];
     [(UIImageView *)self _setAnimatesContents:1];
     [(UIImageView *)self _updateState];
-    [(UIImageView *)self _setAnimatesContents:v21];
+    [(UIImageView *)self _setAnimatesContents:_animatesContents];
     goto LABEL_14;
   }
 
 LABEL_15:
 }
 
-- (void)setContentScaleFactor:(double)a3
+- (void)setContentScaleFactor:(double)factor
 {
   v6.receiver = self;
   v6.super_class = UIImageView;
   [(UIView *)&v6 setContentScaleFactor:?];
-  v5 = [(UIImageView *)self _layeredImageContainer];
-  [v5 setContentScaleFactor:a3];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+  [_layeredImageContainer setContentScaleFactor:factor];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
-  v5 = [(UIView *)self contentMode];
+  contentMode = [(UIView *)self contentMode];
   v6.receiver = self;
   v6.super_class = UIImageView;
-  [(UIView *)&v6 setContentMode:a3];
-  if (v5 != a3)
+  [(UIView *)&v6 setContentMode:mode];
+  if (contentMode != mode)
   {
     *&self->_imageViewFlags &= ~1u;
     [(UIImageView *)self _imageContentParametersDidChange];
@@ -3855,34 +3855,34 @@ LABEL_15:
   }
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
   v4.receiver = self;
   v4.super_class = UIImageView;
-  [(UIView *)&v4 setCenter:a3.x, a3.y];
+  [(UIView *)&v4 setCenter:center.x, center.y];
   [(UIImageView *)self _updateRBSymbolLayerPositionIfNeededForContentTransitionPendingLayoutPass];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5.receiver = self;
   v5.super_class = UIImageView;
   [(UIView *)&v5 setHidden:?];
-  if (!a3)
+  if (!hidden)
   {
     [(UIImageView *)self _mainQ_beginLoadingIfApplicable];
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  v4 = [(UIImageView *)self animationImages:a3.width];
-  v5 = [(UIImageView *)self highlightedAnimationImages];
-  v6 = [(UIImageView *)self _currentImage];
-  v7 = [(UIImageView *)self _currentHighlightedImage];
+  v4 = [(UIImageView *)self animationImages:size.width];
+  highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
+  _currentImage = [(UIImageView *)self _currentImage];
+  _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   v8 = [v4 count];
   v9 = v4;
-  if (v8 || (v10 = [v5 count], v9 = v5, v10))
+  if (v8 || (v10 = [highlightedAnimationImages count], v9 = highlightedAnimationImages, v10))
   {
     v11 = [v9 objectAtIndex:0];
     if (v11)
@@ -3899,20 +3899,20 @@ LABEL_4:
 
   else
   {
-    v21 = v6;
-    if (v6 || (v21 = v7) != 0)
+    v21 = _currentImage;
+    if (_currentImage || (v21 = _currentHighlightedImage) != 0)
     {
       v11 = v21;
       goto LABEL_4;
     }
   }
 
-  v22 = [(UIImageView *)self _placeholderView];
+  _placeholderView = [(UIImageView *)self _placeholderView];
   v17 = *MEMORY[0x1E695F060];
-  if (v22)
+  if (_placeholderView)
   {
-    v23 = v22;
-    [v22 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    v23 = _placeholderView;
+    [_placeholderView systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
     v17 = v24;
     v20 = v25;
 
@@ -3934,18 +3934,18 @@ LABEL_11:
   return result;
 }
 
-- (void)_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:(BOOL)a3
+- (void)_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:(BOOL)changed
 {
   if ((*(&self->super._viewFlags + 7) & 2) != 0)
   {
-    v4 = a3;
-    v11 = [(UIView *)self _layoutEngine];
-    if (v11)
+    changedCopy = changed;
+    _layoutEngine = [(UIView *)self _layoutEngine];
+    if (_layoutEngine)
     {
-      if (v4)
+      if (changedCopy)
       {
-        v6 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v6 postNotificationName:@"_UIViewHasBaselinePropertyChanged" object:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"_UIViewHasBaselinePropertyChanged" object:self];
       }
 
       [(UIImageView *)self _baselineOffsetFromBottom];
@@ -3962,32 +3962,32 @@ LABEL_11:
   }
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIImageView *)self _currentImage];
-  v7 = v6;
-  if (v6)
+  height = size.height;
+  width = size.width;
+  _currentImage = [(UIImageView *)self _currentImage];
+  v7 = _currentImage;
+  if (_currentImage)
   {
-    v8 = v6;
+    _currentHighlightedImage = _currentImage;
   }
 
   else
   {
-    v8 = [(UIImageView *)self _currentHighlightedImage];
+    _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
   }
 
-  v9 = v8;
+  v9 = _currentHighlightedImage;
 
   if ([v9 hasBaseline])
   {
-    v10 = [(UIImageView *)self _layoutForImage:v9 inSize:1 cachePerSize:1 forBaselineOffset:width, height];
+    height = [(UIImageView *)self _layoutForImage:v9 inSize:1 cachePerSize:1 forBaselineOffset:width, height];
     [(UIImageView *)self alignmentRectInsets];
     v13 = v12;
-    if (v10)
+    if (height)
     {
-      v14 = v10[9];
+      v14 = height[9];
     }
 
     else
@@ -3996,7 +3996,7 @@ LABEL_11:
     }
 
     v15 = v14 - v11;
-    [v10 baselineOffsetFromBottom];
+    [height baselineOffsetFromBottom];
     v17 = v16 - v13;
   }
 
@@ -4013,20 +4013,20 @@ LABEL_11:
   return result;
 }
 
-- (id)_imageContentGuideAllowingCreation:(BOOL)a3
+- (id)_imageContentGuideAllowingCreation:(BOOL)creation
 {
-  v3 = a3;
+  creationCopy = creation;
   v19[4] = *MEMORY[0x1E69E9840];
-  v5 = [(_UIImageViewStorage *)self->_storage imageContentGuide];
+  imageContentGuide = [(_UIImageViewStorage *)self->_storage imageContentGuide];
 
-  if (v5)
+  if (imageContentGuide)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = !v3;
+    v6 = !creationCopy;
   }
 
   if (!v6)
@@ -4038,11 +4038,11 @@ LABEL_11:
     [(UILayoutGuide *)v7 setIdentifier:@"UIImageViewImageContentGuide"];
     [(_UIImageViewStorage *)self->_storage setImageContentGuide:v7];
     v8 = MEMORY[0x1E69977A0];
-    v9 = self;
-    v10 = [v8 constraintWithItem:v7 attribute:3 relatedBy:0 toItem:v9 attribute:3];
-    v11 = [MEMORY[0x1E69977A0] constraintWithItem:v7 attribute:1 relatedBy:0 toItem:v9 attribute:1];
-    v12 = [MEMORY[0x1E69977A0] constraintWithItem:v9 attribute:4 relatedBy:0 toItem:v7 attribute:4];
-    v13 = [MEMORY[0x1E69977A0] constraintWithItem:v9 attribute:2 relatedBy:0 toItem:v7 attribute:2];
+    selfCopy = self;
+    v10 = [v8 constraintWithItem:v7 attribute:3 relatedBy:0 toItem:selfCopy attribute:3];
+    v11 = [MEMORY[0x1E69977A0] constraintWithItem:v7 attribute:1 relatedBy:0 toItem:selfCopy attribute:1];
+    v12 = [MEMORY[0x1E69977A0] constraintWithItem:selfCopy attribute:4 relatedBy:0 toItem:v7 attribute:4];
+    v13 = [MEMORY[0x1E69977A0] constraintWithItem:selfCopy attribute:2 relatedBy:0 toItem:v7 attribute:2];
     [v10 setIdentifier:@"UIImageView-imageContentGuide-top-constraint"];
     [v11 setIdentifier:@"UIImageView-imageContentGuide-left-constraint"];
     [v12 setIdentifier:@"UIImageView-imageContentGuide-bottom-constraint"];
@@ -4054,20 +4054,20 @@ LABEL_11:
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
     [(UILayoutGuide *)v7 _setSystemConstraints:v14];
 
-    [(UIImageView *)v9 _imageContentParametersDidChange];
+    [(UIImageView *)selfCopy _imageContentParametersDidChange];
     v15 = MEMORY[0x1E69977A0];
-    v16 = [(UILayoutGuide *)v7 _systemConstraints];
-    [v15 activateConstraints:v16];
+    _systemConstraints = [(UILayoutGuide *)v7 _systemConstraints];
+    [v15 activateConstraints:_systemConstraints];
   }
 
-  v17 = [(_UIImageViewStorage *)self->_storage imageContentGuide];
+  imageContentGuide2 = [(_UIImageViewStorage *)self->_storage imageContentGuide];
 
-  return v17;
+  return imageContentGuide2;
 }
 
-- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)a3
+- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)calculation
 {
-  if (a3)
+  if (calculation)
   {
     v3 = 512;
   }
@@ -4080,15 +4080,15 @@ LABEL_11:
   *&self->_imageViewFlags = *&self->_imageViewFlags & 0xFDFF | v3;
 }
 
-- (id)_symbolConfigurationForImage:(id)a3
+- (id)_symbolConfigurationForImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   WeakRetained = objc_loadWeakRetained(&self->_cachedSymbolConfigurationImage);
   v6 = WeakRetained;
   cachedSymbolConfiguration = self->_cachedSymbolConfiguration;
   if (cachedSymbolConfiguration)
   {
-    v8 = WeakRetained == v4;
+    v8 = WeakRetained == imageCopy;
   }
 
   else
@@ -4104,11 +4104,11 @@ LABEL_11:
   else
   {
     v9 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
-    v10 = [v4 _automaticSymbolConfiguration];
-    v11 = v10;
-    if (v10)
+    _automaticSymbolConfiguration = [imageCopy _automaticSymbolConfiguration];
+    v11 = _automaticSymbolConfiguration;
+    if (_automaticSymbolConfiguration)
     {
-      v12 = v10;
+      v12 = _automaticSymbolConfiguration;
     }
 
     else
@@ -4119,11 +4119,11 @@ LABEL_11:
     v13 = v12;
     v30 = v13;
 
-    v14 = [(UIImageView *)self preferredSymbolConfiguration];
-    v15 = v14;
-    if (v14)
+    preferredSymbolConfiguration = [(UIImageView *)self preferredSymbolConfiguration];
+    v15 = preferredSymbolConfiguration;
+    if (preferredSymbolConfiguration)
     {
-      v16 = v14;
+      v16 = preferredSymbolConfiguration;
     }
 
     else
@@ -4133,11 +4133,11 @@ LABEL_11:
 
     v17 = v16;
 
-    v18 = [(UIImageView *)self _overridingSymbolConfiguration];
-    v19 = v18;
-    if (v18)
+    _overridingSymbolConfiguration = [(UIImageView *)self _overridingSymbolConfiguration];
+    v19 = _overridingSymbolConfiguration;
+    if (_overridingSymbolConfiguration)
     {
-      v20 = v18;
+      v20 = _overridingSymbolConfiguration;
     }
 
     else
@@ -4148,17 +4148,17 @@ LABEL_11:
     v21 = v20;
 
     v22 = [v13 configurationByApplyingConfiguration:v17];
-    v23 = [v4 symbolConfiguration];
-    v24 = [v22 configurationByApplyingConfiguration:v23];
+    symbolConfiguration = [imageCopy symbolConfiguration];
+    v24 = [v22 configurationByApplyingConfiguration:symbolConfiguration];
 
     v25 = [v24 configurationByApplyingConfiguration:v21];
 
-    v26 = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
-    v27 = [v26 imageConfiguration];
-    v28 = [v25 configurationByApplyingConfiguration:v27];
+    _effectiveImageViewTraitCollectionForResolvingImages = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
+    imageConfiguration = [_effectiveImageViewTraitCollectionForResolvingImages imageConfiguration];
+    v28 = [v25 configurationByApplyingConfiguration:imageConfiguration];
 
     objc_storeStrong(&self->_cachedSymbolConfiguration, v28);
-    objc_storeWeak(&self->_cachedSymbolConfigurationImage, v4);
+    objc_storeWeak(&self->_cachedSymbolConfigurationImage, imageCopy);
   }
 
   return v28;
@@ -4167,10 +4167,10 @@ LABEL_11:
 - (void)setPreferredSymbolConfiguration:(UIImageSymbolConfiguration *)preferredSymbolConfiguration
 {
   v4 = preferredSymbolConfiguration;
-  v5 = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
+  preferredSymbolConfiguration = [(_UIImageViewStorage *)self->_storage preferredSymbolConfiguration];
   v6 = v4;
   v9 = v6;
-  if (v5 == v6)
+  if (preferredSymbolConfiguration == v6)
   {
 
 LABEL_9:
@@ -4178,35 +4178,35 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !preferredSymbolConfiguration)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(UIImageSymbolConfiguration *)v5 isEqual:v6];
+  v7 = [(UIImageSymbolConfiguration *)preferredSymbolConfiguration isEqual:v6];
 
   v8 = v9;
   if (!v7)
   {
 LABEL_8:
-    v5 = [(UIImageView *)self _activeImage];
+    preferredSymbolConfiguration = [(UIImageView *)self _activeImage];
     [(_UIImageViewStorage *)self->_storage setPreferredSymbolConfiguration:v9];
     [(UIImageView *)self _invalidateResolvedImages];
-    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:v5];
+    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:preferredSymbolConfiguration];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)_setOverridingSymbolConfiguration:(id)a3
+- (void)_setOverridingSymbolConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(_UIImageViewStorage *)self->_storage overridingSymbolConfiguration];
-  v6 = v4;
+  configurationCopy = configuration;
+  overridingSymbolConfiguration = [(_UIImageViewStorage *)self->_storage overridingSymbolConfiguration];
+  v6 = configurationCopy;
   v9 = v6;
-  if (v5 == v6)
+  if (overridingSymbolConfiguration == v6)
   {
 
 LABEL_9:
@@ -4214,35 +4214,35 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !overridingSymbolConfiguration)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [overridingSymbolConfiguration isEqual:v6];
 
   v8 = v9;
   if ((v7 & 1) == 0)
   {
 LABEL_8:
-    v5 = [(UIImageView *)self _activeImage];
+    overridingSymbolConfiguration = [(UIImageView *)self _activeImage];
     [(_UIImageViewStorage *)self->_storage setOverridingSymbolConfiguration:v9];
     [(UIImageView *)self _invalidateResolvedImages];
-    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:v5];
+    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:overridingSymbolConfiguration];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)_setPreferredSymbolVariant:(id)a3
+- (void)_setPreferredSymbolVariant:(id)variant
 {
-  v4 = a3;
-  v5 = [(_UIImageViewStorage *)self->_storage preferredSymbolVariant];
-  v6 = v4;
+  variantCopy = variant;
+  preferredSymbolVariant = [(_UIImageViewStorage *)self->_storage preferredSymbolVariant];
+  v6 = variantCopy;
   v9 = v6;
-  if (v5 == v6)
+  if (preferredSymbolVariant == v6)
   {
 
 LABEL_9:
@@ -4250,31 +4250,31 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !preferredSymbolVariant)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [v5 isEqual:v6];
+  v7 = [preferredSymbolVariant isEqual:v6];
 
   v8 = v9;
   if ((v7 & 1) == 0)
   {
 LABEL_8:
-    v5 = [(UIImageView *)self _activeImage];
+    preferredSymbolVariant = [(UIImageView *)self _activeImage];
     [(_UIImageViewStorage *)self->_storage setPreferredSymbolVariant:v9];
     [(UIImageView *)self _invalidateResolvedImages];
-    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:v5];
+    [(UIImageView *)self _resolveImagesWithPreviouslyDisplayedImage:preferredSymbolVariant];
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)a3
+- (void)setTranslatesAutoresizingMaskIntoConstraints:(BOOL)constraints
 {
-  if (a3)
+  if (constraints)
   {
     v7.receiver = self;
     v7.super_class = UIImageView;
@@ -4283,52 +4283,52 @@ LABEL_10:
 
   else
   {
-    v4 = [(UIImageView *)self _currentImage];
-    if (v4)
+    _currentImage = [(UIImageView *)self _currentImage];
+    if (_currentImage)
     {
-      v5 = [(UIView *)self translatesAutoresizingMaskIntoConstraints];
+      translatesAutoresizingMaskIntoConstraints = [(UIView *)self translatesAutoresizingMaskIntoConstraints];
     }
 
     else
     {
-      v6 = [(UIImageView *)self _currentHighlightedImage];
-      if (v6)
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+      if (_currentHighlightedImage)
       {
-        v5 = [(UIView *)self translatesAutoresizingMaskIntoConstraints];
+        translatesAutoresizingMaskIntoConstraints = [(UIView *)self translatesAutoresizingMaskIntoConstraints];
       }
 
       else
       {
-        v5 = 0;
+        translatesAutoresizingMaskIntoConstraints = 0;
       }
     }
 
     v7.receiver = self;
     v7.super_class = UIImageView;
     [(UIView *)&v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    if (v5)
+    if (translatesAutoresizingMaskIntoConstraints)
     {
       [(UIView *)self invalidateIntrinsicContentSize];
     }
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIImageView *)self _activeImage];
-  v13 = v8;
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _activeImage = [(UIImageView *)self _activeImage];
+  v13 = _activeImage;
+  if (_activeImage)
   {
     [(UIView *)self bounds];
     [v13 drawInRect:17 blendMode:? alpha:?];
-    v8 = v13;
+    _activeImage = v13;
   }
 
-  if ([(UIImageView *)self _needsImageEffectsForImage:v8])
+  if ([(UIImageView *)self _needsImageEffectsForImage:_activeImage])
   {
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
@@ -4359,33 +4359,33 @@ LABEL_10:
     [(UIImageView *)self stopAnimating];
   }
 
-  v5 = [(_UIImageViewStorage *)self->_storage animationImages];
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
   v6 = v4;
   v7 = v6;
-  if (v5 == v6)
+  if (animationImages == v6)
   {
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !animationImages)
   {
 
     goto LABEL_10;
   }
 
-  v8 = [(NSArray *)v5 isEqual:v6];
+  v8 = [(NSArray *)animationImages isEqual:v6];
 
   if ((v8 & 1) == 0)
   {
 LABEL_10:
-    v5 = [(_UIImageViewStorage *)self->_storage animationImages];
+    animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    v9 = [(NSArray *)animationImages countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v9)
     {
       v10 = v9;
@@ -4396,13 +4396,13 @@ LABEL_10:
         {
           if (*v29 != v11)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(animationImages);
           }
 
           [(UIImageView *)self _clearPretiledImageCacheForImage:*(*(&v28 + 1) + 8 * i)];
         }
 
-        v10 = [(NSArray *)v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v10 = [(NSArray *)animationImages countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v10);
@@ -4445,46 +4445,46 @@ LABEL_10:
 
 LABEL_26:
   [(UIImageView *)self _updateState];
-  v19 = [(UIImageView *)self _currentImage];
-  if (!v19)
+  _currentImage = [(UIImageView *)self _currentImage];
+  if (!_currentImage)
   {
     if (![(NSArray *)v7 count])
     {
       goto LABEL_30;
     }
 
-    v19 = [(NSArray *)v7 objectAtIndex:0];
-    [v19 scale];
+    _currentImage = [(NSArray *)v7 objectAtIndex:0];
+    [_currentImage scale];
     [(UIImageView *)self setContentScaleFactor:?];
   }
 
 LABEL_30:
-  v20 = [(UIImageView *)self _currentImage];
-  if (v20)
+  _currentImage2 = [(UIImageView *)self _currentImage];
+  if (_currentImage2)
   {
     [(UIView *)self setOpaque:0];
   }
 
   else
   {
-    v21 = [(UIImageView *)self animationImages];
-    if (v21)
+    animationImages2 = [(UIImageView *)self animationImages];
+    if (animationImages2)
     {
       [(UIView *)self setOpaque:0];
     }
 
     else
     {
-      v22 = [(UIImageView *)self _currentHighlightedImage];
-      if (v22)
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+      if (_currentHighlightedImage)
       {
         [(UIView *)self setOpaque:0];
       }
 
       else
       {
-        v23 = [(UIImageView *)self highlightedAnimationImages];
-        [(UIView *)self setOpaque:v23 == 0];
+        highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
+        [(UIView *)self setOpaque:highlightedAnimationImages == 0];
       }
     }
   }
@@ -4499,18 +4499,18 @@ LABEL_30:
     [(UIImageView *)self stopAnimating];
   }
 
-  v5 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+  highlightedAnimationImages = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
   v6 = v4;
   v7 = v6;
-  if (v5 == v6)
+  if (highlightedAnimationImages == v6)
   {
 
     goto LABEL_27;
   }
 
-  if (v6 && v5)
+  if (v6 && highlightedAnimationImages)
   {
-    v8 = [(NSArray *)v5 isEqual:v6];
+    v8 = [(NSArray *)highlightedAnimationImages isEqual:v6];
 
     if (v8)
     {
@@ -4526,8 +4526,8 @@ LABEL_30:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
-  v10 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  highlightedAnimationImages2 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+  v10 = [highlightedAnimationImages2 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4538,13 +4538,13 @@ LABEL_30:
       {
         if (*v33 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(highlightedAnimationImages2);
         }
 
         [(UIImageView *)self _clearPretiledImageCacheForImage:*(*(&v32 + 1) + 8 * i)];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v11 = [highlightedAnimationImages2 countByEnumeratingWithState:&v32 objects:v37 count:16];
     }
 
     while (v11);
@@ -4581,8 +4581,8 @@ LABEL_30:
   v19 = [(NSArray *)v14 copy];
   [(_UIImageViewStorage *)self->_storage setHighlightedAnimationImages:v19];
 
-  v20 = [(_UIImageViewStorage *)self->_storage animationImages];
-  v21 = [v20 count];
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
+  v21 = [animationImages count];
 
   if (!v21)
   {
@@ -4595,11 +4595,11 @@ LABEL_27:
     [(UIImageView *)self _updateState];
   }
 
-  v22 = [(UIImageView *)self _currentImage];
-  if (!v22)
+  _currentImage = [(UIImageView *)self _currentImage];
+  if (!_currentImage)
   {
-    v22 = [(_UIImageViewStorage *)self->_storage animationImages];
-    if (![v22 count])
+    _currentImage = [(_UIImageViewStorage *)self->_storage animationImages];
+    if (![_currentImage count])
     {
       v23 = [(NSArray *)v7 count];
 
@@ -4608,39 +4608,39 @@ LABEL_27:
         goto LABEL_34;
       }
 
-      v22 = [(NSArray *)v7 objectAtIndex:0];
-      [v22 scale];
+      _currentImage = [(NSArray *)v7 objectAtIndex:0];
+      [_currentImage scale];
       [(UIImageView *)self setContentScaleFactor:?];
     }
   }
 
 LABEL_34:
-  v24 = [(UIImageView *)self _currentImage];
-  if (v24)
+  _currentImage2 = [(UIImageView *)self _currentImage];
+  if (_currentImage2)
   {
     [(UIView *)self setOpaque:0];
   }
 
   else
   {
-    v25 = [(UIImageView *)self animationImages];
-    if (v25)
+    animationImages2 = [(UIImageView *)self animationImages];
+    if (animationImages2)
     {
       [(UIView *)self setOpaque:0];
     }
 
     else
     {
-      v26 = [(UIImageView *)self _currentHighlightedImage];
-      if (v26)
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+      if (_currentHighlightedImage)
       {
         [(UIView *)self setOpaque:0];
       }
 
       else
       {
-        v27 = [(UIImageView *)self highlightedAnimationImages];
-        [(UIView *)self setOpaque:v27 == 0];
+        highlightedAnimationImages3 = [(UIImageView *)self highlightedAnimationImages];
+        [(UIView *)self setOpaque:highlightedAnimationImages3 == 0];
       }
     }
   }
@@ -4670,16 +4670,16 @@ LABEL_34:
   [(_UIImageViewStorage *)storage setAnimationRepeatCount:animationRepeatCount];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  if (!-[UIImageView isAnimating](self, "isAnimating") && !CGColorEqualToColor([v4 CGColor], -[UIView _backgroundCGColor](self, "_backgroundCGColor")))
+  colorCopy = color;
+  if (!-[UIImageView isAnimating](self, "isAnimating") && !CGColorEqualToColor([colorCopy CGColor], -[UIView _backgroundCGColor](self, "_backgroundCGColor")))
   {
     v7.receiver = self;
     v7.super_class = UIImageView;
-    [(UIView *)&v7 setBackgroundColor:v4];
-    v5 = [(UIImageView *)self _currentImage];
-    if (v5)
+    [(UIView *)&v7 setBackgroundColor:colorCopy];
+    _currentImage = [(UIImageView *)self _currentImage];
+    if (_currentImage)
     {
 
 LABEL_5:
@@ -4689,9 +4689,9 @@ LABEL_5:
 
     if ([(UIImageView *)self isHighlighted])
     {
-      v6 = [(UIImageView *)self _currentHighlightedImage];
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
 
-      if (v6)
+      if (_currentHighlightedImage)
       {
         goto LABEL_5;
       }
@@ -4709,18 +4709,18 @@ LABEL_8:
   [(UIImageView *)self _updateScrollPocketInteraction];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  v5 = [(UIView *)self semanticContentAttribute];
+  semanticContentAttribute = [(UIView *)self semanticContentAttribute];
   v8.receiver = self;
   v8.super_class = UIImageView;
-  [(UIView *)&v8 setSemanticContentAttribute:a3];
-  if (v5 != a3)
+  [(UIView *)&v8 setSemanticContentAttribute:attribute];
+  if (semanticContentAttribute != attribute)
   {
-    v6 = [(UIImageView *)self image];
-    v7 = [v6 flipsForRightToLeftLayoutDirection];
+    image = [(UIImageView *)self image];
+    flipsForRightToLeftLayoutDirection = [image flipsForRightToLeftLayoutDirection];
 
-    if (v7)
+    if (flipsForRightToLeftLayoutDirection)
     {
       [(UIImageView *)self _invalidateImageLayouts];
     }
@@ -4734,10 +4734,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if (-[UIImageView _animatesContents](self, "_animatesContents") && ([v4 isEqualToString:@"contents"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"contentsTransform") & 1) != 0)
+  keyCopy = key;
+  if (-[UIImageView _animatesContents](self, "_animatesContents") && ([keyCopy isEqualToString:@"contents"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"contentsTransform") & 1) != 0)
   {
     goto LABEL_4;
   }
@@ -4748,13 +4748,13 @@ LABEL_8:
 LABEL_11:
     v8.receiver = self;
     v8.super_class = UIImageView;
-    v5 = [(UIView *)&v8 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v8 _shouldAnimatePropertyWithKey:keyCopy];
     goto LABEL_12;
   }
 
   if (+[_UIHDRUsageCoordinator useCALayerDynamicRange])
   {
-    if ([v4 isEqualToString:@"contentsEDRStrength"])
+    if ([keyCopy isEqualToString:@"contentsEDRStrength"])
     {
       goto LABEL_4;
     }
@@ -4767,7 +4767,7 @@ LABEL_11:
     v6 = @"contentsMaximumDesiredEDR";
   }
 
-  if (([v4 isEqualToString:v6] & 1) == 0)
+  if (([keyCopy isEqualToString:v6] & 1) == 0)
   {
     goto LABEL_11;
   }
@@ -4779,10 +4779,10 @@ LABEL_12:
   return v5;
 }
 
-- (id)_initialValueForKey:(id)a3
+- (id)_initialValueForKey:(id)key
 {
-  v4 = a3;
-  if ([@"imageDynamicRange" isEqualToString:v4])
+  keyCopy = key;
+  if ([@"imageDynamicRange" isEqualToString:keyCopy])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[UIImageView imageDynamicRange](self, "imageDynamicRange")}];
   }
@@ -4791,7 +4791,7 @@ LABEL_12:
   {
     v8.receiver = self;
     v8.super_class = UIImageView;
-    v5 = [(UIView *)&v8 _initialValueForKey:v4];
+    v5 = [(UIView *)&v8 _initialValueForKey:keyCopy];
   }
 
   v6 = v5;
@@ -4799,26 +4799,26 @@ LABEL_12:
   return v6;
 }
 
-- (void)_generateDeferredAnimations:(id)a3
+- (void)_generateDeferredAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   v14.receiver = self;
   v14.super_class = UIImageView;
-  [(UIView *)&v14 _generateDeferredAnimations:v4];
+  [(UIView *)&v14 _generateDeferredAnimations:animationsCopy];
   objc_opt_self();
   if (dyld_program_sdk_at_least())
   {
-    v5 = [v4 objectForKeyedSubscript:@"imageDynamicRange"];
+    v5 = [animationsCopy objectForKeyedSubscript:@"imageDynamicRange"];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 animationFrames];
-      v8 = [v7 count];
+      animationFrames = [v5 animationFrames];
+      v8 = [animationFrames count];
 
       if ((+[_UIHDRUsageCoordinator useCALayerDynamicRange]& 1) == 0)
       {
-        v9 = [(UIView *)self layer];
-        [v9 setWantsExtendedDynamicRangeContent:1];
+        layer = [(UIView *)self layer];
+        [layer setWantsExtendedDynamicRangeContent:1];
       }
 
       if (v8 >= 1)
@@ -4873,20 +4873,20 @@ void __43__UIImageView__generateDeferredAnimations___block_invoke(uint64_t a1, v
 {
   v4 = MEMORY[0x1E6982278];
   v5 = symbolEffect;
-  v6 = [v4 options];
-  [(UIImageView *)self addSymbolEffect:v5 options:v6];
+  options = [v4 options];
+  [(UIImageView *)self addSymbolEffect:v5 options:options];
 }
 
 - (void)addSymbolEffect:(NSSymbolEffect *)symbolEffect options:(NSSymbolEffectOptions *)options animated:(BOOL)animated completion:(UISymbolEffectCompletion)completionHandler
 {
   v7 = animated;
   v11 = symbolEffect;
-  v12 = options;
+  options = options;
   v13 = completionHandler;
   if (![(NSSymbolEffect *)v11 ui_isSupportedByImageView])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2719 description:@"Unsupported symbol effect added to UIImageView."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2719 description:@"Unsupported symbol effect added to UIImageView."];
   }
 
   if (!v11)
@@ -4902,10 +4902,10 @@ void __43__UIImageView__generateDeferredAnimations___block_invoke(uint64_t a1, v
   }
 
   v17 = v16;
-  v18 = [(UIImageView *)self image];
-  v19 = [v18 isSymbolImage];
+  image = [(UIImageView *)self image];
+  isSymbolImage = [image isSymbolImage];
 
-  if ((v19 & 1) == 0)
+  if ((isSymbolImage & 1) == 0)
   {
 LABEL_14:
     v27[0] = MEMORY[0x1E69E9820];
@@ -4921,33 +4921,33 @@ LABEL_14:
 
   v20 = [(NSSymbolEffect *)v11 copy];
 
-  v21 = [(NSSymbolEffectOptions *)v12 copy];
-  v12 = v21;
+  v21 = [(NSSymbolEffectOptions *)options copy];
+  options = v21;
   if (!v21)
   {
-    v12 = [MEMORY[0x1E6982278] options];
+    options = [MEMORY[0x1E6982278] options];
   }
 
-  v22 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
 
-  if (!v22)
+  if (!animationPresetManager)
   {
     v23 = [_UIImageViewSymbolAnimationPresetManager managerForClient:self];
     [(_UIImageViewStorage *)self->_storage setAnimationPresetManager:v23];
   }
 
-  v24 = [(UIImageView *)self _rbSymbolLayer];
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
 
-  v25 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-  v26 = v25;
-  if (v24)
+  animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  v26 = animationPresetManager2;
+  if (_rbSymbolLayer)
   {
-    [v25 addActiveSymbolEffect:v20 options:v12 animated:v7 completion:v13];
+    [animationPresetManager2 addActiveSymbolEffect:v20 options:options animated:v7 completion:v13];
   }
 
   else
   {
-    [v25 addPendingSymbolEffect:v20 options:v12 animated:v7 completion:v13];
+    [animationPresetManager2 addPendingSymbolEffect:v20 options:options animated:v7 completion:v13];
 
     [(UIImageView *)self _updateState];
   }
@@ -4967,20 +4967,20 @@ void __59__UIImageView_addSymbolEffect_options_animated_completion___block_invok
 {
   v4 = MEMORY[0x1E6982278];
   v5 = symbolEffect;
-  v6 = [v4 options];
-  [(UIImageView *)self removeSymbolEffectOfType:v5 options:v6];
+  options = [v4 options];
+  [(UIImageView *)self removeSymbolEffectOfType:v5 options:options];
 }
 
 - (void)removeSymbolEffectOfType:(NSSymbolEffect *)symbolEffect options:(NSSymbolEffectOptions *)options animated:(BOOL)animated completion:(UISymbolEffectCompletion)completionHandler
 {
   v7 = animated;
   v11 = symbolEffect;
-  v12 = options;
+  options = options;
   v13 = completionHandler;
   if (![(NSSymbolEffect *)v11 ui_isSupportedByImageView])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2778 description:@"Unsupported symbol effect removed from UIImageView."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2778 description:@"Unsupported symbol effect removed from UIImageView."];
   }
 
   if (!v11 || (objc_opt_self(), v15 = objc_claimAutoreleasedReturnValue(), isKindOfClass = objc_opt_isKindOfClass(), v15, (isKindOfClass & 1) == 0))
@@ -4998,15 +4998,15 @@ void __59__UIImageView_addSymbolEffect_options_animated_completion___block_invok
 
   v17 = [(NSSymbolEffect *)v11 copy];
 
-  v18 = [(NSSymbolEffectOptions *)v12 copy];
-  v12 = v18;
+  v18 = [(NSSymbolEffectOptions *)options copy];
+  options = v18;
   if (!v18)
   {
-    v12 = [MEMORY[0x1E6982278] options];
+    options = [MEMORY[0x1E6982278] options];
   }
 
-  v19 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-  v20 = [v19 removeSymbolEffectsOfType:v17 options:v12 animated:v7 completion:v13];
+  animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  v20 = [animationPresetManager removeSymbolEffectsOfType:v17 options:options animated:v7 completion:v13];
 
   if ((v20 & 1) == 0)
   {
@@ -5040,8 +5040,8 @@ void __68__UIImageView_removeSymbolEffectOfType_options_animated_completion___bl
 
 - (void)removeAllSymbolEffects
 {
-  v3 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)self removeAllSymbolEffectsWithOptions:v3];
+  options = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)self removeAllSymbolEffectsWithOptions:options];
 }
 
 - (void)removeAllSymbolEffectsWithOptions:(NSSymbolEffectOptions *)options animated:(BOOL)animated
@@ -5049,8 +5049,8 @@ void __68__UIImageView_removeSymbolEffectOfType_options_animated_completion___bl
   v4 = animated;
   storage = self->_storage;
   v6 = options;
-  v7 = [(_UIImageViewStorage *)storage animationPresetManager];
-  [v7 removeAllSymbolEffectsWithOptions:v6 animated:v4];
+  animationPresetManager = [(_UIImageViewStorage *)storage animationPresetManager];
+  [animationPresetManager removeAllSymbolEffectsWithOptions:v6 animated:v4];
 }
 
 - (void)setSymbolImage:(UIImage *)symbolImage withContentTransition:(NSSymbolContentTransition *)transition
@@ -5058,20 +5058,20 @@ void __68__UIImageView_removeSymbolEffectOfType_options_animated_completion___bl
   v6 = MEMORY[0x1E6982278];
   v7 = transition;
   v8 = symbolImage;
-  v9 = [v6 options];
-  [(UIImageView *)self setSymbolImage:v8 withContentTransition:v7 options:v9];
+  options = [v6 options];
+  [(UIImageView *)self setSymbolImage:v8 withContentTransition:v7 options:options];
 }
 
 - (void)setSymbolImage:(UIImage *)symbolImage withContentTransition:(NSSymbolContentTransition *)transition options:(NSSymbolEffectOptions *)options completion:(UISymbolEffectCompletion)completionHandler
 {
   v11 = symbolImage;
   v12 = transition;
-  v13 = options;
+  options = options;
   v14 = completionHandler;
   if (![(NSSymbolContentTransition *)v12 ui_isSupportedByImageView])
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2837 description:@"Unsupported symbol content transition added to UIImageView."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageView.m" lineNumber:2837 description:@"Unsupported symbol content transition added to UIImageView."];
   }
 
   if (!v12)
@@ -5085,16 +5085,16 @@ void __68__UIImageView_removeSymbolEffectOfType_options_animated_completion___bl
     goto LABEL_15;
   }
 
-  v17 = [(UIImageView *)self image];
-  if (!v17)
+  image = [(UIImageView *)self image];
+  if (!image)
   {
     goto LABEL_15;
   }
 
-  v18 = v17;
-  v19 = [(UIImageView *)self image];
-  v20 = [v19 isSymbolImage];
-  if (!v11 || !v20 || ![(UIImage *)v11 isSymbolImage])
+  v18 = image;
+  image2 = [(UIImageView *)self image];
+  isSymbolImage = [image2 isSymbolImage];
+  if (!v11 || !isSymbolImage || ![(UIImage *)v11 isSymbolImage])
   {
 
 LABEL_15:
@@ -5110,18 +5110,18 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v22 = [(UIImageView *)self image];
+  image3 = [(UIImageView *)self image];
   v23 = v11;
   v24 = v23;
-  if (v22 == v23)
+  if (image3 == v23)
   {
 
     goto LABEL_17;
   }
 
-  if (v22)
+  if (image3)
   {
-    v25 = [(UIImage *)v22 isEqual:v23];
+    v25 = [(UIImage *)image3 isEqual:v23];
 
     if (!v25)
     {
@@ -5143,24 +5143,24 @@ LABEL_17:
 LABEL_21:
   v26 = [(NSSymbolContentTransition *)v12 copy];
 
-  v27 = [(NSSymbolEffectOptions *)v13 copy];
-  v13 = v27;
+  v27 = [(NSSymbolEffectOptions *)options copy];
+  options = v27;
   if (!v27)
   {
-    v13 = [MEMORY[0x1E6982278] options];
+    options = [MEMORY[0x1E6982278] options];
   }
 
-  v28 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
 
-  if (!v28)
+  if (!animationPresetManager)
   {
     v29 = [_UIImageViewSymbolAnimationPresetManager managerForClient:self];
     [(_UIImageViewStorage *)self->_storage setAnimationPresetManager:v29];
   }
 
-  v30 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-  v31 = [(UIImageView *)self _currentImage];
-  [v30 addPendingSymbolContentTransition:v26 fromSymbolImage:v31 toSymbolImage:v24 options:v13 completion:v14];
+  animationPresetManager2 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+  _currentImage = [(UIImageView *)self _currentImage];
+  [animationPresetManager2 addPendingSymbolContentTransition:v26 fromSymbolImage:_currentImage toSymbolImage:v24 options:options completion:v14];
 
   [(UIImageView *)self _setImage:v24 invalidatingPendingSymbolTransitions:0];
 LABEL_18:
@@ -5174,72 +5174,72 @@ void __71__UIImageView_setSymbolImage_withContentTransition_options_completion__
   [v3 setContentTransition:v4];
 }
 
-- (void)_addSymbolEffect:(id)a3 animated:(BOOL)a4
+- (void)_addSymbolEffect:(id)effect animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [a3 _nsSymbolEffectRepresentation];
-  v6 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)self addSymbolEffect:v7 options:v6 animated:v4];
+  animatedCopy = animated;
+  _nsSymbolEffectRepresentation = [effect _nsSymbolEffectRepresentation];
+  options = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)self addSymbolEffect:_nsSymbolEffectRepresentation options:options animated:animatedCopy];
 }
 
-- (void)_removeSymbolEffect:(id)a3 animated:(BOOL)a4
+- (void)_removeSymbolEffect:(id)effect animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [a3 _nsSymbolEffectRepresentation];
-  v6 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)self removeSymbolEffectOfType:v7 options:v6 animated:v4];
+  animatedCopy = animated;
+  _nsSymbolEffectRepresentation = [effect _nsSymbolEffectRepresentation];
+  options = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)self removeSymbolEffectOfType:_nsSymbolEffectRepresentation options:options animated:animatedCopy];
 }
 
-- (void)_removeAllSymbolEffectsAnimated:(BOOL)a3
+- (void)_removeAllSymbolEffectsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E6982278] options];
-  [(UIImageView *)self removeAllSymbolEffectsWithOptions:v5 animated:v3];
+  animatedCopy = animated;
+  options = [MEMORY[0x1E6982278] options];
+  [(UIImageView *)self removeAllSymbolEffectsWithOptions:options animated:animatedCopy];
 }
 
-- (void)_setSymbolImage:(id)a3 withSymbolTransition:(id)a4
+- (void)_setSymbolImage:(id)image withSymbolTransition:(id)transition
 {
-  v6 = a3;
-  v7 = [a4 _nsSymbolContentTransitionRepresentation];
-  [(UIImageView *)self setSymbolImage:v6 withContentTransition:v7];
+  imageCopy = image;
+  _nsSymbolContentTransitionRepresentation = [transition _nsSymbolContentTransitionRepresentation];
+  [(UIImageView *)self setSymbolImage:imageCopy withContentTransition:_nsSymbolContentTransitionRepresentation];
 }
 
-- (void)animationPresetManager:(id)a3 addEffect:(id)a4 options:(id)a5 completion:(id)a6
+- (void)animationPresetManager:(id)manager addEffect:(id)effect options:(id)options completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v16 = [(UIImageView *)self _rbSymbolLayer];
-  v12 = [v16 animator];
-  v13 = [(UIImageView *)self _animationConfigurationForEffect:v11 forAddingEffect:1 options:v10 clientCompletionHandler:v9 needsAnimationCompletion:1];
+  completionCopy = completion;
+  optionsCopy = options;
+  effectCopy = effect;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
+  v13 = [(UIImageView *)self _animationConfigurationForEffect:effectCopy forAddingEffect:1 options:optionsCopy clientCompletionHandler:completionCopy needsAnimationCompletion:1];
 
-  v14 = [v13 animation];
-  v15 = [v13 options];
-  [v12 addAnimation:v14 options:v15];
+  animation = [v13 animation];
+  options = [v13 options];
+  [animator addAnimation:animation options:options];
 }
 
-- (void)animationPresetManager:(id)a3 removeEffect:(id)a4 wasActive:(BOOL)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)animationPresetManager:(id)manager removeEffect:(id)effect wasActive:(BOOL)active options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  v11 = a5;
-  v13 = a4;
-  v14 = a6;
-  v15 = a8;
-  v16 = [(UIImageView *)self _rbSymbolLayer];
-  v17 = [v16 animator];
-  if (v11)
+  animatedCopy = animated;
+  activeCopy = active;
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
+  if (activeCopy)
   {
-    v18 = [(UIImageView *)self _animationConfigurationForEffect:v13 forAddingEffect:0 options:v14 clientCompletionHandler:v15 needsAnimationCompletion:0];
-    v19 = [v18 animation];
+    v18 = [(UIImageView *)self _animationConfigurationForEffect:effectCopy forAddingEffect:0 options:optionsCopy clientCompletionHandler:completionCopy needsAnimationCompletion:0];
+    animation = [v18 animation];
 
-    if (v9)
+    if (animatedCopy)
     {
-      [v17 cancelAnimation:v19];
+      [animator cancelAnimation:animation];
     }
 
     else
     {
-      [v17 removeAnimation:v19];
+      [animator removeAnimation:animation];
     }
   }
 
@@ -5247,9 +5247,9 @@ void __71__UIImageView_setSymbolImage_withContentTransition_options_completion__
   v21[1] = 3221225472;
   v21[2] = __89__UIImageView_animationPresetManager_removeEffect_wasActive_options_animated_completion___block_invoke;
   v21[3] = &unk_1E71262F0;
-  v22 = v13;
-  v20 = v13;
-  [(UIImageView *)self _runSymbolEffectCompletion:v15 contextConfigurator:v21];
+  v22 = effectCopy;
+  v20 = effectCopy;
+  [(UIImageView *)self _runSymbolEffectCompletion:completionCopy contextConfigurator:v21];
 }
 
 void __89__UIImageView_animationPresetManager_removeEffect_wasActive_options_animated_completion___block_invoke(uint64_t a1, void *a2)
@@ -5259,43 +5259,43 @@ void __89__UIImageView_animationPresetManager_removeEffect_wasActive_options_ani
   [v3 setEffect:*(a1 + 32)];
 }
 
-- (void)animationPresetManager:(id)a3 didSetScale:(int)a4 usingEffect:(id)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)animationPresetManager:(id)manager didSetScale:(int)scale usingEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  v11 = *&a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
-  v16 = [(UIImageView *)self _rbSymbolLayer];
-  v17 = [v16 animator];
-  v18 = [v17 scaleLevel];
-  v19 = v18 != v11;
-  if (v18 == v11)
+  animatedCopy = animated;
+  v11 = *&scale;
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
+  scaleLevel = [animator scaleLevel];
+  v19 = scaleLevel != v11;
+  if (scaleLevel == v11)
   {
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!animatedCopy)
   {
-    [v17 setScaleLevel:v11];
+    [animator setScaleLevel:v11];
 LABEL_5:
     v23 = MEMORY[0x1E69E9820];
     v24 = 3221225472;
     v25 = __90__UIImageView_animationPresetManager_didSetScale_usingEffect_options_animated_completion___block_invoke;
     v26 = &unk_1E712ACB0;
     v28 = v19;
-    v27 = v13;
-    [(UIImageView *)self _runSymbolEffectCompletion:v15 contextConfigurator:&v23];
+    v27 = effectCopy;
+    [(UIImageView *)self _runSymbolEffectCompletion:completionCopy contextConfigurator:&v23];
 
     goto LABEL_6;
   }
 
-  v20 = [(UIImageView *)self _animationConfigurationForEffect:v13 forAddingEffect:1 options:v14 clientCompletionHandler:v15 needsAnimationCompletion:1];
-  v21 = [v20 animation];
-  v22 = [v20 options];
-  [v17 addAnimation:v21 options:v22];
+  v20 = [(UIImageView *)self _animationConfigurationForEffect:effectCopy forAddingEffect:1 options:optionsCopy clientCompletionHandler:completionCopy needsAnimationCompletion:1];
+  animation = [v20 animation];
+  options = [v20 options];
+  [animator addAnimation:animation options:options];
 
-  [v17 setScaleLevel:v11];
+  [animator setScaleLevel:v11];
 LABEL_6:
   [(UIImageView *)self _updateStateIfRBSymbolLayerNoLongerNeeded:v23];
 }
@@ -5308,42 +5308,42 @@ void __90__UIImageView_animationPresetManager_didSetScale_usingEffect_options_an
   [v4 setEffect:*(a1 + 32)];
 }
 
-- (void)animationPresetManager:(id)a3 didSetHiddenness:(BOOL)a4 usingEffect:(id)a5 options:(id)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)animationPresetManager:(id)manager didSetHiddenness:(BOOL)hiddenness usingEffect:(id)effect options:(id)options animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  v11 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
-  v16 = [(UIImageView *)self _rbSymbolLayer];
-  v17 = [v16 animator];
-  v18 = [v17 isHidden] ^ v11;
+  animatedCopy = animated;
+  hiddennessCopy = hiddenness;
+  effectCopy = effect;
+  optionsCopy = options;
+  completionCopy = completion;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
+  v18 = [animator isHidden] ^ hiddennessCopy;
   if (v18 != 1)
   {
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!animatedCopy)
   {
-    [v17 setHidden:v11];
+    [animator setHidden:hiddennessCopy];
 LABEL_5:
     v22 = MEMORY[0x1E69E9820];
     v23 = 3221225472;
     v24 = __95__UIImageView_animationPresetManager_didSetHiddenness_usingEffect_options_animated_completion___block_invoke;
     v25 = &unk_1E712ACB0;
     v27 = v18;
-    v26 = v13;
-    [(UIImageView *)self _runSymbolEffectCompletion:v15 contextConfigurator:&v22];
+    v26 = effectCopy;
+    [(UIImageView *)self _runSymbolEffectCompletion:completionCopy contextConfigurator:&v22];
 
     goto LABEL_6;
   }
 
-  v19 = [(UIImageView *)self _animationConfigurationForEffect:v13 forAddingEffect:v11 options:v14 clientCompletionHandler:v15 needsAnimationCompletion:1];
-  v20 = [v19 animation];
-  v21 = [v19 options];
-  [v17 addAnimation:v20 options:v21];
+  v19 = [(UIImageView *)self _animationConfigurationForEffect:effectCopy forAddingEffect:hiddennessCopy options:optionsCopy clientCompletionHandler:completionCopy needsAnimationCompletion:1];
+  animation = [v19 animation];
+  options = [v19 options];
+  [animator addAnimation:animation options:options];
 
-  [v17 setHidden:v11];
+  [animator setHidden:hiddennessCopy];
 LABEL_6:
   [(UIImageView *)self _updateStateIfRBSymbolLayerNoLongerNeeded:v22];
 }
@@ -5356,17 +5356,17 @@ void __95__UIImageView_animationPresetManager_didSetHiddenness_usingEffect_optio
   [v4 setEffect:*(a1 + 32)];
 }
 
-- (void)animationPresetManager:(id)a3 didDiscardPendingContentTransition:(id)a4
+- (void)animationPresetManager:(id)manager didDiscardPendingContentTransition:(id)transition
 {
-  v5 = a4;
-  v6 = [v5 completionHandler];
+  transitionCopy = transition;
+  completionHandler = [transitionCopy completionHandler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__UIImageView_animationPresetManager_didDiscardPendingContentTransition___block_invoke;
   v8[3] = &unk_1E71262F0;
-  v9 = v5;
-  v7 = v5;
-  [(UIImageView *)self _runSymbolEffectCompletion:v6 contextConfigurator:v8];
+  v9 = transitionCopy;
+  v7 = transitionCopy;
+  [(UIImageView *)self _runSymbolEffectCompletion:completionHandler contextConfigurator:v8];
 }
 
 void __73__UIImageView_animationPresetManager_didDiscardPendingContentTransition___block_invoke(uint64_t a1, void *a2)
@@ -5377,17 +5377,17 @@ void __73__UIImageView_animationPresetManager_didDiscardPendingContentTransition
   [v3 setContentTransition:v4];
 }
 
-- (id)_animationConfigurationForEffect:(id)a3 forAddingEffect:(BOOL)a4 options:(id)a5 clientCompletionHandler:(id)a6 needsAnimationCompletion:(BOOL)a7
+- (id)_animationConfigurationForEffect:(id)effect forAddingEffect:(BOOL)addingEffect options:(id)options clientCompletionHandler:(id)handler needsAnimationCompletion:(BOOL)completion
 {
-  v9 = a7;
-  v12 = a4;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
+  completionCopy = completion;
+  addingEffectCopy = addingEffect;
+  effectCopy = effect;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v17 = [(UIImageView *)self _activeImage];
-  v18 = [v17 configuration];
-  if (v9)
+  _activeImage = [(UIImageView *)self _activeImage];
+  configuration = [_activeImage configuration];
+  if (completionCopy)
   {
     v19 = v23;
     v23[0] = MEMORY[0x1E69E9820];
@@ -5397,9 +5397,9 @@ void __73__UIImageView_animationPresetManager_didDiscardPendingContentTransition
     v7 = &v26;
     objc_copyWeak(&v26, &location);
     v22 = &v24;
-    v24 = v14;
+    v24 = effectCopy;
     v8 = &v25;
-    v25 = v16;
+    v25 = handlerCopy;
   }
 
   else
@@ -5407,8 +5407,8 @@ void __73__UIImageView_animationPresetManager_didDiscardPendingContentTransition
     v19 = 0;
   }
 
-  v20 = [v14 ui_animationConfigurationWithOptions:v15 configuration:v18 forAddingEffect:v12 completion:v19];
-  if (v9)
+  v20 = [effectCopy ui_animationConfigurationWithOptions:optionsCopy configuration:configuration forAddingEffect:addingEffectCopy completion:v19];
+  if (completionCopy)
   {
 
     objc_destroyWeak(v7);
@@ -5448,75 +5448,75 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   [v4 setEffect:*(a1 + 32)];
 }
 
-- (void)_runSymbolEffectCompletion:(id)a3 contextConfigurator:(id)a4
+- (void)_runSymbolEffectCompletion:(id)completion contextConfigurator:(id)configurator
 {
-  v6 = a3;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a4;
+    configuratorCopy = configurator;
     v8 = +[UISymbolEffectCompletionContext _new];
     [v8 setSender:self];
-    v7[2](v7, v8);
+    configuratorCopy[2](configuratorCopy, v8);
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __62__UIImageView__runSymbolEffectCompletion_contextConfigurator___block_invoke;
     v10[3] = &unk_1E70F4A50;
     v11 = v8;
-    v12 = v6;
+    v12 = completionCopy;
     v9 = v8;
     dispatch_async(MEMORY[0x1E69E96A0], v10);
   }
 }
 
-- (int64_t)_effectiveRenderingModeForSource:(id)a3 symbolConfiguration:(id)a4
+- (int64_t)_effectiveRenderingModeForSource:(id)source symbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 renderingMode];
-  if (!v8)
+  sourceCopy = source;
+  configurationCopy = configuration;
+  renderingMode = [sourceCopy renderingMode];
+  if (!renderingMode)
   {
-    v8 = [(UIImageView *)self _defaultRenderingMode];
-    if (!v8)
+    renderingMode = [(UIImageView *)self _defaultRenderingMode];
+    if (!renderingMode)
     {
-      v8 = [v6 _effectiveRenderingModeWithSymbolConfiguration:v7];
+      renderingMode = [sourceCopy _effectiveRenderingModeWithSymbolConfiguration:configurationCopy];
     }
   }
 
-  v9 = v8;
+  v9 = renderingMode;
 
   return v9;
 }
 
-- (BOOL)_shouldTreatImageAsTemplate:(id)a3
+- (BOOL)_shouldTreatImageAsTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self _symbolConfigurationForImage:v4];
-  LOBYTE(self) = [(UIImageView *)self _shouldTreatImageAsTemplate:v4 symbolConfiguration:v5];
+  templateCopy = template;
+  v5 = [(UIImageView *)self _symbolConfigurationForImage:templateCopy];
+  LOBYTE(self) = [(UIImageView *)self _shouldTreatImageAsTemplate:templateCopy symbolConfiguration:v5];
 
   return self;
 }
 
-- (BOOL)_shouldTreatImageAsTemplate:(id)a3 symbolConfiguration:(id)a4
+- (BOOL)_shouldTreatImageAsTemplate:(id)template symbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[UIImageView _effectiveRenderingModeForSource:symbolConfiguration:](self, "_effectiveRenderingModeForSource:symbolConfiguration:", v6, v7) != 2 || [v7 _hasSpecifiedHierarchicalColors] && (objc_msgSend(v6, "_isHierarchicalColorSymbolImage") & 1) != 0)
+  templateCopy = template;
+  configurationCopy = configuration;
+  if (-[UIImageView _effectiveRenderingModeForSource:symbolConfiguration:](self, "_effectiveRenderingModeForSource:symbolConfiguration:", templateCopy, configurationCopy) != 2 || [configurationCopy _hasSpecifiedHierarchicalColors] && (objc_msgSend(templateCopy, "_isHierarchicalColorSymbolImage") & 1) != 0)
   {
     LOBYTE(v8) = 0;
   }
 
-  else if ([v7 _hasSpecifiedPaletteColors])
+  else if ([configurationCopy _hasSpecifiedPaletteColors])
   {
-    v9 = [v7 _colors];
-    if ([v9 count] < 2)
+    _colors = [configurationCopy _colors];
+    if ([_colors count] < 2)
     {
       LOBYTE(v8) = 1;
     }
 
     else
     {
-      v8 = [v6 _isPaletteColorSymbolImage] ^ 1;
+      v8 = [templateCopy _isPaletteColorSymbolImage] ^ 1;
     }
   }
 
@@ -5528,11 +5528,11 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   return v8;
 }
 
-- (UIEdgeInsets)_edgeInsetsForEffectsForImage:(id)a3
+- (UIEdgeInsets)_edgeInsetsForEffectsForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self _symbolConfigurationForImage:v4];
-  if ([(UIImageView *)self _needsBoldEffectForImage:v4 symbolConfiguration:v5])
+  imageCopy = image;
+  v5 = [(UIImageView *)self _symbolConfigurationForImage:imageCopy];
+  if ([(UIImageView *)self _needsBoldEffectForImage:imageCopy symbolConfiguration:v5])
   {
     v6 = [MEMORY[0x1E695E0F0] arrayByAddingObject:@"_UIKitBoldTintStyle"];
   }
@@ -5542,10 +5542,10 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  [v4 scale];
+  [imageCopy scale];
   v8 = v7;
-  v9 = [(UIView *)self traitCollection];
-  [UIImage _edgeInsetsForStylePresetNames:v6 scale:v9 traitCollection:v8];
+  traitCollection = [(UIView *)self traitCollection];
+  [UIImage _edgeInsetsForStylePresetNames:v6 scale:traitCollection traitCollection:v8];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -5562,11 +5562,11 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   return result;
 }
 
-- (void)_setDefaultRenderingMode:(int64_t)a3
+- (void)_setDefaultRenderingMode:(int64_t)mode
 {
-  if ([(_UIImageViewStorage *)self->_storage defaultRenderingMode]!= a3)
+  if ([(_UIImageViewStorage *)self->_storage defaultRenderingMode]!= mode)
   {
-    [(_UIImageViewStorage *)self->_storage setDefaultRenderingMode:a3];
+    [(_UIImageViewStorage *)self->_storage setDefaultRenderingMode:mode];
 
     [(UIImageView *)self _templateSettingsDidChange];
   }
@@ -5595,27 +5595,27 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
 
 - (UIImageDynamicRange)imageDynamicRange
 {
-  v3 = [(UIImageView *)self preferredImageDynamicRange];
-  if (v3 == UIImageDynamicRangeUnspecified)
+  preferredImageDynamicRange = [(UIImageView *)self preferredImageDynamicRange];
+  if (preferredImageDynamicRange == UIImageDynamicRangeUnspecified)
   {
-    v4 = [(UIView *)self traitCollection];
-    v3 = [v4 imageDynamicRange];
+    traitCollection = [(UIView *)self traitCollection];
+    preferredImageDynamicRange = [traitCollection imageDynamicRange];
   }
 
-  if (v3 == UIImageDynamicRangeUnspecified)
+  if (preferredImageDynamicRange == UIImageDynamicRangeUnspecified)
   {
     return 0;
   }
 
   else
   {
-    return v3;
+    return preferredImageDynamicRange;
   }
 }
 
-- (double)_maximumEDRForDynamicRange:(int64_t)a3
+- (double)_maximumEDRForDynamicRange:(int64_t)range
 {
-  if (a3 == 1)
+  if (range == 1)
   {
     v4 = 2.0;
   }
@@ -5623,7 +5623,7 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   else
   {
     result = 1.0;
-    if (a3 != 2)
+    if (range != 2)
     {
       return result;
     }
@@ -5631,9 +5631,9 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
     v4 = 8.0;
   }
 
-  v5 = [(UIImageView *)self _currentImage];
-  v6 = [v5 content];
-  [v6 imageMaximumHeadroom];
+  _currentImage = [(UIImageView *)self _currentImage];
+  content = [_currentImage content];
+  [content imageMaximumHeadroom];
   v8 = v7;
 
   if (v8 <= v4)
@@ -5647,50 +5647,50 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   }
 }
 
-- (void)_updateHDRFlags:(BOOL)a3
+- (void)_updateHDRFlags:(BOOL)flags
 {
-  v3 = a3;
+  flagsCopy = flags;
   objc_opt_self();
   if (dyld_program_sdk_at_least())
   {
-    if (v3)
+    if (flagsCopy)
     {
-      v5 = [(UIImageView *)self imageDynamicRange];
+      imageDynamicRange = [(UIImageView *)self imageDynamicRange];
     }
 
     else
     {
-      v5 = UIImageDynamicRangeStandard;
+      imageDynamicRange = UIImageDynamicRangeStandard;
     }
 
     if (+[_UIHDRUsageCoordinator useCALayerDynamicRange])
     {
-      v10 = [_UIHDRUsageCoordinator convertDynamicRange:v5];
-      v6 = [(UIView *)self layer];
-      [v6 setPreferredDynamicRange:v10];
+      layer3 = [_UIHDRUsageCoordinator convertDynamicRange:imageDynamicRange];
+      layer = [(UIView *)self layer];
+      [layer setPreferredDynamicRange:layer3];
     }
 
     else
     {
-      v7 = [(UIView *)self layer];
-      [v7 setWantsExtendedDynamicRangeContent:v5 != UIImageDynamicRangeStandard];
+      layer2 = [(UIView *)self layer];
+      [layer2 setWantsExtendedDynamicRangeContent:imageDynamicRange != UIImageDynamicRangeStandard];
 
-      [(UIImageView *)self _maximumEDRForDynamicRange:v5];
+      [(UIImageView *)self _maximumEDRForDynamicRange:imageDynamicRange];
       v9 = v8;
-      v10 = [(UIView *)self layer];
-      [v10 setContentsMaximumDesiredEDR:v9];
+      layer3 = [(UIView *)self layer];
+      [layer3 setContentsMaximumDesiredEDR:v9];
     }
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a4 != 0;
+  v6 = toWindow != 0;
   v9.receiver = self;
   v9.super_class = UIImageView;
-  [(UIView *)&v9 _didMoveFromWindow:a3 toWindow:?];
+  [(UIView *)&v9 _didMoveFromWindow:window toWindow:?];
   *&self->_imageViewFlags = *&self->_imageViewFlags & 0xEFFF | (v6 << 12);
-  if (a4)
+  if (toWindow)
   {
     [(UIImageView *)self _mainQ_beginLoadingIfApplicable];
     if (dyld_program_sdk_at_least())
@@ -5705,13 +5705,13 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
   }
 }
 
-- (void)_setMasksTemplateImages:(BOOL)a3
+- (void)_setMasksTemplateImages:(BOOL)images
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self->_storage masksTemplateImages]!= a3)
+  imagesCopy = images;
+  if ([(_UIImageViewStorage *)self->_storage masksTemplateImages]!= images)
   {
-    [(_UIImageViewStorage *)self->_storage setMasksTemplateImages:v3];
-    if (v3)
+    [(_UIImageViewStorage *)self->_storage setMasksTemplateImages:imagesCopy];
+    if (imagesCopy)
     {
 
       [(UIImageView *)self _updateMasking];
@@ -5719,29 +5719,29 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
 
     else
     {
-      v5 = [(UIView *)self layer];
-      [v5 setCompositingFilter:0];
+      layer = [(UIView *)self layer];
+      [layer setCompositingFilter:0];
     }
   }
 }
 
-- (id)_colorByApplyingDrawModeToColor:(id)a3
+- (id)_colorByApplyingDrawModeToColor:(id)color
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self _colorByApplyingDrawMode:[(UIImageView *)self drawMode] toColor:v4];
+  colorCopy = color;
+  v5 = [(UIImageView *)self _colorByApplyingDrawMode:[(UIImageView *)self drawMode] toColor:colorCopy];
 
   return v5;
 }
 
-- (id)_colorByApplyingDrawMode:(unsigned int)a3 toColor:(id)a4
+- (id)_colorByApplyingDrawMode:(unsigned int)mode toColor:(id)color
 {
-  v4 = *&a3;
+  v4 = *&mode;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  colorCopy = color;
   v29 = 0;
   v27 = 0.0;
   v28 = 0.0;
-  v7 = v6;
+  v7 = colorCopy;
   if ([(UIImageView *)self _getDrawModeCompositeOperation:&v29 whiteComponent:&v28 drawingAlpha:&v27 forDrawMode:v4])
   {
     if (os_variant_has_internal_diagnostics())
@@ -5768,22 +5768,22 @@ void __121__UIImageView__animationConfigurationForEffect_forAddingEffect_options
     }
 
     v8 = +[UITraitCollection _currentTraitCollectionIfExists];
-    v9 = [(UIView *)self traitCollection];
-    [UITraitCollection setCurrentTraitCollection:v9];
+    traitCollection = [(UIView *)self traitCollection];
+    [UITraitCollection setCurrentTraitCollection:traitCollection];
 
     v10 = _UISetCurrentFallbackEnvironment(self);
     v25 = 0.0;
     *buf = 0.0;
     v23 = 0.0;
     v24 = 0.0;
-    [v6 getRed:buf green:&v25 blue:&v24 alpha:&v23];
+    [colorCopy getRed:buf green:&v25 blue:&v24 alpha:&v23];
     _UIRestorePreviousFallbackEnvironment(v10);
     [UITraitCollection setCurrentTraitCollection:v8];
     if (v29 == 8)
     {
       v11 = 1.0 - v27;
       v12 = v23 * (1.0 - v27);
-      v7 = v6;
+      v7 = colorCopy;
       if (v12 <= 0.0)
       {
 LABEL_13:
@@ -5823,7 +5823,7 @@ LABEL_13:
         }
       }
 
-      v7 = v6;
+      v7 = colorCopy;
       if (v23 <= 0.0)
       {
         goto LABEL_13;
@@ -5845,59 +5845,59 @@ LABEL_14:
   return v7;
 }
 
-- (id)_baseMultiplyColorWithImage:(id)a3 symbolConfiguration:(id)a4 shouldResolveDynamicColors:(BOOL)a5
+- (id)_baseMultiplyColorWithImage:(id)image symbolConfiguration:(id)configuration shouldResolveDynamicColors:(BOOL)colors
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if ([(UIImageView *)self _shouldTreatImageAsTemplate:v8 symbolConfiguration:v9])
+  colorsCopy = colors;
+  imageCopy = image;
+  configurationCopy = configuration;
+  if ([(UIImageView *)self _shouldTreatImageAsTemplate:imageCopy symbolConfiguration:configurationCopy])
   {
-    v10 = [_UIImageContentRenditionContext contextWithRenderEnvironment:v8 source:?];
-    if ([v9 _hasSpecifiedPaletteColors])
+    v10 = [_UIImageContentRenditionContext contextWithRenderEnvironment:imageCopy source:?];
+    if ([configurationCopy _hasSpecifiedPaletteColors])
     {
-      v11 = [v9 _paletteColorsWithRenditionContext:v10 resolveDynamicColors:v5];
-      v12 = [v11 firstObject];
+      v11 = [configurationCopy _paletteColorsWithRenditionContext:v10 resolveDynamicColors:colorsCopy];
+      firstObject = [v11 firstObject];
     }
 
-    else if ([v9 _hasSpecifiedHierarchicalColors])
+    else if ([configurationCopy _hasSpecifiedHierarchicalColors])
     {
-      v12 = [v9 _hierarchicalColorForLayerLevel:0 renditionContext:v10 resolveDynamicColors:v5];
+      firstObject = [configurationCopy _hierarchicalColorForLayerLevel:0 renditionContext:v10 resolveDynamicColors:colorsCopy];
     }
 
     else
     {
-      v12 = [(UIView *)self tintColor];
-      if (v5)
+      firstObject = [(UIView *)self tintColor];
+      if (colorsCopy)
       {
-        v13 = [(_UIImageContentRenditionContext *)v10 traitCollectionForResolvingDynamicColors];
-        v14 = [v12 resolvedColorWithTraitCollection:v13];
+        traitCollectionForResolvingDynamicColors = [(_UIImageContentRenditionContext *)v10 traitCollectionForResolvingDynamicColors];
+        v14 = [firstObject resolvedColorWithTraitCollection:traitCollectionForResolvingDynamicColors];
 
-        v12 = v14;
+        firstObject = v14;
       }
     }
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  return v12;
+  return firstObject;
 }
 
-- (BOOL)_needsImageEffectsForImage:(id)a3
+- (BOOL)_needsImageEffectsForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self _symbolConfigurationForImage:v4];
-  LOBYTE(self) = [(UIImageView *)self _needsImageEffectsForImage:v4 symbolConfiguration:v5];
+  imageCopy = image;
+  v5 = [(UIImageView *)self _symbolConfigurationForImage:imageCopy];
+  LOBYTE(self) = [(UIImageView *)self _needsImageEffectsForImage:imageCopy symbolConfiguration:v5];
 
   return self;
 }
 
-- (BOOL)_needsImageEffectsForImage:(id)a3 symbolConfiguration:(id)a4
+- (BOOL)_needsImageEffectsForImage:(id)image symbolConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  configurationCopy = configuration;
   if ([(UIImageView *)self drawMode])
   {
     v8 = 1;
@@ -5905,7 +5905,7 @@ LABEL_14:
 
   else
   {
-    v9 = [(UIImageView *)self _baseMultiplyColorWithImage:v6 symbolConfiguration:v7];
+    v9 = [(UIImageView *)self _baseMultiplyColorWithImage:imageCopy symbolConfiguration:configurationCopy];
     if (v9)
     {
       v8 = 1;
@@ -5913,7 +5913,7 @@ LABEL_14:
 
     else
     {
-      v10 = [(UIImageView *)self _effectiveContentEffectsWithImage:v6 symbolConfiguration:v7];
+      v10 = [(UIImageView *)self _effectiveContentEffectsWithImage:imageCopy symbolConfiguration:configurationCopy];
       v8 = [v10 count] != 0;
     }
   }
@@ -5921,16 +5921,16 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)_getDrawModeCompositeOperation:(int *)a3 whiteComponent:(double *)a4 drawingAlpha:(double *)a5
+- (BOOL)_getDrawModeCompositeOperation:(int *)operation whiteComponent:(double *)component drawingAlpha:(double *)alpha
 {
-  v9 = [(UIImageView *)self drawMode];
+  drawMode = [(UIImageView *)self drawMode];
 
-  return [(UIImageView *)self _getDrawModeCompositeOperation:a3 whiteComponent:a4 drawingAlpha:a5 forDrawMode:v9];
+  return [(UIImageView *)self _getDrawModeCompositeOperation:operation whiteComponent:component drawingAlpha:alpha forDrawMode:drawMode];
 }
 
-- (BOOL)_getDrawModeCompositeOperation:(int *)a3 whiteComponent:(double *)a4 drawingAlpha:(double *)a5 forDrawMode:(unsigned int)a6
+- (BOOL)_getDrawModeCompositeOperation:(int *)operation whiteComponent:(double *)component drawingAlpha:(double *)alpha forDrawMode:(unsigned int)mode
 {
-  switch(a6)
+  switch(mode)
   {
     case 1u:
       v9 = +[UIColor lightGrayColor];
@@ -5947,22 +5947,22 @@ LABEL_14:
       v10 = 5;
       v11 = 0.466666667;
 LABEL_7:
-      [v9 getWhite:a4 alpha:0];
+      [v9 getWhite:component alpha:0];
 
-      *a5 = v11;
-      *a3 = v10;
+      *alpha = v11;
+      *operation = v10;
       return 1;
   }
 
   return 0;
 }
 
-- (void)_renderDrawModeEffectInRect:(CGRect)a3
+- (void)_renderDrawModeEffectInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   ContextStack = GetContextStack(0);
   if (*ContextStack < 1)
   {
@@ -5992,10 +5992,10 @@ LABEL_7:
   }
 }
 
-- (void)setDrawMode:(unsigned int)a3
+- (void)setDrawMode:(unsigned int)mode
 {
-  v3 = *&a3;
-  if ([(_UIImageViewStorage *)self->_storage drawMode]!= a3)
+  v3 = *&mode;
+  if ([(_UIImageViewStorage *)self->_storage drawMode]!= mode)
   {
     [(_UIImageViewStorage *)self->_storage setDrawMode:v3];
 
@@ -6003,23 +6003,23 @@ LABEL_7:
   }
 }
 
-- (void)setCGImageRef:(CGImage *)a3
+- (void)setCGImageRef:(CGImage *)ref
 {
-  v4 = [(UIView *)self layer];
-  [v4 setContents:a3];
+  layer = [(UIView *)self layer];
+  [layer setContents:ref];
 }
 
 - (CGImage)imageRef
 {
-  v2 = [(UIView *)self layer];
-  v3 = [v2 contents];
+  layer = [(UIView *)self layer];
+  contents = [layer contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (a3)
+  if (animating)
   {
     [(UIImageView *)self startAnimating];
   }
@@ -6030,9 +6030,9 @@ LABEL_7:
   }
 }
 
-- (void)_setDecompressingImage:(id)a3 forType:(unint64_t)a4
+- (void)_setDecompressingImage:(id)image forType:(unint64_t)type
 {
-  if (a4)
+  if (type)
   {
     v4 = &unk_1ED497FD9;
   }
@@ -6042,12 +6042,12 @@ LABEL_7:
     v4 = &_MergedGlobals_93;
   }
 
-  objc_setAssociatedObject(self, v4, a3, 1);
+  objc_setAssociatedObject(self, v4, image, 1);
 }
 
-- (id)_decompressingImageForType:(unint64_t)a3
+- (id)_decompressingImageForType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
     v3 = &unk_1ED497FD9;
   }
@@ -6060,54 +6060,54 @@ LABEL_7:
   return objc_getAssociatedObject(self, v3);
 }
 
-- (id)_checkImageForAdaptation:(id)a3 hasAdapted:(BOOL *)a4
+- (id)_checkImageForAdaptation:(id)adaptation hasAdapted:(BOOL *)adapted
 {
-  v6 = a3;
-  v7 = [(UIImageView *)self image];
-  v8 = [(UIImageView *)self _currentImage];
-  v9 = [(UIImageView *)self _adaptiveImageForImage:v6 assignedImage:v7 currentImage:v8 hasAdapted:a4];
+  adaptationCopy = adaptation;
+  image = [(UIImageView *)self image];
+  _currentImage = [(UIImageView *)self _currentImage];
+  v9 = [(UIImageView *)self _adaptiveImageForImage:adaptationCopy assignedImage:image currentImage:_currentImage hasAdapted:adapted];
 
   return v9;
 }
 
-- (id)_checkHighlightedImageForAdaptation:(id)a3 hadAdapted:(BOOL *)a4
+- (id)_checkHighlightedImageForAdaptation:(id)adaptation hadAdapted:(BOOL *)adapted
 {
-  v6 = a3;
-  v7 = [(UIImageView *)self highlightedImage];
-  v8 = [(UIImageView *)self _currentHighlightedImage];
-  v9 = [(UIImageView *)self _adaptiveImageForImage:v6 assignedImage:v7 currentImage:v8 hasAdapted:a4];
+  adaptationCopy = adaptation;
+  highlightedImage = [(UIImageView *)self highlightedImage];
+  _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+  v9 = [(UIImageView *)self _adaptiveImageForImage:adaptationCopy assignedImage:highlightedImage currentImage:_currentHighlightedImage hasAdapted:adapted];
 
   return v9;
 }
 
-- (id)_adaptiveImageForImage:(id)a3 assignedImage:(id)a4 currentImage:(id)a5 hasAdapted:(BOOL *)a6
+- (id)_adaptiveImageForImage:(id)image assignedImage:(id)assignedImage currentImage:(id)currentImage hasAdapted:(BOOL *)adapted
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6)
+  imageCopy = image;
+  assignedImageCopy = assignedImage;
+  currentImageCopy = currentImage;
+  if (adapted)
   {
-    *a6 = 0;
+    *adapted = 0;
   }
 
-  v12 = v9;
+  v12 = imageCopy;
   if (v12)
   {
-    v13 = [v10 isEqual:v12];
+    v13 = [assignedImageCopy isEqual:v12];
     v14 = v12;
-    if (v11)
+    if (currentImageCopy)
     {
       v14 = v12;
       if (v13)
       {
         v14 = v12;
-        if (([v11 isEqual:v12] & 1) == 0)
+        if (([currentImageCopy isEqual:v12] & 1) == 0)
         {
-          v14 = v11;
+          v14 = currentImageCopy;
 
-          if (a6)
+          if (adapted)
           {
-            *a6 = 1;
+            *adapted = 1;
           }
         }
       }
@@ -6122,17 +6122,17 @@ LABEL_7:
   return v14;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(UIView *)self traitCollection];
+  changeCopy = change;
+  traitCollection = [(UIView *)self traitCollection];
   [(UIImageView *)self _invalidateCachedSymbolConfiguration];
   [(UIImageView *)self _updateResolvedImages];
   if (![(UIImageView *)self adjustsImageSizeForAccessibilityContentSizeCategory])
   {
 LABEL_6:
-    v5 = v6;
-    if (!v6 || !v4)
+    v5 = changeCopy;
+    if (!changeCopy || !traitCollection)
     {
       goto LABEL_10;
     }
@@ -6140,28 +6140,28 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v5 = v6;
-  if (!v4)
+  v5 = changeCopy;
+  if (!traitCollection)
   {
     goto LABEL_10;
   }
 
-  if (!v6 || v4[13] != v6[13])
+  if (!changeCopy || traitCollection[13] != changeCopy[13])
   {
     [(UIView *)self invalidateIntrinsicContentSize];
     goto LABEL_6;
   }
 
 LABEL_8:
-  if (v4[15] != v5[15])
+  if (traitCollection[15] != v5[15])
   {
     *&self->_imageViewFlags |= 0x10u;
     [(UIView *)self invalidateIntrinsicContentSize];
-    v5 = v6;
+    v5 = changeCopy;
   }
 
 LABEL_10:
-  if (_UITraitCollectionUserInterfaceRenderingModeDidChange(v4, v5))
+  if (_UITraitCollectionUserInterfaceRenderingModeDidChange(traitCollection, v5))
   {
     [(UIImageView *)self _updateState];
   }
@@ -6169,10 +6169,10 @@ LABEL_10:
 
 - (void)_systemIconAppearanceDidChange
 {
-  v3 = [(UIImageView *)self image];
-  v4 = [v3 _isIconImage];
+  image = [(UIImageView *)self image];
+  _isIconImage = [image _isIconImage];
 
-  if (v4)
+  if (_isIconImage)
   {
     [(UIImageView *)self _invalidateResolvedImages];
 
@@ -6180,39 +6180,39 @@ LABEL_10:
   }
 }
 
-- (id)_resolvedImageFromImage:(id)a3
+- (id)_resolvedImageFromImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self image];
+  imageCopy = image;
+  image = [(UIImageView *)self image];
 
-  if (v5 == v4)
+  if (image == imageCopy)
   {
-    v7 = [(UIImageView *)self _currentImage];
+    _currentImage = [(UIImageView *)self _currentImage];
   }
 
   else
   {
-    v6 = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
-    v7 = [(UIImageView *)self _resolvedImageFromImage:v4 withImageViewTrait:v6];
+    _effectiveImageViewTraitCollectionForResolvingImages = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
+    _currentImage = [(UIImageView *)self _resolvedImageFromImage:imageCopy withImageViewTrait:_effectiveImageViewTraitCollectionForResolvingImages];
   }
 
-  return v7;
+  return _currentImage;
 }
 
-- (id)_resolvedImageFromImage:(void *)a3 withImageViewTrait:
+- (id)_resolvedImageFromImage:(void *)image withImageViewTrait:
 {
   v5 = a2;
   v6 = v5;
-  if (!a1)
+  if (!self)
   {
     goto LABEL_16;
   }
 
   v7 = v5;
-  v8 = a3;
+  imageCopy = image;
   if ([v7 _isSymbolImage])
   {
-    [a1 _symbolConfigurationForImage:v7];
+    [self _symbolConfigurationForImage:v7];
   }
 
   else
@@ -6220,33 +6220,33 @@ LABEL_10:
     [v7 configuration];
   }
   v9 = ;
-  v10 = v8;
-  v11 = [v9 _effectiveTraitCollectionForImageLookup];
+  v10 = imageCopy;
+  _effectiveTraitCollectionForImageLookup = [v9 _effectiveTraitCollectionForImageLookup];
   v12 = v10;
-  if (v11)
+  if (_effectiveTraitCollectionForImageLookup)
   {
-    v12 = [(UITraitCollection *)v10 _traitCollectionByPopulatingUnspecifiedTraitsWithValuesFromTraitCollection:v11];
+    v12 = [(UITraitCollection *)v10 _traitCollectionByPopulatingUnspecifiedTraitsWithValuesFromTraitCollection:_effectiveTraitCollectionForImageLookup];
   }
 
   v13 = [v9 configurationWithTraitCollection:v12];
 
   if ([v7 _isIconImage])
   {
-    v14 = [(UITraitCollection *)v10 _systemIconAppearance];
-    if (v14)
+    _systemIconAppearance = [(UITraitCollection *)v10 _systemIconAppearance];
+    if (_systemIconAppearance)
     {
-      v15 = v14;
+      appearance = _systemIconAppearance;
     }
 
     else
     {
       v27 = v6;
-      v16 = [a1 window];
-      v17 = [v16 windowScene];
-      v18 = [v17 _systemIconAppearanceSceneComponent];
-      v15 = [(_UISystemIconAppearanceSceneComponent *)v18 appearance];
+      window = [self window];
+      windowScene = [window windowScene];
+      _systemIconAppearanceSceneComponent = [windowScene _systemIconAppearanceSceneComponent];
+      appearance = [(_UISystemIconAppearanceSceneComponent *)_systemIconAppearanceSceneComponent appearance];
 
-      if (!v15)
+      if (!appearance)
       {
         v6 = v27;
         goto LABEL_13;
@@ -6255,8 +6255,8 @@ LABEL_10:
       v6 = v27;
     }
 
-    v19 = [(UITraitCollection *)v10 _systemIconAppearance];
-    v20 = [v13 _configurationWithSystemIconAppearance:v19];
+    _systemIconAppearance2 = [(UITraitCollection *)v10 _systemIconAppearance];
+    v20 = [v13 _configurationWithSystemIconAppearance:_systemIconAppearance2];
 
     v13 = v20;
   }
@@ -6264,63 +6264,63 @@ LABEL_10:
 LABEL_13:
 
   v21 = v7;
-  v22 = _UISetCurrentFallbackEnvironment(a1);
-  v23 = [a1 _preferredSymbolVariant];
+  v22 = _UISetCurrentFallbackEnvironment(self);
+  _preferredSymbolVariant = [self _preferredSymbolVariant];
 
-  if (v23)
+  if (_preferredSymbolVariant)
   {
-    v24 = [a1 _preferredSymbolVariant];
-    v25 = [v21 _imageByApplyingSymbolVariant:v24];
+    _preferredSymbolVariant2 = [self _preferredSymbolVariant];
+    v25 = [v21 _imageByApplyingSymbolVariant:_preferredSymbolVariant2];
 
     v21 = v25;
   }
 
-  a1 = [v21 imageWithConfiguration:v13];
+  self = [v21 imageWithConfiguration:v13];
 
   _UIRestorePreviousFallbackEnvironment(v22);
 LABEL_16:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_resolveImagesWithPreviouslyDisplayedImage:(id)a3
+- (BOOL)_resolveImagesWithPreviouslyDisplayedImage:(id)image
 {
-  v4 = a3;
-  v5 = [(_UIImageViewStorage *)self->_storage animationImages];
-  if (!v5)
+  imageCopy = image;
+  animationImages = [(_UIImageViewStorage *)self->_storage animationImages];
+  if (!animationImages)
   {
-    v6 = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
+    highlightedAnimationImages = [(_UIImageViewStorage *)self->_storage highlightedAnimationImages];
 
-    if (v6)
+    if (highlightedAnimationImages)
     {
       goto LABEL_6;
     }
 
-    v7 = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
-    if ([(UITraitCollection *)v7 _isEqualToTraitCollectionForResolvingImage:?])
+    _effectiveImageViewTraitCollectionForResolvingImages = [(UIImageView *)self _effectiveImageViewTraitCollectionForResolvingImages];
+    if ([(UITraitCollection *)_effectiveImageViewTraitCollectionForResolvingImages _isEqualToTraitCollectionForResolvingImage:?])
     {
 
       goto LABEL_6;
     }
 
-    objc_storeStrong(&self->_lastResolvedImageViewTraitCollection, v7);
-    v11 = [(UIImageView *)self highlightedImage];
-    if (!v11)
+    objc_storeStrong(&self->_lastResolvedImageViewTraitCollection, _effectiveImageViewTraitCollectionForResolvingImages);
+    highlightedImage = [(UIImageView *)self highlightedImage];
+    if (!highlightedImage)
     {
       v8 = 0;
       v18 = 0;
       goto LABEL_22;
     }
 
-    v12 = [(UIImageView *)self _resolvedImageFromImage:v11 withImageViewTrait:v7];
+    v12 = [(UIImageView *)self _resolvedImageFromImage:highlightedImage withImageViewTrait:_effectiveImageViewTraitCollectionForResolvingImages];
     if (!v12)
     {
       goto LABEL_20;
     }
 
-    v13 = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
+    resolvedHighlightedImage = [(_UIImageViewStorage *)self->_storage resolvedHighlightedImage];
     v14 = v12;
-    v15 = v13;
+    v15 = resolvedHighlightedImage;
     v16 = v15;
     if (v14 == v15)
     {
@@ -6350,8 +6350,8 @@ LABEL_16:
 LABEL_21:
 
 LABEL_22:
-        v19 = [(UIImageView *)self image];
-        if (!v19)
+        image = [(UIImageView *)self image];
+        if (!image)
         {
 
           if (!v18)
@@ -6360,19 +6360,19 @@ LABEL_22:
           }
 
 LABEL_37:
-          [(UIImageView *)self _updateImageViewForOldImage:v4 newImage:v8];
+          [(UIImageView *)self _updateImageViewForOldImage:imageCopy newImage:v8];
           v9 = 1;
           goto LABEL_8;
         }
 
-        v20 = v19;
-        v21 = [(UIImageView *)self _resolvedImageFromImage:v19 withImageViewTrait:v7];
+        v20 = image;
+        v21 = [(UIImageView *)self _resolvedImageFromImage:image withImageViewTrait:_effectiveImageViewTraitCollectionForResolvingImages];
         if (v21)
         {
-          v27 = v11;
-          v22 = [(_UIImageViewStorage *)self->_storage resolvedImage];
+          v27 = highlightedImage;
+          resolvedImage = [(_UIImageViewStorage *)self->_storage resolvedImage];
           v23 = v21;
-          v24 = v22;
+          v24 = resolvedImage;
           v25 = v24;
           if (v23 == v24)
           {
@@ -6384,7 +6384,7 @@ LABEL_37:
             {
               v26 = [v23 isEqual:v24];
 
-              v11 = v27;
+              highlightedImage = v27;
               if (v26)
               {
                 goto LABEL_36;
@@ -6394,7 +6394,7 @@ LABEL_37:
             else
             {
 
-              v11 = v27;
+              highlightedImage = v27;
             }
 
             [(_UIImageViewStorage *)self->_storage setResolvedImage:v23];
@@ -6409,7 +6409,7 @@ LABEL_37:
             v8 = v23;
           }
 
-          v11 = v27;
+          highlightedImage = v27;
         }
 
 LABEL_36:
@@ -6438,22 +6438,22 @@ LABEL_8:
   return v9;
 }
 
-- (id)_effectiveContentEffectsWithImage:(id)a3 symbolConfiguration:(id)a4
+- (id)_effectiveContentEffectsWithImage:(id)image symbolConfiguration:(id)configuration
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![(UIView *)self _enableMonochromaticTreatment]|| ![(UIImageView *)self _imageSupportsMaterials:v6 symbolConfiguration:v7 allowingHierarchical:1])
+  imageCopy = image;
+  configurationCopy = configuration;
+  if (![(UIView *)self _enableMonochromaticTreatment]|| ![(UIImageView *)self _imageSupportsMaterials:imageCopy symbolConfiguration:configurationCopy allowingHierarchical:1])
   {
-    v11 = [(UIView *)self traitCollection];
-    if ([v11 _userInterfaceRenderingMode] == 2 && (*(&self->super._viewFlags + 25) & 1) != 0)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection _userInterfaceRenderingMode] == 2 && (*(&self->super._viewFlags + 25) & 1) != 0)
     {
-      v13 = [(UIImageView *)self _imageSupportsMaterials:v6 symbolConfiguration:v7 allowingHierarchical:0];
+      v13 = [(UIImageView *)self _imageSupportsMaterials:imageCopy symbolConfiguration:configurationCopy allowingHierarchical:0];
 
       if (v13)
       {
-        v9 = [(UIImageView *)self _materialForImage:v6 symbolConfiguration:v7];
-        v10 = [v9 contentEffects];
+        v9 = [(UIImageView *)self _materialForImage:imageCopy symbolConfiguration:configurationCopy];
+        contentEffects = [v9 contentEffects];
         goto LABEL_11;
       }
     }
@@ -6466,18 +6466,18 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v8 = [(UIView *)self _monochromaticContentEffect];
-  v9 = v8;
-  if (!v8)
+  _monochromaticContentEffect = [(UIView *)self _monochromaticContentEffect];
+  v9 = _monochromaticContentEffect;
+  if (!_monochromaticContentEffect)
   {
     v12 = 0;
     goto LABEL_13;
   }
 
-  v15[0] = v8;
-  v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
+  v15[0] = _monochromaticContentEffect;
+  contentEffects = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 LABEL_11:
-  v12 = v10;
+  v12 = contentEffects;
 LABEL_13:
 
 LABEL_14:
@@ -6485,36 +6485,36 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)_imageSupportsMaterials:(id)a3 allowingHierarchical:(BOOL)a4
+- (BOOL)_imageSupportsMaterials:(id)materials allowingHierarchical:(BOOL)hierarchical
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIImageView *)self _symbolConfigurationForImage:v6];
-  LOBYTE(v4) = [(UIImageView *)self _imageSupportsMaterials:v6 symbolConfiguration:v7 allowingHierarchical:v4];
+  hierarchicalCopy = hierarchical;
+  materialsCopy = materials;
+  v7 = [(UIImageView *)self _symbolConfigurationForImage:materialsCopy];
+  LOBYTE(hierarchicalCopy) = [(UIImageView *)self _imageSupportsMaterials:materialsCopy symbolConfiguration:v7 allowingHierarchical:hierarchicalCopy];
 
-  return v4;
+  return hierarchicalCopy;
 }
 
-- (BOOL)_imageSupportsMaterials:(id)a3 symbolConfiguration:(id)a4 allowingHierarchical:(BOOL)a5
+- (BOOL)_imageSupportsMaterials:(id)materials symbolConfiguration:(id)configuration allowingHierarchical:(BOOL)hierarchical
 {
-  v8 = a3;
-  v9 = a4;
-  if (([v9 _suppressesMaterialRendering] & 1) != 0 || objc_msgSend(v8, "isSymbolImage") && objc_msgSend(v9, "colorRenderingMode") == 2 || -[UIImageView _effectiveRenderingModeForSource:symbolConfiguration:](self, "_effectiveRenderingModeForSource:symbolConfiguration:", v8, v9) != 2)
+  materialsCopy = materials;
+  configurationCopy = configuration;
+  if (([configurationCopy _suppressesMaterialRendering] & 1) != 0 || objc_msgSend(materialsCopy, "isSymbolImage") && objc_msgSend(configurationCopy, "colorRenderingMode") == 2 || -[UIImageView _effectiveRenderingModeForSource:symbolConfiguration:](self, "_effectiveRenderingModeForSource:symbolConfiguration:", materialsCopy, configurationCopy) != 2)
   {
     v11 = 0;
   }
 
-  else if ([v9 _hasSpecifiedPaletteColors])
+  else if ([configurationCopy _hasSpecifiedPaletteColors])
   {
-    v10 = [v9 _colors];
-    if ([v10 count] < 2)
+    _colors = [configurationCopy _colors];
+    if ([_colors count] < 2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [v8 _isPaletteColorSymbolImage] ^ 1;
+      v11 = [materialsCopy _isPaletteColorSymbolImage] ^ 1;
     }
   }
 
@@ -6523,15 +6523,15 @@ LABEL_14:
     v11 = 1;
   }
 
-  v12 = [v9 traitCollection];
-  v13 = [v12 userInterfaceIdiom] == 6 || a5;
+  traitCollection = [configurationCopy traitCollection];
+  v13 = [traitCollection userInterfaceIdiom] == 6 || hierarchical;
 
   LOBYTE(v14) = v13 & v11;
   if (!v13 && v11)
   {
-    if ([v9 _hasSpecifiedHierarchicalColors])
+    if ([configurationCopy _hasSpecifiedHierarchicalColors])
     {
-      v14 = [v8 _isHierarchicalColorSymbolImage] ^ 1;
+      v14 = [materialsCopy _isHierarchicalColorSymbolImage] ^ 1;
     }
 
     else
@@ -6543,41 +6543,41 @@ LABEL_14:
   return v14;
 }
 
-- (id)_materialForImage:(id)a3 symbolConfiguration:(id)a4
+- (id)_materialForImage:(id)image symbolConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIView *)self traitCollection];
-  v9 = [(UIImageView *)self _baseMultiplyColorWithImage:v7 symbolConfiguration:v6 shouldResolveDynamicColors:0];
+  configurationCopy = configuration;
+  imageCopy = image;
+  traitCollection = [(UIView *)self traitCollection];
+  v9 = [(UIImageView *)self _baseMultiplyColorWithImage:imageCopy symbolConfiguration:configurationCopy shouldResolveDynamicColors:0];
 
-  v10 = [v9 _resolvedMaterialWithTraitCollection:v8];
+  v10 = [v9 _resolvedMaterialWithTraitCollection:traitCollection];
 
   return v10;
 }
 
-- (void)_updateImageViewForOldImage:(id)a3 newImage:(id)a4
+- (void)_updateImageViewForOldImage:(id)image newImage:(id)newImage
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIView *)self traitCollection];
-  v9 = [v8 legibilityWeight];
+  imageCopy = image;
+  newImageCopy = newImage;
+  traitCollection = [(UIView *)self traitCollection];
+  legibilityWeight = [traitCollection legibilityWeight];
 
-  if (v9 != 1 || [v6 _suppressesAccessibilityHairlineThickening] && (objc_msgSend(v7, "_suppressesAccessibilityHairlineThickening") & 1) != 0)
+  if (legibilityWeight != 1 || [imageCopy _suppressesAccessibilityHairlineThickening] && (objc_msgSend(newImageCopy, "_suppressesAccessibilityHairlineThickening") & 1) != 0)
   {
     v10 = 0;
     goto LABEL_8;
   }
 
-  if (!v6 && v7)
+  if (!imageCopy && newImageCopy)
   {
 LABEL_7:
     v10 = 1;
     goto LABEL_8;
   }
 
-  if (v6)
+  if (imageCopy)
   {
-    v41 = v7 == 0;
+    v41 = newImageCopy == 0;
   }
 
   else
@@ -6586,34 +6586,34 @@ LABEL_7:
   }
 
   v10 = v41;
-  if (v6 && v7)
+  if (imageCopy && newImageCopy)
   {
-    v42 = [v6 renderingMode];
-    v43 = [v7 renderingMode];
-    if (v42 == 1 && v43 != 1)
+    renderingMode = [imageCopy renderingMode];
+    renderingMode2 = [newImageCopy renderingMode];
+    if (renderingMode == 1 && renderingMode2 != 1)
     {
       goto LABEL_7;
     }
 
-    v10 = v42 != 1 && v43 == 1;
+    v10 = renderingMode != 1 && renderingMode2 == 1;
   }
 
 LABEL_8:
-  [v7 alignmentRectInsets];
+  [newImageCopy alignmentRectInsets];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  [v6 alignmentRectInsets];
+  [imageCopy alignmentRectInsets];
   v22 = 1;
   if (v14 == v23 && v12 == v19 && v18 == v21 && v16 == v20)
   {
-    v24 = [v6 configuration];
-    v25 = [v24 traitCollection];
-    v26 = [v25 layoutDirection];
-    v27 = [v7 configuration];
-    v28 = [v27 traitCollection];
-    v22 = v26 != [v28 layoutDirection];
+    configuration = [imageCopy configuration];
+    traitCollection2 = [configuration traitCollection];
+    layoutDirection = [traitCollection2 layoutDirection];
+    configuration2 = [newImageCopy configuration];
+    traitCollection3 = [configuration2 traitCollection];
+    v22 = layoutDirection != [traitCollection3 layoutDirection];
   }
 
   if (v10)
@@ -6624,10 +6624,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v7 size];
+  [newImageCopy size];
   v33 = v32;
   v35 = v34;
-  [v6 size];
+  [imageCopy size];
   if (v33 != v37)
   {
     goto LABEL_15;
@@ -6638,8 +6638,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v38 = [v7 imageOrientation];
-  if (v38 != [v6 imageOrientation] || v22)
+  imageOrientation = [newImageCopy imageOrientation];
+  if (imageOrientation != [imageCopy imageOrientation] || v22)
   {
     goto LABEL_15;
   }
@@ -6647,22 +6647,22 @@ LABEL_15:
 LABEL_16:
   if (v22)
   {
-    v29 = [(UIView *)self _wantsAutolayout];
-    v30 = [(UIView *)self superview];
-    v31 = v30;
-    if (v29)
+    _wantsAutolayout = [(UIView *)self _wantsAutolayout];
+    superview = [(UIView *)self superview];
+    v31 = superview;
+    if (_wantsAutolayout)
     {
-      [v30 setNeedsLayout];
+      [superview setNeedsLayout];
     }
 
     else
     {
-      [v30 _alignmentRectInsetsHaveChangedForChildImageView:self];
+      [superview _alignmentRectInsetsHaveChangedForChildImageView:self];
     }
   }
 
-  [(UIImageView *)self _clearPretiledImageCacheForImage:v6];
-  [(UIImageView *)self _updatePretiledImageCacheForImage:v7];
+  [(UIImageView *)self _clearPretiledImageCacheForImage:imageCopy];
+  [(UIImageView *)self _updatePretiledImageCacheForImage:newImageCopy];
   if ([(UIImageView *)self _animatesContents])
   {
     [(UIImageView *)self _updateState];
@@ -6680,38 +6680,38 @@ LABEL_16:
 
   [(UIImageView *)self _updateVisibilityAndFrameOfPlaceholderView];
   [(UIImageView *)self _updateTemplateProperties];
-  v39 = [(UIImageView *)self _currentImage];
-  if (v39)
+  _currentImage = [(UIImageView *)self _currentImage];
+  if (_currentImage)
   {
     [(UIView *)self setOpaque:0];
   }
 
   else
   {
-    v40 = [(UIImageView *)self animationImages];
-    if (v40)
+    animationImages = [(UIImageView *)self animationImages];
+    if (animationImages)
     {
       [(UIView *)self setOpaque:0];
     }
 
     else
     {
-      v45 = [(UIImageView *)self _currentHighlightedImage];
-      if (v45)
+      _currentHighlightedImage = [(UIImageView *)self _currentHighlightedImage];
+      if (_currentHighlightedImage)
       {
         [(UIView *)self setOpaque:0];
       }
 
       else
       {
-        v46 = [(UIImageView *)self highlightedAnimationImages];
-        [(UIView *)self setOpaque:v46 == 0];
+        highlightedAnimationImages = [(UIImageView *)self highlightedAnimationImages];
+        [(UIView *)self setOpaque:highlightedAnimationImages == 0];
       }
     }
   }
 
   [(UIImageView *)self _imageContentParametersDidChange];
-  -[UIImageView _baselineOffsetParametersDidChangeHasBaselinePropertyChanged:](self, "_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:", [v6 _hasBaseline] ^ objc_msgSend(v7, "_hasBaseline"));
+  -[UIImageView _baselineOffsetParametersDidChangeHasBaselinePropertyChanged:](self, "_baselineOffsetParametersDidChangeHasBaselinePropertyChanged:", [imageCopy _hasBaseline] ^ objc_msgSend(newImageCopy, "_hasBaseline"));
 }
 
 - (void)_teardownLayeredImage
@@ -6722,41 +6722,41 @@ LABEL_16:
   [(UIImageView *)self _updateOverlayContentView];
 }
 
-- (void)_ancestorWillUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)_ancestorWillUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 nextFocusedView];
-  [(UIImageView *)self _updateLayeredImageIsFocusedWithFocusedView:v8 focusAnimationCoordinator:v6];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  nextFocusedView = [contextCopy nextFocusedView];
+  [(UIImageView *)self _updateLayeredImageIsFocusedWithFocusedView:nextFocusedView focusAnimationCoordinator:coordinatorCopy];
 
   v9.receiver = self;
   v9.super_class = UIImageView;
-  [(UIView *)&v9 _ancestorWillUpdateFocusInContext:v7 withAnimationCoordinator:v6];
+  [(UIView *)&v9 _ancestorWillUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
 }
 
 - (double)_layeredImageCornerRadius
 {
-  v2 = [(UIImageView *)self _layeredImageContainer];
-  v3 = [v2 config];
-  [v3 cornerRadius];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+  config = [_layeredImageContainer config];
+  [config cornerRadius];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_setOverlayContentView:(id)a3
+- (void)_setOverlayContentView:(id)view
 {
-  value = a3;
-  v4 = [(UIImageView *)self _existingOverlayView];
-  if (v4)
+  value = view;
+  _existingOverlayView = [(UIImageView *)self _existingOverlayView];
+  if (_existingOverlayView)
   {
-    if (v4 != value)
+    if (_existingOverlayView != value)
     {
-      v5 = [v4 superview];
+      superview = [_existingOverlayView superview];
 
-      if (v5 == self)
+      if (superview == self)
       {
-        [v4 removeFromSuperview];
+        [_existingOverlayView removeFromSuperview];
       }
     }
   }
@@ -6764,7 +6764,7 @@ LABEL_16:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 setOverlayViewDelegate:0];
+    [_existingOverlayView setOverlayViewDelegate:0];
   }
 
   objc_setAssociatedObject(self, &overlayViewKey, value, 1);
@@ -6779,37 +6779,37 @@ LABEL_16:
 
 - (UIView)overlayContentView
 {
-  v3 = [(UIImageView *)self _existingOverlayView];
-  if (!v3)
+  _existingOverlayView = [(UIImageView *)self _existingOverlayView];
+  if (!_existingOverlayView)
   {
     v4 = [_UIImageViewOverlayView alloc];
     [(UIView *)self bounds];
-    v3 = [(UIView *)v4 initWithFrame:?];
-    [(_UIImageViewOverlayView *)v3 setClipsToBounds:1];
-    [(UIView *)v3 setAutoresizingMask:18];
-    [(UIImageView *)self _setOverlayContentView:v3];
+    _existingOverlayView = [(UIView *)v4 initWithFrame:?];
+    [(_UIImageViewOverlayView *)_existingOverlayView setClipsToBounds:1];
+    [(UIView *)_existingOverlayView setAutoresizingMask:18];
+    [(UIImageView *)self _setOverlayContentView:_existingOverlayView];
   }
 
-  return v3;
+  return _existingOverlayView;
 }
 
 - (void)_updateOverlayContentView
 {
-  v8 = [(UIImageView *)self _existingOverlayView];
-  v3 = [(UIImageView *)self _layeredImageContainer];
-  v4 = v3;
-  if (v3 && ([v3 isHidden] & 1) == 0)
+  _existingOverlayView = [(UIImageView *)self _existingOverlayView];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+  v4 = _layeredImageContainer;
+  if (_layeredImageContainer && ([_layeredImageContainer isHidden] & 1) == 0)
   {
-    if (v8)
+    if (_existingOverlayView)
     {
-      if ([v8 clipsToBounds])
+      if ([_existingOverlayView clipsToBounds])
       {
-        [v4 setMaskedOverlayView:v8];
+        [v4 setMaskedOverlayView:_existingOverlayView];
         goto LABEL_12;
       }
 
       v6 = v4;
-      v7 = v8;
+      v7 = _existingOverlayView;
     }
 
     else
@@ -6826,14 +6826,14 @@ LABEL_16:
   {
     [v4 setMaskedOverlayView:0];
     [v4 setUnmaskedOverlayView:0];
-    if (v8)
+    if (_existingOverlayView)
     {
-      v5 = [v8 superview];
+      superview = [_existingOverlayView superview];
 
-      if (v5 != self)
+      if (superview != self)
       {
-        [v8 removeFromSuperview];
-        [(UIView *)self addSubview:v8];
+        [_existingOverlayView removeFromSuperview];
+        [(UIView *)self addSubview:_existingOverlayView];
       }
     }
   }
@@ -6841,33 +6841,33 @@ LABEL_16:
 LABEL_12:
 }
 
-- (void)_setLayeredImageCornerRadius:(double)a3
+- (void)_setLayeredImageCornerRadius:(double)radius
 {
-  v5 = [(UIImageView *)self _layeredImageContainer];
-  v4 = [v5 config];
-  [v4 setCornerRadius:a3];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+  config = [_layeredImageContainer config];
+  [config setCornerRadius:radius];
 }
 
-- (void)_updateLayeredImageIsFocusedWithFocusedView:(id)a3 focusAnimationCoordinator:(id)a4
+- (void)_updateLayeredImageIsFocusedWithFocusedView:(id)view focusAnimationCoordinator:(id)coordinator
 {
-  v7 = a4;
-  if (a3)
+  coordinatorCopy = coordinator;
+  if (view)
   {
-    a3 = [(UIView *)self isDescendantOfView:a3];
+    view = [(UIView *)self isDescendantOfView:view];
   }
 
-  v6 = [(UIImageView *)self _layeredImageContainer];
-  [v6 setStackFocused:a3 withFocusAnimationCoordinator:v7];
+  _layeredImageContainer = [(UIImageView *)self _layeredImageContainer];
+  [_layeredImageContainer setStackFocused:view withFocusAnimationCoordinator:coordinatorCopy];
 }
 
 - (void)_updateStateIfRBSymbolLayerNoLongerNeeded
 {
-  v3 = [(UIImageView *)self _rbSymbolLayer];
-  if (v3)
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  if (_rbSymbolLayer)
   {
-    v4 = v3;
-    v5 = [(UIImageView *)self image];
-    v6 = [(UIImageView *)self _hasReasonToUseRBSymbolLayerForImage:v5];
+    v4 = _rbSymbolLayer;
+    image = [(UIImageView *)self image];
+    v6 = [(UIImageView *)self _hasReasonToUseRBSymbolLayerForImage:image];
 
     if (!v6)
     {
@@ -6877,33 +6877,33 @@ LABEL_12:
   }
 }
 
-- (BOOL)_hasReasonToUseRBSymbolLayerForImage:(id)a3
+- (BOOL)_hasReasonToUseRBSymbolLayerForImage:(id)image
 {
-  v4 = a3;
-  v5 = [(UIImageView *)self _rbSymbolLayer];
-  v6 = [v5 animator];
-  if ([v6 isAnimating])
+  imageCopy = image;
+  _rbSymbolLayer = [(UIImageView *)self _rbSymbolLayer];
+  animator = [_rbSymbolLayer animator];
+  if ([animator isAnimating])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(_UIImageViewStorage *)self->_storage animationPresetManager];
-    v7 = ([v8 hasPendingAnimationsForImage:v4] & 1) != 0 || -[UIImageView _hasNonDefaultSymbolAnimatorState](self, "_hasNonDefaultSymbolAnimatorState");
+    animationPresetManager = [(_UIImageViewStorage *)self->_storage animationPresetManager];
+    v7 = ([animationPresetManager hasPendingAnimationsForImage:imageCopy] & 1) != 0 || -[UIImageView _hasNonDefaultSymbolAnimatorState](self, "_hasNonDefaultSymbolAnimatorState");
   }
 
   return v7;
 }
 
-- (id)_applyImageEffectsToCIImage:(id)a3 multiplyColor:(id)a4
+- (id)_applyImageEffectsToCIImage:(id)image multiplyColor:(id)color
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  imageCopy = image;
+  colorCopy = color;
+  if (colorCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695F610]) initWithColor:v7];
+    v8 = [objc_alloc(MEMORY[0x1E695F610]) initWithColor:colorCopy];
     v9 = v8;
     if (v8)
     {
@@ -6912,14 +6912,14 @@ LABEL_12:
       v45[0] = v8;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:&v44 count:1];
       v12 = [v10 filterWithName:@"CIConstantColorGenerator" withInputParameters:v11];
-      v13 = [v12 outputImage];
+      outputImage = [v12 outputImage];
 
       v42 = *MEMORY[0x1E695FA48];
-      v43 = v6;
+      v43 = imageCopy;
       v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
-      v15 = [v13 imageByApplyingFilter:@"CISourceInCompositing" withInputParameters:v14];
+      v15 = [outputImage imageByApplyingFilter:@"CISourceInCompositing" withInputParameters:v14];
 
-      v6 = v15;
+      imageCopy = v15;
     }
   }
 
@@ -6939,15 +6939,15 @@ LABEL_12:
       v41 = v18;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
       v21 = [v19 filterWithName:@"CIConstantColorGenerator" withInputParameters:v20];
-      v22 = [v21 outputImage];
+      outputImage2 = [v21 outputImage];
 
       if (v33 == 8)
       {
         v38 = *MEMORY[0x1E695FA48];
-        v39 = v22;
+        v39 = outputImage2;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
         v24 = @"CISourceOutCompositing";
-        v25 = v6;
+        v25 = imageCopy;
       }
 
       else
@@ -6978,45 +6978,45 @@ LABEL_12:
         }
 
         v34 = *MEMORY[0x1E695FA48];
-        v35 = v6;
+        v35 = imageCopy;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
         v24 = @"CISourceAtopCompositing";
-        v25 = v22;
+        v25 = outputImage2;
       }
 
       v26 = [v25 imageByApplyingFilter:v24 withInputParameters:v23];
 
-      v6 = v26;
+      imageCopy = v26;
     }
   }
 
-  return v6;
+  return imageCopy;
 }
 
-- (BOOL)_setImageViewContentsForCIImageBackedImage:(id)a3
+- (BOOL)_setImageViewContentsForCIImageBackedImage:(id)image
 {
-  v4 = a3;
-  v5 = [v4 content];
-  v6 = [v5 canRenderCIImage];
-  if (!v6)
+  imageCopy = image;
+  content = [imageCopy content];
+  canRenderCIImage = [content canRenderCIImage];
+  if (!canRenderCIImage)
   {
     goto LABEL_25;
   }
 
   objc_opt_self();
-  v7 = dyld_program_sdk_at_least() && [v5 isHDR] && (-[UIImageView imageDynamicRange](self, "imageDynamicRange") - 1) < 2;
-  v8 = [(_UIImageViewStorage *)self->_storage CIRenderer];
-  if (!v8)
+  v7 = dyld_program_sdk_at_least() && [content isHDR] && (-[UIImageView imageDynamicRange](self, "imageDynamicRange") - 1) < 2;
+  cIRenderer = [(_UIImageViewStorage *)self->_storage CIRenderer];
+  if (!cIRenderer)
   {
-    v8 = objc_opt_new();
-    [(_UIImageViewStorage *)self->_storage setCIRenderer:v8];
+    cIRenderer = objc_opt_new();
+    [(_UIImageViewStorage *)self->_storage setCIRenderer:cIRenderer];
     if (v7)
     {
       goto LABEL_8;
     }
 
 LABEL_10:
-    v9 = 0;
+    isHDR = 0;
     goto LABEL_11;
   }
 
@@ -7026,11 +7026,11 @@ LABEL_10:
   }
 
 LABEL_8:
-  v9 = [v5 isHDR];
+  isHDR = [content isHDR];
 LABEL_11:
-  if ([(UIImageView *)self _needsImageEffectsForImage:v4])
+  if ([(UIImageView *)self _needsImageEffectsForImage:imageCopy])
   {
-    v10 = [(UIImageView *)self _baseMultiplyColorWithImage:v4 symbolConfiguration:0];
+    v10 = [(UIImageView *)self _baseMultiplyColorWithImage:imageCopy symbolConfiguration:0];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __58__UIImageView__setImageViewContentsForCIImageBackedImage___block_invoke;
@@ -7046,11 +7046,11 @@ LABEL_11:
     v12 = 0;
   }
 
-  [(_UIImageCIImageRenderer *)v8 renderContent:v5 usingHDR:v9 withEffects:v12];
-  v13 = v8;
-  if (v8 && (*(v8 + 32) & 1) != 0)
+  [(_UIImageCIImageRenderer *)cIRenderer renderContent:content usingHDR:isHDR withEffects:v12];
+  v13 = cIRenderer;
+  if (cIRenderer && (*(cIRenderer + 32) & 1) != 0)
   {
-    v14 = *(v8 + 8);
+    v14 = *(cIRenderer + 8);
   }
 
   else
@@ -7058,20 +7058,20 @@ LABEL_11:
     v14 = 0;
   }
 
-  v15 = [(UIView *)self layer];
-  v16 = [v15 contents];
-  if (v14 == v16)
+  layer = [(UIView *)self layer];
+  contents = [layer contents];
+  if (v14 == contents)
   {
-    [v15 reloadValueForKeyPath:@"contents"];
+    [layer reloadValueForKeyPath:@"contents"];
   }
 
   else
   {
-    [v15 setContents:v14];
+    [layer setContents:v14];
   }
 
   [(UIView *)self bounds];
-  v19 = [(UIImageView *)self _layoutForImage:v4 inSize:v17, v18];
+  v19 = [(UIImageView *)self _layoutForImage:imageCopy inSize:v17, v18];
   v20 = v19;
   if (v19)
   {
@@ -7088,34 +7088,34 @@ LABEL_11:
   v22[0] = v23;
   v22[1] = v24;
   v22[2] = v25;
-  [v15 setContentsTransform:v22];
+  [layer setContentsTransform:v22];
 
 LABEL_25:
-  return v6;
+  return canRenderCIImage;
 }
 
-- (void)_setPlaceholderView:(id)a3
+- (void)_setPlaceholderView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIImageViewStorage *)self->_storage placeholderView];
-  v6 = v5;
-  if (v5 != v4)
+  viewCopy = view;
+  placeholderView = [(_UIImageViewStorage *)self->_storage placeholderView];
+  v6 = placeholderView;
+  if (placeholderView != viewCopy)
   {
-    v7 = [v5 superview];
+    superview = [placeholderView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [v6 removeFromSuperview];
     }
 
-    [(_UIImageViewStorage *)self->_storage setPlaceholderView:v4];
+    [(_UIImageViewStorage *)self->_storage setPlaceholderView:viewCopy];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __35__UIImageView__setPlaceholderView___block_invoke;
     v8[3] = &unk_1E70F3590;
     v8[4] = self;
     [UIView performWithoutAnimation:v8];
-    [(UIView *)self addSubview:v4];
+    [(UIView *)self addSubview:viewCopy];
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
@@ -7128,43 +7128,43 @@ LABEL_25:
   return [(_UIImageViewStorage *)storage imageLoader];
 }
 
-- (void)_loadImageWithURL:(id)a3
+- (void)_loadImageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [MEMORY[0x1E695AC68] requestWithURL:v4];
+  v5 = [MEMORY[0x1E695AC68] requestWithURL:lCopy];
 
-  v6 = [MEMORY[0x1E695AC78] sharedSession];
-  v7 = [_UIImageLoader _imageLoaderWithURLRequest:v5 session:v6];
+  mEMORY[0x1E695AC78] = [MEMORY[0x1E695AC78] sharedSession];
+  v7 = [_UIImageLoader _imageLoaderWithURLRequest:v5 session:mEMORY[0x1E695AC78]];
 
   [(UIImageView *)self _loadImage:v7 delegate:0];
 }
 
-- (void)_loadImage:(id)a3 delegate:(id)a4
+- (void)_loadImage:(id)image delegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [(_UIImageViewStorage *)self->_storage imageLoader];
-  if (v8)
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+  if (imageLoader)
   {
     [(_UIImageViewStorage *)self->_storage setStoppingLoad:1];
-    v9 = [(_UIImageViewStorage *)self->_storage loadingDelegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 _imageView:self shouldCancelPreviousImageLoader:v8])
+    loadingDelegate = [(_UIImageViewStorage *)self->_storage loadingDelegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && [loadingDelegate _imageView:self shouldCancelPreviousImageLoader:imageLoader])
     {
-      [v8 _cancel];
+      [imageLoader _cancel];
     }
   }
 
-  [(UIImageView *)self _mainQ_resetForLoader:v6 delegate:v7];
+  [(UIImageView *)self _mainQ_resetForLoader:imageCopy delegate:delegateCopy];
   v10 = _UIImageLoadingLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = 134218240;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = v6;
+    v14 = imageCopy;
     _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_INFO, "Image view %p will load from loader=%p", &v11, 0x16u);
   }
 
@@ -7181,11 +7181,11 @@ void __46__UIImageView__mainQ_beginLoadingIfApplicable__block_invoke(uint64_t a1
   }
 }
 
-- (void)_kickoffQ_beginLoadingWithImageLoader:(id)a3
+- (void)_kickoffQ_beginLoadingWithImageLoader:(id)loader
 {
-  v4 = a3;
-  v5 = [(_UIImageViewStorage *)self->_storage imageLoader];
-  if (v5 == v4)
+  loaderCopy = loader;
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+  if (imageLoader == loaderCopy)
   {
     objc_initWeak(&location, self);
     v6 = MEMORY[0x1E69E96A0];
@@ -7195,7 +7195,7 @@ void __46__UIImageView__mainQ_beginLoadingIfApplicable__block_invoke(uint64_t a1
     v8[2] = __53__UIImageView__kickoffQ_beginLoadingWithImageLoader___block_invoke;
     v8[3] = &unk_1E70F2F80;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = loaderCopy;
     [v9 _loadImageWithCompletionQueue:v6 handler:v8];
 
     objc_destroyWeak(&v10);
@@ -7212,38 +7212,38 @@ void __53__UIImageView__kickoffQ_beginLoadingWithImageLoader___block_invoke(uint
   [WeakRetained _mainQ_imageLoader:v2 finishedWithImage:v3 error:v4];
 }
 
-- (void)_mainQ_imageLoader:(id)a3 finishedWithImage:(id)a4 error:(id)a5
+- (void)_mainQ_imageLoader:(id)loader finishedWithImage:(id)image error:(id)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  imageCopy = image;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v11 = [(_UIImageViewStorage *)self->_storage imageLoader];
-  if (v11 == v8)
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+  if (imageLoader == loaderCopy)
   {
-    v29 = [(_UIImageViewStorage *)self->_storage loadingDelegate];
-    if (v9)
+    loadingDelegate = [(_UIImageViewStorage *)self->_storage loadingDelegate];
+    if (imageCopy)
     {
       if (objc_opt_respondsToSelector())
       {
-        v12 = [v29 _imageView:self didLoadImage:v9];
+        v12 = [loadingDelegate _imageView:self didLoadImage:imageCopy];
 
-        v9 = v12;
+        imageCopy = v12;
       }
 
       os_variant_has_internal_diagnostics();
       v28 = +[UITraitCollection _currentTraitCollectionIfExists];
-      v13 = [(UIView *)self traitCollection];
-      [UITraitCollection setCurrentTraitCollection:v13];
+      traitCollection = [(UIView *)self traitCollection];
+      [UITraitCollection setCurrentTraitCollection:traitCollection];
 
       v14 = _UISetCurrentFallbackEnvironment(self);
       [(UIView *)self bounds];
-      v17 = [(UIImageView *)self _layoutForImage:v9 inSize:v15, v16];
+      v17 = [(UIImageView *)self _layoutForImage:imageCopy inSize:v15, v16];
       _UIRestorePreviousFallbackEnvironment(v14);
       [UITraitCollection setCurrentTraitCollection:v28];
       objc_initWeak(location, self);
-      objc_initWeak(&from, v8);
+      objc_initWeak(&from, loaderCopy);
       if (v17 && (v17[8] & 1) != 0)
       {
         v23 = decodeQueue();
@@ -7257,7 +7257,7 @@ void __53__UIImageView__kickoffQ_beginLoadingWithImageLoader___block_invoke(uint
         objc_copyWeak(&v39, &from);
         v20 = &v36;
         v21 = &v37;
-        v36 = v9;
+        v36 = imageCopy;
         v37 = v17;
         v27 = v17;
         v24 = block;
@@ -7275,7 +7275,7 @@ void __53__UIImageView__kickoffQ_beginLoadingWithImageLoader___block_invoke(uint
         objc_copyWeak(&v34, &from);
         v20 = &v31;
         v21 = &v32;
-        v31 = v9;
+        v31 = imageCopy;
         v32 = v17;
         v22 = v17;
         v23 = MEMORY[0x1E69E96A0];
@@ -7297,27 +7297,27 @@ void __53__UIImageView__kickoffQ_beginLoadingWithImageLoader___block_invoke(uint
         v25 = _UIImageLoadingLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
         {
-          v26 = [v10 domain];
+          domain = [errorCopy domain];
           *location = 134218754;
           *&location[4] = self;
           v42 = 2048;
-          v43 = v8;
+          v43 = loaderCopy;
           v44 = 2114;
-          v45 = v26;
+          v45 = domain;
           v46 = 2048;
-          v47 = [v10 code];
+          code = [errorCopy code];
           _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_INFO, "Image view %p stopped loading with error: loader=%p domain=%{public}@ code=%ld", location, 0x2Au);
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [v29 _imageView:self stoppedLoadingWithError:v10];
+          [loadingDelegate _imageView:self stoppedLoadingWithError:errorCopy];
         }
 
         [(UIImageView *)self _mainQ_resetForLoader:0 delegate:0];
       }
 
-      v9 = 0;
+      imageCopy = 0;
     }
   }
 }
@@ -7342,28 +7342,28 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
   }
 }
 
-- (void)_decodeQ_imageLoader:(id)a3 decodeImage:(id)a4 layout:(id)a5
+- (void)_decodeQ_imageLoader:(id)loader decodeImage:(id)image layout:(id)layout
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  loaderCopy = loader;
+  imageCopy = image;
+  layoutCopy = layout;
   v11 = decodeQueue();
   dispatch_assert_queue_V2(v11);
 
-  v12 = [(_UIImageViewStorage *)self->_storage imageLoader];
-  if (v12 == v8)
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+  if (imageLoader == loaderCopy)
   {
-    v13 = v10;
-    if (!v10 || ([(_UIImageContentLayout *)v10 _materializeRenditionContents], (*(v10 + 8) & 1) == 0) || !*(v10 + 4))
+    v13 = layoutCopy;
+    if (!layoutCopy || ([(_UIImageContentLayout *)layoutCopy _materializeRenditionContents], (*(layoutCopy + 8) & 1) == 0) || !*(layoutCopy + 4))
     {
       v14 = _UIImageLoadingLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218240;
-        v20 = v10;
+        v20 = layoutCopy;
         v21 = 2048;
-        v22 = v8;
+        v22 = loaderCopy;
         _os_log_error_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "Could not generate CGImage contents from layout %p (loader=%p)", buf, 0x16u);
       }
     }
@@ -7373,24 +7373,24 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
     v15[2] = __55__UIImageView__decodeQ_imageLoader_decodeImage_layout___block_invoke;
     v15[3] = &unk_1E70F6B40;
     v15[4] = self;
-    v16 = v8;
-    v17 = v9;
-    v18 = v10;
+    v16 = loaderCopy;
+    v17 = imageCopy;
+    v18 = layoutCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v15);
   }
 }
 
-- (void)_mainQ_imageLoader:(id)a3 finishedOrSkippedDecodingImage:(id)a4 layout:(id)a5
+- (void)_mainQ_imageLoader:(id)loader finishedOrSkippedDecodingImage:(id)image layout:(id)layout
 {
-  v9 = a4;
-  v7 = a3;
+  imageCopy = image;
+  loaderCopy = loader;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v8 = [(_UIImageViewStorage *)self->_storage imageLoader];
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
 
-  if (v8 == v7)
+  if (imageLoader == loaderCopy)
   {
-    [(_UIImageViewStorage *)self->_storage setImageBeingSetByLoader:v9];
-    [(UIImageView *)self setImage:v9];
+    [(_UIImageViewStorage *)self->_storage setImageBeingSetByLoader:imageCopy];
+    [(UIImageView *)self setImage:imageCopy];
     [(_UIImageViewStorage *)self->_storage setImageBeingSetByLoader:0];
     [(UIImageView *)self _mainQ_resetForLoader:0 delegate:0];
   }
@@ -7400,8 +7400,8 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
 {
   v10 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v3 = [(_UIImageViewStorage *)self->_storage imageLoader];
-  if (v3)
+  imageLoader = [(_UIImageViewStorage *)self->_storage imageLoader];
+  if (imageLoader)
   {
     [(_UIImageViewStorage *)self->_storage setStoppingLoad:1];
     if (![(_UIImageViewStorage *)self->_storage isStartingLoad]|| [(_UIImageViewStorage *)self->_storage isEnqueueingLoad])
@@ -7410,35 +7410,35 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         v6 = 134218240;
-        v7 = self;
+        selfCopy = self;
         v8 = 2048;
-        v9 = v3;
+        v9 = imageLoader;
         _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_INFO, "Image view %p stopping loader=%p", &v6, 0x16u);
       }
 
-      v5 = [(_UIImageViewStorage *)self->_storage loadingDelegate];
+      loadingDelegate = [(_UIImageViewStorage *)self->_storage loadingDelegate];
       if (objc_opt_respondsToSelector())
       {
-        [v5 _imageView:self stoppedLoadingWithError:0];
+        [loadingDelegate _imageView:self stoppedLoadingWithError:0];
       }
 
       [(UIImageView *)self _mainQ_resetForLoader:0 delegate:0];
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v5 _imageView:self shouldCancelPreviousImageLoader:v3])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [loadingDelegate _imageView:self shouldCancelPreviousImageLoader:imageLoader])
       {
-        [v3 _cancel];
+        [imageLoader _cancel];
       }
     }
   }
 }
 
-- (void)_mainQ_resetForLoader:(id)a3 delegate:(id)a4
+- (void)_mainQ_resetForLoader:(id)loader delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
+  delegateCopy = delegate;
+  loaderCopy = loader;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  [(_UIImageViewStorage *)self->_storage setImageLoader:v7];
+  [(_UIImageViewStorage *)self->_storage setImageLoader:loaderCopy];
 
-  [(_UIImageViewStorage *)self->_storage setLoadingDelegate:v6];
+  [(_UIImageViewStorage *)self->_storage setLoadingDelegate:delegateCopy];
   [(_UIImageViewStorage *)self->_storage setStartingLoad:0];
   [(_UIImageViewStorage *)self->_storage setEnqueueingLoad:0];
   storage = self->_storage;
@@ -7446,51 +7446,51 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
   [(_UIImageViewStorage *)storage setStoppingLoad:0];
 }
 
-- (void)encodeRestorableStateWithCoder:(id)a3
+- (void)encodeRestorableStateWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UIImageView;
-  v4 = a3;
-  [(UIResponder *)&v6 encodeRestorableStateWithCoder:v4];
+  coderCopy = coder;
+  [(UIResponder *)&v6 encodeRestorableStateWithCoder:coderCopy];
   [(UIView *)self anchorPoint];
-  [v4 encodeCGPoint:@"kViewAnchorKey" forKey:?];
+  [coderCopy encodeCGPoint:@"kViewAnchorKey" forKey:?];
   [(UIView *)self bounds];
-  [v4 encodeCGRect:@"kViewBoundsKey" forKey:?];
+  [coderCopy encodeCGRect:@"kViewBoundsKey" forKey:?];
   [(UIView *)self center];
-  [v4 encodeCGPoint:@"kViewCenterKey" forKey:?];
+  [coderCopy encodeCGPoint:@"kViewCenterKey" forKey:?];
   [(UIView *)self transform];
-  [v4 encodeCGAffineTransform:&v5 forKey:@"kViewTransformKey"];
+  [coderCopy encodeCGAffineTransform:&v5 forKey:@"kViewTransformKey"];
 }
 
-- (void)decodeRestorableStateWithCoder:(id)a3
+- (void)decodeRestorableStateWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIImageView;
-  [(UIResponder *)&v9 decodeRestorableStateWithCoder:v4];
-  if ([v4 containsValueForKey:@"kViewAnchorKey"])
+  [(UIResponder *)&v9 decodeRestorableStateWithCoder:coderCopy];
+  if ([coderCopy containsValueForKey:@"kViewAnchorKey"])
   {
-    [v4 decodeCGPointForKey:@"kViewAnchorKey"];
+    [coderCopy decodeCGPointForKey:@"kViewAnchorKey"];
     [(UIView *)self setAnchorPoint:?];
   }
 
-  if ([v4 containsValueForKey:@"kViewBoundsKey"])
+  if ([coderCopy containsValueForKey:@"kViewBoundsKey"])
   {
-    [v4 decodeCGRectForKey:@"kViewBoundsKey"];
+    [coderCopy decodeCGRectForKey:@"kViewBoundsKey"];
     [(UIImageView *)self setBounds:?];
   }
 
-  if ([v4 containsValueForKey:@"kViewCenterKey"])
+  if ([coderCopy containsValueForKey:@"kViewCenterKey"])
   {
-    [v4 decodeCGPointForKey:@"kViewCenterKey"];
+    [coderCopy decodeCGPointForKey:@"kViewCenterKey"];
     [(UIImageView *)self setCenter:?];
   }
 
-  if ([v4 containsValueForKey:@"kViewTransformKey"])
+  if ([coderCopy containsValueForKey:@"kViewTransformKey"])
   {
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"kViewTransformKey"];
+      [coderCopy decodeCGAffineTransformForKey:@"kViewTransformKey"];
     }
 
     else
@@ -7507,12 +7507,12 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
   }
 }
 
-- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)a3
+- (void)setAdjustsImageSizeForAccessibilityContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
-  if ([(_UIImageViewStorage *)self->_storage adjustsImageSizeForAccessibilityContentSizeCategory]!= a3)
+  categoryCopy = category;
+  if ([(_UIImageViewStorage *)self->_storage adjustsImageSizeForAccessibilityContentSizeCategory]!= category)
   {
-    [(_UIImageViewStorage *)self->_storage setAdjustsImageSizeForAccessibilityContentSizeCategory:v3];
+    [(_UIImageViewStorage *)self->_storage setAdjustsImageSizeForAccessibilityContentSizeCategory:categoryCopy];
     [(UIView *)self invalidateIntrinsicContentSize];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -7525,18 +7525,18 @@ void __58__UIImageView__mainQ_imageLoader_finishedWithImage_error___block_invoke
 
 - (double)_scaleFactorForImage
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIAccessibilityContentSizeCategoryImageAdjustingScaleFactorForTraitCollection(v2);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIAccessibilityContentSizeCategoryImageAdjustingScaleFactorForTraitCollection(traitCollection);
 
   return v3;
 }
 
-- (void)_updatePretiledImageCacheForImage:(id)a3
+- (void)_updatePretiledImageCacheForImage:(id)image
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 _isResizable] && (objc_msgSend(v5, "_representsLayeredImage") & 1) == 0)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy && [imageCopy _isResizable] && (objc_msgSend(v5, "_representsLayeredImage") & 1) == 0)
   {
     [(UIView *)self bounds];
     v7 = v6;
@@ -7567,8 +7567,8 @@ LABEL_17:
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v26 = [v10 images];
-    v27 = [v26 countByEnumeratingWithState:&v52 objects:v60 count:16];
+    images = [v10 images];
+    v27 = [images countByEnumeratingWithState:&v52 objects:v60 count:16];
     if (v27)
     {
       v28 = v27;
@@ -7579,13 +7579,13 @@ LABEL_17:
         {
           if (*v53 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(images);
           }
 
           [(UIImageView *)self _updatePretiledImageCacheForImage:*(*(&v52 + 1) + 8 * i)];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v52 objects:v60 count:16];
+        v28 = [images countByEnumeratingWithState:&v52 objects:v60 count:16];
       }
 
       while (v28);
@@ -7599,8 +7599,8 @@ LABEL_17:
     if (v37 || ([qword_1ED4A2C68 objectForKey:v36], (v37 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v38 = v37;
-      v39 = [v37 pretiledImage];
-      [v39 size];
+      pretiledImage = [v37 pretiledImage];
+      [pretiledImage size];
       v41 = v40;
       v43 = v42;
 
@@ -7620,9 +7620,9 @@ LABEL_17:
 
     else
     {
-      v46 = [v44 imageRendererFormat];
-      [v46 setOpaque:0];
-      v47 = [[UIGraphicsImageRenderer alloc] initWithSize:v46 format:v33, v35];
+      imageRendererFormat = [v44 imageRendererFormat];
+      [imageRendererFormat setOpaque:0];
+      v47 = [[UIGraphicsImageRenderer alloc] initWithSize:imageRendererFormat format:v33, v35];
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __pretiledImageForImage_block_invoke;
@@ -7665,14 +7665,14 @@ void __60__UIImageView_Pretiling___updatePretiledImageCacheForImage___block_invo
   qword_1ED4A2C68 = v0;
 }
 
-- (void)_clearPretiledImageCacheForImage:(id)a3
+- (void)_clearPretiledImageCacheForImage:(id)image
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  imageCopy = image;
+  v5 = imageCopy;
   if (qword_1ED4A2C78 == -1)
   {
-    if (!v4)
+    if (!imageCopy)
     {
       goto LABEL_13;
     }
@@ -7693,8 +7693,8 @@ void __60__UIImageView_Pretiling___updatePretiledImageCacheForImage___block_invo
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [v5 images];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    images = [v5 images];
+    v7 = [images countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -7705,13 +7705,13 @@ void __60__UIImageView_Pretiling___updatePretiledImageCacheForImage___block_invo
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(images);
           }
 
           [(UIImageView *)self _clearPretiledImageCacheForImage:*(*(&v12 + 1) + 8 * i)];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [images countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -7724,22 +7724,22 @@ void __60__UIImageView_Pretiling___updatePretiledImageCacheForImage___block_invo
 LABEL_13:
 }
 
-- (id)_cachedPretiledImageForImage:(id)a3
+- (id)_cachedPretiledImageForImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 _isResizable])
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy && [imageCopy _isResizable])
   {
     v6 = objc_getAssociatedObject(self, v5);
-    v7 = [v6 pretiledImage];
+    pretiledImage = [v6 pretiledImage];
   }
 
   else
   {
-    v7 = 0;
+    pretiledImage = 0;
   }
 
-  return v7;
+  return pretiledImage;
 }
 
 @end

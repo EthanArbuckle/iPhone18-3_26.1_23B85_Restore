@@ -1,92 +1,92 @@
 @interface QLTextItemViewController
-- (BOOL)_documentAttributesContainTextColors:(id)a3;
-- (BOOL)_isContentPotentiallySuspicious:(id)a3 context:(id)a4;
+- (BOOL)_documentAttributesContainTextColors:(id)colors;
+- (BOOL)_isContentPotentiallySuspicious:(id)suspicious context:(id)context;
 - (BOOL)shouldAllowEditingContents;
 - (BOOL)shouldEditByCreatingCopy;
-- (BOOL)shouldRecognizeGestureRecognizer:(id)a3;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)shouldRecognizeGestureRecognizer:(id)recognizer;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 - (UIEdgeInsets)customEdgeInsets;
 - (UIPrintPageRenderer)pageRenderer;
 - (UISimpleTextPrintFormatter)printFormatter;
 - (id)_textInputShortcutsBarButtons;
-- (id)displayedDocumentURLForItem:(id)a3;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
+- (id)displayedDocumentURLForItem:(id)item;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
 - (id)registeredKeyCommands;
-- (id)toolbarButtonsForTraitCollection:(id)a3;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)_keyboardWillAppear:(id)a3;
-- (void)_keyboardWillDisappear:(id)a3;
+- (id)toolbarButtonsForTraitCollection:(id)collection;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)_keyboardWillAppear:(id)appear;
+- (void)_keyboardWillDisappear:(id)disappear;
 - (void)_loadDocumentContent;
 - (void)_saveDocumentContentIfNeeded;
-- (void)_saveTextIfEdited:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)_saveTextIfEditedWithEditedCopy:(id)a3 shouldDismissAfterSaving:(BOOL)a4 completionHandler:(id)a5;
-- (void)_setupTextViewColorsWithDocumentAttributes:(id)a3;
-- (void)_setupTextViewMarginsWithDocumentAttributes:(id)a3;
-- (void)_setupTextViewWithDocumentAttributes:(id)a3;
-- (void)_updateConstraintConstants:(BOOL)a3;
+- (void)_saveTextIfEdited:(BOOL)edited withCompletionHandler:(id)handler;
+- (void)_saveTextIfEditedWithEditedCopy:(id)copy shouldDismissAfterSaving:(BOOL)saving completionHandler:(id)handler;
+- (void)_setupTextViewColorsWithDocumentAttributes:(id)attributes;
+- (void)_setupTextViewMarginsWithDocumentAttributes:(id)attributes;
+- (void)_setupTextViewWithDocumentAttributes:(id)attributes;
+- (void)_updateConstraintConstants:(BOOL)constants;
 - (void)_updateTextViewInsets;
-- (void)_updateViewConstraintsFromKeyboardAppearanceInfo:(id)a3 notificationName:(id)a4;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)closeDocumentWithCompletionHandler:(id)a3;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
-- (void)fontPickerViewControllerDidPickFont:(id)a3;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)numberOfPagesWithSize:(CGSize)a3 completionHandler:(id)a4;
-- (void)openDocumentWithCompletionHandler:(id)a3;
-- (void)pdfDataForPageAtIndex:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)_updateViewConstraintsFromKeyboardAppearanceInfo:(id)info notificationName:(id)name;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)closeDocumentWithCompletionHandler:(id)handler;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
+- (void)fontPickerViewControllerDidPickFont:(id)font;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)numberOfPagesWithSize:(CGSize)size completionHandler:(id)handler;
+- (void)openDocumentWithCompletionHandler:(id)handler;
+- (void)pdfDataForPageAtIndex:(int64_t)index withCompletionHandler:(id)handler;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)presentColorPicker;
 - (void)presentFontPicker;
 - (void)presentTextSizePicker;
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3;
-- (void)setUpDocumentWithItem:(id)a3;
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler;
+- (void)setUpDocumentWithItem:(id)item;
 - (void)setUpTextInputShortcutsBar;
-- (void)textDocumentChangedRemotely:(id)a3;
+- (void)textDocumentChangedRemotely:(id)remotely;
 - (void)textSizePickerDidCancel;
 - (void)updateContentFrame;
-- (void)updateSelectionAttributesWithColor:(id)a3 oldColor:(id)a4 range:(_NSRange)a5 undoable:(BOOL)a6;
-- (void)updateSelectionAttributesWithFont:(id)a3 oldFont:(id)a4 range:(_NSRange)a5 undoable:(BOOL)a6;
-- (void)updateTypingAttributesWithFont:(id)a3 color:(id)a4;
+- (void)updateSelectionAttributesWithColor:(id)color oldColor:(id)oldColor range:(_NSRange)range undoable:(BOOL)undoable;
+- (void)updateSelectionAttributesWithFont:(id)font oldFont:(id)oldFont range:(_NSRange)range undoable:(BOOL)undoable;
+- (void)updateTypingAttributesWithFont:(id)font color:(id)color;
 - (void)viewDidLoad;
 @end
 
 @implementation QLTextItemViewController
 
-- (id)displayedDocumentURLForItem:(id)a3
+- (id)displayedDocumentURLForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(QLTextItemViewController *)self shouldEditByCreatingCopy])
   {
-    [v4 editedFileURL];
+    [itemCopy editedFileURL];
   }
 
   else
   {
-    [v4 saveURL];
+    [itemCopy saveURL];
   }
   v5 = ;
 
   return v5;
 }
 
-- (void)openDocumentWithCompletionHandler:(id)a3
+- (void)openDocumentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(QLTextItemViewController *)self isDocumentOpen])
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
   {
-    v5 = [(QLTextItemViewController *)self textDocument];
+    textDocument = [(QLTextItemViewController *)self textDocument];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __78__QLTextItemViewController_FilePresenting__openDocumentWithCompletionHandler___block_invoke;
     v6[3] = &unk_278B57990;
     v6[4] = self;
-    v7 = v4;
-    [v5 openWithCompletionHandler:v6];
+    v7 = handlerCopy;
+    [textDocument openWithCompletionHandler:v6];
   }
 }
 
@@ -108,67 +108,67 @@ uint64_t __78__QLTextItemViewController_FilePresenting__openDocumentWithCompleti
   return v7();
 }
 
-- (void)closeDocumentWithCompletionHandler:(id)a3
+- (void)closeDocumentWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(QLTextItemViewController *)self _saveDocumentContentIfNeeded];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D768A8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D768A8] object:0];
 
-  v6 = [(QLTextItemViewController *)self textDocument];
-  [v6 closeWithCompletionHandler:v4];
+  textDocument = [(QLTextItemViewController *)self textDocument];
+  [textDocument closeWithCompletionHandler:handlerCopy];
 }
 
 - (void)_loadDocumentContent
 {
-  v3 = [(QLTextItemViewController *)self textDocument];
-  v4 = [v3 hasRichContent];
+  textDocument = [(QLTextItemViewController *)self textDocument];
+  hasRichContent = [textDocument hasRichContent];
 
-  v5 = [(QLTextItemViewController *)self textDocument];
-  v6 = v5;
-  if (v4)
+  textDocument2 = [(QLTextItemViewController *)self textDocument];
+  v6 = textDocument2;
+  if (hasRichContent)
   {
-    v7 = [v5 attributedTextContent];
-    v8 = [(QLTextItemViewController *)self textView];
-    [v8 setAttributedText:v7];
+    attributedTextContent = [textDocument2 attributedTextContent];
+    textView = [(QLTextItemViewController *)self textView];
+    [textView setAttributedText:attributedTextContent];
   }
 
   else
   {
-    v7 = [v5 textContent];
-    v8 = [(QLTextItemViewController *)self textView];
-    [v8 setText:v7];
+    attributedTextContent = [textDocument2 textContent];
+    textView = [(QLTextItemViewController *)self textView];
+    [textView setText:attributedTextContent];
   }
 
-  v9 = [(QLTextItemViewController *)self textView];
-  [v9 setAllowsEditingTextAttributes:v4];
+  textView2 = [(QLTextItemViewController *)self textView];
+  [textView2 setAllowsEditingTextAttributes:hasRichContent];
 }
 
 - (void)_saveDocumentContentIfNeeded
 {
-  v3 = [(QLTextItemViewController *)self textDocument];
-  v7 = [v3 attributedTextContent];
+  textDocument = [(QLTextItemViewController *)self textDocument];
+  attributedTextContent = [textDocument attributedTextContent];
 
-  v4 = [(QLTextItemViewController *)self textView];
-  v5 = [v4 attributedText];
+  textView = [(QLTextItemViewController *)self textView];
+  attributedText = [textView attributedText];
 
-  if (v7 != v5)
+  if (attributedTextContent != attributedText)
   {
-    v6 = [(QLTextItemViewController *)self textDocument];
-    [v6 saveWithTextContent:v5];
+    textDocument2 = [(QLTextItemViewController *)self textDocument];
+    [textDocument2 saveWithTextContent:attributedText];
   }
 }
 
-- (void)textDocumentChangedRemotely:(id)a3
+- (void)textDocumentChangedRemotely:(id)remotely
 {
-  v7 = [a3 object];
-  v4 = [(QLTextItemViewController *)self textDocument];
-  if (v7 == v4)
+  object = [remotely object];
+  textDocument = [(QLTextItemViewController *)self textDocument];
+  if (object == textDocument)
   {
-    v5 = [(QLTextItemViewController *)self textDocument];
-    v6 = [v5 documentState];
+    textDocument2 = [(QLTextItemViewController *)self textDocument];
+    documentState = [textDocument2 documentState];
 
-    if (v6 != 2)
+    if (documentState != 2)
     {
 
       [(QLTextItemViewController *)self _loadDocumentContent];
@@ -180,14 +180,14 @@ uint64_t __78__QLTextItemViewController_FilePresenting__openDocumentWithCompleti
   }
 }
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  contentsCopy = contents;
+  contextCopy = context;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  v9 = contextCopy;
+  v10 = contentsCopy;
   QLRunInMainThread();
 }
 
@@ -257,8 +257,8 @@ uint64_t __88__QLTextItemViewController_loadPreviewControllerWithContents_contex
 
 - (UIEdgeInsets)customEdgeInsets
 {
-  v2 = [(QLItemViewController *)self appearance];
-  if ([v2 presentationMode] == 4)
+  appearance = [(QLItemViewController *)self appearance];
+  if ([appearance presentationMode] == 4)
   {
     v4 = *MEMORY[0x277D768C8];
     v3 = *(MEMORY[0x277D768C8] + 8);
@@ -268,20 +268,20 @@ uint64_t __88__QLTextItemViewController_loadPreviewControllerWithContents_contex
 
   else
   {
-    [v2 peripheryInsets];
+    [appearance peripheryInsets];
     v4 = v7;
     v3 = v8;
     v6 = v9;
     v5 = v10;
   }
 
-  [v2 topInset];
+  [appearance topInset];
   if (v4 < v11)
   {
     v4 = v11;
   }
 
-  [v2 bottomInset];
+  [appearance bottomInset];
   if (v6 < v12)
   {
     v6 = v12;
@@ -298,11 +298,11 @@ uint64_t __88__QLTextItemViewController_loadPreviewControllerWithContents_contex
   return result;
 }
 
-- (BOOL)_isContentPotentiallySuspicious:(id)a3 context:(id)a4
+- (BOOL)_isContentPotentiallySuspicious:(id)suspicious context:(id)context
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  suspiciousCopy = suspicious;
+  contextCopy = context;
   v7 = *MEMORY[0x277CE1EE8];
   v26[0] = *MEMORY[0x277CE1DC8];
   v26[1] = v7;
@@ -310,13 +310,13 @@ uint64_t __88__QLTextItemViewController_loadPreviewControllerWithContents_contex
   v26[2] = *MEMORY[0x277CE1EF0];
   v26[3] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
-  v10 = [v6 contentType];
+  contentType = [contextCopy contentType];
 
-  if (v10)
+  if (contentType)
   {
     v11 = MEMORY[0x277CE1CB8];
-    v12 = [v6 contentType];
-    v13 = [v11 typeWithIdentifier:v12];
+    contentType2 = [contextCopy contentType];
+    v13 = [v11 typeWithIdentifier:contentType2];
 
     v23 = 0u;
     v24 = 0u;
@@ -338,8 +338,8 @@ uint64_t __88__QLTextItemViewController_loadPreviewControllerWithContents_contex
 
           if ([v13 conformsToType:{*(*(&v21 + 1) + 8 * i), v21}])
           {
-            v18 = [v5 string];
-            LOBYTE(v15) = [v18 length] > 0xF4240;
+            string = [suspiciousCopy string];
+            LOBYTE(v15) = [string length] > 0xF4240;
 
             goto LABEL_12;
           }
@@ -367,17 +367,17 @@ LABEL_12:
   return v15;
 }
 
-- (void)_setupTextViewWithDocumentAttributes:(id)a3
+- (void)_setupTextViewWithDocumentAttributes:(id)attributes
 {
-  v4 = a3;
-  [(QLTextItemViewController *)self _setupTextViewColorsWithDocumentAttributes:v4];
-  [(QLTextItemViewController *)self _setupTextViewMarginsWithDocumentAttributes:v4];
+  attributesCopy = attributes;
+  [(QLTextItemViewController *)self _setupTextViewColorsWithDocumentAttributes:attributesCopy];
+  [(QLTextItemViewController *)self _setupTextViewMarginsWithDocumentAttributes:attributesCopy];
 }
 
-- (void)_setupTextViewColorsWithDocumentAttributes:(id)a3
+- (void)_setupTextViewColorsWithDocumentAttributes:(id)attributes
 {
-  v10 = a3;
-  v4 = [v10 objectForKeyedSubscript:*MEMORY[0x277D74070]];
+  attributesCopy = attributes;
+  v4 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x277D74070]];
   if (v4)
   {
     [(UITextView *)self->_textView setBackgroundColor:v4];
@@ -385,32 +385,32 @@ LABEL_12:
 
   else
   {
-    if ([(QLTextItemViewController *)self _documentAttributesContainTextColors:v10])
+    if ([(QLTextItemViewController *)self _documentAttributesContainTextColors:attributesCopy])
     {
-      v5 = [MEMORY[0x277D75348] whiteColor];
-      [(UITextView *)self->_textView setBackgroundColor:v5];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [(UITextView *)self->_textView setBackgroundColor:whiteColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75348] systemBackgroundColor];
-      [(UITextView *)self->_textView setBackgroundColor:v6];
+      systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+      [(UITextView *)self->_textView setBackgroundColor:systemBackgroundColor];
 
-      v5 = [(UITextView *)self->_textView textStorage];
+      whiteColor = [(UITextView *)self->_textView textStorage];
       v7 = *MEMORY[0x277D740C0];
-      v8 = [MEMORY[0x277D75348] labelColor];
-      v9 = [(UITextView *)self->_textView textStorage];
-      [v5 addAttribute:v7 value:v8 range:{0, objc_msgSend(v9, "length")}];
+      labelColor = [MEMORY[0x277D75348] labelColor];
+      textStorage = [(UITextView *)self->_textView textStorage];
+      [whiteColor addAttribute:v7 value:labelColor range:{0, objc_msgSend(textStorage, "length")}];
     }
   }
 }
 
-- (void)_setupTextViewMarginsWithDocumentAttributes:(id)a3
+- (void)_setupTextViewMarginsWithDocumentAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = *MEMORY[0x277D74100];
-  v26 = v4;
-  v6 = [v4 valueForKey:*MEMORY[0x277D74100]];
+  v26 = attributesCopy;
+  v6 = [attributesCopy valueForKey:*MEMORY[0x277D74100]];
 
   if (v6)
   {
@@ -444,10 +444,10 @@ LABEL_12:
   }
 }
 
-- (BOOL)_documentAttributesContainTextColors:(id)a3
+- (BOOL)_documentAttributesContainTextColors:(id)colors
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D74098]];
+  colorsCopy = colors;
+  v5 = [colorsCopy objectForKeyedSubscript:*MEMORY[0x277D74098]];
   v6 = [v5 isEqualToString:*MEMORY[0x277D74120]];
 
   if (v6)
@@ -461,9 +461,9 @@ LABEL_12:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v8 = [(UITextView *)self->_textView textStorage];
-    v9 = [v8 string];
-    v10 = [v9 length];
+    textStorage = [(UITextView *)self->_textView textStorage];
+    string = [textStorage string];
+    v10 = [string length];
 
     if (v10 >= 0xC350)
     {
@@ -475,14 +475,14 @@ LABEL_12:
       v11 = v10;
     }
 
-    v12 = [(UITextView *)self->_textView textStorage];
+    textStorage2 = [(UITextView *)self->_textView textStorage];
     v13 = *MEMORY[0x277D740C0];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __65__QLTextItemViewController__documentAttributesContainTextColors___block_invoke;
     v18[3] = &unk_278B57AF0;
     v18[4] = &v19;
-    [v12 enumerateAttribute:v13 inRange:0 options:v11 usingBlock:{0x100000, v18}];
+    [textStorage2 enumerateAttribute:v13 inRange:0 options:v11 usingBlock:{0x100000, v18}];
 
     if (v20[3])
     {
@@ -491,14 +491,14 @@ LABEL_12:
 
     else
     {
-      v14 = [(UITextView *)self->_textView textStorage];
+      textStorage3 = [(UITextView *)self->_textView textStorage];
       v15 = *MEMORY[0x277D74068];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __65__QLTextItemViewController__documentAttributesContainTextColors___block_invoke_2;
       v17[3] = &unk_278B57AF0;
       v17[4] = &v19;
-      [v14 enumerateAttribute:v15 inRange:0 options:v11 usingBlock:{0x100000, v17}];
+      [textStorage3 enumerateAttribute:v15 inRange:0 options:v11 usingBlock:{0x100000, v17}];
 
       v7 = *(v20 + 24);
     }
@@ -536,24 +536,24 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
   v7.receiver = self;
   v7.super_class = QLTextItemViewController;
   [(QLTextItemViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C60] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C00] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C00] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__keyboardWillDisappear_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__keyboardWillDisappear_ name:*MEMORY[0x277D76C50] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C48] object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__keyboardWillAppear_ name:*MEMORY[0x277D76C48] object:0];
 }
 
-- (id)toolbarButtonsForTraitCollection:(id)a3
+- (id)toolbarButtonsForTraitCollection:(id)collection
 {
   v9.receiver = self;
   v9.super_class = QLTextItemViewController;
-  v3 = [(QLItemViewController *)&v9 toolbarButtonsForTraitCollection:a3];
+  v3 = [(QLItemViewController *)&v9 toolbarButtonsForTraitCollection:collection];
   v4 = [v3 mutableCopy];
 
   v5 = [objc_alloc(MEMORY[0x277D43FB0]) initWithIdentifier:@"QLSearchButton"];
@@ -579,23 +579,23 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
   return v4;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"QLSearchButton"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"QLSearchButton"])
   {
-    v8 = [(UITextView *)self->_textView findInteraction];
-    [v8 presentFindNavigatorShowingReplace:0];
+    findInteraction = [(UITextView *)self->_textView findInteraction];
+    [findInteraction presentFindNavigatorShowingReplace:0];
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = QLTextItemViewController;
-    [(QLItemViewController *)&v9 buttonPressedWithIdentifier:v6 completionHandler:v7];
+    [(QLItemViewController *)&v9 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
   }
 }
 
@@ -603,28 +603,28 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
 {
   v4.receiver = self;
   v4.super_class = QLTextItemViewController;
-  v2 = [(QLItemViewController *)&v4 registeredKeyCommands];
+  registeredKeyCommands = [(QLItemViewController *)&v4 registeredKeyCommands];
 
-  return v2;
+  return registeredKeyCommands;
 }
 
-- (BOOL)shouldRecognizeGestureRecognizer:(id)a3
+- (BOOL)shouldRecognizeGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 locationInView:self->_textView];
+    [recognizerCopy locationInView:self->_textView];
     v5 = [(UITextView *)self->_textView characterRangeAtPoint:?];
     textView = self->_textView;
-    v7 = [(UITextView *)textView beginningOfDocument];
-    v8 = [v5 start];
-    v9 = [(UITextView *)textView offsetFromPosition:v7 toPosition:v8];
+    beginningOfDocument = [(UITextView *)textView beginningOfDocument];
+    start = [v5 start];
+    v9 = [(UITextView *)textView offsetFromPosition:beginningOfDocument toPosition:start];
 
     v10 = self->_textView;
-    v11 = [(UITextView *)v10 beginningOfDocument];
+    beginningOfDocument2 = [(UITextView *)v10 beginningOfDocument];
     v12 = [v5 end];
-    v13 = [(UITextView *)v10 offsetFromPosition:v11 toPosition:v12];
+    v13 = [(UITextView *)v10 offsetFromPosition:beginningOfDocument2 toPosition:v12];
 
     if ([v5 isEmpty])
     {
@@ -633,8 +633,8 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
 
     else
     {
-      v15 = [(UITextView *)self->_textView attributedText];
-      v16 = [v15 attributedSubstringFromRange:{v9, v13 - v9}];
+      attributedText = [(UITextView *)self->_textView attributedText];
+      v16 = [attributedText attributedSubstringFromRange:{v9, v13 - v9}];
 
       if ([v16 length])
       {
@@ -684,8 +684,8 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
     self->_pageRenderer = v4;
 
     v6 = self->_pageRenderer;
-    v7 = [(QLTextItemViewController *)self printFormatter];
-    [(UIPrintPageRenderer *)v6 addPrintFormatter:v7 startingAtPageAtIndex:0];
+    printFormatter = [(QLTextItemViewController *)self printFormatter];
+    [(UIPrintPageRenderer *)v6 addPrintFormatter:printFormatter startingAtPageAtIndex:0];
 
     pageRenderer = self->_pageRenderer;
   }
@@ -693,21 +693,21 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
   return pageRenderer;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
-  v6 = a4;
-  v7 = [(QLItemViewController *)self delegate];
-  [v7 previewItemViewController:self wantsToOpenURL:v6];
+  lCopy = l;
+  delegate = [(QLItemViewController *)self delegate];
+  [delegate previewItemViewController:self wantsToOpenURL:lCopy];
 
   return 0;
 }
 
 - (void)updateContentFrame
 {
-  v4 = [(QLTextItemViewController *)self view];
-  v3 = [(UITextView *)self->_textView selectionContainerView];
-  [v3 frame];
-  [v4 convertRect:self->_textView fromView:?];
+  view = [(QLTextItemViewController *)self view];
+  selectionContainerView = [(UITextView *)self->_textView selectionContainerView];
+  [selectionContainerView frame];
+  [view convertRect:self->_textView fromView:?];
   [(QLItemViewController *)self setContentFrame:?];
 }
 
@@ -736,10 +736,10 @@ uint64_t __65__QLTextItemViewController__documentAttributesContainTextColors___b
   [(UITextView *)textView setScrollIndicatorInsets:v11, v9, v8, v10];
 }
 
-- (void)numberOfPagesWithSize:(CGSize)a3 completionHandler:(id)a4
+- (void)numberOfPagesWithSize:(CGSize)size completionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   QLRunInMainThreadSync();
 }
 
@@ -763,10 +763,10 @@ void __68__QLTextItemViewController_numberOfPagesWithSize_completionHandler___bl
   (*(v14 + 16))(v14, [v15 pageCount]);
 }
 
-- (void)pdfDataForPageAtIndex:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)pdfDataForPageAtIndex:(int64_t)index withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   QLRunInMainThreadSync();
 }
 
@@ -800,52 +800,52 @@ void __72__QLTextItemViewController_pdfDataForPageAtIndex_withCompletionHandler_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_keyboardWillAppear:(id)a3
+- (void)_keyboardWillAppear:(id)appear
 {
   self->_isKeyboardVisible = 1;
-  v4 = a3;
-  v6 = [v4 userInfo];
-  v5 = [v4 name];
+  appearCopy = appear;
+  userInfo = [appearCopy userInfo];
+  name = [appearCopy name];
 
-  [(QLTextItemViewController *)self _updateViewConstraintsFromKeyboardAppearanceInfo:v6 notificationName:v5];
+  [(QLTextItemViewController *)self _updateViewConstraintsFromKeyboardAppearanceInfo:userInfo notificationName:name];
 }
 
-- (void)_keyboardWillDisappear:(id)a3
+- (void)_keyboardWillDisappear:(id)disappear
 {
   self->_isKeyboardVisible = 0;
-  v4 = a3;
-  v6 = [v4 userInfo];
-  v5 = [v4 name];
+  disappearCopy = disappear;
+  userInfo = [disappearCopy userInfo];
+  name = [disappearCopy name];
 
-  [(QLTextItemViewController *)self _updateViewConstraintsFromKeyboardAppearanceInfo:v6 notificationName:v5];
+  [(QLTextItemViewController *)self _updateViewConstraintsFromKeyboardAppearanceInfo:userInfo notificationName:name];
 }
 
-- (void)_updateViewConstraintsFromKeyboardAppearanceInfo:(id)a3 notificationName:(id)a4
+- (void)_updateViewConstraintsFromKeyboardAppearanceInfo:(id)info notificationName:(id)name
 {
   v5 = *MEMORY[0x277D76BB8];
-  v6 = a3;
-  v7 = [v6 objectForKey:v5];
+  infoCopy = info;
+  v7 = [infoCopy objectForKey:v5];
   [v7 CGRectValue];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(QLTextItemViewController *)self view];
-  v17 = [v16 window];
-  v18 = [v17 screen];
-  v19 = [v18 coordinateSpace];
+  view = [(QLTextItemViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  coordinateSpace = [screen coordinateSpace];
 
-  v20 = [(QLTextItemViewController *)self view];
-  v21 = [v20 coordinateSpace];
+  view2 = [(QLTextItemViewController *)self view];
+  coordinateSpace2 = [view2 coordinateSpace];
 
-  [v19 convertRect:v21 toCoordinateSpace:{v9, v11, v13, v15}];
+  [coordinateSpace convertRect:coordinateSpace2 toCoordinateSpace:{v9, v11, v13, v15}];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(QLTextItemViewController *)self view];
-  [v30 bounds];
+  view3 = [(QLTextItemViewController *)self view];
+  [view3 bounds];
   MaxY = CGRectGetMaxY(v36);
   v37.origin.x = v23;
   v37.origin.y = v25;
@@ -855,7 +855,7 @@ void __72__QLTextItemViewController_pdfDataForPageAtIndex_withCompletionHandler_
 
   [(QLTextItemViewController *)self _updateTextViewInsets];
   v32 = MEMORY[0x277D75D18];
-  v33 = [v6 objectForKey:*MEMORY[0x277D76B78]];
+  v33 = [infoCopy objectForKey:*MEMORY[0x277D76B78]];
 
   [v33 floatValue];
   v35[0] = MEMORY[0x277D85DD0];
@@ -872,17 +872,17 @@ void __94__QLTextItemViewController__updateViewConstraintsFromKeyboardAppearance
   [v1 layoutIfNeeded];
 }
 
-- (void)setUpDocumentWithItem:(id)a3
+- (void)setUpDocumentWithItem:(id)item
 {
-  v6 = [(QLTextItemViewController *)self displayedDocumentURLForItem:a3];
+  v6 = [(QLTextItemViewController *)self displayedDocumentURLForItem:item];
   v4 = [[_TtC9QuickLook14QLTextDocument alloc] initWithFileURL:v6];
   textDocument = self->_textDocument;
   self->_textDocument = v4;
 }
 
-- (void)_updateConstraintConstants:(BOOL)a3
+- (void)_updateConstraintConstants:(BOOL)constants
 {
-  v3 = a3;
+  constantsCopy = constants;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__QLTextItemViewController__updateConstraintConstants___block_invoke;
@@ -890,7 +890,7 @@ void __94__QLTextItemViewController__updateViewConstraintsFromKeyboardAppearance
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (constantsCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v4 animations:0.2];
   }
@@ -919,20 +919,20 @@ void __55__QLTextItemViewController__updateConstraintConstants___block_invoke(ui
 {
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
-    v4 = [(QLItemViewController *)self context];
-    v5 = [v4 canBeEdited];
-    if (v5 && (-[QLItemViewController context](self, "context"), v2 = objc_claimAutoreleasedReturnValue(), [v2 editedFileBehavior]))
+    context = [(QLItemViewController *)self context];
+    canBeEdited = [context canBeEdited];
+    if (canBeEdited && (-[QLItemViewController context](self, "context"), v2 = objc_claimAutoreleasedReturnValue(), [v2 editedFileBehavior]))
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [(QLItemViewController *)self context];
-      v8 = [v7 item];
-      v6 = [v8 editingMode] != 0;
+      context2 = [(QLItemViewController *)self context];
+      item = [context2 item];
+      v6 = [item editingMode] != 0;
 
-      if (!v5)
+      if (!canBeEdited)
       {
 LABEL_9:
 
@@ -948,12 +948,12 @@ LABEL_9:
 
 - (BOOL)shouldEditByCreatingCopy
 {
-  v4 = [(QLItemViewController *)self context];
-  v5 = [v4 canBeEdited];
-  if (v5)
+  context = [(QLItemViewController *)self context];
+  canBeEdited = [context canBeEdited];
+  if (canBeEdited)
   {
-    v2 = [(QLItemViewController *)self context];
-    if ([v2 editedFileBehavior] == 2)
+    context2 = [(QLItemViewController *)self context];
+    if ([context2 editedFileBehavior] == 2)
     {
       v6 = 1;
 LABEL_5:
@@ -962,11 +962,11 @@ LABEL_5:
     }
   }
 
-  v7 = [(QLItemViewController *)self context];
-  v8 = [v7 item];
-  v6 = [v8 editingMode] == 2;
+  context3 = [(QLItemViewController *)self context];
+  item = [context3 item];
+  v6 = [item editingMode] == 2;
 
-  if (v5)
+  if (canBeEdited)
   {
     goto LABEL_5;
   }
@@ -976,48 +976,48 @@ LABEL_6:
   return v6;
 }
 
-- (void)savePreviewEditedCopyWithCompletionHandler:(id)a3
+- (void)savePreviewEditedCopyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(QLTextItemViewController *)self shouldAllowEditingContents])
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __80__QLTextItemViewController_Editing__savePreviewEditedCopyWithCompletionHandler___block_invoke;
     v5[3] = &unk_278B58210;
-    v6 = v4;
+    v6 = handlerCopy;
     [(QLTextItemViewController *)self _saveTextIfEdited:1 withCompletionHandler:v5];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (void)_saveTextIfEdited:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)_saveTextIfEdited:(BOOL)edited withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v7 = [(QLItemViewController *)self context];
-  v8 = [v7 item];
-  v9 = [v8 previewItemContentType];
+  context = [(QLItemViewController *)self context];
+  item = [context item];
+  previewItemContentType = [item previewItemContentType];
 
-  if (v9)
+  if (previewItemContentType)
   {
     v10 = MEMORY[0x277CE1CB8];
-    v11 = [(QLItemViewController *)self context];
-    v12 = [v11 item];
-    v13 = [v12 previewItemContentType];
-    v14 = [v10 typeWithIdentifier:v13];
+    context2 = [(QLItemViewController *)self context];
+    item2 = [context2 item];
+    previewItemContentType2 = [item2 previewItemContentType];
+    v14 = [v10 typeWithIdentifier:previewItemContentType2];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __77__QLTextItemViewController_Editing___saveTextIfEdited_withCompletionHandler___block_invoke;
     v15[3] = &unk_278B58238;
-    v16 = v6;
+    v16 = handlerCopy;
     objc_copyWeak(&v17, &location);
-    v18 = a3;
+    editedCopy = edited;
     [(QLItemViewController *)self editedCopyToSaveChangesWithOutputType:v14 completionHandler:v15];
     objc_destroyWeak(&v17);
   }
@@ -1025,7 +1025,7 @@ LABEL_6:
   else
   {
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D43EF0] code:0 userInfo:0];
-    (*(v6 + 2))(v6, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, v14);
   }
 
   objc_destroyWeak(&location);
@@ -1062,18 +1062,18 @@ void __77__QLTextItemViewController_Editing___saveTextIfEdited_withCompletionHan
   }
 }
 
-- (void)_saveTextIfEditedWithEditedCopy:(id)a3 shouldDismissAfterSaving:(BOOL)a4 completionHandler:(id)a5
+- (void)_saveTextIfEditedWithEditedCopy:(id)copy shouldDismissAfterSaving:(BOOL)saving completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  copyCopy = copy;
+  handlerCopy = handler;
   if (_os_feature_enabled_impl())
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCopy_shouldDismissAfterSaving_completionHandler___block_invoke;
     v9[3] = &unk_278B57990;
-    v10 = v7;
-    v11 = v8;
+    v10 = copyCopy;
+    v11 = handlerCopy;
     [(QLTextItemViewController *)self closeDocumentWithCompletionHandler:v9];
   }
 }
@@ -1100,46 +1100,46 @@ uint64_t __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCop
 - (void)setUpTextInputShortcutsBar
 {
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(QLTextItemViewController *)self _textInputShortcutsBarButtons];
-  v18 = [v3 initWithArray:v4];
+  _textInputShortcutsBarButtons = [(QLTextItemViewController *)self _textInputShortcutsBarButtons];
+  v18 = [v3 initWithArray:_textInputShortcutsBarButtons];
 
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v7 = [(QLTextItemViewController *)self textView];
-    v8 = [v7 inputAssistantItem];
+    textView = [(QLTextItemViewController *)self textView];
+    inputAssistantItem = [textView inputAssistantItem];
 
     v9 = objc_alloc(MEMORY[0x277D751E0]);
     v10 = [MEMORY[0x277D755B8] systemImageNamed:@"textFormat"];
-    v11 = [v9 initWithImage:v10 style:0 target:0 action:0];
+    textView2 = [v9 initWithImage:v10 style:0 target:0 action:0];
 
-    v12 = [objc_alloc(MEMORY[0x277D751F0]) initWithBarButtonItems:v18 representativeItem:v11];
+    v12 = [objc_alloc(MEMORY[0x277D751F0]) initWithBarButtonItems:v18 representativeItem:textView2];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v14 = [v8 trailingBarButtonGroups];
-    [v13 addObjectsFromArray:v14];
+    trailingBarButtonGroups = [inputAssistantItem trailingBarButtonGroups];
+    [v13 addObjectsFromArray:trailingBarButtonGroups];
 
     [v13 addObject:v12];
-    [v8 setTrailingBarButtonGroups:v13];
+    [inputAssistantItem setTrailingBarButtonGroups:v13];
   }
 
   else
   {
-    v8 = objc_alloc_init(MEMORY[0x277D75C58]);
-    v15 = [MEMORY[0x277D75348] systemFillColor];
-    [v8 setBackgroundColor:v15];
+    inputAssistantItem = objc_alloc_init(MEMORY[0x277D75C58]);
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    [inputAssistantItem setBackgroundColor:systemFillColor];
 
-    v16 = [MEMORY[0x277D75348] labelColor];
-    [v8 setTintColor:v16];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [inputAssistantItem setTintColor:labelColor];
 
-    v17 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-    [v18 insertObject:v17 atIndex:0];
+    flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+    [v18 insertObject:flexibleSpaceItem atIndex:0];
 
-    [v8 setItems:v18];
-    [v8 sizeToFit];
-    v11 = [(QLTextItemViewController *)self textView];
-    [v11 setInputAccessoryView:v8];
+    [inputAssistantItem setItems:v18];
+    [inputAssistantItem sizeToFit];
+    textView2 = [(QLTextItemViewController *)self textView];
+    [textView2 setInputAccessoryView:inputAssistantItem];
   }
 }
 
@@ -1148,10 +1148,10 @@ uint64_t __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCop
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(QLTextItemViewController *)self shouldAllowEditingContents])
   {
-    v4 = [(QLTextItemViewController *)self textDocument];
-    v5 = [v4 hasRichContent];
+    textDocument = [(QLTextItemViewController *)self textDocument];
+    hasRichContent = [textDocument hasRichContent];
 
-    if (v5)
+    if (hasRichContent)
     {
       v6 = [MEMORY[0x277D755B8] systemImageNamed:@"pencil.tip"];
       v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithImage:v6 style:0 target:self action:sel_presentColorPicker];
@@ -1171,82 +1171,82 @@ uint64_t __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCop
   return v3;
 }
 
-- (void)updateTypingAttributesWithFont:(id)a3 color:(id)a4
+- (void)updateTypingAttributesWithFont:(id)font color:(id)color
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D740C0];
   v13[0] = *MEMORY[0x277D740A8];
   v13[1] = v6;
-  v14[0] = a3;
-  v14[1] = a4;
+  v14[0] = font;
+  v14[1] = color;
   v7 = MEMORY[0x277CBEAC0];
-  v8 = a4;
-  v9 = a3;
+  colorCopy = color;
+  fontCopy = font;
   v10 = [v7 dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v11 = [(QLTextItemViewController *)self textView];
-  [v11 setTypingAttributes:v10];
+  textView = [(QLTextItemViewController *)self textView];
+  [textView setTypingAttributes:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSelectionAttributesWithFont:(id)a3 oldFont:(id)a4 range:(_NSRange)a5 undoable:(BOOL)a6
+- (void)updateSelectionAttributesWithFont:(id)font oldFont:(id)oldFont range:(_NSRange)range undoable:(BOOL)undoable
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
+  undoableCopy = undoable;
+  length = range.length;
+  location = range.location;
   v24[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  fontCopy = font;
+  oldFontCopy = oldFont;
   v23 = *MEMORY[0x277D740A8];
-  v24[0] = v11;
+  v24[0] = fontCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v14 = [(QLTextItemViewController *)self textView];
-  v15 = [v14 textStorage];
-  [v15 addAttributes:v13 range:{location, length}];
+  textView = [(QLTextItemViewController *)self textView];
+  textStorage = [textView textStorage];
+  [textStorage addAttributes:v13 range:{location, length}];
 
-  if (v6)
+  if (undoableCopy)
   {
-    v16 = [(QLTextItemViewController *)self textView];
-    v17 = [v16 undoManager];
-    v18 = [v17 prepareWithInvocationTarget:self];
-    [v18 updateSelectionAttributesWithFont:v12 oldFont:v11 range:location undoable:{length, 1}];
+    textView2 = [(QLTextItemViewController *)self textView];
+    undoManager = [textView2 undoManager];
+    v18 = [undoManager prepareWithInvocationTarget:self];
+    [v18 updateSelectionAttributesWithFont:oldFontCopy oldFont:fontCopy range:location undoable:{length, 1}];
 
-    v19 = [(QLTextItemViewController *)self textView];
-    v20 = [v19 undoManager];
+    textView3 = [(QLTextItemViewController *)self textView];
+    undoManager2 = [textView3 undoManager];
     v21 = QLLocalizedString();
-    [v20 setActionName:v21];
+    [undoManager2 setActionName:v21];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSelectionAttributesWithColor:(id)a3 oldColor:(id)a4 range:(_NSRange)a5 undoable:(BOOL)a6
+- (void)updateSelectionAttributesWithColor:(id)color oldColor:(id)oldColor range:(_NSRange)range undoable:(BOOL)undoable
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
+  undoableCopy = undoable;
+  length = range.length;
+  location = range.location;
   v24[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  colorCopy = color;
+  oldColorCopy = oldColor;
   v23 = *MEMORY[0x277D740C0];
-  v24[0] = v11;
+  v24[0] = colorCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-  v14 = [(QLTextItemViewController *)self textView];
-  v15 = [v14 textStorage];
-  [v15 addAttributes:v13 range:{location, length}];
+  textView = [(QLTextItemViewController *)self textView];
+  textStorage = [textView textStorage];
+  [textStorage addAttributes:v13 range:{location, length}];
 
-  if (v6)
+  if (undoableCopy)
   {
-    v16 = [(QLTextItemViewController *)self textView];
-    v17 = [v16 undoManager];
-    v18 = [v17 prepareWithInvocationTarget:self];
-    [v18 updateSelectionAttributesWithColor:v12 oldColor:v11 range:location undoable:{length, 1}];
+    textView2 = [(QLTextItemViewController *)self textView];
+    undoManager = [textView2 undoManager];
+    v18 = [undoManager prepareWithInvocationTarget:self];
+    [v18 updateSelectionAttributesWithColor:oldColorCopy oldColor:colorCopy range:location undoable:{length, 1}];
 
-    v19 = [(QLTextItemViewController *)self textView];
-    v20 = [v19 undoManager];
+    textView3 = [(QLTextItemViewController *)self textView];
+    undoManager2 = [textView3 undoManager];
     v21 = QLLocalizedString();
-    [v20 setActionName:v21];
+    [undoManager2 setActionName:v21];
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -1261,20 +1261,20 @@ uint64_t __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCop
   [(QLTextItemViewController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (void)fontPickerViewControllerDidPickFont:(id)a3
+- (void)fontPickerViewControllerDidPickFont:(id)font
 {
-  v4 = [a3 selectedFontDescriptor];
-  if (v4)
+  selectedFontDescriptor = [font selectedFontDescriptor];
+  if (selectedFontDescriptor)
   {
     v5 = MEMORY[0x277D74300];
-    v9 = v4;
-    v6 = [(QLTextItemViewController *)self textView];
-    v7 = [v6 font];
-    [v7 pointSize];
+    v9 = selectedFontDescriptor;
+    textView = [(QLTextItemViewController *)self textView];
+    font = [textView font];
+    [font pointSize];
     v8 = [v5 fontWithDescriptor:v9 size:?];
 
     [(QLTextItemViewController *)self updateTextWithFont:v8 undoable:1];
-    v4 = v9;
+    selectedFontDescriptor = v9;
   }
 }
 
@@ -1282,86 +1282,86 @@ uint64_t __112__QLTextItemViewController_Editing___saveTextIfEditedWithEditedCop
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D75840]);
-  v4 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v3 setBackgroundColor:secondarySystemBackgroundColor];
 
   [v3 setDataSource:self];
   [v3 setDelegate:self];
   v5 = objc_alloc_init(MEMORY[0x277D75D28]);
   [v5 setView:v3];
   v6 = QLLocalizedString();
-  v7 = [v5 navigationItem];
-  [v7 setTitle:v6];
+  navigationItem = [v5 navigationItem];
+  [navigationItem setTitle:v6];
 
   v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_textSizePickerDidCancel];
-  v9 = [v5 navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [v5 navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v5];
   [v10 setModalPresentationStyle:2];
-  v11 = [MEMORY[0x277D75A28] mediumDetent];
-  v15[0] = v11;
+  mediumDetent = [MEMORY[0x277D75A28] mediumDetent];
+  v15[0] = mediumDetent;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v13 = [v10 sheetPresentationController];
-  [v13 setDetents:v12];
+  sheetPresentationController = [v10 sheetPresentationController];
+  [sheetPresentationController setDetents:v12];
 
   [(QLTextItemViewController *)self presentViewController:v10 animated:1 completion:0];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(QLTextItemViewController *)self availableTextSizes:a3];
+  v4 = [(QLTextItemViewController *)self availableTextSizes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v6 = [(QLTextItemViewController *)self availableTextSizes:a3];
-  v7 = [v6 objectAtIndexedSubscript:a4];
-  v8 = [v7 stringValue];
+  v6 = [(QLTextItemViewController *)self availableTextSizes:view];
+  v7 = [v6 objectAtIndexedSubscript:row];
+  stringValue = [v7 stringValue];
 
-  return v8;
+  return stringValue;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   v7 = MEMORY[0x277D74300];
-  v8 = [(QLTextItemViewController *)self textView:a3];
-  v9 = [v8 font];
-  v10 = [v9 fontDescriptor];
-  v11 = [(QLTextItemViewController *)self availableTextSizes];
-  v12 = [v11 objectAtIndexedSubscript:a4];
+  v8 = [(QLTextItemViewController *)self textView:view];
+  font = [v8 font];
+  fontDescriptor = [font fontDescriptor];
+  availableTextSizes = [(QLTextItemViewController *)self availableTextSizes];
+  v12 = [availableTextSizes objectAtIndexedSubscript:row];
   [v12 floatValue];
-  v14 = [v7 fontWithDescriptor:v10 size:v13];
+  v14 = [v7 fontWithDescriptor:fontDescriptor size:v13];
 
   [(QLTextItemViewController *)self updateTextWithFont:v14 undoable:1];
 }
 
 - (void)textSizePickerDidCancel
 {
-  v2 = [(QLTextItemViewController *)self presentedViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(QLTextItemViewController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)presentColorPicker
 {
   v5 = objc_alloc_init(MEMORY[0x277D75360]);
-  v3 = [(QLTextItemViewController *)self textView];
-  v4 = [v3 textColor];
-  [v5 setSelectedColor:v4];
+  textView = [(QLTextItemViewController *)self textView];
+  textColor = [textView textColor];
+  [v5 setSelectedColor:textColor];
 
   [v5 setDelegate:self];
   [(QLTextItemViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v5 = a5;
-  v7 = [a3 selectedColor];
-  [(QLTextItemViewController *)self updateTextWithColor:v7 undoable:!v5];
+  continuouslyCopy = continuously;
+  selectedColor = [controller selectedColor];
+  [(QLTextItemViewController *)self updateTextWithColor:selectedColor undoable:!continuouslyCopy];
 }
 
 @end

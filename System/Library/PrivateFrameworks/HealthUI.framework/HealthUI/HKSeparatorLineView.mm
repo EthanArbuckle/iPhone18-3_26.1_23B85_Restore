@@ -1,9 +1,9 @@
 @interface HKSeparatorLineView
 + (id)_hkecg_separatorView;
 - (CGSize)intrinsicContentSize;
-- (HKSeparatorLineView)initWithFrame:(CGRect)a3;
-- (void)_applyStyleToContext:(CGContext *)a3;
-- (void)drawRect:(CGRect)a3;
+- (HKSeparatorLineView)initWithFrame:(CGRect)frame;
+- (void)_applyStyleToContext:(CGContext *)context;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation HKSeparatorLineView
@@ -12,8 +12,8 @@
 {
   v2 = objc_alloc_init(HKSeparatorLineView);
   [(HKSeparatorLineView *)v2 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(HKSeparatorLineView *)v2 setColor:v3];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(HKSeparatorLineView *)v2 setColor:secondaryLabelColor];
 
   [(HKSeparatorLineView *)v2 setSeparatorThickness:HKUIFloorToScreenScale(0.5)];
   [(HKSeparatorLineView *)v2 setDashStyle:2];
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (HKSeparatorLineView)initWithFrame:(CGRect)a3
+- (HKSeparatorLineView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = HKSeparatorLineView;
-  v3 = [(HKSeparatorLineView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKSeparatorLineView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     color = v3->_color;
-    v3->_color = v4;
+    v3->_color = blackColor;
 
     v3->_separatorThickness = 1.0;
     v3->_dashStyle = 0;
@@ -43,9 +43,9 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HKSeparatorLineView *)self _isVertical];
+  _isVertical = [(HKSeparatorLineView *)self _isVertical];
   separatorThickness = self->_separatorThickness;
-  if (v3)
+  if (_isVertical)
   {
     v5 = self->_separatorThickness;
   }
@@ -55,7 +55,7 @@
     v5 = 0.0;
   }
 
-  if (v3)
+  if (_isVertical)
   {
     separatorThickness = 0.0;
   }
@@ -65,26 +65,26 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v9 = [(HKSeparatorLineView *)self backgroundColor];
-  v10 = v9;
-  if (v9)
+  backgroundColor = [(HKSeparatorLineView *)self backgroundColor];
+  v10 = backgroundColor;
+  if (backgroundColor)
   {
-    v11 = v9;
+    systemBackgroundColor = backgroundColor;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
 
-  v21 = v11;
+  v21 = systemBackgroundColor;
 
   CGContextSetFillColorWithColor(CurrentContext, [v21 CGColor]);
   v23.origin.x = x;
@@ -118,16 +118,16 @@
   CGContextStrokePath(CurrentContext);
 }
 
-- (void)_applyStyleToContext:(CGContext *)a3
+- (void)_applyStyleToContext:(CGContext *)context
 {
-  CGContextSetStrokeColorWithColor(a3, [(UIColor *)self->_color CGColor]);
-  CGContextSetLineWidth(a3, self->_separatorThickness);
+  CGContextSetStrokeColorWithColor(context, [(UIColor *)self->_color CGColor]);
+  CGContextSetLineWidth(context, self->_separatorThickness);
   v5 = self->_dashStyle - 1;
   if (v5 <= 3)
   {
     v6 = *(&off_1E81B6E90 + v5);
 
-    CGContextSetLineDash(a3, 0.0, v6, 2uLL);
+    CGContextSetLineDash(context, 0.0, v6, 2uLL);
   }
 }
 

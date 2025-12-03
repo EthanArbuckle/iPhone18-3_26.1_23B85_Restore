@@ -1,9 +1,9 @@
 @interface ATMovingAverage
-- (ATMovingAverage)initWithWindow:(unint64_t)a3;
+- (ATMovingAverage)initWithWindow:(unint64_t)window;
 - (double)average;
 - (void)dealloc;
 - (void)reset;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation ATMovingAverage
@@ -50,7 +50,7 @@
   self->_count = 0;
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   count = self->_count;
   if (self->_index == self->_window)
@@ -63,7 +63,7 @@
     index = self->_index;
   }
 
-  self->_values[index] = a3;
+  self->_values[index] = update;
   self->_count = count + 1;
   self->_index = index + 1;
 }
@@ -76,7 +76,7 @@
   [(ATMovingAverage *)&v3 dealloc];
 }
 
-- (ATMovingAverage)initWithWindow:(unint64_t)a3
+- (ATMovingAverage)initWithWindow:(unint64_t)window
 {
   v8.receiver = self;
   v8.super_class = ATMovingAverage;
@@ -84,8 +84,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_window = a3;
-    v6 = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v4->_window = window;
+    v6 = malloc_type_malloc(8 * window, 0x100004000313F17uLL);
     v5->_count = 0;
     v5->_index = 0;
     v5->_values = v6;

@@ -1,5 +1,5 @@
 @interface _UIDocumentUnavailablePageBackgroundAccessoryView
-- (_UIDocumentUnavailablePageBackgroundAccessoryView)initWithFrame:(CGRect)a3;
+- (_UIDocumentUnavailablePageBackgroundAccessoryView)initWithFrame:(CGRect)frame;
 - (unsigned)_layoutPageViews;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
@@ -8,11 +8,11 @@
 
 @implementation _UIDocumentUnavailablePageBackgroundAccessoryView
 
-- (_UIDocumentUnavailablePageBackgroundAccessoryView)initWithFrame:(CGRect)a3
+- (_UIDocumentUnavailablePageBackgroundAccessoryView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = _UIDocumentUnavailablePageBackgroundAccessoryView;
-  v3 = [(UIView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(_UIDocumentUnavailablePageView);
@@ -27,11 +27,11 @@
     [(UIView *)v3 addSubview:v3->_rightView];
     if (_UISolariumEnabled())
     {
-      v8 = [(UIView *)v3->_leftView layer];
-      [v8 setCornerRadius:28.0];
+      layer = [(UIView *)v3->_leftView layer];
+      [layer setCornerRadius:28.0];
 
-      v9 = [(UIView *)v3->_rightView layer];
-      [v9 setCornerRadius:28.0];
+      layer2 = [(UIView *)v3->_rightView layer];
+      [layer2 setCornerRadius:28.0];
     }
   }
 
@@ -50,8 +50,8 @@
     v42 = v6;
     v8 = *(v1 + 54);
     v40 = *(v1 + 55);
-    v9 = [v1 traitCollection];
-    v10 = [v9 horizontalSizeClass];
+    traitCollection = [v1 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
     [v1 safeAreaInsets];
     v12 = v11;
@@ -61,7 +61,7 @@
     v18 = v17;
     v39 = v19;
     v20 = v1[424];
-    if (v10 == 1)
+    if (horizontalSizeClass == 1)
     {
       v21 = 12.0;
     }
@@ -72,7 +72,7 @@
     }
 
     v37 = v3;
-    if (v10 == 1)
+    if (horizontalSizeClass == 1)
     {
       v44.origin.x = v3;
       v44.origin.y = v5;

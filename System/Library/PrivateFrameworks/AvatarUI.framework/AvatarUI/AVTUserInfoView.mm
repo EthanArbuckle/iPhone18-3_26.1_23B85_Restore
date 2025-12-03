@@ -2,11 +2,11 @@
 - (NSDirectionalEdgeInsets)textInsets;
 - (NSString)text;
 - (void)_configure;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setContainerBackgroundColor:(id)a3;
-- (void)setText:(id)a3;
+- (void)setContainerBackgroundColor:(id)color;
+- (void)setText:(id)text;
 - (void)updateConstraints;
 @end
 
@@ -17,48 +17,48 @@
   v7.receiver = self;
   v7.super_class = AVTUserInfoView;
   [(AVTUserInfoView *)&v7 didMoveToWindow];
-  v3 = [(AVTUserInfoView *)self window];
+  window = [(AVTUserInfoView *)self window];
 
-  if (!v3)
+  if (!window)
   {
-    v6 = [(AVTUserInfoView *)self window];
+    window2 = [(AVTUserInfoView *)self window];
 
-    if (v6)
+    if (window2)
     {
       return;
     }
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
     goto LABEL_8;
   }
 
-  v4 = [(AVTUserInfoView *)self userInfoEffectView];
+  userInfoEffectView = [(AVTUserInfoView *)self userInfoEffectView];
 
-  if (!v4)
+  if (!userInfoEffectView)
   {
     [(AVTUserInfoView *)self _configure];
   }
 
   if (![(AVTUserInfoView *)self isRegisteredForCategorySizeChange])
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 LABEL_8:
 
-    [(AVTUserInfoView *)self setIsRegisteredForCategorySizeChange:v3 != 0];
+    [(AVTUserInfoView *)self setIsRegisteredForCategorySizeChange:window != 0];
   }
 }
 
-- (void)setContainerBackgroundColor:(id)a3
+- (void)setContainerBackgroundColor:(id)color
 {
-  if (self->_containerBackgroundColor != a3)
+  if (self->_containerBackgroundColor != color)
   {
-    self->_containerBackgroundColor = a3;
+    self->_containerBackgroundColor = color;
     userInfoEffectView = self->_userInfoEffectView;
-    v5 = a3;
-    v6 = [(UIVisualEffectView *)userInfoEffectView contentView];
-    [v6 setBackgroundColor:v5];
+    colorCopy = color;
+    contentView = [(UIVisualEffectView *)userInfoEffectView contentView];
+    [contentView setBackgroundColor:colorCopy];
   }
 }
 
@@ -68,25 +68,25 @@ LABEL_8:
   *&self->_textInsets.bottom = xmmword_1BB4165E0;
   v18 = [MEMORY[0x1E69DC730] effectWithBlurRadius:20.0];
   v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v18];
-  v4 = [(UIVisualEffectView *)v3 contentView];
-  v5 = [(AVTUserInfoView *)self containerBackgroundColor];
-  if (v5)
+  contentView = [(UIVisualEffectView *)v3 contentView];
+  containerBackgroundColor = [(AVTUserInfoView *)self containerBackgroundColor];
+  if (containerBackgroundColor)
   {
-    [v4 setBackgroundColor:v5];
+    [contentView setBackgroundColor:containerBackgroundColor];
   }
 
   else
   {
     v6 = +[AVTUIColorRepository appBackgroundColor];
-    [v4 setBackgroundColor:v6];
+    [contentView setBackgroundColor:v6];
   }
 
-  v7 = [(UIVisualEffectView *)v3 contentView];
-  [v7 setAlpha:0.649999976];
+  contentView2 = [(UIVisualEffectView *)v3 contentView];
+  [contentView2 setAlpha:0.649999976];
 
   [(UIVisualEffectView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(UIVisualEffectView *)v3 layer];
-  [v8 setMasksToBounds:1];
+  layer = [(UIVisualEffectView *)v3 layer];
+  [layer setMasksToBounds:1];
 
   userInfoEffectView = self->_userInfoEffectView;
   self->_userInfoEffectView = v3;
@@ -110,26 +110,26 @@ LABEL_8:
   v16 = v12;
 
   [(AVTUserInfoView *)self addSubview:v10];
-  v17 = [(UIVisualEffectView *)v10 contentView];
+  contentView3 = [(UIVisualEffectView *)v10 contentView];
 
-  [v17 addSubview:v16];
+  [contentView3 addSubview:v16];
   [(AVTUserInfoView *)self setUserInteractionEnabled:0];
   [(AVTUserInfoView *)self setNeedsUpdateConstraints];
 }
 
 - (NSString)text
 {
-  v2 = [(AVTUserInfoView *)self userInfoLabel];
-  v3 = [v2 text];
+  userInfoLabel = [(AVTUserInfoView *)self userInfoLabel];
+  text = [userInfoLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = [(AVTUserInfoView *)self userInfoLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  userInfoLabel = [(AVTUserInfoView *)self userInfoLabel];
+  [userInfoLabel setText:textCopy];
 
   [(AVTUserInfoView *)self setNeedsUpdateConstraints];
 }
@@ -140,56 +140,56 @@ LABEL_8:
   v37.receiver = self;
   v37.super_class = AVTUserInfoView;
   [(AVTUserInfoView *)&v37 updateConstraints];
-  v3 = [(AVTUserInfoView *)self window];
+  window = [(AVTUserInfoView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(AVTUserInfoView *)self activeConstraints];
-    if (v4)
+    activeConstraints = [(AVTUserInfoView *)self activeConstraints];
+    if (activeConstraints)
     {
-      [MEMORY[0x1E696ACD8] deactivateConstraints:v4];
+      [MEMORY[0x1E696ACD8] deactivateConstraints:activeConstraints];
     }
 
     [(AVTUserInfoView *)self centerYAnchor];
-    v36 = v24 = v4;
-    v35 = [(UIVisualEffectView *)self->_userInfoEffectView centerYAnchor];
-    v34 = [v36 constraintEqualToAnchor:v35];
+    v36 = v24 = activeConstraints;
+    centerYAnchor = [(UIVisualEffectView *)self->_userInfoEffectView centerYAnchor];
+    v34 = [v36 constraintEqualToAnchor:centerYAnchor];
     v38[0] = v34;
-    v33 = [(AVTUserInfoView *)self centerXAnchor];
-    v32 = [(UIVisualEffectView *)self->_userInfoEffectView centerXAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    centerXAnchor = [(AVTUserInfoView *)self centerXAnchor];
+    centerXAnchor2 = [(UIVisualEffectView *)self->_userInfoEffectView centerXAnchor];
+    v31 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v38[1] = v31;
-    v30 = [(AVTUserInfoView *)self leadingAnchor];
-    v29 = [(UIVisualEffectView *)self->_userInfoEffectView leadingAnchor];
-    v28 = [v30 constraintLessThanOrEqualToAnchor:v29];
+    leadingAnchor = [(AVTUserInfoView *)self leadingAnchor];
+    leadingAnchor2 = [(UIVisualEffectView *)self->_userInfoEffectView leadingAnchor];
+    v28 = [leadingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor2];
     v38[2] = v28;
-    v27 = [(AVTUserInfoView *)self trailingAnchor];
-    v26 = [(UIVisualEffectView *)self->_userInfoEffectView trailingAnchor];
-    v25 = [v27 constraintGreaterThanOrEqualToAnchor:v26];
+    trailingAnchor = [(AVTUserInfoView *)self trailingAnchor];
+    trailingAnchor2 = [(UIVisualEffectView *)self->_userInfoEffectView trailingAnchor];
+    v25 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
     v38[3] = v25;
-    v23 = [(AVTUserInfoView *)self topAnchor];
-    v22 = [(UIVisualEffectView *)self->_userInfoEffectView topAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    topAnchor = [(AVTUserInfoView *)self topAnchor];
+    topAnchor2 = [(UIVisualEffectView *)self->_userInfoEffectView topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v38[4] = v21;
-    v20 = [(AVTUserInfoView *)self bottomAnchor];
-    v19 = [(UIVisualEffectView *)self->_userInfoEffectView bottomAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    bottomAnchor = [(AVTUserInfoView *)self bottomAnchor];
+    bottomAnchor2 = [(UIVisualEffectView *)self->_userInfoEffectView bottomAnchor];
+    v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v38[5] = v18;
-    v17 = [(UIVisualEffectView *)self->_userInfoEffectView topAnchor];
-    v16 = [(UILabel *)self->_userInfoLabel topAnchor];
-    v15 = [v17 constraintEqualToAnchor:v16 constant:-self->_textInsets.top];
+    topAnchor3 = [(UIVisualEffectView *)self->_userInfoEffectView topAnchor];
+    topAnchor4 = [(UILabel *)self->_userInfoLabel topAnchor];
+    v15 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-self->_textInsets.top];
     v38[6] = v15;
-    v14 = [(UIVisualEffectView *)self->_userInfoEffectView bottomAnchor];
-    v5 = [(UILabel *)self->_userInfoLabel bottomAnchor];
-    v6 = [v14 constraintEqualToAnchor:v5 constant:self->_textInsets.bottom];
+    bottomAnchor3 = [(UIVisualEffectView *)self->_userInfoEffectView bottomAnchor];
+    bottomAnchor4 = [(UILabel *)self->_userInfoLabel bottomAnchor];
+    v6 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:self->_textInsets.bottom];
     v38[7] = v6;
-    v7 = [(UIVisualEffectView *)self->_userInfoEffectView leadingAnchor];
-    v8 = [(UILabel *)self->_userInfoLabel leadingAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:-self->_textInsets.leading];
+    leadingAnchor3 = [(UIVisualEffectView *)self->_userInfoEffectView leadingAnchor];
+    leadingAnchor4 = [(UILabel *)self->_userInfoLabel leadingAnchor];
+    v9 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:-self->_textInsets.leading];
     v38[8] = v9;
-    v10 = [(UIVisualEffectView *)self->_userInfoEffectView trailingAnchor];
-    v11 = [(UILabel *)self->_userInfoLabel trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:self->_textInsets.trailing];
+    trailingAnchor3 = [(UIVisualEffectView *)self->_userInfoEffectView trailingAnchor];
+    trailingAnchor4 = [(UILabel *)self->_userInfoLabel trailingAnchor];
+    v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:self->_textInsets.trailing];
     v38[9] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:10];
 
@@ -203,19 +203,19 @@ LABEL_8:
   v7.receiver = self;
   v7.super_class = AVTUserInfoView;
   [(AVTUserInfoView *)&v7 layoutSubviews];
-  v3 = [(AVTUserInfoView *)self userInfoEffectView];
-  [v3 bounds];
+  userInfoEffectView = [(AVTUserInfoView *)self userInfoEffectView];
+  [userInfoEffectView bounds];
   v4 = CGRectGetHeight(v8) * 0.5;
-  v5 = [(AVTUserInfoView *)self userInfoEffectView];
-  v6 = [v5 layer];
-  [v6 setCornerRadius:v4];
+  userInfoEffectView2 = [(AVTUserInfoView *)self userInfoEffectView];
+  layer = [userInfoEffectView2 layer];
+  [layer setCornerRadius:v4];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
   v5 = +[AVTUIFontRepository userInfoLabelFont];
-  v4 = [(AVTUserInfoView *)self userInfoLabel];
-  [v4 setFont:v5];
+  userInfoLabel = [(AVTUserInfoView *)self userInfoLabel];
+  [userInfoLabel setFont:v5];
 }
 
 - (NSDirectionalEdgeInsets)textInsets

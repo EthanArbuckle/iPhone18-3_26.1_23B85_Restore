@@ -11,16 +11,16 @@
 
   if (v3)
   {
-    a1 = [a1 initWithCurrentState:v3 desiredState:0];
-    v4 = a1;
+    self = [self initWithCurrentState:v3 desiredState:0];
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

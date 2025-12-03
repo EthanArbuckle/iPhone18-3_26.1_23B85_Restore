@@ -1,37 +1,37 @@
 @interface PKDiscoveryArticleLayout
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForUI:(id)a3;
-- (PKDiscoveryArticleLayout)initWithCoder:(id)a3;
-- (PKDiscoveryArticleLayout)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForUI:(id)i;
+- (PKDiscoveryArticleLayout)initWithCoder:(id)coder;
+- (PKDiscoveryArticleLayout)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
 - (unint64_t)isWritingDirectionRTL;
-- (void)_updatePreferredLocalizationWithBundle:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3;
-- (void)localizeWithBundle:(id)a3 table:(id)a4;
-- (void)setItem:(id)a3;
-- (void)setMediaBundle:(id)a3;
+- (void)_updatePreferredLocalizationWithBundle:(id)bundle;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle;
+- (void)localizeWithBundle:(id)bundle table:(id)table;
+- (void)setItem:(id)item;
+- (void)setMediaBundle:(id)bundle;
 @end
 
 @implementation PKDiscoveryArticleLayout
 
-- (PKDiscoveryArticleLayout)initWithDictionary:(id)a3
+- (PKDiscoveryArticleLayout)initWithDictionary:(id)dictionary
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = PKDiscoveryArticleLayout;
   v5 = [(PKDiscoveryArticleLayout *)&v37 init];
   if (v5)
   {
-    v5->_version = [v4 PKIntegerForKey:@"version"];
-    v31 = [v4 PKDictionaryForKey:@"card"];
+    v5->_version = [dictionaryCopy PKIntegerForKey:@"version"];
+    v31 = [dictionaryCopy PKDictionaryForKey:@"card"];
     v6 = [[PKDiscoveryCard alloc] initWithDictionary:v31];
     card = v5->_card;
     v5->_card = v6;
 
-    v8 = [v4 PKDictionaryForKey:@"mediumCard"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"mediumCard"];
     if (v8)
     {
       v9 = [[PKDiscoveryCard alloc] initWithDictionary:v8];
@@ -39,12 +39,12 @@
       v5->_mediumCard = v9;
     }
 
-    v30 = [v4 PKDictionaryForKey:@"miniCard"];
+    v30 = [dictionaryCopy PKDictionaryForKey:@"miniCard"];
     v11 = [[PKMiniDiscoveryCard alloc] initWithDictionary:v30];
     miniCard = v5->_miniCard;
     v5->_miniCard = v11;
 
-    v13 = [v4 PKArrayContaining:objc_opt_class() forKey:@"shelves"];
+    v13 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"shelves"];
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v33 = 0u;
     v34 = 0u;
@@ -101,7 +101,7 @@
     shelves = v5->_shelves;
     v5->_shelves = v22;
 
-    v24 = [v4 PKDictionaryForKey:@"footerLockup"];
+    v24 = [dictionaryCopy PKDictionaryForKey:@"footerLockup"];
     v25 = [[PKDiscoveryCallToAction alloc] initWithDictionary:v24];
     footerLockup = v5->_footerLockup;
     v5->_footerLockup = v25;
@@ -115,57 +115,57 @@ LABEL_17:
   return v27;
 }
 
-- (void)localizeWithBundle:(id)a3
+- (void)localizeWithBundle:(id)bundle
 {
-  v4 = a3;
-  [(PKDiscoveryArticleLayout *)self _updatePreferredLocalizationWithBundle:v4];
-  [(PKDiscoveryCard *)self->_card localizeWithBundle:v4];
-  [(PKDiscoveryCard *)self->_mediumCard localizeWithBundle:v4];
-  [(PKDiscoveryCard *)self->_miniCard localizeWithBundle:v4];
+  bundleCopy = bundle;
+  [(PKDiscoveryArticleLayout *)self _updatePreferredLocalizationWithBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_card localizeWithBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_mediumCard localizeWithBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_miniCard localizeWithBundle:bundleCopy];
   shelves = self->_shelves;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PKDiscoveryArticleLayout_localizeWithBundle___block_invoke;
   v7[3] = &unk_1E79CA478;
-  v8 = v4;
-  v6 = v4;
+  v8 = bundleCopy;
+  v6 = bundleCopy;
   [(NSArray *)shelves enumerateObjectsUsingBlock:v7];
 }
 
-- (void)localizeWithBundle:(id)a3 table:(id)a4
+- (void)localizeWithBundle:(id)bundle table:(id)table
 {
-  v6 = a3;
-  v7 = a4;
-  [(PKDiscoveryArticleLayout *)self _updatePreferredLocalizationWithBundle:v6];
-  [(PKDiscoveryCard *)self->_card localizeWithBundle:v6 table:v7];
-  [(PKDiscoveryCard *)self->_mediumCard localizeWithBundle:v6 table:v7];
-  [(PKDiscoveryCard *)self->_miniCard localizeWithBundle:v6 table:v7];
+  bundleCopy = bundle;
+  tableCopy = table;
+  [(PKDiscoveryArticleLayout *)self _updatePreferredLocalizationWithBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_card localizeWithBundle:bundleCopy table:tableCopy];
+  [(PKDiscoveryCard *)self->_mediumCard localizeWithBundle:bundleCopy table:tableCopy];
+  [(PKDiscoveryCard *)self->_miniCard localizeWithBundle:bundleCopy table:tableCopy];
   shelves = self->_shelves;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PKDiscoveryArticleLayout_localizeWithBundle_table___block_invoke;
   v11[3] = &unk_1E79CA4A0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bundleCopy;
+  v13 = tableCopy;
+  v9 = tableCopy;
+  v10 = bundleCopy;
   [(NSArray *)shelves enumerateObjectsUsingBlock:v11];
 }
 
-- (void)setMediaBundle:(id)a3
+- (void)setMediaBundle:(id)bundle
 {
-  v4 = a3;
-  [(PKDiscoveryCard *)self->_card setMediaBundle:v4];
-  [(PKDiscoveryCard *)self->_miniCard setMediaBundle:v4];
-  [(PKDiscoveryCard *)self->_mediumCard setMediaBundle:v4];
-  [(PKDiscoveryCallToAction *)self->_footerLockup setMediaBundle:v4];
+  bundleCopy = bundle;
+  [(PKDiscoveryCard *)self->_card setMediaBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_miniCard setMediaBundle:bundleCopy];
+  [(PKDiscoveryCard *)self->_mediumCard setMediaBundle:bundleCopy];
+  [(PKDiscoveryCallToAction *)self->_footerLockup setMediaBundle:bundleCopy];
   shelves = self->_shelves;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke;
   v7[3] = &unk_1E79CA478;
-  v8 = v4;
-  v6 = v4;
+  v8 = bundleCopy;
+  v6 = bundleCopy;
   [(NSArray *)shelves enumerateObjectsUsingBlock:v7];
 }
 
@@ -179,28 +179,28 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
-  if (v5)
+  itemCopy = item;
+  if (itemCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_item, a3);
-    v6 = [v12 identifier];
+    v12 = itemCopy;
+    objc_storeStrong(&self->_item, item);
+    identifier = [v12 identifier];
     itemIdentifier = self->_itemIdentifier;
-    self->_itemIdentifier = v6;
+    self->_itemIdentifier = identifier;
 
     if ([v12 viewCount])
     {
-      v8 = 0;
+      shouldBadge = 0;
     }
 
     else
     {
-      v8 = [v12 shouldBadge];
+      shouldBadge = [v12 shouldBadge];
     }
 
-    self->_requestedBadge = v8;
+    self->_requestedBadge = shouldBadge;
     self->_priority = [v12 priority];
     self->_entitledToForceLargeCard = [v12 entitledToForceLargeCard];
     self->_hitMaxLargeViewCount = [v12 hasHitMaxLargeViewCount];
@@ -217,18 +217,18 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
     }
 
     footerLockup = self->_footerLockup;
-    v5 = v12;
+    itemCopy = v12;
     if (footerLockup)
     {
       [(PKDiscoveryCallToAction *)footerLockup setItem:v12];
-      v5 = v12;
+      itemCopy = v12;
     }
   }
 }
 
-- (BOOL)isEqualForUI:(id)a3
+- (BOOL)isEqualForUI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -236,7 +236,7 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
   }
 
   itemIdentifier = self->_itemIdentifier;
-  v6 = v4[2];
+  v6 = iCopy[2];
   if (itemIdentifier && v6)
   {
     if (([(NSString *)itemIdentifier isEqual:?]& 1) == 0)
@@ -250,13 +250,13 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
     goto LABEL_34;
   }
 
-  if (self->_version != v4[3] || self->_variant != v4[4] || self->_priority != v4[10] || self->_entitledToForceLargeCard != *(v4 + 8) || self->_hitMaxLargeViewCount != *(v4 + 9))
+  if (self->_version != iCopy[3] || self->_variant != iCopy[4] || self->_priority != iCopy[10] || self->_entitledToForceLargeCard != *(iCopy + 8) || self->_hitMaxLargeViewCount != *(iCopy + 9))
   {
     goto LABEL_34;
   }
 
   card = self->_card;
-  v8 = v4[5];
+  v8 = iCopy[5];
   if (card && v8)
   {
     if (![(PKDiscoveryCard *)card isEqual:?])
@@ -271,7 +271,7 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
   }
 
   mediumCard = self->_mediumCard;
-  v10 = v4[6];
+  v10 = iCopy[6];
   if (mediumCard && v10)
   {
     if (![(PKDiscoveryCard *)mediumCard isEqual:?])
@@ -286,7 +286,7 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
   }
 
   shelves = self->_shelves;
-  v12 = v4[8];
+  v12 = iCopy[8];
   if (shelves && v12)
   {
     if (([(NSArray *)shelves isEqual:?]& 1) == 0)
@@ -301,7 +301,7 @@ void __43__PKDiscoveryArticleLayout_setMediaBundle___block_invoke(uint64_t a1, v
   }
 
   footerLockup = self->_footerLockup;
-  v14 = v4[9];
+  v14 = iCopy[9];
   if (!footerLockup || !v14)
   {
     if (footerLockup == v14)
@@ -321,7 +321,7 @@ LABEL_34:
 
 LABEL_30:
   miniCard = self->_miniCard;
-  v16 = v4[7];
+  v16 = iCopy[7];
   if (miniCard && v16)
   {
     v17 = [(PKMiniDiscoveryCard *)miniCard isEqual:?];
@@ -352,54 +352,54 @@ LABEL_35:
   return 2;
 }
 
-- (void)_updatePreferredLocalizationWithBundle:(id)a3
+- (void)_updatePreferredLocalizationWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [v5 languageCode];
+  bundleCopy = bundle;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  languageCode = [currentLocale languageCode];
 
-  v7 = [v4 preferredLocalizations];
-  v8 = [v7 containsObject:v6];
+  preferredLocalizations = [bundleCopy preferredLocalizations];
+  v8 = [preferredLocalizations containsObject:languageCode];
 
   if (v8)
   {
-    objc_storeStrong(&self->_preferredLocalization, v6);
+    objc_storeStrong(&self->_preferredLocalization, languageCode);
   }
 
   else
   {
-    v9 = [v4 preferredLocalizations];
-    v10 = [v9 count];
+    preferredLocalizations2 = [bundleCopy preferredLocalizations];
+    v10 = [preferredLocalizations2 count];
 
     if (v10)
     {
-      v11 = [v4 preferredLocalizations];
+      preferredLocalizations3 = [bundleCopy preferredLocalizations];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __67__PKDiscoveryArticleLayout__updatePreferredLocalizationWithBundle___block_invoke;
       v17[3] = &unk_1E79CA4C8;
-      v18 = v6;
-      v12 = [v11 pk_firstObjectPassingTest:v17];
+      v18 = languageCode;
+      v12 = [preferredLocalizations3 pk_firstObjectPassingTest:v17];
       preferredLocalization = self->_preferredLocalization;
       self->_preferredLocalization = v12;
 
       if (!self->_preferredLocalization)
       {
-        v14 = [v4 preferredLocalizations];
-        v15 = [v14 firstObject];
+        preferredLocalizations4 = [bundleCopy preferredLocalizations];
+        firstObject = [preferredLocalizations4 firstObject];
         v16 = self->_preferredLocalization;
-        self->_preferredLocalization = v15;
+        self->_preferredLocalization = firstObject;
       }
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([(PKDiscoveryArticleLayout *)self isEqualForUI:v4])
+  equalCopy = equal;
+  if ([(PKDiscoveryArticleLayout *)self isEqualForUI:equalCopy])
   {
-    v5 = self->_requestedBadge == v4[10];
+    v5 = self->_requestedBadge == equalCopy[10];
   }
 
   else
@@ -481,67 +481,67 @@ LABEL_35:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"identifier"];
-  [v5 encodeObject:self->_item forKey:@"item"];
-  [v5 encodeInteger:self->_version forKey:@"version"];
-  [v5 encodeInteger:self->_variant forKey:@"variant"];
-  [v5 encodeObject:self->_card forKey:@"card"];
-  [v5 encodeObject:self->_mediumCard forKey:@"mediumCard"];
-  [v5 encodeObject:self->_shelves forKey:@"shelves"];
-  [v5 encodeObject:self->_footerLockup forKey:@"footerLockup"];
-  [v5 encodeBool:self->_requestedBadge forKey:@"requestedBadge"];
-  [v5 encodeInteger:self->_priority forKey:@"priority"];
-  [v5 encodeBool:self->_entitledToForceLargeCard forKey:@"entitledToForceLargeCard"];
-  [v5 encodeBool:self->_hitMaxLargeViewCount forKey:@"hitMaxLargeViewCount"];
-  [v5 encodeObject:self->_miniCard forKey:@"miniCard"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_item forKey:@"item"];
+  [coderCopy encodeInteger:self->_version forKey:@"version"];
+  [coderCopy encodeInteger:self->_variant forKey:@"variant"];
+  [coderCopy encodeObject:self->_card forKey:@"card"];
+  [coderCopy encodeObject:self->_mediumCard forKey:@"mediumCard"];
+  [coderCopy encodeObject:self->_shelves forKey:@"shelves"];
+  [coderCopy encodeObject:self->_footerLockup forKey:@"footerLockup"];
+  [coderCopy encodeBool:self->_requestedBadge forKey:@"requestedBadge"];
+  [coderCopy encodeInteger:self->_priority forKey:@"priority"];
+  [coderCopy encodeBool:self->_entitledToForceLargeCard forKey:@"entitledToForceLargeCard"];
+  [coderCopy encodeBool:self->_hitMaxLargeViewCount forKey:@"hitMaxLargeViewCount"];
+  [coderCopy encodeObject:self->_miniCard forKey:@"miniCard"];
 }
 
-- (PKDiscoveryArticleLayout)initWithCoder:(id)a3
+- (PKDiscoveryArticleLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = PKDiscoveryArticleLayout;
   v5 = [(PKDiscoveryArticleLayout *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"item"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"item"];
     item = v5->_item;
     v5->_item = v8;
 
-    v5->_version = [v4 decodeIntegerForKey:@"version"];
-    v5->_variant = [v4 decodeIntegerForKey:@"variant"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"card"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"version"];
+    v5->_variant = [coderCopy decodeIntegerForKey:@"variant"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"card"];
     card = v5->_card;
     v5->_card = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediumCard"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediumCard"];
     mediumCard = v5->_mediumCard;
     v5->_mediumCard = v12;
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"shelves"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"shelves"];
     shelves = v5->_shelves;
     v5->_shelves = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footerLockup"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footerLockup"];
     footerLockup = v5->_footerLockup;
     v5->_footerLockup = v19;
 
-    v5->_requestedBadge = [v4 decodeBoolForKey:@"requestedBadge"];
-    v5->_priority = [v4 decodeIntegerForKey:@"priority"];
-    v5->_entitledToForceLargeCard = [v4 decodeBoolForKey:@"entitledToForceLargeCard"];
-    v5->_hitMaxLargeViewCount = [v4 decodeBoolForKey:@"hitMaxLargeViewCount"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"miniCard"];
+    v5->_requestedBadge = [coderCopy decodeBoolForKey:@"requestedBadge"];
+    v5->_priority = [coderCopy decodeIntegerForKey:@"priority"];
+    v5->_entitledToForceLargeCard = [coderCopy decodeBoolForKey:@"entitledToForceLargeCard"];
+    v5->_hitMaxLargeViewCount = [coderCopy decodeBoolForKey:@"hitMaxLargeViewCount"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"miniCard"];
     miniCard = v5->_miniCard;
     v5->_miniCard = v21;
   }

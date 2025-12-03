@@ -3,8 +3,8 @@
 + (BOOL)isRaiseToEarGestureSupported;
 - (BOOL)isDetectingRaiseToAnswer;
 - (CSDRaiseToAnswerController)init;
-- (CSDRaiseToAnswerController)initWithCallCenterObserver:(id)a3;
-- (void)setDetectingRaiseToAnswer:(BOOL)a3;
+- (CSDRaiseToAnswerController)initWithCallCenterObserver:(id)observer;
+- (void)setDetectingRaiseToAnswer:(BOOL)answer;
 - (void)updateDetectingRaiseToAnswer;
 @end
 
@@ -14,14 +14,14 @@
 {
   if ([objc_opt_class() isRaiseToEarGestureEnabled])
   {
-    v7 = [(CSDRaiseToAnswerController *)self callCenterObserver];
-    v3 = [v7 callContainer];
-    v4 = [v3 incomingCall];
-    if (v4)
+    callCenterObserver = [(CSDRaiseToAnswerController *)self callCenterObserver];
+    callContainer = [callCenterObserver callContainer];
+    incomingCall = [callContainer incomingCall];
+    if (incomingCall)
     {
-      v5 = [(CSDRaiseToAnswerController *)self callCenterObserver];
-      v6 = [v5 callContainer];
-      -[CSDRaiseToAnswerController setDetectingRaiseToAnswer:](self, "setDetectingRaiseToAnswer:", [v6 currentCallCount] == 1);
+      callCenterObserver2 = [(CSDRaiseToAnswerController *)self callCenterObserver];
+      callContainer2 = [callCenterObserver2 callContainer];
+      -[CSDRaiseToAnswerController setDetectingRaiseToAnswer:](self, "setDetectingRaiseToAnswer:", [callContainer2 currentCallCount] == 1);
     }
 
     else
@@ -39,16 +39,16 @@
 
 + (BOOL)isRaiseToEarGestureEnabled
 {
-  v2 = [a1 isRaiseToEarGestureSupported];
-  if (v2)
+  isRaiseToEarGestureSupported = [self isRaiseToEarGestureSupported];
+  if (isRaiseToEarGestureSupported)
   {
     v3 = +[NSUserDefaults tu_defaults];
     v4 = [v3 BOOLForKey:@"incomingCallRaiseToAnswerEnabledKey"];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isRaiseToEarGestureSupported) = v4;
   }
 
-  return v2;
+  return isRaiseToEarGestureSupported;
 }
 
 + (BOOL)isRaiseToEarGestureSupported
@@ -69,16 +69,16 @@
   return v4;
 }
 
-- (CSDRaiseToAnswerController)initWithCallCenterObserver:(id)a3
+- (CSDRaiseToAnswerController)initWithCallCenterObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v16.receiver = self;
   v16.super_class = CSDRaiseToAnswerController;
   v6 = [(CSDRaiseToAnswerController *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callCenterObserver, a3);
+    objc_storeStrong(&v6->_callCenterObserver, observer);
     [(CSDCallCenterObserver *)v7->_callCenterObserver setTriggers:1];
     [(CSDCallCenterObserver *)v7->_callCenterObserver setDelegate:v7];
     v8 = [objc_alloc(CUTWeakLinkClass()) initWithPriority:2];
@@ -104,30 +104,30 @@
 
 - (BOOL)isDetectingRaiseToAnswer
 {
-  v2 = [(CSDRaiseToAnswerController *)self raiseToEarGestureManager];
-  v3 = [v2 gestureHandler];
-  v4 = v3 != 0;
+  raiseToEarGestureManager = [(CSDRaiseToAnswerController *)self raiseToEarGestureManager];
+  gestureHandler = [raiseToEarGestureManager gestureHandler];
+  v4 = gestureHandler != 0;
 
   return v4;
 }
 
-- (void)setDetectingRaiseToAnswer:(BOOL)a3
+- (void)setDetectingRaiseToAnswer:(BOOL)answer
 {
-  v3 = a3;
-  if (a3)
+  answerCopy = answer;
+  if (answer)
   {
-    v6 = [(CSDRaiseToAnswerController *)self raiseToEarGestureHandler];
+    raiseToEarGestureHandler = [(CSDRaiseToAnswerController *)self raiseToEarGestureHandler];
   }
 
   else
   {
-    v6 = 0;
+    raiseToEarGestureHandler = 0;
   }
 
-  v5 = [(CSDRaiseToAnswerController *)self raiseToEarGestureManager];
-  [v5 setGestureHandler:v6];
+  raiseToEarGestureManager = [(CSDRaiseToAnswerController *)self raiseToEarGestureManager];
+  [raiseToEarGestureManager setGestureHandler:raiseToEarGestureHandler];
 
-  if (v3)
+  if (answerCopy)
   {
   }
 }

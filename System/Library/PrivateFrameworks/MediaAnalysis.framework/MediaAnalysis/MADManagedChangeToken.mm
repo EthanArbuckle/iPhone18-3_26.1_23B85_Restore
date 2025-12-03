@@ -1,25 +1,25 @@
 @interface MADManagedChangeToken
-- (id)_tokenDataInHexFormat:(id)a3;
+- (id)_tokenDataInHexFormat:(id)format;
 - (id)description;
 @end
 
 @implementation MADManagedChangeToken
 
-- (id)_tokenDataInHexFormat:(id)a3
+- (id)_tokenDataInHexFormat:(id)format
 {
-  v3 = a3;
-  v4 = [v3 length];
+  formatCopy = format;
+  v4 = [formatCopy length];
   v5 = [MEMORY[0x1E696AD60] stringWithCapacity:2 * v4];
-  v6 = [v3 bytes];
-  if ([v3 length])
+  bytes = [formatCopy bytes];
+  if ([formatCopy length])
   {
     v7 = 0;
     do
     {
-      [v5 appendFormat:@"%02X", *(v6 + v7++)];
+      [v5 appendFormat:@"%02X", *(bytes + v7++)];
     }
 
-    while (v7 < [v3 length]);
+    while (v7 < [formatCopy length]);
   }
 
   return v5;
@@ -27,30 +27,30 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [objc_opt_class() tokenIDColumnName];
-  [v3 appendFormat:@"%@: %lld, ", v6, -[MADManagedChangeToken tokenID](self, "tokenID")];
+  tokenIDColumnName = [objc_opt_class() tokenIDColumnName];
+  [string appendFormat:@"%@: %lld, ", tokenIDColumnName, -[MADManagedChangeToken tokenID](self, "tokenID")];
 
-  v7 = [objc_opt_class() tokenTypeColumnName];
-  [v3 appendFormat:@"%@: %lld, ", v7, -[MADManagedChangeToken tokenType](self, "tokenType")];
+  tokenTypeColumnName = [objc_opt_class() tokenTypeColumnName];
+  [string appendFormat:@"%@: %lld, ", tokenTypeColumnName, -[MADManagedChangeToken tokenType](self, "tokenType")];
 
-  v8 = [objc_opt_class() tokenDataColumnName];
-  v9 = [(MADManagedChangeToken *)self tokenData];
-  v10 = [(MADManagedChangeToken *)self _tokenDataInHexFormat:v9];
-  [v3 appendFormat:@"%@: %@, ", v8, v10];
+  tokenDataColumnName = [objc_opt_class() tokenDataColumnName];
+  tokenData = [(MADManagedChangeToken *)self tokenData];
+  v10 = [(MADManagedChangeToken *)self _tokenDataInHexFormat:tokenData];
+  [string appendFormat:@"%@: %@, ", tokenDataColumnName, v10];
 
-  v11 = [objc_opt_class() dateColumnName];
-  v12 = [(MADManagedChangeToken *)self date];
-  [v3 appendFormat:@"%@: %@, ", v11, v12];
+  dateColumnName = [objc_opt_class() dateColumnName];
+  date = [(MADManagedChangeToken *)self date];
+  [string appendFormat:@"%@: %@, ", dateColumnName, date];
 
-  v13 = [objc_opt_class() versionColumnName];
-  [v3 appendFormat:@"%@: %d>", v13, -[MADManagedChangeToken version](self, "version")];
+  versionColumnName = [objc_opt_class() versionColumnName];
+  [string appendFormat:@"%@: %d>", versionColumnName, -[MADManagedChangeToken version](self, "version")];
 
-  return v3;
+  return string;
 }
 
 @end

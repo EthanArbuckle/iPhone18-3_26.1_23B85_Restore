@@ -3,15 +3,15 @@
 + (id)preferencesFilePath;
 + (id)preferencesFileUrl;
 + (id)sharedInstance;
-- (BOOL)removeObjectForKey:(id)a3;
-- (BOOL)removeObjectsForKeys:(id)a3;
+- (BOOL)removeObjectForKey:(id)key;
+- (BOOL)removeObjectsForKeys:(id)keys;
 - (BOOL)saveCache;
-- (BOOL)setObject:(id)a3 forKey:(id)a4;
+- (BOOL)setObject:(id)object forKey:(id)key;
 - (MSDPreferencesFile)init;
-- (id)deepCopy:(id)a3;
-- (id)objectForKey:(id)a3;
+- (id)deepCopy:(id)copy;
+- (id)objectForKey:(id)key;
 - (void)populateCache;
-- (void)raiseInvalidPropertyListObjectExceptionForObject:(id)a3;
+- (void)raiseInvalidPropertyListObjectExceptionForObject:(id)object;
 - (void)reload;
 @end
 
@@ -46,9 +46,9 @@
 + (id)preferencesFilePath
 {
   v2 = +[MSDPreferencesFile preferencesFileUrl];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  return v3;
+  return path;
 }
 
 + (BOOL)preferencesFileExists
@@ -68,17 +68,17 @@
   objc_sync_exit(obj);
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MSDPreferencesFile *)v5 cache];
-    v7 = [v6 objectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    cache = [(MSDPreferencesFile *)selfCopy cache];
+    v7 = [cache objectForKey:keyCopy];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -90,33 +90,33 @@
   return v7;
 }
 
-- (BOOL)setObject:(id)a3 forKey:(id)a4
+- (BOOL)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  objectCopy = object;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (!objectCopy || !keyCopy)
   {
-    v10 = sub_100063A54();
-    if (os_log_type_enabled(&v10->super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = sub_100063A54();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 136446210;
       v17 = "[MSDPreferencesFile setObject:forKey:]";
       v14 = "%{public}s - Both object and key must be non-nil.";
 LABEL_13:
-      _os_log_impl(&_mh_execute_header, &v10->super, OS_LOG_TYPE_DEFAULT, v14, &v16, 0xCu);
+      _os_log_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_DEFAULT, v14, &v16, 0xCu);
     }
 
 LABEL_14:
-    v13 = 0;
+    saveCache = 0;
     goto LABEL_15;
   }
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = sub_100063A54();
-    if (os_log_type_enabled(&v10->super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = sub_100063A54();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 136446210;
       v17 = "[MSDPreferencesFile setObject:forKey:]";
@@ -127,74 +127,74 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (![NSPropertyListSerialization propertyList:v6 isValidForFormat:100])
+  if (![NSPropertyListSerialization propertyList:objectCopy isValidForFormat:100])
   {
-    [(MSDPreferencesFile *)self raiseInvalidPropertyListObjectExceptionForObject:v6];
+    [(MSDPreferencesFile *)self raiseInvalidPropertyListObjectExceptionForObject:objectCopy];
   }
 
   v9 = sub_100063A54();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000CBFE0(v8, v6, v9);
+    sub_1000CBFE0(v8, objectCopy, v9);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  v11 = [(MSDPreferencesFile *)v10 cache];
-  v12 = [(MSDPreferencesFile *)v10 deepCopy:v6];
-  [v11 setObject:v12 forKey:v8];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cache = [(MSDPreferencesFile *)selfCopy cache];
+  v12 = [(MSDPreferencesFile *)selfCopy deepCopy:objectCopy];
+  [cache setObject:v12 forKey:v8];
 
-  v13 = [(MSDPreferencesFile *)v10 saveCache];
-  objc_sync_exit(v10);
+  saveCache = [(MSDPreferencesFile *)selfCopy saveCache];
+  objc_sync_exit(selfCopy);
 LABEL_15:
 
-  return v13;
+  return saveCache;
 }
 
-- (BOOL)removeObjectForKey:(id)a3
+- (BOOL)removeObjectForKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MSDPreferencesFile *)v5 cache];
-    [v6 removeObjectForKey:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    cache = [(MSDPreferencesFile *)selfCopy cache];
+    [cache removeObjectForKey:keyCopy];
 
-    v7 = [(MSDPreferencesFile *)v5 saveCache];
-    objc_sync_exit(v5);
+    saveCache = [(MSDPreferencesFile *)selfCopy saveCache];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
     sub_1000CC068();
-    v7 = 0;
+    saveCache = 0;
   }
 
-  return v7;
+  return saveCache;
 }
 
-- (BOOL)removeObjectsForKeys:(id)a3
+- (BOOL)removeObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  if (v4)
+  keysCopy = keys;
+  if (keysCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(MSDPreferencesFile *)v5 cache];
-    [v6 removeObjectsForKeys:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    cache = [(MSDPreferencesFile *)selfCopy cache];
+    [cache removeObjectsForKeys:keysCopy];
 
-    v7 = [(MSDPreferencesFile *)v5 saveCache];
-    objc_sync_exit(v5);
+    saveCache = [(MSDPreferencesFile *)selfCopy saveCache];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
     sub_1000CC108();
-    v7 = 0;
+    saveCache = 0;
   }
 
-  return v7;
+  return saveCache;
 }
 
 - (void)populateCache
@@ -238,10 +238,10 @@ LABEL_8:
 
 - (BOOL)saveCache
 {
-  v2 = [(MSDPreferencesFile *)self cache];
+  cache = [(MSDPreferencesFile *)self cache];
   v3 = +[MSDPreferencesFile preferencesFileUrl];
   v9 = 0;
-  v4 = [v2 writeToURL:v3 error:&v9];
+  v4 = [cache writeToURL:v3 error:&v9];
   v5 = v9;
 
   if ((v4 & 1) == 0)
@@ -263,10 +263,10 @@ LABEL_8:
   return v4;
 }
 
-- (void)raiseInvalidPropertyListObjectExceptionForObject:(id)a3
+- (void)raiseInvalidPropertyListObjectExceptionForObject:(id)object
 {
-  v3 = a3;
-  v4 = [NSString stringWithFormat:@"Object %@ of type %@ is not a valid property list object.", v3, objc_opt_class()];
+  objectCopy = object;
+  v4 = [NSString stringWithFormat:@"Object %@ of type %@ is not a valid property list object.", objectCopy, objc_opt_class()];
 
   v5 = [NSException exceptionWithName:@"InvalidPropertyListObject" reason:v4 userInfo:0];
   v6 = sub_100063A54();
@@ -294,9 +294,9 @@ LABEL_8:
   return v3;
 }
 
-- (id)deepCopy:(id)a3
+- (id)deepCopy:(id)copy
 {
-  DeepCopy = CFPropertyListCreateDeepCopy(kCFAllocatorDefault, a3, 0);
+  DeepCopy = CFPropertyListCreateDeepCopy(kCFAllocatorDefault, copy, 0);
 
   return DeepCopy;
 }

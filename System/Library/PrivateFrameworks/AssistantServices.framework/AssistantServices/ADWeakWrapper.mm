@@ -1,5 +1,5 @@
 @interface ADWeakWrapper
-- (ADWeakWrapper)initWithWrapped:(id)a3;
+- (ADWeakWrapper)initWithWrapped:(id)wrapped;
 - (id)wrapped;
 @end
 
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (ADWeakWrapper)initWithWrapped:(id)a3
+- (ADWeakWrapper)initWithWrapped:(id)wrapped
 {
-  v4 = a3;
+  wrappedCopy = wrapped;
   v8.receiver = self;
   v8.super_class = ADWeakWrapper;
   v5 = [(ADWeakWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_wrapped, v4);
+    objc_storeWeak(&v5->_wrapped, wrappedCopy);
   }
 
   return v6;

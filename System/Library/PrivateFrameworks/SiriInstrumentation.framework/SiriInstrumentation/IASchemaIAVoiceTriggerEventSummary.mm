@@ -1,60 +1,60 @@
 @interface IASchemaIAVoiceTriggerEventSummary
-- (BOOL)isEqual:(id)a3;
-- (IASchemaIAVoiceTriggerEventSummary)initWithDictionary:(id)a3;
-- (IASchemaIAVoiceTriggerEventSummary)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IASchemaIAVoiceTriggerEventSummary)initWithDictionary:(id)dictionary;
+- (IASchemaIAVoiceTriggerEventSummary)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasFirstPassPeakScoreHS:(BOOL)a3;
-- (void)setHasFirstPassPeakScoreJS:(BOOL)a3;
-- (void)setHasHasAppIntentEvent:(BOOL)a3;
-- (void)setHasHasAppLaunchEvent:(BOOL)a3;
-- (void)setHasHasDeviceUnlockEvent:(BOOL)a3;
-- (void)setHasHasNextRejection:(BOOL)a3;
-- (void)setHasHasNextTurn:(BOOL)a3;
-- (void)setHasHasTextInputEvent:(BOOL)a3;
-- (void)setHasInvocationTypeId:(BOOL)a3;
-- (void)setHasIsNextTurnValid:(BOOL)a3;
-- (void)setHasMitigationScore:(BOOL)a3;
-- (void)setHasMitigationScoreThreshold:(BOOL)a3;
-- (void)setHasNextTurnInvocationSource:(BOOL)a3;
-- (void)setHasRepetitionSimilarityScore:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3;
-- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)a3;
-- (void)setHasTimeDeltaToAppIntentEventInSec:(BOOL)a3;
-- (void)setHasTimeDeltaToAppLaunchInSec:(BOOL)a3;
-- (void)setHasTimeDeltaToDeviceUnlockInSec:(BOOL)a3;
-- (void)setHasTimeDeltaToNextRejectionInSec:(BOOL)a3;
-- (void)setHasTimeDeltaToNextTurnInSec:(BOOL)a3;
-- (void)setHasTimeDeltaToTextInputInSec:(BOOL)a3;
-- (void)setHasTriggerScoreHS:(BOOL)a3;
-- (void)setHasTriggerScoreHSThreshold:(BOOL)a3;
-- (void)setHasTriggerScoreJS:(BOOL)a3;
-- (void)setHasTriggerScoreJSThreshold:(BOOL)a3;
-- (void)setHasUserActionTimeThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasFirstPassPeakScoreHS:(BOOL)s;
+- (void)setHasFirstPassPeakScoreJS:(BOOL)s;
+- (void)setHasHasAppIntentEvent:(BOOL)event;
+- (void)setHasHasAppLaunchEvent:(BOOL)event;
+- (void)setHasHasDeviceUnlockEvent:(BOOL)event;
+- (void)setHasHasNextRejection:(BOOL)rejection;
+- (void)setHasHasNextTurn:(BOOL)turn;
+- (void)setHasHasTextInputEvent:(BOOL)event;
+- (void)setHasInvocationTypeId:(BOOL)id;
+- (void)setHasIsNextTurnValid:(BOOL)valid;
+- (void)setHasMitigationScore:(BOOL)score;
+- (void)setHasMitigationScoreThreshold:(BOOL)threshold;
+- (void)setHasNextTurnInvocationSource:(BOOL)source;
+- (void)setHasRepetitionSimilarityScore:(BOOL)score;
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score;
+- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)threshold;
+- (void)setHasTimeDeltaToAppIntentEventInSec:(BOOL)sec;
+- (void)setHasTimeDeltaToAppLaunchInSec:(BOOL)sec;
+- (void)setHasTimeDeltaToDeviceUnlockInSec:(BOOL)sec;
+- (void)setHasTimeDeltaToNextRejectionInSec:(BOOL)sec;
+- (void)setHasTimeDeltaToNextTurnInSec:(BOOL)sec;
+- (void)setHasTimeDeltaToTextInputInSec:(BOOL)sec;
+- (void)setHasTriggerScoreHS:(BOOL)s;
+- (void)setHasTriggerScoreHSThreshold:(BOOL)threshold;
+- (void)setHasTriggerScoreJS:(BOOL)s;
+- (void)setHasTriggerScoreJSThreshold:(BOOL)threshold;
+- (void)setHasUserActionTimeThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IASchemaIAVoiceTriggerEventSummary
 
-- (IASchemaIAVoiceTriggerEventSummary)initWithDictionary:(id)a3
+- (IASchemaIAVoiceTriggerEventSummary)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v65.receiver = self;
   v65.super_class = IASchemaIAVoiceTriggerEventSummary;
   v5 = [(IASchemaIAVoiceTriggerEventSummary *)&v65 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"firstPassDetectionTimestampInSec"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"firstPassDetectionTimestampInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IASchemaIAVoiceTriggerEventSummary setFirstPassDetectionTimestampInSec:](v5, "setFirstPassDetectionTimestampInSec:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"firstPassPeakScoreHS"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setFirstPassPeakScoreHS:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"firstPassPeakScoreJS"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"firstPassPeakScoreJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,14 +70,14 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setFirstPassPeakScoreJS:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"invocationTypeId"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"invocationTypeId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IASchemaIAVoiceTriggerEventSummary setInvocationTypeId:](v5, "setInvocationTypeId:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"triggerScoreHS"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreHS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v50 = v6;
-    v11 = [v4 objectForKeyedSubscript:@"triggerScoreJS"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreJS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setTriggerScoreJS:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"mitigationScore"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"mitigationScore"];
     objc_opt_class();
     v64 = v12;
     if (objc_opt_isKindOfClass())
@@ -103,7 +103,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setMitigationScore:?];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
     objc_opt_class();
     v63 = v13;
     if (objc_opt_isKindOfClass())
@@ -112,7 +112,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setTdSpeakerRecognizerCombinedScore:?];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"triggerScoreHSThreshold"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreHSThreshold"];
     objc_opt_class();
     v62 = v14;
     if (objc_opt_isKindOfClass())
@@ -121,7 +121,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setTriggerScoreHSThreshold:?];
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"triggerScoreJSThreshold"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"triggerScoreJSThreshold"];
     objc_opt_class();
     v61 = v15;
     if (objc_opt_isKindOfClass())
@@ -130,7 +130,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setTriggerScoreJSThreshold:?];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"mitigationScoreThreshold"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"mitigationScoreThreshold"];
     objc_opt_class();
     v60 = v16;
     if (objc_opt_isKindOfClass())
@@ -139,7 +139,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setMitigationScoreThreshold:?];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
     objc_opt_class();
     v59 = v17;
     if (objc_opt_isKindOfClass())
@@ -148,7 +148,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setTdSpeakerRecognizerCombinedThreshold:?];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"voiceTriggerConfigVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"voiceTriggerConfigVersion"];
     objc_opt_class();
     v58 = v18;
     if (objc_opt_isKindOfClass())
@@ -157,7 +157,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setVoiceTriggerConfigVersion:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"userActionTimeThreshold"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"userActionTimeThreshold"];
     objc_opt_class();
     v57 = v20;
     if (objc_opt_isKindOfClass())
@@ -166,7 +166,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setUserActionTimeThreshold:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"hasNextTurn"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"hasNextTurn"];
     objc_opt_class();
     v56 = v21;
     if (objc_opt_isKindOfClass())
@@ -174,7 +174,7 @@
       -[IASchemaIAVoiceTriggerEventSummary setHasNextTurn:](v5, "setHasNextTurn:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"timeDeltaToNextTurnInSec"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"timeDeltaToNextTurnInSec"];
     objc_opt_class();
     v55 = v22;
     if (objc_opt_isKindOfClass())
@@ -184,7 +184,7 @@
     }
 
     v47 = v9;
-    v23 = [v4 objectForKeyedSubscript:@"nextTurnId"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"nextTurnId"];
     objc_opt_class();
     v54 = v23;
     if (objc_opt_isKindOfClass())
@@ -194,14 +194,14 @@
     }
 
     v25 = v7;
-    v26 = [v4 objectForKeyedSubscript:@"nextTurnInvocationSource"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"nextTurnInvocationSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IASchemaIAVoiceTriggerEventSummary setNextTurnInvocationSource:](v5, "setNextTurnInvocationSource:", [v26 unsignedIntValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"isNextTurnValid"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"isNextTurnValid"];
     objc_opt_class();
     v53 = v27;
     if (objc_opt_isKindOfClass())
@@ -210,7 +210,7 @@
     }
 
     v28 = v8;
-    v29 = [v4 objectForKeyedSubscript:@"repetitionSimilarityScore"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"repetitionSimilarityScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -218,7 +218,7 @@
       [(IASchemaIAVoiceTriggerEventSummary *)v5 setRepetitionSimilarityScore:?];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"hasNextRejection"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"hasNextRejection"];
     objc_opt_class();
     v52 = v30;
     if (objc_opt_isKindOfClass())
@@ -226,7 +226,7 @@
       -[IASchemaIAVoiceTriggerEventSummary setHasNextRejection:](v5, "setHasNextRejection:", [v30 BOOLValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"timeDeltaToNextRejectionInSec"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"timeDeltaToNextRejectionInSec"];
     objc_opt_class();
     v51 = v31;
     if (objc_opt_isKindOfClass())
@@ -236,7 +236,7 @@
     }
 
     v45 = v11;
-    v32 = [v4 objectForKeyedSubscript:@"hasAppLaunchEvent"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"hasAppLaunchEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -244,7 +244,7 @@
     }
 
     v44 = v26;
-    v33 = [v4 objectForKeyedSubscript:{@"timeDeltaToAppLaunchInSec", v32}];
+    v33 = [dictionaryCopy objectForKeyedSubscript:{@"timeDeltaToAppLaunchInSec", v32}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -253,7 +253,7 @@
     }
 
     v43 = v29;
-    v34 = [v4 objectForKeyedSubscript:@"hasAppIntentEvent"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"hasAppIntentEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,7 +261,7 @@
     }
 
     v49 = v25;
-    v35 = [v4 objectForKeyedSubscript:@"timeDeltaToAppIntentEventInSec"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"timeDeltaToAppIntentEventInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,14 +270,14 @@
     }
 
     v48 = v28;
-    v36 = [v4 objectForKeyedSubscript:@"hasTextInputEvent"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"hasTextInputEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IASchemaIAVoiceTriggerEventSummary setHasTextInputEvent:](v5, "setHasTextInputEvent:", [v36 BOOLValue]);
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"timeDeltaToTextInputInSec"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"timeDeltaToTextInputInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -286,14 +286,14 @@
     }
 
     v46 = v10;
-    v38 = [v4 objectForKeyedSubscript:@"hasDeviceUnlockEvent"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"hasDeviceUnlockEvent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[IASchemaIAVoiceTriggerEventSummary setHasDeviceUnlockEvent:](v5, "setHasDeviceUnlockEvent:", [v38 BOOLValue]);
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"timeDeltaToDeviceUnlockInSec"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"timeDeltaToDeviceUnlockInSec"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -307,30 +307,30 @@
   return v5;
 }
 
-- (IASchemaIAVoiceTriggerEventSummary)initWithJSON:(id)a3
+- (IASchemaIAVoiceTriggerEventSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IASchemaIAVoiceTriggerEventSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IASchemaIAVoiceTriggerEventSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IASchemaIAVoiceTriggerEventSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -343,12 +343,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (*&has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[IASchemaIAVoiceTriggerEventSummary firstPassDetectionTimestampInSec](self, "firstPassDetectionTimestampInSec")}];
-    [v3 setObject:v9 forKeyedSubscript:@"firstPassDetectionTimestampInSec"];
+    [dictionary setObject:v9 forKeyedSubscript:@"firstPassDetectionTimestampInSec"];
 
     has = self->_has;
     if ((*&has & 2) == 0)
@@ -371,7 +371,7 @@ LABEL_3:
   v10 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self firstPassPeakScoreHS];
   v11 = [v10 numberWithFloat:?];
-  [v3 setObject:v11 forKeyedSubscript:@"firstPassPeakScoreHS"];
+  [dictionary setObject:v11 forKeyedSubscript:@"firstPassPeakScoreHS"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -389,7 +389,7 @@ LABEL_20:
   v12 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self firstPassPeakScoreJS];
   v13 = [v12 numberWithFloat:?];
-  [v3 setObject:v13 forKeyedSubscript:@"firstPassPeakScoreJS"];
+  [dictionary setObject:v13 forKeyedSubscript:@"firstPassPeakScoreJS"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -405,7 +405,7 @@ LABEL_5:
 
 LABEL_21:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasAppIntentEvent](self, "hasAppIntentEvent")}];
-  [v3 setObject:v14 forKeyedSubscript:@"hasAppIntentEvent"];
+  [dictionary setObject:v14 forKeyedSubscript:@"hasAppIntentEvent"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -421,7 +421,7 @@ LABEL_6:
 
 LABEL_22:
   v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasAppLaunchEvent](self, "hasAppLaunchEvent")}];
-  [v3 setObject:v15 forKeyedSubscript:@"hasAppLaunchEvent"];
+  [dictionary setObject:v15 forKeyedSubscript:@"hasAppLaunchEvent"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -437,7 +437,7 @@ LABEL_7:
 
 LABEL_23:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasDeviceUnlockEvent](self, "hasDeviceUnlockEvent")}];
-  [v3 setObject:v16 forKeyedSubscript:@"hasDeviceUnlockEvent"];
+  [dictionary setObject:v16 forKeyedSubscript:@"hasDeviceUnlockEvent"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -453,7 +453,7 @@ LABEL_8:
 
 LABEL_24:
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasNextRejection](self, "hasNextRejection")}];
-  [v3 setObject:v17 forKeyedSubscript:@"hasNextRejection"];
+  [dictionary setObject:v17 forKeyedSubscript:@"hasNextRejection"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -469,7 +469,7 @@ LABEL_9:
 
 LABEL_25:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasNextTurn](self, "hasNextTurn")}];
-  [v3 setObject:v18 forKeyedSubscript:@"hasNextTurn"];
+  [dictionary setObject:v18 forKeyedSubscript:@"hasNextTurn"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -485,7 +485,7 @@ LABEL_10:
 
 LABEL_26:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary hasTextInputEvent](self, "hasTextInputEvent")}];
-  [v3 setObject:v19 forKeyedSubscript:@"hasTextInputEvent"];
+  [dictionary setObject:v19 forKeyedSubscript:@"hasTextInputEvent"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -501,7 +501,7 @@ LABEL_11:
 
 LABEL_27:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IASchemaIAVoiceTriggerEventSummary invocationTypeId](self, "invocationTypeId")}];
-  [v3 setObject:v20 forKeyedSubscript:@"invocationTypeId"];
+  [dictionary setObject:v20 forKeyedSubscript:@"invocationTypeId"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -517,7 +517,7 @@ LABEL_12:
 
 LABEL_28:
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[IASchemaIAVoiceTriggerEventSummary isNextTurnValid](self, "isNextTurnValid")}];
-  [v3 setObject:v21 forKeyedSubscript:@"isNextTurnValid"];
+  [dictionary setObject:v21 forKeyedSubscript:@"isNextTurnValid"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -535,7 +535,7 @@ LABEL_29:
   v22 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self mitigationScore];
   v23 = [v22 numberWithFloat:?];
-  [v3 setObject:v23 forKeyedSubscript:@"mitigationScore"];
+  [dictionary setObject:v23 forKeyedSubscript:@"mitigationScore"];
 
   if ((*&self->_has & 0x400) != 0)
   {
@@ -543,23 +543,23 @@ LABEL_14:
     v5 = MEMORY[0x1E696AD98];
     [(IASchemaIAVoiceTriggerEventSummary *)self mitigationScoreThreshold];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"mitigationScoreThreshold"];
+    [dictionary setObject:v6 forKeyedSubscript:@"mitigationScoreThreshold"];
   }
 
 LABEL_15:
   if (self->_nextTurnId)
   {
-    v7 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    nextTurnId = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+    dictionaryRepresentation = [nextTurnId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"nextTurnId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"nextTurnId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"nextTurnId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"nextTurnId"];
     }
   }
 
@@ -567,7 +567,7 @@ LABEL_15:
   if ((*&v25 & 0x8000) != 0)
   {
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[IASchemaIAVoiceTriggerEventSummary nextTurnInvocationSource](self, "nextTurnInvocationSource")}];
-    [v3 setObject:v31 forKeyedSubscript:@"nextTurnInvocationSource"];
+    [dictionary setObject:v31 forKeyedSubscript:@"nextTurnInvocationSource"];
 
     v25 = self->_has;
     if ((*&v25 & 0x20000) == 0)
@@ -590,7 +590,7 @@ LABEL_35:
   v32 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self repetitionSimilarityScore];
   v33 = [v32 numberWithFloat:?];
-  [v3 setObject:v33 forKeyedSubscript:@"repetitionSimilarityScore"];
+  [dictionary setObject:v33 forKeyedSubscript:@"repetitionSimilarityScore"];
 
   v25 = self->_has;
   if ((*&v25 & 0x80) == 0)
@@ -608,7 +608,7 @@ LABEL_56:
   v34 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self tdSpeakerRecognizerCombinedScore];
   v35 = [v34 numberWithFloat:?];
-  [v3 setObject:v35 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
+  [dictionary setObject:v35 forKeyedSubscript:@"tdSpeakerRecognizerCombinedScore"];
 
   v25 = self->_has;
   if ((*&v25 & 0x800) == 0)
@@ -626,7 +626,7 @@ LABEL_57:
   v36 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self tdSpeakerRecognizerCombinedThreshold];
   v37 = [v36 numberWithFloat:?];
-  [v3 setObject:v37 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
+  [dictionary setObject:v37 forKeyedSubscript:@"tdSpeakerRecognizerCombinedThreshold"];
 
   v25 = self->_has;
   if ((*&v25 & 0x800000) == 0)
@@ -644,7 +644,7 @@ LABEL_58:
   v38 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToAppIntentEventInSec];
   v39 = [v38 numberWithFloat:?];
-  [v3 setObject:v39 forKeyedSubscript:@"timeDeltaToAppIntentEventInSec"];
+  [dictionary setObject:v39 forKeyedSubscript:@"timeDeltaToAppIntentEventInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x200000) == 0)
@@ -662,7 +662,7 @@ LABEL_59:
   v40 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToAppLaunchInSec];
   v41 = [v40 numberWithFloat:?];
-  [v3 setObject:v41 forKeyedSubscript:@"timeDeltaToAppLaunchInSec"];
+  [dictionary setObject:v41 forKeyedSubscript:@"timeDeltaToAppLaunchInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x8000000) == 0)
@@ -680,7 +680,7 @@ LABEL_60:
   v42 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToDeviceUnlockInSec];
   v43 = [v42 numberWithFloat:?];
-  [v3 setObject:v43 forKeyedSubscript:@"timeDeltaToDeviceUnlockInSec"];
+  [dictionary setObject:v43 forKeyedSubscript:@"timeDeltaToDeviceUnlockInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x80000) == 0)
@@ -698,7 +698,7 @@ LABEL_61:
   v44 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToNextRejectionInSec];
   v45 = [v44 numberWithFloat:?];
-  [v3 setObject:v45 forKeyedSubscript:@"timeDeltaToNextRejectionInSec"];
+  [dictionary setObject:v45 forKeyedSubscript:@"timeDeltaToNextRejectionInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x4000) == 0)
@@ -716,7 +716,7 @@ LABEL_62:
   v46 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToNextTurnInSec];
   v47 = [v46 numberWithFloat:?];
-  [v3 setObject:v47 forKeyedSubscript:@"timeDeltaToNextTurnInSec"];
+  [dictionary setObject:v47 forKeyedSubscript:@"timeDeltaToNextTurnInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x2000000) == 0)
@@ -734,7 +734,7 @@ LABEL_63:
   v48 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self timeDeltaToTextInputInSec];
   v49 = [v48 numberWithFloat:?];
-  [v3 setObject:v49 forKeyedSubscript:@"timeDeltaToTextInputInSec"];
+  [dictionary setObject:v49 forKeyedSubscript:@"timeDeltaToTextInputInSec"];
 
   v25 = self->_has;
   if ((*&v25 & 0x10) == 0)
@@ -752,7 +752,7 @@ LABEL_64:
   v50 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self triggerScoreHS];
   v51 = [v50 numberWithFloat:?];
-  [v3 setObject:v51 forKeyedSubscript:@"triggerScoreHS"];
+  [dictionary setObject:v51 forKeyedSubscript:@"triggerScoreHS"];
 
   v25 = self->_has;
   if ((*&v25 & 0x100) == 0)
@@ -770,7 +770,7 @@ LABEL_65:
   v52 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self triggerScoreHSThreshold];
   v53 = [v52 numberWithFloat:?];
-  [v3 setObject:v53 forKeyedSubscript:@"triggerScoreHSThreshold"];
+  [dictionary setObject:v53 forKeyedSubscript:@"triggerScoreHSThreshold"];
 
   v25 = self->_has;
   if ((*&v25 & 0x20) == 0)
@@ -788,7 +788,7 @@ LABEL_66:
   v54 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self triggerScoreJS];
   v55 = [v54 numberWithFloat:?];
-  [v3 setObject:v55 forKeyedSubscript:@"triggerScoreJS"];
+  [dictionary setObject:v55 forKeyedSubscript:@"triggerScoreJS"];
 
   v25 = self->_has;
   if ((*&v25 & 0x200) == 0)
@@ -806,7 +806,7 @@ LABEL_67:
   v56 = MEMORY[0x1E696AD98];
   [(IASchemaIAVoiceTriggerEventSummary *)self triggerScoreJSThreshold];
   v57 = [v56 numberWithFloat:?];
-  [v3 setObject:v57 forKeyedSubscript:@"triggerScoreJSThreshold"];
+  [dictionary setObject:v57 forKeyedSubscript:@"triggerScoreJSThreshold"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
@@ -814,20 +814,20 @@ LABEL_48:
     v26 = MEMORY[0x1E696AD98];
     [(IASchemaIAVoiceTriggerEventSummary *)self userActionTimeThreshold];
     v27 = [v26 numberWithFloat:?];
-    [v3 setObject:v27 forKeyedSubscript:@"userActionTimeThreshold"];
+    [dictionary setObject:v27 forKeyedSubscript:@"userActionTimeThreshold"];
   }
 
 LABEL_49:
   if (self->_voiceTriggerConfigVersion)
   {
-    v28 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"voiceTriggerConfigVersion"];
+    voiceTriggerConfigVersion = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
+    v29 = [voiceTriggerConfigVersion copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"voiceTriggerConfigVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1675,16 +1675,16 @@ LABEL_162:
   return v119 ^ v120 ^ v118 ^ v117 ^ v116 ^ v115 ^ v114 ^ v113 ^ v36 ^ v41 ^ v46 ^ v51 ^ v59 ^ v64 ^ v69 ^ v112 ^ v70 ^ v74 ^ v75 ^ v80 ^ v81 ^ v86 ^ v87 ^ v92 ^ v93 ^ v98 ^ v99 ^ v104 ^ v105 ^ v110;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_70;
   }
 
   has = self->_has;
-  v6 = v4[37];
+  v6 = equalCopy[37];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_70;
@@ -1693,13 +1693,13 @@ LABEL_162:
   if (*&has)
   {
     firstPassDetectionTimestampInSec = self->_firstPassDetectionTimestampInSec;
-    if (firstPassDetectionTimestampInSec != [v4 firstPassDetectionTimestampInSec])
+    if (firstPassDetectionTimestampInSec != [equalCopy firstPassDetectionTimestampInSec])
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -1711,14 +1711,14 @@ LABEL_162:
   if (v8)
   {
     firstPassPeakScoreHS = self->_firstPassPeakScoreHS;
-    [v4 firstPassPeakScoreHS];
+    [equalCopy firstPassPeakScoreHS];
     if (firstPassPeakScoreHS != v10)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v11 = (*&has >> 2) & 1;
@@ -1730,14 +1730,14 @@ LABEL_162:
   if (v11)
   {
     firstPassPeakScoreJS = self->_firstPassPeakScoreJS;
-    [v4 firstPassPeakScoreJS];
+    [equalCopy firstPassPeakScoreJS];
     if (firstPassPeakScoreJS != v13)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v14 = (*&has >> 3) & 1;
@@ -1749,13 +1749,13 @@ LABEL_162:
   if (v14)
   {
     invocationTypeId = self->_invocationTypeId;
-    if (invocationTypeId != [v4 invocationTypeId])
+    if (invocationTypeId != [equalCopy invocationTypeId])
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v16 = (*&has >> 4) & 1;
@@ -1767,14 +1767,14 @@ LABEL_162:
   if (v16)
   {
     triggerScoreHS = self->_triggerScoreHS;
-    [v4 triggerScoreHS];
+    [equalCopy triggerScoreHS];
     if (triggerScoreHS != v18)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v19 = (*&has >> 5) & 1;
@@ -1786,14 +1786,14 @@ LABEL_162:
   if (v19)
   {
     triggerScoreJS = self->_triggerScoreJS;
-    [v4 triggerScoreJS];
+    [equalCopy triggerScoreJS];
     if (triggerScoreJS != v21)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v22 = (*&has >> 6) & 1;
@@ -1805,14 +1805,14 @@ LABEL_162:
   if (v22)
   {
     mitigationScore = self->_mitigationScore;
-    [v4 mitigationScore];
+    [equalCopy mitigationScore];
     if (mitigationScore != v24)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v25 = (*&has >> 7) & 1;
@@ -1824,14 +1824,14 @@ LABEL_162:
   if (v25)
   {
     tdSpeakerRecognizerCombinedScore = self->_tdSpeakerRecognizerCombinedScore;
-    [v4 tdSpeakerRecognizerCombinedScore];
+    [equalCopy tdSpeakerRecognizerCombinedScore];
     if (tdSpeakerRecognizerCombinedScore != v27)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v28 = (*&has >> 8) & 1;
@@ -1843,14 +1843,14 @@ LABEL_162:
   if (v28)
   {
     triggerScoreHSThreshold = self->_triggerScoreHSThreshold;
-    [v4 triggerScoreHSThreshold];
+    [equalCopy triggerScoreHSThreshold];
     if (triggerScoreHSThreshold != v30)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v31 = (*&has >> 9) & 1;
@@ -1862,14 +1862,14 @@ LABEL_162:
   if (v31)
   {
     triggerScoreJSThreshold = self->_triggerScoreJSThreshold;
-    [v4 triggerScoreJSThreshold];
+    [equalCopy triggerScoreJSThreshold];
     if (triggerScoreJSThreshold != v33)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v34 = (*&has >> 10) & 1;
@@ -1881,14 +1881,14 @@ LABEL_162:
   if (v34)
   {
     mitigationScoreThreshold = self->_mitigationScoreThreshold;
-    [v4 mitigationScoreThreshold];
+    [equalCopy mitigationScoreThreshold];
     if (mitigationScoreThreshold != v36)
     {
       goto LABEL_70;
     }
 
     has = self->_has;
-    v6 = v4[37];
+    v6 = equalCopy[37];
   }
 
   v37 = (*&has >> 11) & 1;
@@ -1900,27 +1900,27 @@ LABEL_162:
   if (v37)
   {
     tdSpeakerRecognizerCombinedThreshold = self->_tdSpeakerRecognizerCombinedThreshold;
-    [v4 tdSpeakerRecognizerCombinedThreshold];
+    [equalCopy tdSpeakerRecognizerCombinedThreshold];
     if (tdSpeakerRecognizerCombinedThreshold != v39)
     {
       goto LABEL_70;
     }
   }
 
-  v40 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
-  v41 = [v4 voiceTriggerConfigVersion];
-  if ((v40 != 0) == (v41 == 0))
+  voiceTriggerConfigVersion = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
+  voiceTriggerConfigVersion2 = [equalCopy voiceTriggerConfigVersion];
+  if ((voiceTriggerConfigVersion != 0) == (voiceTriggerConfigVersion2 == 0))
   {
     goto LABEL_69;
   }
 
-  v42 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
-  if (v42)
+  voiceTriggerConfigVersion3 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
+  if (voiceTriggerConfigVersion3)
   {
-    v43 = v42;
-    v44 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
-    v45 = [v4 voiceTriggerConfigVersion];
-    v46 = [v44 isEqual:v45];
+    v43 = voiceTriggerConfigVersion3;
+    voiceTriggerConfigVersion4 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
+    voiceTriggerConfigVersion5 = [equalCopy voiceTriggerConfigVersion];
+    v46 = [voiceTriggerConfigVersion4 isEqual:voiceTriggerConfigVersion5];
 
     if (!v46)
     {
@@ -1934,7 +1934,7 @@ LABEL_162:
 
   v47 = self->_has;
   v48 = (*&v47 >> 12) & 1;
-  v49 = v4[37];
+  v49 = equalCopy[37];
   if (v48 != ((v49 >> 12) & 1))
   {
     goto LABEL_70;
@@ -1943,14 +1943,14 @@ LABEL_162:
   if (v48)
   {
     userActionTimeThreshold = self->_userActionTimeThreshold;
-    [v4 userActionTimeThreshold];
+    [equalCopy userActionTimeThreshold];
     if (userActionTimeThreshold != v51)
     {
       goto LABEL_70;
     }
 
     v47 = self->_has;
-    v49 = v4[37];
+    v49 = equalCopy[37];
   }
 
   v52 = (*&v47 >> 13) & 1;
@@ -1962,13 +1962,13 @@ LABEL_162:
   if (v52)
   {
     hasNextTurn = self->_hasNextTurn;
-    if (hasNextTurn != [v4 hasNextTurn])
+    if (hasNextTurn != [equalCopy hasNextTurn])
     {
       goto LABEL_70;
     }
 
     v47 = self->_has;
-    v49 = v4[37];
+    v49 = equalCopy[37];
   }
 
   v54 = (*&v47 >> 14) & 1;
@@ -1980,29 +1980,29 @@ LABEL_162:
   if (v54)
   {
     timeDeltaToNextTurnInSec = self->_timeDeltaToNextTurnInSec;
-    [v4 timeDeltaToNextTurnInSec];
+    [equalCopy timeDeltaToNextTurnInSec];
     if (timeDeltaToNextTurnInSec != v56)
     {
       goto LABEL_70;
     }
   }
 
-  v40 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
-  v41 = [v4 nextTurnId];
-  if ((v40 != 0) == (v41 == 0))
+  voiceTriggerConfigVersion = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+  voiceTriggerConfigVersion2 = [equalCopy nextTurnId];
+  if ((voiceTriggerConfigVersion != 0) == (voiceTriggerConfigVersion2 == 0))
   {
 LABEL_69:
 
     goto LABEL_70;
   }
 
-  v57 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
-  if (v57)
+  nextTurnId = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+  if (nextTurnId)
   {
-    v58 = v57;
-    v59 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
-    v60 = [v4 nextTurnId];
-    v61 = [v59 isEqual:v60];
+    v58 = nextTurnId;
+    nextTurnId2 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+    nextTurnId3 = [equalCopy nextTurnId];
+    v61 = [nextTurnId2 isEqual:nextTurnId3];
 
     if (!v61)
     {
@@ -2016,19 +2016,19 @@ LABEL_69:
 
   v64 = self->_has;
   v65 = (*&v64 >> 15) & 1;
-  v66 = v4[37];
+  v66 = equalCopy[37];
   if (v65 == ((v66 >> 15) & 1))
   {
     if (v65)
     {
       nextTurnInvocationSource = self->_nextTurnInvocationSource;
-      if (nextTurnInvocationSource != [v4 nextTurnInvocationSource])
+      if (nextTurnInvocationSource != [equalCopy nextTurnInvocationSource])
       {
         goto LABEL_70;
       }
 
       v64 = self->_has;
-      v66 = v4[37];
+      v66 = equalCopy[37];
     }
 
     v68 = HIWORD(*&v64) & 1;
@@ -2037,13 +2037,13 @@ LABEL_69:
       if (v68)
       {
         isNextTurnValid = self->_isNextTurnValid;
-        if (isNextTurnValid != [v4 isNextTurnValid])
+        if (isNextTurnValid != [equalCopy isNextTurnValid])
         {
           goto LABEL_70;
         }
 
         v64 = self->_has;
-        v66 = v4[37];
+        v66 = equalCopy[37];
       }
 
       v70 = (*&v64 >> 17) & 1;
@@ -2052,14 +2052,14 @@ LABEL_69:
         if (v70)
         {
           repetitionSimilarityScore = self->_repetitionSimilarityScore;
-          [v4 repetitionSimilarityScore];
+          [equalCopy repetitionSimilarityScore];
           if (repetitionSimilarityScore != v72)
           {
             goto LABEL_70;
           }
 
           v64 = self->_has;
-          v66 = v4[37];
+          v66 = equalCopy[37];
         }
 
         v73 = (*&v64 >> 18) & 1;
@@ -2068,13 +2068,13 @@ LABEL_69:
           if (v73)
           {
             hasNextRejection = self->_hasNextRejection;
-            if (hasNextRejection != [v4 hasNextRejection])
+            if (hasNextRejection != [equalCopy hasNextRejection])
             {
               goto LABEL_70;
             }
 
             v64 = self->_has;
-            v66 = v4[37];
+            v66 = equalCopy[37];
           }
 
           v75 = (*&v64 >> 19) & 1;
@@ -2083,14 +2083,14 @@ LABEL_69:
             if (v75)
             {
               timeDeltaToNextRejectionInSec = self->_timeDeltaToNextRejectionInSec;
-              [v4 timeDeltaToNextRejectionInSec];
+              [equalCopy timeDeltaToNextRejectionInSec];
               if (timeDeltaToNextRejectionInSec != v77)
               {
                 goto LABEL_70;
               }
 
               v64 = self->_has;
-              v66 = v4[37];
+              v66 = equalCopy[37];
             }
 
             v78 = (*&v64 >> 20) & 1;
@@ -2099,13 +2099,13 @@ LABEL_69:
               if (v78)
               {
                 hasAppLaunchEvent = self->_hasAppLaunchEvent;
-                if (hasAppLaunchEvent != [v4 hasAppLaunchEvent])
+                if (hasAppLaunchEvent != [equalCopy hasAppLaunchEvent])
                 {
                   goto LABEL_70;
                 }
 
                 v64 = self->_has;
-                v66 = v4[37];
+                v66 = equalCopy[37];
               }
 
               v80 = (*&v64 >> 21) & 1;
@@ -2114,14 +2114,14 @@ LABEL_69:
                 if (v80)
                 {
                   timeDeltaToAppLaunchInSec = self->_timeDeltaToAppLaunchInSec;
-                  [v4 timeDeltaToAppLaunchInSec];
+                  [equalCopy timeDeltaToAppLaunchInSec];
                   if (timeDeltaToAppLaunchInSec != v82)
                   {
                     goto LABEL_70;
                   }
 
                   v64 = self->_has;
-                  v66 = v4[37];
+                  v66 = equalCopy[37];
                 }
 
                 v83 = (*&v64 >> 22) & 1;
@@ -2130,13 +2130,13 @@ LABEL_69:
                   if (v83)
                   {
                     hasAppIntentEvent = self->_hasAppIntentEvent;
-                    if (hasAppIntentEvent != [v4 hasAppIntentEvent])
+                    if (hasAppIntentEvent != [equalCopy hasAppIntentEvent])
                     {
                       goto LABEL_70;
                     }
 
                     v64 = self->_has;
-                    v66 = v4[37];
+                    v66 = equalCopy[37];
                   }
 
                   v85 = (*&v64 >> 23) & 1;
@@ -2145,14 +2145,14 @@ LABEL_69:
                     if (v85)
                     {
                       timeDeltaToAppIntentEventInSec = self->_timeDeltaToAppIntentEventInSec;
-                      [v4 timeDeltaToAppIntentEventInSec];
+                      [equalCopy timeDeltaToAppIntentEventInSec];
                       if (timeDeltaToAppIntentEventInSec != v87)
                       {
                         goto LABEL_70;
                       }
 
                       v64 = self->_has;
-                      v66 = v4[37];
+                      v66 = equalCopy[37];
                     }
 
                     v88 = HIBYTE(*&v64) & 1;
@@ -2161,13 +2161,13 @@ LABEL_69:
                       if (v88)
                       {
                         hasTextInputEvent = self->_hasTextInputEvent;
-                        if (hasTextInputEvent != [v4 hasTextInputEvent])
+                        if (hasTextInputEvent != [equalCopy hasTextInputEvent])
                         {
                           goto LABEL_70;
                         }
 
                         v64 = self->_has;
-                        v66 = v4[37];
+                        v66 = equalCopy[37];
                       }
 
                       v90 = (*&v64 >> 25) & 1;
@@ -2176,14 +2176,14 @@ LABEL_69:
                         if (v90)
                         {
                           timeDeltaToTextInputInSec = self->_timeDeltaToTextInputInSec;
-                          [v4 timeDeltaToTextInputInSec];
+                          [equalCopy timeDeltaToTextInputInSec];
                           if (timeDeltaToTextInputInSec != v92)
                           {
                             goto LABEL_70;
                           }
 
                           v64 = self->_has;
-                          v66 = v4[37];
+                          v66 = equalCopy[37];
                         }
 
                         v93 = (*&v64 >> 26) & 1;
@@ -2192,19 +2192,19 @@ LABEL_69:
                           if (v93)
                           {
                             hasDeviceUnlockEvent = self->_hasDeviceUnlockEvent;
-                            if (hasDeviceUnlockEvent != [v4 hasDeviceUnlockEvent])
+                            if (hasDeviceUnlockEvent != [equalCopy hasDeviceUnlockEvent])
                             {
                               goto LABEL_70;
                             }
 
                             v64 = self->_has;
-                            v66 = v4[37];
+                            v66 = equalCopy[37];
                           }
 
                           v95 = (*&v64 >> 27) & 1;
                           if (v95 == ((v66 >> 27) & 1))
                           {
-                            if (!v95 || (timeDeltaToDeviceUnlockInSec = self->_timeDeltaToDeviceUnlockInSec, [v4 timeDeltaToDeviceUnlockInSec], timeDeltaToDeviceUnlockInSec == v97))
+                            if (!v95 || (timeDeltaToDeviceUnlockInSec = self->_timeDeltaToDeviceUnlockInSec, [equalCopy timeDeltaToDeviceUnlockInSec], timeDeltaToDeviceUnlockInSec == v97))
                             {
                               v62 = 1;
                               goto LABEL_71;
@@ -2230,9 +2230,9 @@ LABEL_71:
   return v62;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -2389,9 +2389,9 @@ LABEL_13:
   }
 
 LABEL_14:
-  v5 = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
+  voiceTriggerConfigVersion = [(IASchemaIAVoiceTriggerEventSummary *)self voiceTriggerConfigVersion];
 
-  if (v5)
+  if (voiceTriggerConfigVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -2426,11 +2426,11 @@ LABEL_19:
   }
 
 LABEL_20:
-  v7 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+  nextTurnId = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
 
-  if (v7)
+  if (nextTurnId)
   {
-    v8 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
+    nextTurnId2 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -2606,9 +2606,9 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)setHasTimeDeltaToDeviceUnlockInSec:(BOOL)a3
+- (void)setHasTimeDeltaToDeviceUnlockInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x8000000;
   }
@@ -2621,9 +2621,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasHasDeviceUnlockEvent:(BOOL)a3
+- (void)setHasHasDeviceUnlockEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 0x4000000;
   }
@@ -2636,9 +2636,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasTimeDeltaToTextInputInSec:(BOOL)a3
+- (void)setHasTimeDeltaToTextInputInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x2000000;
   }
@@ -2651,9 +2651,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasHasTextInputEvent:(BOOL)a3
+- (void)setHasHasTextInputEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 0x1000000;
   }
@@ -2666,9 +2666,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasTimeDeltaToAppIntentEventInSec:(BOOL)a3
+- (void)setHasTimeDeltaToAppIntentEventInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x800000;
   }
@@ -2681,9 +2681,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasHasAppIntentEvent:(BOOL)a3
+- (void)setHasHasAppIntentEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 0x400000;
   }
@@ -2696,9 +2696,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasTimeDeltaToAppLaunchInSec:(BOOL)a3
+- (void)setHasTimeDeltaToAppLaunchInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x200000;
   }
@@ -2711,9 +2711,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasHasAppLaunchEvent:(BOOL)a3
+- (void)setHasHasAppLaunchEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 0x100000;
   }
@@ -2726,9 +2726,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasTimeDeltaToNextRejectionInSec:(BOOL)a3
+- (void)setHasTimeDeltaToNextRejectionInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x80000;
   }
@@ -2741,9 +2741,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasHasNextRejection:(BOOL)a3
+- (void)setHasHasNextRejection:(BOOL)rejection
 {
-  if (a3)
+  if (rejection)
   {
     v3 = 0x40000;
   }
@@ -2756,9 +2756,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasRepetitionSimilarityScore:(BOOL)a3
+- (void)setHasRepetitionSimilarityScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 0x20000;
   }
@@ -2771,9 +2771,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasIsNextTurnValid:(BOOL)a3
+- (void)setHasIsNextTurnValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     v3 = 0x10000;
   }
@@ -2786,9 +2786,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasNextTurnInvocationSource:(BOOL)a3
+- (void)setHasNextTurnInvocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 0x8000;
   }
@@ -2801,9 +2801,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasTimeDeltaToNextTurnInSec:(BOOL)a3
+- (void)setHasTimeDeltaToNextTurnInSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 0x4000;
   }
@@ -2816,9 +2816,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasHasNextTurn:(BOOL)a3
+- (void)setHasHasNextTurn:(BOOL)turn
 {
-  if (a3)
+  if (turn)
   {
     v3 = 0x2000;
   }
@@ -2831,9 +2831,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasUserActionTimeThreshold:(BOOL)a3
+- (void)setHasUserActionTimeThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4096;
   }
@@ -2846,9 +2846,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 2048;
   }
@@ -2861,9 +2861,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasMitigationScoreThreshold:(BOOL)a3
+- (void)setHasMitigationScoreThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 1024;
   }
@@ -2876,9 +2876,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTriggerScoreJSThreshold:(BOOL)a3
+- (void)setHasTriggerScoreJSThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 512;
   }
@@ -2891,9 +2891,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTriggerScoreHSThreshold:(BOOL)a3
+- (void)setHasTriggerScoreHSThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 256;
   }
@@ -2906,9 +2906,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)a3
+- (void)setHasTdSpeakerRecognizerCombinedScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 128;
   }
@@ -2921,9 +2921,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasMitigationScore:(BOOL)a3
+- (void)setHasMitigationScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 64;
   }
@@ -2936,9 +2936,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTriggerScoreJS:(BOOL)a3
+- (void)setHasTriggerScoreJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 32;
   }
@@ -2951,9 +2951,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTriggerScoreHS:(BOOL)a3
+- (void)setHasTriggerScoreHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 16;
   }
@@ -2966,9 +2966,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasInvocationTypeId:(BOOL)a3
+- (void)setHasInvocationTypeId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -2981,9 +2981,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasFirstPassPeakScoreJS:(BOOL)a3
+- (void)setHasFirstPassPeakScoreJS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 4;
   }
@@ -2996,9 +2996,9 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasFirstPassPeakScoreHS:(BOOL)a3
+- (void)setHasFirstPassPeakScoreHS:(BOOL)s
 {
-  if (a3)
+  if (s)
   {
     v3 = 2;
   }
@@ -3011,17 +3011,17 @@ LABEL_36:
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = IASchemaIAVoiceTriggerEventSummary;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IASchemaIAVoiceTriggerEventSummary *)self nextTurnId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(IASchemaIAVoiceTriggerEventSummary *)self deleteNextTurnId];
   }

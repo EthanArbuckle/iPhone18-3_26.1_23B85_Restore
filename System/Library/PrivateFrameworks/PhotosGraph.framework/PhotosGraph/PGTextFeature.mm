@@ -1,14 +1,14 @@
 @interface PGTextFeature
-+ (id)_stringToIndexFromTokens:(id)a3;
-+ (id)_tokensFromString:(id)a3 lemmatize:(BOOL)a4;
-+ (id)graphNamesForNode:(id)a3 locationHelper:(id)a4;
-+ (id)mergedTextFeatureFromTextFeatures:(id)a3;
-+ (id)stringForFeatureOrigin:(unint64_t)a3;
-+ (id)textFeaturesFromNode:(id)a3 type:(unint64_t)a4 weight:(double)a5 options:(unint64_t)a6 locationHelper:(id)a7;
-+ (id)textFeaturesFromString:(id)a3 synonyms:(id)a4 type:(unint64_t)a5 weight:(double)a6 options:(unint64_t)a7;
-+ (id)textFeaturesFromString:(id)a3 type:(unint64_t)a4 weight:(double)a5 options:(unint64_t)a6;
-+ (unint64_t)_mostImportantTextFeatureTypeAmongTypes:(id)a3;
-- (PGTextFeature)initWithString:(id)a3 originalString:(id)a4 type:(unint64_t)a5 weight:(double)a6 origin:(unint64_t)a7;
++ (id)_stringToIndexFromTokens:(id)tokens;
++ (id)_tokensFromString:(id)string lemmatize:(BOOL)lemmatize;
++ (id)graphNamesForNode:(id)node locationHelper:(id)helper;
++ (id)mergedTextFeatureFromTextFeatures:(id)features;
++ (id)stringForFeatureOrigin:(unint64_t)origin;
++ (id)textFeaturesFromNode:(id)node type:(unint64_t)type weight:(double)weight options:(unint64_t)options locationHelper:(id)helper;
++ (id)textFeaturesFromString:(id)string synonyms:(id)synonyms type:(unint64_t)type weight:(double)weight options:(unint64_t)options;
++ (id)textFeaturesFromString:(id)string type:(unint64_t)type weight:(double)weight options:(unint64_t)options;
++ (unint64_t)_mostImportantTextFeatureTypeAmongTypes:(id)types;
+- (PGTextFeature)initWithString:(id)string originalString:(id)originalString type:(unint64_t)type weight:(double)weight origin:(unint64_t)origin;
 - (id)description;
 @end
 
@@ -20,52 +20,52 @@
   v12.super_class = PGTextFeature;
   v3 = [(PGTextFeature *)&v12 description];
   v4 = [PGFeature stringForFeatureType:self->_type];
-  v5 = [(PGTextFeature *)self string];
-  v6 = [(PGTextFeature *)self originalString];
+  string = [(PGTextFeature *)self string];
+  originalString = [(PGTextFeature *)self originalString];
   [(PGTextFeature *)self weight];
   v8 = v7;
   v9 = [PGTextFeature stringForFeatureOrigin:[(PGTextFeature *)self origin]];
-  v10 = [v3 stringByAppendingFormat:@": %@ -> %@ (original: %@, weight: %f, origin: %@)", v4, v5, v6, v8, v9];
+  v10 = [v3 stringByAppendingFormat:@": %@ -> %@ (original: %@, weight: %f, origin: %@)", v4, string, originalString, v8, v9];
 
   return v10;
 }
 
-- (PGTextFeature)initWithString:(id)a3 originalString:(id)a4 type:(unint64_t)a5 weight:(double)a6 origin:(unint64_t)a7
+- (PGTextFeature)initWithString:(id)string originalString:(id)originalString type:(unint64_t)type weight:(double)weight origin:(unint64_t)origin
 {
-  v13 = a3;
-  v14 = a4;
+  stringCopy = string;
+  originalStringCopy = originalString;
   v18.receiver = self;
   v18.super_class = PGTextFeature;
   v15 = [(PGTextFeature *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_string, a3);
-    objc_storeStrong(&v16->_originalString, a4);
-    v16->_type = a5;
-    v16->_weight = a6;
-    v16->_origin = a7;
+    objc_storeStrong(&v15->_string, string);
+    objc_storeStrong(&v16->_originalString, originalString);
+    v16->_type = type;
+    v16->_weight = weight;
+    v16->_origin = origin;
   }
 
   return v16;
 }
 
-+ (unint64_t)_mostImportantTextFeatureTypeAmongTypes:(id)a3
++ (unint64_t)_mostImportantTextFeatureTypeAmongTypes:(id)types
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [a1 vipTextFeatureTypes];
+  typesCopy = types;
+  [self vipTextFeatureTypes];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v5 = v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-  if (v6)
+  unsignedIntegerValue = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  if (unsignedIntegerValue)
   {
     v7 = *v13;
     while (2)
     {
-      for (i = 0; i != v6; ++i)
+      for (i = 0; i != unsignedIntegerValue; ++i)
       {
         if (*v13 != v7)
         {
@@ -73,15 +73,15 @@
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v4 containsObject:{v9, v12}])
+        if ([typesCopy containsObject:{v9, v12}])
         {
-          v6 = [v9 unsignedIntegerValue];
+          unsignedIntegerValue = [v9 unsignedIntegerValue];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
-      if (v6)
+      unsignedIntegerValue = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      if (unsignedIntegerValue)
       {
         continue;
       }
@@ -93,38 +93,38 @@
 LABEL_11:
 
   v10 = *MEMORY[0x277D85DE8];
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (id)mergedTextFeatureFromTextFeatures:(id)a3
++ (id)mergedTextFeatureFromTextFeatures:(id)features
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  featuresCopy = features;
+  v5 = [featuresCopy count];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 anyObject];
+    anyObject = [featuresCopy anyObject];
     if (v6 == 1)
     {
-      v8 = v7;
-      v9 = v8;
+      loggingConnection2 = anyObject;
+      v9 = loggingConnection2;
     }
 
     else
     {
-      v41 = a1;
-      v42 = v7;
-      v11 = [v7 string];
-      v12 = [MEMORY[0x277CBEB18] array];
+      selfCopy = self;
+      v42 = anyObject;
+      string = [anyObject string];
+      array = [MEMORY[0x277CBEB18] array];
       v13 = [MEMORY[0x277CCA940] set];
       v14 = [MEMORY[0x277CCA940] set];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v43 = v4;
-      v15 = v4;
+      v43 = featuresCopy;
+      v15 = featuresCopy;
       v16 = [v15 countByEnumeratingWithState:&v46 objects:v51 count:16];
       v45 = v13;
       if (v16)
@@ -144,31 +144,31 @@ LABEL_11:
             }
 
             v22 = *(*(&v46 + 1) + 8 * i);
-            v23 = [v22 string];
-            v24 = v11;
-            v25 = [v23 isEqualToString:v11];
+            string2 = [v22 string];
+            v24 = string;
+            v25 = [string2 isEqualToString:string];
 
             if ((v25 & 1) == 0)
             {
               v30 = +[PGLogging sharedLogging];
-              v31 = [v30 loggingConnection];
+              loggingConnection = [v30 loggingConnection];
 
-              if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = 0;
-                _os_log_error_impl(&dword_22F0FC000, v31, OS_LOG_TYPE_ERROR, "Request to squash text features that don't have the same string", buf, 2u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Request to squash text features that don't have the same string", buf, 2u);
               }
 
               v9 = 0;
-              v8 = v42;
-              v4 = v43;
+              loggingConnection2 = v42;
+              featuresCopy = v43;
               v14 = v21;
               v32 = obj;
               goto LABEL_33;
             }
 
-            v26 = [v22 originalString];
-            [v12 addObject:v26];
+            originalString = [v22 originalString];
+            [array addObject:originalString];
 
             [v22 weight];
             if (v27 > v19)
@@ -184,7 +184,7 @@ LABEL_11:
             v14 = v21;
             [v21 addObject:v29];
 
-            v11 = v24;
+            string = v24;
           }
 
           v15 = obj;
@@ -203,48 +203,48 @@ LABEL_11:
         v19 = 0.0;
       }
 
-      v24 = v11;
+      v24 = string;
       if ([v14 count] == 1)
       {
-        v33 = [v14 anyObject];
-        v34 = [v33 integerValue];
+        anyObject2 = [v14 anyObject];
+        integerValue = [anyObject2 integerValue];
       }
 
       else if ([v14 containsObject:&unk_284482B50])
       {
-        v34 = 1;
+        integerValue = 1;
       }
 
       else
       {
-        v34 = 6;
+        integerValue = 6;
       }
 
-      v8 = v42;
+      loggingConnection2 = v42;
       if ([v13 count] == 1)
       {
-        v35 = [v13 anyObject];
-        v36 = [v35 integerValue];
+        anyObject3 = [v13 anyObject];
+        integerValue2 = [anyObject3 integerValue];
       }
 
       else
       {
-        v37 = [v41 _mostImportantTextFeatureTypeAmongTypes:v13];
+        v37 = [selfCopy _mostImportantTextFeatureTypeAmongTypes:v13];
         if (v37)
         {
-          v36 = v37;
+          integerValue2 = v37;
         }
 
         else
         {
-          v36 = 22;
+          integerValue2 = 22;
         }
       }
 
-      v4 = v43;
+      featuresCopy = v43;
       v38 = [PGTextFeature alloc];
-      v32 = [v12 componentsJoinedByString:@" / "];
-      v9 = [(PGTextFeature *)v38 initWithString:v24 originalString:v32 type:v36 weight:v34 origin:v19];
+      v32 = [array componentsJoinedByString:@" / "];
+      v9 = [(PGTextFeature *)v38 initWithString:v24 originalString:v32 type:integerValue2 weight:integerValue origin:v19];
 LABEL_33:
     }
   }
@@ -252,12 +252,12 @@ LABEL_33:
   else
   {
     v10 = +[PGLogging sharedLogging];
-    v8 = [v10 loggingConnection];
+    loggingConnection2 = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Request to merge text features with empty array", buf, 2u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Request to merge text features with empty array", buf, 2u);
     }
 
     v9 = 0;
@@ -268,31 +268,31 @@ LABEL_33:
   return v9;
 }
 
-+ (id)stringForFeatureOrigin:(unint64_t)a3
++ (id)stringForFeatureOrigin:(unint64_t)origin
 {
-  if (a3 - 1 > 5)
+  if (origin - 1 > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2788804B8[a3 - 1];
+    return off_2788804B8[origin - 1];
   }
 }
 
-+ (id)graphNamesForNode:(id)a3 locationHelper:(id)a4
++ (id)graphNamesForNode:(id)node locationHelper:(id)helper
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  helperCopy = helper;
   v8 = [MEMORY[0x277CBEB58] set];
-  v9 = [v6 label];
-  v10 = [v6 domain];
-  if ([v6 domain] == 103)
+  label = [nodeCopy label];
+  domain = [nodeCopy domain];
+  if ([nodeCopy domain] == 103)
   {
-    v11 = [v6 label];
-    v12 = [v11 isEqualToString:@"ShortTrip"];
+    label2 = [nodeCopy label];
+    v12 = [label2 isEqualToString:@"ShortTrip"];
 
     if (v12)
     {
@@ -304,18 +304,18 @@ LABEL_33:
       else
       {
         v21 = +[PGLogging sharedLogging];
-        v22 = [v21 loggingConnection];
+        loggingConnection = [v21 loggingConnection];
 
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           v33 = 138412290;
-          v34 = v6;
-          _os_log_error_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_ERROR, "Error: nil or empty localizedName from node %@", &v33, 0xCu);
+          v34 = nodeCopy;
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error: nil or empty localizedName from node %@", &v33, 0xCu);
         }
       }
 
-      v23 = [v6 graph];
-      v14 = [v23 anyNodeForLabel:@"LongTrip" domain:103 properties:0];
+      graph = [nodeCopy graph];
+      v14 = [graph anyNodeForLabel:@"LongTrip" domain:103 properties:0];
 
       if (v14)
       {
@@ -326,9 +326,9 @@ LABEL_33:
         }
 
         v29 = +[PGLogging sharedLogging];
-        v17 = [v29 loggingConnection];
+        loggingConnection2 = [v29 loggingConnection];
 
-        if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        if (!os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
         {
 LABEL_48:
 
@@ -338,23 +338,23 @@ LABEL_48:
         v33 = 138412290;
         v34 = v14;
         v25 = "Error: nil or empty localizedName from node %@";
-        v26 = v17;
+        v26 = loggingConnection2;
         v27 = 12;
       }
 
       else
       {
         v24 = +[PGLogging sharedLogging];
-        v17 = [v24 loggingConnection];
+        loggingConnection2 = [v24 loggingConnection];
 
-        if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        if (!os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_48;
         }
 
         LOWORD(v33) = 0;
         v25 = "Highlight type node 'kPGGraphNodeHighlightTypeTrip' non found in graph";
-        v26 = v17;
+        v26 = loggingConnection2;
         v27 = 2;
       }
 
@@ -365,12 +365,12 @@ LABEL_48:
 
   if (![objc_opt_class() conformsToProtocol:&unk_284499510])
   {
-    if (v10 == 300)
+    if (domain == 300)
     {
-      v20 = [v6 name];
-      v18 = [v20 lowercaseString];
+      name = [nodeCopy name];
+      lowercaseString = [name lowercaseString];
 
-      if (![v18 length])
+      if (![lowercaseString length])
       {
         goto LABEL_42;
       }
@@ -378,22 +378,22 @@ LABEL_48:
 
     else
     {
-      if (v10 != 201)
+      if (domain != 201)
       {
-        if (v10 == 200 && [v9 isEqualToString:@"Country"])
+        if (domain == 200 && [label isEqualToString:@"Country"])
         {
-          v15 = [v6 fullname];
-          v14 = v15;
-          if (!v15 || ![v15 length])
+          fullname = [nodeCopy fullname];
+          v14 = fullname;
+          if (!fullname || ![fullname length])
           {
             v32 = +[PGLogging sharedLogging];
-            v17 = [v32 loggingConnection];
+            loggingConnection2 = [v32 loggingConnection];
 
-            if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
             {
               v33 = 138412290;
-              v34 = v6;
-              _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Error: nil or empty fullname from node %@", &v33, 0xCu);
+              v34 = nodeCopy;
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Error: nil or empty fullname from node %@", &v33, 0xCu);
             }
 
             goto LABEL_48;
@@ -402,20 +402,20 @@ LABEL_48:
           goto LABEL_15;
         }
 
-        v18 = [v6 name];
+        lowercaseString = [nodeCopy name];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v19 = [v18 stringValue];
+          stringValue = [lowercaseString stringValue];
         }
 
         else
         {
-          v19 = v18;
+          stringValue = lowercaseString;
         }
 
-        v28 = v19;
-        if (!v19 || ![v19 length])
+        name2 = stringValue;
+        if (!stringValue || ![stringValue length])
         {
           goto LABEL_41;
         }
@@ -423,11 +423,11 @@ LABEL_48:
         goto LABEL_40;
       }
 
-      v18 = [v6 shortenedNameWithLocationHelper:v7];
-      if (![v18 length])
+      lowercaseString = [nodeCopy shortenedNameWithLocationHelper:helperCopy];
+      if (![lowercaseString length])
       {
-        v28 = [v6 name];
-        if (![v28 length])
+        name2 = [nodeCopy name];
+        if (![name2 length])
         {
 LABEL_41:
 
@@ -435,29 +435,29 @@ LABEL_41:
         }
 
 LABEL_40:
-        [v8 addObject:v28];
+        [v8 addObject:name2];
         goto LABEL_41;
       }
     }
 
-    [v8 addObject:v18];
+    [v8 addObject:lowercaseString];
 LABEL_42:
 
     goto LABEL_43;
   }
 
-  v13 = [a1 _localizedNameForLocalizableNode:v6];
+  v13 = [self _localizedNameForLocalizableNode:nodeCopy];
   v14 = v13;
   if (!v13 || ![v13 length])
   {
     v16 = +[PGLogging sharedLogging];
-    v17 = [v16 loggingConnection];
+    loggingConnection2 = [v16 loggingConnection];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
       v33 = 138412290;
-      v34 = v6;
-      _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Error: nil or empty localizedName from node %@", &v33, 0xCu);
+      v34 = nodeCopy;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Error: nil or empty localizedName from node %@", &v33, 0xCu);
     }
 
     goto LABEL_48;
@@ -473,19 +473,19 @@ LABEL_43:
   return v8;
 }
 
-+ (id)textFeaturesFromString:(id)a3 synonyms:(id)a4 type:(unint64_t)a5 weight:(double)a6 options:(unint64_t)a7
++ (id)textFeaturesFromString:(id)string synonyms:(id)synonyms type:(unint64_t)type weight:(double)weight options:(unint64_t)options
 {
-  v7 = a7;
+  optionsCopy = options;
   v79[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  stringCopy = string;
+  synonymsCopy = synonyms;
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = v7 & 8;
-  v15 = v11;
+  v14 = optionsCopy & 8;
+  v15 = stringCopy;
   v16 = [MEMORY[0x277CBEB58] set];
-  if ((v7 & 0x4C) != 0)
+  if ((optionsCopy & 0x4C) != 0)
   {
-    v17 = [a1 _tokensFromString:v15 lemmatize:v14 != 0];
+    v17 = [self _tokensFromString:v15 lemmatize:v14 != 0];
   }
 
   else
@@ -495,10 +495,10 @@ LABEL_43:
   }
 
   v18 = v17;
-  v52 = [MEMORY[0x277CBEB38] dictionary];
-  v46 = v7;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v46 = optionsCopy;
   v47 = v18;
-  if ((v7 & 0x40) != 0)
+  if ((optionsCopy & 0x40) != 0)
   {
     v75 = 0u;
     v76 = 0u;
@@ -520,7 +520,7 @@ LABEL_43:
             objc_enumerationMutation(v19);
           }
 
-          [v52 setObject:&unk_2844870C8 forKeyedSubscript:*(*(&v73 + 1) + 8 * i)];
+          [dictionary setObject:&unk_2844870C8 forKeyedSubscript:*(*(&v73 + 1) + 8 * i)];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v73 objects:v78 count:16];
@@ -533,14 +533,14 @@ LABEL_43:
 
   else
   {
-    v19 = [a1 _stringToIndexFromTokens:v18];
+    v19 = [self _stringToIndexFromTokens:v18];
     if (v19)
     {
-      [v52 setObject:&unk_2844870C8 forKeyedSubscript:v19];
+      [dictionary setObject:&unk_2844870C8 forKeyedSubscript:v19];
     }
   }
 
-  v45 = [v52 count];
+  v45 = [dictionary count];
   if (v45 < 2)
   {
     v24 = 1;
@@ -555,21 +555,21 @@ LABEL_43:
   v66[1] = 3221225472;
   v66[2] = __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___block_invoke;
   v66[3] = &unk_278880470;
-  v70 = a6;
+  weightCopy = weight;
   v50 = v15;
   v67 = v50;
-  v71 = a5;
+  typeCopy = type;
   v72 = v24;
   v48 = v13;
   v68 = v48;
   v53 = v16;
   v69 = v53;
-  [v52 enumerateKeysAndObjectsUsingBlock:v66];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v66];
   v65 = 0u;
   v63 = 0u;
   v64 = 0u;
   v62 = 0u;
-  v25 = v12;
+  v25 = synonymsCopy;
   v26 = [v25 countByEnumeratingWithState:&v62 objects:v77 count:16];
   if (v26)
   {
@@ -585,23 +585,23 @@ LABEL_43:
           objc_enumerationMutation(v25);
         }
 
-        v31 = [a1 _tokensFromString:*(*(&v62 + 1) + 8 * j) lemmatize:v14 != 0];
+        v31 = [self _tokensFromString:*(*(&v62 + 1) + 8 * j) lemmatize:v14 != 0];
         if ([v31 count] <= 2)
         {
           v32 = [v31 componentsJoinedByString:v29];
           if (([v53 containsObject:v32] & 1) == 0)
           {
             v33 = v14;
-            v34 = a1;
+            selfCopy = self;
             v35 = v25;
             v36 = v29;
-            v37 = [[PGTextFeature alloc] initWithString:v32 originalString:v50 type:a5 weight:2 origin:a6 * 0.75];
+            v37 = [[PGTextFeature alloc] initWithString:v32 originalString:v50 type:type weight:2 origin:weight * 0.75];
             [v48 addObject:v37];
             [v53 addObject:v32];
 
             v29 = v36;
             v25 = v35;
-            a1 = v34;
+            self = selfCopy;
             v14 = v33;
           }
         }
@@ -615,19 +615,19 @@ LABEL_43:
 
   if ((v46 & 0x10) != 0 && v45 <= 1)
   {
-    v38 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     LODWORD(v39) = 1063675494;
-    v40 = [MEMORY[0x277D27738] wordEmbeddingNeighborsWithDistanceForNgram:v50 locale:v38 limit:10 distance:v39];
+    v40 = [MEMORY[0x277D27738] wordEmbeddingNeighborsWithDistanceForNgram:v50 locale:currentLocale limit:10 distance:v39];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___block_invoke_2;
     v54[3] = &unk_278880498;
-    v58 = a1;
+    selfCopy2 = self;
     v61 = v14 >> 3;
     v55 = v53;
-    v59 = a6;
+    weightCopy2 = weight;
     v56 = v50;
-    v60 = a5;
+    typeCopy2 = type;
     v57 = v48;
     [v40 enumerateKeysAndObjectsUsingBlock:v54];
   }
@@ -703,12 +703,12 @@ void __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___b
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_tokensFromString:(id)a3 lemmatize:(BOOL)a4
++ (id)_tokensFromString:(id)string lemmatize:(BOOL)lemmatize
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (lemmatize)
   {
-    v4 = [MEMORY[0x277D27738] tokensFromString:a3 options:1];
+    v4 = [MEMORY[0x277D27738] tokensFromString:string options:1];
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
     v18 = 0u;
     v19 = 0u;
@@ -733,17 +733,17 @@ void __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___b
           v12 = [MEMORY[0x277D3ACF8] lemmasForToken:v11 locale:0 options:{4, v18}];
           if ([v12 count])
           {
-            v13 = [v12 firstObject];
+            firstObject = [v12 firstObject];
           }
 
           else
           {
             v14 = MEMORY[0x277D3ACF8];
-            v15 = [v11 lowercaseString];
-            v13 = [v14 stringWithoutDiacriticsFromString:v15];
+            lowercaseString = [v11 lowercaseString];
+            firstObject = [v14 stringWithoutDiacriticsFromString:lowercaseString];
           }
 
-          [v5 addObject:v13];
+          [v5 addObject:firstObject];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -755,7 +755,7 @@ void __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___b
 
   else
   {
-    v5 = [MEMORY[0x277D27738] tokensFromString:a3 options:4];
+    v5 = [MEMORY[0x277D27738] tokensFromString:string options:4];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -763,46 +763,46 @@ void __69__PGTextFeature_textFeaturesFromString_synonyms_type_weight_options___b
   return v5;
 }
 
-+ (id)textFeaturesFromString:(id)a3 type:(unint64_t)a4 weight:(double)a5 options:(unint64_t)a6
++ (id)textFeaturesFromString:(id)string type:(unint64_t)type weight:(double)weight options:(unint64_t)options
 {
-  v10 = [a3 lowercaseString];
-  v11 = [a1 textFeaturesFromString:v10 synonyms:MEMORY[0x277CBEBF8] type:a4 weight:a6 options:a5];
+  lowercaseString = [string lowercaseString];
+  v11 = [self textFeaturesFromString:lowercaseString synonyms:MEMORY[0x277CBEBF8] type:type weight:options options:weight];
 
   return v11;
 }
 
-+ (id)_stringToIndexFromTokens:(id)a3
++ (id)_stringToIndexFromTokens:(id)tokens
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  tokensCopy = tokens;
+  v4 = [tokensCopy count];
   if (v4 == 1)
   {
-    v5 = [v3 firstObject];
+    firstObject = [tokensCopy firstObject];
 LABEL_5:
-    v7 = v5;
+    v7 = firstObject;
     goto LABEL_9;
   }
 
   v6 = v4;
   if (v4 <= 7)
   {
-    v5 = [v3 componentsJoinedByString:@"_"];
+    firstObject = [tokensCopy componentsJoinedByString:@"_"];
     goto LABEL_5;
   }
 
   v8 = +[PGLogging sharedLogging];
-  v9 = [v8 loggingConnection];
+  loggingConnection = [v8 loggingConnection];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v12 = 138412802;
-    v13 = v3;
+    v13 = tokensCopy;
     v14 = 2048;
     v15 = v6;
     v16 = 2048;
     v17 = 7;
-    _os_log_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_INFO, "Ignoring PGTextFeature %@ because it exceeds the maximum number of tokens %lu > %lu", &v12, 0x20u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Ignoring PGTextFeature %@ because it exceeds the maximum number of tokens %lu > %lu", &v12, 0x20u);
   }
 
   v7 = 0;
@@ -813,35 +813,35 @@ LABEL_9:
   return v7;
 }
 
-+ (id)textFeaturesFromNode:(id)a3 type:(unint64_t)a4 weight:(double)a5 options:(unint64_t)a6 locationHelper:(id)a7
++ (id)textFeaturesFromNode:(id)node type:(unint64_t)type weight:(double)weight options:(unint64_t)options locationHelper:(id)helper
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = [PGTextFeature graphNamesForNode:v12 locationHelper:a7];
-  v27 = v12;
-  if ((a6 & 0x20) != 0)
+  nodeCopy = node;
+  v13 = [PGTextFeature graphNamesForNode:nodeCopy locationHelper:helper];
+  v27 = nodeCopy;
+  if ((options & 0x20) != 0)
   {
     if ([objc_opt_class() conformsToProtocol:&unk_2844BA4D8])
     {
-      v14 = [v12 localizedSynonyms];
+      localizedSynonyms = [nodeCopy localizedSynonyms];
       goto LABEL_8;
     }
 
     v15 = +[PGLogging sharedLogging];
-    v16 = [v15 loggingConnection];
+    loggingConnection = [v15 loggingConnection];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v12 label];
+      label = [nodeCopy label];
       *buf = 138412546;
-      v34 = v26;
+      v34 = label;
       v35 = 2048;
-      v36 = [v12 domain];
-      _os_log_error_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_ERROR, "Node label %@ domain %lu doesn't comform to PGGraphSynonymSupport protocol -> cannot get synonyms", buf, 0x16u);
+      domain = [nodeCopy domain];
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Node label %@ domain %lu doesn't comform to PGGraphSynonymSupport protocol -> cannot get synonyms", buf, 0x16u);
     }
   }
 
-  v14 = MEMORY[0x277CBEBF8];
+  localizedSynonyms = MEMORY[0x277CBEBF8];
 LABEL_8:
   v17 = [MEMORY[0x277CBEB58] set];
   v28 = 0u;
@@ -863,7 +863,7 @@ LABEL_8:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [a1 textFeaturesFromString:*(*(&v28 + 1) + 8 * i) synonyms:v14 type:a4 weight:a6 options:a5];
+        v23 = [self textFeaturesFromString:*(*(&v28 + 1) + 8 * i) synonyms:localizedSynonyms type:type weight:options options:weight];
         [v17 unionSet:v23];
       }
 

@@ -1,21 +1,21 @@
 @interface AXLTAudioInfo
-- (AXLTAudioInfo)initWithAudioInfo:(id)a3 requestType:(int64_t)a4 pid:(int)a5;
+- (AXLTAudioInfo)initWithAudioInfo:(id)info requestType:(int64_t)type pid:(int)pid;
 @end
 
 @implementation AXLTAudioInfo
 
-- (AXLTAudioInfo)initWithAudioInfo:(id)a3 requestType:(int64_t)a4 pid:(int)a5
+- (AXLTAudioInfo)initWithAudioInfo:(id)info requestType:(int64_t)type pid:(int)pid
 {
-  v9 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = AXLTAudioInfo;
   v10 = [(AXLTAudioInfo *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_requestType = a4;
-    v10->_pid = a5;
-    objc_storeStrong(&v10->_audioHistogram, a3);
+    v10->_requestType = type;
+    v10->_pid = pid;
+    objc_storeStrong(&v10->_audioHistogram, info);
   }
 
   return v11;

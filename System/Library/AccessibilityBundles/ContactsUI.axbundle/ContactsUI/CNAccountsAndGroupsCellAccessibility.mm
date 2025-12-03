@@ -1,5 +1,5 @@
 @interface CNAccountsAndGroupsCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsEditing;
 - (BOOL)_axIsPlaceholderCell;
 - (BOOL)isAccessibilityElement;
@@ -12,41 +12,41 @@
 
 @implementation CNAccountsAndGroupsCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"titleTextView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"beginEditingName" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"contactCountString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"isCollectionViewEditing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"actionsProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAccountsAndGroupsActionsProvider" hasInstanceMethod:@"actionsForItem:cell:" withFullSignature:{"@", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"item" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"titleTextView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsCell" hasInstanceMethod:@"beginEditingName" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"contactCountString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsItem" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"isCollectionViewEditing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsViewController" hasInstanceMethod:@"actionsProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAccountsAndGroupsActionsProvider" hasInstanceMethod:@"actionsForItem:cell:" withFullSignature:{"@", "@", "@", 0}];
 }
 
 - (id)accessibilityValue
 {
   if ([(CNAccountsAndGroupsCellAccessibility *)self _axIsPlaceholderCell]|| [(CNAccountsAndGroupsCellAccessibility *)self _axIsEditing])
   {
-    v3 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-    v4 = [v3 accessibilityValue];
+    _accessibilityTextViewTextOperationResponder = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+    accessibilityValue = [_accessibilityTextViewTextOperationResponder accessibilityValue];
   }
 
   else
   {
-    v3 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
-    v5 = [v3 safeValueForKey:@"contactCountString"];
-    v6 = [v5 integerValue];
+    _accessibilityTextViewTextOperationResponder = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
+    v5 = [_accessibilityTextViewTextOperationResponder safeValueForKey:@"contactCountString"];
+    integerValue = [v5 integerValue];
 
     v7 = MEMORY[0x29EDBA0F8];
     v8 = accessibilityLocalizedString(@"lists.contacts.count");
-    v4 = [v7 localizedStringWithFormat:v8, v6];
+    accessibilityValue = [v7 localizedStringWithFormat:v8, integerValue];
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (BOOL)isAccessibilityElement
@@ -58,8 +58,8 @@
 
   else
   {
-    v4 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeDelegate];
-    v3 = [v4 safeBoolForKey:@"isCollectionViewEditing"] ^ 1;
+    _accessibilitySafeDelegate = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeDelegate];
+    v3 = [_accessibilitySafeDelegate safeBoolForKey:@"isCollectionViewEditing"] ^ 1;
   }
 
   return v3;
@@ -71,14 +71,14 @@
   v3 = [(CNAccountsAndGroupsCellAccessibility *)self safeValueForKey:@"titleTextView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 isEditing];
-  return v5;
+  isEditing = [v4 isEditing];
+  return isEditing;
 }
 
 - (BOOL)_axIsPlaceholderCell
 {
-  v2 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
-  v3 = [v2 safeValueForKey:@"identifier"];
+  _accessibilitySafeItem = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
+  v3 = [_accessibilitySafeItem safeValueForKey:@"identifier"];
   v4 = [v3 isEqualToString:@"groupPlaceholderIdentifier"];
 
   return v4;
@@ -100,8 +100,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v5 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
-  v4 = [v5 safeValueForKey:@"name"];
+  _accessibilitySafeItem = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeItem];
+  v4 = [_accessibilitySafeItem safeValueForKey:@"name"];
 
 LABEL_7:
 
@@ -115,8 +115,8 @@ LABEL_7:
     return *MEMORY[0x29EDC7F70];
   }
 
-  v3 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
-  [v3 accessibilityTraits];
+  _accessibilityTextViewTextOperationResponder = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilityTextViewTextOperationResponder];
+  [_accessibilityTextViewTextOperationResponder accessibilityTraits];
 
   _AXTraitsRemoveTrait();
 
@@ -130,7 +130,7 @@ LABEL_7:
   [(CNAccountsAndGroupsCellAccessibility *)&v7 beginEditingName];
   v3 = *MEMORY[0x29EDC7EA8];
   v4 = accessibilityLocalizedString(@"editing.contact.format");
-  v5 = [(CNAccountsAndGroupsCellAccessibility *)self accessibilityValue];
+  accessibilityValue = [(CNAccountsAndGroupsCellAccessibility *)self accessibilityValue];
   v6 = AXCFormattedString();
   UIAccessibilityPostNotification(v3, v6);
 }
@@ -144,8 +144,8 @@ LABEL_7:
 
   else
   {
-    v4 = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeDelegate];
-    v5 = [v4 safeValueForKey:@"actionsProvider"];
+    _accessibilitySafeDelegate = [(CNAccountsAndGroupsCellAccessibility *)self _accessibilitySafeDelegate];
+    v5 = [_accessibilitySafeDelegate safeValueForKey:@"actionsProvider"];
 
     v9 = 0;
     v10 = &v9;

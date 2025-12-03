@@ -1,23 +1,23 @@
 @interface STAEAExtractor
-- (STAEAExtractor)initWithOptions:(id)a3 delegate:(id)a4;
+- (STAEAExtractor)initWithOptions:(id)options delegate:(id)delegate;
 - (STExtractionPluginDelegate)delegate;
-- (int)aeaContextCallback:(AEAContext_impl *)a3;
-- (int)extractionProgress:(float)a3;
+- (int)aeaContextCallback:(AEAContext_impl *)callback;
+- (int)extractionProgress:(float)progress;
 - (void)dealloc;
-- (void)finishStreamWithCompletionBlock:(id)a3;
+- (void)finishStreamWithCompletionBlock:(id)block;
 - (void)invalidate;
-- (void)prepareForExtractionToPath:(id)a3 withCompletionBlock:(id)a4;
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4;
-- (void)suspendStreamWithCompletionBlock:(id)a3;
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4;
+- (void)prepareForExtractionToPath:(id)path withCompletionBlock:(id)block;
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block;
+- (void)suspendStreamWithCompletionBlock:(id)block;
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block;
 @end
 
 @implementation STAEAExtractor
 
-- (STAEAExtractor)initWithOptions:(id)a3 delegate:(id)a4
+- (STAEAExtractor)initWithOptions:(id)options delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  delegateCopy = delegate;
   v8 = sub_124C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -39,28 +39,28 @@
   v11 = [(STAEAExtractor *)&v34 init];
   if (v11)
   {
-    v12 = [v6 copy];
+    v12 = [optionsCopy copy];
     options = v11->_options;
     v11->_options = v12;
 
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v7 sessionID];
+      sessionID = [delegateCopy sessionID];
       v15 = v11->_session;
-      v11->_session = v14;
+      v11->_session = sessionID;
     }
 
     else
     {
       v15 = +[NSUUID UUID];
-      v16 = [v15 UUIDString];
+      uUIDString = [v15 UUIDString];
       v17 = v11->_session;
-      v11->_session = v16;
+      v11->_session = uUIDString;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v11->_usesReserveAccessPolicy = [v7 usesReserveAccessPolicy];
+      v11->_usesReserveAccessPolicy = [delegateCopy usesReserveAccessPolicy];
     }
 
     v18 = sub_124C();
@@ -88,7 +88,7 @@
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "[%@] %{public}s: new AEA extractor (SessionID: %@, UsesReserveAccessPolicy: %@)", buf, 0x2Au);
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"STAEAExtractorSymmetricEncryptionKey<Private>"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorSymmetricEncryptionKey<Private>"];
     symmetricDecryptionKey = v11->_symmetricDecryptionKey;
     v11->_symmetricDecryptionKey = v21;
 
@@ -99,7 +99,7 @@
 
     else
     {
-      v23 = [v6 objectForKeyedSubscript:@"STAEAExtractorAsymmetricDecryptionKey<Private>"];
+      v23 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorAsymmetricDecryptionKey<Private>"];
       asymmetricDecryptionKey = v11->_asymmetricDecryptionKey;
       v11->_asymmetricDecryptionKey = v23;
 
@@ -110,7 +110,7 @@
 
       else
       {
-        v25 = [v6 objectForKeyedSubscript:@"STAEAExtractorSigningPublicKey<Private>"];
+        v25 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorSigningPublicKey<Private>"];
         signingPublicKey = v11->_signingPublicKey;
         v11->_signingPublicKey = v25;
 
@@ -121,7 +121,7 @@
 
         else
         {
-          v27 = [v6 objectForKeyedSubscript:@"STAEAExtractorSourceDirectory"];
+          v27 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorSourceDirectory"];
           sourceDirectory = v11->_sourceDirectory;
           v11->_sourceDirectory = v27;
 
@@ -132,7 +132,7 @@
 
           else
           {
-            v29 = [v6 objectForKeyedSubscript:@"STAEAExtractorSourceDirectorySandboxExtension<Private>"];
+            v29 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorSourceDirectorySandboxExtension<Private>"];
             sourceDirectorySandboxExtension = v11->_sourceDirectorySandboxExtension;
             v11->_sourceDirectorySandboxExtension = v29;
 
@@ -143,13 +143,13 @@
 
             else
             {
-              v31 = [v6 objectForKeyedSubscript:@"STAEAExtractorArchiveID"];
+              v31 = [optionsCopy objectForKeyedSubscript:@"STAEAExtractorArchiveID"];
               archiveID = v11->_archiveID;
               v11->_archiveID = v31;
 
               if (!v11->_archiveID || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
-                [(STAEAExtractor *)v11 setDelegate:v7];
+                [(STAEAExtractor *)v11 setDelegate:delegateCopy];
                 [(STAEAExtractor *)v11 setIsComplete:0];
                 [(STAEAExtractor *)v11 setSandboxToken:-1];
                 goto LABEL_27;
@@ -197,33 +197,33 @@ LABEL_27:
   }
 }
 
-- (int)extractionProgress:(float)a3
+- (int)extractionProgress:(float)progress
 {
-  v5 = [(STAEAExtractor *)self delegate];
+  delegate = [(STAEAExtractor *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(STAEAExtractor *)self delegate];
-    [v6 setExtractionProgress:a3];
+    delegate2 = [(STAEAExtractor *)self delegate];
+    [delegate2 setExtractionProgress:progress];
   }
 
   return 0;
 }
 
-- (int)aeaContextCallback:(AEAContext_impl *)a3
+- (int)aeaContextCallback:(AEAContext_impl *)callback
 {
-  v5 = [(STAEAExtractor *)self archiveID];
+  archiveID = [(STAEAExtractor *)self archiveID];
 
-  if (v5)
+  if (archiveID)
   {
     buf_size = 0;
-    if (a3)
+    if (callback)
     {
-      if (!AEAContextGetFieldBlob(a3, 0x12u, 0, 0x20uLL, buf, &buf_size))
+      if (!AEAContextGetFieldBlob(callback, 0x12u, 0, 0x20uLL, buf, &buf_size))
       {
         v6 = [NSData dataWithBytesNoCopy:buf length:buf_size freeWhenDone:0];
-        v7 = [(STAEAExtractor *)self archiveID];
-        v8 = [v7 isEqualToData:v6];
+        archiveID2 = [(STAEAExtractor *)self archiveID];
+        v8 = [archiveID2 isEqualToData:v6];
 
         if (v8)
         {
@@ -251,13 +251,13 @@ LABEL_24:
   }
 
 LABEL_6:
-  v9 = [(STAEAExtractor *)self asymmetricDecryptionKey];
+  asymmetricDecryptionKey = [(STAEAExtractor *)self asymmetricDecryptionKey];
 
-  if (v9)
+  if (asymmetricDecryptionKey)
   {
     v10 = sub_124C();
     v11 = v10;
-    if (!a3)
+    if (!callback)
     {
       sub_40C8(v10);
       return -1;
@@ -266,8 +266,8 @@ LABEL_6:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       session = self->_session;
-      v13 = [(STAEAExtractor *)self asymmetricDecryptionKey];
-      v14 = [v13 length];
+      asymmetricDecryptionKey2 = [(STAEAExtractor *)self asymmetricDecryptionKey];
+      v14 = [asymmetricDecryptionKey2 length];
       *buf = 138412802;
       v43 = session;
       v44 = 2082;
@@ -277,27 +277,27 @@ LABEL_6:
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[%@] %{public}s: Setting asymmetric key on AEA context (%lu bytes)", buf, 0x20u);
     }
 
-    v15 = [(STAEAExtractor *)self asymmetricDecryptionKey];
-    v16 = [v15 bytes];
-    v17 = [(STAEAExtractor *)self asymmetricDecryptionKey];
-    v18 = [v17 length];
-    v19 = a3;
+    asymmetricDecryptionKey3 = [(STAEAExtractor *)self asymmetricDecryptionKey];
+    bytes = [asymmetricDecryptionKey3 bytes];
+    asymmetricDecryptionKey4 = [(STAEAExtractor *)self asymmetricDecryptionKey];
+    v18 = [asymmetricDecryptionKey4 length];
+    callbackCopy2 = callback;
     v20 = 11;
     v21 = 1;
   }
 
   else
   {
-    v22 = [(STAEAExtractor *)self symmetricDecryptionKey];
+    symmetricDecryptionKey = [(STAEAExtractor *)self symmetricDecryptionKey];
 
-    if (!v22)
+    if (!symmetricDecryptionKey)
     {
       goto LABEL_17;
     }
 
     v23 = sub_124C();
     v24 = v23;
-    if (!a3)
+    if (!callback)
     {
       sub_4300(v23);
       return -1;
@@ -306,8 +306,8 @@ LABEL_6:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v25 = self->_session;
-      v26 = [(STAEAExtractor *)self asymmetricDecryptionKey];
-      v27 = [v26 length];
+      asymmetricDecryptionKey5 = [(STAEAExtractor *)self asymmetricDecryptionKey];
+      v27 = [asymmetricDecryptionKey5 length];
       *buf = 138412802;
       v43 = v25;
       v44 = 2082;
@@ -317,16 +317,16 @@ LABEL_6:
       _os_log_impl(&dword_0, v24, OS_LOG_TYPE_DEFAULT, "[%@] %{public}s: Setting symmetric key on AEA context (%lu bytes)", buf, 0x20u);
     }
 
-    v15 = [(STAEAExtractor *)self symmetricDecryptionKey];
-    v16 = [v15 bytes];
-    v17 = [(STAEAExtractor *)self symmetricDecryptionKey];
-    v18 = [v17 length];
-    v19 = a3;
+    asymmetricDecryptionKey3 = [(STAEAExtractor *)self symmetricDecryptionKey];
+    bytes = [asymmetricDecryptionKey3 bytes];
+    asymmetricDecryptionKey4 = [(STAEAExtractor *)self symmetricDecryptionKey];
+    v18 = [asymmetricDecryptionKey4 length];
+    callbackCopy2 = callback;
     v20 = 9;
     v21 = 0;
   }
 
-  v28 = AEAContextSetFieldBlob(v19, v20, v21, v16, v18);
+  v28 = AEAContextSetFieldBlob(callbackCopy2, v20, v21, bytes, v18);
 
   if (v28 == -1)
   {
@@ -335,17 +335,17 @@ LABEL_6:
   }
 
 LABEL_17:
-  v29 = [(STAEAExtractor *)self signingPublicKey];
+  signingPublicKey = [(STAEAExtractor *)self signingPublicKey];
 
-  if (v29)
+  if (signingPublicKey)
   {
-    if (!a3)
+    if (!callback)
     {
       sub_45E0();
       return -1;
     }
 
-    FieldUInt = AEAContextGetFieldUInt(a3, 0);
+    FieldUInt = AEAContextGetFieldUInt(callback, 0);
     if (FieldUInt <= 5 && ((1 << FieldUInt) & 0x2A) != 0)
     {
       v31 = sub_124C();
@@ -362,10 +362,10 @@ LABEL_17:
       goto LABEL_24;
     }
 
-    v35 = [(STAEAExtractor *)self signingPublicKey];
-    v36 = [v35 bytes];
-    v37 = [(STAEAExtractor *)self signingPublicKey];
-    v38 = AEAContextSetFieldBlob(a3, 7u, 1u, v36, [v37 length]);
+    signingPublicKey2 = [(STAEAExtractor *)self signingPublicKey];
+    bytes2 = [signingPublicKey2 bytes];
+    signingPublicKey3 = [(STAEAExtractor *)self signingPublicKey];
+    v38 = AEAContextSetFieldBlob(callback, 7u, 1u, bytes2, [signingPublicKey3 length]);
 
     if (v38 == -1)
     {
@@ -377,10 +377,10 @@ LABEL_17:
   return 0;
 }
 
-- (void)prepareForExtractionToPath:(id)a3 withCompletionBlock:(id)a4
+- (void)prepareForExtractionToPath:(id)path withCompletionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  blockCopy = block;
   v9 = sub_124C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -390,11 +390,11 @@ LABEL_17:
     v32 = 2082;
     v33 = "[STAEAExtractor prepareForExtractionToPath:withCompletionBlock:]";
     v34 = 2112;
-    v35 = v7;
+    v35 = pathCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[%@] %{public}s: Preparing to extract to %@", buf, 0x20u);
   }
 
-  objc_storeStrong(&self->_path, a3);
+  objc_storeStrong(&self->_path, path);
   if ([(STAEAExtractor *)self usesReserveAccessPolicy])
   {
     v30 = 0;
@@ -416,7 +416,7 @@ LABEL_17:
   }
 
   AAThreadErrorContextEnter();
-  [v7 UTF8String];
+  [pathCopy UTF8String];
   v14 = AAAssetExtractorCreate();
   self->_extractor = v14;
   v15 = sub_124C();
@@ -442,16 +442,16 @@ LABEL_30:
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "[%@] %{public}s: starting extraction offset: %llu", buf, 0x20u);
   }
 
-  v19 = [(STAEAExtractor *)self sourceDirectory];
+  sourceDirectory = [(STAEAExtractor *)self sourceDirectory];
 
-  if (v19)
+  if (sourceDirectory)
   {
-    v20 = [(STAEAExtractor *)self sourceDirectorySandboxExtension];
+    sourceDirectorySandboxExtension = [(STAEAExtractor *)self sourceDirectorySandboxExtension];
 
-    if (v20)
+    if (sourceDirectorySandboxExtension)
     {
-      v21 = [(STAEAExtractor *)self sourceDirectorySandboxExtension];
-      [v21 UTF8String];
+      sourceDirectorySandboxExtension2 = [(STAEAExtractor *)self sourceDirectorySandboxExtension];
+      [sourceDirectorySandboxExtension2 UTF8String];
       [(STAEAExtractor *)self setSandboxToken:sandbox_extension_consume()];
 
       if ([(STAEAExtractor *)self sandboxToken]== -1)
@@ -462,8 +462,8 @@ LABEL_30:
     }
 
     extractor = self->_extractor;
-    v23 = [(STAEAExtractor *)self sourceDirectory];
-    [v23 UTF8String];
+    sourceDirectory2 = [(STAEAExtractor *)self sourceDirectory];
+    [sourceDirectory2 UTF8String];
     v24 = AAAssetExtractorSetParameterPtr();
 
     if (v24)
@@ -504,26 +504,26 @@ LABEL_30:
   AAThreadErrorContextLeave();
   v29 = 0;
 LABEL_22:
-  v8[2](v8, self->_offset, v29);
+  blockCopy[2](blockCopy, self->_offset, v29);
 }
 
-- (void)supplyBytes:(id)a3 withCompletionBlock:(id)a4
+- (void)supplyBytes:(id)bytes withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  bytesCopy = bytes;
+  blockCopy = block;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = sub_2894;
   v39 = sub_28A4;
   v40 = 0;
-  v8 = [v6 length];
+  v8 = [bytesCopy length];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
   v34 = 0;
-  v9 = [(STAEAExtractor *)self error];
-  v10 = v9 == 0;
+  error = [(STAEAExtractor *)self error];
+  v10 = error == 0;
 
   if (!v10)
   {
@@ -586,7 +586,7 @@ LABEL_23:
   v29[5] = &v35;
   v29[6] = &v31;
   v29[7] = v8;
-  [v6 enumerateByteRangesUsingBlock:v29];
+  [bytesCopy enumerateByteRangesUsingBlock:v29];
 LABEL_13:
   if (*(v32 + 24) == 1)
   {
@@ -595,8 +595,8 @@ LABEL_13:
 
   if (v36[5])
   {
-    v17 = [(STAEAExtractor *)self error];
-    v18 = v17 == 0;
+    error2 = [(STAEAExtractor *)self error];
+    v18 = error2 == 0;
 
     if (v18)
     {
@@ -606,26 +606,26 @@ LABEL_13:
 
   else
   {
-    v19 = [(STAEAExtractor *)self error];
-    v20 = v19 == 0;
+    error3 = [(STAEAExtractor *)self error];
+    v20 = error3 == 0;
 
     if (!v20)
     {
-      v21 = [(STAEAExtractor *)self error];
+      error4 = [(STAEAExtractor *)self error];
       v22 = v36[5];
-      v36[5] = v21;
+      v36[5] = error4;
     }
   }
 
-  v7[2](v7, v36[5], [(STAEAExtractor *)self isComplete]!= 0);
+  blockCopy[2](blockCopy, v36[5], [(STAEAExtractor *)self isComplete]!= 0);
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(&v35, 8);
 }
 
-- (void)suspendStreamWithCompletionBlock:(id)a3
+- (void)suspendStreamWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_124C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -736,21 +736,21 @@ LABEL_13:
     v21 = sub_1238(v19, 7, v20, 0, "[STAEAExtractor suspendStreamWithCompletionBlock:]", "/Library/Caches/com.apple.xbs/Sources/StreamingExtractor/AEAExtractionPlugin/STAEAExtractorPlugin.m", 519);
   }
 
-  v24 = [(STAEAExtractor *)self error];
+  error = [(STAEAExtractor *)self error];
 
-  if (!v24 && v21)
+  if (!error && v21)
   {
     [(STAEAExtractor *)self setError:v21];
   }
 
   v25 = self->_offset;
-  v26 = [(STAEAExtractor *)self error];
-  v4[2](v4, v25, v26);
+  error2 = [(STAEAExtractor *)self error];
+  blockCopy[2](blockCopy, v25, error2);
 }
 
-- (void)finishStreamWithCompletionBlock:(id)a3
+- (void)finishStreamWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_124C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -836,13 +836,13 @@ LABEL_19:
   v20 = STCreateAEAError(v17, "[STAEAExtractor finishStreamWithCompletionBlock:]", "/Library/Caches/com.apple.xbs/Sources/StreamingExtractor/AEAExtractionPlugin/STAEAExtractorPlugin.m", v19);
 
 LABEL_22:
-  v4[2](v4, v20);
+  blockCopy[2](blockCopy, v20);
 }
 
-- (void)terminateStreamWithError:(id)a3 completionBlock:(id)a4
+- (void)terminateStreamWithError:(id)error completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  blockCopy = block;
   v8 = sub_124C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
@@ -897,7 +897,7 @@ LABEL_22:
     }
   }
 
-  v7[2](v7, v6);
+  blockCopy[2](blockCopy, errorCopy);
 }
 
 - (STExtractionPluginDelegate)delegate

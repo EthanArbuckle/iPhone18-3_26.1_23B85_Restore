@@ -1,13 +1,13 @@
 @interface HDCloudSyncSharedSummaryParticipantRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isParticipantRecord:(id)a3;
-+ (id)codableRecordFromRecord:(id)a3;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isParticipantRecord:(id)record;
++ (id)codableRecordFromRecord:(id)record;
 + (id)fieldsForUnprotectedSerialization;
-+ (id)recordIDWithZoneID:(id)a3 UUID:(id)a4;
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4;
-- (BOOL)updateWithLocalEntry:(id)a3 error:(id *)a4;
++ (id)recordIDWithZoneID:(id)d UUID:(id)iD;
++ (id)recordWithCKRecord:(id)record error:(id *)error;
+- (BOOL)updateWithLocalEntry:(id)entry error:(id *)error;
 - (CKShareParticipant)ownerParticipant;
-- (HDCloudSyncSharedSummaryParticipantRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (HDCloudSyncSharedSummaryParticipantRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (HDCodableSharingSetupMetadata)shareSetupMetadata;
 - (NSArray)allContactIdentifiers;
 - (NSDate)entryAcceptanceDate;
@@ -22,154 +22,154 @@
 - (NSUUID)authorizationRecordIdentifier;
 - (NSUUID)invitationUUID;
 - (id)description;
-- (id)initInZone:(id)a3 codableEntry:(id)a4;
-- (int64_t)mergeWithLocalEntry:(id)a3 error:(id *)a4;
-- (void)setAllContactIdentifiers:(id)a3;
-- (void)setAuthorizationRecord:(id)a3;
-- (void)setCloudKitIdentifier:(id)a3;
-- (void)setEntryAcceptanceDate:(id)a3;
-- (void)setEntryInvitationDate:(id)a3;
-- (void)setEntryModificationDate:(id)a3;
-- (void)setFirstName:(id)a3;
-- (void)setInvitationUUID:(id)a3;
-- (void)setLastName:(id)a3;
-- (void)setNotificationStatus:(id)a3;
-- (void)setOwnerParticipant:(id)a3;
-- (void)setRelationshipDirection:(id)a3;
-- (void)setRelationshipStatus:(id)a3;
-- (void)setRelationshipType:(id)a3;
-- (void)setShareSetupMetadata:(id)a3;
-- (void)setUserWheelchairMode:(id)a3;
+- (id)initInZone:(id)zone codableEntry:(id)entry;
+- (int64_t)mergeWithLocalEntry:(id)entry error:(id *)error;
+- (void)setAllContactIdentifiers:(id)identifiers;
+- (void)setAuthorizationRecord:(id)record;
+- (void)setCloudKitIdentifier:(id)identifier;
+- (void)setEntryAcceptanceDate:(id)date;
+- (void)setEntryInvitationDate:(id)date;
+- (void)setEntryModificationDate:(id)date;
+- (void)setFirstName:(id)name;
+- (void)setInvitationUUID:(id)d;
+- (void)setLastName:(id)name;
+- (void)setNotificationStatus:(id)status;
+- (void)setOwnerParticipant:(id)participant;
+- (void)setRelationshipDirection:(id)direction;
+- (void)setRelationshipStatus:(id)status;
+- (void)setRelationshipType:(id)type;
+- (void)setShareSetupMetadata:(id)metadata;
+- (void)setUserWheelchairMode:(id)mode;
 @end
 
 @implementation HDCloudSyncSharedSummaryParticipantRecord
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-+ (id)recordIDWithZoneID:(id)a3 UUID:(id)a4
++ (id)recordIDWithZoneID:(id)d UUID:(id)iD
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [a4 UUIDString];
-  v8 = [v5 stringWithFormat:@"%@/%@", @"SharedSummaryParticipantRecord", v7];
+  dCopy = d;
+  uUIDString = [iD UUIDString];
+  v8 = [v5 stringWithFormat:@"%@/%@", @"SharedSummaryParticipantRecord", uUIDString];
 
-  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:v6];
+  v9 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v8 zoneID:dCopy];
 
   return v9;
 }
 
-+ (BOOL)isParticipantRecord:(id)a3
++ (BOOL)isParticipantRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"SharedSummaryParticipantRecordType"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"SharedSummaryParticipantRecordType"];
 
   return v4;
 }
 
-- (id)initInZone:(id)a3 codableEntry:(id)a4
+- (id)initInZone:(id)zone codableEntry:(id)entry
 {
-  v6 = a4;
+  entryCopy = entry;
   v7 = MEMORY[0x277CCAD78];
-  v8 = a3;
+  zoneCopy = zone;
   v9 = [v7 alloc];
-  v10 = [v6 uuid];
-  v11 = [v9 initWithUUIDString:v10];
+  uuid = [entryCopy uuid];
+  v11 = [v9 initWithUUIDString:uuid];
 
-  v12 = [objc_opt_class() recordIDWithZoneID:v8 UUID:v11];
+  v12 = [objc_opt_class() recordIDWithZoneID:zoneCopy UUID:v11];
 
   v13 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"SharedSummaryParticipantRecordType" recordID:v12];
   v14 = [(HDCloudSyncSharedSummaryParticipantRecord *)self initWithCKRecord:v13 schemaVersion:1];
   if (v14)
   {
-    v15 = [v11 UUIDString];
-    v16 = [v15 copy];
+    uUIDString = [v11 UUIDString];
+    v16 = [uUIDString copy];
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setUuid:v16];
 
-    v17 = [v6 invitationUUID];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setInvitationUUID:v17];
+    invitationUUID = [entryCopy invitationUUID];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setInvitationUUID:invitationUUID];
 
-    v18 = [v6 primaryContactIdentifier];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setContactIdentifier:v18];
+    primaryContactIdentifier = [entryCopy primaryContactIdentifier];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setContactIdentifier:primaryContactIdentifier];
 
-    v19 = [v6 cloudKitIdentifier];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setCloudKitIdentifier:v19];
+    cloudKitIdentifier = [entryCopy cloudKitIdentifier];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setCloudKitIdentifier:cloudKitIdentifier];
 
-    v20 = [v6 firstName];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setFirstName:v20];
+    firstName = [entryCopy firstName];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setFirstName:firstName];
 
-    v21 = [v6 lastName];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setLastName:v21];
+    lastName = [entryCopy lastName];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setLastName:lastName];
 
-    -[HDCloudSyncCodableSharedSummaryParticipantRecord setUserWheelchairMode:](v14->_underlyingSummaryParticipantRecord, "setUserWheelchairMode:", [v6 userWheelchairMode]);
-    v22 = [v6 allContactIdentifiers];
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setAllContactIdentifiers:v22];
+    -[HDCloudSyncCodableSharedSummaryParticipantRecord setUserWheelchairMode:](v14->_underlyingSummaryParticipantRecord, "setUserWheelchairMode:", [entryCopy userWheelchairMode]);
+    allContactIdentifiers = [entryCopy allContactIdentifiers];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setAllContactIdentifiers:allContactIdentifiers];
 
-    -[HDCloudSyncCodableSharedSummaryParticipantRecord setType:](v14->_underlyingSummaryParticipantRecord, "setType:", [v6 type]);
-    -[HDCloudSyncCodableSharedSummaryParticipantRecord setDirection:](v14->_underlyingSummaryParticipantRecord, "setDirection:", [v6 direction]);
-    -[HDCloudSyncCodableSharedSummaryParticipantRecord setStatus:](v14->_underlyingSummaryParticipantRecord, "setStatus:", [v6 status]);
-    -[HDCloudSyncCodableSharedSummaryParticipantRecord setNotificationStatus:](v14->_underlyingSummaryParticipantRecord, "setNotificationStatus:", [v6 notificationStatus]);
-    if ([v6 hasDateModified])
+    -[HDCloudSyncCodableSharedSummaryParticipantRecord setType:](v14->_underlyingSummaryParticipantRecord, "setType:", [entryCopy type]);
+    -[HDCloudSyncCodableSharedSummaryParticipantRecord setDirection:](v14->_underlyingSummaryParticipantRecord, "setDirection:", [entryCopy direction]);
+    -[HDCloudSyncCodableSharedSummaryParticipantRecord setStatus:](v14->_underlyingSummaryParticipantRecord, "setStatus:", [entryCopy status]);
+    -[HDCloudSyncCodableSharedSummaryParticipantRecord setNotificationStatus:](v14->_underlyingSummaryParticipantRecord, "setNotificationStatus:", [entryCopy notificationStatus]);
+    if ([entryCopy hasDateModified])
     {
-      [v6 dateModified];
+      [entryCopy dateModified];
       [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setEntryModificationDate:?];
     }
 
-    if ([v6 hasDateInvited])
+    if ([entryCopy hasDateInvited])
     {
-      [v6 dateInvited];
+      [entryCopy dateInvited];
       [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setEntryInvitationDate:?];
     }
 
-    if ([v6 hasDateAccepted])
+    if ([entryCopy hasDateAccepted])
     {
-      [v6 dateAccepted];
+      [entryCopy dateAccepted];
       [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setEntryAcceptanceDate:?];
     }
 
-    if ([v6 hasSharingSetupMetadata])
+    if ([entryCopy hasSharingSetupMetadata])
     {
-      v23 = [v6 sharingSetupMetadata];
-      v24 = [v23 data];
-      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setSetupMetadata:v24];
+      sharingSetupMetadata = [entryCopy sharingSetupMetadata];
+      data = [sharingSetupMetadata data];
+      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setSetupMetadata:data];
     }
 
-    if ([v6 hasOwnerParticipant])
+    if ([entryCopy hasOwnerParticipant])
     {
-      v25 = [v6 ownerParticipant];
-      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setOwnerParticipant:v25];
+      ownerParticipant = [entryCopy ownerParticipant];
+      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setOwnerParticipant:ownerParticipant];
     }
 
-    if ([v6 hasCloudKitIdentifier])
+    if ([entryCopy hasCloudKitIdentifier])
     {
-      v26 = [v6 cloudKitIdentifier];
-      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setCloudKitIdentifier:v26];
+      cloudKitIdentifier2 = [entryCopy cloudKitIdentifier];
+      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v14->_underlyingSummaryParticipantRecord setCloudKitIdentifier:cloudKitIdentifier2];
     }
   }
 
   return v14;
 }
 
-- (HDCloudSyncSharedSummaryParticipantRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncSharedSummaryParticipantRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v18 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = HDCloudSyncSharedSummaryParticipantRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableSharedSummaryParticipantRecord);
     underlyingSummaryParticipantRecord = v5->_underlyingSummaryParticipantRecord;
@@ -178,7 +178,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableSharedSummaryParticipantRecord alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableSharedSummaryParticipantRecord alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingSummaryParticipantRecord;
   v5->_underlyingSummaryParticipantRecord = v7;
 
@@ -207,12 +207,12 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)updateWithLocalEntry:(id)a3 error:(id *)a4
+- (BOOL)updateWithLocalEntry:(id)entry error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 uuid];
-  v9 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
-  v10 = [v8 isEqualToString:v9];
+  entryCopy = entry;
+  uuid = [entryCopy uuid];
+  uuid2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
+  v10 = [uuid isEqualToString:uuid2];
 
   if ((v10 & 1) == 0)
   {
@@ -222,16 +222,16 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (![v7 hasInvitationUUID])
+  if (![entryCopy hasInvitationUUID])
   {
 LABEL_9:
-    v20 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasStatus];
-    v21 = [v7 status];
-    if (v20)
+    hasStatus = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasStatus];
+    status = [entryCopy status];
+    if (hasStatus)
     {
-      if (v21 > 2)
+      if (status > 2)
       {
-        if (v21 == 3)
+        if (status == 3)
         {
           if (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status])
           {
@@ -240,14 +240,14 @@ LABEL_9:
           }
         }
 
-        else if (v21 == 4 && (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]|| [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]== 1))
+        else if (status == 4 && (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]|| [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]== 1))
         {
           v22 = 4;
           goto LABEL_17;
         }
       }
 
-      else if (v21 == 1)
+      else if (status == 1)
       {
         if (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status])
         {
@@ -256,31 +256,31 @@ LABEL_9:
         }
       }
 
-      else if (v21 == 2 && (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]|| [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]== 1))
+      else if (status == 2 && (![(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]|| [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status]== 1))
       {
         v22 = 2;
 LABEL_17:
         [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setStatus:v22];
       }
 
-      v23 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasNotificationStatus];
-      v24 = [v7 notificationStatus];
-      if (v23)
+      hasNotificationStatus = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasNotificationStatus];
+      notificationStatus = [entryCopy notificationStatus];
+      if (hasNotificationStatus)
       {
-        if (v24 == 2)
+        if (notificationStatus == 2)
         {
           v25 = 2;
         }
 
         else
         {
-          if (v24 != 1 || [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus])
+          if (notificationStatus != 1 || [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus])
           {
 LABEL_31:
             if ([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasType])
             {
-              v26 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord type];
-              if (v26 != [v7 type])
+              type = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord type];
+              if (type != [entryCopy type])
               {
                 v16 = MEMORY[0x277CCA9B8];
                 v17 = objc_opt_class();
@@ -291,13 +291,13 @@ LABEL_31:
 
             else
             {
-              -[HDCloudSyncCodableSharedSummaryParticipantRecord setType:](self->_underlyingSummaryParticipantRecord, "setType:", [v7 type]);
+              -[HDCloudSyncCodableSharedSummaryParticipantRecord setType:](self->_underlyingSummaryParticipantRecord, "setType:", [entryCopy type]);
             }
 
             if ([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasDirection])
             {
-              v27 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord direction];
-              if (v27 != [v7 direction])
+              direction = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord direction];
+              if (direction != [entryCopy direction])
               {
                 v16 = MEMORY[0x277CCA9B8];
                 v17 = objc_opt_class();
@@ -308,7 +308,7 @@ LABEL_31:
 
             else
             {
-              -[HDCloudSyncCodableSharedSummaryParticipantRecord setDirection:](self->_underlyingSummaryParticipantRecord, "setDirection:", [v7 direction]);
+              -[HDCloudSyncCodableSharedSummaryParticipantRecord setDirection:](self->_underlyingSummaryParticipantRecord, "setDirection:", [entryCopy direction]);
             }
 
             v19 = 1;
@@ -321,29 +321,29 @@ LABEL_31:
 
       else
       {
-        v25 = v24;
+        v25 = notificationStatus;
       }
 
       [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setNotificationStatus:v25];
       goto LABEL_31;
     }
 
-    v22 = v21;
+    v22 = status;
     goto LABEL_17;
   }
 
-  v11 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasInvitationUUID];
-  v12 = [v7 invitationUUID];
+  hasInvitationUUID = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasInvitationUUID];
+  invitationUUID = [entryCopy invitationUUID];
   underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
-  if (!v11)
+  if (!hasInvitationUUID)
   {
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setInvitationUUID:v12];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setInvitationUUID:invitationUUID];
 
     goto LABEL_9;
   }
 
-  v14 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord invitationUUID];
-  v15 = [v12 isEqualToString:v14];
+  invitationUUID2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord invitationUUID];
+  v15 = [invitationUUID isEqualToString:invitationUUID2];
 
   if (v15)
   {
@@ -354,20 +354,20 @@ LABEL_31:
   v17 = objc_opt_class();
   v18 = @"Invitation UUIDs do not match.";
 LABEL_7:
-  [v16 hk_assignError:a4 invalidArgument:v18 class:v17 selector:a2];
+  [v16 hk_assignError:error invalidArgument:v18 class:v17 selector:a2];
   v19 = 0;
 LABEL_40:
 
   return v19;
 }
 
-- (int64_t)mergeWithLocalEntry:(id)a3 error:(id *)a4
+- (int64_t)mergeWithLocalEntry:(id)entry error:(id *)error
 {
   v105 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 uuid];
-  v9 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
-  v10 = [v8 isEqualToString:v9];
+  entryCopy = entry;
+  uuid = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy uuid];
+  uuid2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
+  v10 = [uuid isEqualToString:uuid2];
 
   if ((v10 & 1) == 0)
   {
@@ -377,60 +377,60 @@ LABEL_40:
     goto LABEL_7;
   }
 
-  v11 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasInvitationUUID];
-  v12 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasInvitationUUID];
-  v13 = v12;
-  if (!v11)
+  hasInvitationUUID = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasInvitationUUID];
+  hasInvitationUUID2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasInvitationUUID];
+  v13 = hasInvitationUUID2;
+  if (!hasInvitationUUID)
   {
-    if (!v12)
+    if (!hasInvitationUUID2)
     {
       goto LABEL_11;
     }
 
-    v14 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord invitationUUID];
-    underlyingSummaryParticipantRecord = v7;
+    invitationUUID = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord invitationUUID];
+    underlyingSummaryParticipantRecord = entryCopy;
 LABEL_10:
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setInvitationUUID:v14];
-    v22 = v11 ^ 1;
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setInvitationUUID:invitationUUID];
+    v22 = hasInvitationUUID ^ 1;
 
     goto LABEL_12;
   }
 
-  v14 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 invitationUUID];
+  invitationUUID = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy invitationUUID];
   underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
   if (!v13)
   {
     goto LABEL_10;
   }
 
-  v16 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord invitationUUID];
-  v17 = [v14 isEqualToString:v16];
+  invitationUUID2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord invitationUUID];
+  v17 = [invitationUUID isEqualToString:invitationUUID2];
 
   if (v17)
   {
 LABEL_11:
     v22 = 0;
-    v11 = 0;
+    hasInvitationUUID = 0;
 LABEL_12:
-    v23 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasType];
-    v24 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasType];
-    v25 = v24;
-    if (!v23)
+    hasType = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasType];
+    hasType2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasType];
+    v25 = hasType2;
+    if (!hasType)
     {
-      if (v24)
+      if (hasType2)
       {
-        [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setType:HDSharingTypeFromCodableType([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 type])];
-        v11 = 1;
+        [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setType:HDSharingTypeFromCodableType([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy type])];
+        hasInvitationUUID = 1;
       }
 
       goto LABEL_25;
     }
 
-    v26 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord type];
-    v27 = v26;
+    type = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord type];
+    v27 = type;
     if (v25)
     {
-      if (v26 != HDSharingTypeFromCodableType([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 type]))
+      if (type != HDSharingTypeFromCodableType([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy type]))
       {
         v18 = MEMORY[0x277CCA9B8];
         v19 = objc_opt_class();
@@ -439,25 +439,25 @@ LABEL_12:
       }
 
 LABEL_25:
-      v30 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasDirection];
-      v31 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasDirection];
-      v32 = v31;
-      if (!v30)
+      hasDirection = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasDirection];
+      hasDirection2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasDirection];
+      v32 = hasDirection2;
+      if (!hasDirection)
       {
-        if (v31)
+        if (hasDirection2)
         {
-          [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setDirection:HDSharingMessageDirectionFromCodableDirection([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 direction])];
-          v11 = 1;
+          [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setDirection:HDSharingMessageDirectionFromCodableDirection([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy direction])];
+          hasInvitationUUID = 1;
         }
 
         goto LABEL_38;
       }
 
-      v33 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord direction];
-      v34 = v33;
+      direction = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord direction];
+      v34 = direction;
       if (v32)
       {
-        if (v33 != HDSharingMessageDirectionFromCodableDirection([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 direction]))
+        if (direction != HDSharingMessageDirectionFromCodableDirection([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy direction]))
         {
           v18 = MEMORY[0x277CCA9B8];
           v19 = objc_opt_class();
@@ -466,53 +466,53 @@ LABEL_25:
         }
 
 LABEL_38:
-        v37 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasStatus];
-        v38 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasStatus];
-        if (v37)
+        hasStatus = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasStatus];
+        hasStatus2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasStatus];
+        if (hasStatus)
         {
-          if (v38)
+          if (hasStatus2)
           {
-            v39 = HDSharingStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 status]);
-            v40 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status];
-            v41 = HDMergedSharingStatus(v39, v40);
+            v39 = HDSharingStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy status]);
+            status = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status];
+            v41 = HDMergedSharingStatus(v39, status);
             v42 = v41;
             if (v41 != v39)
             {
-              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setStatus:HDCodableSharingStatusFromStatus(v41)];
+              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setStatus:HDCodableSharingStatusFromStatus(v41)];
               v22 = 1;
             }
 
-            if (v42 != v40)
+            if (v42 != status)
             {
               v43 = self->_underlyingSummaryParticipantRecord;
               v44 = v42;
 LABEL_46:
               [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v43 setStatus:v44];
-              v11 = 1;
+              hasInvitationUUID = 1;
             }
           }
 
           else
           {
-            [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setStatus:HDCodableSharingStatusFromStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status])];
+            [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setStatus:HDCodableSharingStatusFromStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord status])];
             v22 = 1;
           }
 
 LABEL_48:
-          v45 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasNotificationStatus];
-          v46 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasNotificationStatus];
-          if (v45)
+          hasNotificationStatus = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasNotificationStatus];
+          hasNotificationStatus2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasNotificationStatus];
+          if (hasNotificationStatus)
           {
-            if (!v46)
+            if (!hasNotificationStatus2)
             {
-              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setNotificationStatus:HDCodableSharingNotificationStatusFromStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus])];
+              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setNotificationStatus:HDCodableSharingNotificationStatusFromStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus])];
               v22 = 1;
               goto LABEL_65;
             }
 
-            v47 = HDSharingNotificationStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 notificationStatus]);
-            v48 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus];
-            v49 = v48;
+            v47 = HDSharingNotificationStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy notificationStatus]);
+            notificationStatus = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord notificationStatus];
+            v49 = notificationStatus;
             if (v47)
             {
               if (v47 == 2)
@@ -520,7 +520,7 @@ LABEL_48:
                 v50 = 2;
               }
 
-              else if (v48 == 2)
+              else if (notificationStatus == 2)
               {
                 v50 = 2;
               }
@@ -533,22 +533,22 @@ LABEL_48:
 
             else
             {
-              v50 = v48;
+              v50 = notificationStatus;
             }
 
             if (v50 != v47)
             {
-              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setNotificationStatus:HDCodableSharingNotificationStatusFromStatus(v50)];
+              [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setNotificationStatus:HDCodableSharingNotificationStatusFromStatus(v50)];
               v22 = 1;
             }
 
             if (v50 == v49)
             {
 LABEL_65:
-              v53 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryModificationDate];
-              v54 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasDateModified];
-              v55 = v54;
-              if (v53)
+              hasEntryModificationDate = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryModificationDate];
+              hasDateModified = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasDateModified];
+              v55 = hasDateModified;
+              if (hasEntryModificationDate)
               {
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord entryModificationDate];
                 v57 = v56;
@@ -557,7 +557,7 @@ LABEL_65:
                   goto LABEL_72;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateModified];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateModified];
                 if (v57 < v58)
                 {
                   v57 = v58;
@@ -567,29 +567,29 @@ LABEL_65:
                 if (v57 != v59)
                 {
                   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryModificationDate:v57];
-                  v11 = 1;
+                  hasInvitationUUID = 1;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateModified];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateModified];
                 if (v57 != v60)
                 {
 LABEL_72:
-                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setDateModified:v57];
+                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setDateModified:v57];
                   v22 = 1;
                 }
               }
 
-              else if (v54)
+              else if (hasDateModified)
               {
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateModified];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateModified];
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryModificationDate:?];
-                v11 = 1;
+                hasInvitationUUID = 1;
               }
 
-              v61 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryInvitationDate];
-              v62 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasDateInvited];
-              v63 = v62;
-              if (v61)
+              hasEntryInvitationDate = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryInvitationDate];
+              hasDateInvited = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasDateInvited];
+              v63 = hasDateInvited;
+              if (hasEntryInvitationDate)
               {
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord entryInvitationDate];
                 v65 = v64;
@@ -598,7 +598,7 @@ LABEL_72:
                   goto LABEL_82;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateInvited];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateInvited];
                 if (v65 >= v66)
                 {
                   v65 = v66;
@@ -608,29 +608,29 @@ LABEL_72:
                 if (v65 != v67)
                 {
                   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryInvitationDate:v65];
-                  v11 = 1;
+                  hasInvitationUUID = 1;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateInvited];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateInvited];
                 if (v65 != v68)
                 {
 LABEL_82:
-                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setDateInvited:v65];
+                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setDateInvited:v65];
                   v22 = 1;
                 }
               }
 
-              else if (v62)
+              else if (hasDateInvited)
               {
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateInvited];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateInvited];
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryInvitationDate:?];
-                v11 = 1;
+                hasInvitationUUID = 1;
               }
 
-              v69 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryAcceptanceDate];
-              v70 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasDateAccepted];
-              v71 = v70;
-              if (v69)
+              hasEntryAcceptanceDate = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasEntryAcceptanceDate];
+              hasDateAccepted = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasDateAccepted];
+              v71 = hasDateAccepted;
+              if (hasEntryAcceptanceDate)
               {
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord entryAcceptanceDate];
                 v73 = v72;
@@ -639,7 +639,7 @@ LABEL_82:
                   goto LABEL_92;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateAccepted];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateAccepted];
                 if (v73 >= v74)
                 {
                   v73 = v74;
@@ -649,133 +649,133 @@ LABEL_82:
                 if (v73 != v75)
                 {
                   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryAcceptanceDate:v73];
-                  v11 = 1;
+                  hasInvitationUUID = 1;
                 }
 
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateAccepted];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateAccepted];
                 if (v73 != v76)
                 {
 LABEL_92:
-                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setDateAccepted:v73];
+                  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setDateAccepted:v73];
                   v22 = 1;
                 }
               }
 
-              else if (v70)
+              else if (hasDateAccepted)
               {
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 dateAccepted];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy dateAccepted];
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setEntryAcceptanceDate:?];
-                v11 = 1;
+                hasInvitationUUID = 1;
               }
 
-              v77 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasOwnerParticipant];
-              v78 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasOwnerParticipant];
-              if (v77)
+              hasOwnerParticipant = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasOwnerParticipant];
+              hasOwnerParticipant2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasOwnerParticipant];
+              if (hasOwnerParticipant)
               {
-                if (v78)
+                if (hasOwnerParticipant2)
                 {
                   goto LABEL_101;
                 }
 
-                v79 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setOwnerParticipant:v79];
+                ownerParticipant = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setOwnerParticipant:ownerParticipant];
                 v22 = 1;
               }
 
               else
               {
-                if (!v78)
+                if (!hasOwnerParticipant2)
                 {
                   goto LABEL_101;
                 }
 
-                v79 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 ownerParticipant];
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setOwnerParticipant:v79];
-                v11 = 1;
+                ownerParticipant = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy ownerParticipant];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setOwnerParticipant:ownerParticipant];
+                hasInvitationUUID = 1;
               }
 
 LABEL_101:
-              v80 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasCloudKitIdentifier];
-              v81 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 hasCloudKitIdentifier];
-              if (v80)
+              hasCloudKitIdentifier = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasCloudKitIdentifier];
+              hasCloudKitIdentifier2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy hasCloudKitIdentifier];
+              if (hasCloudKitIdentifier)
               {
-                if (v81)
+                if (hasCloudKitIdentifier2)
                 {
                   goto LABEL_107;
                 }
 
-                v82 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord cloudKitIdentifier];
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setCloudKitIdentifier:v82];
+                cloudKitIdentifier = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord cloudKitIdentifier];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setCloudKitIdentifier:cloudKitIdentifier];
                 v22 = 1;
               }
 
               else
               {
-                if (!v81)
+                if (!hasCloudKitIdentifier2)
                 {
                   goto LABEL_107;
                 }
 
-                v82 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 cloudKitIdentifier];
-                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setCloudKitIdentifier:v82];
-                v11 = 1;
+                cloudKitIdentifier = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy cloudKitIdentifier];
+                [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setCloudKitIdentifier:cloudKitIdentifier];
+                hasInvitationUUID = 1;
               }
 
 LABEL_107:
               v83 = objc_alloc_init(MEMORY[0x277CBEB58]);
-              v84 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
+              allContactIdentifiers = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
 
-              if (v84)
+              if (allContactIdentifiers)
               {
-                v85 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
-                [v83 addObjectsFromArray:v85];
+                allContactIdentifiers2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
+                [v83 addObjectsFromArray:allContactIdentifiers2];
               }
 
-              v86 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 allContactIdentifiers];
+              allContactIdentifiers3 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy allContactIdentifiers];
 
-              if (v86)
+              if (allContactIdentifiers3)
               {
-                v87 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 allContactIdentifiers];
-                [v83 addObjectsFromArray:v87];
+                allContactIdentifiers4 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy allContactIdentifiers];
+                [v83 addObjectsFromArray:allContactIdentifiers4];
               }
 
-              v88 = [v83 allObjects];
-              v89 = [v88 sortedArrayUsingSelector:sel_compare_];
+              allObjects = [v83 allObjects];
+              v89 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-              v90 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
-              v91 = v90;
-              if (v90 != v89)
+              allContactIdentifiers5 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
+              v91 = allContactIdentifiers5;
+              if (allContactIdentifiers5 != v89)
               {
                 if (v89)
                 {
-                  v92 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
-                  v93 = [v92 isEqual:v89];
+                  allContactIdentifiers6 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
+                  v93 = [allContactIdentifiers6 isEqual:v89];
 
                   if (v93)
                   {
 LABEL_118:
-                    v94 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 allContactIdentifiers];
-                    v95 = v94;
-                    if (v94 != v89)
+                    allContactIdentifiers7 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy allContactIdentifiers];
+                    v95 = allContactIdentifiers7;
+                    if (allContactIdentifiers7 != v89)
                     {
                       if (v89)
                       {
-                        v96 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 allContactIdentifiers];
-                        v97 = [v96 isEqual:v89];
+                        allContactIdentifiers8 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy allContactIdentifiers];
+                        v97 = [allContactIdentifiers8 isEqual:v89];
 
                         if (v97)
                         {
 LABEL_125:
-                          v98 = [(HDCloudSyncRecord *)self record];
-                          v99 = [v98 objectForKeyedSubscript:@"RelationshipRecord"];
+                          record = [(HDCloudSyncRecord *)self record];
+                          v99 = [record objectForKeyedSubscript:@"RelationshipRecord"];
 
                           if (v99)
                           {
-                            v100 = [(HDCloudSyncRecord *)self record];
-                            [v100 setObject:0 forKeyedSubscript:@"RelationshipRecord"];
+                            record2 = [(HDCloudSyncRecord *)self record];
+                            [record2 setObject:0 forKeyedSubscript:@"RelationshipRecord"];
                           }
 
-                          else if (!v11)
+                          else if (!hasInvitationUUID)
                           {
                             if (v22)
                             {
@@ -811,7 +811,7 @@ LABEL_131:
                       }
 
                       v95 = [v89 mutableCopy];
-                      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setAllContactIdentifiers:v95];
+                      [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setAllContactIdentifiers:v95];
                       v22 = 1;
                     }
 
@@ -825,7 +825,7 @@ LABEL_131:
 
                 v91 = [v89 mutableCopy];
                 [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setAllContactIdentifiers:v91];
-                v11 = 1;
+                hasInvitationUUID = 1;
               }
 
               goto LABEL_118;
@@ -837,37 +837,37 @@ LABEL_131:
 
           else
           {
-            if (!v46)
+            if (!hasNotificationStatus2)
             {
               goto LABEL_65;
             }
 
-            v51 = HDSharingNotificationStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 notificationStatus]);
+            v51 = HDSharingNotificationStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy notificationStatus]);
             v52 = self->_underlyingSummaryParticipantRecord;
           }
 
           [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v52 setNotificationStatus:v51];
-          v11 = 1;
+          hasInvitationUUID = 1;
           goto LABEL_65;
         }
 
-        if (!v38)
+        if (!hasStatus2)
         {
           goto LABEL_48;
         }
 
-        v44 = HDSharingStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 status]);
+        v44 = HDSharingStatusFromCodableStatus([(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy status]);
         v43 = self->_underlyingSummaryParticipantRecord;
         goto LABEL_46;
       }
 
-      if (v33 != 1)
+      if (direction != 1)
       {
-        if (!v33)
+        if (!direction)
         {
           v35 = 0;
 LABEL_37:
-          [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setDirection:v35];
+          [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setDirection:v35];
           v22 = 1;
           goto LABEL_38;
         }
@@ -886,13 +886,13 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    if (v26)
+    if (type)
     {
-      if (v26 == 1)
+      if (type == 1)
       {
         v28 = 1;
 LABEL_24:
-        [(HDCloudSyncCodableSharedSummaryParticipantRecord *)v7 setType:v28];
+        [(HDCloudSyncCodableSharedSummaryParticipantRecord *)entryCopy setType:v28];
         v22 = 1;
         goto LABEL_25;
       }
@@ -915,7 +915,7 @@ LABEL_24:
   v19 = objc_opt_class();
   v20 = @"Invitation UUIDs do not match.";
 LABEL_7:
-  [v18 hk_assignError:a4 invalidArgument:v20 class:v19 selector:a2];
+  [v18 hk_assignError:error invalidArgument:v20 class:v19 selector:a2];
   v21 = 5;
 LABEL_132:
 
@@ -926,17 +926,17 @@ LABEL_132:
 - (NSUUID)UUID
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
-  v5 = [v3 initWithUUIDString:v4];
+  uuid = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord uuid];
+  v5 = [v3 initWithUUIDString:uuid];
 
   return v5;
 }
 
-- (void)setAuthorizationRecord:(id)a3
+- (void)setAuthorizationRecord:(id)record
 {
-  v6 = [a3 UUID];
-  v4 = [v6 UUIDString];
-  v5 = [v4 copy];
+  uUID = [record UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [uUIDString copy];
   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setAuthorizationRecordIdentifier:v5];
 }
 
@@ -945,8 +945,8 @@ LABEL_132:
   if ([(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord hasAuthorizationRecordIdentifier])
   {
     v3 = objc_alloc(MEMORY[0x277CCAD78]);
-    v4 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord authorizationRecordIdentifier];
-    v5 = [v3 initWithUUIDString:v4];
+    authorizationRecordIdentifier = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord authorizationRecordIdentifier];
+    v5 = [v3 initWithUUIDString:authorizationRecordIdentifier];
   }
 
   else
@@ -959,10 +959,10 @@ LABEL_132:
 
 - (NSUUID)invitationUUID
 {
-  v2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord invitationUUID];
-  if (v2)
+  invitationUUID = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord invitationUUID];
+  if (invitationUUID)
   {
-    v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v2];
+    v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:invitationUUID];
   }
 
   else
@@ -973,34 +973,34 @@ LABEL_132:
   return v3;
 }
 
-- (void)setInvitationUUID:(id)a3
+- (void)setInvitationUUID:(id)d
 {
-  v4 = [a3 UUIDString];
-  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setInvitationUUID:v4];
+  uUIDString = [d UUIDString];
+  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setInvitationUUID:uUIDString];
 }
 
-- (void)setCloudKitIdentifier:(id)a3
+- (void)setCloudKitIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setCloudKitIdentifier:v4];
 }
 
-- (void)setFirstName:(id)a3
+- (void)setFirstName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setFirstName:v4];
 }
 
-- (void)setLastName:(id)a3
+- (void)setLastName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setLastName:v4];
 }
 
 - (NSArray)allContactIdentifiers
 {
-  v2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
-  v3 = [v2 copy];
+  allContactIdentifiers = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord allContactIdentifiers];
+  v3 = [allContactIdentifiers copy];
   v4 = v3;
   if (v3)
   {
@@ -1017,9 +1017,9 @@ LABEL_132:
   return v5;
 }
 
-- (void)setAllContactIdentifiers:(id)a3
+- (void)setAllContactIdentifiers:(id)identifiers
 {
-  v4 = [a3 mutableCopy];
+  v4 = [identifiers mutableCopy];
   [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setAllContactIdentifiers:v4];
 }
 
@@ -1038,14 +1038,14 @@ LABEL_132:
   return v3;
 }
 
-- (void)setUserWheelchairMode:(id)a3
+- (void)setUserWheelchairMode:(id)mode
 {
-  if (a3)
+  if (mode)
   {
-    v4 = [a3 longLongValue];
+    longLongValue = [mode longLongValue];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setUserWheelchairMode:v4];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setUserWheelchairMode:longLongValue];
   }
 
   else
@@ -1071,14 +1071,14 @@ LABEL_132:
   return v3;
 }
 
-- (void)setRelationshipType:(id)a3
+- (void)setRelationshipType:(id)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = [a3 longLongValue];
+    longLongValue = [type longLongValue];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setType:v4];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setType:longLongValue];
   }
 
   else
@@ -1104,14 +1104,14 @@ LABEL_132:
   return v3;
 }
 
-- (void)setRelationshipDirection:(id)a3
+- (void)setRelationshipDirection:(id)direction
 {
-  if (a3)
+  if (direction)
   {
-    v4 = [a3 longLongValue];
+    longLongValue = [direction longLongValue];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setDirection:v4];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setDirection:longLongValue];
   }
 
   else
@@ -1137,14 +1137,14 @@ LABEL_132:
   return v3;
 }
 
-- (void)setRelationshipStatus:(id)a3
+- (void)setRelationshipStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = [a3 longLongValue];
+    longLongValue = [status longLongValue];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setStatus:v4];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setStatus:longLongValue];
   }
 
   else
@@ -1170,14 +1170,14 @@ LABEL_132:
   return v3;
 }
 
-- (void)setNotificationStatus:(id)a3
+- (void)setNotificationStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = [a3 longLongValue];
+    longLongValue = [status longLongValue];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
-    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setNotificationStatus:v4];
+    [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setNotificationStatus:longLongValue];
   }
 
   else
@@ -1205,11 +1205,11 @@ LABEL_132:
   return v4;
 }
 
-- (void)setEntryModificationDate:(id)a3
+- (void)setEntryModificationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setEntryModificationDate:?];
@@ -1240,11 +1240,11 @@ LABEL_132:
   return v4;
 }
 
-- (void)setEntryInvitationDate:(id)a3
+- (void)setEntryInvitationDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setEntryInvitationDate:?];
@@ -1275,11 +1275,11 @@ LABEL_132:
   return v4;
 }
 
-- (void)setEntryAcceptanceDate:(id)a3
+- (void)setEntryAcceptanceDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    [a3 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
 
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord setEntryAcceptanceDate:?];
@@ -1295,13 +1295,13 @@ LABEL_132:
 
 - (HDCodableSharingSetupMetadata)shareSetupMetadata
 {
-  v3 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setupMetadata];
+  setupMetadata = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setupMetadata];
 
-  if (v3)
+  if (setupMetadata)
   {
     v4 = [HDCodableSharingSetupMetadata alloc];
-    v5 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setupMetadata];
-    v6 = [(HDCodableSharingSetupMetadata *)v4 initWithData:v5];
+    setupMetadata2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setupMetadata];
+    v6 = [(HDCodableSharingSetupMetadata *)v4 initWithData:setupMetadata2];
   }
 
   else
@@ -1312,27 +1312,27 @@ LABEL_132:
   return v6;
 }
 
-- (void)setShareSetupMetadata:(id)a3
+- (void)setShareSetupMetadata:(id)metadata
 {
-  v4 = [a3 data];
-  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setSetupMetadata:v4];
+  data = [metadata data];
+  [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setSetupMetadata:data];
 }
 
 - (CKShareParticipant)ownerParticipant
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
+  ownerParticipant = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
 
-  if (v3)
+  if (ownerParticipant)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = objc_opt_class();
-    v6 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
+    ownerParticipant2 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
     v14 = 0;
-    v3 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v14];
+    ownerParticipant = [v4 unarchivedObjectOfClass:v5 fromData:ownerParticipant2 error:&v14];
     v7 = v14;
 
-    if (!v3)
+    if (!ownerParticipant)
     {
       _HKInitializeLogging();
       v8 = *MEMORY[0x277CCC328];
@@ -1340,9 +1340,9 @@ LABEL_132:
       {
         underlyingSummaryParticipantRecord = self->_underlyingSummaryParticipantRecord;
         v12 = v8;
-        v13 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord ownerParticipant];
+        ownerParticipant3 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)underlyingSummaryParticipantRecord ownerParticipant];
         *buf = 138543618;
-        v16 = v13;
+        v16 = ownerParticipant3;
         v17 = 2114;
         v18 = v7;
         _os_log_error_impl(&dword_228986000, v12, OS_LOG_TYPE_ERROR, "Failed to unarchive share participant %{public}@: %{public}@", buf, 0x16u);
@@ -1352,32 +1352,32 @@ LABEL_132:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return ownerParticipant;
 }
 
-- (void)setOwnerParticipant:(id)a3
+- (void)setOwnerParticipant:(id)participant
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  participantCopy = participant;
+  if (participantCopy)
   {
     v10 = 0;
-    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v10];
+    v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:participantCopy requiringSecureCoding:1 error:&v10];
     v6 = v10;
     [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord setOwnerParticipant:v5];
 
-    v7 = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
+    ownerParticipant = [(HDCloudSyncCodableSharedSummaryParticipantRecord *)self->_underlyingSummaryParticipantRecord ownerParticipant];
 
-    if (!v7)
+    if (!ownerParticipant)
     {
       _HKInitializeLogging();
       v8 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = v4;
+        v14 = participantCopy;
         v15 = 2114;
         v16 = v6;
         _os_log_error_impl(&dword_228986000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to archive owner participant %{public}@: %{public}@", buf, 0x20u);
@@ -1393,33 +1393,33 @@ LABEL_132:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)codableRecordFromRecord:(id)a3
++ (id)codableRecordFromRecord:(id)record
 {
-  v3 = [*(a3 + 3) copy];
+  v3 = [*(record + 3) copy];
 
   return v3;
 }
 
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4
++ (id)recordWithCKRecord:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 recordType];
-  v9 = [a1 recordType];
-  v10 = [v8 isEqualToString:v9];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  recordType2 = [self recordType];
+  v10 = [recordType isEqualToString:recordType2];
 
   if ((v10 & 1) == 0)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = objc_opt_class();
-    v11 = [v7 recordType];
-    v15 = [a1 recordType];
-    v16 = [v13 hk_errorForInvalidArgument:@"@" class:v14 selector:a2 format:{@"record has type (%@), but expected (%@)", v11, v15}];
+    recordType3 = [recordCopy recordType];
+    recordType4 = [self recordType];
+    v16 = [v13 hk_errorForInvalidArgument:@"@" class:v14 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType3, recordType4}];
     if (v16)
     {
-      if (a4)
+      if (error)
       {
         v17 = v16;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -1431,17 +1431,17 @@ LABEL_132:
     goto LABEL_11;
   }
 
-  v11 = [v7 hd_requiredValueForKey:@"Version" type:objc_opt_class() error:a4];
-  if (!v11)
+  recordType3 = [recordCopy hd_requiredValueForKey:@"Version" type:objc_opt_class() error:error];
+  if (!recordType3)
   {
 LABEL_11:
     v12 = 0;
     goto LABEL_12;
   }
 
-  if (![a1 requiresUnderlyingMessage] || (objc_msgSend(v7, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), a4), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  if (![self requiresUnderlyingMessage] || (objc_msgSend(recordCopy, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), error), v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    v12 = [[a1 alloc] initWithCKRecord:v7 schemaVersion:{objc_msgSend(v11, "integerValue")}];
+    v12 = [[self alloc] initWithCKRecord:recordCopy schemaVersion:{objc_msgSend(recordType3, "integerValue")}];
   }
 
 LABEL_12:
@@ -1452,7 +1452,7 @@ LABEL_12:
 + (id)fieldsForUnprotectedSerialization
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___HDCloudSyncSharedSummaryParticipantRecord;
   v2 = objc_msgSendSuper2(&v9, sel_fieldsForUnprotectedSerialization);
   v10 = objc_opt_class();
@@ -1470,14 +1470,14 @@ LABEL_12:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HDCloudSyncRecord *)self record];
-  v5 = [v4 recordID];
-  v6 = [(HDCloudSyncRecord *)self record];
-  v7 = [v6 objectForKeyedSubscript:@"Version"];
-  v8 = [(HDCloudSyncRecord *)self record];
-  v9 = [v8 modificationDate];
-  v10 = [(HDCloudSyncRecord *)self printDescription];
-  v11 = [v3 stringWithFormat:@"%@ (Version %@) Last Modified: %@\n%@", v5, v7, v9, v10];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  record2 = [(HDCloudSyncRecord *)self record];
+  v7 = [record2 objectForKeyedSubscript:@"Version"];
+  record3 = [(HDCloudSyncRecord *)self record];
+  modificationDate = [record3 modificationDate];
+  printDescription = [(HDCloudSyncRecord *)self printDescription];
+  v11 = [v3 stringWithFormat:@"%@ (Version %@) Last Modified: %@\n%@", recordID, v7, modificationDate, printDescription];
 
   return v11;
 }

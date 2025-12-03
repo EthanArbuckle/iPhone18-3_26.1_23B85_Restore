@@ -1,37 +1,37 @@
 @interface DYUNIXDomainSocketTransport
-- (DYUNIXDomainSocketTransport)initWithMode:(int)a3;
+- (DYUNIXDomainSocketTransport)initWithMode:(int)mode;
 - (id)connect;
-- (void)_connectClient:(id)a3 future:(id)a4;
-- (void)_connectServer:(id)a3 future:(id)a4;
+- (void)_connectClient:(id)client future:(id)future;
+- (void)_connectServer:(id)server future:(id)future;
 - (void)_invalidate;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 @end
 
 @implementation DYUNIXDomainSocketTransport
 
-- (DYUNIXDomainSocketTransport)initWithMode:(int)a3
+- (DYUNIXDomainSocketTransport)initWithMode:(int)mode
 {
   v5.receiver = self;
   v5.super_class = DYUNIXDomainSocketTransport;
   result = [(DYBaseSocketTransport *)&v5 init];
   if (result)
   {
-    *(&result->super._scheduledReadOnWritableSocket + 3) = a3;
+    *(&result->super._scheduledReadOnWritableSocket + 3) = mode;
   }
 
   return result;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   if ([(DYBaseSocketTransport *)self connected])
   {
     dy_abort("tried to set socket path on connected unix domain socket transport");
   }
 
-  if (a3 && ![a3 filePathURL])
+  if (url && ![url filePathURL])
   {
-    dy_abort("unix domain socket url must be a file url: %s", [objc_msgSend(a3 "absoluteString")]);
+    dy_abort("unix domain socket url must be a file url: %s", [objc_msgSend(url "absoluteString")]);
   }
 
   queue = self->super.super.super._queue;
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __38__DYUNIXDomainSocketTransport_setUrl___block_invoke;
   block[3] = &unk_27930C170;
-  block[4] = a3;
+  block[4] = url;
   block[5] = self;
   dispatch_sync(queue, block);
 }
@@ -58,11 +58,11 @@ void *__38__DYUNIXDomainSocketTransport_setUrl___block_invoke(void *result)
   return result;
 }
 
-- (void)_connectServer:(id)a3 future:(id)a4
+- (void)_connectServer:(id)server future:(id)future
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!a3)
+  serverCopy = server;
+  if (!server)
   {
     v8 = NSTemporaryDirectory();
     if (!v8)
@@ -70,10 +70,10 @@ void *__38__DYUNIXDomainSocketTransport_setUrl___block_invoke(void *result)
       v8 = @"/tmp";
     }
 
-    v7 = [(__CFString *)v8 stringByAppendingPathComponent:@"dysonXXXXXX"];
+    serverCopy = [(__CFString *)v8 stringByAppendingPathComponent:@"dysonXXXXXX"];
   }
 
-  CFStringGetFileSystemRepresentation(v7, buffer, 1024);
+  CFStringGetFileSystemRepresentation(serverCopy, buffer, 1024);
   v29 = 0u;
   memset(v30, 0, sizeof(v30));
   v27 = 0u;
@@ -81,7 +81,7 @@ void *__38__DYUNIXDomainSocketTransport_setUrl___block_invoke(void *result)
   v9 = strlen(buffer) + 1;
   v25 = 0;
   v26 = 0u;
-  if (a3 || v9 < 0x69)
+  if (server || v9 < 0x69)
   {
     if (v9 >= 0x69)
     {
@@ -89,12 +89,12 @@ LABEL_19:
       v17 = @"DYErrorDomain";
       v18 = 39;
 LABEL_21:
-      [a4 setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v17, v18, 0)}];
-      [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
+      [future setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v17, v18, 0)}];
+      [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
       goto LABEL_25;
     }
 
-    if (a3)
+    if (server)
     {
       goto LABEL_13;
     }
@@ -117,12 +117,12 @@ LABEL_21:
   }
 
   v11 = v10;
-  v7 = CFStringCreateWithFileSystemRepresentation(*MEMORY[0x277CBECE8], buffer);
+  serverCopy = CFStringCreateWithFileSystemRepresentation(*MEMORY[0x277CBECE8], buffer);
   close(v11);
 LABEL_13:
   if (!self->super.super.super._url)
   {
-    self->super.super.super._url = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:v7];
+    self->super.super.super._url = [objc_alloc(MEMORY[0x277CBEBC0]) initFileURLWithPath:serverCopy];
   }
 
   v25.sa_family = 1;
@@ -150,7 +150,7 @@ LABEL_13:
     handler[3] = &unk_27930C198;
     v24 = v14;
     handler[4] = self;
-    handler[5] = a4;
+    handler[5] = future;
     dispatch_source_set_cancel_handler(v15, handler);
     v16 = *&self->_mode;
     v21[0] = MEMORY[0x277D85DD0];
@@ -159,15 +159,15 @@ LABEL_13:
     v21[3] = &unk_27930C198;
     v22 = v14;
     v21[4] = self;
-    v21[5] = a4;
+    v21[5] = future;
     dispatch_source_set_event_handler(v16, v21);
     dispatch_resume(*&self->_mode);
     goto LABEL_25;
   }
 
 LABEL_23:
-  [a4 setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", *MEMORY[0x277CCA5B8], *__error(), 0)}];
-  [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
+  [future setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", *MEMORY[0x277CCA5B8], *__error(), 0)}];
+  [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", 0)}];
   if (v14 != -1)
   {
     close(v14);
@@ -228,10 +228,10 @@ intptr_t __53__DYUNIXDomainSocketTransport__connectServer_future___block_invoke_
   return result;
 }
 
-- (void)_connectClient:(id)a3 future:(id)a4
+- (void)_connectClient:(id)client future:(id)future
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (client)
   {
     v7 = socket(1, 1, 0);
     if (v7 != -1)
@@ -243,7 +243,7 @@ intptr_t __53__DYUNIXDomainSocketTransport__connectServer_future___block_invoke_
       v24 = 0u;
       v21 = 0;
       v22 = 0u;
-      CFStringGetFileSystemRepresentation(a3, v20, 1024);
+      CFStringGetFileSystemRepresentation(client, v20, 1024);
       if (strlen(v20) - 103 > 0xFFFFFFFFFFFFFF97)
       {
         v21.sa_family = 1;
@@ -254,7 +254,7 @@ intptr_t __53__DYUNIXDomainSocketTransport__connectServer_future___block_invoke_
           [(DYBaseSocketTransport *)self runWithSocket:v8];
           v17 = 1;
 LABEL_14:
-          [a4 setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v17)}];
+          [future setResult:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithBool:", v17)}];
           v19 = *MEMORY[0x277D85DE8];
           return;
         }
@@ -270,7 +270,7 @@ LABEL_14:
         v10 = 1;
       }
 
-      [a4 setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v9, v10, 0)}];
+      [future setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v9, v10, 0)}];
       v17 = 0;
       goto LABEL_14;
     }
@@ -286,11 +286,11 @@ LABEL_14:
     v12 = 38;
   }
 
-  [a4 setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v11, v12, 0)}];
+  [future setError:{+[DYError errorWithDomain:code:userInfo:](DYError, "errorWithDomain:code:userInfo:", v11, v12, 0)}];
   v14 = [MEMORY[0x277CCABB0] numberWithBool:0];
   v15 = *MEMORY[0x277D85DE8];
 
-  [a4 setResult:v14];
+  [future setResult:v14];
 }
 
 - (id)connect

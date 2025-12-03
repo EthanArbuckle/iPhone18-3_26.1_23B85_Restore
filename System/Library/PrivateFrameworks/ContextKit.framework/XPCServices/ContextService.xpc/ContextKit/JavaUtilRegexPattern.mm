@@ -1,30 +1,30 @@
 @interface JavaUtilRegexPattern
-- (id)matcherWithJavaLangCharSequence:(id)a3;
-- (id)splitWithJavaLangCharSequence:(id)a3 withInt:(int)a4;
+- (id)matcherWithJavaLangCharSequence:(id)sequence;
+- (id)splitWithJavaLangCharSequence:(id)sequence withInt:(int)int;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
 @end
 
 @implementation JavaUtilRegexPattern
 
-- (id)matcherWithJavaLangCharSequence:(id)a3
+- (id)matcherWithJavaLangCharSequence:(id)sequence
 {
-  v3 = new_JavaUtilRegexMatcher_initWithJavaUtilRegexPattern_withJavaLangCharSequence_(self, a3);
+  v3 = new_JavaUtilRegexMatcher_initWithJavaUtilRegexPattern_withJavaLangCharSequence_(self, sequence);
 
   return v3;
 }
 
-- (id)splitWithJavaLangCharSequence:(id)a3 withInt:(int)a4
+- (id)splitWithJavaLangCharSequence:(id)sequence withInt:(int)int
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
   pattern = self->pattern_;
-  v7 = [a3 description];
+  v7 = [sequence description];
 
-  return JavaUtilRegexSplitter_splitWithJavaUtilRegexPattern_withNSString_withNSString_withInt_(self, pattern, v7, a4);
+  return JavaUtilRegexSplitter_splitWithJavaUtilRegexPattern_withNSString_withNSString_withInt_(self, pattern, v7, int);
 }
 
 - (void)dealloc
@@ -36,14 +36,14 @@
   [(JavaUtilRegexPattern *)&v3 dealloc];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
+  [stream defaultReadObject];
 
   sub_10028663C(self);
 }

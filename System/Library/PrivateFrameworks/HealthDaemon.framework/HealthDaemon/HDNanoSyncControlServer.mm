@@ -1,45 +1,45 @@
 @interface HDNanoSyncControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
 + (id)requiredEntitlements;
-- (void)remote_fetchNanoSyncPairedDevicesWithCompletion:(id)a3;
-- (void)remote_forceNanoSyncWithOptions:(unint64_t)a3 completion:(id)a4;
+- (void)remote_fetchNanoSyncPairedDevicesWithCompletion:(id)completion;
+- (void)remote_forceNanoSyncWithOptions:(unint64_t)options completion:(id)completion;
 @end
 
 @implementation HDNanoSyncControlServer
 
-- (void)remote_fetchNanoSyncPairedDevicesWithCompletion:(id)a3
+- (void)remote_fetchNanoSyncPairedDevicesWithCompletion:(id)completion
 {
   nanoSyncManager = self->_nanoSyncManager;
-  v5 = a3;
-  v6 = [(HDNanoSyncManager *)nanoSyncManager pairedDevicesSnapshot];
-  (*(a3 + 2))(v5, v6, 0);
+  completionCopy = completion;
+  pairedDevicesSnapshot = [(HDNanoSyncManager *)nanoSyncManager pairedDevicesSnapshot];
+  (*(completion + 2))(completionCopy, pairedDevicesSnapshot, 0);
 }
 
-- (void)remote_forceNanoSyncWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)remote_forceNanoSyncWithOptions:(unint64_t)options completion:(id)completion
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = [(HDStandardTaskServer *)self client];
-  v9 = [v8 process];
-  v10 = [v9 name];
-  v11 = [v6 stringWithFormat:@"External request from %@", v10];
+  completionCopy = completion;
+  client = [(HDStandardTaskServer *)self client];
+  process = [client process];
+  name = [process name];
+  v11 = [v6 stringWithFormat:@"External request from %@", name];
 
-  [(HDNanoSyncManager *)self->_nanoSyncManager syncHealthDataWithOptions:a3 reason:v11 completion:v7];
+  [(HDNanoSyncManager *)self->_nanoSyncManager syncHealthDataWithOptions:options reason:v11 completion:completionCopy];
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 nanoSyncManager];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  nanoSyncManager = [profile nanoSyncManager];
 
-  if (v16)
+  if (nanoSyncManager)
   {
-    v17 = [(HDStandardTaskServer *)[HDNanoSyncControlServer alloc] initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
-    v18 = v16;
+    v17 = [(HDStandardTaskServer *)[HDNanoSyncControlServer alloc] initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
+    v18 = nanoSyncManager;
     nanoSyncManager = v17->_nanoSyncManager;
     v17->_nanoSyncManager = v18;
   }
@@ -49,10 +49,10 @@
     nanoSyncManager = [MEMORY[0x277CCA9B8] hk_featureUnavailableForProfileError];
     if (nanoSyncManager)
     {
-      if (a7)
+      if (error)
       {
         v20 = nanoSyncManager;
-        *a7 = nanoSyncManager;
+        *error = nanoSyncManager;
       }
 
       else

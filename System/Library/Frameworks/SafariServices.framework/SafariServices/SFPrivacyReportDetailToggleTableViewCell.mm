@@ -1,21 +1,21 @@
 @interface SFPrivacyReportDetailToggleTableViewCell
-- (SFPrivacyReportDetailToggleTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SFPrivacyReportDetailToggleTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SFPrivacyReportDetailToggleTableViewCellDelegate)delegate;
-- (void)_addSegmentForDetailType:(int64_t)a3;
-- (void)_selectDetailType:(int64_t)a3;
+- (void)_addSegmentForDetailType:(int64_t)type;
+- (void)_selectDetailType:(int64_t)type;
 - (void)_updateTitle;
-- (void)setDetailType:(int64_t)a3;
-- (void)setUseCurrentWebsiteHeader:(BOOL)a3;
+- (void)setDetailType:(int64_t)type;
+- (void)setUseCurrentWebsiteHeader:(BOOL)header;
 @end
 
 @implementation SFPrivacyReportDetailToggleTableViewCell
 
-- (SFPrivacyReportDetailToggleTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SFPrivacyReportDetailToggleTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v43[7] = *MEMORY[0x1E69E9840];
   v42.receiver = self;
   v42.super_class = SFPrivacyReportDetailToggleTableViewCell;
-  v4 = [(SFPrivacyReportDetailToggleTableViewCell *)&v42 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SFPrivacyReportDetailToggleTableViewCell *)&v42 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCF38]);
@@ -36,8 +36,8 @@
     }
 
     [(UISegmentedControl *)v4->_segmentedControl setSelectedSegmentIndex:[(UISegmentedControl *)v4->_segmentedControl segmentIndexForActionIdentifier:v7]];
-    v8 = [(SFPrivacyReportDetailToggleTableViewCell *)v4 contentView];
-    [v8 addSubview:v4->_segmentedControl];
+    contentView = [(SFPrivacyReportDetailToggleTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_segmentedControl];
     v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v9;
@@ -47,44 +47,44 @@
     v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
     [(UILabel *)v4->_titleLabel setFont:v11];
 
-    v12 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v12];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
     [(SFPrivacyReportDetailToggleTableViewCell *)v4 _updateTitle];
-    [v8 addSubview:v4->_titleLabel];
-    v13 = [v8 layoutMarginsGuide];
+    [contentView addSubview:v4->_titleLabel];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
     v31 = MEMORY[0x1E696ACD8];
-    v41 = [(UISegmentedControl *)v4->_segmentedControl leadingAnchor];
-    v40 = [v13 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leadingAnchor = [(UISegmentedControl *)v4->_segmentedControl leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v43[0] = v39;
-    v38 = [(UISegmentedControl *)v4->_segmentedControl trailingAnchor];
-    v37 = [v13 trailingAnchor];
-    v35 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [(UISegmentedControl *)v4->_segmentedControl trailingAnchor];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v43[1] = v35;
-    v34 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v36 = v13;
-    v33 = [v13 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leadingAnchor3 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    v36 = layoutMarginsGuide;
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v43[2] = v32;
-    v30 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v28 = [v13 trailingAnchor];
-    v27 = [v30 constraintEqualToAnchor:v28];
+    trailingAnchor3 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+    v27 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v43[3] = v27;
-    v26 = [(UISegmentedControl *)v4->_segmentedControl topAnchor];
-    v14 = v8;
-    v29 = v8;
-    v15 = [v8 topAnchor];
-    v16 = [v26 constraintEqualToSystemSpacingBelowAnchor:v15 multiplier:2.0];
+    topAnchor = [(UISegmentedControl *)v4->_segmentedControl topAnchor];
+    v14 = contentView;
+    v29 = contentView;
+    topAnchor2 = [contentView topAnchor];
+    v16 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:2.0];
     v43[4] = v16;
-    v17 = [(UILabel *)v4->_titleLabel topAnchor];
-    v18 = [(UISegmentedControl *)v4->_segmentedControl bottomAnchor];
-    v19 = [v17 constraintEqualToSystemSpacingBelowAnchor:v18 multiplier:2.0];
+    topAnchor3 = [(UILabel *)v4->_titleLabel topAnchor];
+    bottomAnchor = [(UISegmentedControl *)v4->_segmentedControl bottomAnchor];
+    v19 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:2.0];
     v43[5] = v19;
-    v20 = [v14 bottomAnchor];
-    v21 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v22 = [v20 constraintEqualToSystemSpacingBelowAnchor:v21 multiplier:0.5];
+    bottomAnchor2 = [v14 bottomAnchor];
+    bottomAnchor3 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v22 = [bottomAnchor2 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:0.5];
     v43[6] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:7];
     [v31 activateConstraints:v23];
@@ -95,18 +95,18 @@
   return v4;
 }
 
-- (void)_addSegmentForDetailType:(int64_t)a3
+- (void)_addSegmentForDetailType:(int64_t)type
 {
   objc_initWeak(&location, self);
   segmentedControl = self->_segmentedControl;
   v7 = MEMORY[0x1E69DC628];
-  if (a3 <= 1)
+  if (type <= 1)
   {
     v3 = _WBSLocalizedString();
   }
 
   v8 = @"websites";
-  if (a3 == 1)
+  if (type == 1)
   {
     v8 = @"trackers";
   }
@@ -117,7 +117,7 @@
   v11[2] = __69__SFPrivacyReportDetailToggleTableViewCell__addSegmentForDetailType___block_invoke;
   v11[3] = &unk_1E8490888;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
+  v12[1] = type;
   v10 = [v7 actionWithTitle:v3 image:0 identifier:v9 handler:v11];
   [(UISegmentedControl *)segmentedControl insertSegmentWithAction:v10 atIndex:[(UISegmentedControl *)self->_segmentedControl numberOfSegments] animated:0];
 
@@ -131,9 +131,9 @@ void __69__SFPrivacyReportDetailToggleTableViewCell__addSegmentForDetailType___b
   [WeakRetained _selectDetailType:*(a1 + 40)];
 }
 
-- (void)_selectDetailType:(int64_t)a3
+- (void)_selectDetailType:(int64_t)type
 {
-  self->_detailType = a3;
+  self->_detailType = type;
   [(SFPrivacyReportDetailToggleTableViewCell *)self _updateTitle];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -155,18 +155,18 @@ void __69__SFPrivacyReportDetailToggleTableViewCell__addSegmentForDetailType___b
   }
 
   v5 = v3;
-  v4 = [v3 localizedUppercaseString];
-  [(UILabel *)self->_titleLabel setText:v4];
+  localizedUppercaseString = [v3 localizedUppercaseString];
+  [(UILabel *)self->_titleLabel setText:localizedUppercaseString];
 }
 
-- (void)setDetailType:(int64_t)a3
+- (void)setDetailType:(int64_t)type
 {
-  if (self->_detailType != a3)
+  if (self->_detailType != type)
   {
     v10 = v3;
-    self->_detailType = a3;
+    self->_detailType = type;
     segmentedControl = self->_segmentedControl;
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = @"trackers";
     }
@@ -182,11 +182,11 @@ void __69__SFPrivacyReportDetailToggleTableViewCell__addSegmentForDetailType___b
   }
 }
 
-- (void)setUseCurrentWebsiteHeader:(BOOL)a3
+- (void)setUseCurrentWebsiteHeader:(BOOL)header
 {
-  if (self->_useCurrentWebsiteHeader != a3)
+  if (self->_useCurrentWebsiteHeader != header)
   {
-    self->_useCurrentWebsiteHeader = a3;
+    self->_useCurrentWebsiteHeader = header;
     [(SFPrivacyReportDetailToggleTableViewCell *)self _updateTitle];
   }
 }

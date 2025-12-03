@@ -1,52 +1,52 @@
 @interface ATXLaunchServicesHelper
-+ (BOOL)bundleIsExtension:(id)a3;
-+ (id)getGenreIdsForBundleId:(id)a3 remoteBundleIDMappings:(id)a4;
-+ (id)getGenreIdsForRecord:(id)a3;
++ (BOOL)bundleIsExtension:(id)extension;
++ (id)getGenreIdsForBundleId:(id)id remoteBundleIDMappings:(id)mappings;
++ (id)getGenreIdsForRecord:(id)record;
 @end
 
 @implementation ATXLaunchServicesHelper
 
-+ (BOOL)bundleIsExtension:(id)a3
++ (BOOL)bundleIsExtension:(id)extension
 {
   v3 = MEMORY[0x277CC1E50];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 error:0];
+  extensionCopy = extension;
+  v5 = [[v3 alloc] initWithBundleIdentifier:extensionCopy error:0];
 
   return v5 != 0;
 }
 
-+ (id)getGenreIdsForBundleId:(id)a3 remoteBundleIDMappings:(id)a4
++ (id)getGenreIdsForBundleId:(id)id remoteBundleIDMappings:(id)mappings
 {
   v5 = MEMORY[0x277CC1E70];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithBundleIdentifier:v6 allowPlaceholder:1 error:0];
+  idCopy = id;
+  v7 = [[v5 alloc] initWithBundleIdentifier:idCopy allowPlaceholder:1 error:0];
 
   v8 = 0;
   if (([v7 isLaunchProhibited] & 1) == 0)
   {
-    v8 = [a1 getGenreIdsForRecord:v7];
+    v8 = [self getGenreIdsForRecord:v7];
   }
 
   return v8;
 }
 
-+ (id)getGenreIdsForRecord:(id)a3
++ (id)getGenreIdsForRecord:(id)record
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recordCopy = record;
   v4 = MEMORY[0x277CCABB0];
-  v5 = [v3 iTunesMetadata];
-  v18 = [v4 numberWithUnsignedLongLong:{objc_msgSend(v5, "genreIdentifier")}];
+  iTunesMetadata = [recordCopy iTunesMetadata];
+  v18 = [v4 numberWithUnsignedLongLong:{objc_msgSend(iTunesMetadata, "genreIdentifier")}];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v19 = v3;
-  v6 = [v3 iTunesMetadata];
-  v7 = [v6 subgenres];
+  v19 = recordCopy;
+  iTunesMetadata2 = [recordCopy iTunesMetadata];
+  subgenres = [iTunesMetadata2 subgenres];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [subgenres countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -58,7 +58,7 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subgenres);
         }
 
         v13 = [*(*(&v20 + 1) + 8 * i) objectForKeyedSubscript:{@"genreId", v18}];
@@ -75,7 +75,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [subgenres countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);

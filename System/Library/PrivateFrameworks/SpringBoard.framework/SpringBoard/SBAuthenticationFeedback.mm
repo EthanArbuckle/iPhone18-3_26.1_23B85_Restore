@@ -1,9 +1,9 @@
 @interface SBAuthenticationFeedback
 - (BOOL)hintFailureText;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initForFailureShowingPasscode:(BOOL)a3;
-- (id)initForFailureWithFailureSettings:(id)a3;
+- (id)initForFailureShowingPasscode:(BOOL)passcode;
+- (id)initForFailureWithFailureSettings:(id)settings;
 - (id)initForSuccess;
 - (unint64_t)hash;
 @end
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (id)initForFailureShowingPasscode:(BOOL)a3
+- (id)initForFailureShowingPasscode:(BOOL)passcode
 {
   v5.receiver = self;
   v5.super_class = SBAuthenticationFeedback;
@@ -34,21 +34,21 @@
   {
     *(result + 3) = 1;
     *(result + 16) = 1;
-    *(result + 17) = a3;
+    *(result + 17) = passcode;
     *(result + 18) = 1;
   }
 
   return result;
 }
 
-- (id)initForFailureWithFailureSettings:(id)a3
+- (id)initForFailureWithFailureSettings:(id)settings
 {
-  v4 = a3;
-  v5 = -[SBAuthenticationFeedback initForFailureShowingPasscode:](self, "initForFailureShowingPasscode:", [v4 showPasscode]);
+  settingsCopy = settings;
+  v5 = -[SBAuthenticationFeedback initForFailureShowingPasscode:](self, "initForFailureShowingPasscode:", [settingsCopy showPasscode]);
   if (v5)
   {
-    v5[16] = [v4 vibrate];
-    v5[18] = [v4 jiggleLock];
+    v5[16] = [settingsCopy vibrate];
+    v5[18] = [settingsCopy jiggleLock];
   }
 
   return v5;
@@ -86,21 +86,21 @@
   v7 = [v4 appendBool:-[SBAuthenticationFeedback hintFailureText](self withName:{"hintFailureText"), @"hintFailureText"}];
   v8 = [v4 appendBool:self->_vibrate withName:@"vibrates"];
   v9 = [v4 appendBool:self->_jiggleLock withName:@"jiggleLock"];
-  v10 = [v4 build];
+  build = [v4 build];
 
-  return v10;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = self->_result;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __36__SBAuthenticationFeedback_isEqual___block_invoke;
   v28[3] = &unk_2783ACDE0;
-  v7 = v4;
+  v7 = equalCopy;
   v29 = v7;
   v8 = [v5 appendInteger:v6 counterpart:v28];
   jiggleLock = self->_jiggleLock;
@@ -134,17 +134,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SBAuthenticationFeedback *)self showPasscode];
+  showPasscode = [(SBAuthenticationFeedback *)self showPasscode];
   if ([(SBAuthenticationFeedback *)self jiggleLock])
   {
-    v3 |= 4uLL;
+    showPasscode |= 4uLL;
   }
 
-  v4 = [(SBAuthenticationFeedback *)self vibrate];
-  v5 = v3 | 8;
-  if (!v4)
+  vibrate = [(SBAuthenticationFeedback *)self vibrate];
+  v5 = showPasscode | 8;
+  if (!vibrate)
   {
-    v5 = v3;
+    v5 = showPasscode;
   }
 
   v6 = self->_result;

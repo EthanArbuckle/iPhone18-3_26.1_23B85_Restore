@@ -2,47 +2,47 @@
 - (BOOL)isForCopy;
 - (BOOL)isSavingCollaborativeDocument;
 - (BOOL)isSavingDocumentAs;
-- (Message)messageWithNewFunction:(void *)a3 descriptor:(const void *)a4;
+- (Message)messageWithNewFunction:(void *)function descriptor:(const void *)descriptor;
 - (TSPArchiverBase)init;
-- (TSPArchiverBase)initWithObject:(id)a3;
-- (id)alternateDiffToMergeBeforeVersion:(unint64_t)a3 fileFormatVersion:(unint64_t)a4 field:(int)a5 message:(const Message *)a6;
-- (id)alternateDiffToMergeBeforeVersion:(unint64_t)a3 fileFormatVersion:(unint64_t)a4 fieldPath:(int *)a5 baseFieldPath:(const void *)a6 message:(const Message *)a7;
+- (TSPArchiverBase)initWithObject:(id)object;
+- (id)alternateDiffToMergeBeforeVersion:(unint64_t)version fileFormatVersion:(unint64_t)formatVersion field:(int)field message:(const Message *)message;
+- (id)alternateDiffToMergeBeforeVersion:(unint64_t)version fileFormatVersion:(unint64_t)formatVersion fieldPath:(int *)path baseFieldPath:(const void *)fieldPath message:(const Message *)message;
 - (unint64_t)minimumSupportedVersion;
 - (unsigned)messageType;
-- (void)addWeakReferenceToObjectUUID:(id)a3;
+- (void)addWeakReferenceToObjectUUID:(id)d;
 - (void)cleanup;
 - (void)dealloc;
-- (void)enumerateFieldRulesUsingBlock:(id)a3;
-- (void)pushScopeForField:(int)a3 message:(const Message *)a4 usingBlock:(id)a5;
+- (void)enumerateFieldRulesUsingBlock:(id)block;
+- (void)pushScopeForField:(int)field message:(const Message *)message usingBlock:(id)block;
 - (void)releaseMessage;
-- (void)setDataReference:(id)a3 message:(void *)a4;
-- (void)setDataReferenceArray:(id)a3 message:(void *)a4;
-- (void)setDataReferenceOrderedSet:(id)a3 message:(void *)a4;
-- (void)setDataReferenceSet:(id)a3 message:(void *)a4;
-- (void)setIgnoreAndPreserveRuleForField:(int)a3 message:(const Message *)a4;
-- (void)setIgnoreAndPreserveUntilModifiedRuleForField:(int)a3 message:(const Message *)a4;
-- (void)setMustUnderstandRuleForField:(int)a3 message:(const Message *)a4;
-- (void)setRule:(int)a3 forFieldPath:(int *)a4 fileFormatVersion:(unint64_t)a5 featureIdentifier:(id)a6 message:(const Message *)a7;
-- (void)setSparseReferenceArray:(id)a3 isWeak:(BOOL)a4 message:(void *)a5;
-- (void)setSparseWeakObjectUUIDPathReferenceArray:(id)a3 message:(void *)a4;
-- (void)setSparseWeakObjectUUIDReferenceArray:(id)a3 message:(void *)a4;
-- (void)setStrongLazyReference:(id)a3 message:(void *)a4;
-- (void)setStrongLazyReferenceArray:(id)a3 message:(void *)a4;
-- (void)setStrongReference:(id)a3 message:(void *)a4;
-- (void)setStrongReferenceArray:(id)a3 message:(void *)a4;
-- (void)setStrongReferenceOrderedSet:(id)a3 message:(void *)a4;
-- (void)setStrongReferenceSet:(id)a3 message:(void *)a4;
-- (void)setWeakLazyReference:(id)a3 message:(void *)a4;
-- (void)setWeakReference:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceArray:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceOrderedSet:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceSet:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceToObjectUUID:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceToObjectUUIDArray:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceToObjectUUIDData:(const void *)a3 message:(void *)a4;
-- (void)setWeakReferenceToObjectUUIDPath:(id)a3 message:(void *)a4;
-- (void)setWeakReferenceToObjectUUIDPathArray:(id)a3 message:(void *)a4;
-- (void)validateMessage:(const Message *)a3;
+- (void)setDataReference:(id)reference message:(void *)message;
+- (void)setDataReferenceArray:(id)array message:(void *)message;
+- (void)setDataReferenceOrderedSet:(id)set message:(void *)message;
+- (void)setDataReferenceSet:(id)set message:(void *)message;
+- (void)setIgnoreAndPreserveRuleForField:(int)field message:(const Message *)message;
+- (void)setIgnoreAndPreserveUntilModifiedRuleForField:(int)field message:(const Message *)message;
+- (void)setMustUnderstandRuleForField:(int)field message:(const Message *)message;
+- (void)setRule:(int)rule forFieldPath:(int *)path fileFormatVersion:(unint64_t)version featureIdentifier:(id)identifier message:(const Message *)message;
+- (void)setSparseReferenceArray:(id)array isWeak:(BOOL)weak message:(void *)message;
+- (void)setSparseWeakObjectUUIDPathReferenceArray:(id)array message:(void *)message;
+- (void)setSparseWeakObjectUUIDReferenceArray:(id)array message:(void *)message;
+- (void)setStrongLazyReference:(id)reference message:(void *)message;
+- (void)setStrongLazyReferenceArray:(id)array message:(void *)message;
+- (void)setStrongReference:(id)reference message:(void *)message;
+- (void)setStrongReferenceArray:(id)array message:(void *)message;
+- (void)setStrongReferenceOrderedSet:(id)set message:(void *)message;
+- (void)setStrongReferenceSet:(id)set message:(void *)message;
+- (void)setWeakLazyReference:(id)reference message:(void *)message;
+- (void)setWeakReference:(id)reference message:(void *)message;
+- (void)setWeakReferenceArray:(id)array message:(void *)message;
+- (void)setWeakReferenceOrderedSet:(id)set message:(void *)message;
+- (void)setWeakReferenceSet:(id)set message:(void *)message;
+- (void)setWeakReferenceToObjectUUID:(id)d message:(void *)message;
+- (void)setWeakReferenceToObjectUUIDArray:(id)array message:(void *)message;
+- (void)setWeakReferenceToObjectUUIDData:(const void *)data message:(void *)message;
+- (void)setWeakReferenceToObjectUUIDPath:(id)path message:(void *)message;
+- (void)setWeakReferenceToObjectUUIDPathArray:(id)array message:(void *)message;
+- (void)validateMessage:(const Message *)message;
 @end
 
 @implementation TSPArchiverBase
@@ -63,16 +63,16 @@
   objc_exception_throw(v13);
 }
 
-- (TSPArchiverBase)initWithObject:(id)a3
+- (TSPArchiverBase)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = TSPArchiverBase;
   v6 = [(TSPArchiverBase *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!objectCopy)
     {
       TSUSetCrashReporterInfo();
       v9 = MEMORY[0x277D81150];
@@ -84,7 +84,7 @@
       abort();
     }
 
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
     v7->_messageVersion = 0x1000000000005;
   }
 
@@ -133,7 +133,7 @@
   self->_alternates = 0;
 }
 
-- (Message)messageWithNewFunction:(void *)a3 descriptor:(const void *)a4
+- (Message)messageWithNewFunction:(void *)function descriptor:(const void *)descriptor
 {
   ptr = self->_message.__ptr_;
   currentFieldPath = self->_currentFieldPath;
@@ -148,7 +148,7 @@
         do
         {
           v10 = *(*(self->_currentFieldPath + 3) + 4 * v9);
-          v11 = (*(ptr->var0 + 19))(ptr, a2, a3);
+          v11 = (*(ptr->var0 + 19))(ptr, a2, function);
           (*(ptr->var0 + 19))(ptr);
           v13 = v12;
           FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v11, v10);
@@ -187,7 +187,7 @@
 
     if (v8)
     {
-      v35 = objc_msgSend_object(self, a2, a3);
+      v35 = objc_msgSend_object(self, a2, function);
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
       v40 = objc_msgSend_object(self, v38, v39);
@@ -215,7 +215,7 @@
   {
     LODWORD(v8) = 0;
 LABEL_22:
-    if ((*(ptr->var0 + 19))(ptr) == a4)
+    if ((*(ptr->var0 + 19))(ptr) == descriptor)
     {
       return ptr;
     }
@@ -225,7 +225,7 @@ LABEL_22:
     v24 = NSStringFromClass(v23);
     v27 = objc_msgSend_object(self, v25, v26);
     v30 = objc_msgSend_tsp_identifier(v27, v28, v29);
-    v31 = *(a4 + 1);
+    v31 = *(descriptor + 1);
     if (*(v31 + 23) < 0)
     {
       v31 = *v31;
@@ -261,7 +261,7 @@ LABEL_22:
     v73 = NSStringFromClass(v72);
     v76 = objc_msgSend_object(self, v74, v75);
     v87 = objc_msgSend_tsp_identifier(v76, v77, v78);
-    v79 = *(a4 + 1);
+    v79 = *(descriptor + 1);
     if (*(v79 + 23) < 0)
     {
       v79 = *v79;
@@ -293,12 +293,12 @@ LABEL_45:
     abort();
   }
 
-  if (!a3)
+  if (!function)
   {
     return 0;
   }
 
-  (a3)(&v88);
+  (function)(&v88);
   v17 = v88;
   v88 = 0;
   v18 = self->_message.__ptr_;
@@ -324,12 +324,12 @@ LABEL_45:
   return ptr;
 }
 
-- (void)validateMessage:(const Message *)a3
+- (void)validateMessage:(const Message *)message
 {
   ptr = self->_message.__ptr_;
   if (ptr)
   {
-    v5 = (*(a3->var0 + 19))(a3, a2);
+    v5 = (*(message->var0 + 19))(message, a2);
     if (!objc_msgSend_messageWithNewFunction_descriptor_(self, v6, 0, v5))
     {
       v7 = ptr;
@@ -405,13 +405,13 @@ LABEL_45:
   return v4;
 }
 
-- (void)setStrongReference:(id)a3 message:(void *)a4
+- (void)setStrongReference:(id)reference message:(void *)message
 {
-  v15 = a3;
-  v8 = objc_msgSend_tsp_identifier(v15, v6, v7);
-  *(a4 + 4) |= 1u;
-  *(a4 + 3) = v8;
-  if (v15)
+  referenceCopy = reference;
+  v8 = objc_msgSend_tsp_identifier(referenceCopy, v6, v7);
+  *(message + 4) |= 1u;
+  *(message + 3) = v8;
+  if (referenceCopy)
   {
     strongReferences = self->_strongReferences;
     if (!strongReferences)
@@ -424,17 +424,17 @@ LABEL_45:
       strongReferences = self->_strongReferences;
     }
 
-    objc_msgSend_addItem_(strongReferences, v9, v15);
+    objc_msgSend_addItem_(strongReferences, v9, referenceCopy);
   }
 }
 
-- (void)setWeakReference:(id)a3 message:(void *)a4
+- (void)setWeakReference:(id)reference message:(void *)message
 {
-  v15 = a3;
-  v8 = objc_msgSend_tsp_identifier(v15, v6, v7);
-  *(a4 + 4) |= 1u;
-  *(a4 + 3) = v8;
-  if (v15)
+  referenceCopy = reference;
+  v8 = objc_msgSend_tsp_identifier(referenceCopy, v6, v7);
+  *(message + 4) |= 1u;
+  *(message + 3) = v8;
+  if (referenceCopy)
   {
     weakReferences = self->_weakReferences;
     if (!weakReferences)
@@ -447,19 +447,19 @@ LABEL_45:
       weakReferences = self->_weakReferences;
     }
 
-    objc_msgSend_addItem_(weakReferences, v9, v15);
+    objc_msgSend_addItem_(weakReferences, v9, referenceCopy);
   }
 }
 
-- (void)setStrongReferenceArray:(id)a3 message:(void *)a4
+- (void)setStrongReferenceArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  arrayCopy = array;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -470,41 +470,41 @@ LABEL_45:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setStrongReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setStrongReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -512,7 +512,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -521,15 +521,15 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWeakReferenceArray:(id)a3 message:(void *)a4
+- (void)setWeakReferenceArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  arrayCopy = array;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -540,41 +540,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setWeakReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setWeakReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -582,7 +582,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -591,35 +591,35 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStrongReferenceSet:(id)a3 message:(void *)a4
+- (void)setStrongReferenceSet:(id)set message:(void *)message
 {
-  v11 = a3;
+  setCopy = set;
   v6 = objc_autoreleasePoolPush();
-  v9 = objc_msgSend_tsp_sortedObjectArray(v11, v7, v8);
-  objc_msgSend_setStrongReferenceArray_message_(self, v10, v9, a4);
+  v9 = objc_msgSend_tsp_sortedObjectArray(setCopy, v7, v8);
+  objc_msgSend_setStrongReferenceArray_message_(self, v10, v9, message);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setWeakReferenceSet:(id)a3 message:(void *)a4
+- (void)setWeakReferenceSet:(id)set message:(void *)message
 {
-  v11 = a3;
+  setCopy = set;
   v6 = objc_autoreleasePoolPush();
-  v9 = objc_msgSend_tsp_sortedObjectArray(v11, v7, v8);
-  objc_msgSend_setWeakReferenceArray_message_(self, v10, v9, a4);
+  v9 = objc_msgSend_tsp_sortedObjectArray(setCopy, v7, v8);
+  objc_msgSend_setWeakReferenceArray_message_(self, v10, v9, message);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setStrongReferenceOrderedSet:(id)a3 message:(void *)a4
+- (void)setStrongReferenceOrderedSet:(id)set message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  setCopy = set;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -630,41 +630,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setStrongReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setStrongReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -672,7 +672,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -681,15 +681,15 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWeakReferenceOrderedSet:(id)a3 message:(void *)a4
+- (void)setWeakReferenceOrderedSet:(id)set message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  setCopy = set;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -700,41 +700,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setWeakReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setWeakReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -742,7 +742,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -751,19 +751,19 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setStrongLazyReference:(id)a3 message:(void *)a4
+- (void)setStrongLazyReference:(id)reference message:(void *)message
 {
-  v37 = a3;
-  v8 = objc_msgSend_tsp_identifier(v37, v6, v7);
-  *(a4 + 4) |= 1u;
-  *(a4 + 3) = v8;
-  v11 = v37;
-  if (!v37)
+  referenceCopy = reference;
+  v8 = objc_msgSend_tsp_identifier(referenceCopy, v6, v7);
+  *(message + 4) |= 1u;
+  *(message + 3) = v8;
+  v11 = referenceCopy;
+  if (!referenceCopy)
   {
     goto LABEL_14;
   }
 
-  if (objc_msgSend_ownershipMode(v37, v9, v10) && (objc_msgSend_isForCopy(self, v12, v13) & 1) == 0)
+  if (objc_msgSend_ownershipMode(referenceCopy, v9, v10) && (objc_msgSend_isForCopy(self, v12, v13) & 1) == 0)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPArchiverBase setStrongLazyReference:message:]");
@@ -773,7 +773,7 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
   }
 
-  v22 = objc_msgSend_objectIfLoaded(v37, v12, v13);
+  v22 = objc_msgSend_objectIfLoaded(referenceCopy, v12, v13);
   strongReferences = self->_strongReferences;
   if (v22)
   {
@@ -793,12 +793,12 @@ LABEL_10:
 
   else
   {
-    v24 = v37;
+    v24 = referenceCopy;
     if (!strongReferences)
     {
       v28 = [TSPReferenceOrderedSet alloc];
       v27 = objc_msgSend_initWithCapacity_(v28, v29, 1);
-      v24 = v37;
+      v24 = referenceCopy;
       goto LABEL_10;
     }
   }
@@ -815,20 +815,20 @@ LABEL_10:
     lazyReferences = self->_lazyReferences;
   }
 
-  objc_msgSend_addObject_(lazyReferences, v31, v37);
+  objc_msgSend_addObject_(lazyReferences, v31, referenceCopy);
 
-  v11 = v37;
+  v11 = referenceCopy;
 LABEL_14:
 }
 
-- (void)setStrongLazyReferenceArray:(id)a3 message:(void *)a4
+- (void)setStrongLazyReferenceArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = objc_msgSend_references(a3, a2, a3, 0);
+  v6 = objc_msgSend_references(array, a2, array, 0);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
   if (v9)
   {
@@ -844,37 +844,37 @@ LABEL_14:
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setStrongLazyReference_message_(self, v8, v12, *&v13[2 * v14 + 2]);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::Reference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setStrongLazyReference_message_(self, v19, v12, v16);
 LABEL_13:
@@ -891,16 +891,16 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWeakLazyReference:(id)a3 message:(void *)a4
+- (void)setWeakLazyReference:(id)reference message:(void *)message
 {
-  v33 = a3;
-  v8 = objc_msgSend_tsp_identifier(v33, v6, v7);
-  *(a4 + 4) |= 1u;
-  *(a4 + 3) = v8;
-  v11 = v33;
-  if (v33)
+  referenceCopy = reference;
+  v8 = objc_msgSend_tsp_identifier(referenceCopy, v6, v7);
+  *(message + 4) |= 1u;
+  *(message + 3) = v8;
+  v11 = referenceCopy;
+  if (referenceCopy)
   {
-    if (!objc_msgSend_ownershipMode(v33, v9, v10))
+    if (!objc_msgSend_ownershipMode(referenceCopy, v9, v10))
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPArchiverBase setWeakLazyReference:message:]");
@@ -918,16 +918,16 @@ LABEL_13:
       self->_weakReferences = v23;
     }
 
-    v25 = objc_msgSend_objectIfLoaded(v33, v12, v13);
+    v25 = objc_msgSend_objectIfLoaded(referenceCopy, v12, v13);
     v26 = self->_weakReferences;
     if (v25)
     {
-      objc_msgSend_addItem_(v26, v33, v25);
+      objc_msgSend_addItem_(v26, referenceCopy, v25);
     }
 
     else
     {
-      objc_msgSend_addItem_(v26, v33, v33);
+      objc_msgSend_addItem_(v26, referenceCopy, referenceCopy);
     }
 
     lazyReferences = self->_lazyReferences;
@@ -941,17 +941,17 @@ LABEL_13:
       lazyReferences = self->_lazyReferences;
     }
 
-    objc_msgSend_addObject_(lazyReferences, v27, v33);
+    objc_msgSend_addObject_(lazyReferences, v27, referenceCopy);
 
-    v11 = v33;
+    v11 = referenceCopy;
   }
 }
 
-- (void)setDataReference:(id)a3 message:(void *)a4
+- (void)setDataReference:(id)reference message:(void *)message
 {
-  v6 = a3;
-  v75 = v6;
-  if (!v6)
+  referenceCopy = reference;
+  v75 = referenceCopy;
+  if (!referenceCopy)
   {
     v30 = MEMORY[0x277D81150];
     v31 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSPArchiverBase setDataReference:message:]");
@@ -962,7 +962,7 @@ LABEL_13:
     goto LABEL_23;
   }
 
-  v11 = objc_msgSend_storage(v6, v7, v8);
+  v11 = objc_msgSend_storage(referenceCopy, v7, v8);
   if (!v11)
   {
     v37 = objc_msgSend_null(TSPData, v9, v10);
@@ -978,8 +978,8 @@ LABEL_13:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v47, v48);
     }
 
-    *(a4 + 4) |= 1u;
-    *(a4 + 3) = 0;
+    *(message + 4) |= 1u;
+    *(message + 3) = 0;
     goto LABEL_22;
   }
 
@@ -1036,8 +1036,8 @@ LABEL_16:
 
 LABEL_17:
   v63 = objc_msgSend_identifier(v61, v59, v60);
-  *(a4 + 4) |= 1u;
-  *(a4 + 3) = v63;
+  *(message + 4) |= 1u;
+  *(message + 3) = v63;
   dataReferences = self->_dataReferences;
   if (!dataReferences)
   {
@@ -1067,15 +1067,15 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)setDataReferenceArray:(id)a3 message:(void *)a4
+- (void)setDataReferenceArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  arrayCopy = array;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -1086,41 +1086,41 @@ LABEL_23:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setDataReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::DataReference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::DataReference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setDataReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -1128,7 +1128,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -1137,25 +1137,25 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDataReferenceSet:(id)a3 message:(void *)a4
+- (void)setDataReferenceSet:(id)set message:(void *)message
 {
-  v11 = a3;
+  setCopy = set;
   v6 = objc_autoreleasePoolPush();
-  v9 = objc_msgSend_tsp_sortedDataArray(v11, v7, v8);
-  objc_msgSend_setDataReferenceArray_message_(self, v10, v9, a4);
+  v9 = objc_msgSend_tsp_sortedDataArray(setCopy, v7, v8);
+  objc_msgSend_setDataReferenceArray_message_(self, v10, v9, message);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setDataReferenceOrderedSet:(id)a3 message:(void *)a4
+- (void)setDataReferenceOrderedSet:(id)set message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  setCopy = set;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -1166,41 +1166,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setDataReference_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::DataReference>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::DataReference>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setDataReference_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -1208,7 +1208,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(setCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -1217,48 +1217,48 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMustUnderstandRuleForField:(int)a3 message:(const Message *)a4
+- (void)setMustUnderstandRuleForField:(int)field message:(const Message *)message
 {
   v6 = *MEMORY[0x277D85DE8];
-  v5[0] = a3;
+  v5[0] = field;
   v5[1] = 0;
-  objc_msgSend_setMustUnderstandRuleForFieldPath_message_(self, a2, v5, a4);
+  objc_msgSend_setMustUnderstandRuleForFieldPath_message_(self, a2, v5, message);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIgnoreAndPreserveRuleForField:(int)a3 message:(const Message *)a4
+- (void)setIgnoreAndPreserveRuleForField:(int)field message:(const Message *)message
 {
   v6 = *MEMORY[0x277D85DE8];
-  v5[0] = a3;
+  v5[0] = field;
   v5[1] = 0;
-  objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(self, a2, v5, a4);
+  objc_msgSend_setIgnoreAndPreserveRuleForFieldPath_message_(self, a2, v5, message);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIgnoreAndPreserveUntilModifiedRuleForField:(int)a3 message:(const Message *)a4
+- (void)setIgnoreAndPreserveUntilModifiedRuleForField:(int)field message:(const Message *)message
 {
   v6 = *MEMORY[0x277D85DE8];
-  v5[0] = a3;
+  v5[0] = field;
   v5[1] = 0;
-  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForFieldPath_message_(self, a2, v5, a4);
+  objc_msgSend_setIgnoreAndPreserveUntilModifiedRuleForFieldPath_message_(self, a2, v5, message);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRule:(int)a3 forFieldPath:(int *)a4 fileFormatVersion:(unint64_t)a5 featureIdentifier:(id)a6 message:(const Message *)a7
+- (void)setRule:(int)rule forFieldPath:(int *)path fileFormatVersion:(unint64_t)version featureIdentifier:(id)identifier message:(const Message *)message
 {
-  v11 = a6;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!path)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "[TSPArchiverBase setRule:forFieldPath:fileFormatVersion:featureIdentifier:message:]");
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPArchiverBase.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 382, 0, "invalid nil value for '%{public}s'", "inFieldPath", a5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v16, v13, v15, 382, 0, "invalid nil value for '%{public}s'", "inFieldPath", version);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18);
   }
 
-  objc_msgSend_validateMessage_(self, v10, a7);
-  if (a4 && *a4)
+  objc_msgSend_validateMessage_(self, v10, message);
+  if (path && *path)
   {
     operator new();
   }
@@ -1271,10 +1271,10 @@ LABEL_13:
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
 }
 
-- (void)pushScopeForField:(int)a3 message:(const Message *)a4 usingBlock:(id)a5
+- (void)pushScopeForField:(int)field message:(const Message *)message usingBlock:(id)block
 {
-  v29 = a5;
-  if (!v29)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSPArchiverBase pushScopeForField:message:usingBlock:]");
@@ -1284,7 +1284,7 @@ LABEL_13:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  objc_msgSend_validateMessage_(self, v8, a4);
+  objc_msgSend_validateMessage_(self, v8, message);
   currentFieldPath = self->_currentFieldPath;
   if (!currentFieldPath)
   {
@@ -1297,9 +1297,9 @@ LABEL_13:
     google::protobuf::RepeatedField<unsigned int>::Reserve();
   }
 
-  *(*(currentFieldPath + 3) + 4 * v17) = a3;
+  *(*(currentFieldPath + 3) + 4 * v17) = field;
   currentFieldPath[4] = v17 + 1;
-  v29[2]();
+  blockCopy[2]();
   v19 = self->_currentFieldPath;
   v20 = v19[4];
   if (v20 == 1)
@@ -1327,9 +1327,9 @@ LABEL_13:
   }
 }
 
-- (void)enumerateFieldRulesUsingBlock:(id)a3
+- (void)enumerateFieldRulesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fieldRules = self->_fieldRules;
   if (fieldRules)
   {
@@ -1343,7 +1343,7 @@ LABEL_13:
         break;
       }
 
-      v4[2](v4, (v6 + 2), (v6 + 7), &v7);
+      blockCopy[2](blockCopy, (v6 + 2), (v6 + 7), &v7);
     }
 
     while ((v7 & 1) == 0);
@@ -1368,25 +1368,25 @@ LABEL_13:
   return v3;
 }
 
-- (id)alternateDiffToMergeBeforeVersion:(unint64_t)a3 fileFormatVersion:(unint64_t)a4 field:(int)a5 message:(const Message *)a6
+- (id)alternateDiffToMergeBeforeVersion:(unint64_t)version fileFormatVersion:(unint64_t)formatVersion field:(int)field message:(const Message *)message
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9[0] = a5;
+  v9[0] = field;
   v9[1] = 0;
-  v6 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_fieldPath_message_(self, a2, a3, a4, v9, a6);
+  v6 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_fieldPath_message_(self, a2, version, formatVersion, v9, message);
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)alternateDiffToMergeBeforeVersion:(unint64_t)a3 fileFormatVersion:(unint64_t)a4 fieldPath:(int *)a5 baseFieldPath:(const void *)a6 message:(const Message *)a7
+- (id)alternateDiffToMergeBeforeVersion:(unint64_t)version fileFormatVersion:(unint64_t)formatVersion fieldPath:(int *)path baseFieldPath:(const void *)fieldPath message:(const Message *)message
 {
-  if (a5 && *a5)
+  if (path && *path)
   {
     operator new();
   }
 
-  v7 = objc_msgSend_addAlternateArchiverForVersion_fieldPath_isDiffArchiver_diffReadVersion_message_(self, a2, a3, a6, 1, a4, a7);
+  v7 = objc_msgSend_addAlternateArchiverForVersion_fieldPath_isDiffArchiver_diffReadVersion_message_(self, a2, version, fieldPath, 1, formatVersion, message);
 
   return v7;
 }
@@ -1427,14 +1427,14 @@ LABEL_13:
   return v3;
 }
 
-- (void)addWeakReferenceToObjectUUID:(id)a3
+- (void)addWeakReferenceToObjectUUID:(id)d
 {
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
     v7 = objc_msgSend_context(self->_object, v4, v5);
     v20 = 0;
-    v10 = objc_msgSend_objectWithUUID_onlyIfLoaded_validateNewObjects_identifier_(v7, v8, v6, 1, 0, &v20);
+    v10 = objc_msgSend_objectWithUUID_onlyIfLoaded_validateNewObjects_identifier_(v7, v8, dCopy, 1, 0, &v20);
     if (v10)
     {
       v11 = 1;
@@ -1449,7 +1449,7 @@ LABEL_13:
     {
       v12 = [TSPLazyReferenceInternal alloc];
       v10 = objc_msgSend_initWithDelegate_identifier_ownershipMode_allowUnknownObject_objectClass_objectProtocol_(v12, v13, v7, v20, 1, 0, 0, 0);
-      objc_msgSend_setObjectUUID_(v10, v14, v6);
+      objc_msgSend_setObjectUUID_(v10, v14, dCopy);
     }
 
     if (v10)
@@ -1470,40 +1470,40 @@ LABEL_13:
   }
 }
 
-- (void)setWeakReferenceToObjectUUID:(id)a3 message:(void *)a4
+- (void)setWeakReferenceToObjectUUID:(id)d message:(void *)message
 {
-  v8 = a3;
-  objc_msgSend_tsp_saveToMessage_(v8, v6, a4);
-  objc_msgSend_addWeakReferenceToObjectUUID_(self, v7, v8);
+  dCopy = d;
+  objc_msgSend_tsp_saveToMessage_(dCopy, v6, message);
+  objc_msgSend_addWeakReferenceToObjectUUID_(self, v7, dCopy);
 }
 
-- (void)setWeakReferenceToObjectUUIDData:(const void *)a3 message:(void *)a4
+- (void)setWeakReferenceToObjectUUIDData:(const void *)data message:(void *)message
 {
   v6 = objc_autoreleasePoolPush();
   v7 = objc_alloc(MEMORY[0x277CCAD78]);
-  v9 = objc_msgSend_initWithUUIDBytes_(v7, v8, a3);
+  v9 = objc_msgSend_initWithUUIDBytes_(v7, v8, data);
   objc_msgSend_addWeakReferenceToObjectUUID_(self, v10, v9);
 
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)setWeakReferenceToObjectUUIDPath:(id)a3 message:(void *)a4
+- (void)setWeakReferenceToObjectUUIDPath:(id)path message:(void *)message
 {
-  v11 = a3;
-  objc_msgSend_saveToMessage_(v11, v6, a4);
-  v9 = objc_msgSend_lastUUID(v11, v7, v8);
+  pathCopy = path;
+  objc_msgSend_saveToMessage_(pathCopy, v6, message);
+  v9 = objc_msgSend_lastUUID(pathCopy, v7, v8);
   objc_msgSend_addWeakReferenceToObjectUUID_(self, v10, v9);
 }
 
-- (void)setWeakReferenceToObjectUUIDArray:(id)a3 message:(void *)a4
+- (void)setWeakReferenceToObjectUUIDArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  arrayCopy = array;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -1514,41 +1514,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setWeakReferenceToObjectUUID_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::UUID>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::UUID>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setWeakReferenceToObjectUUID_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -1556,7 +1556,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -1565,15 +1565,15 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWeakReferenceToObjectUUIDPathArray:(id)a3 message:(void *)a4
+- (void)setWeakReferenceToObjectUUIDPathArray:(id)array message:(void *)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = a3;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v21, v25, 16);
+  arrayCopy = array;
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, &v21, v25, 16);
   if (v9)
   {
     v10 = *v22;
@@ -1584,41 +1584,41 @@ LABEL_13:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * v11);
-        v13 = *(a4 + 2);
+        v13 = *(message + 2);
         if (!v13)
         {
-          v15 = *(a4 + 3);
+          v15 = *(message + 3);
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4, v15 + 1);
-          v13 = *(a4 + 2);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message, v15 + 1);
+          v13 = *(message + 2);
           v15 = *v13;
           goto LABEL_12;
         }
 
-        v14 = *(a4 + 2);
+        v14 = *(message + 2);
         v15 = *v13;
         if (v14 < *v13)
         {
-          *(a4 + 2) = v14 + 1;
+          *(message + 2) = v14 + 1;
           objc_msgSend_setWeakReferenceToObjectUUIDPath_message_(self, v8, v12, *&v13[2 * v14 + 2], v21);
           goto LABEL_13;
         }
 
-        if (v15 == *(a4 + 3))
+        if (v15 == *(message + 3))
         {
           goto LABEL_11;
         }
 
 LABEL_12:
         *v13 = v15 + 1;
-        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::UUIDPath>(*a4);
-        v17 = *(a4 + 2);
-        v18 = *(a4 + 2) + 8 * v17;
-        *(a4 + 2) = v17 + 1;
+        v16 = google::protobuf::Arena::CreateMaybeMessage<TSP::UUIDPath>(*message);
+        v17 = *(message + 2);
+        v18 = *(message + 2) + 8 * v17;
+        *(message + 2) = v17 + 1;
         *(v18 + 8) = v16;
         objc_msgSend_setWeakReferenceToObjectUUIDPath_message_(self, v19, v12, v16, v21);
 LABEL_13:
@@ -1626,7 +1626,7 @@ LABEL_13:
       }
 
       while (v9 != v11);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v21, v25, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v21, v25, 16);
     }
 
     while (v9);
@@ -1635,11 +1635,11 @@ LABEL_13:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSparseReferenceArray:(id)a3 isWeak:(BOOL)a4 message:(void *)a5
+- (void)setSparseReferenceArray:(id)array isWeak:(BOOL)weak message:(void *)message
 {
-  v38 = a4;
-  v39 = a3;
-  v9 = objc_msgSend_count(v39, v6, v7);
+  weakCopy = weak;
+  arrayCopy = array;
+  v9 = objc_msgSend_count(arrayCopy, v6, v7);
   if (v9 >= 1)
   {
     v10 = 0;
@@ -1647,7 +1647,7 @@ LABEL_13:
     v12 = 0x277D81000uLL;
     while (1)
     {
-      v13 = objc_msgSend_objectAtIndexedSubscript_(v39, v8, v10);
+      v13 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v8, v10);
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1668,41 +1668,41 @@ LABEL_13:
         goto LABEL_26;
       }
 
-      v16 = *(a5 + 5);
+      v16 = *(message + 5);
       if (!v16)
       {
         break;
       }
 
-      v17 = *(a5 + 8);
+      v17 = *(message + 8);
       v18 = *v16;
       if (v17 >= *v16)
       {
-        if (v18 == *(a5 + 9))
+        if (v18 == *(message + 9))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a5 + 6, v18 + 1);
-          v16 = *(a5 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 6, v18 + 1);
+          v16 = *(message + 5);
           v18 = *v16;
         }
 
         *v16 = v18 + 1;
-        v19 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseReferenceArray_Entry>(*(a5 + 3));
-        v30 = *(a5 + 8);
-        v31 = *(a5 + 5) + 8 * v30;
-        *(a5 + 8) = v30 + 1;
+        v19 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseReferenceArray_Entry>(*(message + 3));
+        v30 = *(message + 8);
+        v31 = *(message + 5) + 8 * v30;
+        *(message + 8) = v30 + 1;
         *(v31 + 8) = v19;
         goto LABEL_13;
       }
 
-      *(a5 + 8) = v17 + 1;
+      *(message + 8) = v17 + 1;
       v19 = *&v16[2 * v17 + 2];
 LABEL_13:
       v32 = *(v19 + 16);
       *(v19 + 32) = v10;
       *(v19 + 16) = v32 | 3;
       v33 = *(v19 + 24);
-      if (v38)
+      if (weakCopy)
       {
         if (!v33)
         {
@@ -1750,27 +1750,27 @@ LABEL_26:
       }
     }
 
-    v18 = *(a5 + 9);
+    v18 = *(message + 9);
     goto LABEL_11;
   }
 
   v36 = 0;
 LABEL_29:
-  *(a5 + 4) |= 1u;
-  *(a5 + 12) = v36;
+  *(message + 4) |= 1u;
+  *(message + 12) = v36;
 }
 
-- (void)setSparseWeakObjectUUIDReferenceArray:(id)a3 message:(void *)a4
+- (void)setSparseWeakObjectUUIDReferenceArray:(id)array message:(void *)message
 {
-  v33 = a3;
-  v8 = objc_msgSend_count(v33, v5, v6);
+  arrayCopy = array;
+  v8 = objc_msgSend_count(arrayCopy, v5, v6);
   if (v8 >= 1)
   {
     v9 = 0;
     v10 = -1;
     while (1)
     {
-      v11 = objc_msgSend_objectAtIndexedSubscript_(v33, v7, v9);
+      v11 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v7, v9);
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1789,34 +1789,34 @@ LABEL_29:
         goto LABEL_19;
       }
 
-      v14 = *(a4 + 5);
+      v14 = *(message + 5);
       if (!v14)
       {
         break;
       }
 
-      v15 = *(a4 + 8);
+      v15 = *(message + 8);
       v16 = *v14;
       if (v15 >= *v14)
       {
-        if (v16 == *(a4 + 9))
+        if (v16 == *(message + 9))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4 + 6, v16 + 1);
-          v14 = *(a4 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 6, v16 + 1);
+          v14 = *(message + 5);
           v16 = *v14;
         }
 
         *v14 = v16 + 1;
-        v17 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseUUIDArray_Entry>(*(a4 + 3));
-        v27 = *(a4 + 8);
-        v28 = *(a4 + 5) + 8 * v27;
-        *(a4 + 8) = v27 + 1;
+        v17 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseUUIDArray_Entry>(*(message + 3));
+        v27 = *(message + 8);
+        v28 = *(message + 5) + 8 * v27;
+        *(message + 8) = v27 + 1;
         *(v28 + 8) = v17;
         goto LABEL_13;
       }
 
-      *(a4 + 8) = v15 + 1;
+      *(message + 8) = v15 + 1;
       v17 = *&v14[2 * v15 + 2];
 LABEL_13:
       v29 = *(v17 + 16);
@@ -1850,27 +1850,27 @@ LABEL_19:
       }
     }
 
-    v16 = *(a4 + 9);
+    v16 = *(message + 9);
     goto LABEL_11;
   }
 
   v32 = 0;
 LABEL_22:
-  *(a4 + 4) |= 1u;
-  *(a4 + 12) = v32;
+  *(message + 4) |= 1u;
+  *(message + 12) = v32;
 }
 
-- (void)setSparseWeakObjectUUIDPathReferenceArray:(id)a3 message:(void *)a4
+- (void)setSparseWeakObjectUUIDPathReferenceArray:(id)array message:(void *)message
 {
-  v33 = a3;
-  v8 = objc_msgSend_count(v33, v5, v6);
+  arrayCopy = array;
+  v8 = objc_msgSend_count(arrayCopy, v5, v6);
   if (v8 >= 1)
   {
     v9 = 0;
     v10 = -1;
     while (1)
     {
-      v11 = objc_msgSend_objectAtIndexedSubscript_(v33, v7, v9);
+      v11 = objc_msgSend_objectAtIndexedSubscript_(arrayCopy, v7, v9);
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1889,34 +1889,34 @@ LABEL_22:
         goto LABEL_19;
       }
 
-      v14 = *(a4 + 5);
+      v14 = *(message + 5);
       if (!v14)
       {
         break;
       }
 
-      v15 = *(a4 + 8);
+      v15 = *(message + 8);
       v16 = *v14;
       if (v15 >= *v14)
       {
-        if (v16 == *(a4 + 9))
+        if (v16 == *(message + 9))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a4 + 6, v16 + 1);
-          v14 = *(a4 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve(message + 6, v16 + 1);
+          v14 = *(message + 5);
           v16 = *v14;
         }
 
         *v14 = v16 + 1;
-        v17 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseUUIDPathArray_Entry>(*(a4 + 3));
-        v27 = *(a4 + 8);
-        v28 = *(a4 + 5) + 8 * v27;
-        *(a4 + 8) = v27 + 1;
+        v17 = google::protobuf::Arena::CreateMaybeMessage<TSP::SparseUUIDPathArray_Entry>(*(message + 3));
+        v27 = *(message + 8);
+        v28 = *(message + 5) + 8 * v27;
+        *(message + 8) = v27 + 1;
         *(v28 + 8) = v17;
         goto LABEL_13;
       }
 
-      *(a4 + 8) = v15 + 1;
+      *(message + 8) = v15 + 1;
       v17 = *&v14[2 * v15 + 2];
 LABEL_13:
       v29 = *(v17 + 16);
@@ -1950,14 +1950,14 @@ LABEL_19:
       }
     }
 
-    v16 = *(a4 + 9);
+    v16 = *(message + 9);
     goto LABEL_11;
   }
 
   v32 = 0;
 LABEL_22:
-  *(a4 + 4) |= 1u;
-  *(a4 + 12) = v32;
+  *(message + 4) |= 1u;
+  *(message + 12) = v32;
 }
 
 @end

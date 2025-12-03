@@ -1,41 +1,41 @@
 @interface TPPasscodeView
 - (CGSize)intrinsicContentSize;
 - (NSString)passcodeString;
-- (TPPasscodeView)initWithFrame:(CGRect)a3;
-- (void)appendCharacter:(id)a3;
+- (TPPasscodeView)initWithFrame:(CGRect)frame;
+- (void)appendCharacter:(id)character;
 - (void)clear;
 - (void)deleteLastCharacter;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TPPasscodeView
 
-- (TPPasscodeView)initWithFrame:(CGRect)a3
+- (TPPasscodeView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TPPasscodeView;
-  v3 = [(TPPasscodeView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPPasscodeView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(TPPasscodeView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(TPPasscodeView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [MEMORY[0x1E696AD60] string];
-    [(TPPasscodeView *)v3 setPasscodeMutableString:v5];
+    string = [MEMORY[0x1E696AD60] string];
+    [(TPPasscodeView *)v3 setPasscodeMutableString:string];
   }
 
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(TPPasscodeView *)self bounds:a3.origin.x];
+  [(TPPasscodeView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
-  [v12 setFill];
+  dynamicBackgroundColor = [MEMORY[0x1E69DC888] dynamicBackgroundColor];
+  [dynamicBackgroundColor setFill];
 
   v35.origin.x = v5;
   v35.origin.y = v7;
@@ -44,23 +44,23 @@
   UIRectFill(v35);
   v33 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:v5 + 0.5 cornerRadius:{v7 + 0.5, v9 + -1.0, v11 + -1.0, 4.0}];
   [v33 setLineWidth:1.0];
-  v13 = [MEMORY[0x1E69DC888] dynamicLabelColor];
-  [v13 setStroke];
+  dynamicLabelColor = [MEMORY[0x1E69DC888] dynamicLabelColor];
+  [dynamicLabelColor setStroke];
 
   [v33 stroke];
-  v14 = [MEMORY[0x1E69DC888] dynamicLabelColor];
-  [v14 setFill];
+  dynamicLabelColor2 = [MEMORY[0x1E69DC888] dynamicLabelColor];
+  [dynamicLabelColor2 setFill];
 
-  v15 = [(TPPasscodeView *)self passcodeMutableString];
-  v16 = [v15 length];
+  passcodeMutableString = [(TPPasscodeView *)self passcodeMutableString];
+  v16 = [passcodeMutableString length];
 
-  v17 = [(TPPasscodeView *)self passcodeMutableString];
-  v18 = [v17 length];
+  passcodeMutableString2 = [(TPPasscodeView *)self passcodeMutableString];
+  v18 = [passcodeMutableString2 length];
   if (v16 > 8)
   {
 
-    v24 = [(TPPasscodeView *)self passcodeMutableString];
-    v25 = [v24 length];
+    passcodeMutableString3 = [(TPPasscodeView *)self passcodeMutableString];
+    v25 = [passcodeMutableString3 length];
 
     if (v25)
     {
@@ -75,8 +75,8 @@
         v29 = v27 + v27 + v29;
 
         ++v26;
-        v31 = [(TPPasscodeView *)self passcodeMutableString];
-        v32 = [v31 length];
+        passcodeMutableString4 = [(TPPasscodeView *)self passcodeMutableString];
+        v32 = [passcodeMutableString4 length];
       }
 
       while (v26 < v32);
@@ -97,8 +97,8 @@
         v20 = v20 + 14.0;
 
         ++v19;
-        v22 = [(TPPasscodeView *)self passcodeMutableString];
-        v23 = [v22 length];
+        passcodeMutableString5 = [(TPPasscodeView *)self passcodeMutableString];
+        v23 = [passcodeMutableString5 length];
       }
 
       while (v19 < v23);
@@ -118,31 +118,31 @@
 - (NSString)passcodeString
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(TPPasscodeView *)self passcodeMutableString];
-  v4 = [v2 stringWithString:v3];
+  passcodeMutableString = [(TPPasscodeView *)self passcodeMutableString];
+  v4 = [v2 stringWithString:passcodeMutableString];
 
   return v4;
 }
 
-- (void)appendCharacter:(id)a3
+- (void)appendCharacter:(id)character
 {
-  v4 = a3;
-  v5 = [(TPPasscodeView *)self passcodeMutableString];
-  [v5 appendString:v4];
+  characterCopy = character;
+  passcodeMutableString = [(TPPasscodeView *)self passcodeMutableString];
+  [passcodeMutableString appendString:characterCopy];
 
   [(TPPasscodeView *)self setNeedsDisplay];
 }
 
 - (void)deleteLastCharacter
 {
-  v3 = [(TPPasscodeView *)self passcodeMutableString];
-  v4 = [v3 length];
+  passcodeMutableString = [(TPPasscodeView *)self passcodeMutableString];
+  v4 = [passcodeMutableString length];
 
   if (v4)
   {
-    v5 = [(TPPasscodeView *)self passcodeMutableString];
-    v6 = [(TPPasscodeView *)self passcodeMutableString];
-    [v5 deleteCharactersInRange:{objc_msgSend(v6, "length") - 1, 1}];
+    passcodeMutableString2 = [(TPPasscodeView *)self passcodeMutableString];
+    passcodeMutableString3 = [(TPPasscodeView *)self passcodeMutableString];
+    [passcodeMutableString2 deleteCharactersInRange:{objc_msgSend(passcodeMutableString3, "length") - 1, 1}];
 
     [(TPPasscodeView *)self setNeedsDisplay];
   }
@@ -150,14 +150,14 @@
 
 - (void)clear
 {
-  v3 = [(TPPasscodeView *)self passcodeMutableString];
-  v4 = [v3 length];
+  passcodeMutableString = [(TPPasscodeView *)self passcodeMutableString];
+  v4 = [passcodeMutableString length];
 
   if (v4)
   {
-    v5 = [(TPPasscodeView *)self passcodeMutableString];
-    v6 = [(TPPasscodeView *)self passcodeMutableString];
-    [v5 deleteCharactersInRange:{0, objc_msgSend(v6, "length")}];
+    passcodeMutableString2 = [(TPPasscodeView *)self passcodeMutableString];
+    passcodeMutableString3 = [(TPPasscodeView *)self passcodeMutableString];
+    [passcodeMutableString2 deleteCharactersInRange:{0, objc_msgSend(passcodeMutableString3, "length")}];
 
     [(TPPasscodeView *)self setNeedsDisplay];
   }

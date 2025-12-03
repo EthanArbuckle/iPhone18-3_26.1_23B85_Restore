@@ -1,19 +1,19 @@
 @interface THNoteCardStorageLayer
 - (CGRect)contentFrame;
 - (CGRect)textFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (THNoteCardStorageLayer)init;
 - (double)p_textVerticalCenter;
 - (void)dealloc;
-- (void)i_performWithEachLine:(id)a3;
-- (void)i_updateStorageImageWithSize:(CGSize)a3;
+- (void)i_performWithEachLine:(id)line;
+- (void)i_updateStorageImageWithSize:(CGSize)size;
 - (void)layoutSublayers;
-- (void)setFontFamily:(id)a3 textColor:(id)a4 underlineColor:(id)a5 characterSpacing:(double)a6 lineSpacingMode:(int)a7 lineSpacingAmount:(double)a8 alignment:(unsigned int)a9;
-- (void)setFontSize:(double)a3 lineSpacing:(id)a4;
-- (void)setFontSize:(double)a3 lineSpacingMode:(int)a4 lineSpacingAmount:(double)a5;
-- (void)setLayoutContext:(id)a3;
-- (void)setStorage:(id)a3 range:(_NSRange)a4;
-- (void)setText:(id)a3 context:(id)a4;
+- (void)setFontFamily:(id)family textColor:(id)color underlineColor:(id)underlineColor characterSpacing:(double)spacing lineSpacingMode:(int)mode lineSpacingAmount:(double)amount alignment:(unsigned int)alignment;
+- (void)setFontSize:(double)size lineSpacing:(id)spacing;
+- (void)setFontSize:(double)size lineSpacingMode:(int)mode lineSpacingAmount:(double)amount;
+- (void)setLayoutContext:(id)context;
+- (void)setStorage:(id)storage range:(_NSRange)range;
+- (void)setText:(id)text context:(id)context;
 @end
 
 @implementation THNoteCardStorageLayer
@@ -41,30 +41,30 @@
   [(THNoteCardBodyLayer *)&v3 dealloc];
 }
 
-- (void)setStorage:(id)a3 range:(_NSRange)a4
+- (void)setStorage:(id)storage range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a4.location + a4.length > [a3 length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [storage length])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
-    if ([a3 length] < length)
+    if ([storage length] < length)
     {
-      length = [a3 length];
+      length = [storage length];
     }
 
-    location = ([a3 length] - length);
+    location = ([storage length] - length);
   }
 
-  -[THNoteCardStorageLayer setContext:](self, "setContext:", +[THTemporaryObjectContext temporaryContextForDocumentContext:](THTemporaryObjectContext, "temporaryContextForDocumentContext:", [a3 context]));
-  v8 = [[THWPStorage alloc] initTemporaryWithContext:[(THNoteCardStorageLayer *)self context] storage:a3 range:location, length];
+  -[THNoteCardStorageLayer setContext:](self, "setContext:", +[THTemporaryObjectContext temporaryContextForDocumentContext:](THTemporaryObjectContext, "temporaryContextForDocumentContext:", [storage context]));
+  v8 = [[THWPStorage alloc] initTemporaryWithContext:[(THNoteCardStorageLayer *)self context] storage:storage range:location, length];
   [v8 setApplyTheme:0];
   self->_storage = v8;
   self->_hasGraphicalAttachments = 0;
-  v9 = [(TSWPStorage *)self->_storage attachmentCount];
-  if (v9)
+  attachmentCount = [(TSWPStorage *)self->_storage attachmentCount];
+  if (attachmentCount)
   {
-    v10 = v9;
+    v10 = attachmentCount;
     v11 = 0;
     while (([-[TSWPStorage attachmentAtAttachmentIndex:outCharIndex:](self->_storage attachmentAtAttachmentIndex:v11 outCharIndex:{0), "elementKind"}] & 0x10000F) == 0)
     {
@@ -83,9 +83,9 @@ LABEL_11:
   [(THNoteCardStorageLayer *)self setNeedsLayout];
 }
 
-- (void)setText:(id)a3 context:(id)a4
+- (void)setText:(id)text context:(id)context
 {
-  v7 = [[THWPStorage alloc] initTemporaryWithContext:a4 string:a3];
+  v7 = [[THWPStorage alloc] initTemporaryWithContext:context string:text];
   [v7 setApplyTheme:0];
   self->_storage = v7;
   self->_hasGraphicalAttachments = 0;
@@ -94,11 +94,11 @@ LABEL_11:
   [(THNoteCardStorageLayer *)self setNeedsLayout];
 }
 
-- (void)setFontFamily:(id)a3 textColor:(id)a4 underlineColor:(id)a5 characterSpacing:(double)a6 lineSpacingMode:(int)a7 lineSpacingAmount:(double)a8 alignment:(unsigned int)a9
+- (void)setFontFamily:(id)family textColor:(id)color underlineColor:(id)underlineColor characterSpacing:(double)spacing lineSpacingMode:(int)mode lineSpacingAmount:(double)amount alignment:(unsigned int)alignment
 {
-  v9 = *&a9;
-  v15 = [[TSWPLineSpacing alloc] initWithMode:*&a7 amount:a8];
-  [(TSWPStorage *)self->_storage setFontFamily:a3 fontSize:a4 textColor:a5 underlineColor:v15 underlineWidth:v9 lineSpacing:1 characterSpacing:0.0 alignment:0.0 stripOtherAttributes:a6];
+  v9 = *&alignment;
+  v15 = [[TSWPLineSpacing alloc] initWithMode:*&mode amount:amount];
+  [(TSWPStorage *)self->_storage setFontFamily:family fontSize:color textColor:underlineColor underlineColor:v15 underlineWidth:v9 lineSpacing:1 characterSpacing:0.0 alignment:0.0 stripOtherAttributes:spacing];
 
   self->_storageImageValid = 0;
 
@@ -138,21 +138,21 @@ LABEL_11:
   return result;
 }
 
-- (void)setLayoutContext:(id)a3
+- (void)setLayoutContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = THNoteCardStorageLayer;
-  [(THNoteCardBodyLayer *)&v4 setLayoutContext:a3];
+  [(THNoteCardBodyLayer *)&v4 setLayoutContext:context];
   self->_storageImageValid = 0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (self->_storage)
   {
-    [(THNoteCardStorageLayer *)self i_updateStorageImageWithSize:a3.width, a3.height];
+    [(THNoteCardStorageLayer *)self i_updateStorageImageWithSize:fits.width, fits.height];
     height = self->_imageSize.height;
     [(THNoteCardLayoutContext *)[(THNoteCardBodyLayer *)self layoutContext] noteCardBodyHeight];
     if (height <= v6)
@@ -183,7 +183,7 @@ LABEL_11:
   return result;
 }
 
-- (void)i_performWithEachLine:(id)a3
+- (void)i_performWithEachLine:(id)line
 {
   v30 = 0u;
   v31 = 0u;
@@ -245,7 +245,7 @@ LABEL_11:
         }
 
         [(THNoteCardStorageLayer *)self convertPoint:self->_imageLayer fromLayer:0.0, v23, v26, v28];
-        (*(a3 + 2))(a3, v16, v18, v20, v22, v24);
+        (*(line + 2))(line, v16, v18, v20, v22, v24);
       }
 
       v7 = [(NSArray *)lines countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -287,11 +287,11 @@ LABEL_11:
 
 - (double)p_textVerticalCenter
 {
-  v3 = [(NSArray *)self->_lines firstObject];
-  v4 = v3;
-  if (v3)
+  firstObject = [(NSArray *)self->_lines firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    [v3 lineMetrics];
+    [firstObject lineMetrics];
     [v4 lineMetrics];
     v5 = v16 - v15;
   }
@@ -301,11 +301,11 @@ LABEL_11:
     v5 = 0.0;
   }
 
-  v6 = [(NSArray *)self->_lines lastObject];
-  v7 = v6;
-  if (v6)
+  lastObject = [(NSArray *)self->_lines lastObject];
+  v7 = lastObject;
+  if (lastObject)
   {
-    [v6 lineMetrics];
+    [lastObject lineMetrics];
     v8 = v16;
   }
 
@@ -340,13 +340,13 @@ LABEL_11:
   return v11;
 }
 
-- (void)setFontSize:(double)a3 lineSpacingMode:(int)a4 lineSpacingAmount:(double)a5
+- (void)setFontSize:(double)size lineSpacingMode:(int)mode lineSpacingAmount:(double)amount
 {
-  v7 = [[TSWPLineSpacing alloc] initWithMode:*&a4 amount:a5];
-  [(THNoteCardStorageLayer *)self setFontSize:v7 lineSpacing:a3];
+  v7 = [[TSWPLineSpacing alloc] initWithMode:*&mode amount:amount];
+  [(THNoteCardStorageLayer *)self setFontSize:v7 lineSpacing:size];
 }
 
-- (void)setFontSize:(double)a3 lineSpacing:(id)a4
+- (void)setFontSize:(double)size lineSpacing:(id)spacing
 {
   storage = self->_storage;
   if (storage)
@@ -355,23 +355,23 @@ LABEL_11:
     v9[1] = 3221225472;
     v9[2] = sub_F9174;
     v9[3] = &unk_45D790;
-    *&v9[5] = a3;
-    v9[4] = a4;
+    *&v9[5] = size;
+    v9[4] = spacing;
     [(TSWPStorage *)storage modifyEachParagraphStyleWithBlock:v9];
     v7 = self->_storage;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_F9218;
     v8[3] = &unk_45D7B0;
-    *&v8[4] = a3;
+    *&v8[4] = size;
     [(TSWPStorage *)v7 modifyEachCharacterStyleWithBlock:v8];
     [(TSWPStorage *)self->_storage replaceListLabelTypeNumberWithBullet];
   }
 }
 
-- (void)i_updateStorageImageWithSize:(CGSize)a3
+- (void)i_updateStorageImageWithSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   if (!self->_storage)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler currentHandler];
@@ -381,12 +381,12 @@ LABEL_11:
   {
     TSUScreenScale();
     v6 = v5;
-    v7 = [(TSWPStorage *)self->_storage context];
-    v8 = [TSWPShapeStyle defaultStyleWithContext:v7];
+    context = [(TSWPStorage *)self->_storage context];
+    v8 = [TSWPShapeStyle defaultStyleWithContext:context];
     [v8 setValue:+[TSDStroke emptyStroke](TSDStroke forProperty:{"emptyStroke"), 517}];
     [(THNoteCardLayoutContext *)[(THNoteCardBodyLayer *)self layoutContext] textScale];
     v10 = [[TSDInfoGeometry alloc] initWithWidth:width / v9];
-    v11 = [[THNoteCardShapeInfo alloc] initWithContext:v7 geometry:v10 style:v8 wpStorage:self->_storage];
+    v11 = [[THNoteCardShapeInfo alloc] initWithContext:context geometry:v10 style:v8 wpStorage:self->_storage];
     [(THNoteCardShapeInfo *)v11 setIgnoreEquationAlignment:[(TSWPStorage *)self->_storage paragraphCount]== &dword_0 + 1];
     v20 = 0;
     v12 = &qword_34A868;
@@ -396,7 +396,7 @@ LABEL_11:
       v14 = v12[1];
       [(THNoteCardStorageLayer *)self setFontSize:1 lineSpacingMode:*v12 lineSpacingAmount:*(v12 + 3)];
       [(THNoteCardLayoutContext *)[(THNoteCardBodyLayer *)self layoutContext] textScale];
-      v16 = +[TSDImager imageForShapeInfo:viewScale:screenScale:lines:documentRoot:](TSDImager, "imageForShapeInfo:viewScale:screenScale:lines:documentRoot:", v11, &v20, [v7 documentRoot], v15, v6);
+      v16 = +[TSDImager imageForShapeInfo:viewScale:screenScale:lines:documentRoot:](TSDImager, "imageForShapeInfo:viewScale:screenScale:lines:documentRoot:", v11, &v20, [context documentRoot], v15, v6);
       v17 = [v20 count] >= v14 || v13-- == 0;
       v12 += 4;
     }

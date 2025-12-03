@@ -17,9 +17,9 @@
 - (id)accessibilityCustomRotors
 {
   v0 = +[ICAccessibilityCustomRotorController sharedInstance];
-  v1 = [v0 sharedTextViewRotors];
+  sharedTextViewRotors = [v0 sharedTextViewRotors];
 
-  return v1;
+  return sharedTextViewRotors;
 }
 
 @end

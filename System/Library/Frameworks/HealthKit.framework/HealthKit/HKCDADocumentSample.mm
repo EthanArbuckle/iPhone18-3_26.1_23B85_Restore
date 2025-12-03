@@ -1,19 +1,19 @@
 @interface HKCDADocumentSample
-+ (BOOL)_isValidOperatorType:(unint64_t)a3;
++ (BOOL)_isValidOperatorType:(unint64_t)type;
 + (HKCDADocumentSample)CDADocumentSampleWithData:(NSData *)documentData startDate:(NSDate *)startDate endDate:(NSDate *)endDate metadata:(NSDictionary *)metadata validationError:(NSError *)validationError;
-+ (id)_comparisonExpressionForValue:(id)a3 operatorType:(unint64_t)a4;
-+ (id)_globStringToRegexString:(id)a3;
-- (BOOL)_predicateMatchForKeyPath:(id)a3 pattern:(id)a4;
-- (BOOL)_validateDocumentContentWithError:(id *)a3;
-- (BOOL)prepareForDelivery:(id *)a3;
-- (BOOL)prepareForSaving:(id *)a3;
-- (HKCDADocumentSample)initWithCoder:(id)a3;
-- (id)_fieldValueForKeyPath:(id)a3;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
++ (id)_comparisonExpressionForValue:(id)value operatorType:(unint64_t)type;
++ (id)_globStringToRegexString:(id)string;
+- (BOOL)_predicateMatchForKeyPath:(id)path pattern:(id)pattern;
+- (BOOL)_validateDocumentContentWithError:(id *)error;
+- (BOOL)prepareForDelivery:(id *)delivery;
+- (BOOL)prepareForSaving:(id *)saving;
+- (HKCDADocumentSample)initWithCoder:(id)coder;
+- (id)_fieldValueForKeyPath:(id)path;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)description;
-- (void)_applyPropertiesWithOmittedFlags:(int64_t)a3 compressedDocumentData:(id)a4 title:(id)a5 patientName:(id)a6 authorName:(id)a7 custodianName:(id)a8;
-- (void)_processDocumentData:(id)a3 extractedFields:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_applyPropertiesWithOmittedFlags:(int64_t)flags compressedDocumentData:(id)data title:(id)title patientName:(id)name authorName:(id)authorName custodianName:(id)custodianName;
+- (void)_processDocumentData:(id)data extractedFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCDADocumentSample
@@ -49,11 +49,11 @@ LABEL_3:
   v19 = 2.22507386e-308;
 LABEL_6:
   v20 = [[_HKCDADocumentExtractedFields alloc] initWithDocumentData:v12];
-  v21 = [(_HKCDADocumentExtractedFields *)v20 extractedDate];
-  v22 = v21;
-  if (v21)
+  extractedDate = [(_HKCDADocumentExtractedFields *)v20 extractedDate];
+  v22 = extractedDate;
+  if (extractedDate)
   {
-    [v21 timeIntervalSinceReferenceDate];
+    [extractedDate timeIntervalSinceReferenceDate];
     v19 = v23;
     v17 = v23;
   }
@@ -67,7 +67,7 @@ LABEL_6:
   v36 = v20;
   v25 = v20;
   v26 = v12;
-  v27 = [a1 _newSampleWithType:v24 startDate:0 endDate:v15 device:&v31 metadata:v17 config:v19];
+  v27 = [self _newSampleWithType:v24 startDate:0 endDate:v15 device:&v31 metadata:v17 config:v19];
   v28 = [v27 _validateDocumentContentWithError:{validationError, v31, v32, v33, v34}];
   v29 = 0;
   if (v28)
@@ -80,16 +80,16 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(HKCDADocumentSample *)self document];
+  document = [(HKCDADocumentSample *)self document];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9.receiver = self;
   v9.super_class = HKCDADocumentSample;
   v5 = [(HKSample *)&v9 description];
   [v4 addObject:v5];
 
-  if (v3)
+  if (document)
   {
-    v6 = [v3 description];
+    v6 = [document description];
     [v4 addObject:v6];
   }
 
@@ -98,42 +98,42 @@ LABEL_6:
   return v7;
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v8.receiver = self;
   v8.super_class = HKCDADocumentSample;
-  v4 = [(HKSample *)&v8 _validateWithConfiguration:a3.var0, a3.var1];
-  if (!v4)
+  _validateConfiguration = [(HKSample *)&v8 _validateWithConfiguration:configuration.var0, configuration.var1];
+  if (!_validateConfiguration)
   {
-    v5 = [(HKCDADocumentSample *)self document];
-    v6 = v5;
-    if (v5)
+    document = [(HKCDADocumentSample *)self document];
+    v6 = document;
+    if (document)
     {
-      v4 = [v5 _validateConfiguration];
+      _validateConfiguration = [document _validateConfiguration];
     }
 
     else
     {
-      v4 = 0;
+      _validateConfiguration = 0;
     }
   }
 
-  return v4;
+  return _validateConfiguration;
 }
 
-- (BOOL)prepareForSaving:(id *)a3
+- (BOOL)prepareForSaving:(id *)saving
 {
   os_unfair_lock_assert_not_owner(&self->_contentLock);
   os_unfair_lock_lock(&self->_contentLock);
   v12.receiver = self;
   v12.super_class = HKCDADocumentSample;
-  if ([(HKObject *)&v12 prepareForSaving:a3])
+  if ([(HKObject *)&v12 prepareForSaving:saving])
   {
-    v5 = [(HKCDADocumentSample *)self document];
-    v6 = v5;
-    if (v5)
+    document = [(HKCDADocumentSample *)self document];
+    v6 = document;
+    if (document)
     {
-      v7 = [v5 _compressDocumentDataForTransfer:a3];
+      v7 = [document _compressDocumentDataForTransfer:saving];
     }
 
     else
@@ -142,10 +142,10 @@ LABEL_6:
       v9 = v8;
       if (v8)
       {
-        if (a3)
+        if (saving)
         {
           v10 = v8;
-          *a3 = v9;
+          *saving = v9;
         }
 
         else
@@ -167,24 +167,24 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)prepareForDelivery:(id *)a3
+- (BOOL)prepareForDelivery:(id *)delivery
 {
   os_unfair_lock_assert_not_owner(&self->_contentLock);
   os_unfair_lock_lock(&self->_contentLock);
   v9.receiver = self;
   v9.super_class = HKCDADocumentSample;
-  if ([(HKObject *)&v9 prepareForDelivery:a3])
+  if ([(HKObject *)&v9 prepareForDelivery:delivery])
   {
-    v5 = [(HKCDADocumentSample *)self document];
-    v6 = v5;
-    if (!v5 || (self->_omittedContentFlags & 2) != 0)
+    document = [(HKCDADocumentSample *)self document];
+    v6 = document;
+    if (!document || (self->_omittedContentFlags & 2) != 0)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 _decompressDocumentDataForDelivery:a3];
+      v7 = [document _decompressDocumentDataForDelivery:delivery];
     }
   }
 
@@ -197,11 +197,11 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_validateDocumentContentWithError:(id *)a3
+- (BOOL)_validateDocumentContentWithError:(id *)error
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = [(HKCDADocumentSample *)self document];
-  v5 = [v4 documentData];
+  document = [(HKCDADocumentSample *)self document];
+  documentData = [document documentData];
 
   if (_HKPathToValidationSchema_onceToken != -1)
   {
@@ -211,7 +211,7 @@ LABEL_6:
   v6 = [_HKXMLValidator validatorWithPathToXSD:_HKPathToValidationSchema__pathToValidationSchema];
   v17 = 0;
   v18 = 0;
-  v7 = [v6 validateXML:v5 simpleError:&v18 detailedErrors:&v17];
+  v7 = [v6 validateXML:documentData simpleError:&v18 detailedErrors:&v17];
   v8 = v18;
   v9 = v17;
   v10 = v9;
@@ -226,10 +226,10 @@ LABEL_6:
     v13 = v12;
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         v14 = v12;
-        *a3 = v13;
+        *error = v13;
       }
 
       else
@@ -243,39 +243,39 @@ LABEL_6:
   return v7;
 }
 
-- (void)_processDocumentData:(id)a3 extractedFields:(id)a4
+- (void)_processDocumentData:(id)data extractedFields:(id)fields
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a4;
-  v8 = a3;
-  v16 = [[v6 alloc] initWithData:v8];
+  fieldsCopy = fields;
+  dataCopy = data;
+  v16 = [[v6 alloc] initWithData:dataCopy];
 
   os_unfair_lock_lock(&self->_contentLock);
   self->_omittedContentFlags = 0;
   v9 = [HKCDADocument alloc];
-  v10 = [v7 extractedTitle];
-  v11 = [v7 extractedPatient];
-  v12 = [v7 extractedAuthorName];
-  v13 = [v7 extractedCustodianName];
+  extractedTitle = [fieldsCopy extractedTitle];
+  extractedPatient = [fieldsCopy extractedPatient];
+  extractedAuthorName = [fieldsCopy extractedAuthorName];
+  extractedCustodianName = [fieldsCopy extractedCustodianName];
 
-  v14 = [(HKCDADocument *)v9 initWithDocumentData:v16 compressedDocumentData:0 title:v10 patientName:v11 authorName:v12 custodianName:v13];
+  v14 = [(HKCDADocument *)v9 initWithDocumentData:v16 compressedDocumentData:0 title:extractedTitle patientName:extractedPatient authorName:extractedAuthorName custodianName:extractedCustodianName];
   document = self->_document;
   self->_document = v14;
 
   os_unfair_lock_unlock(&self->_contentLock);
 }
 
-- (HKCDADocumentSample)initWithCoder:(id)a3
+- (HKCDADocumentSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKCDADocumentSample;
-  v5 = [(HKSample *)&v11 initWithCoder:v4];
+  v5 = [(HKSample *)&v11 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v5->_contentLock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeIntegerForKey:@"omittedContentFlags"];
+    v7 = [coderCopy decodeIntegerForKey:@"omittedContentFlags"];
     v6->_omittedContentFlags = v7;
     if (v7)
     {
@@ -284,7 +284,7 @@ LABEL_6:
 
     else
     {
-      v8 = [[HKCDADocument alloc] initWithCoder:v4 omittedContentFlags:v6->_omittedContentFlags];
+      v8 = [[HKCDADocument alloc] initWithCoder:coderCopy omittedContentFlags:v6->_omittedContentFlags];
     }
 
     document = v6->_document;
@@ -294,42 +294,42 @@ LABEL_6:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKCDADocumentSample;
-  [(HKSample *)&v7 encodeWithCoder:v5];
-  [v5 encodeInteger:self->_omittedContentFlags forKey:@"omittedContentFlags"];
+  [(HKSample *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_omittedContentFlags forKey:@"omittedContentFlags"];
   if ((self->_omittedContentFlags & 1) == 0)
   {
-    v6 = [(HKCDADocumentSample *)self document];
-    if (!v6)
+    document = [(HKCDADocumentSample *)self document];
+    if (!document)
     {
       [(HKCDADocumentSample *)a2 encodeWithCoder:?];
     }
 
-    [v6 encodeWithCoder:v5 omittedContentFlags:self->_omittedContentFlags];
+    [document encodeWithCoder:coderCopy omittedContentFlags:self->_omittedContentFlags];
   }
 }
 
-- (void)_applyPropertiesWithOmittedFlags:(int64_t)a3 compressedDocumentData:(id)a4 title:(id)a5 patientName:(id)a6 authorName:(id)a7 custodianName:(id)a8
+- (void)_applyPropertiesWithOmittedFlags:(int64_t)flags compressedDocumentData:(id)data title:(id)title patientName:(id)name authorName:(id)authorName custodianName:(id)custodianName
 {
-  v20 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dataCopy = data;
+  titleCopy = title;
+  nameCopy = name;
+  authorNameCopy = authorName;
+  custodianNameCopy = custodianName;
   os_unfair_lock_lock(&self->_contentLock);
-  self->_omittedContentFlags = a3;
-  if (a3)
+  self->_omittedContentFlags = flags;
+  if (flags)
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = [[HKCDADocument alloc] initWithDocumentData:0 compressedDocumentData:v20 title:v14 patientName:v15 authorName:v16 custodianName:v17];
+    v18 = [[HKCDADocument alloc] initWithDocumentData:0 compressedDocumentData:dataCopy title:titleCopy patientName:nameCopy authorName:authorNameCopy custodianName:custodianNameCopy];
   }
 
   document = self->_document;
@@ -338,21 +338,21 @@ LABEL_6:
   os_unfair_lock_unlock(&self->_contentLock);
 }
 
-+ (BOOL)_isValidOperatorType:(unint64_t)a3
++ (BOOL)_isValidOperatorType:(unint64_t)type
 {
   result = 1;
-  if (a3 > 9 || ((1 << a3) & 0x3B0) == 0)
+  if (type > 9 || ((1 << type) & 0x3B0) == 0)
   {
-    return a3 == 99;
+    return type == 99;
   }
 
   return result;
 }
 
-+ (id)_globStringToRegexString:(id)a3
++ (id)_globStringToRegexString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy length];
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x2020000000;
@@ -365,7 +365,7 @@ LABEL_6:
   v10 = v11;
   v6 = v5;
   v9 = v6;
-  [v3 enumerateSubstringsInRange:0 options:v4 usingBlock:{2, v8}];
+  [stringCopy enumerateSubstringsInRange:0 options:v4 usingBlock:{2, v8}];
 
   _Block_object_dispose(v11, 8);
 
@@ -416,13 +416,13 @@ void __48__HKCDADocumentSample__globStringToRegexString___block_invoke(uint64_t 
   }
 }
 
-+ (id)_comparisonExpressionForValue:(id)a3 operatorType:(unint64_t)a4
++ (id)_comparisonExpressionForValue:(id)value operatorType:(unint64_t)type
 {
-  v6 = [MEMORY[0x1E696AE70] escapedPatternForString:a3];
+  v6 = [MEMORY[0x1E696AE70] escapedPatternForString:value];
   v7 = &stru_1F05FF230;
-  if (a4 > 7)
+  if (type > 7)
   {
-    switch(a4)
+    switch(type)
     {
       case 8uLL:
         [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@.*$", v6];
@@ -440,19 +440,19 @@ void __48__HKCDADocumentSample__globStringToRegexString___block_invoke(uint64_t 
     goto LABEL_12;
   }
 
-  if (a4 - 4 < 2)
+  if (type - 4 < 2)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"^%@$", v6];
     v8 = LABEL_12:;
     goto LABEL_13;
   }
 
-  if (a4 != 7)
+  if (type != 7)
   {
     goto LABEL_14;
   }
 
-  v8 = [a1 _globStringToRegexString:v6];
+  v8 = [self _globStringToRegexString:v6];
 LABEL_13:
   v7 = v8;
 LABEL_14:
@@ -466,35 +466,35 @@ LABEL_14:
   return v9;
 }
 
-- (id)_fieldValueForKeyPath:(id)a3
+- (id)_fieldValueForKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HKCDADocumentSample *)self document];
-  if (v5)
+  pathCopy = path;
+  document = [(HKCDADocumentSample *)self document];
+  if (document)
   {
-    if ([v4 isEqualToString:@"title"])
+    if ([pathCopy isEqualToString:@"title"])
     {
-      v6 = [v5 title];
+      title = [document title];
 LABEL_10:
-      v7 = v6;
+      v7 = title;
       goto LABEL_12;
     }
 
-    if ([v4 isEqualToString:@"patient_name"])
+    if ([pathCopy isEqualToString:@"patient_name"])
     {
-      v6 = [v5 patientName];
+      title = [document patientName];
       goto LABEL_10;
     }
 
-    if ([v4 isEqualToString:@"author_name"])
+    if ([pathCopy isEqualToString:@"author_name"])
     {
-      v6 = [v5 authorName];
+      title = [document authorName];
       goto LABEL_10;
     }
 
-    if ([v4 isEqualToString:@"custodian_name"])
+    if ([pathCopy isEqualToString:@"custodian_name"])
     {
-      v6 = [v5 custodianName];
+      title = [document custodianName];
       goto LABEL_10;
     }
   }
@@ -505,11 +505,11 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_predicateMatchForKeyPath:(id)a3 pattern:(id)a4
+- (BOOL)_predicateMatchForKeyPath:(id)path pattern:(id)pattern
 {
-  v6 = a4;
-  v7 = [(HKCDADocumentSample *)self _fieldValueForKeyPath:a3];
-  v8 = [v6 numberOfMatchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
+  patternCopy = pattern;
+  v7 = [(HKCDADocumentSample *)self _fieldValueForKeyPath:path];
+  v8 = [patternCopy numberOfMatchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
 
   return v8 == 1;
 }

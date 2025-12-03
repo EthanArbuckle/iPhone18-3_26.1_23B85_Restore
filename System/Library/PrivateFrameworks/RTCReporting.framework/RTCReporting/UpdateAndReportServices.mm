@@ -1,11 +1,11 @@
 @interface UpdateAndReportServices
-- (UpdateAndReportServices)initWithServices:(BOOL)a3 needToReport:(BOOL)a4 service:(id)a5;
+- (UpdateAndReportServices)initWithServices:(BOOL)services needToReport:(BOOL)report service:(id)service;
 - (void)dealloc;
 @end
 
 @implementation UpdateAndReportServices
 
-- (UpdateAndReportServices)initWithServices:(BOOL)a3 needToReport:(BOOL)a4 service:(id)a5
+- (UpdateAndReportServices)initWithServices:(BOOL)services needToReport:(BOOL)report service:(id)service
 {
   v11.receiver = self;
   v11.super_class = UpdateAndReportServices;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_update = a3;
-    v8->_report = a4;
-    v8->_block = _Block_copy(a5);
+    v8->_update = services;
+    v8->_report = report;
+    v8->_block = _Block_copy(service);
   }
 
   return v9;

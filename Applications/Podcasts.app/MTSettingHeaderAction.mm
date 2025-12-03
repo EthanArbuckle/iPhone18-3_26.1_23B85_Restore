@@ -1,32 +1,32 @@
 @interface MTSettingHeaderAction
-+ (MTSettingHeaderAction)headerActionWithTitle:(id)a3 actionHandler:(id)a4;
-- (MTSettingHeaderAction)initWithTitle:(id)a3 actionHandler:(id)a4;
++ (MTSettingHeaderAction)headerActionWithTitle:(id)title actionHandler:(id)handler;
+- (MTSettingHeaderAction)initWithTitle:(id)title actionHandler:(id)handler;
 - (void)performAction;
 @end
 
 @implementation MTSettingHeaderAction
 
-+ (MTSettingHeaderAction)headerActionWithTitle:(id)a3 actionHandler:(id)a4
++ (MTSettingHeaderAction)headerActionWithTitle:(id)title actionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 actionHandler:v6];
+  handlerCopy = handler;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy actionHandler:handlerCopy];
 
   return v8;
 }
 
-- (MTSettingHeaderAction)initWithTitle:(id)a3 actionHandler:(id)a4
+- (MTSettingHeaderAction)initWithTitle:(id)title actionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = MTSettingHeaderAction;
   v9 = [(MTSettingHeaderAction *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    v11 = objc_retainBlock(v8);
+    objc_storeStrong(&v9->_title, title);
+    v11 = objc_retainBlock(handlerCopy);
     actionHandler = v10->_actionHandler;
     v10->_actionHandler = v11;
   }
@@ -36,12 +36,12 @@
 
 - (void)performAction
 {
-  v3 = [(MTSettingHeaderAction *)self actionHandler];
+  actionHandler = [(MTSettingHeaderAction *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(MTSettingHeaderAction *)self actionHandler];
-    v4[2]();
+    actionHandler2 = [(MTSettingHeaderAction *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 

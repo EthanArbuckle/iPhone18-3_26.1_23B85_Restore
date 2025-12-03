@@ -1,51 +1,51 @@
 @interface PHAssetAnalysisStateProperties
-- (PHAssetAnalysisStateProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
-- (int)analysisStateForWorkerType:(signed __int16)a3 outLastIgnoreDate:(id *)a4 outIgnoreUntilDate:(id *)a5;
+- (PHAssetAnalysisStateProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
+- (int)analysisStateForWorkerType:(signed __int16)type outLastIgnoreDate:(id *)date outIgnoreUntilDate:(id *)untilDate;
 @end
 
 @implementation PHAssetAnalysisStateProperties
 
-- (int)analysisStateForWorkerType:(signed __int16)a3 outLastIgnoreDate:(id *)a4 outIgnoreUntilDate:(id *)a5
+- (int)analysisStateForWorkerType:(signed __int16)type outLastIgnoreDate:(id *)date outIgnoreUntilDate:(id *)untilDate
 {
   fetchDictionariesByWorkerType = self->_fetchDictionariesByWorkerType;
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:type];
   v9 = [(NSMutableDictionary *)fetchDictionariesByWorkerType objectForKeyedSubscript:v8];
 
   v10 = [v9 objectForKeyedSubscript:@"analysisState"];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  if (a4)
+  if (date)
   {
-    *a4 = [v9 objectForKeyedSubscript:@"lastIgnoredDate"];
+    *date = [v9 objectForKeyedSubscript:@"lastIgnoredDate"];
   }
 
-  if (a5)
+  if (untilDate)
   {
-    *a5 = [v9 objectForKeyedSubscript:@"ignoreUntilDate"];
+    *untilDate = [v9 objectForKeyedSubscript:@"ignoreUntilDate"];
   }
 
-  return v11;
+  return integerValue;
 }
 
-- (PHAssetAnalysisStateProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetAnalysisStateProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v28.receiver = self;
   v28.super_class = PHAssetAnalysisStateProperties;
   v9 = [(PHAssetAnalysisStateProperties *)&v28 init];
   v10 = v9;
   if (v9)
   {
-    v22 = v8;
-    objc_storeWeak(&v9->super._asset, v8);
+    v22 = assetCopy;
+    objc_storeWeak(&v9->super._asset, assetCopy);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     fetchDictionariesByWorkerType = v10->_fetchDictionariesByWorkerType;
     v10->_fetchDictionariesByWorkerType = v11;
 
-    v23 = v7;
-    v13 = [v7 objectForKey:@"assetAnalysisStates"];
+    v23 = dictionaryCopy;
+    v13 = [dictionaryCopy objectForKey:@"assetAnalysisStates"];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -76,8 +76,8 @@
       while (v15);
     }
 
-    v8 = v22;
-    v7 = v23;
+    assetCopy = v22;
+    dictionaryCopy = v23;
   }
 
   return v10;

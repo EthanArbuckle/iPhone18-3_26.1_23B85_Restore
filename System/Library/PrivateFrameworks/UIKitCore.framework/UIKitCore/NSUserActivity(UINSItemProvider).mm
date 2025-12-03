@@ -59,7 +59,7 @@ LABEL_5:
   v8 = *MEMORY[0x1E696AA68];
   v9 = a4;
   v10 = a3;
-  v11 = [a1 initWithActivityType:v8];
+  v11 = [self initWithActivityType:v8];
   v12 = [objc_opt_class() objectWithItemProviderData:v10 typeIdentifier:v9 error:a5];
 
   v13 = v12;
@@ -83,16 +83,16 @@ LABEL_5:
   {
     if (([v6 isEqualToString:@"com.apple.uikit.useractivity"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"com.apple.uikit.scene"))
     {
-      v8 = a1;
+      selfCopy = self;
       v9 = v7;
       v10 = dispatch_get_global_queue(0, 0);
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __createDataWithCompletion_block_invoke;
       v13[3] = &unk_1E70F37C0;
-      v14 = v8;
+      v14 = selfCopy;
       v15 = v9;
-      v11 = v8;
+      v11 = selfCopy;
       dispatch_async(v10, v13);
     }
 

@@ -17,15 +17,15 @@
   v7.receiver = self;
   v7.super_class = _PKSummaryViewLabelContainer;
   [(_PKSummaryViewSubviewContainer *)&v7 animateTransition];
-  v3 = [(_PKSummaryViewSubviewContainer *)self view];
-  [v3 setAlpha:0.0];
+  view = [(_PKSummaryViewSubviewContainer *)self view];
+  [view setAlpha:0.0];
 
-  v4 = [(_PKSummaryViewSubviewContainer *)self view];
-  v5 = [v4 layer];
-  [v5 clearHasBeenCommitted];
+  view2 = [(_PKSummaryViewSubviewContainer *)self view];
+  layer = [view2 layer];
+  [layer clearHasBeenCommitted];
 
-  v6 = [(_PKSummaryViewSubviewContainer *)self view];
-  [v6 pkui_setAlpha:1 animated:1.0];
+  view3 = [(_PKSummaryViewSubviewContainer *)self view];
+  [view3 pkui_setAlpha:1 animated:1.0];
 }
 
 @end

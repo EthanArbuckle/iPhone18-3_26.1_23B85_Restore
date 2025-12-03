@@ -1,53 +1,53 @@
 @interface TSTTableDataStyle
-+ (id)objectWithStyle:(id)a3 refCount:(unsigned int)a4;
++ (id)objectWithStyle:(id)style refCount:(unsigned int)count;
 - (id)description;
-- (id)initObjectWithStyle:(id)a3 refCount:(unsigned int)a4;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5;
+- (id)initObjectWithStyle:(id)style refCount:(unsigned int)count;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion;
 @end
 
 @implementation TSTTableDataStyle
 
-+ (id)objectWithStyle:(id)a3 refCount:(unsigned int)a4
++ (id)objectWithStyle:(id)style refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  inited = objc_msgSend_initObjectWithStyle_refCount_(v7, v8, v6, v4, v9);
+  v4 = *&count;
+  styleCopy = style;
+  v7 = [self alloc];
+  inited = objc_msgSend_initObjectWithStyle_refCount_(v7, v8, styleCopy, v4, v9);
 
   return inited;
 }
 
-- (id)initObjectWithStyle:(id)a3 refCount:(unsigned int)a4
+- (id)initObjectWithStyle:(id)style refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&count;
+  styleCopy = style;
   v11.receiver = self;
   v11.super_class = TSTTableDataStyle;
   v8 = [(TSTTableDataObject *)&v11 initWithRefCount:v4];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->super._payload, a3);
+    objc_storeStrong(&v8->super._payload, style);
   }
 
   return v9;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_sharedLoadFromArchive_(self, v10, a3, v11, v12);
-  v13 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  completionCopy = completion;
+  objc_msgSend_sharedLoadFromArchive_(self, v10, archive, v11, v12);
+  v13 = *(archive + 4);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = sub_2215C13A8;
   v18[3] = &unk_278467518;
   v18[4] = self;
-  v14 = v9;
+  v14 = completionCopy;
   v19 = v14;
-  v15 = v8;
+  v15 = unarchiverCopy;
   v17 = objc_opt_class();
   if (v13)
   {
@@ -60,28 +60,28 @@
   }
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v16.receiver = self;
   v16.super_class = TSTTableDataStyle;
-  [(TSTTableDataObject *)&v16 encodeToArchive:a3 archiver:v6];
+  [(TSTTableDataObject *)&v16 encodeToArchive:archive archiver:archiverCopy];
   v13 = objc_msgSend_style(self, v7, v8, v9, v10);
-  *(a3 + 4) |= 2u;
-  v14 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v14 = *(archive + 4);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = MEMORY[0x223DA0390](v15);
-    *(a3 + 4) = v14;
+    *(archive + 4) = v14;
   }
 
-  objc_msgSend_setStrongReference_message_(v6, v11, v13, v14, v12);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v11, v13, v14, v12);
 }
 
 - (id)description

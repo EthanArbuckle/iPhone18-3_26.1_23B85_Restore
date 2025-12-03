@@ -1,45 +1,45 @@
 @interface HKUITodayCirclePulseView
-- (HKUITodayCirclePulseView)initWithFrame:(CGRect)a3;
+- (HKUITodayCirclePulseView)initWithFrame:(CGRect)frame;
 - (void)_layoutSubviews;
-- (void)pulse:(id)a3;
+- (void)pulse:(id)pulse;
 @end
 
 @implementation HKUITodayCirclePulseView
 
-- (HKUITodayCirclePulseView)initWithFrame:(CGRect)a3
+- (HKUITodayCirclePulseView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HKUITodayCirclePulseView;
-  v3 = [(HKUITodayCirclePulseView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HKUITodayCirclePulseView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(HKUITodayCirclePulseView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(HKUITodayCirclePulseView *)v3 setBackgroundColor:clearColor];
 
     [(HKUITodayCirclePulseView *)v3 setClipsToBounds:0];
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
     backgroundContainer = v3->_backgroundContainer;
     v3->_backgroundContainer = v5;
 
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v3->_backgroundContainer setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v3->_backgroundContainer setBackgroundColor:clearColor2];
 
     v8 = objc_alloc_init(HKUITodayCirclePulseBackground);
     background = v3->_background;
     v3->_background = v8;
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(HKUITodayCirclePulseBackground *)v3->_background setBackgroundColor:v10];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(HKUITodayCirclePulseBackground *)v3->_background setBackgroundColor:clearColor3];
 
     [(HKUITodayCirclePulseBackground *)v3->_background setAutoresizingMask:18];
     [(UIView *)v3->_backgroundContainer addSubview:v3->_background];
     [(HKUITodayCirclePulseView *)v3 addSubview:v3->_backgroundContainer];
-    v11 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     dayLabel = v3->_dayLabel;
-    v3->_dayLabel = v11;
+    v3->_dayLabel = layer;
 
-    v13 = [(HKUITodayCirclePulseView *)v3 layer];
-    [v13 addSublayer:v3->_dayLabel];
+    layer2 = [(HKUITodayCirclePulseView *)v3 layer];
+    [layer2 addSublayer:v3->_dayLabel];
   }
 
   return v3;
@@ -71,9 +71,9 @@
   [(UIView *)backgroundContainer setCenter:v4, v4];
 }
 
-- (void)pulse:(id)a3
+- (void)pulse:(id)pulse
 {
-  v4 = a3;
+  pulseCopy = pulse;
   [(HKUITodayCirclePulseView *)self _layoutSubviews];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -82,7 +82,7 @@
   v10[4] = self;
   [MEMORY[0x1E69DD250] _animateUsingSpringWithDuration:0x20000 delay:v10 options:0 mass:0.230000004 stiffness:0.0700000003 damping:1.20000005 initialVelocity:400.0 animations:16.0 completion:0.0];
   v5 = MEMORY[0x1E69DD250];
-  v8 = v4;
+  v8 = pulseCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__HKUITodayCirclePulseView_pulse___block_invoke_2;
@@ -92,7 +92,7 @@
   v7[1] = 3221225472;
   v7[2] = __34__HKUITodayCirclePulseView_pulse___block_invoke_3;
   v7[3] = &unk_1E81B7D20;
-  v6 = v4;
+  v6 = pulseCopy;
   [v5 _animateUsingSpringWithDuration:196608 delay:v9 options:v7 mass:1.28999996 stiffness:0.0 damping:1.20000005 initialVelocity:400.0 animations:16.0 completion:0.0];
 }
 

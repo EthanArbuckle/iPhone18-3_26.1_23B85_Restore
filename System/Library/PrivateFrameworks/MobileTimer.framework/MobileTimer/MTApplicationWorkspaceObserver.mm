@@ -1,10 +1,10 @@
 @interface MTApplicationWorkspaceObserver
 + (MTApplicationWorkspaceObserver)sharedWorkspaceObserver;
 - (MTApplicationWorkspaceObserver)init;
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MTApplicationWorkspaceObserver
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __57__MTApplicationWorkspaceObserver_sharedWorkspaceObserver__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedWorkspaceObserver_onceToken != -1)
   {
     dispatch_once(&sharedWorkspaceObserver_onceToken, block);
@@ -49,29 +49,29 @@ uint64_t __57__MTApplicationWorkspaceObserver_sharedWorkspaceObserver__block_inv
     observersForBundleID = v2->_observersForBundleID;
     v2->_observersForBundleID = v5;
 
-    v7 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     applicationWorkspace = v2->_applicationWorkspace;
-    v2->_applicationWorkspace = v7;
+    v2->_applicationWorkspace = defaultWorkspace;
   }
 
   return v2;
 }
 
-- (void)addObserver:(id)a3 forBundleIdentifier:(id)a4
+- (void)addObserver:(id)observer forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTApplicationWorkspaceObserver *)self observerQueue];
+  observerCopy = observer;
+  identifierCopy = identifier;
+  observerQueue = [(MTApplicationWorkspaceObserver *)self observerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__MTApplicationWorkspaceObserver_addObserver_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E7B0C9A0;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = identifierCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = identifierCopy;
+  dispatch_sync(observerQueue, block);
 }
 
 void __66__MTApplicationWorkspaceObserver_addObserver_forBundleIdentifier___block_invoke(uint64_t a1)
@@ -98,18 +98,18 @@ void __66__MTApplicationWorkspaceObserver_addObserver_forBundleIdentifier___bloc
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(MTApplicationWorkspaceObserver *)self observerQueue];
+  observerCopy = observer;
+  observerQueue = [(MTApplicationWorkspaceObserver *)self observerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__MTApplicationWorkspaceObserver_removeObserver___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(observerQueue, v7);
 }
 
 void __49__MTApplicationWorkspaceObserver_removeObserver___block_invoke(uint64_t a1)
@@ -186,18 +186,18 @@ void __49__MTApplicationWorkspaceObserver_removeObserver___block_invoke_2(uint64
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(MTApplicationWorkspaceObserver *)self observerQueue];
+  installCopy = install;
+  observerQueue = [(MTApplicationWorkspaceObserver *)self observerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__MTApplicationWorkspaceObserver_applicationsDidInstall___block_invoke;
   v7[3] = &unk_1E7B0C928;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = installCopy;
+  selfCopy = self;
+  v6 = installCopy;
+  dispatch_async(observerQueue, v7);
 }
 
 void __57__MTApplicationWorkspaceObserver_applicationsDidInstall___block_invoke(uint64_t a1)
@@ -275,18 +275,18 @@ void __57__MTApplicationWorkspaceObserver_applicationsDidInstall___block_invoke(
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
-  v5 = [(MTApplicationWorkspaceObserver *)self observerQueue];
+  uninstallCopy = uninstall;
+  observerQueue = [(MTApplicationWorkspaceObserver *)self observerQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MTApplicationWorkspaceObserver_applicationsDidUninstall___block_invoke;
   v7[3] = &unk_1E7B0C928;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
+  dispatch_async(observerQueue, v7);
 }
 
 void __59__MTApplicationWorkspaceObserver_applicationsDidUninstall___block_invoke(uint64_t a1)

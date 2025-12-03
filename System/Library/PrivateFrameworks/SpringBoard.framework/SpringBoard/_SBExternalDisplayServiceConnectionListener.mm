@@ -1,25 +1,25 @@
 @interface _SBExternalDisplayServiceConnectionListener
-- (_SBExternalDisplayServiceConnectionListener)initWithServiceQueue:(id)a3;
+- (_SBExternalDisplayServiceConnectionListener)initWithServiceQueue:(id)queue;
 - (_SBExternalDisplayServiceConnectionListenerDelegate)delegate;
-- (id)_clientForConnection:(id)a3;
-- (id)_createClientForConnection:(id)a3;
-- (void)_handleDisconnectForServiceConnection:(id)a3;
-- (void)_removeClientForConnection:(id)a3;
-- (void)getConnectedDisplayInfoWithCompletion:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)notifyObserversExternalDisplayDidConnect:(id)a3;
-- (void)notifyObserversExternalDisplayDidUpdateProperties:(id)a3 requestingClient:(id)a4;
-- (void)notifyObserversExternalDisplayWillDisconnect:(id)a3;
-- (void)setDisplayArrangement:(id)a3 forDisplay:(id)a4;
-- (void)setDisplayMirroringEnabled:(id)a3 forDisplay:(id)a4;
-- (void)setDisplayModeSettings:(id)a3 forDisplay:(id)a4 options:(id)a5 completionHandler:(id)a6;
+- (id)_clientForConnection:(id)connection;
+- (id)_createClientForConnection:(id)connection;
+- (void)_handleDisconnectForServiceConnection:(id)connection;
+- (void)_removeClientForConnection:(id)connection;
+- (void)getConnectedDisplayInfoWithCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)notifyObserversExternalDisplayDidConnect:(id)connect;
+- (void)notifyObserversExternalDisplayDidUpdateProperties:(id)properties requestingClient:(id)client;
+- (void)notifyObserversExternalDisplayWillDisconnect:(id)disconnect;
+- (void)setDisplayArrangement:(id)arrangement forDisplay:(id)display;
+- (void)setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display;
+- (void)setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation _SBExternalDisplayServiceConnectionListener
 
-- (_SBExternalDisplayServiceConnectionListener)initWithServiceQueue:(id)a3
+- (_SBExternalDisplayServiceConnectionListener)initWithServiceQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = _SBExternalDisplayServiceConnectionListener;
   v6 = [(_SBExternalDisplayServiceConnectionListener *)&v19 init];
@@ -27,15 +27,15 @@
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     lock_connectionToClientMap = v7->_lock_connectionToClientMap;
-    v7->_lock_connectionToClientMap = v8;
+    v7->_lock_connectionToClientMap = strongToStrongObjectsMapTable;
 
     v10 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.externaldisplay.displayArrangements"];
     serviceClientAuthenticator = v7->_serviceClientAuthenticator;
     v7->_serviceClientAuthenticator = v10;
 
-    objc_storeStrong(&v7->_serviceQueue, a3);
+    objc_storeStrong(&v7->_serviceQueue, queue);
     v12 = MEMORY[0x277CF32A0];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -51,113 +51,113 @@
   return v7;
 }
 
-- (void)notifyObserversExternalDisplayDidUpdateProperties:(id)a3 requestingClient:(id)a4
+- (void)notifyObserversExternalDisplayDidUpdateProperties:(id)properties requestingClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  clientCopy = client;
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __114___SBExternalDisplayServiceConnectionListener_notifyObserversExternalDisplayDidUpdateProperties_requestingClient___block_invoke;
   block[3] = &unk_2783A8ED8;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = clientCopy;
+  v13 = propertiesCopy;
+  v9 = propertiesCopy;
+  v10 = clientCopy;
   dispatch_async(serviceQueue, block);
 }
 
-- (void)notifyObserversExternalDisplayDidConnect:(id)a3
+- (void)notifyObserversExternalDisplayDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   serviceQueue = self->_serviceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __88___SBExternalDisplayServiceConnectionListener_notifyObserversExternalDisplayDidConnect___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectCopy;
+  v6 = connectCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (void)notifyObserversExternalDisplayWillDisconnect:(id)a3
+- (void)notifyObserversExternalDisplayWillDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   serviceQueue = self->_serviceQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92___SBExternalDisplayServiceConnectionListener_notifyObserversExternalDisplayWillDisconnect___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = disconnectCopy;
+  v6 = disconnectCopy;
   dispatch_async(serviceQueue, v7);
 }
 
-- (id)_clientForConnection:(id)a3
+- (id)_clientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMapTable *)self->_lock_connectionToClientMap objectForKey:v4];
+  v5 = [(NSMapTable *)self->_lock_connectionToClientMap objectForKey:connectionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (id)_createClientForConnection:(id)a3
+- (id)_createClientForConnection:(id)connection
 {
-  v5 = a3;
-  if (!v5)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [_SBExternalDisplayServiceConnectionListener _createClientForConnection:];
   }
 
-  v6 = [v5 remoteProcess];
+  remoteProcess = [connectionCopy remoteProcess];
 
-  if (!v6)
+  if (!remoteProcess)
   {
     [_SBExternalDisplayServiceConnectionListener _createClientForConnection:];
   }
 
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMapTable *)self->_lock_connectionToClientMap objectForKey:v5];
+  v7 = [(NSMapTable *)self->_lock_connectionToClientMap objectForKey:connectionCopy];
 
   if (v7)
   {
-    [(_SBExternalDisplayServiceConnectionListener *)a2 _createClientForConnection:v5];
+    [(_SBExternalDisplayServiceConnectionListener *)a2 _createClientForConnection:connectionCopy];
   }
 
   v8 = [_SBExternalDisplayServiceClient alloc];
-  v9 = [v5 remoteProcess];
-  v10 = [(_SBExternalDisplayServiceClient *)v8 initWithConnection:v5 remoteProcess:v9];
+  remoteProcess2 = [connectionCopy remoteProcess];
+  v10 = [(_SBExternalDisplayServiceClient *)v8 initWithConnection:connectionCopy remoteProcess:remoteProcess2];
 
-  [(NSMapTable *)self->_lock_connectionToClientMap setObject:v10 forKey:v5];
+  [(NSMapTable *)self->_lock_connectionToClientMap setObject:v10 forKey:connectionCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return v10;
 }
 
-- (void)_removeClientForConnection:(id)a3
+- (void)_removeClientForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_lock_connectionToClientMap removeObjectForKey:v4];
+  [(NSMapTable *)self->_lock_connectionToClientMap removeObjectForKey:connectionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)getConnectedDisplayInfoWithCompletion:(id)a3
+- (void)getConnectedDisplayInfoWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v4 = [MEMORY[0x277CF3280] currentContext];
-  v5 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:v4];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v5 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:currentContext];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
@@ -180,16 +180,16 @@
 
   [_SBExternalDisplayServiceConnectionListener getConnectedDisplayInfoWithCompletion:];
 LABEL_3:
-  [v7 client:v5 getConnectedDisplayInfoWithCompletion:v8];
+  [v7 client:v5 getConnectedDisplayInfoWithCompletion:completionCopy];
 }
 
-- (void)setDisplayArrangement:(id)a3 forDisplay:(id)a4
+- (void)setDisplayArrangement:(id)arrangement forDisplay:(id)display
 {
-  v11 = a3;
-  v6 = a4;
+  arrangementCopy = arrangement;
+  displayCopy = display;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v7 = [MEMORY[0x277CF3280] currentContext];
-  v8 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:v7];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v8 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:currentContext];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = WeakRetained;
@@ -212,16 +212,16 @@ LABEL_3:
 
   [_SBExternalDisplayServiceConnectionListener setDisplayArrangement:forDisplay:];
 LABEL_3:
-  [v10 client:v8 setDisplayArrangement:v11 forDisplay:v6];
+  [v10 client:v8 setDisplayArrangement:arrangementCopy forDisplay:displayCopy];
 }
 
-- (void)setDisplayMirroringEnabled:(id)a3 forDisplay:(id)a4
+- (void)setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display
 {
-  v11 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  displayCopy = display;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v7 = [MEMORY[0x277CF3280] currentContext];
-  v8 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:v7];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v8 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:currentContext];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = WeakRetained;
@@ -244,18 +244,18 @@ LABEL_3:
 
   [_SBExternalDisplayServiceConnectionListener setDisplayMirroringEnabled:forDisplay:];
 LABEL_3:
-  [v10 client:v8 setDisplayMirroringEnabled:v11 forDisplay:v6];
+  [v10 client:v8 setDisplayMirroringEnabled:enabledCopy forDisplay:displayCopy];
 }
 
-- (void)setDisplayModeSettings:(id)a3 forDisplay:(id)a4 options:(id)a5 completionHandler:(id)a6
+- (void)setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  settingsCopy = settings;
+  displayCopy = display;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serviceQueue);
-  v13 = [MEMORY[0x277CF3280] currentContext];
-  v14 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:v13];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  v14 = [(_SBExternalDisplayServiceConnectionListener *)self _clientForConnection:currentContext];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v16 = WeakRetained;
@@ -278,26 +278,26 @@ LABEL_3:
 
   [_SBExternalDisplayServiceConnectionListener setDisplayModeSettings:forDisplay:options:completionHandler:];
 LABEL_3:
-  [v16 client:v14 setDisplayModeSettings:v17 forDisplay:v10 options:v11 completionHandler:v12];
+  [v16 client:v14 setDisplayModeSettings:settingsCopy forDisplay:displayCopy options:optionsCopy completionHandler:handlerCopy];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = SBLogDisplayControlling();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v19 = v6;
+    v19 = connectionCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_INFO, "SBExternalDisplayService: Received Connection: %{public}@", buf, 0xCu);
   }
 
   serviceClientAuthenticator = self->_serviceClientAuthenticator;
-  v9 = [v6 remoteProcess];
-  v10 = [v9 auditToken];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v17 = 0;
-  v11 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:v10 error:&v17];
+  v11 = [(FBServiceClientAuthenticator *)serviceClientAuthenticator authenticateAuditToken:auditToken error:&v17];
   v12 = v17;
 
   if ((v11 & 1) == 0)
@@ -305,7 +305,7 @@ LABEL_3:
     v15 = SBLogDisplayControlling();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      [_SBExternalDisplayServiceConnectionListener listener:v12 didReceiveConnection:v6 withContext:v15];
+      [_SBExternalDisplayServiceConnectionListener listener:v12 didReceiveConnection:connectionCopy withContext:v15];
     }
 
     goto LABEL_14;
@@ -321,11 +321,11 @@ LABEL_3:
 
 LABEL_14:
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_15;
   }
 
-  v13 = [(_SBExternalDisplayServiceConnectionListener *)self _createClientForConnection:v6];
+  v13 = [(_SBExternalDisplayServiceConnectionListener *)self _createClientForConnection:connectionCopy];
   if (!v13)
   {
     [_SBExternalDisplayServiceConnectionListener listener:didReceiveConnection:withContext:];
@@ -336,23 +336,23 @@ LABEL_14:
   v16[2] = __89___SBExternalDisplayServiceConnectionListener_listener_didReceiveConnection_withContext___block_invoke;
   v16[3] = &unk_2783AB730;
   v16[4] = self;
-  [v6 configureConnection:v16];
+  [connectionCopy configureConnection:v16];
   v14 = SBLogDisplayControlling();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     [_SBExternalDisplayServiceConnectionListener listener:v13 didReceiveConnection:v14 withContext:?];
   }
 
-  [v6 activate];
+  [connectionCopy activate];
 LABEL_15:
 }
 
-- (void)_handleDisconnectForServiceConnection:(id)a3
+- (void)_handleDisconnectForServiceConnection:(id)connection
 {
   serviceQueue = self->_serviceQueue;
-  v5 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(serviceQueue);
-  [(_SBExternalDisplayServiceConnectionListener *)self _removeClientForConnection:v5];
+  [(_SBExternalDisplayServiceConnectionListener *)self _removeClientForConnection:connectionCopy];
 }
 
 - (_SBExternalDisplayServiceConnectionListenerDelegate)delegate

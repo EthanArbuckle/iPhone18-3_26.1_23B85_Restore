@@ -1,20 +1,20 @@
 @interface DBAppLinkManager
-- (DBAppLinkManager)initWithSession:(id)a3;
+- (DBAppLinkManager)initWithSession:(id)session;
 - (NSArray)appLinkIcons;
-- (id)launchInfoForAppLink:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)launchInfoForAppLink:(id)link;
+- (void)addObserver:(id)observer;
 - (void)connect;
 - (void)dealloc;
-- (void)presentAppLink:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)update:(id)a3;
+- (void)presentAppLink:(id)link;
+- (void)removeObserver:(id)observer;
+- (void)update:(id)update;
 @end
 
 @implementation DBAppLinkManager
 
-- (DBAppLinkManager)initWithSession:(id)a3
+- (DBAppLinkManager)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v11.receiver = self;
   v11.super_class = DBAppLinkManager;
   v5 = [(DBAppLinkManager *)&v11 init];
@@ -24,9 +24,9 @@
     observers = v5->_observers;
     v5->_observers = v6;
 
-    if (v4)
+    if (sessionCopy)
     {
-      v8 = [[_TtC9DashBoard29DBAppLinkPunchthroughLauncher alloc] initWithSession:v4];
+      v8 = [[_TtC9DashBoard29DBAppLinkPunchthroughLauncher alloc] initWithSession:sessionCopy];
       punchthroughLauncher = v5->_punchthroughLauncher;
       v5->_punchthroughLauncher = v8;
     }
@@ -45,27 +45,27 @@
   [(DBAppLinkManager *)&v3 dealloc];
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DBAppLinkManager *)self appLinkIconsMap];
+  updateCopy = update;
+  appLinkIconsMap = [(DBAppLinkManager *)self appLinkIconsMap];
 
-  if (!v5)
+  if (!appLinkIconsMap)
   {
     v6 = objc_opt_new();
     [(DBAppLinkManager *)self setAppLinkIconsMap:v6];
   }
 
   v7 = MEMORY[0x277CBEB98];
-  v8 = [(DBAppLinkManager *)self snapshot];
-  v9 = [v8 appLinks];
-  v10 = [v7 setWithArray:v9];
+  snapshot = [(DBAppLinkManager *)self snapshot];
+  appLinks = [snapshot appLinks];
+  v10 = [v7 setWithArray:appLinks];
 
   v11 = MEMORY[0x277CBEB98];
-  v44 = v4;
-  v12 = [v4 appLinks];
-  v13 = [v11 setWithArray:v12];
+  v44 = updateCopy;
+  appLinks2 = [updateCopy appLinks];
+  v13 = [v11 setWithArray:appLinks2];
 
   v14 = [v13 mutableCopy];
   [v14 minusSet:v10];
@@ -98,9 +98,9 @@
         v21 = *(*(&v52 + 1) + 8 * v20);
         v22 = [[DBAppLinkLeafIcon alloc] initWithAppLink:v21];
         [v15 addObject:v22];
-        v23 = [(DBAppLinkManager *)self appLinkIconsMap];
-        v24 = [v21 identifier];
-        [v23 setObject:v22 forKeyedSubscript:v24];
+        appLinkIconsMap2 = [(DBAppLinkManager *)self appLinkIconsMap];
+        identifier = [v21 identifier];
+        [appLinkIconsMap2 setObject:v22 forKeyedSubscript:identifier];
 
         ++v20;
       }
@@ -133,18 +133,18 @@
         }
 
         v29 = *(*(&v48 + 1) + 8 * v28);
-        v30 = [(DBAppLinkManager *)self appLinkIconsMap];
-        v31 = [v29 identifier];
-        v32 = [v30 objectForKeyedSubscript:v31];
+        appLinkIconsMap3 = [(DBAppLinkManager *)self appLinkIconsMap];
+        identifier2 = [v29 identifier];
+        v32 = [appLinkIconsMap3 objectForKeyedSubscript:identifier2];
 
         if (v32)
         {
           [v16 addObject:v32];
         }
 
-        v33 = [(DBAppLinkManager *)self appLinkIconsMap];
-        v34 = [v29 identifier];
-        [v33 setObject:0 forKeyedSubscript:v34];
+        appLinkIconsMap4 = [(DBAppLinkManager *)self appLinkIconsMap];
+        identifier3 = [v29 identifier];
+        [appLinkIconsMap4 setObject:0 forKeyedSubscript:identifier3];
 
         ++v28;
       }
@@ -173,19 +173,19 @@
       _os_log_impl(&dword_248146000, v35, OS_LOG_TYPE_DEFAULT, "%s: notifying observers. %@ applink(s) added, %@ applink(s) removed", buf, 0x20u);
     }
 
-    v39 = [(DBAppLinkManager *)self observers];
+    observers = [(DBAppLinkManager *)self observers];
     v40 = [v15 copy];
     v41 = [v16 copy];
-    [v39 appLinkManager:self didAddAppLinks:v40 didRemoveAppLinks:v41];
+    [observers appLinkManager:self didAddAppLinks:v40 didRemoveAppLinks:v41];
   }
 
   else
   {
-    v39 = DBLogForCategory(0x1CuLL);
+    observers = DBLogForCategory(0x1CuLL);
     v36 = v44;
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
+    if (os_log_type_enabled(observers, OS_LOG_TYPE_DEBUG))
     {
-      [DBAppLinkManager update:v39];
+      [DBAppLinkManager update:observers];
     }
   }
 
@@ -230,69 +230,69 @@ void __27__DBAppLinkManager_connect__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)appLinkIcons
 {
-  v2 = [(DBAppLinkManager *)self appLinkIconsMap];
-  v3 = [v2 allValues];
+  appLinkIconsMap = [(DBAppLinkManager *)self appLinkIconsMap];
+  allValues = [appLinkIconsMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBAppLinkManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(DBAppLinkManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBAppLinkManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(DBAppLinkManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)presentAppLink:(id)a3
+- (void)presentAppLink:(id)link
 {
-  v4 = a3;
-  v5 = [(DBAppLinkManager *)self punchthroughLauncher];
+  linkCopy = link;
+  punchthroughLauncher = [(DBAppLinkManager *)self punchthroughLauncher];
 
-  if (v5)
+  if (punchthroughLauncher)
   {
-    v6 = [(DBAppLinkManager *)self punchthroughLauncher];
-    [v6 activatePunchthroughWithAppLink:v4];
+    punchthroughLauncher2 = [(DBAppLinkManager *)self punchthroughLauncher];
+    [punchthroughLauncher2 activatePunchthroughWithAppLink:linkCopy];
   }
 
   else
   {
-    v6 = DBLogForCategory(0x1CuLL);
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    punchthroughLauncher2 = DBLogForCategory(0x1CuLL);
+    if (os_log_type_enabled(punchthroughLauncher2, OS_LOG_TYPE_ERROR))
     {
-      [DBAppLinkManager presentAppLink:v6];
+      [DBAppLinkManager presentAppLink:punchthroughLauncher2];
     }
   }
 }
 
-- (id)launchInfoForAppLink:(id)a3
+- (id)launchInfoForAppLink:(id)link
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [a3 contentURLAction];
-  v5 = [v3 URLWithString:v4];
+  contentURLAction = [link contentURLAction];
+  v5 = [v3 URLWithString:contentURLAction];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    v7 = [v6 applicationsAvailableForOpeningURL:v5];
-    v8 = [v7 firstObject];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    v7 = [defaultWorkspace applicationsAvailableForOpeningURL:v5];
+    firstObject = [v7 firstObject];
 
-    v9 = [v8 bundleIdentifier];
+    bundleIdentifier = [firstObject bundleIdentifier];
     v10 = +[DBApplicationController sharedInstance];
-    v11 = [v10 applicationWithBundleIdentifier:v9];
+    v11 = [v10 applicationWithBundleIdentifier:bundleIdentifier];
 
     if (v11)
     {
       v12 = DBLogForCategory(0x1CuLL);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        [(DBAppLinkManager *)v5 launchInfoForAppLink:v9, v12];
+        [(DBAppLinkManager *)v5 launchInfoForAppLink:bundleIdentifier, v12];
       }
 
       v13 = objc_alloc_init(DBActivationSettings);

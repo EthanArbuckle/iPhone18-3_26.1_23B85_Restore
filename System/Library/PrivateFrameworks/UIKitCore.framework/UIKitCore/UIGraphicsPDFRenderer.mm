@@ -1,36 +1,36 @@
 @interface UIGraphicsPDFRenderer
-+ (CGContext)contextWithFormat:(id)a3;
-+ (void)prepareCGContext:(CGContext *)a3 withRendererContext:(id)a4;
++ (CGContext)contextWithFormat:(id)format;
++ (void)prepareCGContext:(CGContext *)context withRendererContext:(id)rendererContext;
 - (BOOL)writePDFToURL:(NSURL *)url withActions:(UIGraphicsPDFDrawingActions)actions error:(NSError *)error;
 - (NSData)PDFDataWithActions:(UIGraphicsPDFDrawingActions)actions;
 - (UIGraphicsPDFRenderer)init;
-- (UIGraphicsPDFRenderer)initWithBounds:(CGRect)a3;
+- (UIGraphicsPDFRenderer)initWithBounds:(CGRect)bounds;
 - (UIGraphicsPDFRenderer)initWithBounds:(CGRect)bounds format:(UIGraphicsPDFRendererFormat *)format;
-- (void)popContext:(id)a3;
-- (void)pushContext:(id)a3;
+- (void)popContext:(id)context;
+- (void)pushContext:(id)context;
 @end
 
 @implementation UIGraphicsPDFRenderer
 
-- (void)pushContext:(id)a3
+- (void)pushContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = malloc_type_malloc(0x48uLL, 0x1000040773C5DECuLL);
-  [v3 documentBounds];
+  [contextCopy documentBounds];
   *v4 = v5;
   v4[1] = v6;
   v4[2] = v7;
   v4[3] = v8;
-  [v3 pageBounds];
+  [contextCopy pageBounds];
   v4[4] = v9;
   v4[5] = v10;
   v4[6] = v11;
   v4[7] = v12;
-  *(v4 + 64) = [v3 inPage];
-  v13 = [v3 CGContext];
+  *(v4 + 64) = [contextCopy inPage];
+  cGContext = [contextCopy CGContext];
 
   ContextStack = GetContextStack(1);
-  v15 = CGContextRetain(v13);
+  v15 = CGContextRetain(cGContext);
   v16 = *ContextStack;
   v17 = &ContextStack[6 * *ContextStack];
   *(v17 + 1) = v15;
@@ -39,34 +39,34 @@
   *ContextStack = v16 + 1;
 }
 
-- (void)popContext:(id)a3
+- (void)popContext:(id)context
 {
-  v4 = a3;
-  if ([v4 inPage])
+  contextCopy = context;
+  if ([contextCopy inPage])
   {
-    CGPDFContextEndPage([v4 CGContext]);
+    CGPDFContextEndPage([contextCopy CGContext]);
   }
 
   v5.receiver = self;
   v5.super_class = UIGraphicsPDFRenderer;
-  [(UIGraphicsRenderer *)&v5 popContext:v4];
-  CGPDFContextClose([v4 CGContext]);
+  [(UIGraphicsRenderer *)&v5 popContext:contextCopy];
+  CGPDFContextClose([contextCopy CGContext]);
 }
 
-+ (CGContext)contextWithFormat:(id)a3
++ (CGContext)contextWithFormat:(id)format
 {
-  v3 = a3;
-  [v3 bounds];
+  formatCopy = format;
+  [formatCopy bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 documentInfo];
-  v13 = [v3 outputURL];
+  documentInfo = [formatCopy documentInfo];
+  outputURL = [formatCopy outputURL];
 
-  if (v13)
+  if (outputURL)
   {
-    v14 = [v3 outputURL];
+    outputURL2 = [formatCopy outputURL];
     v23.origin.x = v5;
     v23.origin.y = v7;
     v23.size.width = v9;
@@ -81,14 +81,14 @@
       v15 = &v22;
     }
 
-    v16 = CGPDFContextCreateWithURL(v14, v15, v12);
+    v16 = CGPDFContextCreateWithURL(outputURL2, v15, documentInfo);
   }
 
   else
   {
-    v17 = [v3 pdfData];
+    pdfData = [formatCopy pdfData];
 
-    if (v17 && ([v3 pdfData], v18 = objc_claimAutoreleasedReturnValue(), v19 = CGDataConsumerCreateWithCFData(v18), v18, v19))
+    if (pdfData && ([formatCopy pdfData], v18 = objc_claimAutoreleasedReturnValue(), v19 = CGDataConsumerCreateWithCFData(v18), v18, v19))
     {
       v24.origin.x = v5;
       v24.origin.y = v7;
@@ -104,7 +104,7 @@
         v20 = &v22;
       }
 
-      v16 = CGPDFContextCreate(v19, v20, v12);
+      v16 = CGPDFContextCreate(v19, v20, documentInfo);
       CGDataConsumerRelease(v19);
     }
 
@@ -117,11 +117,11 @@
   return v16;
 }
 
-+ (void)prepareCGContext:(CGContext *)a3 withRendererContext:(id)a4
++ (void)prepareCGContext:(CGContext *)context withRendererContext:(id)rendererContext
 {
-  v4 = a4;
-  v5 = [v4 format];
-  [v5 bounds];
+  rendererContextCopy = rendererContext;
+  format = [rendererContextCopy format];
+  [format bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -130,8 +130,8 @@
   v22 = v8;
   *&v23 = v10;
   *(&v23 + 1) = v12;
-  v14 = [v5 documentInfo];
-  v15 = [v14 objectForKey:*MEMORY[0x1E695F390]];
+  documentInfo = [format documentInfo];
+  v15 = [documentInfo objectForKey:*MEMORY[0x1E695F390]];
   v16 = v15;
   if (v15)
   {
@@ -165,9 +165,9 @@
     v18 = *&v23;
   }
 
-  [v4 setDocumentBounds:{v20, v17, v18, v19, *&v21, *&v22, v23}];
-  [v4 setPageBounds:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-  [v4 setInPage:0];
+  [rendererContextCopy setDocumentBounds:{v20, v17, v18, v19, *&v21, *&v22, v23}];
+  [rendererContextCopy setPageBounds:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  [rendererContextCopy setInPage:0];
 }
 
 - (UIGraphicsPDFRenderer)init
@@ -178,16 +178,16 @@
   return v4;
 }
 
-- (UIGraphicsPDFRenderer)initWithBounds:(CGRect)a3
+- (UIGraphicsPDFRenderer)initWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = +[(UIGraphicsRendererFormat *)UIGraphicsPDFRendererFormat];
-  v9 = [(UIGraphicsPDFRenderer *)self initWithBounds:v8 format:x, y, width, height];
+  height = [(UIGraphicsPDFRenderer *)self initWithBounds:v8 format:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
 - (UIGraphicsPDFRenderer)initWithBounds:(CGRect)bounds format:(UIGraphicsPDFRendererFormat *)format
@@ -201,19 +201,19 @@
   [(UIGraphicsPDFRendererFormat *)v9 setOutputURL:0];
   v12.receiver = self;
   v12.super_class = UIGraphicsPDFRenderer;
-  v10 = [(UIGraphicsRenderer *)&v12 initWithBounds:v9 format:x, y, width, height];
+  height = [(UIGraphicsRenderer *)&v12 initWithBounds:v9 format:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
 - (BOOL)writePDFToURL:(NSURL *)url withActions:(UIGraphicsPDFDrawingActions)actions error:(NSError *)error
 {
   v8 = actions;
   v9 = url;
-  v10 = [(UIGraphicsRenderer *)self format];
-  [v10 setOutputURL:v9];
+  format = [(UIGraphicsRenderer *)self format];
+  [format setOutputURL:v9];
 
-  LOBYTE(error) = [(UIGraphicsRenderer *)self runDrawingActions:v8 completionActions:0 format:v10 error:error];
+  LOBYTE(error) = [(UIGraphicsRenderer *)self runDrawingActions:v8 completionActions:0 format:format error:error];
   return error;
 }
 
@@ -222,9 +222,9 @@
   v4 = MEMORY[0x1E695DF88];
   v5 = actions;
   v6 = objc_alloc_init(v4);
-  v7 = [(UIGraphicsRenderer *)self format];
-  [v7 setPdfData:v6];
-  LODWORD(self) = [(UIGraphicsRenderer *)self runDrawingActions:v5 completionActions:0 format:v7 error:0];
+  format = [(UIGraphicsRenderer *)self format];
+  [format setPdfData:v6];
+  LODWORD(self) = [(UIGraphicsRenderer *)self runDrawingActions:v5 completionActions:0 format:format error:0];
 
   if (self)
   {

@@ -10,8 +10,8 @@
 - (BOOL)isAssociationDisallowed;
 - (BOOL)isBackgroundScanResult;
 - (BOOL)isEmergencyServicesReachable;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScanResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScanResult:(id)result;
 - (BOOL)isFILSDiscoveryFrame;
 - (BOOL)isHotspot;
 - (BOOL)isInternetAccessible;
@@ -41,22 +41,22 @@
 - (BOOL)supportsiAPOverWiFi;
 - (BOOL)wasConnectedDuringSleep;
 - (CWFChannel)channel;
-- (CWFScanResult)initWithCoder:(id)a3;
-- (CWFScanResult)initWithScanRecord:(id)a3 knownNetworkProfile:(id)a4 includeProperties:(id)a5;
-- (CWFScanResult)scanResultWithMatchingKnownNetworkProfile:(id)a3;
+- (CWFScanResult)initWithCoder:(id)coder;
+- (CWFScanResult)initWithScanRecord:(id)record knownNetworkProfile:(id)profile includeProperties:(id)properties;
+- (CWFScanResult)scanResultWithMatchingKnownNetworkProfile:(id)profile;
 - (NSDictionary)OSSpecificAttributes;
 - (NSSet)properties;
 - (NSString)description;
 - (NSString)networkName;
 - (id)JSONCompatibleKeyValueMap;
-- (id)OSSpecificValueForKey:(id)a3;
-- (id)__descriptionForAirPortBaseStationModel:(int64_t)a3;
+- (id)OSSpecificValueForKey:(id)key;
+- (id)__descriptionForAirPortBaseStationModel:(int64_t)model;
 - (id)__descriptionForRSNIE;
 - (id)__descriptionForWPAIE;
-- (id)__internalDictionaryFromScanRecord:(id)a3 knownNetworkProfile:(id)a4 includeProperties:(id)a5;
+- (id)__internalDictionaryFromScanRecord:(id)record knownNetworkProfile:(id)profile includeProperties:(id)properties;
 - (id)__supportedProperties;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)filteredScanResultWithProperties:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)filteredScanResultWithProperties:(id)properties;
 - (id)networkProfile;
 - (int)APMode;
 - (int)RSNCapabilities;
@@ -68,9 +68,9 @@
 - (int64_t)WAPISubtype;
 - (int64_t)airPortBaseStationModel;
 - (int64_t)beaconInterval;
-- (int64_t)compareLowDataModes:(id)a3;
-- (int64_t)compareSupportedPHYModes:(id)a3;
-- (int64_t)compareSupportedSecurityTypes:(id)a3;
+- (int64_t)compareLowDataModes:(id)modes;
+- (int64_t)compareSupportedPHYModes:(id)modes;
+- (int64_t)compareSupportedSecurityTypes:(id)types;
 - (int64_t)noise;
 - (int64_t)venueGroup;
 - (int64_t)venueType;
@@ -84,9 +84,9 @@
 - (unint64_t)supportedSecurityTypes;
 - (unint64_t)timestamp;
 - (unint64_t)weakestSupportedSecurityType;
-- (void)setMatchingKnownNetworkProfile:(id)a3;
-- (void)setOSSpecificAttributes:(id)a3;
-- (void)setOSSpecificValue:(id)a3 forKey:(id)a4;
+- (void)setMatchingKnownNetworkProfile:(id)profile;
+- (void)setOSSpecificAttributes:(id)attributes;
+- (void)setOSSpecificValue:(id)value forKey:(id)key;
 @end
 
 @implementation CWFScanResult
@@ -120,41 +120,41 @@
 - (unint64_t)supportedSecurityTypes
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCC88];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)isFILSDiscoveryFrame
 {
-  v2 = [(CWFScanResult *)self networkFlags];
-  v3 = [v2 containsObject:&unk_1F5BBCD00];
+  networkFlags = [(CWFScanResult *)self networkFlags];
+  v3 = [networkFlags containsObject:&unk_1F5BBCD00];
 
   return v3;
 }
 
 - (id)networkProfile
 {
-  v3 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-  if (!v3)
+  matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
+  if (!matchingKnownNetworkProfile)
   {
-    v3 = objc_alloc_init(CWFNetworkProfile);
-    v4 = [(CWFScanResult *)self SSID];
-    [(CWFNetworkProfile *)v3 setSSID:v4];
+    matchingKnownNetworkProfile = objc_alloc_init(CWFNetworkProfile);
+    sSID = [(CWFScanResult *)self SSID];
+    [(CWFNetworkProfile *)matchingKnownNetworkProfile setSSID:sSID];
 
-    [(CWFNetworkProfile *)v3 setSupportedSecurityTypes:[(CWFScanResult *)self supportedSecurityTypes]];
-    [(CWFNetworkProfile *)v3 setWAPISubtype:[(CWFScanResult *)self WAPISubtype]];
-    [(CWFNetworkProfile *)v3 setCarplayNetwork:[(CWFScanResult *)self supportsCarPlay]];
-    [(CWFNetworkProfile *)v3 setPersonalHotspot:[(CWFScanResult *)self isPersonalHotspot]];
+    [(CWFNetworkProfile *)matchingKnownNetworkProfile setSupportedSecurityTypes:[(CWFScanResult *)self supportedSecurityTypes]];
+    [(CWFNetworkProfile *)matchingKnownNetworkProfile setWAPISubtype:[(CWFScanResult *)self WAPISubtype]];
+    [(CWFNetworkProfile *)matchingKnownNetworkProfile setCarplayNetwork:[(CWFScanResult *)self supportsCarPlay]];
+    [(CWFNetworkProfile *)matchingKnownNetworkProfile setPersonalHotspot:[(CWFScanResult *)self isPersonalHotspot]];
   }
 
-  return v3;
+  return matchingKnownNetworkProfile;
 }
 
 - (BOOL)isBackgroundScanResult
 {
-  v2 = [(CWFScanResult *)self networkFlags];
-  v3 = [v2 containsObject:&unk_1F5BBD300];
+  networkFlags = [(CWFScanResult *)self networkFlags];
+  v3 = [networkFlags containsObject:&unk_1F5BBD300];
 
   return v3;
 }
@@ -162,73 +162,73 @@
 - (NSString)description
 {
   v114 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(CWFScanResult *)self SSID];
+  string = [MEMORY[0x1E696AD60] string];
+  sSID = [(CWFScanResult *)self SSID];
 
-  if (v4)
+  if (sSID)
   {
-    v5 = [(CWFScanResult *)self networkName];
-    v6 = [v5 redactedForWiFi];
+    networkName = [(CWFScanResult *)self networkName];
+    redactedForWiFi = [networkName redactedForWiFi];
 
-    if (([v6 hasPrefix:@" "] & 1) != 0 || objc_msgSend(v6, "hasSuffix:", @" "))
+    if (([redactedForWiFi hasPrefix:@" "] & 1) != 0 || objc_msgSend(redactedForWiFi, "hasSuffix:", @" "))
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@'", redactedForWiFi];
 
-      v6 = v7;
+      redactedForWiFi = v7;
     }
 
-    [v3 appendFormat:@"%@ - ", v6];
-    v8 = [(CWFScanResult *)self SSID];
-    v9 = CWFHexadecimalStringFromData(v8);
-    v10 = [v9 redactedForWiFi];
-    [v3 appendFormat:@"ssid=%@ (%lu), ", v10, -[CWFScanResult shortSSID](self, "shortSSID")];
+    [string appendFormat:@"%@ - ", redactedForWiFi];
+    sSID2 = [(CWFScanResult *)self SSID];
+    v9 = CWFHexadecimalStringFromData(sSID2);
+    redactedForWiFi2 = [v9 redactedForWiFi];
+    [string appendFormat:@"ssid=%@ (%lu), ", redactedForWiFi2, -[CWFScanResult shortSSID](self, "shortSSID")];
   }
 
-  v11 = [(CWFScanResult *)self BSSID];
+  bSSID = [(CWFScanResult *)self BSSID];
 
-  if (v11)
+  if (bSSID)
   {
-    v12 = [(CWFScanResult *)self BSSID];
-    v13 = [v12 redactedForWiFi];
-    [v3 appendFormat:@"bssid=%@, ", v13];
+    bSSID2 = [(CWFScanResult *)self BSSID];
+    redactedForWiFi3 = [bSSID2 redactedForWiFi];
+    [string appendFormat:@"bssid=%@, ", redactedForWiFi3];
   }
 
   if ([(CWFScanResult *)self supportedSecurityTypes])
   {
     v14 = sub_1E0BD331C([(CWFScanResult *)self supportedSecurityTypes], 0, [(CWFScanResult *)self WAPISubtype]);
-    [v3 appendFormat:@"security=%@, ", v14];
+    [string appendFormat:@"security=%@, ", v14];
   }
 
-  v15 = [(CWFScanResult *)self __descriptionForRSNIE];
-  v16 = v15;
-  if (v15)
+  __descriptionForRSNIE = [(CWFScanResult *)self __descriptionForRSNIE];
+  v16 = __descriptionForRSNIE;
+  if (__descriptionForRSNIE)
   {
-    [v3 appendFormat:@"rsn=%@, ", v15];
+    [string appendFormat:@"rsn=%@, ", __descriptionForRSNIE];
   }
 
-  v17 = [(CWFScanResult *)self __descriptionForWPAIE];
-  v18 = v17;
-  if (v17)
+  __descriptionForWPAIE = [(CWFScanResult *)self __descriptionForWPAIE];
+  v18 = __descriptionForWPAIE;
+  if (__descriptionForWPAIE)
   {
-    [v3 appendFormat:@"wpa=%@, ", v17];
+    [string appendFormat:@"wpa=%@, ", __descriptionForWPAIE];
   }
 
-  v19 = [(CWFScanResult *)self channel];
+  channel = [(CWFScanResult *)self channel];
 
-  if (v19)
+  if (channel)
   {
-    v20 = [(CWFScanResult *)self channel];
-    [v3 appendFormat:@"channel=%@", v20];
+    channel2 = [(CWFScanResult *)self channel];
+    [string appendFormat:@"channel=%@", channel2];
 
-    v21 = [(CWFScanResult *)self RNRChannelList];
-    if ([v21 count])
+    rNRChannelList = [(CWFScanResult *)self RNRChannelList];
+    if ([rNRChannelList count])
     {
-      objc_msgSend(v3, "appendString:", @" (");
+      objc_msgSend(string, "appendString:", @" (");
       v105 = 0u;
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v22 = v21;
+      v22 = rNRChannelList;
       v23 = [v22 countByEnumeratingWithState:&v103 objects:v113 count:16];
       if (v23)
       {
@@ -244,7 +244,7 @@
               objc_enumerationMutation(v22);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v103 + 1) + 8 * v26++)];
+            [string appendFormat:@"%@, ", *(*(&v103 + 1) + 8 * v26++)];
           }
 
           while (v24 != v26);
@@ -254,7 +254,7 @@
         while (v24);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
       v27 = @", ");
     }
 
@@ -263,85 +263,85 @@
       v27 = @", ";
     }
 
-    [v3 appendString:v27];
+    [string appendString:v27];
   }
 
-  v28 = [(CWFScanResult *)self countryCode];
+  countryCode = [(CWFScanResult *)self countryCode];
 
-  if (v28)
+  if (countryCode)
   {
-    v29 = [(CWFScanResult *)self countryCode];
-    [v3 appendFormat:@"cc=%@, ", v29];
+    countryCode2 = [(CWFScanResult *)self countryCode];
+    [string appendFormat:@"cc=%@, ", countryCode2];
   }
 
   if ([(CWFScanResult *)self supportedPHYModes])
   {
     v30 = sub_1E0BEE5D4([(CWFScanResult *)self supportedPHYModes]);
-    [v3 appendFormat:@"phy=%@, ", v30];
+    [string appendFormat:@"phy=%@, ", v30];
   }
 
   if ([(CWFScanResult *)self RSSI])
   {
-    [v3 appendFormat:@"rssi=%li, ", -[CWFScanResult RSSI](self, "RSSI")];
+    [string appendFormat:@"rssi=%li, ", -[CWFScanResult RSSI](self, "RSSI")];
   }
 
-  [v3 appendFormat:@"wasConnectedDuringSleep=%li, ", -[CWFScanResult wasConnectedDuringSleep](self, "wasConnectedDuringSleep")];
+  [string appendFormat:@"wasConnectedDuringSleep=%li, ", -[CWFScanResult wasConnectedDuringSleep](self, "wasConnectedDuringSleep")];
   if ([(CWFScanResult *)self beaconInterval])
   {
-    [v3 appendFormat:@"bi=%li, ", -[CWFScanResult beaconInterval](self, "beaconInterval")];
+    [string appendFormat:@"bi=%li, ", -[CWFScanResult beaconInterval](self, "beaconInterval")];
   }
 
   if ([(CWFScanResult *)self isPasspoint])
   {
-    [v3 appendString:{@"hs20=yes, "}];
+    [string appendString:{@"hs20=yes, "}];
   }
 
   if ([(CWFScanResult *)self isIBSS])
   {
-    [v3 appendString:{@"ibss=yes, "}];
+    [string appendString:{@"ibss=yes, "}];
   }
 
   if ([(CWFScanResult *)self isPersonalHotspot])
   {
-    [v3 appendString:{@"ph=yes, "}];
+    [string appendString:{@"ph=yes, "}];
   }
 
   if ([(CWFScanResult *)self isAppleSWAP])
   {
-    [v3 appendString:{@"swap=yes, "}];
+    [string appendString:{@"swap=yes, "}];
   }
 
   if ([(CWFScanResult *)self supportsCarPlay])
   {
-    [v3 appendString:{@"carplay=yes, "}];
+    [string appendString:{@"carplay=yes, "}];
   }
 
-  v31 = [(CWFScanResult *)self airPortBaseStationModel];
-  if (v31)
+  airPortBaseStationModel = [(CWFScanResult *)self airPortBaseStationModel];
+  if (airPortBaseStationModel)
   {
-    v32 = [(CWFScanResult *)self __descriptionForAirPortBaseStationModel:v31];
-    [v3 appendFormat:@"airport=[%@], ", v32];
+    v32 = [(CWFScanResult *)self __descriptionForAirPortBaseStationModel:airPortBaseStationModel];
+    [string appendFormat:@"airport=[%@], ", v32];
   }
 
   if ([(CWFScanResult *)self isWiFi6E])
   {
-    [v3 appendString:{@"6e=yes, "}];
+    [string appendString:{@"6e=yes, "}];
   }
 
   if ([(CWFScanResult *)self isFILSDiscoveryFrame])
   {
-    [v3 appendString:{@"filsd=yes, "}];
+    [string appendString:{@"filsd=yes, "}];
   }
 
-  v33 = [(CWFScanResult *)self RNRBSSList];
-  if ([v33 count])
+  rNRBSSList = [(CWFScanResult *)self RNRBSSList];
+  if ([rNRBSSList count])
   {
-    [v3 appendString:@"rnr=["];
+    [string appendString:@"rnr=["];
     v101 = 0u;
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v34 = v33;
+    v34 = rNRBSSList;
     v35 = [v34 countByEnumeratingWithState:&v99 objects:v112 count:16];
     if (v35)
     {
@@ -357,7 +357,7 @@
             objc_enumerationMutation(v34);
           }
 
-          [v3 appendFormat:@"(%@), ", *(*(&v99 + 1) + 8 * v38++)];
+          [string appendFormat:@"(%@), ", *(*(&v99 + 1) + 8 * v38++)];
         }
 
         while (v36 != v38);
@@ -367,26 +367,26 @@
       while (v36);
     }
 
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-    [v3 appendString:{@"], "}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+    [string appendString:{@"], "}];
   }
 
   if ([(CWFScanResult *)self isBackgroundScanResult])
   {
-    [v3 appendString:{@"bgscan=yes, "}];
+    [string appendString:{@"bgscan=yes, "}];
   }
 
   if ([(CWFScanResult *)self isPasspoint])
   {
-    v78 = [(CWFScanResult *)self domainNameList];
-    if ([v78 count])
+    domainNameList = [(CWFScanResult *)self domainNameList];
+    if ([domainNameList count])
     {
-      [v3 appendString:@"hs20-domains=["];
+      [string appendString:@"hs20-domains=["];
       v97 = 0u;
       v98 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v39 = v78;
+      v39 = domainNameList;
       v40 = [v39 countByEnumeratingWithState:&v95 objects:v111 count:16];
       if (v40)
       {
@@ -402,7 +402,7 @@
               objc_enumerationMutation(v39);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v95 + 1) + 8 * v43++)];
+            [string appendFormat:@"%@, ", *(*(&v95 + 1) + 8 * v43++)];
           }
 
           while (v41 != v43);
@@ -412,21 +412,21 @@
         while (v41);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-      [v3 appendString:{@"], "}];
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+      [string appendString:{@"], "}];
     }
 
-    v44 = [(CWFScanResult *)self NAIRealmNameList];
+    nAIRealmNameList = [(CWFScanResult *)self NAIRealmNameList];
     v75 = v18;
-    if ([v44 count])
+    if ([nAIRealmNameList count])
     {
-      [v3 appendString:@"hs20-nai=["];
+      [string appendString:@"hs20-nai=["];
       v93 = 0u;
       v94 = 0u;
       v91 = 0u;
       v92 = 0u;
-      v45 = v44;
-      v46 = v44;
+      v45 = nAIRealmNameList;
+      v46 = nAIRealmNameList;
       v47 = [v46 countByEnumeratingWithState:&v91 objects:v110 count:16];
       if (v47)
       {
@@ -442,7 +442,7 @@
               objc_enumerationMutation(v46);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v91 + 1) + 8 * v50++)];
+            [string appendFormat:@"%@, ", *(*(&v91 + 1) + 8 * v50++)];
           }
 
           while (v48 != v50);
@@ -452,21 +452,21 @@
         while (v48);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-      [v3 appendString:{@"], "}];
-      v44 = v45;
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+      [string appendString:{@"], "}];
+      nAIRealmNameList = v45;
     }
 
     v76 = v16;
-    v77 = [(CWFScanResult *)self roamingConsortiumList];
-    if ([v77 count])
+    roamingConsortiumList = [(CWFScanResult *)self roamingConsortiumList];
+    if ([roamingConsortiumList count])
     {
-      [v3 appendString:@"hs20-rc=["];
+      [string appendString:@"hs20-rc=["];
       v89 = 0u;
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v51 = v77;
+      v51 = roamingConsortiumList;
       v52 = [v51 countByEnumeratingWithState:&v87 objects:v109 count:16];
       if (v52)
       {
@@ -482,7 +482,7 @@
               objc_enumerationMutation(v51);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v87 + 1) + 8 * v55++)];
+            [string appendFormat:@"%@, ", *(*(&v87 + 1) + 8 * v55++)];
           }
 
           while (v53 != v55);
@@ -492,19 +492,19 @@
         while (v53);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-      [v3 appendString:{@"], "}];
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+      [string appendString:{@"], "}];
     }
 
-    v56 = [(CWFScanResult *)self operatorFriendlyNameList];
-    if ([v56 count])
+    operatorFriendlyNameList = [(CWFScanResult *)self operatorFriendlyNameList];
+    if ([operatorFriendlyNameList count])
     {
-      [v3 appendString:@"hs20-friend=["];
+      [string appendString:@"hs20-friend=["];
       v85 = 0u;
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v57 = v56;
+      v57 = operatorFriendlyNameList;
       v58 = [v57 countByEnumeratingWithState:&v83 objects:v108 count:16];
       if (v58)
       {
@@ -520,7 +520,7 @@
               objc_enumerationMutation(v57);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v83 + 1) + 8 * v61++)];
+            [string appendFormat:@"%@, ", *(*(&v83 + 1) + 8 * v61++)];
           }
 
           while (v59 != v61);
@@ -530,21 +530,21 @@
         while (v59);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-      [v3 appendString:{@"], "}];
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+      [string appendString:{@"], "}];
     }
 
-    v62 = [(CWFScanResult *)self cellularNetworkInfo];
-    if ([v62 count])
+    cellularNetworkInfo = [(CWFScanResult *)self cellularNetworkInfo];
+    if ([cellularNetworkInfo count])
     {
-      v74 = v44;
-      v63 = v33;
-      [v3 appendString:@"hs20-cell=["];
+      v74 = nAIRealmNameList;
+      v63 = rNRBSSList;
+      [string appendString:@"hs20-cell=["];
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v64 = v62;
+      v64 = cellularNetworkInfo;
       v65 = [v64 countByEnumeratingWithState:&v79 objects:v107 count:16];
       if (v65)
       {
@@ -560,7 +560,7 @@
               objc_enumerationMutation(v64);
             }
 
-            [v3 appendFormat:@"%@, ", *(*(&v79 + 1) + 8 * v68++)];
+            [string appendFormat:@"%@, ", *(*(&v79 + 1) + 8 * v68++)];
           }
 
           while (v66 != v68);
@@ -570,41 +570,41 @@
         while (v66);
       }
 
-      [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
-      [v3 appendString:{@"], "}];
-      v33 = v63;
-      v44 = v74;
+      [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
+      [string appendString:{@"], "}];
+      rNRBSSList = v63;
+      nAIRealmNameList = v74;
     }
 
     v18 = v75;
     v16 = v76;
   }
 
-  [v3 appendFormat:@"age=%lums (%llu), ", -[CWFScanResult age](self, "age"), -[CWFScanResult timestamp](self, "timestamp")];
-  v69 = [(CWFScanResult *)self matchingKnownNetworkProfile];
+  [string appendFormat:@"age=%lums (%llu), ", -[CWFScanResult age](self, "age"), -[CWFScanResult timestamp](self, "timestamp")];
+  matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
 
-  if (v69)
+  if (matchingKnownNetworkProfile)
   {
-    v70 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-    [v3 appendFormat:@"match=[%@], ", v70];
+    matchingKnownNetworkProfile2 = [(CWFScanResult *)self matchingKnownNetworkProfile];
+    [string appendFormat:@"match=[%@], ", matchingKnownNetworkProfile2];
   }
 
-  if ([v3 hasSuffix:{@", "}])
+  if ([string hasSuffix:{@", "}])
   {
-    [v3 deleteCharactersInRange:{objc_msgSend(v3, "length") - 2, 2}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 2, 2}];
   }
 
-  v71 = v3;
+  v71 = string;
 
   v72 = *MEMORY[0x1E69E9840];
-  return v3;
+  return string;
 }
 
 - (id)__descriptionForRSNIE
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFScanResult *)self scanRecord];
-  v4 = [v3 objectForKeyedSubscript:@"RSN_IE"];
+  scanRecord = [(CWFScanResult *)self scanRecord];
+  v4 = [scanRecord objectForKeyedSubscript:@"RSN_IE"];
 
   if (v4 || ([MEMORY[0x1E695DFD8] setWithArray:&unk_1F5BB9D48], v5 = objc_claimAutoreleasedReturnValue(), -[CWFScanResult properties](self, "properties"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isSubsetOfSet:", v6), v6, v5, v7))
   {
@@ -620,19 +620,19 @@
       v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CWFScanResult RSNBroadcastCipher](self, "RSNBroadcastCipher")}];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"IE_KEY_RSN_UCIPHERS"];
-    if (!v10)
+    rSNUnicastCiphers = [v4 objectForKeyedSubscript:@"IE_KEY_RSN_UCIPHERS"];
+    if (!rSNUnicastCiphers)
     {
-      v10 = [(CWFScanResult *)self RSNUnicastCiphers];
+      rSNUnicastCiphers = [(CWFScanResult *)self RSNUnicastCiphers];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"IE_KEY_RSN_AUTHSELS"];
-    if (!v11)
+    rSNAuthSelectors = [v4 objectForKeyedSubscript:@"IE_KEY_RSN_AUTHSELS"];
+    if (!rSNAuthSelectors)
     {
-      v11 = [(CWFScanResult *)self RSNAuthSelectors];
+      rSNAuthSelectors = [(CWFScanResult *)self RSNAuthSelectors];
     }
 
-    v38 = v11;
+    v38 = rSNAuthSelectors;
     v12 = [v4 objectForKeyedSubscript:@"IE_KEY_RSN_CAPS"];
     v13 = [v12 objectForKeyedSubscript:@"RSN_CAPABILITIES"];
 
@@ -641,22 +641,22 @@
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CWFScanResult RSNCapabilities](self, "RSNCapabilities")}];
     }
 
-    v14 = [MEMORY[0x1E696AD60] string];
-    [v14 appendString:@"["];
+    string = [MEMORY[0x1E696AD60] string];
+    [string appendString:@"["];
     v40 = v8;
     v15 = -[CWFScanResult __descriptionForRSNCipher:](self, "__descriptionForRSNCipher:", [v8 intValue]);
-    [v14 appendFormat:@"mcast=%@, ", v15];
+    [string appendFormat:@"mcast=%@, ", v15];
 
     v39 = v9;
     v16 = -[CWFScanResult __descriptionForRSNCipher:](self, "__descriptionForRSNCipher:", [v9 intValue]);
-    [v14 appendFormat:@"bip=%@, ", v16];
+    [string appendFormat:@"bip=%@, ", v16];
 
-    [v14 appendString:@"ucast={ "];
+    [string appendString:@"ucast={ "];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v17 = v10;
+    v17 = rSNUnicastCiphers;
     v18 = [v17 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v18)
     {
@@ -673,7 +673,7 @@
           }
 
           v22 = -[CWFScanResult __descriptionForRSNCipher:](self, "__descriptionForRSNCipher:", [*(*(&v46 + 1) + 8 * v21) intValue]);
-          [v14 appendFormat:@"%@ ", v22];
+          [string appendFormat:@"%@ ", v22];
 
           ++v21;
         }
@@ -687,8 +687,8 @@
 
     v41 = v4;
 
-    [v14 appendString:{@"}, "}];
-    [v14 appendString:@"auths={ "];
+    [string appendString:{@"}, "}];
+    [string appendString:@"auths={ "];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -710,7 +710,7 @@
           }
 
           v28 = -[CWFScanResult __descriptionForRSNAuthSel:](self, "__descriptionForRSNAuthSel:", [*(*(&v42 + 1) + 8 * v27) intValue]);
-          [v14 appendFormat:@"%@ ", v28];
+          [string appendFormat:@"%@ ", v28];
 
           ++v27;
         }
@@ -722,36 +722,36 @@
       while (v25);
     }
 
-    [v14 appendString:{@"}, "}];
-    v29 = [v13 unsignedIntValue];
-    v30 = [v13 unsignedIntValue];
+    [string appendString:{@"}, "}];
+    unsignedIntValue = [v13 unsignedIntValue];
+    unsignedIntValue2 = [v13 unsignedIntValue];
     v31 = "capable";
-    if ((v29 & 0x80) == 0)
+    if ((unsignedIntValue & 0x80) == 0)
     {
       v31 = "no";
     }
 
-    if ((v30 & 0x40) != 0)
+    if ((unsignedIntValue2 & 0x40) != 0)
     {
       v31 = "required";
     }
 
-    [v14 appendFormat:@"mfp=%s, ", v31];
+    [string appendFormat:@"mfp=%s, ", v31];
     if (v13)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%X", objc_msgSend(v13, "shortValue")];
-      [v14 appendFormat:@"caps=%@", v32];
+      [string appendFormat:@"caps=%@", v32];
     }
 
     else
     {
-      [v14 appendFormat:@"caps=%@", @"n/a"];
+      [string appendFormat:@"caps=%@", @"n/a"];
     }
 
     v33 = v40;
     v4 = v41;
     v34 = v39;
-    [v14 appendString:@"]"];
+    [string appendString:@"]"];
   }
 
   else
@@ -761,52 +761,52 @@
     v23 = 0;
     v13 = 0;
     v33 = 0;
-    v14 = 0;
+    string = 0;
   }
 
-  v35 = v14;
+  v35 = string;
 
   v36 = *MEMORY[0x1E69E9840];
-  return v14;
+  return string;
 }
 
 - (int64_t)beaconInterval
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCC70];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isAppleSWAP
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCCE8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsCarPlay
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCEF8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)airPortBaseStationModel
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCD90];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSSet)properties
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_internal allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSMutableDictionary *)self->_internal allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }
@@ -814,9 +814,9 @@
 - (unint64_t)timestamp
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD258];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (CWFChannel)channel
@@ -853,16 +853,16 @@
 - (BOOL)isPasspoint
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCCB8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)__descriptionForWPAIE
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFScanResult *)self scanRecord];
-  v4 = [v3 objectForKeyedSubscript:@"WPA_IE"];
+  scanRecord = [(CWFScanResult *)self scanRecord];
+  v4 = [scanRecord objectForKeyedSubscript:@"WPA_IE"];
 
   if (v4 || ([MEMORY[0x1E695DFD8] setWithArray:&unk_1F5BB9D30], v5 = objc_claimAutoreleasedReturnValue(), -[CWFScanResult properties](self, "properties"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isSubsetOfSet:", v6), v6, v5, v7))
   {
@@ -872,30 +872,30 @@
       v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[CWFScanResult WPAMulticastCipher](self, "WPAMulticastCipher")}];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"IE_KEY_WPA_UCIPHERS"];
-    if (!v9)
+    wPAUnicastCiphers = [v4 objectForKeyedSubscript:@"IE_KEY_WPA_UCIPHERS"];
+    if (!wPAUnicastCiphers)
     {
-      v9 = [(CWFScanResult *)self WPAUnicastCiphers];
+      wPAUnicastCiphers = [(CWFScanResult *)self WPAUnicastCiphers];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"IE_KEY_WPA_AUTHSELS"];
-    if (!v10)
+    wPAAuthSelectors = [v4 objectForKeyedSubscript:@"IE_KEY_WPA_AUTHSELS"];
+    if (!wPAAuthSelectors)
     {
-      v10 = [(CWFScanResult *)self WPAAuthSelectors];
+      wPAAuthSelectors = [(CWFScanResult *)self WPAAuthSelectors];
     }
 
-    v11 = [MEMORY[0x1E696AD60] string];
-    [v11 appendString:@"["];
+    string = [MEMORY[0x1E696AD60] string];
+    [string appendString:@"["];
     v29 = v8;
     v12 = -[CWFScanResult __descriptionForWPACipher:](self, "__descriptionForWPACipher:", [v8 intValue]);
-    [v11 appendFormat:@"mcast=%@, ", v12];
+    [string appendFormat:@"mcast=%@, ", v12];
 
-    [v11 appendString:@"ucast={ "];
+    [string appendString:@"ucast={ "];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = v9;
+    v13 = wPAUnicastCiphers;
     v14 = [v13 countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v14)
     {
@@ -912,7 +912,7 @@
           }
 
           v18 = -[CWFScanResult __descriptionForWPACipher:](self, "__descriptionForWPACipher:", [*(*(&v34 + 1) + 8 * v17) intValue]);
-          [v11 appendFormat:@"%@ ", v18];
+          [string appendFormat:@"%@ ", v18];
 
           ++v17;
         }
@@ -924,13 +924,13 @@
       while (v15);
     }
 
-    [v11 appendString:{@"}, "}];
-    [v11 appendString:@"auths={ "];
+    [string appendString:{@"}, "}];
+    [string appendString:@"auths={ "];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = v10;
+    v19 = wPAAuthSelectors;
     v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v20)
     {
@@ -947,7 +947,7 @@
           }
 
           v24 = -[CWFScanResult __descriptionForWPAAuthSel:](self, "__descriptionForWPAAuthSel:", [*(*(&v30 + 1) + 8 * v23) intValue]);
-          [v11 appendFormat:@"%@ ", v24];
+          [string appendFormat:@"%@ ", v24];
 
           ++v23;
         }
@@ -959,8 +959,8 @@
       while (v21);
     }
 
-    [v11 appendString:@"}"];
-    [v11 appendString:@"]"];
+    [string appendString:@"}"];
+    [string appendString:@"]"];
     v25 = v29;
   }
 
@@ -969,62 +969,62 @@
     v13 = 0;
     v19 = 0;
     v25 = 0;
-    v11 = 0;
+    string = 0;
   }
 
-  v26 = v11;
+  v26 = string;
 
   v27 = *MEMORY[0x1E69E9840];
-  return v11;
+  return string;
 }
 
 - (int)supportedPHYModes
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCCA0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (int64_t)RSSI
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCC28];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)wasConnectedDuringSleep
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCC40];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int)APMode
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCD30];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)isPersonalHotspot
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCCD0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isWiFi6E
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CWFScanResult *)self channel];
-  v4 = [v3 is6GHz];
+  channel = [(CWFScanResult *)self channel];
+  is6GHz = [channel is6GHz];
 
-  if (v4)
+  if (is6GHz)
   {
     LOBYTE(v5) = 1;
   }
@@ -1035,8 +1035,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(CWFScanResult *)self RNRBSSList];
-    v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    rNRBSSList = [(CWFScanResult *)self RNRBSSList];
+    v5 = [rNRBSSList countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
       v7 = *v15;
@@ -1046,16 +1046,16 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(rNRBSSList);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 channel];
-          if ([v10 is6GHz])
+          channel2 = [v9 channel];
+          if ([channel2 is6GHz])
           {
-            v11 = [v9 isColocatedAP];
+            isColocatedAP = [v9 isColocatedAP];
 
-            if (v11)
+            if (isColocatedAP)
             {
               LOBYTE(v5) = 1;
               goto LABEL_14;
@@ -1067,7 +1067,7 @@
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v5 = [rNRBSSList countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v5);
@@ -1087,9 +1087,9 @@ LABEL_14:
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFScanResult age](self, "age")}];
   [v3 setObject:v4 forKeyedSubscript:@"cache_age"];
 
-  v5 = [(CWFScanResult *)self channel];
-  v6 = [v5 JSONCompatibleKeyValueMap];
-  [v3 setObject:v6 forKeyedSubscript:@"channel"];
+  channel = [(CWFScanResult *)self channel];
+  jSONCompatibleKeyValueMap = [channel JSONCompatibleKeyValueMap];
+  [v3 setObject:jSONCompatibleKeyValueMap forKeyedSubscript:@"channel"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[CWFScanResult RSSI](self, "RSSI")}];
   [v3 setObject:v7 forKeyedSubscript:@"rssi"];
@@ -1223,53 +1223,53 @@ LABEL_14:
   v50 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFScanResult supportsWoW](self, "supportsWoW")}];
   [v3 setObject:v50 forKeyedSubscript:@"supports_wow"];
 
-  v51 = [(CWFScanResult *)self countryCode];
-  [v3 setObject:v51 forKeyedSubscript:@"country_code"];
+  countryCode = [(CWFScanResult *)self countryCode];
+  [v3 setObject:countryCode forKeyedSubscript:@"country_code"];
 
-  v52 = [(CWFScanResult *)self networkName];
-  [v3 setObject:v52 forKeyedSubscript:@"networkName"];
+  networkName = [(CWFScanResult *)self networkName];
+  [v3 setObject:networkName forKeyedSubscript:@"networkName"];
 
-  v53 = [(CWFScanResult *)self BSSID];
-  [v3 setObject:v53 forKeyedSubscript:@"bssid"];
+  bSSID = [(CWFScanResult *)self BSSID];
+  [v3 setObject:bSSID forKeyedSubscript:@"bssid"];
 
-  v54 = [(CWFScanResult *)self HESSID];
-  [v3 setObject:v54 forKeyedSubscript:@"hessid"];
+  hESSID = [(CWFScanResult *)self HESSID];
+  [v3 setObject:hESSID forKeyedSubscript:@"hessid"];
 
-  v55 = [(CWFScanResult *)self friendlyName];
-  [v3 setObject:v55 forKeyedSubscript:@"friendly_name"];
+  friendlyName = [(CWFScanResult *)self friendlyName];
+  [v3 setObject:friendlyName forKeyedSubscript:@"friendly_name"];
 
-  v56 = [(CWFScanResult *)self manufacturerName];
-  [v3 setObject:v56 forKeyedSubscript:@"manufacturer_name"];
+  manufacturerName = [(CWFScanResult *)self manufacturerName];
+  [v3 setObject:manufacturerName forKeyedSubscript:@"manufacturer_name"];
 
-  v57 = [(CWFScanResult *)self modelName];
-  [v3 setObject:v57 forKeyedSubscript:@"model_name"];
+  modelName = [(CWFScanResult *)self modelName];
+  [v3 setObject:modelName forKeyedSubscript:@"model_name"];
 
-  v58 = [(CWFScanResult *)self displayName];
-  [v3 setObject:v58 forKeyedSubscript:@"display_name"];
+  displayName = [(CWFScanResult *)self displayName];
+  [v3 setObject:displayName forKeyedSubscript:@"display_name"];
 
-  v59 = [(CWFScanResult *)self primaryMAC];
-  [v3 setObject:v59 forKeyedSubscript:@"primary_mac"];
+  primaryMAC = [(CWFScanResult *)self primaryMAC];
+  [v3 setObject:primaryMAC forKeyedSubscript:@"primary_mac"];
 
-  v60 = [(CWFScanResult *)self bluetoothMAC];
-  [v3 setObject:v60 forKeyedSubscript:@"bluetooth_name"];
+  bluetoothMAC = [(CWFScanResult *)self bluetoothMAC];
+  [v3 setObject:bluetoothMAC forKeyedSubscript:@"bluetooth_name"];
 
-  v61 = [(CWFScanResult *)self deviceID];
-  [v3 setObject:v61 forKeyedSubscript:@"device_id"];
+  deviceID = [(CWFScanResult *)self deviceID];
+  [v3 setObject:deviceID forKeyedSubscript:@"device_id"];
 
-  v62 = [(CWFScanResult *)self cellularNetworkInfo];
-  [v3 setObject:v62 forKeyedSubscript:@"cellular_network_info"];
+  cellularNetworkInfo = [(CWFScanResult *)self cellularNetworkInfo];
+  [v3 setObject:cellularNetworkInfo forKeyedSubscript:@"cellular_network_info"];
 
-  v63 = [(CWFScanResult *)self NAIRealmNameList];
-  [v3 setObject:v63 forKeyedSubscript:@"nai_realm_name_list"];
+  nAIRealmNameList = [(CWFScanResult *)self NAIRealmNameList];
+  [v3 setObject:nAIRealmNameList forKeyedSubscript:@"nai_realm_name_list"];
 
-  v64 = [(CWFScanResult *)self roamingConsortiumList];
-  [v3 setObject:v64 forKeyedSubscript:@"roaming_consortium_list"];
+  roamingConsortiumList = [(CWFScanResult *)self roamingConsortiumList];
+  [v3 setObject:roamingConsortiumList forKeyedSubscript:@"roaming_consortium_list"];
 
-  v65 = [(CWFScanResult *)self operatorFriendlyNameList];
-  [v3 setObject:v65 forKeyedSubscript:@"operator_friendly_name_list"];
+  operatorFriendlyNameList = [(CWFScanResult *)self operatorFriendlyNameList];
+  [v3 setObject:operatorFriendlyNameList forKeyedSubscript:@"operator_friendly_name_list"];
 
-  v66 = [(CWFScanResult *)self domainNameList];
-  [v3 setObject:v66 forKeyedSubscript:@"domain_name_list"];
+  domainNameList = [(CWFScanResult *)self domainNameList];
+  [v3 setObject:domainNameList forKeyedSubscript:@"domain_name_list"];
 
   v67 = [MEMORY[0x1E696AD98] numberWithBool:{-[CWFScanResult isWiFi6E](self, "isWiFi6E")}];
   [v3 setObject:v67 forKeyedSubscript:@"is_6e"];
@@ -1287,12 +1287,12 @@ LABEL_14:
   v98 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v71 = [(CWFScanResult *)self RNRBSSList];
-  v72 = [v71 countByEnumeratingWithState:&v95 objects:v100 count:16];
+  rNRBSSList = [(CWFScanResult *)self RNRBSSList];
+  v72 = [rNRBSSList countByEnumeratingWithState:&v95 objects:v100 count:16];
   if (v72)
   {
     v73 = v72;
-    v74 = 0;
+    array = 0;
     v75 = *v96;
     do
     {
@@ -1300,20 +1300,20 @@ LABEL_14:
       {
         if (*v96 != v75)
         {
-          objc_enumerationMutation(v71);
+          objc_enumerationMutation(rNRBSSList);
         }
 
         v77 = *(*(&v95 + 1) + 8 * i);
-        if (!v74)
+        if (!array)
         {
-          v74 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v78 = [v77 JSONCompatibleKeyValueMap];
-        [v74 addObject:v78];
+        jSONCompatibleKeyValueMap2 = [v77 JSONCompatibleKeyValueMap];
+        [array addObject:jSONCompatibleKeyValueMap2];
       }
 
-      v73 = [v71 countByEnumeratingWithState:&v95 objects:v100 count:16];
+      v73 = [rNRBSSList countByEnumeratingWithState:&v95 objects:v100 count:16];
     }
 
     while (v73);
@@ -1321,20 +1321,20 @@ LABEL_14:
 
   else
   {
-    v74 = 0;
+    array = 0;
   }
 
-  [v3 setObject:v74 forKeyedSubscript:@"rnr_bss_list"];
+  [v3 setObject:array forKeyedSubscript:@"rnr_bss_list"];
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v79 = [(CWFScanResult *)self RNRChannelList];
-  v80 = [v79 countByEnumeratingWithState:&v91 objects:v99 count:16];
+  rNRChannelList = [(CWFScanResult *)self RNRChannelList];
+  v80 = [rNRChannelList countByEnumeratingWithState:&v91 objects:v99 count:16];
   if (v80)
   {
     v81 = v80;
-    v82 = 0;
+    array2 = 0;
     v83 = *v92;
     do
     {
@@ -1342,20 +1342,20 @@ LABEL_14:
       {
         if (*v92 != v83)
         {
-          objc_enumerationMutation(v79);
+          objc_enumerationMutation(rNRChannelList);
         }
 
         v85 = *(*(&v91 + 1) + 8 * j);
-        if (!v82)
+        if (!array2)
         {
-          v82 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
         }
 
-        v86 = [v85 JSONCompatibleKeyValueMap];
-        [v82 addObject:v86];
+        jSONCompatibleKeyValueMap3 = [v85 JSONCompatibleKeyValueMap];
+        [array2 addObject:jSONCompatibleKeyValueMap3];
       }
 
-      v81 = [v79 countByEnumeratingWithState:&v91 objects:v99 count:16];
+      v81 = [rNRChannelList countByEnumeratingWithState:&v91 objects:v99 count:16];
     }
 
     while (v81);
@@ -1363,10 +1363,10 @@ LABEL_14:
 
   else
   {
-    v82 = 0;
+    array2 = 0;
   }
 
-  [v3 setObject:v82 forKeyedSubscript:@"rnr_channel_list"];
+  [v3 setObject:array2 forKeyedSubscript:@"rnr_channel_list"];
   v87 = sub_1E0BCEC64(v3, 0, 1u);
   if (v87)
   {
@@ -1385,7 +1385,7 @@ LABEL_14:
 
 - (unint64_t)CWFNetworkWarningFlagsFromScanResult
 {
-  v3 = [(CWFScanResult *)self isOpen]|| [(CWFScanResult *)self isOWE];
+  isOWE = [(CWFScanResult *)self isOpen]|| [(CWFScanResult *)self isOWE];
   if ([(CWFScanResult *)self isWEP]|| [(CWFScanResult *)self hasWEP40Cipher]|| [(CWFScanResult *)self hasWEP104Cipher])
   {
     v4 = ![(CWFScanResult *)self isEAP];
@@ -1396,16 +1396,16 @@ LABEL_14:
     v4 = 0;
   }
 
-  v5 = [(CWFScanResult *)self supportedSecurityTypes];
+  supportedSecurityTypes = [(CWFScanResult *)self supportedSecurityTypes];
   v6 = ([(CWFScanResult *)self isWPA]|| [(CWFScanResult *)self isWPA2]) && [(CWFScanResult *)self hasTKIPCipher];
-  v7 = [(CWFScanResult *)self matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
 
-  if (v7)
+  if (matchingKnownNetworkProfile)
   {
-    v8 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-    v9 = [v8 hiddenState] == 1;
+    matchingKnownNetworkProfile2 = [(CWFScanResult *)self matchingKnownNetworkProfile];
+    v9 = [matchingKnownNetworkProfile2 hiddenState] == 1;
 
-    if (v3)
+    if (isOWE)
     {
 LABEL_14:
       v10 = !v9;
@@ -1418,7 +1418,7 @@ LABEL_14:
   else
   {
     v9 = 0;
-    if (v3)
+    if (isOWE)
     {
       goto LABEL_14;
     }
@@ -1452,7 +1452,7 @@ LABEL_20:
   }
 
   v26 = 0x4000;
-  if (v5 == 4)
+  if (supportedSecurityTypes == 4)
   {
     v26 = 128;
   }
@@ -1468,25 +1468,25 @@ LABEL_20:
   }
 
 LABEL_23:
-  if (![(CWFScanResult *)self hasWEP40Cipher]&& ![(CWFScanResult *)self hasWEP104Cipher]&& v5 == 4)
+  if (![(CWFScanResult *)self hasWEP40Cipher]&& ![(CWFScanResult *)self hasWEP104Cipher]&& supportedSecurityTypes == 4)
   {
     v13 |= 4uLL;
   }
 
-  v14 = [(CWFScanResult *)self scanRecord];
-  v15 = [v14 objectForKey:@"PHY_MODE"];
-  v16 = [v15 integerValue];
+  scanRecord = [(CWFScanResult *)self scanRecord];
+  v15 = [scanRecord objectForKey:@"PHY_MODE"];
+  integerValue = [v15 integerValue];
 
-  if (v16 == 4)
+  if (integerValue == 4)
   {
     v13 |= 0x10uLL;
   }
 
-  v17 = [(CWFScanResult *)self scanRecord];
-  v18 = [v17 objectForKey:@"AmbiguousSSIDs"];
-  v19 = [v18 BOOLValue];
+  scanRecord2 = [(CWFScanResult *)self scanRecord];
+  v18 = [scanRecord2 objectForKey:@"AmbiguousSSIDs"];
+  bOOLValue = [v18 BOOLValue];
 
-  if (v19)
+  if (bOOLValue)
   {
     v20 = v13 | 0x20;
   }
@@ -1496,15 +1496,15 @@ LABEL_23:
     v20 = v13;
   }
 
-  v21 = [(CWFScanResult *)self OSSpecificAttributes];
-  v22 = [v21 objectForKey:@"PrivateMacInfoDictionary"];
+  oSSpecificAttributes = [(CWFScanResult *)self OSSpecificAttributes];
+  v22 = [oSSpecificAttributes objectForKey:@"PrivateMacInfoDictionary"];
 
   if (v22)
   {
     v23 = [v22 objectForKey:@"PrivateMacDisableReason"];
-    v24 = [v23 intValue];
+    intValue = [v23 intValue];
 
-    if (v24)
+    if (intValue)
     {
       v20 |= 0x2000uLL;
     }
@@ -1513,22 +1513,22 @@ LABEL_23:
   return v20;
 }
 
-- (id)__internalDictionaryFromScanRecord:(id)a3 knownNetworkProfile:(id)a4 includeProperties:(id)a5
+- (id)__internalDictionaryFromScanRecord:(id)record knownNetworkProfile:(id)profile includeProperties:(id)properties
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [(CWFScanResult *)self __supportedProperties];
-  v13 = [v12 mutableCopy];
+  recordCopy = record;
+  profileCopy = profile;
+  propertiesCopy = properties;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  __supportedProperties = [(CWFScanResult *)self __supportedProperties];
+  v13 = [__supportedProperties mutableCopy];
 
-  if (v10)
+  if (propertiesCopy)
   {
-    [v13 intersectSet:v10];
+    [v13 intersectSet:propertiesCopy];
   }
 
-  v50 = v10;
+  v50 = propertiesCopy;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -1553,41 +1553,41 @@ LABEL_23:
         {
           case 1:
             v19 = &unk_1F5BBCBB0;
-            v20 = v11;
-            v21 = v8;
+            v20 = dictionary;
+            v21 = recordCopy;
             goto LABEL_225;
           case 2:
-            v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "timestamp")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(recordCopy, "timestamp")}];
             v25 = &unk_1F5BBD258;
             goto LABEL_205;
           case 3:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              [v8 FILSSSID];
+              [recordCopy FILSSSID];
             }
 
             else
             {
-              [v8 SSID];
+              [recordCopy SSID];
             }
-            v22 = ;
+            bSSID = ;
             v25 = &unk_1F5BBCBC8;
             goto LABEL_205;
           case 4:
-            v22 = [v8 BSSID];
+            bSSID = [recordCopy BSSID];
             v25 = &unk_1F5BBCBE0;
             goto LABEL_205;
           case 5:
-            v34 = [v8 channelInfo];
-            [v11 setObject:v34 forKeyedSubscript:&unk_1F5BBCBF8];
+            channelInfo = [recordCopy channelInfo];
+            [dictionary setObject:channelInfo forKeyedSubscript:&unk_1F5BBCBF8];
 
-            if (![v8 hasFILSDiscoveryInformation])
+            if (![recordCopy hasFILSDiscoveryInformation])
             {
               goto LABEL_226;
             }
 
-            v22 = [v8 FILSPrimaryChannelInfo];
-            if (!v22)
+            bSSID = [recordCopy FILSPrimaryChannelInfo];
+            if (!bSSID)
             {
               goto LABEL_207;
             }
@@ -1595,55 +1595,55 @@ LABEL_23:
             v25 = &unk_1F5BBCBF8;
             goto LABEL_205;
           case 6:
-            v22 = [v8 countryCode];
+            bSSID = [recordCopy countryCode];
             v25 = &unk_1F5BBCC10;
             goto LABEL_205;
           case 7:
-            v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "RSSI")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "RSSI")}];
             v25 = &unk_1F5BBCC28;
             goto LABEL_205;
           case 8:
-            v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "wasConnectedDuringSleep")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "wasConnectedDuringSleep")}];
             v25 = &unk_1F5BBCC40;
             goto LABEL_205;
           case 9:
-            v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "noise")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "noise")}];
             v25 = &unk_1F5BBCC58;
             goto LABEL_205;
           case 10:
-            v35 = [v8 hasFILSDiscoveryInformation];
+            hasFILSDiscoveryInformation = [recordCopy hasFILSDiscoveryInformation];
             v36 = MEMORY[0x1E696AD98];
-            if (v35)
+            if (hasFILSDiscoveryInformation)
             {
-              v37 = [v8 FILSBeaconInterval];
+              fILSBeaconInterval = [recordCopy FILSBeaconInterval];
             }
 
             else
             {
-              v37 = [v8 beaconInterval];
+              fILSBeaconInterval = [recordCopy beaconInterval];
             }
 
-            v22 = [v36 numberWithInteger:v37];
+            bSSID = [v36 numberWithInteger:fILSBeaconInterval];
             v25 = &unk_1F5BBCC70;
             goto LABEL_205;
           case 11:
-            v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isPasspoint")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "isPasspoint")}];
             v25 = &unk_1F5BBCCB8;
             goto LABEL_205;
           case 12:
-            v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isPersonalHotspot")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "isPersonalHotspot")}];
             v25 = &unk_1F5BBCCD0;
             goto LABEL_205;
           case 13:
-            v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isAppleSWAP")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "isAppleSWAP")}];
             v25 = &unk_1F5BBCCE8;
             goto LABEL_205;
           case 14:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSCaps])
+              if ([recordCopy hasFILSCaps])
               {
-                if ([v8 FILSIsESS])
+                if ([recordCopy FILSIsESS])
                 {
                   v21 = &unk_1F5BBCD00;
                 }
@@ -1661,52 +1661,52 @@ LABEL_23:
 
               v19 = &unk_1F5BBCD30;
 LABEL_222:
-              v20 = v11;
+              v20 = dictionary;
               goto LABEL_225;
             }
 
-            v45 = [v8 APMode];
-            if (!v45)
+            aPMode = [recordCopy APMode];
+            if (!aPMode)
             {
               goto LABEL_226;
             }
 
-            v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v45];
+            bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedInt:aPMode];
             v25 = &unk_1F5BBCD30;
             goto LABEL_205;
           case 15:
-            v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isUnconfiguredAirPortBaseStation")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "isUnconfiguredAirPortBaseStation")}];
             v25 = &unk_1F5BBCD78;
             goto LABEL_205;
           case 16:
-            v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "airPortBaseStationModel")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "airPortBaseStationModel")}];
             v25 = &unk_1F5BBCD90;
             goto LABEL_205;
           case 17:
-            v22 = [v8 informationElementData];
+            bSSID = [recordCopy informationElementData];
             v25 = &unk_1F5BBCD48;
             goto LABEL_205;
           case 18:
-            if (![v8 hasFILSDiscoveryInformation])
+            if (![recordCopy hasFILSDiscoveryInformation])
             {
               v38 = MEMORY[0x1E696AD98];
-              v39 = [v8 supportedPHYModes];
+              supportedPHYModes = [recordCopy supportedPHYModes];
               goto LABEL_191;
             }
 
-            if ([v8 hasFILSCaps])
+            if ([recordCopy hasFILSCaps])
             {
               v38 = MEMORY[0x1E696AD98];
-              v39 = [v8 FILSSupportedPHYModes];
+              supportedPHYModes = [recordCopy FILSSupportedPHYModes];
 LABEL_191:
-              v22 = [v38 numberWithUnsignedInt:v39];
+              bSSID = [v38 numberWithUnsignedInt:supportedPHYModes];
               v25 = &unk_1F5BBCCA0;
               goto LABEL_205;
             }
 
             v19 = &unk_1F5BBCCA0;
 LABEL_224:
-            v20 = v11;
+            v20 = dictionary;
             v21 = 0;
 LABEL_225:
             [v20 setObject:v21 forKeyedSubscript:v19];
@@ -1724,21 +1724,21 @@ LABEL_226:
 
             break;
           case 19:
-            v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "supportedSecurityTypes")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(recordCopy, "supportedSecurityTypes")}];
             v25 = &unk_1F5BBCC88;
             goto LABEL_205;
           case 20:
-            v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "WAPISubtype")}];
+            bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "WAPISubtype")}];
             v25 = &unk_1F5BBCD60;
             goto LABEL_205;
           case 21:
-            v22 = [v8 WPAUnicastCiphers];
+            bSSID = [recordCopy WPAUnicastCiphers];
             v25 = &unk_1F5BBD168;
             goto LABEL_205;
           case 22:
-            if ([v8 hasWPAIE])
+            if ([recordCopy hasWPAIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "WPAMulticastCipher")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(recordCopy, "WPAMulticastCipher")}];
               v25 = &unk_1F5BBD180;
               goto LABEL_205;
             }
@@ -1746,17 +1746,17 @@ LABEL_226:
             v19 = &unk_1F5BBD180;
             goto LABEL_224;
           case 23:
-            v22 = [v8 WPAAuthSelectors];
+            bSSID = [recordCopy WPAAuthSelectors];
             v25 = &unk_1F5BBD198;
             goto LABEL_205;
           case 24:
-            v22 = [v8 RSNUnicastCiphers];
+            bSSID = [recordCopy RSNUnicastCiphers];
             v25 = &unk_1F5BBD1B0;
             goto LABEL_205;
           case 25:
-            if ([v8 hasRSNIE])
+            if ([recordCopy hasRSNIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "RSNMulticastCipher")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(recordCopy, "RSNMulticastCipher")}];
               v25 = &unk_1F5BBD1C8;
               goto LABEL_205;
             }
@@ -1764,9 +1764,9 @@ LABEL_226:
             v19 = &unk_1F5BBD1C8;
             goto LABEL_224;
           case 26:
-            if ([v8 hasRSNIE])
+            if ([recordCopy hasRSNIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "RSNBroadcastCipher")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(recordCopy, "RSNBroadcastCipher")}];
               v25 = &unk_1F5BBD1E0;
               goto LABEL_205;
             }
@@ -1774,13 +1774,13 @@ LABEL_226:
             v19 = &unk_1F5BBD1E0;
             goto LABEL_224;
           case 27:
-            v22 = [v8 RSNAuthSelectors];
+            bSSID = [recordCopy RSNAuthSelectors];
             v25 = &unk_1F5BBD1F8;
             goto LABEL_205;
           case 28:
-            if ([v8 hasRSNIE])
+            if ([recordCopy hasRSNIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v8, "RSNCapabilities")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(recordCopy, "RSNCapabilities")}];
               v25 = &unk_1F5BBD210;
               goto LABEL_205;
             }
@@ -1788,124 +1788,124 @@ LABEL_226:
             v19 = &unk_1F5BBD210;
             goto LABEL_224;
           case 31:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSAccessNetworkOptions])
+              if ([recordCopy hasFILSAccessNetworkOptions])
               {
                 v26 = MEMORY[0x1E696AD98];
-                v27 = [v8 FILSAccessNetworkType];
+                fILSAccessNetworkType = [recordCopy FILSAccessNetworkType];
 LABEL_164:
-                v22 = [v26 numberWithUnsignedInt:v27];
+                bSSID = [v26 numberWithUnsignedInt:fILSAccessNetworkType];
                 v25 = &unk_1F5BBCDA8;
                 goto LABEL_205;
               }
             }
 
-            else if ([v8 hasInterworkingIE])
+            else if ([recordCopy hasInterworkingIE])
             {
               v26 = MEMORY[0x1E696AD98];
-              v27 = [v8 accessNetworkType];
+              fILSAccessNetworkType = [recordCopy accessNetworkType];
               goto LABEL_164;
             }
 
             v19 = &unk_1F5BBCDA8;
             goto LABEL_224;
           case 32:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSAccessNetworkOptions])
+              if ([recordCopy hasFILSAccessNetworkOptions])
               {
                 v28 = MEMORY[0x1E696AD98];
-                v29 = [v8 FILSIsInternetAccessible];
+                fILSIsInternetAccessible = [recordCopy FILSIsInternetAccessible];
 LABEL_171:
-                v22 = [v28 numberWithBool:v29];
+                bSSID = [v28 numberWithBool:fILSIsInternetAccessible];
                 v25 = &unk_1F5BBCDC0;
                 goto LABEL_205;
               }
             }
 
-            else if ([v8 hasInterworkingIE])
+            else if ([recordCopy hasInterworkingIE])
             {
               v28 = MEMORY[0x1E696AD98];
-              v29 = [v8 isInternetAccessible];
+              fILSIsInternetAccessible = [recordCopy isInternetAccessible];
               goto LABEL_171;
             }
 
             v19 = &unk_1F5BBCDC0;
             goto LABEL_224;
           case 33:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSAccessNetworkOptions])
+              if ([recordCopy hasFILSAccessNetworkOptions])
               {
                 v32 = MEMORY[0x1E696AD98];
-                v33 = [v8 FILSIsAdditionalStepRequiredForAccess];
+                fILSIsAdditionalStepRequiredForAccess = [recordCopy FILSIsAdditionalStepRequiredForAccess];
 LABEL_183:
-                v22 = [v32 numberWithBool:v33];
+                bSSID = [v32 numberWithBool:fILSIsAdditionalStepRequiredForAccess];
                 v25 = &unk_1F5BBCDD8;
                 goto LABEL_205;
               }
             }
 
-            else if ([v8 hasInterworkingIE])
+            else if ([recordCopy hasInterworkingIE])
             {
               v32 = MEMORY[0x1E696AD98];
-              v33 = [v8 isAdditionalStepRequiredForAccess];
+              fILSIsAdditionalStepRequiredForAccess = [recordCopy isAdditionalStepRequiredForAccess];
               goto LABEL_183;
             }
 
             v19 = &unk_1F5BBCDD8;
             goto LABEL_224;
           case 34:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSAccessNetworkOptions])
+              if ([recordCopy hasFILSAccessNetworkOptions])
               {
                 v30 = MEMORY[0x1E696AD98];
-                v31 = [v8 FILSIsEmergencyServicesReachable];
+                fILSIsEmergencyServicesReachable = [recordCopy FILSIsEmergencyServicesReachable];
 LABEL_175:
-                v22 = [v30 numberWithBool:v31];
+                bSSID = [v30 numberWithBool:fILSIsEmergencyServicesReachable];
                 v25 = &unk_1F5BBCDF0;
                 goto LABEL_205;
               }
             }
 
-            else if ([v8 hasInterworkingIE])
+            else if ([recordCopy hasInterworkingIE])
             {
               v30 = MEMORY[0x1E696AD98];
-              v31 = [v8 isEmergencyServicesReachable];
+              fILSIsEmergencyServicesReachable = [recordCopy isEmergencyServicesReachable];
               goto LABEL_175;
             }
 
             v19 = &unk_1F5BBCDF0;
             goto LABEL_224;
           case 35:
-            if ([v8 hasFILSDiscoveryInformation])
+            if ([recordCopy hasFILSDiscoveryInformation])
             {
-              if ([v8 hasFILSAccessNetworkOptions])
+              if ([recordCopy hasFILSAccessNetworkOptions])
               {
                 v43 = MEMORY[0x1E696AD98];
-                v44 = [v8 FILSIsUnauthenticatedEmergencyServiceAccessible];
+                fILSIsUnauthenticatedEmergencyServiceAccessible = [recordCopy FILSIsUnauthenticatedEmergencyServiceAccessible];
 LABEL_204:
-                v22 = [v43 numberWithBool:v44];
+                bSSID = [v43 numberWithBool:fILSIsUnauthenticatedEmergencyServiceAccessible];
                 v25 = &unk_1F5BBCE08;
                 goto LABEL_205;
               }
             }
 
-            else if ([v8 hasInterworkingIE])
+            else if ([recordCopy hasInterworkingIE])
             {
               v43 = MEMORY[0x1E696AD98];
-              v44 = [v8 isUnauthenticatedEmergencyServiceAccessible];
+              fILSIsUnauthenticatedEmergencyServiceAccessible = [recordCopy isUnauthenticatedEmergencyServiceAccessible];
               goto LABEL_204;
             }
 
             v19 = &unk_1F5BBCE08;
             goto LABEL_224;
           case 36:
-            if ([v8 hasInterworkingIE])
+            if ([recordCopy hasInterworkingIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "venueGroup")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "venueGroup")}];
               v25 = &unk_1F5BBCE20;
               goto LABEL_205;
             }
@@ -1913,9 +1913,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE20;
             goto LABEL_224;
           case 37:
-            if ([v8 hasInterworkingIE])
+            if ([recordCopy hasInterworkingIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "venueType")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(recordCopy, "venueType")}];
               v25 = &unk_1F5BBCE38;
               goto LABEL_205;
             }
@@ -1923,9 +1923,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE38;
             goto LABEL_224;
           case 38:
-            if ([v8 hasInterworkingIE])
+            if ([recordCopy hasInterworkingIE])
             {
-              v22 = [v8 HESSID];
+              bSSID = [recordCopy HESSID];
               v25 = &unk_1F5BBCE50;
               goto LABEL_205;
             }
@@ -1933,9 +1933,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE50;
             goto LABEL_224;
           case 39:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isUnconfiguredDevice")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "isUnconfiguredDevice")}];
               v25 = &unk_1F5BBCE68;
               goto LABEL_205;
             }
@@ -1943,9 +1943,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE68;
             goto LABEL_224;
           case 40:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "providesInternetAccess")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "providesInternetAccess")}];
               v25 = &unk_1F5BBCE80;
               goto LABEL_205;
             }
@@ -1953,9 +1953,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE80;
             goto LABEL_224;
           case 41:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsWPS")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsWPS")}];
               v25 = &unk_1F5BBCE98;
               goto LABEL_205;
             }
@@ -1963,9 +1963,9 @@ LABEL_204:
             v19 = &unk_1F5BBCE98;
             goto LABEL_224;
           case 42:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsiAPOverWiFi")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsiAPOverWiFi")}];
               v25 = &unk_1F5BBCEB0;
               goto LABEL_205;
             }
@@ -1973,9 +1973,9 @@ LABEL_204:
             v19 = &unk_1F5BBCEB0;
             goto LABEL_224;
           case 43:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supports2GHzNetworks")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supports2GHzNetworks")}];
               v25 = &unk_1F5BBCEC8;
               goto LABEL_205;
             }
@@ -1983,9 +1983,9 @@ LABEL_204:
             v19 = &unk_1F5BBCEC8;
             goto LABEL_224;
           case 44:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supports5GHzNetworks")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supports5GHzNetworks")}];
               v25 = &unk_1F5BBCEE0;
               goto LABEL_205;
             }
@@ -1993,9 +1993,9 @@ LABEL_204:
             v19 = &unk_1F5BBCEE0;
             goto LABEL_224;
           case 45:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsCarPlay")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsCarPlay")}];
               v25 = &unk_1F5BBCEF8;
               goto LABEL_205;
             }
@@ -2003,9 +2003,9 @@ LABEL_204:
             v19 = &unk_1F5BBCEF8;
             goto LABEL_224;
           case 46:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsHomeKit")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsHomeKit")}];
               v25 = &unk_1F5BBCF10;
               goto LABEL_205;
             }
@@ -2013,9 +2013,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF10;
             goto LABEL_224;
           case 47:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsHomeKit2")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsHomeKit2")}];
               v25 = &unk_1F5BBCF28;
               goto LABEL_205;
             }
@@ -2023,9 +2023,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF28;
             goto LABEL_224;
           case 48:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsAirPlay")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsAirPlay")}];
               v25 = &unk_1F5BBCF40;
               goto LABEL_205;
             }
@@ -2033,9 +2033,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF40;
             goto LABEL_224;
           case 49:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsAirPlay2")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsAirPlay2")}];
               v25 = &unk_1F5BBCF58;
               goto LABEL_205;
             }
@@ -2043,9 +2043,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF58;
             goto LABEL_224;
           case 50:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsAirPrint")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsAirPrint")}];
               v25 = &unk_1F5BBCF70;
               goto LABEL_205;
             }
@@ -2053,9 +2053,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF70;
             goto LABEL_224;
           case 51:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsMFi")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsMFi")}];
               v25 = &unk_1F5BBCF88;
               goto LABEL_205;
             }
@@ -2063,9 +2063,9 @@ LABEL_204:
             v19 = &unk_1F5BBCF88;
             goto LABEL_224;
           case 52:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsMFiHardwareAuth")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsMFiHardwareAuth")}];
               v25 = &unk_1F5BBCFA0;
               goto LABEL_205;
             }
@@ -2073,9 +2073,9 @@ LABEL_204:
             v19 = &unk_1F5BBCFA0;
             goto LABEL_224;
           case 53:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsSoftwareTokenAuth")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsSoftwareTokenAuth")}];
               v25 = &unk_1F5BBCFB8;
               goto LABEL_205;
             }
@@ -2083,9 +2083,9 @@ LABEL_204:
             v19 = &unk_1F5BBCFB8;
             goto LABEL_224;
           case 54:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsSoftwareCertAuth")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsSoftwareCertAuth")}];
               v25 = &unk_1F5BBCFD0;
               goto LABEL_205;
             }
@@ -2093,9 +2093,9 @@ LABEL_204:
             v19 = &unk_1F5BBCFD0;
             goto LABEL_224;
           case 55:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsSecureWAC")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsSecureWAC")}];
               v25 = &unk_1F5BBCFE8;
               goto LABEL_205;
             }
@@ -2103,9 +2103,9 @@ LABEL_204:
             v19 = &unk_1F5BBCFE8;
             goto LABEL_224;
           case 56:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "supportsWoW")}];
+              bSSID = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(recordCopy, "supportsWoW")}];
               v25 = &unk_1F5BBD000;
               goto LABEL_205;
             }
@@ -2113,9 +2113,9 @@ LABEL_204:
             v19 = &unk_1F5BBD000;
             goto LABEL_224;
           case 57:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 friendlyName];
+              bSSID = [recordCopy friendlyName];
               v25 = &unk_1F5BBD018;
               goto LABEL_205;
             }
@@ -2123,9 +2123,9 @@ LABEL_204:
             v19 = &unk_1F5BBD018;
             goto LABEL_224;
           case 58:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 manufacturerName];
+              bSSID = [recordCopy manufacturerName];
               v25 = &unk_1F5BBD030;
               goto LABEL_205;
             }
@@ -2133,9 +2133,9 @@ LABEL_204:
             v19 = &unk_1F5BBD030;
             goto LABEL_224;
           case 59:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 modelName];
+              bSSID = [recordCopy modelName];
               v25 = &unk_1F5BBD048;
               goto LABEL_205;
             }
@@ -2143,9 +2143,9 @@ LABEL_204:
             v19 = &unk_1F5BBD048;
             goto LABEL_224;
           case 60:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 displayName];
+              bSSID = [recordCopy displayName];
               v25 = &unk_1F5BBD060;
               goto LABEL_205;
             }
@@ -2153,9 +2153,9 @@ LABEL_204:
             v19 = &unk_1F5BBD060;
             goto LABEL_224;
           case 61:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 primaryMAC];
+              bSSID = [recordCopy primaryMAC];
               v25 = &unk_1F5BBD078;
               goto LABEL_205;
             }
@@ -2163,9 +2163,9 @@ LABEL_204:
             v19 = &unk_1F5BBD078;
             goto LABEL_224;
           case 62:
-            if ([v8 hasAppleIE])
+            if ([recordCopy hasAppleIE])
             {
-              v22 = [v8 bluetoothMAC];
+              bSSID = [recordCopy bluetoothMAC];
               v25 = &unk_1F5BBD090;
               goto LABEL_205;
             }
@@ -2173,27 +2173,27 @@ LABEL_204:
             v19 = &unk_1F5BBD090;
             goto LABEL_224;
           case 63:
-            if (([v8 hasAppleIE] & 1) == 0)
+            if (([recordCopy hasAppleIE] & 1) == 0)
             {
               v19 = &unk_1F5BBD0A8;
               goto LABEL_224;
             }
 
-            v22 = [v8 deviceID];
+            bSSID = [recordCopy deviceID];
             v25 = &unk_1F5BBD0A8;
 LABEL_205:
-            v46 = v11;
-            v47 = v22;
+            v46 = dictionary;
+            v47 = bSSID;
             goto LABEL_206;
           case 64:
-            v22 = [v8 ANQPResponse];
+            bSSID = [recordCopy ANQPResponse];
             v25 = &unk_1F5BBD0C0;
             goto LABEL_205;
           case 65:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 cellularNetworkInfo];
+              cellularNetworkInfo = [recordCopy cellularNetworkInfo];
               v24 = &unk_1F5BBD0D8;
               goto LABEL_138;
             }
@@ -2201,10 +2201,10 @@ LABEL_205:
             v25 = &unk_1F5BBD0D8;
             goto LABEL_219;
           case 66:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 NAIRealmNameList];
+              cellularNetworkInfo = [recordCopy NAIRealmNameList];
               v24 = &unk_1F5BBD0F0;
               goto LABEL_138;
             }
@@ -2212,10 +2212,10 @@ LABEL_205:
             v25 = &unk_1F5BBD0F0;
             goto LABEL_219;
           case 67:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 roamingConsortiumList];
+              cellularNetworkInfo = [recordCopy roamingConsortiumList];
               v24 = &unk_1F5BBD108;
               goto LABEL_138;
             }
@@ -2223,10 +2223,10 @@ LABEL_205:
             v25 = &unk_1F5BBD108;
             goto LABEL_219;
           case 68:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 operatorFriendlyNameList];
+              cellularNetworkInfo = [recordCopy operatorFriendlyNameList];
               v24 = &unk_1F5BBD120;
               goto LABEL_138;
             }
@@ -2234,10 +2234,10 @@ LABEL_205:
             v25 = &unk_1F5BBD120;
             goto LABEL_219;
           case 69:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 domainNameList];
+              cellularNetworkInfo = [recordCopy domainNameList];
               v24 = &unk_1F5BBD138;
               goto LABEL_138;
             }
@@ -2245,20 +2245,20 @@ LABEL_205:
             v25 = &unk_1F5BBD138;
             goto LABEL_219;
           case 70:
-            v22 = [v8 ANQPResponse];
-            if (v22)
+            bSSID = [recordCopy ANQPResponse];
+            if (bSSID)
             {
-              v23 = [v8 venueURLList];
+              cellularNetworkInfo = [recordCopy venueURLList];
               v24 = &unk_1F5BBD150;
 LABEL_138:
-              [v11 setObject:v23 forKeyedSubscript:v24];
+              [dictionary setObject:cellularNetworkInfo forKeyedSubscript:v24];
             }
 
             else
             {
               v25 = &unk_1F5BBD150;
 LABEL_219:
-              v46 = v11;
+              v46 = dictionary;
               v47 = 0;
 LABEL_206:
               [v46 setObject:v47 forKeyedSubscript:v25];
@@ -2268,40 +2268,40 @@ LABEL_207:
 
             goto LABEL_226;
           case 71:
-            v22 = [v8 objectForKeyedSubscript:@"__OSSpecific__"];
+            bSSID = [recordCopy objectForKeyedSubscript:@"__OSSpecific__"];
             v25 = &unk_1F5BBD228;
             goto LABEL_205;
           case 72:
             v19 = &unk_1F5BBD240;
-            v20 = v11;
-            v21 = v9;
+            v20 = dictionary;
+            v21 = profileCopy;
             goto LABEL_225;
           case 73:
-            v22 = [v8 networkFlags];
+            bSSID = [recordCopy networkFlags];
             v25 = &unk_1F5BBD270;
             goto LABEL_205;
           case 74:
-            v40 = [v8 hasFILSDiscoveryInformation];
+            hasFILSDiscoveryInformation2 = [recordCopy hasFILSDiscoveryInformation];
             v41 = MEMORY[0x1E696AD98];
-            if (v40)
+            if (hasFILSDiscoveryInformation2)
             {
-              v42 = [v8 FILSShortSSID];
+              fILSShortSSID = [recordCopy FILSShortSSID];
             }
 
             else
             {
-              v42 = [v8 shortSSID];
+              fILSShortSSID = [recordCopy shortSSID];
             }
 
-            v22 = [v41 numberWithUnsignedInteger:v42];
+            bSSID = [v41 numberWithUnsignedInteger:fILSShortSSID];
             v25 = &unk_1F5BBD288;
             goto LABEL_205;
           case 75:
-            v22 = [v8 RNRBSSList];
+            bSSID = [recordCopy RNRBSSList];
             v25 = &unk_1F5BBD2A0;
             goto LABEL_205;
           case 76:
-            if ([v8 associationDisallowedReason])
+            if ([recordCopy associationDisallowedReason])
             {
               v21 = MEMORY[0x1E695E118];
             }
@@ -2314,11 +2314,11 @@ LABEL_207:
             v19 = &unk_1F5BBD2B8;
             goto LABEL_222;
           case 77:
-            v22 = [v8 RNRChannelList];
+            bSSID = [recordCopy RNRChannelList];
             v25 = &unk_1F5BBD2D0;
             goto LABEL_205;
           case 78:
-            v22 = [v8 privateMACAddress];
+            bSSID = [recordCopy privateMACAddress];
             v25 = &unk_1F5BBD2E8;
             goto LABEL_205;
           default:
@@ -2334,19 +2334,19 @@ LABEL_228:
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return dictionary;
 }
 
-- (CWFScanResult)initWithScanRecord:(id)a3 knownNetworkProfile:(id)a4 includeProperties:(id)a5
+- (CWFScanResult)initWithScanRecord:(id)record knownNetworkProfile:(id)profile includeProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  profileCopy = profile;
+  propertiesCopy = properties;
   v16.receiver = self;
   v16.super_class = CWFScanResult;
   v11 = [(CWFScanResult *)&v16 init];
   v12 = v11;
-  if (!v8 || !v11 || ([(CWFScanResult *)v11 __internalDictionaryFromScanRecord:v8 knownNetworkProfile:v9 includeProperties:v10], v13 = objc_claimAutoreleasedReturnValue(), internal = v12->_internal, v12->_internal = v13, internal, !v12->_internal))
+  if (!recordCopy || !v11 || ([(CWFScanResult *)v11 __internalDictionaryFromScanRecord:recordCopy knownNetworkProfile:profileCopy includeProperties:propertiesCopy], v13 = objc_claimAutoreleasedReturnValue(), internal = v12->_internal, v12->_internal = v13, internal, !v12->_internal))
   {
 
     v12 = 0;
@@ -2355,31 +2355,31 @@ LABEL_228:
   return v12;
 }
 
-- (CWFScanResult)scanResultWithMatchingKnownNetworkProfile:(id)a3
+- (CWFScanResult)scanResultWithMatchingKnownNetworkProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = objc_alloc_init(CWFScanResult);
   v6 = [(NSMutableDictionary *)self->_internal mutableCopy];
-  [v6 setObject:v4 forKeyedSubscript:&unk_1F5BBD240];
+  [v6 setObject:profileCopy forKeyedSubscript:&unk_1F5BBD240];
 
   [(CWFScanResult *)v5 setInternal:v6];
 
   return v5;
 }
 
-- (id)filteredScanResultWithProperties:(id)a3
+- (id)filteredScanResultWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = objc_alloc_init(CWFScanResult);
   v6 = [(NSMutableDictionary *)self->_internal mutableCopy];
-  if (v4)
+  if (propertiesCopy)
   {
-    v7 = [(CWFScanResult *)self properties];
-    v8 = [v7 mutableCopy];
+    properties = [(CWFScanResult *)self properties];
+    v8 = [properties mutableCopy];
 
-    [v8 minusSet:v4];
-    v9 = [v8 allObjects];
-    [v6 removeObjectsForKeys:v9];
+    [v8 minusSet:propertiesCopy];
+    allObjects = [v8 allObjects];
+    [v6 removeObjectsForKeys:allObjects];
   }
 
   [(CWFScanResult *)v5 setInternal:v6];
@@ -2387,82 +2387,82 @@ LABEL_228:
   return v5;
 }
 
-- (int64_t)compareSupportedSecurityTypes:(id)a3
+- (int64_t)compareSupportedSecurityTypes:(id)types
 {
-  v4 = a3;
-  v5 = [(CWFScanResult *)self weakestSupportedSecurityType];
-  v6 = [v4 weakestSupportedSecurityType];
-  v7 = [(CWFScanResult *)self strongestSupportedSecurityType];
-  v8 = [v4 strongestSupportedSecurityType];
-  v9 = [(CWFScanResult *)self WAPISubtype];
-  v10 = [v4 WAPISubtype];
+  typesCopy = types;
+  weakestSupportedSecurityType = [(CWFScanResult *)self weakestSupportedSecurityType];
+  weakestSupportedSecurityType2 = [typesCopy weakestSupportedSecurityType];
+  strongestSupportedSecurityType = [(CWFScanResult *)self strongestSupportedSecurityType];
+  strongestSupportedSecurityType2 = [typesCopy strongestSupportedSecurityType];
+  wAPISubtype = [(CWFScanResult *)self WAPISubtype];
+  wAPISubtype2 = [typesCopy WAPISubtype];
 
-  if (v5 == v6)
+  if (weakestSupportedSecurityType == weakestSupportedSecurityType2)
   {
-    if (v7 == v8)
+    if (strongestSupportedSecurityType == strongestSupportedSecurityType2)
     {
       return 0;
     }
 
-    v12 = v7;
-    v13 = v9;
-    v14 = v8;
+    v12 = strongestSupportedSecurityType;
+    v13 = wAPISubtype;
+    v14 = strongestSupportedSecurityType2;
   }
 
   else
   {
-    v12 = v5;
-    v13 = v9;
-    v14 = v6;
+    v12 = weakestSupportedSecurityType;
+    v13 = wAPISubtype;
+    v14 = weakestSupportedSecurityType2;
   }
 
-  return CWFCompareSecurityType(v12, 0, v13, v14, 0, v10);
+  return CWFCompareSecurityType(v12, 0, v13, v14, 0, wAPISubtype2);
 }
 
-- (int64_t)compareSupportedPHYModes:(id)a3
+- (int64_t)compareSupportedPHYModes:(id)modes
 {
-  v4 = a3;
-  v5 = [(CWFScanResult *)self fastestSupportedPHYMode];
-  v6 = [(CWFScanResult *)self slowestSupportedPHYMode];
-  v7 = [v4 fastestSupportedPHYMode];
-  v8 = [v4 slowestSupportedPHYMode];
+  modesCopy = modes;
+  fastestSupportedPHYMode = [(CWFScanResult *)self fastestSupportedPHYMode];
+  slowestSupportedPHYMode = [(CWFScanResult *)self slowestSupportedPHYMode];
+  fastestSupportedPHYMode2 = [modesCopy fastestSupportedPHYMode];
+  slowestSupportedPHYMode2 = [modesCopy slowestSupportedPHYMode];
 
-  if (v5 == v7)
+  if (fastestSupportedPHYMode == fastestSupportedPHYMode2)
   {
-    if (v6 == v8)
+    if (slowestSupportedPHYMode == slowestSupportedPHYMode2)
     {
       return 0;
     }
 
-    v10 = v6;
-    v11 = v8;
+    v10 = slowestSupportedPHYMode;
+    v11 = slowestSupportedPHYMode2;
   }
 
   else
   {
-    v10 = v5;
-    v11 = v7;
+    v10 = fastestSupportedPHYMode;
+    v11 = fastestSupportedPHYMode2;
   }
 
   return CWFComparePHYMode(v10, v11);
 }
 
-- (int64_t)compareLowDataModes:(id)a3
+- (int64_t)compareLowDataModes:(id)modes
 {
-  v4 = a3;
-  v5 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-  v6 = [v5 lowDataMode];
+  modesCopy = modes;
+  matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
+  lowDataMode = [matchingKnownNetworkProfile lowDataMode];
 
-  v7 = [v4 matchingKnownNetworkProfile];
+  matchingKnownNetworkProfile2 = [modesCopy matchingKnownNetworkProfile];
 
-  v8 = [v7 lowDataMode];
-  v9 = v8 == 1;
-  if (v6 == 1)
+  lowDataMode2 = [matchingKnownNetworkProfile2 lowDataMode];
+  v9 = lowDataMode2 == 1;
+  if (lowDataMode == 1)
   {
     v9 = -1;
   }
 
-  if (v6 == v8)
+  if (lowDataMode == lowDataMode2)
   {
     return 0;
   }
@@ -2475,48 +2475,48 @@ LABEL_228:
 
 - (unint64_t)strongestSupportedSecurityType
 {
-  v3 = [(CWFScanResult *)self supportedSecurityTypes];
-  v4 = [(CWFScanResult *)self WAPISubtype];
+  supportedSecurityTypes = [(CWFScanResult *)self supportedSecurityTypes];
+  wAPISubtype = [(CWFScanResult *)self WAPISubtype];
 
-  return CWFStrongestSecurityType(v3, v4, 0);
+  return CWFStrongestSecurityType(supportedSecurityTypes, wAPISubtype, 0);
 }
 
 - (unint64_t)weakestSupportedSecurityType
 {
-  v3 = [(CWFScanResult *)self supportedSecurityTypes];
-  v4 = [(CWFScanResult *)self WAPISubtype];
+  supportedSecurityTypes = [(CWFScanResult *)self supportedSecurityTypes];
+  wAPISubtype = [(CWFScanResult *)self WAPISubtype];
 
-  return CWFWeakestSecurityType(v3, v4, 0);
+  return CWFWeakestSecurityType(supportedSecurityTypes, wAPISubtype, 0);
 }
 
 - (int64_t)WAPISubtype
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCD60];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int)fastestSupportedPHYMode
 {
-  v2 = [(CWFScanResult *)self supportedPHYModes];
+  supportedPHYModes = [(CWFScanResult *)self supportedPHYModes];
 
-  return CWFFastestPHYMode(v2);
+  return CWFFastestPHYMode(supportedPHYModes);
 }
 
 - (int)slowestSupportedPHYMode
 {
-  v2 = [(CWFScanResult *)self supportedPHYModes];
+  supportedPHYModes = [(CWFScanResult *)self supportedPHYModes];
 
-  return CWFSlowestPHYMode(v2);
+  return CWFSlowestPHYMode(supportedPHYModes);
 }
 
 - (unint64_t)shortSSID
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD288];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (NSString)networkName
@@ -2529,8 +2529,8 @@ LABEL_228:
 
 - (BOOL)isAmbiguousNetworkName
 {
-  v2 = [(CWFScanResult *)self networkName];
-  v3 = sub_1E0BEE360(v2);
+  networkName = [(CWFScanResult *)self networkName];
+  v3 = sub_1E0BEE360(networkName);
 
   return v3;
 }
@@ -2538,47 +2538,47 @@ LABEL_228:
 - (int64_t)noise
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCC58];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isHotspot
 {
-  v3 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-  if (([v3 isHotspot] & 1) != 0 || -[CWFScanResult isPasspoint](self, "isPasspoint") || -[CWFScanResult accessNetworkType](self, "accessNetworkType") == 2)
+  matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
+  if (([matchingKnownNetworkProfile isHotspot] & 1) != 0 || -[CWFScanResult isPasspoint](self, "isPasspoint") || -[CWFScanResult accessNetworkType](self, "accessNetworkType") == 2)
   {
 
     return 1;
   }
 
-  v5 = [(CWFScanResult *)self accessNetworkType];
+  accessNetworkType = [(CWFScanResult *)self accessNetworkType];
 
-  return v5 == 3;
+  return accessNetworkType == 3;
 }
 
 - (BOOL)isUnconfiguredAirPortBaseStation
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCD78];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setOSSpecificAttributes:(id)a3
+- (void)setOSSpecificAttributes:(id)attributes
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  attributesCopy = attributes;
+  if (attributesCopy)
   {
-    v20 = self;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    selfCopy = self;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v6 = [v4 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v33 count:16];
+    allKeys = [attributesCopy allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v21 objects:v33 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2589,7 +2589,7 @@ LABEL_228:
         {
           if (*v22 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v21 + 1) + 8 * i);
@@ -2598,8 +2598,8 @@ LABEL_228:
 
           if (v13)
           {
-            v14 = [v4 objectForKeyedSubscript:v11];
-            [v5 setObject:v14 forKeyedSubscript:v11];
+            v14 = [attributesCopy objectForKeyedSubscript:v11];
+            [dictionary setObject:v14 forKeyedSubscript:v11];
           }
 
           else
@@ -2633,21 +2633,21 @@ LABEL_228:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v33 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v21 objects:v33 count:16];
       }
 
       while (v8);
     }
 
-    self = v20;
+    self = selfCopy;
   }
 
   else
   {
-    v5 = 0;
+    dictionary = 0;
   }
 
-  [(NSMutableDictionary *)self->_internal setObject:v5 forKeyedSubscript:&unk_1F5BBD228, v18, v19];
+  [(NSMutableDictionary *)self->_internal setObject:dictionary forKeyedSubscript:&unk_1F5BBD228, v18, v19];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -2660,23 +2660,23 @@ LABEL_228:
   return v3;
 }
 
-- (void)setOSSpecificValue:(id)a3 forKey:(id)a4
+- (void)setOSSpecificValue:(id)value forKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && (+[CWFScanResult supportedOSSpecificKeys](CWFScanResult, "supportedOSSpecificKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:v7], v8, v9))
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy && (+[CWFScanResult supportedOSSpecificKeys](CWFScanResult, "supportedOSSpecificKeys"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 containsObject:keyCopy], v8, v9))
   {
     v10 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD228];
 
-    if (v6 && !v10)
+    if (valueCopy && !v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_internal setObject:v11 forKeyedSubscript:&unk_1F5BBD228];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_internal setObject:dictionary forKeyedSubscript:&unk_1F5BBD228];
     }
 
     v12 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD228];
-    [v12 setObject:v6 forKeyedSubscript:v7];
+    [v12 setObject:valueCopy forKeyedSubscript:keyCopy];
   }
 
   else
@@ -2702,14 +2702,14 @@ LABEL_228:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)OSSpecificValueForKey:(id)a3
+- (id)OSSpecificValueForKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     internal = self->_internal;
-    v4 = a3;
+    keyCopy = key;
     v5 = [(NSMutableDictionary *)internal objectForKeyedSubscript:&unk_1F5BBD228];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [v5 objectForKeyedSubscript:keyCopy];
   }
 
   else
@@ -2720,9 +2720,9 @@ LABEL_228:
   return v6;
 }
 
-- (void)setMatchingKnownNetworkProfile:(id)a3
+- (void)setMatchingKnownNetworkProfile:(id)profile
 {
-  v4 = [a3 copy];
+  v4 = [profile copy];
   [(NSMutableDictionary *)self->_internal setObject:v4 forKeyedSubscript:&unk_1F5BBD240];
 }
 
@@ -2735,8 +2735,8 @@ LABEL_228:
 
   else
   {
-    v4 = [(CWFScanResult *)self matchingKnownNetworkProfile];
-    if ([v4 isCaptive])
+    matchingKnownNetworkProfile = [(CWFScanResult *)self matchingKnownNetworkProfile];
+    if ([matchingKnownNetworkProfile isCaptive])
     {
       v3 = [(CWFScanResult *)self accessNetworkType]== 2;
     }
@@ -2758,33 +2758,33 @@ LABEL_228:
 - (unint64_t)WPAMulticastCipher
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD180];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)RSNMulticastCipher
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD1C8];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)RSNBroadcastCipher
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD1E0];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (int)RSNCapabilities
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD210];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)hasWEP40Cipher
@@ -2833,13 +2833,13 @@ LABEL_6:
     {
 LABEL_12:
 
-      v9 = [(CWFScanResult *)self RSNUnicastCiphers];
+      rSNUnicastCiphers = [(CWFScanResult *)self RSNUnicastCiphers];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v4 = v9;
+      v4 = rSNUnicastCiphers;
       v3 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (!v3)
       {
@@ -2932,13 +2932,13 @@ LABEL_6:
     {
 LABEL_12:
 
-      v9 = [(CWFScanResult *)self RSNUnicastCiphers];
+      rSNUnicastCiphers = [(CWFScanResult *)self RSNUnicastCiphers];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v4 = v9;
+      v4 = rSNUnicastCiphers;
       v3 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (!v3)
       {
@@ -3031,13 +3031,13 @@ LABEL_6:
     {
 LABEL_12:
 
-      v9 = [(CWFScanResult *)self RSNUnicastCiphers];
+      rSNUnicastCiphers = [(CWFScanResult *)self RSNUnicastCiphers];
 
       v16 = 0u;
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v4 = v9;
+      v4 = rSNUnicastCiphers;
       v3 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
       if (!v3)
       {
@@ -3087,193 +3087,193 @@ LABEL_23:
 - (int)accessNetworkType
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCDA8];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)isInternetAccessible
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCDC0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAdditionalStepRequiredForAccess
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCDD8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isEmergencyServicesReachable
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCDF0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isUnauthenticatedEmergencyServiceAccessible
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE08];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)venueGroup
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE20];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)venueType
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE38];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isUnconfiguredDevice
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE68];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)providesInternetAccess
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE80];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsWPS
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCE98];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsiAPOverWiFi
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCEB0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supports2GHzNetworks
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCEC8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supports5GHzNetworks
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCEE0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMFi
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF88];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMFiHardwareAuth
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCFA0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMFiSoftwareTokenAuth
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCFB8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMFiSoftwareCertAuth
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCFD0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsHomeKit
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF10];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsHomeKit2
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF28];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsAirPrint
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF70];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsWoW
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD000];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsSecureWAC
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCFE8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsAirPlay
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF40];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsAirPlay2
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBCF58];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)hasNon6GHzRNRChannel
@@ -3283,8 +3283,8 @@ LABEL_23:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CWFScanResult *)self RNRChannelList];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  rNRChannelList = [(CWFScanResult *)self RNRChannelList];
+  v3 = [rNRChannelList countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -3295,7 +3295,7 @@ LABEL_23:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(rNRChannelList);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -3306,7 +3306,7 @@ LABEL_23:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [rNRChannelList countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 0;
       if (v4)
       {
@@ -3331,17 +3331,17 @@ LABEL_13:
 - (BOOL)isAssociationDisallowed
 {
   v2 = [(NSMutableDictionary *)self->_internal objectForKeyedSubscript:&unk_1F5BBD2B8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)__descriptionForAirPortBaseStationModel:(int64_t)a3
+- (id)__descriptionForAirPortBaseStationModel:(int64_t)model
 {
-  switch(a3)
+  switch(model)
   {
     case 'f':
-      v4 = @"AirPort Express (802.11 b/g)";
+      model = @"AirPort Express (802.11 b/g)";
 
       break;
     case 'g':
@@ -3351,108 +3351,108 @@ LABEL_13:
     case 'v':
       goto LABEL_10;
     case 'h':
-      v4 = @"AirPort Extreme 802.11n (1st Generation)";
+      model = @"AirPort Extreme 802.11n (1st Generation)";
 
       break;
     case 'i':
-      v4 = @"AirPort Extreme 802.11n w/ Gigabit Ethernet (2nd Generation)";
+      model = @"AirPort Extreme 802.11n w/ Gigabit Ethernet (2nd Generation)";
 
       break;
     case 'j':
-      v4 = @"Time Capsule (1st Generation)";
+      model = @"Time Capsule (1st Generation)";
 
       break;
     case 'k':
-      v4 = @"AirPort Express 802.11n (1st Generation)";
+      model = @"AirPort Express 802.11n (1st Generation)";
 
       break;
     case 'l':
-      v4 = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (3rd Generation)";
+      model = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (3rd Generation)";
 
       break;
     case 'm':
-      v4 = @"Time Capsule w/ Simultaneous Dual-Band (2nd Generation)";
+      model = @"Time Capsule w/ Simultaneous Dual-Band (2nd Generation)";
 
       break;
     case 'q':
-      v4 = @"Time Capsule w/ Simultaneous Dual-Band (3rd Generation)";
+      model = @"Time Capsule w/ Simultaneous Dual-Band (3rd Generation)";
 
       break;
     case 'r':
-      v4 = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (4th Generation)";
+      model = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (4th Generation)";
 
       break;
     case 's':
-      v4 = @"AirPort Express 802.11n w/ Simultaneous Dual-Band (2nd Generation)";
+      model = @"AirPort Express 802.11n w/ Simultaneous Dual-Band (2nd Generation)";
 
       break;
     case 't':
-      v4 = @"Time Capsule w/ Simultaneous Dual-Band (4th Generation)";
+      model = @"Time Capsule w/ Simultaneous Dual-Band (4th Generation)";
 
       break;
     case 'u':
-      v4 = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (5th Generation)";
+      model = @"AirPort Extreme 802.11n w/ Simultaneous Dual-Band (5th Generation)";
 
       break;
     case 'w':
-      v4 = @"Time Capsule 802.11ac (5th Generation)";
+      model = @"Time Capsule 802.11ac (5th Generation)";
 
       break;
     case 'x':
-      v4 = @"AirPort Extreme 802.11ac (6th Generation)";
+      model = @"AirPort Extreme 802.11ac (6th Generation)";
 
       break;
     default:
-      if (a3)
+      if (model)
       {
-        if (a3 == 3)
+        if (model == 3)
         {
-          v4 = @"AirPort Extreme (802.11 b/g)";
+          model = @"AirPort Extreme (802.11 b/g)";
         }
 
         else
         {
 LABEL_10:
-          v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", a3];
+          model = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%ld)", model];
         }
       }
 
       else
       {
-        v4 = 0;
+        model = 0;
       }
 
       break;
   }
 
-  return v4;
+  return model;
 }
 
-- (BOOL)isEqualToScanResult:(id)a3
+- (BOOL)isEqualToScanResult:(id)result
 {
-  v4 = a3;
-  v5 = [(CWFScanResult *)self SSID];
-  if (v5)
+  resultCopy = result;
+  sSID = [(CWFScanResult *)self SSID];
+  if (sSID)
   {
-    v6 = [v4 SSID];
-    if (v6)
+    sSID2 = [resultCopy SSID];
+    if (sSID2)
     {
-      v7 = [(CWFScanResult *)self SSID];
-      v8 = [v4 SSID];
-      if ([v7 isEqual:v8])
+      sSID3 = [(CWFScanResult *)self SSID];
+      sSID4 = [resultCopy SSID];
+      if ([sSID3 isEqual:sSID4])
       {
-        v9 = [(CWFScanResult *)self BSSID];
-        if (v9)
+        bSSID = [(CWFScanResult *)self BSSID];
+        if (bSSID)
         {
-          v10 = [v4 BSSID];
-          if (v10)
+          bSSID2 = [resultCopy BSSID];
+          if (bSSID2)
           {
-            v11 = [(CWFScanResult *)self BSSID];
-            v12 = [v4 BSSID];
-            if ([v11 isEqual:v12] && (v16 = -[CWFScanResult isFILSDiscoveryFrame](self, "isFILSDiscoveryFrame"), v16 == objc_msgSend(v4, "isFILSDiscoveryFrame")))
+            bSSID3 = [(CWFScanResult *)self BSSID];
+            bSSID4 = [resultCopy BSSID];
+            if ([bSSID3 isEqual:bSSID4] && (v16 = -[CWFScanResult isFILSDiscoveryFrame](self, "isFILSDiscoveryFrame"), v16 == objc_msgSend(resultCopy, "isFILSDiscoveryFrame")))
             {
-              v14 = [(CWFScanResult *)self supportedSecurityTypes];
-              v13 = v14 == [v4 supportedSecurityTypes];
+              supportedSecurityTypes = [(CWFScanResult *)self supportedSecurityTypes];
+              v13 = supportedSecurityTypes == [resultCopy supportedSecurityTypes];
             }
 
             else
@@ -3493,18 +3493,18 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFScanResult *)self isEqualToScanResult:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFScanResult *)self isEqualToScanResult:v5];
   }
 
   return v6;
@@ -3512,17 +3512,17 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(CWFScanResult *)self SSID];
-  v4 = [v3 hash];
-  v5 = [(CWFScanResult *)self BSSID];
-  v6 = [v5 hash] ^ v4;
+  sSID = [(CWFScanResult *)self SSID];
+  v4 = [sSID hash];
+  bSSID = [(CWFScanResult *)self BSSID];
+  v6 = [bSSID hash] ^ v4;
   v7 = v6 ^ [(CWFScanResult *)self isFILSDiscoveryFrame];
-  v8 = [(CWFScanResult *)self supportedSecurityTypes];
+  supportedSecurityTypes = [(CWFScanResult *)self supportedSecurityTypes];
 
-  return v7 ^ v8;
+  return v7 ^ supportedSecurityTypes;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFScanResult allocWithZone:?]];
   v5 = v4;
@@ -3540,9 +3540,9 @@ LABEL_10:
   return v5;
 }
 
-- (CWFScanResult)initWithCoder:(id)a3
+- (CWFScanResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CWFScanResult;
   v5 = [(CWFScanResult *)&v20 init];
@@ -3558,7 +3558,7 @@ LABEL_10:
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v19 setWithObjects:{v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"_internal"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"_internal"];
     v16 = [v15 mutableCopy];
     internal = v5->_internal;
     v5->_internal = v16;

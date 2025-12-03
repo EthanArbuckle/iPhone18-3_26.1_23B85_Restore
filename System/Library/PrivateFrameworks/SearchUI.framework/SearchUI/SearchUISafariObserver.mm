@@ -1,6 +1,6 @@
 @interface SearchUISafariObserver
 - (SearchUISafariObserver)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SearchUISafariObserver
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v7 = *MEMORY[0x1E696A500];
-  v8 = a5;
-  v10 = [v8 objectForKeyedSubscript:v7];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+  changeCopy = change;
+  v10 = [changeCopy objectForKeyedSubscript:v7];
+  v9 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
   if (v10 | v9 && ([v10 isEqual:v9] & 1) == 0)
   {

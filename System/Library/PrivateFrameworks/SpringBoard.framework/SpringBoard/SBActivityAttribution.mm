@@ -1,15 +1,15 @@
 @interface SBActivityAttribution
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSystemService;
 - (NSString)activeEntityBundleIdentifier;
 - (NSString)bundleIdentifier;
 - (NSString)displayName;
 - (NSString)executableDisplayName;
 - (NSString)website;
-- (SBActivityAttribution)initWithSTActivityAttribution:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBActivityAttribution)initWithSTActivityAttribution:(id)attribution;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -19,40 +19,40 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_attribution];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_attribution];
+  v5 = [builder hash];
 
   return v5;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  v3 = [v2 bundleIdentifier];
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  bundleIdentifier = [attributedEntity bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)activeEntityBundleIdentifier
 {
-  v2 = [(STActivityAttribution *)self->_attribution activeEntity];
-  v3 = [v2 bundleIdentifier];
+  activeEntity = [(STActivityAttribution *)self->_attribution activeEntity];
+  bundleIdentifier = [activeEntity bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBActivityAttribution *)self displayName];
-  v5 = [v3 appendObject:v4 withName:@"displayName"];
+  displayName = [(SBActivityAttribution *)self displayName];
+  v5 = [v3 appendObject:displayName withName:@"displayName"];
 
-  v6 = [(SBActivityAttribution *)self bundleIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"bundleIdentifier"];
+  bundleIdentifier = [(SBActivityAttribution *)self bundleIdentifier];
+  v7 = [v3 appendObject:bundleIdentifier withName:@"bundleIdentifier"];
 
-  v8 = [(SBActivityAttribution *)self website];
-  v9 = [v3 appendBool:objc_msgSend(v8 withName:{"length") != 0, @"website-non-nil"}];
+  website = [(SBActivityAttribution *)self website];
+  v9 = [v3 appendBool:objc_msgSend(website withName:{"length") != 0, @"website-non-nil"}];
 
   v10 = [v3 appendBool:-[SBActivityAttribution isSystemService](self withName:{"isSystemService"), @"isSystemService"}];
 
@@ -61,72 +61,72 @@
 
 - (NSString)displayName
 {
-  v2 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  v3 = [v2 localizedDisplayName];
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  localizedDisplayName = [attributedEntity localizedDisplayName];
 
-  return v3;
+  return localizedDisplayName;
 }
 
 - (NSString)website
 {
-  v2 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  v3 = [v2 website];
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  website = [attributedEntity website];
 
-  return v3;
+  return website;
 }
 
 - (BOOL)isSystemService
 {
-  v2 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  v3 = [v2 isSystemService];
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  isSystemService = [attributedEntity isSystemService];
 
-  return v3;
+  return isSystemService;
 }
 
 - (NSString)executableDisplayName
 {
-  v2 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  v3 = [v2 localizedExecutableDisplayName];
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  localizedExecutableDisplayName = [attributedEntity localizedExecutableDisplayName];
 
-  return v3;
+  return localizedExecutableDisplayName;
 }
 
-- (SBActivityAttribution)initWithSTActivityAttribution:(id)a3
+- (SBActivityAttribution)initWithSTActivityAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   v21.receiver = self;
   v21.super_class = SBActivityAttribution;
   v5 = [(SBActivityAttribution *)&v21 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributionCopy copy];
     attribution = v5->_attribution;
     v5->_attribution = v6;
 
-    v8 = [v4 attributedEntity];
-    v9 = [v8 bundlePath];
-    if (v9)
+    attributedEntity = [attributionCopy attributedEntity];
+    bundlePath = [attributedEntity bundlePath];
+    if (bundlePath)
     {
-      v10 = v9;
+      executablePath = bundlePath;
     }
 
     else
     {
-      v10 = [v8 executablePath];
-      if (!v10)
+      executablePath = [attributedEntity executablePath];
+      if (!executablePath)
       {
-        v12 = [v8 localizedDisplayName];
+        localizedDisplayName = [attributedEntity localizedDisplayName];
         goto LABEL_11;
       }
     }
 
     v11 = BSPathExistsOnSystemPartition();
-    v12 = [v8 localizedDisplayName];
+    localizedDisplayName = [attributedEntity localizedDisplayName];
     if (v11)
     {
       v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"SYSTEM_ATTRIBUTION_STRING" value:&stru_283094718 table:@"SystemStatusServer"];
-      if ([v12 isEqualToString:v14])
+      if ([localizedDisplayName isEqualToString:v14])
       {
       }
 
@@ -134,15 +134,15 @@
       {
         v15 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v16 = [v15 localizedStringForKey:@"UNKNOWN_ATTRIBUTION_STRING" value:&stru_283094718 table:@"SystemStatusServer"];
-        v17 = [v12 isEqualToString:v16];
+        v17 = [localizedDisplayName isEqualToString:v16];
 
         if ((v17 & 1) == 0)
         {
-          v18 = v12;
-          v12 = v18;
+          bundleIdentifier = localizedDisplayName;
+          localizedDisplayName = bundleIdentifier;
 LABEL_12:
           attributionGroup = v5->_attributionGroup;
-          v5->_attributionGroup = v18;
+          v5->_attributionGroup = bundleIdentifier;
 
           goto LABEL_13;
         }
@@ -150,7 +150,7 @@ LABEL_12:
     }
 
 LABEL_11:
-    v18 = [v8 bundleIdentifier];
+    bundleIdentifier = [attributedEntity bundleIdentifier];
     goto LABEL_12;
   }
 
@@ -161,12 +161,12 @@ LABEL_13:
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken
 {
-  v4 = [(STActivityAttribution *)self->_attribution attributedEntity];
-  if (v4)
+  attributedEntity = [(STActivityAttribution *)self->_attribution attributedEntity];
+  if (attributedEntity)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = attributedEntity;
+    [attributedEntity auditToken];
+    attributedEntity = v6;
   }
 
   else
@@ -178,17 +178,17 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   attribution = self->_attribution;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__SBActivityAttribution_isEqual___block_invoke;
   v10[3] = &unk_2783ACDB8;
-  v11 = v4;
-  v7 = v4;
+  v11 = equalCopy;
+  v7 = equalCopy;
   v8 = [v5 appendObject:attribution counterpart:v10];
   LOBYTE(attribution) = [v5 isEqual];
 
@@ -197,24 +197,24 @@ LABEL_13:
 
 - (id)succinctDescription
 {
-  v2 = [(SBActivityAttribution *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBActivityAttribution *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBActivityAttribution *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBActivityAttribution *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -222,8 +222,8 @@ LABEL_13:
   v10[3] = &unk_2783A92D8;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

@@ -1,70 +1,70 @@
 @interface HDCloudSyncPipeline
-+ (id)operationGroupForContext:(id)a3 syncCircleIdentifier:(id)a4 assetDownloadStagingManager:(id)a5;
++ (id)operationGroupForContext:(id)context syncCircleIdentifier:(id)identifier assetDownloadStagingManager:(id)manager;
 + (id)retrieveAndResetSyncCounts;
-+ (uint64_t)_shouldIncrementCountForSyncAnalyticsForContext:(uint64_t)a1;
++ (uint64_t)_shouldIncrementCountForSyncAnalyticsForContext:(uint64_t)context;
 - (id)analyticsDictionary;
-- (id)beginWithCompletion:(id)a3;
-- (id)beginWithTaskTree:(id)a3;
+- (id)beginWithCompletion:(id)completion;
+- (id)beginWithTaskTree:(id)tree;
 - (id)description;
-- (id)initForContext:(id)a3 repository:(id)a4 accessibilityAssertion:(id)a5 queue:(id)a6;
+- (id)initForContext:(id)context repository:(id)repository accessibilityAssertion:(id)assertion queue:(id)queue;
 - (id)stages;
-- (void)addStage:(id)a3;
+- (void)addStage:(id)stage;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation HDCloudSyncPipeline
 
-- (id)initForContext:(id)a3 repository:(id)a4 accessibilityAssertion:(id)a5 queue:(id)a6
+- (id)initForContext:(id)context repository:(id)repository accessibilityAssertion:(id)assertion queue:(id)queue
 {
   v68 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v11 = a4;
-  v56 = a5;
-  v55 = a6;
+  contextCopy = context;
+  repositoryCopy = repository;
+  assertionCopy = assertion;
+  queueCopy = queue;
   v62.receiver = self;
   v62.super_class = HDCloudSyncPipeline;
   v12 = [(HDCloudSyncPipeline *)&v62 init];
   if (v12)
   {
-    if (!v11)
+    if (!repositoryCopy)
     {
-      v53 = [MEMORY[0x277CCA890] currentHandler];
-      [v53 handleFailureInMethod:a2 object:v12 file:@"HDCloudSyncPipeline.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"repository"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v12 file:@"HDCloudSyncPipeline.m" lineNumber:78 description:{@"Invalid parameter not satisfying: %@", @"repository"}];
     }
 
     v12->_status = 0;
-    v13 = [v57 copy];
+    v13 = [contextCopy copy];
     context = v12->_context;
     v12->_context = v13;
 
-    objc_storeStrong(&v12->_repository, a4);
-    objc_storeStrong(&v12->_queue, a6);
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeStrong(&v12->_repository, repository);
+    objc_storeStrong(&v12->_queue, queue);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v12->_identifier;
-    v12->_identifier = v15;
+    v12->_identifier = uUID;
 
-    v17 = [(NSUUID *)v12->_identifier UUIDString];
-    v18 = [v17 substringToIndex:4];
+    uUIDString = [(NSUUID *)v12->_identifier UUIDString];
+    v18 = [uUIDString substringToIndex:4];
     shortPipelineIdentifier = v12->_shortPipelineIdentifier;
     v12->_shortPipelineIdentifier = v18;
 
     v12->_pipelineResult = 1;
-    v20 = [(HDCloudSyncRepository *)v12->_repository profile];
-    v21 = [v20 database];
+    profile = [(HDCloudSyncRepository *)v12->_repository profile];
+    database = [profile database];
     v22 = objc_opt_class();
     v23 = NSStringFromClass(v22);
-    if (v56)
+    if (assertionCopy)
     {
       v61 = 0;
-      v24 = [v21 cloneAccessibilityAssertion:v56 ownerIdentifier:v23 error:&v61];
+      v24 = [database cloneAccessibilityAssertion:assertionCopy ownerIdentifier:v23 error:&v61];
       v25 = &v61;
     }
 
     else
     {
       v60 = 0;
-      v24 = [v21 takeAccessibilityAssertionWithOwnerIdentifier:v23 timeout:&v60 error:600.0];
+      v24 = [database takeAccessibilityAssertionWithOwnerIdentifier:v23 timeout:&v60 error:600.0];
       v25 = &v60;
     }
 
@@ -79,7 +79,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *location = 138543874;
-        *&location[4] = v11;
+        *&location[4] = repositoryCopy;
         v64 = 2114;
         v65 = v12;
         v66 = 2114;
@@ -103,37 +103,37 @@
     v12->_stages = v30;
 
     v32 = objc_alloc(MEMORY[0x277D10AB8]);
-    v33 = [(NSUUID *)v12->_identifier UUIDString];
-    v34 = [v32 initWithAssertionIdentifier:@"HDCloudSyncDownloadDirectoryAssertionIdentifier" ownerIdentifier:v33];
+    uUIDString2 = [(NSUUID *)v12->_identifier UUIDString];
+    v34 = [v32 initWithAssertionIdentifier:@"HDCloudSyncDownloadDirectoryAssertionIdentifier" ownerIdentifier:uUIDString2];
     inProgressDownloadDirAssertion = v12->_inProgressDownloadDirAssertion;
     v12->_inProgressDownloadDirAssertion = v34;
 
-    v36 = [v11 profile];
-    v37 = [v36 cloudSyncManager];
-    v38 = [v37 assetDownloadStagingManagerWithAssertion:v12->_inProgressDownloadDirAssertion];
+    profile2 = [repositoryCopy profile];
+    cloudSyncManager = [profile2 cloudSyncManager];
+    v38 = [cloudSyncManager assetDownloadStagingManagerWithAssertion:v12->_inProgressDownloadDirAssertion];
 
-    v39 = [v11 syncCircleIdentifier];
-    v40 = [HDCloudSyncPipeline operationGroupForContext:v57 syncCircleIdentifier:v39 assetDownloadStagingManager:v38];
+    syncCircleIdentifier = [repositoryCopy syncCircleIdentifier];
+    v40 = [HDCloudSyncPipeline operationGroupForContext:contextCopy syncCircleIdentifier:syncCircleIdentifier assetDownloadStagingManager:v38];
     operationGroup = v12->_operationGroup;
     v12->_operationGroup = v40;
 
     v42 = [HDCloudSyncOperationConfiguration alloc];
     v43 = v12->_operationGroup;
-    v44 = [v11 syncCircleIdentifier];
+    syncCircleIdentifier2 = [repositoryCopy syncCircleIdentifier];
     v45 = v12->_accessibilityAssertion;
     v46 = v12->_identifier;
-    v47 = [v57 unitTest_syncDateOverride];
-    v48 = v47;
-    if (!v47)
+    unitTest_syncDateOverride = [contextCopy unitTest_syncDateOverride];
+    date = unitTest_syncDateOverride;
+    if (!unitTest_syncDateOverride)
     {
-      v48 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v49 = [(HDCloudSyncOperationConfiguration *)v42 initWithRepository:v11 operationGroup:v43 syncContainerPrefix:v44 context:v57 accessibilityAssertion:v45 syncIdentifier:v46 syncDate:v48];
+    v49 = [(HDCloudSyncOperationConfiguration *)v42 initWithRepository:repositoryCopy operationGroup:v43 syncContainerPrefix:syncCircleIdentifier2 context:contextCopy accessibilityAssertion:v45 syncIdentifier:v46 syncDate:date];
     operationConfiguration = v12->_operationConfiguration;
     v12->_operationConfiguration = v49;
 
-    if (!v47)
+    if (!unitTest_syncDateOverride)
     {
     }
 
@@ -186,11 +186,11 @@ void __78__HDCloudSyncPipeline_initForContext_repository_accessibilityAssertion_
 {
   v3 = MEMORY[0x277CCACA8];
   shortPipelineIdentifier = self->_shortPipelineIdentifier;
-  v5 = [(HDCloudSyncOperationConfiguration *)self->_operationConfiguration shortSyncIdentifier];
-  v6 = v5;
-  if (v5)
+  shortSyncIdentifier = [(HDCloudSyncOperationConfiguration *)self->_operationConfiguration shortSyncIdentifier];
+  v6 = shortSyncIdentifier;
+  if (shortSyncIdentifier)
   {
-    v7 = v5;
+    v7 = shortSyncIdentifier;
   }
 
   else
@@ -212,26 +212,26 @@ void __78__HDCloudSyncPipeline_initForContext_repository_accessibilityAssertion_
 {
   v38[13] = *MEMORY[0x277D85DE8];
   v37[0] = @"syncIdentifier";
-  v36 = [(HDCloudSyncOperationConfiguration *)self->_operationConfiguration syncIdentifier];
-  v35 = [v36 UUIDString];
-  v38[0] = v35;
+  syncIdentifier = [(HDCloudSyncOperationConfiguration *)self->_operationConfiguration syncIdentifier];
+  uUIDString = [syncIdentifier UUIDString];
+  v38[0] = uUIDString;
   v37[1] = @"pipelineIdentifier";
-  v34 = [(NSUUID *)self->_identifier UUIDString];
-  v38[1] = v34;
+  uUIDString2 = [(NSUUID *)self->_identifier UUIDString];
+  v38[1] = uUIDString2;
   v37[2] = @"syncCircleIdentifier";
-  v33 = [(HDCloudSyncRepository *)self->_repository syncCircleIdentifier];
-  v38[2] = v33;
+  syncCircleIdentifier = [(HDCloudSyncRepository *)self->_repository syncCircleIdentifier];
+  v38[2] = syncCircleIdentifier;
   v37[3] = @"primaryContainerIdentifier";
-  v32 = [(HDCloudSyncRepository *)self->_repository primaryCKContainer];
-  v3 = [v32 containerIdentifier];
+  primaryCKContainer = [(HDCloudSyncRepository *)self->_repository primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   analyticsCloudKitIdentifier = &stru_283BF39C8;
   if (self->_analyticsCloudKitIdentifier)
   {
     analyticsCloudKitIdentifier = self->_analyticsCloudKitIdentifier;
   }
 
-  v31 = v3;
-  v38[3] = v3;
+  v31 = containerIdentifier;
+  v38[3] = containerIdentifier;
   v38[4] = analyticsCloudKitIdentifier;
   v37[4] = @"cloudKitIdentifier";
   v37[5] = @"reason";
@@ -271,23 +271,23 @@ LABEL_8:
   v38[9] = v26;
   v37[10] = @"changesPullOperationCount";
   v9 = MEMORY[0x277CCABB0];
-  v25 = [(HDCloudSyncPipeline *)self operationConfiguration];
-  v10 = [v25 computedState];
-  v11 = [v10 pullTargets];
-  v12 = [v9 numberWithUnsignedInteger:{objc_msgSend(v11, "count")}];
+  operationConfiguration = [(HDCloudSyncPipeline *)self operationConfiguration];
+  computedState = [operationConfiguration computedState];
+  pullTargets = [computedState pullTargets];
+  v12 = [v9 numberWithUnsignedInteger:{objc_msgSend(pullTargets, "count")}];
   v38[10] = v12;
   v37[11] = @"changesPushOperationCount";
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(HDCloudSyncPipeline *)self operationConfiguration];
-  v15 = [v14 computedState];
-  v16 = [v15 pushTargets];
-  v17 = [v13 numberWithUnsignedInteger:{objc_msgSend(v16, "count")}];
+  operationConfiguration2 = [(HDCloudSyncPipeline *)self operationConfiguration];
+  computedState2 = [operationConfiguration2 computedState];
+  pushTargets = [computedState2 pushTargets];
+  v17 = [v13 numberWithUnsignedInteger:{objc_msgSend(pushTargets, "count")}];
   v38[11] = v17;
   v37[12] = @"changesRebaseCount";
   v18 = MEMORY[0x277CCABB0];
-  v19 = [(HDCloudSyncPipeline *)self operationConfiguration];
-  v20 = [v19 computedState];
-  v21 = [v18 numberWithUnsignedInteger:{objc_msgSend(v20, "countOfRebaselineOperations")}];
+  operationConfiguration3 = [(HDCloudSyncPipeline *)self operationConfiguration];
+  computedState3 = [operationConfiguration3 computedState];
+  v21 = [v18 numberWithUnsignedInteger:{objc_msgSend(computedState3, "countOfRebaselineOperations")}];
   v38[12] = v21;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:13];
 
@@ -296,28 +296,28 @@ LABEL_8:
   return v24;
 }
 
-- (void)addStage:(id)a3
+- (void)addStage:(id)stage
 {
-  v5 = a3;
-  v7 = v5;
+  stageCopy = stage;
+  v7 = stageCopy;
   if (self->_status)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPipeline.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPipeline.m" lineNumber:189 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
 
-    v5 = v7;
+    stageCopy = v7;
   }
 
-  [(NSMutableArray *)self->_stages addObject:v5];
+  [(NSMutableArray *)self->_stages addObject:stageCopy];
 }
 
-- (id)beginWithTaskTree:(id)a3
+- (id)beginWithTaskTree:(id)tree
 {
-  v5 = a3;
+  treeCopy = tree;
   if (self->_status)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDCloudSyncPipeline.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncPipeline.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"_status == HDCloudSyncOperationStatusPending"}];
   }
 
   self->_status = 1;
@@ -332,7 +332,7 @@ LABEL_8:
   v14[2] = __41__HDCloudSyncPipeline_beginWithTaskTree___block_invoke;
   v14[3] = &unk_278617930;
   v14[4] = self;
-  [v5 addTaskOnQueue:queue task:v14];
+  [treeCopy addTaskOnQueue:queue task:v14];
   v10 = self->_progress;
   v11 = v10;
 
@@ -669,31 +669,31 @@ void __41__HDCloudSyncPipeline_beginWithTaskTree___block_invoke_384(uint64_t a1,
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (uint64_t)_shouldIncrementCountForSyncAnalyticsForContext:(uint64_t)a1
++ (uint64_t)_shouldIncrementCountForSyncAnalyticsForContext:(uint64_t)context
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 reason];
+  reason = [v2 reason];
 
-  return (v3 > 0x1F) | (0x7FFFFFD7u >> v3) & 1;
+  return (reason > 0x1F) | (0x7FFFFFD7u >> reason) & 1;
 }
 
-- (id)beginWithCompletion:(id)a3
+- (id)beginWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x277D10AC8]);
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __43__HDCloudSyncPipeline_beginWithCompletion___block_invoke;
   v13 = &unk_27861F770;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v6 = completionCopy;
   v7 = [v5 initWithDescription:@"Sync pipeline" completion:&v10];
-  v8 = [(HDCloudSyncPipeline *)self beginWithTaskTree:v7, v10, v11, v12, v13, v14];
+  selfCopy = [(HDCloudSyncPipeline *)self beginWithTaskTree:v7, v10, v11, v12, v13, selfCopy];
   [v7 begin];
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)cancel
@@ -1232,8 +1232,8 @@ void __72__HDCloudSyncPipeline__queue_waitForCloudKitOperationDelayWithTaskTree_
 + (id)retrieveAndResetSyncCounts
 {
   os_unfair_lock_lock(&_syncCountLock);
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"HDCloudSyncCountDictionary"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"HDCloudSyncCountDictionary"];
 
   if (v3)
   {
@@ -1257,8 +1257,8 @@ void __72__HDCloudSyncPipeline__queue_waitForCloudKitOperationDelayWithTaskTree_
     [v4 setValue:&unk_283CB2010 forKey:@"HDCloudSyncCountOfTotalSyncs"];
   }
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setValue:0 forKey:@"HDCloudSyncCountDictionary"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 setValue:0 forKey:@"HDCloudSyncCountDictionary"];
 
   os_unfair_lock_unlock(&_syncCountLock);
   v8 = [v4 copy];
@@ -1266,30 +1266,30 @@ void __72__HDCloudSyncPipeline__queue_waitForCloudKitOperationDelayWithTaskTree_
   return v8;
 }
 
-+ (id)operationGroupForContext:(id)a3 syncCircleIdentifier:(id)a4 assetDownloadStagingManager:(id)a5
++ (id)operationGroupForContext:(id)context syncCircleIdentifier:(id)identifier assetDownloadStagingManager:(id)manager
 {
-  v7 = a3;
-  v8 = a5;
+  contextCopy = context;
+  managerCopy = manager;
   v9 = MEMORY[0x277CBC4F8];
-  v10 = a4;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(v9);
   v12 = MEMORY[0x277CCACA8];
-  v13 = HDCloudSyncContextPurposeToString([v7 purpose]);
-  v14 = [v12 stringWithFormat:@"CloudSync-%@-%@-%zd", v10, v13, objc_msgSend(v7, "reason")];
+  v13 = HDCloudSyncContextPurposeToString([contextCopy purpose]);
+  v14 = [v12 stringWithFormat:@"CloudSync-%@-%@-%zd", identifierCopy, v13, objc_msgSend(contextCopy, "reason")];
 
   [v11 setName:v14];
-  [v11 setQuantity:{objc_msgSend(v7, "options")}];
+  [v11 setQuantity:{objc_msgSend(contextCopy, "options")}];
   v15 = 1;
   [v11 setExpectedSendSize:1];
   [v11 setExpectedReceiveSize:1];
-  v16 = v7;
+  v16 = contextCopy;
   objc_opt_self();
   if (([v16 options] & 0x400) == 0)
   {
-    v17 = [v16 reason];
-    if (v17 <= 0x21)
+    reason = [v16 reason];
+    if (reason <= 0x21)
     {
-      v15 = 0x4FFFFFD2uLL >> v17;
+      v15 = 0x4FFFFFD2uLL >> reason;
     }
 
     else
@@ -1298,45 +1298,45 @@ void __72__HDCloudSyncPipeline__queue_waitForCloudKitOperationDelayWithTaskTree_
     }
   }
 
-  v18 = [v11 defaultConfiguration];
-  [v18 setAllowsCellularAccess:v15 & 1];
+  defaultConfiguration = [v11 defaultConfiguration];
+  [defaultConfiguration setAllowsCellularAccess:v15 & 1];
 
   v19 = v16;
   objc_opt_self();
-  v20 = [v19 reason];
+  reason2 = [v19 reason];
 
-  if (v20 <= 0x21 && ((1 << v20) & 0x3B000012DLL) != 0)
+  if (reason2 <= 0x21 && ((1 << reason2) & 0x3B000012DLL) != 0)
   {
-    v21 = [v11 defaultConfiguration];
-    [v21 setQualityOfService:17];
+    defaultConfiguration2 = [v11 defaultConfiguration];
+    [defaultConfiguration2 setQualityOfService:17];
   }
 
   else
   {
-    v21 = HKCreateSerialDispatchQueueWithQOSClass();
+    defaultConfiguration2 = HKCreateSerialDispatchQueueWithQOSClass();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __97__HDCloudSyncPipeline_operationGroupForContext_syncCircleIdentifier_assetDownloadStagingManager___block_invoke;
     block[3] = &unk_2786138F8;
     v29 = v11;
     v30 = 25;
-    dispatch_async_and_wait(v21, block);
+    dispatch_async_and_wait(defaultConfiguration2, block);
   }
 
-  v22 = [v19 backgroundTask];
+  backgroundTask = [v19 backgroundTask];
 
-  if (v22)
+  if (backgroundTask)
   {
-    v23 = [v11 defaultConfiguration];
-    v24 = [v19 backgroundTask];
-    v25 = [v24 currentTask];
-    [v23 setSystemTask:v25];
+    defaultConfiguration3 = [v11 defaultConfiguration];
+    backgroundTask2 = [v19 backgroundTask];
+    currentTask = [backgroundTask2 currentTask];
+    [defaultConfiguration3 setSystemTask:currentTask];
   }
 
-  if (v8)
+  if (managerCopy)
   {
-    v26 = [v11 defaultConfiguration];
-    [v26 setAssetDownloadStagingManager:v8];
+    defaultConfiguration4 = [v11 defaultConfiguration];
+    [defaultConfiguration4 setAssetDownloadStagingManager:managerCopy];
   }
 
   return v11;

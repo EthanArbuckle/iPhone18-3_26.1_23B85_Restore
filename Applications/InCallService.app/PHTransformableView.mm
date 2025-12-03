@@ -1,14 +1,14 @@
 @interface PHTransformableView
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation PHTransformableView
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(PHTransformableView *)self transform];
   if (CGAffineTransformIsIdentity(&v7))
   {
@@ -18,12 +18,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PHTransformableView *)self transform];
   if (CGAffineTransformIsIdentity(&v9))
   {

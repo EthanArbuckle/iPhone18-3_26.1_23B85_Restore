@@ -2,14 +2,14 @@
 - (BOOL)isAlertPresentationIntervalPassed;
 - (BOOL)shouldShowUpdateAlert;
 - (FRApplicationUpdateNotifier)init;
-- (FRApplicationUpdateNotifier)initWithVersionHelpers:(id)a3 appActivityMonitor:(id)a4;
+- (FRApplicationUpdateNotifier)initWithVersionHelpers:(id)helpers appActivityMonitor:(id)monitor;
 - (UIViewController)viewController;
 - (void)activityObservingApplicationWindowDidBecomeForeground;
 - (void)launchSettings;
 - (void)persistStates;
 - (void)restoreStates;
 - (void)showAppUpdateAlert;
-- (void)updateAlertDidDismiss:(BOOL)a3;
+- (void)updateAlertDidDismiss:(BOOL)dismiss;
 @end
 
 @implementation FRApplicationUpdateNotifier
@@ -19,8 +19,8 @@
   v3 = +[NSUserDefaults standardUserDefaults];
   v6 = [v3 dictionaryForKey:@"FRAUNPersistedState"];
 
-  v4 = [(FRApplicationUpdateNotifier *)self persistableProperties];
-  v5 = [v6 dictionaryWithValuesForKeys:v4];
+  persistableProperties = [(FRApplicationUpdateNotifier *)self persistableProperties];
+  v5 = [v6 dictionaryWithValuesForKeys:persistableProperties];
 
   if ([v5 count])
   {
@@ -35,14 +35,14 @@
     [(FRApplicationUpdateNotifier *)self showAppUpdateAlert];
   }
 
-  v3 = [(FRApplicationUpdateNotifier *)self versionHelpers];
-  [v3 updateAppObsolescenceState];
+  versionHelpers = [(FRApplicationUpdateNotifier *)self versionHelpers];
+  [versionHelpers updateAppObsolescenceState];
 }
 
 - (BOOL)shouldShowUpdateAlert
 {
-  v3 = [(FRApplicationUpdateNotifier *)self versionHelpers];
-  v4 = [v3 isUpdateRequired] && !-[FRApplicationUpdateNotifier isPresentingAlert](self, "isPresentingAlert") && -[FRApplicationUpdateNotifier isAlertPresentationIntervalPassed](self, "isAlertPresentationIntervalPassed") && -[FRApplicationUpdateNotifier alertPresentationCount](self, "alertPresentationCount") < 3;
+  versionHelpers = [(FRApplicationUpdateNotifier *)self versionHelpers];
+  v4 = [versionHelpers isUpdateRequired] && !-[FRApplicationUpdateNotifier isPresentingAlert](self, "isPresentingAlert") && -[FRApplicationUpdateNotifier isAlertPresentationIntervalPassed](self, "isAlertPresentationIntervalPassed") && -[FRApplicationUpdateNotifier alertPresentationCount](self, "alertPresentationCount") < 3;
 
   return v4;
 }
@@ -70,20 +70,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRApplicationUpdateNotifier)initWithVersionHelpers:(id)a3 appActivityMonitor:(id)a4
+- (FRApplicationUpdateNotifier)initWithVersionHelpers:(id)helpers appActivityMonitor:(id)monitor
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  helpersCopy = helpers;
+  monitorCopy = monitor;
+  if (!helpersCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D310();
-    if (v8)
+    if (monitorCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (monitorCopy)
   {
     goto LABEL_6;
   }
@@ -100,8 +100,8 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_versionHelpers, a3);
-    [v8 addObserver:v10];
+    objc_storeStrong(&v9->_versionHelpers, helpers);
+    [monitorCopy addObserver:v10];
   }
 
   return v10;
@@ -114,8 +114,8 @@ LABEL_6:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(FRApplicationUpdateNotifier *)self persistableProperties];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  persistableProperties = [(FRApplicationUpdateNotifier *)self persistableProperties];
+  v5 = [persistableProperties countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -126,7 +126,7 @@ LABEL_6:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(persistableProperties);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -137,7 +137,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [persistableProperties countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -149,16 +149,16 @@ LABEL_6:
 
 - (void)showAppUpdateAlert
 {
-  v3 = [(FRApplicationUpdateNotifier *)self viewController];
+  viewController = [(FRApplicationUpdateNotifier *)self viewController];
 
-  if (!v3 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!viewController && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006D4D0();
   }
 
-  v4 = [(FRApplicationUpdateNotifier *)self viewController];
+  viewController2 = [(FRApplicationUpdateNotifier *)self viewController];
 
-  if (v4)
+  if (viewController2)
   {
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:@"FRTimeToUpdateAlertTitle" value:&stru_1000C67A8 table:0];
@@ -208,23 +208,23 @@ LABEL_6:
     v19 = [UIAlertAction actionWithTitle:v10 style:0 handler:v21];
     [v15 addAction:v19];
     self->_isPresentingAlert = 1;
-    v20 = [(FRApplicationUpdateNotifier *)self viewController];
-    [v20 presentViewController:v15 animated:1 completion:0];
+    viewController3 = [(FRApplicationUpdateNotifier *)self viewController];
+    [viewController3 presentViewController:v15 animated:1 completion:0];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(location);
   }
 }
 
-- (void)updateAlertDidDismiss:(BOOL)a3
+- (void)updateAlertDidDismiss:(BOOL)dismiss
 {
-  v3 = a3;
+  dismissCopy = dismiss;
   v5 = [NSDate dateWithTimeIntervalSinceNow:86400.0];
   [(FRApplicationUpdateNotifier *)self setNextAlertPresentationDate:v5];
 
   ++self->_alertPresentationCount;
   [(FRApplicationUpdateNotifier *)self persistStates];
-  if (v3)
+  if (dismissCopy)
   {
 
     [(FRApplicationUpdateNotifier *)self launchSettings];

@@ -1,10 +1,10 @@
 @interface _NTKCUltraCubePhotoListViewController
 - (BOOL)_allPhotosSelected;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (NTKCUltraCubePhotoListViewControllerDelegate)delegate;
-- (_NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6;
+- (_NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view;
 - (id)_currentSelectAllButton;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)_addPressed;
 - (void)_deletePressed;
 - (void)_savePressed;
@@ -13,24 +13,24 @@
 - (void)_updateButtons;
 - (void)_updateButtonsForSelectionChanged;
 - (void)_updateTitle;
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)ultracubePreviewViewControllerDidDismiss:(id)a3;
-- (void)ultracubePreviewViewControllerWantsToCancel:(id)a3;
-- (void)ultracubePreviewViewControllerWantsToDelete:(id)a3;
-- (void)ultracubePreviewViewControllerWantsToSave:(id)a3;
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)ultracubePreviewViewControllerDidDismiss:(id)dismiss;
+- (void)ultracubePreviewViewControllerWantsToCancel:(id)cancel;
+- (void)ultracubePreviewViewControllerWantsToDelete:(id)delete;
+- (void)ultracubePreviewViewControllerWantsToSave:(id)save;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _NTKCUltraCubePhotoListViewController
 
-- (_NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)a3 forFace:(id)a4 inGallery:(BOOL)a5 faceView:(id)a6
+- (_NTKCUltraCubePhotoListViewController)initWithUltraCubePhotosEditor:(id)editor forFace:(id)face inGallery:(BOOL)gallery faceView:(id)view
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  galleryCopy = gallery;
+  editorCopy = editor;
+  faceCopy = face;
+  viewCopy = view;
   v13 = objc_opt_new();
   v52.receiver = self;
   v52.super_class = _NTKCUltraCubePhotoListViewController;
@@ -38,10 +38,10 @@
   v15 = v14;
   if (v14)
   {
-    [(_NTKCUltraCubePhotoListViewController *)v14 setEditor:v10];
-    [(_NTKCUltraCubePhotoListViewController *)v15 setFace:v11];
-    [(_NTKCUltraCubePhotoListViewController *)v15 setInGallery:v7];
-    [(_NTKCUltraCubePhotoListViewController *)v15 setFaceView:v12];
+    [(_NTKCUltraCubePhotoListViewController *)v14 setEditor:editorCopy];
+    [(_NTKCUltraCubePhotoListViewController *)v15 setFace:faceCopy];
+    [(_NTKCUltraCubePhotoListViewController *)v15 setInGallery:galleryCopy];
+    [(_NTKCUltraCubePhotoListViewController *)v15 setFaceView:viewCopy];
     v16 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v15 action:"_savePressed"];
     saveButton = v15->_saveButton;
     v15->_saveButton = v16;
@@ -117,63 +117,63 @@
   v12.super_class = _NTKCUltraCubePhotoListViewController;
   [(_NTKCUltraCubePhotoListViewController *)&v12 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(_NTKCUltraCubePhotoListViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(_NTKCUltraCubePhotoListViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[UIColor systemBackgroundColor];
-  v6 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  [v6 setBackgroundColor:v5];
+  collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  [collectionView setBackgroundColor:v5];
 
-  v7 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  collectionView2 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
   v8 = objc_opt_class();
   v9 = +[NTKCPhotoListCell reuseIdentifier];
-  [v7 registerClass:v8 forCellWithReuseIdentifier:v9];
+  [collectionView2 registerClass:v8 forCellWithReuseIdentifier:v9];
 
-  v10 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  [v10 setAlwaysBounceVertical:1];
+  collectionView3 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  [collectionView3 setAlwaysBounceVertical:1];
 
-  v11 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  [v11 setAllowsSelectionDuringEditing:1];
+  collectionView4 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  [collectionView4 setAllowsSelectionDuringEditing:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = _NTKCUltraCubePhotoListViewController;
-  [(_NTKCUltraCubePhotoListViewController *)&v7 viewWillAppear:a3];
-  v4 = [(_NTKCUltraCubePhotoListViewController *)self navigationController];
-  [v4 setToolbarHidden:0];
+  [(_NTKCUltraCubePhotoListViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(_NTKCUltraCubePhotoListViewController *)self navigationController];
+  [navigationController setToolbarHidden:0];
 
   [(_NTKCUltraCubePhotoListViewController *)self _updateButtons];
-  v5 = [(_NTKCUltraCubePhotoListViewController *)self presentedViewController];
+  presentedViewController = [(_NTKCUltraCubePhotoListViewController *)self presentedViewController];
 
-  if (v5)
+  if (presentedViewController)
   {
-    v6 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-    [v6 reloadData];
+    collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
   v7.receiver = self;
   v7.super_class = _NTKCUltraCubePhotoListViewController;
-  [(_NTKCUltraCubePhotoListViewController *)&v7 setEditing:a3 animated:a4];
+  [(_NTKCUltraCubePhotoListViewController *)&v7 setEditing:editing animated:animated];
   [(_NTKCUltraCubePhotoListViewController *)self _updateButtons];
   [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
-  v5 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  v6 = [v5 visibleCells];
-  [v6 enumerateObjectsUsingBlock:&stru_48DF0];
+  collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
+  [visibleCells enumerateObjectsUsingBlock:&stru_48DF0];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  pathCopy = path;
+  collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
   v7 = +[NTKCPhotoListCell reuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:v5];
+  v8 = [collectionView dequeueReusableCellWithReuseIdentifier:v7 forIndexPath:pathCopy];
 
-  v9 = [v5 item];
+  item = [pathCopy item];
   editor = self->_editor;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -182,36 +182,36 @@
   v15[4] = self;
   v11 = v8;
   v16 = v11;
-  v17 = v9;
-  [(NTKCompanionUltraCubePhotosEditor *)editor thumbnailImageForPhotoAtIndex:v9 completion:v15];
+  v17 = item;
+  [(NTKCompanionUltraCubePhotosEditor *)editor thumbnailImageForPhotoAtIndex:item completion:v15];
   [v11 setPhoto:0];
   [v11 setCrop:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-  [v11 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", v9)}];
+  [v11 setSelected:{-[NSMutableIndexSet containsIndex:](self->_selectedIndexes, "containsIndex:", item)}];
   v12 = v16;
   v13 = v11;
 
   return v11;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 item];
+  viewCopy = view;
+  pathCopy = path;
+  item = [pathCopy item];
   if ([(_NTKCUltraCubePhotoListViewController *)self isEditing])
   {
-    v9 = [v6 cellForItemAtIndexPath:v7];
+    v9 = [viewCopy cellForItemAtIndexPath:pathCopy];
     [v9 setSelected:{objc_msgSend(v9, "isSelected") ^ 1}];
-    v10 = [v9 isSelected];
+    isSelected = [v9 isSelected];
     selectedIndexes = self->_selectedIndexes;
-    if (v10)
+    if (isSelected)
     {
-      [(NSMutableIndexSet *)selectedIndexes addIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes addIndex:item];
     }
 
     else
     {
-      [(NSMutableIndexSet *)selectedIndexes removeIndex:v8];
+      [(NSMutableIndexSet *)selectedIndexes removeIndex:item];
     }
 
     [(_NTKCUltraCubePhotoListViewController *)self _updateButtonsForSelectionChanged];
@@ -220,30 +220,30 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([(NTKCompanionUltraCubePhotosEditor *)self->_editor canChangeOriginalCropOfPhotoAtIndex:v8])
+  if ([(NTKCompanionUltraCubePhotosEditor *)self->_editor canChangeOriginalCropOfPhotoAtIndex:item])
   {
-    v12 = [(_NTKCUltraCubePhotoListViewController *)self face];
-    v9 = [v12 selectedOptionForCustomEditMode:13 slot:0];
+    face = [(_NTKCUltraCubePhotoListViewController *)self face];
+    v9 = [face selectedOptionForCustomEditMode:13 slot:0];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v9 typeface];
+      typeface = [v9 typeface];
     }
 
     else
     {
-      v13 = &dword_0 + 1;
+      typeface = &dword_0 + 1;
     }
 
-    v14 = [(_NTKCUltraCubePhotoListViewController *)self face];
-    v15 = [v14 device];
+    face2 = [(_NTKCUltraCubePhotoListViewController *)self face];
+    device = [face2 device];
 
-    v16 = [[NTKUltraCubePreviewFactory alloc] initWithIndex:v8 device:v15 typeface:v13 editor:self->_editor];
+    v16 = [[NTKUltraCubePreviewFactory alloc] initWithIndex:item device:device typeface:typeface editor:self->_editor];
     v17 = [[NTKCUltraCubePreviewViewController alloc] initWithPreviewProvider:v16];
     v18 = BPSBridgeTintColor();
-    v19 = [(NTKCUltraCubePreviewViewController *)v17 view];
-    [v19 setTintColor:v18];
+    view = [(NTKCUltraCubePreviewViewController *)v17 view];
+    [view setTintColor:v18];
 
     [(NTKCUltraCubePreviewViewController *)v17 setDelegate:self];
     [(_NTKCUltraCubePhotoListViewController *)self presentViewController:v17 animated:1 completion:0];
@@ -256,75 +256,75 @@ LABEL_12:
   return 0;
 }
 
-- (void)collectionView:(id)a3 moveItemAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)collectionView:(id)view moveItemAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   editor = self->_editor;
-  v7 = a5;
-  v8 = [a4 item];
-  v9 = [v7 item];
+  indexPathCopy = indexPath;
+  item = [path item];
+  item2 = [indexPathCopy item];
 
-  [(NTKCompanionUltraCubePhotosEditor *)editor movePhotoAtIndex:v8 toIndex:v9];
+  [(NTKCompanionUltraCubePhotosEditor *)editor movePhotoAtIndex:item toIndex:item2];
 }
 
-- (void)ultracubePreviewViewControllerWantsToCancel:(id)a3
+- (void)ultracubePreviewViewControllerWantsToCancel:(id)cancel
 {
-  v6 = [a3 previewProvider];
-  v4 = [v6 editor];
-  [v4 purgeResourcesForPreviewAtIndex:{objc_msgSend(v6, "index")}];
-  v5 = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  previewProvider = [cancel previewProvider];
+  editor = [previewProvider editor];
+  [editor purgeResourcesForPreviewAtIndex:{objc_msgSend(previewProvider, "index")}];
+  parentViewController = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)ultracubePreviewViewControllerWantsToDelete:(id)a3
+- (void)ultracubePreviewViewControllerWantsToDelete:(id)delete
 {
-  v7 = [a3 previewProvider];
-  v4 = [v7 editor];
-  v5 = [v7 index];
-  [v4 purgeResourcesForPreviewAtIndex:v5];
-  [v4 deletePhotoAtIndex:v5];
-  v6 = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  previewProvider = [delete previewProvider];
+  editor = [previewProvider editor];
+  index = [previewProvider index];
+  [editor purgeResourcesForPreviewAtIndex:index];
+  [editor deletePhotoAtIndex:index];
+  parentViewController = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)ultracubePreviewViewControllerWantsToSave:(id)a3
+- (void)ultracubePreviewViewControllerWantsToSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 currentPreview];
-  if (v5)
+  saveCopy = save;
+  currentPreview = [saveCopy currentPreview];
+  if (currentPreview)
   {
-    v6 = [v4 previewProvider];
-    v7 = [v6 editor];
-    v8 = [v6 index];
-    if (([v7 savePreview:v5 forPhotoAtIndex:v8] & 1) == 0)
+    previewProvider = [saveCopy previewProvider];
+    editor = [previewProvider editor];
+    index = [previewProvider index];
+    if (([editor savePreview:currentPreview forPhotoAtIndex:index] & 1) == 0)
     {
       v9 = _NTKLoggingObjectForDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_298EC(v8, v9);
+        sub_298EC(index, v9);
       }
     }
 
-    [v7 purgeResourcesForPreviewAtIndex:v8];
+    [editor purgeResourcesForPreviewAtIndex:index];
   }
 
-  v10 = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
-  [v10 dismissViewControllerAnimated:1 completion:0];
+  parentViewController = [(_NTKCUltraCubePhotoListViewController *)self parentViewController];
+  [parentViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)ultracubePreviewViewControllerDidDismiss:(id)a3
+- (void)ultracubePreviewViewControllerDidDismiss:(id)dismiss
 {
   [(_NTKCUltraCubePhotoListViewController *)self _updateButtons];
-  v4 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  [v4 reloadData];
+  collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)_updateButtons
 {
   if ([(_NTKCUltraCubePhotoListViewController *)self isEditing])
   {
-    v3 = [(_NTKCUltraCubePhotoListViewController *)self _currentSelectAllButton];
-    v4 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    _currentSelectAllButton = [(_NTKCUltraCubePhotoListViewController *)self _currentSelectAllButton];
+    navigationItem = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:_currentSelectAllButton];
 
     v5 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__editingToolBarItems;
     v6 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__doneButton;
@@ -333,15 +333,15 @@ LABEL_12:
   else
   {
     saveButton = self->_saveButton;
-    v3 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
-    [v3 setLeftBarButtonItem:saveButton];
+    _currentSelectAllButton = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
+    [_currentSelectAllButton setLeftBarButtonItem:saveButton];
     v5 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__defaultToolBarItems;
     v6 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__selectButton;
   }
 
   v8 = *(&self->super.super.super.super.isa + *v6);
-  v9 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  navigationItem2 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v8];
 
   [(_NTKCUltraCubePhotoListViewController *)self setToolbarItems:*(&self->super.super.super.super.isa + *v5)];
   [(UIBarButtonItem *)self->_addButton setEnabled:[(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount]< 0x18];
@@ -355,9 +355,9 @@ LABEL_12:
 {
   if ([(_NTKCUltraCubePhotoListViewController *)self isEditing])
   {
-    v3 = [(_NTKCUltraCubePhotoListViewController *)self _currentSelectAllButton];
-    v4 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    _currentSelectAllButton = [(_NTKCUltraCubePhotoListViewController *)self _currentSelectAllButton];
+    navigationItem = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:_currentSelectAllButton];
 
     v5 = [(NSMutableIndexSet *)self->_selectedIndexes count];
     v6 = v5 != 0;
@@ -365,10 +365,10 @@ LABEL_12:
     {
       v7 = v5;
       v8 = [(NSMutableIndexSet *)self->_selectedIndexes count];
-      v9 = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
+      photosCount = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
       if (v7)
       {
-        v10 = v8 == v9;
+        v10 = v8 == photosCount;
       }
 
       else
@@ -387,9 +387,9 @@ LABEL_12:
 
 - (id)_currentSelectAllButton
 {
-  v3 = [(_NTKCUltraCubePhotoListViewController *)self _allPhotosSelected];
+  _allPhotosSelected = [(_NTKCUltraCubePhotoListViewController *)self _allPhotosSelected];
   v4 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__selectAllButton;
-  if (v3)
+  if (_allPhotosSelected)
   {
     v4 = &OBJC_IVAR____NTKCUltraCubePhotoListViewController__deselectAllButton;
   }
@@ -404,16 +404,16 @@ LABEL_12:
   if (![(_NTKCUltraCubePhotoListViewController *)self isEditing])
   {
     v3 = NTKCCustomizationLocalizedFormat();
-    v4 = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
+    photosCount = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
     goto LABEL_5;
   }
 
   if ([(NSMutableIndexSet *)self->_selectedIndexes count])
   {
     v3 = NTKCCustomizationLocalizedFormat();
-    v4 = [(NSMutableIndexSet *)self->_selectedIndexes count];
+    photosCount = [(NSMutableIndexSet *)self->_selectedIndexes count];
 LABEL_5:
-    v5 = [NSString localizedStringWithFormat:v3, v4];
+    v5 = [NSString localizedStringWithFormat:v3, photosCount];
 
     [(_NTKCUltraCubePhotoListViewController *)self setTitle:v5];
     goto LABEL_6;
@@ -453,8 +453,8 @@ LABEL_6:
   else if ([(NTKCompanionUltraCubePhotosEditor *)self->_editor state:v10]== &dword_0 + 2)
   {
     v8 = self->_spinnerButton;
-    v9 = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(_NTKCUltraCubePhotoListViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
 
     [(NTKCompanionUltraCubePhotosEditor *)self->_editor finalizeWithCompletion:v5];
   }
@@ -471,8 +471,8 @@ LABEL_6:
 
 - (void)_selectAllPressed
 {
-  v3 = [(_NTKCUltraCubePhotoListViewController *)self _allPhotosSelected];
-  if (v3)
+  _allPhotosSelected = [(_NTKCUltraCubePhotoListViewController *)self _allPhotosSelected];
+  if (_allPhotosSelected)
   {
     [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
   }
@@ -482,15 +482,15 @@ LABEL_6:
     [(_NTKCUltraCubePhotoListViewController *)self _selectAllPhotos];
   }
 
-  v4 = v3 ^ 1;
-  v5 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-  v6 = [v5 visibleCells];
+  v4 = _allPhotosSelected ^ 1;
+  collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_8878;
   v7[3] = &unk_48E88;
   v8 = v4;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [visibleCells enumerateObjectsUsingBlock:v7];
 
   [(_NTKCUltraCubePhotoListViewController *)self _updateButtonsForSelectionChanged];
 }
@@ -518,12 +518,12 @@ LABEL_6:
     v17[2] = sub_8C5C;
     v17[3] = &unk_48ED8;
     v18 = v3;
-    v19 = self;
+    selfCopy = self;
     v5 = v3;
     [(NSMutableIndexSet *)selectedIndexes enumerateIndexesWithOptions:2 usingBlock:v17];
     [(NSMutableIndexSet *)self->_selectedIndexes removeAllIndexes];
-    v6 = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
-    [v6 deleteItemsAtIndexPaths:v5];
+    collectionView = [(_NTKCUltraCubePhotoListViewController *)self collectionView];
+    [collectionView deleteItemsAtIndexPaths:v5];
 
     [(_NTKCUltraCubePhotoListViewController *)self setEditing:0 animated:1];
     v7 = v18;
@@ -565,18 +565,18 @@ LABEL_6:
 
 - (BOOL)_allPhotosSelected
 {
-  v3 = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
+  photosCount = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
   selectedIndexes = self->_selectedIndexes;
 
-  return [(NSMutableIndexSet *)selectedIndexes containsIndexesInRange:0, v3];
+  return [(NSMutableIndexSet *)selectedIndexes containsIndexesInRange:0, photosCount];
 }
 
 - (void)_selectAllPhotos
 {
-  v3 = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
+  photosCount = [(NTKCompanionUltraCubePhotosEditor *)self->_editor photosCount];
   selectedIndexes = self->_selectedIndexes;
 
-  [(NSMutableIndexSet *)selectedIndexes addIndexesInRange:0, v3];
+  [(NSMutableIndexSet *)selectedIndexes addIndexesInRange:0, photosCount];
 }
 
 - (NTKCUltraCubePhotoListViewControllerDelegate)delegate

@@ -1,24 +1,24 @@
 @interface QLToolbarButtonOption
 + (id)cancelOption;
 - (BOOL)isCancel;
-- (BOOL)isEqual:(id)a3;
-- (QLToolbarButtonOption)initWithCoder:(id)a3;
-- (QLToolbarButtonOption)initWithIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (QLToolbarButtonOption)initWithCoder:(id)coder;
+- (QLToolbarButtonOption)initWithIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLToolbarButtonOption
 
-- (QLToolbarButtonOption)initWithIdentifier:(id)a3
+- (QLToolbarButtonOption)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = QLToolbarButtonOption;
   v6 = [(QLToolbarButtonOption *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
     v8 = v7;
   }
 
@@ -38,27 +38,27 @@
 
 - (BOOL)isCancel
 {
-  v2 = [(QLToolbarButtonOption *)self identifier];
-  v3 = [v2 isEqualToString:@"QLToolbarButtonOptionCancelIdentifier"];
+  identifier = [(QLToolbarButtonOption *)self identifier];
+  v3 = [identifier isEqualToString:@"QLToolbarButtonOptionCancelIdentifier"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(QLToolbarButtonOption *)self identifier];
-  v6 = [v4 identifier];
-  v7 = v6;
-  if (v5 == v6)
+  equalCopy = equal;
+  identifier = [(QLToolbarButtonOption *)self identifier];
+  identifier2 = [equalCopy identifier];
+  v7 = identifier2;
+  if (identifier == identifier2)
   {
   }
 
   else
   {
-    v8 = [(QLToolbarButtonOption *)self identifier];
-    v9 = [v4 identifier];
-    v10 = [v8 isEqual:v9];
+    identifier3 = [(QLToolbarButtonOption *)self identifier];
+    identifier4 = [equalCopy identifier];
+    v10 = [identifier3 isEqual:identifier4];
 
     if (!v10)
     {
@@ -66,24 +66,24 @@
     }
   }
 
-  v11 = [(QLToolbarButtonOption *)self title];
-  v12 = [v4 title];
-  v13 = v12;
-  if (v11 == v12)
+  title = [(QLToolbarButtonOption *)self title];
+  title2 = [equalCopy title];
+  v13 = title2;
+  if (title == title2)
   {
 
     goto LABEL_9;
   }
 
-  v14 = [(QLToolbarButtonOption *)self title];
-  v15 = [v4 title];
-  v16 = [v14 isEqual:v15];
+  title3 = [(QLToolbarButtonOption *)self title];
+  title4 = [equalCopy title];
+  v16 = [title3 isEqual:title4];
 
   if (v16)
   {
 LABEL_9:
-    v18 = [(QLToolbarButtonOption *)self style];
-    v17 = v18 == [v4 style];
+    style = [(QLToolbarButtonOption *)self style];
+    v17 = style == [equalCopy style];
     goto LABEL_10;
   }
 
@@ -94,45 +94,45 @@ LABEL_10:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(QLToolbarButtonOption *)self identifier];
+  coderCopy = coder;
+  identifier = [(QLToolbarButtonOption *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(QLToolbarButtonOption *)self identifier];
-    [v8 encodeObject:v5 forKey:@"identifier"];
+    identifier2 = [(QLToolbarButtonOption *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
-  v6 = [(QLToolbarButtonOption *)self title];
+  title = [(QLToolbarButtonOption *)self title];
 
-  if (v6)
+  if (title)
   {
-    v7 = [(QLToolbarButtonOption *)self title];
-    [v8 encodeObject:v7 forKey:@"title"];
+    title2 = [(QLToolbarButtonOption *)self title];
+    [coderCopy encodeObject:title2 forKey:@"title"];
   }
 
-  [v8 encodeInteger:-[QLToolbarButtonOption style](self forKey:{"style"), @"style"}];
+  [coderCopy encodeInteger:-[QLToolbarButtonOption style](self forKey:{"style"), @"style"}];
 }
 
-- (QLToolbarButtonOption)initWithCoder:(id)a3
+- (QLToolbarButtonOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = QLToolbarButtonOption;
   v5 = [(QLToolbarButtonOption *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
     v10 = v5;
   }
 

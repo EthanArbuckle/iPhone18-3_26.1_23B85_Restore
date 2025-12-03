@@ -1,8 +1,8 @@
 @interface CRKConcreteCertificate
-+ (id)certificateWithData:(id)a3;
++ (id)certificateWithData:(id)data;
 - (BOOL)isCertificateAuthority;
 - (BOOL)isTemporallyValid;
-- (CRKConcreteCertificate)initWithCertificate:(__SecCertificate *)a3;
+- (CRKConcreteCertificate)initWithCertificate:(__SecCertificate *)certificate;
 - (NSArray)commonNames;
 - (NSData)dataRepresentation;
 - (NSDateInterval)validityDateInterval;
@@ -22,27 +22,27 @@
   [(CRKConcreteCertificate *)&v3 dealloc];
 }
 
-- (CRKConcreteCertificate)initWithCertificate:(__SecCertificate *)a3
+- (CRKConcreteCertificate)initWithCertificate:(__SecCertificate *)certificate
 {
   v6.receiver = self;
   v6.super_class = CRKConcreteCertificate;
   v4 = [(CRKConcreteCertificate *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_underlyingCertificate = a3;
+    CFRetain(certificate);
+    v4->_underlyingCertificate = certificate;
   }
 
   return v4;
 }
 
-+ (id)certificateWithData:(id)a3
++ (id)certificateWithData:(id)data
 {
-  v4 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], a3);
+  v4 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], data);
   if (v4)
   {
     v5 = v4;
-    v6 = [[a1 alloc] initWithCertificate:v4];
+    v6 = [[self alloc] initWithCertificate:v4];
     CFRelease(v5);
   }
 
@@ -78,9 +78,9 @@
 {
   [(CRKConcreteCertificate *)self underlyingCertificate];
   v2 = SecCertificateGetSHA1Digest();
-  v3 = [v2 crk_hexString];
+  crk_hexString = [v2 crk_hexString];
 
-  return v3;
+  return crk_hexString;
 }
 
 - (NSDateInterval)validityDateInterval
@@ -125,24 +125,24 @@
 
 - (BOOL)isTemporallyValid
 {
-  v2 = [(CRKConcreteCertificate *)self validityDateInterval];
-  v3 = [v2 crk_containsCurrentDate];
+  validityDateInterval = [(CRKConcreteCertificate *)self validityDateInterval];
+  crk_containsCurrentDate = [validityDateInterval crk_containsCurrentDate];
 
-  return v3;
+  return crk_containsCurrentDate;
 }
 
 - (BOOL)isCertificateAuthority
 {
-  v2 = [(CRKConcreteCertificate *)self underlyingCertificate];
+  underlyingCertificate = [(CRKConcreteCertificate *)self underlyingCertificate];
 
-  return MEMORY[0x28212B280](v2);
+  return MEMORY[0x28212B280](underlyingCertificate);
 }
 
 - (unsigned)hashingAlgorithm
 {
-  v2 = [(CRKConcreteCertificate *)self underlyingCertificate];
+  underlyingCertificate = [(CRKConcreteCertificate *)self underlyingCertificate];
 
-  return MEMORY[0x28212B260](v2);
+  return MEMORY[0x28212B260](underlyingCertificate);
 }
 
 - (int64_t)keySizeInBits

@@ -1,16 +1,16 @@
 @interface SRDetailedTableCell
-- (SRDetailedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (SRDetailedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 @end
 
 @implementation SRDetailedTableCell
 
-- (SRDetailedTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SRDetailedTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12[6] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = SRDetailedTableCell;
-  v4 = [(SRDetailedTableCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(SRDetailedTableCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v4->_titleLabel = objc_opt_new();

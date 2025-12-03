@@ -1,36 +1,36 @@
 @interface MapsAppTestSwitch
 - (BOOL)runTest;
-- (void)addFullyDrawnCallback:(id)a3 delayInSeconds:(double)a4;
+- (void)addFullyDrawnCallback:(id)callback delayInSeconds:(double)seconds;
 - (void)didFinishJumping;
-- (void)onFullyDrawn:(id)a3;
+- (void)onFullyDrawn:(id)drawn;
 @end
 
 @implementation MapsAppTestSwitch
 
-- (void)onFullyDrawn:(id)a3
+- (void)onFullyDrawn:(id)drawn
 {
-  v18 = a3;
-  v5 = [v18 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"hasFailedTiles"];
-  v7 = [v6 BOOLValue];
+  drawnCopy = drawn;
+  userInfo = [drawnCopy userInfo];
+  object2 = [userInfo objectForKeyedSubscript:@"hasFailedTiles"];
+  bOOLValue = [object2 BOOLValue];
 
-  v8 = [v18 object];
-  if (v8)
+  object = [drawnCopy object];
+  if (object)
   {
-    v6 = [v18 object];
-    v9 = [(MapsAppTest *)self mainVKMapView];
-    v3 = v9;
-    if (v6 != v9)
+    object2 = [drawnCopy object];
+    mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+    v3 = mainVKMapView;
+    if (object2 != mainVKMapView)
     {
 
       goto LABEL_11;
     }
   }
 
-  v10 = [(MapsAppTest *)self mainVKMapView];
-  v11 = [v10 isFullyDrawn] & (v7 ^ 1);
+  mainVKMapView2 = [(MapsAppTest *)self mainVKMapView];
+  v11 = [mainVKMapView2 isFullyDrawn] & (bOOLValue ^ 1);
 
-  if (v8)
+  if (object)
   {
 
     if ((v11 & 1) == 0)
@@ -49,48 +49,48 @@
 
   while (1)
   {
-    v13 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v14 = [v13 count];
+    fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+    v14 = [fullyDrawnCallbacks count];
 
     if (!v14)
     {
       break;
     }
 
-    v15 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v16 = [v15 firstObject];
+    fullyDrawnCallbacks2 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    firstObject = [fullyDrawnCallbacks2 firstObject];
 
-    v17 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    [v17 removeObjectAtIndex:0];
+    fullyDrawnCallbacks3 = [(MapsAppTest *)self fullyDrawnCallbacks];
+    [fullyDrawnCallbacks3 removeObjectAtIndex:0];
 
-    v16[2](v16);
+    firstObject[2](firstObject);
   }
 
 LABEL_11:
 }
 
-- (void)addFullyDrawnCallback:(id)a3 delayInSeconds:(double)a4
+- (void)addFullyDrawnCallback:(id)callback delayInSeconds:(double)seconds
 {
-  v6 = a3;
-  if (a4 <= 0.0)
+  callbackCopy = callback;
+  if (seconds <= 0.0)
   {
-    v8 = [(MapsAppTest *)self fullyDrawnCallbacks];
-    v9 = [v6 copy];
+    fullyDrawnCallbacks = [(MapsAppTest *)self fullyDrawnCallbacks];
+    v9 = [callbackCopy copy];
     v10 = objc_retainBlock(v9);
-    [v8 addObject:v10];
+    [fullyDrawnCallbacks addObject:v10];
 
     [(MapsAppTest *)self setupFullyDrawnNotification:"onFullyDrawn:"];
   }
 
   else
   {
-    v7 = dispatch_time(0, (a4 * 1000000000.0));
+    v7 = dispatch_time(0, (seconds * 1000000000.0));
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100D1403C;
     v11[3] = &unk_101661090;
     v11[4] = self;
-    v12 = v6;
+    v12 = callbackCopy;
     dispatch_after(v7, &_dispatch_main_q, v11);
   }
 }
@@ -115,11 +115,11 @@ LABEL_11:
 
 - (BOOL)runTest
 {
-  v3 = [(MapsAppTest *)self testName];
-  NSLog(@"test is %@", v3);
+  testName = [(MapsAppTest *)self testName];
+  NSLog(@"test is %@", testName);
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_mapTypeWithDefaultType:0];
+  options = [(MapsAppTest *)self options];
+  v5 = [options _mapstest_mapTypeWithDefaultType:0];
   self->_switchToType = v5;
   v6 = 1;
   if (!v5)
@@ -148,11 +148,11 @@ LABEL_11:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(MapsAppTest *)self mainVKMapView];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
   [(MapsAppTestJump *)self pitch];
   v16 = v15;
   [(MapsAppTestJump *)self yaw];
-  [v14 _mapstest_jumpToCoords:-[MapsAppTestJump altitudeIsRegionSize](self pitch:"altitudeIsRegionSize") yaw:v9 altitudeIsRegionSize:{v11, v13, v16, v17}];
+  [mainVKMapView _mapstest_jumpToCoords:-[MapsAppTestJump altitudeIsRegionSize](self pitch:"altitudeIsRegionSize") yaw:v9 altitudeIsRegionSize:{v11, v13, v16, v17}];
 
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;

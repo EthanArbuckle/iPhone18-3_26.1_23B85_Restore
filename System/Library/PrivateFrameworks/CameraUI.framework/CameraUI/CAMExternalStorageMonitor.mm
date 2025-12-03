@@ -1,13 +1,13 @@
 @interface CAMExternalStorageMonitor
-+ (id)_stringFromMonitoringState:(unint64_t)a3;
++ (id)_stringFromMonitoringState:(unint64_t)state;
 - (CAMExternalStorageMonitor)init;
 - (CAMExternalStorageMonitorDelegate)delegate;
 - (void)_beginMonitoring;
 - (void)_endMonitoring;
-- (void)_logMonitoringChangeFromState:(unint64_t)a3 toState:(unint64_t)a4;
+- (void)_logMonitoringChangeFromState:(unint64_t)state toState:(unint64_t)toState;
 - (void)_resumeMonitoring;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setMonitoringState:(unint64_t)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setMonitoringState:(unint64_t)state;
 @end
 
 @implementation CAMExternalStorageMonitor
@@ -28,14 +28,14 @@
   return v2;
 }
 
-- (void)setMonitoringState:(unint64_t)a3
+- (void)setMonitoringState:(unint64_t)state
 {
   monitoringState = self->_monitoringState;
-  if (monitoringState != a3)
+  if (monitoringState != state)
   {
-    self->_monitoringState = a3;
-    [(CAMExternalStorageMonitor *)self _logMonitoringChangeFromState:monitoringState toState:a3];
-    if (a3 == 1)
+    self->_monitoringState = state;
+    [(CAMExternalStorageMonitor *)self _logMonitoringChangeFromState:monitoringState toState:state];
+    if (state == 1)
     {
       if ([(CAMExternalStorageMonitor *)self _isObservingKVO])
       {
@@ -50,7 +50,7 @@
       }
     }
 
-    else if (!a3)
+    else if (!state)
     {
 
       [(CAMExternalStorageMonitor *)self _endMonitoring];
@@ -62,23 +62,23 @@
 {
   if ([(CAMExternalStorageMonitor *)self _isObservingKVO])
   {
-    v3 = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
-    [v3 removeObserver:self forKeyPath:@"externalStorageDevices"];
+    _externalStorageDiscoverySession = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
+    [_externalStorageDiscoverySession removeObserver:self forKeyPath:@"externalStorageDevices"];
 
     [(CAMExternalStorageMonitor *)self set_isObservingKVO:0];
   }
 
-  v4 = [(CAMExternalStorageMonitor *)self delegate];
+  delegate = [(CAMExternalStorageMonitor *)self delegate];
   v5 = objc_alloc_init(MEMORY[0x1E695DEC8]);
-  [v4 externalStorageMonitor:self didChangeConnectedStorageDevices:v5];
+  [delegate externalStorageMonitor:self didChangeConnectedStorageDevices:v5];
 
   [(CAMExternalStorageMonitor *)self set_externalStorageDiscoverySession:0];
 }
 
 - (void)_beginMonitoring
 {
-  v3 = [MEMORY[0x1E69871B0] sharedSession];
-  [(CAMExternalStorageMonitor *)self set_externalStorageDiscoverySession:v3];
+  mEMORY[0x1E69871B0] = [MEMORY[0x1E69871B0] sharedSession];
+  [(CAMExternalStorageMonitor *)self set_externalStorageDiscoverySession:mEMORY[0x1E69871B0]];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -200,36 +200,36 @@ void __45__CAMExternalStorageMonitor__beginMonitoring__block_invoke_6(uint64_t a
   if ([(CAMExternalStorageMonitor *)self _hasPendingChangesSinceLastDelegateCall])
   {
     [(CAMExternalStorageMonitor *)self set_hasPendingChangesSinceLastDelegateCall:0];
-    v4 = [(CAMExternalStorageMonitor *)self delegate];
-    v3 = [(CAMExternalStorageMonitor *)self connectedStorageDevices];
-    [v4 externalStorageMonitor:self didChangeConnectedStorageDevices:v3];
+    delegate = [(CAMExternalStorageMonitor *)self delegate];
+    connectedStorageDevices = [(CAMExternalStorageMonitor *)self connectedStorageDevices];
+    [delegate externalStorageMonitor:self didChangeConnectedStorageDevices:connectedStorageDevices];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:{@"externalStorageDevices", a4, a5, a6}])
+  if ([path isEqualToString:{@"externalStorageDevices", object, change, context}])
   {
-    v7 = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
-    v8 = [v7 externalStorageDevices];
+    _externalStorageDiscoverySession = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
+    externalStorageDevices = [_externalStorageDiscoverySession externalStorageDevices];
 
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9 = os_log_create("com.apple.camera", "ExternalStorage");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v33 = [v8 count];
+      v33 = [externalStorageDevices count];
       _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "External storage: list of devices updated, %ld connected devices", buf, 0xCu);
     }
 
-    v24 = self;
+    selfCopy = self;
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = v8;
+    v10 = externalStorageDevices;
     v11 = [v10 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v11)
     {
@@ -253,12 +253,12 @@ void __45__CAMExternalStorageMonitor__beginMonitoring__block_invoke_6(uint64_t a
               v17 = os_log_create("com.apple.camera", "ExternalStorage");
               if (os_log_type_enabled(&v17->super, OS_LOG_TYPE_DEFAULT))
               {
-                v18 = [v16 displayName];
-                v19 = [v16 baseURL];
+                displayName = [v16 displayName];
+                baseURL = [v16 baseURL];
                 *buf = 138543618;
-                v33 = v18;
+                v33 = displayName;
                 v34 = 2114;
-                v35 = v19;
+                v35 = baseURL;
                 _os_log_impl(&dword_1A3640000, &v17->super, OS_LOG_TYPE_DEFAULT, "External storage: ignoring not recommended storage device (%{public}@) on mount point %{public}@", buf, 0x16u);
               }
 
@@ -277,12 +277,12 @@ void __45__CAMExternalStorageMonitor__beginMonitoring__block_invoke_6(uint64_t a
             v17 = os_log_create("com.apple.camera", "ExternalStorage");
             if (os_log_type_enabled(&v17->super, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [v16 displayName];
-              v21 = [v16 baseURL];
+              displayName2 = [v16 displayName];
+              baseURL2 = [v16 baseURL];
               *buf = 138543618;
-              v33 = v20;
+              v33 = displayName2;
               v34 = 2114;
-              v35 = v21;
+              v35 = baseURL2;
               _os_log_impl(&dword_1A3640000, &v17->super, OS_LOG_TYPE_DEFAULT, "External storage: ignoring disconnected storage device (%{public}@) on mount point %{public}@", buf, 0x16u);
             }
           }
@@ -299,10 +299,10 @@ void __45__CAMExternalStorageMonitor__beginMonitoring__block_invoke_6(uint64_t a
       v13 = 0;
     }
 
-    objc_storeStrong(&v24->_connectedStorageDevices, v25);
-    v24->_hasExternalStorageNotRecommendedForCapture = v13 & 1;
-    v22 = [(CAMExternalStorageMonitor *)v24 monitoringState];
-    switch(v22)
+    objc_storeStrong(&selfCopy->_connectedStorageDevices, v25);
+    selfCopy->_hasExternalStorageNotRecommendedForCapture = v13 & 1;
+    monitoringState = [(CAMExternalStorageMonitor *)selfCopy monitoringState];
+    switch(monitoringState)
     {
       case 2:
         goto LABEL_24;
@@ -311,7 +311,7 @@ void __45__CAMExternalStorageMonitor__beginMonitoring__block_invoke_6(uint64_t a
         block[1] = 3221225472;
         block[2] = __76__CAMExternalStorageMonitor_observeValueForKeyPath_ofObject_change_context___block_invoke;
         block[3] = &unk_1E76F7960;
-        block[4] = v24;
+        block[4] = selfCopy;
         v27 = v25;
         dispatch_async(MEMORY[0x1E69E96A0], block);
 
@@ -325,7 +325,7 @@ LABEL_24:
           _os_log_impl(&dword_1A3640000, v23, OS_LOG_TYPE_DEFAULT, "External storage: devices where update while monitoring was paused", buf, 2u);
         }
 
-        [(CAMExternalStorageMonitor *)v24 set_hasPendingChangesSinceLastDelegateCall:1];
+        [(CAMExternalStorageMonitor *)selfCopy set_hasPendingChangesSinceLastDelegateCall:1];
         break;
     }
   }
@@ -338,35 +338,35 @@ void __76__CAMExternalStorageMonitor_observeValueForKeyPath_ofObject_change_cont
   [v2 externalStorageMonitor:*(a1 + 32) didChangeConnectedStorageDevices:*(a1 + 40)];
 }
 
-- (void)_logMonitoringChangeFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (void)_logMonitoringChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v18 = *MEMORY[0x1E69E9840];
   v7 = os_log_create("com.apple.camera", "ExternalStorage");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [objc_opt_class() _stringFromMonitoringState:a3];
-    v9 = [objc_opt_class() _stringFromMonitoringState:a4];
-    v10 = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
-    v11 = [v10 externalStorageDevices];
+    v8 = [objc_opt_class() _stringFromMonitoringState:state];
+    v9 = [objc_opt_class() _stringFromMonitoringState:toState];
+    _externalStorageDiscoverySession = [(CAMExternalStorageMonitor *)self _externalStorageDiscoverySession];
+    externalStorageDevices = [_externalStorageDiscoverySession externalStorageDevices];
     v12 = 138543874;
     v13 = v8;
     v14 = 2114;
     v15 = v9;
     v16 = 2048;
-    v17 = [v11 count];
+    v17 = [externalStorageDevices count];
     _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "External storage: monitoring state changed from (%{public}@) to (%{public}@), %ld connected devices", &v12, 0x20u);
   }
 }
 
-+ (id)_stringFromMonitoringState:(unint64_t)a3
++ (id)_stringFromMonitoringState:(unint64_t)state
 {
   v3 = @"None";
-  if (a3 == 2)
+  if (state == 2)
   {
     v3 = @"Paused";
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return @"Monitoring";
   }

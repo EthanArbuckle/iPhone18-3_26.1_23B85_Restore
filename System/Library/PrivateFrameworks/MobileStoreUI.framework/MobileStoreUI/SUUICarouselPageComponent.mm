@@ -1,29 +1,29 @@
 @interface SUUICarouselPageComponent
-- (SUUICarouselPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4;
-- (SUUICarouselPageComponent)initWithViewElement:(id)a3;
-- (id)valueForMetricsField:(id)a3;
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4;
-- (void)updateWithMissingItems:(id)a3;
+- (SUUICarouselPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind;
+- (SUUICarouselPageComponent)initWithViewElement:(id)element;
+- (id)valueForMetricsField:(id)field;
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block;
+- (void)updateWithMissingItems:(id)items;
 @end
 
 @implementation SUUICarouselPageComponent
 
-- (SUUICarouselPageComponent)initWithFeaturedContentContext:(id)a3 kind:(int64_t)a4
+- (SUUICarouselPageComponent)initWithFeaturedContentContext:(id)context kind:(int64_t)kind
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v32.receiver = self;
   v32.super_class = SUUICarouselPageComponent;
-  v27 = [(SUUIPageComponent *)&v32 initWithFeaturedContentContext:v6 kind:a4];
+  v27 = [(SUUIPageComponent *)&v32 initWithFeaturedContentContext:contextCopy kind:kind];
   if (v27)
   {
-    v7 = [v6 componentDictionary];
-    v8 = [v7 objectForKey:@"children"];
+    componentDictionary = [contextCopy componentDictionary];
+    v8 = [componentDictionary objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26 = v7;
-      v9 = [v6 copy];
+      v26 = componentDictionary;
+      v9 = [contextCopy copy];
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v28 = 0u;
       v29 = 0u;
@@ -51,16 +51,16 @@
             {
               [v9 setComponentDictionary:v16];
               v17 = [[SUUICarouselItem alloc] initWithComponentContext:v9];
-              v18 = [(SUUICarouselItem *)v17 link];
-              if ([v18 isActionable])
+              link = [(SUUICarouselItem *)v17 link];
+              if ([link isActionable])
               {
                 [v10 addObject:v17];
               }
 
               else
               {
-                v19 = [v18 itemIdentifier];
-                if (v19 && ([v6 isUnavailableItemIdentifier:v19] & 1) == 0)
+                itemIdentifier = [link itemIdentifier];
+                if (itemIdentifier && ([contextCopy isUnavailableItemIdentifier:itemIdentifier] & 1) == 0)
                 {
                   ++v27->_missingItemCount;
                   [v10 addObject:v17];
@@ -75,7 +75,7 @@
         while (v13);
       }
 
-      if ([v6 layoutStyle] == 1 && objc_msgSend(v10, "count") >= 3)
+      if ([contextCopy layoutStyle] == 1 && objc_msgSend(v10, "count") >= 3)
       {
         v20 = [v10 objectAtIndex:1];
         [v10 removeObjectAtIndex:1];
@@ -87,7 +87,7 @@
       v27->_carouselItems = v21;
 
       v8 = v25;
-      v7 = v26;
+      componentDictionary = v26;
     }
 
     v27->_cycleInterval = 5.0;
@@ -96,15 +96,15 @@
   return v27;
 }
 
-- (SUUICarouselPageComponent)initWithViewElement:(id)a3
+- (SUUICarouselPageComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SUUICarouselPageComponent;
-  v5 = [(SUUIPageComponent *)&v8 initWithViewElement:v4];
+  v5 = [(SUUIPageComponent *)&v8 initWithViewElement:elementCopy];
   if (v5)
   {
-    [v4 displayInterval];
+    [elementCopy displayInterval];
     if (v6 < 0.0)
     {
       v6 = 5.0;
@@ -116,10 +116,10 @@
   return v5;
 }
 
-- (void)updateWithMissingItems:(id)a3
+- (void)updateWithMissingItems:(id)items
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -140,11 +140,11 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 link];
-        v12 = [v11 itemIdentifier];
-        if (v12 && ([v11 isActionable] & 1) == 0)
+        link = [v10 link];
+        itemIdentifier = [link itemIdentifier];
+        if (itemIdentifier && ([link isActionable] & 1) == 0)
         {
-          v13 = [v4 objectForKey:v12];
+          v13 = [itemsCopy objectForKey:itemIdentifier];
           if (v13)
           {
             [v10 _setLinkItem:v13];
@@ -160,10 +160,10 @@
   }
 }
 
-- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateMissingItemIdentifiersFromIndex:(int64_t)index usingBlock:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
@@ -185,8 +185,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v14 + 1) + 8 * v12) link];
-        [v7 addObject:v13];
+        link = [*(*(&v14 + 1) + 8 * v12) link];
+        [v7 addObject:link];
 
         ++v12;
       }
@@ -198,13 +198,13 @@
     while (v10);
   }
 
-  [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromLinks:v7 startIndex:a3 usingBlock:v6];
+  [(SUUIPageComponent *)self _enumerateMissingItemIdentifiersFromLinks:v7 startIndex:index usingBlock:blockCopy];
 }
 
-- (id)valueForMetricsField:(id)a3
+- (id)valueForMetricsField:(id)field
 {
-  v4 = a3;
-  if ([v4 isEqualToString:*MEMORY[0x277D6A498]])
+  fieldCopy = field;
+  if ([fieldCopy isEqualToString:*MEMORY[0x277D6A498]])
   {
     v5 = &unk_286BBE190;
   }
@@ -213,7 +213,7 @@
   {
     v7.receiver = self;
     v7.super_class = SUUICarouselPageComponent;
-    v5 = [(SUUIPageComponent *)&v7 valueForMetricsField:v4];
+    v5 = [(SUUIPageComponent *)&v7 valueForMetricsField:fieldCopy];
   }
 
   return v5;

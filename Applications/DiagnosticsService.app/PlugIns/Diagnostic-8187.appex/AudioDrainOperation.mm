@@ -1,5 +1,5 @@
 @interface AudioDrainOperation
-- (AudioDrainOperation)initWithAudioFileURL:(id)a3 volume:(float)a4 responder:(id)a5;
+- (AudioDrainOperation)initWithAudioFileURL:(id)l volume:(float)volume responder:(id)responder;
 - (DKResponder)responder;
 - (void)cancel;
 - (void)main;
@@ -7,19 +7,19 @@
 
 @implementation AudioDrainOperation
 
-- (AudioDrainOperation)initWithAudioFileURL:(id)a3 volume:(float)a4 responder:(id)a5
+- (AudioDrainOperation)initWithAudioFileURL:(id)l volume:(float)volume responder:(id)responder
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  responderCopy = responder;
   v14.receiver = self;
   v14.super_class = AudioDrainOperation;
   v11 = [(AudioDrainOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_audioFileURL, a3);
-    objc_storeWeak(&v12->_responder, v10);
-    v12->_requestedVolume = a4;
+    objc_storeStrong(&v11->_audioFileURL, l);
+    objc_storeWeak(&v12->_responder, responderCopy);
+    v12->_requestedVolume = volume;
   }
 
   return v12;
@@ -28,20 +28,20 @@
 - (void)main
 {
   v3 = [AVAudioPlayer alloc];
-  v4 = [(AudioDrainOperation *)self audioFileURL];
+  audioFileURL = [(AudioDrainOperation *)self audioFileURL];
   v15 = 0;
-  v5 = [v3 initWithContentsOfURL:v4 error:&v15];
+  v5 = [v3 initWithContentsOfURL:audioFileURL error:&v15];
   v6 = v15;
   [(AudioDrainOperation *)self setAudioPlayer:v5];
 
-  v7 = [(AudioDrainOperation *)self audioPlayer];
+  audioPlayer = [(AudioDrainOperation *)self audioPlayer];
 
-  if (v7)
+  if (audioPlayer)
   {
     if (!v6)
     {
-      v8 = [(AudioDrainOperation *)self responder];
-      [v8 enableVolumeHUD:0];
+      responder = [(AudioDrainOperation *)self responder];
+      [responder enableVolumeHUD:0];
 
       v9 = +[AVAudioSession sharedInstance];
       [v9 setCategory:AVAudioSessionCategoryPlayback mode:AVAudioSessionModeRaw options:1 error:0];
@@ -53,33 +53,33 @@
       [(AudioDrainOperation *)self requestedVolume];
       [v11 setActiveCategoryVolumeTo:?];
 
-      v12 = [(AudioDrainOperation *)self audioPlayer];
-      [v12 setNumberOfLoops:-1];
+      audioPlayer2 = [(AudioDrainOperation *)self audioPlayer];
+      [audioPlayer2 setNumberOfLoops:-1];
 
-      v13 = [(AudioDrainOperation *)self audioPlayer];
-      [v13 setDelegate:self];
+      audioPlayer3 = [(AudioDrainOperation *)self audioPlayer];
+      [audioPlayer3 setDelegate:self];
 
-      v14 = [(AudioDrainOperation *)self audioPlayer];
-      [v14 play];
+      audioPlayer4 = [(AudioDrainOperation *)self audioPlayer];
+      [audioPlayer4 play];
     }
   }
 }
 
 - (void)cancel
 {
-  v3 = [(AudioDrainOperation *)self audioPlayer];
+  audioPlayer = [(AudioDrainOperation *)self audioPlayer];
 
-  if (v3)
+  if (audioPlayer)
   {
     v4 = +[AVSystemController sharedAVSystemController];
     [(AudioDrainOperation *)self originalVolume];
     [v4 setActiveCategoryVolumeTo:?];
 
-    v5 = [(AudioDrainOperation *)self responder];
-    [v5 enableVolumeHUD:1];
+    responder = [(AudioDrainOperation *)self responder];
+    [responder enableVolumeHUD:1];
 
-    v6 = [(AudioDrainOperation *)self audioPlayer];
-    [v6 stop];
+    audioPlayer2 = [(AudioDrainOperation *)self audioPlayer];
+    [audioPlayer2 stop];
 
     [(AudioDrainOperation *)self setAudioPlayer:0];
   }

@@ -2,20 +2,20 @@
 + (id)sharedExtractor;
 + (id)supportedLanguages;
 - (id)mockAttributes;
-- (void)requestExtractionOfPersonalIDFromDocument:(id)a3 completion:(id)a4;
+- (void)requestExtractionOfPersonalIDFromDocument:(id)document completion:(id)completion;
 @end
 
 @implementation DUInformationExtractor
 
-- (void)requestExtractionOfPersonalIDFromDocument:(id)a3 completion:(id)a4
+- (void)requestExtractionOfPersonalIDFromDocument:(id)document completion:(id)completion
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  documentCopy = document;
+  completionCopy = completion;
   if (+[_TtC27DocumentUnderstandingClient38DocumentUnderstandingFeatureFlagReader isFoundInUseLLMEnabled])
   {
-    v8 = [(DUInformationExtractor *)self mockAttributes];
-    if (v8)
+    mockAttributes = [(DUInformationExtractor *)self mockAttributes];
+    if (mockAttributes)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -23,8 +23,8 @@
         _os_log_debug_impl(&dword_249D14000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "[DUInformationExtractor] Returns DUMockPersonalIDResult from user defaults, skipping XPC call to textunderstandingd", buf, 2u);
       }
 
-      v9 = -[DUPersonalIDResult initWithResultType:attributes:isPartialExtraction:]([DUPersonalIDResult alloc], "initWithResultType:attributes:isPartialExtraction:", [v6 type], v8, 0);
-      v7[2](v7, v9, 0);
+      v9 = -[DUPersonalIDResult initWithResultType:attributes:isPartialExtraction:]([DUPersonalIDResult alloc], "initWithResultType:attributes:isPartialExtraction:", [documentCopy type], mockAttributes, 0);
+      completionCopy[2](completionCopy, v9, 0);
     }
 
     else
@@ -35,8 +35,8 @@
       v15[1] = 3221225472;
       v15[2] = sub_249D1F0F0;
       v15[3] = &unk_278FB5158;
-      v16 = v7;
-      [v12 requestExtractionOfPersonalIDFromDocument:v6 pid:v13 completion:v15];
+      v16 = completionCopy;
+      [v12 requestExtractionOfPersonalIDFromDocument:documentCopy pid:v13 completion:v15];
 
       v9 = v16;
     }
@@ -54,9 +54,9 @@
     v18 = *MEMORY[0x277CCA450];
     v19[0] = @"Extraction feature is not enabled";
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-    v8 = [v10 errorWithDomain:@"DUInformationExtractorErrorDomain" code:0 userInfo:v11];
+    mockAttributes = [v10 errorWithDomain:@"DUInformationExtractorErrorDomain" code:0 userInfo:v11];
 
-    (v7)[2](v7, 0, v8);
+    (completionCopy)[2](completionCopy, 0, mockAttributes);
   }
 
   v14 = *MEMORY[0x277D85DE8];

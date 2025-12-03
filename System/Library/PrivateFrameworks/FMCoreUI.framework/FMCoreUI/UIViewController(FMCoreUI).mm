@@ -7,13 +7,13 @@
 - (void)addConstraintsToFillSuperview
 {
   v35 = *MEMORY[0x277D85DE8];
-  v2 = [a1 view];
-  v3 = [v2 translatesAutoresizingMaskIntoConstraints];
+  view = [self view];
+  translatesAutoresizingMaskIntoConstraints = [view translatesAutoresizingMaskIntoConstraints];
 
-  if ((v3 & 1) == 0)
+  if ((translatesAutoresizingMaskIntoConstraints & 1) == 0)
   {
-    v4 = [a1 view];
-    v5 = _NSDictionaryOfVariableBindings(&cfstr_View.isa, v4, 0);
+    view2 = [self view];
+    v5 = _NSDictionaryOfVariableBindings(&cfstr_View.isa, view2, 0);
     v6 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[view]|" options:0 metrics:0 views:v5];
     v29 = 0u;
     v30 = 0u;
@@ -45,9 +45,9 @@
       while (v9);
     }
 
-    v13 = [a1 view];
-    v14 = [v13 superview];
-    [v14 addConstraints:v6];
+    view3 = [self view];
+    superview = [view3 superview];
+    [superview addConstraints:v6];
 
     v15 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"H:|[view]|" options:0 metrics:0 views:v5];
 
@@ -82,9 +82,9 @@
       while (v19);
     }
 
-    v23 = [a1 view];
-    v24 = [v23 superview];
-    [v24 addConstraints:v16];
+    view4 = [self view];
+    superview2 = [view4 superview];
+    [superview2 addConstraints:v16];
   }
 }
 

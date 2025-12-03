@@ -1,42 +1,42 @@
 @interface SFProductInventoryResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFProductInventoryResult)initWithCoder:(id)a3;
-- (SFProductInventoryResult)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFProductInventoryResult)initWithCoder:(id)coder;
+- (SFProductInventoryResult)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFProductInventoryResult
 
 - (unint64_t)hash
 {
-  v3 = [(SFProductInventoryResult *)self productIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SFProductInventoryResult *)self availability];
-  v6 = [v5 hash];
+  productIdentifier = [(SFProductInventoryResult *)self productIdentifier];
+  v4 = [productIdentifier hash];
+  availability = [(SFProductInventoryResult *)self availability];
+  v6 = [availability hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFProductInventoryResult *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFProductInventoryResult *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFProductInventoryResult *)self productIdentifier];
-      v8 = [(SFProductInventoryResult *)v6 productIdentifier];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      productIdentifier = [(SFProductInventoryResult *)self productIdentifier];
+      productIdentifier2 = [(SFProductInventoryResult *)v6 productIdentifier];
+      if ((productIdentifier != 0) == (productIdentifier2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -44,12 +44,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFProductInventoryResult *)self productIdentifier];
-      if (v9)
+      productIdentifier3 = [(SFProductInventoryResult *)self productIdentifier];
+      if (productIdentifier3)
       {
-        v3 = [(SFProductInventoryResult *)self productIdentifier];
-        v10 = [(SFProductInventoryResult *)v6 productIdentifier];
-        if (![v3 isEqual:v10])
+        productIdentifier4 = [(SFProductInventoryResult *)self productIdentifier];
+        productIdentifier5 = [(SFProductInventoryResult *)v6 productIdentifier];
+        if (![productIdentifier4 isEqual:productIdentifier5])
         {
           v11 = 0;
 LABEL_17:
@@ -58,13 +58,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = productIdentifier5;
       }
 
-      v12 = [(SFProductInventoryResult *)self availability];
-      v13 = [(SFProductInventoryResult *)v6 availability];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      availability = [(SFProductInventoryResult *)self availability];
+      availability2 = [(SFProductInventoryResult *)v6 availability];
+      v14 = availability2;
+      if ((availability != 0) == (availability2 == 0))
       {
 
         v11 = 0;
@@ -72,16 +72,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFProductInventoryResult *)self availability];
-        if (v15)
+        availability3 = [(SFProductInventoryResult *)self availability];
+        if (availability3)
         {
-          v16 = v15;
-          v19 = [(SFProductInventoryResult *)self availability];
+          v16 = availability3;
+          availability4 = [(SFProductInventoryResult *)self availability];
           [(SFProductInventoryResult *)v6 availability];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = productIdentifier4;
+          v11 = [availability4 isEqual:v17];
 
-          v3 = v20;
+          productIdentifier4 = v20;
         }
 
         else
@@ -91,8 +91,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      productIdentifier5 = v21;
+      if (!productIdentifier3)
       {
         goto LABEL_18;
       }
@@ -108,15 +108,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFProductInventoryResult *)self productIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  productIdentifier = [(SFProductInventoryResult *)self productIdentifier];
+  v6 = [productIdentifier copy];
   [v4 setProductIdentifier:v6];
 
-  v7 = [(SFProductInventoryResult *)self availability];
-  v8 = [v7 copy];
+  availability = [(SFProductInventoryResult *)self availability];
+  v8 = [availability copy];
   [v4 setAvailability:v8];
 
   return v4;
@@ -125,31 +125,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBProductInventoryResult alloc] initWithFacade:self];
-  v3 = [(_SFPBProductInventoryResult *)v2 jsonData];
+  jsonData = [(_SFPBProductInventoryResult *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBProductInventoryResult alloc] initWithFacade:self];
-  v3 = [(_SFPBProductInventoryResult *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBProductInventoryResult *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBProductInventoryResult alloc] initWithFacade:self];
-  v5 = [(_SFPBProductInventoryResult *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBProductInventoryResult *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFProductInventoryResult)initWithCoder:(id)a3
+- (SFProductInventoryResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBProductInventoryResult alloc] initWithData:v5];
   v7 = [(SFProductInventoryResult *)self initWithProtobuf:v6];
@@ -157,25 +157,25 @@ LABEL_20:
   return v7;
 }
 
-- (SFProductInventoryResult)initWithProtobuf:(id)a3
+- (SFProductInventoryResult)initWithProtobuf:(id)protobuf
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v23.receiver = self;
   v23.super_class = SFProductInventoryResult;
   v5 = [(SFProductInventoryResult *)&v23 init];
   if (v5)
   {
-    v6 = [v4 productIdentifier];
+    productIdentifier = [protobufCopy productIdentifier];
 
-    if (v6)
+    if (productIdentifier)
     {
-      v7 = [v4 productIdentifier];
-      [(SFProductInventoryResult *)v5 setProductIdentifier:v7];
+      productIdentifier2 = [protobufCopy productIdentifier];
+      [(SFProductInventoryResult *)v5 setProductIdentifier:productIdentifier2];
     }
 
-    v8 = [v4 availabilitys];
-    if (v8)
+    availabilitys = [protobufCopy availabilitys];
+    if (availabilitys)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -189,8 +189,8 @@ LABEL_20:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 availabilitys];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    availabilitys2 = [protobufCopy availabilitys];
+    v11 = [availabilitys2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -201,7 +201,7 @@ LABEL_20:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(availabilitys2);
           }
 
           v15 = [[SFProductInventory alloc] initWithProtobuf:*(*(&v19 + 1) + 8 * i)];
@@ -211,7 +211,7 @@ LABEL_20:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v12 = [availabilitys2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v12);

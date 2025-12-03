@@ -1,7 +1,7 @@
 @interface SearchUIPhotosAlbumImage
 - (id)fetchAsset;
 - (void)fetchAsset;
-- (void)fetchAssetWithCompletionHandler:(id)a3;
+- (void)fetchAssetWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUIPhotosAlbumImage
@@ -9,19 +9,19 @@
 - (id)fetchAsset
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIImage *)self sfImage];
-  v4 = [v3 albumIdentifier];
+  sfImage = [(SearchUIImage *)self sfImage];
+  albumIdentifier = [sfImage albumIdentifier];
 
   v5 = SearchUIGeneralLog();
   v6 = v5;
-  if (v4)
+  if (albumIdentifier)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(SearchUIImage *)self sfImage];
-      v8 = [v7 albumIdentifier];
+      sfImage2 = [(SearchUIImage *)self sfImage];
+      albumIdentifier2 = [sfImage2 albumIdentifier];
       *buf = 138412290;
-      v26 = v8;
+      v26 = albumIdentifier2;
       _os_log_impl(&dword_1DA169000, v6, OS_LOG_TYPE_DEFAULT, "SearchUIPhotosAlbumImage: albumIdentifier: %@", buf, 0xCu);
     }
 
@@ -38,22 +38,22 @@
 
     v11 = MEMORY[0x1E6978650];
     v12 = MEMORY[0x1E695DFD8];
-    v13 = [(SearchUIImage *)self sfImage];
-    v14 = [v13 albumIdentifier];
-    v24 = v14;
+    sfImage3 = [(SearchUIImage *)self sfImage];
+    albumIdentifier3 = [sfImage3 albumIdentifier];
+    v24 = albumIdentifier3;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v24 count:1];
     v16 = [v12 setWithArray:v15];
     v17 = [v11 localIdentifiersWithUUIDs:v16];
 
-    v18 = [v17 allObjects];
-    v19 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:v18 options:v9];
+    allObjects = [v17 allObjects];
+    v19 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithLocalIdentifiers:allObjects options:v9];
     if ([v19 count])
     {
       v20 = MEMORY[0x1E6978630];
-      v21 = [v19 firstObject];
-      v22 = [v20 fetchKeyAssetsInAssetCollection:v21 options:v9];
+      firstObject = [v19 firstObject];
+      v22 = [v20 fetchKeyAssetsInAssetCollection:firstObject options:v9];
 
-      v10 = [v22 firstObject];
+      firstObject2 = [v22 firstObject];
     }
 
     else
@@ -61,10 +61,10 @@
       v22 = SearchUIGeneralLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        [(SearchUIPhotosAlbumImage *)v18 fetchAsset];
+        [(SearchUIPhotosAlbumImage *)allObjects fetchAsset];
       }
 
-      v10 = 0;
+      firstObject2 = 0;
     }
   }
 
@@ -75,17 +75,17 @@
       [(SearchUIPhotosAlbumImage *)v6 fetchAsset];
     }
 
-    v10 = 0;
+    firstObject2 = 0;
   }
 
-  return v10;
+  return firstObject2;
 }
 
-- (void)fetchAssetWithCompletionHandler:(id)a3
+- (void)fetchAssetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SearchUIPhotosAlbumImage *)self fetchAsset];
-  if (!v5)
+  handlerCopy = handler;
+  fetchAsset = [(SearchUIPhotosAlbumImage *)self fetchAsset];
+  if (!fetchAsset)
   {
     v6 = SearchUIGeneralLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -94,15 +94,15 @@
     }
   }
 
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, fetchAsset);
 }
 
 - (void)fetchAsset
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 firstObject];
+  firstObject = [self firstObject];
   v4 = 138412290;
-  v5 = v3;
+  v5 = firstObject;
   _os_log_error_impl(&dword_1DA169000, a2, OS_LOG_TYPE_ERROR, "SearchUIPhotosAlbumImage: no collection found for identifier %@", &v4, 0xCu);
 }
 

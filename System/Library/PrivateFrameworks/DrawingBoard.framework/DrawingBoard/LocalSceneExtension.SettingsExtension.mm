@@ -1,13 +1,13 @@
 @interface LocalSceneExtension.SettingsExtension
-+ (void)configureSetting:(id)a3;
++ (void)configureSetting:(id)setting;
 @end
 
 @implementation LocalSceneExtension.SettingsExtension
 
-+ (void)configureSetting:(id)a3
++ (void)configureSetting:(id)setting
 {
   swift_unknownObjectRetain();
-  if ([a3 matchesProperty_])
+  if ([setting matchesProperty_])
   {
     v4 = type metadata accessor for LocalSceneExtension.SettingsExtension.ContentBuilderBox();
     v5 = objc_allocWithZone(v4);
@@ -17,7 +17,7 @@
     v8.receiver = v5;
     v8.super_class = v4;
     v7 = objc_msgSendSuper2(&v8, sel_init);
-    [a3 setDefaultValue_];
+    [setting setDefaultValue_];
     swift_unknownObjectRelease();
   }
 

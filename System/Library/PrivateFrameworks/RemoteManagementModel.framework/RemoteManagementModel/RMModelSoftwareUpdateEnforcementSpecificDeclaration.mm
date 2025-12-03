@@ -1,12 +1,12 @@
 @interface RMModelSoftwareUpdateEnforcementSpecificDeclaration
 + (NSSet)allowedPayloadKeys;
 + (id)assetTypes;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 targetOSVersion:(id)a4 targetLocalDateTime:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 targetOSVersion:(id)a4 targetBuildVersion:(id)a5 targetLocalDateTime:(id)a6 detailsURL:(id)a7;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier targetOSVersion:(id)version targetLocalDateTime:(id)time;
++ (id)buildWithIdentifier:(id)identifier targetOSVersion:(id)version targetBuildVersion:(id)buildVersion targetLocalDateTime:(id)time detailsURL:(id)l;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelSoftwareUpdateEnforcementSpecificDeclaration
@@ -34,60 +34,60 @@
   return v2;
 }
 
-+ (id)buildWithIdentifier:(id)a3 targetOSVersion:(id)a4 targetBuildVersion:(id)a5 targetLocalDateTime:(id)a6 detailsURL:(id)a7
++ (id)buildWithIdentifier:(id)identifier targetOSVersion:(id)version targetBuildVersion:(id)buildVersion targetLocalDateTime:(id)time detailsURL:(id)l
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
+  timeCopy = time;
+  buildVersionCopy = buildVersion;
+  versionCopy = version;
   v16 = objc_opt_new();
   [v16 setDeclarationType:@"com.apple.configuration.softwareupdate.enforcement.specific"];
-  if (v11)
+  if (identifierCopy)
   {
-    [v16 setDeclarationIdentifier:v11];
+    [v16 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAD78] UUID];
-    v18 = [v17 UUIDString];
-    [v16 setDeclarationIdentifier:v18];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v16 setDeclarationIdentifier:uUIDString];
   }
 
-  [v16 setPayloadTargetOSVersion:v15];
+  [v16 setPayloadTargetOSVersion:versionCopy];
 
-  [v16 setPayloadTargetBuildVersion:v14];
-  [v16 setPayloadTargetLocalDateTime:v13];
+  [v16 setPayloadTargetBuildVersion:buildVersionCopy];
+  [v16 setPayloadTargetLocalDateTime:timeCopy];
 
-  [v16 setPayloadDetailsURL:v12];
+  [v16 setPayloadDetailsURL:lCopy];
   [v16 updateServerToken];
 
   return v16;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 targetOSVersion:(id)a4 targetLocalDateTime:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier targetOSVersion:(id)version targetLocalDateTime:(id)time
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  timeCopy = time;
+  versionCopy = version;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.softwareupdate.enforcement.specific"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadTargetOSVersion:v9];
+  [v10 setPayloadTargetOSVersion:versionCopy];
 
-  [v10 setPayloadTargetLocalDateTime:v8];
+  [v10 setPayloadTargetLocalDateTime:timeCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -138,12 +138,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSoftwareUpdateEnforcementSpecificDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -151,35 +151,35 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"TargetOSVersion" forKeyPath:@"payloadTargetOSVersion" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"TargetBuildVersion" forKeyPath:@"payloadTargetBuildVersion" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"TargetLocalDateTime" forKeyPath:@"payloadTargetLocalDateTime" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"DetailsURL" forKeyPath:@"payloadDetailsURL" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"TargetOSVersion" forKeyPath:@"payloadTargetOSVersion" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"TargetBuildVersion" forKeyPath:@"payloadTargetBuildVersion" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"TargetLocalDateTime" forKeyPath:@"payloadTargetLocalDateTime" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"DetailsURL" forKeyPath:@"payloadDetailsURL" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetOSVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetOSVersion" value:v5 isRequired:1 defaultValue:0];
+  payloadTargetOSVersion = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetOSVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetOSVersion" value:payloadTargetOSVersion isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetBuildVersion];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetBuildVersion" value:v6 isRequired:0 defaultValue:0];
+  payloadTargetBuildVersion = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetBuildVersion];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetBuildVersion" value:payloadTargetBuildVersion isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetLocalDateTime];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetLocalDateTime" value:v7 isRequired:1 defaultValue:0];
+  payloadTargetLocalDateTime = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadTargetLocalDateTime];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"TargetLocalDateTime" value:payloadTargetLocalDateTime isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadDetailsURL];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DetailsURL" value:v8 isRequired:0 defaultValue:0];
+  payloadDetailsURL = [(RMModelSoftwareUpdateEnforcementSpecificDeclaration *)self payloadDetailsURL];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"DetailsURL" value:payloadDetailsURL isRequired:0 defaultValue:0];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelSoftwareUpdateEnforcementSpecificDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadTargetOSVersion copy];
   v6 = v4[6];
   v4[6] = v5;

@@ -1,9 +1,9 @@
 @interface ML3DatabaseBlob
 - (ML3DatabaseBlob)init;
-- (ML3DatabaseBlob)initWithSQLiteHandle:(sqlite3_blob *)a3;
+- (ML3DatabaseBlob)initWithSQLiteHandle:(sqlite3_blob *)handle;
 - (id)data;
-- (int)readData:(id)a3 numberOfBytes:(unint64_t)a4 offset:(unint64_t)a5;
-- (int)writeData:(id)a3 numberOfBytes:(unint64_t)a4 offset:(unint64_t)a5;
+- (int)readData:(id)data numberOfBytes:(unint64_t)bytes offset:(unint64_t)offset;
+- (int)writeData:(id)data numberOfBytes:(unint64_t)bytes offset:(unint64_t)offset;
 - (unint64_t)length;
 - (void)dealloc;
 @end
@@ -24,26 +24,26 @@
   return v6;
 }
 
-- (int)writeData:(id)a3 numberOfBytes:(unint64_t)a4 offset:(unint64_t)a5
+- (int)writeData:(id)data numberOfBytes:(unint64_t)bytes offset:(unint64_t)offset
 {
-  v5 = a5;
-  v6 = a4;
+  offsetCopy = offset;
+  bytesCopy = bytes;
   sqliteHandle = self->_sqliteHandle;
-  v9 = a3;
-  v10 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
 
-  return sqlite3_blob_write(sqliteHandle, v10, v6, v5);
+  return sqlite3_blob_write(sqliteHandle, bytes, bytesCopy, offsetCopy);
 }
 
-- (int)readData:(id)a3 numberOfBytes:(unint64_t)a4 offset:(unint64_t)a5
+- (int)readData:(id)data numberOfBytes:(unint64_t)bytes offset:(unint64_t)offset
 {
-  v5 = a5;
-  v8 = a3;
-  [v8 setLength:a4];
+  offsetCopy = offset;
+  dataCopy = data;
+  [dataCopy setLength:bytes];
   sqliteHandle = self->_sqliteHandle;
-  v10 = [v8 mutableBytes];
+  mutableBytes = [dataCopy mutableBytes];
 
-  return sqlite3_blob_read(sqliteHandle, v10, a4, v5);
+  return sqlite3_blob_read(sqliteHandle, mutableBytes, bytes, offsetCopy);
 }
 
 - (unint64_t)length
@@ -70,14 +70,14 @@
   [(ML3DatabaseBlob *)&v4 dealloc];
 }
 
-- (ML3DatabaseBlob)initWithSQLiteHandle:(sqlite3_blob *)a3
+- (ML3DatabaseBlob)initWithSQLiteHandle:(sqlite3_blob *)handle
 {
   v5.receiver = self;
   v5.super_class = ML3DatabaseBlob;
   result = [(ML3DatabaseBlob *)&v5 init];
   if (result)
   {
-    result->_sqliteHandle = a3;
+    result->_sqliteHandle = handle;
   }
 
   return result;

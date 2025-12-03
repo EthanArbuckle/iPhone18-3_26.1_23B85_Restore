@@ -1,27 +1,27 @@
 @interface CTCarrierSpaceClient
-- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)a3;
-- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)a3 andListenerEndpoint:(id)a4;
+- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)queue;
+- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)queue andListenerEndpoint:(id)endpoint;
 - (CTCarrierSpaceClientDelegate)delegate;
 - (id).cxx_construct;
-- (id)_proxyWithErrorHandler:(id)a3;
+- (id)_proxyWithErrorHandler:(id)handler;
 - (void)_connect_sync;
 - (void)_ensureConnected_sync;
-- (void)authenticationDidComplete:(id)a3 completion:(id)a4;
-- (void)authenticationDidFail:(id)a3 completion:(id)a4;
+- (void)authenticationDidComplete:(id)complete completion:(id)completion;
+- (void)authenticationDidFail:(id)fail completion:(id)completion;
 - (void)dealloc;
-- (void)fetchDataPlanMetrics:(id)a3;
-- (void)getAuthenticationContext:(id)a3;
-- (void)getCapabilities:(id)a3;
-- (void)getUserConsentFlowInfo:(id)a3;
+- (void)fetchDataPlanMetrics:(id)metrics;
+- (void)getAuthenticationContext:(id)context;
+- (void)getCapabilities:(id)capabilities;
+- (void)getUserConsentFlowInfo:(id)info;
 - (void)invalidate;
-- (void)ping:(id)a3;
-- (void)purchasePlan:(id)a3 authInfo:(id)a4 completion:(id)a5;
-- (void)purchasePlan:(id)a3 completion:(id)a4;
-- (void)refreshAllInfo:(id)a3;
-- (void)refreshAppsInfo:(id)a3;
-- (void)refreshPlansInfo:(id)a3;
-- (void)refreshUsageInfo:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)ping:(id)ping;
+- (void)purchasePlan:(id)plan authInfo:(id)info completion:(id)completion;
+- (void)purchasePlan:(id)plan completion:(id)completion;
+- (void)refreshAllInfo:(id)info;
+- (void)refreshAppsInfo:(id)info;
+- (void)refreshPlansInfo:(id)info;
+- (void)refreshUsageInfo:(id)info;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CTCarrierSpaceClient
@@ -75,11 +75,11 @@
 
   else
   {
-    v12 = [(NSXPCConnection *)v11 _queue];
-    v13 = v12;
-    if (v12)
+    _queue = [(NSXPCConnection *)v11 _queue];
+    v13 = _queue;
+    if (_queue)
     {
-      dispatch_retain(v12);
+      dispatch_retain(_queue);
     }
 
     fObj = self->_callbackQueue.fObj.fObj;
@@ -169,16 +169,16 @@ void __37__CTCarrierSpaceClient__connect_sync__block_invoke_60(uint64_t a1, void
   }
 }
 
-- (id)_proxyWithErrorHandler:(id)a3
+- (id)_proxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__CTCarrierSpaceClient__proxyWithErrorHandler___block_invoke;
   v9[3] = &unk_278D646F0;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v11 = MEMORY[0x245D166C0](v9);
   fObj = self->_queue.fObj.fObj;
   v13 = 0;
@@ -224,18 +224,18 @@ void __47__CTCarrierSpaceClient__proxyWithErrorHandler___block_invoke_2(uint64_t
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   [(CTCarrierSpaceClient *)self _ensureConnected_sync];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__CTCarrierSpaceClient_setDelegate___block_invoke;
   v7[3] = &unk_278D64718;
   v7[4] = self;
-  v8 = v4;
+  v8 = delegateCopy;
   fObj = self->_callbackQueue.fObj.fObj;
-  v6 = v4;
+  v6 = delegateCopy;
   dispatch_async(fObj, v7);
 }
 
@@ -246,7 +246,7 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 40) setDelegate:?];
 }
 
-- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)a3
+- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)queue
 {
   v13.receiver = self;
   v13.super_class = CTCarrierSpaceClient;
@@ -262,20 +262,20 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
       dispatch_release(v7);
     }
 
-    if (a3)
+    if (queue)
     {
-      dispatch_retain(a3);
+      dispatch_retain(queue);
     }
 
     v8 = *(v4 + 3);
-    *(v4 + 3) = a3;
+    *(v4 + 3) = queue;
     if (v8)
     {
       dispatch_release(v8);
-      a3 = *(v4 + 3);
+      queue = *(v4 + 3);
     }
 
-    if (!a3)
+    if (!queue)
     {
       global_queue = dispatch_get_global_queue(0, 0);
       v11 = global_queue;
@@ -315,18 +315,18 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
   [(CTCarrierSpaceClient *)&v4 dealloc];
 }
 
-- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)a3 andListenerEndpoint:(id)a4
+- (CTCarrierSpaceClient)initWithQueue:(dispatch_queue_s *)queue andListenerEndpoint:(id)endpoint
 {
-  objc_storeStrong(&self->_endpoint, a4);
+  objc_storeStrong(&self->_endpoint, endpoint);
 
-  return [(CTCarrierSpaceClient *)self initWithQueue:a3];
+  return [(CTCarrierSpaceClient *)self initWithQueue:queue];
 }
 
-- (void)ping:(id)a3
+- (void)ping:(id)ping
 {
-  v5 = a3;
+  pingCopy = ping;
   v4 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:?];
-  [v4 ping:v5];
+  [v4 ping:pingCopy];
 }
 
 - (void)invalidate
@@ -339,64 +339,64 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
   dispatch_async(self->_queue.fObj.fObj, block);
 }
 
-- (void)refreshUsageInfo:(id)a3
+- (void)refreshUsageInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v4 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:?];
-  [v4 refreshUsageInfo:v5];
+  [v4 refreshUsageInfo:infoCopy];
 }
 
-- (void)refreshPlansInfo:(id)a3
+- (void)refreshPlansInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v4 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:?];
-  [v4 refreshPlansInfo:v5];
+  [v4 refreshPlansInfo:infoCopy];
 }
 
-- (void)refreshAppsInfo:(id)a3
+- (void)refreshAppsInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v4 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:?];
-  [v4 refreshAppsInfo:v5];
+  [v4 refreshAppsInfo:infoCopy];
 }
 
-- (void)authenticationDidComplete:(id)a3 completion:(id)a4
+- (void)authenticationDidComplete:(id)complete completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v6];
-  [v7 authenticationDidComplete:v8 completion:v6];
+  completeCopy = complete;
+  completionCopy = completion;
+  v7 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:completionCopy];
+  [v7 authenticationDidComplete:completeCopy completion:completionCopy];
 }
 
-- (void)authenticationDidFail:(id)a3 completion:(id)a4
+- (void)authenticationDidFail:(id)fail completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v6];
-  [v7 authenticationDidFail:v8 completion:v6];
+  failCopy = fail;
+  completionCopy = completion;
+  v7 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:completionCopy];
+  [v7 authenticationDidFail:failCopy completion:completionCopy];
 }
 
-- (void)getAuthenticationContext:(id)a3
+- (void)getAuthenticationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__CTCarrierSpaceClient_getAuthenticationContext___block_invoke;
   v7[3] = &unk_278D646C8;
-  v5 = v4;
+  v5 = contextCopy;
   v8 = v5;
   v6 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v7];
   [v6 getAuthenticationContext:v5];
 }
 
-- (void)getCapabilities:(id)a3
+- (void)getCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __40__CTCarrierSpaceClient_getCapabilities___block_invoke;
   v9[3] = &unk_278D646C8;
-  v5 = v4;
+  v5 = capabilitiesCopy;
   v10 = v5;
   v6 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v9];
   v7 = _CTCarrierSpaceLogDomain();
@@ -409,14 +409,14 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
   [v6 getCapabilities:v5];
 }
 
-- (void)getUserConsentFlowInfo:(id)a3
+- (void)getUserConsentFlowInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__CTCarrierSpaceClient_getUserConsentFlowInfo___block_invoke;
   v9[3] = &unk_278D646C8;
-  v5 = v4;
+  v5 = infoCopy;
   v10 = v5;
   v6 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v9];
   if (v6)
@@ -432,10 +432,10 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)refreshAllInfo:(id)a3
+- (void)refreshAllInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v4];
+  infoCopy = info;
+  v5 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:infoCopy];
   v6 = _CTCarrierSpaceLogDomain();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -443,58 +443,58 @@ void __36__CTCarrierSpaceClient_setDelegate___block_invoke(uint64_t a1)
     _os_log_impl(&dword_2426DB000, v6, OS_LOG_TYPE_INFO, "Client requesting to refresh all info", v7, 2u);
   }
 
-  [v5 refreshAllInfo:v4];
+  [v5 refreshAllInfo:infoCopy];
 }
 
-- (void)purchasePlan:(id)a3 completion:(id)a4
+- (void)purchasePlan:(id)plan completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v7];
+  planCopy = plan;
+  completionCopy = completion;
+  v8 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:completionCopy];
   v9 = _CTCarrierSpaceLogDomain();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = planCopy;
     _os_log_impl(&dword_2426DB000, v9, OS_LOG_TYPE_INFO, "Client requesting to purchase plan: %@", &v11, 0xCu);
   }
 
-  [v8 purchasePlan:v6 authInfo:0 completion:v7];
+  [v8 purchasePlan:planCopy authInfo:0 completion:completionCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purchasePlan:(id)a3 authInfo:(id)a4 completion:(id)a5
+- (void)purchasePlan:(id)plan authInfo:(id)info completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v10];
+  planCopy = plan;
+  infoCopy = info;
+  completionCopy = completion;
+  v11 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:completionCopy];
   v12 = _CTCarrierSpaceLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v14 = 138412546;
-    v15 = v8;
+    v15 = planCopy;
     v16 = 2112;
-    v17 = v9;
+    v17 = infoCopy;
     _os_log_impl(&dword_2426DB000, v12, OS_LOG_TYPE_INFO, "Client requesting to purchase plan: %@, auth info: %@", &v14, 0x16u);
   }
 
-  [v11 purchasePlan:v8 authInfo:v9 completion:v10];
+  [v11 purchasePlan:planCopy authInfo:infoCopy completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchDataPlanMetrics:(id)a3
+- (void)fetchDataPlanMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__CTCarrierSpaceClient_fetchDataPlanMetrics___block_invoke;
   v9[3] = &unk_278D646C8;
-  v5 = v4;
+  v5 = metricsCopy;
   v10 = v5;
   v6 = [(CTCarrierSpaceClient *)self _proxyWithErrorHandler:v9];
   v7 = _CTCarrierSpaceLogDomain();

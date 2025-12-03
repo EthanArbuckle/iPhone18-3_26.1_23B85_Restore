@@ -1,82 +1,82 @@
 @interface SMSessionWorkoutMonitor
-+ (unint64_t)convertNoMovementDetectionTypeToTriggerCategory:(int64_t)a3;
-- (BOOL)_shouldPromptNoMovementTrigger:(id)a3;
-- (SMSessionWorkoutMonitor)initWithQueue:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 locationManager:(id)a6 healthKitManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 timerManager:(id)a11 noMovementMonitor:(id)a12 motionActivityManager:(id)a13;
++ (unint64_t)convertNoMovementDetectionTypeToTriggerCategory:(int64_t)category;
+- (BOOL)_shouldPromptNoMovementTrigger:(id)trigger;
+- (SMSessionWorkoutMonitor)initWithQueue:(id)queue defaultsManager:(id)manager distanceCalculator:(id)calculator locationManager:(id)locationManager healthKitManager:(id)kitManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 timerManager:(id)self1 noMovementMonitor:(id)self2 motionActivityManager:(id)self3;
 - (SMTriggerManagerProtocol)sessionMonitorDelegate;
 - (double)_workoutEndReminderTimeout;
 - (void)_addObservers;
 - (void)_bootstrap;
-- (void)_initializeTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4;
-- (void)_modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_onTimerExpiryForTimerIdentifier:(id)a3;
-- (void)_onWorkoutTriggerControlUpdate:(unint64_t)a3;
+- (void)_initializeTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay;
+- (void)_modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_onTimerExpiryForTimerIdentifier:(id)identifier;
+- (void)_onWorkoutTriggerControlUpdate:(unint64_t)update;
 - (void)_removeObservers;
 - (void)_removeTimers;
 - (void)_setup;
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_stopMonitoringWithHandler:(id)a3;
-- (void)_tearDownTimerWithIdentifier:(id)a3;
-- (void)checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler:(id)a3;
-- (void)initializeTimersOnStartMonitoring:(id)a3;
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)onHealthKitNotification:(id)a3;
-- (void)onNoMovementMonitorNotification:(id)a3;
-- (void)onWorkoutTriggerControlUpdate:(unint64_t)a3;
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_stopMonitoringWithHandler:(id)handler;
+- (void)_tearDownTimerWithIdentifier:(id)identifier;
+- (void)checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler:(id)handler;
+- (void)initializeTimersOnStartMonitoring:(id)monitoring;
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)onHealthKitNotification:(id)notification;
+- (void)onNoMovementMonitorNotification:(id)notification;
+- (void)onWorkoutTriggerControlUpdate:(unint64_t)update;
 - (void)setup;
 - (void)startListeningForXPCEvents;
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
 - (void)stopListeningForXPCEvents;
-- (void)stopMonitoringWithHandler:(id)a3;
-- (void)takeOdometerDistanceSampleWithHandler:(id)a3;
+- (void)stopMonitoringWithHandler:(id)handler;
+- (void)takeOdometerDistanceSampleWithHandler:(id)handler;
 @end
 
 @implementation SMSessionWorkoutMonitor
 
-- (SMSessionWorkoutMonitor)initWithQueue:(id)a3 defaultsManager:(id)a4 distanceCalculator:(id)a5 locationManager:(id)a6 healthKitManager:(id)a7 platform:(id)a8 sessionMetricManager:(id)a9 sessionStore:(id)a10 timerManager:(id)a11 noMovementMonitor:(id)a12 motionActivityManager:(id)a13
+- (SMSessionWorkoutMonitor)initWithQueue:(id)queue defaultsManager:(id)manager distanceCalculator:(id)calculator locationManager:(id)locationManager healthKitManager:(id)kitManager platform:(id)platform sessionMetricManager:(id)metricManager sessionStore:(id)self0 timerManager:(id)self1 noMovementMonitor:(id)self2 motionActivityManager:(id)self3
 {
   v57 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v44 = a4;
-  v19 = a4;
-  v45 = a5;
-  v51 = a5;
-  v47 = a6;
-  v49 = a6;
-  v46 = a7;
-  v20 = a7;
-  v48 = a8;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v52 = v18;
-  v50 = v26;
-  if (v18)
+  queueCopy = queue;
+  managerCopy = manager;
+  managerCopy2 = manager;
+  calculatorCopy = calculator;
+  calculatorCopy2 = calculator;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
+  kitManagerCopy = kitManager;
+  kitManagerCopy2 = kitManager;
+  platformCopy = platform;
+  platformCopy2 = platform;
+  metricManagerCopy = metricManager;
+  storeCopy = store;
+  timerManagerCopy = timerManager;
+  monitorCopy = monitor;
+  activityManagerCopy = activityManager;
+  v52 = queueCopy;
+  v50 = activityManagerCopy;
+  if (queueCopy)
   {
-    v27 = v19;
-    if (v19)
+    v27 = managerCopy2;
+    if (managerCopy2)
     {
-      v28 = v51;
-      v29 = v49;
-      if (v51)
+      v28 = calculatorCopy2;
+      v29 = locationManagerCopy2;
+      if (calculatorCopy2)
       {
-        if (v49)
+        if (locationManagerCopy2)
         {
-          if (v20)
+          if (kitManagerCopy2)
           {
-            if (v21)
+            if (platformCopy2)
             {
-              if (v22)
+              if (metricManagerCopy)
               {
-                if (v23)
+                if (storeCopy)
                 {
-                  if (v24)
+                  if (timerManagerCopy)
                   {
-                    if (v25)
+                    if (monitorCopy)
                     {
-                      if (v26)
+                      if (activityManagerCopy)
                       {
                         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                         {
@@ -96,20 +96,20 @@
                         if (v31)
                         {
                           objc_storeStrong(&v31->_queue, obja);
-                          objc_storeStrong(&v32->_defaultsManager, v44);
-                          objc_storeStrong(&v32->_distanceCalculator, v45);
-                          objc_storeStrong(&v32->_healthKitManager, v46);
-                          objc_storeStrong(&v32->_locationManager, v47);
-                          objc_storeStrong(&v32->_platform, v48);
-                          objc_storeStrong(&v32->_sessionMetricManager, a9);
-                          objc_storeStrong(&v32->_sessionStore, a10);
-                          objc_storeStrong(&v32->_timerManager, a11);
+                          objc_storeStrong(&v32->_defaultsManager, managerCopy);
+                          objc_storeStrong(&v32->_distanceCalculator, calculatorCopy);
+                          objc_storeStrong(&v32->_healthKitManager, kitManagerCopy);
+                          objc_storeStrong(&v32->_locationManager, locationManagerCopy);
+                          objc_storeStrong(&v32->_platform, platformCopy);
+                          objc_storeStrong(&v32->_sessionMetricManager, metricManager);
+                          objc_storeStrong(&v32->_sessionStore, store);
+                          objc_storeStrong(&v32->_timerManager, timerManager);
                           v33 = objc_opt_new();
                           timerIdentifierToTimers = v32->_timerIdentifierToTimers;
                           v32->_timerIdentifierToTimers = v33;
 
-                          objc_storeStrong(&v32->_noMovementMonitor, a12);
-                          objc_storeStrong(&v32->_motionActivityManager, a13);
+                          objc_storeStrong(&v32->_noMovementMonitor, monitor);
+                          objc_storeStrong(&v32->_motionActivityManager, activityManager);
                           v35 = objc_alloc_init(SMCMOdometer);
                           cmOdometer = v32->_cmOdometer;
                           v32->_cmOdometer = v35;
@@ -240,8 +240,8 @@ LABEL_43:
     else
     {
       v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v28 = v51;
-      v29 = v49;
+      v28 = calculatorCopy2;
+      v29 = locationManagerCopy2;
       if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_43;
@@ -256,7 +256,7 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  v27 = v19;
+  v27 = managerCopy2;
   v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
@@ -265,8 +265,8 @@ LABEL_42:
   }
 
   v37 = 0;
-  v28 = v51;
-  v29 = v49;
+  v28 = calculatorCopy2;
+  v29 = locationManagerCopy2;
 LABEL_44:
 
   return v37;
@@ -274,25 +274,25 @@ LABEL_44:
 
 - (void)setup
 {
-  v3 = [(SMSessionWorkoutMonitor *)self queue];
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__SMSessionWorkoutMonitor_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v4 = [v3 objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderDate"];
+  defaultsManager = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v4 = [defaultsManager objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderDate"];
   endWorkoutReminderDate = self->_endWorkoutReminderDate;
   self->_endWorkoutReminderDate = v4;
 
-  v6 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v7 = [v6 objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderTimeoutSettingEnabled" value:&unk_2845A1E38];
+  defaultsManager2 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v7 = [defaultsManager2 objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderTimeoutSettingEnabled" value:&unk_2845A1E38];
   [v7 doubleValue];
   self->_endWorkoutReminderTimeoutSettingEnabled = v8;
 
@@ -316,8 +316,8 @@ LABEL_44:
     }
   }
 
-  v11 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v12 = [v11 objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderTimeoutSettingDisabled" value:&unk_2845A1E48];
+  defaultsManager3 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v12 = [defaultsManager3 objectForKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderTimeoutSettingDisabled" value:&unk_2845A1E48];
   [v12 doubleValue];
   self->_endWorkoutReminderTimeoutSettingDisabled = v13;
 
@@ -341,13 +341,13 @@ LABEL_44:
     }
   }
 
-  v16 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v17 = [v16 objectForKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
+  defaultsManager4 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v17 = [defaultsManager4 objectForKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
   latestWorkoutManualPauseDate = self->_latestWorkoutManualPauseDate;
   self->_latestWorkoutManualPauseDate = v17;
 
-  v19 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v20 = [v19 objectForKey:@"SMDefaultsSessionWorkoutMonitorWorkoutManualPauseTimeout" value:&unk_2845A1E58];
+  defaultsManager5 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v20 = [defaultsManager5 objectForKey:@"SMDefaultsSessionWorkoutMonitorWorkoutManualPauseTimeout" value:&unk_2845A1E58];
   [v20 doubleValue];
   self->_workoutManualPauseTimeout = v21;
 
@@ -371,13 +371,13 @@ LABEL_44:
     }
   }
 
-  v24 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v25 = [v24 objectForKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutAutoPauseDate"];
+  defaultsManager6 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v25 = [defaultsManager6 objectForKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutAutoPauseDate"];
   latestWorkoutAutoPauseDate = self->_latestWorkoutAutoPauseDate;
   self->_latestWorkoutAutoPauseDate = v25;
 
-  v27 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v28 = [v27 objectForKey:@"SMDefaultsSessionWorkoutMonitorWorkoutAutoPauseTimeout" value:&unk_2845A1E68];
+  defaultsManager7 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v28 = [defaultsManager7 objectForKey:@"SMDefaultsSessionWorkoutMonitorWorkoutAutoPauseTimeout" value:&unk_2845A1E68];
   [v28 doubleValue];
   self->_workoutAutoPauseTimeout = v29;
 
@@ -401,13 +401,13 @@ LABEL_44:
     }
   }
 
-  v32 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v33 = [v32 objectForKey:@"SMDefaultsSessionWorkoutMonitorOutdoorPedAutoPauseDistance"];
+  defaultsManager8 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v33 = [defaultsManager8 objectForKey:@"SMDefaultsSessionWorkoutMonitorOutdoorPedAutoPauseDistance"];
   outdoorPedAutoPauseDistance = self->_outdoorPedAutoPauseDistance;
   self->_outdoorPedAutoPauseDistance = v33;
 
-  v35 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  v36 = [v35 objectForKey:@"SMDefaultsSessionWorkoutMonitorOutdoorPedAutoPauseDistanceThreshold" value:&unk_2845A1E78];
+  defaultsManager9 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  v36 = [defaultsManager9 objectForKey:@"SMDefaultsSessionWorkoutMonitorOutdoorPedAutoPauseDistanceThreshold" value:&unk_2845A1E78];
   [v36 doubleValue];
   self->_outdoorPedAutoPauseDistanceThreshold = v37;
 
@@ -446,17 +446,17 @@ LABEL_44:
     }
   }
 
-  v4 = [(SMSessionWorkoutMonitor *)self healthKitManager];
+  healthKitManager = [(SMSessionWorkoutMonitor *)self healthKitManager];
   v5 = +[(RTNotification *)RTHealthKitManagerWorkoutWillPauseWorkoutNotification];
-  [v4 addObserver:self selector:sel_onHealthKitNotification_ name:v5];
+  [healthKitManager addObserver:self selector:sel_onHealthKitNotification_ name:v5];
 
-  v6 = [(SMSessionWorkoutMonitor *)self healthKitManager];
+  healthKitManager2 = [(SMSessionWorkoutMonitor *)self healthKitManager];
   v7 = +[(RTNotification *)RTHealthKitManagerWorkoutWillResumeWorkoutNotification];
-  [v6 addObserver:self selector:sel_onHealthKitNotification_ name:v7];
+  [healthKitManager2 addObserver:self selector:sel_onHealthKitNotification_ name:v7];
 
-  v8 = [(SMSessionWorkoutMonitor *)self noMovementMonitor];
+  noMovementMonitor = [(SMSessionWorkoutMonitor *)self noMovementMonitor];
   v9 = +[(RTNotification *)SMCMNoMovementStateUpdateNotification];
-  [v8 addObserver:self selector:sel_onNoMovementMonitorNotification_ name:v9];
+  [noMovementMonitor addObserver:self selector:sel_onNoMovementMonitorNotification_ name:v9];
 }
 
 - (void)_removeObservers
@@ -473,11 +473,11 @@ LABEL_44:
     }
   }
 
-  v4 = [(SMSessionWorkoutMonitor *)self healthKitManager];
-  [v4 removeObserver:self];
+  healthKitManager = [(SMSessionWorkoutMonitor *)self healthKitManager];
+  [healthKitManager removeObserver:self];
 
-  v5 = [(SMSessionWorkoutMonitor *)self noMovementMonitor];
-  [v5 removeObserver:self];
+  noMovementMonitor = [(SMSessionWorkoutMonitor *)self noMovementMonitor];
+  [noMovementMonitor removeObserver:self];
 }
 
 - (void)_bootstrap
@@ -488,39 +488,39 @@ LABEL_44:
     v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+      sessionConfiguration = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
       v5 = 136315395;
       v6 = "[SMSessionWorkoutMonitor _bootstrap]";
       v7 = 2117;
-      v8 = v4;
+      v8 = sessionConfiguration;
       _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_INFO, "%s, bootstrapping not yet supported, called with configuration, %{sensitive}@", &v5, 0x16u);
     }
   }
 }
 
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMSessionWorkoutMonitor *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__SMSessionWorkoutMonitor_startMonitoringWithConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 sessionType] != 4)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ([configurationCopy sessionType] != 4)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -534,7 +534,7 @@ LABEL_44:
   }
 
   [(SMSessionWorkoutMonitor *)self _addObservers];
-  [(SMSessionWorkoutMonitor *)self setSessionConfiguration:v6];
+  [(SMSessionWorkoutMonitor *)self setSessionConfiguration:configurationCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -543,34 +543,34 @@ LABEL_44:
       *buf = 136315395;
       v26 = "[SMSessionWorkoutMonitor _startMonitoringWithConfiguration:handler:]";
       v27 = 2117;
-      v28 = v6;
+      v28 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     [(SMSessionWorkoutMonitor *)self startListeningForXPCEvents];
     v10 = +[SMDateUtility date];
-    v11 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
-    v12 = [v11 sessionStartDate];
-    v13 = [v12 isAfterDate:v10];
+    sessionConfiguration = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+    sessionStartDate = [sessionConfiguration sessionStartDate];
+    v13 = [sessionStartDate isAfterDate:v10];
 
     if (v13)
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v19 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
-        v20 = [v19 sessionStartDate];
-        v21 = [v20 stringFromDate];
-        v22 = [v10 stringFromDate];
+        sessionConfiguration2 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+        sessionStartDate2 = [sessionConfiguration2 sessionStartDate];
+        stringFromDate = [sessionStartDate2 stringFromDate];
+        stringFromDate2 = [v10 stringFromDate];
         *buf = 136315650;
         v26 = "[SMSessionWorkoutMonitor _startMonitoringWithConfiguration:handler:]";
         v27 = 2112;
-        v28 = v21;
+        v28 = stringFromDate;
         v29 = 2112;
-        v30 = v22;
+        v30 = stringFromDate2;
         _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "%s, sessionStartDate, %@, larger than currentDate, %@", buf, 0x20u);
       }
 
@@ -581,13 +581,13 @@ LABEL_44:
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       v18 = [v15 errorWithDomain:v16 code:7 userInfo:v17];
 
-      v7[2](v7, v18);
+      handlerCopy[2](handlerCopy, v18);
     }
 
     else
     {
       [(SMSessionWorkoutMonitor *)self initializeTimersOnStartMonitoring:v10];
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -603,24 +603,24 @@ LABEL_44:
   }
 }
 
-- (void)stopMonitoringWithHandler:(id)a3
+- (void)stopMonitoringWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMSessionWorkoutMonitor *)self queue];
+  handlerCopy = handler;
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SMSessionWorkoutMonitor_stopMonitoringWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_stopMonitoringWithHandler:(id)a3
+- (void)_stopMonitoringWithHandler:(id)handler
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -635,34 +635,34 @@ LABEL_44:
   [(SMSessionWorkoutMonitor *)self stopListeningForXPCEvents];
   [(SMSessionWorkoutMonitor *)self _removeObservers];
   [(SMSessionWorkoutMonitor *)self _removeTimers];
-  v6 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  [v6 setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderDate"];
+  defaultsManager = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  [defaultsManager setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorEndWorkoutReminderDate"];
 
-  v7 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-  [v7 setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
+  defaultsManager2 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+  [defaultsManager2 setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
 
-  v8 = [(SMSessionWorkoutMonitor *)self cmOdometer];
-  [v8 stopOdometerUpdates];
+  cmOdometer = [(SMSessionWorkoutMonitor *)self cmOdometer];
+  [cmOdometer stopOdometerUpdates];
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)onWorkoutTriggerControlUpdate:(unint64_t)a3
+- (void)onWorkoutTriggerControlUpdate:(unint64_t)update
 {
-  v5 = [(SMSessionWorkoutMonitor *)self queue];
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__SMSessionWorkoutMonitor_onWorkoutTriggerControlUpdate___block_invoke;
   v6[3] = &unk_2788C52E8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = update;
+  dispatch_async(queue, v6);
 }
 
-- (void)_onWorkoutTriggerControlUpdate:(unint64_t)a3
+- (void)_onWorkoutTriggerControlUpdate:(unint64_t)update
 {
   v20 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -673,34 +673,34 @@ LABEL_44:
       v16 = 136315394;
       v17 = "[SMSessionWorkoutMonitor _onWorkoutTriggerControlUpdate:]";
       v18 = 2048;
-      v19 = a3;
+      updateCopy = update;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, control, %lu", &v16, 0x16u);
     }
   }
 
-  if (a3 == 2)
+  if (update == 2)
   {
     [(SMSessionWorkoutMonitor *)self setIsWorkoutPaused:0];
-    v15 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-    [v15 setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
+    defaultsManager = [(SMSessionWorkoutMonitor *)self defaultsManager];
+    [defaultsManager setObject:0 forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
 
     v14 = @"com.apple.routined.SMSessionWorkoutMonitor.workoutManualPauseTimerIdentifier";
   }
 
   else
   {
-    if (a3 != 1)
+    if (update != 1)
     {
       return;
     }
 
     [(SMSessionWorkoutMonitor *)self setIsWorkoutPaused:1];
-    v6 = [(SMSessionWorkoutMonitor *)self latestWorkoutManualPauseDate];
-    if (!v6 || (v7 = v6, -[SMSessionWorkoutMonitor latestWorkoutManualPauseDate](self, "latestWorkoutManualPauseDate"), v8 = objc_claimAutoreleasedReturnValue(), -[SMSessionWorkoutMonitor sessionConfiguration](self, "sessionConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), [v9 sessionStartDate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isBeforeDate:", v10), v10, v9, v8, v7, v11))
+    latestWorkoutManualPauseDate = [(SMSessionWorkoutMonitor *)self latestWorkoutManualPauseDate];
+    if (!latestWorkoutManualPauseDate || (v7 = latestWorkoutManualPauseDate, -[SMSessionWorkoutMonitor latestWorkoutManualPauseDate](self, "latestWorkoutManualPauseDate"), v8 = objc_claimAutoreleasedReturnValue(), -[SMSessionWorkoutMonitor sessionConfiguration](self, "sessionConfiguration"), v9 = objc_claimAutoreleasedReturnValue(), [v9 sessionStartDate], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isBeforeDate:", v10), v10, v9, v8, v7, v11))
     {
-      v12 = [(SMSessionWorkoutMonitor *)self defaultsManager];
-      v13 = [MEMORY[0x277CBEAA8] date];
-      [v12 setObject:v13 forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
+      defaultsManager2 = [(SMSessionWorkoutMonitor *)self defaultsManager];
+      date = [MEMORY[0x277CBEAA8] date];
+      [defaultsManager2 setObject:date forKey:@"SMDefaultsSessionWorkoutMonitorLatestWorkoutManualPauseDate"];
 
       [(SMSessionWorkoutMonitor *)self _initializeTimerWithIdentifier:@"com.apple.routined.SMSessionWorkoutMonitor.workoutManualPauseTimerIdentifier" fireAfterDelay:self->_workoutManualPauseTimeout];
     }
@@ -712,29 +712,29 @@ LABEL_44:
   [(SMSessionWorkoutMonitor *)self _tearDownTimerWithIdentifier:@"com.apple.routined.SMSessionWorkoutMonitor.workoutAutoPauseTimerIdentifier"];
 }
 
-- (void)modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMSessionWorkoutMonitor *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__SMSessionWorkoutMonitor_modifyMonitoringWithConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_modifyMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)_modifyMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 sessionType] != 4)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ([configurationCopy sessionType] != 4)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -755,20 +755,20 @@ LABEL_44:
       *buf = 136315395;
       v24 = "[SMSessionWorkoutMonitor _modifyMonitoringWithConfiguration:handler:]";
       v25 = 2117;
-      v26 = v6;
+      v26 = configurationCopy;
       _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%s, configuration, %{sensitive}@", buf, 0x16u);
     }
   }
 
-  v10 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
-  v11 = [v10 isEqual:v6];
+  sessionConfiguration = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+  v11 = [sessionConfiguration isEqual:configurationCopy];
 
   if (!v11)
   {
-    v13 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
-    v14 = [v13 sessionID];
-    v15 = [v6 sessionID];
-    v16 = [v14 isEqual:v15];
+    sessionConfiguration2 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+    sessionID = [sessionConfiguration2 sessionID];
+    sessionID2 = [configurationCopy sessionID];
+    v16 = [sessionID isEqual:sessionID2];
 
     if (v16)
     {
@@ -776,10 +776,10 @@ LABEL_44:
       v21[1] = 3221225472;
       v21[2] = __70__SMSessionWorkoutMonitor__modifyMonitoringWithConfiguration_handler___block_invoke;
       v21[3] = &unk_2788C48C0;
-      v17 = v7;
+      v17 = handlerCopy;
       v22 = v17;
       [(SMSessionWorkoutMonitor *)self _stopMonitoringWithHandler:v21];
-      [(SMSessionWorkoutMonitor *)self _startMonitoringWithConfiguration:v6 handler:v17];
+      [(SMSessionWorkoutMonitor *)self _startMonitoringWithConfiguration:configurationCopy handler:v17];
       v12 = v22;
     }
 
@@ -793,15 +793,15 @@ LABEL_44:
       v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v18 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
-        v19 = [v18 sessionID];
-        v20 = [v6 sessionID];
+        sessionConfiguration3 = [(SMSessionWorkoutMonitor *)self sessionConfiguration];
+        sessionID3 = [sessionConfiguration3 sessionID];
+        sessionID4 = [configurationCopy sessionID];
         *buf = 136315650;
         v24 = "[SMSessionWorkoutMonitor _modifyMonitoringWithConfiguration:handler:]";
         v25 = 2112;
-        v26 = v19;
+        v26 = sessionID3;
         v27 = 2112;
-        v28 = v20;
+        v28 = sessionID4;
         _os_log_impl(&dword_2304B3000, v12, OS_LOG_TYPE_INFO, "%s, Configuration modified for wrong session, current config sessionID, %@, modified config sessionID, %@", buf, 0x20u);
       }
     }
@@ -884,13 +884,13 @@ void __70__SMSessionWorkoutMonitor__modifyMonitoringWithConfiguration_handler___
   xpc_set_event();
 }
 
-- (void)initializeTimersOnStartMonitoring:(id)a3
+- (void)initializeTimersOnStartMonitoring:(id)monitoring
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SMSessionWorkoutMonitor *)self queue];
+  monitoringCopy = monitoring;
+  queue = [(SMSessionWorkoutMonitor *)self queue];
 
-  if (!v6)
+  if (!queue)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -904,7 +904,7 @@ void __70__SMSessionWorkoutMonitor__modifyMonitoringWithConfiguration_handler___
   }
 
   objc_initWeak(location, self);
-  v8 = [(SMSessionWorkoutMonitor *)self healthKitManager];
+  healthKitManager = [(SMSessionWorkoutMonitor *)self healthKitManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SMSessionWorkoutMonitor_initializeTimersOnStartMonitoring___block_invoke;
@@ -912,9 +912,9 @@ void __70__SMSessionWorkoutMonitor__modifyMonitoringWithConfiguration_handler___
   objc_copyWeak(v12, location);
   v12[1] = a2;
   v10[4] = self;
-  v9 = v5;
+  v9 = monitoringCopy;
   v11 = v9;
-  [v8 fetchCurrentCMWorkoutSnapshotWithHandler:v10];
+  [healthKitManager fetchCurrentCMWorkoutSnapshotWithHandler:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(location);
@@ -1199,18 +1199,18 @@ LABEL_41:
 LABEL_48:
 }
 
-- (void)onHealthKitNotification:(id)a3
+- (void)onHealthKitNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMSessionWorkoutMonitor *)self queue];
+  notificationCopy = notification;
+  queue = [(SMSessionWorkoutMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SMSessionWorkoutMonitor_onHealthKitNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
 void __51__SMSessionWorkoutMonitor_onHealthKitNotification___block_invoke(uint64_t a1)
@@ -1395,16 +1395,16 @@ void __51__SMSessionWorkoutMonitor_onHealthKitNotification___block_invoke_3(uint
   [v4 setObject:*(*(a1 + 32) + 168) forKey:@"SMDefaultsSessionWorkoutMonitorOutdoorPedAutoPauseDistance"];
 }
 
-- (void)onNoMovementMonitorNotification:(id)a3
+- (void)onNoMovementMonitorNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __59__SMSessionWorkoutMonitor_onNoMovementMonitorNotification___block_invoke;
   v11 = &unk_2788C4A70;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   v6 = _Block_copy(&v8);
   v7 = [(SMSessionWorkoutMonitor *)self queue:v8];
   dispatch_async(v7, v6);
@@ -1443,17 +1443,17 @@ void __59__SMSessionWorkoutMonitor_onNoMovementMonitorNotification___block_invok
   }
 }
 
-- (void)checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler:(id)a3
+- (void)checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMSessionWorkoutMonitor *)self healthKitManager];
+  handlerCopy = handler;
+  healthKitManager = [(SMSessionWorkoutMonitor *)self healthKitManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__SMSessionWorkoutMonitor_checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler___block_invoke;
   v7[3] = &unk_2788CBE80;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentWorkoutSnapshotWithHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [healthKitManager fetchCurrentWorkoutSnapshotWithHandler:v7];
 }
 
 void __79__SMSessionWorkoutMonitor_checkIfCurrentWorkoutIsOutdoorPedestrianWithHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1485,19 +1485,19 @@ void __79__SMSessionWorkoutMonitor_checkIfCurrentWorkoutIsOutdoorPedestrianWithH
   }
 }
 
-- (void)takeOdometerDistanceSampleWithHandler:(id)a3
+- (void)takeOdometerDistanceSampleWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(SMSessionWorkoutMonitor *)self cmOdometer];
+  cmOdometer = [(SMSessionWorkoutMonitor *)self cmOdometer];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__SMSessionWorkoutMonitor_takeOdometerDistanceSampleWithHandler___block_invoke;
   v7[3] = &unk_2788CF4C0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
-  [v5 startOdometerUpdatesForActivity:2 withHandler:v7];
+  [cmOdometer startOdometerUpdatesForActivity:2 withHandler:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1552,33 +1552,33 @@ void __65__SMSessionWorkoutMonitor_takeOdometerDistanceSampleWithHandler___block
   [v13 stopOdometerUpdates];
 }
 
-- (BOOL)_shouldPromptNoMovementTrigger:(id)a3
+- (BOOL)_shouldPromptNoMovementTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = !-[SMSessionWorkoutMonitor isWorkoutPaused](self, "isWorkoutPaused") && [v4 state] == 2;
+  triggerCopy = trigger;
+  v5 = !-[SMSessionWorkoutMonitor isWorkoutPaused](self, "isWorkoutPaused") && [triggerCopy state] == 2;
 
   return v5;
 }
 
-+ (unint64_t)convertNoMovementDetectionTypeToTriggerCategory:(int64_t)a3
++ (unint64_t)convertNoMovementDetectionTypeToTriggerCategory:(int64_t)category
 {
-  if (a3 > 3)
+  if (category > 3)
   {
     return -1;
   }
 
   else
   {
-    return qword_230B014D8[a3];
+    return qword_230B014D8[category];
   }
 }
 
-- (void)_initializeTimerWithIdentifier:(id)a3 fireAfterDelay:(double)a4
+- (void)_initializeTimerWithIdentifier:(id)identifier fireAfterDelay:(double)delay
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-  v8 = [v7 objectForKey:v6];
+  identifierCopy = identifier;
+  timerIdentifierToTimers = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+  v8 = [timerIdentifierToTimers objectForKey:identifierCopy];
 
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (v8)
@@ -1591,9 +1591,9 @@ void __65__SMSessionWorkoutMonitor_takeOdometerDistanceSampleWithHandler___block
         *buf = 136315650;
         v29 = "[SMSessionWorkoutMonitor _initializeTimerWithIdentifier:fireAfterDelay:]";
         v30 = 2112;
-        v31 = v6;
+        v31 = identifierCopy;
         v32 = 2048;
-        v33 = a4;
+        delayCopy2 = delay;
         _os_log_impl(&dword_2304B3000, v10, OS_LOG_TYPE_INFO, "%s, timerIdentifier already exists, skipping %@, delay, %.1f", buf, 0x20u);
       }
     }
@@ -1609,9 +1609,9 @@ void __65__SMSessionWorkoutMonitor_takeOdometerDistanceSampleWithHandler___block
         *buf = 136315650;
         v29 = "[SMSessionWorkoutMonitor _initializeTimerWithIdentifier:fireAfterDelay:]";
         v30 = 2112;
-        v31 = v6;
+        v31 = identifierCopy;
         v32 = 2048;
-        v33 = a4;
+        delayCopy2 = delay;
         _os_log_impl(&dword_2304B3000, v11, OS_LOG_TYPE_INFO, "%s, timerIdentifier, %@, delay, %.1f", buf, 0x20u);
       }
     }
@@ -1619,22 +1619,22 @@ void __65__SMSessionWorkoutMonitor_takeOdometerDistanceSampleWithHandler___block
     objc_initWeak(&location, self);
     v12 = +[SMDateUtility date];
     timerManager = self->_timerManager;
-    v14 = [(SMSessionWorkoutMonitor *)self queue];
+    queue = [(SMSessionWorkoutMonitor *)self queue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __73__SMSessionWorkoutMonitor__initializeTimerWithIdentifier_fireAfterDelay___block_invoke;
     v23[3] = &unk_2788CF4E8;
-    v15 = v6;
+    v15 = identifierCopy;
     v24 = v15;
     v16 = v12;
     v25 = v16;
     objc_copyWeak(&v26, &location);
-    v17 = [(RTTimerManager *)timerManager xpcTimerAlarmWithIdentifier:v15 queue:v14 handler:v23];
+    v17 = [(RTTimerManager *)timerManager xpcTimerAlarmWithIdentifier:v15 queue:queue handler:v23];
 
-    v18 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-    [v18 setObject:v17 forKey:v15];
+    timerIdentifierToTimers2 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+    [timerIdentifierToTimers2 setObject:v17 forKey:v15];
 
-    v19 = [v16 dateByAddingTimeInterval:a4];
+    v19 = [v16 dateByAddingTimeInterval:delay];
     v22 = 0;
     [v17 fireWithDate:v19 error:&v22];
     v20 = v22;
@@ -1682,10 +1682,10 @@ void __73__SMSessionWorkoutMonitor__initializeTimerWithIdentifier_fireAfterDelay
   [WeakRetained _onTimerExpiryForTimerIdentifier:*(a1 + 32)];
 }
 
-- (void)_onTimerExpiryForTimerIdentifier:(id)a3
+- (void)_onTimerExpiryForTimerIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1694,13 +1694,13 @@ void __73__SMSessionWorkoutMonitor__initializeTimerWithIdentifier_fireAfterDelay
       *buf = 136315394;
       v19 = "[SMSessionWorkoutMonitor _onTimerExpiryForTimerIdentifier:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, %@", buf, 0x16u);
     }
   }
 
-  v6 = [(SMSessionWorkoutMonitor *)self sessionMonitorDelegate];
-  if (v4 == @"com.apple.routined.SMSessionWorkoutMonitor.workoutEndReminderTimerIdentifier")
+  sessionMonitorDelegate = [(SMSessionWorkoutMonitor *)self sessionMonitorDelegate];
+  if (identifierCopy == @"com.apple.routined.SMSessionWorkoutMonitor.workoutEndReminderTimerIdentifier")
   {
     v11 = [SMTriggerNotification alloc];
     v12 = +[SMDateUtility date];
@@ -1710,11 +1710,11 @@ void __73__SMSessionWorkoutMonitor__initializeTimerWithIdentifier_fireAfterDelay
 LABEL_12:
     v9 = [(SMTriggerNotification *)v14 initWithTriggerCategory:v15 SOSState:1 triggerName:@"SMTriggerWorkout" date:v12 details:v13];
 
-    [v6 onTriggerNotification:v9];
+    [sessionMonitorDelegate onTriggerNotification:v9];
     goto LABEL_13;
   }
 
-  if (v4 == @"com.apple.routined.SMSessionWorkoutMonitor.workoutManualPauseTimerIdentifier")
+  if (identifierCopy == @"com.apple.routined.SMSessionWorkoutMonitor.workoutManualPauseTimerIdentifier")
   {
     v16 = [SMTriggerNotification alloc];
     v12 = +[SMDateUtility date];
@@ -1724,7 +1724,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v4 == @"com.apple.routined.SMSessionWorkoutMonitor.workoutAutoPauseTimerIdentifier")
+  if (identifierCopy == @"com.apple.routined.SMSessionWorkoutMonitor.workoutAutoPauseTimerIdentifier")
   {
     [(SMSessionWorkoutMonitor *)self _initializeTimerWithIdentifier:@"com.apple.routined.SMSessionWorkoutMonitorWorkoutAutoPauseFireTriggerTimerIdentifier" fireAfterDelay:10.0];
     v17[0] = MEMORY[0x277D85DD0];
@@ -1736,21 +1736,21 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (v4 == @"com.apple.routined.SMSessionWorkoutMonitorWorkoutAutoPauseFireTriggerTimerIdentifier")
+  if (identifierCopy == @"com.apple.routined.SMSessionWorkoutMonitorWorkoutAutoPauseFireTriggerTimerIdentifier")
   {
     v7 = [SMTriggerNotification alloc];
     v8 = +[SMDateUtility date];
     v9 = [(SMTriggerNotification *)v7 initWithTriggerCategory:25 SOSState:1 triggerName:@"SMTriggerWorkout" date:v8 details:MEMORY[0x277CBEC10]];
 
-    [v6 onTriggerNotification:v9];
-    v10 = [(SMSessionWorkoutMonitor *)self cmOdometer];
-    [v10 stopOdometerUpdates];
+    [sessionMonitorDelegate onTriggerNotification:v9];
+    cmOdometer = [(SMSessionWorkoutMonitor *)self cmOdometer];
+    [cmOdometer stopOdometerUpdates];
 
 LABEL_13:
   }
 
 LABEL_14:
-  [(SMSessionWorkoutMonitor *)self _tearDownTimerWithIdentifier:v4];
+  [(SMSessionWorkoutMonitor *)self _tearDownTimerWithIdentifier:identifierCopy];
 }
 
 uint64_t __60__SMSessionWorkoutMonitor__onTimerExpiryForTimerIdentifier___block_invoke(uint64_t result, int a2)
@@ -1818,10 +1818,10 @@ void __60__SMSessionWorkoutMonitor__onTimerExpiryForTimerIdentifier___block_invo
   }
 }
 
-- (void)_tearDownTimerWithIdentifier:(id)a3
+- (void)_tearDownTimerWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1830,22 +1830,22 @@ void __60__SMSessionWorkoutMonitor__onTimerExpiryForTimerIdentifier___block_invo
       v11 = 136315394;
       v12 = "[SMSessionWorkoutMonitor _tearDownTimerWithIdentifier:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = identifierCopy;
       _os_log_impl(&dword_2304B3000, v5, OS_LOG_TYPE_INFO, "%s, %@", &v11, 0x16u);
     }
   }
 
-  v6 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-  v7 = [v6 objectForKey:v4];
+  timerIdentifierToTimers = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+  v7 = [timerIdentifierToTimers objectForKey:identifierCopy];
 
   if (v7)
   {
-    v8 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-    v9 = [v8 objectForKey:v4];
+    timerIdentifierToTimers2 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+    v9 = [timerIdentifierToTimers2 objectForKey:identifierCopy];
     [v9 invalidate];
 
-    v10 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-    [v10 removeObjectForKey:v4];
+    timerIdentifierToTimers3 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+    [timerIdentifierToTimers3 removeObjectForKey:identifierCopy];
   }
 }
 
@@ -1867,10 +1867,10 @@ void __60__SMSessionWorkoutMonitor__onTimerExpiryForTimerIdentifier___block_invo
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-  v5 = [v4 allKeys];
+  timerIdentifierToTimers = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+  allKeys = [timerIdentifierToTimers allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1882,26 +1882,26 @@ void __60__SMSessionWorkoutMonitor__onTimerExpiryForTimerIdentifier___block_invo
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
-        v11 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        timerIdentifierToTimers2 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+        v12 = [timerIdentifierToTimers2 objectForKeyedSubscript:v10];
         [v12 invalidate];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v13 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
-  [v13 removeAllObjects];
+  timerIdentifierToTimers3 = [(SMSessionWorkoutMonitor *)self timerIdentifierToTimers];
+  [timerIdentifierToTimers3 removeAllObjects];
 
   [(SMSessionWorkoutMonitor *)self setTimerIdentifierToTimers:0];
 }

@@ -1,33 +1,33 @@
 @interface SLFetchAsynchronousLPMetadataActionResponse
-+ (id)responseWithMetadata:(id)a3;
-- (SLFetchAsynchronousLPMetadataActionResponse)initWithBSXPCCoder:(id)a3;
-- (SLFetchAsynchronousLPMetadataActionResponse)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)responseWithMetadata:(id)metadata;
+- (SLFetchAsynchronousLPMetadataActionResponse)initWithBSXPCCoder:(id)coder;
+- (SLFetchAsynchronousLPMetadataActionResponse)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLFetchAsynchronousLPMetadataActionResponse
 
-+ (id)responseWithMetadata:(id)a3
++ (id)responseWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [a1 response];
-  [v5 setMetadata:v4];
+  metadataCopy = metadata;
+  response = [self response];
+  [response setMetadata:metadataCopy];
 
-  return v5;
+  return response;
 }
 
-- (SLFetchAsynchronousLPMetadataActionResponse)initWithBSXPCCoder:(id)a3
+- (SLFetchAsynchronousLPMetadataActionResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SLFetchAsynchronousLPMetadataActionResponse;
-  v5 = [(SLShareableContentActionResponse *)&v11 initWithBSXPCCoder:v4];
+  v5 = [(SLShareableContentActionResponse *)&v11 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_metadata);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     metadata = v5->_metadata;
     v5->_metadata = v8;
   }
@@ -35,29 +35,29 @@
   return v5;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLFetchAsynchronousLPMetadataActionResponse *)self metadata];
+  coderCopy = coder;
+  metadata = [(SLFetchAsynchronousLPMetadataActionResponse *)self metadata];
   v6 = NSStringFromSelector(sel_metadata);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:metadata forKey:v6];
 
   v7.receiver = self;
   v7.super_class = SLFetchAsynchronousLPMetadataActionResponse;
-  [(SLShareableContentActionResponse *)&v7 encodeWithBSXPCCoder:v4];
+  [(SLShareableContentActionResponse *)&v7 encodeWithBSXPCCoder:coderCopy];
 }
 
-- (SLFetchAsynchronousLPMetadataActionResponse)initWithCoder:(id)a3
+- (SLFetchAsynchronousLPMetadataActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SLFetchAsynchronousLPMetadataActionResponse;
-  v5 = [(SLShareableContentActionResponse *)&v11 initWithCoder:v4];
+  v5 = [(SLShareableContentActionResponse *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_metadata);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     metadata = v5->_metadata;
     v5->_metadata = v8;
   }
@@ -65,16 +65,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SLFetchAsynchronousLPMetadataActionResponse *)self metadata];
+  coderCopy = coder;
+  metadata = [(SLFetchAsynchronousLPMetadataActionResponse *)self metadata];
   v6 = NSStringFromSelector(sel_metadata);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:metadata forKey:v6];
 
   v7.receiver = self;
   v7.super_class = SLFetchAsynchronousLPMetadataActionResponse;
-  [(SLShareableContentActionResponse *)&v7 encodeWithCoder:v4];
+  [(SLShareableContentActionResponse *)&v7 encodeWithCoder:coderCopy];
 }
 
 @end

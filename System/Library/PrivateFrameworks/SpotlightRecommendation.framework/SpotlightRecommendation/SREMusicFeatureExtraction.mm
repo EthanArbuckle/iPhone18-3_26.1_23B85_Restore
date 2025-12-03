@@ -1,7 +1,7 @@
 @interface SREMusicFeatureExtraction
-- (BOOL)_handleSongEvent:(id)a3 context:(id)a4 numMusic:(unint64_t)a5 outputSequence:(id)a6;
+- (BOOL)_handleSongEvent:(id)event context:(id)context numMusic:(unint64_t)music outputSequence:(id)sequence;
 - (SREMusicFeatureExtraction)init;
-- (id)retrieveNowPlayingHistoryWithLength:(unint64_t)a3 error:(id *)a4;
+- (id)retrieveNowPlayingHistoryWithLength:(unint64_t)length error:(id *)error;
 @end
 
 @implementation SREMusicFeatureExtraction
@@ -13,9 +13,9 @@
   return [(SREMusicFeatureExtraction *)&v3 init];
 }
 
-- (id)retrieveNowPlayingHistoryWithLength:(unint64_t)a3 error:(id *)a4
+- (id)retrieveNowPlayingHistoryWithLength:(unint64_t)length error:(id *)error
 {
-  v7 = [objc_alloc(MEMORY[0x277D1F408]) initAndReturnError:a4];
+  v7 = [objc_alloc(MEMORY[0x277D1F408]) initAndReturnError:error];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCA970]);
@@ -28,7 +28,7 @@
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy_;
     v25 = __Block_byref_object_dispose_;
-    v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:length];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
@@ -36,10 +36,10 @@
     v16[3] = &unk_279D04270;
     objc_copyWeak(v19, &location);
     v12 = v7;
-    v19[1] = a3;
+    v19[1] = length;
     v17 = v12;
     v18 = &v21;
-    if ([v12 enumerateSongEventsThatOverlapWithDateInterval:v11 ascending:0 error:a4 usingBlock:v16])
+    if ([v12 enumerateSongEventsThatOverlapWithDateInterval:v11 ascending:0 error:error usingBlock:v16])
     {
       v13 = v22[5];
     }
@@ -49,7 +49,7 @@
       v14 = logForCSLogCategoryRecs();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        [SREMusicFeatureExtraction retrieveNowPlayingHistoryWithLength:a4 error:v14];
+        [SREMusicFeatureExtraction retrieveNowPlayingHistoryWithLength:error error:v14];
       }
 
       v13 = 0;
@@ -65,7 +65,7 @@
     v11 = logForCSLogCategoryRecs();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SREMusicFeatureExtraction retrieveNowPlayingHistoryWithLength:a4 error:v11];
+      [SREMusicFeatureExtraction retrieveNowPlayingHistoryWithLength:error error:v11];
     }
 
     v13 = 0;
@@ -83,49 +83,49 @@ void __71__SREMusicFeatureExtraction_retrieveNowPlayingHistoryWithLength_error__
   *a3 = a1 ^ 1;
 }
 
-- (BOOL)_handleSongEvent:(id)a3 context:(id)a4 numMusic:(unint64_t)a5 outputSequence:(id)a6
+- (BOOL)_handleSongEvent:(id)event context:(id)context numMusic:(unint64_t)music outputSequence:(id)sequence
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if ([v11 count] >= a5)
+  eventCopy = event;
+  contextCopy = context;
+  sequenceCopy = sequence;
+  if ([sequenceCopy count] >= music)
   {
     v25 = 0;
   }
 
   else
   {
-    v12 = [v9 playbackState];
-    v13 = [v12 isEqualToString:@"Playing"];
+    playbackState = [eventCopy playbackState];
+    v13 = [playbackState isEqualToString:@"Playing"];
 
     if (v13)
     {
-      v14 = [v9 song];
-      v15 = [v14 songId];
-      v16 = [v15 graphSongFromContext:v10 error:0];
+      song = [eventCopy song];
+      songId = [song songId];
+      v16 = [songId graphSongFromContext:contextCopy error:0];
 
       if (v16)
       {
         v17 = logForCSLogCategoryRecs();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v16 name];
-          v19 = [v9 date];
-          v20 = [v19 startDate];
-          v21 = [v16 songAdamId];
+          name = [v16 name];
+          date = [eventCopy date];
+          startDate = [date startDate];
+          songAdamId = [v16 songAdamId];
           v29 = 138412802;
-          v30 = v18;
+          v30 = name;
           v31 = 2112;
-          v32 = v20;
+          v32 = startDate;
           v33 = 2112;
-          v34 = v21;
+          v34 = songAdamId;
           _os_log_impl(&dword_26B806000, v17, OS_LOG_TYPE_DEFAULT, "Now playing sequence: Song name: %@ Song event start date: %@ Adam ID: %@", &v29, 0x20u);
         }
 
         v22 = objc_alloc_init(SREMusicMetadata);
-        v23 = [v16 songAdamId];
-        -[SREMusicMetadata setAdamID:](v22, "setAdamID:", [v23 integerValue]);
+        songAdamId2 = [v16 songAdamId];
+        -[SREMusicMetadata setAdamID:](v22, "setAdamID:", [songAdamId2 integerValue]);
 
         if ([(SREMusicMetadata *)v22 adamID]<= 0)
         {
@@ -140,11 +140,11 @@ void __71__SREMusicFeatureExtraction_retrieveNowPlayingHistoryWithLength_error__
 
         else
         {
-          v24 = [v16 genre];
-          [(SREMusicMetadata *)v22 setGenreID:v24];
+          genre = [v16 genre];
+          [(SREMusicMetadata *)v22 setGenreID:genre];
 
-          [v11 addObject:v22];
-          v25 = [v11 count] < a5;
+          [sequenceCopy addObject:v22];
+          v25 = [sequenceCopy count] < music;
         }
       }
 

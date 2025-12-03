@@ -1,23 +1,23 @@
 @interface SFCompanionAdvertiser
 - (NSData)serviceEndpointData;
-- (SFCompanionAdvertiser)initWithServiceType:(id)a3;
+- (SFCompanionAdvertiser)initWithServiceType:(id)type;
 - (void)dealloc;
-- (void)getContinuationStreamsWithEndpointData:(id)a3 completionHandler:(id)a4;
+- (void)getContinuationStreamsWithEndpointData:(id)data completionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SFCompanionAdvertiser
 
-- (SFCompanionAdvertiser)initWithServiceType:(id)a3
+- (SFCompanionAdvertiser)initWithServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v10.receiver = self;
   v10.super_class = SFCompanionAdvertiser;
   v5 = [(SFCompanionAdvertiser *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     serviceType = v5->_serviceType;
     v5->_serviceType = v6;
 
@@ -43,18 +43,18 @@
   return v4;
 }
 
-- (void)getContinuationStreamsWithEndpointData:(id)a3 completionHandler:(id)a4
+- (void)getContinuationStreamsWithEndpointData:(id)data completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
   v7 = +[SFCompanionManager serviceManager];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __82__SFCompanionAdvertiser_getContinuationStreamsWithEndpointData_completionHandler___block_invoke;
   v9[3] = &unk_1E788C960;
-  v10 = v5;
-  v8 = v5;
-  [v7 getStreamsForData:v6 withStreamHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [v7 getStreamsForData:dataCopy withStreamHandler:v9];
 }
 
 uint64_t __82__SFCompanionAdvertiser_getContinuationStreamsWithEndpointData_completionHandler___block_invoke(uint64_t a1)
@@ -77,15 +77,15 @@ uint64_t __82__SFCompanionAdvertiser_getContinuationStreamsWithEndpointData_comp
     v7[2] = 0x3032000000;
     v7[3] = __Block_byref_object_copy__1;
     v7[4] = __Block_byref_object_dispose__1;
-    v3 = self;
-    v8 = v3;
+    selfCopy = self;
+    v8 = selfCopy;
     v4 = +[SFCompanionManager serviceManager];
-    serviceType = v3->_serviceType;
+    serviceType = selfCopy->_serviceType;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __30__SFCompanionAdvertiser_start__block_invoke;
     v6[3] = &unk_1E788C988;
-    v6[4] = v3;
+    v6[4] = selfCopy;
     v6[5] = v7;
     [v4 supportStreamsWithIdentifier:serviceType withStreamHandler:v6];
 

@@ -1,17 +1,17 @@
 @interface PXPhotosDetailsPeopleWidgetViewModel
-+ (BOOL)hasContentAvailableFor:(id)a3;
++ (BOOL)hasContentAvailableFor:(id)for;
 @end
 
 @implementation PXPhotosDetailsPeopleWidgetViewModel
 
-+ (BOOL)hasContentAvailableFor:(id)a3
++ (BOOL)hasContentAvailableFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 people];
-  if (v4)
+  forCopy = for;
+  people = [forCopy people];
+  if (people)
   {
-    v5 = v4;
-    v6 = [v4 count];
+    v5 = people;
+    v6 = [people count];
 
     return v6 > 0;
   }

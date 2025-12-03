@@ -7,77 +7,77 @@
 
 - (BOOL)useVerticalLayout
 {
-  v3 = [(HUTitleValueCell *)self labelsStackView];
-  [v3 setAxis:0];
+  labelsStackView = [(HUTitleValueCell *)self labelsStackView];
+  [labelsStackView setAxis:0];
 
-  v4 = [(HUTitleValueCell *)self labelsStackView];
-  [v4 setAlignment:2];
+  labelsStackView2 = [(HUTitleValueCell *)self labelsStackView];
+  [labelsStackView2 setAlignment:2];
 
-  v5 = [(HUTitleValueCell *)self labelsStackView];
-  [v5 setDistribution:3];
+  labelsStackView3 = [(HUTitleValueCell *)self labelsStackView];
+  [labelsStackView3 setDistribution:3];
 
-  v6 = [(HUTitleValueCell *)self titleLabel];
-  [v6 setNumberOfLines:1];
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel setNumberOfLines:1];
 
-  v7 = [(HUTitleValueCell *)self valueLabel];
-  [v7 setNumberOfLines:1];
+  valueLabel = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel setNumberOfLines:1];
 
   v8 = 2 * ([(HUDynamicAlignmentTitleValueCell *)self effectiveUserInterfaceLayoutDirection]== 0);
-  v9 = [(HUTitleValueCell *)self valueLabel];
-  [v9 setTextAlignment:v8];
+  valueLabel2 = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel2 setTextAlignment:v8];
 
-  v10 = [(HUTitleValueCell *)self titleLabel];
-  v11 = [v10 text];
+  titleLabel2 = [(HUTitleValueCell *)self titleLabel];
+  text = [titleLabel2 text];
 
-  v12 = [(HUTitleValueCell *)self valueLabel];
-  v13 = [v12 text];
+  valueLabel3 = [(HUTitleValueCell *)self valueLabel];
+  text2 = [valueLabel3 text];
 
-  v14 = [(HUDynamicAlignmentTitleValueCell *)self layoutOptions];
-  v15 = [v14 longestPossibleTitleText];
-  v16 = [(HUTitleValueCell *)self titleLabel];
-  [v16 setText:v15];
+  layoutOptions = [(HUDynamicAlignmentTitleValueCell *)self layoutOptions];
+  longestPossibleTitleText = [layoutOptions longestPossibleTitleText];
+  titleLabel3 = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel3 setText:longestPossibleTitleText];
 
-  v17 = [(HUDynamicAlignmentTitleValueCell *)self layoutOptions];
-  v18 = [v17 longestPossibleValueText];
-  v19 = [(HUTitleValueCell *)self valueLabel];
-  [v19 setText:v18];
+  layoutOptions2 = [(HUDynamicAlignmentTitleValueCell *)self layoutOptions];
+  longestPossibleValueText = [layoutOptions2 longestPossibleValueText];
+  valueLabel4 = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel4 setText:longestPossibleValueText];
 
-  v20 = [(HUTitleValueCell *)self labelsStackView];
-  [v20 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  labelsStackView4 = [(HUTitleValueCell *)self labelsStackView];
+  [labelsStackView4 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v22 = v21;
 
-  v23 = [(HUDynamicAlignmentTitleValueCell *)self contentView];
-  v24 = [v23 readableContentGuide];
-  [v24 layoutFrame];
+  contentView = [(HUDynamicAlignmentTitleValueCell *)self contentView];
+  readableContentGuide = [contentView readableContentGuide];
+  [readableContentGuide layoutFrame];
   Width = CGRectGetWidth(v29);
 
-  v26 = [(HUTitleValueCell *)self titleLabel];
-  [v26 setText:v11];
+  titleLabel4 = [(HUTitleValueCell *)self titleLabel];
+  [titleLabel4 setText:text];
 
-  v27 = [(HUTitleValueCell *)self valueLabel];
-  [v27 setText:v13];
+  valueLabel5 = [(HUTitleValueCell *)self valueLabel];
+  [valueLabel5 setText:text2];
 
   return v22 > Width;
 }
 
 - (void)_ensureCorrectHeaderViewOrientation
 {
-  v5 = [(HUTitleValueCell *)self titleLabel];
-  if (v5)
+  titleLabel = [(HUTitleValueCell *)self titleLabel];
+  if (titleLabel)
   {
-    v6 = v5;
-    v7 = [(HUTitleValueCell *)self valueLabel];
+    v6 = titleLabel;
+    valueLabel = [(HUTitleValueCell *)self valueLabel];
 
-    if (v7)
+    if (valueLabel)
     {
-      v8 = [(HUTitleValueCell *)self titleLabel];
-      v9 = [v8 text];
-      v10 = [v9 length];
+      titleLabel2 = [(HUTitleValueCell *)self titleLabel];
+      text = [titleLabel2 text];
+      v10 = [text length];
       if (v10)
       {
-        v2 = [(HUTitleValueCell *)self valueLabel];
-        v3 = [v2 text];
-        if ([v3 length])
+        valueLabel2 = [(HUTitleValueCell *)self valueLabel];
+        text2 = [valueLabel2 text];
+        if ([text2 length])
         {
           v11 = 16.0;
         }
@@ -93,59 +93,59 @@
         v11 = 0.0;
       }
 
-      v12 = [(HUTitleValueCell *)self labelsStackView];
-      [v12 setSpacing:v11];
+      labelsStackView = [(HUTitleValueCell *)self labelsStackView];
+      [labelsStackView setSpacing:v11];
 
       if (v10)
       {
       }
 
-      v13 = [(HUDynamicAlignmentTitleValueCell *)self useVerticalLayout];
-      v14 = [(HUTitleValueCell *)self labelsStackView];
-      v15 = v14;
-      if (v13)
+      useVerticalLayout = [(HUDynamicAlignmentTitleValueCell *)self useVerticalLayout];
+      labelsStackView2 = [(HUTitleValueCell *)self labelsStackView];
+      v15 = labelsStackView2;
+      if (useVerticalLayout)
       {
-        [v14 setSpacing:0.0];
+        [labelsStackView2 setSpacing:0.0];
 
-        v16 = [(HUTitleValueCell *)self labelsStackView];
-        [v16 setAxis:1];
+        labelsStackView3 = [(HUTitleValueCell *)self labelsStackView];
+        [labelsStackView3 setAxis:1];
 
-        v17 = [(HUTitleValueCell *)self labelsStackView];
-        [v17 setAlignment:0];
+        labelsStackView4 = [(HUTitleValueCell *)self labelsStackView];
+        [labelsStackView4 setAlignment:0];
 
-        v18 = [(HUTitleValueCell *)self labelsStackView];
-        [v18 setDistribution:0];
+        labelsStackView5 = [(HUTitleValueCell *)self labelsStackView];
+        [labelsStackView5 setDistribution:0];
 
-        v19 = [(HUTitleValueCell *)self titleLabel];
-        [v19 setNumberOfLines:0];
+        titleLabel3 = [(HUTitleValueCell *)self titleLabel];
+        [titleLabel3 setNumberOfLines:0];
 
-        v20 = [(HUTitleValueCell *)self valueLabel];
-        [v20 setNumberOfLines:0];
+        valueLabel3 = [(HUTitleValueCell *)self valueLabel];
+        [valueLabel3 setNumberOfLines:0];
 
         v21 = 4;
       }
 
       else
       {
-        [v14 setAxis:0];
+        [labelsStackView2 setAxis:0];
 
-        v22 = [(HUTitleValueCell *)self labelsStackView];
-        [v22 setAlignment:2];
+        labelsStackView6 = [(HUTitleValueCell *)self labelsStackView];
+        [labelsStackView6 setAlignment:2];
 
-        v23 = [(HUTitleValueCell *)self labelsStackView];
-        [v23 setDistribution:3];
+        labelsStackView7 = [(HUTitleValueCell *)self labelsStackView];
+        [labelsStackView7 setDistribution:3];
 
-        v24 = [(HUTitleValueCell *)self titleLabel];
-        [v24 setNumberOfLines:1];
+        titleLabel4 = [(HUTitleValueCell *)self titleLabel];
+        [titleLabel4 setNumberOfLines:1];
 
-        v25 = [(HUTitleValueCell *)self valueLabel];
-        [v25 setNumberOfLines:1];
+        valueLabel4 = [(HUTitleValueCell *)self valueLabel];
+        [valueLabel4 setNumberOfLines:1];
 
         v21 = 2 * ([(HUDynamicAlignmentTitleValueCell *)self effectiveUserInterfaceLayoutDirection]== 0);
       }
 
-      v26 = [(HUTitleValueCell *)self valueLabel];
-      [v26 setTextAlignment:v21];
+      valueLabel5 = [(HUTitleValueCell *)self valueLabel];
+      [valueLabel5 setTextAlignment:v21];
     }
   }
 }

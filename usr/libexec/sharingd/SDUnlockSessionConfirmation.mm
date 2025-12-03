@@ -1,23 +1,23 @@
 @interface SDUnlockSessionConfirmation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasSupportsACK:(BOOL)a3;
-- (void)setHasSuppressNotification:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasSupportsACK:(BOOL)k;
+- (void)setHasSuppressNotification:(BOOL)notification;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockSessionConfirmation
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportsACK:(BOOL)a3
+- (void)setHasSupportsACK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSuppressNotification:(BOOL)a3
+- (void)setHasSuppressNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     v3 = 16;
   }
@@ -80,8 +80,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockSessionConfirmation;
   v3 = [(SDUnlockSessionConfirmation *)&v7 description];
-  v4 = [(SDUnlockSessionConfirmation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockSessionConfirmation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -160,9 +160,9 @@ LABEL_7:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -228,14 +228,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_version;
-    *(v4 + 20) |= 2u;
+    toCopy[3] = self->_version;
+    *(toCopy + 20) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -254,8 +254,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_sessionID;
-  *(v4 + 20) |= 1u;
+  toCopy[2] = self->_sessionID;
+  *(toCopy + 20) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -269,8 +269,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(v4 + 16) = self->_success;
-  *(v4 + 20) |= 4u;
+  *(toCopy + 16) = self->_success;
+  *(toCopy + 20) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -284,21 +284,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 17) = self->_supportsACK;
-  *(v4 + 20) |= 8u;
+  *(toCopy + 17) = self->_supportsACK;
+  *(toCopy + 20) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_6:
-    *(v4 + 18) = self->_suppressNotification;
-    *(v4 + 20) |= 0x10u;
+    *(toCopy + 18) = self->_suppressNotification;
+    *(toCopy + 20) |= 0x10u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -365,108 +365,108 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 20) & 2) == 0 || self->_version != *(v4 + 3))
+    if ((*(equalCopy + 20) & 2) == 0 || self->_version != *(equalCopy + 3))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 20) & 2) != 0)
+  else if ((*(equalCopy + 20) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_sessionID != *(v4 + 2))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_sessionID != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 20) & 4) == 0)
+    if ((*(equalCopy + 20) & 4) == 0)
     {
       goto LABEL_34;
     }
 
-    v6 = *(v4 + 16);
+    v6 = *(equalCopy + 16);
     if (self->_success)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 20) & 4) != 0)
+  else if ((*(equalCopy + 20) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 20) & 8) == 0)
+    if ((*(equalCopy + 20) & 8) == 0)
     {
       goto LABEL_34;
     }
 
-    v7 = *(v4 + 17);
+    v7 = *(equalCopy + 17);
     if (self->_supportsACK)
     {
-      if ((*(v4 + 17) & 1) == 0)
+      if ((*(equalCopy + 17) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 17))
+    else if (*(equalCopy + 17))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 20) & 8) != 0)
+  else if ((*(equalCopy + 20) & 8) != 0)
   {
     goto LABEL_34;
   }
 
-  v5 = (*(v4 + 20) & 0x10) == 0;
+  v5 = (*(equalCopy + 20) & 0x10) == 0;
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 20) & 0x10) != 0)
+    if ((*(equalCopy + 20) & 0x10) != 0)
     {
       if (self->_suppressNotification)
       {
-        if (*(v4 + 18))
+        if (*(equalCopy + 18))
         {
           goto LABEL_36;
         }
       }
 
-      else if (!*(v4 + 18))
+      else if (!*(equalCopy + 18))
       {
 LABEL_36:
         v5 = 1;
@@ -551,15 +551,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 20);
+  fromCopy = from;
+  v5 = *(fromCopy + 20);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(v4 + 3);
+    self->_version = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 20);
+    v5 = *(fromCopy + 20);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -572,14 +572,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 20) & 1) == 0)
+  else if ((*(fromCopy + 20) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_sessionID = *(v4 + 2);
+  self->_sessionID = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -592,9 +592,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_success = *(v4 + 16);
+  self->_success = *(fromCopy + 16);
   *&self->_has |= 4u;
-  v5 = *(v4 + 20);
+  v5 = *(fromCopy + 20);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -607,12 +607,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_supportsACK = *(v4 + 17);
+  self->_supportsACK = *(fromCopy + 17);
   *&self->_has |= 8u;
-  if ((*(v4 + 20) & 0x10) != 0)
+  if ((*(fromCopy + 20) & 0x10) != 0)
   {
 LABEL_6:
-    self->_suppressNotification = *(v4 + 18);
+    self->_suppressNotification = *(fromCopy + 18);
     *&self->_has |= 0x10u;
   }
 

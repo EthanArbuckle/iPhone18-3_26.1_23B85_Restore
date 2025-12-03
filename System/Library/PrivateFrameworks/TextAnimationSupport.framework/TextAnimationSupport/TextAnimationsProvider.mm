@@ -1,9 +1,9 @@
 @interface TextAnimationsProvider
-+ (CGRect)drawStaticString:(id)a3 withAttributes:(id)a4 options:(unint64_t)a5 inRect:(CGRect)a6 withPadding:(double)a7 forceClipping:(BOOL)a8 cgContext:(CGContext *)a9 stringDrawingContext:(id)a10;
-+ (id)animationNamesForDomain:(id)a3;
++ (CGRect)drawStaticString:(id)string withAttributes:(id)attributes options:(unint64_t)options inRect:(CGRect)rect withPadding:(double)padding forceClipping:(BOOL)clipping cgContext:(CGContext *)context stringDrawingContext:(id)self0;
++ (id)animationNamesForDomain:(id)domain;
 + (id)animationRenderer;
-+ (id)animationWithName:(id)a3;
-+ (id)animationWithName:(id)a3 localeIdentifier:(id)a4;
++ (id)animationWithName:(id)name;
++ (id)animationWithName:(id)name localeIdentifier:(id)identifier;
 - (_TtC20TextAnimationSupport22TextAnimationsProvider)init;
 @end
 
@@ -16,7 +16,7 @@
   return v2;
 }
 
-+ (id)animationWithName:(id)a3
++ (id)animationWithName:(id)name
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = specialized static TextAnimationsProvider.textEffect(named:)(v3, v4);
@@ -24,7 +24,7 @@
   return v5;
 }
 
-+ (id)animationWithName:(id)a3 localeIdentifier:(id)a4
++ (id)animationWithName:(id)name localeIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = specialized static TextAnimationsProvider.textEffect(named:)(v4, v5);
@@ -32,9 +32,9 @@
   return v6;
 }
 
-+ (id)animationNamesForDomain:(id)a3
++ (id)animationNamesForDomain:(id)domain
 {
-  if (a3)
+  if (domain)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -44,19 +44,19 @@
   return v3.super.isa;
 }
 
-+ (CGRect)drawStaticString:(id)a3 withAttributes:(id)a4 options:(unint64_t)a5 inRect:(CGRect)a6 withPadding:(double)a7 forceClipping:(BOOL)a8 cgContext:(CGContext *)a9 stringDrawingContext:(id)a10
++ (CGRect)drawStaticString:(id)string withAttributes:(id)attributes options:(unint64_t)options inRect:(CGRect)rect withPadding:(double)padding forceClipping:(BOOL)clipping cgContext:(CGContext *)context stringDrawingContext:(id)self0
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   swift_unknownObjectRetain();
-  v18 = a10;
-  v19 = a4;
-  v20 = a9;
+  drawingContextCopy = drawingContext;
+  attributesCopy = attributes;
+  contextCopy = context;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  if (v19)
+  if (attributesCopy)
   {
     v21 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -66,7 +66,7 @@
     v21 = 0;
   }
 
-  specialized static TextAnimationsProvider.drawStatic(string:attributes:options:rect:padding:forceClipping:cgContext:stringDrawingContext:)(v34, v21, v20, v18, x, y, width, height, a7);
+  specialized static TextAnimationsProvider.drawStatic(string:attributes:options:rect:padding:forceClipping:cgContext:stringDrawingContext:)(v34, v21, contextCopy, drawingContextCopy, x, y, width, height, padding);
   v23 = v22;
   v25 = v24;
   v27 = v26;

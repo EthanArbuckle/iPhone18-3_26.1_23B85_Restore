@@ -1,7 +1,7 @@
 @interface CMState
 - (CMState)init;
-- (id)componentByName:(id)a3;
-- (void)copyFromCMStateWithoutComponents:(id)a3;
+- (id)componentByName:(id)name;
+- (void)copyFromCMStateWithoutComponents:(id)components;
 @end
 
 @implementation CMState
@@ -26,31 +26,31 @@
   return v2;
 }
 
-- (id)componentByName:(id)a3
+- (id)componentByName:(id)name
 {
-  v3 = [(NSMutableDictionary *)self->components objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->components objectForKey:name];
 
   return v3;
 }
 
-- (void)copyFromCMStateWithoutComponents:(id)a3
+- (void)copyFromCMStateWithoutComponents:(id)components
 {
-  v11 = a3;
-  v4 = [v11 getHtmlResource];
-  [(CMState *)self setHtmlResource:v4];
+  componentsCopy = components;
+  getHtmlResource = [componentsCopy getHtmlResource];
+  [(CMState *)self setHtmlResource:getHtmlResource];
 
-  v5 = [v11 resourceUrlPrefix];
+  resourceUrlPrefix = [componentsCopy resourceUrlPrefix];
   mResourceUrlPrefix = self->mResourceUrlPrefix;
-  self->mResourceUrlPrefix = v5;
+  self->mResourceUrlPrefix = resourceUrlPrefix;
 
-  self->mSourceFormat = [v11 sourceFormat];
-  v7 = [v11 colorScheme];
+  self->mSourceFormat = [componentsCopy sourceFormat];
+  colorScheme = [componentsCopy colorScheme];
   mColorScheme = self->mColorScheme;
-  self->mColorScheme = v7;
+  self->mColorScheme = colorScheme;
 
-  v9 = [v11 colorMap];
+  colorMap = [componentsCopy colorMap];
   mColorMap = self->mColorMap;
-  self->mColorMap = v9;
+  self->mColorMap = colorMap;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface EBProtection
-+ (XlDXfProtect)xlDXfProtectFromEDProtection:(id)a3;
-+ (id)edProtectionFromXlDXfProtect:(XlDXfProtect *)a3;
-+ (id)edProtectionFromXlGraphicsInfo:(void *)a3;
-+ (id)edProtectionFromXlXf:(XlXf *)a3;
-+ (void)writeProtection:(id)a3 toXlGraphicsInfo:(void *)a4;
-+ (void)writeProtection:(id)a3 toXlXf:(XlXf *)a4;
++ (XlDXfProtect)xlDXfProtectFromEDProtection:(id)protection;
++ (id)edProtectionFromXlDXfProtect:(XlDXfProtect *)protect;
++ (id)edProtectionFromXlGraphicsInfo:(void *)info;
++ (id)edProtectionFromXlXf:(XlXf *)xf;
++ (void)writeProtection:(id)protection toXlGraphicsInfo:(void *)info;
++ (void)writeProtection:(id)protection toXlXf:(XlXf *)xf;
 @end
 
 @implementation EBProtection
 
-+ (id)edProtectionFromXlXf:(XlXf *)a3
++ (id)edProtectionFromXlXf:(XlXf *)xf
 {
-  if (a3)
+  if (xf)
   {
-    v4 = [EDProtection protectionWithHidden:a3->var25 locked:a3->var24];
+    v4 = [EDProtection protectionWithHidden:xf->var25 locked:xf->var24];
   }
 
   else
@@ -24,11 +24,11 @@
   return v4;
 }
 
-+ (id)edProtectionFromXlDXfProtect:(XlDXfProtect *)a3
++ (id)edProtectionFromXlDXfProtect:(XlDXfProtect *)protect
 {
-  if (a3)
+  if (protect)
   {
-    v4 = [EDProtection protectionWithHidden:a3->var1 locked:a3->var0];
+    v4 = [EDProtection protectionWithHidden:protect->var1 locked:protect->var0];
   }
 
   else
@@ -39,11 +39,11 @@
   return v4;
 }
 
-+ (id)edProtectionFromXlGraphicsInfo:(void *)a3
++ (id)edProtectionFromXlGraphicsInfo:(void *)info
 {
-  if (a3)
+  if (info)
   {
-    v4 = [EDProtection protectionWithHidden:0 locked:*(a3 + 76)];
+    v4 = [EDProtection protectionWithHidden:0 locked:*(info + 76)];
   }
 
   else
@@ -54,36 +54,36 @@
   return v4;
 }
 
-+ (void)writeProtection:(id)a3 toXlXf:(XlXf *)a4
++ (void)writeProtection:(id)protection toXlXf:(XlXf *)xf
 {
-  v5 = a3;
-  if (a4)
+  protectionCopy = protection;
+  if (xf)
   {
-    a4->var37 = v5 != 0;
-    if (v5)
+    xf->var37 = protectionCopy != 0;
+    if (protectionCopy)
     {
-      v6 = v5;
-      a4->var25 = [v5 isHidden];
-      a4->var24 = [v6 isLocked];
-      v5 = v6;
+      v6 = protectionCopy;
+      xf->var25 = [protectionCopy isHidden];
+      xf->var24 = [v6 isLocked];
+      protectionCopy = v6;
     }
   }
 }
 
-+ (void)writeProtection:(id)a3 toXlGraphicsInfo:(void *)a4
++ (void)writeProtection:(id)protection toXlGraphicsInfo:(void *)info
 {
-  v5 = a3;
-  if (v5 && a4)
+  protectionCopy = protection;
+  if (protectionCopy && info)
   {
-    v6 = v5;
-    *(a4 + 76) = [v5 isLocked];
-    v5 = v6;
+    v6 = protectionCopy;
+    *(info + 76) = [protectionCopy isLocked];
+    protectionCopy = v6;
   }
 }
 
-+ (XlDXfProtect)xlDXfProtectFromEDProtection:(id)a3
++ (XlDXfProtect)xlDXfProtectFromEDProtection:(id)protection
 {
-  if (a3)
+  if (protection)
   {
     operator new();
   }

@@ -1,7 +1,7 @@
 @interface AVPublisher
 + (void)initialize;
 - (AVPublisher)init;
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4;
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -32,7 +32,7 @@
   [(AVPublisher *)&v2 dealloc];
 }
 
-- (id)subscribeRequestingInitialValue:(BOOL)a3 block:(id)a4
+- (id)subscribeRequestingInitialValue:(BOOL)value block:(id)block
 {
   v6 = objc_opt_class();
   AVRequestConcreteImplementation(self, a2, v6);

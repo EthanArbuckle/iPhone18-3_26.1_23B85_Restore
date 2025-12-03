@@ -1,13 +1,13 @@
 @interface WorkoutDeviceWatchScanner
-- (void)workoutDevicePairedWatchControllerDidUpdateStatus:(BOOL)a3;
+- (void)workoutDevicePairedWatchControllerDidUpdateStatus:(BOOL)status;
 @end
 
 @implementation WorkoutDeviceWatchScanner
 
-- (void)workoutDevicePairedWatchControllerDidUpdateStatus:(BOOL)a3
+- (void)workoutDevicePairedWatchControllerDidUpdateStatus:(BOOL)status
 {
-  v4 = self;
-  WorkoutDeviceWatchScanner.workoutDevicePairedWatchControllerDidUpdateStatus(_:)(a3);
+  selfCopy = self;
+  WorkoutDeviceWatchScanner.workoutDevicePairedWatchControllerDidUpdateStatus(_:)(status);
 }
 
 @end

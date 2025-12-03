@@ -1,11 +1,11 @@
 @interface AMSDFraudReportODIAssessmentProvider
-- (AMSDFraudReportODIAssessmentProvider)initWithError:(id *)a3;
-- (void)provideFeedbackWithOutcome:(unint64_t)a3;
+- (AMSDFraudReportODIAssessmentProvider)initWithError:(id *)error;
+- (void)provideFeedbackWithOutcome:(unint64_t)outcome;
 @end
 
 @implementation AMSDFraudReportODIAssessmentProvider
 
-- (AMSDFraudReportODIAssessmentProvider)initWithError:(id *)a3
+- (AMSDFraudReportODIAssessmentProvider)initWithError:(id *)error
 {
   v17.receiver = self;
   v17.super_class = AMSDFraudReportODIAssessmentProvider;
@@ -68,10 +68,10 @@
 
   if (!v4->_session)
   {
-    if (a3)
+    if (error)
     {
       AMSError();
-      *a3 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -89,9 +89,9 @@ LABEL_8:
   return v14;
 }
 
-- (void)provideFeedbackWithOutcome:(unint64_t)a3
+- (void)provideFeedbackWithOutcome:(unint64_t)outcome
 {
-  if (a3 >= 3)
+  if (outcome >= 3)
   {
     v6 = [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Unhandled outcome type" userInfo:0, v3, v4];
     objc_exception_throw(v6);

@@ -1,25 +1,25 @@
 @interface ATXAppDirectoryHierarchyNode
-+ (id)dynamicCategoriesForAppBundleIDs:(id)a3 screenTimeMappings:(id)a4 iTunesMappings:(id)a5;
-+ (id)initializeHierarchyForAppBundleIDs:(id)a3 screenTimeMappings:(id)a4 iTunesMappings:(id)a5;
-+ (id)lazyGetNodeForCategoryID:(id)a3 inDictionary:(id)a4;
-+ (unint64_t)effectiveCategoryIDForBundleID:(id)a3 withScreenTimeMappings:(id)a4 iTunesMappings:(id)a5;
-- (ATXAppDirectoryHierarchyNode)initWithCategoryID:(unint64_t)a3;
++ (id)dynamicCategoriesForAppBundleIDs:(id)ds screenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings;
++ (id)initializeHierarchyForAppBundleIDs:(id)ds screenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings;
++ (id)lazyGetNodeForCategoryID:(id)d inDictionary:(id)dictionary;
++ (unint64_t)effectiveCategoryIDForBundleID:(id)d withScreenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings;
+- (ATXAppDirectoryHierarchyNode)initWithCategoryID:(unint64_t)d;
 - (ATXAppDirectoryHierarchyNode)parent;
 - (BOOL)_isRoot;
 - (id)_allAppBundleIDs;
 - (id)_allNodes;
 - (id)_categoryDictionary;
 - (unint64_t)_enabledNodeCount;
-- (void)_addChild:(id)a3;
+- (void)_addChild:(id)child;
 - (void)_computeSize;
 - (void)_displayTree;
-- (void)_displayTreeWithCurrString:(id)a3;
-- (void)_preorderTraverseWithBlock:(id)a3;
+- (void)_displayTreeWithCurrString:(id)string;
+- (void)_preorderTraverseWithBlock:(id)block;
 @end
 
 @implementation ATXAppDirectoryHierarchyNode
 
-- (ATXAppDirectoryHierarchyNode)initWithCategoryID:(unint64_t)a3
+- (ATXAppDirectoryHierarchyNode)initWithCategoryID:(unint64_t)d
 {
   v11.receiver = self;
   v11.super_class = ATXAppDirectoryHierarchyNode;
@@ -38,7 +38,7 @@
     appBundleIDs = v5->_appBundleIDs;
     v5->_appBundleIDs = v8;
 
-    v5->_categoryID = a3;
+    v5->_categoryID = d;
   }
 
   return v5;
@@ -93,11 +93,11 @@
   return v3;
 }
 
-- (void)_addChild:(id)a3
+- (void)_addChild:(id)child
 {
-  v4 = a3;
-  [v4 setParent:self];
-  [(NSMutableArray *)self->_children addObject:v4];
+  childCopy = child;
+  [childCopy setParent:self];
+  [(NSMutableArray *)self->_children addObject:childCopy];
 }
 
 - (void)_displayTree
@@ -118,10 +118,10 @@
   }
 }
 
-- (void)_displayTreeWithCurrString:(id)a3
+- (void)_displayTreeWithCurrString:(id)string
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v5 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -141,7 +141,7 @@
     *buf = 138413314;
     v24 = v6;
     v25 = 2112;
-    v26 = v4;
+    v26 = stringCopy;
     v27 = 2112;
     v28 = v7;
     v29 = 2112;
@@ -172,8 +172,8 @@
         }
 
         v15 = *(*(&v18 + 1) + 8 * v14);
-        v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@--", v4];
-        [v15 _displayTreeWithCurrString:v16];
+        stringCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@--", stringCopy];
+        [v15 _displayTreeWithCurrString:stringCopy];
 
         ++v14;
       }
@@ -188,17 +188,17 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preorderTraverseWithBlock:(id)a3
+- (void)_preorderTraverseWithBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v4[2](v4, self);
+  blockCopy = block;
+  blockCopy[2](blockCopy, self);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(ATXAppDirectoryHierarchyNode *)self children];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  children = [(ATXAppDirectoryHierarchyNode *)self children];
+  v6 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -210,14 +210,14 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) _preorderTraverseWithBlock:v4];
+        [*(*(&v11 + 1) + 8 * v9++) _preorderTraverseWithBlock:blockCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [children countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -300,8 +300,8 @@ uint64_t __49__ATXAppDirectoryHierarchyNode__enabledNodeCount__block_invoke(uint
         v9 = *(*(&v13 + 1) + 8 * i);
         if (([v9 enabled] & 1) == 0)
         {
-          v10 = [v9 _allAppBundleIDs];
-          [v3 addObjectsFromArray:v10];
+          _allAppBundleIDs = [v9 _allAppBundleIDs];
+          [v3 addObjectsFromArray:_allAppBundleIDs];
         }
       }
 
@@ -362,29 +362,29 @@ void __51__ATXAppDirectoryHierarchyNode__categoryDictionary__block_invoke(uint64
   }
 }
 
-+ (id)lazyGetNodeForCategoryID:(id)a3 inDictionary:(id)a4
++ (id)lazyGetNodeForCategoryID:(id)d inDictionary:(id)dictionary
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:v5];
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:dCopy];
 
   if (!v7)
   {
-    v8 = -[ATXAppDirectoryHierarchyNode initWithCategoryID:]([ATXAppDirectoryHierarchyNode alloc], "initWithCategoryID:", [v5 unsignedIntegerValue]);
-    [v6 setObject:v8 forKeyedSubscript:v5];
+    v8 = -[ATXAppDirectoryHierarchyNode initWithCategoryID:]([ATXAppDirectoryHierarchyNode alloc], "initWithCategoryID:", [dCopy unsignedIntegerValue]);
+    [dictionaryCopy setObject:v8 forKeyedSubscript:dCopy];
   }
 
-  v9 = [v6 objectForKeyedSubscript:v5];
+  v9 = [dictionaryCopy objectForKeyedSubscript:dCopy];
 
   return v9;
 }
 
-+ (unint64_t)effectiveCategoryIDForBundleID:(id)a3 withScreenTimeMappings:(id)a4 iTunesMappings:(id)a5
++ (unint64_t)effectiveCategoryIDForBundleID:(id)d withScreenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKeyedSubscript:v7];
-  v10 = [v8 objectForKeyedSubscript:v7];
+  dCopy = d;
+  mappingsCopy = mappings;
+  v9 = [tunesMappings objectForKeyedSubscript:dCopy];
+  v10 = [mappingsCopy objectForKeyedSubscript:dCopy];
 
   if (v10)
   {
@@ -392,7 +392,7 @@ void __51__ATXAppDirectoryHierarchyNode__categoryDictionary__block_invoke(uint64
     {
       v11 = v10;
 LABEL_9:
-      v13 = [v11 unsignedIntegerValue];
+      unsignedIntegerValue = [v11 unsignedIntegerValue];
       goto LABEL_10;
     }
 
@@ -404,7 +404,7 @@ LABEL_8:
   v12 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [ATXAppDirectoryHierarchyNode effectiveCategoryIDForBundleID:v7 withScreenTimeMappings:v12 iTunesMappings:?];
+    [ATXAppDirectoryHierarchyNode effectiveCategoryIDForBundleID:dCopy withScreenTimeMappings:v12 iTunesMappings:?];
   }
 
   if (v9)
@@ -415,27 +415,27 @@ LABEL_8:
   v15 = __atxlog_handle_app_library();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    [ATXAppDirectoryHierarchyNode effectiveCategoryIDForBundleID:v7 withScreenTimeMappings:v15 iTunesMappings:?];
+    [ATXAppDirectoryHierarchyNode effectiveCategoryIDForBundleID:dCopy withScreenTimeMappings:v15 iTunesMappings:?];
   }
 
-  v13 = 1008;
+  unsignedIntegerValue = 1008;
 LABEL_10:
 
-  return v13;
+  return unsignedIntegerValue;
 }
 
-+ (id)initializeHierarchyForAppBundleIDs:(id)a3 screenTimeMappings:(id)a4 iTunesMappings:(id)a5
++ (id)initializeHierarchyForAppBundleIDs:(id)ds screenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  mappingsCopy = mappings;
+  tunesMappingsCopy = tunesMappings;
   v11 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v8;
+  obj = dsCopy;
   v12 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v12)
   {
@@ -451,9 +451,9 @@ LABEL_10:
         }
 
         v16 = *(*(&v33 + 1) + 8 * i);
-        v17 = [a1 effectiveCategoryIDForBundleID:v16 withScreenTimeMappings:v9 iTunesMappings:v10];
+        v17 = [self effectiveCategoryIDForBundleID:v16 withScreenTimeMappings:mappingsCopy iTunesMappings:tunesMappingsCopy];
         v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
-        v19 = [a1 lazyGetNodeForCategoryID:v18 inDictionary:v11];
+        v19 = [self lazyGetNodeForCategoryID:v18 inDictionary:v11];
 
         [v19 _addAppBundleID:v16];
       }
@@ -464,8 +464,8 @@ LABEL_10:
     while (v13);
   }
 
-  v20 = [v11 allKeys];
-  v21 = [v20 mutableCopy];
+  allKeys = [v11 allKeys];
+  v21 = [allKeys mutableCopy];
   while (1)
   {
 
@@ -474,20 +474,20 @@ LABEL_10:
       break;
     }
 
-    v20 = [v21 lastObject];
+    allKeys = [v21 lastObject];
     [v21 removeLastObject];
-    if ([v20 unsignedIntegerValue] != 1008)
+    if ([allKeys unsignedIntegerValue] != 1008)
     {
-      v22 = [v11 objectForKeyedSubscript:v20];
-      v23 = [v22 parent];
+      v22 = [v11 objectForKeyedSubscript:allKeys];
+      parent = [v22 parent];
 
-      if (!v23)
+      if (!parent)
       {
-        v24 = [MEMORY[0x277CEB350] parentCategoryForCategory:{objc_msgSend(v20, "integerValue")}];
+        v24 = [MEMORY[0x277CEB350] parentCategoryForCategory:{objc_msgSend(allKeys, "integerValue")}];
         v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
-        v26 = [a1 lazyGetNodeForCategoryID:v25 inDictionary:v11];
+        v26 = [self lazyGetNodeForCategoryID:v25 inDictionary:v11];
 
-        v27 = [v11 objectForKeyedSubscript:v20];
+        v27 = [v11 objectForKeyedSubscript:allKeys];
         [v26 _addChild:v27];
 
         v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
@@ -503,17 +503,17 @@ LABEL_10:
   return v29;
 }
 
-+ (id)dynamicCategoriesForAppBundleIDs:(id)a3 screenTimeMappings:(id)a4 iTunesMappings:(id)a5
++ (id)dynamicCategoriesForAppBundleIDs:(id)ds screenTimeMappings:(id)mappings iTunesMappings:(id)tunesMappings
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = [a1 initializeHierarchyForAppBundleIDs:a3 screenTimeMappings:a4 iTunesMappings:a5];
+  v5 = [self initializeHierarchyForAppBundleIDs:ds screenTimeMappings:mappings iTunesMappings:tunesMappings];
   [v5 setEnabled:1];
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v6 = [v5 children];
-  v7 = [v6 countByEnumeratingWithState:&v64 objects:v71 count:16];
+  children = [v5 children];
+  v7 = [children countByEnumeratingWithState:&v64 objects:v71 count:16];
   if (v7)
   {
     v8 = v7;
@@ -524,28 +524,28 @@ LABEL_10:
       {
         if (*v65 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         [*(*(&v64 + 1) + 8 * i) setEnabled:1];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v64 objects:v71 count:16];
+      v8 = [children countByEnumeratingWithState:&v64 objects:v71 count:16];
     }
 
     while (v8);
   }
 
-  v11 = [v5 _enabledNodeCount];
+  _enabledNodeCount = [v5 _enabledNodeCount];
   v12 = [v5 size];
-  if ((((__PAIR128__(v11, v12) - 1) >> 64) + 2) >= 0xE)
+  if ((((__PAIR128__(_enabledNodeCount, v12) - 1) >> 64) + 2) >= 0xE)
   {
     v13 = 14;
   }
 
   else
   {
-    v13 = ((__PAIR128__(v11, v12) - 1) >> 64) + 2;
+    v13 = ((__PAIR128__(_enabledNodeCount, v12) - 1) >> 64) + 2;
   }
 
   [v5 _computeSize];
@@ -569,8 +569,8 @@ LABEL_10:
       break;
     }
 
-    v15 = [v14 _allNodes];
-    v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_139];
+    _allNodes = [v14 _allNodes];
+    v16 = [_allNodes sortedArrayUsingComparator:&__block_literal_global_139];
 
     v60 = 0u;
     v61 = 0u;
@@ -614,8 +614,8 @@ LABEL_15:
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v22 = [v21 children];
-        v23 = [v22 countByEnumeratingWithState:&v54 objects:v69 count:16];
+        children2 = [v21 children];
+        v23 = [children2 countByEnumeratingWithState:&v54 objects:v69 count:16];
         if (v23)
         {
           v24 = v23;
@@ -627,14 +627,14 @@ LABEL_15:
             {
               if (*v55 != v26)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(children2);
               }
 
               v28 = [*(*(&v54 + 1) + 8 * j) size];
               v25 |= v28 == [v21 size];
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v54 objects:v69 count:16];
+            v24 = [children2 countByEnumeratingWithState:&v54 objects:v69 count:16];
           }
 
           while (v24);
@@ -648,15 +648,15 @@ LABEL_15:
           }
 
 LABEL_29:
-          v29 = [v21 children];
-          v30 = [v29 sortedArrayUsingComparator:&__block_literal_global_25_2];
+          children3 = [v21 children];
+          v30 = [children3 sortedArrayUsingComparator:&__block_literal_global_25_2];
 
           v52 = 0u;
           v53 = 0u;
           v50 = 0u;
           v51 = 0u;
-          v22 = v30;
-          v31 = [v22 countByEnumeratingWithState:&v50 objects:v68 count:16];
+          children2 = v30;
+          v31 = [children2 countByEnumeratingWithState:&v50 objects:v68 count:16];
           if (v31)
           {
             v32 = v31;
@@ -667,7 +667,7 @@ LABEL_29:
               {
                 if (*v51 != v33)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(children2);
                 }
 
                 v35 = *(*(&v50 + 1) + 8 * k);
@@ -691,7 +691,7 @@ LABEL_29:
                 }
               }
 
-              v32 = [v22 countByEnumeratingWithState:&v50 objects:v68 count:16];
+              v32 = [children2 countByEnumeratingWithState:&v50 objects:v68 count:16];
               if (v32)
               {
                 continue;
@@ -732,11 +732,11 @@ LABEL_49:
   [v39 _preorderTraverseWithBlock:v48];
   [v39 _computeSize];
   [v39 _displayTree];
-  v40 = [v39 _categoryDictionary];
+  _categoryDictionary = [v39 _categoryDictionary];
 
   v41 = *MEMORY[0x277D85DE8];
 
-  return v40;
+  return _categoryDictionary;
 }
 
 uint64_t __99__ATXAppDirectoryHierarchyNode_dynamicCategoriesForAppBundleIDs_screenTimeMappings_iTunesMappings___block_invoke(uint64_t a1, void *a2)

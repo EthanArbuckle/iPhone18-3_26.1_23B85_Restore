@@ -1,36 +1,36 @@
 @interface MSASPersonModelItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MSASPersonModelItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MSASPersonModelItem);
   [(MSASPersonModelItem *)v4 setErrorCount:[(MSASPersonModelItem *)self errorCount]];
-  v5 = [(MSASPersonModelItem *)self object];
-  [(MSASPersonModelItem *)v4 setObject:v5];
+  object = [(MSASPersonModelItem *)self object];
+  [(MSASPersonModelItem *)v4 setObject:object];
 
-  v6 = [(MSASPersonModelItem *)self album];
-  [(MSASPersonModelItem *)v4 setAlbum:v6];
+  album = [(MSASPersonModelItem *)self album];
+  [(MSASPersonModelItem *)v4 setAlbum:album];
 
-  v7 = [(MSASPersonModelItem *)self albumGUID];
-  [(MSASPersonModelItem *)v4 setAlbumGUID:v7];
+  albumGUID = [(MSASPersonModelItem *)self albumGUID];
+  [(MSASPersonModelItem *)v4 setAlbumGUID:albumGUID];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     object = self->_object;
-    v6 = [v4 object];
+    object = [equalCopy object];
 
-    v7 = [object isEqual:v6];
+    v7 = [object isEqual:object];
     return v7;
   }
 
@@ -38,7 +38,7 @@
   {
     v10.receiver = self;
     v10.super_class = MSASPersonModelItem;
-    v9 = [(MSASPersonModelItem *)&v10 isEqual:v4];
+    v9 = [(MSASPersonModelItem *)&v10 isEqual:equalCopy];
 
     return v9;
   }

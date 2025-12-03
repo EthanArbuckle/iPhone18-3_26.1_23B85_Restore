@@ -1,22 +1,22 @@
 @interface WFSearchTextField
 - (BOOL)_hasSearchText;
 - (BOOL)resignFirstResponder;
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4;
-- (CGRect)_calculateEditingRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_calculateTextRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5;
-- (CGRect)_frameForLeftViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4;
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5 willOverflow:(BOOL *)a6;
-- (CGRect)_frameForRightViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4;
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)leftViewRectForBounds:(CGRect)a3;
-- (CGRect)placeholderRectForBounds:(CGRect)a3;
-- (CGRect)rightViewRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (CGSize)_textFieldAccessorySizeFromBounds:(CGRect)a3;
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds;
+- (CGRect)_calculateEditingRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_calculateTextRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l;
+- (CGRect)_frameForLeftViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment;
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l willOverflow:(BOOL *)overflow;
+- (CGRect)_frameForRightViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)leftViewRectForBounds:(CGRect)bounds;
+- (CGRect)placeholderRectForBounds:(CGRect)bounds;
+- (CGRect)rightViewRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (CGSize)_textFieldAccessorySizeFromBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (WFSearchTextField)initWithStyle:(unint64_t)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (WFSearchTextField)initWithStyle:(unint64_t)style;
 - (WFSearchTextFieldDelegate)textFieldDelegate;
 - (double)_calculateHeightWithFont;
 - (double)_defaultTextFieldHeight;
@@ -27,18 +27,18 @@
 - (double)_textFieldVerticalMargin;
 - (id)_textFieldTextStyle;
 - (int64_t)_derivedTextAlignment;
-- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)a3;
-- (void)_didBeginEditing:(id)a3;
-- (void)_didEndEditing:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4;
+- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)editing;
+- (void)_didBeginEditing:(id)editing;
+- (void)_didEndEditing:(id)editing;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setAlignmentBehavior:(int64_t)a3 animated:(BOOL)a4;
-- (void)setFont:(id)a3;
-- (void)setReturnKeyType:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTokens:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAlignmentBehavior:(int64_t)behavior animated:(BOOL)animated;
+- (void)setFont:(id)font;
+- (void)setReturnKeyType:(int64_t)type;
+- (void)setText:(id)text;
+- (void)setTokens:(id)tokens;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateClearButtonVisibility;
 - (void)updateStyleForClearButton;
 - (void)updateStyleForLeftView;
@@ -56,16 +56,16 @@
   return WeakRetained;
 }
 
-- (CGRect)_adjustedTextOrEditingRect:(CGRect)a3 forBounds:(CGRect)a4
+- (CGRect)_adjustedTextOrEditingRect:(CGRect)rect forBounds:(CGRect)bounds
 {
-  v5 = [(WFSearchTextField *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
 
   [(WFSearchTextField *)self bounds];
   [(WFSearchTextField *)self _padding];
-  v8 = [(WFSearchTextField *)self font];
-  [v8 lineHeight];
+  font = [(WFSearchTextField *)self font];
+  [font lineHeight];
 
   v21 = v7;
   UIRectCenteredYInRectScale();
@@ -97,14 +97,14 @@
   return result;
 }
 
-- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5 willOverflow:(BOOL *)a6
+- (CGRect)_frameForPlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l willOverflow:(BOOL *)overflow
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v30[1] = *MEMORY[0x277D85DE8];
-  v12 = [(WFSearchTextField *)self traitCollection:a4];
+  v12 = [(WFSearchTextField *)self traitCollection:alignment];
   [v12 displayScale];
   v14 = v13;
 
@@ -112,18 +112,18 @@
   v16 = v15;
   [(WFSearchTextField *)self _textFieldAccessorySizeFromBounds:x, y, width, height];
   v18 = width - (v17 + v17 + v16 * 2.0);
-  v19 = [(WFSearchTextField *)self placeholder];
+  placeholder = [(WFSearchTextField *)self placeholder];
   v29 = *MEMORY[0x277D740A8];
-  v20 = [(WFSearchTextField *)self font];
-  v30[0] = v20;
+  font = [(WFSearchTextField *)self font];
+  v30[0] = font;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-  [v19 boundingRectWithSize:0 options:v21 attributes:0 context:{width, height}];
+  [placeholder boundingRectWithSize:0 options:v21 attributes:0 context:{width, height}];
   v23 = v22;
 
   v24 = ceil(v14 * v23) / v14;
-  if (a6)
+  if (overflow)
   {
-    *a6 = v24 > v18;
+    *overflow = v24 > v18;
   }
 
   UIRectCenteredIntegralRectScale();
@@ -134,21 +134,21 @@
   return result;
 }
 
-- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculatePlaceholderRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = [(WFSearchTextField *)self traitCollection];
-  [v12 displayScale];
+  lCopy = l;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v47 = v13;
 
-  [(WFSearchTextField *)self _frameForPlaceholderRectForBounds:a4 alignment:v5 isRTL:0 willOverflow:x, y, width, height];
+  [(WFSearchTextField *)self _frameForPlaceholderRectForBounds:alignment alignment:lCopy isRTL:0 willOverflow:x, y, width, height];
   v16 = v15;
   v18 = v17;
-  if (a4 == 1)
+  if (alignment == 1)
   {
     [(WFSearchTextField *)self _textFieldAccessoryHorizontalMargin];
     v20 = v19;
@@ -160,13 +160,13 @@
     v26 = v25;
     v28 = v27;
     v29 = -2.0;
-    if (v5)
+    if (lCopy)
     {
       v29 = 2.0;
     }
 
     v30 = v29 + v23;
-    if (v5)
+    if (lCopy)
     {
       MinX = v30;
     }
@@ -187,8 +187,8 @@
   else
   {
     v48 = v14;
-    [(WFSearchTextField *)self _calculateTextRectForBounds:a4 alignment:v5 isRTL:x, y, width, height];
-    if (v5)
+    [(WFSearchTextField *)self _calculateTextRectForBounds:alignment alignment:lCopy isRTL:x, y, width, height];
+    if (lCopy)
     {
       MaxX = CGRectGetMaxX(*&v36);
       [(WFSearchTextField *)self _textFieldAccessoryHorizontalMargin];
@@ -212,20 +212,20 @@
   return result;
 }
 
-- (CGRect)_calculateTextRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculateTextRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 == 1)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (alignment == 1)
   {
-    [(WFSearchTextField *)self _frameForPlaceholderRectForBounds:1 alignment:a5 isRTL:0 willOverflow:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(WFSearchTextField *)self _frameForPlaceholderRectForBounds:1 alignment:l isRTL:0 willOverflow:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   }
 
   else
   {
-    [(WFSearchTextField *)self _textFieldHorizontalEdgeMargin:a4];
+    [(WFSearchTextField *)self _textFieldHorizontalEdgeMargin:alignment];
     v15 = v14;
     v16 = 0.0;
     if (!self->_alwaysHideLeadingView)
@@ -254,13 +254,13 @@
   return result;
 }
 
-- (CGRect)_calculateEditingRectForBounds:(CGRect)a3 alignment:(int64_t)a4 isRTL:(BOOL)a5
+- (CGRect)_calculateEditingRectForBounds:(CGRect)bounds alignment:(int64_t)alignment isRTL:(BOOL)l
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(WFSearchTextField *)self _textFieldHorizontalEdgeMargin:a4];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(WFSearchTextField *)self _textFieldHorizontalEdgeMargin:alignment];
   v11 = v10;
   v12 = 0.0;
   if (!self->_alwaysHideLeadingView)
@@ -286,19 +286,19 @@
   return result;
 }
 
-- (CGRect)_frameForRightViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4
+- (CGRect)_frameForRightViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(WFSearchTextField *)self traitCollection];
-  [v10 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
 
   [(WFSearchTextField *)self _textFieldAccessorySizeFromBounds:x, y, width, height];
   UIRectCenteredYInRectScale();
-  if (a4 == 1)
+  if (alignment == 1)
   {
     [(WFSearchTextField *)self _calculatePlaceholderRectForBounds:1 alignment:1 isRTL:x, y, width, height, v12];
     CGRectGetMaxX(v17);
@@ -324,19 +324,19 @@
   return result;
 }
 
-- (CGRect)_frameForLeftViewWithinBounds:(CGRect)a3 alignment:(int64_t)a4
+- (CGRect)_frameForLeftViewWithinBounds:(CGRect)bounds alignment:(int64_t)alignment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(WFSearchTextField *)self traitCollection];
-  [v10 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v12 = v11;
 
   [(WFSearchTextField *)self _textFieldAccessorySizeFromBounds:x, y, width, height];
   UIRectCenteredYInRectScale();
-  if (a4 == 1)
+  if (alignment == 1)
   {
     [(WFSearchTextField *)self _calculatePlaceholderRectForBounds:1 alignment:0 isRTL:x, y, width, height, v12];
     CGRectGetMinX(v17);
@@ -362,59 +362,59 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = WFSearchTextField;
   [(WFSearchTextField *)&v5 _setContinuousCornerRadius:?];
-  [(UIView *)self->_backgroundView _setContinuousCornerRadius:a3];
-  [(UIVisualEffectView *)self->_blurView _setContinuousCornerRadius:a3];
+  [(UIView *)self->_backgroundView _setContinuousCornerRadius:radius];
+  [(UIVisualEffectView *)self->_blurView _setContinuousCornerRadius:radius];
 }
 
 - (void)updateStyleForClearButton
 {
-  v8 = [(WFSearchTextField *)self _clearButton];
+  _clearButton = [(WFSearchTextField *)self _clearButton];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [v8 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v8];
+    [_clearButton setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:_clearButton];
   }
 
-  v3 = [(WFSearchTextField *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = MEMORY[0x277CDA5E8];
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = MEMORY[0x277CDA5D8];
   }
 
   v6 = *v5;
 
-  v7 = [v8 layer];
-  [v7 setCompositingFilter:v6];
+  layer = [_clearButton layer];
+  [layer setCompositingFilter:v6];
 }
 
 - (void)updateStyleForRightView
 {
-  v9 = [(WFSearchTextField *)self rightView];
+  rightView = [(WFSearchTextField *)self rightView];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [v9 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v9];
+    [rightView setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:rightView];
   }
 
-  v3 = [(WFSearchTextField *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = MEMORY[0x277CDA5E8];
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = MEMORY[0x277CDA5D8];
   }
 
   v6 = *v5;
 
-  v7 = [v9 layer];
-  [v7 setCompositingFilter:v6];
+  layer = [rightView layer];
+  [layer setCompositingFilter:v6];
 
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
   {
@@ -434,25 +434,25 @@
 
 - (void)updateStyleForLeftView
 {
-  v9 = [(WFSearchTextField *)self leftView];
+  leftView = [(WFSearchTextField *)self leftView];
   if (![(NSHashTable *)self->_styledViews containsObject:?])
   {
-    [v9 setContentMode:1];
-    [(NSHashTable *)self->_styledViews addObject:v9];
+    [leftView setContentMode:1];
+    [(NSHashTable *)self->_styledViews addObject:leftView];
   }
 
-  v3 = [(WFSearchTextField *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v5 = MEMORY[0x277CDA5E8];
-  if (v4 != 2)
+  if (userInterfaceStyle != 2)
   {
     v5 = MEMORY[0x277CDA5D8];
   }
 
   v6 = *v5;
 
-  v7 = [v9 layer];
-  [v7 setCompositingFilter:v6];
+  layer = [leftView layer];
+  [layer setCompositingFilter:v6];
 
   if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] != 1)
   {
@@ -472,21 +472,21 @@
 
 - (void)updateStyleForPlaceholderView
 {
-  v3 = [(WFSearchTextField *)self _placeholderView];
-  v4 = [(WFSearchTextField *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  _placeholderView = [(WFSearchTextField *)self _placeholderView];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v6 = MEMORY[0x277CDA5E8];
-  if (v5 != 2)
+  if (userInterfaceStyle != 2)
   {
     v6 = MEMORY[0x277CDA5D8];
   }
 
   v7 = *v6;
 
-  v8 = [v3 layer];
-  [v8 setCompositingFilter:v7];
+  layer = [_placeholderView layer];
+  [layer setCompositingFilter:v7];
 
-  v11 = v3;
+  v11 = _placeholderView;
   if (v11)
   {
     objc_opt_class();
@@ -511,14 +511,14 @@
   [v10 setAdjustsFontSizeToFitWidth:1];
 }
 
-- (CGRect)rightViewRectForBounds:(CGRect)a3
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WFSearchTextField *)self traitCollection];
-  [v8 displayScale];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
 
   [(WFSearchTextField *)self _textFieldAccessorySizeFromBounds:x, y, width, height];
   v13.origin.x = x;
@@ -536,15 +536,15 @@
   return result;
 }
 
-- (CGRect)leftViewRectForBounds:(CGRect)a3
+- (CGRect)leftViewRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WFSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(WFSearchTextField *)self _derivedTextAlignment];
 
-  [(WFSearchTextField *)self _frameForLeftViewWithinBounds:v8 alignment:x, y, width, height];
+  [(WFSearchTextField *)self _frameForLeftViewWithinBounds:_derivedTextAlignment alignment:x, y, width, height];
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -556,24 +556,24 @@
 {
   v6.receiver = self;
   v6.super_class = WFSearchTextField;
-  v3 = [(UISearchTextField *)&v6 resignFirstResponder];
+  resignFirstResponder = [(UISearchTextField *)&v6 resignFirstResponder];
   if (![(WFSearchTextField *)self _hasSearchText])
   {
-    v4 = [(WFSearchTextField *)self textFieldDelegate];
-    [v4 textFieldDidResignFirstResponder];
+    textFieldDelegate = [(WFSearchTextField *)self textFieldDelegate];
+    [textFieldDelegate textFieldDidResignFirstResponder];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WFSearchTextField *)self _derivedTextAlignment];
-  -[WFSearchTextField _calculateEditingRectForBounds:alignment:isRTL:](self, "_calculateEditingRectForBounds:alignment:isRTL:", v8, [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1, x, y, width, height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(WFSearchTextField *)self _derivedTextAlignment];
+  -[WFSearchTextField _calculateEditingRectForBounds:alignment:isRTL:](self, "_calculateEditingRectForBounds:alignment:isRTL:", _derivedTextAlignment, [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1, x, y, width, height);
 
   [WFSearchTextField _adjustedTextOrEditingRect:"_adjustedTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v12;
@@ -583,14 +583,14 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WFSearchTextField *)self _derivedTextAlignment];
-  -[WFSearchTextField _calculateTextRectForBounds:alignment:isRTL:](self, "_calculateTextRectForBounds:alignment:isRTL:", v8, [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1, x, y, width, height);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(WFSearchTextField *)self _derivedTextAlignment];
+  -[WFSearchTextField _calculateTextRectForBounds:alignment:isRTL:](self, "_calculateTextRectForBounds:alignment:isRTL:", _derivedTextAlignment, [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1, x, y, width, height);
 
   [WFSearchTextField _adjustedTextOrEditingRect:"_adjustedTextOrEditingRect:forBounds:" forBounds:?];
   result.size.height = v12;
@@ -600,16 +600,16 @@
   return result;
 }
 
-- (CGRect)placeholderRectForBounds:(CGRect)a3
+- (CGRect)placeholderRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(WFSearchTextField *)self _derivedTextAlignment];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _derivedTextAlignment = [(WFSearchTextField *)self _derivedTextAlignment];
   v9 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1;
 
-  [(WFSearchTextField *)self _calculatePlaceholderRectForBounds:v8 alignment:v9 isRTL:x, y, width, height];
+  [(WFSearchTextField *)self _calculatePlaceholderRectForBounds:_derivedTextAlignment alignment:v9 isRTL:x, y, width, height];
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -617,48 +617,48 @@
   return result;
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  if ([(WFSearchTextField *)self returnKeyType]!= a3)
+  if ([(WFSearchTextField *)self returnKeyType]!= type)
   {
     v6.receiver = self;
     v6.super_class = WFSearchTextField;
-    [(WFSearchTextField *)&v6 setReturnKeyType:a3];
-    v5 = [MEMORY[0x277D75678] activeInstance];
-    [v5 takeTextInputTraitsFromDelegate];
-    [v5 updateReturnKey:1];
+    [(WFSearchTextField *)&v6 setReturnKeyType:type];
+    activeInstance = [MEMORY[0x277D75678] activeInstance];
+    [activeInstance takeTextInputTraitsFromDelegate];
+    [activeInstance updateReturnKey:1];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v8.receiver = self;
   v8.super_class = WFSearchTextField;
-  v5 = [(WFSearchTextField *)&v8 font];
-  v6 = [v5 isEqual:v4];
+  font = [(WFSearchTextField *)&v8 font];
+  v6 = [font isEqual:fontCopy];
 
   if ((v6 & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = WFSearchTextField;
-    [(WFSearchTextField *)&v7 setFont:v4];
+    [(WFSearchTextField *)&v7 setFont:fontCopy];
     [(WFSearchTextField *)self invalidateIntrinsicContentSize];
   }
 }
 
 - (void)updateVisualStyling
 {
-  v3 = [(WFSearchTextField *)self traitCollection];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
   v4 = MEMORY[0x277D75C80];
-  v36 = v3;
-  v5 = [v3 preferredContentSizeCategory];
-  v6 = WFUIContentSizeCategoryClip(v5, *MEMORY[0x277D76858], *MEMORY[0x277D767F0]);
+  v36 = traitCollection;
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v6 = WFUIContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x277D76858], *MEMORY[0x277D767F0]);
   v7 = [v4 traitCollectionWithPreferredContentSizeCategory:v6];
 
   v8 = MEMORY[0x277D74300];
-  v9 = [(WFSearchTextField *)self _textFieldTextStyle];
-  v10 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v7];
+  _textFieldTextStyle = [(WFSearchTextField *)self _textFieldTextStyle];
+  v10 = [v8 preferredFontForTextStyle:_textFieldTextStyle compatibleWithTraitCollection:v7];
 
   v11 = [MEMORY[0x277D755D0] configurationWithFont:v10];
   if ([(WFSearchTextField *)self _derivedTextAlignment]== 1)
@@ -668,8 +668,8 @@
 
   else
   {
-    v12 = [v7 preferredContentSizeCategory];
-    self->_alwaysHideLeadingView = UIContentSizeCategoryIsAccessibilityCategory(v12);
+    preferredContentSizeCategory2 = [v7 preferredContentSizeCategory];
+    self->_alwaysHideLeadingView = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory2);
   }
 
   [(WFSearchTextField *)self setFont:v10];
@@ -682,8 +682,8 @@
     dispatch_once(&updateVisualStyling_onceToken, &__block_literal_global_244);
   }
 
-  v15 = [v36 userInterfaceStyle];
-  if (v15 == 2)
+  userInterfaceStyle = [v36 userInterfaceStyle];
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] labelColor];
   }
@@ -695,11 +695,11 @@
   v16 = ;
   [(WFSearchTextField *)self setTintColor:v16];
 
-  v17 = [MEMORY[0x277D75348] labelColor];
-  [(WFSearchTextField *)self setTextColor:v17];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [(WFSearchTextField *)self setTextColor:labelColor];
 
-  v18 = [(WFSearchTextField *)self _placeholderLabel];
-  if (v15 == 2)
+  _placeholderLabel = [(WFSearchTextField *)self _placeholderLabel];
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] colorWithWhite:0.46 alpha:1.0];
   }
@@ -709,15 +709,15 @@
     [MEMORY[0x277D75348] secondaryLabelColor];
   }
   v19 = ;
-  [v18 setTextColor:v19];
+  [_placeholderLabel setTextColor:v19];
 
-  v20 = [(WFSearchTextField *)self leftView];
-  if (v20)
+  leftView = [(WFSearchTextField *)self leftView];
+  if (leftView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = leftView;
     }
 
     else
@@ -733,13 +733,13 @@
 
   v22 = v21;
 
-  v23 = [(WFSearchTextField *)self rightView];
-  if (v23)
+  rightView = [(WFSearchTextField *)self rightView];
+  if (rightView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = v23;
+      v24 = rightView;
     }
 
     else
@@ -756,7 +756,7 @@
   v25 = v24;
 
   v26 = &updateVisualStyling_darkModeMagnifyingGlass;
-  if (v15 != 2)
+  if (userInterfaceStyle != 2)
   {
     v26 = &updateVisualStyling_lightModeMagnifyingGlass;
   }
@@ -773,12 +773,12 @@
   }
 
   [v27 setImage:self->_magnifyingGlassImage];
-  v28 = [(UIView *)self->_backgroundView layer];
-  [v28 setCornerCurve:*MEMORY[0x277CDA138]];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
-  v29 = [(UIView *)self->_backgroundView layer];
+  layer2 = [(UIView *)self->_backgroundView layer];
   [(WFSearchTextField *)self _textFieldCornerRadius];
-  [v29 setCornerRadius:?];
+  [layer2 setCornerRadius:?];
 
   [(WFSearchTextField *)self updateStyleForLeftView];
   [(WFSearchTextField *)self updateStyleForRightView];
@@ -786,22 +786,22 @@
   [(WFSearchTextField *)self updateStyleForPlaceholderView];
   if ([(WFSearchTextField *)self style]!= 1)
   {
-    v30 = [(WFSearchTextField *)self traitCollection];
-    v31 = [v30 userInterfaceStyle];
+    traitCollection2 = [(WFSearchTextField *)self traitCollection];
+    userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
     v32 = MEMORY[0x277CDA5E8];
-    if (v31 != 2)
+    if (userInterfaceStyle2 != 2)
     {
       v32 = MEMORY[0x277CDA5D8];
     }
 
     v33 = *v32;
 
-    v34 = [(UIView *)self->_backgroundView layer];
-    [v34 setCompositingFilter:v33];
+    layer3 = [(UIView *)self->_backgroundView layer];
+    [layer3 setCompositingFilter:v33];
   }
 
-  v35 = [(WFSearchTextField *)self layer];
-  [v35 setAllowsGroupBlending:0];
+  layer4 = [(WFSearchTextField *)self layer];
+  [layer4 setAllowsGroupBlending:0];
 }
 
 void __40__WFSearchTextField_updateVisualStyling__block_invoke()
@@ -820,25 +820,25 @@ void __40__WFSearchTextField_updateVisualStyling__block_invoke()
   updateVisualStyling_lightModeMagnifyingGlass = v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = WFSearchTextField;
-  [(WFSearchTextField *)&v11 traitCollectionDidChange:v4];
+  [(WFSearchTextField *)&v11 traitCollectionDidChange:changeCopy];
   [(NSHashTable *)self->_styledViews removeAllObjects];
   [(WFSearchTextField *)self updateVisualStyling];
-  if (v4)
+  if (changeCopy)
   {
-    v5 = [v4 preferredContentSizeCategory];
-    v6 = [(WFSearchTextField *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    traitCollection = [(WFSearchTextField *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
 
-    if (v5 != v7)
+    if (preferredContentSizeCategory != preferredContentSizeCategory2)
     {
-      v8 = [(WFSearchTextField *)self traitCollection];
-      v9 = [v8 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v9);
+      traitCollection2 = [(WFSearchTextField *)self traitCollection];
+      preferredContentSizeCategory3 = [traitCollection2 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory3);
 
       if (IsAccessibilityCategory)
       {
@@ -848,26 +848,26 @@ void __40__WFSearchTextField_updateVisualStyling__block_invoke()
   }
 }
 
-- (void)setTokens:(id)a3
+- (void)setTokens:(id)tokens
 {
   v4.receiver = self;
   v4.super_class = WFSearchTextField;
-  [(UISearchTextField *)&v4 setTokens:a3];
+  [(UISearchTextField *)&v4 setTokens:tokens];
   [(WFSearchTextField *)self updateClearButtonVisibility];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = WFSearchTextField;
-  [(UISearchTextField *)&v4 setText:a3];
+  [(UISearchTextField *)&v4 setText:text];
   [(WFSearchTextField *)self updateClearButtonVisibility];
 }
 
-- (void)_updateTextAlignmentForEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)_updateTextAlignmentForEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(WFSearchTextField *)self _derivedTextAlignmentIfEditing:a3];
+  animatedCopy = animated;
+  v6 = [(WFSearchTextField *)self _derivedTextAlignmentIfEditing:editing];
   if (v6 != [(WFSearchTextField *)self textAlignment])
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -878,7 +878,7 @@ void __40__WFSearchTextField_updateVisualStyling__block_invoke()
     v9[5] = v6;
     v7 = _Block_copy(v9);
     v8 = v7;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] _animateUsingDefaultTimingWithOptions:6 animations:v7 completion:0];
     }
@@ -899,15 +899,15 @@ uint64_t __61__WFSearchTextField__updateTextAlignmentForEditing_animated___block
   return [v2 layoutIfNeeded];
 }
 
-- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)a3
+- (int64_t)_derivedTextAlignmentIfEditing:(BOOL)editing
 {
-  v3 = a3;
-  if ([(WFSearchTextField *)self _hasSearchText]&& !v3)
+  editingCopy = editing;
+  if ([(WFSearchTextField *)self _hasSearchText]&& !editingCopy)
   {
     return 4;
   }
 
-  if (v3)
+  if (editingCopy)
   {
     v6 = 4;
   }
@@ -930,48 +930,48 @@ uint64_t __61__WFSearchTextField__updateTextAlignmentForEditing_animated___block
 
 - (int64_t)_derivedTextAlignment
 {
-  v3 = [(WFSearchTextField *)self isEditing];
+  isEditing = [(WFSearchTextField *)self isEditing];
 
-  return [(WFSearchTextField *)self _derivedTextAlignmentIfEditing:v3];
+  return [(WFSearchTextField *)self _derivedTextAlignmentIfEditing:isEditing];
 }
 
 - (BOOL)_hasSearchText
 {
-  v3 = [(UISearchTextField *)self text];
-  if ([v3 length])
+  text = [(UISearchTextField *)self text];
+  if ([text length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(UISearchTextField *)self tokens];
-    v4 = [v5 count] != 0;
+    tokens = [(UISearchTextField *)self tokens];
+    v4 = [tokens count] != 0;
   }
 
   return v4;
 }
 
-- (void)setAlignmentBehavior:(int64_t)a3 animated:(BOOL)a4
+- (void)setAlignmentBehavior:(int64_t)behavior animated:(BOOL)animated
 {
-  if (self->_alignmentBehavior != a3)
+  if (self->_alignmentBehavior != behavior)
   {
-    v5 = a4;
-    self->_alignmentBehavior = a3;
-    v7 = [(WFSearchTextField *)self isEditing];
+    animatedCopy = animated;
+    self->_alignmentBehavior = behavior;
+    isEditing = [(WFSearchTextField *)self isEditing];
 
-    [(WFSearchTextField *)self _updateTextAlignmentForEditing:v7 animated:v5];
+    [(WFSearchTextField *)self _updateTextAlignmentForEditing:isEditing animated:animatedCopy];
   }
 }
 
 - (void)updateClearButtonVisibility
 {
-  v3 = [(WFSearchTextField *)self _hasSearchText];
+  _hasSearchText = [(WFSearchTextField *)self _hasSearchText];
   [(UIButton *)self->_clearButton alpha];
-  if (((v3 ^ (v4 != 1.0)) & 1) == 0)
+  if (((_hasSearchText ^ (v4 != 1.0)) & 1) == 0)
   {
     clearButtonImageView = self->_clearButtonImageView;
-    if (v3)
+    if (_hasSearchText)
     {
       CGAffineTransformMakeScale(&v10, 0.8, 0.8);
       v6 = 0.25;
@@ -992,7 +992,7 @@ uint64_t __61__WFSearchTextField__updateTextAlignmentForEditing_animated___block
     v8[2] = __48__WFSearchTextField_updateClearButtonVisibility__block_invoke;
     v8[3] = &unk_279EE8AA0;
     v8[4] = self;
-    v9 = v3;
+    v9 = _hasSearchText;
     [MEMORY[0x277D75D18] _animateUsingSpringWithDampingRatio:1 response:v8 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:v6 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
   }
 }
@@ -1041,14 +1041,14 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
   return [v6 setTransform:&v9];
 }
 
-- (void)_didBeginEditing:(id)a3
+- (void)_didBeginEditing:(id)editing
 {
   [(WFSearchTextField *)self _updateTextAlignmentForEditing:1 animated:1];
 
   [(WFSearchTextField *)self updateClearButtonVisibility];
 }
 
-- (void)_didEndEditing:(id)a3
+- (void)_didEndEditing:(id)editing
 {
   [(WFSearchTextField *)self _updateTextAlignmentForEditing:0 animated:1];
 
@@ -1063,12 +1063,12 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
   [(WFSearchTextField *)self updateVisualStyling];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v14.receiver = self;
   v14.super_class = WFSearchTextField;
-  [(WFSearchTextField *)&v14 sizeThatFits:a3.width, a3.height];
+  [(WFSearchTextField *)&v14 sizeThatFits:fits.width, fits.height];
   v6 = v5;
   v8 = v7;
   [(WFSearchTextField *)self _calculateHeightWithFont];
@@ -1101,16 +1101,16 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (double)_calculateHeightWithFont
 {
-  v3 = [(WFSearchTextField *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(WFSearchTextField *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
-  v6 = [(WFSearchTextField *)self font];
+  font = [(WFSearchTextField *)self font];
   [(WFSearchTextField *)self _textFieldVerticalMargin];
   v8 = v7;
-  [v6 lineHeight];
+  [font lineHeight];
   v10 = v9 + v8 * 2.0;
-  [v6 descender];
+  [font descender];
   v12 = v10 + v11;
   [(WFSearchTextField *)self _defaultTextFieldHeight];
   if (v12 >= v13)
@@ -1127,10 +1127,10 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
   return v15;
 }
 
-- (CGSize)_textFieldAccessorySizeFromBounds:(CGRect)a3
+- (CGSize)_textFieldAccessorySizeFromBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  [(WFSearchTextField *)self _textFieldAccessoryVerticalMargin:a3.origin.x];
+  height = bounds.size.height;
+  [(WFSearchTextField *)self _textFieldAccessoryVerticalMargin:bounds.origin.x];
   v5 = fmax(height + v4 * -2.0, 0.0);
   v6 = v5;
   result.height = v6;
@@ -1140,11 +1140,11 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (double)_textFieldHorizontalEdgeMargin
 {
-  v2 = [(WFSearchTextField *)self style];
+  style = [(WFSearchTextField *)self style];
   result = 8.0;
-  if (v2 - 1 <= 3)
+  if (style - 1 <= 3)
   {
-    return dbl_274A29D08[v2 - 1];
+    return dbl_274A29D08[style - 1];
   }
 
   return result;
@@ -1152,22 +1152,22 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (double)_defaultTextFieldHeight
 {
-  v2 = [(WFSearchTextField *)self style];
-  if (v2 - 1 > 3)
+  style = [(WFSearchTextField *)self style];
+  if (style - 1 > 3)
   {
     return 36.0;
   }
 
   else
   {
-    return dbl_274A29CE8[v2 - 1];
+    return dbl_274A29CE8[style - 1];
   }
 }
 
 - (double)_textFieldAccessoryHorizontalMargin
 {
-  v2 = [(WFSearchTextField *)self style];
-  v3 = v2 == 1 || v2 == 4;
+  style = [(WFSearchTextField *)self style];
+  v3 = style == 1 || style == 4;
   result = 6.0;
   if (v3)
   {
@@ -1179,11 +1179,11 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (double)_textFieldAccessoryVerticalMargin
 {
-  v2 = [(WFSearchTextField *)self style];
+  style = [(WFSearchTextField *)self style];
   result = 8.0;
-  if (v2 - 1 <= 3)
+  if (style - 1 <= 3)
   {
-    return dbl_274A29CC8[v2 - 1];
+    return dbl_274A29CC8[style - 1];
   }
 
   return result;
@@ -1191,11 +1191,11 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (double)_textFieldVerticalMargin
 {
-  v2 = [(WFSearchTextField *)self style];
+  style = [(WFSearchTextField *)self style];
   result = 0.0;
-  if (v2 - 1 <= 3)
+  if (style - 1 <= 3)
   {
-    return dbl_274A29CA8[v2 - 1];
+    return dbl_274A29CA8[style - 1];
   }
 
   return result;
@@ -1203,19 +1203,19 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
 
 - (id)_textFieldTextStyle
 {
-  v2 = [(WFSearchTextField *)self style];
-  if ((v2 - 1) <= 3)
+  style = [(WFSearchTextField *)self style];
+  if ((style - 1) <= 3)
   {
-    v2 = **(&unk_279EE7C30 + (v2 - 1));
+    style = **(&unk_279EE7C30 + (style - 1));
   }
 
-  return v2;
+  return style;
 }
 
 - (double)_textFieldCornerRadius
 {
-  v3 = [(WFSearchTextField *)self style];
-  if (v3 == 1 || v3 == 4)
+  style = [(WFSearchTextField *)self style];
+  if (style == 1 || style == 4)
   {
     v4 = 16.0;
     if (_UISolariumEnabled())
@@ -1225,7 +1225,7 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
     }
   }
 
-  else if (v3 == 3)
+  else if (style == 3)
   {
     return 14.0;
   }
@@ -1238,7 +1238,7 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
   return v4;
 }
 
-- (WFSearchTextField)initWithStyle:(unint64_t)a3
+- (WFSearchTextField)initWithStyle:(unint64_t)style
 {
   v78[4] = *MEMORY[0x277D85DE8];
   v76.receiver = self;
@@ -1248,12 +1248,12 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
   if (v4)
   {
     [(UISearchTextField *)v4 setBorderStyle:0];
-    v5->_style = a3;
+    v5->_style = style;
     v6 = MEMORY[0x277CDA328];
     v7 = MEMORY[0x277CDA4C8];
     v8 = MEMORY[0x277CDA4A0];
     v9 = 0x277CBE000;
-    if (a3 == 1)
+    if (style == 1)
     {
       if (_UISolariumEnabled())
       {
@@ -1273,8 +1273,8 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
         v5->_backgroundView = v17;
 
         v19 = v5->_backgroundView;
-        v20 = [MEMORY[0x277D75348] clearColor];
-        [(UIView *)v19 setBackgroundColor:v20];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UIView *)v19 setBackgroundColor:clearColor];
 
         v10 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA580]];
         [v10 setValue:&unk_2883C21E0 forKey:*MEMORY[0x277CDA540]];
@@ -1290,13 +1290,13 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
         [v24 setValue:MEMORY[0x277CBEC28] forKey:*v8];
         [v24 setValue:@"default" forKey:*MEMORY[0x277CDA4E8]];
         [v24 setValue:@"default" forKey:*MEMORY[0x277CDA4B8]];
-        v25 = [(UIView *)v5->_backgroundView layer];
+        layer = [(UIView *)v5->_backgroundView layer];
         v78[0] = v10;
         v78[1] = v22;
         v78[2] = v23;
         v78[3] = v24;
         v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v78 count:4];
-        [v25 setFilters:v26];
+        [layer setFilters:v26];
 
         v6 = MEMORY[0x277CDA328];
         v9 = 0x277CBE000uLL;
@@ -1323,14 +1323,14 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
     [(WFSearchTextField *)v5 addSubview:v5->_backgroundView];
     [(WFSearchTextField *)v5 sendSubviewToBack:v5->_backgroundView];
     [(WFSearchTextField *)v5 setReturnKeyType:6];
-    v28 = [MEMORY[0x277D75418] currentDevice];
-    v29 = [v28 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    [(WFSearchTextField *)v5 setAutocorrectionType:(v29 & 0xFFFFFFFFFFFFFFFBLL) != 1];
-    v30 = [MEMORY[0x277D75418] currentDevice];
-    v31 = [v30 userInterfaceIdiom];
+    [(WFSearchTextField *)v5 setAutocorrectionType:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    [(WFSearchTextField *)v5 setSpellCheckingType:(v31 & 0xFFFFFFFFFFFFFFFBLL) != 1];
+    [(WFSearchTextField *)v5 setSpellCheckingType:(userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) != 1];
     [(WFSearchTextField *)v5 setEnablesReturnKeyAutomatically:1];
     [(WFSearchTextField *)v5 setMinimumFontSize:10.0];
     [(WFSearchTextField *)v5 updateVisualStyling];
@@ -1352,8 +1352,8 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
     [(UIImageView *)v36 setFrame:?];
     [(UIImageView *)v5->_clearButtonImageView setAutoresizingMask:18];
     v37 = v5->_clearButtonImageView;
-    v38 = [MEMORY[0x277D75348] systemGray2Color];
-    [(UIImageView *)v37 setTintColor:v38];
+    systemGray2Color = [MEMORY[0x277D75348] systemGray2Color];
+    [(UIImageView *)v37 setTintColor:systemGray2Color];
 
     [(UIImageView *)v5->_clearButtonImageView setUserInteractionEnabled:0];
     [(UIButton *)v5->_clearButton addSubview:v5->_clearButtonImageView];
@@ -1365,10 +1365,10 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
     [v39 setValue:v40 forKey:*v8];
     [v39 setValue:@"default" forKey:*MEMORY[0x277CDA4E8]];
     [v39 setValue:@"default" forKey:*MEMORY[0x277CDA4B8]];
-    v41 = [(UIImageView *)v5->_clearButtonImageView layer];
+    layer2 = [(UIImageView *)v5->_clearButtonImageView layer];
     v77 = v39;
     v42 = [*(v9 + 2656) arrayWithObjects:&v77 count:1];
-    [v41 setFilters:v42];
+    [layer2 setFilters:v42];
 
     v43 = v5->_clearButton;
     v44 = MEMORY[0x277D750C8];
@@ -1414,18 +1414,18 @@ uint64_t __48__WFSearchTextField_updateClearButtonVisibility__block_invoke(uint6
     v58 = [v56 actionWithHandler:v68];
     [(UIButton *)v55 addAction:v58 forControlEvents:352];
 
-    v59 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     styledViews = v57->_styledViews;
-    v57->_styledViews = v59;
+    v57->_styledViews = weakObjectsHashTable;
 
-    v61 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v61 addObserver:v57 selector:sel__didEndEditing_ name:*MEMORY[0x277D770B8] object:v57];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v57 selector:sel__didEndEditing_ name:*MEMORY[0x277D770B8] object:v57];
 
-    v62 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v62 addObserver:v57 selector:sel__didBeginEditing_ name:*MEMORY[0x277D770A8] object:v57];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v57 selector:sel__didBeginEditing_ name:*MEMORY[0x277D770A8] object:v57];
 
-    v63 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v63 addObserver:v57 selector:sel__textDidChange_ name:*MEMORY[0x277D770B0] object:v57];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v57 selector:sel__textDidChange_ name:*MEMORY[0x277D770B0] object:v57];
 
     v57->_alignmentBehavior = 0;
     [(WFSearchTextField *)v57 _updateTextAlignmentForEditing:0 animated:0];

@@ -1,32 +1,32 @@
 @interface REMCRMutableAttributedString
 + (NSArray)nonEditableAttributes;
-- (BOOL)isEqual:(id)a3;
-- (REMCRMutableAttributedString)initWithBackingStore:(id)a3;
-- (REMCRMutableAttributedString)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMCRMutableAttributedString)initWithBackingStore:(id)store;
+- (REMCRMutableAttributedString)initWithCoder:(id)coder;
 - (REMCRMutableAttributedStringEditObserver)editObserver;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)string;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4;
-- (void)reportDidEdit:(int64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5;
-- (void)setAttributes:(id)a3 range:(_NSRange)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string;
+- (void)reportDidEdit:(int64_t)edit range:(_NSRange)range changeInLength:(int64_t)length;
+- (void)setAttributes:(id)attributes range:(_NSRange)range;
 @end
 
 @implementation REMCRMutableAttributedString
 
-- (REMCRMutableAttributedString)initWithBackingStore:(id)a3
+- (REMCRMutableAttributedString)initWithBackingStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMCRMutableAttributedString;
   v6 = [(REMCRMutableAttributedString *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingStore, a3);
+    objc_storeStrong(&v6->_backingStore, store);
   }
 
   return v7;
@@ -34,26 +34,26 @@
 
 - (id)string
 {
-  v2 = [(REMCRMutableAttributedString *)self backingStore];
-  v3 = [v2 string];
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  string = [backingStore string];
 
-  return v3;
+  return string;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(REMCRMutableAttributedString *)self backingStore];
-  v7 = [v6 attributesAtIndex:a3 effectiveRange:a4];
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  v7 = [backingStore attributesAtIndex:index effectiveRange:range];
 
   return v7;
 }
 
-- (void)replaceCharactersInRange:(_NSRange)a3 withString:(id)a4
+- (void)replaceCharactersInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v99 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  stringCopy = string;
   v65 = [MEMORY[0x1E695DFA8] set];
   v69.location = location;
   v69.length = length;
@@ -72,7 +72,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v64 = v7;
+    v64 = stringCopy;
     v67 = *v87;
     do
     {
@@ -84,25 +84,25 @@ LABEL_21:
         }
 
         v9 = *(*(&v86 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E695DF70] array];
-        v11 = [(REMCRMutableAttributedString *)self backingStore];
+        array = [MEMORY[0x1E695DF70] array];
+        backingStore = [(REMCRMutableAttributedString *)self backingStore];
         v84[0] = MEMORY[0x1E69E9820];
         v84[1] = 3221225472;
         v84[2] = __68__REMCRMutableAttributedString_replaceCharactersInRange_withString___block_invoke;
         v84[3] = &unk_1E7509240;
         v84[4] = self;
         v84[5] = v9;
-        v12 = v10;
+        v12 = array;
         v85 = v12;
-        [v11 enumerateAttribute:v9 inRange:location options:v69.length usingBlock:{0, v84}];
+        [backingStore enumerateAttribute:v9 inRange:location options:v69.length usingBlock:{0, v84}];
 
         v82 = 0u;
         v83 = 0u;
         v80 = 0u;
         v81 = 0u;
         v70 = v12;
-        v13 = [v12 reverseObjectEnumerator];
-        v14 = [v13 countByEnumeratingWithState:&v80 objects:v97 count:16];
+        reverseObjectEnumerator = [v12 reverseObjectEnumerator];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v97 count:16];
         if (v14)
         {
           v15 = v14;
@@ -113,18 +113,18 @@ LABEL_21:
             {
               if (*v81 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
-              v18 = [*(*(&v80 + 1) + 8 * j) rangeValue];
+              rangeValue = [*(*(&v80 + 1) + 8 * j) rangeValue];
               v20 = v19;
-              v21 = [(REMCRMutableAttributedString *)self backingStore];
-              [v21 removeAttribute:v9 range:{v18, v20}];
+              backingStore2 = [(REMCRMutableAttributedString *)self backingStore];
+              [backingStore2 removeAttribute:v9 range:{rangeValue, v20}];
 
-              [(REMCRMutableAttributedString *)self reportDidEdit:1 range:v18 changeInLength:v20, 0];
+              [(REMCRMutableAttributedString *)self reportDidEdit:1 range:rangeValue changeInLength:v20, 0];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v80 objects:v97 count:16];
+            v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v97 count:16];
           }
 
           while (v15);
@@ -155,11 +155,11 @@ LABEL_21:
 
     while (v68);
 LABEL_20:
-    v7 = v64;
+    stringCopy = v64;
     goto LABEL_21;
   }
 
-  if ([v7 length])
+  if ([stringCopy length])
   {
     if (location)
     {
@@ -175,7 +175,7 @@ LABEL_20:
       }
 
       v42 = v41;
-      v64 = v7;
+      v64 = stringCopy;
       v43 = *v77;
       v44 = location - 1;
       v45 = v65;
@@ -191,8 +191,8 @@ LABEL_20:
           v47 = *(*(&v76 + 1) + 8 * k);
           v75.location = 0;
           v75.length = 0;
-          v48 = [(REMCRMutableAttributedString *)self backingStore];
-          v49 = [v48 attribute:v47 atIndex:v44 effectiveRange:&v75];
+          backingStore3 = [(REMCRMutableAttributedString *)self backingStore];
+          v49 = [backingStore3 attribute:v47 atIndex:v44 effectiveRange:&v75];
 
           if (v49)
           {
@@ -203,8 +203,8 @@ LABEL_20:
 
             else
             {
-              v50 = [(REMCRMutableAttributedString *)self backingStore];
-              [v50 removeAttribute:v47 range:{v75.location, v75.length}];
+              backingStore4 = [(REMCRMutableAttributedString *)self backingStore];
+              [backingStore4 removeAttribute:v47 range:{v75.location, v75.length}];
 
               [(REMCRMutableAttributedString *)self reportDidEdit:1 range:v75.location changeInLength:v75.length, 0];
               v51 = +[REMLog crdt];
@@ -238,8 +238,8 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    v54 = [(REMCRMutableAttributedString *)self backingStore];
-    v55 = [v54 length];
+    backingStore5 = [(REMCRMutableAttributedString *)self backingStore];
+    v55 = [backingStore5 length];
 
     if (v55)
     {
@@ -252,7 +252,7 @@ LABEL_20:
       if (v56)
       {
         v57 = v56;
-        v58 = v7;
+        v58 = stringCopy;
         v59 = *v72;
         do
         {
@@ -266,8 +266,8 @@ LABEL_20:
             v61 = *(*(&v71 + 1) + 8 * m);
             *&buf[8] = 0;
             *buf = 0;
-            v62 = [(REMCRMutableAttributedString *)self backingStore];
-            v63 = [v62 attribute:v61 atIndex:0 effectiveRange:buf];
+            backingStore6 = [(REMCRMutableAttributedString *)self backingStore];
+            v63 = [backingStore6 attribute:v61 atIndex:0 effectiveRange:buf];
 
             if (v63)
             {
@@ -279,7 +279,7 @@ LABEL_20:
         }
 
         while (v57);
-        v7 = v58;
+        stringCopy = v58;
         location = v69.location;
       }
 
@@ -288,31 +288,31 @@ LABEL_20:
   }
 
 LABEL_22:
-  v24 = [(REMCRMutableAttributedString *)self backingStore];
-  v25 = [v24 length];
+  backingStore7 = [(REMCRMutableAttributedString *)self backingStore];
+  v25 = [backingStore7 length];
 
-  v26 = [(REMCRMutableAttributedString *)self backingStore];
-  [v26 replaceCharactersInRange:location withString:{v69.length, v7}];
+  backingStore8 = [(REMCRMutableAttributedString *)self backingStore];
+  [backingStore8 replaceCharactersInRange:location withString:{v69.length, stringCopy}];
 
-  v27 = [(REMCRMutableAttributedString *)self backingStore];
-  -[REMCRMutableAttributedString reportDidEdit:range:changeInLength:](self, "reportDidEdit:range:changeInLength:", 2, location, v69.length, [v27 length] - v25);
+  backingStore9 = [(REMCRMutableAttributedString *)self backingStore];
+  -[REMCRMutableAttributedString reportDidEdit:range:changeInLength:](self, "reportDidEdit:range:changeInLength:", 2, location, v69.length, [backingStore9 length] - v25);
 
   v28 = location;
   v29 = v65;
   if ([v65 count])
   {
-    v30 = [(REMCRMutableAttributedString *)self backingStore];
-    v31 = [v30 attributesAtIndex:v28 effectiveRange:0];
+    backingStore10 = [(REMCRMutableAttributedString *)self backingStore];
+    v31 = [backingStore10 attributesAtIndex:v28 effectiveRange:0];
 
     v32 = [v31 mutableCopy];
-    v33 = [v65 allObjects];
-    [v32 removeObjectsForKeys:v33];
+    allObjects = [v65 allObjects];
+    [v32 removeObjectsForKeys:allObjects];
 
-    v34 = v7;
-    v35 = [v7 length];
-    v36 = [(REMCRMutableAttributedString *)self backingStore];
+    v34 = stringCopy;
+    v35 = [stringCopy length];
+    backingStore11 = [(REMCRMutableAttributedString *)self backingStore];
     v37 = [v32 copy];
-    [v36 setAttributes:v37 range:{v28, v35}];
+    [backingStore11 setAttributes:v37 range:{v28, v35}];
 
     [(REMCRMutableAttributedString *)self reportDidEdit:1 range:v28 changeInLength:v35, 0];
     v38 = +[REMLog crdt];
@@ -330,7 +330,7 @@ LABEL_22:
       _os_log_impl(&dword_19A0DB000, v38, OS_LOG_TYPE_INFO, "REMCRMutableAttributedString: Non-editable attributes were extended around the insertion point, now unapply the extension to the attributes {self: %p, keys: %@, range: %@}", buf, 0x20u);
     }
 
-    v7 = v34;
+    stringCopy = v34;
     v29 = v65;
   }
 
@@ -352,37 +352,37 @@ void __68__REMCRMutableAttributedString_replaceCharactersInRange_withString___bl
   }
 }
 
-- (void)setAttributes:(id)a3 range:(_NSRange)a4
+- (void)setAttributes:(id)attributes range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(REMCRMutableAttributedString *)self backingStore];
-  [v8 setAttributes:v7 range:{location, length}];
+  length = range.length;
+  location = range.location;
+  attributesCopy = attributes;
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  [backingStore setAttributes:attributesCopy range:{location, length}];
 
   [(REMCRMutableAttributedString *)self reportDidEdit:1 range:location changeInLength:length, 0];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [(REMCRMutableAttributedString *)self backingStore];
-  v5 = [v4 mutableCopyWithZone:a3];
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  v5 = [backingStore mutableCopyWithZone:zone];
 
   v6 = [[REMCRMutableAttributedString allocWithZone:?], "initWithBackingStore:", v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMCRMutableAttributedString *)self backingStore];
-  [v4 encodeObject:v5 forKey:@"backingStore"];
+  coderCopy = coder;
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  [coderCopy encodeObject:backingStore forKey:@"backingStore"];
 }
 
-- (REMCRMutableAttributedString)initWithCoder:(id)a3
+- (REMCRMutableAttributedString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backingStore"];
 
   v6 = [(REMCRMutableAttributedString *)self initWithBackingStore:v5];
   return v6;
@@ -390,39 +390,39 @@ void __68__REMCRMutableAttributedString_replaceCharactersInRange_withString___bl
 
 - (unint64_t)hash
 {
-  v2 = [(REMCRMutableAttributedString *)self backingStore];
-  v3 = [v2 hash];
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  v3 = [backingStore hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMCRMutableAttributedString *)self backingStore];
-      v8 = [(REMCRMutableAttributedString *)v6 backingStore];
-      if (v7 == v8)
+      backingStore = [(REMCRMutableAttributedString *)self backingStore];
+      backingStore2 = [(REMCRMutableAttributedString *)v6 backingStore];
+      if (backingStore == backingStore2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMCRMutableAttributedString *)self backingStore];
-        v10 = [(REMCRMutableAttributedString *)v6 backingStore];
-        v11 = [v9 isEqual:v10];
+        backingStore3 = [(REMCRMutableAttributedString *)self backingStore];
+        backingStore4 = [(REMCRMutableAttributedString *)v6 backingStore];
+        v11 = [backingStore3 isEqual:backingStore4];
       }
     }
 
@@ -439,8 +439,8 @@ void __68__REMCRMutableAttributedString_replaceCharactersInRange_withString___bl
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMCRMutableAttributedString *)self backingStore];
-  v6 = [v3 stringWithFormat:@"<%@: %p backingStore: %@>", v4, self, v5];
+  backingStore = [(REMCRMutableAttributedString *)self backingStore];
+  v6 = [v3 stringWithFormat:@"<%@: %p backingStore: %@>", v4, self, backingStore];
 
   return v6;
 }
@@ -469,12 +469,12 @@ void __53__REMCRMutableAttributedString_nonEditableAttributes__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportDidEdit:(int64_t)a3 range:(_NSRange)a4 changeInLength:(int64_t)a5
+- (void)reportDidEdit:(int64_t)edit range:(_NSRange)range changeInLength:(int64_t)length
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = [(REMCRMutableAttributedString *)self editObserver];
-  [v10 mutableAttributedString:self didEdit:a3 range:location changeInLength:{length, a5}];
+  length = range.length;
+  location = range.location;
+  editObserver = [(REMCRMutableAttributedString *)self editObserver];
+  [editObserver mutableAttributedString:self didEdit:edit range:location changeInLength:{length, length}];
 }
 
 - (REMCRMutableAttributedStringEditObserver)editObserver

@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerHAPPairingIdentitySet
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerHAPPairingIdentitySet
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -46,9 +46,9 @@
     if (*(v25 + 24) == 1)
     {
       v10 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v19[5];
+        *error = v19[5];
       }
     }
 
@@ -63,11 +63,11 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v11 = MEMORY[0x277CCA9B8];
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create NSSet<HAPPairingIdentity>: %@", v5];
-      *a4 = [v11 hmfErrorWithCode:3 reason:v12];
+      kCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create NSSet<HAPPairingIdentity>: %@", kCopy];
+      *error = [v11 hmfErrorWithCode:3 reason:kCopy];
     }
 
     v10 = 0;
@@ -94,9 +94,9 @@ void __68__HMDCoreDataTransformerHAPPairingIdentitySet_valueFromOPACK_error___bl
   }
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -107,7 +107,7 @@ void __68__HMDCoreDataTransformerHAPPairingIdentitySet_valueFromOPACK_error___bl
   v17 = __Block_byref_object_copy__170269;
   v18 = __Block_byref_object_dispose__170270;
   v19 = 0;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valueCopy, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __68__HMDCoreDataTransformerHAPPairingIdentitySet_OPACKFromValue_error___block_invoke;
@@ -116,13 +116,13 @@ void __68__HMDCoreDataTransformerHAPPairingIdentitySet_valueFromOPACK_error___bl
   v13 = &v20;
   v7 = v6;
   v11 = v7;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  [valueCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
   if (*(v21 + 24) == 1)
   {
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v15[5];
+      *error = v15[5];
     }
   }
 

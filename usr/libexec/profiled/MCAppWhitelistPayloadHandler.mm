@@ -1,13 +1,13 @@
 @interface MCAppWhitelistPayloadHandler
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (void)_postNotification;
 @end
 
 @implementation MCAppWhitelistPayloadHandler
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = [(MCNewPayloadHandler *)self payload:a3];
+  v8 = [(MCNewPayloadHandler *)self payload:installer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -16,10 +16,10 @@
     return 1;
   }
 
-  v10 = [(MCNewPayloadHandler *)self payload];
+  payload = [(MCNewPayloadHandler *)self payload];
   v11 = +[MCRestrictionManager sharedManager];
-  v12 = [v10 applicationBundleID];
-  v13 = [v11 allowedToRunAppWithBundleID:v12];
+  applicationBundleID = [payload applicationBundleID];
+  v13 = [v11 allowedToRunAppWithBundleID:applicationBundleID];
 
   if (v13)
   {
@@ -31,36 +31,36 @@
   v15 = MCErrorArray();
   v16 = MCErrorTypeFatal;
   v17 = [NSError MCErrorWithDomain:v14 code:48000 descriptionArray:v15 errorType:MCErrorTypeFatal, 0];
-  v18 = [v17 MCCopyAsPrimaryError];
+  mCCopyAsPrimaryError = [v17 MCCopyAsPrimaryError];
 
-  if (!v18)
+  if (!mCCopyAsPrimaryError)
   {
     return 1;
   }
 
   v19 = MCInstallationErrorDomain;
-  v20 = [(MCNewPayloadHandler *)self payload];
-  v21 = [v20 friendlyName];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  friendlyName = [payload2 friendlyName];
   v22 = MCErrorArray();
-  v23 = [NSError MCErrorWithDomain:v19 code:4001 descriptionArray:v22 underlyingError:v18 errorType:v16, v21, 0];
+  v23 = [NSError MCErrorWithDomain:v19 code:4001 descriptionArray:v22 underlyingError:mCCopyAsPrimaryError errorType:v16, friendlyName, 0];
 
-  if (a6)
+  if (error)
   {
     v24 = v23;
-    *a6 = v23;
+    *error = v23;
   }
 
   v25 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v26 = v25;
-    v27 = [(MCNewPayloadHandler *)self payload];
-    v28 = [v27 friendlyName];
-    v29 = [v23 MCVerboseDescription];
+    payload3 = [(MCNewPayloadHandler *)self payload];
+    friendlyName2 = [payload3 friendlyName];
+    mCVerboseDescription = [v23 MCVerboseDescription];
     *buf = 138543618;
-    v32 = v28;
+    v32 = friendlyName2;
     v33 = 2114;
-    v34 = v29;
+    v34 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "Cannot install app whitelist payload “%{public}@”. Error: %{public}@", buf, 0x16u);
   }
 

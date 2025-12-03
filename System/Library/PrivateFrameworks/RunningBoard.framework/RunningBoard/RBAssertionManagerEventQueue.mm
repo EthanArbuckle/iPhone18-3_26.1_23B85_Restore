@@ -1,22 +1,22 @@
 @interface RBAssertionManagerEventQueue
-- (RBAssertionManagerEventQueue)initWithTimeProvider:(id)a3;
+- (RBAssertionManagerEventQueue)initWithTimeProvider:(id)provider;
 - (RBAssertionManagerQueueDelegate)delegate;
 - (id)description;
 - (unint64_t)count;
-- (void)_queue_enqueueEventsForAssertion:(uint64_t)a1;
-- (void)_queue_enqueueInvalidationEventForAssertion:(double)a3 startTime:;
-- (void)_queue_enqueueProcessExpirationEventsForProcesses:(id *)a1;
-- (void)_queue_enqueueWarningEventForAssertion:(double)a3 startTime:;
-- (void)_queue_removeEventsForContext:(uint64_t)a1;
-- (void)_queue_updateEventsForAssertion:(uint64_t)a1;
-- (void)updateEventsForAssertions:(id)a3;
+- (void)_queue_enqueueEventsForAssertion:(uint64_t)assertion;
+- (void)_queue_enqueueInvalidationEventForAssertion:(double)assertion startTime:;
+- (void)_queue_enqueueProcessExpirationEventsForProcesses:(id *)processes;
+- (void)_queue_enqueueWarningEventForAssertion:(double)assertion startTime:;
+- (void)_queue_removeEventsForContext:(uint64_t)context;
+- (void)_queue_updateEventsForAssertion:(uint64_t)assertion;
+- (void)updateEventsForAssertions:(id)assertions;
 @end
 
 @implementation RBAssertionManagerEventQueue
 
-- (RBAssertionManagerEventQueue)initWithTimeProvider:(id)a3
+- (RBAssertionManagerEventQueue)initWithTimeProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = RBAssertionManagerEventQueue;
   v6 = [(RBAssertionManagerEventQueue *)&v15 init];
@@ -32,8 +32,8 @@
     expirationWarningEvents = v7->_expirationWarningEvents;
     v7->_expirationWarningEvents = v10;
 
-    objc_storeStrong(&v7->_timeProvider, a3);
-    v12 = [[RBEventQueue alloc] initWithQueue:v7->_queue timeProvider:v5];
+    objc_storeStrong(&v7->_timeProvider, provider);
+    v12 = [[RBEventQueue alloc] initWithQueue:v7->_queue timeProvider:providerCopy];
     eventQueue = v7->_eventQueue;
     v7->_eventQueue = v12;
   }
@@ -41,17 +41,17 @@
   return v7;
 }
 
-- (void)updateEventsForAssertions:(id)a3
+- (void)updateEventsForAssertions:(id)assertions
 {
-  v4 = a3;
+  assertionsCopy = assertions;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__RBAssertionManagerEventQueue_updateEventsForAssertions___block_invoke;
   v7[3] = &unk_279B32B80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = assertionsCopy;
+  v6 = assertionsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -275,11 +275,11 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
   return WeakRetained;
 }
 
-- (void)_queue_updateEventsForAssertion:(uint64_t)a1
+- (void)_queue_updateEventsForAssertion:(uint64_t)assertion
 {
   v10 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (assertion)
   {
     v4 = rbs_assertion_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -289,21 +289,21 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
       OUTLINED_FUNCTION_1_1(&dword_262485000, v5, v6, "Updating events for assertion: %{public}@", &v8);
     }
 
-    [(RBAssertionManagerEventQueue *)a1 _queue_removeEventsForContext:v3];
-    [(RBAssertionManagerEventQueue *)a1 _queue_enqueueEventsForAssertion:v3];
+    [(RBAssertionManagerEventQueue *)assertion _queue_removeEventsForContext:v3];
+    [(RBAssertionManagerEventQueue *)assertion _queue_enqueueEventsForAssertion:v3];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_enqueueProcessExpirationEventsForProcesses:(id *)a1
+- (void)_queue_enqueueProcessExpirationEventsForProcesses:(id *)processes
 {
   v61 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v11 = v3;
-  if (a1)
+  if (processes)
   {
-    v12 = OUTLINED_FUNCTION_2_1(v3, v4, v5, v6, v7, v8, v9, v10, v38, v40, v41, v43, v44, v45, v46, v47, v48, v49, 0, 0, 0, 0, 0, 0, 0, 0, *buf, *&buf[8], *&buf[16], v59, v60);
+    v12 = OUTLINED_FUNCTION_2_1(v3, v4, v5, v6, v7, v8, v9, v10, v38, v40, v41, v43, v44, v45, v46, processesCopy, v48, v49, 0, 0, 0, 0, 0, 0, 0, 0, *buf, *&buf[8], *&buf[16], v59, v60);
     if (v12)
     {
       v14 = v12;
@@ -320,32 +320,32 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
           }
 
           v17 = *(v51 + 8 * i);
-          v18 = [a1[4] removeValueForIdentity:{v17, v39}];
+          v18 = [processes[4] removeValueForIdentity:{v17, v39}];
           if (v18)
           {
-            [a1[3] removeEvent:v18];
+            [processes[3] removeEvent:v18];
           }
 
-          WeakRetained = objc_loadWeakRetained(a1 + 6);
-          [WeakRetained eventQueue:a1 remainingRuntimeForProcessIdentity:v17];
+          WeakRetained = objc_loadWeakRetained(processes + 6);
+          [WeakRetained eventQueue:processes remainingRuntimeForProcessIdentity:v17];
           v21 = v20;
 
           if (v21 <= 0.5)
           {
-            [a1[4] removeIdentity:v17];
+            [processes[4] removeIdentity:v17];
           }
 
           else
           {
-            [a1[5] currentTime];
+            [processes[5] currentTime];
             v23 = fmax(v21 + -5.0, 0.0) + v22;
             v24 = v21 + v22;
             v25 = rbs_assertion_log();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
             {
-              v36 = [v17 shortDescription];
+              shortDescription = [v17 shortDescription];
               *buf = v39;
-              *&buf[4] = v36;
+              *&buf[4] = shortDescription;
               *&buf[12] = 2048;
               *&buf[14] = v23;
               *&buf[22] = 2048;
@@ -360,16 +360,16 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
             v44 = 3221225472;
             v45 = __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsForProcesses___block_invoke;
             v46 = &unk_279B32BF8;
-            v47 = a1;
+            processesCopy = processes;
             v48 = v17;
             v49 = *&v24;
             [(RBEventQueueEvent *)v26 setAction:&v43];
-            v27 = [a1[4] setValue:v26 forIdentity:v17];
-            [a1[3] addEvent:v26];
+            v27 = [processes[4] setValue:v26 forIdentity:v17];
+            [processes[3] addEvent:v26];
           }
         }
 
-        v14 = OUTLINED_FUNCTION_2_1(v28, v29, v30, v31, v32, v33, v34, v35, v39, *(&v39 + 1), v42, v43, v44, v45, v46, v47, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, *buf, *&buf[8], *&buf[16], v59, v60);
+        v14 = OUTLINED_FUNCTION_2_1(v28, v29, v30, v31, v32, v33, v34, v35, v39, *(&v39 + 1), v42, v43, v44, v45, v46, processesCopy, v48, v49, v50, v51, v52, v53, v54, v55, v56, v57, *buf, *&buf[8], *&buf[16], v59, v60);
       }
 
       while (v14);
@@ -379,11 +379,11 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeEventsForContext:(uint64_t)a1
+- (void)_queue_removeEventsForContext:(uint64_t)context
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v4 = rbs_assertion_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -393,13 +393,13 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
       OUTLINED_FUNCTION_1_1(&dword_262485000, v5, v6, "Removing events for context: %{public}@", &v21);
     }
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [*(a1 + 24) events];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    events = [*(context + 24) events];
+    v9 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -410,39 +410,39 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(events);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
-          v14 = [v13 context];
+          context = [v13 context];
 
-          if (v14 == v3)
+          if (context == v3)
           {
-            [v7 addObject:v13];
+            [array addObject:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
 
-    if ([v7 count])
+    if ([array count])
     {
-      [*(a1 + 24) removeEvents:v7];
+      [*(context + 24) removeEvents:array];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_enqueueEventsForAssertion:(uint64_t)a1
+- (void)_queue_enqueueEventsForAssertion:(uint64_t)assertion
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (a1 && [v3 isActive] && objc_msgSend(v4, "isValid"))
+  if (assertion && [v3 isActive] && objc_msgSend(v4, "isValid"))
   {
     v5 = rbs_assertion_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -452,12 +452,12 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
       OUTLINED_FUNCTION_1_1(&dword_262485000, v6, v7, "Enqueueing events for assertion: %{public}@", &v12);
     }
 
-    v8 = *(a1 + 24);
+    v8 = *(assertion + 24);
     OUTLINED_FUNCTION_0_2();
     v10[1] = 3221225472;
     v10[2] = __65__RBAssertionManagerEventQueue__queue_enqueueEventsForAssertion___block_invoke;
     v10[3] = &unk_279B32B80;
-    v10[4] = a1;
+    v10[4] = assertion;
     v11 = v4;
     [v8 batchModify:v10];
   }
@@ -465,11 +465,11 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_enqueueWarningEventForAssertion:(double)a3 startTime:
+- (void)_queue_enqueueWarningEventForAssertion:(double)assertion startTime:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     [v5 warningDuration];
     v8 = v7;
@@ -478,7 +478,7 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
       if ([v6 isValid] && v8 > 0.0)
       {
         [v6 invalidationDuration];
-        v10 = fmax(v9 - v8, 0.0) + a3;
+        v10 = fmax(v9 - v8, 0.0) + assertion;
         v11 = objc_alloc_init(RBEventQueueEvent);
         [(RBEventQueueEvent *)v11 setContext:v6];
         [(RBEventQueueEvent *)v11 setEventTime:v10];
@@ -487,19 +487,19 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
         v12[2] = __81__RBAssertionManagerEventQueue__queue_enqueueWarningEventForAssertion_startTime___block_invoke;
         v12[3] = &unk_279B32BD0;
         v13 = v6;
-        v14 = a1;
+        selfCopy = self;
         [(RBEventQueueEvent *)v11 setAction:v12];
-        [*(a1 + 24) addEvent:v11];
+        [*(self + 24) addEvent:v11];
       }
     }
   }
 }
 
-- (void)_queue_enqueueInvalidationEventForAssertion:(double)a3 startTime:
+- (void)_queue_enqueueInvalidationEventForAssertion:(double)assertion startTime:
 {
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     if ([v5 isActive])
     {
@@ -511,7 +511,7 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
           if ([v6 endPolicy])
           {
             [v6 invalidationDuration];
-            v9 = fmax(v8 + a3, 0.0);
+            v9 = fmax(v8 + assertion, 0.0);
             v10 = objc_alloc_init(RBEventQueueEvent);
             [(RBEventQueueEvent *)v10 setContext:v6];
             [(RBEventQueueEvent *)v10 setEventTime:v9];
@@ -520,9 +520,9 @@ void __82__RBAssertionManagerEventQueue__queue_enqueueProcessExpirationEventsFor
             v11[2] = __86__RBAssertionManagerEventQueue__queue_enqueueInvalidationEventForAssertion_startTime___block_invoke;
             v11[3] = &unk_279B32BD0;
             v12 = v6;
-            v13 = a1;
+            selfCopy = self;
             [(RBEventQueueEvent *)v10 setAction:v11];
-            [*(a1 + 24) addEvent:v10];
+            [*(self + 24) addEvent:v10];
           }
         }
       }

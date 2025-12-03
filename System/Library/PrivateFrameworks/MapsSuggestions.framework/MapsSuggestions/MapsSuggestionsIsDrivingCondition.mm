@@ -1,6 +1,6 @@
 @interface MapsSuggestionsIsDrivingCondition
 - (BOOL)isTrue;
-- (_TtC15MapsSuggestions33MapsSuggestionsIsDrivingCondition)initWithName:(id)a3;
+- (_TtC15MapsSuggestions33MapsSuggestionsIsDrivingCondition)initWithName:(id)name;
 @end
 
 @implementation MapsSuggestionsIsDrivingCondition
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (_TtC15MapsSuggestions33MapsSuggestionsIsDrivingCondition)initWithName:(id)a3
+- (_TtC15MapsSuggestions33MapsSuggestionsIsDrivingCondition)initWithName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

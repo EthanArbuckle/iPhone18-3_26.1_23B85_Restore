@@ -1,7 +1,7 @@
 @interface OSLogEventBacktrace
-- (OSLogEventBacktrace)initWithBacktrace:(os_log_backtrace_s *)a3;
-- (OSLogEventBacktrace)initWithFrames:(id)a3;
-- (OSLogEventBacktrace)initWithSingleFrame:(id)a3;
+- (OSLogEventBacktrace)initWithBacktrace:(os_log_backtrace_s *)backtrace;
+- (OSLogEventBacktrace)initWithFrames:(id)frames;
+- (OSLogEventBacktrace)initWithSingleFrame:(id)frame;
 - (void)dealloc;
 @end
 
@@ -14,33 +14,33 @@
   [(OSLogEventBacktrace *)&v3 dealloc];
 }
 
-- (OSLogEventBacktrace)initWithFrames:(id)a3
+- (OSLogEventBacktrace)initWithFrames:(id)frames
 {
   v6.receiver = self;
   v6.super_class = OSLogEventBacktrace;
   v4 = [(OSLogEventBacktrace *)&v6 init];
   if (v4)
   {
-    v4->_frames = a3;
+    v4->_frames = frames;
   }
 
   return v4;
 }
 
-- (OSLogEventBacktrace)initWithSingleFrame:(id)a3
+- (OSLogEventBacktrace)initWithSingleFrame:(id)frame
 {
   v6.receiver = self;
   v6.super_class = OSLogEventBacktrace;
   v4 = [(OSLogEventBacktrace *)&v6 init];
   if (v4)
   {
-    v4->_frames = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{a3, 0}];
+    v4->_frames = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{frame, 0}];
   }
 
   return v4;
 }
 
-- (OSLogEventBacktrace)initWithBacktrace:(os_log_backtrace_s *)a3
+- (OSLogEventBacktrace)initWithBacktrace:(os_log_backtrace_s *)backtrace
 {
   v8.receiver = self;
   v8.super_class = OSLogEventBacktrace;

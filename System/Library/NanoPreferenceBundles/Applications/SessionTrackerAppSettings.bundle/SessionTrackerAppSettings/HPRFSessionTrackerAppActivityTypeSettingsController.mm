@@ -1,21 +1,21 @@
 @interface HPRFSessionTrackerAppActivityTypeSettingsController
-- (BOOL)metricEnabledForType:(unint64_t)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
+- (BOOL)metricEnabledForType:(unint64_t)type;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
 - (HPRFSessionTrackerAppActivityTypeSettingsController)init;
-- (id)_metricSpecifiersForSettingSection:(unint64_t)a3;
-- (id)_specifierForMetricType:(unint64_t)a3;
-- (id)metricEnabledForSpecifier:(id)a3;
+- (id)_metricSpecifiersForSettingSection:(unint64_t)section;
+- (id)_specifierForMetricType:(unint64_t)type;
+- (id)metricEnabledForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_handleFitnessUnitPreferencesDidChange;
 - (void)dealloc;
-- (void)setMetricEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)setMetricEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 @end
 
 @implementation HPRFSessionTrackerAppActivityTypeSettingsController
@@ -30,9 +30,9 @@
     v3 = +[NRPairedDeviceRegistry sharedInstance];
     v4 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
     v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     device = v2->_device;
-    v2->_device = v6;
+    v2->_device = firstObject;
 
     v8 = v2->_device;
     v9 = FIUIHealthStoreForDevice();
@@ -72,21 +72,21 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = HPRFSessionTrackerAppActivityTypeSettingsController;
-  v4 = a3;
-  [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v14 setSpecifier:v4];
-  v5 = [v4 hprf_workoutActivityType];
+  specifierCopy = specifier;
+  [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v14 setSpecifier:specifierCopy];
+  hprf_workoutActivityType = [specifierCopy hprf_workoutActivityType];
 
-  v6 = [[FIUIWorkoutSettingsManager alloc] initWithWorkoutActivityType:v5 activityMoveMode:self->_activityMoveMode];
+  v6 = [[FIUIWorkoutSettingsManager alloc] initWithWorkoutActivityType:hprf_workoutActivityType activityMoveMode:self->_activityMoveMode];
   settingManager = self->_settingManager;
   self->_settingManager = v6;
 
   workoutActivityType = self->_workoutActivityType;
-  self->_workoutActivityType = v5;
-  v9 = v5;
+  self->_workoutActivityType = hprf_workoutActivityType;
+  v9 = hprf_workoutActivityType;
 
   v10 = [NPSDomainAccessor alloc];
   v11 = [v10 initWithDomain:kNLSessionTrackerAppPreferencesDomain];
@@ -131,19 +131,19 @@
   return v4;
 }
 
-- (id)_metricSpecifiersForSettingSection:(unint64_t)a3
+- (id)_metricSpecifiersForSettingSection:(unint64_t)section
 {
-  if (a3 == 1)
+  if (section == 1)
   {
-    v4 = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedDisabledMetrics];
+    orderedDisabledMetrics = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedDisabledMetrics];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!section)
   {
-    v4 = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedEnabledMetrics];
+    orderedDisabledMetrics = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedEnabledMetrics];
 LABEL_5:
-    v5 = v4;
+    v5 = orderedDisabledMetrics;
     goto LABEL_7;
   }
 
@@ -169,10 +169,10 @@ LABEL_7:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) integerValue];
-        if ([(HPRFSessionTrackerAppActivityTypeSettingsController *)self metricEnabledForType:v12])
+        integerValue = [*(*(&v15 + 1) + 8 * i) integerValue];
+        if ([(HPRFSessionTrackerAppActivityTypeSettingsController *)self metricEnabledForType:integerValue])
         {
-          v13 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self _specifierForMetricType:v12];
+          v13 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self _specifierForMetricType:integerValue];
           [v6 addObject:v13];
         }
       }
@@ -186,15 +186,15 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)metricEnabledForType:(unint64_t)a3
+- (BOOL)metricEnabledForType:(unint64_t)type
 {
-  if (a3 == 10)
+  if (type == 10)
   {
     v3 = @"D1DBCF21-D875-4EA8-B63E-8182578C0B0C";
     goto LABEL_5;
   }
 
-  if (a3 == 17)
+  if (type == 17)
   {
     v3 = @"CB81F0AE-3F2F-4D57-8C90-F0D1A4ADD373";
 LABEL_5:
@@ -208,38 +208,38 @@ LABEL_5:
   return 1;
 }
 
-- (id)_specifierForMetricType:(unint64_t)a3
+- (id)_specifierForMetricType:(unint64_t)type
 {
-  v5 = _LocalizedStringForMetricType(a3, self->_workoutActivityType, self->_formattingManager);
+  v5 = _LocalizedStringForMetricType(type, self->_workoutActivityType, self->_formattingManager);
   v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:"setMetricEnabled:forSpecifier:" get:"metricEnabledForSpecifier:" detail:0 cell:-1 edit:0];
 
-  [v6 hprf_setMetricType:a3];
+  [v6 hprf_setMetricType:type];
 
   return v6;
 }
 
-- (id)metricEnabledForSpecifier:(id)a3
+- (id)metricEnabledForSpecifier:(id)specifier
 {
-  v3 = -[FIUIWorkoutSettingsManager isMetricEnabled:](self->_settingManager, "isMetricEnabled:", [a3 hprf_metricType]);
+  v3 = -[FIUIWorkoutSettingsManager isMetricEnabled:](self->_settingManager, "isMetricEnabled:", [specifier hprf_metricType]);
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setMetricEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setMetricEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a4;
-  -[HPRFSessionTrackerAppActivityTypeSettingsController setMetricEnabled:forSpecifier:autoMove:](self, "setMetricEnabled:forSpecifier:autoMove:", [a3 BOOLValue], v6, 1);
+  specifierCopy = specifier;
+  -[HPRFSessionTrackerAppActivityTypeSettingsController setMetricEnabled:forSpecifier:autoMove:](self, "setMetricEnabled:forSpecifier:autoMove:", [enabled BOOLValue], specifierCopy, 1);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = HPRFSessionTrackerAppActivityTypeSettingsController;
-  v5 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 hprf_metricType];
+  v5 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v14 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  hprf_metricType = [specifier hprf_metricType];
 
-  if (v7 == &dword_4 + 1)
+  if (hprf_metricType == &dword_4 + 1)
   {
     v8 = FIUIIsHeartRateEnabled();
     if ([(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== &stru_20.segname[12] || [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== &dword_18 || [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== &stru_20.cmdsize + 1 || [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== &stru_20.vmsize + 6 || [(FIUIWorkoutActivityType *)self->_workoutActivityType identifier]== &stru_20.vmsize + 7)
@@ -252,26 +252,26 @@ LABEL_5:
       v9 = 1;
     }
 
-    v10 = [v5 textLabel];
-    v11 = v10;
+    textLabel = [v5 textLabel];
+    v11 = textLabel;
     v12 = 0.25;
     if ((v8 & v9) != 0)
     {
       v12 = 1.0;
     }
 
-    [v10 setAlpha:v12];
+    [textLabel setAlpha:v12];
   }
 
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([v5 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v5 section] != &dword_0 + 1)
+    if ([pathCopy section] != &dword_0 + 1)
     {
       v8 = 1;
       goto LABEL_7;
@@ -285,22 +285,22 @@ LABEL_5:
     v6 = &dword_0 + 2;
   }
 
-  v7 = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedEnabledMetrics];
-  v8 = [v7 count] != v6;
+  orderedEnabledMetrics = [(FIUIWorkoutSettingsManager *)self->_settingManager orderedEnabledMetrics];
+  v8 = [orderedEnabledMetrics count] != v6;
 
 LABEL_7:
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self table];
-  v7 = [v6 isEditing];
+  pathCopy = path;
+  table = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self table];
+  isEditing = [table isEditing];
 
-  if (v7)
+  if (isEditing)
   {
-    if ([v5 section])
+    if ([pathCopy section])
     {
       v8 = 2;
     }
@@ -319,7 +319,7 @@ LABEL_7:
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"DELETE_BUTTON_TITLE" value:&stru_35B68 table:@"SessionTrackerAppSettings"];
@@ -327,22 +327,22 @@ LABEL_7:
   return v5;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:pathCopy];
   v12.receiver = self;
   v12.super_class = HPRFSessionTrackerAppActivityTypeSettingsController;
-  [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v12 tableView:v9 commitEditingStyle:a4 forRowAtIndexPath:v8];
+  [(HPRFSessionTrackerAppActivityTypeSettingsController *)&v12 tableView:viewCopy commitEditingStyle:style forRowAtIndexPath:pathCopy];
 
-  if (a4 == 2)
+  if (style == 2)
   {
     v11 = 1;
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (style == 1)
   {
     v11 = 0;
 LABEL_5:
@@ -350,14 +350,14 @@ LABEL_5:
   }
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:a4];
-  v11 = v9;
-  v12 = [v11 section];
-  if (![v11 section] && objc_msgSend(v8, "numberOfRowsInSection:", 0) > 5 || (v13 = v11, v12 == &dword_0 + 1))
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  v10 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:path];
+  v11 = indexPathCopy;
+  section = [v11 section];
+  if (![v11 section] && objc_msgSend(viewCopy, "numberOfRowsInSection:", 0) > 5 || (v13 = v11, section == &dword_0 + 1))
   {
     v13 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", -[FIUIWorkoutSettingsManager disabledIndexForMetricType:](self->_settingManager, "disabledIndexForMetricType:", [v10 hprf_metricType]), 1);
   }
@@ -365,22 +365,22 @@ LABEL_5:
   return v13;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v11 = a5;
-  v7 = a4;
-  v8 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:v7];
-  v9 = [v11 section];
-  v10 = [v7 section];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  v8 = [(HPRFSessionTrackerAppActivityTypeSettingsController *)self specifierAtIndexPath:pathCopy];
+  section = [indexPathCopy section];
+  section2 = [pathCopy section];
 
-  if (v10 != [v11 section])
+  if (section2 != [indexPathCopy section])
   {
-    [(HPRFSessionTrackerAppActivityTypeSettingsController *)self setMetricEnabled:v9 == 0 forSpecifier:v8 autoMove:0];
+    [(HPRFSessionTrackerAppActivityTypeSettingsController *)self setMetricEnabled:section == 0 forSpecifier:v8 autoMove:0];
   }
 
-  if (!v9)
+  if (!section)
   {
-    -[FIUIWorkoutSettingsManager moveMetricType:toEnabledIndex:](self->_settingManager, "moveMetricType:toEnabledIndex:", [v8 hprf_metricType], objc_msgSend(v11, "row"));
+    -[FIUIWorkoutSettingsManager moveMetricType:toEnabledIndex:](self->_settingManager, "moveMetricType:toEnabledIndex:", [v8 hprf_metricType], objc_msgSend(indexPathCopy, "row"));
   }
 
   [(HPRFSessionTrackerAppActivityTypeSettingsController *)self reloadSpecifiers];

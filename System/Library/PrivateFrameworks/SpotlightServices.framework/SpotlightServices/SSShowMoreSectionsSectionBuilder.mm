@@ -11,7 +11,7 @@
 {
   if (isMacOS())
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___SSShowMoreSectionsSectionBuilder;
     v3 = objc_msgSendSuper2(&v5, sel_supportedBundleId);
   }
@@ -27,27 +27,27 @@
 - (id)buildSection
 {
   v3 = objc_opt_new();
-  v4 = [(SSShowMoreSectionsSectionBuilder *)self buildCardSections];
-  [v3 setCardSections:v4];
+  buildCardSections = [(SSShowMoreSectionsSectionBuilder *)self buildCardSections];
+  [v3 setCardSections:buildCardSections];
 
   v5 = objc_opt_new();
   [v5 setBundleIdentifier:@"com.apple.other:show_more"];
-  v6 = [(SSShowMoreSectionsSectionBuilder *)self buildBridgedResult];
-  [v5 addResults:v6];
+  buildBridgedResult = [(SSShowMoreSectionsSectionBuilder *)self buildBridgedResult];
+  [v5 addResults:buildBridgedResult];
 
   return v5;
 }
 
 - (id)buildBridgedResult
 {
-  v3 = [(SSSectionBuilder *)self queryContext];
-  v4 = [v3 queryIdent];
+  queryContext = [(SSSectionBuilder *)self queryContext];
+  queryIdent = [queryContext queryIdent];
 
   v5 = objc_opt_new();
-  v6 = [(SSShowMoreSectionsSectionBuilder *)self buildCardSections];
-  [v5 setCardSections:v6];
+  buildCardSections = [(SSShowMoreSectionsSectionBuilder *)self buildCardSections];
+  [v5 setCardSections:buildCardSections];
 
-  [v5 setQueryId:v4];
+  [v5 setQueryId:queryIdent];
   v7 = objc_opt_new();
   [v7 setType:2];
   [v7 setIdentifier:@"com.apple.other:show_more"];
@@ -60,7 +60,7 @@
   [v7 setTitle:v11];
 
   [v7 setInlineCard:v5];
-  [v7 setQueryId:v4];
+  [v7 setQueryId:queryIdent];
 
   return v7;
 }

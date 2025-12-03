@@ -1,40 +1,40 @@
 @interface SKADatabaseSubscriptionAssertion
-- (SKADatabaseSubscriptionAssertion)initWithChannelIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5;
-- (SKADatabaseSubscriptionAssertion)initWithCoreDataSubscriptionAssertion:(id)a3;
+- (SKADatabaseSubscriptionAssertion)initWithChannelIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier;
+- (SKADatabaseSubscriptionAssertion)initWithCoreDataSubscriptionAssertion:(id)assertion;
 @end
 
 @implementation SKADatabaseSubscriptionAssertion
 
-- (SKADatabaseSubscriptionAssertion)initWithCoreDataSubscriptionAssertion:(id)a3
+- (SKADatabaseSubscriptionAssertion)initWithCoreDataSubscriptionAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [v4 channelIdentifier];
-  v6 = [v4 statusTypeIdentifier];
-  v7 = [v4 applicationIdentifier];
+  assertionCopy = assertion;
+  channelIdentifier = [assertionCopy channelIdentifier];
+  statusTypeIdentifier = [assertionCopy statusTypeIdentifier];
+  applicationIdentifier = [assertionCopy applicationIdentifier];
 
-  v8 = [(SKADatabaseSubscriptionAssertion *)self initWithChannelIdentifier:v5 statusTypeIdentifier:v6 applicationIdentifier:v7];
+  v8 = [(SKADatabaseSubscriptionAssertion *)self initWithChannelIdentifier:channelIdentifier statusTypeIdentifier:statusTypeIdentifier applicationIdentifier:applicationIdentifier];
   return v8;
 }
 
-- (SKADatabaseSubscriptionAssertion)initWithChannelIdentifier:(id)a3 statusTypeIdentifier:(id)a4 applicationIdentifier:(id)a5
+- (SKADatabaseSubscriptionAssertion)initWithChannelIdentifier:(id)identifier statusTypeIdentifier:(id)typeIdentifier applicationIdentifier:(id)applicationIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  typeIdentifierCopy = typeIdentifier;
+  applicationIdentifierCopy = applicationIdentifier;
   v19.receiver = self;
   v19.super_class = SKADatabaseSubscriptionAssertion;
   v11 = [(SKADatabaseSubscriptionAssertion *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     channelIdentifier = v11->_channelIdentifier;
     v11->_channelIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [typeIdentifierCopy copy];
     statusTypeIdentifier = v11->_statusTypeIdentifier;
     v11->_statusTypeIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [applicationIdentifierCopy copy];
     applicationIdentifier = v11->_applicationIdentifier;
     v11->_applicationIdentifier = v16;
   }

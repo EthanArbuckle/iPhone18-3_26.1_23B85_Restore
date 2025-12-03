@@ -1,20 +1,20 @@
 @interface MSVQRConnection
-+ (id)connectionWithDataSource:(id)a3 messageCoder:(id)a4;
-+ (id)createFramerDefinitionWithIdentifier:(id)a3;
-- (MSVQRConnection)initWithDataSource:(id)a3 messageCoder:(id)a4;
++ (id)connectionWithDataSource:(id)source messageCoder:(id)coder;
++ (id)createFramerDefinitionWithIdentifier:(id)identifier;
+- (MSVQRConnection)initWithDataSource:(id)source messageCoder:(id)coder;
 - (MSVQRConnectionDelegate)delegate;
 - (MSVQRConnectionReportProtocol)report;
 - (void)_clearState;
-- (void)_connectionStateDidChangeWithError:(id)a3;
+- (void)_connectionStateDidChangeWithError:(id)error;
 - (void)_createGroupSession;
 - (void)_createQuicConnection;
 - (void)_receiveNextMessage;
-- (void)_sendPathWithCompletion:(id)a3;
-- (void)_terminateWithError:(id)a3;
+- (void)_sendPathWithCompletion:(id)completion;
+- (void)_terminateWithError:(id)error;
 - (void)dealloc;
-- (void)sendMessage:(id)a3;
-- (void)session:(id)a3 didRegisterPluginAllocationInfo:(id)a4;
-- (void)sessionDidJoinGroup:(id)a3 participantUpdate:(id)a4 error:(id)a5;
+- (void)sendMessage:(id)message;
+- (void)session:(id)session didRegisterPluginAllocationInfo:(id)info;
+- (void)sessionDidJoinGroup:(id)group participantUpdate:(id)update error:(id)error;
 - (void)start;
 - (void)stop;
 @end
@@ -38,39 +38,39 @@
 - (void)_createQuicConnection
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(MSVQRConnection *)self dataSource];
-  v4 = [v3 groupSessionIdentifier];
-  v25 = [v4 UUIDString];
+  dataSource = [(MSVQRConnection *)self dataSource];
+  groupSessionIdentifier = [dataSource groupSessionIdentifier];
+  uUIDString = [groupSessionIdentifier UUIDString];
 
-  v26 = [(MSVQRConnection *)self participantIdentifier];
-  v5 = [(MSVQRConnection *)self queue];
-  v6 = [(MSVQRConnection *)self dataSource];
-  v7 = [v6 applicationProtocol];
+  participantIdentifier = [(MSVQRConnection *)self participantIdentifier];
+  queue = [(MSVQRConnection *)self queue];
+  dataSource2 = [(MSVQRConnection *)self dataSource];
+  applicationProtocol = [dataSource2 applicationProtocol];
 
-  v8 = [(MSVQRConnection *)self dataSource];
-  v9 = [v8 trustHandler];
+  dataSource3 = [(MSVQRConnection *)self dataSource];
+  trustHandler = [dataSource3 trustHandler];
 
   objc_initWeak(&location, self);
   v29[1] = MEMORY[0x1E69E9820];
   v29[2] = 3221225472;
   v29[3] = __40__MSVQRConnection__createQuicConnection__block_invoke;
   v29[4] = &unk_1E7982318;
-  v24 = v7;
+  v24 = applicationProtocol;
   v30 = v24;
-  v10 = v9;
+  v10 = trustHandler;
   v32 = v10;
-  v11 = v5;
+  v11 = queue;
   v31 = v11;
   objc_copyWeak(&v33, &location);
   v12 = *MEMORY[0x1E6977EB8];
   quic_stream = nw_parameters_create_quic_stream();
   v14 = nw_parameters_copy_default_protocol_stack(quic_stream);
   nw_protocol_stack_clear_application_protocols(v14);
-  v15 = [(MSVQRConnection *)self framerDefinition];
-  options = nw_framer_create_options(v15);
+  framerDefinition = [(MSVQRConnection *)self framerDefinition];
+  options = nw_framer_create_options(framerDefinition);
 
   nw_protocol_stack_prepend_application_protocol(v14, options);
-  v17 = [MEMORY[0x1E69A4868] augmentNetworkParametersForSession:v25 participantID:objc_msgSend(v26 parameters:{"integerValue"), quic_stream}];
+  v17 = [MEMORY[0x1E69A4868] augmentNetworkParametersForSession:uUIDString participantID:objc_msgSend(participantIdentifier parameters:{"integerValue"), quic_stream}];
   v18 = nw_connection_create(v17, quic_stream);
   [(MSVQRConnection *)self setConnection:v18];
   handler[0] = MEMORY[0x1E69E9820];
@@ -85,15 +85,15 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v36 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v20, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Starting QUIC connection.", buf, 0xCu);
   }
 
-  v21 = [(MSVQRConnection *)self report];
-  [v21 startEvent:@"Start QUIC" withParentEvent:@"Connection"];
+  report = [(MSVQRConnection *)self report];
+  [report startEvent:@"Start QUIC" withParentEvent:@"Connection"];
 
-  v22 = [(MSVQRConnection *)self queue];
-  nw_connection_set_queue(v19, v22);
+  queue2 = [(MSVQRConnection *)self queue];
+  nw_connection_set_queue(v19, queue2);
 
   nw_connection_start(v19);
   objc_destroyWeak(v29);
@@ -315,23 +315,23 @@ void __40__MSVQRConnection__createQuicConnection__block_invoke_3(uint64_t a1, ui
 - (void)_receiveNextMessage
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(MSVQRConnection *)v2 state]== 3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSVQRConnection *)selfCopy state]== 3)
   {
-    v3 = [(MSVQRConnection *)v2 connection];
-    objc_sync_exit(v2);
+    connection = [(MSVQRConnection *)selfCopy connection];
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(location, v2);
+    objc_initWeak(location, selfCopy);
     completion[0] = MEMORY[0x1E69E9820];
     completion[1] = 3221225472;
     completion[2] = __38__MSVQRConnection__receiveNextMessage__block_invoke;
     completion[3] = &unk_1E79822A0;
     objc_copyWeak(&v7, location);
-    nw_connection_receive_message(v3, completion);
+    nw_connection_receive_message(connection, completion);
     objc_destroyWeak(&v7);
     objc_destroyWeak(location);
-    v2 = v3;
+    selfCopy = connection;
   }
 
   else
@@ -340,11 +340,11 @@ void __40__MSVQRConnection__createQuicConnection__block_invoke_3(uint64_t a1, ui
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       LODWORD(location[0]) = 134217984;
-      *(location + 4) = v2;
+      *(location + 4) = selfCopy;
       _os_log_impl(&dword_1AC81F000, v4, OS_LOG_TYPE_ERROR, "[MSVQRConnection] <%p> Cannot receive message because connection is not started.", location, 0xCu);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   v5 = *MEMORY[0x1E69E9840];
@@ -504,36 +504,36 @@ void __38__MSVQRConnection__receiveNextMessage__block_invoke(uint64_t a1, void *
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_connectionStateDidChangeWithError:(id)a3
+- (void)_connectionStateDidChangeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __54__MSVQRConnection__connectionStateDidChangeWithError___block_invoke;
   v12[3] = &unk_1E7982250;
   v12[4] = self;
   v5 = MEMORY[0x1B26EC6C0](v12);
-  v6 = [(MSVQRConnection *)self report];
-  v7 = self;
-  objc_sync_enter(v7);
-  if ([(MSVQRConnection *)v7 state]== 2)
+  report = [(MSVQRConnection *)self report];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSVQRConnection *)selfCopy state]== 2)
   {
-    [v6 endEvent:@"Start QUIC" withError:v4];
+    [report endEvent:@"Start QUIC" withError:errorCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
-  if (((v5)[2](v5, v4) & 1) == 0)
+  if (((v5)[2](v5, errorCopy) & 1) == 0)
   {
-    [v6 startEvent:@"Send Path" withParentEvent:@"Connection"];
+    [report startEvent:@"Send Path" withParentEvent:@"Connection"];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__MSVQRConnection__connectionStateDidChangeWithError___block_invoke_2;
     v8[3] = &unk_1E7982278;
-    v9 = v6;
-    v10 = v7;
+    v9 = report;
+    v10 = selfCopy;
     v11 = v5;
-    [(MSVQRConnection *)v7 _sendPathWithCompletion:v8];
+    [(MSVQRConnection *)selfCopy _sendPathWithCompletion:v8];
   }
 }
 
@@ -612,56 +612,56 @@ void __54__MSVQRConnection__connectionStateDidChangeWithError___block_invoke_2(u
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendPathWithCompletion:(id)a3
+- (void)_sendPathWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v7 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MSVQRConnection *)self dataSource];
-    v9 = [v8 rpcPath];
+    dataSource = [(MSVQRConnection *)self dataSource];
+    rpcPath = [dataSource rpcPath];
     *buf = 134218498;
-    v29 = self;
+    selfCopy = self;
     v30 = 2114;
-    v31 = v9;
+    v31 = rpcPath;
     v32 = 2114;
-    v33 = v6;
+    v33 = uUIDString;
     _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_DEBUG, "[MSVQRConnection] <%p> Sending path %{public}@ with traceID: %{public}@", buf, 0x20u);
   }
 
-  v10 = [(MSVQRConnection *)self dataSource];
-  v11 = [v10 rpcPath];
-  v12 = [v11 dataUsingEncoding:4];
+  dataSource2 = [(MSVQRConnection *)self dataSource];
+  rpcPath2 = [dataSource2 rpcPath];
+  v12 = [rpcPath2 dataUsingEncoding:4];
 
-  v13 = [v12 bytes];
+  bytes = [v12 bytes];
   v14 = [v12 length];
-  v15 = [(MSVQRConnection *)self queue];
-  v16 = dispatch_data_create(v13, v14, v15, 0);
+  queue = [(MSVQRConnection *)self queue];
+  v16 = dispatch_data_create(bytes, v14, queue, 0);
 
   v17 = nw_content_context_create("PathContext");
-  v18 = [(MSVQRConnection *)self framerDefinition];
-  message = nw_framer_protocol_create_message(v18);
+  framerDefinition = [(MSVQRConnection *)self framerDefinition];
+  message = nw_framer_protocol_create_message(framerDefinition);
 
   v26[0] = @"MessageTypeKey";
   v26[1] = @"TraceIdKey";
   v27[0] = @"Path";
-  v27[1] = v6;
+  v27[1] = uUIDString;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
   nw_framer_message_set_object_value(message, "Header", v20);
 
   nw_content_context_set_metadata_for_protocol(v17, message);
-  v21 = [(MSVQRConnection *)self connection];
+  connection = [(MSVQRConnection *)self connection];
   completion[0] = MEMORY[0x1E69E9820];
   completion[1] = 3221225472;
   completion[2] = __43__MSVQRConnection__sendPathWithCompletion___block_invoke;
   completion[3] = &unk_1E7982228;
-  v25 = v4;
-  v22 = v4;
-  nw_connection_send(v21, v16, v17, 1, completion);
+  v25 = completionCopy;
+  v22 = completionCopy;
+  nw_connection_send(connection, v16, v17, 1, completion);
 
   v23 = *MEMORY[0x1E69E9840];
 }
@@ -677,33 +677,33 @@ void __43__MSVQRConnection__sendPathWithCompletion___block_invoke(uint64_t a1, n
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sessionDidJoinGroup:(id)a3 participantUpdate:(id)a4 error:(id)a5
+- (void)sessionDidJoinGroup:(id)group participantUpdate:(id)update error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupCopy = group;
+  updateCopy = update;
+  errorCopy = error;
   v11 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2114;
-    v31 = v10;
+    v31 = errorCopy;
     _os_log_impl(&dword_1AC81F000, v11, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Session did join group with error %{public}@", buf, 0x16u);
   }
 
-  v12 = [(MSVQRConnection *)self guard];
-  v13 = [v12 disarm];
+  guard = [(MSVQRConnection *)self guard];
+  disarm = [guard disarm];
 
-  if (v13)
+  if (disarm)
   {
-    v14 = [(MSVQRConnection *)self report];
-    [v14 endEvent:@"Join Group Session" withError:v10];
+    report = [(MSVQRConnection *)self report];
+    [report endEvent:@"Join Group Session" withError:errorCopy];
     [(MSVQRConnection *)self setGuard:0];
-    if (v10)
+    if (errorCopy)
     {
-      v15 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVQRConnectionError" code:102 underlyingError:v10 debugDescription:@"GroupSession join failed with error."];
+      v15 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"MSVQRConnectionError" code:102 underlyingError:errorCopy debugDescription:@"GroupSession join failed with error."];
       [(MSVQRConnection *)self _terminateWithError:v15];
     }
 
@@ -720,21 +720,21 @@ void __43__MSVQRConnection__sendPathWithCompletion___block_invoke(uint64_t a1, n
       v17 = [(MSVBlockGuard *)v16 initWithTimeout:v23 interruptionHandler:20.0];
       [(MSVQRConnection *)self setGuard:v17];
 
-      [v14 startEvent:@"Register Plugin" withParentEvent:@"Connection"];
+      [report startEvent:@"Register Plugin" withParentEvent:@"Connection"];
       v18 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v29 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1AC81F000, v18, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Register plugin.", buf, 0xCu);
       }
 
       v26 = *MEMORY[0x1E69A4DA8];
-      v19 = [(MSVQRConnection *)self dataSource];
-      v20 = [v19 pluginIdentifier];
-      v27 = v20;
+      dataSource = [(MSVQRConnection *)self dataSource];
+      pluginIdentifier = [dataSource pluginIdentifier];
+      v27 = pluginIdentifier;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-      [v8 registerPluginWithOptions:v21];
+      [groupCopy registerPluginWithOptions:v21];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(&location);
@@ -757,27 +757,27 @@ void __63__MSVQRConnection_sessionDidJoinGroup_participantUpdate_error___block_i
   }
 }
 
-- (void)session:(id)a3 didRegisterPluginAllocationInfo:(id)a4
+- (void)session:(id)session didRegisterPluginAllocationInfo:(id)info
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = [a4 objectForKeyedSubscript:*MEMORY[0x1E69A4D98]];
+  v5 = [info objectForKeyedSubscript:*MEMORY[0x1E69A4D98]];
   v6 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v5;
     _os_log_impl(&dword_1AC81F000, v6, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Registered plugin allocation info. Participant ID: %{public}@", &v12, 0x16u);
   }
 
-  v7 = [(MSVQRConnection *)self guard];
-  v8 = [v7 disarm];
+  guard = [(MSVQRConnection *)self guard];
+  disarm = [guard disarm];
 
-  if (v8)
+  if (disarm)
   {
-    v9 = [(MSVQRConnection *)self report];
-    [v9 endEvent:@"Register Plugin" withError:0];
+    report = [(MSVQRConnection *)self report];
+    [report endEvent:@"Register Plugin" withError:0];
 
     [(MSVQRConnection *)self setGuard:0];
     if (v5)
@@ -799,22 +799,22 @@ void __63__MSVQRConnection_sessionDidJoinGroup_participantUpdate_error___block_i
 - (void)_createGroupSession
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [(MSVQRConnection *)self dataSource];
-  v4 = [v3 account];
+  dataSource = [(MSVQRConnection *)self dataSource];
+  account = [dataSource account];
 
-  if (v4)
+  if (account)
   {
     v5 = objc_alloc(MEMORY[0x1E69A4868]);
-    v6 = [(MSVQRConnection *)self dataSource];
-    v7 = [v6 account];
-    v8 = [(MSVQRConnection *)self dataSource];
-    v9 = [v8 groupSessionOptions];
-    v10 = [v5 initWithAccount:v7 options:v9];
+    dataSource2 = [(MSVQRConnection *)self dataSource];
+    account2 = [dataSource2 account];
+    dataSource3 = [(MSVQRConnection *)self dataSource];
+    groupSessionOptions = [dataSource3 groupSessionOptions];
+    v10 = [v5 initWithAccount:account2 options:groupSessionOptions];
     [(MSVQRConnection *)self setSession:v10];
 
-    v11 = [(MSVQRConnection *)self session];
-    v12 = [(MSVQRConnection *)self queue];
-    [v11 setDelegate:self queue:v12];
+    session = [(MSVQRConnection *)self session];
+    queue = [(MSVQRConnection *)self queue];
+    [session setDelegate:self queue:queue];
 
     objc_initWeak(&location, self);
     v13 = [MSVBlockGuard alloc];
@@ -830,24 +830,24 @@ void __63__MSVQRConnection_sessionDidJoinGroup_participantUpdate_error___block_i
     v15 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MSVQRConnection *)self dataSource];
-      v17 = [v16 groupSessionIdentifier];
+      dataSource4 = [(MSVQRConnection *)self dataSource];
+      groupSessionIdentifier = [dataSource4 groupSessionIdentifier];
       *buf = 134218242;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
-      v33 = v17;
+      v33 = groupSessionIdentifier;
       _os_log_impl(&dword_1AC81F000, v15, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Joining group session with sessionID: %{public}@.", buf, 0x16u);
     }
 
-    v18 = [(MSVQRConnection *)self report];
-    [v18 startEvent:@"Join Group Session" withParentEvent:@"Connection"];
+    report = [(MSVQRConnection *)self report];
+    [report startEvent:@"Join Group Session" withParentEvent:@"Connection"];
 
-    v19 = [(MSVQRConnection *)self session];
+    session2 = [(MSVQRConnection *)self session];
     v28 = *MEMORY[0x1E69A5138];
-    v20 = [MEMORY[0x1E695DEF0] data];
-    v29 = v20;
+    data = [MEMORY[0x1E695DEF0] data];
+    v29 = data;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    [v19 joinWithOptions:v21];
+    [session2 joinWithOptions:v21];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(&location);
@@ -879,44 +879,44 @@ void __38__MSVQRConnection__createGroupSession__block_invoke(uint64_t a1, uint64
 {
   v14 = *MEMORY[0x1E69E9840];
   [(MSVQRConnection *)self setGuard:0];
-  v3 = [(MSVQRConnection *)self connection];
+  connection = [(MSVQRConnection *)self connection];
 
-  if (v3)
+  if (connection)
   {
     v4 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1AC81F000, v4, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Clear connection.", &v12, 0xCu);
     }
 
-    v5 = [(MSVQRConnection *)self connection];
-    nw_connection_set_state_changed_handler(v5, &__block_literal_global_4085);
+    connection2 = [(MSVQRConnection *)self connection];
+    nw_connection_set_state_changed_handler(connection2, &__block_literal_global_4085);
 
-    v6 = [(MSVQRConnection *)self connection];
-    nw_connection_cancel(v6);
+    connection3 = [(MSVQRConnection *)self connection];
+    nw_connection_cancel(connection3);
 
     [(MSVQRConnection *)self setConnection:0];
   }
 
-  v7 = [(MSVQRConnection *)self session];
+  session = [(MSVQRConnection *)self session];
 
-  if (v7)
+  if (session)
   {
     v8 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1AC81F000, v8, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Clear group session.", &v12, 0xCu);
     }
 
-    v9 = [(MSVQRConnection *)self session];
-    [v9 leaveGroupSession];
+    session2 = [(MSVQRConnection *)self session];
+    [session2 leaveGroupSession];
 
-    v10 = [(MSVQRConnection *)self session];
-    [v10 invalidate];
+    session3 = [(MSVQRConnection *)self session];
+    [session3 invalidate];
 
     [(MSVQRConnection *)self setSession:0];
   }
@@ -925,88 +925,88 @@ void __38__MSVQRConnection__createGroupSession__block_invoke(uint64_t a1, uint64
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_terminateWithError:(id)a3
+- (void)_terminateWithError:(id)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(MSVQRConnection *)v5 state]== 1 || ![(MSVQRConnection *)v5 state])
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSVQRConnection *)selfCopy state]== 1 || ![(MSVQRConnection *)selfCopy state])
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    if ([(MSVQRConnection *)v5 state]== 2)
+    if ([(MSVQRConnection *)selfCopy state]== 2)
     {
-      v6 = [(MSVQRConnection *)v5 report];
-      [v6 endEvent:@"Connection" withError:v4];
+      report = [(MSVQRConnection *)selfCopy report];
+      [report endEvent:@"Connection" withError:errorCopy];
     }
 
-    [(MSVQRConnection *)v5 setState:1];
-    objc_sync_exit(v5);
+    [(MSVQRConnection *)selfCopy setState:1];
+    objc_sync_exit(selfCopy);
 
     v7 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v18 = v5;
+      v18 = selfCopy;
       v19 = 2114;
-      v20 = v4;
+      v20 = errorCopy;
       _os_log_impl(&dword_1AC81F000, v7, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Terminating with error %{public}@", buf, 0x16u);
     }
 
-    if ([(MSVQRConnection *)v5 shouldTerminate])
+    if ([(MSVQRConnection *)selfCopy shouldTerminate])
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v4;
+      v8 = errorCopy;
     }
 
     v9 = v8;
-    [(MSVQRConnection *)v5 _clearState];
-    [(MSVQRConnection *)v5 setState:0];
-    v10 = [(MSVQRConnection *)v5 delegate];
+    [(MSVQRConnection *)selfCopy _clearState];
+    [(MSVQRConnection *)selfCopy setState:0];
+    delegate = [(MSVQRConnection *)selfCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(MSVQRConnection *)v5 delegateQueue];
+      delegateQueue = [(MSVQRConnection *)selfCopy delegateQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __39__MSVQRConnection__terminateWithError___block_invoke;
       block[3] = &unk_1E79821B8;
-      v14 = v10;
-      v15 = v5;
+      v14 = delegate;
+      v15 = selfCopy;
       v16 = v9;
-      dispatch_async(v11, block);
+      dispatch_async(delegateQueue, block);
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  messageCopy = message;
+  if (!messageCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"MSVQRConnection.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"message"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVQRConnection.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"message"}];
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(MSVQRConnection *)v6 state]== 3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(MSVQRConnection *)selfCopy state]== 3)
   {
-    v7 = [(MSVQRConnection *)v6 connection];
-    objc_sync_exit(v6);
+    connection = [(MSVQRConnection *)selfCopy connection];
+    objc_sync_exit(selfCopy);
 
-    v8 = [(MSVQRConnection *)v6 messageCoder];
-    v9 = [v8 traceIdentifierForMessage:v5];
+    messageCoder = [(MSVQRConnection *)selfCopy messageCoder];
+    v9 = [messageCoder traceIdentifierForMessage:messageCopy];
     v10 = v9;
     v11 = @"no-trace";
     if (v9)
@@ -1020,26 +1020,26 @@ void __38__MSVQRConnection__createGroupSession__block_invoke(uint64_t a1, uint64
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218499;
-      v35 = v6;
+      v35 = selfCopy;
       v36 = 2114;
       v37 = v12;
       v38 = 2113;
-      v39 = v5;
+      v39 = messageCopy;
       _os_log_impl(&dword_1AC81F000, v13, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Sending message: [%{public}@]%{private}@", buf, 0x20u);
     }
 
-    v14 = [(MSVQRConnection *)v6 messageCoder];
-    v15 = [v14 dataFromMessage:v5];
+    messageCoder2 = [(MSVQRConnection *)selfCopy messageCoder];
+    v15 = [messageCoder2 dataFromMessage:messageCopy];
 
     v16 = v15;
-    v17 = [v15 bytes];
+    bytes = [v15 bytes];
     v18 = [v15 length];
-    v19 = [(MSVQRConnection *)v6 queue];
-    v20 = dispatch_data_create(v17, v18, v19, 0);
+    queue = [(MSVQRConnection *)selfCopy queue];
+    v20 = dispatch_data_create(bytes, v18, queue, 0);
 
     v21 = nw_content_context_create("MessageContext");
-    v22 = [(MSVQRConnection *)v6 framerDefinition];
-    message = nw_framer_protocol_create_message(v22);
+    framerDefinition = [(MSVQRConnection *)selfCopy framerDefinition];
+    message = nw_framer_protocol_create_message(framerDefinition);
 
     v32 = @"MessageTypeKey";
     v33 = @"Proto";
@@ -1047,17 +1047,17 @@ void __38__MSVQRConnection__createGroupSession__block_invoke(uint64_t a1, uint64
     nw_framer_message_set_object_value(message, "Header", v24);
 
     nw_content_context_set_metadata_for_protocol(v21, message);
-    objc_initWeak(buf, v6);
+    objc_initWeak(buf, selfCopy);
     completion[0] = MEMORY[0x1E69E9820];
     completion[1] = 3221225472;
     completion[2] = __31__MSVQRConnection_sendMessage___block_invoke;
     completion[3] = &unk_1E7982190;
     objc_copyWeak(&v31, buf);
-    nw_connection_send(v7, v20, v21, 1, completion);
+    nw_connection_send(connection, v20, v21, 1, completion);
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
 
-    v6 = v7;
+    selfCopy = connection;
   }
 
   else
@@ -1065,27 +1065,27 @@ void __38__MSVQRConnection__createGroupSession__block_invoke(uint64_t a1, uint64
     v25 = os_log_create("com.apple.amp.MediaServices", "QuickRelay_Oversize");
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [(MSVQRConnection *)v6 state];
-      if (v26 >= 4)
+      state = [(MSVQRConnection *)selfCopy state];
+      if (state >= 4)
       {
-        v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnexpectedState-%ld", v26];
+        v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnexpectedState-%ld", state];
       }
 
       else
       {
-        v27 = off_1E7982428[v26];
+        v27 = off_1E7982428[state];
       }
 
       *buf = 134218498;
-      v35 = v6;
+      v35 = selfCopy;
       v36 = 2114;
       v37 = v27;
       v38 = 2114;
-      v39 = v5;
+      v39 = messageCopy;
       _os_log_impl(&dword_1AC81F000, v25, OS_LOG_TYPE_ERROR, "[MSVQRConnection] <%p> Connection in state %{public}@ cannot send message: %{public}@", buf, 0x20u);
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   v28 = *MEMORY[0x1E69E9840];
@@ -1148,16 +1148,16 @@ void __31__MSVQRConnection_sendMessage___block_invoke(uint64_t a1, void *a2)
     v3 = os_log_create("com.apple.amp.MediaServices", "QuickRelay");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(MSVQRConnection *)obj dataSource];
+      dataSource = [(MSVQRConnection *)obj dataSource];
       *buf = 134218242;
       v9 = obj;
       v10 = 2112;
-      v11 = v4;
+      v11 = dataSource;
       _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Starting with data source: %@.", buf, 0x16u);
     }
 
-    v5 = [(MSVQRConnection *)obj report];
-    [v5 startEvent:@"Connection"];
+    report = [(MSVQRConnection *)obj report];
+    [report startEvent:@"Connection"];
 
     [(MSVQRConnection *)obj _createGroupSession];
     v6 = *MEMORY[0x1E69E9840];
@@ -1171,7 +1171,7 @@ void __31__MSVQRConnection_sendMessage___block_invoke(uint64_t a1, void *a2)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1AC81F000, v3, OS_LOG_TYPE_DEFAULT, "[MSVQRConnection] <%p> Deallocating.", buf, 0xCu);
   }
 
@@ -1182,18 +1182,18 @@ void __31__MSVQRConnection_sendMessage___block_invoke(uint64_t a1, void *a2)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MSVQRConnection)initWithDataSource:(id)a3 messageCoder:(id)a4
+- (MSVQRConnection)initWithDataSource:(id)source messageCoder:(id)coder
 {
-  v8 = a3;
-  v9 = a4;
+  sourceCopy = source;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MSVQRConnection;
   v10 = [(MSVQRConnection *)&v23 init];
   if (v10)
   {
-    if (v8)
+    if (sourceCopy)
     {
-      if (v9)
+      if (coderCopy)
       {
 LABEL_4:
         v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -1208,10 +1208,10 @@ LABEL_4:
 
         v10->_state = 0;
         v10->_shouldTerminate = 0;
-        objc_storeStrong(&v10->_dataSource, a3);
-        objc_storeStrong(&v10->_messageCoder, a4);
-        v17 = [(MSVQRConnectionSessionDataSource *)v10->_dataSource applicationProtocol];
-        v18 = [MSVQRConnection createFramerDefinitionWithIdentifier:v17];
+        objc_storeStrong(&v10->_dataSource, source);
+        objc_storeStrong(&v10->_messageCoder, coder);
+        applicationProtocol = [(MSVQRConnectionSessionDataSource *)v10->_dataSource applicationProtocol];
+        v18 = [MSVQRConnection createFramerDefinitionWithIdentifier:applicationProtocol];
         framerDefinition = v10->_framerDefinition;
         v10->_framerDefinition = v18;
 
@@ -1221,17 +1221,17 @@ LABEL_4:
 
     else
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:v10 file:@"MSVQRConnection.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"MSVQRConnection.m" lineNumber:136 description:{@"Invalid parameter not satisfying: %@", @"dataSource"}];
 
-      if (v9)
+      if (coderCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:v10 file:@"MSVQRConnection.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"coder"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"MSVQRConnection.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"coder"}];
 
     goto LABEL_4;
   }
@@ -1241,18 +1241,18 @@ LABEL_5:
   return v10;
 }
 
-+ (id)createFramerDefinitionWithIdentifier:(id)a3
++ (id)createFramerDefinitionWithIdentifier:(id)identifier
 {
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __56__MSVQRConnection_createFramerDefinitionWithIdentifier___block_invoke;
   v12 = &__block_descriptor_48_e32_i16__0__NSObject_OS_nw_framer__8l;
   v13 = 4;
-  v14 = a1;
-  v3 = a3;
+  selfCopy = self;
+  identifierCopy = identifier;
   v4 = MEMORY[0x1B26EC6C0](&v9);
-  v5 = v3;
-  v6 = [v5 cStringUsingEncoding:{4, v9, v10, v11, v12, v13, v14}];
+  v5 = identifierCopy;
+  v6 = [v5 cStringUsingEncoding:{4, v9, v10, v11, v12, v13, selfCopy}];
 
   definition = nw_framer_create_definition(v6, 0, v4);
 
@@ -1523,11 +1523,11 @@ LABEL_13:
   return result;
 }
 
-+ (id)connectionWithDataSource:(id)a3 messageCoder:(id)a4
++ (id)connectionWithDataSource:(id)source messageCoder:(id)coder
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MSVQRConnection alloc] initWithDataSource:v6 messageCoder:v5];
+  coderCopy = coder;
+  sourceCopy = source;
+  v7 = [[MSVQRConnection alloc] initWithDataSource:sourceCopy messageCoder:coderCopy];
 
   return v7;
 }

@@ -1,10 +1,10 @@
 @interface NEFlowDivertFileHandle
 - (id)description;
 - (id)dictionary;
-- (id)getUnitForSocket:(int)a1;
-- (id)initFlowDivertControlSocketWithParams:(BOOL)a3 order:(int)a4;
+- (id)getUnitForSocket:(int)socket;
+- (id)initFlowDivertControlSocketWithParams:(BOOL)params order:(int)order;
 - (id)initFlowDivertDataSocket;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation NEFlowDivertFileHandle
@@ -12,10 +12,10 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEFileHandle *)self handle];
-  v5 = [v4 fileDescriptor];
-  v6 = [(NEFlowDivertFileHandle *)self controlUnit];
-  v7 = [v3 stringWithFormat:@"Flow Divert socket (%d) control unit %@", v5, v6];
+  handle = [(NEFileHandle *)self handle];
+  fileDescriptor = [handle fileDescriptor];
+  controlUnit = [(NEFlowDivertFileHandle *)self controlUnit];
+  v7 = [v3 stringWithFormat:@"Flow Divert socket (%d) control unit %@", fileDescriptor, controlUnit];
 
   return v7;
 }
@@ -24,35 +24,35 @@
 {
   v11.receiver = self;
   v11.super_class = NEFlowDivertFileHandle;
-  v3 = [(NEFileHandle *)&v11 dictionary];
-  v4 = [(NEFlowDivertFileHandle *)self controlUnit];
-  xpc_dictionary_set_uint64(v3, "control-unit", [v4 unsignedLongLongValue]);
+  dictionary = [(NEFileHandle *)&v11 dictionary];
+  controlUnit = [(NEFlowDivertFileHandle *)self controlUnit];
+  xpc_dictionary_set_uint64(dictionary, "control-unit", [controlUnit unsignedLongLongValue]);
 
-  v5 = [(NEFlowDivertFileHandle *)self keyMaterial];
-  v6 = [v5 length];
+  keyMaterial = [(NEFlowDivertFileHandle *)self keyMaterial];
+  v6 = [keyMaterial length];
 
   if (v6)
   {
-    v7 = [(NEFlowDivertFileHandle *)self keyMaterial];
-    v8 = [v7 bytes];
-    v9 = [(NEFlowDivertFileHandle *)self keyMaterial];
-    xpc_dictionary_set_data(v3, "key-material", v8, [v9 length]);
+    keyMaterial2 = [(NEFlowDivertFileHandle *)self keyMaterial];
+    bytes = [keyMaterial2 bytes];
+    keyMaterial3 = [(NEFlowDivertFileHandle *)self keyMaterial];
+    xpc_dictionary_set_data(dictionary, "key-material", bytes, [keyMaterial3 length]);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = NEFlowDivertFileHandle;
-  v5 = [(NEFileHandle *)&v14 initFromDictionary:v4];
+  v5 = [(NEFileHandle *)&v14 initFromDictionary:dictionaryCopy];
   if (v5)
   {
-    uint64 = xpc_dictionary_get_uint64(v4, "control-unit");
+    uint64 = xpc_dictionary_get_uint64(dictionaryCopy, "control-unit");
     length = 0;
-    data = xpc_dictionary_get_data(v4, "key-material", &length);
+    data = xpc_dictionary_get_data(dictionaryCopy, "key-material", &length);
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:uint64];
     v9 = v5[3];
     v5[3] = v8;
@@ -76,7 +76,7 @@
   KernelControlSocket = NEHelperGetKernelControlSocket();
   if ((KernelControlSocket & 0x80000000) != 0)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -93,19 +93,19 @@
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)getUnitForSocket:(int)a1
+- (id)getUnitForSocket:(int)socket
 {
   v12 = *MEMORY[0x1E69E9840];
   v7 = 32;
   v8 = 0;
   v9 = 0u;
-  if (getpeername(a1, &v8, &v7))
+  if (getpeername(socket, &v8, &v7))
   {
     v1 = ne_log_obj();
     if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
@@ -130,10 +130,10 @@
   return v2;
 }
 
-- (id)initFlowDivertControlSocketWithParams:(BOOL)a3 order:(int)a4
+- (id)initFlowDivertControlSocketWithParams:(BOOL)params order:(int)order
 {
   v23 = *MEMORY[0x1E69E9840];
-  v19 = a4;
+  orderCopy = order;
   KernelControlSocket = NEHelperGetKernelControlSocket();
   if ((KernelControlSocket & 0x80000000) != 0)
   {
@@ -189,18 +189,18 @@
   if (v10 < 0)
   {
 LABEL_11:
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
 LABEL_10:
     self = self;
-    v13 = self;
+    selfCopy = self;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
 @end

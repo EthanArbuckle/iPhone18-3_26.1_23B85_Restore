@@ -1,17 +1,17 @@
 @interface EpisodeAvailableViewController
-- (EpisodeAvailableViewController)initWithNotification:(id)a3;
-- (id)actionsWithDefaultActions:(id)a3;
+- (EpisodeAvailableViewController)initWithNotification:(id)notification;
+- (id)actionsWithDefaultActions:(id)actions;
 - (id)episodePropertySource;
 - (id)headerTitle;
-- (void)_fetchImageWithSize:(CGSize)a3 imageKeyWithFallbackKeys:(id)a4 completion:(id)a5;
+- (void)_fetchImageWithSize:(CGSize)size imageKeyWithFallbackKeys:(id)keys completion:(id)completion;
 - (void)_removeNotificationFromHistory;
-- (void)applyImage:(id)a3 fromSource:(id)a4;
+- (void)applyImage:(id)image fromSource:(id)source;
 - (void)loadConstraints;
 - (void)loadContentViews;
 - (void)openAppShowingEpisodeDetails;
 - (void)openAppShowingPodcastDetails;
 - (void)reloadContentPropertyValues;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateDynamicConstraints;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
@@ -20,11 +20,11 @@
 
 @implementation EpisodeAvailableViewController
 
-- (EpisodeAvailableViewController)initWithNotification:(id)a3
+- (EpisodeAvailableViewController)initWithNotification:(id)notification
 {
   v9.receiver = self;
   v9.super_class = EpisodeAvailableViewController;
-  v3 = [(ContentAvailableViewController *)&v9 initWithNotification:a3];
+  v3 = [(ContentAvailableViewController *)&v9 initWithNotification:notification];
   v4 = v3;
   if (v3)
   {
@@ -41,28 +41,28 @@
 
 - (id)episodePropertySource
 {
-  v2 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v3 = [v2 firstEpisodePropertySource];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  firstEpisodePropertySource = [episodesPropertySourceController firstEpisodePropertySource];
 
-  return v3;
+  return firstEpisodePropertySource;
 }
 
 - (void)openAppShowingPodcastDetails
 {
   [(EpisodeAvailableViewController *)self _removeNotificationFromHistory];
-  v5 = [(EpisodeAvailableViewController *)self episodePropertySource];
-  v3 = [(EpisodeAvailableViewController *)self extensionContext];
-  v4 = [v5 openPodcastDetailInAppURL];
-  [v3 openURL:v4 completionHandler:0];
+  episodePropertySource = [(EpisodeAvailableViewController *)self episodePropertySource];
+  extensionContext = [(EpisodeAvailableViewController *)self extensionContext];
+  openPodcastDetailInAppURL = [episodePropertySource openPodcastDetailInAppURL];
+  [extensionContext openURL:openPodcastDetailInAppURL completionHandler:0];
 }
 
 - (void)openAppShowingEpisodeDetails
 {
   [(EpisodeAvailableViewController *)self _removeNotificationFromHistory];
-  v5 = [(EpisodeAvailableViewController *)self episodePropertySource];
-  v3 = [(EpisodeAvailableViewController *)self extensionContext];
-  v4 = [v5 openEpisodeDetailInAppURL];
-  [v3 openURL:v4 completionHandler:0];
+  episodePropertySource = [(EpisodeAvailableViewController *)self episodePropertySource];
+  extensionContext = [(EpisodeAvailableViewController *)self extensionContext];
+  openEpisodeDetailInAppURL = [episodePropertySource openEpisodeDetailInAppURL];
+  [extensionContext openURL:openEpisodeDetailInAppURL completionHandler:0];
 }
 
 - (void)viewDidLoad
@@ -71,15 +71,15 @@
   v5.super_class = EpisodeAvailableViewController;
   [(ContentAvailableViewController *)&v5 viewDidLoad];
   v3 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"tapOnTopLevelViewGestureRecognized:"];
-  v4 = [(EpisodeAvailableViewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(EpisodeAvailableViewController *)self view];
+  [view addGestureRecognizer:v3];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = EpisodeAvailableViewController;
-  [(EpisodeAvailableViewController *)&v4 traitCollectionDidChange:a3];
+  [(EpisodeAvailableViewController *)&v4 traitCollectionDidChange:change];
   [(EpisodeAvailableViewController *)self updateDynamicConstraints];
 }
 
@@ -96,16 +96,16 @@
   v4.receiver = self;
   v4.super_class = EpisodeAvailableViewController;
   [(EpisodeAvailableViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(EpisodeAvailableViewController *)self lineCountLayoutGroup];
-  [v3 layout];
+  lineCountLayoutGroup = [(EpisodeAvailableViewController *)self lineCountLayoutGroup];
+  [lineCountLayoutGroup layout];
 }
 
-- (id)actionsWithDefaultActions:(id)a3
+- (id)actionsWithDefaultActions:(id)actions
 {
-  v3 = [(EpisodeAvailableViewController *)self episodePropertySource];
-  v4 = [v3 requiresForegroundLaunch];
+  episodePropertySource = [(EpisodeAvailableViewController *)self episodePropertySource];
+  requiresForegroundLaunch = [episodePropertySource requiresForegroundLaunch];
 
-  if (v4)
+  if (requiresForegroundLaunch)
   {
     v5 = 4;
   }
@@ -137,16 +137,16 @@
   v30.receiver = self;
   v30.super_class = EpisodeAvailableViewController;
   [(ContentAvailableViewController *)&v30 loadContentViews];
-  v3 = [(EpisodeAvailableViewController *)self view];
+  view = [(EpisodeAvailableViewController *)self view];
   v4 = +[UIColor backgroundColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [(EpisodeAvailableStyle *)self->_style newArtworkView];
+  newArtworkView = [(EpisodeAvailableStyle *)self->_style newArtworkView];
   artworkView = self->_artworkView;
-  self->_artworkView = v5;
+  self->_artworkView = newArtworkView;
 
   [(UIImageView *)self->_artworkView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 addSubview:self->_artworkView];
+  [view addSubview:self->_artworkView];
   v7 = [(ContentAvailableViewController *)self newLabelWithTextStyle:UIFontTextStyleBody traits:0 numberOfLines:1];
   fromLabel = self->_fromLabel;
   self->_fromLabel = v7;
@@ -194,7 +194,7 @@
   v27 = +[UIColor dividerColor];
   [(UIView *)self->_dividerLine setBackgroundColor:v27];
 
-  [v3 addSubview:self->_dividerLine];
+  [view addSubview:self->_dividerLine];
   v28 = [[MTLineCountLayoutGroup alloc] initWithTotalLineCount:8];
   lineCountLayoutGroup = self->_lineCountLayoutGroup;
   self->_lineCountLayoutGroup = v28;
@@ -206,48 +206,48 @@
 
 - (void)reloadContentPropertyValues
 {
-  v3 = [(EpisodeAvailableViewController *)self episodePropertySource];
-  v4 = [v3 podcastUuid];
-  v5 = [(EpisodeAvailableViewController *)self podcastTitleButton];
-  v6 = [v3 podcastTitle];
-  [v5 setTitle:v6 forState:0];
+  episodePropertySource = [(EpisodeAvailableViewController *)self episodePropertySource];
+  podcastUuid = [episodePropertySource podcastUuid];
+  podcastTitleButton = [(EpisodeAvailableViewController *)self podcastTitleButton];
+  podcastTitle = [episodePropertySource podcastTitle];
+  [podcastTitleButton setTitle:podcastTitle forState:0];
 
-  v7 = [(EpisodeAvailableViewController *)self episodeDateLabel];
-  v8 = [v3 localizedDateString];
-  [v7 setText:v8];
+  episodeDateLabel = [(EpisodeAvailableViewController *)self episodeDateLabel];
+  localizedDateString = [episodePropertySource localizedDateString];
+  [episodeDateLabel setText:localizedDateString];
 
-  v9 = [(EpisodeAvailableViewController *)self episodeTitleLabel];
-  v10 = [v3 title];
-  [v9 setText:v10];
+  episodeTitleLabel = [(EpisodeAvailableViewController *)self episodeTitleLabel];
+  title = [episodePropertySource title];
+  [episodeTitleLabel setText:title];
 
-  v11 = [(EpisodeAvailableViewController *)self episodeSummaryLabel];
-  v12 = [v3 summary];
-  [v11 setText:v12];
+  episodeSummaryLabel = [(EpisodeAvailableViewController *)self episodeSummaryLabel];
+  summary = [episodePropertySource summary];
+  [episodeSummaryLabel setText:summary];
 
-  v13 = [(EpisodeAvailableViewController *)self episodeMetadataLabel];
-  v14 = [v3 localizedDurationString];
-  [v13 setText:v14];
+  episodeMetadataLabel = [(EpisodeAvailableViewController *)self episodeMetadataLabel];
+  localizedDurationString = [episodePropertySource localizedDurationString];
+  [episodeMetadataLabel setText:localizedDurationString];
 
   if (![(EpisodeAvailableViewController *)self hasLoadedCurrentImage])
   {
-    v15 = [v3 preloadedImageWithSize:{0x50uLL, 0x50uLL}];
+    v15 = [episodePropertySource preloadedImageWithSize:{0x50uLL, 0x50uLL}];
     if (v15)
     {
-      [(EpisodeAvailableViewController *)self applyImage:v15 fromSource:v3];
+      [(EpisodeAvailableViewController *)self applyImage:v15 fromSource:episodePropertySource];
     }
 
     else
     {
       v16 = +[NSMutableArray array];
-      if ([v4 length])
+      if ([podcastUuid length])
       {
-        [v16 addObject:v4];
+        [v16 addObject:podcastUuid];
       }
 
-      v17 = [(EpisodeAvailableViewController *)self artworkView];
-      v18 = [v17 image];
+      artworkView = [(EpisodeAvailableViewController *)self artworkView];
+      image = [artworkView image];
 
-      if (!v18)
+      if (!image)
       {
         [v16 addObject:kMTLibraryDefaultImageKey];
       }
@@ -257,24 +257,24 @@
       v19[2] = sub_1000091D0;
       v19[3] = &unk_10002CA50;
       v19[4] = self;
-      v20 = v3;
+      v20 = episodePropertySource;
       [(EpisodeAvailableViewController *)self _fetchImageWithSize:v16 imageKeyWithFallbackKeys:v19 completion:0x50uLL, 0x50uLL];
     }
   }
 }
 
-- (void)applyImage:(id)a3 fromSource:(id)a4
+- (void)applyImage:(id)image fromSource:(id)source
 {
-  v6 = a3;
+  imageCopy = image;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000092B0;
   block[3] = &unk_10002CA28;
   block[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  sourceCopy = source;
+  v11 = imageCopy;
+  v7 = imageCopy;
+  v8 = sourceCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
@@ -283,17 +283,17 @@
   v145.receiver = self;
   v145.super_class = EpisodeAvailableViewController;
   [(ContentAvailableViewController *)&v145 loadConstraints];
-  v3 = [(EpisodeAvailableViewController *)self style];
-  v4 = [(EpisodeAvailableViewController *)self view];
-  v5 = [(ContentAvailableViewController *)self headerTitleLabel];
-  v6 = [(EpisodeAvailableViewController *)self artworkView];
-  v140 = [(EpisodeAvailableViewController *)self fromLabel];
-  v142 = [(EpisodeAvailableViewController *)self podcastTitleButton];
-  v139 = [(EpisodeAvailableViewController *)self episodeDateLabel];
-  v137 = [(EpisodeAvailableViewController *)self episodeTitleLabel];
-  v138 = [(EpisodeAvailableViewController *)self dividerLine];
-  v141 = [(EpisodeAvailableViewController *)self episodeSummaryLabel];
-  v143 = [(EpisodeAvailableViewController *)self episodeMetadataLabel];
+  style = [(EpisodeAvailableViewController *)self style];
+  view = [(EpisodeAvailableViewController *)self view];
+  headerTitleLabel = [(ContentAvailableViewController *)self headerTitleLabel];
+  artworkView = [(EpisodeAvailableViewController *)self artworkView];
+  fromLabel = [(EpisodeAvailableViewController *)self fromLabel];
+  podcastTitleButton = [(EpisodeAvailableViewController *)self podcastTitleButton];
+  episodeDateLabel = [(EpisodeAvailableViewController *)self episodeDateLabel];
+  episodeTitleLabel = [(EpisodeAvailableViewController *)self episodeTitleLabel];
+  dividerLine = [(EpisodeAvailableViewController *)self dividerLine];
+  episodeSummaryLabel = [(EpisodeAvailableViewController *)self episodeSummaryLabel];
+  episodeMetadataLabel = [(EpisodeAvailableViewController *)self episodeMetadataLabel];
   v134 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleBody];
   v147 = NSFontAttributeName;
   v148 = v134;
@@ -302,187 +302,187 @@
   v9 = v8;
 
   LODWORD(v10) = 1148846080;
-  [v4 setContentHuggingPriority:1 forAxis:v10];
-  v133 = [v6 widthAnchor];
-  v132 = [v133 constraintEqualToConstant:0x50uLL];
+  [view setContentHuggingPriority:1 forAxis:v10];
+  widthAnchor = [artworkView widthAnchor];
+  v132 = [widthAnchor constraintEqualToConstant:0x50uLL];
   v146[0] = v132;
-  v131 = [v6 heightAnchor];
-  v130 = [v131 constraintEqualToConstant:0x50uLL];
+  heightAnchor = [artworkView heightAnchor];
+  v130 = [heightAnchor constraintEqualToConstant:0x50uLL];
   v146[1] = v130;
-  v11 = [v6 topAnchor];
-  v12 = [v4 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
-  v14 = [v3 container_To_artTop];
-  v129 = [v13 mt_copyWithDynamicTypeConstant:v14];
+  topAnchor = [artworkView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
+  container_To_artTop = [style container_To_artTop];
+  v129 = [v13 mt_copyWithDynamicTypeConstant:container_To_artTop];
 
   v146[2] = v129;
-  v15 = [v6 trailingAnchor];
-  v144 = v4;
-  v16 = [v4 trailingAnchor];
-  [v3 defaultMarginH];
-  v128 = [v15 constraintEqualToAnchor:v16 constant:-v17];
+  trailingAnchor = [artworkView trailingAnchor];
+  v144 = view;
+  trailingAnchor2 = [view trailingAnchor];
+  [style defaultMarginH];
+  v128 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v17];
 
   v146[3] = v128;
-  v18 = [v5 firstBaselineAnchor];
-  v19 = [v6 topAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
-  v21 = [v3 artTop_To_mainHeaderBL];
-  v127 = [v20 mt_copyWithDynamicTypeConstant:v21];
+  firstBaselineAnchor = [headerTitleLabel firstBaselineAnchor];
+  topAnchor3 = [artworkView topAnchor];
+  v20 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3];
+  artTop_To_mainHeaderBL = [style artTop_To_mainHeaderBL];
+  v127 = [v20 mt_copyWithDynamicTypeConstant:artTop_To_mainHeaderBL];
 
   v146[4] = v127;
-  v22 = [v5 leadingAnchor];
-  v23 = [v4 leadingAnchor];
-  [v3 defaultMarginH];
-  v126 = [v22 constraintEqualToAnchor:v23 constant:?];
+  leadingAnchor = [headerTitleLabel leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  [style defaultMarginH];
+  v126 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
   v146[5] = v126;
-  v24 = [v5 trailingAnchor];
-  v25 = [v6 leadingAnchor];
-  [v3 defaultMarginH];
-  v125 = [v24 constraintEqualToAnchor:v25 constant:-v26];
+  trailingAnchor3 = [headerTitleLabel trailingAnchor];
+  leadingAnchor3 = [artworkView leadingAnchor];
+  [style defaultMarginH];
+  v125 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor3 constant:-v26];
 
   v146[6] = v125;
-  v27 = [v140 firstBaselineAnchor];
-  v28 = [v5 lastBaselineAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
-  v30 = [v3 mainHeaderBL_To_showTitleBL];
-  v124 = [v29 mt_copyWithDynamicTypeConstant:v30];
+  firstBaselineAnchor2 = [fromLabel firstBaselineAnchor];
+  lastBaselineAnchor = [headerTitleLabel lastBaselineAnchor];
+  v29 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
+  mainHeaderBL_To_showTitleBL = [style mainHeaderBL_To_showTitleBL];
+  v124 = [v29 mt_copyWithDynamicTypeConstant:mainHeaderBL_To_showTitleBL];
 
   v146[7] = v124;
-  v31 = [v140 leadingAnchor];
-  v32 = [v5 leadingAnchor];
-  v123 = [v31 constraintEqualToAnchor:v32 constant:0.0];
+  leadingAnchor4 = [fromLabel leadingAnchor];
+  leadingAnchor5 = [headerTitleLabel leadingAnchor];
+  v123 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:0.0];
 
   v146[8] = v123;
-  v33 = [v142 firstBaselineAnchor];
-  v34 = [v140 firstBaselineAnchor];
-  v122 = [v33 constraintEqualToAnchor:v34 constant:0.0];
+  firstBaselineAnchor3 = [podcastTitleButton firstBaselineAnchor];
+  firstBaselineAnchor4 = [fromLabel firstBaselineAnchor];
+  v122 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4 constant:0.0];
 
   v146[9] = v122;
-  v35 = [v142 leadingAnchor];
-  v36 = [v140 trailingAnchor];
-  v121 = [v35 constraintEqualToAnchor:v36 constant:v9];
+  leadingAnchor6 = [podcastTitleButton leadingAnchor];
+  trailingAnchor4 = [fromLabel trailingAnchor];
+  v121 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:v9];
 
   v146[10] = v121;
-  v120 = [v142 trailingAnchor];
-  v119 = [v6 leadingAnchor];
-  [v3 spacingBetweenTextAndArtwork];
-  v118 = [v120 constraintLessThanOrEqualToAnchor:v119 constant:-v37];
+  trailingAnchor5 = [podcastTitleButton trailingAnchor];
+  leadingAnchor7 = [artworkView leadingAnchor];
+  [style spacingBetweenTextAndArtwork];
+  v118 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:leadingAnchor7 constant:-v37];
   v146[11] = v118;
-  v38 = [v139 firstBaselineAnchor];
-  v135 = v6;
-  v39 = [v6 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39 constant:0.0];
+  firstBaselineAnchor5 = [episodeDateLabel firstBaselineAnchor];
+  v135 = artworkView;
+  bottomAnchor = [artworkView bottomAnchor];
+  v40 = [firstBaselineAnchor5 constraintEqualToAnchor:bottomAnchor constant:0.0];
   LODWORD(v41) = 1144750080;
   v117 = [v40 mt_copyWithPriority:v41];
 
   v146[12] = v117;
-  v42 = [v139 firstBaselineAnchor];
-  v43 = [v6 bottomAnchor];
-  v116 = [v42 constraintGreaterThanOrEqualToAnchor:v43 constant:0.0];
+  firstBaselineAnchor6 = [episodeDateLabel firstBaselineAnchor];
+  bottomAnchor2 = [artworkView bottomAnchor];
+  v116 = [firstBaselineAnchor6 constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:0.0];
 
   v146[13] = v116;
-  v44 = [v139 firstBaselineAnchor];
-  v45 = [v140 lastBaselineAnchor];
-  v46 = [v44 constraintGreaterThanOrEqualToAnchor:v45];
-  v47 = [v3 showTitleBL_To_dateBaseline_Min];
-  v115 = [v46 mt_copyWithDynamicTypeConstant:v47];
+  firstBaselineAnchor7 = [episodeDateLabel firstBaselineAnchor];
+  lastBaselineAnchor2 = [fromLabel lastBaselineAnchor];
+  v46 = [firstBaselineAnchor7 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2];
+  showTitleBL_To_dateBaseline_Min = [style showTitleBL_To_dateBaseline_Min];
+  v115 = [v46 mt_copyWithDynamicTypeConstant:showTitleBL_To_dateBaseline_Min];
 
   v146[14] = v115;
-  v48 = [v139 leadingAnchor];
-  v49 = [v5 leadingAnchor];
-  v114 = [v48 constraintEqualToAnchor:v49 constant:0.0];
+  leadingAnchor8 = [episodeDateLabel leadingAnchor];
+  leadingAnchor9 = [headerTitleLabel leadingAnchor];
+  v114 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:0.0];
 
   v146[15] = v114;
-  v50 = [v139 trailingAnchor];
-  v136 = v5;
-  v51 = [v5 trailingAnchor];
-  v113 = [v50 constraintEqualToAnchor:v51 constant:0.0];
+  trailingAnchor6 = [episodeDateLabel trailingAnchor];
+  v136 = headerTitleLabel;
+  trailingAnchor7 = [headerTitleLabel trailingAnchor];
+  v113 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:0.0];
 
   v146[16] = v113;
-  v52 = [v137 firstBaselineAnchor];
-  v53 = [v139 lastBaselineAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
-  v55 = [v3 dateBL_To_titleBL];
-  v112 = [v54 mt_copyWithDynamicTypeConstant:v55];
+  firstBaselineAnchor8 = [episodeTitleLabel firstBaselineAnchor];
+  lastBaselineAnchor3 = [episodeDateLabel lastBaselineAnchor];
+  v54 = [firstBaselineAnchor8 constraintEqualToAnchor:lastBaselineAnchor3];
+  dateBL_To_titleBL = [style dateBL_To_titleBL];
+  v112 = [v54 mt_copyWithDynamicTypeConstant:dateBL_To_titleBL];
 
   v146[17] = v112;
-  v56 = [v137 leadingAnchor];
-  v57 = [v5 leadingAnchor];
-  v111 = [v56 constraintEqualToAnchor:v57 constant:0.0];
+  leadingAnchor10 = [episodeTitleLabel leadingAnchor];
+  leadingAnchor11 = [headerTitleLabel leadingAnchor];
+  v111 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:0.0];
 
   v146[18] = v111;
-  v58 = [v137 trailingAnchor];
-  v59 = [v6 trailingAnchor];
-  v110 = [v58 constraintEqualToAnchor:v59 constant:0.0];
+  trailingAnchor8 = [episodeTitleLabel trailingAnchor];
+  trailingAnchor9 = [artworkView trailingAnchor];
+  v110 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:0.0];
 
   v146[19] = v110;
-  v60 = [v138 topAnchor];
-  v61 = [v137 lastBaselineAnchor];
-  v62 = [v60 constraintEqualToAnchor:v61];
-  v63 = [v3 episodeTitleBL_To_divider];
-  v109 = [v62 mt_copyWithDynamicTypeConstant:v63];
+  topAnchor4 = [dividerLine topAnchor];
+  lastBaselineAnchor4 = [episodeTitleLabel lastBaselineAnchor];
+  v62 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor4];
+  episodeTitleBL_To_divider = [style episodeTitleBL_To_divider];
+  v109 = [v62 mt_copyWithDynamicTypeConstant:episodeTitleBL_To_divider];
 
   v146[20] = v109;
-  v64 = [v138 leadingAnchor];
-  v65 = [v4 leadingAnchor];
-  v108 = [v64 constraintEqualToAnchor:v65 constant:0.0];
+  leadingAnchor12 = [dividerLine leadingAnchor];
+  leadingAnchor13 = [view leadingAnchor];
+  v108 = [leadingAnchor12 constraintEqualToAnchor:leadingAnchor13 constant:0.0];
 
   v146[21] = v108;
-  v66 = [v138 trailingAnchor];
-  v67 = [v4 trailingAnchor];
-  v107 = [v66 constraintEqualToAnchor:v67 constant:0.0];
+  trailingAnchor10 = [dividerLine trailingAnchor];
+  trailingAnchor11 = [view trailingAnchor];
+  v107 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:0.0];
 
   v146[22] = v107;
-  v106 = [v138 heightAnchor];
+  heightAnchor2 = [dividerLine heightAnchor];
   v68 = +[UIScreen mainScreen];
   [v68 scale];
   v70 = v69;
 
-  v105 = [v106 constraintEqualToConstant:1.0 / v70];
+  v105 = [heightAnchor2 constraintEqualToConstant:1.0 / v70];
   v146[23] = v105;
-  v71 = [v141 firstBaselineAnchor];
-  v72 = [v138 bottomAnchor];
-  v73 = [v71 constraintEqualToAnchor:v72];
-  v74 = [v3 divider_To_summaryBL];
-  v103 = [v73 mt_copyWithDynamicTypeConstant:v74];
+  firstBaselineAnchor9 = [episodeSummaryLabel firstBaselineAnchor];
+  bottomAnchor3 = [dividerLine bottomAnchor];
+  v73 = [firstBaselineAnchor9 constraintEqualToAnchor:bottomAnchor3];
+  divider_To_summaryBL = [style divider_To_summaryBL];
+  v103 = [v73 mt_copyWithDynamicTypeConstant:divider_To_summaryBL];
 
   v146[24] = v103;
-  v75 = [v141 leadingAnchor];
-  v76 = [v136 leadingAnchor];
-  v102 = [v75 constraintEqualToAnchor:v76 constant:0.0];
+  leadingAnchor14 = [episodeSummaryLabel leadingAnchor];
+  leadingAnchor15 = [v136 leadingAnchor];
+  v102 = [leadingAnchor14 constraintEqualToAnchor:leadingAnchor15 constant:0.0];
 
   v146[25] = v102;
-  v77 = [v141 trailingAnchor];
-  v78 = [v6 trailingAnchor];
-  v101 = [v77 constraintEqualToAnchor:v78 constant:0.0];
+  trailingAnchor12 = [episodeSummaryLabel trailingAnchor];
+  trailingAnchor13 = [artworkView trailingAnchor];
+  v101 = [trailingAnchor12 constraintEqualToAnchor:trailingAnchor13 constant:0.0];
 
   v146[26] = v101;
-  v79 = [v143 firstBaselineAnchor];
-  v80 = [v141 lastBaselineAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80];
-  v104 = v3;
-  v82 = [v3 summaryBL_To_metadataBL];
-  v83 = [v81 mt_copyWithDynamicTypeConstant:v82];
+  firstBaselineAnchor10 = [episodeMetadataLabel firstBaselineAnchor];
+  lastBaselineAnchor5 = [episodeSummaryLabel lastBaselineAnchor];
+  v81 = [firstBaselineAnchor10 constraintEqualToAnchor:lastBaselineAnchor5];
+  v104 = style;
+  summaryBL_To_metadataBL = [style summaryBL_To_metadataBL];
+  v83 = [v81 mt_copyWithDynamicTypeConstant:summaryBL_To_metadataBL];
 
   v146[27] = v83;
-  v84 = [v143 leadingAnchor];
-  v85 = [v136 leadingAnchor];
-  v86 = [v84 constraintEqualToAnchor:v85 constant:0.0];
+  leadingAnchor16 = [episodeMetadataLabel leadingAnchor];
+  leadingAnchor17 = [v136 leadingAnchor];
+  v86 = [leadingAnchor16 constraintEqualToAnchor:leadingAnchor17 constant:0.0];
 
   v146[28] = v86;
-  v87 = [v143 trailingAnchor];
-  v88 = [v6 trailingAnchor];
-  v89 = [v87 constraintEqualToAnchor:v88 constant:0.0];
+  trailingAnchor14 = [episodeMetadataLabel trailingAnchor];
+  trailingAnchor15 = [artworkView trailingAnchor];
+  v89 = [trailingAnchor14 constraintEqualToAnchor:trailingAnchor15 constant:0.0];
 
   v146[29] = v89;
-  v90 = [v144 bottomAnchor];
-  v91 = [v143 bottomAnchor];
-  v92 = [v90 constraintEqualToAnchor:v91];
+  bottomAnchor4 = [v144 bottomAnchor];
+  bottomAnchor5 = [episodeMetadataLabel bottomAnchor];
+  v92 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   LODWORD(v93) = 1112014848;
   v94 = [v92 mt_copyWithPriority:v93];
-  v95 = [v104 metadataBL_To_bottomBL];
-  v96 = [v94 mt_copyWithDynamicTypeConstant:v95];
+  metadataBL_To_bottomBL = [v104 metadataBL_To_bottomBL];
+  v96 = [v94 mt_copyWithDynamicTypeConstant:metadataBL_To_bottomBL];
 
   v146[30] = v96;
   v97 = [NSArray arrayWithObjects:v146 count:31];
@@ -490,31 +490,31 @@
   self->_installedConstraints = v97;
 
   [(EpisodeAvailableViewController *)self updateDynamicConstraints];
-  v99 = [(EpisodeAvailableViewController *)self installedConstraints];
-  [NSLayoutConstraint activateConstraints:v99];
+  installedConstraints = [(EpisodeAvailableViewController *)self installedConstraints];
+  [NSLayoutConstraint activateConstraints:installedConstraints];
 
-  v100 = [(EpisodeAvailableViewController *)self view];
-  [v100 invalidateIntrinsicContentSize];
+  view2 = [(EpisodeAvailableViewController *)self view];
+  [view2 invalidateIntrinsicContentSize];
 }
 
 - (void)updateDynamicConstraints
 {
-  v2 = [(EpisodeAvailableViewController *)self installedConstraints];
-  [MTDynamicTypeConstant updateDynamicConstantInConstraints:v2];
+  installedConstraints = [(EpisodeAvailableViewController *)self installedConstraints];
+  [MTDynamicTypeConstant updateDynamicConstantInConstraints:installedConstraints];
 }
 
-- (void)_fetchImageWithSize:(CGSize)a3 imageKeyWithFallbackKeys:(id)a4 completion:(id)a5
+- (void)_fetchImageWithSize:(CGSize)size imageKeyWithFallbackKeys:(id)keys completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  height = size.height;
+  width = size.width;
+  keysCopy = keys;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if ([v9 count])
+    if ([keysCopy count])
     {
-      v11 = [v9 firstObject];
-      if ([v11 length])
+      firstObject = [keysCopy firstObject];
+      if ([firstObject length])
       {
         objc_initWeak(&location, self);
         v12 = +[PUIObjCArtworkProvider shared];
@@ -523,12 +523,12 @@
         v14[2] = sub_10000A394;
         v14[3] = &unk_10002CAA0;
         objc_copyWeak(v17, &location);
-        v16 = v10;
+        v16 = completionCopy;
         v13 = v12;
         v15 = v13;
         v17[1] = *&width;
         v17[2] = *&height;
-        [v13 artworkPathForShow:v11 size:v14 completionHandler:{width, height}];
+        [v13 artworkPathForShow:firstObject size:v14 completionHandler:{width, height}];
 
         objc_destroyWeak(v17);
         objc_destroyWeak(&location);
@@ -536,22 +536,22 @@
 
       else
       {
-        (*(v10 + 2))(v10, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
 - (void)_removeNotificationFromHistory
 {
-  v3 = [(ContentAvailableViewController *)self episodesPropertySourceController];
-  v2 = [v3 notification];
-  [v2 mt_removeFromUserNotificationCenter];
+  episodesPropertySourceController = [(ContentAvailableViewController *)self episodesPropertySourceController];
+  notification = [episodesPropertySourceController notification];
+  [notification mt_removeFromUserNotificationCenter];
 }
 
 @end

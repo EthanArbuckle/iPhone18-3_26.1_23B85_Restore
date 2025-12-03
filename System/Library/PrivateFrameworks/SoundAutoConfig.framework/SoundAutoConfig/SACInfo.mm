@@ -1,11 +1,11 @@
 @interface SACInfo
 + (BOOL)isSoundAutoConfigAvailable;
-+ (id)calibrationModeDescription:(unint64_t)a3;
++ (id)calibrationModeDescription:(unint64_t)description;
 - (SACInfo)init;
-- (SACInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SACInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SACInfo
@@ -17,112 +17,112 @@
   return [(SACInfo *)&v3 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[SACInfo allocWithZone:?]];
-  v5 = [(SACInfo *)self angle];
-  v6 = [v5 copy];
+  angle = [(SACInfo *)self angle];
+  v6 = [angle copy];
   [(SACInfo *)v4 setAngle:v6];
 
-  v7 = [(SACInfo *)self position];
-  v8 = [v7 copy];
+  position = [(SACInfo *)self position];
+  v8 = [position copy];
   [(SACInfo *)v4 setPosition:v8];
 
-  v9 = [(SACInfo *)self role];
-  v10 = [v9 copy];
+  role = [(SACInfo *)self role];
+  v10 = [role copy];
   [(SACInfo *)v4 setRole:v10];
 
-  v11 = [(SACInfo *)self roomGain];
-  v12 = [v11 copy];
+  roomGain = [(SACInfo *)self roomGain];
+  v12 = [roomGain copy];
   [(SACInfo *)v4 setRoomGain:v12];
 
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
-  v14 = [(SACInfo *)self lfeqIR];
-  v15 = [v13 initWithArray:v14 copyItems:1];
+  lfeqIR = [(SACInfo *)self lfeqIR];
+  v15 = [v13 initWithArray:lfeqIR copyItems:1];
   [(SACInfo *)v4 setLfeqIR:v15];
 
-  v16 = [(SACInfo *)self spatialAudio];
-  v17 = [v16 copy];
+  spatialAudio = [(SACInfo *)self spatialAudio];
+  v17 = [spatialAudio copy];
   [(SACInfo *)v4 setSpatialAudio:v17];
 
-  v18 = [(SACInfo *)self calibrationMode];
-  v19 = [v18 copy];
+  calibrationMode = [(SACInfo *)self calibrationMode];
+  v19 = [calibrationMode copy];
   [(SACInfo *)v4 setCalibrationMode:v19];
 
   v20 = objc_alloc(MEMORY[0x277CBEB18]);
-  v21 = [(SACInfo *)self companionInfo];
-  v22 = [v20 initWithArray:v21 copyItems:1];
+  companionInfo = [(SACInfo *)self companionInfo];
+  v22 = [v20 initWithArray:companionInfo copyItems:1];
   [(SACInfo *)v4 setCompanionInfo:v22];
 
   return v4;
 }
 
-- (SACInfo)initWithCoder:(id)a3
+- (SACInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SACInfo *)self init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"lfeqImpulseResponse"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"lfeqImpulseResponse"];
     [(SACInfo *)v5 setLfeqIR:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"angle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"angle"];
     [(SACInfo *)v5 setAngle:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"position"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"position"];
     [(SACInfo *)v5 setPosition:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"role"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"role"];
     [(SACInfo *)v5 setRole:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"roomGain"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"roomGain"];
     [(SACInfo *)v5 setRoomGain:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"calibrationMode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"calibrationMode"];
     [(SACInfo *)v5 setCalibrationMode:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spatialAudio"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spatialAudio"];
     [(SACInfo *)v5 setSpatialAudio:v15];
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"companionInfo"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"companionInfo"];
     [(SACInfo *)v5 setCompanionInfo:v19];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(SACInfo *)self lfeqIR];
-  [v12 encodeObject:v4 forKey:@"lfeqImpulseResponse"];
+  coderCopy = coder;
+  lfeqIR = [(SACInfo *)self lfeqIR];
+  [coderCopy encodeObject:lfeqIR forKey:@"lfeqImpulseResponse"];
 
-  v5 = [(SACInfo *)self angle];
-  [v12 encodeObject:v5 forKey:@"angle"];
+  angle = [(SACInfo *)self angle];
+  [coderCopy encodeObject:angle forKey:@"angle"];
 
-  v6 = [(SACInfo *)self position];
-  [v12 encodeObject:v6 forKey:@"position"];
+  position = [(SACInfo *)self position];
+  [coderCopy encodeObject:position forKey:@"position"];
 
-  v7 = [(SACInfo *)self role];
-  [v12 encodeObject:v7 forKey:@"role"];
+  role = [(SACInfo *)self role];
+  [coderCopy encodeObject:role forKey:@"role"];
 
-  v8 = [(SACInfo *)self roomGain];
-  [v12 encodeObject:v8 forKey:@"roomGain"];
+  roomGain = [(SACInfo *)self roomGain];
+  [coderCopy encodeObject:roomGain forKey:@"roomGain"];
 
-  v9 = [(SACInfo *)self calibrationMode];
-  [v12 encodeObject:v9 forKey:@"calibrationMode"];
+  calibrationMode = [(SACInfo *)self calibrationMode];
+  [coderCopy encodeObject:calibrationMode forKey:@"calibrationMode"];
 
-  v10 = [(SACInfo *)self spatialAudio];
-  [v12 encodeObject:v10 forKey:@"spatialAudio"];
+  spatialAudio = [(SACInfo *)self spatialAudio];
+  [coderCopy encodeObject:spatialAudio forKey:@"spatialAudio"];
 
-  v11 = [(SACInfo *)self companionInfo];
-  [v12 encodeObject:v11 forKey:@"companionInfo"];
+  companionInfo = [(SACInfo *)self companionInfo];
+  [coderCopy encodeObject:companionInfo forKey:@"companionInfo"];
 }
 
 + (BOOL)isSoundAutoConfigAvailable
@@ -132,12 +132,12 @@
   return v2 == 1540760353 || v3;
 }
 
-+ (id)calibrationModeDescription:(unint64_t)a3
++ (id)calibrationModeDescription:(unint64_t)description
 {
-  if ((a3 & 2) != 0)
+  if ((description & 2) != 0)
   {
     v3 = @"Full LF";
-    if ((a3 & 4) != 0)
+    if ((description & 4) != 0)
     {
 LABEL_8:
       v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ + %@", v3, @"Full HF"];
@@ -146,9 +146,9 @@ LABEL_8:
 
   else
   {
-    if ((a3 & 1) == 0)
+    if ((description & 1) == 0)
     {
-      if ((a3 & 4) != 0)
+      if ((description & 4) != 0)
       {
         v3 = @"Full HF";
       }
@@ -162,7 +162,7 @@ LABEL_8:
     }
 
     v3 = @"Partial LF";
-    if ((a3 & 4) != 0)
+    if ((description & 4) != 0)
     {
       goto LABEL_8;
     }
@@ -189,64 +189,64 @@ LABEL_10:
   v54 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"SACInfo <%lu> {\n", -[SACInfo hash](self, "hash")];
-  v4 = [(SACInfo *)self angle];
+  angle = [(SACInfo *)self angle];
 
-  if (v4)
+  if (angle)
   {
-    v5 = [(SACInfo *)self angle];
-    [v5 floatValue];
+    angle2 = [(SACInfo *)self angle];
+    [angle2 floatValue];
     [v3 appendFormat:@"angle = %1.0f\n", v6];
   }
 
-  v7 = [(SACInfo *)self position];
+  position = [(SACInfo *)self position];
 
-  if (v7)
+  if (position)
   {
-    v8 = [(SACInfo *)self position];
-    [v3 appendFormat:@"position = %@\n", v8];
+    position2 = [(SACInfo *)self position];
+    [v3 appendFormat:@"position = %@\n", position2];
   }
 
-  v9 = [(SACInfo *)self role];
+  role = [(SACInfo *)self role];
 
-  if (v9)
+  if (role)
   {
-    v10 = [(SACInfo *)self role];
-    [v3 appendFormat:@"role = %@\n", v10];
+    role2 = [(SACInfo *)self role];
+    [v3 appendFormat:@"role = %@\n", role2];
   }
 
-  v11 = [(SACInfo *)self roomGain];
+  roomGain = [(SACInfo *)self roomGain];
 
-  if (v11)
+  if (roomGain)
   {
-    v12 = [(SACInfo *)self roomGain];
-    [v3 appendFormat:@"room gain = %@\n", v12];
+    roomGain2 = [(SACInfo *)self roomGain];
+    [v3 appendFormat:@"room gain = %@\n", roomGain2];
   }
 
-  v13 = [(SACInfo *)self calibrationMode];
+  calibrationMode = [(SACInfo *)self calibrationMode];
 
-  if (v13)
+  if (calibrationMode)
   {
-    v14 = [(SACInfo *)self calibrationMode];
-    v15 = +[SACInfo calibrationModeDescription:](SACInfo, "calibrationModeDescription:", [v14 unsignedIntegerValue]);
+    calibrationMode2 = [(SACInfo *)self calibrationMode];
+    v15 = +[SACInfo calibrationModeDescription:](SACInfo, "calibrationModeDescription:", [calibrationMode2 unsignedIntegerValue]);
     [v3 appendFormat:@"calibration level = %@\n", v15];
   }
 
-  v16 = [(SACInfo *)self lfeqIR];
+  lfeqIR = [(SACInfo *)self lfeqIR];
 
-  if (v16)
+  if (lfeqIR)
   {
-    v17 = [(SACInfo *)self lfeqIR];
-    [v3 appendFormat:@"lfeqIR = NSArray of Size %d\n", objc_msgSend(v17, "count")];
+    lfeqIR2 = [(SACInfo *)self lfeqIR];
+    [v3 appendFormat:@"lfeqIR = NSArray of Size %d\n", objc_msgSend(lfeqIR2, "count")];
   }
 
-  v18 = [(SACInfo *)self companionInfo];
-  if (v18)
+  companionInfo = [(SACInfo *)self companionInfo];
+  if (companionInfo)
   {
-    v19 = [(SACInfo *)self role];
-    if (v19)
+    role3 = [(SACInfo *)self role];
+    if (role3)
     {
-      v20 = [(SACInfo *)self role];
-      v21 = [v20 isEqualToString:@"solo"];
+      role4 = [(SACInfo *)self role];
+      v21 = [role4 isEqualToString:@"solo"];
 
       if ((v21 & 1) == 0)
       {
@@ -255,8 +255,8 @@ LABEL_10:
         v52 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v22 = [(SACInfo *)self companionInfo];
-        v23 = [v22 countByEnumeratingWithState:&v49 objects:v53 count:16];
+        companionInfo2 = [(SACInfo *)self companionInfo];
+        v23 = [companionInfo2 countByEnumeratingWithState:&v49 objects:v53 count:16];
         if (v23)
         {
           v24 = *v50;
@@ -266,70 +266,70 @@ LABEL_10:
             {
               if (*v50 != v24)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(companionInfo2);
               }
 
               v26 = *(*(&v49 + 1) + 8 * i);
-              v27 = [v26 role];
-              v28 = v27 == 0;
+              role5 = [v26 role];
+              v28 = role5 == 0;
 
               if (!v28)
               {
-                v29 = [v26 role];
-                [v3 appendFormat:@"\tCompanion - %@ ", v29];
+                role6 = [v26 role];
+                [v3 appendFormat:@"\tCompanion - %@ ", role6];
               }
 
-              v30 = [v26 position];
-              v31 = v30 == 0;
+              position3 = [v26 position];
+              v31 = position3 == 0;
 
               if (!v31)
               {
-                v32 = [v26 position];
-                [v3 appendFormat:@"\tposition = %@ ", v32];
+                position4 = [v26 position];
+                [v3 appendFormat:@"\tposition = %@ ", position4];
               }
 
-              v33 = [v26 angle];
-              v34 = v33 == 0;
+              angle3 = [v26 angle];
+              v34 = angle3 == 0;
 
               if (!v34)
               {
-                v35 = [v26 angle];
-                [v35 floatValue];
+                angle4 = [v26 angle];
+                [angle4 floatValue];
                 [v3 appendFormat:@"\tangle = %1.0f ", v36];
               }
 
-              v37 = [v26 roomGain];
-              v38 = v37 == 0;
+              roomGain3 = [v26 roomGain];
+              v38 = roomGain3 == 0;
 
               if (!v38)
               {
-                v39 = [v26 roomGain];
-                [v3 appendFormat:@"\troom gain = %@ ", v39];
+                roomGain4 = [v26 roomGain];
+                [v3 appendFormat:@"\troom gain = %@ ", roomGain4];
               }
 
-              v40 = [v26 calibrationMode];
-              v41 = v40 == 0;
+              calibrationMode3 = [v26 calibrationMode];
+              v41 = calibrationMode3 == 0;
 
               if (!v41)
               {
-                v42 = [v26 calibrationMode];
-                v43 = +[SACInfo calibrationModeDescription:](SACInfo, "calibrationModeDescription:", [v42 unsignedIntegerValue]);
+                calibrationMode4 = [v26 calibrationMode];
+                v43 = +[SACInfo calibrationModeDescription:](SACInfo, "calibrationModeDescription:", [calibrationMode4 unsignedIntegerValue]);
                 [v3 appendFormat:@"\tcalibration level = %@ ", v43];
               }
 
-              v44 = [v26 lfeqIR];
-              v45 = v44 == 0;
+              lfeqIR3 = [v26 lfeqIR];
+              v45 = lfeqIR3 == 0;
 
               if (!v45)
               {
-                v46 = [v26 lfeqIR];
-                [v3 appendFormat:@"\tlfeqIR = NSArray of Size %d ", objc_msgSend(v46, "count")];
+                lfeqIR4 = [v26 lfeqIR];
+                [v3 appendFormat:@"\tlfeqIR = NSArray of Size %d ", objc_msgSend(lfeqIR4, "count")];
               }
 
               [v3 appendFormat:@"\n"];
             }
 
-            v23 = [v22 countByEnumeratingWithState:&v49 objects:v53 count:16];
+            v23 = [companionInfo2 countByEnumeratingWithState:&v49 objects:v53 count:16];
           }
 
           while (v23);

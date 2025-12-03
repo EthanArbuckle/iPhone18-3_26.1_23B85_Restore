@@ -3,11 +3,11 @@
 + (id)serviceViewControllerInterface;
 - (_UIStickerPickerRemoteViewControllerDelegate)delegate;
 - (void)dismissCard;
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3;
-- (void)stageSticker:(id)a3;
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7;
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler;
+- (void)stageSticker:(id)sticker;
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label;
 - (void)stickerPickerCardDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation _UIStickerPickerServiceRemoteViewController
@@ -36,55 +36,55 @@
   return v3;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-  [v5 viewServiceDidTerminateWithError:v4];
+  errorCopy = error;
+  delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+  [delegate viewServiceDidTerminateWithError:errorCopy];
 }
 
 - (void)stickerPickerCardDidLoad
 {
-  v2 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-  [v2 stickerPickerCardDidLoad];
+  delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+  [delegate stickerPickerCardDidLoad];
 }
 
 - (void)dismissCard
 {
-  v2 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-  [v2 dismissCard];
+  delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+  [delegate dismissCard];
 }
 
-- (void)stageStickerWithIdentifier:(id)a3 representations:(id)a4 name:(id)a5 externalURI:(id)a6 accessibilityLabel:(id)a7
+- (void)stageStickerWithIdentifier:(id)identifier representations:(id)representations name:(id)name externalURI:(id)i accessibilityLabel:(id)label
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-  [v17 stageStickerWithIdentifier:v16 representations:v15 name:v14 externalURI:v13 accessibilityLabel:v12];
+  labelCopy = label;
+  iCopy = i;
+  nameCopy = name;
+  representationsCopy = representations;
+  identifierCopy = identifier;
+  delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+  [delegate stageStickerWithIdentifier:identifierCopy representations:representationsCopy name:nameCopy externalURI:iCopy accessibilityLabel:labelCopy];
 }
 
-- (void)stageSticker:(id)a3
+- (void)stageSticker:(id)sticker
 {
-  v4 = a3;
-  v5 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-  [v5 stageSticker:v4];
+  stickerCopy = sticker;
+  delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+  [delegate stageSticker:stickerCopy];
 }
 
-- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)a3
+- (void)remoteHandlesRecentsStickerDonationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = v4;
-    v5 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+    v7 = handlerCopy;
+    delegate = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
 
-    if (v5)
+    if (delegate)
     {
-      v6 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
-      [v6 remoteHandlesRecentsStickerDonationWithCompletionHandler:v7];
+      delegate2 = [(_UIStickerPickerServiceRemoteViewController *)self delegate];
+      [delegate2 remoteHandlesRecentsStickerDonationWithCompletionHandler:v7];
     }
 
     else
@@ -92,7 +92,7 @@
       v7[2](v7, 1);
     }
 
-    v4 = v7;
+    handlerCopy = v7;
   }
 }
 

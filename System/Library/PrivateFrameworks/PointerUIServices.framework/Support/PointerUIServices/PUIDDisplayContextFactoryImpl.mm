@@ -1,25 +1,25 @@
 @interface PUIDDisplayContextFactoryImpl
-- (id)newDisplayContextForDisplay:(id)a3 pointerRenderingScene:(id)a4 systemPointerScene:(id)a5;
-- (void)createStreamsForDisplay:(id)a3 context:(id)a4;
+- (id)newDisplayContextForDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene;
+- (void)createStreamsForDisplay:(id)display context:(id)context;
 @end
 
 @implementation PUIDDisplayContextFactoryImpl
 
-- (id)newDisplayContextForDisplay:(id)a3 pointerRenderingScene:(id)a4 systemPointerScene:(id)a5
+- (id)newDisplayContextForDisplay:(id)display pointerRenderingScene:(id)scene systemPointerScene:(id)pointerScene
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(PUIDDisplayContextFactoryImpl *)self contextClass];
-  if (([(objc_class *)v12 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  displayCopy = display;
+  pointerSceneCopy = pointerScene;
+  sceneCopy = scene;
+  contextClass = [(PUIDDisplayContextFactoryImpl *)self contextClass];
+  if (([(objc_class *)contextClass isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
-    sub_100027A20(v12, a2, self);
+    sub_100027A20(contextClass, a2, self);
   }
 
-  v13 = objc_alloc_init(v12);
-  [v13 setDisplay:v9];
-  v14 = [[PUIDPointerRenderingRootViewController alloc] initWithDisplay:v9 hiddenForPerformanceReasons:v10 != 0];
-  v15 = [(PUIDSecurePassthroughWindow *)[PUIDPointerRenderingWindow alloc] initWithWindowScene:v11];
+  v13 = objc_alloc_init(contextClass);
+  [v13 setDisplay:displayCopy];
+  v14 = [[PUIDPointerRenderingRootViewController alloc] initWithDisplay:displayCopy hiddenForPerformanceReasons:pointerSceneCopy != 0];
+  v15 = [(PUIDSecurePassthroughWindow *)[PUIDPointerRenderingWindow alloc] initWithWindowScene:sceneCopy];
 
   [v13 setPointerRenderingWindow:v15];
   [v13 setPointerRenderingController:v14];
@@ -28,18 +28,18 @@
   v16 = PSLogCommon();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(PUIDSecurePassthroughWindow *)v15 puid_description];
+    puid_description = [(PUIDSecurePassthroughWindow *)v15 puid_description];
     v27 = 138543618;
-    v28 = v9;
+    v28 = displayCopy;
     v29 = 2114;
-    v30 = v17;
+    v30 = puid_description;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "<%{public}@> created pointerRenderingWindow: %{public}@", &v27, 0x16u);
   }
 
-  if (v10)
+  if (pointerSceneCopy)
   {
-    v18 = [[PUIDSystemPointerRootViewController alloc] initWithDisplay:v9];
-    v19 = [(PUIDSecurePassthroughWindow *)[PUIDSystemPointerWindow alloc] initWithWindowScene:v10];
+    v18 = [[PUIDSystemPointerRootViewController alloc] initWithDisplay:displayCopy];
+    v19 = [(PUIDSecurePassthroughWindow *)[PUIDSystemPointerWindow alloc] initWithWindowScene:pointerSceneCopy];
     [v13 setSystemPointerWindow:v19];
     [v13 setSystemPointerRenderingController:v18];
     [(PUIDSystemPointerWindow *)v19 setRootViewController:v18];
@@ -47,11 +47,11 @@
     v20 = PSLogCommon();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [(PUIDSecurePassthroughWindow *)v19 puid_description];
+      puid_description2 = [(PUIDSecurePassthroughWindow *)v19 puid_description];
       v27 = 138543618;
-      v28 = v9;
+      v28 = displayCopy;
       v29 = 2114;
-      v30 = v21;
+      v30 = puid_description2;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "<%{public}@> created systemPointerWindow: %{public}@", &v27, 0x16u);
     }
   }
@@ -62,12 +62,12 @@
     if (os_log_type_enabled(&v18->super.super.super, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138543362;
-      v28 = v9;
+      v28 = displayCopy;
       _os_log_impl(&_mh_execute_header, &v18->super.super.super, OS_LOG_TYPE_DEFAULT, "<%{public}@> skipped creating system pointer window", &v27, 0xCu);
     }
   }
 
-  [(PUIDDisplayContextFactoryImpl *)self createStreamsForDisplay:v9 context:v13];
+  [(PUIDDisplayContextFactoryImpl *)self createStreamsForDisplay:displayCopy context:v13];
   v22 = [PUIDSystemPointerClient alloc];
   v23 = +[NSUUID UUID];
   v24 = +[BSAuditToken tokenForCurrentProcess];
@@ -77,42 +77,42 @@
   return v13;
 }
 
-- (void)createStreamsForDisplay:(id)a3 context:(id)a4
+- (void)createStreamsForDisplay:(id)display context:(id)context
 {
-  v15 = a3;
-  v5 = a4;
+  displayCopy = display;
+  contextCopy = context;
   v6 = +[BKSMousePointerService sharedInstance];
-  v7 = [v15 hardwareIdentifier];
-  if (v5)
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  if (contextCopy)
   {
-    v8 = [v5[5] _contextId];
+    _contextId = [contextCopy[5] _contextId];
   }
 
   else
   {
-    v8 = 0;
+    _contextId = 0;
   }
 
-  v9 = [v6 requestGlobalMouseEventsForDisplay:v7 targetContextID:v8];
+  v9 = [v6 requestGlobalMouseEventsForDisplay:hardwareIdentifier targetContextID:_contextId];
 
-  [v5 setPointerEventStream:v9];
+  [contextCopy setPointerEventStream:v9];
   v10 = [BKSTouchStream alloc];
-  if (v5)
+  if (contextCopy)
   {
-    v11 = [v5[5] _contextId];
+    _contextId2 = [contextCopy[5] _contextId];
   }
 
   else
   {
-    v11 = 0;
+    _contextId2 = 0;
   }
 
-  v12 = [v15 hardwareIdentifier];
+  hardwareIdentifier2 = [displayCopy hardwareIdentifier];
   v13 = objc_opt_new();
-  v14 = [v10 initWithContextID:v11 displayUUID:v12 identifier:3 policy:v13];
+  v14 = [v10 initWithContextID:_contextId2 displayUUID:hardwareIdentifier2 identifier:3 policy:v13];
 
   [v14 setEventDispatchMode:2 lastTouchTimestamp:0.0];
-  [v5 setTouchStream:v14];
+  [contextCopy setTouchStream:v14];
 }
 
 @end

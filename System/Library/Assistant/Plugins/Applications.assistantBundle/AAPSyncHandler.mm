@@ -1,10 +1,10 @@
 @interface AAPSyncHandler
-+ (void)_checkIfResetIsNeededForKey:(id)a3 withStartAnchorString:(id)a4 validity:(id)a5 lastState:(id)a6 completion:(id)a7;
++ (void)_checkIfResetIsNeededForKey:(id)key withStartAnchorString:(id)string validity:(id)validity lastState:(id)state completion:(id)completion;
 - (AAPSyncHandler)init;
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7 configuration:(id)a8;
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info configuration:(id)configuration;
 - (void)dealloc;
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4;
-- (void)sourceIsReady:(id)a3;
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info;
+- (void)sourceIsReady:(id)ready;
 - (void)syncDidEnd;
 @end
 
@@ -39,10 +39,10 @@
   [(AAPSyncHandler *)&v3 dealloc];
 }
 
-+ (void)_checkIfResetIsNeededForKey:(id)a3 withStartAnchorString:(id)a4 validity:(id)a5 lastState:(id)a6 completion:(id)a7
++ (void)_checkIfResetIsNeededForKey:(id)key withStartAnchorString:(id)string validity:(id)validity lastState:(id)state completion:(id)completion
 {
   v51 = 0;
-  v12 = [AAPSyncAnchor anchorFromStringRepresentation:a4 error:&v51];
+  v12 = [AAPSyncAnchor anchorFromStringRepresentation:string error:&v51];
   v13 = +[LSApplicationWorkspace defaultWorkspace];
   if (v13)
   {
@@ -94,13 +94,13 @@
     v14 = 0;
   }
 
-  if (([@"com.apple.siri.applications" isEqualToString:a3] & 1) == 0)
+  if (([@"com.apple.siri.applications" isEqualToString:key] & 1) == 0)
   {
     [NSException raise:@"wrong syncKey" format:@"expecting %@", @"com.apple.siri.applications"];
     goto LABEL_39;
   }
 
-  if (a4 && !v12)
+  if (string && !v12)
   {
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
     {
@@ -110,20 +110,20 @@
     goto LABEL_39;
   }
 
-  if (!v14 || ![v14 isEqualToString:{objc_msgSend(a6, "validity")}] || !objc_msgSend(v14, "isEqualToString:", a5))
+  if (!v14 || ![v14 isEqualToString:{objc_msgSend(state, "validity")}] || !objc_msgSend(v14, "isEqualToString:", validity))
   {
     v46 = AFSiriLogContextPlugin;
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
     {
-      v48 = [a6 validity];
+      validity = [state validity];
       *buf = 136315906;
       *&buf[4] = "+[AAPSyncHandler _checkIfResetIsNeededForKey:withStartAnchorString:validity:lastState:completion:]";
       v53 = 2114;
       v54 = v14;
       v55 = 2114;
-      v56 = v48;
+      v56 = validity;
       v57 = 2114;
-      v58 = a5;
+      validityCopy = validity;
       v43 = "%s com.apple.siri.applications: validity check failed: MI-'%{public}@' Internal-'%{public}@' Sync-'%{public}@'";
       v44 = v46;
       v45 = 42;
@@ -142,14 +142,14 @@ LABEL_39:
     sub_FB94(v17, v18, v19, v20, v21, v22, v23, v24);
   }
 
-  v25 = [a6 version];
+  version = [state version];
   v26 = AFSiriLogContextPlugin;
   v27 = os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG);
-  if (v25 != &dword_4)
+  if (version != &dword_4)
   {
     if (v27)
     {
-      sub_FC0C(a6);
+      sub_FC0C(state);
     }
 
     goto LABEL_39;
@@ -160,8 +160,8 @@ LABEL_39:
     sub_FCB0(v26, v28, v29, v30, v31, v32, v33, v34);
   }
 
-  v35 = [a6 keyAnchor];
-  v36 = [v35 isNewerThanAnchor:v16];
+  keyAnchor = [state keyAnchor];
+  v36 = [keyAnchor isNewerThanAnchor:v16];
   if (!v16 || (v36 & 1) != 0)
   {
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
@@ -172,11 +172,11 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  v49 = v35;
-  v37 = [a6 startAnchor];
-  v38 = [v12 isOlderThanAnchor:v37];
+  v49 = keyAnchor;
+  startAnchor = [state startAnchor];
+  v38 = [v12 isOlderThanAnchor:startAnchor];
   v39 = [v12 isNewerThanAnchor:v16];
-  if (v37)
+  if (startAnchor)
   {
     v40 = 1;
   }
@@ -195,11 +195,11 @@ LABEL_39:
       *buf = 136316162;
       *&buf[4] = "+[AAPSyncHandler _checkIfResetIsNeededForKey:withStartAnchorString:validity:lastState:completion:]";
       v53 = 2114;
-      v54 = v37;
+      v54 = startAnchor;
       v55 = 2114;
       v56 = v12;
       v57 = 2114;
-      v58 = v49;
+      validityCopy = v49;
       v59 = 2114;
       v60 = v16;
       v43 = "%s com.apple.siri.applications: startAnchor check failed: lastStart=%{public}@ start=%{public}@ lastKey=%{public}@ key=%{public}@";
@@ -218,11 +218,11 @@ LABEL_44:
     *buf = 136316162;
     *&buf[4] = "+[AAPSyncHandler _checkIfResetIsNeededForKey:withStartAnchorString:validity:lastState:completion:]";
     v53 = 2114;
-    v54 = v37;
+    v54 = startAnchor;
     v55 = 2114;
     v56 = v12;
     v57 = 2114;
-    v58 = v49;
+    validityCopy = v49;
     v59 = 2114;
     v60 = v16;
     _os_log_debug_impl(&dword_0, v41, OS_LOG_TYPE_DEBUG, "%s com.apple.siri.applications: startAnchor checks out:  lastStart=%{public}@ start=%{public}@ lastKey=%{public}@ key=%{public}@", buf, 0x34u);
@@ -230,10 +230,10 @@ LABEL_44:
 
   v47 = 0;
 LABEL_40:
-  (*(a7 + 2))(a7, v47, v12, v16, v14);
+  (*(completion + 2))(completion, v47, v12, v16, v14);
 }
 
-- (void)beginSyncWithAnchor:(id)a3 validity:(id)a4 count:(int64_t)a5 forKey:(id)a6 beginInfo:(id)a7 configuration:(id)a8
+- (void)beginSyncWithAnchor:(id)anchor validity:(id)validity count:(int64_t)count forKey:(id)key beginInfo:(id)info configuration:(id)configuration
 {
   stateQueue = self->_stateQueue;
   v9[0] = _NSConcreteStackBlock;
@@ -241,20 +241,20 @@ LABEL_40:
   v9[2] = sub_3E28;
   v9[3] = &unk_20890;
   v9[4] = self;
-  v9[5] = a6;
-  v9[6] = a3;
-  v9[7] = a4;
-  v9[8] = a7;
-  v9[9] = a8;
+  v9[5] = key;
+  v9[6] = anchor;
+  v9[7] = validity;
+  v9[8] = info;
+  v9[9] = configuration;
   dispatch_sync(stateQueue, v9);
 }
 
-- (void)getChangeAfterAnchor:(id)a3 changeInfo:(id)a4
+- (void)getChangeAfterAnchor:(id)anchor changeInfo:(id)info
 {
   v12 = 0;
-  v7 = [AAPSyncAnchor anchorFromStringRepresentation:a3 error:&v12];
+  v7 = [AAPSyncAnchor anchorFromStringRepresentation:anchor error:&v12];
   v8 = v7;
-  if (a3 && !v7)
+  if (anchor && !v7)
   {
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_ERROR))
     {
@@ -262,7 +262,7 @@ LABEL_40:
     }
 
 LABEL_5:
-    [a4 setPostAnchor:a3];
+    [info setPostAnchor:anchor];
     return;
   }
 
@@ -289,7 +289,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [(AAPSyncMetaDataProcessor *)processor processNextChange:a4 afterAnchor:v8];
+  [(AAPSyncMetaDataProcessor *)processor processNextChange:info afterAnchor:v8];
 }
 
 - (void)syncDidEnd
@@ -303,14 +303,14 @@ LABEL_5:
   }
 }
 
-- (void)sourceIsReady:(id)a3
+- (void)sourceIsReady:(id)ready
 {
   stateQueue = self->_stateQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_4594;
   v4[3] = &unk_208B8;
-  v4[4] = a3;
+  v4[4] = ready;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }

@@ -1,18 +1,18 @@
 @interface _UIKeyboardTextSelectionGestureControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)setPanGestureState:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)setPanGestureState:(int64_t)state;
 @end
 
 @implementation _UIKeyboardTextSelectionGestureControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = "q";
   v3 = @"_UIKeyboardTextSelectionGestureController";
   [location[0] validateClass:"q" hasInstanceMethod:0 withFullSignature:?];
@@ -20,23 +20,23 @@
   objc_storeStrong(v6, obj);
 }
 
-- (void)setPanGestureState:(int64_t)a3
+- (void)setPanGestureState:(int64_t)state
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  stateCopy = state;
   v8 = [(_UIKeyboardTextSelectionGestureControllerAccessibility *)self safeValueForKey:@"panGestureState"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   *&v3 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v11 = v9;
-  v10.receiver = v14;
+  v11 = integerValue;
+  v10.receiver = selfCopy;
   v10.super_class = _UIKeyboardTextSelectionGestureControllerAccessibility;
-  [(_UIKeyboardTextSelectionGestureControllerAccessibility *)&v10 setPanGestureState:v12, v3];
-  if (v12 != v11)
+  [(_UIKeyboardTextSelectionGestureControllerAccessibility *)&v10 setPanGestureState:stateCopy, v3];
+  if (stateCopy != v11)
   {
-    if (v11 || v12 != 1)
+    if (v11 || stateCopy != 1)
     {
-      if (v11 == 1 || !v12)
+      if (v11 == 1 || !stateCopy)
       {
         v4 = *MEMORY[0x29EDC7EA8];
         v5 = accessibilityUIKitLocalizedString();

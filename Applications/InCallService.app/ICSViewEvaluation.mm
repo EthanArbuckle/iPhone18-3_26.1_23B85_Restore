@@ -1,13 +1,13 @@
 @interface ICSViewEvaluation
-+ (void)processHierarchy:(id)a3;
++ (void)processHierarchy:(id)hierarchy;
 @end
 
 @implementation ICSViewEvaluation
 
-+ (void)processHierarchy:(id)a3
++ (void)processHierarchy:(id)hierarchy
 {
-  v3 = a3;
-  sub_1001C9DB0(v3);
+  hierarchyCopy = hierarchy;
+  sub_1001C9DB0(hierarchyCopy);
 }
 
 @end

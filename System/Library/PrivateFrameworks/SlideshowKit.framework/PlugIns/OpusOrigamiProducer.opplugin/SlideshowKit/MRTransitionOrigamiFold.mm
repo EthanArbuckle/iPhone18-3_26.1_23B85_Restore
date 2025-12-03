@@ -1,19 +1,19 @@
 @interface MRTransitionOrigamiFold
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (MRTransitionOrigamiFold)initWithTransitionID:(id)a3;
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (MRTransitionOrigamiFold)initWithTransitionID:(id)d;
 - (void)_cleanupSwingTimings;
 - (void)cleanup;
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5;
-- (void)setAttributes:(id)a3;
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation MRTransitionOrigamiFold
 
-- (MRTransitionOrigamiFold)initWithTransitionID:(id)a3
+- (MRTransitionOrigamiFold)initWithTransitionID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MRTransitionOrigamiFold;
-  v3 = [(MRTransition *)&v6 initWithTransitionID:a3];
+  v3 = [(MRTransition *)&v6 initWithTransitionID:d];
   v4 = v3;
   if (v3)
   {
@@ -41,24 +41,24 @@
   self->mSideSwing = 0;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = MRTransitionOrigamiFold;
-  [(MRTransition *)&v4 setAttributes:a3];
+  [(MRTransition *)&v4 setAttributes:attributes];
   self->super._direction = 0;
 }
 
-- (BOOL)prerenderForTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (BOOL)prerenderForTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
   v6.receiver = self;
   v6.super_class = MRTransitionOrigamiFold;
-  return [(MRTransition *)&v6 prerenderForTime:a4 inContext:a5 withArguments:a3];
+  return [(MRTransition *)&v6 prerenderForTime:context inContext:arguments withArguments:time];
 }
 
-- (void)renderAtTime:(double)a3 inContext:(id)a4 withArguments:(id)a5
+- (void)renderAtTime:(double)time inContext:(id)context withArguments:(id)arguments
 {
-  [a4 localAspectRatio];
+  [context localAspectRatio];
   v10 = 1.0 / v9;
   if ((1.0 / v9) <= 0.0)
   {
@@ -110,8 +110,8 @@
   v78 = 0u;
   v79 = 0u;
   v16 = (v12 + 1);
-  v17 = a3;
-  v18 = v17 * v16;
+  timeCopy = time;
+  v18 = timeCopy * v16;
   v19 = vcvtms_s32_f32(v18);
   v20 = v12 - 1;
   if ((v12 - 1) <= v19)
@@ -157,10 +157,10 @@
   cosval = v31.__cosval;
   mSourceLayer = self->super.mSourceLayer;
   [(MRLayerClock *)[(MRLayer *)mSourceLayer clock] externalTime];
-  v33 = [(MRLayer *)mSourceLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+  v33 = [(MRLayer *)mSourceLayer patchworkAtTime:context inContext:arguments withArguments:?];
   mTargetLayer = self->super.mTargetLayer;
   [(MRLayerClock *)[(MRLayer *)mTargetLayer clock] externalTime];
-  v75 = [(MRLayer *)mTargetLayer patchworkAtTime:a4 inContext:a5 withArguments:?];
+  v75 = [(MRLayer *)mTargetLayer patchworkAtTime:context inContext:arguments withArguments:?];
   if (!v24)
   {
     v36 = (~v73 + v16);
@@ -185,7 +185,7 @@
     *(&v77[1] + 1) = v37;
     *(&v77[1] + 2) = v37;
     memset(&v77[1] + 12, 0, 136);
-    RenderPatchworkWithMesh(v33, v77, a4);
+    RenderPatchworkWithMesh(v33, v77, context);
   }
 
   if (v20 <= v19)
@@ -201,7 +201,7 @@
       v42 = 2;
     }
 
-    [a4 cull:v42];
+    [context cull:v42];
     v40 = 3;
   }
 
@@ -267,7 +267,7 @@ LABEL_33:
   v77[1] = v79;
   v77[2] = v80;
   v77[3] = v81;
-  RenderPatchworkWithMesh(v75, v77, a4);
+  RenderPatchworkWithMesh(v75, v77, context);
   v50 = v76.f32[0];
   if (!v24)
   {
@@ -348,7 +348,7 @@ LABEL_33:
           v60 = 1;
         }
 
-        [a4 cull:v60];
+        [context cull:v60];
       }
 
       LOWORD(v77[0]) = 2;
@@ -359,7 +359,7 @@ LABEL_33:
       *(&v77[1] + 4) = __PAIR64__(LODWORD(v55), LODWORD(v56));
       *(&v77[1] + 3) = v54;
       memset(&v77[2], 0, 132);
-      RenderPatchworkWithMesh(v33, v77, a4);
+      RenderPatchworkWithMesh(v33, v77, context);
       v50 = v76.f32[0];
       cosval = v31.__cosval;
     }
@@ -433,7 +433,7 @@ LABEL_33:
         v72 = 1;
       }
 
-      [a4 cull:v72];
+      [context cull:v72];
       LOWORD(v77[0]) = 2;
       WORD1(v77[0]) = v41;
       *(v77 + 4) = __PAIR64__(LODWORD(v70), LODWORD(v71));
@@ -453,11 +453,11 @@ LABEL_33:
       *(&v77[9] + 1) = *v98;
       *(&v77[8] + 1) = v97;
       *(&v77[7] + 1) = v96;
-      RenderPatchworkWithMesh(v33, v77, a4);
+      RenderPatchworkWithMesh(v33, v77, context);
     }
   }
 
-  [a4 cull:0];
+  [context cull:0];
   [v33 removeImages];
   [v75 removeImages];
 }

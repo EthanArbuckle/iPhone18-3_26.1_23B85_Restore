@@ -1,6 +1,6 @@
 @interface COSUnavailableAppDetailViewController
 - (id)specifiers;
-- (void)removeRow:(id)a3;
+- (void)removeRow:(id)row;
 @end
 
 @implementation COSUnavailableAppDetailViewController
@@ -29,19 +29,19 @@
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v13 = [v12 allKeys];
-    v14 = [v13 countByEnumeratingWithState:&v29 objects:v39 count:16];
-    if (v14)
+    allKeys = [v12 allKeys];
+    integerValue = [allKeys countByEnumeratingWithState:&v29 objects:v39 count:16];
+    if (integerValue)
     {
       v26 = v10;
       v15 = *v30;
       while (2)
       {
-        for (i = 0; i != v14; ++i)
+        for (i = 0; i != integerValue; ++i)
         {
           if (*v30 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allKeys);
           }
 
           v17 = *(*(&v29 + 1) + 8 * i);
@@ -49,14 +49,14 @@
           {
             v18 = [v12 objectForKeyedSubscript:v17];
             v19 = [v18 objectForKeyedSubscript:ACXServerStatusKey];
-            v14 = [v19 integerValue];
+            integerValue = [v19 integerValue];
 
             goto LABEL_12;
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v29 objects:v39 count:16];
-        if (v14)
+        integerValue = [allKeys countByEnumeratingWithState:&v29 objects:v39 count:16];
+        if (integerValue)
         {
           continue;
         }
@@ -71,7 +71,7 @@ LABEL_12:
     v20 = pbb_bridge_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [NSNumber numberWithInteger:v14];
+      v21 = [NSNumber numberWithInteger:integerValue];
       *buf = 136315650;
       v34 = "[COSUnavailableAppDetailViewController specifiers]";
       v35 = 2112;
@@ -81,7 +81,7 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s - %@ State: %@", buf, 0x20u);
     }
 
-    v22 = v14 <= 2 && !self->_disabled;
+    v22 = integerValue <= 2 && !self->_disabled;
     v23 = [NSNumber numberWithInt:v22];
     [v9 setProperty:v23 forKey:PSEnabledKey];
 
@@ -96,12 +96,12 @@ LABEL_12:
   return v4;
 }
 
-- (void)removeRow:(id)a3
+- (void)removeRow:(id)row
 {
   v4 = [*&self->BPSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"COSUnavailableApplicationInfoID"];
   v5 = [v4 objectForKeyedSubscript:ACXApplicationBundleIdentiferKey];
   v6 = +[ACXDeviceConnection sharedDeviceConnection];
-  v7 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   self->_disabled = 1;
   [(COSUnavailableAppDetailViewController *)self reloadSpecifiers];
   v8[0] = _NSConcreteStackBlock;
@@ -109,7 +109,7 @@ LABEL_12:
   v8[2] = sub_10003F7C4;
   v8[3] = &unk_1002690F8;
   v8[4] = self;
-  [v6 removeApplication:v5 fromPairedDevice:v7 completion:v8];
+  [v6 removeApplication:v5 fromPairedDevice:activeWatch completion:v8];
 }
 
 @end

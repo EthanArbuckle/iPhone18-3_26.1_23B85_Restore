@@ -1,6 +1,6 @@
 @interface PKUIAnimationDelegate
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 @end
 
@@ -13,7 +13,7 @@
   [(PKUIAnimationDelegate *)&v2 dealloc];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   didStartHandler = self->_didStartHandler;
   if (didStartHandler)
@@ -26,17 +26,17 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v6 = a4;
+    finishedCopy = finished;
     v8 = _Block_copy(completionHandler);
     v7 = self->_completionHandler;
     self->_completionHandler = 0;
 
-    v8[2](v8, v6);
+    v8[2](v8, finishedCopy);
   }
 }
 

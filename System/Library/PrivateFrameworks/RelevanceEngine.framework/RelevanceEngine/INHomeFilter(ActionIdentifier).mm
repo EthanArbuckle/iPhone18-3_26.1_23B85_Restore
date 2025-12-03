@@ -6,10 +6,10 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v1 = [a1 entityIdentifiers];
-  v2 = [v1 re_actionIdentifierHashValue];
+  entityIdentifiers = [self entityIdentifiers];
+  re_actionIdentifierHashValue = [entityIdentifiers re_actionIdentifierHashValue];
 
-  return v2;
+  return re_actionIdentifierHashValue;
 }
 
 @end

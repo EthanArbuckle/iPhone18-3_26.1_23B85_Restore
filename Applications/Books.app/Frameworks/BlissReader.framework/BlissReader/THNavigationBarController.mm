@@ -1,7 +1,7 @@
 @interface THNavigationBarController
 - (BOOL)isNavigationBarHidden;
 - (THNavigationBarController)init;
-- (void)buildConstraintsFromParent:(id)a3 layoutGuide:(id)a4;
+- (void)buildConstraintsFromParent:(id)parent layoutGuide:(id)guide;
 - (void)clearAutohideTimer;
 - (void)completeNavigationBarFade;
 - (void)dealloc;
@@ -9,11 +9,11 @@
 - (void)p_hideNavigationBar;
 - (void)p_showNavigationBar;
 - (void)resetAutohideTimer;
-- (void)setCenterTitle:(id)a3;
-- (void)setLeftItems:(id)a3 rightItems:(id)a4;
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4 duration:(double)a5 completion:(id)a6;
+- (void)setCenterTitle:(id)title;
+- (void)setLeftItems:(id)items rightItems:(id)rightItems;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated duration:(double)duration completion:(id)completion;
 - (void)startNavigationBarFade;
 @end
 
@@ -44,7 +44,7 @@
   [(THNavigationBarController *)&v3 dealloc];
 }
 
-- (void)buildConstraintsFromParent:(id)a3 layoutGuide:(id)a4
+- (void)buildConstraintsFromParent:(id)parent layoutGuide:(id)guide
 {
   if (!self->mBottomConstraint && !self->mTopConstraint)
   {
@@ -53,9 +53,9 @@
     -[THNavigationBarController setTopConstraint:](self, "setTopConstraint:", [-[BCNavigationBar topAnchor](self->mNavigationBar "topAnchor")]);
     [(NSLayoutConstraint *)[(THNavigationBarController *)self topConstraint] setActive:1];
     -[THNavigationBarController setBottomConstraint:](self, "setBottomConstraint:", [-[BCNavigationBar bottomAnchor](self->mNavigationBar "bottomAnchor")]);
-    v7 = [(THNavigationBarController *)self bottomConstraint];
+    bottomConstraint = [(THNavigationBarController *)self bottomConstraint];
 
-    [(NSLayoutConstraint *)v7 setActive:0];
+    [(NSLayoutConstraint *)bottomConstraint setActive:0];
   }
 }
 
@@ -75,43 +75,43 @@
 
 - (BOOL)isNavigationBarHidden
 {
-  v2 = [(THNavigationBarController *)self navigationBar];
+  navigationBar = [(THNavigationBarController *)self navigationBar];
 
-  return [(BCNavigationBar *)v2 isHidden];
+  return [(BCNavigationBar *)navigationBar isHidden];
 }
 
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4 duration:(double)a5 completion:(id)a6
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v8 = a4;
-  v9 = a3;
-  if ([(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] isHidden]!= a3)
+  animatedCopy = animated;
+  hiddenCopy = hidden;
+  if ([(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] isHidden]!= hidden)
   {
     [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setHidden:0];
-    [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] willSetNavigationBarHidden:v9 animated:v8];
-    if (v8)
+    [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] willSetNavigationBarHidden:hiddenCopy animated:animatedCopy];
+    if (animatedCopy)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_6A1A8;
       v15[3] = &unk_45C038;
       v15[4] = self;
-      v16 = v9;
-      v17 = v8;
+      v16 = hiddenCopy;
+      v17 = animatedCopy;
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_6A218;
       v12[3] = &unk_45C060;
-      v13 = v9;
+      v13 = hiddenCopy;
       v12[4] = self;
-      v12[5] = a6;
-      v14 = v8;
-      [UIView animateWithDuration:v15 animations:v12 completion:a5];
+      v12[5] = completion;
+      v14 = animatedCopy;
+      [UIView animateWithDuration:v15 animations:v12 completion:duration];
     }
 
     else
     {
-      [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] settingNavigationBarHidden:v9 animated:0];
-      if (v9)
+      [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] settingNavigationBarHidden:hiddenCopy animated:0];
+      if (hiddenCopy)
       {
         [(THNavigationBarController *)self p_hideNavigationBar];
       }
@@ -121,51 +121,51 @@
         [(THNavigationBarController *)self p_showNavigationBar];
       }
 
-      [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setHidden:v9];
-      if (a6)
+      [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setHidden:hiddenCopy];
+      if (completion)
       {
-        (*(a6 + 2))(a6);
+        (*(completion + 2))(completion);
       }
 
-      v11 = [(THNavigationBarController *)self delegate];
+      delegate = [(THNavigationBarController *)self delegate];
 
-      [(THNavigationBarControllerDelegate *)v11 didSetNavigationBarHidden:v9 animated:0];
+      [(THNavigationBarControllerDelegate *)delegate didSetNavigationBarHidden:hiddenCopy animated:0];
     }
   }
 }
 
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [(THNavigationBarController *)self showHideDuration];
 
-  [(THNavigationBarController *)self setNavigationBarHidden:v7 animated:v6 duration:a5 completion:?];
+  [(THNavigationBarController *)self setNavigationBarHidden:hiddenCopy animated:animatedCopy duration:completion completion:?];
 }
 
-- (void)setNavigationBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [(THNavigationBarController *)self showHideDuration];
 
-  [(THNavigationBarController *)self setNavigationBarHidden:v5 animated:v4 duration:?];
+  [(THNavigationBarController *)self setNavigationBarHidden:hiddenCopy animated:animatedCopy duration:?];
 }
 
 - (void)startNavigationBarFade
 {
-  v2 = [(THNavigationBarController *)self navigationBar];
+  navigationBar = [(THNavigationBarController *)self navigationBar];
 
-  [(BCNavigationBar *)v2 setAlpha:0.0];
+  [(BCNavigationBar *)navigationBar setAlpha:0.0];
 }
 
 - (void)completeNavigationBarFade
 {
   [(THNavigationBarController *)self p_hideNavigationBar];
   [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setAlpha:1.0];
-  v3 = [(THNavigationBarController *)self navigationBar];
+  navigationBar = [(THNavigationBarController *)self navigationBar];
 
-  [(BCNavigationBar *)v3 setHidden:1];
+  [(BCNavigationBar *)navigationBar setHidden:1];
 }
 
 - (void)p_autohideTimerAction
@@ -206,32 +206,32 @@
   }
 }
 
-- (void)setCenterTitle:(id)a3
+- (void)setCenterTitle:(id)title
 {
-  v5 = [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] shouldShowChapterTitle];
-  v6 = [(THNavigationBarController *)self navigationBar];
-  if (v5)
+  shouldShowChapterTitle = [(THNavigationBarControllerDelegate *)[(THNavigationBarController *)self delegate] shouldShowChapterTitle];
+  navigationBar = [(THNavigationBarController *)self navigationBar];
+  if (shouldShowChapterTitle)
   {
-    v7 = a3;
+    titleCopy = title;
   }
 
   else
   {
-    v7 = 0;
+    titleCopy = 0;
   }
 
-  [(BCNavigationBar *)v6 setTitle:v7];
+  [(BCNavigationBar *)navigationBar setTitle:titleCopy];
 }
 
-- (void)setLeftItems:(id)a3 rightItems:(id)a4
+- (void)setLeftItems:(id)items rightItems:(id)rightItems
 {
-  v7 = [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] isHidden];
+  isHidden = [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] isHidden];
   [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setHidden:0];
-  [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setLeftItems:a3];
-  [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setRightItems:a4];
-  v8 = [(THNavigationBarController *)self navigationBar];
+  [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setLeftItems:items];
+  [(BCNavigationBar *)[(THNavigationBarController *)self navigationBar] setRightItems:rightItems];
+  navigationBar = [(THNavigationBarController *)self navigationBar];
 
-  [(BCNavigationBar *)v8 setHidden:v7];
+  [(BCNavigationBar *)navigationBar setHidden:isHidden];
 }
 
 @end

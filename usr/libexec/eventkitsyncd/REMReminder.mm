@@ -8,18 +8,18 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = [[NSMutableString alloc] initWithCapacity:150];
-  v5 = [(REMReminder *)self dueDateComponents];
-  v6 = [v5 date];
+  dueDateComponents = [(REMReminder *)self dueDateComponents];
+  date = [dueDateComponents date];
 
-  v7 = [(REMReminder *)self title];
-  v8 = [v7 string];
+  title = [(REMReminder *)self title];
+  string = [title string];
 
   [v4 appendString:@""];
-  v9 = sub_10002CF20(v8);
+  v9 = sub_10002CF20(string);
   [v4 appendString:v9];
 
   [v4 appendString:@"."];
-  v10 = sub_100016580(v6);
+  v10 = sub_100016580(date);
   [v4 appendString:v10];
 
   objc_autoreleasePoolPop(v3);

@@ -1,15 +1,15 @@
 @interface VNEntityIdentificationModelTrainingData
-- (BOOL)addObservations:(id)a3 toEntityWithUniqueIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)removeAllObservationsFromEntityWithUniqueIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeEntityWithUniqueIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)removeObservations:(id)a3 fromEntityWithUniqueIdentifier:(id)a4 error:(id *)a5;
-- (BOOL)validateWithCanceller:(id)a3 error:(id *)a4;
-- (VNEntityIdentificationModelTrainingData)initWithModelConfiguration:(id)a3;
+- (BOOL)addObservations:(id)observations toEntityWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeAllObservationsFromEntityWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeEntityWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)removeObservations:(id)observations fromEntityWithUniqueIdentifier:(id)identifier error:(id *)error;
+- (BOOL)validateWithCanceller:(id)canceller error:(id *)error;
+- (VNEntityIdentificationModelTrainingData)initWithModelConfiguration:(id)configuration;
 - (VNEntityIdentificationModelTrainingDataDelegate)delegate;
-- (id)_serialNumberForEntityWithUniqueIdentifier:(id *)a1 error:(void *)a2;
-- (id)_uniqueObservationsForObservations:(void *)a3 forEntityWithUniqueIdentifier:(int)a4 inRegisteredState:(void *)a5 compatibleWithOriginatingRequestSpecifier:(uint64_t)a6 error:;
-- (id)observationAtIndex:(unint64_t)a3 forEntityAtIndex:(unint64_t)a4;
-- (unint64_t)observationCountForEntityAtIndex:(unint64_t)a3;
+- (id)_serialNumberForEntityWithUniqueIdentifier:(id *)identifier error:(void *)error;
+- (id)_uniqueObservationsForObservations:(void *)observations forEntityWithUniqueIdentifier:(int)identifier inRegisteredState:(void *)state compatibleWithOriginatingRequestSpecifier:(uint64_t)specifier error:;
+- (id)observationAtIndex:(unint64_t)index forEntityAtIndex:(unint64_t)atIndex;
+- (unint64_t)observationCountForEntityAtIndex:(unint64_t)index;
 - (void)_handleDataModification;
 @end
 
@@ -22,7 +22,7 @@
   return WeakRetained;
 }
 
-- (BOOL)validateWithCanceller:(id)a3 error:(id *)a4
+- (BOOL)validateWithCanceller:(id)canceller error:(id *)error
 {
   v6 = [(NSMutableArray *)self->_entityUniqueIdentifiers count];
   if (v6 == [(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier count]&& v6 == [(NSMutableDictionary *)self->_observationsForSerialNumber count])
@@ -30,7 +30,7 @@
     return 1;
   }
 
-  if (!a4)
+  if (!error)
   {
     return 0;
   }
@@ -38,19 +38,19 @@
   v8 = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(3, @"entity and observation data counts are out-of-sync", 0);
   v9 = v8;
   result = 0;
-  *a4 = v8;
+  *error = v8;
   return result;
 }
 
-- (BOOL)removeEntityWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeEntityWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:v5 error:?];
+  identifierCopy = identifier;
+  v6 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:identifierCopy error:?];
   if (v6)
   {
     [(NSMutableDictionary *)self->_observationsForSerialNumber removeObjectForKey:v6];
-    [(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier removeObjectForKey:v5];
-    [(NSMutableArray *)self->_entityUniqueIdentifiers removeObject:v5];
+    [(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier removeObjectForKey:identifierCopy];
+    [(NSMutableArray *)self->_entityUniqueIdentifiers removeObject:identifierCopy];
     -[NSMutableIndexSet addIndex:](self->_availableSerialNumbers, "addIndex:", [v6 unsignedIntegerValue]);
     [(VNEntityIdentificationModelTrainingData *)self _handleDataModification];
   }
@@ -58,39 +58,39 @@
   return 1;
 }
 
-- (id)_serialNumberForEntityWithUniqueIdentifier:(id *)a1 error:(void *)a2
+- (id)_serialNumberForEntityWithUniqueIdentifier:(id *)identifier error:(void *)error
 {
-  v3 = a2;
-  if (a1)
+  errorCopy = error;
+  if (identifier)
   {
-    v4 = [a1[5] objectForKeyedSubscript:v3];
-    a1 = v4;
+    v4 = [identifier[5] objectForKeyedSubscript:errorCopy];
+    identifier = v4;
     if (v4)
     {
       v5 = v4;
     }
   }
 
-  return a1;
+  return identifier;
 }
 
 - (void)_handleDataModification
 {
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF00]);
-    v3 = a1[8];
-    a1[8] = v2;
+    v3 = self[8];
+    self[8] = v2;
 
-    ++a1[9];
-    v4 = [a1 delegate];
-    [v4 entityIdentificationModelTrainingDataWasModified:a1];
+    ++self[9];
+    delegate = [self delegate];
+    [delegate entityIdentificationModelTrainingDataWasModified:self];
   }
 }
 
-- (BOOL)removeAllObservationsFromEntityWithUniqueIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAllObservationsFromEntityWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:a3 error:?];
+  v5 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:identifier error:?];
   if (v5 && self)
   {
     v6 = [(NSMutableDictionary *)self->_observationsForSerialNumber objectForKeyedSubscript:v5];
@@ -105,15 +105,15 @@
   return 1;
 }
 
-- (BOOL)removeObservations:(id)a3 fromEntityWithUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)removeObservations:(id)observations fromEntityWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:v9 error:?];
+  observationsCopy = observations;
+  identifierCopy = identifier;
+  v10 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:identifierCopy error:?];
   if (v10)
   {
-    v11 = [(VNEntityIdentificationModelTrainingData *)self entityPrintOriginatingRequestSpecifier];
-    v12 = [(VNEntityIdentificationModelTrainingData *)&self->super.isa _uniqueObservationsForObservations:v8 forEntityWithUniqueIdentifier:v9 inRegisteredState:1 compatibleWithOriginatingRequestSpecifier:v11 error:a5];
+    entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelTrainingData *)self entityPrintOriginatingRequestSpecifier];
+    v12 = [(VNEntityIdentificationModelTrainingData *)&self->super.isa _uniqueObservationsForObservations:observationsCopy forEntityWithUniqueIdentifier:identifierCopy inRegisteredState:1 compatibleWithOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:error];
 
     v13 = v12 != 0;
     if (v12)
@@ -145,19 +145,19 @@
   return v13;
 }
 
-- (id)_uniqueObservationsForObservations:(void *)a3 forEntityWithUniqueIdentifier:(int)a4 inRegisteredState:(void *)a5 compatibleWithOriginatingRequestSpecifier:(uint64_t)a6 error:
+- (id)_uniqueObservationsForObservations:(void *)observations forEntityWithUniqueIdentifier:(int)identifier inRegisteredState:(void *)state compatibleWithOriginatingRequestSpecifier:(uint64_t)specifier error:
 {
   v47 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  if (a1)
+  observationsCopy = observations;
+  stateCopy = state;
+  if (self)
   {
     v14 = [v11 count];
     if (v14)
     {
-      v33 = v13;
-      v34 = v12;
+      v33 = stateCopy;
+      v34 = observationsCopy;
       v15 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:v14];
       v41 = 0u;
       v42 = 0u;
@@ -181,15 +181,15 @@
             }
 
             v21 = *(*(&v41 + 1) + 8 * i);
-            v22 = [a1 entityPrintOriginatingRequestSpecifier];
-            v23 = [VNEntityIdentificationModel validateAceptableObservation:v21 forEntityPrintOriginatingRequestSpecifier:v22 error:a6];
+            entityPrintOriginatingRequestSpecifier = [self entityPrintOriginatingRequestSpecifier];
+            v23 = [VNEntityIdentificationModel validateAceptableObservation:v21 forEntityPrintOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:specifier];
 
             if (!v23)
             {
-              v26 = 0;
-              v12 = v34;
+              array = 0;
+              observationsCopy = v34;
               v11 = v35;
-              v13 = v33;
+              stateCopy = v33;
               goto LABEL_26;
             }
 
@@ -207,12 +207,12 @@
         }
       }
 
-      v12 = v34;
-      v24 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:a1 error:v34];
+      observationsCopy = v34;
+      v24 = [VNEntityIdentificationModelTrainingData _serialNumberForEntityWithUniqueIdentifier:self error:v34];
       obj = v24;
       if (v24)
       {
-        v25 = [a1[6] objectForKeyedSubscript:v24];
+        v25 = [self[6] objectForKeyedSubscript:v24];
       }
 
       else
@@ -221,8 +221,8 @@
       }
 
       v11 = v35;
-      v13 = v33;
-      if (a4)
+      stateCopy = v33;
+      if (identifier)
       {
         v27 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v25];
         [v15 intersectSet:v27];
@@ -259,31 +259,31 @@
         }
       }
 
-      v26 = [v15 array];
+      array = [v15 array];
 
 LABEL_26:
     }
 
     else
     {
-      v26 = v11;
+      array = v11;
     }
   }
 
   else
   {
-    v26 = 0;
+    array = 0;
   }
 
-  return v26;
+  return array;
 }
 
-- (BOOL)addObservations:(id)a3 toEntityWithUniqueIdentifier:(id)a4 error:(id *)a5
+- (BOOL)addObservations:(id)observations toEntityWithUniqueIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(VNEntityIdentificationModelTrainingData *)self entityPrintOriginatingRequestSpecifier];
-  v11 = [(VNEntityIdentificationModelTrainingData *)&self->super.isa _uniqueObservationsForObservations:v9 forEntityWithUniqueIdentifier:v8 inRegisteredState:0 compatibleWithOriginatingRequestSpecifier:v10 error:a5];
+  identifierCopy = identifier;
+  observationsCopy = observations;
+  entityPrintOriginatingRequestSpecifier = [(VNEntityIdentificationModelTrainingData *)self entityPrintOriginatingRequestSpecifier];
+  v11 = [(VNEntityIdentificationModelTrainingData *)&self->super.isa _uniqueObservationsForObservations:observationsCopy forEntityWithUniqueIdentifier:identifierCopy inRegisteredState:0 compatibleWithOriginatingRequestSpecifier:entityPrintOriginatingRequestSpecifier error:error];
 
   if (!v11)
   {
@@ -292,7 +292,7 @@ LABEL_26:
   }
 
   v12 = v11;
-  v13 = v8;
+  v13 = identifierCopy;
   if (self)
   {
     v14 = [v12 count];
@@ -323,30 +323,30 @@ LABEL_5:
 
     if ([(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier count]>= self->_maximumEntities)
     {
-      if (a5)
+      if (error)
       {
         v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"The model has reached the maximum entity limit of %lu", self->_maximumEntities];
-        *a5 = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(9, v20, 0);
+        *error = VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(9, v20, 0);
       }
     }
 
     else
     {
-      v19 = [(NSMutableIndexSet *)self->_availableSerialNumbers firstIndex];
-      if (v19 == 0x7FFFFFFFFFFFFFFFLL)
+      firstIndex = [(NSMutableIndexSet *)self->_availableSerialNumbers firstIndex];
+      if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
       {
-        if (a5)
+        if (error)
         {
           VNEntityIdentificationModelErrorWithLocalizedDescriptionAndUnderlyingError(9, @"entity serial numbers have been exhausted", 0);
-          *a5 = LOBYTE(self) = 0;
+          *error = LOBYTE(self) = 0;
           goto LABEL_9;
         }
       }
 
       else
       {
-        v21 = v19;
-        [(NSMutableIndexSet *)self->_availableSerialNumbers removeIndex:v19];
+        v21 = firstIndex;
+        [(NSMutableIndexSet *)self->_availableSerialNumbers removeIndex:firstIndex];
         v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
         if (v22)
         {
@@ -367,14 +367,14 @@ LABEL_11:
   return self;
 }
 
-- (id)observationAtIndex:(unint64_t)a3 forEntityAtIndex:(unint64_t)a4
+- (id)observationAtIndex:(unint64_t)index forEntityAtIndex:(unint64_t)atIndex
 {
-  v6 = [(NSMutableArray *)self->_entityUniqueIdentifiers objectAtIndex:a4];
+  v6 = [(NSMutableArray *)self->_entityUniqueIdentifiers objectAtIndex:atIndex];
   v7 = [(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier objectForKeyedSubscript:v6];
   if (v7)
   {
     v8 = [(NSMutableDictionary *)self->_observationsForSerialNumber objectForKeyedSubscript:v7];
-    v9 = [v8 objectAtIndex:a3];
+    v9 = [v8 objectAtIndex:index];
   }
 
   else
@@ -385,9 +385,9 @@ LABEL_11:
   return v9;
 }
 
-- (unint64_t)observationCountForEntityAtIndex:(unint64_t)a3
+- (unint64_t)observationCountForEntityAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_entityUniqueIdentifiers objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_entityUniqueIdentifiers objectAtIndex:index];
   v5 = [(NSMutableDictionary *)self->_serialNumberForEntityUniqueIdentifier objectForKeyedSubscript:v4];
   if (v5)
   {
@@ -403,17 +403,17 @@ LABEL_11:
   return v7;
 }
 
-- (VNEntityIdentificationModelTrainingData)initWithModelConfiguration:(id)a3
+- (VNEntityIdentificationModelTrainingData)initWithModelConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = VNEntityIdentificationModelTrainingData;
   v5 = [(VNEntityIdentificationModelTrainingData *)&v20 init];
   if (v5)
   {
-    v5->_maximumEntities = [v4 maximumEntities];
-    v6 = [v4 entityPrintOriginatingRequestSpecifier];
-    v7 = [v6 copy];
+    v5->_maximumEntities = [configurationCopy maximumEntities];
+    entityPrintOriginatingRequestSpecifier = [configurationCopy entityPrintOriginatingRequestSpecifier];
+    v7 = [entityPrintOriginatingRequestSpecifier copy];
     entityPrintOriginatingRequestSpecifier = v5->_entityPrintOriginatingRequestSpecifier;
     v5->_entityPrintOriginatingRequestSpecifier = v7;
 

@@ -1,23 +1,23 @@
 @interface MTRPluginRVCRunModeMetric
-+ (id)transformInvokeCommandExpectationMetric:(id)a3;
++ (id)transformInvokeCommandExpectationMetric:(id)metric;
 - (id)additionalCoreAnalyticsEventDictionary;
 @end
 
 @implementation MTRPluginRVCRunModeMetric
 
-+ (id)transformInvokeCommandExpectationMetric:(id)a3
++ (id)transformInvokeCommandExpectationMetric:(id)metric
 {
-  v3 = a3;
+  metricCopy = metric;
   v4 = [MTRPluginRVCRunModeMetric alloc];
-  v5 = [v3 invokeCommandMetric];
-  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcRunModeEvent" sourceMetric:v5];
+  invokeCommandMetric = [metricCopy invokeCommandMetric];
+  v6 = [(MTRPluginMetric *)v4 initMetricWithName:@"com.apple.matter.rvcRunModeEvent" sourceMetric:invokeCommandMetric];
 
-  v7 = [v3 invokeCommandMetric];
-  [v6 setInvokeCommandMetric:v7];
+  invokeCommandMetric2 = [metricCopy invokeCommandMetric];
+  [v6 setInvokeCommandMetric:invokeCommandMetric2];
 
-  v8 = [v3 error];
+  error = [metricCopy error];
 
-  [v6 setError:v8];
+  [v6 setError:error];
 
   return v6;
 }
@@ -29,10 +29,10 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v2 = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
-  v3 = [v2 expectedValues];
+  invokeCommandMetric = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
+  expectedValues = [invokeCommandMetric expectedValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v4 = [expectedValues countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -45,7 +45,7 @@
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(expectedValues);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
@@ -84,7 +84,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v5 = [expectedValues countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v5);
@@ -97,13 +97,13 @@
   }
 
   v19 = MEMORY[0x277CBEB38];
-  v20 = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
-  v21 = [v20 additionalCoreAnalyticsEventDictionary];
-  v22 = [v19 dictionaryWithDictionary:v21];
+  invokeCommandMetric2 = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
+  additionalCoreAnalyticsEventDictionary = [invokeCommandMetric2 additionalCoreAnalyticsEventDictionary];
+  v22 = [v19 dictionaryWithDictionary:additionalCoreAnalyticsEventDictionary];
 
-  v23 = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
-  v24 = [v23 commandFields];
-  v25 = commandValueFromCommandFields(v24);
+  invokeCommandMetric3 = [(MTRPluginRVCRunModeMetric *)self invokeCommandMetric];
+  commandFields = [invokeCommandMetric3 commandFields];
+  v25 = commandValueFromCommandFields(commandFields);
   [v22 setObject:v25 forKeyedSubscript:@"expectedRVCRunMode"];
 
   [v22 setObject:v7 forKeyedSubscript:@"rvcRunMode"];

@@ -1,24 +1,24 @@
 @interface ArticleHeaderViewController.ContentView
-- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithCoder:(id)a3;
-- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithFrame:(CGRect)a3;
+- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithCoder:(id)coder;
+- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ArticleHeaderViewController.ContentView
 
-- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithFrame:(CGRect)a3
+- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v7 = [(ArticleHeaderViewController.ContentView *)&v9 initWithFrame:x, y, width, height];
-  [(ArticleHeaderViewController.ContentView *)v7 setEdgesInsettingLayoutMarginsFromSafeArea:0];
-  return v7;
+  height = [(ArticleHeaderViewController.ContentView *)&v9 initWithFrame:x, y, width, height];
+  [(ArticleHeaderViewController.ContentView *)height setEdgesInsettingLayoutMarginsFromSafeArea:0];
+  return height;
 }
 
-- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithCoder:(id)a3
+- (_TtCC22SubscribePageExtension27ArticleHeaderViewControllerP33_486856A2142B6DE0A30BE8A898B9906E11ContentView)initWithCoder:(id)coder
 {
   result = sub_100754644();
   __break(1u);

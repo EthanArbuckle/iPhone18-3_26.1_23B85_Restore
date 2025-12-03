@@ -49,12 +49,12 @@
     *v11->_origin = origin;
     *&v11->_sampleCount[7] = sampleCount;
     v11->_seamless = seamless;
-    v13 = [(GKNoise *)v10 gradientColors];
+    gradientColors = [(GKNoise *)v10 gradientColors];
     gradientColors = v12->_gradientColors;
-    v12->_gradientColors = v13;
+    v12->_gradientColors = gradientColors;
 
-    v15 = [(GKNoise *)v10 __modules];
-    [v15 lastObject];
+    __modules = [(GKNoise *)v10 __modules];
+    [__modules lastObject];
     objc_claimAutoreleasedReturnValue();
 
     operator new[]();

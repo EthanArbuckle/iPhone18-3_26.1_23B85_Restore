@@ -1,6 +1,6 @@
 @interface GMDeviceSceneViewController
-+ (void)prepareSceneWithCompletionHandler:(id)a3;
-- (_TtC14VoiceTriggerUI27GMDeviceSceneViewController)initWithNibName:(id)a3 bundle:(id)a4;
++ (void)prepareSceneWithCompletionHandler:(id)handler;
+- (_TtC14VoiceTriggerUI27GMDeviceSceneViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   GMDeviceSceneViewController.viewDidLoad()();
 }
 
-+ (void)prepareSceneWithCompletionHandler:(id)a3
++ (void)prepareSceneWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_28089BC00, &qword_272934CB0);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_27292E314();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();
@@ -37,7 +37,7 @@
   sub_2729123F8(0, 0, v8, &unk_272934D38, v13);
 }
 
-- (_TtC14VoiceTriggerUI27GMDeviceSceneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14VoiceTriggerUI27GMDeviceSceneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,42 +1,42 @@
 @interface HKCoverageClassification
-+ (id)coverageClassificationWithTypeCodings:(id)a3 value:(id)a4 name:(id)a5;
-+ (id)indexableKeyPathsWithPrefix:(id)a3;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)coverageClassificationWithTypeCodings:(id)codings value:(id)value name:(id)name;
++ (id)indexableKeyPathsWithPrefix:(id)prefix;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKConcept)type;
 - (HKCoverageClassification)init;
-- (HKCoverageClassification)initWithCoder:(id)a3;
-- (HKCoverageClassification)initWithTypeCodings:(id)a3 value:(id)a4 name:(id)a5;
+- (HKCoverageClassification)initWithCoder:(id)coder;
+- (HKCoverageClassification)initWithTypeCodings:(id)codings value:(id)value name:(id)name;
 - (HKMedicalCodingCollection)typeCodingCollection;
 - (NSString)description;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)_setType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCoverageClassification
 
-+ (id)indexableKeyPathsWithPrefix:(id)a3
++ (id)indexableKeyPathsWithPrefix:(id)prefix
 {
   v10 = *MEMORY[0x1E69E9840];
   v9 = @"type";
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:v4, v9, v10];
+  v6 = [HKConceptIndexUtilities keyPaths:v5 prefix:prefixCopy, v9, v10];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-+ (id)coverageClassificationWithTypeCodings:(id)a3 value:(id)a4 name:(id)a5
++ (id)coverageClassificationWithTypeCodings:(id)codings value:(id)value name:(id)name
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithTypeCodings:v10 value:v9 name:v8];
+  nameCopy = name;
+  valueCopy = value;
+  codingsCopy = codings;
+  v11 = [[self alloc] initWithTypeCodings:codingsCopy value:valueCopy name:nameCopy];
 
   return v11;
 }
@@ -51,17 +51,17 @@
   return 0;
 }
 
-- (HKCoverageClassification)initWithTypeCodings:(id)a3 value:(id)a4 name:(id)a5
+- (HKCoverageClassification)initWithTypeCodings:(id)codings value:(id)value name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  codingsCopy = codings;
+  valueCopy = value;
+  nameCopy = name;
+  if (!codingsCopy)
   {
     [HKCoverageClassification initWithTypeCodings:a2 value:self name:?];
   }
 
-  if (![v9 count])
+  if (![codingsCopy count])
   {
     [HKCoverageClassification initWithTypeCodings:a2 value:self name:?];
   }
@@ -71,22 +71,22 @@
   v12 = [(HKCoverageClassification *)&v23 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [codingsCopy copy];
     typeCodings = v12->_typeCodings;
     v12->_typeCodings = v13;
 
-    v15 = [v10 copy];
+    v15 = [valueCopy copy];
     value = v12->_value;
     v12->_value = v15;
 
-    v17 = [v11 copy];
+    v17 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v17;
 
     if (v12->_typeCodings)
     {
-      v19 = [(HKCoverageClassification *)v12 typeCodingCollection];
-      v20 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v19];
+      typeCodingCollection = [(HKCoverageClassification *)v12 typeCodingCollection];
+      v20 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:typeCodingCollection];
       type = v12->_type;
       v12->_type = v20;
     }
@@ -100,19 +100,19 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKCoverageClassification *)self typeCodings];
-  v7 = [(HKCoverageClassification *)self type];
-  v8 = [(HKCoverageClassification *)self value];
-  v9 = [(HKCoverageClassification *)self name];
-  v10 = [v3 stringWithFormat:@"<%@:%p typeCoding = %@, type = %@, value = %@, name = %@>", v5, self, v6, v7, v8, v9, 0];
+  typeCodings = [(HKCoverageClassification *)self typeCodings];
+  type = [(HKCoverageClassification *)self type];
+  value = [(HKCoverageClassification *)self value];
+  name = [(HKCoverageClassification *)self name];
+  v10 = [v3 stringWithFormat:@"<%@:%p typeCoding = %@, type = %@, value = %@, name = %@>", v5, self, typeCodings, type, value, name, 0];
 
   return v10;
 }
 
-- (HKCoverageClassification)initWithCoder:(id)a3
+- (HKCoverageClassification)initWithCoder:(id)coder
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = HKCoverageClassification;
   v5 = [(HKCoverageClassification *)&v20 init];
@@ -123,7 +123,7 @@
     v21[1] = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"TypeCodings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"TypeCodings"];
     typeCodings = v5->_typeCodings;
     v5->_typeCodings = v9;
 
@@ -133,15 +133,15 @@
       goto LABEL_6;
     }
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Value"];
     value = v5->_value;
     v5->_value = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Name"];
     name = v5->_name;
     v5->_name = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Type"];
     type = v5->_type;
     v5->_type = v15;
   }
@@ -153,26 +153,26 @@ LABEL_6:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKCoverageClassification *)self typeCodings];
-  [v4 encodeObject:v5 forKey:@"TypeCodings"];
+  coderCopy = coder;
+  typeCodings = [(HKCoverageClassification *)self typeCodings];
+  [coderCopy encodeObject:typeCodings forKey:@"TypeCodings"];
 
-  v6 = [(HKCoverageClassification *)self value];
-  [v4 encodeObject:v6 forKey:@"Value"];
+  value = [(HKCoverageClassification *)self value];
+  [coderCopy encodeObject:value forKey:@"Value"];
 
-  v7 = [(HKCoverageClassification *)self name];
-  [v4 encodeObject:v7 forKey:@"Name"];
+  name = [(HKCoverageClassification *)self name];
+  [coderCopy encodeObject:name forKey:@"Name"];
 
-  v8 = [(HKCoverageClassification *)self type];
-  [v4 encodeObject:v8 forKey:@"Type"];
+  type = [(HKCoverageClassification *)self type];
+  [coderCopy encodeObject:type forKey:@"Type"];
 }
 
 - (HKMedicalCodingCollection)typeCodingCollection
 {
-  v2 = [(HKCoverageClassification *)self typeCodings];
-  v3 = [HKMedicalCodingCollection collectionWithCodings:v2];
+  typeCodings = [(HKCoverageClassification *)self typeCodings];
+  v3 = [HKMedicalCodingCollection collectionWithCodings:typeCodings];
 
   return v3;
 }
@@ -187,17 +187,17 @@ LABEL_6:
 
   else
   {
-    v4 = [(HKCoverageClassification *)self typeCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    typeCodingCollection = [(HKCoverageClassification *)self typeCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:typeCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setType:(id)a3
+- (void)_setType:(id)type
 {
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -207,27 +207,27 @@ LABEL_6:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [typeCopy copy];
   type = self->_type;
   self->_type = v6;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKCoverageClassification *)self typeCodings];
-  v4 = [v3 hash];
-  v5 = [(HKCoverageClassification *)self value];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HKCoverageClassification *)self name];
-  v8 = [v7 hash];
+  typeCodings = [(HKCoverageClassification *)self typeCodings];
+  v4 = [typeCodings hash];
+  value = [(HKCoverageClassification *)self value];
+  v6 = [value hash] ^ v4;
+  name = [(HKCoverageClassification *)self name];
+  v8 = [name hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -237,26 +237,26 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKCoverageClassification *)self typeCodings];
-      v7 = [(HKCoverageClassification *)v5 typeCodings];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      typeCodings = [(HKCoverageClassification *)self typeCodings];
+      typeCodings2 = [(HKCoverageClassification *)v5 typeCodings];
+      v8 = typeCodings2;
+      if (typeCodings == typeCodings2)
       {
       }
 
       else
       {
-        v9 = [(HKCoverageClassification *)v5 typeCodings];
-        if (!v9)
+        typeCodings3 = [(HKCoverageClassification *)v5 typeCodings];
+        if (!typeCodings3)
         {
           goto LABEL_19;
         }
 
-        v10 = v9;
-        v11 = [(HKCoverageClassification *)self typeCodings];
-        v12 = [(HKCoverageClassification *)v5 typeCodings];
-        v13 = [v11 isEqual:v12];
+        v10 = typeCodings3;
+        typeCodings4 = [(HKCoverageClassification *)self typeCodings];
+        typeCodings5 = [(HKCoverageClassification *)v5 typeCodings];
+        v13 = [typeCodings4 isEqual:typeCodings5];
 
         if (!v13)
         {
@@ -264,25 +264,25 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKCoverageClassification *)self value];
-      v15 = [(HKCoverageClassification *)v5 value];
-      v8 = v15;
-      if (v6 == v15)
+      typeCodings = [(HKCoverageClassification *)self value];
+      value = [(HKCoverageClassification *)v5 value];
+      v8 = value;
+      if (typeCodings == value)
       {
       }
 
       else
       {
-        v16 = [(HKCoverageClassification *)v5 value];
-        if (!v16)
+        value2 = [(HKCoverageClassification *)v5 value];
+        if (!value2)
         {
           goto LABEL_19;
         }
 
-        v17 = v16;
-        v18 = [(HKCoverageClassification *)self value];
-        v19 = [(HKCoverageClassification *)v5 value];
-        v20 = [v18 isEqualToString:v19];
+        v17 = value2;
+        value3 = [(HKCoverageClassification *)self value];
+        value4 = [(HKCoverageClassification *)v5 value];
+        v20 = [value3 isEqualToString:value4];
 
         if (!v20)
         {
@@ -290,10 +290,10 @@ LABEL_6:
         }
       }
 
-      v6 = [(HKCoverageClassification *)self name];
-      v21 = [(HKCoverageClassification *)v5 name];
-      v8 = v21;
-      if (v6 == v21)
+      typeCodings = [(HKCoverageClassification *)self name];
+      name = [(HKCoverageClassification *)v5 name];
+      v8 = name;
+      if (typeCodings == name)
       {
 
 LABEL_24:
@@ -301,13 +301,13 @@ LABEL_24:
         goto LABEL_21;
       }
 
-      v22 = [(HKCoverageClassification *)v5 name];
-      if (v22)
+      name2 = [(HKCoverageClassification *)v5 name];
+      if (name2)
       {
-        v23 = v22;
-        v24 = [(HKCoverageClassification *)self name];
-        v25 = [(HKCoverageClassification *)v5 name];
-        v26 = [v24 isEqualToString:v25];
+        v23 = name2;
+        name3 = [(HKCoverageClassification *)self name];
+        name4 = [(HKCoverageClassification *)v5 name];
+        v26 = [name3 isEqualToString:name4];
 
         if (v26)
         {
@@ -334,11 +334,11 @@ LABEL_22:
   return v14;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"type"])
+  pathCopy = path;
+  if ([pathCopy isEqualToString:@"type"])
   {
     v7 = [HKMedicalCodingCollection collectionWithCodings:self->_typeCodings];
     v8 = [HKIndexableObject indexableObjectWithObject:v7];
@@ -351,7 +351,7 @@ LABEL_22:
     v10 = MEMORY[0x1E696ABC0];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    [v10 hk_assignError:a4 code:3 format:{@"%@ does not support codings for key path %@", v12, v6}];
+    [v10 hk_assignError:error code:3 format:{@"%@ does not support codings for key path %@", v12, pathCopy}];
 
     v9 = 0;
   }
@@ -361,14 +361,14 @@ LABEL_22:
   return v9;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 isEqualToString:@"type"];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [pathCopy isEqualToString:@"type"];
   if (v10)
   {
-    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], self->_typeCodings != 0, v9, a5);
+    v11 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], self->_typeCodings != 0, pathCopy, error);
 
     if (!v11)
     {
@@ -376,9 +376,9 @@ LABEL_22:
       goto LABEL_7;
     }
 
-    v12 = [v8 firstObject];
-    v9 = [v12 object];
-    v13 = [v9 copy];
+    firstObject = [conceptsCopy firstObject];
+    pathCopy = [firstObject object];
+    v13 = [pathCopy copy];
     type = self->_type;
     self->_type = v13;
   }
@@ -387,8 +387,8 @@ LABEL_22:
   {
     v15 = MEMORY[0x1E696ABC0];
     v16 = objc_opt_class();
-    v12 = NSStringFromClass(v16);
-    [v15 hk_assignError:a5 code:3 format:{@"%@ does not support restoring concepts for key path %@", v12, v9}];
+    firstObject = NSStringFromClass(v16);
+    [v15 hk_assignError:error code:3 format:{@"%@ does not support restoring concepts for key path %@", firstObject, pathCopy}];
   }
 
 LABEL_7:

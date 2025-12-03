@@ -1,22 +1,22 @@
 @interface PXGScrollLayout
-- (CGPoint)anchor:(id)a3 visibleRectOriginForProposedVisibleRect:(CGRect)a4 forLayout:(id)a5;
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (CGPoint)anchor:(id)anchor visibleRectOriginForProposedVisibleRect:(CGRect)rect forLayout:(id)layout;
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (PXGLayout)contentLayout;
 - (PXGScrollLayout)init;
-- (PXGScrollLayout)initWithContentLayout:(id)a3;
+- (PXGScrollLayout)initWithContentLayout:(id)layout;
 - (PXGScrollLayoutDelegate)delegate;
 - (UIEdgeInsets)hitTestContentInsets;
 - (UIEdgeInsets)horizontalScrollIndicatorInsets;
 - (UIEdgeInsets)verticalScrollIndicatorInsets;
-- (id)axContainingScrollViewForAXGroup:(id)a3;
+- (id)axContainingScrollViewForAXGroup:(id)group;
 - (id)axSpriteIndexes;
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3;
-- (id)focusItemsForScrollViewContainer:(id)a3 inRect:(CGRect)a4;
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges;
+- (id)focusItemsForScrollViewContainer:(id)container inRect:(CGRect)rect;
 - (id)layoutForItemChanges;
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4;
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout;
 - (int64_t)intrinsicScrollRegime;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_invalidateContentLayout;
 - (void)_invalidateLocalContent;
 - (void)_updateContentLayout;
@@ -25,36 +25,36 @@
 - (void)contentSizeDidChange;
 - (void)didUpdate;
 - (void)displayScaleDidChange;
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4;
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index;
 - (void)lastScrollDirectionDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)referenceSizeDidChange;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewContainerDidEndScrolling:(id)a3;
-- (void)scrollViewContainerDidScroll:(id)a3;
-- (void)scrollViewContainerWillBeginScrolling:(id)a3;
-- (void)scrollViewContainerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6;
-- (void)setAlwaysBounceHorizontal:(BOOL)a3;
-- (void)setAlwaysBounceVertical:(BOOL)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setContentLayout:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDraggingPerformsScroll:(BOOL)a3;
-- (void)setFixedHeight:(id)a3;
-- (void)setFixedWidth:(id)a3;
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3;
-- (void)setHorizontalInterPageSpacing:(double)a3;
-- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)a3;
-- (void)setIsScrolling:(BOOL)a3;
-- (void)setScrollDecelerationRate:(int64_t)a3;
-- (void)setScrollViewSpriteZPosition:(float)a3;
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
-- (void)setTransfersScrollToContainer:(BOOL)a3;
-- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)a3;
-- (void)setWantsScrollView:(BOOL)a3;
+- (void)scrollViewContainerDidEndScrolling:(id)scrolling;
+- (void)scrollViewContainerDidScroll:(id)scroll;
+- (void)scrollViewContainerWillBeginScrolling:(id)scrolling;
+- (void)scrollViewContainerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset;
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal;
+- (void)setAlwaysBounceVertical:(BOOL)vertical;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setContentLayout:(id)layout;
+- (void)setDelegate:(id)delegate;
+- (void)setDraggingPerformsScroll:(BOOL)scroll;
+- (void)setFixedHeight:(id)height;
+- (void)setFixedWidth:(id)width;
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets;
+- (void)setHorizontalInterPageSpacing:(double)spacing;
+- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)setIsScrolling:(BOOL)scrolling;
+- (void)setScrollDecelerationRate:(int64_t)rate;
+- (void)setScrollViewSpriteZPosition:(float)position;
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
+- (void)setTransfersScrollToContainer:(BOOL)container;
+- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)insets;
+- (void)setWantsScrollView:(BOOL)view;
 - (void)stopScrolling;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
 - (void)viewEnvironmentDidChange;
@@ -110,14 +110,14 @@
   return WeakRetained;
 }
 
-- (id)axContainingScrollViewForAXGroup:(id)a3
+- (id)axContainingScrollViewForAXGroup:(id)group
 {
-  v4 = [(PXGLayout *)self rootLayout];
-  v5 = [v4 viewForSpriteIndex:{objc_msgSend(v4, "convertSpriteIndex:fromDescendantLayout:", self->_scrollViewSpriteIndex, self)}];
-  v6 = [v5 scrollViewController];
-  v7 = [v6 scrollView];
+  rootLayout = [(PXGLayout *)self rootLayout];
+  v5 = [rootLayout viewForSpriteIndex:{objc_msgSend(rootLayout, "convertSpriteIndex:fromDescendantLayout:", self->_scrollViewSpriteIndex, self)}];
+  scrollViewController = [v5 scrollViewController];
+  scrollView = [scrollViewController scrollView];
 
-  return v7;
+  return scrollView;
 }
 
 - (id)axSpriteIndexes
@@ -127,49 +127,49 @@
   return v2;
 }
 
-- (id)focusItemsForScrollViewContainer:(id)a3 inRect:(CGRect)a4
+- (id)focusItemsForScrollViewContainer:(id)container inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = [a3 scrollViewController];
-  v10 = [(PXGScrollLayout *)self contentLayout];
-  v11 = [v10 axGroup];
-  v12 = [v11 focusItemsForScrollViewController:v9 inRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scrollViewController = [container scrollViewController];
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
+  axGroup = [contentLayout axGroup];
+  v12 = [axGroup focusItemsForScrollViewController:scrollViewController inRect:{x, y, width, height}];
 
   return v12;
 }
 
-- (void)scrollViewContainerDidEndScrolling:(id)a3
+- (void)scrollViewContainerDidEndScrolling:(id)scrolling
 {
   [(PXGScrollLayout *)self setIsScrolling:0];
   if (self->_delegateRespondsTo.didEndScrolling)
   {
-    v4 = [(PXGScrollLayout *)self delegate];
-    [v4 scrollLayoutDidEndScrolling:self];
+    delegate = [(PXGScrollLayout *)self delegate];
+    [delegate scrollLayoutDidEndScrolling:self];
   }
 }
 
-- (void)scrollViewContainerWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5 currentContentOffset:(CGPoint)a6
+- (void)scrollViewContainerWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset currentContentOffset:(CGPoint)contentOffset
 {
   if (self->_delegateRespondsTo.willEndScrollingWithVelocityTargetContentOffsetCurrentContentOffset)
   {
-    y = a6.y;
-    x = a6.x;
-    v10 = a4.y;
-    v11 = a4.x;
-    v13 = [(PXGScrollLayout *)self delegate];
-    [v13 scrollLayoutWillEndScrolling:self withVelocity:a5 targetContentOffset:v11 currentContentOffset:{v10, x, y}];
+    y = contentOffset.y;
+    x = contentOffset.x;
+    v10 = velocity.y;
+    v11 = velocity.x;
+    delegate = [(PXGScrollLayout *)self delegate];
+    [delegate scrollLayoutWillEndScrolling:self withVelocity:offset targetContentOffset:v11 currentContentOffset:{v10, x, y}];
   }
 }
 
-- (void)scrollViewContainerDidScroll:(id)a3
+- (void)scrollViewContainerDidScroll:(id)scroll
 {
-  v5 = a3;
+  scrollCopy = scroll;
   if (![(PXGScrollLayout *)self isScrolling]&& +[PXGScrollLayout isRunningPPTScrollTest])
   {
-    [(PXGScrollLayout *)self scrollViewContainerWillBeginScrolling:v5];
+    [(PXGScrollLayout *)self scrollViewContainerWillBeginScrolling:scrollCopy];
   }
 
   if ([(PXGScrollLayout *)self isScrolling])
@@ -179,40 +179,40 @@
 
   if (self->_delegateRespondsTo.didScroll)
   {
-    v4 = [(PXGScrollLayout *)self delegate];
-    [v4 scrollLayoutDidScroll:self];
+    delegate = [(PXGScrollLayout *)self delegate];
+    [delegate scrollLayoutDidScroll:self];
   }
 }
 
-- (void)scrollViewContainerWillBeginScrolling:(id)a3
+- (void)scrollViewContainerWillBeginScrolling:(id)scrolling
 {
   [(PXGScrollLayout *)self setIsScrolling:1];
   if (self->_delegateRespondsTo.willBeginScrolling)
   {
-    v4 = [(PXGScrollLayout *)self delegate];
-    [v4 scrollLayoutWillBeginScrolling:self];
+    delegate = [(PXGScrollLayout *)self delegate];
+    [delegate scrollLayoutWillBeginScrolling:self];
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (ScrollViewModelObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (ScrollViewModelObservationContext != context)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:541 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:541 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if ((v6 & 2) != 0)
+  v10 = observableCopy;
+  if ((changeCopy & 2) != 0)
   {
-    v13 = v9;
-    v11 = [v9 changesOptions];
+    v13 = observableCopy;
+    changesOptions = [observableCopy changesOptions];
     v10 = v13;
-    if ((v11 & 1) == 0)
+    if ((changesOptions & 1) == 0)
     {
       [(PXGScrollLayout *)self _invalidateContentLayout];
       v10 = v13;
@@ -220,39 +220,39 @@
   }
 }
 
-- (id)viewUserDataForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (id)viewUserDataForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_scrollViewSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_scrollViewSpriteIndex != index)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:521 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:521 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = layoutCopy;
   v9 = objc_alloc_init(PXGScrollViewContainerConfiguration);
-  v10 = [(PXGScrollLayout *)self scrollViewModel];
-  [(PXGScrollViewContainerConfiguration *)v9 setScrollViewModel:v10];
+  scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
+  [(PXGScrollViewContainerConfiguration *)v9 setScrollViewModel:scrollViewModel];
 
   [(PXGScrollViewContainerConfiguration *)v9 setDelegate:self];
 
   return v9;
 }
 
-- (Class)viewClassForSpriteAtIndex:(unsigned int)a3 inLayout:(id)a4
+- (Class)viewClassForSpriteAtIndex:(unsigned int)index inLayout:(id)layout
 {
-  v7 = a4;
-  if (self->_scrollViewSpriteIndex != a3)
+  layoutCopy = layout;
+  if (self->_scrollViewSpriteIndex != index)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:510 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGScrollLayout.m" lineNumber:510 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v8 = v7;
+  v8 = layoutCopy;
   v9 = objc_opt_class();
 
   return v9;
@@ -266,7 +266,7 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXGLayout *)self localNumberOfSprites];
+  localNumberOfSprites = [(PXGLayout *)self localNumberOfSprites];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__PXGScrollLayout__updateLocalContent__block_invoke;
@@ -276,7 +276,7 @@
   v12[6] = v6;
   v12[7] = v8;
   v12[8] = v10;
-  [(PXGLayout *)self modifySpritesInRange:v11 << 32 state:v12];
+  [(PXGLayout *)self modifySpritesInRange:localNumberOfSprites << 32 state:v12];
 }
 
 uint64_t __38__PXGScrollLayout__updateLocalContent__block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5)
@@ -362,9 +362,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout _invalidateLocalContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXGScrollLayout.m" lineNumber:488 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXGScrollLayout.m" lineNumber:488 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -390,39 +390,39 @@ LABEL_5:
 {
   isUpdatingContentLayout = self->_isUpdatingContentLayout;
   self->_isUpdatingContentLayout = 1;
-  v5 = [(PXGScrollLayout *)self contentLayout];
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
   [(PXGLayout *)self referenceSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(PXGScrollLayout *)self fixedWidth];
-  v11 = [(PXGScrollLayout *)self fixedHeight];
-  if (v10)
+  fixedWidth = [(PXGScrollLayout *)self fixedWidth];
+  fixedHeight = [(PXGScrollLayout *)self fixedHeight];
+  if (fixedWidth)
   {
-    [v10 doubleValue];
+    [fixedWidth doubleValue];
     v7 = v12;
   }
 
-  if (v11)
+  if (fixedHeight)
   {
-    [v11 doubleValue];
+    [fixedHeight doubleValue];
     v9 = v13;
   }
 
-  v14 = [(PXGLayout *)self viewEnvironment];
-  [v5 setViewEnvironment:v14];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
+  [contentLayout setViewEnvironment:viewEnvironment];
 
-  [v5 setReferenceSize:{v7, v9}];
+  [contentLayout setReferenceSize:{v7, v9}];
   [(PXGLayout *)self referenceDepth];
-  [v5 setReferenceDepth:?];
-  [v5 setReferenceOptions:{-[PXGLayout referenceOptions](self, "referenceOptions")}];
+  [contentLayout setReferenceDepth:?];
+  [contentLayout setReferenceOptions:{-[PXGLayout referenceOptions](self, "referenceOptions")}];
   [(PXGLayout *)self displayScale];
-  [v5 setDisplayScale:?];
-  [v5 setLastScrollDirection:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  [contentLayout setDisplayScale:?];
+  [contentLayout setLastScrollDirection:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
   [(PXGLayout *)self safeAreaInsets];
-  [v5 setSafeAreaInsets:?];
-  [v5 setUserInterfaceDirection:{-[PXGLayout userInterfaceDirection](self, "userInterfaceDirection")}];
-  v15 = [(PXGScrollLayout *)self scrollViewModel];
-  [v15 contentOffset];
+  [contentLayout setSafeAreaInsets:?];
+  [contentLayout setUserInterfaceDirection:{-[PXGLayout userInterfaceDirection](self, "userInterfaceDirection")}];
+  scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
+  [scrollViewModel contentOffset];
   [(PXGLayout *)self visibleRect];
   v17 = v16;
   v19 = v18;
@@ -432,15 +432,15 @@ LABEL_5:
   v56 = v23;
   v57 = v21;
   PXRectWithOriginAndSize();
-  [v5 setVisibleRect:?];
-  v24 = [v5 createAnchorFromSuperlayoutWithSublayoutIndex:0 sublayoutPositionEdges:0 ignoringScrollingAnimationAnchors:0];
-  v25 = [v24 autoInvalidate];
+  [contentLayout setVisibleRect:?];
+  v24 = [contentLayout createAnchorFromSuperlayoutWithSublayoutIndex:0 sublayoutPositionEdges:0 ignoringScrollingAnimationAnchors:0];
+  autoInvalidate = [v24 autoInvalidate];
 
-  [v5 updateIfNeeded];
-  [v5 visibleRect];
+  [contentLayout updateIfNeeded];
+  [contentLayout visibleRect];
   v27 = v26;
   v29 = v28;
-  [v5 contentSize];
+  [contentLayout contentSize];
   v31 = v30;
   v33 = v32;
   [(PXGLayout *)self setContentSize:v7, v9];
@@ -457,7 +457,7 @@ LABEL_5:
   PXPointSubtract();
   v35 = v34;
   v37 = v36;
-  if (-[PXGScrollLayout isScrolling](self, "isScrolling") || ([v15 contentOffset], v42 = v41, v44 = v43, objc_msgSend(v15, "contentSize"), v42 < 0.0))
+  if (-[PXGScrollLayout isScrolling](self, "isScrolling") || ([scrollViewModel contentOffset], v42 = v41, v44 = v43, objc_msgSend(scrollViewModel, "contentSize"), v42 < 0.0))
   {
     v38 = v57;
 LABEL_11:
@@ -536,7 +536,7 @@ LABEL_11:
 
 LABEL_12:
   [(PXGLayout *)self changeVisibleRectToProposedVisibleRect:v17, v19, v38, v39, *&v56];
-  v40 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __39__PXGScrollLayout__updateContentLayout__block_invoke;
@@ -547,7 +547,7 @@ LABEL_12:
   *&v59[7] = v33;
   *&v59[8] = v35;
   *&v59[9] = v37;
-  [v40 enumerateSublayoutGeometriesUsingBlock:v59];
+  [sublayoutDataStore enumerateSublayoutGeometriesUsingBlock:v59];
 
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
@@ -557,7 +557,7 @@ LABEL_12:
   *&v58[5] = v33;
   *&v58[6] = v35;
   *&v58[7] = v37;
-  [v15 performChanges:v58 options:1];
+  [scrollViewModel performChanges:v58 options:1];
   self->_isUpdatingContentLayout = isUpdatingContentLayout;
 }
 
@@ -604,9 +604,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout _invalidateContentLayout]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGScrollLayout.m" lineNumber:408 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGScrollLayout.m" lineNumber:408 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -636,18 +636,18 @@ LABEL_6:
   [(PXGLayout *)&v5 didUpdate];
   if (self->_updateFlags.willPerformUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout didUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGScrollLayout.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGScrollLayout.m" lineNumber:403 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.willPerformUpdate"}];
   }
 }
 
 - (void)update
 {
-  v3 = [(PXGLayout *)self numberOfDescendantAnchors];
+  numberOfDescendantAnchors = [(PXGLayout *)self numberOfDescendantAnchors];
   p_updateFlags = &self->_updateFlags;
   needsUpdate = self->_updateFlags.needsUpdate;
-  if (v3 < 1)
+  if (numberOfDescendantAnchors < 1)
   {
     self->_updateFlags.willPerformUpdate = 0;
     if (!needsUpdate)
@@ -668,9 +668,9 @@ LABEL_6:
     {
       if (self->_updateFlags.updated)
       {
-        v14 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout update]"];
-        [v14 handleFailureInFunction:v15 file:@"PXGScrollLayout.m" lineNumber:387 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v15 file:@"PXGScrollLayout.m" lineNumber:387 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -679,9 +679,9 @@ LABEL_6:
       self->_updateFlags.willPerformUpdate = 0;
       p_isPerformingUpdate = &self->_updateFlags.isPerformingUpdate;
 LABEL_5:
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGScrollLayout.m" lineNumber:390 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGScrollLayout.m" lineNumber:390 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
       goto LABEL_10;
@@ -702,9 +702,9 @@ LABEL_10:
     [(PXGScrollLayout *)self _updateContentLayout];
     if (!self->_updateFlags.isPerformingUpdate)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout update]"];
-      [v10 handleFailureInFunction:v11 file:@"PXGScrollLayout.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v11 file:@"PXGScrollLayout.m" lineNumber:394 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
   }
 
@@ -720,9 +720,9 @@ LABEL_10:
   *p_isPerformingUpdate = 0;
   if (v9)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout update]"];
-    [v12 handleFailureInFunction:v13 file:@"PXGScrollLayout.m" lineNumber:397 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+    [currentHandler4 handleFailureInFunction:v13 file:@"PXGScrollLayout.m" lineNumber:397 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
   }
 
 LABEL_17:
@@ -739,31 +739,31 @@ LABEL_17:
   self->_updateFlags.willPerformUpdate = 1;
   if (self->_updateFlags.isPerformingUpdate)
   {
-    v3 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGScrollLayout willUpdate]"];
-    [v3 handleFailureInFunction:v4 file:@"PXGScrollLayout.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v4 file:@"PXGScrollLayout.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
   }
 }
 
 - (id)layoutForItemChanges
 {
-  v2 = [(PXGScrollLayout *)self contentLayout];
-  v3 = [v2 layoutForItemChanges];
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
+  layoutForItemChanges = [contentLayout layoutForItemChanges];
 
-  return v3;
+  return layoutForItemChanges;
 }
 
-- (CGPoint)anchor:(id)a3 visibleRectOriginForProposedVisibleRect:(CGRect)a4 forLayout:(id)a5
+- (CGPoint)anchor:(id)anchor visibleRectOriginForProposedVisibleRect:(CGRect)rect forLayout:(id)layout
 {
-  y = a4.origin.y;
-  x = a4.origin.x;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_delegateRespondsTo.willEndScrollingWithVelocityTargetContentOffsetCurrentContentOffset)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    v10 = a5;
-    v11 = [(PXGScrollLayout *)self contentLayout];
-    [v11 convertRect:v10 fromLayout:{x, y, width, height}];
+    height = rect.size.height;
+    width = rect.size.width;
+    layoutCopy = layout;
+    contentLayout = [(PXGScrollLayout *)self contentLayout];
+    [contentLayout convertRect:layoutCopy fromLayout:{x, y, width, height}];
     v12 = *MEMORY[0x277CBF348];
     v13 = *(MEMORY[0x277CBF348] + 8);
     PXPointSubtract();
@@ -771,7 +771,7 @@ LABEL_17:
     [v16 scrollLayoutWillEndScrolling:self withVelocity:&v21 targetContentOffset:v12 currentContentOffset:{v13, *MEMORY[0x277D3CFB0], *(MEMORY[0x277D3CFB0] + 8)}];
 
     PXPointSubtract();
-    [v10 convertPoint:v11 fromLayout:?];
+    [layoutCopy convertPoint:contentLayout fromLayout:?];
     x = v17;
     y = v18;
   }
@@ -785,43 +785,43 @@ LABEL_17:
 
 - (int64_t)scrollableAxis
 {
-  v3 = [(PXGScrollLayout *)self contentLayout];
-  v4 = v3;
-  if (v3)
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
+  v4 = contentLayout;
+  if (contentLayout)
   {
-    v5 = [v3 scrollableAxis];
+    scrollableAxis = [contentLayout scrollableAxis];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PXGScrollLayout;
-    v5 = [(PXGLayout *)&v8 scrollableAxis];
+    scrollableAxis = [(PXGLayout *)&v8 scrollableAxis];
   }
 
-  v6 = v5;
+  v6 = scrollableAxis;
 
   return v6;
 }
 
-- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)a3
+- (id)createAnchorForVisibleAreaIgnoringEdges:(unint64_t)edges
 {
   v6.receiver = self;
   v6.super_class = PXGScrollLayout;
-  v4 = [(PXGLayout *)&v6 createAnchorForVisibleAreaIgnoringEdges:a3];
+  v4 = [(PXGLayout *)&v6 createAnchorForVisibleAreaIgnoringEdges:edges];
   [v4 setDelegate:self];
 
   return v4;
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  *a5 = a3;
-  v9 = [(PXGScrollLayout *)self contentLayout];
-  if (v9)
+  referenceCopy = reference;
+  *objectReference = reference;
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
+  if (contentLayout)
   {
-    v10 = [(PXGLayout *)self indexOfSublayout:v9];
+    v10 = [(PXGLayout *)self indexOfSublayout:contentLayout];
   }
 
   else
@@ -834,17 +834,17 @@ LABEL_17:
 
 - (int64_t)intrinsicScrollRegime
 {
-  v2 = [(PXGScrollLayout *)self scrollViewModel];
-  v3 = [v2 scrollRegime];
+  scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
+  scrollRegime = [scrollViewModel scrollRegime];
 
-  return v3;
+  return scrollRegime;
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
   v4.receiver = self;
   v4.super_class = PXGScrollLayout;
-  [(PXGLayout *)&v4 sublayoutNeedsUpdate:a3];
+  [(PXGLayout *)&v4 sublayoutNeedsUpdate:update];
   [(PXGScrollLayout *)self _invalidateContentLayout];
 }
 
@@ -922,91 +922,91 @@ LABEL_17:
 
 - (void)stopScrolling
 {
-  v2 = [(PXGScrollLayout *)self scrollViewModel];
-  [v2 performChanges:&__block_literal_global_756 options:5];
+  scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
+  [scrollViewModel performChanges:&__block_literal_global_756 options:5];
 }
 
-- (void)setTransfersScrollToContainer:(BOOL)a3
+- (void)setTransfersScrollToContainer:(BOOL)container
 {
-  if (self->_transfersScrollToContainer != a3)
+  if (self->_transfersScrollToContainer != container)
   {
     v9 = v3;
     v10 = v4;
-    self->_transfersScrollToContainer = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_transfersScrollToContainer = container;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __49__PXGScrollLayout_setTransfersScrollToContainer___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    containerCopy = container;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setIsScrolling:(BOOL)a3
+- (void)setIsScrolling:(BOOL)scrolling
 {
-  if (self->_isScrolling != a3)
+  if (self->_isScrolling != scrolling)
   {
-    self->_isScrolling = a3;
+    self->_isScrolling = scrolling;
     [(PXGScrollLayout *)self isScrollingDidChange];
   }
 }
 
-- (void)setScrollDecelerationRate:(int64_t)a3
+- (void)setScrollDecelerationRate:(int64_t)rate
 {
-  if (self->_scrollDecelerationRate != a3)
+  if (self->_scrollDecelerationRate != rate)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_scrollDecelerationRate = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_scrollDecelerationRate = rate;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__PXGScrollLayout_setScrollDecelerationRate___block_invoke;
     v7[3] = &__block_descriptor_40_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v7[4] = a3;
-    [v6 performChanges:v7 options:1];
+    v7[4] = rate;
+    [scrollViewModel performChanges:v7 options:1];
   }
 }
 
-- (void)setDraggingPerformsScroll:(BOOL)a3
+- (void)setDraggingPerformsScroll:(BOOL)scroll
 {
-  if (self->_draggingPerformsScroll != a3)
+  if (self->_draggingPerformsScroll != scroll)
   {
     v9 = v3;
     v10 = v4;
-    self->_draggingPerformsScroll = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_draggingPerformsScroll = scroll;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__PXGScrollLayout_setDraggingPerformsScroll___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    scrollCopy = scroll;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setHorizontalInterPageSpacing:(double)a3
+- (void)setHorizontalInterPageSpacing:(double)spacing
 {
-  if (self->_horizontalInterPageSpacing != a3)
+  if (self->_horizontalInterPageSpacing != spacing)
   {
-    self->_horizontalInterPageSpacing = a3;
-    v4 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_horizontalInterPageSpacing = spacing;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __49__PXGScrollLayout_setHorizontalInterPageSpacing___block_invoke;
     v5[3] = &__block_descriptor_40_e37_v16__0___PXGMutableScrollViewModel__8l;
-    *&v5[4] = a3;
-    [v4 performChanges:v5];
+    *&v5[4] = spacing;
+    [scrollViewModel performChanges:v5];
   }
 }
 
-- (void)setHitTestContentInsets:(UIEdgeInsets)a3
+- (void)setHitTestContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_hitTestContentInsets = &self->_hitTestContentInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -1014,7 +1014,7 @@ LABEL_17:
     p_hitTestContentInsets->left = left;
     p_hitTestContentInsets->bottom = bottom;
     p_hitTestContentInsets->right = right;
-    v9 = [(PXGScrollLayout *)self scrollViewModel];
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __43__PXGScrollLayout_setHitTestContentInsets___block_invoke;
@@ -1023,16 +1023,16 @@ LABEL_17:
     *&v10[5] = left;
     *&v10[6] = bottom;
     *&v10[7] = right;
-    [v9 performChanges:v10];
+    [scrollViewModel performChanges:v10];
   }
 }
 
-- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setVerticalScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_verticalScrollIndicatorInsets = &self->_verticalScrollIndicatorInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -1040,7 +1040,7 @@ LABEL_17:
     p_verticalScrollIndicatorInsets->left = left;
     p_verticalScrollIndicatorInsets->bottom = bottom;
     p_verticalScrollIndicatorInsets->right = right;
-    v9 = [(PXGScrollLayout *)self scrollViewModel];
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __52__PXGScrollLayout_setVerticalScrollIndicatorInsets___block_invoke;
@@ -1049,16 +1049,16 @@ LABEL_17:
     *&v10[5] = left;
     *&v10[6] = bottom;
     *&v10[7] = right;
-    [v9 performChanges:v10];
+    [scrollViewModel performChanges:v10];
   }
 }
 
-- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setHorizontalScrollIndicatorInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   p_horizontalScrollIndicatorInsets = &self->_horizontalScrollIndicatorInsets;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -1066,7 +1066,7 @@ LABEL_17:
     p_horizontalScrollIndicatorInsets->left = left;
     p_horizontalScrollIndicatorInsets->bottom = bottom;
     p_horizontalScrollIndicatorInsets->right = right;
-    v9 = [(PXGScrollLayout *)self scrollViewModel];
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __54__PXGScrollLayout_setHorizontalScrollIndicatorInsets___block_invoke;
@@ -1075,163 +1075,163 @@ LABEL_17:
     *&v10[5] = left;
     *&v10[6] = bottom;
     *&v10[7] = right;
-    [v9 performChanges:v10];
+    [scrollViewModel performChanges:v10];
   }
 }
 
-- (void)setAlwaysBounceVertical:(BOOL)a3
+- (void)setAlwaysBounceVertical:(BOOL)vertical
 {
-  if (self->_alwaysBounceVertical != a3)
+  if (self->_alwaysBounceVertical != vertical)
   {
     v9 = v3;
     v10 = v4;
-    self->_alwaysBounceVertical = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_alwaysBounceVertical = vertical;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__PXGScrollLayout_setAlwaysBounceVertical___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    verticalCopy = vertical;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setAlwaysBounceHorizontal:(BOOL)a3
+- (void)setAlwaysBounceHorizontal:(BOOL)horizontal
 {
-  if (self->_alwaysBounceHorizontal != a3)
+  if (self->_alwaysBounceHorizontal != horizontal)
   {
     v9 = v3;
     v10 = v4;
-    self->_alwaysBounceHorizontal = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_alwaysBounceHorizontal = horizontal;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __45__PXGScrollLayout_setAlwaysBounceHorizontal___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    horizontalCopy = horizontal;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  if (self->_showsVerticalScrollIndicator != a3)
+  if (self->_showsVerticalScrollIndicator != indicator)
   {
     v9 = v3;
     v10 = v4;
-    self->_showsVerticalScrollIndicator = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_showsVerticalScrollIndicator = indicator;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__PXGScrollLayout_setShowsVerticalScrollIndicator___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    indicatorCopy = indicator;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setShowsHorizontalScrollIndicator:(BOOL)a3
+- (void)setShowsHorizontalScrollIndicator:(BOOL)indicator
 {
-  if (self->_showsHorizontalScrollIndicator != a3)
+  if (self->_showsHorizontalScrollIndicator != indicator)
   {
     v9 = v3;
     v10 = v4;
-    self->_showsHorizontalScrollIndicator = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_showsHorizontalScrollIndicator = indicator;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __53__PXGScrollLayout_setShowsHorizontalScrollIndicator___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    indicatorCopy = indicator;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  if (self->_clipsToBounds != a3)
+  if (self->_clipsToBounds != bounds)
   {
     v9 = v3;
     v10 = v4;
-    self->_clipsToBounds = a3;
-    v6 = [(PXGScrollLayout *)self scrollViewModel];
+    self->_clipsToBounds = bounds;
+    scrollViewModel = [(PXGScrollLayout *)self scrollViewModel];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __36__PXGScrollLayout_setClipsToBounds___block_invoke;
     v7[3] = &__block_descriptor_33_e37_v16__0___PXGMutableScrollViewModel__8l;
-    v8 = a3;
-    [v6 performChanges:v7];
+    boundsCopy = bounds;
+    [scrollViewModel performChanges:v7];
   }
 }
 
-- (void)setScrollViewSpriteZPosition:(float)a3
+- (void)setScrollViewSpriteZPosition:(float)position
 {
-  if (self->_scrollViewSpriteZPosition != a3)
+  if (self->_scrollViewSpriteZPosition != position)
   {
-    self->_scrollViewSpriteZPosition = a3;
+    self->_scrollViewSpriteZPosition = position;
     [(PXGScrollLayout *)self _invalidateLocalContent];
   }
 }
 
-- (void)setWantsScrollView:(BOOL)a3
+- (void)setWantsScrollView:(BOOL)view
 {
-  if (self->_wantsScrollView != a3)
+  if (self->_wantsScrollView != view)
   {
-    self->_wantsScrollView = a3;
+    self->_wantsScrollView = view;
     [(PXGScrollLayout *)self _invalidateLocalContent];
   }
 }
 
-- (void)setFixedHeight:(id)a3
+- (void)setFixedHeight:(id)height
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_fixedHeight != v5)
+  heightCopy = height;
+  v6 = heightCopy;
+  if (self->_fixedHeight != heightCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = heightCopy;
+    v7 = [(NSNumber *)heightCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_fixedHeight, a3);
+      objc_storeStrong(&self->_fixedHeight, height);
       [(PXGScrollLayout *)self _invalidateContentLayout];
       v6 = v8;
     }
   }
 }
 
-- (void)setFixedWidth:(id)a3
+- (void)setFixedWidth:(id)width
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_fixedWidth != v5)
+  widthCopy = width;
+  v6 = widthCopy;
+  if (self->_fixedWidth != widthCopy)
   {
-    v8 = v5;
-    v7 = [(NSNumber *)v5 isEqual:?];
+    v8 = widthCopy;
+    v7 = [(NSNumber *)widthCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_fixedWidth, a3);
+      objc_storeStrong(&self->_fixedWidth, width);
       [(PXGScrollLayout *)self _invalidateContentLayout];
       v6 = v8;
     }
   }
 }
 
-- (void)insertSublayout:(id)a3 atIndex:(int64_t)a4
+- (void)insertSublayout:(id)sublayout atIndex:(int64_t)index
 {
   v6.receiver = self;
   v6.super_class = PXGScrollLayout;
-  [(PXGLayout *)&v6 insertSublayout:a3 atIndex:?];
-  if (!a4)
+  [(PXGLayout *)&v6 insertSublayout:sublayout atIndex:?];
+  if (!index)
   {
     [(PXGScrollLayout *)self _invalidateContentLayout];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1251,16 +1251,16 @@ LABEL_17:
   }
 }
 
-- (void)setContentLayout:(id)a3
+- (void)setContentLayout:(id)layout
 {
-  v5 = a3;
-  v4 = [(PXGScrollLayout *)self contentLayout];
-  if (v4 != v5)
+  layoutCopy = layout;
+  contentLayout = [(PXGScrollLayout *)self contentLayout];
+  if (contentLayout != layoutCopy)
   {
-    [v4 removeFromSuperlayout];
-    if (v5)
+    [contentLayout removeFromSuperlayout];
+    if (layoutCopy)
     {
-      [(PXGScrollLayout *)self insertSublayout:v5 atIndex:0];
+      [(PXGScrollLayout *)self insertSublayout:layoutCopy atIndex:0];
     }
 
     [(PXGScrollLayout *)self contentLayoutDidChange];
@@ -1282,11 +1282,11 @@ LABEL_17:
   return v3;
 }
 
-- (PXGScrollLayout)initWithContentLayout:(id)a3
+- (PXGScrollLayout)initWithContentLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(PXGScrollLayout *)self init];
-  [(PXGScrollLayout *)v5 setContentLayout:v4];
+  [(PXGScrollLayout *)v5 setContentLayout:layoutCopy];
 
   return v5;
 }

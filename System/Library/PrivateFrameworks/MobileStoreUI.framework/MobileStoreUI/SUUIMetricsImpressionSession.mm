@@ -1,9 +1,9 @@
 @interface SUUIMetricsImpressionSession
 - (SUUIMetricsImpressionSession)init;
-- (void)addItemIdentifier:(int64_t)a3;
-- (void)addItemViewElement:(id)a3;
-- (void)beginActiveImpressionForViewElement:(id)a3;
-- (void)endActiveImpressionForViewElement:(id)a3;
+- (void)addItemIdentifier:(int64_t)identifier;
+- (void)addItemViewElement:(id)element;
+- (void)beginActiveImpressionForViewElement:(id)element;
+- (void)endActiveImpressionForViewElement:(id)element;
 - (void)endAllPendingActiveImpression;
 @end
 
@@ -36,9 +36,9 @@
   return v2;
 }
 
-- (void)addItemIdentifier:(int64_t)a3
+- (void)addItemIdentifier:(int64_t)identifier
 {
-  if (a3)
+  if (identifier)
   {
     if ([(NSMutableString *)self->_impressionsString length])
     {
@@ -50,28 +50,28 @@
       v5 = @"%lld";
     }
 
-    [(NSMutableString *)self->_impressionsString appendFormat:v5, a3];
-    v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:a3];
+    [(NSMutableString *)self->_impressionsString appendFormat:v5, identifier];
+    v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:identifier];
     [(NSMutableArray *)self->_impressionIdentifiers addObject:v6];
   }
 }
 
-- (void)addItemViewElement:(id)a3
+- (void)addItemViewElement:(id)element
 {
-  if (a3)
+  if (element)
   {
     [(NSMutableOrderedSet *)self->_impressionableViewElements addObject:?];
   }
 }
 
-- (void)beginActiveImpressionForViewElement:(id)a3
+- (void)beginActiveImpressionForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 appDocument];
-  [v5 impressionThreshold];
-  if (v6 != 0.0 && [v4 isImpressionable])
+  elementCopy = element;
+  appDocument = [elementCopy appDocument];
+  [appDocument impressionThreshold];
+  if (v6 != 0.0 && [elementCopy isImpressionable])
   {
-    v7 = [(SUUIMetricsImpressionSession *)self _getTimerForViewElement:v4];
+    v7 = [(SUUIMetricsImpressionSession *)self _getTimerForViewElement:elementCopy];
     if (v7)
     {
     }
@@ -79,17 +79,17 @@
     else
     {
       v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
-      [v5 impressionThreshold];
+      [appDocument impressionThreshold];
       v10 = dispatch_time(0, (v9 * 1000000000.0));
       dispatch_source_set_timer(v8, v10, 0xFFFFFFFFFFFFFFFFLL, 0);
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __68__SUUIMetricsImpressionSession_beginActiveImpressionForViewElement___block_invoke;
       handler[3] = &unk_2798F5BC0;
-      v13 = v5;
-      v11 = v4;
+      v13 = appDocument;
+      v11 = elementCopy;
       v14 = v11;
-      v15 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v8, handler);
       [(SUUIMetricsImpressionSession *)self _setTimer:v8 forViewElement:v11];
       dispatch_resume(v8);
@@ -111,11 +111,11 @@ uint64_t __68__SUUIMetricsImpressionSession_beginActiveImpressionForViewElement_
   return [*(a1 + 48) _clearTimerForViewElement:*(a1 + 40)];
 }
 
-- (void)endActiveImpressionForViewElement:(id)a3
+- (void)endActiveImpressionForViewElement:(id)element
 {
-  v4 = a3;
-  source = [(SUUIMetricsImpressionSession *)self _getTimerForViewElement:v4];
-  [(SUUIMetricsImpressionSession *)self _clearTimerForViewElement:v4];
+  elementCopy = element;
+  source = [(SUUIMetricsImpressionSession *)self _getTimerForViewElement:elementCopy];
+  [(SUUIMetricsImpressionSession *)self _clearTimerForViewElement:elementCopy];
 
   v5 = source;
   if (source)
@@ -128,12 +128,12 @@ uint64_t __68__SUUIMetricsImpressionSession_beginActiveImpressionForViewElement_
 - (void)endAllPendingActiveImpression
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUUIMetricsImpressionSession *)self _allViewElementsInTimerMap];
+  _allViewElementsInTimerMap = [(SUUIMetricsImpressionSession *)self _allViewElementsInTimerMap];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [_allViewElementsInTimerMap countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -145,14 +145,14 @@ uint64_t __68__SUUIMetricsImpressionSession_beginActiveImpressionForViewElement_
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allViewElementsInTimerMap);
         }
 
         [(SUUIMetricsImpressionSession *)self endActiveImpressionForViewElement:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_allViewElementsInTimerMap countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

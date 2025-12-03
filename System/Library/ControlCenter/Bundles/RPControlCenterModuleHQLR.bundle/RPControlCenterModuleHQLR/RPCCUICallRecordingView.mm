@@ -1,57 +1,57 @@
 @interface RPCCUICallRecordingView
-- (_TtC25RPControlCenterModuleHQLR23RPCCUICallRecordingView)initWithFrame:(CGRect)a3;
-- (void)setContinuousSliderCornerRadius:(double)a3;
-- (void)setCountdownState:(int64_t)a3;
-- (void)setTimerLabel:(id)a3;
+- (_TtC25RPControlCenterModuleHQLR23RPCCUICallRecordingView)initWithFrame:(CGRect)frame;
+- (void)setContinuousSliderCornerRadius:(double)radius;
+- (void)setCountdownState:(int64_t)state;
+- (void)setTimerLabel:(id)label;
 - (void)setupVideoEffectsPreviewForAppear;
 - (void)teardownVideoEffectsPreviewForDisappear;
-- (void)updateCallRecordingState:(int64_t)a3;
+- (void)updateCallRecordingState:(int64_t)state;
 @end
 
 @implementation RPCCUICallRecordingView
 
-- (void)setContinuousSliderCornerRadius:(double)a3
+- (void)setContinuousSliderCornerRadius:(double)radius
 {
   v4 = *&stru_B8.segname[(swift_isaMask & self->super.super.super.super.isa) - 8];
-  v5 = self;
-  v4(a3);
+  selfCopy = self;
+  v4(radius);
 }
 
-- (void)updateCallRecordingState:(int64_t)a3
+- (void)updateCallRecordingState:(int64_t)state
 {
-  v4 = self;
-  RPCCUICallRecordingView.updateCallRecordingState(_:)(a3);
+  selfCopy = self;
+  RPCCUICallRecordingView.updateCallRecordingState(_:)(state);
 }
 
-- (void)setCountdownState:(int64_t)a3
+- (void)setCountdownState:(int64_t)state
 {
-  v4 = self;
-  RPCCUICallRecordingView.setCountdownState(_:)(a3);
+  selfCopy = self;
+  RPCCUICallRecordingView.setCountdownState(_:)(state);
 }
 
-- (void)setTimerLabel:(id)a3
+- (void)setTimerLabel:(id)label
 {
   v4 = sub_21C6C();
   v6 = v5;
   v7 = *(**(&self->super.super.super.super.isa + OBJC_IVAR____TtC25RPControlCenterModuleHQLR23RPCCUICallRecordingView_viewModel) + 352);
-  v8 = self;
+  selfCopy = self;
 
   v7(v4, v6);
 }
 
 - (void)setupVideoEffectsPreviewForAppear
 {
-  v2 = self;
+  selfCopy = self;
   RPCCUICallRecordingView.setupVideoEffectsPreviewForAppear()();
 }
 
 - (void)teardownVideoEffectsPreviewForDisappear
 {
-  v2 = self;
+  selfCopy = self;
   RPCCUICallRecordingView.teardownVideoEffectsPreviewForDisappear()();
 }
 
-- (_TtC25RPControlCenterModuleHQLR23RPCCUICallRecordingView)initWithFrame:(CGRect)a3
+- (_TtC25RPControlCenterModuleHQLR23RPCCUICallRecordingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

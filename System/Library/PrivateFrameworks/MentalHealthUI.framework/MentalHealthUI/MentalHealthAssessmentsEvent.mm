@@ -1,7 +1,7 @@
 @interface MentalHealthAssessmentsEvent
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation MentalHealthAssessmentsEvent
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   sub_258AD6068(MEMORY[0x277D84F90]);
   v4 = sub_258B029E4();
@@ -21,11 +21,11 @@
   return v4;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v4 = a3;
+  sourceCopy = source;
 
-  sub_258AC1FC8(v4);
+  sub_258AC1FC8(sourceCopy);
 
   v5 = sub_258B029E4();
 

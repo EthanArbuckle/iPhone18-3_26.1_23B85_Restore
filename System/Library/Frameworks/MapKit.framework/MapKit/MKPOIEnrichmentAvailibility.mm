@@ -1,36 +1,36 @@
 @interface MKPOIEnrichmentAvailibility
 + (BOOL)_isMapsApplication;
-+ (BOOL)_shouldAllowUserToAddContributionsForMapItem:(id)a3;
-+ (BOOL)shouldShowAddPhotoButtonOnEndOfPhotoSliderForMapItem:(id)a3;
-+ (BOOL)shouldShowAddPhotoButtonOnMorePhotosGalleryForMapItem:(id)a3 usingAttributionsByProviderIds:(id)a4;
-+ (BOOL)shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:(id)a3 photoAttribution:(id)a4;
-+ (BOOL)shouldShowAppleRatingsForMapItem:(id)a3;
-+ (BOOL)shouldShowCallToActionForMapItem:(id)a3;
-+ (BOOL)shouldShowCallToActionForMapItem:(id)a3 options:(unint64_t)a4;
-+ (BOOL)shouldShowPhotosCallToActionForMapItem:(id)a3;
-+ (BOOL)shouldShowRatingInfoCallToActionOnPlaceCardHeaderForMapItem:(id)a3;
-+ (BOOL)shouldShowRatingsCallToActionForMapItem:(id)a3;
-+ (BOOL)shouldShowReportAnIssueOnPhotoGalleryForMapItem:(id)a3 photoAttribution:(id)a4;
++ (BOOL)_shouldAllowUserToAddContributionsForMapItem:(id)item;
++ (BOOL)shouldShowAddPhotoButtonOnEndOfPhotoSliderForMapItem:(id)item;
++ (BOOL)shouldShowAddPhotoButtonOnMorePhotosGalleryForMapItem:(id)item usingAttributionsByProviderIds:(id)ids;
++ (BOOL)shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:(id)item photoAttribution:(id)attribution;
++ (BOOL)shouldShowAppleRatingsForMapItem:(id)item;
++ (BOOL)shouldShowCallToActionForMapItem:(id)item;
++ (BOOL)shouldShowCallToActionForMapItem:(id)item options:(unint64_t)options;
++ (BOOL)shouldShowPhotosCallToActionForMapItem:(id)item;
++ (BOOL)shouldShowRatingInfoCallToActionOnPlaceCardHeaderForMapItem:(id)item;
++ (BOOL)shouldShowRatingsCallToActionForMapItem:(id)item;
++ (BOOL)shouldShowReportAnIssueOnPhotoGalleryForMapItem:(id)item photoAttribution:(id)attribution;
 @end
 
 @implementation MKPOIEnrichmentAvailibility
 
 + (BOOL)_isMapsApplication
 {
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69A1A78]];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:*MEMORY[0x1E69A1A78]];
 
   return v4;
 }
 
-+ (BOOL)_shouldAllowUserToAddContributionsForMapItem:(id)a3
++ (BOOL)_shouldAllowUserToAddContributionsForMapItem:(id)item
 {
-  v3 = [a3 _geoMapItem];
-  v4 = [v3 _placeQuestionnaire];
-  v5 = [v4 canShowCallToAction];
+  _geoMapItem = [item _geoMapItem];
+  _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
+  canShowCallToAction = [_placeQuestionnaire canShowCallToAction];
 
-  if (!v5 || !GEOCanUserMakeLagunaBeachContributions())
+  if (!canShowCallToAction || !GEOCanUserMakeLagunaBeachContributions())
   {
     return 0;
   }
@@ -38,37 +38,37 @@
   return GEODoesUserHaveValidAccountForMakingContributions();
 }
 
-+ (BOOL)shouldShowReportAnIssueOnPhotoGalleryForMapItem:(id)a3 photoAttribution:(id)a4
++ (BOOL)shouldShowReportAnIssueOnPhotoGalleryForMapItem:(id)item photoAttribution:(id)attribution
 {
-  v5 = a4;
+  attributionCopy = attribution;
   if (_MKRAPIsAvailable())
   {
-    v6 = [v5 supportsReportingIssue];
+    supportsReportingIssue = [attributionCopy supportsReportingIssue];
   }
 
   else
   {
-    v6 = 0;
+    supportsReportingIssue = 0;
   }
 
-  v7 = [a1 _isMapsApplication];
+  _isMapsApplication = [self _isMapsApplication];
 
-  return v6 & v7;
+  return supportsReportingIssue & _isMapsApplication;
 }
 
-+ (BOOL)shouldShowAddPhotoButtonOnMorePhotosGalleryForMapItem:(id)a3 usingAttributionsByProviderIds:(id)a4
++ (BOOL)shouldShowAddPhotoButtonOnMorePhotosGalleryForMapItem:(id)item usingAttributionsByProviderIds:(id)ids
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  idsCopy = ids;
   if (MapsFeature_IsEnabled_LagunaBeach() && GEOConfigGetBOOL())
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v7 allValues];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allValues = [idsCopy allValues];
+    v9 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -79,7 +79,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -90,7 +90,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -100,7 +100,7 @@
       }
     }
 
-    v14 = [a1 shouldShowPhotosCallToActionForMapItem:v6];
+    v14 = [self shouldShowPhotosCallToActionForMapItem:itemCopy];
   }
 
   else
@@ -112,12 +112,12 @@ LABEL_14:
   return v14;
 }
 
-+ (BOOL)shouldShowRatingInfoCallToActionOnPlaceCardHeaderForMapItem:(id)a3
++ (BOOL)shouldShowRatingInfoCallToActionOnPlaceCardHeaderForMapItem:(id)item
 {
-  v4 = a3;
-  if (MapsFeature_IsEnabled_LagunaBeach() && [a1 _isMapsApplication] && GEOCanUserMakeLagunaBeachContributions() && GEODoesUserHaveValidAccountForMakingContributions())
+  itemCopy = item;
+  if (MapsFeature_IsEnabled_LagunaBeach() && [self _isMapsApplication] && GEOCanUserMakeLagunaBeachContributions() && GEODoesUserHaveValidAccountForMakingContributions())
   {
-    v5 = [a1 shouldShowAppleRatingsForMapItem:v4];
+    v5 = [self shouldShowAppleRatingsForMapItem:itemCopy];
   }
 
   else
@@ -128,12 +128,12 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)shouldShowAddPhotoButtonOnEndOfPhotoSliderForMapItem:(id)a3
++ (BOOL)shouldShowAddPhotoButtonOnEndOfPhotoSliderForMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (MapsFeature_IsEnabled_LagunaBeach() && GEOConfigGetBOOL())
   {
-    v5 = [a1 shouldShowPhotosCallToActionForMapItem:v4];
+    v5 = [self shouldShowPhotosCallToActionForMapItem:itemCopy];
   }
 
   else
@@ -144,12 +144,12 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:(id)a3 photoAttribution:(id)a4
++ (BOOL)shouldShowAddPhotoButtonsOnSingleFullScreenPhotoViewerForMapItem:(id)item photoAttribution:(id)attribution
 {
-  v5 = a3;
+  itemCopy = item;
   if (MapsFeature_IsEnabled_LagunaBeach() && GEOConfigGetBOOL())
   {
-    v6 = [a1 shouldShowPhotosCallToActionForMapItem:v5];
+    v6 = [self shouldShowPhotosCallToActionForMapItem:itemCopy];
   }
 
   else
@@ -160,31 +160,31 @@ LABEL_14:
   return v6;
 }
 
-+ (BOOL)shouldShowPhotosCallToActionForMapItem:(id)a3
++ (BOOL)shouldShowPhotosCallToActionForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 _geoMapItem];
-  v6 = [v5 _placeQuestionnaire];
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
 
-  v7 = [v6 canCollectPhotos] && (objc_msgSend(a1, "shouldShowCallToActionForMapItem:", v4) & 1) != 0;
+  v7 = [_placeQuestionnaire canCollectPhotos] && (objc_msgSend(self, "shouldShowCallToActionForMapItem:", itemCopy) & 1) != 0;
   return v7;
 }
 
-+ (BOOL)shouldShowRatingsCallToActionForMapItem:(id)a3
++ (BOOL)shouldShowRatingsCallToActionForMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 _geoMapItem];
-  v6 = [v5 _placeQuestionnaire];
+  itemCopy = item;
+  _geoMapItem = [itemCopy _geoMapItem];
+  _placeQuestionnaire = [_geoMapItem _placeQuestionnaire];
 
-  v7 = [v6 canCollectRatings] && (objc_msgSend(a1, "shouldShowCallToActionForMapItem:", v4) & 1) != 0;
+  v7 = [_placeQuestionnaire canCollectRatings] && (objc_msgSend(self, "shouldShowCallToActionForMapItem:", itemCopy) & 1) != 0;
   return v7;
 }
 
-+ (BOOL)shouldShowCallToActionForMapItem:(id)a3 options:(unint64_t)a4
++ (BOOL)shouldShowCallToActionForMapItem:(id)item options:(unint64_t)options
 {
-  if ((a4 & 0xA0000000) == 0x20000000)
+  if ((options & 0xA0000000) == 0x20000000)
   {
-    return [a1 shouldShowCallToActionForMapItem:a3];
+    return [self shouldShowCallToActionForMapItem:item];
   }
 
   else
@@ -193,12 +193,12 @@ LABEL_14:
   }
 }
 
-+ (BOOL)shouldShowCallToActionForMapItem:(id)a3
++ (BOOL)shouldShowCallToActionForMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (MapsFeature_IsEnabled_LagunaBeach())
   {
-    v5 = [a1 _shouldAllowUserToAddContributionsForMapItem:v4];
+    v5 = [self _shouldAllowUserToAddContributionsForMapItem:itemCopy];
   }
 
   else
@@ -209,12 +209,12 @@ LABEL_14:
   return v5;
 }
 
-+ (BOOL)shouldShowAppleRatingsForMapItem:(id)a3
++ (BOOL)shouldShowAppleRatingsForMapItem:(id)item
 {
-  v3 = [a3 _geoMapItem];
-  v4 = [v3 _hasAppleRatings];
+  _geoMapItem = [item _geoMapItem];
+  _hasAppleRatings = [_geoMapItem _hasAppleRatings];
 
-  return v4;
+  return _hasAppleRatings;
 }
 
 @end

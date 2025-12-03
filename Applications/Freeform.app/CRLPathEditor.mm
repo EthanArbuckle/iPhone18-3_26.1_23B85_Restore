@@ -1,52 +1,52 @@
 @interface CRLPathEditor
-- (BOOL)canAddKnobsForRep:(id)a3;
-- (BOOL)canClosePathToKnob:(id)a3;
-- (BOOL)canContinuePathFromKnob:(id)a3 reversed:(BOOL *)a4;
-- (BOOL)canEndPathCreationWithKnob:(id)a3;
-- (BOOL)p_shouldKeepEditingInfos:(id)a3;
-- (BOOL)pathHasSelectedNodes:(unint64_t)a3;
-- (BOOL)pathReturnsTrueForSelector:(SEL)a3;
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5;
-- (CGPoint)constrainedUnscaledPointForPathCreation:(CGPoint)a3;
-- (CGPoint)p_snappedPointForCanvasBackgroundAlignmentProvider:(CGPoint)a3;
+- (BOOL)canAddKnobsForRep:(id)rep;
+- (BOOL)canClosePathToKnob:(id)knob;
+- (BOOL)canContinuePathFromKnob:(id)knob reversed:(BOOL *)reversed;
+- (BOOL)canEndPathCreationWithKnob:(id)knob;
+- (BOOL)p_shouldKeepEditingInfos:(id)infos;
+- (BOOL)pathHasSelectedNodes:(unint64_t)nodes;
+- (BOOL)pathReturnsTrueForSelector:(SEL)selector;
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors;
+- (CGPoint)constrainedUnscaledPointForPathCreation:(CGPoint)creation;
+- (CGPoint)p_snappedPointForCanvasBackgroundAlignmentProvider:(CGPoint)provider;
 - (CRLPathEditableRep)creatingRep;
 - (NSArray)decoratorOverlayRenderables;
-- (id)newTrackerForKnob:(id)a3 forRep:(id)a4;
+- (id)newTrackerForKnob:(id)knob forRep:(id)rep;
 - (id)p_ghostRenderable;
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7;
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
-- (void)addKnobsForRep:(id)a3 toArray:(id)a4;
-- (void)alignNodesByEdge:(int)a3;
-- (void)close:(id)a3;
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors;
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender;
+- (void)addKnobsForRep:(id)rep toArray:(id)array;
+- (void)alignNodesByEdge:(int)edge;
+- (void)close:(id)close;
 - (void)closeLastSubpath;
 - (void)dealloc;
-- (void)delete:(id)a3;
-- (void)deselectAll:(id)a3;
-- (void)didBecomeCurrentEditorForEditorController:(id)a3;
+- (void)delete:(id)delete;
+- (void)deselectAll:(id)all;
+- (void)didBecomeCurrentEditorForEditorController:(id)controller;
 - (void)didResignTextInputEditor;
-- (void)distributeNodesByEdge:(int)a3;
-- (void)editPathsOnPathEditableRepsWithActionString:(id)a3 usingBlock:(id)a4 filterWithBlock:(id)a5;
+- (void)distributeNodesByEdge:(int)edge;
+- (void)editPathsOnPathEditableRepsWithActionString:(id)string usingBlock:(id)block filterWithBlock:(id)withBlock;
 - (void)endMovingKnob;
 - (void)endPathEditing;
 - (void)invalidateKnobs;
-- (void)join:(id)a3;
-- (void)nudgeByDelta:(CGPoint)a3;
+- (void)join:(id)join;
+- (void)nudgeByDelta:(CGPoint)delta;
 - (void)p_commandGroupSafeEndEditing;
-- (void)p_commandWillBeEnqueued:(id)a3;
-- (void)p_didScroll:(id)a3;
-- (void)p_groupWillBeOpened:(id)a3;
+- (void)p_commandWillBeEnqueued:(id)enqueued;
+- (void)p_didScroll:(id)scroll;
+- (void)p_groupWillBeOpened:(id)opened;
 - (void)p_resetAfterRebase;
-- (void)p_selectNextNode:(int64_t)a3;
+- (void)p_selectNextNode:(int64_t)node;
 - (void)p_setGhostStrokeColor;
-- (void)selectAll:(id)a3;
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5;
-- (void)setCreatingRep:(id)a3;
-- (void)setIsCreatingPath:(BOOL)a3;
-- (void)split:(id)a3;
-- (void)toggleSelectedNodeToType:(int64_t)a3;
+- (void)selectAll:(id)all;
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags;
+- (void)setCreatingRep:(id)rep;
+- (void)setIsCreatingPath:(BOOL)path;
+- (void)split:(id)split;
+- (void)toggleSelectedNodeToType:(int64_t)type;
 - (void)updateGhost;
-- (void)updateGhostForNodeCreationAtPoint:(CGPoint)a3;
-- (void)updatePositionsOfKnobs:(id)a3 forRep:(id)a4;
+- (void)updateGhostForNodeCreationAtPoint:(CGPoint)point;
+- (void)updatePositionsOfKnobs:(id)knobs forRep:(id)rep;
 - (void)willResignCurrentEditor;
 @end
 
@@ -60,23 +60,23 @@
   [(CRLPathEditor *)&v3 dealloc];
 }
 
-- (void)didBecomeCurrentEditorForEditorController:(id)a3
+- (void)didBecomeCurrentEditorForEditorController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(CRLPathEditor *)self invalidateKnobs];
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  [v5 addDecorator:self];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  [interactiveCanvasController addDecorator:self];
 
   if ([(CRLPathEditor *)self isCreatingPath])
   {
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    [v6 addObserver:self selector:"p_didScroll:" name:@"CRLCanvasDidScrollNotification" object:v7];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    [v6 addObserver:self selector:"p_didScroll:" name:@"CRLCanvasDidScrollNotification" object:interactiveCanvasController2];
   }
 
   v8.receiver = self;
   v8.super_class = CRLPathEditor;
-  [(CRLBoardItemEditor *)&v8 didBecomeCurrentEditorForEditorController:v4];
+  [(CRLBoardItemEditor *)&v8 didBecomeCurrentEditorForEditorController:controllerCopy];
 }
 
 - (void)willResignCurrentEditor
@@ -90,18 +90,18 @@
 {
   if (BYTE1(self->_lastGhostPosition.y) == 1)
   {
-    v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v4 = [v3 commandController];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
 
     [(CRLPathEditor *)self p_closeCommandGroupBookkeepingAndUnregisterForOpenGroupNotifications];
     [*(&self->_willBecomeCurrentEditorAgain + 1) setCommitSelectionPath:0];
     [*(&self->_willBecomeCurrentEditorAgain + 1) setPersistableForwardSelectionPath:0];
-    [v4 closeGroup];
+    [commandController closeGroup];
   }
 
   [(CRLPathEditor *)self invalidateKnobs];
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  [v5 removeDecorator:self];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  [interactiveCanvasController2 removeDecorator:self];
 
   if ((BYTE1(self->_creatingInfo) & 1) == 0)
   {
@@ -112,20 +112,20 @@
   if ([(CRLPathEditor *)self isCreatingPath])
   {
     v8 = +[NSNotificationCenter defaultCenter];
-    v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    [v8 removeObserver:self name:@"CRLCanvasDidScrollNotification" object:v7];
+    interactiveCanvasController3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    [v8 removeObserver:self name:@"CRLCanvasDidScrollNotification" object:interactiveCanvasController3];
   }
 }
 
 - (void)invalidateKnobs
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -137,7 +137,7 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(boardItems);
         }
 
         v9 = *(*(&v19 + 1) + 8 * v8);
@@ -145,7 +145,7 @@
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
-        v10 = [v3 repsForInfo:{v9, 0}];
+        v10 = [interactiveCanvasController repsForInfo:{v9, 0}];
         v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
         if (v11)
         {
@@ -176,42 +176,42 @@
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [boardItems countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)canAddKnobsForRep:(id)a3
+- (BOOL)canAddKnobsForRep:(id)rep
 {
-  v4 = a3;
-  v5 = [(CRLBoardItemEditor *)self boardItems];
-  v6 = [v4 info];
+  repCopy = rep;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  info = [repCopy info];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(repCopy) = [boardItems containsObject:info];
+  return repCopy;
 }
 
-- (void)addKnobsForRep:(id)a3 toArray:(id)a4
+- (void)addKnobsForRep:(id)rep toArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 editablePathSource];
-  if (v7)
+  repCopy = rep;
+  arrayCopy = array;
+  editablePathSource = [repCopy editablePathSource];
+  if (editablePathSource)
   {
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v39 = v7;
-    obj = [v7 subpaths];
+    v39 = editablePathSource;
+    obj = [editablePathSource subpaths];
     v42 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
     if (v42)
     {
       v49 = 0;
       v41 = *v62;
-      v48 = v5;
+      v48 = repCopy;
       do
       {
         v8 = 0;
@@ -223,24 +223,24 @@
           }
 
           v9 = *(*(&v61 + 1) + 8 * v8);
-          v10 = [v9 nodes];
+          nodes = [v9 nodes];
           v46 = v9;
           v43 = v8;
           if ([v9 isClosed])
           {
-            v11 = [v10 lastObject];
+            lastObject = [nodes lastObject];
           }
 
           else
           {
-            v11 = 0;
+            lastObject = 0;
           }
 
           v60 = 0u;
           v58 = 0u;
           v59 = 0u;
           v57 = 0u;
-          v12 = v10;
+          v12 = nodes;
           v47 = [v12 countByEnumeratingWithState:&v57 objects:v65 count:16];
           if (v47)
           {
@@ -258,11 +258,11 @@
                 }
 
                 v16 = *(*(&v57 + 1) + 8 * v14);
-                v17 = [[CRLPathKnob alloc] initWithNode:v16 onRep:v5];
+                v17 = [[CRLPathKnob alloc] initWithNode:v16 onRep:repCopy];
                 [(CRLPathKnob *)v17 setNodeIndex:v15];
                 [(CRLPathKnob *)v17 setSubpathIndex:v49];
-                v18 = v6;
-                [v6 addObject:v17];
+                v18 = arrayCopy;
+                [arrayCopy addObject:v17];
                 v13 = v15 + 1;
                 if (([v46 isClosed] & 1) != 0 || v13 < objc_msgSend(v12, "count"))
                 {
@@ -276,7 +276,7 @@
 
                 if ([v16 isSelected] && objc_msgSend(v16, "type") == 2)
                 {
-                  if (v11)
+                  if (lastObject)
                   {
                     [v16 nodePoint];
                     v21 = v20;
@@ -284,13 +284,13 @@
                     [v16 inControlPoint];
                     if (v21 != v25 || v23 != v24)
                     {
-                      v26 = [[CRLPathKnob alloc] initWithInControlForNode:v16 onRep:v5];
+                      v26 = [[CRLPathKnob alloc] initWithInControlForNode:v16 onRep:repCopy];
 
                       [(CRLPathKnob *)v26 setNodeIndex:v15];
                       [(CRLPathKnob *)v26 setSubpathIndex:v49];
                       [v18 addObject:v26];
                       v17 = v26;
-                      v5 = v48;
+                      repCopy = v48;
                     }
                   }
 
@@ -302,13 +302,13 @@
                     [v16 outControlPoint];
                     if (v28 != v32 || v30 != v31)
                     {
-                      v33 = [[CRLPathKnob alloc] initWithOutControlForNode:v16 onRep:v5];
+                      v33 = [[CRLPathKnob alloc] initWithOutControlForNode:v16 onRep:repCopy];
 
                       [(CRLPathKnob *)v33 setNodeIndex:v15];
                       [(CRLPathKnob *)v33 setSubpathIndex:v49];
                       [v18 addObject:v33];
                       v17 = v33;
-                      v5 = v48;
+                      repCopy = v48;
                     }
                   }
                 }
@@ -318,9 +318,9 @@
                 v50[2] = sub_1002759A0;
                 v50[3] = &unk_10184E158;
                 v50[4] = v16;
-                v51 = v5;
+                v51 = repCopy;
                 v52 = v19;
-                v34 = v11;
+                v34 = lastObject;
                 v53 = v34;
                 v55 = v15;
                 v56 = v49;
@@ -334,12 +334,12 @@
                   [v38 setTValue:0.5];
                 }
 
-                v11 = v16;
+                lastObject = v16;
 
                 v14 = v14 + 1;
                 v15 = v13;
-                v5 = v48;
-                v6 = v18;
+                repCopy = v48;
+                arrayCopy = v18;
               }
 
               while (v47 != v14);
@@ -360,23 +360,23 @@
       while (v42);
     }
 
-    [(CRLPathEditor *)self updatePositionsOfKnobs:v6 forRep:v5];
-    v7 = v39;
+    [(CRLPathEditor *)self updatePositionsOfKnobs:arrayCopy forRep:repCopy];
+    editablePathSource = v39;
   }
 }
 
-- (void)updatePositionsOfKnobs:(id)a3 forRep:(id)a4
+- (void)updatePositionsOfKnobs:(id)knobs forRep:(id)rep
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  knobsCopy = knobs;
+  repCopy = rep;
+  v7 = repCopy;
   v8 = 0uLL;
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  if (v6)
+  if (repCopy)
   {
-    [v6 naturalToEditablePathSpaceTransform];
+    [repCopy naturalToEditablePathSpaceTransform];
     v8 = 0uLL;
   }
 
@@ -384,7 +384,7 @@
   v22 = v8;
   v19 = v8;
   v20 = v8;
-  v9 = v5;
+  v9 = knobsCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v26 count:16];
   if (v10)
   {
@@ -423,27 +423,27 @@
   }
 }
 
-- (id)newTrackerForKnob:(id)a3 forRep:(id)a4
+- (id)newTrackerForKnob:(id)knob forRep:(id)rep
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CRLPathKnobTracker alloc] initWithRep:v5 knob:v6];
+  repCopy = rep;
+  knobCopy = knob;
+  v7 = [[CRLPathKnobTracker alloc] initWithRep:repCopy knob:knobCopy];
 
   return v7;
 }
 
-- (void)editPathsOnPathEditableRepsWithActionString:(id)a3 usingBlock:(id)a4 filterWithBlock:(id)a5
+- (void)editPathsOnPathEditableRepsWithActionString:(id)string usingBlock:(id)block filterWithBlock:(id)withBlock
 {
-  v8 = a3;
-  v29 = a4;
-  v9 = a5;
+  stringCopy = string;
+  blockCopy = block;
+  withBlockCopy = withBlock;
   [(CRLPathEditor *)self setCurrentCommandsPathRelated:1];
-  v10 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v11 = [v10 commandController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  commandController = [interactiveCanvasController commandController];
 
-  [v11 openGroup];
-  v28 = v11;
-  [v11 setCurrentGroupActionString:v8];
+  [commandController openGroup];
+  v28 = commandController;
+  [commandController setCurrentGroupActionString:stringCopy];
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
@@ -464,19 +464,19 @@
         }
 
         v16 = *(*(&v31 + 1) + 8 * i);
-        v17 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-        v18 = [v17 repForInfo:v16];
+        interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+        v18 = [interactiveCanvasController2 repForInfo:v16];
         v19 = objc_opt_class();
         v25 = sub_1003038E0(v18, v19, 1, v20, v21, v22, v23, v24, &OBJC_PROTOCOL___CRLPathEditableRep);
 
-        if (v25 && v9[2](v9, v25))
+        if (v25 && withBlockCopy[2](withBlockCopy, v25))
         {
           [v25 dynamicOperationDidBeginWithRealTimeCommands:0];
           [v25 dynamicMovePathKnobDidBegin];
-          v26 = [v25 editablePathSource];
-          v27 = [[CRLEditableBezierPathSourceMorphInfo alloc] initWithEditableBezierPathSource:v26];
-          v29[2](v29, v25);
-          [v26 morphWithMorphInfo:v27];
+          editablePathSource = [v25 editablePathSource];
+          v27 = [[CRLEditableBezierPathSourceMorphInfo alloc] initWithEditableBezierPathSource:editablePathSource];
+          blockCopy[2](blockCopy, v25);
+          [editablePathSource morphWithMorphInfo:v27];
           [v25 dynamicMovePathKnobDidEndWithTracker:0];
           [v25 dynamicOperationDidEnd];
         }
@@ -492,14 +492,14 @@
   [(CRLPathEditor *)self setCurrentCommandsPathRelated:0];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
   v5 = +[NSBundle mainBundle];
   v4 = [v5 localizedStringForKey:@"Select All" value:0 table:@"UndoStrings"];
   [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v4 usingBlock:&stru_10184E198 filterWithBlock:&stru_10184E1D8];
 }
 
-- (void)deselectAll:(id)a3
+- (void)deselectAll:(id)all
 {
   v5 = +[NSBundle mainBundle];
   v4 = [v5 localizedStringForKey:@"Deselect All" value:0 table:@"UndoStrings"];
@@ -529,15 +529,15 @@
 
 - (void)p_setGhostStrokeColor
 {
-  v3 = [(CRLPathEditor *)self creatingRep];
-  v4 = [v3 layout];
-  v10 = [v4 stroke];
+  creatingRep = [(CRLPathEditor *)self creatingRep];
+  layout = [creatingRep layout];
+  stroke = [layout stroke];
 
-  if (v10)
+  if (stroke)
   {
-    v5 = [v10 color];
-    [v5 alphaComponent];
-    v7 = [v5 colorWithAlphaComponent:v6 * 0.3];
+    color = [stroke color];
+    [color alphaComponent];
+    v7 = [color colorWithAlphaComponent:v6 * 0.3];
   }
 
   else
@@ -545,16 +545,16 @@
     v7 = [CRLColor colorWithWhite:0.0 alpha:0.3];
   }
 
-  v8 = [v7 CGColor];
-  v9 = [(CRLPathEditor *)self p_ghostRenderable];
-  [v9 setStrokeColor:v8];
+  cGColor = [v7 CGColor];
+  p_ghostRenderable = [(CRLPathEditor *)self p_ghostRenderable];
+  [p_ghostRenderable setStrokeColor:cGColor];
 }
 
 - (NSArray)decoratorOverlayRenderables
 {
   [(CRLPathEditor *)self p_setGhostStrokeColor];
-  v3 = [(CRLPathEditor *)self p_ghostRenderable];
-  v6 = v3;
+  p_ghostRenderable = [(CRLPathEditor *)self p_ghostRenderable];
+  v6 = p_ghostRenderable;
   v4 = [NSArray arrayWithObjects:&v6 count:1];
 
   return v4;
@@ -564,8 +564,8 @@
 {
   if (*(&self->_hoveringKnob + 1))
   {
-    v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v4 = [v3 repForInfo:*(&self->_hoveringKnob + 1) createIfNeeded:1];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    v4 = [interactiveCanvasController repForInfo:*(&self->_hoveringKnob + 1) createIfNeeded:1];
   }
 
   else
@@ -576,13 +576,13 @@
   return v4;
 }
 
-- (void)setCreatingRep:(id)a3
+- (void)setCreatingRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_class();
-  v6 = [v4 info];
+  info = [repCopy info];
 
-  obj = sub_100014370(v5, v6);
+  obj = sub_100014370(v5, info);
 
   v7 = obj;
   if (obj != *(&self->_hoveringKnob + 1))
@@ -592,15 +592,15 @@
   }
 }
 
-- (void)setIsCreatingPath:(BOOL)a3
+- (void)setIsCreatingPath:(BOOL)path
 {
-  if (BYTE1(self->_insertSelectionBehavior) != a3)
+  if (BYTE1(self->_insertSelectionBehavior) != path)
   {
-    v4 = a3;
-    BYTE1(self->_insertSelectionBehavior) = a3;
+    pathCopy = path;
+    BYTE1(self->_insertSelectionBehavior) = path;
     v7 = +[NSNotificationCenter defaultCenter];
     [(CRLBoardItemEditor *)self interactiveCanvasController];
-    if (v4)
+    if (pathCopy)
       v6 = {;
       [v7 addObserver:self selector:"p_didScroll:" name:@"CRLCanvasDidScrollNotification" object:v6];
     }
@@ -612,14 +612,14 @@
   }
 }
 
-- (void)p_didScroll:(id)a3
+- (void)p_didScroll:(id)scroll
 {
   if ([(CRLPathEditor *)self isCreatingPath])
   {
     if (*(&self->_hoveringKnob + 1))
     {
-      v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-      v5 = [v4 repForInfo:*(&self->_hoveringKnob + 1) createIfNeeded:0];
+      interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      v5 = [interactiveCanvasController repForInfo:*(&self->_hoveringKnob + 1) createIfNeeded:0];
 
       if (!v5)
       {
@@ -658,43 +658,43 @@
   }
 }
 
-- (CGPoint)constrainedUnscaledPointForPathCreation:(CGPoint)a3
+- (CGPoint)constrainedUnscaledPointForPathCreation:(CGPoint)creation
 {
-  y = a3.y;
-  x = a3.x;
+  y = creation.y;
+  x = creation.x;
   v6 = objc_opt_class();
-  v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v29 = 0;
-  v8 = [v7 hitKnobAtPoint:1 inputType:&v29 returningRep:{x, y}];
+  v8 = [interactiveCanvasController hitKnobAtPoint:1 inputType:&v29 returningRep:{x, y}];
   v9 = sub_100014370(v6, v8);
 
   if (!v9)
   {
-    v10 = [(CRLPathEditor *)self creatingRep];
-    v11 = [v10 editablePathSource];
+    creatingRep = [(CRLPathEditor *)self creatingRep];
+    editablePathSource = [creatingRep editablePathSource];
 
-    v12 = [v11 nodes];
-    if ([v12 count])
+    nodes = [editablePathSource nodes];
+    if ([nodes count])
     {
-      v13 = [(CRLPathEditor *)self creatingRep];
-      [v13 convertNaturalPointFromUnscaledCanvas:{x, y}];
+      creatingRep2 = [(CRLPathEditor *)self creatingRep];
+      [creatingRep2 convertNaturalPointFromUnscaledCanvas:{x, y}];
       v15 = v14;
       v17 = v16;
       if ([(CRLPathEditor *)self isCreatingReversed])
       {
-        [v12 objectAtIndexedSubscript:0];
+        [nodes objectAtIndexedSubscript:0];
       }
 
       else
       {
-        [v12 lastObject];
+        [nodes lastObject];
       }
       v18 = ;
       [v18 nodePoint];
       v20 = v19;
       v21 = sub_10011F31C(v15, v17, v19);
       v23 = sub_100120FD4(v21, v22);
-      [v13 convertNaturalPointToUnscaledCanvas:{sub_10011F334(v23, v24, v20)}];
+      [creatingRep2 convertNaturalPointToUnscaledCanvas:{sub_10011F334(v23, v24, v20)}];
       x = v25;
       y = v26;
     }
@@ -710,19 +710,19 @@
 {
   if (BYTE1(self->_lastGhostPosition.y) == 1 && [(CRLPathEditor *)self isCreatingPath])
   {
-    v3 = [(CRLPathEditor *)self creatingRep];
-    v9 = [v3 editablePathSource];
+    creatingRep = [(CRLPathEditor *)self creatingRep];
+    editablePathSource = [creatingRep editablePathSource];
 
-    v4 = [v9 nodes];
-    v5 = [v4 count];
+    nodes = [editablePathSource nodes];
+    v5 = [nodes count];
 
     if (v5 >= 2)
     {
-      v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-      v7 = [v6 commandController];
+      interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+      commandController = [interactiveCanvasController commandController];
 
       [(CRLPathEditor *)self p_closeCommandGroupBookkeepingAndUnregisterForOpenGroupNotifications];
-      [v7 closeGroup];
+      [commandController closeGroup];
       v8 = *(&self->_willBecomeCurrentEditorAgain + 1);
       *(&self->_willBecomeCurrentEditorAgain + 1) = 0;
     }
@@ -732,8 +732,8 @@
 - (void)p_resetAfterRebase
 {
   [(CRLPathEditor *)self setResetAfterRebase:0];
-  v3 = [(CRLBoardItemEditor *)self boardItems];
-  v4 = [v3 count];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v4 = [boardItems count];
 
   if (v4 != 1)
   {
@@ -764,17 +764,17 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:742 isFatal:0 description:"Can only reset editing state if we have a single info selected"];
   }
 
-  v8 = [(CRLBoardItemEditor *)self boardItems];
-  v9 = [v8 anyObject];
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  anyObject = [boardItems2 anyObject];
   v10 = *(&self->_hoveringKnob + 1);
-  *(&self->_hoveringKnob + 1) = v9;
+  *(&self->_hoveringKnob + 1) = anyObject;
 
   BYTE1(self->_insertSelectionBehavior) = 1;
 }
 
-- (void)updateGhostForNodeCreationAtPoint:(CGPoint)a3
+- (void)updateGhostForNodeCreationAtPoint:(CGPoint)point
 {
-  [(CRLPathEditor *)self p_snappedPointForCanvasBackgroundAlignmentProvider:a3.x, a3.y];
+  [(CRLPathEditor *)self p_snappedPointForCanvasBackgroundAlignmentProvider:point.x, point.y];
   if (*(&self->super.mIsChangingStrokeWidth + 1))
   {
     v6 = v4;
@@ -796,18 +796,18 @@
 
 - (void)updateGhost
 {
-  v3 = [(CRLPathEditor *)self creatingRep];
-  if (!v3 || ![(CRLPathEditor *)self isCreatingPath])
+  creatingRep = [(CRLPathEditor *)self creatingRep];
+  if (!creatingRep || ![(CRLPathEditor *)self isCreatingPath])
   {
-    v4 = 0;
+    editablePathSource = 0;
     goto LABEL_7;
   }
 
-  v4 = [v3 editablePathSource];
-  v5 = [v4 bezierPath];
-  v6 = [v5 elementCount];
+  editablePathSource = [creatingRep editablePathSource];
+  bezierPath = [editablePathSource bezierPath];
+  elementCount = [bezierPath elementCount];
 
-  if (v6 < 1)
+  if (elementCount < 1)
   {
 LABEL_7:
     v11 = 0;
@@ -815,35 +815,35 @@ LABEL_7:
   }
 
   v7 = objc_opt_class();
-  v8 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v9 = (&self->_ghostPathRenderable + 1);
   v52 = 0;
-  v10 = [v8 hitKnobAtPoint:1 inputType:&v52 returningRep:{*(&self->_ghostPathRenderable + 1), *(&self->_lastGhostPosition.x + 1)}];
+  v10 = [interactiveCanvasController hitKnobAtPoint:1 inputType:&v52 returningRep:{*(&self->_ghostPathRenderable + 1), *(&self->_lastGhostPosition.x + 1)}];
   v11 = sub_100014370(v7, v10);
 
-  v12 = [v4 subpaths];
-  v13 = [v12 lastObject];
+  subpaths = [editablePathSource subpaths];
+  lastObject = [subpaths lastObject];
 
-  if (([v13 isClosed] & 1) == 0)
+  if (([lastObject isClosed] & 1) == 0)
   {
-    v16 = [v13 nodes];
-    if ([v16 count])
+    nodes = [lastObject nodes];
+    if ([nodes count])
     {
     }
 
     else
     {
-      v17 = [v4 subpaths];
-      v18 = [v17 count];
+      subpaths2 = [editablePathSource subpaths];
+      v18 = [subpaths2 count];
 
       if (v18 >= 2)
       {
-        v19 = [v4 subpaths];
-        v20 = [v4 subpaths];
-        v21 = [v19 objectAtIndex:{objc_msgSend(v20, "count") - 2}];
+        subpaths3 = [editablePathSource subpaths];
+        subpaths4 = [editablePathSource subpaths];
+        v21 = [subpaths3 objectAtIndex:{objc_msgSend(subpaths4, "count") - 2}];
 
         v14 = [v21 isClosed] ^ 1;
-        v13 = v21;
+        lastObject = v21;
         goto LABEL_15;
       }
     }
@@ -867,22 +867,22 @@ LABEL_8:
     [CATransaction setAnimationDuration:0.0];
     [*(&self->super.mIsChangingStrokeWidth + 1) setPath:0];
     +[CATransaction commit];
-    v15 = v4;
+    v15 = editablePathSource;
     goto LABEL_9;
   }
 
-  v15 = [v4 copy];
+  v15 = [editablePathSource copy];
 
-  v22 = [v15 subpaths];
-  v23 = [v22 lastObject];
+  subpaths5 = [v15 subpaths];
+  lastObject2 = [subpaths5 lastObject];
 
   v24 = [[CRLEditableBezierPathSourceMorphInfo alloc] initWithEditableBezierPathSource:v15];
   if (v11 && [(CRLPathEditor *)self canClosePathToKnob:v11])
   {
-    v25 = [v15 firstNode];
-    if ([v25 type] == 3)
+    firstNode = [v15 firstNode];
+    if ([firstNode type] == 3)
     {
-      [v25 setType:1];
+      [firstNode setType:1];
     }
 
     [v15 closePath];
@@ -890,37 +890,37 @@ LABEL_8:
 
   else if ([(CRLPathEditor *)self isCreatingReversed])
   {
-    v26 = [v23 nodes];
-    v25 = [v26 mutableCopy];
+    nodes2 = [lastObject2 nodes];
+    firstNode = [nodes2 mutableCopy];
 
-    [v3 convertNaturalPointFromUnscaledCanvas:{*v9, *(&self->_lastGhostPosition.x + 1)}];
+    [creatingRep convertNaturalPointFromUnscaledCanvas:{*v9, *(&self->_lastGhostPosition.x + 1)}];
     v27 = [CRLBezierNode bezierNodeWithPoint:?];
-    [v25 insertObject:v27 atIndex:0];
+    [firstNode insertObject:v27 atIndex:0];
 
-    [v23 setNodes:v25];
+    [lastObject2 setNodes:firstNode];
   }
 
   else
   {
-    [v3 convertNaturalPointFromUnscaledCanvas:{*v9, *(&self->_lastGhostPosition.x + 1)}];
-    v25 = [CRLBezierNode bezierNodeWithPoint:?];
-    [v23 addNode:v25];
+    [creatingRep convertNaturalPointFromUnscaledCanvas:{*v9, *(&self->_lastGhostPosition.x + 1)}];
+    firstNode = [CRLBezierNode bezierNodeWithPoint:?];
+    [lastObject2 addNode:firstNode];
   }
 
   [v15 morphWithMorphInfo:v24];
   +[CATransaction begin];
   [CATransaction setAnimationDuration:0.0];
   v28 = +[CRLBezierPath bezierPath];
-  v29 = [v23 nodes];
-  v30 = [v29 count] - 1;
+  nodes3 = [lastObject2 nodes];
+  v30 = [nodes3 count] - 1;
 
-  v31 = [v23 nodes];
+  nodes4 = [lastObject2 nodes];
   v51[0] = _NSConcreteStackBlock;
   v51[1] = 3221225472;
   v51[2] = sub_10027722C;
   v51[3] = &unk_10184E2B8;
   v51[4] = v30;
-  v32 = [v31 indexOfObjectWithOptions:2 passingTest:v51];
+  v32 = [nodes4 indexOfObjectWithOptions:2 passingTest:v51];
 
   if (v32 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -932,11 +932,11 @@ LABEL_8:
     v33 = v32;
   }
 
-  [v23 appendToBezierPath:v28 selectedNodesOnly:0 fromIndex:v33];
-  v34 = [v28 elementCount];
-  if (v34)
+  [lastObject2 appendToBezierPath:v28 selectedNodesOnly:0 fromIndex:v33];
+  elementCount2 = [v28 elementCount];
+  if (elementCount2)
   {
-    v35 = v34;
+    v35 = elementCount2;
     v36 = 0;
     while (1)
     {
@@ -973,15 +973,15 @@ LABEL_36:
 
 LABEL_38:
   [*(&self->super.mIsChangingStrokeWidth + 1) setPath:{objc_msgSend(v28, "CGPath")}];
-  v42 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  [v42 viewScale];
+  interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  [interactiveCanvasController2 viewScale];
   v44 = v43;
 
-  v45 = [v3 layout];
-  v46 = v45;
-  if (v45)
+  layout = [creatingRep layout];
+  v46 = layout;
+  if (layout)
   {
-    [v45 pureTransformInRoot];
+    [layout pureTransformInRoot];
   }
 
   else
@@ -1005,37 +1005,37 @@ LABEL_9:
 {
   if ([(CRLPathEditor *)self isCreatingPath])
   {
-    v3 = [(CRLPathEditor *)self creatingRep];
+    creatingRep = [(CRLPathEditor *)self creatingRep];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Close Path" value:0 table:@"UndoStrings"];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1002773D8;
     v7[3] = &unk_10184E300;
-    v8 = v3;
-    v6 = v3;
+    v8 = creatingRep;
+    v6 = creatingRep;
     [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v5 usingBlock:&stru_10184E2D8 filterWithBlock:v7];
   }
 }
 
-- (BOOL)canContinuePathFromKnob:(id)a3 reversed:(BOOL *)a4
+- (BOOL)canContinuePathFromKnob:(id)knob reversed:(BOOL *)reversed
 {
-  v5 = a3;
-  if ([v5 tag] == 17)
+  knobCopy = knob;
+  if ([knobCopy tag] == 17)
   {
-    v6 = [v5 pathEditableRep];
-    v7 = [v6 editablePathSource];
+    pathEditableRep = [knobCopy pathEditableRep];
+    editablePathSource = [pathEditableRep editablePathSource];
 
-    v8 = [v7 subpaths];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "subpathIndex")}];
+    subpaths = [editablePathSource subpaths];
+    v9 = [subpaths objectAtIndexedSubscript:{objc_msgSend(knobCopy, "subpathIndex")}];
 
-    v10 = [v5 nodeIndex];
-    v11 = [v9 nodes];
-    v12 = v10 == [v11 count] - 1 || objc_msgSend(v5, "nodeIndex") == 0;
+    nodeIndex = [knobCopy nodeIndex];
+    nodes = [v9 nodes];
+    v12 = nodeIndex == [nodes count] - 1 || objc_msgSend(knobCopy, "nodeIndex") == 0;
 
-    if (a4)
+    if (reversed)
     {
-      *a4 = [v5 nodeIndex] == 0;
+      *reversed = [knobCopy nodeIndex] == 0;
     }
   }
 
@@ -1047,26 +1047,26 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)canClosePathToKnob:(id)a3
+- (BOOL)canClosePathToKnob:(id)knob
 {
-  v4 = a3;
+  knobCopy = knob;
   if ([(CRLPathEditor *)self isCreatingPath])
   {
-    if ([v4 tag] == 17)
+    if ([knobCopy tag] == 17)
     {
-      v5 = [v4 pathEditableRep];
-      v6 = [(CRLPathEditor *)self creatingRep];
+      pathEditableRep = [knobCopy pathEditableRep];
+      creatingRep = [(CRLPathEditor *)self creatingRep];
 
-      if (v5 == v6)
+      if (pathEditableRep == creatingRep)
       {
-        v9 = [v4 pathEditableRep];
-        v10 = [v9 editablePathSource];
+        pathEditableRep2 = [knobCopy pathEditableRep];
+        editablePathSource = [pathEditableRep2 editablePathSource];
 
-        v11 = [v4 subpathIndex];
-        v12 = [v10 subpaths];
-        v13 = [v12 count] - 1;
+        subpathIndex = [knobCopy subpathIndex];
+        subpaths = [editablePathSource subpaths];
+        v13 = [subpaths count] - 1;
 
-        if (v11 != v13)
+        if (subpathIndex != v13)
         {
           v7 = 0;
 LABEL_16:
@@ -1074,16 +1074,16 @@ LABEL_16:
           goto LABEL_5;
         }
 
-        v14 = [v10 subpaths];
-        v15 = [v14 lastObject];
+        subpaths2 = [editablePathSource subpaths];
+        lastObject = [subpaths2 lastObject];
 
-        LODWORD(v14) = [(CRLPathEditor *)self isCreatingReversed];
-        v16 = [v4 nodeIndex];
-        v17 = v16;
-        if (v14)
+        LODWORD(subpaths2) = [(CRLPathEditor *)self isCreatingReversed];
+        nodeIndex = [knobCopy nodeIndex];
+        v17 = nodeIndex;
+        if (subpaths2)
         {
-          v18 = [v15 nodes];
-          v19 = [v18 count] - 1;
+          nodes = [lastObject nodes];
+          v19 = [nodes count] - 1;
 
           if (v17 != v19)
           {
@@ -1091,15 +1091,15 @@ LABEL_16:
           }
         }
 
-        else if (v16)
+        else if (nodeIndex)
         {
           goto LABEL_13;
         }
 
-        if (([v15 isClosed] & 1) == 0)
+        if (([lastObject isClosed] & 1) == 0)
         {
-          v20 = [v15 nodes];
-          v7 = [v20 count] > 1;
+          nodes2 = [lastObject nodes];
+          v7 = [nodes2 count] > 1;
 
           goto LABEL_15;
         }
@@ -1119,26 +1119,26 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)canEndPathCreationWithKnob:(id)a3
+- (BOOL)canEndPathCreationWithKnob:(id)knob
 {
-  v4 = a3;
+  knobCopy = knob;
   if ([(CRLPathEditor *)self isCreatingPath])
   {
-    if ([v4 tag] == 17)
+    if ([knobCopy tag] == 17)
     {
-      v5 = [v4 pathEditableRep];
-      v6 = [(CRLPathEditor *)self creatingRep];
+      pathEditableRep = [knobCopy pathEditableRep];
+      creatingRep = [(CRLPathEditor *)self creatingRep];
 
-      if (v5 == v6)
+      if (pathEditableRep == creatingRep)
       {
-        v9 = [v4 pathEditableRep];
-        v10 = [v9 editablePathSource];
+        pathEditableRep2 = [knobCopy pathEditableRep];
+        editablePathSource = [pathEditableRep2 editablePathSource];
 
-        v11 = [v4 subpathIndex];
-        v12 = [v10 subpaths];
-        v13 = [v12 count] - 1;
+        subpathIndex = [knobCopy subpathIndex];
+        subpaths = [editablePathSource subpaths];
+        v13 = [subpaths count] - 1;
 
-        if (v11 != v13)
+        if (subpathIndex != v13)
         {
           LOBYTE(v7) = 0;
 LABEL_14:
@@ -1146,15 +1146,15 @@ LABEL_14:
           goto LABEL_5;
         }
 
-        v14 = [v10 subpaths];
-        v15 = [v14 lastObject];
+        subpaths2 = [editablePathSource subpaths];
+        lastObject = [subpaths2 lastObject];
 
-        LODWORD(v14) = [(CRLPathEditor *)self isCreatingReversed];
-        v16 = [v4 nodeIndex];
-        v17 = v16;
-        if (v14)
+        LODWORD(subpaths2) = [(CRLPathEditor *)self isCreatingReversed];
+        nodeIndex = [knobCopy nodeIndex];
+        v17 = nodeIndex;
+        if (subpaths2)
         {
-          if (v16)
+          if (nodeIndex)
           {
 LABEL_9:
             LOBYTE(v7) = 0;
@@ -1166,8 +1166,8 @@ LABEL_13:
 
         else
         {
-          v18 = [v15 nodes];
-          v19 = [v18 count] - 1;
+          nodes = [lastObject nodes];
+          v19 = [nodes count] - 1;
 
           if (v17 != v19)
           {
@@ -1175,7 +1175,7 @@ LABEL_13:
           }
         }
 
-        v7 = [v15 isClosed] ^ 1;
+        v7 = [lastObject isClosed] ^ 1;
         goto LABEL_13;
       }
     }
@@ -1187,14 +1187,14 @@ LABEL_5:
   return v7;
 }
 
-- (id)selectionWillChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5 inSelectionPath:(id)a6 withNewEditors:(id)a7
+- (id)selectionWillChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  selectionCopy = selection;
+  toSelectionCopy = toSelection;
+  pathCopy = path;
+  editorsCopy = editors;
   v16 = objc_opt_class();
-  v17 = sub_100014370(v16, v13);
+  v17 = sub_100014370(v16, toSelectionCopy);
   if (v17)
   {
     v18 = 0;
@@ -1204,49 +1204,49 @@ LABEL_5:
   {
     v20.receiver = self;
     v20.super_class = CRLPathEditor;
-    v18 = [(CRLBoardItemEditor *)&v20 selectionWillChangeFromSelection:v12 toSelection:v13 withFlags:a5 inSelectionPath:v14 withNewEditors:v15];
+    v18 = [(CRLBoardItemEditor *)&v20 selectionWillChangeFromSelection:selectionCopy toSelection:toSelectionCopy withFlags:flags inSelectionPath:pathCopy withNewEditors:editorsCopy];
   }
 
   return v18;
 }
 
-- (void)selectionDidChangeFromSelection:(id)a3 toSelection:(id)a4 withFlags:(unint64_t)a5
+- (void)selectionDidChangeFromSelection:(id)selection toSelection:(id)toSelection withFlags:(unint64_t)flags
 {
-  v8 = a3;
-  v9 = a4;
+  selectionCopy = selection;
+  toSelectionCopy = toSelection;
   v10 = objc_opt_class();
-  v11 = sub_100014370(v10, v9);
+  v11 = sub_100014370(v10, toSelectionCopy);
   if (!v11)
   {
     v12.receiver = self;
     v12.super_class = CRLPathEditor;
-    [(CRLBoardItemEditor *)&v12 selectionDidChangeFromSelection:v8 toSelection:v9 withFlags:a5];
+    [(CRLBoardItemEditor *)&v12 selectionDidChangeFromSelection:selectionCopy toSelection:toSelectionCopy withFlags:flags];
   }
 }
 
-- (BOOL)p_shouldKeepEditingInfos:(id)a3
+- (BOOL)p_shouldKeepEditingInfos:(id)infos
 {
-  v4 = a3;
-  v6 = [(CRLBoardItemEditor *)self boardItems];
-  v5 = [v6 isEqual:v4];
+  infosCopy = infos;
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v5 = [boardItems isEqual:infosCopy];
 
-  LOBYTE(v6) = 1;
-  if (v4 && (v5 & 1) == 0 && [v4 count])
+  LOBYTE(boardItems) = 1;
+  if (infosCopy && (v5 & 1) == 0 && [infosCopy count])
   {
-    if ([v4 count] == 1 && (-[CRLBoardItemEditor boardItems](self, "boardItems"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
+    if ([infosCopy count] == 1 && (-[CRLBoardItemEditor boardItems](self, "boardItems"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8 == 1))
     {
       v9 = objc_opt_class();
-      v10 = [v4 anyObject];
-      v11 = sub_100013F00(v9, v10);
+      anyObject = [infosCopy anyObject];
+      v11 = sub_100013F00(v9, anyObject);
 
-      v6 = [(CRLBoardItemEditor *)self boardItems];
-      v12 = [v6 anyObject];
+      boardItems = [(CRLBoardItemEditor *)self boardItems];
+      anyObject2 = [boardItems anyObject];
 
       v13 = [v11 id];
-      v14 = [v12 id];
-      LODWORD(v6) = [v13 isEqual:v14];
+      v14 = [anyObject2 id];
+      LODWORD(boardItems) = [v13 isEqual:v14];
 
-      if (v6)
+      if (boardItems)
       {
         v15 = [NSSet setWithObject:v11];
         [(CRLBoardItemEditor *)self setBoardItems:v15];
@@ -1260,22 +1260,22 @@ LABEL_5:
 
     else
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(boardItems) = 0;
     }
   }
 
-  return v6;
+  return boardItems;
 }
 
-- (BOOL)shouldRemainOnEditorStackForSelection:(id)a3 inSelectionPath:(id)a4 withNewEditors:(id)a5
+- (BOOL)shouldRemainOnEditorStackForSelection:(id)selection inSelectionPath:(id)path withNewEditors:(id)editors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  selectionCopy = selection;
+  pathCopy = path;
+  editorsCopy = editors;
   if ([(CRLPathEditor *)self isMemberOfClass:objc_opt_class()])
   {
-    v11 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v12 = [v11 infosForSelectionPath:v9];
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    v12 = [interactiveCanvasController infosForSelectionPath:pathCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1293,15 +1293,15 @@ LABEL_5:
   {
     v15.receiver = self;
     v15.super_class = CRLPathEditor;
-    v13 = [(CRLBoardItemEditor *)&v15 shouldRemainOnEditorStackForSelection:v8 inSelectionPath:v9 withNewEditors:v10];
+    v13 = [(CRLBoardItemEditor *)&v15 shouldRemainOnEditorStackForSelection:selectionCopy inSelectionPath:pathCopy withNewEditors:editorsCopy];
   }
 
   return v13;
 }
 
-- (void)p_commandWillBeEnqueued:(id)a3
+- (void)p_commandWillBeEnqueued:(id)enqueued
 {
-  v4 = a3;
+  enqueuedCopy = enqueued;
   if ((BYTE1(self->_lastGhostPosition.y) & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1337,9 +1337,9 @@ LABEL_5:
   }
 }
 
-- (void)p_groupWillBeOpened:(id)a3
+- (void)p_groupWillBeOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   if ((BYTE1(self->_lastGhostPosition.y) & 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -1395,29 +1395,29 @@ LABEL_5:
 
 - (void)p_commandGroupSafeEndEditing
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v7 = v3;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  v7 = interactiveCanvasController;
   if (BYTE1(self->_lastGhostPosition.y) == 1)
   {
-    v4 = [v3 canvasEditor];
-    v5 = [v4 selectionPathWithInfos:0];
-    v6 = [v7 editorController];
-    [v6 setSelectionPath:v5];
+    canvasEditor = [interactiveCanvasController canvasEditor];
+    v5 = [canvasEditor selectionPathWithInfos:0];
+    editorController = [v7 editorController];
+    [editorController setSelectionPath:v5];
   }
 
   else
   {
-    [v3 endEditing];
+    [interactiveCanvasController endEditing];
   }
 }
 
-- (void)toggleSelectedNodeToType:(int64_t)a3
+- (void)toggleSelectedNodeToType:(int64_t)type
 {
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         return;
       }
@@ -1429,11 +1429,11 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         return;
       }
@@ -1467,7 +1467,7 @@ LABEL_9:
 
     v7 = [NSString stringWithUTF8String:"[CRLPathEditor toggleSelectedNodeToType:]"];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLPathEditor.m"];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1344 isFatal:0 description:"Unexpected node type %li", a3];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:1344 isFatal:0 description:"Unexpected node type %li", type];
 
     goto LABEL_21;
   }
@@ -1486,13 +1486,13 @@ LABEL_19:
   v10[1] = 3221225472;
   v10[2] = sub_100278478;
   v10[3] = &unk_10184E3E0;
-  v10[4] = a3;
+  v10[4] = type;
   [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v7 usingBlock:v10 filterWithBlock:&stru_10184E400];
   [(CRLPathEditor *)self invalidateKnobs];
 LABEL_21:
 }
 
-- (void)split:(id)a3
+- (void)split:(id)split
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Divide Path" value:0 table:@"UndoStrings"];
@@ -1501,7 +1501,7 @@ LABEL_21:
   [(CRLPathEditor *)self invalidateKnobs];
 }
 
-- (void)join:(id)a3
+- (void)join:(id)join
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Join" value:0 table:@"UndoStrings"];
@@ -1510,7 +1510,7 @@ LABEL_21:
   [(CRLPathEditor *)self invalidateKnobs];
 }
 
-- (void)close:(id)a3
+- (void)close:(id)close
 {
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"Close Path" value:0 table:@"UndoStrings"];
@@ -1519,15 +1519,15 @@ LABEL_21:
   [(CRLPathEditor *)self invalidateKnobs];
 }
 
-- (BOOL)pathHasSelectedNodes:(unint64_t)a3
+- (BOOL)pathHasSelectedNodes:(unint64_t)nodes
 {
-  v3 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v4 = [v3 infosForCurrentSelectionPath];
-  v33 = [v4 countByEnumeratingWithState:&v39 objects:v54 count:16];
+  infosForCurrentSelectionPath = [interactiveCanvasController infosForCurrentSelectionPath];
+  v33 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v39 objects:v54 count:16];
   if (v33)
   {
     v5 = &off_1018DC000;
@@ -1540,10 +1540,10 @@ LABEL_21:
       {
         if (*v40 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(infosForCurrentSelectionPath);
         }
 
-        v8 = [v3 repForInfo:*(*(&v39 + 1) + 8 * v7)];
+        v8 = [interactiveCanvasController repForInfo:*(*(&v39 + 1) + 8 * v7)];
         v9 = objc_opt_class();
         v15 = sub_1003038E0(v8, v9, 1, v10, v11, v12, v13, v14, v5[393]);
 
@@ -1593,30 +1593,30 @@ LABEL_21:
           [CRLAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:1445 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
         }
 
-        v21 = [v15 editablePathSource];
+        editablePathSource = [v15 editablePathSource];
         v35 = 0u;
         v36 = 0u;
         v37 = 0u;
         v38 = 0u;
-        v22 = [v21 nodes];
-        v23 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
+        nodes = [editablePathSource nodes];
+        v23 = [nodes countByEnumeratingWithState:&v35 objects:v43 count:16];
         if (v23)
         {
           v24 = v23;
           v25 = *v36;
-          v26 = a3;
+          nodesCopy = nodes;
           while (2)
           {
             for (i = 0; i != v24; i = i + 1)
             {
               if (*v36 != v25)
               {
-                objc_enumerationMutation(v22);
+                objc_enumerationMutation(nodes);
               }
 
               if ([*(*(&v35 + 1) + 8 * i) isSelected])
               {
-                if (!--v26)
+                if (!--nodesCopy)
                 {
 
                   v30 = 1;
@@ -1625,7 +1625,7 @@ LABEL_21:
               }
             }
 
-            v24 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            v24 = [nodes countByEnumeratingWithState:&v35 objects:v43 count:16];
             if (v24)
             {
               continue;
@@ -1642,7 +1642,7 @@ LABEL_21:
 
       while (v7 != v33);
       v30 = 0;
-      v33 = [v4 countByEnumeratingWithState:&v39 objects:v54 count:16];
+      v33 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v39 objects:v54 count:16];
     }
 
     while (v33);
@@ -1658,16 +1658,16 @@ LABEL_30:
   return v30;
 }
 
-- (void)alignNodesByEdge:(int)a3
+- (void)alignNodesByEdge:(int)edge
 {
-  if (a3 > 5)
+  if (edge > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = *(&off_10184E6F0 + a3);
+    v5 = *(&off_10184E6F0 + edge);
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:v5 value:0 table:@"UndoStrings"];
   }
@@ -1676,21 +1676,21 @@ LABEL_30:
   v8[1] = 3221225472;
   v8[2] = sub_100278E34;
   v8[3] = &unk_10184E520;
-  v9 = a3;
+  edgeCopy = edge;
   [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v7 usingBlock:v8 filterWithBlock:&stru_10184E540];
   [(CRLPathEditor *)self invalidateKnobs];
 }
 
-- (void)distributeNodesByEdge:(int)a3
+- (void)distributeNodesByEdge:(int)edge
 {
-  if (a3 > 5)
+  if (edge > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = *(&off_10184E720 + a3);
+    v5 = *(&off_10184E720 + edge);
     v6 = +[NSBundle mainBundle];
     v7 = [v6 localizedStringForKey:v5 value:0 table:@"UndoStrings"];
   }
@@ -1699,14 +1699,14 @@ LABEL_30:
   v8[1] = 3221225472;
   v8[2] = sub_100279334;
   v8[3] = &unk_10184E520;
-  v9 = a3;
+  edgeCopy = edge;
   [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v7 usingBlock:v8 filterWithBlock:&stru_10184E5A0];
   [(CRLPathEditor *)self invalidateKnobs];
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Delete" value:0 table:@"UndoStrings"];
 
@@ -1717,23 +1717,23 @@ LABEL_30:
 
   else if ([(CRLPathEditor *)self pathHasSelectedNodes:1])
   {
-    v36 = v4;
-    v7 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v8 = [v7 commandController];
+    v36 = deleteCopy;
+    interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    commandController = [interactiveCanvasController commandController];
 
-    v33 = v8;
-    [v8 openGroup];
+    v33 = commandController;
+    [commandController openGroup];
     v35 = v6;
     [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v6 usingBlock:&stru_10184E5C0 filterWithBlock:&stru_10184E5E0];
-    v38 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
     v37 = +[NSMutableSet set];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v34 = self;
-    v9 = [(CRLBoardItemEditor *)self boardItems];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v46 count:16];
+    selfCopy = self;
+    boardItems = [(CRLBoardItemEditor *)self boardItems];
+    v10 = [boardItems countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1744,24 +1744,24 @@ LABEL_30:
         {
           if (*v43 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(boardItems);
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
-          v15 = [v38 repForInfo:v14];
+          v15 = [interactiveCanvasController2 repForInfo:v14];
           v16 = objc_opt_class();
           v22 = sub_1003038E0(v15, v16, 1, v17, v18, v19, v20, v21, &OBJC_PROTOCOL___CRLPathEditableRep);
 
-          v23 = [v22 editablePathSource];
-          v24 = [v23 deletingSelectedNodesWillDeleteShape];
+          editablePathSource = [v22 editablePathSource];
+          deletingSelectedNodesWillDeleteShape = [editablePathSource deletingSelectedNodesWillDeleteShape];
 
-          if (v24)
+          if (deletingSelectedNodesWillDeleteShape)
           {
             [v37 addObject:v14];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v42 objects:v46 count:16];
+        v11 = [boardItems countByEnumeratingWithState:&v42 objects:v46 count:16];
       }
 
       while (v11);
@@ -1769,31 +1769,31 @@ LABEL_30:
 
     if ([v37 count])
     {
-      v25 = v34;
-      v26 = [(CRLBoardItemEditor *)v34 interactiveCanvasController];
-      v27 = [v26 canvasEditor];
+      v25 = selfCopy;
+      interactiveCanvasController3 = [(CRLBoardItemEditor *)selfCopy interactiveCanvasController];
+      canvasEditor = [interactiveCanvasController3 canvasEditor];
 
-      v28 = [v27 canvasEditorHelper];
-      v29 = [v28 selectionBehaviorForDeletingBoardItems:v37];
+      canvasEditorHelper = [canvasEditor canvasEditorHelper];
+      v29 = [canvasEditorHelper selectionBehaviorForDeletingBoardItems:v37];
 
-      v30 = [v27 selectionPathWithInfos:v37];
-      v31 = [(CRLBoardItemEditor *)v34 editorController];
-      [v31 setSelectionPath:v30];
+      v30 = [canvasEditor selectionPathWithInfos:v37];
+      editorController = [(CRLBoardItemEditor *)selfCopy editorController];
+      [editorController setSelectionPath:v30];
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;
       v40[2] = sub_100279C5C;
       v40[3] = &unk_10184E608;
-      v40[4] = v34;
-      v4 = v36;
+      v40[4] = selfCopy;
+      deleteCopy = v36;
       v41 = v36;
-      [v31 enumerateEditorsOnStackUsingBlock:v40];
+      [editorController enumerateEditorsOnStackUsingBlock:v40];
     }
 
     else
     {
       v29 = 0;
-      v4 = v36;
-      v25 = v34;
+      deleteCopy = v36;
+      v25 = selfCopy;
     }
 
     [(CRLPathEditor *)v25 invalidateKnobs];
@@ -1810,15 +1810,15 @@ LABEL_30:
     v39[3] = &unk_10184E630;
     v39[4] = self;
     [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v6 usingBlock:v39 filterWithBlock:&stru_10184E650];
-    v32 = [(CRLPathEditor *)self creatingRep];
-    [v32 invalidateKnobs];
+    creatingRep = [(CRLPathEditor *)self creatingRep];
+    [creatingRep invalidateKnobs];
   }
 }
 
-- (void)nudgeByDelta:(CGPoint)a3
+- (void)nudgeByDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"Move" value:0 table:@"UndoStrings"];
   v8[0] = _NSConcreteStackBlock;
@@ -1830,15 +1830,15 @@ LABEL_30:
   [(CRLPathEditor *)self editPathsOnPathEditableRepsWithActionString:v7 usingBlock:v8 filterWithBlock:&stru_10184E690];
 }
 
-- (BOOL)pathReturnsTrueForSelector:(SEL)a3
+- (BOOL)pathReturnsTrueForSelector:(SEL)selector
 {
-  v5 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [(CRLBoardItemEditor *)self boardItems];
-  v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v7 = [boardItems countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1849,16 +1849,16 @@ LABEL_3:
     {
       if (*v24 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(boardItems);
       }
 
-      v11 = [v5 repForInfo:*(*(&v23 + 1) + 8 * v10)];
+      v11 = [interactiveCanvasController repForInfo:*(*(&v23 + 1) + 8 * v10)];
       v12 = objc_opt_class();
       v13 = 1;
       v19 = sub_1003038E0(v11, v12, 1, v14, v15, v16, v17, v18, &OBJC_PROTOCOL___CRLPathEditableRep);
 
-      v20 = [v19 editablePathSource];
-      v21 = [v20 performSelector:a3];
+      editablePathSource = [v19 editablePathSource];
+      v21 = [editablePathSource performSelector:selector];
 
       if (v21)
       {
@@ -1867,7 +1867,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v8 = [boardItems countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1887,33 +1887,33 @@ LABEL_9:
   return v13;
 }
 
-- (int64_t)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int64_t)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
   v21.receiver = self;
   v21.super_class = CRLPathEditor;
-  v6 = [(CRLStyledEditor *)&v21 canPerformEditorAction:a3 withSender:a4];
-  if ("alignDrawablesByLeftEdge:" == a3 || "alignDrawablesByRightEdge:" == a3 || "alignDrawablesByTopEdge:" == a3 || "alignDrawablesByBottomEdge:" == a3 || "alignDrawablesByHorizontalCenter:" == a3 || "alignDrawablesByVerticalCenter:" == a3)
+  v6 = [(CRLStyledEditor *)&v21 canPerformEditorAction:action withSender:sender];
+  if ("alignDrawablesByLeftEdge:" == action || "alignDrawablesByRightEdge:" == action || "alignDrawablesByTopEdge:" == action || "alignDrawablesByBottomEdge:" == action || "alignDrawablesByHorizontalCenter:" == action || "alignDrawablesByVerticalCenter:" == action)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2;
 LABEL_55:
-    v16 = [(CRLPathEditor *)v12 pathHasSelectedNodes:v13];
+    v16 = [(CRLPathEditor *)selfCopy2 pathHasSelectedNodes:v13];
     goto LABEL_56;
   }
 
-  if ("distributeDrawablesHorizontally:" == a3 || "distributeDrawablesVertically:" == a3)
+  if ("distributeDrawablesHorizontally:" == action || "distributeDrawablesVertically:" == action)
   {
-    v12 = self;
+    selfCopy2 = self;
     v13 = 3;
     goto LABEL_55;
   }
 
-  if ("makeSmooth:" == a3 || "makeSharp:" == a3 || "makeBezier:" == a3)
+  if ("makeSmooth:" == action || "makeSharp:" == action || "makeBezier:" == action)
   {
     goto LABEL_60;
   }
 
-  if ("split:" == a3)
+  if ("split:" == action)
   {
     v18 = "canCutAtSelectedNodes";
 LABEL_66:
@@ -1930,46 +1930,46 @@ LABEL_56:
     }
   }
 
-  if ("join:" == a3)
+  if ("join:" == action)
   {
     v18 = "canConnectSelectedNodes";
     goto LABEL_66;
   }
 
-  if ("close:" == a3)
+  if ("close:" == action)
   {
     v18 = "canCloseSelectedNodes";
     goto LABEL_66;
   }
 
   v14 = 1;
-  if ("moveUp:" == a3)
+  if ("moveUp:" == action)
   {
     return v14;
   }
 
-  if ("moveDown:" == a3)
+  if ("moveDown:" == action)
   {
     return v14;
   }
 
-  if ("moveLeft:" == a3)
+  if ("moveLeft:" == action)
   {
     return v14;
   }
 
-  if ("moveRight:" == a3)
+  if ("moveRight:" == action)
   {
     return v14;
   }
 
   v14 = 1;
-  if ("moveUpAndModifySelection:" == a3 || "moveDownAndModifySelection:" == a3 || "moveLeftAndModifySelection:" == a3 || "moveRightAndModifySelection:" == a3)
+  if ("moveUpAndModifySelection:" == action || "moveDownAndModifySelection:" == action || "moveLeftAndModifySelection:" == action || "moveRightAndModifySelection:" == action)
   {
     return v14;
   }
 
-  if ("deleteBackward:" == a3 || "deleteForward:" == a3 || "deleteToBeginningOfLine:" == a3 || "deleteToEndOfLine:" == a3 || "deleteToBeginningOfParagraph:" == a3 || "deleteToEndOfParagraph:" == a3 || "deleteWordBackward:" == a3 || "deleteWordForward:" == a3 || "delete:" == a3)
+  if ("deleteBackward:" == action || "deleteForward:" == action || "deleteToBeginningOfLine:" == action || "deleteToEndOfLine:" == action || "deleteToBeginningOfParagraph:" == action || "deleteToEndOfParagraph:" == action || "deleteWordBackward:" == action || "deleteWordForward:" == action || "delete:" == action)
   {
 LABEL_60:
     if ([(CRLPathEditor *)self pathHasSelectedNodes:1])
@@ -1984,13 +1984,13 @@ LABEL_60:
   }
 
   v14 = 1;
-  if ("insertTab:" != a3 && "insertBacktab:" != a3)
+  if ("insertTab:" != action && "insertBacktab:" != action)
   {
     v15 = v6;
-    if ("selectParent:" == a3)
+    if ("selectParent:" == action)
     {
-      v19 = [(CRLBoardItemEditor *)self editorController];
-      v20 = [v19 mostSpecificCurrentEditorOfClass:objc_opt_class()];
+      editorController = [(CRLBoardItemEditor *)self editorController];
+      v20 = [editorController mostSpecificCurrentEditorOfClass:objc_opt_class()];
 
       if (v20)
       {
@@ -2006,14 +2006,14 @@ LABEL_60:
     else
     {
       v14 = 1;
-      if ("cancelOperation:" != a3 && "insertNewline:" != a3)
+      if ("cancelOperation:" != action && "insertNewline:" != action)
       {
-        if ("pasteStyle:" == a3)
+        if ("pasteStyle:" == action)
         {
           return -BYTE1(self->_lastGhostPosition.y);
         }
 
-        else if ("duplicate:" == a3)
+        else if ("duplicate:" == action)
         {
           return -1;
         }
@@ -2034,22 +2034,22 @@ LABEL_60:
   return v14;
 }
 
-- (void)p_selectNextNode:(int64_t)a3
+- (void)p_selectNextNode:(int64_t)node
 {
-  v4 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
   v5 = [NSMutableArray alloc];
-  v6 = [(CRLBoardItemEditor *)self boardItems];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  boardItems = [(CRLBoardItemEditor *)self boardItems];
+  v7 = [v5 initWithCapacity:{objc_msgSend(boardItems, "count")}];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v50 = self;
-  v8 = [(CRLBoardItemEditor *)self boardItems];
-  v9 = [v8 countByEnumeratingWithState:&v62 objects:v78 count:16];
+  selfCopy = self;
+  boardItems2 = [(CRLBoardItemEditor *)self boardItems];
+  v9 = [boardItems2 countByEnumeratingWithState:&v62 objects:v78 count:16];
   v52 = v7;
-  v53 = v4;
+  v53 = interactiveCanvasController;
   if (v9)
   {
     v10 = v9;
@@ -2061,17 +2061,17 @@ LABEL_60:
       {
         if (*v63 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(boardItems2);
         }
 
-        v13 = [v4 repForInfo:*(*(&v62 + 1) + 8 * v12)];
+        v13 = [interactiveCanvasController repForInfo:*(*(&v62 + 1) + 8 * v12)];
         v14 = objc_opt_class();
         v20 = sub_1003038E0(v13, v14, 1, v15, v16, v17, v18, v19, &OBJC_PROTOCOL___CRLPathEditableRep);
 
         if (v20)
         {
-          v21 = [v20 editablePathSource];
-          [v7 addObject:v21];
+          editablePathSource = [v20 editablePathSource];
+          [v7 addObject:editablePathSource];
         }
 
         else
@@ -2115,54 +2115,54 @@ LABEL_60:
             _os_log_error_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: Assertion backtrace: >>%{public}@<<", buf, 0x12u);
           }
 
-          v21 = [NSString stringWithUTF8String:"[CRLPathEditor p_selectNextNode:]"];
+          editablePathSource = [NSString stringWithUTF8String:"[CRLPathEditor p_selectNextNode:]"];
           v25 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLPathEditor.m"];
-          [CRLAssertionHandler handleFailureInFunction:v21 file:v25 lineNumber:1868 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
+          [CRLAssertionHandler handleFailureInFunction:editablePathSource file:v25 lineNumber:1868 isFatal:0 description:"invalid nil value for '%{public}s'", "rep"];
 
           v7 = v52;
-          v4 = v53;
+          interactiveCanvasController = v53;
         }
 
         v12 = v12 + 1;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v62 objects:v78 count:16];
+      v10 = [boardItems2 countByEnumeratingWithState:&v62 objects:v78 count:16];
     }
 
     while (v10);
   }
 
-  v28 = [v7 objectEnumerator];
-  if (a3 == 1)
+  objectEnumerator = [v7 objectEnumerator];
+  if (node == 1)
   {
-    v29 = [v7 reverseObjectEnumerator];
+    reverseObjectEnumerator = [v7 reverseObjectEnumerator];
 
-    v28 = v29;
+    objectEnumerator = reverseObjectEnumerator;
   }
 
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v30 = v28;
+  v30 = objectEnumerator;
   v31 = [v30 countByEnumeratingWithState:&v58 objects:v67 count:16];
   if (!v31)
   {
 
 LABEL_48:
-    if (a3)
+    if (node)
     {
-      v47 = [v7 lastObject];
-      v48 = [v47 nodes];
-      [v48 lastObject];
+      lastObject = [v7 lastObject];
+      nodes = [lastObject nodes];
+      [nodes lastObject];
     }
 
     else
     {
-      v47 = [v7 firstObject];
-      v48 = [v47 nodes];
-      [v48 firstObject];
+      lastObject = [v7 firstObject];
+      nodes = [lastObject nodes];
+      [nodes firstObject];
     }
     v49 = ;
 
@@ -2187,27 +2187,27 @@ LABEL_52:
 
       if (v33)
       {
-        v47 = v30;
+        lastObject = v30;
         goto LABEL_52;
       }
 
       v37 = *(*(&v58 + 1) + 8 * i);
-      v38 = [v37 nodes];
-      v39 = [v38 objectEnumerator];
+      nodes2 = [v37 nodes];
+      objectEnumerator2 = [nodes2 objectEnumerator];
 
-      if (a3 == 1)
+      if (node == 1)
       {
-        v40 = [v37 nodes];
-        v41 = [v40 reverseObjectEnumerator];
+        nodes3 = [v37 nodes];
+        reverseObjectEnumerator2 = [nodes3 reverseObjectEnumerator];
 
-        v39 = v41;
+        objectEnumerator2 = reverseObjectEnumerator2;
       }
 
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
       v55 = 0u;
-      v42 = v39;
+      v42 = objectEnumerator2;
       v33 = [v42 countByEnumeratingWithState:&v54 objects:v66 count:16];
       if (v33)
       {
@@ -2230,9 +2230,9 @@ LABEL_52:
               goto LABEL_41;
             }
 
-            v46 = [*(*(&v54 + 1) + 8 * j) isSelected];
-            v34 = v46;
-            if (v46)
+            isSelected = [*(*(&v54 + 1) + 8 * j) isSelected];
+            v34 = isSelected;
+            if (isSelected)
             {
               [v45 setSelected:0];
             }
@@ -2249,7 +2249,7 @@ LABEL_52:
 
 LABEL_41:
         v7 = v52;
-        v4 = v53;
+        interactiveCanvasController = v53;
       }
     }
 
@@ -2268,25 +2268,25 @@ LABEL_41:
   }
 
 LABEL_53:
-  [(CRLPathEditor *)v50 invalidateKnobs];
+  [(CRLPathEditor *)selfCopy invalidateKnobs];
 }
 
-- (CGPoint)p_snappedPointForCanvasBackgroundAlignmentProvider:(CGPoint)a3
+- (CGPoint)p_snappedPointForCanvasBackgroundAlignmentProvider:(CGPoint)provider
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-  v7 = [v6 canvasBackground];
+  y = provider.y;
+  x = provider.x;
+  interactiveCanvasController = [(CRLBoardItemEditor *)self interactiveCanvasController];
+  canvasBackground = [interactiveCanvasController canvasBackground];
 
-  v8 = [v7 alignmentProvider];
-  if (v8)
+  alignmentProvider = [canvasBackground alignmentProvider];
+  if (alignmentProvider)
   {
-    v9 = [(CRLBoardItemEditor *)self interactiveCanvasController];
-    v10 = [v9 isCanvasBackgroundAlignmentSnappingEnabled];
+    interactiveCanvasController2 = [(CRLBoardItemEditor *)self interactiveCanvasController];
+    isCanvasBackgroundAlignmentSnappingEnabled = [interactiveCanvasController2 isCanvasBackgroundAlignmentSnappingEnabled];
 
-    if (v10)
+    if (isCanvasBackgroundAlignmentSnappingEnabled)
     {
-      [v8 alignmentPointForPoint:{x, y}];
+      [alignmentProvider alignmentPointForPoint:{x, y}];
       x = v11;
       y = v12;
     }

@@ -1,30 +1,30 @@
 @interface SIRINLUINTERNALOverrideCollection
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addComponentOverrides:(id)a3;
-- (void)addParseOverrides:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addComponentOverrides:(id)overrides;
+- (void)addParseOverrides:(id)overrides;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALOverrideCollection
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[6])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[6])
   {
-    self->_creationTimestampMsSinceUnixEpoch = v4[1];
+    self->_creationTimestampMsSinceUnixEpoch = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SIRINLUINTERNALOverrideCollection *)self setAssetId:?];
   }
@@ -111,24 +111,24 @@
   return v6 ^ [(NSMutableArray *)self->_componentOverrides hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_creationTimestampMsSinceUnixEpoch != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_15:
     v10 = 0;
@@ -136,13 +136,13 @@ LABEL_15:
   }
 
   assetId = self->_assetId;
-  if (assetId | *(v4 + 2) && ![(NSString *)assetId isEqual:?])
+  if (assetId | *(equalCopy + 2) && ![(NSString *)assetId isEqual:?])
   {
     goto LABEL_15;
   }
 
   version = self->_version;
-  if (version | *(v4 + 5))
+  if (version | *(equalCopy + 5))
   {
     if (![(NSString *)version isEqual:?])
     {
@@ -151,7 +151,7 @@ LABEL_15:
   }
 
   parseOverrides = self->_parseOverrides;
-  if (parseOverrides | *(v4 + 4))
+  if (parseOverrides | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)parseOverrides isEqual:?])
     {
@@ -160,7 +160,7 @@ LABEL_15:
   }
 
   componentOverrides = self->_componentOverrides;
-  if (componentOverrides | *(v4 + 3))
+  if (componentOverrides | *(equalCopy + 3))
   {
     v10 = [(NSMutableArray *)componentOverrides isEqual:?];
   }
@@ -175,10 +175,10 @@ LABEL_16:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -186,11 +186,11 @@ LABEL_16:
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_assetId copyWithZone:a3];
+  v7 = [(NSString *)self->_assetId copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(NSString *)self->_version copyWithZone:a3];
+  v9 = [(NSString *)self->_version copyWithZone:zone];
   v10 = v6[5];
   v6[5] = v9;
 
@@ -214,7 +214,7 @@ LABEL_16:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v29 + 1) + 8 * v15) copyWithZone:a3];
+        v16 = [*(*(&v29 + 1) + 8 * v15) copyWithZone:zone];
         [v6 addParseOverrides:v16];
 
         ++v15;
@@ -247,7 +247,7 @@ LABEL_16:
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{a3, v25}];
+        v22 = [*(*(&v25 + 1) + 8 * v21) copyWithZone:{zone, v25}];
         [v6 addComponentOverrides:v22];
 
         ++v21;
@@ -264,19 +264,19 @@ LABEL_16:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_creationTimestampMsSinceUnixEpoch;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_creationTimestampMsSinceUnixEpoch;
+    *(toCopy + 48) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_assetId)
   {
-    [v4 setAssetId:?];
+    [toCopy setAssetId:?];
   }
 
   if (self->_version)
@@ -287,10 +287,10 @@ LABEL_16:
   if ([(SIRINLUINTERNALOverrideCollection *)self parseOverridesCount])
   {
     [v13 clearParseOverrides];
-    v5 = [(SIRINLUINTERNALOverrideCollection *)self parseOverridesCount];
-    if (v5)
+    parseOverridesCount = [(SIRINLUINTERNALOverrideCollection *)self parseOverridesCount];
+    if (parseOverridesCount)
     {
-      v6 = v5;
+      v6 = parseOverridesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SIRINLUINTERNALOverrideCollection *)self parseOverridesAtIndex:i];
@@ -302,10 +302,10 @@ LABEL_16:
   if ([(SIRINLUINTERNALOverrideCollection *)self componentOverridesCount])
   {
     [v13 clearComponentOverrides];
-    v9 = [(SIRINLUINTERNALOverrideCollection *)self componentOverridesCount];
-    if (v9)
+    componentOverridesCount = [(SIRINLUINTERNALOverrideCollection *)self componentOverridesCount];
+    if (componentOverridesCount)
     {
-      v10 = v9;
+      v10 = componentOverridesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(SIRINLUINTERNALOverrideCollection *)self componentOverridesAtIndex:j];
@@ -315,10 +315,10 @@ LABEL_16:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     creationTimestampMsSinceUnixEpoch = self->_creationTimestampMsSinceUnixEpoch;
@@ -405,23 +405,23 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_creationTimestampMsSinceUnixEpoch];
-    [v3 setObject:v4 forKey:@"creation_timestamp_ms_since_unix_epoch"];
+    [dictionary setObject:v4 forKey:@"creation_timestamp_ms_since_unix_epoch"];
   }
 
   assetId = self->_assetId;
   if (assetId)
   {
-    [v3 setObject:assetId forKey:@"asset_id"];
+    [dictionary setObject:assetId forKey:@"asset_id"];
   }
 
   version = self->_version;
   if (version)
   {
-    [v3 setObject:version forKey:@"version"];
+    [dictionary setObject:version forKey:@"version"];
   }
 
   if ([(NSMutableArray *)self->_parseOverrides count])
@@ -446,8 +446,8 @@ LABEL_16:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -456,7 +456,7 @@ LABEL_16:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"parse_overrides"];
+    [dictionary setObject:v7 forKey:@"parse_overrides"];
   }
 
   if ([(NSMutableArray *)self->_componentOverrides count])
@@ -481,8 +481,8 @@ LABEL_16:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -491,12 +491,12 @@ LABEL_16:
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"component_overrides"];
+    [dictionary setObject:v14 forKey:@"component_overrides"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -505,46 +505,46 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALOverrideCollection;
   v4 = [(SIRINLUINTERNALOverrideCollection *)&v8 description];
-  v5 = [(SIRINLUINTERNALOverrideCollection *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALOverrideCollection *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addComponentOverrides:(id)a3
+- (void)addComponentOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   componentOverrides = self->_componentOverrides;
-  v8 = v4;
+  v8 = overridesCopy;
   if (!componentOverrides)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_componentOverrides;
     self->_componentOverrides = v6;
 
-    v4 = v8;
+    overridesCopy = v8;
     componentOverrides = self->_componentOverrides;
   }
 
-  [(NSMutableArray *)componentOverrides addObject:v4];
+  [(NSMutableArray *)componentOverrides addObject:overridesCopy];
 }
 
-- (void)addParseOverrides:(id)a3
+- (void)addParseOverrides:(id)overrides
 {
-  v4 = a3;
+  overridesCopy = overrides;
   parseOverrides = self->_parseOverrides;
-  v8 = v4;
+  v8 = overridesCopy;
   if (!parseOverrides)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parseOverrides;
     self->_parseOverrides = v6;
 
-    v4 = v8;
+    overridesCopy = v8;
     parseOverrides = self->_parseOverrides;
   }
 
-  [(NSMutableArray *)parseOverrides addObject:v4];
+  [(NSMutableArray *)parseOverrides addObject:overridesCopy];
 }
 
 @end

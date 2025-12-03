@@ -1,24 +1,24 @@
 @interface NTKTroutFaceView
-- (BOOL)_handlePhysicalButton:(unint64_t)a3 event:(unint64_t)a4;
+- (BOOL)_handlePhysicalButton:(unint64_t)button event:(unint64_t)event;
 - (BOOL)_wantsStatusBarHidden;
-- (BOOL)_wheelChangedWithEvent:(id)a3;
-- (NTKTroutFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_contentAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)colorForDateComplicationPalette:(id)a3;
+- (BOOL)_wheelChangedWithEvent:(id)event;
+- (NTKTroutFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_contentAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)colorForDateComplicationPalette:(id)palette;
 - (id)createController;
 - (id)createFaceColorPalette;
 - (id)dateComplicationView;
-- (id)utilityDateComplicationFontForDateStyle:(unint64_t)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)utilityDateComplicationFontForDateStyle:(unint64_t)style;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForSnapshotting;
 - (void)_removeViews;
@@ -26,33 +26,33 @@
 - (void)_unloadSnapshotContentViews;
 - (void)createView;
 - (void)layoutSubviews;
-- (void)setDelegate:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setTimeOffset:(double)a3;
-- (void)updateComplicationsColorWithPalette:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setTimeOffset:(double)offset;
+- (void)updateComplicationsColorWithPalette:(id)palette;
 - (void)updateTimeViewColor;
 @end
 
 @implementation NTKTroutFaceView
 
-- (NTKTroutFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKTroutFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = NTKTroutFaceView;
-  v9 = [(NTKTroutFaceView *)&v21 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKTroutFaceView *)&v21 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
     v20 = 0;
     v18 = 0u;
     v19 = 0u;
-    v11 = [(NTKTroutFaceView *)v9 device];
-    sub_BA8C(v11, &v18);
+    device = [(NTKTroutFaceView *)v9 device];
+    sub_BA8C(device, &v18);
 
     v12 = objc_alloc_init(NTKCompositeComplicationFactory);
     v13 = [NTKWhistlerAnalogFaceViewComplicationFactory alloc];
-    v14 = [v13 initWithFaceView:v10 dialDiameter:v8 device:*&v18];
+    v14 = [v13 initWithFaceView:v10 dialDiameter:deviceCopy device:*&v18];
     [v14 setUsesNarrowTopSlots:1];
     [(NTKTroutFaceView *)v10 setComplicationFactory:v14];
     v22[0] = NTKComplicationSlotTopLeft;
@@ -62,7 +62,7 @@
     v15 = [NSArray arrayWithObjects:v22 count:4];
     [v12 registerFactory:v14 forSlots:v15];
 
-    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     [v16 setFaceView:v10];
     [v16 setDelegate:v10];
     [v16 setIncludesDateComplicationLayoutRules:1];
@@ -83,39 +83,39 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = NTKTroutFaceView;
-  v4 = a3;
-  [(NTKTroutFaceView *)&v5 setDelegate:v4];
-  [(NTKAlaskanPersistenceStorage *)self->_storage setDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(NTKTroutFaceView *)&v5 setDelegate:delegateCopy];
+  [(NTKAlaskanPersistenceStorage *)self->_storage setDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
 - (void)_applyDataMode
 {
-  v3 = [(NTKTroutFaceView *)self alaskanContentController];
-  [v3 setDatamode:{-[NTKTroutFaceView dataMode](self, "dataMode")}];
+  alaskanContentController = [(NTKTroutFaceView *)self alaskanContentController];
+  [alaskanContentController setDatamode:{-[NTKTroutFaceView dataMode](self, "dataMode")}];
 
-  v5 = [(NTKTroutFaceView *)self delegate];
-  v4 = [(NTKTroutFaceView *)self alaskanContentController];
-  [v5 faceViewWantsStatusBarHidden:objc_msgSend(v4 animated:{"wantsStatusBarHidden"), 0}];
+  delegate = [(NTKTroutFaceView *)self delegate];
+  alaskanContentController2 = [(NTKTroutFaceView *)self alaskanContentController];
+  [delegate faceViewWantsStatusBarHidden:objc_msgSend(alaskanContentController2 animated:{"wantsStatusBarHidden"), 0}];
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v8.receiver = self;
   v8.super_class = NTKTroutFaceView;
-  v6 = a3;
-  [(NTKTroutFaceView *)&v8 setOverrideDate:v6 duration:a4];
+  dateCopy = date;
+  [(NTKTroutFaceView *)&v8 setOverrideDate:dateCopy duration:duration];
   v7 = [(NTKTroutFaceView *)self alaskanContentController:v8.receiver];
-  [v7 setOverrideDate:v6 duration:a4];
+  [v7 setOverrideDate:dateCopy duration:duration];
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
-  v4 = [(NTKTroutFaceView *)self alaskanContentController];
-  [v4 setTimeOffset:a3];
+  alaskanContentController = [(NTKTroutFaceView *)self alaskanContentController];
+  [alaskanContentController setTimeOffset:offset];
 }
 
 - (void)_prepareForSnapshotting
@@ -126,9 +126,9 @@
   [(NTKTroutFaceView *)self setStorage:0];
 }
 
-- (BOOL)_wheelChangedWithEvent:(id)a3
+- (BOOL)_wheelChangedWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (NTKStarbearEnabled() && (-[NTKTroutFaceView alaskanContentView](self, "alaskanContentView"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 currentMode], v5, v6 != &dword_0 + 1))
   {
     v8 = 0;
@@ -136,19 +136,19 @@
 
   else
   {
-    v7 = [(NTKTroutFaceView *)self crownInputHandler];
-    v8 = [v7 _wheelChangedWithEvent:v4];
+    crownInputHandler = [(NTKTroutFaceView *)self crownInputHandler];
+    v8 = [crownInputHandler _wheelChangedWithEvent:eventCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_handlePhysicalButton:(unint64_t)a3 event:(unint64_t)a4
+- (BOOL)_handlePhysicalButton:(unint64_t)button event:(unint64_t)event
 {
-  v6 = [(NTKTroutFaceView *)self crownInputHandler];
-  LOBYTE(a4) = [v6 _handlePhysicalButton:a3 event:a4];
+  crownInputHandler = [(NTKTroutFaceView *)self crownInputHandler];
+  LOBYTE(event) = [crownInputHandler _handlePhysicalButton:button event:event];
 
-  return a4;
+  return event;
 }
 
 - (void)_loadSnapshotContentViews
@@ -179,8 +179,8 @@
   storage = self->_storage;
   self->_storage = v3;
 
-  v5 = [(NTKTroutFaceView *)self delegate];
-  [(NTKAlaskanPersistenceStorage *)self->_storage setDelegate:v5];
+  delegate = [(NTKTroutFaceView *)self delegate];
+  [(NTKAlaskanPersistenceStorage *)self->_storage setDelegate:delegate];
 
   self->_viewsLoaded = 1;
 
@@ -211,10 +211,10 @@
 - (id)createController
 {
   v3 = [NTKAlaskanDiverStyleController alloc];
-  v4 = [(NTKTroutFaceView *)self alaskanContentView];
-  v5 = [(NTKTroutFaceView *)self crownInputHandler];
-  v6 = [(NTKTroutFaceView *)self storage];
-  v7 = [(NTKAlaskanDiverStyleController *)v3 initWithContentView:v4 crownInputHandler:v5 storage:v6];
+  alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+  crownInputHandler = [(NTKTroutFaceView *)self crownInputHandler];
+  storage = [(NTKTroutFaceView *)self storage];
+  v7 = [(NTKAlaskanDiverStyleController *)v3 initWithContentView:alaskanContentView crownInputHandler:crownInputHandler storage:storage];
 
   [(NTKAlaskanDiverStyleController *)v7 setFaceView:self];
   [(NTKAlaskanDiverStyleController *)v7 setDatamode:[(NTKTroutFaceView *)self dataMode]];
@@ -224,48 +224,48 @@
 
 - (BOOL)_wantsStatusBarHidden
 {
-  v2 = [(NTKTroutFaceView *)self alaskanContentController];
-  v3 = [v2 wantsStatusBarHidden];
+  alaskanContentController = [(NTKTroutFaceView *)self alaskanContentController];
+  wantsStatusBarHidden = [alaskanContentController wantsStatusBarHidden];
 
-  return v3;
+  return wantsStatusBarHidden;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (([(NTKTroutFaceView *)self editing:a3]& 1) == 0)
+  if (([(NTKTroutFaceView *)self editing:option]& 1) == 0)
   {
-    v7 = [(NTKTroutFaceView *)self alaskanContentView];
-    v8 = [v7 delegate];
-    [v8 alaskanDiverStyleViewDidCancelPreCountUpWithCompletionBlock:0 animated:1];
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    delegate = [alaskanContentView delegate];
+    [delegate alaskanDiverStyleViewDidCancelPreCountUpWithCompletionBlock:0 animated:1];
   }
 
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v12 = [(NTKTroutFaceView *)self palette];
-    v9 = [(NTKTroutFaceView *)self alaskanContentView];
-    [v9 setPalette:v12];
+    palette = [(NTKTroutFaceView *)self palette];
+    alaskanContentView2 = [(NTKTroutFaceView *)self alaskanContentView];
+    [alaskanContentView2 setPalette:palette];
 
-    [(NTKTroutFaceView *)self updateComplicationsColorWithPalette:v12];
-    v10 = [(NTKTroutFaceView *)self colorForDateComplicationPalette:v12];
-    v11 = [(NTKTroutFaceView *)self dateComplicationView];
-    [v11 setForegroundColor:v10];
+    [(NTKTroutFaceView *)self updateComplicationsColorWithPalette:palette];
+    v10 = [(NTKTroutFaceView *)self colorForDateComplicationPalette:palette];
+    dateComplicationView = [(NTKTroutFaceView *)self dateComplicationView];
+    [dateComplicationView setForegroundColor:v10];
   }
 }
 
-- (id)colorForDateComplicationPalette:(id)a3
+- (id)colorForDateComplicationPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKTroutFaceView *)self storage];
-  v6 = [v5 diverCountUpStartDate];
-  if (v6)
+  paletteCopy = palette;
+  storage = [(NTKTroutFaceView *)self storage];
+  diverCountUpStartDate = [storage diverCountUpStartDate];
+  if (diverCountUpStartDate)
   {
-    v7 = v6;
-    v8 = [(NTKTroutFaceView *)self alaskanContentView];
-    v9 = [v8 isEditing];
+    v7 = diverCountUpStartDate;
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    isEditing = [alaskanContentView isEditing];
 
-    if ((v9 & 1) == 0)
+    if ((isEditing & 1) == 0)
     {
-      v10 = [v4 activeStateDateComplication];
+      activeStateDateComplication = [paletteCopy activeStateDateComplication];
       goto LABEL_6;
     }
   }
@@ -274,239 +274,239 @@
   {
   }
 
-  v10 = [v4 dateComplication];
+  activeStateDateComplication = [paletteCopy dateComplication];
 LABEL_6:
-  v11 = v10;
+  v11 = activeStateDateComplication;
 
   return v11;
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
-    v12 = [(NTKTroutFaceView *)self interpolatedColorPalette:a4];
-    v9 = [(NTKTroutFaceView *)self alaskanContentView];
-    [v9 setPalette:v12];
+    v12 = [(NTKTroutFaceView *)self interpolatedColorPalette:option];
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    [alaskanContentView setPalette:v12];
 
     [(NTKTroutFaceView *)self updateTimeViewColor];
     [(NTKTroutFaceView *)self updateComplicationsColorWithPalette:v12];
     v10 = [(NTKTroutFaceView *)self colorForDateComplicationPalette:v12];
-    v11 = [(NTKTroutFaceView *)self dateComplicationView];
-    [v11 setForegroundColor:v10];
+    dateComplicationView = [(NTKTroutFaceView *)self dateComplicationView];
+    [dateComplicationView setForegroundColor:v10];
   }
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKTroutFaceView;
-  v8 = a5;
-  v9 = [(NTKTroutFaceView *)&v15 _newLegacyViewForComplication:a3 family:a4 slot:v8];
-  LODWORD(a3) = [v8 isEqualToString:{NTKComplicationSlotDate, v15.receiver, v15.super_class}];
+  slotCopy = slot;
+  v9 = [(NTKTroutFaceView *)&v15 _newLegacyViewForComplication:complication family:family slot:slotCopy];
+  LODWORD(complication) = [slotCopy isEqualToString:{NTKComplicationSlotDate, v15.receiver, v15.super_class}];
 
-  if (a3)
+  if (complication)
   {
     v10 = v9;
-    v11 = [(NTKTroutFaceView *)self alaskanContentView];
-    v12 = [v11 palette];
-    v13 = [(NTKTroutFaceView *)self colorForDateComplicationPalette:v12];
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    palette = [alaskanContentView palette];
+    v13 = [(NTKTroutFaceView *)self colorForDateComplicationPalette:palette];
     [v10 setForegroundColor:v13];
   }
 
   return v9;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v17.receiver = self;
   v17.super_class = NTKTroutFaceView;
   [NTKTroutFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  [(NTKTroutFaceView *)self _contentAlphaForEditMode:a4];
-  [(NTKTroutFaceView *)self _contentAlphaForEditMode:a5];
+  [(NTKTroutFaceView *)self _contentAlphaForEditMode:mode];
+  [(NTKTroutFaceView *)self _contentAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  v10 = [(NTKTroutFaceView *)self alaskanContentView];
-  [v10 setAlpha:v9];
+  alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+  [alaskanContentView setAlpha:v9];
 
-  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v12 = v11;
-  v13 = [(NTKTroutFaceView *)self complicationContainerView];
-  [v13 setAlpha:v12];
+  complicationContainerView = [(NTKTroutFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v12];
 
-  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:a4];
-  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:a5];
+  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:mode];
+  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v15 = v14;
-  v16 = [(NTKTroutFaceView *)self timeView];
-  [v16 setAlpha:v15];
+  timeView = [(NTKTroutFaceView *)self timeView];
+  [timeView setAlpha:v15];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v14.receiver = self;
   v14.super_class = NTKTroutFaceView;
   [(NTKTroutFaceView *)&v14 _configureForEditMode:?];
-  [(NTKTroutFaceView *)self _contentAlphaForEditMode:a3];
+  [(NTKTroutFaceView *)self _contentAlphaForEditMode:mode];
   v6 = v5;
-  v7 = [(NTKTroutFaceView *)self alaskanContentView];
-  [v7 setAlpha:v6];
+  alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+  [alaskanContentView setAlpha:v6];
 
-  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:a3];
+  [(NTKTroutFaceView *)self _complicationAlphaForEditMode:mode];
   v9 = v8;
-  v10 = [(NTKTroutFaceView *)self complicationContainerView];
-  [v10 setAlpha:v9];
+  complicationContainerView = [(NTKTroutFaceView *)self complicationContainerView];
+  [complicationContainerView setAlpha:v9];
 
-  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:a3];
+  [(NTKTroutFaceView *)self _timeViewAlphaForEditMode:mode];
   v12 = v11;
-  v13 = [(NTKTroutFaceView *)self timeView];
-  [v13 setAlpha:v12];
+  timeView = [(NTKTroutFaceView *)self timeView];
+  [timeView setAlpha:v12];
 }
 
 - (void)createView
 {
   if ([(NTKTroutFaceView *)self viewsLoaded])
   {
-    v3 = [(NTKTroutFaceView *)self alaskanContentView];
-    [v3 removeFromSuperview];
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    [alaskanContentView removeFromSuperview];
 
     v4 = [NTKAlaskanDiverStyleView alloc];
     [(NTKTroutFaceView *)self contentViewFrame];
     v5 = [(NTKAlaskanDiverStyleView *)v4 initWithFrame:?];
     [(NTKTroutFaceView *)self setAlaskanContentView:v5];
 
-    v6 = [(NTKTroutFaceView *)self createController];
-    [(NTKTroutFaceView *)self setAlaskanContentController:v6];
+    createController = [(NTKTroutFaceView *)self createController];
+    [(NTKTroutFaceView *)self setAlaskanContentController:createController];
 
-    v7 = [(NTKTroutFaceView *)self contentView];
-    v8 = [(NTKTroutFaceView *)self alaskanContentView];
-    [v7 addSubview:v8];
+    contentView = [(NTKTroutFaceView *)self contentView];
+    alaskanContentView2 = [(NTKTroutFaceView *)self alaskanContentView];
+    [contentView addSubview:alaskanContentView2];
 
     if (([(NTKTroutFaceView *)self editing]& 1) == 0)
     {
-      v9 = [(NTKTroutFaceView *)self delegate];
-      v10 = [(NTKTroutFaceView *)self alaskanContentController];
-      [v9 faceViewWantsStatusBarHidden:objc_msgSend(v10 animated:{"wantsStatusBarHidden"), 0}];
+      delegate = [(NTKTroutFaceView *)self delegate];
+      alaskanContentController = [(NTKTroutFaceView *)self alaskanContentController];
+      [delegate faceViewWantsStatusBarHidden:objc_msgSend(alaskanContentController animated:{"wantsStatusBarHidden"), 0}];
     }
 
-    v11 = [(NTKTroutFaceView *)self alaskanContentView];
-    v12 = [(NTKTroutFaceView *)self palette];
-    [v11 setPalette:v12];
+    alaskanContentView3 = [(NTKTroutFaceView *)self alaskanContentView];
+    palette = [(NTKTroutFaceView *)self palette];
+    [alaskanContentView3 setPalette:palette];
   }
 
-  v13 = [(NTKTroutFaceView *)self alaskanContentView];
-  v14 = [v13 palette];
-  [(NTKTroutFaceView *)self updateComplicationsColorWithPalette:v14];
+  alaskanContentView4 = [(NTKTroutFaceView *)self alaskanContentView];
+  palette2 = [alaskanContentView4 palette];
+  [(NTKTroutFaceView *)self updateComplicationsColorWithPalette:palette2];
 
   [(NTKTroutFaceView *)self updateTimeViewColor];
-  v15 = [(NTKTroutFaceView *)self alaskanContentController];
-  [v15 applyVisibilityWithFraction:1.0];
+  alaskanContentController2 = [(NTKTroutFaceView *)self alaskanContentController];
+  [alaskanContentController2 applyVisibilityWithFraction:1.0];
 }
 
 - (void)updateTimeViewColor
 {
-  v3 = [(NTKTroutFaceView *)self palette];
-  v4 = [(NTKTroutFaceView *)self timeView];
-  v5 = [(NTKAlaskanDiverStyleView *)self->_alaskanContentView currentMode];
-  switch(v5)
+  palette = [(NTKTroutFaceView *)self palette];
+  timeView = [(NTKTroutFaceView *)self timeView];
+  currentMode = [(NTKAlaskanDiverStyleView *)self->_alaskanContentView currentMode];
+  switch(currentMode)
   {
     case 2uLL:
-      v14 = [v3 countUpClockHands];
-      v15 = [v4 hourHandView];
-      [v15 setInlayColor:v14];
+      countUpClockHands = [palette countUpClockHands];
+      hourHandView = [timeView hourHandView];
+      [hourHandView setInlayColor:countUpClockHands];
 
-      v16 = [v3 countUpClockHands];
-      v17 = [v4 minuteHandView];
-      [v17 setInlayColor:v16];
+      countUpClockHands2 = [palette countUpClockHands];
+      minuteHandView = [timeView minuteHandView];
+      [minuteHandView setInlayColor:countUpClockHands2];
 
       CGAffineTransformMakeScale(&v31, 0.9, 0.9);
       v30 = v31;
-      [v4 setTransform:&v30];
+      [timeView setTransform:&v30];
       [(NTKTroutFaceView *)self setCurrentTimeViewScale:0.9];
-      v12 = [v4 secondHandView];
-      [v12 setAlpha:0.0];
+      secondHandView = [timeView secondHandView];
+      [secondHandView setAlpha:0.0];
       goto LABEL_7;
     case 1uLL:
-      v10 = [v3 preCountUpClockHands];
-      v11 = [v4 hourHandView];
-      [v11 setInlayColor:v10];
+      preCountUpClockHands = [palette preCountUpClockHands];
+      hourHandView2 = [timeView hourHandView];
+      [hourHandView2 setInlayColor:preCountUpClockHands];
 
-      v12 = [v3 preCountUpClockHands];
-      v13 = [v4 minuteHandView];
-      [v13 setInlayColor:v12];
+      secondHandView = [palette preCountUpClockHands];
+      minuteHandView2 = [timeView minuteHandView];
+      [minuteHandView2 setInlayColor:secondHandView];
 
 LABEL_7:
       break;
     case 0uLL:
-      v6 = [v3 clockHandsInlay];
-      v7 = [v4 hourHandView];
-      [v7 setInlayColor:v6];
+      clockHandsInlay = [palette clockHandsInlay];
+      hourHandView3 = [timeView hourHandView];
+      [hourHandView3 setInlayColor:clockHandsInlay];
 
-      v8 = [v3 clockHandsInlay];
-      v9 = [v4 minuteHandView];
-      [v9 setInlayColor:v8];
+      clockHandsInlay2 = [palette clockHandsInlay];
+      minuteHandView3 = [timeView minuteHandView];
+      [minuteHandView3 setInlayColor:clockHandsInlay2];
 
       [(NTKTroutFaceView *)self setCurrentTimeViewScale:1.0];
       break;
   }
 
-  v18 = [v3 clockHands];
-  v19 = [v4 hourHandView];
-  [v19 setColor:v18];
+  clockHands = [palette clockHands];
+  hourHandView4 = [timeView hourHandView];
+  [hourHandView4 setColor:clockHands];
 
-  v20 = [v3 clockHands];
-  v21 = [v4 minuteHandView];
-  [v21 setColor:v20];
+  clockHands2 = [palette clockHands];
+  minuteHandView4 = [timeView minuteHandView];
+  [minuteHandView4 setColor:clockHands2];
 
-  v22 = [v3 secondHand];
-  v23 = [v4 secondHandView];
-  [v23 setColor:v22];
+  secondHand = [palette secondHand];
+  secondHandView2 = [timeView secondHandView];
+  [secondHandView2 setColor:secondHand];
 
   v24 = +[UIColor blackColor];
-  v25 = [v4 hourHandView];
-  [v25 setHandDotColor:v24];
+  hourHandView5 = [timeView hourHandView];
+  [hourHandView5 setHandDotColor:v24];
 
   v26 = +[UIColor blackColor];
-  v27 = [v4 minuteHandView];
-  [v27 setHandDotColor:v26];
+  minuteHandView5 = [timeView minuteHandView];
+  [minuteHandView5 setHandDotColor:v26];
 
   v28 = +[UIColor blackColor];
-  v29 = [v4 secondHandView];
-  [v29 setHandDotColor:v28];
+  secondHandView3 = [timeView secondHandView];
+  [secondHandView3 setHandDotColor:v28];
 }
 
-- (void)updateComplicationsColorWithPalette:(id)a3
+- (void)updateComplicationsColorWithPalette:(id)palette
 {
-  v4 = [a3 cornerComplication];
-  [(NTKTroutFaceView *)self updateRichCornerComplicationsInnerColor:v4 outerColor:0];
+  cornerComplication = [palette cornerComplication];
+  [(NTKTroutFaceView *)self updateRichCornerComplicationsInnerColor:cornerComplication outerColor:0];
 }
 
 - (id)dateComplicationView
 {
   v2 = [(NTKTroutFaceView *)self normalComplicationDisplayWrapperForSlot:NTKComplicationSlotDate];
-  v3 = [v2 display];
+  display = [v2 display];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [v2 display];
+    display2 = [v2 display];
   }
 
   else
   {
-    v5 = 0;
+    display2 = 0;
   }
 
-  return v5;
+  return display2;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -514,10 +514,10 @@ LABEL_7:
   return result;
 }
 
-- (double)_contentAlphaForEditMode:(int64_t)a3
+- (double)_contentAlphaForEditMode:(int64_t)mode
 {
   result = 0.3;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -525,10 +525,10 @@ LABEL_7:
   return result;
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -536,18 +536,18 @@ LABEL_7:
   return result;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  slotCopy = slot;
   v19.receiver = self;
   v19.super_class = NTKTroutFaceView;
-  [(NTKTroutFaceView *)&v19 _configureComplicationView:v6 forSlot:v7];
+  [(NTKTroutFaceView *)&v19 _configureComplicationView:viewCopy forSlot:slotCopy];
   if (([(NTKTroutFaceView *)self editing]& 1) == 0)
   {
-    v8 = [(NTKTroutFaceView *)self alaskanContentView];
-    v9 = [v8 delegate];
-    [v9 alaskanDiverStyleViewDidCancelPreCountUpWithCompletionBlock:0 animated:1];
+    alaskanContentView = [(NTKTroutFaceView *)self alaskanContentView];
+    delegate = [alaskanContentView delegate];
+    [delegate alaskanDiverStyleViewDidCancelPreCountUpWithCompletionBlock:0 animated:1];
   }
 
   v10 = qword_46B58;
@@ -565,27 +565,27 @@ LABEL_7:
     v10 = qword_46B58;
   }
 
-  if ([v10 containsObject:v7])
+  if ([v10 containsObject:slotCopy])
   {
-    v14 = v6;
-    v15 = [(NTKTroutFaceView *)self palette];
-    v16 = [v15 cornerComplication];
-    [(NTKTroutFaceView *)self setComplicationColor:v16];
+    v14 = viewCopy;
+    palette = [(NTKTroutFaceView *)self palette];
+    cornerComplication = [palette cornerComplication];
+    [(NTKTroutFaceView *)self setComplicationColor:cornerComplication];
 
-    v17 = [v15 cornerComplication];
-    [(NTKTroutFaceView *)self setInterpolatedComplicationColor:v17];
+    cornerComplication2 = [palette cornerComplication];
+    [(NTKTroutFaceView *)self setInterpolatedComplicationColor:cornerComplication2];
 
-    v18 = [v15 cornerComplicationSecondary];
-    [(NTKTroutFaceView *)self setAlternateComplicationColor:v18];
+    cornerComplicationSecondary = [palette cornerComplicationSecondary];
+    [(NTKTroutFaceView *)self setAlternateComplicationColor:cornerComplicationSecondary];
 
     [v14 updateMonochromeColor];
   }
 }
 
-- (id)utilityDateComplicationFontForDateStyle:(unint64_t)a3
+- (id)utilityDateComplicationFontForDateStyle:(unint64_t)style
 {
   v7 = 0.0;
-  v3 = [(NTKTroutFaceView *)self device:a3];
+  v3 = [(NTKTroutFaceView *)self device:style];
   sub_BA8C(v3, &v6);
 
   v4 = v7;
@@ -593,12 +593,12 @@ LABEL_7:
   return [CLKFont compactSoftFontOfSize:v4 weight:UIFontWeightSemibold];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v15.receiver = self;
   v15.super_class = NTKTroutFaceView;
-  [(NTKTroutFaceView *)&v15 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKTroutFaceView *)&v15 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKScaleForBreathingFraction();
     v8 = v7;
@@ -606,17 +606,17 @@ LABEL_7:
     CGAffineTransformMakeScale(&v14, v7, v7);
     memset(&v13, 0, sizeof(v13));
     CGAffineTransformMakeScale(&v13, v8 * self->_currentTimeViewScale, v8 * self->_currentTimeViewScale);
-    v9 = [(NTKTroutFaceView *)self contentView];
+    contentView = [(NTKTroutFaceView *)self contentView];
     v12 = v14;
-    [v9 setTransform:&v12];
+    [contentView setTransform:&v12];
 
-    v10 = [(NTKTroutFaceView *)self timeView];
+    timeView = [(NTKTroutFaceView *)self timeView];
     v12 = v13;
-    [v10 setTransform:&v12];
+    [timeView setTransform:&v12];
 
-    v11 = [(NTKTroutFaceView *)self complicationContainerView];
+    complicationContainerView = [(NTKTroutFaceView *)self complicationContainerView];
     v12 = v14;
-    [v11 setTransform:&v12];
+    [complicationContainerView setTransform:&v12];
   }
 }
 

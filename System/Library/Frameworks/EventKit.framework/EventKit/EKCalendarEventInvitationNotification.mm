@@ -1,156 +1,156 @@
 @interface EKCalendarEventInvitationNotification
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4;
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error;
 - (BOOL)containsBlockedAttendee;
 - (BOOL)containsCachedBlockedAttendee;
 - (BOOL)couldBeJunk;
 - (BOOL)hasRecurrenceRules;
 - (BOOL)isProposedNewTime;
 - (BOOL)needsReply;
-- (BOOL)proposedStartDateIsInFutureForAttendee:(id)a3;
-- (EKCalendarEventInvitationNotification)initWithEvent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)proposedStartDateIsInFutureForAttendee:(id)attendee;
+- (EKCalendarEventInvitationNotification)initWithEvent:(id)event;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nearestProposedTime;
 @end
 
 @implementation EKCalendarEventInvitationNotification
 
-- (EKCalendarEventInvitationNotification)initWithEvent:(id)a3
+- (EKCalendarEventInvitationNotification)initWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 status];
-  if (v5 == 3)
+  eventCopy = event;
+  status = [eventCopy status];
+  if (status == 3)
   {
     v6 = 0;
-    v7 = 2;
+    recurrenceChanged = 2;
   }
 
-  else if ([v4 attendeeReplyChanged])
+  else if ([eventCopy attendeeReplyChanged])
   {
     v6 = 1;
-    v7 = 3;
+    recurrenceChanged = 3;
   }
 
-  else if ([v4 dateChanged] & 1) != 0 || (objc_msgSend(v4, "timeChanged") & 1) != 0 || (objc_msgSend(v4, "titleChanged") & 1) != 0 || (objc_msgSend(v4, "locationChanged") & 1) != 0 || (objc_msgSend(v4, "videoConferenceChanged"))
+  else if ([eventCopy dateChanged] & 1) != 0 || (objc_msgSend(eventCopy, "timeChanged") & 1) != 0 || (objc_msgSend(eventCopy, "titleChanged") & 1) != 0 || (objc_msgSend(eventCopy, "locationChanged") & 1) != 0 || (objc_msgSend(eventCopy, "videoConferenceChanged"))
   {
     v6 = 0;
-    v7 = 1;
+    recurrenceChanged = 1;
   }
 
   else
   {
     v6 = 0;
-    v7 = [v4 recurrenceChanged];
+    recurrenceChanged = [eventCopy recurrenceChanged];
   }
 
   v74.receiver = self;
   v74.super_class = EKCalendarEventInvitationNotification;
-  v8 = [(EKCalendarNotification *)&v74 initWithType:v7];
+  v8 = [(EKCalendarNotification *)&v74 initWithType:recurrenceChanged];
   if (v8)
   {
-    v9 = [v4 title];
-    [(EKCalendarNotification *)v8 setTitle:v9];
+    title = [eventCopy title];
+    [(EKCalendarNotification *)v8 setTitle:title];
 
-    v10 = [v4 locationWithoutPrediction];
-    [(EKCalendarEventInvitationNotification *)v8 setLocation:v10];
+    locationWithoutPrediction = [eventCopy locationWithoutPrediction];
+    [(EKCalendarEventInvitationNotification *)v8 setLocation:locationWithoutPrediction];
 
-    v11 = [v4 organizer];
-    v12 = [v11 name];
-    [(EKCalendarNotification *)v8 setName:v12];
+    organizer = [eventCopy organizer];
+    name = [organizer name];
+    [(EKCalendarNotification *)v8 setName:name];
 
-    v13 = [v4 selfAttendee];
-    v14 = [v13 name];
-    [(EKCalendarNotification *)v8 setRecipientName:v14];
+    selfAttendee = [eventCopy selfAttendee];
+    name2 = [selfAttendee name];
+    [(EKCalendarNotification *)v8 setRecipientName:name2];
 
-    v15 = [v4 organizer];
-    v16 = [v15 firstName];
-    [(EKCalendarNotification *)v8 setFirstName:v16];
+    organizer2 = [eventCopy organizer];
+    firstName = [organizer2 firstName];
+    [(EKCalendarNotification *)v8 setFirstName:firstName];
 
-    v17 = [v4 organizer];
-    v18 = [v17 lastName];
-    [(EKCalendarNotification *)v8 setLastName:v18];
+    organizer3 = [eventCopy organizer];
+    lastName = [organizer3 lastName];
+    [(EKCalendarNotification *)v8 setLastName:lastName];
 
-    v19 = [v4 organizer];
-    v20 = [v19 emailAddress];
-    [(EKCalendarNotification *)v8 setEmailAddress:v20];
+    organizer4 = [eventCopy organizer];
+    emailAddress = [organizer4 emailAddress];
+    [(EKCalendarNotification *)v8 setEmailAddress:emailAddress];
 
-    v21 = [v4 organizer];
-    v22 = [v21 phoneNumber];
-    [(EKCalendarNotification *)v8 setPhoneNumber:v22];
+    organizer5 = [eventCopy organizer];
+    phoneNumber = [organizer5 phoneNumber];
+    [(EKCalendarNotification *)v8 setPhoneNumber:phoneNumber];
 
-    -[EKCalendarNotification setHiddenFromNotificationCenter:](v8, "setHiddenFromNotificationCenter:", [v4 invitationStatus] == 1);
-    v23 = [v4 calendar];
-    -[EKCalendarNotification setDotColor:](v8, "setDotColor:", [v23 CGColor]);
+    -[EKCalendarNotification setHiddenFromNotificationCenter:](v8, "setHiddenFromNotificationCenter:", [eventCopy invitationStatus] == 1);
+    calendar = [eventCopy calendar];
+    -[EKCalendarNotification setDotColor:](v8, "setDotColor:", [calendar CGColor]);
 
-    -[EKCalendarNotification setAlerted:](v8, "setAlerted:", [v4 invitationStatus] != 3);
-    v24 = [v4 calendar];
-    v25 = [v24 source];
-    [(EKCalendarNotification *)v8 setSource:v25];
+    -[EKCalendarNotification setAlerted:](v8, "setAlerted:", [eventCopy invitationStatus] != 3);
+    calendar2 = [eventCopy calendar];
+    source = [calendar2 source];
+    [(EKCalendarNotification *)v8 setSource:source];
 
-    v26 = [v4 objectID];
-    [(EKCalendarNotification *)v8 setObjectID:v26];
+    objectID = [eventCopy objectID];
+    [(EKCalendarNotification *)v8 setObjectID:objectID];
 
-    v27 = [v4 externalURL];
-    [(EKCalendarNotification *)v8 setURL:v27];
+    externalURL = [eventCopy externalURL];
+    [(EKCalendarNotification *)v8 setURL:externalURL];
 
-    -[EKCalendarEventInvitationNotification setStatus:](v8, "setStatus:", [v4 status]);
-    v28 = [v4 startDate];
-    [(EKCalendarEventInvitationNotification *)v8 setStartDate:v28];
+    -[EKCalendarEventInvitationNotification setStatus:](v8, "setStatus:", [eventCopy status]);
+    startDate = [eventCopy startDate];
+    [(EKCalendarEventInvitationNotification *)v8 setStartDate:startDate];
 
-    v29 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
-    v30 = [v4 earliestOccurrenceEndingAfter:v29 excludeSignificantDetachments:1 excludeCanceledDetachments:v5 != 3 excludeDeclinedDetachments:1];
-    v31 = [v30 startDate];
-    [(EKCalendarEventInvitationNotification *)v8 setStartDateForNextOccurrence:v31];
+    calSimulatedDateForNow = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+    v30 = [eventCopy earliestOccurrenceEndingAfter:calSimulatedDateForNow excludeSignificantDetachments:1 excludeCanceledDetachments:status != 3 excludeDeclinedDetachments:1];
+    startDate2 = [v30 startDate];
+    [(EKCalendarEventInvitationNotification *)v8 setStartDateForNextOccurrence:startDate2];
 
-    v32 = [v4 endDateUnadjustedForLegacyClients];
-    [(EKCalendarEventInvitationNotification *)v8 setEndDate:v32];
+    endDateUnadjustedForLegacyClients = [eventCopy endDateUnadjustedForLegacyClients];
+    [(EKCalendarEventInvitationNotification *)v8 setEndDate:endDateUnadjustedForLegacyClients];
 
-    -[EKCalendarEventInvitationNotification setAllDay:](v8, "setAllDay:", [v4 isAllDay]);
-    v33 = [v4 timeZone];
-    [(EKCalendarEventInvitationNotification *)v8 setTimeZone:v33];
+    -[EKCalendarEventInvitationNotification setAllDay:](v8, "setAllDay:", [eventCopy isAllDay]);
+    timeZone = [eventCopy timeZone];
+    [(EKCalendarEventInvitationNotification *)v8 setTimeZone:timeZone];
 
-    v34 = [v4 recurrenceRules];
-    v35 = [v34 firstObject];
-    [(EKCalendarEventInvitationNotification *)v8 setRecurrenceRule:v35];
+    recurrenceRules = [eventCopy recurrenceRules];
+    firstObject = [recurrenceRules firstObject];
+    [(EKCalendarEventInvitationNotification *)v8 setRecurrenceRule:firstObject];
 
-    v36 = [v4 participationStatusModifiedDate];
-    [(EKCalendarEventInvitationNotification *)v8 setParticipationStatusModifiedDate:v36];
+    participationStatusModifiedDate = [eventCopy participationStatusModifiedDate];
+    [(EKCalendarEventInvitationNotification *)v8 setParticipationStatusModifiedDate:participationStatusModifiedDate];
 
-    -[EKCalendarEventInvitationNotification setParticipationStatus:](v8, "setParticipationStatus:", [v4 participationStatus]);
-    -[EKCalendarEventInvitationNotification setTimeChanged:](v8, "setTimeChanged:", [v4 timeChanged]);
-    -[EKCalendarEventInvitationNotification setDateChanged:](v8, "setDateChanged:", [v4 dateChanged]);
-    -[EKCalendarEventInvitationNotification setTitleChanged:](v8, "setTitleChanged:", [v4 titleChanged]);
-    -[EKCalendarEventInvitationNotification setLocationChanged:](v8, "setLocationChanged:", [v4 locationChanged]);
-    -[EKCalendarEventInvitationNotification setVideoConferenceChanged:](v8, "setVideoConferenceChanged:", [v4 videoConferenceChanged]);
-    -[EKCalendarEventInvitationNotification setRecurrenceChanged:](v8, "setRecurrenceChanged:", [v4 recurrenceChanged]);
-    -[EKCalendarEventInvitationNotification setAttendeeReplyChanged:](v8, "setAttendeeReplyChanged:", [v4 attendeeReplyChanged]);
-    [(EKCalendarNotification *)v8 setEvent:v4];
-    v37 = [v4 calendar];
-    [(EKCalendarNotification *)v8 setCalendar:v37];
+    -[EKCalendarEventInvitationNotification setParticipationStatus:](v8, "setParticipationStatus:", [eventCopy participationStatus]);
+    -[EKCalendarEventInvitationNotification setTimeChanged:](v8, "setTimeChanged:", [eventCopy timeChanged]);
+    -[EKCalendarEventInvitationNotification setDateChanged:](v8, "setDateChanged:", [eventCopy dateChanged]);
+    -[EKCalendarEventInvitationNotification setTitleChanged:](v8, "setTitleChanged:", [eventCopy titleChanged]);
+    -[EKCalendarEventInvitationNotification setLocationChanged:](v8, "setLocationChanged:", [eventCopy locationChanged]);
+    -[EKCalendarEventInvitationNotification setVideoConferenceChanged:](v8, "setVideoConferenceChanged:", [eventCopy videoConferenceChanged]);
+    -[EKCalendarEventInvitationNotification setRecurrenceChanged:](v8, "setRecurrenceChanged:", [eventCopy recurrenceChanged]);
+    -[EKCalendarEventInvitationNotification setAttendeeReplyChanged:](v8, "setAttendeeReplyChanged:", [eventCopy attendeeReplyChanged]);
+    [(EKCalendarNotification *)v8 setEvent:eventCopy];
+    calendar3 = [eventCopy calendar];
+    [(EKCalendarNotification *)v8 setCalendar:calendar3];
 
-    v38 = [v4 selfAttendee];
-    v39 = [v38 inviterNameString];
-    v40 = [v39 length];
+    selfAttendee2 = [eventCopy selfAttendee];
+    inviterNameString = [selfAttendee2 inviterNameString];
+    v40 = [inviterNameString length];
 
     if (v40)
     {
-      v41 = [v4 selfAttendee];
-      v42 = [v41 inviterNameString];
+      selfAttendee3 = [eventCopy selfAttendee];
+      inviterNameString2 = [selfAttendee3 inviterNameString];
       invitedBy = v8->_invitedBy;
-      v8->_invitedBy = v42;
+      v8->_invitedBy = inviterNameString2;
     }
 
     if (v6)
     {
       v44 = objc_opt_new();
-      v45 = [v4 attendees];
+      attendees = [eventCopy attendees];
       v71[0] = MEMORY[0x1E69E9820];
       v71[1] = 3221225472;
       v71[2] = __55__EKCalendarEventInvitationNotification_initWithEvent___block_invoke;
       v71[3] = &unk_1E77FE2F0;
-      v72 = v4;
+      v72 = eventCopy;
       v46 = v44;
       v73 = v46;
-      [v45 enumerateObjectsUsingBlock:v71];
+      [attendees enumerateObjectsUsingBlock:v71];
 
       objc_storeStrong(&v8->_attendees, v44);
       v65 = 0;
@@ -169,20 +169,20 @@
       v48 = v66[5];
       if (v48)
       {
-        v49 = [v48 name];
-        [(EKCalendarNotification *)v8 setName:v49];
+        name3 = [v48 name];
+        [(EKCalendarNotification *)v8 setName:name3];
 
-        v50 = [v66[5] firstName];
-        [(EKCalendarNotification *)v8 setFirstName:v50];
+        firstName2 = [v66[5] firstName];
+        [(EKCalendarNotification *)v8 setFirstName:firstName2];
 
-        v51 = [v66[5] lastName];
-        [(EKCalendarNotification *)v8 setLastName:v51];
+        lastName2 = [v66[5] lastName];
+        [(EKCalendarNotification *)v8 setLastName:lastName2];
 
-        v52 = [v66[5] emailAddress];
-        [(EKCalendarNotification *)v8 setEmailAddress:v52];
+        emailAddress2 = [v66[5] emailAddress];
+        [(EKCalendarNotification *)v8 setEmailAddress:emailAddress2];
 
-        v53 = [v66[5] phoneNumber];
-        [(EKCalendarNotification *)v8 setPhoneNumber:v53];
+        phoneNumber2 = [v66[5] phoneNumber];
+        [(EKCalendarNotification *)v8 setPhoneNumber:phoneNumber2];
 
         v54 = [v66[5] participantType] == 2 && objc_msgSend(v66[5], "participantStatus") == 3;
         [(EKCalendarEventInvitationNotification *)v8 setIsLocationDecline:v54];
@@ -191,21 +191,21 @@
       _Block_object_dispose(&v65, 8);
     }
 
-    v55 = [v4 organizer];
+    organizer6 = [eventCopy organizer];
 
-    if (v55)
+    if (organizer6)
     {
       v56 = [EKCalendarEventInvitationNotificationAttendee alloc];
-      v57 = [v4 organizer];
-      v58 = [(EKCalendarEventInvitationNotificationAttendee *)v56 initWithParticipant:v57 forEvent:v4];
+      organizer7 = [eventCopy organizer];
+      v58 = [(EKCalendarEventInvitationNotificationAttendee *)v56 initWithParticipant:organizer7 forEvent:eventCopy];
       owner = v8->_owner;
       v8->_owner = v58;
     }
 
-    v60 = [v4 eventStore];
-    v61 = [v60 blockList];
+    eventStore = [eventCopy eventStore];
+    blockList = [eventStore blockList];
     blockList = v8->_blockList;
-    v8->_blockList = v61;
+    v8->_blockList = blockList;
   }
 
   return v8;
@@ -270,35 +270,35 @@ LABEL_11:
 LABEL_14:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EKCalendarEventInvitationNotification alloc];
-  v5 = [(EKCalendarNotification *)self event];
-  v6 = [(EKCalendarEventInvitationNotification *)v4 initWithEvent:v5];
+  event = [(EKCalendarNotification *)self event];
+  v6 = [(EKCalendarEventInvitationNotification *)v4 initWithEvent:event];
 
   return v6;
 }
 
 - (BOOL)hasRecurrenceRules
 {
-  v2 = [(EKCalendarEventInvitationNotification *)self recurrenceRule];
-  v3 = v2 != 0;
+  recurrenceRule = [(EKCalendarEventInvitationNotification *)self recurrenceRule];
+  v3 = recurrenceRule != 0;
 
   return v3;
 }
 
 - (BOOL)needsReply
 {
-  v2 = [(EKCalendarNotification *)self event];
-  if ([v2 isSelfOrganizedInvitation])
+  event = [(EKCalendarNotification *)self event];
+  if ([event isSelfOrganizedInvitation])
   {
     v3 = 0;
   }
 
   else
   {
-    v4 = [v2 selfAttendee];
-    v3 = ([v4 rsvpRequested] & 1) != 0 || objc_msgSend(v4, "participantStatus") == 1 || objc_msgSend(v4, "participantStatus") == 0;
+    selfAttendee = [event selfAttendee];
+    v3 = ([selfAttendee rsvpRequested] & 1) != 0 || objc_msgSend(selfAttendee, "participantStatus") == 1 || objc_msgSend(selfAttendee, "participantStatus") == 0;
   }
 
   return v3;
@@ -308,9 +308,9 @@ LABEL_14:
 {
   if ([(EKCalendarEventInvitationNotification *)self expanded])
   {
-    v3 = [(EKCalendarEventInvitationNotification *)self expandedProposedTimeAttendee];
-    v4 = [v3 proposedStartDate];
-    v5 = v4 != 0;
+    expandedProposedTimeAttendee = [(EKCalendarEventInvitationNotification *)self expandedProposedTimeAttendee];
+    proposedStartDate = [expandedProposedTimeAttendee proposedStartDate];
+    v5 = proposedStartDate != 0;
   }
 
   else
@@ -323,14 +323,14 @@ LABEL_14:
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v6 = [(EKCalendarEventInvitationNotification *)self attendees];
+    attendees = [(EKCalendarEventInvitationNotification *)self attendees];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke;
     v8[3] = &unk_1E77FE340;
     v8[4] = &v13;
     v8[5] = &v9;
-    [v6 enumerateObjectsUsingBlock:v8];
+    [attendees enumerateObjectsUsingBlock:v8];
 
     v5 = (v10[3] & 1) == 0 && v14[3] > 0;
     _Block_object_dispose(&v9, 8);
@@ -367,23 +367,23 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
   v25 = *MEMORY[0x1E69E9840];
   if ([(EKCalendarEventInvitationNotification *)self expanded])
   {
-    v3 = [(EKCalendarEventInvitationNotification *)self expandedProposedTimeAttendee];
-    v4 = [v3 proposedStartDate];
+    expandedProposedTimeAttendee = [(EKCalendarEventInvitationNotification *)self expandedProposedTimeAttendee];
+    proposedStartDate = [expandedProposedTimeAttendee proposedStartDate];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
+    expandedProposedTimeAttendee = [MEMORY[0x1E695DF00] CalSimulatedDateForNow];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(EKCalendarEventInvitationNotification *)self attendees];
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    attendees = [(EKCalendarEventInvitationNotification *)self attendees];
+    v6 = [attendees countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v6)
     {
       v7 = v6;
-      v4 = 0;
+      proposedStartDate = 0;
       v8 = *v21;
       do
       {
@@ -391,28 +391,28 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(attendees);
           }
 
           v10 = *(*(&v20 + 1) + 8 * i);
           if ([v10 proposedStartDateChanged])
           {
-            v11 = [v10 proposedStartDate];
-            if (v11)
+            proposedStartDate2 = [v10 proposedStartDate];
+            if (proposedStartDate2)
             {
-              v12 = v11;
-              v13 = [v10 proposedStartDate];
-              v14 = [v13 isAfterDate:v3];
+              v12 = proposedStartDate2;
+              proposedStartDate3 = [v10 proposedStartDate];
+              v14 = [proposedStartDate3 isAfterDate:expandedProposedTimeAttendee];
 
               if (v14)
               {
                 if (([v10 proposedStartDateDeclined] & 1) == 0)
                 {
-                  if (!v4 || ([v10 proposedStartDate], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isBeforeDate:", v4), v15, v16))
+                  if (!proposedStartDate || ([v10 proposedStartDate], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isBeforeDate:", proposedStartDate), v15, v16))
                   {
-                    v17 = [v10 proposedStartDate];
+                    proposedStartDate4 = [v10 proposedStartDate];
 
-                    v4 = v17;
+                    proposedStartDate = proposedStartDate4;
                   }
                 }
               }
@@ -420,7 +420,7 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v7 = [attendees countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v7);
@@ -428,30 +428,30 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
 
     else
     {
-      v4 = 0;
+      proposedStartDate = 0;
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v4;
+  return proposedStartDate;
 }
 
-- (BOOL)proposedStartDateIsInFutureForAttendee:(id)a3
+- (BOOL)proposedStartDateIsInFutureForAttendee:(id)attendee
 {
   v3 = MEMORY[0x1E695DF00];
-  v4 = a3;
+  attendeeCopy = attendee;
   v5 = [v3 now];
-  v6 = [v4 proposedStartDate];
+  proposedStartDate = [attendeeCopy proposedStartDate];
 
-  LOBYTE(v4) = [v6 isAfterDate:v5];
-  return v4;
+  LOBYTE(attendeeCopy) = [proposedStartDate isAfterDate:v5];
+  return attendeeCopy;
 }
 
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EKCalendarEventInvitationNotification *)self eventFromEventStore:v6];
+  storeCopy = store;
+  v7 = [(EKCalendarEventInvitationNotification *)self eventFromEventStore:storeCopy];
   if (v7)
   {
     if ([(EKCalendarNotification *)self type]== 3)
@@ -466,7 +466,7 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
     }
 
     v14 = 0;
-    v9 = [v6 saveEvent:v7 span:2 commit:1 error:&v14];
+    v9 = [storeCopy saveEvent:v7 span:2 commit:1 error:&v14];
     v10 = v14;
     if (v9)
     {
@@ -477,13 +477,13 @@ void __58__EKCalendarEventInvitationNotification_isProposedNewTime__block_invoke
     if (os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_ERROR))
     {
       [(EKCalendarEventInvitationNotification *)v11 acknowledgeWithEventStore:v10 error:?];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
 LABEL_12:
 
@@ -491,7 +491,7 @@ LABEL_12:
     }
 
     v12 = v10;
-    *a4 = v10;
+    *error = v10;
     goto LABEL_12;
   }
 
@@ -509,10 +509,10 @@ LABEL_13:
 
 - (BOOL)couldBeJunk
 {
-  v2 = [(EKCalendarNotification *)self event];
-  v3 = [v2 couldBeJunk];
+  event = [(EKCalendarNotification *)self event];
+  couldBeJunk = [event couldBeJunk];
 
-  return v3;
+  return couldBeJunk;
 }
 
 - (BOOL)containsBlockedAttendee
@@ -529,11 +529,11 @@ LABEL_13:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(EKCalendarNotification *)self event];
-    v6 = [v5 attendees];
+    event = [(EKCalendarNotification *)self event];
+    attendees = [event attendees];
 
-    obj = v6;
-    v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    obj = attendees;
+    v7 = [attendees countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
       v8 = v7;
@@ -548,12 +548,12 @@ LABEL_13:
           }
 
           v10 = *(*(&v21 + 1) + 8 * i);
-          v11 = [v10 emailAddress];
-          if (v11)
+          emailAddress = [v10 emailAddress];
+          if (emailAddress)
           {
             blockList = self->_blockList;
-            v2 = [v10 emailAddress];
-            if ([(CalBlockList *)blockList isBlockedWithEmail:v2])
+            emailAddress2 = [v10 emailAddress];
+            if ([(CalBlockList *)blockList isBlockedWithEmail:emailAddress2])
             {
 
 LABEL_21:
@@ -562,14 +562,14 @@ LABEL_21:
             }
           }
 
-          v13 = [v10 phoneNumber];
-          if (v13)
+          phoneNumber = [v10 phoneNumber];
+          if (phoneNumber)
           {
             v14 = self->_blockList;
-            v15 = [v10 phoneNumber];
-            v16 = [(CalBlockList *)v14 isBlockedWithPhoneNumber:v15];
+            phoneNumber2 = [v10 phoneNumber];
+            v16 = [(CalBlockList *)v14 isBlockedWithPhoneNumber:phoneNumber2];
 
-            if (v11)
+            if (emailAddress)
             {
 
               if (v16)
@@ -587,7 +587,7 @@ LABEL_21:
           else
           {
 
-            if (v11)
+            if (emailAddress)
             {
             }
           }
@@ -620,10 +620,10 @@ LABEL_22:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(EKCalendarNotification *)self event];
-  v6 = [v5 attendees];
+  event = [(EKCalendarNotification *)self event];
+  attendees = [event attendees];
 
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v7 = [attendees countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -633,24 +633,24 @@ LABEL_22:
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attendees);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 emailAddress];
-        if (v11)
+        emailAddress = [v10 emailAddress];
+        if (emailAddress)
         {
-          [v3 addObject:v11];
+          [v3 addObject:emailAddress];
         }
 
-        v12 = [v10 phoneNumber];
-        if (v12)
+        phoneNumber = [v10 phoneNumber];
+        if (phoneNumber)
         {
-          [v4 addObject:v12];
+          [v4 addObject:phoneNumber];
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [attendees countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);

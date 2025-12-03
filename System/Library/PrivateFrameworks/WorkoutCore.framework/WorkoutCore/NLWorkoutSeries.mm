@@ -1,9 +1,9 @@
 @interface NLWorkoutSeries
 - (NLWorkoutSeries)init;
-- (NLWorkoutSeries)initWithWorkouts:(id)a3;
-- (id)byAddingWorkout:(id)a3;
-- (id)byUpdatingWorkout:(id)a3;
-- (id)withWorkouts:(id)a3;
+- (NLWorkoutSeries)initWithWorkouts:(id)workouts;
+- (id)byAddingWorkout:(id)workout;
+- (id)byUpdatingWorkout:(id)workout;
+- (id)withWorkouts:(id)workouts;
 @end
 
 @implementation NLWorkoutSeries
@@ -17,36 +17,36 @@
   return v3;
 }
 
-- (NLWorkoutSeries)initWithWorkouts:(id)a3
+- (NLWorkoutSeries)initWithWorkouts:(id)workouts
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, workouts);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = NLWorkoutSeries;
   v6 = [(NLWorkoutSeries *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_workouts, location[0]);
+    objc_storeStrong(&selfCopy->_workouts, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (id)withWorkouts:(id)a3
+- (id)withWorkouts:(id)workouts
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workouts);
   v3 = objc_alloc(objc_opt_class());
   v5 = [v3 initWithWorkouts:location[0]];
   objc_storeStrong(location, 0);
@@ -54,16 +54,16 @@
   return v5;
 }
 
-- (id)byUpdatingWorkout:(id)a3
+- (id)byUpdatingWorkout:(id)workout
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  workouts = v9->_workouts;
+  objc_storeStrong(location, workout);
+  workouts = selfCopy->_workouts;
   v6 = MEMORY[0x277D82BE0](location[0]);
   v7 = [(NSArray *)workouts nl_mapUsingBlock:?];
-  v5 = [(NLWorkoutSeries *)v9 withWorkouts:v7];
+  v5 = [(NLWorkoutSeries *)selfCopy withWorkouts:v7];
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
@@ -102,14 +102,14 @@ id __37__NLWorkoutSeries_byUpdatingWorkout___block_invoke(id *a1, void *a2)
   return v2;
 }
 
-- (id)byAddingWorkout:(id)a3
+- (id)byAddingWorkout:(id)workout
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v8;
-  v5 = [(NSArray *)v8->_workouts arrayByAddingObject:location[0]];
+  objc_storeStrong(location, workout);
+  v4 = selfCopy;
+  v5 = [(NSArray *)selfCopy->_workouts arrayByAddingObject:location[0]];
   v6 = [(NLWorkoutSeries *)v4 withWorkouts:?];
   MEMORY[0x277D82BD8](v5);
   objc_storeStrong(location, 0);

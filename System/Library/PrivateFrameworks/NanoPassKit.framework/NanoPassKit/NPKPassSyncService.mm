@@ -1,51 +1,51 @@
 @interface NPKPassSyncService
-- (NPKPassSyncService)initWithPassSyncEngineRole:(unint64_t)a3;
+- (NPKPassSyncService)initWithPassSyncEngineRole:(unint64_t)role;
 - (id)_archivedPassSyncEngine;
 - (id)companionCatalogToSendWithStateChange;
-- (id)currentLibraryPassSyncStateWithReconciledState:(id)a3;
-- (id)passSyncEngine:(id)a3 dataForPassWithUniqueID:(id)a4;
-- (id)passSyncEngine:(id)a3 partialDataForPassWithUniqueID:(id)a4 baseManifest:(id)a5 outRemoteAssets:(id *)a6;
+- (id)currentLibraryPassSyncStateWithReconciledState:(id)state;
+- (id)passSyncEngine:(id)engine dataForPassWithUniqueID:(id)d;
+- (id)passSyncEngine:(id)engine partialDataForPassWithUniqueID:(id)d baseManifest:(id)manifest outRemoteAssets:(id *)assets;
 - (id)watchCatalogToSendWithStateChange;
-- (unint64_t)settingsForPassWithUniqueID:(id)a3;
+- (unint64_t)settingsForPassWithUniqueID:(id)d;
 - (void)_archiveTimerFired;
 - (void)_ensureSyncTimerIsSet;
-- (void)_provideUpdatedLibraryStateToSyncEngineAndSyncIfNecessary:(BOOL)a3;
+- (void)_provideUpdatedLibraryStateToSyncEngineAndSyncIfNecessary:(BOOL)necessary;
 - (void)_syncNow;
 - (void)_syncTimerFired;
 - (void)_syncWhenAppropriate;
-- (void)associatedPassDataRequested:(id)a3;
-- (void)catalogChanged:(id)a3;
-- (void)handleCatalogChangeWithCompanionCatalog:(id)a3 watchCatalog:(id)a4;
-- (void)handleIncomingCompanionCatalog:(id)a3 watchCatalog:(id)a4;
-- (void)handleIncomingPassSettings:(unint64_t)a3 forPassWithUniqueID:(id)a4;
+- (void)associatedPassDataRequested:(id)requested;
+- (void)catalogChanged:(id)changed;
+- (void)handleCatalogChangeWithCompanionCatalog:(id)catalog watchCatalog:(id)watchCatalog;
+- (void)handleIncomingCompanionCatalog:(id)catalog watchCatalog:(id)watchCatalog;
+- (void)handleIncomingPassSettings:(unint64_t)settings forPassWithUniqueID:(id)d;
 - (void)handlePassLibraryChanged;
-- (void)handleRequestedAssociatedData:(unint64_t)a3 forPassWithUniqueID:(id)a4;
-- (void)handleSettingsChanged:(unint64_t)a3 forPassWithUniqueID:(id)a4;
-- (void)passSettingsChanged:(id)a3;
-- (void)passSyncEngine:(id)a3 finishedProcessingChange:(id)a4;
-- (void)passSyncEngine:(id)a3 receivedStateChangeProcessed:(id)a4 changeAccepted:(BOOL)a5;
-- (void)passSyncEngine:(id)a3 requestsAddPassData:(id)a4 forSyncStateItem:(id)a5 completion:(id)a6;
-- (void)passSyncEngine:(id)a3 requestsRemovePassWithUniqueID:(id)a4 completion:(id)a5;
-- (void)passSyncEngine:(id)a3 requestsUpdatePassData:(id)a4 forSyncStateItem:(id)a5 baseManifestHashForPartialUpdate:(id)a6 remoteAssetsForPartialUpdate:(id)a7 completion:(id)a8;
-- (void)passSyncEngine:(id)a3 sendProposedReconciledState:(id)a4;
-- (void)passSyncEngine:(id)a3 sendReconciledStateAcceptedWithHash:(id)a4;
-- (void)passSyncEngine:(id)a3 sendReconciledStateUnrecognizedWithHash:(id)a4 version:(unint64_t)a5 currentPassSyncState:(id)a6;
-- (void)passSyncEngine:(id)a3 sendStateChange:(id)a4;
-- (void)passSyncEngineStateChanged:(id)a3;
-- (void)proposedReconciledState:(id)a3;
-- (void)reconciledStateAccepted:(id)a3;
-- (void)reconciledStateUnrecognized:(id)a3;
-- (void)requestAssociatedData:(unint64_t)a3 forPassWithUniqueID:(id)a4;
+- (void)handleRequestedAssociatedData:(unint64_t)data forPassWithUniqueID:(id)d;
+- (void)handleSettingsChanged:(unint64_t)changed forPassWithUniqueID:(id)d;
+- (void)passSettingsChanged:(id)changed;
+- (void)passSyncEngine:(id)engine finishedProcessingChange:(id)change;
+- (void)passSyncEngine:(id)engine receivedStateChangeProcessed:(id)processed changeAccepted:(BOOL)accepted;
+- (void)passSyncEngine:(id)engine requestsAddPassData:(id)data forSyncStateItem:(id)item completion:(id)completion;
+- (void)passSyncEngine:(id)engine requestsRemovePassWithUniqueID:(id)d completion:(id)completion;
+- (void)passSyncEngine:(id)engine requestsUpdatePassData:(id)data forSyncStateItem:(id)item baseManifestHashForPartialUpdate:(id)update remoteAssetsForPartialUpdate:(id)partialUpdate completion:(id)completion;
+- (void)passSyncEngine:(id)engine sendProposedReconciledState:(id)state;
+- (void)passSyncEngine:(id)engine sendReconciledStateAcceptedWithHash:(id)hash;
+- (void)passSyncEngine:(id)engine sendReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version currentPassSyncState:(id)state;
+- (void)passSyncEngine:(id)engine sendStateChange:(id)change;
+- (void)passSyncEngineStateChanged:(id)changed;
+- (void)proposedReconciledState:(id)state;
+- (void)reconciledStateAccepted:(id)accepted;
+- (void)reconciledStateUnrecognized:(id)unrecognized;
+- (void)requestAssociatedData:(unint64_t)data forPassWithUniqueID:(id)d;
 - (void)start;
 - (void)suggestSync;
-- (void)syncStateChangeProcessed:(id)a3;
-- (void)syncStateChanged:(id)a3;
+- (void)syncStateChangeProcessed:(id)processed;
+- (void)syncStateChanged:(id)changed;
 - (void)updatePassLibrary;
 @end
 
 @implementation NPKPassSyncService
 
-- (NPKPassSyncService)initWithPassSyncEngineRole:(unint64_t)a3
+- (NPKPassSyncService)initWithPassSyncEngineRole:(unint64_t)role
 {
   v22.receiver = self;
   v22.super_class = NPKPassSyncService;
@@ -82,16 +82,16 @@
     v10 = *(v4 + 7);
     *(v4 + 7) = v9;
 
-    v11 = [v4 _archivedPassSyncEngine];
-    v12 = v11;
-    if (v11)
+    _archivedPassSyncEngine = [v4 _archivedPassSyncEngine];
+    v12 = _archivedPassSyncEngine;
+    if (_archivedPassSyncEngine)
     {
-      v13 = v11;
+      v13 = _archivedPassSyncEngine;
     }
 
     else
     {
-      v13 = [[NPKPassSyncEngine alloc] initWithRole:a3];
+      v13 = [[NPKPassSyncEngine alloc] initWithRole:role];
     }
 
     v14 = *(v4 + 2);
@@ -166,50 +166,50 @@ void __49__NPKPassSyncService_initWithPassSyncEngineRole___block_invoke(uint64_t
   dispatch_async(passSyncQueue, block);
 }
 
-- (void)requestAssociatedData:(unint64_t)a3 forPassWithUniqueID:(id)a4
+- (void)requestAssociatedData:(unint64_t)data forPassWithUniqueID:(id)d
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"46D8FA11-A747-4C0B-B4F4-0AB1308739B4"];
   v8 = NPKPairedOrPairingDevice();
   v9 = [v8 supportsCapability:v7];
 
   if (v9)
   {
-    if (v6)
+    if (dCopy)
     {
       v10 = pk_Sync_log();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
-      if (a3)
+      if (data)
       {
         if (v11)
         {
           v12 = pk_Sync_log();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = NSStringFromNPKAssociatedPassData(a3);
+            v13 = NSStringFromNPKAssociatedPassData(data);
             *buf = 138412546;
             v44 = v13;
             v45 = 2112;
-            v46 = v6;
+            v46 = dCopy;
             _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Requesting associated data:%@ for pass with uniqueID:%@", buf, 0x16u);
           }
         }
 
         v14 = objc_alloc_init(NPKProtoPassAssociatedDataRequest);
-        [(NPKProtoPassAssociatedDataRequest *)v14 setPassUniqueID:v6];
-        [(NPKProtoPassAssociatedDataRequest *)v14 setPassRequestedData:a3];
+        [(NPKProtoPassAssociatedDataRequest *)v14 setPassUniqueID:dCopy];
+        [(NPKProtoPassAssociatedDataRequest *)v14 setPassRequestedData:data];
         v15 = objc_alloc(MEMORY[0x277D189F0]);
-        v16 = [(NPKProtoPassAssociatedDataRequest *)v14 data];
-        v17 = [v15 initWithProtobufData:v16 type:45 isResponse:0];
+        data = [(NPKProtoPassAssociatedDataRequest *)v14 data];
+        v17 = [v15 initWithProtobufData:data type:45 isResponse:0];
 
-        v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"passAssociatedData-%@", v6];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"passAssociatedData-%@", dCopy];
         v41[0] = *MEMORY[0x277D18650];
         v19 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
         v20 = *MEMORY[0x277D18630];
         v42[0] = v19;
-        v42[1] = v18;
+        v42[1] = dCopy;
         v21 = *MEMORY[0x277D18580];
         v41[1] = v20;
         v41[2] = v21;
@@ -261,7 +261,7 @@ void __49__NPKPassSyncService_initWithPassSyncEngineRole___block_invoke(uint64_t
       }
 
       *buf = 138412290;
-      v44 = v6;
+      v44 = dCopy;
       v33 = "Warning: missing associated data for pass with uniqueID:%@, will not request pass associated data";
       p_super = &v14->super.super.super;
       v37 = 12;
@@ -337,10 +337,10 @@ void __64__NPKPassSyncService_requestAssociatedData_forPassWithUniqueID___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSettingsChanged:(unint64_t)a3 forPassWithUniqueID:(id)a4
+- (void)handleSettingsChanged:(unint64_t)changed forPassWithUniqueID:(id)d
 {
   v35[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   v7 = pk_Sync_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -350,24 +350,24 @@ void __64__NPKPassSyncService_requestAssociatedData_forPassWithUniqueID___block_
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v6;
+      v31 = dCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: pass settings changed for pass with unique ID %@", buf, 0xCu);
     }
   }
 
   v10 = objc_alloc_init(NPKProtoPassSettingsChangedRequest);
-  [(NPKProtoPassSettingsChangedRequest *)v10 setUniqueID:v6];
-  [(NPKProtoPassSettingsChangedRequest *)v10 setPassSettings:a3];
+  [(NPKProtoPassSettingsChangedRequest *)v10 setUniqueID:dCopy];
+  [(NPKProtoPassSettingsChangedRequest *)v10 setPassSettings:changed];
   v11 = objc_alloc(MEMORY[0x277D189F0]);
-  v12 = [(NPKProtoPassSettingsChangedRequest *)v10 data];
-  v13 = [v11 initWithProtobufData:v12 type:31 isResponse:0];
+  data = [(NPKProtoPassSettingsChangedRequest *)v10 data];
+  v13 = [v11 initWithProtobufData:data type:31 isResponse:0];
 
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"passSettings-%@", v6];
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"passSettings-%@", dCopy];
   v34[0] = *MEMORY[0x277D18650];
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
   v16 = *MEMORY[0x277D18630];
   v35[0] = v15;
-  v35[1] = v14;
+  v35[1] = dCopy;
   v17 = *MEMORY[0x277D18580];
   v34[1] = v16;
   v34[2] = v17;
@@ -428,11 +428,11 @@ void __64__NPKPassSyncService_handleSettingsChanged_forPassWithUniqueID___block_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCatalogChangeWithCompanionCatalog:(id)a3 watchCatalog:(id)a4
+- (void)handleCatalogChangeWithCompanionCatalog:(id)catalog watchCatalog:(id)watchCatalog
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  catalogCopy = catalog;
+  watchCatalogCopy = watchCatalog;
   v8 = pk_Sync_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -442,25 +442,25 @@ void __64__NPKPassSyncService_handleSettingsChanged_forPassWithUniqueID___block_
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v37 = v6;
+      v37 = catalogCopy;
       v38 = 2048;
-      v39 = v7;
+      v39 = watchCatalogCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: handling catalog changed (companion %p watch %p)", buf, 0x16u);
     }
   }
 
   v11 = objc_alloc_init(NPKProtoCatalog);
-  if (!v6 || (NPKSecureArchiveObject(v6), (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!catalogCopy || (NPKSecureArchiveObject(catalogCopy), (data = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v12 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  [(NPKProtoCatalog *)v11 setCatalogData:v12];
+  [(NPKProtoCatalog *)v11 setCatalogData:data];
   v13 = objc_alloc_init(NPKProtoCatalogChangedRequest);
   [(NPKProtoCatalogChangedRequest *)v13 setCompanionCatalog:v11];
-  if (v7)
+  if (watchCatalogCopy)
   {
-    v14 = NPKSecureArchiveObject(v7);
+    v14 = NPKSecureArchiveObject(watchCatalogCopy);
     if (v14)
     {
       v15 = objc_alloc_init(NPKProtoCatalog);
@@ -470,8 +470,8 @@ void __64__NPKPassSyncService_handleSettingsChanged_forPassWithUniqueID___block_
   }
 
   v16 = objc_alloc(MEMORY[0x277D189F0]);
-  v17 = [(NPKProtoCatalogChangedRequest *)v13 data];
-  v18 = [v16 initWithProtobufData:v17 type:7 isResponse:0];
+  data2 = [(NPKProtoCatalogChangedRequest *)v13 data];
+  v18 = [v16 initWithProtobufData:data2 type:7 isResponse:0];
 
   v34[0] = *MEMORY[0x277D18650];
   v19 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -549,7 +549,7 @@ void __75__NPKPassSyncService_handleCatalogChangeWithCompanionCatalog_watchCatal
   dispatch_async(passSyncQueue, block);
 }
 
-- (id)currentLibraryPassSyncStateWithReconciledState:(id)a3
+- (id)currentLibraryPassSyncStateWithReconciledState:(id)state
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = pk_General_log();
@@ -573,7 +573,7 @@ void __75__NPKPassSyncService_handleCatalogChangeWithCompanionCatalog_watchCatal
   _NPKAssertAbort();
 }
 
-- (unint64_t)settingsForPassWithUniqueID:(id)a3
+- (unint64_t)settingsForPassWithUniqueID:(id)d
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = pk_General_log();
@@ -597,7 +597,7 @@ void __75__NPKPassSyncService_handleCatalogChangeWithCompanionCatalog_watchCatal
   _NPKAssertAbort();
 }
 
-- (void)handleIncomingPassSettings:(unint64_t)a3 forPassWithUniqueID:(id)a4
+- (void)handleIncomingPassSettings:(unint64_t)settings forPassWithUniqueID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = pk_General_log();
@@ -621,7 +621,7 @@ void __75__NPKPassSyncService_handleCatalogChangeWithCompanionCatalog_watchCatal
   _NPKAssertAbort();
 }
 
-- (void)handleIncomingCompanionCatalog:(id)a3 watchCatalog:(id)a4
+- (void)handleIncomingCompanionCatalog:(id)catalog watchCatalog:(id)watchCatalog
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = pk_General_log();
@@ -693,17 +693,17 @@ void __75__NPKPassSyncService_handleCatalogChangeWithCompanionCatalog_watchCatal
   _NPKAssertAbort();
 }
 
-- (void)syncStateChanged:(id)a3
+- (void)syncStateChanged:(id)changed
 {
   v43 = *MEMORY[0x277D85DE8];
   passSyncQueue = self->_passSyncQueue;
-  v5 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(passSyncQueue);
   v6 = [NPKOSTransaction transactionWithName:@"sync state changed"];
   v7 = [NPKProtoPassSyncStateChange alloc];
-  v8 = [v5 data];
+  data = [changedCopy data];
 
-  v9 = [(NPKProtoPassSyncStateChange *)v7 initWithData:v8];
+  v9 = [(NPKProtoPassSyncStateChange *)v7 initWithData:data];
   v10 = [[NPKPassSyncChange alloc] initWithProtoPassSyncChange:v9];
   if (![(NPKProtoPassSyncStateChange *)v9 hasPassSegmentIndex])
   {
@@ -714,10 +714,10 @@ LABEL_14:
       v24 = [NPKOSTransaction transactionWithName:@"sync state changed, catalog"];
       if ([(NPKProtoPassSyncStateChange *)v9 hasCompanionCatalog])
       {
-        v25 = [(NPKProtoPassSyncStateChange *)v9 companionCatalog];
-        v26 = [v25 catalogData];
+        companionCatalog = [(NPKProtoPassSyncStateChange *)v9 companionCatalog];
+        catalogData = [companionCatalog catalogData];
         v27 = objc_opt_class();
-        v28 = NPKSecureUnarchiveObject(v26, v27);
+        v28 = NPKSecureUnarchiveObject(catalogData, v27);
       }
 
       else
@@ -727,10 +727,10 @@ LABEL_14:
 
       if ([(NPKProtoPassSyncStateChange *)v9 hasWatchCatalog])
       {
-        v32 = [(NPKProtoPassSyncStateChange *)v9 watchCatalog];
-        v33 = [v32 catalogData];
+        watchCatalog = [(NPKProtoPassSyncStateChange *)v9 watchCatalog];
+        catalogData2 = [watchCatalog catalogData];
         v34 = objc_opt_class();
-        v35 = NPKSecureUnarchiveObject(v33, v34);
+        v35 = NPKSecureUnarchiveObject(catalogData2, v34);
       }
 
       else
@@ -748,7 +748,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v11 = [(NPKProtoPassSyncStateChange *)v9 passSegmentIndex];
+  passSegmentIndex = [(NPKProtoPassSyncStateChange *)v9 passSegmentIndex];
   v12 = pk_Sync_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -757,25 +757,25 @@ LABEL_26:
     v14 = pk_Sync_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(NPKPassSyncChange *)v10 changeUUID];
+      changeUUID = [(NPKPassSyncChange *)v10 changeUUID];
       v37 = 138412802;
-      v38 = v15;
+      v38 = changeUUID;
       v39 = 1024;
-      v40 = v11;
+      v40 = passSegmentIndex;
       v41 = 1024;
-      v42 = [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal];
+      passSegmentTotal = [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal];
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: storing large pass data segment\n\tchange UUID: %@\n\tsegment index: %u\n\ttotal pass segments: %u", &v37, 0x18u);
     }
   }
 
-  v16 = [(NPKPassSyncChange *)v10 passData];
-  v17 = [(NPKPassSyncChange *)v10 changeUUID];
-  NPKStoreLargePassDataSegmentForChangeUUID(v16, v17, v11);
+  passData = [(NPKPassSyncChange *)v10 passData];
+  changeUUID2 = [(NPKPassSyncChange *)v10 changeUUID];
+  NPKStoreLargePassDataSegmentForChangeUUID(passData, changeUUID2, passSegmentIndex);
 
-  if ([(NPKProtoPassSyncStateChange *)v9 hasPassSegmentTotal]&& [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal]== v11 + 1)
+  if ([(NPKProtoPassSyncStateChange *)v9 hasPassSegmentTotal]&& [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal]== passSegmentIndex + 1)
   {
-    v18 = [(NPKPassSyncChange *)v10 changeUUID];
-    v19 = NPKDataForLargePassWithChangeUUID(v18, [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal]);
+    changeUUID3 = [(NPKPassSyncChange *)v10 changeUUID];
+    v19 = NPKDataForLargePassWithChangeUUID(changeUUID3, [(NPKProtoPassSyncStateChange *)v9 passSegmentTotal]);
 
     v20 = pk_Sync_log();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -785,9 +785,9 @@ LABEL_26:
       v22 = pk_Sync_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v19 npkDescription];
+        npkDescription = [v19 npkDescription];
         v37 = 138412290;
-        v38 = v23;
+        v38 = npkDescription;
         _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: this is the last segment of pass data\n\tretrieved combined pass data: %@", &v37, 0xCu);
       }
     }
@@ -808,9 +808,9 @@ LABEL_26:
     v28 = pk_Sync_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(NPKPassSyncChange *)v10 changeUUID];
+      changeUUID4 = [(NPKPassSyncChange *)v10 changeUUID];
       v37 = 138412290;
-      v38 = v31;
+      v38 = changeUUID4;
       _os_log_impl(&dword_25B300000, v28, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: not providing state change to sync engine\n\tchange UUID: %@", &v37, 0xCu);
     }
 
@@ -823,93 +823,93 @@ LABEL_27:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncStateChangeProcessed:(id)a3
+- (void)syncStateChangeProcessed:(id)processed
 {
   passSyncQueue = self->_passSyncQueue;
-  v5 = a3;
+  processedCopy = processed;
   dispatch_assert_queue_V2(passSyncQueue);
   v13 = [NPKOSTransaction transactionWithName:@"sync state change processed"];
   v6 = [NPKProtoPassSyncStateChangeProcessed alloc];
-  v7 = [v5 data];
+  data = [processedCopy data];
 
-  v8 = [(NPKProtoPassSyncStateChangeProcessed *)v6 initWithData:v7];
+  v8 = [(NPKProtoPassSyncStateChangeProcessed *)v6 initWithData:data];
   v9 = objc_alloc(MEMORY[0x277CCAD78]);
-  v10 = [(NPKProtoPassSyncStateChangeProcessed *)v8 acceptedChangeUUID];
-  v11 = [v9 initWithUUIDBytes:{objc_msgSend(v10, "bytes")}];
+  acceptedChangeUUID = [(NPKProtoPassSyncStateChangeProcessed *)v8 acceptedChangeUUID];
+  v11 = [v9 initWithUUIDBytes:{objc_msgSend(acceptedChangeUUID, "bytes")}];
 
   if ([(NPKProtoPassSyncStateChangeProcessed *)v8 hasChangeAccepted])
   {
-    v12 = [(NPKProtoPassSyncStateChangeProcessed *)v8 changeAccepted];
+    changeAccepted = [(NPKProtoPassSyncStateChangeProcessed *)v8 changeAccepted];
   }
 
   else
   {
-    v12 = 1;
+    changeAccepted = 1;
   }
 
-  [(NPKPassSyncEngine *)self->_passSyncEngine handleStateChangeProcessedWithUUID:v11 changeAccepted:v12 fullPassRequired:[(NPKProtoPassSyncStateChangeProcessed *)v8 fullPassRequired]];
+  [(NPKPassSyncEngine *)self->_passSyncEngine handleStateChangeProcessedWithUUID:v11 changeAccepted:changeAccepted fullPassRequired:[(NPKProtoPassSyncStateChangeProcessed *)v8 fullPassRequired]];
   [v13 invalidate];
 }
 
-- (void)reconciledStateUnrecognized:(id)a3
+- (void)reconciledStateUnrecognized:(id)unrecognized
 {
   passSyncQueue = self->_passSyncQueue;
-  v5 = a3;
+  unrecognizedCopy = unrecognized;
   dispatch_assert_queue_V2(passSyncQueue);
   v14 = [NPKOSTransaction transactionWithName:@"sync state change processed"];
   v6 = [NPKProtoPassSyncReconciledStateUnrecognized alloc];
-  v7 = [v5 data];
+  data = [unrecognizedCopy data];
 
-  v8 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v6 initWithData:v7];
-  v9 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 unrecognizedReconciledStateHash];
-  v10 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 hasUnrecognizedReconciledStateVersion];
+  v8 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v6 initWithData:data];
+  unrecognizedReconciledStateHash = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 unrecognizedReconciledStateHash];
+  hasUnrecognizedReconciledStateVersion = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 hasUnrecognizedReconciledStateVersion];
   v11 = [NPKPassSyncState alloc];
-  v12 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 libraryPassSyncState];
-  v13 = [(NPKPassSyncState *)v11 initWithProtoSyncState:v12];
+  libraryPassSyncState = [(NPKProtoPassSyncReconciledStateUnrecognized *)v8 libraryPassSyncState];
+  v13 = [(NPKPassSyncState *)v11 initWithProtoSyncState:libraryPassSyncState];
 
-  [(NPKPassSyncEngine *)self->_passSyncEngine handleReconciledStateUnrecognizedWithHash:v9 version:v10 passSyncState:v13];
+  [(NPKPassSyncEngine *)self->_passSyncEngine handleReconciledStateUnrecognizedWithHash:unrecognizedReconciledStateHash version:hasUnrecognizedReconciledStateVersion passSyncState:v13];
   [v14 invalidate];
 }
 
-- (void)proposedReconciledState:(id)a3
+- (void)proposedReconciledState:(id)state
 {
   passSyncQueue = self->_passSyncQueue;
-  v5 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(passSyncQueue);
   v12 = [NPKOSTransaction transactionWithName:@"proposed reconciled state"];
   v6 = [NPKProtoPassSyncProposedReconciledState alloc];
-  v7 = [v5 data];
+  data = [stateCopy data];
 
-  v8 = [(NPKProtoPassSyncProposedReconciledState *)v6 initWithData:v7];
+  v8 = [(NPKProtoPassSyncProposedReconciledState *)v6 initWithData:data];
   v9 = [NPKPassSyncState alloc];
-  v10 = [(NPKProtoPassSyncProposedReconciledState *)v8 proposedReconciledState];
-  v11 = [(NPKPassSyncState *)v9 initWithProtoSyncState:v10];
+  proposedReconciledState = [(NPKProtoPassSyncProposedReconciledState *)v8 proposedReconciledState];
+  v11 = [(NPKPassSyncState *)v9 initWithProtoSyncState:proposedReconciledState];
 
   [(NPKPassSyncEngine *)self->_passSyncEngine handleProposedReconciledState:v11];
   [v12 invalidate];
 }
 
-- (void)reconciledStateAccepted:(id)a3
+- (void)reconciledStateAccepted:(id)accepted
 {
   passSyncQueue = self->_passSyncQueue;
-  v5 = a3;
+  acceptedCopy = accepted;
   dispatch_assert_queue_V2(passSyncQueue);
   v11 = [NPKOSTransaction transactionWithName:@"reconciled state accepted"];
   v6 = [NPKProtoPassSyncReconciledStateAccepted alloc];
-  v7 = [v5 data];
+  data = [acceptedCopy data];
 
-  v8 = [(NPKProtoPassSyncReconciledStateAccepted *)v6 initWithData:v7];
+  v8 = [(NPKProtoPassSyncReconciledStateAccepted *)v6 initWithData:data];
   passSyncEngine = self->_passSyncEngine;
-  v10 = [(NPKProtoPassSyncReconciledStateAccepted *)v8 reconciledStateHash];
-  [(NPKPassSyncEngine *)passSyncEngine handleReconciledStateAcceptedWithHash:v10];
+  reconciledStateHash = [(NPKProtoPassSyncReconciledStateAccepted *)v8 reconciledStateHash];
+  [(NPKPassSyncEngine *)passSyncEngine handleReconciledStateAcceptedWithHash:reconciledStateHash];
 
   [v11 invalidate];
 }
 
-- (void)passSettingsChanged:(id)a3
+- (void)passSettingsChanged:(id)changed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -918,22 +918,22 @@ LABEL_27:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [changedCopy npkDescription];
       v18 = 138412290;
-      v19 = v8;
+      v19 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: pass settings changed with protobuf %@", &v18, 0xCu);
     }
   }
 
   v9 = [NPKOSTransaction transactionWithName:@"pass settings changed"];
   v10 = [NPKProtoPassSettingsChangedRequest alloc];
-  v11 = [v4 data];
-  v12 = [(NPKProtoPassSettingsChangedRequest *)v10 initWithData:v11];
+  data = [changedCopy data];
+  v12 = [(NPKProtoPassSettingsChangedRequest *)v10 initWithData:data];
 
-  v13 = [(NPKProtoPassSettingsChangedRequest *)v12 uniqueID];
-  if (v13 && [(NPKProtoPassSettingsChangedRequest *)v12 hasPassSettings])
+  uniqueID = [(NPKProtoPassSettingsChangedRequest *)v12 uniqueID];
+  if (uniqueID && [(NPKProtoPassSettingsChangedRequest *)v12 hasPassSettings])
   {
-    [(NPKPassSyncService *)self handleIncomingPassSettings:[(NPKProtoPassSettingsChangedRequest *)v12 passSettings] forPassWithUniqueID:v13];
+    [(NPKPassSyncService *)self handleIncomingPassSettings:[(NPKProtoPassSettingsChangedRequest *)v12 passSettings] forPassWithUniqueID:uniqueID];
   }
 
   else
@@ -957,10 +957,10 @@ LABEL_27:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)catalogChanged:(id)a3
+- (void)catalogChanged:(id)changed
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -969,28 +969,28 @@ LABEL_27:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [changedCopy npkDescription];
       v25 = 138412290;
-      v26 = v8;
+      v26 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: catalog changed with protobuf %@", &v25, 0xCu);
     }
   }
 
   v9 = [NPKOSTransaction transactionWithName:@"Catalog changed"];
   v10 = [NPKProtoCatalogChangedRequest alloc];
-  v11 = [v4 data];
-  v12 = [(NPKProtoCatalogChangedRequest *)v10 initWithData:v11];
+  data = [changedCopy data];
+  v12 = [(NPKProtoCatalogChangedRequest *)v10 initWithData:data];
 
-  v13 = [(NPKProtoCatalogChangedRequest *)v12 companionCatalog];
-  v14 = [v13 catalogData];
-  v15 = [v14 length];
+  companionCatalog = [(NPKProtoCatalogChangedRequest *)v12 companionCatalog];
+  catalogData = [companionCatalog catalogData];
+  v15 = [catalogData length];
 
   if (v15)
   {
-    v16 = [(NPKProtoCatalogChangedRequest *)v12 companionCatalog];
-    v17 = [v16 catalogData];
+    companionCatalog2 = [(NPKProtoCatalogChangedRequest *)v12 companionCatalog];
+    catalogData2 = [companionCatalog2 catalogData];
     v18 = objc_opt_class();
-    v19 = NPKSecureUnarchiveObject(v17, v18);
+    v19 = NPKSecureUnarchiveObject(catalogData2, v18);
   }
 
   else
@@ -998,10 +998,10 @@ LABEL_27:
     v19 = 0;
   }
 
-  v20 = [(NPKProtoCatalogChangedRequest *)v12 watchCatalog];
-  v21 = [v20 catalogData];
+  watchCatalog = [(NPKProtoCatalogChangedRequest *)v12 watchCatalog];
+  catalogData3 = [watchCatalog catalogData];
   v22 = objc_opt_class();
-  v23 = NPKSecureUnarchiveObject(v21, v22);
+  v23 = NPKSecureUnarchiveObject(catalogData3, v22);
 
   [(NPKPassSyncService *)self handleIncomingCompanionCatalog:v19 watchCatalog:v23];
   [v9 invalidate];
@@ -1009,10 +1009,10 @@ LABEL_27:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)associatedPassDataRequested:(id)a3
+- (void)associatedPassDataRequested:(id)requested
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestedCopy = requested;
   v5 = pk_Sync_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1021,31 +1021,31 @@ LABEL_27:
     v7 = pk_Sync_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestedCopy npkDescription];
       v22 = 138412290;
-      v23 = v8;
+      v23 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: associated pass data request with protobuf %@", &v22, 0xCu);
     }
   }
 
   v9 = [NPKProtoPassAssociatedDataRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoPassAssociatedDataRequest *)v9 initWithData:v10];
+  data = [requestedCopy data];
+  v11 = [(NPKProtoPassAssociatedDataRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoPassAssociatedDataRequest *)v11 passUniqueID];
+  passUniqueID = [(NPKProtoPassAssociatedDataRequest *)v11 passUniqueID];
   if ([(NPKProtoPassAssociatedDataRequest *)v11 hasPassRequestedData])
   {
-    v13 = [(NPKProtoPassAssociatedDataRequest *)v11 passRequestedData];
+    passRequestedData = [(NPKProtoPassAssociatedDataRequest *)v11 passRequestedData];
   }
 
   else
   {
-    v13 = 8;
+    passRequestedData = 8;
   }
 
   v14 = pk_Sync_log();
   v15 = v14;
-  if (v12)
+  if (passUniqueID)
   {
     v16 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -1054,16 +1054,16 @@ LABEL_27:
       v17 = pk_Sync_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = NSStringFromNPKAssociatedPassData(v13);
+        v18 = NSStringFromNPKAssociatedPassData(passRequestedData);
         v22 = 138412546;
         v23 = v18;
         v24 = 2112;
-        v25 = v12;
+        v25 = passUniqueID;
         _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: associated pass data request:%@ for Pass with uniqueID:%@", &v22, 0x16u);
       }
     }
 
-    [(NPKPassSyncService *)self handleRequestedAssociatedData:v13 forPassWithUniqueID:v12];
+    [(NPKPassSyncService *)self handleRequestedAssociatedData:passRequestedData forPassWithUniqueID:passUniqueID];
   }
 
   else
@@ -1084,11 +1084,11 @@ LABEL_27:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngine:(id)a3 sendStateChange:(id)a4
+- (void)passSyncEngine:(id)engine sendStateChange:(id)change
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  changeCopy = change;
   if (!self->_dropAllMessages)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -1097,38 +1097,38 @@ LABEL_27:
     aBlock[3] = &unk_279945080;
     aBlock[4] = self;
     v10 = _Block_copy(aBlock);
-    v11 = [v7 passData];
-    v12 = [v7 protoPassSyncChange];
-    v13 = [(NPKPassSyncService *)self companionCatalogToSendWithStateChange];
-    if (v13)
+    passData = [changeCopy passData];
+    protoPassSyncChange = [changeCopy protoPassSyncChange];
+    companionCatalogToSendWithStateChange = [(NPKPassSyncService *)self companionCatalogToSendWithStateChange];
+    if (companionCatalogToSendWithStateChange)
     {
       v14 = objc_alloc_init(NPKProtoCatalog);
-      v15 = NPKSecureArchiveObject(v13);
+      v15 = NPKSecureArchiveObject(companionCatalogToSendWithStateChange);
       [(NPKProtoCatalog *)v14 setCatalogData:v15];
 
-      [v12 setCompanionCatalog:v14];
+      [protoPassSyncChange setCompanionCatalog:v14];
     }
 
-    v16 = [(NPKPassSyncService *)self watchCatalogToSendWithStateChange];
-    if (v16)
+    watchCatalogToSendWithStateChange = [(NPKPassSyncService *)self watchCatalogToSendWithStateChange];
+    if (watchCatalogToSendWithStateChange)
     {
       v17 = objc_alloc_init(NPKProtoCatalog);
-      v18 = NPKSecureArchiveObject(v16);
+      v18 = NPKSecureArchiveObject(watchCatalogToSendWithStateChange);
       [(NPKProtoCatalog *)v17 setCatalogData:v18];
 
-      [v12 setWatchCatalog:v17];
+      [protoPassSyncChange setWatchCatalog:v17];
     }
 
     v19 = objc_autoreleasePoolPush();
     v20 = v19;
-    if (v11)
+    if (passData)
     {
-      if ([v11 length] > 0x500000)
+      if ([passData length] > 0x500000)
       {
         objc_autoreleasePoolPop(v20);
 LABEL_15:
-        v31 = v6;
-        v25 = NPKSegmentsForLargePassDataNoCopy(v11, 0x400000uLL);
+        v31 = engineCopy;
+        v25 = NPKSegmentsForLargePassDataNoCopy(passData, 0x400000uLL);
         v26 = [v25 count];
         v27 = pk_Sync_log();
         v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
@@ -1148,23 +1148,23 @@ LABEL_15:
         v32[1] = 3221225472;
         v32[2] = __53__NPKPassSyncService_passSyncEngine_sendStateChange___block_invoke_162;
         v32[3] = &unk_2799450A8;
-        v33 = v12;
+        v33 = protoPassSyncChange;
         v36 = v26;
-        v34 = v7;
+        v34 = changeCopy;
         v35 = v10;
         [v25 enumerateObjectsUsingBlock:v32];
 
-        v6 = v31;
+        engineCopy = v31;
         goto LABEL_21;
       }
 
-      v21 = [v12 data];
-      v22 = v6;
-      v23 = [v21 length];
+      data = [protoPassSyncChange data];
+      v22 = engineCopy;
+      v23 = [data length];
 
       objc_autoreleasePoolPop(v20);
       v24 = v23 > 0x500000;
-      v6 = v22;
+      engineCopy = v22;
       if (v24)
       {
         goto LABEL_15;
@@ -1176,7 +1176,7 @@ LABEL_15:
       objc_autoreleasePoolPop(v19);
     }
 
-    (*(v10 + 16))(v10, v12, @"passSyncStateChange");
+    (*(v10 + 16))(v10, protoPassSyncChange, @"passSyncStateChange");
 LABEL_21:
 
 LABEL_22:
@@ -1330,22 +1330,22 @@ void __102__NPKPassSyncService_passSyncEngine_sendStateChangeProcessedWithUUID_c
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngine:(id)a3 sendReconciledStateUnrecognizedWithHash:(id)a4 version:(unint64_t)a5 currentPassSyncState:(id)a6
+- (void)passSyncEngine:(id)engine sendReconciledStateUnrecognizedWithHash:(id)hash version:(unint64_t)version currentPassSyncState:(id)state
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  hashCopy = hash;
+  stateCopy = state;
   if (!self->_dropAllMessages)
   {
     v14 = objc_alloc_init(NPKProtoPassSyncReconciledStateUnrecognized);
-    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setUnrecognizedReconciledStateHash:v9];
-    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setUnrecognizedReconciledStateVersion:a5];
-    v15 = [v10 protoSyncState];
-    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setLibraryPassSyncState:v15];
+    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setUnrecognizedReconciledStateHash:hashCopy];
+    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setUnrecognizedReconciledStateVersion:version];
+    protoSyncState = [stateCopy protoSyncState];
+    [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 setLibraryPassSyncState:protoSyncState];
 
     v16 = objc_alloc(MEMORY[0x277D189F0]);
-    v17 = [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 data];
-    v18 = [v16 initWithProtobufData:v17 type:42 isResponse:0];
+    data = [(NPKProtoPassSyncReconciledStateUnrecognized *)v14 data];
+    v18 = [v16 initWithProtobufData:data type:42 isResponse:0];
 
     v35[0] = *MEMORY[0x277D18650];
     v19 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -1426,19 +1426,19 @@ void __106__NPKPassSyncService_passSyncEngine_sendReconciledStateUnrecognizedWit
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngine:(id)a3 sendProposedReconciledState:(id)a4
+- (void)passSyncEngine:(id)engine sendProposedReconciledState:(id)state
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  stateCopy = state;
   if (!self->_dropAllMessages)
   {
     v9 = objc_alloc_init(NPKProtoPassSyncProposedReconciledState);
-    v10 = [v5 protoSyncState];
-    [(NPKProtoPassSyncProposedReconciledState *)v9 setProposedReconciledState:v10];
+    protoSyncState = [stateCopy protoSyncState];
+    [(NPKProtoPassSyncProposedReconciledState *)v9 setProposedReconciledState:protoSyncState];
 
     v11 = objc_alloc(MEMORY[0x277D189F0]);
-    v12 = [(NPKProtoPassSyncProposedReconciledState *)v9 data];
-    v13 = [v11 initWithProtobufData:v12 type:43 isResponse:0];
+    data = [(NPKProtoPassSyncProposedReconciledState *)v9 data];
+    v13 = [v11 initWithProtobufData:data type:43 isResponse:0];
 
     v30[0] = *MEMORY[0x277D18650];
     v14 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -1519,17 +1519,17 @@ void __65__NPKPassSyncService_passSyncEngine_sendProposedReconciledState___block
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngine:(id)a3 sendReconciledStateAcceptedWithHash:(id)a4
+- (void)passSyncEngine:(id)engine sendReconciledStateAcceptedWithHash:(id)hash
 {
   v30[4] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  hashCopy = hash;
   if (!self->_dropAllMessages)
   {
     v9 = objc_alloc_init(NPKProtoPassSyncReconciledStateAccepted);
-    [(NPKProtoPassSyncReconciledStateAccepted *)v9 setReconciledStateHash:v5];
+    [(NPKProtoPassSyncReconciledStateAccepted *)v9 setReconciledStateHash:hashCopy];
     v10 = objc_alloc(MEMORY[0x277D189F0]);
-    v11 = [(NPKProtoPassSyncReconciledStateAccepted *)v9 data];
-    v12 = [v10 initWithProtobufData:v11 type:44 isResponse:0];
+    data = [(NPKProtoPassSyncReconciledStateAccepted *)v9 data];
+    v12 = [v10 initWithProtobufData:data type:44 isResponse:0];
 
     v29[0] = *MEMORY[0x277D18650];
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -1610,7 +1610,7 @@ void __73__NPKPassSyncService_passSyncEngine_sendReconciledStateAcceptedWithHash
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngineStateChanged:(id)a3
+- (void)passSyncEngineStateChanged:(id)changed
 {
   v4 = pk_Sync_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -1630,11 +1630,11 @@ void __73__NPKPassSyncService_passSyncEngine_sendReconciledStateAcceptedWithHash
   dispatch_source_set_timer(passSyncEngineArchiveTimer, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
 }
 
-- (void)passSyncEngine:(id)a3 receivedStateChangeProcessed:(id)a4 changeAccepted:(BOOL)a5
+- (void)passSyncEngine:(id)engine receivedStateChangeProcessed:(id)processed changeAccepted:(BOOL)accepted
 {
-  v5 = a5;
+  acceptedCopy = accepted;
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  processedCopy = processed;
   v8 = pk_Sync_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1644,26 +1644,26 @@ void __73__NPKPassSyncService_passSyncEngine_sendReconciledStateAcceptedWithHash
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v7;
+      v14 = processedCopy;
       v15 = 1024;
-      v16 = v5;
+      v16 = acceptedCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: received state change processed delegate method invoked\n\tChange: %@\n\tAccepted: %d", &v13, 0x12u);
     }
   }
 
-  if (![v7 changeType])
+  if (![processedCopy changeType])
   {
-    v11 = [v7 uniqueID];
-    [(NPKPassSyncService *)self handleSettingsChanged:[(NPKPassSyncService *)self settingsForPassWithUniqueID:v11] forPassWithUniqueID:v11];
+    uniqueID = [processedCopy uniqueID];
+    [(NPKPassSyncService *)self handleSettingsChanged:[(NPKPassSyncService *)self settingsForPassWithUniqueID:uniqueID] forPassWithUniqueID:uniqueID];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSyncEngine:(id)a3 finishedProcessingChange:(id)a4
+- (void)passSyncEngine:(id)engine finishedProcessingChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  changeCopy = change;
   v6 = pk_Sync_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -1673,7 +1673,7 @@ void __73__NPKPassSyncService_passSyncEngine_sendReconciledStateAcceptedWithHash
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v13 = v5;
+      v13 = changeCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Pass sync service: finished processing change delegate method invoked\n\tChange: %@", buf, 0xCu);
     }
   }
@@ -1707,7 +1707,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   return [*(a1 + 32) _provideUpdatedLibraryStateToSyncEngineAndSyncIfNecessary:1];
 }
 
-- (void)passSyncEngine:(id)a3 requestsAddPassData:(id)a4 forSyncStateItem:(id)a5 completion:(id)a6
+- (void)passSyncEngine:(id)engine requestsAddPassData:(id)data forSyncStateItem:(id)item completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = pk_General_log();
@@ -1731,7 +1731,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (void)passSyncEngine:(id)a3 requestsUpdatePassData:(id)a4 forSyncStateItem:(id)a5 baseManifestHashForPartialUpdate:(id)a6 remoteAssetsForPartialUpdate:(id)a7 completion:(id)a8
+- (void)passSyncEngine:(id)engine requestsUpdatePassData:(id)data forSyncStateItem:(id)item baseManifestHashForPartialUpdate:(id)update remoteAssetsForPartialUpdate:(id)partialUpdate completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
   v8 = pk_General_log();
@@ -1755,7 +1755,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (void)passSyncEngine:(id)a3 requestsRemovePassWithUniqueID:(id)a4 completion:(id)a5
+- (void)passSyncEngine:(id)engine requestsRemovePassWithUniqueID:(id)d completion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = pk_General_log();
@@ -1779,7 +1779,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (id)passSyncEngine:(id)a3 partialDataForPassWithUniqueID:(id)a4 baseManifest:(id)a5 outRemoteAssets:(id *)a6
+- (id)passSyncEngine:(id)engine partialDataForPassWithUniqueID:(id)d baseManifest:(id)manifest outRemoteAssets:(id *)assets
 {
   v15 = *MEMORY[0x277D85DE8];
   v6 = pk_General_log();
@@ -1803,7 +1803,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (id)passSyncEngine:(id)a3 dataForPassWithUniqueID:(id)a4
+- (id)passSyncEngine:(id)engine dataForPassWithUniqueID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = pk_General_log();
@@ -1827,7 +1827,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (void)handleRequestedAssociatedData:(unint64_t)a3 forPassWithUniqueID:(id)a4
+- (void)handleRequestedAssociatedData:(unint64_t)data forPassWithUniqueID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = pk_General_log();
@@ -1851,17 +1851,17 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
   _NPKAssertAbort();
 }
 
-- (void)_provideUpdatedLibraryStateToSyncEngineAndSyncIfNecessary:(BOOL)a3
+- (void)_provideUpdatedLibraryStateToSyncEngineAndSyncIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v32 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_passSyncQueue);
   v5 = +[NPKPassSyncState minRemoteDevicePassSyncStateVersionSupport];
   v6 = [NPKOSTransaction transactionWithName:@"provide updated libray state"];
-  v7 = [(NPKPassSyncEngine *)self->_passSyncEngine reconciledState];
-  v8 = [(NPKPassSyncService *)self currentLibraryPassSyncStateWithReconciledState:v7];
+  reconciledState = [(NPKPassSyncEngine *)self->_passSyncEngine reconciledState];
+  v8 = [(NPKPassSyncService *)self currentLibraryPassSyncStateWithReconciledState:reconciledState];
   v9 = [v8 passSyncStateWithVersion:v5];
-  v10 = [(NPKPassSyncEngine *)self->_passSyncEngine libraryState];
+  libraryState = [(NPKPassSyncEngine *)self->_passSyncEngine libraryState];
   v11 = pk_Sync_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -1871,7 +1871,7 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = "no";
-      if (v3)
+      if (necessaryCopy)
       {
         v14 = "yes";
       }
@@ -1886,12 +1886,12 @@ uint64_t __62__NPKPassSyncService_passSyncEngine_finishedProcessingChange___bloc
 
   [(NPKPassSyncEngine *)self->_passSyncEngine setLibraryState:v9];
   [(NPKPassSyncEngine *)self->_passSyncEngine setMinSyncStateVersion:v5];
-  if (v3)
+  if (necessaryCopy)
   {
-    if ([v9 diffWithBaselineState:v10 representsMaterialDifferenceFromState:v7])
+    if ([v9 diffWithBaselineState:libraryState representsMaterialDifferenceFromState:reconciledState])
     {
-      v15 = [(NPKPassSyncEngine *)self->_passSyncEngine processingChange];
-      if (!v15)
+      processingChange = [(NPKPassSyncEngine *)self->_passSyncEngine processingChange];
+      if (!processingChange)
       {
 LABEL_12:
         v18 = pk_Sync_log();
@@ -1911,9 +1911,9 @@ LABEL_12:
         goto LABEL_26;
       }
 
-      v16 = v15;
-      v17 = [v7 passSyncStateByApplyingChange:v15];
-      if ([v9 diffWithBaselineState:v10 representsMaterialDifferenceFromState:v17])
+      v16 = processingChange;
+      v17 = [reconciledState passSyncStateByApplyingChange:processingChange];
+      if ([v9 diffWithBaselineState:libraryState representsMaterialDifferenceFromState:v17])
       {
 
         goto LABEL_12;
@@ -2006,10 +2006,10 @@ LABEL_26:
 {
   dispatch_assert_queue_V2(self->_passSyncQueue);
   passSyncStatus = self->_passSyncStatus;
-  v4 = [(NPKPassSyncEngine *)self->_passSyncEngine processingChange];
-  v5 = [(NPKPassSyncEngine *)self->_passSyncEngine candidateChange];
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(NPKPassSyncServiceSyncStatus *)passSyncStatus shouldSyncWithCurrentIncomingChange:v4 currentOutgoingChange:v5 currentDate:v6];
+  processingChange = [(NPKPassSyncEngine *)self->_passSyncEngine processingChange];
+  candidateChange = [(NPKPassSyncEngine *)self->_passSyncEngine candidateChange];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [(NPKPassSyncServiceSyncStatus *)passSyncStatus shouldSyncWithCurrentIncomingChange:processingChange currentOutgoingChange:candidateChange currentDate:date];
 
   v8 = pk_Sync_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);

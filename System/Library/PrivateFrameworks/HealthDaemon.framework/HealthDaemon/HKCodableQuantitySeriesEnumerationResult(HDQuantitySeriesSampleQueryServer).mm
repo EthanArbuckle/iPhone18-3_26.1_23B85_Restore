@@ -10,10 +10,10 @@
   v16 = a7;
   v17 = objc_alloc_init(v15);
   [v17 setPersistentID:a6];
-  v18 = [v16 hk_dataForUUIDBytes];
+  hk_dataForUUIDBytes = [v16 hk_dataForUUIDBytes];
 
-  [v17 setUuid:v18];
-  [v17 setValue:a1];
+  [v17 setUuid:hk_dataForUUIDBytes];
+  [v17 setValue:self];
   [v17 setCount:a8];
   [v17 setStartTime:a2];
   [v17 setEndTime:a3];

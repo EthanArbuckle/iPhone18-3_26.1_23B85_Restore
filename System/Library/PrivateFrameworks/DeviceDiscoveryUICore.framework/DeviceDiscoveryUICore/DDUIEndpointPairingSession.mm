@@ -1,50 +1,50 @@
 @interface DDUIEndpointPairingSession
-- (BOOL)_handleIncomingMessage:(id)a3;
-- (DDUIEndpointPairingSession)initWithTransportSession:(id)a3 mode:(unint64_t)a4;
-- (id)processInitialMessage:(id)a3;
-- (void)_activateWithErrorHandler:(id)a3 completionHandler:(id)a4;
+- (BOOL)_handleIncomingMessage:(id)message;
+- (DDUIEndpointPairingSession)initWithTransportSession:(id)session mode:(unint64_t)mode;
+- (id)processInitialMessage:(id)message;
+- (void)_activateWithErrorHandler:(id)handler completionHandler:(id)completionHandler;
 - (void)_clearBlocks;
 - (void)_failPairing;
-- (void)_pairWithInfo:(id)a3;
-- (void)_sendPairingWithInfo:(id)a3;
-- (void)activateWithErrorHandler:(id)a3 completionHandler:(id)a4;
-- (void)cancelWithMessage:(id)a3;
+- (void)_pairWithInfo:(id)info;
+- (void)_sendPairingWithInfo:(id)info;
+- (void)activateWithErrorHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)cancelWithMessage:(id)message;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pairWithMessage:(id)a3;
-- (void)pairWithMessage:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5;
+- (void)pairWithMessage:(id)message;
+- (void)pairWithMessage:(id)message errorHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation DDUIEndpointPairingSession
 
-- (DDUIEndpointPairingSession)initWithTransportSession:(id)a3 mode:(unint64_t)a4
+- (DDUIEndpointPairingSession)initWithTransportSession:(id)session mode:(unint64_t)mode
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = DDUIEndpointPairingSession;
   v8 = [(DDUIEndpointPairingSession *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transportSession, a3);
-    v9->_mode = a4;
+    objc_storeStrong(&v8->_transportSession, session);
+    v9->_mode = mode;
     v9->_state = 0;
-    v10 = [v7 sessionID];
-    if (v10)
+    sessionID = [sessionCopy sessionID];
+    if (sessionID)
     {
       v11 = objc_alloc(MEMORY[0x277CCAD78]);
-      v12 = [v7 sessionID];
-      v13 = [v11 initWithUUIDString:v12];
+      sessionID2 = [sessionCopy sessionID];
+      v13 = [v11 initWithUUIDString:sessionID2];
       sessionID = v9->_sessionID;
       v9->_sessionID = v13;
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCAD78] UUID];
-      v12 = v9->_sessionID;
-      v9->_sessionID = v15;
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      sessionID2 = v9->_sessionID;
+      v9->_sessionID = uUID;
     }
 
     v16 = dispatch_group_create();
@@ -55,15 +55,15 @@
     v18 = _DDUICoreLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v7 remoteDevice];
+      remoteDevice = [sessionCopy remoteDevice];
       *buf = 134218754;
       v24 = v9;
       v25 = 2112;
-      v26 = v7;
+      v26 = sessionCopy;
       v27 = 2048;
-      v28 = a4;
+      modeCopy = mode;
       v29 = 2112;
-      v30 = v19;
+      v30 = remoteDevice;
       _os_log_impl(&dword_230EF9000, v18, OS_LOG_TYPE_DEFAULT, "[DDUIEndpointPairingSession init] {self: %p, transportSession: %@, mode: %lu, remoteDevice: %@}", buf, 0x2Au);
     }
   }
@@ -81,7 +81,7 @@
     mode = self->_mode;
     state = self->_state;
     *buf = 134218496;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = state;
     v13 = 2048;
@@ -106,23 +106,23 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelWithMessage:(id)a3
+- (void)cancelWithMessage:(id)message
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [a3 dictionaryRepresentation];
+  dictionaryRepresentation = [message dictionaryRepresentation];
   v5 = _DDUICoreLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     mode = self->_mode;
     state = self->_state;
     *buf = 134218754;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
     v19 = state;
     v20 = 2048;
     v21 = mode;
     v22 = 2112;
-    v23 = v4;
+    v23 = dictionaryRepresentation;
     _os_log_impl(&dword_230EF9000, v5, OS_LOG_TYPE_DEFAULT, "[DDUIEndpointPairingSession cancelWithMessage:] {self: %p, state: %lu, mode: %lu, info: %@}", buf, 0x2Au);
   }
 
@@ -135,9 +135,9 @@
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v10 = [v9 mutableCopy];
 
-    if (v4)
+    if (dictionaryRepresentation)
     {
-      [v10 setObject:v4 forKeyedSubscript:@"usi"];
+      [v10 setObject:dictionaryRepresentation forKeyedSubscript:@"usi"];
     }
 
     transportSession = self->_transportSession;
@@ -179,7 +179,7 @@ void __48__DDUIEndpointPairingSession_cancelWithMessage___block_invoke(uint64_t 
     mode = self->_mode;
     state = self->_state;
     v11 = 134218496;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = state;
     v15 = 2048;
@@ -210,41 +210,41 @@ void __48__DDUIEndpointPairingSession_cancelWithMessage___block_invoke(uint64_t 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pairWithMessage:(id)a3 errorHandler:(id)a4 completionHandler:(id)a5
+- (void)pairWithMessage:(id)message errorHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  [(DDUIEndpointPairingSession *)self _activateWithErrorHandler:a4 completionHandler:a5];
-  v9 = [v8 dictionaryRepresentation];
+  messageCopy = message;
+  [(DDUIEndpointPairingSession *)self _activateWithErrorHandler:handler completionHandler:completionHandler];
+  dictionaryRepresentation = [messageCopy dictionaryRepresentation];
 
-  [(DDUIEndpointPairingSession *)self _pairWithInfo:v9];
+  [(DDUIEndpointPairingSession *)self _pairWithInfo:dictionaryRepresentation];
 }
 
-- (void)pairWithMessage:(id)a3
+- (void)pairWithMessage:(id)message
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(DDUIEndpointPairingSession *)self _pairWithInfo:v4];
+  dictionaryRepresentation = [message dictionaryRepresentation];
+  [(DDUIEndpointPairingSession *)self _pairWithInfo:dictionaryRepresentation];
 }
 
-- (void)_sendPairingWithInfo:(id)a3
+- (void)_sendPairingWithInfo:(id)info
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DDUIEndpointPairingSession *)self mode];
-  if (v5 == 1)
+  infoCopy = info;
+  mode = [(DDUIEndpointPairingSession *)self mode];
+  if (mode == 1)
   {
     v15 = @"type";
     v16 = &unk_2845C3478;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v7 = [v11 mutableCopy];
 
-    if (v4)
+    if (infoCopy)
     {
-      [v7 setObject:v4 forKeyedSubscript:@"usi"];
+      [v7 setObject:infoCopy forKeyedSubscript:@"usi"];
     }
 
     [(DDUIEndpointPairingSession *)self setState:3];
-    v8 = [(DDUIEndpointPairingSession *)self transportSession];
-    v9 = v8;
+    transportSession = [(DDUIEndpointPairingSession *)self transportSession];
+    v9 = transportSession;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__DDUIEndpointPairingSession__sendPairingWithInfo___block_invoke_22;
@@ -254,7 +254,7 @@ void __48__DDUIEndpointPairingSession_cancelWithMessage___block_invoke(uint64_t 
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!mode)
   {
     [(DDUIEndpointPairingSession *)self setState:2];
     v17 = @"type";
@@ -262,13 +262,13 @@ void __48__DDUIEndpointPairingSession_cancelWithMessage___block_invoke(uint64_t 
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v7 = [v6 mutableCopy];
 
-    if (v4)
+    if (infoCopy)
     {
-      [v7 setObject:v4 forKeyedSubscript:@"usi"];
+      [v7 setObject:infoCopy forKeyedSubscript:@"usi"];
     }
 
-    v8 = [(DDUIEndpointPairingSession *)self transportSession];
-    v9 = v8;
+    transportSession = [(DDUIEndpointPairingSession *)self transportSession];
+    v9 = transportSession;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __51__DDUIEndpointPairingSession__sendPairingWithInfo___block_invoke;
@@ -276,7 +276,7 @@ void __48__DDUIEndpointPairingSession_cancelWithMessage___block_invoke(uint64_t 
     v14[4] = self;
     v10 = v14;
 LABEL_9:
-    [v8 sendMessage:v7 withCompletion:v10];
+    [transportSession sendMessage:v7 withCompletion:v10];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -353,16 +353,16 @@ void __51__DDUIEndpointPairingSession__sendPairingWithInfo___block_invoke_22(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateWithErrorHandler:(id)a3 completionHandler:(id)a4
+- (void)activateWithErrorHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a4;
+  completionHandlerCopy = completionHandler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__DDUIEndpointPairingSession_activateWithErrorHandler_completionHandler___block_invoke;
   v8[3] = &unk_2788F5E20;
-  v9 = v6;
-  v7 = v6;
-  [(DDUIEndpointPairingSession *)self _activateWithErrorHandler:a3 completionHandler:v8];
+  v9 = completionHandlerCopy;
+  v7 = completionHandlerCopy;
+  [(DDUIEndpointPairingSession *)self _activateWithErrorHandler:handler completionHandler:v8];
 }
 
 uint64_t __73__DDUIEndpointPairingSession_activateWithErrorHandler_completionHandler___block_invoke(uint64_t a1)
@@ -376,10 +376,10 @@ uint64_t __73__DDUIEndpointPairingSession_activateWithErrorHandler_completionHan
   return result;
 }
 
-- (void)_activateWithErrorHandler:(id)a3 completionHandler:(id)a4
+- (void)_activateWithErrorHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   if (!self->_state)
   {
     objc_initWeak(&location, self);
@@ -390,7 +390,7 @@ uint64_t __73__DDUIEndpointPairingSession_activateWithErrorHandler_completionHan
     v16[2] = __74__DDUIEndpointPairingSession__activateWithErrorHandler_completionHandler___block_invoke;
     v16[3] = &unk_2788F5E48;
     objc_copyWeak(&v18, &location);
-    v9 = v6;
+    v9 = handlerCopy;
     v17 = v9;
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -402,7 +402,7 @@ uint64_t __73__DDUIEndpointPairingSession_activateWithErrorHandler_completionHan
     v10[2] = __74__DDUIEndpointPairingSession__activateWithErrorHandler_completionHandler___block_invoke_2;
     v10[3] = &unk_2788F5E98;
     objc_copyWeak(&v13, &location);
-    v11 = v7;
+    v11 = completionHandlerCopy;
     v12 = v9;
     [(DDUIEndpointPairingTransportSession *)transportSession activateWithErrorHandler:v16 messageHandler:v14 completion:v10];
 
@@ -472,20 +472,20 @@ void __74__DDUIEndpointPairingSession__activateWithErrorHandler_completionHandle
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pairWithInfo:(id)a3
+- (void)_pairWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_initWeak(&location, self);
-  v5 = [(DDUIEndpointPairingSession *)self activateGroup];
+  activateGroup = [(DDUIEndpointPairingSession *)self activateGroup];
   v6 = DDUICorePrimaryQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke;
   block[3] = &unk_2788F5EC0;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v7 = v4;
-  dispatch_group_notify(v5, v6, block);
+  v9 = infoCopy;
+  v7 = infoCopy;
+  dispatch_group_notify(activateGroup, v6, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -497,13 +497,13 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
   [WeakRetained _sendPairingWithInfo:*(a1 + 32)];
 }
 
-- (id)processInitialMessage:(id)a3
+- (id)processInitialMessage:(id)message
 {
-  v4 = a3;
-  if ([(DDUIEndpointPairingSession *)self _handleIncomingMessage:v4])
+  messageCopy = message;
+  if ([(DDUIEndpointPairingSession *)self _handleIncomingMessage:messageCopy])
   {
     v5 = [DDUIPairInitiateMessage alloc];
-    v6 = [v4 objectForKeyedSubscript:@"usi"];
+    v6 = [messageCopy objectForKeyedSubscript:@"usi"];
     v7 = [(DDUIPairInitiateMessage *)v5 initWithDictionaryRepresentation:v6];
   }
 
@@ -515,21 +515,21 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (BOOL)_handleIncomingMessage:(id)a3
+- (BOOL)_handleIncomingMessage:(id)message
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
-  v6 = [v5 unsignedIntegerValue];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"type"];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = v6 - 1;
+  v7 = unsignedIntegerValue - 1;
   v8 = _DDUICoreLog();
   v9 = v8;
-  if ((v6 - 1) >= 4)
+  if ((unsignedIntegerValue - 1) >= 4)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(DDUIEndpointPairingSession *)self _handleIncomingMessage:v4, v9];
+      [(DDUIEndpointPairingSession *)self _handleIncomingMessage:messageCopy, v9];
     }
 
     goto LABEL_16;
@@ -539,9 +539,9 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
   {
     v10 = DDUIEndpointPairingSessionStateString(self->_state);
     mode = self->_mode;
-    v12 = off_2788F5F08[v6 - 1];
+    v12 = off_2788F5F08[unsignedIntegerValue - 1];
     *buf = 134219010;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v10;
     v34 = 2048;
@@ -549,13 +549,13 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
     v36 = 2112;
     v37 = v12;
     v38 = 2112;
-    v39 = v4;
+    v39 = messageCopy;
     _os_log_impl(&dword_230EF9000, v9, OS_LOG_TYPE_DEFAULT, "[DDUIEndpointPairingSession _handleIncomingMessage] {self: %p, state: %@, mode: %lu, messageType: %@, message: %@}", buf, 0x34u);
   }
 
   if (self->_state == 2)
   {
-    switch(v6)
+    switch(unsignedIntegerValue)
     {
       case 4:
         self->_state = 5;
@@ -565,7 +565,7 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
         self->_state = 5;
         completionHandler = self->_completionHandler;
         v18 = [DDUIPairCompleteMessage alloc];
-        v15 = [v4 objectForKeyedSubscript:@"usi"];
+        v15 = [messageCopy objectForKeyedSubscript:@"usi"];
         v16 = [(DDUIPairCompleteMessage *)v18 initWithDictionaryRepresentation:v15];
         completionHandler[2](completionHandler, 1, 0, v16);
         break;
@@ -574,15 +574,15 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
         if (self->_mode != 1)
         {
           v21 = [DDUIPairCompleteMessage alloc];
-          v22 = [v4 objectForKeyedSubscript:@"usi"];
+          v22 = [messageCopy objectForKeyedSubscript:@"usi"];
           v9 = [(DDUIPairCompleteMessage *)v21 initWithDictionaryRepresentation:v22];
 
-          v23 = [v9 listenerUUID];
+          listenerUUID = [v9 listenerUUID];
 
-          if (v23)
+          if (listenerUUID)
           {
             transportSession = self->_transportSession;
-            v25 = [v9 listenerUUID];
+            listenerUUID2 = [v9 listenerUUID];
             v28[0] = MEMORY[0x277D85DD0];
             v28[1] = 3221225472;
             v28[2] = __53__DDUIEndpointPairingSession__handleIncomingMessage___block_invoke;
@@ -590,7 +590,7 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
             v28[4] = self;
             v9 = v9;
             v29 = v9;
-            [(DDUIEndpointPairingTransportSession *)transportSession generateNetworkEndpointIdentifierForRemoteDevice:v25 withCompletion:v28];
+            [(DDUIEndpointPairingTransportSession *)transportSession generateNetworkEndpointIdentifierForRemoteDevice:listenerUUID2 withCompletion:v28];
           }
 
           else
@@ -599,12 +599,12 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134217984;
-              v31 = self;
+              selfCopy2 = self;
               _os_log_impl(&dword_230EF9000, v26, OS_LOG_TYPE_DEFAULT, "No listener returned from remote device, skipping generating mapping {self: %p}", buf, 0xCu);
             }
 
-            v27 = [(DDUIEndpointPairingSession *)self completionHandler];
-            (v27)[2](v27, 0, 0, v9);
+            completionHandler = [(DDUIEndpointPairingSession *)self completionHandler];
+            (completionHandler)[2](completionHandler, 0, 0, v9);
 
             [(DDUIEndpointPairingSession *)self _clearBlocks];
           }
@@ -614,7 +614,7 @@ void __44__DDUIEndpointPairingSession__pairWithInfo___block_invoke(uint64_t a1)
 
         v13 = self->_completionHandler;
         v14 = [DDUIPairCompleteMessage alloc];
-        v15 = [v4 objectForKeyedSubscript:@"usi"];
+        v15 = [messageCopy objectForKeyedSubscript:@"usi"];
         v16 = [(DDUIPairCompleteMessage *)v14 initWithDictionaryRepresentation:v15];
         (*(v13 + 2))(v13, 0, 0, v16);
         break;
@@ -668,7 +668,7 @@ void __53__DDUIEndpointPairingSession__handleIncomingMessage___block_invoke(uint
     mode = self->_mode;
     state = self->_state;
     *buf = 134218496;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
     v17 = state;
     v18 = 2048;

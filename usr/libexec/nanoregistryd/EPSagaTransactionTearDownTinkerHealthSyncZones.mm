@@ -1,15 +1,15 @@
 @interface EPSagaTransactionTearDownTinkerHealthSyncZones
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionTearDownTinkerHealthSyncZones
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a3;
-  v6 = [v5 queue];
-  v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+  entryCopy = entry;
+  queue = [entryCopy queue];
+  v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   currentTimer = self->_currentTimer;
   self->_currentTimer = v7;
 
@@ -22,7 +22,7 @@
   handler[2] = sub_1000E7278;
   handler[3] = &unk_100175598;
   handler[4] = self;
-  v12 = v5;
+  v12 = entryCopy;
   v22 = v12;
   dispatch_source_set_event_handler(v11, handler);
   dispatch_resume(self->_currentTimer);

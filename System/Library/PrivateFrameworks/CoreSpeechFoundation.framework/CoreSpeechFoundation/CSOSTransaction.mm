@@ -1,5 +1,5 @@
 @interface CSOSTransaction
-- (CSOSTransaction)initWithDescription:(id)a3;
+- (CSOSTransaction)initWithDescription:(id)description;
 - (void)dealloc;
 @end
 
@@ -25,20 +25,20 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (CSOSTransaction)initWithDescription:(id)a3
+- (CSOSTransaction)initWithDescription:(id)description
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   v18.receiver = self;
   v18.super_class = CSOSTransaction;
   v5 = [(CSOSTransaction *)&v18 init];
   if (v5)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [v4 copy];
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
-    v10 = [v6 stringWithFormat:@"%@-%@", v7, v9];
+    v7 = [descriptionCopy copy];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v10 = [v6 stringWithFormat:@"%@-%@", v7, uUIDString];
     description = v5->_description;
     v5->_description = v10;
 

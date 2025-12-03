@@ -1,34 +1,34 @@
 @interface SPUITableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation SPUITableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SPUITableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"SPUITableViewController" conformsToProtocol:@"UITableViewDataSource"];
-  [v3 validateClass:@"SPUISearchModel"];
-  [v3 validateClass:@"SPUISearchModel" hasClassMethod:@"sharedGeneralInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUISearchModel" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPSearchResultSection"];
-  [v3 validateClass:@"SPSearchResultSection" hasInstanceMethod:@"domain" withFullSignature:{"I", 0}];
-  [v3 validateClass:@"SPSearchResultSection" hasInstanceMethod:@"hasDisplayIdentifier" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SPSearchResultSection" hasInstanceMethod:@"displayIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FBApplicationInfo"];
-  [v3 validateClass:@"FBApplicationInfo" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SPUITableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"SPUITableViewController" conformsToProtocol:@"UITableViewDataSource"];
+  [validationsCopy validateClass:@"SPUISearchModel"];
+  [validationsCopy validateClass:@"SPUISearchModel" hasClassMethod:@"sharedGeneralInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUISearchModel" hasInstanceMethod:@"sections" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPSearchResultSection"];
+  [validationsCopy validateClass:@"SPSearchResultSection" hasInstanceMethod:@"domain" withFullSignature:{"I", 0}];
+  [validationsCopy validateClass:@"SPSearchResultSection" hasInstanceMethod:@"hasDisplayIdentifier" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SPSearchResultSection" hasInstanceMethod:@"displayIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FBApplicationInfo"];
+  [validationsCopy validateClass:@"FBApplicationInfo" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = SPUITableViewControllerAccessibility;
-  v8 = [(SPUITableViewControllerAccessibility *)&v23 tableView:v6 cellForRowAtIndexPath:v7];
-  [v7 section];
+  v8 = [(SPUITableViewControllerAccessibility *)&v23 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  [pathCopy section];
   v9 = [MEMORY[0x29ED37100](@"SPUISearchModel") safeValueForKey:@"sharedGeneralInstance"];
   v17 = 0;
   v18 = &v17;

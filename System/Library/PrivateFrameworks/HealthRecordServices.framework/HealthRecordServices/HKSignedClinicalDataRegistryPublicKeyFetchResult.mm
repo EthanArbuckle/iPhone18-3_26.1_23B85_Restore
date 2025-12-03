@@ -1,27 +1,27 @@
 @interface HKSignedClinicalDataRegistryPublicKeyFetchResult
-- (BOOL)isEqual:(id)a3;
-- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithCoder:(id)a3;
-- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithKeyID:(id)a3 outcome:(unint64_t)a4 jwkData:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithCoder:(id)coder;
+- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithKeyID:(id)d outcome:(unint64_t)outcome jwkData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataRegistryPublicKeyFetchResult
 
-- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithKeyID:(id)a3 outcome:(unint64_t)a4 jwkData:(id)a5
+- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithKeyID:(id)d outcome:(unint64_t)outcome jwkData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = HKSignedClinicalDataRegistryPublicKeyFetchResult;
   v10 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     kid = v10->_kid;
     v10->_kid = v11;
 
-    v10->_outcome = a4;
-    v13 = [v9 copy];
+    v10->_outcome = outcome;
+    v13 = [dataCopy copy];
     jwkData = v10->_jwkData;
     v10->_jwkData = v13;
   }
@@ -29,13 +29,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -74,9 +74,9 @@ LABEL_18:
 
 LABEL_11:
         jwkData = self->_jwkData;
-        v17 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
-        v18 = v17;
-        if (jwkData == v17)
+        jwkData = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
+        v18 = jwkData;
+        if (jwkData == jwkData)
         {
 
           v14 = 1;
@@ -84,13 +84,13 @@ LABEL_11:
 
         else
         {
-          v19 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
-          if (v19)
+          jwkData2 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
+          if (jwkData2)
           {
-            v20 = v19;
+            v20 = jwkData2;
             v21 = self->_jwkData;
-            v22 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
-            v14 = [(NSData *)v21 isEqual:v22];
+            jwkData3 = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)v8 jwkData];
+            v14 = [(NSData *)v21 isEqual:jwkData3];
           }
 
           else
@@ -121,35 +121,35 @@ LABEL_21:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   kid = self->_kid;
-  v5 = a3;
-  [v5 encodeObject:kid forKey:@"kid"];
-  [v5 encodeInteger:self->_outcome forKey:@"outcome"];
-  [v5 encodeObject:self->_jwkData forKey:@"jwkData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:kid forKey:@"kid"];
+  [coderCopy encodeInteger:self->_outcome forKey:@"outcome"];
+  [coderCopy encodeObject:self->_jwkData forKey:@"jwkData"];
 }
 
-- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithCoder:(id)a3
+- (HKSignedClinicalDataRegistryPublicKeyFetchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kid"];
-  if (v5 && ([v4 containsValueForKey:@"outcome"] & 1) != 0)
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kid"];
+  if (v5 && ([coderCopy containsValueForKey:@"outcome"] & 1) != 0)
   {
-    v6 = [v4 decodeIntegerForKey:@"outcome"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jwkData"];
+    v6 = [coderCopy decodeIntegerForKey:@"outcome"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jwkData"];
     self = [(HKSignedClinicalDataRegistryPublicKeyFetchResult *)self initWithKeyID:v5 outcome:v6 jwkData:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v8 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

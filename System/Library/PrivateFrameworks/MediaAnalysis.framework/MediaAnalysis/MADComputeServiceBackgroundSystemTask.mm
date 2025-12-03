@@ -1,7 +1,7 @@
 @interface MADComputeServiceBackgroundSystemTask
 + (id)sharedTask;
-- (void)executeWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (void)submitTask:(id *)a3;
+- (void)executeWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)submitTask:(id *)task;
 @end
 
 @implementation MADComputeServiceBackgroundSystemTask
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000CE6F0;
   block[3] = &unk_100282998;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B8370 != -1)
   {
     dispatch_once(&qword_1002B8370, block);
@@ -23,23 +23,23 @@
   return v2;
 }
 
-- (void)submitTask:(id *)a3
+- (void)submitTask:(id *)task
 {
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_opt_class() identifier];
+  identifier = [objc_opt_class() identifier];
   if (MediaAnalysisLogLevel() >= 7)
   {
     v6 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v6))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = identifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "[%@] Try submit the BGST task", buf, 0xCu);
     }
   }
 
   v7 = +[BGSystemTaskScheduler sharedScheduler];
-  v8 = [v7 taskRequestForIdentifier:v5];
+  v8 = [v7 taskRequestForIdentifier:identifier];
 
   if (v8)
   {
@@ -49,7 +49,7 @@
       if (os_log_type_enabled(&_os_log_default, v9))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = identifier;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v9, "[%@] the BGST task already existed, bailing out.", buf, 0xCu);
       }
     }
@@ -60,7 +60,7 @@
 
   else
   {
-    v11 = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:v5];
+    v11 = [[BGNonRepeatingSystemTaskRequest alloc] initWithIdentifier:identifier];
     [v11 setGroupName:MediaAnalysisDaemonDomain];
     [v11 setRequiresBuddyComplete:{objc_msgSend(objc_opt_class(), "buddyCheckRequired")}];
     [v11 setGroupConcurrencyLimit:1];
@@ -83,7 +83,7 @@
       if (os_log_type_enabled(&_os_log_default, v14))
       {
         *buf = 138412546;
-        v17 = v5;
+        v17 = identifier;
         v18 = 2112;
         v19 = v10;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[%@] Failed to submit the BGST task with error: %@", buf, 0x16u);
@@ -91,22 +91,22 @@
     }
 
     objc_autoreleasePoolPop(v4);
-    if (a3 && v10)
+    if (task && v10)
     {
-      *a3 = [v10 copy];
+      *task = [v10 copy];
     }
   }
 }
 
-- (void)executeWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
+- (void)executeWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v51 = a3;
-  v53 = a4;
-  v54 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  v9 = [objc_opt_class() identifier];
-  v10 = [NSString stringWithFormat:@"[%@][%@]", v8, v9];
+  identifier = [objc_opt_class() identifier];
+  v10 = [NSString stringWithFormat:@"[%@][%@]", v8, identifier];
 
   v11 = +[MADManagedRequest statusColumnName];
   v12 = [NSPredicate predicateWithFormat:@"%K == %lu", v11, 0];
@@ -151,21 +151,21 @@
         }
 
         v22 = *(*(&v64 + 1) + 8 * i);
-        v23 = [v22 requestID];
-        v24 = [v16 objectForKeyedSubscript:v23];
+        requestID = [v22 requestID];
+        v24 = [v16 objectForKeyedSubscript:requestID];
 
         if (!v24)
         {
           v25 = +[NSMutableArray array];
-          v26 = [v22 requestID];
-          [v16 setObject:v25 forKeyedSubscript:v26];
+          requestID2 = [v22 requestID];
+          [v16 setObject:v25 forKeyedSubscript:requestID2];
 
-          v27 = [v22 requestID];
-          [v17 addObject:v27];
+          requestID3 = [v22 requestID];
+          [v17 addObject:requestID3];
         }
 
-        v28 = [v22 requestID];
-        v29 = [v16 objectForKeyedSubscript:v28];
+        requestID4 = [v22 requestID];
+        v29 = [v16 objectForKeyedSubscript:requestID4];
         [v29 addObject:v22];
       }
 
@@ -181,7 +181,7 @@
   v61[3] = &unk_100285BE8;
   v45 = v10;
   v62 = v45;
-  v42 = v51;
+  v42 = blockCopy;
   v63 = v42;
   v52 = objc_retainBlock(v61);
   v57 = 0u;
@@ -211,11 +211,11 @@
         v55[1] = 3221225472;
         v55[2] = sub_1000CF29C;
         v55[3] = &unk_100285C10;
-        v35 = v54;
+        v35 = completionHandlerCopy;
         v56 = v35;
         v36 = objc_retainBlock(v55);
         v37 = [v16 objectForKeyedSubscript:v33];
-        v38 = [MADComputeServiceProcessingTask taskWithManagedRequests:v37 cancelBlock:v52 progressHandler:v53 resultsHandler:0 completionHandler:v36];
+        v38 = [MADComputeServiceProcessingTask taskWithManagedRequests:v37 cancelBlock:v52 progressHandler:handlerCopy resultsHandler:0 completionHandler:v36];
 
         v39 = +[VCPMADTaskScheduler sharedInstance];
         v40 = [v39 addBackgroundTask:v38 withQoS:17];
@@ -240,7 +240,7 @@
             _os_log_impl(&_mh_execute_header, &_os_log_default, v46, "%@ Failed to submit background task to task scheduler; prepare to reschedule", buf, 0xCu);
           }
 
-          (*(v54 + 2))(v35, 4294967168);
+          (*(completionHandlerCopy + 2))(v35, 4294967168);
         }
 
         objc_autoreleasePoolPop(v34);

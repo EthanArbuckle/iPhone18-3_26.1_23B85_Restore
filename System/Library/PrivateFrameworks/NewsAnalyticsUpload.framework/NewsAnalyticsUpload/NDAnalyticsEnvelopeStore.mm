@@ -1,18 +1,18 @@
 @interface NDAnalyticsEnvelopeStore
 - (NDAnalyticsEnvelopeStore)init;
-- (NDAnalyticsEnvelopeStore)initWithStoreDirectoryFileURL:(id)a3;
+- (NDAnalyticsEnvelopeStore)initWithStoreDirectoryFileURL:(id)l;
 - (NDAnalyticsEnvelopeStoreObserver)observer;
-- (id)allEntriesWithHoldToken:(id *)a3;
-- (id)envelopesForEntries:(id)a3;
-- (id)sizesOfEnvelopesWithEntries:(id)a3;
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3;
-- (void)_deleteEnvelopesForKeysFromStore:(id)a3;
-- (void)_reportEnvelopesToNewsAutomationIfNeeded:(id)a3;
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4;
-- (void)copyEnvelopes:(id)a3;
-- (void)deleteEnvelopesForEntries:(id)a3;
+- (id)allEntriesWithHoldToken:(id *)token;
+- (id)envelopesForEntries:(id)entries;
+- (id)sizesOfEnvelopesWithEntries:(id)entries;
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock;
+- (void)_deleteEnvelopesForKeysFromStore:(id)store;
+- (void)_reportEnvelopesToNewsAutomationIfNeeded:(id)needed;
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock;
+- (void)copyEnvelopes:(id)envelopes;
+- (void)deleteEnvelopesForEntries:(id)entries;
 - (void)enableFlushing;
-- (void)setObserver:(id)a3;
+- (void)setObserver:(id)observer;
 @end
 
 @implementation NDAnalyticsEnvelopeStore
@@ -43,10 +43,10 @@
   objc_exception_throw(v6);
 }
 
-- (NDAnalyticsEnvelopeStore)initWithStoreDirectoryFileURL:(id)a3
+- (NDAnalyticsEnvelopeStore)initWithStoreDirectoryFileURL:(id)l
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore initWithStoreDirectoryFileURL:];
   }
@@ -56,10 +56,10 @@
   v5 = [(NDAnalyticsEnvelopeStore *)&v16 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"envelope-store" isDirectory:1];
+    v6 = [lCopy URLByAppendingPathComponent:@"envelope-store" isDirectory:1];
     v7 = objc_alloc(MEMORY[0x277D30E18]);
-    v8 = [v6 path];
-    v9 = [v7 initWithDirectoryAtPath:v8 preferredAssetPathExtension:@"env"];
+    path = [v6 path];
+    v9 = [v7 initWithDirectoryAtPath:path preferredAssetPathExtension:@"env"];
 
     assetStore = v5->_assetStore;
     v5->_assetStore = v9;
@@ -67,8 +67,8 @@
 
     v12 = objc_opt_new();
     [v12 setDelegate:v5];
-    v13 = [(FCAssetStore *)v11 allKeys];
-    [v12 setupWithInitialKeys:v13];
+    allKeys = [(FCAssetStore *)v11 allKeys];
+    [v12 setupWithInitialKeys:allKeys];
 
     cacheCoordinator = v5->_cacheCoordinator;
     v5->_cacheCoordinator = v12;
@@ -77,36 +77,36 @@
   return v5;
 }
 
-- (void)copyEnvelopes:(id)a3
+- (void)copyEnvelopes:(id)envelopes
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  envelopesCopy = envelopes;
+  if (!envelopesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore copyEnvelopes:];
   }
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __42__NDAnalyticsEnvelopeStore_copyEnvelopes___block_invoke;
   v20[3] = &unk_27997A780;
-  v21 = v5;
-  v6 = v5;
-  v7 = [v4 fc_dictionaryWithKeyBlock:v20];
-  v8 = [(NDAnalyticsEnvelopeStore *)self assetStore];
-  v9 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  v21 = date;
+  v6 = date;
+  v7 = [envelopesCopy fc_dictionaryWithKeyBlock:v20];
+  assetStore = [(NDAnalyticsEnvelopeStore *)self assetStore];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __42__NDAnalyticsEnvelopeStore_copyEnvelopes___block_invoke_2;
   v16 = &unk_27997A708;
   v17 = v7;
-  v18 = v8;
-  v19 = v9;
-  v10 = v9;
-  v11 = v8;
+  v18 = assetStore;
+  v19 = cacheCoordinator;
+  v10 = cacheCoordinator;
+  v11 = assetStore;
   v12 = v7;
   [v10 performCacheWrite:&v13];
-  [(NDAnalyticsEnvelopeStore *)self _reportEnvelopesToNewsAutomationIfNeeded:v4, v13, v14, v15, v16];
+  [(NDAnalyticsEnvelopeStore *)self _reportEnvelopesToNewsAutomationIfNeeded:envelopesCopy, v13, v14, v15, v16];
 }
 
 id __42__NDAnalyticsEnvelopeStore_copyEnvelopes___block_invoke(uint64_t a1, void *a2)
@@ -146,24 +146,24 @@ void __42__NDAnalyticsEnvelopeStore_copyEnvelopes___block_invoke_3(uint64_t a1, 
   [*(a1 + 40) didInsertKeyIntoCache:v8 withLifetimeHint:1];
 }
 
-- (void)deleteEnvelopesForEntries:(id)a3
+- (void)deleteEnvelopesForEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  entriesCopy = entries;
+  if (!entriesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore deleteEnvelopesForEntries:];
   }
 
-  v5 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__NDAnalyticsEnvelopeStore_deleteEnvelopesForEntries___block_invoke;
   v8[3] = &unk_27997A708;
-  v9 = v4;
-  v10 = self;
-  v11 = v5;
-  v6 = v5;
-  v7 = v4;
+  v9 = entriesCopy;
+  selfCopy = self;
+  v11 = cacheCoordinator;
+  v6 = cacheCoordinator;
+  v7 = entriesCopy;
   [v6 performCacheWrite:v8];
 }
 
@@ -177,22 +177,22 @@ void __54__NDAnalyticsEnvelopeStore_deleteEnvelopesForEntries___block_invoke(voi
 - (void)enableFlushing
 {
   v4 = [objc_alloc(MEMORY[0x277D30E90]) initWithLowWaterMark:5000000 highWaterMark:10000000 alwaysFlushKeysWithZeroInterest:0];
-  v3 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
-  [v3 enableFlushingWithPolicy:v4];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  [cacheCoordinator enableFlushingWithPolicy:v4];
 }
 
-- (void)setObserver:(id)a3
+- (void)setObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  observerCopy = observer;
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__NDAnalyticsEnvelopeStore_setObserver___block_invoke;
   v7[3] = &unk_27997A678;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performCacheWrite:v7];
+  v8 = observerCopy;
+  v6 = observerCopy;
+  [cacheCoordinator performCacheWrite:v7];
 }
 
 - (NDAnalyticsEnvelopeStoreObserver)observer
@@ -203,14 +203,14 @@ void __54__NDAnalyticsEnvelopeStore_deleteEnvelopesForEntries___block_invoke(voi
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
   v12 = 0;
-  v3 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__NDAnalyticsEnvelopeStore_observer__block_invoke;
   v6[3] = &unk_27997A7D0;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performCacheWrite:v6];
+  [cacheCoordinator performCacheWrite:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -228,7 +228,7 @@ uint64_t __36__NDAnalyticsEnvelopeStore_observer__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)allEntriesWithHoldToken:(id *)a3
+- (id)allEntriesWithHoldToken:(id *)token
 {
   v16 = 0;
   v17 = &v16;
@@ -242,10 +242,10 @@ uint64_t __36__NDAnalyticsEnvelopeStore_observer__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__0;
   v14 = __Block_byref_object_dispose__0;
   v15 = 0;
-  v5 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
-  [v5 pruneToMaxCount:10];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  [cacheCoordinator pruneToMaxCount:10];
 
-  v6 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  cacheCoordinator2 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__NDAnalyticsEnvelopeStore_allEntriesWithHoldToken___block_invoke;
@@ -253,12 +253,12 @@ uint64_t __36__NDAnalyticsEnvelopeStore_observer__block_invoke(uint64_t a1)
   v9[4] = self;
   v9[5] = &v16;
   v9[6] = &v10;
-  v9[7] = a3;
-  [v6 performCacheRead:v9];
+  v9[7] = token;
+  [cacheCoordinator2 performCacheRead:v9];
 
-  if (a3)
+  if (token)
   {
-    *a3 = v11[5];
+    *token = v11[5];
   }
 
   v7 = NDAnalyticsEnvelopeStoreEntriesFromStringRepresentations(v17[5]);
@@ -288,10 +288,10 @@ void __52__NDAnalyticsEnvelopeStore_allEntriesWithHoldToken___block_invoke(uint6
   }
 }
 
-- (id)sizesOfEnvelopesWithEntries:(id)a3
+- (id)sizesOfEnvelopesWithEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  entriesCopy = entries;
+  if (!entriesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore sizesOfEnvelopesWithEntries:];
   }
@@ -302,16 +302,16 @@ void __52__NDAnalyticsEnvelopeStore_allEntriesWithHoldToken___block_invoke(uint6
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__NDAnalyticsEnvelopeStore_sizesOfEnvelopesWithEntries___block_invoke;
   v9[3] = &unk_27997A848;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = entriesCopy;
   v10 = v6;
-  [v5 performCacheRead:v9];
+  [cacheCoordinator performCacheRead:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -347,10 +347,10 @@ id __56__NDAnalyticsEnvelopeStore_sizesOfEnvelopesWithEntries___block_invoke_2(u
   return v6;
 }
 
-- (id)envelopesForEntries:(id)a3
+- (id)envelopesForEntries:(id)entries
 {
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  entriesCopy = entries;
+  if (!entriesCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore envelopesForEntries:];
   }
@@ -361,16 +361,16 @@ id __56__NDAnalyticsEnvelopeStore_sizesOfEnvelopesWithEntries___block_invoke_2(u
   v15 = __Block_byref_object_copy__0;
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
-  v5 = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
+  cacheCoordinator = [(NDAnalyticsEnvelopeStore *)self cacheCoordinator];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke;
   v9[3] = &unk_27997A848;
   v9[4] = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = entriesCopy;
   v10 = v6;
-  [v5 performCacheRead:v9];
+  [cacheCoordinator performCacheRead:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -408,38 +408,38 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
   return v8;
 }
 
-- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)a3
+- (unint64_t)cacheCoordinatorCurrentSizeWithReadLock:(id)lock
 {
-  v3 = [(NDAnalyticsEnvelopeStore *)self assetStore];
-  v4 = [v3 storeSize];
+  assetStore = [(NDAnalyticsEnvelopeStore *)self assetStore];
+  storeSize = [assetStore storeSize];
 
-  return v4;
+  return storeSize;
 }
 
-- (void)cacheCoordinator:(id)a3 flushKeysWithWriteLock:(id)a4
+- (void)cacheCoordinator:(id)coordinator flushKeysWithWriteLock:(id)lock
 {
-  v7 = [a4 allObjects];
-  [(NDAnalyticsEnvelopeStore *)self _deleteEnvelopesForKeysFromStore:v7];
+  allObjects = [lock allObjects];
+  [(NDAnalyticsEnvelopeStore *)self _deleteEnvelopesForKeysFromStore:allObjects];
   WeakRetained = objc_loadWeakRetained(&self->_observer);
-  v6 = NDAnalyticsEnvelopeStoreEntriesFromStringRepresentations(v7);
+  v6 = NDAnalyticsEnvelopeStoreEntriesFromStringRepresentations(allObjects);
   [WeakRetained envelopeStore:self didFlushEnvelopesForEntries:v6];
 }
 
-- (void)_deleteEnvelopesForKeysFromStore:(id)a3
+- (void)_deleteEnvelopesForKeysFromStore:(id)store
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  storeCopy = store;
+  if (!storeCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NDAnalyticsEnvelopeStore _deleteEnvelopesForKeysFromStore:];
   }
 
-  v5 = [(NDAnalyticsEnvelopeStore *)self assetStore];
+  assetStore = [(NDAnalyticsEnvelopeStore *)self assetStore];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = storeCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -454,7 +454,7 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
           objc_enumerationMutation(v6);
         }
 
-        [v5 removeFileWithKey:{*(*(&v12 + 1) + 8 * i), v12}];
+        [assetStore removeFileWithKey:{*(*(&v12 + 1) + 8 * i), v12}];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -466,10 +466,10 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportEnvelopesToNewsAutomationIfNeeded:(id)a3
+- (void)_reportEnvelopesToNewsAutomationIfNeeded:(id)needed
 {
   v45 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  neededCopy = needed;
   if (NFInternalBuild())
   {
     v4 = NewsCoreUserDefaults();
@@ -484,8 +484,8 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v24 = v3;
-      obj = v3;
+      v24 = neededCopy;
+      obj = neededCopy;
       v28 = [obj countByEnumeratingWithState:&v32 objects:v44 count:16];
       if (v28)
       {
@@ -502,15 +502,15 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
             v8 = *(*(&v32 + 1) + 8 * i);
             v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"contentType-%d", objc_msgSend(v8, "contentType")];
             v10 = [v27 URLByAppendingPathComponent:v9 isDirectory:1];
-            v11 = [MEMORY[0x277CCAA00] defaultManager];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
             v31 = 0;
-            [v11 createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v31];
+            [defaultManager createDirectoryAtURL:v10 withIntermediateDirectories:1 attributes:0 error:&v31];
             v29 = v31;
 
-            v12 = [MEMORY[0x277CCAA00] defaultManager];
-            v13 = [v10 path];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            path = [v10 path];
             v30 = 0;
-            v14 = [v12 contentsOfDirectoryAtPath:v13 error:&v30];
+            v14 = [defaultManager2 contentsOfDirectoryAtPath:path error:&v30];
             v15 = v30;
             v16 = [v14 count];
 
@@ -533,8 +533,8 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
             v19 = [v17 stringWithFormat:@"%@", v18];
             v20 = [v10 URLByAppendingPathComponent:v19];
 
-            v21 = [v8 data];
-            [v21 writeToURL:v20 atomically:1];
+            data = [v8 data];
+            [data writeToURL:v20 atomically:1];
           }
 
           v28 = [obj countByEnumeratingWithState:&v32 objects:v44 count:16];
@@ -543,7 +543,7 @@ id __48__NDAnalyticsEnvelopeStore_envelopesForEntries___block_invoke_2(uint64_t 
         while (v28);
       }
 
-      v3 = v24;
+      neededCopy = v24;
     }
   }
 

@@ -1,19 +1,19 @@
 @interface PDFPageLabelView
-- (PDFPageLabelView)initWithFrame:(CGRect)a3;
+- (PDFPageLabelView)initWithFrame:(CGRect)frame;
 - (void)_startFade;
-- (void)setCurrentPageNumber:(unint64_t)a3 forPageCount:(unint64_t)a4;
+- (void)setCurrentPageNumber:(unint64_t)number forPageCount:(unint64_t)count;
 - (void)updateEffect;
 @end
 
 @implementation PDFPageLabelView
 
-- (PDFPageLabelView)initWithFrame:(CGRect)a3
+- (PDFPageLabelView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v30.receiver = self;
   v30.super_class = PDFPageLabelView;
-  v5 = [(PDFPageLabelView *)&v30 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PDFPageLabelView *)&v30 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = objc_alloc_init(PDFPageLabelViewPrivate);
@@ -24,11 +24,11 @@
     v8 = *MEMORY[0x1E695EFF8];
     v9 = *(MEMORY[0x1E695EFF8] + 8);
     [(PDFPageLabelView *)v5 setAlpha:0.0];
-    v10 = [(PDFPageLabelView *)v5 layer];
-    [v10 setAllowsGroupOpacity:0];
+    layer = [(PDFPageLabelView *)v5 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v11 = [(PDFPageLabelView *)v5 layer];
-    [v11 setAllowsGroupBlending:0];
+    layer2 = [(PDFPageLabelView *)v5 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     v12 = [MEMORY[0x1E69DD378] settingsForPrivateStyle:2020];
     [v12 setScale:0.5];
@@ -53,17 +53,17 @@
     [(UILabel *)v19 setFont:v20];
 
     v21 = v5->_private->label;
-    v22 = [MEMORY[0x1E69DC888] blackColor];
-    [(UILabel *)v21 setTextColor:v22];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UILabel *)v21 setTextColor:blackColor];
 
     [(UILabel *)v5->_private->label setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v5->_private->label setAlpha:0.4];
-    v23 = [(UILabel *)v5->_private->label layer];
+    layer3 = [(UILabel *)v5->_private->label layer];
     v24 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CE8]];
-    [v23 setCompositingFilter:v24];
+    [layer3 setCompositingFilter:v24];
 
-    v25 = [(_UIBackdropView *)v5->_private->backdropView contentView];
-    [v25 addSubview:v5->_private->label];
+    contentView = [(_UIBackdropView *)v5->_private->backdropView contentView];
+    [contentView addSubview:v5->_private->label];
 
     v26 = [[PDFTimer alloc] initWithThrottleDelay:sel__startFade forSelector:v5 forTarget:1.5];
     v27 = v5->_private;
@@ -74,11 +74,11 @@
   return v5;
 }
 
-- (void)setCurrentPageNumber:(unint64_t)a3 forPageCount:(unint64_t)a4
+- (void)setCurrentPageNumber:(unint64_t)number forPageCount:(unint64_t)count
 {
   v7 = MEMORY[0x1E696AEC0];
   v8 = PDFKitLocalizedString(@"%d of %d");
-  v9 = [v7 stringWithFormat:v8, a3, a4];
+  v9 = [v7 stringWithFormat:v8, number, count];
 
   [(UILabel *)self->_private->label setText:v9];
   [(PDFPageLabelView *)self updateEffect];

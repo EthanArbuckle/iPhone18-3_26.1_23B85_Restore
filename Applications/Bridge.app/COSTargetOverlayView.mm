@@ -1,23 +1,23 @@
 @interface COSTargetOverlayView
 - (CGRect)targetRect;
-- (COSTargetOverlayView)initWithFrame:(CGRect)a3;
+- (COSTargetOverlayView)initWithFrame:(CGRect)frame;
 - (void)_checkForProximateAgaveDevice;
 - (void)_configureMetrics;
 - (void)_setupSubviews;
-- (void)_updateProgressViewFrame:(float)a3;
+- (void)_updateProgressViewFrame:(float)frame;
 - (void)_updateSubviews;
 - (void)layoutSubviews;
 - (void)removeAnimation;
-- (void)setScanningProgress:(double)a3 key:(id)a4;
+- (void)setScanningProgress:(double)progress key:(id)key;
 @end
 
 @implementation COSTargetOverlayView
 
-- (COSTargetOverlayView)initWithFrame:(CGRect)a3
+- (COSTargetOverlayView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = COSTargetOverlayView;
-  v3 = [(COSTargetOverlayView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSTargetOverlayView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,10 +39,10 @@
   [(COSTargetOverlayView *)self _updateSubviews];
 }
 
-- (void)setScanningProgress:(double)a3 key:(id)a4
+- (void)setScanningProgress:(double)progress key:(id)key
 {
-  v18 = a4;
-  if (a3 > 0.0 && self->_cachedProgress != a3)
+  keyCopy = key;
+  if (progress > 0.0 && self->_cachedProgress != progress)
   {
     [(NSTimer *)self->_progressTimer invalidate];
     progressTimer = self->_progressTimer;
@@ -61,8 +61,8 @@
 
       if (!self->_firstReadDone)
       {
-        v11 = [(COSTargetOverlayView *)self outlineView];
-        [v11 setHidden:1];
+        outlineView = [(COSTargetOverlayView *)self outlineView];
+        [outlineView setHidden:1];
 
         [(COSTargetProgressView *)self->_progressView pulseAnimation];
         [(COSTargetBackgroundView *)self->_backgroundView pulseBackground];
@@ -70,7 +70,7 @@
       }
     }
 
-    if (a3 >= 1.0)
+    if (progress >= 1.0)
     {
       v12 = self->_progressView;
       v13 = +[UIColor greenColor];
@@ -83,30 +83,30 @@
   }
 
   v15 = MGGetBoolAnswer();
-  v17 = v18;
+  v17 = keyCopy;
   if (v15)
   {
-    if (v18 || (cachedProgress = self->_cachedProgress, cachedProgress != a3))
+    if (keyCopy || (cachedProgress = self->_cachedProgress, cachedProgress != progress))
     {
-      if (v18)
+      if (keyCopy)
       {
-        [(UILabel *)self->_progressLabel setText:v18];
+        [(UILabel *)self->_progressLabel setText:keyCopy];
       }
 
-      *&cachedProgress = a3;
+      *&cachedProgress = progress;
       [(COSTargetOverlayView *)self _updateProgressViewFrame:cachedProgress];
-      v17 = v18;
+      v17 = keyCopy;
     }
   }
 
-  self->_cachedProgress = a3;
+  self->_cachedProgress = progress;
 }
 
 - (void)removeAnimation
 {
   self->_firstReadDone = 0;
-  v3 = [(COSTargetOverlayView *)self outlineView];
-  [v3 setHidden:0];
+  outlineView = [(COSTargetOverlayView *)self outlineView];
+  [outlineView setHidden:0];
 
   self->_cachedProgress = -1.0;
   [(COSTargetBackgroundView *)self->_backgroundView removeAnimation];
@@ -115,7 +115,7 @@
   [(COSTargetProgressView *)progressView removeAnimation];
 }
 
-- (void)_updateProgressViewFrame:(float)a3
+- (void)_updateProgressViewFrame:(float)frame
 {
   p_targetRect = &self->_targetRect;
   MinX = CGRectGetMinX(self->_targetRect);
@@ -123,7 +123,7 @@
   Width = CGRectGetWidth(*p_targetRect);
   BPSCurrentScreenType();
   progressLabel = self->_progressLabel;
-  v9 = fmin(fmax(a3, 0.0), 1.0) * Width;
+  v9 = fmin(fmax(frame, 0.0), 1.0) * Width;
 
   [(UILabel *)progressLabel setFrame:MinX, 0.0, v9, 10.0];
 }
@@ -139,11 +139,11 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(COSTargetOverlayView *)self backgroundView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  backgroundView = [(COSTargetOverlayView *)self backgroundView];
+  [backgroundView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(COSTargetOverlayView *)self backgroundView];
-  [(COSTargetOverlayView *)self addSubview:v13];
+  backgroundView2 = [(COSTargetOverlayView *)self backgroundView];
+  [(COSTargetOverlayView *)self addSubview:backgroundView2];
 
   v14 = [[COSTargetOutlineView alloc] initWithOutlinePath:self->_cutoutPath];
   [(COSTargetOverlayView *)self setOutlineView:v14];
@@ -153,11 +153,11 @@
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(COSTargetOverlayView *)self outlineView];
-  [v23 setFrame:{v16, v18, v20, v22}];
+  outlineView = [(COSTargetOverlayView *)self outlineView];
+  [outlineView setFrame:{v16, v18, v20, v22}];
 
-  v24 = [(COSTargetOverlayView *)self outlineView];
-  [(COSTargetOverlayView *)self addSubview:v24];
+  outlineView2 = [(COSTargetOverlayView *)self outlineView];
+  [(COSTargetOverlayView *)self addSubview:outlineView2];
 
   v25 = [[COSTargetProgressView alloc] initWithOutlinePath:self->_cutoutPath];
   [(COSTargetOverlayView *)self setProgressView:v25];
@@ -167,11 +167,11 @@
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [(COSTargetOverlayView *)self progressView];
-  [v34 setFrame:{v27, v29, v31, v33}];
+  progressView = [(COSTargetOverlayView *)self progressView];
+  [progressView setFrame:{v27, v29, v31, v33}];
 
-  v35 = [(COSTargetOverlayView *)self progressView];
-  [(COSTargetOverlayView *)self addSubview:v35];
+  progressView2 = [(COSTargetOverlayView *)self progressView];
+  [(COSTargetOverlayView *)self addSubview:progressView2];
 
   if (MGGetBoolAnswer())
   {
@@ -191,8 +191,8 @@
     [(UILabel *)self->_progressLabel setFont:v41];
 
     [(UILabel *)self->_progressLabel setNumberOfLines:0];
-    v42 = [(UILabel *)self->_progressLabel layer];
-    [v42 setCornerRadius:4.0];
+    layer = [(UILabel *)self->_progressLabel layer];
+    [layer setCornerRadius:4.0];
 
     [(UILabel *)self->_progressLabel setClipsToBounds:1];
     [(COSTargetOverlayView *)self addSubview:self->_progressLabel];
@@ -206,29 +206,29 @@
 {
   [(COSTargetOverlayView *)self _configureMetrics];
   cutoutPath = self->_cutoutPath;
-  v4 = [(COSTargetOverlayView *)self backgroundView];
-  [v4 setCutoutPath:cutoutPath];
+  backgroundView = [(COSTargetOverlayView *)self backgroundView];
+  [backgroundView setCutoutPath:cutoutPath];
 
   gradientHeight = self->_gradientHeight;
-  v6 = [(COSTargetOverlayView *)self backgroundView];
-  [v6 setGradientHeight:gradientHeight];
+  backgroundView2 = [(COSTargetOverlayView *)self backgroundView];
+  [backgroundView2 setGradientHeight:gradientHeight];
 
-  v7 = [(COSTargetOverlayView *)self backgroundView];
-  [v7 setNeedsDisplay];
+  backgroundView3 = [(COSTargetOverlayView *)self backgroundView];
+  [backgroundView3 setNeedsDisplay];
 
   v8 = self->_cutoutPath;
-  v9 = [(COSTargetOverlayView *)self outlineView];
-  [v9 setOutlinePath:v8];
+  outlineView = [(COSTargetOverlayView *)self outlineView];
+  [outlineView setOutlinePath:v8];
 
-  v10 = [(COSTargetOverlayView *)self outlineView];
-  [v10 setNeedsDisplay];
+  outlineView2 = [(COSTargetOverlayView *)self outlineView];
+  [outlineView2 setNeedsDisplay];
 
   v11 = self->_cutoutPath;
-  v12 = [(COSTargetOverlayView *)self progressView];
-  [v12 setOutlinePath:v11];
+  progressView = [(COSTargetOverlayView *)self progressView];
+  [progressView setOutlinePath:v11];
 
-  v13 = [(COSTargetOverlayView *)self progressView];
-  [v13 setNeedsDisplay];
+  progressView2 = [(COSTargetOverlayView *)self progressView];
+  [progressView2 setNeedsDisplay];
 }
 
 - (void)_configureMetrics

@@ -1,9 +1,9 @@
 @interface _CPCardSectionFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCardSectionFeedback)init;
-- (_CPCardSectionFeedback)initWithFacade:(id)a3;
+- (_CPCardSectionFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCardSectionFeedback
@@ -16,34 +16,34 @@
   return v5 ^ [(NSString *)self->_resultId hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_CPCardSectionFeedback *)self cardSection];
-  v7 = [v4 cardSection];
-  if ((v6 != 0) == (v7 == 0))
+  cardSection = [(_CPCardSectionFeedback *)self cardSection];
+  cardSection2 = [equalCopy cardSection];
+  if ((cardSection != 0) == (cardSection2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(_CPCardSectionFeedback *)self cardSection];
-  if (v8)
+  cardSection3 = [(_CPCardSectionFeedback *)self cardSection];
+  if (cardSection3)
   {
-    v9 = v8;
-    v10 = [(_CPCardSectionFeedback *)self cardSection];
-    v11 = [v4 cardSection];
-    v12 = [v10 isEqual:v11];
+    v9 = cardSection3;
+    cardSection4 = [(_CPCardSectionFeedback *)self cardSection];
+    cardSection5 = [equalCopy cardSection];
+    v12 = [cardSection4 isEqual:cardSection5];
 
     if (!v12)
     {
@@ -55,20 +55,20 @@
   {
   }
 
-  v6 = [(_CPCardSectionFeedback *)self cardSectionId];
-  v7 = [v4 cardSectionId];
-  if ((v6 != 0) == (v7 == 0))
+  cardSection = [(_CPCardSectionFeedback *)self cardSectionId];
+  cardSection2 = [equalCopy cardSectionId];
+  if ((cardSection != 0) == (cardSection2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_CPCardSectionFeedback *)self cardSectionId];
-  if (v13)
+  cardSectionId = [(_CPCardSectionFeedback *)self cardSectionId];
+  if (cardSectionId)
   {
-    v14 = v13;
-    v15 = [(_CPCardSectionFeedback *)self cardSectionId];
-    v16 = [v4 cardSectionId];
-    v17 = [v15 isEqual:v16];
+    v14 = cardSectionId;
+    cardSectionId2 = [(_CPCardSectionFeedback *)self cardSectionId];
+    cardSectionId3 = [equalCopy cardSectionId];
+    v17 = [cardSectionId2 isEqual:cardSectionId3];
 
     if (!v17)
     {
@@ -80,12 +80,12 @@
   {
   }
 
-  v6 = [(_CPCardSectionFeedback *)self resultId];
-  v7 = [v4 resultId];
-  if ((v6 != 0) != (v7 == 0))
+  cardSection = [(_CPCardSectionFeedback *)self resultId];
+  cardSection2 = [equalCopy resultId];
+  if ((cardSection != 0) != (cardSection2 == 0))
   {
-    v18 = [(_CPCardSectionFeedback *)self resultId];
-    if (!v18)
+    resultId = [(_CPCardSectionFeedback *)self resultId];
+    if (!resultId)
     {
 
 LABEL_21:
@@ -93,10 +93,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(_CPCardSectionFeedback *)self resultId];
-    v21 = [v4 resultId];
-    v22 = [v20 isEqual:v21];
+    v19 = resultId;
+    resultId2 = [(_CPCardSectionFeedback *)self resultId];
+    resultId3 = [equalCopy resultId];
+    v22 = [resultId2 isEqual:resultId3];
 
     if (v22)
     {
@@ -116,39 +116,39 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(_CPCardSectionFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPCardSectionFeedback *)self cardSection];
+  cardSection = [(_CPCardSectionFeedback *)self cardSection];
 
-  if (v5)
+  if (cardSection)
   {
-    v6 = [(_CPCardSectionFeedback *)self cardSection];
+    cardSection2 = [(_CPCardSectionFeedback *)self cardSection];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_CPCardSectionFeedback *)self cardSectionId];
+  cardSectionId = [(_CPCardSectionFeedback *)self cardSectionId];
 
-  if (v7)
+  if (cardSectionId)
   {
     cardSectionId = self->_cardSectionId;
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_CPCardSectionFeedback *)self resultId];
+  resultId = [(_CPCardSectionFeedback *)self resultId];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (resultId)
   {
     resultId = self->_resultId;
     PBDataWriterWriteStringField();
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
@@ -166,39 +166,39 @@ LABEL_19:
   return v2;
 }
 
-- (_CPCardSectionFeedback)initWithFacade:(id)a3
+- (_CPCardSectionFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v16.receiver = self;
   v16.super_class = _CPCardSectionFeedback;
   v5 = [(_CPCardSectionFeedback *)&v16 init];
   if (v5)
   {
-    -[_CPCardSectionFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 cardSection];
+    -[_CPCardSectionFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    cardSection = [facadeCopy cardSection];
 
-    if (v6)
+    if (cardSection)
     {
       v7 = [_CPCardSectionForFeedback alloc];
-      v8 = [v4 cardSection];
-      v9 = [(_CPCardSectionForFeedback *)v7 initWithFacade:v8];
+      cardSection2 = [facadeCopy cardSection];
+      v9 = [(_CPCardSectionForFeedback *)v7 initWithFacade:cardSection2];
       [(_CPCardSectionFeedback *)v5 setCardSection:v9];
     }
 
-    v10 = [v4 cardSectionId];
+    cardSectionId = [facadeCopy cardSectionId];
 
-    if (v10)
+    if (cardSectionId)
     {
-      v11 = [v4 cardSectionId];
-      [(_CPCardSectionFeedback *)v5 setCardSectionId:v11];
+      cardSectionId2 = [facadeCopy cardSectionId];
+      [(_CPCardSectionFeedback *)v5 setCardSectionId:cardSectionId2];
     }
 
-    v12 = [v4 resultId];
+    resultId = [facadeCopy resultId];
 
-    if (v12)
+    if (resultId)
     {
-      v13 = [v4 resultId];
-      [(_CPCardSectionFeedback *)v5 setResultId:v13];
+      resultId2 = [facadeCopy resultId];
+      [(_CPCardSectionFeedback *)v5 setResultId:resultId2];
     }
 
     v14 = v5;

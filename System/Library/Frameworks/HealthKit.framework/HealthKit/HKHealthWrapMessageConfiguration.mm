@@ -1,26 +1,26 @@
 @interface HKHealthWrapMessageConfiguration
-- (HKHealthWrapMessageConfiguration)initWithChannel:(id)a3 payloadType:(id)a4 certificate:(__SecCertificate *)a5;
-- (HKHealthWrapMessageConfiguration)initWithSubjectUUID:(id)a3 studyUUID:(id)a4 channel:(id)a5 payloadType:(id)a6 certificate:(__SecCertificate *)a7;
+- (HKHealthWrapMessageConfiguration)initWithChannel:(id)channel payloadType:(id)type certificate:(__SecCertificate *)certificate;
+- (HKHealthWrapMessageConfiguration)initWithSubjectUUID:(id)d studyUUID:(id)iD channel:(id)channel payloadType:(id)type certificate:(__SecCertificate *)certificate;
 - (void)dealloc;
 @end
 
 @implementation HKHealthWrapMessageConfiguration
 
-- (HKHealthWrapMessageConfiguration)initWithChannel:(id)a3 payloadType:(id)a4 certificate:(__SecCertificate *)a5
+- (HKHealthWrapMessageConfiguration)initWithChannel:(id)channel payloadType:(id)type certificate:(__SecCertificate *)certificate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  channelCopy = channel;
+  typeCopy = type;
+  v10 = typeCopy;
+  if (channelCopy)
   {
-    if (v9)
+    if (typeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [HKHealthWrapMessageConfiguration initWithChannel:payloadType:certificate:];
-    if (a5)
+    if (certificate)
     {
       goto LABEL_4;
     }
@@ -35,7 +35,7 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (a5)
+  if (certificate)
   {
     goto LABEL_4;
   }
@@ -48,7 +48,7 @@ LABEL_4:
   v11 = [(HKHealthWrapMessageConfiguration *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [channelCopy copy];
     channel = v11->_channel;
     v11->_channel = v12;
 
@@ -56,22 +56,22 @@ LABEL_4:
     payloadType = v11->_payloadType;
     v11->_payloadType = v14;
 
-    CFRetain(a5);
-    v11->_certificate = a5;
+    CFRetain(certificate);
+    v11->_certificate = certificate;
   }
 
   return v11;
 }
 
-- (HKHealthWrapMessageConfiguration)initWithSubjectUUID:(id)a3 studyUUID:(id)a4 channel:(id)a5 payloadType:(id)a6 certificate:(__SecCertificate *)a7
+- (HKHealthWrapMessageConfiguration)initWithSubjectUUID:(id)d studyUUID:(id)iD channel:(id)channel payloadType:(id)type certificate:(__SecCertificate *)certificate
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (v12)
+  dCopy = d;
+  iDCopy = iD;
+  channelCopy = channel;
+  typeCopy = type;
+  if (dCopy)
   {
-    if (v13)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -80,7 +80,7 @@ LABEL_4:
   else
   {
     [HKHealthWrapMessageConfiguration initWithSubjectUUID:studyUUID:channel:payloadType:certificate:];
-    if (v13)
+    if (iDCopy)
     {
       goto LABEL_3;
     }
@@ -88,14 +88,14 @@ LABEL_4:
 
   [HKHealthWrapMessageConfiguration initWithSubjectUUID:studyUUID:channel:payloadType:certificate:];
 LABEL_3:
-  v16 = [(HKHealthWrapMessageConfiguration *)self initWithChannel:v14 payloadType:v15 certificate:a7];
+  v16 = [(HKHealthWrapMessageConfiguration *)self initWithChannel:channelCopy payloadType:typeCopy certificate:certificate];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     subjectUUID = v16->_subjectUUID;
     v16->_subjectUUID = v17;
 
-    v19 = [v13 copy];
+    v19 = [iDCopy copy];
     studyUUID = v16->_studyUUID;
     v16->_studyUUID = v19;
   }

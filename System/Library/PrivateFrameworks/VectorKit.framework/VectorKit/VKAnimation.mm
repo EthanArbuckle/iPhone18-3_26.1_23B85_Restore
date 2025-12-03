@@ -1,21 +1,21 @@
 @interface VKAnimation
-- (VKAnimation)initWithName:(id)a3;
-- (VKAnimation)initWithPriority:(int64_t)a3;
-- (VKAnimation)initWithPriority:(int64_t)a3 name:(id)a4;
+- (VKAnimation)initWithName:(id)name;
+- (VKAnimation)initWithPriority:(int64_t)priority;
+- (VKAnimation)initWithPriority:(int64_t)priority name:(id)name;
 - (id)description;
-- (void)onTimerFired:(double)a3;
+- (void)onTimerFired:(double)fired;
 - (void)resume;
-- (void)startWithRunner:(id)a3;
-- (void)stopAnimation:(BOOL)a3;
+- (void)startWithRunner:(id)runner;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation VKAnimation
 
-- (void)onTimerFired:(double)a3
+- (void)onTimerFired:(double)fired
 {
   if (self->_state == 3)
   {
-    [(VKAnimation *)self stopAnimation:1, a3];
+    [(VKAnimation *)self stopAnimation:1, fired];
   }
 }
 
@@ -31,17 +31,17 @@
   }
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
   state = self->_state;
   if (state)
   {
-    v4 = a3;
+    animationCopy = animation;
   }
 
   else
   {
-    v4 = 0;
+    animationCopy = 0;
   }
 
   if (state != 4)
@@ -50,7 +50,7 @@
     v6 = *(self + 1);
     if (v6)
     {
-      (*(v6 + 16))(v6, v4);
+      (*(v6 + 16))(v6, animationCopy);
       completionHandler = self->_completionHandler;
     }
 
@@ -69,11 +69,11 @@
   }
 }
 
-- (void)startWithRunner:(id)a3
+- (void)startWithRunner:(id)runner
 {
   if (self->_state != 4)
   {
-    objc_storeWeak(&self->_runner, a3);
+    objc_storeWeak(&self->_runner, runner);
     self->_state = 1;
   }
 }
@@ -89,35 +89,35 @@
   return v5;
 }
 
-- (VKAnimation)initWithPriority:(int64_t)a3
+- (VKAnimation)initWithPriority:(int64_t)priority
 {
   result = [(VKAnimation *)self init];
   if (result)
   {
-    result->_priority = a3;
+    result->_priority = priority;
   }
 
   return result;
 }
 
-- (VKAnimation)initWithPriority:(int64_t)a3 name:(id)a4
+- (VKAnimation)initWithPriority:(int64_t)priority name:(id)name
 {
-  result = [(VKAnimation *)self initWithName:a4];
+  result = [(VKAnimation *)self initWithName:name];
   if (result)
   {
-    result->_priority = a3;
+    result->_priority = priority;
   }
 
   return result;
 }
 
-- (VKAnimation)initWithName:(id)a3
+- (VKAnimation)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(VKAnimation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }

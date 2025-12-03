@@ -1,9 +1,9 @@
 @interface NRDLDPairingInfo
-- (BOOL)isEqual:(id)a3;
-- (NRDLDPairingInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDLDPairingInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDLDPairingInfo
@@ -60,18 +60,18 @@
     salt = 0;
   }
 
-  v16 = [v3 initWithFormat:@"NRDLDPairingInfo<irkData:%@, remoteAddress:%@, remoteAddressType:%@ sharedSecret:%@ salt:%@>", LogString, v9, v10, v13, salt];
+  salt = [v3 initWithFormat:@"NRDLDPairingInfo<irkData:%@, remoteAddress:%@, remoteAddressType:%@ sharedSecret:%@ salt:%@>", LogString, v9, v10, v13, salt];
 
-  return v16;
+  return salt;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       irkData = self->_irkData;
@@ -247,33 +247,33 @@ LABEL_41:
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   if (self)
   {
-    [v5 encodeObject:self->_remoteAddress forKey:@"remoteAddress"];
-    [v5 encodeObject:self->_remoteAddressType forKey:@"remoteAddressType"];
-    [v5 encodeObject:self->_salt forKey:@"salt"];
-    [v5 encodeObject:self->_irkData forKey:@"irkData"];
+    [coderCopy encodeObject:self->_remoteAddress forKey:@"remoteAddress"];
+    [coderCopy encodeObject:self->_remoteAddressType forKey:@"remoteAddressType"];
+    [coderCopy encodeObject:self->_salt forKey:@"salt"];
+    [coderCopy encodeObject:self->_irkData forKey:@"irkData"];
     sharedSecret = self->_sharedSecret;
   }
 
   else
   {
-    [v5 encodeObject:0 forKey:@"remoteAddress"];
-    [v5 encodeObject:0 forKey:@"remoteAddressType"];
-    [v5 encodeObject:0 forKey:@"salt"];
-    [v5 encodeObject:0 forKey:@"irkData"];
+    [coderCopy encodeObject:0 forKey:@"remoteAddress"];
+    [coderCopy encodeObject:0 forKey:@"remoteAddressType"];
+    [coderCopy encodeObject:0 forKey:@"salt"];
+    [coderCopy encodeObject:0 forKey:@"irkData"];
     sharedSecret = 0;
   }
 
-  [v5 encodeObject:sharedSecret forKey:@"sharedSecret"];
+  [coderCopy encodeObject:sharedSecret forKey:@"sharedSecret"];
 }
 
-- (NRDLDPairingInfo)initWithCoder:(id)a3
+- (NRDLDPairingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = NRDLDPairingInfo;
   v5 = [(NRDLDPairingInfo *)&v33 init];
@@ -299,19 +299,19 @@ LABEL_41:
   }
 
   v6 = v5;
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddress"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddress"];
   remoteAddress = v6->_remoteAddress;
   v6->_remoteAddress = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddressType"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteAddressType"];
   remoteAddressType = v6->_remoteAddressType;
   v6->_remoteAddressType = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
   salt = v6->_salt;
   v6->_salt = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"irkData"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"irkData"];
   v14 = v13;
   if (v13)
   {
@@ -338,7 +338,7 @@ LABEL_41:
   irkData = v6->_irkData;
   v6->_irkData = v18;
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedSecret"];
   v21 = v20;
   if (v20)
   {
@@ -368,9 +368,9 @@ LABEL_41:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (self)
   {
     remoteAddress = self->_remoteAddress;

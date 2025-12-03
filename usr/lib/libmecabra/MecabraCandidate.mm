@@ -1,13 +1,13 @@
 @interface MecabraCandidate
-+ (id)syntheticCandidateFromWords:(id)a3 withLexicon:(Lexicon *)a4 language:(int)a5;
-- (BOOL)isEqual:(id)a3;
-- (MecabraCandidate)initWithCandidate:(void *)a3;
++ (id)syntheticCandidateFromWords:(id)words withLexicon:(Lexicon *)lexicon language:(int)language;
+- (BOOL)isEqual:(id)equal;
+- (MecabraCandidate)initWithCandidate:(void *)candidate;
 - (id)analysisString;
 - (id)attributes;
 - (id)category;
 - (id)convertedAnalysisString;
 - (id)convertedAnalysisStringForFirstSyllable;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryReading;
 - (id)surface;
@@ -17,7 +17,7 @@
 - (id)syllablesInAnalysisString;
 - (id)syllablesInConvertedAnalysisString;
 - (id)syllablesInDictionaryReading;
-- (id)syllablesInString:(id)a3 syllableLengths:(id)a4;
+- (id)syllablesInString:(id)string syllableLengths:(id)lengths;
 - (id)wordIDs;
 - (id)wordReadings;
 - (id)words;
@@ -169,14 +169,14 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = objc_msgSend_rawCandidate(self, a2, a3);
+  result = objc_msgSend_rawCandidate(self, a2, zone);
   if (result)
   {
     v8 = objc_msgSend_rawCandidate(self, v6, v7);
     v9 = (**&v8[*(*v8 - 32)])(&v8[*(*v8 - 32)]);
-    v11 = objc_msgSend_allocWithZone_(MecabraCandidate, v10, a3);
+    v11 = objc_msgSend_allocWithZone_(MecabraCandidate, v10, zone);
 
     return objc_msgSend_initWithCandidate_(v11, v12, v9);
   }
@@ -184,14 +184,14 @@
   return result;
 }
 
-- (MecabraCandidate)initWithCandidate:(void *)a3
+- (MecabraCandidate)initWithCandidate:(void *)candidate
 {
   v5.receiver = self;
   v5.super_class = MecabraCandidate;
   result = [(MecabraCandidate *)&v5 init];
   if (result)
   {
-    result->_rawCandidate = a3;
+    result->_rawCandidate = candidate;
   }
 
   return result;
@@ -259,22 +259,22 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  Surface = MecabraCandidateGetSurface(self, a2, a3);
-  v8 = MecabraCandidateGetSurface(a3, v6, v7);
+  Surface = MecabraCandidateGetSurface(self, a2, equal);
+  v8 = MecabraCandidateGetSurface(equal, v6, v7);
   if (!(Surface | v8) || (isEqualToString = objc_msgSend_isEqualToString_(Surface, v9, v8)) != 0)
   {
     v12 = objc_msgSend_analysisString(self, v9, v10);
-    v15 = objc_msgSend_analysisString(a3, v13, v14);
+    v15 = objc_msgSend_analysisString(equal, v13, v14);
     if (!(v12 | v15) || (isEqualToString = objc_msgSend_isEqualToString_(v12, v16, v15)) != 0)
     {
       v18 = objc_msgSend_convertedAnalysisString(self, v16, v17);
-      v21 = objc_msgSend_convertedAnalysisString(a3, v19, v20);
+      v21 = objc_msgSend_convertedAnalysisString(equal, v19, v20);
       if (!(v18 | v21) || (isEqualToString = objc_msgSend_isEqualToString_(v18, v22, v21)) != 0)
       {
         v24 = objc_msgSend_dictionaryReading(self, v22, v23);
-        v27 = objc_msgSend_dictionaryReading(a3, v25, v26);
+        v27 = objc_msgSend_dictionaryReading(equal, v25, v26);
         if (v24 | v27)
         {
 
@@ -313,7 +313,7 @@
   return objc_msgSend_componentsJoinedByString_(v3, v4, @"'");
 }
 
-- (id)syllablesInString:(id)a3 syllableLengths:(id)a4
+- (id)syllablesInString:(id)string syllableLengths:(id)lengths
 {
   v41 = *MEMORY[0x29EDCA608];
   v6 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -321,7 +321,7 @@
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v7, &v36, v40, 16);
+  v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(lengths, v7, &v36, v40, 16);
   if (v8)
   {
     v11 = v8;
@@ -335,11 +335,11 @@
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(lengths);
         }
 
         v16 = objc_msgSend_unsignedIntegerValue(*(*(&v36 + 1) + 8 * v14), v9, v10);
-        v19 = objc_msgSend_length(a3, v17, v18);
+        v19 = objc_msgSend_length(string, v17, v18);
         v12 = v16 + v15;
         if (v16 < 1 || v19 < v12)
         {
@@ -347,19 +347,19 @@
           goto LABEL_13;
         }
 
-        v21 = objc_msgSend_substringWithRange_(a3, v9, v15, v16);
+        v21 = objc_msgSend_substringWithRange_(string, v9, v15, v16);
         objc_msgSend_addObject_(v6, v22, v21);
         ++v14;
         v15 += v16;
       }
 
       while (v11 != v14);
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(a4, v9, &v36, v40, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(lengths, v9, &v36, v40, 16);
     }
 
     while (v11);
 LABEL_13:
-    if (v12 > objc_msgSend_length(a3, v9, v10))
+    if (v12 > objc_msgSend_length(string, v9, v10))
     {
       objc_msgSend_addObject_(v6, v23, @"GARBAGE");
     }
@@ -367,15 +367,15 @@ LABEL_13:
 
   else
   {
-    objc_msgSend_length(a3, v9, v10);
+    objc_msgSend_length(string, v9, v10);
     v12 = 0;
   }
 
-  if (v12 < objc_msgSend_length(a3, v23, v24))
+  if (v12 < objc_msgSend_length(string, v23, v24))
   {
     v27 = MEMORY[0x29EDBA0F8];
-    v28 = objc_msgSend_length(a3, v25, v26);
-    v30 = objc_msgSend_substringWithRange_(a3, v29, v12, v28 - v12);
+    v28 = objc_msgSend_length(string, v25, v26);
+    v30 = objc_msgSend_substringWithRange_(string, v29, v12, v28 - v12);
     v32 = objc_msgSend_stringWithFormat_(v27, v31, @"(%@)", v30);
     objc_msgSend_addObject_(v6, v33, v32);
   }
@@ -496,7 +496,7 @@ LABEL_13:
   return v7;
 }
 
-+ (id)syntheticCandidateFromWords:(id)a3 withLexicon:(Lexicon *)a4 language:(int)a5
++ (id)syntheticCandidateFromWords:(id)words withLexicon:(Lexicon *)lexicon language:(int)language
 {
   v32 = *MEMORY[0x29EDCA608];
   __src = 0;
@@ -506,7 +506,7 @@ LABEL_13:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, a2, &v24, v31, 16);
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(words, a2, &v24, v31, 16);
   if (v7)
   {
     v8 = *v25;
@@ -516,13 +516,13 @@ LABEL_13:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(words);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        if (a4)
+        if (lexicon)
         {
-          sub_299322050(a4, v10);
+          sub_299322050(lexicon, v10);
         }
 
         v11 = v29;
@@ -579,7 +579,7 @@ LABEL_13:
         v29 = v12;
       }
 
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v10, &v24, v31, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(words, v10, &v24, v31, 16);
     }
 
     while (v7);

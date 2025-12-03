@@ -1,9 +1,9 @@
 @interface CNContactShareContactAction
-- (BOOL)_customizationAvailableForActivityViewController:(id)a3;
-- (id)activityItemForContact:(id)a3;
-- (id)customLocalizedActionTitleForActivityViewController:(id)a3;
-- (void)contactCardFieldPicker:(id)a3 didFinishWithContacts:(id)a4;
-- (void)performActionWithSender:(id)a3;
+- (BOOL)_customizationAvailableForActivityViewController:(id)controller;
+- (id)activityItemForContact:(id)contact;
+- (id)customLocalizedActionTitleForActivityViewController:(id)controller;
+- (void)contactCardFieldPicker:(id)picker didFinishWithContacts:(id)contacts;
+- (void)performActionWithSender:(id)sender;
 - (void)presentFilterFieldPicker;
 - (void)presentShareSheet;
 - (void)setupForContactFieldPicker;
@@ -11,29 +11,29 @@
 
 @implementation CNContactShareContactAction
 
-- (void)contactCardFieldPicker:(id)a3 didFinishWithContacts:(id)a4
+- (void)contactCardFieldPicker:(id)picker didFinishWithContacts:(id)contacts
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    v6 = [v5 firstObject];
-    [(CNContactShareContactAction *)self setFilteredContact:v6];
+    firstObject = [contactsCopy firstObject];
+    [(CNContactShareContactAction *)self setFilteredContact:firstObject];
 
-    v7 = [(CNContactShareContactAction *)self activityViewController];
+    activityViewController = [(CNContactShareContactAction *)self activityViewController];
 
-    if (v7)
+    if (activityViewController)
     {
-      v8 = [(CNContactShareContactAction *)self filteredContact];
-      v9 = [(CNContactShareContactAction *)self activityItemForContact:v8];
+      filteredContact = [(CNContactShareContactAction *)self filteredContact];
+      v9 = [(CNContactShareContactAction *)self activityItemForContact:filteredContact];
 
-      v10 = [(CNContactShareContactAction *)self activityViewController];
+      activityViewController2 = [(CNContactShareContactAction *)self activityViewController];
       v13[0] = v9;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-      [v10 _updateActivityItems:v11];
+      [activityViewController2 _updateActivityItems:v11];
 
-      v12 = [(CNContactShareContactAction *)self activityViewController];
-      [v12 setObjectManipulationDelegate:self];
+      activityViewController3 = [(CNContactShareContactAction *)self activityViewController];
+      [activityViewController3 setObjectManipulationDelegate:self];
     }
 
     else
@@ -43,7 +43,7 @@
   }
 }
 
-- (id)customLocalizedActionTitleForActivityViewController:(id)a3
+- (id)customLocalizedActionTitleForActivityViewController:(id)controller
 {
   v3 = CNContactsUIBundle();
   v4 = [v3 localizedStringForKey:@"SHARE_SELECTED_FIELDS_OPTION_BUTTON_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -51,36 +51,36 @@
   return v4;
 }
 
-- (BOOL)_customizationAvailableForActivityViewController:(id)a3
+- (BOOL)_customizationAvailableForActivityViewController:(id)controller
 {
-  v4 = [(CNContactShareContactAction *)self fieldPicker];
+  fieldPicker = [(CNContactShareContactAction *)self fieldPicker];
 
-  if (!v4)
+  if (!fieldPicker)
   {
     return 0;
   }
 
-  v5 = [(CNContactShareContactAction *)self fieldPicker];
-  v6 = [v5 fieldPickerDataSource];
-  v7 = [v6 sections];
-  v8 = [v7 count] != 0;
+  fieldPicker2 = [(CNContactShareContactAction *)self fieldPicker];
+  fieldPickerDataSource = [fieldPicker2 fieldPickerDataSource];
+  sections = [fieldPickerDataSource sections];
+  v8 = [sections count] != 0;
 
   return v8;
 }
 
-- (id)activityItemForContact:(id)a3
+- (id)activityItemForContact:(id)contact
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[CNShareContactActivityItem alloc] initWithContact:v4];
+  contactCopy = contact;
+  v5 = [[CNShareContactActivityItem alloc] initWithContact:contactCopy];
 
-  v6 = [(CNContactAction *)self contact];
-  v15[0] = v6;
+  contact = [(CNContactAction *)self contact];
+  v15[0] = contact;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   if ([CNContactCardFieldPickerDataSource canSharePronounsForContacts:v7])
   {
-    v8 = [(CNContactAction *)self contact];
-    v14 = v8;
+    contact2 = [(CNContactAction *)self contact];
+    v14 = contact2;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
     [(CNShareContactActivityItem *)v5 setCanSharePronouns:[CNContactShareActionHelper contactsHaveShareableAddressingGrammarValue:v9]];
   }
@@ -90,8 +90,8 @@
     [(CNShareContactActivityItem *)v5 setCanSharePronouns:0];
   }
 
-  v10 = [(CNContactAction *)self contact];
-  v13 = v10;
+  contact3 = [(CNContactAction *)self contact];
+  v13 = contact3;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
   [(CNShareContactActivityItem *)v5 setCanShareMeCardOnlySharingProperties:[CNContactCardFieldPickerDataSource isSharingMeContactForContacts:v11]];
 
@@ -101,19 +101,19 @@
 - (void)presentShareSheet
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactShareContactAction *)self filteredContact];
-  v4 = v3;
-  if (v3)
+  filteredContact = [(CNContactShareContactAction *)self filteredContact];
+  v4 = filteredContact;
+  if (filteredContact)
   {
-    v5 = v3;
+    contact = filteredContact;
   }
 
   else
   {
-    v5 = [(CNContactAction *)self contact];
+    contact = [(CNContactAction *)self contact];
   }
 
-  v6 = v5;
+  v6 = contact;
 
   v7 = [(CNContactShareContactAction *)self activityItemForContact:v6];
   v8 = objc_alloc(MEMORY[0x1E69CD9F8]);
@@ -121,9 +121,9 @@
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
   v10 = [v8 initWithActivityItems:v9 applicationActivities:0];
 
-  v11 = [(CNContactAction *)self delegate];
+  delegate = [(CNContactAction *)self delegate];
   objc_initWeak(&location, v10);
-  objc_initWeak(&from, v11);
+  objc_initWeak(&from, delegate);
   [v10 setObjectManipulationDelegate:self];
   [v10 setShowKeyboardAutomatically:1];
   v19[0] = MEMORY[0x1E69E9820];
@@ -134,23 +134,23 @@
   objc_copyWeak(&v21, &location);
   v19[4] = self;
   [v10 setPreCompletionHandler:v19];
-  v12 = [v10 popoverPresentationController];
-  if (v12)
+  popoverPresentationController = [v10 popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v13 = [(CNContactShareContactAction *)self sourceView];
-    v14 = v13 == 0;
+    sourceView = [(CNContactShareContactAction *)self sourceView];
+    v14 = sourceView == 0;
 
     if (!v14)
     {
-      v15 = [(CNContactShareContactAction *)self sourceView];
-      v16 = [v10 popoverPresentationController];
-      [v16 setSourceView:v15];
+      sourceView2 = [(CNContactShareContactAction *)self sourceView];
+      popoverPresentationController2 = [v10 popoverPresentationController];
+      [popoverPresentationController2 setSourceView:sourceView2];
     }
   }
 
-  v17 = [(CNContactAction *)self delegate];
-  v18 = [(CNContactShareContactAction *)self sourceView];
-  [v17 action:self presentViewController:v10 sender:v18];
+  delegate2 = [(CNContactAction *)self delegate];
+  sourceView3 = [(CNContactShareContactAction *)self sourceView];
+  [delegate2 action:self presentViewController:v10 sender:sourceView3];
 
   [(CNContactShareContactAction *)self setActivityViewController:v10];
   objc_destroyWeak(&v21);
@@ -190,36 +190,36 @@ void __48__CNContactShareContactAction_presentShareSheet__block_invoke(uint64_t 
 - (void)presentFilterFieldPicker
 {
   v3 = objc_alloc(MEMORY[0x1E69DCCD8]);
-  v4 = [(CNContactShareContactAction *)self fieldPicker];
-  v7 = [v3 initWithRootViewController:v4];
+  fieldPicker = [(CNContactShareContactAction *)self fieldPicker];
+  v7 = [v3 initWithRootViewController:fieldPicker];
 
-  v5 = [(CNContactAction *)self delegate];
-  v6 = [(CNContactShareContactAction *)self sourceView];
-  [v5 action:self presentViewController:v7 sender:v6];
+  delegate = [(CNContactAction *)self delegate];
+  sourceView = [(CNContactShareContactAction *)self sourceView];
+  [delegate action:self presentViewController:v7 sender:sourceView];
 }
 
 - (void)setupForContactFieldPicker
 {
   [(CNContactShareContactAction *)self setFilteredContact:0];
   v3 = [CNContactCardFieldPicker alloc];
-  v4 = [(CNContactAction *)self contact];
-  v5 = [(CNContactCardFieldPicker *)v3 initWithContact:v4];
+  contact = [(CNContactAction *)self contact];
+  v5 = [(CNContactCardFieldPicker *)v3 initWithContact:contact];
   [(CNContactShareContactAction *)self setFieldPicker:v5];
 
-  v6 = [(CNContactShareContactAction *)self fieldPicker];
-  [v6 setDelegate:self];
+  fieldPicker = [(CNContactShareContactAction *)self fieldPicker];
+  [fieldPicker setDelegate:self];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  [(CNContactShareContactAction *)self setSourceView:a3];
+  [(CNContactShareContactAction *)self setSourceView:sender];
   [(CNContactShareContactAction *)self setupForContactFieldPicker];
   activityViewController = self->_activityViewController;
   self->_activityViewController = 0;
 
-  v5 = [(CNContactAction *)self contact];
-  v8[0] = v5;
+  contact = [(CNContactAction *)self contact];
+  v8[0] = contact;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v7 = [CNContactShareActionHelper contactsHavePrivateProperties:v6];
 

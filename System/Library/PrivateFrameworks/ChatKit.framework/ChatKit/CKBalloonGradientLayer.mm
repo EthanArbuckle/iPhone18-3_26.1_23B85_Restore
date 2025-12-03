@@ -1,16 +1,16 @@
 @interface CKBalloonGradientLayer
 - (CGRect)frame;
 - (_TtC7ChatKit22CKBalloonGradientLayer)init;
-- (_TtC7ChatKit22CKBalloonGradientLayer)initWithCoder:(id)a3;
-- (_TtC7ChatKit22CKBalloonGradientLayer)initWithLayer:(id)a3;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (_TtC7ChatKit22CKBalloonGradientLayer)initWithCoder:(id)coder;
+- (_TtC7ChatKit22CKBalloonGradientLayer)initWithLayer:(id)layer;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)layoutSublayers;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation CKBalloonGradientLayer
 
-- (_TtC7ChatKit22CKBalloonGradientLayer)initWithLayer:(id)a3
+- (_TtC7ChatKit22CKBalloonGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_190D58140();
@@ -18,7 +18,7 @@
   return sub_190A65780(v4);
 }
 
-- (_TtC7ChatKit22CKBalloonGradientLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit22CKBalloonGradientLayer)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
@@ -43,25 +43,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for CKBalloonGradientLayer(0);
   v23.receiver = self;
   v23.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(CKBalloonGradientLayer *)&v23 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v22.receiver = v9;
+  v22.receiver = selfCopy;
   v22.super_class = v8;
   [(CKBalloonGradientLayer *)&v22 setFrame:x, y, width, height];
-  [(CKBalloonGradientLayer *)v9 frame];
+  [(CKBalloonGradientLayer *)selfCopy frame];
   v25.origin.x = v18;
   v25.origin.y = v19;
   v25.size.width = v20;
@@ -72,18 +72,18 @@
   v24.size.height = v17;
   if (!CGRectEqualToRect(v24, v25))
   {
-    [(CKBalloonGradientLayer *)v9 setNeedsLayout];
+    [(CKBalloonGradientLayer *)selfCopy setNeedsLayout];
   }
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CKBalloonGradientLayer(0);
   v4 = v5.receiver;
-  [(CKBalloonGradientLayer *)&v5 layerDidBecomeVisible:v3];
-  if (v3)
+  [(CKBalloonGradientLayer *)&v5 layerDidBecomeVisible:visibleCopy];
+  if (visibleCopy)
   {
     sub_190A65F28();
   }
@@ -91,7 +91,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A65C10();
 }
 

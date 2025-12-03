@@ -1,8 +1,8 @@
 @interface MPMusicMediaPickerRemoteViewController
 - (MPMediaPickerController)mediaPickerController;
 - (void)remoteMediaPickerDidCancel;
-- (void)remoteMediaPickerDidPickMediaItems:(id)a3;
-- (void)remoteMediaPickerDidPickPlaybackArchive:(id)a3;
+- (void)remoteMediaPickerDidPickMediaItems:(id)items;
+- (void)remoteMediaPickerDidPickPlaybackArchive:(id)archive;
 @end
 
 @implementation MPMusicMediaPickerRemoteViewController
@@ -14,18 +14,18 @@
   return WeakRetained;
 }
 
-- (void)remoteMediaPickerDidPickPlaybackArchive:(id)a3
+- (void)remoteMediaPickerDidPickPlaybackArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   WeakRetained = objc_loadWeakRetained(&self->_mediaPickerController);
-  [WeakRetained remoteMediaPickerDidPickPlaybackArchive:v4];
+  [WeakRetained remoteMediaPickerDidPickPlaybackArchive:archiveCopy];
 }
 
-- (void)remoteMediaPickerDidPickMediaItems:(id)a3
+- (void)remoteMediaPickerDidPickMediaItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_mediaPickerController);
-  [WeakRetained remoteMediaPickerDidPickMediaItems:v4];
+  [WeakRetained remoteMediaPickerDidPickMediaItems:itemsCopy];
 }
 
 - (void)remoteMediaPickerDidCancel

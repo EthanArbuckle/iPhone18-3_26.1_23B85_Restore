@@ -1,28 +1,28 @@
 @interface TUIElementWidgetSection
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5;
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementWidgetSection
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a3;
-  v9 = [a5 stringForAttribute:137 node:var0];
-  [v8 setSectionName:v9];
+  var0 = node.var0;
+  objectCopy = object;
+  v9 = [attributes stringForAttribute:137 node:var0];
+  [objectCopy setSectionName:v9];
 }
 
-+ (void)addObject:(id)a3 toContainingBuilder:(id)a4 context:(id)a5
++ (void)addObject:(id)object toContainingBuilder:(id)builder context:(id)context
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [v6 finalizeWidgetWithParent:0];
-  v8 = [v6 sectionName];
+  builderCopy = builder;
+  objectCopy = object;
+  v7 = [objectCopy finalizeWidgetWithParent:0];
+  sectionName = [objectCopy sectionName];
 
-  if (v8 && v7)
+  if (sectionName && v7)
   {
-    [v9 addWidgetData:v7 withKey:v8];
+    [builderCopy addWidgetData:v7 withKey:sectionName];
   }
 }
 

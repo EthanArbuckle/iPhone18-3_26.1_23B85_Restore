@@ -1,14 +1,14 @@
 @interface CAMVideoDepthDataEnabledCommand
-- (CAMVideoDepthDataEnabledCommand)initWithCoder:(id)a3;
-- (CAMVideoDepthDataEnabledCommand)initWithEnabled:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMVideoDepthDataEnabledCommand)initWithCoder:(id)coder;
+- (CAMVideoDepthDataEnabledCommand)initWithEnabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMVideoDepthDataEnabledCommand
 
-- (CAMVideoDepthDataEnabledCommand)initWithEnabled:(BOOL)a3
+- (CAMVideoDepthDataEnabledCommand)initWithEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = CAMVideoDepthDataEnabledCommand;
@@ -16,70 +16,70 @@
   v5 = v4;
   if (v4)
   {
-    v4->__enabled = a3;
+    v4->__enabled = enabled;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (CAMVideoDepthDataEnabledCommand)initWithCoder:(id)a3
+- (CAMVideoDepthDataEnabledCommand)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"CAMVideoDepthDataEnabledCommandKey"];
+  v4 = [coder decodeBoolForKey:@"CAMVideoDepthDataEnabledCommandKey"];
 
   return [(CAMVideoDepthDataEnabledCommand *)self initWithEnabled:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CAMVideoDepthDataEnabledCommand;
-  v4 = a3;
-  [(CAMCaptureCommand *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:-[CAMVideoDepthDataEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoDepthDataEnabledCommandKey"}];
+  coderCopy = coder;
+  [(CAMCaptureCommand *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:-[CAMVideoDepthDataEnabledCommand _isEnabled](self forKey:{"_isEnabled", v5.receiver, v5.super_class), @"CAMVideoDepthDataEnabledCommandKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CAMVideoDepthDataEnabledCommand;
-  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:a3];
+  v4 = [(CAMCaptureCommand *)&v6 copyWithZone:zone];
   v4[24] = [(CAMVideoDepthDataEnabledCommand *)self _isEnabled];
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 currentMovieFileOutput];
-  v6 = [v4 currentVideoDeviceInput];
-  v7 = [v4 currentCaptureSession];
-  v8 = v7;
-  if (v5 && v6 && v7)
+  contextCopy = context;
+  currentMovieFileOutput = [contextCopy currentMovieFileOutput];
+  currentVideoDeviceInput = [contextCopy currentVideoDeviceInput];
+  currentCaptureSession = [contextCopy currentCaptureSession];
+  v8 = currentCaptureSession;
+  if (currentMovieFileOutput && currentVideoDeviceInput && currentCaptureSession)
   {
     v9 = *MEMORY[0x1E69875C0];
-    v10 = [v5 connectionWithMediaType:*MEMORY[0x1E69875C0]];
-    v11 = [(CAMVideoDepthDataEnabledCommand *)self _isEnabled];
-    v12 = [v10 isEnabled];
-    if (v11 || !v10)
+    v10 = [currentMovieFileOutput connectionWithMediaType:*MEMORY[0x1E69875C0]];
+    _isEnabled = [(CAMVideoDepthDataEnabledCommand *)self _isEnabled];
+    isEnabled = [v10 isEnabled];
+    if (_isEnabled || !v10)
     {
-      if (!(v12 & 1 | !v11))
+      if (!(isEnabled & 1 | !_isEnabled))
       {
         v24 = v10;
-        v26 = v4;
+        v26 = contextCopy;
         if (objc_opt_respondsToSelector())
         {
-          [v5 setDepthCaptureEnabled:1];
+          [currentMovieFileOutput setDepthCaptureEnabled:1];
         }
 
-        v25 = v6;
-        v13 = [v6 ports];
+        v25 = currentVideoDeviceInput;
+        ports = [currentVideoDeviceInput ports];
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v14 = [ports countByEnumeratingWithState:&v28 objects:v33 count:16];
         if (v14)
         {
           v15 = v14;
@@ -90,18 +90,18 @@
             {
               if (*v29 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(ports);
               }
 
               v18 = *(*(&v28 + 1) + 8 * i);
-              v19 = [v18 mediaType];
+              mediaType = [v18 mediaType];
 
-              if (v19 == v9)
+              if (mediaType == v9)
               {
                 v20 = MEMORY[0x1E6987070];
                 v32 = v18;
                 v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
-                v22 = [v20 connectionWithInputPorts:v21 output:v5];
+                v22 = [v20 connectionWithInputPorts:v21 output:currentMovieFileOutput];
 
                 if (v22 && [v8 canAddConnection:v22])
                 {
@@ -120,14 +120,14 @@
               }
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+            v15 = [ports countByEnumeratingWithState:&v28 objects:v33 count:16];
           }
 
           while (v15);
         }
 
-        v6 = v25;
-        v4 = v26;
+        currentVideoDeviceInput = v25;
+        contextCopy = v26;
         v10 = v24;
       }
     }
@@ -137,7 +137,7 @@
       [v8 removeConnection:v10];
       if (objc_opt_respondsToSelector())
       {
-        [v5 setDepthCaptureEnabled:0];
+        [currentMovieFileOutput setDepthCaptureEnabled:0];
       }
     }
   }

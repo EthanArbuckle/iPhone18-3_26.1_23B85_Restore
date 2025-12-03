@@ -1,26 +1,26 @@
 @interface WPHeySiri
-- (WPHeySiri)initWithDelegate:(id)a3 queue:(id)a4;
+- (WPHeySiri)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPHeySiriProtocol)delegate;
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)advertisingPendingOfType:(unsigned __int8)a3;
-- (void)advertisingStartedOfType:(unsigned __int8)a3;
-- (void)advertisingStartedOfTypeAt:(unsigned __int8)a3;
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4;
-- (void)deviceDiscovered:(id)a3;
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)advertisingPendingOfType:(unsigned __int8)type;
+- (void)advertisingStartedOfType:(unsigned __int8)type;
+- (void)advertisingStartedOfTypeAt:(unsigned __int8)at;
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error;
+- (void)deviceDiscovered:(id)discovered;
 - (void)invalidate;
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)scanningStartedOfType:(unsigned __int8)a3;
-- (void)scanningStoppedOfType:(unsigned __int8)a3;
-- (void)startAdvertisingWithData:(id)a3;
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)scanningStartedOfType:(unsigned __int8)type;
+- (void)scanningStoppedOfType:(unsigned __int8)type;
+- (void)startAdvertisingWithData:(id)data;
 - (void)startScanning;
-- (void)startScanningAndAdvertisingWithData:(id)a3;
-- (void)startScanningAndAdvertisingWithOptions:(id)a3;
-- (void)stateDidChange:(int64_t)a3;
+- (void)startScanningAndAdvertisingWithData:(id)data;
+- (void)startScanningAndAdvertisingWithOptions:(id)options;
+- (void)stateDidChange:(int64_t)change;
 - (void)stopAdvertising;
 - (void)stopScanning;
 - (void)stopScanningAndAdvertising;
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4;
-- (void)updateScanningRequest:(id)a3 withUpdate:(id)a4;
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update;
+- (void)updateScanningRequest:(id)request withUpdate:(id)update;
 @end
 
 @implementation WPHeySiri
@@ -146,18 +146,18 @@
   }
 }
 
-- (WPHeySiri)initWithDelegate:(id)a3 queue:(id)a4
+- (WPHeySiri)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   objc_sync_enter(&unk_28835C870);
   v13.receiver = self;
   v13.super_class = WPHeySiri;
-  v8 = [(WPClient *)&v13 initWithQueue:v7 machName:0];
+  v8 = [(WPClient *)&v13 initWithQueue:queueCopy machName:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     if (WPLogInitOnce != -1)
     {
       [WPHeySiri initWithDelegate:queue:];
@@ -188,9 +188,9 @@
   [(WPClient *)&v3 invalidate];
 }
 
-- (void)startScanningAndAdvertisingWithData:(id)a3
+- (void)startScanningAndAdvertisingWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (WPLogInitOnce != -1)
   {
     [WPHeySiri startScanningAndAdvertisingWithData:];
@@ -203,17 +203,17 @@
     _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_DEFAULT, "HeySiri start advertise and scan", v6, 2u);
   }
 
-  [(WPHeySiri *)self startAdvertisingWithData:v4];
+  [(WPHeySiri *)self startAdvertisingWithData:dataCopy];
   [(WPHeySiri *)self startScanning];
 }
 
-- (void)startAdvertisingWithData:(id)a3
+- (void)startAdvertisingWithData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = [WPAdvertisingRequest requestForClientType:8];
   [v5 setUpdateTime:45.0];
-  v6 = [v4 objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
+  v6 = [dataCopy objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
 
   [v5 setAdvertisingData:v6];
   if (+[WPClient isHomePodOrIOS])
@@ -227,8 +227,8 @@
   }
 
   [v5 setAdvertisingRate:v7];
-  v8 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC) / 0xF4240];
-  [v5 setAdvertisementRequestedAt:v8];
+  0xF4240 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:clock_gettime_nsec_np(_CLOCK_MONOTONIC) / 0xF4240];
+  [v5 setAdvertisementRequestedAt:0xF4240];
 
   if (WPLogInitOnce != -1)
   {
@@ -239,12 +239,12 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v5 advertisingData];
-    v12 = [v5 advertisementRequestedAt];
+    advertisingData = [v5 advertisingData];
+    advertisementRequestedAt = [v5 advertisementRequestedAt];
     *buf = 138412546;
-    v16 = v11;
+    v16 = advertisingData;
     v17 = 2048;
-    v18 = [v12 longLongValue];
+    longLongValue = [advertisementRequestedAt longLongValue];
     _os_log_impl(&dword_274327000, v10, OS_LOG_TYPE_DEFAULT, "HeySiri start advertising data=%@ at %llu", buf, 0x16u);
   }
 
@@ -255,11 +255,11 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAdvertisingRequest:(id)a3 withUpdate:(id)a4
+- (void)updateAdvertisingRequest:(id)request withUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 updateTime];
+  requestCopy = request;
+  updateCopy = update;
+  [requestCopy updateTime];
   if (v8 <= 0.0)
   {
     if (WPLogInitOnce != -1)
@@ -270,13 +270,13 @@
     v9 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [WPHeySiri updateAdvertisingRequest:v9 withUpdate:v6];
+      [WPHeySiri updateAdvertisingRequest:v9 withUpdate:requestCopy];
     }
   }
 
   else
   {
-    [v6 setUpdateTime:0.0];
+    [requestCopy setUpdateTime:0.0];
     if (WPLogInitOnce != -1)
     {
       [WPHeySiri updateAdvertisingRequest:withUpdate:];
@@ -290,14 +290,14 @@
     [(WPHeySiri *)self stopAdvertising];
   }
 
-  v7[2](v7, 0);
+  updateCopy[2](updateCopy, 0);
 }
 
-- (void)updateScanningRequest:(id)a3 withUpdate:(id)a4
+- (void)updateScanningRequest:(id)request withUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 updateTime];
+  requestCopy = request;
+  updateCopy = update;
+  [requestCopy updateTime];
   if (v8 <= 0.0)
   {
     if (WPLogInitOnce != -1)
@@ -308,7 +308,7 @@
     v9 = WiProxLog;
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
     {
-      [(WPHeySiri *)v9 updateScanningRequest:v6 withUpdate:self];
+      [(WPHeySiri *)v9 updateScanningRequest:requestCopy withUpdate:self];
     }
 
     [(WPHeySiri *)self setIsScanning:0];
@@ -316,7 +316,7 @@
 
   else
   {
-    [v6 setUpdateTime:0.0];
+    [requestCopy setUpdateTime:0.0];
     if (WPLogInitOnce != -1)
     {
       [WPHeySiri updateScanningRequest:withUpdate:];
@@ -330,28 +330,28 @@
     [(WPHeySiri *)self stopScanning];
   }
 
-  v7[2](v7, 0);
+  updateCopy[2](updateCopy, 0);
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
   v7.receiver = self;
   v7.super_class = WPHeySiri;
-  [(WPClient *)&v7 stateDidChange:a3];
+  [(WPClient *)&v7 stateDidChange:change];
   objc_sync_enter(&unk_28835C870);
-  v4 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPHeySiri *)self delegate];
-    [v6 heySiriDidUpdateState:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriDidUpdateState:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)advertisingStartedOfType:(unsigned __int8)a3
+- (void)advertisingStartedOfType:(unsigned __int8)type
 {
   if (WPLogInitOnce != -1)
   {
@@ -366,19 +366,19 @@
   }
 
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPHeySiri *)self delegate];
-    [v7 heySiriStartedAdvertising:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriStartedAdvertising:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)advertisingStartedOfTypeAt:(unsigned __int8)a3
+- (void)advertisingStartedOfTypeAt:(unsigned __int8)at
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = mach_absolute_time();
@@ -396,22 +396,22 @@
   }
 
   objc_sync_enter(&unk_28835C870);
-  v6 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WPHeySiri *)self delegate];
-    [v8 heySiriStartedAdvertisingAt:self timeStamp:v4];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriStartedAdvertisingAt:self timeStamp:v4];
   }
 
   objc_sync_exit(&unk_28835C870);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)advertisingStoppedOfType:(unsigned __int8)a3 withError:(id)a4
+- (void)advertisingStoppedOfType:(unsigned __int8)type withError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (WPLogInitOnce != -1)
   {
     [WPHeySiri advertisingStoppedOfType:withError:];
@@ -425,64 +425,64 @@
   }
 
   objc_sync_enter(&unk_28835C870);
-  v7 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(WPHeySiri *)self delegate];
-    [v9 heySiriStoppedAdvertising:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriStoppedAdvertising:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)advertisingFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)advertisingFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
+  startCopy = start;
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPHeySiri *)self delegate];
-    [v7 heySiri:self failedToStartAdvertisingWithError:v8];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiri:self failedToStartAdvertisingWithError:startCopy];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)advertisingPendingOfType:(unsigned __int8)a3
+- (void)advertisingPendingOfType:(unsigned __int8)type
 {
   objc_sync_enter(&unk_28835C870);
-  v4 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(WPHeySiri *)self delegate];
-    [v6 heySiriAdvertisingPending:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriAdvertisingPending:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
   v18[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  discoveredCopy = discovered;
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
-    v8 = [v4 objectForKeyedSubscript:@"kDevicePeripheralUUID"];
-    v9 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-    v10 = [v4 objectForKeyedSubscript:@"kDeviceTime"];
-    v11 = [v4 objectForKeyedSubscript:@"kDeviceRSSI"];
+    v7 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+    v8 = [discoveredCopy objectForKeyedSubscript:@"kDevicePeripheralUUID"];
+    v9 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAddress"];
+    v10 = [discoveredCopy objectForKeyedSubscript:@"kDeviceTime"];
+    v11 = [discoveredCopy objectForKeyedSubscript:@"kDeviceRSSI"];
     if (v7 && [v7 length] >= 5)
     {
       v12 = [v7 subdataWithRange:{4, objc_msgSend(v7, "length") - 4}];
@@ -499,13 +499,13 @@
       v18[0] = v8;
       v17[0] = @"WPHeySiriKeyDeviceUUID";
       v17[1] = @"WPHeySiriKeyDeviceAddress";
-      v13 = v9;
+      data = v9;
       if (!v9)
       {
-        v13 = [MEMORY[0x277CBEA90] data];
+        data = [MEMORY[0x277CBEA90] data];
       }
 
-      v18[1] = v13;
+      v18[1] = data;
       v18[2] = v12;
       v17[2] = @"WPHeySiriKeyManufacturerData";
       v17[3] = @"WPHeySiriKeyDeviceTime";
@@ -517,8 +517,8 @@
       {
       }
 
-      v15 = [(WPHeySiri *)self delegate];
-      [v15 heySiri:self foundDevice:v8 withInfo:v14];
+      delegate2 = [(WPHeySiri *)self delegate];
+      [delegate2 heySiri:self foundDevice:v8 withInfo:v14];
     }
 
     else
@@ -540,7 +540,7 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanningStartedOfType:(unsigned __int8)a3
+- (void)scanningStartedOfType:(unsigned __int8)type
 {
   if (WPLogInitOnce != -1)
   {
@@ -555,19 +555,19 @@
   }
 
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPHeySiri *)self delegate];
-    [v7 heySiriStartedScanning:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriStartedScanning:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)scanningStoppedOfType:(unsigned __int8)a3
+- (void)scanningStoppedOfType:(unsigned __int8)type
 {
   if (WPLogInitOnce != -1)
   {
@@ -582,39 +582,39 @@
   }
 
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPHeySiri *)self delegate];
-    [v7 heySiriStoppedScanning:self];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiriStoppedScanning:self];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
+  startCopy = start;
   [(WPHeySiri *)self setIsScanning:0];
   objc_sync_enter(&unk_28835C870);
-  v5 = [(WPHeySiri *)self delegate];
+  delegate = [(WPHeySiri *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPHeySiri *)self delegate];
-    [v7 heySiri:self failedToStartScanningWithError:v8];
+    delegate2 = [(WPHeySiri *)self delegate];
+    [delegate2 heySiri:self failedToStartScanningWithError:startCopy];
   }
 
   objc_sync_exit(&unk_28835C870);
 }
 
-- (void)startScanningAndAdvertisingWithOptions:(id)a3
+- (void)startScanningAndAdvertisingWithOptions:(id)options
 {
   v47[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if (WPLogInitOnce != -1)
   {
     [WPHeySiri(Test) startScanningAndAdvertisingWithOptions:];
@@ -624,7 +624,7 @@
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = optionsCopy;
     _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_DEFAULT, "HeySiri startScanningAndAdvertisingWithDataAndOptions %@", &buf, 0xCu);
   }
 
@@ -652,10 +652,10 @@
     goto LABEL_51;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScan"];
+  v6 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScan"];
   if (v6)
   {
-    v7 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScan"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScan"];
     v8 = [v7 BOOLValue] ^ 1;
   }
 
@@ -664,14 +664,14 @@
     v8 = 1;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestAdvertise"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestAdvertise"];
   if (v20)
   {
     v21 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestAdvertise"];
-    v23 = [v22 BOOLValue];
+    v22 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestAdvertise"];
+    bOOLValue = [v22 BOOLValue];
 
-    if (v23)
+    if (bOOLValue)
     {
       if (WPLogInitOnce != -1)
       {
@@ -687,10 +687,10 @@
 
       v25 = [WPAdvertisingRequest requestForClientType:8];
       [v25 setUpdateTime:45.0];
-      v26 = [v4 objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
+      v26 = [optionsCopy objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
       if (v26)
       {
-        v27 = [v4 objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
+        v27 = [optionsCopy objectForKeyedSubscript:@"WPHeySiriAdvertisingData"];
         [v25 setAdvertisingData:v27];
       }
 
@@ -699,10 +699,10 @@
         [v25 setAdvertisingData:0];
       }
 
-      v28 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestAdvertisingRate"];
+      v28 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestAdvertisingRate"];
       if (v28)
       {
-        v29 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestAdvertisingRate"];
+        v29 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestAdvertisingRate"];
         [v25 setAdvertisingRate:{objc_msgSend(v29, "integerValue")}];
       }
 
@@ -711,9 +711,9 @@
         [v25 setAdvertisingRate:48];
       }
 
-      v30 = [v25 advertisingData];
+      advertisingData = [v25 advertisingData];
 
-      if (v30)
+      if (advertisingData)
       {
         if (WPLogInitOnce != -1)
         {
@@ -762,27 +762,27 @@
     }
 
     [(WPHeySiri *)self setIsScanning:1];
-    v34 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScanDutyCycle"];
+    v34 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScanDutyCycle"];
     if (v34)
     {
-      v35 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScanDutyCycle"];
-      v36 = [v35 integerValue];
+      v35 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScanDutyCycle"];
+      integerValue = [v35 integerValue];
     }
 
     else
     {
-      v36 = 100;
+      integerValue = 100;
     }
 
     v19 = objc_opt_new();
-    *&buf = 3000 / v36;
-    *(&buf + 1) = 3000 / v36;
+    *&buf = 3000 / integerValue;
+    *(&buf + 1) = 3000 / integerValue;
     v45 = 30;
     [v19 setScanningRates:&buf];
-    v37 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestActiveScan"];
+    v37 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestActiveScan"];
     if (v37)
     {
-      v38 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestActiveScan"];
+      v38 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestActiveScan"];
       [v19 setActiveScanning:{objc_msgSend(v38, "BOOLValue")}];
     }
 
@@ -791,10 +791,10 @@
       [v19 setActiveScanning:0];
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScanWithDups"];
+    v39 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScanWithDups"];
     if (v39)
     {
-      v40 = [v4 objectForKeyedSubscript:@"kWPHeySiriTestScanWithDups"];
+      v40 = [optionsCopy objectForKeyedSubscript:@"kWPHeySiriTestScanWithDups"];
       [v19 setAllowDuplicates:{objc_msgSend(v40, "BOOLValue")}];
     }
 

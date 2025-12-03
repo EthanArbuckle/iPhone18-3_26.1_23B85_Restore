@@ -1,25 +1,25 @@
 @interface BKDocument
-+ (id)documentKeyWithHref:(id)a3 documentOrdinal:(id)a4;
-+ (id)newEmptyDocument:(id)a3;
++ (id)documentKeyWithHref:(id)href documentOrdinal:(id)ordinal;
++ (id)newEmptyDocument:(id)document;
 - (BOOL)hasMediaOverlayElements;
 - (CGRect)estimatedFixedLayoutViewFrame;
 - (CGSize)fixedLayoutSize;
 - (id)documentKey;
 - (id)mediaOverlayElements;
 - (int64_t)unboxedDocumentOrdinal;
-- (void)copyPropertiesFrom:(id)a3;
+- (void)copyPropertiesFrom:(id)from;
 @end
 
 @implementation BKDocument
 
 - (CGRect)estimatedFixedLayoutViewFrame
 {
-  v3 = [(BKDocument *)self fixedLayoutWidth];
-  [v3 doubleValue];
+  fixedLayoutWidth = [(BKDocument *)self fixedLayoutWidth];
+  [fixedLayoutWidth doubleValue];
   v5 = v4;
 
-  v6 = [(BKDocument *)self fixedLayoutHeight];
-  [v6 doubleValue];
+  fixedLayoutHeight = [(BKDocument *)self fixedLayoutHeight];
+  [fixedLayoutHeight doubleValue];
   v8 = v7;
 
   if (v5 <= 0.0)
@@ -69,11 +69,11 @@
 
 - (CGSize)fixedLayoutSize
 {
-  v3 = [(BKDocument *)self fixedLayoutWidth];
-  [v3 doubleValue];
+  fixedLayoutWidth = [(BKDocument *)self fixedLayoutWidth];
+  [fixedLayoutWidth doubleValue];
   v5 = v4;
-  v6 = [(BKDocument *)self fixedLayoutHeight];
-  [v6 doubleValue];
+  fixedLayoutHeight = [(BKDocument *)self fixedLayoutHeight];
+  [fixedLayoutHeight doubleValue];
   v8 = v7;
 
   v9 = v5;
@@ -83,80 +83,80 @@
   return result;
 }
 
-- (void)copyPropertiesFrom:(id)a3
+- (void)copyPropertiesFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 bookDatabaseKey];
-  [(BKDocument *)self setBookDatabaseKey:v5];
+  fromCopy = from;
+  bookDatabaseKey = [fromCopy bookDatabaseKey];
+  [(BKDocument *)self setBookDatabaseKey:bookDatabaseKey];
 
-  v6 = [v4 href];
-  [(BKDocument *)self setHref:v6];
+  href = [fromCopy href];
+  [(BKDocument *)self setHref:href];
 
-  v7 = [v4 mime];
-  [(BKDocument *)self setMime:v7];
+  mime = [fromCopy mime];
+  [(BKDocument *)self setMime:mime];
 
-  v8 = [v4 compressionAlgorithm];
-  [(BKDocument *)self setCompressionAlgorithm:v8];
+  compressionAlgorithm = [fromCopy compressionAlgorithm];
+  [(BKDocument *)self setCompressionAlgorithm:compressionAlgorithm];
 
-  v9 = [v4 encryptionAlgorithm];
-  [(BKDocument *)self setEncryptionAlgorithm:v9];
+  encryptionAlgorithm = [fromCopy encryptionAlgorithm];
+  [(BKDocument *)self setEncryptionAlgorithm:encryptionAlgorithm];
 
-  v10 = [v4 documentOrdinal];
-  [(BKDocument *)self setDocumentOrdinal:v10];
+  documentOrdinal = [fromCopy documentOrdinal];
+  [(BKDocument *)self setDocumentOrdinal:documentOrdinal];
 
-  v11 = [v4 fileSize];
-  [(BKDocument *)self setFileSize:v11];
+  fileSize = [fromCopy fileSize];
+  [(BKDocument *)self setFileSize:fileSize];
 
-  v12 = [v4 hasTocElements];
-  [(BKDocument *)self setHasTocElements:v12];
+  hasTocElements = [fromCopy hasTocElements];
+  [(BKDocument *)self setHasTocElements:hasTocElements];
 
-  v13 = [v4 hasLandmarkElements];
-  [(BKDocument *)self setHasLandmarkElements:v13];
+  hasLandmarkElements = [fromCopy hasLandmarkElements];
+  [(BKDocument *)self setHasLandmarkElements:hasLandmarkElements];
 
-  v14 = [v4 hasPhysicalElements];
-  [(BKDocument *)self setHasPhysicalElements:v14];
+  hasPhysicalElements = [fromCopy hasPhysicalElements];
+  [(BKDocument *)self setHasPhysicalElements:hasPhysicalElements];
 
-  v15 = [v4 nonlinearElement];
-  [(BKDocument *)self setNonlinearElement:v15];
+  nonlinearElement = [fromCopy nonlinearElement];
+  [(BKDocument *)self setNonlinearElement:nonlinearElement];
 
-  v16 = [v4 mediaOverlayHref];
-  [(BKDocument *)self setMediaOverlayHref:v16];
+  mediaOverlayHref = [fromCopy mediaOverlayHref];
+  [(BKDocument *)self setMediaOverlayHref:mediaOverlayHref];
 
-  v17 = [v4 mediaOverlayParsed];
-  [(BKDocument *)self setMediaOverlayParsed:v17];
+  mediaOverlayParsed = [fromCopy mediaOverlayParsed];
+  [(BKDocument *)self setMediaOverlayParsed:mediaOverlayParsed];
 
-  v18 = [v4 sinfNumber];
-  [(BKDocument *)self setSinfNumber:v18];
+  sinfNumber = [fromCopy sinfNumber];
+  [(BKDocument *)self setSinfNumber:sinfNumber];
 
-  v19 = [v4 fallbackId];
-  [(BKDocument *)self setFallbackId:v19];
+  fallbackId = [fromCopy fallbackId];
+  [(BKDocument *)self setFallbackId:fallbackId];
 
-  v20 = [v4 manifestId];
-  [(BKDocument *)self setManifestId:v20];
+  manifestId = [fromCopy manifestId];
+  [(BKDocument *)self setManifestId:manifestId];
 
-  v21 = [v4 manifestProperties];
-  [(BKDocument *)self setManifestProperties:v21];
+  manifestProperties = [fromCopy manifestProperties];
+  [(BKDocument *)self setManifestProperties:manifestProperties];
 
-  v22 = [v4 orthography];
-  [(BKDocument *)self setOrthography:v22];
+  orthography = [fromCopy orthography];
+  [(BKDocument *)self setOrthography:orthography];
 
-  v23 = [v4 isDuplicateSpineEntry];
+  isDuplicateSpineEntry = [fromCopy isDuplicateSpineEntry];
 
-  [(BKDocument *)self setIsDuplicateSpineEntry:v23];
+  [(BKDocument *)self setIsDuplicateSpineEntry:isDuplicateSpineEntry];
 }
 
-+ (id)newEmptyDocument:(id)a3
++ (id)newEmptyDocument:(id)document
 {
-  v3 = a3;
-  v4 = [v3 newByClass:objc_opt_class()];
+  documentCopy = document;
+  v4 = [documentCopy newByClass:objc_opt_class()];
 
   return v4;
 }
 
 - (BOOL)hasMediaOverlayElements
 {
-  v2 = [(BKDocument *)self mediaOverlayHref];
-  v3 = [v2 length] != 0;
+  mediaOverlayHref = [(BKDocument *)self mediaOverlayHref];
+  v3 = [mediaOverlayHref length] != 0;
 
   return v3;
 }
@@ -165,25 +165,25 @@
 {
   if ([(BKDocument *)self hasMediaOverlayElements])
   {
-    v3 = [(BKDocument *)self mediaOverlayParsed];
-    v4 = [v3 BOOLValue];
+    mediaOverlayParsed = [(BKDocument *)self mediaOverlayParsed];
+    bOOLValue = [mediaOverlayParsed BOOLValue];
 
-    if ((v4 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v5 = [(BKDocument *)self managedObjectContext];
-      v6 = [(BKDocument *)self bookDatabaseKey];
-      v7 = [AEBookInfo bookFromDatabaseKey:v6 withMOC:v5];
+      managedObjectContext = [(BKDocument *)self managedObjectContext];
+      bookDatabaseKey = [(BKDocument *)self bookDatabaseKey];
+      v7 = [AEBookInfo bookFromDatabaseKey:bookDatabaseKey withMOC:managedObjectContext];
 
       if (v7)
       {
-        v8 = [v7 bookContentSubpath];
-        v9 = [v7 basePlusContentPath];
-        v10 = [v7 basePlusContentPath];
-        v11 = [(BKDocument *)self mediaOverlayHref];
-        v12 = [v10 stringByAppendingPathComponent:v11];
+        bookContentSubpath = [v7 bookContentSubpath];
+        basePlusContentPath = [v7 basePlusContentPath];
+        basePlusContentPath2 = [v7 basePlusContentPath];
+        mediaOverlayHref = [(BKDocument *)self mediaOverlayHref];
+        v12 = [basePlusContentPath2 stringByAppendingPathComponent:mediaOverlayHref];
 
-        v13 = [(BKDocument *)self bookDatabaseKey];
-        v14 = [BKMediaOverlayElement parseSMIL:v12 contentSubpath:v8 bookBasePath:v9 bookDatabaseKey:v13 managedObjectContext:v5];
+        bookDatabaseKey2 = [(BKDocument *)self bookDatabaseKey];
+        v14 = [BKMediaOverlayElement parseSMIL:v12 contentSubpath:bookContentSubpath bookBasePath:basePlusContentPath bookDatabaseKey:bookDatabaseKey2 managedObjectContext:managedObjectContext];
 
         if (v14)
         {
@@ -195,17 +195,17 @@
           v16 = [NSNumber numberWithBool:1];
           [(BKDocument *)self setMediaOverlayParsed:v16];
 
-          [v5 save:0];
+          [managedObjectContext save:0];
         }
       }
     }
 
-    v17 = [(BKDocument *)self href];
-    v18 = [(BKDocument *)self bookDatabaseKey];
-    v19 = [NSPredicate predicateWithFormat:@"documentHref == %@ AND bookDatabaseKey == %@", v17, v18];
+    href = [(BKDocument *)self href];
+    bookDatabaseKey3 = [(BKDocument *)self bookDatabaseKey];
+    v19 = [NSPredicate predicateWithFormat:@"documentHref == %@ AND bookDatabaseKey == %@", href, bookDatabaseKey3];
 
-    v20 = [(BKDocument *)self managedObjectContext];
-    v15 = [v20 entity:@"BKMediaOverlayElement" withPredicate:v19 sortBy:@"documentAbsoluteOrder" ascending:1 fetchLimit:0];
+    managedObjectContext2 = [(BKDocument *)self managedObjectContext];
+    v15 = [managedObjectContext2 entity:@"BKMediaOverlayElement" withPredicate:v19 sortBy:@"documentAbsoluteOrder" ascending:1 fetchLimit:0];
   }
 
   else
@@ -216,13 +216,13 @@
   return v15;
 }
 
-+ (id)documentKeyWithHref:(id)a3 documentOrdinal:(id)a4
++ (id)documentKeyWithHref:(id)href documentOrdinal:(id)ordinal
 {
-  v5 = a3;
-  v6 = a4;
+  hrefCopy = href;
+  ordinalCopy = ordinal;
   if (qword_22D0E0 == -1)
   {
-    if (!v5)
+    if (!hrefCopy)
     {
       goto LABEL_6;
     }
@@ -231,22 +231,22 @@
   else
   {
     sub_1384F8();
-    if (!v5)
+    if (!hrefCopy)
     {
       goto LABEL_6;
     }
   }
 
-  if (v6)
+  if (ordinalCopy)
   {
-    v7 = [NSString stringWithFormat:@"%@:%@", v5, v6];
+    ordinalCopy = [NSString stringWithFormat:@"%@:%@", hrefCopy, ordinalCopy];
     goto LABEL_7;
   }
 
 LABEL_6:
-  v7 = v5;
+  ordinalCopy = hrefCopy;
 LABEL_7:
-  v8 = v7;
+  v8 = ordinalCopy;
 
   return v8;
 }
@@ -254,28 +254,28 @@ LABEL_7:
 - (id)documentKey
 {
   v3 = objc_opt_class();
-  v4 = [(BKDocument *)self href];
-  v5 = [(BKDocument *)self documentOrdinal];
-  v6 = [v3 documentKeyWithHref:v4 documentOrdinal:v5];
+  href = [(BKDocument *)self href];
+  documentOrdinal = [(BKDocument *)self documentOrdinal];
+  v6 = [v3 documentKeyWithHref:href documentOrdinal:documentOrdinal];
 
   return v6;
 }
 
 - (int64_t)unboxedDocumentOrdinal
 {
-  v2 = [(BKDocument *)self documentOrdinal];
-  v3 = v2;
-  if (v2)
+  documentOrdinal = [(BKDocument *)self documentOrdinal];
+  v3 = documentOrdinal;
+  if (documentOrdinal)
   {
-    v4 = [v2 integerValue];
+    integerValue = [documentOrdinal integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

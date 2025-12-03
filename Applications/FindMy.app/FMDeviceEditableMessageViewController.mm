@@ -1,16 +1,16 @@
 @interface FMDeviceEditableMessageViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)completeAction;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateViewConstraints;
 @end
 
 @implementation FMDeviceEditableMessageViewController
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_100096E34();
 }
 
@@ -35,16 +35,16 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_100094060(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_100094060(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
@@ -53,7 +53,7 @@
 
 - (void)completeAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000948F0();
 }
 

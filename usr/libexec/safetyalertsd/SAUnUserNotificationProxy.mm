@@ -1,29 +1,29 @@
 @interface SAUnUserNotificationProxy
-- (SAUnUserNotificationProxy)initWithQueue:(id)a3 bundleIdentifier:(const char *)a4 authorizationOption:(unint64_t)a5 interruptionLevel:(unint64_t)a6 extension:(const char *)a7 categoryName:(const char *)a8 analyticsRef:(shared_ptr<SACoreAnalytics>)a9;
+- (SAUnUserNotificationProxy)initWithQueue:(id)queue bundleIdentifier:(const char *)identifier authorizationOption:(unint64_t)option interruptionLevel:(unint64_t)level extension:(const char *)extension categoryName:(const char *)name analyticsRef:(shared_ptr<SACoreAnalytics>)ref;
 - (id).cxx_construct;
-- (void)postIgneousRichNotification:(id)a3;
-- (void)postIgneousTextNotification:(id)a3;
-- (void)postNotification:(id)a3;
+- (void)postIgneousRichNotification:(id)notification;
+- (void)postIgneousTextNotification:(id)notification;
+- (void)postNotification:(id)notification;
 @end
 
 @implementation SAUnUserNotificationProxy
 
-- (SAUnUserNotificationProxy)initWithQueue:(id)a3 bundleIdentifier:(const char *)a4 authorizationOption:(unint64_t)a5 interruptionLevel:(unint64_t)a6 extension:(const char *)a7 categoryName:(const char *)a8 analyticsRef:(shared_ptr<SACoreAnalytics>)a9
+- (SAUnUserNotificationProxy)initWithQueue:(id)queue bundleIdentifier:(const char *)identifier authorizationOption:(unint64_t)option interruptionLevel:(unint64_t)level extension:(const char *)extension categoryName:(const char *)name analyticsRef:(shared_ptr<SACoreAnalytics>)ref
 {
-  v15 = a3;
+  queueCopy = queue;
   v36.receiver = self;
   v36.super_class = SAUnUserNotificationProxy;
   v16 = [(SAUnUserNotificationProxy *)&v36 init];
   v17 = v16;
   if (v16)
   {
-    if (a4 && a7)
+    if (identifier && extension)
     {
-      v16->_bundleIdentifier = a4;
-      v16->_categoryName = a8;
-      v16->_interruptionLevel = a6;
-      v19 = *a9.__ptr_;
-      v18 = *(a9.__ptr_ + 1);
+      v16->_bundleIdentifier = identifier;
+      v16->_categoryName = name;
+      v16->_interruptionLevel = level;
+      v19 = *ref.__ptr_;
+      v18 = *(ref.__ptr_ + 1);
       if (v18)
       {
         atomic_fetch_add_explicit((v18 + 8), 1uLL, memory_order_relaxed);
@@ -37,7 +37,7 @@
         sub_10002A838(cntrl);
       }
 
-      if (a6 == 3)
+      if (level == 3)
       {
         v21 = +[UNNotificationSound defaultCriticalSound];
         v22 = 1;
@@ -53,12 +53,12 @@
       v17->_defaultSound = v21;
 
       v17->_isHapticsUsed = v22;
-      v25 = [NSString stringWithUTF8String:a7];
+      v25 = [NSString stringWithUTF8String:extension];
       v26 = [UNNotificationCategory categoryWithIdentifier:v25 actions:&__NSArray0__struct intentIdentifiers:&__NSArray0__struct options:1];
 
       v27 = [UNUserNotificationCenter alloc];
-      v28 = [NSString stringWithUTF8String:a4];
-      v29 = [v27 initWithBundleIdentifier:v28 queue:v15];
+      v28 = [NSString stringWithUTF8String:identifier];
+      v29 = [v27 initWithBundleIdentifier:v28 queue:queueCopy];
       notificationCenter = v17->_notificationCenter;
       v17->_notificationCenter = v29;
 
@@ -72,7 +72,7 @@
         v39 = 2082;
         v40 = "";
         v41 = 2081;
-        v42 = a7;
+        extensionCopy = extension;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#notif,setting notification category, categoryIdentifier:%{private, location:escape_only}s}", buf, 0x1Cu);
       }
 
@@ -80,7 +80,7 @@
       v33 = [NSSet setWithObject:v26];
       [(UNUserNotificationCenter *)v32 setNotificationCategories:v33];
 
-      [(UNUserNotificationCenter *)v17->_notificationCenter requestAuthorizationWithOptions:a5 completionHandler:&stru_10013D070];
+      [(UNUserNotificationCenter *)v17->_notificationCenter requestAuthorizationWithOptions:option completionHandler:&stru_10013D070];
       v34 = v17;
     }
 
@@ -93,13 +93,13 @@
   return v17;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v5 = [NSString stringWithUTF8String:"title"];
-    v6 = [v4 objectForKey:v5];
+    v6 = [notificationCopy objectForKey:v5];
 
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -112,7 +112,7 @@
     }
 
     v7 = [NSString stringWithUTF8String:"body"];
-    v8 = [v4 objectForKey:v7];
+    v8 = [notificationCopy objectForKey:v7];
 
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -125,7 +125,7 @@
     }
 
     v9 = [NSString stringWithUTF8String:"isSilent"];
-    v10 = [v4 objectForKey:v9];
+    v10 = [notificationCopy objectForKey:v9];
 
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -138,7 +138,7 @@
     }
 
     v11 = [NSString stringWithUTF8String:"isExtended"];
-    v12 = [v4 objectForKey:v11];
+    v12 = [notificationCopy objectForKey:v11];
 
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -151,7 +151,7 @@
     }
 
     v13 = [NSString stringWithUTF8String:"toneFile"];
-    v14 = [v4 objectForKey:v13];
+    v14 = [notificationCopy objectForKey:v13];
 
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -164,7 +164,7 @@
     }
 
     v15 = [NSString stringWithUTF8String:"userInfo"];
-    v16 = [v4 objectForKey:v15];
+    v16 = [notificationCopy objectForKey:v15];
 
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -177,7 +177,7 @@
     }
 
     v18 = [NSString stringWithUTF8String:"attachments"];
-    v19 = [v4 objectForKey:v18];
+    v19 = [notificationCopy objectForKey:v18];
 
     if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -190,7 +190,7 @@
     }
 
     v20 = [NSString stringWithUTF8String:"serverTs"];
-    v21 = [v4 objectForKey:v20];
+    v21 = [notificationCopy objectForKey:v20];
 
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -203,7 +203,7 @@
     }
 
     v22 = [NSString stringWithUTF8String:"interface"];
-    v23 = [v4 objectForKey:v22];
+    v23 = [notificationCopy objectForKey:v22];
 
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -216,7 +216,7 @@
     }
 
     v24 = [NSString stringWithUTF8String:"isRelayed"];
-    v25 = [v4 objectForKey:v24];
+    v25 = [notificationCopy objectForKey:v24];
 
     if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -229,7 +229,7 @@
     }
 
     v26 = [NSString stringWithUTF8String:"level"];
-    v27 = [v4 objectForKey:v26];
+    v27 = [notificationCopy objectForKey:v26];
 
     if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -267,30 +267,30 @@
     {
       if (v75)
       {
-        v33 = [v75 BOOLValue];
+        bOOLValue = [v75 BOOLValue];
       }
 
       else
       {
-        v33 = 0;
+        bOOLValue = 0;
       }
 
       if (v74)
       {
-        v70 = [v74 BOOLValue];
+        bOOLValue2 = [v74 BOOLValue];
       }
 
       else
       {
-        v70 = 0;
+        bOOLValue2 = 0;
       }
 
       bundleIdentifier = self->_bundleIdentifier;
       if (bundleIdentifier)
       {
-        v37 = [NSString stringWithFormat:@"%s/%s.bundle", "/System/Library/UserNotifications/Bundles/", bundleIdentifier];
-        v38 = v37;
-        if (!v37)
+        bundleIdentifier = [NSString stringWithFormat:@"%s/%s.bundle", "/System/Library/UserNotifications/Bundles/", bundleIdentifier];
+        v38 = bundleIdentifier;
+        if (!bundleIdentifier)
         {
           v44 = SALogObjectGeneral;
           if (os_log_type_enabled(SALogObjectGeneral, OS_LOG_TYPE_DEFAULT))
@@ -304,7 +304,7 @@
           goto LABEL_134;
         }
 
-        v69 = v37;
+        v69 = bundleIdentifier;
         v39 = objc_alloc_init(UNMutableNotificationContent);
         [v39 setTitle:v80];
         [v39 setBody:v79];
@@ -329,7 +329,7 @@
         }
 
         v42 = *(sub_100042820() + 395);
-        if ((v33 | v42))
+        if ((bOOLValue | v42))
         {
           v43 = SALogObjectGeneral;
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
@@ -338,7 +338,7 @@
             *&buf[8] = 2082;
             *&buf[10] = "";
             *&buf[18] = 1025;
-            *&buf[20] = v33;
+            *&buf[20] = bOOLValue;
             v89 = 1025;
             v90 = v42;
             _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#notif,postNotification,tone,silentAlert, isSilent:%{private}hhd, preference:%{private}hhd}", buf, 0x1Eu);
@@ -354,7 +354,7 @@ LABEL_123:
             v58 = [NSString stringWithUTF8String:self->_bundleIdentifier];
             [v39 setThreadIdentifier:v58];
 
-            if (v70)
+            if (bOOLValue2)
             {
               v59 = [NSString stringWithUTF8String:self->_categoryName];
               [v39 setCategoryIdentifier:v59];
@@ -388,7 +388,7 @@ LABEL_123:
                 *(v67 + 64) = [v76 intValue] != 0;
                 v68 = v87.__r_.__value_.__r.__words[0];
                 *(v68 + 68) = [v28 intValue];
-                if ((v70 & 1) == 0)
+                if ((bOOLValue2 & 1) == 0)
                 {
                   sub_10007161C(*(self->analyticsRef.__ptr_ + 13), buf);
                 }
@@ -578,13 +578,13 @@ LABEL_135:
 LABEL_136:
 }
 
-- (void)postIgneousTextNotification:(id)a3
+- (void)postIgneousTextNotification:(id)notification
 {
-  v3 = a3;
-  if (v3)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v4 = [NSString stringWithUTF8String:"title"];
-    v5 = [v3 objectForKey:v4];
+    v5 = [notificationCopy objectForKey:v4];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -597,7 +597,7 @@ LABEL_136:
     }
 
     v6 = [NSString stringWithUTF8String:"body"];
-    v7 = [v3 objectForKey:v6];
+    v7 = [notificationCopy objectForKey:v6];
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -610,7 +610,7 @@ LABEL_136:
     }
 
     v8 = [NSString stringWithUTF8String:"attribution"];
-    v9 = [v3 objectForKey:v8];
+    v9 = [notificationCopy objectForKey:v8];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -623,7 +623,7 @@ LABEL_136:
     }
 
     v10 = [NSString stringWithUTF8String:"tone"];
-    v11 = [v3 objectForKey:v10];
+    v11 = [notificationCopy objectForKey:v10];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -636,7 +636,7 @@ LABEL_136:
     }
 
     v12 = [NSString stringWithUTF8String:"isSilent"];
-    v13 = [v3 objectForKey:v12];
+    v13 = [notificationCopy objectForKey:v12];
 
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -649,7 +649,7 @@ LABEL_136:
     }
 
     v14 = [NSString stringWithUTF8String:"uid"];
-    v15 = [v3 objectForKey:v14];
+    v15 = [notificationCopy objectForKey:v14];
 
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -662,7 +662,7 @@ LABEL_136:
     }
 
     v16 = [NSString stringWithUTF8String:"serverTs"];
-    v17 = [v3 objectForKey:v16];
+    v17 = [notificationCopy objectForKey:v16];
 
     v18 = -1.0;
     if (v17)
@@ -676,42 +676,42 @@ LABEL_136:
     }
 
     v20 = [NSString stringWithUTF8String:"interface"];
-    v21 = [v3 objectForKey:v20];
+    v21 = [notificationCopy objectForKey:v20];
 
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v22 = [v21 intValue];
+      intValue = [v21 intValue];
     }
 
     else
     {
-      v22 = 0;
+      intValue = 0;
     }
 
     v23 = [NSString stringWithUTF8String:"isRelayed"];
-    v24 = [v3 objectForKey:v23];
+    v24 = [notificationCopy objectForKey:v23];
 
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v25 = [v24 intValue];
+      intValue2 = [v24 intValue];
     }
 
     else
     {
-      v25 = 0;
+      intValue2 = 0;
     }
 
     v26 = [NSString stringWithUTF8String:"level"];
-    v27 = [v3 objectForKey:v26];
+    v27 = [notificationCopy objectForKey:v26];
 
     if (v27 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v28 = [v27 intValue];
+      intValue3 = [v27 intValue];
     }
 
     else
     {
-      v28 = 0xFFFFFFFFLL;
+      intValue3 = 0xFFFFFFFFLL;
     }
 
     if (v54 && v53 && v49 && v52 && v51 && v50)
@@ -742,15 +742,15 @@ LABEL_136:
       v56[6] = v29;
       v30 = [NSString stringWithUTF8String:"interface"];
       v55[7] = v30;
-      v31 = [NSNumber numberWithInt:v22];
+      v31 = [NSNumber numberWithInt:intValue];
       v56[7] = v31;
       v32 = [NSString stringWithUTF8String:"isRelayed"];
       v55[8] = v32;
-      v33 = [NSNumber numberWithInt:v25];
+      v33 = [NSNumber numberWithInt:intValue2];
       v56[8] = v33;
       v34 = [NSString stringWithUTF8String:"level"];
       v55[9] = v34;
-      v35 = [NSNumber numberWithInt:v28];
+      v35 = [NSNumber numberWithInt:intValue3];
       v56[9] = v35;
       v36 = [NSDictionary dictionaryWithObjects:v56 forKeys:v55 count:10];
 
@@ -806,13 +806,13 @@ LABEL_136:
   }
 }
 
-- (void)postIgneousRichNotification:(id)a3
+- (void)postIgneousRichNotification:(id)notification
 {
-  v119 = a3;
-  if (v119)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v4 = [NSString stringWithUTF8String:"title"];
-    v5 = [v119 objectForKey:v4];
+    v5 = [notificationCopy objectForKey:v4];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -825,7 +825,7 @@ LABEL_136:
     }
 
     v6 = [NSString stringWithUTF8String:"body"];
-    v7 = [v119 objectForKey:v6];
+    v7 = [notificationCopy objectForKey:v6];
 
     if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -838,7 +838,7 @@ LABEL_136:
     }
 
     v8 = [NSString stringWithUTF8String:"attribution"];
-    v9 = [v119 objectForKey:v8];
+    v9 = [notificationCopy objectForKey:v8];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -851,7 +851,7 @@ LABEL_136:
     }
 
     v10 = [NSString stringWithUTF8String:"tone"];
-    v11 = [v119 objectForKey:v10];
+    v11 = [notificationCopy objectForKey:v10];
 
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -864,7 +864,7 @@ LABEL_136:
     }
 
     v12 = [NSString stringWithUTF8String:"isSilent"];
-    v13 = [v119 objectForKey:v12];
+    v13 = [notificationCopy objectForKey:v12];
 
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -877,7 +877,7 @@ LABEL_136:
     }
 
     v14 = [NSString stringWithUTF8String:"uid"];
-    v15 = [v119 objectForKey:v14];
+    v15 = [notificationCopy objectForKey:v14];
 
     if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -890,7 +890,7 @@ LABEL_136:
     }
 
     v16 = [NSString stringWithUTF8String:"serverTs"];
-    v17 = [v119 objectForKey:v16];
+    v17 = [notificationCopy objectForKey:v16];
 
     v18 = -1.0;
     if (v17)
@@ -904,35 +904,35 @@ LABEL_136:
     }
 
     v20 = [NSString stringWithUTF8String:"isRelayed"];
-    v21 = [v119 objectForKey:v20];
+    v21 = [notificationCopy objectForKey:v20];
 
     if (v21 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v22 = [v21 intValue];
+      intValue = [v21 intValue];
     }
 
     else
     {
-      v22 = 0;
+      intValue = 0;
     }
 
     v23 = [NSString stringWithUTF8String:"level"];
-    v24 = [v119 objectForKey:v23];
+    v24 = [notificationCopy objectForKey:v23];
 
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v25 = [v24 intValue];
+      intValue2 = [v24 intValue];
     }
 
     else
     {
-      v25 = -1;
+      intValue2 = -1;
     }
 
     if (v118 && v117 && v116 && v115 && v114)
     {
       v26 = [NSString stringWithUTF8String:"epiLat"];
-      v27 = [v119 objectForKey:v26];
+      v27 = [notificationCopy objectForKey:v26];
 
       v28 = -1000.0;
       if (v27)
@@ -946,7 +946,7 @@ LABEL_136:
       }
 
       v30 = [NSString stringWithUTF8String:"epiLon"];
-      v31 = [v119 objectForKey:v30];
+      v31 = [notificationCopy objectForKey:v30];
 
       v32 = -1000.0;
       if (v31)
@@ -960,7 +960,7 @@ LABEL_136:
       }
 
       v34 = [NSString stringWithUTF8String:"userLat"];
-      v35 = [v119 objectForKey:v34];
+      v35 = [notificationCopy objectForKey:v34];
 
       v36 = -1000.0;
       if (v35)
@@ -974,7 +974,7 @@ LABEL_136:
       }
 
       v38 = [NSString stringWithUTF8String:"userLon"];
-      v39 = [v119 objectForKey:v38];
+      v39 = [notificationCopy objectForKey:v38];
 
       v40 = -1000.0;
       if (v39)
@@ -988,20 +988,20 @@ LABEL_136:
       }
 
       v42 = [NSString stringWithUTF8String:"interface"];
-      v43 = [v119 objectForKey:v42];
+      v43 = [notificationCopy objectForKey:v42];
 
       if (v43 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v112 = [v43 intValue];
+        intValue3 = [v43 intValue];
       }
 
       else
       {
-        v112 = 0;
+        intValue3 = 0;
       }
 
       v46 = [NSString stringWithUTF8String:"radius"];
-      v47 = [v119 objectForKey:v46];
+      v47 = [notificationCopy objectForKey:v46];
 
       v48 = -1.0;
       if (v47)
@@ -1015,10 +1015,10 @@ LABEL_136:
       }
 
       v50 = [NSString stringWithUTF8String:"polygon"];
-      v51 = [v119 objectForKey:v50];
+      v51 = [notificationCopy objectForKey:v50];
 
-      v110 = v25;
-      v111 = v22;
+      v110 = intValue2;
+      v111 = intValue;
       if (v51 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v52 = v51;
@@ -1143,14 +1143,14 @@ LABEL_136:
 
         if (*(sub_100042820() + 394) == 1)
         {
-          if (v112 - 1 >= 3)
+          if (intValue3 - 1 >= 3)
           {
             v76 = 0;
           }
 
           else
           {
-            v76 = off_10013D0F8[v112 - 1];
+            v76 = off_10013D0F8[intValue3 - 1];
           }
 
           v77 = SALogObjectGeneral;
@@ -1161,7 +1161,7 @@ LABEL_136:
             v127 = 2082;
             v128 = "";
             v129 = 1025;
-            LODWORD(v130) = v112;
+            LODWORD(v130) = intValue3;
             _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#notif,postIgneousRichNotification, alertInterface:%{private}d}", v125, 0x18u);
           }
         }
@@ -1248,7 +1248,7 @@ LABEL_136:
         v141[6] = v100;
         v91 = [NSString stringWithUTF8String:"interface"];
         v138 = v91;
-        v92 = [NSNumber numberWithInt:v112];
+        v92 = [NSNumber numberWithInt:intValue3];
         v141[7] = v92;
         v93 = [NSString stringWithUTF8String:"isRelayed"];
         v139 = v93;

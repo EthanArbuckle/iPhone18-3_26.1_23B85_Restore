@@ -1,31 +1,31 @@
 @interface GKChallengeListCacheObject
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date;
 @end
 
 @implementation GKChallengeListCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date
 {
-  v6 = a3;
-  v31 = a4;
+  representationCopy = representation;
+  dateCopy = date;
   v7 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v7, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v8 = +[NSThread callStackSymbols];
     v9 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKChallengeListCacheObject updateWithServerRepresentation:expirationDate:]", v8];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v9, "-[GKChallengeListCacheObject updateWithServerRepresentation:expirationDate:]", [v11 UTF8String], 4333);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v9, "-[GKChallengeListCacheObject updateWithServerRepresentation:expirationDate:]", [lastPathComponent UTF8String], 4333);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
 
   v39.receiver = self;
   v39.super_class = GKChallengeListCacheObject;
-  [(GKExpiringCacheObject *)&v39 updateWithServerRepresentation:v6 expirationDate:v31];
-  v13 = [(GKChallengeListCacheObject *)self managedObjectContext];
-  v30 = v6;
-  v14 = [v6 objectForKey:@"results"];
+  [(GKExpiringCacheObject *)&v39 updateWithServerRepresentation:representationCopy expirationDate:dateCopy];
+  managedObjectContext = [(GKChallengeListCacheObject *)self managedObjectContext];
+  v30 = representationCopy;
+  v14 = [representationCopy objectForKey:@"results"];
   v15 = [v14 count];
   v16 = [NSMutableArray arrayWithCapacity:v15];
   v35 = 0u;
@@ -64,21 +64,21 @@
     while (v19);
   }
 
-  v23 = [GKChallengeCacheObject challengesWithChallengeIDs:v16 context:v13];
+  v23 = [GKChallengeCacheObject challengesWithChallengeIDs:v16 context:managedObjectContext];
   v24 = [NSMutableDictionary dictionaryWithCapacity:v15];
   v25 = [v23 _gkMapDictionaryWithKeyPath:@"challengeID"];
   [v24 addEntriesFromDictionary:v25];
 
-  v26 = [(GKChallengeListCacheObject *)self player];
-  v27 = [v26 playerID];
+  player = [(GKChallengeListCacheObject *)self player];
+  playerID = [player playerID];
 
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100139720;
   v32[3] = &unk_100367BA8;
   v33 = v24;
-  v34 = v27;
-  v28 = v27;
+  v34 = playerID;
+  v28 = playerID;
   v29 = v24;
   [(GKListCacheObject *)self updateEntriesWithRepresentations:v17 entryForRepresentation:v32 reuseEntriesByIndex:0];
 }

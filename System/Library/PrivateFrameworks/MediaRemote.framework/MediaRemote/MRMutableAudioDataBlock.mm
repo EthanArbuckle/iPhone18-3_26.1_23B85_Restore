@@ -1,19 +1,19 @@
 @interface MRMutableAudioDataBlock
-- (void)setBuffer:(id)a3;
+- (void)setBuffer:(id)buffer;
 @end
 
 @implementation MRMutableAudioDataBlock
 
-- (void)setBuffer:(id)a3
+- (void)setBuffer:(id)buffer
 {
-  v5 = a3;
+  bufferCopy = buffer;
   buffer = self->super._buffer;
   p_buffer = &self->super._buffer;
-  if (buffer != v5)
+  if (buffer != bufferCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_buffer, a3);
-    v5 = v8;
+    v8 = bufferCopy;
+    objc_storeStrong(p_buffer, buffer);
+    bufferCopy = v8;
   }
 }
 

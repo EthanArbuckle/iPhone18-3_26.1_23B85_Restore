@@ -1,16 +1,16 @@
 @interface STDynamicAttributionXPCServerHandle
 + (id)sharedMachServiceServerHandle;
-- (STDynamicAttributionXPCServerHandle)initWithXPCConnectionProvider:(id)a3;
+- (STDynamicAttributionXPCServerHandle)initWithXPCConnectionProvider:(id)provider;
 - (void)_lock_remoteProxy;
-- (void)currentAttributionsDidChange:(id)a3;
+- (void)currentAttributionsDidChange:(id)change;
 - (void)dealloc;
-- (void)didObserveServerLaunch:(id)a3;
-- (void)setAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setLocalizableAttributionKey:(id)a3 andApplication:(id)a4 forClient:(id)a5;
-- (void)subscribeToUpdates:(id)a3;
-- (void)unsubscribeFromUpdates:(id)a3;
+- (void)didObserveServerLaunch:(id)launch;
+- (void)setAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setLocalizableAttributionKey:(id)key andApplication:(id)application forClient:(id)client;
+- (void)subscribeToUpdates:(id)updates;
+- (void)unsubscribeFromUpdates:(id)updates;
 @end
 
 @implementation STDynamicAttributionXPCServerHandle
@@ -43,9 +43,9 @@ id __43__STDynamicAttributionXPCServerHandle_init__block_invoke()
   return v0;
 }
 
-- (STDynamicAttributionXPCServerHandle)initWithXPCConnectionProvider:(id)a3
+- (STDynamicAttributionXPCServerHandle)initWithXPCConnectionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = STDynamicAttributionXPCServerHandle;
   v5 = [(STDynamicAttributionXPCServerHandle *)&v14 init];
@@ -57,7 +57,7 @@ id __43__STDynamicAttributionXPCServerHandle_init__block_invoke()
     lock_clients = v6->_lock_clients;
     v6->_lock_clients = v7;
 
-    v9 = [v4 copy];
+    v9 = [providerCopy copy];
     lock_connectionProvider = v6->_lock_connectionProvider;
     v6->_lock_connectionProvider = v9;
 
@@ -81,51 +81,51 @@ id __43__STDynamicAttributionXPCServerHandle_init__block_invoke()
 
 - (void)_lock_remoteProxy
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    v2 = a1[2];
+    selfCopy = self;
+    v2 = self[2];
     if (!v2)
     {
-      v3 = (*(v1[3] + 16))();
-      v4 = v1[2];
-      v1[2] = v3;
+      v3 = (*(selfCopy[3] + 16))();
+      v4 = selfCopy[2];
+      selfCopy[2] = v3;
 
-      v5 = v1[2];
+      v5 = selfCopy[2];
       v6 = STDynamicAttributionXPCServerInterface();
       [v5 setRemoteObjectInterface:v6];
 
-      v7 = v1[2];
+      v7 = selfCopy[2];
       v8 = STDynamicAttributionXPCClientInterface();
       [v7 setExportedInterface:v8];
 
-      [v1[2] setExportedObject:v1];
-      objc_initWeak(&location, v1);
-      v9 = v1[2];
+      [selfCopy[2] setExportedObject:selfCopy];
+      objc_initWeak(&location, selfCopy);
+      v9 = selfCopy[2];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke;
       v14[3] = &unk_1E85DDD78;
       objc_copyWeak(&v15, &location);
       [v9 setInterruptionHandler:v14];
-      v10 = v1[2];
+      v10 = selfCopy[2];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9;
       v12[3] = &unk_1E85DDD78;
       objc_copyWeak(&v13, &location);
       [v10 setInvalidationHandler:v12];
-      [v1[2] resume];
+      [selfCopy[2] resume];
       objc_destroyWeak(&v13);
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
-      v2 = v1[2];
+      v2 = selfCopy[2];
     }
 
-    a1 = [v2 remoteObjectProxy];
+    self = [v2 remoteObjectProxy];
   }
 
-  return a1;
+  return self;
 }
 
 void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke(uint64_t a1)
@@ -167,11 +167,11 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   }
 }
 
-- (void)setLocalizableAttributionKey:(id)a3 andApplication:(id)a4 forClient:(id)a5
+- (void)setLocalizableAttributionKey:(id)key andApplication:(id)application forClient:(id)client
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keyCopy = key;
+  applicationCopy = application;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = NSStringFromSelector(a2);
@@ -182,7 +182,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     v17 = 2112;
     v18 = v14;
     v19 = 2048;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = @"STDynamicAttributionXPCServerHandle.m";
     v23 = 1024;
@@ -193,10 +193,10 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   __break(0);
 }
 
-- (void)setAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = NSStringFromSelector(a2);
@@ -207,7 +207,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     v15 = 2112;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = @"STDynamicAttributionXPCServerHandle.m";
     v21 = 1024;
@@ -218,10 +218,10 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   __break(0);
 }
 
-- (void)setAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  formatCopy = format;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = NSStringFromSelector(a2);
@@ -232,7 +232,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     v15 = 2112;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = @"STDynamicAttributionXPCServerHandle.m";
     v21 = 1024;
@@ -243,10 +243,10 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   __break(0);
 }
 
-- (void)setAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  clientCopy = client;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = NSStringFromSelector(a2);
@@ -257,7 +257,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     v15 = 2112;
     v16 = v12;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = @"STDynamicAttributionXPCServerHandle.m";
     v21 = 1024;
@@ -268,11 +268,11 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   __break(0);
 }
 
-- (void)subscribeToUpdates:(id)a3
+- (void)subscribeToUpdates:(id)updates
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"client != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -285,7 +285,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
       v17 = 2114;
       v18 = v14;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"STDynamicAttributionXPCServerHandle.m";
       v23 = 1024;
@@ -301,7 +301,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     JUMPOUT(0x1DA9FF5D0);
   }
 
-  v6 = v5;
+  v6 = updatesCopy;
   v7 = STSystemStatusLogDynamicAttribution();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -313,12 +313,12 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableSet *)self->_lock_clients count])
   {
-    v8 = 0;
+    _lock_remoteProxy = 0;
   }
 
   else
   {
-    v8 = [(STDynamicAttributionXPCServerHandle *)self _lock_remoteProxy];
+    _lock_remoteProxy = [(STDynamicAttributionXPCServerHandle *)self _lock_remoteProxy];
     v9 = STSystemStatusLogDynamicAttribution();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -329,19 +329,19 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
 
   [(NSMutableSet *)self->_lock_clients addObject:v6];
   os_unfair_lock_unlock(&self->_lock);
-  if (v8)
+  if (_lock_remoteProxy)
   {
-    [v8 subscribeToUpdates];
+    [_lock_remoteProxy subscribeToUpdates];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsubscribeFromUpdates:(id)a3
+- (void)unsubscribeFromUpdates:(id)updates
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  updatesCopy = updates;
+  if (!updatesCopy)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"client != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -354,7 +354,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
       v17 = 2114;
       v18 = v14;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"STDynamicAttributionXPCServerHandle.m";
       v23 = 1024;
@@ -370,7 +370,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     JUMPOUT(0x1DA9FF808);
   }
 
-  v6 = v5;
+  v6 = updatesCopy;
   v7 = STSystemStatusLogDynamicAttribution();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -400,10 +400,10 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)currentAttributionsDidChange:(id)a3
+- (void)currentAttributionsDidChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableSet *)self->_lock_clients copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -427,7 +427,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) currentAttributionsDidChange:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v10++) currentAttributionsDidChange:{changeCopy, v12}];
       }
 
       while (v8 != v10);
@@ -440,14 +440,14 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didObserveServerLaunch:(id)a3
+- (void)didObserveServerLaunch:(id)launch
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = STSystemStatusLogDynamicAttribution();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1DA9C2000, v4, OS_LOG_TYPE_DEFAULT, "%@: Observed server launch, resubscribing to updates if necessary", buf, 0xCu);
   }
 
@@ -457,12 +457,12 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
     if (self->_lock_connection)
     {
       v5 = [(NSMutableSet *)self->_lock_clients copy];
-      v6 = [(STDynamicAttributionXPCServerHandle *)self _lock_remoteProxy];
+      _lock_remoteProxy = [(STDynamicAttributionXPCServerHandle *)self _lock_remoteProxy];
     }
 
     else
     {
-      v6 = 0;
+      _lock_remoteProxy = 0;
       v5 = 0;
     }
 
@@ -500,7 +500,7 @@ void __56__STDynamicAttributionXPCServerHandle__lock_remoteProxy__block_invoke_9
         while (v9);
       }
 
-      [v6 subscribeToUpdates];
+      [_lock_remoteProxy subscribeToUpdates];
     }
   }
 

@@ -1,14 +1,14 @@
 @interface SecureElement
-+ (void)setQueueKey:(id)a3;
-- (id)transceive:(id)a3 error:(id *)a4;
-- (id)transceive:(id)a3 toOS:(int64_t)a4 error:(id *)a5;
-- (void)log:(id)a3;
-- (void)sync:(id)a3;
++ (void)setQueueKey:(id)key;
+- (id)transceive:(id)transceive error:(id *)error;
+- (id)transceive:(id)transceive toOS:(int64_t)s error:(id *)error;
+- (void)log:(id)log;
+- (void)sync:(id)sync;
 @end
 
 @implementation SecureElement
 
-- (id)transceive:(id)a3 error:(id *)a4
+- (id)transceive:(id)transceive error:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -27,14 +27,14 @@
   v8[2] = sub_100053470;
   v8[3] = &unk_1004C2C40;
   v11 = &v19;
-  v9 = self;
-  v5 = a3;
-  v10 = v5;
+  selfCopy = self;
+  transceiveCopy = transceive;
+  v10 = transceiveCopy;
   v12 = &v13;
-  [(SecureElement *)v9 sync:v8];
-  if (a4)
+  [(SecureElement *)selfCopy sync:v8];
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v6 = v20[5];
@@ -45,7 +45,7 @@
   return v6;
 }
 
-- (id)transceive:(id)a3 toOS:(int64_t)a4 error:(id *)a5
+- (id)transceive:(id)transceive toOS:(int64_t)s error:(id *)error
 {
   v22 = 0;
   v23 = &v22;
@@ -64,15 +64,15 @@
   v10[2] = sub_100053694;
   v10[3] = &unk_1004C2C68;
   v13 = &v22;
-  v11 = self;
-  v7 = a3;
+  selfCopy = self;
+  transceiveCopy = transceive;
   v14 = &v16;
-  v15 = a4;
-  v12 = v7;
-  [(SecureElement *)v11 sync:v10];
-  if (a5)
+  sCopy = s;
+  v12 = transceiveCopy;
+  [(SecureElement *)selfCopy sync:v10];
+  if (error)
   {
-    *a5 = v17[5];
+    *error = v17[5];
   }
 
   v8 = v23[5];
@@ -83,22 +83,22 @@
   return v8;
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = logCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[SLAM] %@", &v5, 0xCu);
   }
 }
 
-+ (void)setQueueKey:(id)a3
++ (void)setQueueKey:(id)key
 {
   v3 = qword_100501D80;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     swift_once();
@@ -107,10 +107,10 @@
   OS_dispatch_queue.setSpecific<A>(key:value:)();
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v5 = _Block_copy(a3);
-  v4 = self;
+  v5 = _Block_copy(sync);
+  selfCopy = self;
   sub_1003349C4(sub_10021BF3C);
   _Block_release(v5);
 }

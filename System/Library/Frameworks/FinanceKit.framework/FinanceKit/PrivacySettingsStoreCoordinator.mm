@@ -1,14 +1,14 @@
 @interface PrivacySettingsStoreCoordinator
-- (void)didChange:(id)a3;
+- (void)didChange:(id)change;
 @end
 
 @implementation PrivacySettingsStoreCoordinator
 
-- (void)didChange:(id)a3
+- (void)didChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1B71F7ED4(v3);
+  sub_1B71F7ED4(changeCopy);
 }
 
 @end

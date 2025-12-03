@@ -1,20 +1,20 @@
 @interface HUSetupBannerItem
-- (id)_determineRequiredAccessorySetupReminders:(id)a3;
-- (id)_determineRequiredLockAccessorySetupReminders:(id)a3;
-- (id)_determineRequiredOnboardingReminders:(id)a3;
+- (id)_determineRequiredAccessorySetupReminders:(id)reminders;
+- (id)_determineRequiredLockAccessorySetupReminders:(id)reminders;
+- (id)_determineRequiredOnboardingReminders:(id)reminders;
 - (id)_namesOfAccessoriesNeedingNaturalLightingOnboarding;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUSetupBannerItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
-  v6 = [v5 BOOLValue];
+  v5 = [options objectForKeyedSubscript:*MEMORY[0x277D13BB0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = MEMORY[0x277D2C900];
     v8 = MEMORY[0x277D14780];
@@ -31,10 +31,10 @@
   else
   {
     v13 = objc_alloc(MEMORY[0x277D14C98]);
-    v14 = [(HUBannerItem *)self home];
-    v15 = [(HUBannerItem *)self home];
-    v16 = [v15 currentUser];
-    v17 = [v13 initWithHome:v14 user:v16 nameStyle:0];
+    home = [(HUBannerItem *)self home];
+    home2 = [(HUBannerItem *)self home];
+    currentUser = [home2 currentUser];
+    v17 = [v13 initWithHome:home user:currentUser nameStyle:0];
 
     v10 = [(HUSetupBannerItem *)self _determineRequiredAccessorySetupReminders:v17];
     v19[0] = MEMORY[0x277D85DD0];
@@ -742,19 +742,19 @@ uint64_t __49__HUSetupBannerItem__subclass_updateWithOptions___block_invoke_235(
   return [v3 futureWithResult:v4];
 }
 
-- (id)_determineRequiredOnboardingReminders:(id)a3
+- (id)_determineRequiredOnboardingReminders:(id)reminders
 {
-  v5 = a3;
-  v6 = [(HUBannerItem *)self home];
-  v7 = [HUHomeFeatureOnboardingUtilities atLeastOneHomePodHasLanguageSettingsForHomeFuture:v6];
+  remindersCopy = reminders;
+  home = [(HUBannerItem *)self home];
+  v7 = [HUHomeFeatureOnboardingUtilities atLeastOneHomePodHasLanguageSettingsForHomeFuture:home];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HUSetupBannerItem__determineRequiredOnboardingReminders___block_invoke;
   v11[3] = &unk_277DC04B8;
-  v12 = v5;
-  v13 = self;
+  v12 = remindersCopy;
+  selfCopy = self;
   v14 = a2;
-  v8 = v5;
+  v8 = remindersCopy;
   v9 = [v7 flatMap:v11];
 
   return v9;
@@ -1025,22 +1025,22 @@ uint64_t __59__HUSetupBannerItem__determineRequiredOnboardingReminders___block_i
   return [v3 futureWithResult:v4];
 }
 
-- (id)_determineRequiredAccessorySetupReminders:(id)a3
+- (id)_determineRequiredAccessorySetupReminders:(id)reminders
 {
-  v5 = a3;
+  remindersCopy = reminders;
   if ([MEMORY[0x277D14CE8] supportsAccessorySetup])
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [(HUSetupBannerItem *)self _determineRequiredLockAccessorySetupReminders:v5];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [(HUSetupBannerItem *)self _determineRequiredLockAccessorySetupReminders:remindersCopy];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__HUSetupBannerItem__determineRequiredAccessorySetupReminders___block_invoke;
     v12[3] = &unk_277DC0418;
-    v13 = v6;
-    v14 = v5;
-    v15 = self;
+    v13 = array;
+    v14 = remindersCopy;
+    selfCopy = self;
     v16 = a2;
-    v8 = v6;
+    v8 = array;
     v9 = [v7 flatMap:v12];
   }
 
@@ -1212,14 +1212,14 @@ BOOL __63__HUSetupBannerItem__determineRequiredAccessorySetupReminders___block_i
   return v3;
 }
 
-- (id)_determineRequiredLockAccessorySetupReminders:(id)a3
+- (id)_determineRequiredLockAccessorySetupReminders:(id)reminders
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D143C0] sharedHandler];
-  v6 = [v5 isAccessorySetupActive];
+  remindersCopy = reminders;
+  mEMORY[0x277D143C0] = [MEMORY[0x277D143C0] sharedHandler];
+  isAccessorySetupActive = [mEMORY[0x277D143C0] isAccessorySetupActive];
 
-  if (v6)
+  if (isAccessorySetupActive)
   {
 LABEL_6:
     v8 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
@@ -1232,7 +1232,7 @@ LABEL_6:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = self;
+      selfCopy = self;
       v31 = 2080;
       v32 = "[HUSetupBannerItem _determineRequiredLockAccessorySetupReminders:]";
       _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "(%@:%s) Not showing any lock related banners because the device is vision.", buf, 0x16u);
@@ -1241,13 +1241,13 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = [v4 home];
-  v10 = [MEMORY[0x277D14CE8] isAnIPhone];
-  v11 = [v9 hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary];
-  v12 = [v9 hf_walletKeyAccessories];
-  v13 = [v12 count];
+  home = [remindersCopy home];
+  isAnIPhone = [MEMORY[0x277D14CE8] isAnIPhone];
+  hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary = [home hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary];
+  hf_walletKeyAccessories = [home hf_walletKeyAccessories];
+  v13 = [hf_walletKeyAccessories count];
 
-  if (v13 && v10 && ([v11 isFinished] & 1) == 0)
+  if (v13 && isAnIPhone && ([hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary isFinished] & 1) == 0)
   {
     v8 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEBF8]];
   }
@@ -1255,23 +1255,23 @@ LABEL_6:
   else
   {
     v14 = objc_opt_new();
-    v15 = [v4 hasDismissedWalletKeyExpressModeOnboardingOnThisDevice];
-    [v14 na_safeAddObject:v15];
-    [v14 na_safeAddObject:v11];
+    hasDismissedWalletKeyExpressModeOnboardingOnThisDevice = [remindersCopy hasDismissedWalletKeyExpressModeOnboardingOnThisDevice];
+    [v14 na_safeAddObject:hasDismissedWalletKeyExpressModeOnboardingOnThisDevice];
+    [v14 na_safeAddObject:hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary];
     v16 = MEMORY[0x277D2C900];
-    v17 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v18 = [v16 combineAllFutures:v14 ignoringErrors:1 scheduler:v17];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v18 = [v16 combineAllFutures:v14 ignoringErrors:1 scheduler:mainThreadScheduler];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __67__HUSetupBannerItem__determineRequiredLockAccessorySetupReminders___block_invoke;
     v22[3] = &unk_277DC0530;
-    v23 = v9;
+    v23 = home;
     v24 = v14;
-    v25 = v15;
-    v26 = v11;
-    v27 = v4;
-    v28 = v10;
-    v19 = v15;
+    v25 = hasDismissedWalletKeyExpressModeOnboardingOnThisDevice;
+    v26 = hf_fetchWalletKeyDeviceStateForCurrentDeviceIfNecessary;
+    v27 = remindersCopy;
+    v28 = isAnIPhone;
+    v19 = hasDismissedWalletKeyExpressModeOnboardingOnThisDevice;
     v20 = v14;
     v8 = [v18 flatMap:v22];
   }
@@ -1795,9 +1795,9 @@ id __67__HUSetupBannerItem__determineRequiredLockAccessorySetupReminders___block
 
 - (id)_namesOfAccessoriesNeedingNaturalLightingOnboarding
 {
-  v3 = [(HUBannerItem *)self home];
-  v4 = [v3 hf_allLightProfilesSupportingNaturalLighting];
-  v5 = [v4 na_flatMap:&__block_literal_global_279_0];
+  home = [(HUBannerItem *)self home];
+  hf_allLightProfilesSupportingNaturalLighting = [home hf_allLightProfilesSupportingNaturalLighting];
+  v5 = [hf_allLightProfilesSupportingNaturalLighting na_flatMap:&__block_literal_global_279_0];
 
   v6 = [MEMORY[0x277CBEB98] setWithArray:v5];
   v11[0] = MEMORY[0x277D85DD0];
@@ -1807,8 +1807,8 @@ id __67__HUSetupBannerItem__determineRequiredLockAccessorySetupReminders___block
   v11[4] = self;
   v7 = [v6 na_map:v11];
 
-  v8 = [v7 allObjects];
-  v9 = [v8 na_map:&__block_literal_global_283];
+  allObjects = [v7 allObjects];
+  v9 = [allObjects na_map:&__block_literal_global_283];
 
   return v9;
 }

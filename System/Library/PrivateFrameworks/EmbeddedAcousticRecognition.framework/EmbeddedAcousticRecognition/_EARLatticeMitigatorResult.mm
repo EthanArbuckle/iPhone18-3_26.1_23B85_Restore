@@ -1,26 +1,26 @@
 @interface _EARLatticeMitigatorResult
-- (_EARLatticeMitigatorResult)initWithVersion:(id)a3 score:(float)a4 threshold:(float)a5 calibrationScale:(float)a6 calibrationOffset:(float)a7 processed:(BOOL)a8;
+- (_EARLatticeMitigatorResult)initWithVersion:(id)version score:(float)score threshold:(float)threshold calibrationScale:(float)scale calibrationOffset:(float)offset processed:(BOOL)processed;
 @end
 
 @implementation _EARLatticeMitigatorResult
 
-- (_EARLatticeMitigatorResult)initWithVersion:(id)a3 score:(float)a4 threshold:(float)a5 calibrationScale:(float)a6 calibrationOffset:(float)a7 processed:(BOOL)a8
+- (_EARLatticeMitigatorResult)initWithVersion:(id)version score:(float)score threshold:(float)threshold calibrationScale:(float)scale calibrationOffset:(float)offset processed:(BOOL)processed
 {
-  v14 = a3;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = _EARLatticeMitigatorResult;
   v15 = [(_EARLatticeMitigatorResult *)&v19 init];
   if (v15)
   {
-    v16 = [v14 copy];
+    v16 = [versionCopy copy];
     version = v15->_version;
     v15->_version = v16;
 
-    v15->_score = a4;
-    v15->_threshold = a5;
-    v15->_calibrationScale = a6;
-    v15->_calibrationOffset = a7;
-    v15->_processed = a8;
+    v15->_score = score;
+    v15->_threshold = threshold;
+    v15->_calibrationScale = scale;
+    v15->_calibrationOffset = offset;
+    v15->_processed = processed;
   }
 
   return v15;

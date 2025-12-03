@@ -1,24 +1,24 @@
 @interface SIRINLUEXTERNALCDMNluResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addParses:(id)a3;
-- (void)addRepetitionResults:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParses:(id)parses;
+- (void)addRepetitionResults:(id)results;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALCDMNluResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   requestId = self->_requestId;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (requestId)
   {
     if (v6)
@@ -36,7 +36,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
@@ -61,7 +61,7 @@
   }
 
   responseStatus = self->_responseStatus;
-  v13 = *(v4 + 5);
+  v13 = *(fromCopy + 5);
   if (responseStatus)
   {
     if (v13)
@@ -79,7 +79,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = *(v4 + 3);
+  v14 = *(fromCopy + 3);
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v15)
   {
@@ -104,7 +104,7 @@
   }
 
   languageVariantResult = self->_languageVariantResult;
-  v20 = *(v4 + 1);
+  v20 = *(fromCopy + 1);
   if (languageVariantResult)
   {
     if (v20)
@@ -119,7 +119,7 @@
   }
 
   supplementaryOutput = self->_supplementaryOutput;
-  v22 = *(v4 + 6);
+  v22 = *(fromCopy + 6);
   if (supplementaryOutput)
   {
     if (v22)
@@ -146,13 +146,13 @@
   return v6 ^ v7 ^ [(SIRINLUEXTERNALNLUSupplementaryOutput *)self->_supplementaryOutput hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | v4[4])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((parses = self->_parses, !(parses | v4[2])) || -[NSMutableArray isEqual:](parses, "isEqual:")) && ((responseStatus = self->_responseStatus, !(responseStatus | v4[5])) || -[SIRINLUEXTERNALResponseStatus isEqual:](responseStatus, "isEqual:")) && ((repetitionResults = self->_repetitionResults, !(repetitionResults | v4[3])) || -[NSMutableArray isEqual:](repetitionResults, "isEqual:")) && ((languageVariantResult = self->_languageVariantResult, !(languageVariantResult | v4[1])) || -[SIRINLUEXTERNALLanguageVariantResult isEqual:](languageVariantResult, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((requestId = self->_requestId, !(requestId | equalCopy[4])) || -[SIRINLUEXTERNALRequestID isEqual:](requestId, "isEqual:")) && ((parses = self->_parses, !(parses | equalCopy[2])) || -[NSMutableArray isEqual:](parses, "isEqual:")) && ((responseStatus = self->_responseStatus, !(responseStatus | equalCopy[5])) || -[SIRINLUEXTERNALResponseStatus isEqual:](responseStatus, "isEqual:")) && ((repetitionResults = self->_repetitionResults, !(repetitionResults | equalCopy[3])) || -[NSMutableArray isEqual:](repetitionResults, "isEqual:")) && ((languageVariantResult = self->_languageVariantResult, !(languageVariantResult | equalCopy[1])) || -[SIRINLUEXTERNALLanguageVariantResult isEqual:](languageVariantResult, "isEqual:")))
   {
     supplementaryOutput = self->_supplementaryOutput;
-    if (supplementaryOutput | v4[6])
+    if (supplementaryOutput | equalCopy[6])
     {
       v11 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)supplementaryOutput isEqual:?];
     }
@@ -171,11 +171,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SIRINLUEXTERNALRequestID *)self->_requestId copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v32 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v32 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addParses:v13];
 
         ++v12;
@@ -212,7 +212,7 @@
     while (v10);
   }
 
-  v14 = [(SIRINLUEXTERNALResponseStatus *)self->_responseStatus copyWithZone:a3];
+  v14 = [(SIRINLUEXTERNALResponseStatus *)self->_responseStatus copyWithZone:zone];
   v15 = v5[5];
   v5[5] = v14;
 
@@ -236,7 +236,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v28 + 1) + 8 * v20) copyWithZone:{a3, v28}];
+        v21 = [*(*(&v28 + 1) + 8 * v20) copyWithZone:{zone, v28}];
         [v5 addRepetitionResults:v21];
 
         ++v20;
@@ -249,11 +249,11 @@
     while (v18);
   }
 
-  v22 = [(SIRINLUEXTERNALLanguageVariantResult *)self->_languageVariantResult copyWithZone:a3];
+  v22 = [(SIRINLUEXTERNALLanguageVariantResult *)self->_languageVariantResult copyWithZone:zone];
   v23 = v5[1];
   v5[1] = v22;
 
-  v24 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self->_supplementaryOutput copyWithZone:a3];
+  v24 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)self->_supplementaryOutput copyWithZone:zone];
   v25 = v5[6];
   v5[6] = v24;
 
@@ -261,66 +261,66 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
-    [v13 setRequestId:?];
+    [toCopy setRequestId:?];
   }
 
   if ([(SIRINLUEXTERNALCDMNluResponse *)self parsesCount])
   {
-    [v13 clearParses];
-    v4 = [(SIRINLUEXTERNALCDMNluResponse *)self parsesCount];
-    if (v4)
+    [toCopy clearParses];
+    parsesCount = [(SIRINLUEXTERNALCDMNluResponse *)self parsesCount];
+    if (parsesCount)
     {
-      v5 = v4;
+      v5 = parsesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(SIRINLUEXTERNALCDMNluResponse *)self parsesAtIndex:i];
-        [v13 addParses:v7];
+        [toCopy addParses:v7];
       }
     }
   }
 
   if (self->_responseStatus)
   {
-    [v13 setResponseStatus:?];
+    [toCopy setResponseStatus:?];
   }
 
   if ([(SIRINLUEXTERNALCDMNluResponse *)self repetitionResultsCount])
   {
-    [v13 clearRepetitionResults];
-    v8 = [(SIRINLUEXTERNALCDMNluResponse *)self repetitionResultsCount];
-    if (v8)
+    [toCopy clearRepetitionResults];
+    repetitionResultsCount = [(SIRINLUEXTERNALCDMNluResponse *)self repetitionResultsCount];
+    if (repetitionResultsCount)
     {
-      v9 = v8;
+      v9 = repetitionResultsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(SIRINLUEXTERNALCDMNluResponse *)self repetitionResultsAtIndex:j];
-        [v13 addRepetitionResults:v11];
+        [toCopy addRepetitionResults:v11];
       }
     }
   }
 
   if (self->_languageVariantResult)
   {
-    [v13 setLanguageVariantResult:?];
+    [toCopy setLanguageVariantResult:?];
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if (self->_supplementaryOutput)
   {
-    [v13 setSupplementaryOutput:?];
-    v12 = v13;
+    [toCopy setSupplementaryOutput:?];
+    v12 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_requestId)
   {
     PBDataWriterWriteSubmessage();
@@ -411,12 +411,12 @@
 - (id)dictionaryRepresentation
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   requestId = self->_requestId;
   if (requestId)
   {
-    v5 = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"request_id"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALRequestID *)requestId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request_id"];
   }
 
   if ([(NSMutableArray *)self->_parses count])
@@ -441,8 +441,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v32 objects:v37 count:16];
@@ -451,14 +451,14 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"parses"];
+    [dictionary setObject:v6 forKey:@"parses"];
   }
 
   responseStatus = self->_responseStatus;
   if (responseStatus)
   {
-    v14 = [(SIRINLUEXTERNALResponseStatus *)responseStatus dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"response_status"];
+    dictionaryRepresentation3 = [(SIRINLUEXTERNALResponseStatus *)responseStatus dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"response_status"];
   }
 
   if ([(NSMutableArray *)self->_repetitionResults count])
@@ -483,8 +483,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation4 = [*(*(&v28 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation4];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v28 objects:v36 count:16];
@@ -493,26 +493,26 @@
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"repetition_results"];
+    [dictionary setObject:v15 forKey:@"repetition_results"];
   }
 
   languageVariantResult = self->_languageVariantResult;
   if (languageVariantResult)
   {
-    v23 = [(SIRINLUEXTERNALLanguageVariantResult *)languageVariantResult dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"language_variant_result"];
+    dictionaryRepresentation5 = [(SIRINLUEXTERNALLanguageVariantResult *)languageVariantResult dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"language_variant_result"];
   }
 
   supplementaryOutput = self->_supplementaryOutput;
   if (supplementaryOutput)
   {
-    v25 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)supplementaryOutput dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"supplementary_output"];
+    dictionaryRepresentation6 = [(SIRINLUEXTERNALNLUSupplementaryOutput *)supplementaryOutput dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"supplementary_output"];
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -521,46 +521,46 @@
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALCDMNluResponse;
   v4 = [(SIRINLUEXTERNALCDMNluResponse *)&v8 description];
-  v5 = [(SIRINLUEXTERNALCDMNluResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALCDMNluResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addRepetitionResults:(id)a3
+- (void)addRepetitionResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   repetitionResults = self->_repetitionResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!repetitionResults)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_repetitionResults;
     self->_repetitionResults = v6;
 
-    v4 = v8;
+    resultsCopy = v8;
     repetitionResults = self->_repetitionResults;
   }
 
-  [(NSMutableArray *)repetitionResults addObject:v4];
+  [(NSMutableArray *)repetitionResults addObject:resultsCopy];
 }
 
-- (void)addParses:(id)a3
+- (void)addParses:(id)parses
 {
-  v4 = a3;
+  parsesCopy = parses;
   parses = self->_parses;
-  v8 = v4;
+  v8 = parsesCopy;
   if (!parses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_parses;
     self->_parses = v6;
 
-    v4 = v8;
+    parsesCopy = v8;
     parses = self->_parses;
   }
 
-  [(NSMutableArray *)parses addObject:v4];
+  [(NSMutableArray *)parses addObject:parsesCopy];
 }
 
 @end

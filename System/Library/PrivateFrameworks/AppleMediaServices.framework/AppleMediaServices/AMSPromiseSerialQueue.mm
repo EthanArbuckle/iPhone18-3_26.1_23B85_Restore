@@ -1,7 +1,7 @@
 @interface AMSPromiseSerialQueue
 - (AMSPromiseSerialQueue)init;
-- (id)runBinaryPromiseBlock:(id)a3;
-- (id)runPromiseBlock:(id)a3;
+- (id)runBinaryPromiseBlock:(id)block;
+- (id)runPromiseBlock:(id)block;
 - (void)processQueue;
 @end
 
@@ -27,8 +27,8 @@
 - (void)processQueue
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableArray *)self->_items firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_items firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_items removeObjectAtIndex:0];
   }
@@ -39,12 +39,12 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [v3 run];
+  [firstObject run];
 }
 
-- (id)runBinaryPromiseBlock:(id)a3
+- (id)runBinaryPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   os_unfair_lock_lock_with_options();
   if (self->_processing)
@@ -55,7 +55,7 @@
     v12[2] = __47__AMSPromiseSerialQueue_runBinaryPromiseBlock___block_invoke;
     v12[3] = &unk_1E73B3680;
     v12[4] = self;
-    v7 = [(AMSPromiseSerialQueueItem *)v6 initWithBinaryPromise:v5 block:v4 completion:v12];
+    v7 = [(AMSPromiseSerialQueueItem *)v6 initWithBinaryPromise:v5 block:blockCopy completion:v12];
 
     [(NSMutableArray *)self->_items addObject:v7];
     os_unfair_lock_unlock(&self->_lock);
@@ -70,8 +70,8 @@
     v9[2] = __47__AMSPromiseSerialQueue_runBinaryPromiseBlock___block_invoke_2;
     v9[3] = &unk_1E73B5368;
     v10 = v5;
-    v11 = self;
-    (*(v4 + 2))(v4, v9);
+    selfCopy = self;
+    (*(blockCopy + 2))(blockCopy, v9);
   }
 
   return v5;
@@ -85,9 +85,9 @@ uint64_t __47__AMSPromiseSerialQueue_runBinaryPromiseBlock___block_invoke_2(uint
   return [v4 processQueue];
 }
 
-- (id)runPromiseBlock:(id)a3
+- (id)runPromiseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_new();
   os_unfair_lock_lock_with_options();
   if (self->_processing)
@@ -98,7 +98,7 @@ uint64_t __47__AMSPromiseSerialQueue_runBinaryPromiseBlock___block_invoke_2(uint
     v12[2] = __41__AMSPromiseSerialQueue_runPromiseBlock___block_invoke;
     v12[3] = &unk_1E73B3680;
     v12[4] = self;
-    v7 = [(AMSPromiseSerialQueueItem *)v6 initWithPromise:v5 block:v4 completion:v12];
+    v7 = [(AMSPromiseSerialQueueItem *)v6 initWithPromise:v5 block:blockCopy completion:v12];
 
     [(NSMutableArray *)self->_items addObject:v7];
     os_unfair_lock_unlock(&self->_lock);
@@ -113,8 +113,8 @@ uint64_t __47__AMSPromiseSerialQueue_runBinaryPromiseBlock___block_invoke_2(uint
     v9[2] = __41__AMSPromiseSerialQueue_runPromiseBlock___block_invoke_2;
     v9[3] = &unk_1E73BA3F8;
     v10 = v5;
-    v11 = self;
-    (*(v4 + 2))(v4, v9);
+    selfCopy = self;
+    (*(blockCopy + 2))(blockCopy, v9);
   }
 
   return v5;

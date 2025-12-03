@@ -1,60 +1,60 @@
 @interface ASCodableCloudKitRelationship
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAddresses:(id)a3;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEventCount:(BOOL)a3;
-- (void)setHasSupportedPhoneFeatures:(BOOL)a3;
-- (void)setHasSupportedWatchFeatures:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAddresses:(id)addresses;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEventCount:(BOOL)count;
+- (void)setHasSupportedPhoneFeatures:(BOOL)features;
+- (void)setHasSupportedWatchFeatures:(BOOL)features;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableCloudKitRelationship
 
-- (void)addAddresses:(id)a3
+- (void)addAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   addresses = self->_addresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!addresses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_addresses;
     self->_addresses = v6;
 
-    v4 = v8;
+    addressesCopy = v8;
     addresses = self->_addresses;
   }
 
-  [(NSMutableArray *)addresses addObject:v4];
+  [(NSMutableArray *)addresses addObject:addressesCopy];
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
-- (void)setHasEventCount:(BOOL)a3
+- (void)setHasEventCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSupportedPhoneFeatures:(BOOL)a3
+- (void)setHasSupportedPhoneFeatures:(BOOL)features
 {
-  if (a3)
+  if (features)
   {
     v3 = 4;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSupportedWatchFeatures:(BOOL)a3
+- (void)setHasSupportedWatchFeatures:(BOOL)features
 {
-  if (a3)
+  if (features)
   {
     v3 = 8;
   }
@@ -103,8 +103,8 @@
   v8.receiver = self;
   v8.super_class = ASCodableCloudKitRelationship;
   v4 = [(ASCodableCloudKitRelationship *)&v8 description];
-  v5 = [(ASCodableCloudKitRelationship *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableCloudKitRelationship *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -112,12 +112,12 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   incomingHandshakeToken = self->_incomingHandshakeToken;
@@ -178,8 +178,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -265,10 +265,10 @@ LABEL_29:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
@@ -423,75 +423,75 @@ LABEL_32:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
-    [v14 setUuid:?];
+    [toCopy setUuid:?];
   }
 
   if (self->_incomingHandshakeToken)
   {
-    [v14 setIncomingHandshakeToken:?];
+    [toCopy setIncomingHandshakeToken:?];
   }
 
   if (self->_outgoingHandshakeToken)
   {
-    [v14 setOutgoingHandshakeToken:?];
+    [toCopy setOutgoingHandshakeToken:?];
   }
 
   if (self->_cloudKitAddress)
   {
-    [v14 setCloudKitAddress:?];
+    [toCopy setCloudKitAddress:?];
   }
 
   if ([(ASCodableCloudKitRelationship *)self addressesCount])
   {
-    [v14 clearAddresses];
-    v4 = [(ASCodableCloudKitRelationship *)self addressesCount];
-    if (v4)
+    [toCopy clearAddresses];
+    addressesCount = [(ASCodableCloudKitRelationship *)self addressesCount];
+    if (addressesCount)
     {
-      v5 = v4;
+      v5 = addressesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ASCodableCloudKitRelationship *)self addressesAtIndex:i];
-        [v14 addAddresses:v7];
+        [toCopy addAddresses:v7];
       }
     }
   }
 
   if (self->_preferredReachableAddress)
   {
-    [v14 setPreferredReachableAddress:?];
+    [toCopy setPreferredReachableAddress:?];
   }
 
   if (self->_preferredReachableService)
   {
-    [v14 setPreferredReachableService:?];
+    [toCopy setPreferredReachableService:?];
   }
 
   if ([(ASCodableCloudKitRelationship *)self eventsCount])
   {
-    [v14 clearEvents];
-    v8 = [(ASCodableCloudKitRelationship *)self eventsCount];
-    if (v8)
+    [toCopy clearEvents];
+    eventsCount = [(ASCodableCloudKitRelationship *)self eventsCount];
+    if (eventsCount)
     {
-      v9 = v8;
+      v9 = eventsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ASCodableCloudKitRelationship *)self eventsAtIndex:j];
-        [v14 addEvents:v11];
+        [toCopy addEvents:v11];
       }
     }
   }
 
   has = self->_has;
-  v13 = v14;
+  v13 = toCopy;
   if ((has & 2) != 0)
   {
-    *(v14 + 2) = self->_eventCount;
-    *(v14 + 120) |= 2u;
+    *(toCopy + 2) = self->_eventCount;
+    *(toCopy + 120) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -510,8 +510,8 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  *(v14 + 26) = self->_supportedPhoneFeatures;
-  *(v14 + 120) |= 4u;
+  *(toCopy + 26) = self->_supportedPhoneFeatures;
+  *(toCopy + 120) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -525,52 +525,52 @@ LABEL_24:
   }
 
 LABEL_37:
-  *(v14 + 27) = self->_supportedWatchFeatures;
-  *(v14 + 120) |= 8u;
+  *(toCopy + 27) = self->_supportedWatchFeatures;
+  *(toCopy + 120) |= 8u;
   if (*&self->_has)
   {
 LABEL_25:
-    *(v14 + 1) = self->_cloudType;
-    *(v14 + 120) |= 1u;
+    *(toCopy + 1) = self->_cloudType;
+    *(toCopy + 120) |= 1u;
   }
 
 LABEL_26:
   if (self->_secureCloudUpgradeToken)
   {
-    [v14 setSecureCloudUpgradeToken:?];
-    v13 = v14;
+    [toCopy setSecureCloudUpgradeToken:?];
+    v13 = toCopy;
   }
 
   if (self->_sentInvitation)
   {
-    [v14 setSentInvitation:?];
-    v13 = v14;
+    [toCopy setSentInvitation:?];
+    v13 = toCopy;
   }
 
   if (self->_receivedInvitation)
   {
-    [v14 setReceivedInvitation:?];
-    v13 = v14;
+    [toCopy setReceivedInvitation:?];
+    v13 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 112);
   *(v5 + 112) = v6;
 
-  v8 = [(NSString *)self->_incomingHandshakeToken copyWithZone:a3];
+  v8 = [(NSString *)self->_incomingHandshakeToken copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_outgoingHandshakeToken copyWithZone:a3];
+  v10 = [(NSString *)self->_outgoingHandshakeToken copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_cloudKitAddress copyWithZone:a3];
+  v12 = [(NSString *)self->_cloudKitAddress copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
@@ -593,7 +593,7 @@ LABEL_26:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v43 + 1) + 8 * i) copyWithZone:a3];
+        v19 = [*(*(&v43 + 1) + 8 * i) copyWithZone:zone];
         [v5 addAddresses:v19];
       }
 
@@ -603,11 +603,11 @@ LABEL_26:
     while (v16);
   }
 
-  v20 = [(NSString *)self->_preferredReachableAddress copyWithZone:a3];
+  v20 = [(NSString *)self->_preferredReachableAddress copyWithZone:zone];
   v21 = *(v5 + 64);
   *(v5 + 64) = v20;
 
-  v22 = [(NSString *)self->_preferredReachableService copyWithZone:a3];
+  v22 = [(NSString *)self->_preferredReachableService copyWithZone:zone];
   v23 = *(v5 + 72);
   *(v5 + 72) = v22;
 
@@ -630,7 +630,7 @@ LABEL_26:
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v39 + 1) + 8 * j) copyWithZone:{a3, v39}];
+        v29 = [*(*(&v39 + 1) + 8 * j) copyWithZone:{zone, v39}];
         [v5 addEvents:v29];
       }
 
@@ -688,15 +688,15 @@ LABEL_19:
   }
 
 LABEL_20:
-  v31 = [(NSString *)self->_secureCloudUpgradeToken copyWithZone:a3, v39];
+  v31 = [(NSString *)self->_secureCloudUpgradeToken copyWithZone:zone, v39];
   v32 = *(v5 + 88);
   *(v5 + 88) = v31;
 
-  v33 = [(NSData *)self->_sentInvitation copyWithZone:a3];
+  v33 = [(NSData *)self->_sentInvitation copyWithZone:zone];
   v34 = *(v5 + 96);
   *(v5 + 96) = v33;
 
-  v35 = [(NSData *)self->_receivedInvitation copyWithZone:a3];
+  v35 = [(NSData *)self->_receivedInvitation copyWithZone:zone];
   v36 = *(v5 + 80);
   *(v5 + 80) = v35;
 
@@ -704,16 +704,16 @@ LABEL_20:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 14))
+  if (uuid | *(equalCopy + 14))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -722,7 +722,7 @@ LABEL_20:
   }
 
   incomingHandshakeToken = self->_incomingHandshakeToken;
-  if (incomingHandshakeToken | *(v4 + 6))
+  if (incomingHandshakeToken | *(equalCopy + 6))
   {
     if (![(NSString *)incomingHandshakeToken isEqual:?])
     {
@@ -731,7 +731,7 @@ LABEL_20:
   }
 
   outgoingHandshakeToken = self->_outgoingHandshakeToken;
-  if (outgoingHandshakeToken | *(v4 + 7))
+  if (outgoingHandshakeToken | *(equalCopy + 7))
   {
     if (![(NSString *)outgoingHandshakeToken isEqual:?])
     {
@@ -740,7 +740,7 @@ LABEL_20:
   }
 
   cloudKitAddress = self->_cloudKitAddress;
-  if (cloudKitAddress | *(v4 + 4))
+  if (cloudKitAddress | *(equalCopy + 4))
   {
     if (![(NSString *)cloudKitAddress isEqual:?])
     {
@@ -749,7 +749,7 @@ LABEL_20:
   }
 
   addresses = self->_addresses;
-  if (addresses | *(v4 + 3))
+  if (addresses | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)addresses isEqual:?])
     {
@@ -758,7 +758,7 @@ LABEL_20:
   }
 
   preferredReachableAddress = self->_preferredReachableAddress;
-  if (preferredReachableAddress | *(v4 + 8))
+  if (preferredReachableAddress | *(equalCopy + 8))
   {
     if (![(NSString *)preferredReachableAddress isEqual:?])
     {
@@ -767,7 +767,7 @@ LABEL_20:
   }
 
   preferredReachableService = self->_preferredReachableService;
-  if (preferredReachableService | *(v4 + 9))
+  if (preferredReachableService | *(equalCopy + 9))
   {
     if (![(NSString *)preferredReachableService isEqual:?])
     {
@@ -776,7 +776,7 @@ LABEL_20:
   }
 
   events = self->_events;
-  if (events | *(v4 + 5))
+  if (events | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)events isEqual:?])
     {
@@ -784,16 +784,16 @@ LABEL_20:
     }
   }
 
-  v13 = *(v4 + 120);
+  v13 = *(equalCopy + 120);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_eventCount != *(v4 + 2))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_eventCount != *(equalCopy + 2))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 120) & 2) != 0)
+  else if ((*(equalCopy + 120) & 2) != 0)
   {
 LABEL_44:
     v17 = 0;
@@ -802,51 +802,51 @@ LABEL_44:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 120) & 4) == 0 || self->_supportedPhoneFeatures != *(v4 + 26))
+    if ((*(equalCopy + 120) & 4) == 0 || self->_supportedPhoneFeatures != *(equalCopy + 26))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 120) & 4) != 0)
+  else if ((*(equalCopy + 120) & 4) != 0)
   {
     goto LABEL_44;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 120) & 8) == 0 || self->_supportedWatchFeatures != *(v4 + 27))
+    if ((*(equalCopy + 120) & 8) == 0 || self->_supportedWatchFeatures != *(equalCopy + 27))
     {
       goto LABEL_44;
     }
   }
 
-  else if ((*(v4 + 120) & 8) != 0)
+  else if ((*(equalCopy + 120) & 8) != 0)
   {
     goto LABEL_44;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_cloudType != *(v4 + 1))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_cloudType != *(equalCopy + 1))
     {
       goto LABEL_44;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_44;
   }
 
   secureCloudUpgradeToken = self->_secureCloudUpgradeToken;
-  if (secureCloudUpgradeToken | *(v4 + 11) && ![(NSString *)secureCloudUpgradeToken isEqual:?])
+  if (secureCloudUpgradeToken | *(equalCopy + 11) && ![(NSString *)secureCloudUpgradeToken isEqual:?])
   {
     goto LABEL_44;
   }
 
   sentInvitation = self->_sentInvitation;
-  if (sentInvitation | *(v4 + 12))
+  if (sentInvitation | *(equalCopy + 12))
   {
     if (![(NSData *)sentInvitation isEqual:?])
     {
@@ -855,7 +855,7 @@ LABEL_44:
   }
 
   receivedInvitation = self->_receivedInvitation;
-  if (receivedInvitation | *(v4 + 10))
+  if (receivedInvitation | *(equalCopy + 10))
   {
     v17 = [(NSData *)receivedInvitation isEqual:?];
   }
@@ -936,26 +936,26 @@ LABEL_10:
   return v15 ^ v17 ^ [(NSData *)self->_receivedInvitation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 14))
+  fromCopy = from;
+  if (*(fromCopy + 14))
   {
     [(ASCodableCloudKitRelationship *)self setUuid:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ASCodableCloudKitRelationship *)self setIncomingHandshakeToken:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ASCodableCloudKitRelationship *)self setOutgoingHandshakeToken:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ASCodableCloudKitRelationship *)self setCloudKitAddress:?];
   }
@@ -964,7 +964,7 @@ LABEL_10:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
@@ -988,12 +988,12 @@ LABEL_10:
     while (v7);
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(ASCodableCloudKitRelationship *)self setPreferredReachableAddress:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ASCodableCloudKitRelationship *)self setPreferredReachableService:?];
   }
@@ -1002,7 +1002,7 @@ LABEL_10:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
@@ -1026,12 +1026,12 @@ LABEL_10:
     while (v12);
   }
 
-  v15 = *(v4 + 120);
+  v15 = *(fromCopy + 120);
   if ((v15 & 2) != 0)
   {
-    self->_eventCount = *(v4 + 2);
+    self->_eventCount = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v15 = *(v4 + 120);
+    v15 = *(fromCopy + 120);
     if ((v15 & 4) == 0)
     {
 LABEL_29:
@@ -1044,14 +1044,14 @@ LABEL_29:
     }
   }
 
-  else if ((*(v4 + 120) & 4) == 0)
+  else if ((*(fromCopy + 120) & 4) == 0)
   {
     goto LABEL_29;
   }
 
-  self->_supportedPhoneFeatures = *(v4 + 26);
+  self->_supportedPhoneFeatures = *(fromCopy + 26);
   *&self->_has |= 4u;
-  v15 = *(v4 + 120);
+  v15 = *(fromCopy + 120);
   if ((v15 & 8) == 0)
   {
 LABEL_30:
@@ -1064,27 +1064,27 @@ LABEL_30:
   }
 
 LABEL_41:
-  self->_supportedWatchFeatures = *(v4 + 27);
+  self->_supportedWatchFeatures = *(fromCopy + 27);
   *&self->_has |= 8u;
-  if (*(v4 + 120))
+  if (*(fromCopy + 120))
   {
 LABEL_31:
-    self->_cloudType = *(v4 + 1);
+    self->_cloudType = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_32:
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(ASCodableCloudKitRelationship *)self setSecureCloudUpgradeToken:?];
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ASCodableCloudKitRelationship *)self setSentInvitation:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ASCodableCloudKitRelationship *)self setReceivedInvitation:?];
   }

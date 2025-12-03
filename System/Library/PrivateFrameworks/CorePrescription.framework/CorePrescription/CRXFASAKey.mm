@@ -1,40 +1,40 @@
 @interface CRXFASAKey
-+ (id)keyInPEMFormat:(id)a3 isPublic:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (CRXFASAKey)initWithName:(id)a3 privateKey:(id)a4 publicKey:(id)a5 creationDate:(id)a6;
++ (id)keyInPEMFormat:(id)format isPublic:(BOOL)public;
+- (BOOL)isEqual:(id)equal;
+- (CRXFASAKey)initWithName:(id)name privateKey:(id)key publicKey:(id)publicKey creationDate:(id)date;
 - (NSString)privateKeyPEM;
 - (NSString)publicKeyPEM;
 @end
 
 @implementation CRXFASAKey
 
-- (CRXFASAKey)initWithName:(id)a3 privateKey:(id)a4 publicKey:(id)a5 creationDate:(id)a6
+- (CRXFASAKey)initWithName:(id)name privateKey:(id)key publicKey:(id)publicKey creationDate:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  keyCopy = key;
+  publicKeyCopy = publicKey;
+  dateCopy = date;
   v20.receiver = self;
   v20.super_class = CRXFASAKey;
   v15 = [(CRXFASAKey *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    objc_storeStrong(&v16->_privateKey, a4);
-    objc_storeStrong(&v16->_publicKey, a5);
-    if (v14)
+    objc_storeStrong(&v15->_name, name);
+    objc_storeStrong(&v16->_privateKey, key);
+    objc_storeStrong(&v16->_publicKey, publicKey);
+    if (dateCopy)
     {
-      v17 = v14;
+      date = dateCopy;
     }
 
     else
     {
-      v17 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     creationDate = v16->_creationDate;
-    v16->_creationDate = v17;
+    v16->_creationDate = date;
   }
 
   return v16;
@@ -74,24 +74,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CRXFASAKey *)self name];
-    v7 = [v5 name];
-    if (CRXUObjectsEqual(v6, v7))
+    v5 = equalCopy;
+    name = [(CRXFASAKey *)self name];
+    name2 = [v5 name];
+    if (CRXUObjectsEqual(name, name2))
     {
-      v8 = [(CRXFASAKey *)self privateKey];
-      v9 = [v5 privateKey];
-      if (CRXUObjectsEqual(v8, v9))
+      privateKey = [(CRXFASAKey *)self privateKey];
+      privateKey2 = [v5 privateKey];
+      if (CRXUObjectsEqual(privateKey, privateKey2))
       {
-        v10 = [(CRXFASAKey *)self publicKey];
-        v11 = [v5 publicKey];
-        v12 = CRXUObjectsEqual(v10, v11);
+        publicKey = [(CRXFASAKey *)self publicKey];
+        publicKey2 = [v5 publicKey];
+        v12 = CRXUObjectsEqual(publicKey, publicKey2);
       }
 
       else
@@ -114,10 +114,10 @@
   return v12;
 }
 
-+ (id)keyInPEMFormat:(id)a3 isPublic:(BOOL)a4
++ (id)keyInPEMFormat:(id)format isPublic:(BOOL)public
 {
-  v4 = a4;
-  if (a4)
+  publicCopy = public;
+  if (public)
   {
     v5 = 120;
   }
@@ -128,13 +128,13 @@
   }
 
   v6 = MEMORY[0x277CBEB28];
-  v7 = a3;
+  formatCopy = format;
   v8 = [[v6 alloc] initWithCapacity:v5];
   v9 = v8;
-  if (v4)
+  if (publicCopy)
   {
     [v8 appendBytes:&keyInPEMFormat_isPublic__kPublicKeyHeader length:23];
-    [v9 appendData:v7];
+    [v9 appendData:formatCopy];
 
     v10 = "-----END PUBLIC KEY-----";
     v11 = "-----BEGIN PUBLIC KEY-----";
@@ -143,11 +143,11 @@
   else
   {
     [v8 appendBytes:&keyInPEMFormat_isPublic__kPrivateKeyHeader length:8];
-    [v9 appendBytes:objc_msgSend(v7 length:{"bytes") + 97, 48}];
+    [v9 appendBytes:objc_msgSend(formatCopy length:{"bytes") + 97, 48}];
     [v9 appendBytes:&keyInPEMFormat_isPublic__kPrivateKeyParamsBlock length:14];
-    v12 = [v7 bytes];
+    bytes = [formatCopy bytes];
 
-    [v9 appendBytes:v12 length:97];
+    [v9 appendBytes:bytes length:97];
     v10 = "-----END EC PRIVATE KEY-----";
     v11 = "-----BEGIN EC PRIVATE KEY-----";
   }

@@ -1,53 +1,53 @@
 @interface MNCompanionNavigationAdapter
 - (BOOL)_isInvalidated;
 - (MNCompanionNavigationAdapter)init;
-- (MNCompanionNavigationAdapter)initWithDelegate:(id)a3;
+- (MNCompanionNavigationAdapter)initWithDelegate:(id)delegate;
 - (MNCompanionNavigationDelegate)delegate;
 - (void)_cancelScheduledRouteStatus;
 - (void)_cancelScheduledRouteUpdates;
 - (void)_handleNavigationServiceStopped;
 - (void)_markCurrentHapticsAsTriggered;
 - (void)_populateInitialDistanceToManeuver;
-- (void)_reloadRouteFromNavigationService:(id)a3;
+- (void)_reloadRouteFromNavigationService:(id)service;
 - (void)_reset;
 - (void)_scheduleCoalescedRouteStatusUpdate;
 - (void)_scheduleCoalescedRouteUpdates;
 - (void)_sendRouteDetailsAndStatus;
 - (void)_sendRouteStatus;
 - (void)_sendRouteUpdates;
-- (void)_setActiveStepIndex:(unint64_t)a3;
-- (void)_setAnnouncementStage:(unint64_t)a3;
-- (void)_setDestinationName:(id)a3;
-- (void)_setDisplayedStepIndex:(unint64_t)a3;
-- (void)_setGuidancePromptsEnabled:(BOOL)a3;
-- (void)_setLastLocation:(id)a3;
-- (void)_setLocationUnreliable:(BOOL)a3;
-- (void)_setNextAnnouncementStage:(unint64_t)a3 timeUntilNextAnnouncement:(double)a4;
-- (void)_setPositionFromDestination:(id)a3;
-- (void)_setPositionFromManeuver:(double)a3;
-- (void)_setRealtimeUpdates:(id)a3;
-- (void)_setRouteMatch:(id)a3;
-- (void)_setTransitAlightMessage:(id)a3;
+- (void)_setActiveStepIndex:(unint64_t)index;
+- (void)_setAnnouncementStage:(unint64_t)stage;
+- (void)_setDestinationName:(id)name;
+- (void)_setDisplayedStepIndex:(unint64_t)index;
+- (void)_setGuidancePromptsEnabled:(BOOL)enabled;
+- (void)_setLastLocation:(id)location;
+- (void)_setLocationUnreliable:(BOOL)unreliable;
+- (void)_setNextAnnouncementStage:(unint64_t)stage timeUntilNextAnnouncement:(double)announcement;
+- (void)_setPositionFromDestination:(id)destination;
+- (void)_setPositionFromManeuver:(double)maneuver;
+- (void)_setRealtimeUpdates:(id)updates;
+- (void)_setRouteMatch:(id)match;
+- (void)_setTransitAlightMessage:(id)message;
 - (void)_updateNavigationStatesOnRouteStatus;
 - (void)dealloc;
 - (void)invalidate;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4;
-- (void)navigationService:(id)a3 didReceiveTransitAlert:(id)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateRouteWithNewRideSelection:(id)a4;
-- (void)navigationService:(id)a3 isApproachingEndOfLeg:(unint64_t)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationServiceDidCancelReroute:(id)a3;
-- (void)navigationServiceDidSynchronize:(id)a3;
-- (void)navigationServiceWillReroute:(id)a3;
-- (void)setIsConnectedToCarplay:(BOOL)a3;
-- (void)setIsNavigatingInLowGuidance:(BOOL)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates;
+- (void)navigationService:(id)service didReceiveTransitAlert:(id)alert;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateRouteWithNewRideSelection:(id)selection;
+- (void)navigationService:(id)service isApproachingEndOfLeg:(unint64_t)leg;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationServiceDidCancelReroute:(id)reroute;
+- (void)navigationServiceDidSynchronize:(id)synchronize;
+- (void)navigationServiceWillReroute:(id)reroute;
+- (void)setIsConnectedToCarplay:(BOOL)carplay;
+- (void)setIsNavigatingInLowGuidance:(BOOL)guidance;
 @end
 
 @implementation MNCompanionNavigationAdapter
@@ -94,8 +94,8 @@
         _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "%{public}@", &v11, 0xCu);
       }
 
-      v9 = [(MNCompanionNavigationAdapter *)self delegate];
-      [v9 updateNavigationRouteStatus:v4];
+      delegate = [(MNCompanionNavigationAdapter *)self delegate];
+      [delegate updateNavigationRouteStatus:v4];
     }
 
     [(MNCompanionNavigationAdapter *)self _markCurrentHapticsAsTriggered];
@@ -125,13 +125,13 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = NSStringFromSelector(a2);
-    v7 = [(GEOCompanionRouteStatus *)self->_companionRouteStatus hasHapticsType];
-    if (v7)
+    hasHapticsType = [(GEOCompanionRouteStatus *)self->_companionRouteStatus hasHapticsType];
+    if (hasHapticsType)
     {
       v8 = MEMORY[0x1E696AEC0];
-      v9 = [(GEOCompanionRouteStatus *)self->_companionRouteStatus hapticsType];
+      hapticsType = [(GEOCompanionRouteStatus *)self->_companionRouteStatus hapticsType];
       v2 = @"NO_TURN";
-      switch(v9)
+      switch(hapticsType)
       {
         case 0:
           break;
@@ -322,7 +322,7 @@
           v2 = @"TURN_AROUND";
           break;
         default:
-          v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v9];
+          v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", hapticsType];
           break;
       }
 
@@ -339,7 +339,7 @@
     v14 = 2114;
     v15 = v10;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "%{public}@ %{public}@", buf, 0x16u);
-    if (v7)
+    if (hasHapticsType)
     {
     }
   }
@@ -372,16 +372,16 @@
 
 - (void)_populateInitialDistanceToManeuver
 {
-  v3 = [(GEOCompanionRouteStatus *)self->_companionRouteStatus stepID];
-  if ([(GEOCompanionRouteDetails *)self->_companionRouteDetails stepsCount]<= v3)
+  stepID = [(GEOCompanionRouteStatus *)self->_companionRouteStatus stepID];
+  if ([(GEOCompanionRouteDetails *)self->_companionRouteDetails stepsCount]<= stepID)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [(GEOCompanionRouteDetails *)self->_companionRouteDetails steps];
-    v6 = [v4 objectAtIndexedSubscript:v3];
+    steps = [(GEOCompanionRouteDetails *)self->_companionRouteDetails steps];
+    v6 = [steps objectAtIndexedSubscript:stepID];
   }
 
   if ([v6 hasDistanceMeters])
@@ -398,22 +398,22 @@
   [(MNCompanionNavigationAdapter *)self _sendRouteDetailsAndStatus];
 }
 
-- (void)_reloadRouteFromNavigationService:(id)a3
+- (void)_reloadRouteFromNavigationService:(id)service
 {
-  v10 = a3;
-  v4 = [v10 route];
-  if (v4)
+  serviceCopy = service;
+  route = [serviceCopy route];
+  if (route)
   {
-    v5 = [v10 destinationName];
-    [(MNCompanionNavigationAdapter *)self _setDestinationName:v5];
+    destinationName = [serviceCopy destinationName];
+    [(MNCompanionNavigationAdapter *)self _setDestinationName:destinationName];
 
-    v6 = [v4 traffic];
-    -[MNCompanionNavigationAdapter _setRoute:traffic:isTrace:](self, "_setRoute:traffic:isTrace:", v4, v6, [v10 traceIsPlaying]);
+    traffic = [route traffic];
+    -[MNCompanionNavigationAdapter _setRoute:traffic:isTrace:](self, "_setRoute:traffic:isTrace:", route, traffic, [serviceCopy traceIsPlaying]);
 
-    v7 = [MEMORY[0x1E695DFD8] setWithObject:v4];
-    v8 = [v10 realtimeUpdatesForRoutes:v7];
-    v9 = [v8 allObjects];
-    [(MNCompanionNavigationAdapter *)self _setRealtimeUpdates:v9];
+    v7 = [MEMORY[0x1E695DFD8] setWithObject:route];
+    v8 = [serviceCopy realtimeUpdatesForRoutes:v7];
+    allObjects = [v8 allObjects];
+    [(MNCompanionNavigationAdapter *)self _setRealtimeUpdates:allObjects];
   }
 
   else
@@ -423,21 +423,21 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateRouteWithNewRideSelection:(id)a4
+- (void)navigationService:(id)service didUpdateRouteWithNewRideSelection:(id)selection
 {
   companionRouteStatus = self->_companionRouteStatus;
-  v6 = a4;
-  v7 = [v6 uniqueRouteID];
-  v8 = [v7 _maps_data];
-  [(GEOCompanionRouteStatus *)companionRouteStatus updateClusteredSectionSelectedRideIndicesFromRoute:v6 routeID:v8];
+  selectionCopy = selection;
+  uniqueRouteID = [selectionCopy uniqueRouteID];
+  _maps_data = [uniqueRouteID _maps_data];
+  [(GEOCompanionRouteStatus *)companionRouteStatus updateClusteredSectionSelectedRideIndicesFromRoute:selectionCopy routeID:_maps_data];
 
   [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
 }
 
-- (void)navigationService:(id)a3 didReceiveTransitAlert:(id)a4
+- (void)navigationService:(id)service didReceiveTransitAlert:(id)alert
 {
-  v13 = a4;
-  v5 = [v13 command];
+  alertCopy = alert;
+  command = [alertCopy command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -445,9 +445,9 @@
 
   else
   {
-    v6 = [v13 command];
+    command2 = [alertCopy command];
 
-    if (v6)
+    if (command2)
     {
       goto LABEL_5;
     }
@@ -455,140 +455,140 @@
 
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [v8 UUIDString];
-  [v7 setIdentifier:v9];
+  uUIDString = [v8 UUIDString];
+  [v7 setIdentifier:uUIDString];
 
-  [v7 setStepID:{objc_msgSend(v13, "stepIndex")}];
-  [v7 setStopID:{objc_msgSend(v13, "stopIndex")}];
-  v10 = [v13 artwork];
-  [v7 setArtwork:v10];
+  [v7 setStepID:{objc_msgSend(alertCopy, "stepIndex")}];
+  [v7 setStopID:{objc_msgSend(alertCopy, "stopIndex")}];
+  artwork = [alertCopy artwork];
+  [v7 setArtwork:artwork];
 
-  v11 = [v13 command];
-  [v7 setTitle:v11];
+  command3 = [alertCopy command];
+  [v7 setTitle:command3];
 
-  v12 = [v13 detail];
-  [v7 setDetail:v12];
+  detail = [alertCopy detail];
+  [v7 setDetail:detail];
 
   [(MNCompanionNavigationAdapter *)self _setTransitAlightMessage:v7];
 LABEL_5:
 }
 
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates
 {
-  v5 = [a4 allObjects];
-  [(MNCompanionNavigationAdapter *)self _setRealtimeUpdates:v5];
+  allObjects = [updates allObjects];
+  [(MNCompanionNavigationAdapter *)self _setRealtimeUpdates:allObjects];
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilManeuver:(double)a4 timeUntilManeuver:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilManeuver:(double)maneuver timeUntilManeuver:(double)untilManeuver forStepIndex:(unint64_t)index
 {
-  v9 = [a3 route];
-  v10 = [v9 composedGuidanceEvents];
-  v11 = [v10 count];
+  route = [service route];
+  composedGuidanceEvents = [route composedGuidanceEvents];
+  v11 = [composedGuidanceEvents count];
 
   if (!v11)
   {
-    [(MNCompanionNavigationAdapter *)self _setDisplayedStepIndex:a6];
+    [(MNCompanionNavigationAdapter *)self _setDisplayedStepIndex:index];
 
-    [(MNCompanionNavigationAdapter *)self _setPositionFromManeuver:a4];
+    [(MNCompanionNavigationAdapter *)self _setPositionFromManeuver:maneuver];
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v5 = [a4 primarySign];
-  v6 = [v5 displayRemainingDistance];
-  v7 = [MEMORY[0x1E696B058] meters];
-  v8 = [v6 measurementByConvertingToUnit:v7];
+  primarySign = [info primarySign];
+  displayRemainingDistance = [primarySign displayRemainingDistance];
+  meters = [MEMORY[0x1E696B058] meters];
+  v8 = [displayRemainingDistance measurementByConvertingToUnit:meters];
 
   [v8 doubleValue];
   [(MNCompanionNavigationAdapter *)self _setPositionFromManeuver:?];
 }
 
-- (void)navigationService:(id)a3 didSwitchToNewTransportType:(int)a4 newRoute:(id)a5 traffic:(id)a6
+- (void)navigationService:(id)service didSwitchToNewTransportType:(int)type newRoute:(id)route traffic:(id)traffic
 {
-  v9 = a6;
-  v10 = a5;
-  -[MNCompanionNavigationAdapter _setRoute:traffic:isTrace:](self, "_setRoute:traffic:isTrace:", v10, v9, [a3 traceIsPlaying]);
+  trafficCopy = traffic;
+  routeCopy = route;
+  -[MNCompanionNavigationAdapter _setRoute:traffic:isTrace:](self, "_setRoute:traffic:isTrace:", routeCopy, trafficCopy, [service traceIsPlaying]);
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 destinationName];
-  [(MNCompanionNavigationAdapter *)self _setDestinationName:v9];
+  rerouteCopy = reroute;
+  serviceCopy = service;
+  destinationName = [serviceCopy destinationName];
+  [(MNCompanionNavigationAdapter *)self _setDestinationName:destinationName];
 
-  v11 = [v7 traffic];
-  v10 = [v8 traceIsPlaying];
+  traffic = [rerouteCopy traffic];
+  traceIsPlaying = [serviceCopy traceIsPlaying];
 
-  [(MNCompanionNavigationAdapter *)self _setRoute:v7 traffic:v11 isTrace:v10];
+  [(MNCompanionNavigationAdapter *)self _setRoute:rerouteCopy traffic:traffic isTrace:traceIsPlaying];
 }
 
-- (void)navigationServiceDidCancelReroute:(id)a3
+- (void)navigationServiceDidCancelReroute:(id)reroute
 {
   [(GEOCompanionRouteStatus *)self->_companionRouteStatus setFeedbackType:1];
 
   [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
   [(GEOCompanionRouteStatus *)self->_companionRouteStatus setFeedbackType:5];
 
   [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v17 = a4;
-  v8 = a5;
-  v9 = [(GEOComposedRoute *)self->_route uniqueRouteID];
-  v10 = [v17 routeID];
-  v11 = v9;
-  v12 = v10;
+  aCopy = a;
+  distanceCopy = distance;
+  uniqueRouteID = [(GEOComposedRoute *)self->_route uniqueRouteID];
+  routeID = [aCopy routeID];
+  v11 = uniqueRouteID;
+  v12 = routeID;
   if (!(v11 | v12) || (v13 = v12, v14 = [v11 isEqual:v12], v13, v11, v13, v11, v14))
   {
-    v15 = [v17 displayRemainingMinutesToEndOfLeg] * 60.0;
-    [v8 distanceRemainingToEndOfLeg];
+    v15 = [aCopy displayRemainingMinutesToEndOfLeg] * 60.0;
+    [distanceCopy distanceRemainingToEndOfLeg];
     [(MNCompanionNavigationAdapter *)self _setPositionFromDestination:v15, v16];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  locationCopy = location;
   v6 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 uuid];
+    uuid = [locationCopy uuid];
     v11 = 138412290;
-    v12 = v7;
+    v12 = uuid;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNCompanionNavigationAdapter::navigationService:didUpdateMatchedLocation:", &v11, 0xCu);
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v5];
+  v8 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
   [(MNCompanionNavigationAdapter *)self _setLastLocation:v8];
-  v9 = [v5 routeMatch];
-  [(MNCompanionNavigationAdapter *)self _setRouteMatch:v9];
+  routeMatch = [locationCopy routeMatch];
+  [(MNCompanionNavigationAdapter *)self _setRouteMatch:routeMatch];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  if ([(GEONavigationGuidanceState *)self->_guidanceState navigationState:a3]== 7)
+  if ([(GEONavigationGuidanceState *)self->_guidanceState navigationState:service]== 7)
   {
 
     [(MNCompanionNavigationAdapter *)self _setNavigationState:1];
   }
 }
 
-- (void)navigationService:(id)a3 isApproachingEndOfLeg:(unint64_t)a4
+- (void)navigationService:(id)service isApproachingEndOfLeg:(unint64_t)leg
 {
-  v6 = [a3 route];
-  v7 = [v6 legs];
-  if ([v7 count] - 1 == a4)
+  route = [service route];
+  legs = [route legs];
+  if ([legs count] - 1 == leg)
   {
     v8 = 6;
   }
@@ -601,13 +601,13 @@ LABEL_5:
   [(MNCompanionNavigationAdapter *)self _setNavigationState:v8];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 > 3 || a5 < 4)
+  serviceCopy = service;
+  v9 = serviceCopy;
+  if (state > 3 || toState < 4)
   {
-    if (a4 >= 4 && !a5)
+    if (state >= 4 && !toState)
     {
       [(MNCompanionNavigationAdapter *)self _handleNavigationServiceStopped];
     }
@@ -615,29 +615,29 @@ LABEL_5:
 
   else
   {
-    [(MNCompanionNavigationAdapter *)self _reloadRouteFromNavigationService:v8];
+    [(MNCompanionNavigationAdapter *)self _reloadRouteFromNavigationService:serviceCopy];
   }
 
-  [(MNCompanionNavigationAdapter *)self setIsNavigatingInLowGuidance:a5 == 5];
+  [(MNCompanionNavigationAdapter *)self setIsNavigatingInLowGuidance:toState == 5];
 }
 
-- (void)navigationServiceDidSynchronize:(id)a3
+- (void)navigationServiceDidSynchronize:(id)synchronize
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  synchronizeCopy = synchronize;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [v5 state];
-    if ((v8 - 1) > 5)
+    state = [synchronizeCopy state];
+    if ((state - 1) > 5)
     {
       v9 = @"Stopped";
     }
 
     else
     {
-      v9 = off_1E842AC68[v8 - 1];
+      v9 = off_1E842AC68[state - 1];
     }
 
     v10 = v9;
@@ -648,7 +648,7 @@ LABEL_5:
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "%{public}@ with state %{public}@", &v14, 0x16u);
   }
 
-  if (![v5 state])
+  if (![synchronizeCopy state])
   {
     if ((-[GEOCompanionRouteStatus isNavigating](self->_companionRouteStatus, "isNavigating") & 1) != 0 || (-[GEOCompanionRouteDetails routeID](self->_companionRouteDetails, "routeID"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 length], v11, v12))
     {
@@ -699,8 +699,8 @@ LABEL_5:
           }
 
           v13 = *(*(&v16 + 1) + 8 * v12);
-          v14 = [(MNCompanionNavigationAdapter *)self delegate];
-          [v14 updateNavigationRouteWithUpdate:v13];
+          delegate = [(MNCompanionNavigationAdapter *)self delegate];
+          [delegate updateNavigationRouteWithUpdate:v13];
 
           ++v12;
         }
@@ -739,8 +739,8 @@ LABEL_5:
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "%{public}@", &v12, 0xCu);
     }
 
-    v9 = [(MNCompanionNavigationAdapter *)self delegate];
-    [v9 updateNavigationRouteDetails:v4 routeStatus:v6];
+    delegate = [(MNCompanionNavigationAdapter *)self delegate];
+    [delegate updateNavigationRouteDetails:v4 routeStatus:v6];
 
     v10 = 0;
   }
@@ -771,10 +771,10 @@ LABEL_5:
   }
 }
 
-- (void)_setTransitAlightMessage:(id)a3
+- (void)_setTransitAlightMessage:(id)message
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  messageCopy = message;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -782,26 +782,26 @@ LABEL_5:
     v9 = 138412546;
     v10 = v7;
     v11 = 2112;
-    v12 = v5;
+    v12 = messageCopy;
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "%@ %@", &v9, 0x16u);
   }
 
-  [(GEOCompanionRouteStatus *)self->_companionRouteStatus setAlightMessage:v5];
+  [(GEOCompanionRouteStatus *)self->_companionRouteStatus setAlightMessage:messageCopy];
   [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setRealtimeUpdates:(id)a3
+- (void)_setRealtimeUpdates:(id)updates
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  updatesCopy = updates;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(updatesCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = updatesCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -821,10 +821,10 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 transitUpdate];
-          if (v12)
+          transitUpdate = [v11 transitUpdate];
+          if (transitUpdate)
           {
-            v13 = [objc_alloc(MEMORY[0x1E69A1C40]) initWithTransitRouteUpdate:v12];
+            v13 = [objc_alloc(MEMORY[0x1E69A1C40]) initWithTransitRouteUpdate:transitUpdate];
             [v5 addObject:v13];
           }
         }
@@ -847,10 +847,10 @@ LABEL_5:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setNextAnnouncementStage:(unint64_t)a3 timeUntilNextAnnouncement:(double)a4
+- (void)_setNextAnnouncementStage:(unint64_t)stage timeUntilNextAnnouncement:(double)announcement
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (self->_nextAnnouncementStage != a3)
+  if (self->_nextAnnouncementStage != stage)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -862,22 +862,22 @@ LABEL_5:
       v14 = 2048;
       v15 = nextAnnouncementStage;
       v16 = 2048;
-      v17 = a3;
+      stageCopy = stage;
       _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_INFO, "%{public}@ changing nextAnnouncementStage from %lu to %lu", &v12, 0x20u);
     }
   }
 
-  self->_nextAnnouncementStage = a3;
-  self->_timeUntilNextAnnouncement = a4;
+  self->_nextAnnouncementStage = stage;
+  self->_timeUntilNextAnnouncement = announcement;
   [(MNCompanionNavigationAdapter *)self _updateNavigationStatesOnRouteStatus];
   [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setAnnouncementStage:(unint64_t)a3
+- (void)_setAnnouncementStage:(unint64_t)stage
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_announcementStage != a3)
+  if (self->_announcementStage != stage)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -889,11 +889,11 @@ LABEL_5:
       v12 = 2048;
       v13 = announcementStage;
       v14 = 2048;
-      v15 = a3;
+      stageCopy = stage;
       _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "%{public}@ changing announcementStage from %lu to %lu", &v10, 0x20u);
     }
 
-    self->_announcementStage = a3;
+    self->_announcementStage = stage;
     [(MNCompanionNavigationAdapter *)self _updateNavigationStatesOnRouteStatus];
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
@@ -901,16 +901,16 @@ LABEL_5:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setPositionFromDestination:(id)a3
+- (void)_setPositionFromDestination:(id)destination
 {
-  var0 = a3.var0;
+  var0 = destination.var0;
   remainingTime = self->_positionFromDestination.remainingTime;
   remainingDistance = self->_positionFromDestination.remainingDistance;
   self->_positionFromDestination.remainingTime = var0;
-  self->_positionFromDestination.remainingDistance = a3.var1;
-  if (vabdd_f64(remainingTime, var0) >= 0.01 || (remainingDistance = vabdd_f64(remainingDistance, a3.var1), remainingDistance >= 0.01))
+  self->_positionFromDestination.remainingDistance = destination.var1;
+  if (vabdd_f64(remainingTime, var0) >= 0.01 || (remainingDistance = vabdd_f64(remainingDistance, destination.var1), remainingDistance >= 0.01))
   {
-    LODWORD(v3) = vcvtad_u64_f64(a3.var1);
+    LODWORD(v3) = vcvtad_u64_f64(destination.var1);
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setDistanceRemainingOnRoute:v3, remainingDistance];
     LODWORD(v8) = vcvtmd_u64_f64(var0);
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setRemainingTime:v8];
@@ -919,25 +919,25 @@ LABEL_5:
   }
 }
 
-- (void)_setPositionFromManeuver:(double)a3
+- (void)_setPositionFromManeuver:(double)maneuver
 {
   positionFromManeuver = self->_positionFromManeuver;
-  self->_positionFromManeuver = a3;
-  if (vabdd_f64(a3, positionFromManeuver) >= 2.22044605e-16)
+  self->_positionFromManeuver = maneuver;
+  if (vabdd_f64(maneuver, positionFromManeuver) >= 2.22044605e-16)
   {
-    LODWORD(v3) = vcvtad_u64_f64(a3);
+    LODWORD(v3) = vcvtad_u64_f64(maneuver);
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setDistanceToManeuver:v3];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
 }
 
-- (void)_setDisplayedStepIndex:(unint64_t)a3
+- (void)_setDisplayedStepIndex:(unint64_t)index
 {
-  if (self->_displayedStepIndex != a3)
+  if (self->_displayedStepIndex != index)
   {
-    self->_displayedStepIndex = a3;
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    self->_displayedStepIndex = index;
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(GEOCompanionRouteStatus *)self->_companionRouteStatus setDisplayedStepID:0];
       [(GEOCompanionRouteStatus *)self->_companionRouteStatus setHasDisplayedStepID:0];
@@ -952,59 +952,59 @@ LABEL_5:
   }
 }
 
-- (void)_setActiveStepIndex:(unint64_t)a3
+- (void)_setActiveStepIndex:(unint64_t)index
 {
-  if (self->_activeStepIndex != a3)
+  if (self->_activeStepIndex != index)
   {
-    self->_activeStepIndex = a3;
+    self->_activeStepIndex = index;
     if ([(GEONavigationGuidanceState *)self->_guidanceState navigationState]!= 6 && [(GEONavigationGuidanceState *)self->_guidanceState navigationState]!= 7)
     {
       [(GEOCompanionRouteStatus *)self->_companionRouteStatus setFeedbackType:2];
     }
 
-    [(GEOCompanionRouteStatus *)self->_companionRouteStatus setStepID:a3];
+    [(GEOCompanionRouteStatus *)self->_companionRouteStatus setStepID:index];
     [(MNCompanionNavigationAdapter *)self _populateInitialDistanceToManeuver];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
 }
 
-- (void)_setGuidancePromptsEnabled:(BOOL)a3
+- (void)_setGuidancePromptsEnabled:(BOOL)enabled
 {
-  if (self->_guidancePromptsEnabled != a3)
+  if (self->_guidancePromptsEnabled != enabled)
   {
-    self->_guidancePromptsEnabled = a3;
+    self->_guidancePromptsEnabled = enabled;
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setGuidancePromptsEnabled:?];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
 }
 
-- (void)_setDestinationName:(id)a3
+- (void)_setDestinationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   destinationName = self->_destinationName;
-  v9 = v4;
-  if (!destinationName || (v6 = [(NSString *)destinationName isEqualToString:v4], v4 = v9, !v6))
+  v9 = nameCopy;
+  if (!destinationName || (v6 = [(NSString *)destinationName isEqualToString:nameCopy], nameCopy = v9, !v6))
   {
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     v8 = self->_destinationName;
     self->_destinationName = v7;
 
     [(GEOCompanionRouteDetails *)self->_companionRouteDetails setDestinationName:self->_destinationName];
     self->_shouldSendRouteWithStatus = 1;
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
-    v4 = v9;
+    nameCopy = v9;
   }
 }
 
-- (void)_setRouteMatch:(id)a3
+- (void)_setRouteMatch:(id)match
 {
-  v5 = a3;
-  if (self->_routeMatch != v5)
+  matchCopy = match;
+  if (self->_routeMatch != matchCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_routeMatch, a3);
+    v11 = matchCopy;
+    objc_storeStrong(&self->_routeMatch, match);
     if (self->_displayedStepIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       [(GEOCompanionRouteStatus *)self->_companionRouteStatus setStepID:[(GEORouteMatch *)v11 stepIndex]];
@@ -1026,32 +1026,32 @@ LABEL_5:
     }
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
-    v5 = v11;
+    matchCopy = v11;
   }
 }
 
-- (void)_setLocationUnreliable:(BOOL)a3
+- (void)_setLocationUnreliable:(BOOL)unreliable
 {
-  if (self->_locationUnreliable != a3)
+  if (self->_locationUnreliable != unreliable)
   {
-    self->_locationUnreliable = a3;
+    self->_locationUnreliable = unreliable;
     [(MNCompanionNavigationAdapter *)self _updateNavigationStatesOnRouteStatus];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
 }
 
-- (void)_setLastLocation:(id)a3
+- (void)_setLastLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   p_lastLocation = &self->_lastLocation;
-  if (self->_lastLocation != v5)
+  if (self->_lastLocation != locationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_lastLocation, a3);
+    v8 = locationCopy;
+    objc_storeStrong(p_lastLocation, location);
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setLocation:v8];
-    v7 = [MEMORY[0x1E695DF00] date];
-    [v7 timeIntervalSinceReferenceDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceReferenceDate];
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setTimestamp:?];
 
     p_lastLocation = [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
@@ -1063,31 +1063,31 @@ LABEL_5:
 - (void)_updateNavigationStatesOnRouteStatus
 {
   companionRouteStatus = self->_companionRouteStatus;
-  v4 = [(GEONavigationGuidanceState *)self->_guidanceState navigationState];
+  navigationState = [(GEONavigationGuidanceState *)self->_guidanceState navigationState];
   locationUnreliable = self->_locationUnreliable;
   announcementStage = self->_announcementStage;
   nextAnnouncementStage = self->_nextAnnouncementStage;
   timeUntilNextAnnouncement = self->_timeUntilNextAnnouncement;
 
-  [(GEOCompanionRouteStatus *)companionRouteStatus updateFeedbackWithNavigationState:v4 locationUnreliable:locationUnreliable announcementStage:announcementStage nextAnnouncementStage:nextAnnouncementStage nextAnnouncementTime:timeUntilNextAnnouncement];
+  [(GEOCompanionRouteStatus *)companionRouteStatus updateFeedbackWithNavigationState:navigationState locationUnreliable:locationUnreliable announcementStage:announcementStage nextAnnouncementStage:nextAnnouncementStage nextAnnouncementTime:timeUntilNextAnnouncement];
 }
 
-- (void)setIsConnectedToCarplay:(BOOL)a3
+- (void)setIsConnectedToCarplay:(BOOL)carplay
 {
-  if (self->_isConnectedToCarplay != a3)
+  if (self->_isConnectedToCarplay != carplay)
   {
-    self->_isConnectedToCarplay = a3;
+    self->_isConnectedToCarplay = carplay;
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setIsConnectedToCarplay:?];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
   }
 }
 
-- (void)setIsNavigatingInLowGuidance:(BOOL)a3
+- (void)setIsNavigatingInLowGuidance:(BOOL)guidance
 {
-  if (self->_isNavigatingInLowGuidance != a3)
+  if (self->_isNavigatingInLowGuidance != guidance)
   {
-    self->_isNavigatingInLowGuidance = a3;
+    self->_isNavigatingInLowGuidance = guidance;
     [(GEOCompanionRouteStatus *)self->_companionRouteStatus setLowGuidanceNavigation:?];
 
     [(MNCompanionNavigationAdapter *)self _scheduleCoalescedRouteStatusUpdate];
@@ -1171,10 +1171,10 @@ LABEL_5:
   [(MNCompanionNavigationAdapter *)&v2 dealloc];
 }
 
-- (MNCompanionNavigationAdapter)initWithDelegate:(id)a3
+- (MNCompanionNavigationAdapter)initWithDelegate:(id)delegate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  delegateCopy = delegate;
   v6 = [(MNCompanionNavigationAdapter *)self init];
   if (v6)
   {
@@ -1187,7 +1187,7 @@ LABEL_5:
       _os_log_impl(&dword_1D311E000, v7, OS_LOG_TYPE_INFO, "%{public}@", buf, 0xCu);
     }
 
-    objc_storeWeak(&v6->_delegate, v5);
+    objc_storeWeak(&v6->_delegate, delegateCopy);
     v9 = +[MNNavigationService sharedService];
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;

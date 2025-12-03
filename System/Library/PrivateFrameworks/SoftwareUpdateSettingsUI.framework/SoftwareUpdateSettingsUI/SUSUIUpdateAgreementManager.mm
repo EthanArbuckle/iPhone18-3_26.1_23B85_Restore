@@ -1,12 +1,12 @@
 @interface SUSUIUpdateAgreementManager
 - (SUSUIUpdateAgreementManager)init;
-- (id)_queue_agreementDictForDescriptor:(id)a3;
-- (int)_queue_agreementDictValueForKey:(id)a3 forDescriptor:(id)a4;
-- (int)cellularFeeAgreementStatusForUpdate:(id)a3;
-- (int)termsAgreementStatusForUpdate:(id)a3;
-- (void)_queue_setAgreementDictValue:(int)a3 forKey:(id)a4 forDescriptor:(id)a5;
-- (void)setCellularFeeAgreementStatus:(int)a3 forUpdate:(id)a4;
-- (void)setTermsAgreementStatus:(int)a3 forUpdate:(id)a4;
+- (id)_queue_agreementDictForDescriptor:(id)descriptor;
+- (int)_queue_agreementDictValueForKey:(id)key forDescriptor:(id)descriptor;
+- (int)cellularFeeAgreementStatusForUpdate:(id)update;
+- (int)termsAgreementStatusForUpdate:(id)update;
+- (void)_queue_setAgreementDictValue:(int)value forKey:(id)key forDescriptor:(id)descriptor;
+- (void)setCellularFeeAgreementStatus:(int)status forUpdate:(id)update;
+- (void)setTermsAgreementStatus:(int)status forUpdate:(id)update;
 @end
 
 @implementation SUSUIUpdateAgreementManager
@@ -38,22 +38,22 @@
   return v7;
 }
 
-- (void)setCellularFeeAgreementStatus:(int)a3 forUpdate:(id)a4
+- (void)setCellularFeeAgreementStatus:(int)status forUpdate:(id)update
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  statusCopy = status;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_assert_queue_not_V2(v16->_stateQueue);
-  queue = v16->_stateQueue;
+  objc_storeStrong(&location, update);
+  dispatch_assert_queue_not_V2(selfCopy->_stateQueue);
+  queue = selfCopy->_stateQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __71__SUSUIUpdateAgreementManager_setCellularFeeAgreementStatus_forUpdate___block_invoke;
   v9 = &unk_279CC2100;
-  v10 = MEMORY[0x277D82BE0](v16);
-  v12 = v14;
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  v12 = statusCopy;
   v11 = MEMORY[0x277D82BE0](location);
   dispatch_sync(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -61,22 +61,22 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)setTermsAgreementStatus:(int)a3 forUpdate:(id)a4
+- (void)setTermsAgreementStatus:(int)status forUpdate:(id)update
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  statusCopy = status;
   location = 0;
-  objc_storeStrong(&location, a4);
-  dispatch_assert_queue_not_V2(v16->_stateQueue);
-  queue = v16->_stateQueue;
+  objc_storeStrong(&location, update);
+  dispatch_assert_queue_not_V2(selfCopy->_stateQueue);
+  queue = selfCopy->_stateQueue;
   v5 = MEMORY[0x277D85DD0];
   v6 = -1073741824;
   v7 = 0;
   v8 = __65__SUSUIUpdateAgreementManager_setTermsAgreementStatus_forUpdate___block_invoke;
   v9 = &unk_279CC2100;
-  v10 = MEMORY[0x277D82BE0](v16);
-  v12 = v14;
+  v10 = MEMORY[0x277D82BE0](selfCopy);
+  v12 = statusCopy;
   v11 = MEMORY[0x277D82BE0](location);
   dispatch_sync(queue, &v5);
   objc_storeStrong(&v11, 0);
@@ -84,26 +84,26 @@
   objc_storeStrong(&location, 0);
 }
 
-- (int)cellularFeeAgreementStatusForUpdate:(id)a3
+- (int)cellularFeeAgreementStatusForUpdate:(id)update
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_not_V2(v19->_stateQueue);
+  objc_storeStrong(location, update);
+  dispatch_assert_queue_not_V2(selfCopy->_stateQueue);
   v13 = 0;
   v14 = &v13;
   v15 = 0x20000000;
   v16 = 32;
   v17 = 0;
-  queue = v19->_stateQueue;
+  queue = selfCopy->_stateQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __67__SUSUIUpdateAgreementManager_cellularFeeAgreementStatusForUpdate___block_invoke;
   v10 = &unk_279CC2128;
   v12[1] = &v13;
-  v11 = MEMORY[0x277D82BE0](v19);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12[0] = MEMORY[0x277D82BE0](location[0]);
   dispatch_sync(queue, &v6);
   v5 = *(v14 + 6);
@@ -121,26 +121,26 @@ uint64_t __67__SUSUIUpdateAgreementManager_cellularFeeAgreementStatusForUpdate__
   return result;
 }
 
-- (int)termsAgreementStatusForUpdate:(id)a3
+- (int)termsAgreementStatusForUpdate:(id)update
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_not_V2(v19->_stateQueue);
+  objc_storeStrong(location, update);
+  dispatch_assert_queue_not_V2(selfCopy->_stateQueue);
   v13 = 0;
   v14 = &v13;
   v15 = 0x20000000;
   v16 = 32;
   v17 = 0;
-  queue = v19->_stateQueue;
+  queue = selfCopy->_stateQueue;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block_invoke;
   v10 = &unk_279CC2128;
   v12[1] = &v13;
-  v11 = MEMORY[0x277D82BE0](v19);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v12[0] = MEMORY[0x277D82BE0](location[0]);
   dispatch_sync(queue, &v6);
   v5 = *(v14 + 6);
@@ -158,16 +158,16 @@ uint64_t __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block
   return result;
 }
 
-- (id)_queue_agreementDictForDescriptor:(id)a3
+- (id)_queue_agreementDictForDescriptor:(id)descriptor
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  dispatch_assert_queue_V2(v6->_stateQueue);
+  objc_storeStrong(location, descriptor);
+  dispatch_assert_queue_V2(selfCopy->_stateQueue);
   if (location[0])
   {
-    v7 = [(NSMutableDictionary *)v6->_updateAgreementDict objectForKeyedSubscript:location[0]];
+    v7 = [(NSMutableDictionary *)selfCopy->_updateAgreementDict objectForKeyedSubscript:location[0]];
   }
 
   else
@@ -181,22 +181,22 @@ uint64_t __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block
   return v3;
 }
 
-- (void)_queue_setAgreementDictValue:(int)a3 forKey:(id)a4 forDescriptor:(id)a5
+- (void)_queue_setAgreementDictValue:(int)value forKey:(id)key forDescriptor:(id)descriptor
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  valueCopy = value;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, key);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  dispatch_assert_queue_V2(v15->_stateQueue);
+  objc_storeStrong(&v11, descriptor);
+  dispatch_assert_queue_V2(selfCopy->_stateQueue);
   if (v11 && location)
   {
-    v9 = [(SUSUIUpdateAgreementManager *)v15 _queue_agreementDictForDescriptor:v11];
+    v9 = [(SUSUIUpdateAgreementManager *)selfCopy _queue_agreementDictForDescriptor:v11];
     if (v9)
     {
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v13];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:valueCopy];
       [v9 setObject:? forKeyedSubscript:?];
       MEMORY[0x277D82BD8](v6);
     }
@@ -204,10 +204,10 @@ uint64_t __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block
     else
     {
       v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v13];
+      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:valueCopy];
       [v8 setObject:? forKeyedSubscript:?];
       MEMORY[0x277D82BD8](v5);
-      [(NSMutableDictionary *)v15->_updateAgreementDict setObject:v8 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)selfCopy->_updateAgreementDict setObject:v8 forKeyedSubscript:v11];
       objc_storeStrong(&v8, 0);
     }
 
@@ -224,19 +224,19 @@ uint64_t __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block
   objc_storeStrong(&location, 0);
 }
 
-- (int)_queue_agreementDictValueForKey:(id)a3 forDescriptor:(id)a4
+- (int)_queue_agreementDictValueForKey:(id)key forDescriptor:(id)descriptor
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  dispatch_assert_queue_V2(v14->_stateQueue);
+  objc_storeStrong(&v12, descriptor);
+  dispatch_assert_queue_V2(selfCopy->_stateQueue);
   v11 = 0;
   if (v12 && location[0])
   {
-    v9 = [(NSMutableDictionary *)v14->_updateAgreementDict objectForKeyedSubscript:v12];
+    v9 = [(NSMutableDictionary *)selfCopy->_updateAgreementDict objectForKeyedSubscript:v12];
     if (v9)
     {
       v4 = [v9 objectForKeyedSubscript:location[0]];
@@ -247,15 +247,15 @@ uint64_t __61__SUSUIUpdateAgreementManager_termsAgreementStatusForUpdate___block
 
     if (v11)
     {
-      v7 = [v11 integerValue];
+      integerValue = [v11 integerValue];
     }
 
     else
     {
-      v7 = 0;
+      integerValue = 0;
     }
 
-    v15 = v7;
+    v15 = integerValue;
     v10 = 1;
     objc_storeStrong(&v9, 0);
   }

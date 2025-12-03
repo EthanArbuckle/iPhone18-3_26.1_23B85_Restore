@@ -12,8 +12,8 @@
 - (id)_prepareTagSettingsAndReturnExpectations;
 - (id)_prepareUserInfoAndReturnExpectations;
 - (void)_eraseAllPrivateData;
-- (void)fetchCleanupToVersionForDatabase:(id)a3 completion:(id)a4;
-- (void)fetchDesiredVersionForDatabase:(id)a3 completion:(id)a4;
+- (void)fetchCleanupToVersionForDatabase:(id)database completion:(id)completion;
+- (void)fetchDesiredVersionForDatabase:(id)database completion:(id)completion;
 - (void)run;
 @end
 
@@ -69,43 +69,43 @@
 {
   v34 = *MEMORY[0x1E69E9840];
   [(FCPrivateDataEncryptionMigrationHealthCheck *)self _eraseAllPrivateData];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareHistoryAndReturnExpectations];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  _prepareHistoryAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareHistoryAndReturnExpectations];
+  [array addObjectsFromArray:_prepareHistoryAndReturnExpectations];
 
-  v5 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareIssueHistoryAndReturnExpectations];
-  [v3 addObjectsFromArray:v5];
+  _prepareIssueHistoryAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareIssueHistoryAndReturnExpectations];
+  [array addObjectsFromArray:_prepareIssueHistoryAndReturnExpectations];
 
-  v6 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareReadingListAndReturnExpectations];
-  [v3 addObjectsFromArray:v6];
+  _prepareReadingListAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareReadingListAndReturnExpectations];
+  [array addObjectsFromArray:_prepareReadingListAndReturnExpectations];
 
-  v7 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSubscriptionsAndReturnExpectations];
-  [v3 addObjectsFromArray:v7];
+  _prepareSubscriptionsAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSubscriptionsAndReturnExpectations];
+  [array addObjectsFromArray:_prepareSubscriptionsAndReturnExpectations];
 
-  v8 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSensitiveSubscriptionsAndReturnExpectations];
-  [v3 addObjectsFromArray:v8];
+  _prepareSensitiveSubscriptionsAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSensitiveSubscriptionsAndReturnExpectations];
+  [array addObjectsFromArray:_prepareSensitiveSubscriptionsAndReturnExpectations];
 
-  v9 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareUserInfoAndReturnExpectations];
-  [v3 addObjectsFromArray:v9];
+  _prepareUserInfoAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareUserInfoAndReturnExpectations];
+  [array addObjectsFromArray:_prepareUserInfoAndReturnExpectations];
 
-  v10 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareTagSettingsAndReturnExpectations];
-  [v3 addObjectsFromArray:v10];
+  _prepareTagSettingsAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareTagSettingsAndReturnExpectations];
+  [array addObjectsFromArray:_prepareTagSettingsAndReturnExpectations];
 
-  v11 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _preparePersonalizationProfileAndReturnExpectations];
-  [v3 addObjectsFromArray:v11];
+  _preparePersonalizationProfileAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _preparePersonalizationProfileAndReturnExpectations];
+  [array addObjectsFromArray:_preparePersonalizationProfileAndReturnExpectations];
 
-  v12 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareReferenceToChannelMembershipsAndReturnExpectations];
-  [v3 addObjectsFromArray:v12];
+  _prepareReferenceToChannelMembershipsAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareReferenceToChannelMembershipsAndReturnExpectations];
+  [array addObjectsFromArray:_prepareReferenceToChannelMembershipsAndReturnExpectations];
 
-  v13 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSentinelsAndReturnExpectations];
-  [v3 addObjectsFromArray:v13];
+  _prepareSentinelsAndReturnExpectations = [(FCPrivateDataEncryptionMigrationHealthCheck *)self _prepareSentinelsAndReturnExpectations];
+  [array addObjectsFromArray:_prepareSentinelsAndReturnExpectations];
 
   v14 = [FCCKPrivateDatabase alloc];
-  v15 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v16 = [v15 containerIdentifier];
-  v17 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v18 = [v17 containerIdentifier];
-  v19 = [(FCCKPrivateDatabase *)v14 initWithContainerIdentifier:v16 secureContainerIdentifier:v18 productionEnvironment:1 encryptionDelegate:self networkBehaviorMonitor:0 privateDataSyncingEnabled:1];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  containerIdentifier = [container containerIdentifier];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  containerIdentifier2 = [secureContainer containerIdentifier];
+  v19 = [(FCCKPrivateDatabase *)v14 initWithContainerIdentifier:containerIdentifier secureContainerIdentifier:containerIdentifier2 productionEnvironment:1 encryptionDelegate:self networkBehaviorMonitor:0 privateDataSyncingEnabled:1];
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -124,7 +124,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = v3;
+  v21 = array;
   v22 = [v21 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v22)
   {
@@ -156,14 +156,14 @@
 - (void)_eraseAllPrivateData
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  v4 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__block_invoke;
   v30[3] = &unk_1E7C37E78;
   v5 = v3;
   v31 = v5;
-  [(FCCKPrivateDatabaseSchema *)v4 enumerateZoneSchemasWithBlock:v30];
+  [(FCCKPrivateDatabaseSchema *)schema enumerateZoneSchemasWithBlock:v30];
 
   v24 = 0;
   v25 = &v24;
@@ -172,12 +172,12 @@
   v28 = __Block_byref_object_dispose__5;
   v29 = 0;
   v6 = objc_alloc_init(MEMORY[0x1E695B9B0]);
-  v7 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v8 = [v7 privateCloudDatabase];
-  [v6 setDatabase:v8];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [v6 setDatabase:privateCloudDatabase];
 
-  v9 = [v5 allObjects];
-  [v6 setRecordZoneIDsToDelete:v9];
+  allObjects = [v5 allObjects];
+  [v6 setRecordZoneIDsToDelete:allObjects];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -201,12 +201,12 @@
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
   v11 = objc_alloc_init(MEMORY[0x1E695B9B0]);
-  v12 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v13 = [v12 privateCloudDatabase];
-  [v11 setDatabase:v13];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase2 = [secureContainer privateCloudDatabase];
+  [v11 setDatabase:privateCloudDatabase2];
 
-  v14 = [v5 allObjects];
-  [v11 setRecordZoneIDsToDelete:v14];
+  allObjects2 = [v5 allObjects];
+  [v11 setRecordZoneIDsToDelete:allObjects2];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -247,15 +247,15 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
 - (id)_prepareHistoryAndReturnExpectations
 {
   v88[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"ReadingHistory" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"ReadingHistory" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -272,11 +272,11 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -293,20 +293,20 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"articleID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"articleID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"reading history record should have encrypted articleID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -316,11 +316,11 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -342,7 +342,7 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   v77[3] = &unk_1E7C37EF0;
   v25 = v21;
   v78 = v25;
-  v79 = self;
+  selfCopy = self;
   v80 = &v81;
   FCWaitUntilBlockIsInvoked(v77);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -356,11 +356,11 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   v66 = FCHistoryItemIDFromArticleID(v26);
   v65 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v66 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -373,12 +373,12 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
 
   [v32 setObject:v26 forKeyedSubscript:@"articleID"];
   [v32 setObject:v64 forKeyedSubscript:@"sourceChannelTagID"];
-  v33 = [MEMORY[0x1E696AFB0] UUID];
-  v34 = [v33 UUIDString];
-  [v32 setObject:v34 forKeyedSubscript:@"deviceID"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v32 setObject:uUIDString forKeyedSubscript:@"deviceID"];
 
-  v35 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v35 forKeyedSubscript:@"lastVisited"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date forKeyedSubscript:@"lastVisited"];
 
   [v32 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"articleRead"];
   [v32 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"articleSeen"];
@@ -392,15 +392,15 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   [v32 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"readerMinimumRequiredVersion"];
   [v32 setObject:&unk_1F2E6FCD8 forKeyedSubscript:@"listenedCount"];
   [v32 setObject:&unk_1F2E71B78 forKeyedSubscript:@"listeningProgress"];
-  v36 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v36 forKeyedSubscript:@"listeningProgressLastSaved"];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date2 forKeyedSubscript:@"listeningProgressLastSaved"];
 
-  v37 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v37 forKeyedSubscript:@"lastListened"];
+  date3 = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date3 forKeyedSubscript:@"lastListened"];
 
   [v32 setObject:&stru_1F2DC7DC0 forKeyedSubscript:@"readingPosition"];
-  v38 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v38 forKeyedSubscript:@"readingPositionLastSaved"];
+  date4 = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date4 forKeyedSubscript:@"readingPositionLastSaved"];
 
   [v32 setObject:&unk_1F2E6FCD8 forKeyedSubscript:@"readCount"];
   [v32 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"removedFromAudio"];
@@ -427,25 +427,25 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   }
 
   v40 = objc_opt_new();
-  v41 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v42 = [v41 privateCloudDatabase];
-  [v40 setDatabase:v42];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v40 setDatabase:privateCloudDatabase];
 
   [v40 setZoneID:v67];
   [v40 setShouldExist:1];
   v43 = objc_opt_new();
-  v44 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v45 = [v44 privateCloudDatabase];
-  [v43 setDatabase:v45];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v43 setDatabase:privateCloudDatabase2];
 
   [v43 setZoneID:v25];
   [v43 setShouldExist:0];
   v46 = objc_opt_new();
-  v47 = [v4 toRecordSchema];
-  v48 = v47;
-  if (v47)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v48 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v49 = *(v47 + 16);
+    v49 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -456,22 +456,22 @@ void __67__FCPrivateDataEncryptionMigrationHealthCheck__eraseAllPrivateData__blo
   v50 = v49;
   [v46 setRecordType:v50];
 
-  v51 = [v4 toRecordSchema];
-  v52 = [(FCCKRecordSchema *)v51 allUnencryptedFieldNames];
-  [v46 setUnencryptedFields:v52];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v46 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v53 = [v4 toRecordSchema];
-  v54 = [(FCCKRecordSchema *)v53 allEncryptedFieldNames];
-  [v46 setEncryptedFields:v54];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v46 setEncryptedFields:allEncryptedFieldNames2];
 
-  v55 = [v39 valueStore];
-  v56 = [v55 values];
-  [v46 setExpectedValues:v56];
+  valueStore = [v39 valueStore];
+  values = [valueStore values];
+  [v46 setExpectedValues:values];
 
   v57 = objc_opt_new();
-  v58 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v59 = [v58 privateCloudDatabase];
-  [v57 setDatabase:v59];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v57 setDatabase:privateCloudDatabase3];
 
   [v57 setZoneID:v67];
   v88[0] = v46;
@@ -542,15 +542,15 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
 - (id)_prepareIssueHistoryAndReturnExpectations
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"IssueReadingHistory" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"IssueReadingHistory" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -567,11 +567,11 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -588,20 +588,20 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"issueID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"issueID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"issue reading history record should have encrypted issueID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -611,11 +611,11 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -637,7 +637,7 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   v73[3] = &unk_1E7C37EF0;
   v25 = v21;
   v74 = v25;
-  v75 = self;
+  selfCopy = self;
   v76 = &v77;
   FCWaitUntilBlockIsInvoked(v73);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -650,11 +650,11 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   v62 = FCIssueHistoryItemIDFromIssueID(v26);
   v61 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v62 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -666,14 +666,14 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   v32 = [v27 initWithRecordType:v31 recordID:v61];
 
   [v32 setObject:v26 forKeyedSubscript:@"issueID"];
-  v33 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v33 forKeyedSubscript:@"lastVisited"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date forKeyedSubscript:@"lastVisited"];
 
-  v34 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v34 forKeyedSubscript:@"lastBadged"];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date2 forKeyedSubscript:@"lastBadged"];
 
-  v35 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v35 forKeyedSubscript:@"lastEngaged"];
+  date3 = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date3 forKeyedSubscript:@"lastEngaged"];
 
   v67 = 0;
   v68 = &v67;
@@ -697,25 +697,25 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   }
 
   v37 = objc_opt_new();
-  v38 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v39 = [v38 privateCloudDatabase];
-  [v37 setDatabase:v39];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v37 setDatabase:privateCloudDatabase];
 
   [v37 setZoneID:v63];
   [v37 setShouldExist:1];
   v40 = objc_opt_new();
-  v41 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v42 = [v41 privateCloudDatabase];
-  [v40 setDatabase:v42];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v40 setDatabase:privateCloudDatabase2];
 
   [v40 setZoneID:v25];
   [v40 setShouldExist:0];
   v43 = objc_opt_new();
-  v44 = [v4 toRecordSchema];
-  v45 = v44;
-  if (v44)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v45 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v46 = *(v44 + 16);
+    v46 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -726,22 +726,22 @@ void __83__FCPrivateDataEncryptionMigrationHealthCheck__prepareHistoryAndReturnE
   v47 = v46;
   [v43 setRecordType:v47];
 
-  v48 = [v4 toRecordSchema];
-  v49 = [(FCCKRecordSchema *)v48 allUnencryptedFieldNames];
-  [v43 setUnencryptedFields:v49];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v43 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v50 = [v4 toRecordSchema];
-  v51 = [(FCCKRecordSchema *)v50 allEncryptedFieldNames];
-  [v43 setEncryptedFields:v51];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v43 setEncryptedFields:allEncryptedFieldNames2];
 
-  v52 = [v36 valueStore];
-  v53 = [v52 values];
-  [v43 setExpectedValues:v53];
+  valueStore = [v36 valueStore];
+  values = [valueStore values];
+  [v43 setExpectedValues:values];
 
   v54 = objc_opt_new();
-  v55 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v56 = [v55 privateCloudDatabase];
-  [v54 setDatabase:v56];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v54 setDatabase:privateCloudDatabase3];
 
   [v54 setZoneID:v63];
   v84[0] = v43;
@@ -812,15 +812,15 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
 - (id)_prepareReadingListAndReturnExpectations
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"ReadingList" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"ReadingList" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -837,11 +837,11 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -858,20 +858,20 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"articleID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"articleID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"reading list record should have encrypted articleID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -881,11 +881,11 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -907,7 +907,7 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   v71[3] = &unk_1E7C37EF0;
   v25 = v21;
   v72 = v25;
-  v73 = self;
+  selfCopy = self;
   v74 = &v75;
   FCWaitUntilBlockIsInvoked(v71);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -920,11 +920,11 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   v60 = FCReadingListEntryIDFromArticleID(v26);
   v59 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v60 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -936,8 +936,8 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   v32 = [v27 initWithRecordType:v31 recordID:v59];
 
   [v32 setObject:v26 forKeyedSubscript:@"articleID"];
-  v33 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v33 forKeyedSubscript:@"dateAdded"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date forKeyedSubscript:@"dateAdded"];
 
   [v32 setObject:&unk_1F2E6FCF0 forKeyedSubscript:@"origin"];
   [v32 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"writerVersionHighWatermark"];
@@ -964,25 +964,25 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   }
 
   v35 = objc_opt_new();
-  v36 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v37 = [v36 privateCloudDatabase];
-  [v35 setDatabase:v37];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v35 setDatabase:privateCloudDatabase];
 
   [v35 setZoneID:v61];
   [v35 setShouldExist:1];
   v38 = objc_opt_new();
-  v39 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v40 = [v39 privateCloudDatabase];
-  [v38 setDatabase:v40];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v38 setDatabase:privateCloudDatabase2];
 
   [v38 setZoneID:v25];
   [v38 setShouldExist:0];
   v41 = objc_opt_new();
-  v42 = [v4 toRecordSchema];
-  v43 = v42;
-  if (v42)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v43 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v44 = *(v42 + 16);
+    v44 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -993,22 +993,22 @@ void __88__FCPrivateDataEncryptionMigrationHealthCheck__prepareIssueHistoryAndRe
   v45 = v44;
   [v41 setRecordType:v45];
 
-  v46 = [v4 toRecordSchema];
-  v47 = [(FCCKRecordSchema *)v46 allUnencryptedFieldNames];
-  [v41 setUnencryptedFields:v47];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v41 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v48 = [v4 toRecordSchema];
-  v49 = [(FCCKRecordSchema *)v48 allEncryptedFieldNames];
-  [v41 setEncryptedFields:v49];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v41 setEncryptedFields:allEncryptedFieldNames2];
 
-  v50 = [v34 valueStore];
-  v51 = [v50 values];
-  [v41 setExpectedValues:v51];
+  valueStore = [v34 valueStore];
+  values = [valueStore values];
+  [v41 setExpectedValues:values];
 
   v52 = objc_opt_new();
-  v53 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v54 = [v53 privateCloudDatabase];
-  [v52 setDatabase:v54];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v52 setDatabase:privateCloudDatabase3];
 
   [v52 setZoneID:v61];
   v82[0] = v41;
@@ -1079,15 +1079,15 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
 - (id)_prepareSubscriptionsAndReturnExpectations
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"Subscriptions" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"Subscriptions" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -1104,11 +1104,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -1125,20 +1125,20 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"tagID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"tagID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"subscriptions record should have encrypted tagID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -1148,11 +1148,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -1174,7 +1174,7 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   v71[3] = &unk_1E7C37EF0;
   v25 = v21;
   v72 = v25;
-  v73 = self;
+  selfCopy = self;
   v74 = &v75;
   FCWaitUntilBlockIsInvoked(v71);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -1187,11 +1187,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   v60 = [FCSubscriptionList subscriptionIDForTagID:v26 type:0];
   v59 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v60 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -1205,8 +1205,8 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   [v32 setObject:@"tag" forKeyedSubscript:@"subscriptionType"];
   [v32 setObject:&unk_1F2E6FD08 forKeyedSubscript:@"subscriptionOrder"];
   [v32 setObject:&unk_1F2E6FD20 forKeyedSubscript:@"subscriptionOrigin"];
-  v33 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v33 forKeyedSubscript:@"dateAdded"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date forKeyedSubscript:@"dateAdded"];
 
   [v32 setObject:v26 forKeyedSubscript:@"tagID"];
   [v32 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"notificationsEnabled"];
@@ -1234,25 +1234,25 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   }
 
   v35 = objc_opt_new();
-  v36 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v37 = [v36 privateCloudDatabase];
-  [v35 setDatabase:v37];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [v35 setDatabase:privateCloudDatabase];
 
   [v35 setZoneID:v61];
   [v35 setShouldExist:1];
   v38 = objc_opt_new();
-  v39 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v40 = [v39 privateCloudDatabase];
-  [v38 setDatabase:v40];
+  container2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container2 privateCloudDatabase];
+  [v38 setDatabase:privateCloudDatabase2];
 
   [v38 setZoneID:v25];
   [v38 setShouldExist:0];
   v41 = objc_opt_new();
-  v42 = [v4 toRecordSchema];
-  v43 = v42;
-  if (v42)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v43 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v44 = *(v42 + 16);
+    v44 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -1263,22 +1263,22 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareReadingListAndRet
   v45 = v44;
   [v41 setRecordType:v45];
 
-  v46 = [v4 toRecordSchema];
-  v47 = [(FCCKRecordSchema *)v46 allUnencryptedFieldNames];
-  [v41 setUnencryptedFields:v47];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v41 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v48 = [v4 toRecordSchema];
-  v49 = [(FCCKRecordSchema *)v48 allEncryptedFieldNames];
-  [v41 setEncryptedFields:v49];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v41 setEncryptedFields:allEncryptedFieldNames2];
 
-  v50 = [v34 valueStore];
-  v51 = [v50 values];
-  [v41 setExpectedValues:v51];
+  valueStore = [v34 valueStore];
+  values = [valueStore values];
+  [v41 setExpectedValues:values];
 
   v52 = objc_opt_new();
-  v53 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self containerWithZoneWidePCS];
-  v54 = [v53 privateCloudDatabase];
-  [v52 setDatabase:v54];
+  containerWithZoneWidePCS = [(FCPrivateDataEncryptionMigrationHealthCheck *)self containerWithZoneWidePCS];
+  privateCloudDatabase3 = [containerWithZoneWidePCS privateCloudDatabase];
+  [v52 setDatabase:privateCloudDatabase3];
 
   [v52 setZoneID:v61];
   v82[0] = v41;
@@ -1349,15 +1349,15 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
 - (id)_prepareSensitiveSubscriptionsAndReturnExpectations
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"SensitiveSubscriptions" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"SensitiveSubscriptions" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -1374,11 +1374,11 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -1395,20 +1395,20 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"tagID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"tagID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"sensitive subscriptions record should have encrypted tagID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -1418,11 +1418,11 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -1444,7 +1444,7 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   v73[3] = &unk_1E7C37EF0;
   v25 = v21;
   v74 = v25;
-  v75 = self;
+  selfCopy = self;
   v76 = &v77;
   FCWaitUntilBlockIsInvoked(v73);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -1457,11 +1457,11 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   v62 = [FCSubscriptionList subscriptionIDForTagID:v26 type:0];
   v61 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v62 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -1474,14 +1474,14 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
 
   [v32 setObject:@"autoFavoriteTag" forKeyedSubscript:@"subscriptionType"];
   [v32 setObject:&unk_1F2E6FD38 forKeyedSubscript:@"subscriptionOrigin"];
-  v33 = [MEMORY[0x1E695DF00] date];
-  [v32 setObject:v33 forKeyedSubscript:@"dateAdded"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v32 setObject:date forKeyedSubscript:@"dateAdded"];
 
   [v32 setObject:v26 forKeyedSubscript:@"tagID"];
   [v32 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"notificationsEnabled"];
-  v34 = [MEMORY[0x1E696AFB0] UUID];
-  v35 = [v34 UUIDString];
-  [v32 setObject:v35 forKeyedSubscript:@"groupID"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v32 setObject:uUIDString forKeyedSubscript:@"groupID"];
 
   [v32 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"writerVersionHighWatermark"];
   [v32 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"readerMinimumRequiredVersion"];
@@ -1507,25 +1507,25 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   }
 
   v37 = objc_opt_new();
-  v38 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v39 = [v38 privateCloudDatabase];
-  [v37 setDatabase:v39];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v37 setDatabase:privateCloudDatabase];
 
   [v37 setZoneID:v63];
   [v37 setShouldExist:1];
   v40 = objc_opt_new();
-  v41 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v42 = [v41 privateCloudDatabase];
-  [v40 setDatabase:v42];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v40 setDatabase:privateCloudDatabase2];
 
   [v40 setZoneID:v25];
   [v40 setShouldExist:0];
   v43 = objc_opt_new();
-  v44 = [v4 toRecordSchema];
-  v45 = v44;
-  if (v44)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v45 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v46 = *(v44 + 16);
+    v46 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -1536,22 +1536,22 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck__prepareSubscriptionsAndR
   v47 = v46;
   [v43 setRecordType:v47];
 
-  v48 = [v4 toRecordSchema];
-  v49 = [(FCCKRecordSchema *)v48 allUnencryptedFieldNames];
-  [v43 setUnencryptedFields:v49];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v43 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v50 = [v4 toRecordSchema];
-  v51 = [(FCCKRecordSchema *)v50 allEncryptedFieldNames];
-  [v43 setEncryptedFields:v51];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v43 setEncryptedFields:allEncryptedFieldNames2];
 
-  v52 = [v36 valueStore];
-  v53 = [v52 values];
-  [v43 setExpectedValues:v53];
+  valueStore = [v36 valueStore];
+  values = [valueStore values];
+  [v43 setExpectedValues:values];
 
   v54 = objc_opt_new();
-  v55 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v56 = [v55 privateCloudDatabase];
-  [v54 setDatabase:v56];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v54 setDatabase:privateCloudDatabase3];
 
   [v54 setZoneID:v63];
   v84[0] = v43;
@@ -1622,15 +1622,15 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
 - (id)_prepareUserInfoAndReturnExpectations
 {
   v86[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"UserInfo" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"UserInfo" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -1647,11 +1647,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -1668,20 +1668,20 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"feldsparID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"feldsparID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"user info record should have encrypted feldsparID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -1691,11 +1691,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -1717,7 +1717,7 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   v75[3] = &unk_1E7C37EF0;
   v64 = v21;
   v76 = v64;
-  v77 = self;
+  selfCopy = self;
   v78 = &v79;
   FCWaitUntilBlockIsInvoked(v75);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -1729,11 +1729,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   v63 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"user_info_static_record_name" zoneID:v64];
   v62 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"user_info_static_record_name_secure" zoneID:v65];
   v25 = objc_alloc(MEMORY[0x1E695BA60]);
-  v26 = [v4 fromRecordSchema];
-  v27 = v26;
-  if (v26)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v27 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v28 = *(v26 + 16);
+    v28 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -1744,12 +1744,12 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   v29 = v28;
   v30 = [v25 initWithRecordType:v29 recordID:v63];
 
-  v31 = [MEMORY[0x1E696AFB0] UUID];
-  v32 = [v31 UUIDString];
-  [v30 setObject:v32 forKeyedSubscript:@"feldsparID"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v30 setObject:uUIDString forKeyedSubscript:@"feldsparID"];
 
-  v33 = [MEMORY[0x1E695DF00] date];
-  [v30 setObject:v33 forKeyedSubscript:@"lastOpenedDate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [v30 setObject:date forKeyedSubscript:@"lastOpenedDate"];
 
   [v30 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"topStoriesIntroduced"];
   [v30 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"writerVersionHighWatermark"];
@@ -1776,25 +1776,25 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   }
 
   v35 = objc_opt_new();
-  v36 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v37 = [v36 privateCloudDatabase];
-  [v35 setDatabase:v37];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v35 setDatabase:privateCloudDatabase];
 
   [v35 setZoneID:v65];
   [v35 setShouldExist:1];
   v38 = objc_opt_new();
-  v39 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v40 = [v39 privateCloudDatabase];
-  [v38 setDatabase:v40];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v38 setDatabase:privateCloudDatabase2];
 
   [v38 setZoneID:v64];
   [v38 setShouldExist:0];
   v41 = objc_opt_new();
-  v42 = [v4 toRecordSchema];
-  v43 = v42;
-  if (v42)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v43 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v44 = *(v42 + 16);
+    v44 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -1805,22 +1805,22 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   v45 = v44;
   [v41 setRecordType:v45];
 
-  v46 = [v4 toRecordSchema];
-  v47 = [(FCCKRecordSchema *)v46 allUnencryptedFieldNames];
-  [v41 setUnencryptedFields:v47];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v41 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v48 = [v4 toRecordSchema];
-  v49 = [(FCCKRecordSchema *)v48 allEncryptedFieldNames];
-  [v41 setEncryptedFields:v49];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v41 setEncryptedFields:allEncryptedFieldNames2];
 
-  v50 = [v34 valueStore];
-  v51 = [v50 values];
-  [v41 setExpectedValues:v51];
+  valueStore = [v34 valueStore];
+  values = [valueStore values];
+  [v41 setExpectedValues:values];
 
   v52 = objc_opt_new();
-  v53 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v54 = [v53 privateCloudDatabase];
-  [v52 setDatabase:v54];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v52 setDatabase:privateCloudDatabase3];
 
   [v52 setZoneID:v65];
   v86[0] = v41;
@@ -1828,9 +1828,9 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__prepareSensitiveSubscrip
   [v52 setRecordTests:v55];
 
   v56 = objc_opt_new();
-  v57 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v58 = [v57 privateCloudDatabase];
-  [v56 setDatabase:v58];
+  secureContainer3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase4 = [secureContainer3 privateCloudDatabase];
+  [v56 setDatabase:privateCloudDatabase4];
 
   [v56 setRecordID:v62];
   [v56 setShouldExist:1];
@@ -1899,15 +1899,15 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
 - (id)_prepareTagSettingsAndReturnExpectations
 {
   v83[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"UserInfo" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"UserInfo" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -1924,11 +1924,11 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromRecordSchema];
-  v11 = v10;
-  if (v10)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v11 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromRecordSchema + 16);
   }
 
   else
@@ -1945,20 +1945,20 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v15 = [v4 toRecordSchema];
-  v16 = [(FCCKRecordSchema *)v15 allEncryptedFieldNames];
-  v17 = [v16 containsObject:@"tagID"];
+  toRecordSchema = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v17 = [allEncryptedFieldNames containsObject:@"tagID"];
 
   if ((v17 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"tag settings record should have encrypted tagID"];
   }
 
-  v18 = [v4 fromZoneSchema];
-  v19 = v18;
-  if (v18)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v19 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v20 = *(v18 + 24);
+    v20 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -1968,11 +1968,11 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
 
   v21 = v20;
 
-  v22 = [v4 toZoneSchema];
-  v23 = v22;
-  if (v22)
+  toZoneSchema = [v4 toZoneSchema];
+  v23 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v24 = *(v22 + 24);
+    v24 = *(toZoneSchema + 24);
   }
 
   else
@@ -1994,7 +1994,7 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   v72[3] = &unk_1E7C37EF0;
   v25 = v21;
   v73 = v25;
-  v74 = self;
+  selfCopy = self;
   v75 = &v76;
   FCWaitUntilBlockIsInvoked(v72);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -2007,11 +2007,11 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   v61 = FCTagSettingsEntryIDFromTagID(v26);
   v60 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:v61 zoneID:v25];
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v4 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -2023,9 +2023,9 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   v32 = [v27 initWithRecordType:v31 recordID:v60];
 
   [v32 setObject:v26 forKeyedSubscript:@"tagID"];
-  v33 = [MEMORY[0x1E696AFB0] UUID];
-  v34 = [v33 UUIDString];
-  [v32 setObject:v34 forKeyedSubscript:@"accessToken"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v32 setObject:uUIDString forKeyedSubscript:@"accessToken"];
 
   [v32 setObject:&unk_1F2E6FD50 forKeyedSubscript:@"fontMultiplier"];
   [v32 setObject:&unk_1F2E6FCC0 forKeyedSubscript:@"writerVersionHighWatermark"];
@@ -2052,25 +2052,25 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   }
 
   v36 = objc_opt_new();
-  v37 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v38 = [v37 privateCloudDatabase];
-  [v36 setDatabase:v38];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v36 setDatabase:privateCloudDatabase];
 
   [v36 setZoneID:v62];
   [v36 setShouldExist:1];
   v39 = objc_opt_new();
-  v40 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v41 = [v40 privateCloudDatabase];
-  [v39 setDatabase:v41];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v39 setDatabase:privateCloudDatabase2];
 
   [v39 setZoneID:v25];
   [v39 setShouldExist:0];
   v42 = objc_opt_new();
-  v43 = [v4 toRecordSchema];
-  v44 = v43;
-  if (v43)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v44 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v45 = *(v43 + 16);
+    v45 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -2081,22 +2081,22 @@ void __84__FCPrivateDataEncryptionMigrationHealthCheck__prepareUserInfoAndReturn
   v46 = v45;
   [v42 setRecordType:v46];
 
-  v47 = [v4 toRecordSchema];
-  v48 = [(FCCKRecordSchema *)v47 allUnencryptedFieldNames];
-  [v42 setUnencryptedFields:v48];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v42 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v49 = [v4 toRecordSchema];
-  v50 = [(FCCKRecordSchema *)v49 allEncryptedFieldNames];
-  [v42 setEncryptedFields:v50];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames2 = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v42 setEncryptedFields:allEncryptedFieldNames2];
 
-  v51 = [v35 valueStore];
-  v52 = [v51 values];
-  [v42 setExpectedValues:v52];
+  valueStore = [v35 valueStore];
+  values = [valueStore values];
+  [v42 setExpectedValues:values];
 
   v53 = objc_opt_new();
-  v54 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v55 = [v54 privateCloudDatabase];
-  [v53 setDatabase:v55];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer2 privateCloudDatabase];
+  [v53 setDatabase:privateCloudDatabase3];
 
   [v53 setZoneID:v62];
   v83[0] = v42;
@@ -2168,19 +2168,19 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
 {
   v63[4] = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"SharedPersonalizationProfile"];
-  v4 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v53 = [(FCCKPrivateDatabaseSchema *)v4 mappingFromRecordID:v3 toVersion:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion]];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v53 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordID:v3 toVersion:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion]];
 
-  v5 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  schema2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
   v6 = *MEMORY[0x1E695B800];
-  v7 = [(FCCKPrivateDatabaseSchema *)v5 mappingFromRecordType:*MEMORY[0x1E695B800] inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  v7 = [(FCCKPrivateDatabaseSchema *)schema2 mappingFromRecordType:*MEMORY[0x1E695B800] inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v8 = [v53 fromZoneSchema];
-  v9 = v8;
-  if (v8)
+  fromZoneSchema = [v53 fromZoneSchema];
+  v9 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v10 = *(v8 + 16);
+    v10 = *(fromZoneSchema + 16);
   }
 
   else
@@ -2197,11 +2197,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v13 = [v7 fromRecordSchema];
-  v14 = v13;
-  if (v13)
+  fromRecordSchema = [v7 fromRecordSchema];
+  v14 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v15 = *(v13 + 16);
+    v15 = *(fromRecordSchema + 16);
   }
 
   else
@@ -2218,20 +2218,20 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v18 = [v7 toRecordSchema];
-  v19 = [(FCCKRecordSchema *)v18 allEncryptedFieldNames];
-  v20 = [v19 containsObject:@"data"];
+  toRecordSchema = [v7 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema allEncryptedFieldNames];
+  v20 = [allEncryptedFieldNames containsObject:@"data"];
 
   if ((v20 & 1) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"personalization record should have encrypted data"];
   }
 
-  v21 = [v7 fromZoneSchema];
-  v22 = v21;
-  if (v21)
+  fromZoneSchema2 = [v7 fromZoneSchema];
+  v22 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v23 = *(v21 + 24);
+    v23 = *(fromZoneSchema2 + 24);
   }
 
   else
@@ -2241,11 +2241,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
 
   v52 = v23;
 
-  v24 = [v7 toZoneSchema];
-  v25 = v24;
-  if (v24)
+  toZoneSchema = [v7 toZoneSchema];
+  v25 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v26 = *(v24 + 24);
+    v26 = *(toZoneSchema + 24);
   }
 
   else
@@ -2256,11 +2256,11 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
   v51 = v26;
 
   v27 = objc_alloc(MEMORY[0x1E695BA60]);
-  v28 = [v7 fromRecordSchema];
-  v29 = v28;
-  if (v28)
+  fromRecordSchema2 = [v7 fromRecordSchema];
+  v29 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v30 = *(v28 + 16);
+    v30 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -2299,32 +2299,32 @@ void __87__FCPrivateDataEncryptionMigrationHealthCheck__prepareTagSettingsAndRet
   }
 
   v35 = objc_opt_new();
-  v36 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v37 = [v36 privateCloudDatabase];
-  [v35 setDatabase:v37];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v35 setDatabase:privateCloudDatabase];
 
   [v35 setZoneID:v52];
   [v35 setShouldExist:1];
   v38 = objc_opt_new();
-  v39 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v40 = [v39 privateCloudDatabase];
-  [v38 setDatabase:v40];
+  secureContainer2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase2 = [secureContainer2 privateCloudDatabase];
+  [v38 setDatabase:privateCloudDatabase2];
 
   [v38 setZoneID:v51];
   [v38 setShouldExist:1];
   v41 = objc_opt_new();
-  v42 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v43 = [v42 privateCloudDatabase];
-  [v41 setDatabase:v43];
+  secureContainer3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase3 = [secureContainer3 privateCloudDatabase];
+  [v41 setDatabase:privateCloudDatabase3];
 
-  v44 = [v53 toRecordID];
-  [v41 setRecordID:v44];
+  toRecordID = [v53 toRecordID];
+  [v41 setRecordID:toRecordID];
 
   [v41 setShouldExist:1];
   v45 = objc_opt_new();
-  v46 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v47 = [v46 privateCloudDatabase];
-  [v45 setDatabase:v47];
+  secureContainer4 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase4 = [secureContainer4 privateCloudDatabase];
+  [v45 setDatabase:privateCloudDatabase4];
 
   [v45 setRecordID:v3];
   [v45 setShouldExist:0];
@@ -2367,15 +2367,15 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
 - (id)_prepareReferenceToChannelMembershipsAndReturnExpectations
 {
   v95[1] = *MEMORY[0x1E69E9840];
-  v3 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
-  v4 = [(FCCKPrivateDatabaseSchema *)v3 mappingFromRecordType:@"ChannelMemberships" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
+  schema = [(FCPrivateDataEncryptionMigrationHealthCheck *)self schema];
+  v4 = [(FCCKPrivateDatabaseSchema *)schema mappingFromRecordType:@"ChannelMemberships" inZoneName:[(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion] toVersion:?];
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v5 = [v4 fromZoneSchema];
-  v6 = v5;
-  if (v5)
+  fromZoneSchema = [v4 fromZoneSchema];
+  v6 = fromZoneSchema;
+  if (fromZoneSchema)
   {
-    v7 = *(v5 + 16);
+    v7 = *(fromZoneSchema + 16);
   }
 
   else
@@ -2392,11 +2392,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v10 = [v4 fromZoneSchema];
-  v11 = v10;
-  if (v10)
+  fromZoneSchema2 = [v4 fromZoneSchema];
+  v11 = fromZoneSchema2;
+  if (fromZoneSchema2)
   {
-    v12 = *(v10 + 16);
+    v12 = *(fromZoneSchema2 + 16);
   }
 
   else
@@ -2405,11 +2405,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   v13 = v12;
-  v14 = [v4 toZoneSchema];
-  v15 = v14;
-  if (v14)
+  toZoneSchema = [v4 toZoneSchema];
+  v15 = toZoneSchema;
+  if (toZoneSchema)
   {
-    v16 = *(v14 + 16);
+    v16 = *(toZoneSchema + 16);
   }
 
   else
@@ -2426,11 +2426,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v19 = [v4 fromRecordSchema];
-  v20 = v19;
-  if (v19)
+  fromRecordSchema = [v4 fromRecordSchema];
+  v20 = fromRecordSchema;
+  if (fromRecordSchema)
   {
-    v21 = *(v19 + 16);
+    v21 = *(fromRecordSchema + 16);
   }
 
   else
@@ -2447,11 +2447,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  v24 = [v4 fromRecordSchema];
-  v25 = v24;
-  if (v24)
+  fromRecordSchema2 = [v4 fromRecordSchema];
+  v25 = fromRecordSchema2;
+  if (fromRecordSchema2)
   {
-    v26 = *(v24 + 16);
+    v26 = *(fromRecordSchema2 + 16);
   }
 
   else
@@ -2460,11 +2460,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   v27 = v26;
-  v28 = [v4 toRecordSchema];
-  v29 = v28;
-  if (v28)
+  toRecordSchema = [v4 toRecordSchema];
+  v29 = toRecordSchema;
+  if (toRecordSchema)
   {
-    v30 = *(v28 + 16);
+    v30 = *(toRecordSchema + 16);
   }
 
   else
@@ -2480,11 +2480,11 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"reference-to-membership record type should be the same on client and server"];
   }
 
-  v33 = [v4 fromZoneSchema];
-  v34 = v33;
-  if (v33)
+  fromZoneSchema3 = [v4 fromZoneSchema];
+  v34 = fromZoneSchema3;
+  if (fromZoneSchema3)
   {
-    v35 = *(v33 + 24);
+    v35 = *(fromZoneSchema3 + 24);
   }
 
   else
@@ -2506,7 +2506,7 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   v84[3] = &unk_1E7C37EF0;
   v37 = v36;
   v85 = v37;
-  v86 = self;
+  selfCopy = self;
   v87 = &v88;
   FCWaitUntilBlockIsInvoked(v84);
   [MEMORY[0x1E696AF00] isMainThread];
@@ -2516,16 +2516,16 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   v38 = objc_alloc(MEMORY[0x1E695BA70]);
-  v39 = [MEMORY[0x1E696AFB0] UUID];
-  v40 = [v39 UUIDString];
-  v41 = [v38 initWithRecordName:v40 zoneID:v37];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v41 = [v38 initWithRecordName:uUIDString zoneID:v37];
 
   v42 = objc_alloc(MEMORY[0x1E695BA60]);
-  v43 = [v4 fromRecordSchema];
-  v44 = v43;
-  if (v43)
+  fromRecordSchema3 = [v4 fromRecordSchema];
+  v44 = fromRecordSchema3;
+  if (fromRecordSchema3)
   {
-    v45 = *(v43 + 16);
+    v45 = *(fromRecordSchema3 + 16);
   }
 
   else
@@ -2536,9 +2536,9 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   v46 = v45;
   v47 = [v42 initWithRecordType:v46 recordID:v41];
 
-  v48 = [MEMORY[0x1E696AFB0] UUID];
-  v49 = [v48 UUIDString];
-  [v47 setObject:v49 forKeyedSubscript:@"membershipID"];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [v47 setObject:uUIDString2 forKeyedSubscript:@"membershipID"];
 
   v78 = 0;
   v79 = &v78;
@@ -2562,25 +2562,25 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   }
 
   v51 = objc_opt_new();
-  v52 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v53 = [v52 privateCloudDatabase];
-  [v51 setDatabase:v53];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase = [secureContainer privateCloudDatabase];
+  [v51 setDatabase:privateCloudDatabase];
 
   [v51 setZoneID:v37];
   [v51 setShouldExist:0];
   v54 = objc_opt_new();
-  v55 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v56 = [v55 privateCloudDatabase];
-  [v54 setDatabase:v56];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase2 = [container privateCloudDatabase];
+  [v54 setDatabase:privateCloudDatabase2];
 
   [v54 setZoneID:v37];
   [v54 setShouldExist:1];
   v57 = objc_opt_new();
-  v58 = [v4 toRecordSchema];
-  v59 = v58;
-  if (v58)
+  toRecordSchema2 = [v4 toRecordSchema];
+  v59 = toRecordSchema2;
+  if (toRecordSchema2)
   {
-    v60 = *(v58 + 16);
+    v60 = *(toRecordSchema2 + 16);
   }
 
   else
@@ -2591,22 +2591,22 @@ void __98__FCPrivateDataEncryptionMigrationHealthCheck__preparePersonalizationPr
   v61 = v60;
   [v57 setRecordType:v61];
 
-  v62 = [v4 toRecordSchema];
-  v63 = [(FCCKRecordSchema *)v62 allUnencryptedFieldNames];
-  [v57 setUnencryptedFields:v63];
+  toRecordSchema3 = [v4 toRecordSchema];
+  allUnencryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema3 allUnencryptedFieldNames];
+  [v57 setUnencryptedFields:allUnencryptedFieldNames];
 
-  v64 = [v4 toRecordSchema];
-  v65 = [(FCCKRecordSchema *)v64 allEncryptedFieldNames];
-  [v57 setEncryptedFields:v65];
+  toRecordSchema4 = [v4 toRecordSchema];
+  allEncryptedFieldNames = [(FCCKRecordSchema *)toRecordSchema4 allEncryptedFieldNames];
+  [v57 setEncryptedFields:allEncryptedFieldNames];
 
-  v66 = [v50 valueStore];
-  v67 = [v66 values];
-  [v57 setExpectedValues:v67];
+  valueStore = [v50 valueStore];
+  values = [valueStore values];
+  [v57 setExpectedValues:values];
 
   v68 = objc_opt_new();
-  v69 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v70 = [v69 privateCloudDatabase];
-  [v68 setDatabase:v70];
+  container2 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase3 = [container2 privateCloudDatabase];
+  [v68 setDatabase:privateCloudDatabase3];
 
   [v68 setZoneID:v37];
   v95[0] = v57;
@@ -2682,16 +2682,16 @@ void __105__FCPrivateDataEncryptionMigrationHealthCheck__prepareReferenceToChann
   v5 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"static_sentinel" zoneID:v4];
   v6 = [objc_alloc(MEMORY[0x1E695BA70]) initWithRecordName:@"static_sentinel_secure" zoneID:v4];
   v7 = objc_opt_new();
-  v8 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
-  v9 = [v8 privateCloudDatabase];
-  [v7 setDatabase:v9];
+  container = [(FCPrivateDataEncryptionMigrationHealthCheck *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [v7 setDatabase:privateCloudDatabase];
 
   [v7 setRecordID:v5];
   [v7 setShouldExist:1];
   v10 = objc_opt_new();
-  v11 = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
-  v12 = [v11 privateCloudDatabase];
-  [v10 setDatabase:v12];
+  secureContainer = [(FCPrivateDataEncryptionMigrationHealthCheck *)self secureContainer];
+  privateCloudDatabase2 = [secureContainer privateCloudDatabase];
+  [v10 setDatabase:privateCloudDatabase2];
 
   [v10 setRecordID:v6];
   [v10 setShouldExist:1];
@@ -2861,17 +2861,17 @@ void __85__FCPrivateDataEncryptionMigrationHealthCheck__prepareSentinelsAndRetur
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchDesiredVersionForDatabase:(id)a3 completion:(id)a4
+- (void)fetchDesiredVersionForDatabase:(id)database completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __89__FCPrivateDataEncryptionMigrationHealthCheck_fetchDesiredVersionForDatabase_completion___block_invoke;
   v8[3] = &unk_1E7C37F40;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(FCCKPrivateDatabase *)a3 fetchSecureDatabaseSupportedWithCompletionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(FCCKPrivateDatabase *)database fetchSecureDatabaseSupportedWithCompletionHandler:v8];
 }
 
 void __89__FCPrivateDataEncryptionMigrationHealthCheck_fetchDesiredVersionForDatabase_completion___block_invoke(uint64_t a1, int a2, void *a3)
@@ -2891,10 +2891,10 @@ void __89__FCPrivateDataEncryptionMigrationHealthCheck_fetchDesiredVersionForDat
   (*(v5 + 16))(v5, v6, v7);
 }
 
-- (void)fetchCleanupToVersionForDatabase:(id)a3 completion:(id)a4
+- (void)fetchCleanupToVersionForDatabase:(id)database completion:(id)completion
 {
-  v6 = a4;
-  (*(a4 + 2))(v6, [(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion], 0);
+  completionCopy = completion;
+  (*(completion + 2))(completionCopy, [(FCPrivateDataEncryptionMigrationHealthCheck *)self toVersion], 0);
 }
 
 @end

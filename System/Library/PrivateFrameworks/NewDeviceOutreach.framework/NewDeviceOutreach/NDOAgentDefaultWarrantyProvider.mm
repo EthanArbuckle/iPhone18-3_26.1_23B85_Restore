@@ -1,23 +1,23 @@
 @interface NDOAgentDefaultWarrantyProvider
-- (NDOAgentDefaultWarrantyProvider)initWithCallingProcessBundleID:(id)a3;
-- (double)cachedWarrantyValidityDurationForSerialNumber:(id)a3;
-- (id)cachedWarrantyLocaleForSerialNumber:(id)a3;
-- (id)cachedWarrantyVersionForSerialNumber:(id)a3;
-- (id)lastUpdatedDateForSerialNumber:(id)a3;
-- (id)refreshAllFollowupsWithDeviceInfos:(id)a3;
-- (id)refreshFollowupWithDeviceInfos:(id)a3;
+- (NDOAgentDefaultWarrantyProvider)initWithCallingProcessBundleID:(id)d;
+- (double)cachedWarrantyValidityDurationForSerialNumber:(id)number;
+- (id)cachedWarrantyLocaleForSerialNumber:(id)number;
+- (id)cachedWarrantyVersionForSerialNumber:(id)number;
+- (id)lastUpdatedDateForSerialNumber:(id)number;
+- (id)refreshAllFollowupsWithDeviceInfos:(id)infos;
+- (id)refreshFollowupWithDeviceInfos:(id)infos;
 - (int)migrationVersion;
-- (void)dismissFollowUpForSerialNumber:(id)a3;
-- (void)dismissNotificationForSerialNumber:(id)a3;
-- (void)downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6;
-- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)a3;
+- (void)dismissFollowUpForSerialNumber:(id)number;
+- (void)dismissNotificationForSerialNumber:(id)number;
+- (void)downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params completionHandler:(id)handler;
+- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)info;
 @end
 
 @implementation NDOAgentDefaultWarrantyProvider
 
-- (NDOAgentDefaultWarrantyProvider)initWithCallingProcessBundleID:(id)a3
+- (NDOAgentDefaultWarrantyProvider)initWithCallingProcessBundleID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = NDOAgentDefaultWarrantyProvider;
   v6 = [(NDOAgentDefaultWarrantyProvider *)&v10 init];
@@ -26,100 +26,100 @@
     v7 = _NDOLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_100073C3C(v5, v7, v8);
+      sub_100073C3C(dCopy, v7, v8);
     }
 
-    objc_storeStrong(&v6->_callingProcessBundleID, a3);
+    objc_storeStrong(&v6->_callingProcessBundleID, d);
   }
 
   return v6;
 }
 
-- (void)downloadWarrantyForSerialNumber:(id)a3 sessionID:(id)a4 params:(id)a5 completionHandler:(id)a6
+- (void)downloadWarrantyForSerialNumber:(id)number sessionID:(id)d params:(id)params completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  paramsCopy = params;
+  dCopy = d;
+  numberCopy = number;
   v14 = [[NDOWarrantyDownloader alloc] initWithCallingProcessBundleID:self->_callingProcessBundleID];
-  [(NDOWarrantyDownloader *)v14 downloadWarrantyForSerialNumber:v13 sessionID:v12 params:v11 completionHandler:v10];
+  [(NDOWarrantyDownloader *)v14 downloadWarrantyForSerialNumber:numberCopy sessionID:dCopy params:paramsCopy completionHandler:handlerCopy];
 }
 
-- (id)refreshFollowupWithDeviceInfos:(id)a3
+- (id)refreshFollowupWithDeviceInfos:(id)infos
 {
-  v3 = a3;
+  infosCopy = infos;
   v4 = objc_opt_new();
-  v5 = [v4 refreshFollowupWithDeviceInfos:v3 andForcePostFollowup:0];
+  v5 = [v4 refreshFollowupWithDeviceInfos:infosCopy andForcePostFollowup:0];
 
   return v5;
 }
 
-- (id)refreshAllFollowupsWithDeviceInfos:(id)a3
+- (id)refreshAllFollowupsWithDeviceInfos:(id)infos
 {
-  v3 = a3;
+  infosCopy = infos;
   v4 = objc_opt_new();
-  v5 = [v4 refreshALLFollowupsWithDeviceInfos:v3 andForcePostFollowup:0];
+  v5 = [v4 refreshALLFollowupsWithDeviceInfos:infosCopy andForcePostFollowup:0];
 
   return v5;
 }
 
-- (void)dismissFollowUpForSerialNumber:(id)a3
+- (void)dismissFollowUpForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = objc_opt_new();
-  [v4 dismissFollowUpForSerialNumber:v3];
+  [v4 dismissFollowUpForSerialNumber:numberCopy];
 }
 
-- (void)dismissNotificationForSerialNumber:(id)a3
+- (void)dismissNotificationForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = objc_opt_new();
-  [v4 dismissNotificationForSerialNumber:v3];
+  [v4 dismissNotificationForSerialNumber:numberCopy];
 }
 
-- (id)lastUpdatedDateForSerialNumber:(id)a3
+- (id)lastUpdatedDateForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v3 sha256Hash];
+  sha256Hash = [numberCopy sha256Hash];
 
-  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyLastUpdatedDate", v5];
+  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyLastUpdatedDate", sha256Hash];
   v7 = [v4 objectForKey:v6];
 
   return v7;
 }
 
-- (id)cachedWarrantyLocaleForSerialNumber:(id)a3
+- (id)cachedWarrantyLocaleForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v3 sha256Hash];
+  sha256Hash = [numberCopy sha256Hash];
 
-  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyLocale", v5];
+  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyLocale", sha256Hash];
   v7 = [v4 objectForKey:v6];
 
   return v7;
 }
 
-- (id)cachedWarrantyVersionForSerialNumber:(id)a3
+- (id)cachedWarrantyVersionForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v3 sha256Hash];
+  sha256Hash = [numberCopy sha256Hash];
 
-  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyVersion", v5];
+  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyVersion", sha256Hash];
   v7 = [v4 objectForKey:v6];
 
   return v7;
 }
 
-- (double)cachedWarrantyValidityDurationForSerialNumber:(id)a3
+- (double)cachedWarrantyValidityDurationForSerialNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v3 sha256Hash];
+  sha256Hash = [numberCopy sha256Hash];
 
-  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyValidityDuration", v5];
+  v6 = [NSString stringWithFormat:@"%@_CachedWarrantyValidityDuration", sha256Hash];
   v7 = [v4 objectForKey:v6];
   [v7 doubleValue];
   v9 = v8;
@@ -137,16 +137,16 @@
 {
   v2 = +[NSUserDefaults standardUserDefaults];
   v3 = [v2 objectForKey:@"NDOMigrationVersion"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)a3
+- (void)migrateLegacyFollowUpIfNeededWithDeviceInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_opt_new();
-  [v4 migrateLegacyFollowUpIfNeededWithDeviceInfo:v3];
+  [v4 migrateLegacyFollowUpIfNeededWithDeviceInfo:infoCopy];
 }
 
 @end

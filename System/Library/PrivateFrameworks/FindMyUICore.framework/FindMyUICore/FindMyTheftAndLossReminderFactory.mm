@@ -1,11 +1,11 @@
 @interface FindMyTheftAndLossReminderFactory
-+ (void)reminderViewControllerForContext:(id)a3 actionHandler:(id)a4 completion:(id)a5;
++ (void)reminderViewControllerForContext:(id)context actionHandler:(id)handler completion:(id)completion;
 - (FindMyTheftAndLossReminderFactory)init;
 @end
 
 @implementation FindMyTheftAndLossReminderFactory
 
-+ (void)reminderViewControllerForContext:(id)a3 actionHandler:(id)a4 completion:(id)a5
++ (void)reminderViewControllerForContext:(id)context actionHandler:(id)handler completion:(id)completion
 {
   sub_24B2D5694();
   sub_24B2D5684();
@@ -15,15 +15,15 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = _Block_copy(a4);
-  v9 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
+  v9 = _Block_copy(completion);
   v10 = swift_allocObject();
   *(v10 + 16) = v8;
   v11 = swift_allocObject();
   *(v11 + 16) = v9;
   swift_getObjCClassMetadata();
-  v12 = a3;
-  static FindMyTheftAndLossReminderFactory.reminderViewController(context:actionHandler:completion:)(v12, sub_24B2CFEE8, v10, sub_24B2C6390, v11);
+  contextCopy = context;
+  static FindMyTheftAndLossReminderFactory.reminderViewController(context:actionHandler:completion:)(contextCopy, sub_24B2CFEE8, v10, sub_24B2C6390, v11);
 }
 
 - (FindMyTheftAndLossReminderFactory)init

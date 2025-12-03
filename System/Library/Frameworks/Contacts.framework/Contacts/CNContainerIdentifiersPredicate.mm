@@ -1,20 +1,20 @@
 @interface CNContainerIdentifiersPredicate
-- (CNContainerIdentifiersPredicate)initWithIdentifiers:(id)a3;
+- (CNContainerIdentifiersPredicate)initWithIdentifiers:(id)identifiers;
 - (id)cn_topLevelFilter;
 @end
 
 @implementation CNContainerIdentifiersPredicate
 
-- (CNContainerIdentifiersPredicate)initWithIdentifiers:(id)a3
+- (CNContainerIdentifiersPredicate)initWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", v4];
+  identifiersCopy = identifiers;
+  identifiersCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"identifier IN %@", identifiersCopy];
   v11.receiver = self;
   v11.super_class = CNContainerIdentifiersPredicate;
-  v6 = [(CNPredicate *)&v11 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v11 initWithPredicate:identifiersCopy];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifiersCopy copy];
     identifiers = v6->_identifiers;
     v6->_identifiers = v7;
 
@@ -26,13 +26,13 @@
 
 - (id)cn_topLevelFilter
 {
-  v3 = [(CNContainerIdentifiersPredicate *)self identifiers];
+  identifiers = [(CNContainerIdentifiersPredicate *)self identifiers];
 
   v4 = MEMORY[0x1E696AE18];
-  if (v3)
+  if (identifiers)
   {
-    v5 = [(CNContainerIdentifiersPredicate *)self identifiers];
-    v6 = [v4 predicateWithFormat:@"identifier IN %@", v5];
+    identifiers2 = [(CNContainerIdentifiersPredicate *)self identifiers];
+    v6 = [v4 predicateWithFormat:@"identifier IN %@", identifiers2];
   }
 
   else

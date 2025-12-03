@@ -1,10 +1,10 @@
 @interface NRQueueTable
 + (id)sharedTable;
 - (NRQueueTable)init;
-- (id)objectForKeyedSubscript:(id)a3;
-- (id)queueWithDispatchQueue:(id)a3;
-- (void)enumerateQueuesWithBlock:(id)a3;
-- (void)removeQueue:(id)a3;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (id)queueWithDispatchQueue:(id)queue;
+- (void)enumerateQueuesWithBlock:(id)block;
+- (void)removeQueue:(id)queue;
 @end
 
 @implementation NRQueueTable
@@ -41,9 +41,9 @@
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -55,10 +55,10 @@
   block[1] = 3221225472;
   block[2] = sub_1000D75CC;
   block[3] = &unk_100175BE0;
-  v10 = v4;
+  v10 = subscriptCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = subscriptCopy;
   dispatch_sync(queueTableQueue, block);
   v7 = v13[5];
 
@@ -67,9 +67,9 @@
   return v7;
 }
 
-- (void)enumerateQueuesWithBlock:(id)a3
+- (void)enumerateQueuesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -102,8 +102,8 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      v10 = [*(*(&v12 + 1) + 8 * v9) nonretainedObjectValue];
-      v11 = v4[2](v4, v10);
+      nonretainedObjectValue = [*(*(&v12 + 1) + 8 * v9) nonretainedObjectValue];
+      v11 = blockCopy[2](blockCopy, nonretainedObjectValue);
 
       if ((v11 & 1) == 0)
       {
@@ -126,9 +126,9 @@ LABEL_3:
   _Block_object_dispose(&v17, 8);
 }
 
-- (id)queueWithDispatchQueue:(id)a3
+- (id)queueWithDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -140,10 +140,10 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = sub_1000D79C4;
   block[3] = &unk_100175BE0;
-  v10 = v4;
+  v10 = queueCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = queueCopy;
   dispatch_sync(queueTableQueue, block);
   v7 = v13[5];
 
@@ -152,17 +152,17 @@ LABEL_3:
   return v7;
 }
 
-- (void)removeQueue:(id)a3
+- (void)removeQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   queueTableQueue = self->_queueTableQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D7C08;
   v7[3] = &unk_100175598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(queueTableQueue, v7);
 }
 

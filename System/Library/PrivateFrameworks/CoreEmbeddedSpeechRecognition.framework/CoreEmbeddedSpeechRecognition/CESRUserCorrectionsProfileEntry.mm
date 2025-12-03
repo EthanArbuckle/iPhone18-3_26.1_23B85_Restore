@@ -1,30 +1,30 @@
 @interface CESRUserCorrectionsProfileEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSpellingCorrectionsCount:(BOOL)a3;
-- (void)setHasTap2editCorrectionsCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSpellingCorrectionsCount:(BOOL)count;
+- (void)setHasTap2editCorrectionsCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CESRUserCorrectionsProfileEntry
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(CESRUserCorrectionsProfileEntry *)self setCorrectedText:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   pronunciationData = self->_pronunciationData;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (pronunciationData)
   {
     if (!v6)
@@ -45,14 +45,14 @@
     pronunciationData = [(CESRUserCorrectionsProfileEntry *)self setPronunciationData:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_9:
-  v7 = *(v4 + 40);
+  v7 = *(fromCopy + 40);
   if ((v7 & 2) != 0)
   {
-    self->_spellingCorrectionsCount = v4[8];
+    self->_spellingCorrectionsCount = fromCopy[8];
     *&self->_has |= 2u;
-    v7 = *(v4 + 40);
+    v7 = *(fromCopy + 40);
     if ((v7 & 4) == 0)
     {
 LABEL_11:
@@ -65,23 +65,23 @@ LABEL_11:
     }
   }
 
-  else if ((v4[10] & 4) == 0)
+  else if ((fromCopy[10] & 4) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_tap2editCorrectionsCount = v4[9];
+  self->_tap2editCorrectionsCount = fromCopy[9];
   *&self->_has |= 4u;
-  if (v4[10])
+  if (fromCopy[10])
   {
 LABEL_12:
-    self->_alternativesCorrectionsCount = v4[2];
+    self->_alternativesCorrectionsCount = fromCopy[2];
     *&self->_has |= 1u;
   }
 
 LABEL_13:
 
-  MEMORY[0x2821F96F8](pronunciationData, v4);
+  MEMORY[0x2821F96F8](pronunciationData, fromCopy);
 }
 
 - (unint64_t)hash
@@ -126,16 +126,16 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   correctedText = self->_correctedText;
-  if (correctedText | *(v4 + 2))
+  if (correctedText | *(equalCopy + 2))
   {
     if (![(NSString *)correctedText isEqual:?])
     {
@@ -144,7 +144,7 @@ LABEL_4:
   }
 
   pronunciationData = self->_pronunciationData;
-  if (pronunciationData | *(v4 + 3))
+  if (pronunciationData | *(equalCopy + 3))
   {
     if (![(CESRCorrectionPronunciation *)pronunciationData isEqual:?])
     {
@@ -154,13 +154,13 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_spellingCorrectionsCount != *(v4 + 8))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_spellingCorrectionsCount != *(equalCopy + 8))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -169,21 +169,21 @@ LABEL_20:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_tap2editCorrectionsCount != *(v4 + 9))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_tap2editCorrectionsCount != *(equalCopy + 9))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 40) & 1) == 0;
+  v7 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_alternativesCorrectionsCount != *(v4 + 2))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_alternativesCorrectionsCount != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
@@ -196,14 +196,14 @@ LABEL_21:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_correctedText copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_correctedText copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(CESRCorrectionPronunciation *)self->_pronunciationData copyWithZone:a3];
+  v8 = [(CESRCorrectionPronunciation *)self->_pronunciationData copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -245,27 +245,27 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_correctedText)
   {
-    [v4 setCorrectedText:?];
-    v4 = v6;
+    [toCopy setCorrectedText:?];
+    toCopy = v6;
   }
 
   if (self->_pronunciationData)
   {
     [v6 setPronunciationData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_spellingCorrectionsCount;
-    *(v4 + 40) |= 2u;
+    *(toCopy + 8) = self->_spellingCorrectionsCount;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -284,32 +284,32 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 9) = self->_tap2editCorrectionsCount;
-  *(v4 + 40) |= 4u;
+  *(toCopy + 9) = self->_tap2editCorrectionsCount;
+  *(toCopy + 40) |= 4u;
   if (*&self->_has)
   {
 LABEL_8:
-    *(v4 + 2) = self->_alternativesCorrectionsCount;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 2) = self->_alternativesCorrectionsCount;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_9:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_correctedText)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_pronunciationData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -317,7 +317,7 @@ LABEL_9:
   {
     spellingCorrectionsCount = self->_spellingCorrectionsCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -338,13 +338,13 @@ LABEL_7:
 
   tap2editCorrectionsCount = self->_tap2editCorrectionsCount;
   PBDataWriterWriteUint32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_8:
     alternativesCorrectionsCount = self->_alternativesCorrectionsCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
@@ -352,19 +352,19 @@ LABEL_9:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   correctedText = self->_correctedText;
   if (correctedText)
   {
-    [v3 setObject:correctedText forKey:@"corrected_text"];
+    [dictionary setObject:correctedText forKey:@"corrected_text"];
   }
 
   pronunciationData = self->_pronunciationData;
   if (pronunciationData)
   {
-    v7 = [(CESRCorrectionPronunciation *)pronunciationData dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"pronunciation_data"];
+    dictionaryRepresentation = [(CESRCorrectionPronunciation *)pronunciationData dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"pronunciation_data"];
   }
 
   has = self->_has;
@@ -412,15 +412,15 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = CESRUserCorrectionsProfileEntry;
   v4 = [(CESRUserCorrectionsProfileEntry *)&v8 description];
-  v5 = [(CESRUserCorrectionsProfileEntry *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(CESRUserCorrectionsProfileEntry *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasTap2editCorrectionsCount:(BOOL)a3
+- (void)setHasTap2editCorrectionsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -433,9 +433,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSpellingCorrectionsCount:(BOOL)a3
+- (void)setHasSpellingCorrectionsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

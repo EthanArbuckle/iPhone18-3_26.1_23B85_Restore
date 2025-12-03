@@ -1,24 +1,24 @@
 @interface UNNotificationTopicRequest
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 options:(unint64_t)a5;
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 options:(unint64_t)a7;
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 supportedOptions:(unint64_t)a7 enabledOptions:(unint64_t)a8;
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationTopicRequest)initWithCoder:(id)a3;
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name options:(unint64_t)options;
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier options:(unint64_t)options;
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier supportedOptions:(unint64_t)options enabledOptions:(unint64_t)enabledOptions;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationTopicRequest)initWithCoder:(id)coder;
 - (id)_description;
-- (id)_initWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 supportedOptions:(unint64_t)a7 enabledOptions:(unint64_t)a8;
+- (id)_initWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier supportedOptions:(unint64_t)options enabledOptions:(unint64_t)enabledOptions;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationTopicRequest
 
 - (unint64_t)hash
 {
-  v3 = [(UNNotificationTopicRequest *)self topic];
-  v4 = [v3 hash];
-  v5 = [(UNNotificationTopicRequest *)self supportedOptions];
-  v6 = v5 ^ [(UNNotificationTopicRequest *)self enabledOptions];
+  topic = [(UNNotificationTopicRequest *)self topic];
+  v4 = [topic hash];
+  supportedOptions = [(UNNotificationTopicRequest *)self supportedOptions];
+  v6 = supportedOptions ^ [(UNNotificationTopicRequest *)self enabledOptions];
 
   return v6 ^ v4;
 }
@@ -26,8 +26,8 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(UNNotificationTopicRequest *)self _description];
-  v4 = [v2 stringWithFormat:@"%@>", v3];
+  _description = [(UNNotificationTopicRequest *)self _description];
+  v4 = [v2 stringWithFormat:@"%@>", _description];
 
   return v4;
 }
@@ -36,74 +36,74 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UNNotificationTopicRequest *)self topic];
-  v6 = [v3 stringWithFormat:@"<%@: %p topic: %@, supportedOptions: %ld, enabledOptions: %ld", v4, self, v5, -[UNNotificationTopicRequest supportedOptions](self, "supportedOptions"), -[UNNotificationTopicRequest enabledOptions](self, "enabledOptions")];;
+  topic = [(UNNotificationTopicRequest *)self topic];
+  v6 = [v3 stringWithFormat:@"<%@: %p topic: %@, supportedOptions: %ld, enabledOptions: %ld", v4, self, topic, -[UNNotificationTopicRequest supportedOptions](self, "supportedOptions"), -[UNNotificationTopicRequest enabledOptions](self, "enabledOptions")];;
 
   return v6;
 }
 
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 options:(unint64_t)a5
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name options:(unint64_t)options
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] _initWithIdentifier:v9 displayName:v8 priority:0 sortIdentifier:&stru_1F308F460 supportedOptions:a5 enabledOptions:a5];
+  nameCopy = name;
+  identifierCopy = identifier;
+  v10 = [[self alloc] _initWithIdentifier:identifierCopy displayName:nameCopy priority:0 sortIdentifier:&stru_1F308F460 supportedOptions:options enabledOptions:options];
 
   return v10;
 }
 
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 options:(unint64_t)a7
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier options:(unint64_t)options
 {
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[a1 alloc] _initWithIdentifier:v14 displayName:v13 priority:a5 sortIdentifier:v12 supportedOptions:a7 enabledOptions:a7];
+  sortIdentifierCopy = sortIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v15 = [[self alloc] _initWithIdentifier:identifierCopy displayName:nameCopy priority:priority sortIdentifier:sortIdentifierCopy supportedOptions:options enabledOptions:options];
 
   return v15;
 }
 
-+ (id)topicRequestWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 supportedOptions:(unint64_t)a7 enabledOptions:(unint64_t)a8
++ (id)topicRequestWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier supportedOptions:(unint64_t)options enabledOptions:(unint64_t)enabledOptions
 {
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] _initWithIdentifier:v16 displayName:v15 priority:a5 sortIdentifier:v14 supportedOptions:a7 enabledOptions:a8];
+  sortIdentifierCopy = sortIdentifier;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v17 = [[self alloc] _initWithIdentifier:identifierCopy displayName:nameCopy priority:priority sortIdentifier:sortIdentifierCopy supportedOptions:options enabledOptions:enabledOptions];
 
   return v17;
 }
 
-- (id)_initWithIdentifier:(id)a3 displayName:(id)a4 priority:(unint64_t)a5 sortIdentifier:(id)a6 supportedOptions:(unint64_t)a7 enabledOptions:(unint64_t)a8
+- (id)_initWithIdentifier:(id)identifier displayName:(id)name priority:(unint64_t)priority sortIdentifier:(id)sortIdentifier supportedOptions:(unint64_t)options enabledOptions:(unint64_t)enabledOptions
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  sortIdentifierCopy = sortIdentifier;
   v21.receiver = self;
   v21.super_class = UNNotificationTopicRequest;
   v17 = [(UNNotificationTopicRequest *)&v21 init];
   if (v17)
   {
-    v18 = [UNNotificationTopic topicWithIdentifier:v14 displayName:v15 priority:a5 sortIdentifier:v16];
+    v18 = [UNNotificationTopic topicWithIdentifier:identifierCopy displayName:nameCopy priority:priority sortIdentifier:sortIdentifierCopy];
     topic = v17->_topic;
     v17->_topic = v18;
 
-    v17->_supportedOptions = a7;
-    v17->_enabledOptions = a8;
+    v17->_supportedOptions = options;
+    v17->_enabledOptions = enabledOptions;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UNNotificationTopicRequest *)self topic];
-    v6 = [v4 topic];
-    if (UNEqualObjects(v5, v6) && (v7 = -[UNNotificationTopicRequest supportedOptions](self, "supportedOptions"), v7 == [v4 supportedOptions]))
+    topic = [(UNNotificationTopicRequest *)self topic];
+    topic2 = [equalCopy topic];
+    if (UNEqualObjects(topic, topic2) && (v7 = -[UNNotificationTopicRequest supportedOptions](self, "supportedOptions"), v7 == [equalCopy supportedOptions]))
     {
-      v8 = [(UNNotificationTopicRequest *)self enabledOptions];
-      v9 = v8 == [v4 enabledOptions];
+      enabledOptions = [(UNNotificationTopicRequest *)self enabledOptions];
+      v9 = enabledOptions == [equalCopy enabledOptions];
     }
 
     else
@@ -120,30 +120,30 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(UNNotificationTopicRequest *)self topic];
-  [v5 encodeObject:v4 forKey:@"topic"];
+  coderCopy = coder;
+  topic = [(UNNotificationTopicRequest *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 
-  [v5 encodeInteger:-[UNNotificationTopicRequest supportedOptions](self forKey:{"supportedOptions"), @"supportedOptions"}];
-  [v5 encodeInteger:-[UNNotificationTopicRequest enabledOptions](self forKey:{"enabledOptions"), @"enabledOptions"}];
+  [coderCopy encodeInteger:-[UNNotificationTopicRequest supportedOptions](self forKey:{"supportedOptions"), @"supportedOptions"}];
+  [coderCopy encodeInteger:-[UNNotificationTopicRequest enabledOptions](self forKey:{"enabledOptions"), @"enabledOptions"}];
 }
 
-- (UNNotificationTopicRequest)initWithCoder:(id)a3
+- (UNNotificationTopicRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
   v6 = [v5 copy];
 
-  v7 = [v4 decodeIntegerForKey:@"supportedOptions"];
-  v8 = [v4 decodeIntegerForKey:@"enabledOptions"];
+  v7 = [coderCopy decodeIntegerForKey:@"supportedOptions"];
+  v8 = [coderCopy decodeIntegerForKey:@"enabledOptions"];
 
-  v9 = [v6 identifier];
-  v10 = [v6 displayName];
-  v11 = [v6 priority];
-  v12 = [v6 sortIdentifier];
-  v13 = [(UNNotificationTopicRequest *)self _initWithIdentifier:v9 displayName:v10 priority:v11 sortIdentifier:v12 supportedOptions:v7 enabledOptions:v8];
+  identifier = [v6 identifier];
+  displayName = [v6 displayName];
+  priority = [v6 priority];
+  sortIdentifier = [v6 sortIdentifier];
+  v13 = [(UNNotificationTopicRequest *)self _initWithIdentifier:identifier displayName:displayName priority:priority sortIdentifier:sortIdentifier supportedOptions:v7 enabledOptions:v8];
 
   return v13;
 }

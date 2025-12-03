@@ -1,60 +1,60 @@
 @interface ESSelfHelper
-+ (id)createANEModelInitializationEndedEventWithTimeStamp:(id)a3 fileName:(id)a4;
-+ (id)createANEModelInitializationStartedEventWithTimeStamp:(id)a3 fileName:(id)a4;
-+ (id)createPreheatEndedEventWithPreheatAlreadyDone:(BOOL)a3;
++ (id)createANEModelInitializationEndedEventWithTimeStamp:(id)stamp fileName:(id)name;
++ (id)createANEModelInitializationStartedEventWithTimeStamp:(id)stamp fileName:(id)name;
++ (id)createPreheatEndedEventWithPreheatAlreadyDone:(BOOL)done;
 + (id)createPreheatFailedEvent;
 + (id)createPreheatStartedOrChangedEvent;
-+ (void)_logRequestLinkWithRequestId:(id)a3 asrId:(id)a4;
++ (void)_logRequestLinkWithRequestId:(id)id asrId:(id)asrId;
 + (void)initializeSharedPowerLoggerIfNeeded;
 + (void)logPowerSnapshotForProcessEnded;
 + (void)logPowerSnapshotForProcessStarted;
-- (BOOL)_isLoggingAllowedForCurrentRequestWithTask:(id)a3 isSpeechAPIRequest:(BOOL)a4;
-- (BOOL)_isNonTier1Message:(id)a3;
-- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)a3;
+- (BOOL)_isLoggingAllowedForCurrentRequestWithTask:(id)task isSpeechAPIRequest:(BOOL)request;
+- (BOOL)_isNonTier1Message:(id)message;
+- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)task;
 - (void)logActiveConfigUpdateEnded;
-- (void)logActiveConfigUpdateStartedOrChangedWithTimeInTicks:(id)a3;
+- (void)logActiveConfigUpdateStartedOrChangedWithTimeInTicks:(id)ticks;
 - (void)logAppleNeuralEngineModelInitializationEnded;
-- (void)logAppleNeuralEngineModelInitializationStartedOrChangedWithTimeInTicks:(id)a3;
-- (void)logAudioPacketArrivalEndedWithTimeInTicks:(id)a3;
-- (void)logAudioPacketArrivalStartedOrChangedWithTimeInTicks:(id)a3;
-- (void)logAudioPacketContainingEndOfFirstWordReadyUpstreamWithTimeInTicks:(id)a3;
-- (void)logESStartWithTimeInTicks:(id)a3;
-- (void)logFinalAudioPacketContainingSpeechReadyUpstreamWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4 earPackage:(id)a5;
-- (void)logFinalAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4 earPackage:(id)a5;
-- (void)logFinalResultGeneratedWithEARPackage:(id)a3 correctAlignedPartialResultIndexList:(id)a4;
-- (void)logFirstAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4;
+- (void)logAppleNeuralEngineModelInitializationStartedOrChangedWithTimeInTicks:(id)ticks;
+- (void)logAudioPacketArrivalEndedWithTimeInTicks:(id)ticks;
+- (void)logAudioPacketArrivalStartedOrChangedWithTimeInTicks:(id)ticks;
+- (void)logAudioPacketContainingEndOfFirstWordReadyUpstreamWithTimeInTicks:(id)ticks;
+- (void)logESStartWithTimeInTicks:(id)ticks;
+- (void)logFinalAudioPacketContainingSpeechReadyUpstreamWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id earPackage:(id)package;
+- (void)logFinalAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id earPackage:(id)package;
+- (void)logFinalResultGeneratedWithEARPackage:(id)package correctAlignedPartialResultIndexList:(id)list;
+- (void)logFirstAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id;
 - (void)logFirstAudioPacketProcessed;
-- (void)logFirstAudioPacketReadyUpstreamWithTimeInTicks:(id)a3;
-- (void)logFirstAudioPacketRecordedWithTimeInTicks:(id)a3;
+- (void)logFirstAudioPacketReadyUpstreamWithTimeInTicks:(id)ticks;
+- (void)logFirstAudioPacketRecordedWithTimeInTicks:(id)ticks;
 - (void)logFrameProcessingReady;
-- (void)logInitializationStartedOrChangedWithTimeInTicks:(id)a3;
-- (void)logIntermediateUtteranceInfoTier1WithPmInput:(id)a3 pmOutput:(id)a4 unrepairedPostItn:(id)a5 loggableSharedUserId:(id)a6;
-- (void)logJitLmeEndedAndEndedTier1WithDialogContext:(id)a3;
-- (void)logJitLmeStartedOrChangedWithTimeInTicks:(id)a3;
-- (void)logLeadingSilenceProcessedWithTimestampInTicks:(id)a3;
-- (void)logPackageGeneratedAndRecognitionResultTier1WithEARPackage:(id)a3 loggableSharedUserId:(id)a4;
+- (void)logInitializationStartedOrChangedWithTimeInTicks:(id)ticks;
+- (void)logIntermediateUtteranceInfoTier1WithPmInput:(id)input pmOutput:(id)output unrepairedPostItn:(id)itn loggableSharedUserId:(id)id;
+- (void)logJitLmeEndedAndEndedTier1WithDialogContext:(id)context;
+- (void)logJitLmeStartedOrChangedWithTimeInTicks:(id)ticks;
+- (void)logLeadingSilenceProcessedWithTimestampInTicks:(id)ticks;
+- (void)logPackageGeneratedAndRecognitionResultTier1WithEARPackage:(id)package loggableSharedUserId:(id)id;
 - (void)logPartialResultGenerated;
-- (void)logPendingANEModelInitializationContextEvents:(id)a3;
-- (void)logPendingPreheatContextEvents:(id)a3;
-- (void)logPersonalizationExperimentTriggersForExperimentIds:(id)a3;
-- (void)logPostSpeechStartOneSecondAudioProcessedWithTimestampInTicks:(id)a3;
-- (void)logPostSpeechStartOneSecondLaterAudioPacketReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4;
-- (void)logRequestEndedOrFailedOrCancelledWithError:(id)a3 recognizerComponents:(id)a4 averageActiveTokensPerFrame:(id)a5 languageModelInterpolationWeights:(id)a6 signalToNoiseRatioInDecibels:(id)a7 recognitionDurationInSec:(id)a8 audioDurationMs:(id)a9 eagerUsed:(id)a10 utteranceDetectionEnabled:(BOOL)a11 utteranceConcatenationEnabled:(BOOL)a12 cpuRealTimeFactor:(id)a13 numLmeDataStreams:(id)a14 phoneticMatchDecoderName:(id)a15 pauseDurations:(id)a16 itnDurationInNs:(id)a17 isEmojiPersonalizationUsed:(BOOL)a18 isEmojiDisambiguationUsed:(BOOL)a19 isEmojiExpectedButNotRecognized:(BOOL)a20 recognizedEmojis:(id)a21 totalITNDurationInNs:(id)a22 totalITNRuns:(id)a23 totalSecondaryPassDurationInNs:(id)a24 totalSecondaryPasses:(id)a25 cpuInstructionsInMillionsPerSecond:(id)a26 aneUsed:(id)a27;
-- (void)logRequestStartedOrChangedWithTask:(id)a3 modelLocale:(id)a4 modelVersion:(id)a5 isHighQualityAsset:(id)a6 hammerVersion:(id)a7 geoLanguageModelRegion:(id)a8 geoLanguageModelLoaded:(BOOL)a9 speechProfileAgeInSec:(id)a10 dictationUIInteractionId:(id)a11 portraitExperimentVariantName:(id)a12;
+- (void)logPendingANEModelInitializationContextEvents:(id)events;
+- (void)logPendingPreheatContextEvents:(id)events;
+- (void)logPersonalizationExperimentTriggersForExperimentIds:(id)ids;
+- (void)logPostSpeechStartOneSecondAudioProcessedWithTimestampInTicks:(id)ticks;
+- (void)logPostSpeechStartOneSecondLaterAudioPacketReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id;
+- (void)logRequestEndedOrFailedOrCancelledWithError:(id)error recognizerComponents:(id)components averageActiveTokensPerFrame:(id)frame languageModelInterpolationWeights:(id)weights signalToNoiseRatioInDecibels:(id)decibels recognitionDurationInSec:(id)sec audioDurationMs:(id)ms eagerUsed:(id)self0 utteranceDetectionEnabled:(BOOL)self1 utteranceConcatenationEnabled:(BOOL)self2 cpuRealTimeFactor:(id)self3 numLmeDataStreams:(id)self4 phoneticMatchDecoderName:(id)self5 pauseDurations:(id)self6 itnDurationInNs:(id)self7 isEmojiPersonalizationUsed:(BOOL)self8 isEmojiDisambiguationUsed:(BOOL)self9 isEmojiExpectedButNotRecognized:(BOOL)recognized recognizedEmojis:(id)emojis totalITNDurationInNs:(id)inNs totalITNRuns:(id)runs totalSecondaryPassDurationInNs:(id)durationInNs totalSecondaryPasses:(id)passes cpuInstructionsInMillionsPerSecond:(id)second aneUsed:(id)aneUsed;
+- (void)logRequestStartedOrChangedWithTask:(id)task modelLocale:(id)locale modelVersion:(id)version isHighQualityAsset:(id)asset hammerVersion:(id)hammerVersion geoLanguageModelRegion:(id)region geoLanguageModelLoaded:(BOOL)loaded speechProfileAgeInSec:(id)self0 dictationUIInteractionId:(id)self1 portraitExperimentVariantName:(id)self2;
 - (void)logSampledAudioFileStoredSuccessfully;
-- (void)logSampledAudioFileStoredWithError:(id)a3 customFailureReason:(int64_t)a4;
-- (void)wrapAndEmitTopLevelEvent:(id)a3 timestampInTicks:(id)a4;
+- (void)logSampledAudioFileStoredWithError:(id)error customFailureReason:(int64_t)reason;
+- (void)wrapAndEmitTopLevelEvent:(id)event timestampInTicks:(id)ticks;
 @end
 
 @implementation ESSelfHelper
 
-- (void)logPersonalizationExperimentTriggersForExperimentIds:(id)a3
+- (void)logPersonalizationExperimentTriggersForExperimentIds:(id)ids
 {
-  v4 = a3;
-  if ([v4 count])
+  idsCopy = ids;
+  if ([idsCopy count])
   {
     v5 = objc_alloc_init(AIMLExperimentationAnalyticsManager);
-    if (([v4 containsObject:@"PeopleSuggesterTop20"] & 1) != 0 || objc_msgSend(v4, "containsObject:", @"NoBoosting"))
+    if (([idsCopy containsObject:@"PeopleSuggesterTop20"] & 1) != 0 || objc_msgSend(idsCopy, "containsObject:", @"NoBoosting"))
     {
       v6 = [[NSUUID alloc] initWithUUIDString:@"043fda7b-2fc0-489e-8cce-319c22dcf3ba"];
       [v5 emitTriggerForCodePathID:v6 requestID:self->_requestId completionHandler:&stru_100054BA8];
@@ -70,7 +70,7 @@
       }
     }
 
-    if (([v4 containsObject:@"RandomSongTitleSelection"] & 1) != 0 || objc_msgSend(v4, "containsObject:", @"PlayCountSongTitleSelection"))
+    if (([idsCopy containsObject:@"RandomSongTitleSelection"] & 1) != 0 || objc_msgSend(idsCopy, "containsObject:", @"PlayCountSongTitleSelection"))
     {
       v8 = [[NSUUID alloc] initWithUUIDString:@"eb18055e-87c4-44c2-ab94-9275bec61c52"];
       [v5 emitTriggerForCodePathID:v8 requestID:self->_requestId completionHandler:&stru_100054BA8];
@@ -88,18 +88,18 @@
   }
 }
 
-- (void)wrapAndEmitTopLevelEvent:(id)a3 timestampInTicks:(id)a4
+- (void)wrapAndEmitTopLevelEvent:(id)event timestampInTicks:(id)ticks
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ESSelfHelper *)self _isNonTier1Message:v6];
+  eventCopy = event;
+  ticksCopy = ticks;
+  v8 = [(ESSelfHelper *)self _isNonTier1Message:eventCopy];
   isTier1LoggingAllowedForCurrentRequest = self->_isTier1LoggingAllowedForCurrentRequest;
   v10 = objc_opt_respondsToSelector();
   if ((v8 & 1) != 0 || isTier1LoggingAllowedForCurrentRequest)
   {
     if (!isTier1LoggingAllowedForCurrentRequest && ((v10 ^ 1) & 1) == 0)
     {
-      ([v6 methodForSelector:"deleteLinkId"])(v6, "deleteLinkId");
+      ([eventCopy methodForSelector:"deleteLinkId"])(eventCopy, "deleteLinkId");
     }
 
     v11 = objc_alloc_init(ASRSchemaASRClientEventMetadata);
@@ -110,7 +110,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v13 setPreheatContext:v6];
+      [v13 setPreheatContext:eventCopy];
     }
 
     else
@@ -118,7 +118,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v13 setRequestContext:v6];
+        [v13 setRequestContext:eventCopy];
       }
 
       else
@@ -126,7 +126,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v13 setPartialResultGenerated:v6];
+          [v13 setPartialResultGenerated:eventCopy];
         }
 
         else
@@ -134,7 +134,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v13 setPackageGenerated:v6];
+            [v13 setPackageGenerated:eventCopy];
           }
 
           else
@@ -142,7 +142,7 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v13 setRecognitionResultTier1:v6];
+              [v13 setRecognitionResultTier1:eventCopy];
             }
 
             else
@@ -150,7 +150,7 @@
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v13 setFinalResultGenerated:v6];
+                [v13 setFinalResultGenerated:eventCopy];
               }
 
               else
@@ -158,7 +158,7 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v13 setIntermediateUtteranceInfoTier1:v6];
+                  [v13 setIntermediateUtteranceInfoTier1:eventCopy];
                 }
 
                 else
@@ -166,7 +166,7 @@
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v13 setInitializationContext:v6];
+                    [v13 setInitializationContext:eventCopy];
                   }
 
                   else
@@ -174,7 +174,7 @@
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v13 setAssetLoadContext:v6];
+                      [v13 setAssetLoadContext:eventCopy];
                     }
 
                     else
@@ -182,7 +182,7 @@
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        [v13 setLanguageModelEnrollmentContext:v6];
+                        [v13 setLanguageModelEnrollmentContext:eventCopy];
                       }
 
                       else
@@ -190,7 +190,7 @@
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          [v13 setJitLanguageModelEnrollmentEndedTier1:v6];
+                          [v13 setJitLanguageModelEnrollmentEndedTier1:eventCopy];
                         }
 
                         else
@@ -198,7 +198,7 @@
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [v13 setAudioPacketArrivalContext:v6];
+                            [v13 setAudioPacketArrivalContext:eventCopy];
                           }
 
                           else
@@ -206,7 +206,7 @@
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [v13 setFirstAudioPacketProcessed:v6];
+                              [v13 setFirstAudioPacketProcessed:eventCopy];
                             }
 
                             else
@@ -214,7 +214,7 @@
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [v13 setFinalAudioPacketContainingSpeechReceived:v6];
+                                [v13 setFinalAudioPacketContainingSpeechReceived:eventCopy];
                               }
 
                               else
@@ -222,7 +222,7 @@
                                 objc_opt_class();
                                 if (objc_opt_isKindOfClass())
                                 {
-                                  [v13 setSampledAudioFileStored:v6];
+                                  [v13 setSampledAudioFileStored:eventCopy];
                                 }
 
                                 else
@@ -230,7 +230,7 @@
                                   objc_opt_class();
                                   if (objc_opt_isKindOfClass())
                                   {
-                                    [v13 setSampledAudioFileStorageFailed:v6];
+                                    [v13 setSampledAudioFileStorageFailed:eventCopy];
                                   }
 
                                   else
@@ -238,7 +238,7 @@
                                     objc_opt_class();
                                     if (objc_opt_isKindOfClass())
                                     {
-                                      [v13 setAppleNeuralEngineCompilationContext:v6];
+                                      [v13 setAppleNeuralEngineCompilationContext:eventCopy];
                                     }
 
                                     else
@@ -246,7 +246,7 @@
                                       objc_opt_class();
                                       if (objc_opt_isKindOfClass())
                                       {
-                                        [v13 setEmbeddedSpeechProcessContext:v6];
+                                        [v13 setEmbeddedSpeechProcessContext:eventCopy];
                                       }
 
                                       else
@@ -254,7 +254,7 @@
                                         objc_opt_class();
                                         if (objc_opt_isKindOfClass())
                                         {
-                                          [v13 setActiveConfigUpdateContext:v6];
+                                          [v13 setActiveConfigUpdateContext:eventCopy];
                                         }
 
                                         else
@@ -262,7 +262,7 @@
                                           objc_opt_class();
                                           if (objc_opt_isKindOfClass())
                                           {
-                                            [v13 setAppleNeuralEngineModelInitializationContext:v6];
+                                            [v13 setAppleNeuralEngineModelInitializationContext:eventCopy];
                                           }
 
                                           else
@@ -270,7 +270,7 @@
                                             objc_opt_class();
                                             if (objc_opt_isKindOfClass())
                                             {
-                                              [v13 setAudioSpeechPacketArrivalContext:v6];
+                                              [v13 setAudioSpeechPacketArrivalContext:eventCopy];
                                             }
 
                                             else
@@ -278,7 +278,7 @@
                                               objc_opt_class();
                                               if (objc_opt_isKindOfClass())
                                               {
-                                                [v13 setAudioSpeechPacketFirstSecondAfterFirstSpeechPacketArrived:v6];
+                                                [v13 setAudioSpeechPacketFirstSecondAfterFirstSpeechPacketArrived:eventCopy];
                                               }
 
                                               else
@@ -286,7 +286,7 @@
                                                 objc_opt_class();
                                                 if (objc_opt_isKindOfClass())
                                                 {
-                                                  [v13 setFrameProcessingReady:v6];
+                                                  [v13 setFrameProcessingReady:eventCopy];
                                                 }
 
                                                 else
@@ -294,7 +294,7 @@
                                                   objc_opt_class();
                                                   if (objc_opt_isKindOfClass())
                                                   {
-                                                    [v13 setLeadingSilenceProcessed:v6];
+                                                    [v13 setLeadingSilenceProcessed:eventCopy];
                                                   }
 
                                                   else
@@ -302,7 +302,7 @@
                                                     objc_opt_class();
                                                     if (objc_opt_isKindOfClass())
                                                     {
-                                                      [v13 setFirstSecondAfterLeadingSilenceProcessed:v6];
+                                                      [v13 setFirstSecondAfterLeadingSilenceProcessed:eventCopy];
                                                     }
 
                                                     else
@@ -310,7 +310,7 @@
                                                       objc_opt_class();
                                                       if (objc_opt_isKindOfClass())
                                                       {
-                                                        [v13 setFirstAudioPacketRecorded:v6];
+                                                        [v13 setFirstAudioPacketRecorded:eventCopy];
                                                       }
 
                                                       else
@@ -318,7 +318,7 @@
                                                         objc_opt_class();
                                                         if (objc_opt_isKindOfClass())
                                                         {
-                                                          [v13 setAudioPacketContainingEndOfFirstWordReadyUpstream:v6];
+                                                          [v13 setAudioPacketContainingEndOfFirstWordReadyUpstream:eventCopy];
                                                         }
 
                                                         else
@@ -326,7 +326,7 @@
                                                           objc_opt_class();
                                                           if (objc_opt_isKindOfClass())
                                                           {
-                                                            [v13 setFirstAudioPacketReadyUpstream:v6];
+                                                            [v13 setFirstAudioPacketReadyUpstream:eventCopy];
                                                           }
 
                                                           else
@@ -345,7 +345,7 @@
                                                               goto LABEL_70;
                                                             }
 
-                                                            [v13 setFinalAudioPacketContainingSpeechReadyUpstream:v6];
+                                                            [v13 setFinalAudioPacketContainingSpeechReadyUpstream:eventCopy];
                                                           }
                                                         }
                                                       }
@@ -390,9 +390,9 @@
 
     v15 = +[AssistantSiriAnalytics sharedStream];
     v16 = v15;
-    if (v7)
+    if (ticksCopy)
     {
-      [v15 emitMessage:v13 timestamp:{objc_msgSend(v7, "unsignedLongLongValue")}];
+      [v15 emitMessage:v13 timestamp:{objc_msgSend(ticksCopy, "unsignedLongLongValue")}];
     }
 
     else
@@ -404,40 +404,40 @@ LABEL_70:
   }
 }
 
-- (void)logSampledAudioFileStoredWithError:(id)a3 customFailureReason:(int64_t)a4
+- (void)logSampledAudioFileStoredWithError:(id)error customFailureReason:(int64_t)reason
 {
-  v12 = a3;
+  errorCopy = error;
   v6 = objc_alloc_init(ASRSchemaASRSampledAudioFileStorageFailed);
-  if (v12)
+  if (errorCopy)
   {
-    [v6 setErrorCode:{objc_msgSend(v12, "code")}];
-    v7 = [v12 domain];
-    [v6 setErrorDomain:v7];
+    [v6 setErrorCode:{objc_msgSend(errorCopy, "code")}];
+    domain = [errorCopy domain];
+    [v6 setErrorDomain:domain];
 
-    v8 = [v12 userInfo];
-    v9 = [v8 objectForKey:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKey:NSUnderlyingErrorKey];
 
     if (v9)
     {
       [v6 setUnderlyingErrorCode:{objc_msgSend(v9, "code")}];
-      v10 = [v9 domain];
-      [v6 setUnderlyingErrorDomain:v10];
+      domain2 = [v9 domain];
+      [v6 setUnderlyingErrorDomain:domain2];
     }
   }
 
   else
   {
-    if ((a4 - 1) < 4)
+    if ((reason - 1) < 4)
     {
-      v11 = a4;
+      reasonCopy = reason;
     }
 
     else
     {
-      v11 = 0;
+      reasonCopy = 0;
     }
 
-    [v6 setSampledAudioStorageFailureReason:v11];
+    [v6 setSampledAudioStorageFailureReason:reasonCopy];
   }
 
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v6 timestampInTicks:0];
@@ -450,34 +450,34 @@ LABEL_70:
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v3 timestampInTicks:0];
 }
 
-- (void)logRequestEndedOrFailedOrCancelledWithError:(id)a3 recognizerComponents:(id)a4 averageActiveTokensPerFrame:(id)a5 languageModelInterpolationWeights:(id)a6 signalToNoiseRatioInDecibels:(id)a7 recognitionDurationInSec:(id)a8 audioDurationMs:(id)a9 eagerUsed:(id)a10 utteranceDetectionEnabled:(BOOL)a11 utteranceConcatenationEnabled:(BOOL)a12 cpuRealTimeFactor:(id)a13 numLmeDataStreams:(id)a14 phoneticMatchDecoderName:(id)a15 pauseDurations:(id)a16 itnDurationInNs:(id)a17 isEmojiPersonalizationUsed:(BOOL)a18 isEmojiDisambiguationUsed:(BOOL)a19 isEmojiExpectedButNotRecognized:(BOOL)a20 recognizedEmojis:(id)a21 totalITNDurationInNs:(id)a22 totalITNRuns:(id)a23 totalSecondaryPassDurationInNs:(id)a24 totalSecondaryPasses:(id)a25 cpuInstructionsInMillionsPerSecond:(id)a26 aneUsed:(id)a27
+- (void)logRequestEndedOrFailedOrCancelledWithError:(id)error recognizerComponents:(id)components averageActiveTokensPerFrame:(id)frame languageModelInterpolationWeights:(id)weights signalToNoiseRatioInDecibels:(id)decibels recognitionDurationInSec:(id)sec audioDurationMs:(id)ms eagerUsed:(id)self0 utteranceDetectionEnabled:(BOOL)self1 utteranceConcatenationEnabled:(BOOL)self2 cpuRealTimeFactor:(id)self3 numLmeDataStreams:(id)self4 phoneticMatchDecoderName:(id)self5 pauseDurations:(id)self6 itnDurationInNs:(id)self7 isEmojiPersonalizationUsed:(BOOL)self8 isEmojiDisambiguationUsed:(BOOL)self9 isEmojiExpectedButNotRecognized:(BOOL)recognized recognizedEmojis:(id)emojis totalITNDurationInNs:(id)inNs totalITNRuns:(id)runs totalSecondaryPassDurationInNs:(id)durationInNs totalSecondaryPasses:(id)passes cpuInstructionsInMillionsPerSecond:(id)second aneUsed:(id)aneUsed
 {
-  v97 = a3;
-  v99 = a4;
-  v85 = a5;
-  v102 = a6;
-  v86 = a7;
-  v101 = a8;
-  v100 = a9;
-  v87 = a10;
-  v88 = a13;
-  v89 = a14;
-  v90 = a15;
-  v98 = a16;
-  v91 = a17;
-  v92 = a21;
-  v93 = a22;
-  v94 = a23;
-  v81 = a24;
-  v83 = a25;
-  v95 = a26;
-  v96 = a27;
+  errorCopy = error;
+  componentsCopy = components;
+  frameCopy = frame;
+  weightsCopy = weights;
+  decibelsCopy = decibels;
+  secCopy = sec;
+  msCopy = ms;
+  usedCopy = used;
+  factorCopy = factor;
+  streamsCopy = streams;
+  nameCopy = name;
+  durationsCopy = durations;
+  nsCopy = ns;
+  emojisCopy = emojis;
+  inNsCopy = inNs;
+  runsCopy = runs;
+  durationInNsCopy = durationInNs;
+  passesCopy = passes;
+  secondCopy = second;
+  aneUsedCopy = aneUsed;
   v32 = objc_alloc_init(ASRSchemaASRRecognitionMetrics);
   personalizedLmAgeInSec = self->_personalizedLmAgeInSec;
   v103 = v32;
   if (personalizedLmAgeInSec)
   {
-    [(NSNumber *)personalizedLmAgeInSec doubleValue:v81];
+    [(NSNumber *)personalizedLmAgeInSec doubleValue:durationInNsCopy];
     v35 = [NSNumber numberWithDouble:v34 * 1000000000.0];
     [v32 setPersonalizedLanguageModelAgeInNs:{objc_msgSend(v35, "unsignedLongLongValue")}];
   }
@@ -489,52 +489,52 @@ LABEL_70:
     [v32 setPersonalizedLanguageModelWeight:?];
   }
 
-  if (v85)
+  if (frameCopy)
   {
-    [v85 floatValue];
+    [frameCopy floatValue];
     [v32 setAverageActiveTokensPerFrame:?];
   }
 
-  if (v86)
+  if (decibelsCopy)
   {
-    [v86 floatValue];
+    [decibelsCopy floatValue];
     [v32 setSignalToNoiseRatioInDecibels:?];
   }
 
-  if (v101)
+  if (secCopy)
   {
-    [v101 doubleValue];
+    [secCopy doubleValue];
     v38 = [NSNumber numberWithDouble:v37 * 1000000000.0];
     [v32 setRecognitionDurationInNs:{objc_msgSend(v38, "unsignedLongLongValue")}];
   }
 
-  if (v100)
+  if (msCopy)
   {
-    [v100 doubleValue];
+    [msCopy doubleValue];
     v40 = [NSNumber numberWithDouble:v39 * 1000000.0];
     [v32 setAudioDurationInNs:{objc_msgSend(v40, "unsignedLongLongValue")}];
   }
 
-  if (v87)
+  if (usedCopy)
   {
-    [v32 setEagerEnabled:{objc_msgSend(v87, "BOOLValue")}];
+    [v32 setEagerEnabled:{objc_msgSend(usedCopy, "BOOLValue")}];
   }
 
-  if (v88)
+  if (factorCopy)
   {
-    [v88 floatValue];
+    [factorCopy floatValue];
     [v32 setCpuRealTimeFactor:?];
   }
 
-  if (v89)
+  if (streamsCopy)
   {
-    [v89 floatValue];
+    [streamsCopy floatValue];
     [v32 setNumLanguageModelEnrollmentDataStreams:v41];
   }
 
-  if (v96)
+  if (aneUsedCopy)
   {
-    if ([v96 BOOLValue])
+    if ([aneUsedCopy BOOLValue])
     {
       v42 = 2;
     }
@@ -550,26 +550,26 @@ LABEL_70:
     v42 = 0;
   }
 
-  [v32 setRecognitionHardware:{v42, v81}];
-  [v32 setUtteranceDetectionEnabled:a11];
-  [v32 setUtteranceConcatenationEnabled:a12];
+  [v32 setRecognitionHardware:{v42, durationInNsCopy}];
+  [v32 setUtteranceDetectionEnabled:enabled];
+  [v32 setUtteranceConcatenationEnabled:concatenationEnabled];
   [v32 setContinuousListeningEnabled:self->_continuousListeningEnabled];
-  [v32 setPhoneticMatchDecoderName:v90];
-  [v32 setInverseTextNormalizationDurationForFinalResultInNs:{objc_msgSend(v91, "unsignedLongLongValue")}];
-  [v32 setInverseTextNormalizationDurationInNs:{objc_msgSend(v93, "unsignedLongLongValue")}];
-  [v32 setNumberOfInverseTextNormalizationRuns:{objc_msgSend(v94, "unsignedIntValue")}];
-  [v95 doubleValue];
+  [v32 setPhoneticMatchDecoderName:nameCopy];
+  [v32 setInverseTextNormalizationDurationForFinalResultInNs:{objc_msgSend(nsCopy, "unsignedLongLongValue")}];
+  [v32 setInverseTextNormalizationDurationInNs:{objc_msgSend(inNsCopy, "unsignedLongLongValue")}];
+  [v32 setNumberOfInverseTextNormalizationRuns:{objc_msgSend(runsCopy, "unsignedIntValue")}];
+  [secondCopy doubleValue];
   [v32 setCpuInstructionsInMillionsPerSecond:v43];
   v44 = objc_alloc_init(ASRSchemaASREmojiMetrics);
-  [v44 setIsEmojiPersonalizationUsed:a18];
-  [v44 setIsEmojiDisambiguationUsed:a19];
-  [v44 setIsEmojiExpectedButNotRecognized:a20];
-  [v44 setRecognizedEmojis:v92];
+  [v44 setIsEmojiPersonalizationUsed:personalizationUsed];
+  [v44 setIsEmojiDisambiguationUsed:disambiguationUsed];
+  [v44 setIsEmojiExpectedButNotRecognized:recognized];
+  [v44 setRecognizedEmojis:emojisCopy];
   v84 = v44;
   [v32 setEmojiMetrics:v44];
-  if (v99)
+  if (componentsCopy)
   {
-    v45 = [v99 componentsSeparatedByString:@"::"];
+    v45 = [componentsCopy componentsSeparatedByString:@"::"];
     v46 = objc_alloc_init(ASRSchemaASRRecognizerComponents);
     v47 = [v45 objectAtIndexedSubscript:0];
     [v46 setFrontend:v47];
@@ -583,10 +583,10 @@ LABEL_70:
     [v32 setRecognizerComponents:v46];
   }
 
-  if (v102)
+  if (weightsCopy)
   {
     v50 = objc_alloc_init(NSMutableArray);
-    [v102 componentsSeparatedByString:@";"];
+    [weightsCopy componentsSeparatedByString:@";"];
     v112 = 0u;
     v113 = 0u;
     v110 = 0u;
@@ -641,14 +641,14 @@ LABEL_70:
     [v103 setLanguageModelInterpolationWeights:v50];
   }
 
-  if (v98)
+  if (durationsCopy)
   {
     v68 = +[NSMutableArray array];
     v108 = 0u;
     v109 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v69 = v98;
+    v69 = durationsCopy;
     v70 = [v69 countByEnumeratingWithState:&v106 objects:v114 count:16];
     if (v70)
     {
@@ -677,7 +677,7 @@ LABEL_70:
   }
 
   v75 = objc_alloc_init(ASRSchemaASRRequestContext);
-  if (!v97)
+  if (!errorCopy)
   {
     if (self->_packageLogged)
     {
@@ -715,7 +715,7 @@ LABEL_60:
     goto LABEL_61;
   }
 
-  if (![v97 code])
+  if (![errorCopy code])
   {
     v76 = objc_alloc_init(ASRSchemaASRFailed);
     [v76 setMetrics:v103];
@@ -732,7 +732,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ([v97 code] == 2)
+  if ([errorCopy code] == 2)
   {
     v76 = objc_alloc_init(ASRSchemaASRCancelled);
     [v76 setReason:2];
@@ -752,7 +752,7 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  if ([v97 code] == 3)
+  if ([errorCopy code] == 3)
   {
     v76 = objc_alloc_init(ASRSchemaASRCancelled);
     [v76 setReason:3];
@@ -772,32 +772,32 @@ LABEL_59:
 
 LABEL_61:
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v75 timestampInTicks:0];
-  v79 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v80 = +[SPIAsrRequestEndedOrFailedOrCancelledEventContext context];
-  [v79 logWithEventContext:v80 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v80 asrIdentifier:self->_asrId];
 }
 
-- (void)logFinalResultGeneratedWithEARPackage:(id)a3 correctAlignedPartialResultIndexList:(id)a4
+- (void)logFinalResultGeneratedWithEARPackage:(id)package correctAlignedPartialResultIndexList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
+  packageCopy = package;
+  listCopy = list;
   v7 = objc_alloc_init(ASRSchemaASRFinalResultGenerated);
-  v8 = [v5 correctPartialResultIndexList];
-  [v7 setCorrectPartialResultIndexLists:v8];
+  correctPartialResultIndexList = [packageCopy correctPartialResultIndexList];
+  [v7 setCorrectPartialResultIndexLists:correctPartialResultIndexList];
 
   v40 = v7;
-  v41 = v6;
-  [v7 setCorrectAlignedPartialResultIndexLists:v6];
+  v41 = listCopy;
+  [v7 setCorrectAlignedPartialResultIndexLists:listCopy];
   v9 = objc_alloc_init(NSMutableArray);
   v10 = objc_alloc_init(NSMutableArray);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = [v5 preITNRecognition];
-  v12 = [v11 oneBest];
+  preITNRecognition = [packageCopy preITNRecognition];
+  oneBest = [preITNRecognition oneBest];
 
-  v13 = [v12 countByEnumeratingWithState:&v42 objects:v54 count:16];
+  v13 = [oneBest countByEnumeratingWithState:&v42 objects:v54 count:16];
   if (v13)
   {
     v14 = v13;
@@ -808,86 +808,86 @@ LABEL_61:
       {
         if (*v43 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(oneBest);
         }
 
         v17 = *(*(&v42 + 1) + 8 * i);
         [v17 silenceStart];
         v19 = v18;
-        [v5 utteranceStart];
+        [packageCopy utteranceStart];
         v21 = [NSNumber numberWithDouble:v19 + v20];
         [v9 addObject:v21];
 
         [v17 silenceStart];
         v23 = v22;
-        [v5 utteranceStart];
+        [packageCopy utteranceStart];
         v25 = [NSNumber numberWithDouble:v23 + v24];
         [v25 doubleValue];
         v27 = [NSNumber numberWithDouble:v26 * 1000000000.0];
         [v10 addObject:v27];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v42 objects:v54 count:16];
+      v14 = [oneBest countByEnumeratingWithState:&v42 objects:v54 count:16];
     }
 
     while (v14);
   }
 
   [v40 setTokenSilenceStartTimeInNsLists:v10];
-  [v40 setIsAfterResume:{objc_msgSend(v5, "firstResultAfterResume")}];
+  [v40 setIsAfterResume:{objc_msgSend(packageCopy, "firstResultAfterResume")}];
   v28 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_DEBUG))
   {
     log = v28;
-    v31 = [v5 correctPartialResultIndexList];
-    v32 = [v31 componentsJoinedByString:{@", "}];
-    v37 = [v32 UTF8String];
+    correctPartialResultIndexList2 = [packageCopy correctPartialResultIndexList];
+    v32 = [correctPartialResultIndexList2 componentsJoinedByString:{@", "}];
+    uTF8String = [v32 UTF8String];
     v33 = [v41 componentsJoinedByString:{@", "}];
-    v34 = [v33 UTF8String];
+    uTF8String2 = [v33 UTF8String];
     v35 = [v9 componentsJoinedByString:{@", "}];
-    v36 = [v35 UTF8String];
+    uTF8String3 = [v35 UTF8String];
     *buf = 136315906;
     v47 = "[ESSelfHelper logFinalResultGeneratedWithEARPackage:correctAlignedPartialResultIndexList:]";
     v48 = 2080;
-    v49 = v37;
+    v49 = uTF8String;
     v50 = 2080;
-    v51 = v34;
+    v51 = uTF8String2;
     v52 = 2080;
-    v53 = v36;
+    v53 = uTF8String3;
     _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "%s SELF: Correct Partial Result Index List is %s, Correct Aligned Partial Result Index List is %s, Silence Start Time List is %s", buf, 0x2Au);
   }
 
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v40 timestampInTicks:0];
-  v29 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v30 = +[SPIAsrFinalResultGeneratedEventContext context];
-  [v29 logWithEventContext:v30 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v30 asrIdentifier:self->_asrId];
 }
 
-- (void)logPackageGeneratedAndRecognitionResultTier1WithEARPackage:(id)a3 loggableSharedUserId:(id)a4
+- (void)logPackageGeneratedAndRecognitionResultTier1WithEARPackage:(id)package loggableSharedUserId:(id)id
 {
-  v23 = a3;
-  v5 = [v23 recognition];
-  v6 = [v5 interpretationIndices];
-  v7 = [v6 count];
+  packageCopy = package;
+  recognition = [packageCopy recognition];
+  interpretationIndices = [recognition interpretationIndices];
+  v7 = [interpretationIndices count];
 
   if (v7)
   {
     v8 = objc_alloc_init(ASRSchemaASRPackageGenerated);
-    [v8 setIsFinal:{objc_msgSend(v23, "isFinal")}];
+    [v8 setIsFinal:{objc_msgSend(packageCopy, "isFinal")}];
     isTier1LoggingAllowedForCurrentRequest = self->_isTier1LoggingAllowedForCurrentRequest;
     emojiUtils = self->_emojiUtils;
     v24 = 0;
     v25 = 0;
-    v11 = v23;
+    v11 = packageCopy;
     v12 = emojiUtils;
     v13 = objc_alloc_init(ASRSchemaASRPackage);
-    v14 = [v11 preITNRecognition];
-    v15 = sub_100003AB4(isTier1LoggingAllowedForCurrentRequest, v14, v12, &v25);
+    preITNRecognition = [v11 preITNRecognition];
+    v15 = sub_100003AB4(isTier1LoggingAllowedForCurrentRequest, preITNRecognition, v12, &v25);
     [v13 setRawRecognition:v15];
 
-    v16 = [v11 recognition];
+    recognition2 = [v11 recognition];
 
-    v17 = sub_100003AB4(isTier1LoggingAllowedForCurrentRequest, v16, v12, &v24);
+    v17 = sub_100003AB4(isTier1LoggingAllowedForCurrentRequest, recognition2, v12, &v24);
 
     [v13 setPostItn:v17];
     v18 = v25;
@@ -895,14 +895,14 @@ LABEL_61:
     [v8 setPackage:v13];
 
     v20 = earPackageResultCandidateId();
-    v21 = [v11 isFinal];
-    v22 = @"-1";
-    if ((v21 & 1) == 0 && v20)
+    isFinal = [v11 isFinal];
+    stringValue = @"-1";
+    if ((isFinal & 1) == 0 && v20)
     {
-      v22 = [v20 stringValue];
+      stringValue = [v20 stringValue];
     }
 
-    [v8 setResultCandidateId:v22];
+    [v8 setResultCandidateId:stringValue];
     [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v8 timestampInTicks:0];
     self->_packageLogged = 1;
     if (self->_isTier1LoggingAllowedForCurrentRequest)
@@ -913,18 +913,18 @@ LABEL_61:
   }
 }
 
-- (void)logIntermediateUtteranceInfoTier1WithPmInput:(id)a3 pmOutput:(id)a4 unrepairedPostItn:(id)a5 loggableSharedUserId:(id)a6
+- (void)logIntermediateUtteranceInfoTier1WithPmInput:(id)input pmOutput:(id)output unrepairedPostItn:(id)itn loggableSharedUserId:(id)id
 {
   if (self->_isTier1LoggingAllowedForCurrentRequest)
   {
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
+    itnCopy = itn;
+    outputCopy = output;
+    inputCopy = input;
     v13 = objc_alloc_init(ASRSchemaASRIntermediateUtteranceInfoTier1);
-    [v13 setPhoneticMatchInput:v12];
+    [v13 setPhoneticMatchInput:inputCopy];
 
-    [v13 setPhoneticMatchOutput:v11];
-    [v13 setUnrepairedPostItn:v10];
+    [v13 setPhoneticMatchOutput:outputCopy];
+    [v13 setUnrepairedPostItn:itnCopy];
 
     [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v13 timestampInTicks:0];
   }
@@ -935,42 +935,42 @@ LABEL_61:
   v5 = objc_alloc_init(ASRSchemaASRPartialResultGenerated);
   [v5 setExists:1];
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:0];
-  v3 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v4 = +[SPIAsrPartialResultGeneratedEventContext context];
-  [v3 logWithEventContext:v4 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v4 asrIdentifier:self->_asrId];
 }
 
-- (void)logPostSpeechStartOneSecondAudioProcessedWithTimestampInTicks:(id)a3
+- (void)logPostSpeechStartOneSecondAudioProcessedWithTimestampInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v5 = objc_alloc_init(ASRSchemaASRFirstSecondAfterLeadingSilenceProcessed);
   [v5 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
-- (void)logLeadingSilenceProcessedWithTimestampInTicks:(id)a3
+- (void)logLeadingSilenceProcessedWithTimestampInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v5 = objc_alloc_init(ASRSchemaASRLeadingSilenceProcessed);
   [v5 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
-- (void)logRequestStartedOrChangedWithTask:(id)a3 modelLocale:(id)a4 modelVersion:(id)a5 isHighQualityAsset:(id)a6 hammerVersion:(id)a7 geoLanguageModelRegion:(id)a8 geoLanguageModelLoaded:(BOOL)a9 speechProfileAgeInSec:(id)a10 dictationUIInteractionId:(id)a11 portraitExperimentVariantName:(id)a12
+- (void)logRequestStartedOrChangedWithTask:(id)task modelLocale:(id)locale modelVersion:(id)version isHighQualityAsset:(id)asset hammerVersion:(id)hammerVersion geoLanguageModelRegion:(id)region geoLanguageModelLoaded:(BOOL)loaded speechProfileAgeInSec:(id)self0 dictationUIInteractionId:(id)self1 portraitExperimentVariantName:(id)self2
 {
-  v37 = a3;
-  v36 = a4;
-  v35 = a6;
-  v17 = a10;
-  v18 = a11;
-  v19 = a12;
-  v20 = a8;
-  v21 = a7;
-  v22 = a5;
+  taskCopy = task;
+  localeCopy = locale;
+  assetCopy = asset;
+  secCopy = sec;
+  idCopy = id;
+  nameCopy = name;
+  regionCopy = region;
+  hammerVersionCopy = hammerVersion;
+  versionCopy = version;
   v23 = objc_alloc_init(ASRSchemaASRStarted);
-  if (v37)
+  if (taskCopy)
   {
-    v24 = v37;
+    v24 = taskCopy;
     if ([v24 isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging])
     {
       v25 = 1;
@@ -1004,20 +1004,20 @@ LABEL_61:
     [v23 setTask:v25];
   }
 
-  if (v36)
+  if (localeCopy)
   {
-    v26 = [v36 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v26 = [localeCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     [v23 setModelLocale:{+[SIUtilities convertLanguageCodeToSchemaLocale:](SIUtilities, "convertLanguageCodeToSchemaLocale:", v26)}];
   }
 
-  if (v35)
+  if (assetCopy)
   {
-    [v23 setIsHighQualityAsset:{objc_msgSend(v35, "BOOLValue")}];
+    [v23 setIsHighQualityAsset:{objc_msgSend(assetCopy, "BOOLValue")}];
   }
 
-  if (v18)
+  if (idCopy)
   {
-    v27 = [[NSUUID alloc] initWithUUIDString:v18];
+    v27 = [[NSUUID alloc] initWithUUIDString:idCopy];
     if (v27)
     {
       v28 = [[SISchemaUUID alloc] initWithNSUUID:v27];
@@ -1025,9 +1025,9 @@ LABEL_61:
     }
   }
 
-  if (v17)
+  if (secCopy)
   {
-    [v17 doubleValue];
+    [secCopy doubleValue];
     v30 = [NSNumber numberWithDouble:v29 * 1000000000.0];
     [v23 setSpeechProfileAgeInNs:{objc_msgSend(v30, "unsignedLongLongValue")}];
   }
@@ -1037,20 +1037,20 @@ LABEL_61:
     [v23 setSpeechProfileAgeInNs:0x7FFFFFFFFFFFFFFFLL];
   }
 
-  [v23 setDatapackVersion:v22];
+  [v23 setDatapackVersion:versionCopy];
 
-  [v23 setHammerVersion:v21];
-  [v23 setGeoLanguageModelRegion:v20];
+  [v23 setHammerVersion:hammerVersionCopy];
+  [v23 setGeoLanguageModelRegion:regionCopy];
 
-  [v23 setGeoLanguageModelLoaded:a9];
-  [v23 setPortraitExperimentVariantName:v19];
+  [v23 setGeoLanguageModelLoaded:loaded];
+  [v23 setPortraitExperimentVariantName:nameCopy];
 
   v31 = objc_alloc_init(ASRSchemaASRRequestContext);
   [v31 setStartedOrChanged:v23];
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v31 timestampInTicks:0];
-  v32 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v33 = +[SPIAsrRequestStartedOrChangedEventContext context];
-  [v32 logWithEventContext:v33 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v33 asrIdentifier:self->_asrId];
 }
 
 - (void)logFrameProcessingReady
@@ -1060,33 +1060,33 @@ LABEL_61:
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v3 timestampInTicks:0];
 }
 
-- (void)logFinalAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4 earPackage:(id)a5
+- (void)logFinalAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id earPackage:(id)package
 {
-  v7 = a5;
-  v8 = a3;
+  packageCopy = package;
+  ticksCopy = ticks;
   v12 = objc_alloc_init(ASRSchemaASRFinalAudioPacketContainingSpeechReceived);
   [v12 setExists:1];
   v9 = earPackageResultCandidateId();
-  v10 = [v7 isFinal];
+  isFinal = [packageCopy isFinal];
 
-  v11 = @"-1";
-  if ((v10 & 1) == 0 && v9)
+  stringValue = @"-1";
+  if ((isFinal & 1) == 0 && v9)
   {
-    v11 = [v9 stringValue];
+    stringValue = [v9 stringValue];
   }
 
-  [v12 setResultCandidateId:v11];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v12 timestampInTicks:v8];
+  [v12 setResultCandidateId:stringValue];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v12 timestampInTicks:ticksCopy];
 }
 
-- (void)logFinalAudioPacketContainingSpeechReadyUpstreamWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4 earPackage:(id)a5
+- (void)logFinalAudioPacketContainingSpeechReadyUpstreamWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id earPackage:(id)package
 {
-  v12 = a5;
-  v7 = a3;
+  packageCopy = package;
+  ticksCopy = ticks;
   v8 = objc_alloc_init(ASRSchemaASRFinalAudioPacketContainingSpeechReadyUpstream);
-  if ([v12 isFinal])
+  if ([packageCopy isFinal])
   {
-    v9 = @"-1";
+    stringValue = @"-1";
   }
 
   else
@@ -1095,43 +1095,43 @@ LABEL_61:
     if (v10)
     {
       v11 = earPackageResultCandidateId();
-      v9 = [v11 stringValue];
+      stringValue = [v11 stringValue];
     }
 
     else
     {
-      v9 = @"-1";
+      stringValue = @"-1";
     }
   }
 
-  [v8 setResultCandidateId:v9];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v8 timestampInTicks:v7];
+  [v8 setResultCandidateId:stringValue];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v8 timestampInTicks:ticksCopy];
 }
 
-- (void)logPostSpeechStartOneSecondLaterAudioPacketReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4
+- (void)logPostSpeechStartOneSecondLaterAudioPacketReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id
 {
-  v5 = a3;
+  ticksCopy = ticks;
   v6 = objc_alloc_init(ASRSchemaASRAudioSpeechPacketFirstSecondAfterFirstSpeechPacketArrived);
   [v6 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v6 timestampInTicks:v5];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v6 timestampInTicks:ticksCopy];
 }
 
-- (void)logFirstAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)a3 loggableSharedUserId:(id)a4
+- (void)logFirstAudioPacketContainingSpeechReceivedWithTimeInTicks:(id)ticks loggableSharedUserId:(id)id
 {
-  v5 = a3;
+  ticksCopy = ticks;
   v7 = objc_alloc_init(ASRSchemaASRAudioSpeechPacketArrivalStarted);
   [v7 setExists:1];
   v6 = objc_alloc_init(ASRSchemaASRAudioSpeechPacketArrivalContext);
   [v6 setStartedOrChanged:v7];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v6 timestampInTicks:v5];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v6 timestampInTicks:ticksCopy];
 }
 
-- (void)logAudioPacketContainingEndOfFirstWordReadyUpstreamWithTimeInTicks:(id)a3
+- (void)logAudioPacketContainingEndOfFirstWordReadyUpstreamWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v5 = objc_alloc_init(ASRSchemaASRAudioPacketContainingEndOfFirstWordReadyUpstream);
   [v5 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
 - (void)logFirstAudioPacketProcessed
@@ -1139,65 +1139,65 @@ LABEL_61:
   v5 = objc_alloc_init(ASRSchemaASRFirstAudioPacketProcessed);
   [v5 setExists:1];
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:0];
-  v3 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v4 = +[SPIAsrFirstAudioPacketProcessedEventContext context];
-  [v3 logWithEventContext:v4 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v4 asrIdentifier:self->_asrId];
 }
 
-- (void)logFirstAudioPacketReadyUpstreamWithTimeInTicks:(id)a3
+- (void)logFirstAudioPacketReadyUpstreamWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v5 = objc_alloc_init(ASRSchemaASRFirstAudioPacketReadyUpstream);
   [v5 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
-- (void)logFirstAudioPacketRecordedWithTimeInTicks:(id)a3
+- (void)logFirstAudioPacketRecordedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v5 = objc_alloc_init(ASRSchemaASRFirstAudioPacketRecorded);
   [v5 setExists:1];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
-- (void)logAudioPacketArrivalEndedWithTimeInTicks:(id)a3
+- (void)logAudioPacketArrivalEndedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v8 = objc_alloc_init(ASRSchemaASRAudioPacketArrivalEnded);
   [v8 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRAudioPacketArrivalContext);
   [v5 setEnded:v8];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 
-  v6 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v7 = +[SPIAsrAudioPacketArrivalEndedEventContext context];
-  [v6 logWithEventContext:v7 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v7 asrIdentifier:self->_asrId];
 }
 
-- (void)logAudioPacketArrivalStartedOrChangedWithTimeInTicks:(id)a3
+- (void)logAudioPacketArrivalStartedOrChangedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v8 = objc_alloc_init(ASRSchemaASRAudioPacketArrivalStarted);
   [v8 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRAudioPacketArrivalContext);
   [v5 setStartedOrChanged:v8];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 
-  v6 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v7 = +[SPIAsrAudioPacketArrivalStartedOrChangedEventContext context];
-  [v6 logWithEventContext:v7 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v7 asrIdentifier:self->_asrId];
 }
 
-- (void)logJitLmeEndedAndEndedTier1WithDialogContext:(id)a3
+- (void)logJitLmeEndedAndEndedTier1WithDialogContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10 = objc_alloc_init(ASRSchemaASRJitLanguageModelEnrollmentEndedTier1);
   v5 = [SISchemaUUID alloc];
   v6 = +[NSUUID UUID];
   v7 = [v5 initWithNSUUID:v6];
 
   [v10 setLinkId:v7];
-  [v10 setDialogContexts:v4];
+  [v10 setDialogContexts:contextCopy];
 
   v8 = objc_alloc_init(ASRSchemaASRJitLanguageModelEnrollmentEnded);
   [v8 setLinkId:v7];
@@ -1207,14 +1207,14 @@ LABEL_61:
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v9 timestampInTicks:0];
 }
 
-- (void)logJitLmeStartedOrChangedWithTimeInTicks:(id)a3
+- (void)logJitLmeStartedOrChangedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v6 = objc_alloc_init(ASRSchemaASRJitLanguageModelEnrollmentStarted);
   [v6 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRJitLanguageModelEnrollmentContext);
   [v5 setStartedOrChanged:v6];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
 - (void)logAppleNeuralEngineModelInitializationEnded
@@ -1226,14 +1226,14 @@ LABEL_61:
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v3 timestampInTicks:0];
 }
 
-- (void)logAppleNeuralEngineModelInitializationStartedOrChangedWithTimeInTicks:(id)a3
+- (void)logAppleNeuralEngineModelInitializationStartedOrChangedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v6 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationStarted);
   [v6 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationContext);
   [v5 setStartedOrChanged:v6];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
 - (void)logActiveConfigUpdateEnded
@@ -1243,57 +1243,57 @@ LABEL_61:
   v3 = objc_alloc_init(ASRSchemaASRActiveConfigUpdateContext);
   [v3 setEnded:v6];
   [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v3 timestampInTicks:0];
-  v4 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v5 = +[SPIAsrAssetLoadEndedEventContext context];
-  [v4 logWithEventContext:v5 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v5 asrIdentifier:self->_asrId];
 }
 
-- (void)logActiveConfigUpdateStartedOrChangedWithTimeInTicks:(id)a3
+- (void)logActiveConfigUpdateStartedOrChangedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v8 = objc_alloc_init(ASRSchemaASRActiveConfigUpdateStarted);
   [v8 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRActiveConfigUpdateContext);
   [v5 setStartedOrChanged:v8];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 
-  v6 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v7 = +[SPIAsrAssetLoadStartedOrChangedEventContext context];
-  [v6 logWithEventContext:v7 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v7 asrIdentifier:self->_asrId];
 }
 
-- (void)logInitializationStartedOrChangedWithTimeInTicks:(id)a3
+- (void)logInitializationStartedOrChangedWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v8 = objc_alloc_init(ASRSchemaASRInitializationStarted);
   [v8 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASRInitializationContext);
   [v5 setStartedOrChanged:v8];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 
-  v6 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v7 = +[SPIAsrInitializationStartedOrChangedEventContext context];
-  [v6 logWithEventContext:v7 asrIdentifier:self->_asrId];
+  [captureSnapshot logWithEventContext:v7 asrIdentifier:self->_asrId];
 }
 
-- (void)logESStartWithTimeInTicks:(id)a3
+- (void)logESStartWithTimeInTicks:(id)ticks
 {
-  v4 = a3;
+  ticksCopy = ticks;
   v6 = objc_alloc_init(ASRSchemaASREmbeddedSpeechProcessStarted);
   [v6 setExists:1];
   v5 = objc_alloc_init(ASRSchemaASREmbeddedSpeechProcessContext);
   [v5 setStartedOrChanged:v6];
-  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:v4];
+  [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v5 timestampInTicks:ticksCopy];
 }
 
-- (void)logPendingANEModelInitializationContextEvents:(id)a3
+- (void)logPendingANEModelInitializationContextEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1304,29 +1304,29 @@ LABEL_61:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 timestampInTicks];
-        [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v9 timestampInTicks:v10];
+        timestampInTicks = [v9 timestampInTicks];
+        [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v9 timestampInTicks:timestampInTicks];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)logPendingPreheatContextEvents:(id)a3
+- (void)logPendingPreheatContextEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1337,30 +1337,30 @@ LABEL_61:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(eventsCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 preheatContext];
-        v11 = [v9 preheatContext];
-        v12 = [v11 timestampInTicks];
-        [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:v10 timestampInTicks:v12];
+        preheatContext = [v9 preheatContext];
+        preheatContext2 = [v9 preheatContext];
+        timestampInTicks = [preheatContext2 timestampInTicks];
+        [(ESSelfHelper *)self wrapAndEmitTopLevelEvent:preheatContext timestampInTicks:timestampInTicks];
 
-        v13 = [v9 powerSnapshot];
-        v14 = [v9 powerEventContext];
-        [v13 logWithEventContext:v14 asrIdentifier:self->_asrId];
+        powerSnapshot = [v9 powerSnapshot];
+        powerEventContext = [v9 powerEventContext];
+        [powerSnapshot logWithEventContext:powerEventContext asrIdentifier:self->_asrId];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)_isNonTier1Message:(id)a3
+- (BOOL)_isNonTier1Message:(id)message
 {
-  v22 = a3;
+  messageCopy = message;
   v21 = objc_opt_class();
   v20 = objc_opt_class();
   v19 = objc_opt_class();
@@ -1384,25 +1384,25 @@ LABEL_61:
   return v14;
 }
 
-- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)a3
+- (BOOL)_isTier1LoggingAllowedForCurrentRequestWithTask:(id)task
 {
   v3 = CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging;
   v4 = CoreEmbeddedSpeechRecognizerTaskSiriDictation;
   v5 = CoreEmbeddedSpeechRecognizerTaskBeto;
   v6 = CoreEmbeddedSpeechRecognizerTaskBetoDictation;
-  v7 = a3;
+  taskCopy = task;
   v8 = [NSSet setWithObjects:v3, v4, v5, v6, 0];
   v9 = [NSSet setWithObjects:CoreEmbeddedSpeechRecognizerTaskDictation, CoreEmbeddedSpeechRecognizerTaskWebSearch, 0];
-  v10 = [v8 containsObject:v7];
-  LODWORD(v4) = [v9 containsObject:v7];
+  v10 = [v8 containsObject:taskCopy];
+  LODWORD(v4) = [v9 containsObject:taskCopy];
 
   v11 = +[AFPreferences sharedPreferences];
   LOBYTE(v5) = [v11 isDictationHIPAACompliant];
 
   v12 = +[AFPreferences sharedPreferences];
-  v13 = [v12 siriDataSharingOptInStatus];
+  siriDataSharingOptInStatus = [v12 siriDataSharingOptInStatus];
 
-  v14 = (v13 == 1) & ~v5;
+  v14 = (siriDataSharingOptInStatus == 1) & ~v5;
   if (!v4)
   {
     v14 = v10;
@@ -1421,18 +1421,18 @@ LABEL_61:
   return v15;
 }
 
-- (BOOL)_isLoggingAllowedForCurrentRequestWithTask:(id)a3 isSpeechAPIRequest:(BOOL)a4
+- (BOOL)_isLoggingAllowedForCurrentRequestWithTask:(id)task isSpeechAPIRequest:(BOOL)request
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskSiriDictation) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskDictation) ? (v6 = !v4) : (v6 = 0), v6 || (objc_msgSend(v5, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskWebSearch) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskTshot) & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskBeto)))
+  requestCopy = request;
+  taskCopy = task;
+  if ([taskCopy isEqualToString:CoreEmbeddedSpeechRecognizerTaskSearchOrMessaging] & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskSiriDictation) & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskDictation) ? (v6 = !requestCopy) : (v6 = 0), v6 || (objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskWebSearch) & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskTshot) & 1) != 0 || (objc_msgSend(taskCopy, "isEqualToString:", CoreEmbeddedSpeechRecognizerTaskBeto)))
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = [v5 isEqualToString:CoreEmbeddedSpeechRecognizerTaskBetoDictation];
+    v7 = [taskCopy isEqualToString:CoreEmbeddedSpeechRecognizerTaskBetoDictation];
   }
 
   return v7;
@@ -1440,16 +1440,16 @@ LABEL_61:
 
 + (void)logPowerSnapshotForProcessEnded
 {
-  v3 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v2 = +[SPIProcessEndedEventContext context];
-  [v3 logWithEventContext:v2];
+  [captureSnapshot logWithEventContext:v2];
 }
 
 + (void)logPowerSnapshotForProcessStarted
 {
-  v3 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v2 = +[SPIProcessStartedEventContext context];
-  [v3 logWithEventContext:v2];
+  [captureSnapshot logWithEventContext:v2];
 }
 
 + (void)initializeSharedPowerLoggerIfNeeded
@@ -1462,42 +1462,42 @@ LABEL_61:
   }
 }
 
-+ (id)createANEModelInitializationEndedEventWithTimeStamp:(id)a3 fileName:(id)a4
++ (id)createANEModelInitializationEndedEventWithTimeStamp:(id)stamp fileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  stampCopy = stamp;
   v7 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationEnded);
   [v7 setExists:1];
   v8 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationContext);
-  [v8 setTimestampInTicks:v6];
+  [v8 setTimestampInTicks:stampCopy];
 
-  [v8 setFileName:v5];
+  [v8 setFileName:nameCopy];
   [v8 setEnded:v7];
 
   return v8;
 }
 
-+ (id)createANEModelInitializationStartedEventWithTimeStamp:(id)a3 fileName:(id)a4
++ (id)createANEModelInitializationStartedEventWithTimeStamp:(id)stamp fileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  stampCopy = stamp;
   v7 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationStarted);
   [v7 setExists:1];
   v8 = objc_alloc_init(ASRSchemaASRAppleNeuralEngineModelInitializationContext);
-  [v8 setFileName:v5];
+  [v8 setFileName:nameCopy];
 
-  [v8 setTimestampInTicks:v6];
+  [v8 setTimestampInTicks:stampCopy];
   [v8 setStartedOrChanged:v7];
 
   return v8;
 }
 
-+ (id)createPreheatEndedEventWithPreheatAlreadyDone:(BOOL)a3
++ (id)createPreheatEndedEventWithPreheatAlreadyDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   v4 = objc_alloc_init(ASRSchemaASRPreheatEnded);
   v5 = v4;
-  if (v3)
+  if (doneCopy)
   {
     v6 = 2;
   }
@@ -1507,7 +1507,7 @@ LABEL_61:
     v6 = 1;
   }
 
-  if (v3)
+  if (doneCopy)
   {
     v7 = SPIAsrPreheatEndedAlreadyDoneEventContext_ptr;
   }
@@ -1518,13 +1518,13 @@ LABEL_61:
   }
 
   [v4 setStatus:v6];
-  v8 = [*v7 context];
+  context = [*v7 context];
   v9 = objc_alloc_init(ASRSchemaASRPreheatContext);
   v10 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
   [v9 setTimestampInTicks:v10];
   [v9 setEnded:v5];
-  v11 = [qword_1000615E0 captureSnapshot];
-  v12 = [[ESSelfPreheatWithPowerContainer alloc] initWithPreheatContext:v9 powerSnapshot:v11 powerEventContext:v8];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
+  v12 = [[ESSelfPreheatWithPowerContainer alloc] initWithPreheatContext:v9 powerSnapshot:captureSnapshot powerEventContext:context];
 
   return v12;
 }
@@ -1537,10 +1537,10 @@ LABEL_61:
   v4 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
   [v3 setTimestampInTicks:v4];
   [v3 setFailed:v2];
-  v5 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v6 = [ESSelfPreheatWithPowerContainer alloc];
   v7 = +[SPIAsrPreheatFailedEventContext context];
-  v8 = [(ESSelfPreheatWithPowerContainer *)v6 initWithPreheatContext:v3 powerSnapshot:v5 powerEventContext:v7];
+  v8 = [(ESSelfPreheatWithPowerContainer *)v6 initWithPreheatContext:v3 powerSnapshot:captureSnapshot powerEventContext:v7];
 
   return v8;
 }
@@ -1553,25 +1553,25 @@ LABEL_61:
   v4 = [NSNumber numberWithUnsignedLongLong:mach_absolute_time()];
   [v3 setTimestampInTicks:v4];
   [v3 setStartedOrChanged:v2];
-  v5 = [qword_1000615E0 captureSnapshot];
+  captureSnapshot = [qword_1000615E0 captureSnapshot];
   v6 = [ESSelfPreheatWithPowerContainer alloc];
   v7 = +[SPIAsrPreheatStartedOrChangedEventContext context];
-  v8 = [(ESSelfPreheatWithPowerContainer *)v6 initWithPreheatContext:v3 powerSnapshot:v5 powerEventContext:v7];
+  v8 = [(ESSelfPreheatWithPowerContainer *)v6 initWithPreheatContext:v3 powerSnapshot:captureSnapshot powerEventContext:v7];
 
   return v8;
 }
 
-+ (void)_logRequestLinkWithRequestId:(id)a3 asrId:(id)a4
++ (void)_logRequestLinkWithRequestId:(id)id asrId:(id)asrId
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  asrIdCopy = asrId;
   v7 = objc_alloc_init(SISchemaRequestLinkInfo);
-  v8 = [[SISchemaUUID alloc] initWithNSUUID:v6];
+  v8 = [[SISchemaUUID alloc] initWithNSUUID:asrIdCopy];
   [v7 setUuid:v8];
 
   [v7 setComponent:8];
   v9 = objc_alloc_init(SISchemaRequestLinkInfo);
-  v10 = [[SISchemaUUID alloc] initWithNSUUID:v5];
+  v10 = [[SISchemaUUID alloc] initWithNSUUID:idCopy];
   [v9 setUuid:v10];
 
   [v9 setComponent:1];
@@ -1584,9 +1584,9 @@ LABEL_61:
     v14 = 136315650;
     v15 = "+[ESSelfHelper _logRequestLinkWithRequestId:asrId:]";
     v16 = 2112;
-    v17 = v6;
+    v17 = asrIdCopy;
     v18 = 2112;
-    v19 = v5;
+    v19 = idCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s SELF: Emitting request link message with asrId=%@ and requestID=%@", &v14, 0x20u);
   }
 

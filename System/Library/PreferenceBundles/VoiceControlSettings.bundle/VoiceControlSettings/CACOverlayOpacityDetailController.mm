@@ -1,9 +1,9 @@
 @interface CACOverlayOpacityDetailController
-- (id)overlayOpacity:(id)a3;
+- (id)overlayOpacity:(id)opacity;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setOverlayOpacity:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setOverlayOpacity:(id)opacity specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation CACOverlayOpacityDetailController
@@ -40,39 +40,39 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v13 contentView];
-    [v5 frame];
+    contentView = [cellCopy contentView];
+    [contentView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [v13 control];
-    [v12 setFrame:{(v9 - v9 * 0.8) * 0.5, v7, v9 * 0.8, v11}];
+    control = [cellCopy control];
+    [control setFrame:{(v9 - v9 * 0.8) * 0.5, v7, v9 * 0.8, v11}];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CACOverlayOpacityDetailController;
-  v4 = [(CACOverlayOpacityDetailController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(CACOverlayOpacityDetailController *)&v7 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 control];
-    [v5 setContinuous:1];
+    control = [v4 control];
+    [control setContinuous:1];
   }
 
   return v4;
 }
 
-- (id)overlayOpacity:(id)a3
+- (id)overlayOpacity:(id)opacity
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeOpacity];
@@ -81,11 +81,11 @@
   return v4;
 }
 
-- (void)setOverlayOpacity:(id)a3 specifier:(id)a4
+- (void)setOverlayOpacity:(id)opacity specifier:(id)specifier
 {
-  v4 = a3;
+  opacityCopy = opacity;
   v8 = +[CACPreferences sharedPreferences];
-  [v4 floatValue];
+  [opacityCopy floatValue];
   v6 = v5;
 
   LODWORD(v7) = v6;

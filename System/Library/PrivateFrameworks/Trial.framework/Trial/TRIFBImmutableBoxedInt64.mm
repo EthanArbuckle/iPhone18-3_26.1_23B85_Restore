@@ -1,26 +1,26 @@
 @interface TRIFBImmutableBoxedInt64
-- (void)initWithBufRef:(uint64_t)a3 cppPointer:;
+- (void)initWithBufRef:(uint64_t)ref cppPointer:;
 @end
 
 @implementation TRIFBImmutableBoxedInt64
 
-- (void)initWithBufRef:(uint64_t)a3 cppPointer:
+- (void)initWithBufRef:(uint64_t)ref cppPointer:
 {
   v6 = a2;
-  if (a1)
+  if (self)
   {
-    v9.receiver = a1;
+    v9.receiver = self;
     v9.super_class = TRIFBImmutableBoxedInt64;
     v7 = objc_msgSendSuper2(&v9, sel_init_);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
       objc_storeStrong(v7 + 1, a2);
-      a1[2] = a3;
+      self[2] = ref;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

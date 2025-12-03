@@ -1,15 +1,15 @@
 @interface SKUIBrickItem
-- (SKUIBrickItem)initWithBannerRoomContext:(id)a3;
-- (SKUIBrickItem)initWithComponentContext:(id)a3;
+- (SKUIBrickItem)initWithBannerRoomContext:(id)context;
+- (SKUIBrickItem)initWithComponentContext:(id)context;
 - (id)description;
-- (void)_setLinkInfoWithLinkDictionary:(id)a3 context:(id)a4;
+- (void)_setLinkInfoWithLinkDictionary:(id)dictionary context:(id)context;
 @end
 
 @implementation SKUIBrickItem
 
-- (SKUIBrickItem)initWithBannerRoomContext:(id)a3
+- (SKUIBrickItem)initWithBannerRoomContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrickItem initWithBannerRoomContext:];
@@ -20,17 +20,17 @@
   v5 = [(SKUIBrickItem *)&v20 init];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"link"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"link"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SKUIBrickItem *)v5 _setLinkInfoWithLinkDictionary:v7 context:v4];
+      [(SKUIBrickItem *)v5 _setLinkInfoWithLinkDictionary:v7 context:contextCopy];
     }
 
     if (!v5->_accessibilityLabel)
     {
-      v8 = [v6 objectForKey:@"imageAltText"];
+      v8 = [componentDictionary objectForKey:@"imageAltText"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -40,7 +40,7 @@
       }
     }
 
-    v11 = [v6 objectForKey:@"text"];
+    v11 = [componentDictionary objectForKey:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
       v5->_editorial = v12;
     }
 
-    v14 = [v6 objectForKey:@"imageUrl"];
+    v14 = [componentDictionary objectForKey:@"imageUrl"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -63,7 +63,7 @@
       }
     }
 
-    v18 = [v6 objectForKey:@"adamId"];
+    v18 = [componentDictionary objectForKey:@"adamId"];
 
     if (objc_opt_respondsToSelector())
     {
@@ -74,9 +74,9 @@
   return v5;
 }
 
-- (SKUIBrickItem)initWithComponentContext:(id)a3
+- (SKUIBrickItem)initWithComponentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrickItem initWithComponentContext:];
@@ -87,17 +87,17 @@
   v5 = [(SKUIBrickItem *)&v26 init];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"link"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"link"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(SKUIBrickItem *)v5 _setLinkInfoWithLinkDictionary:v7 context:v4];
+      [(SKUIBrickItem *)v5 _setLinkInfoWithLinkDictionary:v7 context:contextCopy];
     }
 
     if (!v5->_accessibilityLabel)
     {
-      v8 = [v6 objectForKey:@"designLabel"];
+      v8 = [componentDictionary objectForKey:@"designLabel"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -107,18 +107,18 @@
       }
     }
 
-    v11 = [v6 objectForKey:@"editorial"];
+    v11 = [componentDictionary objectForKey:@"editorial"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v4 copy];
+      v12 = [contextCopy copy];
       [v12 setComponentDictionary:v11];
       v13 = [[SKUIEditorialComponent alloc] initWithCustomPageContext:v12];
       editorial = v5->_editorial;
       v5->_editorial = v13;
     }
 
-    v15 = [v6 objectForKey:*MEMORY[0x277D6A300]];
+    v15 = [componentDictionary objectForKey:*MEMORY[0x277D6A300]];
     v16 = SKUIBrickItemSize();
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -133,16 +133,16 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_19:
-        v20 = [v6 objectForKey:@"fcKind"];
-        v21 = [v6 objectForKey:@"type"];
+        v20 = [componentDictionary objectForKey:@"fcKind"];
+        v21 = [componentDictionary objectForKey:@"type"];
         if ((objc_opt_respondsToSelector() & 1) != 0 && [v20 integerValue] == 290 || objc_msgSend(v21, "isEqualToString:", @"counter"))
         {
-          v22 = [[SKUICountdown alloc] initWithCountdownDictionary:v6];
+          v22 = [[SKUICountdown alloc] initWithCountdownDictionary:componentDictionary];
           countdown = v5->_countdown;
           v5->_countdown = v22;
         }
 
-        v24 = [v6 objectForKey:@"adamId"];
+        v24 = [componentDictionary objectForKey:@"adamId"];
         if (objc_opt_respondsToSelector())
         {
           v5->_brickIdentifier = [v24 longLongValue];
@@ -176,26 +176,26 @@ LABEL_26:
   return v5;
 }
 
-- (void)_setLinkInfoWithLinkDictionary:(id)a3 context:(id)a4
+- (void)_setLinkInfoWithLinkDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v14 = [a4 copy];
-  [v14 setComponentDictionary:v6];
+  dictionaryCopy = dictionary;
+  v14 = [context copy];
+  [v14 setComponentDictionary:dictionaryCopy];
 
   v7 = [[SKUILink alloc] initWithComponentContext:v14];
   link = self->_link;
   self->_link = v7;
 
-  v9 = [(SKUILink *)self->_link title];
+  title = [(SKUILink *)self->_link title];
   accessibilityLabel = self->_accessibilityLabel;
-  self->_accessibilityLabel = v9;
+  self->_accessibilityLabel = title;
 
   if (!self->_accessibilityLabel)
   {
-    v11 = [(SKUILink *)self->_link item];
-    v12 = [v11 title];
+    item = [(SKUILink *)self->_link item];
+    title2 = [item title];
     v13 = self->_accessibilityLabel;
-    self->_accessibilityLabel = v12;
+    self->_accessibilityLabel = title2;
   }
 }
 

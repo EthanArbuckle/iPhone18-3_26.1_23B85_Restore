@@ -1,16 +1,16 @@
 @interface HKBaseUnit
-+ (id)_rootUnitWithDefinition:(id *)a3;
-+ (id)_uniquedRootUnit:(id)a3;
-+ (id)_uniquedRootUnitFromDefinition:(id *)a3;
-+ (id)_uniquedUnitWithPrefix:(id)a3 conversionConstant:(id)a4 rootUnit:(id)a5;
-+ (id)unitFromString:(id)a3;
-- (HKBaseUnit)initWithCoder:(id)a3;
++ (id)_rootUnitWithDefinition:(id *)definition;
++ (id)_uniquedRootUnit:(id)unit;
++ (id)_uniquedRootUnitFromDefinition:(id *)definition;
++ (id)_uniquedUnitWithPrefix:(id)prefix conversionConstant:(id)constant rootUnit:(id)unit;
++ (id)unitFromString:(id)string;
+- (HKBaseUnit)initWithCoder:(id)coder;
 - (_HKBaseDimension)dimension;
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4;
-- (id)_initWithUnitString:(id)a3 proportionalSize:(double)a4 scaleOffset:(double)a5;
-- (id)_unitByPrefixing:(id)a3 withConversionConstant:(id)a4;
-- (id)awakeAfterUsingCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set;
+- (id)_initWithUnitString:(id)string proportionalSize:(double)size scaleOffset:(double)offset;
+- (id)_unitByPrefixing:(id)prefixing withConversionConstant:(id)constant;
+- (id)awakeAfterUsingCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKBaseUnit
@@ -19,44 +19,44 @@
 {
   v4.receiver = self;
   v4.super_class = HKBaseUnit;
-  v2 = [(HKUnit *)&v4 dimension];
+  dimension = [(HKUnit *)&v4 dimension];
 
-  return v2;
+  return dimension;
 }
 
-+ (id)unitFromString:(id)a3
++ (id)unitFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = _HKBaseUnitGrammar();
-  v5 = [v4 parseTreeForString:v3];
+  v5 = [v4 parseTreeForString:stringCopy];
 
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unable to parse base unit string: %@", v3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unable to parse base unit string: %@", stringCopy}];
   }
 
-  v6 = [v5 evaluate];
+  evaluate = [v5 evaluate];
 
-  return v6;
+  return evaluate;
 }
 
-- (id)_computeBaseUnitReductionAndProportionalSize:(double *)a3 withCycleSet:(id)a4
+- (id)_computeBaseUnitReductionAndProportionalSize:(double *)size withCycleSet:(id)set
 {
-  v6 = a4;
+  setCopy = set;
   proportionalSize = self->_proportionalSize;
-  v8 = [(HKBaseUnit *)self dimension];
-  if ([v6 containsObject:v8])
+  dimension = [(HKBaseUnit *)self dimension];
+  if ([setCopy containsObject:dimension])
   {
     v9 = MEMORY[0x1E695DF30];
     v10 = *MEMORY[0x1E695D930];
-    v11 = [v8 name];
-    [v9 raise:v10 format:{@"Illegal dimension dependency cycle involving %@", v11}];
+    name = [dimension name];
+    [v9 raise:v10 format:{@"Illegal dimension dependency cycle involving %@", name}];
   }
 
-  if (![v8 canBeReduced])
+  if (![dimension canBeReduced])
   {
-    v18 = [(HKBaseUnit *)self _baseUnits];
-    if (!a3)
+    _baseUnits = [(HKBaseUnit *)self _baseUnits];
+    if (!size)
     {
       goto LABEL_8;
     }
@@ -64,34 +64,34 @@
     goto LABEL_7;
   }
 
-  v12 = [v8 reducibleBaseUnit];
-  [v12 proportionalSize];
+  reducibleBaseUnit = [dimension reducibleBaseUnit];
+  [reducibleBaseUnit proportionalSize];
   v14 = proportionalSize / v13;
 
-  [v8 reductionCoefficient];
+  [dimension reductionCoefficient];
   v16 = v14 * v15;
-  [v6 addObject:v8];
+  [setCopy addObject:dimension];
   v20 = 1.0;
-  v17 = [v8 reducedUnit];
-  v18 = [v17 _baseUnitReductionAndProportionalSize:&v20 withCycleSet:v6];
+  reducedUnit = [dimension reducedUnit];
+  _baseUnits = [reducedUnit _baseUnitReductionAndProportionalSize:&v20 withCycleSet:setCopy];
 
   proportionalSize = v16 * v20;
-  [v6 removeObject:v8];
-  if (a3)
+  [setCopy removeObject:dimension];
+  if (size)
   {
 LABEL_7:
-    *a3 = proportionalSize;
+    *size = proportionalSize;
   }
 
 LABEL_8:
 
-  return v18;
+  return _baseUnits;
 }
 
-+ (id)_uniquedRootUnit:(id)a3
++ (id)_uniquedRootUnit:(id)unit
 {
-  v4 = a3;
-  v5 = [v4 UTF8String];
+  unitCopy = unit;
+  uTF8String = [unitCopy UTF8String];
   v6 = &xmmword_1E73820A0;
   v7 = 17;
   while (1)
@@ -101,7 +101,7 @@ LABEL_8:
     v22 = *v6;
     v23 = v9;
     v24 = *(v6 + 4);
-    if (!strcmp(v8, v5))
+    if (!strcmp(v8, uTF8String))
     {
       break;
     }
@@ -118,7 +118,7 @@ LABEL_8:
         v22 = *v10;
         v23 = v12;
         v24 = *(v10 + 4);
-        if (!strcmp(v8, v5))
+        if (!strcmp(v8, uTF8String))
         {
           goto LABEL_11;
         }
@@ -135,7 +135,7 @@ LABEL_8:
             v22 = *v13;
             v23 = v15;
             v24 = *(v13 + 4);
-            if (!strcmp(v8, v5))
+            if (!strcmp(v8, uTF8String))
             {
               goto LABEL_11;
             }
@@ -143,7 +143,7 @@ LABEL_8:
             v13 += 3;
             if (!--v14)
             {
-              [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid (un-prefixed) unit string: %@", v4}];
+              [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid (un-prefixed) unit string: %@", unitCopy}];
               v8 = 0;
               v24 = 0;
               v22 = 0u;
@@ -162,23 +162,23 @@ LABEL_11:
   v19 = v22;
   v20 = v23;
   v21 = v24;
-  v16 = [a1 _uniquedRootUnitFromDefinition:&v18];
+  v16 = [self _uniquedRootUnitFromDefinition:&v18];
 
   return v16;
 }
 
-+ (id)_uniquedRootUnitFromDefinition:(id *)a3
++ (id)_uniquedRootUnitFromDefinition:(id *)definition
 {
   os_unfair_lock_lock(&_uniquedRootUnitFromDefinition__lock);
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var0];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:definition->var0];
   v6 = [_uniquedRootUnitFromDefinition__units objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v7 = *&a3->var2;
-    v12[0] = *&a3->var0;
+    v7 = *&definition->var2;
+    v12[0] = *&definition->var0;
     v12[1] = v7;
-    v12[2] = *&a3->var4;
-    v6 = [a1 _rootUnitWithDefinition:v12];
+    v12[2] = *&definition->var4;
+    v6 = [self _rootUnitWithDefinition:v12];
     v6[72] = 1;
     v8 = _uniquedRootUnitFromDefinition__units;
     if (!_uniquedRootUnitFromDefinition__units)
@@ -198,19 +198,19 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_uniquedUnitWithPrefix:(id)a3 conversionConstant:(id)a4 rootUnit:(id)a5
++ (id)_uniquedUnitWithPrefix:(id)prefix conversionConstant:(id)constant rootUnit:(id)unit
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  prefixCopy = prefix;
+  constantCopy = constant;
+  unitCopy = unit;
   os_unfair_lock_lock(&_uniquedUnitWithPrefix_conversionConstant_rootUnit__lock);
-  v10 = [v9 unitString];
-  v11 = _unitStringForUnit(v7, v10, v8);
+  unitString = [unitCopy unitString];
+  v11 = _unitStringForUnit(prefixCopy, unitString, constantCopy);
 
   v12 = [_uniquedUnitWithPrefix_conversionConstant_rootUnit__units objectForKey:v11];
   if (!v12)
   {
-    v12 = [v9 _unitByPrefixing:v7 withConversionConstant:v8];
+    v12 = [unitCopy _unitByPrefixing:prefixCopy withConversionConstant:constantCopy];
     v12[72] = 1;
     v13 = _uniquedUnitWithPrefix_conversionConstant_rootUnit__units;
     if (!_uniquedUnitWithPrefix_conversionConstant_rootUnit__units)
@@ -230,52 +230,52 @@ LABEL_11:
   return v12;
 }
 
-+ (id)_rootUnitWithDefinition:(id *)a3
++ (id)_rootUnitWithDefinition:(id *)definition
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var2];
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var0];
-  v6 = [objc_alloc(NSClassFromString(v4)) _initWithUnitString:v5 proportionalSize:a3->var3 scaleOffset:a3->var4];
+  v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:definition->var2];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:definition->var0];
+  v6 = [objc_alloc(NSClassFromString(v4)) _initWithUnitString:v5 proportionalSize:definition->var3 scaleOffset:definition->var4];
 
   return v6;
 }
 
-- (id)_initWithUnitString:(id)a3 proportionalSize:(double)a4 scaleOffset:(double)a5
+- (id)_initWithUnitString:(id)string proportionalSize:(double)size scaleOffset:(double)offset
 {
-  v8 = a3;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = HKBaseUnit;
-  v9 = [(HKUnit *)&v13 _init];
-  if (v9)
+  _init = [(HKUnit *)&v13 _init];
+  if (_init)
   {
-    v10 = [v8 copy];
-    v11 = v9[6];
-    v9[6] = v10;
+    v10 = [stringCopy copy];
+    v11 = _init[6];
+    _init[6] = v10;
 
-    *(v9 + 10) = a4;
-    *(v9 + 1) = a5;
+    *(_init + 10) = size;
+    *(_init + 1) = offset;
   }
 
-  return v9;
+  return _init;
 }
 
-- (id)_unitByPrefixing:(id)a3 withConversionConstant:(id)a4
+- (id)_unitByPrefixing:(id)prefixing withConversionConstant:(id)constant
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(objc_opt_class()) _init];
-  v9 = _unitStringForUnit(v6, self->_unitString, v7);
+  prefixingCopy = prefixing;
+  constantCopy = constant;
+  _init = [objc_alloc(objc_opt_class()) _init];
+  v9 = _unitStringForUnit(prefixingCopy, self->_unitString, constantCopy);
   v10 = [v9 copy];
-  v11 = *(v8 + 48);
-  *(v8 + 48) = v10;
+  v11 = *(_init + 48);
+  *(_init + 48) = v10;
 
-  if (v6)
+  if (prefixingCopy)
   {
     v12 = _Prefixes();
-    v13 = [v12 objectForKey:v6];
+    v13 = [v12 objectForKey:prefixingCopy];
 
     if (!v13)
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid unit prefix: %@", v6}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Invalid unit prefix: %@", prefixingCopy}];
     }
   }
 
@@ -284,9 +284,9 @@ LABEL_11:
     v13 = &unk_1F0684A10;
   }
 
-  if (v7)
+  if (constantCopy)
   {
-    v14 = v7;
+    v14 = constantCopy;
   }
 
   else
@@ -300,68 +300,68 @@ LABEL_11:
   v17 = v16;
   [v13 doubleValue];
   v19 = v17 * v18;
-  *(v8 + 80) = v19 * self->_proportionalSize;
-  *(v8 + 8) = self->super._scaleOffset / v19;
-  v20 = [v6 copy];
-  v21 = *(v8 + 56);
-  *(v8 + 56) = v20;
+  *(_init + 80) = v19 * self->_proportionalSize;
+  *(_init + 8) = self->super._scaleOffset / v19;
+  v20 = [prefixingCopy copy];
+  v21 = *(_init + 56);
+  *(_init + 56) = v20;
 
   v22 = [(NSString *)self->_unitString copy];
-  v23 = *(v8 + 64);
-  *(v8 + 64) = v22;
+  v23 = *(_init + 64);
+  *(_init + 64) = v22;
 
-  return v8;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = HKBaseUnit;
-  [(HKUnit *)&v3 encodeWithCoder:a3];
+  [(HKUnit *)&v3 encodeWithCoder:coder];
 }
 
-- (HKBaseUnit)initWithCoder:(id)a3
+- (HKBaseUnit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKBaseUnit;
-  v5 = [(HKUnit *)&v15 initWithCoder:v4];
-  if (v5 && ([v4 containsValueForKey:@"HKUnitStringKey"] & 1) == 0)
+  v5 = [(HKUnit *)&v15 initWithCoder:coderCopy];
+  if (v5 && ([coderCopy containsValueForKey:@"HKUnitStringKey"] & 1) == 0)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitStringKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitStringKey"];
     unitString = v5->_unitString;
     v5->_unitString = v6;
 
-    [v4 decodeDoubleForKey:@"BaseUnitProportionalSizeKey"];
+    [coderCopy decodeDoubleForKey:@"BaseUnitProportionalSizeKey"];
     v5->_proportionalSize = v8;
-    [v4 decodeDoubleForKey:@"BaseUnitScaleOffsetKey"];
+    [coderCopy decodeDoubleForKey:@"BaseUnitScaleOffsetKey"];
     v5->super._scaleOffset = v9;
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitPrefixKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitPrefixKey"];
     prefix = v5->_prefix;
     v5->_prefix = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitRootKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BaseUnitRootKey"];
     root = v5->_root;
     v5->_root = v12;
 
-    v5->_uniqued = [v4 decodeBoolForKey:@"BaseUnitUniquedKey"];
+    v5->_uniqued = [coderCopy decodeBoolForKey:@"BaseUnitUniquedKey"];
   }
 
   return v5;
 }
 
-- (id)awakeAfterUsingCoder:(id)a3
+- (id)awakeAfterUsingCoder:(id)coder
 {
-  v4 = [a3 containsValueForKey:@"HKUnitStringKey"];
-  v5 = self;
-  v6 = v5;
-  v7 = v5;
+  v4 = [coder containsValueForKey:@"HKUnitStringKey"];
+  selfCopy = self;
+  v6 = selfCopy;
+  v7 = selfCopy;
   if ((v4 & 1) == 0)
   {
-    v7 = v5;
-    if (v5->_uniqued)
+    v7 = selfCopy;
+    if (selfCopy->_uniqued)
     {
-      if (v5->_root)
+      if (selfCopy->_root)
       {
         v8 = [HKBaseUnit _uniquedRootUnit:?];
         prefix = v6->_prefix;
@@ -405,7 +405,7 @@ LABEL_11:
 
       else
       {
-        v7 = [HKBaseUnit _uniquedRootUnit:v5->_unitString];
+        v7 = [HKBaseUnit _uniquedRootUnit:selfCopy->_unitString];
         v8 = v6;
       }
     }

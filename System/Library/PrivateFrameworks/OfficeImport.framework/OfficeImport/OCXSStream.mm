@@ -2,7 +2,7 @@
 - (BOOL)popLevel;
 - (OCXSStream)init;
 - (int)currentContextDepth;
-- (void)pushLevel:(int)a3 name:(const char *)a4;
+- (void)pushLevel:(int)level name:(const char *)name;
 @end
 
 @implementation OCXSStream
@@ -24,16 +24,16 @@
 
 - (int)currentContextDepth
 {
-  v3 = [(NSMutableArray *)self->mLevelStack lastObject];
-  v4 = v3;
-  if (v3)
+  lastObject = [(NSMutableArray *)self->mLevelStack lastObject];
+  v4 = lastObject;
+  if (lastObject)
   {
-    v2 = [v3 depth];
+    depth = [lastObject depth];
   }
 
   if (v4)
   {
-    return v2;
+    return depth;
   }
 
   else
@@ -44,20 +44,20 @@
 
 - (BOOL)popLevel
 {
-  v3 = [(OCXSStream *)self hasLevels];
-  if (v3)
+  hasLevels = [(OCXSStream *)self hasLevels];
+  if (hasLevels)
   {
     [(NSMutableArray *)self->mLevelStack removeLastObject];
   }
 
-  return v3;
+  return hasLevels;
 }
 
-- (void)pushLevel:(int)a3 name:(const char *)a4
+- (void)pushLevel:(int)level name:(const char *)name
 {
-  v5 = *&a3;
+  v5 = *&level;
   v7 = objc_alloc_init(OCXSStreamLevel);
-  [(OCXSStreamLevel *)v7 setName:a4];
+  [(OCXSStreamLevel *)v7 setName:name];
   [(OCXSStreamLevel *)v7 setDepth:v5];
   [(NSMutableArray *)self->mLevelStack addObject:v7];
 }

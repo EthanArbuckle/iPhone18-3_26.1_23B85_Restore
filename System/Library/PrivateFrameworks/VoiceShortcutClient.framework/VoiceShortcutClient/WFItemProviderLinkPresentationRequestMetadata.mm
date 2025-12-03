@@ -1,38 +1,38 @@
 @interface WFItemProviderLinkPresentationRequestMetadata
-- (WFItemProviderLinkPresentationRequestMetadata)initWithCoder:(id)a3;
-- (WFItemProviderLinkPresentationRequestMetadata)initWithLinkPresentationMetadata:(id)a3;
+- (WFItemProviderLinkPresentationRequestMetadata)initWithCoder:(id)coder;
+- (WFItemProviderLinkPresentationRequestMetadata)initWithLinkPresentationMetadata:(id)metadata;
 - (id)registeredTypeIdentifiers;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchLinkMetadataWithCompletion:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchLinkMetadataWithCompletion:(id)completion;
 @end
 
 @implementation WFItemProviderLinkPresentationRequestMetadata
 
-- (WFItemProviderLinkPresentationRequestMetadata)initWithCoder:(id)a3
+- (WFItemProviderLinkPresentationRequestMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   getLPLinkMetadataClass();
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"linkPresentationMetadata"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"linkPresentationMetadata"];
 
   if (v5)
   {
     self = [(WFItemProviderLinkPresentationRequestMetadata *)self initWithLinkPresentationMetadata:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFItemProviderLinkPresentationRequestMetadata *)self linkPresentationMetadata];
-  [v4 encodeObject:v5 forKey:@"linkPresentationMetadata"];
+  coderCopy = coder;
+  linkPresentationMetadata = [(WFItemProviderLinkPresentationRequestMetadata *)self linkPresentationMetadata];
+  [coderCopy encodeObject:linkPresentationMetadata forKey:@"linkPresentationMetadata"];
 }
 
 - (id)registeredTypeIdentifiers
@@ -45,13 +45,13 @@
   return v2;
 }
 
-- (WFItemProviderLinkPresentationRequestMetadata)initWithLinkPresentationMetadata:(id)a3
+- (WFItemProviderLinkPresentationRequestMetadata)initWithLinkPresentationMetadata:(id)metadata
 {
-  v6 = a3;
-  if (!v6)
+  metadataCopy = metadata;
+  if (!metadataCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"linkPresentationMetadata"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFItemProviderRequestMetadata.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"linkPresentationMetadata"}];
   }
 
   v12.receiver = self;
@@ -60,18 +60,18 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_linkPresentationMetadata, a3);
+    objc_storeStrong(&v7->_linkPresentationMetadata, metadata);
     v9 = v8;
   }
 
   return v8;
 }
 
-- (void)fetchLinkMetadataWithCompletion:(id)a3
+- (void)fetchLinkMetadataWithCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = [(WFItemProviderLinkPresentationRequestMetadata *)self linkPresentationMetadata];
-  (*(a3 + 2))(v5, v6, 0);
+  completionCopy = completion;
+  linkPresentationMetadata = [(WFItemProviderLinkPresentationRequestMetadata *)self linkPresentationMetadata];
+  (*(completion + 2))(completionCopy, linkPresentationMetadata, 0);
 }
 
 @end

@@ -2,10 +2,10 @@
 - (_TtC15CoreMotionFDNML25CMFoundationModelResponse)init;
 - (id)errorMessage;
 - (id)resultKeys;
-- (void)getMachContinuousTimestamp:(unint64_t *)a3;
-- (void)getType:(char *)a3;
-- (void)shapeOfArrayWithKey:(id)a3 shape:(unsigned int *)a4 expectedShapeSize:(unsigned __int8)a5;
-- (void)writeBytesWithKey:(id)a3 ptr:(char *)a4 expectedByteLength:(unint64_t)a5;
+- (void)getMachContinuousTimestamp:(unint64_t *)timestamp;
+- (void)getType:(char *)type;
+- (void)shapeOfArrayWithKey:(id)key shape:(unsigned int *)shape expectedShapeSize:(unsigned __int8)size;
+- (void)writeBytesWithKey:(id)key ptr:(char *)ptr expectedByteLength:(unint64_t)length;
 @end
 
 @implementation CMFoundationModelResponse
@@ -29,7 +29,7 @@
   return [(CMFoundationModelResponse *)&v9 init];
 }
 
-- (void)getType:(char *)a3
+- (void)getType:(char *)type
 {
   v4 = self + OBJC_IVAR____TtC15CoreMotionFDNML25CMFoundationModelResponse_response;
   swift_beginAccess();
@@ -46,18 +46,18 @@
 
   else if (v5 <= 0xFF)
   {
-    *a3 = v5;
+    *type = v5;
     return;
   }
 
   __break(1u);
 }
 
-- (void)getMachContinuousTimestamp:(unint64_t *)a3
+- (void)getMachContinuousTimestamp:(unint64_t *)timestamp
 {
   v5 = OBJC_IVAR____TtC15CoreMotionFDNML25CMFoundationModelResponse_response;
   swift_beginAccess();
-  *a3 = *(&self->super.isa + v5);
+  *timestamp = *(&self->super.isa + v5);
 }
 
 - (id)resultKeys
@@ -72,20 +72,20 @@
   return v5;
 }
 
-- (void)shapeOfArrayWithKey:(id)a3 shape:(unsigned int *)a4 expectedShapeSize:(unsigned __int8)a5
+- (void)shapeOfArrayWithKey:(id)key shape:(unsigned int *)shape expectedShapeSize:(unsigned __int8)size
 {
   v8 = sub_245F76878();
   v10 = v9;
-  v11 = self;
-  sub_245F6A540(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_245F6A540(v8, v10, shape, size);
 }
 
-- (void)writeBytesWithKey:(id)a3 ptr:(char *)a4 expectedByteLength:(unint64_t)a5
+- (void)writeBytesWithKey:(id)key ptr:(char *)ptr expectedByteLength:(unint64_t)length
 {
   v8 = sub_245F76878();
   v10 = v9;
-  v11 = self;
-  sub_245F6A7F8(v8, v10, a4, a5);
+  selfCopy = self;
+  sub_245F6A7F8(v8, v10, ptr, length);
 }
 
 - (id)errorMessage
@@ -102,7 +102,7 @@
   v11 = *v9;
   v10 = *(v9 + 1);
 
-  v12 = self;
+  selfCopy = self;
   sub_245F6D878(v7, type metadata accessor for CoreMotionFoundationModel_Response);
 
   v13 = sub_245F76868();

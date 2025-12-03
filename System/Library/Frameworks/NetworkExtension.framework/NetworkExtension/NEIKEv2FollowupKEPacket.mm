@@ -42,8 +42,8 @@
         }
 
         v12 = *(*(&v32 + 1) + 8 * i);
-        v13 = [v12 type];
-        if (v13 == 41)
+        type = [v12 type];
+        if (type == 41)
         {
           v16 = v12;
           if (self && objc_getProperty(self, v15, 64, 1))
@@ -70,7 +70,7 @@ LABEL_31:
           continue;
         }
 
-        if (v13 == 34)
+        if (type == 34)
         {
           if (self)
           {
@@ -106,12 +106,12 @@ LABEL_29:
           {
             v25 = v10;
             v26 = v9;
-            v27 = [(NEIKEv2Packet *)self copyShortDescription];
-            v28 = [v12 typeDescription];
+            copyShortDescription = [(NEIKEv2Packet *)self copyShortDescription];
+            typeDescription = [v12 typeDescription];
             *buf = v31;
-            v37 = v27;
+            v37 = copyShortDescription;
             v38 = 2112;
-            v39 = v28;
+            v39 = typeDescription;
             _os_log_impl(&dword_1BA83C000, v24, OS_LOG_TYPE_DEFAULT, "%@ ignoring unexpected %@ payload", buf, 0x16u);
 
             v9 = v26;

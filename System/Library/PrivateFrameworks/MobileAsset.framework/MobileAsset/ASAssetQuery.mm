@@ -1,26 +1,26 @@
 @interface ASAssetQuery
-+ (id)queryPredicateForProperties:(id)a3;
-- (ASAssetQuery)initWithAssetType:(id)a3 sessionIdentifier:(id)a4;
++ (id)queryPredicateForProperties:(id)properties;
+- (ASAssetQuery)initWithAssetType:(id)type sessionIdentifier:(id)identifier;
 - (NSArray)results;
-- (id)runQueryAndReturnError:(id *)a3;
-- (id)runQueryForInfoReturnError:(id *)a3;
-- (void)startQuery:(id)a3;
+- (id)runQueryAndReturnError:(id *)error;
+- (id)runQueryForInfoReturnError:(id *)error;
+- (void)startQuery:(id)query;
 @end
 
 @implementation ASAssetQuery
 
-+ (id)queryPredicateForProperties:(id)a3
++ (id)queryPredicateForProperties:(id)properties
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
+  propertiesCopy = properties;
+  array = [v3 array];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__ASAssetQuery_queryPredicateForProperties___block_invoke;
   v9[3] = &unk_1E74CA7D8;
-  v10 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = array;
+  v6 = array;
+  [propertiesCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v6];
 
@@ -33,10 +33,10 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
   [*(a1 + 32) addObject:v4];
 }
 
-- (ASAssetQuery)initWithAssetType:(id)a3 sessionIdentifier:(id)a4
+- (ASAssetQuery)initWithAssetType:(id)type sessionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = ASAssetQuery;
   v8 = [(ASAssetQuery *)&v18 init];
@@ -44,22 +44,22 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
   if (v8)
   {
     v8->_networkTimeout = 30.0;
-    v10 = [v6 copy];
+    v10 = [typeCopy copy];
     assetType = v9->_assetType;
     v9->_assetType = v10;
 
-    v12 = [v7 copy];
+    v12 = [identifierCopy copy];
     sessionIdentifier = v9->_sessionIdentifier;
     v9->_sessionIdentifier = v12;
 
-    v14 = [objc_opt_new() initWithType:v6];
+    v14 = [objc_opt_new() initWithType:typeCopy];
     [(ASAssetQuery *)v9 setMaQuery:v14];
 
-    v15 = [(ASAssetQuery *)v9 maQuery];
-    [v15 setDoNotBlockOnNetworkStatus:1];
+    maQuery = [(ASAssetQuery *)v9 maQuery];
+    [maQuery setDoNotBlockOnNetworkStatus:1];
 
-    v16 = [(ASAssetQuery *)v9 maQuery];
-    [v16 returnTypes:2];
+    maQuery2 = [(ASAssetQuery *)v9 maQuery];
+    [maQuery2 returnTypes:2];
   }
 
   return v9;
@@ -72,10 +72,10 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
   return v2;
 }
 
-- (id)runQueryForInfoReturnError:(id *)a3
+- (id)runQueryForInfoReturnError:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v33 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -101,14 +101,14 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
     dispatch_group_wait(v7, v8);
   }
 
-  v9 = [(ASAssetQuery *)self maQuery];
-  v10 = [v9 queryMetaDataSync];
+  maQuery = [(ASAssetQuery *)self maQuery];
+  queryMetaDataSync = [maQuery queryMetaDataSync];
 
-  if (MAIsQueryResultFailure(v10))
+  if (MAIsQueryResultFailure(queryMetaDataSync))
   {
     v11 = v43[5];
-    v12 = errorStringForMAQueryResult(v10);
-    v17 = MAErrorWithUnderlying(@"com.apple.MobileAssetError.Query", v10, v11, @"%@", v13, v14, v15, v16, v12);
+    v12 = errorStringForMAQueryResult(queryMetaDataSync);
+    v17 = MAErrorWithUnderlying(@"com.apple.MobileAssetError.Query", queryMetaDataSync, v11, @"%@", v13, v14, v15, v16, v12);
     v18 = _ASErrorForMAError(v17);
   }
 
@@ -117,9 +117,9 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
     v18 = 0;
   }
 
-  v19 = [(ASAssetQuery *)self maQuery];
-  v20 = [v19 results];
-  v21 = v20 == 0;
+  maQuery2 = [(ASAssetQuery *)self maQuery];
+  results = [maQuery2 results];
+  v21 = results == 0;
 
   if (v21)
   {
@@ -133,8 +133,8 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v23 = [(MAAssetQuery *)self->maQuery results];
-    v24 = [v23 countByEnumeratingWithState:&v35 objects:v48 count:16];
+    results2 = [(MAAssetQuery *)self->maQuery results];
+    v24 = [results2 countByEnumeratingWithState:&v35 objects:v48 count:16];
     if (v24)
     {
       v25 = *v36;
@@ -144,7 +144,7 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
         {
           if (*v36 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(results2);
           }
 
           v27 = *(*(&v35 + 1) + 8 * i);
@@ -155,17 +155,17 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
           objc_autoreleasePoolPop(v28);
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v35 objects:v48 count:16];
+        v24 = [results2 countByEnumeratingWithState:&v35 objects:v48 count:16];
       }
 
       while (v24);
     }
 
-    [v33 setObject:v22 forKey:@"Assets"];
+    [dictionary setObject:v22 forKey:@"Assets"];
   }
 
   [(ASAssetQuery *)self setResults:v22];
-  if (a3)
+  if (error)
   {
     if (v22)
     {
@@ -177,14 +177,14 @@ void __44__ASAssetQuery_queryPredicateForProperties___block_invoke(uint64_t a1, 
       v30 = v18;
     }
 
-    *a3 = v30;
+    *error = v30;
   }
 
   _Block_object_dispose(&v42, 8);
 
   v31 = *MEMORY[0x1E69E9840];
 
-  return v33;
+  return dictionary;
 }
 
 void __43__ASAssetQuery_runQueryForInfoReturnError___block_invoke(uint64_t a1, int a2, id obj)
@@ -194,9 +194,9 @@ void __43__ASAssetQuery_runQueryForInfoReturnError___block_invoke(uint64_t a1, i
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)runQueryAndReturnError:(id *)a3
+- (id)runQueryAndReturnError:(id *)error
 {
-  v3 = [(ASAssetQuery *)self runQueryForInfoReturnError:a3];
+  v3 = [(ASAssetQuery *)self runQueryForInfoReturnError:error];
   v4 = v3;
   if (v3)
   {
@@ -211,17 +211,17 @@ void __43__ASAssetQuery_runQueryForInfoReturnError___block_invoke(uint64_t a1, i
   return v5;
 }
 
-- (void)startQuery:(id)a3
+- (void)startQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __27__ASAssetQuery_startQuery___block_invoke;
   v7[3] = &unk_1E74C9928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = queryCopy;
+  v6 = queryCopy;
   dispatch_async(v5, v7);
 }
 

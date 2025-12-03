@@ -7,7 +7,7 @@
 + (id)atx_componentsFromDictionary:()Dictionary
 {
   v4 = a3;
-  v5 = objc_alloc_init(a1);
+  v5 = objc_alloc_init(self);
   v6 = [v4 objectForKeyedSubscript:@"year"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())

@@ -99,12 +99,12 @@ LABEL_20:
 
 - (id)wk_colorHexString
 {
-  v1 = [a1 CGColor];
-  if (CGColorGetNumberOfComponents(v1) >= 3)
+  cGColor = [self CGColor];
+  if (CGColorGetNumberOfComponents(cGColor) >= 3)
   {
-    Components = CGColorGetComponents(v1);
+    Components = CGColorGetComponents(cGColor);
     v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"#%02lX%02lX%02lX", llround(*Components * 255.0), llround(Components[1] * 255.0), llround(Components[2] * 255.0)];
-    Alpha = CGColorGetAlpha(v1);
+    Alpha = CGColorGetAlpha(cGColor);
     if (Alpha < 1.0)
     {
       v5 = [v2 stringByAppendingFormat:@"%02lX", llround(Alpha * 255.0)];
@@ -123,13 +123,13 @@ LABEL_20:
 
 - (id)wk_interpolatedToColor:()WKAdditions progress:
 {
-  v7 = a1;
+  selfCopy = self;
   v8 = a4;
-  v9 = [a1 CGColor];
-  v10 = [v8 CGColor];
+  cGColor = [self CGColor];
+  cGColor2 = [v8 CGColor];
 
   *&v11 = a2;
-  v12 = [v9 CA_interpolateValue:v10 byFraction:v11];
+  v12 = [cGColor CA_interpolateValue:cGColor2 byFraction:v11];
   v13 = [MEMORY[0x1E69DC888] colorWithCGColor:v12];
 
   return v13;

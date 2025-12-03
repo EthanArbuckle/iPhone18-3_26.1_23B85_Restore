@@ -1,16 +1,16 @@
 @interface STAltDistroAppInfoLoader
 - (STAltDistroAppInfoLoader)init;
-- (STAltDistroAppInfoLoader)initWithAltDistroRequestsFetcher:(id)a3;
-- (void)_enqueueRequest:(id)a3;
+- (STAltDistroAppInfoLoader)initWithAltDistroRequestsFetcher:(id)fetcher;
+- (void)_enqueueRequest:(id)request;
 - (void)_startNextRequest;
-- (void)fetchForAppBundleId:(id)a3 adamId:(id)a4 distributorBundleId:(id)a5 completionHandler:(id)a6;
+- (void)fetchForAppBundleId:(id)id adamId:(id)adamId distributorBundleId:(id)bundleId completionHandler:(id)handler;
 @end
 
 @implementation STAltDistroAppInfoLoader
 
-- (STAltDistroAppInfoLoader)initWithAltDistroRequestsFetcher:(id)a3
+- (STAltDistroAppInfoLoader)initWithAltDistroRequestsFetcher:(id)fetcher
 {
-  v5 = a3;
+  fetcherCopy = fetcher;
   v9.receiver = self;
   v9.super_class = STAltDistroAppInfoLoader;
   v6 = [(STAltDistroAppInfoLoader *)&v9 init];
@@ -19,7 +19,7 @@
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(STAltDistroAppInfoLoader *)v6 setPendingRequests:v7];
 
-    objc_storeStrong(&v6->_requestsFetcher, a3);
+    objc_storeStrong(&v6->_requestsFetcher, fetcher);
   }
 
   return v6;
@@ -33,36 +33,36 @@
   return v4;
 }
 
-- (void)fetchForAppBundleId:(id)a3 adamId:(id)a4 distributorBundleId:(id)a5 completionHandler:(id)a6
+- (void)fetchForAppBundleId:(id)id adamId:(id)adamId distributorBundleId:(id)bundleId completionHandler:(id)handler
 {
   v9 = MEMORY[0x1E698B3C0];
   v10 = MEMORY[0x1E698B398];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v10 alloc] initWithNumberValue:v13];
+  handlerCopy = handler;
+  bundleIdCopy = bundleId;
+  adamIdCopy = adamId;
+  idCopy = id;
+  v15 = [[v10 alloc] initWithNumberValue:adamIdCopy];
   v16 = *MEMORY[0x1E698B360];
   v17 = *MEMORY[0x1E698B320];
-  v18 = [v9 _requestWithID:v15 kind:*MEMORY[0x1E698B360] context:*MEMORY[0x1E698B320] appVersionId:0 distributorId:v12];
+  v18 = [v9 _requestWithID:v15 kind:*MEMORY[0x1E698B360] context:*MEMORY[0x1E698B320] appVersionId:0 distributorId:bundleIdCopy];
 
   v19 = objc_opt_new();
-  [v19 setCompletion:v11];
+  [v19 setCompletion:handlerCopy];
 
   [v19 setRequest:v18];
   v20 = MEMORY[0x1E698B3C0];
-  v21 = [objc_alloc(MEMORY[0x1E698B398]) initWithNumberValue:v13];
+  v21 = [objc_alloc(MEMORY[0x1E698B398]) initWithNumberValue:adamIdCopy];
   v22 = [v20 _requestWithID:v21 kind:v16 context:v17 appVersionId:0 distributorId:0];
   [v19 setRequestToRetryOnFailure:v22];
 
-  [v19 setBundleID:v14];
-  [v19 setAdamID:v13];
+  [v19 setBundleID:idCopy];
+  [v19 setAdamID:adamIdCopy];
 
-  [v19 setDistributorID:v12];
-  v23 = [MEMORY[0x1E696AF00] currentThread];
-  LODWORD(v13) = [v23 isMainThread];
+  [v19 setDistributorID:bundleIdCopy];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  LODWORD(adamIdCopy) = [currentThread isMainThread];
 
-  if (v13)
+  if (adamIdCopy)
   {
     [(STAltDistroAppInfoLoader *)self _enqueueRequest:v19];
   }
@@ -79,14 +79,14 @@
   }
 }
 
-- (void)_enqueueRequest:(id)a3
+- (void)_enqueueRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(STAltDistroAppInfoLoader *)self pendingRequests];
-  v6 = [v5 count];
+  requestCopy = request;
+  pendingRequests = [(STAltDistroAppInfoLoader *)self pendingRequests];
+  v6 = [pendingRequests count];
 
-  v7 = [(STAltDistroAppInfoLoader *)self pendingRequests];
-  [v7 addObject:v4];
+  pendingRequests2 = [(STAltDistroAppInfoLoader *)self pendingRequests];
+  [pendingRequests2 addObject:requestCopy];
 
   if (!v6)
   {
@@ -98,13 +98,13 @@
 - (void)_startNextRequest
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v3 = [(STAltDistroAppInfoLoader *)self pendingRequests];
-  v4 = [v3 count];
+  pendingRequests = [(STAltDistroAppInfoLoader *)self pendingRequests];
+  v4 = [pendingRequests count];
 
   if (v4)
   {
-    v5 = [(STAltDistroAppInfoLoader *)self pendingRequests];
-    v6 = [v5 firstObject];
+    pendingRequests2 = [(STAltDistroAppInfoLoader *)self pendingRequests];
+    firstObject = [pendingRequests2 firstObject];
 
     v7 = *MEMORY[0x1E698B410];
     v19[0] = *MEMORY[0x1E698B418];
@@ -115,16 +115,16 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
     objc_initWeak(&location, self);
     requestsFetcher = self->_requestsFetcher;
-    v11 = [v6 request];
+    request = [firstObject request];
     v12 = [MEMORY[0x1E695DFD8] setWithArray:v9];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __45__STAltDistroAppInfoLoader__startNextRequest__block_invoke;
     v15[3] = &unk_1E7CE7F98;
     objc_copyWeak(&v17, &location);
-    v13 = v6;
+    v13 = firstObject;
     v16 = v13;
-    [(STAltDistroRequestFetcher *)requestsFetcher _lockupDictionaryForRequest:v11 includingKeys:v12 withCompletionBlock:v15];
+    [(STAltDistroRequestFetcher *)requestsFetcher _lockupDictionaryForRequest:request includingKeys:v12 withCompletionBlock:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);

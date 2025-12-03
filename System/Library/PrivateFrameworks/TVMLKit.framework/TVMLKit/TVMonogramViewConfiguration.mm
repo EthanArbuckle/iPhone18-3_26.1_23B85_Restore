@@ -1,13 +1,13 @@
 @interface TVMonogramViewConfiguration
-- (TVMonogramViewConfiguration)initWithShadowImages:(BOOL)a3;
-- (TVMonogramViewConfiguration)initWithStyle:(int64_t)a3;
+- (TVMonogramViewConfiguration)initWithShadowImages:(BOOL)images;
+- (TVMonogramViewConfiguration)initWithStyle:(int64_t)style;
 - (double)unfocusedImageAlpha;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TVMonogramViewConfiguration
 
-- (TVMonogramViewConfiguration)initWithStyle:(int64_t)a3
+- (TVMonogramViewConfiguration)initWithStyle:(int64_t)style
 {
   v38.receiver = self;
   v38.super_class = TVMonogramViewConfiguration;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 1) = a3;
+    *(v4 + 1) = style;
     *(v4 + 2) = 0x404A000000000000;
     *(v4 + 40) = xmmword_26CE87B80;
     v6 = MEMORY[0x277D755B8];
@@ -32,7 +32,7 @@
 
     objc_storeStrong(&v5->_titleTextStyle, *MEMORY[0x277D76918]);
     objc_storeStrong(&v5->_subtitleTextStyle, *MEMORY[0x277D769C0]);
-    if (a3 == 2)
+    if (style == 2)
     {
       v25 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
       unfocusedBgColor = v5->_unfocusedBgColor;
@@ -56,7 +56,7 @@
       goto LABEL_6;
     }
 
-    if (a3 == 1)
+    if (style == 1)
     {
       v14 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
       v15 = v5->_unfocusedBgColor;
@@ -91,9 +91,9 @@ LABEL_6:
   return v5;
 }
 
-- (TVMonogramViewConfiguration)initWithShadowImages:(BOOL)a3
+- (TVMonogramViewConfiguration)initWithShadowImages:(BOOL)images
 {
-  v3 = a3;
+  imagesCopy = images;
   v15.receiver = self;
   v15.super_class = TVMonogramViewConfiguration;
   v4 = [(TVMonogramViewConfiguration *)&v15 init];
@@ -102,7 +102,7 @@ LABEL_6:
   {
     *(v4 + 1) = 0;
     *(v4 + 2) = 0x404A000000000000;
-    if (v3)
+    if (imagesCopy)
     {
       *(v4 + 40) = xmmword_26CE87B80;
       v6 = MEMORY[0x277D755B8];
@@ -122,9 +122,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 16) = self->_focusedSizeIncrease;
   *(v4 + 40) = self->_unfocusedShadowAlpha;
   *(v4 + 48) = self->_focusedShadowAlpha;

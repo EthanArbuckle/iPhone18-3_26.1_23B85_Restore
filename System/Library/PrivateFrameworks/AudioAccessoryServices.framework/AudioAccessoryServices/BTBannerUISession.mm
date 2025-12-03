@@ -1,14 +1,14 @@
 @interface BTBannerUISession
 - (BTBannerUISession)init;
 - (void)_activate;
-- (void)_xpcCompleted:(id)a3;
-- (void)_xpcConnectionMessage:(id)a3;
-- (void)_xpcEvent:(id)a3;
+- (void)_xpcCompleted:(id)completed;
+- (void)_xpcConnectionMessage:(id)message;
+- (void)_xpcEvent:(id)event;
 - (void)_xpcSendMessage;
-- (void)_xpcSendReplyError:(id)a3 request:(id)a4;
+- (void)_xpcSendReplyError:(id)error request:(id)request;
 - (void)_xpcStart;
 - (void)activate;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 - (void)invalidate;
 @end
 
@@ -125,67 +125,67 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
   xpc_connection_activate(self->_xpcConnection);
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSString *)self->_label UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_label UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "BUISKeyLabel", v5);
+    xpc_dictionary_set_string(objectCopy, "BUISKeyLabel", uTF8String);
   }
 
   timeoutSeconds = self->_timeoutSeconds;
   if (timeoutSeconds != 0.0)
   {
-    xpc_dictionary_set_double(v4, "BUISKeyBannerTimeout", timeoutSeconds);
+    xpc_dictionary_set_double(objectCopy, "BUISKeyBannerTimeout", timeoutSeconds);
   }
 
   centerContentText = self->_centerContentText;
-  v8 = v4;
-  v9 = [(NSString *)centerContentText UTF8String];
-  if (v9)
+  v8 = objectCopy;
+  uTF8String2 = [(NSString *)centerContentText UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v8, "BUISKeyCCText", v9);
+    xpc_dictionary_set_string(v8, "BUISKeyCCText", uTF8String2);
   }
 
   centerContentItemsIcon = self->_centerContentItemsIcon;
   v11 = v8;
-  v12 = [(NSString *)centerContentItemsIcon UTF8String];
-  if (v12)
+  uTF8String3 = [(NSString *)centerContentItemsIcon UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v11, "BUISKeyCCItemsIcon", v12);
+    xpc_dictionary_set_string(v11, "BUISKeyCCItemsIcon", uTF8String3);
   }
 
   centerContentItemsText = self->_centerContentItemsText;
   v14 = v11;
-  v15 = [(NSString *)centerContentItemsText UTF8String];
-  if (v15)
+  uTF8String4 = [(NSString *)centerContentItemsText UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v14, "BUISKeyCCItemsText", v15);
+    xpc_dictionary_set_string(v14, "BUISKeyCCItemsText", uTF8String4);
   }
 
   identifier = self->_identifier;
   v17 = v14;
-  v18 = [(NSString *)identifier UTF8String];
-  if (v18)
+  uTF8String5 = [(NSString *)identifier UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(v17, "BUISKeyIdentifier", v18);
+    xpc_dictionary_set_string(v17, "BUISKeyIdentifier", uTF8String5);
   }
 
   leadingAccessoryImagePath = self->_leadingAccessoryImagePath;
   v20 = v17;
-  v21 = [(NSString *)leadingAccessoryImagePath UTF8String];
-  if (v21)
+  uTF8String6 = [(NSString *)leadingAccessoryImagePath UTF8String];
+  if (uTF8String6)
   {
-    xpc_dictionary_set_string(v20, "BUISKeyLAImagePath", v21);
+    xpc_dictionary_set_string(v20, "BUISKeyLAImagePath", uTF8String6);
   }
 
   leadingAccessoryImageName = self->_leadingAccessoryImageName;
   v23 = v20;
-  v24 = [(NSString *)leadingAccessoryImageName UTF8String];
-  if (v24)
+  uTF8String7 = [(NSString *)leadingAccessoryImageName UTF8String];
+  if (uTF8String7)
   {
-    xpc_dictionary_set_string(v23, "BUISKeyLAImageName", v24);
+    xpc_dictionary_set_string(v23, "BUISKeyLAImageName", uTF8String7);
   }
 
   leadingAccessoryImagePID = self->_leadingAccessoryImagePID;
@@ -196,26 +196,26 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
 
   trailingAccessoryImagePath = self->_trailingAccessoryImagePath;
   v27 = v23;
-  v28 = [(NSString *)trailingAccessoryImagePath UTF8String];
-  if (v28)
+  uTF8String8 = [(NSString *)trailingAccessoryImagePath UTF8String];
+  if (uTF8String8)
   {
-    xpc_dictionary_set_string(v27, "BUISKeyTAImagePath", v28);
+    xpc_dictionary_set_string(v27, "BUISKeyTAImagePath", uTF8String8);
   }
 
   trailingAccessoryImageName = self->_trailingAccessoryImageName;
   v30 = v27;
-  v31 = [(NSString *)trailingAccessoryImageName UTF8String];
-  if (v31)
+  uTF8String9 = [(NSString *)trailingAccessoryImageName UTF8String];
+  if (uTF8String9)
   {
-    xpc_dictionary_set_string(v30, "BUISKeyTAImageName", v31);
+    xpc_dictionary_set_string(v30, "BUISKeyTAImageName", uTF8String9);
   }
 
   trailingAccessoryText = self->_trailingAccessoryText;
   v33 = v30;
-  v34 = [(NSString *)trailingAccessoryText UTF8String];
-  if (v34)
+  uTF8String10 = [(NSString *)trailingAccessoryText UTF8String];
+  if (uTF8String10)
   {
-    xpc_dictionary_set_string(v33, "BUISKeyTAText", v34);
+    xpc_dictionary_set_string(v33, "BUISKeyTAText", uTF8String10);
   }
 
   backgroundColor = self->_backgroundColor;
@@ -244,22 +244,22 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
 
   bannerAppID = self->_bannerAppID;
   xdict = v33;
-  v40 = [(NSString *)bannerAppID UTF8String];
-  if (v40)
+  uTF8String11 = [(NSString *)bannerAppID UTF8String];
+  if (uTF8String11)
   {
-    xpc_dictionary_set_string(xdict, "BUISKeyBannerAppID", v40);
+    xpc_dictionary_set_string(xdict, "BUISKeyBannerAppID", uTF8String11);
   }
 }
 
-- (void)_xpcEvent:(id)a3
+- (void)_xpcEvent:(id)event
 {
-  v17 = a3;
+  eventCopy = event;
   if (MEMORY[0x245CE9330]() == MEMORY[0x277D86468])
   {
-    [(BTBannerUISession *)self _xpcConnectionMessage:v17];
+    [(BTBannerUISession *)self _xpcConnectionMessage:eventCopy];
   }
 
-  else if (v17 == MEMORY[0x277D863F8])
+  else if (eventCopy == MEMORY[0x277D863F8])
   {
     if (gLogCategory_BTBannerUISession <= 30 && (gLogCategory_BTBannerUISession != -1 || _LogCategory_Initialize()))
     {
@@ -277,7 +277,7 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
     self->_xpcConnection = 0;
   }
 
-  else if (v17 == MEMORY[0x277D863F0])
+  else if (eventCopy == MEMORY[0x277D863F0])
   {
     if (gLogCategory_BTBannerUISession <= 30 && (gLogCategory_BTBannerUISession != -1 || _LogCategory_Initialize()))
     {
@@ -333,9 +333,9 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_xpcCompleted:(id)a3
+- (void)_xpcCompleted:(id)completed
 {
-  v8 = a3;
+  completedCopy = completed;
   v4 = CUXPCDecodeNSErrorIfNeeded();
   if (v4)
   {
@@ -367,10 +367,10 @@ void __31__BTBannerUISession_invalidate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_xpcConnectionMessage:(id)a3
+- (void)_xpcConnectionMessage:(id)message
 {
-  v17 = a3;
-  int64 = xpc_dictionary_get_int64(v17, "BUISKeyType");
+  messageCopy = message;
+  int64 = xpc_dictionary_get_int64(messageCopy, "BUISKeyType");
   v5 = int64;
   if (int64 > 1)
   {
@@ -447,7 +447,7 @@ LABEL_31:
     }
 
     v10 = xpc_dictionary_expects_reply();
-    v11 = v17;
+    v11 = messageCopy;
     if (!v10)
     {
       goto LABEL_33;
@@ -455,7 +455,7 @@ LABEL_31:
 
     v12 = *MEMORY[0x277CCA590];
     v13 = NSErrorF();
-    [(BTBannerUISession *)self _xpcSendReplyError:v13 request:v17, 0];
+    [(BTBannerUISession *)self _xpcSendReplyError:v13 request:messageCopy, 0];
   }
 
 LABEL_21:
@@ -465,16 +465,16 @@ LABEL_21:
   }
 
   v10 = xpc_dictionary_expects_reply();
-  v11 = v17;
+  v11 = messageCopy;
   if (v10)
   {
     v14 = *MEMORY[0x277CCA590];
     v16 = v5;
     v7 = NSErrorF();
-    [(BTBannerUISession *)self _xpcSendReplyError:v7 request:v17, v16];
+    [(BTBannerUISession *)self _xpcSendReplyError:v7 request:messageCopy, v16];
 LABEL_32:
 
-    v11 = v17;
+    v11 = messageCopy;
   }
 
 LABEL_33:
@@ -482,14 +482,14 @@ LABEL_33:
   MEMORY[0x2821F96F8](v10, v11);
 }
 
-- (void)_xpcSendReplyError:(id)a3 request:(id)a4
+- (void)_xpcSendReplyError:(id)error request:(id)request
 {
-  v9 = a3;
-  v6 = a4;
+  errorCopy = error;
+  requestCopy = request;
   v7 = self->_xpcConnection;
   if (v7)
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(requestCopy);
     if (reply)
     {
       CUXPCEncodeNSError();

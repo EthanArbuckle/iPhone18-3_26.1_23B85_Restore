@@ -1,24 +1,24 @@
 @interface PLSMetadataUtilities
-+ (BOOL)_writeDetails:(id)a3 forEntityNamed:(id)a4 toFilepath:(id)a5 withDefaultFilename:(id)a6;
-+ (BOOL)initializeJSONFileAtPath:(id)a3;
-+ (id)_allAlbumsInPhotoLibrary:(id)a3;
-+ (id)_detailsForAlbum:(id)a3;
-+ (id)_detailsForAsset:(id)a3 includingLocal:(BOOL)a4 includingFingerprints:(BOOL)a5;
-+ (id)_normalizeObjectForJSON:(id)a3;
-+ (id)allAlbumsDetailsWriteToPath:(id)a3 inLibrary:(id)a4;
-+ (id)allAssetsDetailsWriteToPath:(id)a3 includingLocal:(BOOL)a4 includingFingerprints:(BOOL)a5 forAlbumTitled:(id)a6 library:(id)a7;
-+ (id)dictionaryFromManagedObject:(id)a3 excludeAttributes:(id)a4 includingRelationships:(id)a5 excludeRelationshipAttributes:(id)a6 andSubRelationships:(id)a7;
-+ (void)_writeJSONForObjectDetails:(id)a3 toFile:(id)a4;
-+ (void)serializeJSONFromObjectDetails:(id)a3 ToPath:(id)a4;
-+ (void)writeJSONData:(id)a3 toFile:(id)a4;
++ (BOOL)_writeDetails:(id)details forEntityNamed:(id)named toFilepath:(id)filepath withDefaultFilename:(id)filename;
++ (BOOL)initializeJSONFileAtPath:(id)path;
++ (id)_allAlbumsInPhotoLibrary:(id)library;
++ (id)_detailsForAlbum:(id)album;
++ (id)_detailsForAsset:(id)asset includingLocal:(BOOL)local includingFingerprints:(BOOL)fingerprints;
++ (id)_normalizeObjectForJSON:(id)n;
++ (id)allAlbumsDetailsWriteToPath:(id)path inLibrary:(id)library;
++ (id)allAssetsDetailsWriteToPath:(id)path includingLocal:(BOOL)local includingFingerprints:(BOOL)fingerprints forAlbumTitled:(id)titled library:(id)library;
++ (id)dictionaryFromManagedObject:(id)object excludeAttributes:(id)attributes includingRelationships:(id)relationships excludeRelationshipAttributes:(id)relationshipAttributes andSubRelationships:(id)subRelationships;
++ (void)_writeJSONForObjectDetails:(id)details toFile:(id)file;
++ (void)serializeJSONFromObjectDetails:(id)details ToPath:(id)path;
++ (void)writeJSONData:(id)data toFile:(id)file;
 @end
 
 @implementation PLSMetadataUtilities
 
-+ (id)allAlbumsDetailsWriteToPath:(id)a3 inLibrary:(id)a4
++ (id)allAlbumsDetailsWriteToPath:(id)path inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  libraryCopy = library;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -29,16 +29,16 @@
   v13 = 3221225472;
   v14 = __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_invoke;
   v15 = &unk_1E7576208;
-  v18 = a1;
-  v8 = v7;
+  selfCopy = self;
+  v8 = libraryCopy;
   v16 = v8;
   v17 = &v19;
   [v8 performBlockAndWait:&v12];
-  if (v6)
+  if (pathCopy)
   {
-    if (([a1 _writeDetails:v20[5] forEntityNamed:@"albums" toFilepath:v6 withDefaultFilename:@"allAlbumsMetadataDump.plist"] & 1) == 0)
+    if (([self _writeDetails:v20[5] forEntityNamed:@"albums" toFilepath:pathCopy withDefaultFilename:@"allAlbumsMetadataDump.plist"] & 1) == 0)
     {
-      NSLog(&cfstr_ThereWasAnErro_0.isa, v6, v12, v13, v14, v15);
+      NSLog(&cfstr_ThereWasAnErro_0.isa, pathCopy, v12, v13, v14, v15);
     }
 
     v9 = v20[5];
@@ -77,17 +77,17 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   objc_autoreleasePoolPop(v3);
 }
 
-+ (id)_detailsForAlbum:(id)a3
++ (id)_detailsForAlbum:(id)album
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  albumCopy = album;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 localizedTitle];
-  v7 = [v4 title];
-  v8 = [v4 cloudGUID];
-  if (v6)
+  localizedTitle = [albumCopy localizedTitle];
+  title = [albumCopy title];
+  cloudGUID = [albumCopy cloudGUID];
+  if (localizedTitle)
   {
-    v9 = v6;
+    v9 = localizedTitle;
   }
 
   else
@@ -96,9 +96,9 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   }
 
   [v5 setValue:v9 forKey:@"AlbumLocalizedTitle"];
-  if (v7)
+  if (title)
   {
-    v10 = v7;
+    v10 = title;
   }
 
   else
@@ -107,9 +107,9 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   }
 
   [v5 setValue:v10 forKey:@"AlbumTitle"];
-  if (v8)
+  if (cloudGUID)
   {
-    v11 = v8;
+    v11 = cloudGUID;
   }
 
   else
@@ -118,78 +118,78 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   }
 
   [v5 setValue:v11 forKey:@"AlbumCloudGUID"];
-  v12 = [v4 uuid];
-  [v5 setValue:v12 forKey:@"AlbumUUID"];
+  uuid = [albumCopy uuid];
+  [v5 setValue:uuid forKey:@"AlbumUUID"];
 
-  v13 = [v4 kind];
-  [v5 setValue:v13 forKey:@"AlbumKind"];
+  kind = [albumCopy kind];
+  [v5 setValue:kind forKey:@"AlbumKind"];
 
-  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isCameraAlbum")}];
+  v14 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isCameraAlbum")}];
   [v5 setValue:v14 forKey:@"AlbumIsCameraAlbum"];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isCloudSharedAlbum")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isCloudSharedAlbum")}];
   [v5 setValue:v15 forKey:@"AlbumIsCloudSharedAlbum"];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isDeleted")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isDeleted")}];
   [v5 setValue:v16 forKey:@"AlbumIsDeleted"];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isUpdated")}];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isUpdated")}];
   [v5 setValue:v17 forKey:@"AlbumIsUpdated"];
 
-  v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isEmpty")}];
+  v18 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isEmpty")}];
   [v5 setValue:v18 forKey:@"AlbumIsEmpty"];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isLibrary")}];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isLibrary")}];
   [v5 setValue:v19 forKey:@"AlbumIsLibrary"];
 
-  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isMultipleContributorCloudSharedAlbum")}];
+  v20 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isMultipleContributorCloudSharedAlbum")}];
   [v5 setValue:v20 forKey:@"AlbumIsMultipleContributorCloudSharedAlbum"];
 
-  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isOwnedCloudSharedAlbum")}];
+  v21 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isOwnedCloudSharedAlbum")}];
   [v5 setValue:v21 forKey:@"AlbumIsOwnedCloudSharedAlbum"];
 
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isOwnPhotoStreamAlbum")}];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isOwnPhotoStreamAlbum")}];
   [v5 setValue:v22 forKey:@"AlbumIsOwnPhotoStreamAlbum"];
 
-  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isPanoramasAlbum")}];
+  v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isPanoramasAlbum")}];
   [v5 setValue:v23 forKey:@"AlbumIsPanoramasAlbum"];
 
-  v24 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isPendingPhotoStreamAlbum")}];
+  v24 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isPendingPhotoStreamAlbum")}];
   [v5 setValue:v24 forKey:@"AlbumIsPendingPhotoStreamAlbum"];
 
-  v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isPhotoStreamAlbum")}];
+  v25 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isPhotoStreamAlbum")}];
   [v5 setValue:v25 forKey:@"AlbumIsPhotoStreamAlbum"];
 
-  v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isSmartAlbum")}];
+  v26 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isSmartAlbum")}];
   [v5 setValue:v26 forKey:@"AlbumIsSmartAlbum"];
 
-  v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isStandInAlbum")}];
+  v27 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isStandInAlbum")}];
   [v5 setValue:v27 forKey:@"AlbumIsStandInAlbum"];
 
-  v28 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "isFolder")}];
+  v28 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(albumCopy, "isFolder")}];
   [v5 setValue:v28 forKey:@"AlbumIsFolder"];
 
   v29 = MEMORY[0x1E696AD98];
-  v30 = [v4 assetsCount];
+  assetsCount = [albumCopy assetsCount];
 
-  v31 = [v29 numberWithUnsignedInteger:v30];
+  v31 = [v29 numberWithUnsignedInteger:assetsCount];
   [v5 setValue:v31 forKey:@"AlbumAssetsCount"];
 
   return v5;
 }
 
-+ (id)allAssetsDetailsWriteToPath:(id)a3 includingLocal:(BOOL)a4 includingFingerprints:(BOOL)a5 forAlbumTitled:(id)a6 library:(id)a7
++ (id)allAssetsDetailsWriteToPath:(id)path includingLocal:(BOOL)local includingFingerprints:(BOOL)fingerprints forAlbumTitled:(id)titled library:(id)library
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  pathCopy = path;
+  titledCopy = titled;
+  libraryCopy = library;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
-  if ([v12 length])
+  if ([pathCopy length])
   {
-    v15 = [v12 pathExtension];
-    v16 = [v15 caseInsensitiveCompare:@"json"] == 0;
+    pathExtension = [pathCopy pathExtension];
+    v16 = [pathExtension caseInsensitiveCompare:@"json"] == 0;
   }
 
   else
@@ -213,18 +213,18 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   v25 = 3221225472;
   v26 = __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_includingFingerprints_forAlbumTitled_library___block_invoke;
   v27 = &unk_1E7566048;
-  v35 = a1;
-  v18 = v14;
+  selfCopy = self;
+  v18 = libraryCopy;
   v28 = v18;
-  v19 = v13;
+  v19 = titledCopy;
   v29 = v19;
   v20 = v17;
-  v36 = a4;
-  v37 = a5;
+  localCopy = local;
+  fingerprintsCopy = fingerprints;
   v30 = v20;
   v32 = &v46;
   v33 = v44;
-  v21 = v12;
+  v21 = pathCopy;
   v31 = v21;
   v34 = &v38;
   [v18 performBlockAndWait:&v24];
@@ -236,7 +236,7 @@ void __62__PLSMetadataUtilities_allAlbumsDetailsWriteToPath_inLibrary___block_in
   else
   {
     v22 = [v39[5] sortedArrayUsingComparator:&__block_literal_global_6449];
-    if ([v21 length] && (objc_msgSend(a1, "_writeDetails:forEntityNamed:toFilepath:withDefaultFilename:", v22, @"assets", v21, @"allAssetsMetadataDump.plist") & 1) == 0)
+    if ([v21 length] && (objc_msgSend(self, "_writeDetails:forEntityNamed:toFilepath:withDefaultFilename:", v22, @"assets", v21, @"allAssetsMetadataDump.plist") & 1) == 0)
     {
       NSLog(&cfstr_ThereWasAnErro_0.isa, v21, v24, v25, v26, v27, v28, v29, v30);
     }
@@ -417,46 +417,46 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
   objc_autoreleasePoolPop(v3);
 }
 
-+ (void)serializeJSONFromObjectDetails:(id)a3 ToPath:(id)a4
++ (void)serializeJSONFromObjectDetails:(id)details ToPath:(id)path
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 _normalizeObjectForJSON:a3];
+  pathCopy = path;
+  v7 = [self _normalizeObjectForJSON:details];
   v9[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-  [a1 _writeJSONForObjectDetails:v8 toFile:v6];
+  [self _writeJSONForObjectDetails:v8 toFile:pathCopy];
 }
 
-+ (BOOL)initializeJSONFileAtPath:(id)a3
++ (BOOL)initializeJSONFileAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [@"{\n" dataUsingEncoding:4];
   v10 = 0;
-  v5 = [v4 writeToFile:v3 options:1073741825 error:&v10];
+  v5 = [v4 writeToFile:pathCopy options:1073741825 error:&v10];
 
   v6 = v10;
   v7 = v6;
   if ((v5 & 1) == 0)
   {
-    v8 = [v6 localizedDescription];
-    NSLog(&cfstr_ThereWasAnErro.isa, v8);
+    localizedDescription = [v6 localizedDescription];
+    NSLog(&cfstr_ThereWasAnErro.isa, localizedDescription);
   }
 
   return v5;
 }
 
-+ (void)_writeJSONForObjectDetails:(id)a3 toFile:(id)a4
++ (void)_writeJSONForObjectDetails:(id)details toFile:(id)file
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v18 = a4;
+  detailsCopy = details;
+  fileCopy = file;
   v6 = [MEMORY[0x1E695DF88] dataWithCapacity:0];
-  v7 = [v5 lastObject];
+  lastObject = [detailsCopy lastObject];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = detailsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -477,7 +477,7 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
         v15 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v13 options:1 error:0];
         [v6 appendData:v15];
 
-        if (v13 != v7)
+        if (v13 != lastObject)
         {
           v16 = [@" \n"];
           [v6 appendData:v16];
@@ -494,60 +494,60 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
     while (v10);
   }
 
-  [a1 writeJSONData:v6 toFile:v18];
+  [self writeJSONData:v6 toFile:fileCopy];
 }
 
-+ (void)writeJSONData:(id)a3 toFile:(id)a4
++ (void)writeJSONData:(id)data toFile:(id)file
 {
   v5 = MEMORY[0x1E696AC00];
-  v6 = a3;
-  v7 = [v5 fileHandleForUpdatingAtPath:a4];
+  dataCopy = data;
+  v7 = [v5 fileHandleForUpdatingAtPath:file];
   [v7 seekToEndOfFile];
-  [v7 writeData:v6];
+  [v7 writeData:dataCopy];
 
   [v7 closeFile];
 }
 
-+ (id)_detailsForAsset:(id)a3 includingLocal:(BOOL)a4 includingFingerprints:(BOOL)a5
++ (id)_detailsForAsset:(id)asset includingLocal:(BOOL)local includingFingerprints:(BOOL)fingerprints
 {
-  v74 = a5;
-  v5 = a4;
+  fingerprintsCopy = fingerprints;
+  localCopy = local;
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  assetCopy = asset;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = [v6 entity];
-  v9 = [v8 relationshipsByName];
+  entity = [assetCopy entity];
+  relationshipsByName = [entity relationshipsByName];
   v85[0] = MEMORY[0x1E69E9820];
   v85[1] = 3221225472;
   v85[2] = __78__PLSMetadataUtilities__detailsForAsset_includingLocal_includingFingerprints___block_invoke;
   v85[3] = &unk_1E75746B8;
-  v10 = v6;
+  v10 = assetCopy;
   v86 = v10;
-  [v9 enumerateKeysAndObjectsUsingBlock:v85];
+  [relationshipsByName enumerateKeysAndObjectsUsingBlock:v85];
 
-  v11 = [v10 cloudAssetGUID];
-  v12 = [v10 uuid];
-  v76 = v11;
-  v77 = v12;
-  if (v11)
+  cloudAssetGUID = [v10 cloudAssetGUID];
+  uuid = [v10 uuid];
+  v76 = cloudAssetGUID;
+  v77 = uuid;
+  if (cloudAssetGUID)
   {
-    v13 = v11;
+    v13 = cloudAssetGUID;
   }
 
   else
   {
-    v13 = v12;
+    v13 = uuid;
   }
 
   [v7 setValue:v13 forKey:@"AssetCloudOrLocalID"];
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [v10 dateCreated];
-  v16 = [v14 stringWithFormat:@"%@", v15];
+  dateCreated = [v10 dateCreated];
+  v16 = [v14 stringWithFormat:@"%@", dateCreated];
   [v7 setValue:v16 forKey:@"AssetDateCreated"];
 
   v17 = MEMORY[0x1E696AEC0];
-  v18 = [v10 modificationDate];
-  v19 = [v17 stringWithFormat:@"%@", v18];
+  modificationDate = [v10 modificationDate];
+  v19 = [v17 stringWithFormat:@"%@", modificationDate];
   [v7 setValue:v19 forKey:@"AssetModificationDate"];
 
   v20 = MEMORY[0x1E696AD98];
@@ -570,38 +570,38 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
   v26 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v10, "width")}];
   [v7 setValue:v26 forKey:@"AssetWidth"];
 
-  v27 = [v10 directory];
-  v28 = [v10 filename];
-  v29 = [v27 stringByAppendingPathComponent:v28];
+  directory = [v10 directory];
+  filename = [v10 filename];
+  v29 = [directory stringByAppendingPathComponent:filename];
 
-  v30 = [v10 managedObjectContext];
-  v31 = [v30 pathManager];
-  v32 = [v31 photoDirectoryWithType:1];
+  managedObjectContext = [v10 managedObjectContext];
+  pathManager = [managedObjectContext pathManager];
+  v32 = [pathManager photoDirectoryWithType:1];
   v72 = v29;
   v33 = [v32 stringByAppendingPathComponent:v29];
 
-  v34 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v71 = v33;
-  v35 = [v34 fileExistsAtPath:v33];
+  v35 = [defaultManager fileExistsAtPath:v33];
 
   v36 = [MEMORY[0x1E696AD98] numberWithBool:v35];
   [v7 setValue:v36 forKey:@"AssetExistsOnDisk"];
 
-  v73 = v5;
-  if (v5)
+  v73 = localCopy;
+  if (localCopy)
   {
-    v37 = [v10 filename];
-    [v7 setValue:v37 forKey:@"AssetFilename"];
+    filename2 = [v10 filename];
+    [v7 setValue:filename2 forKey:@"AssetFilename"];
 
-    v38 = [v10 directory];
-    [v7 setValue:v38 forKey:@"AssetDirectory"];
+    directory2 = [v10 directory];
+    [v7 setValue:directory2 forKey:@"AssetDirectory"];
   }
 
-  v39 = [v10 location];
-  v40 = v39;
-  if (v39)
+  location = [v10 location];
+  v40 = location;
+  if (location)
   {
-    [v39 coordinate];
+    [location coordinate];
     v42 = v41;
     v43 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [v7 setValue:v43 forKey:@"AssetLocationLatitude"];
@@ -611,13 +611,13 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
   }
 
   v70 = v40;
-  v45 = [v10 albums];
-  v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v45, "count")}];
+  albums = [v10 albums];
+  v46 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(albums, "count")}];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v47 = v45;
+  v47 = albums;
   v48 = [v47 countByEnumeratingWithState:&v81 objects:v87 count:16];
   if (v48)
   {
@@ -632,8 +632,8 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v81 + 1) + 8 * i) localizedTitle];
-        [v46 addObject:v52];
+        localizedTitle = [*(*(&v81 + 1) + 8 * i) localizedTitle];
+        [v46 addObject:localizedTitle];
       }
 
       v49 = [v47 countByEnumeratingWithState:&v81 objects:v87 count:16];
@@ -643,24 +643,24 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
   }
 
   [v7 setValue:v46 forKey:@"AssetAlbums"];
-  v53 = [v10 additionalAttributes];
-  v54 = [v53 entity];
+  additionalAttributes = [v10 additionalAttributes];
+  entity2 = [additionalAttributes entity];
 
-  v55 = [v54 relationshipsByName];
+  relationshipsByName2 = [entity2 relationshipsByName];
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
   v79[2] = __78__PLSMetadataUtilities__detailsForAsset_includingLocal_includingFingerprints___block_invoke_2;
   v79[3] = &unk_1E75746B8;
-  v56 = v53;
+  v56 = additionalAttributes;
   v80 = v56;
-  [v55 enumerateKeysAndObjectsUsingBlock:v79];
+  [relationshipsByName2 enumerateKeysAndObjectsUsingBlock:v79];
 
-  v57 = [v10 master];
-  v58 = v57;
-  if (v57)
+  master = [v10 master];
+  v58 = master;
+  if (master)
   {
-    v59 = [v57 scopedIdentifier];
-    [v7 setValue:v59 forKey:@"AssetCloudMasterGUID"];
+    scopedIdentifier = [master scopedIdentifier];
+    [v7 setValue:scopedIdentifier forKey:@"AssetCloudMasterGUID"];
   }
 
   else
@@ -684,19 +684,19 @@ void __112__PLSMetadataUtilities_allAssetsDetailsWriteToPath_includingLocal_incl
     [v7 setValue:v63 forKey:@"AssetCloudLocalState"];
   }
 
-  if (v74)
+  if (fingerprintsCopy)
   {
-    v64 = [v10 mainFileURL];
-    if (v64)
+    mainFileURL = [v10 mainFileURL];
+    if (mainFileURL)
     {
       [MEMORY[0x1E6994AE0] fingerprintSchemeForStableHash];
       v75 = v56;
-      v66 = v65 = v54;
+      v66 = v65 = entity2;
       v78 = 0;
-      v67 = [v66 fingerPrintForFileAtURL:v64 error:&v78];
+      v67 = [v66 fingerPrintForFileAtURL:mainFileURL error:&v78];
       v68 = v78;
 
-      v54 = v65;
+      entity2 = v65;
       v56 = v75;
       if (v67)
       {
@@ -757,16 +757,16 @@ void __78__PLSMetadataUtilities__detailsForAsset_includingLocal_includingFingerp
   }
 }
 
-+ (id)_normalizeObjectForJSON:(id)a3
++ (id)_normalizeObjectForJSON:(id)n
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 base64EncodedStringWithOptions:1];
+    v5 = [nCopy base64EncodedStringWithOptions:1];
 LABEL_3:
-    v6 = v5;
+    dictionary = v5;
     goto LABEL_24;
   }
 
@@ -777,7 +777,7 @@ LABEL_3:
     [v7 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
     v8 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
     [v7 setTimeZone:v8];
-    v6 = [v7 stringFromDate:v4];
+    dictionary = [v7 stringFromDate:nCopy];
 
     goto LABEL_24;
   }
@@ -785,13 +785,13 @@ LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = [v4 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    allKeys = [nCopy allKeys];
+    v10 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v10)
     {
       v11 = v10;
@@ -802,16 +802,16 @@ LABEL_3:
         {
           if (*v30 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v29 + 1) + 8 * i);
-          v15 = [v4 objectForKeyedSubscript:v14];
-          v16 = [a1 _normalizeObjectForJSON:v15];
-          [(__CFString *)v6 setObject:v16 forKeyedSubscript:v14];
+          v15 = [nCopy objectForKeyedSubscript:v14];
+          v16 = [self _normalizeObjectForJSON:v15];
+          [(__CFString *)dictionary setObject:v16 forKeyedSubscript:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v11);
@@ -825,13 +825,13 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    dictionary = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = v4;
-    v17 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    allKeys = nCopy;
+    v17 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -842,14 +842,14 @@ LABEL_23:
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys);
           }
 
-          v21 = [a1 _normalizeObjectForJSON:{*(*(&v25 + 1) + 8 * j), v25}];
-          [(__CFString *)v6 addObject:v21];
+          v21 = [self _normalizeObjectForJSON:{*(*(&v25 + 1) + 8 * j), v25}];
+          [(__CFString *)dictionary addObject:v21];
         }
 
-        v18 = [v9 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v18 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v18);
@@ -865,54 +865,54 @@ LABEL_23:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 || ([MEMORY[0x1E695DFB0] null], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v4, "isEqual:", v23), v23, v24))
+  if ((objc_opt_isKindOfClass() & 1) != 0 || ([MEMORY[0x1E695DFB0] null], v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(nCopy, "isEqual:", v23), v23, v24))
   {
-    v5 = v4;
+    v5 = nCopy;
     goto LABEL_3;
   }
 
   if (objc_opt_respondsToSelector())
   {
 LABEL_28:
-    v5 = [v4 description];
+    v5 = [nCopy description];
     goto LABEL_3;
   }
 
-  v6 = @"non-normalized value";
+  dictionary = @"non-normalized value";
 LABEL_24:
 
-  return v6;
+  return dictionary;
 }
 
-+ (id)dictionaryFromManagedObject:(id)a3 excludeAttributes:(id)a4 includingRelationships:(id)a5 excludeRelationshipAttributes:(id)a6 andSubRelationships:(id)a7
++ (id)dictionaryFromManagedObject:(id)object excludeAttributes:(id)attributes includingRelationships:(id)relationships excludeRelationshipAttributes:(id)relationshipAttributes andSubRelationships:(id)subRelationships
 {
   v87 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  objectCopy = object;
+  attributesCopy = attributes;
+  relationshipsCopy = relationships;
+  relationshipAttributesCopy = relationshipAttributes;
+  subRelationshipsCopy = subRelationships;
+  if (objectCopy)
   {
-    v64 = v15;
-    v17 = [v12 entity];
-    v56 = [v17 relationshipsByName];
+    v64 = relationshipAttributesCopy;
+    entity = [objectCopy entity];
+    relationshipsByName = [entity relationshipsByName];
 
-    v18 = [v12 entity];
-    v19 = [v18 attributesByName];
+    entity2 = [objectCopy entity];
+    attributesByName = [entity2 attributesByName];
 
-    v55 = v19;
-    v20 = [v19 allKeys];
-    v21 = [v20 mutableCopy];
+    v55 = attributesByName;
+    allKeys = [attributesByName allKeys];
+    v21 = [allKeys mutableCopy];
 
-    v57 = v13;
-    if (v13)
+    v57 = attributesCopy;
+    if (attributesCopy)
     {
       v82 = 0u;
       v83 = 0u;
       v80 = 0u;
       v81 = 0u;
-      v22 = v13;
+      v22 = attributesCopy;
       v23 = [v22 countByEnumeratingWithState:&v80 objects:v86 count:16];
       if (v23)
       {
@@ -937,27 +937,27 @@ LABEL_24:
       }
     }
 
-    v27 = [v12 dictionaryWithValuesForKeys:v21];
+    v27 = [objectCopy dictionaryWithValuesForKeys:v21];
     v60 = [v27 mutableCopy];
 
-    if (v14)
+    if (relationshipsCopy)
     {
-      v53 = [v12 entity];
-      v28 = [v53 relationshipsByName];
+      entity3 = [objectCopy entity];
+      relationshipsByName2 = [entity3 relationshipsByName];
       v78[0] = MEMORY[0x1E69E9820];
       v78[1] = 3221225472;
       v78[2] = __143__PLSMetadataUtilities_dictionaryFromManagedObject_excludeAttributes_includingRelationships_excludeRelationshipAttributes_andSubRelationships___block_invoke;
       v78[3] = &unk_1E75746B8;
-      v54 = v12;
-      v29 = v12;
+      v54 = objectCopy;
+      v29 = objectCopy;
       v79 = v29;
-      [v28 enumerateKeysAndObjectsUsingBlock:v78];
+      [relationshipsByName2 enumerateKeysAndObjectsUsingBlock:v78];
 
       v76 = 0u;
       v77 = 0u;
       v74 = 0u;
       v75 = 0u;
-      obj = [v56 allKeys];
+      obj = [relationshipsByName allKeys];
       v30 = [obj countByEnumeratingWithState:&v74 objects:v85 count:16];
       if (!v30)
       {
@@ -967,9 +967,9 @@ LABEL_24:
       v31 = v30;
       v32 = *v75;
       v62 = v21;
-      v63 = v14;
+      v63 = relationshipsCopy;
       v58 = v29;
-      v59 = v16;
+      v59 = subRelationshipsCopy;
       v61 = *v75;
       while (1)
       {
@@ -983,11 +983,11 @@ LABEL_24:
           }
 
           v34 = *(*(&v74 + 1) + 8 * v33);
-          if ([v14 containsObject:v34])
+          if ([relationshipsCopy containsObject:v34])
           {
-            if (v16)
+            if (subRelationshipsCopy)
             {
-              v35 = [v16 objectForKey:v34];
+              v35 = [subRelationshipsCopy objectForKey:v34];
             }
 
             else
@@ -995,7 +995,7 @@ LABEL_24:
               v35 = 0;
             }
 
-            v36 = v16;
+            v36 = subRelationshipsCopy;
             if (v64)
             {
               v37 = [v64 objectForKey:v34];
@@ -1006,16 +1006,16 @@ LABEL_24:
               v37 = 0;
             }
 
-            v38 = [v29 entity];
-            v39 = [v38 relationshipsByName];
-            v40 = [v39 objectForKey:v34];
+            entity4 = [v29 entity];
+            relationshipsByName3 = [entity4 relationshipsByName];
+            v40 = [relationshipsByName3 objectForKey:v34];
 
             v69 = v40;
-            LOBYTE(v38) = [v40 isToMany];
+            LOBYTE(entity4) = [v40 isToMany];
             v68 = v34;
             v41 = [v29 valueForKey:v34];
             v42 = v41;
-            if (v38)
+            if (entity4)
             {
               v43 = v41;
               v44 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1039,7 +1039,7 @@ LABEL_24:
                       objc_enumerationMutation(v45);
                     }
 
-                    v50 = [a1 dictionaryFromManagedObject:*(*(&v70 + 1) + 8 * j) excludeAttributes:v37 includingRelationships:v35 excludeRelationshipAttributes:0 andSubRelationships:0];
+                    v50 = [self dictionaryFromManagedObject:*(*(&v70 + 1) + 8 * j) excludeAttributes:v37 includingRelationships:v35 excludeRelationshipAttributes:0 andSubRelationships:0];
                     [v44 addObject:v50];
                   }
 
@@ -1050,9 +1050,9 @@ LABEL_24:
               }
 
               v21 = v62;
-              v14 = v63;
+              relationshipsCopy = v63;
               v29 = v58;
-              v16 = v59;
+              subRelationshipsCopy = v59;
               v51 = v69;
 LABEL_35:
               [v60 setObject:v44 forKey:v68];
@@ -1063,13 +1063,13 @@ LABEL_35:
             else
             {
               v51 = v40;
-              v16 = v36;
+              subRelationshipsCopy = v36;
               v21 = v62;
-              v14 = v63;
+              relationshipsCopy = v63;
               if (v41)
               {
                 v67 = v41;
-                v44 = [a1 dictionaryFromManagedObject:v41 excludeAttributes:v37 includingRelationships:v35 excludeRelationshipAttributes:0 andSubRelationships:0];
+                v44 = [self dictionaryFromManagedObject:v41 excludeAttributes:v37 includingRelationships:v35 excludeRelationshipAttributes:0 andSubRelationships:0];
                 goto LABEL_35;
               }
             }
@@ -1087,14 +1087,14 @@ LABEL_35:
         {
 LABEL_39:
 
-          v12 = v54;
+          objectCopy = v54;
           break;
         }
       }
     }
 
-    v13 = v57;
-    v15 = v64;
+    attributesCopy = v57;
+    relationshipAttributesCopy = v64;
   }
 
   else
@@ -1123,9 +1123,9 @@ void __143__PLSMetadataUtilities_dictionaryFromManagedObject_excludeAttributes_i
   }
 }
 
-+ (id)_allAlbumsInPhotoLibrary:(id)a3
++ (id)_allAlbumsInPhotoLibrary:(id)library
 {
-  v3 = [a3 managedObjectContext];
+  managedObjectContext = [library managedObjectContext];
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLGenericAlbum entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
@@ -1135,7 +1135,7 @@ void __143__PLSMetadataUtilities_dictionaryFromManagedObject_excludeAttributes_i
   [v6 setSortDescriptors:v8];
 
   v13 = 0;
-  v9 = [v3 executeFetchRequest:v6 error:&v13];
+  v9 = [managedObjectContext executeFetchRequest:v6 error:&v13];
   v10 = v13;
   v11 = v10;
   if (!v9)
@@ -1146,40 +1146,40 @@ void __143__PLSMetadataUtilities_dictionaryFromManagedObject_excludeAttributes_i
   return v9;
 }
 
-+ (BOOL)_writeDetails:(id)a3 forEntityNamed:(id)a4 toFilepath:(id)a5 withDefaultFilename:(id)a6
++ (BOOL)_writeDetails:(id)details forEntityNamed:(id)named toFilepath:(id)filepath withDefaultFilename:(id)filename
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (![v11 length])
+  detailsCopy = details;
+  namedCopy = named;
+  filepathCopy = filepath;
+  filenameCopy = filename;
+  if (![filepathCopy length])
   {
     v19 = 0;
     goto LABEL_13;
   }
 
-  v13 = [MEMORY[0x1E695DF20] dictionaryWithObject:v9 forKey:v10];
-  v14 = [v11 pathExtension];
-  v15 = [v14 isEqualToString:@"json"];
-  if ([v14 isEqual:&stru_1F0F06D80])
+  v13 = [MEMORY[0x1E695DF20] dictionaryWithObject:detailsCopy forKey:namedCopy];
+  pathExtension = [filepathCopy pathExtension];
+  v15 = [pathExtension isEqualToString:@"json"];
+  if ([pathExtension isEqual:&stru_1F0F06D80])
   {
     v25 = 0;
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
-    v17 = [v16 fileExistsAtPath:v11 isDirectory:&v25];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v17 = [defaultManager fileExistsAtPath:filepathCopy isDirectory:&v25];
 
     if (!v17)
     {
-      v18 = [v11 stringByAppendingPathExtension:@"plist"];
+      v18 = [filepathCopy stringByAppendingPathExtension:@"plist"];
       goto LABEL_8;
     }
 
     if (v25 == 1)
     {
-      v18 = [v11 stringByAppendingPathComponent:v12];
+      v18 = [filepathCopy stringByAppendingPathComponent:filenameCopy];
 LABEL_8:
       v20 = v18;
 
-      v11 = v20;
+      filepathCopy = v20;
     }
   }
 
@@ -1195,7 +1195,7 @@ LABEL_8:
   }
 
   v22 = v21;
-  v19 = [v21 writeToFile:v11 options:1073741825 error:0];
+  v19 = [v21 writeToFile:filepathCopy options:1073741825 error:0];
 
 LABEL_13:
   return v19;

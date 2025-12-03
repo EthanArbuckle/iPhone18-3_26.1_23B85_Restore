@@ -1,11 +1,11 @@
 @interface RCAppContainerHandle
-- (id)init:(id *)a3;
+- (id)init:(id *)init;
 - (void)dealloc;
 @end
 
 @implementation RCAppContainerHandle
 
-- (id)init:(id *)a3
+- (id)init:(id *)init
 {
   v22.receiver = self;
   v22.super_class = RCAppContainerHandle;
@@ -20,7 +20,7 @@
   v6 = RCVoiceMemosBundleID;
   if (!container_query_create())
   {
-    sub_100008B60(1, 0, a3);
+    sub_100008B60(1, 0, init);
 LABEL_25:
 
 LABEL_26:
@@ -61,7 +61,7 @@ LABEL_26:
       v15 = 0;
     }
 
-    sub_100008B60(2, v14, a3);
+    sub_100008B60(2, v14, init);
 
     container_query_free();
     goto LABEL_25;
@@ -72,7 +72,7 @@ LABEL_26:
   v8 = container_copy_sandbox_token();
   if (!v8)
   {
-    sub_100008B60(4, 0, a3);
+    sub_100008B60(4, 0, init);
 LABEL_14:
     v5->_sandboxHandle = -1;
     goto LABEL_18;
@@ -87,7 +87,7 @@ LABEL_14:
     v24 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
 
-    sub_100008B60(5, v17, a3);
+    sub_100008B60(5, v17, init);
     free(v9);
     goto LABEL_14;
   }
@@ -103,7 +103,7 @@ LABEL_14:
 
   else
   {
-    sub_100008B60(3, 0, a3);
+    sub_100008B60(3, 0, init);
     v13 = 0;
   }
 

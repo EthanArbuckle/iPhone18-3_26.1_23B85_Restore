@@ -1,18 +1,18 @@
 @interface ATXPBERMEvent
 + (uint64_t)clientModelIdType;
 - (BOOL)hasExecutable;
-- (BOOL)isEqual:(id)a3;
-- (__CFString)eventTypeAsString:(__CFString *)a1;
-- (__CFString)executableTypeAsString:(__CFString *)a1;
+- (BOOL)isEqual:(id)equal;
+- (__CFString)eventTypeAsString:(__CFString *)string;
+- (__CFString)executableTypeAsString:(__CFString *)string;
 - (double)dateEngaged;
 - (double)eventDate;
-- (id)clientModelIdAtIndex:(id *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)clientModelIdAtIndex:(id *)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)StringAsEventType:(uint64_t)a1;
-- (uint64_t)StringAsExecutableType:(uint64_t)a1;
-- (uint64_t)addClientModelId:(uint64_t)a1;
+- (uint64_t)StringAsEventType:(uint64_t)type;
+- (uint64_t)StringAsExecutableType:(uint64_t)type;
+- (uint64_t)addClientModelId:(uint64_t)id;
 - (uint64_t)clearClientModelIds;
 - (uint64_t)clientModelIds;
 - (uint64_t)clientModelIdsCount;
@@ -36,11 +36,11 @@
 - (uint64_t)setHasEventType:(uint64_t)result;
 - (uint64_t)setHasExecutableType:(uint64_t)result;
 - (unint64_t)hash;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setClientModelIds:(uint64_t)a1;
-- (void)setExecutable:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setClientModelIds:(uint64_t)ids;
+- (void)setExecutable:(uint64_t)executable;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBERMEvent
@@ -58,20 +58,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBERMEvent;
   v4 = [(ATXPBERMEvent *)&v8 description];
-  v5 = [(ATXPBERMEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBERMEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_eventDate];
-    [v3 setObject:v5 forKey:@"eventDate"];
+    [dictionary setObject:v5 forKey:@"eventDate"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -110,7 +110,7 @@ LABEL_3:
     v7 = @"Unknown";
   }
 
-  [v3 setObject:v7 forKey:@"eventType"];
+  [dictionary setObject:v7 forKey:@"eventType"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -126,7 +126,7 @@ LABEL_4:
 
 LABEL_14:
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateEngaged];
-  [v3 setObject:v8 forKey:@"dateEngaged"];
+  [dictionary setObject:v8 forKey:@"dateEngaged"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -142,7 +142,7 @@ LABEL_5:
 
 LABEL_15:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_engagementType];
-  [v3 setObject:v9 forKey:@"engagementType"];
+  [dictionary setObject:v9 forKey:@"engagementType"];
 
   if ((*&self->_has & 0x10) == 0)
   {
@@ -161,28 +161,28 @@ LABEL_16:
     v11 = off_1E80C1A20[executableType];
   }
 
-  [v3 setObject:v11 forKey:@"executableType"];
+  [dictionary setObject:v11 forKey:@"executableType"];
 
 LABEL_20:
   executable = self->_executable;
   if (executable)
   {
-    [v3 setObject:executable forKey:@"executable"];
+    [dictionary setObject:executable forKey:@"executable"];
   }
 
   clientModelIds = self->_clientModelIds;
   if (clientModelIds)
   {
-    [v3 setObject:clientModelIds forKey:@"clientModelId"];
+    [dictionary setObject:clientModelIds forKey:@"clientModelId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -275,10 +275,10 @@ LABEL_7:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -343,7 +343,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(NSData *)self->_executable copyWithZone:a3];
+  v8 = [(NSData *)self->_executable copyWithZone:zone];
   v9 = v6[6];
   v6[6] = v8;
 
@@ -366,7 +366,7 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * i) copyWithZone:{zone, v17}];
         [(ATXPBERMEvent *)v6 addClientModelId:v15];
       }
 
@@ -379,23 +379,23 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_eventDate != *(v4 + 3))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_eventDate != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
 LABEL_31:
     v7 = 0;
@@ -404,64 +404,64 @@ LABEL_31:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_eventType != *(v4 + 10))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_eventType != *(equalCopy + 10))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_dateEngaged != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_dateEngaged != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_engagementType != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_engagementType != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0 || self->_executableType != *(v4 + 14))
+    if ((*(equalCopy + 60) & 0x10) == 0 || self->_executableType != *(equalCopy + 14))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   executable = self->_executable;
-  if (executable | *(v4 + 6) && ![(NSData *)executable isEqual:?])
+  if (executable | *(equalCopy + 6) && ![(NSData *)executable isEqual:?])
   {
     goto LABEL_31;
   }
 
   clientModelIds = self->_clientModelIds;
-  if (clientModelIds | *(v4 + 4))
+  if (clientModelIds | *(equalCopy + 4))
   {
     v7 = [(NSMutableArray *)clientModelIds isEqual:?];
   }
@@ -684,51 +684,51 @@ LABEL_22:
   return result;
 }
 
-- (__CFString)eventTypeAsString:(__CFString *)a1
+- (__CFString)eventTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_11:
 
-    return a1;
+    return string;
   }
 
   if (a2)
   {
     if (a2 == 1)
     {
-      a1 = @"AddedEntry";
+      string = @"AddedEntry";
 
-      return a1;
+      return string;
     }
 
-    a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+    string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
     goto LABEL_11;
   }
 
-  a1 = @"Unknown";
+  string = @"Unknown";
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsEventType:(uint64_t)a1
+- (uint64_t)StringAsEventType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     if ([v3 isEqualToString:@"Unknown"])
     {
-      a1 = 0;
+      type = 0;
     }
 
     else
     {
-      a1 = [v4 isEqualToString:@"AddedEntry"];
+      type = [v4 isEqualToString:@"AddedEntry"];
     }
   }
 
-  return a1;
+  return type;
 }
 
 - (uint64_t)setDateEngaged:(uint64_t)result
@@ -862,31 +862,31 @@ LABEL_11:
   return result;
 }
 
-- (__CFString)executableTypeAsString:(__CFString *)a1
+- (__CFString)executableTypeAsString:(__CFString *)string
 {
-  if (!a1)
+  if (!string)
   {
 LABEL_4:
 
-    return a1;
+    return string;
   }
 
   if (a2 < 6)
   {
-    a1 = off_1E80C1A20[a2];
+    string = off_1E80C1A20[a2];
     goto LABEL_4;
   }
 
-  a1 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
+  string = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", a2];
 
-  return a1;
+  return string;
 }
 
-- (uint64_t)StringAsExecutableType:(uint64_t)a1
+- (uint64_t)StringAsExecutableType:(uint64_t)type
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (type)
   {
     v5 = v3;
     if ([v5 isEqualToString:@"unknown"])
@@ -953,21 +953,21 @@ LABEL_4:
   return result;
 }
 
-- (uint64_t)addClientModelId:(uint64_t)a1
+- (uint64_t)addClientModelId:(uint64_t)id
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (id)
   {
-    v5 = *(a1 + 32);
+    v5 = *(id + 32);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 32);
-      *(a1 + 32) = v6;
+      v7 = *(id + 32);
+      *(id + 32) = v6;
 
-      v5 = *(a1 + 32);
+      v5 = *(id + 32);
     }
 
     v3 = [v5 addObject:v9];
@@ -987,21 +987,21 @@ LABEL_4:
   return result;
 }
 
-- (id)clientModelIdAtIndex:(id *)a1
+- (id)clientModelIdAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[4] objectAtIndex:a2];
+    index = [index[4] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v13 = a2;
-  if (!a1)
+  if (!to)
   {
     goto LABEL_19;
   }
@@ -1009,7 +1009,7 @@ LABEL_4:
   OUTLINED_FUNCTION_0_14();
   if ((v5 & 4) != 0)
   {
-    *(v13 + 3) = *(a1 + 24);
+    *(v13 + 3) = *(to + 24);
     *(v13 + v4) |= 4u;
     OUTLINED_FUNCTION_0_14();
     if ((v5 & 8) == 0)
@@ -1024,7 +1024,7 @@ LABEL_4:
   if ((v5 & 8) != 0)
   {
 LABEL_6:
-    v6[10] = *(a1 + 40);
+    v6[10] = *(to + 40);
     *(v6 + *(v3 + 2408)) |= 8u;
     OUTLINED_FUNCTION_0_14();
   }
@@ -1038,7 +1038,7 @@ LABEL_7:
     }
 
 LABEL_23:
-    *(v6 + 2) = *(a1 + 16);
+    *(v6 + 2) = *(to + 16);
     *(v6 + v4) |= 2u;
     OUTLINED_FUNCTION_0_14();
     if ((v12 & 0x10) == 0)
@@ -1049,7 +1049,7 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  *(v6 + 1) = *(a1 + 8);
+  *(v6 + 1) = *(to + 8);
   *(v6 + v4) |= 1u;
   OUTLINED_FUNCTION_0_14();
   if ((v5 & 2) != 0)
@@ -1061,31 +1061,31 @@ LABEL_9:
   if ((v5 & 0x10) != 0)
   {
 LABEL_10:
-    v6[14] = *(a1 + 56);
+    v6[14] = *(to + 56);
     *(v6 + *(v3 + 2408)) |= 0x10u;
   }
 
 LABEL_11:
-  v7 = *(a1 + 48);
+  v7 = *(to + 48);
   if (v7)
   {
     [(ATXPBERMEvent *)v13 setExecutable:v7];
   }
 
-  if ([*(a1 + 32) count])
+  if ([*(to + 32) count])
   {
     if (v13)
     {
       [*(v13 + 4) removeAllObjects];
     }
 
-    v8 = [*(a1 + 32) count];
+    v8 = [*(to + 32) count];
     if (v8)
     {
       v9 = v8;
       for (i = 0; i != v9; ++i)
       {
-        v11 = [*(a1 + 32) objectAtIndex:i];
+        v11 = [*(to + 32) objectAtIndex:i];
         [(ATXPBERMEvent *)v13 addClientModelId:v11];
       }
     }
@@ -1094,19 +1094,19 @@ LABEL_11:
 LABEL_19:
 }
 
-- (void)setExecutable:(uint64_t)a1
+- (void)setExecutable:(uint64_t)executable
 {
-  if (a1)
+  if (executable)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 48);
+    OUTLINED_FUNCTION_2(executable, a2, 48);
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v19 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!from)
   {
     goto LABEL_18;
   }
@@ -1114,8 +1114,8 @@ LABEL_19:
   OUTLINED_FUNCTION_0_14();
   if ((v6 & 4) != 0)
   {
-    *(a1 + 24) = *(v3 + 3);
-    *(a1 + v5) |= 4u;
+    *(from + 24) = *(v3 + 3);
+    *(from + v5) |= 4u;
     OUTLINED_FUNCTION_0_14();
     if ((v6 & 8) == 0)
     {
@@ -1134,8 +1134,8 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  *(a1 + 40) = *(v3 + 10);
-  *(a1 + *(v4 + 2408)) |= 8u;
+  *(from + 40) = *(v3 + 10);
+  *(from + *(v4 + 2408)) |= 8u;
   OUTLINED_FUNCTION_0_14();
   if ((v6 & 1) == 0)
   {
@@ -1146,8 +1146,8 @@ LABEL_5:
     }
 
 LABEL_22:
-    *(a1 + 16) = *(v3 + 2);
-    *(a1 + v5) |= 2u;
+    *(from + 16) = *(v3 + 2);
+    *(from + v5) |= 2u;
     OUTLINED_FUNCTION_0_14();
     if ((v13 & 0x10) == 0)
     {
@@ -1158,8 +1158,8 @@ LABEL_22:
   }
 
 LABEL_21:
-  *(a1 + 8) = *(v3 + 1);
-  *(a1 + v5) |= 1u;
+  *(from + 8) = *(v3 + 1);
+  *(from + v5) |= 1u;
   OUTLINED_FUNCTION_0_14();
   if ((v6 & 2) != 0)
   {
@@ -1170,15 +1170,15 @@ LABEL_6:
   if ((v6 & 0x10) != 0)
   {
 LABEL_7:
-    *(a1 + 56) = *(v3 + 14);
-    *(a1 + *(v4 + 2408)) |= 0x10u;
+    *(from + 56) = *(v3 + 14);
+    *(from + *(v4 + 2408)) |= 0x10u;
   }
 
 LABEL_8:
   v7 = *(v3 + 6);
   if (v7)
   {
-    objc_storeStrong((a1 + 48), v7);
+    objc_storeStrong((from + 48), v7);
   }
 
   v16 = 0u;
@@ -1201,7 +1201,7 @@ LABEL_8:
           objc_enumerationMutation(v8);
         }
 
-        [(ATXPBERMEvent *)a1 addClientModelId:?];
+        [(ATXPBERMEvent *)from addClientModelId:?];
       }
 
       while (v10 != v12);
@@ -1216,9 +1216,9 @@ LABEL_18:
 
 - (double)eventDate
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else
@@ -1229,9 +1229,9 @@ LABEL_18:
 
 - (double)dateEngaged
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   else
@@ -1270,11 +1270,11 @@ LABEL_18:
   return result;
 }
 
-- (void)setClientModelIds:(uint64_t)a1
+- (void)setClientModelIds:(uint64_t)ids
 {
-  if (a1)
+  if (ids)
   {
-    OUTLINED_FUNCTION_2(a1, a2, 32);
+    OUTLINED_FUNCTION_2(ids, a2, 32);
   }
 }
 

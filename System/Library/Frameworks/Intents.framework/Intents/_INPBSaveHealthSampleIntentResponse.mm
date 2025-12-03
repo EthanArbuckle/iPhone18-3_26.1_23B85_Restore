@@ -1,17 +1,17 @@
 @interface _INPBSaveHealthSampleIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSaveHealthSampleIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSaveHealthSampleIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSampleUuids:(id)a3;
-- (void)addValuesDefaultUnit:(id)a3;
-- (void)addValuesUserProvidedUnit:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSampleUuids:(id)a3;
-- (void)setValuesDefaultUnits:(id)a3;
-- (void)setValuesUserProvidedUnits:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSampleUuids:(id)uuids;
+- (void)addValuesDefaultUnit:(id)unit;
+- (void)addValuesUserProvidedUnit:(id)unit;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSampleUuids:(id)uuids;
+- (void)setValuesDefaultUnits:(id)units;
+- (void)setValuesUserProvidedUnits:(id)units;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSaveHealthSampleIntentResponse
@@ -19,22 +19,22 @@
 - (id)dictionaryRepresentation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"defaultUnit"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+  dictionaryRepresentation = [defaultUnit dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"defaultUnit"];
 
-  v6 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"punchoutUrl"];
+  punchoutUrl = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+  dictionaryRepresentation2 = [punchoutUrl dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"punchoutUrl"];
 
-  v8 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"recordDate"];
+  recordDate = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+  dictionaryRepresentation3 = [recordDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"recordDate"];
 
   if ([(NSArray *)self->_sampleUuids count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -54,8 +54,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation4 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation4];
         }
 
         v13 = [(NSArray *)v11 countByEnumeratingWithState:&v43 objects:v49 count:16];
@@ -64,16 +64,16 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"sampleUuids"];
+    [dictionary setObject:array forKeyedSubscript:@"sampleUuids"];
   }
 
-  v17 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"userProvidedUnit"];
+  userProvidedUnit = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+  dictionaryRepresentation5 = [userProvidedUnit dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"userProvidedUnit"];
 
   if ([(NSArray *)self->_valuesDefaultUnits count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation6 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation6];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v39 objects:v48 count:16];
@@ -103,12 +103,12 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"valuesDefaultUnit"];
+    [dictionary setObject:array2 forKeyedSubscript:@"valuesDefaultUnit"];
   }
 
   if ([(NSArray *)self->_valuesUserProvidedUnits count])
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -128,8 +128,8 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
-          [v26 addObject:v32];
+          dictionaryRepresentation7 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation7];
         }
 
         v29 = [(NSArray *)v27 countByEnumeratingWithState:&v35 objects:v47 count:16];
@@ -138,12 +138,12 @@
       while (v29);
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"valuesUserProvidedUnit"];
+    [dictionary setObject:array3 forKeyedSubscript:@"valuesUserProvidedUnit"];
   }
 
   v33 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -157,28 +157,28 @@
   return v6 ^ v8 ^ [(NSArray *)self->_valuesUserProvidedUnits hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_37;
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
-  v6 = [v4 defaultUnit];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+  defaultUnit2 = [equalCopy defaultUnit];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v7 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
-  if (v7)
+  defaultUnit3 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+  if (defaultUnit3)
   {
-    v8 = v7;
-    v9 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
-    v10 = [v4 defaultUnit];
-    v11 = [v9 isEqual:v10];
+    v8 = defaultUnit3;
+    defaultUnit4 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+    defaultUnit5 = [equalCopy defaultUnit];
+    v11 = [defaultUnit4 isEqual:defaultUnit5];
 
     if (!v11)
     {
@@ -190,20 +190,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
-  v6 = [v4 punchoutUrl];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+  defaultUnit2 = [equalCopy punchoutUrl];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v12 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
-  if (v12)
+  punchoutUrl = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+  if (punchoutUrl)
   {
-    v13 = v12;
-    v14 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
-    v15 = [v4 punchoutUrl];
-    v16 = [v14 isEqual:v15];
+    v13 = punchoutUrl;
+    punchoutUrl2 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+    punchoutUrl3 = [equalCopy punchoutUrl];
+    v16 = [punchoutUrl2 isEqual:punchoutUrl3];
 
     if (!v16)
     {
@@ -215,20 +215,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
-  v6 = [v4 recordDate];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+  defaultUnit2 = [equalCopy recordDate];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v17 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
-  if (v17)
+  recordDate = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+  if (recordDate)
   {
-    v18 = v17;
-    v19 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
-    v20 = [v4 recordDate];
-    v21 = [v19 isEqual:v20];
+    v18 = recordDate;
+    recordDate2 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+    recordDate3 = [equalCopy recordDate];
+    v21 = [recordDate2 isEqual:recordDate3];
 
     if (!v21)
     {
@@ -240,20 +240,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
-  v6 = [v4 sampleUuids];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
+  defaultUnit2 = [equalCopy sampleUuids];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v22 = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
-  if (v22)
+  sampleUuids = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
+  if (sampleUuids)
   {
-    v23 = v22;
-    v24 = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
-    v25 = [v4 sampleUuids];
-    v26 = [v24 isEqual:v25];
+    v23 = sampleUuids;
+    sampleUuids2 = [(_INPBSaveHealthSampleIntentResponse *)self sampleUuids];
+    sampleUuids3 = [equalCopy sampleUuids];
+    v26 = [sampleUuids2 isEqual:sampleUuids3];
 
     if (!v26)
     {
@@ -265,20 +265,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
-  v6 = [v4 userProvidedUnit];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+  defaultUnit2 = [equalCopy userProvidedUnit];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v27 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
-  if (v27)
+  userProvidedUnit = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+  if (userProvidedUnit)
   {
-    v28 = v27;
-    v29 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
-    v30 = [v4 userProvidedUnit];
-    v31 = [v29 isEqual:v30];
+    v28 = userProvidedUnit;
+    userProvidedUnit2 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+    userProvidedUnit3 = [equalCopy userProvidedUnit];
+    v31 = [userProvidedUnit2 isEqual:userProvidedUnit3];
 
     if (!v31)
     {
@@ -290,20 +290,20 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
-  v6 = [v4 valuesDefaultUnits];
-  if ((v5 != 0) == (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
+  defaultUnit2 = [equalCopy valuesDefaultUnits];
+  if ((defaultUnit != 0) == (defaultUnit2 == 0))
   {
     goto LABEL_36;
   }
 
-  v32 = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
-  if (v32)
+  valuesDefaultUnits = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
+  if (valuesDefaultUnits)
   {
-    v33 = v32;
-    v34 = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
-    v35 = [v4 valuesDefaultUnits];
-    v36 = [v34 isEqual:v35];
+    v33 = valuesDefaultUnits;
+    valuesDefaultUnits2 = [(_INPBSaveHealthSampleIntentResponse *)self valuesDefaultUnits];
+    valuesDefaultUnits3 = [equalCopy valuesDefaultUnits];
+    v36 = [valuesDefaultUnits2 isEqual:valuesDefaultUnits3];
 
     if (!v36)
     {
@@ -315,12 +315,12 @@
   {
   }
 
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
-  v6 = [v4 valuesUserProvidedUnits];
-  if ((v5 != 0) != (v6 == 0))
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
+  defaultUnit2 = [equalCopy valuesUserProvidedUnits];
+  if ((defaultUnit != 0) != (defaultUnit2 == 0))
   {
-    v37 = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
-    if (!v37)
+    valuesUserProvidedUnits = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
+    if (!valuesUserProvidedUnits)
     {
 
 LABEL_40:
@@ -328,10 +328,10 @@ LABEL_40:
       goto LABEL_38;
     }
 
-    v38 = v37;
-    v39 = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
-    v40 = [v4 valuesUserProvidedUnits];
-    v41 = [v39 isEqual:v40];
+    v38 = valuesUserProvidedUnits;
+    valuesUserProvidedUnits2 = [(_INPBSaveHealthSampleIntentResponse *)self valuesUserProvidedUnits];
+    valuesUserProvidedUnits3 = [equalCopy valuesUserProvidedUnits];
+    v41 = [valuesUserProvidedUnits2 isEqual:valuesUserProvidedUnits3];
 
     if (v41)
     {
@@ -351,82 +351,82 @@ LABEL_38:
   return v42;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSaveHealthSampleIntentResponse allocWithZone:](_INPBSaveHealthSampleIntentResponse init];
-  v6 = [(_INPBString *)self->_defaultUnit copyWithZone:a3];
+  v6 = [(_INPBString *)self->_defaultUnit copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setDefaultUnit:v6];
 
-  v7 = [(_INPBString *)self->_punchoutUrl copyWithZone:a3];
+  v7 = [(_INPBString *)self->_punchoutUrl copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setPunchoutUrl:v7];
 
-  v8 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:a3];
+  v8 = [(_INPBDateTimeRange *)self->_recordDate copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setRecordDate:v8];
 
-  v9 = [(NSArray *)self->_sampleUuids copyWithZone:a3];
+  v9 = [(NSArray *)self->_sampleUuids copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setSampleUuids:v9];
 
-  v10 = [(_INPBString *)self->_userProvidedUnit copyWithZone:a3];
+  v10 = [(_INPBString *)self->_userProvidedUnit copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setUserProvidedUnit:v10];
 
-  v11 = [(NSArray *)self->_valuesDefaultUnits copyWithZone:a3];
+  v11 = [(NSArray *)self->_valuesDefaultUnits copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setValuesDefaultUnits:v11];
 
-  v12 = [(NSArray *)self->_valuesUserProvidedUnits copyWithZone:a3];
+  v12 = [(NSArray *)self->_valuesUserProvidedUnits copyWithZone:zone];
   [(_INPBSaveHealthSampleIntentResponse *)v5 setValuesUserProvidedUnits:v12];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSaveHealthSampleIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSaveHealthSampleIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSaveHealthSampleIntentResponse)initWithCoder:(id)a3
+- (_INPBSaveHealthSampleIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSaveHealthSampleIntentResponse *)self initWithData:v6];
+    self = [(_INPBSaveHealthSampleIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+  toCopy = to;
+  defaultUnit = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
 
-  if (v5)
+  if (defaultUnit)
   {
-    v6 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
+    defaultUnit2 = [(_INPBSaveHealthSampleIntentResponse *)self defaultUnit];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+  punchoutUrl = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
 
-  if (v7)
+  if (punchoutUrl)
   {
-    v8 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
+    punchoutUrl2 = [(_INPBSaveHealthSampleIntentResponse *)self punchoutUrl];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+  recordDate = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
 
-  if (v9)
+  if (recordDate)
   {
-    v10 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
+    recordDate2 = [(_INPBSaveHealthSampleIntentResponse *)self recordDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -462,11 +462,11 @@ LABEL_38:
     while (v13);
   }
 
-  v17 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+  userProvidedUnit = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
 
-  if (v17)
+  if (userProvidedUnit)
   {
-    v18 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
+    userProvidedUnit2 = [(_INPBSaveHealthSampleIntentResponse *)self userProvidedUnit];
     PBDataWriterWriteSubmessage();
   }
 
@@ -537,81 +537,81 @@ LABEL_38:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addValuesUserProvidedUnit:(id)a3
+- (void)addValuesUserProvidedUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   valuesUserProvidedUnits = self->_valuesUserProvidedUnits;
-  v8 = v4;
+  v8 = unitCopy;
   if (!valuesUserProvidedUnits)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_valuesUserProvidedUnits;
-    self->_valuesUserProvidedUnits = v6;
+    self->_valuesUserProvidedUnits = array;
 
-    v4 = v8;
+    unitCopy = v8;
     valuesUserProvidedUnits = self->_valuesUserProvidedUnits;
   }
 
-  [(NSArray *)valuesUserProvidedUnits addObject:v4];
+  [(NSArray *)valuesUserProvidedUnits addObject:unitCopy];
 }
 
-- (void)setValuesUserProvidedUnits:(id)a3
+- (void)setValuesUserProvidedUnits:(id)units
 {
-  v4 = [a3 mutableCopy];
+  v4 = [units mutableCopy];
   valuesUserProvidedUnits = self->_valuesUserProvidedUnits;
   self->_valuesUserProvidedUnits = v4;
 
   MEMORY[0x1EEE66BB8](v4, valuesUserProvidedUnits);
 }
 
-- (void)addValuesDefaultUnit:(id)a3
+- (void)addValuesDefaultUnit:(id)unit
 {
-  v4 = a3;
+  unitCopy = unit;
   valuesDefaultUnits = self->_valuesDefaultUnits;
-  v8 = v4;
+  v8 = unitCopy;
   if (!valuesDefaultUnits)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_valuesDefaultUnits;
-    self->_valuesDefaultUnits = v6;
+    self->_valuesDefaultUnits = array;
 
-    v4 = v8;
+    unitCopy = v8;
     valuesDefaultUnits = self->_valuesDefaultUnits;
   }
 
-  [(NSArray *)valuesDefaultUnits addObject:v4];
+  [(NSArray *)valuesDefaultUnits addObject:unitCopy];
 }
 
-- (void)setValuesDefaultUnits:(id)a3
+- (void)setValuesDefaultUnits:(id)units
 {
-  v4 = [a3 mutableCopy];
+  v4 = [units mutableCopy];
   valuesDefaultUnits = self->_valuesDefaultUnits;
   self->_valuesDefaultUnits = v4;
 
   MEMORY[0x1EEE66BB8](v4, valuesDefaultUnits);
 }
 
-- (void)addSampleUuids:(id)a3
+- (void)addSampleUuids:(id)uuids
 {
-  v4 = a3;
+  uuidsCopy = uuids;
   sampleUuids = self->_sampleUuids;
-  v8 = v4;
+  v8 = uuidsCopy;
   if (!sampleUuids)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sampleUuids;
-    self->_sampleUuids = v6;
+    self->_sampleUuids = array;
 
-    v4 = v8;
+    uuidsCopy = v8;
     sampleUuids = self->_sampleUuids;
   }
 
-  [(NSArray *)sampleUuids addObject:v4];
+  [(NSArray *)sampleUuids addObject:uuidsCopy];
 }
 
-- (void)setSampleUuids:(id)a3
+- (void)setSampleUuids:(id)uuids
 {
-  v4 = [a3 mutableCopy];
+  v4 = [uuids mutableCopy];
   sampleUuids = self->_sampleUuids;
   self->_sampleUuids = v4;
 

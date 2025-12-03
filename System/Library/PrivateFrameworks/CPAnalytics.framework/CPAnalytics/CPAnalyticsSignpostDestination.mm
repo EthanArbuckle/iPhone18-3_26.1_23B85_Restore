@@ -1,10 +1,10 @@
 @interface CPAnalyticsSignpostDestination
 - (CPAnalytics)cpAnalyticsInstance;
-- (CPAnalyticsSignpostDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4;
-- (void)_checkSignpostsEndForEvent:(id)a3;
-- (void)_sendCPAnalyticsEvent:(id)a3 withPayload:(id)a4 withDuration:(double)a5;
-- (void)_trackSignpostsStartForEvent:(id)a3;
-- (void)processEvent:(id)a3;
+- (CPAnalyticsSignpostDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance;
+- (void)_checkSignpostsEndForEvent:(id)event;
+- (void)_sendCPAnalyticsEvent:(id)event withPayload:(id)payload withDuration:(double)duration;
+- (void)_trackSignpostsStartForEvent:(id)event;
+- (void)processEvent:(id)event;
 @end
 
 @implementation CPAnalyticsSignpostDestination
@@ -16,51 +16,51 @@
   return WeakRetained;
 }
 
-- (void)_sendCPAnalyticsEvent:(id)a3 withPayload:(id)a4 withDuration:(double)a5
+- (void)_sendCPAnalyticsEvent:(id)event withPayload:(id)payload withDuration:(double)duration
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a3;
-  v12 = [v8 dictionaryWithDictionary:a4];
+  eventCopy = event;
+  v12 = [v8 dictionaryWithDictionary:payload];
   [v12 removeObjectForKey:@"signpostID"];
   [v12 removeObjectForKey:@"signpostEventName"];
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [v12 setObject:v10 forKey:@"signpostDuration"];
 
-  v11 = [(CPAnalyticsSignpostDestination *)self cpAnalyticsInstance];
-  [v11 sendEvent:v9 withPayload:v12];
+  cpAnalyticsInstance = [(CPAnalyticsSignpostDestination *)self cpAnalyticsInstance];
+  [cpAnalyticsInstance sendEvent:eventCopy withPayload:v12];
 }
 
-- (void)_checkSignpostsEndForEvent:(id)a3
+- (void)_checkSignpostsEndForEvent:(id)event
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"com.photos.CPAnalytics.signpost.end"];
+  eventCopy = event;
+  name = [eventCopy name];
+  v6 = [name isEqualToString:@"com.photos.CPAnalytics.signpost.end"];
 
   if (v6)
   {
-    v7 = [v4 propertyForKey:@"signpostID"];
-    v8 = [v4 propertyForKey:@"signpostEventName"];
+    v7 = [eventCopy propertyForKey:@"signpostID"];
+    v8 = [eventCopy propertyForKey:@"signpostEventName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v7 CPAnalyticsSignpostIDValue];
-        v10 = [(CPAnalyticsSignpostDestination *)self startedSignpostIDs];
-        if ([v10 containsIndex:v9])
+        cPAnalyticsSignpostIDValue = [v7 CPAnalyticsSignpostIDValue];
+        startedSignpostIDs = [(CPAnalyticsSignpostDestination *)self startedSignpostIDs];
+        if ([startedSignpostIDs containsIndex:cPAnalyticsSignpostIDValue])
         {
-          [v10 removeIndex:v9];
-          v11 = [CPAnalytics creationDateForSignpost:v9];
+          [startedSignpostIDs removeIndex:cPAnalyticsSignpostIDValue];
+          v11 = [CPAnalytics creationDateForSignpost:cPAnalyticsSignpostIDValue];
           if (v11)
           {
-            v12 = [v4 timestamp];
-            [v12 timeIntervalSinceDate:v11];
+            timestamp = [eventCopy timestamp];
+            [timestamp timeIntervalSinceDate:v11];
             v14 = v13;
 
-            v15 = [v4 propertyForKey:@"cpa_interval_startDate"];
-            v16 = [v4 propertyForKey:@"cpa_interval_endDate"];
+            v15 = [eventCopy propertyForKey:@"cpa_interval_startDate"];
+            v16 = [eventCopy propertyForKey:@"cpa_interval_endDate"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -74,8 +74,8 @@
 
             if (v14 < 0.0)
             {
-              v18 = [v4 timestamp];
-              [v18 timeIntervalSinceReferenceDate];
+              timestamp2 = [eventCopy timestamp];
+              [timestamp2 timeIntervalSinceReferenceDate];
               v20 = v19;
 
               if (v20 >= 0.0)
@@ -105,8 +105,8 @@
               v14 = 0.0;
             }
 
-            v22 = [v4 copyRawPayload];
-            [(CPAnalyticsSignpostDestination *)self _sendCPAnalyticsEvent:v8 withPayload:v22 withDuration:v14];
+            copyRawPayload = [eventCopy copyRawPayload];
+            [(CPAnalyticsSignpostDestination *)self _sendCPAnalyticsEvent:v8 withPayload:copyRawPayload withDuration:v14];
           }
         }
       }
@@ -116,45 +116,45 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trackSignpostsStartForEvent:(id)a3
+- (void)_trackSignpostsStartForEvent:(id)event
 {
-  v10 = a3;
-  v4 = [v10 name];
-  v5 = [v4 isEqualToString:@"com.photos.CPAnalytics.signpost.start"];
+  eventCopy = event;
+  name = [eventCopy name];
+  v5 = [name isEqualToString:@"com.photos.CPAnalytics.signpost.start"];
 
-  v6 = v10;
+  v6 = eventCopy;
   if (v5)
   {
-    v7 = [v10 propertyForKey:@"signpostID"];
+    v7 = [eventCopy propertyForKey:@"signpostID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 CPAnalyticsSignpostIDValue];
-      v9 = [(CPAnalyticsSignpostDestination *)self startedSignpostIDs];
-      [v9 addIndex:v8];
+      cPAnalyticsSignpostIDValue = [v7 CPAnalyticsSignpostIDValue];
+      startedSignpostIDs = [(CPAnalyticsSignpostDestination *)self startedSignpostIDs];
+      [startedSignpostIDs addIndex:cPAnalyticsSignpostIDValue];
     }
 
-    v6 = v10;
+    v6 = eventCopy;
   }
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
-  v4 = a3;
-  [(CPAnalyticsSignpostDestination *)self _trackSignpostsStartForEvent:v4];
-  [(CPAnalyticsSignpostDestination *)self _checkSignpostsEndForEvent:v4];
+  eventCopy = event;
+  [(CPAnalyticsSignpostDestination *)self _trackSignpostsStartForEvent:eventCopy];
+  [(CPAnalyticsSignpostDestination *)self _checkSignpostsEndForEvent:eventCopy];
 }
 
-- (CPAnalyticsSignpostDestination)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (CPAnalyticsSignpostDestination)initWithConfig:(id)config cpAnalyticsInstance:(id)instance
 {
-  v5 = a4;
+  instanceCopy = instance;
   v11.receiver = self;
   v11.super_class = CPAnalyticsSignpostDestination;
   v6 = [(CPAnalyticsSignpostDestination *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    [(CPAnalyticsSignpostDestination *)v6 setCpAnalyticsInstance:v5];
+    [(CPAnalyticsSignpostDestination *)v6 setCpAnalyticsInstance:instanceCopy];
     v8 = objc_alloc_init(MEMORY[0x277CCAB58]);
     startedSignpostIDs = v7->_startedSignpostIDs;
     v7->_startedSignpostIDs = v8;

@@ -1,19 +1,19 @@
 @interface HealthExperienceUI_CollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsSelectable;
-- (id)_axDataTypeTileHeaderViewForCell:(id)a3;
-- (id)_axDelegateForCheckingSelectabilityFromCollectionView:(id)a3;
+- (id)_axDataTypeTileHeaderViewForCell:(id)cell;
+- (id)_axDelegateForCheckingSelectabilityFromCollectionView:(id)view;
 @end
 
 @implementation HealthExperienceUI_CollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HealthExperienceUI.CompoundDataSourceCollectionViewController"];
-  [v3 validateClass:@"HealthExperienceUI.CompoundDataSourceCollectionViewController" hasInstanceMethod:@"collectionView:shouldSelectItemAtIndexPath:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"HealthExperienceUI.DataTypeTileHeaderView"];
-  [v3 validateClass:@"HealthExperienceUI.DataTypeTileHeaderView" hasInstanceMethod:@"accessibilityAccessoryLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HealthExperienceUI.CompoundDataSourceCollectionViewController"];
+  [validationsCopy validateClass:@"HealthExperienceUI.CompoundDataSourceCollectionViewController" hasInstanceMethod:@"collectionView:shouldSelectItemAtIndexPath:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"HealthExperienceUI.DataTypeTileHeaderView"];
+  [validationsCopy validateClass:@"HealthExperienceUI.DataTypeTileHeaderView" hasInstanceMethod:@"accessibilityAccessoryLabel" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_axIsSelectable
@@ -69,21 +69,21 @@ LABEL_14:
   return v10;
 }
 
-- (id)_axDelegateForCheckingSelectabilityFromCollectionView:(id)a3
+- (id)_axDelegateForCheckingSelectabilityFromCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!MEMORY[0x29C2D8570](@"HealthExperienceUI.CompoundDataSourceCollectionViewController"))
   {
     goto LABEL_8;
   }
 
-  v5 = [v4 delegate];
+  delegate = [viewCopy delegate];
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v6 = AXLogValidations();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(HealthExperienceUI_CollectionViewCellAccessibility *)self _axDelegateForCheckingSelectabilityFromCollectionView:v5, v6];
+      [(HealthExperienceUI_CollectionViewCellAccessibility *)self _axDelegateForCheckingSelectabilityFromCollectionView:delegate, v6];
     }
   }
 
@@ -91,15 +91,15 @@ LABEL_14:
   {
 
 LABEL_8:
-    v5 = 0;
+    delegate = 0;
   }
 
-  return v5;
+  return delegate;
 }
 
-- (id)_axDataTypeTileHeaderViewForCell:(id)a3
+- (id)_axDataTypeTileHeaderViewForCell:(id)cell
 {
-  v3 = a3;
+  cellCopy = cell;
   v4 = MEMORY[0x29C2D8570](@"HealthExperienceUI.DataTypeTileHeaderView");
   if (v4)
   {
@@ -108,7 +108,7 @@ LABEL_8:
     v7[2] = __87__HealthExperienceUI_CollectionViewCellAccessibility__axDataTypeTileHeaderViewForCell___block_invoke;
     v7[3] = &__block_descriptor_40_e16_B16__0__UIView_8lu32l8;
     v7[4] = v4;
-    v5 = [v3 _accessibilityFindSubviewDescendant:v7];
+    v5 = [cellCopy _accessibilityFindSubviewDescendant:v7];
   }
 
   else

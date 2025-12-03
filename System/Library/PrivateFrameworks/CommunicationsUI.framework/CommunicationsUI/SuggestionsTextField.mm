@@ -1,7 +1,7 @@
 @interface SuggestionsTextField
-- (_TtC16CommunicationsUI20SuggestionsTextField)initWithFrame:(CGRect)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (_TtC16CommunicationsUI20SuggestionsTextField)initWithFrame:(CGRect)frame;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)layoutSubviews;
 @end
 
@@ -9,25 +9,25 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionsTextField.layoutSubviews()();
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2E4FD80(v4, 1);
+  showCopy = show;
+  selfCopy = self;
+  sub_1C2E4FD80(showCopy, 1);
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2E4FD80(v4, 0);
+  hideCopy = hide;
+  selfCopy = self;
+  sub_1C2E4FD80(hideCopy, 0);
 }
 
-- (_TtC16CommunicationsUI20SuggestionsTextField)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI20SuggestionsTextField)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

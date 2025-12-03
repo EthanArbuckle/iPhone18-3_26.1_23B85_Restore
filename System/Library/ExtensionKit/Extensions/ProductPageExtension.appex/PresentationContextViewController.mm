@@ -1,15 +1,15 @@
 @interface PresentationContextViewController
-- (_TtC20ProductPageExtension33PresentationContextViewController)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension33PresentationContextViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC20ProductPageExtension33PresentationContextViewController)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension33PresentationContextViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PresentationContextViewController
 
-- (_TtC20ProductPageExtension33PresentationContextViewController)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension33PresentationContextViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension33PresentationContextViewController_contextViewController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension33PresentationContextViewController_hasPresentedViewController) = 0;
@@ -23,35 +23,35 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B9244();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PresentationContextViewController();
   v4 = v7.receiver;
-  [(PresentationContextViewController *)&v7 viewWillAppear:v3];
-  v5 = [v4 presentationController];
-  if (v5)
+  [(PresentationContextViewController *)&v7 viewWillAppear:appearCopy];
+  presentationController = [v4 presentationController];
+  if (presentationController)
   {
-    v6 = v5;
-    [v5 _setContainerIgnoresDirectTouchEvents:1];
+    v6 = presentationController;
+    [presentationController _setContainerIgnoresDirectTouchEvents:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000B93FC(a3);
+  selfCopy = self;
+  sub_1000B93FC(appear);
 }
 
-- (void)dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = _Block_copy(a4);
+  v4 = *&transition;
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -64,12 +64,12 @@
     v7 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1000B96B0(v4, v6, v7);
   sub_1000167E0(v6);
 }
 
-- (_TtC20ProductPageExtension33PresentationContextViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ProductPageExtension33PresentationContextViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

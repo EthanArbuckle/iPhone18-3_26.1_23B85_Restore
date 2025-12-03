@@ -6,7 +6,7 @@
 
 - (NSString)currentContentSizeCategory
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ApplicationContentSizeCategoryProvider.currentContentSizeCategory.getter();
 
   return v3;

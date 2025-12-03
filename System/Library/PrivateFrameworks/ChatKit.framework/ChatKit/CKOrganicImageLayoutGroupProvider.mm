@@ -1,24 +1,24 @@
 @interface CKOrganicImageLayoutGroupProvider
-- (CGSize)_targetSizeForChatItem:(id)a3 totalItemCount:(unint64_t)a4;
-- (double)_rotationForChatItem:(id)a3 leftRotated:(BOOL)a4;
-- (double)_setLayoutRecipesForChatItems:(id)a3;
-- (double)scalarForSize:(CGSize)a3 count:(unint64_t)a4;
-- (id)_intersectSpecForIndex:(unint64_t)a3 count:(unint64_t)a4;
-- (id)_startOffsetSpecForCount:(unint64_t)a3;
-- (id)layoutGroupForDatasourceItems:(id)a3 environment:(id)a4 layoutItems:(id)a5;
+- (CGSize)_targetSizeForChatItem:(id)item totalItemCount:(unint64_t)count;
+- (double)_rotationForChatItem:(id)item leftRotated:(BOOL)rotated;
+- (double)_setLayoutRecipesForChatItems:(id)items;
+- (double)scalarForSize:(CGSize)size count:(unint64_t)count;
+- (id)_intersectSpecForIndex:(unint64_t)index count:(unint64_t)count;
+- (id)_startOffsetSpecForCount:(unint64_t)count;
+- (id)layoutGroupForDatasourceItems:(id)items environment:(id)environment layoutItems:(id)layoutItems;
 @end
 
 @implementation CKOrganicImageLayoutGroupProvider
 
-- (id)layoutGroupForDatasourceItems:(id)a3 environment:(id)a4 layoutItems:(id)a5
+- (id)layoutGroupForDatasourceItems:(id)items environment:(id)environment layoutItems:(id)layoutItems
 {
-  v8 = a3;
-  v9 = a4;
-  v60 = a5;
-  v61 = v9;
-  v10 = [v9 collectionLayoutEnvironment];
-  v11 = [v10 container];
-  [v11 contentSize];
+  itemsCopy = items;
+  environmentCopy = environment;
+  layoutItemsCopy = layoutItems;
+  v61 = environmentCopy;
+  collectionLayoutEnvironment = [environmentCopy collectionLayoutEnvironment];
+  container = [collectionLayoutEnvironment container];
+  [container contentSize];
   v13 = v12;
 
   v14 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
@@ -26,9 +26,9 @@
   [v15 smallTranscriptSpace];
   v17 = v16;
 
-  [(CKOrganicImageLayoutGroupProvider *)self _setLayoutRecipesForChatItems:v8];
+  [(CKOrganicImageLayoutGroupProvider *)self _setLayoutRecipesForChatItems:itemsCopy];
   v19 = v18;
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v74[0] = 0;
   v74[1] = v74;
   v74[2] = 0x2020000000;
@@ -46,19 +46,19 @@
   v21 = v20;
   v66 = v21;
   v68 = &v70;
-  [v8 enumerateObjectsUsingBlock:v65];
+  [itemsCopy enumerateObjectsUsingBlock:v65];
   v22 = 0;
   v23 = 0;
   v24 = v17 + v19;
   v25 = (v17 + v19) * 0.5;
   while ([v21 count] > v22)
   {
-    v26 = [v8 objectAtIndex:v22];
+    v26 = [itemsCopy objectAtIndex:v22];
     v27 = v26;
     if (!v22)
     {
-      v28 = [v26 tapbacksChatItem];
-      v29 = v28 != 0;
+      tapbacksChatItem = [v26 tapbacksChatItem];
+      v29 = tapbacksChatItem != 0;
 
       v23 |= v29;
     }
@@ -75,16 +75,16 @@
     v76.size.width = v36;
     v76.size.height = v38;
     v39 = [MEMORY[0x1E696AD98] numberWithDouble:v25 - CGRectGetMinY(v76)];
-    v40 = [v27 layoutRecipe];
-    [v40 setRelativeGroupCenter:v39];
+    layoutRecipe = [v27 layoutRecipe];
+    [layoutRecipe setRelativeGroupCenter:v39];
 
     v41 = [MEMORY[0x1E696AD98] numberWithDouble:v71[3]];
-    v42 = [v27 layoutRecipe];
-    [v42 setGroupMaxX:v41];
+    layoutRecipe2 = [v27 layoutRecipe];
+    [layoutRecipe2 setGroupMaxX:v41];
 
-    v43 = [v8 lastObject];
-    v44 = [v27 layoutRecipe];
-    [v44 setIsLastItem:v27 == v43];
+    lastObject = [itemsCopy lastObject];
+    layoutRecipe3 = [v27 layoutRecipe];
+    [layoutRecipe3 setIsLastItem:v27 == lastObject];
 
     ++v22;
   }
@@ -96,7 +96,7 @@
   v62[1] = 3221225472;
   v62[2] = __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_environment_layoutItems___block_invoke_2;
   v62[3] = &unk_1E72F7D48;
-  v48 = v8;
+  v48 = itemsCopy;
   v63 = v48;
   v49 = v21;
   v64 = v49;
@@ -188,20 +188,20 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
   [*(a1 + 32) addObject:v5];
 }
 
-- (double)_setLayoutRecipesForChatItems:(id)a3
+- (double)_setLayoutRecipesForChatItems:(id)items
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] >= 2 && objc_msgSend(v4, "count") < 4)
+  itemsCopy = items;
+  if ([itemsCopy count] >= 2 && objc_msgSend(itemsCopy, "count") < 4)
   {
-    v7 = [v4 count];
+    v7 = [itemsCopy count];
     v63 = [(CKOrganicImageLayoutGroupProvider *)self _startOffsetSpecForCount:v7];
-    v62 = [MEMORY[0x1E696AEC0] stringGUID];
-    v67 = [v4 firstObject];
-    v66 = [v4 objectAtIndex:1];
-    if ([v4 count] == 3)
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    firstObject = [itemsCopy firstObject];
+    v66 = [itemsCopy objectAtIndex:1];
+    if ([itemsCopy count] == 3)
     {
-      v65 = [v4 objectAtIndex:2];
+      v65 = [itemsCopy objectAtIndex:2];
     }
 
     else
@@ -209,7 +209,7 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
       v65 = 0;
     }
 
-    [(CKOrganicImageLayoutGroupProvider *)self _targetSizeForChatItem:v67 totalItemCount:v7];
+    [(CKOrganicImageLayoutGroupProvider *)self _targetSizeForChatItem:firstObject totalItemCount:v7];
     v9 = v8;
     v61 = v10;
     v11 = [(CKOrganicImageLayoutGroupProvider *)self _orientationForChatItemSize:?];
@@ -217,16 +217,16 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
     v13 = v12;
     v15 = v14;
     v16 = [(CKOrganicImageLayoutGroupProvider *)self _orientationForChatItemSize:?];
-    v64 = [(CKOrganicImageLayoutGroupProvider *)self _startRotationSpec];
-    v17 = [v64 objectAtIndexedSubscript:v11];
+    _startRotationSpec = [(CKOrganicImageLayoutGroupProvider *)self _startRotationSpec];
+    v17 = [_startRotationSpec objectAtIndexedSubscript:v11];
     v18 = [v17 objectAtIndexedSubscript:v16];
-    v19 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
 
-    v20 = [v4 firstObject];
-    LODWORD(v18) = [v20 isFromMe];
+    firstObject2 = [itemsCopy firstObject];
+    LODWORD(v18) = [firstObject2 isFromMe];
 
-    v21 = v19 ^ v18;
-    [(CKOrganicImageLayoutGroupProvider *)self _rotationForChatItem:v67 leftRotated:v21];
+    v21 = bOOLValue ^ v18;
+    [(CKOrganicImageLayoutGroupProvider *)self _rotationForChatItem:firstObject leftRotated:v21];
     v23 = v22;
     [(CKOrganicImageLayoutGroupProvider *)self _rotationForChatItem:v66 leftRotated:v21 ^ 1];
     v25 = v24;
@@ -239,9 +239,9 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
 
     v32 = [v63 objectAtIndexedSubscript:v11];
     v33 = [v32 objectAtIndexedSubscript:v16];
-    v34 = [v33 BOOLValue];
+    bOOLValue2 = [v33 BOOLValue];
 
-    if (v34)
+    if (bOOLValue2)
     {
       v35 = v13 - v13 * v60;
       v36 = 0.0;
@@ -265,9 +265,9 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
     }
 
     v37 = v9 * v31;
-    v38 = [[CKOrganicImageLayoutRecipe alloc] initWithRotation:1 offset:v62 targetSize:v23 overlap:v35 wantsShadow:v61 groupIdentifier:v9, 0.0];
-    [v67 setLayoutRecipe:v38];
-    v39 = [[CKOrganicImageLayoutRecipe alloc] initWithRotation:1 offset:v62 targetSize:v25 overlap:v36 wantsShadow:v13 groupIdentifier:v15, v37];
+    v38 = [[CKOrganicImageLayoutRecipe alloc] initWithRotation:1 offset:stringGUID targetSize:v23 overlap:v35 wantsShadow:v61 groupIdentifier:v9, 0.0];
+    [firstObject setLayoutRecipe:v38];
+    v39 = [[CKOrganicImageLayoutRecipe alloc] initWithRotation:1 offset:stringGUID targetSize:v25 overlap:v36 wantsShadow:v13 groupIdentifier:v15, v37];
     [v66 setLayoutRecipe:v39];
     v5 = v9 + v15 - v37;
     v40 = v65;
@@ -287,16 +287,16 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
       v52 = v51;
       v54 = v53;
 
-      if (v34)
+      if (bOOLValue2)
       {
         v55 = v13 - v13 * v52;
-        v56 = v62;
+        v56 = stringGUID;
       }
 
       else
       {
         v55 = 0.0;
-        v56 = v62;
+        v56 = stringGUID;
         if (!v47)
         {
           v55 = v42 - v42 * v52 - (v61 - v61 * v60);
@@ -313,7 +313,7 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
     else
     {
       v48 = v26;
-      v56 = v62;
+      v56 = stringGUID;
     }
   }
 
@@ -328,7 +328,7 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
         *buf = 136315394;
         v69 = "[CKOrganicImageLayoutGroupProvider _setLayoutRecipesForChatItems:]";
         v70 = 2048;
-        v71 = [v4 count];
+        v71 = [itemsCopy count];
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "%s asked to generate layout with %lu items, unsupported!", buf, 0x16u);
       }
     }
@@ -337,15 +337,15 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
   return v5;
 }
 
-- (id)_startOffsetSpecForCount:(unint64_t)a3
+- (id)_startOffsetSpecForCount:(unint64_t)count
 {
   v3 = &unk_1F04E7530;
-  if (a3 != 3)
+  if (count != 3)
   {
     v3 = 0;
   }
 
-  if (a3 == 2)
+  if (count == 2)
   {
     return &unk_1F04E74E8;
   }
@@ -356,12 +356,12 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
   }
 }
 
-- (id)_intersectSpecForIndex:(unint64_t)a3 count:(unint64_t)a4
+- (id)_intersectSpecForIndex:(unint64_t)index count:(unint64_t)count
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  if (a4 == 3)
+  if (count == 3)
   {
-    if (a3 == 1)
+    if (index == 1)
     {
       v17 = xmmword_190DD1C00;
       v4 = [MEMORY[0x1E696B098] valueWithBytes:&v17 objCType:"{CGSize=dd}"];
@@ -382,7 +382,7 @@ void __91__CKOrganicImageLayoutGroupProvider_layoutGroupForDatasourceItems_envir
       goto LABEL_9;
     }
 
-    if (!a3)
+    if (!index)
     {
       v21 = xmmword_190DD1C00;
       v4 = [MEMORY[0x1E696B098] valueWithBytes:&v21 objCType:"{CGSize=dd}"];
@@ -408,7 +408,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a4 != 2)
+  if (count != 2)
   {
     goto LABEL_7;
   }
@@ -439,11 +439,11 @@ LABEL_10:
   return v11;
 }
 
-- (CGSize)_targetSizeForChatItem:(id)a3 totalItemCount:(unint64_t)a4
+- (CGSize)_targetSizeForChatItem:(id)item totalItemCount:(unint64_t)count
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 size];
+  itemCopy = item;
+  [itemCopy size];
   v9 = v8;
   v10 = v7;
   if (v8 <= 0.0 || v7 <= 0.0 || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v11 = objc_claimAutoreleasedReturnValue(), [v11 previewMaxWidth], v13 = v12, v11, v9 > v13))
@@ -453,14 +453,14 @@ LABEL_10:
       v14 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        [v6 size];
+        [itemCopy size];
         v15 = NSStringFromCGSize(v31);
         v24 = 136315650;
         v25 = "[CKOrganicImageLayoutGroupProvider _targetSizeForChatItem:totalItemCount:]";
         v26 = 2112;
         v27 = v15;
         v28 = 2112;
-        v29 = v6;
+        v29 = itemCopy;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "CKOrganicImageLayoutGroupProvider - %s - Got invalid chatItem size %@ for chatItem %@", &v24, 0x20u);
       }
     }
@@ -474,7 +474,7 @@ LABEL_10:
   }
 
   v20 = [(CKOrganicImageLayoutGroupProvider *)self _orientationForChatItemSize:v9, v10];
-  if (a4 == 3 || (v21 = 1.0, a4 == 2))
+  if (count == 3 || (v21 = 1.0, count == 2))
   {
     if (v20)
     {
@@ -494,15 +494,15 @@ LABEL_10:
   return result;
 }
 
-- (double)_rotationForChatItem:(id)a3 leftRotated:(BOOL)a4
+- (double)_rotationForChatItem:(id)item leftRotated:(BOOL)rotated
 {
-  v4 = a4;
-  v5 = [a3 IMChatItem];
-  v6 = [v5 guid];
+  rotatedCopy = rotated;
+  iMChatItem = [item IMChatItem];
+  guid = [iMChatItem guid];
 
-  v7 = [v6 hash];
+  v7 = [guid hash];
   v8 = 1.0;
-  if (v4)
+  if (rotatedCopy)
   {
     v8 = -1.0;
   }
@@ -520,11 +520,11 @@ LABEL_10:
   return v9;
 }
 
-- (double)scalarForSize:(CGSize)a3 count:(unint64_t)a4
+- (double)scalarForSize:(CGSize)size count:(unint64_t)count
 {
-  if (a4 == 2 || (v4 = 0.0, a4 == 3))
+  if (count == 2 || (v4 = 0.0, count == 3))
   {
-    if (a3.width <= a3.height)
+    if (size.width <= size.height)
     {
       return 0.6;
     }

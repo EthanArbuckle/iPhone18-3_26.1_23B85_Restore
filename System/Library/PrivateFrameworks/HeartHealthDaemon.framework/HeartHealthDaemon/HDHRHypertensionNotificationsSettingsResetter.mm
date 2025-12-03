@@ -1,22 +1,22 @@
 @interface HDHRHypertensionNotificationsSettingsResetter
-- (HDHRHypertensionNotificationsSettingsResetter)initWithKeyValueDomain:(id)a3 featureAvailabilityProvider:(id)a4;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
+- (HDHRHypertensionNotificationsSettingsResetter)initWithKeyValueDomain:(id)domain featureAvailabilityProvider:(id)provider;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
 @end
 
 @implementation HDHRHypertensionNotificationsSettingsResetter
 
-- (HDHRHypertensionNotificationsSettingsResetter)initWithKeyValueDomain:(id)a3 featureAvailabilityProvider:(id)a4
+- (HDHRHypertensionNotificationsSettingsResetter)initWithKeyValueDomain:(id)domain featureAvailabilityProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = HDHRHypertensionNotificationsSettingsResetter;
   v9 = [(HDHRHypertensionNotificationsSettingsResetter *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keyValueDomain, a3);
-    objc_storeStrong(&v10->_featureAvailabilityProvider, a4);
+    objc_storeStrong(&v9->_keyValueDomain, domain);
+    objc_storeStrong(&v10->_featureAvailabilityProvider, provider);
     v11 = HKCreateSerialDispatchQueue();
     queue = v10->_queue;
     v10->_queue = v11;
@@ -27,14 +27,14 @@
   return v10;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
   queue = self->_queue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
   v22 = 0;
-  v6 = [v5 earliestDateLowestOnboardingVersionCompletedWithError:&v22];
+  v6 = [completionCopy earliestDateLowestOnboardingVersionCompletedWithError:&v22];
 
   v7 = v22;
   v8 = v7;
@@ -84,7 +84,7 @@
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v24 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_229486000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Cleaned up hypertension notifications key value settings", buf, 0xCu);
           }
         }
@@ -102,7 +102,7 @@
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v24 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_229486000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] (Skipping reset) Hypertension notifications key value settings are not set", buf, 0xCu);
         }
 

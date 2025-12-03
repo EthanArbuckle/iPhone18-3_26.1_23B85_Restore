@@ -28,12 +28,12 @@
     [v8 setValue:v10 forHTTPHeaderField:*MEMORY[0x277D6A130]];
   }
 
-  v11 = [MEMORY[0x277D69A80] currentDevice];
-  v12 = [v11 storeFrontIdentifier];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  storeFrontIdentifier = [currentDevice storeFrontIdentifier];
 
-  if (v12)
+  if (storeFrontIdentifier)
   {
-    [v8 setValue:v12 forHTTPHeaderField:*MEMORY[0x277D6A190]];
+    [v8 setValue:storeFrontIdentifier forHTTPHeaderField:*MEMORY[0x277D6A190]];
   }
 
   if (newForRadioRequestURL_accountUniqueIdentifier____once != -1)
@@ -53,11 +53,11 @@
 {
   v4 = MEMORY[0x277D69A20];
   v5 = a3;
-  v6 = [v4 defaultStore];
-  v7 = [v6 activeAccount];
+  defaultStore = [v4 defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  v8 = [v7 uniqueIdentifier];
-  v9 = [a1 newForRadioRequestURL:v5 accountUniqueIdentifier:v8];
+  uniqueIdentifier = [activeAccount uniqueIdentifier];
+  v9 = [self newForRadioRequestURL:v5 accountUniqueIdentifier:uniqueIdentifier];
 
   return v9;
 }

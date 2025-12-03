@@ -1,18 +1,18 @@
 @interface VCHistogram2D
-- (VCHistogram2D)initWithRanges:(const unsigned int *)a3 bucketValues:(id)a4;
+- (VCHistogram2D)initWithRanges:(const unsigned int *)ranges bucketValues:(id)values;
 - (id)description;
-- (void)addValue:(unsigned int)a3 withArray:(id)a4;
+- (void)addValue:(unsigned int)value withArray:(id)array;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation VCHistogram2D
 
-- (VCHistogram2D)initWithRanges:(const unsigned int *)a3 bucketValues:(id)a4
+- (VCHistogram2D)initWithRanges:(const unsigned int *)ranges bucketValues:(id)values
 {
   v8.receiver = self;
   v8.super_class = VCHistogram2D;
-  v4 = [(VCHistogram *)&v8 initWithRanges:a3 bucketValues:a4];
+  v4 = [(VCHistogram *)&v8 initWithRanges:ranges bucketValues:values];
   v5 = v4;
   if (v4)
   {
@@ -75,14 +75,14 @@
 
 - (id)description
 {
-  v3 = [(VCHistogram *)self bucketCount];
-  v4 = v3 - 1;
-  if (v3 == 1)
+  bucketCount = [(VCHistogram *)self bucketCount];
+  v4 = bucketCount - 1;
+  if (bucketCount == 1)
   {
     return &stru_284F80940;
   }
 
-  LODWORD(v5) = v3;
+  LODWORD(v5) = bucketCount;
   v6 = &stru_284F80940;
   while (1)
   {
@@ -173,7 +173,7 @@
   return v6;
 }
 
-- (void)addValue:(unsigned int)a3 withArray:(id)a4
+- (void)addValue:(unsigned int)value withArray:(id)array
 {
   if ([(VCHistogram *)self bucketCount]== 1)
   {
@@ -185,7 +185,7 @@
     v7 = 0;
     do
     {
-      if ([(VCHistogram *)self ranges][4 * v7] >= a3)
+      if ([(VCHistogram *)self ranges][4 * v7] >= value)
       {
         break;
       }
@@ -196,8 +196,8 @@
     while (v7 < [(VCHistogram *)self bucketCount]- 1);
   }
 
-  v8 = [(VCHistogram *)self bucketCount];
-  if ([a4 count])
+  bucketCount = [(VCHistogram *)self bucketCount];
+  if ([array count])
   {
     v9 = 0;
     v10 = 0;
@@ -209,9 +209,9 @@
         ++v11;
       }
 
-      if (v7 < v8 && v11 < v8)
+      if (v7 < bucketCount && v11 < bucketCount)
       {
-        v12 = [objc_msgSend(a4 objectAtIndex:{v9), "integerValue"}];
+        v12 = [objc_msgSend(array objectAtIndex:{v9), "integerValue"}];
         v13 = self->_buckets2D[v7];
         v13[v11] += v12;
       }
@@ -219,7 +219,7 @@
       v9 = ++v10;
     }
 
-    while ([a4 count] > v10);
+    while ([array count] > v10);
   }
 }
 

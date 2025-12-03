@@ -1,14 +1,14 @@
 @interface ATXAppSessionInterruptionsProvider
-- (ATXAppSessionInterruptionsProvider)initWithLastNDays:(unint64_t)a3;
-- (unint64_t)appInterruptionsCountWithAccumulator:(id)a3 suggestedBundleIds:(id)a4;
+- (ATXAppSessionInterruptionsProvider)initWithLastNDays:(unint64_t)days;
+- (unint64_t)appInterruptionsCountWithAccumulator:(id)accumulator suggestedBundleIds:(id)ids;
 - (unint64_t)globalInterruptedAppSessionsCountWithinLast1Day;
 - (unint64_t)globalInterruptedAppSessionsCountWithinLastNDays;
-- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode:(unint64_t)a3;
-- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode:(unint64_t)a3;
-- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode:(unint64_t)a3;
-- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode:(unint64_t)a3;
-- (unint64_t)modeInterruptedAppSessionsCountWithinLast1DayForMode:(unint64_t)a3;
-- (unint64_t)modeInterruptedAppSessionsCountWithinLastNDaysForMode:(unint64_t)a3;
+- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode:(unint64_t)mode;
+- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode:(unint64_t)mode;
+- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode:(unint64_t)mode;
+- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode:(unint64_t)mode;
+- (unint64_t)modeInterruptedAppSessionsCountWithinLast1DayForMode:(unint64_t)mode;
+- (unint64_t)modeInterruptedAppSessionsCountWithinLastNDaysForMode:(unint64_t)mode;
 - (void)cacheGlobalAppSessionInterruptionsCalculatorIfNecessary;
 - (void)cacheModeAppSessionInterruptionsCalculatorIfNecessary;
 - (void)cacheRecommendedAndCandidateAppsInAllowListForAllModesIfNecessary;
@@ -17,14 +17,14 @@
 
 @implementation ATXAppSessionInterruptionsProvider
 
-- (ATXAppSessionInterruptionsProvider)initWithLastNDays:(unint64_t)a3
+- (ATXAppSessionInterruptionsProvider)initWithLastNDays:(unint64_t)days
 {
   v8.receiver = self;
   v8.super_class = ATXAppSessionInterruptionsProvider;
   v4 = [(ATXAppSessionInterruptionsProvider *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * a3)];
+    v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:(-86400 * days)];
     thresholdDateLastNDays = v4->_thresholdDateLastNDays;
     v4->_thresholdDateLastNDays = v5;
   }
@@ -35,7 +35,7 @@
 - (void)cacheGlobalAppSessionInterruptionsCalculatorIfNecessary
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0(&dword_2263AA000, a2, a3, "ATXAppSessionInterruptionsProvider: could not fetch app launch and notification publishers with error: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -105,7 +105,7 @@ void __93__ATXAppSessionInterruptionsProvider_cacheGlobalAppSessionInterruptions
 - (void)cacheModeAppSessionInterruptionsCalculatorIfNecessary
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(*a1 + 40));
+  v9 = HIDWORD(*(*self + 40));
   OUTLINED_FUNCTION_0(&dword_2263AA000, a2, a3, "ATXAppSessionInterruptionsProvider: could not fetch inferred mode stream, app launch and notification publishers with error: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -242,7 +242,7 @@ LABEL_22:
 
 - (void)cacheRecommendedAndCandidateAppsInAllowListForAllModesIfNecessary
 {
-  v19 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
   v3 = objc_opt_new();
@@ -266,7 +266,7 @@ LABEL_22:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v26 + 1) + 8 * v7) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v26 + 1) + 8 * v7) unsignedIntegerValue];
         v9 = objc_opt_new();
         v10 = ATXModeToString();
         [(NSDictionary *)v2 setObject:v9 forKeyedSubscript:v10];
@@ -281,9 +281,9 @@ LABEL_22:
         v22 = v13;
         v23 = v11;
         v24 = v2;
-        v25 = v8;
+        v25 = unsignedIntegerValue;
         v14 = v11;
-        [v3 recommendedAndCandidateAllowedAppsForMode:v8 reply:v21];
+        [v3 recommendedAndCandidateAllowedAppsForMode:unsignedIntegerValue reply:v21];
         v15 = v13;
         v16 = dispatch_time(0, 5000000000);
         dispatch_semaphore_wait(v15, v16);
@@ -298,8 +298,8 @@ LABEL_22:
     while (v5);
   }
 
-  cachedRecommendedAndCandidateAllowedApps = v19->_cachedRecommendedAndCandidateAllowedApps;
-  v19->_cachedRecommendedAndCandidateAllowedApps = v2;
+  cachedRecommendedAndCandidateAllowedApps = selfCopy->_cachedRecommendedAndCandidateAllowedApps;
+  selfCopy->_cachedRecommendedAndCandidateAllowedApps = v2;
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -383,7 +383,7 @@ void __103__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
 
 - (void)cacheRecommendedAndCandidateAppsInDenyListForAllModesIfNecessary
 {
-  v19 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x277D85DE8];
   v2 = objc_opt_new();
   v3 = objc_opt_new();
@@ -407,7 +407,7 @@ void __103__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v26 + 1) + 8 * v7) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v26 + 1) + 8 * v7) unsignedIntegerValue];
         v9 = objc_opt_new();
         v10 = ATXModeToString();
         [(NSDictionary *)v2 setObject:v9 forKeyedSubscript:v10];
@@ -422,9 +422,9 @@ void __103__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
         v22 = v13;
         v23 = v11;
         v24 = v2;
-        v25 = v8;
+        v25 = unsignedIntegerValue;
         v14 = v11;
-        [v3 recommendedAndCandidateDeniedAppsForMode:v8 reply:v21];
+        [v3 recommendedAndCandidateDeniedAppsForMode:unsignedIntegerValue reply:v21];
         v15 = v13;
         v16 = dispatch_time(0, 5000000000);
         dispatch_semaphore_wait(v15, v16);
@@ -439,8 +439,8 @@ void __103__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
     while (v5);
   }
 
-  cachedRecommendedAndCandidateDeniedApps = v19->_cachedRecommendedAndCandidateDeniedApps;
-  v19->_cachedRecommendedAndCandidateDeniedApps = v2;
+  cachedRecommendedAndCandidateDeniedApps = selfCopy->_cachedRecommendedAndCandidateDeniedApps;
+  selfCopy->_cachedRecommendedAndCandidateDeniedApps = v2;
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -538,27 +538,27 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
   return [(ATXInterruptedAppSessionAccumulator *)cachedGlobalInterruptedAppSessionsAccumulatorForLast1Day numberOfInterruptingAppSessions];
 }
 
-- (unint64_t)modeInterruptedAppSessionsCountWithinLastNDaysForMode:(unint64_t)a3
+- (unint64_t)modeInterruptedAppSessionsCountWithinLastNDaysForMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_cachedAccumulatorsPerATXModeForLastNDays objectForKeyedSubscript:v4];
-  v6 = [v5 numberOfInterruptingAppSessions];
+  numberOfInterruptingAppSessions = [v5 numberOfInterruptingAppSessions];
 
-  return v6;
+  return numberOfInterruptingAppSessions;
 }
 
-- (unint64_t)modeInterruptedAppSessionsCountWithinLast1DayForMode:(unint64_t)a3
+- (unint64_t)modeInterruptedAppSessionsCountWithinLast1DayForMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
   v4 = ATXModeToString();
   v5 = [(NSDictionary *)self->_cachedAccumulatorsPerATXModeForLast1Day objectForKeyedSubscript:v4];
-  v6 = [v5 numberOfInterruptingAppSessions];
+  numberOfInterruptingAppSessions = [v5 numberOfInterruptingAppSessions];
 
-  return v6;
+  return numberOfInterruptingAppSessions;
 }
 
-- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode:(unint64_t)a3
+- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnAllowListOfMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheRecommendedAndCandidateAppsInAllowListForAllModesIfNecessary];
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
@@ -570,7 +570,7 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
   return v7;
 }
 
-- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode:(unint64_t)a3
+- (unint64_t)modeAppInterruptionsCountWithinLastNDaysBasedOnDenyListOfMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheRecommendedAndCandidateAppsInDenyListForAllModesIfNecessary];
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
@@ -582,7 +582,7 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
   return v7;
 }
 
-- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode:(unint64_t)a3
+- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnAllowListOfMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheRecommendedAndCandidateAppsInAllowListForAllModesIfNecessary];
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
@@ -594,7 +594,7 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
   return v7;
 }
 
-- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode:(unint64_t)a3
+- (unint64_t)modeAppInterruptionsCountWithinLast1DayBasedOnDenyListOfMode:(unint64_t)mode
 {
   [(ATXAppSessionInterruptionsProvider *)self cacheRecommendedAndCandidateAppsInDenyListForAllModesIfNecessary];
   [(ATXAppSessionInterruptionsProvider *)self cacheModeAppSessionInterruptionsCalculatorIfNecessary];
@@ -606,17 +606,17 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
   return v7;
 }
 
-- (unint64_t)appInterruptionsCountWithAccumulator:(id)a3 suggestedBundleIds:(id)a4
+- (unint64_t)appInterruptionsCountWithAccumulator:(id)accumulator suggestedBundleIds:(id)ids
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 countedSetContainingInterruptingAppBundleIds];
+  accumulatorCopy = accumulator;
+  idsCopy = ids;
+  countedSetContainingInterruptingAppBundleIds = [accumulatorCopy countedSetContainingInterruptingAppBundleIds];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [countedSetContainingInterruptingAppBundleIds countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -628,18 +628,18 @@ void __102__ATXAppSessionInterruptionsProvider_cacheRecommendedAndCandidateAppsI
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(countedSetContainingInterruptingAppBundleIds);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        if ([v6 containsObject:v13])
+        if ([idsCopy containsObject:v13])
         {
-          v14 = [v5 countedSetContainingInterruptingAppBundleIds];
-          v10 += [v14 countForObject:v13];
+          countedSetContainingInterruptingAppBundleIds2 = [accumulatorCopy countedSetContainingInterruptingAppBundleIds];
+          v10 += [countedSetContainingInterruptingAppBundleIds2 countForObject:v13];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [countedSetContainingInterruptingAppBundleIds countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);

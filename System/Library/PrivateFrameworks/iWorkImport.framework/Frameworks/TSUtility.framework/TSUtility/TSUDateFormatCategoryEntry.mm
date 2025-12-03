@@ -1,13 +1,13 @@
 @interface TSUDateFormatCategoryEntry
-- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)a3;
+- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)separator;
 - (id)formatStrings;
-- (id)newDateFromString:(id)a3 forceAllowAMPM:(BOOL)a4 successfulFormatString:(id *)a5 perfect:(BOOL *)a6;
-- (void)addFormat:(id)a3 locale:(id)a4;
+- (id)newDateFromString:(id)string forceAllowAMPM:(BOOL)m successfulFormatString:(id *)formatString perfect:(BOOL *)perfect;
+- (void)addFormat:(id)format locale:(id)locale;
 @end
 
 @implementation TSUDateFormatCategoryEntry
 
-- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)a3
+- (TSUDateFormatCategoryEntry)initWithSeparator:(unsigned __int16)separator
 {
   v11.receiver = self;
   v11.super_class = TSUDateFormatCategoryEntry;
@@ -15,7 +15,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_separator = a3;
+    v4->_separator = separator;
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     formatters = v5->_formatters;
     v5->_formatters = v6;
@@ -30,14 +30,14 @@
 
 - (id)formatStrings
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(NSMutableArray *)self->_formatters count])
   {
     v4 = 0;
     do
     {
       v5 = CFDateFormatterGetFormat([(NSMutableArray *)self->_formatters objectAtIndex:v4]);
-      [v3 addObject:v5];
+      [array addObject:v5];
 
       ++v4;
     }
@@ -45,31 +45,31 @@
     while (v4 < [(NSMutableArray *)self->_formatters count]);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)addFormat:(id)a3 locale:(id)a4
+- (void)addFormat:(id)format locale:(id)locale
 {
-  formatString = a3;
-  v6 = a4;
+  formatString = format;
+  localeCopy = locale;
   if (([(NSMutableSet *)self->_formatStrings containsObject:formatString]& 1) == 0)
   {
     [(NSMutableSet *)self->_formatStrings addObject:formatString];
-    v7 = sub_277032454(v6);
+    v7 = sub_277032454(localeCopy);
     CFDateFormatterSetFormat(v7, formatString);
     [(NSMutableArray *)self->_formatters addObject:v7];
   }
 }
 
-- (id)newDateFromString:(id)a3 forceAllowAMPM:(BOOL)a4 successfulFormatString:(id *)a5 perfect:(BOOL *)a6
+- (id)newDateFromString:(id)string forceAllowAMPM:(BOOL)m successfulFormatString:(id *)formatString perfect:(BOOL *)perfect
 {
-  v38 = a4;
-  v9 = a3;
-  v10 = [(__CFString *)v9 length];
-  v37 = self;
+  mCopy = m;
+  stringCopy = string;
+  v10 = [(__CFString *)stringCopy length];
+  selfCopy = self;
   v11 = [(NSMutableArray *)self->_formatters count];
-  v34 = a6;
-  *a6 = 0;
+  perfectCopy = perfect;
+  *perfect = 0;
   v36 = v11;
   if (!v11)
   {
@@ -86,10 +86,10 @@
   v14 = 1;
   do
   {
-    v15 = [(NSMutableArray *)v37->_formatters objectAtIndex:v14 - 1, v33];
+    v15 = [(NSMutableArray *)selfCopy->_formatters objectAtIndex:v14 - 1, v33];
     rangep.location = 0;
     rangep.length = v10;
-    v16 = CFDateFormatterCreateDateFromString(0, v15, v9, &rangep);
+    v16 = CFDateFormatterCreateDateFromString(0, v15, stringCopy, &rangep);
     if (v16)
     {
       v17 = 1;
@@ -97,7 +97,7 @@
 
     else
     {
-      v17 = !v38;
+      v17 = !mCopy;
     }
 
     if (!v17)
@@ -108,7 +108,7 @@
       CFDateFormatterSetProperty(v15, v13, @"PM");
       rangep.location = 0;
       rangep.length = v10;
-      v16 = CFDateFormatterCreateDateFromString(0, v15, v9, &rangep);
+      v16 = CFDateFormatterCreateDateFromString(0, v15, stringCopy, &rangep);
       CFDateFormatterSetProperty(v15, v12, v18);
       CFDateFormatterSetProperty(v15, v13, v19);
     }
@@ -118,16 +118,16 @@
       v20 = CFDateFormatterGetFormat(v15);
       v21 = sub_277030634(v16, v20);
 
-      if (a5)
+      if (formatString)
       {
         v22 = v20;
-        *a5 = v20;
+        *formatString = v20;
       }
 
       StringWithDate = CFDateFormatterCreateStringWithDate(0, v15, v21);
-      if (![(__CFString *)v9 compare:StringWithDate options:1])
+      if (![(__CFString *)stringCopy compare:StringWithDate options:1])
       {
-        *v34 = 1;
+        *perfectCopy = 1;
         v16 = v21;
 LABEL_23:
 
@@ -139,20 +139,20 @@ LABEL_23:
       {
         if (rangep.length == v10)
         {
-          if (!a5)
+          if (!formatString)
           {
             v16 = 0;
             v35 = v21;
             goto LABEL_23;
           }
 
-          v25 = *a5;
+          v25 = *formatString;
 
           v35 = v21;
           v33 = v25;
 LABEL_20:
           v16 = 0;
-          *a5 = 0;
+          *formatString = 0;
           goto LABEL_23;
         }
 
@@ -161,7 +161,7 @@ LABEL_20:
 
       v35 = v24;
 
-      if (!a5)
+      if (!formatString)
       {
         v16 = 0;
         goto LABEL_23;
@@ -191,11 +191,11 @@ LABEL_24:
     if (v35)
     {
       v29 = v35;
-      if (a5)
+      if (formatString)
       {
         v28 = v29;
         v30 = v33;
-        *a5 = v33;
+        *formatString = v33;
         v16 = v28;
       }
 

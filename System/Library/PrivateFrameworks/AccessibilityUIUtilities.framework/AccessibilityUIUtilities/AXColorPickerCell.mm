@@ -1,27 +1,27 @@
 @interface AXColorPickerCell
-- (AXColorPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXColorPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_colorValue;
 - (id)accessibilityValue;
 - (id)controlValue;
 - (id)newControl;
 - (unint64_t)accessibilityTraits;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setValue:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setValue:(id)value;
 @end
 
 @implementation AXColorPickerCell
 
-- (AXColorPickerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXColorPickerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = AXColorPickerCell;
-  v4 = [(PSControlTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSControlTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(PSControlTableCell *)v4 control];
-    [(AXColorPickerCell *)v5 setAccessoryView:v6];
+    control = [(PSControlTableCell *)v4 control];
+    [(AXColorPickerCell *)v5 setAccessoryView:control];
   }
 
   return v5;
@@ -32,8 +32,8 @@
   v4.receiver = self;
   v4.super_class = AXColorPickerCell;
   [(PSTableCell *)&v4 prepareForReuse];
-  v3 = [(PSControlTableCell *)self control];
-  [(AXColorPickerCell *)self setAccessoryView:v3];
+  control = [(PSControlTableCell *)self control];
+  [(AXColorPickerCell *)self setAccessoryView:control];
 }
 
 - (id)newControl
@@ -43,44 +43,44 @@
   return v2;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = AXColorPickerCell;
-  [(PSControlTableCell *)&v8 refreshCellContentsWithSpecifier:a3];
-  v4 = [(AXColorPickerCell *)self _colorValue];
-  v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C5798]) selectedColor];
+  [(PSControlTableCell *)&v8 refreshCellContentsWithSpecifier:specifier];
+  _colorValue = [(AXColorPickerCell *)self _colorValue];
+  selectedColor = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x1E69C5798]) selectedColor];
 
-  if (v4 != v5)
+  if (_colorValue != selectedColor)
   {
-    v6 = [(PSControlTableCell *)self control];
-    v7 = [(AXColorPickerCell *)self _colorValue];
-    [v6 setSelectedColor:v7];
+    control = [(PSControlTableCell *)self control];
+    _colorValue2 = [(AXColorPickerCell *)self _colorValue];
+    [control setSelectedColor:_colorValue2];
   }
 }
 
 - (id)controlValue
 {
-  v2 = [(PSControlTableCell *)self control];
-  v3 = [v2 selectedColor];
+  control = [(PSControlTableCell *)self control];
+  selectedColor = [control selectedColor];
 
-  return v3;
+  return selectedColor;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = *MEMORY[0x1E69C5800];
-  if (*(&self->super.super.super.super.super.super.isa + v6) != v5)
+  if (*(&self->super.super.super.super.super.super.isa + v6) != valueCopy)
   {
-    v9 = v5;
+    v9 = valueCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (!v9 || (isKindOfClass & 1) != 0)
     {
-      objc_storeStrong((&self->super.super.super.super.super.super.isa + v6), a3);
-      v8 = [(PSControlTableCell *)self control];
-      [v8 setSelectedColor:v9];
+      objc_storeStrong((&self->super.super.super.super.super.super.isa + v6), value);
+      control = [(PSControlTableCell *)self control];
+      [control setSelectedColor:v9];
     }
   }
 
@@ -112,11 +112,11 @@
 
 - (id)accessibilityValue
 {
-  v2 = [(AXColorPickerCell *)self _colorValue];
-  v3 = v2;
-  if (v2)
+  _colorValue = [(AXColorPickerCell *)self _colorValue];
+  v3 = _colorValue;
+  if (_colorValue)
   {
-    AXColorStringForColor(v2, 0);
+    AXColorStringForColor(_colorValue, 0);
   }
 
   else

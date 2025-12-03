@@ -1,21 +1,21 @@
 @interface CPLBucketFileStorageItem
 - (BOOL)isMarkedForDelete;
 - (BOOL)isOriginal;
-- (CPLBucketFileStorageItem)initWithIdentity:(id)a3 url:(id)a4;
+- (CPLBucketFileStorageItem)initWithIdentity:(id)identity url:(id)url;
 - (void)_cacheAttributes;
 @end
 
 @implementation CPLBucketFileStorageItem
 
-- (CPLBucketFileStorageItem)initWithIdentity:(id)a3 url:(id)a4
+- (CPLBucketFileStorageItem)initWithIdentity:(id)identity url:(id)url
 {
-  v6 = a4;
+  urlCopy = url;
   v11.receiver = self;
   v11.super_class = CPLBucketFileStorageItem;
-  v7 = [(CPLBucketFileStorageItem *)&v11 initWithIdentity:a3 original:0 markedForDelete:0 lastAccessDate:0];
+  v7 = [(CPLBucketFileStorageItem *)&v11 initWithIdentity:identity original:0 markedForDelete:0 lastAccessDate:0];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [urlCopy copy];
     url = v7->_url;
     v7->_url = v8;
   }
@@ -45,8 +45,8 @@
 
 - (void)_cacheAttributes
 {
-  v3 = [(NSURL *)self->_url fileSystemRepresentation];
-  v4 = open(v3, 0);
+  fileSystemRepresentation = [(NSURL *)self->_url fileSystemRepresentation];
+  v4 = open(fileSystemRepresentation, 0);
   if (v4 < 0)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -58,7 +58,7 @@
         v9 = strerror(*v8);
         v10 = *__error();
         v12 = 136315650;
-        v13 = v3;
+        v13 = fileSystemRepresentation;
         v14 = 2080;
         v15 = v9;
         v16 = 1024;

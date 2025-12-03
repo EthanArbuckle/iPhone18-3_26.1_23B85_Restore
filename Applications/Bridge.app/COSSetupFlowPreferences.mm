@@ -1,14 +1,14 @@
 @interface COSSetupFlowPreferences
 + (unint64_t)position;
-+ (void)beganController:(unint64_t)a3;
++ (void)beganController:(unint64_t)controller;
 @end
 
 @implementation COSSetupFlowPreferences
 
-+ (void)beganController:(unint64_t)a3
++ (void)beganController:(unint64_t)controller
 {
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:controller];
   [v4 setObject:v5 forKey:@"CurrentController"];
 
   v6 = +[NSUserDefaults standardUserDefaults];
@@ -22,15 +22,15 @@
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

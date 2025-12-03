@@ -1,5 +1,5 @@
 @interface HTAudioSequence
-- (BOOL)checkValidityAndReturnError:(id *)a3;
+- (BOOL)checkValidityAndReturnError:(id *)error;
 - (_TtC11HearingTest15HTAudioSequence)init;
 @end
 
@@ -12,24 +12,24 @@
   return result;
 }
 
-- (BOOL)checkValidityAndReturnError:(id *)a3
+- (BOOL)checkValidityAndReturnError:(id *)error
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC11HearingTest15HTAudioSequence_requiresBluetoothOutput) != 1 || *(&self->super.isa + OBJC_IVAR____TtC11HearingTest15HTAudioSequence_outputMode) != 1)
   {
     return 1;
   }
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_2520DE3F0(0, 0, 7u);
   swift_willThrow();
 
-  if (a3)
+  if (error)
   {
     v6 = sub_25214177C();
 
     v7 = v6;
     result = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else

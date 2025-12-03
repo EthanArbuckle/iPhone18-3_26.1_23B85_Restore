@@ -1,34 +1,34 @@
 @interface DebugHierarchyRequestExecutor
-+ (id)executorWithRequest:(id)a3;
-- (DebugHierarchyRequestExecutor)initWithRequest:(id)a3;
-- (id)_performanceMetricsDictionaryRequestActionDuration:(double)a3;
-- (id)_v1CompatibleRequestResponseFromResponse:(id)a3;
-- (id)runWithError:(id *)a3;
++ (id)executorWithRequest:(id)request;
+- (DebugHierarchyRequestExecutor)initWithRequest:(id)request;
+- (id)_performanceMetricsDictionaryRequestActionDuration:(double)duration;
+- (id)_v1CompatibleRequestResponseFromResponse:(id)response;
+- (id)runWithError:(id *)error;
 - (void)_executeRequestActionsWithCrawler;
 - (void)_executeRequestActionsWithKnownObjects;
-- (void)_v1MakePropertyDescriptionCompatible:(id)a3 withRuntimeType:(id)a4;
-- (void)_v1RecursivelyMakePropertyDescriptionCompatibleWithGroup:(id)a3;
+- (void)_v1MakePropertyDescriptionCompatible:(id)compatible withRuntimeType:(id)type;
+- (void)_v1RecursivelyMakePropertyDescriptionCompatibleWithGroup:(id)group;
 @end
 
 @implementation DebugHierarchyRequestExecutor
 
-+ (id)executorWithRequest:(id)a3
++ (id)executorWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRequest:v4];
+  requestCopy = request;
+  v5 = [[self alloc] initWithRequest:requestCopy];
 
   return v5;
 }
 
-- (DebugHierarchyRequestExecutor)initWithRequest:(id)a3
+- (DebugHierarchyRequestExecutor)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v11.receiver = self;
   v11.super_class = DebugHierarchyRequestExecutor;
   v5 = [(DebugHierarchyRequestExecutor *)&v11 init];
   if (v5)
   {
-    v6 = [DebugHierarchyRequestExecutionContext contextWithRequest:v4];
+    v6 = [DebugHierarchyRequestExecutionContext contextWithRequest:requestCopy];
     requestContext = v5->_requestContext;
     v5->_requestContext = v6;
 
@@ -40,7 +40,7 @@
   return v5;
 }
 
-- (id)runWithError:(id *)a3
+- (id)runWithError:(id *)error
 {
   v78 = +[NSDate date];
   v4 = DebugHierarchyRequestsOSLog();
@@ -54,8 +54,8 @@
     _os_signpost_emit_with_name_impl(&dword_0, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "Request Executor", "Begin %{public}s", buf, 0xCu);
   }
 
-  v8 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
-  [v8 executeInitialStandaloneActions];
+  actionExecutor = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+  [actionExecutor executeInitialStandaloneActions];
 
   v9 = DebugHierarchyRequestsOSLog();
   v10 = os_signpost_id_make_with_pointer(v9, self);
@@ -67,11 +67,11 @@
     _os_signpost_emit_with_name_impl(&dword_0, v12, OS_SIGNPOST_INTERVAL_END, v10, "Request Executor", "Completed", buf, 2u);
   }
 
-  v13 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v14 = [v13 request];
-  v15 = [v14 objectDiscovery];
+  requestContext = [(DebugHierarchyRequestExecutor *)self requestContext];
+  request = [requestContext request];
+  objectDiscovery = [request objectDiscovery];
 
-  if (v15 == &dword_0 + 2)
+  if (objectDiscovery == &dword_0 + 2)
   {
     v24 = DebugHierarchyRequestsOSLog();
     v25 = os_signpost_id_make_with_pointer(v24, self);
@@ -98,7 +98,7 @@
     goto LABEL_21;
   }
 
-  if (v15 == &dword_0 + 1)
+  if (objectDiscovery == &dword_0 + 1)
   {
     v16 = DebugHierarchyRequestsOSLog();
     v17 = os_signpost_id_make_with_pointer(v16, self);
@@ -138,8 +138,8 @@ LABEL_22:
     _os_signpost_emit_with_name_impl(&dword_0, v33, OS_SIGNPOST_INTERVAL_BEGIN, v31, "Request Executor", "Begin %{public}s", buf, 0xCu);
   }
 
-  v34 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
-  [v34 executeFinalStandaloneActions];
+  actionExecutor2 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+  [actionExecutor2 executeFinalStandaloneActions];
 
   v35 = DebugHierarchyRequestsOSLog();
   v36 = os_signpost_id_make_with_pointer(v35, self);
@@ -155,9 +155,9 @@ LABEL_22:
   [v39 timeIntervalSinceDate:v78];
   v77 = v39;
   v40 = [(DebugHierarchyRequestExecutor *)self _performanceMetricsDictionaryRequestActionDuration:?];
-  v41 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v42 = [v41 metaData];
-  [v42 setObject:v40 forKeyedSubscript:@"metaDataRequestPerformance"];
+  requestContext2 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  metaData = [requestContext2 metaData];
+  [metaData setObject:v40 forKeyedSubscript:@"metaDataRequestPerformance"];
 
   v43 = DebugHierarchyRequestsOSLog();
   v44 = os_signpost_id_make_with_pointer(v43, self);
@@ -169,8 +169,8 @@ LABEL_22:
     _os_signpost_emit_with_name_impl(&dword_0, v46, OS_SIGNPOST_INTERVAL_BEGIN, v44, "Request Executor", "Begin Response Generation", buf, 2u);
   }
 
-  v47 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v48 = [v47 requestResponse];
+  requestContext3 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  requestResponse = [requestContext3 requestResponse];
 
   v49 = DebugHierarchyRequestsOSLog();
   v50 = os_signpost_id_make_with_pointer(v49, self);
@@ -183,41 +183,41 @@ LABEL_22:
   }
 
   v53 = +[DebugHierarchyTargetHub sharedHub];
-  v54 = [v53 runtimeInfo];
-  v55 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v56 = [v55 contextRuntimeInfo];
-  [v54 mergeWith:v56];
+  runtimeInfo = [v53 runtimeInfo];
+  requestContext4 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  contextRuntimeInfo = [requestContext4 contextRuntimeInfo];
+  [runtimeInfo mergeWith:contextRuntimeInfo];
 
-  v57 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v58 = [v57 request];
-  LODWORD(v56) = [v58 needsCompatibilityConversion];
+  requestContext5 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  request2 = [requestContext5 request];
+  LODWORD(contextRuntimeInfo) = [request2 needsCompatibilityConversion];
 
-  if (v56)
+  if (contextRuntimeInfo)
   {
-    v59 = [(DebugHierarchyRequestExecutor *)self _v1CompatibleRequestResponseFromResponse:v48];
+    v59 = [(DebugHierarchyRequestExecutor *)self _v1CompatibleRequestResponseFromResponse:requestResponse];
 
-    v48 = v59;
+    requestResponse = v59;
   }
 
   v79 = 0;
-  v60 = [v48 generateJSONDataWithError:&v79];
+  v60 = [requestResponse generateJSONDataWithError:&v79];
   v61 = v79;
   v62 = v61;
   if (v61)
   {
-    v63 = [v61 localizedDescription];
+    localizedDescription = [v61 localizedDescription];
     v64 = [NSString stringWithCString:"[DebugHierarchyRequestExecutor runWithError:]" encoding:4];
-    v65 = [DebugHierarchyLogEntry errorLogEntryWithTitle:@"Error generating request response data." message:v63 methodSignature:v64];
+    v65 = [DebugHierarchyLogEntry errorLogEntryWithTitle:@"Error generating request response data." message:localizedDescription methodSignature:v64];
 
-    v66 = [(DebugHierarchyRequestExecutor *)self requestContext];
-    v67 = [v66 request];
-    [v67 addLogEntry:v65];
+    requestContext6 = [(DebugHierarchyRequestExecutor *)self requestContext];
+    request3 = [requestContext6 request];
+    [request3 addLogEntry:v65];
 
     v80 = @"request";
-    v68 = [(DebugHierarchyRequestExecutor *)self requestContext];
-    v69 = [v68 request];
-    v70 = [v69 dictionaryRepresentation];
-    v81 = v70;
+    requestContext7 = [(DebugHierarchyRequestExecutor *)self requestContext];
+    request4 = [requestContext7 request];
+    dictionaryRepresentation = [request4 dictionaryRepresentation];
+    v81 = dictionaryRepresentation;
     v71 = [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
 
     v72 = [v71 generateJSONDataWithError:0];
@@ -228,23 +228,23 @@ LABEL_22:
     v72 = v60;
   }
 
-  v73 = [(DebugHierarchyRequestExecutor *)self requestContext];
-  v74 = [v73 request];
-  v75 = [v74 formattedResponseDataForRawRequestResultData:v72];
+  requestContext8 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  request5 = [requestContext8 request];
+  v75 = [request5 formattedResponseDataForRawRequestResultData:v72];
 
   return v75;
 }
 
-- (id)_v1CompatibleRequestResponseFromResponse:(id)a3
+- (id)_v1CompatibleRequestResponseFromResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[DebugHierarchyTargetHub sharedHub];
-  v6 = [v5 knownObjectsMap];
+  knownObjectsMap = [v5 knownObjectsMap];
 
   v7 = +[DebugHierarchyTargetHub sharedHub];
-  v8 = [v7 runtimeInfo];
+  runtimeInfo = [v7 runtimeInfo];
 
-  v9 = [v4 mutableCopy];
+  v9 = [responseCopy mutableCopy];
   v10 = [v9 objectForKeyedSubscript:@"topLevelGroups"];
   +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v10 count]);
   v25[0] = _NSConcreteStackBlock;
@@ -255,19 +255,19 @@ LABEL_22:
   v11 = v26;
   [v10 enumerateKeysAndObjectsUsingBlock:v25];
   [v9 setObject:v11 forKeyedSubscript:@"topLevelGroups"];
-  v12 = [v4 objectForKeyedSubscript:@"topLevelPropertyDescriptions"];
+  v12 = [responseCopy objectForKeyedSubscript:@"topLevelPropertyDescriptions"];
 
   +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = __74__DebugHierarchyRequestExecutor__v1CompatibleRequestResponseFromResponse___block_invoke_2;
   v20 = &unk_24360;
-  v21 = v6;
-  v22 = v8;
+  v21 = knownObjectsMap;
+  v22 = runtimeInfo;
   v24 = v23 = self;
   v13 = v24;
-  v14 = v8;
-  v15 = v6;
+  v14 = runtimeInfo;
+  v15 = knownObjectsMap;
   [v12 enumerateKeysAndObjectsUsingBlock:&v17];
   [v9 setObject:v13 forKeyedSubscript:{@"topLevelPropertyDescriptions", v17, v18, v19, v20}];
 
@@ -300,17 +300,17 @@ void __74__DebugHierarchyRequestExecutor__v1CompatibleRequestResponseFromRespons
   }
 }
 
-- (void)_v1RecursivelyMakePropertyDescriptionCompatibleWithGroup:(id)a3
+- (void)_v1RecursivelyMakePropertyDescriptionCompatibleWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v5 = +[DebugHierarchyTargetHub sharedHub];
-  v42 = [v5 knownObjectsMap];
+  knownObjectsMap = [v5 knownObjectsMap];
 
   v6 = +[DebugHierarchyTargetHub sharedHub];
-  v38 = [v6 runtimeInfo];
+  runtimeInfo = [v6 runtimeInfo];
 
-  v34 = v4;
-  v7 = [v4 objectForKeyedSubscript:@"debugHierarchyObjects"];
+  v34 = groupCopy;
+  v7 = [groupCopy objectForKeyedSubscript:@"debugHierarchyObjects"];
   v41 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
   v51 = 0u;
   v52 = 0u;
@@ -348,13 +348,13 @@ void __74__DebugHierarchyRequestExecutor__v1CompatibleRequestResponseFromRespons
 
         v17 = [v13 objectForKeyedSubscript:@"properties"];
         v18 = [v12 objectForKeyedSubscript:@"objectID"];
-        v19 = [v42 objectForKey:v18];
+        v19 = [knownObjectsMap objectForKey:v18];
         v20 = v19;
         if (v19)
         {
           v43 = v19;
           v44 = v18;
-          v21 = [v38 typeOfObject:v19];
+          v21 = [runtimeInfo typeOfObject:v19];
           if (v21)
           {
             v40 = v16;
@@ -394,15 +394,15 @@ void __74__DebugHierarchyRequestExecutor__v1CompatibleRequestResponseFromRespons
             v30 = v21;
             do
             {
-              v31 = [v30 instanceProperties];
-              [v29 addEntriesFromDictionary:v31];
+              instanceProperties = [v30 instanceProperties];
+              [v29 addEntriesFromDictionary:instanceProperties];
 
-              v32 = [v30 parentType];
+              parentType = [v30 parentType];
 
-              v30 = v32;
+              v30 = parentType;
             }
 
-            while (v32);
+            while (parentType);
             v45[0] = _NSConcreteStackBlock;
             v45[1] = 3221225472;
             v45[2] = __90__DebugHierarchyRequestExecutor__v1RecursivelyMakePropertyDescriptionCompatibleWithGroup___block_invoke;
@@ -500,14 +500,14 @@ void __90__DebugHierarchyRequestExecutor__v1RecursivelyMakePropertyDescriptionCo
   }
 }
 
-- (void)_v1MakePropertyDescriptionCompatible:(id)a3 withRuntimeType:(id)a4
+- (void)_v1MakePropertyDescriptionCompatible:(id)compatible withRuntimeType:(id)type
 {
-  v28 = a3;
-  v5 = a4;
-  v6 = [v28 objectForKeyedSubscript:@"propertyName"];
+  compatibleCopy = compatible;
+  typeCopy = type;
+  v6 = [compatibleCopy objectForKeyedSubscript:@"propertyName"];
   if (v6)
   {
-    v7 = [v5 propertyWithName:v6];
+    v7 = [typeCopy propertyWithName:v6];
     v8 = v7;
     if (!v7)
     {
@@ -516,25 +516,25 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    v9 = [v7 format];
+    format = [v7 format];
 
-    if (v9)
+    if (format)
     {
-      v10 = [v8 format];
-      [v28 setObject:v10 forKeyedSubscript:@"propertyFormat"];
+      format2 = [v8 format];
+      [compatibleCopy setObject:format2 forKeyedSubscript:@"propertyFormat"];
     }
 
-    v11 = [v8 logicalType];
+    logicalType = [v8 logicalType];
 
-    if (!v11)
+    if (!logicalType)
     {
 LABEL_12:
-      v17 = [v8 runtimeTypeName];
+      runtimeTypeName = [v8 runtimeTypeName];
 
-      if (v17)
+      if (runtimeTypeName)
       {
-        v18 = [v8 runtimeTypeName];
-        [v28 setObject:v18 forKeyedSubscript:@"propertyRuntimeType"];
+        runtimeTypeName2 = [v8 runtimeTypeName];
+        [compatibleCopy setObject:runtimeTypeName2 forKeyedSubscript:@"propertyRuntimeType"];
       }
 
       if ([v8 visibility] == &dword_0 + 1)
@@ -548,24 +548,24 @@ LABEL_12:
       }
 
       v20 = [NSNumber numberWithUnsignedInteger:v19];
-      [v28 setObject:v20 forKeyedSubscript:@"visibility"];
+      [compatibleCopy setObject:v20 forKeyedSubscript:@"visibility"];
 
       v21 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v8 options]);
-      [v28 setObject:v21 forKeyedSubscript:@"propertyOptions"];
+      [compatibleCopy setObject:v21 forKeyedSubscript:@"propertyOptions"];
 
-      v22 = [v28 objectForKeyedSubscript:@"fetchStatus"];
-      v23 = [v28 objectForKeyedSubscript:@"propertyValue"];
+      v22 = [compatibleCopy objectForKeyedSubscript:@"fetchStatus"];
+      v23 = [compatibleCopy objectForKeyedSubscript:@"propertyValue"];
 
       if (v22)
       {
-        v24 = [v22 integerValue];
+        integerValue = [v22 integerValue];
         v25 = 2;
-        if (v24 == &dword_4)
+        if (integerValue == &dword_4)
         {
           v25 = v23 == 0;
         }
 
-        if (v24 == &dword_8)
+        if (integerValue == &dword_8)
         {
           v26 = 3;
         }
@@ -582,24 +582,24 @@ LABEL_12:
       }
 
       v27 = [NSNumber numberWithUnsignedInteger:v26];
-      [v28 setObject:v27 forKeyedSubscript:@"propertyValueStatus"];
+      [compatibleCopy setObject:v27 forKeyedSubscript:@"propertyValueStatus"];
 
       goto LABEL_25;
     }
 
-    v12 = [v8 logicalType];
-    v13 = [v8 logicalType];
-    if ([v13 isEqualToString:@"DebugHierarchyLogicalPropertyTypeEnum"])
+    logicalType2 = [v8 logicalType];
+    logicalType3 = [v8 logicalType];
+    if ([logicalType3 isEqualToString:@"DebugHierarchyLogicalPropertyTypeEnum"])
     {
-      v14 = [v8 name];
-      v15 = [v14 isEqualToString:@"orientation"];
+      name = [v8 name];
+      v15 = [name isEqualToString:@"orientation"];
 
       if (!v15)
       {
-        v16 = @"DebugHierarchyLogicalPropertyTypeNumber";
+        logicalType4 = @"DebugHierarchyLogicalPropertyTypeNumber";
 LABEL_11:
 
-        [v28 setObject:v16 forKeyedSubscript:@"propertyLogicalType"];
+        [compatibleCopy setObject:logicalType4 forKeyedSubscript:@"propertyLogicalType"];
         goto LABEL_12;
       }
     }
@@ -608,7 +608,7 @@ LABEL_11:
     {
     }
 
-    v16 = [v8 logicalType];
+    logicalType4 = [v8 logicalType];
     goto LABEL_11;
   }
 
@@ -617,22 +617,22 @@ LABEL_26:
 
 - (void)_executeRequestActionsWithCrawler
 {
-  v3 = [(DebugHierarchyRequestExecutor *)self requestContext];
+  requestContext = [(DebugHierarchyRequestExecutor *)self requestContext];
   v4 = +[DebugHierarchyTargetHub sharedHub];
-  v5 = [v4 knownObjectsMap];
-  v7 = [DebugHierarchyCrawler crawlerWithRequestContext:v3 knownObjectsMap:v5];
+  knownObjectsMap = [v4 knownObjectsMap];
+  v7 = [DebugHierarchyCrawler crawlerWithRequestContext:requestContext knownObjectsMap:knownObjectsMap];
 
-  v6 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
-  [v7 setActionExecutor:v6];
+  actionExecutor = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+  [v7 setActionExecutor:actionExecutor];
 
   [v7 run];
 }
 
 - (void)_executeRequestActionsWithKnownObjects
 {
-  v3 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+  actionExecutor = [(DebugHierarchyRequestExecutor *)self actionExecutor];
   v32 = 0;
-  v4 = [v3 allObjectActionsTargetIdentifiers:&v32];
+  v4 = [actionExecutor allObjectActionsTargetIdentifiers:&v32];
   v5 = v32;
 
   if (v4)
@@ -641,8 +641,8 @@ LABEL_26:
     v31 = 0uLL;
     v28 = 0uLL;
     v29 = 0uLL;
-    v6 = v5;
-    v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    objectEnumerator = v5;
+    v7 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
     if (v7)
     {
       v8 = v7;
@@ -653,22 +653,22 @@ LABEL_26:
         {
           if (*v29 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v11 = *(*(&v28 + 1) + 8 * i);
           v12 = +[DebugHierarchyTargetHub sharedHub];
-          v13 = [v12 knownObjectsMap];
-          v14 = [v13 objectForKey:v11];
+          knownObjectsMap = [v12 knownObjectsMap];
+          v14 = [knownObjectsMap objectForKey:v11];
 
           if (v14)
           {
-            v15 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
-            [v15 executeActionsWithObject:v14];
+            actionExecutor2 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+            [actionExecutor2 executeActionsWithObject:v14];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+        v8 = [objectEnumerator countByEnumeratingWithState:&v28 objects:v34 count:16];
       }
 
       while (v8);
@@ -682,10 +682,10 @@ LABEL_26:
     *(&v24 + 1) = 0;
     v25 = 0uLL;
     v16 = +[DebugHierarchyTargetHub sharedHub];
-    v17 = [v16 knownObjectsMap];
-    v6 = [v17 objectEnumerator];
+    knownObjectsMap2 = [v16 knownObjectsMap];
+    objectEnumerator = [knownObjectsMap2 objectEnumerator];
 
-    v18 = [v6 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    v18 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v18)
     {
       v19 = v18;
@@ -696,15 +696,15 @@ LABEL_26:
         {
           if (*v25 != v20)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v22 = *(*(&v24 + 1) + 8 * j);
-          v23 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
-          [v23 executeActionsWithObject:v22];
+          actionExecutor3 = [(DebugHierarchyRequestExecutor *)self actionExecutor];
+          [actionExecutor3 executeActionsWithObject:v22];
         }
 
-        v19 = [v6 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v19 = [objectEnumerator countByEnumeratingWithState:&v24 objects:v33 count:16];
       }
 
       while (v19);
@@ -712,10 +712,10 @@ LABEL_26:
   }
 }
 
-- (id)_performanceMetricsDictionaryRequestActionDuration:(double)a3
+- (id)_performanceMetricsDictionaryRequestActionDuration:(double)duration
 {
   v6 = @"actionExecution";
-  v3 = [NSNumber numberWithDouble:a3];
+  v3 = [NSNumber numberWithDouble:duration];
   v7 = v3;
   v4 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
 

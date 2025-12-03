@@ -2,10 +2,10 @@
 - (SearchUIFeedbackDelegate)feedbackDelegate;
 - (SearchUIInfoSizingDelegate)sizingDelegate;
 - (SearchUIInfoValueFlowView)init;
-- (void)buttonItemPressed:(id)a3;
-- (void)configureInfoValueButtonController:(id)a3 withButtonItem:(id)a4;
+- (void)buttonItemPressed:(id)pressed;
+- (void)configureInfoValueButtonController:(id)controller withButtonItem:(id)item;
 - (void)reloadViews;
-- (void)setTuple:(id)a3;
+- (void)setTuple:(id)tuple;
 @end
 
 @implementation SearchUIInfoValueFlowView
@@ -20,17 +20,17 @@
     v3 = objc_opt_new();
     [(SearchUIInfoValueFlowView *)v2 setInfoValueViewControllers:v3];
 
-    v4 = [MEMORY[0x1E69D9240] isMacOS];
+    isMacOS = [MEMORY[0x1E69D9240] isMacOS];
     v5 = 7.0;
-    if ((v4 & 1) == 0)
+    if ((isMacOS & 1) == 0)
     {
       [MEMORY[0x1E69D91A8] deviceScaledRoundedValue:v2 forView:6.5];
     }
 
     [(NUIContainerFlowView *)v2 setRowSpacing:v5];
-    v6 = [MEMORY[0x1E69D9240] isMacOS];
+    isMacOS2 = [MEMORY[0x1E69D9240] isMacOS];
     v7 = 0.0;
-    if (v6)
+    if (isMacOS2)
     {
       v7 = 7.0;
     }
@@ -42,16 +42,16 @@
   return v2;
 }
 
-- (void)setTuple:(id)a3
+- (void)setTuple:(id)tuple
 {
-  v5 = a3;
-  if (self->_tuple != v5)
+  tupleCopy = tuple;
+  if (self->_tuple != tupleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tuple, a3);
+    v6 = tupleCopy;
+    objc_storeStrong(&self->_tuple, tuple);
     [(SearchUIInfoValueFlowView *)self setIsExpanded:0];
     [(SearchUIInfoValueFlowView *)self reloadViews];
-    v5 = v6;
+    tupleCopy = v6;
   }
 }
 
@@ -236,65 +236,65 @@ LABEL_32:
   return [*(a1 + 32) invalidateIntrinsicContentSize];
 }
 
-- (void)configureInfoValueButtonController:(id)a3 withButtonItem:(id)a4
+- (void)configureInfoValueButtonController:(id)controller withButtonItem:(id)item
 {
-  v16 = a4;
-  v5 = a3;
-  v6 = [v16 image];
+  itemCopy = item;
+  controllerCopy = controller;
+  image = [itemCopy image];
 
-  if (v6)
+  if (image)
   {
-    v7 = [v16 image];
+    image2 = [itemCopy image];
   }
 
   else
   {
-    v8 = [v16 command];
+    command = [itemCopy command];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v10 = [v16 command];
-      v11 = [v10 punchout];
-      v12 = [v11 urls];
-      v13 = [v12 firstObject];
-      v14 = [v13 scheme];
+      command2 = [itemCopy command];
+      punchout = [command2 punchout];
+      urls = [punchout urls];
+      firstObject = [urls firstObject];
+      scheme = [firstObject scheme];
 
-      if (([v14 isEqualToString:@"http"] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"https"))
+      if (([scheme isEqualToString:@"http"] & 1) != 0 || objc_msgSend(scheme, "isEqualToString:", @"https"))
       {
-        v7 = objc_opt_new();
-        [v7 setSymbolName:@"arrow.up.forward.app.fill"];
-        [v7 setIsTemplate:1];
+        image2 = objc_opt_new();
+        [image2 setSymbolName:@"arrow.up.forward.app.fill"];
+        [image2 setIsTemplate:1];
       }
 
       else
       {
-        v7 = 0;
+        image2 = 0;
       }
     }
 
     else
     {
-      v7 = 0;
+      image2 = 0;
     }
   }
 
-  v15 = [[SearchUIButtonItem alloc] initWithSFButtonItem:v16];
-  [(SearchUIButtonItem *)v15 setImage:v7];
-  [v5 updateWithButtonItem:v15 buttonItemViewType:{objc_msgSend(v5, "buttonItemViewStyle")}];
+  v15 = [[SearchUIButtonItem alloc] initWithSFButtonItem:itemCopy];
+  [(SearchUIButtonItem *)v15 setImage:image2];
+  [controllerCopy updateWithButtonItem:v15 buttonItemViewType:{objc_msgSend(controllerCopy, "buttonItemViewStyle")}];
 }
 
-- (void)buttonItemPressed:(id)a3
+- (void)buttonItemPressed:(id)pressed
 {
-  v4 = [a3 sfButtonItem];
+  sfButtonItem = [pressed sfButtonItem];
 
-  if (!v4)
+  if (!sfButtonItem)
   {
     [(SearchUIInfoValueFlowView *)self setIsExpanded:1];
     [(SearchUIInfoValueFlowView *)self reloadViews];
-    v5 = [(SearchUIInfoValueFlowView *)self sizingDelegate];
-    [v5 didInvalidateSizeAnimate:1];
+    sizingDelegate = [(SearchUIInfoValueFlowView *)self sizingDelegate];
+    [sizingDelegate didInvalidateSizeAnimate:1];
   }
 }
 

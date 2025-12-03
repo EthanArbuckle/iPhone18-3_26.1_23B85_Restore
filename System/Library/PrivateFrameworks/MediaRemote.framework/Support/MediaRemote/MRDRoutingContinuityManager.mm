@@ -6,8 +6,8 @@
 - (id)_calculateDesiredPredictedRouteOutputDeviceUIDs;
 - (void)_pausePredicatedRoutesSync;
 - (void)_reevaluatePredictedRoutes;
-- (void)setActiveSystemEndpoint:(id)a3;
-- (void)setPausePredictedRoutesTimer:(id)a3;
+- (void)setActiveSystemEndpoint:(id)endpoint;
+- (void)setPausePredictedRoutesTimer:(id)timer;
 @end
 
 @implementation MRDRoutingContinuityManager
@@ -15,24 +15,24 @@
 - (id)_calculateDesiredPredictedRouteOutputDeviceUIDs
 {
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 deviceInfo];
+  deviceInfo = [v3 deviceInfo];
 
   v5 = +[MRUserSettings currentSettings];
   if ([v5 supportTopologyHealing])
   {
-    v6 = [v4 isAirPlayActive];
+    isAirPlayActive = [deviceInfo isAirPlayActive];
 
-    if (v6)
+    if (isAirPlayActive)
     {
-      v7 = [v4 leaderDeviceInfo];
-      v8 = [v7 groupedDevices];
+      leaderDeviceInfo = [deviceInfo leaderDeviceInfo];
+      groupedDevices = [leaderDeviceInfo groupedDevices];
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
       v42[2] = sub_10009AAD4;
       v42[3] = &unk_1004B99C8;
-      v9 = v4;
+      v9 = deviceInfo;
       v43 = v9;
-      v10 = [v8 msv_compactMap:v42];
+      v10 = [groupedDevices msv_compactMap:v42];
 
       v40[0] = _NSConcreteStackBlock;
       v40[1] = 3221225472;
@@ -48,7 +48,7 @@
       }
 
       v13 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-      v14 = [v13 outputDevices];
+      outputDevices = [v13 outputDevices];
 
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
@@ -56,7 +56,7 @@
       v38[3] = &unk_1004B8A40;
       v15 = v11;
       v39 = v15;
-      v16 = [v14 msv_firstWhere:v38];
+      v16 = [outputDevices msv_firstWhere:v38];
 
       v36[0] = _NSConcreteStackBlock;
       v36[1] = 3221225472;
@@ -64,9 +64,9 @@
       v36[3] = &unk_1004B8A40;
       v17 = v15;
       v37 = v17;
-      v18 = [v14 msv_firstWhere:v36];
+      v18 = [outputDevices msv_firstWhere:v36];
 
-      v19 = [v14 msv_compactMap:&stru_1004B9A10];
+      v19 = [outputDevices msv_compactMap:&stru_1004B9A10];
       v20 = objc_alloc_init(NSMutableArray);
       if ([v17 supportsTwoHop])
       {
@@ -100,8 +100,8 @@ LABEL_17:
         }
       }
 
-      v21 = [v17 deviceUID];
-      [v20 addObject:v21];
+      deviceUID = [v17 deviceUID];
+      [v20 addObject:deviceUID];
 
       goto LABEL_16;
     }
@@ -114,23 +114,23 @@ LABEL_17:
   v20 = 0;
 LABEL_18:
   v22 = +[MRUserSettings currentSettings];
-  v23 = [v22 supportRoutingContinuity];
+  supportRoutingContinuity = [v22 supportRoutingContinuity];
 
-  if (v23)
+  if (supportRoutingContinuity)
   {
-    v24 = [(MRDRoutingContinuityManager *)self activeSystemEndpoint];
-    v25 = [v24 isLocalEndpoint];
+    activeSystemEndpoint = [(MRDRoutingContinuityManager *)self activeSystemEndpoint];
+    isLocalEndpoint = [activeSystemEndpoint isLocalEndpoint];
 
-    if ((v25 & 1) == 0)
+    if ((isLocalEndpoint & 1) == 0)
     {
-      v26 = [(MRDRoutingContinuityManager *)self activeSystemEndpoint];
-      v27 = [v26 resolvedOutputDevices];
+      activeSystemEndpoint2 = [(MRDRoutingContinuityManager *)self activeSystemEndpoint];
+      resolvedOutputDevices = [activeSystemEndpoint2 resolvedOutputDevices];
       v31 = _NSConcreteStackBlock;
       v32 = 3221225472;
       v33 = sub_10009ADC4;
       v34 = &unk_1004B8A40;
-      v35 = v4;
-      v28 = [v27 msv_filter:&v31];
+      v35 = deviceInfo;
+      v28 = [resolvedOutputDevices msv_filter:&v31];
       v29 = [v28 msv_compactMap:{&stru_1004B9A30, v31, v32, v33, v34}];
 
       v20 = v29;
@@ -142,18 +142,18 @@ LABEL_18:
 
 - (BOOL)shouldIgnorePredictedRoutesSync
 {
-  v2 = [(MRDRoutingContinuityManager *)self pausePredictedRoutesTimer];
-  v3 = v2 != 0;
+  pausePredictedRoutesTimer = [(MRDRoutingContinuityManager *)self pausePredictedRoutesTimer];
+  v3 = pausePredictedRoutesTimer != 0;
 
   return v3;
 }
 
 - (MSVTimer)pausePredictedRoutesTimer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_pausePredictedRoutesTimer;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_pausePredictedRoutesTimer;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -162,13 +162,13 @@ LABEL_18:
 {
   if (![(MRDRoutingContinuityManager *)self shouldIgnorePredictedRoutesSync])
   {
-    v3 = [(MRDRoutingContinuityManager *)self _calculateDesiredPredictedRouteOutputDeviceUIDs];
+    _calculateDesiredPredictedRouteOutputDeviceUIDs = [(MRDRoutingContinuityManager *)self _calculateDesiredPredictedRouteOutputDeviceUIDs];
     v4 = [NSSet alloc];
     v5 = +[MRAVLocalEndpoint sharedLocalEndpoint];
-    v6 = [v5 predictedOutputDeviceUIDs];
-    v7 = [v4 initWithArray:v6];
+    predictedOutputDeviceUIDs = [v5 predictedOutputDeviceUIDs];
+    v7 = [v4 initWithArray:predictedOutputDeviceUIDs];
 
-    v8 = [[NSSet alloc] initWithArray:v3];
+    v8 = [[NSSet alloc] initWithArray:_calculateDesiredPredictedRouteOutputDeviceUIDs];
     if (v7 != v8 && ([v7 isEqual:v8] & 1) == 0)
     {
       v9 = [MRRequestDetails alloc];
@@ -176,7 +176,7 @@ LABEL_18:
       v11 = NSStringFromClass(v10);
       v12 = [v9 initWithName:@"Set predicted routes when being airplayed to by a group" requestID:0 reason:v11];
 
-      v13 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v12 type:3 outputDeviceUIDs:v3];
+      v13 = [[MRGroupTopologyModificationRequest alloc] initWithRequestDetails:v12 type:3 outputDeviceUIDs:_calculateDesiredPredictedRouteOutputDeviceUIDs];
       [v13 setShouldModifyPredictedRoutes:1];
       v14 = +[MRAVLocalEndpoint sharedLocalEndpoint];
       v16[0] = _NSConcreteStackBlock;
@@ -198,9 +198,9 @@ LABEL_18:
   if (v2)
   {
     v3 = +[MRUserSettings currentSettings];
-    v4 = [v3 supportRoutingContinuity];
+    supportRoutingContinuity = [v3 supportRoutingContinuity];
 
-    if (v4)
+    if (supportRoutingContinuity)
     {
       v5 = [MRRateLimiter alloc];
       v6 = dispatch_get_global_queue(0, 0);
@@ -273,14 +273,14 @@ LABEL_18:
   return v2;
 }
 
-- (void)setActiveSystemEndpoint:(id)a3
+- (void)setActiveSystemEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  p_activeSystemEndpoint = &v6->_activeSystemEndpoint;
-  activeSystemEndpoint = v6->_activeSystemEndpoint;
-  v9 = v5;
+  endpointCopy = endpoint;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  p_activeSystemEndpoint = &selfCopy->_activeSystemEndpoint;
+  activeSystemEndpoint = selfCopy->_activeSystemEndpoint;
+  v9 = endpointCopy;
   v10 = activeSystemEndpoint;
   v11 = v10;
   if (v10 == v9)
@@ -293,34 +293,34 @@ LABEL_18:
 
     if ((v12 & 1) == 0)
     {
-      if (v6->_endpointOutputDevicesDidChangeToken)
+      if (selfCopy->_endpointOutputDevicesDidChangeToken)
       {
         v13 = +[NSNotificationCenter defaultCenter];
-        [v13 removeObserver:v6->_endpointOutputDevicesDidChangeToken];
+        [v13 removeObserver:selfCopy->_endpointOutputDevicesDidChangeToken];
 
-        endpointOutputDevicesDidChangeToken = v6->_endpointOutputDevicesDidChangeToken;
-        v6->_endpointOutputDevicesDidChangeToken = 0;
+        endpointOutputDevicesDidChangeToken = selfCopy->_endpointOutputDevicesDidChangeToken;
+        selfCopy->_endpointOutputDevicesDidChangeToken = 0;
       }
 
-      v15 = [*p_activeSystemEndpoint debugName];
+      debugName = [*p_activeSystemEndpoint debugName];
 
-      if (v15)
+      if (debugName)
       {
         v16 = _MRLogForCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           v17 = objc_opt_class();
           v18 = NSStringFromClass(v17);
-          v19 = [*p_activeSystemEndpoint debugName];
-          v20 = [(MRAVEndpoint *)v9 debugName];
+          debugName2 = [*p_activeSystemEndpoint debugName];
+          debugName3 = [(MRAVEndpoint *)v9 debugName];
           *buf = 138544130;
           v30 = v18;
           v31 = 2114;
           v32 = @"activeSystemEndpoint";
           v33 = 2112;
-          v34 = v19;
+          v34 = debugName2;
           v35 = 2112;
-          v36 = v20;
+          v36 = debugName3;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ from <%@> to <%@>", buf, 0x2Au);
         }
       }
@@ -332,45 +332,45 @@ LABEL_18:
         {
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
-          v23 = [(MRAVEndpoint *)v9 debugName];
+          debugName4 = [(MRAVEndpoint *)v9 debugName];
           *buf = 138543874;
           v30 = v22;
           v31 = 2114;
           v32 = @"activeSystemEndpoint";
           v33 = 2112;
-          v34 = v23;
+          v34 = debugName4;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Set: %{public}@ setting %{public}@ to <%@>", buf, 0x20u);
         }
       }
 
-      objc_storeStrong(&v6->_activeSystemEndpoint, a3);
+      objc_storeStrong(&selfCopy->_activeSystemEndpoint, endpoint);
       if (*p_activeSystemEndpoint)
       {
         v24 = +[NSNotificationCenter defaultCenter];
-        v25 = v6->_activeSystemEndpoint;
+        v25 = selfCopy->_activeSystemEndpoint;
         v28[0] = _NSConcreteStackBlock;
         v28[1] = 3221225472;
         v28[2] = sub_10009AA78;
         v28[3] = &unk_1004B99A0;
-        v28[4] = v6;
+        v28[4] = selfCopy;
         v26 = [v24 addObserverForName:MRAVEndpointOutputDevicesDidChangeNotification object:v25 queue:0 usingBlock:v28];
-        v27 = v6->_endpointOutputDevicesDidChangeToken;
-        v6->_endpointOutputDevicesDidChangeToken = v26;
+        v27 = selfCopy->_endpointOutputDevicesDidChangeToken;
+        selfCopy->_endpointOutputDevicesDidChangeToken = v26;
       }
 
-      [(MRDRoutingContinuityManager *)v6 _reevaluatePredictedRoutes];
+      [(MRDRoutingContinuityManager *)selfCopy _reevaluatePredictedRoutes];
     }
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 - (MRAVEndpoint)activeSystemEndpoint
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeSystemEndpoint;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeSystemEndpoint;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -385,32 +385,32 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDRoutingContinuityManager] Pausing PredictedRoutesSync for %lf seconds...", buf, 0xCu);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = [MSVTimer alloc];
   v6 = &_dispatch_main_q;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009B084;
   v8[3] = &unk_1004B6D08;
-  v8[4] = v4;
+  v8[4] = selfCopy;
   v7 = [v5 initWithInterval:&_dispatch_main_q queue:v8 block:10.0];
-  [(MRDRoutingContinuityManager *)v4 setPausePredictedRoutesTimer:v7];
+  [(MRDRoutingContinuityManager *)selfCopy setPausePredictedRoutesTimer:v7];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setPausePredictedRoutesTimer:(id)a3
+- (void)setPausePredictedRoutesTimer:(id)timer
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  pausePredictedRoutesTimer = v5->_pausePredictedRoutesTimer;
-  v5->_pausePredictedRoutesTimer = v4;
+  timerCopy = timer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pausePredictedRoutesTimer = selfCopy->_pausePredictedRoutesTimer;
+  selfCopy->_pausePredictedRoutesTimer = timerCopy;
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  [(MRDRoutingContinuityManager *)v5 _reevaluatePredictedRoutes];
+  [(MRDRoutingContinuityManager *)selfCopy _reevaluatePredictedRoutes];
 }
 
 @end

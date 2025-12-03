@@ -13,37 +13,37 @@
 {
   [(AMSFeatureFlag *)self setDefaultEnabled:[(AMSFeatureFlagRemote *)self _developmentPhase]== 4];
   v9 = +[AMSFeatureFlagRemote fetchRemoteFlagState];
-  v3 = [(AMSFeatureFlagRemote *)self _preferencesKey];
-  v4 = [v9 objectForKeyedSubscript:v3];
-  v5 = [v4 BOOLValue];
+  _preferencesKey = [(AMSFeatureFlagRemote *)self _preferencesKey];
+  v4 = [v9 objectForKeyedSubscript:_preferencesKey];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(AMSFeatureFlagRemote *)self _preferencesKey];
-  v7 = [v9 objectForKeyedSubscript:v6];
+  _preferencesKey2 = [(AMSFeatureFlagRemote *)self _preferencesKey];
+  v7 = [v9 objectForKeyedSubscript:_preferencesKey2];
 
-  if (v5)
+  if (bOOLValue)
   {
-    v8 = 1;
+    isDefaultEnabled = 1;
   }
 
   else if (v7)
   {
-    v8 = 0;
+    isDefaultEnabled = 0;
   }
 
   else
   {
-    v8 = [(AMSFeatureFlag *)self isDefaultEnabled];
+    isDefaultEnabled = [(AMSFeatureFlag *)self isDefaultEnabled];
   }
 
-  [(AMSFeatureFlag *)self setEnabled:v8];
+  [(AMSFeatureFlag *)self setEnabled:isDefaultEnabled];
   [(AMSFeatureFlag *)self _updateUserEnabled:[(AMSFeatureFlag *)self isEnabled]];
 }
 
 - (void)_updateDevelopmentPhase
 {
-  v3 = [(AMSFeatureFlagRemote *)self _developmentPhase];
+  _developmentPhase = [(AMSFeatureFlagRemote *)self _developmentPhase];
 
-  [(AMSFeatureFlag *)self setDevelopmentPhase:v3];
+  [(AMSFeatureFlag *)self setDevelopmentPhase:_developmentPhase];
 }
 
 - (void)_activateFlag
@@ -51,11 +51,11 @@
   v19 = *MEMORY[0x1E69E9840];
   v3 = AMSSetLogKeyIfNeeded();
   v4 = +[AMSFeatureFlagRemote fetchRemoteFlagState];
-  v5 = [(AMSFeatureFlag *)self isUserEnabled];
-  v6 = [(AMSFeatureFlagRemote *)self _preferencesKey];
-  if (v5)
+  isUserEnabled = [(AMSFeatureFlag *)self isUserEnabled];
+  _preferencesKey = [(AMSFeatureFlagRemote *)self _preferencesKey];
+  if (isUserEnabled)
   {
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:v6];
+    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:_preferencesKey];
 
     v7 = +[AMSLogConfig sharedConfig];
     if (!v7)
@@ -63,26 +63,26 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 = objc_opt_class();
-      v10 = [(AMSFeatureFlag *)self feature];
+      feature = [(AMSFeatureFlag *)self feature];
       v13 = 138543874;
       v14 = v9;
       v15 = 2114;
       v16 = v3;
       v17 = 2114;
-      v18 = v10;
+      v18 = feature;
       v11 = "%{public}@: [%{public}@] Remote Feature Flag enabled: %{public}@";
 LABEL_10:
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, v11, &v13, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, v11, &v13, 0x20u);
     }
   }
 
   else
   {
-    [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:v6];
+    [v4 setObject:MEMORY[0x1E695E110] forKeyedSubscript:_preferencesKey];
 
     v7 = +[AMSLogConfig sharedConfig];
     if (!v7)
@@ -90,17 +90,17 @@ LABEL_10:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
-      v10 = [(AMSFeatureFlag *)self feature];
+      feature = [(AMSFeatureFlag *)self feature];
       v13 = 138543874;
       v14 = v12;
       v15 = 2114;
       v16 = v3;
       v17 = 2114;
-      v18 = v10;
+      v18 = feature;
       v11 = "%{public}@: [%{public}@] Remote Feature Flag disabled: %{public}@";
       goto LABEL_10;
     }
@@ -112,8 +112,8 @@ LABEL_10:
 
 - (int64_t)_developmentPhase
 {
-  v3 = [(AMSFeatureFlag *)self flagData];
-  v4 = [v3 objectForKeyedSubscript:@"DevelopmentPhase"];
+  flagData = [(AMSFeatureFlag *)self flagData];
+  v4 = [flagData objectForKeyedSubscript:@"DevelopmentPhase"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -154,12 +154,12 @@ LABEL_11:
 
 - (id)_preferencesKey
 {
-  v3 = [(AMSFeatureFlagRemote *)self _developmentPhase];
+  _developmentPhase = [(AMSFeatureFlagRemote *)self _developmentPhase];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(AMSFeatureFlag *)self domain];
-  v6 = [(AMSFeatureFlag *)self flagGroup];
-  v7 = [(AMSFeatureFlag *)self feature];
-  v8 = [v4 stringWithFormat:@"%@-%@-%@-%ld", v5, v6, v7, v3];
+  domain = [(AMSFeatureFlag *)self domain];
+  flagGroup = [(AMSFeatureFlag *)self flagGroup];
+  feature = [(AMSFeatureFlag *)self feature];
+  v8 = [v4 stringWithFormat:@"%@-%@-%@-%ld", domain, flagGroup, feature, _developmentPhase];
 
   return v8;
 }

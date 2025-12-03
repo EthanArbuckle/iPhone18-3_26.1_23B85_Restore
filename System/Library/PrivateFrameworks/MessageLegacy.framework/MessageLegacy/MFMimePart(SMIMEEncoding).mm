@@ -17,10 +17,10 @@
   [a3 mf_dataByConvertingUnixNewlinesToNetwork];
   if (MFDataConsumerConsumeCompleteData() < 0)
   {
-    v11 = [v10 lastSecCMSError];
-    if (v11)
+    lastSecCMSError = [v10 lastSecCMSError];
+    if (lastSecCMSError)
     {
-      v12 = v11;
+      v12 = lastSecCMSError;
       v13 = objc_alloc(MEMORY[0x277CCA9B8]);
       v14 = [v13 initWithDomain:*MEMORY[0x277CCA590] code:v12 userInfo:0];
       v15 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -49,7 +49,7 @@ LABEL_8:
     [v17 setSubtype:@"signed"];
     [v17 setBodyParameter:@"application/pkcs7-signature" forKey:@"protocol"];
     [v17 setBodyParameter:@"sha1" forKey:@"micalg"];
-    [v17 addSubpart:a1];
+    [v17 addSubpart:self];
     v21 = objc_alloc_init(objc_opt_class());
     [v21 setType:@"application"];
     [v21 setSubtype:@"pkcs7-signature"];
@@ -72,7 +72,7 @@ LABEL_8:
       [(MFError *)v22 setShortDescription:MFLookupLocalizedString(@"SMIME_CANT_SIGN_TITLE", @"Unable to Sign", @"Delayed")];
     }
 
-    [a1 _setSMIMEError:v22];
+    [self _setSMIMEError:v22];
     v18 = +[MFActivityMonitor currentMonitor];
     [v18 setError:v22];
     v19 = MFLogGeneral();
@@ -97,10 +97,10 @@ LABEL_8:
   [a3 mf_dataByConvertingUnixNewlinesToNetwork];
   if (MFDataConsumerConsumeCompleteData() < 0)
   {
-    v9 = [v8 lastSecCMSError];
-    if (v9)
+    lastSecCMSError = [v8 lastSecCMSError];
+    if (lastSecCMSError)
     {
-      v10 = v9;
+      v10 = lastSecCMSError;
       v11 = objc_alloc(MEMORY[0x277CCA9B8]);
       v12 = [v11 initWithDomain:*MEMORY[0x277CCA590] code:v10 userInfo:0];
       v13 = objc_alloc(MEMORY[0x277CBEAC0]);
@@ -145,7 +145,7 @@ LABEL_8:
       [(MFError *)v19 setShortDescription:MFLookupLocalizedString(@"SMIME_CANT_ENCRYPT_TITLE", @"Unable to Encrypt", @"Delayed")];
     }
 
-    [a1 _setSMIMEError:v19];
+    [self _setSMIMEError:v19];
     v16 = +[MFActivityMonitor currentMonitor];
     [v16 setError:v19];
     v17 = MFLogGeneral();

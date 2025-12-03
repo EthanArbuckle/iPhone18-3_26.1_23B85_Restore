@@ -1,29 +1,29 @@
 @interface UAFAssetConfiguration
-+ (BOOL)isValid:(id)a3 validUsageTypes:(id)a4 error:(id *)a5;
-- (UAFAssetConfiguration)initWithDictionary:(id)a3;
-- (id)getAutoAssetSpecifier:(id)a3;
++ (BOOL)isValid:(id)valid validUsageTypes:(id)types error:(id *)error;
+- (UAFAssetConfiguration)initWithDictionary:(id)dictionary;
+- (id)getAutoAssetSpecifier:(id)specifier;
 @end
 
 @implementation UAFAssetConfiguration
 
-+ (BOOL)isValid:(id)a3 validUsageTypes:(id)a4 error:(id *)a5
++ (BOOL)isValid:(id)valid validUsageTypes:(id)types error:(id *)error
 {
   v189[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (![UAFConfiguration isValidValue:v7 key:@"AssetName" kind:objc_opt_class() required:1 error:a5])
+  validCopy = valid;
+  typesCopy = types;
+  if (![UAFConfiguration isValidValue:validCopy key:@"AssetName" kind:objc_opt_class() required:1 error:error])
   {
-    if (a5)
+    if (error)
     {
       v21 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v188[0] = *MEMORY[0x1E696A578];
         v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown Asset is invalid"];
         v188[1] = *MEMORY[0x1E696AA08];
         v189[0] = v23;
-        v189[1] = *a5;
+        v189[1] = *error;
         v24 = MEMORY[0x1E695DF20];
         v25 = v189;
         v26 = v188;
@@ -42,7 +42,7 @@
       }
 
       v46 = [v24 dictionaryWithObjects:v25 forKeys:v26 count:v27];
-      *a5 = [v21 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v46];
+      *error = [v21 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v46];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -56,21 +56,21 @@
     goto LABEL_53;
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"AutoAssetType" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"AutoAssetType" kind:objc_opt_class() required:0 error:error])
   {
-    if (a5)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v184[0] = *MEMORY[0x1E696A578];
         v30 = MEMORY[0x1E696AEC0];
-        v31 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v31 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v32 = [v30 stringWithFormat:@"AutoAssetType for Asset %@ is invalid", v31];
         v184[1] = *MEMORY[0x1E696AA08];
         v185[0] = v32;
-        v185[1] = *a5;
+        v185[1] = *error;
         v33 = MEMORY[0x1E695DF20];
         v34 = v185;
         v35 = v184;
@@ -81,7 +81,7 @@
       {
         v182 = *MEMORY[0x1E696A578];
         v57 = MEMORY[0x1E696AEC0];
-        v31 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v31 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v32 = [v57 stringWithFormat:@"AutoAssetType for Asset %@ is invalid", v31];
         v183 = v32;
         v33 = MEMORY[0x1E695DF20];
@@ -91,7 +91,7 @@
       }
 
       v58 = [v33 dictionaryWithObjects:v34 forKeys:v35 count:v36];
-      *a5 = [v28 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v58];
+      *error = [v28 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v58];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -100,7 +100,7 @@
       goto LABEL_53;
     }
 
-    v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+    v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
     *buf = 136315394;
     v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
     v149 = 2112;
@@ -109,21 +109,21 @@
     goto LABEL_52;
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"TrialNamespace" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"TrialNamespace" kind:objc_opt_class() required:0 error:error])
   {
-    if (a5)
+    if (error)
     {
       v37 = MEMORY[0x1E696ABC0];
       v38 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v180[0] = *MEMORY[0x1E696A578];
         v39 = MEMORY[0x1E696AEC0];
-        v40 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v40 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v41 = [v39 stringWithFormat:@"Asset %@ is invalid", v40];
         v180[1] = *MEMORY[0x1E696AA08];
         v181[0] = v41;
-        v181[1] = *a5;
+        v181[1] = *error;
         v42 = MEMORY[0x1E695DF20];
         v43 = v181;
         v44 = v180;
@@ -134,7 +134,7 @@
       {
         v178 = *MEMORY[0x1E696A578];
         v61 = MEMORY[0x1E696AEC0];
-        v40 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v40 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v41 = [v61 stringWithFormat:@"Asset %@ is invalid", v40];
         v179 = v41;
         v42 = MEMORY[0x1E695DF20];
@@ -144,7 +144,7 @@
       }
 
       v62 = [v42 dictionaryWithObjects:v43 forKeys:v44 count:v45];
-      *a5 = [v37 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v62];
+      *error = [v37 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v62];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -153,7 +153,7 @@
       goto LABEL_53;
     }
 
-    v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+    v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
     *buf = 136315394;
     v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
     v149 = 2112;
@@ -162,20 +162,20 @@
     goto LABEL_52;
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"TrialMAAssetType" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"TrialMAAssetType" kind:objc_opt_class() required:0 error:error])
   {
-    if (a5)
+    if (error)
     {
       v47 = MEMORY[0x1E696ABC0];
       v48 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v176[0] = *MEMORY[0x1E696A578];
         v49 = MEMORY[0x1E696AEC0];
-        v50 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v50 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v51 = [v49 stringWithFormat:@"Asset %@ is invalid", v50];
         v176[1] = *MEMORY[0x1E696AA08];
-        v52 = *a5;
+        v52 = *error;
         v177[0] = v51;
         v177[1] = v52;
         v53 = MEMORY[0x1E695DF20];
@@ -188,7 +188,7 @@
       {
         v174 = *MEMORY[0x1E696A578];
         v73 = MEMORY[0x1E696AEC0];
-        v50 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v50 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v51 = [v73 stringWithFormat:@"Asset %@ is invalid", v50];
         v175 = v51;
         v53 = MEMORY[0x1E695DF20];
@@ -198,7 +198,7 @@
       }
 
       v74 = [v53 dictionaryWithObjects:v54 forKeys:v55 count:v56];
-      *a5 = [v47 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v74];
+      *error = [v47 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v74];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -207,7 +207,7 @@
       goto LABEL_53;
     }
 
-    v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+    v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
     *buf = 136315394;
     v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
     v149 = 2112;
@@ -217,25 +217,25 @@
   }
 
   v9 = 0;
-  if (![UAFConfiguration isValidValue:v7 key:@"IgnoreOSCompatibility" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"IgnoreOSCompatibility" kind:objc_opt_class() required:0 error:error])
   {
     goto LABEL_55;
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"TrialMATargetingTemplate" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"TrialMATargetingTemplate" kind:objc_opt_class() required:0 error:error])
   {
-    if (a5)
+    if (error)
     {
       v63 = MEMORY[0x1E696ABC0];
       v64 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v172[0] = *MEMORY[0x1E696A578];
         v65 = MEMORY[0x1E696AEC0];
-        v66 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v66 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v67 = [v65 stringWithFormat:@"Asset %@ is invalid", v66];
         v172[1] = *MEMORY[0x1E696AA08];
-        v68 = *a5;
+        v68 = *error;
         v173[0] = v67;
         v173[1] = v68;
         v69 = MEMORY[0x1E695DF20];
@@ -248,7 +248,7 @@
       {
         v170 = *MEMORY[0x1E696A578];
         v95 = MEMORY[0x1E696AEC0];
-        v66 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v66 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v67 = [v95 stringWithFormat:@"Asset %@ is invalid", v66];
         v171 = v67;
         v69 = MEMORY[0x1E695DF20];
@@ -258,7 +258,7 @@
       }
 
       v96 = [v69 dictionaryWithObjects:v70 forKeys:v71 count:v72];
-      *a5 = [v63 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v96];
+      *error = [v63 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v96];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -267,7 +267,7 @@
       goto LABEL_53;
     }
 
-    v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+    v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
     *buf = 136315394;
     v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
     v149 = 2112;
@@ -276,28 +276,28 @@
     goto LABEL_52;
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"TrialMATargetingTemplate"];
+  v10 = [validCopy objectForKeyedSubscript:@"TrialMATargetingTemplate"];
 
   if (v10)
   {
-    v11 = [v7 objectForKeyedSubscript:@"TrialMATargetingTemplate"];
-    v12 = [UAFConfiguration isValidValue:v11 key:@"MetadataAttribute" kind:objc_opt_class() required:1 error:a5];
+    v11 = [validCopy objectForKeyedSubscript:@"TrialMATargetingTemplate"];
+    v12 = [UAFConfiguration isValidValue:v11 key:@"MetadataAttribute" kind:objc_opt_class() required:1 error:error];
 
     if (!v12)
     {
-      if (a5)
+      if (error)
       {
         v77 = MEMORY[0x1E696ABC0];
         v78 = *MEMORY[0x1E696A578];
-        if (*a5)
+        if (*error)
         {
           v168[0] = *MEMORY[0x1E696A578];
           v79 = MEMORY[0x1E696AEC0];
-          v80 = [v7 objectForKeyedSubscript:@"AssetName"];
+          v80 = [validCopy objectForKeyedSubscript:@"AssetName"];
           v81 = [v79 stringWithFormat:@"Asset %@ is invalid", v80];
           v168[1] = *MEMORY[0x1E696AA08];
           v169[0] = v81;
-          v169[1] = *a5;
+          v169[1] = *error;
           v82 = MEMORY[0x1E695DF20];
           v83 = v169;
           v84 = v168;
@@ -308,7 +308,7 @@
         {
           v166 = *MEMORY[0x1E696A578];
           v123 = MEMORY[0x1E696AEC0];
-          v80 = [v7 objectForKeyedSubscript:@"AssetName"];
+          v80 = [validCopy objectForKeyedSubscript:@"AssetName"];
           v81 = [v123 stringWithFormat:@"Asset %@ is invalid", v80];
           v167 = v81;
           v82 = MEMORY[0x1E695DF20];
@@ -318,7 +318,7 @@
         }
 
         v124 = [v82 dictionaryWithObjects:v83 forKeys:v84 count:v85];
-        *a5 = [v77 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v124];
+        *error = [v77 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v124];
       }
 
       v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -327,7 +327,7 @@
         goto LABEL_53;
       }
 
-      v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+      v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
       *buf = 136315394;
       v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
       v149 = 2112;
@@ -336,24 +336,24 @@
       goto LABEL_52;
     }
 
-    v13 = [v7 objectForKeyedSubscript:@"TrialMATargetingTemplate"];
-    v14 = [UAFConfiguration isValidValue:v13 key:@"ValueExpansion" kind:objc_opt_class() required:1 error:a5];
+    v13 = [validCopy objectForKeyedSubscript:@"TrialMATargetingTemplate"];
+    v14 = [UAFConfiguration isValidValue:v13 key:@"ValueExpansion" kind:objc_opt_class() required:1 error:error];
 
     if (!v14)
     {
-      if (a5)
+      if (error)
       {
         v97 = MEMORY[0x1E696ABC0];
         v98 = *MEMORY[0x1E696A578];
-        if (*a5)
+        if (*error)
         {
           v164[0] = *MEMORY[0x1E696A578];
           v99 = MEMORY[0x1E696AEC0];
-          v100 = [v7 objectForKeyedSubscript:@"AssetName"];
-          v101 = [v99 stringWithFormat:@"Asset %@ is invalid", v100];
+          v100 = [validCopy objectForKeyedSubscript:@"AssetName"];
+          v100 = [v99 stringWithFormat:@"Asset %@ is invalid", v100];
           v164[1] = *MEMORY[0x1E696AA08];
-          v165[0] = v101;
-          v165[1] = *a5;
+          v165[0] = v100;
+          v165[1] = *error;
           v102 = MEMORY[0x1E695DF20];
           v103 = v165;
           v104 = v164;
@@ -364,9 +364,9 @@
         {
           v162 = *MEMORY[0x1E696A578];
           v127 = MEMORY[0x1E696AEC0];
-          v100 = [v7 objectForKeyedSubscript:@"AssetName"];
-          v101 = [v127 stringWithFormat:@"Asset %@ is invalid", v100];
-          v163 = v101;
+          v100 = [validCopy objectForKeyedSubscript:@"AssetName"];
+          v100 = [v127 stringWithFormat:@"Asset %@ is invalid", v100];
+          v163 = v100;
           v102 = MEMORY[0x1E695DF20];
           v103 = &v163;
           v104 = &v162;
@@ -374,7 +374,7 @@
         }
 
         v128 = [v102 dictionaryWithObjects:v103 forKeys:v104 count:v105];
-        *a5 = [v97 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v128];
+        *error = [v97 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v128];
       }
 
       v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -383,7 +383,7 @@
         goto LABEL_53;
       }
 
-      v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+      v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
       *buf = 136315394;
       v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
       v149 = 2112;
@@ -393,21 +393,21 @@
     }
   }
 
-  if (![UAFConfiguration isValidValue:v7 key:@"Expansions" kind:objc_opt_class() required:0 error:a5])
+  if (![UAFConfiguration isValidValue:validCopy key:@"Expansions" kind:objc_opt_class() required:0 error:error])
   {
-    if (a5)
+    if (error)
     {
       v86 = MEMORY[0x1E696ABC0];
       v87 = *MEMORY[0x1E696A578];
-      if (*a5)
+      if (*error)
       {
         v160[0] = *MEMORY[0x1E696A578];
         v88 = MEMORY[0x1E696AEC0];
-        v89 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v89 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v90 = [v88 stringWithFormat:@"Asset %@ is invalid", v89];
         v160[1] = *MEMORY[0x1E696AA08];
         v161[0] = v90;
-        v161[1] = *a5;
+        v161[1] = *error;
         v91 = MEMORY[0x1E695DF20];
         v92 = v161;
         v93 = v160;
@@ -418,7 +418,7 @@
       {
         v158 = *MEMORY[0x1E696A578];
         v125 = MEMORY[0x1E696AEC0];
-        v89 = [v7 objectForKeyedSubscript:@"AssetName"];
+        v89 = [validCopy objectForKeyedSubscript:@"AssetName"];
         v90 = [v125 stringWithFormat:@"Asset %@ is invalid", v89];
         v159 = v90;
         v91 = MEMORY[0x1E695DF20];
@@ -428,7 +428,7 @@
       }
 
       v126 = [v91 dictionaryWithObjects:v92 forKeys:v93 count:v94];
-      *a5 = [v86 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v126];
+      *error = [v86 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v126];
     }
 
     v15 = UAFGetLogCategory(&UAFLogContextConfiguration);
@@ -437,7 +437,7 @@
       goto LABEL_53;
     }
 
-    v59 = [v7 objectForKeyedSubscript:@"AssetName"];
+    v59 = [validCopy objectForKeyedSubscript:@"AssetName"];
     *buf = 136315394;
     v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
     v149 = 2112;
@@ -455,7 +455,7 @@ LABEL_53:
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v15 = [v7 objectForKeyedSubscript:@"Expansions"];
+  v15 = [validCopy objectForKeyedSubscript:@"Expansions"];
   v16 = [v15 countByEnumeratingWithState:&v139 objects:v157 count:16];
   if (!v16)
   {
@@ -478,19 +478,19 @@ LABEL_53:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v138 = MEMORY[0x1E696ABC0];
           v106 = *MEMORY[0x1E696A578];
-          if (*a5)
+          if (*error)
           {
             v155[0] = *MEMORY[0x1E696A578];
             v107 = MEMORY[0x1E696AEC0];
-            v108 = [v7 objectForKeyedSubscript:@"AssetName"];
+            v108 = [validCopy objectForKeyedSubscript:@"AssetName"];
             v109 = [v107 stringWithFormat:@"Asset %@ is not expected kind %@", v108, objc_opt_class()];
             v155[1] = *MEMORY[0x1E696AA08];
             v156[0] = v109;
-            v156[1] = *a5;
+            v156[1] = *error;
             v110 = MEMORY[0x1E695DF20];
             v111 = v156;
             v112 = v155;
@@ -501,7 +501,7 @@ LABEL_53:
           {
             v153 = *MEMORY[0x1E696A578];
             v129 = MEMORY[0x1E696AEC0];
-            v108 = [v7 objectForKeyedSubscript:@"AssetName"];
+            v108 = [validCopy objectForKeyedSubscript:@"AssetName"];
             v109 = [v129 stringWithFormat:@"Asset %@ is not expected kind %@", v108, objc_opt_class()];
             v154 = v109;
             v110 = MEMORY[0x1E695DF20];
@@ -511,13 +511,13 @@ LABEL_53:
           }
 
           v130 = [v110 dictionaryWithObjects:v111 forKeys:v112 count:v113];
-          *a5 = [v138 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v130];
+          *error = [v138 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v130];
         }
 
         v131 = UAFGetLogCategory(&UAFLogContextConfiguration);
         if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
         {
-          v132 = [v7 objectForKeyedSubscript:@"AssetName"];
+          v132 = [validCopy objectForKeyedSubscript:@"AssetName"];
           v133 = objc_opt_class();
           *buf = 136315650;
           v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
@@ -532,21 +532,21 @@ LABEL_53:
         goto LABEL_96;
       }
 
-      if (![UAFAssetExpansion isValid:v20 validUsageTypes:v8 error:a5])
+      if (![UAFAssetExpansion isValid:v20 validUsageTypes:typesCopy error:error])
       {
-        if (a5)
+        if (error)
         {
           v114 = MEMORY[0x1E696ABC0];
           v115 = *MEMORY[0x1E696A578];
-          if (*a5)
+          if (*error)
           {
             v145[0] = *MEMORY[0x1E696A578];
             v116 = MEMORY[0x1E696AEC0];
-            v117 = [v7 objectForKeyedSubscript:@"AssetName"];
-            v118 = [v116 stringWithFormat:@"Asset %@ is invalid", v117];
+            v117 = [validCopy objectForKeyedSubscript:@"AssetName"];
+            v117 = [v116 stringWithFormat:@"Asset %@ is invalid", v117];
             v145[1] = *MEMORY[0x1E696AA08];
-            v146[0] = v118;
-            v146[1] = *a5;
+            v146[0] = v117;
+            v146[1] = *error;
             v119 = MEMORY[0x1E695DF20];
             v120 = v146;
             v121 = v145;
@@ -557,9 +557,9 @@ LABEL_53:
           {
             v143 = *MEMORY[0x1E696A578];
             v135 = MEMORY[0x1E696AEC0];
-            v117 = [v7 objectForKeyedSubscript:@"AssetName"];
-            v118 = [v135 stringWithFormat:@"Asset %@ is invalid", v117];
-            v144 = v118;
+            v117 = [validCopy objectForKeyedSubscript:@"AssetName"];
+            v117 = [v135 stringWithFormat:@"Asset %@ is invalid", v117];
+            v144 = v117;
             v119 = MEMORY[0x1E695DF20];
             v120 = &v144;
             v121 = &v143;
@@ -567,13 +567,13 @@ LABEL_53:
           }
 
           v136 = [v119 dictionaryWithObjects:v120 forKeys:v121 count:v122];
-          *a5 = [v114 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v136];
+          *error = [v114 errorWithDomain:@"com.apple.UnifiedAssetFramework" code:-1 userInfo:v136];
         }
 
         v131 = UAFGetLogCategory(&UAFLogContextConfiguration);
         if (os_log_type_enabled(v131, OS_LOG_TYPE_DEFAULT))
         {
-          v137 = [v7 objectForKeyedSubscript:@"AssetName"];
+          v137 = [validCopy objectForKeyedSubscript:@"AssetName"];
           *buf = 136315394;
           v148 = "+[UAFAssetConfiguration isValid:validUsageTypes:error:]";
           v149 = 2112;
@@ -604,27 +604,27 @@ LABEL_55:
   return v9;
 }
 
-- (UAFAssetConfiguration)initWithDictionary:(id)a3
+- (UAFAssetConfiguration)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = UAFAssetConfiguration;
   v5 = [(UAFAssetConfiguration *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AssetName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AssetName"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"IgnoreOSCompatibility"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"IgnoreOSCompatibility"];
     v5->_ignoreOSCompatibility = [v8 BOOLValue];
     v9 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v10 = [v4 objectForKeyedSubscript:{@"Expansions", 0}];
+    v10 = [dictionaryCopy objectForKeyedSubscript:{@"Expansions", 0}];
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v11)
     {
@@ -663,16 +663,16 @@ LABEL_55:
   return v5;
 }
 
-- (id)getAutoAssetSpecifier:(id)a3
+- (id)getAutoAssetSpecifier:(id)specifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  specifierCopy = specifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(UAFAssetConfiguration *)self expansions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  expansions = [(UAFAssetConfiguration *)self expansions];
+  v6 = [expansions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -683,10 +683,10 @@ LABEL_55:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(expansions);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) getAutoAssetSpecifier:v4];
+        v10 = [*(*(&v14 + 1) + 8 * i) getAutoAssetSpecifier:specifierCopy];
         if (v10)
         {
           v11 = v10;
@@ -694,7 +694,7 @@ LABEL_55:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [expansions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

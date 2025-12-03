@@ -1,33 +1,33 @@
 @interface PSWeakReference
-+ (PSWeakReference)weakReferenceWithObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PSWeakReference)initWithObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
++ (PSWeakReference)weakReferenceWithObject:(id)object;
+- (BOOL)isEqual:(id)equal;
+- (PSWeakReference)initWithObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)object;
 - (unint64_t)hash;
 @end
 
 @implementation PSWeakReference
 
-+ (PSWeakReference)weakReferenceWithObject:(id)a3
++ (PSWeakReference)weakReferenceWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [[PSWeakReference alloc] initWithObject:v3];
+  objectCopy = object;
+  v4 = [[PSWeakReference alloc] initWithObject:objectCopy];
 
   return v4;
 }
 
-- (PSWeakReference)initWithObject:(id)a3
+- (PSWeakReference)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = PSWeakReference;
   v5 = [(PSWeakReference *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_location, v4);
+    objc_storeWeak(&v5->_location, objectCopy);
   }
 
   return v6;
@@ -40,42 +40,42 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(PSWeakReference *)self object];
-  v6 = [v4 initWithObject:v5];
+  object = [(PSWeakReference *)self object];
+  v6 = [v4 initWithObject:object];
 
   return v6;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = PSWeakReference;
-  v5 = [(PSWeakReference *)&v8 forwardingTargetForSelector:?];
-  if (!v5)
+  object = [(PSWeakReference *)&v8 forwardingTargetForSelector:?];
+  if (!object)
   {
-    v5 = [(PSWeakReference *)self object];
-    Name = sel_getName(a3);
-    NSLog(&cfstr_WarningPsweakr.isa, Name, v5);
+    object = [(PSWeakReference *)self object];
+    Name = sel_getName(selector);
+    NSLog(&cfstr_WarningPsweakr.isa, Name, object);
   }
 
-  return v5;
+  return object;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(PSWeakReference *)self object];
-  if (v5 == v4)
+  equalCopy = equal;
+  object = [(PSWeakReference *)self object];
+  if (object == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v4 isEqual:v5];
+    v6 = [equalCopy isEqual:object];
   }
 
   return v6;
@@ -83,8 +83,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PSWeakReference *)self object];
-  v3 = [v2 hash];
+  object = [(PSWeakReference *)self object];
+  v3 = [object hash];
 
   return v3;
 }

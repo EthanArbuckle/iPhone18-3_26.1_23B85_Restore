@@ -1,25 +1,25 @@
 @interface AMSAnisetteSyncTask
-- (AMSAnisetteSyncTask)initWithData:(id)a3 type:(int64_t)a4 account:(id)a5 bag:(id)a6;
+- (AMSAnisetteSyncTask)initWithData:(id)data type:(int64_t)type account:(id)account bag:(id)bag;
 - (id)performSync;
 @end
 
 @implementation AMSAnisetteSyncTask
 
-- (AMSAnisetteSyncTask)initWithData:(id)a3 type:(int64_t)a4 account:(id)a5 bag:(id)a6
+- (AMSAnisetteSyncTask)initWithData:(id)data type:(int64_t)type account:(id)account bag:(id)bag
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  accountCopy = account;
+  bagCopy = bag;
   v17.receiver = self;
   v17.super_class = AMSAnisetteSyncTask;
   v14 = [(AMSTask *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_data, a3);
-    v15->_type = a4;
-    objc_storeStrong(&v15->_account, a5);
-    objc_storeStrong(&v15->_bag, a6);
+    objc_storeStrong(&v14->_data, data);
+    v15->_type = type;
+    objc_storeStrong(&v15->_account, account);
+    objc_storeStrong(&v15->_bag, bag);
   }
 
   return v15;

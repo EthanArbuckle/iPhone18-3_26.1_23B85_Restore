@@ -3,22 +3,22 @@
 - (id)keyphrases;
 - (id)links;
 - (id)locations;
-- (void)addEntity:(id)a3;
-- (void)updateWithEntities:(id)a3;
+- (void)addEntity:(id)entity;
+- (void)updateWithEntities:(id)entities;
 @end
 
 @implementation SKGEntityRanker
 
-- (void)addEntity:(id)a3
+- (void)addEntity:(id)entity
 {
-  v43 = a3;
+  entityCopy = entity;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v43;
+      v4 = entityCopy;
       links = self->_links;
       if (!links)
       {
@@ -29,8 +29,8 @@
         links = self->_links;
       }
 
-      v11 = [v4 link];
-      v24 = [(NSMutableDictionary *)v11 lowercaseString];
+      link = [v4 link];
+      lowercaseString = [(NSMutableDictionary *)link lowercaseString];
       v25 = links;
       v26 = v4;
     }
@@ -40,7 +40,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v43;
+        v4 = entityCopy;
         locations = self->_locations;
         if (!locations)
         {
@@ -51,14 +51,14 @@
           locations = self->_locations;
         }
 
-        v11 = [v4 description];
+        link = [v4 description];
         goto LABEL_20;
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = v43;
+        v4 = entityCopy;
         keyphrases = self->_keyphrases;
         if (!keyphrases)
         {
@@ -69,21 +69,21 @@
           keyphrases = self->_keyphrases;
         }
 
-        v32 = [v4 keyphrase];
-        v33 = [(NSMutableDictionary *)keyphrases objectForKeyedSubscript:v32];
+        keyphrase = [v4 keyphrase];
+        v33 = [(NSMutableDictionary *)keyphrases objectForKeyedSubscript:keyphrase];
 
         if (!v33)
         {
           v34 = objc_alloc_init(MEMORY[0x277CBEB58]);
           v35 = self->_keyphrases;
-          v36 = [v4 keyphrase];
-          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:v36];
+          keyphrase2 = [v4 keyphrase];
+          [(NSMutableDictionary *)v35 setObject:v34 forKeyedSubscript:keyphrase2];
         }
 
         v37 = self->_keyphrases;
-        v11 = [v4 keyphrase];
-        v24 = [(NSMutableDictionary *)v37 objectForKeyedSubscript:v11];
-        [v24 addObject:v4];
+        link = [v4 keyphrase];
+        lowercaseString = [(NSMutableDictionary *)v37 objectForKeyedSubscript:link];
+        [lowercaseString addObject:v4];
         goto LABEL_15;
       }
 
@@ -106,19 +106,19 @@
         [(NSMutableDictionary *)self->_entities setObject:v42 forKeyedSubscript:v4];
       }
 
-      v11 = [(NSMutableDictionary *)self->_entities objectForKeyedSubscript:v4];
-      v24 = [v43 description];
-      v25 = v11;
-      v26 = v43;
+      link = [(NSMutableDictionary *)self->_entities objectForKeyedSubscript:v4];
+      lowercaseString = [entityCopy description];
+      v25 = link;
+      v26 = entityCopy;
     }
 
-    [(NSMutableDictionary *)v25 setObject:v26 forKeyedSubscript:v24];
+    [(NSMutableDictionary *)v25 setObject:v26 forKeyedSubscript:lowercaseString];
 LABEL_15:
 
     goto LABEL_21;
   }
 
-  v4 = v43;
+  v4 = entityCopy;
   dates = self->_dates;
   if (!dates)
   {
@@ -129,19 +129,19 @@ LABEL_15:
     dates = self->_dates;
   }
 
-  v8 = [v4 date];
-  v9 = [(NSMutableDictionary *)dates objectForKeyedSubscript:v8];
+  date = [v4 date];
+  date2 = [(NSMutableDictionary *)dates objectForKeyedSubscript:date];
 
   locations = self->_dates;
-  v11 = [v4 date];
-  if (!v9)
+  link = [v4 date];
+  if (!date2)
   {
 LABEL_20:
-    [(NSMutableDictionary *)locations setObject:v4 forKeyedSubscript:v11];
+    [(NSMutableDictionary *)locations setObject:v4 forKeyedSubscript:link];
     goto LABEL_21;
   }
 
-  v12 = [(NSMutableDictionary *)locations objectForKeyedSubscript:v11];
+  v12 = [(NSMutableDictionary *)locations objectForKeyedSubscript:link];
   [v12 score];
   v14 = v13;
   [v4 score];
@@ -150,13 +150,13 @@ LABEL_20:
   if (v14 > v15)
   {
     v18 = self->_dates;
-    v9 = [v4 date];
-    v17 = [(NSMutableDictionary *)v18 objectForKeyedSubscript:v9];
+    date2 = [v4 date];
+    v17 = [(NSMutableDictionary *)v18 objectForKeyedSubscript:date2];
   }
 
   v19 = self->_dates;
-  v20 = [v4 date];
-  [(NSMutableDictionary *)v19 setObject:v17 forKeyedSubscript:v20];
+  date3 = [v4 date];
+  [(NSMutableDictionary *)v19 setObject:v17 forKeyedSubscript:date3];
 
   if (v14 > v16)
   {
@@ -165,18 +165,18 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)updateWithEntities:(id)a3
+- (void)updateWithEntities:(id)entities
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entitiesCopy = entities;
   if ([(NSMutableDictionary *)self->_dates count]|| [(NSMutableDictionary *)self->_links count]|| [(NSMutableDictionary *)self->_locations count]|| [(NSMutableDictionary *)self->_entities count])
   {
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v5 = [(NSMutableDictionary *)self->_links allValues];
-    v6 = [v5 countByEnumeratingWithState:&v54 objects:v62 count:16];
+    allValues = [(NSMutableDictionary *)self->_links allValues];
+    v6 = [allValues countByEnumeratingWithState:&v54 objects:v62 count:16];
     if (v6)
     {
       v7 = v6;
@@ -187,14 +187,14 @@ LABEL_21:
         {
           if (*v55 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          [v4 addLink:*(*(&v54 + 1) + 8 * i)];
-          [v4 setDidProcessBreadcrumbs:1];
+          [entitiesCopy addLink:*(*(&v54 + 1) + 8 * i)];
+          [entitiesCopy setDidProcessBreadcrumbs:1];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v54 objects:v62 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v54 objects:v62 count:16];
       }
 
       while (v7);
@@ -220,15 +220,15 @@ LABEL_21:
           }
 
           v13 = *(*(&v50 + 1) + 8 * j);
-          v14 = [v13 address];
-          if (v14)
+          address = [v13 address];
+          if (address)
           {
             v48 = 0u;
             v49 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v15 = [v13 expansions];
-            v16 = [v15 countByEnumeratingWithState:&v46 objects:v60 count:16];
+            expansions = [v13 expansions];
+            v16 = [expansions countByEnumeratingWithState:&v46 objects:v60 count:16];
             if (v16)
             {
               v17 = v16;
@@ -239,13 +239,13 @@ LABEL_21:
                 {
                   if (*v47 != v18)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(expansions);
                   }
 
-                  [v14 addComponent:*(*(&v46 + 1) + 8 * k)];
+                  [address addComponent:*(*(&v46 + 1) + 8 * k)];
                 }
 
-                v17 = [v15 countByEnumeratingWithState:&v46 objects:v60 count:16];
+                v17 = [expansions countByEnumeratingWithState:&v46 objects:v60 count:16];
               }
 
               while (v17);
@@ -253,15 +253,15 @@ LABEL_21:
 
             if ([v13 fromPIR])
             {
-              [v4 setDidMakePIRCall:1];
-              if (([v4 errorCallingPIR] & 1) == 0)
+              [entitiesCopy setDidMakePIRCall:1];
+              if (([entitiesCopy errorCallingPIR] & 1) == 0)
               {
-                [v4 setErrorCallingPIR:{objc_msgSend(v13, "hitPIRError")}];
+                [entitiesCopy setErrorCallingPIR:{objc_msgSend(v13, "hitPIRError")}];
               }
             }
 
-            [v4 addLocation:v13];
-            [v4 setDidProcessBreadcrumbs:1];
+            [entitiesCopy addLocation:v13];
+            [entitiesCopy setDidProcessBreadcrumbs:1];
           }
         }
 
@@ -319,9 +319,9 @@ LABEL_21:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v4 addLink:v29];
+                  [entitiesCopy addLink:v29];
 LABEL_43:
-                  [v4 setDidProcessBreadcrumbs:1];
+                  [entitiesCopy setDidProcessBreadcrumbs:1];
                   goto LABEL_46;
                 }
 
@@ -334,28 +334,28 @@ LABEL_43:
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v4 addAddress:v29];
+                      [entitiesCopy addAddress:v29];
                       goto LABEL_43;
                     }
 
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v4 addLocation:v29];
+                      [entitiesCopy addLocation:v29];
                       goto LABEL_43;
                     }
 
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v4 addNamedLocation:v29];
+                      [entitiesCopy addNamedLocation:v29];
                       goto LABEL_43;
                     }
 
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      [v4 addAirportLocation:v29];
+                      [entitiesCopy addAirportLocation:v29];
                       goto LABEL_43;
                     }
 
@@ -408,15 +408,15 @@ LABEL_46:
   links = self->_links;
   if (links)
   {
-    v3 = [(NSMutableDictionary *)links allValues];
+    allValues = [(NSMutableDictionary *)links allValues];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_29];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_29];
 
   return v4;
 }
@@ -447,15 +447,15 @@ uint64_t __24__SKGEntityRanker_links__block_invoke(uint64_t a1, void *a2, void *
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_entities objectForKeyedSubscript:v3];
-    v6 = [v5 allValues];
+    allValues = [v5 allValues];
   }
 
   else
   {
-    v6 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  v7 = [v6 sortedArrayUsingComparator:&__block_literal_global_40_0];
+  v7 = [allValues sortedArrayUsingComparator:&__block_literal_global_40_0];
 
   return v7;
 }
@@ -484,15 +484,15 @@ uint64_t __28__SKGEntityRanker_addresses__block_invoke(uint64_t a1, void *a2, vo
   locations = self->_locations;
   if (locations)
   {
-    v3 = [(NSMutableDictionary *)locations allValues];
+    allValues = [(NSMutableDictionary *)locations allValues];
   }
 
   else
   {
-    v3 = MEMORY[0x277CBEBF8];
+    allValues = MEMORY[0x277CBEBF8];
   }
 
-  v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_42];
+  v4 = [allValues sortedArrayUsingComparator:&__block_literal_global_42];
 
   return v4;
 }
@@ -521,10 +521,10 @@ uint64_t __28__SKGEntityRanker_locations__block_invoke(uint64_t a1, void *a2, vo
   v69 = *MEMORY[0x277D85DE8];
   if (self->_keyphrases)
   {
-    v2 = self;
+    selfCopy = self;
     context = objc_autoreleasePoolPush();
     v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)v2->_keyphrases allKeys];
+    [(NSMutableDictionary *)selfCopy->_keyphrases allKeys];
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
@@ -532,7 +532,7 @@ uint64_t __28__SKGEntityRanker_locations__block_invoke(uint64_t a1, void *a2, vo
     v47 = [obj countByEnumeratingWithState:&v61 objects:v68 count:16];
     if (v47)
     {
-      v45 = v2;
+      v45 = selfCopy;
       v46 = *v62;
       do
       {
@@ -545,19 +545,19 @@ uint64_t __28__SKGEntityRanker_locations__block_invoke(uint64_t a1, void *a2, vo
           }
 
           v6 = *(*(&v61 + 1) + 8 * i);
-          v7 = [(NSMutableDictionary *)v2->_keyphrases objectForKeyedSubscript:v6];
-          v8 = [v7 allObjects];
+          v7 = [(NSMutableDictionary *)selfCopy->_keyphrases objectForKeyedSubscript:v6];
+          allObjects = [v7 allObjects];
 
-          v9 = [v8 firstObject];
+          firstObject = [allObjects firstObject];
           v10 = [SKGKeyphrase alloc];
-          v11 = [v9 tokenCount];
-          [v9 score];
-          v12 = [(SKGKeyphrase *)v10 initWithKeyphrase:v6 components:MEMORY[0x277CBEBF8] tokenCount:v11 score:?];
+          tokenCount = [firstObject tokenCount];
+          [firstObject score];
+          v12 = [(SKGKeyphrase *)v10 initWithKeyphrase:v6 components:MEMORY[0x277CBEBF8] tokenCount:tokenCount score:?];
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v13 = v8;
+          v13 = allObjects;
           v14 = [v13 countByEnumeratingWithState:&v57 objects:v67 count:16];
           if (v14)
           {
@@ -572,8 +572,8 @@ uint64_t __28__SKGEntityRanker_locations__block_invoke(uint64_t a1, void *a2, vo
                   objc_enumerationMutation(v13);
                 }
 
-                v18 = [*(*(&v57 + 1) + 8 * j) components];
-                [(SKGKeyphrase *)v12 addComponents:v18];
+                components = [*(*(&v57 + 1) + 8 * j) components];
+                [(SKGKeyphrase *)v12 addComponents:components];
 
                 [(SKGKeyphrase *)v12 setCount:[(SKGKeyphrase *)v12 count]+ 1];
               }
@@ -599,7 +599,7 @@ uint64_t __28__SKGEntityRanker_locations__block_invoke(uint64_t a1, void *a2, vo
           v24 = [v5 objectForKeyedSubscript:v23];
           [v24 addObject:v12];
 
-          v2 = v45;
+          selfCopy = v45;
         }
 
         v47 = [obj countByEnumeratingWithState:&v61 objects:v68 count:16];

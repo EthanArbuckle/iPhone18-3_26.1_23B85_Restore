@@ -1,20 +1,20 @@
 @interface LPVisualMedia
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LPVisualMedia)init;
-- (LPVisualMedia)initWithCoder:(id)a3 properties:(id)a4;
-- (LPVisualMedia)initWithCoderInternal:(id)a3;
-- (LPVisualMedia)initWithProperties:(id)a3;
+- (LPVisualMedia)initWithCoder:(id)coder properties:(id)properties;
+- (LPVisualMedia)initWithCoderInternal:(id)internal;
+- (LPVisualMedia)initWithProperties:(id)properties;
 - (LPVisualMediaProperties)properties;
 - (NSData)_cachedData;
 - (NSData)data;
-- (id)_initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5;
-- (id)_initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5;
-- (id)_initWithData:(id)a3 fileURL:(id)a4 MIMEType:(id)a5 properties:(id)a6;
-- (id)_initWithLPVisualMedia:(id)a3;
+- (id)_initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties;
+- (id)_initWithData:(id)data MIMEType:(id)type properties:(id)properties;
+- (id)_initWithData:(id)data fileURL:(id)l MIMEType:(id)type properties:(id)properties;
+- (id)_initWithLPVisualMedia:(id)media;
 - (unint64_t)_encodedSize;
 - (void)data;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFileURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFileURL:(id)l;
 @end
 
 @implementation LPVisualMedia
@@ -33,62 +33,62 @@
   return v3;
 }
 
-- (id)_initWithLPVisualMedia:(id)a3
+- (id)_initWithLPVisualMedia:(id)media
 {
-  v4 = a3;
+  mediaCopy = media;
   v9.receiver = self;
   v9.super_class = LPVisualMedia;
   v5 = [(LPVisualMedia *)&v9 init];
   p_isa = &v5->super.isa;
   if (v5)
   {
-    objc_storeStrong(&v5->_data, v4[1]);
-    objc_storeStrong(p_isa + 2, v4[2]);
-    objc_storeStrong(p_isa + 3, v4[3]);
-    objc_storeStrong(p_isa + 4, v4[4]);
+    objc_storeStrong(&v5->_data, mediaCopy[1]);
+    objc_storeStrong(p_isa + 2, mediaCopy[2]);
+    objc_storeStrong(p_isa + 3, mediaCopy[3]);
+    objc_storeStrong(p_isa + 4, mediaCopy[4]);
     v7 = p_isa;
   }
 
   return p_isa;
 }
 
-- (id)_initWithData:(id)a3 fileURL:(id)a4 MIMEType:(id)a5 properties:(id)a6
+- (id)_initWithData:(id)data fileURL:(id)l MIMEType:(id)type properties:(id)properties
 {
-  v11 = a4;
-  v12 = [(LPVisualMedia *)self _initWithData:a3 MIMEType:a5 properties:a6];
+  lCopy = l;
+  v12 = [(LPVisualMedia *)self _initWithData:data MIMEType:type properties:properties];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(v12 + 3, a4);
+    objc_storeStrong(v12 + 3, l);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (id)_initWithData:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (id)_initWithData:(id)data MIMEType:(id)type properties:(id)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = LPVisualMedia;
   v12 = [(LPVisualMedia *)&v17 init];
   if (v12)
   {
-    if (!v9)
+    if (!dataCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPVisualMedia with nil data."];
     }
 
-    if (!v10)
+    if (!typeCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Trying to create an LPVisualMedia with nil MIME type."];
     }
 
-    objc_storeStrong(&v12->_data, a3);
-    objc_storeStrong(&v12->_MIMEType, a4);
-    v13 = [v11 copy];
+    objc_storeStrong(&v12->_data, data);
+    objc_storeStrong(&v12->_MIMEType, type);
+    v13 = [propertiesCopy copy];
     properties = v12->_properties;
     v12->_properties = v13;
 
@@ -112,12 +112,12 @@
   }
 }
 
-- (void)setFileURL:(id)a3
+- (void)setFileURL:(id)l
 {
-  v6 = a3;
-  if ([v6 isFileURL])
+  lCopy = l;
+  if ([lCopy isFileURL])
   {
-    v4 = v6;
+    v4 = lCopy;
   }
 
   else
@@ -129,19 +129,19 @@
   self->_fileURL = v4;
 }
 
-- (id)_initByReferencingFileURL:(id)a3 MIMEType:(id)a4 properties:(id)a5
+- (id)_initByReferencingFileURL:(id)l MIMEType:(id)type properties:(id)properties
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  typeCopy = type;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = LPVisualMedia;
   v12 = [(LPVisualMedia *)&v17 init];
-  if (v12 && [v9 isFileURL])
+  if (v12 && [lCopy isFileURL])
   {
-    objc_storeStrong(&v12->_fileURL, a3);
-    objc_storeStrong(&v12->_MIMEType, a4);
-    v13 = [v11 copy];
+    objc_storeStrong(&v12->_fileURL, l);
+    objc_storeStrong(&v12->_MIMEType, type);
+    v13 = [propertiesCopy copy];
     properties = v12->_properties;
     v12->_properties = v13;
 
@@ -156,15 +156,15 @@
   return v15;
 }
 
-- (LPVisualMedia)initWithProperties:(id)a3
+- (LPVisualMedia)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v10.receiver = self;
   v10.super_class = LPVisualMedia;
   v5 = [(LPVisualMedia *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
 
@@ -176,19 +176,19 @@
 
 - (NSData)data
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  data = v2->_data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  data = selfCopy->_data;
   if (!data)
   {
-    fileURL = v2->_fileURL;
+    fileURL = selfCopy->_fileURL;
     if (fileURL)
     {
       v11 = 0;
       v5 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL options:1 error:&v11];
       v6 = v11;
-      v7 = v2->_data;
-      v2->_data = v5;
+      v7 = selfCopy->_data;
+      selfCopy->_data = v5;
 
       if (v6)
       {
@@ -199,7 +199,7 @@
         }
       }
 
-      data = v2->_data;
+      data = selfCopy->_data;
     }
 
     else
@@ -209,17 +209,17 @@
   }
 
   v9 = data;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
 
 - (NSData)_cachedData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_data;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_data;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -231,33 +231,33 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if (![(LPVisualMedia *)self _isSubstitute])
   {
-    v4 = [(LPVisualMedia *)self data];
-    [v6 _lp_encodeObjectIfNotNil:v4 forKey:@"data"];
+    data = [(LPVisualMedia *)self data];
+    [coderCopy _lp_encodeObjectIfNotNil:data forKey:@"data"];
   }
 
-  [v6 _lp_encodeStringIfNotNil:self->_MIMEType forKey:@"MIMEType"];
-  v5 = [(LPVisualMediaProperties *)self->_properties accessibilityText];
-  [v6 _lp_encodeStringIfNotNil:v5 forKey:@"accessibilityText"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_MIMEType forKey:@"MIMEType"];
+  accessibilityText = [(LPVisualMediaProperties *)self->_properties accessibilityText];
+  [coderCopy _lp_encodeStringIfNotNil:accessibilityText forKey:@"accessibilityText"];
 }
 
-- (LPVisualMedia)initWithCoderInternal:(id)a3
+- (LPVisualMedia)initWithCoderInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v12.receiver = self;
   v12.super_class = LPVisualMedia;
   v5 = [(LPVisualMedia *)&v12 init];
   if (v5)
   {
-    v6 = [v4 _lp_strictlyDecodeNSDataForKey:@"data"];
+    v6 = [internalCopy _lp_strictlyDecodeNSDataForKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 _lp_strictlyDecodeNSStringForKey:@"MIMEType"];
+    v8 = [internalCopy _lp_strictlyDecodeNSStringForKey:@"MIMEType"];
     MIMEType = v5->_MIMEType;
     v5->_MIMEType = v8;
 
@@ -267,26 +267,26 @@
   return v5;
 }
 
-- (LPVisualMedia)initWithCoder:(id)a3 properties:(id)a4
+- (LPVisualMedia)initWithCoder:(id)coder properties:(id)properties
 {
-  v7 = a4;
-  v8 = [(LPVisualMedia *)self initWithCoderInternal:a3];
+  propertiesCopy = properties;
+  v8 = [(LPVisualMedia *)self initWithCoderInternal:coder];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_properties, a4);
+    objc_storeStrong(&v8->_properties, properties);
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPVisualMedia;
-  if ([(LPVisualMedia *)&v8 isEqual:v4])
+  if ([(LPVisualMedia *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -296,7 +296,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_3(v6[1], self->_data) & 1) != 0 && objectsAreEqual_3(v6[2], self->_MIMEType) && objectsAreEqual_3(v6[3], self->_fileURL))
       {
         v5 = objectsAreEqual_3(v6[4], self->_properties);
@@ -321,7 +321,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AE886000, a2, OS_LOG_TYPE_ERROR, "LPVisualMedia: Failed to load data: %@", &v2, 0xCu);
 }
 

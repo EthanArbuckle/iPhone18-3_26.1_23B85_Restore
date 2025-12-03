@@ -11,7 +11,7 @@
   {
     v4 = @"LIST_BUTTON";
 LABEL_5:
-    v5 = AXMapsLocString(v4);
+    accessibilityLabel = AXMapsLocString(v4);
     goto LABEL_7;
   }
 
@@ -23,9 +23,9 @@ LABEL_5:
 
   v8.receiver = self;
   v8.super_class = UIMapsButtonAccessibility;
-  v5 = [(UIMapsButtonAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(UIMapsButtonAccessibility *)&v8 accessibilityLabel];
 LABEL_7:
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

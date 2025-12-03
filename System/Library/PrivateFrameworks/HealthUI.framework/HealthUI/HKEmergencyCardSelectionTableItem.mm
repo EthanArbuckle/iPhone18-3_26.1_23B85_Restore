@@ -1,8 +1,8 @@
 @interface HKEmergencyCardSelectionTableItem
 - (HKEmergencyCardSelectionTableItemDelegate)selectionDelegate;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4;
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index;
 @end
 
 @implementation HKEmergencyCardSelectionTableItem
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
   if (!self->_cell)
   {
@@ -24,19 +24,19 @@
     self->_cell = v5;
   }
 
-  v7 = [(HKEmergencyCardSelectionTableItem *)self title:a3];
-  v8 = [(UITableViewCell *)self->_cell textLabel];
-  [v8 setText:v7];
+  v7 = [(HKEmergencyCardSelectionTableItem *)self title:view];
+  textLabel = [(UITableViewCell *)self->_cell textLabel];
+  [textLabel setText:v7];
 
   v9 = HKHealthKeyColor();
-  v10 = [(UITableViewCell *)self->_cell textLabel];
-  [v10 setTextColor:v9];
+  textLabel2 = [(UITableViewCell *)self->_cell textLabel];
+  [textLabel2 setTextColor:v9];
 
   v11 = objc_alloc_init(_HKCustomInsetCellLayoutManager);
   [(UITableViewCell *)self->_cell setLayoutManager:v11];
   v12 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v13 = [(UITableViewCell *)self->_cell textLabel];
-  [v13 setFont:v12];
+  textLabel3 = [(UITableViewCell *)self->_cell textLabel];
+  [textLabel3 setFont:v12];
 
   v14 = self->_cell;
   v15 = v14;
@@ -44,11 +44,11 @@
   return v14;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndex:(int64_t)a4
+- (void)tableView:(id)view didSelectRowAtIndex:(int64_t)index
 {
-  v5 = a3;
-  v6 = [v5 indexPathForSelectedRow];
-  [v5 deselectRowAtIndexPath:v6 animated:1];
+  viewCopy = view;
+  indexPathForSelectedRow = [viewCopy indexPathForSelectedRow];
+  [viewCopy deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_selectionDelegate);
   [WeakRetained selectionTableItemDidTap:self];

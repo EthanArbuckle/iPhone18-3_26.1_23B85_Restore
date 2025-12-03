@@ -1,34 +1,34 @@
 @interface CHTextSynthesizerChunkedData
-- (CHTextSynthesizerChunkedData)initWithCoder:(id)a3;
-- (CHTextSynthesizerChunkedData)initWithDataChunks:(id)a3 originalString:(id)a4;
+- (CHTextSynthesizerChunkedData)initWithCoder:(id)coder;
+- (CHTextSynthesizerChunkedData)initWithDataChunks:(id)chunks originalString:(id)string;
 - (id)chunkForOneShotRefine;
 - (id)chunkForOneShotReplace;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)koreanRefineUnsupportedCharacterSet;
 - (id)latinVariantCharacterSet;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHTextSynthesizerChunkedData
 
-- (CHTextSynthesizerChunkedData)initWithDataChunks:(id)a3 originalString:(id)a4
+- (CHTextSynthesizerChunkedData)initWithDataChunks:(id)chunks originalString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  chunksCopy = chunks;
+  stringCopy = string;
   v12.receiver = self;
   v12.super_class = CHTextSynthesizerChunkedData;
   v9 = [(CHTextSynthesizerChunkedData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataChunks, a3);
-    objc_storeStrong(&v10->_originalString, a4);
+    objc_storeStrong(&v9->_dataChunks, chunks);
+    objc_storeStrong(&v10->_originalString, string);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHTextSynthesizerChunkedData alloc];
   dataChunks = self->_dataChunks;
@@ -37,18 +37,18 @@
   return objc_msgSend_initWithDataChunks_originalString_(v4, v5, dataChunks, originalString, v6, v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  objc_msgSend_encodeObject_forKey_(v10, v4, self->_dataChunks, @"dataChunks", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v10, v7, self->_originalString, @"originalString", v8, v9);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_dataChunks, @"dataChunks", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_originalString, @"originalString", v8, v9);
 }
 
-- (CHTextSynthesizerChunkedData)initWithCoder:(id)a3
+- (CHTextSynthesizerChunkedData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v9 = objc_msgSend_decodeObjectForKey_(v4, v5, @"dataChunks", v6, v7, v8);
-  v14 = objc_msgSend_decodeObjectForKey_(v4, v10, @"originalString", v11, v12, v13);
+  coderCopy = coder;
+  v9 = objc_msgSend_decodeObjectForKey_(coderCopy, v5, @"dataChunks", v6, v7, v8);
+  v14 = objc_msgSend_decodeObjectForKey_(coderCopy, v10, @"originalString", v11, v12, v13);
   v18 = objc_msgSend_initWithDataChunks_originalString_(self, v15, v9, v14, v16, v17);
 
   return v18;

@@ -1,31 +1,31 @@
 @interface ParagraphReusableView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication21ParagraphReusableView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication21ParagraphReusableView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication21ParagraphReusableView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication21ParagraphReusableView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
 @end
 
 @implementation ParagraphReusableView
 
-- (_TtC16MusicApplication21ParagraphReusableView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication21ParagraphReusableView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC16MusicApplication21ParagraphReusableView_paragraphView;
   type metadata accessor for ParagraphView();
   *(&self->super.super.super.super.isa + v9) = [objc_allocWithZone(swift_getObjCClassFromMetadata()) init];
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(ParagraphReusableView *)&v12 initWithFrame:x, y, width, height];
-  [(ParagraphReusableView *)v10 addSubview:*(&v10->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21ParagraphReusableView_paragraphView)];
-  return v10;
+  height = [(ParagraphReusableView *)&v12 initWithFrame:x, y, width, height];
+  [(ParagraphReusableView *)height addSubview:*(&height->super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication21ParagraphReusableView_paragraphView)];
+  return height;
 }
 
-- (_TtC16MusicApplication21ParagraphReusableView)initWithCoder:(id)a3
+- (_TtC16MusicApplication21ParagraphReusableView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MusicApplication21ParagraphReusableView_paragraphView;
   type metadata accessor for ParagraphView();
@@ -35,11 +35,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_4CDE34(width, height);
   v7 = v6;
   v9 = v8;
@@ -53,7 +53,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4D1E1C();
 }
 

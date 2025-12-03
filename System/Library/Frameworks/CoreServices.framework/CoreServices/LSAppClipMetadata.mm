@@ -1,21 +1,21 @@
 @interface LSAppClipMetadata
 - (BOOL)wantsEphemeralNotifications;
 - (BOOL)wantsLocationConfirmation;
-- (LSAppClipMetadata)initWithCoder:(id)a3;
-- (id)_initWithApplicationRecord:(id)a3 parentApplicationIdentifiers:(id)a4 appClipPlist:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (LSAppClipMetadata)initWithCoder:(id)coder;
+- (id)_initWithApplicationRecord:(id)record parentApplicationIdentifiers:(id)identifiers appClipPlist:(id)plist;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LSAppClipMetadata
 
-- (id)_initWithApplicationRecord:(id)a3 parentApplicationIdentifiers:(id)a4 appClipPlist:(id)a5
+- (id)_initWithApplicationRecord:(id)record parentApplicationIdentifiers:(id)identifiers appClipPlist:(id)plist
 {
   v15.receiver = self;
   v15.super_class = LSAppClipMetadata;
   v7 = [(LSAppClipMetadata *)&v15 init];
   if (v7)
   {
-    v8 = [a4 copy];
+    v8 = [identifiers copy];
     v9 = v8;
     if (v8)
     {
@@ -29,7 +29,7 @@
 
     objc_storeStrong(&v7->_parentApplicationIdentifiers, v10);
 
-    v11 = [a5 copy];
+    v11 = [plist copy];
     v12 = v11;
     if (v11)
     {
@@ -52,15 +52,15 @@
   v2 = [(NSDictionary *)self->_appClipPlist objectForKeyedSubscript:@"NSAppClipRequestEphemeralUserNotification"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)wantsLocationConfirmation
@@ -68,33 +68,33 @@
   v2 = [(NSDictionary *)self->_appClipPlist objectForKeyedSubscript:@"NSAppClipRequestLocationConfirmation"];
   if (_NSIsNSNumber())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_parentApplicationIdentifiers forKey:@"parentApplicationIdentifiers"];
+  [coder encodeObject:self->_parentApplicationIdentifiers forKey:@"parentApplicationIdentifiers"];
   appClipPlist = self->_appClipPlist;
 
-  [a3 encodeObject:appClipPlist forKey:@"appClipPlist"];
+  [coder encodeObject:appClipPlist forKey:@"appClipPlist"];
 }
 
-- (LSAppClipMetadata)initWithCoder:(id)a3
+- (LSAppClipMetadata)initWithCoder:(id)coder
 {
   v14.receiver = self;
   v14.super_class = LSAppClipMetadata;
   v4 = [(LSAppClipMetadata *)&v14 init];
   if (v4)
   {
-    v5 = [a3 ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"parentApplicationIdentifiers"];
+    v5 = [coder ls_decodeArrayWithValuesOfClass:objc_opt_class() forKey:@"parentApplicationIdentifiers"];
     v6 = v5;
     if (v5)
     {
@@ -110,7 +110,7 @@
 
     v8 = objc_opt_class();
     v9 = XNSGetPropertyListClasses();
-    v10 = [a3 ls_decodeDictionaryWithKeysOfClass:v8 valuesOfClasses:v9 forKey:@"appClipPlist"];
+    v10 = [coder ls_decodeDictionaryWithKeysOfClass:v8 valuesOfClasses:v9 forKey:@"appClipPlist"];
     v11 = v10;
     if (v10)
     {

@@ -1,8 +1,8 @@
 @interface HKAVPlayerViewController
 - (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)init;
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithPlayerLayerView:(id)a3;
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithPlayerLayerView:(id)view;
 @end
 
 @implementation HKAVPlayerViewController
@@ -25,16 +25,16 @@
   v4 = [(HKAVPlayerViewController *)&v10 initWithNibName:0 bundle:0];
   v5 = objc_opt_self();
   v6 = v4;
-  v7 = [v5 defaultCenter];
-  [v7 addObserver:v6 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter addObserver:v6 selector:sel_didBecomeActive name:*MEMORY[0x277D76648] object:0];
 
-  v8 = [v5 defaultCenter];
-  [v8 addObserver:v6 selector:sel_willResignActive name:*MEMORY[0x277D76768] object:0];
+  defaultCenter2 = [v5 defaultCenter];
+  [defaultCenter2 addObserver:v6 selector:sel_willResignActive name:*MEMORY[0x277D76768] object:0];
 
   return v6;
 }
 
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithPlayerLayerView:(id)a3
+- (_TtC16HealthArticlesUIP33_5654D5C4E01B31C9F970FE0D4B22B66D24HKAVPlayerViewController)initWithPlayerLayerView:(id)view
 {
   sub_25133F8F4();
   sub_25133F8E4();

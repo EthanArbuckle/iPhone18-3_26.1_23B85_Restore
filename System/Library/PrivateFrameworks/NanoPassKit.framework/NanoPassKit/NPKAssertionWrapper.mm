@@ -1,27 +1,27 @@
 @interface NPKAssertionWrapper
-- (BOOL)invalidateAssertionExpected:(BOOL)a3;
-- (NPKAssertionWrapper)initWithAssertion:(id)a3 invalidator:(id)a4;
+- (BOOL)invalidateAssertionExpected:(BOOL)expected;
+- (NPKAssertionWrapper)initWithAssertion:(id)assertion invalidator:(id)invalidator;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation NPKAssertionWrapper
 
-- (NPKAssertionWrapper)initWithAssertion:(id)a3 invalidator:(id)a4
+- (NPKAssertionWrapper)initWithAssertion:(id)assertion invalidator:(id)invalidator
 {
-  v7 = a3;
-  v8 = a4;
+  assertionCopy = assertion;
+  invalidatorCopy = invalidator;
   v15.receiver = self;
   v15.super_class = NPKAssertionWrapper;
   v9 = [(NPKAssertionWrapper *)&v15 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     wrapperUUID = v9->_wrapperUUID;
-    v9->_wrapperUUID = v10;
+    v9->_wrapperUUID = uUID;
 
-    objc_storeStrong(&v9->_assertion, a3);
-    v12 = _Block_copy(v8);
+    objc_storeStrong(&v9->_assertion, assertion);
+    v12 = _Block_copy(invalidatorCopy);
     assertionInvalidator = v9->_assertionInvalidator;
     v9->_assertionInvalidator = v12;
   }
@@ -37,13 +37,13 @@
   [(NPKAssertionWrapper *)&v3 dealloc];
 }
 
-- (BOOL)invalidateAssertionExpected:(BOOL)a3
+- (BOOL)invalidateAssertionExpected:(BOOL)expected
 {
   v16 = *MEMORY[0x277D85DE8];
   assertion = self->_assertion;
   if (assertion)
   {
-    if (!a3)
+    if (!expected)
     {
       v5 = pk_General_log();
       v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -80,15 +80,15 @@
   assertion = self->_assertion;
   if (assertion)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@", assertion:%@", assertion];
+    assertion = [MEMORY[0x277CCACA8] stringWithFormat:@", assertion:%@", assertion];
   }
 
   else
   {
-    v4 = &stru_286C934F8;
+    assertion = &stru_286C934F8;
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p> {UUID:%@%@}", objc_opt_class(), self, self->_wrapperUUID, v4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@:%p> {UUID:%@%@}", objc_opt_class(), self, self->_wrapperUUID, assertion];
 
   return v5;
 }

@@ -1,10 +1,10 @@
 @interface CNLimitedAccessContactListCollectionViewCell
-- (CNLimitedAccessContactListCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CNLimitedAccessContactListCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)applyContactListStyleWithAvatarImage;
 - (void)layoutSubviews;
-- (void)setAvatarImage:(id)a3;
-- (void)setContact:(id)a3;
-- (void)setIsShowingSearchResult:(BOOL)a3;
+- (void)setAvatarImage:(id)image;
+- (void)setContact:(id)contact;
+- (void)setIsShowingSearchResult:(BOOL)result;
 @end
 
 @implementation CNLimitedAccessContactListCollectionViewCell
@@ -27,8 +27,8 @@
   {
     v8 = [v6 mutableCopy];
     v9 = +[CNUIFontRepository contactStyleDefaultTextFont];
-    v10 = [v9 fontDescriptor];
-    v11 = [v10 fontDescriptorWithSymbolicTraits:1];
+    fontDescriptor = [v9 fontDescriptor];
+    v11 = [fontDescriptor fontDescriptorWithSymbolicTraits:1];
 
     v12 = MEMORY[0x1E69DB878];
     v13 = +[CNUIFontRepository contactStyleDefaultTextFont];
@@ -45,10 +45,10 @@
   }
 
   objc_opt_class();
-  v19 = [(CNLimitedAccessContactListCollectionViewCell *)self contentConfiguration];
+  contentConfiguration = [(CNLimitedAccessContactListCollectionViewCell *)self contentConfiguration];
   if (objc_opt_isKindOfClass())
   {
-    v20 = v19;
+    v20 = contentConfiguration;
   }
 
   else
@@ -60,40 +60,40 @@
 
   if (!v21)
   {
-    v19 = [MEMORY[0x1E69DCC28] cellConfiguration];
+    contentConfiguration = [MEMORY[0x1E69DCC28] cellConfiguration];
   }
 
-  [v19 setAttributedText:{v7, v38}];
-  v22 = [(CNContact *)self->_contact phoneNumbers];
-  v23 = [v22 count];
+  [contentConfiguration setAttributedText:{v7, v38}];
+  phoneNumbers = [(CNContact *)self->_contact phoneNumbers];
+  v23 = [phoneNumbers count];
 
   contact = self->_contact;
   if (v23)
   {
-    v25 = [(CNContact *)contact phoneNumbers];
-    v26 = [v25 firstObject];
-    v27 = [v26 value];
-    v28 = [v27 formattedStringValue];
+    phoneNumbers2 = [(CNContact *)contact phoneNumbers];
+    firstObject = [phoneNumbers2 firstObject];
+    value = [firstObject value];
+    formattedStringValue = [value formattedStringValue];
 
-    v29 = 0;
+    value2 = 0;
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v30 = [(CNContact *)contact emailAddresses];
-  v29 = [v30 count];
+  emailAddresses = [(CNContact *)contact emailAddresses];
+  value2 = [emailAddresses count];
 
-  if (v29)
+  if (value2)
   {
-    v25 = [(CNContact *)self->_contact emailAddresses];
-    v26 = [v25 firstObject];
-    v29 = [v26 value];
-    v28 = 0;
+    phoneNumbers2 = [(CNContact *)self->_contact emailAddresses];
+    firstObject = [phoneNumbers2 firstObject];
+    value2 = [firstObject value];
+    formattedStringValue = 0;
     goto LABEL_12;
   }
 
-  v28 = 0;
+  formattedStringValue = 0;
 LABEL_13:
   v40[0] = v3;
   v31 = +[CNUIFontRepository navigationListDetailCellSubtitleFontRegular];
@@ -106,7 +106,7 @@ LABEL_13:
   caption = self->_caption;
   if (caption == 1)
   {
-    v35 = v29;
+    v35 = value2;
     if (!(*(*MEMORY[0x1E6996570] + 16))())
     {
       goto LABEL_17;
@@ -117,54 +117,54 @@ LABEL_13:
 
   if (caption == 2)
   {
-    v35 = v28;
+    v35 = formattedStringValue;
     if ((*(*MEMORY[0x1E6996570] + 16))())
     {
 LABEL_16:
       v36 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v35 attributes:v33];
-      [v19 setSecondaryAttributedText:v36];
+      [contentConfiguration setSecondaryAttributedText:v36];
     }
   }
 
 LABEL_17:
-  v37 = [(CNLimitedAccessContactListCollectionViewCell *)self avatarImage];
-  [v19 setImage:v37];
+  avatarImage = [(CNLimitedAccessContactListCollectionViewCell *)self avatarImage];
+  [contentConfiguration setImage:avatarImage];
 
-  [(CNLimitedAccessContactListCollectionViewCell *)self setContentConfiguration:v19];
+  [(CNLimitedAccessContactListCollectionViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
-- (void)setAvatarImage:(id)a3
+- (void)setAvatarImage:(id)image
 {
-  objc_storeStrong(&self->_avatarImage, a3);
+  objc_storeStrong(&self->_avatarImage, image);
 
   [(CNLimitedAccessContactListCollectionViewCell *)self applyContactListStyleWithAvatarImage];
 }
 
-- (void)setIsShowingSearchResult:(BOOL)a3
+- (void)setIsShowingSearchResult:(BOOL)result
 {
-  self->_isShowingSearchResult = a3;
-  if (a3)
+  self->_isShowingSearchResult = result;
+  if (result)
   {
-    v9 = [(CNLimitedAccessContactListCollectionViewCell *)self separatorLayoutGuide];
-    v4 = [v9 leadingAnchor];
-    v5 = [(CNLimitedAccessContactListCollectionViewCell *)self contentView];
-    v6 = [v5 layoutMarginsGuide];
-    v7 = [v6 leadingAnchor];
-    v8 = [v4 constraintEqualToAnchor:v7];
+    separatorLayoutGuide = [(CNLimitedAccessContactListCollectionViewCell *)self separatorLayoutGuide];
+    leadingAnchor = [separatorLayoutGuide leadingAnchor];
+    contentView = [(CNLimitedAccessContactListCollectionViewCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v8 setActive:1];
   }
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_contact, contact);
     [(CNLimitedAccessContactListCollectionViewCell *)self applyContactListStyleWithAvatarImage];
     [(UIView *)self provideOnscreenContactToAppItents:v6];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 
@@ -175,11 +175,11 @@ LABEL_17:
   [(CNLimitedAccessContactListCollectionViewCell *)&v2 layoutSubviews];
 }
 
-- (CNLimitedAccessContactListCollectionViewCell)initWithFrame:(CGRect)a3
+- (CNLimitedAccessContactListCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNLimitedAccessContactListCollectionViewCell;
-  v3 = [(CNLimitedAccessContactListCollectionViewCell *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNLimitedAccessContactListCollectionViewCell *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

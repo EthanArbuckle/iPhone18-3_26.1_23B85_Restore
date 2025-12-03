@@ -1,15 +1,15 @@
 @interface CRLCollaboratorPresence
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)lastCursorUpdateTime;
 - (NSString)description;
 - (_TtC8Freeform23CRLCollaboratorPresence)init;
-- (_TtC8Freeform23CRLCollaboratorPresence)initWithOwner:(id)a3 presenceUUID:(id)a4 joinTime:(id)a5 isLocal:(BOOL)a6;
+- (_TtC8Freeform23CRLCollaboratorPresence)initWithOwner:(id)owner presenceUUID:(id)d joinTime:(id)time isLocal:(BOOL)local;
 - (_TtC8Freeform27CRLCollaborationParticipant)owner;
-- (id)collaboratorColorForType:(int64_t)a3;
+- (id)collaboratorColorForType:(int64_t)type;
 - (id)collaboratorColorName;
 - (int64_t)hash;
-- (void)setCollaboratorColorIndex:(int64_t)a3;
-- (void)setLastCursorUpdateTime:(id)a3;
+- (void)setCollaboratorColorIndex:(int64_t)index;
+- (void)setLastCursorUpdateTime:(id)time;
 @end
 
 @implementation CRLCollaboratorPresence
@@ -29,7 +29,7 @@
   return v8.super.isa;
 }
 
-- (void)setLastCursorUpdateTime:(id)a3
+- (void)setLastCursorUpdateTime:(id)time
 {
   v4 = type metadata accessor for Date();
   v5 = *(v4 - 8);
@@ -39,7 +39,7 @@
   v8 = OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_lastCursorUpdateTime;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
@@ -51,9 +51,9 @@
   return Strong;
 }
 
-- (_TtC8Freeform23CRLCollaboratorPresence)initWithOwner:(id)a3 presenceUUID:(id)a4 joinTime:(id)a5 isLocal:(BOOL)a6
+- (_TtC8Freeform23CRLCollaboratorPresence)initWithOwner:(id)owner presenceUUID:(id)d joinTime:(id)time isLocal:(BOOL)local
 {
-  v6 = a6;
+  localCopy = local;
   v8 = type metadata accessor for Date();
   __chkstk_darwin(v8 - 8);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -62,15 +62,15 @@
   v13 = &v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
-  v14 = a3;
-  v15 = sub_1006C2108(v14, v13, v10, v6);
+  ownerCopy = owner;
+  v15 = sub_1006C2108(ownerCopy, v13, v10, localCopy);
 
   return v15;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006C1AD4();
 
   v3 = String._bridgeToObjectiveC()();
@@ -78,11 +78,11 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -91,7 +91,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1006C1C14(v8);
@@ -102,26 +102,26 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = UUID.hashValue.getter();
 
   return v3;
 }
 
-- (void)setCollaboratorColorIndex:(int64_t)a3
+- (void)setCollaboratorColorIndex:(int64_t)index
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_collaboratorColorIndex);
-  *(self + OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_collaboratorColorIndex) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_collaboratorColorIndex) = index;
+  if (v4 != index)
   {
     Strong = swift_unknownObjectWeakLoadStrong();
     [Strong updateCachedCollaboratorColors];
   }
 }
 
-- (id)collaboratorColorForType:(int64_t)a3
+- (id)collaboratorColorForType:(int64_t)type
 {
-  v3 = sub_1009A2AC0(a3, *(self + OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_collaboratorColorIndex));
+  v3 = sub_1009A2AC0(type, *(self + OBJC_IVAR____TtC8Freeform23CRLCollaboratorPresence_collaboratorColorIndex));
 
   return v3;
 }

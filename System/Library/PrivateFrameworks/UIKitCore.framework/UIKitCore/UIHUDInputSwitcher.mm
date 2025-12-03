@@ -1,13 +1,13 @@
 @interface UIHUDInputSwitcher
-- (BOOL)handleSwitchCommand:(BOOL)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
+- (BOOL)handleSwitchCommand:(BOOL)command withHUD:(BOOL)d withDelay:(BOOL)delay;
 - (BOOL)isVisibleOrHiding;
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5;
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay;
 - (UIHUDInputSwitcher)init;
 - (id)selectedInputMode;
 - (void)_showSwitcherViewAsHUD;
-- (void)dismissSwitcher:(BOOL)a3;
-- (void)dismissSwitcherWithDelay:(double)a3;
-- (void)setSelectedInputMode:(id)a3;
+- (void)dismissSwitcher:(BOOL)switcher;
+- (void)dismissSwitcherWithDelay:(double)delay;
+- (void)setSelectedInputMode:(id)mode;
 @end
 
 @implementation UIHUDInputSwitcher
@@ -31,48 +31,48 @@
 {
   if ([(UIKeyboardMenuView *)self->m_switcherView isVisible])
   {
-    v3 = [(UIInputSwitcherView *)self->m_switcherView selectedInputMode];
+    selectedInputMode = [(UIInputSwitcherView *)self->m_switcherView selectedInputMode];
   }
 
   else if (self->super.m_state == 1)
   {
-    v3 = [(UIInputSwitcher *)self loadedIdentifier];
+    selectedInputMode = [(UIInputSwitcher *)self loadedIdentifier];
   }
 
   else
   {
-    v3 = 0;
+    selectedInputMode = 0;
   }
 
-  return v3;
+  return selectedInputMode;
 }
 
-- (void)setSelectedInputMode:(id)a3
+- (void)setSelectedInputMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   [(UIHUDInputSwitcher *)self _showSwitcherViewAsHUD];
-  [(UIInputSwitcherView *)self->m_switcherView selectInputMode:v4];
+  [(UIInputSwitcherView *)self->m_switcherView selectInputMode:modeCopy];
 }
 
 - (BOOL)isVisibleOrHiding
 {
-  v2 = [(UIView *)self->m_switcherView superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->m_switcherView superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (void)dismissSwitcherWithDelay:(double)a3
+- (void)dismissSwitcherWithDelay:(double)delay
 {
   [(UIKeyboardMenuView *)self->m_switcherView setMode:2];
   m_switcherView = self->m_switcherView;
 
-  [(UIInputSwitcherView *)m_switcherView fadeWithDelay:a3];
+  [(UIInputSwitcherView *)m_switcherView fadeWithDelay:delay];
 }
 
-- (void)dismissSwitcher:(BOOL)a3
+- (void)dismissSwitcher:(BOOL)switcher
 {
-  if (a3)
+  if (switcher)
   {
     [(UIKeyboardMenuView *)self->m_switcherView setMode:2];
   }
@@ -91,14 +91,14 @@
   [(UIKeyboardMenuView *)m_switcherView showAsHUD];
 }
 
-- (BOOL)handleSwitchCommand:(BOOL)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)handleSwitchCommand:(BOOL)command withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  delayCopy = delay;
+  dCopy = d;
+  commandCopy = command;
   [(UIInputSwitcherView *)self->m_switcherView reloadInputModes];
-  v9 = [(UIInputSwitcherView *)self->m_switcherView inputModes];
-  v10 = [v9 count];
+  inputModes = [(UIInputSwitcherView *)self->m_switcherView inputModes];
+  v10 = [inputModes count];
 
   if (v10 < 2)
   {
@@ -107,14 +107,14 @@
 
   v12.receiver = self;
   v12.super_class = UIHUDInputSwitcher;
-  return [(UIInputSwitcher *)&v12 handleSwitchCommand:v7 withHUD:v6 withDelay:v5];
+  return [(UIInputSwitcher *)&v12 handleSwitchCommand:commandCopy withHUD:dCopy withDelay:delayCopy];
 }
 
-- (BOOL)switchMode:(id)a3 withHUD:(BOOL)a4 withDelay:(BOOL)a5
+- (BOOL)switchMode:(id)mode withHUD:(BOOL)d withDelay:(BOOL)delay
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  delayCopy = delay;
+  dCopy = d;
+  modeCopy = mode;
   v9 = UIKeyboardActiveUserSelectableInputModes;
   if ([v9 count] < 2)
   {
@@ -123,20 +123,20 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  [(UIInputSwitcher *)self setLoadedIdentifier:v8];
-  if (!v6 || ([(UIKeyboardMenuView *)self->m_switcherView containerView], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
+  [(UIInputSwitcher *)self setLoadedIdentifier:modeCopy];
+  if (!dCopy || ([(UIKeyboardMenuView *)self->m_switcherView containerView], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
     [(UIInputSwitcher *)self cancelShowSwitcherTimer];
     v13 = +[UIKeyboardImpl activeInstance];
-    v14 = [(UIInputSwitcher *)self loadedIdentifier];
-    [v13 setInputMode:v14 userInitiated:1];
+    loadedIdentifier = [(UIInputSwitcher *)self loadedIdentifier];
+    [v13 setInputMode:loadedIdentifier userInitiated:1];
 
-    if (v5)
+    if (delayCopy)
     {
       [(UIHUDInputSwitcher *)self _showSwitcherViewAsHUD];
       m_switcherView = self->m_switcherView;
-      v16 = [(UIInputSwitcher *)self loadedIdentifier];
-      [(UIInputSwitcherView *)m_switcherView selectInputMode:v16];
+      loadedIdentifier2 = [(UIInputSwitcher *)self loadedIdentifier];
+      [(UIInputSwitcherView *)m_switcherView selectInputMode:loadedIdentifier2];
 
       [(UIKeyboardMenuView *)self->m_switcherView setMode:2];
       [(UIInputSwitcherView *)self->m_switcherView fadeWithDelay:0.5];
@@ -158,8 +158,8 @@ LABEL_13:
     [(UIInputSwitcher *)self cancelShowSwitcherTimer];
 LABEL_14:
     v17 = self->m_switcherView;
-    v18 = [(UIInputSwitcher *)self loadedIdentifier];
-    [(UIInputSwitcherView *)v17 selectInputMode:v18];
+    loadedIdentifier3 = [(UIInputSwitcher *)self loadedIdentifier];
+    [(UIInputSwitcherView *)v17 selectInputMode:loadedIdentifier3];
 
 LABEL_15:
     v12 = 1;
@@ -184,7 +184,7 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  if (!v5)
+  if (!delayCopy)
   {
     self->super.m_state = 2;
     [(UIInputSwitcher *)self cancelShowSwitcherTimer];

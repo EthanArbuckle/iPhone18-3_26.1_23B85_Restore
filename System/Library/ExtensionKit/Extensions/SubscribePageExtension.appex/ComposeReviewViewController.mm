@@ -1,17 +1,17 @@
 @interface ComposeReviewViewController
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCompositionURL:(id)a3;
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCompositionURL:(id)l;
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation ComposeReviewViewController
 
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCompositionURL:(id)a3
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCompositionURL:(id)l
 {
   v4 = sub_10000C518(&unk_100923970);
   __chkstk_darwin(v4 - 8);
   v6 = &v10 - v5;
-  if (a3)
+  if (l)
   {
     sub_100741224();
     v7 = sub_100741264();
@@ -27,34 +27,34 @@
   return sub_1001449BC(v6);
 }
 
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_100753094();
-    v8 = a4;
-    a3 = sub_100753064();
+    bundleCopy = bundle;
+    name = sub_100753064();
   }
 
   else
   {
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(ComposeReviewViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(ComposeReviewViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension27ComposeReviewViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(ComposeReviewViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ComposeReviewViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

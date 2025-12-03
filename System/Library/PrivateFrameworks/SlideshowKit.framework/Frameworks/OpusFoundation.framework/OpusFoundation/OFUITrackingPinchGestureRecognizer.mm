@@ -1,28 +1,28 @@
 @interface OFUITrackingPinchGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (CGPoint)locationInView:(id)a3;
-- (OFUITrackingPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 mode:(unint64_t)a5;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (CGPoint)locationInView:(id)view;
+- (OFUITrackingPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action mode:(unint64_t)mode;
 - (void)dealloc;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation OFUITrackingPinchGestureRecognizer
 
-- (OFUITrackingPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4 mode:(unint64_t)a5
+- (OFUITrackingPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action mode:(unint64_t)mode
 {
   v9.receiver = self;
   v9.super_class = OFUITrackingPinchGestureRecognizer;
-  v6 = [(UIPinchGestureRecognizer *)&v9 initWithTarget:a3 action:a4];
+  v6 = [(UIPinchGestureRecognizer *)&v9 initWithTarget:target action:action];
   v7 = v6;
   if (v6)
   {
     [(UIPinchGestureRecognizer *)v6 _setEndsOnSingleTouch:1];
-    v7->_zoomMode = a5;
+    v7->_zoomMode = mode;
     v7->_leftTouchIndex = 0;
     v7->_rightTouchIndex = 1;
     v7->_centerPoint = *MEMORY[0x277CBF348];
@@ -65,14 +65,14 @@
   self->_startedPinchingIn = 0;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
   v4.receiver = self;
   v4.super_class = OFUITrackingPinchGestureRecognizer;
-  return [(OFUITrackingPinchGestureRecognizer *)&v4 canPreventGestureRecognizer:a3];
+  return [(OFUITrackingPinchGestureRecognizer *)&v4 canPreventGestureRecognizer:recognizer];
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
   if (self->_zoomMode != 1)
   {
@@ -80,7 +80,7 @@
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([a3 view], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([recognizer view], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -88,7 +88,7 @@
       goto LABEL_9;
     }
 
-    [a3 view];
+    [recognizer view];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -98,10 +98,10 @@
     return 0;
   }
 
-  v5 = [a3 view];
-  [v5 zoomScale];
+  view = [recognizer view];
+  [view zoomScale];
   v7 = v6;
-  [v5 minimumZoomScale];
+  [view minimumZoomScale];
   if (v7 <= v8 + 0.01)
   {
     return 0;
@@ -110,37 +110,37 @@
 LABEL_9:
   v10.receiver = self;
   v10.super_class = OFUITrackingPinchGestureRecognizer;
-  return [(OFUITrackingPinchGestureRecognizer *)&v10 canBePreventedByGestureRecognizer:a3];
+  return [(OFUITrackingPinchGestureRecognizer *)&v10 canBePreventedByGestureRecognizer:recognizer];
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
   v5 = [-[OFUITrackingPinchGestureRecognizer view](self "view")];
   x = self->_centerPoint.x;
   y = self->_centerPoint.y;
 
-  [v5 convertPoint:a3 toView:{x, y}];
+  [v5 convertPoint:view toView:{x, y}];
   result.y = v9;
   result.x = v8;
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
+  v6 = [event touchesForGestureRecognizer:self];
   if ([v6 count] == 2)
   {
-    v7 = [(OFUITrackingPinchGestureRecognizer *)self view];
-    v8 = [v7 superview];
+    view = [(OFUITrackingPinchGestureRecognizer *)self view];
+    superview = [view superview];
     v26.receiver = self;
     v26.super_class = OFUITrackingPinchGestureRecognizer;
-    [(OFUITrackingPinchGestureRecognizer *)&v26 touchesBegan:v6 withEvent:a4];
+    [(OFUITrackingPinchGestureRecognizer *)&v26 touchesBegan:v6 withEvent:event];
     p_leftTouchLocation = &self->_leftTouchLocation;
-    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:v7];
+    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:view];
     self->_leftTouchLocation.x = v10;
     self->_leftTouchLocation.y = v11;
     p_rightTouchLocation = &self->_rightTouchLocation;
-    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:v7];
+    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:view];
     self->_rightTouchLocation.x = v13;
     self->_rightTouchLocation.y = v14;
     if (self->_leftTouchLocation.x >= v13)
@@ -152,10 +152,10 @@ LABEL_9:
       *p_rightTouchLocation = v15;
     }
 
-    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:v8];
+    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:superview];
     v17 = v16;
     v19 = v18;
-    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:v8];
+    [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:superview];
     v21 = v20;
     v23 = v22;
     self->_centerPoint.x = (v17 + v20) * 0.5;
@@ -174,31 +174,31 @@ LABEL_9:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = [a4 touchesForGestureRecognizer:self];
+  v6 = [event touchesForGestureRecognizer:self];
   if ([v6 count] != 2)
   {
     return;
   }
 
-  v7 = [(OFUITrackingPinchGestureRecognizer *)self view];
-  v8 = [v7 superview];
+  view = [(OFUITrackingPinchGestureRecognizer *)self view];
+  superview = [view superview];
   v44.receiver = self;
   v44.super_class = OFUITrackingPinchGestureRecognizer;
-  [(OFUITrackingPinchGestureRecognizer *)&v44 touchesMoved:v6 withEvent:a4];
-  v9 = [v6 allObjects];
-  v10 = [v9 objectAtIndex:0];
-  v11 = [v9 objectAtIndex:1];
-  [v10 previousLocationInView:v7];
+  [(OFUITrackingPinchGestureRecognizer *)&v44 touchesMoved:v6 withEvent:event];
+  allObjects = [v6 allObjects];
+  v10 = [allObjects objectAtIndex:0];
+  v11 = [allObjects objectAtIndex:1];
+  [v10 previousLocationInView:view];
   v13 = v12;
   v15 = v14;
-  [v11 previousLocationInView:v7];
+  [v11 previousLocationInView:view];
   v18 = OFDistanceBetweenTwoPoints(v13, v15, v16, v17);
-  [v10 locationInView:v7];
+  [v10 locationInView:view];
   v20 = v19;
   v22 = v21;
-  [v11 locationInView:v7];
+  [v11 locationInView:view];
   v25 = OFDistanceBetweenTwoPoints(v20, v22, v23, v24);
   zoomMode = self->_zoomMode;
   if (zoomMode)
@@ -239,16 +239,16 @@ LABEL_9:
 LABEL_10:
   self->_previousLeftLocation = self->_leftTouchLocation;
   self->_previousRightLocation = self->_rightTouchLocation;
-  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:v7];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:view];
   self->_leftTouchLocation.x = v28;
   self->_leftTouchLocation.y = v29;
-  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:v7];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:view];
   self->_rightTouchLocation.x = v30;
   self->_rightTouchLocation.y = v31;
-  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:v8];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_leftTouchIndex inView:superview];
   v33 = v32;
   v35 = v34;
-  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:v8];
+  [(UIPinchGestureRecognizer *)self locationOfTouch:self->_rightTouchIndex inView:superview];
   v37 = v36;
   v39 = v38;
   self->_centerPoint.x = (v33 + v36) * 0.5;
@@ -274,18 +274,18 @@ LABEL_10:
   self->_pinchAngle = v43;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = OFUITrackingPinchGestureRecognizer;
-  [(OFUITrackingPinchGestureRecognizer *)&v4 touchesEnded:a3 withEvent:a4];
+  [(OFUITrackingPinchGestureRecognizer *)&v4 touchesEnded:ended withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = OFUITrackingPinchGestureRecognizer;
-  [(OFUITrackingPinchGestureRecognizer *)&v4 touchesCancelled:a3 withEvent:a4];
+  [(OFUITrackingPinchGestureRecognizer *)&v4 touchesCancelled:cancelled withEvent:event];
 }
 
 @end

@@ -4,7 +4,7 @@
 - (_UIFocusBehavior_TV)init;
 - (int64_t)indirectMovementPriority;
 - (int64_t)pageButtonScrollingStyle;
-- (void)_handleRemoteTouchSurfaceTypeDidChangeNotification:(id)a3;
+- (void)_handleRemoteTouchSurfaceTypeDidChangeNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __37___UIFocusBehavior_TV_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2A00 != -1)
   {
     dispatch_once(&qword_1ED4A2A00, block);
@@ -34,8 +34,8 @@
   v2 = [(_UIFocusBehavior_TV *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleRemoteTouchSurfaceTypeDidChangeNotification_ name:@"_UIDeviceRemoteTouchSurfaceTypeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleRemoteTouchSurfaceTypeDidChangeNotification_ name:@"_UIDeviceRemoteTouchSurfaceTypeDidChangeNotification" object:0];
   }
 
   return v2;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIDeviceRemoteTouchSurfaceTypeDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIDeviceRemoteTouchSurfaceTypeDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = _UIFocusBehavior_TV;
@@ -117,10 +117,10 @@
   }
 }
 
-- (void)_handleRemoteTouchSurfaceTypeDidChangeNotification:(id)a3
+- (void)_handleRemoteTouchSurfaceTypeDidChangeNotification:(id)notification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIFocusBehaviorDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIFocusBehaviorDidChangeNotification" object:0];
 }
 
 @end

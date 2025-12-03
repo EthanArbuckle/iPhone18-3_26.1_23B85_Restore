@@ -1,22 +1,22 @@
 @interface TRMPort
 - (BOOL)_startInterestNotifications;
 - (BOOL)_updatePropertiesFromService;
-- (BOOL)isEqual:(id)a3;
-- (TRMPort)initWithService:(unsigned int)a3 andDelegate:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TRMPort)initWithService:(unsigned int)service andDelegate:(id)delegate;
 - (TRMPortDelegate)delegate;
 - (id)description;
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5;
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument;
 - (void)_startInterestNotifications;
 - (void)_stopInterestNotifications;
 - (void)dealloc;
-- (void)setUserAuthorizationStatus:(int)a3 completionHandler:(id)a4;
+- (void)setUserAuthorizationStatus:(int)status completionHandler:(id)handler;
 @end
 
 @implementation TRMPort
 
-- (TRMPort)initWithService:(unsigned int)a3 andDelegate:(id)a4
+- (TRMPort)initWithService:(unsigned int)service andDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
@@ -24,7 +24,7 @@
     *buf = 138412546;
     v21 = v8;
     v22 = 1024;
-    v23 = a3;
+    serviceCopy = service;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Initializing %@... (service: %u)", buf, 0x12u);
   }
 
@@ -34,12 +34,12 @@
   v10 = v9;
   if (v9)
   {
-    if (a3)
+    if (service)
     {
-      v9->_service = a3;
-      IOObjectRetain(a3);
-      objc_storeWeak(&v10->_delegate, v6);
-      RegistryEntryID = IORegistryEntryGetRegistryEntryID(a3, &v10->_registryEntryID);
+      v9->_service = service;
+      IOObjectRetain(service);
+      objc_storeWeak(&v10->_delegate, delegateCopy);
+      RegistryEntryID = IORegistryEntryGetRegistryEntryID(service, &v10->_registryEntryID);
       if (!RegistryEntryID)
       {
         v13 = objc_opt_class();
@@ -62,7 +62,7 @@
         _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IORegistryEntryGetRegistryEntryID failed: %08x", buf, 8u);
       }
 
-      IOObjectRelease(a3);
+      IOObjectRelease(service);
     }
 
     v10 = 0;
@@ -77,13 +77,13 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TRMPort *)self portDescription];
-  v6 = [(TRMPort *)self registryEntryID];
-  v7 = [(TRMPort *)self authorizationPending];
-  v8 = [(TRMPort *)self userAuthorizationPending];
-  v9 = [(TRMPort *)self userAuthorizationStatusDescription];
-  v10 = [(TRMPort *)self transportsUnauthorized];
-  v11 = [NSString stringWithFormat:@"<%@: %p, portDescription: %@, registryEntryID: %llu, authorizationPending: %d, userAuthorizationPending: %d, userAuthorizationStatusDescription: [%@], transportsUnauthorized: %@>", v4, self, v5, v6, v7, v8, v9, v10];
+  portDescription = [(TRMPort *)self portDescription];
+  registryEntryID = [(TRMPort *)self registryEntryID];
+  authorizationPending = [(TRMPort *)self authorizationPending];
+  userAuthorizationPending = [(TRMPort *)self userAuthorizationPending];
+  userAuthorizationStatusDescription = [(TRMPort *)self userAuthorizationStatusDescription];
+  transportsUnauthorized = [(TRMPort *)self transportsUnauthorized];
+  v11 = [NSString stringWithFormat:@"<%@: %p, portDescription: %@, registryEntryID: %llu, authorizationPending: %d, userAuthorizationPending: %d, userAuthorizationStatusDescription: [%@], transportsUnauthorized: %@>", v4, self, portDescription, registryEntryID, authorizationPending, userAuthorizationPending, userAuthorizationStatusDescription, transportsUnauthorized];
 
   return v11;
 }
@@ -97,7 +97,7 @@ LABEL_11:
     *buf = 138412546;
     v8 = v4;
     v9 = 2048;
-    v10 = [(TRMPort *)self registryEntryID];
+    registryEntryID = [(TRMPort *)self registryEntryID];
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Deallocating %@... (self.registryEntryID: %llu)", buf, 0x16u);
   }
 
@@ -113,28 +113,28 @@ LABEL_11:
   [(TRMPort *)&v6 dealloc];
 }
 
-- (void)setUserAuthorizationStatus:(int)a3 completionHandler:(id)a4
+- (void)setUserAuthorizationStatus:(int)status completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v13 = a3;
+    statusCopy = status;
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Setting user authorization status... (userAuthorizationStatus: %d, self: %@)", buf, 0x12u);
   }
 
-  v7 = [(TRMPort *)self queue];
+  queue = [(TRMPort *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __56__TRMPort_setUserAuthorizationStatus_completionHandler___block_invoke;
   block[3] = &unk_59878;
-  v11 = a3;
+  statusCopy2 = status;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(queue, block);
 }
 
 void __56__TRMPort_setUserAuthorizationStatus_completionHandler___block_invoke(uint64_t a1)
@@ -203,9 +203,9 @@ void __56__TRMPort_setUserAuthorizationStatus_completionHandler___block_invoke(u
     return 0;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
-  CFProperties = IORegistryEntryCreateCFProperties([(TRMPort *)v3 service], buf, kCFAllocatorDefault, 0);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  CFProperties = IORegistryEntryCreateCFProperties([(TRMPort *)selfCopy service], buf, kCFAllocatorDefault, 0);
   if (!CFProperties)
   {
     v50 = *buf;
@@ -216,8 +216,8 @@ void __56__TRMPort_setUserAuthorizationStatus_completionHandler___block_invoke(u
     v7 = [v48 allKeysForObject:v6];
     [v48 removeObjectsForKeys:v7];
 
-    v8 = [(TRMPort *)v3 servicePropertiesFiltered];
-    v47 = [v48 isEqualToDictionary:v8];
+    servicePropertiesFiltered = [(TRMPort *)selfCopy servicePropertiesFiltered];
+    v47 = [v48 isEqualToDictionary:servicePropertiesFiltered];
 
     v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
     if (v47)
@@ -237,53 +237,53 @@ void __56__TRMPort_setUserAuthorizationStatus_completionHandler___block_invoke(u
         _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Properties have changed!", v52, 2u);
       }
 
-      v10 = [(TRMPort *)v3 servicePropertiesFiltered];
-      printDictionaryDelta(v10, v48);
+      servicePropertiesFiltered2 = [(TRMPort *)selfCopy servicePropertiesFiltered];
+      printDictionaryDelta(servicePropertiesFiltered2, v48);
 
-      [(TRMPort *)v3 setServicePropertiesFiltered:v48];
+      [(TRMPort *)selfCopy setServicePropertiesFiltered:v48];
       v11 = [v50 objectForKeyedSubscript:@"PortDescription"];
-      [(TRMPort *)v3 setPortDescription:v11];
+      [(TRMPort *)selfCopy setPortDescription:v11];
 
       v12 = [v50 objectForKeyedSubscript:@"PortType"];
-      -[TRMPort setPortType:](v3, "setPortType:", [v12 intValue]);
+      -[TRMPort setPortType:](selfCopy, "setPortType:", [v12 intValue]);
 
       v13 = [v50 objectForKeyedSubscript:@"PortTypeDescription"];
-      [(TRMPort *)v3 setPortTypeDescription:v13];
+      [(TRMPort *)selfCopy setPortTypeDescription:v13];
 
       v14 = [v50 objectForKeyedSubscript:@"PortNumber"];
-      -[TRMPort setPortNumber:](v3, "setPortNumber:", [v14 intValue]);
+      -[TRMPort setPortNumber:](selfCopy, "setPortNumber:", [v14 intValue]);
 
       v15 = [v50 objectForKeyedSubscript:@"BuiltIn"];
-      -[TRMPort setBuiltIn:](v3, "setBuiltIn:", [v15 BOOLValue]);
+      -[TRMPort setBuiltIn:](selfCopy, "setBuiltIn:", [v15 BOOLValue]);
 
       v16 = [v50 objectForKeyedSubscript:@"ConnectionActive"];
-      -[TRMPort setConnectionActive:](v3, "setConnectionActive:", [v16 BOOLValue]);
+      -[TRMPort setConnectionActive:](selfCopy, "setConnectionActive:", [v16 BOOLValue]);
 
       v17 = [v50 objectForKeyedSubscript:@"ConnectionUUID"];
-      [(TRMPort *)v3 setConnectionUUID:v17];
+      [(TRMPort *)selfCopy setConnectionUUID:v17];
 
       v18 = [v50 objectForKeyedSubscript:@"AuthorizationRequired"];
-      -[TRMPort setAuthorizationRequired:](v3, "setAuthorizationRequired:", [v18 BOOLValue]);
+      -[TRMPort setAuthorizationRequired:](selfCopy, "setAuthorizationRequired:", [v18 BOOLValue]);
 
       v19 = [v50 objectForKeyedSubscript:@"AuthorizationPending"];
-      -[TRMPort setAuthorizationPending:](v3, "setAuthorizationPending:", [v19 BOOLValue]);
+      -[TRMPort setAuthorizationPending:](selfCopy, "setAuthorizationPending:", [v19 BOOLValue]);
 
       v20 = [v50 objectForKeyedSubscript:@"UserAuthorizationPending"];
-      -[TRMPort setUserAuthorizationPending:](v3, "setUserAuthorizationPending:", [v20 BOOLValue]);
+      -[TRMPort setUserAuthorizationPending:](selfCopy, "setUserAuthorizationPending:", [v20 BOOLValue]);
 
       v21 = [v50 objectForKeyedSubscript:@"TransportsUnauthorized"];
-      [(TRMPort *)v3 setTransportsUnauthorized:v21];
+      [(TRMPort *)selfCopy setTransportsUnauthorized:v21];
 
       v22 = [v50 objectForKeyedSubscript:@"UserAuthorizationStatus"];
-      -[TRMPort setUserAuthorizationStatus:](v3, "setUserAuthorizationStatus:", [v22 intValue]);
+      -[TRMPort setUserAuthorizationStatus:](selfCopy, "setUserAuthorizationStatus:", [v22 intValue]);
 
       v23 = [v50 objectForKeyedSubscript:@"UserAuthorizationStatusDescription"];
-      [(TRMPort *)v3 setUserAuthorizationStatusDescription:v23];
+      [(TRMPort *)selfCopy setUserAuthorizationStatusDescription:v23];
     }
 
     *v52 = -1431655766;
     v24 = 0;
-    if (IORegistryEntryGetChildIterator([(TRMPort *)v3 service], "IOService", v52))
+    if (IORegistryEntryGetChildIterator([(TRMPort *)selfCopy service], "IOService", v52))
     {
       v49 = 0;
 LABEL_15:
@@ -292,20 +292,20 @@ LABEL_15:
         IOObjectRelease(*v52);
       }
 
-      v25 = [(TRMPort *)v3 deviceDescription];
+      deviceDescription = [(TRMPort *)selfCopy deviceDescription];
       v26 = v49;
       if (v49 || (v26 = v24) != 0)
       {
-        [(TRMPort *)v3 setDeviceDescription:v26];
+        [(TRMPort *)selfCopy setDeviceDescription:v26];
       }
 
       else
       {
-        [(TRMPort *)v3 setDeviceDescription:?];
+        [(TRMPort *)selfCopy setDeviceDescription:?];
       }
 
-      v27 = [(TRMPort *)v3 deviceDescription];
-      v28 = [v27 isEqualToString:v25];
+      deviceDescription2 = [(TRMPort *)selfCopy deviceDescription];
+      v28 = [deviceDescription2 isEqualToString:deviceDescription];
 
       if (v28)
       {
@@ -349,10 +349,10 @@ LABEL_15:
             goto LABEL_60;
           }
 
-          v36 = [v35 intValue];
-          if (v36 != 2)
+          intValue = [v35 intValue];
+          if (intValue != 2)
           {
-            if (v36 == 3)
+            if (intValue == 3)
             {
               v37 = IORegistryEntryCreateCFProperty(v32, @"Manufacturer", kCFAllocatorDefault, 0);
               v38 = IORegistryEntryCreateCFProperty(v32, @"Product", kCFAllocatorDefault, 0);
@@ -381,7 +381,7 @@ LABEL_15:
 
             else
             {
-              if (v36 != 4)
+              if (intValue != 4)
               {
                 goto LABEL_60;
               }
@@ -477,7 +477,7 @@ LABEL_60:
   v50 = 0;
   v29 = 0;
 LABEL_26:
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v29;
 }
@@ -494,7 +494,7 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = [(TRMPort *)self registryEntryID];
+    registryEntryID = [(TRMPort *)self registryEntryID];
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Registering for interest notifications... (self.registryEntryID: %llu)", buf, 0xCu);
   }
 
@@ -504,9 +504,9 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
   }
 
   [(TRMPort *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-  v3 = [(TRMPort *)self ioNotificationPort];
-  v4 = [(TRMPort *)self queue];
-  IONotificationPortSetDispatchQueue(v3, v4);
+  ioNotificationPort = [(TRMPort *)self ioNotificationPort];
+  queue = [(TRMPort *)self queue];
+  IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
   v5 = IOServiceAddInterestNotification([(TRMPort *)self ioNotificationPort], [(TRMPort *)self service], "IOGeneralInterest", _serviceNotification, self, &notification);
   v6 = v5;
@@ -528,7 +528,7 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v3 = 134217984;
-    v4 = [(TRMPort *)self registryEntryID];
+    registryEntryID = [(TRMPort *)self registryEntryID];
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Disabling interest notifications... (self.registryEntryID: %llu)", &v3, 0xCu);
   }
 
@@ -545,9 +545,9 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
   [(TRMPort *)self setInterestNotificationsStarted:0];
 }
 
-- (void)_handleNotificationForService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5
+- (void)_handleNotificationForService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument
 {
-  switch(a4)
+  switch(type)
   {
     case 0xE0000010:
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -563,13 +563,13 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
         IOObjectRelease([(TRMPort *)self service]);
       }
 
-      v14 = [(TRMPort *)self delegate];
+      delegate = [(TRMPort *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v8 = [(TRMPort *)self delegate];
-        [v8 portDidTerminate:self];
+        delegate2 = [(TRMPort *)self delegate];
+        [delegate2 portDidTerminate:self];
         goto LABEL_22;
       }
 
@@ -583,23 +583,23 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
 
       if ([(TRMPort *)self _updatePropertiesFromService])
       {
-        v9 = [(TRMPort *)self delegate];
+        delegate3 = [(TRMPort *)self delegate];
         v10 = objc_opt_respondsToSelector();
 
         if (v10)
         {
-          v11 = [(TRMPort *)self delegate];
-          [v11 portDidUpdate:self];
+          delegate4 = [(TRMPort *)self delegate];
+          [delegate4 portDidUpdate:self];
         }
       }
 
-      v12 = [(TRMPort *)self delegate];
+      delegate5 = [(TRMPort *)self delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
-        v8 = [(TRMPort *)self delegate];
-        [v8 portDidUpdateAuthorizationState:self];
+        delegate2 = [(TRMPort *)self delegate];
+        [delegate2 portDidUpdateAuthorizationState:self];
         goto LABEL_22;
       }
 
@@ -613,13 +613,13 @@ void __39__TRMPort__updatePropertiesFromService__block_invoke(id a1)
 
       if ([(TRMPort *)self _updatePropertiesFromService])
       {
-        v6 = [(TRMPort *)self delegate];
+        delegate6 = [(TRMPort *)self delegate];
         v7 = objc_opt_respondsToSelector();
 
         if (v7)
         {
-          v8 = [(TRMPort *)self delegate];
-          [v8 portDidUpdate:self];
+          delegate2 = [(TRMPort *)self delegate];
+          [delegate2 portDidUpdate:self];
 LABEL_22:
         }
       }
@@ -635,14 +635,14 @@ LABEL_22:
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 registryEntryID];
-    v6 = v5 == [(TRMPort *)self registryEntryID];
+    registryEntryID = [equalCopy registryEntryID];
+    v6 = registryEntryID == [(TRMPort *)self registryEntryID];
   }
 
   else
@@ -658,7 +658,7 @@ LABEL_22:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v2[0] = 67109120;
-    v2[1] = a1;
+    v2[1] = self;
     _os_log_impl(&def_3A0E8, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IOServiceAddInterestNotification failed: %08x", v2, 8u);
   }
 }

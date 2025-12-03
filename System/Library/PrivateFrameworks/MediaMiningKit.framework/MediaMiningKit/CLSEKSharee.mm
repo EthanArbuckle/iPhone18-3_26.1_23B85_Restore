@@ -1,16 +1,16 @@
 @interface CLSEKSharee
-- (BOOL)isEqual:(id)a3;
-- (CLSEKSharee)initWithCoder:(id)a3;
-- (CLSEKSharee)initWithEKSharee:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLSEKSharee)initWithCoder:(id)coder;
+- (CLSEKSharee)initWithEKSharee:(id)sharee;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSEKSharee
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       emailAddress = self->_emailAddress;
       if (emailAddress == v5->_emailAddress || [(NSString *)emailAddress isEqualToString:?])
       {
@@ -51,54 +51,54 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   emailAddress = self->_emailAddress;
-  v5 = a3;
-  [v5 encodeObject:emailAddress forKey:@"emailAddress"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeBool:self->_isCurrentUserForSharing forKey:@"isCurrentUserForSharing"];
-  [v5 encodeBool:self->_isCurrentUserForScheduling forKey:@"isCurrentUserForScheduling"];
+  coderCopy = coder;
+  [coderCopy encodeObject:emailAddress forKey:@"emailAddress"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeBool:self->_isCurrentUserForSharing forKey:@"isCurrentUserForSharing"];
+  [coderCopy encodeBool:self->_isCurrentUserForScheduling forKey:@"isCurrentUserForScheduling"];
 }
 
-- (CLSEKSharee)initWithCoder:(id)a3
+- (CLSEKSharee)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLSEKSharee;
   v5 = [(CLSEKSharee *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v5->_isCurrentUserForSharing = [v4 decodeBoolForKey:@"isCurrentUserForSharing"];
-    v5->_isCurrentUserForScheduling = [v4 decodeBoolForKey:@"isCurrentUserForScheduling"];
+    v5->_isCurrentUserForSharing = [coderCopy decodeBoolForKey:@"isCurrentUserForSharing"];
+    v5->_isCurrentUserForScheduling = [coderCopy decodeBoolForKey:@"isCurrentUserForScheduling"];
   }
 
   return v5;
 }
 
-- (CLSEKSharee)initWithEKSharee:(id)a3
+- (CLSEKSharee)initWithEKSharee:(id)sharee
 {
-  v4 = a3;
+  shareeCopy = sharee;
   v11.receiver = self;
   v11.super_class = CLSEKSharee;
   v5 = [(CLSEKSharee *)&v11 init];
   if (v5)
   {
-    v6 = [v4 emailAddress];
+    emailAddress = [shareeCopy emailAddress];
     emailAddress = v5->_emailAddress;
-    v5->_emailAddress = v6;
+    v5->_emailAddress = emailAddress;
 
-    v8 = [v4 name];
+    name = [shareeCopy name];
     name = v5->_name;
-    v5->_name = v8;
+    v5->_name = name;
   }
 
   return v5;

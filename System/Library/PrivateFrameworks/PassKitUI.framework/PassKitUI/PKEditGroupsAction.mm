@@ -1,21 +1,21 @@
 @interface PKEditGroupsAction
-- (PKEditGroupsAction)initWithLabel:(id)a3 type:(id)a4;
+- (PKEditGroupsAction)initWithLabel:(id)label type:(id)type;
 @end
 
 @implementation PKEditGroupsAction
 
-- (PKEditGroupsAction)initWithLabel:(id)a3 type:(id)a4
+- (PKEditGroupsAction)initWithLabel:(id)label type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = PKEditGroupsAction;
   v8 = [(PKEditGroupsAction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(PKEditGroupsAction *)v8 setActionLabel:v6];
-    [(PKEditGroupsAction *)v9 setActionType:v7];
+    [(PKEditGroupsAction *)v8 setActionLabel:labelCopy];
+    [(PKEditGroupsAction *)v9 setActionType:typeCopy];
   }
 
   return v9;

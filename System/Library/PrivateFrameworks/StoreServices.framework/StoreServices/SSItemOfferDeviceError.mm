@@ -1,21 +1,21 @@
 @interface SSItemOfferDeviceError
-- (id)_initWithMessage:(id)a3 title:(id)a4 URLTitle:(id)a5 URL:(id)a6;
+- (id)_initWithMessage:(id)message title:(id)title URLTitle:(id)lTitle URL:(id)l;
 - (void)dealloc;
 @end
 
 @implementation SSItemOfferDeviceError
 
-- (id)_initWithMessage:(id)a3 title:(id)a4 URLTitle:(id)a5 URL:(id)a6
+- (id)_initWithMessage:(id)message title:(id)title URLTitle:(id)lTitle URL:(id)l
 {
   v12.receiver = self;
   v12.super_class = SSItemOfferDeviceError;
   v10 = [(SSItemOfferDeviceError *)&v12 init];
   if (v10)
   {
-    v10->_localizedMessage = a3;
-    v10->_localizedTitle = a4;
-    v10->_localizedURLTitle = a5;
-    v10->_url = a6;
+    v10->_localizedMessage = message;
+    v10->_localizedTitle = title;
+    v10->_localizedURLTitle = lTitle;
+    v10->_url = l;
   }
 
   return v10;

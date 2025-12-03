@@ -1,18 +1,18 @@
 @interface RBSIdentityAndRecordInfoProvider
-+ (id)_providerWithIdentity:(id)a3 record:(id)a4;
-- (id)_initWithIdentity:(id)a3 record:(id)a4;
++ (id)_providerWithIdentity:(id)identity record:(id)record;
+- (id)_initWithIdentity:(id)identity record:(id)record;
 @end
 
 @implementation RBSIdentityAndRecordInfoProvider
 
-- (id)_initWithIdentity:(id)a3 record:(id)a4
+- (id)_initWithIdentity:(id)identity record:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  identityCopy = identity;
+  recordCopy = record;
+  v8 = recordCopy;
+  if (identityCopy)
   {
-    if (v7)
+    if (recordCopy)
     {
       goto LABEL_3;
     }
@@ -32,17 +32,17 @@ LABEL_3:
   v9 = [(RBSIdentityAndRecordInfoProvider *)self init];
   if (v9)
   {
-    v10 = [v6 personaUniqueString];
+    personaUniqueString = [identityCopy personaUniqueString];
     personaString = v9->_personaString;
-    v9->_personaString = v10;
+    v9->_personaString = personaUniqueString;
 
-    v12 = [v8 bundleIdentifier];
+    bundleIdentifier = [v8 bundleIdentifier];
     bundleID = v9->_bundleID;
-    v9->_bundleID = v12;
+    v9->_bundleID = bundleIdentifier;
 
-    v14 = [v8 jobLabel];
+    jobLabel = [v8 jobLabel];
     persistentJobLabel = v9->_persistentJobLabel;
-    v9->_persistentJobLabel = v14;
+    v9->_persistentJobLabel = jobLabel;
 
     v9->_platform = [v8 platform];
   }
@@ -50,11 +50,11 @@ LABEL_3:
   return v9;
 }
 
-+ (id)_providerWithIdentity:(id)a3 record:(id)a4
++ (id)_providerWithIdentity:(id)identity record:(id)record
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RBSIdentityAndRecordInfoProvider alloc] _initWithIdentity:v6 record:v5];
+  recordCopy = record;
+  identityCopy = identity;
+  v7 = [[RBSIdentityAndRecordInfoProvider alloc] _initWithIdentity:identityCopy record:recordCopy];
 
   return v7;
 }

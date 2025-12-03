@@ -1,25 +1,25 @@
 @interface SBSAContainerPanGestureDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)initialLocation;
 - (CGPoint)translation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation SBSAContainerPanGestureDescription
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __46__SBSAContainerPanGestureDescription_isEqual___block_invoke;
   v20[3] = &unk_2783A94B0;
-  v6 = v4;
+  v6 = equalCopy;
   v21 = v6;
-  v22 = self;
+  selfCopy = self;
   v7 = [v5 appendEqualsBlocks:{v20, 0}];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -52,13 +52,13 @@ id __46__SBSAContainerPanGestureDescription_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__SBSAContainerPanGestureDescription_hash__block_invoke;
   v9[3] = &unk_2783A9500;
   v9[4] = self;
-  v4 = [v3 appendHashingBlocks:{v9, 0}];
+  v4 = [builder appendHashingBlocks:{v9, 0}];
   v5 = [v4 appendCGPoint:{self->_initialLocation.x, self->_initialLocation.y}];
   v6 = [v5 appendCGPoint:{self->_translation.x, self->_translation.y}];
   v7 = [v6 hash];
@@ -90,11 +90,11 @@ id __42__SBSAContainerPanGestureDescription_hash__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SBSAContainerPanGestureDescription;
-  result = [(SBSAGestureDescription *)&v5 copyWithZone:a3];
+  result = [(SBSAGestureDescription *)&v5 copyWithZone:zone];
   *(result + 2) = self->_initialLocation;
   *(result + 3) = self->_translation;
   return result;

@@ -1,31 +1,31 @@
 @interface SidebarPopover
-- (_TtC17ContinuityDisplay14SidebarPopover)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17ContinuityDisplay14SidebarPopover)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SidebarPopover
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001F708();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10001FCB0(a3);
+  selfCopy = self;
+  sub_10001FCB0(appear);
 }
 
-- (_TtC17ContinuityDisplay14SidebarPopover)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17ContinuityDisplay14SidebarPopover)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_100057A50();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_10001FDC8();
 }
 

@@ -1,8 +1,8 @@
 @interface ApplicationObserver
 - (ApplicationObserver)delegate;
 - (ApplicationObserver)init;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
@@ -15,8 +15,8 @@
   v2 = [(ApplicationObserver *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CC1E78] defaultWorkspace];
-    [v3 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E78] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     v4 = v2;
   }
@@ -26,26 +26,26 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E78] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E78] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ApplicationObserver;
   [(ApplicationObserver *)&v4 dealloc];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
-  v4 = a3;
-  v5 = [(ApplicationObserver *)self delegate];
-  [v5 applicationsDidInstall:v4];
+  installCopy = install;
+  delegate = [(ApplicationObserver *)self delegate];
+  [delegate applicationsDidInstall:installCopy];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
-  v5 = [(ApplicationObserver *)self delegate];
-  [v5 applicationsDidUninstall:v4];
+  uninstallCopy = uninstall;
+  delegate = [(ApplicationObserver *)self delegate];
+  [delegate applicationsDidUninstall:uninstallCopy];
 }
 
 - (ApplicationObserver)delegate

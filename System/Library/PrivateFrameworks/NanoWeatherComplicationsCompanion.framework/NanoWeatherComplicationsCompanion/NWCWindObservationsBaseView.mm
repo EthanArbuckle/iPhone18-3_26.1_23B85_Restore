@@ -1,77 +1,77 @@
 @interface NWCWindObservationsBaseView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)initFullColorImageViewWithDevice:(id)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
 - (int64_t)supportedComplicationFamily;
-- (void)_applyConstraintsWithLayoutConstants:(id *)a3;
-- (void)_processWindSpeed:(id)a3 unit:(id)a4 directionAbbreviation:(id)a5;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)_applyConstraintsWithLayoutConstants:(id *)constants;
+- (void)_processWindSpeed:(id)speed unit:(id)unit directionAbbreviation:(id)abbreviation;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NWCWindObservationsBaseView
 
-- (void)_applyConstraintsWithLayoutConstants:(id *)a3
+- (void)_applyConstraintsWithLayoutConstants:(id *)constants
 {
   v53[9] = *MEMORY[0x277D85DE8];
-  v52 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  v50 = [v52 leadingAnchor];
-  v51 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v49 = [v51 leadingAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  windDirectionAbbreviationLabel = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  leadingAnchor = [windDirectionAbbreviationLabel leadingAnchor];
+  windSpeedLabel = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  leadingAnchor2 = [windSpeedLabel leadingAnchor];
+  v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v53[0] = v48;
-  v47 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  v45 = [v47 trailingAnchor];
-  v46 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v44 = [v46 trailingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  windDirectionAbbreviationLabel2 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  trailingAnchor = [windDirectionAbbreviationLabel2 trailingAnchor];
+  windSpeedLabel2 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  trailingAnchor2 = [windSpeedLabel2 trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v53[1] = v43;
-  v42 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  v40 = [v42 firstBaselineAnchor];
-  v41 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v39 = [v41 topAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:2.0];
+  windDirectionAbbreviationLabel3 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  firstBaselineAnchor = [windDirectionAbbreviationLabel3 firstBaselineAnchor];
+  windSpeedLabel3 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  topAnchor = [windSpeedLabel3 topAnchor];
+  v38 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:2.0];
   v53[2] = v38;
-  v5 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v6 = [v5 leadingAnchor];
-  v7 = [(NWCWindObservationsBaseView *)self leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:a3->var3];
+  windSpeedLabel4 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  leadingAnchor3 = [windSpeedLabel4 leadingAnchor];
+  leadingAnchor4 = [(NWCWindObservationsBaseView *)self leadingAnchor];
+  v8 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:constants->var3];
 
   v37 = v8;
   LODWORD(v9) = 1148829696;
   [v8 setPriority:v9];
   v53[3] = v8;
-  v10 = [(NWCWindObservationsBaseView *)self trailingAnchor];
-  v11 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:a3->var3];
+  trailingAnchor3 = [(NWCWindObservationsBaseView *)self trailingAnchor];
+  windSpeedLabel5 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  trailingAnchor4 = [windSpeedLabel5 trailingAnchor];
+  v13 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:constants->var3];
 
   v36 = v13;
   LODWORD(v14) = 1148829696;
   [v13 setPriority:v14];
   v53[4] = v13;
-  v35 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v34 = [v35 centerYAnchor];
-  v33 = [(NWCWindObservationsBaseView *)self centerYAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  windSpeedLabel6 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  centerYAnchor = [windSpeedLabel6 centerYAnchor];
+  centerYAnchor2 = [(NWCWindObservationsBaseView *)self centerYAnchor];
+  v32 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v53[5] = v32;
-  v30 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  v28 = [v30 leadingAnchor];
-  v29 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  windUnitLabel = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  leadingAnchor5 = [windUnitLabel leadingAnchor];
+  windSpeedLabel7 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  leadingAnchor6 = [windSpeedLabel7 leadingAnchor];
+  v26 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v53[6] = v26;
-  v15 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  v16 = [v15 trailingAnchor];
-  v17 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  windUnitLabel2 = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  trailingAnchor5 = [windUnitLabel2 trailingAnchor];
+  windSpeedLabel8 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  trailingAnchor6 = [windSpeedLabel8 trailingAnchor];
+  v19 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v53[7] = v19;
-  v20 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  v21 = [v20 topAnchor];
-  v22 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v23 = [v22 firstBaselineAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  windUnitLabel3 = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  topAnchor2 = [windUnitLabel3 topAnchor];
+  windSpeedLabel9 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  firstBaselineAnchor2 = [windSpeedLabel9 firstBaselineAnchor];
+  v24 = [topAnchor2 constraintEqualToAnchor:firstBaselineAnchor2];
   v53[8] = v24;
   v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:9];
 
@@ -79,33 +79,33 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processWindSpeed:(id)a3 unit:(id)a4 directionAbbreviation:(id)a5
+- (void)_processWindSpeed:(id)speed unit:(id)unit directionAbbreviation:(id)abbreviation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  [v11 setText:v8];
+  abbreviationCopy = abbreviation;
+  unitCopy = unit;
+  speedCopy = speed;
+  windDirectionAbbreviationLabel = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  [windDirectionAbbreviationLabel setText:abbreviationCopy];
 
-  v12 = [(NWCWindObservationsBaseView *)self device];
-  v13 = [(NWCWindObservationsBaseView *)self supportedComplicationFamily];
-  ___LayoutConstants_block_invoke_4(v13, v12);
+  device = [(NWCWindObservationsBaseView *)self device];
+  supportedComplicationFamily = [(NWCWindObservationsBaseView *)self supportedComplicationFamily];
+  ___LayoutConstants_block_invoke_4(supportedComplicationFamily, device);
   v14 = &_LayoutConstants___constantsGraphicExtraLarge + 1;
   v15 = &xmmword_27FBA1740;
-  if (v13 != 12)
+  if (supportedComplicationFamily != 12)
   {
     v15 = &xmmword_27FBA1710;
   }
 
   v16 = *v15;
-  if (v13 != 12)
+  if (supportedComplicationFamily != 12)
   {
     v14 = &_LayoutConstants___constantsGraphicCircular + 1;
   }
 
   v17 = *v14;
 
-  if ([v10 length] <= 2)
+  if ([speedCopy length] <= 2)
   {
     v18 = v17;
   }
@@ -116,29 +116,29 @@
   }
 
   v22 = [MEMORY[0x277CBBB08] systemFontOfSize:*MEMORY[0x277CBB6C0] weight:v18 design:*MEMORY[0x277D74420]];
-  v19 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  [v19 setFont:v22];
+  windSpeedLabel = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  [windSpeedLabel setFont:v22];
 
-  v20 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  [v20 setText:v10];
+  windSpeedLabel2 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  [windSpeedLabel2 setText:speedCopy];
 
-  v21 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  [v21 setText:v9];
+  windUnitLabel = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  [windUnitLabel setText:unitCopy];
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v32.receiver = self;
   v32.super_class = NWCWindObservationsBaseView;
   v6 = [(NWCWindObservationsBaseView *)&v32 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [(NWCWindObservationsBaseView *)v7 supportedComplicationFamily];
-    ___LayoutConstants_block_invoke_4(v8, v5);
-    if (v8 == 12)
+    objc_storeStrong(&v6->_device, device);
+    supportedComplicationFamily = [(NWCWindObservationsBaseView *)v7 supportedComplicationFamily];
+    ___LayoutConstants_block_invoke_4(supportedComplicationFamily, deviceCopy);
+    if (supportedComplicationFamily == 12)
     {
       v9 = &_LayoutConstants___constantsGraphicExtraLarge;
     }
@@ -178,8 +178,8 @@
 
     [(UILabel *)v19 setNumberOfLines:1];
     [(UILabel *)v19 setTextAlignment:1];
-    v21 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v19 setTextColor:v21];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v19 setTextColor:whiteColor];
 
     [(UILabel *)v19 setTranslatesAutoresizingMaskIntoConstraints:0];
     windSpeedLabel = v7->_windSpeedLabel;
@@ -195,8 +195,8 @@
     [(UILabel *)v23 setMinimumScaleFactor:0.6];
     [(UILabel *)v23 setNumberOfLines:1];
     [(UILabel *)v23 setTextAlignment:1];
-    v25 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v23 setTextColor:v25];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v23 setTextColor:whiteColor2];
 
     [(UILabel *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
     windUnitLabel = v7->_windUnitLabel;
@@ -213,60 +213,60 @@
   return v7;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = a3;
-  v6 = [v5 metadata];
-  v7 = [v6 objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindDirectionAbbreviation"];
+  providerCopy = provider;
+  metadata = [providerCopy metadata];
+  v7 = [metadata objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindDirectionAbbreviation"];
 
   v13 = v7;
-  v8 = [v5 metadata];
-  v9 = [v8 objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindSpeed"];
+  metadata2 = [providerCopy metadata];
+  v9 = [metadata2 objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindSpeed"];
 
   v10 = v9;
-  v11 = [v5 metadata];
+  metadata3 = [providerCopy metadata];
 
-  v12 = [v11 objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindUnit"];
+  v12 = [metadata3 objectForKeyedSubscript:@"NWCCurrentObservationsMetadata_WindUnit"];
 
   [(NWCWindObservationsBaseView *)self _processWindSpeed:v10 unit:v12 directionAbbreviation:v13];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
-  v13 = [(NWCWindObservationsBaseView *)self filterProvider];
-  v5 = [v13 filtersForView:self style:2 fraction:a3];
-  v6 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  v7 = [v6 layer];
-  [v7 setFilters:v5];
+  filterProvider = [(NWCWindObservationsBaseView *)self filterProvider];
+  v5 = [filterProvider filtersForView:self style:2 fraction:fraction];
+  windDirectionAbbreviationLabel = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  layer = [windDirectionAbbreviationLabel layer];
+  [layer setFilters:v5];
 
-  v8 = [v13 filtersForView:self style:0 fraction:a3];
-  v9 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v10 = [v9 layer];
-  [v10 setFilters:v8];
+  v8 = [filterProvider filtersForView:self style:0 fraction:fraction];
+  windSpeedLabel = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  layer2 = [windSpeedLabel layer];
+  [layer2 setFilters:v8];
 
-  v11 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  v12 = [v11 layer];
-  [v12 setFilters:v8];
+  windUnitLabel = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  layer3 = [windUnitLabel layer];
+  [layer3 setFilters:v8];
 }
 
 - (void)updateMonochromeColor
 {
-  v12 = [(NWCWindObservationsBaseView *)self filterProvider];
-  v3 = [v12 filtersForView:self style:2];
-  v4 = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
-  v5 = [v4 layer];
-  [v5 setFilters:v3];
+  filterProvider = [(NWCWindObservationsBaseView *)self filterProvider];
+  v3 = [filterProvider filtersForView:self style:2];
+  windDirectionAbbreviationLabel = [(NWCWindObservationsBaseView *)self windDirectionAbbreviationLabel];
+  layer = [windDirectionAbbreviationLabel layer];
+  [layer setFilters:v3];
 
-  v6 = [(NWCWindObservationsBaseView *)self filterProvider];
-  v7 = [v6 filtersForView:self style:0];
+  filterProvider2 = [(NWCWindObservationsBaseView *)self filterProvider];
+  v7 = [filterProvider2 filtersForView:self style:0];
 
-  v8 = [(NWCWindObservationsBaseView *)self windSpeedLabel];
-  v9 = [v8 layer];
-  [v9 setFilters:v7];
+  windSpeedLabel = [(NWCWindObservationsBaseView *)self windSpeedLabel];
+  layer2 = [windSpeedLabel layer];
+  [layer2 setFilters:v7];
 
-  v10 = [(NWCWindObservationsBaseView *)self windUnitLabel];
-  v11 = [v10 layer];
-  [v11 setFilters:v7];
+  windUnitLabel = [(NWCWindObservationsBaseView *)self windUnitLabel];
+  layer3 = [windUnitLabel layer];
+  [layer3 setFilters:v7];
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

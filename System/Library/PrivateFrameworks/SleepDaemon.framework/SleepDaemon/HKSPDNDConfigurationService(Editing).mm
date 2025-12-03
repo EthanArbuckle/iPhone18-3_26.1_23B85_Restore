@@ -12,13 +12,13 @@
 - (uint64_t)createSleepFocusModeInState:()Editing error:
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ([a1 hasSleepFocusMode:a4])
+  if ([self hasSleepFocusMode:a4])
   {
     v7 = HKSPLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] already have a sleep focus mode", &v11, 0xCu);
     }
 
@@ -30,18 +30,18 @@
   {
     v10 = *MEMORY[0x277D85DE8];
 
-    return [a1 _createSleepFocusModeInState:a3 error:a4];
+    return [self _createSleepFocusModeInState:a3 error:a4];
   }
 }
 
 - (uint64_t)removeSleepFocusMode:()Editing
 {
-  v5 = [a1 modeConfigService];
-  v6 = [v5 removeModeConfigurationForModeIdentifier:*MEMORY[0x277D622D0] error:a3];
+  modeConfigService = [self modeConfigService];
+  v6 = [modeConfigService removeModeConfigurationForModeIdentifier:*MEMORY[0x277D622D0] error:a3];
 
   if (v6)
   {
-    [a1 updateCachedUUID:0 state:0];
+    [self updateCachedUUID:0 state:0];
   }
 
   return v6;
@@ -50,11 +50,11 @@
 - (uint64_t)configureSleepFocusModeWithState:()Editing error:
 {
   v13 = *MEMORY[0x277D85DE8];
-  if ([a1 hasSleepFocusMode:a4])
+  if ([self hasSleepFocusMode:a4])
   {
     v7 = *MEMORY[0x277D85DE8];
 
-    return [a1 _updateSleepFocusModeWithState:a3 error:a4];
+    return [self _updateSleepFocusModeWithState:a3 error:a4];
   }
 
   else
@@ -63,7 +63,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_269B11000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] we don't have a sleep focus mode", &v11, 0xCu);
     }
 
@@ -80,18 +80,18 @@
   {
     v8 = NSStringFromHKSPSleepFocusConfigurationState();
     v16 = 138543618;
-    v17 = a1;
+    selfCopy2 = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] creating default sleep focus mode (state: %{public}@)", &v16, 0x16u);
   }
 
-  v9 = [a1 modeConfigService];
-  v10 = [v9 createDefaultSleepingModeConfigurationWithError:a4];
+  modeConfigService = [self modeConfigService];
+  v10 = [modeConfigService createDefaultSleepingModeConfigurationWithError:a4];
 
   if (v10)
   {
-    v11 = [a1 _actuallyUpdateModeConfiguration:v10 state:a3 error:a4];
+    v11 = [self _actuallyUpdateModeConfiguration:v10 state:a3 error:a4];
   }
 
   else
@@ -101,7 +101,7 @@
     {
       v15 = *a4;
       v16 = 138543618;
-      v17 = a1;
+      selfCopy2 = self;
       v18 = 2114;
       v19 = v15;
       _os_log_error_impl(&dword_269B11000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] failed to create default sleep focus mode configuration with error: %{public}@", &v16, 0x16u);
@@ -122,18 +122,18 @@
   {
     v8 = NSStringFromHKSPSleepFocusConfigurationState();
     v16 = 138543618;
-    v17 = a1;
+    selfCopy2 = self;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] updating existing sleep focus mode (state: %{public}@)", &v16, 0x16u);
   }
 
-  v9 = [a1 modeConfigService];
-  v10 = [v9 modeConfigurationForModeIdentifier:*MEMORY[0x277D622D0] error:a4];
+  modeConfigService = [self modeConfigService];
+  v10 = [modeConfigService modeConfigurationForModeIdentifier:*MEMORY[0x277D622D0] error:a4];
 
   if (v10)
   {
-    v11 = [a1 _actuallyUpdateModeConfiguration:v10 state:a3 error:a4];
+    v11 = [self _actuallyUpdateModeConfiguration:v10 state:a3 error:a4];
   }
 
   else
@@ -143,7 +143,7 @@
     {
       v15 = *a4;
       v16 = 138543618;
-      v17 = a1;
+      selfCopy2 = self;
       v18 = 2114;
       v19 = v15;
       _os_log_error_impl(&dword_269B11000, v12, OS_LOG_TYPE_ERROR, "[%{public}@] failed to fetch existing sleep focus mode configuration with error: %{public}@", &v16, 0x16u);
@@ -160,33 +160,33 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v7 = [a3 hksp_configurationWithConfigurationState:a4];
-  v8 = [a1 modeConfigService];
-  v9 = [v8 setModeConfiguration:v7 error:a5];
+  modeConfigService = [self modeConfigService];
+  v9 = [modeConfigService setModeConfiguration:v7 error:a5];
 
   v10 = HKSPLogForCategory();
-  v11 = v10;
+  mode = v10;
   if (v9)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = a1;
-      _os_log_impl(&dword_269B11000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] successfully set sleep focus mode configuration", &v16, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_269B11000, mode, OS_LOG_TYPE_DEFAULT, "[%{public}@] successfully set sleep focus mode configuration", &v16, 0xCu);
     }
 
-    v11 = [v7 mode];
-    v12 = [v11 identifier];
-    [a1 updateCachedUUID:v12 state:{objc_msgSend(v7, "hksp_configurationState")}];
+    mode = [v7 mode];
+    identifier = [mode identifier];
+    [self updateCachedUUID:identifier state:{objc_msgSend(v7, "hksp_configurationState")}];
   }
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     v15 = *a5;
     v16 = 138543618;
-    v17 = a1;
+    selfCopy2 = self;
     v18 = 2114;
     v19 = v15;
-    _os_log_error_impl(&dword_269B11000, v11, OS_LOG_TYPE_ERROR, "[%{public}@] failed to set sleep focus mode configuration with error: %{public}@", &v16, 0x16u);
+    _os_log_error_impl(&dword_269B11000, mode, OS_LOG_TYPE_ERROR, "[%{public}@] failed to set sleep focus mode configuration with error: %{public}@", &v16, 0x16u);
   }
 
   v13 = *MEMORY[0x277D85DE8];

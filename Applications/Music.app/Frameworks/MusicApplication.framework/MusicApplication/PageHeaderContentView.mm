@@ -1,35 +1,35 @@
 @interface PageHeaderContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)setAccessoryView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessoryView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PageHeaderContentView
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
   v6 = *(self + OBJC_IVAR____TtC16MusicApplication21PageHeaderContentView_accessoryView);
-  *(self + OBJC_IVAR____TtC16MusicApplication21PageHeaderContentView_accessoryView) = a3;
-  v4 = a3;
-  v5 = self;
+  *(self + OBJC_IVAR____TtC16MusicApplication21PageHeaderContentView_accessoryView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_34549C(v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_345B98();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  v5 = [(PageHeaderContentView *)v4 traitCollection];
-  sub_3468D8(v5, width);
+  width = fits.width;
+  selfCopy = self;
+  traitCollection = [(PageHeaderContentView *)selfCopy traitCollection];
+  sub_3468D8(traitCollection, width);
   v7 = v6;
 
   v8 = width;
@@ -48,20 +48,20 @@
   [v2 setNeedsLayout];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_346BF0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_346BF0(change);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_346D34(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_346D34(event, x, y);
 
   return v10;
 }

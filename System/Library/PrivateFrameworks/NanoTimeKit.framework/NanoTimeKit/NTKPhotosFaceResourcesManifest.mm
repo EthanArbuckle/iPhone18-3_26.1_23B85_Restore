@@ -1,17 +1,17 @@
 @interface NTKPhotosFaceResourcesManifest
-- (BOOL)_imageListItemContainsValidImage:(id)a3;
-- (BOOL)_imageListItemContainsValidIrisVideo:(id)a3;
-- (BOOL)_imageListItemHasValidAnalysisValues:(id)a3;
-- (BOOL)_imageListItemHasValidCropValues:(id)a3;
-- (BOOL)didLoadRawManifest:(id)a3;
-- (BOOL)validateImageListItem:(id)a3 withError:(id *)a4;
+- (BOOL)_imageListItemContainsValidImage:(id)image;
+- (BOOL)_imageListItemContainsValidIrisVideo:(id)video;
+- (BOOL)_imageListItemHasValidAnalysisValues:(id)values;
+- (BOOL)_imageListItemHasValidCropValues:(id)values;
+- (BOOL)didLoadRawManifest:(id)manifest;
+- (BOOL)validateImageListItem:(id)item withError:(id *)error;
 @end
 
 @implementation NTKPhotosFaceResourcesManifest
 
-- (BOOL)didLoadRawManifest:(id)a3
+- (BOOL)didLoadRawManifest:(id)manifest
 {
-  v4 = [a3 objectForKeyedSubscript:@"assetCollection"];
+  v4 = [manifest objectForKeyedSubscript:@"assetCollection"];
   assetCollectionIdentifier = self->_assetCollectionIdentifier;
   self->_assetCollectionIdentifier = v4;
 
@@ -35,21 +35,21 @@
   return 0;
 }
 
-- (BOOL)validateImageListItem:(id)a3 withError:(id *)a4
+- (BOOL)validateImageListItem:(id)item withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"localIdentifier"];
-  if (!v6 || (v7 = v6, [v5 objectForKeyedSubscript:@"localIdentifier"], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) == 0))
+  itemCopy = item;
+  v6 = [itemCopy objectForKeyedSubscript:@"localIdentifier"];
+  if (!v6 || (v7 = v6, [itemCopy objectForKeyedSubscript:@"localIdentifier"], v8 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v8, v7, (isKindOfClass & 1) == 0))
   {
     v21 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v23 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-      v24 = [v23 lastPathComponent];
-      v25 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+      resourceDirectoryURL = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+      lastPathComponent = [resourceDirectoryURL lastPathComponent];
+      v25 = [itemCopy objectForKeyedSubscript:@"localIdentifier"];
       v26 = 138412546;
-      v27 = v24;
+      v27 = lastPathComponent;
       v28 = 2112;
       v29 = v25;
       _os_log_error_impl(&dword_22D9C5000, v21, OS_LOG_TYPE_ERROR, "[SANITIZER:%@]: invalid image list item identifier '%@'.", &v26, 0x16u);
@@ -61,66 +61,66 @@
   v10 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-    v12 = [v11 lastPathComponent];
-    v13 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+    resourceDirectoryURL2 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+    lastPathComponent2 = [resourceDirectoryURL2 lastPathComponent];
+    v13 = [itemCopy objectForKeyedSubscript:@"localIdentifier"];
     v26 = 138412546;
-    v27 = v12;
+    v27 = lastPathComponent2;
     v28 = 2112;
     v29 = v13;
     _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "[SANITIZER:%@]: validating image list item: %@", &v26, 0x16u);
   }
 
-  if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemContainsValidImage:v5])
+  if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemContainsValidImage:itemCopy])
   {
     goto LABEL_15;
   }
 
-  v14 = [v5 objectForKeyedSubscript:@"isIris"];
-  v15 = [v14 BOOLValue];
+  v14 = [itemCopy objectForKeyedSubscript:@"isIris"];
+  bOOLValue = [v14 BOOLValue];
 
-  if (v15)
+  if (bOOLValue)
   {
     v16 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-      v18 = [v17 lastPathComponent];
-      v19 = [v5 objectForKeyedSubscript:@"localIdentifier"];
+      resourceDirectoryURL3 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+      lastPathComponent3 = [resourceDirectoryURL3 lastPathComponent];
+      v19 = [itemCopy objectForKeyedSubscript:@"localIdentifier"];
       v26 = 138412546;
-      v27 = v18;
+      v27 = lastPathComponent3;
       v28 = 2112;
       v29 = v19;
       _os_log_impl(&dword_22D9C5000, v16, OS_LOG_TYPE_DEFAULT, "[SANITIZER:%@]: image list item '%@' includes iris video.", &v26, 0x16u);
     }
 
-    if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemContainsValidIrisVideo:v5])
+    if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemContainsValidIrisVideo:itemCopy])
     {
       goto LABEL_15;
     }
   }
 
-  if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemHasValidCropValues:v5])
+  if (![(NTKPhotosFaceResourcesManifest *)self _imageListItemHasValidCropValues:itemCopy])
   {
 LABEL_15:
     v20 = 0;
     goto LABEL_16;
   }
 
-  v20 = [(NTKPhotosFaceResourcesManifest *)self _imageListItemHasValidAnalysisValues:v5];
+  v20 = [(NTKPhotosFaceResourcesManifest *)self _imageListItemHasValidAnalysisValues:itemCopy];
 LABEL_16:
 
   return v20;
 }
 
-- (BOOL)_imageListItemContainsValidImage:(id)a3
+- (BOOL)_imageListItemContainsValidImage:(id)image
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"imageURL"];
-  if (v5 && (v6 = v5, [v4 objectForKeyedSubscript:@"imageURL"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
+  imageCopy = image;
+  v5 = [imageCopy objectForKeyedSubscript:@"imageURL"];
+  if (v5 && (v6 = v5, [imageCopy objectForKeyedSubscript:@"imageURL"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v7, v6, (isKindOfClass & 1) != 0))
   {
-    v9 = [v4 objectForKeyedSubscript:@"imageURL"];
+    v9 = [imageCopy objectForKeyedSubscript:@"imageURL"];
     if ([(NTKBasePhotoResourcesManifest *)self resourceWithName:v9 isValidMediaAssetOfType:&unk_284189FA0 withMinFileSize:1000 maxFileSize:2000000])
     {
       v10 = [(NTKBasePhotoResourcesManifest *)self resourceWithNameIsValidImage:v9];
@@ -137,11 +137,11 @@ LABEL_16:
     v11 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-      v14 = [v13 lastPathComponent];
-      v15 = [v4 objectForKeyedSubscript:@"imageURL"];
+      resourceDirectoryURL = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+      lastPathComponent = [resourceDirectoryURL lastPathComponent];
+      v15 = [imageCopy objectForKeyedSubscript:@"imageURL"];
       v16 = 138412802;
-      v17 = v14;
+      v17 = lastPathComponent;
       v18 = 2112;
       v19 = v15;
       v20 = 2112;
@@ -155,18 +155,18 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)_imageListItemContainsValidIrisVideo:(id)a3
+- (BOOL)_imageListItemContainsValidIrisVideo:(id)video
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"irisVideoURL"];
-  if (v5 && (v6 = v5, [v4 objectForKeyedSubscript:@"irisVideoURL"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v8 = objc_opt_isKindOfClass(), v7, v6, (v8 & 1) != 0))
+  videoCopy = video;
+  v5 = [videoCopy objectForKeyedSubscript:@"irisVideoURL"];
+  if (v5 && (v6 = v5, [videoCopy objectForKeyedSubscript:@"irisVideoURL"], v7 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v8 = objc_opt_isKindOfClass(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [v4 objectForKeyedSubscript:@"irisVideoURL"];
+    v9 = [videoCopy objectForKeyedSubscript:@"irisVideoURL"];
     if ([(NTKBasePhotoResourcesManifest *)self resourceWithName:v9 isValidMediaAssetOfType:&unk_284189FB8 withMinFileSize:10000 maxFileSize:4000000])
     {
-      v10 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-      v11 = [v10 URLByAppendingPathComponent:v9 isDirectory:0];
+      resourceDirectoryURL = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+      v11 = [resourceDirectoryURL URLByAppendingPathComponent:v9 isDirectory:0];
 
       v12 = MEMORY[0x277CE6650];
       v56 = *MEMORY[0x277CE6240];
@@ -176,8 +176,8 @@ LABEL_16:
 
       if (([v14 isPlayable] & 1) == 0)
       {
-        v16 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+        firstObject = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           [(NTKPhotosFaceResourcesManifest *)self _imageListItemContainsValidIrisVideo:v11];
         }
@@ -186,9 +186,9 @@ LABEL_16:
       }
 
       v15 = [v14 tracksWithMediaType:*MEMORY[0x277CE5EA8]];
-      v16 = [v15 firstObject];
+      firstObject = [v15 firstObject];
 
-      if (!v16)
+      if (!firstObject)
       {
         v21 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -199,23 +199,23 @@ LABEL_16:
         goto LABEL_20;
       }
 
-      [v16 naturalSize];
-      if (v17 < 1.0 || ([v16 naturalSize], v18 < 1.0) || ([v16 naturalSize], v19 > 1920.0) || ([v16 naturalSize], v20 > 1920.0))
+      [firstObject naturalSize];
+      if (v17 < 1.0 || ([firstObject naturalSize], v18 < 1.0) || ([firstObject naturalSize], v19 > 1920.0) || ([firstObject naturalSize], v20 > 1920.0))
       {
         v21 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          v22 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-          v23 = [v22 lastPathComponent];
-          [v16 naturalSize];
+          resourceDirectoryURL2 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+          lastPathComponent = [resourceDirectoryURL2 lastPathComponent];
+          [firstObject naturalSize];
           v24 = NSStringFromCGSize(v58);
-          v25 = [v11 path];
+          path = [v11 path];
           LODWORD(buf.value) = 138412802;
-          *(&buf.value + 4) = v23;
+          *(&buf.value + 4) = lastPathComponent;
           LOWORD(buf.flags) = 2112;
           *(&buf.flags + 2) = v24;
           HIWORD(buf.epoch) = 2112;
-          v53 = v25;
+          v53 = path;
           _os_log_error_impl(&dword_22D9C5000, v21, OS_LOG_TYPE_ERROR, "[SANITIZER:%@]: unexpected iris video dimensions '%@' at path '%@'", &buf, 0x20u);
         }
 
@@ -233,24 +233,24 @@ LABEL_16:
       }
 
       Seconds = CMTimeGetSeconds(&buf);
-      v32 = [v4 objectForKeyedSubscript:@"irisDuration"];
-      if (v32 && (v33 = v32, [v4 objectForKeyedSubscript:@"irisDuration"], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v35 = objc_opt_isKindOfClass(), v34, v33, (v35 & 1) != 0))
+      v32 = [videoCopy objectForKeyedSubscript:@"irisDuration"];
+      if (v32 && (v33 = v32, [videoCopy objectForKeyedSubscript:@"irisDuration"], v34 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v35 = objc_opt_isKindOfClass(), v34, v33, (v35 & 1) != 0))
       {
-        v36 = [v4 objectForKeyedSubscript:@"irisStillDisplayTime"];
+        v36 = [videoCopy objectForKeyedSubscript:@"irisStillDisplayTime"];
         if (v36)
         {
           v37 = v36;
-          v38 = [v4 objectForKeyedSubscript:@"irisStillDisplayTime"];
+          v38 = [videoCopy objectForKeyedSubscript:@"irisStillDisplayTime"];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v40 = [v4 objectForKeyedSubscript:@"irisDuration"];
+            v40 = [videoCopy objectForKeyedSubscript:@"irisDuration"];
             [v40 doubleValue];
             v42 = v41;
 
-            v43 = [v4 objectForKeyedSubscript:@"irisStillDisplayTime"];
+            v43 = [videoCopy objectForKeyedSubscript:@"irisStillDisplayTime"];
             [v43 doubleValue];
             v45 = v44;
 
@@ -262,13 +262,13 @@ LABEL_16:
                 goto LABEL_20;
               }
 
-              v46 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-              v49 = [v46 lastPathComponent];
-              v50 = [v11 path];
+              resourceDirectoryURL3 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+              lastPathComponent2 = [resourceDirectoryURL3 lastPathComponent];
+              path2 = [v11 path];
               LODWORD(buf.value) = 138413058;
-              *(&buf.value + 4) = v49;
+              *(&buf.value + 4) = lastPathComponent2;
               LOWORD(buf.flags) = 2112;
-              *(&buf.flags + 2) = v50;
+              *(&buf.flags + 2) = path2;
               HIWORD(buf.epoch) = 2048;
               v53 = *&Seconds;
               v54 = 2048;
@@ -290,13 +290,13 @@ LABEL_16:
                 goto LABEL_20;
               }
 
-              v46 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-              v49 = [v46 lastPathComponent];
-              v50 = [v11 path];
+              resourceDirectoryURL3 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+              lastPathComponent2 = [resourceDirectoryURL3 lastPathComponent];
+              path2 = [v11 path];
               LODWORD(buf.value) = 138413058;
-              *(&buf.value + 4) = v49;
+              *(&buf.value + 4) = lastPathComponent2;
               LOWORD(buf.flags) = 2112;
-              *(&buf.flags + 2) = v50;
+              *(&buf.flags + 2) = path2;
               HIWORD(buf.epoch) = 2048;
               v53 = *&v45;
               v54 = 2048;
@@ -314,11 +314,11 @@ LABEL_16:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
 LABEL_39:
-          v46 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-          v47 = [v46 lastPathComponent];
-          v48 = [v4 objectForKeyedSubscript:@"irisDuration"];
+          resourceDirectoryURL3 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+          lastPathComponent3 = [resourceDirectoryURL3 lastPathComponent];
+          v48 = [videoCopy objectForKeyedSubscript:@"irisDuration"];
           LODWORD(buf.value) = 138412802;
-          *(&buf.value + 4) = v47;
+          *(&buf.value + 4) = lastPathComponent3;
           LOWORD(buf.flags) = 2112;
           *(&buf.flags + 2) = v48;
           HIWORD(buf.epoch) = 2112;
@@ -353,11 +353,11 @@ LABEL_22:
     v9 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v28 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-      v29 = [v28 lastPathComponent];
-      v30 = [v4 objectForKeyedSubscript:@"irisVideoURL"];
+      resourceDirectoryURL4 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+      lastPathComponent4 = [resourceDirectoryURL4 lastPathComponent];
+      v30 = [videoCopy objectForKeyedSubscript:@"irisVideoURL"];
       LODWORD(buf.value) = 138412802;
-      *(&buf.value + 4) = v29;
+      *(&buf.value + 4) = lastPathComponent4;
       LOWORD(buf.flags) = 2112;
       *(&buf.flags + 2) = v30;
       HIWORD(buf.epoch) = 2112;
@@ -372,11 +372,11 @@ LABEL_15:
   return v26;
 }
 
-- (BOOL)_imageListItemHasValidCropValues:(id)a3
+- (BOOL)_imageListItemHasValidCropValues:(id)values
 {
-  v38 = self;
+  selfCopy = self;
   v57[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valuesCopy = values;
   v57[0] = @"cropH";
   v57[1] = @"cropW";
   v57[2] = @"cropX";
@@ -401,12 +401,12 @@ LABEL_15:
         }
 
         v8 = *(*(&v44 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:{v8, v38}];
+        v9 = [valuesCopy objectForKeyedSubscript:{v8, selfCopy}];
         v13 = 1;
         if (v9)
         {
           v10 = v9;
-          v11 = [v3 objectForKeyedSubscript:v8];
+          v11 = [valuesCopy objectForKeyedSubscript:v8];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -416,7 +416,7 @@ LABEL_15:
           }
         }
 
-        v14 = [v3 objectForKeyedSubscript:v8];
+        v14 = [valuesCopy objectForKeyedSubscript:v8];
         [v14 floatValue];
         v16 = v15;
 
@@ -425,11 +425,11 @@ LABEL_15:
           v18 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
-            v32 = [(NTKBasePhotoResourcesManifest *)v38 resourceDirectoryURL];
-            v33 = [v32 lastPathComponent];
-            v34 = [v3 objectForKeyedSubscript:v8];
+            resourceDirectoryURL = [(NTKBasePhotoResourcesManifest *)selfCopy resourceDirectoryURL];
+            lastPathComponent = [resourceDirectoryURL lastPathComponent];
+            v34 = [valuesCopy objectForKeyedSubscript:v8];
             *buf = 138412802;
-            v51 = v33;
+            v51 = lastPathComponent;
             v52 = 2112;
             v53 = v34;
             v54 = 2112;
@@ -480,11 +480,11 @@ LABEL_15:
         }
 
         v23 = *(*(&v40 + 1) + 8 * j);
-        v24 = [v3 objectForKeyedSubscript:{v23, v38}];
+        v24 = [valuesCopy objectForKeyedSubscript:{v23, selfCopy}];
         if (v24)
         {
           v25 = v24;
-          v26 = [v3 objectForKeyedSubscript:v23];
+          v26 = [valuesCopy objectForKeyedSubscript:v23];
           objc_opt_class();
           v27 = objc_opt_isKindOfClass();
 
@@ -497,11 +497,11 @@ LABEL_15:
         v30 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
-          v35 = [(NTKBasePhotoResourcesManifest *)v38 resourceDirectoryURL];
-          v36 = [v35 lastPathComponent];
-          v37 = [v3 objectForKeyedSubscript:v23];
+          resourceDirectoryURL2 = [(NTKBasePhotoResourcesManifest *)selfCopy resourceDirectoryURL];
+          lastPathComponent2 = [resourceDirectoryURL2 lastPathComponent];
+          v37 = [valuesCopy objectForKeyedSubscript:v23];
           *buf = 138412802;
-          v51 = v36;
+          v51 = lastPathComponent2;
           v52 = 2112;
           v53 = v37;
           v54 = 2112;
@@ -539,10 +539,10 @@ LABEL_31:
   return v28;
 }
 
-- (BOOL)_imageListItemHasValidAnalysisValues:(id)a3
+- (BOOL)_imageListItemHasValidAnalysisValues:(id)values
 {
   v51[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  valuesCopy = values;
   v51[0] = @"topAnalysis";
   v51[1] = @"bottomAnalysis";
   v51[2] = @"leftAnalysis";
@@ -567,7 +567,7 @@ LABEL_31:
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
-        v10 = [v3 objectForKeyedSubscript:v9];
+        v10 = [valuesCopy objectForKeyedSubscript:v9];
         v11 = [NTKPhotoAnalysis isValidDictionary:v10];
 
         if (!v11)
@@ -575,11 +575,11 @@ LABEL_31:
           v12 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v26 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-            v27 = [v26 lastPathComponent];
-            v28 = [v3 objectForKeyedSubscript:v9];
+            resourceDirectoryURL = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+            lastPathComponent = [resourceDirectoryURL lastPathComponent];
+            v28 = [valuesCopy objectForKeyedSubscript:v9];
             *buf = 138412802;
-            v45 = v27;
+            v45 = lastPathComponent;
             v46 = 2112;
             v47 = v28;
             v48 = 2112;
@@ -632,11 +632,11 @@ LABEL_31:
         }
 
         v17 = *(*(&v34 + 1) + 8 * j);
-        v18 = [v3 objectForKeyedSubscript:{v17, v32}];
+        v18 = [valuesCopy objectForKeyedSubscript:{v17, v32}];
         if (v18)
         {
           v19 = v18;
-          v20 = [v3 objectForKeyedSubscript:v17];
+          v20 = [valuesCopy objectForKeyedSubscript:v17];
           v21 = [NTKPhotoAnalysis isValidDictionary:v20];
 
           if (!v21)
@@ -644,11 +644,11 @@ LABEL_31:
             v24 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
             if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
             {
-              v29 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
-              v30 = [v29 lastPathComponent];
-              v31 = [v3 objectForKeyedSubscript:v17];
+              resourceDirectoryURL2 = [(NTKBasePhotoResourcesManifest *)self resourceDirectoryURL];
+              lastPathComponent2 = [resourceDirectoryURL2 lastPathComponent];
+              v31 = [valuesCopy objectForKeyedSubscript:v17];
               *buf = 138412802;
-              v45 = v30;
+              v45 = lastPathComponent2;
               v46 = 2112;
               v47 = v31;
               v48 = 2112;

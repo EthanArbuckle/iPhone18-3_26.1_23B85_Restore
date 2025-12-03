@@ -1,17 +1,17 @@
 @interface SafariFetcherServer
 + (id)sharedServer;
 - (SafariFetcherServer)init;
-- (void)_clearAllReadingListArchivesForConnection:(id)a3;
+- (void)_clearAllReadingListArchivesForConnection:(id)connection;
 - (void)_clearReadingListFetcherStartTimer;
-- (void)_connection:(id)a3 clearReadingListArchiveWithMessage:(id)a4;
-- (void)_registerConnectionForReadingListFetcherUpdates:(id)a3;
+- (void)_connection:(id)_connection clearReadingListArchiveWithMessage:(id)message;
+- (void)_registerConnectionForReadingListFetcherUpdates:(id)updates;
 - (void)_startReadingListFetcher;
 - (void)_startReadingListFetcherNow;
 - (void)dealloc;
 - (void)deliverReadingListDidFinishFetching;
-- (void)deliverReadingListFetchingDidStartForItemWithUUID:(id)a3;
-- (void)deliverReadingListFetchingDidStopForItemWithUUID:(id)a3;
-- (void)deliverReadingListFetchingProgress:(double)a3;
+- (void)deliverReadingListFetchingDidStartForItemWithUUID:(id)d;
+- (void)deliverReadingListFetchingDidStopForItemWithUUID:(id)d;
+- (void)deliverReadingListFetchingProgress:(double)progress;
 @end
 
 @implementation SafariFetcherServer
@@ -105,7 +105,7 @@
   block[1] = 3221225472;
   block[2] = sub_100009594;
   block[3] = &unk_10001C6C8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100022D70 != -1)
   {
     dispatch_once(&qword_100022D70, block);
@@ -157,21 +157,21 @@
   _objc_release_x1();
 }
 
-- (void)_registerConnectionForReadingListFetcherUpdates:(id)a3
+- (void)_registerConnectionForReadingListFetcherUpdates:(id)updates
 {
-  v4 = a3;
-  if ([v4 hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
+  updatesCopy = updates;
+  if ([updatesCopy hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
   {
-    [(NSMutableArray *)self->_readingListReplyConnections addObject:v4];
+    [(NSMutableArray *)self->_readingListReplyConnections addObject:updatesCopy];
     v5 = +[ReadingListFetcher sharedReadingListFetcher];
     [v5 start];
 
     v6 = +[ReadingListFetcher sharedReadingListFetcher];
-    v7 = [v6 currentItemUUID];
+    currentItemUUID = [v6 currentItemUUID];
 
-    if (v7)
+    if (currentItemUUID)
     {
-      [(SafariFetcherServer *)self deliverReadingListFetchingDidStartForItemWithUUID:v7];
+      [(SafariFetcherServer *)self deliverReadingListFetchingDidStartForItemWithUUID:currentItemUUID];
       v8 = +[ReadingListFetcher sharedReadingListFetcher];
       [v8 currentProgress];
       [(SafariFetcherServer *)self deliverReadingListFetchingProgress:?];
@@ -190,10 +190,10 @@
   }
 }
 
-- (void)deliverReadingListFetchingDidStartForItemWithUUID:(id)a3
+- (void)deliverReadingListFetchingDidStartForItemWithUUID:(id)d
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  dCopy = d;
+  uTF8String = [d UTF8String];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -215,7 +215,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * i);
         v13 = [v12 messageWithName:{kSafariFetcherDidStartFetchingItemMessageName, v14}];
-        xpc_dictionary_set_string(v13, kWebBookmarksUUIDKey, v6);
+        xpc_dictionary_set_string(v13, kWebBookmarksUUIDKey, uTF8String);
         [v12 sendMessage:v13];
       }
 
@@ -226,10 +226,10 @@
   }
 }
 
-- (void)deliverReadingListFetchingDidStopForItemWithUUID:(id)a3
+- (void)deliverReadingListFetchingDidStopForItemWithUUID:(id)d
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  dCopy = d;
+  uTF8String = [d UTF8String];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -251,7 +251,7 @@
 
         v12 = *(*(&v14 + 1) + 8 * i);
         v13 = [v12 messageWithName:{kSafariFetcherDidStopFetchingItemMessageName, v14}];
-        xpc_dictionary_set_string(v13, kWebBookmarksUUIDKey, v6);
+        xpc_dictionary_set_string(v13, kWebBookmarksUUIDKey, uTF8String);
         [v12 sendMessage:v13];
       }
 
@@ -262,7 +262,7 @@
   }
 }
 
-- (void)deliverReadingListFetchingProgress:(double)a3
+- (void)deliverReadingListFetchingProgress:(double)progress
 {
   v11 = 0u;
   v12 = 0u;
@@ -285,7 +285,7 @@
 
         v9 = *(*(&v11 + 1) + 8 * i);
         v10 = [v9 messageWithName:{kSafariFetcherDidUpdateProgressMessageName, v11}];
-        xpc_dictionary_set_double(v10, kWebBookmarksProgressKey, a3);
+        xpc_dictionary_set_double(v10, kWebBookmarksProgressKey, progress);
         [v9 sendMessage:v10];
       }
 
@@ -329,9 +329,9 @@
   }
 }
 
-- (void)_clearAllReadingListArchivesForConnection:(id)a3
+- (void)_clearAllReadingListArchivesForConnection:(id)connection
 {
-  if ([a3 hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
+  if ([connection hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
   {
     collection = self->_collection;
 
@@ -339,10 +339,10 @@
   }
 }
 
-- (void)_connection:(id)a3 clearReadingListArchiveWithMessage:(id)a4
+- (void)_connection:(id)_connection clearReadingListArchiveWithMessage:(id)message
 {
-  xdict = a4;
-  if ([a3 hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
+  xdict = message;
+  if ([_connection hasBoolEntitlement:@"com.apple.private.safari.offlinereadinglist"])
   {
     v6 = [NSString stringWithUTF8String:xpc_dictionary_get_string(xdict, kWebBookmarksUUIDKey)];
     if ([v6 length])

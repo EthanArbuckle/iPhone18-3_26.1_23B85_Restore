@@ -1,14 +1,14 @@
 @interface BMPublisherVirtualTableCursor
-- (BMPublisherVirtualTableCursor)initWithVirtualTable:(id)a3;
+- (BMPublisherVirtualTableCursor)initWithVirtualTable:(id)table;
 - (NSString)description;
-- (int64_t)receiveInput:(id)a3;
-- (void)_resetWithPublisher:(id)a3;
+- (int64_t)receiveInput:(id)input;
+- (void)_resetWithPublisher:(id)publisher;
 - (void)advance;
 - (void)close;
-- (void)receivedEvent:(id)a3;
+- (void)receivedEvent:(id)event;
 - (void)requestNextEvents;
-- (void)resetWithOptions:(id)a3;
-- (void)subscribeTo:(id)a3;
+- (void)resetWithOptions:(id)options;
+- (void)subscribeTo:(id)to;
 @end
 
 @implementation BMPublisherVirtualTableCursor
@@ -16,13 +16,13 @@
 - (void)requestNextEvents
 {
   v3 = objc_autoreleasePoolPush();
-  v5 = [(BPSPublisher *)self->_publisher nextEvent];
+  nextEvent = [(BPSPublisher *)self->_publisher nextEvent];
   objc_autoreleasePoolPop(v3);
-  v4 = v5;
-  if (v5)
+  v4 = nextEvent;
+  if (nextEvent)
   {
-    [(BMPublisherVirtualTableCursor *)self receivedEvent:v5];
-    v4 = v5;
+    [(BMPublisherVirtualTableCursor *)self receivedEvent:nextEvent];
+    v4 = nextEvent;
   }
 }
 
@@ -33,16 +33,16 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BMPublisherVirtualTableCursor)initWithVirtualTable:(id)a3
+- (BMPublisherVirtualTableCursor)initWithVirtualTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v10.receiver = self;
   v10.super_class = BMPublisherVirtualTableCursor;
   v6 = [(BMPublisherVirtualTableCursor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_virtualTable, a3);
+    objc_storeStrong(&v6->_virtualTable, table);
     rowObject = v7->_rowObject;
     v7->_rowObject = 0;
   }
@@ -50,15 +50,15 @@
   return v7;
 }
 
-- (void)resetWithOptions:(id)a3
+- (void)resetWithOptions:(id)options
 {
-  v9 = a3;
+  optionsCopy = options;
   rowObject = self->_rowObject;
   self->_rowObject = 0;
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [(BMStreamVirtualTable *)self->_virtualTable publisherBlock];
-  v7 = (v6)[2](v6, v9);
+  publisherBlock = [(BMStreamVirtualTable *)self->_virtualTable publisherBlock];
+  v7 = (publisherBlock)[2](publisherBlock, optionsCopy);
 
   objc_autoreleasePoolPop(v5);
   if (BPSPipelineSupportsPullBasedPublishers())
@@ -97,9 +97,9 @@
   }
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   rowObject = self->_rowObject;
   if (rowObject)
   {
@@ -108,26 +108,26 @@
 
   self->_rowID = rowObject;
   v6 = self->_rowObject;
-  self->_rowObject = v4;
-  v7 = self;
+  self->_rowObject = inputCopy;
+  selfCopy = self;
 
   v8 = *MEMORY[0x1E698F0A0];
   return v8;
 }
 
-- (void)_resetWithPublisher:(id)a3
+- (void)_resetWithPublisher:(id)publisher
 {
-  v5 = a3;
+  publisherCopy = publisher;
   v4 = objc_autoreleasePoolPush();
-  [(BMPublisherVirtualTableCursor *)self subscribeTo:v5];
+  [(BMPublisherVirtualTableCursor *)self subscribeTo:publisherCopy];
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)subscribeTo:(id)a3
+- (void)subscribeTo:(id)to
 {
-  objc_storeStrong(&self->_publisher, a3);
-  v4 = [(BMPublisherVirtualTableCursor *)self publisher];
-  v6 = [v4 startWithSubscriber:self];
+  objc_storeStrong(&self->_publisher, to);
+  publisher = [(BMPublisherVirtualTableCursor *)self publisher];
+  v6 = [publisher startWithSubscriber:self];
 
   v5 = v6;
   if (!v6)
@@ -137,9 +137,9 @@
   }
 }
 
-- (void)receivedEvent:(id)a3
+- (void)receivedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   rowObject = self->_rowObject;
   if (rowObject)
   {
@@ -148,7 +148,7 @@
 
   self->_rowID = rowObject;
   v6 = self->_rowObject;
-  self->_rowObject = v4;
+  self->_rowObject = eventCopy;
 
   MEMORY[0x1EEE66BB8]();
 }

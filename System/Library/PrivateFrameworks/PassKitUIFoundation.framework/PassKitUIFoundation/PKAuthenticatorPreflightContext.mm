@@ -1,7 +1,7 @@
 @interface PKAuthenticatorPreflightContext
 - (BOOL)isInvalidated;
 - (id)context;
-- (id)initForLocationBasedAuthorization:(BOOL)a3;
+- (id)initForLocationBasedAuthorization:(BOOL)authorization;
 - (void)_clearIfPossibleUnsafe;
 - (void)dealloc;
 - (void)decrementValidReferenceCount;
@@ -11,9 +11,9 @@
 
 @implementation PKAuthenticatorPreflightContext
 
-- (id)initForLocationBasedAuthorization:(BOOL)a3
+- (id)initForLocationBasedAuthorization:(BOOL)authorization
 {
-  v3 = a3;
+  authorizationCopy = authorization;
   v9.receiver = self;
   v9.super_class = PKAuthenticatorPreflightContext;
   v4 = [(PKAuthenticatorPreflightContext *)&v9 init];
@@ -25,13 +25,13 @@
     context = v5->_context;
     v5->_context = v6;
 
-    if (v3)
+    if (authorizationCopy)
     {
       [(LAContext *)v5->_context setOptionDTO:MEMORY[0x277CBEC38]];
     }
 
     v5->_validReferenceCount = 0;
-    v5->_useLocationBasedAuthorization = v3;
+    v5->_useLocationBasedAuthorization = authorizationCopy;
   }
 
   return v5;

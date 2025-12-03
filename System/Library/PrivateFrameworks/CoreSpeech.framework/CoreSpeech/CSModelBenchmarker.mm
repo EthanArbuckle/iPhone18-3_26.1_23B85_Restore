@@ -1,35 +1,35 @@
 @interface CSModelBenchmarker
-- (BOOL)_setupAudioInjectionEngineWithAudioURL:(id)a3;
+- (BOOL)_setupAudioInjectionEngineWithAudioURL:(id)l;
 - (CSModelBenchmarker)init;
-- (void)_onDeviceCompilationWithConfigFile:(id)a3 locale:(id)a4 modelType:(int64_t)a5;
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8;
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)benchmarkOnDeviceCompilationCleanup:(id)a3;
-- (void)pingpong:(id)a3 completion:(id)a4;
+- (void)_onDeviceCompilationWithConfigFile:(id)file locale:(id)locale modelType:(int64_t)type;
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer;
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason;
+- (void)benchmarkOnDeviceCompilationCleanup:(id)cleanup;
+- (void)pingpong:(id)pingpong completion:(id)completion;
 - (void)reset;
-- (void)runAudioInjectionOnly:(id)a3 completion:(id)a4;
-- (void)runLstmPhsModelWithConfig:(id)a3 withUrl:(id)a4 withConfigRoot:(id)a5 completion:(id)a6;
-- (void)runNCModelWithConfig:(id)a3 completion:(id)a4;
-- (void)runNovDetectorWithConfig:(id)a3 configRoot:(id)a4 withUrl:(id)a5 completion:(id)a6;
-- (void)runODLDModelWithConfig:(id)a3 locale:(id)a4 inputText:(id)a5 completion:(id)a6;
-- (void)runOSDAnalyzerWithConfig:(id)a3 withUrl:(id)a4 completion:(id)a5;
-- (void)runVTSecondPassModelWithConfig:(id)a3 locale:(id)a4 withUrl:(id)a5 completion:(id)a6;
+- (void)runAudioInjectionOnly:(id)only completion:(id)completion;
+- (void)runLstmPhsModelWithConfig:(id)config withUrl:(id)url withConfigRoot:(id)root completion:(id)completion;
+- (void)runNCModelWithConfig:(id)config completion:(id)completion;
+- (void)runNovDetectorWithConfig:(id)config configRoot:(id)root withUrl:(id)url completion:(id)completion;
+- (void)runODLDModelWithConfig:(id)config locale:(id)locale inputText:(id)text completion:(id)completion;
+- (void)runOSDAnalyzerWithConfig:(id)config withUrl:(id)url completion:(id)completion;
+- (void)runVTSecondPassModelWithConfig:(id)config locale:(id)locale withUrl:(id)url completion:(id)completion;
 - (void)setAllProcessorsAsNil;
 @end
 
 @implementation CSModelBenchmarker
 
-- (BOOL)_setupAudioInjectionEngineWithAudioURL:(id)a3
+- (BOOL)_setupAudioInjectionEngineWithAudioURL:(id)l
 {
   audioInjectionEngine = self->_audioInjectionEngine;
-  v5 = a3;
+  lCopy = l;
   +[CSFAudioStreamBasicDescriptionFactory lpcmMonoInterleavedASBD];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10008298C;
   v8[3] = &unk_10024FDE8;
   v8[4] = self;
-  v6 = [(CSFileAudioInjectionEngine *)audioInjectionEngine injectAudio:v5 withScaleFactor:v9 outASBD:&stru_10024FDC0 playbackStarted:v8 completion:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
+  v6 = [(CSFileAudioInjectionEngine *)audioInjectionEngine injectAudio:lCopy withScaleFactor:v9 outASBD:&stru_10024FDC0 playbackStarted:v8 completion:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0))];
 
   if (v6)
   {
@@ -41,11 +41,11 @@
   return v6;
 }
 
-- (void)_onDeviceCompilationWithConfigFile:(id)a3 locale:(id)a4 modelType:(int64_t)a5
+- (void)_onDeviceCompilationWithConfigFile:(id)file locale:(id)locale modelType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:v8 modelType:a5];
+  fileCopy = file;
+  localeCopy = locale;
+  v10 = [CSOnDeviceCompilationUtils readMilFilePathFromConfig:fileCopy modelType:type];
   v11 = [CSOnDeviceCompilationUtils getBackendTypeFromModelFile:v10];
   if (v11 == 2)
   {
@@ -64,7 +64,7 @@ LABEL_6:
       v19 = 2112;
       v20 = v10;
       v21 = 2112;
-      v22 = v8;
+      v22 = fileCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%s No Valid backend for compilation is found for model file: %@ from config: %@", buf, 0x20u);
     }
 
@@ -74,13 +74,13 @@ LABEL_6:
   v12 = +[CSOnDeviceCompilationHandler sharedHandler];
   tempCacheDirectoryForMil2Bnns = self->_tempCacheDirectoryForMil2Bnns;
   v16 = 0;
-  [v12 compileUsingConfig:v8 locale:v9 compileDirectory:tempCacheDirectoryForMil2Bnns modelType:a5 errOut:&v16];
+  [v12 compileUsingConfig:fileCopy locale:localeCopy compileDirectory:tempCacheDirectoryForMil2Bnns modelType:type errOut:&v16];
   v14 = v16;
 
 LABEL_7:
 }
 
-- (void)audioEngineDidStopRecord:(id)a3 audioStreamHandleId:(unint64_t)a4 reason:(unint64_t)a5
+- (void)audioEngineDidStopRecord:(id)record audioStreamHandleId:(unint64_t)id reason:(unint64_t)reason
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -91,17 +91,17 @@ LABEL_7:
   dispatch_async(queue, block);
 }
 
-- (void)audioEngineBufferAvailable:(id)a3 audioStreamHandleId:(unint64_t)a4 buffer:(id)a5 remoteVAD:(id)a6 atTime:(unint64_t)a7 isFileLoadedBuffer:(BOOL)a8
+- (void)audioEngineBufferAvailable:(id)available audioStreamHandleId:(unint64_t)id buffer:(id)buffer remoteVAD:(id)d atTime:(unint64_t)time isFileLoadedBuffer:(BOOL)loadedBuffer
 {
-  v9 = a5;
+  bufferCopy = buffer;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000831D8;
   v12[3] = &unk_100253C48;
-  v13 = v9;
-  v14 = self;
-  v11 = v9;
+  v13 = bufferCopy;
+  selfCopy = self;
+  v11 = bufferCopy;
   dispatch_async(queue, v12);
 }
 
@@ -139,9 +139,9 @@ LABEL_7:
   self->_inferenceTimeSpan = 0;
 }
 
-- (void)benchmarkOnDeviceCompilationCleanup:(id)a3
+- (void)benchmarkOnDeviceCompilationCleanup:(id)cleanup
 {
-  v4 = a3;
+  cleanupCopy = cleanup;
   v5 = +[NSFileManager defaultManager];
   tempCacheDirectoryForMil2Bnns = self->_tempCacheDirectoryForMil2Bnns;
   v10 = 0;
@@ -161,57 +161,57 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s clean up benchmark cached bnnsir directory: %@ with error: %@", buf, 0x20u);
   }
 
-  v4[2](v4, v7);
+  cleanupCopy[2](cleanupCopy, v7);
 }
 
-- (void)runAudioInjectionOnly:(id)a3 completion:(id)a4
+- (void)runAudioInjectionOnly:(id)only completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  onlyCopy = only;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008373C;
   block[3] = &unk_1002533A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = onlyCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = onlyCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)runNovDetectorWithConfig:(id)a3 configRoot:(id)a4 withUrl:(id)a5 completion:(id)a6
+- (void)runNovDetectorWithConfig:(id)config configRoot:(id)root withUrl:(id)url completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  rootCopy = root;
+  urlCopy = url;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008398C;
   block[3] = &unk_10024FD80;
-  v22 = v12;
-  v23 = v13;
+  v22 = urlCopy;
+  v23 = completionCopy;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
+  v20 = configCopy;
+  v21 = rootCopy;
+  v15 = urlCopy;
+  v16 = rootCopy;
+  v17 = configCopy;
+  v18 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)runNCModelWithConfig:(id)a3 completion:(id)a4
+- (void)runNCModelWithConfig:(id)config completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(CSModelBenchmarker *)self _onDeviceCompilationWithConfigFile:v6 locale:@"agnosticLocale" modelType:3];
+  configCopy = config;
+  completionCopy = completion;
+  [(CSModelBenchmarker *)self _onDeviceCompilationWithConfigFile:configCopy locale:@"agnosticLocale" modelType:3];
   v25 = 0;
-  v23 = v6;
-  v8 = [[SLUresMitigator alloc] initWithConfig:v6 error:&v25];
+  v23 = configCopy;
+  v8 = [[SLUresMitigator alloc] initWithConfig:configCopy error:&v25];
   v9 = v25;
   if (v9)
   {
@@ -227,36 +227,36 @@ LABEL_7:
     }
 
     v36 = @"reason";
-    v11 = [v9 localizedDescription];
-    v37 = v11;
+    localizedDescription = [v9 localizedDescription];
+    v37 = localizedDescription;
     v12 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
     v13 = [NSError errorWithDomain:CSErrorDomain code:2001 userInfo:v12];
-    v7[2](v7, v13);
+    completionCopy[2](completionCopy, v13);
   }
 
   else
   {
-    v11 = [[SLUresMitigatorIpFeats alloc] initWithDefaults];
-    [v11 setSpeechPackage:0];
-    [v11 setInputOrigin:&off_10025E150];
-    [v11 setAcousticFTMScores:&off_10025E150];
-    [v11 setBoronScore:&off_10025E150];
-    [v11 setSpeakerIDScore:&off_10025E138];
-    [v11 setDidDetectAttention:1];
-    [v11 setDidDetectAttention:1];
-    [v11 setDidDetectGazeAtOrb:1];
-    [v11 setDidDetectVisualActivity:1];
-    [v11 setIsAirpodsConnected:0];
-    [v11 setTimeSinceLastQuery:1.0];
-    [v11 setDecisionStage:1];
-    [v11 setPrevStageOutput:0];
-    [v11 setEosLikelihood:0];
-    [v11 setNldaScore:&off_10025E998];
-    [v11 setLrnnScore:&off_10025E998];
-    [v11 setLrnnThreshold:&off_10025E9A8];
-    [v11 setEmbeddingScore:&off_10025E9A8];
-    [v11 setExternalLrnnScale:&off_10025E138];
-    [v11 setExternalLrnnOffset:&off_10025E150];
+    localizedDescription = [[SLUresMitigatorIpFeats alloc] initWithDefaults];
+    [localizedDescription setSpeechPackage:0];
+    [localizedDescription setInputOrigin:&off_10025E150];
+    [localizedDescription setAcousticFTMScores:&off_10025E150];
+    [localizedDescription setBoronScore:&off_10025E150];
+    [localizedDescription setSpeakerIDScore:&off_10025E138];
+    [localizedDescription setDidDetectAttention:1];
+    [localizedDescription setDidDetectAttention:1];
+    [localizedDescription setDidDetectGazeAtOrb:1];
+    [localizedDescription setDidDetectVisualActivity:1];
+    [localizedDescription setIsAirpodsConnected:0];
+    [localizedDescription setTimeSinceLastQuery:1.0];
+    [localizedDescription setDecisionStage:1];
+    [localizedDescription setPrevStageOutput:0];
+    [localizedDescription setEosLikelihood:0];
+    [localizedDescription setNldaScore:&off_10025E998];
+    [localizedDescription setLrnnScore:&off_10025E998];
+    [localizedDescription setLrnnThreshold:&off_10025E9A8];
+    [localizedDescription setEmbeddingScore:&off_10025E9A8];
+    [localizedDescription setExternalLrnnScale:&off_10025E138];
+    [localizedDescription setExternalLrnnOffset:&off_10025E150];
     v22 = mach_absolute_time();
     *buf = 0;
     *&buf[8] = buf;
@@ -269,7 +269,7 @@ LABEL_7:
     v24[2] = sub_1000841FC;
     v24[3] = &unk_10024FD58;
     v24[4] = buf;
-    [v8 processInputFeats:v11 completion:v24];
+    [v8 processInputFeats:localizedDescription completion:v24];
     v14 = mach_absolute_time();
     v15 = os_signpost_id_generate(CSLogContextFacilityCoreSpeech);
     v16 = CSLogContextFacilityCoreSpeech;
@@ -303,9 +303,9 @@ LABEL_7:
     if (*(*&buf[8] + 40))
     {
       [(CSModelBenchmarker *)self reset];
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -313,103 +313,103 @@ LABEL_7:
     {
       [(CSModelBenchmarker *)self reset];
       v21 = [NSError errorWithDomain:CSErrorDomain code:2002 userInfo:0];
-      v7[2](v7, v21);
+      completionCopy[2](completionCopy, v21);
     }
 
     _Block_object_dispose(buf, 8);
   }
 }
 
-- (void)runODLDModelWithConfig:(id)a3 locale:(id)a4 inputText:(id)a5 completion:(id)a6
+- (void)runODLDModelWithConfig:(id)config locale:(id)locale inputText:(id)text completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  configCopy = config;
+  textCopy = text;
+  completionCopy = completion;
   queue = self->_queue;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000842FC;
   v16[3] = &unk_100252E58;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v10;
-  v14 = v11;
-  v15 = v9;
+  v17 = configCopy;
+  v18 = textCopy;
+  v19 = completionCopy;
+  v13 = textCopy;
+  v14 = completionCopy;
+  v15 = configCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)runOSDAnalyzerWithConfig:(id)a3 withUrl:(id)a4 completion:(id)a5
+- (void)runOSDAnalyzerWithConfig:(id)config withUrl:(id)url completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configCopy = config;
+  urlCopy = url;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100084720;
   v15[3] = &unk_100252E58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = configCopy;
+  v17 = urlCopy;
+  v18 = completionCopy;
+  v12 = urlCopy;
+  v13 = completionCopy;
+  v14 = configCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)runVTSecondPassModelWithConfig:(id)a3 locale:(id)a4 withUrl:(id)a5 completion:(id)a6
+- (void)runVTSecondPassModelWithConfig:(id)config locale:(id)locale withUrl:(id)url completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  localeCopy = locale;
+  urlCopy = url;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084A44;
   block[3] = &unk_10024FD80;
   block[4] = self;
-  v20 = v10;
-  v22 = v12;
-  v23 = v13;
-  v21 = v11;
-  v15 = v12;
-  v16 = v13;
-  v17 = v11;
-  v18 = v10;
+  v20 = configCopy;
+  v22 = urlCopy;
+  v23 = completionCopy;
+  v21 = localeCopy;
+  v15 = urlCopy;
+  v16 = completionCopy;
+  v17 = localeCopy;
+  v18 = configCopy;
   dispatch_async(queue, block);
 }
 
-- (void)runLstmPhsModelWithConfig:(id)a3 withUrl:(id)a4 withConfigRoot:(id)a5 completion:(id)a6
+- (void)runLstmPhsModelWithConfig:(id)config withUrl:(id)url withConfigRoot:(id)root completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configCopy = config;
+  urlCopy = url;
+  rootCopy = root;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084E20;
   block[3] = &unk_10024FD80;
   block[4] = self;
-  v20 = v10;
-  v22 = v11;
-  v23 = v13;
-  v21 = v12;
-  v15 = v11;
-  v16 = v13;
-  v17 = v12;
-  v18 = v10;
+  v20 = configCopy;
+  v22 = urlCopy;
+  v23 = completionCopy;
+  v21 = rootCopy;
+  v15 = urlCopy;
+  v16 = completionCopy;
+  v17 = rootCopy;
+  v18 = configCopy;
   dispatch_async(queue, block);
 }
 
-- (void)pingpong:(id)a3 completion:(id)a4
+- (void)pingpong:(id)pingpong completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  pingpongCopy = pingpong;
+  completionCopy = completion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -418,10 +418,10 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", &v9, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v8 = [v5 copy];
-    v6[2](v6, v8);
+    v8 = [pingpongCopy copy];
+    completionCopy[2](completionCopy, v8);
   }
 }
 
@@ -439,9 +439,9 @@ LABEL_7:
     v2->_totalNumberSamples = 0;
     v2->_inferenceTimeSpan = 0;
     v5 = +[CSFPreferences sharedPreferences];
-    v6 = [v5 getOnDeviceCompilationCacheDirectoryForBenchmark];
+    getOnDeviceCompilationCacheDirectoryForBenchmark = [v5 getOnDeviceCompilationCacheDirectoryForBenchmark];
     tempCacheDirectoryForMil2Bnns = v2->_tempCacheDirectoryForMil2Bnns;
-    v2->_tempCacheDirectoryForMil2Bnns = v6;
+    v2->_tempCacheDirectoryForMil2Bnns = getOnDeviceCompilationCacheDirectoryForBenchmark;
 
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))

@@ -1,11 +1,11 @@
 @interface TRIFBMutableBoxedBool
 - (void)dealloc;
-- (void)setVal:(BOOL)a3;
+- (void)setVal:(BOOL)val;
 @end
 
 @implementation TRIFBMutableBoxedBool
 
-- (void)setVal:(BOOL)a3
+- (void)setVal:(BOOL)val
 {
   if (self && !self->_allowMutation)
   {
@@ -17,7 +17,7 @@
     objc_exception_throw(v7);
   }
 
-  self->_ptr->var0 = a3;
+  self->_ptr->var0 = val;
 }
 
 - (void)dealloc

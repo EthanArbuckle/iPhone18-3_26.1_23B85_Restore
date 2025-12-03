@@ -2,87 +2,87 @@
 - (BOOL)canCancelCurrentMatchmaking;
 - (BOOL)haveNonGuestPlayers;
 - (BOOL)havePendingPlayers;
-- (BOOL)participantShouldBeRemovable:(id)a3 atIndexPath:(id)a4;
-- (BOOL)shouldUpdateStatus:(int64_t)a3 withNewStatus:(int64_t)a4;
-- (GKMultiplayerDataSource)initWithMetricsPageId:(id)a3;
+- (BOOL)participantShouldBeRemovable:(id)removable atIndexPath:(id)path;
+- (BOOL)shouldUpdateStatus:(int64_t)status withNewStatus:(int64_t)newStatus;
+- (GKMultiplayerDataSource)initWithMetricsPageId:(id)id;
 - (GKMultiplayerDataSourceDelegate)delegate;
 - (NSArray)participants;
 - (_NSRange)playerRange;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (id)collectionViewDebugDescription;
 - (id)currentPlayersDebugDescription;
 - (id)currentPlayersNotInvitedViaMessages;
 - (id)currentRemotePlayers;
 - (id)firstInvitedContactPlayer;
 - (id)guestPlayers;
-- (id)participantForAutoMatchNumber:(int64_t)a3;
-- (id)participantForPlayer:(id)a3;
-- (id)playersDebugDescription:(id)a3 newStatus:(int64_t)a4;
-- (id)playersWithStatus:(int64_t)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)statusForPlayer:(id)a3;
-- (void)addPlayers:(id)a3 withStatus:(int64_t)a4 replaceAutomatches:(BOOL)a5 complete:(id)a6;
+- (id)participantForAutoMatchNumber:(int64_t)number;
+- (id)participantForPlayer:(id)player;
+- (id)playersDebugDescription:(id)description newStatus:(int64_t)status;
+- (id)playersWithStatus:(int64_t)status;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)statusForPlayer:(id)player;
+- (void)addPlayers:(id)players withStatus:(int64_t)status replaceAutomatches:(BOOL)automatches complete:(id)complete;
 - (void)clearDataSource;
-- (void)configureCollectionView:(id)a3;
+- (void)configureCollectionView:(id)view;
 - (void)didChangeMode;
-- (void)failedToInvitePlayers:(id)a3;
-- (void)prepopulateConversationParticipants:(id)a3 complete:(id)a4;
-- (void)recordButtonClickAction:(id)a3 targetId:(id)a4;
-- (void)recordRemoveFriendClickAction:(id)a3;
+- (void)failedToInvitePlayers:(id)players;
+- (void)prepopulateConversationParticipants:(id)participants complete:(id)complete;
+- (void)recordButtonClickAction:(id)action targetId:(id)id;
+- (void)recordRemoveFriendClickAction:(id)action;
 - (void)refreshParticipantsStatuses;
-- (void)refreshStatusForParticipant:(id)a3;
-- (void)removePlayers:(id)a3 complete:(id)a4;
-- (void)removePrepopulatedPlayersIfExisted:(id)a3 completionHandler:(id)a4;
-- (void)replacePlayers:(id)a3 withGKPlayers:(id)a4 completionHandler:(id)a5;
-- (void)replacePrepopulatedPlayerWithNormalPlayer:(id)a3 participantServerIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)reportMultiplayerSelection:(id)a3;
+- (void)refreshStatusForParticipant:(id)participant;
+- (void)removePlayers:(id)players complete:(id)complete;
+- (void)removePrepopulatedPlayersIfExisted:(id)existed completionHandler:(id)handler;
+- (void)replacePlayers:(id)players withGKPlayers:(id)kPlayers completionHandler:(id)handler;
+- (void)replacePrepopulatedPlayerWithNormalPlayer:(id)player participantServerIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)reportMultiplayerSelection:(id)selection;
 - (void)restoreOrderOfPlayers;
 - (void)revertFailedPlayers;
-- (void)setAutomatchPlayerCount:(int64_t)a3;
-- (void)setAutomatchPlayerCount:(int64_t)a3 complete:(id)a4;
-- (void)setParticipantsWithPlayers:(id)a3 automatchPlayerCount:(int64_t)a4 shouldUpdateAutomatchPlayerCount:(BOOL)a5 andStatuses:(id)a6 complete:(id)a7;
-- (void)setStatus:(int64_t)a3 forPlayers:(id)a4 complete:(id)a5;
-- (void)setStatus:(int64_t)a3 forPlayers:(id)a4 uuid:(id)a5;
-- (void)updateDataStructuresForRemovedPlayer:(id)a3;
+- (void)setAutomatchPlayerCount:(int64_t)count;
+- (void)setAutomatchPlayerCount:(int64_t)count complete:(id)complete;
+- (void)setParticipantsWithPlayers:(id)players automatchPlayerCount:(int64_t)count shouldUpdateAutomatchPlayerCount:(BOOL)playerCount andStatuses:(id)statuses complete:(id)complete;
+- (void)setStatus:(int64_t)status forPlayers:(id)players complete:(id)complete;
+- (void)setStatus:(int64_t)status forPlayers:(id)players uuid:(id)uuid;
+- (void)updateDataStructuresForRemovedPlayer:(id)player;
 - (void)updateParticipants;
 @end
 
 @implementation GKMultiplayerDataSource
 
-- (void)configureCollectionView:(id)a3
+- (void)configureCollectionView:(id)view
 {
   v8.receiver = self;
   v8.super_class = GKMultiplayerDataSource;
-  v3 = a3;
-  [(GKBasicCollectionViewDataSource *)&v8 configureCollectionView:v3];
+  viewCopy = view;
+  [(GKBasicCollectionViewDataSource *)&v8 configureCollectionView:viewCopy];
   v4 = objc_opt_class();
   v5 = [_TtC12GameCenterUI42GKMultiplayerParticipantCollectionViewCell reuseIdentifier:v8.receiver];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [viewCopy registerClass:v4 forCellWithReuseIdentifier:v5];
 
   v6 = objc_opt_class();
   v7 = +[_TtC12GameCenterUI38GKMultiplayerAddSlotCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v6 forCellWithReuseIdentifier:v7];
+  [viewCopy registerClass:v6 forCellWithReuseIdentifier:v7];
 
-  [v3 setContentInsetAdjustmentBehavior:2];
+  [viewCopy setContentInsetAdjustmentBehavior:2];
 }
 
-- (GKMultiplayerDataSource)initWithMetricsPageId:(id)a3
+- (GKMultiplayerDataSource)initWithMetricsPageId:(id)id
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v23.receiver = self;
   v23.super_class = GKMultiplayerDataSource;
   v6 = [(GKBasicCollectionViewDataSource *)&v23 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277D0C138] localPlayer];
-    v8 = [objc_alloc(MEMORY[0x277CBEB40]) initWithObject:v7];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    v8 = [objc_alloc(MEMORY[0x277CBEB40]) initWithObject:localPlayer];
     players = v6->_players;
     v6->_players = v8;
 
     v10 = objc_alloc(MEMORY[0x277CBEB38]);
-    v11 = [v7 referenceKey];
-    v24 = v11;
+    referenceKey = [localPlayer referenceKey];
+    v24 = referenceKey;
     v25[0] = &unk_286188FD0;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v13 = [v10 initWithDictionary:v12];
@@ -92,9 +92,9 @@
     v6->_removingEnabled = 1;
     v6->_invitingEnabled = 1;
     v15 = objc_alloc(MEMORY[0x277CBEB40]);
-    v16 = [v7 internal];
-    v17 = [v16 playerID];
-    v18 = [v15 initWithObject:v17];
+    internal = [localPlayer internal];
+    playerID = [internal playerID];
+    v18 = [v15 initWithObject:playerID];
     orderedPlayerIDList = v6->_orderedPlayerIDList;
     v6->_orderedPlayerIDList = v18;
 
@@ -104,7 +104,7 @@
 
     [(GKMultiplayerParticipant *)v6->_placeholderItem setIsPlaceHolderItem:1];
     v6->_automatchPlayerCountLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_pageId, a3);
+    objc_storeStrong(&v6->_pageId, id);
   }
 
   return v6;
@@ -112,15 +112,15 @@
 
 - (id)currentPlayersNotInvitedViaMessages
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(GKMultiplayerDataSource *)self players];
+  array = [MEMORY[0x277CBEB18] array];
+  players = [(GKMultiplayerDataSource *)self players];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_invoke;
   v7[3] = &unk_27966BAF8;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [players enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -140,13 +140,13 @@ void __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_in
 - (id)currentRemotePlayers
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(GKMultiplayerDataSource *)self players];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  players = [(GKMultiplayerDataSource *)self players];
+  v5 = [players countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -157,37 +157,37 @@ void __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_in
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(players);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
         if (([v9 isGuestPlayer] & 1) == 0 && (objc_msgSend(v9, "isLocalPlayer") & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [players countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)guestPlayers
 {
-  v2 = [(GKMultiplayerDataSource *)self currentPlayers];
-  v3 = [v2 _gkGuestPlayersFromPlayers];
+  currentPlayers = [(GKMultiplayerDataSource *)self currentPlayers];
+  _gkGuestPlayersFromPlayers = [currentPlayers _gkGuestPlayersFromPlayers];
 
-  return v3;
+  return _gkGuestPlayersFromPlayers;
 }
 
-- (id)playersWithStatus:(int64_t)a3
+- (id)playersWithStatus:(int64_t)status
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -208,9 +208,9 @@ void __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_in
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([(GKMultiplayerDataSource *)self statusForPlayer:v11, v13]== a3)
+        if ([(GKMultiplayerDataSource *)self statusForPlayer:v11, v13]== status)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -220,7 +220,7 @@ void __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_in
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (BOOL)havePendingPlayers
@@ -232,8 +232,8 @@ void __62__GKMultiplayerDataSource_currentPlayersNotInvitedViaMessages__block_in
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(NSMutableDictionary *)self->_playerStatus allValues];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allValues = [(NSMutableDictionary *)self->_playerStatus allValues];
+    v5 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -245,23 +245,23 @@ LABEL_5:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) integerValue];
-        if (v9 - 1 <= 0x14)
+        integerValue = [*(*(&v12 + 1) + 8 * v8) integerValue];
+        if (integerValue - 1 <= 0x14)
         {
-          v3 |= 0x180C21u >> (v9 - 1);
+          v3 |= 0x180C21u >> (integerValue - 1);
         }
 
-        if (v9 <= 0x15 && ((1 << v9) & 0x301842) != 0)
+        if (integerValue <= 0x15 && ((1 << integerValue) & 0x301842) != 0)
         {
           break;
         }
 
         if (v6 == ++v8)
         {
-          v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v6)
           {
             goto LABEL_5;
@@ -293,8 +293,8 @@ LABEL_5:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(GKMultiplayerDataSource *)self participants];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v4 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -307,7 +307,7 @@ LABEL_5:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -318,7 +318,7 @@ LABEL_5:
       }
 
       v6 += v5;
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -348,8 +348,8 @@ LABEL_5:
 
 - (NSArray)participants
 {
-  v2 = [(GKBasicCollectionViewDataSource *)self items];
-  v3 = [v2 _gkFilterWithBlock:&__block_literal_global_25];
+  items = [(GKBasicCollectionViewDataSource *)self items];
+  v3 = [items _gkFilterWithBlock:&__block_literal_global_25];
 
   return v3;
 }
@@ -370,16 +370,16 @@ id __39__GKMultiplayerDataSource_participants__block_invoke(uint64_t a1, void *a
   return v3;
 }
 
-- (id)participantForPlayer:(id)a3
+- (id)participantForPlayer:(id)player
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playerCopy = player;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(GKMultiplayerDataSource *)self participants];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v6 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -389,12 +389,12 @@ id __39__GKMultiplayerDataSource_participants__block_invoke(uint64_t a1, void *a
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(participants);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 player];
-        v11 = [v10 isEqual:v4];
+        player = [v9 player];
+        v11 = [player isEqual:playerCopy];
 
         if (v11)
         {
@@ -403,7 +403,7 @@ id __39__GKMultiplayerDataSource_participants__block_invoke(uint64_t a1, void *a
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -418,15 +418,15 @@ LABEL_11:
   return v6;
 }
 
-- (id)participantForAutoMatchNumber:(int64_t)a3
+- (id)participantForAutoMatchNumber:(int64_t)number
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(GKMultiplayerDataSource *)self participants];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v5 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -438,13 +438,13 @@ LABEL_11:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(participants);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if ([v10 type] == 1)
         {
-          if (v7 == a3)
+          if (v7 == number)
           {
             v11 = v10;
             goto LABEL_13;
@@ -454,7 +454,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [participants countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -492,9 +492,9 @@ LABEL_13:
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
-        v7 = [v6 contact];
+        contact = [v6 contact];
 
-        if (v7)
+        if (contact)
         {
           v3 = v6;
           goto LABEL_11;
@@ -516,73 +516,73 @@ LABEL_11:
   return v3;
 }
 
-- (int64_t)statusForPlayer:(id)a3
+- (int64_t)statusForPlayer:(id)player
 {
-  if (!a3)
+  if (!player)
   {
     return 7;
   }
 
   playerStatus = self->_playerStatus;
-  v4 = [a3 referenceKey];
-  v5 = [(NSMutableDictionary *)playerStatus objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  referenceKey = [player referenceKey];
+  v5 = [(NSMutableDictionary *)playerStatus objectForKeyedSubscript:referenceKey];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
-- (BOOL)participantShouldBeRemovable:(id)a3 atIndexPath:(id)a4
+- (BOOL)participantShouldBeRemovable:(id)removable atIndexPath:(id)path
 {
-  v5 = a3;
+  removableCopy = removable;
   if ([(GKMultiplayerDataSource *)self removingEnabled])
   {
-    v6 = [v5 type];
-    if (v6 == 1)
+    type = [removableCopy type];
+    if (type == 1)
     {
-      v10 = [(GKMultiplayerDataSource *)self participants];
-      v9 = [v10 count];
+      participants = [(GKMultiplayerDataSource *)self participants];
+      v9 = [participants count];
       LOBYTE(v9) = v9 > [(GKMultiplayerDataSource *)self minPlayers];
     }
 
-    else if (v6)
+    else if (type)
     {
       LOBYTE(v9) = 1;
     }
 
     else
     {
-      v7 = [v5 player];
-      v8 = [v7 isLocalPlayer];
+      player = [removableCopy player];
+      isLocalPlayer = [player isLocalPlayer];
 
-      if (v8)
+      if (isLocalPlayer)
       {
         LOBYTE(v9) = 0;
       }
 
       else
       {
-        v11 = [v5 status];
-        if (v11 >= 0x15)
+        status = [removableCopy status];
+        if (status >= 0x15)
         {
           LOBYTE(v9) = 1;
         }
 
         else
         {
-          LODWORD(v9) = 0xFEF3Fu >> v11;
+          LODWORD(v9) = 0xFEF3Fu >> status;
         }
       }
     }
 
-    if ([v5 status] == 12 || objc_msgSend(v5, "status") == 6 || objc_msgSend(v5, "status") == 7 || objc_msgSend(v5, "status") == 20 && objc_msgSend(v5, "type") != 1)
+    if ([removableCopy status] == 12 || objc_msgSend(removableCopy, "status") == 6 || objc_msgSend(removableCopy, "status") == 7 || objc_msgSend(removableCopy, "status") == 20 && objc_msgSend(removableCopy, "type") != 1)
     {
       LOBYTE(v9) = 0;
     }
 
-    if ([v5 status] == 6)
+    if ([removableCopy status] == 6)
     {
-      v12 = [(GKMultiplayerDataSource *)self delegate];
-      v13 = [v12 isParticipantInvitedByLocalPlayer:v5];
+      delegate = [(GKMultiplayerDataSource *)self delegate];
+      v13 = [delegate isParticipantInvitedByLocalPlayer:removableCopy];
 
       LOBYTE(v9) = v13 | v9;
     }
@@ -596,12 +596,12 @@ LABEL_11:
   return v9 & 1;
 }
 
-- (void)recordButtonClickAction:(id)a3 targetId:(id)a4
+- (void)recordButtonClickAction:(id)action targetId:(id)id
 {
   v35 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v24 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  actionCopy = action;
+  idCopy = id;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -626,7 +626,7 @@ LABEL_11:
         v14 = MEMORY[0x277CCABB0];
         v15 = -[GKMultiplayerDataSource playersWithStatus:](self, "playersWithStatus:", [v12 intValue]);
         v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
-        [v6 setObject:v16 forKeyedSubscript:v13];
+        [dictionary setObject:v16 forKeyedSubscript:v13];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -635,71 +635,71 @@ LABEL_11:
     while (v9);
   }
 
-  v17 = [MEMORY[0x277D0BFA8] reporter];
-  v18 = [(GKMultiplayerDataSource *)self pageId];
+  reporter = [MEMORY[0x277D0BFA8] reporter];
+  pageId = [(GKMultiplayerDataSource *)self pageId];
   v32 = @"location";
   v30[0] = @"playersCount";
   v19 = MEMORY[0x277CCABB0];
-  v20 = [(GKMultiplayerDataSource *)self players];
-  v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
+  players = [(GKMultiplayerDataSource *)self players];
+  v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(players, "count")}];
   v30[1] = @"statusCounts";
   v31[0] = v21;
-  v31[1] = v6;
+  v31[1] = dictionary;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
   v33 = v22;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-  [v17 recordClickWithAction:v25 targetId:v24 targetType:@"button" pageId:v18 pageType:@"multiplayer" additionalFields:v23];
+  [reporter recordClickWithAction:actionCopy targetId:idCopy targetType:@"button" pageId:pageId pageType:@"multiplayer" additionalFields:v23];
 }
 
-- (void)recordRemoveFriendClickAction:(id)a3
+- (void)recordRemoveFriendClickAction:(id)action
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D0BFA8];
-  v5 = a3;
-  v6 = [v4 reporter];
-  v7 = [(GKMultiplayerDataSource *)self pageId];
+  actionCopy = action;
+  reporter = [v4 reporter];
+  pageId = [(GKMultiplayerDataSource *)self pageId];
   v13 = @"location";
   v11 = @"status";
-  v8 = [v5 statusName];
+  statusName = [actionCopy statusName];
 
-  v12 = v8;
+  v12 = statusName;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
   v14[0] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  [v6 recordClickWithAction:@"remove" targetId:@"removeFriend" targetType:@"button" pageId:v7 pageType:@"multiplayer" additionalFields:v10];
+  [reporter recordClickWithAction:@"remove" targetId:@"removeFriend" targetType:@"button" pageId:pageId pageType:@"multiplayer" additionalFields:v10];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKMultiplayerDataSource *)self delegate];
-  if (![v8 allowAutoMatch])
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(GKMultiplayerDataSource *)self delegate];
+  if (![delegate allowAutoMatch])
   {
     goto LABEL_6;
   }
 
-  v9 = [v7 item];
-  v10 = [(GKBasicCollectionViewDataSource *)self items];
-  if (v9 != [v10 count] - 1)
+  item = [pathCopy item];
+  items = [(GKBasicCollectionViewDataSource *)self items];
+  if (item != [items count] - 1)
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [(GKMultiplayerDataSource *)self maxPlayers];
-  v12 = [(GKMultiplayerDataSource *)self participants];
-  v13 = [v12 count];
+  maxPlayers = [(GKMultiplayerDataSource *)self maxPlayers];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v13 = [participants count];
 
-  if (v11 > v13)
+  if (maxPlayers > v13)
   {
     v14 = +[_TtC12GameCenterUI38GKMultiplayerAddSlotCollectionViewCell reuseIdentifier];
-    v15 = [v6 dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:v7];
+    v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:v14 forIndexPath:pathCopy];
 
-    v16 = [(GKMultiplayerDataSource *)self maxPlayers];
-    v17 = [(GKMultiplayerDataSource *)self participants];
-    [v15 setMaximumAdditionalPlayers:{v16 - objc_msgSend(v17, "count")}];
+    maxPlayers2 = [(GKMultiplayerDataSource *)self maxPlayers];
+    participants2 = [(GKMultiplayerDataSource *)self participants];
+    [v15 setMaximumAdditionalPlayers:{maxPlayers2 - objc_msgSend(participants2, "count")}];
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
@@ -712,20 +712,20 @@ LABEL_6:
 
 LABEL_7:
   v18 = +[_TtC12GameCenterUI42GKMultiplayerParticipantCollectionViewCell reuseIdentifier];
-  v15 = [v6 dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:v7];
+  v15 = [viewCopy dequeueReusableCellWithReuseIdentifier:v18 forIndexPath:pathCopy];
 
   [v15 setSharePlayEnabled:{-[GKMultiplayerDataSource sharePlayEnabled](self, "sharePlayEnabled")}];
-  v19 = [(GKMultiplayerDataSource *)self participants];
-  v20 = [v19 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+  participants3 = [(GKMultiplayerDataSource *)self participants];
+  v20 = [participants3 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
   [(GKMultiplayerDataSource *)self refreshStatusForParticipant:v20];
-  v21 = [v7 item];
-  v22 = [(GKMultiplayerDataSource *)self removingEnabled];
-  v23 = [(GKMultiplayerDataSource *)self invitingEnabled];
-  v24 = [(GKMultiplayerDataSource *)self delegate];
-  [v15 applyWithParticipant:v20 number:v21 + 1 isRemovingEnabled:v22 isInvitingEnabled:v23 layoutMode:{objc_msgSend(v24, "multiplayerCellLayoutMode")}];
+  item2 = [pathCopy item];
+  removingEnabled = [(GKMultiplayerDataSource *)self removingEnabled];
+  invitingEnabled = [(GKMultiplayerDataSource *)self invitingEnabled];
+  delegate2 = [(GKMultiplayerDataSource *)self delegate];
+  [v15 applyWithParticipant:v20 number:item2 + 1 isRemovingEnabled:removingEnabled isInvitingEnabled:invitingEnabled layoutMode:{objc_msgSend(delegate2, "multiplayerCellLayoutMode")}];
 
-  [v15 setRemoveButtonHidden:{-[GKMultiplayerDataSource participantShouldBeRemovable:atIndexPath:](self, "participantShouldBeRemovable:atIndexPath:", v20, v7) ^ 1}];
+  [v15 setRemoveButtonHidden:{-[GKMultiplayerDataSource participantShouldBeRemovable:atIndexPath:](self, "participantShouldBeRemovable:atIndexPath:", v20, pathCopy) ^ 1}];
   objc_initWeak(&location, v15);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -878,15 +878,15 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
   [v1 didUpdateAutoMatchPlayerCount];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
 
-  v5 = [(GKBasicCollectionViewDataSource *)self items];
-  v6 = [v5 count];
+  items = [(GKBasicCollectionViewDataSource *)self items];
+  v6 = [items count];
 
   return v6;
 }
@@ -894,10 +894,10 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
 - (id)collectionViewDebugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKMultiplayerDataSource *)self currentPlayersDebugDescription];
+  currentPlayersDebugDescription = [(GKMultiplayerDataSource *)self currentPlayersDebugDescription];
   orderedPlayerIDList = self->_orderedPlayerIDList;
-  v6 = [(GKMultiplayerDataSource *)self participants];
-  v7 = [v3 stringWithFormat:@"CollectionView Debug Description - players: %@\n            orderedPlayerIDList: %@\n            participants: %@ \n", v4, orderedPlayerIDList, v6];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v7 = [v3 stringWithFormat:@"CollectionView Debug Description - players: %@\n            orderedPlayerIDList: %@\n            participants: %@ \n", currentPlayersDebugDescription, orderedPlayerIDList, participants];
 
   return v7;
 }
@@ -905,27 +905,27 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
 - (id)currentPlayersDebugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKMultiplayerDataSource *)self players];
-  v5 = [v4 array];
-  v6 = [(GKMultiplayerDataSource *)self playersDebugDescription:v5 newStatus:-1];
+  players = [(GKMultiplayerDataSource *)self players];
+  array = [players array];
+  v6 = [(GKMultiplayerDataSource *)self playersDebugDescription:array newStatus:-1];
   v7 = [v3 stringWithFormat:@"current players: %@", v6];
 
   return v7;
 }
 
-- (id)playersDebugDescription:(id)a3 newStatus:(int64_t)a4
+- (id)playersDebugDescription:(id)description newStatus:(int64_t)status
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  descriptionCopy = description;
+  if ([descriptionCopy count])
   {
     v7 = [&stru_28612D290 stringByAppendingFormat:@"players: {\n"];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v25 = v6;
-    obj = v6;
+    v25 = descriptionCopy;
+    obj = descriptionCopy;
     v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v8)
     {
@@ -943,24 +943,24 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
           v11 = *(*(&v28 + 1) + 8 * i);
           v12 = [v7 stringByAppendingFormat:@"\t%@", v11];
 
-          v13 = [(GKMultiplayerDataSource *)self playerStatus];
-          v14 = [v11 referenceKey];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          playerStatus = [(GKMultiplayerDataSource *)self playerStatus];
+          referenceKey = [v11 referenceKey];
+          v15 = [playerStatus objectForKeyedSubscript:referenceKey];
 
           if (v15)
           {
-            v16 = [(GKMultiplayerDataSource *)self playerStatus];
-            v17 = [v11 referenceKey];
-            v18 = [v16 objectForKeyedSubscript:v17];
+            playerStatus2 = [(GKMultiplayerDataSource *)self playerStatus];
+            referenceKey2 = [v11 referenceKey];
+            v18 = [playerStatus2 objectForKeyedSubscript:referenceKey2];
             v19 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v18];
             v20 = [v12 stringByAppendingFormat:@"- current status: %@", v19];
 
             v12 = v20;
           }
 
-          if ((a4 & 0x8000000000000000) == 0)
+          if ((status & 0x8000000000000000) == 0)
           {
-            v21 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a4];
+            v21 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
             v22 = [v12 stringByAppendingFormat:@" - new status: %@", v21];
 
             v12 = v22;
@@ -977,7 +977,7 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
 
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@}\n", v7];
 
-    v6 = v25;
+    descriptionCopy = v25;
   }
 
   else
@@ -988,17 +988,17 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
   return v23;
 }
 
-- (void)prepopulateConversationParticipants:(id)a3 complete:(id)a4
+- (void)prepopulateConversationParticipants:(id)participants complete:(id)complete
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v19 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  participantsCopy = participants;
+  completeCopy = complete;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = participantsCopy;
   v8 = [obj countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
@@ -1016,13 +1016,13 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
 
         v12 = *(*(&v21 + 1) + 8 * v11);
         v13 = objc_alloc(MEMORY[0x277D0C170]);
-        v14 = [(GKMultiplayerDataSource *)self game];
-        v15 = [v14 bundleIdentifier];
-        v16 = [v13 initWithParticipant:v12 forBundleID:v15];
+        game = [(GKMultiplayerDataSource *)self game];
+        bundleIdentifier = [game bundleIdentifier];
+        v16 = [v13 initWithParticipant:v12 forBundleID:bundleIdentifier];
 
         if (v16)
         {
-          [v7 addObject:v16];
+          [array addObject:v16];
         }
 
         else
@@ -1051,16 +1051,16 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
     while (v9);
   }
 
-  [(GKMultiplayerDataSource *)self addPlayers:v7 withStatus:20 replaceAutomatches:1 complete:v19];
+  [(GKMultiplayerDataSource *)self addPlayers:array withStatus:20 replaceAutomatches:1 complete:completeCopy];
 }
 
-- (void)addPlayers:(id)a3 withStatus:(int64_t)a4 replaceAutomatches:(BOOL)a5 complete:(id)a6
+- (void)addPlayers:(id)players withStatus:(int64_t)status replaceAutomatches:(BOOL)automatches complete:(id)complete
 {
-  v7 = a5;
+  automatchesCopy = automatches;
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [MEMORY[0x277CCAD78] UUID];
+  playersCopy = players;
+  completeCopy = complete;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v13 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1073,15 +1073,15 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
   {
     v30 = MEMORY[0x277CCACA8];
     v27 = v16;
-    v28 = [(GKMultiplayerDataSource *)self playersDebugDescription:v10 newStatus:a4];
+    v28 = [(GKMultiplayerDataSource *)self playersDebugDescription:playersCopy newStatus:status];
     v32 = v28;
     v29 = @"NO";
-    if (v7)
+    if (automatchesCopy)
     {
       v29 = @"YES";
     }
 
-    v31 = [v30 stringWithFormat:@"- START - uuid: %@, %@, replaceAutomatch: %@", v12, v28, v29];
+    v31 = [v30 stringWithFormat:@"- START - uuid: %@, %@, replaceAutomatch: %@", uUID, v28, v29];
     *buf = 136315394;
     v43 = "[GKMultiplayerDataSource addPlayers:withStatus:replaceAutomatches:complete:]";
     v44 = 2112;
@@ -1099,7 +1099,7 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
     [GKMultiplayerDataSource addPlayers:withStatus:replaceAutomatches:complete:];
   }
 
-  [(GKMultiplayerDataSource *)self reportMultiplayerSelection:v10];
+  [(GKMultiplayerDataSource *)self reportMultiplayerSelection:playersCopy];
   if (!*v13)
   {
     v18 = GKOSLoggers();
@@ -1109,13 +1109,13 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v20 = v19;
-    v21 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a4];
+    v21 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
     v22 = v21;
     v23 = @"NO";
     *buf = 138412802;
-    v43 = v10;
+    v43 = playersCopy;
     v44 = 2112;
-    if (v7)
+    if (automatchesCopy)
     {
       v23 = @"YES";
     }
@@ -1131,20 +1131,20 @@ void __65__GKMultiplayerDataSource_collectionView_cellForItemAtIndexPath___block
   v37[2] = __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_complete___block_invoke;
   v37[3] = &unk_27966BB90;
   v37[4] = self;
-  v38 = v10;
-  v41 = v7;
-  v40 = a4;
-  v39 = v12;
+  v38 = playersCopy;
+  v41 = automatchesCopy;
+  statusCopy = status;
+  v39 = uUID;
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_complete___block_invoke_2;
   v33[3] = &unk_27966B380;
   v34 = v39;
-  v35 = self;
-  v36 = v11;
-  v24 = v11;
+  selfCopy = self;
+  v36 = completeCopy;
+  v24 = completeCopy;
   v25 = v39;
-  v26 = v10;
+  v26 = playersCopy;
   [(GKCollectionViewDataSource *)self notifyBatchUpdate:v37 complete:v33];
 }
 
@@ -1242,33 +1242,33 @@ uint64_t __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_
   return result;
 }
 
-- (void)updateDataStructuresForRemovedPlayer:(id)a3
+- (void)updateDataStructuresForRemovedPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(GKMultiplayerDataSource *)self playerStatus];
-  v6 = [v4 referenceKey];
-  [v5 removeObjectForKey:v6];
+  playerCopy = player;
+  playerStatus = [(GKMultiplayerDataSource *)self playerStatus];
+  referenceKey = [playerCopy referenceKey];
+  [playerStatus removeObjectForKey:referenceKey];
 
-  v7 = [(GKMultiplayerDataSource *)self players];
-  [v7 removeObject:v4];
+  players = [(GKMultiplayerDataSource *)self players];
+  [players removeObject:playerCopy];
 
-  v8 = [(GKMultiplayerDataSource *)self orderedPlayerIDList];
-  v9 = [v4 internal];
+  orderedPlayerIDList = [(GKMultiplayerDataSource *)self orderedPlayerIDList];
+  internal = [playerCopy internal];
 
-  v10 = [v9 playerID];
-  [v8 removeObject:v10];
+  playerID = [internal playerID];
+  [orderedPlayerIDList removeObject:playerID];
 
   v11 = [(GKMultiplayerDataSource *)self automatchPlayerCount]+ 1;
 
   [(GKMultiplayerDataSource *)self setAutomatchPlayerCount:v11];
 }
 
-- (void)removePlayers:(id)a3 complete:(id)a4
+- (void)removePlayers:(id)players complete:(id)complete
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAD78] UUID];
+  playersCopy = players;
+  completeCopy = complete;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v9 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1281,8 +1281,8 @@ uint64_t __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_
   {
     v19 = MEMORY[0x277CCACA8];
     v20 = v12;
-    v21 = [(GKMultiplayerDataSource *)self playersDebugDescription:v6 newStatus:-1];
-    v22 = [v19 stringWithFormat:@"- START - uuid: %@, %@", v8, v21];
+    v21 = [(GKMultiplayerDataSource *)self playersDebugDescription:playersCopy newStatus:-1];
+    v22 = [v19 stringWithFormat:@"- START - uuid: %@, %@", uUID, v21];
     *buf = 136315394;
     v31 = "[GKMultiplayerDataSource removePlayers:complete:]";
     v32 = 2112;
@@ -1309,7 +1309,7 @@ uint64_t __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v31 = v6;
+    v31 = playersCopy;
     _os_log_impl(&dword_24DE53000, v15, OS_LOG_TYPE_INFO, "remove players: %@", buf, 0xCu);
   }
 
@@ -1317,18 +1317,18 @@ uint64_t __77__GKMultiplayerDataSource_addPlayers_withStatus_replaceAutomatches_
   v27[1] = 3221225472;
   v27[2] = __50__GKMultiplayerDataSource_removePlayers_complete___block_invoke;
   v27[3] = &unk_279669E48;
-  v28 = v6;
-  v29 = self;
+  v28 = playersCopy;
+  selfCopy = self;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __50__GKMultiplayerDataSource_removePlayers_complete___block_invoke_2;
   v23[3] = &unk_27966B380;
-  v24 = v8;
-  v25 = self;
-  v26 = v7;
-  v16 = v7;
-  v17 = v8;
-  v18 = v6;
+  v24 = uUID;
+  selfCopy2 = self;
+  v26 = completeCopy;
+  v16 = completeCopy;
+  v17 = uUID;
+  v18 = playersCopy;
   [(GKCollectionViewDataSource *)self notifyBatchUpdate:v27 complete:v23];
 }
 
@@ -1390,41 +1390,41 @@ uint64_t __50__GKMultiplayerDataSource_removePlayers_complete___block_invoke_2(u
   return result;
 }
 
-- (BOOL)shouldUpdateStatus:(int64_t)a3 withNewStatus:(int64_t)a4
+- (BOOL)shouldUpdateStatus:(int64_t)status withNewStatus:(int64_t)newStatus
 {
-  v6 = [MEMORY[0x277D0C1F8] reporter];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
   v7 = *MEMORY[0x277D0BE80];
-  [v6 reportEvent:*MEMORY[0x277D0BE80] type:*MEMORY[0x277D0BC80]];
+  [reporter reportEvent:*MEMORY[0x277D0BE80] type:*MEMORY[0x277D0BC80]];
 
-  if (a3 == a4)
+  if (status == newStatus)
   {
     return 0;
   }
 
-  if (a3 != 6)
+  if (status != 6)
   {
-    if (a3 != 7 || a4 > 0xC)
+    if (status != 7 || newStatus > 0xC)
     {
       return 1;
     }
 
-    if (((1 << a4) & 0x1042) == 0)
+    if (((1 << newStatus) & 0x1042) == 0)
     {
-      return ((1 << a4) & 0x201) == 0;
+      return ((1 << newStatus) & 0x201) == 0;
     }
 
     goto LABEL_11;
   }
 
   result = 0;
-  if (a4 <= 8)
+  if (newStatus <= 8)
   {
-    if (!a4)
+    if (!newStatus)
     {
       return result;
     }
 
-    if (a4 != 1)
+    if (newStatus != 1)
     {
       return 1;
     }
@@ -1432,16 +1432,16 @@ uint64_t __50__GKMultiplayerDataSource_removePlayers_complete___block_invoke_2(u
     goto LABEL_11;
   }
 
-  if (a4 == 9)
+  if (newStatus == 9)
   {
     return result;
   }
 
-  if (a4 == 12)
+  if (newStatus == 12)
   {
 LABEL_11:
-    v9 = [MEMORY[0x277D0C1F8] reporter];
-    [v9 reportEvent:v7 type:*MEMORY[0x277D0BC88]];
+    reporter2 = [MEMORY[0x277D0C1F8] reporter];
+    [reporter2 reportEvent:v7 type:*MEMORY[0x277D0BC88]];
 
     return 0;
   }
@@ -1449,21 +1449,21 @@ LABEL_11:
   return 1;
 }
 
-- (void)setStatus:(int64_t)a3 forPlayers:(id)a4 uuid:(id)a5
+- (void)setStatus:(int64_t)status forPlayers:(id)players uuid:(id)uuid
 {
   v124 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v97 = a5;
-  v96 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  playersCopy = players;
+  uuidCopy = uuid;
+  v96 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(playersCopy, "count")}];
   v111 = 0u;
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
-  v8 = v7;
+  v8 = playersCopy;
   v9 = [v8 countByEnumeratingWithState:&v111 objects:v123 count:16];
   v10 = MEMORY[0x277D0C2A0];
   v11 = MEMORY[0x277D0C270];
-  v98 = self;
+  selfCopy = self;
   v99 = v8;
   v101 = v9;
   if (v9)
@@ -1480,10 +1480,10 @@ LABEL_11:
         }
 
         v13 = *(*(&v111 + 1) + 8 * v12);
-        v14 = [(GKMultiplayerDataSource *)self playerStatus];
-        v15 = [v13 referenceKey];
-        v16 = [v14 objectForKeyedSubscript:v15];
-        v17 = [v16 integerValue];
+        playerStatus = [(GKMultiplayerDataSource *)self playerStatus];
+        referenceKey = [v13 referenceKey];
+        v16 = [playerStatus objectForKeyedSubscript:referenceKey];
+        integerValue = [v16 integerValue];
 
         if (!*v10)
         {
@@ -1495,8 +1495,8 @@ LABEL_11:
         {
           v55 = MEMORY[0x277CCACA8];
           v56 = v19;
-          v57 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v17];
-          v58 = [v55 stringWithFormat:@"- MIDDLE 1 - uuid: %@, Settings status for player: %@ with current status: %@", v97, v13, v57];
+          v57 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:integerValue];
+          v58 = [v55 stringWithFormat:@"- MIDDLE 1 - uuid: %@, Settings status for player: %@ with current status: %@", uuidCopy, v13, v57];
           *buf = 136315394;
           v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
           v118 = 2112;
@@ -1504,7 +1504,7 @@ LABEL_11:
           _os_log_debug_impl(&dword_24DE53000, v56, OS_LOG_TYPE_DEBUG, "****** - GKCVC - %s \n%@", buf, 0x16u);
         }
 
-        v20 = [(GKMultiplayerDataSource *)self shouldUpdateStatus:v17 withNewStatus:a3];
+        v20 = [(GKMultiplayerDataSource *)self shouldUpdateStatus:integerValue withNewStatus:status];
         v21 = *v10;
         if (v20)
         {
@@ -1518,9 +1518,9 @@ LABEL_11:
           {
             v95 = MEMORY[0x277CCACA8];
             v59 = v23;
-            v60 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v17];
-            v61 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a3];
-            v62 = [v95 stringWithFormat:@"- MIDDLE 2 - uuid: %@, should update status for player: %@ from status %@ to new status: %@", v97, v13, v60, v61];
+            v60 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:integerValue];
+            v61 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
+            v62 = [v95 stringWithFormat:@"- MIDDLE 2 - uuid: %@, should update status for player: %@ from status %@ to new status: %@", uuidCopy, v13, v60, v61];
             *buf = 136315394;
             v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
             v118 = 2112;
@@ -1528,8 +1528,8 @@ LABEL_11:
             _os_log_debug_impl(&dword_24DE53000, v59, OS_LOG_TYPE_DEBUG, "****** - GKCVC - %s \n%@", buf, 0x16u);
           }
 
-          v24 = [(GKMultiplayerDataSource *)self players];
-          v25 = [v24 indexOfObject:v13];
+          players = [(GKMultiplayerDataSource *)self players];
+          v25 = [players indexOfObject:v13];
 
           v26 = *v10;
           if (v25 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1544,7 +1544,7 @@ LABEL_11:
             {
               v29 = MEMORY[0x277CCACA8];
               v30 = v28;
-              v31 = [v29 stringWithFormat:@"- MIDDLE 5 - uuid: %@, cannot find index path for player: %@", v97, v13];
+              v31 = [v29 stringWithFormat:@"- MIDDLE 5 - uuid: %@, cannot find index path for player: %@", uuidCopy, v13];
               *buf = 136315394;
               v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
               v118 = 2112;
@@ -1565,9 +1565,9 @@ LABEL_11:
             {
               v68 = MEMORY[0x277CCACA8];
               v69 = v42;
-              v70 = [v13 referenceKey];
-              v71 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a3];
-              v72 = [v68 stringWithFormat:@"- MIDDLE 3 - uuid: %@, updating player: %@ with referencekey %@ to status: %@", v97, v13, v70, v71];
+              referenceKey2 = [v13 referenceKey];
+              v71 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
+              v72 = [v68 stringWithFormat:@"- MIDDLE 3 - uuid: %@, updating player: %@ with referencekey %@ to status: %@", uuidCopy, v13, referenceKey2, v71];
               *buf = 136315394;
               v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
               v118 = 2112;
@@ -1575,17 +1575,17 @@ LABEL_11:
               _os_log_debug_impl(&dword_24DE53000, v69, OS_LOG_TYPE_DEBUG, "****** - GKCVC - %s \n%@", buf, 0x16u);
             }
 
-            v43 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-            v44 = [(GKMultiplayerDataSource *)self playerStatus];
-            v45 = [v13 referenceKey];
-            [v44 setObject:v43 forKeyedSubscript:v45];
+            v43 = [MEMORY[0x277CCABB0] numberWithInteger:status];
+            playerStatus2 = [(GKMultiplayerDataSource *)self playerStatus];
+            referenceKey3 = [v13 referenceKey];
+            [playerStatus2 setObject:v43 forKeyedSubscript:referenceKey3];
 
             v109 = 0u;
             v110 = 0u;
             v107 = 0u;
             v108 = 0u;
-            v36 = [(GKMultiplayerDataSource *)self participants];
-            v46 = [v36 countByEnumeratingWithState:&v107 objects:v122 count:16];
+            participants = [(GKMultiplayerDataSource *)self participants];
+            v46 = [participants countByEnumeratingWithState:&v107 objects:v122 count:16];
             if (v46)
             {
               v47 = v46;
@@ -1596,16 +1596,16 @@ LABEL_11:
                 {
                   if (*v108 != v48)
                   {
-                    objc_enumerationMutation(v36);
+                    objc_enumerationMutation(participants);
                   }
 
                   v50 = *(*(&v107 + 1) + 8 * i);
-                  v51 = [v50 player];
-                  v52 = [v51 isEqual:v13];
+                  player = [v50 player];
+                  v52 = [player isEqual:v13];
 
                   if (v52)
                   {
-                    [v50 setStatus:a3];
+                    [v50 setStatus:status];
                     v39 = [MEMORY[0x277CCAA70] indexPathForItem:v25 inSection:0];
                     [v96 addObject:v39];
                     v10 = MEMORY[0x277D0C2A0];
@@ -1616,13 +1616,13 @@ LABEL_11:
 
                     v11 = MEMORY[0x277D0C270];
                     v54 = *MEMORY[0x277D0C270];
-                    self = v98;
+                    self = selfCopy;
                     v8 = v99;
                     if (os_log_type_enabled(*MEMORY[0x277D0C270], OS_LOG_TYPE_DEBUG))
                     {
                       v73 = MEMORY[0x277CCACA8];
                       v74 = v54;
-                      v75 = [v73 stringWithFormat:@"- MIDDLE 4 - uuid: %@, marking index path row: %@ to refresh", v97, v39];
+                      v75 = [v73 stringWithFormat:@"- MIDDLE 4 - uuid: %@, marking index path row: %@ to refresh", uuidCopy, v39];
                       *buf = 136315394;
                       v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
                       v118 = 2112;
@@ -1636,7 +1636,7 @@ LABEL_11:
                   }
                 }
 
-                v47 = [v36 countByEnumeratingWithState:&v107 objects:v122 count:16];
+                v47 = [participants countByEnumeratingWithState:&v107 objects:v122 count:16];
                 if (v47)
                 {
                   continue;
@@ -1646,7 +1646,7 @@ LABEL_11:
               }
             }
 
-            self = v98;
+            self = selfCopy;
             v8 = v99;
             v11 = MEMORY[0x277D0C270];
             v10 = MEMORY[0x277D0C2A0];
@@ -1665,8 +1665,8 @@ LABEL_11:
           {
             v63 = MEMORY[0x277CCACA8];
             v64 = v33;
-            v65 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v17];
-            v66 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a3];
+            v65 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:integerValue];
+            v66 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
             v67 = [v63 stringWithFormat:@"- MIDDLE 6 - should not update status for player: %@ from status %@ to new status: %@", v13, v65, v66];
             *buf = 136315394;
             v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
@@ -1686,18 +1686,18 @@ LABEL_11:
           v35 = *MEMORY[0x277D0C2B0];
           if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
           {
-            v36 = v35;
-            v37 = [v13 internal];
-            v38 = [v37 debugDescription];
-            v39 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:v17];
-            v40 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a3];
+            participants = v35;
+            internal = [v13 internal];
+            v38 = [internal debugDescription];
+            v39 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:integerValue];
+            v40 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
             *buf = 138412802;
             v117 = v38;
             v118 = 2112;
             v119 = v39;
             v120 = 2112;
             v121 = v40;
-            _os_log_impl(&dword_24DE53000, v36, OS_LOG_TYPE_INFO, "Should not update datasource status for player: %@ - from: %@ - to: %@", buf, 0x20u);
+            _os_log_impl(&dword_24DE53000, participants, OS_LOG_TYPE_INFO, "Should not update datasource status for player: %@ - from: %@ - to: %@", buf, 0x20u);
 
             v11 = MEMORY[0x277D0C270];
             v10 = MEMORY[0x277D0C2A0];
@@ -1760,7 +1760,7 @@ LABEL_45:
           {
             v88 = MEMORY[0x277CCACA8];
             v89 = v87;
-            v90 = [v88 stringWithFormat:@"- MIDDLE 8 - uuid: %@, \t\tRefreshing: %@", v97, v85];
+            v90 = [v88 stringWithFormat:@"- MIDDLE 8 - uuid: %@, \t\tRefreshing: %@", uuidCopy, v85];
             *buf = 136315394;
             v117 = "[GKMultiplayerDataSource setStatus:forPlayers:uuid:]";
             v118 = 2112;
@@ -1777,17 +1777,17 @@ LABEL_45:
       while (v82);
     }
 
-    v91 = [MEMORY[0x277D0C1D8] shared];
-    v92 = [v91 multiplayerShouldAlwaysReloadCollectionView];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    multiplayerShouldAlwaysReloadCollectionView = [mEMORY[0x277D0C1D8] multiplayerShouldAlwaysReloadCollectionView];
 
-    if (v92)
+    if (multiplayerShouldAlwaysReloadCollectionView)
     {
-      [(GKCollectionViewDataSource *)v98 notifyDidReloadData];
+      [(GKCollectionViewDataSource *)selfCopy notifyDidReloadData];
     }
 
     else
     {
-      [(GKCollectionViewDataSource *)v98 notifyItemsRefreshedAtIndexPaths:v80];
+      [(GKCollectionViewDataSource *)selfCopy notifyItemsRefreshedAtIndexPaths:v80];
     }
 
     v8 = v99;
@@ -1808,12 +1808,12 @@ LABEL_45:
   }
 }
 
-- (void)setStatus:(int64_t)a3 forPlayers:(id)a4 complete:(id)a5
+- (void)setStatus:(int64_t)status forPlayers:(id)players complete:(id)complete
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCAD78] UUID];
+  playersCopy = players;
+  completeCopy = complete;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v11 = MEMORY[0x277D0C2A0];
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1825,9 +1825,9 @@ LABEL_45:
   {
     v21 = MEMORY[0x277CCACA8];
     log = v13;
-    v24 = [(GKMultiplayerDataSource *)self playersDebugDescription:v8 newStatus:a3];
-    v22 = [(GKMultiplayerDataSource *)self collectionViewDebugDescription];
-    v23 = [v21 stringWithFormat:@"- START - uuid: %@, %@, \n %@", v10, v24, v22];
+    v24 = [(GKMultiplayerDataSource *)self playersDebugDescription:playersCopy newStatus:status];
+    collectionViewDebugDescription = [(GKMultiplayerDataSource *)self collectionViewDebugDescription];
+    v23 = [v21 stringWithFormat:@"- START - uuid: %@, %@, \n %@", uUID, v24, collectionViewDebugDescription];
     *buf = 136315394;
     v36 = "[GKMultiplayerDataSource setStatus:forPlayers:complete:]";
     v37 = 2112;
@@ -1844,9 +1844,9 @@ LABEL_45:
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:a3];
+    v17 = [GKMultiplayerParticipant stringFromGKMultiplayerParticipantStatus:status];
     *buf = 138412546;
-    v36 = v8;
+    v36 = playersCopy;
     v37 = 2112;
     v38 = v17;
     _os_log_impl(&dword_24DE53000, v16, OS_LOG_TYPE_INFO, "Multiplayer datasource set players: %@ - status:%@", buf, 0x16u);
@@ -1857,19 +1857,19 @@ LABEL_45:
   v31[2] = __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_invoke;
   v31[3] = &unk_27966B2E8;
   v31[4] = self;
-  v34 = a3;
-  v32 = v8;
-  v33 = v10;
+  statusCopy = status;
+  v32 = playersCopy;
+  v33 = uUID;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_invoke_2;
   v26[3] = &unk_27966A3E0;
-  v29 = v9;
-  v30 = a3;
+  v29 = completeCopy;
+  statusCopy2 = status;
   v26[4] = self;
   v27 = v32;
   v28 = v33;
-  v18 = v9;
+  v18 = completeCopy;
   v19 = v33;
   v20 = v32;
   [(GKCollectionViewDataSource *)self notifyBatchUpdate:v31 complete:v26];
@@ -1971,12 +1971,12 @@ uint64_t __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_inv
   return [*(a1 + 40) updateParticipants];
 }
 
-- (void)setParticipantsWithPlayers:(id)a3 automatchPlayerCount:(int64_t)a4 shouldUpdateAutomatchPlayerCount:(BOOL)a5 andStatuses:(id)a6 complete:(id)a7
+- (void)setParticipantsWithPlayers:(id)players automatchPlayerCount:(int64_t)count shouldUpdateAutomatchPlayerCount:(BOOL)playerCount andStatuses:(id)statuses complete:(id)complete
 {
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v34 = a6;
-  v30 = a7;
+  playersCopy = players;
+  statusesCopy = statuses;
+  completeCopy = complete;
   if (!*MEMORY[0x277D0C2A0])
   {
     v12 = GKOSLoggers();
@@ -1987,17 +1987,17 @@ uint64_t __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_inv
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = v13;
-    v16 = [v14 numberWithInteger:a4];
+    v16 = [v14 numberWithInteger:count];
     *buf = 138412802;
-    v47 = v11;
+    v47 = playersCopy;
     v48 = 2112;
     v49 = v16;
     v50 = 2112;
-    v51 = v34;
+    v51 = statusesCopy;
     _os_log_impl(&dword_24DE53000, v15, OS_LOG_TYPE_INFO, "players: %@ - automatchCount: %@ - statuses: %@", buf, 0x20u);
   }
 
-  v32 = a4;
+  countCopy = count;
   v17 = MEMORY[0x277D0C020];
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMultiplayerDataSource.m", 673, "-[GKMultiplayerDataSource setParticipantsWithPlayers:automatchPlayerCount:shouldUpdateAutomatchPlayerCount:andStatuses:complete:]"];
   v19 = [v17 dispatchGroupWithName:v18];
@@ -2006,7 +2006,7 @@ uint64_t __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_inv
   v44 = 0u;
   v42 = 0u;
   v41 = 0u;
-  obj = v11;
+  obj = playersCopy;
   v20 = [obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v20)
   {
@@ -2023,11 +2023,11 @@ uint64_t __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_inv
         }
 
         v24 = *(*(&v41 + 1) + 8 * v23);
-        v25 = [(GKMultiplayerDataSource *)self players];
-        [v25 indexOfObject:v24];
+        players = [(GKMultiplayerDataSource *)self players];
+        [players indexOfObject:v24];
 
-        v26 = [v24 referenceKey];
-        v27 = [v34 objectForKey:v26];
+        referenceKey = [v24 referenceKey];
+        v27 = [statusesCopy objectForKey:referenceKey];
 
         v39[0] = MEMORY[0x277D85DD0];
         v39[1] = 3221225472;
@@ -2053,11 +2053,11 @@ uint64_t __57__GKMultiplayerDataSource_setStatus_forPlayers_complete___block_inv
   v35[1] = 3221225472;
   v35[2] = __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlayerCount_shouldUpdateAutomatchPlayerCount_andStatuses_complete___block_invoke_5;
   v35[3] = &unk_27966BBB8;
-  v38 = a5;
+  playerCountCopy = playerCount;
   v35[4] = self;
-  v36 = v30;
-  v37 = v32;
-  v29 = v30;
+  v36 = completeCopy;
+  v37 = countCopy;
+  v29 = completeCopy;
   [v19 notifyOnMainQueueWithBlock:v35];
 }
 
@@ -2108,11 +2108,11 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
   OUTLINED_FUNCTION_2_1(&dword_24DE53000, v6, v7, "****** - GKCVC - %s \n%@", v8, v9, v10, v11, v1, v12, 2u);
 }
 
-- (void)failedToInvitePlayers:(id)a3
+- (void)failedToInvitePlayers:(id)players
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAD78] UUID];
+  playersCopy = players;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   if (!*MEMORY[0x277D0C2A0])
   {
     v6 = GKOSLoggers();
@@ -2125,19 +2125,19 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
     [GKMultiplayerDataSource failedToInvitePlayers:v8];
   }
 
-  v9 = [MEMORY[0x277CBEB18] array];
-  players = v4;
-  if (!v4)
+  array = [MEMORY[0x277CBEB18] array];
+  players = playersCopy;
+  if (!playersCopy)
   {
     players = self->_players;
   }
 
-  v11 = players;
+  playersCopy2 = players;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [(NSMutableOrderedSet *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v12 = [(NSMutableOrderedSet *)playersCopy2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2148,23 +2148,23 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(playersCopy2);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
         if ([(GKMultiplayerDataSource *)self statusForPlayer:v16]== 1)
         {
-          [v9 addObject:v16];
+          [array addObject:v16];
         }
       }
 
-      v13 = [(NSMutableOrderedSet *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [(NSMutableOrderedSet *)playersCopy2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -2176,16 +2176,16 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
       [GKMultiplayerDataSource failedToInvitePlayers:];
     }
 
-    [(GKMultiplayerDataSource *)self setStatus:4 forPlayers:v9 complete:0];
+    [(GKMultiplayerDataSource *)self setStatus:4 forPlayers:array complete:0];
   }
 }
 
 - (BOOL)canCancelCurrentMatchmaking
 {
-  v3 = [(GKMultiplayerDataSource *)self players];
-  v4 = [v3 count];
-  v5 = [(GKMultiplayerDataSource *)self readyPlayers];
-  v6 = v4 != [v5 count] || -[GKMultiplayerDataSource automatchPlayerCount](self, "automatchPlayerCount") > 0;
+  players = [(GKMultiplayerDataSource *)self players];
+  v4 = [players count];
+  readyPlayers = [(GKMultiplayerDataSource *)self readyPlayers];
+  v6 = v4 != [readyPlayers count] || -[GKMultiplayerDataSource automatchPlayerCount](self, "automatchPlayerCount") > 0;
 
   return v6;
 }
@@ -2197,8 +2197,8 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(GKMultiplayerDataSource *)self players];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  players = [(GKMultiplayerDataSource *)self players];
+  v3 = [players countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -2208,7 +2208,7 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(players);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -2219,7 +2219,7 @@ uint64_t __129__GKMultiplayerDataSource_setParticipantsWithPlayers_automatchPlay
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [players countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -2234,30 +2234,30 @@ LABEL_12:
   return v3;
 }
 
-- (void)setAutomatchPlayerCount:(int64_t)a3
+- (void)setAutomatchPlayerCount:(int64_t)count
 {
   os_unfair_lock_lock(&self->_automatchPlayerCountLock);
-  v5 = [(GKMultiplayerDataSource *)self delegate];
-  v6 = [v5 allowAutoMatch];
+  delegate = [(GKMultiplayerDataSource *)self delegate];
+  allowAutoMatch = [delegate allowAutoMatch];
 
-  if (v6)
+  if (allowAutoMatch)
   {
-    v7 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v7 = 0;
+    countCopy = 0;
   }
 
-  self->_automatchPlayerCount = v7;
+  self->_automatchPlayerCount = countCopy;
 
   os_unfair_lock_unlock(&self->_automatchPlayerCountLock);
 }
 
-- (void)setAutomatchPlayerCount:(int64_t)a3 complete:(id)a4
+- (void)setAutomatchPlayerCount:(int64_t)count complete:(id)complete
 {
-  if (self->_automatchPlayerCount != a3)
+  if (self->_automatchPlayerCount != count)
   {
     v6[6] = v4;
     v6[7] = v5;
@@ -2266,8 +2266,8 @@ LABEL_12:
     v6[2] = __60__GKMultiplayerDataSource_setAutomatchPlayerCount_complete___block_invoke;
     v6[3] = &unk_27966B9C8;
     v6[4] = self;
-    v6[5] = a3;
-    [(GKCollectionViewDataSource *)self notifyBatchUpdate:v6 complete:a4];
+    v6[5] = count;
+    [(GKCollectionViewDataSource *)self notifyBatchUpdate:v6 complete:complete];
   }
 }
 
@@ -2286,50 +2286,50 @@ uint64_t __60__GKMultiplayerDataSource_setAutomatchPlayerCount_complete___block_
   return [v3 updateParticipants];
 }
 
-- (void)refreshStatusForParticipant:(id)a3
+- (void)refreshStatusForParticipant:(id)participant
 {
-  v16 = a3;
-  v5 = [(GKMultiplayerDataSource *)self delegate];
-  v6 = [v5 isCanceling];
+  participantCopy = participant;
+  delegate = [(GKMultiplayerDataSource *)self delegate];
+  isCanceling = [delegate isCanceling];
 
-  if (v6)
+  if (isCanceling)
   {
-    v7 = v16;
+    v7 = participantCopy;
     v8 = 14;
 LABEL_3:
     [v7 setStatus:v8];
     goto LABEL_10;
   }
 
-  if ([v16 type] == 1)
+  if ([participantCopy type] == 1)
   {
-    v9 = [(GKMultiplayerDataSource *)self delegate];
-    v10 = [v9 allowAutoMatch];
+    delegate2 = [(GKMultiplayerDataSource *)self delegate];
+    allowAutoMatch = [delegate2 allowAutoMatch];
 
-    if (!v10)
+    if (!allowAutoMatch)
     {
-      v7 = v16;
+      v7 = participantCopy;
       v8 = 0;
       goto LABEL_3;
     }
 
-    v11 = [(GKMultiplayerDataSource *)self delegate];
-    [v16 setStatus:{objc_msgSend(v11, "automatchParticipantStatus")}];
+    delegate3 = [(GKMultiplayerDataSource *)self delegate];
+    [participantCopy setStatus:{objc_msgSend(delegate3, "automatchParticipantStatus")}];
   }
 
   else
   {
-    v12 = [(GKMultiplayerDataSource *)self players];
-    v13 = [v16 player];
-    v14 = [v12 containsObject:v13];
+    players = [(GKMultiplayerDataSource *)self players];
+    player = [participantCopy player];
+    v14 = [players containsObject:player];
 
     if ((v14 & 1) == 0)
     {
       [(GKMultiplayerDataSource *)a2 refreshStatusForParticipant:?];
     }
 
-    v15 = [v16 player];
-    [v16 setStatus:{-[GKMultiplayerDataSource statusForPlayer:](self, "statusForPlayer:", v15)}];
+    player2 = [participantCopy player];
+    [participantCopy setStatus:{-[GKMultiplayerDataSource statusForPlayer:](self, "statusForPlayer:", player2)}];
   }
 
 LABEL_10:
@@ -2338,8 +2338,8 @@ LABEL_10:
 - (void)didChangeMode
 {
   [(GKMultiplayerDataSource *)self refreshParticipantsStatuses];
-  v3 = [(GKMultiplayerDataSource *)self delegate];
-  [v3 didUpdateParticipants];
+  delegate = [(GKMultiplayerDataSource *)self delegate];
+  [delegate didUpdateParticipants];
 }
 
 - (void)refreshParticipantsStatuses
@@ -2349,8 +2349,8 @@ LABEL_10:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(GKMultiplayerDataSource *)self participants];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  participants = [(GKMultiplayerDataSource *)self participants];
+  v4 = [participants countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2362,14 +2362,14 @@ LABEL_10:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(participants);
         }
 
         [(GKMultiplayerDataSource *)self refreshStatusForParticipant:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [participants countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2380,18 +2380,18 @@ LABEL_10:
 {
   OUTLINED_FUNCTION_4();
   v2 = v1;
-  v3 = [OUTLINED_FUNCTION_5() collectionViewDebugDescription];
+  collectionViewDebugDescription = [OUTLINED_FUNCTION_5() collectionViewDebugDescription];
   OUTLINED_FUNCTION_3();
   OUTLINED_FUNCTION_6();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0x16u);
 }
 
-- (void)replacePlayers:(id)a3 withGKPlayers:(id)a4 completionHandler:(id)a5
+- (void)replacePlayers:(id)players withGKPlayers:(id)kPlayers completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playersCopy = players;
+  kPlayersCopy = kPlayers;
+  handlerCopy = handler;
   if (!*MEMORY[0x277D0C2A0])
   {
     v11 = GKOSLoggers();
@@ -2401,9 +2401,9 @@ LABEL_10:
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v20 = v8;
+    v20 = playersCopy;
     v21 = 2112;
-    v22 = v9;
+    v22 = kPlayersCopy;
     _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_INFO, "Replace contactPlayers: %@ \nwith gkPlayers:%@", buf, 0x16u);
   }
 
@@ -2411,12 +2411,12 @@ LABEL_10:
   v15[1] = 3221225472;
   v15[2] = __74__GKMultiplayerDataSource_replacePlayers_withGKPlayers_completionHandler___block_invoke;
   v15[3] = &unk_27966A9A8;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v13 = v9;
-  v14 = v8;
-  [(GKCollectionViewDataSource *)self notifyBatchUpdate:v15 complete:v10];
+  v16 = playersCopy;
+  v17 = kPlayersCopy;
+  selfCopy = self;
+  v13 = kPlayersCopy;
+  v14 = playersCopy;
+  [(GKCollectionViewDataSource *)self notifyBatchUpdate:v15 complete:handlerCopy];
 }
 
 void __74__GKMultiplayerDataSource_replacePlayers_withGKPlayers_completionHandler___block_invoke(id *a1)
@@ -2518,12 +2518,12 @@ void __74__GKMultiplayerDataSource_replacePlayers_withGKPlayers_completionHandle
   }
 }
 
-- (void)replacePrepopulatedPlayerWithNormalPlayer:(id)a3 participantServerIdentifier:(id)a4 completionHandler:(id)a5
+- (void)replacePrepopulatedPlayerWithNormalPlayer:(id)player participantServerIdentifier:(id)identifier completionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playerCopy = player;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (!*MEMORY[0x277D0C2A0])
   {
     v11 = GKOSLoggers();
@@ -2533,17 +2533,17 @@ void __74__GKMultiplayerDataSource_replacePlayers_withGKPlayers_completionHandle
   if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v38 = v8;
+    v38 = playerCopy;
     _os_log_impl(&dword_24DE53000, v12, OS_LOG_TYPE_INFO, "Replace a prepopulated player with normalPlayer:%@", buf, 0xCu);
   }
 
-  v29 = v8;
+  v29 = playerCopy;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = [(GKMultiplayerDataSource *)self players];
-  v14 = [v13 countByEnumeratingWithState:&v30 objects:v36 count:16];
+  players = [(GKMultiplayerDataSource *)self players];
+  v14 = [players countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v14)
   {
     v15 = v14;
@@ -2554,13 +2554,13 @@ LABEL_7:
     {
       if (*v31 != v16)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(players);
       }
 
       v18 = *(*(&v30 + 1) + 8 * v17);
-      v19 = [v18 internal];
-      v20 = [v19 playerID];
-      v21 = [v20 isEqualToString:v9];
+      internal = [v18 internal];
+      playerID = [internal playerID];
+      v21 = [playerID isEqualToString:identifierCopy];
 
       if (v21)
       {
@@ -2569,7 +2569,7 @@ LABEL_7:
 
       if (v15 == ++v17)
       {
-        v15 = [v13 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v15 = [players countByEnumeratingWithState:&v30 objects:v36 count:16];
         if (v15)
         {
           goto LABEL_7;
@@ -2591,7 +2591,7 @@ LABEL_7:
     v24 = v29;
     v34 = v29;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-    [v28 replacePlayers:v23 withGKPlayers:v25 completionHandler:v10];
+    [v28 replacePlayers:v23 withGKPlayers:v25 completionHandler:handlerCopy];
   }
 
   else
@@ -2609,30 +2609,30 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v38 = v9;
+      v38 = identifierCopy;
       _os_log_impl(&dword_24DE53000, v27, OS_LOG_TYPE_INFO, "Cannot find matching prepopulated player for participantID: %@", buf, 0xCu);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)removePrepopulatedPlayersIfExisted:(id)a3 completionHandler:(id)a4
+- (void)removePrepopulatedPlayersIfExisted:(id)existed completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v20 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  existedCopy = existed;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = self;
-  v8 = [(GKMultiplayerDataSource *)self players];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  selfCopy = self;
+  players = [(GKMultiplayerDataSource *)self players];
+  v9 = [players countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2643,27 +2643,27 @@ LABEL_16:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(players);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 internal];
-        v15 = [v14 playerID];
-        v16 = [v6 containsObject:v15];
+        internal = [v13 internal];
+        playerID = [internal playerID];
+        v16 = [existedCopy containsObject:playerID];
 
         if (v16)
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v10 = [players countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v10);
   }
 
-  if ([v7 count])
+  if ([array count])
   {
     if (!*MEMORY[0x277D0C2A0])
     {
@@ -2674,11 +2674,11 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = existedCopy;
       _os_log_impl(&dword_24DE53000, v18, OS_LOG_TYPE_INFO, "found prepopulated players matching removed participants' server identifiers. serverIdentifiers: %@", buf, 0xCu);
     }
 
-    [(GKMultiplayerDataSource *)v19 removePlayers:v7 complete:v20];
+    [(GKMultiplayerDataSource *)selfCopy removePlayers:array complete:handlerCopy];
   }
 }
 
@@ -2689,8 +2689,8 @@ LABEL_16:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(GKMultiplayerDataSource *)self players];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  players = [(GKMultiplayerDataSource *)self players];
+  v4 = [players countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2702,14 +2702,14 @@ LABEL_16:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(players);
         }
 
         [(GKMultiplayerDataSource *)self updateDataStructuresForRemovedPlayer:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [players countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2764,14 +2764,14 @@ LABEL_16:
   [(GKMultiplayerDataSource *)self setPlayers:v4];
 }
 
-- (void)reportMultiplayerSelection:(id)a3
+- (void)reportMultiplayerSelection:(id)selection
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = a3;
+  obj = selection;
   v3 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v3)
   {
@@ -2791,39 +2791,39 @@ LABEL_16:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 contact];
+        contact = [v11 contact];
 
-        if (v12)
+        if (contact)
         {
-          v13 = [MEMORY[0x277D0C1F8] reporter];
-          [v13 reportEvent:v6 type:v7];
+          reporter = [MEMORY[0x277D0C1F8] reporter];
+          [reporter reportEvent:v6 type:v7];
         }
 
-        v14 = [v11 friendPlayedWith];
-        if (v14)
+        friendPlayedWith = [v11 friendPlayedWith];
+        if (friendPlayedWith)
         {
         }
 
         else
         {
-          v15 = [v11 friendPlayedNearby];
+          friendPlayedNearby = [v11 friendPlayedNearby];
 
-          if (!v15)
+          if (!friendPlayedNearby)
           {
             goto LABEL_12;
           }
         }
 
-        v16 = [MEMORY[0x277D0C1F8] reporter];
-        [v16 reportEvent:v6 type:v8];
+        reporter2 = [MEMORY[0x277D0C1F8] reporter];
+        [reporter2 reportEvent:v6 type:v8];
 
 LABEL_12:
-        v17 = [v11 friendBiDirectional];
+        friendBiDirectional = [v11 friendBiDirectional];
 
-        if (v17)
+        if (friendBiDirectional)
         {
-          v18 = [MEMORY[0x277D0C1F8] reporter];
-          [v18 reportEvent:v6 type:v9];
+          reporter3 = [MEMORY[0x277D0C1F8] reporter];
+          [reporter3 reportEvent:v6 type:v9];
         }
       }
 

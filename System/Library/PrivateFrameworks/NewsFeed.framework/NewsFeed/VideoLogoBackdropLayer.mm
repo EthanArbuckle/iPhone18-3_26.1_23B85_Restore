@@ -1,8 +1,8 @@
 @interface VideoLogoBackdropLayer
 - (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)init;
-- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithCoder:(id)a3;
-- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithCoder:(id)coder;
+- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation VideoLogoBackdropLayer
@@ -20,7 +20,7 @@
   return v6;
 }
 
-- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithLayer:(id)a3
+- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1D7263AEC();
@@ -28,7 +28,7 @@
   return sub_1D5E4962C(v4);
 }
 
-- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithCoder:(id)a3
+- (_TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v5 = OBJC_IVAR____TtC8NewsFeedP33_CC8D83E957AA6608BCA74C771D42D56B22VideoLogoBackdropLayer_gradientDescriptor;
@@ -39,11 +39,11 @@
   return [(VideoLogoBackdropLayer *)&v8 init];
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D5E498CC(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1D5E498CC(contextCopy);
 }
 
 @end

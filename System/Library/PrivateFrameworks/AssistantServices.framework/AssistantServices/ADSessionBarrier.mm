@@ -1,6 +1,6 @@
 @interface ADSessionBarrier
-- (ADSessionBarrier)initWithThunk:(id)a3 barrier:(id)a4;
-- (void)barrierResultReturnedWithSuccess:(BOOL)a3;
+- (ADSessionBarrier)initWithThunk:(id)thunk barrier:(id)barrier;
+- (void)barrierResultReturnedWithSuccess:(BOOL)success;
 - (void)dealloc;
 - (void)siriCore_invokeThunk;
 - (void)siriNetwork_invokeThunk;
@@ -26,14 +26,14 @@
   }
 }
 
-- (void)barrierResultReturnedWithSuccess:(BOOL)a3
+- (void)barrierResultReturnedWithSuccess:(BOOL)success
 {
   barrierQueue = self->_barrierQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1002FB6A8;
   v4[3] = &unk_10051CBD8;
-  v5 = a3;
+  successCopy = success;
   v4[4] = self;
   dispatch_async(barrierQueue, v4);
 }
@@ -51,20 +51,20 @@
   [(ADSessionBarrier *)&v4 dealloc];
 }
 
-- (ADSessionBarrier)initWithThunk:(id)a3 barrier:(id)a4
+- (ADSessionBarrier)initWithThunk:(id)thunk barrier:(id)barrier
 {
-  v6 = a3;
-  v7 = a4;
+  thunkCopy = thunk;
+  barrierCopy = barrier;
   v17.receiver = self;
   v17.super_class = ADSessionBarrier;
   v8 = [(ADSessionBarrier *)&v17 init];
   if (v8)
   {
-    v9 = objc_retainBlock(v6);
+    v9 = objc_retainBlock(thunkCopy);
     thunkBlock = v8->_thunkBlock;
     v8->_thunkBlock = v9;
 
-    v11 = objc_retainBlock(v7);
+    v11 = objc_retainBlock(barrierCopy);
     barrierBlock = v8->_barrierBlock;
     v8->_barrierBlock = v11;
 

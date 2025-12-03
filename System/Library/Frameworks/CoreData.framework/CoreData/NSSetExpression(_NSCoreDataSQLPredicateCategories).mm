@@ -7,26 +7,26 @@
 
 - (void)minimalFormInContext:()_NSCoreDataSQLPredicateCategories
 {
-  v5 = [objc_msgSend(a1 "leftExpression")];
-  v6 = [objc_msgSend(a1 "rightExpression")];
-  v7 = [v5 expressionType];
-  if (v7 == 14)
+  v5 = [objc_msgSend(self "leftExpression")];
+  v6 = [objc_msgSend(self "rightExpression")];
+  expressionType = [v5 expressionType];
+  if (expressionType == 14)
   {
-    v8 = [v5 collection];
+    collection = [v5 collection];
   }
 
   else
   {
-    if (v7)
+    if (expressionType)
     {
       goto LABEL_9;
     }
 
-    v8 = [v5 constantValue];
+    collection = [v5 constantValue];
   }
 
-  v9 = v8;
-  if (([v8 isNSSet] & 1) != 0 || (objc_msgSend(v9, "isNSArray") & 1) != 0 || objc_msgSend(v9, "isNSOrderedSet"))
+  v9 = collection;
+  if (([collection isNSSet] & 1) != 0 || (objc_msgSend(v9, "isNSArray") & 1) != 0 || objc_msgSend(v9, "isNSOrderedSet"))
   {
     v10 = [v9 count] == 0;
     goto LABEL_10;
@@ -35,40 +35,40 @@
 LABEL_9:
   v10 = 0;
 LABEL_10:
-  v11 = [v6 expressionType];
-  if (v11 == 14)
+  expressionType2 = [v6 expressionType];
+  if (expressionType2 == 14)
   {
-    v12 = [v6 collection];
+    collection2 = [v6 collection];
   }
 
   else
   {
-    if (v11)
+    if (expressionType2)
     {
       goto LABEL_26;
     }
 
-    v12 = [v6 constantValue];
+    collection2 = [v6 constantValue];
   }
 
-  v13 = v12;
-  if (([v12 isNSSet] & 1) == 0 && (objc_msgSend(v13, "isNSArray") & 1) == 0 && !objc_msgSend(v13, "isNSOrderedSet"))
+  v13 = collection2;
+  if (([collection2 isNSSet] & 1) == 0 && (objc_msgSend(v13, "isNSArray") & 1) == 0 && !objc_msgSend(v13, "isNSOrderedSet"))
   {
 LABEL_26:
-    v15 = [a1 expressionType];
+    expressionType3 = [self expressionType];
     if (!v10)
     {
-      return a1;
+      return self;
     }
 
 LABEL_27:
     v17 = v6;
-    if (v15 == 5)
+    if (expressionType3 == 5)
     {
       return v17;
     }
 
-    if (v15 != 7)
+    if (expressionType3 != 7)
     {
       v17 = v5;
       goto LABEL_30;
@@ -78,7 +78,7 @@ LABEL_27:
   }
 
   v14 = [v13 count];
-  v15 = [a1 expressionType];
+  expressionType3 = [self expressionType];
   if (v14)
   {
     v16 = 0;
@@ -101,25 +101,25 @@ LABEL_27:
 
   if (v14)
   {
-    return a1;
+    return self;
   }
 
-  if (v15 == 5)
+  if (expressionType3 == 5)
   {
     return v5;
   }
 
   v17 = v5;
-  if (v15 == 7)
+  if (expressionType3 == 7)
   {
     return v17;
   }
 
   v17 = v6;
 LABEL_30:
-  if (v15 != 6)
+  if (expressionType3 != 6)
   {
-    return a1;
+    return self;
   }
 
   return v17;
@@ -127,10 +127,10 @@ LABEL_30:
 
 - (void)_keypathsForDerivedPropertyValidation:()_NSCoreDataSQLPredicateCategories
 {
-  v5 = [objc_msgSend(a1 "leftExpression")];
+  v5 = [objc_msgSend(self "leftExpression")];
   if (v5)
   {
-    v6 = [objc_msgSend(a1 "rightExpression")];
+    v6 = [objc_msgSend(self "rightExpression")];
     if (v6)
     {
       [v5 addObjectsFromArray:{objc_msgSend(v6, "allObjects")}];

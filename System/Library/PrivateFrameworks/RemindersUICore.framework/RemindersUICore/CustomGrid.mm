@@ -1,6 +1,6 @@
 @interface CustomGrid
 - (CGSize)intrinsicContentSize;
-- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB10CustomGrid)initWithArrangedSubviewRows:(id)a3;
+- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB10CustomGrid)initWithArrangedSubviewRows:(id)rows;
 @end
 
 @implementation CustomGrid
@@ -14,19 +14,19 @@
   return result;
 }
 
-- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB10CustomGrid)initWithArrangedSubviewRows:(id)a3
+- (_TtC15RemindersUICoreP33_34792CABF8531B98D43671B0DD1043EB10CustomGrid)initWithArrangedSubviewRows:(id)rows
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (rows)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE5F100);
     sub_21DBFA5EC();
-    a3 = sub_21DBFA5DC();
+    rows = sub_21DBFA5DC();
   }
 
   v8.receiver = self;
   v8.super_class = ObjectType;
-  v6 = [(NUIContainerGridView *)&v8 initWithArrangedSubviewRows:a3];
+  v6 = [(NUIContainerGridView *)&v8 initWithArrangedSubviewRows:rows];
 
   return v6;
 }

@@ -1,12 +1,12 @@
 @interface WiFiSoftErrorContext
-- (WiFiSoftErrorContext)initWithErrorType:(int)a3 deviceContext:(void *)a4;
+- (WiFiSoftErrorContext)initWithErrorType:(int)type deviceContext:(void *)context;
 - (id)fetchSoftErrorContextData;
-- (void)addStatsRecord:(id)a3;
+- (void)addStatsRecord:(id)record;
 @end
 
 @implementation WiFiSoftErrorContext
 
-- (WiFiSoftErrorContext)initWithErrorType:(int)a3 deviceContext:(void *)a4
+- (WiFiSoftErrorContext)initWithErrorType:(int)type deviceContext:(void *)context
 {
   v14.receiver = self;
   v14.super_class = WiFiSoftErrorContext;
@@ -14,15 +14,15 @@
   v7 = v6;
   if (v6)
   {
-    v6->_errorType = a3;
+    v6->_errorType = type;
     v6->_errorState = 0;
     v8 = 24;
-    if (a3 == 1)
+    if (type == 1)
     {
       v8 = 16;
     }
 
-    *(&v6->super.isa + v8) = a4;
+    *(&v6->super.isa + v8) = context;
     v6->_triggerTime = CFAbsoluteTimeGetCurrent();
     v7->_detectionTime = 0.0;
     v9 = objc_alloc_init(NSMutableArray);
@@ -42,12 +42,12 @@
   return v7;
 }
 
-- (void)addStatsRecord:(id)a3
+- (void)addStatsRecord:(id)record
 {
   statsRecordData = self->_statsRecordData;
   if (statsRecordData)
   {
-    [(NSMutableArray *)statsRecordData addObject:a3];
+    [(NSMutableArray *)statsRecordData addObject:record];
   }
 }
 

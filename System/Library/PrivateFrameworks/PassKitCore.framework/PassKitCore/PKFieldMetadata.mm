@@ -1,40 +1,40 @@
 @interface PKFieldMetadata
-- (PKFieldMetadata)initWithAssociatedPassIdentifiers:(id)a3 shouldIgnoreField:(BOOL)a4 foundExplicitlyRequestedPass:(BOOL)a5;
-- (PKFieldMetadata)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKFieldMetadata)initWithAssociatedPassIdentifiers:(id)identifiers shouldIgnoreField:(BOOL)field foundExplicitlyRequestedPass:(BOOL)pass;
+- (PKFieldMetadata)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKFieldMetadata
 
-- (PKFieldMetadata)initWithAssociatedPassIdentifiers:(id)a3 shouldIgnoreField:(BOOL)a4 foundExplicitlyRequestedPass:(BOOL)a5
+- (PKFieldMetadata)initWithAssociatedPassIdentifiers:(id)identifiers shouldIgnoreField:(BOOL)field foundExplicitlyRequestedPass:(BOOL)pass
 {
-  v9 = a3;
+  identifiersCopy = identifiers;
   v13.receiver = self;
   v13.super_class = PKFieldMetadata;
   v10 = [(PKFieldMetadata *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_associatedPassIdentifiers, a3);
-    v11->_shouldIgnoreField = a4;
-    v11->_foundExplicitlyRequestedPass = a5;
+    objc_storeStrong(&v10->_associatedPassIdentifiers, identifiers);
+    v11->_shouldIgnoreField = field;
+    v11->_foundExplicitlyRequestedPass = pass;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   associatedPassIdentifiers = self->_associatedPassIdentifiers;
-  v5 = a3;
-  [v5 encodeObject:associatedPassIdentifiers forKey:@"associatedPassIdentifiers"];
-  [v5 encodeBool:self->_shouldIgnoreField forKey:@"shouldIgnoreField"];
-  [v5 encodeBool:self->_foundExplicitlyRequestedPass forKey:@"foundExplicitlyRequestedPass"];
+  coderCopy = coder;
+  [coderCopy encodeObject:associatedPassIdentifiers forKey:@"associatedPassIdentifiers"];
+  [coderCopy encodeBool:self->_shouldIgnoreField forKey:@"shouldIgnoreField"];
+  [coderCopy encodeBool:self->_foundExplicitlyRequestedPass forKey:@"foundExplicitlyRequestedPass"];
 }
 
-- (PKFieldMetadata)initWithCoder:(id)a3
+- (PKFieldMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKFieldMetadata;
   v5 = [(PKFieldMetadata *)&v12 init];
@@ -43,12 +43,12 @@
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"associatedPassIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"associatedPassIdentifiers"];
     associatedPassIdentifiers = v5->_associatedPassIdentifiers;
     v5->_associatedPassIdentifiers = v9;
 
-    v5->_shouldIgnoreField = [v4 decodeBoolForKey:@"shouldIgnoreField"];
-    v5->_foundExplicitlyRequestedPass = [v4 decodeBoolForKey:@"foundExplicitlyRequestedPass"];
+    v5->_shouldIgnoreField = [coderCopy decodeBoolForKey:@"shouldIgnoreField"];
+    v5->_foundExplicitlyRequestedPass = [coderCopy decodeBoolForKey:@"foundExplicitlyRequestedPass"];
   }
 
   return v5;

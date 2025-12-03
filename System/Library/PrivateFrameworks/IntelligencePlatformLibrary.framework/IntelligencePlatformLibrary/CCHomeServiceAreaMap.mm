@@ -1,25 +1,25 @@
 @interface CCHomeServiceAreaMap
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCHomeServiceAreaMap)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCHomeServiceAreaMap)initWithName:(id)a3 mapIdentifier:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCHomeServiceAreaMap)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCHomeServiceAreaMap)initWithName:(id)name mapIdentifier:(id)identifier error:(id *)error;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCHomeServiceAreaMap
 
-- (CCHomeServiceAreaMap)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCHomeServiceAreaMap)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"mapIdentifier"];
-    v11 = [[CCHomeServiceAreaMap alloc] initWithName:v9 mapIdentifier:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mapIdentifier"];
+    v11 = [[CCHomeServiceAreaMap alloc] initWithName:v9 mapIdentifier:v10 error:error];
   }
 
   else
@@ -36,8 +36,8 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCHomeServiceAreaMap *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCHomeServiceAreaMap *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_hasMapIdentifier)
@@ -51,19 +51,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_name)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17041 stringValue:self->_name];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_hasMapIdentifier)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:17042 uint32Value:self->_mapIdentifier];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -74,10 +74,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -88,7 +88,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v41 = self;
+  selfCopy = self;
   while (2)
   {
     if (*&v7[*v10])
@@ -220,14 +220,14 @@ LABEL_38:
         {
           v31 = objc_opt_class();
           NSStringFromClass(v31);
-          v32 = a4;
-          v34 = v33 = v6;
+          errorCopy = error;
+          v34 = v33 = dataCopy;
           v35 = *&v7[*v10];
           v11 = CCSkipFieldErrorForMessage();
 
-          v6 = v33;
-          a4 = v32;
-          self = v41;
+          dataCopy = v33;
+          error = errorCopy;
+          self = selfCopy;
           goto LABEL_38;
         }
       }
@@ -266,15 +266,15 @@ LABEL_45:
   return v39;
 }
 
-- (CCHomeServiceAreaMap)initWithName:(id)a3 mapIdentifier:(id)a4 error:(id *)a5
+- (CCHomeServiceAreaMap)initWithName:(id)name mapIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!nameCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!identifierCopy)
     {
       goto LABEL_8;
     }
@@ -288,12 +288,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    [v9 unsignedIntValue];
+    [identifierCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
     v12 = v14;
     goto LABEL_8;
@@ -305,24 +305,24 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (identifierCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

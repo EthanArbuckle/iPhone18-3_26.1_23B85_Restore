@@ -1,36 +1,36 @@
 @interface DADevice
-+ (BOOL)deviceMetadataURLValid:(id)a3;
-+ (void)mergePersistentDictionary:(id)a3 into:(id)a4;
++ (BOOL)deviceMetadataURLValid:(id)valid;
++ (void)mergePersistentDictionary:(id)dictionary into:(id)into;
 - (BOOL)requiresBluetoothSetup;
 - (BOOL)requiresWiFiAwareSetup;
 - (BOOL)requiresWiFiSoftAPSetup;
-- (DADevice)initWithCoder:(id)a3;
-- (DADevice)initWithPersistentDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (DADevice)initWithXPCObject:(id)a3 error:(id *)a4;
+- (DADevice)initWithCoder:(id)coder;
+- (DADevice)initWithPersistentDictionaryRepresentation:(id)representation error:(id *)error;
+- (DADevice)initWithXPCObject:(id)object error:(id *)error;
 - (NSDictionary)accessoryServicesMap;
 - (NSDictionary)appAccessInfoMap;
 - (NSDictionary)persistentDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)decodeAdvDataWithCoder:(id)a3 xpcObject:(id)a4;
-- (void)encodeAdvDataWithCoder:(id)a3 xpcObject:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
-- (void)setDeviceUpgradeFinished:(BOOL)a3 inProgress:(BOOL)a4 failed:(BOOL)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)decodeAdvDataWithCoder:(id)coder xpcObject:(id)object;
+- (void)encodeAdvDataWithCoder:(id)coder xpcObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
+- (void)setDeviceUpgradeFinished:(BOOL)finished inProgress:(BOOL)progress failed:(BOOL)failed;
 @end
 
 @implementation DADevice
 
-- (DADevice)initWithCoder:(id)a3
+- (DADevice)initWithCoder:(id)coder
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v38.receiver = self;
   v38.super_class = DADevice;
   v5 = [(DADevice *)&v38 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -72,9 +72,9 @@
     v39 = 0;
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v13 = [v39 copyCEndpoint];
+    copyCEndpoint = [v39 copyCEndpoint];
     networkEndpoint = v5->_networkEndpoint;
-    v5->_networkEndpoint = v13;
+    v5->_networkEndpoint = copyCEndpoint;
 
     v15 = v12;
     if ([v15 containsValueForKey:@"dvPT"])
@@ -183,23 +183,23 @@
 
   else
   {
-    [DADeviceAppAccessInfo initWithCoder:v4];
+    [DADeviceAppAccessInfo initWithCoder:coderCopy];
   }
 
   v36 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v34 = a3;
+  coderCopy = coder;
   v4 = self->_accessoryServicesInternalMap;
   if (v4)
   {
     v5 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
     if (v5)
     {
-      [v34 encodeObject:v5 forKey:@"dAsI"];
+      [coderCopy encodeObject:v5 forKey:@"dAsI"];
     }
   }
 
@@ -209,60 +209,60 @@
     v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:0];
     if (v7)
     {
-      [v34 encodeObject:v7 forKey:@"dAaI"];
+      [coderCopy encodeObject:v7 forKey:@"dAaI"];
     }
   }
 
   bluetoothIdentifier = self->_bluetoothIdentifier;
   if (bluetoothIdentifier)
   {
-    [v34 encodeObject:bluetoothIdentifier forKey:@"btID"];
+    [coderCopy encodeObject:bluetoothIdentifier forKey:@"btID"];
   }
 
   bluetoothOTAName = self->_bluetoothOTAName;
-  v10 = v34;
+  v10 = coderCopy;
   if (bluetoothOTAName)
   {
-    [v34 encodeObject:bluetoothOTAName forKey:@"btNm"];
-    v10 = v34;
+    [coderCopy encodeObject:bluetoothOTAName forKey:@"btNm"];
+    v10 = coderCopy;
   }
 
   if (self->_bluetoothAppearance)
   {
     [v10 encodeInteger:? forKey:?];
-    v10 = v34;
+    v10 = coderCopy;
   }
 
   bluetoothRSSI = self->_bluetoothRSSI;
   if (bluetoothRSSI)
   {
     [v10 encodeObject:bluetoothRSSI forKey:@"btRs"];
-    v10 = v34;
+    v10 = coderCopy;
   }
 
   [(DADevice *)self encodeAdvDataWithCoder:v10];
   displayImageFileURL = self->_displayImageFileURL;
   if (displayImageFileURL)
   {
-    [v34 encodeObject:displayImageFileURL forKey:@"dvDIuR"];
+    [coderCopy encodeObject:displayImageFileURL forKey:@"dvDIuR"];
   }
 
   flags = self->_flags;
   if (flags)
   {
-    [v34 encodeInteger:flags forKey:@"dvFl"];
+    [coderCopy encodeInteger:flags forKey:@"dvFl"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v34 encodeObject:identifier forKey:@"id"];
+    [coderCopy encodeObject:identifier forKey:@"id"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v34 encodeObject:name forKey:@"name"];
+    [coderCopy encodeObject:name forKey:@"name"];
   }
 
   v16 = self->_networkEndpoint;
@@ -271,130 +271,130 @@
     v17 = [MEMORY[0x277CD91C8] endpointWithCEndpoint:v16];
     if (v17)
     {
-      [v34 encodeObject:v17 forKey:@"nwEP"];
+      [coderCopy encodeObject:v17 forKey:@"nwEP"];
     }
   }
 
   protocol = self->_protocol;
   if (protocol)
   {
-    [v34 encodeInteger:protocol forKey:@"dvPT"];
+    [coderCopy encodeInteger:protocol forKey:@"dvPT"];
   }
 
   protocolType = self->_protocolType;
   if (protocolType)
   {
-    [v34 encodeObject:protocolType forKey:@"prTy"];
+    [coderCopy encodeObject:protocolType forKey:@"prTy"];
   }
 
   SSID = self->_SSID;
   if (SSID)
   {
-    [v34 encodeObject:SSID forKey:@"ssID"];
+    [coderCopy encodeObject:SSID forKey:@"ssID"];
   }
 
   if (self->_networkUnsecured)
   {
-    [v34 encodeBool:1 forKey:@"nwUsec"];
+    [coderCopy encodeBool:1 forKey:@"nwUsec"];
   }
 
   if (self->_supportsGrouping)
   {
-    [v34 encodeBool:1 forKey:@"dvGr"];
+    [coderCopy encodeBool:1 forKey:@"dvGr"];
   }
 
   type = self->_type;
   if (type)
   {
-    [v34 encodeInteger:type forKey:@"dvCa"];
+    [coderCopy encodeInteger:type forKey:@"dvCa"];
   }
 
   txtRecordData = self->_txtRecordData;
   if (txtRecordData)
   {
-    [v34 encodeObject:txtRecordData forKey:@"txRD"];
+    [coderCopy encodeObject:txtRecordData forKey:@"txRD"];
   }
 
-  v23 = [(NSURL *)self->_url absoluteString];
-  if (v23)
+  absoluteString = [(NSURL *)self->_url absoluteString];
+  if (absoluteString)
   {
-    [v34 encodeObject:v23 forKey:@"urlS"];
+    [coderCopy encodeObject:absoluteString forKey:@"urlS"];
   }
 
   mediaPlaybackState = self->_mediaPlaybackState;
   if (mediaPlaybackState)
   {
-    [v34 encodeInteger:mediaPlaybackState forKey:@"mpSt"];
+    [coderCopy encodeInteger:mediaPlaybackState forKey:@"mpSt"];
   }
 
   mediaContentTitle = self->_mediaContentTitle;
   if (mediaContentTitle)
   {
-    [v34 encodeObject:mediaContentTitle forKey:@"mTi"];
+    [coderCopy encodeObject:mediaContentTitle forKey:@"mTi"];
   }
 
   mediaContentArtistName = self->_mediaContentArtistName;
   if (mediaContentArtistName)
   {
-    [v34 encodeObject:mediaContentArtistName forKey:@"mArt"];
+    [coderCopy encodeObject:mediaContentArtistName forKey:@"mArt"];
   }
 
   if (self->_discoveredInExtension)
   {
-    [v34 encodeBool:1 forKey:@"dvDe"];
+    [coderCopy encodeBool:1 forKey:@"dvDe"];
   }
 
   displayImageName = self->_displayImageName;
   if (displayImageName)
   {
-    [v34 encodeObject:displayImageName forKey:@"dvDI"];
+    [coderCopy encodeObject:displayImageName forKey:@"dvDI"];
   }
 
   if (self->_allowPairing)
   {
-    [v34 encodeBool:1 forKey:@"btAP"];
+    [coderCopy encodeBool:1 forKey:@"btAP"];
   }
 
   bluetoothClassicAddress = self->_bluetoothClassicAddress;
   if (bluetoothClassicAddress)
   {
-    [v34 encodeObject:bluetoothClassicAddress forKey:@"btCa"];
+    [coderCopy encodeObject:bluetoothClassicAddress forKey:@"btCa"];
   }
 
   wifiAwareOTAName = self->_wifiAwareOTAName;
   if (wifiAwareOTAName)
   {
-    [v34 encodeObject:wifiAwareOTAName forKey:@"wfaNm"];
+    [coderCopy encodeObject:wifiAwareOTAName forKey:@"wfaNm"];
   }
 
   wifiAwareVendorName = self->_wifiAwareVendorName;
   if (wifiAwareVendorName)
   {
-    [v34 encodeObject:wifiAwareVendorName forKey:@"wFVn"];
+    [coderCopy encodeObject:wifiAwareVendorName forKey:@"wFVn"];
   }
 
   wifiAwareModelName = self->_wifiAwareModelName;
   if (wifiAwareModelName)
   {
-    [v34 encodeObject:wifiAwareModelName forKey:@"wFMn"];
+    [coderCopy encodeObject:wifiAwareModelName forKey:@"wFMn"];
   }
 
   wifiAwareDevicePairingID = self->_wifiAwareDevicePairingID;
   if (wifiAwareDevicePairingID)
   {
-    [v34 encodeObject:wifiAwareDevicePairingID forKey:@"dwFPi"];
+    [coderCopy encodeObject:wifiAwareDevicePairingID forKey:@"dwFPi"];
   }
 
   signature = self->_signature;
   if (signature)
   {
-    [v34 encodeInteger:signature forKey:@"sig"];
+    [coderCopy encodeInteger:signature forKey:@"sig"];
   }
 }
 
-- (DADevice)initWithPersistentDictionaryRepresentation:(id)a3 error:(id *)a4
+- (DADevice)initWithPersistentDictionaryRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
+  representationCopy = representation;
   v60.receiver = self;
   v60.super_class = DADevice;
   v7 = [(DADevice *)&v60 init];
@@ -458,9 +458,9 @@
     CFDataGetTypeID();
     v55 = CFDictionaryGetTypedValue();
     v54 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v55 error:0];
-    v23 = [v54 copyCEndpoint];
+    copyCEndpoint = [v54 copyCEndpoint];
     networkEndpoint = v7->_networkEndpoint;
-    v7->_networkEndpoint = v23;
+    v7->_networkEndpoint = copyCEndpoint;
 
     v25 = NSDictionaryGetNSNumber();
     v7->_protocol = [v25 integerValue];
@@ -580,7 +580,7 @@
 
   else
   {
-    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:a4 error:?];
+    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:error error:?];
   }
 
   return v7;
@@ -595,8 +595,8 @@
   bluetoothIdentifier = self->_bluetoothIdentifier;
   if (bluetoothIdentifier)
   {
-    v6 = [(NSUUID *)bluetoothIdentifier UUIDString];
-    [v3 setObject:v6 forKeyedSubscript:@"bluetoothIdentifier"];
+    uUIDString = [(NSUUID *)bluetoothIdentifier UUIDString];
+    [v3 setObject:uUIDString forKeyedSubscript:@"bluetoothIdentifier"];
   }
 
   bluetoothOTAName = self->_bluetoothOTAName;
@@ -656,8 +656,8 @@
   protocolType = self->_protocolType;
   if (protocolType)
   {
-    v19 = [(UTType *)protocolType identifier];
-    [v3 setObject:v19 forKeyedSubscript:@"protocolType"];
+    identifier = [(UTType *)protocolType identifier];
+    [v3 setObject:identifier forKeyedSubscript:@"protocolType"];
   }
 
   SSID = self->_SSID;
@@ -675,8 +675,8 @@
   displayImageFileURL = self->_displayImageFileURL;
   if (displayImageFileURL)
   {
-    v23 = [(NSURL *)displayImageFileURL absoluteString];
-    [v3 setObject:v23 forKeyedSubscript:@"displayImageURL"];
+    absoluteString = [(NSURL *)displayImageFileURL absoluteString];
+    [v3 setObject:absoluteString forKeyedSubscript:@"displayImageURL"];
   }
 
   v24 = [MEMORY[0x277CCABB0] numberWithInteger:self->_state];
@@ -700,8 +700,8 @@
   url = self->_url;
   if (url)
   {
-    v29 = [(NSURL *)url absoluteString];
-    [v3 setObject:v29 forKeyedSubscript:@"url"];
+    absoluteString2 = [(NSURL *)url absoluteString];
+    [v3 setObject:absoluteString2 forKeyedSubscript:@"url"];
   }
 
   if (self->_mediaPlaybackState)
@@ -785,8 +785,8 @@
   wifiAwareDevicePairingID = self->_wifiAwareDevicePairingID;
   if (wifiAwareDevicePairingID)
   {
-    v49 = [(NSUUID *)wifiAwareDevicePairingID UUIDString];
-    [v3 setObject:v49 forKeyedSubscript:@"deviceWiFiAwarePairingID"];
+    uUIDString2 = [(NSUUID *)wifiAwareDevicePairingID UUIDString];
+    [v3 setObject:uUIDString2 forKeyedSubscript:@"deviceWiFiAwarePairingID"];
   }
 
   if (self->_signature)
@@ -800,10 +800,10 @@
   return v51;
 }
 
-+ (void)mergePersistentDictionary:(id)a3 into:(id)a4
++ (void)mergePersistentDictionary:(id)dictionary into:(id)into
 {
-  v9 = a3;
-  v5 = a4;
+  dictionaryCopy = dictionary;
+  intoCopy = into;
   CFDictionaryGetDouble();
   if (v6 == 0.0)
   {
@@ -811,15 +811,15 @@
     if (v7 != 0.0)
     {
       v8 = [MEMORY[0x277CCABB0] numberWithDouble:?];
-      [v5 setObject:v8 forKeyedSubscript:@"approveTime"];
+      [intoCopy setObject:v8 forKeyedSubscript:@"approveTime"];
     }
   }
 }
 
-- (DADevice)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADevice)initWithXPCObject:(id)object error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v38.receiver = self;
   v38.super_class = DADevice;
   v7 = [(DADevice *)&v38 init];
@@ -829,7 +829,7 @@
     CUXPCDecodeNSData();
     if (CUXPCDecodeNSUUID() && CUXPCDecodeNSString())
     {
-      [(DADevice *)v7 decodeAdvDataWithXPC:v6];
+      [(DADevice *)v7 decodeAdvDataWithXPC:objectCopy];
       v39 = 0;
       v8 = CUXPCDecodeUInt64RangedEx();
       if (v8 == 6)
@@ -866,16 +866,16 @@ LABEL_7:
 
         if (CUXPCDecodeNSString() && CUXPCDecodeNSString())
         {
-          v13 = xpc_dictionary_get_dictionary(v6, "nwEP");
+          v13 = xpc_dictionary_get_dictionary(objectCopy, "nwEP");
           if (v13)
           {
             v14 = nw_endpoint_create_from_dictionary();
             if (!v14)
             {
-              if (a4)
+              if (error)
               {
                 DAErrorF(350001, "XPC->NW failed", v15, v16, v17, v18, v19, v20, v37);
-                *a4 = v27 = 0;
+                *error = v27 = 0;
                 goto LABEL_53;
               }
 
@@ -1003,11 +1003,11 @@ LABEL_59:
     goto LABEL_55;
   }
 
-  if (a4)
+  if (error)
   {
     v30 = objc_opt_class();
     DAErrorF(350001, "%@ super init failed", v31, v32, v33, v34, v35, v36, v30);
-    *a4 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -1021,10 +1021,10 @@ LABEL_56:
   return v27;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v88 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v5 = self->_accessoryServicesInternalMap;
   if (v5)
   {
@@ -1033,11 +1033,11 @@ LABEL_56:
     if (v6)
     {
       v8 = v6;
-      v9 = v4;
-      v10 = [v7 bytes];
-      if (v10)
+      v9 = objectCopy;
+      bytes = [v7 bytes];
+      if (bytes)
       {
-        v11 = v10;
+        v11 = bytes;
       }
 
       else
@@ -1057,11 +1057,11 @@ LABEL_56:
     if (v13)
     {
       v15 = v13;
-      v16 = v4;
-      v17 = [v14 bytes];
-      if (v17)
+      v16 = objectCopy;
+      bytes2 = [v14 bytes];
+      if (bytes2)
       {
-        v18 = v17;
+        v18 = bytes2;
       }
 
       else
@@ -1076,17 +1076,17 @@ LABEL_56:
   bluetoothIdentifier = self->_bluetoothIdentifier;
   if (bluetoothIdentifier)
   {
-    v20 = v4;
+    v20 = objectCopy;
     [(NSUUID *)bluetoothIdentifier getUUIDBytes:uuid];
     xpc_dictionary_set_uuid(v20, "btID", uuid);
   }
 
   bluetoothOTAName = self->_bluetoothOTAName;
-  v22 = v4;
-  v23 = [(NSString *)bluetoothOTAName UTF8String];
-  if (v23)
+  v22 = objectCopy;
+  uTF8String = [(NSString *)bluetoothOTAName UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v22, "btNm", v23);
+    xpc_dictionary_set_string(v22, "btNm", uTF8String);
   }
 
   [(DADevice *)self encodeAdvDataWithXPC:v22];
@@ -1098,10 +1098,10 @@ LABEL_56:
   bluetoothRSSI = self->_bluetoothRSSI;
   if (bluetoothRSSI)
   {
-    v25 = [(NSNumber *)bluetoothRSSI intValue];
-    if (v25)
+    intValue = [(NSNumber *)bluetoothRSSI intValue];
+    if (intValue)
     {
-      xpc_dictionary_set_int64(v22, "btRs", v25);
+      xpc_dictionary_set_int64(v22, "btRs", intValue);
     }
   }
 
@@ -1111,30 +1111,30 @@ LABEL_56:
   v28 = v27;
   if (v27)
   {
-    v29 = [(NSURL *)v27 absoluteString];
+    absoluteString = [(NSURL *)v27 absoluteString];
     v30 = v22;
-    v31 = [v29 UTF8String];
-    if (v31)
+    uTF8String2 = [absoluteString UTF8String];
+    if (uTF8String2)
     {
-      xpc_dictionary_set_string(v30, "dvDIuR", v31);
+      xpc_dictionary_set_string(v30, "dvDIuR", uTF8String2);
     }
   }
 
   xpc_dictionary_set_uint64(v22, "dvFl", self->_flags);
   identifier = self->_identifier;
   v33 = v22;
-  v34 = [(NSString *)identifier UTF8String];
-  if (v34)
+  uTF8String3 = [(NSString *)identifier UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v33, "id", v34);
+    xpc_dictionary_set_string(v33, "id", uTF8String3);
   }
 
   name = self->_name;
   v36 = v33;
-  v37 = [(NSString *)name UTF8String];
-  if (v37)
+  uTF8String4 = [(NSString *)name UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v36, "name", v37);
+    xpc_dictionary_set_string(v36, "name", uTF8String4);
   }
 
   v38 = self->_networkEndpoint;
@@ -1149,20 +1149,20 @@ LABEL_56:
 
   v86 = v5;
   xpc_dictionary_set_int64(v36, "dvPT", self->_protocol);
-  v40 = [(UTType *)self->_protocolType identifier];
+  identifier = [(UTType *)self->_protocolType identifier];
   v41 = v36;
-  v42 = [v40 UTF8String];
-  if (v42)
+  uTF8String5 = [identifier UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(v41, "prTy", v42);
+    xpc_dictionary_set_string(v41, "prTy", uTF8String5);
   }
 
   SSID = self->_SSID;
   v44 = v41;
-  v45 = [(NSString *)SSID UTF8String];
-  if (v45)
+  uTF8String6 = [(NSString *)SSID UTF8String];
+  if (uTF8String6)
   {
-    xpc_dictionary_set_string(v44, "ssID", v45);
+    xpc_dictionary_set_string(v44, "ssID", uTF8String6);
   }
 
   if (self->_networkUnsecured)
@@ -1183,10 +1183,10 @@ LABEL_56:
     v47 = txtRecordData;
     v48 = v44;
     v49 = txtRecordData;
-    v50 = [(NSData *)v49 bytes];
-    if (v50)
+    bytes3 = [(NSData *)v49 bytes];
+    if (bytes3)
     {
-      v51 = v50;
+      v51 = bytes3;
     }
 
     else
@@ -1203,30 +1203,30 @@ LABEL_56:
   v54 = v53;
   if (v53)
   {
-    v55 = [(NSURL *)v53 absoluteString];
+    absoluteString2 = [(NSURL *)v53 absoluteString];
     v56 = v44;
-    v57 = [v55 UTF8String];
-    if (v57)
+    uTF8String7 = [absoluteString2 UTF8String];
+    if (uTF8String7)
     {
-      xpc_dictionary_set_string(v56, "urlS", v57);
+      xpc_dictionary_set_string(v56, "urlS", uTF8String7);
     }
   }
 
   xpc_dictionary_set_int64(v44, "mpSt", self->_mediaPlaybackState);
   mediaContentTitle = self->_mediaContentTitle;
   v59 = v44;
-  v60 = [(NSString *)mediaContentTitle UTF8String];
-  if (v60)
+  uTF8String8 = [(NSString *)mediaContentTitle UTF8String];
+  if (uTF8String8)
   {
-    xpc_dictionary_set_string(v59, "mTi", v60);
+    xpc_dictionary_set_string(v59, "mTi", uTF8String8);
   }
 
   mediaContentArtistName = self->_mediaContentArtistName;
   v62 = v59;
-  v63 = [(NSString *)mediaContentArtistName UTF8String];
-  if (v63)
+  uTF8String9 = [(NSString *)mediaContentArtistName UTF8String];
+  if (uTF8String9)
   {
-    xpc_dictionary_set_string(v62, "mArt", v63);
+    xpc_dictionary_set_string(v62, "mArt", uTF8String9);
   }
 
   if (self->_discoveredInExtension)
@@ -1236,10 +1236,10 @@ LABEL_56:
 
   displayImageName = self->_displayImageName;
   v65 = v62;
-  v66 = [(NSString *)displayImageName UTF8String];
-  if (v66)
+  uTF8String10 = [(NSString *)displayImageName UTF8String];
+  if (uTF8String10)
   {
-    xpc_dictionary_set_string(v65, "dvDI", v66);
+    xpc_dictionary_set_string(v65, "dvDI", uTF8String10);
   }
 
   if (self->_allowPairing)
@@ -1253,10 +1253,10 @@ LABEL_56:
     v68 = bluetoothClassicAddress;
     v69 = v65;
     v70 = bluetoothClassicAddress;
-    v71 = [(NSData *)v70 bytes];
-    if (v71)
+    bytes4 = [(NSData *)v70 bytes];
+    if (bytes4)
     {
-      v72 = v71;
+      v72 = bytes4;
     }
 
     else
@@ -1271,10 +1271,10 @@ LABEL_56:
 
   wifiAwareOTAName = self->_wifiAwareOTAName;
   v75 = v65;
-  v76 = [(NSString *)wifiAwareOTAName UTF8String];
-  if (v76)
+  uTF8String11 = [(NSString *)wifiAwareOTAName UTF8String];
+  if (uTF8String11)
   {
-    xpc_dictionary_set_string(v75, "wfaNm", v76);
+    xpc_dictionary_set_string(v75, "wfaNm", uTF8String11);
   }
 
   wifiAwareDevicePairingID = self->_wifiAwareDevicePairingID;
@@ -1287,27 +1287,27 @@ LABEL_56:
 
   wifiAwareVendorName = self->_wifiAwareVendorName;
   v80 = v75;
-  v81 = [(NSString *)wifiAwareVendorName UTF8String];
-  if (v81)
+  uTF8String12 = [(NSString *)wifiAwareVendorName UTF8String];
+  if (uTF8String12)
   {
-    xpc_dictionary_set_string(v80, "wFVn", v81);
+    xpc_dictionary_set_string(v80, "wFVn", uTF8String12);
   }
 
   wifiAwareModelName = self->_wifiAwareModelName;
   v83 = v80;
-  v84 = [(NSString *)wifiAwareModelName UTF8String];
-  if (v84)
+  uTF8String13 = [(NSString *)wifiAwareModelName UTF8String];
+  if (uTF8String13)
   {
-    xpc_dictionary_set_string(v83, "wFMn", v84);
+    xpc_dictionary_set_string(v83, "wFMn", uTF8String13);
   }
 
   xpc_dictionary_set_int64(v83, "sig", self->_signature);
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 248) = self->_approveTime;
   v5 = [(NSMutableDictionary *)self->_appAccessInfoDeviceMap copy];
   v6 = *(v4 + 232);
@@ -1420,7 +1420,7 @@ LABEL_56:
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v129 = 0;
   v130 = &v129;
@@ -1431,7 +1431,7 @@ LABEL_56:
   v127[0] = 0;
   v127[1] = v127;
   v127[2] = 0x2020000000;
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v5 = 8;
   }
@@ -1442,7 +1442,7 @@ LABEL_56:
   }
 
   v128 = v5;
-  if ((a3 & 0x8000000) == 0)
+  if ((level & 0x8000000) == 0)
   {
     v126 = 0;
     objc_opt_class();
@@ -1833,7 +1833,7 @@ LABEL_56:
   v86[3] = &unk_278F57B78;
   v86[4] = &v129;
   v86[5] = v127;
-  v87 = a3;
+  levelCopy = level;
   [(NSMutableDictionary *)appAccessInfoDeviceMap enumerateKeysAndObjectsUsingBlock:v86];
   accessoryServicesInternalMap = self->_accessoryServicesInternalMap;
   v84[0] = MEMORY[0x277D85DD0];
@@ -1842,7 +1842,7 @@ LABEL_56:
   v84[3] = &unk_278F57BA0;
   v84[4] = &v129;
   v84[5] = v127;
-  v85 = a3;
+  levelCopy2 = level;
   [(NSMutableDictionary *)accessoryServicesInternalMap enumerateKeysAndObjectsUsingBlock:v84];
   v76 = v130[5];
   if (!v76)
@@ -1910,11 +1910,11 @@ void __33__DADevice_descriptionWithLevel___block_invoke_3(uint64_t a1)
 - (BOOL)requiresBluetoothSetup
 {
   v3 = self->_discoveryConfiguration;
-  v4 = [(DADiscoveryConfiguration *)v3 bluetoothCompanyIdentifiers];
-  if (!v4)
+  bluetoothCompanyIdentifiers = [(DADiscoveryConfiguration *)v3 bluetoothCompanyIdentifiers];
+  if (!bluetoothCompanyIdentifiers)
   {
-    v6 = [(DADiscoveryConfiguration *)v3 bluetoothCompanyPayload];
-    if (v6)
+    bluetoothCompanyPayload = [(DADiscoveryConfiguration *)v3 bluetoothCompanyPayload];
+    if (bluetoothCompanyPayload)
     {
       v5 = 1;
 LABEL_18:
@@ -1922,8 +1922,8 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v7 = [(DADiscoveryConfiguration *)v3 bluetoothCompanyPayloadMask];
-    if (v7)
+    bluetoothCompanyPayloadMask = [(DADiscoveryConfiguration *)v3 bluetoothCompanyPayloadMask];
+    if (bluetoothCompanyPayloadMask)
     {
       v5 = 1;
 LABEL_17:
@@ -1931,8 +1931,8 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v8 = [(DADiscoveryConfiguration *)v3 bluetoothNameSubstring];
-    if (v8)
+    bluetoothNameSubstring = [(DADiscoveryConfiguration *)v3 bluetoothNameSubstring];
+    if (bluetoothNameSubstring)
     {
       v5 = 1;
 LABEL_16:
@@ -1940,20 +1940,20 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v9 = [(DADiscoveryConfiguration *)v3 bluetoothServices];
-    if (v9 && (-[DADiscoveryConfiguration bluetoothServices](v3, "bluetoothServices"), v2 = objc_claimAutoreleasedReturnValue(), [v2 count]))
+    bluetoothServices = [(DADiscoveryConfiguration *)v3 bluetoothServices];
+    if (bluetoothServices && (-[DADiscoveryConfiguration bluetoothServices](v3, "bluetoothServices"), v2 = objc_claimAutoreleasedReturnValue(), [v2 count]))
     {
       v5 = 1;
     }
 
     else
     {
-      v10 = [(DADiscoveryConfiguration *)v3 bluetoothServicePayload];
-      if (v10)
+      bluetoothServicePayload = [(DADiscoveryConfiguration *)v3 bluetoothServicePayload];
+      if (bluetoothServicePayload)
       {
 
         v5 = 1;
-        if (!v9)
+        if (!bluetoothServices)
         {
 LABEL_15:
 
@@ -1963,10 +1963,10 @@ LABEL_15:
 
       else
       {
-        v12 = [(DADiscoveryConfiguration *)v3 bluetoothServicePayloadMask];
-        v5 = v12 != 0;
+        bluetoothServicePayloadMask = [(DADiscoveryConfiguration *)v3 bluetoothServicePayloadMask];
+        v5 = bluetoothServicePayloadMask != 0;
 
-        if (!v9)
+        if (!bluetoothServices)
         {
           goto LABEL_15;
         }
@@ -1985,16 +1985,16 @@ LABEL_19:
 - (BOOL)requiresWiFiSoftAPSetup
 {
   v2 = self->_discoveryConfiguration;
-  v3 = [(DADiscoveryConfiguration *)v2 hotspotSSIDs];
-  if (v3)
+  hotspotSSIDs = [(DADiscoveryConfiguration *)v2 hotspotSSIDs];
+  if (hotspotSSIDs)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(DADiscoveryConfiguration *)v2 hotspotSSIDPrefixes];
-    v4 = v5 != 0;
+    hotspotSSIDPrefixes = [(DADiscoveryConfiguration *)v2 hotspotSSIDPrefixes];
+    v4 = hotspotSSIDPrefixes != 0;
   }
 
   return v4;
@@ -2002,17 +2002,17 @@ LABEL_19:
 
 - (BOOL)requiresWiFiAwareSetup
 {
-  v2 = [(DADiscoveryConfiguration *)self->_discoveryConfiguration wifiAwareServiceName];
-  v3 = v2 != 0;
+  wifiAwareServiceName = [(DADiscoveryConfiguration *)self->_discoveryConfiguration wifiAwareServiceName];
+  v3 = wifiAwareServiceName != 0;
 
   return v3;
 }
 
-- (void)setDeviceUpgradeFinished:(BOOL)a3 inProgress:(BOOL)a4 failed:(BOOL)a5
+- (void)setDeviceUpgradeFinished:(BOOL)finished inProgress:(BOOL)progress failed:(BOOL)failed
 {
-  self->_upgradeInProgress = !a5 && a4;
-  self->_upgradeFinished = !a5 && a3;
-  self->_upgradeFailed = a5;
+  self->_upgradeInProgress = !failed && progress;
+  self->_upgradeFinished = !failed && finished;
+  self->_upgradeFailed = failed;
 }
 
 void __45__DADevice_encodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2023,20 +2023,20 @@ void __45__DADevice_encodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
   [v4 setObject:v5 forKeyedSubscript:v6];
 }
 
-- (void)decodeAdvDataWithCoder:(id)a3 xpcObject:(id)a4
+- (void)decodeAdvDataWithCoder:(id)coder xpcObject:(id)object
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  coderCopy = coder;
+  objectCopy = object;
+  v7 = objectCopy;
   v36 = 0;
-  if (v5)
+  if (coderCopy)
   {
     objc_opt_class();
     NSDecodeObjectIfPresent();
   }
 
-  else if (v6)
+  else if (objectCopy)
   {
     CUXPCDecodeNSData();
   }
@@ -2063,9 +2063,9 @@ void __45__DADevice_encodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
 
         v9 = *(*(&v32 + 1) + 8 * i);
         v31 = 0;
-        if (v5)
+        if (coderCopy)
         {
-          v10 = v5;
+          v10 = coderCopy;
           v11 = v9;
           objc_opt_class();
           NSDecodeObjectIfPresent();
@@ -2095,26 +2095,26 @@ void __45__DADevice_encodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
           v15 = [v13 setWithArray:v14];
 
           v16 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v15 fromData:v31 error:0];
-          v17 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           if ([v9 isEqualToString:v25])
           {
             v29[0] = MEMORY[0x277D85DD0];
             v29[1] = 3221225472;
             v29[2] = __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke;
             v29[3] = &unk_278F57BF0;
-            v30 = v17;
+            v30 = dictionary;
             [v16 enumerateKeysAndObjectsUsingBlock:v29];
           }
 
-          v18 = v28;
+          dictionary2 = v28;
           if (!v28)
           {
-            v18 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v19 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v17];
-          v28 = v18;
-          [v18 setObject:v19 forKeyedSubscript:v9];
+          v19 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
+          v28 = dictionary2;
+          [dictionary2 setObject:v19 forKeyedSubscript:v9];
 
           v7 = v12;
         }
@@ -2146,11 +2146,11 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
   }
 }
 
-+ (BOOL)deviceMetadataURLValid:(id)a3
++ (BOOL)deviceMetadataURLValid:(id)valid
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
-  v5 = [v4 length];
+  validCopy = valid;
+  absoluteString = [validCopy absoluteString];
+  v5 = [absoluteString length];
 
   if (v5 > 0x31)
   {
@@ -2159,17 +2159,17 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
 
   else
   {
-    v6 = [v3 query];
-    if (v6)
+    query = [validCopy query];
+    if (query)
     {
       v10 = 0;
     }
 
     else
     {
-      v7 = [v3 host];
-      v8 = v7;
-      if (v7 && [v7 length] <= 0x13)
+      host = [validCopy host];
+      v8 = host;
+      if (host && [host length] <= 0x13)
       {
         v9 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"^[a-zA-Z0-9.-]+$" options:1 error:0];
         v10 = [v9 numberOfMatchesInString:v8 options:0 range:{0, objc_msgSend(v8, "length")}] != 0;
@@ -2185,14 +2185,14 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
   return v10;
 }
 
-- (void)encodeAdvDataWithCoder:(id)a3 xpcObject:(id)a4
+- (void)encodeAdvDataWithCoder:(id)coder xpcObject:(id)object
 {
   v85[7] = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v54 = a4;
+  coderCopy = coder;
+  objectCopy = object;
   if (self->_bluetoothAdvertisementData)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -2212,7 +2212,7 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
     v85[6] = *MEMORY[0x277CBDD38];
     obj = [MEMORY[0x277CBEA60] arrayWithObjects:v85 count:7];
     v10 = [obj countByEnumeratingWithState:&v78 objects:v84 count:16];
-    v61 = v6;
+    v61 = dictionary;
     if (v10)
     {
       v11 = v10;
@@ -2234,9 +2234,9 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
           {
             if (([v13 isEqualToString:v62] & 1) != 0 || (objc_msgSend(v13, "isEqualToString:", key) & 1) != 0 || objc_msgSend(v13, "isEqualToString:", xdict))
             {
-              v15 = self;
+              selfCopy = self;
               v16 = [(NSDictionary *)self->_bluetoothAdvertisementData objectForKeyedSubscript:v13];
-              v17 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
               v74 = 0u;
               v75 = 0u;
               v76 = 0u;
@@ -2256,8 +2256,8 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
                       objc_enumerationMutation(v18);
                     }
 
-                    v23 = [*(*(&v74 + 1) + 8 * i) UUIDString];
-                    [v17 addObject:v23];
+                    uUIDString = [*(*(&v74 + 1) + 8 * i) UUIDString];
+                    [array addObject:uUIDString];
                   }
 
                   v20 = [v18 countByEnumeratingWithState:&v74 objects:v83 count:16];
@@ -2266,16 +2266,16 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
                 while (v20);
               }
 
-              v6 = v61;
-              [v61 setObject:v17 forKeyedSubscript:v13];
+              dictionary = v61;
+              [v61 setObject:array forKeyedSubscript:v13];
 
-              self = v15;
+              self = selfCopy;
             }
 
             else
             {
               v18 = [(NSDictionary *)self->_bluetoothAdvertisementData objectForKeyedSubscript:v13];
-              [v6 setObject:v18 forKeyedSubscript:v13];
+              [dictionary setObject:v18 forKeyedSubscript:v13];
             }
           }
 
@@ -2290,34 +2290,34 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
       while (v24);
     }
 
-    if ([v6 count])
+    if ([dictionary count])
     {
       v73 = 0;
-      v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v73];
+      v25 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:dictionary requiringSecureCoding:1 error:&v73];
       v26 = v73;
       if (v26 && gLogCategory_DADevice <= 90 && (gLogCategory_DADevice != -1 || _LogCategory_Initialize()))
       {
         v51 = v26;
-        v52 = v6;
+        v52 = dictionary;
         LogPrintF();
       }
 
       if (v25)
       {
-        if (v57)
+        if (coderCopy)
         {
-          [v57 encodeObject:v25 forKey:@"btAdv"];
+          [coderCopy encodeObject:v25 forKey:@"btAdv"];
         }
 
-        else if (v54)
+        else if (objectCopy)
         {
-          v27 = v54;
+          v27 = objectCopy;
           v28 = v25;
           v29 = v25;
-          v30 = [v29 bytes];
-          if (v30)
+          bytes = [v29 bytes];
+          if (bytes)
           {
-            v31 = v30;
+            v31 = bytes;
           }
 
           else
@@ -2365,12 +2365,12 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
           if (v40 && [v39 isEqualToString:v36])
           {
             v41 = [(NSDictionary *)self->_bluetoothAdvertisementData objectForKeyedSubscript:v39];
-            v42 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary2 = [MEMORY[0x277CBEB38] dictionary];
             v67[0] = MEMORY[0x277D85DD0];
             v67[1] = 3221225472;
             v67[2] = __45__DADevice_encodeAdvDataWithCoder_xpcObject___block_invoke;
             v67[3] = &unk_278F57BC8;
-            v43 = v42;
+            v43 = dictionary2;
             v68 = v43;
             [v41 enumerateKeysAndObjectsUsingBlock:v67];
             v66 = v26;
@@ -2386,22 +2386,22 @@ void __45__DADevice_decodeAdvDataWithCoder_xpcObject___block_invoke(uint64_t a1,
 
             if (v44)
             {
-              if (v57)
+              if (coderCopy)
               {
-                [v57 encodeObject:v44 forKey:v39];
+                [coderCopy encodeObject:v44 forKey:v39];
               }
 
-              else if (v54)
+              else if (objectCopy)
               {
                 keya = [v39 cStringUsingEncoding:4];
-                xdicta = v54;
+                xdicta = objectCopy;
                 v45 = v44;
                 v46 = v44;
-                v47 = [v46 bytes];
+                bytes2 = [v46 bytes];
                 v48 = "";
-                if (v47)
+                if (bytes2)
                 {
-                  v48 = v47;
+                  v48 = bytes2;
                 }
 
                 bytes = v48;

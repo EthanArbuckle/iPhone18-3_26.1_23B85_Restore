@@ -1,20 +1,20 @@
 @interface SAPAStyleThreadData
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleThreadData
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleThreadData" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleThreadData" userInfo:0];
   objc_exception_throw(v3);
@@ -26,15 +26,15 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v10 = @"NULL buffer";
     goto LABEL_24;
   }
 
-  if ((*a3 - 287528979) >= 7)
+  if ((*buffer - 287528979) >= 7)
   {
     v10 = @"Bad magic";
 LABEL_24:
@@ -43,16 +43,16 @@ LABEL_24:
   }
 
   v5 = objc_alloc_init(SAPAStyleThreadData);
-  v6 = [SAThreadState stateWithoutReferencesFromPAStyleSerializedThread:a3];
+  v6 = [SAThreadState stateWithoutReferencesFromPAStyleSerializedThread:buffer];
   threadState = v5->_threadState;
   v5->_threadState = v6;
 
-  v8 = *a3;
-  if (*a3 > 0x11235818uLL)
+  v8 = *buffer;
+  if (*buffer > 0x11235818uLL)
   {
-    v5->_dispatchQueueId = *(a3 + 6);
-    v5->_threadId = *(a3 + 5);
-    if ((*(a3 + 115) & 8) == 0)
+    v5->_dispatchQueueId = *(buffer + 6);
+    v5->_threadId = *(buffer + 5);
+    if ((*(buffer + 115) & 8) == 0)
     {
       return v5;
     }
@@ -60,11 +60,11 @@ LABEL_24:
     goto LABEL_11;
   }
 
-  if (*a3 == 287528984)
+  if (*buffer == 287528984)
   {
-    v5->_dispatchQueueId = *(a3 + 6);
-    v5->_threadId = *(a3 + 5);
-    if ((*(a3 + 99) & 8) == 0)
+    v5->_dispatchQueueId = *(buffer + 6);
+    v5->_threadId = *(buffer + 5);
+    if ((*(buffer + 99) & 8) == 0)
     {
       return v5;
     }
@@ -78,9 +78,9 @@ LABEL_24:
     {
       if (v8 == 287528981)
       {
-        v5->_dispatchQueueId = *(a3 + 4);
-        v5->_threadId = *(a3 + 3);
-        if ((*(a3 + 80) & 8) == 0)
+        v5->_dispatchQueueId = *(buffer + 4);
+        v5->_threadId = *(buffer + 3);
+        if ((*(buffer + 80) & 8) == 0)
         {
           return v5;
         }
@@ -88,9 +88,9 @@ LABEL_24:
 
       else
       {
-        v5->_dispatchQueueId = *(a3 + 5);
-        v5->_threadId = *(a3 + 4);
-        if ((*(a3 + 88) & 8) == 0)
+        v5->_dispatchQueueId = *(buffer + 5);
+        v5->_threadId = *(buffer + 4);
+        if ((*(buffer + 88) & 8) == 0)
         {
           return v5;
         }
@@ -101,16 +101,16 @@ LABEL_24:
 
     if (v8 == 287528979 || v8 == 287528980)
     {
-      v5->_dispatchQueueId = *(a3 + 2);
-      v5->_threadId = *(a3 + 7);
+      v5->_dispatchQueueId = *(buffer + 2);
+      v5->_threadId = *(buffer + 7);
     }
   }
 
   else
   {
-    v5->_dispatchQueueId = *(a3 + 6);
-    v5->_threadId = *(a3 + 5);
-    if ((*(a3 + 96) & 8) != 0)
+    v5->_dispatchQueueId = *(buffer + 6);
+    v5->_threadId = *(buffer + 5);
+    if ((*(buffer + 96) & 8) != 0)
     {
 LABEL_11:
       v5->_isGlobalForcedIdle = 1;
@@ -120,25 +120,25 @@ LABEL_11:
   return v5;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
-  if (!a3)
+  if (!buffer)
   {
     v7 = @"NULL buffer";
     goto LABEL_8;
   }
 
-  if ((*a3 - 287528979) >= 7)
+  if ((*buffer - 287528979) >= 7)
   {
     v7 = @"Bad magic";
 LABEL_8:
-    v8 = [SAException exceptionWithName:@"Decoding failure" reason:v7 userInfo:0, a6];
-    objc_exception_throw(v8);
+    bufferDictionary = [SAException exceptionWithName:@"Decoding failure" reason:v7 userInfo:0, bufferDictionary];
+    objc_exception_throw(bufferDictionary);
   }
 
   threadState = self->_threadState;
 
-  [(SAThreadState *)threadState populateReferencesUsingPAStyleSerializedThread:a3 andDeserializationDictionary:a5 andDataBufferDictionary:a6];
+  [(SAThreadState *)threadState populateReferencesUsingPAStyleSerializedThread:buffer andDeserializationDictionary:dictionary andDataBufferDictionary:bufferDictionary];
 }
 
 @end

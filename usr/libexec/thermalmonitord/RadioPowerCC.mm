@@ -1,20 +1,20 @@
 @interface RadioPowerCC
-- (unint64_t)convertDetailStringToValue:(__CFString *)a3;
+- (unint64_t)convertDetailStringToValue:(__CFString *)value;
 - (void)defaultAction;
 @end
 
 @implementation RadioPowerCC
 
-- (unint64_t)convertDetailStringToValue:(__CFString *)a3
+- (unint64_t)convertDetailStringToValue:(__CFString *)value
 {
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(value);
   if (Length == 4)
   {
     v5 = 0;
     v6 = 0;
     do
     {
-      CharacterAtIndex = CFStringGetCharacterAtIndex(a3, v5);
+      CharacterAtIndex = CFStringGetCharacterAtIndex(value, v5);
       if (v5 == 3)
       {
         v6 += CharacterAtIndex;
@@ -37,7 +37,7 @@
     v9 = qword_1000AB718;
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
-      sub_100057448(a3, v8, v9);
+      sub_100057448(value, v8, v9);
     }
 
     return 0;

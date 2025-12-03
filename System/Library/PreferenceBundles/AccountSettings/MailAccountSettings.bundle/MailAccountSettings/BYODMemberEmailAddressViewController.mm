@@ -1,5 +1,5 @@
 @interface BYODMemberEmailAddressViewController
-- (BYODMemberEmailAddressViewController)initWithAccount:(id)a3 domain:(id)a4 member:(id)a5;
+- (BYODMemberEmailAddressViewController)initWithAccount:(id)account domain:(id)domain member:(id)member;
 - (id)_getRemoveSpecifier;
 - (id)specifiers;
 - (void)_removeMemberAlert;
@@ -11,20 +11,20 @@
 
 @implementation BYODMemberEmailAddressViewController
 
-- (BYODMemberEmailAddressViewController)initWithAccount:(id)a3 domain:(id)a4 member:(id)a5
+- (BYODMemberEmailAddressViewController)initWithAccount:(id)account domain:(id)domain member:(id)member
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  domainCopy = domain;
+  memberCopy = member;
   v15.receiver = self;
   v15.super_class = BYODMemberEmailAddressViewController;
   v12 = [(BYODMemberEmailAddressViewController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_loggedInUserAccount, a3);
-    objc_storeStrong(&v13->_domainResult, a4);
-    objc_storeStrong(&v13->_domainMember, a5);
+    objc_storeStrong(&v12->_loggedInUserAccount, account);
+    objc_storeStrong(&v13->_domainResult, domain);
+    objc_storeStrong(&v13->_domainMember, member);
   }
 
   return v13;
@@ -35,8 +35,8 @@
   v9.receiver = self;
   v9.super_class = BYODMemberEmailAddressViewController;
   [(BYODMemberEmailAddressViewController *)&v9 viewDidLoad];
-  v3 = [(BYODUser *)self->_domainMember invitationStatus];
-  v4 = [v3 isEqualToString:@"INVITED"];
+  invitationStatus = [(BYODUser *)self->_domainMember invitationStatus];
+  v4 = [invitationStatus isEqualToString:@"INVITED"];
 
   domainMember = self->_domainMember;
   if (v4)
@@ -49,39 +49,39 @@
     [(BYODUser *)domainMember fullName];
   }
   v6 = ;
-  v7 = [(BYODMemberEmailAddressViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  navigationItem = [(BYODMemberEmailAddressViewController *)self navigationItem];
+  [navigationItem setTitle:v6];
 
-  v8 = [(BYODMemberEmailAddressViewController *)self navigationItem];
-  [v8 setHidesBackButton:0];
+  navigationItem2 = [(BYODMemberEmailAddressViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:0];
 }
 
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(BYODUser *)self->_domainMember invitationStatus];
-  v5 = [v4 isEqualToString:@"INVITED"];
+  invitationStatus = [(BYODUser *)self->_domainMember invitationStatus];
+  v5 = [invitationStatus isEqualToString:@"INVITED"];
 
   if (v5)
   {
     v6 = +[PSSpecifier emptyGroupSpecifier];
     [v3 addObject:v6];
-    v7 = [(BYODUser *)self->_domainMember memberIdentifier];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:4 edit:0];
+    memberIdentifier = [(BYODUser *)self->_domainMember memberIdentifier];
+    v8 = [PSSpecifier preferenceSpecifierNamed:memberIdentifier target:self set:0 get:0 detail:0 cell:4 edit:0];
 
     v9 = +[BYODContactsManager sharedInstance];
     v10 = [v9 avatarImageForUser:self->_domainMember];
     [v8 setProperty:v10 forKey:PSIconImageKey];
 
-    v11 = [(BYODUser *)self->_domainMember invitedOnDate];
-    v12 = [v11 length];
+    invitedOnDate = [(BYODUser *)self->_domainMember invitedOnDate];
+    v12 = [invitedOnDate length];
 
     if (v12)
     {
       v13 = [NSBundle bundleForClass:objc_opt_class()];
       v14 = [v13 localizedStringForKey:@"BYOD_MEMBER_INVITE_ON_DATE" value:&stru_B9FC8 table:@"AccountPreferences"];
-      v15 = [(BYODUser *)self->_domainMember invitedOnDate];
-      v16 = [NSString stringWithFormat:v14, v15];
+      invitedOnDate2 = [(BYODUser *)self->_domainMember invitedOnDate];
+      v16 = [NSString stringWithFormat:v14, invitedOnDate2];
 
       [v8 setProperty:v16 forKey:PSTableCellSubtitleTextKey];
     }
@@ -98,8 +98,8 @@
 
   else
   {
-    v20 = [(BYODUser *)self->_domainMember emails];
-    v21 = [v20 count];
+    emails = [(BYODUser *)self->_domainMember emails];
+    v21 = [emails count];
 
     if (v21)
     {
@@ -112,8 +112,8 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v25 = [(BYODUser *)self->_domainMember emails];
-      v26 = [v25 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      emails2 = [(BYODUser *)self->_domainMember emails];
+      v26 = [emails2 countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v26)
       {
         v27 = *v39;
@@ -124,18 +124,18 @@
           {
             if (*v39 != v27)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(emails2);
             }
 
-            v29 = [*(*(&v38 + 1) + 8 * v28) email];
-            v30 = [PSSpecifier preferenceSpecifierNamed:v29 target:self set:0 get:0 detail:0 cell:4 edit:0];
+            email = [*(*(&v38 + 1) + 8 * v28) email];
+            v30 = [PSSpecifier preferenceSpecifierNamed:email target:self set:0 get:0 detail:0 cell:4 edit:0];
             [v3 addObject:v30];
 
             v28 = v28 + 1;
           }
 
           while (v26 != v28);
-          v26 = [v25 countByEnumeratingWithState:&v38 objects:v42 count:16];
+          v26 = [emails2 countByEnumeratingWithState:&v38 objects:v42 count:16];
         }
 
         while (v26);
@@ -143,8 +143,8 @@
     }
   }
 
-  v31 = [(BYODMemberEmailAddressViewController *)self _getRemoveSpecifier];
-  [v3 addObjectsFromArray:v31];
+  _getRemoveSpecifier = [(BYODMemberEmailAddressViewController *)self _getRemoveSpecifier];
+  [v3 addObjectsFromArray:_getRemoveSpecifier];
 
   v32 = [v3 copy];
   v33 = OBJC_IVAR___PSListController__specifiers;
@@ -163,10 +163,10 @@
   v4 = [PSSpecifier groupSpecifierWithID:@"BYOD_MEMBER_REMOVE_GROUP_ID"];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BYOD_MEMBER_REMOVE_BUTTON_FOOTER" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v7 = [(BYODUser *)self->_domainMember fullName];
-  v8 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v9 = [v8 name];
-  v10 = [NSString stringWithFormat:v6, v7, v9];
+  fullName = [(BYODUser *)self->_domainMember fullName];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  v10 = [NSString stringWithFormat:v6, fullName, name];
 
   [v4 setProperty:v10 forKey:PSFooterTextGroupKey];
   [v3 addObject:v4];
@@ -185,15 +185,15 @@
 {
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"BYOD_MEMBER_REMOVE_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v5 = [(BYODUser *)self->_domainMember fullName];
-  v6 = [NSString stringWithFormat:v4, v5];
+  fullName = [(BYODUser *)self->_domainMember fullName];
+  v6 = [NSString stringWithFormat:v4, fullName];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"BYOD_MEMBER_REMOVE_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v9 = [(BYODUser *)self->_domainMember fullName];
-  v10 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v11 = [v10 name];
-  v12 = [NSString stringWithFormat:v8, v9, v11];
+  fullName2 = [(BYODUser *)self->_domainMember fullName];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  v12 = [NSString stringWithFormat:v8, fullName2, name];
 
   v13 = [UIAlertController alertControllerWithTitle:v6 message:v12 preferredStyle:1];
   v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -222,10 +222,10 @@
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BYOD_MEMBER_RESEND_INVITE_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v7 = [(BYODUser *)self->_domainMember memberIdentifier];
-  v8 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v9 = [v8 name];
-  v10 = [NSString stringWithFormat:v6, v7, v9];
+  memberIdentifier = [(BYODUser *)self->_domainMember memberIdentifier];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  v10 = [NSString stringWithFormat:v6, memberIdentifier, name];
 
   v11 = [UIAlertController alertControllerWithTitle:v4 message:v10 preferredStyle:1];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
@@ -245,12 +245,12 @@
 {
   v3 = [BYODRemoveMemberRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v5 = [(ACAccount *)loggedInUserAccount accountStore];
-  v6 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v7 = [v6 name];
-  v8 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v9 = [v8 status];
-  v10 = [(BYODRemoveMemberRequest *)v3 initWithAccount:loggedInUserAccount accountStore:v5 domain:v7 domainStatus:v9 domainMember:self->_domainMember];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  domain2 = [(BYODGetDomainResult *)self->_domainResult domain];
+  status = [domain2 status];
+  v10 = [(BYODRemoveMemberRequest *)v3 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name domainStatus:status domainMember:self->_domainMember];
 
   spinner = self->_spinner;
   if (!spinner)
@@ -278,12 +278,12 @@
 {
   v3 = [BYODResendMemberInviteRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v5 = [(ACAccount *)loggedInUserAccount accountStore];
-  v6 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v7 = [v6 name];
-  v8 = [(BYODUser *)self->_domainMember invitedEmail];
-  v9 = [(BYODUser *)self->_domainMember invitedPhoneNumber];
-  v10 = [(BYODResendMemberInviteRequest *)v3 initWithAccount:loggedInUserAccount accountStore:v5 domain:v7 email:v8 phone:v9];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  name = [domain name];
+  invitedEmail = [(BYODUser *)self->_domainMember invitedEmail];
+  invitedPhoneNumber = [(BYODUser *)self->_domainMember invitedPhoneNumber];
+  v10 = [(BYODResendMemberInviteRequest *)v3 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name email:invitedEmail phone:invitedPhoneNumber];
 
   spinner = self->_spinner;
   if (!spinner)

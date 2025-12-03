@@ -1,44 +1,44 @@
 @interface NLSessionActivityGroundElevationManager
-- (NLSessionActivityGroundElevationManager)initWithDelegate:(id)a3;
+- (NLSessionActivityGroundElevationManager)initWithDelegate:(id)delegate;
 - (NLSessionActivityGroundElevationManagerDelegate)delegate;
 - (void)_setup;
 - (void)_startRequestingGroundElevation;
-- (void)_updateElevation:(id)a3;
-- (void)elevationError:(id)a3;
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)setActive:(BOOL)a3;
+- (void)_updateElevation:(id)elevation;
+- (void)elevationError:(id)error;
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation NLSessionActivityGroundElevationManager
 
-- (NLSessionActivityGroundElevationManager)initWithDelegate:(id)a3
+- (NLSessionActivityGroundElevationManager)initWithDelegate:(id)delegate
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, delegate);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = NLSessionActivityGroundElevationManager;
   v6 = [(NLSessionActivityGroundElevationManager *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    [(NLSessionActivityGroundElevationManager *)v9 setDelegate:location[0]];
-    [(NLSessionActivityGroundElevationManager *)v9 _setup];
+    [(NLSessionActivityGroundElevationManager *)selfCopy setDelegate:location[0]];
+    [(NLSessionActivityGroundElevationManager *)selfCopy _setup];
   }
 
-  v5 = MEMORY[0x277D82BE0](v9);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)_setup
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   queue = dispatch_get_global_queue(25, 0);
   v3 = MEMORY[0x277D85DD0];
@@ -46,7 +46,7 @@
   v5 = 0;
   v6 = __49__NLSessionActivityGroundElevationManager__setup__block_invoke;
   v7 = &unk_277D88890;
-  v8[0] = MEMORY[0x277D82BE0](v9);
+  v8[0] = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v3);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(v8, 0);
@@ -119,32 +119,32 @@ uint64_t __49__NLSessionActivityGroundElevationManager__setup__block_invoke_295(
   return MEMORY[0x277D82BD8](WeakRetained);
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
-  if (self->_active != a3)
+  activeCopy = active;
+  if (self->_active != active)
   {
-    v6->_active = v4;
+    selfCopy->_active = activeCopy;
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_1_4_0(v7, v6->_active);
+      __os_log_helper_16_0_1_4_0(v7, selfCopy->_active);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[CMAltimeterManager] setActive=%{BOOL}d", v7, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v4)
+    if (activeCopy)
     {
-      [(NLSessionActivityGroundElevationManager *)v6 _startRequestingGroundElevation];
+      [(NLSessionActivityGroundElevationManager *)selfCopy _startRequestingGroundElevation];
     }
 
     else
     {
-      [(NLSessionActivityGroundElevationManager *)v6 _stopRequestingGroundElevation];
+      [(NLSessionActivityGroundElevationManager *)selfCopy _stopRequestingGroundElevation];
     }
   }
 
@@ -153,7 +153,7 @@ uint64_t __49__NLSessionActivityGroundElevationManager__setup__block_invoke_295(
 
 - (void)_startRequestingGroundElevation
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
   _HKInitializeLogging();
@@ -168,16 +168,16 @@ uint64_t __49__NLSessionActivityGroundElevationManager__setup__block_invoke_295(
   }
 
   objc_storeStrong(&v14, 0);
-  altimeterManager = v16->_altimeterManager;
-  v2 = [MEMORY[0x277CCABD8] mainQueue];
+  altimeterManager = selfCopy->_altimeterManager;
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevation__block_invoke;
   v10 = &unk_277D88E58;
   objc_copyWeak(&v11, location);
-  [(CMAltimeter *)altimeterManager startAbsoluteAltitudeUpdatesToQueue:v2 withHandler:&v6];
-  MEMORY[0x277D82BD8](v2);
+  [(CMAltimeter *)altimeterManager startAbsoluteAltitudeUpdatesToQueue:mainQueue withHandler:&v6];
+  MEMORY[0x277D82BD8](mainQueue);
   objc_destroyWeak(&v11);
   objc_destroyWeak(location);
 }
@@ -222,18 +222,18 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateElevation:(id)a3
+- (void)_updateElevation:(id)elevation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elevation);
   [location[0] absoluteAltitudeAccuracy];
   if (v3 <= 15.0)
   {
-    v16 = [location[0] absoluteAltitude];
-    [v16 doubleValue];
+    absoluteAltitude = [location[0] absoluteAltitude];
+    [absoluteAltitude doubleValue];
     v22 = v5;
     v23 = v5;
     if (fabs(v5) == INFINITY)
@@ -243,7 +243,7 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
       v14 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v24, v16);
+        __os_log_helper_16_2_1_8_64(v24, absoluteAltitude);
         _os_log_impl(&dword_20AEA4000, v15, v14, "[CMAltimeterManager] Ignoring elevation value. Value is not finite: %@", v24, 0xCu);
       }
 
@@ -253,18 +253,18 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
 
     else
     {
-      objc_storeStrong(&v21->_altitude, v16);
+      objc_storeStrong(&selfCopy->_altitude, absoluteAltitude);
       v7 = MEMORY[0x277CBEAA8];
       [location[0] timestamp];
       v13 = [v7 dateWithTimeIntervalSinceReferenceDate:?];
       v8 = MEMORY[0x277CCD7E8];
-      v9 = [MEMORY[0x277CCDAB0] meterUnit];
-      [(NSNumber *)v21->_altitude doubleValue];
-      v12 = [v8 quantityWithUnit:v9 doubleValue:?];
-      MEMORY[0x277D82BD8](v9);
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [(NSNumber *)selfCopy->_altitude doubleValue];
+      v12 = [v8 quantityWithUnit:meterUnit doubleValue:?];
+      MEMORY[0x277D82BD8](meterUnit);
       v6 = [WOElevationSample alloc];
       v11 = [(WOElevationSample *)v6 initWithDate:v13 value:v12];
-      WeakRetained = objc_loadWeakRetained(&v21->_delegate);
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
       [WeakRetained groundElevationDidUpdate:v11];
       MEMORY[0x277D82BD8](WeakRetained);
       objc_storeStrong(&v11, 0);
@@ -273,7 +273,7 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
       v17 = 0;
     }
 
-    objc_storeStrong(&v16, 0);
+    objc_storeStrong(&absoluteAltitude, 0);
   }
 
   else
@@ -296,13 +296,13 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
   *MEMORY[0x277D85DE8];
 }
 
-- (void)elevationError:(id)a3
+- (void)elevationError:(id)error
 {
   v14 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   _HKInitializeLogging();
   v11 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
   v10 = OS_LOG_TYPE_DEFAULT;
@@ -313,10 +313,10 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
   }
 
   objc_storeStrong(&v11, 0);
-  v6 = [location[0] domain];
+  domain = [location[0] domain];
   v5 = *MEMORY[0x277CC1BC0];
-  MEMORY[0x277D82BD8](v6);
-  if (v6 == v5 && ([location[0] code] == 109 || objc_msgSend(location[0], "code") == 110 || objc_msgSend(location[0], "code") == 111 || objc_msgSend(location[0], "code") == 104 || objc_msgSend(location[0], "code") == 106 || objc_msgSend(location[0], "code") == 105))
+  MEMORY[0x277D82BD8](domain);
+  if (domain == v5 && ([location[0] code] == 109 || objc_msgSend(location[0], "code") == 110 || objc_msgSend(location[0], "code") == 111 || objc_msgSend(location[0], "code") == 104 || objc_msgSend(location[0], "code") == 106 || objc_msgSend(location[0], "code") == 105))
   {
     _HKInitializeLogging();
     v9 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -336,22 +336,22 @@ void __74__NLSessionActivityGroundElevationManager__startRequestingGroundElevati
   *MEMORY[0x277D85DE8];
 }
 
-- (void)sessionActivity:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)sessionActivity:(id)activity didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a5 - 3 <= 2)
+  objc_storeStrong(location, activity);
+  if (toState - 3 <= 2)
   {
 LABEL_6:
-    [(NLSessionActivityGroundElevationManager *)v7 setActive:0];
+    [(NLSessionActivityGroundElevationManager *)selfCopy setActive:0];
     goto LABEL_7;
   }
 
-  if (a5 != 6)
+  if (toState != 6)
   {
-    if (a5 - 8 > 1)
+    if (toState - 8 > 1)
     {
       goto LABEL_7;
     }
@@ -359,7 +359,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  [(NLSessionActivityGroundElevationManager *)v7 setActive:1];
+  [(NLSessionActivityGroundElevationManager *)selfCopy setActive:1];
 LABEL_7:
   objc_storeStrong(location, 0);
 }

@@ -1,6 +1,6 @@
 @interface HMDActionSetNotificationRegistration
-- (BOOL)isEqual:(id)a3;
-- (HMDActionSetNotificationRegistration)initWithActionSetUUID:(id)a3 deviceIdsDestination:(id)a4 userUUID:(id)a5 lastModified:(id)a6 enabled:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (HMDActionSetNotificationRegistration)initWithActionSetUUID:(id)d deviceIdsDestination:(id)destination userUUID:(id)iD lastModified:(id)modified enabled:(BOOL)enabled;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 @end
@@ -11,20 +11,20 @@
 {
   v21[5] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v20 = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
-  v4 = [v3 initWithName:@"Action Set UUID" value:v20];
+  actionSetUUID = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
+  v4 = [v3 initWithName:@"Action Set UUID" value:actionSetUUID];
   v21[0] = v4;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v6 = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
-  v7 = [v5 initWithName:@"Device IDS Destination" value:v6];
+  deviceIdsDestination = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
+  v7 = [v5 initWithName:@"Device IDS Destination" value:deviceIdsDestination];
   v21[1] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDActionSetNotificationRegistration *)self userUUID];
-  v10 = [v8 initWithName:@"User UUID" value:v9];
+  userUUID = [(HMDActionSetNotificationRegistration *)self userUUID];
+  v10 = [v8 initWithName:@"User UUID" value:userUUID];
   v21[2] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
-  v12 = [(HMDActionSetNotificationRegistration *)self lastModified];
-  v13 = [v11 initWithName:@"Last Modified" value:v12];
+  lastModified = [(HMDActionSetNotificationRegistration *)self lastModified];
+  v13 = [v11 initWithName:@"Last Modified" value:lastModified];
   v21[3] = v13;
   v14 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDActionSetNotificationRegistration *)self enabled];
@@ -40,18 +40,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
-  v4 = [v3 hash];
-  v5 = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
-  v6 = [v5 hash];
+  actionSetUUID = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
+  v4 = [actionSetUUID hash];
+  deviceIdsDestination = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
+  v6 = [deviceIdsDestination hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v18) = 1;
   }
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,27 +72,27 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
-      v8 = [(HMDActionSetNotificationRegistration *)v6 actionSetUUID];
-      if ([v7 isEqual:v8])
+      actionSetUUID = [(HMDActionSetNotificationRegistration *)self actionSetUUID];
+      actionSetUUID2 = [(HMDActionSetNotificationRegistration *)v6 actionSetUUID];
+      if ([actionSetUUID isEqual:actionSetUUID2])
       {
-        v9 = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
-        v10 = [(HMDActionSetNotificationRegistration *)v6 deviceIdsDestination];
-        if ([v9 isEqual:v10])
+        deviceIdsDestination = [(HMDActionSetNotificationRegistration *)self deviceIdsDestination];
+        deviceIdsDestination2 = [(HMDActionSetNotificationRegistration *)v6 deviceIdsDestination];
+        if ([deviceIdsDestination isEqual:deviceIdsDestination2])
         {
-          v11 = [(HMDActionSetNotificationRegistration *)self userUUID];
-          v12 = [(HMDActionSetNotificationRegistration *)v6 userUUID];
-          if ([v11 isEqual:v12])
+          userUUID = [(HMDActionSetNotificationRegistration *)self userUUID];
+          userUUID2 = [(HMDActionSetNotificationRegistration *)v6 userUUID];
+          if ([userUUID isEqual:userUUID2])
           {
-            v13 = [(HMDActionSetNotificationRegistration *)self lastModified];
-            v14 = [(HMDActionSetNotificationRegistration *)v6 lastModified];
-            v20 = v13;
-            v15 = v13;
-            v16 = v14;
-            if ([v15 isEqual:v14])
+            lastModified = [(HMDActionSetNotificationRegistration *)self lastModified];
+            lastModified2 = [(HMDActionSetNotificationRegistration *)v6 lastModified];
+            v20 = lastModified;
+            v15 = lastModified;
+            v16 = lastModified2;
+            if ([v15 isEqual:lastModified2])
             {
-              v17 = [(HMDActionSetNotificationRegistration *)self enabled];
-              v18 = v17 ^ [(HMDActionSetNotificationRegistration *)v6 enabled]^ 1;
+              enabled = [(HMDActionSetNotificationRegistration *)self enabled];
+              v18 = enabled ^ [(HMDActionSetNotificationRegistration *)v6 enabled]^ 1;
             }
 
             else
@@ -128,23 +128,23 @@
   return v18;
 }
 
-- (HMDActionSetNotificationRegistration)initWithActionSetUUID:(id)a3 deviceIdsDestination:(id)a4 userUUID:(id)a5 lastModified:(id)a6 enabled:(BOOL)a7
+- (HMDActionSetNotificationRegistration)initWithActionSetUUID:(id)d deviceIdsDestination:(id)destination userUUID:(id)iD lastModified:(id)modified enabled:(BOOL)enabled
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  dCopy = d;
+  destinationCopy = destination;
+  iDCopy = iD;
+  modifiedCopy = modified;
   v20.receiver = self;
   v20.super_class = HMDActionSetNotificationRegistration;
   v17 = [(HMDActionSetNotificationRegistration *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_actionSetUUID, a3);
-    objc_storeStrong(&v18->_deviceIdsDestination, a4);
-    objc_storeStrong(&v18->_userUUID, a5);
-    objc_storeStrong(&v18->_lastModified, a6);
-    v18->_enabled = a7;
+    objc_storeStrong(&v17->_actionSetUUID, d);
+    objc_storeStrong(&v18->_deviceIdsDestination, destination);
+    objc_storeStrong(&v18->_userUUID, iD);
+    objc_storeStrong(&v18->_lastModified, modified);
+    v18->_enabled = enabled;
   }
 
   return v18;

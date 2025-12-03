@@ -1,85 +1,85 @@
 @interface TUIMicaPlayer
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5;
-+ (id)rootDictForPath:(id)a3 fileProvider:(id)a4;
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5;
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value;
++ (id)rootDictForPath:(id)path fileProvider:(id)provider;
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree;
 - (BOOL)isPlaybackAtEnd;
 - (MicaPlayerDelegate)delegate;
-- (TUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4;
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4;
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 fileProvider:(id)a5;
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6;
+- (TUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale;
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale;
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale fileProvider:(id)provider;
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects;
 - (double)playbackTime;
-- (id)_initWithPath:(id)a3 retinaScale:(double)a4 rootDict:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4;
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4;
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5;
+- (id)_initWithPath:(id)path retinaScale:(double)scale rootDict:(id)dict;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required;
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required;
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity;
 - (void)dealloc;
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5;
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate;
 - (void)notifyDelegateDidChangePlaybackTime;
 - (void)notifyDelegateDidStartPlaying;
 - (void)notifyDelegateDidStopPlaying;
 - (void)pause;
 - (void)play;
 - (void)removeFromSuperlayer;
-- (void)runPlayTimer:(id)a3;
-- (void)setPlaybackTime:(double)a3;
-- (void)setPreferredPlaybackSpeed:(float)a3;
+- (void)runPlayTimer:(id)timer;
+- (void)setPlaybackTime:(double)time;
+- (void)setPreferredPlaybackSpeed:(float)speed;
 - (void)startPlayTimer;
 - (void)stopPlayTimer;
 @end
 
 @implementation TUIMicaPlayer
 
-- (TUIMicaPlayer)initWithFileName:(id)a3 retinaScale:(double)a4
+- (TUIMicaPlayer)initWithFileName:(id)name retinaScale:(double)scale
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = +[NSBundle mainBundle];
-  v8 = [v7 URLForResource:v6 withExtension:@"caar"];
+  v8 = [v7 URLForResource:nameCopy withExtension:@"caar"];
 
   if (v8)
   {
-    v9 = [v8 path];
-    v10 = [(TUIMicaPlayer *)self initWithPath:v9 retinaScale:a4];
-    self = v9;
+    path = [v8 path];
+    v10 = [(TUIMicaPlayer *)self initWithPath:path retinaScale:scale];
+    self = path;
   }
 
   else
   {
-    NSLog(@"Unable to find Mica document: %@", v6);
+    NSLog(@"Unable to find Mica document: %@", nameCopy);
     v10 = 0;
   }
 
   return v10;
 }
 
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale
 {
-  v6 = a3;
-  v7 = [TUIMicaPlayer rootDictForPath:v6 fileProvider:0];
-  v8 = [(TUIMicaPlayer *)self _initWithPath:v6 retinaScale:v7 rootDict:a4];
+  pathCopy = path;
+  v7 = [TUIMicaPlayer rootDictForPath:pathCopy fileProvider:0];
+  v8 = [(TUIMicaPlayer *)self _initWithPath:pathCopy retinaScale:v7 rootDict:scale];
 
   return v8;
 }
 
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 rootLayer:(id)a5 publishedObjects:(id)a6
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale rootLayer:(id)layer publishedObjects:(id)objects
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pathCopy = path;
+  layerCopy = layer;
+  objectsCopy = objects;
   v17.receiver = self;
   v17.super_class = TUIMicaPlayer;
   v13 = [(TUIMicaPlayer *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    [(TUIMicaPlayer *)v13 setPath:v10];
-    [(TUIMicaPlayer *)v14 setRootLayer:v11];
-    [(TUIMicaPlayer *)v14 setPublishedObjects:v12];
+    [(TUIMicaPlayer *)v13 setPath:pathCopy];
+    [(TUIMicaPlayer *)v14 setRootLayer:layerCopy];
+    [(TUIMicaPlayer *)v14 setPublishedObjects:objectsCopy];
     LODWORD(v15) = 1.0;
     [(TUIMicaPlayer *)v14 setPreferredPlaybackSpeed:v15];
-    [(TUIMicaPlayer *)v14 setRetinaScale:a4];
-    [v11 duration];
+    [(TUIMicaPlayer *)v14 setRetinaScale:scale];
+    [layerCopy duration];
     [(TUIMicaPlayer *)v14 setDocumentDuration:?];
     [(CALayer *)v14->_rootLayer setDuration:INFINITY];
   }
@@ -87,11 +87,11 @@
   return v14;
 }
 
-- (TUIMicaPlayer)initWithPath:(id)a3 retinaScale:(double)a4 fileProvider:(id)a5
+- (TUIMicaPlayer)initWithPath:(id)path retinaScale:(double)scale fileProvider:(id)provider
 {
-  v8 = a3;
-  v9 = [TUIMicaPlayer rootDictForPath:v8 fileProvider:a5];
-  v10 = [(TUIMicaPlayer *)self _initWithPath:v8 retinaScale:v9 rootDict:a4];
+  pathCopy = path;
+  v9 = [TUIMicaPlayer rootDictForPath:pathCopy fileProvider:provider];
+  v10 = [(TUIMicaPlayer *)self _initWithPath:pathCopy retinaScale:v9 rootDict:scale];
 
   return v10;
 }
@@ -104,16 +104,16 @@
   [(TUIMicaPlayer *)&v3 dealloc];
 }
 
-- (id)_initWithPath:(id)a3 retinaScale:(double)a4 rootDict:(id)a5
+- (id)_initWithPath:(id)path retinaScale:(double)scale rootDict:(id)dict
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v9 || ([v9 objectForKeyedSubscript:@"rootLayer"], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  pathCopy = path;
+  dictCopy = dict;
+  v10 = dictCopy;
+  if (!dictCopy || ([dictCopy objectForKeyedSubscript:@"rootLayer"], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
 LABEL_6:
-    NSLog(@"Unable to load Mica document with path: %@", v8);
+    NSLog(@"Unable to load Mica document with path: %@", pathCopy);
     v14 = 0;
     goto LABEL_7;
   }
@@ -123,7 +123,7 @@ LABEL_6:
   [v12 setMasksToBounds:1];
   [v12 setRepeatCount:0.0];
   v13 = [v10 objectForKeyedSubscript:@"publishedObjects"];
-  v14 = [(TUIMicaPlayer *)self initWithPath:v8 retinaScale:v12 rootLayer:v13 publishedObjects:a4];
+  v14 = [(TUIMicaPlayer *)self initWithPath:pathCopy retinaScale:v12 rootLayer:v13 publishedObjects:scale];
 
   if (!v14)
   {
@@ -135,16 +135,16 @@ LABEL_7:
   return v14;
 }
 
-+ (id)rootDictForPath:(id)a3 fileProvider:(id)a4
++ (id)rootDictForPath:(id)path fileProvider:(id)provider
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  pathCopy = path;
+  providerCopy = provider;
+  v7 = providerCopy;
+  if (!providerCopy)
   {
-    if (v5)
+    if (pathCopy)
     {
-      v16 = [NSURL fileURLWithPath:v5];
+      v16 = [NSURL fileURLWithPath:pathCopy];
       if (v16)
       {
         v21 = 0;
@@ -153,8 +153,8 @@ LABEL_7:
         v9 = v17;
         if (v17)
         {
-          v18 = [v17 localizedDescription];
-          NSLog(@"Error: %@", v18);
+          localizedDescription = [v17 localizedDescription];
+          NSLog(@"Error: %@", localizedDescription);
         }
 
 LABEL_12:
@@ -181,7 +181,7 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v8 = [v6 dataFor:v5];
+  v8 = [providerCopy dataFor:pathCopy];
   v9 = 0;
   if (!v8)
   {
@@ -195,8 +195,8 @@ LABEL_3:
 
   if (v11)
   {
-    v12 = [v11 localizedDescription];
-    NSLog(@"Error: %@", v12);
+    localizedDescription2 = [v11 localizedDescription];
+    NSLog(@"Error: %@", localizedDescription2);
   }
 
   v22[0] = objc_opt_class();
@@ -214,55 +214,55 @@ LABEL_14:
   return v15;
 }
 
-+ (BOOL)BOOLFromDictionary:(id)a3 key:(id)a4 defaultValue:(BOOL)a5
++ (BOOL)BOOLFromDictionary:(id)dictionary key:(id)key defaultValue:(BOOL)value
 {
-  v6 = [a3 objectForKeyedSubscript:a4];
+  v6 = [dictionary objectForKeyedSubscript:key];
   v7 = v6;
   if (v6)
   {
-    a5 = [v6 BOOLValue];
+    value = [v6 BOOLValue];
   }
 
-  return a5;
+  return value;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(TUIMicaPlayer *)self path];
-  v6 = [v5 copy];
+  path = [(TUIMicaPlayer *)self path];
+  v6 = [path copy];
 
-  v7 = [(TUIMicaPlayer *)self rootLayer];
-  v8 = [v7 tui_deepCopyLayer];
+  rootLayer = [(TUIMicaPlayer *)self rootLayer];
+  tui_deepCopyLayer = [rootLayer tui_deepCopyLayer];
 
-  v9 = [(TUIMicaPlayer *)self publishedObjects];
-  v10 = [(TUIMicaPlayer *)self rootLayer];
-  v11 = [TUIMicaPlayer updatePublishedObjects:v9 toReferenceLayersInTree:v8 ratherThanLayersInTree:v10];
+  publishedObjects = [(TUIMicaPlayer *)self publishedObjects];
+  rootLayer2 = [(TUIMicaPlayer *)self rootLayer];
+  v11 = [TUIMicaPlayer updatePublishedObjects:publishedObjects toReferenceLayersInTree:tui_deepCopyLayer ratherThanLayersInTree:rootLayer2];
 
-  v12 = [objc_opt_class() allocWithZone:a3];
+  v12 = [objc_opt_class() allocWithZone:zone];
   [(TUIMicaPlayer *)self retinaScale];
-  v13 = [v12 initWithPath:v6 retinaScale:v8 rootLayer:v11 publishedObjects:?];
+  v13 = [v12 initWithPath:v6 retinaScale:tui_deepCopyLayer rootLayer:v11 publishedObjects:?];
 
   return v13;
 }
 
-+ (id)updatePublishedObjects:(id)a3 toReferenceLayersInTree:(id)a4 ratherThanLayersInTree:(id)a5
++ (id)updatePublishedObjects:(id)objects toReferenceLayersInTree:(id)tree ratherThanLayersInTree:(id)inTree
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectsCopy = objects;
+  treeCopy = tree;
+  inTreeCopy = inTree;
   v28 = +[NSMutableDictionary dictionary];
-  if (v7 && [v7 count])
+  if (objectsCopy && [objectsCopy count])
   {
-    v10 = [v9 tui_allLayersInTree];
-    v24 = v9;
-    v26 = [v9 tui_allAnimationsInTree];
-    v11 = [v8 tui_allLayersInTree];
-    v25 = [v8 tui_allAnimationsInTree];
+    tui_allLayersInTree = [inTreeCopy tui_allLayersInTree];
+    v24 = inTreeCopy;
+    tui_allAnimationsInTree = [inTreeCopy tui_allAnimationsInTree];
+    tui_allLayersInTree2 = [treeCopy tui_allLayersInTree];
+    tui_allAnimationsInTree2 = [treeCopy tui_allAnimationsInTree];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    obj = [v7 allKeys];
+    obj = [objectsCopy allKeys];
     v12 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v12)
     {
@@ -278,12 +278,12 @@ LABEL_14:
           }
 
           v16 = *(*(&v29 + 1) + 8 * i);
-          v17 = [v7 objectForKeyedSubscript:v16];
+          v17 = [objectsCopy objectForKeyedSubscript:v16];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v19 = v10;
-          v20 = v11;
-          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = v25, v19 = v26, (v21))
+          v19 = tui_allLayersInTree;
+          v20 = tui_allLayersInTree2;
+          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v20 = tui_allAnimationsInTree2, v19 = tui_allAnimationsInTree, (v21))
           {
             v22 = [v20 objectAtIndexedSubscript:{objc_msgSend(v19, "indexOfObjectIdenticalTo:", v17)}];
             [v28 setObject:v22 forKeyedSubscript:v16];
@@ -296,42 +296,42 @@ LABEL_14:
       while (v13);
     }
 
-    v9 = v24;
+    inTreeCopy = v24;
   }
 
   return v28;
 }
 
-- (void)addToLayer:(id)a3 onTop:(BOOL)a4 gravity:(id)a5
+- (void)addToLayer:(id)layer onTop:(BOOL)top gravity:(id)gravity
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  v9 = [(CALayer *)self->_rootLayer superlayer];
+  topCopy = top;
+  layerCopy = layer;
+  gravityCopy = gravity;
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (!v9)
+  if (!superlayer)
   {
     [(TUIMicaPlayer *)self pause];
     [(TUIMicaPlayer *)self setPlaybackTime:0.0];
-    [(TUIMicaPlayer *)self moveAndResizeWithinParentLayer:v11 usingGravity:v8 animate:0];
+    [(TUIMicaPlayer *)self moveAndResizeWithinParentLayer:layerCopy usingGravity:gravityCopy animate:0];
     rootLayer = self->_rootLayer;
-    if (v6)
+    if (topCopy)
     {
-      [v11 addSublayer:rootLayer];
+      [layerCopy addSublayer:rootLayer];
     }
 
     else
     {
-      [v11 insertSublayer:rootLayer atIndex:0];
+      [layerCopy insertSublayer:rootLayer atIndex:0];
     }
   }
 }
 
 - (void)removeFromSuperlayer
 {
-  v3 = [(CALayer *)self->_rootLayer superlayer];
+  superlayer = [(CALayer *)self->_rootLayer superlayer];
 
-  if (v3)
+  if (superlayer)
   {
     [(TUIMicaPlayer *)self pause];
     rootLayer = self->_rootLayer;
@@ -340,19 +340,19 @@ LABEL_14:
   }
 }
 
-- (void)moveAndResizeWithinParentLayer:(id)a3 usingGravity:(id)a4 animate:(BOOL)a5
+- (void)moveAndResizeWithinParentLayer:(id)layer usingGravity:(id)gravity animate:(BOOL)animate
 {
-  v5 = a5;
+  animateCopy = animate;
   rootLayer = self->_rootLayer;
-  v9 = a4;
-  v10 = a3;
+  gravityCopy = gravity;
+  layerCopy = layer;
   [(TUIMicaPlayer *)self retinaScale];
-  [(CALayer *)rootLayer tui_moveAndResizeWithinParentLayer:v10 usingGravity:v9 geometryFlipped:1 retinaScale:v5 animate:?];
+  [(CALayer *)rootLayer tui_moveAndResizeWithinParentLayer:layerCopy usingGravity:gravityCopy geometryFlipped:1 retinaScale:animateCopy animate:?];
 }
 
-- (id)publishedLayerWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedLayerWithKey:(id)key required:(BOOL)required
 {
-  v4 = [(TUIMicaPlayer *)self publishedObjectWithKey:a3 required:a4];
+  v4 = [(TUIMicaPlayer *)self publishedObjectWithKey:key required:required];
   if (v4)
   {
     objc_opt_class();
@@ -366,16 +366,16 @@ LABEL_14:
   return v4;
 }
 
-- (id)publishedObjectWithKey:(id)a3 required:(BOOL)a4
+- (id)publishedObjectWithKey:(id)key required:(BOOL)required
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:v6];
+  requiredCopy = required;
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_publishedObjects objectForKeyedSubscript:keyCopy];
   v8 = v7;
-  if (v4 && !v7)
+  if (requiredCopy && !v7)
   {
-    v9 = [(NSString *)self->_path lastPathComponent];
-    NSLog(@"Missing published object '%@' in Mica document '%@'", v6, v9);
+    lastPathComponent = [(NSString *)self->_path lastPathComponent];
+    NSLog(@"Missing published object '%@' in Mica document '%@'", keyCopy, lastPathComponent);
   }
 
   return v8;
@@ -411,23 +411,23 @@ LABEL_14:
   }
 }
 
-- (void)setPreferredPlaybackSpeed:(float)a3
+- (void)setPreferredPlaybackSpeed:(float)speed
 {
-  if (a3 <= 0.0)
+  if (speed <= 0.0)
   {
-    v4 = 1.0;
+    speedCopy = 1.0;
   }
 
   else
   {
-    v4 = a3;
+    speedCopy = speed;
   }
 
-  self->_preferredPlaybackSpeed = v4;
+  self->_preferredPlaybackSpeed = speedCopy;
   if ([(TUIMicaPlayer *)self isPlaying])
   {
     rootLayer = self->_rootLayer;
-    *&v5 = v4;
+    *&v5 = speedCopy;
 
     [(CALayer *)rootLayer setSpeed:v5];
   }
@@ -454,18 +454,18 @@ LABEL_14:
   return result;
 }
 
-- (void)setPlaybackTime:(double)a3
+- (void)setPlaybackTime:(double)time
 {
-  v5 = [(TUIMicaPlayer *)self isPlaying];
+  isPlaying = [(TUIMicaPlayer *)self isPlaying];
   v6 = 0.0;
-  if (v5)
+  if (isPlaying)
   {
-    v6 = CACurrentMediaTime() - a3;
-    a3 = 0.0;
+    v6 = CACurrentMediaTime() - time;
+    time = 0.0;
   }
 
   [(CALayer *)self->_rootLayer setBeginTime:v6];
-  [(CALayer *)self->_rootLayer setTimeOffset:a3];
+  [(CALayer *)self->_rootLayer setTimeOffset:time];
 
   [(TUIMicaPlayer *)self notifyDelegateDidChangePlaybackTime];
 }
@@ -553,7 +553,7 @@ LABEL_14:
   }
 }
 
-- (void)runPlayTimer:(id)a3
+- (void)runPlayTimer:(id)timer
 {
   if ([(TUIMicaPlayer *)self isPlaybackAtEnd])
   {

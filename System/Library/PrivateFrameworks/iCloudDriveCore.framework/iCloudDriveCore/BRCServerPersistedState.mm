@@ -1,23 +1,23 @@
 @interface BRCServerPersistedState
-- (BOOL)mangledIDIsPendingMigration:(id)a3;
+- (BOOL)mangledIDIsPendingMigration:(id)migration;
 - (BRCServerPersistedState)init;
-- (BRCServerPersistedState)initWithCoder:(id)a3;
-- (BRCServerPersistedState)initWithState:(id)a3;
+- (BRCServerPersistedState)initWithCoder:(id)coder;
+- (BRCServerPersistedState)initWithState:(id)state;
 - (NSString)description;
 - (id)_dataPendingSave;
 - (id)_stateToData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dumpMigrationQueriesForMangledID:(id)a3;
-- (id)migrationQueryKeyForMangledID:(id)a3 continuationCursor:(id *)a4;
-- (void)abortMigrationsOfMigrationKey:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initiateMigrationQueryForMangledIDs:(id)a3 key:(id)a4;
-- (void)migrationQueryForMangledID:(id)a3 key:(id)a4 didUpdateWithCursor:(id)a5;
-- (void)saveToDB:(id)a3;
-- (void)setLastSyncDownDate:(id)a3;
-- (void)setMinLastUsedTime:(unint64_t)a3;
-- (void)setNextRank:(int64_t)a3;
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dumpMigrationQueriesForMangledID:(id)d;
+- (id)migrationQueryKeyForMangledID:(id)d continuationCursor:(id *)cursor;
+- (void)abortMigrationsOfMigrationKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)initiateMigrationQueryForMangledIDs:(id)ds key:(id)key;
+- (void)migrationQueryForMangledID:(id)d key:(id)key didUpdateWithCursor:(id)cursor;
+- (void)saveToDB:(id)b;
+- (void)setLastSyncDownDate:(id)date;
+- (void)setMinLastUsedTime:(unint64_t)time;
+- (void)setNextRank:(int64_t)rank;
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index;
 @end
 
 @implementation BRCServerPersistedState
@@ -39,48 +39,48 @@
     }
 
     brc_append_system_info_to_message();
-    v6 = [objc_claimAutoreleasedReturnValue() UTF8String];
-    __assert_rtn("[BRCServerPersistedState _stateToData]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCServerPersistedState.m", 361, v6);
+    uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+    __assert_rtn("[BRCServerPersistedState _stateToData]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCServerPersistedState.m", 361, uTF8String);
   }
 
   return v2;
 }
 
-- (void)setNextRank:(int64_t)a3
+- (void)setNextRank:(int64_t)rank
 {
-  if (self->_nextRank != a3)
+  if (self->_nextRank != rank)
   {
     self->_needsSave = 1;
-    self->_nextRank = a3;
+    self->_nextRank = rank;
   }
 }
 
-- (void)setLastSyncDownDate:(id)a3
+- (void)setLastSyncDownDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_lastSyncDownDate isEqualToDate:?])
   {
     self->_needsSave = 1;
-    objc_storeStrong(&self->_lastSyncDownDate, a3);
+    objc_storeStrong(&self->_lastSyncDownDate, date);
   }
 }
 
-- (void)setMinLastUsedTime:(unint64_t)a3
+- (void)setMinLastUsedTime:(unint64_t)time
 {
-  if (self->_minLastUsedTime != a3)
+  if (self->_minLastUsedTime != time)
   {
     self->_needsSave = 1;
-    self->_minLastUsedTime = a3;
+    self->_minLastUsedTime = time;
   }
 }
 
 - (NSString)description
 {
   v3 = [BRCUserDefaults defaultsForMangledID:0];
-  v4 = [v3 dumpDateFormatter];
+  dumpDateFormatter = [v3 dumpDateFormatter];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v4 stringFromDate:self->_lastSyncDownDate];
+  v6 = [dumpDateFormatter stringFromDate:self->_lastSyncDownDate];
   v7 = v6;
   v8 = @"never";
   if (v6)
@@ -112,17 +112,17 @@
   return v3;
 }
 
-- (BRCServerPersistedState)initWithState:(id)a3
+- (BRCServerPersistedState)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v14.receiver = self;
   v14.super_class = BRCServerPersistedState;
   v5 = [(BRCServerPersistedState *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    v5->_nextRank = v4[4];
-    v7 = v4[6];
+    v5->_nextRank = stateCopy[4];
+    v7 = stateCopy[6];
     if (v7)
     {
       v8 = v7;
@@ -136,9 +136,9 @@
     sharedDatabaseChangeState = v6->_sharedDatabaseChangeState;
     v6->_sharedDatabaseChangeState = v8;
 
-    v6->_minLastUsedTime = v4[7];
+    v6->_minLastUsedTime = stateCopy[7];
     v6->_needsSave = 1;
-    v10 = v4[1];
+    v10 = stateCopy[1];
     if (v10)
     {
       v11 = [v10 copy];
@@ -150,23 +150,23 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithState:self];
 }
 
-- (BRCServerPersistedState)initWithCoder:(id)a3
+- (BRCServerPersistedState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = BRCServerPersistedState;
   v5 = [(BRCServerPersistedState *)&v22 init];
   if (v5)
   {
-    v5->_nextRank = [v4 decodeInt64ForKey:@"nextRank"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shareDatabase"];
+    v5->_nextRank = [coderCopy decodeInt64ForKey:@"nextRank"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shareDatabase"];
     v7 = v6;
     if (v6)
     {
@@ -188,44 +188,44 @@
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v10 setWithObjects:{v11, v12, v13, v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"migrationQuery"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"migrationQuery"];
     pendingMigrations = v5->_pendingMigrations;
     v5->_pendingMigrations = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lsdDate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lsdDate"];
     lastSyncDownDate = v5->_lastSyncDownDate;
     v5->_lastSyncDownDate = v19;
 
-    v5->_minLastUsedTime = [v4 decodeInt64ForKey:@"minUsedTime"];
+    v5->_minLastUsedTime = [coderCopy decodeInt64ForKey:@"minUsedTime"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nextRank = self->_nextRank;
-  v5 = a3;
-  [v5 encodeInt64:nextRank forKey:@"nextRank"];
-  [v5 encodeObject:self->_sharedDatabaseChangeState forKey:@"shareDatabase"];
-  [v5 encodeObject:self->_pendingMigrations forKey:@"migrationQuery"];
-  [v5 encodeObject:self->_lastSyncDownDate forKey:@"lsdDate"];
-  [v5 encodeInt64:self->_minLastUsedTime forKey:@"minUsedTime"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:nextRank forKey:@"nextRank"];
+  [coderCopy encodeObject:self->_sharedDatabaseChangeState forKey:@"shareDatabase"];
+  [coderCopy encodeObject:self->_pendingMigrations forKey:@"migrationQuery"];
+  [coderCopy encodeObject:self->_lastSyncDownDate forKey:@"lsdDate"];
+  [coderCopy encodeInt64:self->_minLastUsedTime forKey:@"minUsedTime"];
 }
 
-- (void)sqliteBind:(sqlite3_stmt *)a3 index:(int)a4
+- (void)sqliteBind:(sqlite3_stmt *)bind index:(int)index
 {
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
   v6 = v7;
-  sqlite3_bind_blob(a3, a4, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
+  sqlite3_bind_blob(bind, index, [v7 bytes], objc_msgSend(v7, "length"), 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (id)_dataPendingSave
 {
-  v3 = [(BRCServerPersistedState *)self _stateToData];
-  if (self->_needsSave || ![(NSData *)self->_originalServerPersistedState isEqualToData:v3])
+  _stateToData = [(BRCServerPersistedState *)self _stateToData];
+  if (self->_needsSave || ![(NSData *)self->_originalServerPersistedState isEqualToData:_stateToData])
   {
-    v4 = v3;
+    v4 = _stateToData;
   }
 
   else
@@ -236,14 +236,14 @@
   return v4;
 }
 
-- (void)saveToDB:(id)a3
+- (void)saveToDB:(id)b
 {
-  v9 = a3;
-  v4 = [(BRCServerPersistedState *)self _dataPendingSave];
-  v5 = v4;
-  if (v4)
+  bCopy = b;
+  _dataPendingSave = [(BRCServerPersistedState *)self _dataPendingSave];
+  v5 = _dataPendingSave;
+  if (_dataPendingSave)
   {
-    if (([v9 execute:{@"UPDATE server_state SET state = %@", v4}] & 1) == 0)
+    if (([bCopy execute:{@"UPDATE server_state SET state = %@", _dataPendingSave}] & 1) == 0)
     {
       abc_report_panic_with_signature();
       [MEMORY[0x277CCACA8] stringWithFormat:@"unable to update the server_state"];
@@ -256,8 +256,8 @@
       }
 
       brc_append_system_info_to_message();
-      v8 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      __assert_rtn("[BRCServerPersistedState saveToDB:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCServerPersistedState.m", 380, v8);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      __assert_rtn("[BRCServerPersistedState saveToDB:]", "/Library/Caches/com.apple.xbs/Sources/CloudDocs_plugins/core/shared/database/BRCServerPersistedState.m", 380, uTF8String);
     }
 
     objc_storeStrong(&self->_originalServerPersistedState, v5);
@@ -265,25 +265,25 @@
   }
 }
 
-- (BOOL)mangledIDIsPendingMigration:(id)a3
+- (BOOL)mangledIDIsPendingMigration:(id)migration
 {
-  v3 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:migration];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)initiateMigrationQueryForMangledIDs:(id)a3 key:(id)a4
+- (void)initiateMigrationQueryForMangledIDs:(id)ds key:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  keyCopy = key;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v6;
-  v9 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v8 = dsCopy;
+  v9 = [dsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -302,23 +302,23 @@
         pendingMigrations = self->_pendingMigrations;
         if (!pendingMigrations)
         {
-          v15 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v16 = self->_pendingMigrations;
-          self->_pendingMigrations = v15;
+          self->_pendingMigrations = dictionary;
 
           pendingMigrations = self->_pendingMigrations;
         }
 
-        v17 = [(NSMutableDictionary *)pendingMigrations objectForKeyedSubscript:v13];
-        if (!v17)
+        dictionary2 = [(NSMutableDictionary *)pendingMigrations objectForKeyedSubscript:v13];
+        if (!dictionary2)
         {
           v18 = self->_pendingMigrations;
-          v17 = [MEMORY[0x277CBEB38] dictionary];
-          [(NSMutableDictionary *)v18 setObject:v17 forKeyedSubscript:v13];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [(NSMutableDictionary *)v18 setObject:dictionary2 forKeyedSubscript:v13];
         }
 
-        v19 = [MEMORY[0x277CBEB68] null];
-        [v17 setObject:v19 forKeyedSubscript:v7];
+        null = [MEMORY[0x277CBEB68] null];
+        [dictionary2 setObject:null forKeyedSubscript:keyCopy];
 
         ++v12;
       }
@@ -341,15 +341,15 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)abortMigrationsOfMigrationKey:(id)a3
+- (void)abortMigrationsOfMigrationKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   pendingMigrations = self->_pendingMigrations;
   if (pendingMigrations)
   {
-    v6 = [(NSMutableDictionary *)pendingMigrations allKeys];
-    v7 = [v6 copy];
+    allKeys = [(NSMutableDictionary *)pendingMigrations allKeys];
+    v7 = [allKeys copy];
 
     v20 = 0u;
     v21 = 0u;
@@ -375,7 +375,7 @@
           v15 = v14;
           if (v14)
           {
-            [v14 removeObjectForKey:v4];
+            [v14 removeObjectForKey:keyCopy];
             if (![v15 count])
             {
               [(NSMutableDictionary *)self->_pendingMigrations removeObjectForKey:v13];
@@ -401,14 +401,14 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)migrationQueryKeyForMangledID:(id)a3 continuationCursor:(id *)a4
+- (id)migrationQueryKeyForMangledID:(id)d continuationCursor:(id *)cursor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  dCopy = d;
   v6 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:?];
   if (v6)
   {
-    v31 = a4;
+    cursorCopy = cursor;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -437,10 +437,10 @@ LABEL_4:
           break;
         }
 
-        v15 = [BRCUserDefaults defaultsForMangledID:v32];
-        v16 = [v15 shouldMigrateFetchShareAliases];
+        v15 = [BRCUserDefaults defaultsForMangledID:dCopy];
+        shouldMigrateFetchShareAliases = [v15 shouldMigrateFetchShareAliases];
 
-        if (v16)
+        if (shouldMigrateFetchShareAliases)
         {
           goto LABEL_13;
         }
@@ -450,7 +450,7 @@ LABEL_4:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           *buf = v30;
-          v38 = v32;
+          v38 = dCopy;
           v39 = 2112;
           v40 = v17;
           _os_log_debug_impl(&dword_223E7A000, v18, OS_LOG_TYPE_DEBUG, "[DEBUG] Ignoring share alias migration key for %@ because the user default is no%@", buf, 0x16u);
@@ -478,13 +478,13 @@ LABEL_13:
         if (objc_opt_isKindOfClass())
         {
           v22 = v20;
-          v23 = v31;
+          v23 = cursorCopy;
         }
 
         else
         {
           objc_opt_class();
-          v23 = v31;
+          v23 = cursorCopy;
           if (objc_opt_isKindOfClass())
           {
             v22 = [[BRCMigrationCursor alloc] initWithCKQueryCursor:v20];
@@ -504,7 +504,7 @@ LABEL_13:
         {
           v29 = prettyPrintMigrationCursor(v22);
           *buf = 138413058;
-          v38 = v32;
+          v38 = dCopy;
           v39 = 2112;
           v40 = v13;
           v41 = 2112;
@@ -523,7 +523,7 @@ LABEL_13:
 
 LABEL_16:
 
-    *v31 = 0;
+    *cursorCopy = 0;
     v7 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -545,27 +545,27 @@ LABEL_28:
   return v21;
 }
 
-- (void)migrationQueryForMangledID:(id)a3 key:(id)a4 didUpdateWithCursor:(id)a5
+- (void)migrationQueryForMangledID:(id)d key:(id)key didUpdateWithCursor:(id)cursor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  keyCopy = key;
+  cursorCopy = cursor;
   p_pendingMigrations = &self->_pendingMigrations;
-  v12 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:v8];
+  v12 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:dCopy];
   v13 = v12;
   if (v12)
   {
-    if (v10)
+    if (cursorCopy)
     {
-      [v12 setObject:v10 forKeyedSubscript:v9];
+      [v12 setObject:cursorCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [v12 removeObjectForKey:v9];
+      [v12 removeObjectForKey:keyCopy];
       if (![v13 count])
       {
-        [(NSMutableDictionary *)*p_pendingMigrations removeObjectForKey:v8];
+        [(NSMutableDictionary *)*p_pendingMigrations removeObjectForKey:dCopy];
         if (![(NSMutableDictionary *)*p_pendingMigrations count])
         {
           v16 = *p_pendingMigrations;
@@ -594,10 +594,10 @@ LABEL_28:
   }
 }
 
-- (id)dumpMigrationQueriesForMangledID:(id)a3
+- (id)dumpMigrationQueriesForMangledID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_pendingMigrations objectForKeyedSubscript:dCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"{"];

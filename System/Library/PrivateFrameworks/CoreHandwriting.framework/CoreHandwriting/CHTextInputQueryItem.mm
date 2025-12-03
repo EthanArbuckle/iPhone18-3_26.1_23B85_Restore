@@ -1,6 +1,6 @@
 @interface CHTextInputQueryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextInputQueryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextInputQueryItem:(id)item;
 - (id)description;
 @end
 
@@ -52,18 +52,18 @@
   return v97;
 }
 
-- (BOOL)isEqualToTextInputQueryItem:(id)a3
+- (BOOL)isEqualToTextInputQueryItem:(id)item
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (!itemCopy)
   {
     isEqual = 0;
     goto LABEL_18;
   }
 
-  if (v4 == self)
+  if (itemCopy == self)
   {
     isEqual = 1;
     goto LABEL_18;
@@ -147,13 +147,13 @@ LABEL_18:
   return isEqual;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToTextInputQueryItem = objc_msgSend_isEqualToTextInputQueryItem_(self, v5, v4, v6, v7, v8);
+    isEqualToTextInputQueryItem = objc_msgSend_isEqualToTextInputQueryItem_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToTextInputQueryItem;
   }

@@ -26,8 +26,8 @@
 
   [(UIViewController *)v7 setView:v22];
   v10 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:sel_dismiss];
-  v11 = [(UIViewController *)v7 navigationItem];
-  [v11 setRightBarButtonItem:v10];
+  navigationItem = [(UIViewController *)v7 navigationItem];
+  [navigationItem setRightBarButtonItem:v10];
 
   v12 = [[UINavigationController alloc] initWithRootViewController:v7];
   privacySheetController = self->_privacySheetController;
@@ -35,18 +35,18 @@
 
   [(UIViewController *)self->_privacySheetController setModalPresentationStyle:2];
   v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v15 = [v14 scene];
+  scene = [v14 scene];
 
   v16 = [UIWindow alloc];
-  v17 = [objc_opt_self() mainScreen];
-  [v17 bounds];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen bounds];
   v18 = [(UIWindow *)v16 initWithFrame:?];
   presenterWindow = self->_presenterWindow;
   self->_presenterWindow = v18;
 
   [(UIWindow *)self->_presenterWindow _setRoleHint:@"_UIWindowRoleHintKeyboardPrivacySheet"];
   [(UIView *)self->_presenterWindow setOpaque:0];
-  [(UIWindow *)self->_presenterWindow setWindowScene:v15];
+  [(UIWindow *)self->_presenterWindow setWindowScene:scene];
   [(UIWindow *)self->_presenterWindow setWindowLevel:2000.0];
   [(UIWindow *)self->_presenterWindow setHidden:1];
   [(UIWindow *)self->_presenterWindow _setWindowControlsStatusBarOrientation:0];
@@ -54,8 +54,8 @@
   [(UIWindow *)self->_presenterWindow setRootViewController:v20];
 
   [(UIWindow *)self->_presenterWindow makeKeyAndVisible];
-  v21 = [(UIWindow *)self->_presenterWindow rootViewController];
-  [v21 presentViewController:self->_privacySheetController animated:1 completion:0];
+  rootViewController = [(UIWindow *)self->_presenterWindow rootViewController];
+  [rootViewController presentViewController:self->_privacySheetController animated:1 completion:0];
 }
 
 - (void)dismiss

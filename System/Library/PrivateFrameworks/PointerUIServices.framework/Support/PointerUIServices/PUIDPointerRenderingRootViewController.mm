@@ -1,52 +1,52 @@
 @interface PUIDPointerRenderingRootViewController
-- (BOOL)_updatePointerWithOptions:(unint64_t)a3 updateHandlerCollection:(id)a4 error:(id *)a5;
-- (BOOL)isValidPointerPortalSourceCollection:(id)a3 forClient:(id)a4;
-- (BOOL)setPointerState:(id)a3 options:(unint64_t)a4 updateHandlerCollection:(id)a5 error:(id *)a6;
-- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)a3;
-- (CGPoint)_positionForTargetWithCenter:(CGPoint)a3 modelCursorPosition:(CGPoint)a4 slip:(CGPoint)a5;
-- (CGRect)_samplingBoundsForPointerShape:(id)a3;
+- (BOOL)_updatePointerWithOptions:(unint64_t)options updateHandlerCollection:(id)collection error:(id *)error;
+- (BOOL)isValidPointerPortalSourceCollection:(id)collection forClient:(id)client;
+- (BOOL)setPointerState:(id)state options:(unint64_t)options updateHandlerCollection:(id)collection error:(id *)error;
+- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)display;
+- (CGPoint)_positionForTargetWithCenter:(CGPoint)center modelCursorPosition:(CGPoint)position slip:(CGPoint)slip;
+- (CGRect)_samplingBoundsForPointerShape:(id)shape;
 - (NSString)description;
-- (PUIDPointerRenderingRootViewController)initWithCoder:(id)a3;
-- (PUIDPointerRenderingRootViewController)initWithDisplay:(id)a3 hiddenForPerformanceReasons:(BOOL)a4;
-- (PUIDPointerRenderingRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUIDPointerRenderingRootViewController)initWithCoder:(id)coder;
+- (PUIDPointerRenderingRootViewController)initWithDisplay:(id)display hiddenForPerformanceReasons:(BOOL)reasons;
+- (PUIDPointerRenderingRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PUIDPointerRenderingRootViewControllerDelegate)delegate;
 - (id)_createMatchMoveSourceView;
-- (id)_createPortalSourceViewWithFrame:(CGRect)a3;
-- (id)_positionAnimationCountIncrementingCompletionWrapper:(id)a3;
-- (id)createContentMatchMoveSourceForClient:(id)a3;
-- (id)createPointerPortalSourceCollectionForClient:(id)a3;
-- (void)_debugVisualizationForView:(id)a3;
-- (void)_debugVisualizationUpdate:(CATransform3D *)a3;
-- (void)_relativePositionAnimationParametersUsingSystemPointerPositionSettings:(id)a3 forTextContent:(BOOL)a4 outXDamping:(double *)a5 outXResponse:(double *)a6 outYDamping:(double *)a7 outYResponse:(double *)a8;
-- (void)_transitionFromPointerPortalSourceView:(id)a3 toPointerPortalSourceView:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_updatePointerShapePosition:(double)a3 onAxis:(unint64_t)a4 isModel:(BOOL)a5;
-- (void)_updateRampingPropertiesForPointerSlip:(CGPoint)a3 animated:(BOOL)a4;
-- (void)hidePointerAnimated:(BOOL)a3;
-- (void)invalidateContentMatchMoveSource:(id)a3 forClient:(id)a4;
-- (void)invalidateContentMatchMoveSourcesPassingTest:(id)a3 additionalInvalidation:(id)a4;
-- (void)invalidateEffectSourcesForPointerClient:(id)a3;
-- (void)invalidatePointerPortalSourceCollection:(id)a3 forClient:(id)a4;
-- (void)invalidatePointerPortalSourceCollectionsPassingTest:(id)a3 additionalInvalidation:(id)a4;
-- (void)pointerShapeViewInterfaceOrientationDidChange:(id)a3 duration:(double)a4;
-- (void)pointerShapeViewVisibilityDidChange:(id)a3;
+- (id)_createPortalSourceViewWithFrame:(CGRect)frame;
+- (id)_positionAnimationCountIncrementingCompletionWrapper:(id)wrapper;
+- (id)createContentMatchMoveSourceForClient:(id)client;
+- (id)createPointerPortalSourceCollectionForClient:(id)client;
+- (void)_debugVisualizationForView:(id)view;
+- (void)_debugVisualizationUpdate:(CATransform3D *)update;
+- (void)_relativePositionAnimationParametersUsingSystemPointerPositionSettings:(id)settings forTextContent:(BOOL)content outXDamping:(double *)damping outXResponse:(double *)response outYDamping:(double *)yDamping outYResponse:(double *)yResponse;
+- (void)_transitionFromPointerPortalSourceView:(id)view toPointerPortalSourceView:(id)sourceView animated:(BOOL)animated completion:(id)completion;
+- (void)_updatePointerShapePosition:(double)position onAxis:(unint64_t)axis isModel:(BOOL)model;
+- (void)_updateRampingPropertiesForPointerSlip:(CGPoint)slip animated:(BOOL)animated;
+- (void)hidePointerAnimated:(BOOL)animated;
+- (void)invalidateContentMatchMoveSource:(id)source forClient:(id)client;
+- (void)invalidateContentMatchMoveSourcesPassingTest:(id)test additionalInvalidation:(id)invalidation;
+- (void)invalidateEffectSourcesForPointerClient:(id)client;
+- (void)invalidatePointerPortalSourceCollection:(id)collection forClient:(id)client;
+- (void)invalidatePointerPortalSourceCollectionsPassingTest:(id)test additionalInvalidation:(id)invalidation;
+- (void)pointerShapeViewInterfaceOrientationDidChange:(id)change duration:(double)duration;
+- (void)pointerShapeViewVisibilityDidChange:(id)change;
 - (void)removeClippingRegion;
-- (void)setClippingRegion:(CGRect)a3 cornerRadius:(double)a4;
+- (void)setClippingRegion:(CGRect)region cornerRadius:(double)radius;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUIDPointerRenderingRootViewController
 
-- (PUIDPointerRenderingRootViewController)initWithDisplay:(id)a3 hiddenForPerformanceReasons:(BOOL)a4
+- (PUIDPointerRenderingRootViewController)initWithDisplay:(id)display hiddenForPerformanceReasons:(BOOL)reasons
 {
-  v7 = a3;
+  displayCopy = display;
   v17.receiver = self;
   v17.super_class = PUIDPointerRenderingRootViewController;
   v8 = [(PUIDPointerRenderingRootViewController *)&v17 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_display, a3);
+    objc_storeStrong(&v8->_display, display);
     v9->_visibilityState = 1;
     v10 = +[PUIDPointerDomain rootSettings];
     settings = v9->_settings;
@@ -64,21 +64,21 @@
     v15 = *&CATransform3DIdentity.m33;
     *&v9->_previousContentTransform.m31 = *&CATransform3DIdentity.m31;
     *&v9->_previousContentTransform.m33 = v15;
-    v9->_hiddenForPerformanceReasons = a4;
+    v9->_hiddenForPerformanceReasons = reasons;
   }
 
   return v9;
 }
 
-- (PUIDPointerRenderingRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUIDPointerRenderingRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:name];
   [v6 handleFailureInMethod:a2 object:self file:@"PUIDPointerRenderingRootViewController.m" lineNumber:187 description:@"Call initWithDisplay: instead"];
 
   return [(PUIDPointerRenderingRootViewController *)self init];
 }
 
-- (PUIDPointerRenderingRootViewController)initWithCoder:(id)a3
+- (PUIDPointerRenderingRootViewController)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"PUIDPointerRenderingRootViewController.m" lineNumber:193 description:@"Call initWithDisplay: instead"];
@@ -94,18 +94,18 @@
   v3 = +[NSUserDefaults standardUserDefaults];
   self->_isDebugMode = [v3 BOOLForKey:@"DebugScene"];
 
-  v4 = [(PUIDPointerRenderingRootViewController *)self view];
-  [v4 bounds];
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [v4 setHidden:self->_hiddenForPerformanceReasons];
+  [view setHidden:self->_hiddenForPerformanceReasons];
   v13 = [[UIView alloc] initWithFrame:{v6, v8, v10, v12}];
   pointerRootView = self->_pointerRootView;
   self->_pointerRootView = v13;
 
-  [v4 addSubview:self->_pointerRootView];
+  [view addSubview:self->_pointerRootView];
   v15 = objc_alloc_init(PUIDPointerShapeView);
   pointerShapeView = self->_pointerShapeView;
   self->_pointerShapeView = v15;
@@ -119,7 +119,7 @@
   self->_pointerBackgroundSamplingSourceView = v18;
 
   [(UIView *)self->_pointerBackgroundSamplingSourceView setPosition:CGPointZero.x, y];
-  [v4 addSubview:self->_pointerBackgroundSamplingSourceView];
+  [view addSubview:self->_pointerBackgroundSamplingSourceView];
   v20 = objc_alloc_init(UIViewFloatAnimatableProperty);
   rampingXProperty = self->_rampingXProperty;
   self->_rampingXProperty = v20;
@@ -173,7 +173,7 @@
   specularEffectRootView = self->_specularEffectRootView;
   self->_specularEffectRootView = v30;
 
-  [v4 addSubview:self->_specularEffectRootView];
+  [view addSubview:self->_specularEffectRootView];
   v32 = +[NSBundle PUID_mainBundle];
   v33 = [UIImage imageNamed:@"Specular" inBundle:v32 withConfiguration:0];
 
@@ -207,8 +207,8 @@
     [(UIView *)self->_specularEffectRootView setHidden:1];
   }
 
-  v44 = [(PUIDPointerRenderingRootViewController *)self view];
-  [(PUIDPointerRenderingRootViewController *)self _debugVisualizationForView:v44];
+  view2 = [(PUIDPointerRenderingRootViewController *)self view];
+  [(PUIDPointerRenderingRootViewController *)self _debugVisualizationForView:view2];
 
   objc_destroyWeak(&v46);
   objc_destroyWeak(&v48);
@@ -221,18 +221,18 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_display withName:@"display"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(PUIDPointerRenderingRootViewController *)self view];
-  [v8 size];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  [view size];
   v10 = v9;
   v12 = v11;
 
@@ -251,63 +251,63 @@
   objc_destroyWeak(&location);
 }
 
-- (void)pointerShapeViewVisibilityDidChange:(id)a3
+- (void)pointerShapeViewVisibilityDidChange:(id)change
 {
-  self->_pointerIsVisible = [a3 isVisible];
-  v4 = [(PUIDPointerRenderingRootViewController *)self delegate];
+  self->_pointerIsVisible = [change isVisible];
+  delegate = [(PUIDPointerRenderingRootViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PUIDPointerRenderingRootViewController *)self delegate];
-    [v6 pointerVisibilityDidChange:self];
+    delegate2 = [(PUIDPointerRenderingRootViewController *)self delegate];
+    [delegate2 pointerVisibilityDidChange:self];
   }
 }
 
-- (void)pointerShapeViewInterfaceOrientationDidChange:(id)a3 duration:(double)a4
+- (void)pointerShapeViewInterfaceOrientationDidChange:(id)change duration:(double)duration
 {
-  v6 = [(PUIDPointerRenderingRootViewController *)self delegate];
+  delegate = [(PUIDPointerRenderingRootViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PUIDPointerRenderingRootViewController *)self delegate];
-    [v8 pointerOrientationDidChange:self duration:a4];
+    delegate2 = [(PUIDPointerRenderingRootViewController *)self delegate];
+    [delegate2 pointerOrientationDidChange:self duration:duration];
   }
 
   [(PUIDPointerRenderingRootViewController *)self _updatePointerWithOptions:3 updateHandlerCollection:0 error:0];
 }
 
-- (id)createPointerPortalSourceCollectionForClient:(id)a3
+- (id)createPointerPortalSourceCollectionForClient:(id)client
 {
-  v41 = a3;
-  v4 = [(PUIDPointerRenderingRootViewController *)self view];
-  [v4 bounds];
+  clientCopy = client;
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v13 = [(PUIDPointerRenderingRootViewController *)self _createPortalSourceViewWithFrame:?];
-  v14 = [v13 contentPortalView];
-  [v14 setSourceView:self->_pointerRootView];
+  contentPortalView = [v13 contentPortalView];
+  [contentPortalView setSourceView:self->_pointerRootView];
 
-  [v4 addSubview:v13];
-  v15 = [v13 layer];
+  [view addSubview:v13];
+  layer = [v13 layer];
   v16 = [PSPortalSource alloc];
-  v17 = [v15 context];
-  v39 = v15;
-  v18 = [v16 initWithSourceContextID:objc_msgSend(v17 sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
+  context = [layer context];
+  v39 = layer;
+  v18 = [v16 initWithSourceContextID:objc_msgSend(context sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
 
   v19 = [(PUIDPointerRenderingRootViewController *)self _createPortalSourceViewWithFrame:v6, v8, v10, v12];
-  v20 = [v19 contentPortalView];
-  [v20 setSourceView:self->_specularEffectRootView];
+  contentPortalView2 = [v19 contentPortalView];
+  [contentPortalView2 setSourceView:self->_specularEffectRootView];
 
-  v40 = v4;
-  [v4 addSubview:v19];
-  v21 = [v19 layer];
+  v40 = view;
+  [view addSubview:v19];
+  layer2 = [v19 layer];
   v22 = [PSPortalSource alloc];
-  v23 = [v21 context];
-  v24 = [v22 initWithSourceContextID:objc_msgSend(v23 sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
+  context2 = [layer2 context];
+  v24 = [v22 initWithSourceContextID:objc_msgSend(context2 sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
 
   portalSourceToView = self->_portalSourceToView;
   if (!portalSourceToView)
@@ -319,16 +319,16 @@
     portalSourceToView = self->_portalSourceToView;
   }
 
-  [(NSMutableDictionary *)portalSourceToView setObject:v13 forKey:v18, v21];
+  [(NSMutableDictionary *)portalSourceToView setObject:v13 forKey:v18, layer2];
   [(NSMutableDictionary *)self->_portalSourceToView setObject:v19 forKey:v24];
-  v28 = [(UIView *)self->_pointerBackgroundSamplingSourceView layer];
+  layer3 = [(UIView *)self->_pointerBackgroundSamplingSourceView layer];
   v29 = [PSMatchMoveSource alloc];
-  v30 = [v28 context];
-  v31 = [v29 initWithSourceContextID:objc_msgSend(v30 sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
+  context3 = [layer3 context];
+  v31 = [v29 initWithSourceContextID:objc_msgSend(context3 sourceLayerRenderID:{"contextId"), CALayerGetRenderId()}];
 
   [v31 setShouldBeInvalidatedIfPointerLeavesDisplay:0];
   v32 = [[PSPointerPortalSourceCollection alloc] initWithPointerPortalSource:v18 overlayEffectPortalSource:v24 samplingMatchMoveSource:v31];
-  v33 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:v41];
+  v33 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:clientCopy];
   if (!v33)
   {
     v33 = objc_alloc_init(_PUIDPointerRenderingClientSourceContainer);
@@ -342,7 +342,7 @@
       pointerClientToSourceContainerMap = self->_pointerClientToSourceContainerMap;
     }
 
-    [(NSMapTable *)pointerClientToSourceContainerMap setObject:v33 forKey:v41];
+    [(NSMapTable *)pointerClientToSourceContainerMap setObject:v33 forKey:clientCopy];
   }
 
   [(_PUIDPointerRenderingClientSourceContainer *)v33 addPointerPortalSourceCollection:v32];
@@ -350,37 +350,37 @@
   return v32;
 }
 
-- (void)invalidatePointerPortalSourceCollection:(id)a3 forClient:(id)a4
+- (void)invalidatePointerPortalSourceCollection:(id)collection forClient:(id)client
 {
-  v18 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:v6];
-  v8 = [v7 pointerPortalSourceCollections];
-  v9 = [v8 containsObject:v18];
+  collectionCopy = collection;
+  clientCopy = client;
+  v7 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:clientCopy];
+  pointerPortalSourceCollections = [v7 pointerPortalSourceCollections];
+  v9 = [pointerPortalSourceCollections containsObject:collectionCopy];
 
   if (v9)
   {
-    v10 = [v18 pointerPortalSource];
-    if (v10)
+    pointerPortalSource = [collectionCopy pointerPortalSource];
+    if (pointerPortalSource)
     {
-      v11 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:v10];
+      v11 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:pointerPortalSource];
       if (v11)
       {
         v12 = v11;
         [v11 removeFromSuperview];
-        [(NSMutableDictionary *)self->_portalSourceToView removeObjectForKey:v10];
+        [(NSMutableDictionary *)self->_portalSourceToView removeObjectForKey:pointerPortalSource];
       }
     }
 
-    v13 = [v18 overlayEffectPortalSource];
-    if (v13)
+    overlayEffectPortalSource = [collectionCopy overlayEffectPortalSource];
+    if (overlayEffectPortalSource)
     {
-      v14 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:v13];
+      v14 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:overlayEffectPortalSource];
       if (v14)
       {
         v15 = v14;
         [v14 removeFromSuperview];
-        [(NSMutableDictionary *)self->_portalSourceToView removeObjectForKey:v13];
+        [(NSMutableDictionary *)self->_portalSourceToView removeObjectForKey:overlayEffectPortalSource];
       }
     }
 
@@ -390,10 +390,10 @@
       self->_portalSourceToView = 0;
     }
 
-    [v7 removePointerPortalSourceCollection:v18];
+    [v7 removePointerPortalSourceCollection:collectionCopy];
     if ([v7 isEmpty])
     {
-      [(NSMapTable *)self->_pointerClientToSourceContainerMap removeObjectForKey:v6];
+      [(NSMapTable *)self->_pointerClientToSourceContainerMap removeObjectForKey:clientCopy];
       if (![(NSMapTable *)self->_pointerClientToSourceContainerMap count])
       {
         pointerClientToSourceContainerMap = self->_pointerClientToSourceContainerMap;
@@ -403,31 +403,31 @@
   }
 }
 
-- (BOOL)isValidPointerPortalSourceCollection:(id)a3 forClient:(id)a4
+- (BOOL)isValidPointerPortalSourceCollection:(id)collection forClient:(id)client
 {
   pointerClientToSourceContainerMap = self->_pointerClientToSourceContainerMap;
-  v6 = a3;
-  v7 = [(NSMapTable *)pointerClientToSourceContainerMap objectForKey:a4];
-  v8 = [v7 pointerPortalSourceCollections];
-  v9 = [v8 containsObject:v6];
+  collectionCopy = collection;
+  v7 = [(NSMapTable *)pointerClientToSourceContainerMap objectForKey:client];
+  pointerPortalSourceCollections = [v7 pointerPortalSourceCollections];
+  v9 = [pointerPortalSourceCollections containsObject:collectionCopy];
 
   return v9;
 }
 
-- (void)invalidatePointerPortalSourceCollectionsPassingTest:(id)a3 additionalInvalidation:(id)a4
+- (void)invalidatePointerPortalSourceCollectionsPassingTest:(id)test additionalInvalidation:(id)invalidation
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  invalidationCopy = invalidation;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
-  v8 = [(NSMapTable *)self->_pointerClientToSourceContainerMap keyEnumerator];
-  v9 = [v8 allObjects];
+  selfCopy = self;
+  keyEnumerator = [(NSMapTable *)self->_pointerClientToSourceContainerMap keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  obj = v9;
-  v20 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  obj = allObjects;
+  v20 = [allObjects countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v20)
   {
     v19 = *v29;
@@ -443,13 +443,13 @@
 
         v22 = v10;
         v11 = *(*(&v28 + 1) + 8 * v10);
-        v21 = [(NSMapTable *)v23->_pointerClientToSourceContainerMap objectForKey:v11];
-        v12 = [v21 pointerPortalSourceCollections];
+        v21 = [(NSMapTable *)selfCopy->_pointerClientToSourceContainerMap objectForKey:v11];
+        pointerPortalSourceCollections = [v21 pointerPortalSourceCollections];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v13 = [pointerPortalSourceCollections countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -460,18 +460,18 @@
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(pointerPortalSourceCollections);
               }
 
               v17 = *(*(&v24 + 1) + 8 * i);
-              if (!v6 || v6[2](v6, v11, *(*(&v24 + 1) + 8 * i)))
+              if (!testCopy || testCopy[2](testCopy, v11, *(*(&v24 + 1) + 8 * i)))
               {
-                [(PUIDPointerRenderingRootViewController *)v23 invalidatePointerPortalSourceCollection:v17 forClient:v11];
-                v7[2](v7, v11, v17);
+                [(PUIDPointerRenderingRootViewController *)selfCopy invalidatePointerPortalSourceCollection:v17 forClient:v11];
+                invalidationCopy[2](invalidationCopy, v11, v17);
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v14 = [pointerPortalSourceCollections countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v14);
@@ -488,15 +488,15 @@
   }
 }
 
-- (id)createContentMatchMoveSourceForClient:(id)a3
+- (id)createContentMatchMoveSourceForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(PUIDPointerRenderingRootViewController *)self _createMatchMoveSourceView];
-  v6 = [v5 layer];
+  clientCopy = client;
+  _createMatchMoveSourceView = [(PUIDPointerRenderingRootViewController *)self _createMatchMoveSourceView];
+  layer = [_createMatchMoveSourceView layer];
   v7 = [PSMatchMoveSource alloc];
-  v8 = [(PUIDPointerRenderingRootViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v7 initWithSourceContextID:objc_msgSend(v9 sourceLayerRenderID:{"_contextId"), CALayerGetRenderId()}];
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  window = [view window];
+  v10 = [v7 initWithSourceContextID:objc_msgSend(window sourceLayerRenderID:{"_contextId"), CALayerGetRenderId()}];
 
   matchMoveSourceToView = self->_matchMoveSourceToView;
   if (!matchMoveSourceToView)
@@ -508,8 +508,8 @@
     matchMoveSourceToView = self->_matchMoveSourceToView;
   }
 
-  [(NSMutableDictionary *)matchMoveSourceToView setObject:v5 forKey:v10];
-  v14 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:v4];
+  [(NSMutableDictionary *)matchMoveSourceToView setObject:_createMatchMoveSourceView forKey:v10];
+  v14 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:clientCopy];
   if (!v14)
   {
     v14 = objc_alloc_init(_PUIDPointerRenderingClientSourceContainer);
@@ -523,7 +523,7 @@
       pointerClientToSourceContainerMap = self->_pointerClientToSourceContainerMap;
     }
 
-    [(NSMapTable *)pointerClientToSourceContainerMap setObject:v14 forKey:v4];
+    [(NSMapTable *)pointerClientToSourceContainerMap setObject:v14 forKey:clientCopy];
   }
 
   [(_PUIDPointerRenderingClientSourceContainer *)v14 addContentMatchMoveSource:v10];
@@ -531,22 +531,22 @@
   return v10;
 }
 
-- (void)invalidateContentMatchMoveSource:(id)a3 forClient:(id)a4
+- (void)invalidateContentMatchMoveSource:(id)source forClient:(id)client
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:v6];
-  v8 = [v7 contentMatchMoveSources];
-  v9 = [v8 containsObject:v14];
+  sourceCopy = source;
+  clientCopy = client;
+  v7 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:clientCopy];
+  contentMatchMoveSources = [v7 contentMatchMoveSources];
+  v9 = [contentMatchMoveSources containsObject:sourceCopy];
 
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_matchMoveSourceToView objectForKey:v14];
+    v10 = [(NSMutableDictionary *)self->_matchMoveSourceToView objectForKey:sourceCopy];
     v11 = v10;
     if (v10)
     {
       [v10 removeFromSuperview];
-      [(NSMutableDictionary *)self->_matchMoveSourceToView removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_matchMoveSourceToView removeObjectForKey:sourceCopy];
     }
 
     if (![(NSMutableDictionary *)self->_matchMoveSourceToView count])
@@ -555,10 +555,10 @@
       self->_matchMoveSourceToView = 0;
     }
 
-    [v7 removeContentMatchMoveSource:v14];
+    [v7 removeContentMatchMoveSource:sourceCopy];
     if ([v7 isEmpty])
     {
-      [(NSMapTable *)self->_pointerClientToSourceContainerMap removeObjectForKey:v6];
+      [(NSMapTable *)self->_pointerClientToSourceContainerMap removeObjectForKey:clientCopy];
       if (![(NSMapTable *)self->_pointerClientToSourceContainerMap count])
       {
         pointerClientToSourceContainerMap = self->_pointerClientToSourceContainerMap;
@@ -568,20 +568,20 @@
   }
 }
 
-- (void)invalidateContentMatchMoveSourcesPassingTest:(id)a3 additionalInvalidation:(id)a4
+- (void)invalidateContentMatchMoveSourcesPassingTest:(id)test additionalInvalidation:(id)invalidation
 {
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  invalidationCopy = invalidation;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = self;
-  v8 = [(NSMapTable *)self->_pointerClientToSourceContainerMap keyEnumerator];
-  v9 = [v8 allObjects];
+  selfCopy = self;
+  keyEnumerator = [(NSMapTable *)self->_pointerClientToSourceContainerMap keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  obj = v9;
-  v20 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  obj = allObjects;
+  v20 = [allObjects countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v20)
   {
     v19 = *v29;
@@ -597,13 +597,13 @@
 
         v22 = v10;
         v11 = *(*(&v28 + 1) + 8 * v10);
-        v21 = [(NSMapTable *)v23->_pointerClientToSourceContainerMap objectForKey:v11];
-        v12 = [v21 contentMatchMoveSources];
+        v21 = [(NSMapTable *)selfCopy->_pointerClientToSourceContainerMap objectForKey:v11];
+        contentMatchMoveSources = [v21 contentMatchMoveSources];
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v13 = [contentMatchMoveSources countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v13)
         {
           v14 = v13;
@@ -614,18 +614,18 @@
             {
               if (*v25 != v15)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(contentMatchMoveSources);
               }
 
               v17 = *(*(&v24 + 1) + 8 * i);
-              if (!v6 || v6[2](v6, v11, *(*(&v24 + 1) + 8 * i)))
+              if (!testCopy || testCopy[2](testCopy, v11, *(*(&v24 + 1) + 8 * i)))
               {
-                [(PUIDPointerRenderingRootViewController *)v23 invalidateContentMatchMoveSource:v17 forClient:v11];
-                v7[2](v7, v11, v17);
+                [(PUIDPointerRenderingRootViewController *)selfCopy invalidateContentMatchMoveSource:v17 forClient:v11];
+                invalidationCopy[2](invalidationCopy, v11, v17);
               }
             }
 
-            v14 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v14 = [contentMatchMoveSources countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v14);
@@ -642,17 +642,17 @@
   }
 }
 
-- (void)invalidateEffectSourcesForPointerClient:(id)a3
+- (void)invalidateEffectSourcesForPointerClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:v4];
-  v6 = [v5 contentMatchMoveSources];
-  v7 = [v5 pointerPortalSourceCollections];
+  clientCopy = client;
+  v5 = [(NSMapTable *)self->_pointerClientToSourceContainerMap objectForKey:clientCopy];
+  contentMatchMoveSources = [v5 contentMatchMoveSources];
+  pointerPortalSourceCollections = [v5 pointerPortalSourceCollections];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = contentMatchMoveSources;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
@@ -668,7 +668,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [(PUIDPointerRenderingRootViewController *)self invalidateContentMatchMoveSource:*(*(&v22 + 1) + 8 * v12) forClient:v4];
+        [(PUIDPointerRenderingRootViewController *)self invalidateContentMatchMoveSource:*(*(&v22 + 1) + 8 * v12) forClient:clientCopy];
         v12 = v12 + 1;
       }
 
@@ -683,7 +683,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v13 = v7;
+  v13 = pointerPortalSourceCollections;
   v14 = [v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v14)
   {
@@ -699,7 +699,7 @@
           objc_enumerationMutation(v13);
         }
 
-        [(PUIDPointerRenderingRootViewController *)self invalidatePointerPortalSourceCollection:*(*(&v18 + 1) + 8 * v17) forClient:v4, v18];
+        [(PUIDPointerRenderingRootViewController *)self invalidatePointerPortalSourceCollection:*(*(&v18 + 1) + 8 * v17) forClient:clientCopy, v18];
         v17 = v17 + 1;
       }
 
@@ -711,37 +711,37 @@
   }
 }
 
-- (BOOL)setPointerState:(id)a3 options:(unint64_t)a4 updateHandlerCollection:(id)a5 error:(id *)a6
+- (BOOL)setPointerState:(id)state options:(unint64_t)options updateHandlerCollection:(id)collection error:(id *)error
 {
-  v11 = a3;
+  stateCopy = state;
   pointerState = self->_pointerState;
-  v13 = a5;
-  v14 = v13;
-  if (pointerState == v11)
+  collectionCopy = collection;
+  v14 = collectionCopy;
+  if (pointerState == stateCopy)
   {
     v19 = 1;
-    [v13 performAllHandlersWithFinished:1 retargeted:0];
+    [collectionCopy performAllHandlersWithFinished:1 retargeted:0];
   }
 
   else
   {
-    v15 = [(PUIDPointerState *)v11 pointerShape];
-    if ([v15 shapeType] == 5)
+    pointerShape = [(PUIDPointerState *)stateCopy pointerShape];
+    if ([pointerShape shapeType] == 5)
     {
-      v16 = [(PUIDPointerState *)self->_pointerState pointerShape];
-      v17 = [v16 shapeType];
+      pointerShape2 = [(PUIDPointerState *)self->_pointerState pointerShape];
+      shapeType = [pointerShape2 shapeType];
 
-      v18 = a4 & 0xFFFFFFFFFFFFFFFELL;
-      if (v17 == 5)
+      v18 = options & 0xFFFFFFFFFFFFFFFELL;
+      if (shapeType == 5)
       {
-        a4 &= ~1uLL;
+        options &= ~1uLL;
       }
     }
 
     else
     {
 
-      v18 = a4 & 0xFFFFFFFFFFFFFFFELL;
+      v18 = options & 0xFFFFFFFFFFFFFFFELL;
     }
 
     if (self->_visibilityState == 1)
@@ -749,30 +749,30 @@
       [(PUIDPointerState *)self->_pointerState pointerVisualIntensity];
       if (v20 == 0.0)
       {
-        a4 = v18;
+        options = v18;
       }
     }
 
-    objc_storeStrong(&self->_pointerState, a3);
+    objc_storeStrong(&self->_pointerState, state);
     v24 = 0;
-    v19 = [(PUIDPointerRenderingRootViewController *)self _updatePointerWithOptions:a4 updateHandlerCollection:v14 error:&v24];
+    v19 = [(PUIDPointerRenderingRootViewController *)self _updatePointerWithOptions:options updateHandlerCollection:v14 error:&v24];
 
     v21 = v24;
     v14 = v21;
-    if (a6 && !v19)
+    if (error && !v19)
     {
       v22 = v21;
-      *a6 = v14;
+      *error = v14;
     }
   }
 
   return v19;
 }
 
-- (BOOL)_updatePointerWithOptions:(unint64_t)a3 updateHandlerCollection:(id)a4 error:(id *)a5
+- (BOOL)_updatePointerWithOptions:(unint64_t)options updateHandlerCollection:(id)collection error:(id *)error
 {
-  v159 = a4;
-  v6 = [(PUIDPointerRenderingRootViewController *)self view];
+  collectionCopy = collection;
+  view = [(PUIDPointerRenderingRootViewController *)self view];
   memset(&v208[1], 0, sizeof(CATransform3D));
   pointerState = self->_pointerState;
   if (pointerState)
@@ -787,13 +787,13 @@
   memset(&v207, 0, sizeof(v207));
   CATransform3DMakeRotation(&v207, v211, 0.0, 0.0, 1.0);
   v146 = sub_100019EA0();
-  v8 = [(PUIDPointerState *)self->_pointerState pointerPortalSourceCollection];
-  v9 = [v8 pointerPortalSource];
-  v10 = [(PSPointerPortalSourceCollection *)self->_previousPointerPortalSourceCollection pointerPortalSource];
-  v161 = v10;
-  if (v9)
+  pointerPortalSourceCollection = [(PUIDPointerState *)self->_pointerState pointerPortalSourceCollection];
+  pointerPortalSource = [pointerPortalSourceCollection pointerPortalSource];
+  pointerPortalSource2 = [(PSPointerPortalSourceCollection *)self->_previousPointerPortalSourceCollection pointerPortalSource];
+  v161 = pointerPortalSource2;
+  if (pointerPortalSource)
   {
-    v11 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:v9];
+    v11 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:pointerPortalSource];
     v12 = v161;
     v158 = v11;
     if (v161)
@@ -806,9 +806,9 @@ LABEL_5:
 
   else
   {
-    v12 = v10;
+    v12 = pointerPortalSource2;
     v158 = 0;
-    if (v10)
+    if (pointerPortalSource2)
     {
       goto LABEL_5;
     }
@@ -816,12 +816,12 @@ LABEL_5:
 
   v157 = 0;
 LABEL_8:
-  v13 = [v8 overlayEffectPortalSource];
-  v156 = [(PSPointerPortalSourceCollection *)self->_previousPointerPortalSourceCollection overlayEffectPortalSource];
-  v151 = v13;
-  if (v13)
+  overlayEffectPortalSource = [pointerPortalSourceCollection overlayEffectPortalSource];
+  overlayEffectPortalSource2 = [(PSPointerPortalSourceCollection *)self->_previousPointerPortalSourceCollection overlayEffectPortalSource];
+  v151 = overlayEffectPortalSource;
+  if (overlayEffectPortalSource)
   {
-    v14 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:v13];
+    v14 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:overlayEffectPortalSource];
   }
 
   else
@@ -829,11 +829,11 @@ LABEL_8:
     v14 = 0;
   }
 
-  v15 = v156;
+  v15 = overlayEffectPortalSource2;
   v160 = v14;
-  if (v156)
+  if (overlayEffectPortalSource2)
   {
-    v16 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:v156];
+    v16 = [(NSMutableDictionary *)self->_portalSourceToView objectForKey:overlayEffectPortalSource2];
   }
 
   else
@@ -844,21 +844,21 @@ LABEL_8:
   if (v14 != v16)
   {
     [v16 contentPortalView];
-    v18 = v17 = v9;
+    v18 = v17 = pointerPortalSource;
     [v18 setAlpha:0.0];
 
-    v19 = [v14 contentPortalView];
-    [v19 setAlpha:1.0];
+    contentPortalView = [v14 contentPortalView];
+    [contentPortalView setAlpha:1.0];
 
-    v9 = v17;
+    pointerPortalSource = v17;
   }
 
   v150 = v16;
-  objc_storeStrong(&self->_previousPointerPortalSourceCollection, v8);
-  v20 = [(PUIDPointerState *)self->_pointerState contentMatchMoveSource];
-  if (v20)
+  objc_storeStrong(&self->_previousPointerPortalSourceCollection, pointerPortalSourceCollection);
+  contentMatchMoveSource = [(PUIDPointerState *)self->_pointerState contentMatchMoveSource];
+  if (contentMatchMoveSource)
   {
-    v21 = [(NSMutableDictionary *)self->_matchMoveSourceToView objectForKey:v20];
+    v21 = [(NSMutableDictionary *)self->_matchMoveSourceToView objectForKey:contentMatchMoveSource];
   }
 
   else
@@ -876,21 +876,21 @@ LABEL_8:
     v22 = 0;
   }
 
-  objc_storeStrong(&self->_previousContentMatchMoveSource, v20);
+  objc_storeStrong(&self->_previousContentMatchMoveSource, contentMatchMoveSource);
   [(PUIDPointerState *)self->_pointerState modelPointerReferencePosition];
   v24 = v23;
   v26 = v25;
   sub_100022070(@"pointerStateModelReferencePosition", self->_pointerState, v23, v25);
-  [v6 convertPoint:0 fromView:{v24, v26}];
+  [view convertPoint:0 fromView:{v24, v26}];
   v28 = v27;
   v30 = v29;
   sub_100022070(@"relativeModelPosition", self->_pointerState, v27, v29);
   [(PUIDPointerState *)self->_pointerState contentBounds];
   y = CGPointZero.y;
-  v32 = [(PUIDPointerState *)self->_pointerState pointerSlipValue];
+  pointerSlipValue = [(PUIDPointerState *)self->_pointerState pointerSlipValue];
   v153 = v28;
   path = *&y;
-  if (v32)
+  if (pointerSlipValue)
   {
     UIRectGetCenter();
     *b = v208[0];
@@ -898,7 +898,7 @@ LABEL_8:
     x = v33;
     v36 = v35;
     sub_100022070(@"contentBoundsCenterInLocalWindowCoordinates", self->_pointerState, v33, v35);
-    [v32 CGPointValue];
+    [pointerSlipValue CGPointValue];
     v38 = v37;
     v40 = v39;
     sub_100022070(@"pointerSlipValue", self->_pointerState, v37, v39);
@@ -934,19 +934,19 @@ LABEL_8:
     x = CGPointZero.x;
   }
 
-  v152 = v8;
+  v152 = pointerPortalSourceCollection;
   v148 = sub_100022070(@"relativeEffectedPosition", self->_pointerState, v28, v44);
-  v149 = v32;
+  v149 = pointerSlipValue;
   if (v148)
   {
-    v145 = v6;
-    v45 = [v6 window];
-    v46 = [v45 screen];
-    v47 = v46;
+    v145 = view;
+    window = [view window];
+    screen = [window screen];
+    v47 = screen;
     v135 = v30;
-    if (v46)
+    if (screen)
     {
-      v48 = v46;
+      v48 = screen;
     }
 
     else
@@ -961,13 +961,13 @@ LABEL_8:
     BSPointRoundForScale();
     v54 = v53;
     v130 = v55;
-    v56 = [(PUIDPointerState *)self->_pointerState contentSlipValue];
-    v57 = v56;
+    contentSlipValue = [(PUIDPointerState *)self->_pointerState contentSlipValue];
+    v57 = contentSlipValue;
     v58 = CGPointZero.x;
     v59 = path;
-    if (v56)
+    if (contentSlipValue)
     {
-      [v56 CGPointValue];
+      [contentSlipValue CGPointValue];
       if (v146)
       {
         v62 = v61;
@@ -996,15 +996,15 @@ LABEL_8:
 
     v131 = v59;
     v147 = v58;
-    v64 = [(PUIDPointerState *)self->_pointerState pointerShape];
-    v65 = [v64 shapeType];
-    v66 = v65;
-    v134 = v20;
+    pointerShape = [(PUIDPointerState *)self->_pointerState pointerShape];
+    shapeType = [pointerShape shapeType];
+    v66 = shapeType;
+    v134 = contentMatchMoveSource;
     v142 = v22;
     v132 = v57;
-    if (v65 == 5)
+    if (shapeType == 5)
     {
-      [v64 pinnedPoint];
+      [pointerShape pinnedPoint];
       *b = v208[0];
       CA_CGPointApplyTransform();
       BSPointRoundForScale();
@@ -1054,13 +1054,13 @@ LABEL_8:
       v54 = v85;
       v89 = [PSPointerShape roundedRectWithBounds:v88 cornerRadius:v87, width, height, v75];
 
-      v64 = v89;
+      pointerShape = v89;
       v90 = v135;
     }
 
     else
     {
-      if ((v65 - 2) <= 2)
+      if ((shapeType - 2) <= 2)
       {
         *b = v208[0];
         CA_CGPointApplyTransform();
@@ -1077,36 +1077,36 @@ LABEL_8:
         CATransform3DMakeTranslation(b, -v92, -v94, 0.0);
         a = v206;
         CATransform3DConcat(&v205, &a, b);
-        if ([v64 shapeType] == 2)
+        if ([pointerShape shapeType] == 2)
         {
-          [v64 bounds];
+          [pointerShape bounds];
           *b = v205;
           CA_CGRectApplyTransform();
           v95 = [PSPointerShape circleWithBounds:?];
 
-          v64 = v95;
+          pointerShape = v95;
         }
 
-        else if ([v64 shapeType] == 3)
+        else if ([pointerShape shapeType] == 3)
         {
-          [v64 bounds];
+          [pointerShape bounds];
           *b = v205;
           CA_CGRectApplyTransform();
           v97 = v96;
           v99 = v98;
           v101 = v100;
           v103 = v102;
-          [v64 cornerRadius];
+          [pointerShape cornerRadius];
           v105 = v104;
-          v106 = [v64 cornerCurve];
-          patha = [PSPointerShape roundedRectWithBounds:v106 cornerRadius:v97 cornerCurve:v99, v101, v103, v105];
+          cornerCurve = [pointerShape cornerCurve];
+          patha = [PSPointerShape roundedRectWithBounds:cornerCurve cornerRadius:v97 cornerCurve:v99, v101, v103, v105];
 
-          v64 = patha;
+          pointerShape = patha;
         }
 
-        else if ([v64 shapeType] == 4)
+        else if ([pointerShape shapeType] == 4)
         {
-          pathb = [v64 path];
+          pathb = [pointerShape path];
           a = v205;
           Mutable = CGPathCreateMutable();
           *b = _NSConcreteStackBlock;
@@ -1118,10 +1118,10 @@ LABEL_8:
           CGPathApplyWithBlock(pathb, b);
           pathc = CGPathCreateCopy(Mutable);
           CGPathRelease(Mutable);
-          v129 = +[PSPointerShape customShapeWithPath:usesEvenOddFillRule:](PSPointerShape, "customShapeWithPath:usesEvenOddFillRule:", pathc, [v64 usesEvenOddFillRule]);
+          v129 = +[PSPointerShape customShapeWithPath:usesEvenOddFillRule:](PSPointerShape, "customShapeWithPath:usesEvenOddFillRule:", pathc, [pointerShape usesEvenOddFillRule]);
 
           CGPathRelease(pathc);
-          v64 = v129;
+          pointerShape = v129;
         }
       }
 
@@ -1129,10 +1129,10 @@ LABEL_8:
       v77 = v130;
     }
 
-    v108 = [(PUIDPointerState *)self->_pointerState suppressPointerMirroring];
-    v109 = [(UIView *)self->_pointerRootView layer];
-    v110 = v109;
-    if (v108)
+    suppressPointerMirroring = [(PUIDPointerState *)self->_pointerState suppressPointerMirroring];
+    layer = [(UIView *)self->_pointerRootView layer];
+    v110 = layer;
+    if (suppressPointerMirroring)
     {
       v111 = 18;
     }
@@ -1142,25 +1142,25 @@ LABEL_8:
       v111 = 0;
     }
 
-    [v109 setDisableUpdateMask:v111];
+    [layer setDisableUpdateMask:v111];
 
-    [(PUIDPointerRenderingRootViewController *)self _updateRampingPropertiesForPointerSlip:a3 & 1 animated:v140, v141];
+    [(PUIDPointerRenderingRootViewController *)self _updateRampingPropertiesForPointerSlip:options & 1 animated:v140, v141];
     v196[0] = _NSConcreteStackBlock;
     v196[1] = 3221225472;
     v196[2] = sub_1000221D4;
     v196[3] = &unk_1000495B0;
     v196[4] = self;
-    v112 = v64;
+    v112 = pointerShape;
     v197 = v112;
     v198 = v153;
     v199 = v90;
     v200 = v54;
     v201 = v77;
-    v203 = a3 & 1;
-    v202 = a3;
+    v203 = options & 1;
+    optionsCopy = options;
     [SBC2GroupCompletion perform:v196 finalCompletion:&stru_1000495F0];
-    v113 = [(PUIDPointerState *)self->_pointerState isPointerAutoHidden];
-    if (v113)
+    isPointerAutoHidden = [(PUIDPointerState *)self->_pointerState isPointerAutoHidden];
+    if (isPointerAutoHidden)
     {
       v114 = 1;
     }
@@ -1171,7 +1171,7 @@ LABEL_8:
     }
 
     v133 = v52;
-    if (v66 != 5 && (v113 & 1) == 0)
+    if (v66 != 5 && (isPointerAutoHidden & 1) == 0)
     {
       if ([(PUIDPointerState *)self->_pointerState isPressed])
       {
@@ -1192,13 +1192,13 @@ LABEL_8:
     v191[3] = &unk_100049618;
     v192 = v158;
     v193 = v157;
-    v194 = self;
-    v195 = a3 & 1;
+    selfCopy = self;
+    v195 = options & 1;
     v189[0] = _NSConcreteStackBlock;
     v189[1] = 3221225472;
     v189[2] = sub_10002296C;
     v189[3] = &unk_100048EE0;
-    v115 = v159;
+    v115 = collectionCopy;
     v190 = v115;
     [SBC2GroupCompletion perform:v191 finalCompletion:v189];
     pointerShapeView = self->_pointerShapeView;
@@ -1214,7 +1214,7 @@ LABEL_8:
     v186[4] = self;
     v118 = v112;
     v187 = v118;
-    v188 = a3 & 1;
+    v188 = options & 1;
     v184[0] = _NSConcreteStackBlock;
     v184[1] = 3221225472;
     v184[2] = sub_100022AB0;
@@ -1231,8 +1231,8 @@ LABEL_8:
     v120 = v118;
     v179 = v120;
     v181 = visibilityState;
-    v183 = (a3 & 2) != 0;
-    v182 = a3;
+    v183 = (options & 2) != 0;
+    optionsCopy2 = options;
     v176[0] = _NSConcreteStackBlock;
     v176[1] = 3221225472;
     v176[2] = sub_100023484;
@@ -1250,7 +1250,7 @@ LABEL_8:
     v170 = v143;
     v171 = v142;
     v172 = v145;
-    v175 = a3 & 1;
+    v175 = options & 1;
     v167[0] = _NSConcreteStackBlock;
     v167[1] = 3221225472;
     v167[2] = sub_100023940;
@@ -1265,17 +1265,17 @@ LABEL_8:
     v164[4] = self;
     v123 = v120;
     v165 = v123;
-    v166 = a3 & 1;
+    v166 = options & 1;
     v162[0] = _NSConcreteStackBlock;
     v162[1] = 3221225472;
     v162[2] = sub_100023CBC;
     v162[3] = &unk_100048EE0;
     v163 = v122;
     [SBC2GroupCompletion perform:v164 finalCompletion:v162];
-    v124 = [(PUIDPointerState *)self->_pointerState accessories];
+    accessories = [(PUIDPointerState *)self->_pointerState accessories];
     v50 = v152;
-    v15 = v156;
-    if ([v124 count])
+    v15 = overlayEffectPortalSource2;
+    if ([accessories count])
     {
       accessoryContainerView = self->_accessoryContainerView;
       if (!accessoryContainerView)
@@ -1292,14 +1292,14 @@ LABEL_8:
       [(PUIDPointerAccessoryContainerView *)accessoryContainerView setTransform3D:b];
     }
 
-    [(PUIDPointerAccessoryContainerView *)self->_accessoryContainerView setAccessories:v124 animated:1];
+    [(PUIDPointerAccessoryContainerView *)self->_accessoryContainerView setAccessories:accessories animated:1];
     *b = v208[0];
     [(PUIDPointerRenderingRootViewController *)self _debugVisualizationUpdate:b];
 
-    v51 = v159;
+    v51 = collectionCopy;
     v21 = v143;
-    v6 = v145;
-    v20 = v134;
+    view = v145;
+    contentMatchMoveSource = v134;
     v22 = v142;
   }
 
@@ -1312,25 +1312,25 @@ LABEL_8:
     }
 
     v50 = v152;
-    v51 = v159;
-    if (a5)
+    v51 = collectionCopy;
+    if (error)
     {
-      *a5 = [NSError errorWithDomain:@"PUIDPointerRenderingRootViewControllerErrorDomain" code:-1002 userInfo:0];
+      *error = [NSError errorWithDomain:@"PUIDPointerRenderingRootViewControllerErrorDomain" code:-1002 userInfo:0];
     }
   }
 
   return v148;
 }
 
-- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)a3
+- (CATransform3D)transformToLocalWindowForCoordinateSpaceTransformToDisplay:(SEL)display
 {
-  v6 = [(PUIDPointerRenderingRootViewController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  v9 = v8;
-  if (v8)
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  v9 = screen;
+  if (screen)
   {
-    v10 = v8;
+    v10 = screen;
   }
 
   else
@@ -1345,17 +1345,17 @@ LABEL_8:
   [v11 _referenceBounds];
   _D9 = v14;
   v17 = v16;
-  v18 = [v6 window];
-  v19 = [v18 windowScene];
+  window2 = [view window];
+  windowScene = [window2 windowScene];
 
-  v20 = [v19 _FBSScene];
-  v21 = [v20 settings];
+  _FBSScene = [windowScene _FBSScene];
+  settings = [_FBSScene settings];
   v55 = *&CGAffineTransformIdentity.tx;
   if (objc_opt_respondsToSelector())
   {
-    if (v21)
+    if (settings)
     {
-      [v21 rootWindowTransform];
+      [settings rootWindowTransform];
       v22 = *&m.m11;
       v23 = *&m.m13;
     }
@@ -1496,12 +1496,12 @@ LABEL_8:
   return result;
 }
 
-- (void)hidePointerAnimated:(BOOL)a3
+- (void)hidePointerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v6 = [(PUIDPointerState *)self->_pointerState mutableCopy];
   [v6 setPointerAutoHidden:1];
-  if (v3)
+  if (animatedCopy)
   {
     v5 = 3;
   }
@@ -1514,16 +1514,16 @@ LABEL_8:
   [(PUIDPointerRenderingRootViewController *)self setPointerState:v6 options:v5 updateHandlerCollection:0 error:0];
 }
 
-- (void)setClippingRegion:(CGRect)a3 cornerRadius:(double)a4
+- (void)setClippingRegion:(CGRect)region cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
   pointerShapeView = self->_pointerShapeView;
-  v11 = [(PUIDPointerRenderingRootViewController *)self view];
-  v12 = [v11 window];
-  [(PUIDPointerShapeView *)pointerShapeView convertRect:v12 fromCoordinateSpace:x, y, width, height];
+  view = [(PUIDPointerRenderingRootViewController *)self view];
+  window = [view window];
+  [(PUIDPointerShapeView *)pointerShapeView convertRect:window fromCoordinateSpace:x, y, width, height];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -1533,7 +1533,7 @@ LABEL_8:
   v23.origin.y = v16;
   v23.size.width = v18;
   v23.size.height = v20;
-  v21 = CGPathCreateWithRoundedRect(v23, a4, a4, 0);
+  v21 = CGPathCreateWithRoundedRect(v23, radius, radius, 0);
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(PUIDPointerShapeView *)self->_pointerShapeView setMaskPath:v21];
@@ -1552,30 +1552,30 @@ LABEL_8:
   }
 }
 
-- (id)_positionAnimationCountIncrementingCompletionWrapper:(id)a3
+- (id)_positionAnimationCountIncrementingCompletionWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   ++self->_positionAnimationCount;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002438C;
   v9[3] = &unk_100048AA0;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = wrapperCopy;
+  v5 = wrapperCopy;
   v6 = objc_retainBlock(v9);
   v7 = objc_retainBlock(v6);
 
   return v7;
 }
 
-- (void)_updateRampingPropertiesForPointerSlip:(CGPoint)a3 animated:(BOOL)a4
+- (void)_updateRampingPropertiesForPointerSlip:(CGPoint)slip animated:(BOOL)animated
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000244EC;
   v14[3] = &unk_1000497D0;
-  v15 = a4;
+  animatedCopy = animated;
   v14[4] = self;
   v5 = objc_retainBlock(v14);
   rampingXProperty = self->_rampingXProperty;
@@ -1609,13 +1609,13 @@ LABEL_8:
   self->_rampingYProperty = v12;
 }
 
-- (void)_relativePositionAnimationParametersUsingSystemPointerPositionSettings:(id)a3 forTextContent:(BOOL)a4 outXDamping:(double *)a5 outXResponse:(double *)a6 outYDamping:(double *)a7 outYResponse:(double *)a8
+- (void)_relativePositionAnimationParametersUsingSystemPointerPositionSettings:(id)settings forTextContent:(BOOL)content outXDamping:(double *)damping outXResponse:(double *)response outYDamping:(double *)yDamping outYResponse:(double *)yResponse
 {
-  v12 = a4;
-  v31 = a3;
-  if (a5)
+  contentCopy = content;
+  settingsCopy = settings;
+  if (damping)
   {
-    if (a6)
+    if (response)
     {
       goto LABEL_3;
     }
@@ -1624,17 +1624,17 @@ LABEL_8:
   else
   {
     sub_100028620();
-    if (a6)
+    if (response)
     {
 LABEL_3:
-      if (a7)
+      if (yDamping)
       {
         goto LABEL_4;
       }
 
 LABEL_22:
       sub_100028708();
-      if (a8)
+      if (yResponse)
       {
         goto LABEL_5;
       }
@@ -1644,13 +1644,13 @@ LABEL_22:
   }
 
   sub_100028694();
-  if (!a7)
+  if (!yDamping)
   {
     goto LABEL_22;
   }
 
 LABEL_4:
-  if (a8)
+  if (yResponse)
   {
     goto LABEL_5;
   }
@@ -1661,68 +1661,68 @@ LABEL_5:
   [(UIViewFloatAnimatableProperty *)self->_rampingXProperty presentationValue];
   v15 = v14;
   [(UIViewFloatAnimatableProperty *)self->_rampingYProperty presentationValue];
-  if (v12)
+  if (contentCopy)
   {
-    v17 = [(PUIDPointerSettings *)self->_settings textContentPointerPositionAnimationSettings];
-    [v17 dampingRatio];
+    textContentPointerPositionAnimationSettings = [(PUIDPointerSettings *)self->_settings textContentPointerPositionAnimationSettings];
+    [textContentPointerPositionAnimationSettings dampingRatio];
     v19 = v18;
-    [v17 response];
+    [textContentPointerPositionAnimationSettings response];
     v21 = v20;
-    *a5 = v19;
-    *a7 = v19;
-    *a6 = v20;
+    *damping = v19;
+    *yDamping = v19;
+    *response = v20;
   }
 
   else
   {
     v22 = v16;
-    [v31 dampingRatio];
+    [settingsCopy dampingRatio];
     v24 = v23;
-    [v31 response];
+    [settingsCopy response];
     v21 = v25;
-    v17 = [(PUIDPointerSettings *)self->_settings focusedPointerPositionAnimationSettings];
-    [v17 dampingRatio];
+    textContentPointerPositionAnimationSettings = [(PUIDPointerSettings *)self->_settings focusedPointerPositionAnimationSettings];
+    [textContentPointerPositionAnimationSettings dampingRatio];
     v27 = v26;
-    [v17 response];
+    [textContentPointerPositionAnimationSettings response];
     v29 = v28;
     if (BSFloatIsZero())
     {
-      *a5 = v24;
+      *damping = v24;
       v30 = v21;
     }
 
     else if (BSFloatIsOne())
     {
-      *a5 = v27;
+      *damping = v27;
       v30 = v29;
     }
 
     else
     {
-      *a5 = v15 * v27 + (1.0 - v15) * v24;
+      *damping = v15 * v27 + (1.0 - v15) * v24;
       v30 = v15 * v29 + (1.0 - v15) * v21;
     }
 
-    *a6 = v30;
+    *response = v30;
     if (BSFloatIsZero())
     {
-      *a7 = v24;
+      *yDamping = v24;
     }
 
     else if (BSFloatIsOne())
     {
-      *a7 = v27;
+      *yDamping = v27;
       v21 = v29;
     }
 
     else
     {
-      *a7 = v22 * v27 + (1.0 - v22) * v24;
+      *yDamping = v22 * v27 + (1.0 - v22) * v24;
       v21 = v22 * v29 + (1.0 - v22) * v21;
     }
   }
 
-  *a8 = v21;
+  *yResponse = v21;
 }
 
 - (id)_createMatchMoveSourceView
@@ -1732,10 +1732,10 @@ LABEL_5:
   return v2;
 }
 
-- (CGRect)_samplingBoundsForPointerShape:(id)a3
+- (CGRect)_samplingBoundsForPointerShape:(id)shape
 {
-  v4 = a3;
-  [(PUIDPointerShapeView *)self->_pointerShapeView expectedShapeBoundsForPointerShape:v4];
+  shapeCopy = shape;
+  [(PUIDPointerShapeView *)self->_pointerShapeView expectedShapeBoundsForPointerShape:shapeCopy];
   x = v5;
   y = v7;
   width = v9;
@@ -1746,7 +1746,7 @@ LABEL_5:
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  if (!_UIPlasmaEnabled() || [v4 shapeType] != 1)
+  if (!_UIPlasmaEnabled() || [shapeCopy shapeType] != 1)
   {
     v25.origin.x = x;
     v25.origin.y = y;
@@ -1774,58 +1774,58 @@ LABEL_5:
   return result;
 }
 
-- (id)_createPortalSourceViewWithFrame:(CGRect)a3
+- (id)_createPortalSourceViewWithFrame:(CGRect)frame
 {
-  v3 = [[_PUIDPointerPortalSourceView alloc] initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [[_PUIDPointerPortalSourceView alloc] initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v3;
 }
 
-- (CGPoint)_positionForTargetWithCenter:(CGPoint)a3 modelCursorPosition:(CGPoint)a4 slip:(CGPoint)a5
+- (CGPoint)_positionForTargetWithCenter:(CGPoint)center modelCursorPosition:(CGPoint)position slip:(CGPoint)slip
 {
-  v5 = a3.x - (a3.x - a4.x) * a5.x;
-  v6 = a3.y - (a3.y - a4.y) * a5.y;
+  v5 = center.x - (center.x - position.x) * slip.x;
+  v6 = center.y - (center.y - position.y) * slip.y;
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (void)_transitionFromPointerPortalSourceView:(id)a3 toPointerPortalSourceView:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_transitionFromPointerPortalSourceView:(id)view toPointerPortalSourceView:(id)sourceView animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 contentPortalView];
-  v13 = [v11 contentPortalView];
+  animatedCopy = animated;
+  completionCopy = completion;
+  sourceViewCopy = sourceView;
+  contentPortalView = [view contentPortalView];
+  contentPortalView2 = [sourceViewCopy contentPortalView];
 
   v64[0] = _NSConcreteStackBlock;
   v64[1] = 3221225472;
   v64[2] = sub_100024F2C;
   v64[3] = &unk_100048A28;
-  v14 = v12;
+  v14 = contentPortalView;
   v65 = v14;
-  v15 = v13;
+  v15 = contentPortalView2;
   v66 = v15;
   v16 = objc_retainBlock(v64);
   v17 = v16;
-  if (v6)
+  if (animatedCopy)
   {
-    v44 = self;
+    selfCopy = self;
     v46 = v14;
-    v47 = v10;
+    v47 = completionCopy;
     v18 = v14;
-    v19 = [v18 layer];
+    layer = [v18 layer];
     v45 = v15;
     v20 = v15;
-    v21 = [v20 layer];
+    layer2 = [v20 layer];
     v22 = [v20 _velocityForKey:@"opacity"];
     if (v18)
     {
-      v23 = [v19 filters];
-      if (([v23 bs_containsObjectPassingTest:&stru_100049810] & 1) == 0)
+      filters = [layer filters];
+      if (([filters bs_containsObjectPassingTest:&stru_100049810] & 1) == 0)
       {
-        v24 = v19;
-        v25 = [v23 mutableCopy];
+        v24 = layer;
+        v25 = [filters mutableCopy];
         if (!v25)
         {
           v25 = [[NSMutableArray alloc] initWithCapacity:1];
@@ -1836,23 +1836,23 @@ LABEL_5:
         [v25 addObject:v26];
         [v24 setFilters:v25];
 
-        v19 = v24;
+        layer = v24;
       }
     }
 
     if (v20)
     {
-      v27 = [v21 filters];
-      v28 = [v27 indexOfObjectPassingTest:&stru_100049850];
+      filters2 = [layer2 filters];
+      v28 = [filters2 indexOfObjectPassingTest:&stru_100049850];
       if (v28 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v29 = v28;
-        v30 = v19;
-        v31 = [v27 mutableCopy];
+        v30 = layer;
+        v31 = [filters2 mutableCopy];
         [v31 removeObjectAtIndex:v29];
-        [v21 setFilters:v31];
+        [layer2 setFilters:v31];
 
-        v19 = v30;
+        layer = v30;
       }
     }
 
@@ -1861,18 +1861,18 @@ LABEL_5:
     v58[1] = 3221225472;
     v58[2] = sub_100025078;
     v58[3] = &unk_100049878;
-    v33 = v19;
+    v33 = layer;
     v59 = v33;
     v34 = v32;
     v60 = v34;
-    v61 = v21;
+    v61 = layer2;
     v62 = v18;
     v63 = v22;
     v43 = v22;
     v35 = v18;
-    v36 = v21;
+    v36 = layer2;
     [UIView _performWithoutRetargetingAnimations:v58];
-    v37 = [(PUIDPointerSettings *)v44->_settings zTransitionOpacityAnimationSettings];
+    zTransitionOpacityAnimationSettings = [(PUIDPointerSettings *)selfCopy->_settings zTransitionOpacityAnimationSettings];
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = sub_10002512C;
@@ -1892,7 +1892,7 @@ LABEL_5:
     v40 = v34;
     v41 = v55;
     v42 = v20;
-    [UIView _animateUsingSpringBehavior:v37 tracking:0 animations:v54 completion:v50];
+    [UIView _animateUsingSpringBehavior:zTransitionOpacityAnimationSettings tracking:0 animations:v54 completion:v50];
 
     v15 = v45;
     v14 = v46;
@@ -1907,22 +1907,22 @@ LABEL_5:
     v49 = v16;
     v36 = v16;
     [UIView _performWithoutRetargetingAnimations:v48];
-    (*(v10 + 2))(v10, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
     v35 = v49;
-    v38 = v10;
+    v38 = completionCopy;
   }
 }
 
-- (void)_updatePointerShapePosition:(double)a3 onAxis:(unint64_t)a4 isModel:(BOOL)a5
+- (void)_updatePointerShapePosition:(double)position onAxis:(unint64_t)axis isModel:(BOOL)model
 {
-  v5 = a5;
-  v6 = a4;
-  sub_1000253EC(a3, self, self->_pointerShapeView, a4, a5);
-  sub_1000253EC(a3, v9, self->_accessoryContainerView, v6, v5);
-  sub_1000253EC(a3, v10, self->_pointerBackgroundSamplingSourceView, v6, v5);
+  modelCopy = model;
+  axisCopy = axis;
+  sub_1000253EC(position, self, self->_pointerShapeView, axis, model);
+  sub_1000253EC(position, v9, self->_accessoryContainerView, axisCopy, modelCopy);
+  sub_1000253EC(position, v10, self->_pointerBackgroundSamplingSourceView, axisCopy, modelCopy);
   specularEffectMaskPointerShapeView = self->_specularEffectMaskPointerShapeView;
 
-  sub_1000253EC(a3, v11, specularEffectMaskPointerShapeView, v6, v5);
+  sub_1000253EC(position, v11, specularEffectMaskPointerShapeView, axisCopy, modelCopy);
 }
 
 - (PUIDPointerRenderingRootViewControllerDelegate)delegate
@@ -1932,35 +1932,35 @@ LABEL_5:
   return WeakRetained;
 }
 
-- (void)_debugVisualizationForView:(id)a3
+- (void)_debugVisualizationForView:(id)view
 {
   if (self->_isDebugMode)
   {
-    v9 = [a3 layer];
+    layer = [view layer];
     v5 = [UIColor colorWithRed:1.0 green:0.01 blue:0.5 alpha:0.200000003];
-    [v9 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+    [layer setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
 
     v6 = +[UIColor blueColor];
-    [v9 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    [layer setBorderColor:{objc_msgSend(v6, "CGColor")}];
 
-    [v9 setBorderWidth:1.0];
+    [layer setBorderWidth:1.0];
     v7 = +[CALayer layer];
     debugHoverRegion = self->_debugHoverRegion;
     self->_debugHoverRegion = v7;
 
     [(CALayer *)self->_debugHoverRegion setBackgroundColor:CGColorCreateSRGB(1.0, 1.0, 0.0, 0.1)];
-    [v9 addSublayer:self->_debugHoverRegion];
+    [layer addSublayer:self->_debugHoverRegion];
   }
 }
 
-- (void)_debugVisualizationUpdate:(CATransform3D *)a3
+- (void)_debugVisualizationUpdate:(CATransform3D *)update
 {
   if (self->_isDebugMode)
   {
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
     [(PUIDPointerState *)self->_pointerState contentBounds];
-    v5 = *a3;
+    v5 = *update;
     CA_CGRectApplyTransform();
     [(CALayer *)self->_debugHoverRegion setFrame:*&v5.m11, *&v5.m13, *&v5.m21, *&v5.m23, *&v5.m31, *&v5.m33, *&v5.m41, *&v5.m43];
     +[CATransaction commit];

@@ -1,20 +1,20 @@
 @interface SXOfferIdentifierConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXOfferIdentifierConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 offerIdentifier];
+  conditionCopy = condition;
+  contextCopy = context;
+  offerIdentifier = [conditionCopy offerIdentifier];
 
-  if (v7)
+  if (offerIdentifier)
   {
-    v8 = [v5 offerIdentifier];
-    v9 = [v6 offerIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    offerIdentifier2 = [conditionCopy offerIdentifier];
+    offerIdentifier3 = [contextCopy offerIdentifier];
+    v10 = [offerIdentifier2 isEqualToString:offerIdentifier3];
   }
 
   else

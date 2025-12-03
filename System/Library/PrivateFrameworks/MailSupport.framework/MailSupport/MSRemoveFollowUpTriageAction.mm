@@ -1,20 +1,20 @@
 @interface MSRemoveFollowUpTriageAction
-- (MSRemoveFollowUpTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 followUp:(id)a7;
+- (MSRemoveFollowUpTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate followUp:(id)up;
 - (id)_changeAction;
 @end
 
 @implementation MSRemoveFollowUpTriageAction
 
-- (MSRemoveFollowUpTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 followUp:(id)a7
+- (MSRemoveFollowUpTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate followUp:(id)up
 {
-  v13 = a7;
+  upCopy = up;
   v17.receiver = self;
   v17.super_class = MSRemoveFollowUpTriageAction;
-  v14 = [(MSTriageAction *)&v17 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  v14 = [(MSTriageAction *)&v17 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_followUp, a7);
+    objc_storeStrong(&v14->_followUp, up);
   }
 
   return v15;
@@ -23,12 +23,12 @@
 - (id)_changeAction
 {
   v3 = objc_alloc(MEMORY[0x277D06DF8]);
-  v4 = [(MSTriageAction *)self messageListItemSelection];
-  v5 = [v4 messageListItems];
-  v6 = [(MSTriageAction *)self origin];
-  v7 = [(MSTriageAction *)self actor];
-  v8 = [(MSRemoveFollowUpTriageAction *)self followUp];
-  v9 = [v3 initWithMessageListItems:v5 origin:v6 actor:v7 followUp:v8];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  messageListItems = [messageListItemSelection messageListItems];
+  origin = [(MSTriageAction *)self origin];
+  actor = [(MSTriageAction *)self actor];
+  followUp = [(MSRemoveFollowUpTriageAction *)self followUp];
+  v9 = [v3 initWithMessageListItems:messageListItems origin:origin actor:actor followUp:followUp];
 
   return v9;
 }

@@ -1,14 +1,14 @@
 @interface DNDSDefaultLifetimeMonitor
-- (id)updateForModeAssertions:(id)a3 date:(id)a4;
+- (id)updateForModeAssertions:(id)assertions date:(id)date;
 @end
 
 @implementation DNDSDefaultLifetimeMonitor
 
-- (id)updateForModeAssertions:(id)a3 date:(id)a4
+- (id)updateForModeAssertions:(id)assertions date:(id)date
 {
-  v5 = a3;
-  v6 = [(DNDSBaseLifetimeMonitor *)self queue];
-  dispatch_assert_queue_V2(v6);
+  assertionsCopy = assertions;
+  queue = [(DNDSBaseLifetimeMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = DNDSLogDefaultLifetimeMonitor;
   if (os_log_type_enabled(DNDSLogDefaultLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
@@ -17,7 +17,7 @@
     _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Refreshing monitor", v12, 2u);
   }
 
-  v8 = [v5 bs_mapNoNulls:&__block_literal_global_3];
+  v8 = [assertionsCopy bs_mapNoNulls:&__block_literal_global_3];
 
   v9 = [DNDSLifetimeMonitorResult alloc];
   v10 = [(DNDSLifetimeMonitorResult *)v9 initWithActiveUUIDs:v8 expiredUUIDs:MEMORY[0x277CBEBF8]];

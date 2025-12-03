@@ -1,6 +1,6 @@
 @interface FRDestructiveDataMigrationHandler
 - (FRDestructiveDataMigrationHandler)init;
-- (FRDestructiveDataMigrationHandler)initWithPrivateDataActionProvider:(id)a3 defaultsDataDestructionItems:(id)a4;
+- (FRDestructiveDataMigrationHandler)initWithPrivateDataActionProvider:(id)provider defaultsDataDestructionItems:(id)items;
 - (void)handleMigration;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)handleMigration
 {
-  v3 = [(FRDestructiveDataMigrationHandler *)self privateDataActionProvider];
+  privateDataActionProvider = [(FRDestructiveDataMigrationHandler *)self privateDataActionProvider];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100004D04;
   v4[3] = &unk_1000C5C60;
   v4[4] = self;
-  [v3 consumeActionsUpToDestructiveActionSyncWithBlock:v4];
+  [privateDataActionProvider consumeActionsUpToDestructiveActionSyncWithBlock:v4];
 }
 
 - (FRDestructiveDataMigrationHandler)init
@@ -40,20 +40,20 @@
   objc_exception_throw(v4);
 }
 
-- (FRDestructiveDataMigrationHandler)initWithPrivateDataActionProvider:(id)a3 defaultsDataDestructionItems:(id)a4
+- (FRDestructiveDataMigrationHandler)initWithPrivateDataActionProvider:(id)provider defaultsDataDestructionItems:(id)items
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  providerCopy = provider;
+  itemsCopy = items;
+  if (!providerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100073C10();
-    if (v8)
+    if (itemsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (itemsCopy)
   {
     goto LABEL_6;
   }
@@ -70,8 +70,8 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_privateDataActionProvider, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_privateDataActionProvider, provider);
+    v11 = [itemsCopy copy];
     defaultsDataDestructionItems = v10->_defaultsDataDestructionItems;
     v10->_defaultsDataDestructionItems = v11;
   }

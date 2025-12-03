@@ -1,38 +1,38 @@
 @interface VSTreeNode
 + (id)keyPathsForValuesAffectingIndexPath;
 + (id)keyPathsForValuesAffectingLeaf;
-+ (id)treeNodeWithRepresentedObject:(id)a3;
++ (id)treeNodeWithRepresentedObject:(id)object;
 - (BOOL)isLeaf;
 - (NSIndexPath)indexPath;
-- (VSTreeNode)initWithRepresentedObject:(id)a3;
+- (VSTreeNode)initWithRepresentedObject:(id)object;
 - (VSTreeNode)parentNode;
-- (id)_descendantNodesAtDepth:(unint64_t)a3;
-- (id)descendantNodeAtIndexPath:(id)a3;
-- (void)enumerateDescendantsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)insertChildNodes:(id)a3 atIndexes:(id)a4;
-- (void)removeChildNodesAtIndexes:(id)a3;
+- (id)_descendantNodesAtDepth:(unint64_t)depth;
+- (id)descendantNodeAtIndexPath:(id)path;
+- (void)enumerateDescendantsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)insertChildNodes:(id)nodes atIndexes:(id)indexes;
+- (void)removeChildNodesAtIndexes:(id)indexes;
 @end
 
 @implementation VSTreeNode
 
-+ (id)treeNodeWithRepresentedObject:(id)a3
++ (id)treeNodeWithRepresentedObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithRepresentedObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithRepresentedObject:objectCopy];
 
   return v5;
 }
 
-- (VSTreeNode)initWithRepresentedObject:(id)a3
+- (VSTreeNode)initWithRepresentedObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v11.receiver = self;
   v11.super_class = VSTreeNode;
   v6 = [(VSTreeNode *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_representedObject, a3);
+    objc_storeStrong(&v6->_representedObject, object);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     children = v7->_children;
     v7->_children = v8;
@@ -72,13 +72,13 @@ id __49__VSTreeNode_keyPathsForValuesAffectingIndexPath__block_invoke_2()
 - (NSIndexPath)indexPath
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAA70]);
-  v4 = [(VSTreeNode *)self parentNode];
-  v5 = v4;
-  if (v4)
+  parentNode = [(VSTreeNode *)self parentNode];
+  v5 = parentNode;
+  if (parentNode)
   {
-    v6 = [v4 childNodes];
-    v7 = [v5 indexPath];
-    v8 = [v7 indexPathByAddingIndex:{objc_msgSend(v6, "indexOfObject:", self)}];
+    childNodes = [parentNode childNodes];
+    indexPath = [v5 indexPath];
+    v8 = [indexPath indexPathByAddingIndex:{objc_msgSend(childNodes, "indexOfObject:", self)}];
 
     v3 = v8;
   }
@@ -116,19 +116,19 @@ id __44__VSTreeNode_keyPathsForValuesAffectingLeaf__block_invoke_2()
 
 - (BOOL)isLeaf
 {
-  v2 = [(VSTreeNode *)self childNodes];
-  v3 = [v2 count];
+  childNodes = [(VSTreeNode *)self childNodes];
+  v3 = [childNodes count];
 
   return v3 == 0;
 }
 
-- (void)insertChildNodes:(id)a3 atIndexes:(id)a4
+- (void)insertChildNodes:(id)nodes atIndexes:(id)indexes
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  nodesCopy = nodes;
+  indexesCopy = indexes;
+  if (nodesCopy)
   {
-    if (v6)
+    if (indexesCopy)
     {
       goto LABEL_3;
     }
@@ -137,7 +137,7 @@ id __44__VSTreeNode_keyPathsForValuesAffectingLeaf__block_invoke_2()
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The insertedChildren parameter must not be nil."];
-    if (v6)
+    if (indexesCopy)
     {
       goto LABEL_3;
     }
@@ -145,52 +145,52 @@ id __44__VSTreeNode_keyPathsForValuesAffectingLeaf__block_invoke_2()
 
   [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The indexes parameter must not be nil."];
 LABEL_3:
-  [v8 makeObjectsPerformSelector:sel_setParentNode_ withObject:self];
-  v7 = [(VSTreeNode *)self children];
-  [v7 insertObjects:v8 atIndexes:v6];
+  [nodesCopy makeObjectsPerformSelector:sel_setParentNode_ withObject:self];
+  children = [(VSTreeNode *)self children];
+  [children insertObjects:nodesCopy atIndexes:indexesCopy];
 }
 
-- (void)removeChildNodesAtIndexes:(id)a3
+- (void)removeChildNodesAtIndexes:(id)indexes
 {
-  v6 = a3;
-  if (!v6)
+  indexesCopy = indexes;
+  if (!indexesCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The indexes parameter must not be nil."];
   }
 
-  v4 = [(VSTreeNode *)self children];
-  v5 = [v4 objectsAtIndexes:v6];
+  children = [(VSTreeNode *)self children];
+  v5 = [children objectsAtIndexes:indexesCopy];
   [v5 makeObjectsPerformSelector:sel_setParentNode_ withObject:0];
-  [v4 removeObjectsAtIndexes:v6];
+  [children removeObjectsAtIndexes:indexesCopy];
 }
 
-- (id)descendantNodeAtIndexPath:(id)a3
+- (id)descendantNodeAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The indexPath parameter must not be nil."];
   }
 
-  v5 = self;
-  v6 = [v4 length];
+  selfCopy = self;
+  v6 = [pathCopy length];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     while (1)
     {
-      v9 = [(VSTreeNode *)v5 childNodes];
-      v10 = [v4 indexAtPosition:v8];
-      if (v10 >= [v9 count])
+      childNodes = [(VSTreeNode *)selfCopy childNodes];
+      v10 = [pathCopy indexAtPosition:v8];
+      if (v10 >= [childNodes count])
       {
         break;
       }
 
-      v11 = [v9 objectAtIndex:v10];
+      v11 = [childNodes objectAtIndex:v10];
 
       ++v8;
-      v5 = v11;
+      selfCopy = v11;
       if (v7 == v8)
       {
         goto LABEL_10;
@@ -202,7 +202,7 @@ LABEL_3:
 
   else
   {
-    v11 = v5;
+    v11 = selfCopy;
   }
 
 LABEL_10:
@@ -217,22 +217,22 @@ LABEL_10:
   return WeakRetained;
 }
 
-- (id)_descendantNodesAtDepth:(unint64_t)a3
+- (id)_descendantNodesAtDepth:(unint64_t)depth
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (depth)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(VSTreeNode *)self childNodes];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    childNodes = [(VSTreeNode *)self childNodes];
+    v7 = [childNodes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
-      v9 = a3 - 1;
+      v9 = depth - 1;
       v10 = *v16;
       do
       {
@@ -240,21 +240,21 @@ LABEL_10:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(childNodes);
           }
 
           v12 = [*(*(&v15 + 1) + 8 * i) _descendantNodesAtDepth:v9];
           [v5 addObjectsFromArray:v12];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [childNodes countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    v13 = [v5 copy];
-    if (!v13)
+    childNodes2 = [v5 copy];
+    if (!childNodes2)
     {
       goto LABEL_10;
     }
@@ -262,24 +262,24 @@ LABEL_10:
 
   else
   {
-    v13 = [(VSTreeNode *)self childNodes];
-    if (!v13)
+    childNodes2 = [(VSTreeNode *)self childNodes];
+    if (!childNodes2)
     {
 LABEL_10:
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The collectedDescendants parameter must not be nil."];
     }
   }
 
-  return v13;
+  return childNodes2;
 }
 
-- (void)enumerateDescendantsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateDescendantsWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
 LABEL_3:
       v28 = 0;
@@ -287,8 +287,8 @@ LABEL_3:
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v7 = [(VSTreeNode *)self childNodes];
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v29 count:16];
+      childNodes = [(VSTreeNode *)self childNodes];
+      v8 = [childNodes countByEnumeratingWithState:&v20 objects:v29 count:16];
       if (v8)
       {
         v9 = v8;
@@ -299,17 +299,17 @@ LABEL_5:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(childNodes);
           }
 
           v12 = *(*(&v20 + 1) + 8 * v11);
-          v6[2](v6, v12, &v28);
+          blockCopy[2](blockCopy, v12, &v28);
           if (v28)
           {
             break;
           }
 
-          [v12 enumerateDescendantsWithOptions:a3 usingBlock:v6];
+          [v12 enumerateDescendantsWithOptions:options usingBlock:blockCopy];
           if (v28)
           {
             break;
@@ -317,7 +317,7 @@ LABEL_5:
 
           if (v9 == ++v11)
           {
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v29 count:16];
+            v9 = [childNodes countByEnumeratingWithState:&v20 objects:v29 count:16];
             if (v9)
             {
               goto LABEL_5;
@@ -335,7 +335,7 @@ LABEL_5:
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The block parameter must not be nil."];
-    if ((a3 & 1) == 0)
+    if ((options & 1) == 0)
     {
       goto LABEL_3;
     }
@@ -367,7 +367,7 @@ LABEL_17:
           objc_enumerationMutation(v14);
         }
 
-        v6[2](v6, *(*(&v24 + 1) + 8 * v19), &v28);
+        blockCopy[2](blockCopy, *(*(&v24 + 1) + 8 * v19), &v28);
         if (v28)
         {
           break;

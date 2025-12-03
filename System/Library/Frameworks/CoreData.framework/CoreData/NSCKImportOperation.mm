@@ -1,20 +1,20 @@
 @interface NSCKImportOperation
-+ (BOOL)purgeFinishedImportOperationsInStore:(void *)a3 withManagedObjectContext:(uint64_t)a4 error:;
++ (BOOL)purgeFinishedImportOperationsInStore:(void *)store withManagedObjectContext:(uint64_t)context error:;
 + (uint64_t)entityPath;
-+ (uint64_t)fetchUnfinishedImportOperationsInStore:(void *)a3 withManagedObjectContext:(uint64_t)a4 error:;
-+ (void)fetchOperationWithIdentifier:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:;
++ (uint64_t)fetchUnfinishedImportOperationsInStore:(void *)store withManagedObjectContext:(uint64_t)context error:;
++ (void)fetchOperationWithIdentifier:(uint64_t)identifier fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:;
 @end
 
 @implementation NSCKImportOperation
 
-+ (uint64_t)fetchUnfinishedImportOperationsInStore:(void *)a3 withManagedObjectContext:(uint64_t)a4 error:
++ (uint64_t)fetchUnfinishedImportOperationsInStore:(void *)store withManagedObjectContext:(uint64_t)context error:
 {
   v10[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v7 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKImportOperation entityPath]);
   v10[0] = a2;
   -[NSFetchRequest setAffectedStores:](v7, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1]);
-  result = [a3 executeFetchRequest:v7 error:a4];
+  result = [store executeFetchRequest:v7 error:context];
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -28,15 +28,15 @@
   return [v0 stringWithFormat:@"%@/%@", v1, NSStringFromClass(v2)];
 }
 
-+ (void)fetchOperationWithIdentifier:(uint64_t)a3 fromStore:(void *)a4 inManagedObjectContext:(uint64_t)a5 error:
++ (void)fetchOperationWithIdentifier:(uint64_t)identifier fromStore:(void *)store inManagedObjectContext:(uint64_t)context error:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v9 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKImportOperation entityPath]);
-  v19[0] = a3;
+  v19[0] = identifier;
   -[NSFetchRequest setAffectedStores:](v9, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1]);
   -[NSFetchRequest setPredicate:](v9, "setPredicate:", [MEMORY[0x1E696AE18] predicateWithFormat:@"operationUUID == %@", a2]);
-  result = [a4 executeFetchRequest:v9 error:a5];
+  result = [store executeFetchRequest:v9 error:context];
   if (result)
   {
     v11 = result;
@@ -75,14 +75,14 @@
   return result;
 }
 
-+ (BOOL)purgeFinishedImportOperationsInStore:(void *)a3 withManagedObjectContext:(uint64_t)a4 error:
++ (BOOL)purgeFinishedImportOperationsInStore:(void *)store withManagedObjectContext:(uint64_t)context error:
 {
   v22[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v7 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKImportOperation entityPath]);
   v22[0] = a2;
   -[NSFetchRequest setAffectedStores:](v7, "setAffectedStores:", [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1]);
-  v8 = [a3 executeFetchRequest:v7 error:a4];
+  v8 = [store executeFetchRequest:v7 error:context];
   v9 = v8;
   if (v8)
   {
@@ -107,7 +107,7 @@
           v14 = *(*(&v17 + 1) + 8 * i);
           if (![objc_msgSend(v14 "pendingRelationships")])
           {
-            [a3 deleteObject:v14];
+            [store deleteObject:v14];
           }
         }
 

@@ -1,17 +1,17 @@
 @interface _CPRange
-- (BOOL)isEqual:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPRange
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (location = self->_location, location == objc_msgSend(v4, "location")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (location = self->_location, location == objc_msgSend(equalCopy, "location")))
   {
     length = self->_length;
-    v7 = length == [v4 length];
+    v7 = length == [equalCopy length];
   }
 
   else
@@ -22,9 +22,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_CPRange *)self location])
   {
     location = self->_location;

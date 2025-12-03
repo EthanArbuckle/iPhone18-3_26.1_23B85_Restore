@@ -1,13 +1,13 @@
 @interface MacFooterView
-- (MacFooterView)initWithRightButtonType:(int64_t)a3 hasBlur:(BOOL)a4;
+- (MacFooterView)initWithRightButtonType:(int64_t)type hasBlur:(BOOL)blur;
 - (MacFooterViewDelegate)delegate;
-- (id)_basicButtonSetupAddedToContentView:(id)a3;
-- (void)_backButtonTapped:(id)a3;
-- (void)_leftButtonTapped:(id)a3;
-- (void)_rightButtonTapped:(id)a3;
-- (void)setRightButtonEnabled:(BOOL)a3;
-- (void)submissionFinishedWithError:(id)a3;
-- (void)willBeginSubmissionWithProgress:(id)a3;
+- (id)_basicButtonSetupAddedToContentView:(id)view;
+- (void)_backButtonTapped:(id)tapped;
+- (void)_leftButtonTapped:(id)tapped;
+- (void)_rightButtonTapped:(id)tapped;
+- (void)setRightButtonEnabled:(BOOL)enabled;
+- (void)submissionFinishedWithError:(id)error;
+- (void)willBeginSubmissionWithProgress:(id)progress;
 @end
 
 @implementation MacFooterView
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (void)submissionFinishedWithError:(id)a3
+- (void)submissionFinishedWithError:(id)error
 {
   v13 = 0u;
   v14 = 0u;
@@ -42,13 +42,13 @@
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(MacFooterView *)self rightButton];
+        rightButton = [(MacFooterView *)self rightButton];
 
-        if (v9 == v10)
+        if (v9 == rightButton)
         {
-          v11 = [(MacFooterView *)self rightButtonEnabled];
-          v12 = [(MacFooterView *)self rightButton];
-          [v12 setEnabled:v11];
+          rightButtonEnabled = [(MacFooterView *)self rightButtonEnabled];
+          rightButton2 = [(MacFooterView *)self rightButton];
+          [rightButton2 setEnabled:rightButtonEnabled];
         }
 
         else
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)willBeginSubmissionWithProgress:(id)a3
+- (void)willBeginSubmissionWithProgress:(id)progress
 {
   v8 = 0u;
   v9 = 0u;
@@ -101,29 +101,29 @@
   }
 }
 
-- (void)_backButtonTapped:(id)a3
+- (void)_backButtonTapped:(id)tapped
 {
-  v4 = [(MacFooterView *)self delegate];
-  [v4 macFooterViewBackButtonTapped:self];
+  delegate = [(MacFooterView *)self delegate];
+  [delegate macFooterViewBackButtonTapped:self];
 }
 
-- (void)_rightButtonTapped:(id)a3
+- (void)_rightButtonTapped:(id)tapped
 {
-  v4 = [(MacFooterView *)self delegate];
-  [v4 macFooterViewRightButtonTapped:self];
+  delegate = [(MacFooterView *)self delegate];
+  [delegate macFooterViewRightButtonTapped:self];
 }
 
-- (void)_leftButtonTapped:(id)a3
+- (void)_leftButtonTapped:(id)tapped
 {
-  v4 = [(MacFooterView *)self delegate];
-  [v4 macFooterViewLeftButtonTapped:self];
+  delegate = [(MacFooterView *)self delegate];
+  [delegate macFooterViewLeftButtonTapped:self];
 }
 
-- (id)_basicButtonSetupAddedToContentView:(id)a3
+- (id)_basicButtonSetupAddedToContentView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [UIButton buttonWithType:1];
-  [v3 addSubview:v4];
+  [viewCopy addSubview:v4];
 
   LODWORD(v5) = 1148846080;
   [v4 setContentHuggingPriority:0 forAxis:v5];
@@ -133,45 +133,45 @@
   return v4;
 }
 
-- (void)setRightButtonEnabled:(BOOL)a3
+- (void)setRightButtonEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_rightButtonEnabled = a3;
-  v4 = [(MacFooterView *)self rightButton];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  self->_rightButtonEnabled = enabled;
+  rightButton = [(MacFooterView *)self rightButton];
+  [rightButton setEnabled:enabledCopy];
 }
 
-- (MacFooterView)initWithRightButtonType:(int64_t)a3 hasBlur:(BOOL)a4
+- (MacFooterView)initWithRightButtonType:(int64_t)type hasBlur:(BOOL)blur
 {
-  v4 = a4;
-  v5 = a3;
+  blurCopy = blur;
+  typeCopy = type;
   v62.receiver = self;
   v62.super_class = MacFooterView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v9 = [(MacFooterView *)&v62 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v10 = v9;
-  if (!v9)
+  height = [(MacFooterView *)&v62 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v10 = height;
+  if (!height)
   {
     return v10;
   }
 
-  v11 = v9;
+  v11 = height;
   v12 = v11;
   v54 = v10;
-  if (v4)
+  if (blurCopy)
   {
     v13 = [MapsTheme visualEffectViewAllowingBlur:1];
     [(MacFooterView *)v12 addSubview:v13];
     v56 = v13;
-    v14 = [v13 contentView];
+    contentView = [v13 contentView];
   }
 
   else
   {
     v56 = 0;
-    v14 = v11;
+    contentView = v11;
   }
 
   v15 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
@@ -183,26 +183,26 @@
   [(UIView *)v12->_accessoryView setContentHuggingPriority:0 forAxis:v17];
   LODWORD(v18) = 1132068864;
   [(UIView *)v12->_accessoryView setContentCompressionResistancePriority:0 forAxis:v18];
-  [v14 addSubview:v12->_accessoryView];
+  [contentView addSubview:v12->_accessoryView];
   v19 = objc_alloc_init(NSMutableArray);
-  if ((v5 & 0x1D) != 0)
+  if ((typeCopy & 0x1D) != 0)
   {
-    v20 = [(MacFooterView *)v12 _basicButtonSetupAddedToContentView:v14];
+    v20 = [(MacFooterView *)v12 _basicButtonSetupAddedToContentView:contentView];
     [v20 setRole:1];
     [(MacFooterView *)v12 setRightButton:v20];
-    if (v5)
+    if (typeCopy)
     {
       v21 = @"Add";
     }
 
-    else if ((v5 & 4) != 0)
+    else if ((typeCopy & 4) != 0)
     {
       v21 = @"Submit";
     }
 
     else
     {
-      if ((v5 & 0x18) == 0)
+      if ((typeCopy & 0x18) == 0)
       {
 LABEL_13:
         [v20 addTarget:v12 action:"_rightButtonTapped:" forControlEvents:64];
@@ -222,19 +222,19 @@ LABEL_13:
   }
 
 LABEL_14:
-  if ((v5 & 2) != 0)
+  if ((typeCopy & 2) != 0)
   {
     v24 = &selRef__backButtonTapped_;
     v25 = @"Back";
     goto LABEL_18;
   }
 
-  if ((v5 & 8) == 0)
+  if ((typeCopy & 8) == 0)
   {
     v24 = &selRef__leftButtonTapped_;
     v25 = @"Cancel";
 LABEL_18:
-    v26 = [(MacFooterView *)v12 _basicButtonSetupAddedToContentView:v14];
+    v26 = [(MacFooterView *)v12 _basicButtonSetupAddedToContentView:contentView];
     v27 = +[NSBundle mainBundle];
     v28 = [v27 localizedStringForKey:v25 value:@"localized string not found" table:0];
     [v26 setTitle:v28 forState:0];
@@ -250,14 +250,14 @@ LABEL_18:
   v31 = v12->_accessoryView;
   +[MUSizeLayout useIntrinsicContentSize];
   v57 = [v30 initWithItem:v31 size:?];
-  v32 = [[MUStackLayout alloc] initWithContainer:v14 axis:0];
+  v32 = [[MUStackLayout alloc] initWithContainer:contentView axis:0];
   [v32 addArrangedLayoutItem:v12->_accessoryView];
   v60 = 0u;
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v33 = [v19 reverseObjectEnumerator];
-  v34 = [v33 countByEnumeratingWithState:&v58 objects:v65 count:16];
+  reverseObjectEnumerator = [v19 reverseObjectEnumerator];
+  v34 = [reverseObjectEnumerator countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v34)
   {
     v35 = v34;
@@ -268,19 +268,19 @@ LABEL_18:
       {
         if (*v59 != v36)
         {
-          objc_enumerationMutation(v33);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [v32 addArrangedLayoutItem:*(*(&v58 + 1) + 8 * i)];
       }
 
-      v35 = [v33 countByEnumeratingWithState:&v58 objects:v65 count:16];
+      v35 = [reverseObjectEnumerator countByEnumeratingWithState:&v58 objects:v65 count:16];
     }
 
     while (v35);
   }
 
-  v53 = v14;
+  v53 = contentView;
 
   [v32 setDistribution:0];
   [v32 setDistributionBoundsContent:1];
@@ -304,11 +304,11 @@ LABEL_18:
   if ([v19 count] == 2)
   {
     v43 = [v19 objectAtIndexedSubscript:0];
-    v44 = [v43 widthAnchor];
+    widthAnchor = [v43 widthAnchor];
     v45 = [v19 objectAtIndexedSubscript:1];
-    v46 = [v45 widthAnchor];
+    widthAnchor2 = [v45 widthAnchor];
     LODWORD(v47) = 1140457472;
-    v48 = [v44 constraintEqualToAnchor:v46 constant:0.0 priority:v47];
+    v48 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:0.0 priority:v47];
     v63 = v48;
     v49 = [NSArray arrayWithObjects:&v63 count:1];
 

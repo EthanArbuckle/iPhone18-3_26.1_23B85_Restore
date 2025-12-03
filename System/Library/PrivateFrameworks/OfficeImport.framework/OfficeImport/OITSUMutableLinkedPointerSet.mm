@@ -1,17 +1,17 @@
 @interface OITSUMutableLinkedPointerSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OITSUMutableLinkedPointerSet)init;
 - (id)array;
 - (id)firstObject;
 - (id)objectEnumerator;
-- (id)objectEnumeratorAfterObject:(id)a3;
+- (id)objectEnumeratorAfterObject:(id)object;
 - (id)reverseObjectEnumerator;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)addObject:(id)a3;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)insertFirstObject:(id)a3;
+- (void)insertFirstObject:(id)object;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
+- (void)removeObject:(id)object;
 @end
 
 @implementation OITSUMutableLinkedPointerSet
@@ -59,9 +59,9 @@
   return v2;
 }
 
-- (id)objectEnumeratorAfterObject:(id)a3
+- (id)objectEnumeratorAfterObject:(id)object
 {
-  result = CFDictionaryGetValue(self->mDictionary, a3);
+  result = CFDictionaryGetValue(self->mDictionary, object);
   if (result)
   {
     v4 = [[OITSULinkedPointerSetEnumerator alloc] initWithFirstEntry:*(result + 3)];
@@ -72,20 +72,20 @@
   return result;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  var0 = a3->var0;
+  var0 = state->var0;
   p_mHead = &self->mHead;
-  if (a3->var0)
+  if (state->var0)
   {
-    p_mHead = (a3->var0 + 24);
+    p_mHead = (state->var0 + 24);
   }
 
   v7 = *p_mHead;
   result = 0;
   if (v7)
   {
-    v9 = a5 == 0;
+    v9 = count == 0;
   }
 
   else
@@ -98,11 +98,11 @@
     do
     {
       var0 = v7;
-      a4[result++] = v7->mObject;
+      objects[result++] = v7->mObject;
       v7 = v7->mNext;
       if (v7)
       {
-        v10 = result >= a5;
+        v10 = result >= count;
       }
 
       else
@@ -114,9 +114,9 @@
     while (!v10);
   }
 
-  a3->var0 = var0;
-  a3->var1 = a4;
-  a3->var2 = &a3->var2;
+  state->var0 = var0;
+  state->var1 = objects;
+  state->var2 = &state->var2;
   return result;
 }
 
@@ -134,9 +134,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v6) = 1;
   }
@@ -146,7 +146,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = *(a3 + 2);
+      v7 = *(equal + 2);
       mHead = self->mHead;
       if (!mHead)
       {
@@ -182,11 +182,11 @@ LABEL_10:
   return v6;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  if (!CFDictionaryContainsKey(self->mDictionary, a3))
+  if (!CFDictionaryContainsKey(self->mDictionary, object))
   {
-    v5 = [[OITSULinkedPointerSetEntry alloc] initWithObject:a3 previousEntry:self->mTail];
+    v5 = [[OITSULinkedPointerSetEntry alloc] initWithObject:object previousEntry:self->mTail];
     v8 = v5;
     mTail = self->mTail;
     if (mTail)
@@ -201,33 +201,33 @@ LABEL_10:
 
     *p_mNext = v5;
     self->mTail = v5;
-    CFDictionarySetValue(self->mDictionary, a3, v5);
+    CFDictionarySetValue(self->mDictionary, object, v5);
   }
 }
 
-- (void)insertFirstObject:(id)a3
+- (void)insertFirstObject:(id)object
 {
   [(OITSUMutableLinkedPointerSet *)self removeObject:?];
-  v5 = [[OITSULinkedPointerSetEntry alloc] initWithObject:a3 previousEntry:0];
+  v5 = [[OITSULinkedPointerSetEntry alloc] initWithObject:object previousEntry:0];
   mHead = self->mHead;
-  v7 = self;
+  selfCopy = self;
   v8 = v5;
   if (mHead)
   {
     mHead->mPrevious = v5;
     v8 = self->mHead;
-    v7 = v5;
+    selfCopy = v5;
   }
 
-  v7->mTail = v8;
+  selfCopy->mTail = v8;
   self->mHead = v5;
   v9 = v5;
-  CFDictionarySetValue(self->mDictionary, a3, v5);
+  CFDictionarySetValue(self->mDictionary, object, v5);
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  Value = CFDictionaryGetValue(self->mDictionary, a3);
+  Value = CFDictionaryGetValue(self->mDictionary, object);
   if (Value)
   {
     if (Value == self->mHead)
@@ -254,7 +254,7 @@ LABEL_10:
 
     mDictionary = self->mDictionary;
 
-    CFDictionaryRemoveValue(mDictionary, a3);
+    CFDictionaryRemoveValue(mDictionary, object);
   }
 }
 

@@ -9,7 +9,7 @@
   v7 = a4;
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    v6 = [a1 appendTimeInterval:v7 withName:0 decomposeUnits:a2];
+    v6 = [self appendTimeInterval:v7 withName:0 decomposeUnits:a2];
   }
 }
 

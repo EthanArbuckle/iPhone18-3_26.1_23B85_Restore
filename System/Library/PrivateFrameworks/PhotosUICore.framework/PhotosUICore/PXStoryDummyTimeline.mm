@@ -2,15 +2,15 @@
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)timeRange;
 - (CGSize)size;
 - (PXStoryDummyTimeline)init;
-- (PXStoryDummyTimeline)initWithSize:(CGSize)a3;
-- (PXStoryDummyTimeline)initWithTimeline:(id)a3;
-- (id)clipWithIdentifier:(int64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PXStoryDummyTimeline)initWithSize:(CGSize)size;
+- (PXStoryDummyTimeline)initWithTimeline:(id)timeline;
+- (id)clipWithIdentifier:(int64_t)identifier;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5;
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4;
-- (void)setNumberOfClips:(int64_t)a3;
-- (void)setNumberOfSegments:(int64_t)a3;
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block;
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block;
+- (void)setNumberOfClips:(int64_t)clips;
+- (void)setNumberOfSegments:(int64_t)segments;
 @end
 
 @implementation PXStoryDummyTimeline
@@ -33,18 +33,18 @@
   return self;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PXStoryMutableDummyTimeline alloc];
 
   return [(PXStoryDummyTimeline *)v4 initWithTimeline:self];
 }
 
-- (void)enumerateSegmentsInTimeRange:(id *)a3 usingBlock:(id)a4
+- (void)enumerateSegmentsInTimeRange:(id *)range usingBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   [(PXStoryDummyTimeline *)self numberOfSegments];
-  v6 = v5;
+  v6 = blockCopy;
   PXEnumerateSubrangesMatchingTestUsingBlock();
 }
 
@@ -62,20 +62,20 @@ BOOL __64__PXStoryDummyTimeline_enumerateSegmentsInTimeRange_usingBlock___block_
   return PXStoryTimeRangeIntersectsTimeRange(v7, v6);
 }
 
-- (id)clipWithIdentifier:(int64_t)a3
+- (id)clipWithIdentifier:(int64_t)identifier
 {
   clipsByIdentifier = self->_clipsByIdentifier;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:identifier];
   v5 = [(NSMutableDictionary *)clipsByIdentifier objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)enumerateClipsInTimeRange:(id *)a3 rect:(CGRect)a4 usingBlock:(id)a5
+- (void)enumerateClipsInTimeRange:(id *)range rect:(CGRect)rect usingBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(PXStoryDummyTimeline *)self numberOfClips];
-  v7 = v6;
+  v7 = blockCopy;
   PXEnumerateSubrangesMatchingTestUsingBlock();
 }
 
@@ -109,13 +109,13 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
   return result;
 }
 
-- (void)setNumberOfSegments:(int64_t)a3
+- (void)setNumberOfSegments:(int64_t)segments
 {
-  if (self->_numberOfSegments != a3)
+  if (self->_numberOfSegments != segments)
   {
-    self->_numberOfSegments = a3;
+    self->_numberOfSegments = segments;
     segmentCapacity = self->_segmentCapacity;
-    if (segmentCapacity < a3)
+    if (segmentCapacity < segments)
     {
       if (segmentCapacity)
       {
@@ -130,7 +130,7 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
 
       else
       {
-        self->_segmentCapacity = a3;
+        self->_segmentCapacity = segments;
       }
 
       _PXGArrayResize();
@@ -138,13 +138,13 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
   }
 }
 
-- (void)setNumberOfClips:(int64_t)a3
+- (void)setNumberOfClips:(int64_t)clips
 {
-  if (self->_numberOfClips != a3)
+  if (self->_numberOfClips != clips)
   {
-    self->_numberOfClips = a3;
+    self->_numberOfClips = clips;
     clipCapacity = self->_clipCapacity;
-    if (clipCapacity < a3)
+    if (clipCapacity < clips)
     {
       if (clipCapacity)
       {
@@ -159,7 +159,7 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
 
       else
       {
-        self->_clipCapacity = a3;
+        self->_clipCapacity = clips;
       }
 
       _PXGArrayResize();
@@ -179,38 +179,38 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
   [(PXStoryDummyTimeline *)&v3 dealloc];
 }
 
-- (PXStoryDummyTimeline)initWithTimeline:(id)a3
+- (PXStoryDummyTimeline)initWithTimeline:(id)timeline
 {
-  v4 = a3;
-  [v4 size];
+  timelineCopy = timeline;
+  [timelineCopy size];
   v5 = [(PXStoryDummyTimeline *)self initWithSize:?];
   v6 = v5;
   if (v5)
   {
-    v8 = *(v4 + 24);
-    v7 = *(v4 + 40);
-    *&v5->_timeRange.start.value = *(v4 + 8);
+    v8 = *(timelineCopy + 24);
+    v7 = *(timelineCopy + 40);
+    *&v5->_timeRange.start.value = *(timelineCopy + 8);
     *&v5->_timeRange.start.epoch = v8;
     *&v5->_timeRange.duration.timescale = v7;
-    v9 = [v4 numberOfClips];
-    [(PXStoryDummyTimeline *)v6 setNumberOfClips:v9];
-    if (v9 >= 1)
+    numberOfClips = [timelineCopy numberOfClips];
+    [(PXStoryDummyTimeline *)v6 setNumberOfClips:numberOfClips];
+    if (numberOfClips >= 1)
     {
-      memcpy(v6->_clipTimeRanges, *(v4 + 8), 48 * v9);
-      memcpy(v6->_clipFrames, *(v4 + 9), 32 * v9);
-      memcpy(v6->_clipInfos, *(v4 + 10), 768 * v9);
+      memcpy(v6->_clipTimeRanges, *(timelineCopy + 8), 48 * numberOfClips);
+      memcpy(v6->_clipFrames, *(timelineCopy + 9), 32 * numberOfClips);
+      memcpy(v6->_clipInfos, *(timelineCopy + 10), 768 * numberOfClips);
     }
 
-    v10 = [v4 numberOfSegments];
-    [(PXStoryDummyTimeline *)v6 setNumberOfSegments:v10];
-    if (v10 >= 1)
+    numberOfSegments = [timelineCopy numberOfSegments];
+    [(PXStoryDummyTimeline *)v6 setNumberOfSegments:numberOfSegments];
+    if (numberOfSegments >= 1)
     {
-      memcpy(v6->_segmentTimeRanges, *(v4 + 12), 48 * v10);
-      memcpy(v6->_segmentInfos, *(v4 + 13), 200 * v10);
+      memcpy(v6->_segmentTimeRanges, *(timelineCopy + 12), 48 * numberOfSegments);
+      memcpy(v6->_segmentInfos, *(timelineCopy + 13), 200 * numberOfSegments);
     }
 
-    [(NSMutableDictionary *)v6->_clipsByIdentifier setDictionary:*(v4 + 14)];
-    v11 = [*(v4 + 15) copy];
+    [(NSMutableDictionary *)v6->_clipsByIdentifier setDictionary:*(timelineCopy + 14)];
+    v11 = [*(timelineCopy + 15) copy];
     resourceOccurrenceCounts = v6->_resourceOccurrenceCounts;
     v6->_resourceOccurrenceCounts = v11;
   }
@@ -218,10 +218,10 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
   return v6;
 }
 
-- (PXStoryDummyTimeline)initWithSize:(CGSize)a3
+- (PXStoryDummyTimeline)initWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = PXStoryDummyTimeline;
   v5 = [(PXStoryDummyTimeline *)&v12 init];
@@ -247,8 +247,8 @@ BOOL __66__PXStoryDummyTimeline_enumerateClipsInTimeRange_rect_usingBlock___bloc
 
 - (PXStoryDummyTimeline)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimeline.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryDummyTimeline init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryDummyTimeline.m" lineNumber:40 description:{@"%s is not available as initializer", "-[PXStoryDummyTimeline init]"}];
 
   abort();
 }

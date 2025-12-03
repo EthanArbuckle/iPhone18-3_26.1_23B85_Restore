@@ -2,12 +2,12 @@
 - (BOOL)isPrivateSharingEnabled;
 - (id)OSSSpecifier;
 - (id)advancedSettingsSpecifier;
-- (id)privateSharingEnabled:(id)a3;
+- (id)privateSharingEnabled:(id)enabled;
 - (id)privateSharingGroupSpecifier;
 - (id)privateSharingSwitchSpecifier;
 - (id)specifiers;
 - (id)syncSpecifier;
-- (void)setPrivateSharingEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setPrivateSharingEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)showShortcutsSharingAndPrivacy;
 - (void)viewDidLoad;
 @end
@@ -27,9 +27,9 @@
     v8 = v6;
 
     v9 = +[WFDevice currentDevice];
-    v10 = [v9 isChineseRegionDevice];
+    isChineseRegionDevice = [v9 isChineseRegionDevice];
 
-    if (v10)
+    if (isChineseRegionDevice)
     {
       v11 = 33619972;
     }
@@ -42,29 +42,29 @@
     v12 = [(PSSystemPolicyForApp *)v8 specifiersForPolicyOptions:v11 force:0];
     v13 = [v12 mutableCopy];
 
-    v14 = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
-    [v13 addObject:v14];
+    dummyGroupSpecifier = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
+    [v13 addObject:dummyGroupSpecifier];
 
-    v15 = [(WFShortcutsSettingsController *)self syncSpecifier];
-    [v13 addObject:v15];
+    syncSpecifier = [(WFShortcutsSettingsController *)self syncSpecifier];
+    [v13 addObject:syncSpecifier];
 
-    v16 = [(WFShortcutsSettingsController *)self privateSharingGroupSpecifier];
-    [v13 addObject:v16];
+    privateSharingGroupSpecifier = [(WFShortcutsSettingsController *)self privateSharingGroupSpecifier];
+    [v13 addObject:privateSharingGroupSpecifier];
 
-    v17 = [(WFShortcutsSettingsController *)self privateSharingSwitchSpecifier];
-    [v13 addObject:v17];
+    privateSharingSwitchSpecifier = [(WFShortcutsSettingsController *)self privateSharingSwitchSpecifier];
+    [v13 addObject:privateSharingSwitchSpecifier];
 
-    v18 = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
-    [v13 addObject:v18];
+    dummyGroupSpecifier2 = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
+    [v13 addObject:dummyGroupSpecifier2];
 
-    v19 = [(WFShortcutsSettingsController *)self advancedSettingsSpecifier];
-    [v13 addObject:v19];
+    advancedSettingsSpecifier = [(WFShortcutsSettingsController *)self advancedSettingsSpecifier];
+    [v13 addObject:advancedSettingsSpecifier];
 
-    v20 = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
-    [v13 addObject:v20];
+    dummyGroupSpecifier3 = [(WFShortcutsSettingsController *)self dummyGroupSpecifier];
+    [v13 addObject:dummyGroupSpecifier3];
 
-    v21 = [(WFShortcutsSettingsController *)self OSSSpecifier];
-    [v13 addObject:v21];
+    oSSSpecifier = [(WFShortcutsSettingsController *)self OSSSpecifier];
+    [v13 addObject:oSSSpecifier];
 
     v22 = [v13 copy];
     v23 = *&self->PSListController_opaque[v3];
@@ -103,22 +103,22 @@
   [v3 present];
 }
 
-- (void)setPrivateSharingEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setPrivateSharingEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a4;
-  v6 = [a3 BOOLValue];
-  v8 = [v5 propertyForKey:PSControlKey];
+  specifierCopy = specifier;
+  bOOLValue = [enabled BOOLValue];
+  v8 = [specifierCopy propertyForKey:PSControlKey];
 
-  [v8 setOn:v6 animated:1];
+  [v8 setOn:bOOLValue animated:1];
   v7 = +[NSUserDefaults systemShortcutsUserDefaults];
-  [v7 setBool:v6 forKey:WFShortcutsPrivateSharingEnabledKey];
+  [v7 setBool:bOOLValue forKey:WFShortcutsPrivateSharingEnabledKey];
 }
 
-- (id)privateSharingEnabled:(id)a3
+- (id)privateSharingEnabled:(id)enabled
 {
-  v3 = [(WFShortcutsSettingsController *)self isPrivateSharingEnabled];
+  isPrivateSharingEnabled = [(WFShortcutsSettingsController *)self isPrivateSharingEnabled];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:isPrivateSharingEnabled];
 }
 
 - (BOOL)isPrivateSharingEnabled
@@ -140,17 +140,17 @@
 - (id)privateSharingGroupSpecifier
 {
   v3 = [PSSpecifier preferenceSpecifierNamed:0 target:self set:"setPreferenceValue:specifier:" get:"readPreferenceValue:" detail:0 cell:0 edit:0];
-  v4 = [(WFShortcutsSettingsController *)self privateSharingGroupUntrustedShortcutsDescription];
-  v5 = [(WFShortcutsSettingsController *)self sharingGroupAboutLinkText];
-  v6 = [NSString stringWithFormat:@"%@ %@", v4, v5];
+  privateSharingGroupUntrustedShortcutsDescription = [(WFShortcutsSettingsController *)self privateSharingGroupUntrustedShortcutsDescription];
+  sharingGroupAboutLinkText = [(WFShortcutsSettingsController *)self sharingGroupAboutLinkText];
+  v6 = [NSString stringWithFormat:@"%@ %@", privateSharingGroupUntrustedShortcutsDescription, sharingGroupAboutLinkText];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v3 setProperty:v8 forKey:PSFooterCellClassGroupKey];
 
   [v3 setProperty:v6 forKey:PSFooterHyperlinkViewTitleKey];
-  v9 = [(WFShortcutsSettingsController *)self sharingGroupAboutLinkText];
-  v14.location = [v6 rangeOfString:v9];
+  sharingGroupAboutLinkText2 = [(WFShortcutsSettingsController *)self sharingGroupAboutLinkText];
+  v14.location = [v6 rangeOfString:sharingGroupAboutLinkText2];
   v10 = NSStringFromRange(v14);
   [v3 setProperty:v10 forKey:PSFooterHyperlinkViewLinkRangeKey];
 

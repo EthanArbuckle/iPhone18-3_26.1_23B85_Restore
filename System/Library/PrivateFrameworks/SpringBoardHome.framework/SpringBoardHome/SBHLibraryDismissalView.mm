@@ -1,31 +1,31 @@
 @interface SBHLibraryDismissalView
-- (SBHLibraryDismissalView)initWithFrame:(CGRect)a3;
+- (SBHLibraryDismissalView)initWithFrame:(CGRect)frame;
 - (id)layer;
 - (void)layoutSubviews;
-- (void)setBrightness:(double)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
+- (void)setBrightness:(double)brightness;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
 @end
 
 @implementation SBHLibraryDismissalView
 
-- (SBHLibraryDismissalView)initWithFrame:(CGRect)a3
+- (SBHLibraryDismissalView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBHLibraryDismissalView;
-  v3 = [(SBHLibraryDismissalView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHLibraryDismissalView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBHLibraryDismissalView *)v3 layer];
+    layer = [(SBHLibraryDismissalView *)v3 layer];
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.18];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
-    [v5 setFillRule:*MEMORY[0x1E69797F8]];
+    [layer setFillColor:{objc_msgSend(v6, "CGColor")}];
+    [layer setFillRule:*MEMORY[0x1E69797F8]];
   }
 
   return v4;
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -43,30 +43,30 @@
   }
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
-  if (self->_brightness != a3)
+  if (self->_brightness != brightness)
   {
-    self->_brightness = a3;
+    self->_brightness = brightness;
     IsOne = BSFloatIsOne();
-    v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0 - a3 + (1.0 - (1.0 - a3)) * 0.18];
-    v6 = [(SBHLibraryDismissalView *)self layer];
+    v9 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0 - brightness + (1.0 - (1.0 - brightness)) * 0.18];
+    layer = [(SBHLibraryDismissalView *)self layer];
     if (IsOne)
     {
       v7 = [MEMORY[0x1E6979318] animationWithKeyPath:@"fillColor"];
       v8 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
       [v7 setTimingFunction:v8];
 
-      [v7 setFromValue:{objc_msgSend(v6, "fillColor")}];
+      [v7 setFromValue:{objc_msgSend(layer, "fillColor")}];
       [v7 setFillMode:*MEMORY[0x1E69797E8]];
       [v7 setDuration:0.3];
-      [v6 setFillColor:{objc_msgSend(v9, "CGColor")}];
-      [v6 addAnimation:v7 forKey:0];
+      [layer setFillColor:{objc_msgSend(v9, "CGColor")}];
+      [layer addAnimation:v7 forKey:0];
     }
 
     else
     {
-      [v6 setFillColor:{objc_msgSend(v9, "CGColor")}];
+      [layer setFillColor:{objc_msgSend(v9, "CGColor")}];
     }
   }
 }
@@ -75,9 +75,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBHLibraryDismissalView;
-  v2 = [(SBHLibraryDismissalView *)&v4 layer];
+  layer = [(SBHLibraryDismissalView *)&v4 layer];
 
-  return v2;
+  return layer;
 }
 
 - (void)layoutSubviews
@@ -89,7 +89,7 @@
   v4 = v3;
   continuousCornerRadius = self->_iconImageInfo.continuousCornerRadius;
   v6 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:? cornerRadius:?];
-  v7 = [MEMORY[0x1E69DC728] bezierPath];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   UIRectCenteredRect();
   rect_16 = continuousCornerRadius / 6.0;
   rect_24 = v38.size.width;
@@ -115,7 +115,7 @@
   v41.origin.y = y;
   v41.size.width = rect_24;
   v41.size.height = height;
-  [v7 moveToPoint:{MinX, CGRectGetMinY(v41)}];
+  [bezierPath moveToPoint:{MinX, CGRectGetMinY(v41)}];
   v42.origin.x = v12;
   v42.origin.y = v13;
   v42.size.width = width;
@@ -125,7 +125,7 @@
   v43.origin.y = y;
   v43.size.width = rect_24;
   v43.size.height = height;
-  [v7 addLineToPoint:{MaxX, CGRectGetMinY(v43)}];
+  [bezierPath addLineToPoint:{MaxX, CGRectGetMinY(v43)}];
   v44.origin.x = v12;
   v44.origin.y = v13;
   v44.size.width = width;
@@ -135,21 +135,21 @@
   v45.origin.y = v13;
   v45.size.width = width;
   v45.size.height = v15;
-  [v7 addArcWithCenter:1 radius:v19 startAngle:CGRectGetMinY(v45) endAngle:rect_16 clockwise:?];
-  [v7 currentPoint];
+  [bezierPath addArcWithCenter:1 radius:v19 startAngle:CGRectGetMinY(v45) endAngle:rect_16 clockwise:?];
+  [bezierPath currentPoint];
   v21 = v20;
   v46.origin.x = v12;
   v46.origin.y = v13;
   v46.size.width = width;
   v46.size.height = v15;
   v22 = v21 - CGRectGetWidth(v46) * 0.5;
-  [v7 currentPoint];
+  [bezierPath currentPoint];
   v24 = v23;
   v47.origin.x = v12;
   v47.origin.y = v13;
   v47.size.width = width;
   v47.size.height = v15;
-  [v7 addLineToPoint:{v22, v24 + CGRectGetHeight(v47)}];
+  [bezierPath addLineToPoint:{v22, v24 + CGRectGetHeight(v47)}];
   v48.origin.x = v12;
   v48.origin.y = v13;
   v48.size.width = width;
@@ -159,25 +159,25 @@
   v49.origin.y = v13;
   v49.size.width = width;
   v49.size.height = v15;
-  [v7 addArcWithCenter:1 radius:MidX startAngle:CGRectGetMaxY(v49) endAngle:rect_16 clockwise:{rect_8, v36}];
-  [v7 currentPoint];
+  [bezierPath addArcWithCenter:1 radius:MidX startAngle:CGRectGetMaxY(v49) endAngle:rect_16 clockwise:{rect_8, v36}];
+  [bezierPath currentPoint];
   v27 = v26;
   v50.origin.x = v12;
   v50.origin.y = v13;
   v50.size.width = width;
   v50.size.height = v15;
   v28 = v27 - CGRectGetWidth(v50) * 0.5;
-  [v7 currentPoint];
+  [bezierPath currentPoint];
   v30 = v29;
   v51.origin.x = v12;
   v51.origin.y = v13;
   v51.size.width = width;
   v51.size.height = v15;
-  [v7 addLineToPoint:{v28, v30 - CGRectGetHeight(v51)}];
-  [v7 addArcWithCenter:1 radius:v12 startAngle:v13 endAngle:rect_16 clockwise:{v36, 4.71238898}];
-  [v6 appendPath:v7];
-  v31 = [(SBHLibraryDismissalView *)self layer];
-  [v31 setPath:{objc_msgSend(v6, "CGPath")}];
+  [bezierPath addLineToPoint:{v28, v30 - CGRectGetHeight(v51)}];
+  [bezierPath addArcWithCenter:1 radius:v12 startAngle:v13 endAngle:rect_16 clockwise:{v36, 4.71238898}];
+  [v6 appendPath:bezierPath];
+  layer = [(SBHLibraryDismissalView *)self layer];
+  [layer setPath:{objc_msgSend(v6, "CGPath")}];
 }
 
 @end

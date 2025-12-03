@@ -1,50 +1,50 @@
 @interface NSSArticleViewControllerInternal
-- (NSSArticleViewControllerInternal)initWithArticle:(id)a3;
-- (NSSArticleViewControllerInternal)initWithNotification:(id)a3;
-- (NSSArticleViewControllerInternal)initWithSpotlightIdentifier:(id)a3;
+- (NSSArticleViewControllerInternal)initWithArticle:(id)article;
+- (NSSArticleViewControllerInternal)initWithNotification:(id)notification;
+- (NSSArticleViewControllerInternal)initWithSpotlightIdentifier:(id)identifier;
 - (void)_tickleArticleView;
 - (void)_tickleSpinner;
-- (void)presentArticle:(id)a3 completion:(id)a4;
-- (void)setArticle:(id)a3;
-- (void)setArticleLoading:(BOOL)a3;
+- (void)presentArticle:(id)article completion:(id)completion;
+- (void)setArticle:(id)article;
+- (void)setArticleLoading:(BOOL)loading;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation NSSArticleViewControllerInternal
 
-- (NSSArticleViewControllerInternal)initWithArticle:(id)a3
+- (NSSArticleViewControllerInternal)initWithArticle:(id)article
 {
-  v4 = a3;
+  articleCopy = article;
   v8.receiver = self;
   v8.super_class = NSSArticleViewControllerInternal;
   v5 = [(NSSArticleViewControllerInternal *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(NSSArticleViewControllerInternal *)v5 setArticle:v4];
+    [(NSSArticleViewControllerInternal *)v5 setArticle:articleCopy];
   }
 
   return v6;
 }
 
-- (NSSArticleViewControllerInternal)initWithNotification:(id)a3
+- (NSSArticleViewControllerInternal)initWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v11.receiver = self;
   v11.super_class = NSSArticleViewControllerInternal;
   v5 = [(NSSArticleViewControllerInternal *)&v11 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    v5->_articleLoading = v4 != 0;
+    v5->_articleLoading = notificationCopy != 0;
     objc_initWeak(&location, v5);
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __57__NSSArticleViewControllerInternal_initWithNotification___block_invoke;
     v8[3] = &unk_279980D70;
     objc_copyWeak(&v9, &location);
-    [NSSArticleInternal articleFromNotification:v4 completion:v8];
+    [NSSArticleInternal articleFromNotification:notificationCopy completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
@@ -64,10 +64,10 @@ void __57__NSSArticleViewControllerInternal_initWithNotification___block_invoke(
   [WeakRetained setArticleLoading:0];
 }
 
-- (NSSArticleViewControllerInternal)initWithSpotlightIdentifier:(id)a3
+- (NSSArticleViewControllerInternal)initWithSpotlightIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([NSSArticleInternal coreSpotlightIdentifierRepresentsArticleIdentifier:v4])
+  identifierCopy = identifier;
+  if ([NSSArticleInternal coreSpotlightIdentifierRepresentsArticleIdentifier:identifierCopy])
   {
     v12.receiver = self;
     v12.super_class = NSSArticleViewControllerInternal;
@@ -75,28 +75,28 @@ void __57__NSSArticleViewControllerInternal_initWithNotification___block_invoke(
     v6 = v5;
     if (v5)
     {
-      v5->_articleLoading = v4 != 0;
+      v5->_articleLoading = identifierCopy != 0;
       objc_initWeak(&location, v5);
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_invoke;
       v9[3] = &unk_279980D70;
       objc_copyWeak(&v10, &location);
-      [NSSArticleInternal articleFromCoreSpotlightIdentifier:v4 completion:v9];
+      [NSSArticleInternal articleFromCoreSpotlightIdentifier:identifierCopy completion:v9];
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 void __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -119,20 +119,20 @@ void __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_
   v3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
   [(NSSArticleViewControllerInternal *)self setSpinner:v3];
 
-  v4 = [(NSSArticleViewControllerInternal *)self spinner];
-  [v4 setHidesWhenStopped:1];
+  spinner = [(NSSArticleViewControllerInternal *)self spinner];
+  [spinner setHidesWhenStopped:1];
 
-  v5 = [(NSSArticleViewControllerInternal *)self view];
-  v6 = [(NSSArticleViewControllerInternal *)self spinner];
-  [v5 addSubview:v6];
+  view = [(NSSArticleViewControllerInternal *)self view];
+  spinner2 = [(NSSArticleViewControllerInternal *)self spinner];
+  [view addSubview:spinner2];
 
   v7 = [NSSArticleView alloc];
   v8 = [(NSSArticleView *)v7 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   [(NSSArticleViewControllerInternal *)self setArticleView:v8];
 
-  v9 = [(NSSArticleViewControllerInternal *)self view];
-  v10 = [(NSSArticleViewControllerInternal *)self articleView];
-  [v9 addSubview:v10];
+  view2 = [(NSSArticleViewControllerInternal *)self view];
+  articleView = [(NSSArticleViewControllerInternal *)self articleView];
+  [view2 addSubview:articleView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -140,68 +140,68 @@ void __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_
   v13.receiver = self;
   v13.super_class = NSSArticleViewControllerInternal;
   [(NSSArticleViewControllerInternal *)&v13 viewWillLayoutSubviews];
-  v3 = [(NSSArticleViewControllerInternal *)self view];
-  [v3 bounds];
+  view = [(NSSArticleViewControllerInternal *)self view];
+  [view bounds];
   MidX = CGRectGetMidX(v14);
-  v5 = [(NSSArticleViewControllerInternal *)self view];
-  [v5 bounds];
+  view2 = [(NSSArticleViewControllerInternal *)self view];
+  [view2 bounds];
   MidY = CGRectGetMidY(v15);
-  v7 = [(NSSArticleViewControllerInternal *)self spinner];
-  [v7 setCenter:{MidX, MidY}];
+  spinner = [(NSSArticleViewControllerInternal *)self spinner];
+  [spinner setCenter:{MidX, MidY}];
 
-  v8 = [(NSSArticleViewControllerInternal *)self view];
-  [v8 bounds];
+  view3 = [(NSSArticleViewControllerInternal *)self view];
+  [view3 bounds];
   Width = CGRectGetWidth(v16);
-  v10 = [(NSSArticleViewControllerInternal *)self view];
-  [v10 bounds];
+  view4 = [(NSSArticleViewControllerInternal *)self view];
+  [view4 bounds];
   Height = CGRectGetHeight(v17);
-  v12 = [(NSSArticleViewControllerInternal *)self articleView];
-  [v12 setFrame:{0.0, 0.0, Width, Height}];
+  articleView = [(NSSArticleViewControllerInternal *)self articleView];
+  [articleView setFrame:{0.0, 0.0, Width, Height}];
 }
 
-- (void)setArticleLoading:(BOOL)a3
+- (void)setArticleLoading:(BOOL)loading
 {
-  if (self->_articleLoading != a3)
+  if (self->_articleLoading != loading)
   {
-    self->_articleLoading = a3;
+    self->_articleLoading = loading;
     [(NSSArticleViewControllerInternal *)self _tickleSpinner];
   }
 }
 
-- (void)setArticle:(id)a3
+- (void)setArticle:(id)article
 {
-  v5 = a3;
-  if (self->_article != v5)
+  articleCopy = article;
+  if (self->_article != articleCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_article, a3);
+    v11 = articleCopy;
+    objc_storeStrong(&self->_article, article);
     [(NSSArticleViewControllerInternal *)self _tickleArticleView];
-    v6 = [(NSSArticleViewControllerInternal *)self articleView];
-    [v6 preferredSize];
+    articleView = [(NSSArticleViewControllerInternal *)self articleView];
+    [articleView preferredSize];
     v8 = v7;
     v10 = v9;
 
     [(NSSArticleViewControllerInternal *)self setPreferredContentSize:v8, v10];
-    v5 = v11;
+    articleCopy = v11;
   }
 }
 
-- (void)presentArticle:(id)a3 completion:(id)a4
+- (void)presentArticle:(id)article completion:(id)completion
 {
-  v13 = a3;
-  v7 = a4;
-  if (self->_article != v13)
+  articleCopy = article;
+  completionCopy = completion;
+  if (self->_article != articleCopy)
   {
-    objc_storeStrong(&self->_article, a3);
+    objc_storeStrong(&self->_article, article);
     [(NSSArticleViewControllerInternal *)self _tickleArticleView];
-    if (v7)
+    if (completionCopy)
     {
-      v8 = [(NSSArticleViewControllerInternal *)self articleView];
-      [v8 preferredSize];
+      articleView = [(NSSArticleViewControllerInternal *)self articleView];
+      [articleView preferredSize];
       v10 = v9;
       v12 = v11;
 
-      v7[2](v7, v10, v12);
+      completionCopy[2](completionCopy, v10, v12);
     }
 
     [(NSSArticleViewControllerInternal *)self _tickleSpinner];
@@ -212,17 +212,17 @@ void __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_
 {
   if ([(NSSArticleViewControllerInternal *)self isViewLoaded])
   {
-    v3 = [(NSSArticleViewControllerInternal *)self articleLoading];
-    v4 = [(NSSArticleViewControllerInternal *)self spinner];
-    v5 = v4;
-    if (v3)
+    articleLoading = [(NSSArticleViewControllerInternal *)self articleLoading];
+    spinner = [(NSSArticleViewControllerInternal *)self spinner];
+    v5 = spinner;
+    if (articleLoading)
     {
-      [v4 startAnimating];
+      [spinner startAnimating];
     }
 
     else
     {
-      [v4 stopAnimating];
+      [spinner stopAnimating];
     }
   }
 }
@@ -231,13 +231,13 @@ void __64__NSSArticleViewControllerInternal_initWithSpotlightIdentifier___block_
 {
   if ([(NSSArticleViewControllerInternal *)self isViewLoaded])
   {
-    v3 = [(NSSArticleViewControllerInternal *)self article];
-    v4 = [(NSSArticleViewControllerInternal *)self articleView];
-    [v4 setArticle:v3];
+    article = [(NSSArticleViewControllerInternal *)self article];
+    articleView = [(NSSArticleViewControllerInternal *)self articleView];
+    [articleView setArticle:article];
 
-    v6 = [(NSSArticleViewControllerInternal *)self article];
-    v5 = [(NSSArticleViewControllerInternal *)self articleView];
-    [v5 setHidden:v6 == 0];
+    article2 = [(NSSArticleViewControllerInternal *)self article];
+    articleView2 = [(NSSArticleViewControllerInternal *)self articleView];
+    [articleView2 setHidden:article2 == 0];
   }
 }
 

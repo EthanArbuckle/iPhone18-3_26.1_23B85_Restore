@@ -1,6 +1,6 @@
 @interface _PASRng
 - (_PASRng)init;
-- (_PASRng)initWithSeed:(unint64_t)a3;
+- (_PASRng)initWithSeed:(unint64_t)seed;
 - (double)nextDouble;
 - (float)nextFloat;
 - (unint64_t)next;
@@ -39,15 +39,15 @@
   return v3 + v2;
 }
 
-- (_PASRng)initWithSeed:(unint64_t)a3
+- (_PASRng)initWithSeed:(unint64_t)seed
 {
   v7.receiver = self;
   v7.super_class = _PASRng;
   result = [(_PASRng *)&v7 init];
   if (result)
   {
-    v5 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * ((a3 | 1) ^ (a3 >> 30))) ^ ((0xBF58476D1CE4E5B9 * ((a3 | 1) ^ (a3 >> 30))) >> 27));
-    v6 = 0x63660277528772BBLL * ((0x3CD0EB9D47532DFBLL * ((a3 | 1) ^ (a3 >> 29))) ^ ((0x3CD0EB9D47532DFBLL * ((a3 | 1) ^ (a3 >> 29))) >> 26));
+    v5 = 0x94D049BB133111EBLL * ((0xBF58476D1CE4E5B9 * ((seed | 1) ^ (seed >> 30))) ^ ((0xBF58476D1CE4E5B9 * ((seed | 1) ^ (seed >> 30))) >> 27));
+    v6 = 0x63660277528772BBLL * ((0x3CD0EB9D47532DFBLL * ((seed | 1) ^ (seed >> 29))) ^ ((0x3CD0EB9D47532DFBLL * ((seed | 1) ^ (seed >> 29))) >> 26));
     result->_state.s[0] = v5 ^ (v5 >> 31);
     result->_state.s[1] = v6 ^ (v6 >> 33);
   }

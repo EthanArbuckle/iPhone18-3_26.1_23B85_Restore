@@ -1,17 +1,17 @@
 @interface DNDSDateIntervalLifetimeMonitor
-- (id)updateForModeAssertions:(id)a3 date:(id)a4;
-- (void)setDelegate:(id)a3;
+- (id)updateForModeAssertions:(id)assertions date:(id)date;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation DNDSDateIntervalLifetimeMonitor
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DNDSDateIntervalLifetimeMonitor;
-  [(DNDSBaseLifetimeMonitor *)&v8 setDelegate:v4];
-  if (v4)
+  [(DNDSBaseLifetimeMonitor *)&v8 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
     objc_initWeak(&location, self);
     v5[0] = MEMORY[0x277D85DD0];
@@ -19,7 +19,7 @@
     v5[2] = __47__DNDSDateIntervalLifetimeMonitor_setDelegate___block_invoke;
     v5[3] = &unk_278F8A438;
     objc_copyWeak(&v6, &location);
-    [v4 lifetimeMonitor:self registerTimerHandlerWithServiceIdentifier:@"com.apple.donotdisturb.server.DateIntervalLifetimeMonitor.timer" handler:v5];
+    [delegateCopy lifetimeMonitor:self registerTimerHandlerWithServiceIdentifier:@"com.apple.donotdisturb.server.DateIntervalLifetimeMonitor.timer" handler:v5];
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
   }
@@ -35,31 +35,31 @@ void __47__DNDSDateIntervalLifetimeMonitor_setDelegate___block_invoke(uint64_t a
   }
 }
 
-- (id)updateForModeAssertions:(id)a3 date:(id)a4
+- (id)updateForModeAssertions:(id)assertions date:(id)date
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DNDSBaseLifetimeMonitor *)self queue];
-  dispatch_assert_queue_V2(v8);
+  assertionsCopy = assertions;
+  dateCopy = date;
+  queue = [(DNDSBaseLifetimeMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = DNDSLogDateIntervalLifetimeMonitor;
   if (os_log_type_enabled(DNDSLogDateIntervalLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = v7;
+    v47 = dateCopy;
     _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Refreshing monitor, date=%{public}@", buf, 0xCu);
   }
 
-  v38 = self;
-  v10 = [MEMORY[0x277CBEAA8] distantFuture];
-  v40 = [MEMORY[0x277CBEB18] array];
-  v39 = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v11 = v6;
+  v11 = assertionsCopy;
   v12 = [v11 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v12)
   {
@@ -75,25 +75,25 @@ void __47__DNDSDateIntervalLifetimeMonitor_setDelegate___block_invoke(uint64_t a
         }
 
         v16 = *(*(&v41 + 1) + 8 * i);
-        v17 = [v16 details];
-        v18 = [v17 lifetime];
+        details = [v16 details];
+        lifetime = [details lifetime];
 
-        v19 = [v18 dateInterval];
-        v20 = [v19 dnds_lifetimePhaseForDate:v7];
+        dateInterval = [lifetime dateInterval];
+        v20 = [dateInterval dnds_lifetimePhaseForDate:dateCopy];
         if (v20 == 2)
         {
-          v23 = [v16 UUID];
-          [v39 addObject:v23];
+          uUID = [v16 UUID];
+          [array2 addObject:uUID];
         }
 
         else
         {
           if (v20 == 1)
           {
-            v22 = [v16 UUID];
-            [v40 addObject:v22];
+            uUID2 = [v16 UUID];
+            [array addObject:uUID2];
 
-            v21 = [v19 endDate];
+            endDate = [dateInterval endDate];
           }
 
           else
@@ -103,13 +103,13 @@ void __47__DNDSDateIntervalLifetimeMonitor_setDelegate___block_invoke(uint64_t a
               goto LABEL_16;
             }
 
-            v21 = [v19 startDate];
+            endDate = [dateInterval startDate];
           }
 
-          v23 = v21;
-          v24 = [(NSDate *)v10 earlierDate:v21];
+          uUID = endDate;
+          v24 = [(NSDate *)distantFuture earlierDate:endDate];
 
-          v10 = v24;
+          distantFuture = v24;
         }
 
 LABEL_16:
@@ -121,46 +121,46 @@ LABEL_16:
     while (v13);
   }
 
-  v25 = [MEMORY[0x277CBEAA8] distantFuture];
-  v26 = [(NSDate *)v10 isEqualToDate:v25];
+  distantFuture2 = [MEMORY[0x277CBEAA8] distantFuture];
+  v26 = [(NSDate *)distantFuture isEqualToDate:distantFuture2];
 
-  v27 = [(NSDate *)v10 isEqualToDate:v38->_lifetimeTimerFireDate];
-  v28 = [(DNDSBaseLifetimeMonitor *)v38 delegate];
+  v27 = [(NSDate *)distantFuture isEqualToDate:selfCopy->_lifetimeTimerFireDate];
+  delegate = [(DNDSBaseLifetimeMonitor *)selfCopy delegate];
   if (v26 || !v27)
   {
     v29 = DNDSLogDateIntervalLifetimeMonitor;
     if (os_log_type_enabled(DNDSLogDateIntervalLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
     {
-      lifetimeTimerFireDate = v38->_lifetimeTimerFireDate;
+      lifetimeTimerFireDate = selfCopy->_lifetimeTimerFireDate;
       *buf = 138543362;
       v47 = lifetimeTimerFireDate;
       _os_log_impl(&dword_24912E000, v29, OS_LOG_TYPE_DEFAULT, "Invalidating existing timer; fireDate=%{public}@", buf, 0xCu);
     }
 
     v31 = [[DNDSXPCTimer alloc] initWithFireDate:0 serviceIdentifier:@"com.apple.donotdisturb.server.DateIntervalLifetimeMonitor.timer" userVisible:1];
-    [v28 lifetimeMonitor:v38 setTimer:v31];
+    [delegate lifetimeMonitor:selfCopy setTimer:v31];
 
-    v32 = v38->_lifetimeTimerFireDate;
-    v38->_lifetimeTimerFireDate = 0;
+    v32 = selfCopy->_lifetimeTimerFireDate;
+    selfCopy->_lifetimeTimerFireDate = 0;
   }
 
-  if (!v26 && (v38->_lifetimeTimerFireDate == 0 || !v27))
+  if (!v26 && (selfCopy->_lifetimeTimerFireDate == 0 || !v27))
   {
     v33 = DNDSLogDateIntervalLifetimeMonitor;
     if (os_log_type_enabled(DNDSLogDateIntervalLifetimeMonitor, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v47 = v10;
+      v47 = distantFuture;
       _os_log_impl(&dword_24912E000, v33, OS_LOG_TYPE_DEFAULT, "Scheduling timer; nextUpdateDate=%{public}@", buf, 0xCu);
     }
 
-    v34 = [[DNDSXPCTimer alloc] initWithFireDate:v10 serviceIdentifier:@"com.apple.donotdisturb.server.DateIntervalLifetimeMonitor.timer" userVisible:1];
-    [v28 lifetimeMonitor:v38 setTimer:v34];
+    v34 = [[DNDSXPCTimer alloc] initWithFireDate:distantFuture serviceIdentifier:@"com.apple.donotdisturb.server.DateIntervalLifetimeMonitor.timer" userVisible:1];
+    [delegate lifetimeMonitor:selfCopy setTimer:v34];
 
-    objc_storeStrong(&v38->_lifetimeTimerFireDate, v10);
+    objc_storeStrong(&selfCopy->_lifetimeTimerFireDate, distantFuture);
   }
 
-  v35 = [[DNDSLifetimeMonitorResult alloc] initWithActiveUUIDs:v40 expiredUUIDs:v39];
+  v35 = [[DNDSLifetimeMonitorResult alloc] initWithActiveUUIDs:array expiredUUIDs:array2];
 
   v36 = *MEMORY[0x277D85DE8];
 

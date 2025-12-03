@@ -1,35 +1,35 @@
 @interface UAFExperimentalAssetsConfiguration
-+ (BOOL)isValid:(id)a3 error:(id *)a4;
-- (UAFExperimentalAssetsConfiguration)initWithDictionary:(id)a3;
++ (BOOL)isValid:(id)valid error:(id *)error;
+- (UAFExperimentalAssetsConfiguration)initWithDictionary:(id)dictionary;
 @end
 
 @implementation UAFExperimentalAssetsConfiguration
 
-+ (BOOL)isValid:(id)a3 error:(id *)a4
++ (BOOL)isValid:(id)valid error:(id *)error
 {
-  v5 = a3;
-  v6 = [UAFConfiguration isValidValue:v5 key:@"TrialProject" kind:objc_opt_class() required:1 error:a4]&& [UAFConfiguration isValidValue:v5 key:@"TrialNamespace" kind:objc_opt_class() required:1 error:a4]&& [UAFConfiguration isValidValue:v5 key:@"TrialFactor" kind:objc_opt_class() required:1 error:a4];
+  validCopy = valid;
+  v6 = [UAFConfiguration isValidValue:validCopy key:@"TrialProject" kind:objc_opt_class() required:1 error:error]&& [UAFConfiguration isValidValue:validCopy key:@"TrialNamespace" kind:objc_opt_class() required:1 error:error]&& [UAFConfiguration isValidValue:validCopy key:@"TrialFactor" kind:objc_opt_class() required:1 error:error];
 
   return v6;
 }
 
-- (UAFExperimentalAssetsConfiguration)initWithDictionary:(id)a3
+- (UAFExperimentalAssetsConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = UAFExperimentalAssetsConfiguration;
   v5 = [(UAFExperimentalAssetsConfiguration *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"TrialProject"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"TrialProject"];
     trialProject = v5->_trialProject;
     v5->_trialProject = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"TrialNamespace"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"TrialNamespace"];
     trialNamespace = v5->_trialNamespace;
     v5->_trialNamespace = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"TrialFactor"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"TrialFactor"];
     trialFactor = v5->_trialFactor;
     v5->_trialFactor = v10;
 

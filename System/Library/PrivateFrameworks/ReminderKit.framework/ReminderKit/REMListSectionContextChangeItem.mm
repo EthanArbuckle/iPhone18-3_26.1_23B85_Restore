@@ -1,19 +1,19 @@
 @interface REMListSectionContextChangeItem
 - (BOOL)shouldUpdateSectionsOrdering;
 - (NSArray)unsavedSectionIDsOrdering;
-- (REMListSectionContextChangeItem)initWithListChangeItem:(id)a3;
+- (REMListSectionContextChangeItem)initWithListChangeItem:(id)item;
 - (REMMemberships)unsavedMembershipsOfRemindersInSections;
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3;
-- (void)setUnsavedSectionIDsOrdering:(id)a3;
-- (void)undeleteSectionWithID:(id)a3;
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections;
+- (void)setUnsavedSectionIDsOrdering:(id)ordering;
+- (void)undeleteSectionWithID:(id)d;
 @end
 
 @implementation REMListSectionContextChangeItem
 
-- (REMListSectionContextChangeItem)initWithListChangeItem:(id)a3
+- (REMListSectionContextChangeItem)initWithListChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "listChangeItem");
   }
@@ -24,7 +24,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_listChangeItem, a3);
+    objc_storeStrong(&v6->_listChangeItem, item);
   }
 
   return v7;
@@ -32,55 +32,55 @@
 
 - (BOOL)shouldUpdateSectionsOrdering
 {
-  v2 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  v3 = [v2 shouldUpdateSectionsOrdering];
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  shouldUpdateSectionsOrdering = [listChangeItem shouldUpdateSectionsOrdering];
 
-  return v3;
+  return shouldUpdateSectionsOrdering;
 }
 
 - (NSArray)unsavedSectionIDsOrdering
 {
-  v2 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  v3 = [v2 unsavedSectionIDsOrdering];
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  unsavedSectionIDsOrdering = [listChangeItem unsavedSectionIDsOrdering];
 
-  return v3;
+  return unsavedSectionIDsOrdering;
 }
 
-- (void)setUnsavedSectionIDsOrdering:(id)a3
+- (void)setUnsavedSectionIDsOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  [v5 setUnsavedSectionIDsOrdering:v4];
+  orderingCopy = ordering;
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  [listChangeItem setUnsavedSectionIDsOrdering:orderingCopy];
 }
 
 - (REMMemberships)unsavedMembershipsOfRemindersInSections
 {
-  v2 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  v3 = [v2 unsavedMembershipsOfRemindersInSections];
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  unsavedMembershipsOfRemindersInSections = [listChangeItem unsavedMembershipsOfRemindersInSections];
 
-  return v3;
+  return unsavedMembershipsOfRemindersInSections;
 }
 
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  [v5 setUnsavedMembershipsOfRemindersInSections:v4];
+  sectionsCopy = sections;
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  [listChangeItem setUnsavedMembershipsOfRemindersInSections:sectionsCopy];
 }
 
-- (void)undeleteSectionWithID:(id)a3
+- (void)undeleteSectionWithID:(id)d
 {
-  v8 = a3;
-  if (!v8)
+  dCopy = d;
+  if (!dCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "sectionID");
   }
 
-  v4 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  v5 = [v4 sectionIDsToUndelete];
-  v6 = [v5 setByAddingObject:v8];
-  v7 = [(REMListSectionContextChangeItem *)self listChangeItem];
-  [v7 setSectionIDsToUndelete:v6];
+  listChangeItem = [(REMListSectionContextChangeItem *)self listChangeItem];
+  sectionIDsToUndelete = [listChangeItem sectionIDsToUndelete];
+  v6 = [sectionIDsToUndelete setByAddingObject:dCopy];
+  listChangeItem2 = [(REMListSectionContextChangeItem *)self listChangeItem];
+  [listChangeItem2 setSectionIDsToUndelete:v6];
 }
 
 @end

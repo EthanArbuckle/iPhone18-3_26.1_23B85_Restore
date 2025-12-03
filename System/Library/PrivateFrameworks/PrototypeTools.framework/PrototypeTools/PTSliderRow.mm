@@ -1,11 +1,11 @@
 @interface PTSliderRow
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PTSliderRow)init;
-- (PTSliderRow)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)minValue:(double)a3 maxValue:(double)a4;
+- (PTSliderRow)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)minValue:(double)value maxValue:(double)maxValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PTSliderRow
@@ -25,17 +25,17 @@
   return v3;
 }
 
-- (id)minValue:(double)a3 maxValue:(double)a4
+- (id)minValue:(double)value maxValue:(double)maxValue
 {
-  [(PTSliderRow *)self setMinValue:a3];
-  [(PTSliderRow *)self setMaxValue:a4];
+  [(PTSliderRow *)self setMinValue:value];
+  [(PTSliderRow *)self setMaxValue:maxValue];
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -44,7 +44,7 @@
   {
     v7.receiver = self;
     v7.super_class = PTSliderRow;
-    v5 = [(PTRow *)&v7 isEqual:v4]&& PTEqualFloats(self->_minValue, v4->_minValue) && PTEqualFloats(self->_maxValue, v4->_maxValue);
+    v5 = [(PTRow *)&v7 isEqual:equalCopy]&& PTEqualFloats(self->_minValue, equalCopy->_minValue) && PTEqualFloats(self->_maxValue, equalCopy->_maxValue);
   }
 
   return v5;
@@ -52,16 +52,16 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
+  builder = [MEMORY[0x277CF0C40] builder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __19__PTSliderRow_hash__block_invoke;
   v9[3] = &unk_27835ECA8;
   v9[4] = self;
-  v4 = [v3 appendHashingBlocks:{v9, 0}];
-  v5 = [v3 appendDouble:self->_minValue];
-  v6 = [v3 appendDouble:self->_maxValue];
-  v7 = [v3 hash];
+  v4 = [builder appendHashingBlocks:{v9, 0}];
+  v5 = [builder appendDouble:self->_minValue];
+  v6 = [builder appendDouble:self->_maxValue];
+  v7 = [builder hash];
 
   return v7;
 }
@@ -73,38 +73,38 @@ id __19__PTSliderRow_hash__block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v2, sel_hash);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PTSliderRow;
-  v4 = [(PTRow *)&v6 copyWithZone:a3];
+  v4 = [(PTRow *)&v6 copyWithZone:zone];
   [v4 setMinValue:self->_minValue];
   [v4 setMaxValue:self->_maxValue];
   [v4 setValueStringFormatter:self->_valueStringFormatter];
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PTSliderRow;
-  v4 = a3;
-  [(PTRow *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"minValue" forKey:{self->_minValue, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"maxValue" forKey:self->_maxValue];
+  coderCopy = coder;
+  [(PTRow *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"minValue" forKey:{self->_minValue, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"maxValue" forKey:self->_maxValue];
 }
 
-- (PTSliderRow)initWithCoder:(id)a3
+- (PTSliderRow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PTSliderRow;
-  v5 = [(PTRow *)&v9 initWithCoder:v4];
+  v5 = [(PTRow *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"minValue"];
+    [coderCopy decodeDoubleForKey:@"minValue"];
     v5->_minValue = v6;
-    [v4 decodeDoubleForKey:@"maxValue"];
+    [coderCopy decodeDoubleForKey:@"maxValue"];
     v5->_maxValue = v7;
   }
 

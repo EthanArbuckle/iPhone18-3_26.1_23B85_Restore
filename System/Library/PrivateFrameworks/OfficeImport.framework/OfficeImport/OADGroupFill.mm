@@ -1,7 +1,7 @@
 @interface OADGroupFill
 + (id)defaultProperties;
 - (OADGroupFill)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OADGroupFill
@@ -25,9 +25,9 @@
   return [(OADProperties *)&v3 initWithDefaults];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [OADGroupFill allocWithZone:a3];
+  v3 = [OADGroupFill allocWithZone:zone];
 
   return [(OADGroupFill *)v3 initWithDefaults];
 }

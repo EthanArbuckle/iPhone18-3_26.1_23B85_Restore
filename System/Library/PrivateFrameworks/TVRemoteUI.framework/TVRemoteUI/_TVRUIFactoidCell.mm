@@ -1,18 +1,18 @@
 @interface _TVRUIFactoidCell
-- (_TVRUIFactoidCell)initWithFrame:(CGRect)a3;
+- (_TVRUIFactoidCell)initWithFrame:(CGRect)frame;
 - (void)_configureHierarchy;
-- (void)_updateFromItem:(id)a3;
+- (void)_updateFromItem:(id)item;
 - (void)prepareForReuse;
-- (void)setItem:(id)a3;
+- (void)setItem:(id)item;
 @end
 
 @implementation _TVRUIFactoidCell
 
-- (_TVRUIFactoidCell)initWithFrame:(CGRect)a3
+- (_TVRUIFactoidCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUIFactoidCell;
-  v3 = [(_TVRUIFactoidCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUIFactoidCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  objc_storeStrong(&self->_item, a3);
-  v5 = a3;
-  [(_TVRUIFactoidCell *)self _updateFromItem:v5];
+  objc_storeStrong(&self->_item, item);
+  itemCopy = item;
+  [(_TVRUIFactoidCell *)self _updateFromItem:itemCopy];
 }
 
 - (void)prepareForReuse
@@ -46,8 +46,8 @@
 
   [(UILabel *)v3 setAdjustsFontForContentSizeCategory:1];
   [(UILabel *)v3 setNumberOfLines:0];
-  v27 = self;
-  v5 = [(_TVRUIFactoidCell *)self contentView];
+  selfCopy = self;
+  contentView = [(_TVRUIFactoidCell *)self contentView];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -70,7 +70,7 @@
 
         v11 = *(*(&v28 + 1) + 8 * i);
         [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v5 addSubview:v11];
+        [contentView addSubview:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -80,42 +80,42 @@
   }
 
   v21 = MEMORY[0x277CCAAD0];
-  v26 = [(UILabel *)v3 leadingAnchor];
-  v25 = [v5 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25 constant:20.0];
+  leadingAnchor = [(UILabel *)v3 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:20.0];
   v32[0] = v24;
-  v23 = [(UILabel *)v3 trailingAnchor];
-  v22 = [v5 trailingAnchor];
-  v12 = [v23 constraintEqualToAnchor:v22 constant:-20.0];
+  trailingAnchor = [(UILabel *)v3 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-20.0];
   v32[1] = v12;
-  v13 = [(UILabel *)v3 topAnchor];
-  v14 = [v5 topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:5.0];
+  topAnchor = [(UILabel *)v3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v32[2] = v15;
-  v16 = [(UILabel *)v3 bottomAnchor];
-  v17 = [v5 bottomAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17 constant:-5.0];
+  bottomAnchor = [(UILabel *)v3 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v32[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   [v21 activateConstraints:v19];
 
-  factoidLabel = v27->_factoidLabel;
-  v27->_factoidLabel = v3;
+  factoidLabel = selfCopy->_factoidLabel;
+  selfCopy->_factoidLabel = v3;
 }
 
-- (void)_updateFromItem:(id)a3
+- (void)_updateFromItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 factoidText];
-  v6 = [(_TVRUIFactoidCell *)self factoidLabel];
-  [v6 setText:v5];
+  itemCopy = item;
+  factoidText = [itemCopy factoidText];
+  factoidLabel = [(_TVRUIFactoidCell *)self factoidLabel];
+  [factoidLabel setText:factoidText];
 
-  LOBYTE(v5) = [v4 factoidOptions];
-  v7 = [v4 factoidOptions];
-  v8 = [v4 factoidOptions];
+  LOBYTE(factoidText) = [itemCopy factoidOptions];
+  factoidOptions = [itemCopy factoidOptions];
+  factoidOptions2 = [itemCopy factoidOptions];
 
-  v9 = [(_TVRUIFactoidCell *)self isExpanded];
-  if (v5)
+  isExpanded = [(_TVRUIFactoidCell *)self isExpanded];
+  if (factoidText)
   {
     v10 = 1;
   }
@@ -125,20 +125,20 @@
     v10 = 4;
   }
 
-  v11 = [(_TVRUIFactoidCell *)self factoidLabel];
-  [v11 setTextAlignment:v10];
+  factoidLabel2 = [(_TVRUIFactoidCell *)self factoidLabel];
+  [factoidLabel2 setTextAlignment:v10];
 
   v12 = MEMORY[0x277D76918];
-  if ((v7 & 2) == 0)
+  if ((factoidOptions & 2) == 0)
   {
     v12 = MEMORY[0x277D76938];
   }
 
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*v12];
-  v14 = [(_TVRUIFactoidCell *)self factoidLabel];
-  [v14 setFont:v13];
+  factoidLabel3 = [(_TVRUIFactoidCell *)self factoidLabel];
+  [factoidLabel3 setFont:v13];
 
-  if ((v8 & 4) == 0 || v9)
+  if ((factoidOptions2 & 4) == 0 || isExpanded)
   {
     v15 = 0;
   }
@@ -148,8 +148,8 @@
     v15 = 10;
   }
 
-  v16 = [(_TVRUIFactoidCell *)self factoidLabel];
-  [v16 setNumberOfLines:v15];
+  factoidLabel4 = [(_TVRUIFactoidCell *)self factoidLabel];
+  [factoidLabel4 setNumberOfLines:v15];
 }
 
 @end

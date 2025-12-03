@@ -1,12 +1,12 @@
 @interface UberTopFlipAndBlurBackgroundView
-- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation UberTopFlipAndBlurBackgroundView
 
-- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView_mirrorBackgroundView);
   *v3 = 0;
@@ -24,11 +24,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1571C4();
 }
 
-- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews32UberTopFlipAndBlurBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

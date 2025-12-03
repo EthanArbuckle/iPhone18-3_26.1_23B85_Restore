@@ -1,12 +1,12 @@
 @interface WK_RTCVideoEncoderVP9
-+ (id)vp9Encoder:(id)a3;
++ (id)vp9Encoder:(id)encoder;
 @end
 
 @implementation WK_RTCVideoEncoderVP9
 
-+ (id)vp9Encoder:(id)a3
++ (id)vp9Encoder:(id)encoder
 {
-  v3 = a3;
+  encoderCopy = encoder;
   v4 = [WK_RTCWrappedNativeVideoEncoder alloc];
   v10 = 0;
   memset(v9, 0, sizeof(v9));

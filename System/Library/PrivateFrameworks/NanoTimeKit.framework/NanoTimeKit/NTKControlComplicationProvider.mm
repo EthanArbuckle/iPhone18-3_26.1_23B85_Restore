@@ -1,6 +1,6 @@
 @interface NTKControlComplicationProvider
 + (NTKControlComplicationProvider)sharedInstance;
-- (id)localizedAppNameFor:(id)a3;
+- (id)localizedAppNameFor:(id)for;
 @end
 
 @implementation NTKControlComplicationProvider
@@ -17,11 +17,11 @@
   return v3;
 }
 
-- (id)localizedAppNameFor:(id)a3
+- (id)localizedAppNameFor:(id)for
 {
-  v4 = a3;
-  v5 = self;
-  object = NTKControlComplicationProvider.localizedAppName(for:)(v4).value._object;
+  forCopy = for;
+  selfCopy = self;
+  object = NTKControlComplicationProvider.localizedAppName(for:)(forCopy).value._object;
 
   if (object)
   {

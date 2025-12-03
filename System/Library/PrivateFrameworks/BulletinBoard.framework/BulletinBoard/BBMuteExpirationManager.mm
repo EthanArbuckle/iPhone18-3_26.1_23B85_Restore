@@ -1,21 +1,21 @@
 @interface BBMuteExpirationManager
-- (BBMuteExpirationManager)initWithQueue:(id)a3;
+- (BBMuteExpirationManager)initWithQueue:(id)queue;
 - (BBMuteExpirationManagerDelegate)delegate;
-- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)a3;
-- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)a3 currentDate:(id)a4;
-- (id)scheduledExpirationDateForSectionID:(id)a3;
-- (id)timerForSectionID:(id)a3;
+- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)info;
+- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)info currentDate:(id)date;
+- (id)scheduledExpirationDateForSectionID:(id)d;
+- (id)timerForSectionID:(id)d;
 - (unint64_t)numberOfTimers;
-- (void)_cancelTimerForSectionID:(id)a3;
-- (void)_queue_triggerDidFireForExpiryTimer:(id)a3;
+- (void)_cancelTimerForSectionID:(id)d;
+- (void)_queue_triggerDidFireForExpiryTimer:(id)timer;
 - (void)dealloc;
 @end
 
 @implementation BBMuteExpirationManager
 
-- (BBMuteExpirationManager)initWithQueue:(id)a3
+- (BBMuteExpirationManager)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = BBMuteExpirationManager;
   v5 = [(BBMuteExpirationManager *)&v10 init];
@@ -25,7 +25,7 @@
     v7 = dispatch_queue_create("com.apple.BulletinBoard.BBMuteExpirationManager.accessQueue", v6);
     [(BBMuteExpirationManager *)v5 setAccessQueue:v7];
 
-    [(BBMuteExpirationManager *)v5 setQueue:v4];
+    [(BBMuteExpirationManager *)v5 setQueue:queueCopy];
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(BBMuteExpirationManager *)v5 setTimersBySectionID:v8];
   }
@@ -53,73 +53,73 @@ void __34__BBMuteExpirationManager_dealloc__block_invoke(uint64_t a1)
   [v1 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_19];
 }
 
-- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)a3
+- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)info
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  infoCopy = info;
   v6 = [v4 now];
-  LOBYTE(self) = [(BBMuteExpirationManager *)self cleanAndWatchExpirationsForSectionInfo:v5 currentDate:v6];
+  LOBYTE(self) = [(BBMuteExpirationManager *)self cleanAndWatchExpirationsForSectionInfo:infoCopy currentDate:v6];
 
   return self;
 }
 
-- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)a3 currentDate:(id)a4
+- (BOOL)cleanAndWatchExpirationsForSectionInfo:(id)info currentDate:(id)date
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   v25 = 0;
-  v7 = a4;
-  v8 = [v6 muteAssertion];
+  dateCopy = date;
+  muteAssertion = [infoCopy muteAssertion];
   v24 = 0;
-  [v8 getNextExpirationDate:&v24 wasPurged:&v25 currentDate:v7];
+  [muteAssertion getNextExpirationDate:&v24 wasPurged:&v25 currentDate:dateCopy];
 
   v9 = v24;
-  v10 = [v6 sectionID];
-  if (v9 || ([v6 muteAssertion], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  sectionID = [infoCopy sectionID];
+  if (v9 || ([infoCopy muteAssertion], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
     v11 = v25;
   }
 
   else
   {
-    [v6 setMuteAssertion:0];
+    [infoCopy setMuteAssertion:0];
     v11 = 1;
   }
 
-  v13 = [(BBMuteExpirationManager *)self scheduledExpirationDateForSectionID:v10];
+  v13 = [(BBMuteExpirationManager *)self scheduledExpirationDateForSectionID:sectionID];
   if (v13 && v9)
   {
     if (([v9 isEqualToDate:v13] & 1) == 0)
     {
-      [(BBMuteExpirationManager *)self _cancelTimerForSectionID:v10];
+      [(BBMuteExpirationManager *)self _cancelTimerForSectionID:sectionID];
 LABEL_10:
       v26[0] = @"sectionIDKey";
       v26[1] = @"scheduledExpirationDateKey";
-      v27[0] = v10;
+      v27[0] = sectionID;
       v27[1] = v9;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
-      v15 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:v9 serviceIdentifier:v10 target:self selector:sel__queue_triggerDidFireForExpiryTimer_ userInfo:v14];
+      v15 = [objc_alloc(MEMORY[0x277D3A180]) initWithFireDate:v9 serviceIdentifier:sectionID target:self selector:sel__queue_triggerDidFireForExpiryTimer_ userInfo:v14];
       [v15 setMinimumEarlyFireProportion:1.0];
       [v15 setUserVisible:1];
-      v16 = [(BBMuteExpirationManager *)self queue];
-      [v15 scheduleInQueue:v16];
+      queue = [(BBMuteExpirationManager *)self queue];
+      [v15 scheduleInQueue:queue];
 
-      v17 = [(BBMuteExpirationManager *)self accessQueue];
+      accessQueue = [(BBMuteExpirationManager *)self accessQueue];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __78__BBMuteExpirationManager_cleanAndWatchExpirationsForSectionInfo_currentDate___block_invoke;
       v21[3] = &unk_278D2AB58;
       v21[4] = self;
       v22 = v15;
-      v23 = v10;
+      v23 = sectionID;
       v18 = v15;
-      dispatch_sync(v17, v21);
+      dispatch_sync(accessQueue, v21);
     }
   }
 
   else
   {
-    [(BBMuteExpirationManager *)self _cancelTimerForSectionID:v10];
+    [(BBMuteExpirationManager *)self _cancelTimerForSectionID:sectionID];
     if (v9)
     {
       goto LABEL_10;
@@ -142,14 +142,14 @@ void __78__BBMuteExpirationManager_cleanAndWatchExpirationsForSectionInfo_curren
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(BBMuteExpirationManager *)self accessQueue];
+  accessQueue = [(BBMuteExpirationManager *)self accessQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__BBMuteExpirationManager_numberOfTimers__block_invoke;
   v6[3] = &unk_278D2AC60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(accessQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -162,25 +162,25 @@ void __41__BBMuteExpirationManager_numberOfTimers__block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [v2 count];
 }
 
-- (id)timerForSectionID:(id)a3
+- (id)timerForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v5 = [(BBMuteExpirationManager *)self accessQueue];
+  accessQueue = [(BBMuteExpirationManager *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__BBMuteExpirationManager_timerForSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dCopy;
+  dispatch_sync(accessQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -197,25 +197,25 @@ void __45__BBMuteExpirationManager_timerForSectionID___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)scheduledExpirationDateForSectionID:(id)a3
+- (id)scheduledExpirationDateForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v5 = [(BBMuteExpirationManager *)self accessQueue];
+  accessQueue = [(BBMuteExpirationManager *)self accessQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__BBMuteExpirationManager_scheduledExpirationDateForSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(accessQueue, block);
 
   v7 = [v13[5] valueForKey:@"scheduledExpirationDateKey"];
 
@@ -234,18 +234,18 @@ void __63__BBMuteExpirationManager_scheduledExpirationDateForSectionID___block_i
   *(v4 + 40) = v3;
 }
 
-- (void)_cancelTimerForSectionID:(id)a3
+- (void)_cancelTimerForSectionID:(id)d
 {
-  v4 = a3;
-  v5 = [(BBMuteExpirationManager *)self accessQueue];
+  dCopy = d;
+  accessQueue = [(BBMuteExpirationManager *)self accessQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__BBMuteExpirationManager__cancelTimerForSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(accessQueue, v7);
 }
 
 void __52__BBMuteExpirationManager__cancelTimerForSectionID___block_invoke(uint64_t a1)
@@ -264,11 +264,11 @@ void __52__BBMuteExpirationManager__cancelTimerForSectionID___block_invoke(uint6
   }
 }
 
-- (void)_queue_triggerDidFireForExpiryTimer:(id)a3
+- (void)_queue_triggerDidFireForExpiryTimer:(id)timer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"sectionIDKey"];
+  userInfo = [timer userInfo];
+  v5 = [userInfo valueForKey:@"sectionIDKey"];
 
   v6 = BBLogSettings;
   if (os_log_type_enabled(BBLogSettings, OS_LOG_TYPE_DEFAULT))
@@ -278,15 +278,15 @@ void __52__BBMuteExpirationManager__cancelTimerForSectionID___block_invoke(uint6
     _os_log_impl(&dword_241EFF000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Mute assertion expired", buf, 0xCu);
   }
 
-  v7 = [(BBMuteExpirationManager *)self accessQueue];
+  accessQueue = [(BBMuteExpirationManager *)self accessQueue];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __63__BBMuteExpirationManager__queue_triggerDidFireForExpiryTimer___block_invoke;
   v14 = &unk_278D2A628;
-  v15 = self;
+  selfCopy = self;
   v16 = v5;
   v8 = v5;
-  dispatch_sync(v7, &v11);
+  dispatch_sync(accessQueue, &v11);
 
   v9 = [(BBMuteExpirationManager *)self delegate:v11];
   [v9 didChangeMuteAssertionForSectionID:v8];

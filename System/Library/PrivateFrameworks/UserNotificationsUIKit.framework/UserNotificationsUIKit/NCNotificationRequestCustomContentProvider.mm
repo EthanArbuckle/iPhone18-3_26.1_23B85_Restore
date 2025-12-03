@@ -1,16 +1,16 @@
 @interface NCNotificationRequestCustomContentProvider
-- (id)customContentViewControllerForNotificationRequest:(id)a3;
+- (id)customContentViewControllerForNotificationRequest:(id)request;
 @end
 
 @implementation NCNotificationRequestCustomContentProvider
 
-- (id)customContentViewControllerForNotificationRequest:(id)a3
+- (id)customContentViewControllerForNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   customContentViewController = self->_customContentViewController;
-  if (!customContentViewController || (-[NCNotificationContentContainerViewController notificationRequest](customContentViewController, "notificationRequest"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqual:v4], v6, (v7 & 1) == 0))
+  if (!customContentViewController || (-[NCNotificationContentContainerViewController notificationRequest](customContentViewController, "notificationRequest"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqual:requestCopy], v6, (v7 & 1) == 0))
   {
-    v8 = [[NCNotificationContentContainerViewController alloc] initWithNotificationRequest:v4];
+    v8 = [[NCNotificationContentContainerViewController alloc] initWithNotificationRequest:requestCopy];
     v9 = self->_customContentViewController;
     self->_customContentViewController = v8;
   }

@@ -1,19 +1,19 @@
 @interface CNMutableDonationOrigin
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setClusterIdentifier:(id)a3;
-- (void)setDonationDate:(id)a3;
-- (void)setDonationIdentifier:(id)a3;
-- (void)setExpirationDate:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setClusterIdentifier:(id)identifier;
+- (void)setDonationDate:(id)date;
+- (void)setDonationIdentifier:(id)identifier;
+- (void)setExpirationDate:(id)date;
 @end
 
 @implementation CNMutableDonationOrigin
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  if (self->super._bundleIdentifier != a3)
+  if (self->super._bundleIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     bundleIdentifier = self->super._bundleIdentifier;
     self->super._bundleIdentifier = v5;
 
@@ -21,11 +21,11 @@
   }
 }
 
-- (void)setDonationIdentifier:(id)a3
+- (void)setDonationIdentifier:(id)identifier
 {
-  if (self->super._donationIdentifier != a3)
+  if (self->super._donationIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     donationIdentifier = self->super._donationIdentifier;
     self->super._donationIdentifier = v5;
 
@@ -33,11 +33,11 @@
   }
 }
 
-- (void)setClusterIdentifier:(id)a3
+- (void)setClusterIdentifier:(id)identifier
 {
-  if (self->super._clusterIdentifier != a3)
+  if (self->super._clusterIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     clusterIdentifier = self->super._clusterIdentifier;
     self->super._clusterIdentifier = v5;
 
@@ -45,11 +45,11 @@
   }
 }
 
-- (void)setDonationDate:(id)a3
+- (void)setDonationDate:(id)date
 {
-  if (self->super._donationDate != a3)
+  if (self->super._donationDate != date)
   {
-    v5 = [a3 copy];
+    v5 = [date copy];
     donationDate = self->super._donationDate;
     self->super._donationDate = v5;
 
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  if (self->super._expirationDate != a3)
+  if (self->super._expirationDate != date)
   {
-    v5 = [a3 copy];
+    v5 = [date copy];
     expirationDate = self->super._expirationDate;
     self->super._expirationDate = v5;
 
@@ -69,7 +69,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CNDonationOrigin alloc];
 

@@ -1,18 +1,18 @@
 @interface PKUIForegroundActiveArbiter
-+ (BOOL)isDeactivedForReasons:(unsigned int)a3;
++ (BOOL)isDeactivedForReasons:(unsigned int)reasons;
 + (id)sharedInstance;
-- ($96EE1C12479E9B303E9C2794B92A11A2)registerObserver:(id)a3;
+- ($96EE1C12479E9B303E9C2794B92A11A2)registerObserver:(id)observer;
 - (id)_init;
-- (unsigned)registerDeactivationObserver:(id)a3;
+- (unsigned)registerDeactivationObserver:(id)observer;
 - (void)_beginEnteringForegroundTimer;
-- (void)_didRemoveDeactivationReasonNotification:(id)a3;
-- (void)_updateForegroundActiveWithEnteringForegroundPolicy:(int64_t)a3;
-- (void)_willAddDeactivationReasonNotification:(id)a3;
+- (void)_didRemoveDeactivationReasonNotification:(id)notification;
+- (void)_updateForegroundActiveWithEnteringForegroundPolicy:(int64_t)policy;
+- (void)_willAddDeactivationReasonNotification:(id)notification;
 - (void)dealloc;
 - (void)didBecomeActive;
 - (void)didEnterBackground;
-- (void)unregisterDeactivationObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)unregisterDeactivationObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 - (void)willEnterForegroundPostlude;
 - (void)willEnterForegroundPrelude;
 - (void)willResignActive;
@@ -56,19 +56,19 @@ void __45__PKUIForegroundActiveArbiter_sharedInstance__block_invoke()
   v2 = [(PKUIForegroundActiveArbiter *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality2 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     deactivationObservers = v2->_deactivationObservers;
-    v2->_deactivationObservers = v5;
+    v2->_deactivationObservers = pk_weakObjectsHashTableUsingPointerPersonality2;
 
     v2->_backgroundTaskIdentifier = *MEMORY[0x1E69DDBE8];
     v2->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v2 selector:sel__willAddDeactivationReasonNotification_ name:*MEMORY[0x1E69DE878] object:0];
-    [v7 addObserver:v2 selector:sel__didRemoveDeactivationReasonNotification_ name:*MEMORY[0x1E69DE840] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__willAddDeactivationReasonNotification_ name:*MEMORY[0x1E69DE878] object:0];
+    [defaultCenter addObserver:v2 selector:sel__didRemoveDeactivationReasonNotification_ name:*MEMORY[0x1E69DE840] object:0];
   }
 
   return v2;
@@ -145,8 +145,8 @@ void __45__PKUIForegroundActiveArbiter_sharedInstance__block_invoke()
   v7 = *MEMORY[0x1E69DDBE8];
   if (backgroundTaskIdentifier == *MEMORY[0x1E69DDBE8])
   {
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    self->_backgroundTaskIdentifier = [v8 beginBackgroundTaskWithName:@"Entering Foreground" expirationHandler:v3];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    self->_backgroundTaskIdentifier = [mEMORY[0x1E69DC668] beginBackgroundTaskWithName:@"Entering Foreground" expirationHandler:v3];
 
     backgroundTaskIdentifier = self->_backgroundTaskIdentifier;
   }
@@ -194,23 +194,23 @@ void __45__PKUIForegroundActiveArbiter_sharedInstance__block_invoke()
   [(PKUIForegroundActiveArbiter *)self _updateForegroundActiveWithEnteringForegroundPolicy:0];
 }
 
-+ (BOOL)isDeactivedForReasons:(unsigned int)a3
++ (BOOL)isDeactivedForReasons:(unsigned int)reasons
 {
-  if ((a3 & 0xA05F) != 0)
+  if ((reasons & 0xA05F) != 0)
   {
     return 1;
   }
 
   else
   {
-    return [a1 isBackgroundedForReasons:?];
+    return [self isBackgroundedForReasons:?];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKUIForegroundActiveArbiter;
@@ -274,11 +274,11 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   return [*(a1 + 32) _updateForegroundActiveWithEnteringForegroundPolicy:2];
 }
 
-- (void)_updateForegroundActiveWithEnteringForegroundPolicy:(int64_t)a3
+- (void)_updateForegroundActiveWithEnteringForegroundPolicy:(int64_t)policy
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69DDBE8];
-  if ((a3 | 2) == 2)
+  if ((policy | 2) == 2)
   {
     enteringForegroundTimeout = self->_enteringForegroundTimeout;
     if (enteringForegroundTimeout)
@@ -288,7 +288,7 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
       self->_enteringForegroundTimeout = 0;
     }
 
-    self->_enteringForegroundExpired = a3 == 2 && self->_enteringForeground;
+    self->_enteringForegroundExpired = policy == 2 && self->_enteringForeground;
     backgroundTaskIdentifier = self->_backgroundTaskIdentifier;
     self->_backgroundTaskIdentifier = v4;
   }
@@ -314,14 +314,14 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
 
   if (self->_foregroundActiveState.foregroundActive == v10 && self->_foregroundActiveState.foreground == foreground)
   {
-    v12 = 0;
+    allObjects = 0;
   }
 
   else
   {
     self->_foregroundActiveState.foreground = foreground;
     self->_foregroundActiveState.foregroundActive = v10;
-    v12 = [(NSHashTable *)self->_observers allObjects];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -330,7 +330,7 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = v12;
+  v14 = allObjects;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
@@ -366,31 +366,31 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
       _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "PKUIForegroundActiveArbiter: ending background task.", v22, 2u);
     }
 
-    v21 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v21 endBackgroundTask:backgroundTaskIdentifier];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] endBackgroundTask:backgroundTaskIdentifier];
   }
 }
 
-- (void)_willAddDeactivationReasonNotification:(id)a3
+- (void)_willAddDeactivationReasonNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
-  v7 = [v6 integerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
+  integerValue = [v6 integerValue];
 
   os_unfair_lock_lock(&self->_lock);
   deactivationReasons = self->_deactivationReasons;
-  v9 = deactivationReasons | (1 << v7);
+  v9 = deactivationReasons | (1 << integerValue);
   if (deactivationReasons == v9)
   {
-    v10 = 0;
+    allObjects = 0;
   }
 
   else
   {
     self->_deactivationReasons = v9;
-    v10 = [(NSHashTable *)self->_deactivationObservers allObjects];
+    allObjects = [(NSHashTable *)self->_deactivationObservers allObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -399,7 +399,7 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v10;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -426,26 +426,26 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   objc_autoreleasePoolPop(v11);
 }
 
-- (void)_didRemoveDeactivationReasonNotification:(id)a3
+- (void)_didRemoveDeactivationReasonNotification:(id)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
-  v7 = [v6 integerValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69DE838]];
+  integerValue = [v6 integerValue];
 
   os_unfair_lock_lock(&self->_lock);
   deactivationReasons = self->_deactivationReasons;
-  v9 = deactivationReasons & ~(1 << v7);
+  v9 = deactivationReasons & ~(1 << integerValue);
   if (deactivationReasons == v9)
   {
-    v10 = 0;
+    allObjects = 0;
   }
 
   else
   {
     self->_deactivationReasons = v9;
-    v10 = [(NSHashTable *)self->_deactivationObservers allObjects];
+    allObjects = [(NSHashTable *)self->_deactivationObservers allObjects];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -454,7 +454,7 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = v10;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v13)
   {
@@ -481,14 +481,14 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   objc_autoreleasePoolPop(v11);
 }
 
-- ($96EE1C12479E9B303E9C2794B92A11A2)registerObserver:(id)a3
+- ($96EE1C12479E9B303E9C2794B92A11A2)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   foregroundActiveState = self->_foregroundActiveState;
-  if (v4)
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -496,27 +496,27 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   return *&foregroundActiveState;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lock);
     [(NSHashTable *)self->_observers removeObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 
-- (unsigned)registerDeactivationObserver:(id)a3
+- (unsigned)registerDeactivationObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   deactivationReasons = self->_deactivationReasons;
-  if (v4)
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_deactivationObservers addObject:v4];
+    [(NSHashTable *)self->_deactivationObservers addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -524,16 +524,16 @@ uint64_t __60__PKUIForegroundActiveArbiter__beginEnteringForegroundTimer__block_
   return deactivationReasons;
 }
 
-- (void)unregisterDeactivationObserver:(id)a3
+- (void)unregisterDeactivationObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v5 = v4;
+    v5 = observerCopy;
     os_unfair_lock_lock(&self->_lock);
     [(NSHashTable *)self->_deactivationObservers removeObject:v5];
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    observerCopy = v5;
   }
 }
 

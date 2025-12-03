@@ -1,26 +1,26 @@
 @interface MCDAlbumsTableViewController
-+ (id)albumsForGenre:(id)a3 showLocalContent:(BOOL)a4;
-+ (id)albumsForPerson:(id)a3 showLocalContent:(BOOL)a4;
-- (MCDAlbumsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
++ (id)albumsForGenre:(id)genre showLocalContent:(BOOL)content;
++ (id)albumsForPerson:(id)person showLocalContent:(BOOL)content;
+- (MCDAlbumsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
 - (id)filteringPreferenceKey;
 - (id)legacyFilteringPreferenceKey;
-- (id)sectionIndexTitlesForContentManager:(id)a3;
-- (id)shuffleContainerForContentManager:(id)a3;
+- (id)sectionIndexTitlesForContentManager:(id)manager;
+- (id)shuffleContainerForContentManager:(id)manager;
 - (id)sortingPreferenceKey;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDAlbumsTableViewController
 
-- (MCDAlbumsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDAlbumsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDAlbumsTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -30,31 +30,31 @@
   return v8;
 }
 
-+ (id)albumsForPerson:(id)a3 showLocalContent:(BOOL)a4
++ (id)albumsForPerson:(id)person showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[MCDAlbumsDataSource alloc] initWithPerson:v5];
+  contentCopy = content;
+  personCopy = person;
+  v6 = [[MCDAlbumsDataSource alloc] initWithPerson:personCopy];
   v7 = [MCDAlbumsTableViewController alloc];
-  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsViewControllerIdentifier showLocalContent:v4 dataSource:v6];
-  v9 = [v5 name];
+  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsViewControllerIdentifier showLocalContent:contentCopy dataSource:v6];
+  name = [personCopy name];
 
-  [(MCDAlbumsTableViewController *)v8 setTitle:v9];
+  [(MCDAlbumsTableViewController *)v8 setTitle:name];
   [(MCDAlbumsTableViewController *)v8 setPlayActivityFeatureName:@"albums"];
 
   return v8;
 }
 
-+ (id)albumsForGenre:(id)a3 showLocalContent:(BOOL)a4
++ (id)albumsForGenre:(id)genre showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[MCDAlbumsDataSource alloc] initWithGenre:v5];
+  contentCopy = content;
+  genreCopy = genre;
+  v6 = [[MCDAlbumsDataSource alloc] initWithGenre:genreCopy];
   v7 = [MCDAlbumsTableViewController alloc];
-  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsViewControllerIdentifier showLocalContent:v4 dataSource:v6];
-  v9 = [v5 name];
+  v8 = [(MCDLibraryTableViewController *)v7 initWithIdentifier:MCDAlbumsViewControllerIdentifier showLocalContent:contentCopy dataSource:v6];
+  name = [genreCopy name];
 
-  [(MCDAlbumsTableViewController *)v8 setTitle:v9];
+  [(MCDAlbumsTableViewController *)v8 setTitle:name];
   [(MCDAlbumsTableViewController *)v8 setPlayActivityFeatureName:@"albums"];
 
   return v8;
@@ -65,8 +65,8 @@
   v8.receiver = self;
   v8.super_class = MCDAlbumsTableViewController;
   [(MCDLibraryTableViewController *)&v8 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  [v3 setShowShuffleAll:1];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setShowShuffleAll:1];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v6, &location);
@@ -79,17 +79,17 @@
 
 - (id)sortingPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
-  v3 = [v2 genre];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  genre = [dataSource genre];
 
-  if (v3)
+  if (genre)
   {
     v4 = @"genreAlbumsSortType";
   }
 
   else
   {
-    v5 = [v2 person];
+    person = [dataSource person];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -100,7 +100,7 @@
 
     else
     {
-      v7 = [v2 person];
+      person2 = [dataSource person];
       objc_opt_class();
       v8 = objc_opt_isKindOfClass();
 
@@ -121,19 +121,19 @@
 
 - (id)filteringPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
-  v3 = [v2 genre];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  genre = [dataSource genre];
 
-  if (v3)
+  if (genre)
   {
     v4 = @"LibraryGenresFilterOption";
   }
 
   else
   {
-    v5 = [v2 person];
+    person = [dataSource person];
 
-    if (v5)
+    if (person)
     {
       v4 = &stru_101107168;
     }
@@ -149,17 +149,17 @@
 
 - (id)legacyFilteringPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
-  v3 = [v2 genre];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  genre = [dataSource genre];
 
-  if (v3)
+  if (genre)
   {
     v4 = @"genres";
   }
 
   else
   {
-    v5 = [v2 person];
+    person = [dataSource person];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -170,7 +170,7 @@
 
     else
     {
-      v7 = [v2 person];
+      person2 = [dataSource person];
       objc_opt_class();
       v8 = objc_opt_isKindOfClass();
 
@@ -189,12 +189,12 @@
   return v4;
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDAlbumsTableViewController *)self traitCollection];
-  v5 = [v4 shouldLimitMusicLists];
+  traitCollection = [(MCDAlbumsTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v5)
+  if (shouldLimitMusicLists)
   {
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"RECENTLY_PLAYED_ALBUMS" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -213,13 +213,13 @@
   return v7;
 }
 
-- (id)sectionIndexTitlesForContentManager:(id)a3
+- (id)sectionIndexTitlesForContentManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(MCDAlbumsTableViewController *)self traitCollection];
-  v6 = [v5 shouldLimitMusicLists];
+  managerCopy = manager;
+  traitCollection = [(MCDAlbumsTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v6)
+  if (shouldLimitMusicLists)
   {
     v7 = 0;
   }
@@ -227,15 +227,15 @@
   else
   {
     v8 = +[NSMutableArray array];
-    v9 = [v4 lastReceivedResponse];
-    v10 = [v9 results];
+    lastReceivedResponse = [managerCopy lastReceivedResponse];
+    results = [lastReceivedResponse results];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000EDC38;
     v14[3] = &unk_101097CA8;
     v15 = v8;
     v11 = v8;
-    [v10 enumerateSectionsUsingBlock:v14];
+    [results enumerateSectionsUsingBlock:v14];
 
     if ([v11 count])
     {
@@ -253,13 +253,13 @@
   return v7;
 }
 
-- (id)shuffleContainerForContentManager:(id)a3
+- (id)shuffleContainerForContentManager:(id)manager
 {
-  v3 = [(MCDLibraryTableViewController *)self dataSource];
-  v4 = [v3 scopedContainers];
-  v5 = [v4 firstObject];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  scopedContainers = [dataSource scopedContainers];
+  firstObject = [scopedContainers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 @end

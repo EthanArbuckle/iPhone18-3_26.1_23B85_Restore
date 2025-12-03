@@ -1,20 +1,20 @@
 @interface BWPreviewStabilizationNode
-- (BWPreviewStabilizationNode)initWithCameraInfoByPortType:(id)a3 forStillImagePreview:(BOOL)a4 updateFinalCropRectWithStabilizationShift:(BOOL)a5 minimumSupportedUIZoomFactor:(float)a6;
+- (BWPreviewStabilizationNode)initWithCameraInfoByPortType:(id)type forStillImagePreview:(BOOL)preview updateFinalCropRectWithStabilizationShift:(BOOL)shift minimumSupportedUIZoomFactor:(float)factor;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWPreviewStabilizationNode
 
-- (BWPreviewStabilizationNode)initWithCameraInfoByPortType:(id)a3 forStillImagePreview:(BOOL)a4 updateFinalCropRectWithStabilizationShift:(BOOL)a5 minimumSupportedUIZoomFactor:(float)a6
+- (BWPreviewStabilizationNode)initWithCameraInfoByPortType:(id)type forStillImagePreview:(BOOL)preview updateFinalCropRectWithStabilizationShift:(BOOL)shift minimumSupportedUIZoomFactor:(float)factor
 {
-  v7 = a5;
-  v8 = a4;
+  shiftCopy = shift;
+  previewCopy = preview;
   v38.receiver = self;
   v38.super_class = BWPreviewStabilizationNode;
   v10 = [(BWNode *)&v38 init];
   v11 = v10;
-  if (!a3)
+  if (!type)
   {
     [BWPreviewStabilizationNode initWithCameraInfoByPortType:forStillImagePreview:updateFinalCropRectWithStabilizationShift:minimumSupportedUIZoomFactor:];
 LABEL_19:
@@ -27,7 +27,7 @@ LABEL_19:
     return v11;
   }
 
-  v31 = __PAIR64__(v8, v7);
+  v31 = __PAIR64__(previewCopy, shiftCopy);
   v12 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v10];
   [(BWNodeInput *)v12 setFormatRequirements:objc_alloc_init(BWVideoFormatRequirements)];
   [(BWNodeInput *)v12 setPassthroughMode:1];
@@ -37,13 +37,13 @@ LABEL_19:
   [(BWNodeOutput *)v13 setPassthroughMode:1];
   v32 = v11;
   [(BWNode *)v11 addOutput:v13];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v15 = [a3 allKeys];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v33 count:16];
+  allKeys = [type allKeys];
+  v16 = [allKeys countByEnumeratingWithState:&v34 objects:v33 count:16];
   if (!v16)
   {
     goto LABEL_12;
@@ -59,12 +59,12 @@ LABEL_19:
     {
       if (*v35 != v18)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(allKeys);
       }
 
       v22 = *(*(&v34 + 1) + 8 * i);
-      v23 = [MEMORY[0x1E695DF90] dictionary];
-      v24 = [objc_msgSend(a3 objectForKeyedSubscript:{v22), "objectForKeyedSubscript:", v19}];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      v24 = [objc_msgSend(type objectForKeyedSubscript:{v22), "objectForKeyedSubscript:", v19}];
       if (!v24)
       {
         [BWPreviewStabilizationNode initWithCameraInfoByPortType:forStillImagePreview:updateFinalCropRectWithStabilizationShift:minimumSupportedUIZoomFactor:];
@@ -73,19 +73,19 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      [v23 setObject:v24 forKeyedSubscript:v19];
-      v25 = [objc_msgSend(a3 objectForKeyedSubscript:{v22), "objectForKeyedSubscript:", v20}];
+      [dictionary2 setObject:v24 forKeyedSubscript:v19];
+      v25 = [objc_msgSend(type objectForKeyedSubscript:{v22), "objectForKeyedSubscript:", v20}];
       if (!v25)
       {
         [BWPreviewStabilizationNode initWithCameraInfoByPortType:forStillImagePreview:updateFinalCropRectWithStabilizationShift:minimumSupportedUIZoomFactor:];
         goto LABEL_18;
       }
 
-      [v23 setObject:v25 forKeyedSubscript:v20];
-      [v14 setObject:v23 forKeyedSubscript:v22];
+      [dictionary2 setObject:v25 forKeyedSubscript:v20];
+      [dictionary setObject:dictionary2 forKeyedSubscript:v22];
     }
 
-    v17 = [v15 countByEnumeratingWithState:&v34 objects:v33 count:16];
+    v17 = [allKeys countByEnumeratingWithState:&v34 objects:v33 count:16];
     if (v17)
     {
       continue;
@@ -104,16 +104,16 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v32->_staticParametersByPortType = v14;
+  v32->_staticParametersByPortType = dictionary;
   v32->_updateFinalCropRectWithStabilizationShift = v31;
-  v27 = 5.0;
-  if (a6 > 0.0)
+  factorCopy = 5.0;
+  if (factor > 0.0)
   {
-    v27 = a6;
+    factorCopy = factor;
   }
 
-  v32->_minimumSupportedUIZoomFactor = v27;
-  v32->_photoModeFullStrengthUIZoomFactor = v27 + 0.2;
+  v32->_minimumSupportedUIZoomFactor = factorCopy;
+  v32->_photoModeFullStrengthUIZoomFactor = factorCopy + 0.2;
   v32->_stabilizeFallbackCamera = 1;
   v32->_stabilizationEnterRampFrameCount = 50;
   v32->_stabilizationExitRampFrameCount = 25;
@@ -136,14 +136,14 @@ LABEL_12:
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v106 = 0;
   cf = 0;
   v5 = *off_1E798A0D8;
-  v6 = [(NSDictionary *)self->_staticParametersByPortType objectForKeyedSubscript:*off_1E798A0D8, a4];
+  input = [(NSDictionary *)self->_staticParametersByPortType objectForKeyedSubscript:*off_1E798A0D8, input];
   v7 = *off_1E7989E50;
-  [objc_msgSend(v6 objectForKeyedSubscript:{*off_1E7989E50), "floatValue"}];
+  [objc_msgSend(input objectForKeyedSubscript:{*off_1E7989E50), "floatValue"}];
   if (v8 == 0.0)
   {
     [BWPreviewStabilizationNode renderSampleBuffer:forInput:];
@@ -152,7 +152,7 @@ LABEL_12:
   else
   {
     v9 = v8;
-    v10 = CMGetAttachment(a3, @"LastRecommendedMasterSelectionReason", 0);
+    v10 = CMGetAttachment(buffer, @"LastRecommendedMasterSelectionReason", 0);
     if (v10)
     {
       v11 = v10;
@@ -165,7 +165,7 @@ LABEL_12:
       lastRecommendedMasterSelectionReason = self->_lastRecommendedMasterSelectionReason;
     }
 
-    v13 = CMGetAttachment(a3, @"RecommendedMasterPortType", 0);
+    v13 = CMGetAttachment(buffer, @"RecommendedMasterPortType", 0);
     if (v13)
     {
       v14 = v13;
@@ -173,7 +173,7 @@ LABEL_12:
       self->_lastRecommendedMasterPortType = v14;
     }
 
-    BWOverCaptureSampleBufferUnpackAndRetain(a3, 0, &cf, &v106, 0, 0);
+    BWOverCaptureSampleBufferUnpackAndRetain(buffer, 0, &cf, &v106, 0, 0);
     v15 = v106;
     if (v106)
     {
@@ -241,7 +241,7 @@ LABEL_12:
 
         else
         {
-          v32 = CMGetAttachment(a3, @"UIZoomFactor", 0);
+          v32 = CMGetAttachment(buffer, @"UIZoomFactor", 0);
           if (v32)
           {
             [v32 floatValue];
@@ -419,7 +419,7 @@ LABEL_12:
               v66 = CMGetAttachment(v106, key, 0);
               rect = *ymmword_1AD056718;
               CGRectMakeWithDictionaryRepresentation([v66 objectForKeyedSubscript:*off_1E798A5C8], &rect);
-              v67 = CMSampleBufferGetImageBuffer(a3);
+              v67 = CMSampleBufferGetImageBuffer(buffer);
               v68 = *(MEMORY[0x1E695F058] + 8);
               v102.origin.x = *MEMORY[0x1E695F058];
               v102.origin.y = v68;
@@ -542,7 +542,7 @@ LABEL_12:
     CFRelease(cf);
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
 }
 
 - (uint64_t)initWithCameraInfoByPortType:forStillImagePreview:updateFinalCropRectWithStabilizationShift:minimumSupportedUIZoomFactor:.cold.1()

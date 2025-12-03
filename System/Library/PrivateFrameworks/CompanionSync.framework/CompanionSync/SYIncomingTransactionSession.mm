@@ -1,36 +1,36 @@
 @interface SYIncomingTransactionSession
-- (SYIncomingTransactionSession)initWithService:(id)a3 transaction:(id)a4 completion:(id)a5;
+- (SYIncomingTransactionSession)initWithService:(id)service transaction:(id)transaction completion:(id)completion;
 - (void)_sendCancelled;
 - (void)_sendChanges;
 - (void)_sendComplete;
-- (void)cancelWithError:(id)a3;
+- (void)cancelWithError:(id)error;
 - (void)didCompleteSession;
-- (void)start:(id)a3;
+- (void)start:(id)start;
 @end
 
 @implementation SYIncomingTransactionSession
 
-- (SYIncomingTransactionSession)initWithService:(id)a3 transaction:(id)a4 completion:(id)a5
+- (SYIncomingTransactionSession)initWithService:(id)service transaction:(id)transaction completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  transactionCopy = transaction;
+  completionCopy = completion;
   v20.receiver = self;
   v20.super_class = SYIncomingTransactionSession;
-  v11 = [(SYSession *)&v20 initWithService:v8];
+  v11 = [(SYSession *)&v20 initWithService:serviceCopy];
   if (v11)
   {
-    v12 = [v9 header];
-    [v12 timestamp];
+    header = [transactionCopy header];
+    [header timestamp];
     [(SYSession *)v11 setBirthDate:?];
 
-    objc_storeStrong(&v11->_message, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_message, transaction);
+    v13 = [completionCopy copy];
     completion = v11->_completion;
     v11->_completion = v13;
 
-    v15 = [v8 serviceActivity];
-    v16 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Delta Sync, Incoming)", v15, OS_ACTIVITY_FLAG_DEFAULT);
+    serviceActivity = [serviceCopy serviceActivity];
+    v16 = _os_activity_create(&dword_1DF835000, "SYSession (v1 Delta Sync, Incoming)", serviceActivity, OS_ACTIVITY_FLAG_DEFAULT);
 
     sessionActivity = v11->_sessionActivity;
     v11->_sessionActivity = v16;
@@ -43,20 +43,20 @@
 
 - (void)_sendComplete
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__SYIncomingTransactionSession__sendComplete__block_invoke;
   block[3] = &unk_1E86C9FB0;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(targetQueue, block);
 
-  v5 = [(SYSession *)self service];
-  v6 = [(SYSession *)self error];
-  [v5 sessionDidEnd:self withError:v6];
+  service = [(SYSession *)self service];
+  error = [(SYSession *)self error];
+  [service sessionDidEnd:self withError:error];
 
   [(SYIncomingTransactionSession *)self didCompleteSession];
 }
@@ -83,19 +83,19 @@ void __45__SYIncomingTransactionSession__sendComplete__block_invoke(uint64_t a1)
 
 - (void)_sendCancelled
 {
-  v3 = [(SYSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SYSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithSYError:-128 userInfo:0];
-  v5 = [(SYSession *)self targetQueue];
+  targetQueue = [(SYSession *)self targetQueue];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __46__SYIncomingTransactionSession__sendCancelled__block_invoke;
   v11 = &unk_1E86C9E90;
-  v12 = self;
+  selfCopy = self;
   v13 = v4;
   v6 = v4;
-  dispatch_sync(v5, &v8);
+  dispatch_sync(targetQueue, &v8);
 
   v7 = [(SYSession *)self service:v8];
   [v7 sessionDidEnd:self withError:v6];
@@ -124,12 +124,12 @@ void __46__SYIncomingTransactionSession__sendCancelled__block_invoke(uint64_t a1
 - (void)_sendChanges
 {
   v7 = *MEMORY[0x1E69E9840];
-  v1 = a1;
+  selfCopy = self;
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   v5 = 138543362;
   v6 = v3;
-  _os_log_error_impl(&dword_1DF835000, v1, OS_LOG_TYPE_ERROR, "Unable to create an _SYLazyChangeArray object for %{public}@", &v5, 0xCu);
+  _os_log_error_impl(&dword_1DF835000, selfCopy, OS_LOG_TYPE_ERROR, "Unable to create an _SYLazyChangeArray object for %{public}@", &v5, 0xCu);
 
   v4 = *MEMORY[0x1E69E9840];
 }
@@ -264,22 +264,22 @@ LABEL_17:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &state);
   [(SYSession *)self didStartSession];
-  v5 = [(SYSession *)self queue];
+  queue = [(SYSession *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__SYIncomingTransactionSession_start___block_invoke;
   v7[3] = &unk_1E86CA388;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = startCopy;
+  v6 = startCopy;
+  dispatch_async(queue, v7);
 
   os_activity_scope_leave(&state);
 }
@@ -371,23 +371,23 @@ LABEL_15:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(self->_sessionActivity, &state);
   if ([(SYIncomingTransactionSession *)self state]!= 11)
   {
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:@"SYErrorDomain"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"SYErrorDomain"])
     {
-      v6 = [v4 code];
+      code = [errorCopy code];
 
-      if (v6 == -128)
+      if (code == -128)
       {
         [(SYIncomingTransactionSession *)self setState:3];
-        v7 = [(SYSession *)self queue];
+        queue = [(SYSession *)self queue];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __48__SYIncomingTransactionSession_cancelWithError___block_invoke;
@@ -395,7 +395,7 @@ LABEL_15:
         v10[4] = self;
         v8 = v10;
 LABEL_8:
-        dispatch_async(v7, v8);
+        dispatch_async(queue, v8);
 
         goto LABEL_9;
       }
@@ -405,9 +405,9 @@ LABEL_8:
     {
     }
 
-    [(SYSession *)self setError:v4];
+    [(SYSession *)self setError:errorCopy];
     [(SYIncomingTransactionSession *)self setState:5];
-    v7 = [(SYSession *)self queue];
+    queue = [(SYSession *)self queue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__SYIncomingTransactionSession_cancelWithError___block_invoke_2;
@@ -418,7 +418,7 @@ LABEL_8:
   }
 
   [(SYIncomingTransactionSession *)self setState:12];
-  [(SYSession *)self setError:v4];
+  [(SYSession *)self setError:errorCopy];
 LABEL_9:
   os_activity_scope_leave(&state);
 }
@@ -434,8 +434,8 @@ LABEL_9:
   completion = self->_completion;
   if (completion)
   {
-    v4 = [(SYSession *)self wrappedUserContext];
-    completion[2](completion, 0, v4);
+    wrappedUserContext = [(SYSession *)self wrappedUserContext];
+    completion[2](completion, 0, wrappedUserContext);
   }
 
   os_activity_scope_leave(&state);

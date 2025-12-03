@@ -1,40 +1,40 @@
 @interface TTRComplicationReminderDueDate
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDueDate:(id)a3;
-- (BOOL)isInSameDayAsDueDate:(id)a3 inCalendar:(id)a4;
-- (TTRComplicationReminderDueDate)initWithDate:(id)a3 precision:(int64_t)a4;
-- (TTRComplicationReminderDueDate)initWithDateComponents:(id)a3 inCalendar:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDueDate:(id)date;
+- (BOOL)isInSameDayAsDueDate:(id)date inCalendar:(id)calendar;
+- (TTRComplicationReminderDueDate)initWithDate:(id)date precision:(int64_t)precision;
+- (TTRComplicationReminderDueDate)initWithDateComponents:(id)components inCalendar:(id)calendar;
 - (id)description;
-- (int64_t)compare:(id)a3 inCalendar:(id)a4;
+- (int64_t)compare:(id)compare inCalendar:(id)calendar;
 @end
 
 @implementation TTRComplicationReminderDueDate
 
-- (TTRComplicationReminderDueDate)initWithDate:(id)a3 precision:(int64_t)a4
+- (TTRComplicationReminderDueDate)initWithDate:(id)date precision:(int64_t)precision
 {
-  v7 = a3;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = TTRComplicationReminderDueDate;
   v8 = [(TTRComplicationReminderDueDate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_date, a3);
-    v9->_precision = a4;
+    objc_storeStrong(&v8->_date, date);
+    v9->_precision = precision;
   }
 
   return v9;
 }
 
-- (TTRComplicationReminderDueDate)initWithDateComponents:(id)a3 inCalendar:(id)a4
+- (TTRComplicationReminderDueDate)initWithDateComponents:(id)components inCalendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 timeZone];
-  v9 = v8;
-  if (v8)
+  componentsCopy = components;
+  calendarCopy = calendar;
+  timeZone = [componentsCopy timeZone];
+  v9 = timeZone;
+  if (timeZone)
   {
-    v10 = v8;
+    v10 = timeZone;
   }
 
   else
@@ -44,10 +44,10 @@
 
   v11 = v10;
 
-  v12 = [NSDateComponents rem_dateWithDateComponents:v6 timeZone:v11];
+  v12 = [NSDateComponents rem_dateWithDateComponents:componentsCopy timeZone:v11];
   if (v12)
   {
-    v13 = [v6 rem_isAllDayDateComponents] ^ 1;
+    v13 = [componentsCopy rem_isAllDayDateComponents] ^ 1;
     if (v13)
     {
       v15 = v12;
@@ -55,13 +55,13 @@
 
     else
     {
-      v14 = [v7 dateByAddingUnit:16 value:1 toDate:v12 options:1024];
+      v14 = [calendarCopy dateByAddingUnit:16 value:1 toDate:v12 options:1024];
       v15 = [v14 dateByAddingTimeInterval:-1.0];
     }
 
     self = [(TTRComplicationReminderDueDate *)self initWithDate:v15 precision:v13];
 
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -69,44 +69,44 @@
     v16 = +[REMLog ui];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      sub_7C20(v6, v11, v16);
+      sub_7C20(componentsCopy, v11, v16);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(TTRComplicationReminderDueDate *)self date];
-  v5 = [(TTRComplicationReminderDueDate *)self precision];
+  date = [(TTRComplicationReminderDueDate *)self date];
+  precision = [(TTRComplicationReminderDueDate *)self precision];
   v6 = @"Exact";
-  if (!v5)
+  if (!precision)
   {
     v6 = @"All Day";
   }
 
-  v7 = [NSString stringWithFormat:@"<%p %@: date=%@, precision=%@>", self, v3, v4, v6];
+  v7 = [NSString stringWithFormat:@"<%p %@: date=%@, precision=%@>", self, v3, date, v6];
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3 inCalendar:(id)a4
+- (int64_t)compare:(id)compare inCalendar:(id)calendar
 {
-  v6 = a3;
-  if (![(TTRComplicationReminderDueDate *)self isInSameDayAsDueDate:v6 inCalendar:a4])
+  compareCopy = compare;
+  if (![(TTRComplicationReminderDueDate *)self isInSameDayAsDueDate:compareCopy inCalendar:calendar])
   {
     goto LABEL_5;
   }
 
-  v7 = [(TTRComplicationReminderDueDate *)self precision];
-  v8 = [v6 precision];
-  if (v7 == 1)
+  precision = [(TTRComplicationReminderDueDate *)self precision];
+  precision2 = [compareCopy precision];
+  if (precision == 1)
   {
-    if (v8)
+    if (precision2)
     {
       v9 = 0;
     }
@@ -122,26 +122,26 @@
     }
   }
 
-  else if (v7 || (v9 = v8 == &dword_0 + 1, v8 != &dword_0 + 1))
+  else if (precision || (v9 = precision2 == &dword_0 + 1, precision2 != &dword_0 + 1))
   {
 LABEL_5:
-    v10 = [(TTRComplicationReminderDueDate *)self date];
-    v11 = [v6 date];
-    v9 = [v10 compare:v11];
+    date = [(TTRComplicationReminderDueDate *)self date];
+    date2 = [compareCopy date];
+    v9 = [date compare:date2];
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToDueDate:(id)a3
+- (BOOL)isEqualToDueDate:(id)date
 {
-  v4 = a3;
-  v5 = [(TTRComplicationReminderDueDate *)self precision];
-  if (v5 == [v4 precision])
+  dateCopy = date;
+  precision = [(TTRComplicationReminderDueDate *)self precision];
+  if (precision == [dateCopy precision])
   {
-    v6 = [(TTRComplicationReminderDueDate *)self date];
-    v7 = [v4 date];
-    v8 = [v6 isEqualToDate:v7];
+    date = [(TTRComplicationReminderDueDate *)self date];
+    date2 = [dateCopy date];
+    v8 = [date isEqualToDate:date2];
   }
 
   else
@@ -152,13 +152,13 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TTRComplicationReminderDueDate *)self isEqualToDueDate:v4];
+    v5 = [(TTRComplicationReminderDueDate *)self isEqualToDueDate:equalCopy];
   }
 
   else
@@ -169,15 +169,15 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isInSameDayAsDueDate:(id)a3 inCalendar:(id)a4
+- (BOOL)isInSameDayAsDueDate:(id)date inCalendar:(id)calendar
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TTRComplicationReminderDueDate *)self date];
-  v9 = [v7 date];
+  calendarCopy = calendar;
+  dateCopy = date;
+  date = [(TTRComplicationReminderDueDate *)self date];
+  date2 = [dateCopy date];
 
-  LOBYTE(v7) = [v6 isDate:v8 inSameDayAsDate:v9];
-  return v7;
+  LOBYTE(dateCopy) = [calendarCopy isDate:date inSameDayAsDate:date2];
+  return dateCopy;
 }
 
 @end

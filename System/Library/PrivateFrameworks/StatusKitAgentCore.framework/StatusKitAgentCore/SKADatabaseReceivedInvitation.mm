@@ -1,9 +1,9 @@
 @interface SKADatabaseReceivedInvitation
 + (id)logger;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPStatusKitIncomingRatchet)incomingRatchet;
-- (SKADatabaseReceivedInvitation)initWithCoreDataReceivedInvitation:(id)a3;
-- (SKADatabaseReceivedInvitation)initWithInvitationIdentifier:(id)a3 senderHandle:(id)a4 invitedHandle:(id)a5 statusTypeIdentifier:(id)a6 dateInvitationCreated:(id)a7 incomingRatchetState:(id)a8 presenceIdentifier:(id)a9 channelToken:(id)a10 serverKey:(id)a11 peerKey:(id)a12 invitationPayload:(id)a13;
+- (SKADatabaseReceivedInvitation)initWithCoreDataReceivedInvitation:(id)invitation;
+- (SKADatabaseReceivedInvitation)initWithInvitationIdentifier:(id)identifier senderHandle:(id)handle invitedHandle:(id)invitedHandle statusTypeIdentifier:(id)typeIdentifier dateInvitationCreated:(id)created incomingRatchetState:(id)state presenceIdentifier:(id)presenceIdentifier channelToken:(id)self0 serverKey:(id)self1 peerKey:(id)self2 invitationPayload:(id)self3;
 - (SKHandle)invitedSKHandle;
 - (SKHandle)senderSKHandle;
 - (SKInvitationPayload)skInvitationPayload;
@@ -13,60 +13,60 @@
 
 @implementation SKADatabaseReceivedInvitation
 
-- (SKADatabaseReceivedInvitation)initWithCoreDataReceivedInvitation:(id)a3
+- (SKADatabaseReceivedInvitation)initWithCoreDataReceivedInvitation:(id)invitation
 {
-  v3 = a3;
-  v4 = [v3 invitationIdentifier];
-  v15 = [v3 senderHandle];
-  v14 = [v3 invitedHandle];
-  v5 = [v3 statusTypeIdentifier];
-  v6 = [v3 dateInvitationCreated];
-  v7 = [v3 incomingRatchetState];
-  v13 = [v3 presenceIdentifier];
-  v8 = [v3 channelToken];
-  v9 = [v3 serverKey];
-  v10 = [v3 peerKey];
-  v11 = [v3 invitationPayload];
+  invitationCopy = invitation;
+  invitationIdentifier = [invitationCopy invitationIdentifier];
+  senderHandle = [invitationCopy senderHandle];
+  invitedHandle = [invitationCopy invitedHandle];
+  statusTypeIdentifier = [invitationCopy statusTypeIdentifier];
+  dateInvitationCreated = [invitationCopy dateInvitationCreated];
+  incomingRatchetState = [invitationCopy incomingRatchetState];
+  presenceIdentifier = [invitationCopy presenceIdentifier];
+  channelToken = [invitationCopy channelToken];
+  serverKey = [invitationCopy serverKey];
+  peerKey = [invitationCopy peerKey];
+  invitationPayload = [invitationCopy invitationPayload];
 
-  v17 = [(SKADatabaseReceivedInvitation *)self initWithInvitationIdentifier:v4 senderHandle:v15 invitedHandle:v14 statusTypeIdentifier:v5 dateInvitationCreated:v6 incomingRatchetState:v7 presenceIdentifier:v13 channelToken:v8 serverKey:v9 peerKey:v10 invitationPayload:v11];
+  v17 = [(SKADatabaseReceivedInvitation *)self initWithInvitationIdentifier:invitationIdentifier senderHandle:senderHandle invitedHandle:invitedHandle statusTypeIdentifier:statusTypeIdentifier dateInvitationCreated:dateInvitationCreated incomingRatchetState:incomingRatchetState presenceIdentifier:presenceIdentifier channelToken:channelToken serverKey:serverKey peerKey:peerKey invitationPayload:invitationPayload];
   return v17;
 }
 
-- (SKADatabaseReceivedInvitation)initWithInvitationIdentifier:(id)a3 senderHandle:(id)a4 invitedHandle:(id)a5 statusTypeIdentifier:(id)a6 dateInvitationCreated:(id)a7 incomingRatchetState:(id)a8 presenceIdentifier:(id)a9 channelToken:(id)a10 serverKey:(id)a11 peerKey:(id)a12 invitationPayload:(id)a13
+- (SKADatabaseReceivedInvitation)initWithInvitationIdentifier:(id)identifier senderHandle:(id)handle invitedHandle:(id)invitedHandle statusTypeIdentifier:(id)typeIdentifier dateInvitationCreated:(id)created incomingRatchetState:(id)state presenceIdentifier:(id)presenceIdentifier channelToken:(id)self0 serverKey:(id)self1 peerKey:(id)self2 invitationPayload:(id)self3
 {
-  v44 = a3;
-  v43 = a4;
-  v18 = a5;
-  v19 = a6;
-  v42 = a7;
-  v40 = a8;
-  v20 = a9;
-  v39 = a10;
-  v41 = a11;
-  v21 = a12;
-  v22 = v18;
-  v23 = a13;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  invitedHandleCopy = invitedHandle;
+  typeIdentifierCopy = typeIdentifier;
+  createdCopy = created;
+  stateCopy = state;
+  presenceIdentifierCopy = presenceIdentifier;
+  tokenCopy = token;
+  keyCopy = key;
+  peerKeyCopy = peerKey;
+  v22 = invitedHandleCopy;
+  payloadCopy = payload;
   v45.receiver = self;
   v45.super_class = SKADatabaseReceivedInvitation;
   v24 = [(SKADatabaseReceivedInvitation *)&v45 init];
   if (v24)
   {
-    v25 = [v44 copy];
+    v25 = [identifierCopy copy];
     invitationIdentifier = v24->_invitationIdentifier;
     v24->_invitationIdentifier = v25;
 
-    v27 = [v19 copy];
+    v27 = [typeIdentifierCopy copy];
     statusTypeIdentifier = v24->_statusTypeIdentifier;
     v24->_statusTypeIdentifier = v27;
 
-    v29 = [v20 copy];
+    v29 = [presenceIdentifierCopy copy];
     presenceIdentifier = v24->_presenceIdentifier;
     v24->_presenceIdentifier = v29;
 
-    objc_storeStrong(&v24->_channelToken, a10);
-    objc_storeStrong(&v24->_serverKey, a11);
-    objc_storeStrong(&v24->_peerKey, a12);
-    v31 = [v43 copy];
+    objc_storeStrong(&v24->_channelToken, token);
+    objc_storeStrong(&v24->_serverKey, key);
+    objc_storeStrong(&v24->_peerKey, peerKey);
+    v31 = [handleCopy copy];
     senderHandle = v24->_senderHandle;
     v24->_senderHandle = v31;
 
@@ -74,25 +74,25 @@
     invitedHandle = v24->_invitedHandle;
     v24->_invitedHandle = v33;
 
-    objc_storeStrong(&v24->_dateInvitationCreated, a7);
-    objc_storeStrong(&v24->_incomingRatchetState, a8);
-    v35 = [v23 copy];
+    objc_storeStrong(&v24->_dateInvitationCreated, created);
+    objc_storeStrong(&v24->_incomingRatchetState, state);
+    v35 = [payloadCopy copy];
     invitationPayload = v24->_invitationPayload;
     v24->_invitationPayload = v35;
 
-    v24->_invitationType = v19 == 0;
+    v24->_invitationType = typeIdentifierCopy == 0;
   }
 
   return v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v5)
+    if (self == equalCopy)
     {
       LOBYTE(v10) = 1;
       goto LABEL_106;
@@ -102,33 +102,33 @@
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [(SKADatabaseReceivedInvitation *)self invitationType];
-      v9 = [(SKADatabaseReceivedInvitation *)v7 invitationType];
-      v10 = v8 == v9;
-      v11 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
-      if (!v11)
+      invitationType = [(SKADatabaseReceivedInvitation *)self invitationType];
+      invitationType2 = [(SKADatabaseReceivedInvitation *)v7 invitationType];
+      v10 = invitationType == invitationType2;
+      invitationIdentifier = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
+      if (!invitationIdentifier)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
+        if (!invitationIdentifier2)
         {
           goto LABEL_14;
         }
       }
 
-      v12 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
-      if (v12)
+      invitationIdentifier3 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
+      if (invitationIdentifier3)
       {
-        v13 = v12;
-        v14 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
-        if (v14)
+        v13 = invitationIdentifier3;
+        invitationIdentifier4 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
+        if (invitationIdentifier4)
         {
-          v15 = v14;
-          v16 = v8 == v9;
-          v17 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
-          v18 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
-          v10 = v16 & [v17 isEqualToString:v18];
+          v15 = invitationIdentifier4;
+          v16 = invitationType == invitationType2;
+          invitationIdentifier5 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
+          invitationIdentifier6 = [(SKADatabaseReceivedInvitation *)v7 invitationIdentifier];
+          v10 = v16 & [invitationIdentifier5 isEqualToString:invitationIdentifier6];
 
-          if (!v11)
+          if (!invitationIdentifier)
           {
             goto LABEL_14;
           }
@@ -138,36 +138,36 @@
       }
 
       v10 = 0;
-      if (!v11)
+      if (!invitationIdentifier)
       {
 LABEL_14:
       }
 
 LABEL_15:
 
-      v19 = [(SKADatabaseReceivedInvitation *)self senderHandle];
-      if (!v19)
+      senderHandle = [(SKADatabaseReceivedInvitation *)self senderHandle];
+      if (!senderHandle)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
+        if (!invitationIdentifier2)
         {
           goto LABEL_23;
         }
       }
 
-      v20 = [(SKADatabaseReceivedInvitation *)self senderHandle];
-      if (v20)
+      senderHandle2 = [(SKADatabaseReceivedInvitation *)self senderHandle];
+      if (senderHandle2)
       {
-        v21 = v20;
-        v22 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
-        if (v22)
+        v21 = senderHandle2;
+        senderHandle3 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
+        if (senderHandle3)
         {
-          v23 = v22;
-          v24 = [(SKADatabaseReceivedInvitation *)self senderHandle];
-          v25 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
-          v10 &= [v24 isEqualToString:v25];
+          v23 = senderHandle3;
+          senderHandle4 = [(SKADatabaseReceivedInvitation *)self senderHandle];
+          senderHandle5 = [(SKADatabaseReceivedInvitation *)v7 senderHandle];
+          v10 &= [senderHandle4 isEqualToString:senderHandle5];
 
-          if (!v19)
+          if (!senderHandle)
           {
             goto LABEL_23;
           }
@@ -177,36 +177,36 @@ LABEL_15:
       }
 
       v10 = 0;
-      if (!v19)
+      if (!senderHandle)
       {
 LABEL_23:
       }
 
 LABEL_24:
 
-      v26 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
-      if (!v26)
+      invitedHandle = [(SKADatabaseReceivedInvitation *)self invitedHandle];
+      if (!invitedHandle)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
+        if (!invitationIdentifier2)
         {
           goto LABEL_32;
         }
       }
 
-      v27 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
-      if (v27)
+      invitedHandle2 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
+      if (invitedHandle2)
       {
-        v28 = v27;
-        v29 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
-        if (v29)
+        v28 = invitedHandle2;
+        invitedHandle3 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
+        if (invitedHandle3)
         {
-          v30 = v29;
-          v31 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
-          v32 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
-          v10 &= [v31 isEqualToString:v32];
+          v30 = invitedHandle3;
+          invitedHandle4 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
+          invitedHandle5 = [(SKADatabaseReceivedInvitation *)v7 invitedHandle];
+          v10 &= [invitedHandle4 isEqualToString:invitedHandle5];
 
-          if (!v26)
+          if (!invitedHandle)
           {
             goto LABEL_32;
           }
@@ -216,36 +216,36 @@ LABEL_24:
       }
 
       v10 = 0;
-      if (!v26)
+      if (!invitedHandle)
       {
 LABEL_32:
       }
 
 LABEL_33:
 
-      v33 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
-      if (!v33)
+      statusTypeIdentifier = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
+      if (!statusTypeIdentifier)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
+        if (!invitationIdentifier2)
         {
           goto LABEL_41;
         }
       }
 
-      v34 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
-      if (v34)
+      statusTypeIdentifier2 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
+      if (statusTypeIdentifier2)
       {
-        v35 = v34;
-        v36 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
-        if (v36)
+        v35 = statusTypeIdentifier2;
+        statusTypeIdentifier3 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
+        if (statusTypeIdentifier3)
         {
-          v37 = v36;
-          v38 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
-          v39 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
-          v10 &= [v38 isEqualToString:v39];
+          v37 = statusTypeIdentifier3;
+          statusTypeIdentifier4 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
+          statusTypeIdentifier5 = [(SKADatabaseReceivedInvitation *)v7 statusTypeIdentifier];
+          v10 &= [statusTypeIdentifier4 isEqualToString:statusTypeIdentifier5];
 
-          if (!v33)
+          if (!statusTypeIdentifier)
           {
             goto LABEL_41;
           }
@@ -255,36 +255,36 @@ LABEL_33:
       }
 
       v10 = 0;
-      if (!v33)
+      if (!statusTypeIdentifier)
       {
 LABEL_41:
       }
 
 LABEL_42:
 
-      v40 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
-      if (!v40)
+      dateInvitationCreated = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
+      if (!dateInvitationCreated)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
+        if (!invitationIdentifier2)
         {
           goto LABEL_50;
         }
       }
 
-      v41 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
-      if (v41)
+      dateInvitationCreated2 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
+      if (dateInvitationCreated2)
       {
-        v42 = v41;
-        v43 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
-        if (v43)
+        v42 = dateInvitationCreated2;
+        dateInvitationCreated3 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
+        if (dateInvitationCreated3)
         {
-          v44 = v43;
-          v45 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
-          v46 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
-          v10 &= [v45 isEqualToDate:v46];
+          v44 = dateInvitationCreated3;
+          dateInvitationCreated4 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
+          dateInvitationCreated5 = [(SKADatabaseReceivedInvitation *)v7 dateInvitationCreated];
+          v10 &= [dateInvitationCreated4 isEqualToDate:dateInvitationCreated5];
 
-          if (!v40)
+          if (!dateInvitationCreated)
           {
             goto LABEL_50;
           }
@@ -294,36 +294,36 @@ LABEL_42:
       }
 
       v10 = 0;
-      if (!v40)
+      if (!dateInvitationCreated)
       {
 LABEL_50:
       }
 
 LABEL_51:
 
-      v47 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
-      if (!v47)
+      incomingRatchetState = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
+      if (!incomingRatchetState)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
+        if (!invitationIdentifier2)
         {
           goto LABEL_59;
         }
       }
 
-      v48 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
-      if (v48)
+      incomingRatchetState2 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
+      if (incomingRatchetState2)
       {
-        v49 = v48;
-        v50 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
-        if (v50)
+        v49 = incomingRatchetState2;
+        incomingRatchetState3 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
+        if (incomingRatchetState3)
         {
-          v51 = v50;
-          v52 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
-          v53 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
-          v10 &= [v52 isEqualToData:v53];
+          v51 = incomingRatchetState3;
+          incomingRatchetState4 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
+          incomingRatchetState5 = [(SKADatabaseReceivedInvitation *)v7 incomingRatchetState];
+          v10 &= [incomingRatchetState4 isEqualToData:incomingRatchetState5];
 
-          if (!v47)
+          if (!incomingRatchetState)
           {
             goto LABEL_59;
           }
@@ -333,36 +333,36 @@ LABEL_51:
       }
 
       v10 = 0;
-      if (!v47)
+      if (!incomingRatchetState)
       {
 LABEL_59:
       }
 
 LABEL_60:
 
-      v54 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
-      if (!v54)
+      presenceIdentifier = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
+      if (!presenceIdentifier)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
+        if (!invitationIdentifier2)
         {
           goto LABEL_68;
         }
       }
 
-      v55 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
-      if (v55)
+      presenceIdentifier2 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
+      if (presenceIdentifier2)
       {
-        v56 = v55;
-        v57 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
-        if (v57)
+        v56 = presenceIdentifier2;
+        presenceIdentifier3 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
+        if (presenceIdentifier3)
         {
-          v58 = v57;
-          v59 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
-          v60 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
-          v10 &= [v59 isEqualToString:v60];
+          v58 = presenceIdentifier3;
+          presenceIdentifier4 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
+          presenceIdentifier5 = [(SKADatabaseReceivedInvitation *)v7 presenceIdentifier];
+          v10 &= [presenceIdentifier4 isEqualToString:presenceIdentifier5];
 
-          if (!v54)
+          if (!presenceIdentifier)
           {
             goto LABEL_68;
           }
@@ -372,36 +372,36 @@ LABEL_60:
       }
 
       v10 = 0;
-      if (!v54)
+      if (!presenceIdentifier)
       {
 LABEL_68:
       }
 
 LABEL_69:
 
-      v61 = [(SKADatabaseReceivedInvitation *)self channelToken];
-      if (!v61)
+      channelToken = [(SKADatabaseReceivedInvitation *)self channelToken];
+      if (!channelToken)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
+        if (!invitationIdentifier2)
         {
           goto LABEL_77;
         }
       }
 
-      v62 = [(SKADatabaseReceivedInvitation *)self channelToken];
-      if (v62)
+      channelToken2 = [(SKADatabaseReceivedInvitation *)self channelToken];
+      if (channelToken2)
       {
-        v63 = v62;
-        v64 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
-        if (v64)
+        v63 = channelToken2;
+        channelToken3 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
+        if (channelToken3)
         {
-          v65 = v64;
-          v66 = [(SKADatabaseReceivedInvitation *)self channelToken];
-          v67 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
-          v10 &= [v66 isEqualToData:v67];
+          v65 = channelToken3;
+          channelToken4 = [(SKADatabaseReceivedInvitation *)self channelToken];
+          channelToken5 = [(SKADatabaseReceivedInvitation *)v7 channelToken];
+          v10 &= [channelToken4 isEqualToData:channelToken5];
 
-          if (!v61)
+          if (!channelToken)
           {
             goto LABEL_77;
           }
@@ -411,36 +411,36 @@ LABEL_69:
       }
 
       v10 = 0;
-      if (!v61)
+      if (!channelToken)
       {
 LABEL_77:
       }
 
 LABEL_78:
 
-      v68 = [(SKADatabaseReceivedInvitation *)self serverKey];
-      if (!v68)
+      serverKey = [(SKADatabaseReceivedInvitation *)self serverKey];
+      if (!serverKey)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
+        if (!invitationIdentifier2)
         {
           goto LABEL_86;
         }
       }
 
-      v69 = [(SKADatabaseReceivedInvitation *)self serverKey];
-      if (v69)
+      serverKey2 = [(SKADatabaseReceivedInvitation *)self serverKey];
+      if (serverKey2)
       {
-        v70 = v69;
-        v71 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
-        if (v71)
+        v70 = serverKey2;
+        serverKey3 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
+        if (serverKey3)
         {
-          v72 = v71;
-          v73 = [(SKADatabaseReceivedInvitation *)self serverKey];
-          v74 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
-          v10 &= [v73 isEqualToData:v74];
+          v72 = serverKey3;
+          serverKey4 = [(SKADatabaseReceivedInvitation *)self serverKey];
+          serverKey5 = [(SKADatabaseReceivedInvitation *)v7 serverKey];
+          v10 &= [serverKey4 isEqualToData:serverKey5];
 
-          if (!v68)
+          if (!serverKey)
           {
             goto LABEL_86;
           }
@@ -450,36 +450,36 @@ LABEL_78:
       }
 
       v10 = 0;
-      if (!v68)
+      if (!serverKey)
       {
 LABEL_86:
       }
 
 LABEL_87:
 
-      v75 = [(SKADatabaseReceivedInvitation *)self peerKey];
-      if (!v75)
+      peerKey = [(SKADatabaseReceivedInvitation *)self peerKey];
+      if (!peerKey)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
+        if (!invitationIdentifier2)
         {
           goto LABEL_95;
         }
       }
 
-      v76 = [(SKADatabaseReceivedInvitation *)self peerKey];
-      if (v76)
+      peerKey2 = [(SKADatabaseReceivedInvitation *)self peerKey];
+      if (peerKey2)
       {
-        v77 = v76;
-        v78 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
-        if (v78)
+        v77 = peerKey2;
+        peerKey3 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
+        if (peerKey3)
         {
-          v79 = v78;
-          v80 = [(SKADatabaseReceivedInvitation *)self peerKey];
-          v81 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
-          v10 &= [v80 isEqualToData:v81];
+          v79 = peerKey3;
+          peerKey4 = [(SKADatabaseReceivedInvitation *)self peerKey];
+          peerKey5 = [(SKADatabaseReceivedInvitation *)v7 peerKey];
+          v10 &= [peerKey4 isEqualToData:peerKey5];
 
-          if (!v75)
+          if (!peerKey)
           {
             goto LABEL_95;
           }
@@ -489,36 +489,36 @@ LABEL_87:
       }
 
       v10 = 0;
-      if (!v75)
+      if (!peerKey)
       {
 LABEL_95:
       }
 
 LABEL_96:
 
-      v82 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
-      if (!v82)
+      invitationPayload = [(SKADatabaseReceivedInvitation *)self invitationPayload];
+      if (!invitationPayload)
       {
-        v3 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
-        if (!v3)
+        invitationIdentifier2 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
+        if (!invitationIdentifier2)
         {
           goto LABEL_104;
         }
       }
 
-      v83 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
-      if (v83)
+      invitationPayload2 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
+      if (invitationPayload2)
       {
-        v84 = v83;
-        v85 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
-        if (v85)
+        v84 = invitationPayload2;
+        invitationPayload3 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
+        if (invitationPayload3)
         {
-          v86 = v85;
-          v87 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
-          v88 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
-          v10 &= [v87 isEqualToData:v88];
+          v86 = invitationPayload3;
+          invitationPayload4 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
+          invitationPayload5 = [(SKADatabaseReceivedInvitation *)v7 invitationPayload];
+          v10 &= [invitationPayload4 isEqualToData:invitationPayload5];
 
-          if (!v82)
+          if (!invitationPayload)
           {
             goto LABEL_104;
           }
@@ -528,7 +528,7 @@ LABEL_96:
       }
 
       LOBYTE(v10) = 0;
-      if (!v82)
+      if (!invitationPayload)
       {
 LABEL_104:
       }
@@ -547,39 +547,39 @@ LABEL_106:
 
 - (unint64_t)hash
 {
-  v3 = [(SKADatabaseReceivedInvitation *)self invitationType];
-  v4 = [(SKADatabaseReceivedInvitation *)self invitationPayload];
-  v5 = [v4 hash] ^ v3;
+  invitationType = [(SKADatabaseReceivedInvitation *)self invitationType];
+  invitationPayload = [(SKADatabaseReceivedInvitation *)self invitationPayload];
+  v5 = [invitationPayload hash] ^ invitationType;
 
-  v6 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
-  v7 = [v6 hash];
+  dateInvitationCreated = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
+  v7 = [dateInvitationCreated hash];
 
-  v8 = [(SKADatabaseReceivedInvitation *)self invitedHandle];
-  v9 = v5 ^ v7 ^ [v8 hash];
+  invitedHandle = [(SKADatabaseReceivedInvitation *)self invitedHandle];
+  v9 = v5 ^ v7 ^ [invitedHandle hash];
 
-  v10 = [(SKADatabaseReceivedInvitation *)self senderHandle];
-  v11 = [v10 hash];
+  senderHandle = [(SKADatabaseReceivedInvitation *)self senderHandle];
+  v11 = [senderHandle hash];
 
-  v12 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
-  v13 = v11 ^ [v12 hash];
+  invitationIdentifier = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
+  v13 = v11 ^ [invitationIdentifier hash];
 
-  v14 = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
-  v15 = v9 ^ v13 ^ [v14 hash];
+  statusTypeIdentifier = [(SKADatabaseReceivedInvitation *)self statusTypeIdentifier];
+  v15 = v9 ^ v13 ^ [statusTypeIdentifier hash];
 
-  v16 = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
-  v17 = [v16 hash];
+  presenceIdentifier = [(SKADatabaseReceivedInvitation *)self presenceIdentifier];
+  v17 = [presenceIdentifier hash];
 
-  v18 = [(SKADatabaseReceivedInvitation *)self channelToken];
-  v19 = v17 ^ [v18 hash];
+  channelToken = [(SKADatabaseReceivedInvitation *)self channelToken];
+  v19 = v17 ^ [channelToken hash];
 
-  v20 = [(SKADatabaseReceivedInvitation *)self serverKey];
-  v21 = v19 ^ [v20 hash];
+  serverKey = [(SKADatabaseReceivedInvitation *)self serverKey];
+  v21 = v19 ^ [serverKey hash];
 
-  v22 = [(SKADatabaseReceivedInvitation *)self peerKey];
-  v23 = v15 ^ v21 ^ [v22 hash];
+  peerKey = [(SKADatabaseReceivedInvitation *)self peerKey];
+  v23 = v15 ^ v21 ^ [peerKey hash];
 
-  v24 = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
-  v25 = [v24 hash];
+  incomingRatchetState = [(SKADatabaseReceivedInvitation *)self incomingRatchetState];
+  v25 = [incomingRatchetState hash];
 
   return v23 ^ v25;
 }
@@ -588,10 +588,10 @@ LABEL_106:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
-  v6 = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
-  v7 = [(SKADatabaseReceivedInvitation *)self skInvitationPayload];
-  v8 = [v3 stringWithFormat:@"<%@: %p identifier = %@; dateCreated = %@; invitationPayload: %@>", v4, self, v5, v6, v7];;
+  invitationIdentifier = [(SKADatabaseReceivedInvitation *)self invitationIdentifier];
+  dateInvitationCreated = [(SKADatabaseReceivedInvitation *)self dateInvitationCreated];
+  skInvitationPayload = [(SKADatabaseReceivedInvitation *)self skInvitationPayload];
+  v8 = [v3 stringWithFormat:@"<%@: %p identifier = %@; dateCreated = %@; invitationPayload: %@>", v4, self, invitationIdentifier, dateInvitationCreated, skInvitationPayload];;
 
   return v8;
 }

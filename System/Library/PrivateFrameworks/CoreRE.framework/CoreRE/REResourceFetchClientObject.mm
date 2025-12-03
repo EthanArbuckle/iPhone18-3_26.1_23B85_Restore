@@ -1,33 +1,33 @@
 @interface REResourceFetchClientObject
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (REResourceFetchClientObject)initWithResourceFetchManager:(void *)a3 connection:(const Connection *)a4 voucher:(id)a5;
-- (void)associateConnectionWithPeerID:(unint64_t)a3 clientPorts:(id)a4;
+- (REResourceFetchClientObject)initWithResourceFetchManager:(void *)manager connection:(const Connection *)connection voucher:(id)voucher;
+- (void)associateConnectionWithPeerID:(unint64_t)d clientPorts:(id)ports;
 - (void)dealloc;
-- (void)decodeShaderGraph:(id)a3 withFnConsts:(id)a4 withReply:(id)a5;
-- (void)pushLoadedResourceWithPayloadAndAssetId:(unint64_t)a3 assetType:(id)a4 payload:(id)a5 isPriorityAsset:(BOOL)a6;
-- (void)receiveDirectResourceCommit:(id)a3;
-- (void)receiveTrackableResource:(id)a3 withType:(int)a4;
-- (void)releaseResourcesWithAssetIds:(id)a3;
-- (void)resourceAtAssetPath:(id)a3 payloadDidUpdate:(id)a4 error:(id)a5;
+- (void)decodeShaderGraph:(id)graph withFnConsts:(id)consts withReply:(id)reply;
+- (void)pushLoadedResourceWithPayloadAndAssetId:(unint64_t)id assetType:(id)type payload:(id)payload isPriorityAsset:(BOOL)asset;
+- (void)receiveDirectResourceCommit:(id)commit;
+- (void)receiveTrackableResource:(id)resource withType:(int)type;
+- (void)releaseResourcesWithAssetIds:(id)ids;
+- (void)resourceAtAssetPath:(id)path payloadDidUpdate:(id)update error:(id)error;
 @end
 
 @implementation REResourceFetchClientObject
 
-- (REResourceFetchClientObject)initWithResourceFetchManager:(void *)a3 connection:(const Connection *)a4 voucher:(id)a5
+- (REResourceFetchClientObject)initWithResourceFetchManager:(void *)manager connection:(const Connection *)connection voucher:(id)voucher
 {
-  v9 = a5;
+  voucherCopy = voucher;
   v17.receiver = self;
   v17.super_class = REResourceFetchClientObject;
   v10 = [(REResourceFetchClientObject *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_resourceFetchManager = a3;
+    v10->_resourceFetchManager = manager;
     v10->_peerID = 0;
-    objc_storeStrong(&v10->_voucher, a5);
-    if (*a4)
+    objc_storeStrong(&v10->_voucher, voucher);
+    if (*connection)
     {
-      [*a4 auditToken];
+      [*connection auditToken];
     }
 
     else
@@ -66,23 +66,23 @@
   [(REResourceFetchClientObject *)&v5 dealloc];
 }
 
-- (void)resourceAtAssetPath:(id)a3 payloadDidUpdate:(id)a4 error:(id)a5
+- (void)resourceAtAssetPath:(id)path payloadDidUpdate:(id)update error:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8)
+  pathCopy = path;
+  updateCopy = update;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (pathCopy)
   {
     resourceFetchManager = self->_resourceFetchManager;
     if (resourceFetchManager)
     {
-      if (v10)
+      if (errorCopy)
       {
-        v13 = self;
-        v28 = v13;
-        v14 = [v8 UTF8String];
+        selfCopy2 = self;
+        v28 = selfCopy2;
+        uTF8String = [pathCopy UTF8String];
         v15 = v11;
         v25[0] = 0;
         v26 = v15;
@@ -103,12 +103,12 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (v9)
+      if (updateCopy)
       {
-        v13 = self;
-        v24 = v13;
-        v19 = [v8 UTF8String];
-        v20 = v9;
+        selfCopy2 = self;
+        v24 = selfCopy2;
+        uTF8String2 = [pathCopy UTF8String];
+        v20 = updateCopy;
         v21[0] = 1;
         v22 = v20;
         re::ResourceFetchManager::updateResourceWithPayloadAndAssetId(resourceFetchManager, &v24, v23, v21);
@@ -133,27 +133,27 @@ LABEL_18:
       }
 
       *buf = 138412290;
-      v30 = self;
+      selfCopy5 = self;
       v17 = "Resource connection %@ received an invalid message: both payload and error are nil";
       goto LABEL_10;
     }
 
-    v18 = re::resourceSharingLogObjects(v10)[1];
+    v18 = re::resourceSharingLogObjects(errorCopy)[1];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v30 = self;
+      selfCopy5 = self;
       _os_log_error_impl(&dword_1E1C61000, v18, OS_LOG_TYPE_ERROR, "Resource connection %@ ignored a message: service was deinited", buf, 0xCu);
     }
   }
 
   else
   {
-    v16 = re::resourceSharingLogObjects(v10)[1];
+    v16 = re::resourceSharingLogObjects(errorCopy)[1];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v30 = self;
+      selfCopy5 = self;
       v17 = "Resource connection %@ received an invalid updated payload for a nil asset path";
 LABEL_10:
       _os_log_fault_impl(&dword_1E1C61000, v16, OS_LOG_TYPE_FAULT, v17, buf, 0xCu);
@@ -163,33 +163,33 @@ LABEL_10:
 LABEL_19:
 }
 
-- (void)pushLoadedResourceWithPayloadAndAssetId:(unint64_t)a3 assetType:(id)a4 payload:(id)a5 isPriorityAsset:(BOOL)a6
+- (void)pushLoadedResourceWithPayloadAndAssetId:(unint64_t)id assetType:(id)type payload:(id)payload isPriorityAsset:(BOOL)asset
 {
-  v6 = a6;
+  assetCopy = asset;
   *&v30[5] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [MEMORY[0x1E696B0B8] currentConnection];
-  v13 = [v12 valueForEntitlement:@"com.apple.surfboard.allow-any-custom-shader"];
-  v14 = [v13 BOOLValue];
+  typeCopy = type;
+  payloadCopy = payload;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v13 = [currentConnection valueForEntitlement:@"com.apple.surfboard.allow-any-custom-shader"];
+  bOOLValue = [v13 BOOLValue];
 
-  if (v10)
+  if (typeCopy)
   {
-    if (a3)
+    if (id)
     {
-      [v11 setClientObject:self];
+      [payloadCopy setClientObject:self];
       resourceFetchManager = self->_resourceFetchManager;
-      v17 = self;
-      v18 = [v10 cStringUsingEncoding:4];
-      v19 = v11;
+      selfCopy = self;
+      v18 = [typeCopy cStringUsingEncoding:4];
+      v19 = payloadCopy;
       v20 = resourceFetchManager[48];
       if (v20)
       {
         v21 = (v20 + 8);
       }
 
-      v22 = [(REResourceFetchClientObject *)v17 peerID];
-      if (v22)
+      peerID = [(REResourceFetchClientObject *)selfCopy peerID];
+      if (peerID)
       {
         if (!v20)
         {
@@ -198,10 +198,10 @@ LABEL_17:
           goto LABEL_18;
         }
 
-        v23 = v22;
+        v23 = peerID;
         LOBYTE(v29) = 1;
         *&v30[1] = v19;
-        (*(*v20 + 32))(v20, a3, v18, v23, v23, v14, &v29, v6);
+        (*(*v20 + 32))(v20, id, v18, v23, v23, bOOLValue, &v29, assetCopy);
       }
 
       else
@@ -209,12 +209,12 @@ LABEL_17:
         v26 = re::resourceSharingLogObjects(0)[1];
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = v17;
+          v27 = selfCopy;
           v28 = v26;
           v29 = 67109376;
           v30[0] = [(REResourceFetchClientObject *)v27 pid];
           LOWORD(v30[1]) = 2048;
-          *(&v30[1] + 2) = a3;
+          *(&v30[1] + 2) = id;
           _os_log_impl(&dword_1E1C61000, v28, OS_LOG_TYPE_DEFAULT, "Client (pid %d) attempted to push-load asset %llu without registering a peerID.  Push load will not be initiated.", &v29, 0x12u);
         }
 
@@ -253,13 +253,13 @@ LABEL_12:
 LABEL_18:
 }
 
-- (void)releaseResourcesWithAssetIds:(id)a3
+- (void)releaseResourcesWithAssetIds:(id)ids
 {
   v36 = *MEMORY[0x1E69E9840];
   resourceFetchManager = self->_resourceFetchManager;
-  v5 = a3;
-  v6 = self;
-  v7 = v5;
+  idsCopy = ids;
+  selfCopy = self;
+  v7 = idsCopy;
   v8 = [v7 count];
   if (v8)
   {
@@ -270,12 +270,12 @@ LABEL_18:
       v11 = (v10 + 8);
     }
 
-    v12 = [(REResourceFetchClientObject *)v6 peerID];
-    if (v12)
+    peerID = [(REResourceFetchClientObject *)selfCopy peerID];
+    if (peerID)
     {
       if (v10)
       {
-        v14 = v12;
+        v14 = peerID;
         v15 = 0;
         *&v13 = 67109120;
         v31 = v13;
@@ -299,7 +299,7 @@ LABEL_18:
               goto LABEL_11;
             }
 
-            v21 = v6;
+            v21 = selfCopy;
             v19 = v20;
             v22 = [(REResourceFetchClientObject *)v21 pid];
             *buf = v31;
@@ -321,7 +321,7 @@ LABEL_11:
       v26 = re::resourceSharingLogObjects(0)[1];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = v6;
+        v27 = selfCopy;
         v28 = v26;
         v29 = [(REResourceFetchClientObject *)v27 pid];
         v30 = [v7 objectAtIndexedSubscript:0];
@@ -344,7 +344,7 @@ LABEL_18:
     v23 = re::resourceSharingLogObjects(0)[1];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = v6;
+      v24 = selfCopy;
       v25 = v23;
       *buf = 67109120;
       v33 = [(REResourceFetchClientObject *)v24 pid];
@@ -353,15 +353,15 @@ LABEL_18:
   }
 }
 
-- (void)receiveDirectResourceCommit:(id)a3
+- (void)receiveDirectResourceCommit:(id)commit
 {
   resourceFetchManager = self->_resourceFetchManager;
-  v5 = a3;
-  v13 = self;
-  v14 = v13;
-  v6 = [v5 object];
+  commitCopy = commit;
+  selfCopy = self;
+  v14 = selfCopy;
+  object = [commitCopy object];
 
-  v7 = v6;
+  v7 = object;
   dispatch_assert_queue_V2(*(resourceFetchManager + 4));
   os_unfair_lock_lock(resourceFetchManager + 32);
   v8 = *(resourceFetchManager + 49);
@@ -372,7 +372,7 @@ LABEL_18:
     {
       v10 = v9 << 6;
       v11 = (*(resourceFetchManager + 21) + 8);
-      while (*v11 != v13)
+      while (*v11 != selfCopy)
       {
         v11 += 8;
         v10 -= 64;
@@ -391,14 +391,14 @@ LABEL_8:
   os_unfair_lock_unlock(resourceFetchManager + 32);
 }
 
-- (void)receiveTrackableResource:(id)a3 withType:(int)a4
+- (void)receiveTrackableResource:(id)resource withType:(int)type
 {
   resourceFetchManager = self->_resourceFetchManager;
-  v7 = a3;
-  v8 = self;
-  v9 = [v7 object];
+  resourceCopy = resource;
+  selfCopy = self;
+  object = [resourceCopy object];
 
-  v10 = v9;
+  v10 = object;
   dispatch_assert_queue_V2(*(resourceFetchManager + 4));
   os_unfair_lock_lock(resourceFetchManager + 32);
   v11 = *(resourceFetchManager + 50);
@@ -409,7 +409,7 @@ LABEL_8:
     {
       v13 = v12 << 6;
       v14 = (*(resourceFetchManager + 21) + 8);
-      while (*v14 != v8)
+      while (*v14 != selfCopy)
       {
         v14 += 8;
         v13 -= 64;
@@ -420,8 +420,8 @@ LABEL_8:
       }
 
       v16 = v10;
-      v15 = a4;
-      (*(**(v11 + 56) + 16))(*(v11 + 56), &v16, &v15);
+      typeCopy = type;
+      (*(**(v11 + 56) + 16))(*(v11 + 56), &v16, &typeCopy);
     }
   }
 
@@ -429,10 +429,10 @@ LABEL_8:
   os_unfair_lock_unlock(resourceFetchManager + 32);
 }
 
-- (void)associateConnectionWithPeerID:(unint64_t)a3 clientPorts:(id)a4
+- (void)associateConnectionWithPeerID:(unint64_t)d clientPorts:(id)ports
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  portsCopy = ports;
   if (self->_peerID)
   {
     re::internal::assertLog(4, v8, "assertion failure: '%s' (%s:line %i) Tried to set peer ID on a connection twice", "_peerID == 0", "[REResourceFetchClientObject associateConnectionWithPeerID:clientPorts:]", 1315);
@@ -440,9 +440,9 @@ LABEL_8:
     __break(1u);
   }
 
-  v9 = v7;
+  v9 = portsCopy;
   dispatch_assert_queue_V2(*(self->_resourceFetchManager + 4));
-  *buf = a3;
+  *buf = d;
   *&buf[8] = self->_pid;
   *&buf[12] = *self->_auditToken.val;
   *&buf[28] = *&self->_auditToken.val[4];
@@ -458,7 +458,7 @@ LABEL_8:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
         *buf = 134218242;
-        *&buf[4] = a3;
+        *&buf[4] = d;
         *&buf[12] = 2112;
         *&buf[14] = self;
         _os_log_fault_impl(&dword_1E1C61000, v14, OS_LOG_TYPE_FAULT, "Attempted to associate peer ID %llu with resource connection %@ which already has a peer ID", buf, 0x16u);
@@ -472,12 +472,12 @@ LABEL_8:
         *buf = 138412546;
         *&buf[4] = self;
         *&buf[12] = 2048;
-        *&buf[14] = a3;
+        *&buf[14] = d;
         _os_log_impl(&dword_1E1C61000, v14, OS_LOG_TYPE_DEFAULT, "Resource connection %@ is now associated with peer ID %llu", buf, 0x16u);
       }
 
-      self->_peerID = a3;
-      objc_storeStrong(&self->_clientPorts, a4);
+      self->_peerID = d;
+      objc_storeStrong(&self->_clientPorts, ports);
     }
 
     v15 = *(self->_resourceFetchManager + 50);
@@ -517,11 +517,11 @@ LABEL_15:
   }
 }
 
-- (void)decodeShaderGraph:(id)a3 withFnConsts:(id)a4 withReply:(id)a5
+- (void)decodeShaderGraph:(id)graph withFnConsts:(id)consts withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  graphCopy = graph;
+  constsCopy = consts;
+  replyCopy = reply;
   dispatch_assert_queue_V2(*(self->_resourceFetchManager + 4));
   v11 = _Block_copy(*(self->_resourceFetchManager + 53));
   if (v11)
@@ -533,14 +533,14 @@ LABEL_15:
     v20[1] = 3221225472;
     v20[2] = __72__REResourceFetchClientObject_decodeShaderGraph_withFnConsts_withReply___block_invoke;
     v20[3] = &unk_1E871AAE0;
-    v21 = v8;
-    v22 = v9;
-    v23 = self;
+    v21 = graphCopy;
+    v22 = constsCopy;
+    selfCopy = self;
     v24 = v11;
-    v25 = v10;
-    v16 = v10;
-    v17 = v9;
-    v18 = v8;
+    v25 = replyCopy;
+    v16 = replyCopy;
+    v17 = constsCopy;
+    v18 = graphCopy;
     v19 = v13;
     [v14 _handoffCurrentReplyToQueue:v15 block:v20];
   }

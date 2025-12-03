@@ -1,6 +1,6 @@
 @interface AVAsynchronousVideoCompositionRequestInternal
 - (void)dealloc;
-- (void)setCompositionTime:(id *)a3;
+- (void)setCompositionTime:(id *)time;
 @end
 
 @implementation AVAsynchronousVideoCompositionRequestInternal
@@ -12,10 +12,10 @@
   [(AVAsynchronousVideoCompositionRequestInternal *)&v3 dealloc];
 }
 
-- (void)setCompositionTime:(id *)a3
+- (void)setCompositionTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_compositionTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_compositionTime.epoch = time->var3;
   *&self->_compositionTime.value = v3;
 }
 

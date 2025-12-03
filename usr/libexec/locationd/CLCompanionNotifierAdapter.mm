@@ -1,23 +1,23 @@
 @interface CLCompanionNotifierAdapter
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLCompanionNotifierAdapter)init;
 - (void)adaptee;
 - (void)beginService;
-- (void)doAsync:(id)a3;
-- (void)doAsync:(id)a3 withReply:(id)a4;
+- (void)doAsync:(id)async;
+- (void)doAsync:(id)async withReply:(id)reply;
 - (void)endService;
-- (void)setSilo:(id)a3;
+- (void)setSilo:(id)silo;
 @end
 
 @implementation CLCompanionNotifierAdapter
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -48,20 +48,20 @@
   return result;
 }
 
-- (void)doAsync:(id)a3
+- (void)doAsync:(id)async
 {
-  v4 = [(CLCompanionNotifierAdapter *)self adaptee];
-  v5 = *(a3 + 2);
+  adaptee = [(CLCompanionNotifierAdapter *)self adaptee];
+  v5 = *(async + 2);
 
-  v5(a3, v4);
+  v5(async, adaptee);
 }
 
-- (void)doAsync:(id)a3 withReply:(id)a4
+- (void)doAsync:(id)async withReply:(id)reply
 {
-  (*(a3 + 2))(a3, [(CLCompanionNotifierAdapter *)self adaptee]);
-  v5 = *(a4 + 2);
+  (*(async + 2))(async, [(CLCompanionNotifierAdapter *)self adaptee]);
+  v5 = *(reply + 2);
 
-  v5(a4);
+  v5(reply);
 }
 
 - (void)beginService
@@ -72,8 +72,8 @@
     sub_1018E4788();
   }
 
-  v3 = [(CLNotifierServiceAdapter *)self notifier];
-  if (v3)
+  notifier = [(CLNotifierServiceAdapter *)self notifier];
+  if (notifier)
   {
   }
 
@@ -105,13 +105,13 @@
 
 - (void)endService
 {
-  v2 = [(CLNotifierServiceAdapter *)self notifier];
-  (*(v2->var0 + 2))(v2);
+  notifier = [(CLNotifierServiceAdapter *)self notifier];
+  (*(notifier->var0 + 2))(notifier);
 
   qword_102658368 = 0;
 }
 
-- (void)setSilo:(id)a3
+- (void)setSilo:(id)silo
 {
   if (qword_1025D4200 != -1)
   {
@@ -128,10 +128,10 @@
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#CLCompanionNotifier suspending silo until IDS becomes available (CLCompanionTransport)}", buf, 0x12u);
   }
 
-  [a3 suspend];
+  [silo suspend];
   v8.receiver = self;
   v8.super_class = CLCompanionNotifierAdapter;
-  [(CLCompanionNotifierAdapter *)&v8 setSilo:a3];
+  [(CLCompanionNotifierAdapter *)&v8 setSilo:silo];
   if (qword_1025D4200 != -1)
   {
     sub_1018E48FC();
@@ -151,7 +151,7 @@
   v7[1] = 3221225472;
   v7[2] = sub_1005F5DA4;
   v7[3] = &unk_102463950;
-  v7[4] = a3;
+  v7[4] = silo;
   [IDSService serviceWithIdentifier:@"com.apple.private.alloy.location.motion" completion:v7];
 }
 

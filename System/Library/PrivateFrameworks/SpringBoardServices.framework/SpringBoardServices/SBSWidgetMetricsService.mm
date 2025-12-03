@@ -1,13 +1,13 @@
 @interface SBSWidgetMetricsService
 - (SBSWidgetHostingEnvironmentMetricsProviding)metricsProvider;
 - (SBSWidgetMetricsService)init;
-- (SBSWidgetMetricsService)initWithMetricsProvider:(id)a3;
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3;
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5;
-- (id)systemMetricsForWidget:(id)a3;
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4;
+- (SBSWidgetMetricsService)initWithMetricsProvider:(id)provider;
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier;
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier;
+- (id)systemMetricsForWidget:(id)widget;
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment;
 - (void)dealloc;
 @end
 
@@ -21,16 +21,16 @@
   return v4;
 }
 
-- (SBSWidgetMetricsService)initWithMetricsProvider:(id)a3
+- (SBSWidgetMetricsService)initWithMetricsProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SBSWidgetMetricsService;
   v5 = [(SBSWidgetMetricsService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_metricsProvider, v4);
+    objc_storeWeak(&v5->_metricsProvider, providerCopy);
   }
 
   return v6;
@@ -38,11 +38,11 @@
 
 - (void)dealloc
 {
-  v3 = [(SBSWidgetMetricsService *)self metricsProvider];
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [SBSWidgetMetricsServer returnServerInstance:v3];
+    [SBSWidgetMetricsServer returnServerInstance:metricsProvider];
   }
 
   v4.receiver = self;
@@ -50,61 +50,61 @@
   [(SBSWidgetMetricsService *)&v4 dealloc];
 }
 
-- (id)systemMetricsForWidget:(id)a3
+- (id)systemMetricsForWidget:(id)widget
 {
-  v4 = a3;
-  v5 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v6 = [v5 systemMetricsForWidget:v4];
+  widgetCopy = widget;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v6 = [metricsProvider systemMetricsForWidget:widgetCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v6 = [v5 previewMetricsSpecificationForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v6 = [metricsProvider previewMetricsSpecificationForBundleIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v12 = [v11 previewMetricsSpecificationForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v12 = [metricsProvider previewMetricsSpecificationForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   return v12;
 }
 
-- (id)systemMetricsForWidget:(id)a3 inHostingEnvironment:(id)a4
+- (id)systemMetricsForWidget:(id)widget inHostingEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v9 = [v8 systemMetricsForWidget:v7 inHostingEnvironment:v6];
+  environmentCopy = environment;
+  widgetCopy = widget;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v9 = [metricsProvider systemMetricsForWidget:widgetCopy inHostingEnvironment:environmentCopy];
 
   return v9;
 }
 
-- (id)previewMetricsSpecificationsForBundleIdentifier:(id)a3
+- (id)previewMetricsSpecificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v6 = [v5 previewMetricsSpecificationsForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v6 = [metricsProvider previewMetricsSpecificationsForBundleIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)previewMetricsSpecificationsForDeviceContext:(id)a3 displayContext:(id)a4 bundleIdentifier:(id)a5
+- (id)previewMetricsSpecificationsForDeviceContext:(id)context displayContext:(id)displayContext bundleIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBSWidgetMetricsService *)self metricsProvider];
-  v12 = [v11 previewMetricsSpecificationsForDeviceContext:v10 displayContext:v9 bundleIdentifier:v8];
+  identifierCopy = identifier;
+  displayContextCopy = displayContext;
+  contextCopy = context;
+  metricsProvider = [(SBSWidgetMetricsService *)self metricsProvider];
+  v12 = [metricsProvider previewMetricsSpecificationsForDeviceContext:contextCopy displayContext:displayContextCopy bundleIdentifier:identifierCopy];
 
   return v12;
 }

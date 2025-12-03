@@ -1,37 +1,37 @@
 @interface HRTFEnrollmentService
-- (BOOL)_checkForAssetExistence:(AssetDownloadOptions)a3 assetURL:(id *)a4 error:(id *)a5;
-- (HRTFEnrollmentService)initWithConnection:(id)a3;
+- (BOOL)_checkForAssetExistence:(AssetDownloadOptions)existence assetURL:(id *)l error:(id *)error;
+- (HRTFEnrollmentService)initWithConnection:(id)connection;
 - (id)_assetPath;
 - (id)getAssetDownloadOptions;
 - (id)requestedVersion;
 - (void)cancelAssetDownloadSession;
-- (void)checkForAssetExistence:(unsigned int)a3 withCompletion:(id)a4;
+- (void)checkForAssetExistence:(unsigned int)existence withCompletion:(id)completion;
 - (void)dealloc;
-- (void)downloadAsset:(unint64_t)a3 withCompletion:(id)a4;
-- (void)downloadAssetV2:(unint64_t)a3 withCompletion:(id)a4;
+- (void)downloadAsset:(unint64_t)asset withCompletion:(id)completion;
+- (void)downloadAssetV2:(unint64_t)v2 withCompletion:(id)completion;
 - (void)invalidate;
-- (void)processCaptureData:(id)a3 withFaceData:(id)a4;
-- (void)requestDataWithOffset:(unint64_t)a3 length:(unint64_t)a4 withCompletion:(id)a5;
-- (void)startSessionWithTerminationCallback:(id)a3;
-- (void)startSessionWithTerminationCallback:(id)a3 withCallback:(id)a4;
-- (void)stopSession:(id)a3;
-- (void)updateWithData:(id)a3 error:(id *)a4;
-- (void)xpcConnectionUpdateResultSize:(unint64_t)a3;
-- (void)xpcConnectionUpdateState:(unint64_t)a3 withProgress:(float)a4 facePoseStatus:(id)a5 earPoseStatus:(id)a6 errorStatus:(id)a7;
+- (void)processCaptureData:(id)data withFaceData:(id)faceData;
+- (void)requestDataWithOffset:(unint64_t)offset length:(unint64_t)length withCompletion:(id)completion;
+- (void)startSessionWithTerminationCallback:(id)callback;
+- (void)startSessionWithTerminationCallback:(id)callback withCallback:(id)withCallback;
+- (void)stopSession:(id)session;
+- (void)updateWithData:(id)data error:(id *)error;
+- (void)xpcConnectionUpdateResultSize:(unint64_t)size;
+- (void)xpcConnectionUpdateState:(unint64_t)state withProgress:(float)progress facePoseStatus:(id)status earPoseStatus:(id)poseStatus errorStatus:(id)errorStatus;
 @end
 
 @implementation HRTFEnrollmentService
 
-- (HRTFEnrollmentService)initWithConnection:(id)a3
+- (HRTFEnrollmentService)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = HRTFEnrollmentService;
   v6 = [(HRTFEnrollmentService *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = v7;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -69,7 +69,7 @@
   block[2] = sub_1000044BC;
   block[3] = &unk_1000103F8;
   block[4] = self;
-  v3 = self;
+  selfCopy = self;
   dispatch_async(queue, block);
 }
 
@@ -88,15 +88,15 @@
   return requestedVersion;
 }
 
-- (BOOL)_checkForAssetExistence:(AssetDownloadOptions)a3 assetURL:(id *)a4 error:(id *)a5
+- (BOOL)_checkForAssetExistence:(AssetDownloadOptions)existence assetURL:(id *)l error:(id *)error
 {
-  v82 = a3;
+  existenceCopy = existence;
   group = dispatch_group_create();
   v103 = 0;
   v104 = &v103;
   v105 = 0x2020000000;
   v106 = 3;
-  v80 = a4;
+  lCopy = l;
   v84 = [[MAAssetQuery alloc] initWithType:@"com.apple.MobileAsset.HRTFModels"];
   [v84 returnTypes:2];
   while (1)
@@ -104,8 +104,8 @@
     [v84 queryMetaDataSync];
     if (![v84 resultCode])
     {
-      v9 = [v84 results];
-      v10 = v9 == 0;
+      results = [v84 results];
+      v10 = results == 0;
 
       if (v10)
       {
@@ -124,7 +124,7 @@
         v45 = [NSError alloc];
         v43 = [v45 initWithDomain:kHRTFEnrollmentErrorDomain code:2 userInfo:0];
         v6 = v43;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_59;
         }
@@ -133,7 +133,7 @@ LABEL_50:
         v46 = v43;
 LABEL_51:
         v47 = 0;
-        *a5 = v6;
+        *error = v6;
         goto LABEL_70;
       }
 
@@ -141,12 +141,12 @@ LABEL_51:
       v99 = 0u;
       v96 = 0u;
       v97 = 0u;
-      v11 = [v84 results];
-      v12 = [v11 countByEnumeratingWithState:&v96 objects:v111 count:16];
+      results2 = [v84 results];
+      v12 = [results2 countByEnumeratingWithState:&v96 objects:v111 count:16];
       if (v12)
       {
         v88 = 0;
-        obj = v11;
+        obj = results2;
         v86 = 0;
         v13 = *v97;
         do
@@ -159,17 +159,17 @@ LABEL_51:
             }
 
             v15 = *(*(&v96 + 1) + 8 * i);
-            v16 = [v15 attributes];
+            attributes = [v15 attributes];
             v17 = [_Version alloc];
-            v18 = [v16 objectForKeyedSubscript:@"ContentVersion"];
+            v18 = [attributes objectForKeyedSubscript:@"ContentVersion"];
             v19 = [(_Version *)v17 initWithString:v18];
 
             v20 = [_Version alloc];
-            v21 = [v16 objectForKeyedSubscript:@"CompatibleVersion"];
+            v21 = [attributes objectForKeyedSubscript:@"CompatibleVersion"];
             v22 = [(_Version *)v20 initWithString:v21];
 
-            v23 = [(HRTFEnrollmentService *)self requestedVersion];
-            v24 = [(_Version *)v22 compareTo:v23]== 1;
+            requestedVersion = [(HRTFEnrollmentService *)self requestedVersion];
+            v24 = [(_Version *)v22 compareTo:requestedVersion]== 1;
 
             if (!v24 && (!v88 || [(_Version *)v19 compareTo:v88]== 1))
             {
@@ -198,15 +198,15 @@ LABEL_51:
           {
             v28 = [(_Version *)v88 description];
             v29 = v28;
-            v30 = [v28 UTF8String];
+            uTF8String = [v28 UTF8String];
             *buf = 136315138;
-            v117 = v30;
+            v117 = uTF8String;
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "selecting asset version: %s", buf, 0xCu);
           }
 
           if ([v86 state] == 1 || objc_msgSend(v86, "state") == 4)
           {
-            if ((v82 & 1) == 0)
+            if ((existenceCopy & 1) == 0)
             {
               if (qword_1000164B0 != -1)
               {
@@ -221,7 +221,7 @@ LABEL_51:
               }
 
               v32 = [NSError alloc];
-              v33 = [v32 initWithDomain:kHRTFEnrollmentErrorDomain code:3 userInfo:0];
+              getLocalUrl = [v32 initWithDomain:kHRTFEnrollmentErrorDomain code:3 userInfo:0];
               goto LABEL_66;
             }
 
@@ -285,10 +285,10 @@ LABEL_51:
               v73 = [NSDictionary dictionaryWithObjects:&v108 forKeys:&v107 count:1];
               v74 = [v70 initWithDomain:v71 code:3 userInfo:v73];
 
-              if (a5)
+              if (error)
               {
                 v75 = v74;
-                *a5 = v74;
+                *error = v74;
               }
 
               v47 = 0;
@@ -296,7 +296,7 @@ LABEL_51:
             }
           }
 
-          v33 = [v86 getLocalUrl];
+          getLocalUrl = [v86 getLocalUrl];
           if (qword_1000164B0 != -1)
           {
             sub_1000086E8();
@@ -305,17 +305,17 @@ LABEL_51:
           v76 = qword_1000164A8;
           if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
           {
-            v77 = [v33 description];
+            v77 = [getLocalUrl description];
             v78 = v77;
-            v79 = [v77 UTF8String];
+            uTF8String2 = [v77 UTF8String];
             *buf = 136315138;
-            v117 = v79;
+            v117 = uTF8String2;
             _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_INFO, "asset is at %s", buf, 0xCu);
           }
 
           v47 = 1;
-          a5 = v80;
-          if (!v80)
+          error = lCopy;
+          if (!lCopy)
           {
             goto LABEL_68;
           }
@@ -345,16 +345,16 @@ LABEL_51:
       v57 = [NSError alloc];
       v58 = kHRTFEnrollmentErrorDomain;
       v109 = @"RequestedVersion";
-      v59 = [(HRTFEnrollmentService *)self requestedVersion];
-      v60 = [v59 description];
+      requestedVersion2 = [(HRTFEnrollmentService *)self requestedVersion];
+      v60 = [requestedVersion2 description];
       v110 = v60;
       v61 = [NSDictionary dictionaryWithObjects:&v110 forKeys:&v109 count:1];
-      v33 = [v57 initWithDomain:v58 code:4 userInfo:v61];
+      getLocalUrl = [v57 initWithDomain:v58 code:4 userInfo:v61];
 
       v86 = 0;
 LABEL_66:
       v47 = 0;
-      if (!a5)
+      if (!error)
       {
 LABEL_68:
 
@@ -365,8 +365,8 @@ LABEL_69:
       }
 
 LABEL_67:
-      v62 = v33;
-      *a5 = v33;
+      v62 = getLocalUrl;
+      *error = getLocalUrl;
       goto LABEL_68;
     }
 
@@ -380,9 +380,9 @@ LABEL_67:
       v34 = qword_1000164A8;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
-        v35 = [v84 resultCode];
+        resultCode = [v84 resultCode];
         *buf = 134217984;
-        v117 = v35;
+        v117 = resultCode;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "Query failed: %lu", buf, 0xCu);
       }
 
@@ -394,7 +394,7 @@ LABEL_67:
       v39 = [NSDictionary dictionaryWithObjects:&v113 forKeys:&v112 count:1];
       v6 = [v36 initWithDomain:v37 code:2 userInfo:v39];
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_59;
       }
@@ -403,7 +403,7 @@ LABEL_67:
       goto LABEL_51;
     }
 
-    if ((v82 & 1) == 0)
+    if ((existenceCopy & 1) == 0)
     {
       break;
     }
@@ -446,10 +446,10 @@ LABEL_67:
       v53 = [NSDictionary dictionaryWithObjects:&v115 forKeys:&v114 count:1];
       v54 = [v50 initWithDomain:v51 code:3 userInfo:v53];
 
-      if (a5)
+      if (error)
       {
         v55 = v54;
-        *a5 = v54;
+        *error = v54;
       }
 
       goto LABEL_59;
@@ -471,7 +471,7 @@ LABEL_67:
   v42 = [NSError alloc];
   v43 = [v42 initWithDomain:kHRTFEnrollmentErrorDomain code:3 userInfo:0];
   v6 = v43;
-  if (a5)
+  if (error)
   {
     goto LABEL_50;
   }
@@ -484,18 +484,18 @@ LABEL_70:
   return v47;
 }
 
-- (void)checkForAssetExistence:(unsigned int)a3 withCompletion:(id)a4
+- (void)checkForAssetExistence:(unsigned int)existence withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(21, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100005508;
   block[3] = &unk_100010498;
-  v11 = a3;
+  existenceCopy = existence;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
@@ -556,30 +556,30 @@ LABEL_70:
   return v5;
 }
 
-- (void)xpcConnectionUpdateState:(unint64_t)a3 withProgress:(float)a4 facePoseStatus:(id)a5 earPoseStatus:(id)a6 errorStatus:(id)a7
+- (void)xpcConnectionUpdateState:(unint64_t)state withProgress:(float)progress facePoseStatus:(id)status earPoseStatus:(id)poseStatus errorStatus:(id)errorStatus
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  statusCopy = status;
+  poseStatusCopy = poseStatus;
+  errorStatusCopy = errorStatus;
   queue = self->_queue;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10000589C;
   v20[3] = &unk_100010528;
-  v23 = v14;
-  v24 = a3;
-  v25 = a4;
+  v23 = errorStatusCopy;
+  stateCopy = state;
+  progressCopy = progress;
   v20[4] = self;
-  v21 = v12;
-  v22 = v13;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = self;
+  v21 = statusCopy;
+  v22 = poseStatusCopy;
+  v16 = errorStatusCopy;
+  v17 = poseStatusCopy;
+  v18 = statusCopy;
+  selfCopy = self;
   dispatch_async(queue, v20);
 }
 
-- (void)xpcConnectionUpdateResultSize:(unint64_t)a3
+- (void)xpcConnectionUpdateResultSize:(unint64_t)size
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -587,29 +587,29 @@ LABEL_70:
   v5[2] = sub_1000059B0;
   v5[3] = &unk_100010550;
   v5[4] = self;
-  v5[5] = a3;
-  v4 = self;
+  v5[5] = size;
+  selfCopy = self;
   dispatch_async(queue, v5);
 }
 
-- (void)updateWithData:(id)a3 error:(id *)a4
+- (void)updateWithData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (*a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (*error)
   {
     [(HRTFEnrollmentService *)self xpcConnectionUpdateState:5 withProgress:0 facePoseStatus:0 earPoseStatus:0.0 errorStatus:?];
     goto LABEL_53;
   }
 
-  v8 = [v6 step];
-  v9 = v8;
+  step = [dataCopy step];
+  v9 = step;
   v10 = 1.0;
-  if (v8 > 1)
+  if (step > 1)
   {
-    if (v8 != 2)
+    if (step != 2)
     {
-      if (v8 == 3)
+      if (step == 3)
       {
         v14 = 0;
         v15 = 4;
@@ -625,13 +625,13 @@ LABEL_70:
 
   else
   {
-    if (v8)
+    if (step)
     {
-      if (v8 == 1)
+      if (step == 1)
       {
-        v11 = [v7 captureUpdateData];
-        v12 = [v11 earCaptureUpdateData];
-        [v12 progress];
+        captureUpdateData = [v7 captureUpdateData];
+        earCaptureUpdateData = [captureUpdateData earCaptureUpdateData];
+        [earCaptureUpdateData progress];
         v10 = v13;
 
         v94 = 0;
@@ -645,33 +645,33 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    v16 = [v7 captureUpdateData];
-    v17 = [v16 faceCaptureUpdateData];
-    [v17 progress];
+    captureUpdateData2 = [v7 captureUpdateData];
+    faceCaptureUpdateData = [captureUpdateData2 faceCaptureUpdateData];
+    [faceCaptureUpdateData progress];
     v10 = v18;
 
-    v19 = [v7 captureUpdateData];
-    v20 = [v19 faceCaptureUpdateData];
-    v21 = [v20 poseStatusList];
+    captureUpdateData3 = [v7 captureUpdateData];
+    faceCaptureUpdateData2 = [captureUpdateData3 faceCaptureUpdateData];
+    poseStatusList = [faceCaptureUpdateData2 poseStatusList];
 
-    v22 = [v7 captureUpdateData];
-    v23 = [v22 faceCaptureUpdateData];
-    v24 = [v23 trackedData];
+    captureUpdateData4 = [v7 captureUpdateData];
+    faceCaptureUpdateData3 = [captureUpdateData4 faceCaptureUpdateData];
+    trackedData = [faceCaptureUpdateData3 trackedData];
 
-    if (v24)
+    if (trackedData)
     {
-      v25 = [v7 captureUpdateData];
-      v26 = [v25 faceCaptureUpdateData];
-      v27 = [v26 trackedData];
-      v28 = [v27 yawAngle];
-      [v28 doubleValue];
+      captureUpdateData5 = [v7 captureUpdateData];
+      faceCaptureUpdateData4 = [captureUpdateData5 faceCaptureUpdateData];
+      trackedData2 = [faceCaptureUpdateData4 trackedData];
+      yawAngle = [trackedData2 yawAngle];
+      [yawAngle doubleValue];
       v30 = v29;
 
-      v31 = [v7 captureUpdateData];
-      v32 = [v31 faceCaptureUpdateData];
-      v33 = [v32 trackedData];
-      v34 = [v33 pitchAngle];
-      [v34 doubleValue];
+      captureUpdateData6 = [v7 captureUpdateData];
+      faceCaptureUpdateData5 = [captureUpdateData6 faceCaptureUpdateData];
+      trackedData3 = [faceCaptureUpdateData5 trackedData];
+      pitchAngle = [trackedData3 pitchAngle];
+      [pitchAngle doubleValue];
       v36 = v35;
     }
 
@@ -688,12 +688,12 @@ LABEL_10:
 
     else
     {
-      v37 = [v21 objectAtIndexedSubscript:1];
+      v37 = [poseStatusList objectAtIndexedSubscript:1];
     }
 
     v38 = v37;
     v39 = [HRTFEnrollmentPoseStatus alloc];
-    v40 = [v21 objectAtIndexedSubscript:0];
+    v40 = [poseStatusList objectAtIndexedSubscript:0];
     v14 = [(HRTFEnrollmentPoseStatus *)v39 initWithCurrentYawPose:v40 pitchPose:v38 yawAngle:v30 pitchAngle:v36 faceBoundingBox:self->_faceBoundingBox.origin.x, self->_faceBoundingBox.origin.y, self->_faceBoundingBox.size.width, self->_faceBoundingBox.size.height];
 
     v15 = 1;
@@ -705,82 +705,82 @@ LABEL_19:
     v94 = v14;
     v95 = v15;
 LABEL_21:
-    v42 = [v7 captureUpdateData];
-    v43 = [v42 earCaptureUpdateData];
-    v44 = [v43 leftEarStatusList];
+    captureUpdateData7 = [v7 captureUpdateData];
+    earCaptureUpdateData2 = [captureUpdateData7 earCaptureUpdateData];
+    leftEarStatusList = [earCaptureUpdateData2 leftEarStatusList];
 
-    v45 = [v7 captureUpdateData];
-    v46 = [v45 earCaptureUpdateData];
-    v47 = [v46 rightEarStatusList];
+    captureUpdateData8 = [v7 captureUpdateData];
+    earCaptureUpdateData3 = [captureUpdateData8 earCaptureUpdateData];
+    rightEarStatusList = [earCaptureUpdateData3 rightEarStatusList];
 
     v48 = [[NSDictionary alloc] initWithObjects:&__NSArray0__struct forKeys:&__NSArray0__struct];
-    v49 = [v7 captureUpdateData];
-    v50 = [v49 earCaptureUpdateData];
-    v51 = [v50 trackedData];
+    captureUpdateData9 = [v7 captureUpdateData];
+    earCaptureUpdateData4 = [captureUpdateData9 earCaptureUpdateData];
+    trackedData4 = [earCaptureUpdateData4 trackedData];
 
-    if (!v51)
+    if (!trackedData4)
     {
       v84 = 0;
       x = CGRectZero.origin.x;
       y = CGRectZero.origin.y;
       width = CGRectZero.size.width;
       height = CGRectZero.size.height;
-      v83 = 1;
+      error = 1;
       v61 = -100.0;
       v67 = -100.0;
       v15 = v95;
       goto LABEL_37;
     }
 
-    v52 = [v7 captureUpdateData];
-    v53 = [v52 earCaptureUpdateData];
-    v54 = [v53 trackedData];
-    v55 = [v54 detectionData];
-    v93 = [v55 earSide];
+    captureUpdateData10 = [v7 captureUpdateData];
+    earCaptureUpdateData5 = [captureUpdateData10 earCaptureUpdateData];
+    trackedData5 = [earCaptureUpdateData5 trackedData];
+    detectionData = [trackedData5 detectionData];
+    earSide = [detectionData earSide];
 
-    v56 = [v7 captureUpdateData];
-    v57 = [v56 earCaptureUpdateData];
-    v58 = [v57 trackedData];
-    v59 = [v58 detectionData];
-    [v59 yawAngle];
+    captureUpdateData11 = [v7 captureUpdateData];
+    earCaptureUpdateData6 = [captureUpdateData11 earCaptureUpdateData];
+    trackedData6 = [earCaptureUpdateData6 trackedData];
+    detectionData2 = [trackedData6 detectionData];
+    [detectionData2 yawAngle];
     v61 = v60;
 
-    v62 = [v7 captureUpdateData];
-    v63 = [v62 earCaptureUpdateData];
-    v64 = [v63 trackedData];
-    v65 = [v64 detectionData];
-    [v65 pitchAngle];
+    captureUpdateData12 = [v7 captureUpdateData];
+    earCaptureUpdateData7 = [captureUpdateData12 earCaptureUpdateData];
+    trackedData7 = [earCaptureUpdateData7 trackedData];
+    detectionData3 = [trackedData7 detectionData];
+    [detectionData3 pitchAngle];
     v67 = v66;
 
-    v68 = [v7 captureUpdateData];
-    v69 = [v68 earCaptureUpdateData];
-    v70 = [v69 trackedData];
-    v71 = [v70 detectionData];
-    [v71 boundingBox];
+    captureUpdateData13 = [v7 captureUpdateData];
+    earCaptureUpdateData8 = [captureUpdateData13 earCaptureUpdateData];
+    trackedData8 = [earCaptureUpdateData8 trackedData];
+    detectionData4 = [trackedData8 detectionData];
+    [detectionData4 boundingBox];
     x = v72;
     y = v74;
     width = v76;
     height = v78;
 
-    v80 = [v7 captureUpdateData];
-    v81 = [v80 earCaptureUpdateData];
-    v82 = [v81 trackedData];
-    v83 = [v82 error];
+    captureUpdateData14 = [v7 captureUpdateData];
+    earCaptureUpdateData9 = [captureUpdateData14 earCaptureUpdateData];
+    trackedData9 = [earCaptureUpdateData9 trackedData];
+    error = [trackedData9 error];
 
-    if (v83 > 2)
+    if (error > 2)
     {
       v15 = v95;
-      if (v83 != 3)
+      if (error != 3)
       {
-        v84 = v93;
-        if (v83 == 4)
+        v84 = earSide;
+        if (error == 4)
         {
           goto LABEL_37;
         }
 
-        if (v83 == 8)
+        if (error == 8)
         {
-          v83 = 0;
+          error = 0;
           goto LABEL_37;
         }
 
@@ -791,38 +791,38 @@ LABEL_21:
     else
     {
       v15 = v95;
-      if (v83)
+      if (error)
       {
-        v84 = v93;
-        if (v83 == 1)
+        v84 = earSide;
+        if (error == 1)
         {
-          v83 = 2;
+          error = 2;
           goto LABEL_37;
         }
 
-        if (v83 == 2)
+        if (error == 2)
         {
-          v83 = 5;
+          error = 5;
 LABEL_37:
-          v85 = [[HRTFEnrollmentEarPoseStatus alloc] initWithLeftYawPose:v44 rightYawPose:v47 leftpitchPose:v48 rightpitchPose:v48 earSide:v84 yawAngle:v83 pitchAngle:v61 earBoundingBox:v67 earCaptureStatus:x, y, width, height];
+          height = [[HRTFEnrollmentEarPoseStatus alloc] initWithLeftYawPose:leftEarStatusList rightYawPose:rightEarStatusList leftpitchPose:v48 rightpitchPose:v48 earSide:v84 yawAngle:error pitchAngle:v61 earBoundingBox:v67 earCaptureStatus:x, y, width, height];
 
           v14 = v94;
           goto LABEL_38;
         }
 
 LABEL_35:
-        v83 = 7;
+        error = 7;
         goto LABEL_37;
       }
 
-      v83 = 1;
+      error = 1;
     }
 
-    v84 = v93;
+    v84 = earSide;
     goto LABEL_37;
   }
 
-  v85 = 0;
+  height = 0;
 LABEL_38:
   if (v9 == 2)
   {
@@ -836,10 +836,10 @@ LABEL_38:
 
   if (v9 == 3)
   {
-    v87 = [v7 postProcessUpdateData];
-    v88 = [v87 result];
+    postProcessUpdateData = [v7 postProcessUpdateData];
+    result = [postProcessUpdateData result];
 
-    if (!v88)
+    if (!result)
     {
       if (qword_1000164B0 != -1)
       {
@@ -855,7 +855,7 @@ LABEL_38:
     }
 
     resultData = self->_resultData;
-    self->_resultData = v88;
+    self->_resultData = result;
 
     [(HRTFEnrollmentService *)self xpcConnectionUpdateResultSize:[(NSData *)self->_resultData length]];
     *&v91 = v10;
@@ -865,7 +865,7 @@ LABEL_38:
   else
   {
     *&v41 = v86;
-    [(HRTFEnrollmentService *)self xpcConnectionUpdateState:v15 withProgress:v14 facePoseStatus:v85 earPoseStatus:0 errorStatus:v41];
+    [(HRTFEnrollmentService *)self xpcConnectionUpdateState:v15 withProgress:v14 facePoseStatus:height earPoseStatus:0 errorStatus:v41];
     if (qword_1000164B0 != -1)
     {
       sub_100008710();
@@ -885,9 +885,9 @@ LABEL_38:
 LABEL_53:
 }
 
-- (void)startSessionWithTerminationCallback:(id)a3
+- (void)startSessionWithTerminationCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -895,8 +895,8 @@ LABEL_53:
   v7[2] = sub_1000062E4;
   v7[3] = &unk_100010578;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = callbackCopy;
+  v6 = callbackCopy;
   objc_copyWeak(&v9, &location);
   dispatch_sync(queue, v7);
   objc_destroyWeak(&v9);
@@ -904,14 +904,14 @@ LABEL_53:
   objc_destroyWeak(&location);
 }
 
-- (void)startSessionWithTerminationCallback:(id)a3 withCallback:(id)a4
+- (void)startSessionWithTerminationCallback:(id)callback withCallback:(id)withCallback
 {
-  objc_storeStrong(&self->_downloadedModelPath, a3);
+  objc_storeStrong(&self->_downloadedModelPath, callback);
 
   [(HRTFEnrollmentService *)self startSessionWithTerminationCallback:&stru_100010598];
 }
 
-- (void)stopSession:(id)a3
+- (void)stopSession:(id)session
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -919,49 +919,49 @@ LABEL_53:
   block[2] = sub_1000067E4;
   block[3] = &unk_1000103F8;
   block[4] = self;
-  v4 = a3;
+  sessionCopy = session;
   dispatch_sync(queue, block);
-  v4[2](v4);
+  sessionCopy[2](sessionCopy);
 }
 
-- (void)processCaptureData:(id)a3 withFaceData:(id)a4
+- (void)processCaptureData:(id)data withFaceData:(id)faceData
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  faceDataCopy = faceData;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006994;
   block[3] = &unk_1000105C0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = self;
+  v13 = dataCopy;
+  v14 = faceDataCopy;
+  v9 = faceDataCopy;
+  v10 = dataCopy;
+  selfCopy = self;
   dispatch_sync(queue, block);
 }
 
-- (void)requestDataWithOffset:(unint64_t)a3 length:(unint64_t)a4 withCompletion:(id)a5
+- (void)requestDataWithOffset:(unint64_t)offset length:(unint64_t)length withCompletion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100006D60;
   v11[3] = &unk_1000105E8;
-  v13 = a4;
-  v14 = a3;
+  lengthCopy = length;
+  offsetCopy = offset;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = completionCopy;
+  v10 = completionCopy;
   dispatch_sync(queue, v11);
 }
 
-- (void)downloadAssetV2:(unint64_t)a3 withCompletion:(id)a4
+- (void)downloadAssetV2:(unint64_t)v2 withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = objc_retainBlock(v6);
+  completionCopy = completion;
+  v7 = objc_retainBlock(completionCopy);
   downloadAssetsCallbackV2 = self->_downloadAssetsCallbackV2;
   self->_downloadAssetsCallbackV2 = v7;
 
@@ -1027,10 +1027,10 @@ LABEL_53:
   if ([v9 wasLocal])
   {
     *(v69 + 24) = 1;
-    v12 = [v9 getLocalFileUrl];
-    v13 = [v12 path];
+    getLocalFileUrl = [v9 getLocalFileUrl];
+    path = [getLocalFileUrl path];
     v14 = v57[5];
-    v57[5] = v13;
+    v57[5] = path;
 
     if (qword_1000164B0 != -1)
     {
@@ -1059,15 +1059,15 @@ LABEL_53:
 LABEL_15:
     _os_log_impl(&_mh_execute_header, v20, v21, v19, buf, v22);
 LABEL_16:
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, *(v69 + 24), v57[5], v63[5], v53[3]);
+      (*(completionCopy + 2))(completionCopy, *(v69 + 24), v57[5], v63[5], v53[3]);
     }
 
     goto LABEL_32;
   }
 
-  v24 = [(HRTFEnrollmentService *)self getAssetDownloadOptions];
+  getAssetDownloadOptions = [(HRTFEnrollmentService *)self getAssetDownloadOptions];
   if (qword_1000164B0 != -1)
   {
     sub_1000086E8();
@@ -1076,12 +1076,12 @@ LABEL_16:
   v25 = qword_1000164A8;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [v9 assetType];
-    v27 = [v9 assetId];
+    assetType = [v9 assetType];
+    assetId = [v9 assetId];
     *buf = 138412546;
-    *&buf[4] = v26;
+    *&buf[4] = assetType;
     *&buf[12] = 2112;
-    *&buf[14] = v27;
+    *&buf[14] = assetId;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Downloading HRTF asset with type: %@ and id: %@", buf, 0x16u);
   }
 
@@ -1095,7 +1095,7 @@ LABEL_16:
   v50 = 1;
   v28 = dispatch_group_create();
   v29 = v28;
-  if (a3 == 1)
+  if (v2 == 1)
   {
     dispatch_group_enter(v28);
   }
@@ -1108,17 +1108,17 @@ LABEL_16:
   v41 = &v52;
   v42 = &v62;
   v36 = v9;
-  v30 = v6;
+  v30 = completionCopy;
   v43 = &v68;
   v44 = &v56;
   v39 = v30;
-  v37 = self;
+  selfCopy = self;
   v45 = &v47;
-  v46 = a3;
+  v2Copy = v2;
   v31 = v29;
   v38 = v31;
-  [v36 startDownload:v24 completionWithError:v35];
-  if (a3 == 1)
+  [v36 startDownload:getAssetDownloadOptions completionWithError:v35];
+  if (v2 == 1)
   {
     v32 = dispatch_time(0, 5000000);
     dispatch_group_wait(v31, v32);
@@ -1151,10 +1151,10 @@ LABEL_32:
   _Block_object_dispose(&v68, 8);
 }
 
-- (void)downloadAsset:(unint64_t)a3 withCompletion:(id)a4
+- (void)downloadAsset:(unint64_t)asset withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = objc_retainBlock(v6);
+  completionCopy = completion;
+  v7 = objc_retainBlock(completionCopy);
   downloadAssetsCallback = self->_downloadAssetsCallback;
   self->_downloadAssetsCallback = v7;
 
@@ -1216,10 +1216,10 @@ LABEL_32:
   if ([v9 wasLocal])
   {
     *(v64 + 24) = 1;
-    v12 = [v9 getLocalFileUrl];
-    v13 = [v12 path];
+    getLocalFileUrl = [v9 getLocalFileUrl];
+    path = [getLocalFileUrl path];
     v14 = v52[5];
-    v52[5] = v13;
+    v52[5] = path;
 
     if (qword_1000164B0 != -1)
     {
@@ -1248,15 +1248,15 @@ LABEL_32:
 LABEL_15:
     _os_log_impl(&_mh_execute_header, v20, v21, v19, buf, v22);
 LABEL_16:
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, *(v64 + 24), v52[5], v58[5]);
+      (*(completionCopy + 2))(completionCopy, *(v64 + 24), v52[5], v58[5]);
     }
 
     goto LABEL_32;
   }
 
-  v24 = [(HRTFEnrollmentService *)self getAssetDownloadOptions];
+  getAssetDownloadOptions = [(HRTFEnrollmentService *)self getAssetDownloadOptions];
   if (qword_1000164B0 != -1)
   {
     sub_1000086E8();
@@ -1265,12 +1265,12 @@ LABEL_16:
   v25 = qword_1000164A8;
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
-    v26 = [v9 assetType];
-    v27 = [v9 assetId];
+    assetType = [v9 assetType];
+    assetId = [v9 assetId];
     *buf = 138412546;
-    *&buf[4] = v26;
+    *&buf[4] = assetType;
     *&buf[12] = 2112;
-    *&buf[14] = v27;
+    *&buf[14] = assetId;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Downloading HRTF asset with type: %@ and id: %@", buf, 0x16u);
   }
 
@@ -1284,7 +1284,7 @@ LABEL_16:
   v49 = 1;
   v28 = dispatch_group_create();
   v29 = v28;
-  if (a3 == 1)
+  if (asset == 1)
   {
     dispatch_group_enter(v28);
   }
@@ -1296,17 +1296,17 @@ LABEL_16:
   v40 = buf;
   v41 = &v57;
   v36 = v9;
-  v30 = v6;
+  v30 = completionCopy;
   v42 = &v63;
   v43 = &v51;
   v39 = v30;
-  v37 = self;
+  selfCopy = self;
   v44 = &v46;
-  v45 = a3;
+  assetCopy = asset;
   v31 = v29;
   v38 = v31;
-  [v36 startDownload:v24 completionWithError:v35];
-  if (a3 == 1)
+  [v36 startDownload:getAssetDownloadOptions completionWithError:v35];
+  if (asset == 1)
   {
     v32 = dispatch_time(0, 5000000);
     dispatch_group_wait(v31, v32);

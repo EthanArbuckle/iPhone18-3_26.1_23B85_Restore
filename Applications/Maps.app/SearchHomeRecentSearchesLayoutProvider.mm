@@ -1,16 +1,16 @@
 @interface SearchHomeRecentSearchesLayoutProvider
-- (SearchHomeRecentSearchesLayoutProvider)initWithParentViewController:(id)a3;
+- (SearchHomeRecentSearchesLayoutProvider)initWithParentViewController:(id)controller;
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomeRecentSearchesLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v11 = a3;
-  [(SearchHomeRecentSearchesLayoutProvider *)self setDeletionBlock:a6];
+  environmentCopy = environment;
+  [(SearchHomeRecentSearchesLayoutProvider *)self setDeletionBlock:block];
   v12 = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:0];
   [v12 setHeaderMode:1];
   v13 = +[UIColor clearColor];
@@ -18,11 +18,11 @@
 
   [v12 setShowsSeparators:0];
   [v12 setHeaderTopPadding:0.0];
-  v14 = [NSCollectionLayoutSection sectionWithListConfiguration:v12 layoutEnvironment:v11];
+  v14 = [NSCollectionLayoutSection sectionWithListConfiguration:v12 layoutEnvironment:environmentCopy];
 
   [v14 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
   v15 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
-  v16 = [NSCollectionLayoutDimension estimatedDimension:a4];
+  v16 = [NSCollectionLayoutDimension estimatedDimension:height];
   v17 = [NSCollectionLayoutSize sizeWithWidthDimension:v15 heightDimension:v16];
 
   v18 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v17 elementKind:UICollectionElementKindSectionHeader alignment:1];
@@ -35,13 +35,13 @@
   return v14;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  cellReuseIdentifier = [(SearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
   v27[0] = 0;
   v27[1] = v27;
@@ -68,14 +68,14 @@
   v18[4] = v27;
   v18[5] = v25;
   v18[6] = &v19;
-  [v10 enumerateObjectsUsingBlock:v18];
+  [itemCopy enumerateObjectsUsingBlock:v18];
   v13 = v20[5];
   WeakRetained = objc_loadWeakRetained(&self->_recentsDelegate);
-  v15 = [(SearchHomeRecentSearchesLayoutProvider *)self deletionBlock];
-  [v12 configureUsing:v13 delegate:WeakRetained deletionBlock:v15];
+  deletionBlock = [(SearchHomeRecentSearchesLayoutProvider *)self deletionBlock];
+  [v12 configureUsing:v13 delegate:WeakRetained deletionBlock:deletionBlock];
 
-  v16 = [(SearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
-  [v12 setAccessibilityIdentifier:v16];
+  cellReuseIdentifier2 = [(SearchHomeRecentSearchesLayoutProvider *)self cellReuseIdentifier];
+  [v12 setAccessibilityIdentifier:cellReuseIdentifier2];
 
   _Block_object_dispose(&v19, 8);
   _Block_object_dispose(v25, 8);
@@ -93,16 +93,16 @@
   return v2;
 }
 
-- (SearchHomeRecentSearchesLayoutProvider)initWithParentViewController:(id)a3
+- (SearchHomeRecentSearchesLayoutProvider)initWithParentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SearchHomeRecentSearchesLayoutProvider;
   v5 = [(SearchHomeRecentSearchesLayoutProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_recentsDelegate, v4);
+    objc_storeWeak(&v5->_recentsDelegate, controllerCopy);
   }
 
   return v6;

@@ -1,5 +1,5 @@
 @interface TSCHChartSeriesTypePie
-- (BOOL)floatValueForLabelExplosion:(float *)a3 series:(id)a4;
+- (BOOL)floatValueForLabelExplosion:(float *)explosion series:(id)series;
 - (TSCHChartSeriesTypePie)init;
 - (id)elementBuilder;
 - (id)g_genericToSpecificPropertyMapPie;
@@ -7,8 +7,8 @@
 - (id)inspectorLocalizedValueLabelsTabName;
 - (id)seriesFillLabelUIString;
 - (id)userInterfaceName;
-- (id)userInterfaceNameForLabelPosition:(id)a3;
-- (unsigned)filterChartLabelPosition:(unsigned int)a3 forSeries:(id)a4;
+- (id)userInterfaceNameForLabelPosition:(id)position;
+- (unsigned)filterChartLabelPosition:(unsigned int)position forSeries:(id)series;
 @end
 
 @implementation TSCHChartSeriesTypePie
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (id)userInterfaceNameForLabelPosition:(id)a3
+- (id)userInterfaceNameForLabelPosition:(id)position
 {
-  v4 = a3;
-  v9 = objc_msgSend_intValue(v4, v5, v6, v7, v8);
+  positionCopy = position;
+  v9 = objc_msgSend_intValue(positionCopy, v5, v6, v7, v8);
   if (v9 == objc_msgSend_filterChartLabelPosition_forSeries_(self, v10, v11, v12, v13, 0, 0))
   {
     v18 = sub_276360774(v15, v16, v17);
@@ -67,22 +67,22 @@ LABEL_8:
   return v39;
 }
 
-- (unsigned)filterChartLabelPosition:(unsigned int)a3 forSeries:(id)a4
+- (unsigned)filterChartLabelPosition:(unsigned int)position forSeries:(id)series
 {
-  v4 = a3;
-  v5 = a4;
-  v10 = v5;
-  if (v4)
+  positionCopy = position;
+  seriesCopy = series;
+  v10 = seriesCopy;
+  if (positionCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v4 & 2;
+    v11 = positionCopy & 2;
   }
 
-  v12 = objc_msgSend_model(v5, v6, v7, v8, v9);
+  v12 = objc_msgSend_model(seriesCopy, v6, v7, v8, v9);
   v17 = objc_msgSend_chartInfo(v12, v13, v14, v15, v16);
 
   if ((objc_msgSend_isSingleCircleSpecialCaseOutSeries_(v17, v18, v19, v20, v21, 0) & 1) == 0)
@@ -153,10 +153,10 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)floatValueForLabelExplosion:(float *)a3 series:(id)a4
+- (BOOL)floatValueForLabelExplosion:(float *)explosion series:(id)series
 {
-  v6 = a4;
-  if (!a3)
+  seriesCopy = series;
+  if (!explosion)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCHChartSeriesTypePie(PieExplosionValueImplementation) floatValueForLabelExplosion:series:]");
@@ -167,22 +167,22 @@ LABEL_8:
   }
 
   LODWORD(v7) = 2143289344;
-  objc_msgSend_floatValueForProperty_defaultValue_(v6, v5, v7, v8, v9, 1163);
-  *a3 = *&v25;
-  v29 = objc_msgSend_chartInfo(v6, v26, v25, v27, v28);
+  objc_msgSend_floatValueForProperty_defaultValue_(seriesCopy, v5, v7, v8, v9, 1163);
+  *explosion = *&v25;
+  v29 = objc_msgSend_chartInfo(seriesCopy, v26, v25, v27, v28);
   v34 = objc_msgSend_chartType(v29, v30, v31, v32, v33);
   v39 = objc_msgSend_supportsPlaceTitleAtCenter(v34, v35, v36, v37, v38);
 
-  v44 = objc_msgSend_chartInfo(v6, v40, v41, v42, v43);
+  v44 = objc_msgSend_chartInfo(seriesCopy, v40, v41, v42, v43);
   v49 = objc_msgSend_chartType(v44, v45, v46, v47, v48);
   v54 = objc_msgSend_supportsCalloutLines(v49, v50, v51, v52, v53);
 
   if (v54)
   {
-    v59 = objc_msgSend_chartInfo(v6, v55, v56, v57, v58);
+    v59 = objc_msgSend_chartInfo(seriesCopy, v55, v56, v57, v58);
     v64 = objc_msgSend_intValueForProperty_defaultValue_(v59, v60, v61, v62, v63, 1081, 1);
 
-    v69 = objc_msgSend_intValueForProperty_defaultValue_(v6, v65, v66, v67, v68, 1138, 2);
+    v69 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v65, v66, v67, v68, 1138, 2);
     v71 = v64 == 1 && v69 != 0;
   }
 
@@ -191,7 +191,7 @@ LABEL_8:
     v71 = 0;
   }
 
-  v72 = objc_msgSend_model(v6, v55, v56, v57, v58);
+  v72 = objc_msgSend_model(seriesCopy, v55, v56, v57, v58);
   if ((objc_msgSend_numberOfSeries(v72, v73, v74, v75, v76) != 1) | v39 & 1 || v71)
   {
   }
@@ -199,7 +199,7 @@ LABEL_8:
   else
   {
 
-    *a3 = 0.0;
+    *explosion = 0.0;
   }
 
   return 1;

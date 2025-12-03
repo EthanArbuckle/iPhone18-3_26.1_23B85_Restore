@@ -1,14 +1,14 @@
 @interface CSLPRFApp
-+ (id)appWithACXRemoteApplication:(id)a3;
-+ (id)appWithApplicationRecord:(id)a3;
-+ (id)appWithBBSectionInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)appWithACXRemoteApplication:(id)application;
++ (id)appWithApplicationRecord:(id)record;
++ (id)appWithBBSectionInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)supportsSmartStack;
-- (CSLPRFApp)initWithBundleIdentifier:(id)a3 localizedName:(id)a4 sdkVersion:(id)a5 supportsAlwaysOnDisplay:(BOOL)a6 defaultsToPrivateAlwaysOnDisplayTreatment:(BOOL)a7 applicationRecord:(id)a8 remoteApplicationRecord:(id)a9 bbSectionInfo:(id)a10;
+- (CSLPRFApp)initWithBundleIdentifier:(id)identifier localizedName:(id)name sdkVersion:(id)version supportsAlwaysOnDisplay:(BOOL)display defaultsToPrivateAlwaysOnDisplayTreatment:(BOOL)treatment applicationRecord:(id)record remoteApplicationRecord:(id)applicationRecord bbSectionInfo:(id)self0;
 - (LSApplicationRecord)applicationRecord;
 - (NSMutableArray)unionedBackgroundModes;
 - (NSString)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
@@ -16,30 +16,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_localizedName];
-  v5 = [v3 appendObject:self->_bundleIdentifier];
-  v6 = [v3 appendObject:self->_SDKVersion];
-  v7 = [v3 appendBool:self->_supportsAlwaysOnDisplay];
-  v8 = [v3 appendBool:self->_defaultsToPrivateAlwaysOnDisplayTreatment];
-  v9 = [v3 appendBool:self->_local];
-  v10 = [v3 appendObject:self->_URL];
-  v11 = [v3 appendObject:self->_bbSectionInfo];
-  v12 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_localizedName];
+  v5 = [builder appendObject:self->_bundleIdentifier];
+  v6 = [builder appendObject:self->_SDKVersion];
+  v7 = [builder appendBool:self->_supportsAlwaysOnDisplay];
+  v8 = [builder appendBool:self->_defaultsToPrivateAlwaysOnDisplayTreatment];
+  v9 = [builder appendBool:self->_local];
+  v10 = [builder appendObject:self->_URL];
+  v11 = [builder appendObject:self->_bbSectionInfo];
+  v12 = [builder hash];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   localizedName = self->_localizedName;
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __21__CSLPRFApp_isEqual___block_invoke;
   v48[3] = &unk_278745500;
-  v7 = v4;
+  v7 = equalCopy;
   v49 = v7;
   v8 = [v5 appendObject:localizedName counterpart:v48];
   bundleIdentifier = self->_bundleIdentifier;
@@ -113,21 +113,21 @@
   v8 = [v3 appendBool:self->_defaultsToPrivateAlwaysOnDisplayTreatment withName:@"privateByDefault"];
   v9 = [v3 appendBool:self->_local withName:@"local" ifEqualTo:1];
   v10 = [v3 appendBool:self->_isBBSourcedApplication withName:@"bbSourced" ifEqualTo:1];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 - (BOOL)supportsSmartStack
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v3 = [(CSLPRFApp *)self unionedBackgroundModes];
+  unionedBackgroundModes = [(CSLPRFApp *)self unionedBackgroundModes];
   v24[0] = @"com.apple.Fitness";
   v24[1] = @"com.apple.Bridge";
   v24[2] = @"com.apple.NanoNowPlaying";
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
-  v5 = [(CSLPRFApp *)self bundleIdentifier];
-  v6 = [v4 containsObject:v5];
+  bundleIdentifier = [(CSLPRFApp *)self bundleIdentifier];
+  v6 = [v4 containsObject:bundleIdentifier];
 
   if (v6)
   {
@@ -149,10 +149,10 @@
     v23[10] = @"com.apple.NanoAllWorkoutApps";
     v23[11] = @"com.apple.NanoPhone";
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:12];
-    v9 = [(CSLPRFApp *)self bundleIdentifier];
-    LOBYTE(v10) = [v8 containsObject:v9];
+    bundleIdentifier2 = [(CSLPRFApp *)self bundleIdentifier];
+    LOBYTE(v10) = [v8 containsObject:bundleIdentifier2];
 
-    if (v3 && (v10 & 1) == 0)
+    if (unionedBackgroundModes && (v10 & 1) == 0)
     {
       if (supportsSmartStack_onceToken != -1)
       {
@@ -163,7 +163,7 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v11 = v3;
+      v11 = unionedBackgroundModes;
       v10 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
@@ -197,10 +197,10 @@
 LABEL_17:
     }
 
-    v14 = [(CSLPRFApp *)self applicationRecord];
-    v15 = [v14 supportsLiveActivities];
+    applicationRecord = [(CSLPRFApp *)self applicationRecord];
+    supportsLiveActivities = [applicationRecord supportsLiveActivities];
 
-    v7 = v10 | v15;
+    v7 = v10 | supportsLiveActivities;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -222,52 +222,52 @@ void __31__CSLPRFApp_supportsSmartStack__block_invoke()
 
 - (NSMutableArray)unionedBackgroundModes
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CSLPRFApp *)self applicationRecord];
-  v5 = [v4 UIBackgroundModes];
-  [v3 addObjectsFromArray:v5];
+  array = [MEMORY[0x277CBEB18] array];
+  applicationRecord = [(CSLPRFApp *)self applicationRecord];
+  uIBackgroundModes = [applicationRecord UIBackgroundModes];
+  [array addObjectsFromArray:uIBackgroundModes];
 
   v6 = NSSelectorFromString(&cfstr_Uibackgroundmo.isa);
-  v7 = [(ACXRemoteApplication *)self->_remoteApplicationRecord backgroundModes];
-  [v3 addObjectsFromArray:v7];
+  backgroundModes = [(ACXRemoteApplication *)self->_remoteApplicationRecord backgroundModes];
+  [array addObjectsFromArray:backgroundModes];
 
-  v8 = [(CSLPRFApp *)self remoteApplicationRecord];
+  remoteApplicationRecord = [(CSLPRFApp *)self remoteApplicationRecord];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    [v3 addObjectsFromArray:{-[ACXRemoteApplication performSelector:](self->_remoteApplicationRecord, "performSelector:", v6)}];
+    [array addObjectsFromArray:{-[ACXRemoteApplication performSelector:](self->_remoteApplicationRecord, "performSelector:", v6)}];
   }
 
-  return v3;
+  return array;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(CSLPRFApp *)self localizedName];
-  v6 = [v4 localizedName];
-  v7 = [v5 compare:v6 options:1];
+  compareCopy = compare;
+  localizedName = [(CSLPRFApp *)self localizedName];
+  localizedName2 = [compareCopy localizedName];
+  v7 = [localizedName compare:localizedName2 options:1];
 
   if (!v7)
   {
-    v8 = [(CSLPRFApp *)self bundleIdentifier];
-    v9 = [v4 bundleIdentifier];
-    v7 = [v8 compare:v9 options:1];
+    bundleIdentifier = [(CSLPRFApp *)self bundleIdentifier];
+    bundleIdentifier2 = [compareCopy bundleIdentifier];
+    v7 = [bundleIdentifier compare:bundleIdentifier2 options:1];
   }
 
   return v7;
 }
 
-- (CSLPRFApp)initWithBundleIdentifier:(id)a3 localizedName:(id)a4 sdkVersion:(id)a5 supportsAlwaysOnDisplay:(BOOL)a6 defaultsToPrivateAlwaysOnDisplayTreatment:(BOOL)a7 applicationRecord:(id)a8 remoteApplicationRecord:(id)a9 bbSectionInfo:(id)a10
+- (CSLPRFApp)initWithBundleIdentifier:(id)identifier localizedName:(id)name sdkVersion:(id)version supportsAlwaysOnDisplay:(BOOL)display defaultsToPrivateAlwaysOnDisplayTreatment:(BOOL)treatment applicationRecord:(id)record remoteApplicationRecord:(id)applicationRecord bbSectionInfo:(id)self0
 {
   v55 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  versionCopy = version;
+  recordCopy = record;
+  applicationRecordCopy = applicationRecord;
+  infoCopy = info;
   v50.receiver = self;
   v50.super_class = CSLPRFApp;
   v21 = [(CSLPRFApp *)&v50 init];
@@ -278,62 +278,62 @@ void __31__CSLPRFApp_supportsSmartStack__block_invoke()
   }
 
   v21->_lock._os_unfair_lock_opaque = 0;
-  v23 = [v48 copy];
+  v23 = [identifierCopy copy];
   bundleIdentifier = v22->_bundleIdentifier;
   v22->_bundleIdentifier = v23;
 
-  v25 = [v16 copy];
+  v25 = [nameCopy copy];
   localizedName = v22->_localizedName;
   v22->_localizedName = v25;
 
-  v27 = [v17 copy];
+  v27 = [versionCopy copy];
   SDKVersion = v22->_SDKVersion;
   v22->_SDKVersion = v27;
 
-  v22->_supportsAlwaysOnDisplay = a6;
-  v22->_defaultsToPrivateAlwaysOnDisplayTreatment = a7;
-  if (v18)
+  v22->_supportsAlwaysOnDisplay = display;
+  v22->_defaultsToPrivateAlwaysOnDisplayTreatment = treatment;
+  if (recordCopy)
   {
     v22->_local = 1;
-    objc_storeWeak(&v22->_lock_applicationRecord, v18);
-    v29 = [v18 URL];
+    objc_storeWeak(&v22->_lock_applicationRecord, recordCopy);
+    v29 = [recordCopy URL];
     URL = v22->_URL;
     v22->_URL = v29;
 
-    v31 = [v18 counterpartIdentifiers];
-    v32 = [v31 copy];
+    counterpartIdentifiers = [recordCopy counterpartIdentifiers];
+    v32 = [counterpartIdentifiers copy];
     counterpartIdentifiers = v22->_counterpartIdentifiers;
     v22->_counterpartIdentifiers = v32;
 
-    v34 = [v18 applicationState];
-    if ([v34 isInstalled])
+    applicationState = [recordCopy applicationState];
+    if ([applicationState isInstalled])
     {
       v22->_isRemovedSystemApp = 0;
     }
 
     else
     {
-      v35 = [v18 applicationState];
-      v22->_isRemovedSystemApp = [v35 isPlaceholder] ^ 1;
+      applicationState2 = [recordCopy applicationState];
+      v22->_isRemovedSystemApp = [applicationState2 isPlaceholder] ^ 1;
     }
   }
 
-  objc_storeStrong(&v22->_remoteApplicationRecord, a9);
-  v36 = [(CSLPRFApp *)v22 applicationRecord];
-  if (!v36)
+  objc_storeStrong(&v22->_remoteApplicationRecord, applicationRecord);
+  applicationRecord = [(CSLPRFApp *)v22 applicationRecord];
+  if (!applicationRecord)
   {
     if (v22->_remoteApplicationRecord)
     {
       goto LABEL_10;
     }
 
-    v39 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v36 = [v39 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    applicationRecord = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-    v40 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
     v41 = v22->_bundleIdentifier;
     v49 = 0;
-    v42 = [v40 applicationOnPairedDevice:v36 withBundleID:v41 error:&v49];
+    v42 = [mEMORY[0x277CEAF80] applicationOnPairedDevice:applicationRecord withBundleID:v41 error:&v49];
     v43 = v49;
     remoteApplicationRecord = v22->_remoteApplicationRecord;
     v22->_remoteApplicationRecord = v42;
@@ -355,9 +355,9 @@ void __31__CSLPRFApp_supportsSmartStack__block_invoke()
   }
 
 LABEL_10:
-  v22->_isBBSourcedApplication = v20 != 0;
-  objc_storeStrong(&v22->_bbSectionInfo, a10);
-  if (!v19 && !v22->_local && !v22->_isBBSourcedApplication)
+  v22->_isBBSourcedApplication = infoCopy != 0;
+  objc_storeStrong(&v22->_bbSectionInfo, info);
+  if (!applicationRecordCopy && !v22->_local && !v22->_isBBSourcedApplication)
   {
     v22->_local = 1;
   }
@@ -396,14 +396,14 @@ LABEL_14:
   return WeakRetained;
 }
 
-+ (id)appWithBBSectionInfo:(id)a3
++ (id)appWithBBSectionInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sectionID];
-  v6 = [v4 sectionID];
+  infoCopy = info;
+  sectionID = [infoCopy sectionID];
+  sectionID2 = [infoCopy sectionID];
   v18 = 0;
-  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v18];
+  v7 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:sectionID2 allowPlaceholder:0 error:&v18];
   v8 = v18;
   if (v8)
   {
@@ -411,18 +411,18 @@ LABEL_14:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = v6;
+      v20 = sectionID2;
       v21 = 2112;
       v22 = v8;
       _os_log_error_impl(&dword_22CE92000, v9, OS_LOG_TYPE_ERROR, "error retrieving application record with bundleID:%@ error:%@", buf, 0x16u);
     }
   }
 
-  v10 = [v4 displayName];
+  displayName = [infoCopy displayName];
 
-  if (v10)
+  if (displayName)
   {
-    v11 = [v4 displayName];
+    displayName2 = [infoCopy displayName];
   }
 
   else
@@ -432,42 +432,42 @@ LABEL_14:
       goto LABEL_10;
     }
 
-    v11 = [v7 localizedName];
+    displayName2 = [v7 localizedName];
   }
 
-  v12 = v11;
+  v12 = displayName2;
 
-  v5 = v12;
+  sectionID = v12;
 LABEL_10:
-  v13 = [a1 alloc];
-  v14 = [v7 SDKVersion];
-  v15 = [v13 initWithBundleIdentifier:v6 localizedName:v5 sdkVersion:v14 supportsAlwaysOnDisplay:objc_msgSend(v7 defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(v7 bbSectionInfo:{"defaultsToPrivateAlwaysOnDisplayTreatment"), v7, v4}];
+  v13 = [self alloc];
+  sDKVersion = [v7 SDKVersion];
+  v15 = [v13 initWithBundleIdentifier:sectionID2 localizedName:sectionID sdkVersion:sDKVersion supportsAlwaysOnDisplay:objc_msgSend(v7 defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(v7 bbSectionInfo:{"defaultsToPrivateAlwaysOnDisplayTreatment"), v7, infoCopy}];
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-+ (id)appWithApplicationRecord:(id)a3
++ (id)appWithApplicationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v4 localizedName];
-  v8 = [v4 SDKVersion];
-  v9 = [v5 initWithBundleIdentifier:v6 localizedName:v7 sdkVersion:v8 supportsAlwaysOnDisplay:objc_msgSend(v4 defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(v4 bbSectionInfo:{"defaultsToPrivateAlwaysOnDisplayTreatment"), v4, 0}];
+  recordCopy = record;
+  v5 = [self alloc];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  localizedName = [recordCopy localizedName];
+  sDKVersion = [recordCopy SDKVersion];
+  v9 = [v5 initWithBundleIdentifier:bundleIdentifier localizedName:localizedName sdkVersion:sDKVersion supportsAlwaysOnDisplay:objc_msgSend(recordCopy defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(recordCopy bbSectionInfo:{"defaultsToPrivateAlwaysOnDisplayTreatment"), recordCopy, 0}];
 
   return v9;
 }
 
-+ (id)appWithACXRemoteApplication:(id)a3
++ (id)appWithACXRemoteApplication:(id)application
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v4 cslprf_displayName];
-  v8 = [v4 sdkVersion];
-  v9 = [v5 initWithBundleIdentifier:v6 localizedName:v7 sdkVersion:v8 supportsAlwaysOnDisplay:objc_msgSend(v4 defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(v4 remoteApplicationRecord:"defaultsToPrivateAlwaysOnDisplayTreatment") bbSectionInfo:{0, v4, 0}];
+  applicationCopy = application;
+  v5 = [self alloc];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
+  cslprf_displayName = [applicationCopy cslprf_displayName];
+  sdkVersion = [applicationCopy sdkVersion];
+  v9 = [v5 initWithBundleIdentifier:bundleIdentifier localizedName:cslprf_displayName sdkVersion:sdkVersion supportsAlwaysOnDisplay:objc_msgSend(applicationCopy defaultsToPrivateAlwaysOnDisplayTreatment:"supportsAlwaysOnDisplay") applicationRecord:objc_msgSend(applicationCopy remoteApplicationRecord:"defaultsToPrivateAlwaysOnDisplayTreatment") bbSectionInfo:{0, applicationCopy, 0}];
 
   return v9;
 }

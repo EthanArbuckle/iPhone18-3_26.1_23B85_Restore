@@ -1,9 +1,9 @@
 @interface NRTermsAcknowledgementRegistry
-+ (id)errorStringWithEnum:(unint64_t)a3;
-+ (id)errorWithEnum:(unint64_t)a3;
-- (id)proxyWithErrorHandler:(uint64_t)a1;
-- (void)add:(id)a3 forDeviceID:(id)a4 withCompletion:(id)a5;
-- (void)checkForAcknowledgement:(id)a3 forDeviceID:(id)a4 withCompletion:(id)a5;
++ (id)errorStringWithEnum:(unint64_t)enum;
++ (id)errorWithEnum:(unint64_t)enum;
+- (id)proxyWithErrorHandler:(uint64_t)handler;
+- (void)add:(id)add forDeviceID:(id)d withCompletion:(id)completion;
+- (void)checkForAcknowledgement:(id)acknowledgement forDeviceID:(id)d withCompletion:(id)completion;
 @end
 
 @implementation NRTermsAcknowledgementRegistry
@@ -19,9 +19,9 @@ void __44__NRTermsAcknowledgementRegistry_connection__block_invoke()
   [qword_1ED6F0A88 resume];
 }
 
-- (id)proxyWithErrorHandler:(uint64_t)a1
+- (id)proxyWithErrorHandler:(uint64_t)handler
 {
-  if (a1)
+  if (handler)
   {
     v2 = a2;
     if (_MergedGlobals_6 != -1)
@@ -41,14 +41,14 @@ void __44__NRTermsAcknowledgementRegistry_connection__block_invoke()
   return v4;
 }
 
-- (void)add:(id)a3 forDeviceID:(id)a4 withCompletion:(id)a5
+- (void)add:(id)add forDeviceID:(id)d withCompletion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 termsText];
-  v12 = [v11 length];
+  addCopy = add;
+  dCopy = d;
+  completionCopy = completion;
+  termsText = [addCopy termsText];
+  v12 = [termsText length];
 
   if (v12 > 9)
   {
@@ -56,16 +56,16 @@ void __44__NRTermsAcknowledgementRegistry_connection__block_invoke()
     v20[1] = 3221225472;
     v20[2] = __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block_invoke_2;
     v20[3] = &unk_1E86DACE8;
-    v14 = v10;
+    v14 = completionCopy;
     v21 = v14;
     v15 = [(NRTermsAcknowledgementRegistry *)self proxyWithErrorHandler:v20];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block_invoke_189;
     v17[3] = &unk_1E86DAD10;
-    v18 = v8;
+    v18 = addCopy;
     v19 = v14;
-    [v15 add:v18 forDeviceID:v9 withCompletion:v17];
+    [v15 add:v18 forDeviceID:dCopy withCompletion:v17];
   }
 
   else
@@ -76,7 +76,7 @@ void __44__NRTermsAcknowledgementRegistry_connection__block_invoke()
     block[2] = __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block_invoke;
     block[3] = &unk_1E86DACC0;
     block[4] = self;
-    v23 = v10;
+    v23 = completionCopy;
     dispatch_async(v13, block);
   }
 
@@ -144,18 +144,18 @@ void __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)checkForAcknowledgement:(id)a3 forDeviceID:(id)a4 withCompletion:(id)a5
+- (void)checkForAcknowledgement:(id)acknowledgement forDeviceID:(id)d withCompletion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 termsText];
-  v12 = [v11 length];
+  acknowledgementCopy = acknowledgement;
+  dCopy = d;
+  completionCopy = completion;
+  termsText = [acknowledgementCopy termsText];
+  v12 = [termsText length];
 
   if (v12 > 9)
   {
-    if ([v8 eventType])
+    if ([acknowledgementCopy eventType])
     {
       v14 = [objc_opt_class() errorWithEnum:3];
       v15 = nr_framework_log();
@@ -169,12 +169,12 @@ void __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block
           *buf = 138412546;
           v29 = v14;
           v30 = 2112;
-          v31 = v8;
+          v31 = acknowledgementCopy;
           _os_log_error_impl(&dword_1E0ADF000, v17, OS_LOG_TYPE_ERROR, "NRTermsAcknowledgementRegistry checkForAcknowledgement:forEventID:withCompletion: exception %@ event %@", buf, 0x16u);
         }
       }
 
-      v10[2](v10, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
     }
 
     else
@@ -183,16 +183,16 @@ void __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block
       v24[1] = 3221225472;
       v24[2] = __85__NRTermsAcknowledgementRegistry_checkForAcknowledgement_forDeviceID_withCompletion___block_invoke_190;
       v24[3] = &unk_1E86DACE8;
-      v18 = v10;
+      v18 = completionCopy;
       v25 = v18;
       v19 = [(NRTermsAcknowledgementRegistry *)self proxyWithErrorHandler:v24];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __85__NRTermsAcknowledgementRegistry_checkForAcknowledgement_forDeviceID_withCompletion___block_invoke_191;
       v21[3] = &unk_1E86DAD38;
-      v22 = v8;
+      v22 = acknowledgementCopy;
       v23 = v18;
-      [v19 checkForAcknowledgement:v22 forDeviceID:v9 withCompletion:v21];
+      [v19 checkForAcknowledgement:v22 forDeviceID:dCopy withCompletion:v21];
     }
   }
 
@@ -204,7 +204,7 @@ void __65__NRTermsAcknowledgementRegistry_add_forDeviceID_withCompletion___block
     block[2] = __85__NRTermsAcknowledgementRegistry_checkForAcknowledgement_forDeviceID_withCompletion___block_invoke;
     block[3] = &unk_1E86DACC0;
     block[4] = self;
-    v27 = v10;
+    v27 = completionCopy;
     dispatch_async(v13, block);
   }
 
@@ -272,20 +272,20 @@ void __85__NRTermsAcknowledgementRegistry_checkForAcknowledgement_forDeviceID_wi
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)errorStringWithEnum:(unint64_t)a3
++ (id)errorStringWithEnum:(unint64_t)enum
 {
-  if (a3 > 0xA)
+  if (enum > 0xA)
   {
     return @"🤷‍♂️";
   }
 
   else
   {
-    return off_1E86DADA0[a3];
+    return off_1E86DADA0[enum];
   }
 }
 
-+ (id)errorWithEnum:(unint64_t)a3
++ (id)errorWithEnum:(unint64_t)enum
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ABC0];
@@ -293,7 +293,7 @@ void __85__NRTermsAcknowledgementRegistry_checkForAcknowledgement_forDeviceID_wi
   v5 = [NRTermsAcknowledgementRegistry errorStringWithEnum:?];
   v11[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [v4 errorWithDomain:@"com.apple.nanoregistry.termsacknowledgementregistry" code:a3 userInfo:v6];
+  v7 = [v4 errorWithDomain:@"com.apple.nanoregistry.termsacknowledgementregistry" code:enum userInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 

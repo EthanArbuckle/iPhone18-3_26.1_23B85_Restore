@@ -1,19 +1,19 @@
 @interface SSDoubleLinkedListNode
-- (SSDoubleLinkedListNode)initWithObject:(id)a3;
+- (SSDoubleLinkedListNode)initWithObject:(id)object;
 @end
 
 @implementation SSDoubleLinkedListNode
 
-- (SSDoubleLinkedListNode)initWithObject:(id)a3
+- (SSDoubleLinkedListNode)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = SSDoubleLinkedListNode;
   v6 = [(SSDoubleLinkedListNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;

@@ -1,24 +1,24 @@
 @interface HDCPSOperation
 - (HDCPSOperation)init;
-- (HDCPSOperation)initWithManager:(id)a3 profile:(id)a4;
+- (HDCPSOperation)initWithManager:(id)manager profile:(id)profile;
 - (HDClinicalProviderServiceManager)providerServiceManager;
 - (HDProfile)profile;
 @end
 
 @implementation HDCPSOperation
 
-- (HDCPSOperation)initWithManager:(id)a3 profile:(id)a4
+- (HDCPSOperation)initWithManager:(id)manager profile:(id)profile
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  profileCopy = profile;
   v11.receiver = self;
   v11.super_class = HDCPSOperation;
   v8 = [(HDCPSOperation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v7);
-    objc_storeWeak(&v9->_providerServiceManager, v6);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeWeak(&v9->_providerServiceManager, managerCopy);
   }
 
   return v9;

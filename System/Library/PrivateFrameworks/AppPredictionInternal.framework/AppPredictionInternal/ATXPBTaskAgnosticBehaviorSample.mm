@@ -1,15 +1,15 @@
 @interface ATXPBTaskAgnosticBehaviorSample
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEngaged:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEngaged:(BOOL)engaged;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBTaskAgnosticBehaviorSample
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -42,9 +42,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasEngaged:(BOOL)a3
+- (void)setHasEngaged:(BOOL)engaged
 {
-  if (a3)
+  if (engaged)
   {
     v3 = 4;
   }
@@ -63,20 +63,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBTaskAgnosticBehaviorSample;
   v4 = [(ATXPBTaskAgnosticBehaviorSample *)&v8 description];
-  v5 = [(ATXPBTaskAgnosticBehaviorSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBTaskAgnosticBehaviorSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeIntervalSinceReferenceDate];
-    [v3 setObject:v9 forKey:@"timeIntervalSinceReferenceDate"];
+    [dictionary setObject:v9 forKey:@"timeIntervalSinceReferenceDate"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -106,36 +106,36 @@ LABEL_3:
     v10 = @"contactInteraction";
   }
 
-  [v3 setObject:v10 forKey:@"type"];
+  [dictionary setObject:v10 forKey:@"type"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_engaged];
-    [v3 setObject:v5 forKey:@"engaged"];
+    [dictionary setObject:v5 forKey:@"engaged"];
   }
 
 LABEL_5:
   featureVector = self->_featureVector;
   if (featureVector)
   {
-    v7 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)featureVector dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"featureVector"];
+    dictionaryRepresentation = [(ATXPBTaskAgnosticBehaviorFeatureVector *)featureVector dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"featureVector"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if (has)
   {
     timeIntervalSinceReferenceDate = self->_timeIntervalSinceReferenceDate;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -156,31 +156,31 @@ LABEL_3:
 
   type = self->_type;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     engaged = self->_engaged;
     PBDataWriterWriteBOOLField();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_featureVector)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_timeIntervalSinceReferenceDate;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_timeIntervalSinceReferenceDate;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -199,27 +199,27 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_type;
-  *(v4 + 32) |= 2u;
+  *(toCopy + 6) = self->_type;
+  *(toCopy + 32) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v4 + 28) = self->_engaged;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 28) = self->_engaged;
+    *(toCopy + 32) |= 4u;
   }
 
 LABEL_5:
   if (self->_featureVector)
   {
-    v6 = v4;
-    [v4 setFeatureVector:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setFeatureVector:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 1) == 0)
@@ -257,51 +257,51 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)self->_featureVector copyWithZone:a3];
+  v8 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)self->_featureVector copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timeIntervalSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timeIntervalSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_type != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_type != *(equalCopy + 6))
     {
       goto LABEL_17;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_17;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 32) & 4) == 0)
+    if ((*(equalCopy + 32) & 4) == 0)
     {
       goto LABEL_14;
     }
@@ -311,28 +311,28 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ((*(v4 + 32) & 4) == 0)
+  if ((*(equalCopy + 32) & 4) == 0)
   {
     goto LABEL_17;
   }
 
-  v9 = *(v4 + 28);
+  v9 = *(equalCopy + 28);
   if (self->_engaged)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_17;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_17;
   }
 
 LABEL_14:
   featureVector = self->_featureVector;
-  if (featureVector | *(v4 + 2))
+  if (featureVector | *(equalCopy + 2))
   {
     v7 = [(ATXPBTaskAgnosticBehaviorFeatureVector *)featureVector isEqual:?];
   }
@@ -406,16 +406,16 @@ LABEL_11:
   return v12 ^ v8 ^ v13 ^ [(ATXPBTaskAgnosticBehaviorFeatureVector *)self->_featureVector hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if (v6)
   {
-    self->_timeIntervalSinceReferenceDate = *(v4 + 1);
+    self->_timeIntervalSinceReferenceDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
     if ((v6 & 2) == 0)
     {
 LABEL_3:
@@ -428,17 +428,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_type = *(v4 + 6);
+  self->_type = *(fromCopy + 6);
   *&self->_has |= 2u;
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
 LABEL_4:
-    self->_engaged = *(v4 + 28);
+    self->_engaged = *(fromCopy + 28);
     *&self->_has |= 4u;
   }
 

@@ -1,11 +1,11 @@
 @interface PanoramaGyroStage
 - (PanoramaGyroStage)init;
-- (int)prepareToProcess:(int)a3 sliceWidth:(unint64_t)a4 sliceHeight:(unint64_t)a5;
+- (int)prepareToProcess:(int)process sliceWidth:(unint64_t)width sliceHeight:(unint64_t)height;
 - (int)resetState;
-- (int)update:(id)a3 sliceType:(int)a4 sliceID:(unint64_t)a5;
-- (int)updateWithTransformMatrix:(float *)a3 sliceType:(int)a4;
-- (int)updateWithTranslation:(float *)a3 sliceType:(int)a4;
-- (void)currentAccumulatedHomographyForThread:(double)a3;
+- (int)update:(id)update sliceType:(int)type sliceID:(unint64_t)d;
+- (int)updateWithTransformMatrix:(float *)matrix sliceType:(int)type;
+- (int)updateWithTranslation:(float *)translation sliceType:(int)type;
+- (void)currentAccumulatedHomographyForThread:(double)thread;
 @end
 
 @implementation PanoramaGyroStage
@@ -33,25 +33,25 @@
   return 0;
 }
 
-- (int)prepareToProcess:(int)a3 sliceWidth:(unint64_t)a4 sliceHeight:(unint64_t)a5
+- (int)prepareToProcess:(int)process sliceWidth:(unint64_t)width sliceHeight:(unint64_t)height
 {
-  self->_sliceHeight = a5;
-  self->_sliceWidth = a4;
-  self->_gyroMode = a3;
+  self->_sliceHeight = height;
+  self->_sliceWidth = width;
+  self->_gyroMode = process;
   return 0;
 }
 
-- (int)update:(id)a3 sliceType:(int)a4 sliceID:(unint64_t)a5
+- (int)update:(id)update sliceType:(int)type sliceID:(unint64_t)d
 {
-  v5 = a5;
-  v6 = *&a4;
+  dCopy = d;
+  v6 = *&type;
   v51[16] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v11 = v8;
-  if (v8)
+  updateCopy = update;
+  v11 = updateCopy;
+  if (updateCopy)
   {
     self->_motionSource = 0;
-    v12 = objc_msgSend_objectForKey_(v8, v9, @"Attitude", v10);
+    v12 = objc_msgSend_objectForKey_(updateCopy, v9, @"Attitude", v10);
 
     if (v12)
     {
@@ -86,7 +86,7 @@
         }
 
         HostTime = ACT_getHostTime();
-        panoLog(32, "FrameID:%04d time %.3f: gyro updated with TransformMatrix\n", v5, HostTime);
+        panoLog(32, "FrameID:%04d time %.3f: gyro updated with TransformMatrix\n", dCopy, HostTime);
       }
 
       else
@@ -110,7 +110,7 @@
         }
 
         v47 = ACT_getHostTime();
-        panoLog(32, "FrameID:%04d time %.3f: gyro updated with txty = %f %f\n", v5, v47, *v51, *(v51 + 1));
+        panoLog(32, "FrameID:%04d time %.3f: gyro updated with txty = %f %f\n", dCopy, v47, *v51, *(v51 + 1));
       }
     }
 
@@ -121,7 +121,7 @@
       fig_log_call_emit_and_clean_up_after_send_and_compose();
 
       v49 = ACT_getHostTime();
-      panoLog(4, "FrameID:%04d time %.3f: NO motion data available\n", v5, v49);
+      panoLog(4, "FrameID:%04d time %.3f: NO motion data available\n", dCopy, v49);
     }
   }
 
@@ -133,10 +133,10 @@
   return v28;
 }
 
-- (int)updateWithTranslation:(float *)a3 sliceType:(int)a4
+- (int)updateWithTranslation:(float *)translation sliceType:(int)type
 {
-  *&v4 = vmul_f32(*a3, vrev64_s32(vdiv_f32(*&self->_sliceHeight, 0x457B7000453D0000)));
-  if (a4)
+  *&v4 = vmul_f32(*translation, vrev64_s32(vdiv_f32(*&self->_sliceHeight, 0x457B7000453D0000)));
+  if (type)
   {
     v5 = vsub_f32(*&v4, *&self->_txty[7]);
   }
@@ -152,13 +152,13 @@
   return 0;
 }
 
-- (int)updateWithTransformMatrix:(float *)a3 sliceType:(int)a4
+- (int)updateWithTransformMatrix:(float *)matrix sliceType:(int)type
 {
   v4 = *(MEMORY[0x277D860B0] + 16);
   v17 = *MEMORY[0x277D860B0];
   v18 = v4;
   v19 = *(MEMORY[0x277D860B0] + 32);
-  if (a4)
+  if (type)
   {
     for (i = 0; i != 3; ++i)
     {
@@ -176,12 +176,12 @@
           v8 = i;
         }
 
-        v7[v8] = a3[v6++];
+        v7[v8] = matrix[v6++];
         v7 += 4;
       }
 
       while (v6 != 3);
-      a3 += 3;
+      matrix += 3;
     }
   }
 
@@ -214,12 +214,12 @@
   return 0;
 }
 
-- (void)currentAccumulatedHomographyForThread:(double)a3
+- (void)currentAccumulatedHomographyForThread:(double)thread
 {
-  v7 = a1[10].n128_u32[0];
+  v7 = self[10].n128_u32[0];
   if (v7)
   {
-    a1[2].n128_u64[1] = 0;
+    self[2].n128_u64[1] = 0;
   }
 
   else
@@ -227,12 +227,12 @@
     v8 = MEMORY[0x277D860B0];
     if ((v7 & 2) != 0)
     {
-      a6.n128_u32[0] = a1[9].n128_u32[2];
-      transformToHomography(a1[6].n128_f64[0], a1[7].n128_f64[0], a1[8], a1[9].n128_f32[3], a6);
+      a6.n128_u32[0] = self[9].n128_u32[2];
+      transformToHomography(self[6].n128_f64[0], self[7].n128_f64[0], self[8], self[9].n128_f32[3], a6);
       v9 = v8[1];
-      a1[6] = *v8;
-      a1[7] = v9;
-      a1[8] = v8[2];
+      self[6] = *v8;
+      self[7] = v9;
+      self[8] = v8[2];
     }
   }
 }

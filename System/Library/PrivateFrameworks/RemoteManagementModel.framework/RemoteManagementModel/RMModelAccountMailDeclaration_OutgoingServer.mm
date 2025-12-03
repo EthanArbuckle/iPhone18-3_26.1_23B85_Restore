@@ -1,10 +1,10 @@
 @interface RMModelAccountMailDeclaration_OutgoingServer
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithHostName:(id)a3 authenticationMethod:(id)a4;
-+ (id)buildWithHostName:(id)a3 port:(id)a4 authenticationMethod:(id)a5 authenticationCredentialsAssetReference:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithHostName:(id)name authenticationMethod:(id)method;
++ (id)buildWithHostName:(id)name port:(id)port authenticationMethod:(id)method authenticationCredentialsAssetReference:(id)reference;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountMailDeclaration_OutgoingServer
@@ -25,41 +25,41 @@
   return v4;
 }
 
-+ (id)buildWithHostName:(id)a3 port:(id)a4 authenticationMethod:(id)a5 authenticationCredentialsAssetReference:(id)a6
++ (id)buildWithHostName:(id)name port:(id)port authenticationMethod:(id)method authenticationCredentialsAssetReference:(id)reference
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  referenceCopy = reference;
+  methodCopy = method;
+  portCopy = port;
+  nameCopy = name;
   v13 = objc_opt_new();
-  [v13 setPayloadHostName:v12];
+  [v13 setPayloadHostName:nameCopy];
 
-  [v13 setPayloadPort:v11];
-  [v13 setPayloadAuthenticationMethod:v10];
+  [v13 setPayloadPort:portCopy];
+  [v13 setPayloadAuthenticationMethod:methodCopy];
 
-  [v13 setPayloadAuthenticationCredentialsAssetReference:v9];
+  [v13 setPayloadAuthenticationCredentialsAssetReference:referenceCopy];
 
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithHostName:(id)a3 authenticationMethod:(id)a4
++ (id)buildRequiredOnlyWithHostName:(id)name authenticationMethod:(id)method
 {
-  v5 = a4;
-  v6 = a3;
+  methodCopy = method;
+  nameCopy = name;
   v7 = objc_opt_new();
-  [v7 setPayloadHostName:v6];
+  [v7 setPayloadHostName:nameCopy];
 
-  [v7 setPayloadAuthenticationMethod:v5];
+  [v7 setPayloadAuthenticationMethod:methodCopy];
 
   return v7;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountMailDeclaration_OutgoingServer allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -67,35 +67,35 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v7 usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationMethod" forKeyPath:@"payloadAuthenticationMethod" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"HostName" forKeyPath:@"payloadHostName" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"Port" forKeyPath:@"payloadPort" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationMethod" forKeyPath:@"payloadAuthenticationMethod" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"AuthenticationCredentialsAssetReference" forKeyPath:@"payloadAuthenticationCredentialsAssetReference" isRequired:0 defaultValue:0 error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadHostName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:v5 isRequired:1 defaultValue:0];
+  payloadHostName = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadHostName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"HostName" value:payloadHostName isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadPort];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:v6 isRequired:0 defaultValue:0];
+  payloadPort = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadPort];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v4 usingKey:@"Port" value:payloadPort isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadAuthenticationMethod];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationMethod" value:v7 isRequired:1 defaultValue:0];
+  payloadAuthenticationMethod = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadAuthenticationMethod];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationMethod" value:payloadAuthenticationMethod isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadAuthenticationCredentialsAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:v8 isRequired:0 defaultValue:0];
+  payloadAuthenticationCredentialsAssetReference = [(RMModelAccountMailDeclaration_OutgoingServer *)self payloadAuthenticationCredentialsAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"AuthenticationCredentialsAssetReference" value:payloadAuthenticationCredentialsAssetReference isRequired:0 defaultValue:0];
 
   v9 = [v4 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelAccountMailDeclaration_OutgoingServer;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadHostName copy];
   v6 = v4[2];
   v4[2] = v5;

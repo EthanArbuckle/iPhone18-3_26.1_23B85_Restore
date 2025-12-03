@@ -1,6 +1,6 @@
 @interface CKDMain
 + (id)sharedMain;
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3;
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed;
 - (CKDMain)init;
 - (void)_setupNotifydEventHandler;
 - (void)_setupTCCEventHandler;
@@ -58,9 +58,9 @@
   if ([v4 isSystemInstalledBinary])
   {
     v2 = +[CKDDaemonProcess currentProcess];
-    v3 = [v2 processType];
+    processType = [v2 processType];
 
-    if (v3 != 2)
+    if (processType != 2)
     {
 
       xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, &stru_100010D78);
@@ -75,36 +75,36 @@
 - (void)_setupTCCEventHandler
 {
   v2 = +[CKDDaemonProcess currentProcess];
-  v3 = [v2 processType];
+  processType = [v2 processType];
 
-  if (v3 != 1)
+  if (processType != 1)
   {
     v4 = +[CKDAuthorizationObserver defaultObserver];
     [v4 registerWithBlock:&stru_100010E18];
   }
 }
 
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v74 = _os_activity_create(&_mh_execute_header, "systemAvailabilityChanged", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v74, &state);
-  v5 = [(CKDMain *)self canRunGivenAvailabilityState:a3];
-  v75 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(CKDMain *)v6 upAndRunning];
-  [(CKDMain *)v6 setUpAndRunning:v5];
-  objc_sync_exit(v6);
-  v76 = v6;
+  v5 = [(CKDMain *)self canRunGivenAvailabilityState:changed];
+  changedCopy = changed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  upAndRunning = [(CKDMain *)selfCopy upAndRunning];
+  [(CKDMain *)selfCopy setUpAndRunning:v5];
+  objc_sync_exit(selfCopy);
+  v76 = selfCopy;
 
-  if (!((v7 ^ 1) & v5))
+  if (!((upAndRunning ^ 1) & v5))
   {
     goto LABEL_44;
   }
 
-  if (v6)
+  if (selfCopy)
   {
     v8 = objc_autoreleasePoolPush();
     v9 = dispatch_semaphore_create(0);
@@ -140,15 +140,15 @@
       {
         v73 = CKGetCacheDir();
         v15 = +[CKDLogicalDeviceContext defaultContext];
-        v16 = [v15 metadataCache];
-        v17 = [v16 knownContainerizedApplicationIDs];
+        metadataCache = [v15 metadataCache];
+        knownContainerizedApplicationIDs = [metadataCache knownContainerizedApplicationIDs];
 
         v18 = +[NSMutableSet set];
         v88 = 0u;
         v89 = 0u;
         v86 = 0u;
         v87 = 0u;
-        v19 = v17;
+        v19 = knownContainerizedApplicationIDs;
         v20 = [v19 countByEnumeratingWithState:&v86 objects:v95 count:16];
         if (v20)
         {
@@ -164,13 +164,13 @@
 
               v23 = *(*(&v86 + 1) + 8 * i);
               v24 = +[CKDLogicalDeviceContext defaultContext];
-              v25 = [v24 metadataCache];
-              v26 = [v25 applicationMetadataForApplicationID:v23];
+              metadataCache2 = [v24 metadataCache];
+              v26 = [metadataCache2 applicationMetadataForApplicationID:v23];
 
               if (v26)
               {
-                v27 = [v26 applicationContainerPath];
-                v28 = [v27 stringByAppendingPathComponent:@"Library/Caches/CloudKit"];
+                applicationContainerPath = [v26 applicationContainerPath];
+                v28 = [applicationContainerPath stringByAppendingPathComponent:@"Library/Caches/CloudKit"];
                 [v18 addObject:v28];
               }
             }
@@ -186,7 +186,7 @@
 
         if (v30)
         {
-          v31 = [v30 lastPathComponent];
+          lastPathComponent = [v30 lastPathComponent];
           if (ck_log_initialization_predicate != -1)
           {
             dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -196,11 +196,11 @@
           if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
           {
             v33 = v32;
-            v34 = [v30 CKSanitizedPath];
+            cKSanitizedPath = [v30 CKSanitizedPath];
             *buf = 138412546;
-            v92 = v31;
+            v92 = lastPathComponent;
             v93 = 2112;
-            v94 = v34;
+            v94 = cKSanitizedPath;
             _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "Purging %@ directory at %@", buf, 0x16u);
           }
 
@@ -208,10 +208,10 @@
         }
 
         v35 = +[CKDLogicalDeviceContext defaultContext];
-        v36 = [v35 metadataCache];
-        v37 = [v36 hasMigrated];
+        metadataCache3 = [v35 metadataCache];
+        hasMigrated = [metadataCache3 hasMigrated];
 
-        if (((v73 != 0) & v37) == 1)
+        if (((v73 != 0) & hasMigrated) == 1)
         {
           v38 = +[CKDMetadataCache dbFileName];
           v39 = +[CKDOperationInfoCache dbFileName];
@@ -225,12 +225,12 @@
           if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
           {
             v42 = v41;
-            v43 = [v38 CKSanitizedPath];
-            v44 = [v73 CKSanitizedPath];
+            cKSanitizedPath2 = [v38 CKSanitizedPath];
+            cKSanitizedPath3 = [v73 CKSanitizedPath];
             *buf = 138412546;
-            v92 = v43;
+            v92 = cKSanitizedPath2;
             v93 = 2112;
-            v94 = v44;
+            v94 = cKSanitizedPath3;
             _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Migrated %@ db, now purging the cache directory at %@", buf, 0x16u);
           }
 
@@ -277,17 +277,17 @@
     }
 
     v55 = +[CKDLogicalDeviceContext defaultContext];
-    v56 = [v55 tokenRegistrationScheduler];
-    [v56 registerTokenRefresh];
+    tokenRegistrationScheduler = [v55 tokenRegistrationScheduler];
+    [tokenRegistrationScheduler registerTokenRefresh];
 
     v57 = +[CKDLogicalDeviceContext defaultContext];
-    v58 = [v57 metadataCache];
+    metadataCache4 = [v57 metadataCache];
 
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_100009A0C;
     v79[3] = &unk_100010EF8;
-    v52 = v58;
+    v52 = metadataCache4;
     v80 = v52;
     v59 = objc_retainBlock(v79);
     v60 = +[CKDAccountNotifier sharedNotifier];
@@ -296,14 +296,14 @@
     (v59[2])(v59, 0, 0);
     [v52 expungeStaleAccountIDs];
     v61 = +[CKDLogicalDeviceContext defaultContext];
-    v62 = [v61 operationInfoCache];
+    operationInfoCache = [v61 operationInfoCache];
 
-    [v62 registerCacheEviction];
+    [operationInfoCache registerCacheEviction];
     v77[0] = _NSConcreteStackBlock;
     v77[1] = 3221225472;
     v77[2] = sub_100009A24;
     v77[3] = &unk_100010EF8;
-    v63 = v62;
+    v63 = operationInfoCache;
     v78 = v63;
     v64 = objc_retainBlock(v77);
     v65 = +[CKDAccountNotifier sharedNotifier];
@@ -349,10 +349,10 @@ LABEL_36:
   }
 
 LABEL_44:
-  if (v75 == 3)
+  if (changedCopy == 3)
   {
-    v70 = [(CKDMain *)v76 swiftMain];
-    [v70 markSystemAvailableForCacheDelete];
+    swiftMain = [(CKDMain *)v76 swiftMain];
+    [swiftMain markSystemAvailableForCacheDelete];
   }
 
   os_activity_scope_leave(&state);

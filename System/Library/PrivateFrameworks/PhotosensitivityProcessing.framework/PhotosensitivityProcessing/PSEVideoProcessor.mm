@@ -2,25 +2,25 @@
 + (BOOL)needsProcessing;
 + (uint64_t)needsProcessing;
 + (void)initialize;
-- (BOOL)canProcessSurface:(__IOSurface *)a3;
+- (BOOL)canProcessSurface:(__IOSurface *)surface;
 - (KernelData)_prepare_contrast_kernels;
 - (PSEVideoProcessor)init;
-- (id)_prepare_gamma_kernel:(float)a3 shape:(float)a4 scale:(float)a5;
-- (int)_colorSpaceFromSurface:(__IOSurface *)a3;
-- (int)_colorSpaceValueForName:(__CFString *)a3;
+- (id)_prepare_gamma_kernel:(float)_prepare_gamma_kernel shape:(float)shape scale:(float)scale;
+- (int)_colorSpaceFromSurface:(__IOSurface *)surface;
+- (int)_colorSpaceValueForName:(__CFString *)name;
 - (int)_computeFrameRateIndexSelection;
-- (unint64_t)_pixelFormatForSurface:(__IOSurface *)a3;
+- (unint64_t)_pixelFormatForSurface:(__IOSurface *)surface;
 - (void)_computeDisplaySizeIndexSelection;
 - (void)_computeFrameRateIndexSelection;
 - (void)_initialize;
-- (void)_initializeProtectedBuffers:(unint64_t)a3;
-- (void)_processFrame:(id)a3 sourceSurface:(__IOSurface *)a4 outSurface:(__IOSurface *)a5;
-- (void)_processSurface:(__IOSurface *)a3 withTimestamp:(double)a4 destinationSurface:(__IOSurface *)a5 options:(id)a6;
-- (void)_resetState:(unint64_t)a3;
-- (void)_sourceCopyDebuggingChanged:(id)a3;
-- (void)_visualDebuggingChanged:(id)a3;
-- (void)processSourceSurface:(__IOSurface *)a3 withTimestamp:(double)a4 toDestinationSurface:(__IOSurface *)a5 options:(id)a6;
-- (void)setValidationCallback:(id)a3;
+- (void)_initializeProtectedBuffers:(unint64_t)buffers;
+- (void)_processFrame:(id)frame sourceSurface:(__IOSurface *)surface outSurface:(__IOSurface *)outSurface;
+- (void)_processSurface:(__IOSurface *)surface withTimestamp:(double)timestamp destinationSurface:(__IOSurface *)destinationSurface options:(id)options;
+- (void)_resetState:(unint64_t)state;
+- (void)_sourceCopyDebuggingChanged:(id)changed;
+- (void)_visualDebuggingChanged:(id)changed;
+- (void)processSourceSurface:(__IOSurface *)surface withTimestamp:(double)timestamp toDestinationSurface:(__IOSurface *)destinationSurface options:(id)options;
+- (void)setValidationCallback:(id)callback;
 @end
 
 @implementation PSEVideoProcessor
@@ -113,7 +113,7 @@ LABEL_11:
 
   [(PSEVideoProcessor *)v2 _visualDebuggingChanged:0];
   [(PSEVideoProcessor *)v2 _sourceCopyDebuggingChanged:0];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -140,9 +140,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [v7 addObserver:v2 selector:sel__visualDebuggingChanged_ name:*v8 object:0];
+  [defaultCenter addObserver:v2 selector:sel__visualDebuggingChanged_ name:*v8 object:0];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -171,17 +171,17 @@ LABEL_11:
     _Unwind_Resume(v16);
   }
 
-  [v11 addObserver:v2 selector:sel__sourceCopyDebuggingChanged_ name:*v12 object:0];
+  [defaultCenter2 addObserver:v2 selector:sel__sourceCopyDebuggingChanged_ name:*v12 object:0];
 
   return v2;
 }
 
-- (void)_visualDebuggingChanged:(id)a3
+- (void)_visualDebuggingChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
   self->_bufferConstants.bDebug = soft_AXSPhotosensitiveVisualDebuggingEnabled() != 0;
   [(SwiftVideoProcessor *)self->_swiftProcessor setDebugMode:soft_AXSPhotosensitiveVisualDebuggingEnabled() != 0];
-  if (a3)
+  if (changed)
   {
     v5 = PSELog;
     if (os_log_type_enabled(PSELog, OS_LOG_TYPE_DEFAULT))
@@ -199,12 +199,12 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sourceCopyDebuggingChanged:(id)a3
+- (void)_sourceCopyDebuggingChanged:(id)changed
 {
   v13 = *MEMORY[0x277D85DE8];
   self->_bufferConstants.bCopyOnly = soft_AXSPhotosensitiveSourceCopyDebuggingEnabled() != 0;
   [(SwiftVideoProcessor *)self->_swiftProcessor setCopySourceOnlyDebugging:soft_AXSPhotosensitiveSourceCopyDebuggingEnabled() != 0];
-  if (a3)
+  if (changed)
   {
     v5 = PSELog;
     if (os_log_type_enabled(PSELog, OS_LOG_TYPE_DEFAULT))
@@ -222,15 +222,15 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setValidationCallback:(id)a3
+- (void)setValidationCallback:(id)callback
 {
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  callbackCopy = callback;
+  v5 = _Block_copy(callbackCopy);
   validationCallback = self->_validationCallback;
   self->_validationCallback = v5;
 
-  [(SwiftVideoProcessor *)self->_swiftProcessor setValidationCallback:v4];
-  self->_bufferConstants.bCallbackValues = v4 != 0;
+  [(SwiftVideoProcessor *)self->_swiftProcessor setValidationCallback:callbackCopy];
+  self->_bufferConstants.bCallbackValues = callbackCopy != 0;
 }
 
 - (void)_initialize
@@ -566,7 +566,7 @@ void __32__PSEVideoProcessor__initialize__block_invoke()
   }
 }
 
-- (void)_initializeProtectedBuffers:(unint64_t)a3
+- (void)_initializeProtectedBuffers:(unint64_t)buffers
 {
   v5 = 0;
   v6 = 0;
@@ -583,14 +583,14 @@ void __32__PSEVideoProcessor__initialize__block_invoke()
   [v9 setSize:v6];
   [v9 setHazardTrackingMode:2];
   v10 = [(MTLDevice *)self->_device newHeapWithDescriptor:v9];
-  [v9 setProtectionOptions:a3];
+  [v9 setProtectionOptions:buffers];
   v11 = [(MTLDevice *)self->_device newHeapWithDescriptor:v9];
   v12 = PSELog;
   if (os_log_type_enabled(PSELog, OS_LOG_TYPE_DEFAULT))
   {
     v13 = MEMORY[0x277CCABB0];
     v14 = v12;
-    v15 = [v13 numberWithUnsignedLongLong:a3];
+    v15 = [v13 numberWithUnsignedLongLong:buffers];
     v61 = 138412290;
     v62 = v15;
     _os_log_impl(&dword_25E78C000, v14, OS_LOG_TYPE_DEFAULT, "Making new protected heap with %@", &v61, 0xCu);
@@ -686,23 +686,23 @@ void __32__PSEVideoProcessor__initialize__block_invoke()
     v59 = self->_bufferResults[1];
     self->_bufferResults[1] = v58;
 
-    self->_protectionStatus = a3;
+    self->_protectionStatus = buffers;
     self->_madeProtectedBuffers = self->_bufferFrameLumaSum[1] != 0;
   }
 
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canProcessSurface:(__IOSurface *)a3
+- (BOOL)canProcessSurface:(__IOSurface *)surface
 {
   v5 = PSELog;
   if (os_log_type_enabled(PSELog, OS_LOG_TYPE_DEBUG))
   {
-    [(PSEVideoProcessor *)v5 canProcessSurface:a3];
+    [(PSEVideoProcessor *)v5 canProcessSurface:surface];
   }
 
   self->_anon_15c[12] = 0;
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   result = 1;
   if (PixelFormat <= 1380401728)
   {
@@ -793,9 +793,9 @@ LABEL_28:
   return result;
 }
 
-- (unint64_t)_pixelFormatForSurface:(__IOSurface *)a3
+- (unint64_t)_pixelFormatForSurface:(__IOSurface *)surface
 {
-  PixelFormat = IOSurfaceGetPixelFormat(a3);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   result = 70;
   if (PixelFormat <= 1882468911)
   {
@@ -938,23 +938,23 @@ LABEL_22:
   v14 = v5;
   do
   {
-    v7 = [UFMKernels[35 * self->_idxEquivalentKernelIndex + 7 * v6 + self->_idxFrameRate] objectEnumerator];
-    v8 = [v7 nextObject];
-    if (v8)
+    objectEnumerator = [UFMKernels[35 * self->_idxEquivalentKernelIndex + 7 * v6 + self->_idxFrameRate] objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v9 = v8;
+      v9 = nextObject;
       v10 = 0;
       do
       {
         [v9 floatValue];
         *&v5[4 * v10] = v11;
-        v12 = [v7 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
 
         ++v10;
-        v9 = v12;
+        v9 = nextObject2;
       }
 
-      while (v12);
+      while (nextObject2);
     }
 
     else
@@ -973,27 +973,27 @@ LABEL_22:
   return result;
 }
 
-- (id)_prepare_gamma_kernel:(float)a3 shape:(float)a4 scale:(float)a5
+- (id)_prepare_gamma_kernel:(float)_prepare_gamma_kernel shape:(float)shape scale:(float)scale
 {
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:1024];
   [v8 resetBytesInRange:{0, objc_msgSend(v8, "length")}];
-  v9 = a4 + -1.0;
-  v19 = flt_25E79DB14[(a4 + -1.0)];
-  v10 = a3;
-  v18 = 1.0 / a3;
-  v11 = powf(a5, -a4);
+  v9 = shape + -1.0;
+  v19 = flt_25E79DB14[(shape + -1.0)];
+  _prepare_gamma_kernelCopy = _prepare_gamma_kernel;
+  v18 = 1.0 / _prepare_gamma_kernel;
+  v11 = powf(scale, -shape);
   v12 = 0.0;
   v13 = 256;
   v14 = 0.0;
   do
   {
-    if ((v12 / v10) > 0.99 && v14 >= 2.0)
+    if ((v12 / _prepare_gamma_kernelCopy) > 0.99 && v14 >= 2.0)
     {
       break;
     }
 
     v14 = v18 + v14;
-    v16 = v11 * expf(-v14 / a5);
+    v16 = v11 * expf(-v14 / scale);
     v20 = (powf(v14, v9) * v16) / v19;
     v12 = v12 + v20;
     [v8 appendBytes:&v20 length:4];
@@ -1005,12 +1005,12 @@ LABEL_22:
   return v8;
 }
 
-- (int)_colorSpaceFromSurface:(__IOSurface *)a3
+- (int)_colorSpaceFromSurface:(__IOSurface *)surface
 {
-  v5 = IOSurfaceCopyValue(a3, *MEMORY[0x277CD29C0]);
+  v5 = IOSurfaceCopyValue(surface, *MEMORY[0x277CD29C0]);
   if (!v5 || (v6 = v5, v7 = CGColorSpaceCreateWithPropertyList(v5), Name = CGColorSpaceGetName(v7), CFRelease(v6), CGColorSpaceRelease(v7), !Name))
   {
-    v9 = IOSurfaceCopyValue(a3, *MEMORY[0x277CD2A30]);
+    v9 = IOSurfaceCopyValue(surface, *MEMORY[0x277CD2A30]);
     if (v9)
     {
       v10 = v9;
@@ -1049,17 +1049,17 @@ LABEL_6:
   return [(PSEVideoProcessor *)self _colorSpaceValueForName:Name];
 }
 
-- (int)_colorSpaceValueForName:(__CFString *)a3
+- (int)_colorSpaceValueForName:(__CFString *)name
 {
   if (_colorSpaceValueForName__onceToken != -1)
   {
     [PSEVideoProcessor _colorSpaceValueForName:];
   }
 
-  v4 = [_colorSpaceValueForName__Values objectForKey:a3];
-  v5 = [v4 intValue];
+  v4 = [_colorSpaceValueForName__Values objectForKey:name];
+  intValue = [v4 intValue];
 
-  return v5;
+  return intValue;
 }
 
 void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
@@ -1134,12 +1134,12 @@ void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processSourceSurface:(__IOSurface *)a3 withTimestamp:(double)a4 toDestinationSurface:(__IOSurface *)a5 options:(id)a6
+- (void)processSourceSurface:(__IOSurface *)surface withTimestamp:(double)timestamp toDestinationSurface:(__IOSurface *)destinationSurface options:(id)options
 {
-  v10 = a6;
-  if (v10)
+  optionsCopy = options;
+  if (optionsCopy)
   {
-    [(SwiftVideoProcessor *)self->_swiftProcessor processSurfaceWithSourceSurface:a3 timestamp:a5 destinationSurface:v10 options:a4];
+    [(SwiftVideoProcessor *)self->_swiftProcessor processSurfaceWithSourceSurface:surface timestamp:destinationSurface destinationSurface:optionsCopy options:timestamp];
   }
 
   else
@@ -1152,10 +1152,10 @@ void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
   }
 }
 
-- (void)_processSurface:(__IOSurface *)a3 withTimestamp:(double)a4 destinationSurface:(__IOSurface *)a5 options:(id)a6
+- (void)_processSurface:(__IOSurface *)surface withTimestamp:(double)timestamp destinationSurface:(__IOSurface *)destinationSurface options:(id)options
 {
   v86 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  optionsCopy = options;
   if (self->_needsInitialization)
   {
     [(PSEVideoProcessor *)self _initialize];
@@ -1167,10 +1167,10 @@ void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
     }
   }
 
-  if (a3)
+  if (surface)
   {
     v12 = 0;
-    v13 = a4 - self->_previousSurfaceTime;
+    v13 = timestamp - self->_previousSurfaceTime;
     if (v13 < 0.00833333333)
     {
       v13 = 0.00833333333;
@@ -1213,7 +1213,7 @@ void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
     while (v20 != 10);
     fps = self->_fps;
     self->_fps = 8.0 / ((v16 - v17) - v18);
-    self->_previousSurfaceTime = a4;
+    self->_previousSurfaceTime = timestamp;
     v24 = PSELog;
     if (os_log_type_enabled(PSELog, OS_LOG_TYPE_DEBUG))
     {
@@ -1240,9 +1240,9 @@ void __45__PSEVideoProcessor__colorSpaceValueForName___block_invoke()
       _os_log_debug_impl(&dword_25E78C000, v34, OS_LOG_TYPE_DEBUG, "PSE stdDelta value: %@, fps: %@ %@", buf, 0x20u);
     }
 
-    Width = IOSurfaceGetWidth(a3);
-    Height = IOSurfaceGetHeight(a3);
-    v27 = [(PSEVideoProcessor *)self _colorSpaceFromSurface:a3];
+    Width = IOSurfaceGetWidth(surface);
+    Height = IOSurfaceGetHeight(surface);
+    v27 = [(PSEVideoProcessor *)self _colorSpaceFromSurface:surface];
     v28 = 1;
     v29 = 1;
     switch(v27)
@@ -1327,59 +1327,59 @@ LABEL_32:
 
     else
     {
-      if (a4 - self->_previousSurfaceTime <= 1.0 && vabds_f32(self->_fps, fps) < 5.0)
+      if (timestamp - self->_previousSurfaceTime <= 1.0 && vabds_f32(self->_fps, fps) < 5.0)
       {
 LABEL_41:
         if (self->_anon_15c[12] == 1)
         {
-          WidthOfPlane = IOSurfaceGetWidthOfPlane(a3, 0);
-          v50 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(a3 mipmapped:0), 0];
+          WidthOfPlane = IOSurfaceGetWidthOfPlane(surface, 0);
+          v50 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:115 width:WidthOfPlane height:IOSurfaceGetHeightOfPlane(surface mipmapped:0), 0];
           [v50 setUsage:2];
           [v50 setProtectionOptions:v41];
-          v51 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:a5 plane:0];
+          v51 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:destinationSurface plane:0];
           processedTexture = self->_processedTexture;
           self->_processedTexture = v51;
 
           [v50 setUsage:1];
           [v50 setPixelFormat:20];
-          v53 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:a3 plane:0];
+          v53 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:surface plane:0];
           sourceTexture = self->_sourceTexture;
           self->_sourceTexture = v53;
 
-          [v50 setWidth:{IOSurfaceGetWidthOfPlane(a3, 1uLL)}];
-          [v50 setHeight:{IOSurfaceGetHeightOfPlane(a3, 1uLL)}];
+          [v50 setWidth:{IOSurfaceGetWidthOfPlane(surface, 1uLL)}];
+          [v50 setHeight:{IOSurfaceGetHeightOfPlane(surface, 1uLL)}];
           [v50 setPixelFormat:60];
-          v55 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:a3 plane:1];
+          v55 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:surface plane:1];
           v56 = 296;
         }
 
         else
         {
-          v50 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:-[PSEVideoProcessor _pixelFormatForSurface:](self width:"_pixelFormatForSurface:" height:a3) mipmapped:Width, Height, 0];
+          v50 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:-[PSEVideoProcessor _pixelFormatForSurface:](self width:"_pixelFormatForSurface:" height:surface) mipmapped:Width, Height, 0];
           [v50 setUsage:1];
           [v50 setProtectionOptions:v41];
-          v57 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:a3 plane:0];
+          v57 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:surface plane:0];
           v58 = self->_sourceTexture;
           self->_sourceTexture = v57;
 
           [v50 setUsage:2];
-          [v50 setPixelFormat:-[PSEVideoProcessor _pixelFormatForSurface:](self, "_pixelFormatForSurface:", a5)];
-          v55 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:a5 plane:0];
+          [v50 setPixelFormat:-[PSEVideoProcessor _pixelFormatForSurface:](self, "_pixelFormatForSurface:", destinationSurface)];
+          v55 = [(MTLDevice *)self->_device newTextureWithDescriptor:v50 iosurface:destinationSurface plane:0];
           v56 = 304;
         }
 
         v59 = *(&self->super.isa + v56);
         *(&self->super.isa + v56) = v55;
 
-        v60 = [v10 objectForKey:@"displayMaxNits"];
+        v60 = [optionsCopy objectForKey:@"displayMaxNits"];
         [v60 floatValue];
         self->_bufferConstants.maxNits = v61;
 
-        v62 = [v10 objectForKey:@"sourceSurfaceEDR"];
+        v62 = [optionsCopy objectForKey:@"sourceSurfaceEDR"];
         [v62 floatValue];
         self->_bufferConstants.edr = v63;
 
-        v64 = [v10 objectForKey:@"displayEDRFactor"];
+        v64 = [optionsCopy objectForKey:@"displayEDRFactor"];
         v65 = v64;
         if (v64)
         {
@@ -1392,7 +1392,7 @@ LABEL_41:
         }
 
         self->_bufferConstants.displayEDR = v66;
-        v67 = [v10 objectForKey:@"currentFPS"];
+        v67 = [optionsCopy objectForKey:@"currentFPS"];
         [v67 floatValue];
         v69 = v68;
 
@@ -1403,18 +1403,18 @@ LABEL_41:
 
         self->_bufferConstants.fps = v69;
         v70 = dispatch_semaphore_create(0);
-        v71 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-        [v71 setProtectionOptions:v41];
+        commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+        [commandBuffer setProtectionOptions:v41];
         v74 = MEMORY[0x277D85DD0];
         v75 = 3221225472;
         v76 = __78__PSEVideoProcessor__processSurface_withTimestamp_destinationSurface_options___block_invoke;
         v77 = &unk_279A34A50;
-        v78 = self;
+        selfCopy = self;
         v79 = v70;
         v72 = v70;
-        [v71 addCompletedHandler:&v74];
-        [(PSEVideoProcessor *)self _processFrame:v71 sourceSurface:a3 outSurface:a5, v74, v75, v76, v77, v78];
-        [v71 commit];
+        [commandBuffer addCompletedHandler:&v74];
+        [(PSEVideoProcessor *)self _processFrame:commandBuffer sourceSurface:surface outSurface:destinationSurface, v74, v75, v76, v77, selfCopy];
+        [commandBuffer commit];
         dispatch_semaphore_wait(v72, 0xFFFFFFFFFFFFFFFFLL);
 
         goto LABEL_50;
@@ -1424,7 +1424,7 @@ LABEL_41:
       if (os_log_type_enabled(PSELog, OS_LOG_TYPE_INFO))
       {
         v43 = MEMORY[0x277CCABB0];
-        v44 = a4 - self->_previousSurfaceTime;
+        v44 = timestamp - self->_previousSurfaceTime;
         v45 = v42;
         v46 = [v43 numberWithDouble:v44];
         *&v47 = vabds_f32(self->_fps, fps);
@@ -1522,7 +1522,7 @@ void __78__PSEVideoProcessor__processSurface_withTimestamp_destinationSurface_op
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetState:(unint64_t)a3
+- (void)_resetState:(unint64_t)state
 {
   self->_idxFrameRate = [(PSEVideoProcessor *)self _computeFrameRateIndexSelection];
   [(PSEVideoProcessor *)self _computeDisplaySizeIndexSelection];
@@ -1592,124 +1592,124 @@ void __78__PSEVideoProcessor__processSurface_withTimestamp_destinationSurface_op
   free(*(&v36[2] + 4));
   v26 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [v9 bytes], objc_msgSend(v9, "length"), 0);
   v27 = [(MTLDevice *)self->_device newBufferWithBytes:v32 length:144 options:0];
-  v28 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v29 = [v28 blitCommandEncoder];
-  [v29 copyFromBuffer:v27 sourceOffset:0 toBuffer:self->_bufferCurState[0] destinationOffset:0 size:144];
-  [v29 copyFromBuffer:v26 sourceOffset:0 toBuffer:self->_bufferGammaKernel[0] destinationOffset:0 size:{objc_msgSend(v9, "length")}];
-  [v29 copyFromBuffer:v25 sourceOffset:0 toBuffer:self->_bufferContrastKernel[0] destinationOffset:0 size:640];
-  [v29 fillBuffer:self->_bufferContrast[0] range:0 value:{640, 0}];
-  [v29 fillBuffer:self->_bufferEnergy[0] range:0 value:{objc_msgSend(v9, "length"), 0}];
-  [v29 fillBuffer:self->_bufferEnergy2[0] range:0 value:{objc_msgSend(v9, "length"), 0}];
-  [v29 fillBuffer:self->_bufferDataDebug range:0 value:{56, 0}];
-  [v29 endEncoding];
-  [v28 commit];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  blitCommandEncoder = [commandBuffer blitCommandEncoder];
+  [blitCommandEncoder copyFromBuffer:v27 sourceOffset:0 toBuffer:self->_bufferCurState[0] destinationOffset:0 size:144];
+  [blitCommandEncoder copyFromBuffer:v26 sourceOffset:0 toBuffer:self->_bufferGammaKernel[0] destinationOffset:0 size:{objc_msgSend(v9, "length")}];
+  [blitCommandEncoder copyFromBuffer:v25 sourceOffset:0 toBuffer:self->_bufferContrastKernel[0] destinationOffset:0 size:640];
+  [blitCommandEncoder fillBuffer:self->_bufferContrast[0] range:0 value:{640, 0}];
+  [blitCommandEncoder fillBuffer:self->_bufferEnergy[0] range:0 value:{objc_msgSend(v9, "length"), 0}];
+  [blitCommandEncoder fillBuffer:self->_bufferEnergy2[0] range:0 value:{objc_msgSend(v9, "length"), 0}];
+  [blitCommandEncoder fillBuffer:self->_bufferDataDebug range:0 value:{56, 0}];
+  [blitCommandEncoder endEncoding];
+  [commandBuffer commit];
   if (![(PSEVideoProcessor *)self inTestingMode]&& self->_madeProtectedBuffers)
   {
-    v30 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    commandBuffer2 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
 
-    [v30 setProtectionOptions:a3];
-    v31 = [v30 blitCommandEncoder];
+    [commandBuffer2 setProtectionOptions:state];
+    blitCommandEncoder2 = [commandBuffer2 blitCommandEncoder];
 
-    [v31 copyFromBuffer:v27 sourceOffset:0 toBuffer:self->_bufferCurState[1] destinationOffset:0 size:144];
-    [v31 copyFromBuffer:v26 sourceOffset:0 toBuffer:self->_bufferGammaKernel[1] destinationOffset:0 size:{objc_msgSend(v9, "length")}];
-    [v31 copyFromBuffer:v25 sourceOffset:0 toBuffer:self->_bufferContrastKernel[1] destinationOffset:0 size:640];
-    [v31 fillBuffer:self->_bufferContrast[1] range:0 value:{640, 0}];
-    [v31 fillBuffer:self->_bufferEnergy[1] range:0 value:{objc_msgSend(v9, "length"), 0}];
-    [v31 fillBuffer:self->_bufferEnergy2[1] range:0 value:{objc_msgSend(v9, "length"), 0}];
-    [v31 endEncoding];
-    [v30 commit];
-    v29 = v31;
-    v28 = v30;
+    [blitCommandEncoder2 copyFromBuffer:v27 sourceOffset:0 toBuffer:self->_bufferCurState[1] destinationOffset:0 size:144];
+    [blitCommandEncoder2 copyFromBuffer:v26 sourceOffset:0 toBuffer:self->_bufferGammaKernel[1] destinationOffset:0 size:{objc_msgSend(v9, "length")}];
+    [blitCommandEncoder2 copyFromBuffer:v25 sourceOffset:0 toBuffer:self->_bufferContrastKernel[1] destinationOffset:0 size:640];
+    [blitCommandEncoder2 fillBuffer:self->_bufferContrast[1] range:0 value:{640, 0}];
+    [blitCommandEncoder2 fillBuffer:self->_bufferEnergy[1] range:0 value:{objc_msgSend(v9, "length"), 0}];
+    [blitCommandEncoder2 fillBuffer:self->_bufferEnergy2[1] range:0 value:{objc_msgSend(v9, "length"), 0}];
+    [blitCommandEncoder2 endEncoding];
+    [commandBuffer2 commit];
+    blitCommandEncoder = blitCommandEncoder2;
+    commandBuffer = commandBuffer2;
   }
 }
 
-- (void)_processFrame:(id)a3 sourceSurface:(__IOSurface *)a4 outSurface:(__IOSurface *)a5
+- (void)_processFrame:(id)frame sourceSurface:(__IOSurface *)surface outSurface:(__IOSurface *)outSurface
 {
-  v7 = a3;
-  v8 = [v7 protectionOptions] != 0;
+  frameCopy = frame;
+  v8 = [frameCopy protectionOptions] != 0;
   self->_bufferConstants.bProtected = v8;
-  Width = IOSurfaceGetWidth(a4);
-  Height = IOSurfaceGetHeight(a4);
+  Width = IOSurfaceGetWidth(surface);
+  Height = IOSurfaceGetHeight(surface);
   v11 = Width * Height;
   self->_bufferConstants.fPixelCnt = v11;
-  v12 = [v7 blitCommandEncoder];
-  [v12 fillBuffer:self->_bufferFrameLumaSum[v8] range:0 value:{-[MTLBuffer length](self->_bufferFrameLumaSum[v8], "length"), 0}];
-  [v12 endEncoding];
-  v13 = [v7 computeCommandEncoder];
-  [v13 setLabel:@"Primary Compute Encoder"];
-  [v13 setComputePipelineState:self->_cptPSO_RiskComputePass0];
-  [v13 setTexture:self->_sourceTexture atIndex:0];
-  [v13 setTexture:self->_sourceCbCrTexture atIndex:1];
-  [v13 setTexture:self->_processedTexture atIndex:2];
-  [v13 setBytes:&self->_bufferConstants length:56 atIndex:0];
-  [v13 setBuffer:self->_bufferFrameLumaSum[v8] offset:0 atIndex:1];
+  blitCommandEncoder = [frameCopy blitCommandEncoder];
+  [blitCommandEncoder fillBuffer:self->_bufferFrameLumaSum[v8] range:0 value:{-[MTLBuffer length](self->_bufferFrameLumaSum[v8], "length"), 0}];
+  [blitCommandEncoder endEncoding];
+  computeCommandEncoder = [frameCopy computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"Primary Compute Encoder"];
+  [computeCommandEncoder setComputePipelineState:self->_cptPSO_RiskComputePass0];
+  [computeCommandEncoder setTexture:self->_sourceTexture atIndex:0];
+  [computeCommandEncoder setTexture:self->_sourceCbCrTexture atIndex:1];
+  [computeCommandEncoder setTexture:self->_processedTexture atIndex:2];
+  [computeCommandEncoder setBytes:&self->_bufferConstants length:56 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_bufferFrameLumaSum[v8] offset:0 atIndex:1];
   bufferData = self->_bufferData;
-  [v13 setBuffer:self->_bufferData[v8] offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_bufferData[v8] offset:0 atIndex:2];
   bufferGammaKernel = self->_bufferGammaKernel;
-  [v13 setBuffer:self->_bufferGammaKernel[v8] offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_bufferGammaKernel[v8] offset:0 atIndex:3];
   bufferCurState = self->_bufferCurState;
-  [v13 setBuffer:self->_bufferCurState[v8] offset:0 atIndex:4];
-  v17 = [(MTLComputePipelineState *)self->_cptPSO_RiskComputePass0 threadExecutionWidth];
-  v18 = [(MTLComputePipelineState *)self->_cptPSO_RiskComputePass0 maxTotalThreadsPerThreadgroup];
+  [computeCommandEncoder setBuffer:self->_bufferCurState[v8] offset:0 atIndex:4];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_cptPSO_RiskComputePass0 threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_cptPSO_RiskComputePass0 maxTotalThreadsPerThreadgroup];
   *v23 = Width;
   *&v23[8] = Height;
   *&v23[16] = 1;
-  *v22 = v17;
-  *&v22[8] = v18 / v17;
+  *v22 = threadExecutionWidth;
+  *&v22[8] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
   *&v22[16] = 1;
-  [v13 dispatchThreads:v23 threadsPerThreadgroup:v22];
+  [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
   if (!self->_bufferConstants.bCopyOnly)
   {
-    [v13 setComputePipelineState:self->_cptPSO_RiskComputePass1];
-    [v13 setBytes:&self->_bufferConstants length:56 atIndex:0];
-    [v13 setBuffer:self->_bufferFrameLumaSum[v8] offset:0 atIndex:1];
-    [v13 setBuffer:bufferData[v8] offset:0 atIndex:2];
-    [v13 setBuffer:bufferGammaKernel[v8] offset:0 atIndex:3];
-    [v13 setBuffer:bufferCurState[v8] offset:0 atIndex:4];
+    [computeCommandEncoder setComputePipelineState:self->_cptPSO_RiskComputePass1];
+    [computeCommandEncoder setBytes:&self->_bufferConstants length:56 atIndex:0];
+    [computeCommandEncoder setBuffer:self->_bufferFrameLumaSum[v8] offset:0 atIndex:1];
+    [computeCommandEncoder setBuffer:bufferData[v8] offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:bufferGammaKernel[v8] offset:0 atIndex:3];
+    [computeCommandEncoder setBuffer:bufferCurState[v8] offset:0 atIndex:4];
     v19 = &self->super.isa + v8;
-    [v13 setBuffer:v19[23] offset:0 atIndex:5];
-    [v13 setBuffer:v19[25] offset:0 atIndex:6];
-    [v13 setBuffer:v19[27] offset:0 atIndex:7];
-    [v13 setBuffer:v19[29] offset:0 atIndex:8];
+    [computeCommandEncoder setBuffer:v19[23] offset:0 atIndex:5];
+    [computeCommandEncoder setBuffer:v19[25] offset:0 atIndex:6];
+    [computeCommandEncoder setBuffer:v19[27] offset:0 atIndex:7];
+    [computeCommandEncoder setBuffer:v19[29] offset:0 atIndex:8];
     *v23 = 160;
     v21 = vdupq_n_s64(1uLL);
     *&v23[8] = v21;
     *v22 = 32;
     *&v22[8] = v21;
-    [v13 dispatchThreads:v23 threadsPerThreadgroup:v22];
-    [v13 setComputePipelineState:self->_cptPSO_RiskComputePass2];
-    [v13 setBytes:&self->_bufferConstants length:56 atIndex:0];
-    [v13 setBuffer:bufferData[v8] offset:0 atIndex:2];
-    [v13 setBuffer:bufferGammaKernel[v8] offset:0 atIndex:3];
-    [v13 setBuffer:bufferCurState[v8] offset:0 atIndex:4];
-    [v13 setBuffer:v19[27] offset:0 atIndex:7];
-    [v13 setBuffer:v19[29] offset:0 atIndex:8];
-    [v13 setBuffer:v19[19] offset:0 atIndex:9];
-    [v13 setBuffer:v19[21] offset:0 atIndex:10];
-    [v13 setBuffer:v19[31] offset:0 atIndex:11];
+    [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
+    [computeCommandEncoder setComputePipelineState:self->_cptPSO_RiskComputePass2];
+    [computeCommandEncoder setBytes:&self->_bufferConstants length:56 atIndex:0];
+    [computeCommandEncoder setBuffer:bufferData[v8] offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:bufferGammaKernel[v8] offset:0 atIndex:3];
+    [computeCommandEncoder setBuffer:bufferCurState[v8] offset:0 atIndex:4];
+    [computeCommandEncoder setBuffer:v19[27] offset:0 atIndex:7];
+    [computeCommandEncoder setBuffer:v19[29] offset:0 atIndex:8];
+    [computeCommandEncoder setBuffer:v19[19] offset:0 atIndex:9];
+    [computeCommandEncoder setBuffer:v19[21] offset:0 atIndex:10];
+    [computeCommandEncoder setBuffer:v19[31] offset:0 atIndex:11];
     *v23 = 1280;
     *&v23[8] = v21;
     *v22 = 256;
     *&v22[8] = v21;
-    [v13 dispatchThreads:v23 threadsPerThreadgroup:v22];
-    [v13 setComputePipelineState:self->_cptPSO_RiskComputePass3];
-    [v13 setBytes:&self->_bufferConstants length:56 atIndex:0];
-    [v13 setBuffer:bufferCurState[v8] offset:0 atIndex:4];
-    [v13 setBuffer:bufferData[v8] offset:0 atIndex:2];
-    [v13 setBuffer:v19[31] offset:0 atIndex:11];
+    [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
+    [computeCommandEncoder setComputePipelineState:self->_cptPSO_RiskComputePass3];
+    [computeCommandEncoder setBytes:&self->_bufferConstants length:56 atIndex:0];
+    [computeCommandEncoder setBuffer:bufferCurState[v8] offset:0 atIndex:4];
+    [computeCommandEncoder setBuffer:bufferData[v8] offset:0 atIndex:2];
+    [computeCommandEncoder setBuffer:v19[31] offset:0 atIndex:11];
     *v23 = v21;
     *&v23[16] = 1;
     *v22 = v21;
     *&v22[16] = 1;
-    [v13 dispatchThreads:v23 threadsPerThreadgroup:v22];
+    [computeCommandEncoder dispatchThreads:v23 threadsPerThreadgroup:v22];
   }
 
-  [v13 endEncoding];
+  [computeCommandEncoder endEncoding];
   if ((self->_bufferConstants.bCallbackValues || self->_bufferConstants.bDebug) && !self->_bufferConstants.bProtected)
   {
-    v20 = [v7 blitCommandEncoder];
-    [v20 copyFromBuffer:self->_bufferData[0] sourceOffset:0 toBuffer:self->_bufferDataDebug destinationOffset:0 size:56];
-    [v20 endEncoding];
+    blitCommandEncoder2 = [frameCopy blitCommandEncoder];
+    [blitCommandEncoder2 copyFromBuffer:self->_bufferData[0] sourceOffset:0 toBuffer:self->_bufferDataDebug destinationOffset:0 size:56];
+    [blitCommandEncoder2 endEncoding];
   }
 }
 
@@ -1737,7 +1737,7 @@ void __78__PSEVideoProcessor__processSurface_withTimestamp_destinationSurface_op
 {
   v15 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCABB0];
-  v3 = standardFrameRates[a1];
+  v3 = standardFrameRates[self];
   v4 = a2;
   LODWORD(v5) = v3;
   v6 = [v2 numberWithFloat:v5];

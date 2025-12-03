@@ -1,6 +1,6 @@
 @interface CaptureMTL4MachineLearningPipelineState
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTL4MachineLearningPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTL4MachineLearningPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler;
 - (NSString)description;
 - (unint64_t)streamReference;
 - (void)dealloc;
@@ -35,10 +35,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTL4MachineLearningPipelineState *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTL4MachineLearningPipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -57,13 +57,13 @@
   [(CaptureMTL4MachineLearningPipelineState *)&v13 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTL4MachineLearningPipelineState *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTL4MachineLearningPipelineState *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -118,39 +118,39 @@
   }
 }
 
-- (CaptureMTL4MachineLearningPipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5
+- (CaptureMTL4MachineLearningPipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  compilerCopy = compiler;
   v23.receiver = self;
   v23.super_class = CaptureMTL4MachineLearningPipelineState;
   v12 = [(CaptureMTL4MachineLearningPipelineState *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_baseObject, a3);
-    objc_storeStrong(&v13->_captureCompiler, a5);
-    objc_storeStrong(&v13->_mtl4Descriptor, a4);
-    v14 = [v11 captureDevice];
+    objc_storeStrong(&v12->_baseObject, object);
+    objc_storeStrong(&v13->_captureCompiler, compiler);
+    objc_storeStrong(&v13->_mtl4Descriptor, descriptor);
+    captureDevice = [compilerCopy captureDevice];
     captureDevice = v13->_captureDevice;
-    v13->_captureDevice = v14;
+    v13->_captureDevice = captureDevice;
 
-    v16 = [(CaptureMTLDevice *)v13->_captureDevice traceContext];
-    v13->_traceContext = v16;
-    v17 = DEVICEOBJECT(v9);
-    v13->_traceStream = GTTraceContext_openStream(v16, v17, v13);
+    traceContext = [(CaptureMTLDevice *)v13->_captureDevice traceContext];
+    v13->_traceContext = traceContext;
+    v17 = DEVICEOBJECT(objectCopy);
+    v13->_traceStream = GTTraceContext_openStream(traceContext, v17, v13);
 
-    v18 = [v10 machineLearningFunctionDescriptor];
+    machineLearningFunctionDescriptor = [descriptorCopy machineLearningFunctionDescriptor];
     objc_opt_class();
     LOBYTE(v17) = objc_opt_isKindOfClass();
 
     if (v17)
     {
-      v19 = [v10 machineLearningFunctionDescriptor];
-      v20 = [v19 library];
+      machineLearningFunctionDescriptor2 = [descriptorCopy machineLearningFunctionDescriptor];
+      library = [machineLearningFunctionDescriptor2 library];
       captureLibrary = v13->_captureLibrary;
-      v13->_captureLibrary = v20;
+      v13->_captureLibrary = library;
     }
   }
 

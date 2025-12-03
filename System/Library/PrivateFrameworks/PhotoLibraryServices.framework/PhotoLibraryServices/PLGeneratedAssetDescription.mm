@@ -1,48 +1,48 @@
 @interface PLGeneratedAssetDescription
-+ (id)_fetchGeneratedAssetDescriptionEdgesForAsset:(id)a3;
-+ (id)_labelIDWithCode:(int)a3 context:(id)a4;
-+ (id)_labelWithCode:(int)a3 context:(id)a4;
-+ (id)_newNodeContainerWithManagedObjectContext:(id)a3 dictionary:(id)a4;
-+ (id)fetchGeneratedAssetDescriptionNodesForAsset:(id)a3;
-+ (id)fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:(int64_t)a3 forAssetsIDs:(id)a4 inLibrary:(id)a5;
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3;
-+ (void)_enumerateGraphNodesForAssetObjectIDs:(id)a3 inContext:(id)a4 withBlock:(id)a5;
-+ (void)_updateAsset:(id)a3 nodeContainer:(id)a4;
-+ (void)prepareForDeletingIncomingEdge:(id)a3;
-+ (void)resetGeneratedAssetDescriptionsForAsset:(id)a3;
-+ (void)resetGeneratedAssetDescriptionsForAsset:(id)a3 sourceTypes:(id)a4;
-+ (void)setGeneratedAssetDescriptionForAsset:(id)a3 fromDictionaries:(id)a4;
++ (id)_fetchGeneratedAssetDescriptionEdgesForAsset:(id)asset;
++ (id)_labelIDWithCode:(int)code context:(id)context;
++ (id)_labelWithCode:(int)code context:(id)context;
++ (id)_newNodeContainerWithManagedObjectContext:(id)context dictionary:(id)dictionary;
++ (id)fetchGeneratedAssetDescriptionNodesForAsset:(id)asset;
++ (id)fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:(int64_t)type forAssetsIDs:(id)ds inLibrary:(id)library;
++ (id)newNodeContainerWithManagedObjectContext:(id)context;
++ (void)_enumerateGraphNodesForAssetObjectIDs:(id)ds inContext:(id)context withBlock:(id)block;
++ (void)_updateAsset:(id)asset nodeContainer:(id)container;
++ (void)prepareForDeletingIncomingEdge:(id)edge;
++ (void)resetGeneratedAssetDescriptionsForAsset:(id)asset;
++ (void)resetGeneratedAssetDescriptionsForAsset:(id)asset sourceTypes:(id)types;
++ (void)setGeneratedAssetDescriptionForAsset:(id)asset fromDictionaries:(id)dictionaries;
 - (NSString)descriptionText;
-- (id)_insertEdgeForAsset:(id)a3;
+- (id)_insertEdgeForAsset:(id)asset;
 - (id)asset;
 - (id)description;
 - (int64_t)analysisSourceType;
 - (signed)analysisVersion;
 - (void)_updateChangeFlagForProperties;
-- (void)setAnalysisSourceType:(int64_t)a3;
-- (void)setAnalysisVersion:(signed __int16)a3;
-- (void)setDescriptionText:(id)a3;
+- (void)setAnalysisSourceType:(int64_t)type;
+- (void)setAnalysisVersion:(signed __int16)version;
+- (void)setDescriptionText:(id)text;
 @end
 
 @implementation PLGeneratedAssetDescription
 
-+ (void)resetGeneratedAssetDescriptionsForAsset:(id)a3 sourceTypes:(id)a4
++ (void)resetGeneratedAssetDescriptionsForAsset:(id)asset sourceTypes:(id)types
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 containsObject:&unk_1F0FBAF90];
-  v9 = [v7 containsObject:&unk_1F0FBAFA8];
+  assetCopy = asset;
+  typesCopy = types;
+  v8 = [typesCopy containsObject:&unk_1F0FBAF90];
+  v9 = [typesCopy containsObject:&unk_1F0FBAFA8];
   if (v8 && v9)
   {
-    [a1 resetGeneratedAssetDescriptionsForAsset:v6];
+    [self resetGeneratedAssetDescriptionsForAsset:assetCopy];
   }
 
   else
   {
-    [v6 managedObjectContext];
-    v31 = v30 = v6;
-    [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:v6];
+    [assetCopy managedObjectContext];
+    v31 = v30 = assetCopy;
+    [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:assetCopy];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -63,20 +63,20 @@
 
           v14 = *(*(&v33 + 1) + 8 * i);
           v15 = [PLGeneratedAssetDescription alloc];
-          v16 = [v14 targetNode];
-          v17 = [(PLGraphNodeContainer *)v15 initWithNode:v16];
+          targetNode = [v14 targetNode];
+          v17 = [(PLGraphNodeContainer *)v15 initWithNode:targetNode];
 
           v18 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PLGeneratedAssetDescription analysisSourceType](v17, "analysisSourceType")}];
-          v19 = [v7 containsObject:v18];
+          v19 = [typesCopy containsObject:v18];
 
           if (v19)
           {
-            v20 = [v14 targetNode];
+            targetNode2 = [v14 targetNode];
 
-            if (v20)
+            if (targetNode2)
             {
-              v21 = [v14 targetNode];
-              [v31 deleteObject:v21];
+              targetNode3 = [v14 targetNode];
+              [v31 deleteObject:targetNode3];
             }
           }
         }
@@ -87,28 +87,28 @@
       while (v11);
     }
 
-    v6 = v30;
+    assetCopy = v30;
     if (v28)
     {
-      v22 = [v30 mediaAnalysisAttributes];
-      v23 = [v22 imageCaptionVersion];
+      mediaAnalysisAttributes = [v30 mediaAnalysisAttributes];
+      imageCaptionVersion = [mediaAnalysisAttributes imageCaptionVersion];
 
-      if (v23)
+      if (imageCaptionVersion)
       {
-        v24 = [v30 mediaAnalysisAttributes];
-        [v24 setImageCaptionVersion:0];
+        mediaAnalysisAttributes2 = [v30 mediaAnalysisAttributes];
+        [mediaAnalysisAttributes2 setImageCaptionVersion:0];
       }
     }
 
     if (v29)
     {
-      v25 = [v30 mediaAnalysisAttributes];
-      v26 = [v25 videoCaptionVersion];
+      mediaAnalysisAttributes3 = [v30 mediaAnalysisAttributes];
+      videoCaptionVersion = [mediaAnalysisAttributes3 videoCaptionVersion];
 
-      if (v26)
+      if (videoCaptionVersion)
       {
-        v27 = [v30 mediaAnalysisAttributes];
-        [v27 setVideoCaptionVersion:0];
+        mediaAnalysisAttributes4 = [v30 mediaAnalysisAttributes];
+        [mediaAnalysisAttributes4 setVideoCaptionVersion:0];
       }
     }
   }
@@ -117,116 +117,116 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLGeneratedAssetDescription *)self asset];
-  v5 = [v4 pl_shortDescription];
-  v6 = [(PLGeneratedAssetDescription *)self descriptionText];
-  v7 = [v3 stringWithFormat:@"\nasset: %@\ndescriptionText: %@\nanalysisVersion: %llu\nanalysisSourceType: %ld", v5, v6, -[PLGeneratedAssetDescription analysisVersion](self, "analysisVersion"), -[PLGeneratedAssetDescription analysisSourceType](self, "analysisSourceType")];
+  asset = [(PLGeneratedAssetDescription *)self asset];
+  pl_shortDescription = [asset pl_shortDescription];
+  descriptionText = [(PLGeneratedAssetDescription *)self descriptionText];
+  v7 = [v3 stringWithFormat:@"\nasset: %@\ndescriptionText: %@\nanalysisVersion: %llu\nanalysisSourceType: %ld", pl_shortDescription, descriptionText, -[PLGeneratedAssetDescription analysisVersion](self, "analysisVersion"), -[PLGeneratedAssetDescription analysisSourceType](self, "analysisSourceType")];
 
   return v7;
 }
 
 - (void)_updateChangeFlagForProperties
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  [v2 setChangeFlag0:{objc_msgSend(v2, "changeFlag0") + 1}];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  [sourceNode setChangeFlag0:{objc_msgSend(sourceNode, "changeFlag0") + 1}];
 }
 
 - (id)asset
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 edgesIn];
-  v4 = [v3 anyObject];
-  v5 = [v4 sourceAsset];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  edgesIn = [sourceNode edgesIn];
+  anyObject = [edgesIn anyObject];
+  sourceAsset = [anyObject sourceAsset];
 
-  return v5;
+  return sourceAsset;
 }
 
-- (void)setAnalysisSourceType:(int64_t)a3
+- (void)setAnalysisSourceType:(int64_t)type
 {
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:1000 createIfMissing:1];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:1000 createIfMissing:1];
 
-  [v6 setIntegerValue:a3];
+  [v6 setIntegerValue:type];
   [(PLGeneratedAssetDescription *)self _updateChangeFlagForProperties];
 }
 
 - (int64_t)analysisSourceType
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:1000];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:1000];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setAnalysisVersion:(signed __int16)a3
+- (void)setAnalysisVersion:(signed __int16)version
 {
-  v3 = a3;
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:1002 createIfMissing:1];
+  versionCopy = version;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:1002 createIfMissing:1];
 
-  [v6 setIntegerValue:v3];
+  [v6 setIntegerValue:versionCopy];
   [(PLGeneratedAssetDescription *)self _updateChangeFlagForProperties];
 }
 
 - (signed)analysisVersion
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:1002];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:1002];
 
-  LOWORD(v2) = [v3 integerValue];
-  return v2;
+  LOWORD(sourceNode) = [v3 integerValue];
+  return sourceNode;
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v4 = a3;
-  v5 = [(PLGraphNodeContainer *)self sourceNode];
-  v6 = [v5 valueWithCode:1001 createIfMissing:1];
+  textCopy = text;
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v6 = [sourceNode valueWithCode:1001 createIfMissing:1];
 
-  [v6 setStringValue:v4];
+  [v6 setStringValue:textCopy];
   [(PLGeneratedAssetDescription *)self _updateChangeFlagForProperties];
 }
 
 - (NSString)descriptionText
 {
-  v2 = [(PLGraphNodeContainer *)self sourceNode];
-  v3 = [v2 valueWithCode:1001];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  v3 = [sourceNode valueWithCode:1001];
 
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (id)_insertEdgeForAsset:(id)a3
+- (id)_insertEdgeForAsset:(id)asset
 {
-  v5 = a3;
-  if (!v5)
+  assetCopy = asset;
+  if (!assetCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLGeneratedAssetDescription.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGeneratedAssetDescription.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
   }
 
-  v6 = [(PLGraphNodeContainer *)self sourceNode];
-  v7 = [v6 managedObjectContext];
+  sourceNode = [(PLGraphNodeContainer *)self sourceNode];
+  managedObjectContext = [sourceNode managedObjectContext];
 
-  v8 = [PLGeneratedAssetDescription _labelWithCode:1300 context:v7];
-  v9 = [PLGraphEdge insertGraphEdgeInContext:v7 withPrimaryLabel:v8];
+  v8 = [PLGeneratedAssetDescription _labelWithCode:1300 context:managedObjectContext];
+  v9 = [PLGraphEdge insertGraphEdgeInContext:managedObjectContext withPrimaryLabel:v8];
 
-  v10 = [(PLGraphNodeContainer *)self sourceNode];
-  [v9 setTargetNode:v10];
+  sourceNode2 = [(PLGraphNodeContainer *)self sourceNode];
+  [v9 setTargetNode:sourceNode2];
 
-  [v9 setSourceAsset:v5];
+  [v9 setSourceAsset:assetCopy];
 
   return v9;
 }
 
-+ (void)resetGeneratedAssetDescriptionsForAsset:(id)a3
++ (void)resetGeneratedAssetDescriptionsForAsset:(id)asset
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
-  v5 = [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:v3];
+  assetCopy = asset;
+  managedObjectContext = [assetCopy managedObjectContext];
+  v5 = [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:assetCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -246,12 +246,12 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 targetNode];
+        targetNode = [v10 targetNode];
 
-        if (v11)
+        if (targetNode)
         {
-          v12 = [v10 targetNode];
-          [v4 deleteObject:v12];
+          targetNode2 = [v10 targetNode];
+          [managedObjectContext deleteObject:targetNode2];
         }
       }
 
@@ -261,33 +261,33 @@
     while (v7);
   }
 
-  v13 = [v3 mediaAnalysisAttributes];
-  v14 = [v13 imageCaptionVersion];
+  mediaAnalysisAttributes = [assetCopy mediaAnalysisAttributes];
+  imageCaptionVersion = [mediaAnalysisAttributes imageCaptionVersion];
 
-  if (v14)
+  if (imageCaptionVersion)
   {
-    v15 = [v3 mediaAnalysisAttributes];
-    [v15 setImageCaptionVersion:0];
+    mediaAnalysisAttributes2 = [assetCopy mediaAnalysisAttributes];
+    [mediaAnalysisAttributes2 setImageCaptionVersion:0];
   }
 
-  v16 = [v3 mediaAnalysisAttributes];
-  v17 = [v16 videoCaptionVersion];
+  mediaAnalysisAttributes3 = [assetCopy mediaAnalysisAttributes];
+  videoCaptionVersion = [mediaAnalysisAttributes3 videoCaptionVersion];
 
-  if (v17)
+  if (videoCaptionVersion)
   {
-    v18 = [v3 mediaAnalysisAttributes];
-    [v18 setVideoCaptionVersion:0];
+    mediaAnalysisAttributes4 = [assetCopy mediaAnalysisAttributes];
+    [mediaAnalysisAttributes4 setVideoCaptionVersion:0];
   }
 }
 
-+ (void)setGeneratedAssetDescriptionForAsset:(id)a3 fromDictionaries:(id)a4
++ (void)setGeneratedAssetDescriptionForAsset:(id)asset fromDictionaries:(id)dictionaries
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v39 = a4;
-  v6 = [v39 mutableCopy];
-  v7 = v5;
-  [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:v5];
+  assetCopy = asset;
+  dictionariesCopy = dictionaries;
+  v6 = [dictionariesCopy mutableCopy];
+  v7 = assetCopy;
+  [PLGeneratedAssetDescription _fetchGeneratedAssetDescriptionEdgesForAsset:assetCopy];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -307,14 +307,14 @@
         }
 
         v37 = v8;
-        v9 = [*(*(&v49 + 1) + 8 * v8) targetNode];
-        v10 = [(PLGraphNodeContainer *)PLGeneratedAssetDescription newNodeContainerWithNode:v9];
+        targetNode = [*(*(&v49 + 1) + 8 * v8) targetNode];
+        v10 = [(PLGraphNodeContainer *)PLGeneratedAssetDescription newNodeContainerWithNode:targetNode];
 
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v11 = v39;
+        v11 = dictionariesCopy;
         v12 = [v11 countByEnumeratingWithState:&v45 objects:v54 count:16];
         if (v12)
         {
@@ -330,8 +330,8 @@
               }
 
               v16 = *(*(&v45 + 1) + 8 * i);
-              v17 = [v16 integerValue];
-              if (v17 == [v10 analysisSourceType])
+              integerValue = [v16 integerValue];
+              if (integerValue == [v10 analysisSourceType])
               {
                 v18 = [v11 objectForKeyedSubscript:v16];
                 v19 = [v18 objectForKeyedSubscript:@"descriptionText"];
@@ -341,7 +341,7 @@
                 v21 = [v20 objectForKeyedSubscript:@"analysisVersion"];
                 [v10 setAnalysisVersion:{objc_msgSend(v21, "integerValue")}];
 
-                [a1 _updateAsset:v7 nodeContainer:v10];
+                [self _updateAsset:v7 nodeContainer:v10];
                 [v6 removeObjectForKey:v16];
               }
             }
@@ -382,20 +382,20 @@
         }
 
         v25 = *(*(&v41 + 1) + 8 * j);
-        v26 = [v7 managedObjectContext];
-        v27 = [a1 newNodeContainerWithManagedObjectContext:v26];
+        managedObjectContext = [v7 managedObjectContext];
+        v27 = [self newNodeContainerWithManagedObjectContext:managedObjectContext];
 
-        v28 = [v39 objectForKeyedSubscript:v25];
+        v28 = [dictionariesCopy objectForKeyedSubscript:v25];
         v29 = [v28 objectForKeyedSubscript:@"descriptionText"];
         [v27 setDescriptionText:v29];
 
-        v30 = [v39 objectForKeyedSubscript:v25];
+        v30 = [dictionariesCopy objectForKeyedSubscript:v25];
         v31 = [v30 objectForKeyedSubscript:@"analysisVersion"];
         [v27 setAnalysisVersion:{objc_msgSend(v31, "integerValue")}];
 
         [v27 setAnalysisSourceType:{objc_msgSend(v25, "integerValue")}];
         v32 = [v27 _insertEdgeForAsset:v7];
-        [a1 _updateAsset:v7 nodeContainer:v27];
+        [self _updateAsset:v7 nodeContainer:v27];
       }
 
       v23 = [v36 countByEnumeratingWithState:&v41 objects:v53 count:16];
@@ -405,41 +405,41 @@
   }
 }
 
-+ (void)_updateAsset:(id)a3 nodeContainer:(id)a4
++ (void)_updateAsset:(id)asset nodeContainer:(id)container
 {
-  v11 = a3;
-  v7 = a4;
-  if (![v7 analysisSourceType])
+  assetCopy = asset;
+  containerCopy = container;
+  if (![containerCopy analysisSourceType])
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLGeneratedAssetDescription.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"description.analysisSourceType != PLGeneratedAssetDescriptionSourceTypeUnknown"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLGeneratedAssetDescription.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"description.analysisSourceType != PLGeneratedAssetDescriptionSourceTypeUnknown"}];
   }
 
-  v8 = [v11 mediaAnalysisAttributesInsertingIfNecessary];
-  v9 = [v7 analysisSourceType];
-  if (v9 == 2)
+  mediaAnalysisAttributesInsertingIfNecessary = [assetCopy mediaAnalysisAttributesInsertingIfNecessary];
+  analysisSourceType = [containerCopy analysisSourceType];
+  if (analysisSourceType == 2)
   {
-    [v8 setVideoCaptionVersion:{objc_msgSend(v7, "analysisVersion")}];
+    [mediaAnalysisAttributesInsertingIfNecessary setVideoCaptionVersion:{objc_msgSend(containerCopy, "analysisVersion")}];
   }
 
-  else if (v9 == 1)
+  else if (analysisSourceType == 1)
   {
-    [v8 setImageCaptionVersion:{objc_msgSend(v7, "analysisVersion")}];
+    [mediaAnalysisAttributesInsertingIfNecessary setImageCaptionVersion:{objc_msgSend(containerCopy, "analysisVersion")}];
   }
 }
 
-+ (void)_enumerateGraphNodesForAssetObjectIDs:(id)a3 inContext:(id)a4 withBlock:(id)a5
++ (void)_enumerateGraphNodesForAssetObjectIDs:(id)ds inContext:(id)context withBlock:(id)block
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [PLGeneratedAssetDescription _labelIDWithCode:1300 context:v8];
+  dsCopy = ds;
+  contextCopy = context;
+  blockCopy = block;
+  v10 = [PLGeneratedAssetDescription _labelIDWithCode:1300 context:contextCopy];
   v11 = MEMORY[0x1E696AB28];
   v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"primaryLabel", v10];
   v34[0] = v12;
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"sourceAsset", v7];
-  v34[1] = v13;
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K in %@", @"sourceAsset", dsCopy];
+  v34[1] = dsCopy;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   v15 = [v11 andPredicateWithSubpredicates:v14];
 
@@ -458,7 +458,7 @@
   [v16 setRelationshipKeyPathsForPrefetching:v18];
 
   v27 = 0;
-  v19 = [v8 executeFetchRequest:v16 error:&v27];
+  v19 = [contextCopy executeFetchRequest:v16 error:&v27];
   v20 = v27;
   if (!v19)
   {
@@ -466,7 +466,7 @@
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v29 = v7;
+      v29 = dsCopy;
       v30 = 2112;
       v31 = v20;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Failed to fetch generated asset descriptions for assets %{public}@ with error %@", buf, 0x16u);
@@ -477,10 +477,10 @@
   v24[1] = 3221225472;
   v24[2] = __89__PLGeneratedAssetDescription__enumerateGraphNodesForAssetObjectIDs_inContext_withBlock___block_invoke;
   v24[3] = &unk_1E756BF90;
-  v25 = v8;
-  v26 = v9;
-  v22 = v9;
-  v23 = v8;
+  v25 = contextCopy;
+  v26 = blockCopy;
+  v22 = blockCopy;
+  v23 = contextCopy;
   [v19 enumerateObjectsUsingBlock:v24];
 }
 
@@ -497,15 +497,15 @@ void __89__PLGeneratedAssetDescription__enumerateGraphNodesForAssetObjectIDs_inC
   }
 }
 
-+ (id)fetchGeneratedAssetDescriptionNodesForAsset:(id)a3
++ (id)fetchGeneratedAssetDescriptionNodesForAsset:(id)asset
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  assetCopy = asset;
   v6 = objc_alloc_init(v4);
   v7 = MEMORY[0x1E695DFD8];
-  v8 = [v5 objectID];
-  v9 = [v7 setWithObject:v8];
-  v10 = [v5 managedObjectContext];
+  objectID = [assetCopy objectID];
+  v9 = [v7 setWithObject:objectID];
+  managedObjectContext = [assetCopy managedObjectContext];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -513,30 +513,30 @@ void __89__PLGeneratedAssetDescription__enumerateGraphNodesForAssetObjectIDs_inC
   v13[3] = &unk_1E7566A00;
   v11 = v6;
   v14 = v11;
-  [a1 _enumerateGraphNodesForAssetObjectIDs:v9 inContext:v10 withBlock:v13];
+  [self _enumerateGraphNodesForAssetObjectIDs:v9 inContext:managedObjectContext withBlock:v13];
 
   return v11;
 }
 
-+ (id)fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:(int64_t)a3 forAssetsIDs:(id)a4 inLibrary:(id)a5
++ (id)fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType:(int64_t)type forAssetsIDs:(id)ds inLibrary:(id)library
 {
-  v7 = a4;
+  dsCopy = ds;
   v8 = MEMORY[0x1E695DF90];
-  v9 = a5;
-  v10 = [v8 dictionary];
-  v11 = [v9 managedObjectContext];
+  libraryCopy = library;
+  dictionary = [v8 dictionary];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __110__PLGeneratedAssetDescription_fetchGeneratedAssetDescriptionsGroupedByAssetIdWithType_forAssetsIDs_inLibrary___block_invoke;
   v18[3] = &unk_1E7576168;
-  v19 = v11;
-  v20 = v7;
-  v22 = a3;
-  v12 = v10;
+  v19 = managedObjectContext;
+  v20 = dsCopy;
+  typeCopy = type;
+  v12 = dictionary;
   v21 = v12;
-  v13 = v7;
-  v14 = v11;
-  [v9 performBlockAndWait:v18];
+  v13 = dsCopy;
+  v14 = managedObjectContext;
+  [libraryCopy performBlockAndWait:v18];
 
   v15 = v21;
   v16 = v12;
@@ -639,28 +639,28 @@ void __110__PLGeneratedAssetDescription_fetchGeneratedAssetDescriptionsGroupedBy
   }
 }
 
-+ (id)_fetchGeneratedAssetDescriptionEdgesForAsset:(id)a3
++ (id)_fetchGeneratedAssetDescriptionEdgesForAsset:(id)asset
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  assetCopy = asset;
+  managedObjectContext = [assetCopy managedObjectContext];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLGraphEdge entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
 
-  v8 = [PLGeneratedAssetDescription _labelIDWithCode:1300 context:v4];
+  v8 = [PLGeneratedAssetDescription _labelIDWithCode:1300 context:managedObjectContext];
   v9 = MEMORY[0x1E696AB28];
   v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"primaryLabel", v8];
   v22[0] = v10;
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"sourceAsset", v3];
+  assetCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"sourceAsset", assetCopy];
 
-  v22[1] = v11;
+  v22[1] = assetCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   v13 = [v9 andPredicateWithSubpredicates:v12];
   [v7 setPredicate:v13];
 
   v19 = 0;
-  v14 = [v4 executeFetchRequest:v7 error:&v19];
+  v14 = [managedObjectContext executeFetchRequest:v7 error:&v19];
   v15 = v19;
   if (v14)
   {
@@ -681,67 +681,67 @@ void __110__PLGeneratedAssetDescription_fetchGeneratedAssetDescriptionsGroupedBy
   return v14;
 }
 
-+ (id)_newNodeContainerWithManagedObjectContext:(id)a3 dictionary:(id)a4
++ (id)_newNodeContainerWithManagedObjectContext:(id)context dictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = [a1 newNodeContainerWithManagedObjectContext:a3];
-  v8 = [v6 objectForKeyedSubscript:@"descriptionText"];
+  dictionaryCopy = dictionary;
+  v7 = [self newNodeContainerWithManagedObjectContext:context];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"descriptionText"];
   [v7 setDescriptionText:v8];
 
-  v9 = [v6 objectForKeyedSubscript:@"analysisVersion"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"analysisVersion"];
   [v7 setAnalysisVersion:{objc_msgSend(v9, "integerValue")}];
 
-  v10 = [v6 objectForKeyedSubscript:@"analysisSourceType"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"analysisSourceType"];
 
   [v7 setAnalysisSourceType:{objc_msgSend(v10, "integerValue")}];
   return v7;
 }
 
-+ (id)_labelIDWithCode:(int)a3 context:(id)a4
++ (id)_labelIDWithCode:(int)code context:(id)context
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [v5 pl_graphCache];
-  v7 = [v6 objectIDForLabelWithCode:v4 inContext:v5];
+  v4 = *&code;
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache objectIDForLabelWithCode:v4 inContext:contextCopy];
 
   return v7;
 }
 
-+ (id)_labelWithCode:(int)a3 context:(id)a4
++ (id)_labelWithCode:(int)code context:(id)context
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = [v5 pl_graphCache];
-  v7 = [v6 labelWithCode:v4 inContext:v5];
+  v4 = *&code;
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v7 = [pl_graphCache labelWithCode:v4 inContext:contextCopy];
 
   return v7;
 }
 
-+ (void)prepareForDeletingIncomingEdge:(id)a3
++ (void)prepareForDeletingIncomingEdge:(id)edge
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___PLGeneratedAssetDescription;
-  v3 = a3;
-  objc_msgSendSuper2(&v6, sel_prepareForDeletingIncomingEdge_, v3);
-  v4 = [v3 managedObjectContext];
-  v5 = [v3 targetNode];
+  edgeCopy = edge;
+  objc_msgSendSuper2(&v6, sel_prepareForDeletingIncomingEdge_, edgeCopy);
+  managedObjectContext = [edgeCopy managedObjectContext];
+  targetNode = [edgeCopy targetNode];
 
-  [v4 deleteObject:v5];
+  [managedObjectContext deleteObject:targetNode];
 }
 
-+ (id)newNodeContainerWithManagedObjectContext:(id)a3
++ (id)newNodeContainerWithManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 pl_graphCache];
-  v6 = [v5 labelWithCode:1300 inContext:v4];
-  v7 = [PLGraphNode insertGraphNodeInContext:v4 withPrimaryLabel:v6];
+  contextCopy = context;
+  pl_graphCache = [contextCopy pl_graphCache];
+  v6 = [pl_graphCache labelWithCode:1300 inContext:contextCopy];
+  v7 = [PLGraphNode insertGraphNodeInContext:contextCopy withPrimaryLabel:v6];
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS___PLGeneratedAssetDescription;
   v8 = [objc_msgSendSuper2(&v12 alloc)];
-  v9 = [MEMORY[0x1E696AFB0] UUID];
-  v10 = [v9 UUIDString];
-  [v8 setUuid:v10];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v8 setUuid:uUIDString];
 
   return v8;
 }

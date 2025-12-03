@@ -1,98 +1,98 @@
 @interface NCNotificationListHighlights
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)isExpanded;
-- (BOOL)removeNotificationRequest:(id)a3;
+- (BOOL)removeNotificationRequest:(id)request;
 - (CGSize)contentSize;
-- (NCNotificationListHighlights)initWithTitle:(id)a3 sectionType:(unint64_t)a4;
+- (NCNotificationListHighlights)initWithTitle:(id)title sectionType:(unint64_t)type;
 - (UITraitChangeRegistration)glassLuminanceValueTraitChangeRegistration;
 - (double)collapsedHeight;
 - (double)expandedHeight;
 - (double)expandedHeightIgnoringNotificationStacks;
 - (double)expandedPercentage;
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4;
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(int64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7;
-- (id)notificationGroupList:(id)a3 requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)a4 isLongLook:(BOOL)a5;
-- (id)notificationListView:(id)a3 topSpacingForItemAtIndex:(int64_t)a4;
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(int64_t)a4;
-- (id)overlayViewForNotificationList:(id)a3;
-- (int64_t)insertNotificationRequest:(id)a3;
-- (int64_t)notificationListViewNumberOfItems:(id)a3;
-- (unint64_t)_groupingSettingForSectionIdentifier:(id)a3;
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width;
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width;
+- (double)notificationListView:(id)view heightForItemAtIndex:(int64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack;
+- (id)notificationGroupList:(id)list requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look;
+- (id)notificationListView:(id)view topSpacingForItemAtIndex:(int64_t)index;
+- (id)notificationListView:(id)view viewForItemAtIndex:(int64_t)index;
+- (id)overlayViewForNotificationList:(id)list;
+- (int64_t)insertNotificationRequest:(id)request;
+- (int64_t)notificationListViewNumberOfItems:(id)items;
+- (unint64_t)_groupingSettingForSectionIdentifier:(id)identifier;
 - (void)glassLuminanceChanged;
-- (void)groupListDidLayout:(id)a3;
-- (void)handleCoverSheetVisibilityChange:(BOOL)a3;
-- (void)handleWake:(BOOL)a3;
-- (void)notificationListComponent:(id)a3 willRemoveNotificationRequest:(id)a4;
+- (void)groupListDidLayout:(id)layout;
+- (void)handleCoverSheetVisibilityChange:(BOOL)change;
+- (void)handleWake:(BOOL)wake;
+- (void)notificationListComponent:(id)component willRemoveNotificationRequest:(id)request;
 - (void)notificationListDidLayoutSubviews;
-- (void)notificationListPresentableGroup:(id)a3 didReceivedHorizontalTranslation:(double)a4 forCell:(id)a5;
-- (void)notificationListPresentableGroup:(id)a3 didSetGrouped:(BOOL)a4;
-- (void)notificationListPresentableGroup:(id)a3 requestsScrollToTopOfCollectionWithCompletion:(id)a4;
+- (void)notificationListPresentableGroup:(id)group didReceivedHorizontalTranslation:(double)translation forCell:(id)cell;
+- (void)notificationListPresentableGroup:(id)group didSetGrouped:(BOOL)grouped;
+- (void)notificationListPresentableGroup:(id)group requestsScrollToTopOfCollectionWithCompletion:(id)completion;
 - (void)notificationListWillLayoutSubviews;
 - (void)prepareForUIAppear;
-- (void)setAvailableHeight:(double)a3;
-- (void)setBacklightState:(int64_t)a3;
-- (void)setContentSize:(CGSize)a3;
-- (void)setDragState:(id)a3;
-- (void)setExpandedPercentage:(double)a3;
-- (void)setGlassLuminanceValueTraitChangeRegistration:(id)a3;
-- (void)setIsCollapsed:(BOOL)a3;
-- (void)setIsOnScreen:(BOOL)a3;
+- (void)setAvailableHeight:(double)height;
+- (void)setBacklightState:(int64_t)state;
+- (void)setContentSize:(CGSize)size;
+- (void)setDragState:(id)state;
+- (void)setExpandedPercentage:(double)percentage;
+- (void)setGlassLuminanceValueTraitChangeRegistration:(id)registration;
+- (void)setIsCollapsed:(BOOL)collapsed;
+- (void)setIsOnScreen:(BOOL)screen;
 @end
 
 @implementation NCNotificationListHighlights
 
-- (void)setAvailableHeight:(double)a3
+- (void)setAvailableHeight:(double)height
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_availableHeight);
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_availableHeight) = a3;
-  if (v4 != a3)
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_availableHeight) = height;
+  if (v4 != height)
   {
-    v5 = self;
+    selfCopy = self;
     sub_21E8E9548();
   }
 }
 
 - (double)expandedPercentage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = 1.0;
-  if (![(NCNotificationListHighlights *)v2 forceExpanded])
+  if (![(NCNotificationListHighlights *)selfCopy forceExpanded])
   {
-    v3 = *(&v2->super.super.isa + OBJC_IVAR___NCNotificationListHighlights__mappedExpandedPercentage);
+    v3 = *(&selfCopy->super.super.isa + OBJC_IVAR___NCNotificationListHighlights__mappedExpandedPercentage);
   }
 
   return v3;
 }
 
-- (void)setExpandedPercentage:(double)a3
+- (void)setExpandedPercentage:(double)percentage
 {
-  v4 = self;
-  sub_21E8E99E4(a3);
+  selfCopy = self;
+  sub_21E8E99E4(percentage);
 }
 
 - (BOOL)isExpanded
 {
-  v2 = self;
-  if ([(NCNotificationListHighlights *)v2 forceExpanded])
+  selfCopy = self;
+  if ([(NCNotificationListHighlights *)selfCopy forceExpanded])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = *(&v2->super.super.isa + OBJC_IVAR___NCNotificationListHighlights__isExpanded);
+    v3 = *(&selfCopy->super.super.isa + OBJC_IVAR___NCNotificationListHighlights__isExpanded);
   }
 
   return v3;
 }
 
-- (void)setDragState:(id)a3
+- (void)setDragState:(id)state
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_dragState);
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_dragState) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_dragState) = state;
+  stateCopy = state;
+  selfCopy = self;
 
   sub_21E8E9CF8();
 }
@@ -106,29 +106,29 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_21E8E9DF8(width, height);
 }
 
-- (void)setIsCollapsed:(BOOL)a3
+- (void)setIsCollapsed:(BOOL)collapsed
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isCollapsed);
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isCollapsed) = a3;
-  v4 = self;
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isCollapsed) = collapsed;
+  selfCopy = self;
   sub_21E8E9F48(v3);
 }
 
-- (void)setBacklightState:(int64_t)a3
+- (void)setBacklightState:(int64_t)state
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_backlightState);
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_backlightState) = a3;
-  if (v4 != a3 && a3 != 2 && v4 == 2)
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_backlightState) = state;
+  if (v4 != state && state != 2 && v4 == 2)
   {
-    v7 = self;
+    selfCopy = self;
     sub_21E8F344C(0, 0, 0);
   }
 }
@@ -140,9 +140,9 @@
   return v2;
 }
 
-- (void)setGlassLuminanceValueTraitChangeRegistration:(id)a3
+- (void)setGlassLuminanceValueTraitChangeRegistration:(id)registration
 {
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_glassLuminanceValueTraitChangeRegistration) = a3;
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_glassLuminanceValueTraitChangeRegistration) = registration;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -150,17 +150,17 @@
 
 - (void)glassLuminanceChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E8EA388();
 }
 
-- (void)setIsOnScreen:(BOOL)a3
+- (void)setIsOnScreen:(BOOL)screen
 {
   v3 = *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isOnScreen);
-  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isOnScreen) = a3;
-  if ((v3 & 1) == 0 && a3)
+  *(&self->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_isOnScreen) = screen;
+  if ((v3 & 1) == 0 && screen)
   {
-    v5 = self;
+    selfCopy = self;
     v4 = _sSo28NCNotificationListHighlightsC22UserNotificationsUIKitE11overlayView015forNotificationB0So6UIViewCSo0abH8Protocol_p_tF_0();
     sub_21E8DDBD8();
   }
@@ -168,7 +168,7 @@
 
 - (double)expandedHeightIgnoringNotificationStacks
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListHighlights.expandedHeightIgnoringNotificationStacks.getter();
   v4 = v3;
 
@@ -177,7 +177,7 @@
 
 - (double)expandedHeight
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListHighlights.expandedHeight.getter();
   v4 = v3;
 
@@ -186,16 +186,16 @@
 
 - (double)collapsedHeight
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListHighlights.collapsedHeight.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (NCNotificationListHighlights)initWithTitle:(id)a3 sectionType:(unint64_t)a4
+- (NCNotificationListHighlights)initWithTitle:(id)title sectionType:(unint64_t)type
 {
-  if (a3)
+  if (title)
   {
     v5 = sub_21E92A458();
   }
@@ -206,23 +206,23 @@
     v6 = 0;
   }
 
-  sub_21E8EE7F8(v5, v6, a4);
+  sub_21E8EE7F8(v5, v6, type);
   return result;
 }
 
-- (unint64_t)_groupingSettingForSectionIdentifier:(id)a3
+- (unint64_t)_groupingSettingForSectionIdentifier:(id)identifier
 {
   v5 = objc_opt_self();
-  v6 = a3;
-  v7 = self;
-  v8 = [v5 standardDefaults];
-  LODWORD(v5) = [v8 allowStackingInHighlights];
+  identifierCopy = identifier;
+  selfCopy = self;
+  standardDefaults = [v5 standardDefaults];
+  LODWORD(v5) = [standardDefaults allowStackingInHighlights];
 
   if (v5)
   {
-    v11.receiver = v7;
+    v11.receiver = selfCopy;
     v11.super_class = NCNotificationListHighlights;
-    v9 = [(NCNotificationStructuredSectionList *)&v11 _groupingSettingForSectionIdentifier:v6];
+    v9 = [(NCNotificationStructuredSectionList *)&v11 _groupingSettingForSectionIdentifier:identifierCopy];
 
     return v9;
   }
@@ -238,51 +238,51 @@
 {
   v4.receiver = self;
   v4.super_class = NCNotificationListHighlights;
-  v2 = self;
+  selfCopy = self;
   [(NCNotificationStructuredSectionList *)&v4 adjustForContentSizeCategoryChange];
-  [*(&v2->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_headerLabel) adjustForContentSizeCategoryChange];
-  [*(&v2->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_showMoreLabel) adjustForContentSizeCategoryChange];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_headerLabel) adjustForContentSizeCategoryChange];
+  [*(&selfCopy->super.super.isa + OBJC_IVAR___NCNotificationListHighlights_showMoreLabel) adjustForContentSizeCategoryChange];
 
   return 1;
 }
 
-- (int64_t)insertNotificationRequest:(id)a3
+- (int64_t)insertNotificationRequest:(id)request
 {
-  v5 = a3;
-  v6 = self;
-  v7 = NCNotificationListHighlights.insert(_:)(a3);
+  requestCopy = request;
+  selfCopy = self;
+  v7 = NCNotificationListHighlights.insert(_:)(request);
 
   return v7;
 }
 
-- (BOOL)removeNotificationRequest:(id)a3
+- (BOOL)removeNotificationRequest:(id)request
 {
-  v3 = self;
+  selfCopy = self;
   v7.receiver = self;
   v7.super_class = NCNotificationListHighlights;
-  v4 = a3;
-  v5 = v3;
-  LOBYTE(v3) = [(NCNotificationStructuredSectionList *)&v7 removeNotificationRequest:v4];
+  requestCopy = request;
+  v5 = selfCopy;
+  LOBYTE(selfCopy) = [(NCNotificationStructuredSectionList *)&v7 removeNotificationRequest:requestCopy];
   sub_21E8E9548();
   sub_21E8EA388();
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)notificationListComponent:(id)a3 willRemoveNotificationRequest:(id)a4
+- (void)notificationListComponent:(id)component willRemoveNotificationRequest:(id)request
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  NCNotificationListHighlights.notificationListComponent(_:willRemove:)(a3, a4);
+  requestCopy = request;
+  selfCopy = self;
+  NCNotificationListHighlights.notificationListComponent(_:willRemove:)(component, request);
   swift_unknownObjectRelease();
 }
 
-- (id)notificationListView:(id)a3 topSpacingForItemAtIndex:(int64_t)a4
+- (id)notificationListView:(id)view topSpacingForItemAtIndex:(int64_t)index
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_21E8F98B0(a4);
+  selfCopy = self;
+  sub_21E8F98B0(index);
   v8 = v7;
   swift_unknownObjectRelease();
 
@@ -291,62 +291,62 @@
 
 - (void)notificationListWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListHighlights.notificationListWillLayoutSubviews()();
 }
 
-- (double)footerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)footerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_21E8AE0D8();
 
   return v5;
 }
 
-- (double)notificationListView:(id)a3 heightForItemAtIndex:(int64_t)a4 withWidth:(double)a5 inDisplayListAsStackMode:(BOOL)a6 ignoreExpandedGroupStack:(BOOL)a7
+- (double)notificationListView:(id)view heightForItemAtIndex:(int64_t)index withWidth:(double)width inDisplayListAsStackMode:(BOOL)mode ignoreExpandedGroupStack:(BOOL)stack
 {
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_21E8F9AA4(a4);
+  selfCopy = self;
+  sub_21E8F9AA4(index);
   v11 = v10;
   swift_unknownObjectRelease();
 
   return v11;
 }
 
-- (id)notificationListView:(id)a3 viewForItemAtIndex:(int64_t)a4
+- (id)notificationListView:(id)view viewForItemAtIndex:(int64_t)index
 {
   v13.receiver = self;
   v13.super_class = NCNotificationListHighlights;
-  v5 = self;
-  v6 = [(NCNotificationStructuredSectionList *)&v13 allNotificationGroups];
+  selfCopy = self;
+  allNotificationGroups = [(NCNotificationStructuredSectionList *)&v13 allNotificationGroups];
   sub_21E796644(0, &qword_280D03DF0);
   v7 = sub_21E92A528();
 
   if ((v7 & 0xC000000000000001) != 0)
   {
-    v9 = MEMORY[0x223D64A50](a4, v7);
+    v9 = MEMORY[0x223D64A50](index, v7);
     goto LABEL_5;
   }
 
-  if (a4 < 0)
+  if (index < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
-  if (*((v7 & 0xFFFFFFFFFFFFFF8) + 0x10) <= a4)
+  if (*((v7 & 0xFFFFFFFFFFFFFF8) + 0x10) <= index)
   {
 LABEL_10:
     __break(1u);
     return result;
   }
 
-  v9 = *(v7 + 8 * a4 + 32);
+  v9 = *(v7 + 8 * index + 32);
 LABEL_5:
   v10 = v9;
 
-  v11 = [v10 listView];
+  listView = [v10 listView];
 
   objc_opt_self();
   v12 = swift_dynamicCastObjCClassUnconditional();
@@ -354,20 +354,20 @@ LABEL_5:
   return v12;
 }
 
-- (double)headerViewHeightForNotificationList:(id)a3 withWidth:(double)a4
+- (double)headerViewHeightForNotificationList:(id)list withWidth:(double)width
 {
-  v4 = self;
+  selfCopy = self;
   v5 = sub_21E8AE010();
 
   return v5;
 }
 
-- (int64_t)notificationListViewNumberOfItems:(id)a3
+- (int64_t)notificationListViewNumberOfItems:(id)items
 {
   v8.receiver = self;
   v8.super_class = NCNotificationListHighlights;
-  v3 = self;
-  v4 = [(NCNotificationStructuredSectionList *)&v8 allNotificationGroups];
+  selfCopy = self;
+  allNotificationGroups = [(NCNotificationStructuredSectionList *)&v8 allNotificationGroups];
   sub_21E796644(0, &qword_280D03DF0);
   v5 = sub_21E92A528();
 
@@ -386,36 +386,36 @@ LABEL_5:
 
 - (void)notificationListDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NCNotificationListHighlights.notificationListDidLayoutSubviews()();
 }
 
-- (void)handleWake:(BOOL)a3
+- (void)handleWake:(BOOL)wake
 {
-  v3 = a3;
-  v4 = self;
-  if ([(NCNotificationStructuredSectionList *)v4 count]< 1)
+  wakeCopy = wake;
+  selfCopy = self;
+  if ([(NCNotificationStructuredSectionList *)selfCopy count]< 1)
   {
   }
 
   else
   {
-    v5.receiver = v4;
+    v5.receiver = selfCopy;
     v5.super_class = NCNotificationListHighlights;
-    [(NCNotificationStructuredSectionList *)&v5 handleWake:v3];
-    sub_21E8F2B50(v3);
+    [(NCNotificationStructuredSectionList *)&v5 handleWake:wakeCopy];
+    sub_21E8F2B50(wakeCopy);
   }
 }
 
-- (void)handleCoverSheetVisibilityChange:(BOOL)a3
+- (void)handleCoverSheetVisibilityChange:(BOOL)change
 {
-  v4 = self;
-  NCNotificationListHighlights.handleCoverSheetVisibilityChange(_:)(a3);
+  selfCopy = self;
+  NCNotificationListHighlights.handleCoverSheetVisibilityChange(_:)(change);
 }
 
-- (id)overlayViewForNotificationList:(id)a3
+- (id)overlayViewForNotificationList:(id)list
 {
-  v3 = self;
+  selfCopy = self;
   v4 = _sSo28NCNotificationListHighlightsC22UserNotificationsUIKitE11overlayView015forNotificationB0So6UIViewCSo0abH8Protocol_p_tF_0();
 
   return v4;
@@ -423,30 +423,30 @@ LABEL_5:
 
 - (void)prepareForUIAppear
 {
-  v3 = self;
+  selfCopy = self;
   v2 = _sSo28NCNotificationListHighlightsC22UserNotificationsUIKitE11overlayView015forNotificationB0So6UIViewCSo0abH8Protocol_p_tF_0();
   sub_21E8DDBD8();
 }
 
-- (void)notificationListPresentableGroup:(id)a3 didReceivedHorizontalTranslation:(double)a4 forCell:(id)a5
+- (void)notificationListPresentableGroup:(id)group didReceivedHorizontalTranslation:(double)translation forCell:(id)cell
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = self;
-  sub_21E8F9D6C(v9, a4);
+  groupCopy = group;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_21E8F9D6C(cellCopy, translation);
 }
 
-- (id)notificationGroupList:(id)a3 requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)a4 isLongLook:(BOOL)a5
+- (id)notificationGroupList:(id)list requestsAuxiliaryOptionsContentProviderForNotificationRequest:(id)request isLongLook:(BOOL)look
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  if (os_variant_has_internal_content() && [(NCNotificationStructuredSectionList *)v10 count]<= 1)
+  lookCopy = look;
+  listCopy = list;
+  requestCopy = request;
+  selfCopy = self;
+  if (os_variant_has_internal_content() && [(NCNotificationStructuredSectionList *)selfCopy count]<= 1)
   {
-    v13.receiver = v10;
+    v13.receiver = selfCopy;
     v13.super_class = NCNotificationListHighlights;
-    v11 = [(NCNotificationStructuredSectionList *)&v13 notificationGroupList:v8 requestsAuxiliaryOptionsContentProviderForNotificationRequest:v9 isLongLook:v5];
+    v11 = [(NCNotificationStructuredSectionList *)&v13 notificationGroupList:listCopy requestsAuxiliaryOptionsContentProviderForNotificationRequest:requestCopy isLongLook:lookCopy];
   }
 
   else
@@ -458,14 +458,14 @@ LABEL_5:
   return v11;
 }
 
-- (void)groupListDidLayout:(id)a3
+- (void)groupListDidLayout:(id)layout
 {
-  v5 = self;
-  v3 = [(NCNotificationStructuredSectionList *)v5 listView];
-  if (v3)
+  selfCopy = self;
+  listView = [(NCNotificationStructuredSectionList *)selfCopy listView];
+  if (listView)
   {
-    v4 = v3;
-    [(NCNotificationListView *)v3 setNeedsLayout];
+    v4 = listView;
+    [(NCNotificationListView *)listView setNeedsLayout];
   }
 
   else
@@ -474,22 +474,22 @@ LABEL_5:
   }
 }
 
-- (void)notificationListPresentableGroup:(id)a3 requestsScrollToTopOfCollectionWithCompletion:(id)a4
+- (void)notificationListPresentableGroup:(id)group requestsScrollToTopOfCollectionWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_21E8F9E38(v7, v8, v6);
+  groupCopy = group;
+  selfCopy = self;
+  sub_21E8F9E38(groupCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)notificationListPresentableGroup:(id)a3 didSetGrouped:(BOOL)a4
+- (void)notificationListPresentableGroup:(id)group didSetGrouped:(BOOL)grouped
 {
-  v6 = a3;
-  v7 = self;
-  sub_21E8FA0B8(a4);
+  groupCopy = group;
+  selfCopy = self;
+  sub_21E8FA0B8(grouped);
 }
 
 @end

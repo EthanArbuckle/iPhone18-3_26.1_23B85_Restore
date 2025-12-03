@@ -1,14 +1,14 @@
 @interface PFCoreAnalyticsChannel
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation PFCoreAnalyticsChannel
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v3 = a3;
-  v5 = [v3 name];
-  v4 = [v3 payloadGenerator];
+  eventCopy = event;
+  name = [eventCopy name];
+  payloadGenerator = [eventCopy payloadGenerator];
 
   AnalyticsSendEventLazy();
 }

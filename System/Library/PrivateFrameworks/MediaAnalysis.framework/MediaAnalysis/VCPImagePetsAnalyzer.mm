@@ -1,12 +1,12 @@
 @interface VCPImagePetsAnalyzer
-- (VCPImagePetsAnalyzer)initWithMaxNumRegions:(int)a3;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6;
-- (int)convertResultsToDict:(id)a3 results:(id)a4;
+- (VCPImagePetsAnalyzer)initWithMaxNumRegions:(int)regions;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel;
+- (int)convertResultsToDict:(id)dict results:(id)results;
 @end
 
 @implementation VCPImagePetsAnalyzer
 
-- (VCPImagePetsAnalyzer)initWithMaxNumRegions:(int)a3
+- (VCPImagePetsAnalyzer)initWithMaxNumRegions:(int)regions
 {
   v11.receiver = self;
   v11.super_class = VCPImagePetsAnalyzer;
@@ -14,22 +14,22 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 >= 5)
+    if (regions >= 5)
     {
-      v6 = 5;
+      regionsCopy = 5;
     }
 
     else
     {
-      v6 = a3;
+      regionsCopy = regions;
     }
 
-    if (a3 <= 1)
+    if (regions <= 1)
     {
-      v6 = 1;
+      regionsCopy = 1;
     }
 
-    v4->_maxNumRegions = v6;
+    v4->_maxNumRegions = regionsCopy;
     v7 = [VCPCNNPetsDetectorV2 detector:5 forceCPU:0 sharedModel:0 revision:1];
     petsDetector = v5->_petsDetector;
     v5->_petsDetector = v7;
@@ -40,16 +40,16 @@
   return v5;
 }
 
-- (int)convertResultsToDict:(id)a3 results:(id)a4
+- (int)convertResultsToDict:(id)dict results:(id)results
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v28 = a4;
+  dictCopy = dict;
+  resultsCopy = results;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = dictCopy;
   v6 = [obj countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v6)
   {
@@ -154,7 +154,7 @@ LABEL_3:
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
       v37 = v21;
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      [v28 addObject:v22];
+      [resultsCopy addObject:v22];
 
       ++v8;
       if (v6 == ++v7)
@@ -173,12 +173,12 @@ LABEL_3:
   return 0;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 flags:(unint64_t *)a4 results:(id *)a5 cancel:(id)a6
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer flags:(unint64_t *)flags results:(id *)results cancel:(id)cancel
 {
-  v9 = a6;
-  *a5 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  cancelCopy = cancel;
+  *results = 0;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   if (Width <= Height)
   {
     v12 = Height;
@@ -199,8 +199,8 @@ LABEL_3:
     v13 = Height;
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if ((v12 / v13) > 2.0)
   {
 LABEL_14:
@@ -208,26 +208,26 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v16 = [(VCPCNNPetsDetectorV2 *)self->_petsDetector petsDetection:a3 petsRegions:v14 petsFaceRegions:v15 cancel:v9];
+  v16 = [(VCPCNNPetsDetectorV2 *)self->_petsDetector petsDetection:buffer petsRegions:array petsFaceRegions:array2 cancel:cancelCopy];
   if (!v16)
   {
-    v17 = [MEMORY[0x1E695DF70] array];
-    v18 = [MEMORY[0x1E695DF70] array];
-    [(VCPImagePetsAnalyzer *)self convertResultsToDict:v14 results:v17];
-    [(VCPImagePetsAnalyzer *)self convertResultsToDict:v15 results:v18];
+    array3 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
+    [(VCPImagePetsAnalyzer *)self convertResultsToDict:array results:array3];
+    [(VCPImagePetsAnalyzer *)self convertResultsToDict:array2 results:array4];
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([v17 count])
+    if ([array3 count])
     {
-      [v19 setValue:v17 forKey:@"PetsResults"];
+      [v19 setValue:array3 forKey:@"PetsResults"];
     }
 
-    if ([v18 count])
+    if ([array4 count])
     {
-      [v19 setValue:v18 forKey:@"PetsFaceResults"];
+      [v19 setValue:array4 forKey:@"PetsFaceResults"];
     }
 
     v20 = v19;
-    *a5 = v19;
+    *results = v19;
 
     goto LABEL_14;
   }

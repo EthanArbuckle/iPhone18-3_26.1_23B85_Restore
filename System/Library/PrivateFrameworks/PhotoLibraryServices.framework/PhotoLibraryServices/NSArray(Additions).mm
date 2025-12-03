@@ -21,7 +21,7 @@
     v14[2] = __62__NSArray_Additions__pl_indexOfLastObjectInRange_passingTest___block_invoke;
     v14[3] = &unk_1E75725C8;
     v15 = v8;
-    v10 = [a1 pl_indexOfFirstObjectInRange:a3 passingTest:{a4, v14}];
+    v10 = [self pl_indexOfFirstObjectInRange:a3 passingTest:{a4, v14}];
     v11 = v10 - 1;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -50,7 +50,7 @@
 - (uint64_t)pl_indexOfLastObjectPassingTest:()Additions
 {
   v4 = a3;
-  v5 = [a1 pl_indexOfLastObjectInRange:0 passingTest:{objc_msgSend(a1, "count"), v4}];
+  v5 = [self pl_indexOfLastObjectInRange:0 passingTest:{objc_msgSend(self, "count"), v4}];
 
   return v5;
 }
@@ -69,7 +69,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __63__NSArray_Additions__pl_indexOfFirstObjectInRange_passingTest___block_invoke;
     aBlock[3] = &unk_1E756DB68;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v16 = v8;
     v17 = &v18;
     v10 = _Block_copy(aBlock);
@@ -121,7 +121,7 @@ LABEL_8:
 - (uint64_t)pl_indexOfFirstObjectPassingTest:()Additions
 {
   v4 = a3;
-  v5 = [a1 pl_indexOfFirstObjectInRange:0 passingTest:{objc_msgSend(a1, "count"), v4}];
+  v5 = [self pl_indexOfFirstObjectInRange:0 passingTest:{objc_msgSend(self, "count"), v4}];
 
   return v5;
 }
@@ -130,12 +130,12 @@ LABEL_8:
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DEC8] array];
+    selfCopy = [MEMORY[0x1E695DEC8] array];
 LABEL_10:
-    v14 = v13;
+    v14 = selfCopy;
     goto LABEL_33;
   }
 
@@ -143,7 +143,7 @@ LABEL_10:
   v7 = [v4 count];
   if (!v7)
   {
-    v13 = a1;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -205,8 +205,8 @@ LABEL_10:
   v35 = 0u;
   v33 = 0u;
   v32 = 0u;
-  v20 = a1;
-  v21 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  selfCopy2 = self;
+  v21 = [selfCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v21)
   {
     v22 = v21;
@@ -218,7 +218,7 @@ LABEL_10:
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(selfCopy2);
         }
 
         v26 = *(*(&v32 + 1) + 8 * i);
@@ -228,7 +228,7 @@ LABEL_10:
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v22 = [selfCopy2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v22);
@@ -266,8 +266,8 @@ LABEL_33:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -279,7 +279,7 @@ LABEL_3:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(selfCopy);
       }
 
       v9 += v4[2](v4, *(*(&v13 + 1) + 8 * v11), &v17);
@@ -290,7 +290,7 @@ LABEL_3:
 
       if (v8 == ++v11)
       {
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -315,13 +315,13 @@ LABEL_3:
   v18 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E696AD60] stringWithString:@"{"];
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -332,20 +332,20 @@ LABEL_3:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", *(*(&v13 + 1) + 8 * i)];
-        [v4 addObject:v10];
+        [array addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [v4 componentsJoinedByString:{@", "}];
+  v11 = [array componentsJoinedByString:{@", "}];
   [v2 appendString:v11];
 
   objc_autoreleasePoolPop(v3);

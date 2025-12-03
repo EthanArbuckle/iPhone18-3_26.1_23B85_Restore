@@ -1,7 +1,7 @@
 @interface CUIKCalendarSpecialDayData
 - (CUIKCalendarSpecialDayData)init;
 - (UIColor)color;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation CUIKCalendarSpecialDayData
@@ -22,17 +22,17 @@
 - (UIColor)color
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(CUIKCalendarSpecialDayData *)self cgColor];
+  cgColor = [(CUIKCalendarSpecialDayData *)self cgColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:cgColor];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
+  colorCopy = color;
+  cGColor = [color CGColor];
 
-  [(CUIKCalendarSpecialDayData *)self setCgColor:v6];
+  [(CUIKCalendarSpecialDayData *)self setCgColor:cGColor];
 }
 
 @end

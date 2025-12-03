@@ -1,89 +1,89 @@
 @interface SBPIPMorphAnimatorController
 - (CGRect)appLayoutBoundingBox;
 - (SBPIPContainerViewController)pictureInPictureContainerViewController;
-- (SBPIPMorphAnimatorController)initWithTargetProcessIdentifier:(int)a3 scenePersistenceIdentifier:(id)a4 appLayout:(id)a5 layoutRole:(int64_t)a6 appLayoutBoundingBox:(CGRect)a7 windowScene:(id)a8 direction:(int64_t)a9 gestureInitiated:(BOOL)a10 delegate:(id)a11 uuid:(id)a12;
+- (SBPIPMorphAnimatorController)initWithTargetProcessIdentifier:(int)identifier scenePersistenceIdentifier:(id)persistenceIdentifier appLayout:(id)layout layoutRole:(int64_t)role appLayoutBoundingBox:(CGRect)box windowScene:(id)scene direction:(int64_t)direction gestureInitiated:(BOOL)self0 delegate:(id)self1 uuid:(id)self2;
 - (SBPIPMorphAnimatorControllerDelegate)delegate;
 - (void)_performAnimatorWaitingForExternalAnimationActionBlock;
 - (void)_terminate;
 - (void)cancel;
-- (void)didEndSourceAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)didEndTargetAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5;
-- (void)setAnimatorWaitingForExternalAnimationActionBlock:(id)a3;
-- (void)setPictureInPictureContainerViewController:(id)a3;
-- (void)willRemoveTargeMatchMoveAnimationAtFrame:(CGRect)a3 withinSourceFrame:(CGRect)a4;
-- (void)willStartSourceAnimations:(unint64_t)a3;
+- (void)didEndSourceAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block;
+- (void)didEndTargetAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block;
+- (void)setAnimatorWaitingForExternalAnimationActionBlock:(id)block;
+- (void)setPictureInPictureContainerViewController:(id)controller;
+- (void)willRemoveTargeMatchMoveAnimationAtFrame:(CGRect)frame withinSourceFrame:(CGRect)sourceFrame;
+- (void)willStartSourceAnimations:(unint64_t)animations;
 @end
 
 @implementation SBPIPMorphAnimatorController
 
-- (SBPIPMorphAnimatorController)initWithTargetProcessIdentifier:(int)a3 scenePersistenceIdentifier:(id)a4 appLayout:(id)a5 layoutRole:(int64_t)a6 appLayoutBoundingBox:(CGRect)a7 windowScene:(id)a8 direction:(int64_t)a9 gestureInitiated:(BOOL)a10 delegate:(id)a11 uuid:(id)a12
+- (SBPIPMorphAnimatorController)initWithTargetProcessIdentifier:(int)identifier scenePersistenceIdentifier:(id)persistenceIdentifier appLayout:(id)layout layoutRole:(int64_t)role appLayoutBoundingBox:(CGRect)box windowScene:(id)scene direction:(int64_t)direction gestureInitiated:(BOOL)self0 delegate:(id)self1 uuid:(id)self2
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v22 = a4;
-  v39 = a5;
-  v23 = a8;
-  v24 = a11;
-  v25 = a12;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  persistenceIdentifierCopy = persistenceIdentifier;
+  layoutCopy = layout;
+  sceneCopy = scene;
+  delegateCopy = delegate;
+  uuidCopy = uuid;
   v40.receiver = self;
   v40.super_class = SBPIPMorphAnimatorController;
   v26 = [(SBPIPMorphAnimatorController *)&v40 init];
   v27 = v26;
   if (v26)
   {
-    v37 = v22;
-    v26->_targetProcessIdentifier = a3;
-    objc_storeStrong(&v26->_scenePersistenceIdentifier, a4);
-    objc_storeStrong(&v27->_appLayout, a5);
-    v27->_layoutRole = a6;
+    v37 = persistenceIdentifierCopy;
+    v26->_targetProcessIdentifier = identifier;
+    objc_storeStrong(&v26->_scenePersistenceIdentifier, persistenceIdentifier);
+    objc_storeStrong(&v27->_appLayout, layout);
+    v27->_layoutRole = role;
     v27->_appLayoutBoundingBox.origin.x = x;
     v27->_appLayoutBoundingBox.origin.y = y;
     v27->_appLayoutBoundingBox.size.width = width;
     v27->_appLayoutBoundingBox.size.height = height;
-    v27->_gestureInitiated = a10;
-    objc_storeStrong(&v27->_uuid, a12);
-    objc_storeWeak(&v27->_delegate, v24);
-    v28 = [[SBViewMorphAnimator alloc] initWithUUID:v25 windowScene:v23 direction:a9];
+    v27->_gestureInitiated = initiated;
+    objc_storeStrong(&v27->_uuid, uuid);
+    objc_storeWeak(&v27->_delegate, delegateCopy);
+    v28 = [[SBViewMorphAnimator alloc] initWithUUID:uuidCopy windowScene:sceneCopy direction:direction];
     viewMorphAnimator = v27->_viewMorphAnimator;
     v27->_viewMorphAnimator = v28;
 
-    v30 = [v24 dataSourceForMorphAnimatorController:v27];
+    v30 = [delegateCopy dataSourceForMorphAnimatorController:v27];
     viewMorphAnimatorDataSource = v27->_viewMorphAnimatorDataSource;
     v27->_viewMorphAnimatorDataSource = v30;
 
     [(SBViewMorphAnimator *)v27->_viewMorphAnimator setDataSource:v27->_viewMorphAnimatorDataSource];
     v32 = v27->_viewMorphAnimator;
     v33 = +[SBPIPSettingsDomain rootSettings];
-    v34 = [v33 fluidTransitionsSettings];
-    v35 = [v34 targetClippingFluidBehavior];
-    [(SBViewMorphAnimator *)v32 setTargetClipAnimationSettings:v35];
+    fluidTransitionsSettings = [v33 fluidTransitionsSettings];
+    targetClippingFluidBehavior = [fluidTransitionsSettings targetClippingFluidBehavior];
+    [(SBViewMorphAnimator *)v32 setTargetClipAnimationSettings:targetClippingFluidBehavior];
 
-    v22 = v37;
+    persistenceIdentifierCopy = v37;
     [(SBViewMorphAnimator *)v27->_viewMorphAnimator addObserver:v27];
   }
 
   return v27;
 }
 
-- (void)setPictureInPictureContainerViewController:(id)a3
+- (void)setPictureInPictureContainerViewController:(id)controller
 {
-  v9 = a3;
-  v4 = objc_storeWeak(&self->_pictureInPictureContainerViewController, v9);
-  [v9 transitionAnimationWillBegin];
+  controllerCopy = controller;
+  v4 = objc_storeWeak(&self->_pictureInPictureContainerViewController, controllerCopy);
+  [controllerCopy transitionAnimationWillBegin];
   if ([(SBViewMorphAnimator *)self->_viewMorphAnimator direction]== 1)
   {
     [(SBViewMorphAnimator *)self->_viewMorphAnimator setAutomaticallyStartTargetAnimations:0];
   }
 
   viewMorphAnimator = self->_viewMorphAnimator;
-  v6 = [v9 morphAnimatorTargetView];
-  [(SBViewMorphAnimator *)viewMorphAnimator setTargetView:v6];
+  morphAnimatorTargetView = [controllerCopy morphAnimatorTargetView];
+  [(SBViewMorphAnimator *)viewMorphAnimator setTargetView:morphAnimatorTargetView];
 
   v7 = self->_viewMorphAnimator;
-  v8 = [v9 morphAnimatorTargetContainerView];
-  [(SBViewMorphAnimator *)v7 setTargetContentView:v8];
+  morphAnimatorTargetContainerView = [controllerCopy morphAnimatorTargetContainerView];
+  [(SBViewMorphAnimator *)v7 setTargetContentView:morphAnimatorTargetContainerView];
 }
 
 - (void)cancel
@@ -111,22 +111,22 @@
   }
 }
 
-- (void)setAnimatorWaitingForExternalAnimationActionBlock:(id)a3
+- (void)setAnimatorWaitingForExternalAnimationActionBlock:(id)block
 {
-  v7 = a3;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBPIPMorphAnimatorController *)a2 setAnimatorWaitingForExternalAnimationActionBlock:?];
   }
 
   if ([(SBPIPMorphAnimatorController *)self _isWaitingForExternalAnimationCompletion])
   {
-    v7[2]();
+    blockCopy[2]();
   }
 
   else
   {
-    v5 = MEMORY[0x223D6F7F0](v7);
+    v5 = MEMORY[0x223D6F7F0](blockCopy);
     animatorWaitingForExternalAnimationActionBlock = self->_animatorWaitingForExternalAnimationActionBlock;
     self->_animatorWaitingForExternalAnimationActionBlock = v5;
   }
@@ -146,7 +146,7 @@
   }
 }
 
-- (void)willStartSourceAnimations:(unint64_t)a3
+- (void)willStartSourceAnimations:(unint64_t)animations
 {
   setupCompletionBlock = self->_setupCompletionBlock;
   if (setupCompletionBlock)
@@ -155,18 +155,18 @@
   }
 }
 
-- (void)didEndSourceAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)didEndSourceAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block
 {
-  if ((a3 & 4) != 0)
+  if ((animations & 4) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureContainerViewController);
     [WeakRetained transitionAnimationDidEnd];
   }
 }
 
-- (void)didEndTargetAnimations:(unint64_t)a3 finished:(BOOL)a4 continueBlock:(id)a5
+- (void)didEndTargetAnimations:(unint64_t)animations finished:(BOOL)finished continueBlock:(id)block
 {
-  self->_completedTargetAnimations |= a3;
+  self->_completedTargetAnimations |= animations;
   if ([(SBPIPMorphAnimatorController *)self _isWaitingForExternalAnimationCompletion])
   {
 
@@ -180,37 +180,37 @@
   }
 }
 
-- (void)willRemoveTargeMatchMoveAnimationAtFrame:(CGRect)a3 withinSourceFrame:(CGRect)a4
+- (void)willRemoveTargeMatchMoveAnimationAtFrame:(CGRect)frame withinSourceFrame:(CGRect)sourceFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  v40 = [(SBViewMorphAnimator *)self->_viewMorphAnimator dataSource];
-  [v40 sourceSubviewFrame:self->_viewMorphAnimator inScreenSpaceForAnimator:{v11, v10, v9, v8}];
+  height = sourceFrame.size.height;
+  width = sourceFrame.size.width;
+  y = sourceFrame.origin.y;
+  x = sourceFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
+  dataSource = [(SBViewMorphAnimator *)self->_viewMorphAnimator dataSource];
+  [dataSource sourceSubviewFrame:self->_viewMorphAnimator inScreenSpaceForAnimator:{v11, v10, v9, v8}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v40 sourceSubviewFrame:self->_viewMorphAnimator inScreenSpaceForAnimator:{x, y, width, height}];
+  [dataSource sourceSubviewFrame:self->_viewMorphAnimator inScreenSpaceForAnimator:{x, y, width, height}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
   WeakRetained = objc_loadWeakRetained(&self->_pictureInPictureContainerViewController);
-  v30 = [WeakRetained bundleIdentifier];
-  v31 = [v30 isEqualToString:@"com.apple.InCallService"];
+  bundleIdentifier = [WeakRetained bundleIdentifier];
+  v31 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
-  v32 = [(SBViewMorphAnimator *)self->_viewMorphAnimator windowScene];
-  v33 = [v32 switcherController];
-  v34 = [v33 windowManagementContext];
-  v35 = [v34 isChamoisOrFlexibleWindowing];
+  windowScene = [(SBViewMorphAnimator *)self->_viewMorphAnimator windowScene];
+  switcherController = [windowScene switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  if (v35 & 1 | ((v31 & 1) == 0))
+  if (isChamoisOrFlexibleWindowing & 1 | ((v31 & 1) == 0))
   {
     v36 = v14;
   }
@@ -220,7 +220,7 @@
     v36 = v22;
   }
 
-  if (v35 & 1 | ((v31 & 1) == 0))
+  if (isChamoisOrFlexibleWindowing & 1 | ((v31 & 1) == 0))
   {
     v37 = v16;
   }
@@ -230,7 +230,7 @@
     v37 = v24;
   }
 
-  if (v35 & 1 | ((v31 & 1) == 0))
+  if (isChamoisOrFlexibleWindowing & 1 | ((v31 & 1) == 0))
   {
     v38 = v18;
   }
@@ -240,7 +240,7 @@
     v38 = v26;
   }
 
-  if (v35 & 1 | ((v31 & 1) == 0))
+  if (isChamoisOrFlexibleWindowing & 1 | ((v31 & 1) == 0))
   {
     v39 = v20;
   }

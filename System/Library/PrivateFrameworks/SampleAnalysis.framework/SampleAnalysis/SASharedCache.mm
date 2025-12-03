@@ -1,58 +1,58 @@
 @interface SASharedCache
-+ (id)currentSharedCacheWithDataGatheringOptions:(uint64_t)a1;
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-+ (id)sharedCacheWithCSSymbolicator:(uint64_t)a3 dataGatheringOptions:(uint64_t)a4;
-+ (id)sharedCacheWithDyldSharedCache:(__int16)a3 dataGatheringOptions:;
-+ (id)sharedCacheWithUUID:(uint64_t)a3 slide:(uint64_t)a4 binaryLoadInfos:;
-+ (id)sharedCacheWithUUID:(uint64_t)a3 slide:(uint64_t)a4 slidBaseAddress:(uint64_t)a5 dataGatheringOptions:;
-+ (uint64_t)applyBinaryLoadInfos:(uint64_t)a3 sharedCacheUUID:(uint64_t)a4 slide:(uint64_t)a5 slidBaseAddress:;
-+ (void)_applyBaseAddress:(void *)a3 toSharedCaches:;
-+ (void)_applyLoadInfos:(uint64_t)a3 withSlide:(uint64_t)a4 andSlidBaseAddress:(void *)a5 toSharedCaches:;
-+ (void)_doDscSymDirsWork:(uint64_t)a1;
-+ (void)_doSharedCachesWork:(id)a3;
-+ (void)_findLoadInfosForSharedCaches:(uint64_t)a1;
-+ (void)addDSCSymData:(id)a3;
-+ (void)addDscSymDir:(id)a3;
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
-- (BOOL)matchesUUID:(unsigned __int8)a3[16] slide:(unint64_t)a4 slidBaseAddress:(unint64_t)a5;
++ (id)currentSharedCacheWithDataGatheringOptions:(uint64_t)options;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
++ (id)sharedCacheWithCSSymbolicator:(uint64_t)symbolicator dataGatheringOptions:(uint64_t)options;
++ (id)sharedCacheWithDyldSharedCache:(__int16)cache dataGatheringOptions:;
++ (id)sharedCacheWithUUID:(uint64_t)d slide:(uint64_t)slide binaryLoadInfos:;
++ (id)sharedCacheWithUUID:(uint64_t)d slide:(uint64_t)slide slidBaseAddress:(uint64_t)address dataGatheringOptions:;
++ (uint64_t)applyBinaryLoadInfos:(uint64_t)infos sharedCacheUUID:(uint64_t)d slide:(uint64_t)slide slidBaseAddress:;
++ (void)_applyBaseAddress:(void *)address toSharedCaches:;
++ (void)_applyLoadInfos:(uint64_t)infos withSlide:(uint64_t)slide andSlidBaseAddress:(void *)address toSharedCaches:;
++ (void)_doDscSymDirsWork:(uint64_t)work;
++ (void)_doSharedCachesWork:(id)work;
++ (void)_findLoadInfosForSharedCaches:(uint64_t)caches;
++ (void)addDSCSymData:(id)data;
++ (void)addDscSymDir:(id)dir;
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
+- (BOOL)matchesUUID:(unsigned __int8)d[16] slide:(unint64_t)slide slidBaseAddress:(unint64_t)address;
 - (NSString)debugDescription;
-- (id)initWithUUID:(void *)a3 slide:(void *)a4 slidBaseAddress:;
+- (id)initWithUUID:(void *)d slide:(void *)slide slidBaseAddress:;
 - (uint64_t)setSlidBaseAddress:(uint64_t)result;
 - (uint64_t)setSlide:(uint64_t)result;
 - (unint64_t)endAddress;
 - (unint64_t)startAddress;
-- (void)_applyLoadInfos:(uint64_t)a3 withSlide:(uint64_t)a4 andSlidBaseAddress:;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
-- (void)writeJSONDictionaryEntriesToStream:(id)a3;
+- (void)_applyLoadInfos:(uint64_t)infos withSlide:(uint64_t)slide andSlidBaseAddress:;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
+- (void)writeJSONDictionaryEntriesToStream:(id)stream;
 @end
 
 @implementation SASharedCache
 
 - (unint64_t)startAddress
 {
-  v2 = [(NSArray *)self->_binaryLoadInfos firstObject];
-  v3 = v2;
-  if (v2)
+  firstObject = [(NSArray *)self->_binaryLoadInfos firstObject];
+  v3 = firstObject;
+  if (firstObject)
   {
-    v4 = [v2 loadAddress];
+    loadAddress = [firstObject loadAddress];
   }
 
   else
   {
-    v4 = -1;
+    loadAddress = -1;
   }
 
-  return v4;
+  return loadAddress;
 }
 
 - (unint64_t)endAddress
 {
-  v2 = [(NSArray *)self->_binaryLoadInfos lastObject];
-  v3 = v2;
-  if (v2)
+  lastObject = [(NSArray *)self->_binaryLoadInfos lastObject];
+  v3 = lastObject;
+  if (lastObject)
   {
-    v4 = [v2 length];
+    v4 = [lastObject length];
     if (v4)
     {
       v5 = v4;
@@ -74,28 +74,28 @@
   return v6;
 }
 
-- (id)initWithUUID:(void *)a3 slide:(void *)a4 slidBaseAddress:
+- (id)initWithUUID:(void *)d slide:(void *)slide slidBaseAddress:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = SASharedCache;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   v8 = v7;
   if (v7)
   {
     objc_storeStrong(v7 + 5, a2);
-    v8[1] = a3;
-    v8[2] = a4;
+    v8[1] = d;
+    v8[2] = slide;
   }
 
   return v8;
 }
 
-+ (void)_doDscSymDirsWork:(uint64_t)a1
++ (void)_doDscSymDirsWork:(uint64_t)work
 {
   objc_opt_self();
   if (qword_1EDD03228 != -1)
@@ -116,7 +116,7 @@ void __35__SASharedCache__doDscSymDirsWork___block_invoke()
   qword_1EDD03220 = v0;
 }
 
-+ (void)_doSharedCachesWork:(id)a3
++ (void)_doSharedCachesWork:(id)work
 {
   if (qword_1EDD03238 != -1)
   {
@@ -125,7 +125,7 @@ void __35__SASharedCache__doDscSymDirsWork___block_invoke()
 
   obj = qword_1EDD03230;
   objc_sync_enter(obj);
-  (*(a3 + 2))(a3, qword_1EDD03230);
+  (*(work + 2))(work, qword_1EDD03230);
   objc_sync_exit(obj);
 }
 
@@ -136,7 +136,7 @@ void __37__SASharedCache__doSharedCachesWork___block_invoke()
   qword_1EDD03230 = v0;
 }
 
-+ (void)addDscSymDir:(id)a3
++ (void)addDscSymDir:(id)dir
 {
   v6 = 0;
   v7 = &v6;
@@ -146,17 +146,17 @@ void __37__SASharedCache__doSharedCachesWork___block_invoke()
   v5[1] = 3221225472;
   v5[2] = __30__SASharedCache_addDscSymDir___block_invoke;
   v5[3] = &unk_1E86F6B70;
-  v5[4] = a3;
+  v5[4] = dir;
   v5[5] = &v6;
-  [(SASharedCache *)a1 _doDscSymDirsWork:v5];
+  [(SASharedCache *)self _doDscSymDirsWork:v5];
   if (*(v7 + 24) == 1)
   {
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __30__SASharedCache_addDscSymDir___block_invoke_2;
     v4[3] = &__block_descriptor_40_e29_v16__0__NSMutableDictionary_8l;
-    v4[4] = a1;
-    [a1 _doSharedCachesWork:v4];
+    v4[4] = self;
+    [self _doSharedCachesWork:v4];
   }
 
   _Block_object_dispose(&v6, 8);
@@ -184,32 +184,32 @@ uint64_t __30__SASharedCache_addDscSymDir___block_invoke_2(uint64_t a1, void *a2
   return [a2 enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-+ (void)_findLoadInfosForSharedCaches:(uint64_t)a1
++ (void)_findLoadInfosForSharedCaches:(uint64_t)caches
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_self();
-  v4 = [a2 firstObject];
-  v5 = [v4 binaryLoadInfos];
-  v6 = [v5 count];
+  firstObject = [a2 firstObject];
+  binaryLoadInfos = [firstObject binaryLoadInfos];
+  v6 = [binaryLoadInfos count];
 
   if (!v6)
   {
     *uu = 0;
     v36 = 0;
-    v7 = [v4 uuid];
-    [v7 getUUIDBytes:uu];
+    uuid = [firstObject uuid];
+    [uuid getUUIDBytes:uu];
 
     if (!uuid_is_null(uu))
     {
-      v8 = [v4 slide];
-      if (v8 == -1)
+      slide = [firstObject slide];
+      if (slide == -1)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = v8;
+        v9 = slide;
       }
 
       v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2560];
@@ -331,7 +331,7 @@ void __27__SASharedCache_dscSymDirs__block_invoke(uint64_t a1, void *a2)
   *(v4 + 40) = v3;
 }
 
-+ (id)currentSharedCacheWithDataGatheringOptions:(uint64_t)a1
++ (id)currentSharedCacheWithDataGatheringOptions:(uint64_t)options
 {
   v3 = objc_opt_self();
   v6[0] = MEMORY[0x1E69E9820];
@@ -434,7 +434,7 @@ LABEL_13:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)sharedCacheWithDyldSharedCache:(__int16)a3 dataGatheringOptions:
++ (id)sharedCacheWithDyldSharedCache:(__int16)cache dataGatheringOptions:
 {
   v33 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -451,7 +451,7 @@ LABEL_13:
     base_address = dyld_shared_cache_get_base_address();
     v7 = [SASharedCache sharedCacheWithUUID:v5 slide:-1 slidBaseAddress:base_address dataGatheringOptions:2048];
     v4 = v7;
-    if ((a3 & 0x800) == 0)
+    if ((cache & 0x800) == 0)
     {
       if ([v7 slide] == -1)
       {
@@ -489,8 +489,8 @@ LABEL_13:
         _Block_object_dispose(&v26, 8);
       }
 
-      v10 = [v4 binaryLoadInfos];
-      v11 = [v10 count] == 0;
+      binaryLoadInfos = [v4 binaryLoadInfos];
+      v11 = [binaryLoadInfos count] == 0;
 
       if (v11)
       {
@@ -509,8 +509,8 @@ LABEL_13:
         {
           objc_opt_self();
           [v13 sortUsingComparator:&__block_literal_global_361];
-          v15 = [v14 uuid];
-          +[SASharedCache applyBinaryLoadInfos:sharedCacheUUID:slide:slidBaseAddress:](SASharedCache, v13, v15, [v14 slide], objc_msgSend(v14, "slidBaseAddress"));
+          uuid = [v14 uuid];
+          +[SASharedCache applyBinaryLoadInfos:sharedCacheUUID:slide:slidBaseAddress:](SASharedCache, v13, uuid, [v14 slide], objc_msgSend(v14, "slidBaseAddress"));
         }
 
         _Block_object_dispose(&v26, 8);
@@ -523,21 +523,21 @@ LABEL_13:
   return v4;
 }
 
-+ (id)sharedCacheWithCSSymbolicator:(uint64_t)a3 dataGatheringOptions:(uint64_t)a4
++ (id)sharedCacheWithCSSymbolicator:(uint64_t)symbolicator dataGatheringOptions:(uint64_t)options
 {
   v5 = objc_opt_self();
   SharedCacheUUID = CSSymbolicatorGetSharedCacheUUID();
   if (SharedCacheUUID && (v7 = SharedCacheUUID, !uuid_is_null(SharedCacheUUID)))
   {
     v9 = uuidForBytes(v7);
-    if ((a4 & 0x800) != 0)
+    if ((options & 0x800) != 0)
     {
       SharedCacheBaseAddress = CSSymbolicatorGetSharedCacheBaseAddress();
       if (SharedCacheBaseAddress)
       {
         v11 = SharedCacheBaseAddress;
         v12 = objc_opt_self();
-        v8 = [(SASharedCache *)v12 sharedCacheWithUUID:v9 slide:-1 slidBaseAddress:v11 dataGatheringOptions:a4];
+        v8 = [(SASharedCache *)v12 sharedCacheWithUUID:v9 slide:-1 slidBaseAddress:v11 dataGatheringOptions:options];
       }
 
       else
@@ -559,7 +559,7 @@ LABEL_13:
       dscsym_iterate();
       if (*(v19 + 24) == 1)
       {
-        v8 = [(SASharedCache *)v5 sharedCacheWithUUID:v9 slide:v15[3] slidBaseAddress:v15[3] - 1 dataGatheringOptions:a4];
+        v8 = [(SASharedCache *)v5 sharedCacheWithUUID:v9 slide:v15[3] slidBaseAddress:v15[3] - 1 dataGatheringOptions:options];
       }
 
       else
@@ -580,10 +580,10 @@ LABEL_13:
   return v8;
 }
 
-+ (id)sharedCacheWithUUID:(uint64_t)a3 slide:(uint64_t)a4 slidBaseAddress:(uint64_t)a5 dataGatheringOptions:
++ (id)sharedCacheWithUUID:(uint64_t)d slide:(uint64_t)slide slidBaseAddress:(uint64_t)address dataGatheringOptions:
 {
   v9 = objc_opt_self();
-  if ((a4 & a3) == 0xFFFFFFFFFFFFFFFFLL)
+  if ((slide & d) == 0xFFFFFFFFFFFFFFFFLL)
   {
     v12 = *__error();
     v13 = _sa_logt();
@@ -611,12 +611,12 @@ LABEL_13:
     v20[1] = 3221225472;
     v20[2] = __80__SASharedCache_sharedCacheWithUUID_slide_slidBaseAddress_dataGatheringOptions___block_invoke;
     v20[3] = &unk_1E86F6C28;
-    v20[6] = a3;
-    v20[7] = a4;
+    v20[6] = d;
+    v20[7] = slide;
     v20[4] = a2;
     v20[5] = buf;
     v20[8] = v9;
-    v20[9] = a5;
+    v20[9] = address;
     [v9 _doSharedCachesWork:v20];
     v10 = *(v22 + 5);
     _Block_object_dispose(buf, 8);
@@ -672,17 +672,17 @@ uint64_t __68__SASharedCache_sharedCacheWithCSSymbolicator_dataGatheringOptions_
   return result;
 }
 
-+ (void)_applyBaseAddress:(void *)a3 toSharedCaches:
++ (void)_applyBaseAddress:(void *)address toSharedCaches:
 {
   v56 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(a3, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(address, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v40 = a3;
-  v6 = [a3 copy];
+  addressCopy = address;
+  v6 = [address copy];
   v7 = [v6 countByEnumeratingWithState:&v41 objects:v55 count:16];
   if (v7)
   {
@@ -698,60 +698,60 @@ uint64_t __68__SASharedCache_sharedCacheWithCSSymbolicator_dataGatheringOptions_
         }
 
         v11 = *(*(&v41 + 1) + 8 * i);
-        v12 = [v11 slide];
-        v13 = [v11 slidBaseAddress];
-        if (v12 == -1)
+        slide = [v11 slide];
+        slidBaseAddress = [v11 slidBaseAddress];
+        if (slide == -1)
         {
-          v15 = v13 - a2;
+          v15 = slidBaseAddress - a2;
           v16 = 8;
 LABEL_12:
           *&v11[v16] = v15;
           goto LABEL_13;
         }
 
-        if (v13 == -1)
+        if (slidBaseAddress == -1)
         {
           v15 = [v11 slide] + a2;
           v16 = 16;
           goto LABEL_12;
         }
 
-        v14 = [v11 slidBaseAddress];
-        if (v14 - [v11 slide] != a2)
+        slidBaseAddress2 = [v11 slidBaseAddress];
+        if (slidBaseAddress2 - [v11 slide] != a2)
         {
           v21 = *__error();
           v22 = _sa_logt();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v11 slide];
-            v25 = [v11 slidBaseAddress];
-            v26 = [v11 slidBaseAddress];
-            v27 = v26 - [v11 slide];
-            v28 = [v11 uuid];
-            v29 = [v28 UUIDString];
-            v30 = [v29 UTF8String];
+            slide2 = [v11 slide];
+            slidBaseAddress3 = [v11 slidBaseAddress];
+            slidBaseAddress4 = [v11 slidBaseAddress];
+            v27 = slidBaseAddress4 - [v11 slide];
+            uuid = [v11 uuid];
+            uUIDString = [uuid UUIDString];
+            uTF8String = [uUIDString UTF8String];
             *buf = 134219010;
-            v46 = v24;
+            v46 = slide2;
             v47 = 2048;
-            v48 = v25;
+            v48 = slidBaseAddress3;
             v49 = 2048;
             v50 = v27;
             v51 = 2048;
             v52 = a2;
             v53 = 2080;
-            v54 = v30;
+            v54 = uTF8String;
             _os_log_error_impl(&dword_1E0E2F000, v22, OS_LOG_TYPE_ERROR, "Mismatch shared cache info: existing slide 0x%llx, slidBaseAddress 0x%llx (base address 0x%llx) vs applied base address 0x%llx for %s", buf, 0x34u);
           }
 
           *__error() = v21;
-          v31 = [v11 slide];
+          slide3 = [v11 slide];
           [v11 slidBaseAddress];
           [v11 slidBaseAddress];
           [v11 slide];
-          v32 = [v11 uuid];
-          v33 = [v32 UUIDString];
-          [v33 UTF8String];
-          _SASetCrashLogMessage(3608, "Mismatch shared cache info: existing slide 0x%llx, slidBaseAddress 0x%llx (base address 0x%llx) vs applied base address 0x%llx for %s", v34, v35, v36, v37, v38, v39, v31);
+          uuid2 = [v11 uuid];
+          uUIDString2 = [uuid2 UUIDString];
+          [uUIDString2 UTF8String];
+          _SASetCrashLogMessage(3608, "Mismatch shared cache info: existing slide 0x%llx, slidBaseAddress 0x%llx (base address 0x%llx) vs applied base address 0x%llx for %s", v34, v35, v36, v37, v38, v39, slide3);
 
           _os_crash();
           __break(1u);
@@ -768,7 +768,7 @@ LABEL_13:
             v11[24] = 1;
           }
 
-          [v40 removeObject:v11];
+          [addressCopy removeObject:v11];
         }
 
         else
@@ -787,22 +787,22 @@ LABEL_13:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_applyLoadInfos:(uint64_t)a3 withSlide:(uint64_t)a4 andSlidBaseAddress:
+- (void)_applyLoadInfos:(uint64_t)infos withSlide:(uint64_t)slide andSlidBaseAddress:
 {
   v89 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_64;
   }
 
-  if ((a4 & a3) == 0xFFFFFFFFFFFFFFFFLL)
+  if ((slide & infos) == 0xFFFFFFFFFFFFFFFFLL)
   {
     a2 = *__error();
-    v7 = _sa_logt();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    selfCopy = _sa_logt();
+    if (os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "applying load infos with unknown slide and unknown slidBaseAddress", buf, 2u);
+      _os_log_error_impl(&dword_1E0E2F000, selfCopy, OS_LOG_TYPE_ERROR, "applying load infos with unknown slide and unknown slidBaseAddress", buf, 2u);
     }
 
     *__error() = a2;
@@ -812,25 +812,25 @@ LABEL_13:
     goto LABEL_70;
   }
 
-  v7 = a1;
-  if (![(objc_class *)a1[6].isa count])
+  selfCopy = self;
+  if (![(objc_class *)self[6].isa count])
   {
     if (qword_1EDD03260 == -1)
     {
 LABEL_8:
-      v67 = v7;
-      if (a3 == -1 || !_MergedGlobals_5)
+      v67 = selfCopy;
+      if (infos == -1 || !_MergedGlobals_5)
       {
         goto LABEL_41;
       }
 
       v66 = a2;
-      v9 = [a2 firstObject];
-      v10 = [v9 loadAddress];
-      if (v10 >= 0x300000001)
+      firstObject = [a2 firstObject];
+      loadAddress = [firstObject loadAddress];
+      if (loadAddress >= 0x300000001)
       {
-        v4 = [a2 firstObject];
-        if (!([v4 loadAddress] >> 34))
+        firstObject2 = [a2 firstObject];
+        if (!([firstObject2 loadAddress] >> 34))
         {
 
 LABEL_13:
@@ -838,8 +838,8 @@ LABEL_13:
           v12 = _sa_logt();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v57 = [v66 firstObject];
-            v58 = [v57 debugDescription];
+            firstObject3 = [v66 firstObject];
+            v58 = [firstObject3 debugDescription];
             *buf = 138412290;
             v81 = v58;
             _os_log_error_impl(&dword_1E0E2F000, v12, OS_LOG_TYPE_ERROR, "Detected bad shared cache load infos (%@) see rdar://93325284", buf, 0xCu);
@@ -865,10 +865,10 @@ LABEL_13:
                 }
 
                 v17 = *(*(&v75 + 1) + 8 * i);
-                v18 = [v17 loadAddress];
+                loadAddress2 = [v17 loadAddress];
                 v19 = *__error();
                 v20 = _sa_logt();
-                v21 = (a3 + ((v18 - a3) >> 1));
+                v21 = (infos + ((loadAddress2 - infos) >> 1));
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
                 {
                   v22 = [v17 debugDescription];
@@ -894,11 +894,11 @@ LABEL_13:
 
 LABEL_40:
           a2 = v66;
-          v7 = v67;
+          selfCopy = v67;
 LABEL_41:
-          if (a3 == -1 || (v33 = v7[1].isa, v33 == -1))
+          if (infos == -1 || (v33 = selfCopy[1].isa, v33 == -1))
           {
-            if (a4 == -1 || (isa = v7[2].isa, isa == -1))
+            if (slide == -1 || (isa = selfCopy[2].isa, isa == -1))
             {
               v51 = a2;
               v52 = *__error();
@@ -912,9 +912,9 @@ LABEL_41:
                 v82 = 2048;
                 v83 = v55;
                 v84 = 2048;
-                v85 = a3;
+                infosCopy = infos;
                 v86 = 2048;
-                v87 = a4;
+                slideCopy = slide;
                 _os_log_impl(&dword_1E0E2F000, v53, OS_LOG_TYPE_DEFAULT, "WARNING: Unable to calculate appropriate load addresses for shared cache %@ when applying %lu load infos with slide #%llx and slidbaseAddress 0x%llx", buf, 0x2Au);
               }
 
@@ -922,15 +922,15 @@ LABEL_41:
               goto LABEL_64;
             }
 
-            v34 = isa - a4;
+            v34 = isa - slide;
           }
 
           else
           {
-            v34 = v33 - a3;
+            v34 = v33 - infos;
           }
 
-          v69 = v7;
+          v69 = selfCopy;
           objc_sync_enter(v69);
           if (v34)
           {
@@ -954,23 +954,23 @@ LABEL_41:
                   }
 
                   v40 = *(*(&v71 + 1) + 8 * j);
-                  v41 = [v40 loadAddress];
-                  v42 = [v40 segment];
+                  loadAddress3 = [v40 loadAddress];
+                  segment = [v40 segment];
 
-                  if (v42)
+                  if (segment)
                   {
-                    v43 = [v40 segment];
-                    v44 = [v40 isInKernelAddressSpace];
-                    v45 = [v40 exclave];
-                    [SABinaryLoadInfo binaryLoadInfoWithSegment:v43 loadAddress:&v34[v41] isInKernelAddressSpace:v44 exclave:v45];
+                    segment2 = [v40 segment];
+                    isInKernelAddressSpace = [v40 isInKernelAddressSpace];
+                    exclave = [v40 exclave];
+                    [SABinaryLoadInfo binaryLoadInfoWithSegment:segment2 loadAddress:&v34[loadAddress3] isInKernelAddressSpace:isInKernelAddressSpace exclave:exclave];
                   }
 
                   else
                   {
-                    v43 = [v40 binary];
-                    v46 = [v40 isInKernelAddressSpace];
-                    v45 = [v40 exclave];
-                    [SABinaryLoadInfo binaryLoadInfoWithBinary:v43 loadAddress:&v34[v41] isInKernelAddressSpace:v46 exclave:v45];
+                    segment2 = [v40 binary];
+                    isInKernelAddressSpace2 = [v40 isInKernelAddressSpace];
+                    exclave = [v40 exclave];
+                    [SABinaryLoadInfo binaryLoadInfoWithBinary:segment2 loadAddress:&v34[loadAddress3] isInKernelAddressSpace:isInKernelAddressSpace2 exclave:exclave];
                   }
                   v47 = ;
 
@@ -991,8 +991,8 @@ LABEL_41:
           else
           {
             v50 = [a2 copy];
-            v36 = v7[6].isa;
-            v7[6].isa = v50;
+            v36 = selfCopy[6].isa;
+            selfCopy[6].isa = v50;
           }
 
           objc_sync_exit(v69);
@@ -1002,11 +1002,11 @@ LABEL_64:
         }
       }
 
-      v23 = [a2 firstObject];
-      if ([v23 loadAddress] >> 32 || v7[2].isa == -1)
+      firstObject4 = [a2 firstObject];
+      if ([firstObject4 loadAddress] >> 32 || selfCopy[2].isa == -1)
       {
 
-        if (v10 < 0x300000001)
+        if (loadAddress < 0x300000001)
         {
           goto LABEL_36;
         }
@@ -1014,19 +1014,19 @@ LABEL_64:
 
       else
       {
-        v24 = [a2 firstObject];
-        if ([v24 loadAddress] > v7[2].isa + 436207616)
+        firstObject5 = [a2 firstObject];
+        if ([firstObject5 loadAddress] > selfCopy[2].isa + 436207616)
         {
-          v25 = v10 > 0x300000000;
-          v26 = [a2 firstObject];
-          v27 = [v26 loadAddress];
+          v25 = loadAddress > 0x300000000;
+          firstObject6 = [a2 firstObject];
+          loadAddress4 = [firstObject6 loadAddress];
           v28 = v67[2].isa + 2315255808u;
 
           if (v25)
           {
           }
 
-          if (v27 < v28)
+          if (loadAddress4 < v28)
           {
             goto LABEL_13;
           }
@@ -1036,8 +1036,8 @@ LABEL_37:
           v30 = _sa_logt();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            v31 = [v66 firstObject];
-            v32 = [v31 debugDescription];
+            firstObject7 = [v66 firstObject];
+            v32 = [firstObject7 debugDescription];
             *buf = 138412290;
             v81 = v32;
             _os_log_impl(&dword_1E0E2F000, v30, OS_LOG_TYPE_INFO, "Detected ok shared cache load infos (%@) see rdar://93325284", buf, 0xCu);
@@ -1047,7 +1047,7 @@ LABEL_37:
           goto LABEL_40;
         }
 
-        if (v10 <= 0x300000000)
+        if (loadAddress <= 0x300000000)
         {
 LABEL_36:
 
@@ -1063,7 +1063,7 @@ LABEL_70:
     goto LABEL_8;
   }
 
-  [(objc_class *)v7[6].isa count];
+  [(objc_class *)selfCopy[6].isa count];
   v8 = *MEMORY[0x1E69E9840];
 
   [a2 count];
@@ -1081,21 +1081,21 @@ char *__62__SASharedCache__applyLoadInfos_withSlide_andSlidBaseAddress___block_i
   return result;
 }
 
-+ (void)_applyLoadInfos:(uint64_t)a3 withSlide:(uint64_t)a4 andSlidBaseAddress:(void *)a5 toSharedCaches:
++ (void)_applyLoadInfos:(uint64_t)infos withSlide:(uint64_t)slide andSlidBaseAddress:(void *)address toSharedCaches:
 {
   v21 = *MEMORY[0x1E69E9840];
   v9 = objc_opt_self();
-  if (a3 != -1 && a4 != -1)
+  if (infos != -1 && slide != -1)
   {
-    [(SASharedCache *)v9 _applyBaseAddress:a5 toSharedCaches:?];
+    [(SASharedCache *)v9 _applyBaseAddress:address toSharedCaches:?];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = a5;
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  addressCopy = address;
+  v11 = [addressCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1107,14 +1107,14 @@ char *__62__SASharedCache__applyLoadInfos_withSlide_andSlidBaseAddress___block_i
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(addressCopy);
         }
 
-        [(SASharedCache *)*(*(&v16 + 1) + 8 * v14++) _applyLoadInfos:a2 withSlide:a3 andSlidBaseAddress:a4];
+        [(SASharedCache *)*(*(&v16 + 1) + 8 * v14++) _applyLoadInfos:a2 withSlide:infos andSlidBaseAddress:slide];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [addressCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
@@ -1483,7 +1483,7 @@ uint64_t __69__SASharedCache_sharedCacheWithDyldSharedCache_dataGatheringOptions
       {
         v10 = [v3 debugDescription];
         *buf = 136315394;
-        v21 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         v22 = 2048;
         v23 = a2;
         _os_log_error_impl(&dword_1E0E2F000, v9, OS_LOG_TYPE_ERROR, "Changing %s slide to 0x%llx", buf, 0x16u);
@@ -1491,8 +1491,8 @@ uint64_t __69__SASharedCache_sharedCacheWithDyldSharedCache_dataGatheringOptions
 
       *__error() = v8;
       v11 = [v3 debugDescription];
-      v12 = [v11 UTF8String];
-      _SASetCrashLogMessage(3916, "Changing %s slide to 0x%llx", v13, v14, v15, v16, v17, v18, v12);
+      uTF8String2 = [v11 UTF8String];
+      _SASetCrashLogMessage(3916, "Changing %s slide to 0x%llx", v13, v14, v15, v16, v17, v18, uTF8String2);
 
       _os_crash();
       __break(1u);
@@ -1523,25 +1523,25 @@ void __69__SASharedCache_sharedCacheWithDyldSharedCache_dataGatheringOptions___b
   }
 }
 
-+ (uint64_t)applyBinaryLoadInfos:(uint64_t)a3 sharedCacheUUID:(uint64_t)a4 slide:(uint64_t)a5 slidBaseAddress:
++ (uint64_t)applyBinaryLoadInfos:(uint64_t)infos sharedCacheUUID:(uint64_t)d slide:(uint64_t)slide slidBaseAddress:
 {
   v9 = objc_opt_self();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __76__SASharedCache_applyBinaryLoadInfos_sharedCacheUUID_slide_slidBaseAddress___block_invoke;
   v11[3] = &unk_1E86F6DB0;
-  v11[6] = a4;
-  v11[7] = a5;
-  v11[4] = a3;
+  v11[6] = d;
+  v11[7] = slide;
+  v11[4] = infos;
   v11[5] = a2;
   v11[8] = v9;
   return [SASharedCache _doSharedCachesWork:v11];
 }
 
-- (BOOL)matchesUUID:(unsigned __int8)a3[16] slide:(unint64_t)a4 slidBaseAddress:(unint64_t)a5
+- (BOOL)matchesUUID:(unsigned __int8)d[16] slide:(unint64_t)slide slidBaseAddress:(unint64_t)address
 {
   v30 = *MEMORY[0x1E69E9840];
-  if ((a5 & a4) == 0xFFFFFFFFFFFFFFFFLL)
+  if ((address & slide) == 0xFFFFFFFFFFFFFFFFLL)
   {
     v18 = *__error();
     v19 = _sa_logt();
@@ -1557,22 +1557,22 @@ void __69__SASharedCache_sharedCacheWithDyldSharedCache_dataGatheringOptions___b
     __break(1u);
   }
 
-  if (a4 == -1 || (slide = self->_slide, slide == -1))
+  if (slide == -1 || (slide = self->_slide, slide == -1))
   {
     v10 = 0;
-    if (a5 == -1)
+    if (address == -1)
     {
       goto LABEL_21;
     }
 
     slidBaseAddress = self->_slidBaseAddress;
-    if (slidBaseAddress == -1 || slidBaseAddress != a5)
+    if (slidBaseAddress == -1 || slidBaseAddress != address)
     {
       goto LABEL_21;
     }
   }
 
-  else if (slide != a4)
+  else if (slide != slide)
   {
     v10 = 0;
     goto LABEL_21;
@@ -1581,28 +1581,28 @@ void __69__SASharedCache_sharedCacheWithDyldSharedCache_dataGatheringOptions___b
   *uu1 = 0;
   v29 = 0;
   [(NSUUID *)self->_uuid getUUIDBytes:uu1];
-  v13 = uuid_compare(uu1, a3);
+  v13 = uuid_compare(uu1, d);
   v10 = v13 == 0;
-  if (a4 != -1 && a5 != -1 && !v13 && (self->_slide == -1 || self->_slidBaseAddress == -1))
+  if (slide != -1 && address != -1 && !v13 && (self->_slide == -1 || self->_slidBaseAddress == -1))
   {
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __51__SASharedCache_matchesUUID_slide_slidBaseAddress___block_invoke;
     v27[3] = &unk_1E86F6CC0;
     v27[4] = self;
-    v27[5] = a5;
-    v27[6] = a4;
+    v27[5] = address;
+    v27[6] = slide;
     [SASharedCache _doSharedCachesWork:v27];
     v14 = self->_slide;
     v15 = self->_slidBaseAddress;
     if (v14 == -1)
     {
-      self->_slide = a4 - a5 + v15;
+      self->_slide = slide - address + v15;
     }
 
     else if (v15 == -1)
     {
-      self->_slidBaseAddress = a5 - a4 + v14;
+      self->_slidBaseAddress = address - slide + v14;
     }
   }
 
@@ -1641,7 +1641,7 @@ void __26__SASharedCache_setSlide___block_invoke(uint64_t a1, void *a2)
       {
         v10 = [v3 debugDescription];
         *buf = 136315394;
-        v21 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         v22 = 2048;
         v23 = a2;
         _os_log_error_impl(&dword_1E0E2F000, v9, OS_LOG_TYPE_ERROR, "Changing %s slidBaseAddress to 0x%llx", buf, 0x16u);
@@ -1649,8 +1649,8 @@ void __26__SASharedCache_setSlide___block_invoke(uint64_t a1, void *a2)
 
       *__error() = v8;
       v11 = [v3 debugDescription];
-      v12 = [v11 UTF8String];
-      _SASetCrashLogMessage(3933, "Changing %s slidBaseAddress to 0x%llx", v13, v14, v15, v16, v17, v18, v12);
+      uTF8String2 = [v11 UTF8String];
+      _SASetCrashLogMessage(3933, "Changing %s slidBaseAddress to 0x%llx", v13, v14, v15, v16, v17, v18, uTF8String2);
 
       _os_crash();
       __break(1u);
@@ -1710,15 +1710,15 @@ uint64_t __47__SASharedCache__findLoadInfosForSharedCaches___block_invoke(uint64
   return 0;
 }
 
-+ (void)addDSCSymData:(id)a3
++ (void)addDSCSymData:(id)data
 {
   v35 = *MEMORY[0x1E69E9840];
   *uu = 0;
   v34 = 0;
   v30 = -1;
-  v5 = a3;
-  [a3 bytes];
-  [a3 length];
+  dataCopy = data;
+  [data bytes];
+  [data length];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -1728,7 +1728,7 @@ uint64_t __47__SASharedCache__findLoadInfosForSharedCaches___block_invoke(uint64
   v28[2] = __31__SASharedCache_addDSCSymData___block_invoke;
   v28[3] = &unk_1E86F6840;
   v28[4] = v29;
-  [a1 _doSharedCachesWork:v28];
+  [self _doSharedCachesWork:v28];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2560];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
@@ -1779,7 +1779,7 @@ uint64_t __47__SASharedCache__findLoadInfosForSharedCaches___block_invoke(uint64
     v19 = v29;
     v20 = v30;
     v18 = v7;
-    v21 = a1;
+    selfCopy = self;
     [SASharedCache _doSharedCachesWork:v16];
   }
 
@@ -1922,13 +1922,13 @@ void __31__SASharedCache_addDSCSymData___block_invoke_502(uint64_t a1, void *a2)
   }
 }
 
-+ (id)sharedCacheWithUUID:(uint64_t)a3 slide:(uint64_t)a4 binaryLoadInfos:
++ (id)sharedCacheWithUUID:(uint64_t)d slide:(uint64_t)slide binaryLoadInfos:
 {
   v7 = objc_opt_self();
-  [(SASharedCache *)v7 applyBinaryLoadInfos:a4 sharedCacheUUID:a2 slide:a3 slidBaseAddress:-1];
+  [(SASharedCache *)v7 applyBinaryLoadInfos:slide sharedCacheUUID:a2 slide:d slidBaseAddress:-1];
   v8 = objc_opt_self();
 
-  return [(SASharedCache *)v8 sharedCacheWithUUID:a2 slide:a3 slidBaseAddress:-1 dataGatheringOptions:0];
+  return [(SASharedCache *)v8 sharedCacheWithUUID:a2 slide:d slidBaseAddress:-1 dataGatheringOptions:0];
 }
 
 void __76__SASharedCache_applyBinaryLoadInfos_sharedCacheUUID_slide_slidBaseAddress___block_invoke(uint64_t a1, void *a2)
@@ -1958,32 +1958,32 @@ void __76__SASharedCache_applyBinaryLoadInfos_sharedCacheUUID_slide_slidBaseAddr
   return v2;
 }
 
-- (void)writeJSONDictionaryEntriesToStream:(id)a3
+- (void)writeJSONDictionaryEntriesToStream:(id)stream
 {
-  v5 = [(NSUUID *)self->_uuid UUIDString];
-  SAJSONWriteDictionaryFirstEntry(a3, @"uuid", v5);
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  SAJSONWriteDictionaryFirstEntry(stream, @"uuid", uUIDString);
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_slide];
-  SAJSONWriteDictionaryEntry(a3, @"slide", v6);
+  SAJSONWriteDictionaryEntry(stream, @"slide", v6);
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_slidBaseAddress];
-  SAJSONWriteDictionaryEntry(a3, @"slidBaseAddress", v7);
+  SAJSONWriteDictionaryEntry(stream, @"slidBaseAddress", v7);
 }
 
-- (BOOL)addSelfToBuffer:(id *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(id *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  *&a3->var0 = 1025;
-  *(&a3->var3 + 1) = self->_slide;
-  [(NSUUID *)self->_uuid getUUIDBytes:a3->var2];
-  if ([(SASharedCache *)self sizeInBytesForSerializedVersion]== a4)
+  *&buffer->var0 = 1025;
+  *(&buffer->var3 + 1) = self->_slide;
+  [(NSUUID *)self->_uuid getUUIDBytes:buffer->var2];
+  if ([(SASharedCache *)self sizeInBytesForSerializedVersion]== length)
   {
     if ([(NSArray *)self->_binaryLoadInfos count]< 0xFFFF)
     {
       v10 = [(NSArray *)self->_binaryLoadInfos count];
-      a3->var3 = v10;
-      SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&a3->var4 + 4, v10, self->_binaryLoadInfos, a5);
-      var3 = a3->var3;
+      buffer->var3 = v10;
+      SASerializableFillSerializedIndicesWithCollectionOfSerializableInstances(&buffer->var4 + 4, v10, self->_binaryLoadInfos, dictionary);
+      var3 = buffer->var3;
       goto LABEL_8;
     }
 
@@ -1993,7 +1993,7 @@ void __76__SASharedCache_applyBinaryLoadInfos_sharedCacheUUID_slide_slidBaseAddr
     {
       v21 = [(SASharedCache *)self debugDescription];
       *buf = 136315394;
-      v37 = [v21 UTF8String];
+      lengthCopy = [v21 UTF8String];
       v38 = 1024;
       LODWORD(v39) = 0xFFFF;
       _os_log_error_impl(&dword_1E0E2F000, v20, OS_LOG_TYPE_ERROR, "%s: more than %d binaries", buf, 0x12u);
@@ -2001,8 +2001,8 @@ void __76__SASharedCache_applyBinaryLoadInfos_sharedCacheUUID_slide_slidBaseAddr
 
     *__error() = v13;
     v22 = [(SASharedCache *)self debugDescription];
-    v23 = [v22 UTF8String];
-    _SASetCrashLogMessage(5298, "%s: more than %d binaries", v24, v25, v26, v27, v28, v29, v23);
+    uTF8String = [v22 UTF8String];
+    _SASetCrashLogMessage(5298, "%s: more than %d binaries", v24, v25, v26, v27, v28, v29, uTF8String);
 
     v12 = _os_crash();
     __break(1u);
@@ -2010,14 +2010,14 @@ LABEL_12:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v37 = a4;
+      lengthCopy = length;
       v38 = 2048;
       v39 = 28;
       _os_log_error_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_ERROR, "bufferLength %lu != serialized SASharedCache struct %lu", buf, 0x16u);
     }
 
     *__error() = v5;
-    _SASetCrashLogMessage(5303, "bufferLength %lu != serialized SASharedCache struct %lu", v30, v31, v32, v33, v34, v35, a4);
+    _SASetCrashLogMessage(5303, "bufferLength %lu != serialized SASharedCache struct %lu", v30, v31, v32, v33, v34, v35, length);
     _os_crash();
     __break(1u);
   }
@@ -2025,7 +2025,7 @@ LABEL_12:
   v5 = *__error();
   v12 = _sa_logt();
   v13 = v12;
-  if (a4 <= 0x2C)
+  if (length <= 0x2C)
   {
     goto LABEL_12;
   }
@@ -2035,7 +2035,7 @@ LABEL_12:
     v14 = [(SASharedCache *)self debugDescription];
     v15 = [(NSArray *)self->_binaryLoadInfos count];
     *buf = 138412546;
-    v37 = v14;
+    lengthCopy = v14;
     v38 = 2048;
     v39 = v15;
     _os_log_impl(&dword_1E0E2F000, v13, OS_LOG_TYPE_DEFAULT, "WARNING: SASharedCache %@ got its %lu binaries after starting serialization!", buf, 0x16u);
@@ -2044,9 +2044,9 @@ LABEL_12:
   v16 = __error();
   var3 = 0;
   *v16 = v5;
-  a3->var3 = 0;
+  buffer->var3 = 0;
 LABEL_8:
-  v17 = &a3->var4 + 8 * var3 + 4;
+  v17 = &buffer->var4 + 8 * var3 + 4;
   *v17 = self->_slidBaseAddress;
   *(v17 + 1) = self->_flags;
   v17[16] = v17[16] & 0xFE | self->_isExclaveSharedCache;
@@ -2054,11 +2054,11 @@ LABEL_8:
   return 1;
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_opt_class() classDictionaryKey];
-  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(a3, self, v5);
+  classDictionaryKey = [objc_opt_class() classDictionaryKey];
+  v6 = SASerializableAddInstanceToSerializationDictionaryWithClassKey(dictionary, self, classDictionaryKey);
 
   if (v6)
   {
@@ -2082,7 +2082,7 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v13 + 1) + 8 * v11++) addSelfToSerializationDictionary:{a3, v13}];
+          [*(*(&v13 + 1) + 8 * v11++) addSelfToSerializationDictionary:{dictionary, v13}];
         }
 
         while (v9 != v11);
@@ -2096,45 +2096,45 @@ LABEL_8:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
   *&v71[13] = *MEMORY[0x1E69E9840];
-  if (*a3 >= 5u)
+  if (*buffer >= 5u)
   {
     goto LABEL_35;
   }
 
-  if (a4 <= 0x1B)
+  if (length <= 0x1B)
   {
     v20 = *__error();
-    v5 = _sa_logt();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v69 = a4;
+      lengthCopy5 = length;
       v70 = 2048;
       *v71 = 28;
-      _os_log_error_impl(&dword_1E0E2F000, v5, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SASharedCache struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SASharedCache struct %lu", buf, 0x16u);
     }
 
     *__error() = v20;
-    _SASetCrashLogMessage(5331, "bufferLength %lu < serialized SASharedCache struct %lu", v21, v22, v23, v24, v25, v26, a4);
+    _SASetCrashLogMessage(5331, "bufferLength %lu < serialized SASharedCache struct %lu", v21, v22, v23, v24, v25, v26, length);
     _os_crash();
     __break(1u);
     goto LABEL_23;
   }
 
-  v5 = a3;
-  if (8 * *(a3 + 9) + 28 > a4)
+  bufferCopy = buffer;
+  if (8 * *(buffer + 9) + 28 > length)
   {
 LABEL_23:
     v27 = *__error();
     v28 = _sa_logt();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = *(v5 + 18);
+      v29 = *(bufferCopy + 18);
       *buf = 134218496;
-      v69 = a4;
+      lengthCopy5 = length;
       v70 = 1024;
       *v71 = v29;
       v71[2] = 2048;
@@ -2143,8 +2143,8 @@ LABEL_23:
     }
 
     *__error() = v27;
-    v64 = *(v5 + 18);
-    _SASetCrashLogMessage(5332, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v30, v31, v32, v33, v34, v35, a4);
+    v64 = *(bufferCopy + 18);
+    _SASetCrashLogMessage(5332, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v30, v31, v32, v33, v34, v35, length);
     _os_crash();
     __break(1u);
 LABEL_26:
@@ -2152,9 +2152,9 @@ LABEL_26:
     v37 = _sa_logt();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      v38 = *(v5 + 18);
+      v38 = *(bufferCopy + 18);
       *buf = 134218496;
-      v69 = a4;
+      lengthCopy5 = length;
       v70 = 1024;
       *v71 = v38;
       v71[2] = 2048;
@@ -2163,8 +2163,8 @@ LABEL_26:
     }
 
     *__error() = v36;
-    v65 = *(v5 + 18);
-    _SASetCrashLogMessage(5340, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v39, v40, v41, v42, v43, v44, a4);
+    v65 = *(bufferCopy + 18);
+    _SASetCrashLogMessage(5340, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v39, v40, v41, v42, v43, v44, length);
     _os_crash();
     __break(1u);
 LABEL_29:
@@ -2172,9 +2172,9 @@ LABEL_29:
     v46 = _sa_logt();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
-      v47 = *(v5 + 18);
+      v47 = *(bufferCopy + 18);
       *buf = 134218496;
-      v69 = a4;
+      lengthCopy5 = length;
       v70 = 1024;
       *v71 = v47;
       v71[2] = 2048;
@@ -2183,8 +2183,8 @@ LABEL_29:
     }
 
     *__error() = v45;
-    v66 = *(v5 + 18);
-    _SASetCrashLogMessage(5347, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v48, v49, v50, v51, v52, v53, a4);
+    v66 = *(bufferCopy + 18);
+    _SASetCrashLogMessage(5347, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v48, v49, v50, v51, v52, v53, length);
     _os_crash();
     __break(1u);
 LABEL_32:
@@ -2192,9 +2192,9 @@ LABEL_32:
     v55 = _sa_logt();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
-      v56 = *(v5 + 18);
+      v56 = *(bufferCopy + 18);
       *buf = 134218496;
-      v69 = a4;
+      lengthCopy5 = length;
       v70 = 1024;
       *v71 = v56;
       v71[2] = 2048;
@@ -2203,8 +2203,8 @@ LABEL_32:
     }
 
     *__error() = v54;
-    v67 = *(v5 + 18);
-    _SASetCrashLogMessage(5353, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v57, v58, v59, v60, v61, v62, a4);
+    v67 = *(bufferCopy + 18);
+    _SASetCrashLogMessage(5353, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v57, v58, v59, v60, v61, v62, length);
     _os_crash();
     __break(1u);
 LABEL_35:
@@ -2212,8 +2212,8 @@ LABEL_35:
     objc_exception_throw(v63);
   }
 
-  v6 = uuidForBytes(a3 + 2);
-  v7 = *(v5 + 1);
+  v6 = uuidForBytes(buffer + 2);
+  v7 = *(bufferCopy + 1);
   if (v7 < 2)
   {
     v14 = 0;
@@ -2221,14 +2221,14 @@ LABEL_35:
     goto LABEL_9;
   }
 
-  v8 = *(v5 + 18);
+  v8 = *(bufferCopy + 18);
   v9 = 8 * v8;
-  if (8 * v8 + 36 > a4)
+  if (8 * v8 + 36 > length)
   {
     goto LABEL_26;
   }
 
-  v10 = v5 + 8 * v8;
+  v10 = bufferCopy + 8 * v8;
   v13 = *(v10 + 28);
   v12 = v10 + 28;
   v11 = v13;
@@ -2240,7 +2240,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v9 + 44 > a4)
+  if (v9 + 44 > length)
   {
     goto LABEL_29;
   }
@@ -2251,14 +2251,14 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v9 + 45 > a4)
+  if (v9 + 45 > length)
   {
     goto LABEL_32;
   }
 
   v15 = *(v12 + 16) ^ 1;
 LABEL_10:
-  v16 = [SASharedCache sharedCacheWithUUID:v6 slide:*(v5 + 20) slidBaseAddress:v11 dataGatheringOptions:2048];
+  v16 = [SASharedCache sharedCacheWithUUID:v6 slide:*(bufferCopy + 20) slidBaseAddress:v11 dataGatheringOptions:2048];
   v17 = v16;
   if (v14)
   {
@@ -2281,45 +2281,45 @@ LABEL_15:
   return v17;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   *&v39[13] = *MEMORY[0x1E69E9840];
-  if (*a3 >= 5u)
+  if (*buffer >= 5u)
   {
     goto LABEL_14;
   }
 
-  if (a4 <= 0x1B)
+  if (length <= 0x1B)
   {
     v16 = *__error();
-    v7 = _sa_logt();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    bufferCopy = _sa_logt();
+    if (os_log_type_enabled(bufferCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v37 = a4;
+      lengthCopy2 = length;
       v38 = 2048;
       *v39 = 28;
-      _os_log_error_impl(&dword_1E0E2F000, v7, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SASharedCache struct %lu", buf, 0x16u);
+      _os_log_error_impl(&dword_1E0E2F000, bufferCopy, OS_LOG_TYPE_ERROR, "bufferLength %lu < serialized SASharedCache struct %lu", buf, 0x16u);
     }
 
     *__error() = v16;
-    _SASetCrashLogMessage(5379, "bufferLength %lu < serialized SASharedCache struct %lu", v17, v18, v19, v20, v21, v22, a4);
+    _SASetCrashLogMessage(5379, "bufferLength %lu < serialized SASharedCache struct %lu", v17, v18, v19, v20, v21, v22, length);
     _os_crash();
     __break(1u);
     goto LABEL_11;
   }
 
-  v7 = a3;
-  if (8 * *(a3 + 9) + 28 > a4)
+  bufferCopy = buffer;
+  if (8 * *(buffer + 9) + 28 > length)
   {
 LABEL_11:
     v23 = *__error();
     v24 = _sa_logt();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = *(v7 + 18);
+      v25 = *(bufferCopy + 18);
       *buf = 134218496;
-      v37 = a4;
+      lengthCopy2 = length;
       v38 = 1024;
       *v39 = v25;
       v39[2] = 2048;
@@ -2328,8 +2328,8 @@ LABEL_11:
     }
 
     *__error() = v23;
-    v33 = *(v7 + 18);
-    _SASetCrashLogMessage(5380, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v26, v27, v28, v29, v30, v31, a4);
+    v33 = *(bufferCopy + 18);
+    _SASetCrashLogMessage(5380, "bufferLength %lu < serialized SASharedCache struct plus %u load infos %lu", v26, v27, v28, v29, v30, v31, length);
     _os_crash();
     __break(1u);
 LABEL_14:
@@ -2339,11 +2339,11 @@ LABEL_14:
 
   if (![(NSArray *)self->_binaryLoadInfos count])
   {
-    v11 = *(v7 + 18);
-    if (*(v7 + 18))
+    v11 = *(bufferCopy + 18);
+    if (*(bufferCopy + 18))
     {
       v12 = objc_opt_class();
-      v13 = SASerializableNewMutableArrayFromIndexList(v7 + 28, v11, a5, a6, v12);
+      v13 = SASerializableNewMutableArrayFromIndexList(bufferCopy + 28, v11, dictionary, bufferDictionary, v12);
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __128__SASharedCache_Serialization__populateReferencesUsingBuffer_bufferLength_andDeserializationDictionary_andDataBufferDictionary___block_invoke;

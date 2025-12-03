@@ -1,20 +1,20 @@
 @interface MPCAutoBugCaptureEventConsumer
-- (BOOL)shouldReportError:(id)a3;
-- (void)autoBugCaptureWithSubType:(id)a3 context:(id)a4 triggerThresholdValues:(id)a5 events:(id)a6;
-- (void)subscribeToEventStream:(id)a3;
+- (BOOL)shouldReportError:(id)error;
+- (void)autoBugCaptureWithSubType:(id)type context:(id)context triggerThresholdValues:(id)values events:(id)events;
+- (void)subscribeToEventStream:(id)stream;
 @end
 
 @implementation MPCAutoBugCaptureEventConsumer
 
-- (void)autoBugCaptureWithSubType:(id)a3 context:(id)a4 triggerThresholdValues:(id)a5 events:(id)a6
+- (void)autoBugCaptureWithSubType:(id)type context:(id)context triggerThresholdValues:(id)values events:(id)events
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v10, v11];
-  v15 = [v14 hash];
+  typeCopy = type;
+  contextCopy = context;
+  valuesCopy = values;
+  eventsCopy = events;
+  contextCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", typeCopy, contextCopy];
+  v15 = [contextCopy hash];
 
   reportedBugSignatures = self->_reportedBugSignatures;
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
@@ -26,11 +26,11 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v23 = v10;
+      v23 = typeCopy;
       v24 = 2114;
-      v25 = v11;
+      v25 = contextCopy;
       v26 = 2114;
-      v27 = v13;
+      v27 = eventsCopy;
       v19 = "PlayPerf ABC [discarded] subtype:%{public}@ context:%{public}@ events:%{public}@";
 LABEL_6:
       _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, v19, buf, 0x20u);
@@ -43,39 +43,39 @@ LABEL_6:
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
     [(NSMutableSet *)v20 addObject:v21];
 
-    [MEMORY[0x1E69B13D8] snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Performance" subType:v10 context:v11 triggerThresholdValues:v12 events:v13 completion:0];
+    [MEMORY[0x1E69B13D8] snapshotWithDomain:*MEMORY[0x1E69B1340] type:@"Performance" subType:typeCopy context:contextCopy triggerThresholdValues:valuesCopy events:eventsCopy completion:0];
     v18 = os_log_create("com.apple.amp.mediaplaybackcore", "Analytics_Oversize");
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v23 = v10;
+      v23 = typeCopy;
       v24 = 2114;
-      v25 = v11;
+      v25 = contextCopy;
       v26 = 2114;
-      v27 = v13;
+      v27 = eventsCopy;
       v19 = "PlayPerf ABC [reported] subtype:%{public}@ context:%{public}@ events:%{public}@";
       goto LABEL_6;
     }
   }
 }
 
-- (BOOL)shouldReportError:(id)a3
+- (BOOL)shouldReportError:(id)error
 {
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  v3 = [a3 msv_errorByUnwrappingDomain:@"MPCError"];
-  v4 = [v3 code];
+  v3 = [error msv_errorByUnwrappingDomain:@"MPCError"];
+  code = [v3 code];
 
-  return v4 != 28 && (v4 & 0xFFFFFFFFFFFFFFDFLL) != 24;
+  return code != 28 && (code & 0xFFFFFFFFFFFFFFDFLL) != 24;
 }
 
-- (void)subscribeToEventStream:(id)a3
+- (void)subscribeToEventStream:(id)stream
 {
-  objc_storeStrong(&self->_subscription, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_subscription, stream);
+  streamCopy = stream;
   v6 = [MEMORY[0x1E695DFA8] set];
   reportedBugSignatures = self->_reportedBugSignatures;
   self->_reportedBugSignatures = v6;
@@ -85,37 +85,37 @@ LABEL_6:
   v13[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke;
   v13[3] = &unk_1E8232330;
   v13[4] = self;
-  [v5 subscribeToEventType:@"remote-control-end" handler:v13];
+  [streamCopy subscribeToEventType:@"remote-control-end" handler:v13];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke_18;
   v12[3] = &unk_1E8232330;
   v12[4] = self;
-  [v5 subscribeToEventType:@"remote-control-timeout" handler:v12];
+  [streamCopy subscribeToEventType:@"remote-control-timeout" handler:v12];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke_2;
   v11[3] = &unk_1E8232330;
   v11[4] = self;
-  [v5 subscribeToEventType:@"asset-load-end" handler:v11];
+  [streamCopy subscribeToEventType:@"asset-load-end" handler:v11];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke_3;
   v10[3] = &unk_1E8232330;
   v10[4] = self;
-  [v5 subscribeToEventType:@"item-rate-changed" handler:v10];
+  [streamCopy subscribeToEventType:@"item-rate-changed" handler:v10];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke_4;
   v9[3] = &unk_1E8232330;
   v9[4] = self;
-  [v5 subscribeToEventType:@"item-failed" handler:v9];
+  [streamCopy subscribeToEventType:@"item-failed" handler:v9];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke_5;
   v8[3] = &unk_1E8232330;
   v8[4] = self;
-  [v5 subscribeToEventType:@"item-pause" handler:v8];
+  [streamCopy subscribeToEventType:@"item-pause" handler:v8];
 }
 
 uint64_t __57__MPCAutoBugCaptureEventConsumer_subscribeToEventStream___block_invoke(uint64_t a1, void *a2, void *a3)

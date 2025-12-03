@@ -1,44 +1,44 @@
 @interface CKConversationAvatarSearchResultCell
-- (CKConversationAvatarSearchResultCell)initWithFrame:(CGRect)a3;
+- (CKConversationAvatarSearchResultCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)marginInsets;
 - (double)_adjustedContentWidth;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)_configureAvatarViewForConversation:(id)a3;
-- (void)_configureNameLabelForConversation:(id)a3 searchText:(id)a4;
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)_configureAvatarViewForConversation:(id)conversation;
+- (void)_configureNameLabelForConversation:(id)conversation searchText:(id)text;
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshForSearchTextIfNeeded:(id)a3;
+- (void)refreshForSearchTextIfNeeded:(id)needed;
 @end
 
 @implementation CKConversationAvatarSearchResultCell
 
-- (void)configureWithQueryResult:(id)a3 searchText:(id)a4 mode:(unint64_t)a5
+- (void)configureWithQueryResult:(id)result searchText:(id)text mode:(unint64_t)mode
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 identifier];
-  [(CKConversationAvatarSearchResultCell *)self setResultIdentifier:v9];
+  textCopy = text;
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  [(CKConversationAvatarSearchResultCell *)self setResultIdentifier:identifier];
 
-  v10 = [v8 conversation];
+  conversation = [resultCopy conversation];
 
-  [(CKConversationAvatarSearchResultCell *)self setConversation:v10];
-  [(CKConversationAvatarSearchResultCell *)self _configureAvatarViewForConversation:v10];
-  [(CKConversationAvatarSearchResultCell *)self _configureNameLabelForConversation:v10 searchText:v7];
+  [(CKConversationAvatarSearchResultCell *)self setConversation:conversation];
+  [(CKConversationAvatarSearchResultCell *)self _configureAvatarViewForConversation:conversation];
+  [(CKConversationAvatarSearchResultCell *)self _configureNameLabelForConversation:conversation searchText:textCopy];
 }
 
-- (void)refreshForSearchTextIfNeeded:(id)a3
+- (void)refreshForSearchTextIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(CKConversationAvatarSearchResultCell *)self conversation];
-  [(CKConversationAvatarSearchResultCell *)self _configureNameLabelForConversation:v5 searchText:v4];
+  neededCopy = needed;
+  conversation = [(CKConversationAvatarSearchResultCell *)self conversation];
+  [(CKConversationAvatarSearchResultCell *)self _configureNameLabelForConversation:conversation searchText:neededCopy];
 }
 
-- (CKConversationAvatarSearchResultCell)initWithFrame:(CGRect)a3
+- (CKConversationAvatarSearchResultCell)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = CKConversationAvatarSearchResultCell;
-  v3 = [(CKConversationAvatarSearchResultCell *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKConversationAvatarSearchResultCell *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [CKAvatarView alloc];
@@ -52,15 +52,15 @@
     [(CNAvatarView *)v9 setDelegate:v3];
     [(CNAvatarView *)v9 setBypassActionValidation:1];
     [(CKConversationAvatarSearchResultCell *)v3 setAvatarView:v9];
-    v10 = [(CKConversationAvatarSearchResultCell *)v3 contentView];
-    [v10 addSubview:v9];
+    contentView = [(CKConversationAvatarSearchResultCell *)v3 contentView];
+    [contentView addSubview:v9];
 
     v11 = [[CKLabel alloc] initWithFrame:v5, v6, v7, v8];
     [(CKLabel *)v11 setNumberOfLines:2];
     [(CKLabel *)v11 setTextAlignment:1];
     [(CKLabel *)v11 setLineBreakMode:4];
-    v12 = [(CKConversationAvatarSearchResultCell *)v3 contentView];
-    [v12 addSubview:v11];
+    contentView2 = [(CKConversationAvatarSearchResultCell *)v3 contentView];
+    [contentView2 addSubview:v11];
 
     [(CKConversationAvatarSearchResultCell *)v3 setNameLabel:v11];
   }
@@ -73,8 +73,8 @@
   v30.receiver = self;
   v30.super_class = CKConversationAvatarSearchResultCell;
   [(CKConversationAvatarSearchResultCell *)&v30 layoutSubviews];
-  v3 = [(CKConversationAvatarSearchResultCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKConversationAvatarSearchResultCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
 
@@ -95,13 +95,13 @@
   [v11 searchConversationCellPadding];
   v13 = v12;
 
-  v14 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  [v14 setFrame:{v10, v13, v8, v8}];
+  avatarView = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  [avatarView setFrame:{v10, v13, v8, v8}];
 
   [(CKConversationAvatarSearchResultCell *)self _adjustedContentWidth];
   v16 = v15;
-  v17 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
-  [v17 sizeThatFits:{v16, 1.79769313e308}];
+  nameLabel = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  [nameLabel sizeThatFits:{v16, 1.79769313e308}];
   v19 = v18;
   v21 = v20;
 
@@ -127,8 +127,8 @@
   }
 
   v28 = floor((v5 + (v7 - v19) * 0.5) * v27) / v27;
-  v29 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
-  [v29 setFrame:{v28, v26, v19, v21}];
+  nameLabel2 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  [nameLabel2 setFrame:{v28, v26, v19, v21}];
 }
 
 - (void)prepareForReuse
@@ -138,25 +138,25 @@
   [(CKConversationAvatarSearchResultCell *)&v6 prepareForReuse];
   [(CKConversationAvatarSearchResultCell *)self setResultIdentifier:0];
   [(CKConversationAvatarSearchResultCell *)self setConversation:0];
-  v3 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  [v3 setContacts:MEMORY[0x1E695E0F0]];
+  avatarView = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  [avatarView setContacts:MEMORY[0x1E695E0F0]];
 
-  v4 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  [v4 setName:0];
+  avatarView2 = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  [avatarView2 setName:0];
 
-  v5 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
-  [v5 setAttributedText:0];
+  nameLabel = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  [nameLabel setAttributedText:0];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  [v4 size];
+  attributesCopy = attributes;
+  [attributesCopy size];
   v6 = v5;
   v7 = fmin(v5, 64.0);
-  v8 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  nameLabel = [(CKConversationAvatarSearchResultCell *)self nameLabel];
   [(CKConversationAvatarSearchResultCell *)self _adjustedContentWidth];
-  [v8 sizeThatFits:?];
+  [nameLabel sizeThatFits:?];
   v10 = v9;
 
   v11 = +[CKUIBehavior sharedBehaviors];
@@ -166,34 +166,34 @@
   [v14 searchConversationCellPadding];
   v16 = v13 + v15 * 2.0;
 
-  [v4 setSize:{v6, v16}];
+  [attributesCopy setSize:{v6, v16}];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)_configureAvatarViewForConversation:(id)a3
+- (void)_configureAvatarViewForConversation:(id)conversation
 {
   v20[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695D0C0] maxContactAvatars];
-  v6 = [v4 conversationVisualIdentityWithKeys:MEMORY[0x1E695E0F0] requestedNumberOfContactsToFetch:v5];
+  conversationCopy = conversation;
+  maxContactAvatars = [MEMORY[0x1E695D0C0] maxContactAvatars];
+  v6 = [conversationCopy conversationVisualIdentityWithKeys:MEMORY[0x1E695E0F0] requestedNumberOfContactsToFetch:maxContactAvatars];
   v7 = [(CNAvatarView *)self->_avatarView updateViewWithGroupIdentity:v6];
-  if ([v4 hasDisplayName])
+  if ([conversationCopy hasDisplayName])
   {
-    [v4 displayName];
+    [conversationCopy displayName];
   }
 
   else
   {
-    [v4 name];
+    [conversationCopy name];
   }
   v8 = ;
-  v9 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  [v9 setName:v8];
+  avatarView = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  [avatarView setName:v8];
 
-  v10 = [v4 recipientCount];
-  v11 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  if (v10 == 1)
+  recipientCount = [conversationCopy recipientCount];
+  avatarView2 = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  if (recipientCount == 1)
   {
     v12 = *MEMORY[0x1E695D070];
     v20[0] = *MEMORY[0x1E695D068];
@@ -216,53 +216,53 @@
   }
 
   v17 = [v14 arrayWithObjects:v15 count:v16];
-  [v11 setActionCategories:v17];
+  [avatarView2 setActionCategories:v17];
 
-  v18 = [(CKConversationAvatarSearchResultCell *)self avatarView];
-  [v18 setStyle:{objc_msgSend(v4, "shouldHaveRoundRectAvatar")}];
+  avatarView3 = [(CKConversationAvatarSearchResultCell *)self avatarView];
+  [avatarView3 setStyle:{objc_msgSend(conversationCopy, "shouldHaveRoundRectAvatar")}];
 
   [(CKConversationAvatarSearchResultCell *)self setNeedsLayout];
 }
 
-- (void)_configureNameLabelForConversation:(id)a3 searchText:(id)a4
+- (void)_configureNameLabelForConversation:(id)conversation searchText:(id)text
 {
-  v21 = a3;
-  v17 = a4;
-  if ([v21 hasDisplayName])
+  conversationCopy = conversation;
+  textCopy = text;
+  if ([conversationCopy hasDisplayName])
   {
-    [v21 displayName];
+    [conversationCopy displayName];
   }
 
   else
   {
-    [v21 name];
+    [conversationCopy name];
   }
   v20 = ;
   v18 = +[CKUIBehavior sharedBehaviors];
-  v16 = [v18 theme];
-  v5 = [v16 conversationListSummaryColor];
+  theme = [v18 theme];
+  conversationListSummaryColor = [theme conversationListSummaryColor];
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [v6 searchResultLabelFont];
+  searchResultLabelFont = [v6 searchResultLabelFont];
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v10 = [v9 conversationListSenderColor];
+  theme2 = [v8 theme];
+  conversationListSenderColor = [theme2 conversationListSenderColor];
   v11 = +[CKUIBehavior sharedBehaviors];
-  v12 = [v11 searchResultLabelFont];
-  v13 = [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:v17 resultText:v20 primaryTextColor:v5 primaryFont:v7 annotatedTextColor:v10 annotatedFont:v12];
+  searchResultLabelFont2 = [v11 searchResultLabelFont];
+  v13 = [CKSpotlightQueryUtilities annotatedResultStringWithSearchText:textCopy resultText:v20 primaryTextColor:conversationListSummaryColor primaryFont:searchResultLabelFont annotatedTextColor:conversationListSenderColor annotatedFont:searchResultLabelFont2];
 
-  v14 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
-  [v14 setAttributedText:v13];
+  nameLabel = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  [nameLabel setAttributedText:v13];
 
-  v15 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
-  [v15 setTitleIconImageType:{+[CKConversationAvatarSearchResultCell _titleIconImageTypeForConversation:](CKConversationAvatarSearchResultCell, "_titleIconImageTypeForConversation:", v21)}];
+  nameLabel2 = [(CKConversationAvatarSearchResultCell *)self nameLabel];
+  [nameLabel2 setTitleIconImageType:{+[CKConversationAvatarSearchResultCell _titleIconImageTypeForConversation:](CKConversationAvatarSearchResultCell, "_titleIconImageTypeForConversation:", conversationCopy)}];
 
   [(CKConversationAvatarSearchResultCell *)self setNeedsLayout];
 }
 
 - (double)_adjustedContentWidth
 {
-  v2 = [(CKConversationAvatarSearchResultCell *)self contentView];
-  [v2 bounds];
+  contentView = [(CKConversationAvatarSearchResultCell *)self contentView];
+  [contentView bounds];
   v4 = v3;
   v5 = +[CKUIBehavior sharedBehaviors];
   [v5 searchConversationCellPadding];

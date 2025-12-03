@@ -5,27 +5,27 @@
 - (PXUIPlayButtonTile)init;
 - (PXUIPlayButtonTileDelegate)delegate;
 - (UIView)view;
-- (void)_handleExtractionResult:(id)a3 isPlaceholder:(BOOL)a4 extraction:(id)a5;
+- (void)_handleExtractionResult:(id)result isPlaceholder:(BOOL)placeholder extraction:(id)extraction;
 - (void)_resetHifiPlayButton;
-- (void)_setAnimatingGeometry:(BOOL)a3;
-- (void)_setAnimationCount:(unint64_t)a3;
-- (void)_setBackgroundImage:(id)a3;
+- (void)_setAnimatingGeometry:(BOOL)geometry;
+- (void)_setAnimationCount:(unint64_t)count;
+- (void)_setBackgroundImage:(id)image;
 - (void)_updateBackgroundImageIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updatePlayButtonViewIfNeeded;
 - (void)becomeReusable;
-- (void)didAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5;
-- (void)didTapButton:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
+- (void)didAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options;
+- (void)didTapButton:(id)button;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
 - (void)prepareForReuse;
-- (void)setAllowsBackdropStatisticsSuppression:(BOOL)a3;
-- (void)setImageRequester:(id)a3;
-- (void)setImageViewportLocation:(CGPoint)a3;
-- (void)setPlayButtonSize:(CGSize)a3;
-- (void)setPlayButtonStyle:(int64_t)a3;
-- (void)setPlayButtonTitle:(id)a3;
-- (void)willAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5;
+- (void)setAllowsBackdropStatisticsSuppression:(BOOL)suppression;
+- (void)setImageRequester:(id)requester;
+- (void)setImageViewportLocation:(CGPoint)location;
+- (void)setPlayButtonSize:(CGSize)size;
+- (void)setPlayButtonStyle:(int64_t)style;
+- (void)setPlayButtonTitle:(id)title;
+- (void)willAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options;
 @end
 
 @implementation PXUIPlayButtonTile
@@ -55,16 +55,16 @@
   return WeakRetained;
 }
 
-- (void)didAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5
+- (void)didAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options
 {
-  v6 = [(PXUIPlayButtonTile *)self _animationCount:a3]- 1;
+  v6 = [(PXUIPlayButtonTile *)self _animationCount:geometry]- 1;
 
   [(PXUIPlayButtonTile *)self _setAnimationCount:v6];
 }
 
-- (void)willAnimateToGeometry:(PXTileGeometry *)a3 toUserData:(id)a4 withOptions:(id)a5
+- (void)willAnimateToGeometry:(PXTileGeometry *)geometry toUserData:(id)data withOptions:(id)options
 {
-  v6 = [(PXUIPlayButtonTile *)self _animationCount:a3]+ 1;
+  v6 = [(PXUIPlayButtonTile *)self _animationCount:geometry]+ 1;
 
   [(PXUIPlayButtonTile *)self _setAnimationCount:v6];
 }
@@ -84,9 +84,9 @@
   return v5;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 0x800) != 0 && PXImageRequesterObserverContext == a5)
+  if ((change & 0x800) != 0 && PXImageRequesterObserverContext == context)
   {
     v7[5] = v5;
     v7[6] = v6;
@@ -101,38 +101,38 @@
 
 - (void)prepareForReuse
 {
-  v2 = [(PXUIPlayButtonTile *)self view];
-  [v2 setHidden:0];
+  view = [(PXUIPlayButtonTile *)self view];
+  [view setHidden:0];
 }
 
 - (void)becomeReusable
 {
-  v3 = [(PXUIPlayButtonTile *)self view];
-  [v3 setHidden:1];
+  view = [(PXUIPlayButtonTile *)self view];
+  [view setHidden:1];
 
   [(PXUIPlayButtonTile *)self performChanges:&__block_literal_global_18_64079];
 }
 
-- (void)didTapButton:(id)a3
+- (void)didTapButton:(id)button
 {
-  v4 = [(PXUIPlayButtonTile *)self delegate];
-  [v4 playButtonTileWasTapped:self];
+  delegate = [(PXUIPlayButtonTile *)self delegate];
+  [delegate playButtonTileWasTapped:self];
 }
 
-- (void)_handleExtractionResult:(id)a3 isPlaceholder:(BOOL)a4 extraction:(id)a5
+- (void)_handleExtractionResult:(id)result isPlaceholder:(BOOL)placeholder extraction:(id)extraction
 {
-  v11 = a3;
-  v8 = a5;
-  if (![(PXImageExtraction *)v8 isCancelled])
+  resultCopy = result;
+  extractionCopy = extraction;
+  if (![(PXImageExtraction *)extractionCopy isCancelled])
   {
     imageExtraction = self->_imageExtraction;
-    if (!imageExtraction || imageExtraction == v8)
+    if (!imageExtraction || imageExtraction == extractionCopy)
     {
-      v10 = [(PXUIPlayButtonTile *)self _backgroundImage];
+      _backgroundImage = [(PXUIPlayButtonTile *)self _backgroundImage];
 
-      if (!v10 || !a4)
+      if (!_backgroundImage || !placeholder)
       {
-        [(PXUIPlayButtonTile *)self _setBackgroundImage:v11];
+        [(PXUIPlayButtonTile *)self _setBackgroundImage:resultCopy];
       }
     }
   }
@@ -146,29 +146,29 @@
     [(PXUIPlayButtonTile *)self _updatePlayButtonViewIfNeeded];
     if ([(PXUIPlayButtonTile *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:331 description:{@"[%@] update needed at end of update pass", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:331 description:{@"[%@] update needed at end of update pass", self}];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  v6 = v4;
-  if (v4)
+  v6 = changesCopy;
+  if (changesCopy)
   {
-    (*(v4 + 2))(v4, self);
-    v4 = v6;
+    (*(changesCopy + 2))(changesCopy, self);
+    changesCopy = v6;
   }
 
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
     [(PXUIPlayButtonTile *)self _updateIfNeeded];
-    v4 = v6;
+    changesCopy = v6;
   }
 }
 
@@ -177,24 +177,24 @@
   if (self->_needsUpdate.backgroundImage)
   {
     self->_needsUpdate.backgroundImage = 0;
-    v3 = [(PXUIPlayButtonTile *)self imageRequester];
-    v4 = [v3 opportunisticImage];
+    imageRequester = [(PXUIPlayButtonTile *)self imageRequester];
+    opportunisticImage = [imageRequester opportunisticImage];
     imageExtraction = self->_imageExtraction;
-    if (v4)
+    if (opportunisticImage)
     {
       if (!imageExtraction)
       {
 LABEL_15:
-        v14 = [v3 asset];
+        asset = [imageRequester asset];
         assetForImageExtraction = self->_assetForImageExtraction;
-        self->_assetForImageExtraction = v14;
+        self->_assetForImageExtraction = asset;
 
-        [v3 contentsRect];
+        [imageRequester contentsRect];
         v17 = v16;
         v19 = v18;
         v21 = v20;
         v23 = v22;
-        [v3 viewportSize];
+        [imageRequester viewportSize];
         v25 = v24;
         v27 = v26;
         [(PXUIPlayButtonTile *)self imageViewportLocation];
@@ -206,7 +206,7 @@ LABEL_15:
         v34[2] = __52__PXUIPlayButtonTile__updateBackgroundImageIfNeeded__block_invoke;
         v34[3] = &unk_1E77342C0;
         objc_copyWeak(&v35, &location);
-        v32 = [v4 px_extractPlayOverlayBackgroundImageFromLocation:2 inViewportWithSize:1 contentMode:v34 contentsRect:v29 asynchronously:v31 handler:{v25, v27, v17, v19, v21, v23}];
+        v32 = [opportunisticImage px_extractPlayOverlayBackgroundImageFromLocation:2 inViewportWithSize:1 contentMode:v34 contentsRect:v29 asynchronously:v31 handler:{v25, v27, v17, v19, v21, v23}];
         v33 = self->_imageExtraction;
         self->_imageExtraction = v32;
 
@@ -216,9 +216,9 @@ LABEL_15:
       }
 
       v6 = self->_assetForImageExtraction;
-      v7 = [v3 asset];
+      asset2 = [imageRequester asset];
       v8 = v6;
-      v9 = v7;
+      v9 = asset2;
       v10 = v9;
       if (v8 != v9)
       {
@@ -283,18 +283,18 @@ void __52__PXUIPlayButtonTile__updateBackgroundImageIfNeeded__block_invoke(uint6
   v53 = v2;
   v54 = v3;
   self->_needsUpdate.playButton = 0;
-  v9 = [(PXUIPlayButtonTile *)self view];
+  view = [(PXUIPlayButtonTile *)self view];
   [(PXUIPlayButtonTile *)self playButtonSize];
   v11 = v10;
   v13 = v12;
-  v14 = [(PXUIPlayButtonTile *)self playButtonStyle];
-  if (v14 != 1)
+  playButtonStyle = [(PXUIPlayButtonTile *)self playButtonStyle];
+  if (playButtonStyle != 1)
   {
-    v17 = v14;
+    v17 = playButtonStyle;
     if ([(PXUIPlayButtonTile *)self _isAnimatingGeometry])
     {
-      v18 = [(PXUIPlayButtonTile *)self _backgroundImage];
-      v16 = v18 != 0;
+      _backgroundImage = [(PXUIPlayButtonTile *)self _backgroundImage];
+      v16 = _backgroundImage != 0;
 
       if (v17)
       {
@@ -327,7 +327,7 @@ LABEL_9:
   v42[3] = &unk_1E7734298;
   v47 = v15;
   v42[4] = self;
-  v20 = v9;
+  v20 = view;
   v43 = v20;
   v30 = *MEMORY[0x1E695EFF8];
   v44 = *MEMORY[0x1E695EFF8];
@@ -494,12 +494,12 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
   return [v2 removeFromSuperview];
 }
 
-- (void)_setBackgroundImage:(id)a3
+- (void)_setBackgroundImage:(id)image
 {
-  v5 = a3;
-  if (self->__backgroundImage != v5)
+  imageCopy = image;
+  if (self->__backgroundImage != imageCopy)
   {
-    objc_storeStrong(&self->__backgroundImage, a3);
+    objc_storeStrong(&self->__backgroundImage, image);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__PXUIPlayButtonTile__setBackgroundImage___block_invoke;
@@ -509,13 +509,13 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
   }
 }
 
-- (void)_setAnimatingGeometry:(BOOL)a3
+- (void)_setAnimatingGeometry:(BOOL)geometry
 {
-  if (self->__animatingGeometry != a3)
+  if (self->__animatingGeometry != geometry)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->__animatingGeometry = a3;
+    self->__animatingGeometry = geometry;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __44__PXUIPlayButtonTile__setAnimatingGeometry___block_invoke;
@@ -525,12 +525,12 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
   }
 }
 
-- (void)_setAnimationCount:(unint64_t)a3
+- (void)_setAnimationCount:(unint64_t)count
 {
-  if (self->__animationCount != a3)
+  if (self->__animationCount != count)
   {
-    self->__animationCount = a3;
-    [(PXUIPlayButtonTile *)self _setAnimatingGeometry:a3 != 0];
+    self->__animationCount = count;
+    [(PXUIPlayButtonTile *)self _setAnimatingGeometry:count != 0];
   }
 }
 
@@ -543,33 +543,33 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
   [(PXUIPlayButtonTile *)self _invalidatePlayButton];
 }
 
-- (void)setAllowsBackdropStatisticsSuppression:(BOOL)a3
+- (void)setAllowsBackdropStatisticsSuppression:(BOOL)suppression
 {
-  v3 = a3;
+  suppressionCopy = suppression;
   if (!self->_isPerformingChanges)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:116 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:116 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
   }
 
-  if (self->_allowsBackdropStatisticsSuppression != v3)
+  if (self->_allowsBackdropStatisticsSuppression != suppressionCopy)
   {
-    self->_allowsBackdropStatisticsSuppression = v3;
+    self->_allowsBackdropStatisticsSuppression = suppressionCopy;
 
     [(PXUIPlayButtonTile *)self _resetHifiPlayButton];
   }
 }
 
-- (void)setImageViewportLocation:(CGPoint)a3
+- (void)setImageViewportLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (!self->_isPerformingChanges)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:106 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:106 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
   }
 
   if (x != self->_imageViewportLocation.x || y != self->_imageViewportLocation.y)
@@ -581,40 +581,40 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v6 = a3;
+  requesterCopy = requester;
   if (!self->_isPerformingChanges)
   {
-    v11 = v6;
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    v11 = requesterCopy;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:93 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:93 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
 
-    v6 = v11;
+    requesterCopy = v11;
   }
 
   imageRequester = self->_imageRequester;
-  if (imageRequester != v6)
+  if (imageRequester != requesterCopy)
   {
-    v10 = v6;
+    v10 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXUIPlayButtonTile *)self _invalidateBackgroundImage];
     [(PXImageRequester *)self->_imageRequester registerChangeObserver:self context:PXImageRequesterObserverContext];
-    v6 = v10;
+    requesterCopy = v10;
   }
 }
 
-- (void)setPlayButtonTitle:(id)a3
+- (void)setPlayButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   playButtonTitle = self->_playButtonTitle;
-  if (playButtonTitle != v4)
+  if (playButtonTitle != titleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)playButtonTitle isEqualToString:v4];
-    v4 = v9;
+    v9 = titleCopy;
+    v6 = [(NSString *)playButtonTitle isEqualToString:titleCopy];
+    titleCopy = v9;
     if (!v6)
     {
       v7 = [(NSString *)v9 copy];
@@ -622,37 +622,37 @@ uint64_t __51__PXUIPlayButtonTile__updatePlayButtonViewIfNeeded__block_invoke_4(
       self->_playButtonTitle = v7;
 
       [(PXUIPlayButtonTile *)self _invalidatePlayButton];
-      v4 = v9;
+      titleCopy = v9;
     }
   }
 }
 
-- (void)setPlayButtonStyle:(int64_t)a3
+- (void)setPlayButtonStyle:(int64_t)style
 {
   if (!self->_isPerformingChanges)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:74 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:74 description:{@"[%@] %@ must be called from a performChanges block.", self, v7}];
   }
 
-  if (self->_playButtonStyle != a3)
+  if (self->_playButtonStyle != style)
   {
-    self->_playButtonStyle = a3;
+    self->_playButtonStyle = style;
 
     [(PXUIPlayButtonTile *)self _invalidatePlayButton];
   }
 }
 
-- (void)setPlayButtonSize:(CGSize)a3
+- (void)setPlayButtonSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (!self->_isPerformingChanges)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = NSStringFromSelector(a2);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:64 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIPlayButtonTile.m" lineNumber:64 description:{@"[%@] %@ must be called from a performChanges block.", self, v9}];
   }
 
   if (width != self->_playButtonSize.width || height != self->_playButtonSize.height)

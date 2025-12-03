@@ -8,10 +8,10 @@
 {
   v19.receiver = self;
   v19.super_class = _MKUILabelAccessibility;
-  v3 = [(_MKUILabelAccessibility *)&v19 accessibilityLabel];
-  if ([v3 length])
+  accessibilityLabel = [(_MKUILabelAccessibility *)&v19 accessibilityLabel];
+  if ([accessibilityLabel length])
   {
-    v4 = v3;
+    v4 = accessibilityLabel;
     goto LABEL_9;
   }
 
@@ -20,20 +20,20 @@
   v5 = [(_MKUILabelAccessibility *)self safeValueForKey:@"attributedText"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 string];
-  v8 = [v6 accessibilityLabel];
-  v9 = [v8 length];
+  string = [v6 string];
+  accessibilityLabel2 = [v6 accessibilityLabel];
+  v9 = [accessibilityLabel2 length];
 
   if (v9)
   {
     v10 = MEMORY[0x29EDBD7E8];
-    v11 = [v6 accessibilityLabel];
+    accessibilityLabel3 = [v6 accessibilityLabel];
     v12 = v10;
   }
 
   else
   {
-    v14 = [v7 length];
+    v14 = [string length];
     v15 = MEMORY[0x29EDBD7E8];
     if (v14)
     {
@@ -43,11 +43,11 @@
 
     v17.receiver = self;
     v17.super_class = _MKUILabelAccessibility;
-    v11 = [(_MKUILabelAccessibility *)&v17 accessibilityLabel];
+    accessibilityLabel3 = [(_MKUILabelAccessibility *)&v17 accessibilityLabel];
     v12 = v15;
   }
 
-  v13 = [v12 axAttributedStringWithString:v11];
+  v13 = [v12 axAttributedStringWithString:accessibilityLabel3];
 
 LABEL_8:
   v4 = [v13 stringByReplacingOccurrencesOfString:@"·" withString:{@", "}];

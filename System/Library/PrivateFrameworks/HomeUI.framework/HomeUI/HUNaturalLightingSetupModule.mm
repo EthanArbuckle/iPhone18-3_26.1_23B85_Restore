@@ -1,27 +1,27 @@
 @interface HUNaturalLightingSetupModule
-+ (BOOL)showNaturalLightingContainingHomeKitObject:(id)a3;
-- (HUNaturalLightingSetupModule)initWithHome:(id)a3 itemUpdater:(id)a4;
++ (BOOL)showNaturalLightingContainingHomeKitObject:(id)object;
+- (HUNaturalLightingSetupModule)initWithHome:(id)home itemUpdater:(id)updater;
 - (HUNaturalLightingSetupModuleDelegate)delegate;
 - (id)_buildItemProviders;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)commitSelectedItems;
 - (id)itemProviders;
 - (id)selectedItems;
-- (void)toggleSelectedForItem:(id)a3;
+- (void)toggleSelectedForItem:(id)item;
 @end
 
 @implementation HUNaturalLightingSetupModule
 
-- (HUNaturalLightingSetupModule)initWithHome:(id)a3 itemUpdater:(id)a4
+- (HUNaturalLightingSetupModule)initWithHome:(id)home itemUpdater:(id)updater
 {
-  v7 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HUNaturalLightingSetupModule;
-  v8 = [(HFItemModule *)&v11 initWithItemUpdater:a4];
+  v8 = [(HFItemModule *)&v11 initWithItemUpdater:updater];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a3);
+    objc_storeStrong(&v8->_home, home);
   }
 
   return v9;
@@ -29,8 +29,8 @@
 
 - (id)selectedItems
 {
-  v2 = [(HFItemModule *)self allItems];
-  v3 = [v2 na_filter:&__block_literal_global_254];
+  allItems = [(HFItemModule *)self allItems];
+  v3 = [allItems na_filter:&__block_literal_global_254];
 
   return v3;
 }
@@ -67,11 +67,11 @@ uint64_t __45__HUNaturalLightingSetupModule_selectedItems__block_invoke(uint64_t
   return v6;
 }
 
-- (void)toggleSelectedForItem:(id)a3
+- (void)toggleSelectedForItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v6 = v5;
+  v6 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -84,16 +84,16 @@ uint64_t __45__HUNaturalLightingSetupModule_selectedItems__block_invoke(uint64_t
 
   v8 = v7;
 
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  latestResults = [v8 latestResults];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   [v8 setSelected:{objc_msgSend(v10, "BOOLValue") ^ 1}];
 
   v11 = MEMORY[0x277D14788];
   v12 = [MEMORY[0x277CBEB98] setWithObject:v6];
   v13 = [v11 requestToUpdateItems:v12 senderSelector:a2];
 
-  v14 = [(HFItemModule *)self itemUpdater];
-  v15 = [v14 performItemUpdateRequest:v13];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v15 = [itemUpdater performItemUpdateRequest:v13];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __54__HUNaturalLightingSetupModule_toggleSelectedForItem___block_invoke;
@@ -113,26 +113,26 @@ void __54__HUNaturalLightingSetupModule_toggleSelectedForItem___block_invoke(uin
 - (id)commitSelectedItems
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUNaturalLightingSetupModule *)self home];
-  v5 = [v4 hf_allLightProfilesSupportingNaturalLighting];
-  v6 = [v3 setWithArray:v5];
+  home = [(HUNaturalLightingSetupModule *)self home];
+  hf_allLightProfilesSupportingNaturalLighting = [home hf_allLightProfilesSupportingNaturalLighting];
+  v6 = [v3 setWithArray:hf_allLightProfilesSupportingNaturalLighting];
 
-  v7 = [(HFItemModule *)self allItems];
-  v8 = [v7 na_flatMap:&__block_literal_global_6_0];
+  allItems = [(HFItemModule *)self allItems];
+  v8 = [allItems na_flatMap:&__block_literal_global_6_0];
 
-  v9 = [(HUNaturalLightingSetupModule *)self selectedItems];
-  v10 = [v9 na_flatMap:&__block_literal_global_8_2];
+  selectedItems = [(HUNaturalLightingSetupModule *)self selectedItems];
+  v10 = [selectedItems na_flatMap:&__block_literal_global_8_2];
 
   v11 = [v8 na_setByIntersectingWithSet:v6];
   v12 = MEMORY[0x277D2C900];
-  v13 = [v11 allObjects];
+  allObjects = [v11 allObjects];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __51__HUNaturalLightingSetupModule_commitSelectedItems__block_invoke_3;
   v18[3] = &unk_277DC36A0;
   v19 = v10;
   v14 = v10;
-  v15 = [v13 na_map:v18];
+  v15 = [allObjects na_map:v18];
   v16 = [v12 combineAllFutures:v15];
 
   return v16;
@@ -211,9 +211,9 @@ void __51__HUNaturalLightingSetupModule_commitSelectedItems__block_invoke_4(uint
   itemProviders = self->_itemProviders;
   if (!itemProviders)
   {
-    v4 = [(HUNaturalLightingSetupModule *)self _buildItemProviders];
+    _buildItemProviders = [(HUNaturalLightingSetupModule *)self _buildItemProviders];
     v5 = self->_itemProviders;
-    self->_itemProviders = v4;
+    self->_itemProviders = _buildItemProviders;
 
     itemProviders = self->_itemProviders;
   }
@@ -221,11 +221,11 @@ void __51__HUNaturalLightingSetupModule_commitSelectedItems__block_invoke_4(uint
   return itemProviders;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HFItemModule *)self allItems];
-  v6 = [v5 na_setByIntersectingWithSet:v4];
+  itemsCopy = items;
+  allItems = [(HFItemModule *)self allItems];
+  v6 = [allItems na_setByIntersectingWithSet:itemsCopy];
 
   v7 = [v6 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_14_1];
   v8 = MEMORY[0x277D14778];
@@ -235,7 +235,7 @@ void __51__HUNaturalLightingSetupModule_commitSelectedItems__block_invoke_4(uint
   v12[3] = &unk_277DC36E8;
   v12[4] = self;
   v9 = [v7 na_map:v12];
-  v10 = [v8 filterSections:v9 toDisplayedItems:v4];
+  v10 = [v8 filterSections:v9 toDisplayedItems:itemsCopy];
 
   return v10;
 }
@@ -310,14 +310,14 @@ id __64__HUNaturalLightingSetupModule_buildSectionsWithDisplayedItems___block_in
 - (id)_buildItemProviders
 {
   v3 = [HUNaturalLightingItemProvider alloc];
-  v4 = [(HUNaturalLightingSetupModule *)self home];
-  v5 = [(HUNaturalLightingItemProvider *)v3 initWithHome:v4];
+  home = [(HUNaturalLightingSetupModule *)self home];
+  v5 = [(HUNaturalLightingItemProvider *)v3 initWithHome:home];
 
-  v6 = [(HUNaturalLightingSetupModule *)self filter];
-  [(HUNaturalLightingItemProvider *)v5 setLightProfileFilter:v6];
+  filter = [(HUNaturalLightingSetupModule *)self filter];
+  [(HUNaturalLightingItemProvider *)v5 setLightProfileFilter:filter];
 
-  v7 = [(HUNaturalLightingSetupModule *)self defaultSelectedValue];
-  [(HUNaturalLightingItemProvider *)v5 setDefaultSelectedValue:v7];
+  defaultSelectedValue = [(HUNaturalLightingSetupModule *)self defaultSelectedValue];
+  [(HUNaturalLightingItemProvider *)v5 setDefaultSelectedValue:defaultSelectedValue];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -338,11 +338,11 @@ uint64_t __51__HUNaturalLightingSetupModule__buildItemProviders__block_invoke(ui
   return v3;
 }
 
-+ (BOOL)showNaturalLightingContainingHomeKitObject:(id)a3
++ (BOOL)showNaturalLightingContainingHomeKitObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
-  v4 = v3;
+  v4 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -377,9 +377,9 @@ uint64_t __51__HUNaturalLightingSetupModule__buildItemProviders__block_invoke(ui
 
   if ([v9 hf_isVisibleAccessory] && (objc_msgSend(v9, "hf_isVisibleAsBridge") & 1) == 0)
   {
-    v12 = [v9 services];
+    services = [v9 services];
 
-    v10 = v12;
+    v10 = services;
 LABEL_12:
     v11 = [v10 na_any:&__block_literal_global_26_1];
     goto LABEL_13;

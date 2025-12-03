@@ -1,7 +1,7 @@
 @interface PKExtensionBaseContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (id)remoteContextWithErrorHandler:(id)a3;
+- (id)remoteContextWithErrorHandler:(id)handler;
 @end
 
 @implementation PKExtensionBaseContext
@@ -60,11 +60,11 @@ void __39__PKExtensionBaseContext_remoteContext__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (id)remoteContextWithErrorHandler:(id)a3
+- (id)remoteContextWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKExtensionBaseContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(PKExtensionBaseContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

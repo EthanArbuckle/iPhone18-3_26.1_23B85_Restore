@@ -1,13 +1,13 @@
 @interface _DKBluetoothMonitor
 + (id)audioProductsBatteryLevels;
 + (id)log;
-+ (int)BMDeviceBluetoothDeviceTypeFromBTDeviceType:(int)a3;
++ (int)BMDeviceBluetoothDeviceTypeFromBTDeviceType:(int)type;
 - (_DKBluetoothMonitor)init;
 - (id)loadState;
 - (void)deactivate;
 - (void)dealloc;
-- (void)handleUnpairingEvent:(id)a3;
-- (void)receiveNotificationEvent:(id)a3;
+- (void)handleUnpairingEvent:(id)event;
+- (void)receiveNotificationEvent:(id)event;
 - (void)saveState;
 - (void)start;
 - (void)updateCurrentBatteryLevels;
@@ -25,34 +25,34 @@
     if (+[_DKBluetoothMonitor writeToBiome])
     {
       v3 = BiomeLibrary();
-      v4 = [v3 Device];
-      v5 = [v4 Wireless];
-      v6 = [v5 Bluetooth];
-      v7 = [v6 source];
+      device = [v3 Device];
+      wireless = [device Wireless];
+      bluetooth = [wireless Bluetooth];
+      source = [bluetooth source];
       source = v2->_source;
-      v2->_source = v7;
+      v2->_source = source;
     }
 
     v9 = BiomeLibrary();
-    v10 = [v9 Device];
-    v11 = [v10 Wireless];
-    v12 = [v11 Bluetooth];
-    v13 = [v12 pruner];
-    [(_DKBluetoothMonitor *)v2 setPruner:v13];
+    device2 = [v9 Device];
+    wireless2 = [device2 Wireless];
+    bluetooth2 = [wireless2 Bluetooth];
+    pruner = [bluetooth2 pruner];
+    [(_DKBluetoothMonitor *)v2 setPruner:pruner];
 
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     activeConnections = v2->_activeConnections;
-    v2->_activeConnections = v14;
+    v2->_activeConnections = dictionary;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     inactiveConnections = v2->_inactiveConnections;
-    v2->_inactiveConnections = v16;
+    v2->_inactiveConnections = dictionary2;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     previousVendorIDs = v2->_previousVendorIDs;
-    v2->_previousVendorIDs = v18;
+    v2->_previousVendorIDs = dictionary3;
 
-    v20 = [(_DKBluetoothMonitor *)v2 loadState];
+    loadState = [(_DKBluetoothMonitor *)v2 loadState];
     v21 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     connectionUpdateLock = v2->_connectionUpdateLock;
     v2->_connectionUpdateLock = v21;
@@ -74,14 +74,14 @@
   v29 = *MEMORY[0x277D85DE8];
   if (IOPSCopyPowerSourcesByTypePrecise() || (v3 = IOPSCopyPowerSourcesList(0)) == 0)
   {
-    v2 = MEMORY[0x277CBEC10];
+    dictionary = MEMORY[0x277CBEC10];
   }
 
   else
   {
     v4 = v3;
     Count = CFArrayGetCount(v3);
-    v2 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (Count >= 1)
     {
       v7 = 0;
@@ -99,12 +99,12 @@
           break;
         }
 
-        v13 = [v2 objectForKeyedSubscript:v12];
+        v13 = [dictionary objectForKeyedSubscript:v12];
 
         if (!v13)
         {
-          v14 = [MEMORY[0x277CBEB38] dictionary];
-          [v2 setObject:v14 forKeyedSubscript:v12];
+          dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:dictionary2 forKeyedSubscript:v12];
         }
 
         valuePtr = 0;
@@ -123,11 +123,11 @@
           v19 = CFDictionaryGetValue(v9, @"Current Capacity");
           CFNumberGetValue(v19, kCFNumberSInt32Type, &valuePtr);
           v16 = [MEMORY[0x277CCABB0] numberWithInt:valuePtr];
-          v17 = [v2 objectForKeyedSubscript:v12];
-          v18 = [MEMORY[0x277CFE198] batteryLevelHeadphoneCase];
+          v17 = [dictionary objectForKeyedSubscript:v12];
+          batteryLevelHeadphoneCase = [MEMORY[0x277CFE198] batteryLevelHeadphoneCase];
 LABEL_22:
-          v21 = v18;
-          [v17 setObject:v16 forKeyedSubscript:{v18, v24}];
+          v21 = batteryLevelHeadphoneCase;
+          [v17 setObject:v16 forKeyedSubscript:{batteryLevelHeadphoneCase, v24}];
 
 LABEL_23:
           goto LABEL_24;
@@ -140,8 +140,8 @@ LABEL_23:
             v15 = CFDictionaryGetValue(v9, @"Current Capacity");
             CFNumberGetValue(v15, kCFNumberSInt32Type, &valuePtr);
             v16 = [MEMORY[0x277CCABB0] numberWithInt:valuePtr];
-            v17 = [v2 objectForKeyedSubscript:v12];
-            v18 = [MEMORY[0x277CFE198] batteryLevelHeadphoneLeft];
+            v17 = [dictionary objectForKeyedSubscript:v12];
+            batteryLevelHeadphoneCase = [MEMORY[0x277CFE198] batteryLevelHeadphoneLeft];
             goto LABEL_22;
           }
 
@@ -150,8 +150,8 @@ LABEL_23:
             v20 = CFDictionaryGetValue(v9, @"Current Capacity");
             CFNumberGetValue(v20, kCFNumberSInt32Type, &valuePtr);
             v16 = [MEMORY[0x277CCABB0] numberWithInt:valuePtr];
-            v17 = [v2 objectForKeyedSubscript:v12];
-            v18 = [MEMORY[0x277CFE198] batteryLevelHeadphoneRight];
+            v17 = [dictionary objectForKeyedSubscript:v12];
+            batteryLevelHeadphoneCase = [MEMORY[0x277CFE198] batteryLevelHeadphoneRight];
             goto LABEL_22;
           }
         }
@@ -184,14 +184,14 @@ LABEL_25:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return dictionary;
 }
 
-+ (int)BMDeviceBluetoothDeviceTypeFromBTDeviceType:(int)a3
++ (int)BMDeviceBluetoothDeviceTypeFromBTDeviceType:(int)type
 {
-  if (a3 < 0x32)
+  if (type < 0x32)
   {
-    return a3 + 1;
+    return type + 1;
   }
 
   else
@@ -203,17 +203,17 @@ LABEL_25:
 - (void)updateCurrentBatteryLevels
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(_DKBluetoothMonitor *)self batteryLevels];
-  v4 = [v3 mutableCopy];
+  batteryLevels = [(_DKBluetoothMonitor *)self batteryLevels];
+  v4 = [batteryLevels mutableCopy];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [(_DKBluetoothMonitor *)self batteryLevels];
-  v6 = [v5 allKeys];
+  batteryLevels2 = [(_DKBluetoothMonitor *)self batteryLevels];
+  allKeys = [batteryLevels2 allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v7)
   {
     v8 = v7;
@@ -224,29 +224,29 @@ LABEL_25:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [(_DKBluetoothMonitor *)self batteryLevels];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        batteryLevels3 = [(_DKBluetoothMonitor *)self batteryLevels];
+        v13 = [batteryLevels3 objectForKeyedSubscript:v11];
         v14 = [v13 mutableCopy];
         [v4 setValue:v14 forKey:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v36 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v31 objects:v36 count:16];
     }
 
     while (v8);
   }
 
-  v15 = [objc_opt_class() audioProductsBatteryLevels];
+  audioProductsBatteryLevels = [objc_opt_class() audioProductsBatteryLevels];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = [v15 allKeys];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  allKeys2 = [audioProductsBatteryLevels allKeys];
+  v17 = [allKeys2 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
     v18 = v17;
@@ -257,7 +257,7 @@ LABEL_25:
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys2);
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
@@ -265,16 +265,16 @@ LABEL_25:
 
         if (!v22)
         {
-          v23 = [MEMORY[0x277CBEB38] dictionary];
-          [v4 setValue:v23 forKey:v21];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [v4 setValue:dictionary forKey:v21];
         }
 
         v24 = [v4 objectForKeyedSubscript:v21];
-        v25 = [v15 objectForKeyedSubscript:v21];
+        v25 = [audioProductsBatteryLevels objectForKeyedSubscript:v21];
         [v24 addEntriesFromDictionary:v25];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v18 = [allKeys2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v18);
@@ -287,13 +287,13 @@ LABEL_25:
 - (void)start
 {
   v3 = MEMORY[0x277CF3248];
-  v4 = [(_DKMonitor *)self queue];
-  [v3 setSharedInstanceQueue:v4];
+  queue = [(_DKMonitor *)self queue];
+  [v3 setSharedInstanceQueue:queue];
 
-  v5 = [MEMORY[0x277CF3248] sharedInstance];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
   v6 = objc_alloc_init(MEMORY[0x277CCABD8]);
-  v7 = [(_DKMonitor *)self queue];
-  [v6 setUnderlyingQueue:v7];
+  queue2 = [(_DKMonitor *)self queue];
+  [v6 setUnderlyingQueue:queue2];
 
   if (!self->_batteryLevelPollingQueue)
   {
@@ -320,47 +320,47 @@ LABEL_25:
     dispatch_activate(self->_batteryLevelPollingTimer);
   }
 
-  v14 = [(_DKBluetoothMonitor *)self batteryLevels];
+  batteryLevels = [(_DKBluetoothMonitor *)self batteryLevels];
 
-  if (!v14)
+  if (!batteryLevels)
   {
     [(_DKBluetoothMonitor *)self setBatteryLevels:MEMORY[0x277CBEC10]];
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v16 = *MEMORY[0x277CF3190];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __28___DKBluetoothMonitor_start__block_invoke_2;
   v26[3] = &unk_27856F718;
   v26[4] = self;
-  v17 = [v15 addObserverForName:v16 object:0 queue:v6 usingBlock:v26];
+  v17 = [defaultCenter addObserverForName:v16 object:0 queue:v6 usingBlock:v26];
 
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v19 = *MEMORY[0x277CF3150];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __28___DKBluetoothMonitor_start__block_invoke_4;
   v25[3] = &unk_27856F718;
   v25[4] = self;
-  v20 = [v18 addObserverForName:v19 object:0 queue:v6 usingBlock:v25];
+  v20 = [defaultCenter2 addObserverForName:v19 object:0 queue:v6 usingBlock:v25];
 
-  v21 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v22 = *MEMORY[0x277CF31A0];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __28___DKBluetoothMonitor_start__block_invoke_5;
   v24[3] = &unk_27856F718;
   v24[4] = self;
-  v23 = [v21 addObserverForName:v22 object:0 queue:v6 usingBlock:v24];
+  v23 = [defaultCenter3 addObserverForName:v22 object:0 queue:v6 usingBlock:v24];
 
   self->_enabled = 1;
 }
 
 - (void)deactivate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 + (id)log
@@ -390,7 +390,7 @@ LABEL_25:
   v18[0] = activeConnections;
   v18[1] = inactiveConnections;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-  v5 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __32___DKBluetoothMonitor_saveState__block_invoke;
@@ -398,7 +398,7 @@ LABEL_25:
   v11[4] = self;
   v11[5] = v12;
   v6 = v11;
-  v7 = v5;
+  v7 = queue;
   v8 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -428,14 +428,14 @@ LABEL_25:
   v11 = __Block_byref_object_copy__6;
   v12 = __Block_byref_object_dispose__6;
   v13 = 0;
-  v4 = [(_DKMonitor *)self queue];
+  queue = [(_DKMonitor *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32___DKBluetoothMonitor_loadState__block_invoke;
   v7[3] = &unk_27856F368;
   v7[4] = self;
   v7[5] = buf;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue, v7);
 
   v5 = *(v9 + 5);
   _Block_object_dispose(buf, 8);
@@ -443,29 +443,29 @@ LABEL_25:
   return v5;
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
   if (self->_enabled)
   {
-    v6 = [v4 objectForKeyedSubscript:@"Notification"];
+    v6 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v7 = [v6 isEqual:@"com.apple.bluetooth.pairing"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"_State"];
-      v9 = [v8 unsignedLongLongValue];
+      v8 = [eventCopy objectForKeyedSubscript:@"_State"];
+      unsignedLongLongValue = [v8 unsignedLongLongValue];
 
       v10 = +[_DKBluetoothMonitor log];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        [(_DKBluetoothMonitor *)v9 receiveNotificationEvent:v10];
+        [(_DKBluetoothMonitor *)unsignedLongLongValue receiveNotificationEvent:v10];
       }
 
-      v27 = bswap64(v9);
-      LOWORD(v27) = HIWORD(v9);
+      v27 = bswap64(unsignedLongLongValue);
+      LOWORD(v27) = HIWORD(unsignedLongLongValue);
       if (BTDeviceAddressToString())
       {
         v11 = +[_DKBluetoothMonitor log];
@@ -496,7 +496,7 @@ LABEL_25:
 
         if ((v27 & 1) == 0)
         {
-          v20 = [(_DKMonitor *)self queue];
+          queue = [(_DKMonitor *)self queue];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __48___DKBluetoothMonitor_receiveNotificationEvent___block_invoke;
@@ -513,7 +513,7 @@ LABEL_25:
           v31 = v22;
           v32 = v21;
           v23 = v22;
-          dispatch_async(v20, buf);
+          dispatch_async(queue, buf);
         }
       }
     }
@@ -524,43 +524,43 @@ LABEL_25:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUnpairingEvent:(id)a3
+- (void)handleUnpairingEvent:(id)event
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(_DKMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  eventCopy = event;
+  queue = [(_DKMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = os_transaction_create();
-  v7 = [(_DKBluetoothMonitor *)self historicalDeletingHandler];
+  historicalDeletingHandler = [(_DKBluetoothMonitor *)self historicalDeletingHandler];
 
-  if (v7)
+  if (historicalDeletingHandler)
   {
     v8 = MEMORY[0x277CCA920];
     v9 = MEMORY[0x277CFE260];
-    v10 = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
-    v11 = [v10 name];
-    v12 = [v9 predicateForEventsWithStreamName:v11];
+    bluetoothIsConnectedStream = [MEMORY[0x277CFE298] bluetoothIsConnectedStream];
+    name = [bluetoothIsConnectedStream name];
+    v12 = [v9 predicateForEventsWithStreamName:name];
     v24[0] = v12;
     v13 = MEMORY[0x277CFE260];
-    v14 = [MEMORY[0x277CFE198] address];
-    v15 = [v13 predicateForObjectsWithMetadataKey:v14 andStringValue:v4];
+    address = [MEMORY[0x277CFE198] address];
+    v15 = [v13 predicateForObjectsWithMetadataKey:address andStringValue:eventCopy];
     v24[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
     v17 = [v8 andPredicateWithSubpredicates:v16];
 
-    v18 = [(_DKBluetoothMonitor *)self historicalDeletingHandler];
-    (v18)[2](v18, v17);
+    historicalDeletingHandler2 = [(_DKBluetoothMonitor *)self historicalDeletingHandler];
+    (historicalDeletingHandler2)[2](historicalDeletingHandler2, v17);
   }
 
-  v19 = [(_DKBluetoothMonitor *)self pruner];
+  pruner = [(_DKBluetoothMonitor *)self pruner];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __44___DKBluetoothMonitor_handleUnpairingEvent___block_invoke;
   v22[3] = &unk_27856F458;
-  v23 = v4;
-  v20 = v4;
-  [v19 deleteWithPolicy:@"forget-this-device" eventsPassingTest:v22];
+  v23 = eventCopy;
+  v20 = eventCopy;
+  [pruner deleteWithPolicy:@"forget-this-device" eventsPassingTest:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }

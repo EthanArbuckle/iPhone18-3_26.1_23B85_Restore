@@ -1,10 +1,10 @@
 @interface NUHistogramRenderRequest
 - (NUColorSpace)histogramCalculationColorSpace;
 - (NUHistogramParameters)parameters;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 - (void)_commonInit;
-- (void)setParameters:(id)a3;
+- (void)setParameters:(id)parameters;
 @end
 
 @implementation NUHistogramRenderRequest
@@ -16,12 +16,12 @@
   if (!histogramCalculationColorSpace)
   {
     v4 = [NUImagePropertiesRequest alloc];
-    v5 = [(NURenderRequest *)self composition];
-    v6 = [(NURenderRequest *)v4 initWithComposition:v5];
+    composition = [(NURenderRequest *)self composition];
+    v6 = [(NURenderRequest *)v4 initWithComposition:composition];
 
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(NURenderRequest *)self name];
-    v9 = [v7 stringWithFormat:@"%@-imageProperties", v8];
+    name = [(NURenderRequest *)self name];
+    v9 = [v7 stringWithFormat:@"%@-imageProperties", name];
     [(NURenderRequest *)v6 setName:v9];
 
     v19 = 0;
@@ -30,10 +30,10 @@
     v12 = +[NUColorSpace sRGBColorSpace];
     if (v10)
     {
-      v13 = [v10 properties];
-      v14 = [v13 colorSpace];
+      properties = [v10 properties];
+      colorSpace = [properties colorSpace];
 
-      if ([v14 isHDR])
+      if ([colorSpace isHDR])
       {
         v15 = +[NUColorSpace itur2100HLGColorSpace];
 
@@ -73,9 +73,9 @@
   return v2;
 }
 
-- (void)setParameters:(id)a3
+- (void)setParameters:(id)parameters
 {
-  self->_parameters = [a3 copy];
+  self->_parameters = [parameters copy];
 
   MEMORY[0x1EEE66BB8]();
 }
@@ -87,11 +87,11 @@
   return [(NUHistogramRenderJob *)v3 initWithHistogramRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = NUHistogramRenderRequest;
-  v4 = [(NURenderRequest *)&v7 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

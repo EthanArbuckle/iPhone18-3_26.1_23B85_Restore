@@ -1,22 +1,22 @@
 @interface GESSAlgInverseRenderExtended
-- (BOOL)run:(id)a3 mvps:(id)a4 imageSets:(id)a5 outputMesh:(id)a6;
+- (BOOL)run:(id)run mvps:(id)mvps imageSets:(id)sets outputMesh:(id)mesh;
 - (id)returnReport;
 @end
 
 @implementation GESSAlgInverseRenderExtended
 
-- (BOOL)run:(id)a3 mvps:(id)a4 imageSets:(id)a5 outputMesh:(id)a6
+- (BOOL)run:(id)run mvps:(id)mvps imageSets:(id)sets outputMesh:(id)mesh
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v28 = a6;
+  runCopy = run;
+  mvpsCopy = mvps;
+  setsCopy = sets;
+  meshCopy = mesh;
   std::chrono::system_clock::now();
-  if ((GESSEnvMLXAvailable_0() & 1) != 0 && (objc_msgSend_valid(v10, v13, v14, v15) & 1) != 0 && objc_msgSend_meshType(v10, v16, v17, v18) == 1)
+  if ((GESSEnvMLXAvailable_0() & 1) != 0 && (objc_msgSend_valid(runCopy, v13, v14, v15) & 1) != 0 && objc_msgSend_meshType(runCopy, v16, v17, v18) == 1)
   {
-    v22 = objc_msgSend_count(v11, v19, v20, v21);
-    if (v22 == objc_msgSend_count(v12, v23, v24, v25))
+    v22 = objc_msgSend_count(mvpsCopy, v19, v20, v21);
+    if (v22 == objc_msgSend_count(setsCopy, v23, v24, v25))
     {
       strcpy(v29, ">wl[PZ[L");
       v30 = sub_24BD09B90(v29);

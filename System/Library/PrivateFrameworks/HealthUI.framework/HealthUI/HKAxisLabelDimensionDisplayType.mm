@@ -1,22 +1,22 @@
 @interface HKAxisLabelDimensionDisplayType
-- (HKAxisLabelDimensionDisplayType)initWithDisplayType:(id)a3 unitPreferencesController:(id)a4;
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4;
+- (HKAxisLabelDimensionDisplayType)initWithDisplayType:(id)type unitPreferencesController:(id)controller;
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size;
 @end
 
 @implementation HKAxisLabelDimensionDisplayType
 
-- (HKAxisLabelDimensionDisplayType)initWithDisplayType:(id)a3 unitPreferencesController:(id)a4
+- (HKAxisLabelDimensionDisplayType)initWithDisplayType:(id)type unitPreferencesController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = HKAxisLabelDimensionDisplayType;
   v9 = [(HKAxisLabelDimensionDisplayType *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_unitController, a4);
-    objc_storeStrong(&v10->_displayType, a3);
+    objc_storeStrong(&v9->_unitController, controller);
+    objc_storeStrong(&v10->_displayType, type);
     v11 = [(HKUnitPreferenceController *)v10->_unitController unitForDisplayType:v10->_displayType];
     v12 = [(HKDisplayType *)v10->_displayType hk_valueFormatterForUnit:v11];
     valueFormatter = v10->_valueFormatter;
@@ -26,13 +26,13 @@
   return v10;
 }
 
-- (id)stringForLocation:(id)a3 formatterForStepSize:(id)a4
+- (id)stringForLocation:(id)location formatterForStepSize:(id)size
 {
-  v5 = a3;
-  v6 = [(HKAxisLabelDimensionDisplayType *)self valueFormatter];
-  v7 = [(HKAxisLabelDimensionDisplayType *)self displayType];
-  v8 = [(HKAxisLabelDimensionDisplayType *)self unitController];
-  v9 = [v6 stringFromValue:v5 displayType:v7 unitController:v8];
+  locationCopy = location;
+  valueFormatter = [(HKAxisLabelDimensionDisplayType *)self valueFormatter];
+  displayType = [(HKAxisLabelDimensionDisplayType *)self displayType];
+  unitController = [(HKAxisLabelDimensionDisplayType *)self unitController];
+  v9 = [valueFormatter stringFromValue:locationCopy displayType:displayType unitController:unitController];
 
   return v9;
 }

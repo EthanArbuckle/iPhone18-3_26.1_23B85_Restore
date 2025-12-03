@@ -1,7 +1,7 @@
 @interface FormatBorderLayer
 - (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)init;
-- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithCoder:(id)a3;
-- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithLayer:(id)a3;
+- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithCoder:(id)coder;
+- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithLayer:(id)layer;
 @end
 
 @implementation FormatBorderLayer
@@ -13,7 +13,7 @@
   return [(FormatBorderLayer *)&v3 init];
 }
 
-- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithLayer:(id)a3
+- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,12 +29,12 @@
   return v6;
 }
 
-- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithCoder:(id)a3
+- (_TtC8NewsFeedP33_777F7CE0D0BB06B491F265B7F8694DA417FormatBorderLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(FormatBorderLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FormatBorderLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

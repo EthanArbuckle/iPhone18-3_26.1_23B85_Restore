@@ -1,13 +1,13 @@
 @interface COSWristAttributeVisualDetector
-- (CGImage)newImageFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (CGImage)resizedImageFromImage:(CGImage *)a3;
+- (CGImage)newImageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (CGImage)resizedImageFromImage:(CGImage *)image;
 - (CGImage)warmupBuffer;
 - (COSWristAttributeVisualDetector)init;
-- (__CVBuffer)newPixelBufferFromCGImage:(CGImage *)a3;
+- (__CVBuffer)newPixelBufferFromCGImage:(CGImage *)image;
 - (id)computedConfidences;
 - (id)confidenceSummary;
-- (void)exportSample:(opaqueCMSampleBuffer *)a3 withClassification:(unint64_t)a4;
-- (void)ingestSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (void)exportSample:(opaqueCMSampleBuffer *)sample withClassification:(unint64_t)classification;
+- (void)ingestSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)ingestWarmupBuffer;
 @end
 
@@ -34,22 +34,22 @@
 
 - (id)confidenceSummary
 {
-  v2 = [(COSWristAttributeVisualDetector *)self computedConfidences];
-  [v2 leftWristRightCrown];
+  computedConfidences = [(COSWristAttributeVisualDetector *)self computedConfidences];
+  [computedConfidences leftWristRightCrown];
   v4 = v3;
-  [v2 leftWristLeftCrown];
+  [computedConfidences leftWristLeftCrown];
   v6 = v5;
-  [v2 rightWristRightCrown];
+  [computedConfidences rightWristRightCrown];
   v8 = v7;
-  [v2 rightWristLeftCrown];
+  [computedConfidences rightWristLeftCrown];
   v10 = v9;
-  [v2 none];
+  [computedConfidences none];
   v12 = v11;
-  [v2 invalid];
+  [computedConfidences invalid];
   v14 = v13;
-  [v2 palm];
+  [computedConfidences palm];
   v16 = v15;
-  [v2 dock];
+  [computedConfidences dock];
   if (v4 <= v6 || v4 <= v8 || v4 <= v10 || v4 <= v12 || v4 <= v14 || v4 <= v16 || v4 <= 0.65 || v4 <= v17)
   {
     if (v8 <= v6 || v8 <= v4 || v8 <= v10 || v8 <= v12 || v8 <= v14 || v8 <= v16 || v8 <= 0.65 || v8 <= v17)
@@ -190,9 +190,9 @@
   return v6;
 }
 
-- (CGImage)newImageFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (CGImage)newImageFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
   CVPixelBufferLockBaseAddress(ImageBuffer, 0);
   Width = CVPixelBufferGetWidth(ImageBuffer);
   Height = CVPixelBufferGetHeight(ImageBuffer);
@@ -273,14 +273,14 @@
   return Image;
 }
 
-- (CGImage)resizedImageFromImage:(CGImage *)a3
+- (CGImage)resizedImageFromImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  v5 = Width * 256.0 / CGImageGetHeight(a3);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
+  Width = CGImageGetWidth(image);
+  v5 = Width * 256.0 / CGImageGetHeight(image);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  BytesPerRow = CGImageGetBytesPerRow(image);
+  ColorSpace = CGImageGetColorSpace(image);
+  BitmapInfo = CGImageGetBitmapInfo(image);
   v10 = CGBitmapContextCreate(0, 0x100uLL, 0x100uLL, BitsPerComponent, BytesPerRow, ColorSpace, BitmapInfo);
   CGContextSetInterpolationQuality(v10, kCGInterpolationHigh);
   CGContextTranslateCTM(v10, 128.0, 128.0);
@@ -291,7 +291,7 @@
   v16.origin.y = 0.0;
   v16.size.width = v5;
   v16.size.height = 256.0;
-  CGContextDrawImage(v10, v16, a3);
+  CGContextDrawImage(v10, v16, image);
   Image = CGBitmapContextCreateImage(v10);
   v13 = [UIImage imageWithCGImage:Image];
   if (Image)
@@ -304,16 +304,16 @@
     CFRelease(v10);
   }
 
-  v14 = [v13 CGImage];
+  cGImage = [v13 CGImage];
 
-  return v14;
+  return cGImage;
 }
 
-- (__CVBuffer)newPixelBufferFromCGImage:(CGImage *)a3
+- (__CVBuffer)newPixelBufferFromCGImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
+  Width = CGImageGetWidth(image);
   pixelBufferOut = 0;
-  Height = CGImageGetHeight(a3);
+  Height = CGImageGetHeight(image);
   v6 = CVPixelBufferCreate(kCFAllocatorDefault, Width, Height, 0x42475241u, 0, &pixelBufferOut);
   result = 0;
   if (!v6)
@@ -323,12 +323,12 @@
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
     v11 = CGBitmapContextCreate(BaseAddress, Width, Height, 8uLL, BytesPerRow, DeviceRGB, 0x2002u);
-    v12 = CGImageGetWidth(a3);
-    v14.size.height = CGImageGetHeight(a3);
+    v12 = CGImageGetWidth(image);
+    v14.size.height = CGImageGetHeight(image);
     v14.origin.x = 0.0;
     v14.origin.y = 0.0;
     v14.size.width = v12;
-    CGContextDrawImage(v11, v14, a3);
+    CGContextDrawImage(v11, v14, image);
     CGColorSpaceRelease(DeviceRGB);
     CGContextRelease(v11);
     CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
@@ -353,9 +353,9 @@
   UIRectFill(v7);
   v3 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v4 = [v3 CGImage];
+  cGImage = [v3 CGImage];
 
-  return v4;
+  return cGImage;
 }
 
 - (void)ingestWarmupBuffer
@@ -399,9 +399,9 @@
   CVPixelBufferRelease(v3);
 }
 
-- (void)ingestSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)ingestSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = [(COSWristAttributeVisualDetector *)self newImageFromSampleBuffer:a3];
+  v4 = [(COSWristAttributeVisualDetector *)self newImageFromSampleBuffer:buffer];
   v5 = [(COSWristAttributeVisualDetector *)self resizedImageFromImage:v4];
   if (v4)
   {
@@ -424,11 +424,11 @@
   v11 = v16;
   if (v10)
   {
-    v12 = [v10 leaf_leaf_predictions_probabilities];
-    v13 = [COSWristModelTranslator translatorWithBeamBridgeMultiArray:v12];
+    leaf_leaf_predictions_probabilities = [v10 leaf_leaf_predictions_probabilities];
+    v13 = [COSWristModelTranslator translatorWithBeamBridgeMultiArray:leaf_leaf_predictions_probabilities];
 
-    v14 = [v13 confidences];
-    [(NSMutableArray *)self->_confidenceObservations addObject:v14];
+    confidences = [v13 confidences];
+    [(NSMutableArray *)self->_confidenceObservations addObject:confidences];
   }
 
   if (v11)
@@ -443,23 +443,23 @@
   CVPixelBufferRelease(v6);
 }
 
-- (void)exportSample:(opaqueCMSampleBuffer *)a3 withClassification:(unint64_t)a4
+- (void)exportSample:(opaqueCMSampleBuffer *)sample withClassification:(unint64_t)classification
 {
-  v6 = [(COSWristAttributeVisualDetector *)self newImageFromSampleBuffer:a3];
+  v6 = [(COSWristAttributeVisualDetector *)self newImageFromSampleBuffer:sample];
   v7 = [(COSWristAttributeVisualDetector *)self resizedImageFromImage:v6];
   if (v6)
   {
     CGImageRelease(v6);
   }
 
-  if (a4 - 6 > 2)
+  if (classification - 6 > 2)
   {
     v8 = @"LeftRight";
   }
 
   else
   {
-    v8 = off_1002694B8[a4 - 6];
+    v8 = off_1002694B8[classification - 6];
   }
 
   v9 = NSTemporaryDirectory();

@@ -1,38 +1,38 @@
 @interface SUAnalyticsEvent
 - (NSDictionary)eventPayload;
-- (SUAnalyticsEvent)initWithCoder:(id)a3;
-- (SUAnalyticsEvent)initWithEventName:(id)a3;
+- (SUAnalyticsEvent)initWithCoder:(id)coder;
+- (SUAnalyticsEvent)initWithEventName:(id)name;
 - (id)description;
-- (void)_queue_addEventPayloadEntries:(id)a3;
-- (void)_queue_removeEventPayloadEntry:(id)a3;
-- (void)_queue_setEventPayloadEntry:(id)a3 numberValue:(id)a4;
-- (void)_queue_setEventPayloadEntry:(id)a3 stringValue:(id)a4;
-- (void)_queue_setEventPayloadEntryToNull:(id)a3;
-- (void)addEventPayloadEntries:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeEventPayloadEntry:(id)a3;
-- (void)setEventPayloadEntry:(id)a3 BOOLValue:(BOOL)a4;
-- (void)setEventPayloadEntry:(id)a3 numberValue:(id)a4;
-- (void)setEventPayloadEntry:(id)a3 stringValue:(id)a4;
-- (void)setEventPayloadEntryToNull:(id)a3;
+- (void)_queue_addEventPayloadEntries:(id)entries;
+- (void)_queue_removeEventPayloadEntry:(id)entry;
+- (void)_queue_setEventPayloadEntry:(id)entry numberValue:(id)value;
+- (void)_queue_setEventPayloadEntry:(id)entry stringValue:(id)value;
+- (void)_queue_setEventPayloadEntryToNull:(id)null;
+- (void)addEventPayloadEntries:(id)entries;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeEventPayloadEntry:(id)entry;
+- (void)setEventPayloadEntry:(id)entry BOOLValue:(BOOL)value;
+- (void)setEventPayloadEntry:(id)entry numberValue:(id)value;
+- (void)setEventPayloadEntry:(id)entry stringValue:(id)value;
+- (void)setEventPayloadEntryToNull:(id)null;
 @end
 
 @implementation SUAnalyticsEvent
 
-- (SUAnalyticsEvent)initWithEventName:(id)a3
+- (SUAnalyticsEvent)initWithEventName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = SUAnalyticsEvent;
   v6 = [(SUAnalyticsEvent *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventName, a3);
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    objc_storeStrong(&v6->_eventName, name);
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     eventUUID = v7->_eventUUID;
-    v7->_eventUUID = v9;
+    v7->_eventUUID = uUIDString;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mutableEventPayload = v7->_mutableEventPayload;
@@ -47,19 +47,19 @@
   return v7;
 }
 
-- (SUAnalyticsEvent)initWithCoder:(id)a3
+- (SUAnalyticsEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = SUAnalyticsEvent;
   v5 = [(SUAnalyticsEvent *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEventName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEventName"];
     eventName = v5->_eventName;
     v5->_eventName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEventUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"analyticsEventUUID"];
     eventUUID = v5->_eventUUID;
     v5->_eventUUID = v8;
 
@@ -68,7 +68,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeDictionaryWithKeysOfClasses:v10 objectsOfClasses:v14 forKey:@"analyticsEventPayload"];
+    v15 = [coderCopy decodeDictionaryWithKeysOfClasses:v10 objectsOfClasses:v14 forKey:@"analyticsEventPayload"];
     v16 = [v15 mutableCopy];
     mutableEventPayload = v5->_mutableEventPayload;
     v5->_mutableEventPayload = v16;
@@ -82,17 +82,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUAnalyticsEvent *)self eventName];
-  [v4 encodeObject:v5 forKey:@"analyticsEventName"];
+  coderCopy = coder;
+  eventName = [(SUAnalyticsEvent *)self eventName];
+  [coderCopy encodeObject:eventName forKey:@"analyticsEventName"];
 
-  v6 = [(SUAnalyticsEvent *)self eventPayload];
-  [v4 encodeObject:v6 forKey:@"analyticsEventPayload"];
+  eventPayload = [(SUAnalyticsEvent *)self eventPayload];
+  [coderCopy encodeObject:eventPayload forKey:@"analyticsEventPayload"];
 
-  v7 = [(SUAnalyticsEvent *)self eventUUID];
-  [v4 encodeObject:v7 forKey:@"analyticsEventUUID"];
+  eventUUID = [(SUAnalyticsEvent *)self eventUUID];
+  [coderCopy encodeObject:eventUUID forKey:@"analyticsEventUUID"];
 }
 
 - (NSDictionary)eventPayload
@@ -128,9 +128,9 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)addEventPayloadEntries:(id)a3
+- (void)addEventPayloadEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -138,14 +138,14 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   v7[2] = __43__SUAnalyticsEvent_addEventPayloadEntries___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entriesCopy;
+  v6 = entriesCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)setEventPayloadEntry:(id)a3 BOOLValue:(BOOL)a4
+- (void)setEventPayloadEntry:(id)entry BOOLValue:(BOOL)value
 {
-  v6 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -153,16 +153,16 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   block[2] = __51__SUAnalyticsEvent_setEventPayloadEntry_BOOLValue___block_invoke;
   block[3] = &unk_279CAAE40;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = entryCopy;
+  valueCopy = value;
+  v8 = entryCopy;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)setEventPayloadEntry:(id)a3 numberValue:(id)a4
+- (void)setEventPayloadEntry:(id)entry numberValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -170,17 +170,17 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   block[2] = __53__SUAnalyticsEvent_setEventPayloadEntry_numberValue___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entryCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = entryCopy;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)setEventPayloadEntry:(id)a3 stringValue:(id)a4
+- (void)setEventPayloadEntry:(id)entry stringValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -188,16 +188,16 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   block[2] = __53__SUAnalyticsEvent_setEventPayloadEntry_stringValue___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = entryCopy;
+  v13 = valueCopy;
+  v9 = valueCopy;
+  v10 = entryCopy;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)setEventPayloadEntryToNull:(id)a3
+- (void)setEventPayloadEntryToNull:(id)null
 {
-  v4 = a3;
+  nullCopy = null;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -205,14 +205,14 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   v7[2] = __47__SUAnalyticsEvent_setEventPayloadEntryToNull___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nullCopy;
+  v6 = nullCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)removeEventPayloadEntry:(id)a3
+- (void)removeEventPayloadEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -220,27 +220,27 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   v7[2] = __44__SUAnalyticsEvent_removeEventPayloadEntry___block_invoke;
   v7[3] = &unk_279CAA7C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = entryCopy;
+  v6 = entryCopy;
   dispatch_sync(stateQueue, v7);
 }
 
-- (void)_queue_addEventPayloadEntries:(id)a3
+- (void)_queue_addEventPayloadEntries:(id)entries
 {
   stateQueue = self->_stateQueue;
-  v5 = a3;
+  entriesCopy = entries;
   dispatch_assert_queue_V2(stateQueue);
-  [(NSMutableDictionary *)self->_mutableEventPayload addEntriesFromDictionary:v5];
+  [(NSMutableDictionary *)self->_mutableEventPayload addEntriesFromDictionary:entriesCopy];
 }
 
-- (void)_queue_setEventPayloadEntry:(id)a3 numberValue:(id)a4
+- (void)_queue_setEventPayloadEntry:(id)entry numberValue:(id)value
 {
-  v15 = a3;
-  v6 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v15 && v6)
+  if (entryCopy && valueCopy)
   {
-    [(NSMutableDictionary *)self->_mutableEventPayload setObject:v6 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)self->_mutableEventPayload setObject:valueCopy forKeyedSubscript:entryCopy];
   }
 
   else
@@ -250,14 +250,14 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_setEventPayloadEntry:(id)a3 stringValue:(id)a4
+- (void)_queue_setEventPayloadEntry:(id)entry stringValue:(id)value
 {
-  v15 = a3;
-  v6 = a4;
+  entryCopy = entry;
+  valueCopy = value;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v15 && v6)
+  if (entryCopy && valueCopy)
   {
-    [(NSMutableDictionary *)self->_mutableEventPayload setObject:v6 forKeyedSubscript:v15];
+    [(NSMutableDictionary *)self->_mutableEventPayload setObject:valueCopy forKeyedSubscript:entryCopy];
   }
 
   else
@@ -267,12 +267,12 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_setEventPayloadEntryToNull:(id)a3
+- (void)_queue_setEventPayloadEntryToNull:(id)null
 {
   dispatch_assert_queue_V2(self->_stateQueue);
   v4 = SULogAnalytics();
   v13 = v4;
-  if (a3)
+  if (null)
   {
     v11 = @"not supported";
   }
@@ -285,13 +285,13 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
   SULogErrorForSubsystem(v4, v11, v5, v6, v7, v8, v9, v10, v12);
 }
 
-- (void)_queue_removeEventPayloadEntry:(id)a3
+- (void)_queue_removeEventPayloadEntry:(id)entry
 {
-  v12 = a3;
+  entryCopy = entry;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v12)
+  if (entryCopy)
   {
-    [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:v12];
+    [(NSMutableDictionary *)self->_mutableEventPayload setObject:0 forKeyedSubscript:entryCopy];
   }
 
   else
@@ -304,10 +304,10 @@ uint64_t __32__SUAnalyticsEvent_eventPayload__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUAnalyticsEvent *)self eventName];
-  v5 = [(SUAnalyticsEvent *)self eventUUID];
-  v6 = [(SUAnalyticsEvent *)self eventPayload];
-  v7 = [v3 stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", v4, v5, v6];
+  eventName = [(SUAnalyticsEvent *)self eventName];
+  eventUUID = [(SUAnalyticsEvent *)self eventUUID];
+  eventPayload = [(SUAnalyticsEvent *)self eventPayload];
+  v7 = [v3 stringWithFormat:@"EventName: %@ EventUUID: %@ EventPayload: %@", eventName, eventUUID, eventPayload];
 
   return v7;
 }

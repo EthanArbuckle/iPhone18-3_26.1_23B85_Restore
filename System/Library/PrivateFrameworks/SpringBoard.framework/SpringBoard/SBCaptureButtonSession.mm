@@ -1,48 +1,48 @@
 @interface SBCaptureButtonSession
-- (SBCaptureButtonSession)initWithInteraction:(id)a3 delegate:(id)a4 appInteractionEventSource:(id)a5 displayLayoutPublisher:(id)a6;
-- (void)_handleNotification:(id)a3;
+- (SBCaptureButtonSession)initWithInteraction:(id)interaction delegate:(id)delegate appInteractionEventSource:(id)source displayLayoutPublisher:(id)publisher;
+- (void)_handleNotification:(id)notification;
 - (void)_sealIntentionalLaunch;
 - (void)_sealIntentionalMitigation;
 - (void)_sealLowConfidenceIntentionalLaunch;
 - (void)_sealUnintentionalLaunch;
-- (void)_sealWithReason:(id)a3 block:(id)a4;
+- (void)_sealWithReason:(id)reason block:(id)block;
 - (void)_startCountdown;
-- (void)coalesceInteraction:(id)a3;
+- (void)coalesceInteraction:(id)interaction;
 - (void)dealloc;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
 - (void)invalidate;
 - (void)logInteractionIntentions;
 - (void)logToCoreAnalytics;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
 @end
 
 @implementation SBCaptureButtonSession
 
-- (SBCaptureButtonSession)initWithInteraction:(id)a3 delegate:(id)a4 appInteractionEventSource:(id)a5 displayLayoutPublisher:(id)a6
+- (SBCaptureButtonSession)initWithInteraction:(id)interaction delegate:(id)delegate appInteractionEventSource:(id)source displayLayoutPublisher:(id)publisher
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  interactionCopy = interaction;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  publisherCopy = publisher;
   v32.receiver = self;
   v32.super_class = SBCaptureButtonSession;
   v14 = [(SBCaptureButtonSession *)&v32 init];
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x277CBEB18]);
-    v33[0] = v10;
+    v33[0] = interactionCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
     v17 = [v15 initWithArray:v16];
     interactions = v14->_interactions;
     v14->_interactions = v17;
 
-    v19 = [v10 context];
-    v20 = [v19 captureAppBundleID];
+    context = [interactionCopy context];
+    captureAppBundleID = [context captureAppBundleID];
     captureAppBundleID = v14->_captureAppBundleID;
-    v14->_captureAppBundleID = v20;
+    v14->_captureAppBundleID = captureAppBundleID;
 
-    objc_storeWeak(&v14->_delegate, v11);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
     v14->_sealed = 0;
     v14->_inCaptureApp = 0;
     v22 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:@"com.apple.SpringBoard.CaptureButton.SessionTimer"];
@@ -53,18 +53,18 @@
     captureAppInteractionTimer = v14->_captureAppInteractionTimer;
     v14->_captureAppInteractionTimer = v24;
 
-    [v13 addObserver:v14];
-    objc_storeWeak(&v14->_displayLayoutPublisher, v13);
-    objc_storeWeak(&v14->_displayAppInteractionEventSource, v12);
-    [v12 addObserver:v14];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v14 selector:sel__handleNotification_ name:@"SBVolumeHardwareButtonIncreaseNotification" object:0];
+    [publisherCopy addObserver:v14];
+    objc_storeWeak(&v14->_displayLayoutPublisher, publisherCopy);
+    objc_storeWeak(&v14->_displayAppInteractionEventSource, sourceCopy);
+    [sourceCopy addObserver:v14];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v14 selector:sel__handleNotification_ name:@"SBVolumeHardwareButtonIncreaseNotification" object:0];
 
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v14 selector:sel__handleNotification_ name:@"SBVolumeHardwareButtonDecreaseNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v14 selector:sel__handleNotification_ name:@"SBVolumeHardwareButtonDecreaseNotification" object:0];
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v14 selector:sel__handleNotification_ name:@"SBCaptureHardwareButtonPressNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v14 selector:sel__handleNotification_ name:@"SBCaptureHardwareButtonPressNotification" object:0];
 
     v29 = SBLogCameraCaptureSessionLogs();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -91,14 +91,14 @@
 {
   [(BSAbsoluteMachTimer *)self->_timer invalidate];
   [(BSAbsoluteMachTimer *)self->_captureAppInteractionTimer invalidate];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SBVolumeHardwareButtonIncreaseNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBVolumeHardwareButtonIncreaseNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"SBVolumeHardwareButtonDecreaseNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"SBVolumeHardwareButtonDecreaseNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"SBCaptureHardwareButtonPressNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"SBCaptureHardwareButtonPressNotification" object:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_displayLayoutPublisher);
   [WeakRetained removeObserver:self];
@@ -107,9 +107,9 @@
   [v7 removeObserver:self];
 }
 
-- (void)coalesceInteraction:(id)a3
+- (void)coalesceInteraction:(id)interaction
 {
-  v5 = a3;
+  interactionCopy = interaction;
   if (![(SBCaptureButtonSession *)self isActive])
   {
     [(SBCaptureButtonSession *)a2 coalesceInteraction:?];
@@ -123,7 +123,7 @@
   }
 
   [(SBCaptureButtonSession *)self _startCountdown];
-  [(NSMutableArray *)self->_interactions addObject:v5];
+  [(NSMutableArray *)self->_interactions addObject:interactionCopy];
 }
 
 - (void)logToCoreAnalytics
@@ -193,13 +193,13 @@
         v8 = SBLogCameraCaptureStudyLogs();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 context];
-          v10 = [v9 machAbsoluteTimestamp];
-          v11 = [v7 intention];
+          context = [v7 context];
+          machAbsoluteTimestamp = [context machAbsoluteTimestamp];
+          intention = [v7 intention];
           *buf = 134218240;
-          v18 = v10;
+          v18 = machAbsoluteTimestamp;
           v19 = 2048;
-          v20 = v11;
+          v20 = intention;
           _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "{machAbsoluteTimestamp: %llu, intention: %lu}", buf, 0x16u);
         }
       }
@@ -218,12 +218,12 @@
   }
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
-  v6 = [a4 elements];
-  v7 = [v6 lastObject];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:self->_captureAppBundleID];
+  elements = [layout elements];
+  lastObject = [elements lastObject];
+  bundleIdentifier = [lastObject bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:self->_captureAppBundleID];
 
   if (self->_inCaptureApp || !v9)
   {
@@ -254,9 +254,9 @@
   }
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
-  if ([a4 isEqualToString:self->_captureAppBundleID] && self->_inCaptureApp && !-[BSAbsoluteMachTimer isScheduled](self->_captureAppInteractionTimer, "isScheduled"))
+  if ([application isEqualToString:self->_captureAppBundleID] && self->_inCaptureApp && !-[BSAbsoluteMachTimer isScheduled](self->_captureAppInteractionTimer, "isScheduled"))
   {
     v5 = SBLogCameraCaptureSessionLogs();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -319,17 +319,17 @@ void __41__SBCaptureButtonSession__startCountdown__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_handleNotification:(id)a3
+- (void)_handleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if (([v5 isEqualToString:@"SBVolumeHardwareButtonIncreaseNotification"] & 1) == 0)
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  if (([name isEqualToString:@"SBVolumeHardwareButtonIncreaseNotification"] & 1) == 0)
   {
-    v6 = [v4 name];
-    if (![v6 isEqualToString:@"SBVolumeHardwareButtonDecreaseNotification"])
+    name2 = [notificationCopy name];
+    if (![name2 isEqualToString:@"SBVolumeHardwareButtonDecreaseNotification"])
     {
-      v8 = [v4 name];
-      v9 = [v8 isEqualToString:@"SBCaptureHardwareButtonPressNotification"];
+      name3 = [notificationCopy name];
+      v9 = [name3 isEqualToString:@"SBCaptureHardwareButtonPressNotification"];
 
       if ((v9 & 1) == 0)
       {
@@ -561,16 +561,16 @@ void __52__SBCaptureButtonSession__sealIntentionalMitigation__block_invoke(uint6
   }
 }
 
-- (void)_sealWithReason:(id)a3 block:(id)a4
+- (void)_sealWithReason:(id)reason block:(id)block
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
   v8 = SBLogCameraCaptureSessionLogs();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Attempting to seal %{public}@.", &v11, 0xCu);
   }
 
@@ -587,16 +587,16 @@ void __52__SBCaptureButtonSession__sealIntentionalMitigation__block_invoke(uint6
   {
     self->_sealed = 1;
     [(SBCaptureButtonSession *)self invalidate];
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
 
     v10 = SBLogCameraCaptureSessionLogs();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Sealed %{public}@.", &v11, 0xCu);
     }
 

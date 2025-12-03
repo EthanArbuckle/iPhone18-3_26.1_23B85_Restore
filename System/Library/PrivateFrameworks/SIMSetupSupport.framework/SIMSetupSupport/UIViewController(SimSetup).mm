@@ -39,10 +39,10 @@
 
 - (uint64_t)isCloudFlow
 {
-  if (([a1 conformsToProtocol:&unk_28758ABD0] & 1) == 0)
+  if (([self conformsToProtocol:&unk_28758ABD0] & 1) == 0)
   {
-    v2 = _TSLogDomain();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    selfCopy = _TSLogDomain();
+    if (os_log_type_enabled(selfCopy, OS_LOG_TYPE_ERROR))
     {
       [UIViewController(SimSetup) isCloudFlow];
     }
@@ -50,10 +50,10 @@
     goto LABEL_10;
   }
 
-  v2 = a1;
-  v3 = [v2 delegate];
+  selfCopy = self;
+  delegate = [selfCopy delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     v6 = _TSLogDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  v4 = [v2 delegate];
+  delegate2 = [selfCopy delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -75,7 +75,7 @@ LABEL_10:
 
   else
   {
-    v7 = [v2 delegate];
+    delegate3 = [selfCopy delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }

@@ -7,48 +7,48 @@
 - (void)execute
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request collaboration];
-  v5 = [v4 identifiers];
-  v6 = [v5 universalStore];
-  v7 = [v6 globalPlaylistID];
+  collaboration = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request collaboration];
+  identifiers = [collaboration identifiers];
+  universalStore = [identifiers universalStore];
+  globalPlaylistID = [universalStore globalPlaylistID];
 
-  v8 = [v5 library];
-  v9 = [v8 persistentID];
+  library = [identifiers library];
+  persistentID = [library persistentID];
 
   v10 = os_log_create("com.apple.amp.mediaplayer", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request socialProfileIDsToRemove];
-    v12 = [v11 msv_compactDescription];
+    socialProfileIDsToRemove = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request socialProfileIDsToRemove];
+    msv_compactDescription = [socialProfileIDsToRemove msv_compactDescription];
     *buf = 138544130;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v4;
+    v26 = collaboration;
     v27 = 2114;
-    v28 = v7;
+    v28 = globalPlaylistID;
     v29 = 2114;
-    v30 = v12;
+    v30 = msv_compactDescription;
     _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ removing collaborators from %{public}@ (globalPlaylistID = %{public}@); (%{public}@)", buf, 0x2Au);
   }
 
-  if (!v9 || (-[MPModelLibraryRemoveCollaboratorsChangeRequest socialProfileIDsToRemove](self->_request, "socialProfileIDsToRemove"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 count], v13, !v14))
+  if (!persistentID || (-[MPModelLibraryRemoveCollaboratorsChangeRequest socialProfileIDsToRemove](self->_request, "socialProfileIDsToRemove"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 count], v13, !v14))
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"MPModelLibraryRemoveCollaboratorsChangeRequestOperation.m" lineNumber:27 description:@"Must provide a playlist and social profile IDs to remove"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelLibraryRemoveCollaboratorsChangeRequestOperation.m" lineNumber:27 description:@"Must provide a playlist and social profile IDs to remove"];
   }
 
   v16 = +[MPCloudController sharedCloudController];
-  v17 = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request socialProfileIDsToRemove];
+  socialProfileIDsToRemove2 = [(MPModelLibraryRemoveCollaboratorsChangeRequest *)self->_request socialProfileIDsToRemove];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __66__MPModelLibraryRemoveCollaboratorsChangeRequestOperation_execute__block_invoke;
   v20[3] = &unk_1E76801E8;
   v20[4] = self;
-  v21 = v5;
-  v22 = v4;
-  v18 = v4;
-  v19 = v5;
-  [v16 removeCollaborators:v17 fromCollaborationWithPersistentID:v9 completion:v20];
+  v21 = identifiers;
+  v22 = collaboration;
+  v18 = collaboration;
+  v19 = identifiers;
+  [v16 removeCollaborators:socialProfileIDsToRemove2 fromCollaborationWithPersistentID:persistentID completion:v20];
 }
 
 void __66__MPModelLibraryRemoveCollaboratorsChangeRequestOperation_execute__block_invoke(uint64_t a1, void *a2)

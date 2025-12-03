@@ -18,7 +18,7 @@
       v9 = *MEMORY[0x277D47048];
       v21[0] = v8;
       v21[1] = v9;
-      v10 = [a1 description];
+      v10 = [self description];
       v22[1] = v10;
       v11 = MEMORY[0x277CBEAC0];
       v12 = v22;
@@ -38,7 +38,7 @@ LABEL_6:
     v15 = *MEMORY[0x277D47048];
     v19[0] = v14;
     v19[1] = v15;
-    v10 = [a1 description];
+    v10 = [self description];
     v20[1] = v10;
     v11 = MEMORY[0x277CBEAC0];
     v12 = v20;

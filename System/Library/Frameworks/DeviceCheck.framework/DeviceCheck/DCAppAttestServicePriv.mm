@@ -2,12 +2,12 @@
 + (DCAppAttestServicePriv)sharedService;
 - (BOOL)isSupported;
 - (DCAppAttestController)appAttestController;
-- (void)attestKey:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6;
-- (void)generateAssertion:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6;
-- (void)generateKeyWithTeamIdentifier:(id)a3 completion:(id)a4;
-- (void)getPropertiesForKeyId:(id)a3 teamIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)sign:(id)a3 withKey:(id)a4 completionHandler:(id)a5;
-- (void)sign:(id)a3 withKey:(id)a4 teamIdentifier:(id)a5 completionHandler:(id)a6;
+- (void)attestKey:(id)key teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler;
+- (void)generateAssertion:(id)assertion teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler;
+- (void)generateKeyWithTeamIdentifier:(id)identifier completion:(id)completion;
+- (void)getPropertiesForKeyId:(id)id teamIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)sign:(id)sign withKey:(id)key completionHandler:(id)handler;
+- (void)sign:(id)sign withKey:(id)key teamIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation DCAppAttestServicePriv
@@ -48,66 +48,66 @@ uint64_t __39__DCAppAttestServicePriv_sharedService__block_invoke()
 
 - (BOOL)isSupported
 {
-  v2 = [(DCAppAttestServicePriv *)self appAttestController];
-  v3 = [v2 isSupported];
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  isSupported = [appAttestController isSupported];
 
-  return v3;
+  return isSupported;
 }
 
-- (void)generateKeyWithTeamIdentifier:(id)a3 completion:(id)a4
+- (void)generateKeyWithTeamIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v8 generateKeyWithTeamIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController generateKeyWithTeamIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)attestKey:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6
+- (void)attestKey:(id)key teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v14 attestKey:v13 teamIdentifier:v12 clientDataHash:v11 completionHandler:v10];
+  handlerCopy = handler;
+  hashCopy = hash;
+  identifierCopy = identifier;
+  keyCopy = key;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController attestKey:keyCopy teamIdentifier:identifierCopy clientDataHash:hashCopy completionHandler:handlerCopy];
 }
 
-- (void)generateAssertion:(id)a3 teamIdentifier:(id)a4 clientDataHash:(id)a5 completionHandler:(id)a6
+- (void)generateAssertion:(id)assertion teamIdentifier:(id)identifier clientDataHash:(id)hash completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v14 generateAssertion:v13 teamIdentifier:v12 clientDataHash:v11 completionHandler:v10];
+  handlerCopy = handler;
+  hashCopy = hash;
+  identifierCopy = identifier;
+  assertionCopy = assertion;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController generateAssertion:assertionCopy teamIdentifier:identifierCopy clientDataHash:hashCopy completionHandler:handlerCopy];
 }
 
-- (void)sign:(id)a3 withKey:(id)a4 completionHandler:(id)a5
+- (void)sign:(id)sign withKey:(id)key completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v11 sign:v10 withKey:v9 teamIdentifier:0 completionHandler:v8];
+  handlerCopy = handler;
+  keyCopy = key;
+  signCopy = sign;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController sign:signCopy withKey:keyCopy teamIdentifier:0 completionHandler:handlerCopy];
 }
 
-- (void)sign:(id)a3 withKey:(id)a4 teamIdentifier:(id)a5 completionHandler:(id)a6
+- (void)sign:(id)sign withKey:(id)key teamIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v14 sign:v13 withKey:v12 teamIdentifier:v11 completionHandler:v10];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  keyCopy = key;
+  signCopy = sign;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController sign:signCopy withKey:keyCopy teamIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)getPropertiesForKeyId:(id)a3 teamIdentifier:(id)a4 completionHandler:(id)a5
+- (void)getPropertiesForKeyId:(id)id teamIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DCAppAttestServicePriv *)self appAttestController];
-  [v11 getPropertiesForKeyId:v10 teamIdentifier:v9 completionHandler:v8];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  idCopy = id;
+  appAttestController = [(DCAppAttestServicePriv *)self appAttestController];
+  [appAttestController getPropertiesForKeyId:idCopy teamIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
 @end

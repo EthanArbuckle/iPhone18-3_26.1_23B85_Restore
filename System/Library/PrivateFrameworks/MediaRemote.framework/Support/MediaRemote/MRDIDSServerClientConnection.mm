@@ -1,14 +1,14 @@
 @interface MRDIDSServerClientConnection
-- (MRDIDSServerClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4;
+- (MRDIDSServerClientConnection)initWithConnection:(id)connection replyQueue:(id)queue;
 @end
 
 @implementation MRDIDSServerClientConnection
 
-- (MRDIDSServerClientConnection)initWithConnection:(id)a3 replyQueue:(id)a4
+- (MRDIDSServerClientConnection)initWithConnection:(id)connection replyQueue:(id)queue
 {
   v5.receiver = self;
   v5.super_class = MRDIDSServerClientConnection;
-  return [(MRDIDSServerClientConnection *)&v5 initWithConnection:a3 replyQueue:a4];
+  return [(MRDIDSServerClientConnection *)&v5 initWithConnection:connection replyQueue:queue];
 }
 
 @end

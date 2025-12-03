@@ -1,28 +1,28 @@
 @interface NDSessionManager
-+ (id)restoreOptionsFromArchivePath:(id)a3;
-- (BOOL)connection:(id)a3 canUseSharedContainerIdentifier:(id)a4;
-- (NDSessionManager)initWithDelegate:(id)a3 bundleID:(id)a4 isSpringBoardApp:(BOOL)a5 forPersona:(id)a6 dataSeparatedPath:(id)a7 db:(id)a8;
++ (id)restoreOptionsFromArchivePath:(id)path;
+- (BOOL)connection:(id)connection canUseSharedContainerIdentifier:(id)identifier;
+- (NDSessionManager)initWithDelegate:(id)delegate bundleID:(id)d isSpringBoardApp:(BOOL)app forPersona:(id)persona dataSeparatedPath:(id)path db:(id)db;
 - (NDSessionManagerDelegate)delegate;
 - (NSXPCConnection)xpcConn;
-- (id)copyAndSanitizeClientConfiguration:(id)a3;
+- (id)copyAndSanitizeClientConfiguration:(id)configuration;
 - (id)downloadDirectoryDataPath;
-- (id)getSessionWithIdentifier:(id)a3;
-- (id)restoreState:(BOOL *)a3;
+- (id)getSessionWithIdentifier:(id)identifier;
+- (id)restoreState:(BOOL *)state;
 - (void)archiveTimerFired;
 - (void)boost;
-- (void)cleanupWithCompletionHandler:(id)a3;
+- (void)cleanupWithCompletionHandler:(id)handler;
 - (void)clientApplicationWasReinstalled;
-- (void)createSessionWithConfiguration:(id)a3 clientProxy:(id)a4 cachesDirectory:(id)a5 options:(id)a6 reply:(id)a7;
+- (void)createSessionWithConfiguration:(id)configuration clientProxy:(id)proxy cachesDirectory:(id)directory options:(id)options reply:(id)reply;
 - (void)dealloc;
 - (void)dropBoost;
-- (void)failedSessionRestoreWithID:(id)a3 directoryToDelete:(id)a4;
-- (void)getActiveSessionIdentifiersWithReply:(id)a3;
+- (void)failedSessionRestoreWithID:(id)d directoryToDelete:(id)delete;
+- (void)getActiveSessionIdentifiersWithReply:(id)reply;
 - (void)obliterate;
-- (void)obliterateAllSessionsWithReply:(id)a3;
-- (void)okayToSendPendingCallbacksForIdentifier:(id)a3 reply:(id)a4;
-- (void)releaseAssertionForSession:(id)a3 reply:(id)a4;
-- (void)sendPendingCallbacksForIdentifier:(id)a3 reply:(id)a4;
-- (void)sessionCompleted:(id)a3 withCompletionHandler:(id)a4;
+- (void)obliterateAllSessionsWithReply:(id)reply;
+- (void)okayToSendPendingCallbacksForIdentifier:(id)identifier reply:(id)reply;
+- (void)releaseAssertionForSession:(id)session reply:(id)reply;
+- (void)sendPendingCallbacksForIdentifier:(id)identifier reply:(id)reply;
+- (void)sessionCompleted:(id)completed withCompletionHandler:(id)handler;
 - (void)setWorkState;
 @end
 
@@ -108,24 +108,24 @@
   dispatch_async(queue, block);
 }
 
-- (id)getSessionWithIdentifier:(id)a3
+- (id)getSessionWithIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:identifier];
 
   return v3;
 }
 
-- (void)sessionCompleted:(id)a3 withCompletionHandler:(id)a4
+- (void)sessionCompleted:(id)completed withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  handlerCopy = handler;
   sessions = self->_sessions;
-  v9 = [v6 identifier];
-  v10 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v9];
+  identifier = [completedCopy identifier];
+  v10 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:identifier];
 
-  if (v10 != v6)
+  if (v10 != completedCopy)
   {
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_11;
     }
@@ -136,41 +136,41 @@
   v11 = qword_1000EB210;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 uuid];
-    v13 = [v6 clientBundleID];
-    v14 = [v6 identifier];
+    uuid = [completedCopy uuid];
+    clientBundleID = [completedCopy clientBundleID];
+    identifier2 = [completedCopy identifier];
     v17 = 138543874;
-    v18 = v12;
+    v18 = uuid;
     v19 = 2112;
-    v20 = v13;
+    v20 = clientBundleID;
     v21 = 2112;
-    v22 = v14;
+    v22 = identifier2;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: removing session", &v17, 0x20u);
   }
 
   v15 = self->_sessions;
-  v16 = [v6 identifier];
-  [(NSMutableDictionary *)v15 removeObjectForKey:v16];
+  identifier3 = [completedCopy identifier];
+  [(NSMutableDictionary *)v15 removeObjectForKey:identifier3];
 
   if (![(NSMutableDictionary *)self->_sessions count])
   {
-    [(NDSessionManager *)self cleanupWithCompletionHandler:v7];
+    [(NDSessionManager *)self cleanupWithCompletionHandler:handlerCopy];
     goto LABEL_11;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     [(NDSessionManager *)self setWorkState];
 LABEL_9:
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_11:
 }
 
-- (void)cleanupWithCompletionHandler:(id)a3
+- (void)cleanupWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [NDFileUtilities removeItemAtURL:self->_bundleDirectory];
   [(NDTaskStorageDB *)self->_sessionTasksDB _deleteAllSessionsForBundleID:self->_clientBundleID];
   [(NDSessionManager *)self dropBoost];
@@ -180,15 +180,15 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_10002189C;
   v8[3] = &unk_1000D52E8;
-  v7 = v4;
+  v7 = handlerCopy;
   v8[4] = self;
   v9 = v7;
   [WeakRetained managerBecameEmpty:self bundleID:clientBundleID withCompletionHandler:v8];
 }
 
-- (void)obliterateAllSessionsWithReply:(id)a3
+- (void)obliterateAllSessionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
@@ -200,21 +200,21 @@ LABEL_11:
 
   if ([(NSMutableDictionary *)self->_sessions count])
   {
-    [(NDSessionManager *)self setObliterationCompletion:v4];
+    [(NDSessionManager *)self setObliterationCompletion:replyCopy];
     [(NSMutableDictionary *)self->_sessions enumerateKeysAndObjectsUsingBlock:&stru_1000D52C0];
   }
 
   else
   {
-    [(NDSessionManager *)self cleanupWithCompletionHandler:v4];
+    [(NDSessionManager *)self cleanupWithCompletionHandler:replyCopy];
   }
 }
 
-- (void)getActiveSessionIdentifiersWithReply:(id)a3
+- (void)getActiveSessionIdentifiersWithReply:(id)reply
 {
-  v5 = a3;
-  v4 = [(NSMutableDictionary *)self->_sessions allKeys];
-  v5[2](v5, v4);
+  replyCopy = reply;
+  allKeys = [(NSMutableDictionary *)self->_sessions allKeys];
+  replyCopy[2](replyCopy, allKeys);
 
   if (![(NSMutableDictionary *)self->_sessions count])
   {
@@ -222,26 +222,26 @@ LABEL_11:
   }
 }
 
-- (void)okayToSendPendingCallbacksForIdentifier:(id)a3 reply:(id)a4
+- (void)okayToSendPendingCallbacksForIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:identifierCopy];
   v9 = qword_1000EB210;
   if (v8)
   {
     v10 = qword_1000EB210;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 uuid];
-      v12 = [v8 clientBundleID];
-      v13 = [v8 identifier];
+      uuid = [v8 uuid];
+      clientBundleID = [v8 clientBundleID];
+      identifier = [v8 identifier];
       v14 = 138543874;
-      v15 = v11;
+      v15 = uuid;
       v16 = 2112;
-      v17 = v12;
+      v17 = clientBundleID;
       v18 = 2112;
-      v19 = v13;
+      v19 = identifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: notified it is OK to send pending callbacks", &v14, 0x20u);
     }
 
@@ -251,87 +251,87 @@ LABEL_11:
   else if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = identifierCopy;
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Signalled that it is okay to send pending callbacks for session %@ that we have no record of. This shouldn't happen", &v14, 0xCu);
   }
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)releaseAssertionForSession:(id)a3 reply:(id)a4
+- (void)releaseAssertionForSession:(id)session reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  replyCopy = reply;
   v8 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "releaseAssertionForSession: %@", &v10, 0xCu);
   }
 
   v9 = +[NDSpringBoard sharedSpringBoard];
-  [v9 releaseAssertionForBundleID:self->_clientBundleID sessionID:v6];
+  [v9 releaseAssertionForBundleID:self->_clientBundleID sessionID:sessionCopy];
 
-  v7[2](v7);
+  replyCopy[2](replyCopy);
 }
 
-- (void)sendPendingCallbacksForIdentifier:(id)a3 reply:(id)a4
+- (void)sendPendingCallbacksForIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  v8 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:identifierCopy];
   v9 = qword_1000EB210;
   if (v8)
   {
     v10 = qword_1000EB210;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v8 uuid];
-      v12 = [v8 clientBundleID];
-      v13 = [v8 identifier];
+      uuid = [v8 uuid];
+      clientBundleID = [v8 clientBundleID];
+      identifier = [v8 identifier];
       *buf = 138543874;
-      v19 = v11;
+      v19 = uuid;
       v20 = 2112;
-      v21 = v12;
+      v21 = clientBundleID;
       v22 = 2112;
-      v23 = v13;
+      v23 = identifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: instructed to send pending callbacks", buf, 0x20u);
     }
 
-    v14 = [(NSMutableDictionary *)self->_reconnectingProxies objectForKeyedSubscript:v6];
+    v14 = [(NSMutableDictionary *)self->_reconnectingProxies objectForKeyedSubscript:identifierCopy];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000220E0;
     v16[3] = &unk_1000D5F30;
-    v17 = v7;
+    v17 = replyCopy;
     [v8 reconnectClient:v14 withCompletion:v16];
 
     v15 = +[NDChronoKitLauncher sharedLauncher];
-    [v15 removePendingLaunchForBundleID:self->_clientBundleID sessionID:v6];
+    [v15 removePendingLaunchForBundleID:self->_clientBundleID sessionID:identifierCopy];
 
-    [(NSMutableDictionary *)self->_reconnectingProxies removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_reconnectingProxies removeObjectForKey:identifierCopy];
   }
 
   else if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Asked to send pending callbacks for session %@ that we have no record of. This shouldn't happen", buf, 0xCu);
   }
 }
 
-- (void)createSessionWithConfiguration:(id)a3 clientProxy:(id)a4 cachesDirectory:(id)a5 options:(id)a6 reply:(id)a7
+- (void)createSessionWithConfiguration:(id)configuration clientProxy:(id)proxy cachesDirectory:(id)directory options:(id)options reply:(id)reply
 {
-  v11 = a3;
-  v82 = a4;
-  v83 = a6;
-  v84 = a7;
-  v12 = [(NDSessionManager *)self copyAndSanitizeClientConfiguration:v11];
-  if (![v11 _supportsAVAssetDownloads] || (objc_msgSend(v12, "_supportsAVAssetDownloads") & 1) != 0)
+  configurationCopy = configuration;
+  proxyCopy = proxy;
+  optionsCopy = options;
+  replyCopy = reply;
+  v12 = [(NDSessionManager *)self copyAndSanitizeClientConfiguration:configurationCopy];
+  if (![configurationCopy _supportsAVAssetDownloads] || (objc_msgSend(v12, "_supportsAVAssetDownloads") & 1) != 0)
   {
     v81 = +[NSXPCConnection currentConnection];
-    v13 = [v81 _xpcConnection];
+    _xpcConnection = [v81 _xpcConnection];
     is_extension = xpc_connection_is_extension();
 
     if (is_extension)
@@ -345,29 +345,29 @@ LABEL_11:
       v16 = 0;
     }
 
-    v80 = [v83 mutableCopy];
+    v80 = [optionsCopy mutableCopy];
     sessions = self->_sessions;
-    v18 = [v12 identifier];
-    v19 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:v18];
-    v20 = [v19 hasConnectedClient];
+    identifier = [v12 identifier];
+    v19 = [(NSMutableDictionary *)sessions objectForKeyedSubscript:identifier];
+    hasConnectedClient = [v19 hasConnectedClient];
 
-    if (v20)
+    if (hasConnectedClient)
     {
       v21 = qword_1000EB210;
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v22 = self->_sessions;
-        v23 = [v12 identifier];
-        v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:v23];
-        v25 = [v24 uuid];
+        identifier2 = [v12 identifier];
+        v24 = [(NSMutableDictionary *)v22 objectForKeyedSubscript:identifier2];
+        uuid = [v24 uuid];
         clientBundleID = self->_clientBundleID;
-        v27 = [v12 identifier];
+        identifier3 = [v12 identifier];
         *buf = 138543874;
-        v94 = v25;
+        v94 = uuid;
         v95 = 2112;
         v96 = clientBundleID;
         v97 = 2112;
-        v98 = v27;
+        v98 = identifier3;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: already has a connected client, returning nil proxy object to client", buf, 0x20u);
       }
 
@@ -375,7 +375,7 @@ LABEL_11:
       v91 = @"kNSURLSessionImmediateInvalidationErrorKey";
       v92 = v28;
       v29 = [NSDictionary dictionaryWithObjects:&v92 forKeys:&v91 count:1];
-      (*(v84 + 2))(v84, 0, v29, 0);
+      (*(replyCopy + 2))(replyCopy, 0, v29, 0);
 LABEL_10:
 
       v30 = 0;
@@ -387,18 +387,18 @@ LABEL_40:
     }
 
     v33 = self->_sessions;
-    v34 = [v12 identifier];
-    v35 = [(NSMutableDictionary *)v33 objectForKeyedSubscript:v34];
+    identifier4 = [v12 identifier];
+    v35 = [(NSMutableDictionary *)v33 objectForKeyedSubscript:identifier4];
 
     if (v35)
     {
       if (((is_extension ^ 1 | v16) & 1) == 0)
       {
         v36 = self->_sessions;
-        v37 = [v12 identifier];
-        v38 = [(NSMutableDictionary *)v36 objectForKeyedSubscript:v37];
-        v39 = [v38 sharedContainerIdentifier];
-        v40 = [(NDSessionManager *)self connection:v81 canUseSharedContainerIdentifier:v39];
+        identifier5 = [v12 identifier];
+        v38 = [(NSMutableDictionary *)v36 objectForKeyedSubscript:identifier5];
+        sharedContainerIdentifier = [v38 sharedContainerIdentifier];
+        v40 = [(NDSessionManager *)self connection:v81 canUseSharedContainerIdentifier:sharedContainerIdentifier];
 
         if ((v40 & 1) == 0)
         {
@@ -413,47 +413,47 @@ LABEL_40:
           v89 = @"kNSURLSessionImmediateInvalidationErrorKey";
           v90 = v28;
           v29 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
-          (*(v84 + 2))(v84, 0, v29, 0);
+          (*(replyCopy + 2))(replyCopy, 0, v29, 0);
           goto LABEL_10;
         }
       }
 
       v41 = self->_sessions;
-      v42 = [v12 identifier];
-      v31 = [(NSMutableDictionary *)v41 objectForKeyedSubscript:v42];
+      identifier6 = [v12 identifier];
+      v31 = [(NSMutableDictionary *)v41 objectForKeyedSubscript:identifier6];
 
       v43 = qword_1000EB210;
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [v31 uuid];
+        uuid2 = [v31 uuid];
         v45 = self->_clientBundleID;
-        v46 = [v12 identifier];
+        identifier7 = [v12 identifier];
         *buf = 138543874;
-        v94 = v44;
+        v94 = uuid2;
         v95 = 2112;
         v96 = v45;
         v97 = 2112;
-        v98 = v46;
+        v98 = identifier7;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: reconnecting existing session", buf, 0x20u);
       }
 
-      [v31 updateOptions:v83];
-      v47 = [v31 getTasksForReconnection];
-      v48 = [v31 uuid];
-      v49 = [v31 getTLSSessionCachePrefix];
+      [v31 updateOptions:optionsCopy];
+      getTasksForReconnection = [v31 getTasksForReconnection];
+      uuid3 = [v31 uuid];
+      getTLSSessionCachePrefix = [v31 getTLSSessionCachePrefix];
       v87[0] = @"NDBackgroundSessionManagerRestoredStateKeyTasks";
       v87[1] = @"NDBackgroundSessionManagerKeySessionUUID";
-      v88[0] = v47;
-      v88[1] = v48;
+      v88[0] = getTasksForReconnection;
+      v88[1] = uuid3;
       v87[2] = @"NDBackgroundSessionManagerRestoredStateKeyTLSSessionCachePrefix";
-      v88[2] = v49;
+      v88[2] = getTLSSessionCachePrefix;
       v30 = [NSDictionary dictionaryWithObjects:v88 forKeys:v87 count:3];
       reconnectingProxies = self->_reconnectingProxies;
-      v51 = [v12 identifier];
-      [(NSMutableDictionary *)reconnectingProxies setObject:v82 forKeyedSubscript:v51];
+      identifier8 = [v12 identifier];
+      [(NSMutableDictionary *)reconnectingProxies setObject:proxyCopy forKeyedSubscript:identifier8];
 
-      v52 = [v12 identifier];
-      v32 = [NDFileUtilities sessionPath:v52 forBundleID:self->_clientBundleID];
+      identifier9 = [v12 identifier];
+      v32 = [NDFileUtilities sessionPath:identifier9 forBundleID:self->_clientBundleID];
 
       v53 = 0;
     }
@@ -462,9 +462,9 @@ LABEL_40:
     {
       if (((is_extension ^ 1 | v16) & 1) == 0)
       {
-        v54 = [v12 sharedContainerIdentifier];
+        sharedContainerIdentifier2 = [v12 sharedContainerIdentifier];
 
-        if (!v54)
+        if (!sharedContainerIdentifier2)
         {
           v77 = qword_1000EB210;
           if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
@@ -477,7 +477,7 @@ LABEL_40:
           v85 = @"kNSURLSessionImmediateInvalidationErrorKey";
           v86 = v28;
           v29 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-          (*(v84 + 2))(v84, 0, v29, 0);
+          (*(replyCopy + 2))(replyCopy, 0, v29, 0);
           goto LABEL_10;
         }
       }
@@ -485,10 +485,10 @@ LABEL_40:
       v55 = qword_1000EB210;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
-        v56 = [v12 identifier];
+        identifier10 = [v12 identifier];
         v57 = self->_clientBundleID;
         *buf = 138412546;
-        v94 = v56;
+        v94 = identifier10;
         v95 = 2112;
         v96 = v57;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Creating session with identifier: %@ for bundle id: %@", buf, 0x16u);
@@ -501,9 +501,9 @@ LABEL_40:
 
       else
       {
-        v60 = [v12 usesClassicLoadingMode];
+        usesClassicLoadingMode = [v12 usesClassicLoadingMode];
         v58 = off_1000D4888;
-        if (v60)
+        if (usesClassicLoadingMode)
         {
           v58 = off_1000D4880;
         }
@@ -512,28 +512,28 @@ LABEL_40:
       v61 = *v58;
       v62 = objc_alloc(objc_opt_class());
       queue = self->_queue;
-      v31 = [v62 initWithConfiguration:v12 bundleID:self->_clientBundleID isSpringBoardApp:self->_isSpringBoardApp downloadDirectory:0 options:v80 clientProxy:v82 delegate:self workQueue:queue db:self->_sessionTasksDB];
+      v31 = [v62 initWithConfiguration:v12 bundleID:self->_clientBundleID isSpringBoardApp:self->_isSpringBoardApp downloadDirectory:0 options:v80 clientProxy:proxyCopy delegate:self workQueue:queue db:self->_sessionTasksDB];
       v64 = qword_1000EB210;
-      v47 = v64;
+      getTasksForReconnection = v64;
       if (v31)
       {
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
-          v65 = [v31 uuid];
+          uuid4 = [v31 uuid];
           v66 = self->_clientBundleID;
-          v67 = [v12 identifier];
+          identifier11 = [v12 identifier];
           *buf = 138543874;
-          v94 = v65;
+          v94 = uuid4;
           v95 = 2112;
           v96 = v66;
           v97 = 2112;
-          v98 = v67;
-          _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: created successfully", buf, 0x20u);
+          v98 = identifier11;
+          _os_log_impl(&_mh_execute_header, getTasksForReconnection, OS_LOG_TYPE_DEFAULT, "NDSession <%{public}@>.<%@>.<%@>: created successfully", buf, 0x20u);
         }
 
         v68 = self->_sessions;
-        v47 = [v12 identifier];
-        [(NSMutableDictionary *)v68 setObject:v31 forKeyedSubscript:v47];
+        getTasksForReconnection = [v12 identifier];
+        [(NSMutableDictionary *)v68 setObject:v31 forKeyedSubscript:getTasksForReconnection];
         v30 = 0;
         v32 = 0;
         v53 = 1;
@@ -543,13 +543,13 @@ LABEL_40:
       {
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v78 = [v12 identifier];
+          identifier12 = [v12 identifier];
           v79 = self->_clientBundleID;
           *buf = 138412546;
-          v94 = v78;
+          v94 = identifier12;
           v95 = 2112;
           v96 = v79;
-          _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "Coudn't create session with identifier: %@ for bundle id: %@", buf, 0x16u);
+          _os_log_error_impl(&_mh_execute_header, getTasksForReconnection, OS_LOG_TYPE_ERROR, "Coudn't create session with identifier: %@ for bundle id: %@", buf, 0x16u);
         }
 
         v30 = 0;
@@ -560,21 +560,21 @@ LABEL_40:
     }
 
     [v31 setXPCConnection:v81];
-    v69 = [v31 xpcProtocol];
+    xpcProtocol = [v31 xpcProtocol];
     v70 = +[Daemon sharedDaemon];
-    (*(v84 + 2))(v84, v69, v30, [v70 isPrivileged]);
+    (*(replyCopy + 2))(replyCopy, xpcProtocol, v30, [v70 isPrivileged]);
 
     if (v32)
     {
       sessionTasksDB = self->_sessionTasksDB;
-      v72 = [v31 clientBundleID];
-      v73 = [v31 identifier];
-      [(NDTaskStorageDB *)sessionTasksDB _updateConfigurationForBundleID:v72 sessionID:v73 with:v12];
+      clientBundleID = [v31 clientBundleID];
+      identifier13 = [v31 identifier];
+      [(NDTaskStorageDB *)sessionTasksDB _updateConfigurationForBundleID:clientBundleID sessionID:identifier13 with:v12];
 
       v74 = self->_sessionTasksDB;
-      v75 = [v31 clientBundleID];
-      v76 = [v31 identifier];
-      [(NDTaskStorageDB *)v74 _updateOptionsForBundleID:v75 sessionID:v76 with:v80];
+      clientBundleID2 = [v31 clientBundleID];
+      identifier14 = [v31 identifier];
+      [(NDTaskStorageDB *)v74 _updateOptionsForBundleID:clientBundleID2 sessionID:identifier14 with:v80];
     }
 
     if (v53)
@@ -585,19 +585,19 @@ LABEL_40:
     goto LABEL_40;
   }
 
-  (*(v84 + 2))(v84, 0, &off_1000D8A70, 0);
+  (*(replyCopy + 2))(replyCopy, 0, &off_1000D8A70, 0);
 LABEL_41:
 }
 
-- (BOOL)connection:(id)a3 canUseSharedContainerIdentifier:(id)a4
+- (BOOL)connection:(id)connection canUseSharedContainerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = [v6 valueForEntitlement:@"com.apple.security.application-groups"];
+    v8 = [connectionCopy valueForEntitlement:@"com.apple.security.application-groups"];
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 containsObject:v7])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 containsObject:identifierCopy])
     {
       v9 = 1;
     }
@@ -610,7 +610,7 @@ LABEL_41:
       {
         clientBundleID = self->_clientBundleID;
         v13 = 138412802;
-        v14 = v7;
+        v14 = identifierCopy;
         v15 = 2112;
         v16 = clientBundleID;
         v17 = 1024;
@@ -629,16 +629,16 @@ LABEL_41:
   return v9;
 }
 
-- (id)copyAndSanitizeClientConfiguration:(id)a3
+- (id)copyAndSanitizeClientConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [v4 copy];
-  v7 = [v6 sharedContainerIdentifier];
-  if (v7)
+  v6 = [configurationCopy copy];
+  sharedContainerIdentifier = [v6 sharedContainerIdentifier];
+  if (sharedContainerIdentifier)
   {
-    v8 = [v6 sharedContainerIdentifier];
-    v9 = [(NDSessionManager *)self connection:v5 canUseSharedContainerIdentifier:v8];
+    sharedContainerIdentifier2 = [v6 sharedContainerIdentifier];
+    v9 = [(NDSessionManager *)self connection:v5 canUseSharedContainerIdentifier:sharedContainerIdentifier2];
 
     if ((v9 & 1) == 0)
     {
@@ -647,18 +647,18 @@ LABEL_41:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         clientBundleID = self->_clientBundleID;
-        v12 = [v6 sharedContainerIdentifier];
+        sharedContainerIdentifier3 = [v6 sharedContainerIdentifier];
         *buf = 138412546;
         *&buf[4] = clientBundleID;
         *&buf[12] = 2112;
-        *&buf[14] = v12;
+        *&buf[14] = sharedContainerIdentifier3;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Client %@ tried to specify a shared container that it cannot access: %@", buf, 0x16u);
       }
     }
   }
 
-  v13 = [v6 _sourceApplicationBundleIdentifier];
-  if (v13)
+  _sourceApplicationBundleIdentifier = [v6 _sourceApplicationBundleIdentifier];
+  if (_sourceApplicationBundleIdentifier)
   {
     v14 = sub_100008D00(v5, @"com.apple.private.nsurlsession.impersonate");
 
@@ -675,8 +675,8 @@ LABEL_41:
     }
   }
 
-  v16 = [v6 _sourceApplicationSecondaryIdentifier];
-  if (v16)
+  _sourceApplicationSecondaryIdentifier = [v6 _sourceApplicationSecondaryIdentifier];
+  if (_sourceApplicationSecondaryIdentifier)
   {
     v17 = sub_100008D00(v5, @"com.apple.private.nsurlsession.impersonate");
 
@@ -693,8 +693,8 @@ LABEL_41:
     }
   }
 
-  v19 = [v6 _sourceApplicationAuditTokenData];
-  if (v19)
+  _sourceApplicationAuditTokenData = [v6 _sourceApplicationAuditTokenData];
+  if (_sourceApplicationAuditTokenData)
   {
     v20 = sub_100008D00(v5, @"com.apple.private.nsurlsession.impersonate");
 
@@ -742,8 +742,8 @@ LABEL_41:
     }
   }
 
-  v24 = [v6 _connectionPoolName];
-  if (v24)
+  _connectionPoolName = [v6 _connectionPoolName];
+  if (_connectionPoolName)
   {
     v25 = sub_100008D00(v5, @"com.apple.private.nsurlsession-allow-override-connection-pool");
 
@@ -760,15 +760,15 @@ LABEL_41:
     }
   }
 
-  v27 = [v6 _directoryForDownloadedFiles];
-  if (v27)
+  _directoryForDownloadedFiles = [v6 _directoryForDownloadedFiles];
+  if (_directoryForDownloadedFiles)
   {
     v28 = +[Daemon sharedDaemon];
-    v29 = [v28 isPrivileged];
+    isPrivileged = [v28 isPrivileged];
 
-    if ((v29 & 1) == 0)
+    if ((isPrivileged & 1) == 0)
     {
-      v30 = [v6 _directoryForDownloadedFiles];
+      _directoryForDownloadedFiles2 = [v6 _directoryForDownloadedFiles];
       if (v5)
       {
         [v5 auditToken];
@@ -779,11 +779,11 @@ LABEL_41:
         memset(buf, 0, sizeof(buf));
       }
 
-      v31 = [NDFileUtilities safeDirectoryForDownloads:v30 auditToken:buf];
+      v31 = [NDFileUtilities safeDirectoryForDownloads:_directoryForDownloadedFiles2 auditToken:buf];
       [v6 set_directoryForDownloadedFiles:v31];
 
-      v32 = [v6 _directoryForDownloadedFiles];
-      v33 = v32 == 0;
+      _directoryForDownloadedFiles3 = [v6 _directoryForDownloadedFiles];
+      v33 = _directoryForDownloadedFiles3 == 0;
 
       if (v33)
       {
@@ -812,8 +812,8 @@ LABEL_41:
     }
   }
 
-  v36 = [v6 _maximumWatchCellularTransferSize];
-  if (v36)
+  _maximumWatchCellularTransferSize = [v6 _maximumWatchCellularTransferSize];
+  if (_maximumWatchCellularTransferSize)
   {
     v37 = sub_100008D00(v5, @"com.apple.private.nsurlsession.set-max-watch-cell-transfer-size");
 
@@ -831,15 +831,15 @@ LABEL_41:
 
   if ((sub_100008D00(v5, @"get-task-allow") & 1) != 0 || (sub_100008D00(v5, @"com.apple.security.get-task-allow") & 1) != 0 || os_variant_allows_internal_security_policies())
   {
-    v39 = [v5 processIdentifier];
+    processIdentifier = [v5 processIdentifier];
   }
 
   else
   {
-    v39 = 0;
+    processIdentifier = 0;
   }
 
-  [v6 set_pidForHAR:v39];
+  [v6 set_pidForHAR:processIdentifier];
   v41 = 0u;
   v42 = 0u;
   if (v5)
@@ -867,7 +867,7 @@ LABEL_41:
   dispatch_async(queue, block);
 }
 
-- (id)restoreState:(BOOL *)a3
+- (id)restoreState:(BOOL *)state
 {
   v4 = qword_1000EB210;
   if (os_log_type_enabled(qword_1000EB210, OS_LOG_TYPE_DEFAULT))
@@ -983,12 +983,12 @@ LABEL_41:
               {
                 [v64 timeIntervalSinceNow];
                 v49 = v48;
-                v50 = [v15 identifier];
+                identifier = [v15 identifier];
                 v51 = self->_clientBundleID;
                 *buf = 134218498;
                 v77 = -v49;
                 v78 = 2112;
-                v79 = v50;
+                v79 = identifier;
                 v80 = 2112;
                 v81 = v51;
                 _os_log_error_impl(&_mh_execute_header, v44, OS_LOG_TYPE_ERROR, "Ignoring stale session (inactive for %fs) with identifier: %@ for bundle id: %@", buf, 0x20u);
@@ -1001,13 +1001,13 @@ LABEL_41:
 
             v21 = 0;
 LABEL_21:
-            v22 = [v15 _supportsAVAssetDownloads];
+            _supportsAVAssetDownloads = [v15 _supportsAVAssetDownloads];
             v23 = off_1000D4878;
-            if ((v22 & 1) == 0)
+            if ((_supportsAVAssetDownloads & 1) == 0)
             {
-              v24 = [v15 usesClassicLoadingMode];
+              usesClassicLoadingMode = [v15 usesClassicLoadingMode];
               v23 = off_1000D4888;
-              if (v24)
+              if (usesClassicLoadingMode)
               {
                 v23 = off_1000D4880;
               }
@@ -1054,8 +1054,8 @@ LABEL_21:
 
                 [v66 addObjectsFromArray:v62];
                 sessions = self->_sessions;
-                v42 = [v63 identifier];
-                [(NSMutableDictionary *)sessions setObject:v63 forKeyedSubscript:v42];
+                identifier2 = [v63 identifier];
+                [(NSMutableDictionary *)sessions setObject:v63 forKeyedSubscript:identifier2];
               }
 
               v33 = v60 ^ 1;
@@ -1146,9 +1146,9 @@ LABEL_62:
     [NDFileUtilities removeItemAtURL:self->_bundleDirectory];
   }
 
-  if (a3)
+  if (state)
   {
-    *a3 = v55;
+    *state = v55;
   }
 
   [(NDSessionManager *)self setWorkState];
@@ -1156,16 +1156,16 @@ LABEL_62:
   return v66;
 }
 
-- (void)failedSessionRestoreWithID:(id)a3 directoryToDelete:(id)a4
+- (void)failedSessionRestoreWithID:(id)d directoryToDelete:(id)delete
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  deleteCopy = delete;
+  if (deleteCopy)
   {
-    [NDFileUtilities removeItemAtPath:v7];
+    [NDFileUtilities removeItemAtPath:deleteCopy];
   }
 
-  [(NDTaskStorageDB *)self->_sessionTasksDB _deleteSessionForBundleID:self->_clientBundleID sessionID:v6];
+  [(NDTaskStorageDB *)self->_sessionTasksDB _deleteSessionForBundleID:self->_clientBundleID sessionID:dCopy];
   if ([(NSString *)self->_clientBundleID isEqualToString:@"com.apple.OTACrashCopier"])
   {
     v8 = qword_1000EB210;
@@ -1175,21 +1175,21 @@ LABEL_62:
       v11 = 138412546;
       v12 = clientBundleID;
       v13 = 2112;
-      v14 = v6;
+      v14 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Launching application %@ since we could not restore session %@", &v11, 0x16u);
     }
 
     v10 = [NDApplication applicationWithIdentifier:self->_clientBundleID];
-    [v10 wakeForSessionIdentifier:v6 withSessionUUID:0 wakeRequirement:2];
+    [v10 wakeForSessionIdentifier:dCopy withSessionUUID:0 wakeRequirement:2];
   }
 }
 
 - (id)downloadDirectoryDataPath
 {
   v2 = [(NSURL *)self->_bundleDirectory URLByAppendingPathComponent:@"downloadDirectoryPath.plist"];
-  v3 = [v2 path];
+  path = [v2 path];
 
-  return v3;
+  return path;
 }
 
 - (void)dealloc
@@ -1200,21 +1200,21 @@ LABEL_62:
   [(NDSessionManager *)&v3 dealloc];
 }
 
-- (NDSessionManager)initWithDelegate:(id)a3 bundleID:(id)a4 isSpringBoardApp:(BOOL)a5 forPersona:(id)a6 dataSeparatedPath:(id)a7 db:(id)a8
+- (NDSessionManager)initWithDelegate:(id)delegate bundleID:(id)d isSpringBoardApp:(BOOL)app forPersona:(id)persona dataSeparatedPath:(id)path db:(id)db
 {
-  v14 = a3;
-  v37 = a4;
-  v36 = a6;
-  v15 = a7;
-  v16 = a8;
+  delegateCopy = delegate;
+  dCopy = d;
+  personaCopy = persona;
+  pathCopy = path;
+  dbCopy = db;
   v40.receiver = self;
   v40.super_class = NDSessionManager;
   v17 = [(NDSessionManager *)&v40 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_delegate, v14);
-    objc_storeStrong(&v18->_clientBundleID, a4);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
+    objc_storeStrong(&v18->_clientBundleID, d);
     v19 = +[NSMutableDictionary dictionary];
     sessions = v18->_sessions;
     v18->_sessions = v19;
@@ -1223,8 +1223,8 @@ LABEL_62:
     reconnectingProxies = v18->_reconnectingProxies;
     v18->_reconnectingProxies = v21;
 
-    objc_storeStrong(&v18->_persona, a6);
-    objc_storeStrong(&v18->_containerPath, a7);
+    objc_storeStrong(&v18->_persona, persona);
+    objc_storeStrong(&v18->_containerPath, path);
     v23 = [NDFileUtilities bundleManagerPath:v18->_clientBundleID];
     v24 = [NSURL fileURLWithPath:v23];
     bundleDirectory = v18->_bundleDirectory;
@@ -1235,11 +1235,11 @@ LABEL_62:
     queue = v18->_queue;
     v18->_queue = v27;
 
-    objc_storeStrong(&v18->_sessionTasksDB, a8);
+    objc_storeStrong(&v18->_sessionTasksDB, db);
     boost = v18->_boost;
     v18->_boost = 0;
 
-    v18->_isSpringBoardApp = a5;
+    v18->_isSpringBoardApp = app;
     [NDFileUtilities createDirectoryAtURL:v18->_bundleDirectory];
     v30 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v18->_queue);
     powerlogPeriodicUpdateTimer = v18->_powerlogPeriodicUpdateTimer;
@@ -1261,18 +1261,18 @@ LABEL_62:
   return v18;
 }
 
-+ (id)restoreOptionsFromArchivePath:(id)a3
++ (id)restoreOptionsFromArchivePath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:pathCopy];
 
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = sub_100008D9C(NSKeyedUnarchiver, v3);
+  v6 = sub_100008D9C(NSKeyedUnarchiver, pathCopy);
   if (v6)
   {
     objc_opt_class();

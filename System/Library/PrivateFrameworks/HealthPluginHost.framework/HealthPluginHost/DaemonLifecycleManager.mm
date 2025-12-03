@@ -1,14 +1,14 @@
 @interface DaemonLifecycleManager
 - (NSString)description;
 - (_TtC10healthappd22DaemonLifecycleManager)init;
-- (void)applicationsDidUninstall:(id)a3;
+- (void)applicationsDidUninstall:(id)uninstall;
 @end
 
 @implementation DaemonLifecycleManager
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008C6C();
 
   v3 = String._bridgeToObjectiveC()();
@@ -23,9 +23,9 @@
   return result;
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
-  if (a3)
+  if (uninstall)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -35,7 +35,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_100009B20(v4);
 }
 

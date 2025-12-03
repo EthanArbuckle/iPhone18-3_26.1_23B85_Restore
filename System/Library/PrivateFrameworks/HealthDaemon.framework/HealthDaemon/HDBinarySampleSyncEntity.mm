@@ -1,16 +1,16 @@
 @interface HDBinarySampleSyncEntity
-+ (BOOL)_insertObjectsFromCodableObjectCollection:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
-+ (id)_objectWithCodable:(id)a3 collection:(id)a4;
-+ (id)_predicateForSyncSession:(id)a3;
-+ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)a3;
++ (BOOL)_insertObjectsFromCodableObjectCollection:(id)collection syncStore:(id)store profile:(id)profile error:(id *)error;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
++ (id)_objectWithCodable:(id)codable collection:(id)collection;
++ (id)_predicateForSyncSession:(id)session;
++ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)version;
 @end
 
 @implementation HDBinarySampleSyncEntity
 
-+ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)a3
++ (unint64_t)supportedNanoSyncDirectionsForProtocolVersion:(int)version
 {
-  if (a3 >= 6)
+  if (version >= 6)
   {
     return 3;
   }
@@ -21,17 +21,17 @@
   }
 }
 
-+ (id)_objectWithCodable:(id)a3 collection:(id)a4
++ (id)_objectWithCodable:(id)codable collection:(id)collection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 sample];
-  [v6 dataType];
+  codableCopy = codable;
+  sample = [codableCopy sample];
+  [sample dataType];
   v7 = _HKValidDataTypeCode();
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CCD8A8] createWithCodable:v5];
+    v8 = [MEMORY[0x277CCD8A8] createWithCodable:codableCopy];
   }
 
   else
@@ -41,11 +41,11 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [v5 sample];
+      sample2 = [codableCopy sample];
       v14 = 138543618;
-      v15 = a1;
+      selfCopy = self;
       v16 = 2048;
-      v17 = [v11 dataType];
+      dataType = [sample2 dataType];
       _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignorning unknown data type code %lld", &v14, 0x16u);
     }
 
@@ -57,16 +57,16 @@
   return v8;
 }
 
-+ (BOOL)_insertObjectsFromCodableObjectCollection:(id)a3 syncStore:(id)a4 profile:(id)a5 error:(id *)a6
++ (BOOL)_insertObjectsFromCodableObjectCollection:(id)collection syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [objc_msgSend(a1 "healthEntityClass")];
+  collectionCopy = collection;
+  storeCopy = store;
+  profileCopy = profile;
+  v13 = [objc_msgSend(self "healthEntityClass")];
   v68 = 0;
-  v60 = v10;
-  v14 = [HDDataSyncUtilities provenanceFromCollection:v10 syncStore:v11 profile:v12 error:&v68];
+  v60 = collectionCopy;
+  v14 = [HDDataSyncUtilities provenanceFromCollection:collectionCopy syncStore:storeCopy profile:profileCopy error:&v68];
   v62 = v68;
   v15 = v14 == 0;
   if (v14)
@@ -80,12 +80,12 @@
     if (v16)
     {
       v17 = v16;
-      v53 = a6;
+      errorCopy = error;
       v54 = v14 == 0;
       v55 = v13;
       v18 = *v65;
-      v57 = v12;
-      v58 = v11;
+      v57 = profileCopy;
+      v58 = storeCopy;
       v56 = *v65;
 LABEL_4:
       v19 = 0;
@@ -98,16 +98,16 @@ LABEL_4:
         }
 
         v20 = *(*(&v64 + 1) + 8 * v19);
-        v21 = [v20 sample];
-        v22 = [v21 dataType];
+        sample = [v20 sample];
+        dataType = [sample dataType];
 
-        if (v22 != 144)
+        if (dataType != 144)
         {
           break;
         }
 
         v63 = 0;
-        v23 = [HDECGSampleEntity _insertECGWithCodableBinarySample:v20 syncStore:v11 profile:v12 provenance:v14 error:&v63];
+        v23 = [HDECGSampleEntity _insertECGWithCodableBinarySample:v20 syncStore:storeCopy profile:profileCopy provenance:v14 error:&v63];
         v24 = v63;
         v25 = v24;
         if (!v23)
@@ -115,15 +115,15 @@ LABEL_4:
           if ([v24 hk_isHealthKitErrorWithCode:123])
           {
             v49 = v25;
-            v48 = v49;
+            autoBugCaptureReporter2 = v49;
             v13 = v55;
             v15 = v54;
             if (v49)
             {
-              if (v53)
+              if (errorCopy)
               {
                 v50 = v49;
-                *v53 = v48;
+                *errorCopy = autoBugCaptureReporter2;
               }
 
               else
@@ -140,16 +140,16 @@ LABEL_4:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v73 = v11;
+            v73 = storeCopy;
             v74 = 2114;
             v75 = v25;
             _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "failed to insert ECG sample from binary sample synced from store %{public}@: %{public}@", buf, 0x16u);
           }
 
 LABEL_25:
-          v44 = [v12 daemon];
-          v45 = [v44 autoBugCaptureReporter];
-          [v45 reportApplyDataFailure:objc_opt_class() duringSyncFromStore:v11 error:v62];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+          [autoBugCaptureReporter reportApplyDataFailure:objc_opt_class() duringSyncFromStore:storeCopy error:v62];
         }
 
 LABEL_26:
@@ -168,7 +168,7 @@ LABEL_26:
       }
 
       v27 = v20;
-      v28 = v12;
+      v28 = profileCopy;
       v29 = v14;
       v30 = v14;
       v31 = v60;
@@ -194,15 +194,15 @@ LABEL_26:
           }
         }
 
-        v39 = [v28 dataManager];
+        dataManager = [v28 dataManager];
         v71 = v36;
         v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v71 count:1];
         v69 = 0;
-        v41 = [v39 insertDataObjects:v40 withProvenance:v30 creationDate:1 skipInsertionFilter:0 updateSourceOrder:0 resolveAssociations:&v69 error:2.22507386e-308];
+        v41 = [dataManager insertDataObjects:v40 withProvenance:v30 creationDate:1 skipInsertionFilter:0 updateSourceOrder:0 resolveAssociations:&v69 error:2.22507386e-308];
 
         v25 = 0;
-        v12 = v57;
-        v11 = v58;
+        profileCopy = v57;
+        storeCopy = v58;
         v14 = v29;
         v18 = v56;
         v17 = v59;
@@ -223,8 +223,8 @@ LABEL_26:
           _os_log_error_impl(&dword_228986000, v42, OS_LOG_TYPE_ERROR, "failed to create client object with codable %@", buf, 0xCu);
         }
 
-        v12 = v57;
-        v11 = v58;
+        profileCopy = v57;
+        storeCopy = v58;
         v14 = v29;
         v18 = v56;
         v17 = v59;
@@ -243,7 +243,7 @@ LABEL_34:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v73 = v11;
+        v73 = storeCopy;
         v74 = 2114;
         v75 = v62;
         _os_log_error_impl(&dword_228986000, v43, OS_LOG_TYPE_ERROR, "failed to insert objects synced from store %{public}@: %{public}@", buf, 0x16u);
@@ -263,15 +263,15 @@ LABEL_34:
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v73 = v11;
+      v73 = storeCopy;
       v74 = 2114;
       v75 = v62;
       _os_log_impl(&dword_228986000, v47, OS_LOG_TYPE_DEFAULT, "Failed to create provenance for codable object collection from store %{public}@: %{public}@", buf, 0x16u);
     }
 
-    obj = [v12 daemon];
-    v48 = [obj autoBugCaptureReporter];
-    [v48 reportApplyDataFailure:objc_opt_class() duringSyncFromStore:v11 error:v62];
+    obj = [profileCopy daemon];
+    autoBugCaptureReporter2 = [obj autoBugCaptureReporter];
+    [autoBugCaptureReporter2 reportApplyDataFailure:objc_opt_class() duringSyncFromStore:storeCopy error:v62];
 LABEL_40:
 
     v46 = v15;
@@ -283,18 +283,18 @@ LABEL_41:
   return v46;
 }
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
-  v5 = a3;
-  v6 = [a4 daemon];
-  v7 = [v6 behavior];
-  v8 = [v7 supportsSampleExpiration];
+  dateCopy = date;
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-  if (v8)
+  if (supportsSampleExpiration)
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [MEMORY[0x277CCD720] _allBinarySampleTypes];
-    v11 = [v9 hd_predicateForSamplesWithTypes:v10 endingBeforeDate:v5 minusDays:*MEMORY[0x277CCCEE8]];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    _allBinarySampleTypes = [MEMORY[0x277CCD720] _allBinarySampleTypes];
+    v11 = [currentCalendar hd_predicateForSamplesWithTypes:_allBinarySampleTypes endingBeforeDate:dateCopy minusDays:*MEMORY[0x277CCCEE8]];
   }
 
   else
@@ -305,23 +305,23 @@ LABEL_41:
   return v11;
 }
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16.receiver = a1;
+  sessionCopy = session;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___HDBinarySampleSyncEntity;
-  v5 = objc_msgSendSuper2(&v16, sel__predicateForSyncSession_, v4);
-  v6 = [MEMORY[0x277CCD720] unprocessedBloodOxygenDataType];
-  v17[0] = v6;
+  v5 = objc_msgSendSuper2(&v16, sel__predicateForSyncSession_, sessionCopy);
+  unprocessedBloodOxygenDataType = [MEMORY[0x277CCD720] unprocessedBloodOxygenDataType];
+  v17[0] = unprocessedBloodOxygenDataType;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v8 = HDSampleEntityPredicateForDataTypes(v7);
 
   v9 = [MEMORY[0x277D10B20] negatedPredicate:v8];
-  v10 = [v4 syncStore];
-  v11 = [v10 syncStoreType];
+  syncStore = [sessionCopy syncStore];
+  syncStoreType = [syncStore syncStoreType];
 
-  if (v11 == 2 || _isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(v4))
+  if (syncStoreType == 2 || _isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(sessionCopy))
   {
     v12 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v5 otherPredicate:v9];
   }

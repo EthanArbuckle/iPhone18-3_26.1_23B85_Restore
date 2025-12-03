@@ -1,19 +1,19 @@
 @interface CNPropertyAction
-+ (void)performDefaultActionForItem:(id)a3 sender:(id)a4;
-- (CNPropertyAction)initWithContact:(id)a3 propertyItem:(id)a4;
-- (CNPropertyAction)initWithContact:(id)a3 propertyItems:(id)a4;
++ (void)performDefaultActionForItem:(id)item sender:(id)sender;
+- (CNPropertyAction)initWithContact:(id)contact propertyItem:(id)item;
+- (CNPropertyAction)initWithContact:(id)contact propertyItems:(id)items;
 - (CNPropertyGroupItem)propertyItem;
-- (void)performActionForItem:(id)a3 sender:(id)a4;
-- (void)performActionWithSender:(id)a3;
-- (void)presentDisambiguationAlertWithSender:(id)a3;
+- (void)performActionForItem:(id)item sender:(id)sender;
+- (void)performActionWithSender:(id)sender;
+- (void)presentDisambiguationAlertWithSender:(id)sender;
 @end
 
 @implementation CNPropertyAction
 
-- (void)presentDisambiguationAlertWithSender:(id)a3
+- (void)presentDisambiguationAlertWithSender:(id)sender
 {
   v27 = *MEMORY[0x1E69E9840];
-  v18 = a3;
+  senderCopy = sender;
   v4 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v22 = 0u;
   v23 = 0u;
@@ -35,15 +35,15 @@
         }
 
         v9 = *(*(&v22 + 1) + 8 * i);
-        v10 = [v9 displayValue];
-        v11 = [v9 displayLabel];
+        displayValue = [v9 displayValue];
+        displayLabel = [v9 displayLabel];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
         v21[2] = __57__CNPropertyAction_presentDisambiguationAlertWithSender___block_invoke;
         v21[3] = &unk_1E74E7308;
         v21[4] = self;
         v21[5] = v9;
-        v12 = [MEMORY[0x1E69DC648] _actionWithTitle:v10 descriptiveText:v11 image:0 style:0 handler:v21 shouldDismissHandler:0];
+        v12 = [MEMORY[0x1E69DC648] _actionWithTitle:displayValue descriptiveText:displayLabel image:0 style:0 handler:v21 shouldDismissHandler:0];
         [v4 addAction:v12];
       }
 
@@ -64,8 +64,8 @@
   v16 = [v13 actionWithTitle:v15 style:1 handler:v20];
   [v4 addAction:v16];
 
-  v17 = [(CNContactAction *)self delegate];
-  [v17 action:self presentViewController:v4 sender:v18];
+  delegate = [(CNContactAction *)self delegate];
+  [delegate action:self presentViewController:v4 sender:senderCopy];
 }
 
 void __57__CNPropertyAction_presentDisambiguationAlertWithSender___block_invoke(uint64_t a1)
@@ -81,64 +81,64 @@ void __57__CNPropertyAction_presentDisambiguationAlertWithSender___block_invoke_
   [v2 actionWasCanceled:*(a1 + 32)];
 }
 
-- (void)performActionWithSender:(id)a3
+- (void)performActionWithSender:(id)sender
 {
-  v8 = a3;
-  v4 = [(CNPropertyAction *)self propertyItems];
-  v5 = [v4 count];
+  senderCopy = sender;
+  propertyItems = [(CNPropertyAction *)self propertyItems];
+  v5 = [propertyItems count];
 
   if (v5 == 1)
   {
-    v6 = [(CNPropertyAction *)self propertyItem];
-    [(CNPropertyAction *)self performActionForItem:v6 sender:v8];
+    propertyItem = [(CNPropertyAction *)self propertyItem];
+    [(CNPropertyAction *)self performActionForItem:propertyItem sender:senderCopy];
 
-    v7 = [(CNContactAction *)self delegate];
-    [v7 actionDidFinish:self];
+    delegate = [(CNContactAction *)self delegate];
+    [delegate actionDidFinish:self];
   }
 
   else
   {
-    [(CNPropertyAction *)self presentDisambiguationAlertWithSender:v8];
+    [(CNPropertyAction *)self presentDisambiguationAlertWithSender:senderCopy];
   }
 }
 
-- (void)performActionForItem:(id)a3 sender:(id)a4
+- (void)performActionForItem:(id)item sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() performDefaultActionForItem:v6 sender:v5];
+  senderCopy = sender;
+  itemCopy = item;
+  [objc_opt_class() performDefaultActionForItem:itemCopy sender:senderCopy];
 }
 
 - (CNPropertyGroupItem)propertyItem
 {
-  v2 = [(CNPropertyAction *)self propertyItems];
-  v3 = [v2 firstObject];
+  propertyItems = [(CNPropertyAction *)self propertyItems];
+  firstObject = [propertyItems firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (CNPropertyAction)initWithContact:(id)a3 propertyItem:(id)a4
+- (CNPropertyAction)initWithContact:(id)contact propertyItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a4;
+  itemCopy = item;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
+  itemCopy2 = item;
+  contactCopy = contact;
+  v9 = [v6 arrayWithObjects:&itemCopy count:1];
 
-  v10 = [(CNPropertyAction *)self initWithContact:v8 propertyItems:v9, v12, v13];
+  v10 = [(CNPropertyAction *)self initWithContact:contactCopy propertyItems:v9, itemCopy, v13];
   return v10;
 }
 
-- (CNPropertyAction)initWithContact:(id)a3 propertyItems:(id)a4
+- (CNPropertyAction)initWithContact:(id)contact propertyItems:(id)items
 {
-  v6 = a4;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = CNPropertyAction;
-  v7 = [(CNContactAction *)&v11 initWithContact:a3];
+  v7 = [(CNContactAction *)&v11 initWithContact:contact];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [itemsCopy copy];
     propertyItems = v7->_propertyItems;
     v7->_propertyItems = v8;
   }
@@ -146,47 +146,47 @@ void __57__CNPropertyAction_presentDisambiguationAlertWithSender___block_invoke_
   return v7;
 }
 
-+ (void)performDefaultActionForItem:(id)a3 sender:(id)a4
++ (void)performDefaultActionForItem:(id)item sender:(id)sender
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v9 = [v4 defaultActionURL];
-  if (v9)
+  itemCopy = item;
+  defaultActionURL = [itemCopy defaultActionURL];
+  if (defaultActionURL)
   {
-    if ([v4 isSuggested])
+    if ([itemCopy isSuggested])
     {
       SGSuggestedActionMetricsClass = getSGSuggestedActionMetricsClass();
-      v11 = [v4 property];
-      v12 = [MEMORY[0x1E696AAE8] mainBundle];
-      v13 = [v12 bundleIdentifier];
-      [(objc_class *)SGSuggestedActionMetricsClass recordContactDetailUsage:v11 withApp:v13];
+      property = [itemCopy property];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      [(objc_class *)SGSuggestedActionMetricsClass recordContactDetailUsage:property withApp:bundleIdentifier];
     }
 
     v14 = +[CNUIDataCollector sharedCollector];
     v15 = CNUIContactActionTypeTapProperty;
     v25[0] = CNUIContactActionTapPropertyIdentifier;
-    v16 = [v4 property];
-    v26[0] = v16;
+    property2 = [itemCopy property];
+    v26[0] = property2;
     v25[1] = CNUIDataCollectorActionTypeAttributeContact;
-    v17 = [v4 contact];
-    v26[1] = v17;
+    contact = [itemCopy contact];
+    v26[1] = contact;
     v25[2] = CNUIDataCollectorActionTypeAttributeLabeledValue;
-    v18 = [v4 labeledValue];
-    v26[2] = v18;
+    labeledValue = [itemCopy labeledValue];
+    v26[2] = labeledValue;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
     [v14 logContactActionType:v15 attributes:v19];
 
     v20 = +[CNUIContactsEnvironment currentEnvironment];
-    v21 = [v20 applicationWorkspace];
+    applicationWorkspace = [v20 applicationWorkspace];
     v23 = *MEMORY[0x1E6963550];
     v24 = MEMORY[0x1E695E118];
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    [v21 openSensitiveURLInBackground:v9 withOptions:v22];
+    [applicationWorkspace openSensitiveURLInBackground:defaultActionURL withOptions:v22];
   }
 
   else
   {
-    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyAction.m", 89, 6, @"%@ doesn’t define a default action URL", v5, v6, v7, v8, v4);
+    _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNPropertyAction.m", 89, 6, @"%@ doesn’t define a default action URL", v5, v6, v7, v8, itemCopy);
   }
 }
 

@@ -7,14 +7,14 @@
 
 - (FSContainerIdentifier)fs_containerIdentifier
 {
-  v1 = [(FSEntityIdentifier *)[FSContainerIdentifier alloc] initWithUUID:a1];
+  v1 = [(FSEntityIdentifier *)[FSContainerIdentifier alloc] initWithUUID:self];
 
   return v1;
 }
 
 - (FSVolumeIdentifier)fs_volumeIdentifier
 {
-  v1 = [(FSEntityIdentifier *)[FSVolumeIdentifier alloc] initWithUUID:a1];
+  v1 = [(FSEntityIdentifier *)[FSVolumeIdentifier alloc] initWithUUID:self];
 
   return v1;
 }

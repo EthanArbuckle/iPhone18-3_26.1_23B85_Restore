@@ -1,37 +1,37 @@
 @interface ICURLSession
 - (ICURLSession)init;
-- (ICURLSession)initWithConfiguration:(id)a3 maxConcurrentRequests:(unint64_t)a4 qualityOfService:(int64_t)a5;
-- (double)_timeoutForRequest:(id)a3;
-- (id)_createURLSessionTaskForRequest:(id)a3 usingSession:(id)a4;
-- (id)_newResponseForRequest:(id)a3;
-- (id)_requestForTask:(id)a3;
-- (void)URLSession:(id)a3 avAssetDownloadTask:(id)a4 didReceiveAVAssetDownloadToken:(unint64_t)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (ICURLSession)initWithConfiguration:(id)configuration maxConcurrentRequests:(unint64_t)requests qualityOfService:(int64_t)service;
+- (double)_timeoutForRequest:(id)request;
+- (id)_createURLSessionTaskForRequest:(id)request usingSession:(id)session;
+- (id)_newResponseForRequest:(id)request;
+- (id)_requestForTask:(id)task;
+- (void)URLSession:(id)session avAssetDownloadTask:(id)task didReceiveAVAssetDownloadToken:(unint64_t)token;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)_checkRequestTimeouts;
-- (void)_enqueueRequest:(id)a3;
-- (void)_finishRequest:(id)a3;
+- (void)_enqueueRequest:(id)request;
+- (void)_finishRequest:(id)request;
 - (void)_processPendingRequests;
-- (void)_processRequest:(id)a3;
+- (void)_processRequest:(id)request;
 - (void)_scheduleNextRequestTimeoutCheck;
-- (void)_updateProgressForSessionTask:(id)a3 withTotalBytesWritten:(int64_t)a4 totalBytesExpectedToWrite:(int64_t)a5;
-- (void)cancelPendingRequestsWithError:(id)a3;
-- (void)cancelRequest:(id)a3;
-- (void)cancelRequest:(id)a3 withError:(id)a4;
+- (void)_updateProgressForSessionTask:(id)task withTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)cancelPendingRequestsWithError:(id)error;
+- (void)cancelRequest:(id)request;
+- (void)cancelRequest:(id)request withError:(id)error;
 - (void)dealloc;
-- (void)enqueueDataRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)enqueueDownloadRequest:(id)a3 toDestination:(id)a4 withCompletionHandler:(id)a5;
-- (void)enqueueDownloadRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)enqueueUploadRequest:(id)a3 withCompletionHandler:(id)a4;
+- (void)enqueueDataRequest:(id)request withCompletionHandler:(id)handler;
+- (void)enqueueDownloadRequest:(id)request toDestination:(id)destination withCompletionHandler:(id)handler;
+- (void)enqueueDownloadRequest:(id)request withCompletionHandler:(id)handler;
+- (void)enqueueUploadRequest:(id)request withCompletionHandler:(id)handler;
 - (void)pause;
-- (void)pauseRequest:(id)a3;
+- (void)pauseRequest:(id)request;
 - (void)resume;
-- (void)resumeRequest:(id)a3;
+- (void)resumeRequest:(id)request;
 @end
 
 @implementation ICURLSession
@@ -308,19 +308,19 @@ LABEL_20:
   dispatch_source_set_timer(v19, v18, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
 }
 
-- (void)_updateProgressForSessionTask:(id)a3 withTotalBytesWritten:(int64_t)a4 totalBytesExpectedToWrite:(int64_t)a5
+- (void)_updateProgressForSessionTask:(id)task withTotalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v8 = a3;
+  taskCopy = task;
   accessQueue = self->_accessQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __94__ICURLSession__updateProgressForSessionTask_withTotalBytesWritten_totalBytesExpectedToWrite___block_invoke;
   v11[3] = &unk_1E7BF4E18;
   v11[4] = self;
-  v12 = v8;
-  v13 = a5;
-  v14 = a4;
-  v10 = v8;
+  v12 = taskCopy;
+  writeCopy = write;
+  writtenCopy = written;
+  v10 = taskCopy;
   dispatch_sync(accessQueue, v11);
 }
 
@@ -359,16 +359,16 @@ void __94__ICURLSession__updateProgressForSessionTask_withTotalBytesWritten_tota
   }
 }
 
-- (double)_timeoutForRequest:(id)a3
+- (double)_timeoutForRequest:(id)request
 {
-  v4 = [a3 currentURLRequest];
-  [v4 timeoutInterval];
+  currentURLRequest = [request currentURLRequest];
+  [currentURLRequest timeoutInterval];
   v6 = v5;
 
   if (v6 == 0.0)
   {
-    v7 = [(NSURLSession *)self->_urlSession configuration];
-    [v7 timeoutIntervalForRequest];
+    configuration = [(NSURLSession *)self->_urlSession configuration];
+    [configuration timeoutIntervalForRequest];
     v6 = v8;
   }
 
@@ -470,35 +470,35 @@ void __37__ICURLSession__checkRequestTimeouts__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_newResponseForRequest:(id)a3
+- (id)_newResponseForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 type];
-  if (v4 > 5)
+  requestCopy = request;
+  type = [requestCopy type];
+  if (type > 5)
   {
     v12 = 0;
   }
 
   else
   {
-    if (((1 << v4) & 0x3A) != 0)
+    if (((1 << type) & 0x3A) != 0)
     {
       v5 = objc_alloc([objc_opt_class() _responseClass]);
-      v6 = [v3 urlResponse];
-      v7 = [v3 currentURLRequest];
-      v8 = [v3 responseDataURL];
-      v9 = [v3 aggregatedPerformanceMetrics];
-      v10 = [v5 initWithURLResponse:v6 urlRequest:v7 bodyDataURL:v8 performanceMetrics:v9];
+      urlResponse = [requestCopy urlResponse];
+      currentURLRequest = [requestCopy currentURLRequest];
+      responseDataURL = [requestCopy responseDataURL];
+      aggregatedPerformanceMetrics = [requestCopy aggregatedPerformanceMetrics];
+      v10 = [v5 initWithURLResponse:urlResponse urlRequest:currentURLRequest bodyDataURL:responseDataURL performanceMetrics:aggregatedPerformanceMetrics];
     }
 
     else
     {
       v11 = objc_alloc([objc_opt_class() _responseClass]);
-      v6 = [v3 urlResponse];
-      v7 = [v3 currentURLRequest];
-      v8 = [v3 responseData];
-      v9 = [v3 aggregatedPerformanceMetrics];
-      v10 = [v11 initWithURLResponse:v6 urlRequest:v7 bodyData:v8 performanceMetrics:v9];
+      urlResponse = [requestCopy urlResponse];
+      currentURLRequest = [requestCopy currentURLRequest];
+      responseDataURL = [requestCopy responseData];
+      aggregatedPerformanceMetrics = [requestCopy aggregatedPerformanceMetrics];
+      v10 = [v11 initWithURLResponse:urlResponse urlRequest:currentURLRequest bodyData:responseDataURL performanceMetrics:aggregatedPerformanceMetrics];
     }
 
     v12 = v10;
@@ -507,24 +507,24 @@ void __37__ICURLSession__checkRequestTimeouts__block_invoke(uint64_t a1)
   return v12;
 }
 
-- (id)_createURLSessionTaskForRequest:(id)a3 usingSession:(id)a4
+- (id)_createURLSessionTaskForRequest:(id)request usingSession:(id)session
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 type];
-  if (v9 <= 1)
+  requestCopy = request;
+  sessionCopy = session;
+  type = [requestCopy type];
+  if (type <= 1)
   {
-    if (!v9)
+    if (!type)
     {
-      v10 = [v7 currentURLRequest];
-      v11 = [v8 dataTaskWithRequest:v10];
+      currentURLRequest = [requestCopy currentURLRequest];
+      v11 = [sessionCopy dataTaskWithRequest:currentURLRequest];
       goto LABEL_10;
     }
 
-    if (v9 == 1)
+    if (type == 1)
     {
-      v10 = [v7 currentURLRequest];
-      v11 = [v8 downloadTaskWithRequest:v10];
+      currentURLRequest = [requestCopy currentURLRequest];
+      v11 = [sessionCopy downloadTaskWithRequest:currentURLRequest];
 LABEL_10:
       v12 = v11;
       goto LABEL_12;
@@ -533,36 +533,36 @@ LABEL_10:
     goto LABEL_8;
   }
 
-  if (v9 != 2)
+  if (type != 2)
   {
-    if (v9 == 4)
+    if (type == 4)
     {
-      v10 = [v7 resumeData];
-      v11 = [v8 downloadTaskWithResumeData:v10];
+      currentURLRequest = [requestCopy resumeData];
+      v11 = [sessionCopy downloadTaskWithResumeData:currentURLRequest];
       goto LABEL_10;
     }
 
 LABEL_8:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ICURLSession.m" lineNumber:756 description:{@"unsupported request type %d", objc_msgSend(v7, "type")}];
+    currentURLRequest = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentURLRequest handleFailureInMethod:a2 object:self file:@"ICURLSession.m" lineNumber:756 description:{@"unsupported request type %d", objc_msgSend(requestCopy, "type")}];
     v12 = 0;
     goto LABEL_12;
   }
 
-  v10 = [v7 currentURLRequest];
-  v13 = [v7 currentURLRequest];
-  v14 = [v13 HTTPBody];
-  v12 = [v8 uploadTaskWithRequest:v10 fromData:v14];
+  currentURLRequest = [requestCopy currentURLRequest];
+  currentURLRequest2 = [requestCopy currentURLRequest];
+  hTTPBody = [currentURLRequest2 HTTPBody];
+  v12 = [sessionCopy uploadTaskWithRequest:currentURLRequest fromData:hTTPBody];
 
 LABEL_12:
 
   return v12;
 }
 
-- (id)_requestForTask:(id)a3
+- (id)_requestForTask:(id)task
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  taskCopy = task;
   dispatch_assert_queue_V2(self->_accessQueue);
   v16 = 0u;
   v17 = 0u;
@@ -583,11 +583,11 @@ LABEL_12:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 task];
-        v11 = [v10 taskIdentifier];
-        v12 = [v4 taskIdentifier];
+        task = [v9 task];
+        taskIdentifier = [task taskIdentifier];
+        taskIdentifier2 = [taskCopy taskIdentifier];
 
-        if (v11 == v12)
+        if (taskIdentifier == taskIdentifier2)
         {
           v6 = v9;
           goto LABEL_11;
@@ -609,17 +609,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)_finishRequest:(id)a3
+- (void)_finishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   operationQueue = self->_operationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__ICURLSession__finishRequest___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(operationQueue, v7);
 }
 
@@ -796,17 +796,17 @@ uint64_t __31__ICURLSession__finishRequest___block_invoke_2_65(uint64_t a1)
   return [v3 addObject:v4];
 }
 
-- (void)_processRequest:(id)a3
+- (void)_processRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   operationQueue = self->_operationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__ICURLSession__processRequest___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(operationQueue, v7);
 }
 
@@ -1005,63 +1005,63 @@ void __32__ICURLSession__processRequest___block_invoke_2_62(uint64_t a1)
   [*(a1 + 32) setTask:v2];
 }
 
-- (void)_enqueueRequest:(id)a3
+- (void)_enqueueRequest:(id)request
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ICURLSession.m" lineNumber:541 description:@"_enqueue request called with nil request"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICURLSession.m" lineNumber:541 description:@"_enqueue request called with nil request"];
   }
 
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = +[ICURLRequest _nameForRequestType:](ICURLRequest, "_nameForRequestType:", [v5 type]);
-    v8 = [v5 urlRequest];
-    v9 = [v8 URL];
+    v7 = +[ICURLRequest _nameForRequestType:](ICURLRequest, "_nameForRequestType:", [requestCopy type]);
+    urlRequest = [requestCopy urlRequest];
+    v9 = [urlRequest URL];
     *buf = 138544130;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = v7;
     v24 = 2114;
-    v25 = v5;
+    v25 = requestCopy;
     v26 = 2114;
     v27 = v9;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ enqueueing new %{public}@ request %{public}@ with url %{public}@", buf, 0x2Au);
   }
 
-  [v5 updateState:0];
-  v10 = [MEMORY[0x1E695DF00] date];
-  [v5 _requestWasEnqueuedAt:v10];
+  [requestCopy updateState:0];
+  date = [MEMORY[0x1E695DF00] date];
+  [requestCopy _requestWasEnqueuedAt:date];
 
   accessQueue = self->_accessQueue;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __32__ICURLSession__enqueueRequest___block_invoke;
   v17 = &unk_1E7BFA078;
-  v18 = self;
-  v19 = v5;
-  v12 = v5;
+  selfCopy2 = self;
+  v19 = requestCopy;
+  v12 = requestCopy;
   dispatch_sync(accessQueue, &v14);
   [(ICURLSession *)self _processPendingRequests:v14];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  metricsCopy = metrics;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__ICURLSession_URLSession_task_didFinishCollectingMetrics___block_invoke;
   block[3] = &unk_1E7BFA178;
-  v13 = v8;
-  v14 = self;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = metricsCopy;
+  selfCopy = self;
+  v15 = taskCopy;
+  v10 = taskCopy;
+  v11 = metricsCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -1091,20 +1091,20 @@ void __59__ICURLSession_URLSession_task_didFinishCollectingMetrics___block_invok
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  lCopy = l;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__ICURLSession_URLSession_downloadTask_didFinishDownloadingToURL___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = taskCopy;
+  v14 = lCopy;
+  v10 = lCopy;
+  v11 = taskCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -1210,19 +1210,19 @@ LABEL_17:
   }
 }
 
-- (void)URLSession:(id)a3 avAssetDownloadTask:(id)a4 didReceiveAVAssetDownloadToken:(unint64_t)a5
+- (void)URLSession:(id)session avAssetDownloadTask:(id)task didReceiveAVAssetDownloadToken:(unint64_t)token
 {
   v19 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  taskCopy = task;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
-    v16 = a5;
+    tokenCopy = token;
     v17 = 2114;
-    v18 = v7;
+    v18 = taskCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "%{public}@ Received download token '%llu' for download task %{public}@", buf, 0x20u);
   }
 
@@ -1232,8 +1232,8 @@ LABEL_17:
   v11[2] = __78__ICURLSession_URLSession_avAssetDownloadTask_didReceiveAVAssetDownloadToken___block_invoke;
   v11[3] = &unk_1E7BFA078;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
+  v12 = taskCopy;
+  v10 = taskCopy;
   dispatch_sync(accessQueue, v11);
 }
 
@@ -1249,20 +1249,20 @@ void __78__ICURLSession_URLSession_avAssetDownloadTask_didReceiveAVAssetDownload
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v7 = a4;
-  v8 = a5;
+  taskCopy = task;
+  dataCopy = data;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__ICURLSession_URLSession_dataTask_didReceiveData___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = taskCopy;
+  v14 = dataCopy;
+  v10 = dataCopy;
+  v11 = taskCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -1285,14 +1285,14 @@ void __51__ICURLSession_URLSession_dataTask_didReceiveData___block_invoke(uint64
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E695DF00] date];
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  date = [MEMORY[0x1E695DF00] date];
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -1306,7 +1306,7 @@ void __51__ICURLSession_URLSession_dataTask_didReceiveData___block_invoke(uint64
   block[3] = &unk_1E7BF97E8;
   v28 = &v29;
   block[4] = self;
-  v16 = v11;
+  v16 = taskCopy;
   v27 = v16;
   dispatch_sync(accessQueue, block);
   if (v30[5])
@@ -1321,10 +1321,10 @@ void __51__ICURLSession_URLSession_dataTask_didReceiveData___block_invoke(uint64
     v19[4] = self;
     v25 = &v29;
     v20 = v16;
-    v21 = v12;
-    v22 = v10;
-    v24 = v13;
-    v23 = v14;
+    v21 = responseCopy;
+    v22 = sessionCopy;
+    v24 = handlerCopy;
+    v23 = date;
     dispatch_async(operationQueue, v19);
   }
 
@@ -1334,13 +1334,13 @@ void __51__ICURLSession_URLSession_dataTask_didReceiveData___block_invoke(uint64
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy = self;
       v37 = 2114;
       v38 = v16;
       _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ no request for data task %{public}@ - ignoring", buf, 0x16u);
     }
 
-    (*(v13 + 2))(v13, 1);
+    (*(handlerCopy + 2))(handlerCopy, 1);
   }
 
   _Block_object_dispose(&v29, 8);
@@ -1467,13 +1467,13 @@ void __73__ICURLSession_URLSession_dataTask_didReceiveResponse_completionHandler
   v16();
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x1E695DF00] date];
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  date = [MEMORY[0x1E695DF00] date];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x3032000000;
@@ -1487,7 +1487,7 @@ void __73__ICURLSession_URLSession_dataTask_didReceiveResponse_completionHandler
   block[3] = &unk_1E7BF97E8;
   v33 = v34;
   block[4] = self;
-  v17 = v11;
+  v17 = taskCopy;
   v32 = v17;
   dispatch_sync(accessQueue, block);
   operationQueue = self->_operationQueue;
@@ -1495,18 +1495,18 @@ void __73__ICURLSession_URLSession_dataTask_didReceiveResponse_completionHandler
   v24[1] = 3221225472;
   v24[2] = __88__ICURLSession_URLSession_task_willPerformHTTPRedirection_newRequest_completionHandler___block_invoke_2;
   v24[3] = &unk_1E7BF4D78;
-  v29 = v14;
+  v29 = handlerCopy;
   v30 = v34;
   v24[4] = self;
-  v25 = v12;
-  v26 = v13;
+  v25 = redirectionCopy;
+  v26 = requestCopy;
   v27 = v17;
-  v28 = v15;
-  v19 = v15;
+  v28 = date;
+  v19 = date;
   v20 = v17;
-  v21 = v13;
-  v22 = v12;
-  v23 = v14;
+  v21 = requestCopy;
+  v22 = redirectionCopy;
+  v23 = handlerCopy;
   dispatch_async(operationQueue, v24);
 
   _Block_object_dispose(v34, 8);
@@ -1712,12 +1712,12 @@ void __88__ICURLSession_URLSession_task_willPerformHTTPRedirection_newRequest_co
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -1731,30 +1731,30 @@ void __88__ICURLSession_URLSession_task_willPerformHTTPRedirection_newRequest_co
   block[3] = &unk_1E7BF97E8;
   v25 = &v26;
   block[4] = self;
-  v15 = v11;
+  v15 = taskCopy;
   v24 = v15;
   dispatch_sync(accessQueue, block);
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [v27[5] setLastUpdateTime:?];
-  v16 = [v12 protectionSpace];
-  v17 = [v16 authenticationMethod];
-  if (![v17 isEqualToString:*MEMORY[0x1E695AB40]])
+  protectionSpace = [challengeCopy protectionSpace];
+  authenticationMethod = [protectionSpace authenticationMethod];
+  if (![authenticationMethod isEqualToString:*MEMORY[0x1E695AB40]])
   {
-    if ([v17 isEqualToString:*MEMORY[0x1E695AB80]])
+    if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB80]])
     {
-      v18 = +[ICDeviceInfo currentDeviceInfo];
-      if (![v18 isInternalBuild])
+      sender = +[ICDeviceInfo currentDeviceInfo];
+      if (![sender isInternalBuild])
       {
         v19 = 1;
         goto LABEL_3;
       }
 
       v21 = +[ICDefaults standardDefaults];
-      v22 = [v21 ignoreExtendedCertificateValidation];
+      ignoreExtendedCertificateValidation = [v21 ignoreExtendedCertificateValidation];
 
-      if (v22)
+      if (ignoreExtendedCertificateValidation)
       {
-        v20 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(v16, "serverTrust")}];
+        v20 = [MEMORY[0x1E695AC48] credentialForTrust:{objc_msgSend(protectionSpace, "serverTrust")}];
         v19 = 0;
         goto LABEL_9;
       }
@@ -1765,13 +1765,13 @@ void __88__ICURLSession_URLSession_task_willPerformHTTPRedirection_newRequest_co
     goto LABEL_9;
   }
 
-  v18 = [v12 sender];
+  sender = [challengeCopy sender];
   v19 = objc_opt_respondsToSelector() & 1;
 LABEL_3:
 
   v20 = 0;
 LABEL_9:
-  v13[2](v13, v19, v20);
+  handlerCopy[2](handlerCopy, v19, v20);
 
   _Block_object_dispose(&v26, 8);
 }
@@ -1786,23 +1786,23 @@ uint64_t __70__ICURLSession_URLSession_task_didReceiveChallenge_completionHandle
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF00] date];
+  taskCopy = task;
+  errorCopy = error;
+  date = [MEMORY[0x1E695DF00] date];
   accessQueue = self->_accessQueue;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__ICURLSession_URLSession_task_didCompleteWithError___block_invoke;
   v14[3] = &unk_1E7BFA1F0;
   v14[4] = self;
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = taskCopy;
+  v16 = errorCopy;
+  v17 = date;
+  v11 = date;
+  v12 = errorCopy;
+  v13 = taskCopy;
   dispatch_sync(accessQueue, v14);
 }
 
@@ -2073,17 +2073,17 @@ void __21__ICURLSession_pause__block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelPendingRequestsWithError:(id)a3
+- (void)cancelPendingRequestsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ICURLSession_cancelPendingRequestsWithError___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -2140,20 +2140,20 @@ void __47__ICURLSession_cancelPendingRequestsWithError___block_invoke(uint64_t a
   }
 }
 
-- (void)cancelRequest:(id)a3 withError:(id)a4
+- (void)cancelRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  errorCopy = error;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__ICURLSession_cancelRequest_withError___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2204,25 +2204,25 @@ void __40__ICURLSession_cancelRequest_withError___block_invoke(uint64_t a1)
   }
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
+  requestCopy = request;
   v6 = [v4 errorWithDomain:@"ICError" code:-7004 userInfo:0];
-  [(ICURLSession *)self cancelRequest:v5 withError:v6];
+  [(ICURLSession *)self cancelRequest:requestCopy withError:v6];
 }
 
-- (void)resumeRequest:(id)a3
+- (void)resumeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__ICURLSession_resumeRequest___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -2264,17 +2264,17 @@ uint64_t __30__ICURLSession_resumeRequest___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)pauseRequest:(id)a3
+- (void)pauseRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   accessQueue = self->_accessQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __29__ICURLSession_pauseRequest___block_invoke;
   v10 = &unk_1E7BFA078;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(accessQueue, &v7);
   [(ICURLSession *)self _processPendingRequests:v7];
 }
@@ -2303,13 +2303,13 @@ uint64_t __29__ICURLSession_pauseRequest___block_invoke(uint64_t a1)
   return [*(a1 + 40) setRequestState:2];
 }
 
-- (void)enqueueDownloadRequest:(id)a3 toDestination:(id)a4 withCompletionHandler:(id)a5
+- (void)enqueueDownloadRequest:(id)request toDestination:(id)destination withCompletionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a3;
-  v10 = [v12 resumeData];
-  if (v10)
+  handlerCopy = handler;
+  destinationCopy = destination;
+  requestCopy = request;
+  resumeData = [requestCopy resumeData];
+  if (resumeData)
   {
     v11 = 4;
   }
@@ -2319,53 +2319,53 @@ uint64_t __29__ICURLSession_pauseRequest___block_invoke(uint64_t a1)
     v11 = 1;
   }
 
-  [v12 setType:v11];
+  [requestCopy setType:v11];
 
-  [v12 setCompletionHandler:v8];
-  [v12 setResponseDataURL:v9];
+  [requestCopy setCompletionHandler:handlerCopy];
+  [requestCopy setResponseDataURL:destinationCopy];
 
-  [(ICURLSession *)self _enqueueRequest:v12];
+  [(ICURLSession *)self _enqueueRequest:requestCopy];
 }
 
-- (void)enqueueDownloadRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)enqueueDownloadRequest:(id)request withCompletionHandler:(id)handler
 {
   v6 = MEMORY[0x1E695DFF8];
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v9 = NSTemporaryDirectory();
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
-  v13 = [v10 stringWithFormat:@"tmp.%@", v12];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v13 = [v10 stringWithFormat:@"tmp.%@", uUIDString];
   v14 = [v9 stringByAppendingPathComponent:v13];
   v15 = [v6 fileURLWithPath:v14];
 
-  [(ICURLSession *)self enqueueDownloadRequest:v8 toDestination:v15 withCompletionHandler:v7];
+  [(ICURLSession *)self enqueueDownloadRequest:requestCopy toDestination:v15 withCompletionHandler:handlerCopy];
 }
 
-- (void)enqueueUploadRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)enqueueUploadRequest:(id)request withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setType:2];
-  [v7 setCompletionHandler:v6];
+  handlerCopy = handler;
+  requestCopy = request;
+  [requestCopy setType:2];
+  [requestCopy setCompletionHandler:handlerCopy];
 
-  [(ICURLSession *)self _enqueueRequest:v7];
+  [(ICURLSession *)self _enqueueRequest:requestCopy];
 }
 
-- (void)enqueueDataRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)enqueueDataRequest:(id)request withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 urlRequest];
-  v9 = [v8 URL];
+  requestCopy = request;
+  handlerCopy = handler;
+  urlRequest = [requestCopy urlRequest];
+  v9 = [urlRequest URL];
 
   if (v9 && ([v9 host], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v11))
   {
-    [v6 setType:0];
-    [v6 setCompletionHandler:v7];
-    [(ICURLSession *)self _enqueueRequest:v6];
+    [requestCopy setType:0];
+    [requestCopy setCompletionHandler:handlerCopy];
+    [(ICURLSession *)self _enqueueRequest:requestCopy];
   }
 
   else
@@ -2374,7 +2374,7 @@ uint64_t __29__ICURLSession_pauseRequest___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy = self;
       v22 = 2114;
       v23 = v9;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Enqueued data request with invalid url '%{public}@'", buf, 0x16u);
@@ -2390,7 +2390,7 @@ uint64_t __29__ICURLSession_pauseRequest___block_invoke(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __57__ICURLSession_enqueueDataRequest_withCompletionHandler___block_invoke;
     block[3] = &unk_1E7BF9EC8;
-    v19 = v7;
+    v19 = handlerCopy;
     v18 = v9;
     dispatch_async(operationQueue, block);
   }
@@ -2416,25 +2416,25 @@ void __57__ICURLSession_enqueueDataRequest_withCompletionHandler___block_invoke(
   [(ICURLSession *)&v4 dealloc];
 }
 
-- (ICURLSession)initWithConfiguration:(id)a3 maxConcurrentRequests:(unint64_t)a4 qualityOfService:(int64_t)a5
+- (ICURLSession)initWithConfiguration:(id)configuration maxConcurrentRequests:(unint64_t)requests qualityOfService:(int64_t)service
 {
-  v8 = a3;
+  configurationCopy = configuration;
   v40.receiver = self;
   v40.super_class = ICURLSession;
   v9 = [(ICURLSession *)&v40 init];
   v10 = v9;
   if (v9)
   {
-    v9->_maxConcurrentRequests = a4;
+    v9->_maxConcurrentRequests = requests;
     v11 = dispatch_queue_create("com.apple.iTunesCloud.ICURLSession.access", 0);
     accessQueue = v10->_accessQueue;
     v10->_accessQueue = v11;
 
     v13 = MEMORY[0x1E69E96A8];
     v14 = MEMORY[0x1E69E96A8];
-    if (a5 != -1)
+    if (service != -1)
     {
-      v15 = __ROR8__(a5 - 9, 3);
+      v15 = __ROR8__(service - 9, 3);
       if (v15 >= 4)
       {
         v16 = QOS_CLASS_UNSPECIFIED;
@@ -2481,14 +2481,14 @@ void __57__ICURLSession_enqueueDataRequest_withCompletionHandler___block_invoke(
     dispatch_source_set_event_handler(v29, &v34);
     dispatch_source_set_timer(v10->_requestTimeoutTimer, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
     dispatch_resume(v10->_requestTimeoutTimer);
-    [v8 timeoutIntervalForRequest];
+    [configurationCopy timeoutIntervalForRequest];
     if (v30 == 0.0)
     {
-      [v8 setTimeoutIntervalForRequest:120.0];
+      [configurationCopy setTimeoutIntervalForRequest:120.0];
     }
 
-    [v8 set_timingDataOptions:5];
-    v31 = [(ICURLSession *)v10 _createURLSessionWithConfiguration:v8];
+    [configurationCopy set_timingDataOptions:5];
+    v31 = [(ICURLSession *)v10 _createURLSessionWithConfiguration:configurationCopy];
     urlSession = v10->_urlSession;
     v10->_urlSession = v31;
 
@@ -2512,8 +2512,8 @@ void __77__ICURLSession_initWithConfiguration_maxConcurrentRequests_qualityOfSer
 
 - (ICURLSession)init
 {
-  v3 = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
-  v4 = [(ICURLSession *)self initWithConfiguration:v3];
+  ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] ephemeralSessionConfiguration];
+  v4 = [(ICURLSession *)self initWithConfiguration:ephemeralSessionConfiguration];
 
   return v4;
 }

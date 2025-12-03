@@ -1,16 +1,16 @@
 @interface CSAttendingServiceClient
-- (BOOL)_isAttendingAllowedForUseCase:(int64_t)a3;
+- (BOOL)_isAttendingAllowedForUseCase:(int64_t)case;
 - (CSAttendingServiceClient)init;
 - (CSAttendingServiceDelegate)delegate;
 - (void)_createClientConnection;
 - (void)_setupRemoteServiceProxyObject;
-- (void)attendingStoppedWithReason:(int64_t)a3;
+- (void)attendingStoppedWithReason:(int64_t)reason;
 - (void)dealloc;
 - (void)invalidate;
 - (void)speechPauseDetected;
-- (void)speechStartDetectedWithEventInfo:(id)a3;
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4;
-- (void)stopAttendingWithReason:(int64_t)a3;
+- (void)speechStartDetectedWithEventInfo:(id)info;
+- (void)startAttendingWithOptions:(id)options completion:(id)completion;
+- (void)stopAttendingWithReason:(int64_t)reason;
 @end
 
 @implementation CSAttendingServiceClient
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (BOOL)_isAttendingAllowedForUseCase:(int64_t)a3
+- (BOOL)_isAttendingAllowedForUseCase:(int64_t)case
 {
-  if (a3 != 6 && a3 != 1)
+  if (case != 6 && case != 1)
   {
     return 1;
   }
 
   v7 = [CSAttSiriMagusSupportedPolicy sharedInstance:v4];
-  v8 = [v7 getIsAssetMagusSupported];
+  getIsAssetMagusSupported = [v7 getIsAssetMagusSupported];
 
-  return v8;
+  return getIsAssetMagusSupported;
 }
 
 - (void)_createClientConnection
@@ -140,37 +140,37 @@
   [WeakRetained speechPauseDetected];
 }
 
-- (void)speechStartDetectedWithEventInfo:(id)a3
+- (void)speechStartDetectedWithEventInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSAttendingServiceClient speechStartDetectedWithEventInfo:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v7, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained speechStartDetectedWithEventInfo:v4];
+  [WeakRetained speechStartDetectedWithEventInfo:infoCopy];
 }
 
-- (void)attendingStoppedWithReason:(int64_t)a3
+- (void)attendingStoppedWithReason:(int64_t)reason
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    if ((a3 - 1) > 8)
+    if ((reason - 1) > 8)
     {
       v7 = @"Default";
     }
 
     else
     {
-      v7 = *(&off_100250440 + a3 - 1);
+      v7 = *(&off_100250440 + reason - 1);
     }
 
     v8 = v7;
@@ -182,10 +182,10 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained attendingStoppedWithReason:a3];
+  [WeakRetained attendingStoppedWithReason:reason];
 }
 
-- (void)stopAttendingWithReason:(int64_t)a3
+- (void)stopAttendingWithReason:(int64_t)reason
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -201,7 +201,7 @@
   v7 = self->_remoteObjectProxy;
   if (v7)
   {
-    [v7 stopAttendingWithReason:a3];
+    [v7 stopAttendingWithReason:reason];
   }
 
   else
@@ -216,23 +216,23 @@
   }
 }
 
-- (void)startAttendingWithOptions:(id)a3 completion:(id)a4
+- (void)startAttendingWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v21 = "[CSAttendingServiceClient startAttendingWithOptions:completion:]";
     v22 = 2112;
-    v23 = v6;
+    v23 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  if (!-[CSAttendingServiceClient _isAttendingAllowedForUseCase:](self, "_isAttendingAllowedForUseCase:", [v6 attendingType]))
+  if (!-[CSAttendingServiceClient _isAttendingAllowedForUseCase:](self, "_isAttendingAllowedForUseCase:", [optionsCopy attendingType]))
   {
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Attending is not allowed for usecase: %lu", [v6 attendingType]);
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Attending is not allowed for usecase: %lu", [optionsCopy attendingType]);
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -243,7 +243,7 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v14 = CSErrorDomain;
       v18 = NSLocalizedDescriptionKey;
@@ -251,7 +251,7 @@
       v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v16 = [NSError errorWithDomain:v14 code:2108 userInfo:v15];
 
-      v7[2](v7, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
 
     goto LABEL_15;
@@ -266,34 +266,34 @@
       *buf = 136315138;
       v21 = "[CSAttendingServiceClient startAttendingWithOptions:completion:]";
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Cannot start attending since unable to setup remoteObjectProxy", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_16;
     }
 
     v12 = [NSError errorWithDomain:CSErrorDomain code:2101 userInfo:0];
-    v7[2](v7, 0, v12);
+    completionCopy[2](completionCopy, 0, v12);
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v9 = [v6 deviceId];
+  deviceId = [optionsCopy deviceId];
 
-  if (v9)
+  if (deviceId)
   {
     v10 = +[CSOpportuneSpeakListenerDeviceManager sharedManager];
-    v11 = [v6 deviceId];
-    [v10 setDeviceId:v11];
+    deviceId2 = [optionsCopy deviceId];
+    [v10 setDeviceId:deviceId2];
   }
 
-  [self->_remoteObjectProxy startAttendingWithOptions:v6 completion:v7];
+  [self->_remoteObjectProxy startAttendingWithOptions:optionsCopy completion:completionCopy];
 LABEL_16:
 }
 

@@ -1,8 +1,8 @@
 @interface MSVABTestGenerator
-- (MSVABTestGenerator)initWithProbabilityForOutcomeA:(float)a3;
+- (MSVABTestGenerator)initWithProbabilityForOutcomeA:(float)a;
 - (int64_t)lastOutcome;
 - (int64_t)nextOutcome;
-- (void)updateProbabilityForOutcomeA:(float)a3;
+- (void)updateProbabilityForOutcomeA:(float)a;
 @end
 
 @implementation MSVABTestGenerator
@@ -60,22 +60,22 @@
   return v6;
 }
 
-- (void)updateProbabilityForOutcomeA:(float)a3
+- (void)updateProbabilityForOutcomeA:(float)a
 {
-  self->_probabilityForOutcomeA = a3;
+  self->_probabilityForOutcomeA = a;
   self->_totalForOutcomeA = 0;
   self->_totalForOutcomeB = 0;
   self->_totalExperiments = 0;
 }
 
-- (MSVABTestGenerator)initWithProbabilityForOutcomeA:(float)a3
+- (MSVABTestGenerator)initWithProbabilityForOutcomeA:(float)a
 {
   v5.receiver = self;
   v5.super_class = MSVABTestGenerator;
   result = [(MSVABTestGenerator *)&v5 init];
   if (result)
   {
-    result->_probabilityForOutcomeA = a3;
+    result->_probabilityForOutcomeA = a;
     result->_totalExperiments = 0;
     result->_totalForOutcomeA = 0;
   }

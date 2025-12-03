@@ -1,30 +1,30 @@
 @interface ManagedOutputStream
-- (ManagedOutputStream)initWithPaused:(BOOL)a3 attributedTo:(id)a4 definition:(id)a5 renderBlock:(id)a6;
+- (ManagedOutputStream)initWithPaused:(BOOL)paused attributedTo:(id)to definition:(id)definition renderBlock:(id)block;
 - (id).cxx_construct;
-- (void)setRenderer:(weak_ptr<Phase::Controller::StreamRenderer>)a3;
+- (void)setRenderer:(weak_ptr<Phase::Controller::StreamRenderer>)renderer;
 - (weak_ptr<Phase::Controller::StreamRenderer>)renderer;
 @end
 
 @implementation ManagedOutputStream
 
-- (ManagedOutputStream)initWithPaused:(BOOL)a3 attributedTo:(id)a4 definition:(id)a5 renderBlock:(id)a6
+- (ManagedOutputStream)initWithPaused:(BOOL)paused attributedTo:(id)to definition:(id)definition renderBlock:(id)block
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  toCopy = to;
+  definitionCopy = definition;
+  blockCopy = block;
   v19.receiver = self;
   v19.super_class = ManagedOutputStream;
   v14 = [(ManagedOutputStream *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_streamPaused = a3;
-    objc_storeStrong(&v14->_definition, a5);
-    v16 = _Block_copy(v13);
+    v14->_streamPaused = paused;
+    objc_storeStrong(&v14->_definition, definition);
+    v16 = _Block_copy(blockCopy);
     renderBlock = v15->_renderBlock;
     v15->_renderBlock = v16;
 
-    objc_storeStrong(&v15->_attributedClientID, a4);
+    objc_storeStrong(&v15->_attributedClientID, to);
   }
 
   return v15;
@@ -45,10 +45,10 @@
   return result;
 }
 
-- (void)setRenderer:(weak_ptr<Phase::Controller::StreamRenderer>)a3
+- (void)setRenderer:(weak_ptr<Phase::Controller::StreamRenderer>)renderer
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *renderer.__ptr_;
+  v3 = *(renderer.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 16), 1uLL, memory_order_relaxed);

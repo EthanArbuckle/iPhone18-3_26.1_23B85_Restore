@@ -1,26 +1,26 @@
 @interface AFSiriTether
 - (AFSiriTether)init;
-- (AFSiriTether)initWithInstanceContext:(id)a3;
+- (AFSiriTether)initWithInstanceContext:(id)context;
 - (id)_connection;
-- (void)_attach:(id)a3;
-- (void)_attachmentStatusUpdate:(BOOL)a3;
-- (void)_connectionInterrupted:(id)a3;
-- (void)_connectionInvalid:(id)a3;
+- (void)_attach:(id)_attach;
+- (void)_attachmentStatusUpdate:(BOOL)update;
+- (void)_connectionInterrupted:(id)interrupted;
+- (void)_connectionInvalid:(id)invalid;
 - (void)_listenForLaunchNotification;
-- (void)_logEvent:(id)a3;
-- (void)attach:(id)a3;
+- (void)_logEvent:(id)event;
+- (void)attach:(id)attach;
 - (void)dealloc;
-- (void)setAttachmentStatusChangedHandler:(id)a3;
-- (void)waitForAttachment:(double)a3;
+- (void)setAttachmentStatusChangedHandler:(id)handler;
+- (void)waitForAttachment:(double)attachment;
 @end
 
 @implementation AFSiriTether
 
-- (void)_logEvent:(id)a3
+- (void)_logEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   pendingEvents = self->_pendingEvents;
-  v12 = v4;
+  v12 = eventCopy;
   if (self->_isAttached)
   {
     if ([(NSMutableArray *)pendingEvents count])
@@ -45,11 +45,11 @@
       v11 = self->_pendingEvents;
       self->_pendingEvents = v10;
 
-      v4 = v12;
+      eventCopy = v12;
       pendingEvents = self->_pendingEvents;
     }
 
-    [(NSMutableArray *)pendingEvents addObject:v4];
+    [(NSMutableArray *)pendingEvents addObject:eventCopy];
   }
 }
 
@@ -99,24 +99,24 @@ void __44__AFSiriTether__listenForLaunchNotification__block_invoke(uint64_t a1)
   [WeakRetained attach:0];
 }
 
-- (void)_attachmentStatusUpdate:(BOOL)a3
+- (void)_attachmentStatusUpdate:(BOOL)update
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_isAttached != a3)
+  if (self->_isAttached != update)
   {
-    v3 = a3;
+    updateCopy = update;
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
     {
       v10 = 136315394;
       v11 = "[AFSiriTether _attachmentStatusUpdate:]";
       v12 = 1024;
-      v13 = v3;
+      v13 = updateCopy;
       _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s %d", &v10, 0x12u);
     }
 
-    self->_isAttached = v3;
-    if (v3)
+    self->_isAttached = updateCopy;
+    if (updateCopy)
     {
       v6 = 1922;
     }
@@ -139,24 +139,24 @@ void __44__AFSiriTether__listenForLaunchNotification__block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_attach:(id)a3
+- (void)_attach:(id)_attach
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  _attachCopy = _attach;
+  v5 = _attachCopy;
   if (self->_isAttached)
   {
-    if (v4)
+    if (_attachCopy)
     {
-      (*(v4 + 2))(v4, 1);
+      (*(_attachCopy + 2))(_attachCopy, 1);
     }
   }
 
   else
   {
     [(AFSiriTether *)self _listenForLaunchNotification];
-    v6 = [(AFSiriTether *)self _connection];
-    if (v6)
+    _connection = [(AFSiriTether *)self _connection];
+    if (_connection)
     {
       v7 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -176,7 +176,7 @@ void __44__AFSiriTether__listenForLaunchNotification__block_invoke(uint64_t a1)
       handler[3] = &unk_1E7348638;
       handler[4] = self;
       v12 = v5;
-      xpc_connection_send_message_with_reply(v6, v8, queue, handler);
+      xpc_connection_send_message_with_reply(_connection, v8, queue, handler);
     }
 
     else if (v5)
@@ -215,10 +215,10 @@ uint64_t __24__AFSiriTether__attach___block_invoke(uint64_t a1, uint64_t a2)
   return result;
 }
 
-- (void)_connectionInvalid:(id)a3
+- (void)_connectionInvalid:(id)invalid
 {
   connection = self->_connection;
-  if (connection == a3 && connection != 0)
+  if (connection == invalid && connection != 0)
   {
     xpc_connection_cancel(connection);
     v6 = self->_connection;
@@ -228,9 +228,9 @@ uint64_t __24__AFSiriTether__attach___block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)_connectionInterrupted:(id)a3
+- (void)_connectionInterrupted:(id)interrupted
 {
-  if (self->_connection == a3)
+  if (self->_connection == interrupted)
   {
     [(AFSiriTether *)self _attachmentStatusUpdate:0];
   }
@@ -312,17 +312,17 @@ void __27__AFSiriTether__connection__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)setAttachmentStatusChangedHandler:(id)a3
+- (void)setAttachmentStatusChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__AFSiriTether_setAttachmentStatusChangedHandler___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -334,10 +334,10 @@ void __50__AFSiriTether_setAttachmentStatusChangedHandler___block_invoke(uint64_
   *(v3 + 40) = v2;
 }
 
-- (void)waitForAttachment:(double)a3
+- (void)waitForAttachment:(double)attachment
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 > 0.0 && (v5 = dispatch_group_create()) != 0)
+  if (attachment > 0.0 && (v5 = dispatch_group_create()) != 0)
   {
     v6 = v5;
     dispatch_group_enter(v5);
@@ -355,11 +355,11 @@ void __50__AFSiriTether_setAttachmentStatusChangedHandler___block_invoke(uint64_
       *buf = 136315394;
       v25 = "[AFSiriTether waitForAttachment:]";
       v26 = 2048;
-      v27 = a3;
+      attachmentCopy = attachment;
       _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s Waiting for attachment %lf", buf, 0x16u);
     }
 
-    v10 = dispatch_time(0, (a3 * 1000000000.0));
+    v10 = dispatch_time(0, (attachment * 1000000000.0));
     v11 = dispatch_group_wait(v7, v10);
     v12 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -367,7 +367,7 @@ void __50__AFSiriTether_setAttachmentStatusChangedHandler___block_invoke(uint64_
       *buf = 136315394;
       v25 = "[AFSiriTether waitForAttachment:]";
       v26 = 1024;
-      LODWORD(v27) = v11 == 0;
+      LODWORD(attachmentCopy) = v11 == 0;
       _os_log_impl(&dword_1912FE000, v12, OS_LOG_TYPE_INFO, "%s Wait finished %d", buf, 0x12u);
     }
 
@@ -404,9 +404,9 @@ uint64_t __34__AFSiriTether_waitForAttachment___block_invoke_8(uint64_t a1)
   return [v2 _logEvent:v3];
 }
 
-- (void)attach:(id)a3
+- (void)attach:(id)attach
 {
-  v4 = a3;
+  attachCopy = attach;
   v5 = AFAnalyticsEventCreateCurrent(1920, 0);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -415,8 +415,8 @@ uint64_t __34__AFSiriTether_waitForAttachment___block_invoke_8(uint64_t a1)
   block[3] = &unk_1E73496E8;
   block[4] = self;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = attachCopy;
+  v7 = attachCopy;
   v8 = v5;
   dispatch_async(queue, block);
 }
@@ -468,9 +468,9 @@ uint64_t __23__AFSiriTether_attach___block_invoke_2(uint64_t a1, uint64_t a2)
   [(AFSiriTether *)&v4 dealloc];
 }
 
-- (AFSiriTether)initWithInstanceContext:(id)a3
+- (AFSiriTether)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = AFSiriTether;
   v5 = [(AFSiriTether *)&v12 init];
@@ -483,9 +483,9 @@ uint64_t __23__AFSiriTether_attach___block_invoke_2(uint64_t a1, uint64_t a2)
     v5->_queue = v7;
 
     v5->_notifyToken = -1;
-    if (v4)
+    if (contextCopy)
     {
-      v9 = v4;
+      v9 = contextCopy;
     }
 
     else

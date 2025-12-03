@@ -1,15 +1,15 @@
 @interface AltitudeRichXLDialView
-- (CircularLayoutConstants)_layoutConstantsForDevice:(id)a3;
+- (CircularLayoutConstants)_layoutConstantsForDevice:(id)device;
 - (id)unitFont;
 - (id)valueFont;
 @end
 
 @implementation AltitudeRichXLDialView
 
-- (CircularLayoutConstants)_layoutConstantsForDevice:(id)a3
+- (CircularLayoutConstants)_layoutConstantsForDevice:(id)device
 {
   p_layoutConstants = &self->_layoutConstants;
-  sub_23BD2B63C(self, a3);
+  sub_23BD2B63C(self, device);
   v4 = *&qword_27E1C4B28;
   v5 = *&qword_27E1C4B30;
   v6 = *&qword_27E1C4B38;

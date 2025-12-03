@@ -5,7 +5,7 @@
 - (id)copyNearbyPairedDeviceName;
 - (id)copyNearbyPairedDeviceProductName;
 - (id)copyNearbyPairedDeviceUniqueID;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
 - (void)updateNearbyPairedDevice;
 @end
 
@@ -38,7 +38,7 @@
   return v2;
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   IsNearbyPairedDevicePresentAndConnected = CMSM_IDSConnection_IsNearbyPairedDevicePresentAndConnected();
   if (IsNearbyPairedDevicePresentAndConnected != service_connectedDevicesChanged__nearbyPairedDeviceIsConnectedOldValue)
@@ -52,12 +52,12 @@
 - (void)updateNearbyPairedDevice
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(IDSService *)self->pIdsService devices];
+  devices = [(IDSService *)self->pIdsService devices];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -68,7 +68,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(devices);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [devices countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -111,16 +111,16 @@ LABEL_12:
   pNearbyPairedDevice = self->pNearbyPairedDevice;
   if (pNearbyPairedDevice)
   {
-    v4 = [(IDSDevice *)pNearbyPairedDevice uniqueIDOverride];
+    uniqueIDOverride = [(IDSDevice *)pNearbyPairedDevice uniqueIDOverride];
   }
 
   else
   {
-    v4 = 0;
+    uniqueIDOverride = 0;
   }
 
   FigSimpleMutexUnlock();
-  return v4;
+  return uniqueIDOverride;
 }
 
 - (id)copyNearbyPairedDeviceProductName
@@ -129,16 +129,16 @@ LABEL_12:
   pNearbyPairedDevice = self->pNearbyPairedDevice;
   if (pNearbyPairedDevice)
   {
-    v4 = [(IDSDevice *)pNearbyPairedDevice productName];
+    productName = [(IDSDevice *)pNearbyPairedDevice productName];
   }
 
   else
   {
-    v4 = 0;
+    productName = 0;
   }
 
   FigSimpleMutexUnlock();
-  return v4;
+  return productName;
 }
 
 - (id)copyNearbyPairedDeviceModelIdentifier
@@ -147,16 +147,16 @@ LABEL_12:
   pNearbyPairedDevice = self->pNearbyPairedDevice;
   if (pNearbyPairedDevice)
   {
-    v4 = [(IDSDevice *)pNearbyPairedDevice modelIdentifier];
+    modelIdentifier = [(IDSDevice *)pNearbyPairedDevice modelIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    modelIdentifier = 0;
   }
 
   FigSimpleMutexUnlock();
-  return v4;
+  return modelIdentifier;
 }
 
 - (id)copyNearbyPairedDeviceName
@@ -165,16 +165,16 @@ LABEL_12:
   pNearbyPairedDevice = self->pNearbyPairedDevice;
   if (pNearbyPairedDevice)
   {
-    v4 = [(IDSDevice *)pNearbyPairedDevice name];
+    name = [(IDSDevice *)pNearbyPairedDevice name];
   }
 
   else
   {
-    v4 = 0;
+    name = 0;
   }
 
   FigSimpleMutexUnlock();
-  return v4;
+  return name;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface TSDMSGExtSyncSession
-+ (id)withConfig:(id *)a3 andCallback:(id)a4;
++ (id)withConfig:(id *)config andCallback:(id)callback;
 - ($9A6480CA0849F83AAA69585CA702AD28)config;
 - (_opaque_pthread_cond_t)sessionCond;
 - (_opaque_pthread_mutex_t)sessionMutex;
@@ -11,32 +11,32 @@
 - (void)dealloc;
 - (void)monitorSyncSessionThread;
 - (void)runSyncSessionThread;
-- (void)setSessionCond:(_opaque_pthread_cond_t *)a3;
-- (void)setSessionMutex:(_opaque_pthread_mutex_t *)a3;
+- (void)setSessionCond:(_opaque_pthread_cond_t *)cond;
+- (void)setSessionMutex:(_opaque_pthread_mutex_t *)mutex;
 @end
 
 @implementation TSDMSGExtSyncSession
 
-+ (id)withConfig:(id *)a3 andCallback:(id)a4
++ (id)withConfig:(id *)config andCallback:(id)callback
 {
-  v5 = a4;
+  callbackCopy = callback;
   v6 = objc_alloc_init(TSDMSGExtSyncSession);
   v7 = v6;
   if (v6)
   {
     v6->_startTime.tv_sec = 0;
     v6->_startTime.tv_nsec = 0;
-    *&v6->_config.syncId = *&a3->var0;
-    v8 = *&a3->var2.var1;
-    v9 = *&a3->var3.var1;
-    v10 = *&a3->var5;
-    v6->_config.simulationFilePath = a3->var7;
+    *&v6->_config.syncId = *&config->var0;
+    v8 = *&config->var2.var1;
+    v9 = *&config->var3.var1;
+    v10 = *&config->var5;
+    v6->_config.simulationFilePath = config->var7;
     *&v6->_config.toleranceSyncOutputNs = v10;
     *&v6->_config.syncMultiplier.denominator = v9;
     *&v6->_config.nominalTriggerDuration.denominator = v8;
     v6->_timeToLockNs = 0;
     v6->_triggerLostCnt = 0;
-    v6->_callback = v5;
+    v6->_callback = callbackCopy;
     v6->_triggerPresent = 0;
     *&v6->_syncSessionLocked = 0;
     v6->_maxTargetDuration = 0;
@@ -95,21 +95,21 @@
   }
 
   [(TSDMSGExtSyncSession *)self setSyncSessionThreadState:1];
-  v4 = [(TSDMSGExtSyncSession *)self dispatchGroup];
+  dispatchGroup = [(TSDMSGExtSyncSession *)self dispatchGroup];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F388;
   block[3] = &unk_10004D128;
   block[4] = self;
-  dispatch_group_async(v4, qword_1000588B8, block);
+  dispatch_group_async(dispatchGroup, qword_1000588B8, block);
 
-  v5 = [(TSDMSGExtSyncSession *)self dispatchGroup];
+  dispatchGroup2 = [(TSDMSGExtSyncSession *)self dispatchGroup];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10001F390;
   v16[3] = &unk_10004D128;
   v16[4] = self;
-  dispatch_group_async(v5, qword_1000588B8, v16);
+  dispatch_group_async(dispatchGroup2, qword_1000588B8, v16);
 
   pthread_mutex_lock(&self->_sessionMutex);
   __tp.tv_sec = 0;
@@ -117,7 +117,7 @@
   [(TSDMSGExtSyncSession *)self config];
   [(TSDMSGExtSyncSession *)self config];
   sub_10001F398(&__tp, v14 / 0x3B9ACA00, v21 % 0x3B9ACA00);
-  v3 = -536870199;
+  exitStatus = -536870199;
   while (![(TSDMSGExtSyncSession *)self syncSessionLocked]&& [(TSDMSGExtSyncSession *)self syncSessionThreadState]== 1)
   {
     v6 = pthread_cond_timedwait(&self->_sessionCond, &self->_sessionMutex, &__tp);
@@ -130,12 +130,12 @@
 
       if (v6 == 60)
       {
-        v3 = -536870186;
+        exitStatus = -536870186;
       }
 
       else
       {
-        v3 = -536870199;
+        exitStatus = -536870199;
       }
 
       break;
@@ -143,17 +143,17 @@
 
     if ([(TSDMSGExtSyncSession *)self syncSessionLocked])
     {
-      v3 = 0;
+      exitStatus = 0;
     }
 
     else if ([(TSDMSGExtSyncSession *)self syncSessionThreadState]== 3)
     {
-      v3 = [(TSDMSGExtSyncSession *)self exitStatus];
+      exitStatus = [(TSDMSGExtSyncSession *)self exitStatus];
     }
   }
 
   pthread_mutex_unlock(&self->_sessionMutex);
-  if (v3)
+  if (exitStatus)
   {
     [(TSDMSGExtSyncSession *)self stop];
   }
@@ -173,21 +173,21 @@
     else
     {
       tv_sec = v13.tv_sec;
-      v9 = [(TSDMSGExtSyncSession *)self startTime];
+      startTime = [(TSDMSGExtSyncSession *)self startTime];
       tv_nsec = v13.tv_nsec;
       [(TSDMSGExtSyncSession *)self startTime];
-      self->_timeToLockNs = tv_nsec + 1000000000 * (tv_sec - v9) - v11;
+      self->_timeToLockNs = tv_nsec + 1000000000 * (tv_sec - startTime) - v11;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(TSDMSGExtSyncSession *)self timeToLockNs];
+        timeToLockNs = [(TSDMSGExtSyncSession *)self timeToLockNs];
         *buf = 134217984;
-        v20 = v12;
+        v20 = timeToLockNs;
         _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "External sync session took %llu nanoseconds to lock", buf, 0xCu);
       }
     }
   }
 
-  return v3;
+  return exitStatus;
 }
 
 - (int)stop
@@ -199,9 +199,9 @@
   }
 
   [(TSDMSGExtSyncSession *)self setSyncSessionThreadState:2];
-  v4 = [(TSDMSGExtSyncSession *)self dispatchGroup];
+  dispatchGroup = [(TSDMSGExtSyncSession *)self dispatchGroup];
   v5 = dispatch_time(0, 5000000000);
-  v6 = dispatch_group_wait(v4, v5);
+  v6 = dispatch_group_wait(dispatchGroup, v5);
 
   if (!v6)
   {
@@ -455,9 +455,9 @@
       dispatch_async(qword_1000588B8, block);
     }
 
-    v8 = [(TSDMSGExtSyncSession *)self triggerPresent];
+    triggerPresent = [(TSDMSGExtSyncSession *)self triggerPresent];
     [(TSDMSGExtSyncSession *)self setTriggerPresent:v7 - 1 < [(TSDMSGExtSyncSession *)self maxTargetDuration]];
-    if (v8 != [(TSDMSGExtSyncSession *)self triggerPresent])
+    if (triggerPresent != [(TSDMSGExtSyncSession *)self triggerPresent])
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
@@ -558,11 +558,11 @@ LABEL_26:
   return self;
 }
 
-- (void)setSessionCond:(_opaque_pthread_cond_t *)a3
+- (void)setSessionCond:(_opaque_pthread_cond_t *)cond
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  *&self->_sessionCond.__opaque[24] = *&a3->__opaque[24];
+  v3 = *&cond->__sig;
+  v4 = *&cond->__opaque[8];
+  *&self->_sessionCond.__opaque[24] = *&cond->__opaque[24];
   *&self->_sessionCond.__opaque[8] = v4;
   *&self->_sessionCond.__sig = v3;
 }
@@ -578,12 +578,12 @@ LABEL_26:
   return self;
 }
 
-- (void)setSessionMutex:(_opaque_pthread_mutex_t *)a3
+- (void)setSessionMutex:(_opaque_pthread_mutex_t *)mutex
 {
-  v3 = *&a3->__sig;
-  v4 = *&a3->__opaque[8];
-  v5 = *&a3->__opaque[24];
-  *&self->_sessionMutex.__opaque[40] = *&a3->__opaque[40];
+  v3 = *&mutex->__sig;
+  v4 = *&mutex->__opaque[8];
+  v5 = *&mutex->__opaque[24];
+  *&self->_sessionMutex.__opaque[40] = *&mutex->__opaque[40];
   *&self->_sessionMutex.__opaque[24] = v5;
   *&self->_sessionMutex.__opaque[8] = v4;
   *&self->_sessionMutex.__sig = v3;

@@ -1,63 +1,63 @@
 @interface PKPaymentSetupCredentialsViewController
-- (PKPaymentSetupCredentialsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 credentials:(id)a5 product:(id)a6 allowsManualEntry:(BOOL)a7 reporter:(id)a8;
+- (PKPaymentSetupCredentialsViewController)initWithProvisioningController:(id)controller context:(int64_t)context credentials:(id)credentials product:(id)product allowsManualEntry:(BOOL)entry reporter:(id)reporter;
 - (PKPaymentSetupCredentialsViewControllerFlowDelegate)flowDelegate;
 - (void)_beginReportingIfNecessary;
 - (void)_configureAndUpdateDockView;
 - (void)_continueButtonPressed;
 - (void)_disableEditStateIfNecessary;
 - (void)_endReportingIfNecessary;
-- (void)_presentCredentialDoubleCheckAlert:(id)a3 continueHandler:(id)a4 setupLaterHandler:(id)a5;
+- (void)_presentCredentialDoubleCheckAlert:(id)alert continueHandler:(id)handler setupLaterHandler:(id)laterHandler;
 - (void)_presentManualAddController;
-- (void)_presentProvisioningFlowForCredentials:(id)a3;
-- (void)_reportSelectedCredentials:(id)a3;
-- (void)_requestAuthAndStartProvisioningForCredentials:(id)a3;
-- (void)_requestExternalizedAuthIfNeededWithCompletion:(id)a3;
-- (void)_setUserInteractionEnabled:(BOOL)a3;
+- (void)_presentProvisioningFlowForCredentials:(id)credentials;
+- (void)_reportSelectedCredentials:(id)credentials;
+- (void)_requestAuthAndStartProvisioningForCredentials:(id)credentials;
+- (void)_requestExternalizedAuthIfNeededWithCompletion:(id)completion;
+- (void)_setUserInteractionEnabled:(BOOL)enabled;
 - (void)_setupLaterTapped;
 - (void)_terminateSetupFlow;
 - (void)_toggleEdit;
 - (void)_updateEditButtonVisibility;
 - (void)dealloc;
-- (void)presentRefundFlowForCredential:(id)a3;
-- (void)presentUnavailableDetailsForCredential:(id)a3;
-- (void)reloadAnimated:(BOOL)a3;
-- (void)setShowNoResultsView:(BOOL)a3;
+- (void)presentRefundFlowForCredential:(id)credential;
+- (void)presentUnavailableDetailsForCredential:(id)credential;
+- (void)reloadAnimated:(BOOL)animated;
+- (void)setShowNoResultsView:(BOOL)view;
 - (void)showCredentialDeletionError;
-- (void)showDeleteConfirmationWithCredential:(id)a3 completion:(id)a4;
-- (void)showMaxSelectionAlertForCredential:(id)a3;
+- (void)showDeleteConfirmationWithCredential:(id)credential completion:(id)completion;
+- (void)showMaxSelectionAlertForCredential:(id)credential;
 - (void)showUnableToDeleteCredentialError;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentSetupCredentialsViewController
 
-- (PKPaymentSetupCredentialsViewController)initWithProvisioningController:(id)a3 context:(int64_t)a4 credentials:(id)a5 product:(id)a6 allowsManualEntry:(BOOL)a7 reporter:(id)a8
+- (PKPaymentSetupCredentialsViewController)initWithProvisioningController:(id)controller context:(int64_t)context credentials:(id)credentials product:(id)product allowsManualEntry:(BOOL)entry reporter:(id)reporter
 {
-  v9 = a7;
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  entryCopy = entry;
+  controllerCopy = controller;
+  credentialsCopy = credentials;
+  productCopy = product;
+  reporterCopy = reporter;
   v24.receiver = self;
   v24.super_class = PKPaymentSetupCredentialsViewController;
-  v19 = [(PKPaymentSetupOptionsViewController *)&v24 initWithContext:a4];
+  v19 = [(PKPaymentSetupOptionsViewController *)&v24 initWithContext:context];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_provisioningController, a3);
-    v21 = [[PKPaymentSetupCredentialsSectionController alloc] initWithCredentials:v16 provisioningController:v15 context:a4 product:v17];
+    objc_storeStrong(&v19->_provisioningController, controller);
+    v21 = [[PKPaymentSetupCredentialsSectionController alloc] initWithCredentials:credentialsCopy provisioningController:controllerCopy context:context product:productCopy];
     sectionController = v20->_sectionController;
     v20->_sectionController = v21;
 
     [(PKPaymentSetupCredentialsSectionController *)v20->_sectionController setDelegate:v20];
     [(PKPaymentSetupCredentialsSectionController *)v20->_sectionController setDataChangeDelegate:v20];
-    objc_storeStrong(&v20->_product, a6);
-    [(PKPaymentSetupOptionsViewController *)v20 setAllowsManualEntry:v9];
+    objc_storeStrong(&v20->_product, product);
+    [(PKPaymentSetupOptionsViewController *)v20 setAllowsManualEntry:entryCopy];
     [(PKDynamicCollectionViewController *)v20 setUseItemIdentityWhenUpdating:1];
-    objc_storeStrong(&v20->_reporter, a8);
+    objc_storeStrong(&v20->_reporter, reporter);
   }
 
   return v20;
@@ -77,25 +77,25 @@
   v15.receiver = self;
   v15.super_class = PKPaymentSetupCredentialsViewController;
   [(PKPaymentSetupOptionsViewController *)&v15 viewDidLoad];
-  v3 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v3 setAllowsMultipleSelection:1];
-  [v3 setAllowsSelectionDuringEditing:1];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9A70]];
-  v4 = [(PKPaymentSetupProduct *)self->_product configuration];
-  v5 = [v4 type];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setAllowsMultipleSelection:1];
+  [collectionView setAllowsSelectionDuringEditing:1];
+  [collectionView setAccessibilityIdentifier:*MEMORY[0x1E69B9A70]];
+  configuration = [(PKPaymentSetupProduct *)self->_product configuration];
+  type = [configuration type];
 
-  if (v5 == 6)
+  if (type == 6)
   {
     v7 = PKLocalizedPaymentString(&cfstr_PaymentSetupBa.isa);
-    v9 = [(PKPaymentSetupProduct *)self->_product displayName];
-    v8 = PKLocalizedPaymentString(&cfstr_PaymentSetupBa_0.isa, &stru_1F3BD5BF0.isa, v9);
+    displayName = [(PKPaymentSetupProduct *)self->_product displayName];
+    v8 = PKLocalizedPaymentString(&cfstr_PaymentSetupBa_0.isa, &stru_1F3BD5BF0.isa, displayName);
   }
 
   else
   {
-    if (v5 != 11)
+    if (type != 11)
     {
-      if (v5 == 9)
+      if (type == 9)
       {
         v6 = PKLocalizedAquamanString(&cfstr_AccountsOnFile.isa);
       }
@@ -139,33 +139,33 @@ LABEL_12:
   [(PKPaymentSetupOptionsViewController *)self setSections:v12 animated:0];
 
   [(PKPaymentSetupCredentialsViewController *)self _beginReportingIfNecessary];
-  v13 = [(PKPaymentSetupOptionsViewController *)self context];
-  v14 = [(PKPaymentSetupCredentialsViewController *)self view];
-  PKPaymentSetupApplyContextAppearance(v13, v14);
+  context = [(PKPaymentSetupOptionsViewController *)self context];
+  view = [(PKPaymentSetupCredentialsViewController *)self view];
+  PKPaymentSetupApplyContextAppearance(context, view);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupCredentialsViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewWillAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewWillAppear:appear];
   [(PKPaymentSetupCredentialsSectionController *)self->_sectionController reloadCredentialStores];
   [(PKPaymentSetupCredentialsViewController *)self _updateEditButtonVisibility];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupCredentialsViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupCredentialsViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewWillDisappear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewWillDisappear:disappear];
   [(PKPaymentSetupCredentialsViewController *)self _endReportingIfNecessary];
 }
 
@@ -192,70 +192,70 @@ LABEL_12:
   }
 }
 
-- (void)reloadAnimated:(BOOL)a3
+- (void)reloadAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v7[1] = *MEMORY[0x1E69E9840];
   v7[0] = self->_sectionController;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   v6.receiver = self;
   v6.super_class = PKPaymentSetupCredentialsViewController;
-  [(PKPaymentSetupOptionsViewController *)&v6 setSections:v5 animated:v3];
+  [(PKPaymentSetupOptionsViewController *)&v6 setSections:v5 animated:animatedCopy];
 }
 
-- (void)presentRefundFlowForCredential:(id)a3
+- (void)presentRefundFlowForCredential:(id)credential
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  credentialCopy = credential;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  credentialCopy2 = credential;
+  v6 = [v4 arrayWithObjects:&credentialCopy count:1];
 
-  [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:v6, v7, v8];
+  [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:v6, credentialCopy, v8];
 }
 
-- (void)presentUnavailableDetailsForCredential:(id)a3
+- (void)presentUnavailableDetailsForCredential:(id)credential
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  credentialCopy = credential;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  credentialCopy2 = credential;
+  v6 = [v4 arrayWithObjects:&credentialCopy count:1];
 
-  [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:v6, v7, v8];
+  [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:v6, credentialCopy, v8];
 }
 
-- (void)showMaxSelectionAlertForCredential:(id)a3
+- (void)showMaxSelectionAlertForCredential:(id)credential
 {
   product = self->_product;
-  v5 = a3;
-  v6 = [(PKPaymentSetupProduct *)product configuration];
-  v7 = [v6 type];
+  credentialCopy = credential;
+  configuration = [(PKPaymentSetupProduct *)product configuration];
+  type = [configuration type];
 
-  v8 = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController maximumNumberOfSelectableCredentials];
-  if (v8 == -1)
+  maximumNumberOfSelectableCredentials = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController maximumNumberOfSelectableCredentials];
+  if (maximumNumberOfSelectableCredentials == -1)
   {
     v9 = PKLocalizedPaymentString(&cfstr_MaxCardsSelect.isa);
   }
 
   else
   {
-    if (v7 == 9)
+    if (type == 9)
     {
-      PKLocalizedAquamanString(&cfstr_MaxAccountsSel.isa, &cfstr_Lu.isa, v8);
+      PKLocalizedAquamanString(&cfstr_MaxAccountsSel.isa, &cfstr_Lu.isa, maximumNumberOfSelectableCredentials);
     }
 
     else
     {
-      PKLocalizedString(&cfstr_MaxCardsSelect_0.isa, &cfstr_Lu.isa, v8);
+      PKLocalizedString(&cfstr_MaxCardsSelect_0.isa, &cfstr_Lu.isa, maximumNumberOfSelectableCredentials);
     }
     v9 = ;
   }
 
   v16 = v9;
-  v10 = [v5 longDescription];
+  longDescription = [credentialCopy longDescription];
 
-  v11 = PKLocalizedPaymentString(&cfstr_MaxCardsSelect_1.isa, &stru_1F3BD5BF0.isa, v10);
+  v11 = PKLocalizedPaymentString(&cfstr_MaxCardsSelect_1.isa, &stru_1F3BD5BF0.isa, longDescription);
 
   v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v16 message:v11 preferredStyle:1];
   v13 = MEMORY[0x1E69DC648];
@@ -266,30 +266,30 @@ LABEL_12:
   [(PKPaymentSetupCredentialsViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)showDeleteConfirmationWithCredential:(id)a3 completion:(id)a4
+- (void)showDeleteConfirmationWithCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
-    if (v8)
+    presentedViewController = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
+    if (presentedViewController)
     {
 
 LABEL_5:
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_6;
     }
 
-    v9 = [(PKPaymentSetupCredentialsViewController *)self navigationController];
-    v10 = [v9 topViewController];
+    navigationController = [(PKPaymentSetupCredentialsViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v10 != self)
+    if (topViewController != self)
     {
       goto LABEL_5;
     }
 
-    if ([v6 isFPANCredential])
+    if ([credentialCopy isFPANCredential])
     {
       v11 = @"DELETE_AUTOFILL_CARD_CONFIRMATION_ALERT_TITLE";
     }
@@ -300,15 +300,15 @@ LABEL_5:
     }
 
     v12 = PKLocalizedPaymentString(&v11->isa);
-    v13 = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
-    v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v12 preferredStyle:v13];
+    pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+    v14 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:v12 preferredStyle:pkui_userInterfaceIdiomSupportsLargeLayouts];
     v15 = MEMORY[0x1E69DC648];
     v16 = PKLocalizedPaymentString(&cfstr_DeleteCardConf_0.isa);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __91__PKPaymentSetupCredentialsViewController_showDeleteConfirmationWithCredential_completion___block_invoke;
     v27[3] = &unk_1E8011248;
-    v17 = v7;
+    v17 = completionCopy;
     v28 = v17;
     v18 = [v15 actionWithTitle:v16 style:2 handler:v27];
     [v14 addAction:v18];
@@ -331,13 +331,13 @@ LABEL_6:
 
 - (void)showUnableToDeleteCredentialError
 {
-  v3 = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
-  if (!v3)
+  presentedViewController = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
-    v4 = [(PKPaymentSetupCredentialsViewController *)self navigationController];
-    v5 = [v4 topViewController];
+    navigationController = [(PKPaymentSetupCredentialsViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v5 != self)
+    if (topViewController != self)
     {
       return;
     }
@@ -351,19 +351,19 @@ LABEL_6:
     [v7 addAction:v10];
 
     [(PKPaymentSetupCredentialsViewController *)self presentViewController:v7 animated:1 completion:0];
-    v3 = v11;
+    presentedViewController = v11;
   }
 }
 
 - (void)showCredentialDeletionError
 {
-  v3 = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
-  if (!v3)
+  presentedViewController = [(PKPaymentSetupCredentialsViewController *)self presentedViewController];
+  if (!presentedViewController)
   {
-    v4 = [(PKPaymentSetupCredentialsViewController *)self navigationController];
-    v5 = [v4 topViewController];
+    navigationController = [(PKPaymentSetupCredentialsViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v5 != self)
+    if (topViewController != self)
     {
       return;
     }
@@ -377,13 +377,13 @@ LABEL_6:
     [v7 addAction:v10];
 
     [(PKPaymentSetupCredentialsViewController *)self presentViewController:v7 animated:1 completion:0];
-    v3 = v11;
+    presentedViewController = v11;
   }
 }
 
-- (void)setShowNoResultsView:(BOOL)a3
+- (void)setShowNoResultsView:(BOOL)view
 {
-  [(PKPaymentSetupOptionsViewController *)self setShowNoResultsView:a3 animated:1];
+  [(PKPaymentSetupOptionsViewController *)self setShowNoResultsView:view animated:1];
   [(PKPaymentSetupCredentialsViewController *)self _updateEditButtonVisibility];
 
   [(PKPaymentSetupCredentialsViewController *)self _disableEditStateIfNecessary];
@@ -391,12 +391,12 @@ LABEL_6:
 
 - (void)_configureAndUpdateDockView
 {
-  v3 = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController credentialSelectionState];
-  v4 = [(PKPaymentSetupOptionsViewController *)self allowsManualEntry];
+  credentialSelectionState = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController credentialSelectionState];
+  allowsManualEntry = [(PKPaymentSetupOptionsViewController *)self allowsManualEntry];
   [(PKPaymentSetupOptionsViewController *)self context];
   IsExpressSetupAssistant = PKPaymentSetupContextIsExpressSetupAssistant();
   v6 = IsExpressSetupAssistant;
-  if (!v3.var0 && !v4 && (IsExpressSetupAssistant & 1) == 0)
+  if (!credentialSelectionState.var0 && !allowsManualEntry && (IsExpressSetupAssistant & 1) == 0)
   {
     self->_isDockViewConfigured = 0;
 
@@ -404,33 +404,33 @@ LABEL_6:
     return;
   }
 
-  v21 = [(PKPaymentSetupOptionsViewController *)self dockView];
+  dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
   if (!self->_isDockViewConfigured)
   {
     self->_isDockViewConfigured = 1;
-    v7 = [v21 primaryButton];
-    [v7 setEnabled:1];
-    [v7 addTarget:self action:sel__continueButtonPressed forControlEvents:0x2000];
+    primaryButton = [dockView primaryButton];
+    [primaryButton setEnabled:1];
+    [primaryButton addTarget:self action:sel__continueButtonPressed forControlEvents:0x2000];
     v8 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-    [v7 setTitle:v8 forState:0];
+    [primaryButton setTitle:v8 forState:0];
 
-    [v21 setButtonsEnabled:1];
-    v9 = [v21 footerView];
-    v10 = v9;
+    [dockView setButtonsEnabled:1];
+    footerView = [dockView footerView];
+    v10 = footerView;
     if (v6)
     {
-      v11 = [v9 setUpLaterButton];
-      [v11 addTarget:self action:sel__setupLaterTapped forControlEvents:0x2000];
+      setUpLaterButton = [footerView setUpLaterButton];
+      [setUpLaterButton addTarget:self action:sel__setupLaterTapped forControlEvents:0x2000];
     }
 
-    if (v4)
+    if (allowsManualEntry)
     {
-      v12 = [v10 manualEntryButton];
-      [v12 addTarget:self action:sel__presentManualAddController forControlEvents:0x2000];
-      v13 = [(PKPaymentSetupProduct *)self->_product configuration];
-      v14 = [v13 type];
+      manualEntryButton = [v10 manualEntryButton];
+      [manualEntryButton addTarget:self action:sel__presentManualAddController forControlEvents:0x2000];
+      configuration = [(PKPaymentSetupProduct *)self->_product configuration];
+      type = [configuration type];
 
-      if (v14 == 9)
+      if (type == 9)
       {
         PKLocalizedAquamanString(&cfstr_AddADifferentA.isa);
       }
@@ -440,7 +440,7 @@ LABEL_6:
         PKLocalizedPaymentString(&cfstr_AddANewCard.isa);
       }
       v15 = ;
-      [v12 setTitle:v15 forState:0];
+      [manualEntryButton setTitle:v15 forState:0];
 
       [v10 setButtonsEnabled:1];
       if (v6)
@@ -470,28 +470,28 @@ LABEL_18:
     [(PKPaymentSetupOptionsViewController *)self setPrivacyLink:v17];
   }
 
-  v18 = [(PKDynamicCollectionViewController *)self collectionView];
-  v19 = [v18 isEditing];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
 
-  LOBYTE(v18) = v19 ^ 1;
-  [v21 setButtonsEnabled:v19 ^ 1u];
-  v20 = [v21 primaryButton];
-  [v20 setEnabled:v18 & ((*&v3 & 0x100) >> 8)];
+  LOBYTE(collectionView) = isEditing ^ 1;
+  [dockView setButtonsEnabled:isEditing ^ 1u];
+  primaryButton2 = [dockView primaryButton];
+  [primaryButton2 setEnabled:collectionView & ((*&credentialSelectionState & 0x100) >> 8)];
 }
 
-- (void)_presentCredentialDoubleCheckAlert:(id)a3 continueHandler:(id)a4 setupLaterHandler:(id)a5
+- (void)_presentCredentialDoubleCheckAlert:(id)alert continueHandler:(id)handler setupLaterHandler:(id)laterHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  alertCopy = alert;
+  handlerCopy = handler;
+  laterHandlerCopy = laterHandler;
   [(PKPaymentSetupOptionsViewController *)self context];
   if (PKPaymentSetupContextIsiOSSetupAssistant())
   {
-    v11 = [v8 accountCredential];
-    v12 = v11;
-    if (v11)
+    accountCredential = [alertCopy accountCredential];
+    v12 = accountCredential;
+    if (accountCredential)
     {
-      v13 = [v11 account];
+      account = [accountCredential account];
       v14 = MEMORY[0x1E69DC650];
       v15 = PKLocalizedFeatureString();
       v16 = PKLocalizedFeatureString();
@@ -504,8 +504,8 @@ LABEL_18:
       v28[2] = __112__PKPaymentSetupCredentialsViewController__presentCredentialDoubleCheckAlert_continueHandler_setupLaterHandler___block_invoke;
       v28[3] = &unk_1E8016480;
       v28[4] = self;
-      v29 = v8;
-      v30 = v9;
+      v29 = alertCopy;
+      v30 = handlerCopy;
       v20 = [v18 actionWithTitle:v19 style:0 handler:v28];
       [v17 addAction:v20];
 
@@ -515,24 +515,24 @@ LABEL_18:
       v25[1] = 3221225472;
       v25[2] = __112__PKPaymentSetupCredentialsViewController__presentCredentialDoubleCheckAlert_continueHandler_setupLaterHandler___block_invoke_2;
       v25[3] = &unk_1E8016458;
-      v26 = v13;
-      v27 = v10;
-      v23 = v13;
+      v26 = account;
+      v27 = laterHandlerCopy;
+      v23 = account;
       v24 = [v21 actionWithTitle:v22 style:1 handler:v25];
       [v17 addAction:v24];
 
       [(PKPaymentSetupCredentialsViewController *)self presentViewController:v17 animated:1 completion:0];
     }
 
-    else if (v9)
+    else if (handlerCopy)
     {
-      v9[2](v9);
+      handlerCopy[2](handlerCopy);
     }
   }
 
   else
   {
-    v10[2](v10);
+    laterHandlerCopy[2](laterHandlerCopy);
   }
 }
 
@@ -632,10 +632,10 @@ void __65__PKPaymentSetupCredentialsViewController__continueButtonPressed__block
   v6[3] = &unk_1E8010970;
   v6[4] = self;
   v4 = _Block_copy(v6);
-  v5 = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController availableCredentialRequiringAction];
-  if (v5)
+  availableCredentialRequiringAction = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController availableCredentialRequiringAction];
+  if (availableCredentialRequiringAction)
   {
-    [(PKPaymentSetupCredentialsViewController *)self _presentCredentialDoubleCheckAlert:v5 continueHandler:v3 setupLaterHandler:v4];
+    [(PKPaymentSetupCredentialsViewController *)self _presentCredentialDoubleCheckAlert:availableCredentialRequiringAction continueHandler:v3 setupLaterHandler:v4];
   }
 
   else
@@ -667,7 +667,7 @@ void __60__PKPaymentSetupCredentialsViewController__setupLaterTapped__block_invo
   [WeakRetained credentialsViewControllerDidSelectManualEntry:self];
 }
 
-- (void)_reportSelectedCredentials:(id)a3
+- (void)_reportSelectedCredentials:(id)credentials
 {
   v6[1] = *MEMORY[0x1E69E9840];
   reporter = self->_reporter;
@@ -677,25 +677,25 @@ void __60__PKPaymentSetupCredentialsViewController__setupLaterTapped__block_invo
   [(PKProvisioningAnalyticsSessionUIReporter *)reporter reportEvent:v4];
 }
 
-- (void)_requestAuthAndStartProvisioningForCredentials:(id)a3
+- (void)_requestAuthAndStartProvisioningForCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   [(PKPaymentSetupCredentialsViewController *)self _setUserInteractionEnabled:0];
-  [(PKPaymentSetupCredentialsViewController *)self _reportSelectedCredentials:v4];
-  if ([(PKPaymentSetupCredentialsSectionController *)self->_sectionController doesContainCredentialThatRequiresAuth:v4])
+  [(PKPaymentSetupCredentialsViewController *)self _reportSelectedCredentials:credentialsCopy];
+  if ([(PKPaymentSetupCredentialsSectionController *)self->_sectionController doesContainCredentialThatRequiresAuth:credentialsCopy])
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvisioningForCredentials___block_invoke;
     v5[3] = &unk_1E80228A8;
     v5[4] = self;
-    v6 = v4;
+    v6 = credentialsCopy;
     [(PKPaymentSetupCredentialsViewController *)self _requestExternalizedAuthIfNeededWithCompletion:v5];
   }
 
   else
   {
-    [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:v4];
+    [(PKPaymentSetupCredentialsViewController *)self _presentProvisioningFlowForCredentials:credentialsCopy];
   }
 }
 
@@ -751,47 +751,47 @@ void __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvision
   }
 }
 
-- (void)_presentProvisioningFlowForCredentials:(id)a3
+- (void)_presentProvisioningFlowForCredentials:(id)credentials
 {
-  v4 = a3;
+  credentialsCopy = credentials;
   WeakRetained = objc_loadWeakRetained(&self->_flowDelegate);
-  [WeakRetained credentialsViewController:self didSelectCredentials:v4];
+  [WeakRetained credentialsViewController:self didSelectCredentials:credentialsCopy];
 }
 
-- (void)_setUserInteractionEnabled:(BOOL)a3
+- (void)_setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setUserInteractionEnabled:enabledCopy];
 
-  v6 = [(PKPaymentSetupCredentialsViewController *)self view];
-  [v6 setUserInteractionEnabled:v3];
+  view = [(PKPaymentSetupCredentialsViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 
-  v7 = [(PKPaymentSetupCredentialsViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKPaymentSetupCredentialsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 
   if (self->_isDockViewConfigured)
   {
-    v14 = [(PKPaymentSetupOptionsViewController *)self dockView];
-    v9 = [v14 footerView];
-    [v9 setButtonsEnabled:v3];
+    dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
+    footerView = [dockView footerView];
+    [footerView setButtonsEnabled:enabledCopy];
 
-    v10 = [v14 primaryButton];
-    v11 = v10;
-    if (v3)
+    primaryButton = [dockView primaryButton];
+    v11 = primaryButton;
+    if (enabledCopy)
     {
-      v12 = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController selectedCredentials];
-      [v11 setEnabled:{objc_msgSend(v12, "count") != 0}];
+      selectedCredentials = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController selectedCredentials];
+      [v11 setEnabled:{objc_msgSend(selectedCredentials, "count") != 0}];
     }
 
     else
     {
-      [v10 setEnabled:0];
+      [primaryButton setEnabled:0];
     }
 
-    v13 = [v14 primaryButton];
-    [v13 setShowSpinner:v3 ^ 1];
+    primaryButton2 = [dockView primaryButton];
+    [primaryButton2 setShowSpinner:enabledCopy ^ 1];
   }
 }
 
@@ -817,12 +817,12 @@ void __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvision
   }
 }
 
-- (void)_requestExternalizedAuthIfNeededWithCompletion:(id)a3
+- (void)_requestExternalizedAuthIfNeededWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentSetupOptionsViewController *)self context];
-  if (PKPaymentSetupContextIsSetupAssistant() && ((v6 = [(PKPaymentProvisioningController *)self->_provisioningController hasExternalizedAuth], v7 = v6, v5 != 5) || v6))
+  completionCopy = completion;
+  context = [(PKPaymentSetupOptionsViewController *)self context];
+  if (PKPaymentSetupContextIsSetupAssistant() && ((v6 = [(PKPaymentProvisioningController *)self->_provisioningController hasExternalizedAuth], v7 = v6, context != 5) || v6))
   {
     v14 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -838,7 +838,7 @@ void __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvision
       _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "CredentialsVC requestExternaliziedAuthIfNeededWithCompletion returning %@ for buddy.", buf, 0xCu);
     }
 
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -847,7 +847,7 @@ void __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvision
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = @"N";
-      if (v5 == 4)
+      if (context == 4)
       {
         v9 = @"Y";
       }
@@ -862,11 +862,11 @@ void __90__PKPaymentSetupCredentialsViewController__requestAuthAndStartProvision
     aBlock[2] = __90__PKPaymentSetupCredentialsViewController__requestExternalizedAuthIfNeededWithCompletion___block_invoke;
     aBlock[3] = &unk_1E8010DD0;
     aBlock[4] = self;
-    v10 = v4;
+    v10 = completionCopy;
     v20 = v10;
     v11 = _Block_copy(aBlock);
     v12 = v11;
-    if (v5 == 4)
+    if (context == 4)
     {
       provisioningController = self->_provisioningController;
       v16[0] = MEMORY[0x1E69E9820];
@@ -1011,10 +1011,10 @@ void __90__PKPaymentSetupCredentialsViewController__requestExternalizedAuthIfNee
 
 - (void)_toggleEdit
 {
-  v4 = [(PKDynamicCollectionViewController *)self collectionView];
-  v3 = [v4 isEditing];
-  [v4 setEditing:v3 ^ 1u];
-  [(PKPaymentSetupCredentialsSectionController *)self->_sectionController setEditing:v3 ^ 1u];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
+  [collectionView setEditing:isEditing ^ 1u];
+  [(PKPaymentSetupCredentialsSectionController *)self->_sectionController setEditing:isEditing ^ 1u];
   [(PKPaymentSetupCredentialsViewController *)self _updateEditButtonVisibility];
   [(PKPaymentSetupCredentialsViewController *)self _configureAndUpdateDockView];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:5];
@@ -1022,14 +1022,14 @@ void __90__PKPaymentSetupCredentialsViewController__requestExternalizedAuthIfNee
 
 - (void)_updateEditButtonVisibility
 {
-  v8 = [(PKPaymentSetupCredentialsViewController *)self navigationItem];
-  v3 = [v8 rightBarButtonItem];
+  navigationItem = [(PKPaymentSetupCredentialsViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
   if ([(PKPaymentSetupCredentialsSectionController *)self->_sectionController shouldShowEditButton])
   {
-    v4 = [(PKDynamicCollectionViewController *)self collectionView];
-    v5 = [v4 isEditing];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    isEditing = [collectionView isEditing];
 
-    if (v5)
+    if (isEditing)
     {
       v6 = 0;
     }
@@ -1039,29 +1039,29 @@ void __90__PKPaymentSetupCredentialsViewController__requestExternalizedAuthIfNee
       v6 = 2;
     }
 
-    if (!v3 || [v3 systemItem] != v6)
+    if (!rightBarButtonItem || [rightBarButtonItem systemItem] != v6)
     {
       v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:v6 target:self action:sel__toggleEdit];
       [v7 setAccessibilityIdentifier:*MEMORY[0x1E69B9740]];
-      [v8 setRightBarButtonItem:v7];
+      [navigationItem setRightBarButtonItem:v7];
     }
   }
 
-  else if (v3)
+  else if (rightBarButtonItem)
   {
-    [v8 setRightBarButtonItem:0 animated:1];
+    [navigationItem setRightBarButtonItem:0 animated:1];
   }
 }
 
 - (void)_disableEditStateIfNecessary
 {
-  v5 = [(PKDynamicCollectionViewController *)self collectionView];
-  v3 = [v5 isEditing];
-  v4 = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController shouldShowEditButton];
-  if (v3 && !v4)
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  isEditing = [collectionView isEditing];
+  shouldShowEditButton = [(PKPaymentSetupCredentialsSectionController *)self->_sectionController shouldShowEditButton];
+  if (isEditing && !shouldShowEditButton)
   {
     [(PKPaymentSetupCredentialsSectionController *)self->_sectionController setEditing:0];
-    [v5 setEditing:0];
+    [collectionView setEditing:0];
     [(PKPaymentSetupCredentialsViewController *)self _configureAndUpdateDockView];
   }
 }

@@ -1,19 +1,19 @@
 @interface CLFindMyAccessoryDiagnosticExtension
-- (BOOL)isValidProductId:(int64_t)a3;
+- (BOOL)isValidProductId:(int64_t)id;
 - (CLFindMyAccessoryDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)defaultDateFormatter;
 - (id)logDirectory;
-- (id)outputURLWithSuffix:(id)a3 forDevice:(id)a4;
+- (id)outputURLWithSuffix:(id)suffix forDevice:(id)device;
 - (void)checkForCompletion;
-- (void)dumpLogOfType:(unint64_t)a3 fromDevice:(id)a4;
-- (void)dumpLogsForBeacon:(id)a3;
+- (void)dumpLogOfType:(unint64_t)type fromDevice:(id)device;
+- (void)dumpLogsForBeacon:(id)beacon;
 - (void)fetchAllBeacons;
-- (void)fetchFirmwareVersionForBeacon:(id)a3;
-- (void)findMyAccessoryManager:(id)a3 didDumpLogData:(id)a4 ofType:(unint64_t)a5 fromDevice:(id)a6 withError:(id)a7;
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5;
-- (void)findMyAccessoryManager:(id)a3 didFetchFirmwareVersion:(id)a4 fromDevice:(id)a5 withError:(id)a6;
-- (void)saveSummaryForDevice:(id)a3 withFirmwareVersionData:(id)a4;
+- (void)fetchFirmwareVersionForBeacon:(id)beacon;
+- (void)findMyAccessoryManager:(id)manager didDumpLogData:(id)data ofType:(unint64_t)type fromDevice:(id)device withError:(id)error;
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device;
+- (void)findMyAccessoryManager:(id)manager didFetchFirmwareVersion:(id)version fromDevice:(id)device withError:(id)error;
+- (void)saveSummaryForDevice:(id)device withFirmwareVersionData:(id)data;
 @end
 
 @implementation CLFindMyAccessoryDiagnosticExtension
@@ -71,13 +71,13 @@
   if (!logDirectory)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v4 temporaryDirectory];
+    temporaryDirectory = [v4 temporaryDirectory];
 
-    v6 = [(CLFindMyAccessoryDiagnosticExtension *)self defaultDateFormatter];
-    v7 = [v6 stringFromDate:self->_startDate];
+    defaultDateFormatter = [(CLFindMyAccessoryDiagnosticExtension *)self defaultDateFormatter];
+    v7 = [defaultDateFormatter stringFromDate:self->_startDate];
 
     v8 = [NSString stringWithFormat:@"findMyAccessoryManager_device_logs_%@", v7];
-    v9 = [v5 URLByAppendingPathComponent:v8];
+    v9 = [temporaryDirectory URLByAppendingPathComponent:v8];
     v10 = self->_logDirectory;
     self->_logDirectory = v9;
 
@@ -87,7 +87,7 @@
   return logDirectory;
 }
 
-- (BOOL)isValidProductId:(int64_t)a3
+- (BOOL)isValidProductId:(int64_t)id
 {
   if (_os_feature_enabled_impl())
   {
@@ -99,7 +99,7 @@
     v4 = 21762;
   }
 
-  return a3 == v4;
+  return id == v4;
 }
 
 - (void)fetchAllBeacons
@@ -128,9 +128,9 @@
   [(SPBeaconManager *)beaconManager allBeaconsOfType:SPBeaconTypeDurian completion:v5];
 }
 
-- (void)fetchFirmwareVersionForBeacon:(id)a3
+- (void)fetchFirmwareVersionForBeacon:(id)beacon
 {
-  v4 = a3;
+  beaconCopy = beacon;
   if (qword_10000D0B0 != -1)
   {
     sub_100002DF0();
@@ -140,29 +140,29 @@
   if (os_log_type_enabled(qword_10000D0B8, OS_LOG_TYPE_DEBUG))
   {
     v6 = v5;
-    v7 = [v4 identifier];
+    identifier = [beaconCopy identifier];
     v12 = 68289282;
     v13 = 2082;
     v14 = "";
     v15 = 2114;
-    v16 = v7;
+    v16 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian Fetching firmware version from beacon, beaconUUID:%{public, location:escape_only}@}", &v12, 0x1Cu);
   }
 
   findMyAccessoryManager = self->_findMyAccessoryManager;
-  v9 = [v4 identifier];
-  [(CLFindMyAccessoryManager *)findMyAccessoryManager fetchFirmwareVersionFromDevice:v9];
+  identifier2 = [beaconCopy identifier];
+  [(CLFindMyAccessoryManager *)findMyAccessoryManager fetchFirmwareVersionFromDevice:identifier2];
 
   pendingFirmwareFetches = self->_pendingFirmwareFetches;
-  v11 = [v4 identifier];
-  [(NSMutableArray *)pendingFirmwareFetches addObject:v11];
+  identifier3 = [beaconCopy identifier];
+  [(NSMutableArray *)pendingFirmwareFetches addObject:identifier3];
 }
 
-- (void)dumpLogOfType:(unint64_t)a3 fromDevice:(id)a4
+- (void)dumpLogOfType:(unint64_t)type fromDevice:(id)device
 {
-  v11 = a4;
-  [(CLFindMyAccessoryManager *)self->_findMyAccessoryManager dumpLogDataOfType:a3 fromDevice:v11];
-  v6 = [(NSMutableDictionary *)self->_pendingLogDumps objectForKey:v11];
+  deviceCopy = device;
+  [(CLFindMyAccessoryManager *)self->_findMyAccessoryManager dumpLogDataOfType:type fromDevice:deviceCopy];
+  v6 = [(NSMutableDictionary *)self->_pendingLogDumps objectForKey:deviceCopy];
   v7 = v6;
   if (v6)
   {
@@ -176,15 +176,15 @@
 
   v9 = v8;
 
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v10 = [NSNumber numberWithUnsignedInteger:type];
   [v9 addObject:v10];
 
-  [(NSMutableDictionary *)self->_pendingLogDumps setObject:v9 forKey:v11];
+  [(NSMutableDictionary *)self->_pendingLogDumps setObject:v9 forKey:deviceCopy];
 }
 
-- (void)dumpLogsForBeacon:(id)a3
+- (void)dumpLogsForBeacon:(id)beacon
 {
-  v4 = a3;
+  beaconCopy = beacon;
   if (qword_10000D0B0 != -1)
   {
     sub_100002DF0();
@@ -194,27 +194,27 @@
   if (os_log_type_enabled(qword_10000D0B8, OS_LOG_TYPE_DEBUG))
   {
     v6 = v5;
-    v7 = [v4 identifier];
+    identifier = [beaconCopy identifier];
     v12[0] = 68289283;
     v12[1] = 0;
     v13 = 2082;
     v14 = "";
     v15 = 2113;
-    v16 = v7;
+    v16 = identifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian TTR extension requesting log dump from beacon, beaconUUID:%{private, location:escape_only}@}", v12, 0x1Cu);
   }
 
-  v8 = [v4 identifier];
-  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:0 fromDevice:v8];
+  identifier2 = [beaconCopy identifier];
+  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:0 fromDevice:identifier2];
 
-  v9 = [v4 identifier];
-  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:1 fromDevice:v9];
+  identifier3 = [beaconCopy identifier];
+  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:1 fromDevice:identifier3];
 
-  v10 = [v4 identifier];
-  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:2 fromDevice:v10];
+  identifier4 = [beaconCopy identifier];
+  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:2 fromDevice:identifier4];
 
-  v11 = [v4 identifier];
-  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:3 fromDevice:v11];
+  identifier5 = [beaconCopy identifier];
+  [(CLFindMyAccessoryDiagnosticExtension *)self dumpLogOfType:3 fromDevice:identifier5];
 }
 
 - (void)checkForCompletion
@@ -240,21 +240,21 @@
   }
 }
 
-- (id)outputURLWithSuffix:(id)a3 forDevice:(id)a4
+- (id)outputURLWithSuffix:(id)suffix forDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   beaconMap = self->_beaconMap;
-  v8 = a3;
-  v9 = [(NSMutableDictionary *)beaconMap objectForKey:v6];
-  v10 = [v9 name];
-  v11 = [v10 stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+  suffixCopy = suffix;
+  v9 = [(NSMutableDictionary *)beaconMap objectForKey:deviceCopy];
+  name = [v9 name];
+  v11 = [name stringByReplacingOccurrencesOfString:@" " withString:@"-"];
 
-  v12 = [(NSMutableDictionary *)self->_beaconMap objectForKey:v6];
-  v13 = [v12 productId];
+  v12 = [(NSMutableDictionary *)self->_beaconMap objectForKey:deviceCopy];
+  productId = [v12 productId];
 
-  if (v13)
+  if (productId)
   {
-    v14 = [(NSMutableDictionary *)self->_beaconMap objectForKey:v6];
+    v14 = [(NSMutableDictionary *)self->_beaconMap objectForKey:deviceCopy];
     v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%X", [v14 productId]);
   }
 
@@ -263,35 +263,35 @@
     v15 = &stru_1000083C8;
   }
 
-  v16 = [v6 UUIDString];
-  v17 = [NSString stringWithFormat:@"%@_%@_%@", v11, v15, v16];
+  uUIDString = [deviceCopy UUIDString];
+  v17 = [NSString stringWithFormat:@"%@_%@_%@", v11, v15, uUIDString];
 
-  v18 = [(CLFindMyAccessoryDiagnosticExtension *)self logDirectory];
-  v19 = [v18 URLByAppendingPathComponent:v17];
+  logDirectory = [(CLFindMyAccessoryDiagnosticExtension *)self logDirectory];
+  v19 = [logDirectory URLByAppendingPathComponent:v17];
 
   v20 = +[NSFileManager defaultManager];
-  v21 = [v19 path];
-  [v20 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:0];
+  path = [v19 path];
+  [v20 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:0];
 
-  v22 = [v6 UUIDString];
-  v23 = [NSString stringWithFormat:@"%@_%@", v22, v8];
+  uUIDString2 = [deviceCopy UUIDString];
+  suffixCopy = [NSString stringWithFormat:@"%@_%@", uUIDString2, suffixCopy];
 
-  v24 = [v19 URLByAppendingPathComponent:v23];
+  v24 = [v19 URLByAppendingPathComponent:suffixCopy];
 
   return v24;
 }
 
-- (void)saveSummaryForDevice:(id)a3 withFirmwareVersionData:(id)a4
+- (void)saveSummaryForDevice:(id)device withFirmwareVersionData:(id)data
 {
-  v6 = a3;
+  deviceCopy = device;
   beaconMap = self->_beaconMap;
-  v8 = a4;
-  v9 = [(NSMutableDictionary *)beaconMap objectForKey:v6];
+  dataCopy = data;
+  v9 = [(NSMutableDictionary *)beaconMap objectForKey:deviceCopy];
   v10 = [CLFindMyAccessoryFirmwareVersion alloc];
-  v11 = [v8 bytes];
-  v12 = [v8 length];
+  bytes = [dataCopy bytes];
+  v12 = [dataCopy length];
 
-  v13 = [v10 initWithBytes:v11 length:v12];
+  v13 = [v10 initWithBytes:bytes length:v12];
   if (([v13 debugVariant] & 1) == 0)
   {
     if (qword_10000D0B0 != -1)
@@ -318,7 +318,7 @@
       v29 = 2082;
       v30 = "";
       v31 = 2113;
-      v32 = v6;
+      v32 = deviceCopy;
       v33 = 2082;
       v34 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#durian TTR extension log dump on debug variants only, device:%{private, location:escape_only}@, debugVariant:%{public, location:escape_only}s}", buf, 0x26u);
@@ -348,7 +348,7 @@
       v29 = 2082;
       v30 = "";
       v31 = 2113;
-      v32 = v6;
+      v32 = deviceCopy;
       v33 = 2082;
       v34 = v19;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#durian TTR extension log dump on debug variants only", "{msg%{public}.0s:#durian TTR extension log dump on debug variants only, device:%{private, location:escape_only}@, debugVariant:%{public, location:escape_only}s}", buf, 0x26u);
@@ -356,17 +356,17 @@
   }
 
   v20 = objc_alloc_init(NSMutableString);
-  v21 = [v9 name];
-  [v20 appendFormat:@"Beacon Name: %@\n", v21];
+  name = [v9 name];
+  [v20 appendFormat:@"Beacon Name: %@\n", name];
 
-  v22 = [v13 vanBurenVersion];
-  [v20 appendFormat:@"VB Version: %@\n", v22];
+  vanBurenVersion = [v13 vanBurenVersion];
+  [v20 appendFormat:@"VB Version: %@\n", vanBurenVersion];
 
-  v23 = [v13 rtKitVersion];
-  [v20 appendFormat:@"RTKit Version: %@\n", v23];
+  rtKitVersion = [v13 rtKitVersion];
+  [v20 appendFormat:@"RTKit Version: %@\n", rtKitVersion];
 
-  v24 = [v13 specificationVersion];
-  [v20 appendFormat:@"CL Spec Version: %@\n", v24];
+  specificationVersion = [v13 specificationVersion];
+  [v20 appendFormat:@"CL Spec Version: %@\n", specificationVersion];
 
   [v20 appendFormat:@"Rose AP Version: %lu\n", objc_msgSend(v13, "roseAPVersion")];
   [v20 appendFormat:@"Rose DSP Version: %lu\n", objc_msgSend(v13, "roseDSPVersion")];
@@ -383,15 +383,15 @@
   }
 
   [v20 appendFormat:@"Debug Variant: %s\n", v25];
-  v26 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:@"summary.txt" forDevice:v6];
+  v26 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:@"summary.txt" forDevice:deviceCopy];
   [v20 writeToURL:v26 atomically:1 encoding:4 error:0];
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFailWithError:(id)a4 forDevice:(id)a5
+- (void)findMyAccessoryManager:(id)manager didFailWithError:(id)error forDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  errorCopy = error;
+  deviceCopy = device;
   if (qword_10000D0B0 != -1)
   {
     sub_100002DF0();
@@ -405,27 +405,27 @@
     v13 = 2082;
     v14 = "";
     v15 = 2113;
-    v16 = v10;
+    v16 = deviceCopy;
     v17 = 2113;
-    v18 = v9;
+    v18 = errorCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian TTR extension failed to dump logs, device:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", v12, 0x26u);
   }
 
-  if (v10)
+  if (deviceCopy)
   {
-    [(NSMutableDictionary *)self->_pendingLogDumps removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_pendingLogDumps removeObjectForKey:deviceCopy];
   }
 
   [(CLFindMyAccessoryDiagnosticExtension *)self checkForCompletion];
 }
 
-- (void)findMyAccessoryManager:(id)a3 didFetchFirmwareVersion:(id)a4 fromDevice:(id)a5 withError:(id)a6
+- (void)findMyAccessoryManager:(id)manager didFetchFirmwareVersion:(id)version fromDevice:(id)device withError:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [(NSMutableArray *)self->_pendingFirmwareFetches removeObject:v10];
-  if (v11)
+  versionCopy = version;
+  deviceCopy = device;
+  errorCopy = error;
+  [(NSMutableArray *)self->_pendingFirmwareFetches removeObject:deviceCopy];
+  if (errorCopy)
   {
     if (qword_10000D0B0 != -1)
     {
@@ -440,9 +440,9 @@
       v20 = 2082;
       v21 = "";
       v22 = 2113;
-      v23 = v10;
+      v23 = deviceCopy;
       v24 = 2113;
-      v25 = v11;
+      v25 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#durian TTR extension failed to fetch firmware, device:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", &v18, 0x26u);
     }
 
@@ -459,9 +459,9 @@
       v20 = 2082;
       v21 = "";
       v22 = 2113;
-      v23 = v10;
+      v23 = deviceCopy;
       v24 = 2113;
-      v25 = v11;
+      v25 = errorCopy;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#durian TTR extension failed to fetch firmware", "{msg%{public}.0s:#durian TTR extension failed to fetch firmware, device:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", &v18, 0x26u);
     }
 
@@ -470,9 +470,9 @@
 
   else
   {
-    v14 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:@"firmware_version.bin" forDevice:v10];
-    [v9 writeToURL:v14 atomically:1];
-    [(CLFindMyAccessoryDiagnosticExtension *)self saveSummaryForDevice:v10 withFirmwareVersionData:v9];
+    v14 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:@"firmware_version.bin" forDevice:deviceCopy];
+    [versionCopy writeToURL:v14 atomically:1];
+    [(CLFindMyAccessoryDiagnosticExtension *)self saveSummaryForDevice:deviceCopy withFirmwareVersionData:versionCopy];
     if (qword_10000D0B0 != -1)
     {
       sub_100002DF0();
@@ -482,15 +482,15 @@
     if (os_log_type_enabled(qword_10000D0B8, OS_LOG_TYPE_DEBUG))
     {
       v16 = v15;
-      v17 = [v14 path];
+      path = [v14 path];
       v18 = 68289539;
       v19 = 0;
       v20 = 2082;
       v21 = "";
       v22 = 2113;
-      v23 = v10;
+      v23 = deviceCopy;
       v24 = 2113;
-      v25 = v17;
+      v25 = path;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian TTR extension fetched firmware, device:%{private, location:escape_only}@, firmware_path:%{private, location:escape_only}@}", &v18, 0x26u);
     }
 
@@ -498,32 +498,32 @@
   }
 }
 
-- (void)findMyAccessoryManager:(id)a3 didDumpLogData:(id)a4 ofType:(unint64_t)a5 fromDevice:(id)a6 withError:(id)a7
+- (void)findMyAccessoryManager:(id)manager didDumpLogData:(id)data ofType:(unint64_t)type fromDevice:(id)device withError:(id)error
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(NSMutableDictionary *)self->_pendingLogDumps objectForKey:v12];
-  v15 = [NSNumber numberWithUnsignedInteger:a5];
+  dataCopy = data;
+  deviceCopy = device;
+  errorCopy = error;
+  v14 = [(NSMutableDictionary *)self->_pendingLogDumps objectForKey:deviceCopy];
+  v15 = [NSNumber numberWithUnsignedInteger:type];
   [v14 removeObject:v15];
 
   if (![v14 count])
   {
-    [(NSMutableDictionary *)self->_pendingLogDumps removeObjectForKey:v12];
+    [(NSMutableDictionary *)self->_pendingLogDumps removeObjectForKey:deviceCopy];
   }
 
-  if (a5 < 4)
+  if (type < 4)
   {
-    v16 = *(&off_1000082A8 + a5);
-    if ([v11 length])
+    v16 = *(&off_1000082A8 + type);
+    if ([dataCopy length])
     {
-      if (v13)
+      if (errorCopy)
       {
         v16 = [@"partial_" stringByAppendingString:v16];
       }
 
-      v17 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:v16 forDevice:v12];
-      [v11 writeToURL:v17 atomically:1];
+      v17 = [(CLFindMyAccessoryDiagnosticExtension *)self outputURLWithSuffix:v16 forDevice:deviceCopy];
+      [dataCopy writeToURL:v17 atomically:1];
       if (qword_10000D0B0 != -1)
       {
         sub_100002DF0();
@@ -533,7 +533,7 @@
       if (os_log_type_enabled(qword_10000D0B8, OS_LOG_TYPE_DEBUG))
       {
         v19 = v18;
-        v20 = [v11 length];
+        v20 = [dataCopy length];
         [v17 path];
         v21 = v39 = v16;
         *buf = 68290307;
@@ -541,15 +541,15 @@
         v42 = 2082;
         v43 = "";
         v44 = 2113;
-        v45 = v12;
+        v45 = deviceCopy;
         v46 = 2049;
         v47 = v20;
         v48 = 2049;
-        v49 = a5;
+        typeCopy6 = type;
         v50 = 2113;
         v51 = v21;
         v52 = 2113;
-        v53 = v13;
+        v53 = errorCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian TTR extension collected log, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu, log_path:%{private, location:escape_only}@, error:%{private, location:escape_only}@}", buf, 0x44u);
 
         v16 = v39;
@@ -558,7 +558,7 @@
 
     else
     {
-      if (v13)
+      if (errorCopy)
       {
         if (qword_10000D0B0 != -1)
         {
@@ -576,13 +576,13 @@
           v42 = 2082;
           v43 = "";
           v44 = 2113;
-          v45 = v12;
+          v45 = deviceCopy;
           v46 = 2049;
-          v47 = [v11 length];
+          v47 = [dataCopy length];
           v48 = 2049;
-          v49 = a5;
+          typeCopy6 = type;
           v50 = 2113;
-          v51 = v13;
+          v51 = errorCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#durian TTR dump logs failed, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu, error:%{private, location:escape_only}@}", buf, 0x3Au);
 
           v16 = v26;
@@ -599,19 +599,19 @@
           v29 = v28;
           v30 = v16;
           v31 = v29;
-          v32 = [v11 length];
+          v32 = [dataCopy length];
           *buf = 68290051;
           v41 = 0;
           v42 = 2082;
           v43 = "";
           v44 = 2113;
-          v45 = v12;
+          v45 = deviceCopy;
           v46 = 2049;
           v47 = v32;
           v48 = 2049;
-          v49 = a5;
+          typeCopy6 = type;
           v50 = 2113;
-          v51 = v13;
+          v51 = errorCopy;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v31, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#durian TTR dump logs failed", "{msg%{public}.0s:#durian TTR dump logs failed, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu, error:%{private, location:escape_only}@}", buf, 0x3Au);
 
           v16 = v30;
@@ -636,11 +636,11 @@
         v42 = 2082;
         v43 = "";
         v44 = 2113;
-        v45 = v12;
+        v45 = deviceCopy;
         v46 = 2049;
-        v47 = [v11 length];
+        v47 = [dataCopy length];
         v48 = 2049;
-        v49 = a5;
+        typeCopy6 = type;
         v50 = 2113;
         v51 = 0;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "{msg%{public}.0s:#durian TTR dump logs empty, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu, error:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -660,17 +660,17 @@
       }
 
       v17 = v37;
-      v38 = [v11 length];
+      v38 = [dataCopy length];
       *buf = 68290051;
       v41 = 0;
       v42 = 2082;
       v43 = "";
       v44 = 2113;
-      v45 = v12;
+      v45 = deviceCopy;
       v46 = 2049;
       v47 = v38;
       v48 = 2049;
-      v49 = a5;
+      typeCopy6 = type;
       v50 = 2113;
       v51 = 0;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "#durian TTR dump logs empty", "{msg%{public}.0s:#durian TTR dump logs empty, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu, error:%{private, location:escape_only}@}", buf, 0x3Au);
@@ -696,11 +696,11 @@ LABEL_12:
     v42 = 2082;
     v43 = "";
     v44 = 2113;
-    v45 = v12;
+    v45 = deviceCopy;
     v46 = 2049;
-    v47 = [v11 length];
+    v47 = [dataCopy length];
     v48 = 2049;
-    v49 = a5;
+    typeCopy6 = type;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#durian TTR extension collected log of unknown type, device:%{private, location:escape_only}@, size:%{private}lu, type:%{private}lu}", buf, 0x30u);
   }
 
@@ -708,9 +708,9 @@ LABEL_12:
 LABEL_18:
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if (qword_10000D0B0 != -1)
   {
     sub_100002DF0();
@@ -724,7 +724,7 @@ LABEL_18:
     v24 = 2082;
     v25 = "";
     v26 = 2113;
-    v27[0] = v4;
+    v27[0] = parametersCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:#durian TTR extension called, parameters:%{private, location:escape_only}@}", buf, 0x1Cu);
   }
 
@@ -783,8 +783,8 @@ LABEL_18:
     }
   }
 
-  v17 = [(CLFindMyAccessoryDiagnosticExtension *)self logDirectory];
-  v18 = [DEAttachmentItem attachmentWithPathURL:v17];
+  logDirectory = [(CLFindMyAccessoryDiagnosticExtension *)self logDirectory];
+  v18 = [DEAttachmentItem attachmentWithPathURL:logDirectory];
   v21 = v18;
   v19 = [NSArray arrayWithObjects:&v21 count:1];
 

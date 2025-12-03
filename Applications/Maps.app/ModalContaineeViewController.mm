@@ -1,8 +1,8 @@
 @interface ModalContaineeViewController
 - (HeightProviding)childHeightProvider;
-- (ModalContaineeViewController)initWithChildViewController:(id)a3 visualEffectDisabled:(BOOL)a4 fullScreen:(BOOL)a5;
+- (ModalContaineeViewController)initWithChildViewController:(id)controller visualEffectDisabled:(BOOL)disabled fullScreen:(BOOL)screen;
 - (_TtC4Maps19ModalCardHeaderView)headerView;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)_dismissContainee;
 - (void)_setupConstraints;
 - (void)_setupViews;
@@ -20,32 +20,32 @@
 
 - (void)_dismissContainee
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  [v3 dismiss:1];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController dismiss:1];
 
-  v4 = [(ModalContaineeViewController *)self blockAlongDismissContainee];
+  blockAlongDismissContainee = [(ModalContaineeViewController *)self blockAlongDismissContainee];
 
-  if (v4)
+  if (blockAlongDismissContainee)
   {
-    v5 = [(ModalContaineeViewController *)self blockAlongDismissContainee];
-    v6 = [v5 copy];
+    blockAlongDismissContainee2 = [(ModalContaineeViewController *)self blockAlongDismissContainee];
+    v6 = [blockAlongDismissContainee2 copy];
 
     [(ModalContaineeViewController *)self setBlockAlongDismissContainee:0];
     v6[2]();
   }
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
   v3 = -1.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((layout & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
-    v5 = [(ModalContaineeViewController *)self childHeightProvider];
+    childHeightProvider = [(ModalContaineeViewController *)self childHeightProvider];
 
-    if (v5)
+    if (childHeightProvider)
     {
-      v6 = [(ModalContaineeViewController *)self childHeightProvider];
-      [v6 fittingHeight];
+      childHeightProvider2 = [(ModalContaineeViewController *)self childHeightProvider];
+      [childHeightProvider2 fittingHeight];
       v8 = v7;
       [(ContaineeViewController *)self headerHeight];
       v3 = v9 + v8;
@@ -53,8 +53,8 @@
 
     else
     {
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      [v6 availableHeight];
+      childHeightProvider2 = [(ContaineeViewController *)self cardPresentationController];
+      [childHeightProvider2 availableHeight];
       v3 = v10;
     }
   }
@@ -64,48 +64,48 @@
 
 - (void)_setupConstraints
 {
-  v39 = [(ModalContaineeViewController *)self headerView];
-  v37 = [v39 topAnchor];
-  v38 = [(ModalContaineeViewController *)self view];
-  v36 = [v38 safeAreaLayoutGuide];
-  v35 = [v36 topAnchor];
-  v34 = [v37 constraintEqualToAnchor:v35];
+  headerView = [(ModalContaineeViewController *)self headerView];
+  topAnchor = [headerView topAnchor];
+  view = [(ModalContaineeViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[0] = v34;
-  v33 = [(ModalContaineeViewController *)self headerView];
-  v31 = [v33 bottomAnchor];
-  v32 = [(UIViewController *)self->_childVC view];
-  v30 = [v32 topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  headerView2 = [(ModalContaineeViewController *)self headerView];
+  bottomAnchor = [headerView2 bottomAnchor];
+  view2 = [(UIViewController *)self->_childVC view];
+  topAnchor3 = [view2 topAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v40[1] = v29;
-  v28 = [(ModalContaineeViewController *)self headerView];
-  v26 = [v28 leadingAnchor];
-  v27 = [(ModalContaineeViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  headerView3 = [(ModalContaineeViewController *)self headerView];
+  leadingAnchor = [headerView3 leadingAnchor];
+  view3 = [(ModalContaineeViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v40[2] = v24;
-  v23 = [(ModalContaineeViewController *)self headerView];
-  v21 = [v23 trailingAnchor];
-  v22 = [(ModalContaineeViewController *)self view];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  headerView4 = [(ModalContaineeViewController *)self headerView];
+  trailingAnchor = [headerView4 trailingAnchor];
+  view4 = [(ModalContaineeViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v40[3] = v19;
-  v18 = [(UIViewController *)self->_childVC view];
-  v16 = [v18 leadingAnchor];
-  v17 = [(ModalContaineeViewController *)self view];
-  v15 = [v17 leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  view5 = [(UIViewController *)self->_childVC view];
+  leadingAnchor3 = [view5 leadingAnchor];
+  view6 = [(ModalContaineeViewController *)self view];
+  leadingAnchor4 = [view6 leadingAnchor];
+  v14 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v40[4] = v14;
-  v13 = [(UIViewController *)self->_childVC view];
-  v3 = [v13 trailingAnchor];
-  v4 = [(ModalContaineeViewController *)self view];
-  v5 = [v4 trailingAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  view7 = [(UIViewController *)self->_childVC view];
+  trailingAnchor3 = [view7 trailingAnchor];
+  view8 = [(ModalContaineeViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v6 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v40[5] = v6;
-  v7 = [(UIViewController *)self->_childVC view];
-  v8 = [v7 bottomAnchor];
-  v9 = [(ModalContaineeViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  view9 = [(UIViewController *)self->_childVC view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  view10 = [(ModalContaineeViewController *)self view];
+  bottomAnchor3 = [view10 bottomAnchor];
+  v11 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v40[6] = v11;
   v12 = [NSArray arrayWithObjects:v40 count:7];
   [NSLayoutConstraint activateConstraints:v12];
@@ -120,26 +120,26 @@
 
   if (byte_10195DF08 != 1 || (-[ContaineeViewController cardPresentationController](self, "cardPresentationController"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 wantsFullscreen], v3, (v4 & 1) == 0))
   {
-    v5 = [(ModalContaineeViewController *)self view];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(ModalContaineeViewController *)self view];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   if (self->_childVC)
   {
     [(ModalContaineeViewController *)self addChildViewController:?];
-    v6 = [(UIViewController *)self->_childVC view];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view2 = [(UIViewController *)self->_childVC view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v7 = [(ModalContaineeViewController *)self view];
-    v8 = [(UIViewController *)self->_childVC view];
-    [v7 addSubview:v8];
+    view3 = [(ModalContaineeViewController *)self view];
+    view4 = [(UIViewController *)self->_childVC view];
+    [view3 addSubview:view4];
 
     [(UIViewController *)self->_childVC didMoveToParentViewController:self];
   }
 
-  v10 = [(ModalContaineeViewController *)self view];
-  v9 = [(ModalContaineeViewController *)self headerView];
-  [v10 addSubview:v9];
+  view5 = [(ModalContaineeViewController *)self view];
+  headerView = [(ModalContaineeViewController *)self headerView];
+  [view5 addSubview:headerView];
 }
 
 - (_TtC4Maps19ModalCardHeaderView)headerView
@@ -171,37 +171,37 @@
   [(ModalContaineeViewController *)self _setupConstraints];
 }
 
-- (ModalContaineeViewController)initWithChildViewController:(id)a3 visualEffectDisabled:(BOOL)a4 fullScreen:(BOOL)a5
+- (ModalContaineeViewController)initWithChildViewController:(id)controller visualEffectDisabled:(BOOL)disabled fullScreen:(BOOL)screen
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
+  screenCopy = screen;
+  disabledCopy = disabled;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = ModalContaineeViewController;
   v10 = [(ModalContaineeViewController *)&v18 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    if (v5)
+    if (screenCopy)
     {
       [(ModalContaineeViewController *)v10 setModalPresentationStyle:0];
-      v12 = [(ContaineeViewController *)v11 cardPresentationController];
-      [v12 setWantsFullscreen:1];
+      cardPresentationController = [(ContaineeViewController *)v11 cardPresentationController];
+      [cardPresentationController setWantsFullscreen:1];
     }
 
-    v13 = [(ContaineeViewController *)v11 cardPresentationController];
-    [v13 setPresentedModally:1];
+    cardPresentationController2 = [(ContaineeViewController *)v11 cardPresentationController];
+    [cardPresentationController2 setPresentedModally:1];
 
-    v14 = [(ContaineeViewController *)v11 cardPresentationController];
-    [v14 setTakesAvailableHeight:1];
+    cardPresentationController3 = [(ContaineeViewController *)v11 cardPresentationController];
+    [cardPresentationController3 setTakesAvailableHeight:1];
 
-    v15 = [(ContaineeViewController *)v11 cardPresentationController];
-    [v15 setBlurInCardView:!v6];
+    cardPresentationController4 = [(ContaineeViewController *)v11 cardPresentationController];
+    [cardPresentationController4 setBlurInCardView:!disabledCopy];
 
-    v16 = [(ContaineeViewController *)v11 cardPresentationController];
-    [v16 setAllowsSwipeToDismiss:0];
+    cardPresentationController5 = [(ContaineeViewController *)v11 cardPresentationController];
+    [cardPresentationController5 setAllowsSwipeToDismiss:0];
 
-    objc_storeStrong(&v11->_childVC, a3);
+    objc_storeStrong(&v11->_childVC, controller);
   }
 
   return v11;

@@ -1,9 +1,9 @@
 @interface _TVAppNavigationController_iOS
 - (id)_accessibilityButtonBackgroundDefaultTintColor;
 - (int64_t)preferredStatusBarStyle;
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3;
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets;
 - (void)didPresentTraitsOverridingViewController;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)willPresentTraitsOverridingViewController;
 @end
@@ -12,10 +12,10 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(_TVAppNavigationController_iOS *)self topViewController];
-  v3 = [v2 preferredStatusBarStyle];
+  topViewController = [(_TVAppNavigationController_iOS *)self topViewController];
+  preferredStatusBarStyle = [topViewController preferredStatusBarStyle];
 
-  return v3;
+  return preferredStatusBarStyle;
 }
 
 - (void)viewDidLoad
@@ -23,22 +23,22 @@
   v4.receiver = self;
   v4.super_class = _TVAppNavigationController_iOS;
   [(_TVAppNavigationController_iOS *)&v4 viewDidLoad];
-  v3 = [(_TVAppNavigationController_iOS *)self navigationBar];
-  [v3 setPrefersLargeTitles:1];
+  navigationBar = [(_TVAppNavigationController_iOS *)self navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 }
 
 - (void)willPresentTraitsOverridingViewController
 {
   [(_TVAppNavigationController_iOS *)self setShouldPreventContentFromShiftingVertically:1];
-  v4 = [(_TVAppNavigationController_iOS *)self navigationBar];
-  -[_TVAppNavigationController_iOS setOriginalValueForNavigationBarForceFullHeightInLandscape:](self, "setOriginalValueForNavigationBarForceFullHeightInLandscape:", [v4 forceFullHeightInLandscape]);
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  if (([v3 statusBarOrientation] - 1) <= 1)
+  navigationBar = [(_TVAppNavigationController_iOS *)self navigationBar];
+  -[_TVAppNavigationController_iOS setOriginalValueForNavigationBarForceFullHeightInLandscape:](self, "setOriginalValueForNavigationBarForceFullHeightInLandscape:", [navigationBar forceFullHeightInLandscape]);
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if (([mEMORY[0x277D75128] statusBarOrientation] - 1) <= 1)
   {
-    [v4 setForceFullHeightInLandscape:1];
+    [navigationBar setForceFullHeightInLandscape:1];
   }
 
-  if (([v3 isStatusBarHidden] & 1) == 0)
+  if (([mEMORY[0x277D75128] isStatusBarHidden] & 1) == 0)
   {
     [(_TVAppNavigationController_iOS *)self setShouldFakeStatusBarVisible:1];
   }
@@ -46,8 +46,8 @@
 
 - (void)didPresentTraitsOverridingViewController
 {
-  v3 = [(_TVAppNavigationController_iOS *)self navigationBar];
-  [v3 setForceFullHeightInLandscape:{-[_TVAppNavigationController_iOS originalValueForNavigationBarForceFullHeightInLandscape](self, "originalValueForNavigationBarForceFullHeightInLandscape")}];
+  navigationBar = [(_TVAppNavigationController_iOS *)self navigationBar];
+  [navigationBar setForceFullHeightInLandscape:{-[_TVAppNavigationController_iOS originalValueForNavigationBarForceFullHeightInLandscape](self, "originalValueForNavigationBarForceFullHeightInLandscape")}];
 
   [(_TVAppNavigationController_iOS *)self setShouldPreventContentFromShiftingVertically:0];
   [(_TVAppNavigationController_iOS *)self setShouldFakeStatusBarVisible:0];
@@ -55,11 +55,11 @@
   [(_TVAppNavigationController_iOS *)self setOriginalValueForNavigationBarForceFullHeightInLandscape:0];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _TVAppNavigationController_iOS;
-  [(_TVAppNavigationController_iOS *)&v5 didShowViewController:a3 animated:a4];
+  [(_TVAppNavigationController_iOS *)&v5 didShowViewController:controller animated:animated];
   [(_TVAppNavigationController_iOS *)self setNeedsStatusBarAppearanceUpdate];
 }
 
@@ -75,12 +75,12 @@
   return v3;
 }
 
-- (void)_setContentOverlayInsets:(UIEdgeInsets)a3
+- (void)_setContentOverlayInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   if ([(_TVAppNavigationController_iOS *)self shouldPreventContentFromShiftingVertically])
   {
     [(_TVAppNavigationController_iOS *)self _contentOverlayInsets];

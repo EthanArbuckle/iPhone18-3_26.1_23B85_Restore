@@ -1,18 +1,18 @@
 @interface IOGPUMetalDebugCommandEncoder
-- (IOGPUMetalDebugCommandEncoder)initWithCommandBuffer:(id)a3;
-- (void)IOLogBytes:(const char *)a3 length:(unint64_t)a4;
-- (void)addAPIResource:(id)a3;
+- (IOGPUMetalDebugCommandEncoder)initWithCommandBuffer:(id)buffer;
+- (void)IOLogBytes:(const char *)bytes length:(unint64_t)length;
+- (void)addAPIResource:(id)resource;
 - (void)dealloc;
-- (void)debugBytes:(const char *)a3 length:(unint64_t)a4 output_type:(unsigned int)a5;
+- (void)debugBytes:(const char *)bytes length:(unint64_t)length output_type:(unsigned int)output_type;
 - (void)endEncoding;
-- (void)kprintfBytes:(const char *)a3 length:(unint64_t)a4;
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3;
+- (void)kprintfBytes:(const char *)bytes length:(unint64_t)length;
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space;
 - (void)restartDebugPass;
 @end
 
 @implementation IOGPUMetalDebugCommandEncoder
 
-- (IOGPUMetalDebugCommandEncoder)initWithCommandBuffer:(id)a3
+- (IOGPUMetalDebugCommandEncoder)initWithCommandBuffer:(id)buffer
 {
   v8.receiver = self;
   v8.super_class = IOGPUMetalDebugCommandEncoder;
@@ -27,10 +27,10 @@
       [IOGPUMetalDebugCommandEncoder initWithCommandBuffer:];
     }
 
-    [a3 getCurrentKernelCommandBufferPointer:&v5->_kernelCommandBufferCurrent end:&v5->_kernelCommandBufferEnd];
-    [a3 beginSegment:v5->_kernelCommandBufferCurrent];
-    v5->_resourceList = [a3 ioGPUResourceList];
-    v5->_api_resourceList = [a3 akResourceList];
+    [buffer getCurrentKernelCommandBufferPointer:&v5->_kernelCommandBufferCurrent end:&v5->_kernelCommandBufferEnd];
+    [buffer beginSegment:v5->_kernelCommandBufferCurrent];
+    v5->_resourceList = [buffer ioGPUResourceList];
+    v5->_api_resourceList = [buffer akResourceList];
     if (!v5->_resourceList)
     {
       [IOGPUMetalDebugCommandEncoder initWithCommandBuffer:];
@@ -51,23 +51,23 @@
   [(_MTLCommandEncoder *)&v2 dealloc];
 }
 
-- (void)reserveKernelCommandBufferSpace:(unint64_t)a3
+- (void)reserveKernelCommandBufferSpace:(unint64_t)space
 {
   kernelCommandBufferEnd = self->_kernelCommandBufferEnd;
   result = self->_kernelCommandBufferCurrent;
-  if (kernelCommandBufferEnd - result < a3)
+  if (kernelCommandBufferEnd - result < space)
   {
     v7 = *(&self->super.super.super.super.isa + *MEMORY[0x1E69742C0]);
-    [v7 growKernelCommandBuffer:a3];
+    [v7 growKernelCommandBuffer:space];
     [v7 getCurrentKernelCommandBufferPointer:&self->_kernelCommandBufferCurrent end:&self->_kernelCommandBufferEnd];
     result = self->_kernelCommandBufferCurrent;
-    if (self->_kernelCommandBufferEnd - result < a3)
+    if (self->_kernelCommandBufferEnd - result < space)
     {
       [IOGPUMetalDebugCommandEncoder reserveKernelCommandBufferSpace:];
     }
   }
 
-  self->_kernelCommandBufferCurrent = result + a3;
+  self->_kernelCommandBufferCurrent = result + space;
   return result;
 }
 
@@ -95,20 +95,20 @@
   [(_MTLCommandEncoder *)&v4 endEncoding];
 }
 
-- (void)debugBytes:(const char *)a3 length:(unint64_t)a4 output_type:(unsigned int)a5
+- (void)debugBytes:(const char *)bytes length:(unint64_t)length output_type:(unsigned int)output_type
 {
-  v8 = (a4 + 19) & 0xFFFFFFFC;
-  v9 = [(IOGPUMetalDebugCommandEncoder *)self reserveKernelCommandBufferSpace:(a4 + 19) & 0xFFFFFFFFFFFFFFFCLL];
-  *v9 = 0;
-  v9[1] = v8;
-  v9[2] = a5;
-  v9[3] = a4;
-  v10 = v9 + 4;
+  v8 = (length + 19) & 0xFFFFFFFC;
+  0xFFFFFFFFFFFFFFFCLL = [(IOGPUMetalDebugCommandEncoder *)self reserveKernelCommandBufferSpace:(length + 19) & 0xFFFFFFFFFFFFFFFCLL];
+  *0xFFFFFFFFFFFFFFFCLL = 0;
+  0xFFFFFFFFFFFFFFFCLL[1] = v8;
+  0xFFFFFFFFFFFFFFFCLL[2] = output_type;
+  0xFFFFFFFFFFFFFFFCLL[3] = length;
+  v10 = 0xFFFFFFFFFFFFFFFCLL + 4;
 
-  memcpy(v10, a3, a4);
+  memcpy(v10, bytes, length);
 }
 
-- (void)addAPIResource:(id)a3
+- (void)addAPIResource:(id)resource
 {
   if (self->_api_resourceList)
   {
@@ -116,24 +116,24 @@
   }
 }
 
-- (void)kprintfBytes:(const char *)a3 length:(unint64_t)a4
+- (void)kprintfBytes:(const char *)bytes length:(unint64_t)length
 {
   if (!*(&self->super.super.super.super.isa + *MEMORY[0x1E69742C0]))
   {
     [IOGPUMetalDebugCommandEncoder kprintfBytes:length:];
   }
 
-  [(IOGPUMetalDebugCommandEncoder *)self debugBytes:a3 length:a4 output_type:0];
+  [(IOGPUMetalDebugCommandEncoder *)self debugBytes:bytes length:length output_type:0];
 }
 
-- (void)IOLogBytes:(const char *)a3 length:(unint64_t)a4
+- (void)IOLogBytes:(const char *)bytes length:(unint64_t)length
 {
   if (!*(&self->super.super.super.super.isa + *MEMORY[0x1E69742C0]))
   {
     [IOGPUMetalDebugCommandEncoder IOLogBytes:length:];
   }
 
-  [(IOGPUMetalDebugCommandEncoder *)self debugBytes:a3 length:a4 output_type:1];
+  [(IOGPUMetalDebugCommandEncoder *)self debugBytes:bytes length:length output_type:1];
 }
 
 @end

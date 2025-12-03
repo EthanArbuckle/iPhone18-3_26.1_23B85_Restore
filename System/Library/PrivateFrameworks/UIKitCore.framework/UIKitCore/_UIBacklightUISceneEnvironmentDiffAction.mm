@@ -1,6 +1,6 @@
 @interface _UIBacklightUISceneEnvironmentDiffAction
 - (_UIBacklightUISceneEnvironmentDiffAction)init;
-- (void)performChangesWithTransitionContext:(id)a3 environmentDelta:(id)a4 performActionsBlock:(id)a5;
+- (void)performChangesWithTransitionContext:(id)context environmentDelta:(id)delta performActionsBlock:(id)block;
 @end
 
 @implementation _UIBacklightUISceneEnvironmentDiffAction
@@ -31,20 +31,20 @@
   return v2;
 }
 
-- (void)performChangesWithTransitionContext:(id)a3 environmentDelta:(id)a4 performActionsBlock:(id)a5
+- (void)performChangesWithTransitionContext:(id)context environmentDelta:(id)delta performActionsBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  deltaCopy = delta;
+  contextCopy = context;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __117___UIBacklightUISceneEnvironmentDiffAction_performChangesWithTransitionContext_environmentDelta_performActionsBlock___block_invoke;
   v11[3] = &unk_1E711F5F0;
-  v12 = v7;
-  v13 = v8;
-  v14 = v6;
-  v9 = v7;
-  v10 = v8;
+  v12 = contextCopy;
+  v13 = blockCopy;
+  v14 = deltaCopy;
+  v9 = contextCopy;
+  v10 = blockCopy;
   _UISceneSettingsDiffActionPerformChangesWithTransitionContextAndCompletion(v9, v11, 0);
 }
 

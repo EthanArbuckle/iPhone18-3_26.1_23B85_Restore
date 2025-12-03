@@ -2,31 +2,31 @@
 - (BOOL)shouldDisplayTagOperatorInTagHeading;
 - (BOOL)shouldIndentNoteCount;
 - (ICFolderCoreDataIndexer)indexer;
-- (ICFolderDataSource)initWithCollectionView:(id)a3 presentingViewController:(id)a4 legacyManagedObjectContext:(id)a5 modernManagedObjectContext:(id)a6 overrideContainerIdentifier:(id)a7 unsupportedFolderInfoButtonTapHandler:(id)a8 accountUpgradeButtonTapHandlerProvider:(id)a9 tagSelectionDidChangeHandler:(id)a10 allowNotificationsCloseHandler:(id)a11;
+- (ICFolderDataSource)initWithCollectionView:(id)view presentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext overrideContainerIdentifier:(id)identifier unsupportedFolderInfoButtonTapHandler:(id)handler accountUpgradeButtonTapHandlerProvider:(id)provider tagSelectionDidChangeHandler:(id)self0 allowNotificationsCloseHandler:(id)self1;
 - (ICNAViewController)presentingViewController;
 - (ICOutlineParentCollectionViewCell)tagHeadingCell;
 - (ICTagOperatorCell)tagOperatorCell;
 - (NSManagedObjectContext)legacyViewContext;
 - (NSManagedObjectContext)modernViewContext;
 - (NSSet)allSmartFolderObjectIDs;
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4;
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects;
 - (int64_t)shouldIncludeCallNotes;
 - (int64_t)shouldIncludeMathNotes;
 - (int64_t)shouldIncludeSharedWithYou;
 - (int64_t)shouldIncludeSystemPaper;
 - (unint64_t)countOfLegacyAccounts;
 - (unint64_t)countOfModernAccounts;
-- (void)accountHidesNotesInCustomFoldersDidChange:(id)a3;
-- (void)accountsDidChange:(id)a3;
+- (void)accountHidesNotesInCustomFoldersDidChange:(id)change;
+- (void)accountsDidChange:(id)change;
 - (void)checkUpdateVirtualSmartFolders;
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4;
-- (void)reindexDataAnimated:(BOOL)a3 dataIndexedBlock:(id)a4 dataRenderedBlock:(id)a5;
-- (void)setHasGroupInset:(BOOL)a3;
-- (void)setShouldIncludeCallNotes:(int64_t)a3;
-- (void)setShouldIncludeMathNotes:(int64_t)a3;
-- (void)setShouldIncludeSharedWithYou:(int64_t)a3;
-- (void)setShouldIncludeSystemPaper:(int64_t)a3;
-- (void)setTagSelection:(id)a3;
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds;
+- (void)reindexDataAnimated:(BOOL)animated dataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock;
+- (void)setHasGroupInset:(BOOL)inset;
+- (void)setShouldIncludeCallNotes:(int64_t)notes;
+- (void)setShouldIncludeMathNotes:(int64_t)notes;
+- (void)setShouldIncludeSharedWithYou:(int64_t)you;
+- (void)setShouldIncludeSystemPaper:(int64_t)paper;
+- (void)setTagSelection:(id)selection;
 - (void)updateTagOperatorVisibility;
 @end
 
@@ -35,51 +35,51 @@
 - (NSManagedObjectContext)modernViewContext
 {
   v2 = +[ICNoteContext sharedContext];
-  v3 = [v2 managedObjectContext];
+  managedObjectContext = [v2 managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (ICFolderCoreDataIndexer)indexer
 {
   v4.receiver = self;
   v4.super_class = ICFolderDataSource;
-  v2 = [(ICFolderDataSource *)&v4 indexer];
+  indexer = [(ICFolderDataSource *)&v4 indexer];
 
-  return v2;
+  return indexer;
 }
 
-- (ICFolderDataSource)initWithCollectionView:(id)a3 presentingViewController:(id)a4 legacyManagedObjectContext:(id)a5 modernManagedObjectContext:(id)a6 overrideContainerIdentifier:(id)a7 unsupportedFolderInfoButtonTapHandler:(id)a8 accountUpgradeButtonTapHandlerProvider:(id)a9 tagSelectionDidChangeHandler:(id)a10 allowNotificationsCloseHandler:(id)a11
+- (ICFolderDataSource)initWithCollectionView:(id)view presentingViewController:(id)controller legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext overrideContainerIdentifier:(id)identifier unsupportedFolderInfoButtonTapHandler:(id)handler accountUpgradeButtonTapHandlerProvider:(id)provider tagSelectionDidChangeHandler:(id)self0 allowNotificationsCloseHandler:(id)self1
 {
-  v17 = a3;
-  obj = a4;
-  v71 = a5;
-  v70 = a6;
-  v18 = a7;
-  v67 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
+  viewCopy = view;
+  obj = controller;
+  contextCopy = context;
+  objectContextCopy = objectContext;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  providerCopy = provider;
+  changeHandlerCopy = changeHandler;
+  closeHandlerCopy = closeHandler;
   objc_initWeak(location, self);
-  v69 = v17;
-  objc_initWeak(&from, v17);
+  v69 = viewCopy;
+  objc_initWeak(&from, viewCopy);
   self->_shouldShowTagOperatorOnSeparateLine = 0;
-  v22 = [[ICFolderCoreDataIndexer alloc] initWithLegacyManagedObjectContext:v71 modernManagedObjectContext:v70 overrideContainerIdentifier:v18];
-  [v22 setShouldIncludeOutlineParentItems:v18 == 0];
-  [v22 setShouldIncludeTags:v18 == 0];
+  v22 = [[ICFolderCoreDataIndexer alloc] initWithLegacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy overrideContainerIdentifier:identifierCopy];
+  [v22 setShouldIncludeOutlineParentItems:identifierCopy == 0];
+  [v22 setShouldIncludeTags:identifierCopy == 0];
   v23 = objc_opt_class();
   v97[0] = _NSConcreteStackBlock;
   v97[1] = 3221225472;
   v97[2] = sub_10014C05C;
   v97[3] = &unk_10064B2B0;
   objc_copyWeak(&v100, location);
-  v66 = v19;
+  v66 = providerCopy;
   v98 = v66;
-  v24 = v20;
+  v24 = changeHandlerCopy;
   v99 = v24;
   v25 = [UICollectionViewCellRegistration registrationWithCellClass:v23 configurationHandler:v97];
   v26 = objc_opt_class();
-  v65 = v18;
+  v65 = identifierCopy;
   v94[0] = _NSConcreteStackBlock;
   v94[1] = 3221225472;
   v94[2] = sub_10014C328;
@@ -126,7 +126,7 @@
   v79[2] = sub_10014C9F4;
   v79[3] = &unk_10064B378;
   objc_copyWeak(&v81, location);
-  v37 = v21;
+  v37 = closeHandlerCopy;
   v80 = v37;
   [UICollectionViewSupplementaryRegistration registrationWithSupplementaryClass:v36 elementKind:UICollectionElementKindSectionHeader configurationHandler:v79];
   v77[0] = _NSConcreteStackBlock;
@@ -142,7 +142,7 @@
   if (v40)
   {
     objc_storeWeak(&v40->_presentingViewController, obj);
-    v42 = objc_retainBlock(v67);
+    v42 = objc_retainBlock(handlerCopy);
     unsupportedFolderInfoButtonTapHandler = v41->_unsupportedFolderInfoButtonTapHandler;
     v41->_unsupportedFolderInfoButtonTapHandler = v42;
 
@@ -151,8 +151,8 @@
     if (v44)
     {
       v45 = [ICManagedObjectContextChangeController alloc];
-      v46 = [(ICFolderDataSource *)v41 modernViewContext];
-      v47 = [NSSet setWithObject:v46];
+      modernViewContext = [(ICFolderDataSource *)v41 modernViewContext];
+      v47 = [NSSet setWithObject:modernViewContext];
       v48 = [v45 initWithManagedObjectContexts:v47 delegate:v41];
       managedObjectContextChangeController = v41->_managedObjectContextChangeController;
       v41->_managedObjectContextChangeController = v48;
@@ -171,12 +171,12 @@
     v72[3] = &unk_1006458D8;
     objc_copyWeak(&v73, location);
     [v50 setWillCollapseItemHandler:v72];
-    v51 = [(ICFolderDataSource *)v41 collectionViewDiffableDataSource];
-    [v51 setSectionSnapshotHandlers:v50];
+    collectionViewDiffableDataSource = [(ICFolderDataSource *)v41 collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource setSectionSnapshotHandlers:v50];
 
     [(ICFolderDataSource *)v41 setSectionTypes:&off_10066E368];
-    v52 = [(ICFolderDataSource *)v41 collectionViewDiffableDataSource];
-    [v52 setSupplementaryViewProvider:v39];
+    collectionViewDiffableDataSource2 = [(ICFolderDataSource *)v41 collectionViewDiffableDataSource];
+    [collectionViewDiffableDataSource2 setSupplementaryViewProvider:v39];
 
     v53 = +[NSNotificationCenter defaultCenter];
     [v53 addObserver:v41 selector:"accountsDidChange:" name:ICAccountsDidChangeNotification object:0];
@@ -214,149 +214,149 @@
   return v59;
 }
 
-- (void)reindexDataAnimated:(BOOL)a3 dataIndexedBlock:(id)a4 dataRenderedBlock:(id)a5
+- (void)reindexDataAnimated:(BOOL)animated dataIndexedBlock:(id)block dataRenderedBlock:(id)renderedBlock
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  animatedCopy = animated;
+  blockCopy = block;
+  renderedBlockCopy = renderedBlock;
   objc_initWeak(&location, self);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10014CD8C;
   v12[3] = &unk_10064B3A0;
   objc_copyWeak(&v14, &location);
-  v10 = v8;
+  v10 = blockCopy;
   v13 = v10;
   v11.receiver = self;
   v11.super_class = ICFolderDataSource;
-  [(ICFolderDataSource *)&v11 reindexDataAnimated:v6 dataIndexedBlock:v12 dataRenderedBlock:v9];
+  [(ICFolderDataSource *)&v11 reindexDataAnimated:animatedCopy dataIndexedBlock:v12 dataRenderedBlock:renderedBlockCopy];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)setTagSelection:(id)a3
+- (void)setTagSelection:(id)selection
 {
-  objc_storeStrong(&self->_tagSelection, a3);
-  v5 = a3;
-  v6 = [(ICFolderDataSource *)self tagOperatorCell];
-  [v6 setTagSelection:v5];
+  objc_storeStrong(&self->_tagSelection, selection);
+  selectionCopy = selection;
+  tagOperatorCell = [(ICFolderDataSource *)self tagOperatorCell];
+  [tagOperatorCell setTagSelection:selectionCopy];
 
-  v7 = [(ICFolderDataSource *)self tagHeadingCell];
-  [v7 setTagSelection:v5];
+  tagHeadingCell = [(ICFolderDataSource *)self tagHeadingCell];
+  [tagHeadingCell setTagSelection:selectionCopy];
 
   [(ICFolderDataSource *)self updateTagOperatorVisibility];
 }
 
-- (void)setHasGroupInset:(BOOL)a3
+- (void)setHasGroupInset:(BOOL)inset
 {
-  v3 = a3;
+  insetCopy = inset;
   hasGroupInset = self->_hasGroupInset;
-  self->_hasGroupInset = a3;
+  self->_hasGroupInset = inset;
   objc_opt_class();
-  v6 = [(ICFolderDataSource *)self collectionView];
+  collectionView = [(ICFolderDataSource *)self collectionView];
   v7 = ICDynamicCast();
-  [v7 setHasGroupInset:v3];
+  [v7 setHasGroupInset:insetCopy];
 
-  if (hasGroupInset != v3)
+  if (hasGroupInset != insetCopy)
   {
-    v8 = [(ICFolderDataSource *)self collectionView];
-    [v8 reloadData];
+    collectionView2 = [(ICFolderDataSource *)self collectionView];
+    [collectionView2 reloadData];
   }
 }
 
 - (unint64_t)countOfLegacyAccounts
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 countOfLegacyAccounts];
+  indexer = [(ICFolderDataSource *)self indexer];
+  countOfLegacyAccounts = [indexer countOfLegacyAccounts];
 
-  return v3;
+  return countOfLegacyAccounts;
 }
 
 - (unint64_t)countOfModernAccounts
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 countOfModernAccounts];
+  indexer = [(ICFolderDataSource *)self indexer];
+  countOfModernAccounts = [indexer countOfModernAccounts];
 
-  return v3;
+  return countOfModernAccounts;
 }
 
 - (NSSet)allSmartFolderObjectIDs
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 allSmartFolderObjectIDs];
+  indexer = [(ICFolderDataSource *)self indexer];
+  allSmartFolderObjectIDs = [indexer allSmartFolderObjectIDs];
 
-  return v3;
+  return allSmartFolderObjectIDs;
 }
 
 - (int64_t)shouldIncludeSharedWithYou
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 shouldIncludeSharedWithYou];
+  indexer = [(ICFolderDataSource *)self indexer];
+  shouldIncludeSharedWithYou = [indexer shouldIncludeSharedWithYou];
 
-  return v3;
+  return shouldIncludeSharedWithYou;
 }
 
-- (void)setShouldIncludeSharedWithYou:(int64_t)a3
+- (void)setShouldIncludeSharedWithYou:(int64_t)you
 {
-  v4 = [(ICFolderDataSource *)self indexer];
-  [v4 setShouldIncludeSharedWithYou:a3];
+  indexer = [(ICFolderDataSource *)self indexer];
+  [indexer setShouldIncludeSharedWithYou:you];
 }
 
 - (int64_t)shouldIncludeSystemPaper
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 shouldIncludeSystemPaper];
+  indexer = [(ICFolderDataSource *)self indexer];
+  shouldIncludeSystemPaper = [indexer shouldIncludeSystemPaper];
 
-  return v3;
+  return shouldIncludeSystemPaper;
 }
 
-- (void)setShouldIncludeSystemPaper:(int64_t)a3
+- (void)setShouldIncludeSystemPaper:(int64_t)paper
 {
-  v4 = [(ICFolderDataSource *)self indexer];
-  [v4 setShouldIncludeSystemPaper:a3];
+  indexer = [(ICFolderDataSource *)self indexer];
+  [indexer setShouldIncludeSystemPaper:paper];
 }
 
 - (int64_t)shouldIncludeCallNotes
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 shouldIncludeCallNotes];
+  indexer = [(ICFolderDataSource *)self indexer];
+  shouldIncludeCallNotes = [indexer shouldIncludeCallNotes];
 
-  return v3;
+  return shouldIncludeCallNotes;
 }
 
-- (void)setShouldIncludeCallNotes:(int64_t)a3
+- (void)setShouldIncludeCallNotes:(int64_t)notes
 {
-  v4 = [(ICFolderDataSource *)self indexer];
-  [v4 setShouldIncludeCallNotes:a3];
+  indexer = [(ICFolderDataSource *)self indexer];
+  [indexer setShouldIncludeCallNotes:notes];
 }
 
 - (int64_t)shouldIncludeMathNotes
 {
-  v2 = [(ICFolderDataSource *)self indexer];
-  v3 = [v2 shouldIncludeMathNotes];
+  indexer = [(ICFolderDataSource *)self indexer];
+  shouldIncludeMathNotes = [indexer shouldIncludeMathNotes];
 
-  return v3;
+  return shouldIncludeMathNotes;
 }
 
-- (void)setShouldIncludeMathNotes:(int64_t)a3
+- (void)setShouldIncludeMathNotes:(int64_t)notes
 {
-  v4 = [(ICFolderDataSource *)self indexer];
-  [v4 setShouldIncludeMathNotes:a3];
+  indexer = [(ICFolderDataSource *)self indexer];
+  [indexer setShouldIncludeMathNotes:notes];
 }
 
-- (void)managedObjectContextChangeController:(id)a3 performUpdatesForManagedObjectIDs:(id)a4
+- (void)managedObjectContextChangeController:(id)controller performUpdatesForManagedObjectIDs:(id)ds
 {
-  v19 = a3;
-  v6 = a4;
-  if ([v6 count])
+  controllerCopy = controller;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v28 = 0u;
     v29 = 0u;
     v27 = 0u;
     v26 = 0u;
-    v16 = v6;
-    obj = v6;
+    v16 = dsCopy;
+    obj = dsCopy;
     v20 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v20)
     {
@@ -376,8 +376,8 @@
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v9 = [v19 managedObjectContexts];
-          v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          managedObjectContexts = [controllerCopy managedObjectContexts];
+          v10 = [managedObjectContexts countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v10)
           {
             v11 = v10;
@@ -389,7 +389,7 @@
               {
                 if (*v23 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(managedObjectContexts);
                 }
 
                 v14 = *(*(&v22 + 1) + 8 * v13);
@@ -405,7 +405,7 @@
               }
 
               while (v11 != v13);
-              v11 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v11 = [managedObjectContexts countByEnumeratingWithState:&v22 objects:v30 count:16];
             }
 
             while (v11);
@@ -421,22 +421,22 @@
       while (v20);
     }
 
-    v15 = [(ICFolderDataSource *)self updateVirtualSmartFoldersDelayer];
-    [v15 requestFire];
+    updateVirtualSmartFoldersDelayer = [(ICFolderDataSource *)self updateVirtualSmartFoldersDelayer];
+    [updateVirtualSmartFoldersDelayer requestFire];
 
-    v6 = v16;
+    dsCopy = v16;
   }
 }
 
-- (id)managedObjectContextChangeController:(id)a3 managedObjectIDsToUpdateForUpdatedManagedObjects:(id)a4
+- (id)managedObjectContextChangeController:(id)controller managedObjectIDsToUpdateForUpdatedManagedObjects:(id)objects
 {
-  v4 = a4;
+  objectsCopy = objects;
   v5 = +[NSMutableSet set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -455,8 +455,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v12 = [v11 objectID];
-          [v5 addObject:v12];
+          objectID = [v11 objectID];
+          [v5 addObject:objectID];
         }
       }
 
@@ -487,31 +487,31 @@
 - (NSManagedObjectContext)legacyViewContext
 {
   v2 = +[NotesApp sharedNotesApp];
-  v3 = [v2 noteContext];
-  v4 = [v3 managedObjectContext];
+  noteContext = [v2 noteContext];
+  managedObjectContext = [noteContext managedObjectContext];
 
-  return v4;
+  return managedObjectContext;
 }
 
-- (void)accountsDidChange:(id)a3
+- (void)accountsDidChange:(id)change
 {
-  v3 = [(ICFolderDataSource *)self accountChangeDelayer];
-  [v3 requestFire];
+  accountChangeDelayer = [(ICFolderDataSource *)self accountChangeDelayer];
+  [accountChangeDelayer requestFire];
 }
 
-- (void)accountHidesNotesInCustomFoldersDidChange:(id)a3
+- (void)accountHidesNotesInCustomFoldersDidChange:(id)change
 {
   v18.receiver = self;
   v18.super_class = ICFolderDataSource;
-  [(ICFolderDataSource *)&v18 accountHidesNotesInCustomFoldersDidChange:a3];
+  [(ICFolderDataSource *)&v18 accountHidesNotesInCustomFoldersDidChange:change];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ICFolderDataSource *)self collectionView];
-  v5 = [v4 indexPathsForVisibleItems];
+  collectionView = [(ICFolderDataSource *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -523,13 +523,13 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         objc_opt_class();
-        v11 = [(ICFolderDataSource *)self collectionView];
-        v12 = [v11 cellForItemAtIndexPath:v10];
+        collectionView2 = [(ICFolderDataSource *)self collectionView];
+        v12 = [collectionView2 cellForItemAtIndexPath:v10];
         v13 = ICDynamicCast();
 
         [v13 updateNoteCount];
@@ -537,7 +537,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
@@ -546,20 +546,20 @@
 
 - (void)checkUpdateVirtualSmartFolders
 {
-  v3 = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
-  v4 = [v3 snapshot];
-  v5 = [v4 itemIdentifiers];
-  v6 = [v5 ic_objectsOfClass:objc_opt_class()];
+  collectionViewDiffableDataSource = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v6 = [itemIdentifiers ic_objectsOfClass:objc_opt_class()];
   v7 = [NSSet setWithArray:v6];
 
-  v8 = [(ICFolderDataSource *)self indexer];
-  v9 = [v8 allVirtualSmartFolderIdentifiers];
+  indexer = [(ICFolderDataSource *)self indexer];
+  allVirtualSmartFolderIdentifiers = [indexer allVirtualSmartFolderIdentifiers];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10014DD90;
   v11[3] = &unk_10064B3C8;
   v11[4] = self;
-  v10 = [v9 ic_objectsPassingTest:v11];
+  v10 = [allVirtualSmartFolderIdentifiers ic_objectsPassingTest:v11];
 
   if (([v10 isEqualToSet:v7] & 1) == 0)
   {
@@ -569,20 +569,20 @@
 
 - (ICOutlineParentCollectionViewCell)tagHeadingCell
 {
-  v3 = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
-  v4 = [v3 snapshot];
+  collectionViewDiffableDataSource = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
+  snapshot = [collectionViewDiffableDataSource snapshot];
 
-  v5 = [v4 itemIdentifiers];
-  v6 = [v5 ic_objectPassingTest:&stru_10064B3E8];
+  itemIdentifiers = [snapshot itemIdentifiers];
+  v6 = [itemIdentifiers ic_objectPassingTest:&stru_10064B3E8];
 
   if (v6)
   {
-    v7 = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
-    v8 = [v7 indexPathForItemIdentifier:v6];
+    collectionViewDiffableDataSource2 = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
+    v8 = [collectionViewDiffableDataSource2 indexPathForItemIdentifier:v6];
 
     objc_opt_class();
-    v9 = [(ICFolderDataSource *)self collectionView];
-    v10 = [v9 cellForItemAtIndexPath:v8];
+    collectionView = [(ICFolderDataSource *)self collectionView];
+    v10 = [collectionView cellForItemAtIndexPath:v8];
     v11 = ICDynamicCast();
   }
 
@@ -596,13 +596,13 @@
 
 - (ICTagOperatorCell)tagOperatorCell
 {
-  v3 = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
+  collectionViewDiffableDataSource = [(ICFolderDataSource *)self collectionViewDiffableDataSource];
   v4 = +[ICTagOperatorItemIdentifier sharedItemIdentifier];
-  v5 = [v3 indexPathForItemIdentifier:v4];
+  v5 = [collectionViewDiffableDataSource indexPathForItemIdentifier:v4];
 
   objc_opt_class();
-  v6 = [(ICFolderDataSource *)self collectionView];
-  v7 = [v6 cellForItemAtIndexPath:v5];
+  collectionView = [(ICFolderDataSource *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:v5];
   v8 = ICDynamicCast();
 
   return v8;
@@ -610,9 +610,9 @@
 
 - (void)updateTagOperatorVisibility
 {
-  v3 = [(ICFolderDataSource *)self shouldDisplayTagOperatorInTagHeading];
-  v4 = [(ICFolderDataSource *)self tagHeadingCell];
-  [v4 setShouldDisplayTagSelectionOperator:v3];
+  shouldDisplayTagOperatorInTagHeading = [(ICFolderDataSource *)self shouldDisplayTagOperatorInTagHeading];
+  tagHeadingCell = [(ICFolderDataSource *)self tagHeadingCell];
+  [tagHeadingCell setShouldDisplayTagSelectionOperator:shouldDisplayTagOperatorInTagHeading];
 
   if ([(ICFolderDataSource *)self hasGroupInset]|| ![(ICFolderDataSource *)self shouldShowTagOperatorOnSeparateLine])
   {
@@ -621,17 +621,17 @@
 
   else
   {
-    v5 = [(ICFolderDataSource *)self tagSelection];
-    v6 = [v5 selectedTagCount] > 1;
+    tagSelection = [(ICFolderDataSource *)self tagSelection];
+    v6 = [tagSelection selectedTagCount] > 1;
   }
 
-  v7 = [(ICFolderDataSource *)self indexer];
-  v8 = [v7 shouldIncludeTagOperator];
+  indexer = [(ICFolderDataSource *)self indexer];
+  shouldIncludeTagOperator = [indexer shouldIncludeTagOperator];
 
-  if (v6 != v8)
+  if (v6 != shouldIncludeTagOperator)
   {
-    v9 = [(ICFolderDataSource *)self indexer];
-    [v9 setShouldIncludeTagOperator:v6];
+    indexer2 = [(ICFolderDataSource *)self indexer];
+    [indexer2 setShouldIncludeTagOperator:v6];
 
     [(ICFolderDataSource *)self reloadDataAnimated:1];
   }

@@ -3,22 +3,22 @@
 - (BOOL)isConnected;
 - (SUBMessageEndpoint)init;
 - (id)SUBDefaultPairedDevice;
-- (id)dataCompress:(id)a3 shouldCompress:(BOOL)a4;
-- (id)getMessageTimeout:(BOOL)a3 useTimeout:(id)a4;
+- (id)dataCompress:(id)compress shouldCompress:(BOOL)shouldCompress;
+- (id)getMessageTimeout:(BOOL)timeout useTimeout:(id)useTimeout;
 - (void)_checkConnectivityForQueuedDisconnectedBlocks;
-- (void)executeBlockWhenDisconnected:(id)a3;
-- (void)handleMessage:(id)a3 withContext:(id)a4;
+- (void)executeBlockWhenDisconnected:(id)disconnected;
+- (void)handleMessage:(id)message withContext:(id)context;
 - (void)resume;
-- (void)sendCloudMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 destinations:(id)a6 completion:(id)a7;
-- (void)sendCloudMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 withReply:(id)a6 destinations:(id)a7;
-- (void)sendErrorReply:(id)a3 toMessage:(id)a4 isCritical:(BOOL)a5;
-- (void)sendMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 withReply:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)setHandler:(id)a3 forMessagesOfType:(id)a4;
-- (void)setHandler:(id)a3 forMessagesOfTypes:(id)a4;
+- (void)sendCloudMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout destinations:(id)destinations completion:(id)completion;
+- (void)sendCloudMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout withReply:(id)reply destinations:(id)destinations;
+- (void)sendErrorReply:(id)reply toMessage:(id)message isCritical:(BOOL)critical;
+- (void)sendMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout withReply:(id)reply;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)setHandler:(id)handler forMessagesOfType:(id)type;
+- (void)setHandler:(id)handler forMessagesOfTypes:(id)types;
 - (void)suspend;
 @end
 
@@ -88,8 +88,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_service devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_service devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -99,7 +99,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -110,7 +110,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -125,11 +125,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)executeBlockWhenDisconnected:(id)a3
+- (void)executeBlockWhenDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   dispatch_assert_queue_not_V2(self->_queue);
-  if (v4)
+  if (disconnectedCopy)
   {
     v12[0] = 0;
     v12[1] = v12;
@@ -147,7 +147,7 @@ LABEL_11:
     block[2] = sub_1000140F4;
     block[3] = &unk_10002D678;
     block[4] = self;
-    v10 = v4;
+    v10 = disconnectedCopy;
     v11 = v12;
     dispatch_async(queue, block);
 
@@ -239,17 +239,17 @@ LABEL_11:
   _Block_object_dispose(v8, 8);
 }
 
-- (id)getMessageTimeout:(BOOL)a3 useTimeout:(id)a4
+- (id)getMessageTimeout:(BOOL)timeout useTimeout:(id)useTimeout
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  timeoutCopy = timeout;
+  useTimeoutCopy = useTimeout;
+  v6 = useTimeoutCopy;
+  if (useTimeoutCopy)
   {
-    v7 = v5;
+    v7 = useTimeoutCopy;
   }
 
-  else if (v4)
+  else if (timeoutCopy)
   {
     v7 = &off_10002F568;
   }
@@ -262,11 +262,11 @@ LABEL_11:
   return v7;
 }
 
-- (void)sendMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 withReply:(id)a6
+- (void)sendMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout withReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  messageCopy = message;
+  timeoutCopy = timeout;
+  replyCopy = reply;
   dispatch_assert_queue_not_V2(self->_queue);
   v26[0] = 0;
   v26[1] = v26;
@@ -284,34 +284,34 @@ LABEL_11:
   block[2] = sub_100015090;
   block[3] = &unk_10002D740;
   block[4] = self;
-  v21 = v10;
-  v25 = a4;
-  v22 = v11;
-  v23 = v12;
+  v21 = messageCopy;
+  criticalCopy = critical;
+  v22 = timeoutCopy;
+  v23 = replyCopy;
   v24 = v26;
-  v17 = v11;
-  v18 = v10;
-  v19 = v12;
+  v17 = timeoutCopy;
+  v18 = messageCopy;
+  v19 = replyCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v26, 8);
 }
 
-- (void)sendCloudMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 destinations:(id)a6 completion:(id)a7
+- (void)sendCloudMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout destinations:(id)destinations completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  messageCopy = message;
+  timeoutCopy = timeout;
+  destinationsCopy = destinations;
+  completionCopy = completion;
   dispatch_assert_queue_not_V2(self->_queue);
-  if (v13)
+  if (timeoutCopy)
   {
-    v16 = [v13 unsignedLongLongValue];
+    unsignedLongLongValue = [timeoutCopy unsignedLongLongValue];
   }
 
   else
   {
-    v16 = 0;
+    unsignedLongLongValue = 0;
   }
 
   v33[0] = 0;
@@ -321,7 +321,7 @@ LABEL_11:
   v33[4] = sub_1000140EC;
   v17 = [SUBTransaction alloc];
   v18 = [NSString stringWithFormat:@"%s", "com.apple.SoftwareUpdateBridge.sendCloudMessage1.1"];
-  v19 = [(SUBTransaction *)v17 initWithNameAndTimeout:v18 timeOut:v16];
+  v19 = [(SUBTransaction *)v17 initWithNameAndTimeout:v18 timeOut:unsignedLongLongValue];
 
   v34 = v19;
   queue = self->_queue;
@@ -330,37 +330,37 @@ LABEL_11:
   block[2] = sub_100015894;
   block[3] = &unk_10002D790;
   v30 = v33;
-  v31 = v16;
+  v31 = unsignedLongLongValue;
   block[4] = self;
-  v26 = v12;
-  v32 = a4;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
-  v24 = v15;
+  v26 = messageCopy;
+  criticalCopy = critical;
+  v27 = timeoutCopy;
+  v28 = destinationsCopy;
+  v29 = completionCopy;
+  v21 = destinationsCopy;
+  v22 = timeoutCopy;
+  v23 = messageCopy;
+  v24 = completionCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v33, 8);
 }
 
-- (void)sendCloudMessage:(id)a3 isCritical:(BOOL)a4 useTimeout:(id)a5 withReply:(id)a6 destinations:(id)a7
+- (void)sendCloudMessage:(id)message isCritical:(BOOL)critical useTimeout:(id)timeout withReply:(id)reply destinations:(id)destinations
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  messageCopy = message;
+  timeoutCopy = timeout;
+  replyCopy = reply;
+  destinationsCopy = destinations;
   dispatch_assert_queue_not_V2(self->_queue);
-  if (v13)
+  if (timeoutCopy)
   {
-    v16 = [v13 unsignedLongLongValue];
+    unsignedLongLongValue = [timeoutCopy unsignedLongLongValue];
   }
 
   else
   {
-    v16 = 0;
+    unsignedLongLongValue = 0;
   }
 
   v33[0] = 0;
@@ -370,7 +370,7 @@ LABEL_11:
   v33[4] = sub_1000140EC;
   v17 = [SUBTransaction alloc];
   v18 = [NSString stringWithFormat:@"%s", "com.apple.SoftwareUpdateBridge.sendCloudMessage2.1"];
-  v19 = [(SUBTransaction *)v17 initWithNameAndTimeout:v18 timeOut:v16];
+  v19 = [(SUBTransaction *)v17 initWithNameAndTimeout:v18 timeOut:unsignedLongLongValue];
 
   v34 = v19;
   queue = self->_queue;
@@ -379,64 +379,64 @@ LABEL_11:
   block[2] = sub_100015F58;
   block[3] = &unk_10002D790;
   v30 = v33;
-  v31 = v16;
+  v31 = unsignedLongLongValue;
   block[4] = self;
-  v26 = v12;
-  v32 = a4;
-  v27 = v13;
-  v28 = v15;
-  v29 = v14;
-  v21 = v15;
-  v22 = v13;
-  v23 = v12;
-  v24 = v14;
+  v26 = messageCopy;
+  criticalCopy = critical;
+  v27 = timeoutCopy;
+  v28 = destinationsCopy;
+  v29 = replyCopy;
+  v21 = destinationsCopy;
+  v22 = timeoutCopy;
+  v23 = messageCopy;
+  v24 = replyCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v33, 8);
 }
 
-- (void)setHandler:(id)a3 forMessagesOfType:(id)a4
+- (void)setHandler:(id)handler forMessagesOfType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  typeCopy = type;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016848;
   block[3] = &unk_10002D7E0;
-  v12 = v7;
-  v13 = v6;
+  v12 = typeCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = typeCopy;
+  v10 = handlerCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)setHandler:(id)a3 forMessagesOfTypes:(id)a4
+- (void)setHandler:(id)handler forMessagesOfTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  typesCopy = types;
   dispatch_assert_queue_not_V2(self->_queue);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100016978;
   block[3] = &unk_10002D2E0;
-  v13 = self;
-  v14 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = typesCopy;
+  v9 = typesCopy;
+  v10 = handlerCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)dataCompress:(id)a3 shouldCompress:(BOOL)a4
+- (id)dataCompress:(id)compress shouldCompress:(BOOL)shouldCompress
 {
-  v4 = a4;
-  v5 = a3;
+  shouldCompressCopy = shouldCompress;
+  compressCopy = compress;
   memset(&stream, 0, sizeof(stream));
-  if (compression_stream_init(&stream, !v4, COMPRESSION_ZLIB))
+  if (compression_stream_init(&stream, !shouldCompressCopy, COMPRESSION_ZLIB))
   {
     v6 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -451,8 +451,8 @@ LABEL_11:
   else
   {
     v8 = objc_alloc_init(NSMutableData);
-    stream.src_ptr = [v5 bytes];
-    stream.src_size = [v5 length];
+    stream.src_ptr = [compressCopy bytes];
+    stream.src_size = [compressCopy length];
     while (1)
     {
       stream.dst_ptr = buf;
@@ -570,10 +570,10 @@ LABEL_17:
   return v8;
 }
 
-- (void)sendErrorReply:(id)a3 toMessage:(id)a4 isCritical:(BOOL)a5
+- (void)sendErrorReply:(id)reply toMessage:(id)message isCritical:(BOOL)critical
 {
-  v8 = a3;
-  v9 = a4;
+  replyCopy = reply;
+  messageCopy = message;
   dispatch_assert_queue_not_V2(self->_queue);
   v21[0] = 0;
   v21[1] = v21;
@@ -591,27 +591,27 @@ LABEL_17:
   block[2] = sub_1000182F0;
   block[3] = &unk_10002D7B8;
   block[4] = self;
-  v17 = v8;
-  v20 = a5;
-  v18 = v9;
+  v17 = replyCopy;
+  criticalCopy = critical;
+  v18 = messageCopy;
   v19 = v21;
-  v14 = v9;
-  v15 = v8;
+  v14 = messageCopy;
+  v15 = replyCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v21, 8);
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (v15)
+  if (errorCopy)
   {
-    v20 = SUBError(@"SUBError", 2, v15, @"failed to send message", v16, v17, v18, v19, v28);
+    v20 = SUBError(@"SUBError", 2, errorCopy, @"failed to send message", v16, v17, v18, v19, v28);
   }
 
   else
@@ -619,10 +619,10 @@ LABEL_17:
     v20 = 0;
   }
 
-  v21 = [(NSMutableDictionary *)self->_pendingMessageCompletions objectForKeyedSubscript:v14];
-  if (v15)
+  v21 = [(NSMutableDictionary *)self->_pendingMessageCompletions objectForKeyedSubscript:identifierCopy];
+  if (errorCopy)
   {
-    v22 = [(NSMutableDictionary *)self->_pendingMessageReplies objectForKeyedSubscript:v14];
+    v22 = [(NSMutableDictionary *)self->_pendingMessageReplies objectForKeyedSubscript:identifierCopy];
     v23 = objc_retainBlock(v22);
   }
 
@@ -633,7 +633,7 @@ LABEL_17:
 
   if (v21 | v23)
   {
-    v29 = v12;
+    v29 = serviceCopy;
     v36[0] = 0;
     v36[1] = v36;
     v36[2] = 0x3032000000;
@@ -651,38 +651,38 @@ LABEL_17:
     block[3] = &unk_10002D830;
     v32 = v21;
     v31 = v20;
-    v35 = a6;
+    successCopy = success;
     v33 = v23;
     v34 = v36;
     dispatch_async(callbackQueue, block);
     if (v21)
     {
-      [(NSMutableDictionary *)self->_pendingMessageCompletions removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_pendingMessageCompletions removeObjectForKey:identifierCopy];
     }
 
     if (v23)
     {
-      [(NSMutableDictionary *)self->_pendingMessageReplies removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_pendingMessageReplies removeObjectForKey:identifierCopy];
     }
 
     _Block_object_dispose(v36, 8);
-    v12 = v29;
+    serviceCopy = v29;
   }
 }
 
-- (void)handleMessage:(id)a3 withContext:(id)a4
+- (void)handleMessage:(id)message withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [v7 incomingResponseIdentifier];
-  v48 = [v7 outgoingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
   v63 = 0;
-  v9 = [NSPropertyListSerialization propertyListWithData:v6 options:0 format:0 error:&v63];
+  v9 = [NSPropertyListSerialization propertyListWithData:messageCopy options:0 format:0 error:&v63];
   v10 = v63;
   if (v9)
   {
-    if (!v8)
+    if (!incomingResponseIdentifier)
     {
       v11 = [NSString stringWithUTF8String:SUBMessageTypeKey[0]];
       v12 = [v9 objectForKeyedSubscript:v11];
@@ -708,11 +708,11 @@ LABEL_17:
           block[2] = sub_1000194A4;
           block[3] = &unk_10002D880;
           v50 = v12;
-          v51 = v48;
+          v51 = outgoingResponseIdentifier;
           v13 = v13;
           v54 = v13;
           v52 = v9;
-          v53 = v7;
+          v53 = contextCopy;
           v55 = buf;
           dispatch_async(callbackQueue, block);
 
@@ -725,17 +725,17 @@ LABEL_17:
           if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
           {
             loga = v37;
-            v42 = [v7 outgoingResponseIdentifier];
+            outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
             *buf = 138412546;
-            *&buf[4] = v42;
+            *&buf[4] = outgoingResponseIdentifier2;
             *&buf[12] = 2112;
             *&buf[14] = v12;
             _os_log_impl(&_mh_execute_header, loga, OS_LOG_TYPE_DEFAULT, "No handler for message %@ of type %@", buf, 0x16u);
           }
 
           v43 = SUBError(@"SUBError", 1, 0, @"No handler for message type '%@'", v38, v39, v40, v41, v12);
-          v44 = [v7 outgoingResponseIdentifier];
-          [(SUBMessageEndpoint *)self _sendErrorReply:v43 toMessage:v44 isCritical:1];
+          outgoingResponseIdentifier3 = [contextCopy outgoingResponseIdentifier];
+          [(SUBMessageEndpoint *)self _sendErrorReply:v43 toMessage:outgoingResponseIdentifier3 isCritical:1];
         }
       }
 
@@ -745,17 +745,17 @@ LABEL_17:
         if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
         {
           log = v30;
-          v35 = [v7 outgoingResponseIdentifier];
+          outgoingResponseIdentifier4 = [contextCopy outgoingResponseIdentifier];
           *buf = 138543618;
-          *&buf[4] = v35;
+          *&buf[4] = outgoingResponseIdentifier4;
           *&buf[12] = 2082;
           *&buf[14] = SUBMessageTypeKey[0];
           _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEFAULT, "Got message %{public}@ without %{public}s key", buf, 0x16u);
         }
 
         v13 = SUBError(@"SUBError", 1, 0, @"Dropping message without '%s' key", v31, v32, v33, v34, SUBMessageTypeKey[0]);
-        v36 = [v7 outgoingResponseIdentifier];
-        [(SUBMessageEndpoint *)self _sendErrorReply:v13 toMessage:v36 isCritical:1];
+        outgoingResponseIdentifier5 = [contextCopy outgoingResponseIdentifier];
+        [(SUBMessageEndpoint *)self _sendErrorReply:v13 toMessage:outgoingResponseIdentifier5 isCritical:1];
       }
 
       goto LABEL_21;
@@ -768,23 +768,23 @@ LABEL_17:
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      *&buf[4] = v48;
+      *&buf[4] = outgoingResponseIdentifier;
       *&buf[12] = 2114;
       *&buf[14] = v10;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Failed to parse IDS message %{public}@: %{public}@", buf, 0x16u);
     }
 
-    if (!v8)
+    if (!incomingResponseIdentifier)
     {
       v12 = SUBError(@"SUBError", 1, v10, @"Unparseable IDS message", v19, v20, v21, v22, v45);
-      v29 = [v7 outgoingResponseIdentifier];
-      [(SUBMessageEndpoint *)self _sendErrorReply:v12 toMessage:v29 isCritical:1];
+      outgoingResponseIdentifier6 = [contextCopy outgoingResponseIdentifier];
+      [(SUBMessageEndpoint *)self _sendErrorReply:v12 toMessage:outgoingResponseIdentifier6 isCritical:1];
 
       goto LABEL_21;
     }
   }
 
-  v12 = [(NSMutableDictionary *)self->_pendingMessageReplies objectForKeyedSubscript:v8];
+  v12 = [(NSMutableDictionary *)self->_pendingMessageReplies objectForKeyedSubscript:incomingResponseIdentifier];
   if (v12)
   {
     *buf = 0;
@@ -806,8 +806,8 @@ LABEL_17:
     v12 = v12;
     v61 = v12;
     v58 = v9;
-    v59 = v48;
-    v27 = v8;
+    v59 = outgoingResponseIdentifier;
+    v27 = incomingResponseIdentifier;
     v60 = v27;
     v62 = buf;
     dispatch_async(v26, v56);
@@ -822,7 +822,7 @@ LABEL_17:
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v8;
+      *&buf[4] = incomingResponseIdentifier;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "No reply handler set for message identifier %{public}@", buf, 0xCu);
     }
   }
@@ -830,16 +830,16 @@ LABEL_17:
 LABEL_21:
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(IDSService *)self->_cloudService linkedDeviceForFromID:v11 withRelationship:3];
-  v14 = [(IDSService *)self->_service linkedDeviceForFromID:v11 withRelationship:3];
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [(IDSService *)self->_cloudService linkedDeviceForFromID:dCopy withRelationship:3];
+  v14 = [(IDSService *)self->_service linkedDeviceForFromID:dCopy withRelationship:3];
   if (v13 | v14)
   {
-    [(SUBMessageEndpoint *)self handleMessage:v10 withContext:v12];
+    [(SUBMessageEndpoint *)self handleMessage:dataCopy withContext:contextCopy];
   }
 
   else
@@ -848,30 +848,30 @@ LABEL_21:
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v11;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Incoming data from from unknown device (%{public}@), dropping..", &v16, 0xCu);
     }
   }
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
   dispatch_assert_queue_V2(self->_queue);
 
   [(SUBMessageEndpoint *)self _checkConnectivityForQueuedDisconnectedBlocks];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(IDSService *)self->_cloudService linkedDeviceForFromID:v11 withRelationship:3];
+  lCopy = l;
+  dCopy = d;
+  contextCopy = context;
+  v13 = [(IDSService *)self->_cloudService linkedDeviceForFromID:dCopy withRelationship:3];
   if (v13)
   {
-    v14 = [NSData dataWithContentsOfURL:v10];
+    v14 = [NSData dataWithContentsOfURL:lCopy];
     v15 = [(SUBMessageEndpoint *)self dataCompress:v14 shouldCompress:0];
-    [(SUBMessageEndpoint *)self handleMessage:v15 withContext:v12];
+    [(SUBMessageEndpoint *)self handleMessage:v15 withContext:contextCopy];
   }
 
   else
@@ -880,7 +880,7 @@ LABEL_21:
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138543362;
-      v18 = v11;
+      v18 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Message sent by unknown device (%{public}@), dropping", &v17, 0xCu);
     }
   }

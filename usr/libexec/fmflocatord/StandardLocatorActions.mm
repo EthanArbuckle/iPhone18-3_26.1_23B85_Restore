@@ -1,23 +1,23 @@
 @interface StandardLocatorActions
-+ (void)didStopLocatingInProvider:(id)a3;
++ (void)didStopLocatingInProvider:(id)provider;
 @end
 
 @implementation StandardLocatorActions
 
-+ (void)didStopLocatingInProvider:(id)a3
++ (void)didStopLocatingInProvider:(id)provider
 {
-  v3 = a3;
-  v4 = [v3 standardLocator];
+  providerCopy = provider;
+  standardLocator = [providerCopy standardLocator];
 
-  if (v4)
+  if (standardLocator)
   {
     v5 = sub_100002830();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_100037DB4(v3, v5);
+      sub_100037DB4(providerCopy, v5);
     }
 
-    [v3 setStandardLocator:0];
+    [providerCopy setStandardLocator:0];
   }
 }
 

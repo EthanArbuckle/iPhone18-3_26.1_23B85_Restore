@@ -1,31 +1,31 @@
 @interface UAFSchemaUAFAssetSetSubscription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (UAFSchemaUAFAssetSetSubscription)initWithDictionary:(id)a3;
-- (UAFSchemaUAFAssetSetSubscription)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (UAFSchemaUAFAssetSetSubscription)initWithDictionary:(id)dictionary;
+- (UAFSchemaUAFAssetSetSubscription)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (unsigned)assetSetIndicesAtIndex:(unint64_t)a3;
-- (void)addAssetSetIndices:(unsigned int)a3;
-- (void)addAssetSetUsages:(id)a3;
-- (void)addUsageAliases:(id)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)assetSetIndicesAtIndex:(unint64_t)index;
+- (void)addAssetSetIndices:(unsigned int)indices;
+- (void)addAssetSetUsages:(id)usages;
+- (void)addUsageAliases:(id)aliases;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UAFSchemaUAFAssetSetSubscription
 
-- (UAFSchemaUAFAssetSetSubscription)initWithDictionary:(id)a3
+- (UAFSchemaUAFAssetSetSubscription)initWithDictionary:(id)dictionary
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v48.receiver = self;
   v48.super_class = UAFSchemaUAFAssetSetSubscription;
   v5 = [(UAFSchemaUAFAssetSetSubscription *)&v48 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"subscriptionName"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"subscriptionName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       [(UAFSchemaUAFAssetSetSubscription *)v5 setSubscriptionName:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"assetSetIndices"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"assetSetIndices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       v6 = v9;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"assetSetUsages"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"assetSetUsages"];
     objc_opt_class();
     v35 = v8;
     if (objc_opt_isKindOfClass())
@@ -116,7 +116,7 @@
       v8 = v35;
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"usageAliases"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"usageAliases"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -165,30 +165,30 @@
   return v5;
 }
 
-- (UAFSchemaUAFAssetSetSubscription)initWithJSON:(id)a3
+- (UAFSchemaUAFAssetSetSubscription)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(UAFSchemaUAFAssetSetSubscription *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(UAFSchemaUAFAssetSetSubscription *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(UAFSchemaUAFAssetSetSubscription *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -202,17 +202,17 @@
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_assetSetIndices count])
   {
-    v4 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"assetSetIndices"];
+    assetSetIndices = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
+    v5 = [assetSetIndices copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"assetSetIndices"];
   }
 
   if ([(NSArray *)self->_assetSetUsages count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -232,16 +232,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -251,19 +251,19 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"assetSetUsages"];
+    [dictionary setObject:array forKeyedSubscript:@"assetSetUsages"];
   }
 
   if (self->_subscriptionName)
   {
-    v14 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"subscriptionName"];
+    subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
+    v15 = [subscriptionName copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"subscriptionName"];
   }
 
   if ([(NSArray *)self->_usageAliases count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -283,16 +283,16 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation2 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v16 addObject:v22];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -302,12 +302,12 @@
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"usageAliases"];
+    [dictionary setObject:array2 forKeyedSubscript:@"usageAliases"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v25];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v25];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -318,28 +318,28 @@
   return v4 ^ v5 ^ [(NSArray *)self->_usageAliases hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
-  v6 = [v4 subscriptionName];
-  if ((v5 != 0) == (v6 == 0))
+  subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
+  subscriptionName2 = [equalCopy subscriptionName];
+  if ((subscriptionName != 0) == (subscriptionName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
-  if (v7)
+  subscriptionName3 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
+  if (subscriptionName3)
   {
-    v8 = v7;
-    v9 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
-    v10 = [v4 subscriptionName];
-    v11 = [v9 isEqual:v10];
+    v8 = subscriptionName3;
+    subscriptionName4 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
+    subscriptionName5 = [equalCopy subscriptionName];
+    v11 = [subscriptionName4 isEqual:subscriptionName5];
 
     if (!v11)
     {
@@ -351,20 +351,20 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
-  v6 = [v4 assetSetIndices];
-  if ((v5 != 0) == (v6 == 0))
+  subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
+  subscriptionName2 = [equalCopy assetSetIndices];
+  if ((subscriptionName != 0) == (subscriptionName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
-  if (v12)
+  assetSetIndices = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
+  if (assetSetIndices)
   {
-    v13 = v12;
-    v14 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
-    v15 = [v4 assetSetIndices];
-    v16 = [v14 isEqual:v15];
+    v13 = assetSetIndices;
+    assetSetIndices2 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetIndices];
+    assetSetIndices3 = [equalCopy assetSetIndices];
+    v16 = [assetSetIndices2 isEqual:assetSetIndices3];
 
     if (!v16)
     {
@@ -376,20 +376,20 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
-  v6 = [v4 assetSetUsages];
-  if ((v5 != 0) == (v6 == 0))
+  subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
+  subscriptionName2 = [equalCopy assetSetUsages];
+  if ((subscriptionName != 0) == (subscriptionName2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
-  if (v17)
+  assetSetUsages = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
+  if (assetSetUsages)
   {
-    v18 = v17;
-    v19 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
-    v20 = [v4 assetSetUsages];
-    v21 = [v19 isEqual:v20];
+    v18 = assetSetUsages;
+    assetSetUsages2 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages];
+    assetSetUsages3 = [equalCopy assetSetUsages];
+    v21 = [assetSetUsages2 isEqual:assetSetUsages3];
 
     if (!v21)
     {
@@ -401,12 +401,12 @@
   {
   }
 
-  v5 = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
-  v6 = [v4 usageAliases];
-  if ((v5 != 0) != (v6 == 0))
+  subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
+  subscriptionName2 = [equalCopy usageAliases];
+  if ((subscriptionName != 0) != (subscriptionName2 == 0))
   {
-    v22 = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
-    if (!v22)
+    usageAliases = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
+    if (!usageAliases)
     {
 
 LABEL_25:
@@ -414,10 +414,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
-    v25 = [v4 usageAliases];
-    v26 = [v24 isEqual:v25];
+    v23 = usageAliases;
+    usageAliases2 = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
+    usageAliases3 = [equalCopy usageAliases];
+    v26 = [usageAliases2 isEqual:usageAliases3];
 
     if (v26)
     {
@@ -437,13 +437,13 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
+  toCopy = to;
+  subscriptionName = [(UAFSchemaUAFAssetSetSubscription *)self subscriptionName];
 
-  if (v5)
+  if (subscriptionName)
   {
     PBDataWriterWriteStringField();
   }
@@ -543,59 +543,59 @@ LABEL_23:
   }
 }
 
-- (void)addUsageAliases:(id)a3
+- (void)addUsageAliases:(id)aliases
 {
-  v4 = a3;
+  aliasesCopy = aliases;
   usageAliases = self->_usageAliases;
-  v8 = v4;
+  v8 = aliasesCopy;
   if (!usageAliases)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_usageAliases;
-    self->_usageAliases = v6;
+    self->_usageAliases = array;
 
-    v4 = v8;
+    aliasesCopy = v8;
     usageAliases = self->_usageAliases;
   }
 
-  [(NSArray *)usageAliases addObject:v4];
+  [(NSArray *)usageAliases addObject:aliasesCopy];
 }
 
-- (void)addAssetSetUsages:(id)a3
+- (void)addAssetSetUsages:(id)usages
 {
-  v4 = a3;
+  usagesCopy = usages;
   assetSetUsages = self->_assetSetUsages;
-  v8 = v4;
+  v8 = usagesCopy;
   if (!assetSetUsages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assetSetUsages;
-    self->_assetSetUsages = v6;
+    self->_assetSetUsages = array;
 
-    v4 = v8;
+    usagesCopy = v8;
     assetSetUsages = self->_assetSetUsages;
   }
 
-  [(NSArray *)assetSetUsages addObject:v4];
+  [(NSArray *)assetSetUsages addObject:usagesCopy];
 }
 
-- (unsigned)assetSetIndicesAtIndex:(unint64_t)a3
+- (unsigned)assetSetIndicesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_assetSetIndices objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_assetSetIndices objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addAssetSetIndices:(unsigned int)a3
+- (void)addAssetSetIndices:(unsigned int)indices
 {
-  v3 = *&a3;
+  v3 = *&indices;
   assetSetIndices = self->_assetSetIndices;
   if (!assetSetIndices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_assetSetIndices;
-    self->_assetSetIndices = v6;
+    self->_assetSetIndices = array;
 
     assetSetIndices = self->_assetSetIndices;
   }
@@ -604,18 +604,18 @@ LABEL_23:
   [(NSArray *)assetSetIndices addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = UAFSchemaUAFAssetSetSubscription;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(UAFSchemaUAFAssetSetSubscription *)self assetSetUsages:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(UAFSchemaUAFAssetSetSubscription *)self setAssetSetUsages:v7];
 
-  v8 = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  usageAliases = [(UAFSchemaUAFAssetSetSubscription *)self usageAliases];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:usageAliases underConditions:policyCopy];
 
   [(UAFSchemaUAFAssetSetSubscription *)self setUsageAliases:v9];
 

@@ -1,137 +1,137 @@
 @interface MutableFloatArray
-- (MutableFloatArray)initWithCount:(unint64_t)a3 capacity:(unint64_t)a4;
-- (MutableFloatArray)initWithFloat:(float)a3 repeatCount:(unint64_t)a4 capacity:(unint64_t)a5;
-- (MutableFloatArray)initWithZeros:(unint64_t)a3 capacity:(unint64_t)a4;
-- (float)floatAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendFloat:(float)a3;
-- (void)removeFromStart:(unint64_t)a3;
-- (void)setFloat:(float)a3 atIndex:(unint64_t)a4;
-- (void)setFloat:(float)a3 inRange:(_NSRange)a4;
-- (void)setFloats:(const float *)a3 inRange:(_NSRange)a4;
+- (MutableFloatArray)initWithCount:(unint64_t)count capacity:(unint64_t)capacity;
+- (MutableFloatArray)initWithFloat:(float)float repeatCount:(unint64_t)count capacity:(unint64_t)capacity;
+- (MutableFloatArray)initWithZeros:(unint64_t)zeros capacity:(unint64_t)capacity;
+- (float)floatAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendFloat:(float)float;
+- (void)removeFromStart:(unint64_t)start;
+- (void)setFloat:(float)float atIndex:(unint64_t)index;
+- (void)setFloat:(float)float inRange:(_NSRange)range;
+- (void)setFloats:(const float *)floats inRange:(_NSRange)range;
 @end
 
 @implementation MutableFloatArray
 
-- (MutableFloatArray)initWithCount:(unint64_t)a3 capacity:(unint64_t)a4
+- (MutableFloatArray)initWithCount:(unint64_t)count capacity:(unint64_t)capacity
 {
-  if (a4 <= a3)
+  if (capacity <= count)
   {
-    v5 = a3;
+    capacityCopy = count;
   }
 
   else
   {
-    v5 = a4;
+    capacityCopy = capacity;
   }
 
-  if (v5 <= 0x10)
+  if (capacityCopy <= 0x10)
   {
     v6 = 16;
   }
 
   else
   {
-    v6 = v5;
+    v6 = capacityCopy;
   }
 
   v8.receiver = self;
   v8.super_class = MutableFloatArray;
   result = [(FloatArray *)&v8 initWithCount:v6];
   result->_start = result->super._buffer;
-  result->super._count = a3;
+  result->super._count = count;
   result->_capacity = v6;
   return result;
 }
 
-- (MutableFloatArray)initWithZeros:(unint64_t)a3 capacity:(unint64_t)a4
+- (MutableFloatArray)initWithZeros:(unint64_t)zeros capacity:(unint64_t)capacity
 {
-  if (a4 <= a3)
+  if (capacity <= zeros)
   {
-    v5 = a3;
+    capacityCopy = zeros;
   }
 
   else
   {
-    v5 = a4;
+    capacityCopy = capacity;
   }
 
-  if (v5 <= 0x10)
+  if (capacityCopy <= 0x10)
   {
     v6 = 16;
   }
 
   else
   {
-    v6 = v5;
+    v6 = capacityCopy;
   }
 
   v8.receiver = self;
   v8.super_class = MutableFloatArray;
   result = [(FloatArray *)&v8 initWithZeros:v6];
   result->_start = result->super._buffer;
-  result->super._count = a3;
+  result->super._count = zeros;
   result->_capacity = v6;
   return result;
 }
 
-- (MutableFloatArray)initWithFloat:(float)a3 repeatCount:(unint64_t)a4 capacity:(unint64_t)a5
+- (MutableFloatArray)initWithFloat:(float)float repeatCount:(unint64_t)count capacity:(unint64_t)capacity
 {
-  __A = a3;
-  v6 = [(MutableFloatArray *)self initWithCount:a4 capacity:a5];
+  __A = float;
+  v6 = [(MutableFloatArray *)self initWithCount:count capacity:capacity];
   v7 = v6;
   if (v6)
   {
-    vDSP_vfill(&__A, v6->super._buffer, 1, a4);
+    vDSP_vfill(&__A, v6->super._buffer, 1, count);
   }
 
   return v7;
 }
 
-- (float)floatAtIndex:(unint64_t)a3
+- (float)floatAtIndex:(unint64_t)index
 {
-  if (self->super._count <= a3)
+  if (self->super._count <= index)
   {
     [MutableFloatArray floatAtIndex:];
   }
 
-  return self->_start[a3];
+  return self->_start[index];
 }
 
-- (void)setFloat:(float)a3 atIndex:(unint64_t)a4
+- (void)setFloat:(float)float atIndex:(unint64_t)index
 {
-  if (self->super._count <= a4)
+  if (self->super._count <= index)
   {
     [MutableFloatArray setFloat:atIndex:];
   }
 
-  self->_start[a4] = a3;
+  self->_start[index] = float;
 }
 
-- (void)setFloat:(float)a3 inRange:(_NSRange)a4
+- (void)setFloat:(float)float inRange:(_NSRange)range
 {
-  __A = a3;
-  if (a4.location + a4.length > self->super._count)
+  __A = float;
+  if (range.location + range.length > self->super._count)
   {
     [MutableFloatArray setFloat:inRange:];
   }
 
-  vDSP_vfill(&__A, &self->_start[a4.location], 1, a4.length);
+  vDSP_vfill(&__A, &self->_start[range.location], 1, range.length);
 }
 
-- (void)setFloats:(const float *)a3 inRange:(_NSRange)a4
+- (void)setFloats:(const float *)floats inRange:(_NSRange)range
 {
-  if (a4.location + a4.length > self->super._count)
+  if (range.location + range.length > self->super._count)
   {
     [MutableFloatArray setFloats:inRange:];
   }
 
-  v5 = &self->_start[a4.location];
+  v5 = &self->_start[range.location];
 
-  memcpy(v5, a3, 4 * a4.length);
+  memcpy(v5, floats, 4 * range.length);
 }
 
-- (void)appendFloat:(float)a3
+- (void)appendFloat:(float)float
 {
   start = self->_start;
   p_buffer = &self->super._buffer;
@@ -164,27 +164,27 @@
 
   count = self->super._count;
   self->super._count = count + 1;
-  start[count] = a3;
+  start[count] = float;
 }
 
-- (void)removeFromStart:(unint64_t)a3
+- (void)removeFromStart:(unint64_t)start
 {
   count = self->super._count;
-  if (count >= a3)
+  if (count >= start)
   {
-    v4 = a3;
+    startCopy = start;
   }
 
   else
   {
-    v4 = self->super._count;
+    startCopy = self->super._count;
   }
 
-  self->_start += v4;
-  self->super._count = count - v4;
+  self->_start += startCopy;
+  self->super._count = count - startCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FloatArray alloc];
 

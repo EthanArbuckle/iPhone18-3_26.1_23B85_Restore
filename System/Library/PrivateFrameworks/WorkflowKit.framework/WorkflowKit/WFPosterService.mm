@@ -1,23 +1,23 @@
 @interface WFPosterService
-- (void)fetchEligiblePostersWithCompletionHandler:(id)a3;
-- (void)findPosterMatchingRepresentation:(id)a3 completionHandler:(id)a4;
-- (void)getPostersWithCompletionHandler:(id)a3;
+- (void)fetchEligiblePostersWithCompletionHandler:(id)handler;
+- (void)findPosterMatchingRepresentation:(id)representation completionHandler:(id)handler;
+- (void)getPostersWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFPosterService
 
-- (void)findPosterMatchingRepresentation:(id)a3 completionHandler:(id)a4
+- (void)findPosterMatchingRepresentation:(id)representation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__WFPosterService_findPosterMatchingRepresentation_completionHandler___block_invoke;
   v10[3] = &unk_1E837F020;
-  v11 = v6;
-  v12 = v7;
-  v8 = v6;
-  v9 = v7;
+  v11 = representationCopy;
+  v12 = handlerCopy;
+  v8 = representationCopy;
+  v9 = handlerCopy;
   [(WFPosterService *)self getPostersWithCompletionHandler:v10];
 }
 
@@ -53,9 +53,9 @@ uint64_t __70__WFPosterService_findPosterMatchingRepresentation_completionHandle
   return v6;
 }
 
-- (void)getPostersWithCompletionHandler:(id)a3
+- (void)getPostersWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -79,8 +79,8 @@ uint64_t __70__WFPosterService_findPosterMatchingRepresentation_completionHandle
   v8[1] = 3221225472;
   v8[2] = __51__WFPosterService_getPostersWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E837F588;
-  v9 = v3;
-  v7 = v3;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 fetchPosterConfigurations:v8];
 }
 
@@ -121,9 +121,9 @@ void __51__WFPosterService_getPostersWithCompletionHandler___block_invoke_2(uint
   [*(a1 + 32) addObject:v11];
 }
 
-- (void)fetchEligiblePostersWithCompletionHandler:(id)a3
+- (void)fetchEligiblePostersWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2050000000;
@@ -143,7 +143,7 @@ void __51__WFPosterService_getPostersWithCompletionHandler___block_invoke_2(uint
   v5 = v4;
   _Block_object_dispose(&v8, 8);
   v6 = objc_alloc_init(v4);
-  [v6 fetchEligibleConfigurationsWithCompletion:v3];
+  [v6 fetchEligibleConfigurationsWithCompletion:handlerCopy];
 }
 
 @end

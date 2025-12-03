@@ -3,25 +3,25 @@
 - (NSData)leaseInfoData;
 - (NSData)subscriptionKeyBagData;
 - (double)leaseDuration;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)itemForItemIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)itemForItemIdentifier:(id)identifier;
 @end
 
 @implementation SSVPlaybackLeaseResponse
 
-- (id)itemForItemIdentifier:(id)a3
+- (id)itemForItemIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = SSVPlaybackLeaseResponse;
-  v3 = [(SSVPlaybackResponse *)&v5 itemForItemIdentifier:a3];
+  v3 = [(SSVPlaybackResponse *)&v5 itemForItemIdentifier:identifier];
 
   return v3;
 }
 
 - (double)leaseDuration
 {
-  v2 = [(SSVPlaybackResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"leaseDurationInSeconds"];
+  responseDictionary = [(SSVPlaybackResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"leaseDurationInSeconds"];
 
   if (v3)
   {
@@ -43,26 +43,26 @@
 
 - (BOOL)isOfflineSlotAvailable
 {
-  v2 = [(SSVPlaybackResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"offlineSlotAvailable"];
+  responseDictionary = [(SSVPlaybackResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"offlineSlotAvailable"];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSData)leaseInfoData
 {
-  v2 = [(SSVPlaybackResponse *)self responseDictionary];
-  v3 = [v2 objectForKey:@"ckc"];
+  responseDictionary = [(SSVPlaybackResponse *)self responseDictionary];
+  v3 = [responseDictionary objectForKey:@"ckc"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -80,17 +80,17 @@
 
 - (NSData)subscriptionKeyBagData
 {
-  v2 = [(SSVPlaybackResponse *)self responseDictionary];
-  v3 = SSVSubscriptionBagForDictionary(v2);
+  responseDictionary = [(SSVPlaybackResponse *)self responseDictionary];
+  v3 = SSVSubscriptionBagForDictionary(responseDictionary);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SSVPlaybackLeaseResponse;
-  v4 = [(SSVPlaybackResponse *)&v6 copyWithZone:a3];
+  v4 = [(SSVPlaybackResponse *)&v6 copyWithZone:zone];
   [v4 setCertificateData:self->_certificateData];
   [v4 setKDMovieIdentifier:self->_kdMovieIdentifier];
   return v4;

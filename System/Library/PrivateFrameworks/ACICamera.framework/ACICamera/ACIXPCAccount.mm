@@ -1,29 +1,29 @@
 @interface ACIXPCAccount
-- (ACIXPCAccount)initWithXPCConnection:(id)a3 delegate:(void *)a4;
+- (ACIXPCAccount)initWithXPCConnection:(id)connection delegate:(void *)delegate;
 - (id).cxx_construct;
-- (void)activateService:(id)a3 uuid:(id)a4 withReply:(id)a5;
-- (void)allServices:(id)a3;
-- (void)deactivateService:(id)a3 uuid:(id)a4 withReply:(id)a5;
+- (void)activateService:(id)service uuid:(id)uuid withReply:(id)reply;
+- (void)allServices:(id)services;
+- (void)deactivateService:(id)service uuid:(id)uuid withReply:(id)reply;
 - (void)dealloc;
-- (void)prepareService:(id)a3 uuid:(id)a4 withReply:(id)a5;
-- (void)startService:(id)a3 uuid:(id)a4 withReply:(id)a5;
-- (void)stopService:(id)a3 uuid:(id)a4 withReply:(id)a5;
-- (void)subscribeService:(id)a3 uuid:(id)a4 endpoint:(id)a5 withReply:(id)a6;
-- (void)unprepareService:(id)a3 uuid:(id)a4 withReply:(id)a5;
-- (void)unsubscribeService:(id)a3 uuid:(id)a4 withReply:(id)a5;
+- (void)prepareService:(id)service uuid:(id)uuid withReply:(id)reply;
+- (void)startService:(id)service uuid:(id)uuid withReply:(id)reply;
+- (void)stopService:(id)service uuid:(id)uuid withReply:(id)reply;
+- (void)subscribeService:(id)service uuid:(id)uuid endpoint:(id)endpoint withReply:(id)reply;
+- (void)unprepareService:(id)service uuid:(id)uuid withReply:(id)reply;
+- (void)unsubscribeService:(id)service uuid:(id)uuid withReply:(id)reply;
 @end
 
 @implementation ACIXPCAccount
 
-- (ACIXPCAccount)initWithXPCConnection:(id)a3 delegate:(void *)a4
+- (ACIXPCAccount)initWithXPCConnection:(id)connection delegate:(void *)delegate
 {
-  v7 = a3;
+  connectionCopy = connection;
   v8 = [(ACIXPCAccount *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(&v9->_delegate, a4);
+    objc_storeStrong(&v8->_connection, connection);
+    aci::SP<aci::SourceManager,&(void ACISPRetain<aci::SourceManager>(aci::SourceManager &)),&(void ACISPRelease<aci::SourceManager>(aci::SourceManager &))>::setPtr(&v9->_delegate, delegate);
     aci::ACIObjectSP<aci::Dictionary>();
   }
 
@@ -40,13 +40,13 @@
   [(ACIXPCAccount *)&v4 dealloc];
 }
 
-- (void)allServices:(id)a3
+- (void)allServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   (*(*self->_delegate._ptr + 112))(&v6);
   v5 = objc_opt_new();
   aci::Array::enumerateObjectsUsingBlock();
-  v4[2](v4, v5);
+  servicesCopy[2](servicesCopy, v5);
 
   aci::SP<aci::Array,&(void ACISPRetain<aci::Array>(aci::Array &)),&(void ACISPRelease<aci::Array>(aci::Array &))>::~SP(&v6);
 }
@@ -64,13 +64,13 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   return 0;
 }
 
-- (void)subscribeService:(id)a3 uuid:(id)a4 endpoint:(id)a5 withReply:(id)a6
+- (void)subscribeService:(id)service uuid:(id)uuid endpoint:(id)endpoint withReply:(id)reply
 {
   v23 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  uuidCopy = uuid;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v14 = _aciLogGeneral();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,29 +81,29 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v14, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  v15 = v10;
-  v16 = [v10 UTF8String];
-  *buf = aci::String::stringWithCString(v16, v17);
+  v15 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *buf = aci::String::stringWithCString(uTF8String, v17);
   if (aci::Provider::serviceForKey(self->_delegate._ptr, *buf))
   {
-    aci::ACIObjectSP<aci::camera::XPCAccountReceiver,NSXPCListenerEndpoint * {__strong}>(v12);
+    aci::ACIObjectSP<aci::camera::XPCAccountReceiver,NSXPCListenerEndpoint * {__strong}>(endpointCopy);
   }
 
   v19 = _aciLogGeneral();
   [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-  v13[2](v13, 4294967289, 0);
+  replyCopy[2](replyCopy, 4294967289, 0);
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(buf);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)unsubscribeService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  uuidCopy = uuid;
+  replyCopy = reply;
   v11 = _aciLogGeneral();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,15 +114,15 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v11, OS_LOG_TYPE_DEFAULT, "%s:%d", buf, 0x12u);
   }
 
-  v12 = v8;
-  v13 = [v8 UTF8String];
-  *buf = aci::String::stringWithCString(v13, v14);
+  v12 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *buf = aci::String::stringWithCString(uTF8String, v14);
   v15 = aci::Provider::serviceForKey(self->_delegate._ptr, *buf);
   if (v15)
   {
-    v16 = v9;
-    v17 = [v9 UTF8String];
-    v23 = aci::String::stringWithCString(v17, v18);
+    v16 = uuidCopy;
+    uTF8String2 = [uuidCopy UTF8String];
+    v23 = aci::String::stringWithCString(uTF8String2, v18);
     v19 = aci::Service::unsubscribe(v15, v23);
     if (v19)
     {
@@ -138,7 +138,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       v19 = 0;
     }
 
-    v10[2](v10, v19);
+    replyCopy[2](replyCopy, v19);
     aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(&v23);
   }
 
@@ -147,7 +147,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v22 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v10[2](v10, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(buf);
@@ -155,11 +155,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)startService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,9 +170,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -184,7 +184,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount startService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -192,7 +192,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);
@@ -200,11 +200,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)stopService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -215,9 +215,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -229,7 +229,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount stopService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -237,7 +237,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);
@@ -245,11 +245,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)prepareService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -260,9 +260,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -274,7 +274,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount prepareService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -282,7 +282,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);
@@ -290,11 +290,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unprepareService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)unprepareService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -305,9 +305,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -319,7 +319,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount unprepareService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -327,7 +327,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);
@@ -335,11 +335,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)activateService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -350,9 +350,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -364,7 +364,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount activateService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -372,7 +372,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);
@@ -380,11 +380,11 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateService:(id)a3 uuid:(id)a4 withReply:(id)a5
+- (void)deactivateService:(id)service uuid:(id)uuid withReply:(id)reply
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  serviceCopy = service;
+  replyCopy = reply;
   v9 = _aciLogGeneral();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -395,9 +395,9 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     _os_log_impl(&dword_23C3F5000, v9, OS_LOG_TYPE_DEFAULT, "%s:%d", v17, 0x12u);
   }
 
-  v10 = v7;
-  v11 = [v7 UTF8String];
-  *v17 = aci::String::stringWithCString(v11, v12);
+  v10 = serviceCopy;
+  uTF8String = [serviceCopy UTF8String];
+  *v17 = aci::String::stringWithCString(uTF8String, v12);
   v13 = aci::Provider::serviceForKey(self->_delegate._ptr, *v17);
   if (v13)
   {
@@ -409,7 +409,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
       [ACIXPCAccount deactivateService:uuid:withReply:];
     }
 
-    v8[2](v8, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -417,7 +417,7 @@ uint64_t __29__ACIXPCAccount_allServices___block_invoke(uint64_t a1, aci::Dictio
     v16 = _aciLogGeneral();
     [ACIXPCAccount subscribeService:uuid:endpoint:withReply:];
 
-    v8[2](v8, 4294967289);
+    replyCopy[2](replyCopy, 4294967289);
   }
 
   aci::SP<aci::String,&(void ACISPRetain<aci::String>(aci::String &)),&(void ACISPRelease<aci::String>(aci::String &))>::~SP(v17);

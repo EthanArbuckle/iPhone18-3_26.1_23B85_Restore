@@ -1,23 +1,23 @@
 @interface HKCodableHandwashingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCount:(BOOL)a3;
-- (void)setHasEndDate:(BOOL)a3;
-- (void)setHasMeetsGoal:(BOOL)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCount:(BOOL)count;
+- (void)setHasEndDate:(BOOL)date;
+- (void)setHasMeetsGoal:(BOOL)goal;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableHandwashingEvent
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndDate:(BOOL)a3
+- (void)setHasEndDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCount:(BOOL)a3
+- (void)setHasCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMeetsGoal:(BOOL)a3
+- (void)setHasMeetsGoal:(BOOL)goal
 {
-  if (a3)
+  if (goal)
   {
     v3 = 16;
   }
@@ -81,20 +81,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableHandwashingEvent;
   v4 = [(HKCodableHandwashingEvent *)&v8 description];
-  v5 = [(HKCodableHandwashingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableHandwashingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-    [v3 setObject:v5 forKey:@"startDate"];
+    [dictionary setObject:v5 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -102,21 +102,21 @@
   if ((has & 4) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-    [v3 setObject:v6 forKey:@"endDate"];
+    [dictionary setObject:v6 forKey:@"endDate"];
   }
 
   averageDuration = self->_averageDuration;
   if (averageDuration)
   {
-    v8 = [(HKCodableQuantity *)averageDuration dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"averageDuration"];
+    dictionaryRepresentation = [(HKCodableQuantity *)averageDuration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"averageDuration"];
   }
 
   v9 = self->_has;
   if ((v9 & 2) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_count];
-    [v3 setObject:v12 forKey:@"count"];
+    [dictionary setObject:v12 forKey:@"count"];
 
     v9 = self->_has;
     if ((v9 & 1) == 0)
@@ -137,23 +137,23 @@ LABEL_9:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_averageDailyCount];
-  [v3 setObject:v13 forKey:@"averageDailyCount"];
+  [dictionary setObject:v13 forKey:@"averageDailyCount"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_10:
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_meetsGoal];
-    [v3 setObject:v10 forKey:@"meetsGoal"];
+    [dictionary setObject:v10 forKey:@"meetsGoal"];
   }
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -203,35 +203,35 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_startDate;
-    *(v4 + 52) |= 8u;
+    toCopy[4] = *&self->_startDate;
+    *(toCopy + 52) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    v4[3] = *&self->_endDate;
-    *(v4 + 52) |= 4u;
+    toCopy[3] = *&self->_endDate;
+    *(toCopy + 52) |= 4u;
   }
 
   if (self->_averageDuration)
   {
-    v7 = v4;
-    [v4 setAverageDuration:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setAverageDuration:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 2) != 0)
   {
-    v4[2] = self->_count;
-    *(v4 + 52) |= 2u;
+    toCopy[2] = self->_count;
+    *(toCopy + 52) |= 2u;
     v6 = self->_has;
     if ((v6 & 1) == 0)
     {
@@ -250,21 +250,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[1] = self->_averageDailyCount;
-  *(v4 + 52) |= 1u;
+  toCopy[1] = self->_averageDailyCount;
+  *(toCopy + 52) |= 1u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_10:
-    *(v4 + 48) = self->_meetsGoal;
-    *(v4 + 52) |= 0x10u;
+    *(toCopy + 48) = self->_meetsGoal;
+    *(toCopy + 52) |= 0x10u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -280,7 +280,7 @@ LABEL_11:
     *(v5 + 52) |= 4u;
   }
 
-  v8 = [(HKCodableQuantity *)self->_averageDuration copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_averageDuration copyWithZone:zone];
   v9 = *(v6 + 40);
   *(v6 + 40) = v8;
 
@@ -322,10 +322,10 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
@@ -333,32 +333,32 @@ LABEL_8:
   has = self->_has;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_startDate != *(v4 + 4))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_startDate != *(equalCopy + 4))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_endDate != *(v4 + 3))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_endDate != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   averageDuration = self->_averageDuration;
-  if (averageDuration | *(v4 + 5))
+  if (averageDuration | *(equalCopy + 5))
   {
     if (![(HKCodableQuantity *)averageDuration isEqual:?])
     {
@@ -370,44 +370,44 @@ LABEL_8:
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_count != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_count != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if (has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_averageDailyCount != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_averageDailyCount != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_27;
   }
 
-  v7 = (*(v4 + 52) & 0x10) == 0;
+  v7 = (*(equalCopy + 52) & 0x10) == 0;
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) != 0)
+    if ((*(equalCopy + 52) & 0x10) != 0)
     {
       if (self->_meetsGoal)
       {
-        if ((*(v4 + 48) & 1) == 0)
+        if ((*(equalCopy + 48) & 1) == 0)
         {
           goto LABEL_27;
         }
       }
 
-      else if (*(v4 + 48))
+      else if (*(equalCopy + 48))
       {
         goto LABEL_27;
       }
@@ -533,21 +533,21 @@ LABEL_20:
   return v9 ^ v5 ^ v14 ^ v15 ^ v16 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 52);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 52);
   if ((v6 & 8) != 0)
   {
-    self->_startDate = v4[4];
+    self->_startDate = fromCopy[4];
     *&self->_has |= 8u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_endDate = v4[3];
+    self->_endDate = fromCopy[3];
     *&self->_has |= 4u;
   }
 

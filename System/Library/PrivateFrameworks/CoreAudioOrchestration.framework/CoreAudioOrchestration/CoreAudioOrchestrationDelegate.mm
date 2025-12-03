@@ -1,7 +1,7 @@
 @interface CoreAudioOrchestrationDelegate
 - (_TtC22CoreAudioOrchestration30CoreAudioOrchestrationDelegate)init;
-- (id)registerWithEventCallback:(id)a3;
-- (id)subscribeToEventWithDescription:(id)a3;
+- (id)registerWithEventCallback:(id)callback;
+- (id)subscribeToEventWithDescription:(id)description;
 @end
 
 @implementation CoreAudioOrchestrationDelegate
@@ -16,11 +16,11 @@
   return [(CoreAudioOrchestrationDelegate *)&v4 init];
 }
 
-- (id)registerWithEventCallback:(id)a3
+- (id)registerWithEventCallback:(id)callback
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_2450BF434(a3);
+  selfCopy = self;
+  sub_2450BF434(callback);
   swift_unknownObjectRelease();
 
   v6 = sub_2450E5798();
@@ -28,9 +28,9 @@
   return v6;
 }
 
-- (id)subscribeToEventWithDescription:(id)a3
+- (id)subscribeToEventWithDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
     v4 = sub_2450E57A8();
   }
@@ -40,7 +40,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_2450BF608(v4);
 
   v6 = sub_2450E5798();

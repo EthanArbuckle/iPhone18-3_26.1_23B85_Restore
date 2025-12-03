@@ -1,17 +1,17 @@
 @interface DOCSuggestionsTableView
 - (CGSize)intrinsicContentSize;
-- (_TtC26DocumentManagerExecutables23DOCSuggestionsTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
+- (_TtC26DocumentManagerExecutables23DOCSuggestionsTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
 - (void)reloadData;
 @end
 
 @implementation DOCSuggestionsTableView
 
-- (_TtC26DocumentManagerExecutables23DOCSuggestionsTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC26DocumentManagerExecutables23DOCSuggestionsTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_getObjectType();
   v10 = self + OBJC_IVAR____TtC26DocumentManagerExecutables23DOCSuggestionsTableView_cachedIntrinsicSize;
   *v10 = 0;
@@ -19,7 +19,7 @@
   v10[16] = 1;
   v17.receiver = self;
   v17.super_class = type metadata accessor for DOCSuggestionsTableView();
-  v11 = [(DOCTableView *)&v17 initWithFrame:a4 style:x, y, width, height];
+  height = [(DOCTableView *)&v17 initWithFrame:style style:x, y, width, height];
   __swift_instantiateConcreteTypeFromMangledNameV2(&_ss23_ContiguousArrayStorageCy5UIKit17UITraitDefinition_pXpGMd);
   v12 = swift_allocObject();
   *(v12 + 16) = xmmword_249B9A480;
@@ -27,7 +27,7 @@
   v14 = MEMORY[0x277D74DB8];
   *(v12 + 32) = v13;
   *(v12 + 40) = v14;
-  v15 = v11;
+  v15 = height;
   UIView.registerForTraitChanges<A>(_:handler:)();
 
   swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
 {
   v2 = MEMORY[0x277D85000];
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.super.super.super.isa) + 0x58);
-  v4 = self;
+  selfCopy = self;
   *&v5 = COERCE_DOUBLE(v3());
   if (v7)
   {
@@ -64,7 +64,7 @@
     v10 = v6;
   }
 
-  (*((*v2 & v4->super.super.super.super.super.super.isa) + 0x60))(COERCE_DOUBLE(*&v8), COERCE_DOUBLE(*&v10), 0);
+  (*((*v2 & selfCopy->super.super.super.super.super.super.isa) + 0x60))(COERCE_DOUBLE(*&v8), COERCE_DOUBLE(*&v10), 0);
 
   v11 = v8;
   v12 = v10;

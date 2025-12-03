@@ -1,26 +1,26 @@
 @interface CompositionalLayout
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithCoder:(id)a3;
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)a3;
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)a3;
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithCoder:(id)coder;
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)section;
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)provider;
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation CompositionalLayout
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_18BC1EDD8();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_18BC1ED68();
   v10 = type metadata accessor for CompositionalLayout();
-  v13.receiver = v8;
+  v13.receiver = selfCopy;
   v13.super_class = v10;
   v11 = [(CompositionalLayout *)&v13 layoutAttributesForItemAtIndexPath:v9];
 
@@ -34,13 +34,13 @@
   return v11;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_18BA0F534(x, y, width, height);
   v9 = v8;
 
@@ -58,27 +58,27 @@
   return v10;
 }
 
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)a3
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)section
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemDown) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemUp) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for CompositionalLayout();
-  return [(CompositionalLayout *)&v5 initWithSection:a3];
+  return [(CompositionalLayout *)&v5 initWithSection:section];
 }
 
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSection:(id)section configuration:(id)configuration
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemDown) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemUp) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CompositionalLayout();
-  return [(CompositionalLayout *)&v7 initWithSection:a3 configuration:a4];
+  return [(CompositionalLayout *)&v7 initWithSection:section configuration:configuration];
 }
 
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)a3
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemDown) = 0;
@@ -100,9 +100,9 @@
   return v7;
 }
 
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemDown) = 0;
@@ -114,25 +114,25 @@
   aBlock[2] = sub_18B9B53C0;
   aBlock[3] = &block_descriptor_9;
   v8 = _Block_copy(aBlock);
-  v9 = a4;
+  configurationCopy = configuration;
   sub_18BC1E1A8();
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for CompositionalLayout();
-  v10 = [(CompositionalLayout *)&v12 initWithSectionProvider:v8 configuration:v9];
+  v10 = [(CompositionalLayout *)&v12 initWithSectionProvider:v8 configuration:configurationCopy];
 
   _Block_release(v8);
   return v10;
 }
 
-- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithCoder:(id)a3
+- (_TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemDown) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12MobileSafariP33_DA0FD1D9453FFEF6CCD88A7A825CA7EA19CompositionalLayout_isMovingItemUp) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for CompositionalLayout();
-  v4 = a3;
-  v5 = [(CompositionalLayout *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CompositionalLayout *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

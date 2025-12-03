@@ -1,5 +1,5 @@
 @interface EDForceRecategorizationUpgradeStep
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4;
++ (BOOL)runWithConnection:(id)connection error:(id *)error;
 + (id)log;
 @end
 
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __41__EDForceRecategorizationUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_39 != -1)
   {
     dispatch_once(&log_onceToken_39, block);
@@ -30,26 +30,26 @@ void __41__EDForceRecategorizationUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_39 = v1;
 }
 
-+ (BOOL)runWithConnection:(id)a3 error:(id *)a4
++ (BOOL)runWithConnection:(id)connection error:(id *)error
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = [objc_alloc(MEMORY[0x1E699B960]) initWithTable:@"message_global_data"];
-  v7 = [MEMORY[0x1E695DFB0] null];
-  [v6 setObject:v7 forKeyedSubscript:@"model_category"];
+  null = [MEMORY[0x1E695DFB0] null];
+  [v6 setObject:null forKeyedSubscript:@"model_category"];
 
-  v8 = [MEMORY[0x1E695DFB0] null];
-  [v6 setObject:v8 forKeyedSubscript:@"model_subcategory"];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  [v6 setObject:null2 forKeyedSubscript:@"model_subcategory"];
 
-  v9 = [MEMORY[0x1E695DFB0] null];
-  [v6 setObject:v9 forKeyedSubscript:@"category_model_version"];
+  null3 = [MEMORY[0x1E695DFB0] null];
+  [v6 setObject:null3 forKeyedSubscript:@"category_model_version"];
 
-  v10 = [MEMORY[0x1E695DFB0] null];
-  [v6 setObject:v10 forKeyedSubscript:@"model_analytics"];
+  null4 = [MEMORY[0x1E695DFB0] null];
+  [v6 setObject:null4 forKeyedSubscript:@"model_analytics"];
 
   [v6 setObject:&unk_1F45E6658 forKeyedSubscript:@"model_high_impact"];
-  LOBYTE(a4) = [v5 executeUpdateStatement:v6 error:a4];
+  LOBYTE(error) = [connectionCopy executeUpdateStatement:v6 error:error];
 
-  return a4;
+  return error;
 }
 
 @end

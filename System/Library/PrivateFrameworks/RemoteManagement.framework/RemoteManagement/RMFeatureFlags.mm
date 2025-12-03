@@ -1,32 +1,32 @@
 @interface RMFeatureFlags
-+ (BOOL)isAllowedDeclarationType:(id)a3;
-+ (BOOL)isAllowedStatusItem:(id)a3;
-+ (BOOL)isAllowedXPCServiceName:(id)a3;
++ (BOOL)isAllowedDeclarationType:(id)type;
++ (BOOL)isAllowedStatusItem:(id)item;
++ (BOOL)isAllowedXPCServiceName:(id)name;
 @end
 
 @implementation RMFeatureFlags
 
-+ (BOOL)isAllowedXPCServiceName:(id)a3
++ (BOOL)isAllowedXPCServiceName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DiskManagementSubscriber"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"DiskManagementSubscriber"])
   {
     v4 = +[RMFeatureFlags isDiskManagementSubscriberEnabled];
   }
 
-  else if ([v3 isEqualToString:@"ManagedAppsSubscriber"])
+  else if ([nameCopy isEqualToString:@"ManagedAppsSubscriber"])
   {
     v4 = +[RMFeatureFlags isManagedAppsEnabled];
   }
 
-  else if ([v3 isEqualToString:@"NetworkEAPSubscriber"])
+  else if ([nameCopy isEqualToString:@"NetworkEAPSubscriber"])
   {
     v4 = +[RMFeatureFlags isNetworkEAPConfigurationEnabled];
   }
 
   else
   {
-    if (![v3 isEqualToString:@"NetworkWiFiSubscriber"])
+    if (![nameCopy isEqualToString:@"NetworkWiFiSubscriber"])
     {
       v5 = 1;
       goto LABEL_10;
@@ -41,11 +41,11 @@ LABEL_10:
   return v5;
 }
 
-+ (BOOL)isAllowedDeclarationType:(id)a3
++ (BOOL)isAllowedDeclarationType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[RMModelAppManagedDeclaration registeredIdentifier];
-  v5 = [v3 isEqualToString:v4];
+  v5 = [typeCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -55,7 +55,7 @@ LABEL_10:
   else
   {
     v7 = +[RMModelAppMarketplaceDeclaration registeredIdentifier];
-    v8 = [v3 isEqualToString:v7];
+    v8 = [typeCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -65,7 +65,7 @@ LABEL_10:
     else
     {
       v9 = +[RMModelNetworkEAPDeclaration registeredIdentifier];
-      v10 = [v3 isEqualToString:v9];
+      v10 = [typeCopy isEqualToString:v9];
 
       if (v10)
       {
@@ -75,7 +75,7 @@ LABEL_10:
       else
       {
         v11 = +[RMModelNetworkWiFiDeclaration registeredIdentifier];
-        v12 = [v3 isEqualToString:v11];
+        v12 = [typeCopy isEqualToString:v11];
 
         if (!v12)
         {
@@ -94,17 +94,17 @@ LABEL_10:
   return v13;
 }
 
-+ (BOOL)isAllowedStatusItem:(id)a3
++ (BOOL)isAllowedStatusItem:(id)item
 {
-  v3 = a3;
-  if ([v3 isEqualToString:RMModelStatusItemAppManagedList])
+  itemCopy = item;
+  if ([itemCopy isEqualToString:RMModelStatusItemAppManagedList])
   {
     v4 = +[RMFeatureFlags isManagedAppsEnabled];
   }
 
   else
   {
-    if (![v3 isEqualToString:RMModelStatusItemDiskManagementFileVaultEnabled])
+    if (![itemCopy isEqualToString:RMModelStatusItemDiskManagementFileVaultEnabled])
     {
       v5 = 1;
       goto LABEL_7;

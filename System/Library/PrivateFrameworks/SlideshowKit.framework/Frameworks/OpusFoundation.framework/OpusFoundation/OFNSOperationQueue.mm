@@ -1,14 +1,14 @@
 @interface OFNSOperationQueue
 - (OFNSOperationQueue)init;
-- (id)_operationLookupObjectForKey:(unint64_t)a3;
-- (unint64_t)addOperation:(id)a3 withPriority:(int64_t)a4;
-- (void)_setOperationLookupObject:(id)a3 forKey:(unint64_t)a4;
+- (id)_operationLookupObjectForKey:(unint64_t)key;
+- (unint64_t)addOperation:(id)operation withPriority:(int64_t)priority;
+- (void)_setOperationLookupObject:(id)object forKey:(unint64_t)key;
 - (void)_setupOperationsLookupTable;
-- (void)addOperation:(id)a3 context:(id)a4 identifier:(id)a5 queuePriority:(int64_t)a6;
-- (void)cancelAllOperationsWithContext:(id)a3;
-- (void)cancelAllOperationsWithContext:(id)a3 andIdentifier:(id)a4;
-- (void)cancelAllOperationsWithIdentifier:(id)a3;
-- (void)cancelSlideshowOperationWithID:(unint64_t)a3;
+- (void)addOperation:(id)operation context:(id)context identifier:(id)identifier queuePriority:(int64_t)priority;
+- (void)cancelAllOperationsWithContext:(id)context;
+- (void)cancelAllOperationsWithContext:(id)context andIdentifier:(id)identifier;
+- (void)cancelAllOperationsWithIdentifier:(id)identifier;
+- (void)cancelSlideshowOperationWithID:(unint64_t)d;
 - (void)dealloc;
 @end
 
@@ -58,24 +58,24 @@
   [(OFNSOperationQueue *)&v6 dealloc];
 }
 
-- (void)addOperation:(id)a3 context:(id)a4 identifier:(id)a5 queuePriority:(int64_t)a6
+- (void)addOperation:(id)operation context:(id)context identifier:(id)identifier queuePriority:(int64_t)priority
 {
-  [a3 setContext:a4];
-  [a3 setIdentifier:a5];
-  [a3 setQueuePriority:a6];
+  [operation setContext:context];
+  [operation setIdentifier:identifier];
+  [operation setQueuePriority:priority];
 
-  [(OFNSOperationQueue *)self addOperation:a3];
+  [(OFNSOperationQueue *)self addOperation:operation];
 }
 
-- (void)cancelAllOperationsWithContext:(id)a3
+- (void)cancelAllOperationsWithContext:(id)context
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(OFNSOperationQueue *)self operations];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  operations = [(OFNSOperationQueue *)self operations];
+  v5 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -87,12 +87,12 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 context] == a3)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 context] == context)
         {
           [v9 cancel];
         }
@@ -101,22 +101,22 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)cancelAllOperationsWithIdentifier:(id)a3
+- (void)cancelAllOperationsWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(OFNSOperationQueue *)self operations];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  operations = [(OFNSOperationQueue *)self operations];
+  v5 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -128,7 +128,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(operations);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -145,22 +145,22 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [operations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)cancelAllOperationsWithContext:(id)a3 andIdentifier:(id)a4
+- (void)cancelAllOperationsWithContext:(id)context andIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(OFNSOperationQueue *)self operations];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  operations = [(OFNSOperationQueue *)self operations];
+  v7 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -172,12 +172,12 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(operations);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 context] == a3)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 context] == context)
         {
           if ([objc_msgSend(v11 "identifier")])
           {
@@ -189,7 +189,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [operations countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -204,42 +204,42 @@
   [(NSMutableIndexSet *)operationsLookupTableFreeIndices addIndexesInRange:1, 1024];
 }
 
-- (void)_setOperationLookupObject:(id)a3 forKey:(unint64_t)a4
+- (void)_setOperationLookupObject:(id)object forKey:(unint64_t)key
 {
-  if ([(NSPointerArray *)self->_operationsLookupTable count]<= a4)
+  if ([(NSPointerArray *)self->_operationsLookupTable count]<= key)
   {
-    [(NSPointerArray *)self->_operationsLookupTable setCount:a4 + 1024];
-    [(NSMutableIndexSet *)self->_operationsLookupTableFreeIndices addIndexesInRange:[(NSPointerArray *)self->_operationsLookupTable count], a4 + 1024];
+    [(NSPointerArray *)self->_operationsLookupTable setCount:key + 1024];
+    [(NSMutableIndexSet *)self->_operationsLookupTableFreeIndices addIndexesInRange:[(NSPointerArray *)self->_operationsLookupTable count], key + 1024];
   }
 
-  [(NSPointerArray *)self->_operationsLookupTable replacePointerAtIndex:a4 withPointer:a3];
+  [(NSPointerArray *)self->_operationsLookupTable replacePointerAtIndex:key withPointer:object];
   operationsLookupTableFreeIndices = self->_operationsLookupTableFreeIndices;
-  if (a3)
+  if (object)
   {
 
-    [(NSMutableIndexSet *)operationsLookupTableFreeIndices addIndex:a4];
+    [(NSMutableIndexSet *)operationsLookupTableFreeIndices addIndex:key];
   }
 
   else
   {
 
-    [(NSMutableIndexSet *)operationsLookupTableFreeIndices removeIndex:a4];
+    [(NSMutableIndexSet *)operationsLookupTableFreeIndices removeIndex:key];
   }
 }
 
-- (id)_operationLookupObjectForKey:(unint64_t)a3
+- (id)_operationLookupObjectForKey:(unint64_t)key
 {
-  if ([(NSPointerArray *)self->_operationsLookupTable count]<= a3)
+  if ([(NSPointerArray *)self->_operationsLookupTable count]<= key)
   {
     return 0;
   }
 
   operationsLookupTable = self->_operationsLookupTable;
 
-  return [(NSPointerArray *)operationsLookupTable pointerAtIndex:a3];
+  return [(NSPointerArray *)operationsLookupTable pointerAtIndex:key];
 }
 
-- (unint64_t)addOperation:(id)a3 withPriority:(int64_t)a4
+- (unint64_t)addOperation:(id)operation withPriority:(int64_t)priority
 {
   v13 = 0;
   v14 = &v13;
@@ -250,21 +250,21 @@
   block[1] = 3221225472;
   block[2] = __48__OFNSOperationQueue_addOperation_withPriority___block_invoke;
   block[3] = &unk_279C89E78;
-  block[5] = a3;
+  block[5] = operation;
   block[6] = &v13;
   block[4] = self;
   dispatch_barrier_sync(operationsLookupTableQueue, block);
-  v8 = [a3 finishBlock];
+  finishBlock = [operation finishBlock];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __48__OFNSOperationQueue_addOperation_withPriority___block_invoke_2;
   v11[3] = &unk_279C89EC8;
-  v11[5] = v8;
+  v11[5] = finishBlock;
   v11[6] = &v13;
   v11[4] = self;
-  [a3 setFinishBlock:v11];
-  [a3 setQueuePriority:a4];
-  [(OFNSOperationQueue *)self addOperation:a3];
+  [operation setFinishBlock:v11];
+  [operation setQueuePriority:priority];
+  [(OFNSOperationQueue *)self addOperation:operation];
   v9 = v14[3];
   _Block_object_dispose(&v13, 8);
   return v9;
@@ -299,9 +299,9 @@ void __48__OFNSOperationQueue_addOperation_withPriority___block_invoke_2(uint64_
   }
 }
 
-- (void)cancelSlideshowOperationWithID:(unint64_t)a3
+- (void)cancelSlideshowOperationWithID:(unint64_t)d
 {
-  if (a3)
+  if (d)
   {
     operationsLookupTableQueue = self->_operationsLookupTableQueue;
     v4[0] = MEMORY[0x277D85DD0];
@@ -309,7 +309,7 @@ void __48__OFNSOperationQueue_addOperation_withPriority___block_invoke_2(uint64_
     v4[2] = __53__OFNSOperationQueue_cancelSlideshowOperationWithID___block_invoke;
     v4[3] = &unk_279C89EF0;
     v4[4] = self;
-    v4[5] = a3;
+    v4[5] = d;
     dispatch_barrier_async(operationsLookupTableQueue, v4);
   }
 }

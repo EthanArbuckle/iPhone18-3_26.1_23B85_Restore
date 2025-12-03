@@ -1,49 +1,49 @@
 @interface PUIStyleDiscreteColors
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation;
 - (NSArray)variationAppliedColors;
 - (NSString)identifier;
 - (NSString)nonVariatedIdentifier;
-- (PUIStyleDiscreteColors)initWithCoder:(id)a3;
-- (PUIStyleDiscreteColors)initWithColors:(id)a3 vibrant:(BOOL)a4 supportsVariation:(BOOL)a5 variationValue:(double)a6;
+- (PUIStyleDiscreteColors)initWithCoder:(id)coder;
+- (PUIStyleDiscreteColors)initWithColors:(id)colors vibrant:(BOOL)vibrant supportsVariation:(BOOL)variation variationValue:(double)value;
 - (UIColor)vibrancyEffectColor;
-- (id)copyWithVariation:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithVariation:(double)variation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIStyleDiscreteColors
 
-- (PUIStyleDiscreteColors)initWithColors:(id)a3 vibrant:(BOOL)a4 supportsVariation:(BOOL)a5 variationValue:(double)a6
+- (PUIStyleDiscreteColors)initWithColors:(id)colors vibrant:(BOOL)vibrant supportsVariation:(BOOL)variation variationValue:(double)value
 {
-  v7 = a5;
-  v10 = a3;
+  variationCopy = variation;
+  colorsCopy = colors;
   v15.receiver = self;
   v15.super_class = PUIStyleDiscreteColors;
   v11 = [(PUIStyleDiscreteColors *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [colorsCopy copy];
     colors = v11->_colors;
     v11->_colors = v12;
 
-    v11->_vibrant = a4;
-    v11->_supportsVariation = v7;
-    if (v7)
+    v11->_vibrant = vibrant;
+    v11->_supportsVariation = variationCopy;
+    if (variationCopy)
     {
-      v11->_variation = a6;
+      v11->_variation = value;
     }
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  variationCopy = variation;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -51,21 +51,21 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleDiscreteColors *)self isEqualToStyle:v6 ignoringVariation:v4];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIStyleDiscreteColors *)self isEqualToStyle:equalCopy ignoringVariation:variationCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  variationCopy = variation;
+  styleCopy = style;
+  v7 = styleCopy;
   v12 = 1;
-  if (v6 != self)
+  if (styleCopy != self)
   {
-    if (!v6 || !_PUIStyleCompareUsingIdentifiers(self, v6, v4) || (-[PUIStyleDiscreteColors colors](self, "colors"), v8 = objc_claimAutoreleasedReturnValue(), [v7 colors], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToArray:", v9), v9, v8, !v10) || (v11 = -[PUIStyleDiscreteColors isVibrant](self, "isVibrant"), v11 != objc_msgSend(v7, "isVibrant")) || self->_supportsVariation != v7[8] || !v4 && self->_supportsVariation && !BSFloatEqualToFloat())
+    if (!styleCopy || !_PUIStyleCompareUsingIdentifiers(self, styleCopy, variationCopy) || (-[PUIStyleDiscreteColors colors](self, "colors"), v8 = objc_claimAutoreleasedReturnValue(), [v7 colors], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "isEqualToArray:", v9), v9, v8, !v10) || (v11 = -[PUIStyleDiscreteColors isVibrant](self, "isVibrant"), v11 != objc_msgSend(v7, "isVibrant")) || self->_supportsVariation != v7[8] || !variationCopy && self->_supportsVariation && !BSFloatEqualToFloat())
     {
       v12 = 0;
     }
@@ -93,8 +93,8 @@
 - (NSString)nonVariatedIdentifier
 {
   v3 = NSStringFromPUIStyleType([(PUIStyleDiscreteColors *)self type]);
-  v4 = [(PUIStyleDiscreteColors *)self colors];
-  v5 = [v4 bs_map:&__block_literal_global_29];
+  colors = [(PUIStyleDiscreteColors *)self colors];
+  v5 = [colors bs_map:&__block_literal_global_29];
   v6 = [v5 componentsJoinedByString:@"_"];
   v7 = [v3 stringByAppendingFormat:@"-%@", v6];
 
@@ -111,17 +111,17 @@ uint64_t __47__PUIStyleDiscreteColors_nonVariatedIdentifier__block_invoke(uint64
 
 - (NSString)identifier
 {
-  v3 = [(PUIStyleDiscreteColors *)self allowsVariation];
-  v4 = [(PUIStyleDiscreteColors *)self nonVariatedIdentifier];
-  if (v3)
+  allowsVariation = [(PUIStyleDiscreteColors *)self allowsVariation];
+  nonVariatedIdentifier = [(PUIStyleDiscreteColors *)self nonVariatedIdentifier];
+  if (allowsVariation)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_variation];
-    v6 = [v4 stringByAppendingFormat:@":%@", v5];
+    v6 = [nonVariatedIdentifier stringByAppendingFormat:@":%@", v5];
 
-    v4 = v6;
+    nonVariatedIdentifier = v6;
   }
 
-  return v4;
+  return nonVariatedIdentifier;
 }
 
 - (NSArray)variationAppliedColors
@@ -136,7 +136,7 @@ uint64_t __47__PUIStyleDiscreteColors_nonVariatedIdentifier__block_invoke(uint64
       v14 = 3221225472;
       v15 = __48__PUIStyleDiscreteColors_variationAppliedColors__block_invoke;
       v16 = &unk_1E7854460;
-      v17 = self;
+      selfCopy = self;
       v5 = &v13;
     }
 
@@ -146,19 +146,19 @@ uint64_t __47__PUIStyleDiscreteColors_nonVariatedIdentifier__block_invoke(uint64
       v9 = 3221225472;
       v10 = __48__PUIStyleDiscreteColors_variationAppliedColors__block_invoke_2;
       v11 = &unk_1E7854460;
-      v12 = self;
+      selfCopy2 = self;
       v5 = &v8;
     }
 
-    v6 = [(NSArray *)colors bs_map:v5, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17];
+    selfCopy = [(NSArray *)colors bs_map:v5, v8, v9, v10, v11, selfCopy2, v13, v14, v15, v16, selfCopy];
   }
 
   else
   {
-    v6 = self->_colors;
+    selfCopy = self->_colors;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 id __48__PUIStyleDiscreteColors_variationAppliedColors__block_invoke_2(uint64_t a1, void *a2)
@@ -183,41 +183,41 @@ id __48__PUIStyleDiscreteColors_variationAppliedColors__block_invoke_2(uint64_t 
   return v11;
 }
 
-- (id)copyWithVariation:(double)a3
+- (id)copyWithVariation:(double)variation
 {
   v5 = objc_alloc(objc_opt_class());
   colors = self->_colors;
   vibrant = self->_vibrant;
   supportsVariation = self->_supportsVariation;
 
-  return [v5 initWithColors:colors vibrant:vibrant supportsVariation:supportsVariation variationValue:a3];
+  return [v5 initWithColors:colors vibrant:vibrant supportsVariation:supportsVariation variationValue:variation];
 }
 
 - (UIColor)vibrancyEffectColor
 {
   if ([(PUIStyleDiscreteColors *)self allowsVariation])
   {
-    v3 = [(PUIStyleDiscreteColors *)self variationAppliedColors];
-    v4 = [v3 firstObject];
+    variationAppliedColors = [(PUIStyleDiscreteColors *)self variationAppliedColors];
+    firstObject = [variationAppliedColors firstObject];
   }
 
   else
   {
-    v4 = [(NSArray *)self->_colors firstObject];
+    firstObject = [(NSArray *)self->_colors firstObject];
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (PUIStyleDiscreteColors)initWithCoder:(id)a3
+- (PUIStyleDiscreteColors)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colors"];
-  v6 = [v4 decodeBoolForKey:@"vibrant"];
-  v7 = [v4 decodeBoolForKey:@"supportsVariation"];
-  [v4 decodeDoubleForKey:@"variation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"colors"];
+  v6 = [coderCopy decodeBoolForKey:@"vibrant"];
+  v7 = [coderCopy decodeBoolForKey:@"supportsVariation"];
+  [coderCopy decodeDoubleForKey:@"variation"];
   v9 = v8;
-  v10 = [v4 decodeBoolForKey:@"needsToResolveVariation"];
+  v10 = [coderCopy decodeBoolForKey:@"needsToResolveVariation"];
 
   v11 = [[PUIStyleDiscreteColors alloc] initWithColors:v5 vibrant:v6 supportsVariation:v7 variationValue:v9];
   [(PUIStyleDiscreteColors *)v11 setNeedsToResolveVariationFromColorStore:v10];
@@ -225,18 +225,18 @@ id __48__PUIStyleDiscreteColors_variationAppliedColors__block_invoke_2(uint64_t 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   colors = self->_colors;
-  v5 = a3;
-  [v5 encodeObject:colors forKey:@"colors"];
-  [v5 encodeBool:self->_vibrant forKey:@"vibrant"];
-  [v5 encodeBool:self->_supportsVariation forKey:@"supportsVariation"];
-  [v5 encodeDouble:@"variation" forKey:self->_variation];
-  [v5 encodeBool:self->_needsToResolveVariationFromColorStore forKey:@"needsToResolveVariation"];
+  coderCopy = coder;
+  [coderCopy encodeObject:colors forKey:@"colors"];
+  [coderCopy encodeBool:self->_vibrant forKey:@"vibrant"];
+  [coderCopy encodeBool:self->_supportsVariation forKey:@"supportsVariation"];
+  [coderCopy encodeDouble:@"variation" forKey:self->_variation];
+  [coderCopy encodeBool:self->_needsToResolveVariationFromColorStore forKey:@"needsToResolveVariation"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithColors:self->_colors vibrant:self->_vibrant supportsVariation:self->_supportsVariation variationValue:self->_variation];
   [v4 setNeedsToResolveVariationFromColorStore:self->_needsToResolveVariationFromColorStore];

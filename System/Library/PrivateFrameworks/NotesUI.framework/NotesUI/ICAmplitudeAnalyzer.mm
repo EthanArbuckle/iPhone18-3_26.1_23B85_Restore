@@ -1,41 +1,41 @@
 @interface ICAmplitudeAnalyzer
-- (float)calculateAmplitude:(float *)a3 sampleCount:(int)a4 channelCount:(int)a5;
+- (float)calculateAmplitude:(float *)amplitude sampleCount:(int)count channelCount:(int)channelCount;
 @end
 
 @implementation ICAmplitudeAnalyzer
 
-- (float)calculateAmplitude:(float *)a3 sampleCount:(int)a4 channelCount:(int)a5
+- (float)calculateAmplitude:(float *)amplitude sampleCount:(int)count channelCount:(int)channelCount
 {
-  if ([(NSData *)self->_processingBuffer length]< 4 * a4)
+  if ([(NSData *)self->_processingBuffer length]< 4 * count)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * a4];
+    v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:4 * count];
     processingBuffer = self->_processingBuffer;
     self->_processingBuffer = v9;
   }
 
-  if (a5 < 1)
+  if (channelCount < 1)
   {
     return 0.0;
   }
 
   v11 = 0.0;
-  v12 = a5;
+  channelCountCopy = channelCount;
   do
   {
-    v13 = *a3++;
+    v13 = *amplitude++;
     __C = 0.0;
-    v14 = [(NSData *)self->_processingBuffer bytes];
-    vDSP_vabs(v13, 1, v14, 1, a4);
-    vDSP_maxv(v14, 1, &__C, a4);
+    bytes = [(NSData *)self->_processingBuffer bytes];
+    vDSP_vabs(v13, 1, bytes, 1, count);
+    vDSP_maxv(bytes, 1, &__C, count);
     if (v11 < __C)
     {
       v11 = __C;
     }
 
-    --v12;
+    --channelCountCopy;
   }
 
-  while (v12);
+  while (channelCountCopy);
   return v11;
 }
 

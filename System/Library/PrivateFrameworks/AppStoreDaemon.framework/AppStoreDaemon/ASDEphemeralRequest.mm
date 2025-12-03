@@ -1,35 +1,35 @@
 @interface ASDEphemeralRequest
-- (ASDEphemeralRequest)initWithCoder:(id)a3;
-- (void)_initWithOptions:(void *)a1;
+- (ASDEphemeralRequest)initWithCoder:(id)coder;
+- (void)_initWithOptions:(void *)options;
 - (void)_startWithCompletionHandler:(void *)result;
-- (void)encodeWithCoder:(id)a3;
-- (void)receiveResponse:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)receiveResponse:(id)response;
 @end
 
 @implementation ASDEphemeralRequest
 
-- (void)_initWithOptions:(void *)a1
+- (void)_initWithOptions:(void *)options
 {
   v3 = a2;
-  if (a1)
+  if (options)
   {
-    v7.receiver = a1;
+    v7.receiver = options;
     v7.super_class = ASDEphemeralRequest;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    options = objc_msgSendSuper2(&v7, sel_init);
+    if (options)
     {
       v4 = [v3 copy];
-      v5 = a1[5];
-      a1[5] = v4;
+      v5 = options[5];
+      options[5] = v4;
     }
   }
 
-  return a1;
+  return options;
 }
 
-- (void)receiveResponse:(id)a3
+- (void)receiveResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   if (self)
   {
     v6 = objc_getProperty(self, v4, 32, 1);
@@ -41,8 +41,8 @@
       block[2] = __58__ASDEphemeralRequest__callCompletionHandlerWithResponse___block_invoke;
       block[3] = &unk_1E7CDBAE0;
       v13 = v6;
-      v11 = v5;
-      v12 = self;
+      v11 = responseCopy;
+      selfCopy = self;
       dispatch_async(v7, block);
 
       objc_setProperty_atomic_copy(self, v8, 0, 32);
@@ -56,15 +56,15 @@
   }
 }
 
-- (ASDEphemeralRequest)initWithCoder:(id)a3
+- (ASDEphemeralRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ASDEphemeralRequest;
-  v5 = [(ASDRequest *)&v9 initWithCoder:v4];
+  v5 = [(ASDRequest *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
     options = v5->_options;
     v5->_options = v6;
   }
@@ -72,14 +72,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ASDEphemeralRequest;
-  v4 = a3;
-  [(ASDRequest *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ASDRequest *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ASDEphemeralRequest *)self options:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"options"];
+  [coderCopy encodeObject:v5 forKey:@"options"];
 }
 
 void __58__ASDEphemeralRequest__callCompletionHandlerWithResponse___block_invoke(uint64_t a1)

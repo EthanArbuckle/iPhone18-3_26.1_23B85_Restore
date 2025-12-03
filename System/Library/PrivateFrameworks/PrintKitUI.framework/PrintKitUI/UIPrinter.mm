@@ -18,8 +18,8 @@
 - (NSURL)URL;
 - (UIPrinter)init;
 - (UIPrinterJobTypes)supportedJobTypes;
-- (id)_initWithPrinter:(id)a3;
-- (id)_initWithURL:(id)a3;
+- (id)_initWithPrinter:(id)printer;
+- (id)_initWithURL:(id)l;
 - (id)_printerID;
 - (int64_t)jobAccountIDSupport;
 - (void)contactPrinter:(void *)completionHandler;
@@ -31,38 +31,38 @@
 + (UIPrinter)printerWithURL:(NSURL *)url
 {
   v4 = url;
-  v5 = [[a1 alloc] _initWithURL:v4];
+  v5 = [[self alloc] _initWithURL:v4];
 
   v6 = v5;
 
   return v6;
 }
 
-- (id)_initWithURL:(id)a3
+- (id)_initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = UIPrinter;
   v5 = [(UIPrinter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIPrinter *)v5 setPrinterURL:v4];
+    [(UIPrinter *)v5 setPrinterURL:lCopy];
   }
 
   return v6;
 }
 
-- (id)_initWithPrinter:(id)a3
+- (id)_initWithPrinter:(id)printer
 {
-  v4 = a3;
+  printerCopy = printer;
   v8.receiver = self;
   v8.super_class = UIPrinter;
   v5 = [(UIPrinter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIPrinter *)v5 setPkPrinter:v4];
+    [(UIPrinter *)v5 setPkPrinter:printerCopy];
     [(UIPrinter *)v6 setPrinterURL:0];
   }
 
@@ -78,13 +78,13 @@
 
 - (NSURL)URL
 {
-  v3 = [(UIPrinter *)self printerURL];
+  printerURL = [(UIPrinter *)self printerURL];
 
-  if (!v3)
+  if (!printerURL)
   {
-    v4 = [(UIPrinter *)self pkPrinter];
-    v5 = [v4 printerURL];
-    [(UIPrinter *)self setPrinterURL:v5];
+    pkPrinter = [(UIPrinter *)self pkPrinter];
+    printerURL2 = [pkPrinter printerURL];
+    [(UIPrinter *)self setPrinterURL:printerURL2];
   }
 
   return [(UIPrinter *)self printerURL];
@@ -92,12 +92,12 @@
 
 - (NSString)displayName
 {
-  v2 = [(UIPrinter *)self pkPrinter];
-  v3 = [v2 displayName];
-  v4 = v3;
-  if (v3)
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  displayName = [pkPrinter displayName];
+  v4 = displayName;
+  if (displayName)
   {
-    v5 = v3;
+    v5 = displayName;
   }
 
   else
@@ -112,13 +112,13 @@
 
 - (NSString)displayLocation
 {
-  v3 = [(UIPrinter *)self pkPrinter];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
 
-  if (v3)
+  if (pkPrinter)
   {
-    v4 = [(UIPrinter *)self pkPrinter];
-    v5 = [v4 location];
-    v6 = [v5 copy];
+    pkPrinter2 = [(UIPrinter *)self pkPrinter];
+    location = [pkPrinter2 location];
+    v6 = [location copy];
   }
 
   else
@@ -131,28 +131,28 @@
 
 - (UIPrinterJobTypes)supportedJobTypes
 {
-  v3 = [(UIPrinter *)self pkPrinter];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
 
-  if (!v3)
+  if (!pkPrinter)
   {
     return 0;
   }
 
-  v4 = [(UIPrinter *)self pkPrinter];
-  v5 = [v4 jobTypesSupported];
+  pkPrinter2 = [(UIPrinter *)self pkPrinter];
+  jobTypesSupported = [pkPrinter2 jobTypesSupported];
 
-  return v5;
+  return jobTypesSupported;
 }
 
 - (NSString)makeAndModel
 {
-  v3 = [(UIPrinter *)self pkPrinter];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
 
-  if (v3)
+  if (pkPrinter)
   {
-    v4 = [(UIPrinter *)self pkPrinter];
-    v5 = [v4 makeAndModel];
-    v6 = [v5 copy];
+    pkPrinter2 = [(UIPrinter *)self pkPrinter];
+    makeAndModel = [pkPrinter2 makeAndModel];
+    v6 = [makeAndModel copy];
   }
 
   else
@@ -165,23 +165,23 @@
 
 - (BOOL)supportsColor
 {
-  v3 = [(UIPrinter *)self pkPrinter];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
 
-  if (!v3)
+  if (!pkPrinter)
   {
     return 0;
   }
 
-  v4 = [(UIPrinter *)self pkPrinter];
-  if ([v4 type] == 1)
+  pkPrinter2 = [(UIPrinter *)self pkPrinter];
+  if ([pkPrinter2 type] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(UIPrinter *)self pkPrinter];
-    v5 = [v6 type] == 3;
+    pkPrinter3 = [(UIPrinter *)self pkPrinter];
+    v5 = [pkPrinter3 type] == 3;
   }
 
   return v5;
@@ -189,23 +189,23 @@
 
 - (BOOL)supportsDuplex
 {
-  v3 = [(UIPrinter *)self pkPrinter];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
 
-  if (!v3)
+  if (!pkPrinter)
   {
     return 0;
   }
 
-  v4 = [(UIPrinter *)self pkPrinter];
-  if ([v4 type] == 3)
+  pkPrinter2 = [(UIPrinter *)self pkPrinter];
+  if ([pkPrinter2 type] == 3)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(UIPrinter *)self pkPrinter];
-    v5 = [v6 type] == 2;
+    pkPrinter3 = [(UIPrinter *)self pkPrinter];
+    v5 = [pkPrinter3 type] == 2;
   }
 
   return v5;
@@ -224,41 +224,41 @@
     v5 = &__block_literal_global_5;
   }
 
-  v6 = [(UIPrinter *)self pkPrinter];
-  if (v6)
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter)
   {
   }
 
   else
   {
-    v7 = [(UIPrinter *)self printerURL];
+    printerURL = [(UIPrinter *)self printerURL];
 
-    if (!v7)
+    if (!printerURL)
     {
       v5[2](v5, 0);
       goto LABEL_11;
     }
   }
 
-  v8 = [(UIPrinter *)self pkPrinter];
+  pkPrinter2 = [(UIPrinter *)self pkPrinter];
 
-  if (v8)
+  if (pkPrinter2)
   {
-    v9 = [(UIPrinter *)self pkPrinter];
-    [v9 _checkAvailable:MEMORY[0x277D85CD0] queue:v5 completionHandler:30.0];
+    pkPrinter3 = [(UIPrinter *)self pkPrinter];
+    [pkPrinter3 _checkAvailable:MEMORY[0x277D85CD0] queue:v5 completionHandler:30.0];
   }
 
   else
   {
     v10 = MEMORY[0x277D410A8];
-    v11 = [(UIPrinter *)self printerURL];
+    printerURL2 = [(UIPrinter *)self printerURL];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __28__UIPrinter_contactPrinter___block_invoke_2;
     v12[3] = &unk_279A9C990;
     v12[4] = self;
     v13 = v5;
-    [v10 printerWithURL:v11 discoveryTimeout:v12 completionHandler:30.0];
+    [v10 printerWithURL:printerURL2 discoveryTimeout:v12 completionHandler:30.0];
   }
 
 LABEL_11:
@@ -280,31 +280,31 @@ void __28__UIPrinter_contactPrinter___block_invoke_2(uint64_t a1, void *a2)
 
 - (id)_printerID
 {
-  v2 = [(UIPrinter *)self pkPrinter];
-  v3 = [v2 name];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  name = [pkPrinter name];
 
-  return v3;
+  return name;
 }
 
 - (void)loadPrinterInfoDict
 {
-  v4 = [(UIPrinter *)self pkPrinter];
-  v3 = [v4 printInfoSupported];
-  [(UIPrinter *)self setPrinterInfoDict:v3];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  printInfoSupported = [pkPrinter printInfoSupported];
+  [(UIPrinter *)self setPrinterInfoDict:printInfoSupported];
 }
 
 - (NSArray)printerFinishingOptions
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3)
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter)
   {
-    v4 = v3;
-    v5 = [(UIPrinter *)self printerInfoDict];
+    v4 = pkPrinter;
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
-      v6 = [(UIPrinter *)self printerInfoDict];
-      v7 = [v6 objectForKey:*MEMORY[0x277D41128]];
+      printerInfoDict2 = [(UIPrinter *)self printerInfoDict];
+      v7 = [printerInfoDict2 objectForKey:*MEMORY[0x277D41128]];
 
       if ([v7 count])
       {
@@ -321,16 +321,16 @@ LABEL_6:
 
 - (NSArray)finishingTemplates
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3)
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter)
   {
-    v4 = v3;
-    v5 = [(UIPrinter *)self printerInfoDict];
+    v4 = pkPrinter;
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
-      v6 = [(UIPrinter *)self printerInfoDict];
-      v7 = [v6 objectForKey:*MEMORY[0x277D41118]];
+      printerInfoDict2 = [(UIPrinter *)self printerInfoDict];
+      v7 = [printerInfoDict2 objectForKey:*MEMORY[0x277D41118]];
 
       if ([v7 count])
       {
@@ -347,16 +347,16 @@ LABEL_6:
 
 - (NSArray)outputBins
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3)
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter)
   {
-    v4 = v3;
-    v5 = [(UIPrinter *)self printerInfoDict];
+    v4 = pkPrinter;
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
-      v6 = [(UIPrinter *)self printerInfoDict];
-      v7 = [v6 objectForKey:*MEMORY[0x277D411C0]];
+      printerInfoDict2 = [(UIPrinter *)self printerInfoDict];
+      v7 = [printerInfoDict2 objectForKey:*MEMORY[0x277D411C0]];
 
       if ([v7 count])
       {
@@ -373,11 +373,11 @@ LABEL_6:
 
 - (NSArray)supportedPresets
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3 && (v4 = v3, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter && (v4 = pkPrinter, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(UIPrinter *)self printerInfoDict];
-    v7 = [v6 objectForKey:*MEMORY[0x277D41168]];
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
+    v7 = [printerInfoDict objectForKey:*MEMORY[0x277D41168]];
   }
 
   else
@@ -390,11 +390,11 @@ LABEL_6:
 
 - (NSArray)supportedTrays
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3 && (v4 = v3, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter && (v4 = pkPrinter, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(UIPrinter *)self printerInfoDict];
-    v7 = [v6 objectForKey:*MEMORY[0x277D41138]];
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
+    v7 = [printerInfoDict objectForKey:*MEMORY[0x277D41138]];
   }
 
   else
@@ -421,11 +421,11 @@ LABEL_6:
 
 - (NSArray)supportedMediaTypes
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3 && (v4 = v3, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter && (v4 = pkPrinter, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(UIPrinter *)self printerInfoDict];
-    v7 = [v6 objectForKey:*MEMORY[0x277D41190]];
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
+    v7 = [printerInfoDict objectForKey:*MEMORY[0x277D41190]];
   }
 
   else
@@ -438,11 +438,11 @@ LABEL_6:
 
 - (NSArray)supportedQualities
 {
-  v3 = [(UIPrinter *)self pkPrinter];
-  if (v3 && (v4 = v3, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  if (pkPrinter && (v4 = pkPrinter, [(UIPrinter *)self printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(UIPrinter *)self printerInfoDict];
-    v7 = [v6 objectForKey:*MEMORY[0x277D41220]];
+    printerInfoDict = [(UIPrinter *)self printerInfoDict];
+    v7 = [printerInfoDict objectForKey:*MEMORY[0x277D41220]];
   }
 
   else
@@ -455,18 +455,18 @@ LABEL_6:
 
 - (BOOL)supportsJobAccountID
 {
-  v2 = [(UIPrinter *)self pkPrinter];
-  v3 = [v2 supportsJobAccountID];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  supportsJobAccountID = [pkPrinter supportsJobAccountID];
 
-  return v3;
+  return supportsJobAccountID;
 }
 
 - (int64_t)jobAccountIDSupport
 {
-  v2 = [(UIPrinter *)self pkPrinter];
-  v3 = [v2 jobAccountIDSupport];
+  pkPrinter = [(UIPrinter *)self pkPrinter];
+  jobAccountIDSupport = [pkPrinter jobAccountIDSupport];
 
-  return v3;
+  return jobAccountIDSupport;
 }
 
 @end

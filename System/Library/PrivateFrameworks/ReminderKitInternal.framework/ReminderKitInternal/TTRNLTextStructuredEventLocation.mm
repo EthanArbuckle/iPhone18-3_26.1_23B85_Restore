@@ -1,15 +1,15 @@
 @interface TTRNLTextStructuredEventLocation
-- (TTRNLTextStructuredEventLocation)initWithRange:(_NSRange)a3 locationType:(int64_t)a4 proximity:(int64_t)a5;
+- (TTRNLTextStructuredEventLocation)initWithRange:(_NSRange)range locationType:(int64_t)type proximity:(int64_t)proximity;
 - (_NSRange)range;
 - (id)description;
 @end
 
 @implementation TTRNLTextStructuredEventLocation
 
-- (TTRNLTextStructuredEventLocation)initWithRange:(_NSRange)a3 locationType:(int64_t)a4 proximity:(int64_t)a5
+- (TTRNLTextStructuredEventLocation)initWithRange:(_NSRange)range locationType:(int64_t)type proximity:(int64_t)proximity
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = TTRNLTextStructuredEventLocation;
   result = [(TTRNLTextStructuredEventLocation *)&v10 init];
@@ -17,8 +17,8 @@
   {
     result->_range.location = location;
     result->_range.length = length;
-    result->_locationType = a4;
-    result->_proximity = a5;
+    result->_locationType = type;
+    result->_proximity = proximity;
   }
 
   return result;
@@ -26,21 +26,21 @@
 
 - (id)description
 {
-  v3 = [(TTRNLTextStructuredEventLocation *)self locationType];
+  locationType = [(TTRNLTextStructuredEventLocation *)self locationType];
   v4 = @"unknown";
-  if (v3 <= 2)
+  if (locationType <= 2)
   {
-    v4 = off_2788BC4A8[v3];
+    v4 = off_2788BC4A8[locationType];
   }
 
-  v5 = [(TTRNLTextStructuredEventLocation *)self proximity];
+  proximity = [(TTRNLTextStructuredEventLocation *)self proximity];
   v6 = @"leave";
-  if (v5 != 1)
+  if (proximity != 1)
   {
     v6 = @"unknown";
   }
 
-  if (v5)
+  if (proximity)
   {
     v7 = v6;
   }

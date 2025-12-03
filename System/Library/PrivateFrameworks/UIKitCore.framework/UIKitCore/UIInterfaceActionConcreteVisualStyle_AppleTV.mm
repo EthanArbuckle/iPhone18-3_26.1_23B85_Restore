@@ -2,25 +2,25 @@
 - (CGSize)minimumActionContentSize;
 - (UIEdgeInsets)actionSequenceEdgeInsets;
 - (UIEdgeInsets)contentMargin;
-- (id)actionImageViewTintColorForImageProperty:(id)a3 actionViewState:(id)a4;
+- (id)actionImageViewTintColorForImageProperty:(id)property actionViewState:(id)state;
 - (id)actionPropertiesAffectingActionRepresentationViewStyling;
 - (id)actionPropertiesAffectingLabelStyling;
-- (id)actionTitleLabelColorForViewState:(id)a3;
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3;
+- (id)actionTitleLabelColorForViewState:(id)state;
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view;
 - (id)defaultScreen;
-- (id)newActionBackgroundViewForViewState:(id)a3;
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3;
-- (void)configureAttributesForActionRepresentationView:(id)a3 actionViewState:(id)a4;
-- (void)configureAttributesForActionScrollView:(id)a3 groupViewState:(id)a4;
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5;
+- (id)newActionBackgroundViewForViewState:(id)state;
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state;
+- (void)configureAttributesForActionRepresentationView:(id)view actionViewState:(id)state;
+- (void)configureAttributesForActionScrollView:(id)view groupViewState:(id)state;
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_AppleTV
 
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view
 {
-  v3 = a3;
-  v4 = [[_UIInterfaceActionRepresentationViewContext_AppleTV alloc] initWithHighlightTransformTargetView:v3];
+  viewCopy = view;
+  v4 = [[_UIInterfaceActionRepresentationViewContext_AppleTV alloc] initWithHighlightTransformTargetView:viewCopy];
 
   return v4;
 }
@@ -69,23 +69,23 @@
   return result;
 }
 
-- (id)actionTitleLabelColorForViewState:(id)a3
+- (id)actionTitleLabelColorForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 action];
-  v6 = [v5 type];
-  if (v6 < 2 || v6 == 100)
+  stateCopy = state;
+  action = [stateCopy action];
+  type = [action type];
+  if (type < 2 || type == 100)
   {
-    if ([v5 isEnabled])
+    if ([action isEnabled])
     {
-      if ([v4 isHighlighted])
+      if ([stateCopy isHighlighted])
       {
         +[UIColor blackColor];
       }
 
       else
       {
-        [v4 tintColor];
+        [stateCopy tintColor];
       }
       v7 = ;
     }
@@ -98,7 +98,7 @@
 
   else
   {
-    if (v6 != 2)
+    if (type != 2)
     {
       goto LABEL_12;
     }
@@ -112,20 +112,20 @@ LABEL_12:
   return v3;
 }
 
-- (id)actionImageViewTintColorForImageProperty:(id)a3 actionViewState:(id)a4
+- (id)actionImageViewTintColorForImageProperty:(id)property actionViewState:(id)state
 {
-  v5 = a4;
-  v6 = [v5 action];
-  v7 = [v6 _titleTextColor];
-  v8 = v7;
-  if (v7)
+  stateCopy = state;
+  action = [stateCopy action];
+  _titleTextColor = [action _titleTextColor];
+  v8 = _titleTextColor;
+  if (_titleTextColor)
   {
-    v9 = v7;
+    v9 = _titleTextColor;
   }
 
   else
   {
-    v9 = [(UIInterfaceActionConcreteVisualStyle_AppleTV *)self actionTitleLabelColorForViewState:v5];
+    v9 = [(UIInterfaceActionConcreteVisualStyle_AppleTV *)self actionTitleLabelColorForViewState:stateCopy];
   }
 
   v10 = v9;
@@ -133,12 +133,12 @@ LABEL_12:
   return v10;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v3 = [a3 action];
+  action = [state action];
   v4 = objc_alloc_init([objc_opt_class() associatedAlertBackgroundViewClass]);
   [v4 _setContinuousCornerRadius:4.5];
-  if ([v3 type] == 2)
+  if ([action type] == 2)
   {
     v5 = [UIColor colorWithRed:0.968627451 green:0.149019608 blue:0.17254902 alpha:1.0];
     [v4 setTintColor:v5];
@@ -152,11 +152,11 @@ LABEL_12:
   return v4;
 }
 
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state
 {
-  v3 = [objc_opt_class() associatedAlertBackgroundViewClass];
+  associatedAlertBackgroundViewClass = [objc_opt_class() associatedAlertBackgroundViewClass];
 
-  return objc_alloc_init(v3);
+  return objc_alloc_init(associatedAlertBackgroundViewClass);
 }
 
 - (id)actionPropertiesAffectingLabelStyling
@@ -168,12 +168,12 @@ LABEL_12:
   return v2;
 }
 
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state
 {
-  v7 = a3;
-  v6 = [a5 isFocused];
-  [v7 setMarqueeEnabled:v6];
-  [v7 setMarqueeRunning:v6];
+  labelCopy = label;
+  isFocused = [state isFocused];
+  [labelCopy setMarqueeEnabled:isFocused];
+  [labelCopy setMarqueeRunning:isFocused];
 }
 
 - (id)actionPropertiesAffectingActionRepresentationViewStyling
@@ -185,21 +185,21 @@ LABEL_12:
   return v2;
 }
 
-- (void)configureAttributesForActionRepresentationView:(id)a3 actionViewState:(id)a4
+- (void)configureAttributesForActionRepresentationView:(id)view actionViewState:(id)state
 {
-  v4 = a4;
-  v6 = [v4 actionViewStateContext];
-  [v6 setHighlighted:{objc_msgSend(v4, "isHighlighted")}];
-  v5 = [v4 isPressed];
+  stateCopy = state;
+  actionViewStateContext = [stateCopy actionViewStateContext];
+  [actionViewStateContext setHighlighted:{objc_msgSend(stateCopy, "isHighlighted")}];
+  isPressed = [stateCopy isPressed];
 
-  [v6 setPressed:v5];
+  [actionViewStateContext setPressed:isPressed];
 }
 
-- (void)configureAttributesForActionScrollView:(id)a3 groupViewState:(id)a4
+- (void)configureAttributesForActionScrollView:(id)view groupViewState:(id)state
 {
-  v4 = a3;
-  [v4 setLayoutMargins:{0.0, 25.0, 0.0, 25.0}];
-  [v4 _setGradientMaskInsets:{50.0, 0.0, 50.0, 0.0}];
+  viewCopy = view;
+  [viewCopy setLayoutMargins:{0.0, 25.0, 0.0, 25.0}];
+  [viewCopy _setGradientMaskInsets:{50.0, 0.0, 50.0, 0.0}];
 }
 
 @end

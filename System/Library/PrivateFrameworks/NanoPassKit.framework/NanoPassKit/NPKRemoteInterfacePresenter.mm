@@ -1,14 +1,14 @@
 @interface NPKRemoteInterfacePresenter
 - (NPKRemoteInterfacePresenter)init;
 - (NPKRemoteInterfacePresenterDelegate)delegate;
-- (void)clearInAppInterfaceForSkeletonPeerPaymentQuote:(id)a3 withError:(id)a4;
-- (void)presentContactlessInterfaceForPassWithUniqueIdentifier:(id)a3 fromSource:(int64_t)a4 completion:(id)a5;
-- (void)presentContinuityPaymentInterfaceWithRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (void)presentPasscodeUpgradeRequestWithChangeType:(unint64_t)a3 completion:(id)a4;
-- (void)presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:(id)a3 continuityType:(id)a4 transferToken:(id)a5 completion:(id)a6;
-- (void)presentSetupApplePayAlert:(id)a3;
-- (void)presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:(id)a3 balanceField:(id)a4 completion:(id)a5;
-- (void)showInAppInterfaceWithSkeletonPeerPaymentQuote:(id)a3 completion:(id)a4;
+- (void)clearInAppInterfaceForSkeletonPeerPaymentQuote:(id)quote withError:(id)error;
+- (void)presentContactlessInterfaceForPassWithUniqueIdentifier:(id)identifier fromSource:(int64_t)source completion:(id)completion;
+- (void)presentContinuityPaymentInterfaceWithRemotePaymentRequest:(id)request completion:(id)completion;
+- (void)presentPasscodeUpgradeRequestWithChangeType:(unint64_t)type completion:(id)completion;
+- (void)presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:(id)identifier continuityType:(id)type transferToken:(id)token completion:(id)completion;
+- (void)presentSetupApplePayAlert:(id)alert;
+- (void)presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:(id)identifier balanceField:(id)field completion:(id)completion;
+- (void)showInAppInterfaceWithSkeletonPeerPaymentQuote:(id)quote completion:(id)completion;
 @end
 
 @implementation NPKRemoteInterfacePresenter
@@ -132,11 +132,11 @@ void __218__NPKRemoteInterfacePresenter_presentInAppPaymentInterfaceWithPaymentR
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentContinuityPaymentInterfaceWithRemotePaymentRequest:(id)a3 completion:(id)a4
+- (void)presentContinuityPaymentInterfaceWithRemotePaymentRequest:(id)request completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -146,7 +146,7 @@ void __218__NPKRemoteInterfacePresenter_presentInAppPaymentInterfaceWithPaymentR
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = requestCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to present continuity payment interface for remote payment request: %@", buf, 0xCu);
     }
   }
@@ -156,10 +156,10 @@ void __218__NPKRemoteInterfacePresenter_presentInAppPaymentInterfaceWithPaymentR
   v15[1] = 3221225472;
   v15[2] = __100__NPKRemoteInterfacePresenter_presentContinuityPaymentInterfaceWithRemotePaymentRequest_completion___block_invoke;
   v15[3] = &unk_279945218;
-  v16 = v7;
-  v12 = v7;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v15];
-  [v13 showInAppInterfaceWithRemotePaymentRequest:v6 activationHandler:v12];
+  [v13 showInAppInterfaceWithRemotePaymentRequest:requestCopy activationHandler:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -191,11 +191,11 @@ void __100__NPKRemoteInterfacePresenter_presentContinuityPaymentInterfaceWithRem
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showInAppInterfaceWithSkeletonPeerPaymentQuote:(id)a3 completion:(id)a4
+- (void)showInAppInterfaceWithSkeletonPeerPaymentQuote:(id)quote completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  quoteCopy = quote;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -205,7 +205,7 @@ void __100__NPKRemoteInterfacePresenter_presentContinuityPaymentInterfaceWithRem
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v6;
+      v18 = quoteCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to present in-app interface for skeleton peer payment quote: %@", buf, 0xCu);
     }
   }
@@ -215,10 +215,10 @@ void __100__NPKRemoteInterfacePresenter_presentContinuityPaymentInterfaceWithRem
   v15[1] = 3221225472;
   v15[2] = __89__NPKRemoteInterfacePresenter_showInAppInterfaceWithSkeletonPeerPaymentQuote_completion___block_invoke;
   v15[3] = &unk_279945218;
-  v16 = v7;
-  v12 = v7;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v15];
-  [v13 showInAppInterfaceWithSkeletonPeerPaymentQuote:v6 activationHandler:v12];
+  [v13 showInAppInterfaceWithSkeletonPeerPaymentQuote:quoteCopy activationHandler:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -250,11 +250,11 @@ void __89__NPKRemoteInterfacePresenter_showInAppInterfaceWithSkeletonPeerPayment
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearInAppInterfaceForSkeletonPeerPaymentQuote:(id)a3 withError:(id)a4
+- (void)clearInAppInterfaceForSkeletonPeerPaymentQuote:(id)quote withError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  quoteCopy = quote;
+  errorCopy = error;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -264,15 +264,15 @@ void __89__NPKRemoteInterfacePresenter_showInAppInterfaceWithSkeletonPeerPayment
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = quoteCopy;
       v15 = 2112;
-      v16 = v7;
+      v16 = errorCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to clear skeleton peer payment quote: %@ error: %@", &v13, 0x16u);
     }
   }
 
   v11 = [(NSXPCConnection *)self->_xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_16];
-  [v11 clearInAppInterfaceForSkeletonPeerPaymentQuote:v6 withError:v7];
+  [v11 clearInAppInterfaceForSkeletonPeerPaymentQuote:quoteCopy withError:errorCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -298,15 +298,15 @@ void __88__NPKRemoteInterfacePresenter_clearInAppInterfaceForSkeletonPeerPayment
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentSetupApplePayAlert:(id)a3
+- (void)presentSetupApplePayAlert:(id)alert
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = v4;
-  if (v3)
+  alertCopy = alert;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v5 = dictionary;
+  if (alertCopy)
   {
-    [v4 setObject:v3 forKey:@"AppName"];
+    [dictionary setObject:alertCopy forKey:@"AppName"];
   }
 
   v6 = pk_General_log();
@@ -318,23 +318,23 @@ void __88__NPKRemoteInterfacePresenter_clearInAppInterfaceForSkeletonPeerPayment
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = alertCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Request to present set up Apple Pay alert for %@", &v11, 0xCu);
     }
   }
 
-  v9 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v9 postNotificationName:@"com.apple.NanoPassKit.PresentApplePaySetupAlert" object:0 userInfo:v5];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.NanoPassKit.PresentApplePaySetupAlert" object:0 userInfo:v5];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentPasscodeUpgradeRequestWithChangeType:(unint64_t)a3 completion:(id)a4
+- (void)presentPasscodeUpgradeRequestWithChangeType:(unint64_t)type completion:(id)completion
 {
   xpcConnection = self->_xpcConnection;
-  v6 = a4;
+  completionCopy = completion;
   v7 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_92_0];
-  [v7 presentPasscodeUpgradeRequestWithChangeType:a3 completion:v6];
+  [v7 presentPasscodeUpgradeRequestWithChangeType:type completion:completionCopy];
 }
 
 void __86__NPKRemoteInterfacePresenter_presentPasscodeUpgradeRequestWithChangeType_completion___block_invoke(uint64_t a1, void *a2)
@@ -379,13 +379,13 @@ void __87__NPKRemoteInterfacePresenter_tearDownPasscodeUpgradeRequestWithPasscod
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentContactlessInterfaceForPassWithUniqueIdentifier:(id)a3 fromSource:(int64_t)a4 completion:(id)a5
+- (void)presentContactlessInterfaceForPassWithUniqueIdentifier:(id)identifier fromSource:(int64_t)source completion:(id)completion
 {
   xpcConnection = self->_xpcConnection;
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_96];
-  [v10 presentContactlessInterfaceForPassWithUniqueIdentifier:v9 fromSource:a4 completion:v8];
+  [v10 presentContactlessInterfaceForPassWithUniqueIdentifier:identifierCopy fromSource:source completion:completionCopy];
 }
 
 void __108__NPKRemoteInterfacePresenter_presentContactlessInterfaceForPassWithUniqueIdentifier_fromSource_completion___block_invoke(uint64_t a1, void *a2)
@@ -409,15 +409,15 @@ void __108__NPKRemoteInterfacePresenter_presentContactlessInterfaceForPassWithUn
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:(id)a3 continuityType:(id)a4 transferToken:(id)a5 completion:(id)a6
+- (void)presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:(id)identifier continuityType:(id)type transferToken:(id)token completion:(id)completion
 {
   xpcConnection = self->_xpcConnection;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  completionCopy = completion;
+  tokenCopy = token;
+  typeCopy = type;
+  identifierCopy = identifier;
   v14 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_98];
-  [v14 presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:v13 continuityType:v12 transferToken:v11 completion:v10];
+  [v14 presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier:identifierCopy continuityType:typeCopy transferToken:tokenCopy completion:completionCopy];
 }
 
 void __137__NPKRemoteInterfacePresenter_presentProvisioningContinuityInterfaceForPassWithUniqueIdentifier_continuityType_transferToken_completion___block_invoke(uint64_t a1, void *a2)
@@ -441,14 +441,14 @@ void __137__NPKRemoteInterfacePresenter_presentProvisioningContinuityInterfaceFo
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:(id)a3 balanceField:(id)a4 completion:(id)a5
+- (void)presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:(id)identifier balanceField:(id)field completion:(id)completion
 {
   xpcConnection = self->_xpcConnection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  fieldCopy = field;
+  identifierCopy = identifier;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_100];
-  [v11 presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:v10 balanceField:v9 completion:v8];
+  [v11 presentTransitTopUpValueSelectionForPassWithUniqueIdentifier:identifierCopy balanceField:fieldCopy completion:completionCopy];
 }
 
 void __116__NPKRemoteInterfacePresenter_presentTransitTopUpValueSelectionForPassWithUniqueIdentifier_balanceField_completion___block_invoke(uint64_t a1, void *a2)

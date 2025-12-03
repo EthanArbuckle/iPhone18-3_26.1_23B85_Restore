@@ -1,15 +1,15 @@
 @interface TLKImageAttachment
 - (CGSize)size;
-- (void)setSize:(CGSize)a3;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation TLKImageAttachment
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (a3.width != self->_size.width || a3.height != self->_size.height)
+  if (size.width != self->_size.width || size.height != self->_size.height)
   {
-    self->_size = a3;
+    self->_size = size;
     [(TLKImageAttachment *)self setBounds:0.0, 0.0];
   }
 }

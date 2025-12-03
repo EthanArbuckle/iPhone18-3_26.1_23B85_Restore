@@ -1,21 +1,21 @@
 @interface XRFrameActivityBlockAgent
-- (XRFrameActivityBlockAgent)initWithBlock:(id)a3;
+- (XRFrameActivityBlockAgent)initWithBlock:(id)block;
 - (id)operationRepresentation;
 - (void)dealloc;
-- (void)executeStopOnItinerary:(id)a3;
+- (void)executeStopOnItinerary:(id)itinerary;
 @end
 
 @implementation XRFrameActivityBlockAgent
 
-- (XRFrameActivityBlockAgent)initWithBlock:(id)a3
+- (XRFrameActivityBlockAgent)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13.receiver = self;
   v13.super_class = XRFrameActivityBlockAgent;
   v9 = [(XRFrameActivityBlockAgent *)&v13 init];
   if (v9)
   {
-    v10 = objc_msgSend_copy(v4, v5, v6, v7, v8);
+    v10 = objc_msgSend_copy(blockCopy, v5, v6, v7, v8);
     block = v9->_block;
     v9->_block = v10;
   }
@@ -54,9 +54,9 @@
   [(XRFrameActivityBlockAgent *)&v7 dealloc];
 }
 
-- (void)executeStopOnItinerary:(id)a3
+- (void)executeStopOnItinerary:(id)itinerary
 {
-  v4 = a3;
+  itineraryCopy = itinerary;
   v13 = objc_msgSend_mode(self, v5, v6, v7, v8);
   if (v13 == @"Activating")
   {
@@ -64,12 +64,12 @@
     {
       v29.receiver = self;
       v29.super_class = XRFrameActivityBlockAgent;
-      [(XRMobileAgent *)&v29 executeStopOnItinerary:v4];
+      [(XRMobileAgent *)&v29 executeStopOnItinerary:itineraryCopy];
     }
 
     if (atomic_load_explicit(self->_yieldNow, memory_order_acquire))
     {
-      objc_msgSend_revisit(v4, v14, v15, v16, v17);
+      objc_msgSend_revisit(itineraryCopy, v14, v15, v16, v17);
     }
 
     else
@@ -89,7 +89,7 @@
         objc_msgSend_start(v23, v24, v25, v26, v27);
       }
 
-      objc_msgSend_finishedWithMode_(v4, v19, @"Finished", v20, v21);
+      objc_msgSend_finishedWithMode_(itineraryCopy, v19, @"Finished", v20, v21);
     }
   }
 
@@ -97,7 +97,7 @@
   {
     v28.receiver = self;
     v28.super_class = XRFrameActivityBlockAgent;
-    [(XRMobileAgent *)&v28 executeStopOnItinerary:v4];
+    [(XRMobileAgent *)&v28 executeStopOnItinerary:itineraryCopy];
   }
 }
 

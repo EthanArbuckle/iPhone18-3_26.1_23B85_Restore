@@ -1,41 +1,41 @@
 @interface _INPBSupportedTrafficIncidentType
-- (BOOL)isEqual:(id)a3;
-- (_INPBSupportedTrafficIncidentType)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSupportedTrafficIncidentType)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setType:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setType:(int)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSupportedTrafficIncidentType
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"localizedDisplayString"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  localizedDisplayString = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+  dictionaryRepresentation = [localizedDisplayString dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"localizedDisplayString"];
 
   if ([(_INPBSupportedTrafficIncidentType *)self hasType])
   {
-    v6 = [(_INPBSupportedTrafficIncidentType *)self type];
-    if (v6 >= 5)
+    type = [(_INPBSupportedTrafficIncidentType *)self type];
+    if (type >= 5)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v7 = off_1E72887C8[v6];
+      v7 = off_1E72887C8[type];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"type"];
+    [dictionary setObject:v7 forKeyedSubscript:@"type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,26 +54,26 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
-  v6 = [v4 localizedDisplayString];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  localizedDisplayString = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+  localizedDisplayString2 = [equalCopy localizedDisplayString];
+  v7 = localizedDisplayString2;
+  if ((localizedDisplayString != 0) != (localizedDisplayString2 == 0))
   {
-    v8 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
-    if (v8)
+    localizedDisplayString3 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+    if (localizedDisplayString3)
     {
-      v9 = v8;
-      v10 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
-      v11 = [v4 localizedDisplayString];
-      v12 = [v10 isEqual:v11];
+      v9 = localizedDisplayString3;
+      localizedDisplayString4 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+      localizedDisplayString5 = [equalCopy localizedDisplayString];
+      v12 = [localizedDisplayString4 isEqual:localizedDisplayString5];
 
       if (!v12)
       {
@@ -85,10 +85,10 @@
     {
     }
 
-    v13 = [(_INPBSupportedTrafficIncidentType *)self hasType];
-    if (v13 == [v4 hasType])
+    hasType = [(_INPBSupportedTrafficIncidentType *)self hasType];
+    if (hasType == [equalCopy hasType])
     {
-      if (!-[_INPBSupportedTrafficIncidentType hasType](self, "hasType") || ![v4 hasType] || (type = self->_type, type == objc_msgSend(v4, "type")))
+      if (!-[_INPBSupportedTrafficIncidentType hasType](self, "hasType") || ![equalCopy hasType] || (type = self->_type, type == objc_msgSend(equalCopy, "type")))
       {
         v14 = 1;
         goto LABEL_10;
@@ -107,10 +107,10 @@ LABEL_10:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSupportedTrafficIncidentType allocWithZone:](_INPBSupportedTrafficIncidentType init];
-  v6 = [(_INPBString *)self->_localizedDisplayString copyWithZone:a3];
+  v6 = [(_INPBString *)self->_localizedDisplayString copyWithZone:zone];
   [(_INPBSupportedTrafficIncidentType *)v5 setLocalizedDisplayString:v6];
 
   if ([(_INPBSupportedTrafficIncidentType *)self hasType])
@@ -121,38 +121,38 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSupportedTrafficIncidentType *)self data];
+  coderCopy = coder;
+  data = [(_INPBSupportedTrafficIncidentType *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSupportedTrafficIncidentType)initWithCoder:(id)a3
+- (_INPBSupportedTrafficIncidentType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSupportedTrafficIncidentType *)self initWithData:v6];
+    self = [(_INPBSupportedTrafficIncidentType *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+  toCopy = to;
+  localizedDisplayString = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
 
-  if (v4)
+  if (localizedDisplayString)
   {
-    v5 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
+    localizedDisplayString2 = [(_INPBSupportedTrafficIncidentType *)self localizedDisplayString];
     PBDataWriterWriteSubmessage();
   }
 
@@ -163,30 +163,30 @@ LABEL_10:
   }
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ACCIDENT"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ACCIDENT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"HAZARD"])
+  else if ([typeCopy isEqualToString:@"HAZARD"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SPEEDTRAP"])
+  else if ([typeCopy isEqualToString:@"SPEEDTRAP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CONSTRUCTION"])
+  else if ([typeCopy isEqualToString:@"CONSTRUCTION"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ROADWORK"])
+  else if ([typeCopy isEqualToString:@"ROADWORK"])
   {
     v4 = 4;
   }
@@ -199,10 +199,10 @@ LABEL_10:
   return v4;
 }
 
-- (void)setType:(int)a3
+- (void)setType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -210,7 +210,7 @@ LABEL_10:
   else
   {
     *&self->_has = has | 1;
-    self->_type = a3;
+    self->_type = type;
   }
 }
 

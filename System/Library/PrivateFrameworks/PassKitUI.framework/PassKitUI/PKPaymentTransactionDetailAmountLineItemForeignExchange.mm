@@ -1,27 +1,27 @@
 @interface PKPaymentTransactionDetailAmountLineItemForeignExchange
-- (PKPaymentTransactionDetailAmountLineItemForeignExchange)initWithForeignExchangeInformation:(id)a3 type:(unint64_t)a4;
+- (PKPaymentTransactionDetailAmountLineItemForeignExchange)initWithForeignExchangeInformation:(id)information type:(unint64_t)type;
 @end
 
 @implementation PKPaymentTransactionDetailAmountLineItemForeignExchange
 
-- (PKPaymentTransactionDetailAmountLineItemForeignExchange)initWithForeignExchangeInformation:(id)a3 type:(unint64_t)a4
+- (PKPaymentTransactionDetailAmountLineItemForeignExchange)initWithForeignExchangeInformation:(id)information type:(unint64_t)type
 {
-  v6 = a3;
+  informationCopy = information;
   v16.receiver = self;
   v16.super_class = PKPaymentTransactionDetailAmountLineItemForeignExchange;
   v7 = [(PKPaymentTransactionDetailAmountLineItemForeignExchange *)&v16 init];
   if (v7)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = PKLocalizedFeatureString();
-      v9 = [v6 exchangeRate];
-      v10 = PKFormattedStringSignificantDigitsFromNumber();
+      exchangeRate = [informationCopy exchangeRate];
+      formattedStringValue = PKFormattedStringSignificantDigitsFromNumber();
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         v8 = 0;
         v11 = 0;
@@ -29,11 +29,11 @@
       }
 
       v8 = PKLocalizedFeatureString();
-      v9 = [v6 destinationCurrencyAmount];
-      v10 = [v9 formattedStringValue];
+      exchangeRate = [informationCopy destinationCurrencyAmount];
+      formattedStringValue = [exchangeRate formattedStringValue];
     }
 
-    v11 = v10;
+    v11 = formattedStringValue;
 
 LABEL_8:
     label = v7->_label;

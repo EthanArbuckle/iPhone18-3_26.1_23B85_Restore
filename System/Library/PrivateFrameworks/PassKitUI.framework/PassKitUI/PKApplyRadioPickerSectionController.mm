@@ -1,23 +1,23 @@
 @interface PKApplyRadioPickerSectionController
-- (PKApplyRadioPickerSectionController)initWithController:(id)a3 applyPage:(id)a4 picker:(id)a5;
+- (PKApplyRadioPickerSectionController)initWithController:(id)controller applyPage:(id)page picker:(id)picker;
 - (id)identifiers;
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)_configureContentSection:(id)a3;
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)_configureContentSection:(id)section;
 @end
 
 @implementation PKApplyRadioPickerSectionController
 
-- (PKApplyRadioPickerSectionController)initWithController:(id)a3 applyPage:(id)a4 picker:(id)a5
+- (PKApplyRadioPickerSectionController)initWithController:(id)controller applyPage:(id)page picker:(id)picker
 {
-  v9 = a5;
+  pickerCopy = picker;
   v13.receiver = self;
   v13.super_class = PKApplyRadioPickerSectionController;
-  v10 = [(PKApplyCollectionViewSectionController *)&v13 initWithController:a3 applyPage:a4];
+  v10 = [(PKApplyCollectionViewSectionController *)&v13 initWithController:controller applyPage:page];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_picker, a5);
+    objc_storeStrong(&v10->_picker, picker);
   }
 
   return v11;
@@ -26,20 +26,20 @@
 - (id)identifiers
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PKPaymentSetupFieldPicker *)self->_picker identifier];
-  v5[0] = v2;
+  identifier = [(PKPaymentSetupFieldPicker *)self->_picker identifier];
+  v5[0] = identifier;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v7 = [(PKPaymentSetupFieldPicker *)self->_picker identifier];
-  v8 = v5;
-  v9 = v7;
+  identifier = [(PKPaymentSetupFieldPicker *)self->_picker identifier];
+  v8 = identifierCopy;
+  v9 = identifier;
   v10 = v9;
   if (v9 == v8)
   {
@@ -66,11 +66,11 @@ LABEL_9:
   return v6;
 }
 
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PKApplyRadioPickerSectionController;
-  v4 = [(PKApplyCollectionViewSectionController *)&v6 listLayoutConfigurationWithLayoutEnvironment:a3 sectionIdentifier:a4];
+  v4 = [(PKApplyCollectionViewSectionController *)&v6 listLayoutConfigurationWithLayoutEnvironment:environment sectionIdentifier:identifier];
   [v4 setItemSeparatorHandler:&__block_literal_global_22];
 
   return v4;
@@ -87,18 +87,18 @@ id __102__PKApplyRadioPickerSectionController_listLayoutConfigurationWithLayoutE
   return v4;
 }
 
-- (void)_configureContentSection:(id)a3
+- (void)_configureContentSection:(id)section
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v22 = a3;
+  sectionCopy = section;
   v4 = [PKApplyRadioPickerTitleRow alloc];
-  v5 = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
-  v6 = [(PKApplyRadioPickerTitleRow *)v4 initWithTitle:v5];
+  localizedDisplayName = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
+  v6 = [(PKApplyRadioPickerTitleRow *)v4 initWithTitle:localizedDisplayName];
 
   v20 = v6;
   v32[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-  [v22 appendItems:v7];
+  [sectionCopy appendItems:v7];
 
   v28 = 0u;
   v29 = 0u;
@@ -120,13 +120,13 @@ id __102__PKApplyRadioPickerSectionController_listLayoutConfigurationWithLayoutE
 
         v11 = *(*(&v26 + 1) + 8 * i);
         v12 = [PKApplyRadioPickerRow alloc];
-        v13 = [v11 localizedDisplayName];
-        v14 = [v11 submissionValue];
-        v15 = [(PKApplyRadioPickerRow *)v12 initWithTitle:v13 submissionValue:v14];
+        localizedDisplayName2 = [v11 localizedDisplayName];
+        submissionValue = [v11 submissionValue];
+        v15 = [(PKApplyRadioPickerRow *)v12 initWithTitle:localizedDisplayName2 submissionValue:submissionValue];
 
-        v16 = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
-        v17 = [v16 submissionValue];
-        v18 = [v11 submissionValue];
+        currentValue = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
+        submissionValue2 = [currentValue submissionValue];
+        submissionValue3 = [v11 submissionValue];
         [(PKApplyRadioPickerRow *)v15 setSelected:PKEqualObjects()];
 
         objc_initWeak(&location, self);
@@ -139,7 +139,7 @@ id __102__PKApplyRadioPickerSectionController_listLayoutConfigurationWithLayoutE
         [(PKApplyRadioPickerRow *)v15 setAction:v23];
         v30 = v15;
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-        [v22 appendItems:v19];
+        [sectionCopy appendItems:v19];
 
         objc_destroyWeak(&v24);
         objc_destroyWeak(&location);

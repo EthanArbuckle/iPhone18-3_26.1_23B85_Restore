@@ -1,23 +1,23 @@
 @interface HDMedicationScheduleEntityEncoder
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
 @end
 
 @implementation HDMedicationScheduleEntityEncoder
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v9 = [(HDEntityEncoder *)self profile];
-  v10 = [(HDEntityEncoder *)self transaction];
-  v11 = [HDMedicationScheduleEntity _codableRepresentationForMedicationScheduleID:a3 row:a4 profile:v9 transaction:v10 error:a5];
+  profile = [(HDEntityEncoder *)self profile];
+  transaction = [(HDEntityEncoder *)self transaction];
+  v11 = [HDMedicationScheduleEntity _codableRepresentationForMedicationScheduleID:d row:row profile:profile transaction:transaction error:error];
 
   return v11;
 }
 
-- (id)objectForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)objectForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self transaction];
-  v9 = [HDMedicationScheduleEntity _medicationScheduleFromRow:a4 persistentID:a3 transaction:v8 error:a5];
+  transaction = [(HDEntityEncoder *)self transaction];
+  v9 = [HDMedicationScheduleEntity _medicationScheduleFromRow:row persistentID:d transaction:transaction error:error];
 
   return v9;
 }

@@ -1,8 +1,8 @@
 @interface _HDSPSleepModeTurnedOffState
-- (BOOL)_shouldUpdateSleepModeStateForState:(unint64_t)a3 changeReason:(unint64_t)a4 previousState:(unint64_t)a5;
+- (BOOL)_shouldUpdateSleepModeStateForState:(unint64_t)state changeReason:(unint64_t)reason previousState:(unint64_t)previousState;
 - (id)expirationDate;
-- (void)sleepScheduleStateChangedToBedtime:(unint64_t)a3 fromState:(unint64_t)a4;
-- (void)sleepScheduleStateChangedToWindDown:(unint64_t)a3 fromState:(unint64_t)a4;
+- (void)sleepScheduleStateChangedToBedtime:(unint64_t)bedtime fromState:(unint64_t)state;
+- (void)sleepScheduleStateChangedToWindDown:(unint64_t)down fromState:(unint64_t)state;
 - (void)updateState;
 @end
 
@@ -11,13 +11,13 @@
 - (id)expirationDate
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [(HKSPStateMachineState *)self stateMachine];
-  v3 = [v2 infoProvider];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  infoProvider = [stateMachine infoProvider];
 
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
   v5 = *MEMORY[0x277D621B8];
-  v6 = [v4 sleepSchedule];
-  [v6 windDownTime];
+  sleepSchedule = [sleepScheduleModel sleepSchedule];
+  [sleepSchedule windDownTime];
   v8 = v7;
 
   if (v8 > 0.0)
@@ -27,8 +27,8 @@
     v5 = v9;
   }
 
-  v10 = [v3 currentDate];
-  v11 = [v4 nextEventWithIdentifier:v5 dueAfterDate:v10];
+  currentDate = [infoProvider currentDate];
+  v11 = [sleepScheduleModel nextEventWithIdentifier:v5 dueAfterDate:currentDate];
 
   v12 = HKSPLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -53,9 +53,9 @@
   v11 = *MEMORY[0x277D85DE8];
   if (![(HDSPSleepModeStateMachineState *)self updateStateCommon])
   {
-    v3 = [(HKSPStateMachineState *)self stateMachine];
-    v4 = [v3 infoProvider];
-    if (([v4 shouldGoIntoSleepModeDuringState:{objc_msgSend(v4, "sleepScheduleState")}] & 1) == 0)
+    stateMachine = [(HKSPStateMachineState *)self stateMachine];
+    infoProvider = [stateMachine infoProvider];
+    if (([infoProvider shouldGoIntoSleepModeDuringState:{objc_msgSend(infoProvider, "sleepScheduleState")}] & 1) == 0)
     {
       v5 = HKSPLogForCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -66,15 +66,15 @@
         _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] going to regular off state", &v9, 0xCu);
       }
 
-      v7 = [v3 offState];
-      [v3 enterState:v7];
+      offState = [stateMachine offState];
+      [stateMachine enterState:offState];
     }
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldUpdateSleepModeStateForState:(unint64_t)a3 changeReason:(unint64_t)a4 previousState:(unint64_t)a5
+- (BOOL)_shouldUpdateSleepModeStateForState:(unint64_t)state changeReason:(unint64_t)reason previousState:(unint64_t)previousState
 {
   v34 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -96,13 +96,13 @@
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ entered from %{public}@ (%{public}@)", &v26, 0x2Au);
   }
 
-  if (a5 - 4 <= 0xFFFFFFFFFFFFFFFDLL)
+  if (previousState - 4 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (a4 == 5)
+    if (reason == 5)
     {
       v13 = HKSPLogForCategory();
       v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-      if (a5)
+      if (previousState)
       {
         if (v14)
         {
@@ -169,23 +169,23 @@ LABEL_18:
   return v19;
 }
 
-- (void)sleepScheduleStateChangedToWindDown:(unint64_t)a3 fromState:(unint64_t)a4
+- (void)sleepScheduleStateChangedToWindDown:(unint64_t)down fromState:(unint64_t)state
 {
-  if ([(_HDSPSleepModeTurnedOffState *)self _shouldUpdateSleepModeStateForState:3 changeReason:a3 previousState:a4])
+  if ([(_HDSPSleepModeTurnedOffState *)self _shouldUpdateSleepModeStateForState:3 changeReason:down previousState:state])
   {
     v7.receiver = self;
     v7.super_class = _HDSPSleepModeTurnedOffState;
-    [(HDSPSleepModeStateMachineState *)&v7 sleepScheduleStateChangedToWindDown:a3 fromState:a4];
+    [(HDSPSleepModeStateMachineState *)&v7 sleepScheduleStateChangedToWindDown:down fromState:state];
   }
 }
 
-- (void)sleepScheduleStateChangedToBedtime:(unint64_t)a3 fromState:(unint64_t)a4
+- (void)sleepScheduleStateChangedToBedtime:(unint64_t)bedtime fromState:(unint64_t)state
 {
-  if ([(_HDSPSleepModeTurnedOffState *)self _shouldUpdateSleepModeStateForState:2 changeReason:a3 previousState:a4])
+  if ([(_HDSPSleepModeTurnedOffState *)self _shouldUpdateSleepModeStateForState:2 changeReason:bedtime previousState:state])
   {
     v7.receiver = self;
     v7.super_class = _HDSPSleepModeTurnedOffState;
-    [(HDSPSleepModeStateMachineState *)&v7 sleepScheduleStateChangedToBedtime:a3 fromState:a4];
+    [(HDSPSleepModeStateMachineState *)&v7 sleepScheduleStateChangedToBedtime:bedtime fromState:state];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface CKDPZoneRetrieveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSkipContinuation:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSkipContinuation:(BOOL)continuation;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneRetrieveRequest
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (void)setHasSkipContinuation:(BOOL)a3
+- (void)setHasSkipContinuation:(BOOL)continuation
 {
-  if (a3)
+  if (continuation)
   {
     v3 = 2;
   }
@@ -83,74 +83,74 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_zoneIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     onlyFetchPCSInfo = self->_onlyFetchPCSInfo;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_continuationMarker)
   {
     PBDataWriterWriteDataField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     skipContinuation = self->_skipContinuation;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   zoneIdentifier = self->_zoneIdentifier;
-  v8 = v4;
+  v8 = toCopy;
   if (zoneIdentifier)
   {
-    objc_msgSend_setZoneIdentifier_(v4, v5, zoneIdentifier);
-    v4 = v8;
+    objc_msgSend_setZoneIdentifier_(toCopy, v5, zoneIdentifier);
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_onlyFetchPCSInfo;
-    v4[28] |= 1u;
+    toCopy[24] = self->_onlyFetchPCSInfo;
+    toCopy[28] |= 1u;
   }
 
   continuationMarker = self->_continuationMarker;
   if (continuationMarker)
   {
     objc_msgSend_setContinuationMarker_(v8, v5, continuationMarker);
-    v4 = v8;
+    toCopy = v8;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v4[25] = self->_skipContinuation;
-    v4[28] |= 2u;
+    toCopy[25] = self->_skipContinuation;
+    toCopy[28] |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneIdentifier, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
@@ -160,7 +160,7 @@
     *(v10 + 28) |= 1u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_continuationMarker, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_continuationMarker, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
@@ -173,17 +173,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_15;
   }
 
   zoneIdentifier = self->_zoneIdentifier;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (zoneIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(zoneIdentifier, v7, v9))
@@ -193,36 +193,36 @@
   }
 
   has = self->_has;
-  v11 = *(v4 + 28);
+  v11 = *(equalCopy + 28);
   if (has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v16 = *(v4 + 24);
+    v16 = *(equalCopy + 24);
     if (self->_onlyFetchPCSInfo)
     {
-      if ((v4[3] & 1) == 0)
+      if ((equalCopy[3] & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (v4[3])
+    else if (equalCopy[3])
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
     goto LABEL_15;
   }
 
   continuationMarker = self->_continuationMarker;
-  v13 = v4[1];
+  v13 = equalCopy[1];
   if (!(continuationMarker | v13))
   {
     goto LABEL_9;
@@ -236,7 +236,7 @@ LABEL_15:
   }
 
   has = self->_has;
-  v11 = *(v4 + 28);
+  v11 = *(equalCopy + 28);
 LABEL_9:
   v14 = (v11 & 2) == 0;
   if ((has & 2) != 0)
@@ -245,13 +245,13 @@ LABEL_9:
     {
       if (self->_skipContinuation)
       {
-        if (*(v4 + 25))
+        if (*(equalCopy + 25))
         {
           goto LABEL_23;
         }
       }
 
-      else if (!*(v4 + 25))
+      else if (!*(equalCopy + 25))
       {
 LABEL_23:
         v14 = 1;
@@ -294,12 +294,12 @@ LABEL_16:
   return v7 ^ v6 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   zoneIdentifier = self->_zoneIdentifier;
-  v6 = *(v4 + 2);
-  v8 = v4;
+  v6 = *(fromCopy + 2);
+  v8 = fromCopy;
   if (zoneIdentifier)
   {
     if (!v6)
@@ -307,7 +307,7 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(zoneIdentifier, v4, v6);
+    objc_msgSend_mergeFrom_(zoneIdentifier, fromCopy, v6);
   }
 
   else
@@ -317,27 +317,27 @@ LABEL_16:
       goto LABEL_7;
     }
 
-    objc_msgSend_setZoneIdentifier_(self, v4, v6);
+    objc_msgSend_setZoneIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_onlyFetchPCSInfo = *(v4 + 24);
+    self->_onlyFetchPCSInfo = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   if (v7)
   {
-    objc_msgSend_setContinuationMarker_(self, v4, v7);
-    v4 = v8;
+    objc_msgSend_setContinuationMarker_(self, fromCopy, v7);
+    fromCopy = v8;
   }
 
-  if ((*(v4 + 28) & 2) != 0)
+  if ((*(fromCopy + 28) & 2) != 0)
   {
-    self->_skipContinuation = *(v4 + 25);
+    self->_skipContinuation = *(fromCopy + 25);
     *&self->_has |= 2u;
   }
 

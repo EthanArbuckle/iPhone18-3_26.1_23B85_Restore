@@ -1,17 +1,17 @@
 @interface HDHRHypertensionNotificationManager
-- (HDHRHypertensionNotificationManager)initWithProfile:(id)a3;
-- (void)_queue_addNotificationRequestForHypertensionEvent:(uint64_t)a1;
-- (void)daemonReady:(id)a3;
+- (HDHRHypertensionNotificationManager)initWithProfile:(id)profile;
+- (void)_queue_addNotificationRequestForHypertensionEvent:(uint64_t)event;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDHRHypertensionNotificationManager
 
-- (HDHRHypertensionNotificationManager)initWithProfile:(id)a3
+- (HDHRHypertensionNotificationManager)initWithProfile:(id)profile
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v16.receiver = self;
   v16.super_class = HDHRHypertensionNotificationManager;
   v5 = [(HDHRHypertensionNotificationManager *)&v16 init];
@@ -26,19 +26,19 @@
       _os_log_impl(&dword_229486000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v5->_queue;
     v5->_queue = v7;
 
     v9 = objc_alloc(MEMORY[0x277CCCFE8]);
-    v10 = [v9 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:v4];
+    v10 = [v9 initWithLoggingCategory:*MEMORY[0x277CCC2D0] healthDataSource:profileCopy];
     analyticsEventSubmissionManager = v5->_analyticsEventSubmissionManager;
     v5->_analyticsEventSubmissionManager = v10;
 
     WeakRetained = objc_loadWeakRetained(&v5->_profile);
-    v13 = [WeakRetained daemon];
-    [v13 registerForDaemonReady:v5];
+    daemon = [WeakRetained daemon];
+    [daemon registerForDaemonReady:v5];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -47,15 +47,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v4 = [v3 isCompanionCapable];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
-  if (v4)
+  if (isCompanionCapable)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v6 = [WeakRetained dataManager];
-    v7 = [MEMORY[0x277CCD0C0] hypertensionEventType];
-    [v6 removeObserver:self forDataType:v7];
+    dataManager = [WeakRetained dataManager];
+    hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
+    [dataManager removeObserver:self forDataType:hypertensionEventType];
   }
 
   v8.receiver = self;
@@ -63,58 +63,58 @@
   [(HDHRHypertensionNotificationManager *)&v8 dealloc];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v5 = [v4 isCompanionCapable];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  isCompanionCapable = [mEMORY[0x277CCDD30] isCompanionCapable];
 
   _HKInitializeLogging();
   WeakRetained = HKLogHeartRateCategory();
   v7 = os_log_type_enabled(WeakRetained, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isCompanionCapable)
   {
     if (v7)
     {
       v11 = 138543362;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_229486000, WeakRetained, OS_LOG_TYPE_DEFAULT, "[%{public}@] Daemon ready", &v11, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained dataManager];
-    v9 = [MEMORY[0x277CCD0C0] hypertensionEventType];
-    [v8 addObserver:self forDataType:v9];
+    dataManager = [WeakRetained dataManager];
+    hypertensionEventType = [MEMORY[0x277CCD0C0] hypertensionEventType];
+    [dataManager addObserver:self forDataType:hypertensionEventType];
   }
 
   else if (v7)
   {
     v11 = 138543362;
-    v12 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_229486000, WeakRetained, OS_LOG_TYPE_DEFAULT, "[%{public}@] Daemon ready (not companion)", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v7 = [v6 healthAppHiddenOrNotInstalled];
+  addedCopy = added;
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  healthAppHiddenOrNotInstalled = [mEMORY[0x277CCDD30] healthAppHiddenOrNotInstalled];
 
   _HKInitializeLogging();
   v8 = HKLogHeartRateCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (!v7)
+  if (!healthAppHiddenOrNotInstalled)
   {
     if (v9)
     {
       v12 = HRLogSensitiveClassName();
       v13 = HKSensitiveLogItem();
       *buf = 138543618;
-      v20 = v12;
+      selfCopy2 = v12;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] samplesAdded: %@", buf, 0x16u);
@@ -125,26 +125,26 @@
     v16[1] = 3221225472;
     v16[2] = __59__HDHRHypertensionNotificationManager_samplesAdded_anchor___block_invoke;
     v16[3] = &unk_27865FE98;
-    v17 = v5;
-    v18 = self;
+    v17 = addedCopy;
+    selfCopy = self;
     dispatch_async(queue, v16);
-    v11 = v17;
+    unitTesting_notificationNotPostedHandler2 = v17;
     goto LABEL_9;
   }
 
   if (v9)
   {
     *buf = 138543362;
-    v20 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_229486000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Health App is hidden or deleted, will not post notification", buf, 0xCu);
   }
 
-  v10 = [(HDHRHypertensionNotificationManager *)self unitTesting_notificationNotPostedHandler];
+  unitTesting_notificationNotPostedHandler = [(HDHRHypertensionNotificationManager *)self unitTesting_notificationNotPostedHandler];
 
-  if (v10)
+  if (unitTesting_notificationNotPostedHandler)
   {
-    v11 = [(HDHRHypertensionNotificationManager *)self unitTesting_notificationNotPostedHandler];
-    v11[2]();
+    unitTesting_notificationNotPostedHandler2 = [(HDHRHypertensionNotificationManager *)self unitTesting_notificationNotPostedHandler];
+    unitTesting_notificationNotPostedHandler2[2]();
 LABEL_9:
   }
 
@@ -220,13 +220,13 @@ void __59__HDHRHypertensionNotificationManager_samplesAdded_anchor___block_invok
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_addNotificationRequestForHypertensionEvent:(uint64_t)a1
+- (void)_queue_addNotificationRequestForHypertensionEvent:(uint64_t)event
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (event)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
+    dispatch_assert_queue_V2(*(event + 16));
     _HKInitializeLogging();
     v4 = HKLogHeartRateCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -238,22 +238,22 @@ void __59__HDHRHypertensionNotificationManager_samplesAdded_anchor___block_invok
     }
 
     v6 = HDHRHypertensionNotificationRequestForEvent(v3);
-    v7 = [a1 unitTesting_postNotificationWithRequestHandler];
-    v8 = v7 == 0;
+    unitTesting_postNotificationWithRequestHandler = [event unitTesting_postNotificationWithRequestHandler];
+    v8 = unitTesting_postNotificationWithRequestHandler == 0;
 
     if (v8)
     {
-      objc_initWeak(buf, a1);
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v10 = [WeakRetained notificationManager];
+      objc_initWeak(buf, event);
+      WeakRetained = objc_loadWeakRetained((event + 8));
+      notificationManager = [WeakRetained notificationManager];
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __89__HDHRHypertensionNotificationManager__queue_addNotificationRequestForHypertensionEvent___block_invoke;
       v12[3] = &unk_2786603E0;
       objc_copyWeak(&v15, buf);
       v13 = v6;
-      v14 = a1;
-      [v10 postNotificationWithRequest:v13 completion:v12];
+      eventCopy = event;
+      [notificationManager postNotificationWithRequest:v13 completion:v12];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -261,7 +261,7 @@ void __59__HDHRHypertensionNotificationManager_samplesAdded_anchor___block_invok
 
     else
     {
-      [(HDHRHypertensionNotificationManager *)a1 _queue_addNotificationRequestForHypertensionEvent:v6];
+      [(HDHRHypertensionNotificationManager *)event _queue_addNotificationRequestForHypertensionEvent:v6];
     }
   }
 

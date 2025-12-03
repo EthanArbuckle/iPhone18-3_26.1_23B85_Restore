@@ -10,7 +10,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v11 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   if (UITraitCollection.isLimitedUI.getter())
   {
     v8 = UITraitCollection.limitedUserInterfaces.getter();

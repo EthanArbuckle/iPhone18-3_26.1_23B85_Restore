@@ -1,16 +1,16 @@
 @interface NSStoreMigrationPolicy
-+ (id)destinationURLForMigrationSourceURL:(id)a3 createDocumentReplacementDirectory:(BOOL)a4 error:(id *)a5;
-+ (id)migrationStoreOptionsFromStoreOptions:(uint64_t)a1;
-- (NSManagedObjectModel)_sourceModelForVersionHashes:(uint64_t)a3 withMetadata:(void *)a4 inBundles:(void *)a5 outPaths:;
-- (id)createMigrationManagerForSourceModel:(id)a3 destinationModel:(id)a4 error:(id *)a5;
-- (id)migrateStoreAtURL:(id)a3 withManager:(id)a4 metadata:(id)a5 options:(id)a6 error:(id *)a7;
-- (id)sourceModelForStoreAtURL:(id)a3 metadata:(id)a4 error:(id *)a5;
-- (uint64_t)_gatherDataAndPerformMigration:(uint64_t)a1;
-- (uint64_t)setMigrationManager:(uint64_t)a1;
++ (id)destinationURLForMigrationSourceURL:(id)l createDocumentReplacementDirectory:(BOOL)directory error:(id *)error;
++ (id)migrationStoreOptionsFromStoreOptions:(uint64_t)options;
+- (NSManagedObjectModel)_sourceModelForVersionHashes:(uint64_t)hashes withMetadata:(void *)metadata inBundles:(void *)bundles outPaths:;
+- (id)createMigrationManagerForSourceModel:(id)model destinationModel:(id)destinationModel error:(id *)error;
+- (id)migrateStoreAtURL:(id)l withManager:(id)manager metadata:(id)metadata options:(id)options error:(id *)error;
+- (id)sourceModelForStoreAtURL:(id)l metadata:(id)metadata error:(id *)error;
+- (uint64_t)_gatherDataAndPerformMigration:(uint64_t)migration;
+- (uint64_t)setMigrationManager:(uint64_t)manager;
 - (uint64_t)setSourceMetadata:(uint64_t)result;
 - (void)dealloc;
 - (void)resourceBundles;
-- (void)setPersistentStoreCoordinator:(void *)a3 sourceURL:(void *)a4 configuration:(void *)a5 metadata:(void *)a6 options:;
+- (void)setPersistentStoreCoordinator:(void *)coordinator sourceURL:(void *)l configuration:(void *)configuration metadata:(void *)metadata options:;
 @end
 
 @implementation NSStoreMigrationPolicy
@@ -41,7 +41,7 @@
   [(NSStoreMigrationPolicy *)&v3 dealloc];
 }
 
-- (NSManagedObjectModel)_sourceModelForVersionHashes:(uint64_t)a3 withMetadata:(void *)a4 inBundles:(void *)a5 outPaths:
+- (NSManagedObjectModel)_sourceModelForVersionHashes:(uint64_t)hashes withMetadata:(void *)metadata inBundles:(void *)bundles outPaths:
 {
   v51 = *MEMORY[0x1E69E9840];
   if (result)
@@ -51,10 +51,10 @@
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v33 = [a4 countByEnumeratingWithState:&v43 objects:v50 count:16];
+    v33 = [metadata countByEnumeratingWithState:&v43 objects:v50 count:16];
     if (v33)
     {
-      obj = a4;
+      obj = metadata;
       v8 = 0;
       v32 = *v44;
 LABEL_4:
@@ -92,9 +92,9 @@ LABEL_4:
               }
 
               v15 = *(*(&v39 + 1) + 8 * i);
-              if (([a5 containsObject:v15] & 1) == 0)
+              if (([bundles containsObject:v15] & 1) == 0)
               {
-                [a5 addObject:v15];
+                [bundles addObject:v15];
                 v38 = 0;
                 if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")] && v38 == 1)
                 {
@@ -151,7 +151,7 @@ LABEL_4:
                   objc_autoreleasePoolPop(v18);
                 }
 
-                v20 = [(NSManagedObjectModel *)v8 isConfiguration:0 compatibleWithStoreMetadata:a3];
+                v20 = [(NSManagedObjectModel *)v8 isConfiguration:0 compatibleWithStoreMetadata:hashes];
                 v21 = [_PFPersistentHistoryModel _hasTombstonesInUserInfo:v8];
                 if (v20)
                 {
@@ -232,7 +232,7 @@ LABEL_60:
                     [(NSManagedObjectModel *)v8 _traverseTombstonesAndMark:?];
                   }
 
-                  if ([(NSManagedObjectModel *)v8 isConfiguration:0 compatibleWithStoreMetadata:a3])
+                  if ([(NSManagedObjectModel *)v8 isConfiguration:0 compatibleWithStoreMetadata:hashes])
                   {
                     v9 = v34;
                     if (+[NSMappingModel migrationDebugLevel]< 2)
@@ -316,10 +316,10 @@ LABEL_66:
   return result;
 }
 
-- (id)sourceModelForStoreAtURL:(id)a3 metadata:(id)a4 error:(id *)a5
+- (id)sourceModelForStoreAtURL:(id)l metadata:(id)metadata error:(id *)error
 {
   v85[1] = *MEMORY[0x1E69E9840];
-  v8 = [a4 objectForKey:@"NSStoreModelVersionHashes"];
+  v8 = [metadata objectForKey:@"NSStoreModelVersionHashes"];
   if (+[NSMappingModel migrationDebugLevel]>= 2)
   {
     v9 = objc_autoreleasePoolPush();
@@ -361,21 +361,21 @@ LABEL_66:
     objc_autoreleasePoolPop(v9);
   }
 
-  v13 = [(NSStoreMigrationPolicy *)self resourceBundles];
-  v14 = v13;
-  if (v13)
+  resourceBundles = [(NSStoreMigrationPolicy *)self resourceBundles];
+  v14 = resourceBundles;
+  if (resourceBundles)
   {
-    v15 = [v13 mutableCopy];
+    array = [resourceBundles mutableCopy];
   }
 
   else
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  v16 = v15;
+  v16 = array;
   v17 = [MEMORY[0x1E695DFA8] set];
-  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:a4 inBundles:v14 outPaths:v17];
+  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:metadata inBundles:v14 outPaths:v17];
   if (v18)
   {
     goto LABEL_17;
@@ -422,13 +422,13 @@ LABEL_66:
     objc_autoreleasePoolPop(v22);
   }
 
-  v26 = [MEMORY[0x1E696AAE8] mainBundle];
-  if (v26)
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  if (mainBundle)
   {
-    v27 = v26;
-    [v16 addObject:v26];
+    v27 = mainBundle;
+    [v16 addObject:mainBundle];
     v85[0] = v27;
-    v18 = -[NSStoreMigrationPolicy _sourceModelForVersionHashes:withMetadata:inBundles:outPaths:](self, v8, a4, [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:1], v17);
+    v18 = -[NSStoreMigrationPolicy _sourceModelForVersionHashes:withMetadata:inBundles:outPaths:](self, v8, metadata, [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:1], v17);
     if (v18)
     {
       goto LABEL_17;
@@ -489,7 +489,7 @@ LABEL_66:
     }
 
     v33 = self ? self->_sourceOptions : 0;
-    v34 = [NSSQLCore cachedModelForPersistentStoreWithURL:a3 options:v33 error:0];
+    v34 = [NSSQLCore cachedModelForPersistentStoreWithURL:l options:v33 error:0];
     if (v34)
     {
       v19 = v34;
@@ -504,9 +504,9 @@ LABEL_66:
             v36 = _PFLogGetLogStream(1);
             if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
             {
-              v37 = [a3 path];
+              path = [l path];
               *buf = 138412290;
-              v84 = v37;
+              v84 = path;
               _os_log_error_impl(&dword_18565F000, v36, OS_LOG_TYPE_ERROR, "CoreData: error:   \t Choosing model from cache table in db at '%@'\n", buf, 0xCu);
             }
           }
@@ -516,23 +516,23 @@ LABEL_66:
             v48 = _PFLogGetLogStream(9);
             if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
-              v49 = [a3 path];
+              path2 = [l path];
               *buf = 138412290;
-              v84 = v49;
+              v84 = path2;
               _os_log_impl(&dword_18565F000, v48, OS_LOG_TYPE_INFO, "CoreData: debug:   \t Choosing model from cache table in db at '%@'\n", buf, 0xCu);
             }
           }
         }
 
         v50 = _pflogging_catastrophic_mode;
-        v51 = [a3 path];
+        path3 = [l path];
         v52 = 9;
         if (v50)
         {
           v52 = 1;
         }
 
-        _NSCoreDataLog_console(v52, "  \t Choosing model from cache table in db at '%@'", v51);
+        _NSCoreDataLog_console(v52, "  \t Choosing model from cache table in db at '%@'", path3);
         objc_autoreleasePoolPop(v35);
       }
 
@@ -581,11 +581,11 @@ LABEL_66:
     objc_autoreleasePoolPop(v38);
   }
 
-  v42 = [MEMORY[0x1E696AAE8] allBundles];
-  [v16 addObjectsFromArray:v42];
+  allBundles = [MEMORY[0x1E696AAE8] allBundles];
+  [v16 addObjectsFromArray:allBundles];
   if (+[NSMappingModel migrationDebugLevel]>= 2)
   {
-    v43 = a3;
+    lCopy = l;
     v44 = objc_autoreleasePoolPush();
     _pflogInitialize(9);
     if (_NSCoreDataIsLogEnabled(9) && _pflogging_enable_oslog >= 1)
@@ -596,7 +596,7 @@ LABEL_66:
         if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v84 = v42;
+          v84 = allBundles;
           _os_log_error_impl(&dword_18565F000, log, OS_LOG_TYPE_ERROR, "CoreData: error: sourceModelForStoreAtURL: allBundles is %@\n", buf, 0xCu);
         }
       }
@@ -607,7 +607,7 @@ LABEL_66:
         if (os_log_type_enabled(loga, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v84 = v42;
+          v84 = allBundles;
           _os_log_impl(&dword_18565F000, loga, OS_LOG_TYPE_INFO, "CoreData: debug: sourceModelForStoreAtURL: allBundles is %@\n", buf, 0xCu);
         }
       }
@@ -623,12 +623,12 @@ LABEL_66:
       v45 = 9;
     }
 
-    _NSCoreDataLog_console(v45, "sourceModelForStoreAtURL: allBundles is %@", v42);
+    _NSCoreDataLog_console(v45, "sourceModelForStoreAtURL: allBundles is %@", allBundles);
     objc_autoreleasePoolPop(v44);
-    a3 = v43;
+    l = lCopy;
   }
 
-  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:a4 inBundles:v42 outPaths:v17];
+  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:metadata inBundles:allBundles outPaths:v17];
   if (v18)
   {
     goto LABEL_17;
@@ -675,10 +675,10 @@ LABEL_66:
     objc_autoreleasePoolPop(v46);
   }
 
-  v55 = [MEMORY[0x1E696AAE8] allFrameworks];
+  allFrameworks = [MEMORY[0x1E696AAE8] allFrameworks];
   if (+[NSMappingModel migrationDebugLevel]>= 2)
   {
-    v56 = a3;
+    lCopy2 = l;
     v57 = objc_autoreleasePoolPush();
     _pflogInitialize(9);
     if (_NSCoreDataIsLogEnabled(9) && _pflogging_enable_oslog >= 1)
@@ -689,7 +689,7 @@ LABEL_66:
         if (os_log_type_enabled(logb, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v84 = v55;
+          v84 = allFrameworks;
           _os_log_error_impl(&dword_18565F000, logb, OS_LOG_TYPE_ERROR, "CoreData: error: sourceModelForStoreAtURL: allFrameworks is %@\n", buf, 0xCu);
         }
       }
@@ -700,7 +700,7 @@ LABEL_66:
         if (os_log_type_enabled(logc, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v84 = v55;
+          v84 = allFrameworks;
           _os_log_impl(&dword_18565F000, logc, OS_LOG_TYPE_INFO, "CoreData: debug: sourceModelForStoreAtURL: allFrameworks is %@\n", buf, 0xCu);
         }
       }
@@ -716,13 +716,13 @@ LABEL_66:
       v58 = 9;
     }
 
-    _NSCoreDataLog_console(v58, "sourceModelForStoreAtURL: allFrameworks is %@", v55);
+    _NSCoreDataLog_console(v58, "sourceModelForStoreAtURL: allFrameworks is %@", allFrameworks);
     objc_autoreleasePoolPop(v57);
-    a3 = v56;
+    l = lCopy2;
   }
 
-  [v16 addObjectsFromArray:v55];
-  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:a4 inBundles:v55 outPaths:v17];
+  [v16 addObjectsFromArray:allFrameworks];
+  v18 = [(NSStoreMigrationPolicy *)self _sourceModelForVersionHashes:v8 withMetadata:metadata inBundles:allFrameworks outPaths:v17];
   if (v18)
   {
 LABEL_17:
@@ -778,7 +778,7 @@ LABEL_17:
   if (v63)
   {
     v64 = v63;
-    logd = a3;
+    logd = l;
     v65 = *v79;
     while (2)
     {
@@ -803,7 +803,7 @@ LABEL_17:
           v19 = -[NSManagedObjectModel initWithContentsOfURL:]([NSManagedObjectModel alloc], "initWithContentsOfURL:", [MEMORY[0x1E695DFF8] fileURLWithPath:v67 isDirectory:0]);
         }
 
-        if ([(NSManagedObjectModel *)v19 _isConfiguration:1 inStyle:a4 compatibleWithStoreMetadata:?])
+        if ([(NSManagedObjectModel *)v19 _isConfiguration:1 inStyle:metadata compatibleWithStoreMetadata:?])
         {
           v70 = v19;
           self->_workingWithSkewedSource = 1;
@@ -826,7 +826,7 @@ LABEL_17:
 
     v19 = 0;
 LABEL_137:
-    a3 = logd;
+    l = logd;
   }
 
   else
@@ -834,9 +834,9 @@ LABEL_137:
     v19 = 0;
   }
 
-  if (a5 && !v19)
+  if (error && !v19)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134130 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", @"Can't find model for source store", @"reason", a3, @"URL", a4, @"metadata", 0)}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134130 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", @"Can't find model for source store", @"reason", l, @"URL", metadata, @"metadata", 0)}];
   }
 
 LABEL_18:
@@ -900,9 +900,9 @@ LABEL_18:
   return result;
 }
 
-- (id)createMigrationManagerForSourceModel:(id)a3 destinationModel:(id)a4 error:(id *)a5
+- (id)createMigrationManagerForSourceModel:(id)model destinationModel:(id)destinationModel error:(id *)error
 {
-  v8 = objc_opt_class();
+  migrationManagerClass = objc_opt_class();
   if (BYTE2(z9dsptsiQ80etb9782fsrs98bfdle88) != 1)
   {
     goto LABEL_14;
@@ -925,52 +925,52 @@ LABEL_18:
     v11 = 0;
   }
 
-  v12 = [(NSDictionary *)v10 objectForKey:v11];
-  if (objc_opt_class() != v12)
+  pointerValue = [(NSDictionary *)v10 objectForKey:v11];
+  if (objc_opt_class() != pointerValue)
   {
-    if (![v12 isNSValue])
+    if (![pointerValue isNSValue])
     {
       goto LABEL_14;
     }
 
-    v12 = [v12 pointerValue];
+    pointerValue = [pointerValue pointerValue];
   }
 
-  if (v12)
+  if (pointerValue)
   {
-    [v12 migrationManagerClass];
+    [pointerValue migrationManagerClass];
     if (objc_opt_respondsToSelector())
     {
-      if ([objc_msgSend(v12 "migrationManagerClass")])
+      if ([objc_msgSend(pointerValue "migrationManagerClass")])
       {
-        v8 = [v12 migrationManagerClass];
+        migrationManagerClass = [pointerValue migrationManagerClass];
       }
     }
   }
 
 LABEL_14:
-  v13 = [[v8 alloc] initWithSourceModel:a3 destinationModel:a4];
+  v13 = [[migrationManagerClass alloc] initWithSourceModel:model destinationModel:destinationModel];
 
   return v13;
 }
 
-- (id)migrateStoreAtURL:(id)a3 withManager:(id)a4 metadata:(id)a5 options:(id)a6 error:(id *)a7
+- (id)migrateStoreAtURL:(id)l withManager:(id)manager metadata:(id)metadata options:(id)options error:(id *)error
 {
   if (self)
   {
-    v11 = self;
+    selfCopy = self;
     v12 = *(self + 8);
     v13 = *(self + 9);
     v14 = [+[NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:](NSStoreMigrationPolicy *(self + 4))];
-    if (*(v11 + 14))
+    if (*(selfCopy + 14))
     {
       [v14 setValue:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSIgnorePersistentStoreVersioningOption"}];
     }
 
-    [v14 setValue:objc_msgSend(*(v11 + 1) forKey:{"codableAdapterRegistry"), @"NSPersistentStoreCoordinatorCodableAdapterFactoryKey"}];
-    if (a4)
+    [v14 setValue:objc_msgSend(*(selfCopy + 1) forKey:{"codableAdapterRegistry"), @"NSPersistentStoreCoordinatorCodableAdapterFactoryKey"}];
+    if (manager)
     {
-      if (*(v11 + 120))
+      if (*(selfCopy + 120))
       {
         v15 = 8;
       }
@@ -980,29 +980,29 @@ LABEL_14:
         v15 = 0;
       }
 
-      *(a4 + 24) = *(a4 + 24) & 0xFFFFFFF7 | v15;
-      v16 = *(v11 + 16);
-      v17 = *(a4 + 9);
+      *(manager + 24) = *(manager + 24) & 0xFFFFFFF7 | v15;
+      v16 = *(selfCopy + 16);
+      v17 = *(manager + 9);
       if (v17 != v16)
       {
 
-        *(a4 + 9) = 0;
-        *(a4 + 9) = [v16 copy];
+        *(manager + 9) = 0;
+        *(manager + 9) = [v16 copy];
       }
 
-      v18 = *(v11 + 17);
-      v19 = *(a4 + 10);
+      v18 = *(selfCopy + 17);
+      v19 = *(manager + 10);
       if (v19 != v18)
       {
 
-        *(a4 + 10) = 0;
-        *(a4 + 10) = [v18 copy];
+        *(manager + 10) = 0;
+        *(manager + 10) = [v18 copy];
       }
     }
 
-    if ([a4 migrateStoreFromURL:a3 type:objc_msgSend(*(v11 + 6) options:"valueForKey:" withMappingModel:@"NSStoreType" toDestinationURL:v14 destinationType:*(v11 + 7) destinationOptions:v12 error:{v13, +[NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:](NSStoreMigrationPolicy, a6), a7}])
+    if ([manager migrateStoreFromURL:l type:objc_msgSend(*(selfCopy + 6) options:"valueForKey:" withMappingModel:@"NSStoreType" toDestinationURL:v14 destinationType:*(selfCopy + 7) destinationOptions:v12 error:{v13, +[NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:](NSStoreMigrationPolicy, options), error}])
     {
-      return *(v11 + 8);
+      return *(selfCopy + 8);
     }
 
     else
@@ -1014,7 +1014,7 @@ LABEL_14:
   return self;
 }
 
-+ (id)migrationStoreOptionsFromStoreOptions:(uint64_t)a1
++ (id)migrationStoreOptionsFromStoreOptions:(uint64_t)options
 {
   v8[2] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -1039,7 +1039,7 @@ LABEL_14:
   return result;
 }
 
-- (void)setPersistentStoreCoordinator:(void *)a3 sourceURL:(void *)a4 configuration:(void *)a5 metadata:(void *)a6 options:
+- (void)setPersistentStoreCoordinator:(void *)coordinator sourceURL:(void *)l configuration:(void *)configuration metadata:(void *)metadata options:
 {
   if (result)
   {
@@ -1053,34 +1053,34 @@ LABEL_14:
     }
 
     v13 = v11[2];
-    if (v13 != a3)
+    if (v13 != coordinator)
     {
 
-      result = a3;
+      result = coordinator;
       v11[2] = result;
     }
 
     v14 = v11[3];
-    if (v14 != a4)
+    if (v14 != l)
     {
 
-      result = a4;
+      result = l;
       v11[3] = result;
     }
 
     v15 = v11[6];
-    if (v15 != a5)
+    if (v15 != configuration)
     {
 
-      result = a5;
+      result = configuration;
       v11[6] = result;
     }
 
     v16 = v11[4];
-    if (v16 != a6)
+    if (v16 != metadata)
     {
 
-      result = a6;
+      result = metadata;
       v11[4] = result;
     }
   }
@@ -1088,37 +1088,37 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)setMigrationManager:(uint64_t)a1
+- (uint64_t)setMigrationManager:(uint64_t)manager
 {
-  result = [*(a1 + 96) isEqual:a2];
+  result = [*(manager + 96) isEqual:a2];
   if ((result & 1) == 0)
   {
 
     result = a2;
-    *(a1 + 96) = result;
+    *(manager + 96) = result;
   }
 
   return result;
 }
 
-+ (id)destinationURLForMigrationSourceURL:(id)a3 createDocumentReplacementDirectory:(BOOL)a4 error:(id *)a5
++ (id)destinationURLForMigrationSourceURL:(id)l createDocumentReplacementDirectory:(BOOL)directory error:(id *)error
 {
-  v6 = a4;
-  v8 = [a3 path];
-  v9 = [v8 lastPathComponent];
-  if (v6)
+  directoryCopy = directory;
+  path = [l path];
+  lastPathComponent = [path lastPathComponent];
+  if (directoryCopy)
   {
     result = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
     if (result)
     {
 
-      return [result URLByAppendingPathComponent:v9];
+      return [result URLByAppendingPathComponent:lastPathComponent];
     }
   }
 
   else
   {
-    v11 = [objc_msgSend(v8 "stringByDeletingLastPathComponent")];
+    v11 = [objc_msgSend(path "stringByDeletingLastPathComponent")];
     v12 = MEMORY[0x1E695DFF8];
 
     return [v12 fileURLWithPath:v11 isDirectory:0];
@@ -1127,20 +1127,20 @@ LABEL_14:
   return result;
 }
 
-- (uint64_t)_gatherDataAndPerformMigration:(uint64_t)a1
+- (uint64_t)_gatherDataAndPerformMigration:(uint64_t)migration
 {
-  v2 = a1;
+  migrationCopy = migration;
   v71 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (migration)
   {
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
     v61 = [(_PFBackgroundRuntimeVoucher *)_PFRunningBoardBackgroundMigrationVoucher _beginPowerAssertionNamed:@"CoreData: Schema migration (policy)"];
-    v4 = [*(v2 + 8) managedObjectModel];
+    managedObjectModel = [*(migrationCopy + 8) managedObjectModel];
     v5 = 0;
-    v6 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+    v6 = [managedObjectModel countByEnumeratingWithState:&v63 objects:v70 count:16];
     if (v6)
     {
       v7 = *v64;
@@ -1150,39 +1150,39 @@ LABEL_14:
         {
           if (*v64 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(managedObjectModel);
           }
 
           v5 |= [(NSEntityDescription *)*(*(&v63 + 1) + 8 * i) _hasAttributesWithExternalDataReferences];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+        v6 = [managedObjectModel countByEnumeratingWithState:&v63 objects:v70 count:16];
       }
 
       while (v6);
     }
 
-    v9 = [*(v2 + 16) path];
-    v10 = [v9 pathExtension];
-    v11 = v10;
-    if (v10 && ![v10 isEqualToString:&stru_1EF3F1768])
+    path = [*(migrationCopy + 16) path];
+    pathExtension = [path pathExtension];
+    v11 = pathExtension;
+    if (pathExtension && ![pathExtension isEqualToString:&stru_1EF3F1768])
     {
-      v12 = [objc_msgSend(objc_msgSend(v9 "stringByDeletingPathExtension")];
+      v12 = [objc_msgSend(objc_msgSend(path "stringByDeletingPathExtension")];
     }
 
     else
     {
-      v12 = [v9 stringByAppendingString:@"~"];
+      v12 = [path stringByAppendingString:@"~"];
     }
 
     v13 = v12;
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     if (v5)
     {
       v15 = [objc_msgSend(-[NSDictionary valueForKey:](+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator "registeredStoreTypes")];
-      if ([v14 fileExistsAtPath:{objc_msgSend(v15, "path")}])
+      if ([defaultManager fileExistsAtPath:{objc_msgSend(v15, "path")}])
       {
-        if (([v14 removeItemAtURL:v15 error:0] & 1) == 0)
+        if (([defaultManager removeItemAtURL:v15 error:0] & 1) == 0)
         {
           if (!a2)
           {
@@ -1197,15 +1197,15 @@ LABEL_14:
       }
     }
 
-    v16 = [v2 sourceModelForStoreAtURL:*(v2 + 16) metadata:*(v2 + 48) error:a2];
+    v16 = [migrationCopy sourceModelForStoreAtURL:*(migrationCopy + 16) metadata:*(migrationCopy + 48) error:a2];
     [v16 _setIsEditable:0];
-    v17 = [*(v2 + 40) isEqual:v16];
-    v18 = *(v2 + 40);
+    v17 = [*(migrationCopy + 40) isEqual:v16];
+    v18 = *(migrationCopy + 40);
     if ((v17 & 1) == 0)
     {
 
       v18 = v16;
-      *(v2 + 40) = v18;
+      *(migrationCopy + 40) = v18;
     }
 
     if (!v18)
@@ -1213,27 +1213,27 @@ LABEL_14:
       goto LABEL_102;
     }
 
-    v19 = [*(v2 + 8) managedObjectModel];
-    v20 = [(NSStoreMigrationPolicy *)v2 resourceBundles];
-    v21 = [*(v2 + 32) objectForKey:@"NSInferMappingModelAutomaticallyOption"];
+    managedObjectModel2 = [*(migrationCopy + 8) managedObjectModel];
+    resourceBundles = [(NSStoreMigrationPolicy *)migrationCopy resourceBundles];
+    v21 = [*(migrationCopy + 32) objectForKey:@"NSInferMappingModelAutomaticallyOption"];
     v22 = v21;
     if (v21 && [v21 isNSString] && objc_msgSend(@"force", "isEqualToString:", v22))
     {
       v22 = [MEMORY[0x1E696AD98] numberWithBool:1];
-      [v20 count];
+      [resourceBundles count];
       v23 = 0;
       v24 = 1;
     }
 
     else
     {
-      v23 = [NSMappingModel _mappingModelFromBundles:v20 forSourceModel:v18 destinationModel:v19];
+      v23 = [NSMappingModel _mappingModelFromBundles:resourceBundles forSourceModel:v18 destinationModel:managedObjectModel2];
       if (v23)
       {
         goto LABEL_51;
       }
 
-      if ([v20 count])
+      if ([resourceBundles count])
       {
         v24 = 0;
         v23 = 0;
@@ -1241,15 +1241,15 @@ LABEL_14:
 
       else
       {
-        v23 = [NSMappingModel _mappingModelFromBundles:v18 forSourceModel:v19 destinationModel:?];
+        v23 = [NSMappingModel _mappingModelFromBundles:v18 forSourceModel:managedObjectModel2 destinationModel:?];
         v24 = 0;
       }
     }
 
-    if ([v22 BOOLValue] && (*buf = 0, (v23 = +[NSMappingModel inferredMappingModelForSourceModel:destinationModel:error:](NSMappingModel, "inferredMappingModelForSourceModel:destinationModel:error:", v18, v19, buf)) == 0))
+    if ([v22 BOOLValue] && (*buf = 0, (v23 = +[NSMappingModel inferredMappingModelForSourceModel:destinationModel:error:](NSMappingModel, "inferredMappingModelForSourceModel:destinationModel:error:", v18, managedObjectModel2, buf)) == 0))
     {
       v30 = MEMORY[0x1E696ABC0];
-      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Can't find or automatically infer mapping model for migration", @"reason", v18, @"sourceModel", v19, @"destinationModel", *buf, *MEMORY[0x1E696AA08], 0}];
+      v31 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Can't find or automatically infer mapping model for migration", @"reason", v18, @"sourceModel", managedObjectModel2, @"destinationModel", *buf, *MEMORY[0x1E696AA08], 0}];
       v28 = [v30 errorWithDomain:*MEMORY[0x1E696A250] code:134140 userInfo:v31];
     }
 
@@ -1262,7 +1262,7 @@ LABEL_14:
       }
     }
 
-    if ([v20 count])
+    if ([resourceBundles count])
     {
       v29 = v24;
     }
@@ -1279,13 +1279,13 @@ LABEL_14:
 
     else
     {
-      v23 = [NSMappingModel _mappingModelFromBundles:v18 forSourceModel:v19 destinationModel:?];
+      v23 = [NSMappingModel _mappingModelFromBundles:v18 forSourceModel:managedObjectModel2 destinationModel:?];
     }
 
     if (!(v23 | v28))
     {
       v32 = MEMORY[0x1E696ABC0];
-      v33 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Can't find mapping model for migration", @"reason", v18, @"sourceModel", v19, @"destinationModel", 0}];
+      v33 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Can't find mapping model for migration", @"reason", v18, @"sourceModel", managedObjectModel2, @"destinationModel", 0}];
       v28 = [v32 errorWithDomain:*MEMORY[0x1E696A250] code:134140 userInfo:v33];
       goto LABEL_43;
     }
@@ -1330,13 +1330,13 @@ LABEL_43:
     }
 
 LABEL_51:
-    v36 = [*(v2 + 56) isEqual:v23];
-    v37 = *(v2 + 56);
+    v36 = [*(migrationCopy + 56) isEqual:v23];
+    v37 = *(migrationCopy + 56);
     if ((v36 & 1) == 0)
     {
 
       v37 = v23;
-      *(v2 + 56) = v37;
+      *(migrationCopy + 56) = v37;
     }
 
     if (!v37)
@@ -1344,14 +1344,14 @@ LABEL_51:
       goto LABEL_102;
     }
 
-    v38 = *(v2 + 32);
-    v39 = [*(v2 + 88) isEqual:v38];
-    v40 = *(v2 + 88);
+    v38 = *(migrationCopy + 32);
+    v39 = [*(migrationCopy + 88) isEqual:v38];
+    v40 = *(migrationCopy + 88);
     if ((v39 & 1) == 0)
     {
 
       v40 = v38;
-      *(v2 + 88) = v40;
+      *(migrationCopy + 88) = v40;
     }
 
     if (!v40)
@@ -1359,14 +1359,14 @@ LABEL_51:
       goto LABEL_102;
     }
 
-    v41 = [*(v2 + 48) valueForKey:@"NSStoreType"];
-    v42 = [*(v2 + 72) isEqual:v41];
-    v43 = *(v2 + 72);
+    v41 = [*(migrationCopy + 48) valueForKey:@"NSStoreType"];
+    v42 = [*(migrationCopy + 72) isEqual:v41];
+    v43 = *(migrationCopy + 72);
     if ((v42 & 1) == 0)
     {
 
       v43 = v41;
-      *(v2 + 72) = v43;
+      *(migrationCopy + 72) = v43;
     }
 
     if (!v43)
@@ -1374,25 +1374,25 @@ LABEL_51:
       goto LABEL_102;
     }
 
-    v44 = *(v2 + 24);
-    if (([*(v2 + 80) isEqual:v44] & 1) == 0)
+    v44 = *(migrationCopy + 24);
+    if (([*(migrationCopy + 80) isEqual:v44] & 1) == 0)
     {
 
-      *(v2 + 80) = v44;
+      *(migrationCopy + 80) = v44;
     }
 
-    v45 = [v2 createMigrationManagerForSourceModel:*(v2 + 40) destinationModel:objc_msgSend(*(v2 + 8) error:{"managedObjectModel"), a2}];
-    [v45 setDestinationConfigurationForCloudKitValidation:*(v2 + 136)];
-    [(NSStoreMigrationPolicy *)v2 setMigrationManager:v45];
-    if (!*(v2 + 96))
+    v45 = [migrationCopy createMigrationManagerForSourceModel:*(migrationCopy + 40) destinationModel:objc_msgSend(*(migrationCopy + 8) error:{"managedObjectModel"), a2}];
+    [v45 setDestinationConfigurationForCloudKitValidation:*(migrationCopy + 136)];
+    [(NSStoreMigrationPolicy *)migrationCopy setMigrationManager:v45];
+    if (!*(migrationCopy + 96))
     {
       goto LABEL_102;
     }
 
-    v46 = [objc_opt_class() _canMigrateWithMappingModel:*(v2 + 56)];
+    v46 = [objc_opt_class() _canMigrateWithMappingModel:*(migrationCopy + 56)];
     if (v46)
     {
-      v47 = *(v2 + 16);
+      v47 = *(migrationCopy + 16);
       if (!v47)
       {
         goto LABEL_102;
@@ -1401,19 +1401,19 @@ LABEL_51:
       goto LABEL_70;
     }
 
-    v47 = [objc_opt_class() destinationURLForMigrationSourceURL:*(v2 + 16) createDocumentReplacementDirectory:0 error:a2];
+    v47 = [objc_opt_class() destinationURLForMigrationSourceURL:*(migrationCopy + 16) createDocumentReplacementDirectory:0 error:a2];
     if (!v47)
     {
       goto LABEL_102;
     }
 
-    if (![*(v2 + 16) isEqual:v47])
+    if (![*(migrationCopy + 16) isEqual:v47])
     {
 LABEL_70:
-      if (([*(v2 + 64) isEqual:v47] & 1) == 0)
+      if (([*(migrationCopy + 64) isEqual:v47] & 1) == 0)
       {
 
-        *(v2 + 64) = v47;
+        *(migrationCopy + 64) = v47;
       }
 
       if (v5)
@@ -1421,24 +1421,24 @@ LABEL_70:
         [objc_msgSend(-[NSDictionary valueForKey:](+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator "registeredStoreTypes")];
       }
 
-      v50 = [*(v2 + 88) mutableCopy];
+      v50 = [*(migrationCopy + 88) mutableCopy];
       [v50 setObject:MEMORY[0x1E695E118] forKey:@"NSPersistentStoreUnlinkDestroyOption"];
       [v50 setObject:MEMORY[0x1E695E118] forKey:@"NSPersistentStoreForceDestroyOption"];
       if ((v46 & 1) != 0 || ![objc_msgSend(v47 "path")])
       {
 LABEL_84:
-        if (![v2 migrateStoreAtURL:*(v2 + 16) withManager:*(v2 + 96) metadata:*(v2 + 48) options:*(v2 + 88) error:a2])
+        if (![migrationCopy migrateStoreAtURL:*(migrationCopy + 16) withManager:*(migrationCopy + 96) metadata:*(migrationCopy + 48) options:*(migrationCopy + 88) error:a2])
         {
-          if (([*(v2 + 16) isEqual:v47] & 1) == 0 && objc_msgSend(objc_msgSend(v47, "path"), "hasSuffix:", @".migrationdestination_41b5a6b5c6e848c462a8480cd24caef3"))
+          if (([*(migrationCopy + 16) isEqual:v47] & 1) == 0 && objc_msgSend(objc_msgSend(v47, "path"), "hasSuffix:", @".migrationdestination_41b5a6b5c6e848c462a8480cd24caef3"))
           {
             if (+[NSMappingModel migrationDebugLevel]< 1)
             {
-              [*(v2 + 8) _destroyPersistentStoreAtURL:v47 withType:*(v2 + 72) options:v50 error:0];
-              [*(v2 + 8) removePersistentStore:objc_msgSend(*(v2 + 8) error:{"persistentStoreForURL:", v47), 0}];
-              [v14 removeItemAtPath:objc_msgSend(v47 error:{"path"), 0}];
-              [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-shm", 0}];
-              [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-journal", 0}];
-              [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-wal", 0}];
+              [*(migrationCopy + 8) _destroyPersistentStoreAtURL:v47 withType:*(migrationCopy + 72) options:v50 error:0];
+              [*(migrationCopy + 8) removePersistentStore:objc_msgSend(*(migrationCopy + 8) error:{"persistentStoreForURL:", v47), 0}];
+              [defaultManager removeItemAtPath:objc_msgSend(v47 error:{"path"), 0}];
+              [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-shm", 0}];
+              [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-journal", 0}];
+              [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-wal", 0}];
             }
 
             else
@@ -1487,31 +1487,31 @@ LABEL_84:
           goto LABEL_102;
         }
 
-        [(NSStoreMigrationPolicy *)v2 setMigrationManager:?];
+        [(NSStoreMigrationPolicy *)migrationCopy setMigrationManager:?];
         v53 = [NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:?];
-        v54 = [+[NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:](NSStoreMigrationPolicy *(v2 + 32))];
+        v54 = [+[NSStoreMigrationPolicy migrationStoreOptionsFromStoreOptions:](NSStoreMigrationPolicy *(migrationCopy + 32))];
         [v54 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), @"NSPersistentStoreUnlinkDestroyOption"}];
         [v54 setObject:MEMORY[0x1E695E118] forKey:@"NSPersistentStoreForceDestroyOption"];
-        if (v46 & 1) != 0 || ([*(v2 + 8) _replacePersistentStoreAtURL:*(v2 + 16) destinationOptions:v53 withPersistentStoreFromURL:v47 sourceOptions:v54 storeType:*(v2 + 72) error:a2])
+        if (v46 & 1) != 0 || ([*(migrationCopy + 8) _replacePersistentStoreAtURL:*(migrationCopy + 16) destinationOptions:v53 withPersistentStoreFromURL:v47 sourceOptions:v54 storeType:*(migrationCopy + 72) error:a2])
         {
-          v2 = [*(v2 + 8) addPersistentStoreWithType:*(v2 + 72) configuration:*(v2 + 80) URL:*(v2 + 16) options:*(v2 + 88) error:a2];
+          migrationCopy = [*(migrationCopy + 8) addPersistentStoreWithType:*(migrationCopy + 72) configuration:*(migrationCopy + 80) URL:*(migrationCopy + 16) options:*(migrationCopy + 88) error:a2];
           goto LABEL_103;
         }
 
 LABEL_102:
-        v2 = 0;
+        migrationCopy = 0;
         goto LABEL_103;
       }
 
       v62 = 0;
-      if ([*(v2 + 8) _destroyPersistentStoreAtURL:v47 withType:*(v2 + 72) options:v50 error:&v62])
+      if ([*(migrationCopy + 8) _destroyPersistentStoreAtURL:v47 withType:*(migrationCopy + 72) options:v50 error:&v62])
       {
 LABEL_83:
-        [*(v2 + 8) removePersistentStore:objc_msgSend(*(v2 + 8) error:{"persistentStoreForURL:", v47), 0}];
-        [v14 removeItemAtPath:objc_msgSend(v47 error:{"path"), 0}];
-        [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-shm", 0}];
-        [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-journal", 0}];
-        [v14 removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-wal", 0}];
+        [*(migrationCopy + 8) removePersistentStore:objc_msgSend(*(migrationCopy + 8) error:{"persistentStoreForURL:", v47), 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(v47 error:{"path"), 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-shm", 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-journal", 0}];
+        [defaultManager removeItemAtPath:objc_msgSend(objc_msgSend(v47 error:{"path"), "stringByAppendingString:", @"-wal", 0}];
         goto LABEL_84;
       }
 
@@ -1553,17 +1553,17 @@ LABEL_105:
     }
 
     v48 = MEMORY[0x1E696ABC0];
-    v49 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Migration source and destination URLs must be different", @"reason", *(v2 + 16), @"sourceURL", v47, @"destinationURL", 0}];
+    v49 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Migration source and destination URLs must be different", @"reason", *(migrationCopy + 16), @"sourceURL", v47, @"destinationURL", 0}];
     v27 = [v48 errorWithDomain:*MEMORY[0x1E696A250] code:134110 userInfo:v49];
 LABEL_28:
-    v2 = 0;
+    migrationCopy = 0;
     *a2 = v27;
 LABEL_103:
     [(_PFBackgroundRuntimeVoucher *)_PFRunningBoardBackgroundMigrationVoucher _endPowerAssertionWithVoucher:v61];
   }
 
   v59 = *MEMORY[0x1E69E9840];
-  return v2;
+  return migrationCopy;
 }
 
 @end

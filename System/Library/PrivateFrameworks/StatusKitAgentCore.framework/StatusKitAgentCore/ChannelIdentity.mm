@@ -1,14 +1,14 @@
 @interface ChannelIdentity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChannelOwnershipType:(id)a3;
+- (int)StringAsChannelOwnershipType:(id)type;
 - (int)channelOwnershipType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ChannelIdentity
@@ -26,17 +26,17 @@
   }
 }
 
-- (int)StringAsChannelOwnershipType:(id)a3
+- (int)StringAsChannelOwnershipType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SELF_USER_OWNERSHIP"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"SELF_USER_OWNERSHIP"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"SHARED_OWNERSHIP"];
+    v4 = [typeCopy isEqualToString:@"SHARED_OWNERSHIP"];
   }
 
   return v4;
@@ -48,20 +48,20 @@
   v8.receiver = self;
   v8.super_class = ChannelIdentity;
   v4 = [(ChannelIdentity *)&v8 description];
-  v5 = [(ChannelIdentity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ChannelIdentity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   channelTopic = self->_channelTopic;
   if (channelTopic)
   {
-    [v3 setObject:channelTopic forKey:@"channel_topic"];
+    [dictionary setObject:channelTopic forKey:@"channel_topic"];
   }
 
   channelId = self->_channelId;
@@ -103,77 +103,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_channelTopic)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelId)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_channelToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     channelOwnershipType = self->_channelOwnershipType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_channelTopic)
   {
-    [v4 setChannelTopic:?];
-    v4 = v5;
+    [toCopy setChannelTopic:?];
+    toCopy = v5;
   }
 
   if (self->_channelId)
   {
     [v5 setChannelId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_channelToken)
   {
     [v5 setChannelToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_channelOwnershipType;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_channelOwnershipType;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_channelTopic copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_channelTopic copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_channelId copyWithZone:a3];
+  v8 = [(NSData *)self->_channelId copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSData *)self->_channelToken copyWithZone:a3];
+  v10 = [(NSData *)self->_channelToken copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -186,16 +186,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   channelTopic = self->_channelTopic;
-  if (channelTopic | *(v4 + 4))
+  if (channelTopic | *(equalCopy + 4))
   {
     if (![(NSString *)channelTopic isEqual:?])
     {
@@ -204,7 +204,7 @@
   }
 
   channelId = self->_channelId;
-  if (channelId | *(v4 + 1))
+  if (channelId | *(equalCopy + 1))
   {
     if (![(NSData *)channelId isEqual:?])
     {
@@ -213,7 +213,7 @@
   }
 
   channelToken = self->_channelToken;
-  if (channelToken | *(v4 + 3))
+  if (channelToken | *(equalCopy + 3))
   {
     if (![(NSData *)channelToken isEqual:?])
     {
@@ -221,10 +221,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_channelOwnershipType == *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_channelOwnershipType == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -257,31 +257,31 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(ChannelIdentity *)self setChannelTopic:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ChannelIdentity *)self setChannelId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ChannelIdentity *)self setChannelToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[10])
+  if (fromCopy[10])
   {
-    self->_channelOwnershipType = v4[4];
+    self->_channelOwnershipType = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

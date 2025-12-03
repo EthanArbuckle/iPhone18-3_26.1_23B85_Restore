@@ -1,10 +1,10 @@
 @interface PlaybackController.VolumeController_Catalyst
-- (void)updateOutputContext:(id)a3;
+- (void)updateOutputContext:(id)context;
 @end
 
 @implementation PlaybackController.VolumeController_Catalyst
 
-- (void)updateOutputContext:(id)a3
+- (void)updateOutputContext:(id)context
 {
   v3 = sub_59474();
   v4 = *(v3 - 8);

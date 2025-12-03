@@ -1,21 +1,21 @@
 @interface SFUCryptoUtils
-+ (BOOL)checkKey:(id)a3 againstPassphraseVerifier:(id)a4;
-+ (id)decodePassphraseHint:(id)a3;
-+ (id)generatePassphraseVerifierForKey:(id)a3 verifierVersion:(unsigned __int16)a4;
++ (BOOL)checkKey:(id)key againstPassphraseVerifier:(id)verifier;
++ (id)decodePassphraseHint:(id)hint;
++ (id)generatePassphraseVerifierForKey:(id)key verifierVersion:(unsigned __int16)version;
 + (id)generateRandomSalt;
-+ (id)generateRandomSaltWithLength:(unint64_t)a3;
-+ (id)hashForPassphrase:(id)a3 withSalt:(id)a4;
-+ (id)newBufferedInputStreamForDecryptingFile:(id)a3 key:(id)a4 isDeflated:(BOOL)a5 zipStream:(id *)a6;
-+ (id)newBufferedInputStreamForDecryptingZippedBundle:(id)a3 key:(id)a4 zipArchive:(id)a5 isDeflated:(BOOL)a6 zipStream:(id *)a7;
++ (id)generateRandomSaltWithLength:(unint64_t)length;
++ (id)hashForPassphrase:(id)passphrase withSalt:(id)salt;
++ (id)newBufferedInputStreamForDecryptingFile:(id)file key:(id)key isDeflated:(BOOL)deflated zipStream:(id *)stream;
++ (id)newBufferedInputStreamForDecryptingZippedBundle:(id)bundle key:(id)key zipArchive:(id)archive isDeflated:(BOOL)deflated zipStream:(id *)stream;
 + (id)saltForSageFiles;
-+ (id)saltFromVerifier:(id)a3 saltLength:(unint64_t)a4;
-+ (id)sha1HashFromStorage:(id)a3;
-+ (id)sha256HashFromData:(id)a3;
-+ (id)sha256HashFromDataArray:(id)a3;
-+ (id)sha256HashFromStorage:(id)a3;
-+ (id)sha256HashFromString:(id)a3;
-+ (id)sha256HashFromStrings:(id)a3;
-+ (unsigned)iterationCountFromPassphraseVerifier:(id)a3;
++ (id)saltFromVerifier:(id)verifier saltLength:(unint64_t)length;
++ (id)sha1HashFromStorage:(id)storage;
++ (id)sha256HashFromData:(id)data;
++ (id)sha256HashFromDataArray:(id)array;
++ (id)sha256HashFromStorage:(id)storage;
++ (id)sha256HashFromString:(id)string;
++ (id)sha256HashFromStrings:(id)strings;
++ (unsigned)iterationCountFromPassphraseVerifier:(id)verifier;
 @end
 
 @implementation SFUCryptoUtils
@@ -27,10 +27,10 @@
   return [v2 generateRandomSaltWithLength:32];
 }
 
-+ (id)generateRandomSaltWithLength:(unint64_t)a3
++ (id)generateRandomSaltWithLength:(unint64_t)length
 {
-  v4 = malloc_type_calloc(a3, 1uLL, 0x100004077774924uLL);
-  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], a3, v4))
+  v4 = malloc_type_calloc(length, 1uLL, 0x100004077774924uLL);
+  if (SecRandomCopyBytes(*MEMORY[0x277CDC540], length, v4))
   {
     free(v4);
     return 0;
@@ -40,27 +40,27 @@
   {
     v6 = MEMORY[0x277CBEA90];
 
-    return [v6 dataWithBytesNoCopy:v4 length:a3 freeWhenDone:1];
+    return [v6 dataWithBytesNoCopy:v4 length:length freeWhenDone:1];
   }
 }
 
-+ (id)hashForPassphrase:(id)a3 withSalt:(id)a4
++ (id)hashForPassphrase:(id)passphrase withSalt:(id)salt
 {
-  if (!a3 || !a4)
+  if (!passphrase || !salt)
   {
     return 0;
   }
 
-  [objc_msgSend(MEMORY[0x277CBEB28] dataWithData:{a4), "appendData:", objc_msgSend(a3, "dataUsingEncoding:", 4)}];
+  [objc_msgSend(MEMORY[0x277CBEB28] dataWithData:{salt), "appendData:", objc_msgSend(passphrase, "dataUsingEncoding:", 4)}];
 
-  return MEMORY[0x2821F9670](a1, sel_sha256HashFromData_);
+  return MEMORY[0x2821F9670](self, sel_sha256HashFromData_);
 }
 
-+ (id)generatePassphraseVerifierForKey:(id)a3 verifierVersion:(unsigned __int16)a4
++ (id)generatePassphraseVerifierForKey:(id)key verifierVersion:(unsigned __int16)version
 {
-  v4 = a4;
+  versionCopy = version;
   v33 = *MEMORY[0x277D85DE8];
-  if ([a3 keyType])
+  if ([key keyType])
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SFUCryptoUtils generatePassphraseVerifierForKey:verifierVersion:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v7, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUCryptoUtils.mm"], 91, 0, "Unsupported key type");
@@ -70,21 +70,21 @@
 
   else
   {
-    v8 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     v30 = 0;
-    v9 = [[SFUMemoryOutputStream alloc] initWithData:v8];
-    v29 = v4;
+    v9 = [[SFUMemoryOutputStream alloc] initWithData:data];
+    v29 = versionCopy;
     v28 = 1;
     [(SFUMemoryOutputStream *)v9 writeBuffer:&v29 size:2];
     [(SFUMemoryOutputStream *)v9 writeBuffer:&v28 size:2];
-    v27 = [a3 iterationCount];
-    [(SFUMemoryOutputStream *)v9 writeBuffer:&v27 size:4];
-    if (v4 >= 2)
+    iterationCount = [key iterationCount];
+    [(SFUMemoryOutputStream *)v9 writeBuffer:&iterationCount size:4];
+    if (versionCopy >= 2)
     {
-      -[SFUMemoryOutputStream writeBuffer:size:](v9, "writeBuffer:size:", [objc_msgSend(a3 "saltData")], objc_msgSend(objc_msgSend(a3, "saltData"), "length"));
+      -[SFUMemoryOutputStream writeBuffer:size:](v9, "writeBuffer:size:", [objc_msgSend(key "saltData")], objc_msgSend(objc_msgSend(key, "saltData"), "length"));
     }
 
-    v10 = [a1 ivLengthForKey:a3];
+    v10 = [self ivLengthForKey:key];
     MEMORY[0x28223BE20]();
     v12 = &v25 - v11;
     v13 = *MEMORY[0x277CDC540];
@@ -105,14 +105,14 @@
       v9 = 0;
     }
 
-    v16 = [[SFUCryptor alloc] initWithKey:a3 operation:0 iv:v12 ivLength:v10 usePKCS7Padding:v4 == 1];
+    v16 = [[SFUCryptor alloc] initWithKey:key operation:0 iv:v12 ivLength:v10 usePKCS7Padding:versionCopy == 1];
     if (![(SFUCryptor *)v16 cryptDataFromBuffer:bytes length:32 toStream:v9 finished:0 error:&v30])
     {
 
       v17 = MEMORY[0x277CBEAD8];
       v18 = *v15;
-      v19 = [v30 localizedDescription];
-      [v17 raise:v18 format:{@"SFUCryptor failed. %@: %@", v19, objc_msgSend(v30, "localizedFailureReason")}];
+      localizedDescription = [v30 localizedDescription];
+      [v17 raise:v18 format:{@"SFUCryptor failed. %@: %@", localizedDescription, objc_msgSend(v30, "localizedFailureReason")}];
       v9 = 0;
       v16 = 0;
     }
@@ -124,8 +124,8 @@
 
         v20 = MEMORY[0x277CBEAD8];
         v21 = *v15;
-        v22 = [v30 localizedDescription];
-        [v20 raise:v21 format:{@"SFUCryptor failed. %@: %@", v22, objc_msgSend(v30, "localizedFailureReason")}];
+        localizedDescription2 = [v30 localizedDescription];
+        [v20 raise:v21 format:{@"SFUCryptor failed. %@: %@", localizedDescription2, objc_msgSend(v30, "localizedFailureReason")}];
         v16 = 0;
         v9 = 0;
       }
@@ -136,17 +136,17 @@
       v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SFUCryptoUtils generatePassphraseVerifierForKey:verifierVersion:]"];
       +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v23, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUCryptoUtils.mm"], 157, 0, "CC_SHA256 failed");
       +[TSUAssertionHandler logBacktraceThrottled];
-      v8 = 0;
+      data = 0;
     }
   }
 
-  return v8;
+  return data;
 }
 
-+ (unsigned)iterationCountFromPassphraseVerifier:(id)a3
++ (unsigned)iterationCountFromPassphraseVerifier:(id)verifier
 {
-  v4 = [[SFUMemoryInputStream alloc] initWithData:a3];
-  if ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:a3])
+  v4 = [[SFUMemoryInputStream alloc] initWithData:verifier];
+  if ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:verifier])
   {
     [(SFUMemoryInputStream *)v4 seekToOffset:4];
     v7 = 0;
@@ -170,39 +170,39 @@
   }
 }
 
-+ (id)saltFromVerifier:(id)a3 saltLength:(unint64_t)a4
++ (id)saltFromVerifier:(id)verifier saltLength:(unint64_t)length
 {
   v13 = *MEMORY[0x277D85DE8];
-  v7 = [[SFUMemoryInputStream alloc] initWithData:a3];
-  if ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:a3])
+  v7 = [[SFUMemoryInputStream alloc] initWithData:verifier];
+  if ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:verifier])
   {
     v12 = 0;
     if ([(SFUMemoryInputStream *)v7 readToBuffer:&v12 size:2]== 2 && v12)
     {
       if (v12 == 1)
       {
-        v8 = [a1 saltForSageFiles];
+        saltForSageFiles = [self saltForSageFiles];
       }
 
       else
       {
         v10 = [(SFUMemoryInputStream *)v7 seekToOffset:8];
         MEMORY[0x28223BE20](v10);
-        if ([(SFUMemoryInputStream *)v7 readToBuffer:&v11[-((a4 + 15) & 0xFFFFFFFFFFFFFFF0)] size:a4]== a4)
+        if ([(SFUMemoryInputStream *)v7 readToBuffer:&v11[-((length + 15) & 0xFFFFFFFFFFFFFFF0)] size:length]== length)
         {
-          v8 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v11[-((a4 + 15) & 0xFFFFFFFFFFFFFFF0)] length:a4];
+          saltForSageFiles = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v11[-((length + 15) & 0xFFFFFFFFFFFFFFF0)] length:length];
         }
 
         else
         {
-          v8 = 0;
+          saltForSageFiles = 0;
         }
       }
     }
 
     else
     {
-      v8 = 0;
+      saltForSageFiles = 0;
     }
   }
 
@@ -212,7 +212,7 @@
     return 0;
   }
 
-  return v8;
+  return saltForSageFiles;
 }
 
 + (id)saltForSageFiles
@@ -222,21 +222,21 @@
   return v2;
 }
 
-+ (BOOL)checkKey:(id)a3 againstPassphraseVerifier:(id)a4
++ (BOOL)checkKey:(id)key againstPassphraseVerifier:(id)verifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v7 = [[SFUMemoryInputStream alloc] initWithData:a4];
+  v7 = [[SFUMemoryInputStream alloc] initWithData:verifier];
   v32 = 0;
-  if (-[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v32, 2) == 2 && (v8 = v32, v31 = 0, -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v31, 2) == 2) && ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:a4] & 1) != 0 && (v30 = 0, -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v30, 4) == 4) && (v9 = v30, v9 == objc_msgSend(a3, "iterationCount")) && (v8 < 2 || (v10 = objc_msgSend(objc_msgSend(a3, "saltData"), "length"), MEMORY[0x28223BE20](v10), -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:") == v10)))
+  if (-[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v32, 2) == 2 && (v8 = v32, v31 = 0, -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v31, 2) == 2) && ([objc_opt_class() isEncryptionVersionAndFormatSupportedInPassphraseVerifier:verifier] & 1) != 0 && (v30 = 0, -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:", &v30, 4) == 4) && (v9 = v30, v9 == objc_msgSend(key, "iterationCount")) && (v8 < 2 || (v10 = objc_msgSend(objc_msgSend(key, "saltData"), "length"), MEMORY[0x28223BE20](v10), -[SFUMemoryInputStream readToBuffer:size:](v7, "readToBuffer:size:") == v10)))
   {
-    v11 = [a1 ivLengthForKey:a3];
+    v11 = [self ivLengthForKey:key];
     v12 = v11;
     v13 = v11;
     MEMORY[0x28223BE20](v11);
     v15 = &v26 - v14;
     if ([(SFUMemoryInputStream *)v7 readToBuffer:&v26 - v14 size:v13]== v12)
     {
-      v16 = [[SFUCryptor alloc] initWithKey:a3 operation:1 iv:v15 ivLength:v13 usePKCS7Padding:v8 == 1];
+      v16 = [[SFUCryptor alloc] initWithKey:key operation:1 iv:v15 ivLength:v13 usePKCS7Padding:v8 == 1];
       v17 = 0;
       v28 = 0;
       v29 = 0;
@@ -284,16 +284,16 @@
   return v21;
 }
 
-+ (id)newBufferedInputStreamForDecryptingFile:(id)a3 key:(id)a4 isDeflated:(BOOL)a5 zipStream:(id *)a6
++ (id)newBufferedInputStreamForDecryptingFile:(id)file key:(id)key isDeflated:(BOOL)deflated zipStream:(id *)stream
 {
-  v7 = a5;
-  v9 = [[SFUFileInputStream alloc] initWithPath:a3 offset:0];
+  deflatedCopy = deflated;
+  v9 = [[SFUFileInputStream alloc] initWithPath:file offset:0];
   if (v9)
   {
     v10 = v9;
-    v11 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:v9 key:a4];
+    v11 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:v9 key:key];
 
-    if (!v7)
+    if (!deflatedCopy)
     {
       if (!v11)
       {
@@ -309,7 +309,7 @@ LABEL_10:
 
   else
   {
-    if (!v7)
+    if (!deflatedCopy)
     {
       return 0;
     }
@@ -322,9 +322,9 @@ LABEL_10:
 
   if (v11)
   {
-    if (a6)
+    if (stream)
     {
-      *a6 = v11;
+      *stream = v11;
     }
 
     goto LABEL_10;
@@ -333,14 +333,14 @@ LABEL_10:
   return 0;
 }
 
-+ (id)newBufferedInputStreamForDecryptingZippedBundle:(id)a3 key:(id)a4 zipArchive:(id)a5 isDeflated:(BOOL)a6 zipStream:(id *)a7
++ (id)newBufferedInputStreamForDecryptingZippedBundle:(id)bundle key:(id)key zipArchive:(id)archive isDeflated:(BOOL)deflated zipStream:(id *)stream
 {
-  v8 = a6;
-  v10 = [a5 entryWithName:a3];
+  deflatedCopy = deflated;
+  v10 = [archive entryWithName:bundle];
   if (v10 && (v11 = [v10 inputStream]) != 0)
   {
-    v12 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:v11 key:a4];
-    if (!v8)
+    v12 = [[SFUCryptoInputStream alloc] initForDecryptionWithInputStream:v11 key:key];
+    if (!deflatedCopy)
     {
       goto LABEL_4;
     }
@@ -349,7 +349,7 @@ LABEL_10:
   else
   {
     v12 = 0;
-    if (!v8)
+    if (!deflatedCopy)
     {
 LABEL_4:
       if (!v12)
@@ -368,9 +368,9 @@ LABEL_11:
 
   if (v13)
   {
-    if (a7)
+    if (stream)
     {
-      *a7 = v13;
+      *stream = v13;
     }
 
     v12 = v13;
@@ -380,12 +380,12 @@ LABEL_11:
   return 0;
 }
 
-+ (id)decodePassphraseHint:(id)a3
++ (id)decodePassphraseHint:(id)hint
 {
-  result = [a3 length];
+  result = [hint length];
   if (result)
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(a3 length:"bytes") encoding:{result, 4}];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(hint length:"bytes") encoding:{result, 4}];
 
     return v5;
   }
@@ -393,18 +393,18 @@ LABEL_11:
   return result;
 }
 
-+ (id)sha256HashFromData:(id)a3
++ (id)sha256HashFromData:(id)data
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = CC_SHA256_Init(&v7);
-  if ([a3 length] >> 32)
+  if ([data length] >> 32)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SFUCryptoUtils sha256HashFromData:]"];
     +[TSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](TSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v5, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/sf/SFUCryptoUtils.mm"], 426, 0, "overflow  in sha256HashFromData");
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (v4 && CC_SHA256_Update(&v7, [a3 bytes], objc_msgSend(a3, "length")) && CC_SHA256_Final(md, &v7))
+  if (v4 && CC_SHA256_Update(&v7, [data bytes], objc_msgSend(data, "length")) && CC_SHA256_Final(md, &v7))
   {
     return [MEMORY[0x277CBEA90] dataWithBytes:md length:32];
   }
@@ -415,12 +415,12 @@ LABEL_11:
   }
 }
 
-+ (id)sha256HashFromStorage:(id)a3
++ (id)sha256HashFromStorage:(id)storage
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = CC_SHA256_Init(&c);
-  v5 = [a3 bufferedInputStream];
-  [v5 disableSystemCaching];
+  bufferedInputStream = [storage bufferedInputStream];
+  [bufferedInputStream disableSystemCaching];
   data = 0;
   if (!v4)
   {
@@ -429,7 +429,7 @@ LABEL_11:
 
   while (1)
   {
-    v6 = [v5 readToOwnBuffer:&data size:0xFFFFFFFFLL];
+    v6 = [bufferedInputStream readToOwnBuffer:&data size:0xFFFFFFFFLL];
     if (!v6)
     {
       break;
@@ -452,19 +452,19 @@ LABEL_11:
   }
 }
 
-+ (id)sha256HashFromString:(id)a3
++ (id)sha256HashFromString:(id)string
 {
-  [a3 dataUsingEncoding:4];
+  [string dataUsingEncoding:4];
 
-  return MEMORY[0x2821F9670](a1, sel_sha256HashFromData_);
+  return MEMORY[0x2821F9670](self, sel_sha256HashFromData_);
 }
 
-+ (id)sha1HashFromStorage:(id)a3
++ (id)sha1HashFromStorage:(id)storage
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = CC_SHA1_Init(&c);
-  v5 = [a3 bufferedInputStream];
-  [v5 disableSystemCaching];
+  bufferedInputStream = [storage bufferedInputStream];
+  [bufferedInputStream disableSystemCaching];
   data = 0;
   if (!v4)
   {
@@ -473,7 +473,7 @@ LABEL_11:
 
   while (1)
   {
-    v6 = [v5 readToOwnBuffer:&data size:0xFFFFFFFFLL];
+    v6 = [bufferedInputStream readToOwnBuffer:&data size:0xFFFFFFFFLL];
     if (!v6)
     {
       break;
@@ -496,7 +496,7 @@ LABEL_11:
   }
 }
 
-+ (id)sha256HashFromDataArray:(id)a3
++ (id)sha256HashFromDataArray:(id)array
 {
   v19 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -504,7 +504,7 @@ LABEL_11:
   v4 = CC_SHA256_Init(&c) != 0;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v5 = [array countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -515,7 +515,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -529,7 +529,7 @@ LABEL_11:
         v4 = v4 && CC_SHA256_Update(&c, [v9 bytes], objc_msgSend(v9, "length")) != 0;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [array countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);
@@ -546,7 +546,7 @@ LABEL_11:
   }
 }
 
-+ (id)sha256HashFromStrings:(id)a3
++ (id)sha256HashFromStrings:(id)strings
 {
   v19 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -554,7 +554,7 @@ LABEL_11:
   v4 = CC_SHA256_Init(&c) != 0;
   v14 = 0u;
   v15 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v5 = [strings countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -566,7 +566,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(strings);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * v8) dataUsingEncoding:{4, v12}];
@@ -582,7 +582,7 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v6 = [strings countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v6);

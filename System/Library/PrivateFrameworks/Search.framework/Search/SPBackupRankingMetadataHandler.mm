@@ -3,18 +3,18 @@
 + (void)checkForRestoreFile;
 - (BOOL)didCreateKeychainItem;
 - (SPBackupRankingMetadataHandler)init;
-- (char)getDataOutWithSize:(unint64_t)a3 withFlag:(unint64_t)a4 fd:(int *)a5;
+- (char)getDataOutWithSize:(unint64_t)size withFlag:(unint64_t)flag fd:(int *)fd;
 - (id)createRandomAESKey;
-- (id)dictionaryToSecItemFormat:(id)a3;
+- (id)dictionaryToSecItemFormat:(id)format;
 - (id)fetchKeyFromKeychain;
-- (id)secItemFormatToDictionary:(id)a3;
-- (int)getBackupVersion:(unint64_t)a3;
-- (int)restoreFromExistingKeyWithOutData:(__CFData *)a3;
-- (void)addAttributesToDictionary:(id)a3;
+- (id)secItemFormatToDictionary:(id)dictionary;
+- (int)getBackupVersion:(unint64_t)version;
+- (int)restoreFromExistingKeyWithOutData:(__CFData *)data;
+- (void)addAttributesToDictionary:(id)dictionary;
 - (void)backUpFileProtectionClassCheck;
-- (void)backUpFileProtectionClassCheckWithFd:(int)a3;
-- (void)extractAndWriteEncryptedBackupMetadata:(id)a3;
-- (void)restoreRankingSignalsFromEncryptedFile:(id)a3;
+- (void)backUpFileProtectionClassCheckWithFd:(int)fd;
+- (void)extractAndWriteEncryptedBackupMetadata:(id)metadata;
+- (void)restoreRankingSignalsFromEncryptedFile:(id)file;
 - (void)tryRestoreFromBackUp;
 - (void)writeToKeychain;
 @end
@@ -53,8 +53,8 @@
 
 + (void)checkForRestoreFile
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0;
   if (([qword_1000A83C0 BOOLForKey:@"didCreateLocalBackup"] & 1) == 0)
   {
@@ -63,13 +63,13 @@
 
     if ((v4 & 1) == 0)
     {
-      v5 = [qword_1000A83D0 UTF8String];
-      v6 = [qword_1000A83E0 UTF8String];
-      rename(v5, v6, v7);
+      uTF8String = [qword_1000A83D0 UTF8String];
+      uTF8String2 = [qword_1000A83E0 UTF8String];
+      rename(uTF8String, uTF8String2, v7);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (SPBackupRankingMetadataHandler)init
@@ -116,26 +116,26 @@
   return v2;
 }
 
-- (void)addAttributesToDictionary:(id)a3
+- (void)addAttributesToDictionary:(id)dictionary
 {
-  v3 = a3;
-  [v3 setObject:@"com.apple.Spotlight" forKey:kSecAttrAccessGroup];
-  [v3 setObject:kCFBooleanTrue forKey:kSecAttrSynchronizable];
-  [v3 setObject:kCFBooleanTrue forKey:kSecReturnData];
-  [v3 setObject:kCFBooleanTrue forKey:kSecAttrCanEncrypt];
-  [v3 setObject:kCFBooleanTrue forKey:kSecAttrCanDecrypt];
-  [v3 setObject:kSecAttrKeyClassSymmetric forKey:kSecAttrKeyClass];
+  dictionaryCopy = dictionary;
+  [dictionaryCopy setObject:@"com.apple.Spotlight" forKey:kSecAttrAccessGroup];
+  [dictionaryCopy setObject:kCFBooleanTrue forKey:kSecAttrSynchronizable];
+  [dictionaryCopy setObject:kCFBooleanTrue forKey:kSecReturnData];
+  [dictionaryCopy setObject:kCFBooleanTrue forKey:kSecAttrCanEncrypt];
+  [dictionaryCopy setObject:kCFBooleanTrue forKey:kSecAttrCanDecrypt];
+  [dictionaryCopy setObject:kSecAttrKeyClassSymmetric forKey:kSecAttrKeyClass];
 }
 
-- (int)restoreFromExistingKeyWithOutData:(__CFData *)a3
+- (int)restoreFromExistingKeyWithOutData:(__CFData *)data
 {
-  result = a3;
-  v4 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
-  v5 = SecItemCopyMatching(v4, &result);
+  result = data;
+  privateKeyQuery = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
+  v5 = SecItemCopyMatching(privateKeyQuery, &result);
 
-  v6 = [(SPBackupRankingMetadataHandler *)self keychainData];
+  keychainData = [(SPBackupRankingMetadataHandler *)self keychainData];
 
-  if (!v6)
+  if (!keychainData)
   {
     v8 = objc_opt_new();
     [(SPBackupRankingMetadataHandler *)self setKeychainData:v8];
@@ -146,8 +146,8 @@
     }
 
 LABEL_5:
-    v9 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    [v9 setObject:result forKey:kSecValueData];
+    keychainData2 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    [keychainData2 setObject:result forKey:kSecValueData];
 
     return v5;
   }
@@ -165,11 +165,11 @@ LABEL_5:
   v3 = objc_alloc_init(NSMutableDictionary);
   [(SPBackupRankingMetadataHandler *)self setPrivateKeyQuery:v3];
 
-  v4 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
-  [v4 setObject:kSecClassKey forKey:kSecClass];
+  privateKeyQuery = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
+  [privateKeyQuery setObject:kSecClassKey forKey:kSecClass];
 
-  v5 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
-  [(SPBackupRankingMetadataHandler *)self addAttributesToDictionary:v5];
+  privateKeyQuery2 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
+  [(SPBackupRankingMetadataHandler *)self addAttributesToDictionary:privateKeyQuery2];
 
   v6 = [(SPBackupRankingMetadataHandler *)self restoreFromExistingKeyWithOutData:0];
   if (!v6)
@@ -184,8 +184,8 @@ LABEL_5:
       [(SPBackupRankingMetadataHandler *)self writeToKeychain];
       [(SPBackupRankingMetadataHandler *)self restoreFromExistingKeyWithOutData:0];
 LABEL_5:
-      v7 = [(SPBackupRankingMetadataHandler *)self keychainData];
-      v8 = [v7 objectForKey:kSecValueData];
+      keychainData = [(SPBackupRankingMetadataHandler *)self keychainData];
+      v8 = [keychainData objectForKey:kSecValueData];
 
       goto LABEL_10;
     }
@@ -225,19 +225,19 @@ LABEL_10:
 
 - (BOOL)didCreateKeychainItem
 {
-  v3 = [(SPBackupRankingMetadataHandler *)self keychainData];
+  keychainData = [(SPBackupRankingMetadataHandler *)self keychainData];
 
-  if (v3)
+  if (keychainData)
   {
-    v4 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    keychainData2 = [(SPBackupRankingMetadataHandler *)self keychainData];
 
-    if (!v4)
+    if (!keychainData2)
     {
       goto LABEL_9;
     }
 
-    v5 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    v6 = [(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:v5];
+    keychainData3 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    v6 = [(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:keychainData3];
 
     if (SecItemDelete(v6))
     {
@@ -256,43 +256,43 @@ LABEL_10:
   }
 
 LABEL_9:
-  v8 = [(SPBackupRankingMetadataHandler *)self createRandomAESKey];
-  if (v8)
+  createRandomAESKey = [(SPBackupRankingMetadataHandler *)self createRandomAESKey];
+  if (createRandomAESKey)
   {
-    v9 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    [v9 setObject:v8 forKey:kSecValueData];
+    keychainData4 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    [keychainData4 setObject:createRandomAESKey forKey:kSecValueData];
 
-    v10 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    [(SPBackupRankingMetadataHandler *)self addAttributesToDictionary:v10];
+    keychainData5 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    [(SPBackupRankingMetadataHandler *)self addAttributesToDictionary:keychainData5];
   }
 
   else
   {
-    v10 = SPLogForSPLogCategoryDefault();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    keychainData5 = SPLogForSPLogCategoryDefault();
+    if (os_log_type_enabled(keychainData5, OS_LOG_TYPE_ERROR))
     {
       sub_100062B74();
     }
   }
 
-  return v8 != 0;
+  return createRandomAESKey != 0;
 }
 
 - (void)writeToKeychain
 {
   result = 0;
-  v3 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
-  v4 = SecItemCopyMatching(v3, &result);
+  privateKeyQuery = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
+  v4 = SecItemCopyMatching(privateKeyQuery, &result);
 
   if (v4)
   {
-    v5 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    v6 = SecItemAdd([(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:v5], 0);
+    keychainData = [(SPBackupRankingMetadataHandler *)self keychainData];
+    v6 = SecItemAdd([(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:keychainData], 0);
 
     if (v6 == -25299)
     {
-      v7 = [(SPBackupRankingMetadataHandler *)self keychainData];
-      v6 = SecItemDelete([(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:v7]);
+      keychainData2 = [(SPBackupRankingMetadataHandler *)self keychainData];
+      v6 = SecItemDelete([(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:keychainData2]);
     }
 
     if (v6)
@@ -315,12 +315,12 @@ LABEL_9:
     v9 = result;
     v10 = [NSMutableDictionary dictionaryWithDictionary:result];
 
-    v11 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
-    v12 = [v11 objectForKey:kSecClass];
+    privateKeyQuery2 = [(SPBackupRankingMetadataHandler *)self privateKeyQuery];
+    v12 = [privateKeyQuery2 objectForKey:kSecClass];
     [v10 setObject:v12 forKey:kSecClass];
 
-    v13 = [(SPBackupRankingMetadataHandler *)self keychainData];
-    v14 = [(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:v13];
+    keychainData3 = [(SPBackupRankingMetadataHandler *)self keychainData];
+    v14 = [(SPBackupRankingMetadataHandler *)self dictionaryToSecItemFormat:keychainData3];
 
     [v14 removeObjectForKey:kSecClass];
     if (SecItemUpdate(v10, v14))
@@ -334,12 +334,12 @@ LABEL_9:
   }
 }
 
-- (id)dictionaryToSecItemFormat:(id)a3
+- (id)dictionaryToSecItemFormat:(id)format
 {
-  v3 = a3;
-  v4 = [NSMutableDictionary dictionaryWithDictionary:v3];
+  formatCopy = format;
+  v4 = [NSMutableDictionary dictionaryWithDictionary:formatCopy];
   [v4 setObject:kSecClassKey forKey:kSecClass];
-  v5 = [v3 objectForKey:kSecValueData];
+  v5 = [formatCopy objectForKey:kSecValueData];
 
   if (v5)
   {
@@ -349,9 +349,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)secItemFormatToDictionary:(id)a3
+- (id)secItemFormatToDictionary:(id)dictionary
 {
-  v3 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  v3 = [NSMutableDictionary dictionaryWithDictionary:dictionary];
   [v3 setObject:kCFBooleanTrue forKey:kSecReturnData];
   [v3 setObject:kSecClassKey forKey:kSecClass];
   result = 0;
@@ -385,34 +385,34 @@ LABEL_9:
   return v3;
 }
 
-- (void)backUpFileProtectionClassCheckWithFd:(int)a3
+- (void)backUpFileProtectionClassCheckWithFd:(int)fd
 {
-  if (a3 != -1 && fcntl(a3, 63) != 3)
+  if (fd != -1 && fcntl(fd, 63) != 3)
   {
-    fcntl(a3, 64, 3);
+    fcntl(fd, 64, 3);
   }
 }
 
-- (void)extractAndWriteEncryptedBackupMetadata:(id)a3
+- (void)extractAndWriteEncryptedBackupMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(SPBackupRankingMetadataHandler *)v5 queue];
+  metadataCopy = metadata;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  queue = [(SPBackupRankingMetadataHandler *)selfCopy queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100029424;
   block[3] = &unk_1000921C8;
-  block[4] = v5;
-  dispatch_group_async(v4, v6, block);
+  block[4] = selfCopy;
+  dispatch_group_async(metadataCopy, queue, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)tryRestoreFromBackUp
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v21 = 0;
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 fileExistsAtPath:qword_1000A83E0 isDirectory:&v21];
@@ -465,7 +465,7 @@ LABEL_9:
       }
 
       v9 = *v8;
-      objc_initWeak(&location, v2);
+      objc_initWeak(&location, selfCopy);
       v10 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_REPEATING, 0);
       xpc_dictionary_set_BOOL(v10, XPC_ACTIVITY_ALLOW_BATTERY, 0);
@@ -489,13 +489,13 @@ LABEL_9:
     _Block_object_dispose(&v17, 8);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (char)getDataOutWithSize:(unint64_t)a3 withFlag:(unint64_t)a4 fd:(int *)a5
+- (char)getDataOutWithSize:(unint64_t)size withFlag:(unint64_t)flag fd:(int *)fd
 {
-  *a5 = -1;
-  v7 = sub_100028EB8(a3, a4);
+  *fd = -1;
+  v7 = sub_100028EB8(size, flag);
   if (v7 < 0)
   {
     v10 = SPLogForSPLogCategoryDefault();
@@ -508,10 +508,10 @@ LABEL_9:
   else
   {
     v8 = v7;
-    result = mmap(0, a3, 3, 1, v7, 0);
+    result = mmap(0, size, 3, 1, v7, 0);
     if (result != -1)
     {
-      *a5 = v8;
+      *fd = v8;
       return result;
     }
 
@@ -526,7 +526,7 @@ LABEL_9:
   return 0;
 }
 
-- (int)getBackupVersion:(unint64_t)a3
+- (int)getBackupVersion:(unint64_t)version
 {
   memset(&v10.st_size, 0, 48);
   v4 = open([qword_1000A83D0 UTF8String], 0);
@@ -548,14 +548,14 @@ LABEL_9:
     v5 = v4;
     fstat(v4, &v10);
     v6 = 1;
-    if (v10.st_size >= a3)
+    if (v10.st_size >= version)
     {
       v13 = 0u;
       v14 = 0u;
       *__s1 = 0u;
       v12 = 0u;
-      read(v5, __s1, a3);
-      if (!strncmp(__s1, "SPOTLIGHT_RANKING_BACKUP_VERSION_00002", a3))
+      read(v5, __s1, version);
+      if (!strncmp(__s1, "SPOTLIGHT_RANKING_BACKUP_VERSION_00002", version))
       {
         v6 = 2;
       }
@@ -572,16 +572,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)restoreRankingSignalsFromEncryptedFile:(id)a3
+- (void)restoreRankingSignalsFromEncryptedFile:(id)file
 {
-  v4 = a3;
-  v5 = [(SPBackupRankingMetadataHandler *)self queue];
+  fileCopy = file;
+  queue = [(SPBackupRankingMetadataHandler *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A5B4;
   block[3] = &unk_1000921C8;
   block[4] = self;
-  dispatch_group_async(v4, v5, block);
+  dispatch_group_async(fileCopy, queue, block);
 }
 
 @end

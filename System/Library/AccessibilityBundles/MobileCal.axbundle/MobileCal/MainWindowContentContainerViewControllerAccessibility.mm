@@ -1,25 +1,25 @@
 @interface MainWindowContentContainerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (MainWindowContentContainerViewControllerAccessibility)initWithRootNavigationController:(id *)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (MainWindowContentContainerViewControllerAccessibility)initWithRootNavigationController:(id *)controller;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilitySetAccessibilityElements;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
 @end
 
 @implementation MainWindowContentContainerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MainWindowRootViewController"];
-  [v3 validateClass:@"RootNavigationController"];
-  [v3 validateClass:@"MainWindowContentContainerViewController" hasInstanceVariable:@"_containerViewController" withType:"UIViewController"];
-  [v3 validateClass:@"MainWindowContentContainerViewController" hasInstanceVariable:@"_rootNavigationController" withType:"RootNavigationController"];
-  [v3 validateClass:@"MainWindowContentContainerViewController" hasInstanceMethod:@"initWithRootNavigationController:" withFullSignature:{"@", "@", 0}];
-  [v3 validateProtocol:@"UISplitViewControllerDelegate" hasOptionalInstanceMethod:@"splitViewController:willChangeToDisplayMode:"];
-  [v3 validateClass:@"MainWindowContentContainerViewController" conformsToProtocol:@"UISplitViewControllerDelegate"];
-  [v3 validateClass:@"MainWindowContentContainerViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RootNavigationController" hasInstanceMethod:@"viewSwitcher" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MainWindowRootViewController"];
+  [validationsCopy validateClass:@"RootNavigationController"];
+  [validationsCopy validateClass:@"MainWindowContentContainerViewController" hasInstanceVariable:@"_containerViewController" withType:"UIViewController"];
+  [validationsCopy validateClass:@"MainWindowContentContainerViewController" hasInstanceVariable:@"_rootNavigationController" withType:"RootNavigationController"];
+  [validationsCopy validateClass:@"MainWindowContentContainerViewController" hasInstanceMethod:@"initWithRootNavigationController:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateProtocol:@"UISplitViewControllerDelegate" hasOptionalInstanceMethod:@"splitViewController:willChangeToDisplayMode:"];
+  [validationsCopy validateClass:@"MainWindowContentContainerViewController" conformsToProtocol:@"UISplitViewControllerDelegate"];
+  [validationsCopy validateClass:@"MainWindowContentContainerViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RootNavigationController" hasInstanceMethod:@"viewSwitcher" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,11 +30,11 @@
   [(MainWindowContentContainerViewControllerAccessibility *)self _accessibilitySetAccessibilityElements];
 }
 
-- (MainWindowContentContainerViewControllerAccessibility)initWithRootNavigationController:(id *)a3
+- (MainWindowContentContainerViewControllerAccessibility)initWithRootNavigationController:(id *)controller
 {
   v6.receiver = self;
   v6.super_class = MainWindowContentContainerViewControllerAccessibility;
-  v3 = [(MainWindowContentContainerViewControllerAccessibility *)&v6 initWithRootNavigationController:a3];
+  v3 = [(MainWindowContentContainerViewControllerAccessibility *)&v6 initWithRootNavigationController:controller];
   v4 = v3;
   if (v3)
   {
@@ -44,14 +44,14 @@
   return v4;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   v7 = [(MainWindowContentContainerViewControllerAccessibility *)self safeValueForKey:@"delegate"];
   v8 = __UIAccessibilityCastAsSafeCategory();
 
-  [v8 _accessibilitySetAccessibilityElementsForDisplayMode:0x7FFFFFFFFFFFFFFFLL searchDisplayMode:a4];
+  [v8 _accessibilitySetAccessibilityElementsForDisplayMode:0x7FFFFFFFFFFFFFFFLL searchDisplayMode:mode];
 }
 
 - (void)_accessibilitySetAccessibilityElements
@@ -62,8 +62,8 @@
   v5 = [(MainWindowContentContainerViewControllerAccessibility *)self safeValueForKey:@"_containerViewController"];
   v6 = [v5 safeUIViewForKey:@"view"];
 
-  v7 = [v6 subviews];
-  v8 = [v7 mutableCopy];
+  subviews = [v6 subviews];
+  v8 = [subviews mutableCopy];
 
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;

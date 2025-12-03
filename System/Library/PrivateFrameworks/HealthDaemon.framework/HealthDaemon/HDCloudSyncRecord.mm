@@ -1,18 +1,18 @@
 @interface HDCloudSyncRecord
-+ (BOOL)_deserializeData:(void *)a3 record:(void *)a4 fields:(uint64_t)a5 error:;
-+ (BOOL)hasFutureSchema:(id)a3;
++ (BOOL)_deserializeData:(void *)data record:(void *)record fields:(uint64_t)fields error:;
++ (BOOL)hasFutureSchema:(id)schema;
 + (BOOL)requiresUnderlyingMessage;
-+ (id)_serializeRecord:(void *)a3 fields:;
++ (id)_serializeRecord:(void *)record fields:;
 + (id)fieldsForProtectedSerialization;
 + (id)fieldsForUnprotectedSerialization;
-+ (id)initWithSerializedRecord:(id)a3 error:(id *)a4;
++ (id)initWithSerializedRecord:(id)record error:(id *)error;
 + (id)recordType;
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)validateWithError:(id *)a3;
++ (id)recordWithCKRecord:(id)record error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)validateWithError:(id *)error;
 - (CKRecord)record;
 - (HDCloudSyncRecord)init;
-- (HDCloudSyncRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (HDCloudSyncRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (NSData)underlyingMessage;
 - (id)serialize;
 - (id)serializeUnderlyingMessage;
@@ -32,27 +32,27 @@
   return 0;
 }
 
-- (HDCloudSyncRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
-  v7 = a3;
+  recordCopy = record;
   v20.receiver = self;
   v20.super_class = HDCloudSyncRecord;
   v8 = [(HDCloudSyncRecord *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_record, a3);
-    v10 = [objc_opt_class() requiresEncryptedSchemaVersion];
-    v11 = [(CKRecord *)v9->_record allKeys];
-    v12 = [v11 count];
+    objc_storeStrong(&v8->_record, record);
+    requiresEncryptedSchemaVersion = [objc_opt_class() requiresEncryptedSchemaVersion];
+    allKeys = [(CKRecord *)v9->_record allKeys];
+    v12 = [allKeys count];
 
     if (v12)
     {
       record = v9->_record;
-      if (v10)
+      if (requiresEncryptedSchemaVersion)
       {
-        v14 = [(CKRecord *)record encryptedValues];
-        v15 = [v14 objectForKeyedSubscript:@"Version"];
+        encryptedValues = [(CKRecord *)record encryptedValues];
+        v15 = [encryptedValues objectForKeyedSubscript:@"Version"];
 
         if (!v15)
         {
@@ -69,7 +69,7 @@
         }
       }
 
-      if ([v15 integerValue] == a4)
+      if ([v15 integerValue] == version)
       {
 LABEL_11:
 
@@ -82,12 +82,12 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:version];
     v17 = v9->_record;
-    if (v10)
+    if (requiresEncryptedSchemaVersion)
     {
-      v18 = [(CKRecord *)v17 encryptedValues];
-      [v18 setObject:v16 forKeyedSubscript:@"Version"];
+      encryptedValues2 = [(CKRecord *)v17 encryptedValues];
+      [encryptedValues2 setObject:v16 forKeyedSubscript:@"Version"];
     }
 
     else
@@ -103,12 +103,12 @@ LABEL_14:
   return v9;
 }
 
-+ (id)initWithSerializedRecord:(id)a3 error:(id *)a4
++ (id)initWithSerializedRecord:(id)record error:(id *)error
 {
-  v7 = a3;
+  recordCopy = record;
   v8 = MEMORY[0x277CBC5A0];
-  v9 = [v7 systemData];
-  v10 = [v8 hd_recordWithSystemData:v9 error:a4];
+  systemData = [recordCopy systemData];
+  v10 = [v8 hd_recordWithSystemData:systemData error:error];
 
   if (!v10)
   {
@@ -116,23 +116,23 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  v11 = [a1 fieldsForUnprotectedSerialization];
-  if (![v11 count])
+  fieldsForUnprotectedSerialization = [self fieldsForUnprotectedSerialization];
+  if (![fieldsForUnprotectedSerialization count])
   {
     goto LABEL_5;
   }
 
-  v12 = [v7 unprotectedDBData];
+  unprotectedDBData = [recordCopy unprotectedDBData];
 
-  if (!v12)
+  if (!unprotectedDBData)
   {
-    v15 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"serializedRecord.unprotectedDBData" class:objc_opt_class() selector:a2 format:@"Class requires unprotected serialized data but none is present in the serialized record."];
-    if (v15)
+    fieldsForProtectedSerialization = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"serializedRecord.unprotectedDBData" class:objc_opt_class() selector:a2 format:@"Class requires unprotected serialized data but none is present in the serialized record."];
+    if (fieldsForProtectedSerialization)
     {
-      if (a4)
+      if (error)
       {
-        v22 = v15;
-        *a4 = v15;
+        v22 = fieldsForProtectedSerialization;
+        *error = fieldsForProtectedSerialization;
       }
 
       else
@@ -144,34 +144,34 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v13 = [v7 unprotectedDBData];
-  v14 = [(HDCloudSyncRecord *)a1 _deserializeData:v13 record:v10 fields:v11 error:a4];
+  unprotectedDBData2 = [recordCopy unprotectedDBData];
+  v14 = [(HDCloudSyncRecord *)self _deserializeData:unprotectedDBData2 record:v10 fields:fieldsForUnprotectedSerialization error:error];
 
   if (v14)
   {
 LABEL_5:
-    v15 = [a1 fieldsForProtectedSerialization];
-    if (![v15 count])
+    fieldsForProtectedSerialization = [self fieldsForProtectedSerialization];
+    if (![fieldsForProtectedSerialization count])
     {
 LABEL_8:
-      v19 = [v10 valueStore];
-      [v19 resetChangedKeys];
+      valueStore = [v10 valueStore];
+      [valueStore resetChangedKeys];
 
-      v20 = [v10 encryptedValueStore];
-      [v20 resetChangedKeys];
+      encryptedValueStore = [v10 encryptedValueStore];
+      [encryptedValueStore resetChangedKeys];
 
-      v21 = [a1 recordWithCKRecord:v10 error:a4];
+      v21 = [self recordWithCKRecord:v10 error:error];
 LABEL_22:
 
       goto LABEL_23;
     }
 
-    v16 = [v7 protectedDBData];
+    protectedDBData = [recordCopy protectedDBData];
 
-    if (v16)
+    if (protectedDBData)
     {
-      v17 = [v7 protectedDBData];
-      v18 = [(HDCloudSyncRecord *)a1 _deserializeData:v17 record:v10 fields:v15 error:a4];
+      protectedDBData2 = [recordCopy protectedDBData];
+      v18 = [(HDCloudSyncRecord *)self _deserializeData:protectedDBData2 record:v10 fields:fieldsForProtectedSerialization error:error];
 
       if (v18)
       {
@@ -184,10 +184,10 @@ LABEL_22:
       v23 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"serializedRecord.protectedDBData" class:objc_opt_class() selector:a2 format:@"Class requires protected serialized data but none is present in the serialized record."];
       if (v23)
       {
-        if (a4)
+        if (error)
         {
           v24 = v23;
-          *a4 = v23;
+          *error = v23;
         }
 
         else
@@ -210,23 +210,23 @@ LABEL_24:
   return v21;
 }
 
-+ (BOOL)_deserializeData:(void *)a3 record:(void *)a4 fields:(uint64_t)a5 error:
++ (BOOL)_deserializeData:(void *)data record:(void *)record fields:(uint64_t)fields error:
 {
   v32 = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  recordCopy = record;
   objc_opt_self();
-  v11 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v8 error:a5];
+  v11 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v8 error:fields];
   if (v11)
   {
-    v25 = v10;
+    v25 = recordCopy;
     v26 = v8;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = v10;
+    v12 = recordCopy;
     v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
@@ -242,21 +242,21 @@ LABEL_24:
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          v18 = [v17 classes];
+          classes = [v17 classes];
           v19 = [v17 key];
-          v20 = [v11 decodeObjectOfClasses:v18 forKey:v19];
+          v20 = [v11 decodeObjectOfClasses:classes forKey:v19];
 
           if ([v17 encrypted])
           {
-            v21 = [v9 encryptedValues];
+            encryptedValues = [dataCopy encryptedValues];
             v22 = [v17 key];
-            [v21 setObject:v20 forKeyedSubscript:v22];
+            [encryptedValues setObject:v20 forKeyedSubscript:v22];
           }
 
           else
           {
-            v21 = [v17 key];
-            [v9 setObject:v20 forKeyedSubscript:v21];
+            encryptedValues = [v17 key];
+            [dataCopy setObject:v20 forKeyedSubscript:encryptedValues];
           }
         }
 
@@ -267,7 +267,7 @@ LABEL_24:
     }
 
     [v11 finishDecoding];
-    v10 = v25;
+    recordCopy = v25;
     v8 = v26;
   }
 
@@ -275,12 +275,12 @@ LABEL_24:
   return v11 != 0;
 }
 
-- (BOOL)validateWithError:(id *)a3
+- (BOOL)validateWithError:(id *)error
 {
-  v5 = [(HDCloudSyncRecord *)self record];
-  v6 = [v5 copy];
+  record = [(HDCloudSyncRecord *)self record];
+  v6 = [record copy];
 
-  v7 = [objc_opt_class() recordWithCKRecord:v6 error:a3];
+  v7 = [objc_opt_class() recordWithCKRecord:v6 error:error];
   if (!v7)
   {
     goto LABEL_5;
@@ -288,7 +288,7 @@ LABEL_24:
 
   if (![(HDCloudSyncRecord *)self isEqual:v7])
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:709 format:{@"Validation failed for %@; does not compare equal after inflation to %@", self, v7}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:709 format:{@"Validation failed for %@; does not compare equal after inflation to %@", self, v7}];
 LABEL_5:
     v8 = 0;
     goto LABEL_6;
@@ -302,13 +302,13 @@ LABEL_6:
 
 - (CKRecord)record
 {
-  v3 = [(HDCloudSyncRecord *)self serializeUnderlyingMessage];
-  v4 = [(HDCloudSyncRecord *)self underlyingMessage];
-  v5 = v4;
-  if (v4 != v3 && (!v3 || ([v4 isEqual:v3] & 1) == 0))
+  serializeUnderlyingMessage = [(HDCloudSyncRecord *)self serializeUnderlyingMessage];
+  underlyingMessage = [(HDCloudSyncRecord *)self underlyingMessage];
+  v5 = underlyingMessage;
+  if (underlyingMessage != serializeUnderlyingMessage && (!serializeUnderlyingMessage || ([underlyingMessage isEqual:serializeUnderlyingMessage] & 1) == 0))
   {
-    v6 = [(CKRecord *)self->_record encryptedValues];
-    [v6 setObject:v3 forKeyedSubscript:@"UnderlyingMessage"];
+    encryptedValues = [(CKRecord *)self->_record encryptedValues];
+    [encryptedValues setObject:serializeUnderlyingMessage forKeyedSubscript:@"UnderlyingMessage"];
   }
 
   record = self->_record;
@@ -320,10 +320,10 @@ LABEL_6:
 - (int64_t)schemaVersion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() requiresEncryptedSchemaVersion];
+  requiresEncryptedSchemaVersion = [objc_opt_class() requiresEncryptedSchemaVersion];
   record = self->_record;
   v5 = objc_opt_class();
-  if (v3)
+  if (requiresEncryptedSchemaVersion)
   {
     v19 = 0;
     v6 = &v19;
@@ -352,7 +352,7 @@ LABEL_6:
 
   if (v11)
   {
-    v12 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
@@ -369,18 +369,18 @@ LABEL_6:
       _os_log_fault_impl(&dword_228986000, v13, OS_LOG_TYPE_FAULT, "Failed to find schema version in record %{public}@: %{public}@", buf, 0x16u);
     }
 
-    v12 = 0;
+    integerValue = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v12;
+  return integerValue;
 }
 
 - (NSData)underlyingMessage
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(CKRecord *)self->_record encryptedValues];
-  v4 = [v3 objectForKeyedSubscript:@"UnderlyingMessage"];
+  encryptedValues = [(CKRecord *)self->_record encryptedValues];
+  v4 = [encryptedValues objectForKeyedSubscript:@"UnderlyingMessage"];
 
   if (v4)
   {
@@ -434,21 +434,21 @@ LABEL_6:
 
 - (unint64_t)hash
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 hash];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDCloudSyncRecord *)self record];
-    v6 = [v4 record];
-    v7 = [v5 hd_equivalentRecord:v6];
+    record = [(HDCloudSyncRecord *)self record];
+    record2 = [equalCopy record];
+    v7 = [record hd_equivalentRecord:record2];
   }
 
   else
@@ -459,26 +459,26 @@ LABEL_6:
   return v7;
 }
 
-+ (id)recordWithCKRecord:(id)a3 error:(id *)a4
++ (id)recordWithCKRecord:(id)record error:(id *)error
 {
-  v7 = a3;
-  v8 = [v7 recordType];
-  v9 = [a1 recordType];
-  v10 = [v8 isEqualToString:v9];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  recordType2 = [self recordType];
+  v10 = [recordType isEqualToString:recordType2];
 
   if ((v10 & 1) == 0)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = objc_opt_class();
-    v15 = [v7 recordType];
-    v16 = [a1 recordType];
-    v17 = [v13 hk_errorForInvalidArgument:@"record" class:v14 selector:a2 format:{@"record has type (%@), but expected (%@)", v15, v16}];
+    recordType3 = [recordCopy recordType];
+    recordType4 = [self recordType];
+    v17 = [v13 hk_errorForInvalidArgument:@"record" class:v14 selector:a2 format:{@"record has type (%@), but expected (%@)", recordType3, recordType4}];
     if (v17)
     {
-      if (a4)
+      if (error)
       {
         v18 = v17;
-        *a4 = v17;
+        *error = v17;
       }
 
       else
@@ -490,28 +490,28 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  v11 = [objc_opt_class() requiresEncryptedSchemaVersion];
+  requiresEncryptedSchemaVersion = [objc_opt_class() requiresEncryptedSchemaVersion];
   v12 = objc_opt_class();
-  if (v11)
+  if (requiresEncryptedSchemaVersion)
   {
-    [v7 hd_requiredEncryptedValueForKey:@"Version" type:v12 error:a4];
+    [recordCopy hd_requiredEncryptedValueForKey:@"Version" type:v12 error:error];
   }
 
   else
   {
-    [v7 hd_requiredValueForKey:@"Version" type:v12 error:a4];
+    [recordCopy hd_requiredValueForKey:@"Version" type:v12 error:error];
   }
-  v15 = ;
-  if (!v15)
+  recordType3 = ;
+  if (!recordType3)
   {
 LABEL_14:
     v19 = 0;
     goto LABEL_15;
   }
 
-  if (![a1 requiresUnderlyingMessage] || (objc_msgSend(v7, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), a4), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
+  if (![self requiresUnderlyingMessage] || (objc_msgSend(recordCopy, "hd_requiredEncryptedValueForKey:type:error:", @"UnderlyingMessage", objc_opt_class(), error), v19 = objc_claimAutoreleasedReturnValue(), v19, v19))
   {
-    v19 = [[a1 alloc] initWithCKRecord:v7 schemaVersion:{objc_msgSend(v15, "integerValue")}];
+    v19 = [[self alloc] initWithCKRecord:recordCopy schemaVersion:{objc_msgSend(recordType3, "integerValue")}];
   }
 
 LABEL_15:
@@ -533,7 +533,7 @@ LABEL_15:
   return 0;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
@@ -542,14 +542,14 @@ LABEL_15:
 
 - (id)serialize
 {
-  v3 = [(HDCloudSyncRecord *)self record];
-  v4 = [v3 hd_systemData];
+  record = [(HDCloudSyncRecord *)self record];
+  hd_systemData = [record hd_systemData];
 
-  v5 = [objc_opt_class() fieldsForUnprotectedSerialization];
-  if ([v5 count])
+  fieldsForUnprotectedSerialization = [objc_opt_class() fieldsForUnprotectedSerialization];
+  if ([fieldsForUnprotectedSerialization count])
   {
-    v6 = [(HDCloudSyncRecord *)self record];
-    v7 = [HDCloudSyncRecord _serializeRecord:v6 fields:v5];
+    record2 = [(HDCloudSyncRecord *)self record];
+    v7 = [HDCloudSyncRecord _serializeRecord:record2 fields:fieldsForUnprotectedSerialization];
   }
 
   else
@@ -557,11 +557,11 @@ LABEL_15:
     v7 = 0;
   }
 
-  v8 = [objc_opt_class() fieldsForProtectedSerialization];
-  if ([v8 count])
+  fieldsForProtectedSerialization = [objc_opt_class() fieldsForProtectedSerialization];
+  if ([fieldsForProtectedSerialization count])
   {
-    v9 = [(HDCloudSyncRecord *)self record];
-    v10 = [HDCloudSyncRecord _serializeRecord:v9 fields:v8];
+    record3 = [(HDCloudSyncRecord *)self record];
+    v10 = [HDCloudSyncRecord _serializeRecord:record3 fields:fieldsForProtectedSerialization];
   }
 
   else
@@ -569,23 +569,23 @@ LABEL_15:
     v10 = 0;
   }
 
-  v11 = [[HDCloudSyncSerializedRecord alloc] initWithEncodedSystemData:v4 unprotectedDBData:v7 protectedDBData:v10];
+  v11 = [[HDCloudSyncSerializedRecord alloc] initWithEncodedSystemData:hd_systemData unprotectedDBData:v7 protectedDBData:v10];
 
   return v11;
 }
 
-+ (id)_serializeRecord:(void *)a3 fields:
++ (id)_serializeRecord:(void *)record fields:
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  recordCopy = record;
   objc_opt_self();
   v6 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = recordCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -603,15 +603,15 @@ LABEL_15:
         v12 = *(*(&v20 + 1) + 8 * i);
         if ([v12 encrypted])
         {
-          v13 = [v4 encryptedValues];
+          encryptedValues = [v4 encryptedValues];
           v14 = [v12 key];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          v15 = [encryptedValues objectForKeyedSubscript:v14];
         }
 
         else
         {
-          v13 = [v12 key];
-          v15 = [v4 objectForKeyedSubscript:v13];
+          encryptedValues = [v12 key];
+          v15 = [v4 objectForKeyedSubscript:encryptedValues];
         }
 
         v16 = [v12 key];
@@ -625,19 +625,19 @@ LABEL_15:
   }
 
   [v6 finishEncoding];
-  v17 = [v6 encodedData];
+  encodedData = [v6 encodedData];
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return encodedData;
 }
 
 + (id)fieldsForUnprotectedSerialization
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 shouldSerializeUnderlyingMessageAsProtected];
+  shouldSerializeUnderlyingMessageAsProtected = [self shouldSerializeUnderlyingMessageAsProtected];
   v3 = objc_opt_class();
-  if (v2)
+  if (shouldSerializeUnderlyingMessageAsProtected)
   {
     v14 = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
@@ -667,7 +667,7 @@ LABEL_15:
 + (id)fieldsForProtectedSerialization
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if ([a1 shouldSerializeUnderlyingMessageAsProtected])
+  if ([self shouldSerializeUnderlyingMessageAsProtected])
   {
     v7 = objc_opt_class();
     v2 = [MEMORY[0x277CBEA60] arrayWithObjects:&v7 count:1];

@@ -1,8 +1,8 @@
 @interface TSDFrameImageCacheEntry
-- (CGImage)newImageForCALayer:(BOOL)a3 mask:(BOOL)a4;
+- (CGImage)newImageForCALayer:(BOOL)layer mask:(BOOL)mask;
 - (CGSize)size;
 - (void)dealloc;
-- (void)setImage:(CGImage *)a3 forCALayer:(BOOL)a4 mask:(BOOL)a5;
+- (void)setImage:(CGImage *)image forCALayer:(BOOL)layer mask:(BOOL)mask;
 @end
 
 @implementation TSDFrameImageCacheEntry
@@ -19,15 +19,15 @@
   [(TSDFrameImageCacheEntry *)&v4 dealloc];
 }
 
-- (CGImage)newImageForCALayer:(BOOL)a3 mask:(BOOL)a4
+- (CGImage)newImageForCALayer:(BOOL)layer mask:(BOOL)mask
 {
   v4 = 2;
-  if (!a3)
+  if (!layer)
   {
     v4 = 0;
   }
 
-  v5 = &self->super.isa + (v4 | a4);
+  v5 = &self->super.isa + (v4 | mask);
   v6 = v5[6];
   if (v6)
   {
@@ -37,28 +37,28 @@
   return v6;
 }
 
-- (void)setImage:(CGImage *)a3 forCALayer:(BOOL)a4 mask:(BOOL)a5
+- (void)setImage:(CGImage *)image forCALayer:(BOOL)layer mask:(BOOL)mask
 {
-  v5 = a5;
-  v6 = a4;
-  if (!a3)
+  maskCopy = mask;
+  layerCopy = layer;
+  if (!image)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameImageCacheEntry setImage:forCALayer:mask:]"];
-    [v9 handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameImageCache.m"), 73, @"invalid nil value for '%s'", "image"}];
+    [currentHandler handleFailureInFunction:v10 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameImageCache.m"), 73, @"invalid nil value for '%s'", "image"}];
   }
 
   v11 = 2;
-  if (!v6)
+  if (!layerCopy)
   {
     v11 = 0;
   }
 
-  v12 = v11 | v5;
+  v12 = v11 | maskCopy;
   mImages = self->mImages;
   if (!mImages[v12])
   {
-    mImages[v12] = CGImageRetain(a3);
+    mImages[v12] = CGImageRetain(image);
   }
 }
 

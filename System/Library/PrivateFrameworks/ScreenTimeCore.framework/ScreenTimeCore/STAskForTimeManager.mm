@@ -1,158 +1,158 @@
 @interface STAskForTimeManager
-+ (id)_blueprintsForBudgetIdentifiers:(id)a3 fromBlueprints:(id)a4;
-+ (id)_filterForExceededBudgetBlueprints:(id)a3 error:(id *)a4;
-+ (int64_t)_approvedTimeForResponseAnswer:(int64_t)a3 amount:(id)a4;
-+ (int64_t)_resourceTypeForUsageType:(int64_t)a3;
-+ (int64_t)_responseAnswerForAnswer:(int64_t)a3 timeApproved:(id *)a4;
-+ (void)updateBundleIdentifiers:(id)a3 withCategory:(id)a4;
-- (BOOL)_applyAskForTimeDeclarationsForAnswer:(int64_t)a3 usageType:(int64_t)a4 requestedResourceIdentifier:(id)a5 timeGranted:(id)a6 oneMoreMinute:(BOOL)a7 toUser:(id)a8 managedObjectContext:(id)a9 error:(id *)a10;
-- (BOOL)_approveAskForTimeRequest:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)_sendRequestToParents:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (STAskForTimeManager)initWithPersistenceController:(id)a3 userNotificationManager:(id)a4 eventRelay:(id)a5 askForTimeConfigurationProvider:(id)a6 askToManager:(id)a7;
++ (id)_blueprintsForBudgetIdentifiers:(id)identifiers fromBlueprints:(id)blueprints;
++ (id)_filterForExceededBudgetBlueprints:(id)blueprints error:(id *)error;
++ (int64_t)_approvedTimeForResponseAnswer:(int64_t)answer amount:(id)amount;
++ (int64_t)_resourceTypeForUsageType:(int64_t)type;
++ (int64_t)_responseAnswerForAnswer:(int64_t)answer timeApproved:(id *)approved;
++ (void)updateBundleIdentifiers:(id)identifiers withCategory:(id)category;
+- (BOOL)_applyAskForTimeDeclarationsForAnswer:(int64_t)answer usageType:(int64_t)type requestedResourceIdentifier:(id)identifier timeGranted:(id)granted oneMoreMinute:(BOOL)minute toUser:(id)user managedObjectContext:(id)context error:(id *)self0;
+- (BOOL)_approveAskForTimeRequest:(id)request managedObjectContext:(id)context error:(id *)error;
+- (BOOL)_sendRequestToParents:(id)parents managedObjectContext:(id)context error:(id *)error;
+- (STAskForTimeManager)initWithPersistenceController:(id)controller userNotificationManager:(id)manager eventRelay:(id)relay askForTimeConfigurationProvider:(id)provider askToManager:(id)toManager;
 - (STFamilyOrganizationController)familyOrganizationController;
-- (id)_eventForRequest:(id)a3;
-- (id)requestIdentifierFor:(id)a3 request:(id)a4;
-- (void)_applyOneMoreMinuteForBlueprint:(id)a3 timeGranted:(id)a4 toUser:(id)a5 managedObjectContext:(id)a6 error:(id *)a7;
-- (void)_categoryForIdentifier:(id)a3 ofUsageType:(int64_t)a4 completionHandler:(id)a5;
-- (void)_handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6;
-- (void)_handleApprovalOfRequest:(id)a3;
-- (void)_handleAskForTimeResponse:(id)a3 respondingUserAppleID:(id)a4;
-- (void)_handleDisapprovalOfRequest:(id)a3;
-- (void)_postAskForTimeResponseNotificationWithRespondingUserGivenName:(id)a3 respondingUserDSID:(id)a4 respondingUserAltDSID:(id)a5 respondingUserAppleID:(id)a6 associatedRequestIdentifier:(id)a7 answer:(int64_t)a8 requestedResourceName:(id)a9 amountGranted:(id)a10;
-- (void)approveExceptionForRequest:(id)a3 completionHandler:(id)a4;
-- (void)fetchLastResponseForRequestedResourceIdentifier:(id)a3 usageType:(int64_t)a4 withCompletionHandler:(id)a5;
-- (void)handleAnswer:(int64_t)a3 forRequestWithIdentifier:(id)a4;
-- (void)handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6;
-- (void)handleAskForTimeRequestPayload:(id)a3;
-- (void)handleAskForTimeResponsePayload:(id)a3;
-- (void)handleV2AskForTimeResponsePayload:(id)a3;
-- (void)sendAskForTimeRequest:(id)a3 completionHandler:(id)a4;
+- (id)_eventForRequest:(id)request;
+- (id)requestIdentifierFor:(id)for request:(id)request;
+- (void)_applyOneMoreMinuteForBlueprint:(id)blueprint timeGranted:(id)granted toUser:(id)user managedObjectContext:(id)context error:(id *)error;
+- (void)_categoryForIdentifier:(id)identifier ofUsageType:(int64_t)type completionHandler:(id)handler;
+- (void)_handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler;
+- (void)_handleApprovalOfRequest:(id)request;
+- (void)_handleAskForTimeResponse:(id)response respondingUserAppleID:(id)d;
+- (void)_handleDisapprovalOfRequest:(id)request;
+- (void)_postAskForTimeResponseNotificationWithRespondingUserGivenName:(id)name respondingUserDSID:(id)d respondingUserAltDSID:(id)iD respondingUserAppleID:(id)appleID associatedRequestIdentifier:(id)identifier answer:(int64_t)answer requestedResourceName:(id)resourceName amountGranted:(id)self0;
+- (void)approveExceptionForRequest:(id)request completionHandler:(id)handler;
+- (void)fetchLastResponseForRequestedResourceIdentifier:(id)identifier usageType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)handleAnswer:(int64_t)answer forRequestWithIdentifier:(id)identifier;
+- (void)handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler;
+- (void)handleAskForTimeRequestPayload:(id)payload;
+- (void)handleAskForTimeResponsePayload:(id)payload;
+- (void)handleV2AskForTimeResponsePayload:(id)payload;
+- (void)sendAskForTimeRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation STAskForTimeManager
 
-- (STAskForTimeManager)initWithPersistenceController:(id)a3 userNotificationManager:(id)a4 eventRelay:(id)a5 askForTimeConfigurationProvider:(id)a6 askToManager:(id)a7
+- (STAskForTimeManager)initWithPersistenceController:(id)controller userNotificationManager:(id)manager eventRelay:(id)relay askForTimeConfigurationProvider:(id)provider askToManager:(id)toManager
 {
-  v21 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  managerCopy = manager;
+  relayCopy = relay;
+  providerCopy = provider;
+  toManagerCopy = toManager;
   v22.receiver = self;
   v22.super_class = STAskForTimeManager;
   v17 = [(STAskForTimeManager *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_eventRelay, a5);
-    objc_storeStrong(&v18->_persistenceController, a3);
-    objc_storeStrong(&v18->_userNotificationManager, a4);
-    objc_storeStrong(&v18->_askForTimeConfigurationProvider, a6);
-    objc_storeStrong(&v18->_askToManager, a7);
+    objc_storeStrong(&v17->_eventRelay, relay);
+    objc_storeStrong(&v18->_persistenceController, controller);
+    objc_storeStrong(&v18->_userNotificationManager, manager);
+    objc_storeStrong(&v18->_askForTimeConfigurationProvider, provider);
+    objc_storeStrong(&v18->_askToManager, toManager);
     v19 = +[NSNotificationCenter defaultCenter];
-    [v19 addObserver:v18 selector:"_handleApprovalOfRequest:" name:STUserNotificationAskForTimeResponseReceivedApprove object:v13];
-    [v19 addObserver:v18 selector:"_handleDisapprovalOfRequest:" name:STUserNotificationAskForTimeResponseReceivedDontApprove object:v13];
+    [v19 addObserver:v18 selector:"_handleApprovalOfRequest:" name:STUserNotificationAskForTimeResponseReceivedApprove object:managerCopy];
+    [v19 addObserver:v18 selector:"_handleDisapprovalOfRequest:" name:STUserNotificationAskForTimeResponseReceivedDontApprove object:managerCopy];
   }
 
   return v18;
 }
 
-- (void)sendAskForTimeRequest:(id)a3 completionHandler:(id)a4
+- (void)sendAskForTimeRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STAskForTimeManager *)self askForTimeConfigurationProvider];
+  requestCopy = request;
+  handlerCopy = handler;
+  askForTimeConfigurationProvider = [(STAskForTimeManager *)self askForTimeConfigurationProvider];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000A300;
   v11[3] = &unk_1001A2D30;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 shouldDeliverNotificationQuietlyWithCompletion:v11];
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
+  [askForTimeConfigurationProvider shouldDeliverNotificationQuietlyWithCompletion:v11];
 }
 
-- (id)_eventForRequest:(id)a3
+- (id)_eventForRequest:(id)request
 {
-  v3 = a3;
-  v4 = +[STAskForTimeManager _resourceTypeForUsageType:](STAskForTimeManager, "_resourceTypeForUsageType:", [v3 usageType]);
+  requestCopy = request;
+  v4 = +[STAskForTimeManager _resourceTypeForUsageType:](STAskForTimeManager, "_resourceTypeForUsageType:", [requestCopy usageType]);
   v5 = [STUserID alloc];
-  v6 = [v3 requestingUserDSID];
-  v7 = [v5 initWithDSID:v6];
+  requestingUserDSID = [requestCopy requestingUserDSID];
+  v7 = [v5 initWithDSID:requestingUserDSID];
 
   v8 = [STAskForTimeRequestEvent alloc];
-  v9 = [v3 requestIdentifier];
-  v10 = [v9 UUIDString];
-  v11 = [v3 timeStamp];
-  v12 = [v3 requestedResourceIdentifier];
+  requestIdentifier = [requestCopy requestIdentifier];
+  uUIDString = [requestIdentifier UUIDString];
+  timeStamp = [requestCopy timeStamp];
+  requestedResourceIdentifier = [requestCopy requestedResourceIdentifier];
 
-  v13 = [(STAskForTimeRequestEvent *)v8 initWithIdentifier:v10 resourceType:v4 timestamp:v11 requesterUserID:v7 requestedResourceIdentifier:v12];
+  v13 = [(STAskForTimeRequestEvent *)v8 initWithIdentifier:uUIDString resourceType:v4 timestamp:timeStamp requesterUserID:v7 requestedResourceIdentifier:requestedResourceIdentifier];
 
   return v13;
 }
 
-- (void)approveExceptionForRequest:(id)a3 completionHandler:(id)a4
+- (void)approveExceptionForRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STAskForTimeManager *)self persistenceController];
+  requestCopy = request;
+  handlerCopy = handler;
+  persistenceController = [(STAskForTimeManager *)self persistenceController];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000AED8;
   v11[3] = &unk_1001A2D58;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 performBackgroundTask:v11];
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
+  [persistenceController performBackgroundTask:v11];
 }
 
-- (void)fetchLastResponseForRequestedResourceIdentifier:(id)a3 usageType:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)fetchLastResponseForRequestedResourceIdentifier:(id)identifier usageType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v9 = +[STLog ask];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     sub_1001113C8();
   }
 
-  v10 = [(STAskForTimeManager *)self persistenceController];
+  persistenceController = [(STAskForTimeManager *)self persistenceController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B0F0;
   v13[3] = &unk_1001A2D80;
-  v14 = v7;
-  v15 = v8;
-  v11 = v7;
-  v12 = v8;
-  [v10 performBackgroundTask:v13];
+  v14 = identifierCopy;
+  v15 = handlerCopy;
+  v11 = identifierCopy;
+  v12 = handlerCopy;
+  [persistenceController performBackgroundTask:v13];
 }
 
-- (id)requestIdentifierFor:(id)a3 request:(id)a4
+- (id)requestIdentifierFor:(id)for request:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  forCopy = for;
+  requestCopy = request;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_10000A804;
   v21 = sub_10000A814;
   v22 = 0;
-  v8 = [(STAskForTimeManager *)self persistenceController];
+  persistenceController = [(STAskForTimeManager *)self persistenceController];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000B724;
   v13[3] = &unk_1001A2DA8;
-  v9 = v6;
+  v9 = forCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = requestCopy;
   v15 = v10;
   v16 = &v17;
-  [v8 performBackgroundTaskAndWait:v13];
+  [persistenceController performBackgroundTaskAndWait:v13];
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -160,43 +160,43 @@
   return v11;
 }
 
-- (void)handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6
+- (void)handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  approvedCopy = approved;
+  handlerCopy = handler;
   v13 = +[STLog ask];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     v15 = @"disapproved";
     v16 = 138543874;
-    v17 = v14;
+    v17 = uUIDString;
     v18 = 2114;
-    if (!a3)
+    if (!answer)
     {
       v15 = @"approved";
     }
 
     v19 = v15;
     v20 = 2114;
-    v21 = v11;
+    v21 = approvedCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Begin handling answer for request %{public}@, answer:%{public}@, time approved:%{public}@", &v16, 0x20u);
   }
 
-  [(STAskForTimeManager *)self _handleAnswer:a3 requestIdentifier:v10 timeApproved:v11 completionHandler:v12];
+  [(STAskForTimeManager *)self _handleAnswer:answer requestIdentifier:identifierCopy timeApproved:approvedCopy completionHandler:handlerCopy];
 }
 
-- (void)_handleApprovalOfRequest:(id)a3
+- (void)_handleApprovalOfRequest:(id)request
 {
-  v4 = [a3 userInfo];
+  userInfo = [request userInfo];
   v5 = [NSUUID alloc];
-  v6 = [v4 objectForKeyedSubscript:STUserNotificationAskForTimeKeyRequestIdentifier];
+  v6 = [userInfo objectForKeyedSubscript:STUserNotificationAskForTimeKeyRequestIdentifier];
   v7 = [v5 initWithUUIDString:v6];
 
   if (v7)
   {
-    v8 = [v4 objectForKeyedSubscript:STUserNotificationAskForTimeKeyTimeApproved];
+    v8 = [userInfo objectForKeyedSubscript:STUserNotificationAskForTimeKeyTimeApproved];
     [(STAskForTimeManager *)self _handleAnswer:0 requestIdentifier:v7 timeApproved:v8 completionHandler:0];
   }
 
@@ -210,13 +210,13 @@
   }
 }
 
-- (void)_handleDisapprovalOfRequest:(id)a3
+- (void)_handleDisapprovalOfRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [NSUUID alloc];
-  v6 = [v4 userInfo];
+  userInfo = [requestCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:STUserNotificationAskForTimeKeyRequestIdentifier];
+  v7 = [userInfo objectForKeyedSubscript:STUserNotificationAskForTimeKeyRequestIdentifier];
   v8 = [v5 initWithUUIDString:v7];
 
   if (v8)
@@ -234,9 +234,9 @@
   }
 }
 
-- (void)handleAskForTimeRequestPayload:(id)a3
+- (void)handleAskForTimeRequestPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -244,14 +244,14 @@
   v34 = sub_10000A814;
   v35 = 0;
   v4 = [STAskForTimeRequest alloc];
-  v5 = [v3 payloadDictionary];
-  v6 = [v4 initWithPayload:v5];
+  payloadDictionary = [payloadCopy payloadDictionary];
+  v6 = [v4 initWithPayload:payloadDictionary];
 
   if (v6)
   {
     v7 = +[NSDate now];
-    v8 = [v3 userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"ServerReceivedTime"];
+    userInfo = [payloadCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"ServerReceivedTime"];
 
     if (v9)
     {
@@ -268,14 +268,14 @@
     v13 = +[STLog ask];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 requestIdentifier];
-      v15 = [v6 requestedResourceIdentifier];
-      v16 = [v3 userInfo];
-      v17 = [v16 objectForKeyedSubscript:@"AppleID"];
+      requestIdentifier = [v6 requestIdentifier];
+      requestedResourceIdentifier = [v6 requestedResourceIdentifier];
+      userInfo2 = [payloadCopy userInfo];
+      v17 = [userInfo2 objectForKeyedSubscript:@"AppleID"];
       *buf = 138544130;
-      v37 = v14;
+      v37 = requestIdentifier;
       v38 = 2114;
-      v39 = v15;
+      v39 = requestedResourceIdentifier;
       v40 = 2114;
       v41 = v17;
       v42 = 2114;
@@ -291,16 +291,16 @@
       v20 = +[STLog ask];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v6 requestIdentifier];
+        requestIdentifier2 = [v6 requestIdentifier];
         *buf = 138543362;
-        v37 = v21;
+        v37 = requestIdentifier2;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Dropping expired ask for time request: %{public}@", buf, 0xCu);
       }
     }
 
     else
     {
-      v22 = [(STAskForTimeManager *)self persistenceController];
+      persistenceController = [(STAskForTimeManager *)self persistenceController];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_10000BFF8;
@@ -308,13 +308,13 @@
       v26 = v6;
       v29 = &v30;
       v27 = v7;
-      v28 = self;
-      [v22 performBackgroundTaskAndWait:v25];
+      selfCopy = self;
+      [persistenceController performBackgroundTaskAndWait:v25];
 
       if (v31[5])
       {
-        v23 = [(STAskForTimeManager *)self eventRelay];
-        [v23 relayRequestEvent:v31[5]];
+        eventRelay = [(STAskForTimeManager *)self eventRelay];
+        [eventRelay relayRequestEvent:v31[5]];
       }
 
       v20 = v26;
@@ -326,19 +326,19 @@
     v7 = +[STLog ask];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v3 payloadDictionary];
-      sub_100111580(v11, buf, v7);
+      payloadDictionary2 = [payloadCopy payloadDictionary];
+      sub_100111580(payloadDictionary2, buf, v7);
     }
   }
 
   _Block_object_dispose(&v30, 8);
 }
 
-- (void)handleAskForTimeResponsePayload:(id)a3
+- (void)handleAskForTimeResponsePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"AppleID"];
+  payloadCopy = payload;
+  userInfo = [payloadCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"AppleID"];
 
   v7 = +[STLog ask];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -349,8 +349,8 @@
   }
 
   v8 = [STAskForTimeResponse alloc];
-  v9 = [v4 payloadDictionary];
-  v10 = [v8 initWithPayload:v9];
+  payloadDictionary = [payloadCopy payloadDictionary];
+  v10 = [v8 initWithPayload:payloadDictionary];
 
   if (v10)
   {
@@ -362,24 +362,24 @@
     v11 = +[STLog ask];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_1001117AC(v4, v11);
+      sub_1001117AC(payloadCopy, v11);
     }
   }
 }
 
-- (void)_handleAskForTimeResponse:(id)a3 respondingUserAppleID:(id)a4
+- (void)_handleAskForTimeResponse:(id)response respondingUserAppleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dCopy = d;
   v8 = +[STLog ask];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received a response for more time from %{private}@", &buf, 0xCu);
   }
 
-  if (v6)
+  if (responseCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -387,30 +387,30 @@
     v29 = sub_10000A804;
     v30 = sub_10000A814;
     v31 = 0;
-    v9 = [(STAskForTimeManager *)self persistenceController];
+    persistenceController = [(STAskForTimeManager *)self persistenceController];
     v19 = _NSConcreteStackBlock;
     v20 = 3221225472;
     v21 = sub_10000CC88;
     v22 = &unk_1001A2E48;
-    v10 = v6;
+    v10 = responseCopy;
     v23 = v10;
-    v24 = v7;
-    v25 = self;
+    v24 = dCopy;
+    selfCopy = self;
     p_buf = &buf;
-    [v9 performBackgroundTaskAndWait:&v19];
+    [persistenceController performBackgroundTaskAndWait:&v19];
 
     if (*(*(&buf + 1) + 40))
     {
       v11 = objc_opt_new();
-      v12 = [v10 answer];
-      v13 = [v10 amountGranted];
-      v14 = [v10 associatedRequestIdentifier];
-      v15 = [v14 UUIDString];
-      v16 = [v10 respondingUserDSID];
-      [v11 tellAskToAboutAskForTimeResponseWithAnswer:v12 timeApproved:v13 requestIdentifier:v15 responderDSID:v16 completionHandler:&stru_1001A2E88];
+      answer = [v10 answer];
+      amountGranted = [v10 amountGranted];
+      associatedRequestIdentifier = [v10 associatedRequestIdentifier];
+      uUIDString = [associatedRequestIdentifier UUIDString];
+      respondingUserDSID = [v10 respondingUserDSID];
+      [v11 tellAskToAboutAskForTimeResponseWithAnswer:answer timeApproved:amountGranted requestIdentifier:uUIDString responderDSID:respondingUserDSID completionHandler:&stru_1001A2E88];
 
-      v17 = [(STAskForTimeManager *)self eventRelay];
-      [v17 relayResponseEvent:*(*(&buf + 1) + 40)];
+      eventRelay = [(STAskForTimeManager *)self eventRelay];
+      [eventRelay relayResponseEvent:*(*(&buf + 1) + 40)];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -426,16 +426,16 @@
   }
 }
 
-- (void)handleV2AskForTimeResponsePayload:(id)a3
+- (void)handleV2AskForTimeResponsePayload:(id)payload
 {
-  v4 = a3;
-  v5 = [v4 payloadType];
-  v6 = [v5 isEqualToString:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"];
+  payloadCopy = payload;
+  payloadType = [payloadCopy payloadType];
+  v6 = [payloadType isEqualToString:@"STUnifiedTransportPayloadTypeAskForTimeResponseV2"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"AppleID"];
+    userInfo = [payloadCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"AppleID"];
 
     v9 = +[STLog ask];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -451,21 +451,21 @@
     v19 = sub_10000A804;
     v20 = sub_10000A814;
     v21 = 0;
-    v10 = [(STAskForTimeManager *)self persistenceController];
+    persistenceController = [(STAskForTimeManager *)self persistenceController];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10000D80C;
     v13[3] = &unk_1001A2DA8;
-    v14 = v4;
+    v14 = payloadCopy;
     v11 = v8;
     v15 = v11;
     p_buf = &buf;
-    [v10 performBackgroundTaskAndWait:v13];
+    [persistenceController performBackgroundTaskAndWait:v13];
 
     if (*(*(&buf + 1) + 40))
     {
-      v12 = [(STAskForTimeManager *)self eventRelay];
-      [v12 relayResponseEvent:*(*(&buf + 1) + 40)];
+      eventRelay = [(STAskForTimeManager *)self eventRelay];
+      [eventRelay relayResponseEvent:*(*(&buf + 1) + 40)];
     }
 
     _Block_object_dispose(&buf, 8);
@@ -481,21 +481,21 @@
   }
 }
 
-- (void)_postAskForTimeResponseNotificationWithRespondingUserGivenName:(id)a3 respondingUserDSID:(id)a4 respondingUserAltDSID:(id)a5 respondingUserAppleID:(id)a6 associatedRequestIdentifier:(id)a7 answer:(int64_t)a8 requestedResourceName:(id)a9 amountGranted:(id)a10
+- (void)_postAskForTimeResponseNotificationWithRespondingUserGivenName:(id)name respondingUserDSID:(id)d respondingUserAltDSID:(id)iD respondingUserAppleID:(id)appleID associatedRequestIdentifier:(id)identifier answer:(int64_t)answer requestedResourceName:(id)resourceName amountGranted:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  appleIDCopy = appleID;
+  identifierCopy = identifier;
+  resourceNameCopy = resourceName;
+  grantedCopy = granted;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
   v43[3] = sub_10000A804;
   v43[4] = sub_10000A814;
-  v22 = v15;
+  v22 = nameCopy;
   v44 = v22;
   v41[0] = 0;
   v41[1] = v41;
@@ -504,9 +504,9 @@
   v41[4] = sub_10000A814;
   v42 = 0;
   v23 = objc_opt_new();
-  if (v17)
+  if (iDCopy)
   {
-    v45 = v17;
+    v45 = iDCopy;
     v24 = [NSArray arrayWithObjects:&v45 count:1];
     [v23 setExpectedAltDSIDs:v24];
   }
@@ -515,36 +515,36 @@
   v31[1] = 3221225472;
   v31[2] = sub_10000E238;
   v31[3] = &unk_1001A2EB0;
-  v25 = v16;
+  v25 = dCopy;
   v32 = v25;
-  v26 = v18;
+  v26 = appleIDCopy;
   v33 = v26;
   v38 = v43;
   v39 = v41;
-  v40 = a8;
-  v27 = v19;
+  answerCopy = answer;
+  v27 = identifierCopy;
   v34 = v27;
-  v28 = v20;
+  v28 = resourceNameCopy;
   v35 = v28;
-  v29 = v21;
+  v29 = grantedCopy;
   v36 = v29;
-  v37 = self;
+  selfCopy = self;
   [v23 startRequestWithCompletionHandler:v31];
 
   _Block_object_dispose(v41, 8);
   _Block_object_dispose(v43, 8);
 }
 
-- (void)_handleAnswer:(int64_t)a3 requestIdentifier:(id)a4 timeApproved:(id)a5 completionHandler:(id)a6
+- (void)_handleAnswer:(int64_t)answer requestIdentifier:(id)identifier timeApproved:(id)approved completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  approvedCopy = approved;
+  handlerCopy = handler;
   v13 = +[STLog ask];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = a3 ? @"Not approving" : @"Approving";
-    v15 = [v11 isEqual:&off_1001B2098];
+    v14 = answer ? @"Not approving" : @"Approving";
+    v15 = [approvedCopy isEqual:&off_1001B2098];
     if (v15)
     {
       v16 = @"all day";
@@ -552,17 +552,17 @@
 
     else
     {
-      [v11 floatValue];
+      [approvedCopy floatValue];
       v16 = [NSNumber numberWithDouble:v17 / 60.0];
     }
 
-    v18 = [v10 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     *buf = 138412802;
     *&buf[4] = v14;
     *&buf[12] = 2112;
     *&buf[14] = v16;
     *&buf[22] = 2112;
-    v30 = v18;
+    v30 = uUIDString;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ request for %@ [minutes] for request %@", buf, 0x20u);
 
     if ((v15 & 1) == 0)
@@ -576,54 +576,54 @@
   v30 = sub_10000A804;
   v31 = sub_10000A814;
   v32 = 0;
-  v19 = [(STAskForTimeManager *)self persistenceController];
+  persistenceController = [(STAskForTimeManager *)self persistenceController];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000E7B8;
   v23[3] = &unk_1001A2ED8;
-  v20 = v10;
+  v20 = identifierCopy;
   v24 = v20;
-  v28 = a3;
-  v21 = v11;
+  answerCopy = answer;
+  v21 = approvedCopy;
   v25 = v21;
-  v26 = self;
+  selfCopy = self;
   v27 = buf;
-  [v19 performBackgroundTaskAndWait:v23];
+  [persistenceController performBackgroundTaskAndWait:v23];
 
   if (*(*&buf[8] + 40))
   {
-    v22 = [(STAskForTimeManager *)self eventRelay];
-    [v22 relayResponseEvent:*(*&buf[8] + 40)];
+    eventRelay = [(STAskForTimeManager *)self eventRelay];
+    [eventRelay relayResponseEvent:*(*&buf[8] + 40)];
   }
 
-  if (v12)
+  if (handlerCopy)
   {
-    v12[2](v12);
+    handlerCopy[2](handlerCopy);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (BOOL)_applyAskForTimeDeclarationsForAnswer:(int64_t)a3 usageType:(int64_t)a4 requestedResourceIdentifier:(id)a5 timeGranted:(id)a6 oneMoreMinute:(BOOL)a7 toUser:(id)a8 managedObjectContext:(id)a9 error:(id *)a10
+- (BOOL)_applyAskForTimeDeclarationsForAnswer:(int64_t)answer usageType:(int64_t)type requestedResourceIdentifier:(id)identifier timeGranted:(id)granted oneMoreMinute:(BOOL)minute toUser:(id)user managedObjectContext:(id)context error:(id *)self0
 {
-  v11 = a7;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
+  minuteCopy = minute;
+  identifierCopy = identifier;
+  grantedCopy = granted;
+  userCopy = user;
+  contextCopy = context;
   v21 = +[STLog ask];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v67 = v18;
+    v67 = grantedCopy;
     v68 = 2114;
-    v69 = v17;
+    v69 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Granting %@ seconds for %{public}@", buf, 0x16u);
   }
 
-  if (a3 != 1)
+  if (answer != 1)
   {
-    if (a3)
+    if (answer)
     {
       v22 = 0;
     }
@@ -633,10 +633,10 @@
       v22 = CEMPolicyWebSiteDeclaration_Mode_override;
     }
 
-    v56 = self;
-    if (v17)
+    selfCopy = self;
+    if (identifierCopy)
     {
-      v65 = v17;
+      v65 = identifierCopy;
       v23 = [NSArray arrayWithObjects:&v65 count:1];
     }
 
@@ -645,10 +645,10 @@
       v23 = 0;
     }
 
-    v61 = v20;
-    if (a4 == 2)
+    v61 = contextCopy;
+    if (type == 2)
     {
-      if (([v17 isEqualToString:CTCategoryIdentifierUtilities] & 1) != 0 || (objc_msgSend(v17, "isEqualToString:", CTCategoryIdentifierShoppingAndFood) & 1) != 0 || objc_msgSend(v17, "isEqualToString:", CTCategoryIdentifierTravel))
+      if (([identifierCopy isEqualToString:CTCategoryIdentifierUtilities] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", CTCategoryIdentifierShoppingAndFood) & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", CTCategoryIdentifierTravel))
       {
         v64 = CTCategoryIdentifierOther;
         v26 = [NSArray arrayWithObjects:&v64 count:1];
@@ -665,17 +665,17 @@
       goto LABEL_22;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v24 = [CEMPolicyWebSiteDeclaration buildWithIdentifier:0 withMode:v22 withHostnames:v23 withExemptApps:&__NSArray0__struct];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         v28 = +[NSAssertionHandler currentHandler];
-        [v28 handleFailureInMethod:a2 object:v56 file:@"STAskForTimeManager.m" lineNumber:753 description:{@"Unexpected usage type %ld", a4}];
+        [v28 handleFailureInMethod:a2 object:selfCopy file:@"STAskForTimeManager.m" lineNumber:753 description:{@"Unexpected usage type %ld", type}];
 
         v25 = 0;
         goto LABEL_22;
@@ -688,7 +688,7 @@
 LABEL_22:
     v59 = v23;
     v29 = +[NSDate now];
-    [v18 doubleValue];
+    [grantedCopy doubleValue];
     v30 = [v29 dateByAddingTimeInterval:?];
     v31 = [[STBlueprint alloc] initWithContext:v61];
     [v31 setType:STBlueprintTypeUsageLimitOverride];
@@ -696,20 +696,20 @@ LABEL_22:
     [v31 setCreationDate:v29];
     v57 = v30;
     [v31 setExpiration:v30];
-    v32 = [v19 managingOrganization];
-    [v31 setOrganization:v32];
+    managingOrganization = [userCopy managingOrganization];
+    [v31 setOrganization:managingOrganization];
 
-    v33 = [NSSet setWithObject:v19];
+    v33 = [NSSet setWithObject:userCopy];
     [v31 setUsers:v33];
 
     v60 = v22;
-    v34 = v18;
-    if (v11)
+    v34 = grantedCopy;
+    if (minuteCopy)
     {
       v35 = STOneMoreMinuteBlueprintIdentifierPrefix;
       v36 = objc_opt_new();
-      v37 = [v36 UUIDString];
-      v38 = [NSString stringWithFormat:@"%@_%@", v35, v37];
+      uUIDString = [v36 UUIDString];
+      v38 = [NSString stringWithFormat:@"%@_%@", v35, uUIDString];
 
       [v31 setIdentifier:v38];
     }
@@ -717,17 +717,17 @@ LABEL_22:
     else
     {
       v38 = +[NSUUID UUID];
-      v39 = [v38 UUIDString];
-      [v31 setIdentifier:v39];
+      uUIDString2 = [v38 UUIDString];
+      [v31 setIdentifier:uUIDString2];
     }
 
     [v31 setIsDirty:1];
     v40 = [[STBlueprintConfiguration alloc] initWithContext:v61];
-    v41 = [v25 declarationIdentifier];
-    [v40 setIdentifier:v41];
+    declarationIdentifier = [v25 declarationIdentifier];
+    [v40 setIdentifier:declarationIdentifier];
 
-    v42 = [v25 declarationType];
-    [v40 setType:v42];
+    declarationType = [v25 declarationType];
+    [v40 setType:declarationType];
 
     [v40 setBlueprint:v31];
     v63 = 0;
@@ -735,31 +735,31 @@ LABEL_22:
     v44 = v63;
     [v40 setPayloadPlist:v43];
 
-    v45 = [v40 payloadPlist];
+    payloadPlist = [v40 payloadPlist];
 
-    if (v45)
+    if (payloadPlist)
     {
-      v55 = v19;
-      v46 = v18;
-      v47 = [(STAskForTimeManager *)v56 persistenceController];
+      v55 = userCopy;
+      v46 = grantedCopy;
+      persistenceController = [(STAskForTimeManager *)selfCopy persistenceController];
       v62 = 0;
-      v48 = [v47 saveContext:v61 error:&v62];
+      v48 = [persistenceController saveContext:v61 error:&v62];
       v49 = v62;
 
       v50 = +[STLog ask];
-      a3 = v50;
+      answer = v50;
       if (v48)
       {
-        v18 = v34;
+        grantedCopy = v34;
         v51 = v59;
         if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v67 = v17;
-          _os_log_impl(&_mh_execute_header, a3, OS_LOG_TYPE_DEFAULT, "Successfully saved ask for time override declaration for %{public}@", buf, 0xCu);
+          v67 = identifierCopy;
+          _os_log_impl(&_mh_execute_header, answer, OS_LOG_TYPE_DEFAULT, "Successfully saved ask for time override declaration for %{public}@", buf, 0xCu);
         }
 
-        LOBYTE(a3) = 1;
+        LOBYTE(answer) = 1;
       }
 
       else
@@ -770,20 +770,20 @@ LABEL_22:
           sub_100111D80();
         }
 
-        v18 = v46;
-        if (a10)
+        grantedCopy = v46;
+        if (error)
         {
           STXPCSafeErrorFromCoreDataError();
-          *a10 = LOBYTE(a3) = 0;
+          *error = LOBYTE(answer) = 0;
         }
 
         else
         {
-          LOBYTE(a3) = 0;
+          LOBYTE(answer) = 0;
         }
       }
 
-      v19 = v55;
+      userCopy = v55;
     }
 
     else
@@ -794,41 +794,41 @@ LABEL_22:
         sub_100111DE8();
       }
 
-      if (a10)
+      if (error)
       {
         v53 = v44;
         v49 = 0;
-        LOBYTE(a3) = 0;
-        *a10 = v44;
+        LOBYTE(answer) = 0;
+        *error = v44;
       }
 
       else
       {
         v49 = 0;
-        LOBYTE(a3) = 0;
+        LOBYTE(answer) = 0;
       }
 
       v51 = v59;
     }
 
-    v20 = v61;
+    contextCopy = v61;
   }
 
-  return a3;
+  return answer;
 }
 
-- (BOOL)_approveAskForTimeRequest:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_approveAskForTimeRequest:(id)request managedObjectContext:(id)context error:(id *)error
 {
-  v55 = a3;
+  requestCopy = request;
   v73[1] = 0;
-  v54 = a4;
+  contextCopy = context;
   v59 = [STCoreUser fetchLocalUserInContext:"fetchLocalUserInContext:error:" error:?];
   v6 = 0;
   if (v59)
   {
-    v7 = [v55 timeRequested];
+    timeRequested = [requestCopy timeRequested];
     v8 = [NSNumber numberWithDouble:STAskForTimeRequestRestOfDayInterval];
-    v9 = [v7 isEqual:v8];
+    v9 = [timeRequested isEqual:v8];
 
     if (v9)
     {
@@ -849,36 +849,36 @@ LABEL_22:
 
     else
     {
-      v58 = v7;
+      v58 = timeRequested;
     }
 
-    v15 = [v55 usageType];
-    v16 = [v55 requestedResourceIdentifier];
+    usageType = [requestCopy usageType];
+    requestedResourceIdentifier = [requestCopy requestedResourceIdentifier];
     v73[0] = v6;
-    v53 = -[STAskForTimeManager _applyAskForTimeDeclarationsForAnswer:usageType:requestedResourceIdentifier:timeGranted:oneMoreMinute:toUser:managedObjectContext:error:](self, "_applyAskForTimeDeclarationsForAnswer:usageType:requestedResourceIdentifier:timeGranted:oneMoreMinute:toUser:managedObjectContext:error:", 0, v15, v16, v58, [v55 oneMoreMinute], v59, v54, v73);
+    v53 = -[STAskForTimeManager _applyAskForTimeDeclarationsForAnswer:usageType:requestedResourceIdentifier:timeGranted:oneMoreMinute:toUser:managedObjectContext:error:](self, "_applyAskForTimeDeclarationsForAnswer:usageType:requestedResourceIdentifier:timeGranted:oneMoreMinute:toUser:managedObjectContext:error:", 0, usageType, requestedResourceIdentifier, v58, [requestCopy oneMoreMinute], v59, contextCopy, v73);
     v17 = v73[0];
 
     if (v53)
     {
-      if ([v55 oneMoreMinute] && _os_feature_enabled_impl())
+      if ([requestCopy oneMoreMinute] && _os_feature_enabled_impl())
       {
 
         [v59 dsid];
         v18 = v72 = 0;
-        v19 = v54;
+        v19 = contextCopy;
         v20 = [STCoreUser fetchUserWithDSID:v18 inContext:v19 error:&v72];
         v21 = v20;
         if (v20)
         {
-          v22 = [v20 dsid];
-          v23 = [v21 managingOrganization];
-          v24 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:v22 ofType:STBlueprintTypeDowntime fromOrganization:v23];
+          dsid = [v20 dsid];
+          managingOrganization = [v21 managingOrganization];
+          v24 = [STBlueprint fetchRequestMatchingBlueprintsForUserWithDSID:dsid ofType:STBlueprintTypeDowntime fromOrganization:managingOrganization];
 
           v25 = [v24 execute:&v72];
           v26 = v25;
           if (v25)
           {
-            v52 = [v25 firstObject];
+            firstObject = [v25 firstObject];
           }
 
           else
@@ -889,7 +889,7 @@ LABEL_22:
               sub_100111E50(&v72, v29, v30, v31, v32, v33, v34, v35);
             }
 
-            v52 = 0;
+            firstObject = 0;
           }
         }
 
@@ -901,17 +901,17 @@ LABEL_22:
             sub_100111EC0(v18, &v72);
           }
 
-          v52 = 0;
+          firstObject = 0;
         }
 
         v6 = v72;
-        v36 = [v52 downtimeConfiguration];
-        v37 = [v36 currentState] == 2;
+        downtimeConfiguration = [firstObject downtimeConfiguration];
+        v37 = [downtimeConfiguration currentState] == 2;
 
-        v38 = [v52 downtimeConfiguration];
-        v39 = [v38 currentState];
+        downtimeConfiguration2 = [firstObject downtimeConfiguration];
+        currentState = [downtimeConfiguration2 currentState];
 
-        v40 = v39 == 4 || v37;
+        v40 = currentState == 4 || v37;
         if (v40 == 1)
         {
           v41 = STAvailableCategoriesExcludingSystemCategories();
@@ -941,7 +941,7 @@ LABEL_22:
                 if ((v46 & 1) == 0)
                 {
                   v48 = v47;
-                  *a5 = v47;
+                  *error = v47;
                   v49 = +[STLog ask];
                   if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
                   {
@@ -967,19 +967,19 @@ LABEL_22:
           v76 = sub_10000A804;
           v77 = sub_10000A814;
           v78 = 0;
-          v50 = [v55 requestedResourceIdentifier];
-          v51 = [v55 usageType];
+          requestedResourceIdentifier2 = [requestCopy requestedResourceIdentifier];
+          usageType2 = [requestCopy usageType];
           v60[0] = _NSConcreteStackBlock;
           v60[1] = 3221225472;
           v60[2] = sub_10000FF84;
           v60[3] = &unk_1001A2F28;
           p_buf = &buf;
-          v61 = v55;
-          v62 = self;
+          v61 = requestCopy;
+          selfCopy = self;
           v63 = v19;
           v64 = v59;
           v65 = v58;
-          [(STAskForTimeManager *)self _categoryForIdentifier:v50 ofUsageType:v51 completionHandler:v60];
+          [(STAskForTimeManager *)self _categoryForIdentifier:requestedResourceIdentifier2 ofUsageType:usageType2 completionHandler:v60];
 
           _Block_object_dispose(&buf, 8);
         }
@@ -991,7 +991,7 @@ LABEL_22:
     else
     {
       v27 = v17;
-      *a5 = v17;
+      *error = v17;
     }
 
     v6 = v17;
@@ -1006,10 +1006,10 @@ LABEL_19:
     sub_100111F44();
   }
 
-  if (a5)
+  if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:2 userInfo:0];
-    *a5 = v53 = 0;
+    *error = v53 = 0;
   }
 
   else
@@ -1022,37 +1022,37 @@ LABEL_20:
   return v53;
 }
 
-+ (void)updateBundleIdentifiers:(id)a3 withCategory:(id)a4
++ (void)updateBundleIdentifiers:(id)identifiers withCategory:(id)category
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v5 canonicalBundleIdentifier];
-  if (v6)
+  identifiersCopy = identifiers;
+  categoryCopy = category;
+  canonicalBundleIdentifier = [categoryCopy canonicalBundleIdentifier];
+  if (canonicalBundleIdentifier)
   {
-    [v10 addObject:v6];
-    v7 = [CTCategory equivalentIdentifiersForBundleID:v6];
+    [identifiersCopy addObject:canonicalBundleIdentifier];
+    v7 = [CTCategory equivalentIdentifiersForBundleID:canonicalBundleIdentifier];
     if ([v7 count])
     {
-      v8 = [v7 array];
-      [v10 addObjectsFromArray:v8];
+      array = [v7 array];
+      [identifiersCopy addObjectsFromArray:array];
     }
   }
 
-  v9 = [v5 equivalentBundleIdentifiers];
-  if ([v9 count])
+  equivalentBundleIdentifiers = [categoryCopy equivalentBundleIdentifiers];
+  if ([equivalentBundleIdentifiers count])
   {
-    [v10 addObjectsFromArray:v9];
+    [identifiersCopy addObjectsFromArray:equivalentBundleIdentifiers];
   }
 }
 
-+ (id)_filterForExceededBudgetBlueprints:(id)a3 error:(id *)a4
++ (id)_filterForExceededBudgetBlueprints:(id)blueprints error:(id *)error
 {
-  v6 = a3;
+  blueprintsCopy = blueprints;
   v7 = +[DMFPolicyMonitor policyMonitor];
-  v8 = [v7 allExpiredScreenTimeBudgetsWithError:a4];
+  v8 = [v7 allExpiredScreenTimeBudgetsWithError:error];
   if (v8)
   {
-    v9 = [a1 _blueprintsForBudgetIdentifiers:v8 fromBlueprints:v6];
+    v9 = [self _blueprintsForBudgetIdentifiers:v8 fromBlueprints:blueprintsCopy];
   }
 
   else
@@ -1063,18 +1063,18 @@ LABEL_20:
   return v9;
 }
 
-+ (id)_blueprintsForBudgetIdentifiers:(id)a3 fromBlueprints:(id)a4
++ (id)_blueprintsForBudgetIdentifiers:(id)identifiers fromBlueprints:(id)blueprints
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  blueprintsCopy = blueprints;
   v7 = objc_opt_new();
-  v26 = v6;
-  v8 = [v6 mutableCopy];
+  v26 = blueprintsCopy;
+  v8 = [blueprintsCopy mutableCopy];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = v5;
+  v9 = identifiersCopy;
   v25 = [v9 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v25)
   {
@@ -1119,14 +1119,14 @@ LABEL_20:
               }
 
               v17 = *(*(&v28 + 1) + 8 * i);
-              v18 = [v17 identifier];
-              v19 = [v11 containsString:v18];
+              identifier = [v17 identifier];
+              v19 = [v11 containsString:identifier];
 
               if (v19)
               {
                 [v7 addObject:v17];
-                v20 = [v17 identifier];
-                [v8 removeObject:v20];
+                identifier2 = [v17 identifier];
+                [v8 removeObject:identifier2];
               }
             }
 
@@ -1157,22 +1157,22 @@ LABEL_20:
   return v21;
 }
 
-- (void)_applyOneMoreMinuteForBlueprint:(id)a3 timeGranted:(id)a4 toUser:(id)a5 managedObjectContext:(id)a6 error:(id *)a7
+- (void)_applyOneMoreMinuteForBlueprint:(id)blueprint timeGranted:(id)granted toUser:(id)user managedObjectContext:(id)context error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  blueprintCopy = blueprint;
+  grantedCopy = granted;
+  userCopy = user;
+  contextCopy = context;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v32 = v12;
-  v16 = [v12 usageLimit];
-  v17 = [v16 applicationIdentifiers];
+  v32 = blueprintCopy;
+  usageLimit = [blueprintCopy usageLimit];
+  applicationIdentifiers = [usageLimit applicationIdentifiers];
 
-  obj = v17;
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v46 count:16];
+  obj = applicationIdentifiers;
+  v18 = [applicationIdentifiers countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1195,7 +1195,7 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Expiring One More Minute for %{public}@", buf, 0xCu);
         }
 
-        [(STAskForTimeManager *)self _applyAskForTimeDeclarationsForAnswer:0 usageType:0 requestedResourceIdentifier:v22 timeGranted:v13 oneMoreMinute:1 toUser:v14 managedObjectContext:v15 error:a7];
+        [(STAskForTimeManager *)self _applyAskForTimeDeclarationsForAnswer:0 usageType:0 requestedResourceIdentifier:v22 timeGranted:grantedCopy oneMoreMinute:1 toUser:userCopy managedObjectContext:contextCopy error:error];
       }
 
       v19 = [obj countByEnumeratingWithState:&v39 objects:v46 count:16];
@@ -1208,11 +1208,11 @@ LABEL_20:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = [v32 usageLimit];
-  v25 = [v24 websiteIdentifiers];
+  usageLimit2 = [v32 usageLimit];
+  websiteIdentifiers = [usageLimit2 websiteIdentifiers];
 
-  obja = v25;
-  v26 = [v25 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  obja = websiteIdentifiers;
+  v26 = [websiteIdentifiers countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v26)
   {
     v27 = v26;
@@ -1235,7 +1235,7 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Expiring One More Minute for %{public}@", buf, 0xCu);
         }
 
-        [(STAskForTimeManager *)self _applyAskForTimeDeclarationsForAnswer:0 usageType:1 requestedResourceIdentifier:v30 timeGranted:v13 oneMoreMinute:1 toUser:v14 managedObjectContext:v15 error:a7];
+        [(STAskForTimeManager *)self _applyAskForTimeDeclarationsForAnswer:0 usageType:1 requestedResourceIdentifier:v30 timeGranted:grantedCopy oneMoreMinute:1 toUser:userCopy managedObjectContext:contextCopy error:error];
       }
 
       v27 = [obja countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -1245,43 +1245,43 @@ LABEL_20:
   }
 }
 
-- (void)_categoryForIdentifier:(id)a3 ofUsageType:(int64_t)a4 completionHandler:(id)a5
+- (void)_categoryForIdentifier:(id)identifier ofUsageType:(int64_t)type completionHandler:(id)handler
 {
-  v10 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 2)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (type == 2)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v9 = +[CTCategories sharedCategories];
-      [v9 categoryForDomainName:v10 completionHandler:v8];
+      [v9 categoryForDomainName:identifierCopy completionHandler:v8];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_8;
       }
 
       v9 = +[CTCategories sharedCategories];
-      [v9 categoryForBundleID:v10 completionHandler:v8];
+      [v9 categoryForBundleID:identifierCopy completionHandler:v8];
     }
   }
 
 LABEL_8:
 }
 
-- (BOOL)_sendRequestToParents:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_sendRequestToParents:(id)parents managedObjectContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  parentsCopy = parents;
+  contextCopy = context;
   v9 = +[STLog ask];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -1289,14 +1289,14 @@ LABEL_8:
   }
 
   v30 = 0;
-  v10 = [STCoreUser fetchLocalUserInContext:v8 error:&v30];
+  v10 = [STCoreUser fetchLocalUserInContext:contextCopy error:&v30];
   v11 = v30;
   if (v10)
   {
     if ([v10 isManaged])
     {
       v29 = v11;
-      v12 = [STAskForTimeRequestResponse upsertAskForTimeRequest:v7 fromUser:v10 inContext:v8 error:&v29];
+      v12 = [STAskForTimeRequestResponse upsertAskForTimeRequest:parentsCopy fromUser:v10 inContext:contextCopy error:&v29];
       v13 = v29;
 
       if (!v12)
@@ -1307,11 +1307,11 @@ LABEL_8:
           sub_100111674();
         }
 
-        if (a5)
+        if (error)
         {
           v24 = v13;
           v21 = 0;
-          *a5 = v13;
+          *error = v13;
         }
 
         else
@@ -1325,10 +1325,10 @@ LABEL_8:
       v14 = objc_opt_new();
       [v12 setRequestTimeStamp:v14];
 
-      if ([v8 hasChanges])
+      if ([contextCopy hasChanges])
       {
         v28 = v13;
-        v15 = [v8 save:&v28];
+        v15 = [contextCopy save:&v28];
         v16 = v28;
 
         if ((v15 & 1) == 0)
@@ -1339,11 +1339,11 @@ LABEL_8:
             sub_10011160C();
           }
 
-          if (a5)
+          if (error)
           {
             v26 = v16;
             v21 = 0;
-            *a5 = v16;
+            *error = v16;
           }
 
           else
@@ -1364,14 +1364,14 @@ LABEL_8:
         sub_1001121C4();
       }
 
-      v18 = [v10 dsid];
-      [v7 setRequestingUserDSID:v18];
+      dsid = [v10 dsid];
+      [parentsCopy setRequestingUserDSID:dsid];
 
-      v19 = [v10 givenName];
-      [v7 setRequestingUserDisplayName:v19];
+      givenName = [v10 givenName];
+      [parentsCopy setRequestingUserDisplayName:givenName];
 
-      v20 = [v12 identifier];
-      [v7 setRequestIdentifier:v20];
+      identifier = [v12 identifier];
+      [parentsCopy setRequestIdentifier:identifier];
 
       v21 = 1;
 LABEL_30:
@@ -1396,10 +1396,10 @@ LABEL_30:
     }
   }
 
-  if (a5)
+  if (error)
   {
     [NSError errorWithDomain:STErrorDomain code:2 userInfo:0];
-    *a5 = v21 = 0;
+    *error = v21 = 0;
   }
 
   else
@@ -1412,59 +1412,59 @@ LABEL_31:
   return v21;
 }
 
-- (void)handleAnswer:(int64_t)a3 forRequestWithIdentifier:(id)a4
+- (void)handleAnswer:(int64_t)answer forRequestWithIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = +[STLog ask];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a3 - 1) > 2)
+    if ((answer - 1) > 2)
     {
       v8 = @"Not Approved";
     }
 
     else
     {
-      v8 = off_1001A2F48[a3 - 1];
+      v8 = off_1001A2F48[answer - 1];
     }
 
     *buf = 138543618;
     v14 = v8;
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling local ask response: %{public}@ for request: %{public}@", buf, 0x16u);
   }
 
   v12 = 0;
-  v9 = [STAskForTimeManager _responseAnswerForAnswer:a3 timeApproved:&v12];
+  v9 = [STAskForTimeManager _responseAnswerForAnswer:answer timeApproved:&v12];
   v10 = v12;
-  v11 = [[NSUUID alloc] initWithUUIDString:v6];
+  v11 = [[NSUUID alloc] initWithUUIDString:identifierCopy];
   [(STAskForTimeManager *)self _handleAnswer:v9 requestIdentifier:v11 timeApproved:v10 completionHandler:0];
 }
 
-+ (int64_t)_resourceTypeForUsageType:(int64_t)a3
++ (int64_t)_resourceTypeForUsageType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (int64_t)_approvedTimeForResponseAnswer:(int64_t)a3 amount:(id)a4
++ (int64_t)_approvedTimeForResponseAnswer:(int64_t)answer amount:(id)amount
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (answer)
   {
     v7 = 0;
   }
 
-  else if ([v5 isEqualToNumber:&off_1001B20B0])
+  else if ([amountCopy isEqualToNumber:&off_1001B20B0])
   {
     v7 = 1;
   }
@@ -1482,13 +1482,13 @@ LABEL_31:
   return v7;
 }
 
-+ (int64_t)_responseAnswerForAnswer:(int64_t)a3 timeApproved:(id *)a4
++ (int64_t)_responseAnswerForAnswer:(int64_t)answer timeApproved:(id *)approved
 {
-  if ((a3 - 1) > 2)
+  if ((answer - 1) > 2)
   {
     v5 = 0;
     result = 1;
-    if (!a4)
+    if (!approved)
     {
       return result;
     }
@@ -1497,11 +1497,11 @@ LABEL_31:
   }
 
   result = 0;
-  v5 = off_1001A2F60[a3 - 1];
-  if (a4)
+  v5 = off_1001A2F60[answer - 1];
+  if (approved)
   {
 LABEL_5:
-    *a4 = v5;
+    *approved = v5;
   }
 
   return result;

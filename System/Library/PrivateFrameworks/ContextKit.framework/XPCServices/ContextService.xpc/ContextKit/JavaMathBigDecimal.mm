@@ -1,48 +1,48 @@
 @interface JavaMathBigDecimal
-+ (int)longCompareToWithLong:(int64_t)a3 withLong:(int64_t)a4;
++ (int)longCompareToWithLong:(int64_t)long withLong:(int64_t)withLong;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (JavaMathBigDecimal)initWithCharArray:(id)a3;
-- (JavaMathBigDecimal)initWithDouble:(double)a3 withJavaMathMathContext:(id)a4;
-- (JavaMathBigDecimal)initWithInt:(int)a3 withJavaMathMathContext:(id)a4;
-- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)a3 withInt:(int)a4 withJavaMathMathContext:(id)a5;
-- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)a3 withJavaMathMathContext:(id)a4;
-- (JavaMathBigDecimal)initWithLong:(int64_t)a3 withJavaMathMathContext:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaMathBigDecimal)initWithCharArray:(id)array;
+- (JavaMathBigDecimal)initWithDouble:(double)double withJavaMathMathContext:(id)context;
+- (JavaMathBigDecimal)initWithInt:(int)int withJavaMathMathContext:(id)context;
+- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)integer withInt:(int)int withJavaMathMathContext:(id)context;
+- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)integer withJavaMathMathContext:(id)context;
+- (JavaMathBigDecimal)initWithLong:(int64_t)long withJavaMathMathContext:(id)context;
 - (NSString)description;
 - (double)doubleValue;
 - (float)floatValue;
 - (id)abs;
-- (id)absWithJavaMathMathContext:(id)a3;
-- (id)addWithJavaMathBigDecimal:(id)a3;
-- (id)addWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
-- (id)divideAndRemainderWithJavaMathBigDecimal:(id)a3;
-- (id)divideAndRemainderWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
-- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)a3;
-- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
-- (id)divideWithJavaMathBigDecimal:(id)a3;
-- (id)divideWithJavaMathBigDecimal:(id)a3 withInt:(int)a4;
-- (id)divideWithJavaMathBigDecimal:(id)a3 withInt:(int)a4 withJavaMathRoundingModeEnum:(id)a5;
-- (id)divideWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
-- (id)maxWithJavaMathBigDecimal:(id)a3;
-- (id)minWithJavaMathBigDecimal:(id)a3;
-- (id)multiplyWithJavaMathBigDecimal:(id)a3;
-- (id)multiplyWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
+- (id)absWithJavaMathMathContext:(id)context;
+- (id)addWithJavaMathBigDecimal:(id)decimal;
+- (id)addWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
+- (id)divideAndRemainderWithJavaMathBigDecimal:(id)decimal;
+- (id)divideAndRemainderWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
+- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)decimal;
+- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
+- (id)divideWithJavaMathBigDecimal:(id)decimal;
+- (id)divideWithJavaMathBigDecimal:(id)decimal withInt:(int)int;
+- (id)divideWithJavaMathBigDecimal:(id)decimal withInt:(int)int withJavaMathRoundingModeEnum:(id)enum;
+- (id)divideWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
+- (id)maxWithJavaMathBigDecimal:(id)decimal;
+- (id)minWithJavaMathBigDecimal:(id)decimal;
+- (id)multiplyWithJavaMathBigDecimal:(id)decimal;
+- (id)multiplyWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
 - (id)negate;
-- (id)negateWithJavaMathMathContext:(id)a3;
-- (id)remainderWithJavaMathBigDecimal:(id)a3;
-- (id)remainderWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
-- (id)roundWithJavaMathMathContext:(id)a3;
-- (id)scaleByPowerOfTenWithInt:(int)a3;
-- (id)setScaleWithInt:(int)a3 withJavaMathRoundingModeEnum:(id)a4;
+- (id)negateWithJavaMathMathContext:(id)context;
+- (id)remainderWithJavaMathBigDecimal:(id)decimal;
+- (id)remainderWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
+- (id)roundWithJavaMathMathContext:(id)context;
+- (id)scaleByPowerOfTenWithInt:(int)int;
+- (id)setScaleWithInt:(int)int withJavaMathRoundingModeEnum:(id)enum;
 - (id)stripTrailingZeros;
-- (id)subtractWithJavaMathBigDecimal:(id)a3;
-- (id)subtractWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4;
+- (id)subtractWithJavaMathBigDecimal:(id)decimal;
+- (id)subtractWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context;
 - (id)toBigInteger;
 - (id)toBigIntegerExact;
 - (id)toEngineeringString;
 - (id)toPlainString;
 - (int)aproxPrecision;
-- (int)compareToWithId:(id)a3;
+- (int)compareToWithId:(id)id;
 - (int)intValue;
 - (int)precision;
 - (int)signum;
@@ -50,84 +50,84 @@
 - (uint64_t)unscaledValue;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaMathBigDecimal
 
-- (JavaMathBigDecimal)initWithCharArray:(id)a3
+- (JavaMathBigDecimal)initWithCharArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  JavaMathBigDecimal_initWithCharArray_withInt_withInt_(self, a3, 0, *(a3 + 2));
+  JavaMathBigDecimal_initWithCharArray_withInt_withInt_(self, array, 0, *(array + 2));
   return self;
 }
 
-- (JavaMathBigDecimal)initWithDouble:(double)a3 withJavaMathMathContext:(id)a4
+- (JavaMathBigDecimal)initWithDouble:(double)double withJavaMathMathContext:(id)context
 {
-  JavaMathBigDecimal_initWithDouble_(self, a3);
-  sub_10015FC44(self, a4);
+  JavaMathBigDecimal_initWithDouble_(self, double);
+  sub_10015FC44(self, context);
   return self;
 }
 
-- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)a3 withJavaMathMathContext:(id)a4
+- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)integer withJavaMathMathContext:(id)context
 {
-  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(self, a3, 0);
-  sub_10015FC44(self, a4);
+  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(self, integer, 0);
+  sub_10015FC44(self, context);
   return self;
 }
 
-- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)a3 withInt:(int)a4 withJavaMathMathContext:(id)a5
+- (JavaMathBigDecimal)initWithJavaMathBigInteger:(id)integer withInt:(int)int withJavaMathMathContext:(id)context
 {
-  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(self, a3, a4);
-  sub_10015FC44(self, a5);
+  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(self, integer, int);
+  sub_10015FC44(self, context);
   return self;
 }
 
-- (JavaMathBigDecimal)initWithInt:(int)a3 withJavaMathMathContext:(id)a4
+- (JavaMathBigDecimal)initWithInt:(int)int withJavaMathMathContext:(id)context
 {
-  sub_10015DB2C(self, a3, 0);
-  sub_10015FC44(self, a4);
+  sub_10015DB2C(self, int, 0);
+  sub_10015FC44(self, context);
   return self;
 }
 
-- (JavaMathBigDecimal)initWithLong:(int64_t)a3 withJavaMathMathContext:(id)a4
+- (JavaMathBigDecimal)initWithLong:(int64_t)long withJavaMathMathContext:(id)context
 {
-  sub_10015DA74(self, a3, 0);
-  sub_10015FC44(self, a4);
+  sub_10015DA74(self, long, 0);
+  sub_10015FC44(self, context);
   return self;
 }
 
-- (id)addWithJavaMathBigDecimal:(id)a3
+- (id)addWithJavaMathBigDecimal:(id)decimal
 {
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_28;
   }
 
-  v3 = a3;
+  decimalCopy = decimal;
   scale = self->scale__;
-  v6 = *(a3 + 12);
+  v6 = *(decimal + 12);
   v7 = (scale - v6);
   bitLength = self->bitLength_;
   if (!bitLength && self->smallValue_ != -1)
   {
     if (v7 < 1)
     {
-      return v3;
+      return decimalCopy;
     }
 
-    v9 = v3->bitLength_;
+    v9 = decimalCopy->bitLength_;
     if (v9)
     {
       goto LABEL_4;
     }
 
-    if (v3->smallValue_ == -1)
+    if (decimalCopy->smallValue_ == -1)
     {
       v9 = 0;
       goto LABEL_4;
@@ -136,8 +136,8 @@
     return self;
   }
 
-  v9 = v3->bitLength_;
-  if (!v9 && v3->smallValue_ != -1 && (v7 & 0x80000000) == 0)
+  v9 = decimalCopy->bitLength_;
+  if (!v9 && decimalCopy->smallValue_ != -1 && (v7 & 0x80000000) == 0)
   {
     return self;
   }
@@ -148,7 +148,7 @@ LABEL_4:
     if ((JavaLangMath_maxWithInt_withInt_(bitLength, v9) + 1) <= 63)
     {
       v10 = self->scale__;
-      v11 = v3->smallValue_ + self->smallValue_;
+      v11 = decimalCopy->smallValue_ + self->smallValue_;
 
       return JavaMathBigDecimal_valueOfWithLong_withInt_(v11, v10);
     }
@@ -156,7 +156,7 @@ LABEL_4:
     v15 = [JavaMathBigDecimal unscaledValue]_0(self);
     if (v15)
     {
-      v16 = [v15 addWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(v3)];
+      v16 = [v15 addWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimalCopy)];
       v17 = self->scale__;
       v18 = [JavaMathBigDecimal alloc];
       JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v18, v16, v17);
@@ -171,52 +171,52 @@ LABEL_28:
   if (v7 < 1)
   {
     v7 = (v6 - scale);
-    v13 = v3;
-    v14 = self;
+    selfCopy2 = decimalCopy;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = self;
-    v14 = v3;
+    selfCopy2 = self;
+    selfCopy = decimalCopy;
   }
 
-  return sub_10015EEA4(v13, v14, v7);
+  return sub_10015EEA4(selfCopy2, selfCopy, v7);
 }
 
 - (uint64_t)unscaledValue
 {
-  result = *(a1 + 24);
+  result = *(self + 24);
   if (!result)
   {
-    v3 = JavaMathBigInteger_valueOfWithLong_(*(a1 + 40));
-    JreStrongAssign((a1 + 24), v3);
-    return *(a1 + 24);
+    v3 = JavaMathBigInteger_valueOfWithLong_(*(self + 40));
+    JreStrongAssign((self + 24), v3);
+    return *(self + 24);
   }
 
   return result;
 }
 
-- (id)addWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)addWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_44;
   }
 
   scale = self->scale__;
-  v8 = *(a3 + 12);
-  if (!*(a3 + 8) && *(a3 + 5) != -1 || !self->bitLength_ && self->smallValue_ != -1)
+  v8 = *(decimal + 12);
+  if (!*(decimal + 8) && *(decimal + 5) != -1 || !self->bitLength_ && self->smallValue_ != -1)
   {
     goto LABEL_36;
   }
 
-  if (!a4)
+  if (!context)
   {
     goto LABEL_44;
   }
 
-  if (![a4 getPrecision])
+  if (![context getPrecision])
   {
     goto LABEL_36;
   }
@@ -245,14 +245,14 @@ LABEL_28:
     precision = v12 + 1;
   }
 
-  v14 = a3;
-  v15 = self;
+  selfCopy2 = decimal;
+  decimalCopy2 = self;
   if (v9 - 1 <= precision)
   {
-    v16 = *(a3 + 13);
+    v16 = *(decimal + 13);
     if (v16 <= 0)
     {
-      v17 = (*(a3 + 8) - 1) * 0.301029996;
+      v17 = (*(decimal + 8) - 1) * 0.301029996;
       v18 = v17;
       if (v17 < 0.0)
       {
@@ -272,19 +272,19 @@ LABEL_28:
       v16 = v18 + 1;
     }
 
-    v14 = self;
-    v15 = a3;
+    selfCopy2 = self;
+    decimalCopy2 = decimal;
     if (v16 >= ~v9)
     {
       goto LABEL_36;
     }
   }
 
-  v20 = [a4 getPrecision];
-  v21 = v14[13];
+  getPrecision = [context getPrecision];
+  v21 = selfCopy2[13];
   if (v21 <= 0)
   {
-    v22 = (v14[8] - 1) * 0.301029996;
+    v22 = (selfCopy2[8] - 1) * 0.301029996;
     v23 = v22;
     if (v22 < 0.0)
     {
@@ -304,10 +304,10 @@ LABEL_28:
     v21 = v23 + 1;
   }
 
-  if (v20 >= v21)
+  if (getPrecision >= v21)
   {
 LABEL_36:
-    v30 = [(JavaMathBigDecimal *)self addWithJavaMathBigDecimal:a3];
+    v30 = [(JavaMathBigDecimal *)self addWithJavaMathBigDecimal:decimal];
     if (v30)
     {
       goto LABEL_37;
@@ -316,19 +316,19 @@ LABEL_36:
     goto LABEL_44;
   }
 
-  v25 = [v14 signum];
-  v26 = [v15 signum];
-  v27 = [JavaMathBigDecimal unscaledValue]_0(v14);
-  if (v25 != v26)
+  signum = [selfCopy2 signum];
+  signum2 = [decimalCopy2 signum];
+  v27 = [JavaMathBigDecimal unscaledValue]_0(selfCopy2);
+  if (signum != signum2)
   {
     if (v27)
     {
-      v32 = [v27 subtractWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(v25)];
+      v32 = [v27 subtractWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(signum)];
       v33 = JavaMathMultiplication_multiplyByPositiveIntWithJavaMathBigInteger_withInt_(v32, 0xAu);
       if (v33)
       {
         v29 = v33;
-        v25 *= 9;
+        signum *= 9;
         goto LABEL_43;
       }
     }
@@ -345,38 +345,38 @@ LABEL_44:
 
   v29 = v28;
 LABEL_43:
-  v34 = [(JavaMathBigInteger *)v29 addWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(v25)];
-  v35 = v14[12];
+  v34 = [(JavaMathBigInteger *)v29 addWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(signum)];
+  v35 = selfCopy2[12];
   v36 = [JavaMathBigDecimal alloc];
   JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v36, v34, v35 + 1);
   v30 = v36;
 LABEL_37:
 
-  return [(JavaMathBigDecimal *)v30 roundWithJavaMathMathContext:a4];
+  return [(JavaMathBigDecimal *)v30 roundWithJavaMathMathContext:context];
 }
 
-- (id)subtractWithJavaMathBigDecimal:(id)a3
+- (id)subtractWithJavaMathBigDecimal:(id)decimal
 {
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_50;
   }
 
   scale = self->scale__;
-  v6 = *(a3 + 12);
+  v6 = *(decimal + 12);
   v7 = (scale - v6);
   bitLength = self->bitLength_;
   if (bitLength || self->smallValue_ == -1)
   {
-    v9 = *(a3 + 8);
-    if (v9 || *(a3 + 5) == -1 || (v7 & 0x80000000) != 0)
+    v9 = *(decimal + 8);
+    if (v9 || *(decimal + 5) == -1 || (v7 & 0x80000000) != 0)
     {
 LABEL_4:
       if (scale == v6)
       {
         if ((JavaLangMath_maxWithInt_withInt_(bitLength, v9) + 1) <= 63)
         {
-          v10 = self->smallValue_ - *(a3 + 5);
+          v10 = self->smallValue_ - *(decimal + 5);
 LABEL_20:
           v14 = self->scale__;
 LABEL_21:
@@ -388,7 +388,7 @@ LABEL_21:
         if (v16)
         {
           v17 = v16;
-          v18 = [JavaMathBigDecimal unscaledValue]_0(a3);
+          v18 = [JavaMathBigDecimal unscaledValue]_0(decimal);
           v19 = v17;
 LABEL_31:
           v23 = [v19 subtractWithJavaMathBigInteger:v18];
@@ -440,8 +440,8 @@ LABEL_47:
               IOSArray_throwOutOfBoundsWithMsg(v33, v29);
             }
 
-            v10 = *(qword_100554A50 + 16 + 8 * v29) * smallValue - *(a3 + 5);
-            v14 = *(a3 + 12);
+            v10 = *(qword_100554A50 + 16 + 8 * v29) * smallValue - *(decimal + 5);
+            v14 = *(decimal + 12);
             goto LABEL_21;
           }
         }
@@ -450,8 +450,8 @@ LABEL_47:
         v35 = JavaMathMultiplication_multiplyByTenPowWithJavaMathBigInteger_withLong_(v34, v30);
         if (v35)
         {
-          v36 = [(JavaMathBigInteger *)v35 subtractWithJavaMathBigInteger:[JavaMathBigDecimal unscaledValue]_0(a3)];
-          v37 = *(a3 + 12);
+          v36 = [(JavaMathBigInteger *)v35 subtractWithJavaMathBigInteger:[JavaMathBigDecimal unscaledValue]_0(decimal)];
+          v37 = *(decimal + 12);
           v25 = [JavaMathBigDecimal alloc];
           v26 = v25;
           v27 = v36;
@@ -482,7 +482,7 @@ LABEL_47:
 
           if ((JavaLangMath_maxWithInt_withInt_(bitLength, *(qword_100554A58 + 12 + 4 * v7) + v9) + 1) <= 63)
           {
-            v12 = *(a3 + 5);
+            v12 = *(decimal + 5);
             v13 = *(qword_100554A50 + 8);
             if (v7 >= v13)
             {
@@ -498,7 +498,7 @@ LABEL_47:
         if (v20)
         {
           v21 = v20;
-          v22 = [JavaMathBigDecimal unscaledValue]_0(a3);
+          v22 = [JavaMathBigDecimal unscaledValue]_0(decimal);
           v18 = JavaMathMultiplication_multiplyByTenPowWithJavaMathBigInteger_withLong_(v22, v7);
           v19 = v21;
           goto LABEL_31;
@@ -514,13 +514,13 @@ LABEL_50:
 
   if (v7 > 0)
   {
-    v9 = *(a3 + 8);
+    v9 = *(decimal + 8);
     if (v9)
     {
       goto LABEL_4;
     }
 
-    if (*(a3 + 5) == -1)
+    if (*(decimal + 5) == -1)
     {
       v9 = 0;
       goto LABEL_4;
@@ -529,37 +529,37 @@ LABEL_50:
     return self;
   }
 
-  return [a3 negate];
+  return [decimal negate];
 }
 
-- (id)subtractWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)subtractWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_36;
   }
 
-  v7 = *(a3 + 12);
+  v7 = *(decimal + 12);
   scale = self->scale__;
-  if (!*(a3 + 8) && *(a3 + 5) != -1 || !self->bitLength_ && self->smallValue_ != -1)
+  if (!*(decimal + 8) && *(decimal + 5) != -1 || !self->bitLength_ && self->smallValue_ != -1)
   {
     goto LABEL_29;
   }
 
-  if (!a4)
+  if (!context)
   {
     goto LABEL_36;
   }
 
-  if (![a4 getPrecision])
+  if (![context getPrecision])
   {
     goto LABEL_29;
   }
 
-  v9 = *(a3 + 13);
+  v9 = *(decimal + 13);
   if (v9 <= 0)
   {
-    v10 = (*(a3 + 8) - 1) * 0.301029996;
+    v10 = (*(decimal + 8) - 1) * 0.301029996;
     v11 = v10;
     if (v10 < 0.0)
     {
@@ -584,7 +584,7 @@ LABEL_50:
     goto LABEL_29;
   }
 
-  v13 = [a4 getPrecision];
+  getPrecision = [context getPrecision];
   precision = self->precision_;
   if (precision <= 0)
   {
@@ -608,10 +608,10 @@ LABEL_50:
     precision = v16 + 1;
   }
 
-  if (v13 >= precision)
+  if (getPrecision >= precision)
   {
 LABEL_29:
-    v24 = [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:a3];
+    v24 = [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:decimal];
     if (v24)
     {
       goto LABEL_30;
@@ -620,10 +620,10 @@ LABEL_29:
     goto LABEL_36;
   }
 
-  v18 = [(JavaMathBigDecimal *)self signum];
-  v19 = [a3 signum];
+  signum = [(JavaMathBigDecimal *)self signum];
+  signum2 = [decimal signum];
   v20 = [JavaMathBigDecimal unscaledValue]_0(self);
-  if (v18 != v19)
+  if (signum != signum2)
   {
     v26 = JavaMathMultiplication_multiplyByPositiveIntWithJavaMathBigInteger_withInt_(v20, 0xAu);
     if (v26)
@@ -641,7 +641,7 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  v21 = [v20 subtractWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(v18)];
+  v21 = [v20 subtractWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(signum)];
   v22 = JavaMathMultiplication_multiplyByPositiveIntWithJavaMathBigInteger_withInt_(v21, 0xAu);
   if (!v22)
   {
@@ -649,29 +649,29 @@ LABEL_36:
   }
 
   v23 = v22;
-  v18 *= 9;
+  signum *= 9;
 LABEL_35:
-  v27 = [(JavaMathBigInteger *)v23 addWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(v18)];
+  v27 = [(JavaMathBigInteger *)v23 addWithJavaMathBigInteger:JavaMathBigInteger_valueOfWithLong_(signum)];
   v28 = self->scale__;
   v29 = [JavaMathBigDecimal alloc];
   JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v29, v27, v28 + 1);
   v24 = v29;
 LABEL_30:
 
-  return [(JavaMathBigDecimal *)v24 roundWithJavaMathMathContext:a4];
+  return [(JavaMathBigDecimal *)v24 roundWithJavaMathMathContext:context];
 }
 
-- (id)multiplyWithJavaMathBigDecimal:(id)a3
+- (id)multiplyWithJavaMathBigDecimal:(id)decimal
 {
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_18;
   }
 
   scale = self->scale__;
-  v5 = *(a3 + 12);
+  v5 = *(decimal + 12);
   bitLength = self->bitLength_;
-  if (!bitLength && self->smallValue_ != -1 || (v7 = *(a3 + 8)) == 0 && *(a3 + 5) != -1)
+  if (!bitLength && self->smallValue_ != -1 || (v7 = *(decimal + 8)) == 0 && *(decimal + 5) != -1)
   {
 
     return sub_10015FAF4(v5 + scale);
@@ -679,7 +679,7 @@ LABEL_30:
 
   if (v7 + bitLength <= 63)
   {
-    v8 = *(a3 + 5) * self->smallValue_;
+    v8 = *(decimal + 5) * self->smallValue_;
     v9 = sub_10015FB94(v5 + scale);
 
     return JavaMathBigDecimal_valueOfWithLong_withInt_(v8, v9);
@@ -692,7 +692,7 @@ LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v12 = [v11 multiplyWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+  v12 = [v11 multiplyWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
   v13 = sub_10015FB94(v5 + scale);
   v14 = [JavaMathBigDecimal alloc];
   JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v14, v12, v13);
@@ -700,34 +700,34 @@ LABEL_18:
   return v14;
 }
 
-- (id)multiplyWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)multiplyWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  v5 = [(JavaMathBigDecimal *)self multiplyWithJavaMathBigDecimal:a3];
+  v5 = [(JavaMathBigDecimal *)self multiplyWithJavaMathBigDecimal:decimal];
   if (!v5)
   {
     JreThrowNullPointerException();
   }
 
   v6 = v5;
-  sub_10015FC44(v5, a4);
+  sub_10015FC44(v5, context);
   return v6;
 }
 
-- (id)divideWithJavaMathBigDecimal:(id)a3 withInt:(int)a4 withJavaMathRoundingModeEnum:(id)a5
+- (id)divideWithJavaMathBigDecimal:(id)decimal withInt:(int)int withJavaMathRoundingModeEnum:(id)enum
 {
-  if (!a5)
+  if (!enum)
   {
     v26 = new_JavaLangNullPointerException_init();
     goto LABEL_42;
   }
 
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_35;
   }
 
-  v8 = *(a3 + 8);
-  if (!v8 && *(a3 + 5) != -1)
+  v8 = *(decimal + 8);
+  if (!v8 && *(decimal + 5) != -1)
   {
     v26 = new_JavaLangArithmeticException_initWithNSString_(@"Division by zero");
 LABEL_42:
@@ -735,7 +735,7 @@ LABEL_42:
   }
 
   scale = self->scale__;
-  v10 = *(a3 + 12) + a4;
+  v10 = *(decimal + 12) + int;
   v11 = scale - v10;
   if (v8 > 63)
   {
@@ -752,10 +752,10 @@ LABEL_42:
   {
     smallValue = self->smallValue_;
 LABEL_9:
-    v14 = *(a3 + 5);
+    v14 = *(decimal + 5);
 LABEL_10:
 
-    return sub_1001603C4(smallValue, v14, a4, a5);
+    return sub_1001603C4(smallValue, v14, int, enum);
   }
 
   if (v11 >= 1)
@@ -784,7 +784,7 @@ LABEL_10:
             IOSArray_throwOutOfBoundsWithMsg(v18, v11);
           }
 
-          v14 = *(qword_100554A50 + 16 + 8 * v11) * *(a3 + 5);
+          v14 = *(qword_100554A50 + 16 + 8 * v11) * *(decimal + 5);
           smallValue = v17;
           goto LABEL_10;
         }
@@ -834,7 +834,7 @@ LABEL_35:
 
 LABEL_28:
   v23 = [JavaMathBigDecimal unscaledValue]_0(self);
-  v24 = [JavaMathBigDecimal unscaledValue]_0(a3);
+  v24 = [JavaMathBigDecimal unscaledValue]_0(decimal);
   v25 = v24;
   if (v11 < 1)
   {
@@ -849,27 +849,27 @@ LABEL_28:
     v25 = JavaMathMultiplication_multiplyByTenPowWithJavaMathBigInteger_withLong_(v24, v11);
   }
 
-  return sub_1001604AC(v23, v25, a4, a5);
+  return sub_1001604AC(v23, v25, int, enum);
 }
 
-- (id)divideWithJavaMathBigDecimal:(id)a3 withInt:(int)a4
+- (id)divideWithJavaMathBigDecimal:(id)decimal withInt:(int)int
 {
   scale = self->scale__;
-  v7 = JavaMathRoundingModeEnum_valueOfWithInt_(a4);
+  v7 = JavaMathRoundingModeEnum_valueOfWithInt_(int);
 
-  return [(JavaMathBigDecimal *)self divideWithJavaMathBigDecimal:a3 withInt:scale withJavaMathRoundingModeEnum:v7];
+  return [(JavaMathBigDecimal *)self divideWithJavaMathBigDecimal:decimal withInt:scale withJavaMathRoundingModeEnum:v7];
 }
 
-- (id)divideWithJavaMathBigDecimal:(id)a3
+- (id)divideWithJavaMathBigDecimal:(id)decimal
 {
   v5 = [JavaMathBigDecimal unscaledValue]_0(self);
-  if (!a3)
+  if (!decimal)
   {
     goto LABEL_45;
   }
 
   v6 = v5;
-  v7 = [JavaMathBigDecimal unscaledValue]_0(a3);
+  v7 = [JavaMathBigDecimal unscaledValue]_0(decimal);
   if (!qword_100554A60)
   {
     goto LABEL_45;
@@ -877,7 +877,7 @@ LABEL_28:
 
   v8 = v7;
   v9 = *(qword_100554A60 + 8);
-  if (!*(a3 + 8) && *(a3 + 5) != -1)
+  if (!*(decimal + 8) && *(decimal + 5) != -1)
   {
     v39 = @"Division by zero";
     goto LABEL_48;
@@ -888,7 +888,7 @@ LABEL_28:
     goto LABEL_45;
   }
 
-  v10 = self->scale__ - *(a3 + 12);
+  v10 = self->scale__ - *(decimal + 12);
   if ([v6 signum])
   {
     v11 = [v6 gcdWithJavaMathBigInteger:v8];
@@ -907,8 +907,8 @@ LABEL_28:
 
     v15 = v14;
     v41 = v13;
-    v16 = [v14 getLowestSetBit];
-    v17 = [v15 shiftRightWithInt:v16];
+    getLowestSetBit = [v14 getLowestSetBit];
+    v17 = [v15 shiftRightWithInt:getLowestSetBit];
     if (!v17)
     {
       goto LABEL_45;
@@ -998,20 +998,20 @@ LABEL_28:
           goto LABEL_45;
         }
 
-        v31 = [v41 negate];
+        negate = [v41 negate];
       }
 
       else
       {
-        v31 = v41;
+        negate = v41;
       }
 
-      v33 = JavaLangMath_maxWithInt_withInt_(v16, v19);
+      v33 = JavaLangMath_maxWithInt_withInt_(getLowestSetBit, v19);
       v34 = sub_10015FB94(v10 + v33);
-      v35 = (v16 - v19);
+      v35 = (getLowestSetBit - v19);
       if (v35 >= 1)
       {
-        v36 = JavaMathMultiplication_multiplyByFivePowWithJavaMathBigInteger_withInt_(v31, v35);
+        v36 = JavaMathMultiplication_multiplyByFivePowWithJavaMathBigInteger_withInt_(negate, v35);
 LABEL_42:
         v37 = v36;
         v38 = [JavaMathBigDecimal alloc];
@@ -1020,9 +1020,9 @@ LABEL_42:
         return v38;
       }
 
-      if (v31)
+      if (negate)
       {
-        v36 = [v31 shiftLeftWithInt:(v19 - v16)];
+        v36 = [negate shiftLeftWithInt:(v19 - getLowestSetBit)];
         goto LABEL_42;
       }
 
@@ -1039,24 +1039,24 @@ LABEL_48:
   return sub_10015FAF4(v10);
 }
 
-- (id)divideWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)divideWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  if (!a4)
+  if (!context)
   {
     goto LABEL_68;
   }
 
-  v7 = [a4 getPrecision];
-  if (!a3)
+  getPrecision = [context getPrecision];
+  if (!decimal)
   {
     goto LABEL_68;
   }
 
-  v8 = v7;
-  v9 = *(a3 + 13);
+  v8 = getPrecision;
+  v9 = *(decimal + 13);
   if (v9 <= 0)
   {
-    v10 = (*(a3 + 8) - 1) * 0.301029996;
+    v10 = (*(decimal + 8) - 1) * 0.301029996;
     v11 = v10;
     if (v10 < 0.0)
     {
@@ -1105,13 +1105,13 @@ LABEL_48:
   }
 
   scale = self->scale__;
-  v18 = *(a3 + 12);
+  v18 = *(decimal + 12);
   v51 = *(qword_100554A68 + 8);
   v52 = [JavaMathBigDecimal unscaledValue]_0(self);
   v19 = [IOSObjectArray arrayWithObjects:&v52 count:1 type:JavaMathBigInteger_class_()];
-  if (![a4 getPrecision] || !self->bitLength_ && self->smallValue_ != -1 || !*(a3 + 8) && *(a3 + 5) != -1)
+  if (![context getPrecision] || !self->bitLength_ && self->smallValue_ != -1 || !*(decimal + 8) && *(decimal + 5) != -1)
   {
-    return [(JavaMathBigDecimal *)self divideWithJavaMathBigDecimal:a3];
+    return [(JavaMathBigDecimal *)self divideWithJavaMathBigDecimal:decimal];
   }
 
   v20 = v8 + 2 + v9 - precision;
@@ -1146,7 +1146,7 @@ LABEL_48:
     goto LABEL_68;
   }
 
-  v28 = [(IOSClass *)elementType divideAndRemainderWithJavaMathBigInteger:[JavaMathBigDecimal unscaledValue]_0(a3)];
+  v28 = [(IOSClass *)elementType divideAndRemainderWithJavaMathBigInteger:[JavaMathBigDecimal unscaledValue]_0(decimal)];
   if (!v28)
   {
     goto LABEL_68;
@@ -1259,13 +1259,13 @@ LABEL_68:
     goto LABEL_68;
   }
 
-  v35 = [v34 shiftLeftOneBit];
-  if (!v35)
+  shiftLeftOneBit = [v34 shiftLeftOneBit];
+  if (!shiftLeftOneBit)
   {
     goto LABEL_68;
   }
 
-  v36 = [v35 compareToWithId:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+  v36 = [shiftLeftOneBit compareToWithId:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
   if (!v31)
   {
     goto LABEL_68;
@@ -1300,28 +1300,28 @@ LABEL_68:
   ++v24;
 LABEL_46:
   v42 = sub_10015FB94(v24);
-  return new_JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_withJavaMathMathContext_(v31, v42, a4);
+  return new_JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_withJavaMathMathContext_(v31, v42, context);
 }
 
-- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)a3
+- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)decimal
 {
   v44 = [JavaMathBigDecimal unscaledValue]_0(self);
   [IOSObjectArray arrayWithObjects:&v44 count:1 type:JavaMathBigInteger_class_()];
-  if (!a3 || !qword_100554A68)
+  if (!decimal || !qword_100554A68)
   {
     goto LABEL_61;
   }
 
   v5 = *(qword_100554A68 + 8);
-  v6 = *(a3 + 8);
-  if (!v6 && *(a3 + 5) != -1)
+  v6 = *(decimal + 8);
+  if (!v6 && *(decimal + 5) != -1)
   {
     v43 = new_JavaLangArithmeticException_initWithNSString_(@"Division by zero");
     objc_exception_throw(v43);
   }
 
-  v7 = self->scale__ - *(a3 + 12);
-  v8 = *(a3 + 13);
+  v7 = self->scale__ - *(decimal + 12);
+  v8 = *(decimal + 13);
   if (v8 <= 0)
   {
     v9 = (v6 - 1) * 0.301029996;
@@ -1395,16 +1395,16 @@ LABEL_61:
     }
 
     v28 = v27;
-    v29 = [JavaMathBigDecimal unscaledValue]_0(a3);
+    v29 = [JavaMathBigDecimal unscaledValue]_0(decimal);
     v16 = [v28 divideWithJavaMathBigInteger:{v29, v44}];
     v7 = 0;
     goto LABEL_23;
   }
 
-  v21 = self->scale__ != *(a3 + 12);
+  v21 = self->scale__ != *(decimal + 12);
   if (v7 >= 1)
   {
-    v22 = JavaMathMultiplication_powerOf10WithLong_(self->scale__ - *(a3 + 12));
+    v22 = JavaMathMultiplication_powerOf10WithLong_(self->scale__ - *(decimal + 12));
     v23 = [JavaMathBigDecimal unscaledValue]_0(self);
     if (!v23)
     {
@@ -1412,7 +1412,7 @@ LABEL_61:
     }
 
     v24 = v23;
-    v25 = [JavaMathBigDecimal unscaledValue]_0(a3);
+    v25 = [JavaMathBigDecimal unscaledValue]_0(decimal);
     if (!v25)
     {
       goto LABEL_61;
@@ -1428,7 +1428,7 @@ LABEL_61:
     goto LABEL_23;
   }
 
-  v30 = JavaMathMultiplication_powerOf10WithLong_(*(a3 + 12) - self->scale__);
+  v30 = JavaMathMultiplication_powerOf10WithLong_(*(decimal + 12) - self->scale__);
   v31 = [JavaMathBigDecimal unscaledValue]_0(self);
   if (!v31)
   {
@@ -1441,7 +1441,7 @@ LABEL_61:
     goto LABEL_61;
   }
 
-  v33 = [v32 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+  v33 = [v32 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
   if (!v33)
   {
     goto LABEL_61;
@@ -1527,36 +1527,36 @@ LABEL_24:
   return v19;
 }
 
-- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)divideToIntegralValueWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  if (!a4)
+  if (!context)
   {
     goto LABEL_78;
   }
 
-  v6 = [a4 getPrecision];
-  v7 = [(JavaMathBigDecimal *)self precision];
-  if (!a3)
+  getPrecision = [context getPrecision];
+  precision = [(JavaMathBigDecimal *)self precision];
+  if (!decimal)
   {
     goto LABEL_78;
   }
 
-  v8 = v7;
-  v9 = [a3 precision];
+  v8 = precision;
+  precision2 = [decimal precision];
   if (!qword_100554A68)
   {
     goto LABEL_78;
   }
 
-  v10 = v9;
+  v10 = precision2;
   v11 = *(qword_100554A68 + 8);
   scale = self->scale__;
-  v13 = *(a3 + 12);
+  v13 = *(decimal + 12);
   v14 = [IOSObjectArray arrayWithLength:2 type:JavaMathBigInteger_class_()];
-  if (!v6 || (v15 = v14, !self->bitLength_) && self->smallValue_ != -1 || !*(a3 + 8) && *(a3 + 5) != -1)
+  if (!getPrecision || (v15 = v14, !self->bitLength_) && self->smallValue_ != -1 || !*(decimal + 8) && *(decimal + 5) != -1)
   {
 
-    return [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:a3];
+    return [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:decimal];
   }
 
   v16 = v8 - v10;
@@ -1582,7 +1582,7 @@ LABEL_24:
       goto LABEL_78;
     }
 
-    v29 = [v30 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+    v29 = [v30 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
     v24 = 0;
 LABEL_26:
     IOSObjectArray_Set(v15, 0, v29);
@@ -1597,7 +1597,7 @@ LABEL_26:
   if (v17 < 1)
   {
     v48 = scale - v13;
-    v49 = JavaLangMath_maxWithLong_withLong_(v6 - v16, 0);
+    v49 = JavaLangMath_maxWithLong_withLong_(getPrecision - v16, 0);
     v50 = JavaLangMath_minWithLong_withLong_(-v17, v49);
     v51 = [JavaMathBigDecimal unscaledValue]_0(self);
     if (!v51)
@@ -1611,7 +1611,7 @@ LABEL_26:
       goto LABEL_78;
     }
 
-    v53 = [v52 divideAndRemainderWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+    v53 = [v52 divideAndRemainderWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
     if (!v53)
     {
       goto LABEL_78;
@@ -1647,8 +1647,8 @@ LABEL_26:
           IOSArray_throwOutOfBoundsWithMsg(v56, 1);
         }
 
-        v57 = [new_JavaMathBigDecimal_initWithJavaMathBigInteger_(*(v15 + 32)) precision];
-        v58 = v57 - (v24 + [a3 precision]);
+        precision3 = [new_JavaMathBigDecimal_initWithJavaMathBigInteger_(*(v15 + 32)) precision];
+        v58 = precision3 - (v24 + [decimal precision]);
         if (v58)
         {
           v17 = v48;
@@ -1674,7 +1674,7 @@ LABEL_26:
             goto LABEL_78;
           }
 
-          v62 = [v61 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(a3)];
+          v62 = [v61 divideWithJavaMathBigInteger:-[JavaMathBigDecimal unscaledValue]_0(decimal)];
           IOSObjectArray_Set(v15, 1, v62);
           v63 = *(v15 + 8);
           if (v63 <= 1)
@@ -1709,7 +1709,7 @@ LABEL_26:
     }
 
     v20 = v19;
-    v21 = [JavaMathBigDecimal unscaledValue]_0(a3);
+    v21 = [JavaMathBigDecimal unscaledValue]_0(decimal);
     if (!v21)
     {
       goto LABEL_78;
@@ -1717,7 +1717,7 @@ LABEL_26:
 
     v22 = [v20 divideWithJavaMathBigInteger:{objc_msgSend(v21, "multiplyWithJavaMathBigInteger:", JavaMathMultiplication_powerOf10WithLong_(v17))}];
     IOSObjectArray_Set(v15, 0, v22);
-    v23 = JavaLangMath_maxWithLong_withLong_(v6 - v18, 0);
+    v23 = JavaLangMath_maxWithLong_withLong_(getPrecision - v18, 0);
     v24 = JavaLangMath_minWithLong_withLong_(v17, v23);
     v25 = *(v15 + 8);
     if (v25 <= 0)
@@ -1761,12 +1761,12 @@ LABEL_27:
     v35 = [JavaMathBigDecimal alloc];
     JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v35, v34, 0);
     v66 = v35;
-    v36 = [(JavaMathBigDecimal *)v66 precision];
+    precision4 = [(JavaMathBigDecimal *)v66 precision];
     if (v34)
     {
       v67 = v11 - 1;
-      v37 = v36;
-      v38 = v6;
+      v37 = precision4;
+      v38 = getPrecision;
       v39 = 1;
       while (([v34 testBitWithInt:0] & 1) == 0)
       {
@@ -1842,9 +1842,9 @@ LABEL_78:
   return sub_10015FAF4(v17);
 }
 
-- (id)remainderWithJavaMathBigDecimal:(id)a3
+- (id)remainderWithJavaMathBigDecimal:(id)decimal
 {
-  v3 = [(JavaMathBigDecimal *)self divideAndRemainderWithJavaMathBigDecimal:a3];
+  v3 = [(JavaMathBigDecimal *)self divideAndRemainderWithJavaMathBigDecimal:decimal];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -1860,9 +1860,9 @@ LABEL_78:
   return *(v4 + 4);
 }
 
-- (id)remainderWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)remainderWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
-  v4 = [(JavaMathBigDecimal *)self divideAndRemainderWithJavaMathBigDecimal:a3 withJavaMathMathContext:a4];
+  v4 = [(JavaMathBigDecimal *)self divideAndRemainderWithJavaMathBigDecimal:decimal withJavaMathMathContext:context];
   if (!v4)
   {
     JreThrowNullPointerException();
@@ -1878,10 +1878,10 @@ LABEL_78:
   return *(v5 + 4);
 }
 
-- (id)divideAndRemainderWithJavaMathBigDecimal:(id)a3
+- (id)divideAndRemainderWithJavaMathBigDecimal:(id)decimal
 {
   v5 = [IOSObjectArray arrayWithLength:2 type:JavaMathBigDecimal_class_()];
-  IOSObjectArray_Set(v5, 0, [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:a3]);
+  IOSObjectArray_Set(v5, 0, [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:decimal]);
   size = v5->super.size_;
   if (size <= 0)
   {
@@ -1894,14 +1894,14 @@ LABEL_78:
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(v5, 1, [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:[(IOSClass *)elementType multiplyWithJavaMathBigDecimal:a3]]);
+  IOSObjectArray_Set(v5, 1, [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:[(IOSClass *)elementType multiplyWithJavaMathBigDecimal:decimal]]);
   return v5;
 }
 
-- (id)divideAndRemainderWithJavaMathBigDecimal:(id)a3 withJavaMathMathContext:(id)a4
+- (id)divideAndRemainderWithJavaMathBigDecimal:(id)decimal withJavaMathMathContext:(id)context
 {
   v7 = [IOSObjectArray arrayWithLength:2 type:JavaMathBigDecimal_class_()];
-  IOSObjectArray_Set(v7, 0, [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:a3 withJavaMathMathContext:a4]);
+  IOSObjectArray_Set(v7, 0, [(JavaMathBigDecimal *)self divideToIntegralValueWithJavaMathBigDecimal:decimal withJavaMathMathContext:context]);
   size = v7->super.size_;
   if (size <= 0)
   {
@@ -1914,7 +1914,7 @@ LABEL_78:
     JreThrowNullPointerException();
   }
 
-  IOSObjectArray_Set(v7, 1, [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:[(IOSClass *)elementType multiplyWithJavaMathBigDecimal:a3]]);
+  IOSObjectArray_Set(v7, 1, [(JavaMathBigDecimal *)self subtractWithJavaMathBigDecimal:[(IOSClass *)elementType multiplyWithJavaMathBigDecimal:decimal]]);
   return v7;
 }
 
@@ -1928,9 +1928,9 @@ LABEL_78:
   return [(JavaMathBigDecimal *)self negate];
 }
 
-- (id)absWithJavaMathMathContext:(id)a3
+- (id)absWithJavaMathMathContext:(id)context
 {
-  v3 = [(JavaMathBigDecimal *)self roundWithJavaMathMathContext:a3];
+  v3 = [(JavaMathBigDecimal *)self roundWithJavaMathMathContext:context];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -1966,17 +1966,17 @@ LABEL_3:
     JreThrowNullPointerException();
   }
 
-  v8 = [v7 negate];
+  negate = [v7 negate];
   v9 = self->scale__;
   v10 = [JavaMathBigDecimal alloc];
-  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v10, v8, v9);
+  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v10, negate, v9);
 
   return v10;
 }
 
-- (id)negateWithJavaMathMathContext:(id)a3
+- (id)negateWithJavaMathMathContext:(id)context
 {
-  v3 = [(JavaMathBigDecimal *)self roundWithJavaMathMathContext:a3];
+  v3 = [(JavaMathBigDecimal *)self roundWithJavaMathMathContext:context];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -2102,30 +2102,30 @@ LABEL_17:
   return result;
 }
 
-- (id)roundWithJavaMathMathContext:(id)a3
+- (id)roundWithJavaMathMathContext:(id)context
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [JavaMathBigDecimal unscaledValue]_0(self);
-  LODWORD(v4) = v4->scale__;
+  LODWORD(selfCopy) = selfCopy->scale__;
   v6 = [JavaMathBigDecimal alloc];
-  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v6, v5, v4);
+  JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v6, v5, selfCopy);
   v7 = v6;
-  sub_10015FC44(v7, a3);
+  sub_10015FC44(v7, context);
   return v7;
 }
 
-- (id)setScaleWithInt:(int)a3 withJavaMathRoundingModeEnum:(id)a4
+- (id)setScaleWithInt:(int)int withJavaMathRoundingModeEnum:(id)enum
 {
-  if (!a4)
+  if (!enum)
   {
     v21 = new_JavaLangNullPointerException_init();
     objc_exception_throw(v21);
   }
 
   v5 = *(self + 12);
-  if (v5 != a3)
+  if (v5 != int)
   {
-    v6 = a3 - v5;
+    v6 = int - v5;
     if (v6 >= 1)
     {
       if (qword_100554A50)
@@ -2136,7 +2136,7 @@ LABEL_13:
           v11 = [JavaMathBigDecimal unscaledValue]_0(self);
           v12 = JavaMathMultiplication_multiplyByTenPowWithJavaMathBigInteger_withLong_(v11, v6);
           v13 = [JavaMathBigDecimal alloc];
-          JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v13, v12, a3);
+          JavaMathBigDecimal_initWithJavaMathBigInteger_withInt_(v13, v12, int);
 
           return v13;
         }
@@ -2161,7 +2161,7 @@ LABEL_13:
 
             v10 = *(qword_100554A50 + 16 + 8 * v6) * v8;
 
-            return JavaMathBigDecimal_valueOfWithLong_withInt_(v10, a3);
+            return JavaMathBigDecimal_valueOfWithLong_withInt_(v10, int);
           }
 
           goto LABEL_13;
@@ -2172,7 +2172,7 @@ LABEL_26:
       JreThrowNullPointerException();
     }
 
-    v15 = v5 - a3;
+    v15 = v5 - int;
     if (*(self + 8) > 63)
     {
       goto LABEL_23;
@@ -2190,7 +2190,7 @@ LABEL_23:
       v19 = [JavaMathBigDecimal unscaledValue]_0(self);
       v20 = JavaMathMultiplication_powerOf10WithLong_(v15);
 
-      return sub_1001604AC(v19, v20, a3, a4);
+      return sub_1001604AC(v19, v20, int, enum);
     }
 
     else
@@ -2203,16 +2203,16 @@ LABEL_23:
 
       v18 = *(qword_100554A50 + 16 + 8 * v15);
 
-      return sub_1001603C4(v17, v18, a3, a4);
+      return sub_1001603C4(v17, v18, int, enum);
     }
   }
 
   return self;
 }
 
-- (id)scaleByPowerOfTenWithInt:(int)a3
+- (id)scaleByPowerOfTenWithInt:(int)int
 {
-  v3 = self->scale__ - a3;
+  v3 = self->scale__ - int;
   if (self->bitLength_ > 63)
   {
     v7 = [JavaMathBigDecimal unscaledValue]_0(self);
@@ -2228,14 +2228,14 @@ LABEL_23:
     smallValue = self->smallValue_;
     if (smallValue)
     {
-      v5 = sub_10015FB94(self->scale__ - a3);
+      v5 = sub_10015FB94(self->scale__ - int);
 
       return JavaMathBigDecimal_valueOfWithLong_withInt_(smallValue, v5);
     }
 
     else
     {
-      v10 = self->scale__ - a3;
+      v10 = self->scale__ - int;
 
       return sub_10015FAF4(v10);
     }
@@ -2341,10 +2341,10 @@ LABEL_26:
   return v16;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     [(JavaMathBigDecimal *)self signum];
     JreThrowNullPointerException();
@@ -2355,11 +2355,11 @@ LABEL_26:
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaMathBigDecimal *)self signum];
-  v6 = [a3 signum];
-  if (v5 != v6)
+  signum = [(JavaMathBigDecimal *)self signum];
+  signum2 = [id signum];
+  if (signum != signum2)
   {
-    if (v5 < v6)
+    if (signum < signum2)
     {
       return -1;
     }
@@ -2371,11 +2371,11 @@ LABEL_26:
   }
 
   scale = self->scale__;
-  v8 = *(a3 + 12);
-  if (scale == v8 && self->bitLength_ <= 63 && *(a3 + 8) <= 63)
+  v8 = *(id + 12);
+  if (scale == v8 && self->bitLength_ <= 63 && *(id + 8) <= 63)
   {
     smallValue = self->smallValue_;
-    v10 = *(a3 + 5);
+    v10 = *(id + 5);
     v11 = smallValue < v10;
     v12 = smallValue > v10;
     if (v11)
@@ -2413,10 +2413,10 @@ LABEL_26:
   }
 
   v17 = scale - v8;
-  v18 = *(a3 + 13);
+  v18 = *(id + 13);
   if (v18 <= 0)
   {
-    v19 = (*(a3 + 8) - 1) * 0.301029996;
+    v19 = (*(id + 8) - 1) * 0.301029996;
     v20 = v19;
     if (v19 < 0.0)
     {
@@ -2439,16 +2439,16 @@ LABEL_26:
   v22 = precision - v18;
   if (v17 + 1 < v22)
   {
-    return v5;
+    return signum;
   }
 
   if (v17 - 1 > v22)
   {
-    return -v5;
+    return -signum;
   }
 
   v24 = [JavaMathBigDecimal unscaledValue]_0(self);
-  v25 = [JavaMathBigDecimal unscaledValue]_0(a3);
+  v25 = [JavaMathBigDecimal unscaledValue]_0(id);
   v26 = v25;
   if (v17 < 0)
   {
@@ -2479,9 +2479,9 @@ LABEL_42:
   return [v24 compareToWithId:v26];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -2493,7 +2493,7 @@ LABEL_42:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_15;
   }
@@ -2503,14 +2503,14 @@ LABEL_42:
     JreThrowClassCastException();
   }
 
-  if (*(a3 + 12) != self->scale__)
+  if (*(equal + 12) != self->scale__)
   {
     return 0;
   }
 
   if (self->bitLength_ <= 63)
   {
-    return *(a3 + 5) == self->smallValue_;
+    return *(equal + 5) == self->smallValue_;
   }
 
   intVal = self->intVal_;
@@ -2520,16 +2520,16 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v7 = *(a3 + 3);
+  v7 = *(equal + 3);
 
   return [(JavaMathBigInteger *)intVal isEqual:v7];
 }
 
-- (id)minWithJavaMathBigDecimal:(id)a3
+- (id)minWithJavaMathBigDecimal:(id)decimal
 {
   if ([(JavaMathBigDecimal *)self compareToWithId:?]>= 1)
   {
-    return a3;
+    return decimal;
   }
 
   else
@@ -2538,7 +2538,7 @@ LABEL_15:
   }
 }
 
-- (id)maxWithJavaMathBigDecimal:(id)a3
+- (id)maxWithJavaMathBigDecimal:(id)decimal
 {
   if ([(JavaMathBigDecimal *)self compareToWithId:?]>= 0)
   {
@@ -2547,7 +2547,7 @@ LABEL_15:
 
   else
   {
-    return a3;
+    return decimal;
   }
 }
 
@@ -2719,7 +2719,7 @@ LABEL_35:
     if (v15)
     {
       v16 = v8 - v7;
-      v17 = [v15 signum];
+      signum = [v15 signum];
       v18 = v14 + 3;
       if (v14 < 0)
       {
@@ -2733,7 +2733,7 @@ LABEL_35:
       }
 
       v20 = v19 - v14;
-      if (v17)
+      if (signum)
       {
         v21 = (v18 + v7);
       }
@@ -2743,7 +2743,7 @@ LABEL_35:
         v21 = v7;
       }
 
-      if (v17)
+      if (signum)
       {
         v9 -= v18;
       }
@@ -2753,7 +2753,7 @@ LABEL_35:
         v9 += v20;
       }
 
-      if (!v17)
+      if (!signum)
       {
         v18 = v20;
       }
@@ -2811,14 +2811,14 @@ LABEL_42:
     return result;
   }
 
-  v7 = [(JavaMathBigDecimal *)self signum];
+  signum = [(JavaMathBigDecimal *)self signum];
   if (!v5)
   {
     goto LABEL_27;
   }
 
-  v8 = v7;
-  v9 = v7 >> 31;
+  v8 = signum;
+  v9 = signum >> 31;
   v10 = self->scale__;
   v11 = [v5 length];
   v12 = JavaLangMath_absWithInt_(self->scale__);
@@ -3049,13 +3049,13 @@ LABEL_29:
     return 0;
   }
 
-  v8 = [(JavaMathBigDecimal *)self toBigInteger];
-  if (!v8)
+  toBigInteger = [(JavaMathBigDecimal *)self toBigInteger];
+  if (!toBigInteger)
   {
     JreThrowNullPointerException();
   }
 
-  return [v8 longLongValue];
+  return [toBigInteger longLongValue];
 }
 
 - (int)intValue
@@ -3094,19 +3094,19 @@ LABEL_29:
     return 0;
   }
 
-  v8 = [(JavaMathBigDecimal *)self toBigInteger];
-  if (!v8)
+  toBigInteger = [(JavaMathBigDecimal *)self toBigInteger];
+  if (!toBigInteger)
   {
     JreThrowNullPointerException();
   }
 
-  return [v8 intValue];
+  return [toBigInteger intValue];
 }
 
 - (float)floatValue
 {
-  v3 = [(JavaMathBigDecimal *)self signum];
-  *v4.i32 = v3;
+  signum = [(JavaMathBigDecimal *)self signum];
+  *v4.i32 = signum;
   *v5.i64 = self->scale__ / 0.301029996;
   v6 = *v5.i64;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
@@ -3121,7 +3121,7 @@ LABEL_29:
   }
 
   v8 = self->bitLength_ - v6;
-  if (v8 < -149 || v3 == 0)
+  if (v8 < -149 || signum == 0)
   {
     v5.i64[0] = 0;
     v10.i64[0] = 0x8000000080000000;
@@ -3145,8 +3145,8 @@ LABEL_29:
 
 - (double)doubleValue
 {
-  v3 = [(JavaMathBigDecimal *)self signum];
-  v5 = v3;
+  signum = [(JavaMathBigDecimal *)self signum];
+  v5 = signum;
   bitLength = self->bitLength_;
   *v7.i64 = self->scale__ / 0.301029996;
   v8 = *v7.i64;
@@ -3162,7 +3162,7 @@ LABEL_29:
   }
 
   v10 = bitLength - v8;
-  if (bitLength - v8 < -1074 || v3 == 0)
+  if (bitLength - v8 < -1074 || signum == 0)
   {
     goto LABEL_10;
   }
@@ -3236,13 +3236,13 @@ LABEL_43:
       goto LABEL_61;
     }
 
-    v23 = [v22 shiftLeftOneBit];
-    if (!v23)
+    shiftLeftOneBit = [v22 shiftLeftOneBit];
+    if (!shiftLeftOneBit)
     {
       goto LABEL_61;
     }
 
-    v24 = [v23 compareToWithId:v16];
+    v24 = [shiftLeftOneBit compareToWithId:v16];
     v25 = v20[2];
     if (v25 <= 0)
     {
@@ -3264,18 +3264,18 @@ LABEL_61:
     goto LABEL_61;
   }
 
-  v28 = [v18 getLowestSetBit];
-  v29 = [v18 bitLength];
-  v30 = v29 - 54;
+  getLowestSetBit = [v18 getLowestSetBit];
+  bitLength = [v18 bitLength];
+  v30 = bitLength - 54;
   if (v30 >= 1)
   {
     v31 = [v18 shiftRightWithInt:v30];
     if (v31)
     {
-      v32 = [v31 longLongValue];
-      if ((~v32 & 3) != 0)
+      longLongValue = [v31 longLongValue];
+      if ((~longLongValue & 3) != 0)
       {
-        v33 = v32 & (v28 < v30);
+        v33 = longLongValue & (getLowestSetBit < v30);
       }
 
       else
@@ -3283,10 +3283,10 @@ LABEL_61:
         v33 = 1;
       }
 
-      v34 = v32 + 2;
+      v34 = longLongValue + 2;
       if (!v33)
       {
-        v34 = v32;
+        v34 = longLongValue;
       }
 
       goto LABEL_40;
@@ -3295,18 +3295,18 @@ LABEL_61:
     goto LABEL_61;
   }
 
-  v32 = [v18 longLongValue] << (54 - v29);
-  v34 = v32 + 2;
-  if ((~v32 & 3) != 0)
+  longLongValue = [v18 longLongValue] << (54 - bitLength);
+  v34 = longLongValue + 2;
+  if ((~longLongValue & 3) != 0)
   {
-    v34 = v32;
+    v34 = longLongValue;
   }
 
 LABEL_40:
-  v35 = v29 - 53;
+  v35 = bitLength - 53;
   if ((v34 & 0x40000000000000) == 0)
   {
-    v35 = v29 - 54;
+    v35 = bitLength - 54;
   }
 
   v36 = v35 + v17;
@@ -3325,8 +3325,8 @@ LABEL_40:
   {
     if (v36 > -54)
     {
-      v39 = v32 >> 1 >> -v36;
-      if ((~v39 & 3) == 0 || (v39 & 1) != 0 && (((0xFFFFFFFFFFFFFFFFLL >> (v36 + 63)) & (v32 >> 1)) != 0 ? (v40 = v28 < v30) : (v40 = 0), v40))
+      v39 = longLongValue >> 1 >> -v36;
+      if ((~v39 & 3) == 0 || (v39 & 1) != 0 && (((0xFFFFFFFFFFFFFFFFLL >> (v36 + 63)) & (longLongValue >> 1)) != 0 ? (v40 = getLowestSetBit < v30) : (v40 = 0), v40))
       {
         ++v39;
       }
@@ -3352,14 +3352,14 @@ LABEL_58:
   return *v7.i64;
 }
 
-+ (int)longCompareToWithLong:(int64_t)a3 withLong:(int64_t)a4
++ (int)longCompareToWithLong:(int64_t)long withLong:(int64_t)withLong
 {
   if ((atomic_load_explicit(JavaMathBigDecimal__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_100164DDC();
   }
 
-  if (a3 >= a4)
+  if (long >= withLong)
   {
     v6 = 0;
   }
@@ -3369,7 +3369,7 @@ LABEL_58:
     v6 = -1;
   }
 
-  if (a3 > a4)
+  if (long > withLong)
   {
     return 1;
   }
@@ -3408,30 +3408,30 @@ LABEL_58:
   return precision;
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3 || ([a3 defaultReadObject], (intVal = self->intVal_) == 0))
+  if (!stream || ([stream defaultReadObject], (intVal = self->intVal_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [(JavaMathBigInteger *)intVal bitLength];
-  self->bitLength_ = v5;
-  if (v5 <= 63)
+  bitLength = [(JavaMathBigInteger *)intVal bitLength];
+  self->bitLength_ = bitLength;
+  if (bitLength <= 63)
   {
     self->smallValue_ = [(JavaMathBigInteger *)self->intVal_ longLongValue];
   }
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
   [JavaMathBigDecimal unscaledValue]_0(self);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
 }
 
 - (void)dealloc
@@ -3443,7 +3443,7 @@ LABEL_58:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaMathBigDecimal alloc];
     sub_10015DB2C(v2, 0, 0);

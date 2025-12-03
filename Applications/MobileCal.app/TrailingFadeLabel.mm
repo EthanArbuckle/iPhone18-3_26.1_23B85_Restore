@@ -1,6 +1,6 @@
 @interface TrailingFadeLabel
 - (BOOL)isTextTruncated;
-- (TrailingFadeLabel)initWithFrame:(CGRect)a3;
+- (TrailingFadeLabel)initWithFrame:(CGRect)frame;
 - (void)_updateFadeDirection;
 - (void)_updateFadeVisibility;
 - (void)_updateFadeWidth;
@@ -9,11 +9,11 @@
 
 @implementation TrailingFadeLabel
 
-- (TrailingFadeLabel)initWithFrame:(CGRect)a3
+- (TrailingFadeLabel)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = TrailingFadeLabel;
-  v3 = [(TrailingFadeLabel *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TrailingFadeLabel *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(CAGradientLayer);
@@ -76,8 +76,8 @@
 
 - (void)_updateFadeDirection
 {
-  v3 = [(TrailingFadeLabel *)self effectiveUserInterfaceLayoutDirection];
-  if (v3 == 1)
+  effectiveUserInterfaceLayoutDirection = [(TrailingFadeLabel *)self effectiveUserInterfaceLayoutDirection];
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v4 = 1.0;
   }
@@ -87,7 +87,7 @@
     v4 = 0.0;
   }
 
-  if (v3 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v5 = 0.0;
   }
@@ -115,15 +115,15 @@
     gradientLayer = 0;
   }
 
-  v4 = [(TrailingFadeLabel *)self layer];
-  [v4 setMask:gradientLayer];
+  layer = [(TrailingFadeLabel *)self layer];
+  [layer setMask:gradientLayer];
 }
 
 - (BOOL)isTextTruncated
 {
-  v3 = [(TrailingFadeLabel *)self attributedText];
+  attributedText = [(TrailingFadeLabel *)self attributedText];
   [(TrailingFadeLabel *)self bounds];
-  [v3 boundingRectWithSize:1 options:0 context:{1.79769313e308, v4}];
+  [attributedText boundingRectWithSize:1 options:0 context:{1.79769313e308, v4}];
   v6 = v5;
 
   [(TrailingFadeLabel *)self bounds];

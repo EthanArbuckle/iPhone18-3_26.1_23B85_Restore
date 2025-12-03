@@ -1,39 +1,39 @@
 @interface BLSHService
 + (id)sharedService;
-+ (id)startLocalOnlyServiceWithConfiguration:(id)a3;
-+ (id)startServiceWithPlatformProvider:(id)a3;
++ (id)startLocalOnlyServiceWithConfiguration:(id)configuration;
++ (id)startServiceWithPlatformProvider:(id)provider;
 + (void)sharedService;
-- (void)beginSpecialManagementForHostEnvironment:(id)a3;
+- (void)beginSpecialManagementForHostEnvironment:(id)environment;
 - (void)dealloc;
 @end
 
 @implementation BLSHService
 
-+ (id)startServiceWithPlatformProvider:(id)a3
++ (id)startServiceWithPlatformProvider:(id)provider
 {
-  v5 = a3;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    [(BLSHService *)a2 startServiceWithPlatformProvider:a1];
+    [(BLSHService *)a2 startServiceWithPlatformProvider:self];
   }
 
-  v6 = v5;
-  v7 = [a1 startServiceWithPlatformProvider:v5 localOnly:0];
+  v6 = providerCopy;
+  v7 = [self startServiceWithPlatformProvider:providerCopy localOnly:0];
 
   return v7;
 }
 
-+ (id)startLocalOnlyServiceWithConfiguration:(id)a3
++ (id)startLocalOnlyServiceWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
-    v4 = objc_opt_new();
+    configurationCopy = objc_opt_new();
   }
 
-  v5 = [[BLSHLocalOnlySimplePlatformProvider alloc] initWithConfiguration:v4];
+  v5 = [[BLSHLocalOnlySimplePlatformProvider alloc] initWithConfiguration:configurationCopy];
   [MEMORY[0x277CF09B8] setIsHostProcess:1];
-  v6 = [a1 startServiceWithPlatformProvider:v5 localOnly:1];
+  v6 = [self startServiceWithPlatformProvider:v5 localOnly:1];
 
   return v6;
 }
@@ -63,13 +63,13 @@
   [(BLSHService *)&v3 dealloc];
 }
 
-- (void)beginSpecialManagementForHostEnvironment:(id)a3
+- (void)beginSpecialManagementForHostEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = bls_backlight_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(BLSHService *)self beginSpecialManagementForHostEnvironment:v4, v5];
+    [(BLSHService *)self beginSpecialManagementForHostEnvironment:environmentCopy, v5];
   }
 }
 
@@ -131,7 +131,7 @@
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"[BLSHService sharedService] should not be called before startServiceWithPlatformProvider:"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = NSStringFromSelector(a1);
+    v5 = NSStringFromSelector(self);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     OUTLINED_FUNCTION_0_13();

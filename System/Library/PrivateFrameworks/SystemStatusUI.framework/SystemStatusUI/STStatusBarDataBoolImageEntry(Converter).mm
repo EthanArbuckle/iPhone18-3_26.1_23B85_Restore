@@ -21,17 +21,17 @@
       v14 = 0;
     }
 
-    v15 = [v13 entryWithImageNamed:v14 BOOLValue:a7];
+    disabledEntry = [v13 entryWithImageNamed:v14 BOOLValue:a7];
 
-    a1 = v14;
+    self = v14;
   }
 
   else
   {
-    v15 = [v12 disabledEntry];
+    disabledEntry = [v12 disabledEntry];
   }
 
-  return v15;
+  return disabledEntry;
 }
 
 @end

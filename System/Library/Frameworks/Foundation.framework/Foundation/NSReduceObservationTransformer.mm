@@ -1,16 +1,16 @@
 @interface NSReduceObservationTransformer
-+ (id)reduceValue:(id)a3 withReducer:(id)a4;
-- (NSReduceObservationTransformer)initWithBlock:(id)a3 initialValue:(id)a4;
-- (void)_receiveBox:(id)a3;
++ (id)reduceValue:(id)value withReducer:(id)reducer;
+- (NSReduceObservationTransformer)initWithBlock:(id)block initialValue:(id)value;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 - (void)finishObserving;
 @end
 
 @implementation NSReduceObservationTransformer
 
-+ (id)reduceValue:(id)a3 withReducer:(id)a4
++ (id)reduceValue:(id)value withReducer:(id)reducer
 {
-  v4 = [[a1 alloc] initWithBlock:a4 initialValue:a3];
+  v4 = [[self alloc] initWithBlock:reducer initialValue:value];
 
   return v4;
 }
@@ -23,7 +23,7 @@
   v10[1] = 3221225472;
   v11 = __49__NSReduceObservationTransformer_finishObserving__block_invoke;
   v12 = &unk_1E69F30D8;
-  v13 = self;
+  selfCopy = self;
   v14[0] = 0;
   StackObservedValueClassAndBoxSize = getStackObservedValueClassAndBoxSize(v14);
   MEMORY[0x1EEE9AC00](StackObservedValueClassAndBoxSize);
@@ -45,10 +45,10 @@ id __49__NSReduceObservationTransformer_finishObserving__block_invoke(uint64_t a
   return objc_msgSendSuper2(&v3, sel__receiveBox_, a2);
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = *(a3 + 6);
+  v3 = *(box + 6);
   if (v3 == 1)
   {
     accumulator = self->_accumulator;
@@ -69,7 +69,7 @@ id __49__NSReduceObservationTransformer_finishObserving__block_invoke(uint64_t a
   }
 }
 
-- (NSReduceObservationTransformer)initWithBlock:(id)a3 initialValue:(id)a4
+- (NSReduceObservationTransformer)initWithBlock:(id)block initialValue:(id)value
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -77,8 +77,8 @@ id __49__NSReduceObservationTransformer_finishObserving__block_invoke(uint64_t a
   v6 = [(NSReduceObservationTransformer *)&v8 init];
   if (v6)
   {
-    v6->_reducer = [a3 copy];
-    v6->_accumulator = a4;
+    v6->_reducer = [block copy];
+    v6->_accumulator = value;
   }
 
   return v6;

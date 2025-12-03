@@ -1,12 +1,12 @@
 @interface AVDataValueTransformer
-+ (id)messageTransformerWithClass:(Class)a3;
++ (id)messageTransformerWithClass:(Class)class;
 @end
 
 @implementation AVDataValueTransformer
 
-+ (id)messageTransformerWithClass:(Class)a3
++ (id)messageTransformerWithClass:(Class)class
 {
-  v3 = [[AVAirMessageTransformer alloc] initWithMessageClass:a3];
+  v3 = [[AVAirMessageTransformer alloc] initWithMessageClass:class];
 
   return v3;
 }

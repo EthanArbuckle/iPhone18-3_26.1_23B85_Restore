@@ -15,12 +15,12 @@
 
   v9 = v7;
   coords_high = HIDWORD(self->coords_);
-  v11 = [*(&self->req_ + 4) freq];
+  freq = [*(&self->req_ + 4) freq];
   v12 = *(v8 + 8);
-  v13 = v11 + coords_high;
-  if ((v11 + coords_high) < 0 || v13 >= v12)
+  v13 = freq + coords_high;
+  if ((freq + coords_high) < 0 || v13 >= v12)
   {
-    IOSArray_throwOutOfBoundsWithMsg(v12, v11 + coords_high);
+    IOSArray_throwOutOfBoundsWithMsg(v12, freq + coords_high);
   }
 
   return (v6 + v9) * *(v8 + 12 + 4 * v13);

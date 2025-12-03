@@ -1,21 +1,21 @@
 @interface RemoteXPCPair
-- (RemoteXPCPair)initWithClient:(id)a3 server:(id)a4;
+- (RemoteXPCPair)initWithClient:(id)client server:(id)server;
 @end
 
 @implementation RemoteXPCPair
 
-- (RemoteXPCPair)initWithClient:(id)a3 server:(id)a4
+- (RemoteXPCPair)initWithClient:(id)client server:(id)server
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  serverCopy = server;
   v12.receiver = self;
   v12.super_class = RemoteXPCPair;
   v9 = [(RemoteXPCPair *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    objc_storeStrong(&v10->_server, a4);
+    objc_storeStrong(&v9->_client, client);
+    objc_storeStrong(&v10->_server, server);
   }
 
   return v10;

@@ -1,28 +1,28 @@
 @interface SCNCameraController
-- (BOOL)_isLocationValid:(CGPoint)a3 inViewport:(CGSize)a4;
+- (BOOL)_isLocationValid:(CGPoint)valid inViewport:(CGSize)viewport;
 - (BOOL)useOrbitInteractionMode;
 - (SCNCameraController)init;
 - (SCNVector3)target;
 - (SCNVector3)up;
 - (SCNVector3)worldUp;
 - (__n128)_targetRelativeToPointOfViewParent;
-- (double)_convertRotationFromWorldToPointOfView:(void *)a1;
-- (double)_mapToSphere:(float64_t)a3 inViewport:(double)a4;
+- (double)_convertRotationFromWorldToPointOfView:(void *)view;
+- (double)_mapToSphere:(float64_t)sphere inViewport:(double)viewport;
 - (double)_orientationForMode;
-- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(float)a3 scaleDelta:(float64_t)a4 viewport:(float64_t)a5;
-- (double)lookAtWith:(float32x4_t)a3 target:;
-- (double)unrolledWorldOrientation:(float *)a3;
+- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(float)point scaleDelta:(float64_t)delta viewport:(float64_t)viewport;
+- (double)lookAtWith:(float32x4_t)with target:;
+- (double)unrolledWorldOrientation:(float *)orientation;
 - (float)maximumHorizontalAngle;
 - (float)minimumHorizontalAngle;
-- (float32x4_t)_directionForScreenPoint:(double)a3 viewport:(float64_t)a4;
+- (float32x4_t)_directionForScreenPoint:(double)point viewport:(float64_t)viewport;
 - (void)_capOrientationAnglesToMaximum;
-- (void)_endDraggingWithVelocity:(CGPoint)a3;
+- (void)_endDraggingWithVelocity:(CGPoint)velocity;
 - (void)_resetOrientationState;
-- (void)_rotateByX:(float)a3 Y:(float)a4;
-- (void)_setInertiaRunning:(BOOL)a3;
-- (void)_translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5;
+- (void)_rotateByX:(float)x Y:(float)y;
+- (void)_setInertiaRunning:(BOOL)running;
+- (void)_translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z;
 - (void)_updateArcballOrientation;
-- (void)_updateInertiaAtTime:(double)a3;
+- (void)_updateInertiaAtTime:(double)time;
 - (void)_updateRotation;
 - (void)beginInteraction:(CGPoint)location withViewport:(CGSize)viewport;
 - (void)clearRoll;
@@ -33,7 +33,7 @@
 - (void)frameNodes:(NSArray *)nodes;
 - (void)rollAroundTarget:(float)delta;
 - (void)rollBy:(float)delta aroundScreenPoint:(CGPoint)point viewport:(CGSize)viewport;
-- (void)rollCameraSpaceBy:(float)a3 withPoint:(CGPoint)a4 viewport:(CGSize)a5;
+- (void)rollCameraSpaceBy:(float)by withPoint:(CGPoint)point viewport:(CGSize)viewport;
 - (void)rotateByX:(float)deltaX Y:(float)deltaY;
 - (void)setInertiaEnabled:(BOOL)inertiaEnabled;
 - (void)setInteractionMode:(SCNInteractionMode)interactionMode;
@@ -41,10 +41,10 @@
 - (void)setMaximumVerticalAngle:(float)maximumVerticalAngle;
 - (void)setMinimumHorizontalAngle:(float)minimumHorizontalAngle;
 - (void)setMinimumVerticalAngle:(float)minimumVerticalAngle;
-- (void)setPointOfView:(id)a3 updateUpTransform:(BOOL)a4;
+- (void)setPointOfView:(id)view updateUpTransform:(BOOL)transform;
 - (void)setSimdUp:(SCNCameraController *)self;
 - (void)translateInCameraSpaceByX:(float)deltaX Y:(float)deltaY Z:(float)deltaZ;
-- (void)translateInScreenSpaceTo:(CGPoint)a3 viewport:(CGSize)a4;
+- (void)translateInScreenSpaceTo:(CGPoint)to viewport:(CGSize)viewport;
 @end
 
 @implementation SCNCameraController
@@ -115,13 +115,13 @@
   return result;
 }
 
-- (void)setPointOfView:(id)a3 updateUpTransform:(BOOL)a4
+- (void)setPointOfView:(id)view updateUpTransform:(BOOL)transform
 {
-  if (self->_pointOfView != a3)
+  if (self->_pointOfView != view)
   {
-    [(SCNCameraController *)self _setInertiaRunning:0, a4];
+    [(SCNCameraController *)self _setInertiaRunning:0, transform];
 
-    self->_pointOfView = a3;
+    self->_pointOfView = view;
   }
 }
 
@@ -227,12 +227,12 @@
   [(SCNCameraController *)self _translateInCameraSpaceByX:v9 Y:v10 Z:v11];
 }
 
-- (void)translateInScreenSpaceTo:(CGPoint)a3 viewport:(CGSize)a4
+- (void)translateInScreenSpaceTo:(CGPoint)to viewport:(CGSize)viewport
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = viewport.height;
+  width = viewport.width;
+  y = to.y;
+  x = to.x;
   [(SCNCameraController *)self _setInertiaRunning:0];
   v6.f64[0] = width;
   v6.f64[1] = height;
@@ -242,9 +242,9 @@
   v6.f64[0] = x;
   v6.f64[1] = height - y;
   v17 = COERCE_DOUBLE(vcvt_f32_f64(vaddq_f64(v6, v12)));
-  v13 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v13 simdLocalTranslateBy:v17];
+  [(SCNNode *)pointOfView simdLocalTranslateBy:v17];
 }
 
 - (void)rotateByX:(float)deltaX Y:(float)deltaY
@@ -263,12 +263,12 @@
   [(SCNCameraController *)self _rotateByX:v7 Y:v8];
 }
 
-- (void)rollCameraSpaceBy:(float)a3 withPoint:(CGPoint)a4 viewport:(CGSize)a5
+- (void)rollCameraSpaceBy:(float)by withPoint:(CGPoint)point viewport:(CGSize)viewport
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
+  height = viewport.height;
+  width = viewport.width;
+  y = point.y;
+  x = point.x;
   [(SCNCameraController *)self _setInertiaRunning:0];
   [(SCNCameraController *)self _directionForScreenPoint:x viewport:y, width, height];
   v12 = v11;
@@ -282,7 +282,7 @@
   else
   {
     v20 = v14;
-    v15 = a3 / 180.0 * 3.14159265;
+    v15 = by / 180.0 * 3.14159265;
     v21 = v12;
     LODWORD(v18) = *&__sincosf_stret(v15 * 0.5);
     v16 = vrsqrte_f32(v20);
@@ -291,9 +291,9 @@
   }
 
   v22 = *&v18;
-  v19 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v19 simdLocalRotateBy:v22];
+  [(SCNNode *)pointOfView simdLocalRotateBy:v22];
 }
 
 - (void)rollAroundTarget:(float)delta
@@ -323,18 +323,18 @@
   }
 
   v14 = *&v9;
-  v10 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v10 simdLocalRotateBy:v14];
+  [(SCNNode *)pointOfView simdLocalRotateBy:v14];
 }
 
 - (void)dollyToTarget:(float)delta
 {
   [(SCNCameraController *)self _setInertiaRunning:0];
-  v5 = [(SCNCameraController *)self pointOfView];
-  if (v5)
+  pointOfView = [(SCNCameraController *)self pointOfView];
+  if (pointOfView)
   {
-    [(SCNNode *)v5 transform];
+    [(SCNNode *)pointOfView transform];
     v8.columns[0] = v24;
     v8.columns[1].i32[0] = v25.i32[0];
     v7 = v24.i32[3];
@@ -377,9 +377,9 @@
   LODWORD(v22) = vmul_f32(*v28.columns[0].f32, vrsqrts_f32(v28.columns[2].u32[0], vmul_f32(*v28.columns[0].f32, *v28.columns[0].f32))).u32[0];
   [(SCNNode *)[(SCNCameraController *)self pointOfView] simdWorldPosition];
   v20 = v12;
-  v13 = [(SCNCameraController *)self pointOfView];
+  pointOfView2 = [(SCNCameraController *)self pointOfView];
   +[SCNNode simdLocalFront];
-  [(SCNNode *)v13 simdConvertVector:0 toNode:?];
+  [(SCNNode *)pointOfView2 simdConvertVector:0 toNode:?];
   v14 = vsubq_f32(v21, v20);
   v16 = vmulq_f32(v14, v15);
   if ((v16.f32[2] + vaddv_f32(*v16.f32)) <= 0.0)
@@ -405,28 +405,28 @@
 {
   if ([(SCNCameraController *)self interactionMode]== SCNInteractionModeOrbitArcball || [(SCNCameraController *)self interactionMode]== SCNInteractionModeOrbitCenteredArcball)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(interactionMode) = 1;
   }
 
   else
   {
-    v3 = [(SCNCameraController *)self interactionMode];
-    if (v3 != SCNInteractionModeOrbitTurntable)
+    interactionMode = [(SCNCameraController *)self interactionMode];
+    if (interactionMode != SCNInteractionModeOrbitTurntable)
     {
-      LOBYTE(v3) = [(SCNCameraController *)self interactionMode]== SCNInteractionModeOrbitAngleMapping;
+      LOBYTE(interactionMode) = [(SCNCameraController *)self interactionMode]== SCNInteractionModeOrbitAngleMapping;
     }
   }
 
-  return v3;
+  return interactionMode;
 }
 
-- (double)unrolledWorldOrientation:(float *)a3
+- (double)unrolledWorldOrientation:(float *)orientation
 {
-  [objc_msgSend(a1 "pointOfView")];
+  [objc_msgSend(self "pointOfView")];
   v114 = v5;
-  [objc_msgSend(a1 "pointOfView")];
+  [objc_msgSend(self "pointOfView")];
   v109 = v6;
-  [a1 simdUp];
+  [self simdUp];
   v8 = vmulq_f32(v109, v7);
   v9 = v8.f32[2] + vaddv_f32(*v8.f32);
   v10 = fabsf(fabsf(v9) + -1.0);
@@ -447,11 +447,11 @@
 
   if (v11 >= 0.01)
   {
-    [a1 simdTarget];
+    [self simdTarget];
     v110 = v14;
-    [objc_msgSend(a1 "pointOfView")];
+    [objc_msgSend(self "pointOfView")];
     v111 = vsubq_f32(v110, v15);
-    if ([a1 useOrbitInteractionMode])
+    if ([self useOrbitInteractionMode])
     {
       v17 = v111;
       v16 = v114;
@@ -492,7 +492,7 @@
     {
       v112 = vnegq_f32(v16);
       v115 = v16;
-      [a1 simdUp];
+      [self simdUp];
       v26 = v115;
       v27 = v25;
       v28 = vdupq_laneq_s32(v115, 3);
@@ -637,9 +637,9 @@
     }
 
     while (v22++ < 0x63);
-    if (a3)
+    if (orientation)
     {
-      *a3 = v24;
+      *orientation = v24;
     }
 
     v87 = vmulq_f32(v16, v16);
@@ -652,14 +652,14 @@
 
   else
   {
-    if (a3)
+    if (orientation)
     {
-      *a3 = 0.0;
+      *orientation = 0.0;
     }
 
-    v12 = [a1 pointOfView];
+    pointOfView = [self pointOfView];
 
-    [v12 simdWorldOrientation];
+    [pointOfView simdWorldOrientation];
   }
 
   return result;
@@ -670,9 +670,9 @@
   [(SCNCameraController *)self _setInertiaRunning:0];
   [(SCNCameraController *)self unrolledWorldOrientation:0];
   v5 = v3;
-  v4 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v4 setSimdWorldOrientation:v5];
+  [(SCNNode *)pointOfView setSimdWorldOrientation:v5];
 }
 
 - (void)frameNodes:(NSArray *)nodes
@@ -681,10 +681,10 @@
   [(SCNCameraController *)self _setInertiaRunning:0];
   if ([(SCNNode *)[(SCNCameraController *)self pointOfView] camera])
   {
-    v5 = [(SCNNode *)[(SCNCameraController *)self pointOfView] scene];
-    if (v5)
+    scene = [(SCNNode *)[(SCNCameraController *)self pointOfView] scene];
+    if (scene)
     {
-      v6 = v5;
+      v6 = scene;
       BoundingSphere = SCNNodeGetBoundingSphere(nodes, 16843009);
       v9.i64[0] = BoundingSphere;
       v9.i64[1] = v8;
@@ -731,10 +731,10 @@
   }
 }
 
-- (double)lookAtWith:(float32x4_t)a3 target:
+- (double)lookAtWith:(float32x4_t)with target:
 {
-  [a1 simdUp];
-  v3 = vsubq_f32(a3, a2);
+  [self simdUp];
+  v3 = vsubq_f32(with, a2);
   v4 = vmulq_f32(v3, v3);
   *&v5 = v4.f32[2] + vaddv_f32(*v4.f32);
   v6 = vrsqrte_f32(v5);
@@ -763,20 +763,20 @@
   self->_handlingInteraction = 1;
   if ([(SCNCameraController *)self automaticTarget])
   {
-    v6 = [(SCNNode *)[(SCNCameraController *)self pointOfView] sceneRef];
-    if (!v6)
+    sceneRef = [(SCNNode *)[(SCNCameraController *)self pointOfView] sceneRef];
+    if (!sceneRef)
     {
       return;
     }
 
-    v7 = v6;
+    v7 = sceneRef;
     v8.f64[0] = x;
     v16 = vcvt_hight_f32_f64(0, v17);
     v8.f64[1] = y;
     v9 = vcvt_f32_f64(v8);
-    C3DSceneLock(v6);
-    v10 = [(SCNNode *)[(SCNCameraController *)self pointOfView] nodeRef];
-    HitTestResultsAtPoint = C3DSceneCreateHitTestResultsAtPoint(v7, v10, 0, *&v9, v16, v11);
+    C3DSceneLock(sceneRef);
+    nodeRef = [(SCNNode *)[(SCNCameraController *)self pointOfView] nodeRef];
+    HitTestResultsAtPoint = C3DSceneCreateHitTestResultsAtPoint(v7, nodeRef, 0, *&v9, v16, v11);
     C3DSceneUnlock(v7);
     if (HitTestResultsAtPoint)
     {
@@ -849,7 +849,7 @@
         v15.f32[0] = -*&v16;
         LODWORD(v16) = HIDWORD(v16);
         v17 = 0.0;
-        v18 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -862,10 +862,10 @@
         v15 = vmul_n_f32(vsub_f32(*&self->_anon_70[8], *&self->_anon_70[16]), self->_inertia.translationSensitivity);
         *&v17 = -v15.f32[1];
         v16 = 0.0;
-        v18 = self;
+        selfCopy2 = self;
       }
 
-      [(SCNCameraController *)v18 _translateInCameraSpaceByX:*&v15 Y:v16 Z:v17];
+      [(SCNCameraController *)selfCopy2 _translateInCameraSpaceByX:*&v15 Y:v16 Z:v17];
       goto LABEL_8;
     }
 
@@ -917,9 +917,9 @@ LABEL_8:
   v25 = vuzp1q_s32(v22, v22);
   v25.i32[0] = v29.i32[1];
   *&v30 = vmlsq_f32(v24, v25, vextq_s8(vuzp1q_s32(v20, v20), v20, 0xCuLL)).u64[0];
-  v26 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v26 setSimdOrientation:v30];
+  [(SCNNode *)pointOfView setSimdOrientation:v30];
 }
 
 - (void)dollyBy:(float)delta onScreenPoint:(CGPoint)point viewport:(CGSize)viewport
@@ -931,10 +931,10 @@ LABEL_8:
   [(SCNCameraController *)self _setInertiaRunning:0];
   [(SCNCameraController *)self _directionForScreenPoint:x viewport:y, width, height];
   v13 = v10;
-  v11 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
   *&v12 = vmulq_n_f32(v13, delta).u64[0];
 
-  [(SCNNode *)v11 simdLocalTranslateBy:v12];
+  [(SCNNode *)pointOfView simdLocalTranslateBy:v12];
 }
 
 - (void)_resetOrientationState
@@ -1031,11 +1031,11 @@ LABEL_18:
   v34 = vmvn_s8(vceqz_f32(*self->_minimumAngles));
   if ((vpmax_u32(v34, v34).u32[0] & 0x80000000) != 0 || (v35.i64[0] = 0, v36 = vmvn_s8(vceqz_f32(*self->_maximumAngles)), (vpmax_u32(v36, v36).u32[0] & 0x80000000) != 0))
   {
-    v37 = [(SCNCameraController *)self interactionMode];
-    v38 = [(SCNCameraController *)self pointOfView];
-    if (v37)
+    interactionMode = [(SCNCameraController *)self interactionMode];
+    pointOfView = [(SCNCameraController *)self pointOfView];
+    if (interactionMode)
     {
-      [(SCNNode *)v38 simdWorldPosition];
+      [(SCNNode *)pointOfView simdWorldPosition];
       v73 = v39;
       [(SCNCameraController *)self simdTarget];
       v41 = vsubq_f32(v73, v40);
@@ -1043,7 +1043,7 @@ LABEL_18:
 
     else
     {
-      [(SCNNode *)v38 simdWorldFront];
+      [(SCNNode *)pointOfView simdWorldFront];
       v41 = vnegq_f32(v42);
     }
 
@@ -1108,9 +1108,9 @@ LABEL_18:
   *&self->_anon_10[8] = v35.i64[0];
 }
 
-- (float32x4_t)_directionForScreenPoint:(double)a3 viewport:(float64_t)a4
+- (float32x4_t)_directionForScreenPoint:(double)point viewport:(float64_t)viewport
 {
-  result = [objc_msgSend(a1 "pointOfView")];
+  result = [objc_msgSend(self "pointOfView")];
   if (result)
   {
     v6 = result;
@@ -1128,7 +1128,7 @@ LABEL_18:
           C3DAdjustZRangeOfProjectionInfos(v20, v6, 0, v7);
         }
 
-        v9.f64[0] = a4;
+        v9.f64[0] = viewport;
         v9.f64[1] = a5;
         v19 = vcvt_hight_f32_f64(0, v9);
         v21 = *C3DProjectionInfosGetMatrix(v20, &v19, 0);
@@ -1150,16 +1150,16 @@ LABEL_18:
   return result;
 }
 
-- (void)_updateInertiaAtTime:(double)a3
+- (void)_updateInertiaAtTime:(double)time
 {
   if (!self->_inertia.inertiaRunning)
   {
     return;
   }
 
-  v4 = (a3 - self->_inertia.lastSimulationTime) * 60.0;
+  v4 = (time - self->_inertia.lastSimulationTime) * 60.0;
   v5 = fmaxf(v4, 1.0);
-  self->_inertia.lastSimulationTime = a3;
+  self->_inertia.lastSimulationTime = time;
   if (v5 >= 1)
   {
     friction = self->_inertia.friction;
@@ -1233,7 +1233,7 @@ LABEL_18:
       v8.f32[0] = -*&v15;
       *&v15 = -*(&v15 + 1);
       v13 = 0.0;
-      v16 = self;
+      selfCopy2 = self;
       goto LABEL_21;
     }
 
@@ -1242,9 +1242,9 @@ LABEL_18:
       v8 = vmul_n_f32(v8, self->_inertia.translationSensitivity);
       LODWORD(v13) = v8.i32[1];
       v15 = 0.0;
-      v16 = self;
+      selfCopy2 = self;
 LABEL_21:
-      [(SCNCameraController *)v16 _translateInCameraSpaceByX:*&v8 Y:v15 Z:v13];
+      [(SCNCameraController *)selfCopy2 _translateInCameraSpaceByX:*&v8 Y:v15 Z:v13];
     }
   }
 
@@ -1263,35 +1263,35 @@ LABEL_22:
 
 - (__n128)_targetRelativeToPointOfViewParent
 {
-  if ([-[__n128 pointOfView](a1 "pointOfView")])
+  if ([-[__n128 pointOfView](self "pointOfView")])
   {
-    v2 = [-[__n128 pointOfView](a1 "pointOfView")];
-    v3 = a1[16];
+    v2 = [-[__n128 pointOfView](self "pointOfView")];
+    v3 = self[16];
 
     [v2 simdConvertPosition:0 fromNode:v3.n128_f64[0]];
   }
 
   else
   {
-    return a1[16];
+    return self[16];
   }
 
   return result;
 }
 
-- (void)_translateInCameraSpaceByX:(float)a3 Y:(float)a4 Z:(float)a5
+- (void)_translateInCameraSpaceByX:(float)x Y:(float)y Z:(float)z
 {
-  v5 = [(SCNCameraController *)self pointOfView];
+  pointOfView = [(SCNCameraController *)self pointOfView];
 
-  [(SCNNode *)v5 simdLocalTranslateBy:COERCE_DOUBLE(__PAIR64__(LODWORD(a4), LODWORD(a3)))];
+  [(SCNNode *)pointOfView simdLocalTranslateBy:COERCE_DOUBLE(__PAIR64__(LODWORD(y), LODWORD(x)))];
 }
 
-- (void)_rotateByX:(float)a3 Y:(float)a4
+- (void)_rotateByX:(float)x Y:(float)y
 {
-  v5 = vceqz_f32(*&a3);
+  v5 = vceqz_f32(*&x);
   if ((vpmin_u32(v5, v5).u32[0] & 0x80000000) == 0)
   {
-    v6 = vadd_f32(*&a3, *self->_anon_10);
+    v6 = vadd_f32(*&x, *self->_anon_10);
     *&v7 = *v6.i32 + -6.28318531;
     v8 = vbsl_s8(vcgtd_f64(*v6.i32, 6.28318531), __PAIR64__(v6.u32[1], v7), v6);
     *&v9 = *v8.i32 + 6.28318531;
@@ -1307,22 +1307,22 @@ LABEL_22:
 - (double)_orientationForMode
 {
   v41 = *(MEMORY[0x277D860B8] + 48);
-  if ([a1 interactionMode])
+  if ([self interactionMode])
   {
-    if ([a1 interactionMode] == 1)
+    if ([self interactionMode] == 1)
     {
-      [a1 simdUp];
+      [self simdUp];
     }
 
     else
     {
-      if ([a1 interactionMode] != 2)
+      if ([self interactionMode] != 2)
       {
         v30 = v41;
         goto LABEL_15;
       }
 
-      [objc_msgSend(a1 "pointOfView")];
+      [objc_msgSend(self "pointOfView")];
     }
 
     v14 = v2;
@@ -1333,7 +1333,7 @@ LABEL_22:
     {
       v36 = v3;
       v40 = v14;
-      v17 = __sincosf_stret(0.5 * COERCE_FLOAT(*(a1 + 16)));
+      v17 = __sincosf_stret(0.5 * COERCE_FLOAT(*(self + 16)));
       v18 = vrsqrte_f32(v36);
       v19 = vmul_f32(v18, vrsqrts_f32(v36, vmul_f32(v18, v18)));
       v16 = vmulq_n_f32(vmulq_n_f32(v40, vmul_f32(v19, vrsqrts_f32(v36, vmul_f32(v19, v19))).f32[0]), v17.__sinval);
@@ -1341,14 +1341,14 @@ LABEL_22:
     }
 
     v39 = v16;
-    [objc_msgSend(a1 pointOfView];
+    [objc_msgSend(self pointOfView];
   }
 
   else
   {
-    v4 = [a1 pointOfView];
-    [a1 simdUp];
-    [v4 simdConvertVector:0 fromNode:?];
+    pointOfView = [self pointOfView];
+    [self simdUp];
+    [pointOfView simdConvertVector:0 fromNode:?];
     v6 = v5;
     v7 = vmulq_f32(v5, v5);
     *&v8 = v7.f32[2] + vaddv_f32(*v7.f32);
@@ -1357,7 +1357,7 @@ LABEL_22:
     {
       v36 = v8;
       v38 = v6;
-      v10 = __sincosf_stret(0.5 * COERCE_FLOAT(*(a1 + 16)));
+      v10 = __sincosf_stret(0.5 * COERCE_FLOAT(*(self + 16)));
       v11 = vrsqrte_f32(v36);
       v12 = vmul_f32(v11, vrsqrts_f32(v36, vmul_f32(v11, v11)));
       v9 = vmulq_n_f32(vmulq_n_f32(v38, vmul_f32(v12, vrsqrts_f32(v36, vmul_f32(v12, v12))).f32[0]), v10.__sinval);
@@ -1376,7 +1376,7 @@ LABEL_22:
   {
     v37 = v22;
     v42 = v20;
-    v24 = __sincosf_stret(*(a1 + 20) * 0.5);
+    v24 = __sincosf_stret(*(self + 20) * 0.5);
     v25 = vrsqrte_f32(LODWORD(v37));
     v26 = vmul_f32(v25, vrsqrts_f32(LODWORD(v37), vmul_f32(v25, v25)));
     v23 = vmulq_n_f32(vmulq_n_f32(v42, vmul_f32(v26, vrsqrts_f32(LODWORD(v37), vmul_f32(v26, v26))).f32[0]), v24.__sinval);
@@ -1510,30 +1510,30 @@ LABEL_28:
     if ([(SCNCameraController *)self useOrbitInteractionMode])
     {
       [(SCNNode *)[(SCNCameraController *)self pointOfView] setSimdWorldTransform:*&self->_anon_10[16], *&self->_anon_10[32], *&self->_anon_10[48], *&self->_anon_10[64]];
-      v3 = [(SCNCameraController *)self pointOfView];
+      pointOfView = [(SCNCameraController *)self pointOfView];
       [(SCNCameraController *)self _orientationForMode];
       v7 = v4;
       [(SCNCameraController *)self simdTarget];
 
-      [(SCNNode *)v3 simdRotateBy:v7 aroundTarget:v5];
+      [(SCNNode *)pointOfView simdRotateBy:v7 aroundTarget:v5];
     }
 
     else
     {
       [(SCNNode *)[(SCNCameraController *)self pointOfView] setSimdWorldOrientation:*&self->_anon_10[80]];
-      v6 = [(SCNCameraController *)self pointOfView];
+      pointOfView2 = [(SCNCameraController *)self pointOfView];
       [(SCNCameraController *)self _orientationForMode];
 
-      [(SCNNode *)v6 simdLocalRotateBy:?];
+      [(SCNNode *)pointOfView2 simdLocalRotateBy:?];
     }
   }
 }
 
-- (double)_convertRotationFromWorldToPointOfView:(void *)a1
+- (double)_convertRotationFromWorldToPointOfView:(void *)view
 {
-  [objc_msgSend(a1 "pointOfView")];
+  [objc_msgSend(view "pointOfView")];
   v16 = v3;
-  [objc_msgSend(a1 "pointOfView")];
+  [objc_msgSend(view "pointOfView")];
   v5 = vnegq_f32(v4);
   v6 = vzip1q_s32(v5, v5);
   v6.i32[0] = v5.i32[2];
@@ -1590,7 +1590,7 @@ LABEL_28:
 
         [(SCNCameraController *)self _convertRotationFromWorldToPointOfView:*&v14, *&v22];
         v24 = v15;
-        v16 = [(SCNCameraController *)self pointOfView];
+        pointOfView = [(SCNCameraController *)self pointOfView];
         v17 = vmulq_f32(v24, v24);
         *v17.i8 = vadd_f32(*v17.i8, *&vextq_s8(v17, v17, 8uLL));
         v18 = vdupq_lane_s32(vadd_f32(*v17.i8, vdup_lane_s32(*v17.i8, 1)), 0);
@@ -1598,7 +1598,7 @@ LABEL_28:
         v20 = vmulq_f32(v19, vrsqrtsq_f32(v18, vmulq_f32(v19, v19)));
         v24.i64[0] = vbslq_s8(vceqzq_f32(v18), v24, vmulq_f32(v24, vmulq_f32(v20, vrsqrtsq_f32(v18, vmulq_f32(v20, v20))))).u64[0];
         [(SCNCameraController *)self simdTarget];
-        [(SCNNode *)v16 simdRotateBy:*v24.i64 aroundTarget:v21];
+        [(SCNNode *)pointOfView simdRotateBy:*v24.i64 aroundTarget:v21];
         v3 = *&self->_anon_90[32];
       }
 
@@ -1607,43 +1607,43 @@ LABEL_28:
   }
 }
 
-- (BOOL)_isLocationValid:(CGPoint)a3 inViewport:(CGSize)a4
+- (BOOL)_isLocationValid:(CGPoint)valid inViewport:(CGSize)viewport
 {
-  v4 = a3.x <= a4.width;
-  if (a3.y > a4.height)
+  v4 = valid.x <= viewport.width;
+  if (valid.y > viewport.height)
   {
     v4 = 0;
   }
 
-  if (a3.y < 0.0)
+  if (valid.y < 0.0)
   {
     v4 = 0;
   }
 
-  return a3.x >= 0.0 && v4;
+  return valid.x >= 0.0 && v4;
 }
 
-- (double)_mapToSphere:(float64_t)a3 inViewport:(double)a4
+- (double)_mapToSphere:(float64_t)sphere inViewport:(double)viewport
 {
-  a2.f64[1] = a3;
-  if (*&a1[39] == 3)
+  a2.f64[1] = sphere;
+  if (*&self[39] == 3)
   {
-    a2 = vaddq_f64(a2, vcvtq_f64_f32(a1[18]));
+    a2 = vaddq_f64(a2, vcvtq_f64_f32(self[18]));
   }
 
-  if (a4 >= a5)
+  if (viewport >= a5)
   {
-    v5 = a4;
+    viewportCopy = viewport;
   }
 
   else
   {
-    v5 = a5;
+    viewportCopy = a5;
   }
 
-  *&v5 = v5;
-  v6 = vsubq_f64(a2, vdupq_lane_s64(COERCE__INT64((*&v5 * 0.5)), 0));
-  *v6.f32 = vdiv_f32(vcvt_f32_f64(v6), vdup_lane_s32(*&v5, 0));
+  *&viewportCopy = viewportCopy;
+  v6 = vsubq_f64(a2, vdupq_lane_s64(COERCE__INT64((*&viewportCopy * 0.5)), 0));
+  *v6.f32 = vdiv_f32(vcvt_f32_f64(v6), vdup_lane_s32(*&viewportCopy, 0));
   v7 = COERCE_FLOAT(vmul_f32(*&v6, *&v6).i32[1]) + (v6.f32[0] * v6.f32[0]);
   v8 = v7 < 0.125;
   v9 = 0.125 / sqrtf(v7);
@@ -1662,12 +1662,12 @@ LABEL_28:
   return *v6.i64;
 }
 
-- (void)_endDraggingWithVelocity:(CGPoint)a3
+- (void)_endDraggingWithVelocity:(CGPoint)velocity
 {
   if (self->_inertia.inertiaEnabled)
   {
-    y = a3.y;
-    v8 = vcvt_f32_f64(a3);
+    y = velocity.y;
+    v8 = vcvt_f32_f64(velocity);
     v9 = vcge_f32(vabs_f32(v8), vdup_n_s32(0x3DCCCCCDu));
     if ((vpmax_u32(v9, v9).u32[0] & 0x80000000) != 0)
     {
@@ -1722,13 +1722,13 @@ LABEL_28:
   }
 }
 
-- (void)_setInertiaRunning:(BOOL)a3
+- (void)_setInertiaRunning:(BOOL)running
 {
-  if (self->_inertia.inertiaRunning != a3)
+  if (self->_inertia.inertiaRunning != running)
   {
     v10[7] = v3;
     v10[8] = v4;
-    if (a3)
+    if (running)
     {
       [(SCNCameraController *)self delegate];
       if (objc_opt_respondsToSelector())
@@ -1751,7 +1751,7 @@ LABEL_28:
         *&self->_anon_e0[8] = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:1 repeats:v9 block:0.0166666667];
       }
 
-      self->_inertia.inertiaRunning = a3;
+      self->_inertia.inertiaRunning = running;
     }
 
     else
@@ -1767,7 +1767,7 @@ LABEL_28:
         *&self->_anon_e0[8] = 0;
       }
 
-      self->_inertia.inertiaRunning = a3;
+      self->_inertia.inertiaRunning = running;
       [(SCNCameraController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
@@ -1806,9 +1806,9 @@ uint64_t __42__SCNCameraController__setInertiaRunning___block_invoke_3(uint64_t 
   return [v2 cameraInertiaDidEndForController:v3];
 }
 
-- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(float)a3 scaleDelta:(float64_t)a4 viewport:(float64_t)a5
+- (double)_orthographicViewSpaceTranslationForZoomAtScreenPoint:(float)point scaleDelta:(float64_t)delta viewport:(float64_t)viewport
 {
-  v6 = [objc_msgSend(a1 "pointOfView")];
+  v6 = [objc_msgSend(self "pointOfView")];
   v7 = 0.0;
   if (v6)
   {
@@ -1853,8 +1853,8 @@ uint64_t __42__SCNCameraController__setInertiaRunning___block_invoke_3(uint64_t 
 
           v12 = C3DGetScene(v8);
           C3DSceneUnlock(v12);
-          v13.f64[0] = a4;
-          v13.f64[1] = a5;
+          v13.f64[0] = delta;
+          v13.f64[1] = viewport;
           v32 = vcvt_hight_f32_f64(0, v13);
           v45 = *C3DProjectionInfosGetMatrix(v33, &v32, 0);
           v46 = __invert_f4(v45);
@@ -1862,11 +1862,11 @@ uint64_t __42__SCNCameraController__setInertiaRunning___block_invoke_3(uint64_t 
           v26 = v46.columns[1];
           v27 = v46.columns[2];
           v28 = *v46.columns[3].f32;
-          *&v34 = *&v34 + a3;
+          *&v34 = *&v34 + point;
           v47 = *C3DProjectionInfosGetMatrix(v33, &v32, 0);
           v48 = __invert_f4(v47);
-          v14 = (*&a2 + *&a2) / a4 + -1.0;
-          v15 = (*(&a2 + 1) + *(&a2 + 1)) / a5 + -1.0;
+          v14 = (*&a2 + *&a2) / delta + -1.0;
+          v15 = (*(&a2 + 1) + *(&a2 + 1)) / viewport + -1.0;
           __asm { FMOV            V7.4S, #-1.0 }
 
           return COERCE_DOUBLE(vsub_f32(vadd_f32(v28, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v25, v14), v26, v15), _Q7, v27)), vadd_f32(*v48.columns[3].f32, *&vmlaq_f32(vmlaq_n_f32(vmulq_n_f32(v48.columns[0], v14), v48.columns[1], v15), _Q7, v48.columns[2]))));

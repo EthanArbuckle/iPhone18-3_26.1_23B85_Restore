@@ -1,21 +1,21 @@
 @interface CRSIconLayoutPage
-- (CRSIconLayoutPage)initWithCoder:(id)a3;
-- (CRSIconLayoutPage)initWithIcons:(id)a3;
+- (CRSIconLayoutPage)initWithCoder:(id)coder;
+- (CRSIconLayoutPage)initWithIcons:(id)icons;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRSIconLayoutPage
 
-- (CRSIconLayoutPage)initWithIcons:(id)a3
+- (CRSIconLayoutPage)initWithIcons:(id)icons
 {
-  v4 = a3;
+  iconsCopy = icons;
   v9.receiver = self;
   v9.super_class = CRSIconLayoutPage;
   v5 = [(CRSIconLayoutPage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [iconsCopy copy];
     icons = v5->_icons;
     v5->_icons = v6;
   }
@@ -31,16 +31,16 @@
   v4 = [(CRSIconLayoutPage *)&v9 description];
   v5 = [v3 stringWithString:v4];
 
-  v6 = [(CRSIconLayoutPage *)self icons];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  icons = [(CRSIconLayoutPage *)self icons];
+  v7 = [icons componentsJoinedByString:{@", "}];
   [v5 appendFormat:@" %@", v7];
 
   return v5;
 }
 
-- (CRSIconLayoutPage)initWithCoder:(id)a3
+- (CRSIconLayoutPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CRSIconLayoutPage;
   v5 = [(CRSIconLayoutPage *)&v12 init];
@@ -49,7 +49,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CRSIconLayoutPageIcons"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CRSIconLayoutPageIcons"];
     icons = v5->_icons;
     v5->_icons = v9;
   }
@@ -57,11 +57,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRSIconLayoutPage *)self icons];
-  [v4 encodeObject:v5 forKey:@"CRSIconLayoutPageIcons"];
+  coderCopy = coder;
+  icons = [(CRSIconLayoutPage *)self icons];
+  [coderCopy encodeObject:icons forKey:@"CRSIconLayoutPageIcons"];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface AWDIDSSocketPairConnectionTCPInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCurrentRTT:(BOOL)a3;
-- (void)setHasLinkType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCurrentRTT:(BOOL)t;
+- (void)setHasLinkType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSocketPairConnectionTCPInfo
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLinkType:(BOOL)a3
+- (void)setHasLinkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasCurrentRTT:(BOOL)a3
+- (void)setHasCurrentRTT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 2;
   }
@@ -68,11 +68,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -83,10 +83,10 @@ LABEL_3:
       }
 
 LABEL_9:
-      [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_currentRTT), @"currentRTT"}];
+      [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_currentRTT), @"currentRTT"}];
       if ((*&self->_has & 1) == 0)
       {
-        return v3;
+        return dictionary;
       }
 
       goto LABEL_5;
@@ -98,7 +98,7 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkType), @"linkType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_linkType), @"linkType"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -109,13 +109,13 @@ LABEL_4:
   if (has)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bandwidth), @"bandwidth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_bandwidth), @"bandwidth"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -168,13 +168,13 @@ LABEL_9:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 36) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 36) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -193,8 +193,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 8) = self->_linkType;
-  *(a3 + 36) |= 8u;
+  *(to + 8) = self->_linkType;
+  *(to + 36) |= 8u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -205,23 +205,23 @@ LABEL_4:
     }
 
 LABEL_9:
-    *(a3 + 1) = self->_bandwidth;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = self->_bandwidth;
+    *(to + 36) |= 1u;
     return;
   }
 
 LABEL_8:
-  *(a3 + 2) = self->_currentRTT;
-  *(a3 + 36) |= 2u;
+  *(to + 2) = self->_currentRTT;
+  *(to + 36) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -273,20 +273,20 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 36) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 36) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 36) & 4) != 0)
+    else if ((*(equal + 36) & 4) != 0)
     {
 LABEL_21:
       LOBYTE(v5) = 0;
@@ -295,34 +295,34 @@ LABEL_21:
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 36) & 8) == 0 || self->_linkType != *(a3 + 8))
+      if ((*(equal + 36) & 8) == 0 || self->_linkType != *(equal + 8))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 36) & 8) != 0)
+    else if ((*(equal + 36) & 8) != 0)
     {
       goto LABEL_21;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 36) & 2) == 0 || self->_currentRTT != *(a3 + 2))
+      if ((*(equal + 36) & 2) == 0 || self->_currentRTT != *(equal + 2))
       {
         goto LABEL_21;
       }
     }
 
-    else if ((*(a3 + 36) & 2) != 0)
+    else if ((*(equal + 36) & 2) != 0)
     {
       goto LABEL_21;
     }
 
-    LOBYTE(v5) = (*(a3 + 36) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 36) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_bandwidth != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_bandwidth != *(equal + 1))
       {
         goto LABEL_21;
       }
@@ -388,14 +388,14 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 36);
+    v3 = *(from + 36);
     if ((v3 & 8) == 0)
     {
 LABEL_3:
@@ -408,14 +408,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 36) & 8) == 0)
+  else if ((*(from + 36) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_linkType = *(a3 + 8);
+  self->_linkType = *(from + 8);
   *&self->_has |= 8u;
-  v3 = *(a3 + 36);
+  v3 = *(from + 36);
   if ((v3 & 2) == 0)
   {
 LABEL_4:
@@ -425,15 +425,15 @@ LABEL_4:
     }
 
 LABEL_9:
-    self->_bandwidth = *(a3 + 1);
+    self->_bandwidth = *(from + 1);
     *&self->_has |= 1u;
     return;
   }
 
 LABEL_8:
-  self->_currentRTT = *(a3 + 2);
+  self->_currentRTT = *(from + 2);
   *&self->_has |= 2u;
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
     goto LABEL_9;
   }

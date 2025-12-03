@@ -1,36 +1,36 @@
 @interface TSWPHyperlinkField
-+ (BOOL)schemeIsValidForURL:(id)a3;
-+ (BOOL)schemeIsValidForURLReference:(id)a3;
++ (BOOL)schemeIsValidForURL:(id)l;
++ (BOOL)schemeIsValidForURLReference:(id)reference;
 + (id)defaultFileURL;
 + (id)invalidURLSchemes;
-+ (id)newURLFromURLReference:(id)a3;
-+ (int64_t)schemeFromURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)newURLFromURLReference:(id)reference;
++ (int64_t)schemeFromURL:(id)l;
+- (BOOL)isEqual:(id)equal;
 - (NSString)displayText;
 - (NSString)filePath;
 - (NSString)fullPath;
 - (NSString)urlPrefix;
 - (NSURL)url;
 - (NSURL)urlOriginal;
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4;
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4 urlOriginal:(id)a5;
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url;
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url urlOriginal:(id)original;
 - (TSWPSelection)highlightSelection;
-- (id)copyWithContext:(id)a3;
+- (id)copyWithContext:(id)context;
 - (int64_t)scheme;
 - (unint64_t)hash;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_performHyperlinkSelector:(SEL)a3 onStorage:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)saveToHyperlinkArchive:(id)a3;
-- (void)saveToUnsupportedHyperlinkArchive:(id)a3;
-- (void)setURL:(id)a3;
-- (void)setURLOriginal:(id)a3;
-- (void)setUrlOriginalString:(id)a3;
-- (void)setUrlString:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3 storage:(id)a4;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_performHyperlinkSelector:(SEL)selector onStorage:(id)storage;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)saveToHyperlinkArchive:(id)archive;
+- (void)saveToUnsupportedHyperlinkArchive:(id)archive;
+- (void)setURL:(id)l;
+- (void)setURLOriginal:(id)original;
+- (void)setUrlOriginalString:(id)string;
+- (void)setUrlString:(id)string;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root storage:(id)storage;
 @end
 
 @implementation TSWPHyperlinkField
@@ -42,31 +42,31 @@
   return objc_msgSend_selectionWithRange_(TSWPSelection, v4, &v4[v3], 0);
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  v4 = a3;
-  if (self->_urlString != v4)
+  stringCopy = string;
+  if (self->_urlString != stringCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = stringCopy;
+    objc_msgSend_willModify(self, stringCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_urlString, v8);
-    v4 = v8;
+    stringCopy = v8;
   }
 }
 
-- (void)setUrlOriginalString:(id)a3
+- (void)setUrlOriginalString:(id)string
 {
-  v4 = a3;
-  if (self->_urlOriginalString != v4)
+  stringCopy = string;
+  if (self->_urlOriginalString != stringCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = stringCopy;
+    objc_msgSend_willModify(self, stringCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_urlOriginalString, v8);
-    v4 = v8;
+    stringCopy = v8;
   }
 }
 
@@ -89,13 +89,13 @@
   return v12;
 }
 
-+ (int64_t)schemeFromURL:(id)a3
++ (int64_t)schemeFromURL:(id)l
 {
-  v3 = a3;
-  v6 = v3;
-  if (v3)
+  lCopy = l;
+  v6 = lCopy;
+  if (lCopy)
   {
-    v7 = objc_msgSend_scheme(v3, v4, v5);
+    v7 = objc_msgSend_scheme(lCopy, v4, v5);
     v10 = objc_msgSend_lowercaseString(v7, v8, v9);
 
     if (v10)
@@ -212,11 +212,11 @@
   return v3;
 }
 
-+ (BOOL)schemeIsValidForURL:(id)a3
++ (BOOL)schemeIsValidForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v6 = objc_msgSend_invalidURLSchemes(TSWPHyperlinkField, v4, v5);
-  v9 = objc_msgSend_scheme(v3, v7, v8);
+  v9 = objc_msgSend_scheme(lCopy, v7, v8);
   v12 = objc_msgSend_lowercaseString(v9, v10, v11);
 
   if (v12)
@@ -233,11 +233,11 @@
   return v15;
 }
 
-+ (BOOL)schemeIsValidForURLReference:(id)a3
++ (BOOL)schemeIsValidForURLReference:(id)reference
 {
-  v3 = a3;
+  referenceCopy = reference;
   v4 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v6 = objc_msgSend_initWithString_(v4, v5, v3);
+  v6 = objc_msgSend_initWithString_(v4, v5, referenceCopy);
   if (v6)
   {
     v7 = objc_opt_class();
@@ -270,25 +270,25 @@
   return v9;
 }
 
-+ (id)newURLFromURLReference:(id)a3
++ (id)newURLFromURLReference:(id)reference
 {
-  v3 = a3;
-  if (!v3)
+  referenceCopy = reference;
+  if (!referenceCopy)
   {
     goto LABEL_5;
   }
 
   v4 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v7 = objc_msgSend_initWithString_(v4, v5, v3);
+  v7 = objc_msgSend_initWithString_(v4, v5, referenceCopy);
   if (!v7)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "+[TSWPHyperlinkField newURLFromURLReference:]");
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPHyperlinkField.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 202, 0, "Failed to create an NSURL from %@", v3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 202, 0, "Failed to create an NSURL from %@", referenceCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
-    if (objc_msgSend_hasPrefix_(v3, v15, @"mailto:"))
+    if (objc_msgSend_hasPrefix_(referenceCopy, v15, @"mailto:"))
     {
       v18 = objc_msgSend_sharedDelegate(MEMORY[0x277D80610], v16, v17);
       v7 = objc_msgSend_defaultEmailHyperlinkURL(v18, v19, v20);
@@ -305,42 +305,42 @@ LABEL_6:
   return v7;
 }
 
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  urlCopy = url;
   v14.receiver = self;
   v14.super_class = TSWPHyperlinkField;
-  v10 = [(TSWPSmartField *)&v14 initWithContext:v6];
+  v10 = [(TSWPSmartField *)&v14 initWithContext:contextCopy];
   if (v10)
   {
-    v11 = objc_msgSend_absoluteString(v7, v8, v9);
+    v11 = objc_msgSend_absoluteString(urlCopy, v8, v9);
     objc_msgSend_setUrlString_(v10, v12, v11);
   }
 
   return v10;
 }
 
-- (TSWPHyperlinkField)initWithContext:(id)a3 url:(id)a4 urlOriginal:(id)a5
+- (TSWPHyperlinkField)initWithContext:(id)context url:(id)url urlOriginal:(id)original
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_initWithContext_url_(self, v11, v8, v9);
+  contextCopy = context;
+  urlCopy = url;
+  originalCopy = original;
+  v14 = objc_msgSend_initWithContext_url_(self, v11, contextCopy, urlCopy);
   if (v14)
   {
-    v15 = objc_msgSend_absoluteString(v10, v12, v13);
+    v15 = objc_msgSend_absoluteString(originalCopy, v12, v13);
     objc_msgSend_setUrlOriginalString_(v14, v16, v15);
   }
 
   return v14;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = TSWPHyperlinkField;
-  v4 = [(TSWPSmartField *)&v8 copyWithContext:a3];
+  v4 = [(TSWPSmartField *)&v8 copyWithContext:context];
   objc_msgSend_setUrlString_(v4, v5, self->_urlString);
   objc_msgSend_setUrlOriginalString_(v4, v6, self->_urlOriginalString);
   return v4;
@@ -388,9 +388,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(l, a2, l);
   objc_msgSend_setUrlString_(self, v4, v5);
 }
 
@@ -419,9 +419,9 @@ LABEL_9:
   return v5;
 }
 
-- (void)setURLOriginal:(id)a3
+- (void)setURLOriginal:(id)original
 {
-  v5 = objc_msgSend_absoluteString(a3, a2, a3);
+  v5 = objc_msgSend_absoluteString(original, a2, original);
   objc_msgSend_setUrlOriginalString_(self, v4, v5);
 }
 
@@ -486,10 +486,10 @@ LABEL_9:
   return v6;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v4 = MEMORY[0x277D81150];
-  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPHyperlinkField saveToArchive:archiver:]", a4);
+  v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSWPHyperlinkField saveToArchive:archiver:]", archiver);
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPHyperlinkField.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v4, v8, v5, v7, 338, 0, "Don't subclass TSWPHyperlinkField. TSWPUnsupportedHyperlinkField shim in saveToArchiver:");
 
@@ -498,12 +498,12 @@ LABEL_9:
   objc_msgSend_logBacktraceThrottled(v11, v9, v10);
 }
 
-- (void)saveToUnsupportedHyperlinkArchive:(id)a3
+- (void)saveToUnsupportedHyperlinkArchive:(id)archive
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiveCopy = archive;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DEFF0C, off_2812DC408[142]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiveCopy, v5, sub_276DEFF0C, off_2812DC408[142]);
 
   *(v6 + 16) |= 4u;
   v7 = *(v6 + 40);
@@ -535,7 +535,7 @@ LABEL_9:
 
   v16.receiver = self;
   v16.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v16 saveToArchive:v9 archiver:v4];
+  [(TSWPSmartField *)&v16 saveToArchive:v9 archiver:archiveCopy];
   v11 = self->_urlString;
   if (v11)
   {
@@ -558,7 +558,7 @@ LABEL_9:
   v14 = self->_urlOriginalString;
   if (v14)
   {
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v4, v13, 3, v6);
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiveCopy, v13, 3, v6);
     sub_276D9F478(v19, v14);
     v15 = __s;
     *(v6 + 16) |= 2u;
@@ -576,12 +576,12 @@ LABEL_9:
   }
 }
 
-- (void)saveToHyperlinkArchive:(id)a3
+- (void)saveToHyperlinkArchive:(id)archive
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiveCopy = archive;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DEFF78, off_2812DC408[138]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiveCopy, v5, sub_276DEFF78, off_2812DC408[138]);
 
   *(v6 + 16) |= 2u;
   v7 = *(v6 + 32);
@@ -599,7 +599,7 @@ LABEL_9:
 
   v19.receiver = self;
   v19.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v19 saveToArchive:v7 archiver:v4];
+  [(TSWPSmartField *)&v19 saveToArchive:v7 archiver:archiveCopy];
   v9 = self->_urlString;
   if (v9)
   {
@@ -630,34 +630,34 @@ LABEL_9:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   v6 = objc_msgSend_scheme(self, v4, v5);
   switch(v6)
   {
     case 4:
       goto LABEL_6;
     case 9:
-      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v8, v7, *MEMORY[0x277D80968], *MEMORY[0x277D809B0], @"TPLinkToPage");
+      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v7, *MEMORY[0x277D80968], *MEMORY[0x277D809B0], @"TPLinkToPage");
       goto LABEL_6;
     case 10:
-      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v8, v7, *MEMORY[0x277D80968], *MEMORY[0x277D809B0], @"TNLinkToSheet");
+      objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v7, *MEMORY[0x277D80968], *MEMORY[0x277D809B0], @"TNLinkToSheet");
 LABEL_6:
-      objc_msgSend_saveToUnsupportedHyperlinkArchive_(self, v7, v8);
+      objc_msgSend_saveToUnsupportedHyperlinkArchive_(self, v7, archiverCopy);
       goto LABEL_8;
   }
 
-  objc_msgSend_saveToHyperlinkArchive_(self, v7, v8);
+  objc_msgSend_saveToHyperlinkArchive_(self, v7, archiverCopy);
 LABEL_8:
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 4))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 4))
   {
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   else
@@ -667,11 +667,11 @@ LABEL_8:
 
   v11.receiver = self;
   v11.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v11 loadFromArchive:v7 unarchiver:v6];
-  if (*(a3 + 16))
+  [(TSWPSmartField *)&v11 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  if (*(archive + 16))
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v10 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     if (v10)
     {
       objc_storeStrong(&self->_urlString, v10);
@@ -679,13 +679,13 @@ LABEL_8:
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
-  v7 = objc_msgSend_messageType(v4, v5, v6);
+  unarchiverCopy = unarchiver;
+  v7 = objc_msgSend_messageType(unarchiverCopy, v5, v6);
   if (v7 == 2039)
   {
-    v8 = v4;
+    v8 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v10 = objc_msgSend_messageWithDescriptor_(v8, v9, off_2812DC408[142]);
 
@@ -735,7 +735,7 @@ LABEL_8:
 
   else if (v7 == 2032)
   {
-    v21 = v4;
+    v21 = unarchiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v23 = objc_msgSend_messageWithDescriptor_(v21, v22, off_2812DC408[138]);
 
@@ -743,10 +743,10 @@ LABEL_8:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     v6 = TSUDynamicCast();
@@ -812,10 +812,10 @@ LABEL_14:
   return v11;
 }
 
-- (void)p_performHyperlinkSelector:(SEL)a3 onStorage:(id)a4
+- (void)p_performHyperlinkSelector:(SEL)selector onStorage:(id)storage
 {
-  v14 = a4;
-  v8 = objc_msgSend_parentInfo(v14, v6, v7);
+  storageCopy = storage;
+  v8 = objc_msgSend_parentInfo(storageCopy, v6, v7);
   if (v8)
   {
     do
@@ -823,7 +823,7 @@ LABEL_14:
       if (objc_opt_respondsToSelector())
       {
         v11 = objc_msgSend_url(self, v9, v10);
-        objc_msgSend_performSelector_withObject_withObject_(v8, v12, a3, v14, v11);
+        objc_msgSend_performSelector_withObject_withObject_(v8, v12, selector, storageCopy, v11);
       }
 
       v13 = objc_msgSend_parentInfo(v8, v9, v10);
@@ -835,29 +835,29 @@ LABEL_14:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v10 = objc_msgSend_parentStorage(self, v8, v9);
   objc_msgSend_p_performHyperlinkSelector_onStorage_(self, v11, sel_addMapForStorage_forHyperlink_, v10);
   v12.receiver = self;
   v12.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v12 wasAddedToDocumentRoot:v6 dolcContext:v7];
+  [(TSWPSmartField *)&v12 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3 storage:(id)a4
+- (void)willBeRemovedFromDocumentRoot:(id)root storage:(id)storage
 {
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  rootCopy = root;
+  storageCopy = storage;
+  if (storageCopy)
   {
-    objc_msgSend_p_performHyperlinkSelector_onStorage_(self, v7, sel_removeMapForStorage_forHyperlink_, v8);
+    objc_msgSend_p_performHyperlinkSelector_onStorage_(self, v7, sel_removeMapForStorage_forHyperlink_, storageCopy);
   }
 
   v9.receiver = self;
   v9.super_class = TSWPHyperlinkField;
-  [(TSWPSmartField *)&v9 willBeRemovedFromDocumentRoot:v6];
+  [(TSWPSmartField *)&v9 willBeRemovedFromDocumentRoot:rootCopy];
 }
 
 @end

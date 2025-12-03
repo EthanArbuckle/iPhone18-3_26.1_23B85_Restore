@@ -1,15 +1,15 @@
 @interface SKRConversationTurnDataXPC
 - (SKRConversationTurnDataXPC)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRConversationTurnDataXPC
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ConversationTurnDataXPC.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ConversationTurnDataXPC.encode(with:)(coderCopy);
 }
 
 - (SKRConversationTurnDataXPC)init

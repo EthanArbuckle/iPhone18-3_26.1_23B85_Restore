@@ -1,25 +1,25 @@
 @interface SFWebFormAccessoryViewWrapper
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SFWebFormAccessoryViewWrapper)initWithWebFormAccessoryView:(id)a3 bottomBarHeight:(double)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SFWebFormAccessoryViewWrapper)initWithWebFormAccessoryView:(id)view bottomBarHeight:(double)height;
 - (void)layoutSubviews;
-- (void)setBottomBarHeight:(double)a3;
+- (void)setBottomBarHeight:(double)height;
 @end
 
 @implementation SFWebFormAccessoryViewWrapper
 
-- (SFWebFormAccessoryViewWrapper)initWithWebFormAccessoryView:(id)a3 bottomBarHeight:(double)a4
+- (SFWebFormAccessoryViewWrapper)initWithWebFormAccessoryView:(id)view bottomBarHeight:(double)height
 {
-  v7 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = SFWebFormAccessoryViewWrapper;
   v8 = [(SFWebFormAccessoryViewWrapper *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    v8->_bottomBarHeight = a4;
-    objc_storeStrong(&v8->_webFormAccessoryView, a3);
-    [(SFWebFormAccessoryViewWrapper *)v9 addSubview:v7];
+    v8->_bottomBarHeight = height;
+    objc_storeStrong(&v8->_webFormAccessoryView, view);
+    [(SFWebFormAccessoryViewWrapper *)v9 addSubview:viewCopy];
     [(SFWebFormAccessoryViewWrapper *)v9 sizeToFit];
     v10 = v9;
   }
@@ -27,11 +27,11 @@
   return v9;
 }
 
-- (void)setBottomBarHeight:(double)a3
+- (void)setBottomBarHeight:(double)height
 {
-  if (self->_bottomBarHeight != a3)
+  if (self->_bottomBarHeight != height)
   {
-    self->_bottomBarHeight = a3;
+    self->_bottomBarHeight = height;
     [(SFWebFormAccessoryViewWrapper *)self sizeToFit];
 
     [(SFWebFormAccessoryViewWrapper *)self setNeedsLayout];
@@ -71,11 +71,11 @@
   [(UIView *)self->_webFormAccessoryView setFrame:v12, v20, CGRectGetWidth(v24), v18];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   bottomBarHeight = self->_bottomBarHeight;
-  [(UIView *)self->_webFormAccessoryView bounds:a3.width];
+  [(UIView *)self->_webFormAccessoryView bounds:fits.width];
   v5 = bottomBarHeight + CGRectGetHeight(v8);
   v6 = width;
   result.height = v5;
@@ -83,10 +83,10 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self->_webFormAccessoryView frame];
   v10 = x;
   v11 = y;

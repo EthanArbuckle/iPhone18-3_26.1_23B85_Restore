@@ -1,11 +1,11 @@
 @interface VoicemailNavigationBarTitleViewWrapper
-- (_TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper)initWithCoder:(id)a3;
+- (_TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation VoicemailNavigationBarTitleViewWrapper
 
-- (_TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper_principalView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI38VoicemailNavigationBarTitleViewWrapper_maximumOrnamentWidth) = 0x407AE00000000000;
@@ -17,7 +17,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C2E38F9C();
 }
 

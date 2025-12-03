@@ -36,8 +36,8 @@
 
 - (uint64_t)pui_content
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20493];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20493];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -62,25 +62,25 @@
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (uint64_t)pui_userInterfaceStyle
 {
-  v1 = a1;
+  selfCopy = self;
   if (sel_userInterfaceStyle)
   {
     if (objc_opt_respondsToSelector())
     {
-      v2 = v1;
+      v2 = selfCopy;
     }
 
     else
@@ -98,26 +98,26 @@
 
   if (v3)
   {
-    v4 = [v3 userInterfaceStyle];
+    userInterfaceStyle = [v3 userInterfaceStyle];
   }
 
   else
   {
-    v5 = [v1 otherSettings];
+    otherSettings = [selfCopy otherSettings];
 
-    v6 = [v5 objectForSetting:20476];
-    v4 = [v6 unsignedIntegerValue];
+    v6 = [otherSettings objectForSetting:20476];
+    userInterfaceStyle = [v6 unsignedIntegerValue];
 
-    v3 = v5;
+    v3 = otherSettings;
   }
 
-  return v4;
+  return userInterfaceStyle;
 }
 
 - (uint64_t)pui_deviceOrientation
 {
-  v2 = [a1 otherSettings];
-  v3 = [v2 objectForSetting:20466];
+  otherSettings = [self otherSettings];
+  v3 = [otherSettings objectForSetting:20466];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -142,17 +142,17 @@
 
   if (v7)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
     if (sel_deviceOrientation)
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = v9;
+        v10 = selfCopy;
       }
 
       else
@@ -170,31 +170,31 @@
 
     if (v11)
     {
-      v12 = [v11 deviceOrientation];
-      if (v12 > 6)
+      deviceOrientation = [v11 deviceOrientation];
+      if (deviceOrientation > 6)
       {
-        v8 = 1;
+        integerValue = 1;
       }
 
       else
       {
-        v8 = qword_1A8D24DA8[v12];
+        integerValue = qword_1A8D24DA8[deviceOrientation];
       }
     }
 
     else
     {
-      v8 = 0;
+      integerValue = 0;
     }
   }
 
-  return v8;
+  return integerValue;
 }
 
 - (void)pui_provider
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20463];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20463];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -217,24 +217,24 @@
 
 - (uint64_t)pui_isSnapshot
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20487];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20487];
 
   return v2;
 }
 
 - (uint64_t)pui_isIdle
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20499];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20499];
 
   return v2;
 }
 
 - (void)pui_posterContents
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20467];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20467];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -257,16 +257,16 @@
 
 - (uint64_t)pui_isComplicationRowConfigured
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20472];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20472];
 
   return v2;
 }
 
 - (uint64_t)pui_significantEventsCounter
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20489];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20489];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -291,21 +291,21 @@
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pui_mode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20492];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20492];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -330,21 +330,21 @@
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (uint64_t)pui_previewContent
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20494];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20494];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -369,29 +369,29 @@
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = 1;
+    integerValue = 1;
   }
 
-  return v7;
+  return integerValue;
 }
 
 - (uint64_t)pui_isEditorPreview
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20500];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20500];
 
   return v2;
 }
 
 - (double)pui_salientContentRectangle
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20496];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20496];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -430,8 +430,8 @@
 
 - (uint64_t)pui_userTapEventsCounter
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20491];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20491];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -456,53 +456,53 @@
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (uint64_t)pui_isWallpaperObscured
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20468];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20468];
 
   return v2;
 }
 
 - (id)pui_contentOcclusionRectangles
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20497];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20497];
 
   return v2;
 }
 
 - (uint64_t)pui_showsHeaderElements
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20475];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20475];
 
   return v2;
 }
 
 - (uint64_t)pui_showsComplications
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20474];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20474];
 
   return v2;
 }
 
 - (double)pui_userTapLocation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20490];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20490];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -541,8 +541,8 @@
 
 - (id)pui_sceneAttachments
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20495];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20495];
 
   if (v2)
   {
@@ -566,16 +566,16 @@
 
 - (uint64_t)pui_isExtensionUserInteractionEnabled
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20470];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20470];
 
   return v2;
 }
 
 - (uint64_t)pui_isInvalidated
 {
-  v1 = [a1 otherSettings];
-  [v1 flagForSetting:20464];
+  otherSettings = [self otherSettings];
+  [otherSettings flagForSetting:20464];
   IsYes = BSSettingFlagIsYes();
 
   return IsYes;
@@ -583,17 +583,17 @@
 
 - (uint64_t)pui_posterBoundingShape
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20477];
-  v3 = [v2 integerValue];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20477];
+  integerValue = [v2 integerValue];
 
-  return PUIPosterBoundingShapeFromInt(v3);
+  return PUIPosterBoundingShapeFromInt(integerValue);
 }
 
 - (void)pui_role
 {
-  v2 = [a1 otherSettings];
-  v3 = [v2 objectForSetting:20462];
+  otherSettings = [self otherSettings];
+  v3 = [otherSettings objectForSetting:20462];
   v4 = objc_opt_class();
   v5 = v3;
   if (v4)
@@ -618,8 +618,8 @@
 
   if (!v7)
   {
-    v8 = [a1 otherSettings];
-    v9 = [v8 objectForSetting:20211529];
+    otherSettings2 = [self otherSettings];
+    v9 = [otherSettings2 objectForSetting:20211529];
     v10 = objc_opt_class();
     v11 = v9;
     if (v10)
@@ -660,8 +660,8 @@
 
 - (void)pui_previewIdentifier
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20465];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20465];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -684,48 +684,48 @@
 
 - (uint64_t)pui_isInlineComplicationConfigured
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20471];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20471];
 
   return v2;
 }
 
 - (uint64_t)pui_isComplicationSidebarConfigured
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20473];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20473];
 
   return v2;
 }
 
 - (uint64_t)pui_isComplicationRowAtBottom
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20478];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20478];
 
   return v2;
 }
 
 - (uint64_t)pui_isAdaptiveTimeDisabled
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20479];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20479];
 
   return v2;
 }
 
 - (uint64_t)pui_isFloatingLayerSnapshot
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20488];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20488];
 
   return v2;
 }
 
 - (uint64_t)pui_isShowingIdealizedTime
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20498];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20498];
 
   return v2;
 }

@@ -1,13 +1,13 @@
 @interface TCPProgressProbe
-+ (id)probeForInterface:(id)a3;
-+ (id)progressPrettyPrintUtility:(nstat_progress_indicators *)a3;
++ (id)probeForInterface:(id)interface;
++ (id)progressPrettyPrintUtility:(nstat_progress_indicators *)utility;
 + (void)initialize;
 - (BOOL)interfaceMappingIsCurrent;
-- (BOOL)manage:(unsigned int)a3 outValue:(unsigned int *)a4;
-- (id)_initForInterface:(id)a3;
+- (BOOL)manage:(unsigned int)manage outValue:(unsigned int *)value;
+- (id)_initForInterface:(id)interface;
 - (id)description;
 - (void)dealloc;
-- (void)fetchMetricsForFlowsAged:(double)a3 metrics:(nstat_progress_indicators *)a4 includeQUICFlows:(BOOL)a5 resultBlock:(id)a6;
+- (void)fetchMetricsForFlowsAged:(double)aged metrics:(nstat_progress_indicators *)metrics includeQUICFlows:(BOOL)flows resultBlock:(id)block;
 @end
 
 @implementation TCPProgressProbe
@@ -42,15 +42,15 @@
   MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (id)probeForInterface:(id)a3
++ (id)probeForInterface:(id)interface
 {
   v38 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  if ([v23 length])
+  interfaceCopy = interface;
+  if ([interfaceCopy length])
   {
     obj = registry;
     objc_sync_enter(obj);
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -77,15 +77,15 @@
             v11 = rnfLogHandle;
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
-              v12 = [v10 interfaceIndex];
+              interfaceIndex = [v10 interfaceIndex];
               *buf = 138412546;
               v34 = v8;
               v35 = 2048;
-              v36 = v12;
+              v36 = interfaceIndex;
               _os_log_impl(&dword_23255B000, v11, OS_LOG_TYPE_DEFAULT, "TCPPP: Remove obsolete mapping for ifname %@ to interface %llu", buf, 0x16u);
             }
 
-            [v3 addObject:v8];
+            [array addObject:v8];
           }
         }
 
@@ -99,7 +99,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v13 = v3;
+    v13 = array;
     v14 = [v13 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v14)
     {
@@ -122,13 +122,13 @@
       while (v14);
     }
 
-    v17 = [registry objectForKeyedSubscript:v23];
+    v17 = [registry objectForKeyedSubscript:interfaceCopy];
     if (!v17)
     {
-      v17 = [[TCPProgressProbe alloc] _initForInterface:v23];
+      v17 = [[TCPProgressProbe alloc] _initForInterface:interfaceCopy];
       if (v17)
       {
-        [registry setObject:v17 forKeyedSubscript:v23];
+        [registry setObject:v17 forKeyedSubscript:interfaceCopy];
       }
 
       else
@@ -137,7 +137,7 @@
         if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v34 = v23;
+          v34 = interfaceCopy;
           _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_ERROR, "TCPPP: Failure to allocate probe for ifName: %@", buf, 0xCu);
         }
 
@@ -165,18 +165,18 @@
   return v17;
 }
 
-+ (id)progressPrettyPrintUtility:(nstat_progress_indicators *)a3
++ (id)progressPrettyPrintUtility:(nstat_progress_indicators *)utility
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
-  v5 = *&a3->var6;
-  v6 = [v4 initWithFormat:@"allflows=%d/C=%d/R=%d/W=%d/flows=%d/unacked=%d/rxbytes=%lld/txbytes=%lld/rxooo=%lld/rxdup=%lld/retx=%lld", a3->var0, a3->var1, a3->var2, a3->var3, a3->var4, a3->var5, a3->var6, a3->var7, a3->var8, a3->var9, a3->var10];
+  v5 = *&utility->var6;
+  v6 = [v4 initWithFormat:@"allflows=%d/C=%d/R=%d/W=%d/flows=%d/unacked=%d/rxbytes=%lld/txbytes=%lld/rxooo=%lld/rxdup=%lld/retx=%lld", utility->var0, utility->var1, utility->var2, utility->var3, utility->var4, utility->var5, utility->var6, utility->var7, utility->var8, utility->var9, utility->var10];
 
   return v6;
 }
 
-- (id)_initForInterface:(id)a3
+- (id)_initForInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v12.receiver = self;
   v12.super_class = TCPProgressProbe;
   v5 = [(TCPProgressProbe *)&v12 init];
@@ -187,13 +187,13 @@
     lqueue = v5->lqueue;
     v5->lqueue = v7;
 
-    v9 = [v4 UTF8String];
-    if (!v9)
+    uTF8String = [interfaceCopy UTF8String];
+    if (!uTF8String)
     {
       [WiFiTriggerHandler getHandlerByName:?];
     }
 
-    v10 = strdup(v9);
+    v10 = strdup(uTF8String);
     if (!v10)
     {
       [WiFiTriggerHandler getHandlerByName:?];
@@ -206,7 +206,7 @@
   return v5;
 }
 
-- (BOOL)manage:(unsigned int)a3 outValue:(unsigned int *)a4
+- (BOOL)manage:(unsigned int)manage outValue:(unsigned int *)value
 {
   v9 = 0;
   v10 = &v9;
@@ -217,10 +217,10 @@
   v7[1] = 3221225472;
   v7[2] = __36__TCPProgressProbe_manage_outValue___block_invoke;
   v7[3] = &unk_27898F2D8;
-  v8 = a3;
+  manageCopy = manage;
   v7[4] = self;
   v7[5] = &v9;
-  v7[6] = a4;
+  v7[6] = value;
   dispatch_sync(lqueue, v7);
   v5 = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -570,12 +570,12 @@ LABEL_33:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchMetricsForFlowsAged:(double)a3 metrics:(nstat_progress_indicators *)a4 includeQUICFlows:(BOOL)a5 resultBlock:(id)a6
+- (void)fetchMetricsForFlowsAged:(double)aged metrics:(nstat_progress_indicators *)metrics includeQUICFlows:(BOOL)flows resultBlock:(id)block
 {
-  v6 = a5;
+  flowsCopy = flows;
   v48 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  if (!a4)
+  blockCopy = block;
+  if (!metrics)
   {
     v19 = rnfLogHandle;
     if (!os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
@@ -594,7 +594,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 <= 0.0)
+  if (aged <= 0.0)
   {
     v24 = rnfLogHandle;
     if (!os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_ERROR))
@@ -605,7 +605,7 @@ LABEL_15:
     LODWORD(v43[0]) = 134218240;
     *(v43 + 4) = self;
     WORD6(v43[0]) = 2048;
-    *(v43 + 14) = a3;
+    *(v43 + 14) = aged;
     v20 = "TCPPP: %p invalid argument (age: %f)";
     v21 = v43;
     v22 = v24;
@@ -622,7 +622,7 @@ LABEL_15:
   interfaceIndex = self->_interfaceIndex;
   v33 = 0;
   v32[0] = interfaceIndex;
-  v12 = machAbsoluteTimeFromNanoseconds((a3 * 1000000000.0));
+  v12 = machAbsoluteTimeFromNanoseconds((aged * 1000000000.0));
   v13 = 4096;
   if (self->_localFlowTracking)
   {
@@ -632,7 +632,7 @@ LABEL_15:
   v32[1] = v12;
   v33 = v13;
   v14 = 3;
-  if (!v6)
+  if (!flowsCopy)
   {
     v14 = 1;
   }
@@ -648,7 +648,7 @@ LABEL_15:
       interfaceName = self->interfaceName;
       v29 = self->_interfaceIndex;
       *buf = 134218754;
-      v36 = self;
+      selfCopy = self;
       v37 = 2080;
       v38 = interfaceName;
       v39 = 2048;
@@ -663,21 +663,21 @@ LABEL_15:
     }
 
 LABEL_16:
-    (*(v10 + 2))(v10, 0, 0);
+    (*(blockCopy + 2))(blockCopy, 0, 0);
     goto LABEL_17;
   }
 
   v15 = v45;
   v16 = v46;
-  *&a4->var7 = v44;
-  *&a4->var9 = v15;
+  *&metrics->var7 = v44;
+  *&metrics->var9 = v15;
   v17 = v47;
-  *&a4->var11 = v16;
-  *&a4->var13 = v17;
+  *&metrics->var11 = v16;
+  *&metrics->var13 = v17;
   v18 = v43[1];
-  *&a4->var0 = v43[0];
-  *&a4->var4 = v18;
-  (*(v10 + 2))(v10, 1, a4);
+  *&metrics->var0 = v43[0];
+  *&metrics->var4 = v18;
+  (*(blockCopy + 2))(blockCopy, 1, metrics);
 LABEL_17:
 
   v30 = *MEMORY[0x277D85DE8];

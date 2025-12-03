@@ -1,6 +1,6 @@
 @interface ISrOSAppRecipe
 - (ISrOSAppRecipe)init;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation ISrOSAppRecipe
@@ -19,10 +19,10 @@
   return v3;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"layer"];

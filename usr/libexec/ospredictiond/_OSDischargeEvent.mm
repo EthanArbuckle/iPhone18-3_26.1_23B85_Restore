@@ -1,23 +1,23 @@
 @interface _OSDischargeEvent
-- (_OSDischargeEvent)initWithSoC:(id)a3 andCurrrentCapacity:(id)a4 andTimestamp:(id)a5;
+- (_OSDischargeEvent)initWithSoC:(id)c andCurrrentCapacity:(id)capacity andTimestamp:(id)timestamp;
 @end
 
 @implementation _OSDischargeEvent
 
-- (_OSDischargeEvent)initWithSoC:(id)a3 andCurrrentCapacity:(id)a4 andTimestamp:(id)a5
+- (_OSDischargeEvent)initWithSoC:(id)c andCurrrentCapacity:(id)capacity andTimestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  cCopy = c;
+  capacityCopy = capacity;
+  timestampCopy = timestamp;
   v14.receiver = self;
   v14.super_class = _OSDischargeEvent;
   v11 = [(_OSDischargeEvent *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(_OSDischargeEvent *)v11 setSoc:v8];
-    [(_OSDischargeEvent *)v12 setCurrentCapacity:v9];
-    [(_OSDischargeEvent *)v12 setTimestamp:v10];
+    [(_OSDischargeEvent *)v11 setSoc:cCopy];
+    [(_OSDischargeEvent *)v12 setCurrentCapacity:capacityCopy];
+    [(_OSDischargeEvent *)v12 setTimestamp:timestampCopy];
   }
 
   return v12;

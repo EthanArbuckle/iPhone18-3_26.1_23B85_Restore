@@ -1,7 +1,7 @@
 @interface _UIRoundedRectShadowView
 + (UIEdgeInsets)_expansionInsetForShadowImage;
-- (CGRect)frameWithContentWithFrame:(CGRect)a3;
-- (_UIRoundedRectShadowView)initWithCornerRadius:(double)a3;
+- (CGRect)frameWithContentWithFrame:(CGRect)frame;
+- (_UIRoundedRectShadowView)initWithCornerRadius:(double)radius;
 - (void)_loadImageIfNecessary;
 - (void)_updateShadowOutsetsIfNecessary;
 - (void)layoutSubviews;
@@ -11,21 +11,21 @@
 
 - (void)_loadImageIfNecessary
 {
-  v3 = [(UIImageView *)self image];
+  image = [(UIImageView *)self image];
 
-  if (!v3)
+  if (!image)
   {
     maskCornerRadius = self->_maskCornerRadius;
-    v5 = [(UIView *)self _screen];
-    [v5 scale];
+    _screen = [(UIView *)self _screen];
+    [_screen scale];
     v7 = v6;
-    v8 = [objc_opt_class() _shouldCutoutShadow];
+    _shouldCutoutShadow = [objc_opt_class() _shouldCutoutShadow];
     if (qword_1ED49A918 != -1)
     {
       dispatch_once(&qword_1ED49A918, &__block_literal_global_80_0);
     }
 
-    v9 = [[_UIShadowViewImageCacheKey alloc] initWithSize:v8 scale:maskCornerRadius options:v7];
+    v9 = [[_UIShadowViewImageCacheKey alloc] initWithSize:_shouldCutoutShadow scale:maskCornerRadius options:v7];
     v10 = [qword_1ED49A910 objectForKey:v9];
     if (!v10)
     {
@@ -87,7 +87,7 @@
       }
 
       while (v14 != 4);
-      if (v8)
+      if (_shouldCutoutShadow)
       {
         v23 = +[UIColor blackColor];
         CGContextSetFillColorWithColor(v13, [v23 CGColor]);
@@ -98,8 +98,8 @@
         v36.origin.y = 0.0;
         v36.size.height = 400.0;
         v37 = CGRectInset(v36, 150.0, 150.0);
-        v24 = [UIBezierPath bezierPathWithRoundedRect:v37.origin.x cornerRadius:v37.origin.y, v37.size.width, v37.size.height, maskCornerRadius];
-        [v24 fill];
+        maskCornerRadius = [UIBezierPath bezierPathWithRoundedRect:v37.origin.x cornerRadius:v37.origin.y, v37.size.width, v37.size.height, maskCornerRadius];
+        [maskCornerRadius fill];
       }
 
       v25 = _UIGraphicsGetImageFromCurrentImageContext(0);
@@ -119,8 +119,8 @@
   if (v26 < 400.0 || ([(UIView *)self frame], v27 < 400.0))
   {
     v28 = fmax(self->_maskCornerRadius + 150.0, 170.0);
-    v29 = [(UIView *)self _screen];
-    [v29 scale];
+    _screen2 = [(UIView *)self _screen];
+    [_screen2 scale];
     v31 = -1.0 / v30 + 200.0;
 
     if (v28 >= v31)
@@ -128,8 +128,8 @@
       v28 = v31;
     }
 
-    v32 = [(UIImageView *)self image];
-    v34 = [v32 resizableImageWithCapInsets:{v28, v28, v28, v28}];
+    image2 = [(UIImageView *)self image];
+    v34 = [image2 resizableImageWithCapInsets:{v28, v28, v28, v28}];
 
     [(UIImageView *)self setImage:v34];
   }
@@ -169,25 +169,25 @@
   [(_UIRoundedRectShadowView *)self _loadImageIfNecessary];
 }
 
-- (_UIRoundedRectShadowView)initWithCornerRadius:(double)a3
+- (_UIRoundedRectShadowView)initWithCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = _UIRoundedRectShadowView;
   result = [(UIView *)&v5 init];
   if (result)
   {
-    result->_maskCornerRadius = a3;
+    result->_maskCornerRadius = radius;
   }
 
   return result;
 }
 
-- (CGRect)frameWithContentWithFrame:(CGRect)a3
+- (CGRect)frameWithContentWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIRoundedRectShadowView *)self _updateShadowOutsetsIfNecessary];
   top = self->_shadowOutsets.top;
   left = self->_shadowOutsets.left;

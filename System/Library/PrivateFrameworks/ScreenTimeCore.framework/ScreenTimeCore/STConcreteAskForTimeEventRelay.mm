@@ -1,8 +1,8 @@
 @interface STConcreteAskForTimeEventRelay
 - (STConcreteAskForTimeEventRelay)init;
-- (void)addObserver:(id)a3;
-- (void)relayRequestEvent:(id)a3;
-- (void)relayResponseEvent:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)relayRequestEvent:(id)event;
+- (void)relayResponseEvent:(id)event;
 @end
 
 @implementation STConcreteAskForTimeEventRelay
@@ -23,28 +23,28 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_observersLock;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)relayRequestEvent:(id)a3
+- (void)relayRequestEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_observersLock;
   objc_sync_enter(v5);
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   objc_sync_exit(v5);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -59,7 +59,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) eventRelay:self didRelayRequestEvent:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v10) eventRelay:self didRelayRequestEvent:{eventCopy, v11}];
         v10 = v10 + 1;
       }
 
@@ -71,19 +71,19 @@
   }
 }
 
-- (void)relayResponseEvent:(id)a3
+- (void)relayResponseEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = self->_observersLock;
   objc_sync_enter(v5);
-  v6 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   objc_sync_exit(v5);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -98,7 +98,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) eventRelay:self didRelayResponseEvent:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v10) eventRelay:self didRelayResponseEvent:{eventCopy, v11}];
         v10 = v10 + 1;
       }
 

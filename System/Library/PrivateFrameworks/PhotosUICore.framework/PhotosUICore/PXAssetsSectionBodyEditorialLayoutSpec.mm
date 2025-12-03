@@ -1,14 +1,14 @@
 @interface PXAssetsSectionBodyEditorialLayoutSpec
-- (PXAssetsSectionBodyEditorialLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXAssetsSectionBodyEditorialLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 @end
 
 @implementation PXAssetsSectionBodyEditorialLayoutSpec
 
-- (PXAssetsSectionBodyEditorialLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXAssetsSectionBodyEditorialLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v8.receiver = self;
   v8.super_class = PXAssetsSectionBodyEditorialLayoutSpec;
-  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v8 initWithExtendedTraitCollection:a3 options:a4];
+  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v8 initWithExtendedTraitCollection:collection options:options];
   if (v4)
   {
     v5 = +[PXCuratedLibrarySettings sharedInstance];

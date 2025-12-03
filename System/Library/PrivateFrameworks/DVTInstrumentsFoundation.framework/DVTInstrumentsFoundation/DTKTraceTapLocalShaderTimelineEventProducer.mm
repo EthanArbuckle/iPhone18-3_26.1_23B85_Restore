@@ -1,5 +1,5 @@
 @interface DTKTraceTapLocalShaderTimelineEventProducer
-+ (BOOL)supportsConfig:(id)a3;
++ (BOOL)supportsConfig:(id)config;
 - (DTKTraceTapLocalShaderTimelineEventProducer)init;
 - (void)_notifyShaderBinaryInfo;
 - (void)dealloc;
@@ -9,9 +9,9 @@
 
 @implementation DTKTraceTapLocalShaderTimelineEventProducer
 
-+ (BOOL)supportsConfig:(id)a3
++ (BOOL)supportsConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -21,7 +21,7 @@
   v6[2] = sub_247FE60E8;
   v6[3] = &unk_278EF26B0;
   v6[4] = &v7;
-  [v3 enumerateTriggerConfigs:v6];
+  [configCopy enumerateTriggerConfigs:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 

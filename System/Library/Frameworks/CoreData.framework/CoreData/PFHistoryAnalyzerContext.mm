@@ -1,16 +1,16 @@
 @interface PFHistoryAnalyzerContext
-- (BOOL)finishProcessing:(id *)a3;
-- (BOOL)processChange:(id)a3 error:(id *)a4;
-- (BOOL)processTransaction:(id)a3 error:(id *)a4;
-- (BOOL)reset:(id *)a3;
-- (PFHistoryAnalyzerContext)initWithOptions:(id)a3;
-- (id)newAnalyzerStateForChange:(id)a3 error:(id *)a4;
+- (BOOL)finishProcessing:(id *)processing;
+- (BOOL)processChange:(id)change error:(id *)error;
+- (BOOL)processTransaction:(id)transaction error:(id *)error;
+- (BOOL)reset:(id *)reset;
+- (PFHistoryAnalyzerContext)initWithOptions:(id)options;
+- (id)newAnalyzerStateForChange:(id)change error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PFHistoryAnalyzerContext
 
-- (PFHistoryAnalyzerContext)initWithOptions:(id)a3
+- (PFHistoryAnalyzerContext)initWithOptions:(id)options
 {
   v6.receiver = self;
   v6.super_class = PFHistoryAnalyzerContext;
@@ -19,7 +19,7 @@
   {
     v4->_objectIDToState = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_processedTransactionIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v4->_options = a3;
+    v4->_options = options;
     v4->_accumulatedChangeBytes = 0;
   }
 
@@ -36,7 +36,7 @@
   [(PFHistoryAnalyzerContext *)&v3 dealloc];
 }
 
-- (BOOL)reset:(id *)a3
+- (BOOL)reset:(id *)reset
 {
   self->_objectIDToState = objc_alloc_init(MEMORY[0x1E695DF90]);
 
@@ -48,11 +48,11 @@
   return 1;
 }
 
-- (BOOL)processTransaction:(id)a3 error:(id *)a4
+- (BOOL)processTransaction:(id)transaction error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
   v28 = 0;
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(a3, "transactionNumber")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(transaction, "transactionNumber")}];
   if ([(NSMutableSet *)self->_processedTransactionIDs containsObject:v8])
   {
     v21 = MEMORY[0x1E695DF30];
@@ -73,15 +73,15 @@ LABEL_24:
   }
 
   [(NSMutableSet *)self->_processedTransactionIDs addObject:v8];
-  v9 = [a3 changes];
-  v10 = [v9 count];
+  changes = [transaction changes];
+  v10 = [changes count];
   v11 = objc_alloc_init(MEMORY[0x1E696AAC8]);
   if (v10)
   {
-    v27 = a4;
+    errorCopy = error;
     v12 = 0;
     v13 = 0;
-    while (-[PFHistoryAnalyzerContext processChange:error:](self, "processChange:error:", [v9 objectAtIndexedSubscript:v13], &v28))
+    while (-[PFHistoryAnalyzerContext processChange:error:](self, "processChange:error:", [changes objectAtIndexedSubscript:v13], &v28))
     {
       if (!(v12 + 1000 * (v13 / 0x3E8)))
       {
@@ -101,7 +101,7 @@ LABEL_24:
     v15 = v28;
     v14 = 0;
 LABEL_12:
-    a4 = v27;
+    error = errorCopy;
   }
 
   else
@@ -109,15 +109,15 @@ LABEL_12:
     v14 = 1;
   }
 
-  self->_finalHistoryToken = [a3 token];
+  self->_finalHistoryToken = [transaction token];
   if (!v14)
   {
     v16 = v28;
     if (v16)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = v16;
+        *error = v16;
       }
     }
 
@@ -149,11 +149,11 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)processChange:(id)a3 error:(id *)a4
+- (BOOL)processChange:(id)change error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0;
-  v7 = -[PFHistoryAnalyzerContext analyzerStateForChangedObjectID:error:](self, "analyzerStateForChangedObjectID:error:", [a3 changedObjectID], &v18);
+  v7 = -[PFHistoryAnalyzerContext analyzerStateForChangedObjectID:error:](self, "analyzerStateForChangedObjectID:error:", [change changedObjectID], &v18);
   if (!v7)
   {
     v14 = v18;
@@ -162,7 +162,7 @@ LABEL_12:
       goto LABEL_6;
     }
 
-    v15 = [(PFHistoryAnalyzerContext *)self newAnalyzerStateForChange:a3 error:&v18];
+    v15 = [(PFHistoryAnalyzerContext *)self newAnalyzerStateForChange:change error:&v18];
     if (v15)
     {
       v8 = v15;
@@ -174,11 +174,11 @@ LABEL_12:
     if (v18)
     {
 LABEL_6:
-      if (a4)
+      if (error)
       {
         v11 = 0;
         v8 = 0;
-        *a4 = v14;
+        *error = v14;
         goto LABEL_4;
       }
     }
@@ -212,9 +212,9 @@ LABEL_6:
   }
 
   v8 = v7;
-  v9 = [v7 estimatedSizeInBytes];
-  [v8 updateWithChange:a3];
-  self->_accumulatedChangeBytes -= v9;
+  estimatedSizeInBytes = [v7 estimatedSizeInBytes];
+  [v8 updateWithChange:change];
+  self->_accumulatedChangeBytes -= estimatedSizeInBytes;
   v10 = self->_accumulatedChangeBytes + [v8 estimatedSizeInBytes];
 LABEL_3:
   self->_accumulatedChangeBytes = v10;
@@ -225,14 +225,14 @@ LABEL_4:
   return v11;
 }
 
-- (id)newAnalyzerStateForChange:(id)a3 error:(id *)a4
+- (id)newAnalyzerStateForChange:(id)change error:(id *)error
 {
-  v6 = [[PFHistoryAnalyzerDefaultObjectState alloc] initWithOriginalChange:a3];
-  -[NSMutableDictionary setObject:forKey:](self->_objectIDToState, "setObject:forKey:", v6, [a3 changedObjectID]);
+  v6 = [[PFHistoryAnalyzerDefaultObjectState alloc] initWithOriginalChange:change];
+  -[NSMutableDictionary setObject:forKey:](self->_objectIDToState, "setObject:forKey:", v6, [change changedObjectID]);
   return v6;
 }
 
-- (BOOL)finishProcessing:(id *)a3
+- (BOOL)finishProcessing:(id *)processing
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = [-[NSMutableDictionary allValues](self->_objectIDToState "allValues")];
@@ -240,14 +240,14 @@ LABEL_4:
   {
     if ([v5 count] == 1)
     {
-      v6 = [v5 lastObject];
+      lastObject = [v5 lastObject];
       options = self->_options;
       if (options)
       {
         if (options->_automaticallyPruneTransientRecords)
         {
-          v8 = v6;
-          if (![v6 originalChangeType] && objc_msgSend(v8, "finalChangeType") == 2)
+          v8 = lastObject;
+          if (![lastObject originalChangeType] && objc_msgSend(v8, "finalChangeType") == 2)
           {
             [v5 removeAllObjects];
           }

@@ -1,10 +1,10 @@
 @interface _CBApplicationSupportServiceDelegate
-- (id)service:(id)a3 initializeClient:(id)a4;
+- (id)service:(id)service initializeClient:(id)client;
 @end
 
 @implementation _CBApplicationSupportServiceDelegate
 
-- (id)service:(id)a3 initializeClient:(id)a4
+- (id)service:(id)service initializeClient:(id)client
 {
   if (qword_100092438 != -1)
   {

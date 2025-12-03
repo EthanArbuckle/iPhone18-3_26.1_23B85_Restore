@@ -1,6 +1,6 @@
 @interface SFSpeechRecognizer
 + (SFSpeechRecognizerAuthorizationStatus)authorizationStatus;
-+ (void)_fetchSupportedForcedOfflineLocalesWithCompletion:(id)a3;
++ (void)_fetchSupportedForcedOfflineLocalesWithCompletion:(id)completion;
 + (void)initialize;
 + (void)requestAuthorization:(void *)handler;
 - (BOOL)_isAvailableForForcedOfflineRecognition;
@@ -12,10 +12,10 @@
 - (uint64_t)_informDelegateOfAvailabilityChange;
 - (void)_dealloc;
 - (void)_objc_initiateDealloc;
-- (void)_prepareToRecognizeWithTaskHint:(int64_t)a3 clientIdentifier:(id)a4 completion:(id)a5;
-- (void)_prepareToRecognizeWithTaskHint:(int64_t)a3 completion:(id)a4;
-- (void)_requestOfflineDictationSupportForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)_requestOfflineDictationSupportWithCompletion:(id)a3;
+- (void)_prepareToRecognizeWithTaskHint:(int64_t)hint clientIdentifier:(id)identifier completion:(id)completion;
+- (void)_prepareToRecognizeWithTaskHint:(int64_t)hint completion:(id)completion;
+- (void)_requestOfflineDictationSupportForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)_requestOfflineDictationSupportWithCompletion:(id)completion;
 - (void)setQueue:(NSOperationQueue *)queue;
 @end
 
@@ -88,28 +88,28 @@ void __57__SFSpeechRecognizer__informDelegateOfAvailabilityChange__block_invoke(
   return v8;
 }
 
-- (void)_prepareToRecognizeWithTaskHint:(int64_t)a3 completion:(id)a4
+- (void)_prepareToRecognizeWithTaskHint:(int64_t)hint completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[SFUtilities defaultClientID];
-  [(SFSpeechRecognizer *)self _prepareToRecognizeWithTaskHint:a3 clientIdentifier:v7 completion:v6];
+  [(SFSpeechRecognizer *)self _prepareToRecognizeWithTaskHint:hint clientIdentifier:v7 completion:completionCopy];
 }
 
-- (void)_prepareToRecognizeWithTaskHint:(int64_t)a3 clientIdentifier:(id)a4 completion:(id)a5
+- (void)_prepareToRecognizeWithTaskHint:(int64_t)hint clientIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_completion___block_invoke;
   v13[3] = &unk_1E797C0B0;
-  v15 = v9;
-  v16 = a3;
+  v15 = completionCopy;
+  hintCopy = hint;
   v13[4] = self;
-  v14 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = completionCopy;
   [(NSOperationQueue *)queue addOperationWithBlock:v13];
 }
 
@@ -139,17 +139,17 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
   }
 }
 
-- (void)_requestOfflineDictationSupportWithCompletion:(id)a3
+- (void)_requestOfflineDictationSupportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SFUtilities defaultClientID];
-  [(SFSpeechRecognizer *)self _requestOfflineDictationSupportForClientIdentifier:v5 completion:v4];
+  [(SFSpeechRecognizer *)self _requestOfflineDictationSupportForClientIdentifier:v5 completion:completionCopy];
 }
 
-- (void)_requestOfflineDictationSupportForClientIdentifier:(id)a3 completion:(id)a4
+- (void)_requestOfflineDictationSupportForClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (+[SFUtilities isSpeechXPCEnabled])
   {
     v8 = [[SFEntitledAssetConfig alloc] initWithLanguage:self->_languageCode taskHint:1];
@@ -157,13 +157,13 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
     v9[1] = 3221225472;
     v9[2] = __84__SFSpeechRecognizer__requestOfflineDictationSupportForClientIdentifier_completion___block_invoke;
     v9[3] = &unk_1E797C038;
-    v10 = v7;
-    [SFSpeechAssetManager fetchAssetWithConfig:v8 clientIdentifier:v6 progress:0 completion:v9];
+    v10 = completionCopy;
+    [SFSpeechAssetManager fetchAssetWithConfig:v8 clientIdentifier:identifierCopy progress:0 completion:v9];
   }
 
   else
   {
-    [(AFDictationConnection *)self->_dictationConnection requestOfflineDictationSupportForLanguage:self->_languageCode completion:v7];
+    [(AFDictationConnection *)self->_dictationConnection requestOfflineDictationSupportForLanguage:self->_languageCode completion:completionCopy];
   }
 }
 
@@ -186,20 +186,20 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
 
     if (!v8)
     {
-      v9 = [(SFEntitledAssetConfig *)v6 assetType];
-      if ((v9 - 1) > 6)
+      assetType = [(SFEntitledAssetConfig *)v6 assetType];
+      if ((assetType - 1) > 6)
       {
         v10 = @"Unknown";
       }
 
       else
       {
-        v10 = off_1E797BC18[v9 - 1];
+        v10 = off_1E797BC18[assetType - 1];
       }
 
       v14 = v10;
-      v15 = [(SFEntitledAssetConfig *)v6 language];
-      NSLog(&cfstr_NoAssetForLang.isa, v14, v15);
+      language = [(SFEntitledAssetConfig *)v6 language];
+      NSLog(&cfstr_NoAssetForLang.isa, v14, language);
     }
 
     return v8 != 0;
@@ -236,14 +236,14 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
   [(AFDictationConnection *)self->_dictationConnection cancelAvailabilityMonitoring];
   if (self->_preferencesObserver)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self->_preferencesObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_preferencesObserver];
   }
 
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (([v5 isEqualToString:@"net.whatsapp.WhatsApp"] & 1) == 0)
+  if (([bundleIdentifier isEqualToString:@"net.whatsapp.WhatsApp"] & 1) == 0)
   {
     [SFLocalSpeechRecognitionClient cleanupCacheWithCompletion:&__block_literal_global_18];
   }
@@ -252,19 +252,19 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
 - (SFSpeechRecognizer)initWithLocale:(NSLocale *)locale
 {
   v4 = locale;
-  v5 = [(NSLocale *)v4 localeIdentifier];
-  v6 = [SFUtilities stringByReplacingUnderscoresWithHyphens:v5];
+  localeIdentifier = [(NSLocale *)v4 localeIdentifier];
+  v6 = [SFUtilities stringByReplacingUnderscoresWithHyphens:localeIdentifier];
 
   if (!v6 || ([sSupportedLocaleIdentifiers_950 containsObject:v6] & 1) == 0)
   {
-    v7 = AFDictationLanguageForKeyboardLanguage();
-    if (!v7)
+    selfCopy = AFDictationLanguageForKeyboardLanguage();
+    if (!selfCopy)
     {
       NSLog(&cfstr_CannotMakeReco.isa, v6, sSupportedLocaleIdentifiers_950);
       goto LABEL_9;
     }
 
-    v8 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v7];
+    v8 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:selfCopy];
 
     v4 = v8;
   }
@@ -285,9 +285,9 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
     languageCode = v9->_languageCode;
     v9->_languageCode = v15;
 
-    v17 = [MEMORY[0x1E696ADC8] mainQueue];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     queue = v9->_queue;
-    v9->_queue = v17;
+    v9->_queue = mainQueue;
 
     v19 = objc_alloc_init(MEMORY[0x1E698D118]);
     dictationConnection = v9->_dictationConnection;
@@ -296,15 +296,15 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
     [(AFDictationConnection *)v9->_dictationConnection setDelegate:v9];
     [(AFDictationConnection *)v9->_dictationConnection beginAvailabilityMonitoring];
     objc_initWeak(&location, v9);
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    v22 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v23 = *MEMORY[0x1E698D098];
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __37__SFSpeechRecognizer_initWithLocale___block_invoke;
     v32[3] = &unk_1E797C010;
     objc_copyWeak(&v33, &location);
-    v24 = [v21 addObserverForName:v23 object:0 queue:v22 usingBlock:v32];
+    v24 = [defaultCenter addObserverForName:v23 object:0 queue:mainQueue2 usingBlock:v32];
     preferencesObserver = v9->_preferencesObserver;
     v9->_preferencesObserver = v24;
 
@@ -322,10 +322,10 @@ void __82__SFSpeechRecognizer__prepareToRecognizeWithTaskHint_clientIdentifier_c
   }
 
   self = v9;
-  v7 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __37__SFSpeechRecognizer_initWithLocale___block_invoke(uint64_t a1)
@@ -357,15 +357,15 @@ void __56__SFSpeechRecognizer__informDelegateOfPreferencesChange__block_invoke(u
 
 - (SFSpeechRecognizer)init
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  v4 = [(SFSpeechRecognizer *)self initWithLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v4 = [(SFSpeechRecognizer *)self initWithLocale:currentLocale];
 
   return v4;
 }
 
-+ (void)_fetchSupportedForcedOfflineLocalesWithCompletion:(id)a3
++ (void)_fetchSupportedForcedOfflineLocalesWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   if (+[SFUtilities isSpeechXPCEnabled])
   {
     v10[0] = MEMORY[0x1E69E9820];
@@ -373,8 +373,8 @@ void __56__SFSpeechRecognizer__informDelegateOfPreferencesChange__block_invoke(u
     v10[2] = __72__SFSpeechRecognizer__fetchSupportedForcedOfflineLocalesWithCompletion___block_invoke;
     v10[3] = &unk_1E797C060;
     v4 = &v11;
-    v11 = v3;
-    v5 = v3;
+    v11 = completionCopy;
+    v5 = completionCopy;
     [SFSpeechAssetManager installedLanguagesForTaskHint:1 completion:v10];
   }
 
@@ -386,8 +386,8 @@ void __56__SFSpeechRecognizer__informDelegateOfPreferencesChange__block_invoke(u
     v8[2] = __72__SFSpeechRecognizer__fetchSupportedForcedOfflineLocalesWithCompletion___block_invoke_2;
     v8[3] = &unk_1E797C088;
     v4 = &v9;
-    v9 = v3;
-    v7 = v3;
+    v9 = completionCopy;
+    v7 = completionCopy;
     [v6 getForcedOfflineDictationSupportedLanguagesWithCompletion:v8];
   }
 }
@@ -545,7 +545,7 @@ uint64_t __43__SFSpeechRecognizer_requestAuthorization___block_invoke(uint64_t a
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_opt_self();
     _class_setCustomDeallocInitiation();

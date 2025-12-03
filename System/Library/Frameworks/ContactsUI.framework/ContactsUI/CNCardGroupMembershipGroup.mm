@@ -10,12 +10,12 @@
 
 - (id)groupItemsToDisplayForEditing
 {
-  v3 = [(CNCardGroupMembershipGroup *)self groupsToDisplayForEditing];
+  groupsToDisplayForEditing = [(CNCardGroupMembershipGroup *)self groupsToDisplayForEditing];
 
-  if (v3)
+  if (groupsToDisplayForEditing)
   {
-    v4 = [(CNCardGroupMembershipGroup *)self groupsToDisplayForEditing];
-    v5 = [v4 _cn_map:&__block_literal_global_14_31459];
+    groupsToDisplayForEditing2 = [(CNCardGroupMembershipGroup *)self groupsToDisplayForEditing];
+    v5 = [groupsToDisplayForEditing2 _cn_map:&__block_literal_global_14_31459];
   }
 
   else
@@ -36,12 +36,12 @@ CNCardGroupMembershipGroupItem *__59__CNCardGroupMembershipGroup_groupItemsToDis
 
 - (id)parentGroupItems
 {
-  v3 = [(CNCardGroupMembershipGroup *)self parentGroups];
+  parentGroups = [(CNCardGroupMembershipGroup *)self parentGroups];
 
-  if (v3)
+  if (parentGroups)
   {
-    v4 = [(CNCardGroupMembershipGroup *)self parentGroups];
-    v5 = [v4 _cn_map:&__block_literal_global_31463];
+    parentGroups2 = [(CNCardGroupMembershipGroup *)self parentGroups];
+    v5 = [parentGroups2 _cn_map:&__block_literal_global_31463];
   }
 
   else
@@ -62,27 +62,27 @@ CNCardGroupMembershipGroupItem *__46__CNCardGroupMembershipGroup_parentGroupItem
 
 - (id)editingItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNCardGroupMembershipGroup *)self groupItemsToDisplayForEditing];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  groupItemsToDisplayForEditing = [(CNCardGroupMembershipGroup *)self groupItemsToDisplayForEditing];
+  [array addObjectsFromArray:groupItemsToDisplayForEditing];
   v5 = objc_alloc_init(CNCardGroupMembershipPlaceholderGroupItem);
-  [v3 addObject:v5];
+  [array addObject:v5];
 
-  return v3;
+  return array;
 }
 
 - (id)displayItems
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CNCardGroupMembershipGroup *)self parentGroupItems];
-  [v3 addObjectsFromArray:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  parentGroupItems = [(CNCardGroupMembershipGroup *)self parentGroupItems];
+  [array addObjectsFromArray:parentGroupItems];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(CNCardGroup *)self actionItems];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  actionItems = [(CNCardGroup *)self actionItems];
+  v6 = [actionItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -93,26 +93,26 @@ CNCardGroupMembershipGroupItem *__46__CNCardGroupMembershipGroup_parentGroupItem
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(actionItems);
         }
 
-        [v3 addObject:*(*(&v11 + 1) + 8 * i)];
+        [array addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [actionItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)title
 {
   v3 = *MEMORY[0x1E6996530];
-  v4 = [(CNCardGroupMembershipGroup *)self parentGroups];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v4);
+  parentGroups = [(CNCardGroupMembershipGroup *)self parentGroups];
+  LOBYTE(v3) = (*(v3 + 16))(v3, parentGroups);
 
   if (v3)
   {
@@ -121,8 +121,8 @@ CNCardGroupMembershipGroupItem *__46__CNCardGroupMembershipGroup_parentGroupItem
 
   else
   {
-    v6 = [(CNCardGroupMembershipGroup *)self parentGroups];
-    v7 = [v6 count];
+    parentGroups2 = [(CNCardGroupMembershipGroup *)self parentGroups];
+    v7 = [parentGroups2 count];
 
     v8 = CNContactsUIBundle();
     v9 = v8;

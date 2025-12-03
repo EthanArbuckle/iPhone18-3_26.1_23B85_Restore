@@ -1,29 +1,29 @@
 @interface VCIntentDefinitionChange
-- (BOOL)readFrom:(id)a3 error:(id *)a4;
-- (BOOL)writeTo:(id)a3 error:(id *)a4;
+- (BOOL)readFrom:(id)from error:(id *)error;
+- (BOOL)writeTo:(id)to error:(id *)error;
 - (NSString)checksum;
-- (VCIntentDefinitionChange)initWithApplicationRecord:(id)a3 changeType:(int64_t)a4;
-- (VCIntentDefinitionChange)initWithObjectIdentifier:(id)a3 changeType:(int64_t)a4;
+- (VCIntentDefinitionChange)initWithApplicationRecord:(id)record changeType:(int64_t)type;
+- (VCIntentDefinitionChange)initWithObjectIdentifier:(id)identifier changeType:(int64_t)type;
 @end
 
 @implementation VCIntentDefinitionChange
 
-- (BOOL)readFrom:(id)a3 error:(id *)a4
+- (BOOL)readFrom:(id)from error:(id *)error
 {
-  v6 = a3;
+  fromCopy = from;
   v7 = objc_opt_new();
-  v8 = [v7 readFrom:v6 error:a4];
+  v8 = [v7 readFrom:fromCopy error:error];
 
   if (v8)
   {
-    v9 = [v7 intentDefinition];
-    v10 = [v9 files];
+    intentDefinition = [v7 intentDefinition];
+    files = [intentDefinition files];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __43__VCIntentDefinitionChange_readFrom_error___block_invoke;
     v13[3] = &unk_2788FFC70;
     v13[4] = self;
-    v11 = [v10 if_compactMap:v13];
+    v11 = [files if_compactMap:v13];
     [(VCIntentDefinitionChange *)self setFiles:v11];
   }
 
@@ -71,15 +71,15 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
   return v11;
 }
 
-- (BOOL)writeTo:(id)a3 error:(id *)a4
+- (BOOL)writeTo:(id)to error:(id *)error
 {
-  v6 = a3;
+  toCopy = to;
   v7 = 1;
   if ([(VCIntentDefinitionChange *)self changeType]!= 3)
   {
     v8 = objc_opt_new();
-    v9 = [(VCIntentDefinitionChange *)self objectIdentifier];
-    [v8 setAssociatedBundleID:v9];
+    objectIdentifier = [(VCIntentDefinitionChange *)self objectIdentifier];
+    [v8 setAssociatedBundleID:objectIdentifier];
 
     v26 = 0;
     v27 = &v26;
@@ -91,7 +91,7 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
     v23 = __Block_byref_object_copy__6187;
     v24 = __Block_byref_object_dispose__6188;
     v25 = 0;
-    v10 = [(VCIntentDefinitionChange *)self files];
+    files = [(VCIntentDefinitionChange *)self files];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __42__VCIntentDefinitionChange_writeTo_error___block_invoke;
@@ -99,7 +99,7 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
     v19[4] = self;
     v19[5] = &v20;
     v19[6] = &v26;
-    v11 = [v10 if_compactMap:v19];
+    v11 = [files if_compactMap:v19];
     v12 = [v11 mutableCopy];
     [v8 setFiles:v12];
 
@@ -107,11 +107,11 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
     if (v7)
     {
       v13 = objc_opt_new();
-      v14 = [(VCIntentDefinitionChange *)self objectIdentifier];
-      [v13 setAssociatedBundleID:v14];
+      objectIdentifier2 = [(VCIntentDefinitionChange *)self objectIdentifier];
+      [v13 setAssociatedBundleID:objectIdentifier2];
 
-      v15 = [(VCIntentDefinitionChange *)self changeType];
-      if (v15 == 2)
+      changeType = [(VCIntentDefinitionChange *)self changeType];
+      if (changeType == 2)
       {
         v16 = 2;
       }
@@ -121,7 +121,7 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
         v16 = 1;
       }
 
-      if (v15 == 3)
+      if (changeType == 3)
       {
         v17 = 3;
       }
@@ -133,12 +133,12 @@ id __43__VCIntentDefinitionChange_readFrom_error___block_invoke(uint64_t a1, voi
 
       [v13 setChangeType:v17];
       [v13 setIntentDefinition:v8];
-      [v13 writeTo:v6];
+      [v13 writeTo:toCopy];
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = v21[5];
+      *error = v21[5];
     }
 
     _Block_object_dispose(&v20, 8);
@@ -217,12 +217,12 @@ id __42__VCIntentDefinitionChange_writeTo_error___block_invoke(uint64_t a1, void
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v4 = [(VCIntentDefinitionChange *)self files];
-    v5 = [v4 countByEnumeratingWithState:&v29 objects:v42 count:16];
+    files = [(VCIntentDefinitionChange *)self files];
+    v5 = [files countByEnumeratingWithState:&v29 objects:v42 count:16];
     if (v5)
     {
       v6 = *v30;
-      obj = v4;
+      obj = files;
       while (2)
       {
         for (i = 0; i != v5; ++i)
@@ -234,30 +234,30 @@ id __42__VCIntentDefinitionChange_writeTo_error___block_invoke(uint64_t a1, void
 
           v8 = *(*(&v29 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
-          v10 = [v8 filename];
-          v11 = [v10 dataUsingEncoding:4];
+          filename = [v8 filename];
+          v11 = [filename dataUsingEncoding:4];
 
           v12 = v34;
           v13 = v11;
           CC_SHA1_Update((v12 + 4), [v11 bytes], objc_msgSend(v11, "length"));
           if ([v8 representationType])
           {
-            v14 = [v8 inputStream];
-            [v14 open];
-            while ([v14 hasBytesAvailable])
+            inputStream = [v8 inputStream];
+            [inputStream open];
+            while ([inputStream hasBytesAvailable])
             {
               v15 = objc_autoreleasePoolPush();
-              v16 = [v14 read:data maxLength:0x2000];
+              v16 = [inputStream read:data maxLength:0x2000];
               if (v16 < 0)
               {
                 v18 = getWFWatchSyncLogObject();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
                 {
-                  v19 = [v14 streamError];
+                  streamError = [inputStream streamError];
                   *buf = 136315394;
                   v39 = "[VCIntentDefinitionChange checksum]";
                   v40 = 2114;
-                  v41 = v19;
+                  v41 = streamError;
                   _os_log_impl(&dword_23103C000, v18, OS_LOG_TYPE_ERROR, "%s Error calculating intent definition file checksum: %{public}@", buf, 0x16u);
                 }
 
@@ -287,19 +287,19 @@ id __42__VCIntentDefinitionChange_writeTo_error___block_invoke(uint64_t a1, void
               }
             }
 
-            [v14 close];
+            [inputStream close];
             v17 = 0;
           }
 
           else
           {
-            v14 = [v8 data];
+            inputStream = [v8 data];
             v28[0] = MEMORY[0x277D85DD0];
             v28[1] = 3221225472;
             v28[2] = __36__VCIntentDefinitionChange_checksum__block_invoke;
             v28[3] = &unk_2788FFC20;
             v28[4] = &v33;
-            [v14 enumerateByteRangesUsingBlock:v28];
+            [inputStream enumerateByteRangesUsingBlock:v28];
             v17 = 3;
           }
 
@@ -314,7 +314,7 @@ LABEL_22:
           }
         }
 
-        v4 = obj;
+        files = obj;
         v5 = [obj countByEnumeratingWithState:&v29 objects:v42 count:16];
         if (v5)
         {
@@ -346,51 +346,51 @@ LABEL_30:
   return v3;
 }
 
-- (VCIntentDefinitionChange)initWithObjectIdentifier:(id)a3 changeType:(int64_t)a4
+- (VCIntentDefinitionChange)initWithObjectIdentifier:(id)identifier changeType:(int64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = VCIntentDefinitionChange;
   v7 = [(VCIntentDefinitionChange *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     objectIdentifier = v7->_objectIdentifier;
     v7->_objectIdentifier = v8;
 
-    v7->_changeType = a4;
+    v7->_changeType = type;
     v10 = v7;
   }
 
   return v7;
 }
 
-- (VCIntentDefinitionChange)initWithApplicationRecord:(id)a3 changeType:(int64_t)a4
+- (VCIntentDefinitionChange)initWithApplicationRecord:(id)record changeType:(int64_t)type
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v31 = [MEMORY[0x277CCA890] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionChange.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"applicationRecord"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCIntentDefinitionChange.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"applicationRecord"}];
   }
 
-  v8 = [v7 bundleIdentifier];
-  v9 = [(VCIntentDefinitionChange *)self initWithObjectIdentifier:v8 changeType:a4];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v9 = [(VCIntentDefinitionChange *)self initWithObjectIdentifier:bundleIdentifier changeType:type];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:v7];
-    v11 = [v10 supportedActions];
-    v12 = [v11 count];
+    v10 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:recordCopy];
+    supportedActions = [v10 supportedActions];
+    v12 = [supportedActions count];
 
     if (v12)
     {
-      v13 = v7;
+      v13 = recordCopy;
       v14 = objc_opt_new();
-      v15 = [v13 if_allIntentDefinitionURLs];
-      v16 = [v15 allObjects];
-      [v14 addObjectsFromArray:v16];
+      if_allIntentDefinitionURLs = [v13 if_allIntentDefinitionURLs];
+      allObjects = [if_allIntentDefinitionURLs allObjects];
+      [v14 addObjectsFromArray:allObjects];
 
       v17 = INIntentDefinitionLocalizableFileURLsForBundleRecord();
 
@@ -406,9 +406,9 @@ LABEL_30:
 
       v22 = v9->_files;
       v23 = MEMORY[0x277CFC3C8];
-      v24 = [v10 data];
+      data = [v10 data];
       v25 = [MEMORY[0x277D79F68] typeWithUTType:*MEMORY[0x277CE1D48]];
-      v26 = [v23 fileWithData:v24 ofType:v25 proposedFilename:@"AppInfo.appinfo"];
+      v26 = [v23 fileWithData:data ofType:v25 proposedFilename:@"AppInfo.appinfo"];
       v27 = [(NSArray *)v22 arrayByAddingObject:v26];
       v28 = v9->_files;
       v9->_files = v27;

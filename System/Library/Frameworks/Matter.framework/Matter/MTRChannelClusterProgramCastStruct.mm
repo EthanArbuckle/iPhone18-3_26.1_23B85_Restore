@@ -1,6 +1,6 @@
 @interface MTRChannelClusterProgramCastStruct
 - (MTRChannelClusterProgramCastStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterProgramCastStruct);
-  v5 = [(MTRChannelClusterProgramCastStruct *)self name];
-  [(MTRChannelClusterProgramCastStruct *)v4 setName:v5];
+  name = [(MTRChannelClusterProgramCastStruct *)self name];
+  [(MTRChannelClusterProgramCastStruct *)v4 setName:name];
 
-  v6 = [(MTRChannelClusterProgramCastStruct *)self role];
-  [(MTRChannelClusterProgramCastStruct *)v4 setRole:v6];
+  role = [(MTRChannelClusterProgramCastStruct *)self role];
+  [(MTRChannelClusterProgramCastStruct *)v4 setRole:role];
 
   return v4;
 }

@@ -1,9 +1,9 @@
 @interface UIApplicationSceneClientAgent
 - (UIApplicationSceneClientAgent)init;
 - (void)dealloc;
-- (void)scene:(id)a3 didInitializeWithEvent:(id)a4 completion:(id)a5;
-- (void)scene:(id)a3 handleEvent:(id)a4 withCompletion:(id)a5;
-- (void)scene:(id)a3 willInvalidateWithEvent:(id)a4 completion:(id)a5;
+- (void)scene:(id)scene didInitializeWithEvent:(id)event completion:(id)completion;
+- (void)scene:(id)scene handleEvent:(id)event withCompletion:(id)completion;
+- (void)scene:(id)scene willInvalidateWithEvent:(id)event completion:(id)completion;
 @end
 
 @implementation UIApplicationSceneClientAgent
@@ -22,34 +22,34 @@
   [(UIApplicationSceneClientAgent *)&v2 dealloc];
 }
 
-- (void)scene:(id)a3 didInitializeWithEvent:(id)a4 completion:(id)a5
+- (void)scene:(id)scene didInitializeWithEvent:(id)event completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [UIApp _workspace];
-  v12 = [v8 identifier];
-  v13 = [v11 sceneWithIdentifier:v12];
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
+  _workspace = [UIApp _workspace];
+  identifier = [sceneCopy identifier];
+  v13 = [_workspace sceneWithIdentifier:identifier];
 
-  v14 = [v11 delegate];
+  delegate = [_workspace delegate];
 
-  if (v14)
+  if (delegate)
   {
-    v15 = [v11 delegate];
-    v16 = [v9 transitionContext];
+    delegate2 = [_workspace delegate];
+    transitionContext = [eventCopy transitionContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __73__UIApplicationSceneClientAgent_scene_didInitializeWithEvent_completion___block_invoke;
     v18[3] = &unk_1E710A5A8;
-    v19 = v10;
-    [v15 workspace:v11 didCreateScene:v13 withTransitionContext:v16 completion:v18];
+    v19 = completionCopy;
+    [delegate2 workspace:_workspace didCreateScene:v13 withTransitionContext:transitionContext completion:v18];
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = UIApplicationSceneClientAgent;
-    [(FBSBasicSceneClientAgent *)&v17 scene:v8 didInitializeWithEvent:v9 completion:v10];
+    [(FBSBasicSceneClientAgent *)&v17 scene:sceneCopy didInitializeWithEvent:eventCopy completion:completionCopy];
   }
 }
 
@@ -64,34 +64,34 @@ uint64_t __73__UIApplicationSceneClientAgent_scene_didInitializeWithEvent_comple
   return result;
 }
 
-- (void)scene:(id)a3 willInvalidateWithEvent:(id)a4 completion:(id)a5
+- (void)scene:(id)scene willInvalidateWithEvent:(id)event completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [UIApp _workspace];
-  v12 = [v8 identifier];
-  v13 = [v11 sceneWithIdentifier:v12];
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
+  _workspace = [UIApp _workspace];
+  identifier = [sceneCopy identifier];
+  v13 = [_workspace sceneWithIdentifier:identifier];
 
-  v14 = [v11 delegate];
+  delegate = [_workspace delegate];
 
-  if (v14)
+  if (delegate)
   {
-    v15 = [v11 delegate];
-    v16 = [v9 transitionContext];
+    delegate2 = [_workspace delegate];
+    transitionContext = [eventCopy transitionContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __74__UIApplicationSceneClientAgent_scene_willInvalidateWithEvent_completion___block_invoke;
     v18[3] = &unk_1E710A5D0;
-    v19 = v10;
-    [v15 workspace:v11 willDestroyScene:v13 withTransitionContext:v16 completion:v18];
+    v19 = completionCopy;
+    [delegate2 workspace:_workspace willDestroyScene:v13 withTransitionContext:transitionContext completion:v18];
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = UIApplicationSceneClientAgent;
-    [(FBSBasicSceneClientAgent *)&v17 scene:v8 willInvalidateWithEvent:v9 completion:v10];
+    [(FBSBasicSceneClientAgent *)&v17 scene:sceneCopy willInvalidateWithEvent:eventCopy completion:completionCopy];
   }
 }
 
@@ -106,63 +106,63 @@ uint64_t __74__UIApplicationSceneClientAgent_scene_willInvalidateWithEvent_compl
   return result;
 }
 
-- (void)scene:(id)a3 handleEvent:(id)a4 withCompletion:(id)a5
+- (void)scene:(id)scene handleEvent:(id)event withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [UIApp _workspace];
-  v12 = [v8 identifier];
-  v13 = [v11 sceneWithIdentifier:v12];
+  sceneCopy = scene;
+  eventCopy = event;
+  completionCopy = completion;
+  _workspace = [UIApp _workspace];
+  identifier = [sceneCopy identifier];
+  v13 = [_workspace sceneWithIdentifier:identifier];
 
-  v14 = [v13 delegate];
-  if (!v14)
+  delegate = [v13 delegate];
+  if (!delegate)
   {
     goto LABEL_9;
   }
 
-  v15 = [v9 settingsDiff];
-  if (v15)
+  settingsDiff = [eventCopy settingsDiff];
+  if (settingsDiff)
   {
 
 LABEL_5:
-    v17 = [v9 settingsDiff];
-    v18 = [v9 transitionContext];
+    settingsDiff2 = [eventCopy settingsDiff];
+    transitionContext = [eventCopy transitionContext];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __66__UIApplicationSceneClientAgent_scene_handleEvent_withCompletion___block_invoke;
     v23[3] = &unk_1E710A5F8;
-    v24 = v10;
-    [v14 scene:v13 didUpdateWithDiff:v17 transitionContext:v18 completion:v23];
+    v24 = completionCopy;
+    [delegate scene:v13 didUpdateWithDiff:settingsDiff2 transitionContext:transitionContext completion:v23];
 
     goto LABEL_10;
   }
 
-  v16 = [v9 transitionContext];
+  transitionContext2 = [eventCopy transitionContext];
 
-  if (v16)
+  if (transitionContext2)
   {
     goto LABEL_5;
   }
 
-  v19 = [v9 actions];
-  v20 = [v19 count];
+  actions = [eventCopy actions];
+  v20 = [actions count];
 
   if (!v20)
   {
 LABEL_9:
     v22.receiver = self;
     v22.super_class = UIApplicationSceneClientAgent;
-    [(FBSBasicSceneClientAgent *)&v22 scene:v8 handleEvent:v9 withCompletion:v10];
+    [(FBSBasicSceneClientAgent *)&v22 scene:sceneCopy handleEvent:eventCopy withCompletion:completionCopy];
     goto LABEL_10;
   }
 
-  v21 = [v9 actions];
-  [v14 scene:v13 didReceiveActions:v21];
+  actions2 = [eventCopy actions];
+  [delegate scene:v13 didReceiveActions:actions2];
 
-  if (v10)
+  if (completionCopy)
   {
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_10:

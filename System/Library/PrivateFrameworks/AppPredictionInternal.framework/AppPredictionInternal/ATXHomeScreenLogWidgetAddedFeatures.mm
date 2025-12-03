@@ -1,6 +1,6 @@
 @interface ATXHomeScreenLogWidgetAddedFeatures
-- (ATXHomeScreenLogWidgetAddedFeatures)initWithHSEvent:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5;
-- (id)_key:(id)a3 byAppendingStringIndicatingIfWidgetWasAdded:(BOOL)a4;
+- (ATXHomeScreenLogWidgetAddedFeatures)initWithHSEvent:(id)event rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items;
+- (id)_key:(id)_key byAppendingStringIndicatingIfWidgetWasAdded:(BOOL)added;
 - (id)_pickIndexForNegativeExampleFromGalleryItems;
 - (void)_pickIndexForNegativeExampleFromGalleryItems;
 - (void)_populateFeaturesForAddedWidget;
@@ -11,10 +11,10 @@
 
 @implementation ATXHomeScreenLogWidgetAddedFeatures
 
-- (ATXHomeScreenLogWidgetAddedFeatures)initWithHSEvent:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5
+- (ATXHomeScreenLogWidgetAddedFeatures)initWithHSEvent:(id)event rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items
 {
-  v9 = a3;
-  v10 = a5;
+  eventCopy = event;
+  itemsCopy = items;
   v15.receiver = self;
   v15.super_class = ATXHomeScreenLogWidgetAddedFeatures;
   v11 = [(ATXHomeScreenLogWidgetAddedFeatures *)&v15 init];
@@ -24,9 +24,9 @@
     widgetAddedFeatures = v11->_widgetAddedFeatures;
     v11->_widgetAddedFeatures = v12;
 
-    objc_storeStrong(&v11->_hsEvent, a3);
-    v11->_rankOfWidgetInGallery = a4;
-    objc_storeStrong(&v11->_galleryItems, a5);
+    objc_storeStrong(&v11->_hsEvent, event);
+    v11->_rankOfWidgetInGallery = gallery;
+    objc_storeStrong(&v11->_galleryItems, items);
   }
 
   return v11;
@@ -52,9 +52,9 @@
 - (void)_populateFeaturesForAddedWidget
 {
   v3 = MEMORY[0x277CEB9B0];
-  v4 = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
-  v5 = [(ATXHomeScreenEvent *)self->_hsEvent widgetKind];
-  v6 = [v3 stringRepresentationForExtensionBundleId:v4 kind:v5];
+  widgetBundleId = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
+  widgetKind = [(ATXHomeScreenEvent *)self->_hsEvent widgetKind];
+  v6 = [v3 stringRepresentationForExtensionBundleId:widgetBundleId kind:widgetKind];
   widgetAddedFeatures = self->_widgetAddedFeatures;
   v8 = 1;
   v9 = [(ATXHomeScreenLogWidgetAddedFeatures *)self _key:@"widgetBundleIdAndKindFor" byAppendingStringIndicatingIfWidgetWasAdded:1];
@@ -118,30 +118,30 @@ LABEL_7:
     [(NSMutableDictionary *)self->_widgetAddedFeatures setObject:v22 forKeyedSubscript:@"suggestedSizeInGalleryIsSameForAddedWidget"];
   }
 
-  v23 = [(ATXHomeScreenEvent *)self->_hsEvent appBundleId];
-  [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateParentAppFeaturesForParentAppBundleId:v23 widgetWasAdded:1];
+  appBundleId = [(ATXHomeScreenEvent *)self->_hsEvent appBundleId];
+  [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateParentAppFeaturesForParentAppBundleId:appBundleId widgetWasAdded:1];
 
-  v24 = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
-  v25 = [(ATXHomeScreenEvent *)self->_hsEvent widgetKind];
-  v26 = [(ATXHomeScreenEvent *)self->_hsEvent appBundleId];
-  [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateHomeScreenConfigFeaturesForWidgetBundleId:v24 widgetKind:v25 parentAppBundleId:v26 widgetWasAdded:1];
+  widgetBundleId2 = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
+  widgetKind2 = [(ATXHomeScreenEvent *)self->_hsEvent widgetKind];
+  appBundleId2 = [(ATXHomeScreenEvent *)self->_hsEvent appBundleId];
+  [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateHomeScreenConfigFeaturesForWidgetBundleId:widgetBundleId2 widgetKind:widgetKind2 parentAppBundleId:appBundleId2 widgetWasAdded:1];
 }
 
 - (void)_populateFeaturesForNegativeExample
 {
-  v3 = [(ATXHomeScreenLogWidgetAddedFeatures *)self _pickIndexForNegativeExampleFromGalleryItems];
-  if (v3)
+  _pickIndexForNegativeExampleFromGalleryItems = [(ATXHomeScreenLogWidgetAddedFeatures *)self _pickIndexForNegativeExampleFromGalleryItems];
+  if (_pickIndexForNegativeExampleFromGalleryItems)
   {
-    v27 = v3;
-    v4 = -[NSArray objectAtIndexedSubscript:](self->_galleryItems, "objectAtIndexedSubscript:", [v3 unsignedIntValue]);
+    v27 = _pickIndexForNegativeExampleFromGalleryItems;
+    v4 = -[NSArray objectAtIndexedSubscript:](self->_galleryItems, "objectAtIndexedSubscript:", [_pickIndexForNegativeExampleFromGalleryItems unsignedIntValue]);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
       v6 = MEMORY[0x277CEB9B0];
-      v7 = [v5 extensionBundleIdForMetrics];
-      v8 = [v5 widgetKind];
-      v9 = [v6 stringRepresentationForExtensionBundleId:v7 kind:v8];
+      extensionBundleIdForMetrics = [v5 extensionBundleIdForMetrics];
+      widgetKind = [v5 widgetKind];
+      v9 = [v6 stringRepresentationForExtensionBundleId:extensionBundleIdForMetrics kind:widgetKind];
       widgetAddedFeatures = self->_widgetAddedFeatures;
       v11 = [(ATXHomeScreenLogWidgetAddedFeatures *)self _key:@"widgetBundleIdAndKindFor" byAppendingStringIndicatingIfWidgetWasAdded:0];
       [(NSMutableDictionary *)widgetAddedFeatures setObject:v9 forKeyedSubscript:v11];
@@ -162,15 +162,15 @@ LABEL_7:
       v20 = [(ATXHomeScreenLogWidgetAddedFeatures *)self _key:@"galleryRankTypeFor" byAppendingStringIndicatingIfWidgetWasAdded:0];
       [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
 
-      v21 = [v5 appBundleId];
-      [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateParentAppFeaturesForParentAppBundleId:v21 widgetWasAdded:0];
+      appBundleId = [v5 appBundleId];
+      [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateParentAppFeaturesForParentAppBundleId:appBundleId widgetWasAdded:0];
 
-      v22 = [v5 avocadoDescriptor];
-      v23 = [v22 extensionBundleIdentifier];
-      v24 = [v5 avocadoDescriptor];
-      v25 = [v24 kind];
-      v26 = [v5 appBundleId];
-      [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateHomeScreenConfigFeaturesForWidgetBundleId:v23 widgetKind:v25 parentAppBundleId:v26 widgetWasAdded:0];
+      avocadoDescriptor = [v5 avocadoDescriptor];
+      extensionBundleIdentifier = [avocadoDescriptor extensionBundleIdentifier];
+      avocadoDescriptor2 = [v5 avocadoDescriptor];
+      kind = [avocadoDescriptor2 kind];
+      appBundleId2 = [v5 appBundleId];
+      [(ATXHomeScreenLogWidgetAddedFeatures *)self _populateHomeScreenConfigFeaturesForWidgetBundleId:extensionBundleIdentifier widgetKind:kind parentAppBundleId:appBundleId2 widgetWasAdded:0];
     }
 
     else
@@ -178,7 +178,7 @@ LABEL_7:
       v5 = 0;
     }
 
-    v3 = v27;
+    _pickIndexForNegativeExampleFromGalleryItems = v27;
   }
 }
 
@@ -350,19 +350,19 @@ LABEL_14:
   return v10;
 }
 
-- (id)_key:(id)a3 byAppendingStringIndicatingIfWidgetWasAdded:(BOOL)a4
+- (id)_key:(id)_key byAppendingStringIndicatingIfWidgetWasAdded:(BOOL)added
 {
-  v4 = a4;
+  addedCopy = added;
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
+  _keyCopy = _key;
   v7 = [v5 alloc];
   v8 = @"NegativeExample";
-  if (v4)
+  if (addedCopy)
   {
     v8 = @"WidgetAdded";
   }
 
-  v9 = [v7 initWithFormat:@"%@%@", v6, v8];
+  v9 = [v7 initWithFormat:@"%@%@", _keyCopy, v8];
 
   return v9;
 }
@@ -373,10 +373,10 @@ LABEL_14:
   v3 = __atxlog_handle_home_screen();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
+    widgetBundleId = [(ATXHomeScreenEvent *)self->_hsEvent widgetBundleId];
     rankOfWidgetInGallery = self->_rankOfWidgetInGallery;
     v7 = 138412546;
-    v8 = v4;
+    v8 = widgetBundleId;
     v9 = 2048;
     v10 = rankOfWidgetInGallery;
     _os_log_impl(&dword_2263AA000, v3, OS_LOG_TYPE_DEFAULT, "ATXHomeScreenLogWidgetAddedFeatures: logging new widget added: %@, rank in gallery: %lu", &v7, 0x16u);
@@ -392,7 +392,7 @@ LABEL_14:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 134217984;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_2263AA000, a2, OS_LOG_TYPE_FAULT, "ATXHomeScreenLogWidgetAddedFeatures: Unable to find a negative example with negExampleIndexUpperBound: %lu", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

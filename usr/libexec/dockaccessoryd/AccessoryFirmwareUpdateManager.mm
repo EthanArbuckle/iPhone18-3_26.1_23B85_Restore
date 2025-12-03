@@ -1,55 +1,55 @@
 @interface AccessoryFirmwareUpdateManager
-- (BOOL)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4 error:(id *)a5;
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4;
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6;
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4;
+- (BOOL)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg error:(id *)error;
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD;
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total;
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status;
 @end
 
 @implementation AccessoryFirmwareUpdateManager
 
-- (void)assetAvailablityUpdateForAccessoryID:(id)a3 assetID:(id)a4
+- (void)assetAvailablityUpdateForAccessoryID:(id)d assetID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10014C4A8(v6, v7);
+  dCopy = d;
+  iDCopy = iD;
+  selfCopy = self;
+  sub_10014C4A8(dCopy, iDCopy);
 }
 
-- (BOOL)sendMessageToAccessory:(id)a3 uarpMsg:(id)a4 error:(id *)a5
+- (BOOL)sendMessageToAccessory:(id)accessory uarpMsg:(id)msg error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  accessoryCopy = accessory;
+  msgCopy = msg;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
-  sub_10014CE30(v7, v10, v12);
+  sub_10014CE30(accessoryCopy, v10, v12);
   sub_1000A0D2C(v10, v12);
   return 1;
 }
 
-- (void)firmwareStagingProgress:(id)a3 assetID:(id)a4 bytesSent:(unint64_t)a5 bytesTotal:(unint64_t)a6
+- (void)firmwareStagingProgress:(id)progress assetID:(id)d bytesSent:(unint64_t)sent bytesTotal:(unint64_t)total
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_10014D378(v10, v11, a5, a6);
+  progressCopy = progress;
+  dCopy = d;
+  selfCopy = self;
+  sub_10014D378(progressCopy, dCopy, sent, total);
 }
 
-- (void)firmwareStagingComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)firmwareStagingComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_10014D6B4(v8, v9, a5);
+  completeCopy = complete;
+  dCopy = d;
+  selfCopy = self;
+  sub_10014D6B4(completeCopy, dCopy, status);
 }
 
-- (void)stagedFirmwareApplicationComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)stagedFirmwareApplicationComplete:(id)complete withStatus:(unint64_t)status
 {
-  v6 = a3;
-  v7 = self;
-  sub_10014D9DC(v6, a4);
+  completeCopy = complete;
+  selfCopy = self;
+  sub_10014D9DC(completeCopy, status);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface APPBInstallAttribution
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCampaignId:(BOOL)a3;
-- (void)setHasSourceAppAdamId:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCampaignId:(BOOL)id;
+- (void)setHasSourceAppAdamId:(BOOL)id;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBInstallAttribution
 
-- (void)setHasCampaignId:(BOOL)a3
+- (void)setHasCampaignId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSourceAppAdamId:(BOOL)a3
+- (void)setHasSourceAppAdamId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = APPBInstallAttribution;
   v3 = [(APPBInstallAttribution *)&v7 description];
-  v4 = [(APPBInstallAttribution *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBInstallAttribution *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -143,45 +143,45 @@ LABEL_15:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_adNetworkId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_version)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attributionSignature)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -201,56 +201,56 @@ LABEL_13:
   }
 
   PBDataWriterWriteUint64Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_14:
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_15:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_adNetworkId)
   {
-    [v4 setAdNetworkId:?];
-    v4 = v6;
+    [toCopy setAdNetworkId:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_campaignId;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 2) = self->_campaignId;
+    *(toCopy + 72) |= 2u;
   }
 
   if (self->_version)
   {
     [v6 setVersion:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_attributionSignature)
   {
     [v6 setAttributionSignature:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuid)
   {
     [v6 setUuid:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_adamId;
-    *(v4 + 72) |= 1u;
+    *(toCopy + 1) = self->_adamId;
+    *(toCopy + 72) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -269,22 +269,22 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 3) = self->_sourceAppAdamId;
-  *(v4 + 72) |= 4u;
+  *(toCopy + 3) = self->_sourceAppAdamId;
+  *(toCopy + 72) |= 4u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_14:
-    *(v4 + 4) = self->_timestamp;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 4) = self->_timestamp;
+    *(toCopy + 72) |= 8u;
   }
 
 LABEL_15:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_adNetworkId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_adNetworkId copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
@@ -294,15 +294,15 @@ LABEL_15:
     *(v5 + 72) |= 2u;
   }
 
-  v8 = [(NSString *)self->_version copyWithZone:a3];
+  v8 = [(NSString *)self->_version copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(NSString *)self->_attributionSignature copyWithZone:a3];
+  v10 = [(NSString *)self->_attributionSignature copyWithZone:zone];
   v11 = v5[6];
   v5[6] = v10;
 
-  v12 = [(NSString *)self->_uuid copyWithZone:a3];
+  v12 = [(NSString *)self->_uuid copyWithZone:zone];
   v13 = v5[7];
   v5[7] = v12;
 
@@ -344,16 +344,16 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   adNetworkId = self->_adNetworkId;
-  if (adNetworkId | *(v4 + 5))
+  if (adNetworkId | *(equalCopy + 5))
   {
     if (![(NSString *)adNetworkId isEqual:?])
     {
@@ -363,13 +363,13 @@ LABEL_6:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_campaignId != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_campaignId != *(equalCopy + 2))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_29:
     v9 = 0;
@@ -377,13 +377,13 @@ LABEL_29:
   }
 
   version = self->_version;
-  if (version | *(v4 + 8) && ![(NSString *)version isEqual:?])
+  if (version | *(equalCopy + 8) && ![(NSString *)version isEqual:?])
   {
     goto LABEL_29;
   }
 
   attributionSignature = self->_attributionSignature;
-  if (attributionSignature | *(v4 + 6))
+  if (attributionSignature | *(equalCopy + 6))
   {
     if (![(NSString *)attributionSignature isEqual:?])
     {
@@ -392,7 +392,7 @@ LABEL_29:
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 7))
+  if (uuid | *(equalCopy + 7))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -402,34 +402,34 @@ LABEL_29:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_adamId != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_adamId != *(equalCopy + 1))
     {
       goto LABEL_29;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_29;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_sourceAppAdamId != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_sourceAppAdamId != *(equalCopy + 3))
     {
       goto LABEL_29;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_29;
   }
 
-  v9 = (*(v4 + 72) & 8) == 0;
+  v9 = (*(equalCopy + 72) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_timestamp != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_timestamp != *(equalCopy + 4))
     {
       goto LABEL_29;
     }
@@ -496,46 +496,46 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4[5])
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy[5])
   {
     [(APPBInstallAttribution *)self setAdNetworkId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[9] & 2) != 0)
+  if ((fromCopy[9] & 2) != 0)
   {
-    self->_campaignId = v4[2];
+    self->_campaignId = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  if (v4[8])
+  if (fromCopy[8])
   {
     [(APPBInstallAttribution *)self setVersion:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[6])
+  if (fromCopy[6])
   {
     [(APPBInstallAttribution *)self setAttributionSignature:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(APPBInstallAttribution *)self setUuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if (v5)
   {
-    self->_adamId = v4[1];
+    self->_adamId = fromCopy[1];
     *&self->_has |= 1u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
     if ((v5 & 4) == 0)
     {
 LABEL_13:
@@ -548,17 +548,17 @@ LABEL_13:
     }
   }
 
-  else if ((v4[9] & 4) == 0)
+  else if ((fromCopy[9] & 4) == 0)
   {
     goto LABEL_13;
   }
 
-  self->_sourceAppAdamId = v4[3];
+  self->_sourceAppAdamId = fromCopy[3];
   *&self->_has |= 4u;
-  if ((v4[9] & 8) != 0)
+  if ((fromCopy[9] & 8) != 0)
   {
 LABEL_14:
-    self->_timestamp = v4[4];
+    self->_timestamp = fromCopy[4];
     *&self->_has |= 8u;
   }
 

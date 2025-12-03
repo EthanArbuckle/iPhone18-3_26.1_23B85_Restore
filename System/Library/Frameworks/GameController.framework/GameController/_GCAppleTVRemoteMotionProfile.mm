@@ -4,20 +4,20 @@
 - ($1AB5FA073B851C12C2339EC22442E995)userAcceleration;
 - (BOOL)isEmulatedMicroGamepad;
 - (GCQuaternion)attitude;
-- (_GCAppleTVRemoteMotionProfile)initWithController:(id)a3;
+- (_GCAppleTVRemoteMotionProfile)initWithController:(id)controller;
 - (id)_motionLiteFusedHandler;
 - (id)controller;
 - (id)internalValueChangedHandler;
 - (id)valueChangedHandler;
-- (void)setInternalValueChangedHandler:(id)a3;
-- (void)setValueChangedHandler:(id)a3;
+- (void)setInternalValueChangedHandler:(id)handler;
+- (void)setValueChangedHandler:(id)handler;
 @end
 
 @implementation _GCAppleTVRemoteMotionProfile
 
-- (_GCAppleTVRemoteMotionProfile)initWithController:(id)a3
+- (_GCAppleTVRemoteMotionProfile)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _GCAppleTVRemoteMotionProfile;
   v5 = [(_GCAppleTVRemoteMotionProfile *)&v8 init];
@@ -27,13 +27,13 @@
     v5->_linkedOnOrAfterCompassFeature = 0;
     dyld_get_active_platform();
     v6->_linkedOnOrAfterCompassFeature = dyld_program_sdk_at_least();
-    v6->_motionLite = [v4 isATVRemote];
+    v6->_motionLite = [controllerCopy isATVRemote];
     if (v6->_linkedOnOrAfterCompassFeature)
     {
-      v6->_compassEnabled = [v4 physicalDeviceUsesCompass];
+      v6->_compassEnabled = [controllerCopy physicalDeviceUsesCompass];
     }
 
-    objc_storeWeak(&v6->_controller, v4);
+    objc_storeWeak(&v6->_controller, controllerCopy);
     v6->_gravity.x = 0.0;
     v6->_gravity.y = 0.0;
     v6->_gravity.z = -1.0;
@@ -115,13 +115,13 @@
   return v2;
 }
 
-- (void)setValueChangedHandler:(id)a3
+- (void)setValueChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(_GCAppleTVRemoteMotionProfile *)self controller];
-  v6 = [v5 handlerQueue];
-  if (v4)
+  controller = [(_GCAppleTVRemoteMotionProfile *)self controller];
+  handlerQueue = [controller handlerQueue];
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -130,10 +130,10 @@
     v7 = &v12;
     objc_copyWeak(&v12, &location);
     block[4] = self;
-    v11 = v4;
-    dispatch_async(v6, block);
+    v11 = handlerCopy;
+    dispatch_async(handlerQueue, block);
 
-    v5 = v11;
+    controller = v11;
   }
 
   else
@@ -145,7 +145,7 @@
     v7 = &v9;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    dispatch_async(v6, v8);
+    dispatch_async(handlerQueue, v8);
   }
 
   objc_destroyWeak(v7);
@@ -159,13 +159,13 @@
   return v2;
 }
 
-- (void)setInternalValueChangedHandler:(id)a3
+- (void)setInternalValueChangedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(_GCAppleTVRemoteMotionProfile *)self controller];
-  v6 = [v5 handlerQueue];
-  if (v4)
+  controller = [(_GCAppleTVRemoteMotionProfile *)self controller];
+  handlerQueue = [controller handlerQueue];
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -174,10 +174,10 @@
     v7 = &v12;
     objc_copyWeak(&v12, &location);
     block[4] = self;
-    v11 = v4;
-    dispatch_async(v6, block);
+    v11 = handlerCopy;
+    dispatch_async(handlerQueue, block);
 
-    v5 = v11;
+    controller = v11;
   }
 
   else
@@ -189,7 +189,7 @@
     v7 = &v9;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    dispatch_async(v6, v8);
+    dispatch_async(handlerQueue, v8);
   }
 
   objc_destroyWeak(v7);
@@ -198,21 +198,21 @@
 
 - (BOOL)isEmulatedMicroGamepad
 {
-  v3 = [(_GCAppleTVRemoteMotionProfile *)self controller];
-  v4 = [v3 profile];
+  controller = [(_GCAppleTVRemoteMotionProfile *)self controller];
+  profile = [controller profile];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(_GCAppleTVRemoteMotionProfile *)self controller];
-    v6 = [v5 isForwarded];
+    controller2 = [(_GCAppleTVRemoteMotionProfile *)self controller];
+    isForwarded = [controller2 isForwarded];
   }
 
   else
   {
-    v6 = 0;
+    isForwarded = 0;
   }
 
-  return v6;
+  return isForwarded;
 }
 
 - (id)_motionLiteFusedHandler

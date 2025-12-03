@@ -1,7 +1,7 @@
 @interface TVShowPlayBarView
 - (NSString)title;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TVShowPlayBarView
@@ -14,18 +14,18 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v7 = v6;
-  v9 = a3;
-  v8 = self;
+  titleCopy = title;
+  selfCopy = self;
   sub_22775C(v5, v7);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_227858();
 }
 

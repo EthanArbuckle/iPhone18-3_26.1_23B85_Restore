@@ -1,32 +1,32 @@
 @interface SMTSchemaSMTAppLanguageModelAssetCopyStarted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithDictionary:(id)a3;
-- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithJSON:(id)a3;
+- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithDictionary:(id)dictionary;
+- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SMTSchemaSMTAppLanguageModelAssetCopyStarted
 
-- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithDictionary:(id)a3
+- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SMTSchemaSMTAppLanguageModelAssetCopyStarted;
   v5 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"locale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SMTSchemaSMTAppLanguageModelAssetCopyStarted setLocale:](v5, "setLocale:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"appBundleId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"appBundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
       [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)v5 setAppBundleId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"appAssetPath"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"appAssetPath"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithJSON:(id)a3
+- (SMTSchemaSMTAppLanguageModelAssetCopyStarted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,19 +84,19 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appAssetPath)
   {
-    v4 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appAssetPath"];
+    appAssetPath = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
+    v5 = [appAssetPath copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appAssetPath"];
   }
 
   if (self->_appBundleId)
   {
-    v6 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"appBundleId"];
+    appBundleId = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
+    v7 = [appBundleId copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"appBundleId"];
   }
 
   if (*&self->_has)
@@ -112,12 +112,12 @@
       v9 = off_1E78E7150[v8];
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"locale"];
+    [dictionary setObject:v9 forKeyedSubscript:@"locale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -136,15 +136,15 @@
   return v4 ^ [(NSString *)self->_appAssetPath hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_15;
   }
@@ -152,26 +152,26 @@
   if (*&self->_has)
   {
     locale = self->_locale;
-    if (locale != [v4 locale])
+    if (locale != [equalCopy locale])
     {
       goto LABEL_15;
     }
   }
 
-  v6 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
-  v7 = [v4 appBundleId];
-  if ((v6 != 0) == (v7 == 0))
+  appBundleId = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
+  appBundleId2 = [equalCopy appBundleId];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_14;
   }
 
-  v8 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
-  if (v8)
+  appBundleId3 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
+  if (appBundleId3)
   {
-    v9 = v8;
-    v10 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
-    v11 = [v4 appBundleId];
-    v12 = [v10 isEqual:v11];
+    v9 = appBundleId3;
+    appBundleId4 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
+    appBundleId5 = [equalCopy appBundleId];
+    v12 = [appBundleId4 isEqual:appBundleId5];
 
     if (!v12)
     {
@@ -183,12 +183,12 @@
   {
   }
 
-  v6 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
-  v7 = [v4 appAssetPath];
-  if ((v6 != 0) != (v7 == 0))
+  appBundleId = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
+  appBundleId2 = [equalCopy appAssetPath];
+  if ((appBundleId != 0) != (appBundleId2 == 0))
   {
-    v13 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
-    if (!v13)
+    appAssetPath = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
+    if (!appAssetPath)
     {
 
 LABEL_18:
@@ -196,10 +196,10 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v14 = v13;
-    v15 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
-    v16 = [v4 appAssetPath];
-    v17 = [v15 isEqual:v16];
+    v14 = appAssetPath;
+    appAssetPath2 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
+    appAssetPath3 = [equalCopy appAssetPath];
+    v17 = [appAssetPath2 isEqual:appAssetPath3];
 
     if (v17)
     {
@@ -219,28 +219,28 @@ LABEL_16:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
+  appBundleId = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appBundleId];
 
-  if (v4)
+  if (appBundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
+  appAssetPath = [(SMTSchemaSMTAppLanguageModelAssetCopyStarted *)self appAssetPath];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (appAssetPath)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

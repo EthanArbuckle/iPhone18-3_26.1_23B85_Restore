@@ -1,6 +1,6 @@
 @interface __NSFastEnumerationEnumerator
-+ (id)allocWithZone:(_NSZone *)a3;
-- (__NSFastEnumerationEnumerator)initWithObject:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
+- (__NSFastEnumerationEnumerator)initWithObject:(id)object;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -55,14 +55,14 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return __CFAllocateObject(v3, 0x40uLL);
 }
 
-- (__NSFastEnumerationEnumerator)initWithObject:(id)a3
+- (__NSFastEnumerationEnumerator)initWithObject:(id)object
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -70,8 +70,8 @@
   v4 = [(__NSFastEnumerationEnumerator *)&v7 init];
   if (v4)
   {
-    v4->_obj = a3;
-    v4->_origObj = a3;
+    v4->_obj = object;
+    v4->_origObj = object;
   }
 
   v5 = *MEMORY[0x1E69E9840];

@@ -1,81 +1,81 @@
 @interface _SFPBPin
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPin)initWithDictionary:(id)a3;
-- (_SFPBPin)initWithFacade:(id)a3;
-- (_SFPBPin)initWithJSON:(id)a3;
+- (_SFPBPin)initWithDictionary:(id)dictionary;
+- (_SFPBPin)initWithFacade:(id)facade;
+- (_SFPBPin)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setLabel:(id)a3;
-- (void)setMapsData:(id)a3;
-- (void)setPinText:(id)a3;
-- (void)setResultID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLabel:(id)label;
+- (void)setMapsData:(id)data;
+- (void)setPinText:(id)text;
+- (void)setResultID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPin
 
-- (_SFPBPin)initWithFacade:(id)a3
+- (_SFPBPin)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPin *)self init];
   if (v5)
   {
-    v6 = [v4 location];
+    location = [facadeCopy location];
 
-    if (v6)
+    if (location)
     {
       v7 = [_SFPBLatLng alloc];
-      v8 = [v4 location];
-      v9 = [(_SFPBLatLng *)v7 initWithFacade:v8];
+      location2 = [facadeCopy location];
+      v9 = [(_SFPBLatLng *)v7 initWithFacade:location2];
       [(_SFPBPin *)v5 setLocation:v9];
     }
 
-    v10 = [v4 pinColor];
+    pinColor = [facadeCopy pinColor];
 
-    if (v10)
+    if (pinColor)
     {
       v11 = [_SFPBColor alloc];
-      v12 = [v4 pinColor];
-      v13 = [(_SFPBColor *)v11 initWithFacade:v12];
+      pinColor2 = [facadeCopy pinColor];
+      v13 = [(_SFPBColor *)v11 initWithFacade:pinColor2];
       [(_SFPBPin *)v5 setPinColor:v13];
     }
 
-    v14 = [v4 label];
+    label = [facadeCopy label];
 
-    if (v14)
+    if (label)
     {
-      v15 = [v4 label];
-      [(_SFPBPin *)v5 setLabel:v15];
+      label2 = [facadeCopy label];
+      [(_SFPBPin *)v5 setLabel:label2];
     }
 
-    v16 = [v4 resultID];
+    resultID = [facadeCopy resultID];
 
-    if (v16)
+    if (resultID)
     {
-      v17 = [v4 resultID];
-      [(_SFPBPin *)v5 setResultID:v17];
+      resultID2 = [facadeCopy resultID];
+      [(_SFPBPin *)v5 setResultID:resultID2];
     }
 
-    v18 = [v4 mapsData];
+    mapsData = [facadeCopy mapsData];
 
-    if (v18)
+    if (mapsData)
     {
-      v19 = [v4 mapsData];
-      [(_SFPBPin *)v5 setMapsData:v19];
+      mapsData2 = [facadeCopy mapsData];
+      [(_SFPBPin *)v5 setMapsData:mapsData2];
     }
 
-    if ([v4 hasPinBehavior])
+    if ([facadeCopy hasPinBehavior])
     {
-      -[_SFPBPin setPinBehavior:](v5, "setPinBehavior:", [v4 pinBehavior]);
+      -[_SFPBPin setPinBehavior:](v5, "setPinBehavior:", [facadeCopy pinBehavior]);
     }
 
-    v20 = [v4 pinText];
+    pinText = [facadeCopy pinText];
 
-    if (v20)
+    if (pinText)
     {
-      v21 = [v4 pinText];
-      [(_SFPBPin *)v5 setPinText:v21];
+      pinText2 = [facadeCopy pinText];
+      [(_SFPBPin *)v5 setPinText:pinText2];
     }
 
     v22 = v5;
@@ -84,15 +84,15 @@
   return v5;
 }
 
-- (_SFPBPin)initWithDictionary:(id)a3
+- (_SFPBPin)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = _SFPBPin;
   v5 = [(_SFPBPin *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"location"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBPin *)v5 setLocation:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pinColor"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pinColor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(_SFPBPin *)v5 setPinColor:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
       [(_SFPBPin *)v5 setLabel:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"resultID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"resultID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
       [(_SFPBPin *)v5 setResultID:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"mapsData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"mapsData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,14 +132,14 @@
       [(_SFPBPin *)v5 setMapsData:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"pinBehavior"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"pinBehavior"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBPin setPinBehavior:](v5, "setPinBehavior:", [v16 intValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"pinText"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"pinText"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -153,30 +153,30 @@
   return v5;
 }
 
-- (_SFPBPin)initWithJSON:(id)a3
+- (_SFPBPin)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPin *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPin *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPin *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -189,93 +189,93 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_label)
   {
-    v4 = [(_SFPBPin *)self label];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"label"];
+    label = [(_SFPBPin *)self label];
+    v5 = [label copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"label"];
   }
 
   if (self->_location)
   {
-    v6 = [(_SFPBPin *)self location];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    location = [(_SFPBPin *)self location];
+    dictionaryRepresentation = [location dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"location"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"location"];
     }
   }
 
   if (self->_mapsData)
   {
-    v9 = [(_SFPBPin *)self mapsData];
-    v10 = [v9 base64EncodedStringWithOptions:0];
+    mapsData = [(_SFPBPin *)self mapsData];
+    v10 = [mapsData base64EncodedStringWithOptions:0];
     if (v10)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"mapsData"];
+      [dictionary setObject:v10 forKeyedSubscript:@"mapsData"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"mapsData"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"mapsData"];
     }
   }
 
   if (self->_pinBehavior)
   {
-    v12 = [(_SFPBPin *)self pinBehavior];
-    if (v12 >= 3)
+    pinBehavior = [(_SFPBPin *)self pinBehavior];
+    if (pinBehavior >= 3)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v12];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", pinBehavior];
     }
 
     else
     {
-      v13 = off_1E7ACE548[v12];
+      v13 = off_1E7ACE548[pinBehavior];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"pinBehavior"];
+    [dictionary setObject:v13 forKeyedSubscript:@"pinBehavior"];
   }
 
   if (self->_pinColor)
   {
-    v14 = [(_SFPBPin *)self pinColor];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    pinColor = [(_SFPBPin *)self pinColor];
+    dictionaryRepresentation2 = [pinColor dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"pinColor"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"pinColor"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"pinColor"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"pinColor"];
     }
   }
 
   if (self->_pinText)
   {
-    v17 = [(_SFPBPin *)self pinText];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"pinText"];
+    pinText = [(_SFPBPin *)self pinText];
+    v18 = [pinText copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"pinText"];
   }
 
   if (self->_resultID)
   {
-    v19 = [(_SFPBPin *)self resultID];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"resultID"];
+    resultID = [(_SFPBPin *)self resultID];
+    v20 = [resultID copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"resultID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -289,28 +289,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ [(NSString *)self->_pinText hash]^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
-  v5 = [(_SFPBPin *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self location];
+  location2 = [equalCopy location];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_32;
   }
 
-  v7 = [(_SFPBPin *)self location];
-  if (v7)
+  location3 = [(_SFPBPin *)self location];
+  if (location3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPin *)self location];
-    v10 = [v4 location];
-    v11 = [v9 isEqual:v10];
+    v8 = location3;
+    location4 = [(_SFPBPin *)self location];
+    location5 = [equalCopy location];
+    v11 = [location4 isEqual:location5];
 
     if (!v11)
     {
@@ -322,20 +322,20 @@
   {
   }
 
-  v5 = [(_SFPBPin *)self pinColor];
-  v6 = [v4 pinColor];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self pinColor];
+  location2 = [equalCopy pinColor];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_32;
   }
 
-  v12 = [(_SFPBPin *)self pinColor];
-  if (v12)
+  pinColor = [(_SFPBPin *)self pinColor];
+  if (pinColor)
   {
-    v13 = v12;
-    v14 = [(_SFPBPin *)self pinColor];
-    v15 = [v4 pinColor];
-    v16 = [v14 isEqual:v15];
+    v13 = pinColor;
+    pinColor2 = [(_SFPBPin *)self pinColor];
+    pinColor3 = [equalCopy pinColor];
+    v16 = [pinColor2 isEqual:pinColor3];
 
     if (!v16)
     {
@@ -347,20 +347,20 @@
   {
   }
 
-  v5 = [(_SFPBPin *)self label];
-  v6 = [v4 label];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self label];
+  location2 = [equalCopy label];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_32;
   }
 
-  v17 = [(_SFPBPin *)self label];
-  if (v17)
+  label = [(_SFPBPin *)self label];
+  if (label)
   {
-    v18 = v17;
-    v19 = [(_SFPBPin *)self label];
-    v20 = [v4 label];
-    v21 = [v19 isEqual:v20];
+    v18 = label;
+    label2 = [(_SFPBPin *)self label];
+    label3 = [equalCopy label];
+    v21 = [label2 isEqual:label3];
 
     if (!v21)
     {
@@ -372,20 +372,20 @@
   {
   }
 
-  v5 = [(_SFPBPin *)self resultID];
-  v6 = [v4 resultID];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self resultID];
+  location2 = [equalCopy resultID];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_32;
   }
 
-  v22 = [(_SFPBPin *)self resultID];
-  if (v22)
+  resultID = [(_SFPBPin *)self resultID];
+  if (resultID)
   {
-    v23 = v22;
-    v24 = [(_SFPBPin *)self resultID];
-    v25 = [v4 resultID];
-    v26 = [v24 isEqual:v25];
+    v23 = resultID;
+    resultID2 = [(_SFPBPin *)self resultID];
+    resultID3 = [equalCopy resultID];
+    v26 = [resultID2 isEqual:resultID3];
 
     if (!v26)
     {
@@ -397,20 +397,20 @@
   {
   }
 
-  v5 = [(_SFPBPin *)self mapsData];
-  v6 = [v4 mapsData];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self mapsData];
+  location2 = [equalCopy mapsData];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_32;
   }
 
-  v27 = [(_SFPBPin *)self mapsData];
-  if (v27)
+  mapsData = [(_SFPBPin *)self mapsData];
+  if (mapsData)
   {
-    v28 = v27;
-    v29 = [(_SFPBPin *)self mapsData];
-    v30 = [v4 mapsData];
-    v31 = [v29 isEqual:v30];
+    v28 = mapsData;
+    mapsData2 = [(_SFPBPin *)self mapsData];
+    mapsData3 = [equalCopy mapsData];
+    v31 = [mapsData2 isEqual:mapsData3];
 
     if (!v31)
     {
@@ -423,22 +423,22 @@
   }
 
   pinBehavior = self->_pinBehavior;
-  if (pinBehavior != [v4 pinBehavior])
+  if (pinBehavior != [equalCopy pinBehavior])
   {
     goto LABEL_33;
   }
 
-  v5 = [(_SFPBPin *)self pinText];
-  v6 = [v4 pinText];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBPin *)self pinText];
+  location2 = [equalCopy pinText];
+  if ((location != 0) == (location2 == 0))
   {
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v33 = [(_SFPBPin *)self pinText];
-  if (!v33)
+  pinText = [(_SFPBPin *)self pinText];
+  if (!pinText)
   {
 
 LABEL_36:
@@ -446,10 +446,10 @@ LABEL_36:
     goto LABEL_34;
   }
 
-  v34 = v33;
-  v35 = [(_SFPBPin *)self pinText];
-  v36 = [v4 pinText];
-  v37 = [v35 isEqual:v36];
+  v34 = pinText;
+  pinText2 = [(_SFPBPin *)self pinText];
+  pinText3 = [equalCopy pinText];
+  v37 = [pinText2 isEqual:pinText3];
 
   if (v37)
   {
@@ -463,35 +463,35 @@ LABEL_34:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(_SFPBPin *)self location];
-  if (v4)
+  toCopy = to;
+  location = [(_SFPBPin *)self location];
+  if (location)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBPin *)self pinColor];
-  if (v5)
+  pinColor = [(_SFPBPin *)self pinColor];
+  if (pinColor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBPin *)self label];
-  if (v6)
+  label = [(_SFPBPin *)self label];
+  if (label)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBPin *)self resultID];
-  if (v7)
+  resultID = [(_SFPBPin *)self resultID];
+  if (resultID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBPin *)self mapsData];
-  if (v8)
+  mapsData = [(_SFPBPin *)self mapsData];
+  if (mapsData)
   {
     PBDataWriterWriteDataField();
   }
@@ -501,43 +501,43 @@ LABEL_34:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(_SFPBPin *)self pinText];
-  if (v9)
+  pinText = [(_SFPBPin *)self pinText];
+  if (pinText)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setPinText:(id)a3
+- (void)setPinText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   pinText = self->_pinText;
   self->_pinText = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMapsData:(id)a3
+- (void)setMapsData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   mapsData = self->_mapsData;
   self->_mapsData = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setResultID:(id)a3
+- (void)setResultID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   resultID = self->_resultID;
   self->_resultID = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   label = self->_label;
   self->_label = v4;
 

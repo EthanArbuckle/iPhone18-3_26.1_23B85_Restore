@@ -1,10 +1,10 @@
 @interface FRSharedImageCache
 - (FRSharedImageCache)init;
-- (FRSharedImageCache)initWithPersistenceEnabled:(BOOL)a3;
-- (id)_imageAtPath:(id)a3;
-- (id)fetchImageForKey:(id)a3;
-- (void)cache:(id)a3 forKey:(id)a4 immediately:(BOOL)a5;
-- (void)pruneImagesOlderThan:(double)a3;
+- (FRSharedImageCache)initWithPersistenceEnabled:(BOOL)enabled;
+- (id)_imageAtPath:(id)path;
+- (id)fetchImageForKey:(id)key;
+- (void)cache:(id)cache forKey:(id)key immediately:(BOOL)immediately;
+- (void)pruneImagesOlderThan:(double)than;
 @end
 
 @implementation FRSharedImageCache
@@ -17,7 +17,7 @@
   return v4;
 }
 
-- (FRSharedImageCache)initWithPersistenceEnabled:(BOOL)a3
+- (FRSharedImageCache)initWithPersistenceEnabled:(BOOL)enabled
 {
   v18.receiver = self;
   v18.super_class = FRSharedImageCache;
@@ -25,7 +25,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_persistenceEnabled = a3;
+    v4->_persistenceEnabled = enabled;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_attr_make_with_qos_class(v6, QOS_CLASS_BACKGROUND, 0);
     v8 = dispatch_queue_create("com.apple.FRSharedImageCache.persistence", v7);
@@ -33,9 +33,9 @@
     v5->_persistenceQueue = v8;
 
     v10 = FRURLForNewsAppCachesDirectory();
-    v11 = [v10 path];
+    path = [v10 path];
 
-    v12 = [v11 stringByAppendingPathComponent:@"CachedImages"];
+    v12 = [path stringByAppendingPathComponent:@"CachedImages"];
     rootPath = v5->_rootPath;
     v5->_rootPath = v12;
 
@@ -52,9 +52,9 @@
   return v5;
 }
 
-- (id)_imageAtPath:(id)a3
+- (id)_imageAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(FRSharedImageCache *)self persistenceEnabled])
   {
     v11 = 0;
@@ -63,14 +63,14 @@
     v14 = sub_100009C28;
     v15 = sub_100009F68;
     v16 = 0;
-    v5 = [(FRSharedImageCache *)self persistenceQueue];
+    persistenceQueue = [(FRSharedImageCache *)self persistenceQueue];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10005968C;
     v8[3] = &unk_1000C5598;
-    v9 = v4;
+    v9 = pathCopy;
     v10 = &v11;
-    dispatch_sync(v5, v8);
+    dispatch_sync(persistenceQueue, v8);
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -84,46 +84,46 @@
   return v6;
 }
 
-- (void)pruneImagesOlderThan:(double)a3
+- (void)pruneImagesOlderThan:(double)than
 {
-  v5 = [(FRSharedImageCache *)self persistenceQueue];
+  persistenceQueue = [(FRSharedImageCache *)self persistenceQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100059874;
   v6[3] = &unk_1000C5A18;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_async(v5, v6);
+  *&v6[5] = than;
+  dispatch_async(persistenceQueue, v6);
 }
 
-- (id)fetchImageForKey:(id)a3
+- (id)fetchImageForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FRSharedImageCache *)self rootPath];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  keyCopy = key;
+  rootPath = [(FRSharedImageCache *)self rootPath];
+  v6 = [rootPath stringByAppendingPathComponent:keyCopy];
 
   v7 = [(FRSharedImageCache *)self _imageAtPath:v6];
 
   return v7;
 }
 
-- (void)cache:(id)a3 forKey:(id)a4 immediately:(BOOL)a5
+- (void)cache:(id)cache forKey:(id)key immediately:(BOOL)immediately
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  immediatelyCopy = immediately;
+  cacheCopy = cache;
+  keyCopy = key;
   if ([(FRSharedImageCache *)self persistenceEnabled])
   {
-    v10 = [(FRSharedImageCache *)self rootPath];
-    v11 = [v10 stringByAppendingPathComponent:v9];
+    rootPath = [(FRSharedImageCache *)self rootPath];
+    v11 = [rootPath stringByAppendingPathComponent:keyCopy];
 
-    v12 = [v8 CGImage];
-    if (v8)
+    cGImage = [cacheCopy CGImage];
+    if (cacheCopy)
     {
-      v13 = v12;
-      if (v12)
+      v13 = cGImage;
+      if (cGImage)
       {
-        CGImageRetain(v12);
+        CGImageRetain(cGImage);
         Current = CFAbsoluteTimeGetCurrent();
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
@@ -131,13 +131,13 @@
         v20[3] = &unk_1000C5C18;
         v24 = v13;
         v21 = v11;
-        v22 = v8;
+        v22 = cacheCopy;
         v25 = Current;
-        v23 = v9;
+        v23 = keyCopy;
         v15 = objc_retainBlock(v20);
-        v16 = [(FRSharedImageCache *)self persistenceQueue];
-        v17 = v16;
-        if (v5)
+        persistenceQueue = [(FRSharedImageCache *)self persistenceQueue];
+        v17 = persistenceQueue;
+        if (immediatelyCopy)
         {
           v18[0] = _NSConcreteStackBlock;
           v18[1] = 3221225472;
@@ -151,7 +151,7 @@
 
         else
         {
-          dispatch_async(v16, v15);
+          dispatch_async(persistenceQueue, v15);
         }
       }
     }

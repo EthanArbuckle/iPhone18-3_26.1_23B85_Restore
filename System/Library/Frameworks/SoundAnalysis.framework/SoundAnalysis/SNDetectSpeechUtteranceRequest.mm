@@ -1,23 +1,23 @@
 @interface SNDetectSpeechUtteranceRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (double)decisionDelay;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SNDetectSpeechUtteranceRequest
 
 - (double)decisionDelay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C980037C();
 
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   SNDetectSpeechUtteranceRequest.copy(with:)(v6);
 
   sub_1C97A5A8C(v6, v6[3]);
@@ -26,11 +26,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -39,7 +39,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SNDetectSpeechUtteranceRequest.isEqual(_:)(v8);
@@ -48,11 +48,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  SNDetectSpeechUtteranceRequest.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  SNDetectSpeechUtteranceRequest.encode(with:)(coderCopy);
 }
 
 @end

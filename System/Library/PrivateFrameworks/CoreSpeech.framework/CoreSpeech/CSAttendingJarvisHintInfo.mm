@@ -1,5 +1,5 @@
 @interface CSAttendingJarvisHintInfo
-- (CSAttendingJarvisHintInfo)initWithOrigin:(unint64_t)a3 deviceId:(id)a4;
+- (CSAttendingJarvisHintInfo)initWithOrigin:(unint64_t)origin deviceId:(id)id;
 - (id)description;
 @end
 
@@ -17,16 +17,16 @@
   return v3;
 }
 
-- (CSAttendingJarvisHintInfo)initWithOrigin:(unint64_t)a3 deviceId:(id)a4
+- (CSAttendingJarvisHintInfo)initWithOrigin:(unint64_t)origin deviceId:(id)id
 {
-  v7 = a4;
+  idCopy = id;
   v11.receiver = self;
   v11.super_class = CSAttendingJarvisHintInfo;
-  v8 = [(CSAttendingHintInfo *)&v11 initWithOrigin:a3];
+  v8 = [(CSAttendingHintInfo *)&v11 initWithOrigin:origin];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_deviceId, a4);
+    objc_storeStrong(&v8->_deviceId, id);
   }
 
   return v9;

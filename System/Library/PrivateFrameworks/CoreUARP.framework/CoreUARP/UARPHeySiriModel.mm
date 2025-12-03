@@ -1,28 +1,28 @@
 @interface UARPHeySiriModel
-+ (id)hsModelWithUarpPayload:(id)a3;
-+ (id)uarpPayloadWithHSModel:(id)a3;
-- (BOOL)expandURL:(id *)a3;
-- (UARPHeySiriModel)initWithURL:(id)a3;
-- (id)exportAsSuperBinary:(id *)a3;
-- (void)addHeySiriDownloadedModel:(id)a3;
-- (void)addHeySiriFallbackModel:(id)a3;
-- (void)addHeySiriPreinstalledModel:(id)a3;
-- (void)addHeySiriPrimaryModel:(id)a3;
-- (void)expandSuperBinaryMetaData:(id)a3;
-- (void)expandSuperBinaryPayloads:(id)a3;
++ (id)hsModelWithUarpPayload:(id)payload;
++ (id)uarpPayloadWithHSModel:(id)model;
+- (BOOL)expandURL:(id *)l;
+- (UARPHeySiriModel)initWithURL:(id)l;
+- (id)exportAsSuperBinary:(id *)binary;
+- (void)addHeySiriDownloadedModel:(id)model;
+- (void)addHeySiriFallbackModel:(id)model;
+- (void)addHeySiriPreinstalledModel:(id)model;
+- (void)addHeySiriPrimaryModel:(id)model;
+- (void)expandSuperBinaryMetaData:(id)data;
+- (void)expandSuperBinaryPayloads:(id)payloads;
 @end
 
 @implementation UARPHeySiriModel
 
-- (UARPHeySiriModel)initWithURL:(id)a3
+- (UARPHeySiriModel)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = UARPHeySiriModel;
   v5 = [(UARPHeySiriModel *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
   }
@@ -30,99 +30,99 @@
   return v5;
 }
 
-- (void)addHeySiriPrimaryModel:(id)a3
+- (void)addHeySiriPrimaryModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   newModels = self->_newModels;
-  v8 = v4;
+  v8 = modelCopy;
   if (!newModels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_newModels;
     self->_newModels = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     newModels = self->_newModels;
   }
 
-  [(NSMutableArray *)newModels addObject:v4];
+  [(NSMutableArray *)newModels addObject:modelCopy];
 }
 
-- (void)addHeySiriFallbackModel:(id)a3
+- (void)addHeySiriFallbackModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   fallbackModels = self->_fallbackModels;
-  v8 = v4;
+  v8 = modelCopy;
   if (!fallbackModels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_fallbackModels;
     self->_fallbackModels = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     fallbackModels = self->_fallbackModels;
   }
 
-  [(NSMutableArray *)fallbackModels addObject:v4];
+  [(NSMutableArray *)fallbackModels addObject:modelCopy];
 }
 
-- (void)addHeySiriDownloadedModel:(id)a3
+- (void)addHeySiriDownloadedModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   downloadedModels = self->_downloadedModels;
-  v8 = v4;
+  v8 = modelCopy;
   if (!downloadedModels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_downloadedModels;
     self->_downloadedModels = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     downloadedModels = self->_downloadedModels;
   }
 
-  [(NSMutableArray *)downloadedModels addObject:v4];
+  [(NSMutableArray *)downloadedModels addObject:modelCopy];
 }
 
-- (void)addHeySiriPreinstalledModel:(id)a3
+- (void)addHeySiriPreinstalledModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   preInstalledModels = self->_preInstalledModels;
-  v8 = v4;
+  v8 = modelCopy;
   if (!preInstalledModels)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_preInstalledModels;
     self->_preInstalledModels = v6;
 
-    v4 = v8;
+    modelCopy = v8;
     preInstalledModels = self->_preInstalledModels;
   }
 
-  [(NSMutableArray *)preInstalledModels addObject:v4];
+  [(NSMutableArray *)preInstalledModels addObject:modelCopy];
 }
 
-- (void)expandSuperBinaryMetaData:(id)a3
+- (void)expandSuperBinaryMetaData:(id)data
 {
-  v4 = a3;
-  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725832 tlvs:v4];
-  v5 = [v8 valueAsNumber];
-  self->_engineType = [v5 unsignedShortValue];
-  v6 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725831 tlvs:v4];
+  dataCopy = data;
+  v8 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725832 tlvs:dataCopy];
+  valueAsNumber = [v8 valueAsNumber];
+  self->_engineType = [valueAsNumber unsignedShortValue];
+  v6 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725831 tlvs:dataCopy];
 
-  v7 = [v6 valueAsVersion];
-  self->_majorVersion = [v7 majorVersion];
-  self->_minorVersion = [v7 minorVersion];
+  valueAsVersion = [v6 valueAsVersion];
+  self->_majorVersion = [valueAsVersion majorVersion];
+  self->_minorVersion = [valueAsVersion minorVersion];
 }
 
-- (void)expandSuperBinaryPayloads:(id)a3
+- (void)expandSuperBinaryPayloads:(id)payloads
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = a3;
+  obj = payloads;
   v4 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -139,11 +139,11 @@
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [UARPHeySiriModel hsModelWithUarpPayload:v8];
-        v10 = [v8 tlvs];
-        v11 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725824 tlvs:v10];
+        tlvs = [v8 tlvs];
+        v11 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725824 tlvs:tlvs];
 
-        v12 = [v11 valueAsNumber];
-        if ([v12 unsignedShortValue] == 1)
+        valueAsNumber = [v11 valueAsNumber];
+        if ([valueAsNumber unsignedShortValue] == 1)
         {
           [(UARPHeySiriModel *)self addHeySiriPreinstalledModel:v9];
         }
@@ -163,31 +163,31 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)expandURL:(id *)a3
+- (BOOL)expandURL:(id *)l
 {
   v35 = *MEMORY[0x277D85DE8];
   v5 = [[UARPSuperBinaryAsset alloc] initWithURL:self->_url];
   v6 = v5;
-  if (v5 && [(UARPSuperBinaryAsset *)v5 expandHeadersAndTLVs:a3])
+  if (v5 && [(UARPSuperBinaryAsset *)v5 expandHeadersAndTLVs:l])
   {
-    v7 = [(UARPSuperBinaryAsset *)v6 tlvs];
-    v8 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725831 tlvs:v7];
+    tlvs = [(UARPSuperBinaryAsset *)v6 tlvs];
+    v8 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725831 tlvs:tlvs];
 
     if (v8)
     {
-      v9 = [v8 valueAsVersion];
-      self->_majorVersion = [v9 majorVersion];
-      self->_minorVersion = [v9 minorVersion];
+      valueAsVersion = [v8 valueAsVersion];
+      self->_majorVersion = [valueAsVersion majorVersion];
+      self->_minorVersion = [valueAsVersion minorVersion];
     }
 
     v28 = v8;
-    v10 = [(UARPSuperBinaryAsset *)v6 tlvs];
-    v11 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725832 tlvs:v10];
+    tlvs2 = [(UARPSuperBinaryAsset *)v6 tlvs];
+    v11 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725832 tlvs:tlvs2];
 
     if (v11)
     {
-      v12 = [v11 valueAsNumber];
-      self->_engineType = [v12 unsignedShortValue];
+      valueAsNumber = [v11 valueAsNumber];
+      self->_engineType = [valueAsNumber unsignedShortValue];
     }
 
     v27 = v11;
@@ -196,8 +196,8 @@
     v30 = 0u;
     v31 = 0u;
     v29 = v6;
-    v13 = [(UARPSuperBinaryAsset *)v6 payloads];
-    v14 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    payloads = [(UARPSuperBinaryAsset *)v6 payloads];
+    v14 = [payloads countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v14)
     {
       v15 = v14;
@@ -208,13 +208,13 @@
         {
           if (*v31 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(payloads);
           }
 
           v18 = *(*(&v30 + 1) + 8 * i);
           v19 = [UARPHeySiriModel hsModelWithUarpPayload:v18];
-          v20 = [v18 tlvs];
-          v21 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725824 tlvs:v20];
+          tlvs3 = [v18 tlvs];
+          v21 = [UARPSuperBinaryAssetTLV findTLVWithType:1619725824 tlvs:tlvs3];
 
           if (v21 && ([v21 valueAsNumber], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "unsignedShortValue"), v22, v23 == 1))
           {
@@ -227,7 +227,7 @@
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v15 = [payloads countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v15);
@@ -246,88 +246,88 @@
   return v24;
 }
 
-+ (id)uarpPayloadWithHSModel:(id)a3
++ (id)uarpPayloadWithHSModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = uarpAssetTagHeySiriModel4cc();
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%c%c%c%c", *v4, v4[1], v4[2], v4[3]];
   v6 = [[UARPSuperBinaryAssetPayload alloc] initWithTag:v5 majorVersion:&unk_2859CAC40 minorVersion:&unk_2859CAC40 releaseVersion:&unk_2859CAC40 buildVersion:&unk_2859CAC40];
-  v7 = [v3 modelLocale];
+  modelLocale = [modelCopy modelLocale];
 
-  if (v7)
+  if (modelLocale)
   {
     v8 = [UARPSuperBinaryAssetTLV alloc];
-    v9 = [v3 modelLocale];
-    v10 = [(UARPSuperBinaryAssetTLV *)v8 initWithType:1619725825 stringValue:v9];
+    modelLocale2 = [modelCopy modelLocale];
+    v10 = [(UARPSuperBinaryAssetTLV *)v8 initWithType:1619725825 stringValue:modelLocale2];
 
     [(UARPSuperBinaryAssetPayload *)v6 addMetaDataTLV:v10];
   }
 
-  v11 = [v3 modelHash];
+  modelHash = [modelCopy modelHash];
 
-  if (v11)
+  if (modelHash)
   {
     v12 = [UARPSuperBinaryAssetTLV alloc];
-    v13 = [v3 modelHash];
-    v14 = [(UARPSuperBinaryAssetTLV *)v12 initWithType:1619725826 stringValue:v13];
+    modelHash2 = [modelCopy modelHash];
+    v14 = [(UARPSuperBinaryAssetTLV *)v12 initWithType:1619725826 stringValue:modelHash2];
 
     [(UARPSuperBinaryAssetPayload *)v6 addMetaDataTLV:v14];
   }
 
-  v15 = [v3 digest];
+  digest = [modelCopy digest];
 
-  if (v15)
+  if (digest)
   {
     v16 = [UARPSuperBinaryAssetTLV alloc];
-    v17 = [v3 digest];
-    v18 = [(UARPSuperBinaryAssetTLV *)v16 initWithType:1619725828 dataValue:v17];
+    digest2 = [modelCopy digest];
+    v18 = [(UARPSuperBinaryAssetTLV *)v16 initWithType:1619725828 dataValue:digest2];
 
     [(UARPSuperBinaryAssetPayload *)v6 addMetaDataTLV:v18];
   }
 
-  v19 = [v3 signature];
+  signature = [modelCopy signature];
 
-  if (v19)
+  if (signature)
   {
     v20 = [UARPSuperBinaryAssetTLV alloc];
-    v21 = [v3 signature];
-    v22 = [(UARPSuperBinaryAssetTLV *)v20 initWithType:1619725829 dataValue:v21];
+    signature2 = [modelCopy signature];
+    v22 = [(UARPSuperBinaryAssetTLV *)v20 initWithType:1619725829 dataValue:signature2];
 
     [(UARPSuperBinaryAssetPayload *)v6 addMetaDataTLV:v22];
   }
 
-  v23 = [v3 certificate];
+  certificate = [modelCopy certificate];
 
-  if (v23)
+  if (certificate)
   {
     v24 = [UARPSuperBinaryAssetTLV alloc];
-    v25 = [v3 certificate];
-    v26 = [(UARPSuperBinaryAssetTLV *)v24 initWithType:1619725830 dataValue:v25];
+    certificate2 = [modelCopy certificate];
+    v26 = [(UARPSuperBinaryAssetTLV *)v24 initWithType:1619725830 dataValue:certificate2];
 
     [(UARPSuperBinaryAssetPayload *)v6 addMetaDataTLV:v26];
   }
 
-  v27 = [v3 modelData];
+  modelData = [modelCopy modelData];
 
-  if (v27)
+  if (modelData)
   {
-    v28 = [v3 modelData];
-    [(UARPSuperBinaryAssetPayload *)v6 setPayloadToData:v28];
+    modelData2 = [modelCopy modelData];
+    [(UARPSuperBinaryAssetPayload *)v6 setPayloadToData:modelData2];
   }
 
   return v6;
 }
 
-+ (id)hsModelWithUarpPayload:(id)a3
++ (id)hsModelWithUarpPayload:(id)payload
 {
   v34 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v3 = [v26 tlvs];
+  payloadCopy = payload;
+  tlvs = [payloadCopy tlvs];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v4 = [tlvs countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v4)
   {
     v27 = 0;
@@ -351,51 +351,51 @@
     {
       if (*v30 != v9)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(tlvs);
       }
 
       v11 = *(*(&v29 + 1) + 8 * i);
-      v12 = [v11 type];
-      if (v12 <= 1619725827)
+      type = [v11 type];
+      if (type <= 1619725827)
       {
-        if (v12 == 1619725825)
+        if (type == 1619725825)
         {
-          v18 = [v11 valueAsString];
+          valueAsString = [v11 valueAsString];
           v14 = v8;
-          v8 = v18;
+          v8 = valueAsString;
         }
 
         else
         {
-          if (v12 != 1619725826)
+          if (type != 1619725826)
           {
             continue;
           }
 
-          v15 = [v11 valueAsString];
+          valueAsString2 = [v11 valueAsString];
           v14 = v7;
-          v7 = v15;
+          v7 = valueAsString2;
         }
       }
 
       else
       {
-        switch(v12)
+        switch(type)
         {
           case 1619725828:
-            v16 = [v11 valueAsData];
+            valueAsData = [v11 valueAsData];
             v14 = v6;
-            v6 = v16;
+            v6 = valueAsData;
             break;
           case 1619725829:
-            v17 = [v11 valueAsData];
+            valueAsData2 = [v11 valueAsData];
             v14 = v28;
-            v28 = v17;
+            v28 = valueAsData2;
             break;
           case 1619725830:
-            v13 = [v11 valueAsData];
+            valueAsData3 = [v11 valueAsData];
             v14 = v27;
-            v27 = v13;
+            v27 = valueAsData3;
             break;
           default:
             continue;
@@ -403,18 +403,18 @@
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    v5 = [tlvs countByEnumeratingWithState:&v29 objects:v33 count:16];
   }
 
   while (v5);
 LABEL_22:
-  v19 = [v26 payload];
+  payload = [payloadCopy payload];
   v20 = objc_alloc(getCSVoiceTriggerRTModelClass());
-  if (v19)
+  if (payload)
   {
     v22 = v27;
     v21 = v28;
-    v23 = [v20 initWithData:v19 hash:v7 locale:v8 digest:v6 signature:v28 certificate:v27];
+    v23 = [v20 initWithData:payload hash:v7 locale:v8 digest:v6 signature:v28 certificate:v27];
   }
 
   else
@@ -429,14 +429,14 @@ LABEL_22:
   return v23;
 }
 
-- (id)exportAsSuperBinary:(id *)a3
+- (id)exportAsSuperBinary:(id *)binary
 {
   v4 = [[UARPAssetVersion alloc] initWithMajorVersion:0 minorVersion:0 releaseVersion:0 buildVersion:0];
   v5 = [[UARPSuperBinaryAsset alloc] initWithFormatVersion:4 assetVersion:v4];
   if ([(NSMutableArray *)self->_newModels count])
   {
-    v6 = [(NSMutableArray *)self->_newModels firstObject];
-    v7 = [UARPHeySiriModel uarpPayloadWithHSModel:v6];
+    firstObject = [(NSMutableArray *)self->_newModels firstObject];
+    v7 = [UARPHeySiriModel uarpPayloadWithHSModel:firstObject];
 
     v8 = [[UARPSuperBinaryAssetTLV alloc] initWithType:1619725827 unsignedInt16:0];
     [v7 addMetaDataTLV:v8];
@@ -445,8 +445,8 @@ LABEL_22:
 
   if ([(NSMutableArray *)self->_fallbackModels count])
   {
-    v9 = [(NSMutableArray *)self->_fallbackModels firstObject];
-    v10 = [UARPHeySiriModel uarpPayloadWithHSModel:v9];
+    firstObject2 = [(NSMutableArray *)self->_fallbackModels firstObject];
+    v10 = [UARPHeySiriModel uarpPayloadWithHSModel:firstObject2];
 
     v11 = [[UARPSuperBinaryAssetTLV alloc] initWithType:1619725827 unsignedInt16:1];
     [v10 addMetaDataTLV:v11];

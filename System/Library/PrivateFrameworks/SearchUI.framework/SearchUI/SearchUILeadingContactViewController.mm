@@ -1,32 +1,32 @@
 @interface SearchUILeadingContactViewController
-+ (BOOL)supportsRowModel:(id)a3;
++ (BOOL)supportsRowModel:(id)model;
 - (BOOL)shouldVerticallyCenter;
 - (id)setupView;
 - (void)hide;
-- (void)setUsesCompactWidth:(BOOL)a3;
-- (void)updateWithRowModel:(id)a3;
-- (void)willBeginPreviewInteractionForAvatarView:(id)a3;
+- (void)setUsesCompactWidth:(BOOL)width;
+- (void)updateWithRowModel:(id)model;
+- (void)willBeginPreviewInteractionForAvatarView:(id)view;
 @end
 
 @implementation SearchUILeadingContactViewController
 
-+ (BOOL)supportsRowModel:(id)a3
++ (BOOL)supportsRowModel:(id)model
 {
-  v3 = a3;
-  v4 = [v3 leadingImage];
+  modelCopy = model;
+  leadingImage = [modelCopy leadingImage];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 leadingImage];
-    v6 = [v5 threeDTouchEnabled];
+    leadingImage2 = [modelCopy leadingImage];
+    threeDTouchEnabled = [leadingImage2 threeDTouchEnabled];
   }
 
   else
   {
-    v6 = 0;
+    threeDTouchEnabled = 0;
   }
 
-  return v6;
+  return threeDTouchEnabled;
 }
 
 - (void)hide
@@ -34,8 +34,8 @@
   v4.receiver = self;
   v4.super_class = SearchUILeadingContactViewController;
   [(SearchUILeadingViewController *)&v4 hide];
-  v3 = [(SearchUILeadingContactViewController *)self avatarView];
-  [v3 setThreeDTouchEnabled:0];
+  avatarView = [(SearchUILeadingContactViewController *)self avatarView];
+  [avatarView setThreeDTouchEnabled:0];
 }
 
 - (id)setupView
@@ -52,92 +52,92 @@
   return v6;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = SearchUILeadingContactViewController;
-  [(SearchUILeadingViewController *)&v21 updateWithRowModel:v4];
-  v5 = [(SearchUILeadingContactViewController *)self avatarView];
-  [v5 updateWithRowModel:v4];
+  [(SearchUILeadingViewController *)&v21 updateWithRowModel:modelCopy];
+  avatarView = [(SearchUILeadingContactViewController *)self avatarView];
+  [avatarView updateWithRowModel:modelCopy];
 
-  v6 = [v4 leadingImage];
-  v7 = [v6 appIconBadgeBundleIdentifier];
-  if (!v7)
+  leadingImage = [modelCopy leadingImage];
+  appIconBadgeBundleIdentifier = [leadingImage appIconBadgeBundleIdentifier];
+  if (!appIconBadgeBundleIdentifier)
   {
-    v8 = [v6 badgingImage];
+    badgingImage = [leadingImage badgingImage];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      [v4 useCompactVersionOfUI];
-      v7 = 0;
+      [modelCopy useCompactVersionOfUI];
+      appIconBadgeBundleIdentifier = 0;
       v11 = 1;
       goto LABEL_10;
     }
 
-    v10 = [v6 badgingImage];
-    v7 = [v10 bundleIdentifier];
+    badgingImage2 = [leadingImage badgingImage];
+    appIconBadgeBundleIdentifier = [badgingImage2 bundleIdentifier];
   }
 
   v11 = 1;
-  if (([v4 useCompactVersionOfUI] & 1) == 0 && v7)
+  if (([modelCopy useCompactVersionOfUI] & 1) == 0 && appIconBadgeBundleIdentifier)
   {
-    v12 = [(SearchUILeadingContactViewController *)self appIconBadgeView];
+    appIconBadgeView = [(SearchUILeadingContactViewController *)self appIconBadgeView];
 
-    if (!v12)
+    if (!appIconBadgeView)
     {
       v13 = objc_opt_new();
       [v13 setUserInteractionEnabled:0];
-      v14 = [(SearchUILeadingViewController *)self view];
-      [v14 addArrangedSubview:v13];
+      view = [(SearchUILeadingViewController *)self view];
+      [view addArrangedSubview:v13];
 
-      v15 = [(SearchUILeadingViewController *)self view];
-      [v15 setAlignment:4 forView:v13 inAxis:1];
+      view2 = [(SearchUILeadingViewController *)self view];
+      [view2 setAlignment:4 forView:v13 inAxis:1];
 
-      v16 = [(SearchUILeadingViewController *)self view];
-      [v16 setAlignment:4 forView:v13 inAxis:0];
+      view3 = [(SearchUILeadingViewController *)self view];
+      [view3 setAlignment:4 forView:v13 inAxis:0];
 
-      v17 = [(SearchUILeadingViewController *)self view];
-      [v17 setPositionAdjustmentOffset:v13 forView:{*MEMORY[0x1E69D9258], *MEMORY[0x1E69D9258]}];
+      view4 = [(SearchUILeadingViewController *)self view];
+      [view4 setPositionAdjustmentOffset:v13 forView:{*MEMORY[0x1E69D9258], *MEMORY[0x1E69D9258]}];
 
       [(SearchUILeadingContactViewController *)self setAppIconBadgeView:v13];
     }
 
-    v18 = [SearchUIAppIconImage appIconForBundleIdentifier:v7 variant:1];
-    v19 = [(SearchUILeadingContactViewController *)self appIconBadgeView];
-    [v19 updateWithImage:v18];
+    v18 = [SearchUIAppIconImage appIconForBundleIdentifier:appIconBadgeBundleIdentifier variant:1];
+    appIconBadgeView2 = [(SearchUILeadingContactViewController *)self appIconBadgeView];
+    [appIconBadgeView2 updateWithImage:v18];
 
     v11 = 0;
   }
 
 LABEL_10:
-  v20 = [(SearchUILeadingContactViewController *)self appIconBadgeView];
-  [v20 setHidden:v11];
+  appIconBadgeView3 = [(SearchUILeadingContactViewController *)self appIconBadgeView];
+  [appIconBadgeView3 setHidden:v11];
 }
 
-- (void)setUsesCompactWidth:(BOOL)a3
+- (void)setUsesCompactWidth:(BOOL)width
 {
-  v3 = a3;
-  if ([(SearchUILeadingViewController *)self usesCompactWidth]!= a3)
+  widthCopy = width;
+  if ([(SearchUILeadingViewController *)self usesCompactWidth]!= width)
   {
     v6.receiver = self;
     v6.super_class = SearchUILeadingContactViewController;
-    [(SearchUILeadingViewController *)&v6 setUsesCompactWidth:v3];
-    v5 = [(SearchUILeadingContactViewController *)self avatarView];
-    [v5 setUsesCompactWidth:v3];
+    [(SearchUILeadingViewController *)&v6 setUsesCompactWidth:widthCopy];
+    avatarView = [(SearchUILeadingContactViewController *)self avatarView];
+    [avatarView setUsesCompactWidth:widthCopy];
   }
 }
 
-- (void)willBeginPreviewInteractionForAvatarView:(id)a3
+- (void)willBeginPreviewInteractionForAvatarView:(id)view
 {
-  v11 = [(SearchUILeadingViewController *)self feedbackDelegate];
-  v4 = [(SearchUILeadingViewController *)self rowModel];
-  v5 = [v4 identifyingResult];
-  if (v5)
+  feedbackDelegate = [(SearchUILeadingViewController *)self feedbackDelegate];
+  rowModel = [(SearchUILeadingViewController *)self rowModel];
+  identifyingResult = [rowModel identifyingResult];
+  if (identifyingResult)
   {
-    v6 = v5;
+    v6 = identifyingResult;
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -146,11 +146,11 @@ LABEL_10:
     }
 
     v8 = objc_alloc(MEMORY[0x1E69CA368]);
-    v9 = [(SearchUILeadingViewController *)self rowModel];
-    v10 = [v9 identifyingResult];
-    v4 = [v8 initWithResult:v10 triggerEvent:5 destination:1 actionTarget:0];
+    rowModel2 = [(SearchUILeadingViewController *)self rowModel];
+    identifyingResult2 = [rowModel2 identifyingResult];
+    rowModel = [v8 initWithResult:identifyingResult2 triggerEvent:5 destination:1 actionTarget:0];
 
-    [v11 didEngageResult:v4];
+    [feedbackDelegate didEngageResult:rowModel];
   }
 
 LABEL_5:
@@ -158,10 +158,10 @@ LABEL_5:
 
 - (BOOL)shouldVerticallyCenter
 {
-  v2 = [(SearchUILeadingViewController *)self rowModel];
-  v3 = [v2 useCompactVersionOfUI];
+  rowModel = [(SearchUILeadingViewController *)self rowModel];
+  useCompactVersionOfUI = [rowModel useCompactVersionOfUI];
 
-  return v3;
+  return useCompactVersionOfUI;
 }
 
 @end

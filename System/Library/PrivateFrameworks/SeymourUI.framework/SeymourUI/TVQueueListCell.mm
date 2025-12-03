@@ -18,19 +18,19 @@
 
 - (void)handleGrab
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B8E1CAC();
 }
 
 - (void)handleDelete
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B8E1F0C();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B8E2154();
 }
 

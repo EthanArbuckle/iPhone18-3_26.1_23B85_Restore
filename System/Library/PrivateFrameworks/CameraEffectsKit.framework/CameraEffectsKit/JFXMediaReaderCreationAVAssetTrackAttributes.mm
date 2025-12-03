@@ -1,22 +1,22 @@
 @interface JFXMediaReaderCreationAVAssetTrackAttributes
-- (JFXMediaReaderCreationAVAssetTrackAttributes)initWithAssetTrack:(id)a3;
+- (JFXMediaReaderCreationAVAssetTrackAttributes)initWithAssetTrack:(id)track;
 @end
 
 @implementation JFXMediaReaderCreationAVAssetTrackAttributes
 
-- (JFXMediaReaderCreationAVAssetTrackAttributes)initWithAssetTrack:(id)a3
+- (JFXMediaReaderCreationAVAssetTrackAttributes)initWithAssetTrack:(id)track
 {
-  v5 = a3;
+  trackCopy = track;
   v10.receiver = self;
   v10.super_class = JFXMediaReaderCreationAVAssetTrackAttributes;
   v6 = [(JFXMediaReaderCreationAVAssetTrackAttributes *)&v10 init];
   if (v6)
   {
-    v7 = [v5 asset];
+    asset = [trackCopy asset];
     asset = v6->_asset;
-    v6->_asset = v7;
+    v6->_asset = asset;
 
-    objc_storeStrong(&v6->_assetTrack, a3);
+    objc_storeStrong(&v6->_assetTrack, track);
   }
 
   return v6;

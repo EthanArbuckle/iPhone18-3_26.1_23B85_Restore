@@ -1,17 +1,17 @@
 @interface _HandlerBox
 - (_TtC7MercuryP33_2B1830E49151A2D290BADAC81D16B73411_HandlerBox)init;
-- (void)invoke:(BOOL)a3 :(void *)a4;
+- (void)invoke:(BOOL)invoke :(void *)a4;
 @end
 
 @implementation _HandlerBox
 
-- (void)invoke:(BOOL)a3 :(void *)a4
+- (void)invoke:(BOOL)invoke :(void *)a4
 {
-  v4 = a3;
+  invokeCopy = invoke;
   v5 = *(&self->super.isa + OBJC_IVAR____TtC7MercuryP33_2B1830E49151A2D290BADAC81D16B73411_HandlerBox_handler);
-  v6 = self;
+  selfCopy = self;
 
-  v5(v4);
+  v5(invokeCopy);
 }
 
 - (_TtC7MercuryP33_2B1830E49151A2D290BADAC81D16B73411_HandlerBox)init

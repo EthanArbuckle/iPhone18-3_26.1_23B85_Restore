@@ -1,6 +1,6 @@
 @interface Logging
 + (NSString)entityName;
-- (Logging)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (Logging)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation Logging
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (Logging)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (Logging)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for Logging();
-  return [(Logging *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(Logging *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface IdsDeviceState
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsDeviceState)init;
 - (id)data;
 - (id)description;
@@ -25,16 +25,16 @@
 - (id)data
 {
   v3 = +[NSMutableData data];
-  v4 = [(IdsDeviceState *)self deviceIdHash];
-  v5 = [(TLSMessageClass *)self encodeHashValue:v4 buffer:v3];
+  deviceIdHash = [(IdsDeviceState *)self deviceIdHash];
+  v5 = [(TLSMessageClass *)self encodeHashValue:deviceIdHash buffer:v3];
 
   if (!v5)
   {
     goto LABEL_8;
   }
 
-  v6 = [(IdsDeviceState *)self clientDataHash];
-  v7 = [(TLSMessageClass *)self encodeHashValue:v6 buffer:v3];
+  clientDataHash = [(IdsDeviceState *)self clientDataHash];
+  v7 = [(TLSMessageClass *)self encodeHashValue:clientDataHash buffer:v3];
 
   if (!v7)
   {
@@ -55,59 +55,59 @@ LABEL_8:
   return v10;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(objc_opt_class());
   v33 = 0;
-  v10 = [v9 parseHashValue:v6 end:&v8[v7] result:&v33];
+  v10 = [v9 parseHashValue:bytes end:&v8[bytes2] result:&v33];
   v11 = v33;
   if (v10)
   {
     [v9 setDeviceIdHash:v11];
     v32 = 0;
-    v12 = [v9 parseHashValue:v10 end:&v8[v7] result:&v32];
+    v12 = [v9 parseHashValue:v10 end:&v8[bytes2] result:&v32];
     v13 = v32;
     if (v12)
     {
       [v9 setClientDataHash:v13];
       v31 = 0;
-      v14 = [v9 parseUint64:v12 end:&v8[v7] result:&v31];
+      v14 = [v9 parseUint64:v12 end:&v8[bytes2] result:&v31];
       if (v14)
       {
         v15 = v14;
         [v9 setAppVersion:v31];
         v30 = 0;
-        v16 = [v9 parseUint64:v15 end:&v8[v7] result:&v30];
+        v16 = [v9 parseUint64:v15 end:&v8[bytes2] result:&v30];
         if (v16)
         {
           v17 = v16;
           [v9 setAddedMs:v30];
           v29 = 0;
-          v18 = [v9 parseUint64:v17 end:&v8[v7] result:&v29];
+          v18 = [v9 parseUint64:v17 end:&v8[bytes2] result:&v29];
           if (v18)
           {
             v19 = v18;
             [v9 setExpiryMs:v29];
             v28 = 0;
-            v20 = [v9 parseExtensions:v19 end:&v8[v7] result:&v28];
+            v20 = [v9 parseExtensions:v19 end:&v8[bytes2] result:&v28];
             v21 = v28;
             if (v20)
             {
               v22 = [NSMutableArray arrayWithArray:v21];
               [v9 setExtensions:v22];
 
-              [v9 setParsedLength:{v20 - objc_msgSend(v5, "bytes")}];
+              [v9 setParsedLength:{v20 - objc_msgSend(dataCopy, "bytes")}];
               v23 = v9;
             }
 
-            else if (a4)
+            else if (error)
             {
               [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-359 description:@"failed to parse extensions from SingleDataRecord"];
-              *a4 = v23 = 0;
+              *error = v23 = 0;
             }
 
             else
@@ -118,7 +118,7 @@ LABEL_8:
             goto LABEL_25;
           }
 
-          if (a4)
+          if (error)
           {
             v24 = kTransparencyErrorDecode;
             v25 = @"failed to parse expiry timestamp from DeviceState";
@@ -131,7 +131,7 @@ LABEL_20:
           goto LABEL_25;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_20;
         }
@@ -143,7 +143,7 @@ LABEL_20:
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_20;
         }
@@ -156,7 +156,7 @@ LABEL_20:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_20;
       }
@@ -168,16 +168,16 @@ LABEL_20:
 
 LABEL_19:
     [TransparencyError errorWithDomain:v24 code:v26 description:v25];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-354 description:@"failed to parse device ID from DeviceState"];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -192,18 +192,18 @@ LABEL_26:
 
 - (id)description
 {
-  v3 = [(NSData *)self->_deviceIdHash kt_hexString];
-  v4 = [(NSData *)self->_clientDataHash kt_hexString];
+  kt_hexString = [(NSData *)self->_deviceIdHash kt_hexString];
+  kt_hexString2 = [(NSData *)self->_clientDataHash kt_hexString];
   addedMs = self->_addedMs;
-  v6 = [NSString stringWithFormat:@"deviceIdHash:%@ clientDataHash:%@; applicationVersion:%llu; addedMs:%llu; expiryMs:%llu", v3, v4, self->_appVersion, addedMs, self->_expiryMs];;
+  v6 = [NSString stringWithFormat:@"deviceIdHash:%@ clientDataHash:%@; applicationVersion:%llu; addedMs:%llu; expiryMs:%llu", kt_hexString, kt_hexString2, self->_appVersion, addedMs, self->_expiryMs];;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -213,11 +213,11 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsDeviceState *)self data];
-      v7 = [(IdsDeviceState *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsDeviceState *)self data];
+      data2 = [(IdsDeviceState *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else

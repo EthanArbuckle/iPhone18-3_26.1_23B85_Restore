@@ -1,55 +1,55 @@
 @interface EPDevice
-+ (id)newClassicDeviceWithInfo:(id)a3;
++ (id)newClassicDeviceWithInfo:(id)info;
 + (id)newDeviceForClassicPairing;
-+ (id)newDeviceWithInfo:(id)a3;
-+ (id)newDeviceWithInfo:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5;
-+ (id)stringFromCBPairingType:(int64_t)a3;
++ (id)newDeviceWithInfo:(id)info;
++ (id)newDeviceWithInfo:(id)info withAdvertisementData:(id)data withRSSI:(id)i;
++ (id)stringFromCBPairingType:(int64_t)type;
 + (int64_t)minRSSIInteger;
 + (int64_t)proxRSSIInteger;
 - (BOOL)hasPairer;
 - (BOOL)isDisplayabilityExpired;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
 - (BOOL)isPeripheral;
 - (BOOL)isProximateExpired;
-- (BOOL)updateWithPeer:(id)a3;
-- (EPDevice)initWithInfo:(id)a3;
-- (EPDevice)initWithInfo:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5;
+- (BOOL)updateWithPeer:(id)peer;
+- (EPDevice)initWithInfo:(id)info;
+- (EPDevice)initWithInfo:(id)info withAdvertisementData:(id)data withRSSI:(id)i;
 - (EPPairerList)pairers;
 - (NSString)description;
 - (id)initBase;
-- (id)initClassicDeviceWithInfo:(id)a3;
-- (id)newClassicBTPairerWithDelegate:(id)a3;
-- (id)newObserverWithDelegate:(id)a3;
-- (id)newPairerWithDelegate:(id)a3 withParameters:(id)a4;
-- (id)stringFromPairingPhase:(unint64_t)a3;
+- (id)initClassicDeviceWithInfo:(id)info;
+- (id)newClassicBTPairerWithDelegate:(id)delegate;
+- (id)newObserverWithDelegate:(id)delegate;
+- (id)newPairerWithDelegate:(id)delegate withParameters:(id)parameters;
+- (id)stringFromPairingPhase:(unint64_t)phase;
 - (unint64_t)hash;
 - (void)_reset;
-- (void)_resetPairingTimeout:(double)a3;
-- (void)cancelPairingWithError:(id)a3;
+- (void)_resetPairingTimeout:(double)timeout;
+- (void)cancelPairingWithError:(id)error;
 - (void)dealloc;
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4;
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5;
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6;
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing;
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error;
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey;
 - (void)reset;
-- (void)setEnableOOBPairing:(BOOL)a3;
-- (void)updateAndEnterState:(id)a3;
-- (void)updateWithPeripheral:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5;
-- (void)writeData:(id)a3 begin:(id)a4 completion:(id)a5;
+- (void)setEnableOOBPairing:(BOOL)pairing;
+- (void)updateAndEnterState:(id)state;
+- (void)updateWithPeripheral:(id)peripheral withAdvertisementData:(id)data withRSSI:(id)i;
+- (void)writeData:(id)data begin:(id)begin completion:(id)completion;
 @end
 
 @implementation EPDevice
 
-+ (id)stringFromCBPairingType:(int64_t)a3
++ (id)stringFromCBPairingType:(int64_t)type
 {
-  if (a3 > 5)
+  if (type > 5)
   {
     return @"CBPairingTypeReserved";
   }
 
   else
   {
-    return *(&off_100177B40 + a3);
+    return *(&off_100177B40 + type);
   }
 }
 
@@ -60,12 +60,12 @@
   return [(EPDevice *)&v3 init];
 }
 
-+ (id)newDeviceWithInfo:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5
++ (id)newDeviceWithInfo:(id)info withAdvertisementData:(id)data withRSSI:(id)i
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithInfo:v10 withAdvertisementData:v9 withRSSI:v8];
+  iCopy = i;
+  dataCopy = data;
+  infoCopy = info;
+  v11 = [[self alloc] initWithInfo:infoCopy withAdvertisementData:dataCopy withRSSI:iCopy];
 
   return v11;
 }
@@ -85,69 +85,69 @@
   return pairers;
 }
 
-- (EPDevice)initWithInfo:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5
+- (EPDevice)initWithInfo:(id)info withAdvertisementData:(id)data withRSSI:(id)i
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(EPDevice *)self initBase];
-  v13 = v12;
-  if (v12)
+  infoCopy = info;
+  dataCopy = data;
+  iCopy = i;
+  initBase = [(EPDevice *)self initBase];
+  v13 = initBase;
+  if (initBase)
   {
-    objc_storeStrong(v12 + 23, a3);
-    v14 = [v9 peer];
-    [(EPDevice *)v13 updateWithPeripheral:v14 withAdvertisementData:v10 withRSSI:v11];
+    objc_storeStrong(initBase + 23, info);
+    peer = [infoCopy peer];
+    [(EPDevice *)v13 updateWithPeripheral:peer withAdvertisementData:dataCopy withRSSI:iCopy];
   }
 
   return v13;
 }
 
-+ (id)newDeviceWithInfo:(id)a3
++ (id)newDeviceWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithInfo:v4];
+  infoCopy = info;
+  v5 = [[self alloc] initWithInfo:infoCopy];
 
   return v5;
 }
 
-+ (id)newClassicDeviceWithInfo:(id)a3
++ (id)newClassicDeviceWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initClassicDeviceWithInfo:v4];
+  infoCopy = info;
+  v5 = [[self alloc] initClassicDeviceWithInfo:infoCopy];
 
   return v5;
 }
 
 + (id)newDeviceForClassicPairing
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
 
   return [v2 initBase];
 }
 
-- (EPDevice)initWithInfo:(id)a3
+- (EPDevice)initWithInfo:(id)info
 {
-  v5 = a3;
-  v6 = [(EPDevice *)self initBase];
-  v7 = v6;
-  if (v6)
+  infoCopy = info;
+  initBase = [(EPDevice *)self initBase];
+  v7 = initBase;
+  if (initBase)
   {
-    objc_storeStrong(v6 + 23, a3);
-    v8 = [v5 peer];
-    [(EPDevice *)v7 updateWithPeer:v8];
+    objc_storeStrong(initBase + 23, info);
+    peer = [infoCopy peer];
+    [(EPDevice *)v7 updateWithPeer:peer];
   }
 
   return v7;
 }
 
-- (id)initClassicDeviceWithInfo:(id)a3
+- (id)initClassicDeviceWithInfo:(id)info
 {
-  v5 = a3;
-  v6 = [(EPDevice *)self initBase];
-  v7 = v6;
-  if (v6)
+  infoCopy = info;
+  initBase = [(EPDevice *)self initBase];
+  v7 = initBase;
+  if (initBase)
   {
-    objc_storeStrong(v6 + 23, a3);
+    objc_storeStrong(initBase + 23, info);
   }
 
   return v7;
@@ -173,26 +173,26 @@
   return qword_1001B2CB0;
 }
 
-- (void)updateWithPeripheral:(id)a3 withAdvertisementData:(id)a4 withRSSI:(id)a5
+- (void)updateWithPeripheral:(id)peripheral withAdvertisementData:(id)data withRSSI:(id)i
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = [a4 objectForKeyedSubscript:CBAdvertisementDataLocalNameKey];
-  if (!v9)
+  peripheralCopy = peripheral;
+  iCopy = i;
+  name = [data objectForKeyedSubscript:CBAdvertisementDataLocalNameKey];
+  if (!name)
   {
-    v9 = [v10 name];
+    name = [peripheralCopy name];
   }
 
-  if ([objc_opt_class() isInRangeWithRSSI:v8])
+  if ([objc_opt_class() isInRangeWithRSSI:iCopy])
   {
-    objc_storeStrong(&self->_name, v9);
-    objc_storeStrong(&self->_RSSI, a5);
+    objc_storeStrong(&self->_name, name);
+    objc_storeStrong(&self->_RSSI, i);
     self->_lastDiscoveredDate = CFAbsoluteTimeGetCurrent();
     if ([(EPDevice *)self displayable])
     {
       self->_lastDisplayableDate = self->_lastDiscoveredDate;
-      objc_storeStrong(&self->_displayableName, v9);
-      objc_storeStrong(&self->_displayableRSSI, a5);
+      objc_storeStrong(&self->_displayableName, name);
+      objc_storeStrong(&self->_displayableRSSI, i);
     }
 
     if ([(EPDevice *)self proximate])
@@ -202,15 +202,15 @@
   }
 }
 
-- (BOOL)updateWithPeer:(id)a3
+- (BOOL)updateWithPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 name];
+    name = [peerCopy name];
     name = self->_name;
-    self->_name = v5;
+    self->_name = name;
   }
 
   self->_lastPairingRequestDate = CFAbsoluteTimeGetCurrent();
@@ -244,7 +244,7 @@
       *buf = 138412546;
       v10 = v7;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "dealloc %@[%p]", buf, 0x16u);
     }
   }
@@ -254,11 +254,11 @@
   [(EPDevice *)&v8 dealloc];
 }
 
-- (void)setEnableOOBPairing:(BOOL)a3
+- (void)setEnableOOBPairing:(BOOL)pairing
 {
-  if (self->_enableOOBPairing != a3)
+  if (self->_enableOOBPairing != pairing)
   {
-    self->_enableOOBPairing = a3;
+    self->_enableOOBPairing = pairing;
     self->_enableOOBPairingIsSet = 0;
     [(EPDevice *)self update];
   }
@@ -266,7 +266,7 @@
 
 - (BOOL)isPeripheral
 {
-  v2 = [(EPDeviceInfo *)self->_info peer];
+  peer = [(EPDeviceInfo *)self->_info peer];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -275,9 +275,9 @@
 
 - (BOOL)isExpired
 {
-  v3 = [(EPDevice *)self peer];
+  peer = [(EPDevice *)self peer];
 
-  if (v3)
+  if (peer)
   {
     if ([(EPDevice *)self isPairing])
     {
@@ -285,8 +285,8 @@
     }
 
     v5 = +[EPPeripheralConnectorManagerFactory sharedConnectorManagerFactory];
-    v6 = [(EPDevice *)self uuid];
-    v7 = [v5 isConnected:v6];
+    uuid = [(EPDevice *)self uuid];
+    v7 = [v5 isConnected:uuid];
 
     if (v7)
     {
@@ -532,20 +532,20 @@ LABEL_5:
   return 0;
 }
 
-- (id)newObserverWithDelegate:(id)a3
+- (id)newObserverWithDelegate:(id)delegate
 {
   info = self->_info;
-  v4 = a3;
-  v5 = [(EPDeviceInfo *)info peripheralFactory];
-  v6 = [v5 newObserverWithDelegate:v4];
+  delegateCopy = delegate;
+  peripheralFactory = [(EPDeviceInfo *)info peripheralFactory];
+  v6 = [peripheralFactory newObserverWithDelegate:delegateCopy];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -554,15 +554,15 @@ LABEL_5:
   {
     v12.receiver = self;
     v12.super_class = EPDevice;
-    if ([(EPDevice *)&v12 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(EPDevice *)&v12 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       info = self->_info;
-      v6 = v4;
-      v7 = [(EPDeviceInfo *)info uuid];
+      v6 = equalCopy;
+      uuid = [(EPDeviceInfo *)info uuid];
       v8 = v6->_info;
 
-      v9 = [(EPDeviceInfo *)v8 uuid];
-      v10 = [v7 isEqual:v9];
+      uuid2 = [(EPDeviceInfo *)v8 uuid];
+      v10 = [uuid isEqual:uuid2];
     }
 
     else
@@ -576,8 +576,8 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v2 = [(EPDeviceInfo *)self->_info uuid];
-  v3 = [v2 hash];
+  uuid = [(EPDeviceInfo *)self->_info uuid];
+  v3 = [uuid hash];
 
   return v3 + 31;
 }
@@ -586,10 +586,10 @@ LABEL_5:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(EPDevice *)self uuid];
-  v6 = [v5 UUIDString];
-  v7 = [(EPDevice *)self name];
-  v8 = [NSString stringWithFormat:@"%@[%p] %@ name=%@", v4, self, v6, v7];
+  uuid = [(EPDevice *)self uuid];
+  uUIDString = [uuid UUIDString];
+  name = [(EPDevice *)self name];
+  v8 = [NSString stringWithFormat:@"%@[%p] %@ name=%@", v4, self, uUIDString, name];
 
   return v8;
 }
@@ -635,7 +635,7 @@ LABEL_5:
     self->_pairingTimer = 0;
   }
 
-  v5 = [(EPDevice *)self isPairing];
+  isPairing = [(EPDevice *)self isPairing];
   v6 = self->_pairingError;
   pairingError = self->_pairingError;
   self->_pairingError = 0;
@@ -670,14 +670,14 @@ LABEL_5:
   me = self->me;
   self->me = 0;
 
-  if (v5)
+  if (isPairing)
   {
-    v13 = [(EPDevice *)self pairers];
-    [v13 pairer:0 completedWithError:v6];
+    pairers = [(EPDevice *)self pairers];
+    [pairers pairer:0 completedWithError:v6];
 
-    v14 = [(EPDevice *)self delegate];
-    v15 = [(EPDeviceInfo *)self->_info peer];
-    [v14 device:self peerDidInvalidate:v15];
+    delegate = [(EPDevice *)self delegate];
+    peer = [(EPDeviceInfo *)self->_info peer];
+    [delegate device:self peerDidInvalidate:peer];
 
     v16 = +[EPFactory queue];
     v19[0] = _NSConcreteStackBlock;
@@ -685,19 +685,19 @@ LABEL_5:
     v19[2] = sub_10005BEE4;
     v19[3] = &unk_100175598;
     v20 = v6;
-    v21 = self;
+    selfCopy = self;
     dispatch_async(v16, v19);
   }
 
   else
   {
-    v17 = [(EPDevice *)self delegate];
-    v18 = [(EPDeviceInfo *)self->_info peer];
-    [v17 device:self peerDidInvalidate:v18];
+    delegate2 = [(EPDevice *)self delegate];
+    peer2 = [(EPDeviceInfo *)self->_info peer];
+    [delegate2 device:self peerDidInvalidate:peer2];
   }
 }
 
-- (void)_resetPairingTimeout:(double)a3
+- (void)_resetPairingTimeout:(double)timeout
 {
   pairingTimer = self->_pairingTimer;
   if (pairingTimer)
@@ -708,7 +708,7 @@ LABEL_5:
   v6 = +[EPFactory queue];
   v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
 
-  v8 = dispatch_time(0, (a3 * 1000000000.0));
+  v8 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
@@ -722,16 +722,16 @@ LABEL_5:
   v10 = v7;
 }
 
-- (id)stringFromPairingPhase:(unint64_t)a3
+- (id)stringFromPairingPhase:(unint64_t)phase
 {
-  if (a3 - 1 > 2)
+  if (phase - 1 > 2)
   {
     return @"EPPairingPhaseIdle";
   }
 
   else
   {
-    return *(&off_100177B70 + a3 - 1);
+    return *(&off_100177B70 + phase - 1);
   }
 }
 
@@ -746,14 +746,14 @@ LABEL_5:
   return pairers;
 }
 
-- (void)cancelPairingWithError:(id)a3
+- (void)cancelPairingWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   if (!self->_endingPairing && [(EPDevice *)self pairingPhase])
   {
     v6 = sub_1000A98C0();
     v7 = v6;
-    if (v5)
+    if (errorCopy)
     {
       v8 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
 
@@ -765,7 +765,7 @@ LABEL_5:
       v9 = sub_1000A98C0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        sub_100100780(v5, v9);
+        sub_100100780(errorCopy, v9);
       }
     }
 
@@ -787,12 +787,12 @@ LABEL_5:
     }
 
 LABEL_11:
-    objc_storeStrong(&self->_pairingError, a3);
+    objc_storeStrong(&self->_pairingError, error);
     self->_endingPairing = 1;
-    if (v5)
+    if (errorCopy)
     {
-      v11 = +[NRDataCollector sharedInstance];
-      v12 = [v11 incrementCounterForKey:@"btPairingRetryCount"];
+      peer = +[NRDataCollector sharedInstance];
+      v12 = [peer incrementCounterForKey:@"btPairingRetryCount"];
       pairingConnector = self->_pairingConnector;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -812,8 +812,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v11 = [(EPDevice *)self peer];
-      [v11 tag:@"IsAppleWatch"];
+      peer = [(EPDevice *)self peer];
+      [peer tag:@"IsAppleWatch"];
     }
 
     goto LABEL_18;
@@ -822,10 +822,10 @@ LABEL_18:
 LABEL_19:
 }
 
-- (id)newPairerWithDelegate:(id)a3 withParameters:(id)a4
+- (id)newPairerWithDelegate:(id)delegate withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  parametersCopy = parameters;
   if ([(EPDevice *)self hasPairer])
   {
     v8 = sub_1000A98C0();
@@ -846,8 +846,8 @@ LABEL_19:
 
   else
   {
-    v12 = [(EPDevice *)self pairers];
-    v11 = [v12 newPairerWithDelegate:v6 withParameters:v7];
+    pairers = [(EPDevice *)self pairers];
+    v11 = [pairers newPairerWithDelegate:delegateCopy withParameters:parametersCopy];
 
     if (![(EPDevice *)self isPairing])
     {
@@ -864,9 +864,9 @@ LABEL_19:
   return v11;
 }
 
-- (id)newClassicBTPairerWithDelegate:(id)a3
+- (id)newClassicBTPairerWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if ([(EPDevice *)self hasPairer])
   {
     v5 = sub_1000A98C0();
@@ -890,15 +890,15 @@ LABEL_19:
 
   else
   {
-    v9 = [(EPDevice *)self pairers];
-    v10 = [v9 newPairerWithDelegate:v4 withParameters:0];
+    pairers = [(EPDevice *)self pairers];
+    v10 = [pairers newPairerWithDelegate:delegateCopy withParameters:0];
 
     v11 = +[EPFactory queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10005C6A8;
     block[3] = &unk_100175598;
-    v15 = v4;
+    v15 = delegateCopy;
     v8 = v10;
     v16 = v8;
     dispatch_async(v11, block);
@@ -910,28 +910,28 @@ LABEL_9:
   return v8;
 }
 
-- (void)pairingAgent:(id)a3 peerDidRequestPairing:(id)a4 type:(int64_t)a5 passkey:(id)a6
+- (void)pairingAgent:(id)agent peerDidRequestPairing:(id)pairing type:(int64_t)type passkey:(id)passkey
 {
-  v13 = a6;
-  v10 = [a4 identifier];
-  v11 = [(EPDeviceInfo *)self->_info uuid];
-  v12 = [v10 isEqual:v11];
+  passkeyCopy = passkey;
+  identifier = [pairing identifier];
+  uuid = [(EPDeviceInfo *)self->_info uuid];
+  v12 = [identifier isEqual:uuid];
 
   if (v12)
   {
     self->_lastPairingRequestDate = CFAbsoluteTimeGetCurrent();
     self->_pendingPairingRequest = 1;
-    self->_lastPairingRequestType = a5;
-    objc_storeStrong(&self->_lastPairingRequestPasskey, a6);
+    self->_lastPairingRequestType = type;
+    objc_storeStrong(&self->_lastPairingRequestPasskey, passkey);
     [(EPDevice *)self update];
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidCompletePairing:(id)a4
+- (void)pairingAgent:(id)agent peerDidCompletePairing:(id)pairing
 {
-  v5 = [a4 identifier];
-  v6 = [(EPDeviceInfo *)self->_info uuid];
-  v7 = [v5 isEqual:v6];
+  identifier = [pairing identifier];
+  uuid = [(EPDeviceInfo *)self->_info uuid];
+  v7 = [identifier isEqual:uuid];
 
   if (v7)
   {
@@ -940,49 +940,49 @@ LABEL_9:
   }
 }
 
-- (void)pairingAgent:(id)a3 peerDidFailToCompletePairing:(id)a4 error:(id)a5
+- (void)pairingAgent:(id)agent peerDidFailToCompletePairing:(id)pairing error:(id)error
 {
-  v10 = a5;
-  v7 = [a4 identifier];
-  v8 = [(EPDeviceInfo *)self->_info uuid];
-  v9 = [v7 isEqual:v8];
+  errorCopy = error;
+  identifier = [pairing identifier];
+  uuid = [(EPDeviceInfo *)self->_info uuid];
+  v9 = [identifier isEqual:uuid];
 
   if (v9)
   {
-    [(EPDevice *)self cancelPairingWithError:v10];
+    [(EPDevice *)self cancelPairingWithError:errorCopy];
   }
 }
 
-- (void)writeData:(id)a3 begin:(id)a4 completion:(id)a5
+- (void)writeData:(id)data begin:(id)begin completion:(id)completion
 {
   info = self->_info;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(EPDeviceInfo *)info peripheralFactory];
-  v16 = [v11 newObserverWithDelegate:0];
+  completionCopy = completion;
+  beginCopy = begin;
+  dataCopy = data;
+  peripheralFactory = [(EPDeviceInfo *)info peripheralFactory];
+  v16 = [peripheralFactory newObserverWithDelegate:0];
 
   v12 = [EPCharacteristicWriter alloc];
   v13 = [CBUUID UUIDWithString:@"9AA4730F-B25C-4CC3-B821-C931559FC196"];
   v14 = [CBUUID UUIDWithString:@"5F6C6A23-8AC8-400E-810B-017134943460"];
   v15 = [(EPCharacteristicWriter *)v12 initWithPeripheral:v16 serviceUUID:v13 characteristicUUID:v14];
 
-  [(EPCharacteristicWriter *)v15 writeData:v10 begin:v9 completion:v8];
+  [(EPCharacteristicWriter *)v15 writeData:dataCopy begin:beginCopy completion:completionCopy];
 }
 
-- (void)updateAndEnterState:(id)a3
+- (void)updateAndEnterState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(EPDeviceInfo *)self->_info hasClassicDevice])
   {
     goto LABEL_85;
   }
 
-  if (v4)
+  if (stateCopy)
   {
-    v5 = [v4 integerValue];
+    integerValue = [stateCopy integerValue];
 
-    if (v5 != [(EPDevice *)self pairingPhase])
+    if (integerValue != [(EPDevice *)self pairingPhase])
     {
       v6 = sub_1000A98C0();
       v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -992,12 +992,12 @@ LABEL_9:
         v8 = sub_1000A98C0();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(EPDevice *)self uuid];
-          v10 = [v9 UUIDString];
+          uuid = [(EPDevice *)self uuid];
+          uUIDString = [uuid UUIDString];
           v11 = [(EPDevice *)self stringFromPairingPhase:[(EPDevice *)self pairingPhase]];
-          v12 = [(EPDevice *)self stringFromPairingPhase:v5];
+          v12 = [(EPDevice *)self stringFromPairingPhase:integerValue];
           *buf = 138412802;
-          v94 = v10;
+          v94 = uUIDString;
           v95 = 2112;
           v96 = v11;
           v97 = 2112;
@@ -1008,11 +1008,11 @@ LABEL_9:
 
       if ([(EPDevice *)self pairingPhase])
       {
-        if (v5 != 3)
+        if (integerValue != 3)
         {
-          if (v5 != 2)
+          if (integerValue != 2)
           {
-            if (!v5)
+            if (!integerValue)
             {
               pairingTimer = self->_pairingTimer;
               if (pairingTimer)
@@ -1026,7 +1026,7 @@ LABEL_9:
             }
 
 LABEL_46:
-            [(EPDevice *)self setPairingPhase:v5];
+            [(EPDevice *)self setPairingPhase:integerValue];
             goto LABEL_47;
           }
 
@@ -1058,7 +1058,7 @@ LABEL_46:
         }
 
         [(EPDevice *)self _resetPairingTimeout:v18];
-        if (!v5)
+        if (!integerValue)
         {
 LABEL_40:
           self->_endingPairing = 1;
@@ -1066,9 +1066,9 @@ LABEL_40:
           goto LABEL_46;
         }
 
-        if (v5 != 3)
+        if (integerValue != 3)
         {
-          if (v5 != 2)
+          if (integerValue != 2)
           {
             goto LABEL_46;
           }
@@ -1097,20 +1097,20 @@ LABEL_23:
                     v22 = @"NO";
                   }
 
-                  v23 = [(EPDevice *)self uuid];
-                  v24 = [v23 UUIDString];
+                  uuid2 = [(EPDevice *)self uuid];
+                  uUIDString2 = [uuid2 UUIDString];
                   *buf = 138412546;
                   v94 = v22;
                   v95 = 2112;
-                  v96 = v24;
+                  v96 = uUIDString2;
                   _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Calling CoreBluetooth CBPairingAgent setOOBPairingEnabled:%@ forPeer:%@", buf, 0x16u);
                 }
               }
 
-              v25 = [(EPPairingAgent *)self->_agent agent];
+              agent = [(EPPairingAgent *)self->_agent agent];
               enableOOBPairing = self->_enableOOBPairing;
-              v27 = [(EPDevice *)self peer];
-              [v25 setOOBPairingEnabled:enableOOBPairing forPeer:v27];
+              peer = [(EPDevice *)self peer];
+              [agent setOOBPairingEnabled:enableOOBPairing forPeer:peer];
             }
 
             v28 = [(EPDeviceInfo *)self->_info newConnectorWithDelegate:self];
@@ -1134,8 +1134,8 @@ LABEL_23:
             goto LABEL_46;
           }
 
-          v39 = sub_1000A98C0();
-          if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+          pairers = sub_1000A98C0();
+          if (os_log_type_enabled(pairers, OS_LOG_TYPE_DEFAULT))
           {
             v44 = self->_pairingConnector;
             v45 = objc_opt_class();
@@ -1145,14 +1145,14 @@ LABEL_23:
             v94 = v46;
             v95 = 2048;
             v96 = v47;
-            _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Grabbed pairing connector %@[%p]", buf, 0x16u);
+            _os_log_impl(&_mh_execute_header, pairers, OS_LOG_TYPE_DEFAULT, "Grabbed pairing connector %@[%p]", buf, 0x16u);
           }
 
           goto LABEL_45;
         }
       }
 
-      v30 = [(EPDeviceInfo *)self->_info peer];
+      peer2 = [(EPDeviceInfo *)self->_info peer];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1169,20 +1169,20 @@ LABEL_23:
         v34 = sub_1000A98C0();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
-          v35 = [(EPDevice *)self uuid];
-          v36 = [v35 UUIDString];
+          uuid3 = [(EPDevice *)self uuid];
+          uUIDString3 = [uuid3 UUIDString];
           *buf = 138412290;
-          v94 = v36;
+          v94 = uUIDString3;
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Calling CoreBluetooth CBPairingAgent pairPeer: on %@", buf, 0xCu);
         }
       }
 
-      v37 = [(EPPairingAgent *)self->_agent agent];
-      v38 = [(EPDeviceInfo *)self->_info peer];
-      [v37 pairPeer:v38];
+      agent2 = [(EPPairingAgent *)self->_agent agent];
+      peer3 = [(EPDeviceInfo *)self->_info peer];
+      [agent2 pairPeer:peer3];
 
-      v39 = [(EPDevice *)self pairers];
-      [v39 pairerDidBeginToPair:0];
+      pairers = [(EPDevice *)self pairers];
+      [pairers pairerDidBeginToPair:0];
 LABEL_45:
 
       goto LABEL_46;
@@ -1192,9 +1192,9 @@ LABEL_45:
 LABEL_47:
   if ([(EPDevice *)self isPairing]|| [(EPDevice *)self hasPairer])
   {
-    v48 = self;
+    selfCopy = self;
     me = self->me;
-    self->me = v48;
+    self->me = selfCopy;
   }
 
   else
@@ -1222,8 +1222,8 @@ LABEL_47:
       {
         if (self->_pairingPhase != 2)
         {
-          v52 = [(EPDevice *)self pairers];
-          v53 = [v52 pairer:0 newEndpointWithDelegate:self];
+          pairers2 = [(EPDevice *)self pairers];
+          v53 = [pairers2 pairer:0 newEndpointWithDelegate:self];
           v54 = self->_pipe;
           self->_pipe = v53;
 
@@ -1260,8 +1260,8 @@ LABEL_47:
     {
       self->_enableOOBPairingIsSet = 0;
       v61 = +[EPFactory sharedFactory];
-      v62 = [v61 agentManager];
-      v63 = [v62 newAgentWithDelegate:self fromCentral:{-[EPDevice isPeripheral](self, "isPeripheral")}];
+      agentManager = [v61 agentManager];
+      v63 = [agentManager newAgentWithDelegate:self fromCentral:{-[EPDevice isPeripheral](self, "isPeripheral")}];
       v64 = self->_agent;
       self->_agent = v63;
 
@@ -1319,8 +1319,8 @@ LABEL_47:
       goto LABEL_78;
     }
 
-    v72 = [(EPDevice *)self pairers];
-    [v72 update];
+    pairers3 = [(EPDevice *)self pairers];
+    [pairers3 update];
     goto LABEL_77;
   }
 
@@ -1329,7 +1329,7 @@ LABEL_47:
 
   if (![(EPDevice *)self hasPairer])
   {
-    v72 = self->_pipe;
+    pairers3 = self->_pipe;
     self->_pipe = 0;
 LABEL_77:
   }
@@ -1368,7 +1368,7 @@ LABEL_78:
     dispatch_async(v77, v79);
   }
 
-  v4 = 0;
+  stateCopy = 0;
 LABEL_85:
 }
 

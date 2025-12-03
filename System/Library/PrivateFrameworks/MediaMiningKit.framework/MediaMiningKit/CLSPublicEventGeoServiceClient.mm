@@ -1,9 +1,9 @@
 @interface CLSPublicEventGeoServiceClient
 - (CLSPublicEventGeoServiceClient)init;
-- (id)publicEventQueryHelperWithTimeLocationTuples:(id)a3 queryRadius:(double)a4 queryContext:(id)a5 simulatesTimeout:(BOOL)a6;
+- (id)publicEventQueryHelperWithTimeLocationTuples:(id)tuples queryRadius:(double)radius queryContext:(id)context simulatesTimeout:(BOOL)timeout;
 - (id)queryContext;
 - (int64_t)maximumBatchSize;
-- (void)serverVersionWithCompletionBlock:(id)a3;
+- (void)serverVersionWithCompletionBlock:(id)block;
 @end
 
 @implementation CLSPublicEventGeoServiceClient
@@ -14,40 +14,40 @@
   if (result)
   {
     v3 = result;
-    v4 = [result maxParametersCountForSpatialEventLookup];
+    maxParametersCountForSpatialEventLookup = [result maxParametersCountForSpatialEventLookup];
 
-    return v4;
+    return maxParametersCountForSpatialEventLookup;
   }
 
   return result;
 }
 
-- (id)publicEventQueryHelperWithTimeLocationTuples:(id)a3 queryRadius:(double)a4 queryContext:(id)a5 simulatesTimeout:(BOOL)a6
+- (id)publicEventQueryHelperWithTimeLocationTuples:(id)tuples queryRadius:(double)radius queryContext:(id)context simulatesTimeout:(BOOL)timeout
 {
-  v6 = a6;
+  timeoutCopy = timeout;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAD1C90);
   sub_22F989B90();
   v9 = objc_allocWithZone(CLSPublicEventGeoServiceQuery);
   swift_unknownObjectRetain();
-  v10 = self;
+  selfCopy = self;
   v11 = sub_22F989B80();
-  v12 = [v9 initWithTimeLocationTuples:v11 radius:a4];
+  v12 = [v9 initWithTimeLocationTuples:v11 radius:radius];
 
   if (v12)
   {
-    v13 = [objc_allocWithZone(CLSQueueBasedGeoMapQueryHelper) initWithQueryObject_];
-    [v13 setSimulatesTimeout_];
+    initWithQueryObject_ = [objc_allocWithZone(CLSQueueBasedGeoMapQueryHelper) initWithQueryObject_];
+    [initWithQueryObject_ setSimulatesTimeout_];
   }
 
   else
   {
 
-    v13 = 0;
+    initWithQueryObject_ = 0;
   }
 
   swift_unknownObjectRelease();
 
-  return v13;
+  return initWithQueryObject_;
 }
 
 - (id)queryContext
@@ -57,12 +57,12 @@
   return v2;
 }
 
-- (void)serverVersionWithCompletionBlock:(id)a3
+- (void)serverVersionWithCompletionBlock:(id)block
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAD1990);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -78,7 +78,7 @@
   v12[3] = 0;
   v12[4] = &unk_22F992200;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_22F91FC54(0, 0, v7, &unk_22F991EF0, v12);
 }
 

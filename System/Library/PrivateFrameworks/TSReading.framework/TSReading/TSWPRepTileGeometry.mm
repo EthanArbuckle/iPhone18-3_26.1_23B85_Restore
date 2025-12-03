@@ -1,12 +1,12 @@
 @interface TSWPRepTileGeometry
-- (BOOL)updateWithLayer:(id)a3 scale:(double)a4 columns:(id)a5;
-- (CGRect)tileGeometryRectWithLayer:(id)a3 atIndex:(unint64_t)a4 mask:(unsigned int *)a5;
+- (BOOL)updateWithLayer:(id)layer scale:(double)scale columns:(id)columns;
+- (CGRect)tileGeometryRectWithLayer:(id)layer atIndex:(unint64_t)index mask:(unsigned int *)mask;
 - (CGSize)maxTileSize;
 - (NSString)description;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)tileGeometryAddVisibileIndices:(id)a3 withLayer:(id)a4 visibleBounds:(CGRect)a5;
-- (void)tileGeometryConfigureWithLayer:(id)a3 tileLayer:(id)a4 atIndex:(unint64_t)a5;
+- (void)tileGeometryAddVisibileIndices:(id)indices withLayer:(id)layer visibleBounds:(CGRect)bounds;
+- (void)tileGeometryConfigureWithLayer:(id)layer tileLayer:(id)tileLayer atIndex:(unint64_t)index;
 @end
 
 @implementation TSWPRepTileGeometry
@@ -18,15 +18,15 @@
   [(TSWPRepTileGeometry *)&v2 dealloc];
 }
 
-- (void)tileGeometryAddVisibileIndices:(id)a3 withLayer:(id)a4 visibleBounds:(CGRect)a5
+- (void)tileGeometryAddVisibileIndices:(id)indices withLayer:(id)layer visibleBounds:(CGRect)bounds
 {
   begin = self->_infos.__begin_;
   if (begin != self->_infos.__end_)
   {
-    height = a5.size.height;
-    width = a5.size.width;
-    y = a5.origin.y;
-    x = a5.origin.x;
+    height = bounds.size.height;
+    width = bounds.size.width;
+    y = bounds.origin.y;
+    x = bounds.origin.x;
     v12 = 0;
     do
     {
@@ -36,7 +36,7 @@
       v13.size.height = height;
       if (CGRectIntersectsRect(v13, *begin))
       {
-        [a3 addIndex:v12];
+        [indices addIndex:v12];
       }
 
       ++v12;
@@ -47,11 +47,11 @@
   }
 }
 
-- (CGRect)tileGeometryRectWithLayer:(id)a3 atIndex:(unint64_t)a4 mask:(unsigned int *)a5
+- (CGRect)tileGeometryRectWithLayer:(id)layer atIndex:(unint64_t)index mask:(unsigned int *)mask
 {
   begin = self->_infos.__begin_;
-  v7 = (begin + 40 * a4);
-  if (0xCCCCCCCCCCCCCCCDLL * ((self->_infos.__end_ - begin) >> 3) <= a4)
+  v7 = (begin + 40 * index);
+  if (0xCCCCCCCCCCCCCCCDLL * ((self->_infos.__end_ - begin) >> 3) <= index)
   {
     v7 = MEMORY[0x277CBF3A0];
   }
@@ -60,8 +60,8 @@
   v9 = v7[1];
   v10 = v7[2];
   v11 = v7[3];
-  [a3 bounds];
-  if (a5)
+  [layer bounds];
+  if (mask)
   {
     v16 = v12;
     v17 = v13;
@@ -137,7 +137,7 @@
       v24 = v22;
     }
 
-    *a5 = v24;
+    *mask = v24;
   }
 
   v25 = v8;
@@ -151,12 +151,12 @@
   return result;
 }
 
-- (void)tileGeometryConfigureWithLayer:(id)a3 tileLayer:(id)a4 atIndex:(unint64_t)a5
+- (void)tileGeometryConfigureWithLayer:(id)layer tileLayer:(id)tileLayer atIndex:(unint64_t)index
 {
   begin = self->_infos.__begin_;
-  if (0xCCCCCCCCCCCCCCCDLL * ((self->_infos.__end_ - begin) >> 3) > a5)
+  if (0xCCCCCCCCCCCCCCCDLL * ((self->_infos.__end_ - begin) >> 3) > index)
   {
-    v7 = CGColorRetain(*(begin + 5 * a5 + 4));
+    v7 = CGColorRetain(*(begin + 5 * index + 4));
     v8 = v7;
     if (v7)
     {
@@ -174,8 +174,8 @@
       v10 = MEMORY[0x277CDA0B8];
     }
 
-    [a4 setContentsFormat:*v10];
-    [a4 setContentsMultiplyColor:CopyWithAlpha];
+    [tileLayer setContentsFormat:*v10];
+    [tileLayer setContentsMultiplyColor:CopyWithAlpha];
     if (CopyWithAlpha)
     {
       CGColorRelease(CopyWithAlpha);
@@ -185,10 +185,10 @@
   }
 }
 
-- (BOOL)updateWithLayer:(id)a3 scale:(double)a4 columns:(id)a5
+- (BOOL)updateWithLayer:(id)layer scale:(double)scale columns:(id)columns
 {
   v7 = *MEMORY[0x277D85DE8];
-  [a3 bounds];
+  [layer bounds];
   TSWPRepBoundsAnalyzer::TSWPRepBoundsAnalyzer(v6, v8);
 }
 

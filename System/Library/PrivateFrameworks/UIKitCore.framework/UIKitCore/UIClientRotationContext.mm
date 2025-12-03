@@ -1,19 +1,19 @@
 @interface UIClientRotationContext
 - (BOOL)_isFooterTranslucent;
 - (BOOL)_isHeaderTranslucent;
-- (UIClientRotationContext)initWithClient:(id)a3 toOrientation:(int64_t)a4 duration:(double)a5 andWindow:(id)a6;
-- (void)_positionHeaderView:(id)a3 andFooterView:(id)a4 outsideContentViewForInterfaceOrientation:(int64_t)a5;
-- (void)_slideHeaderView:(id)a3 andFooterView:(id)a4 offScreen:(BOOL)a5 forInterfaceOrientation:(int64_t)a6;
+- (UIClientRotationContext)initWithClient:(id)client toOrientation:(int64_t)orientation duration:(double)duration andWindow:(id)window;
+- (void)_positionHeaderView:(id)view andFooterView:(id)footerView outsideContentViewForInterfaceOrientation:(int64_t)orientation;
+- (void)_slideHeaderView:(id)view andFooterView:(id)footerView offScreen:(BOOL)screen forInterfaceOrientation:(int64_t)orientation;
 - (void)dealloc;
 - (void)finishFirstHalfRotation;
-- (void)finishFullRotateUsingOnePartAnimation:(BOOL)a3;
+- (void)finishFullRotateUsingOnePartAnimation:(BOOL)animation;
 - (void)rotateSnapshots;
-- (void)setupRotationOrderingKeyboardInAfterRotation:(BOOL)a3;
+- (void)setupRotationOrderingKeyboardInAfterRotation:(BOOL)rotation;
 @end
 
 @implementation UIClientRotationContext
 
-- (UIClientRotationContext)initWithClient:(id)a3 toOrientation:(int64_t)a4 duration:(double)a5 andWindow:(id)a6
+- (UIClientRotationContext)initWithClient:(id)client toOrientation:(int64_t)orientation duration:(double)duration andWindow:(id)window
 {
   v15.receiver = self;
   v15.super_class = UIClientRotationContext;
@@ -23,14 +23,14 @@
     return v10;
   }
 
-  v10->_rotatingClient = a3;
-  v10->_window = a6;
+  v10->_rotatingClient = client;
+  v10->_window = window;
   v10->_fromOrientation = 0;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [a3 _lastKnownInterfaceOrientation];
-    v10->_fromOrientation = v11;
-    if (!v11)
+    _lastKnownInterfaceOrientation = [client _lastKnownInterfaceOrientation];
+    v10->_fromOrientation = _lastKnownInterfaceOrientation;
+    if (!_lastKnownInterfaceOrientation)
     {
       goto LABEL_7;
     }
@@ -42,22 +42,22 @@ LABEL_7:
     v10->_fromOrientation = [(UIWindow *)v10->_window interfaceOrientation];
   }
 
-  v10->_toOrientation = a4;
-  v10->_duration = a5;
-  v10->_contentView = [v10->_rotatingClient rotatingContentViewForWindow:a6];
+  v10->_toOrientation = orientation;
+  v10->_duration = duration;
+  v10->_contentView = [v10->_rotatingClient rotatingContentViewForWindow:window];
   if (objc_opt_respondsToSelector())
   {
-    v10->_snapshotTargetView = [v10->_rotatingClient rotatingSnapshotViewForWindow:a6];
+    v10->_snapshotTargetView = [v10->_rotatingClient rotatingSnapshotViewForWindow:window];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v10->_headerView = [v10->_rotatingClient rotatingHeaderViewForWindow:a6];
+    v10->_headerView = [v10->_rotatingClient rotatingHeaderViewForWindow:window];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10->_rotatingClient rotatingFooterViewForWindow:a6];
+    v12 = [v10->_rotatingClient rotatingFooterViewForWindow:window];
     v10->_footerView = v12;
     v10->_footerWasHidden = [(UIView *)v12 isHidden];
   }
@@ -79,7 +79,7 @@ LABEL_7:
   v10->_rotationSettings.edgeClip = v13;
   if (objc_opt_respondsToSelector())
   {
-    [v10->_rotatingClient getRotationContentSettings:&v10->_rotationSettings forWindow:a6];
+    [v10->_rotatingClient getRotationContentSettings:&v10->_rotationSettings forWindow:window];
   }
 
   return v10;
@@ -92,27 +92,27 @@ LABEL_7:
   [(UIClientRotationContext *)&v3 dealloc];
 }
 
-- (void)_slideHeaderView:(id)a3 andFooterView:(id)a4 offScreen:(BOOL)a5 forInterfaceOrientation:(int64_t)a6
+- (void)_slideHeaderView:(id)view andFooterView:(id)footerView offScreen:(BOOL)screen forInterfaceOrientation:(int64_t)orientation
 {
-  v7 = a5;
-  [a3 center];
+  screenCopy = screen;
+  [view center];
   v11 = v10;
   v13 = v12;
-  [a4 center];
+  [footerView center];
   v33 = v14;
   v34 = v15;
-  [a3 bounds];
+  [view bounds];
   v17 = v16;
-  [a4 bounds];
+  [footerView bounds];
   v19 = v18;
   [UIApp statusBarFrame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  if (a3)
+  if (view)
   {
-    [a3 transform];
+    [view transform];
   }
 
   else
@@ -126,18 +126,18 @@ LABEL_7:
   v36.size.height = v27;
   v37 = CGRectApplyAffineTransform(v36, &v35);
   v28 = v17 + v37.size.height;
-  if (a6 > 2)
+  if (orientation > 2)
   {
-    if (a6 == 3)
+    if (orientation == 3)
     {
-      if (!v7)
+      if (!screenCopy)
       {
         v28 = -v28;
       }
 
       v11 = v11 + v28;
       v30 = -v19;
-      if (!v7)
+      if (!screenCopy)
       {
         v30 = v19;
       }
@@ -145,19 +145,19 @@ LABEL_7:
 
     else
     {
-      if (a6 != 4)
+      if (orientation != 4)
       {
         goto LABEL_18;
       }
 
-      if (v7)
+      if (screenCopy)
       {
         v28 = -v28;
       }
 
       v11 = v11 + v28;
       v30 = -v19;
-      if (v7)
+      if (screenCopy)
       {
         v30 = v19;
       }
@@ -168,16 +168,16 @@ LABEL_7:
     goto LABEL_29;
   }
 
-  if (a6 == 1)
+  if (orientation == 1)
   {
-    if (v7)
+    if (screenCopy)
     {
       v28 = -v28;
     }
 
     v13 = v13 + v28;
     v29 = -v19;
-    if (v7)
+    if (screenCopy)
     {
       v29 = v19;
     }
@@ -185,16 +185,16 @@ LABEL_7:
     goto LABEL_23;
   }
 
-  if (a6 == 2)
+  if (orientation == 2)
   {
-    if (!v7)
+    if (!screenCopy)
     {
       v28 = -v28;
     }
 
     v13 = v13 + v28;
     v29 = -v19;
-    if (!v7)
+    if (!screenCopy)
     {
       v29 = v19;
     }
@@ -209,25 +209,25 @@ LABEL_18:
   v32 = v33;
   v31 = v34;
 LABEL_29:
-  [a3 setCenter:{v11, v13, v37.size.width}];
-  [a4 setCenter:{v32, v31}];
+  [view setCenter:{v11, v13, v37.size.width}];
+  [footerView setCenter:{v32, v31}];
 }
 
-- (void)_positionHeaderView:(id)a3 andFooterView:(id)a4 outsideContentViewForInterfaceOrientation:(int64_t)a5
+- (void)_positionHeaderView:(id)view andFooterView:(id)footerView outsideContentViewForInterfaceOrientation:(int64_t)orientation
 {
-  [objc_msgSend(a3 "superview")];
+  [objc_msgSend(view "superview")];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v46 = v14;
-  [objc_msgSend(a4 "superview")];
+  [objc_msgSend(footerView "superview")];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [a3 bounds];
+  [view bounds];
   v24 = v23;
-  [a4 bounds];
+  [footerView bounds];
   v25 = v24 * 0.5;
   v27 = v26 * 0.5;
   v28 = *MEMORY[0x1E695EFF8];
@@ -237,7 +237,7 @@ LABEL_29:
   v32 = v18 + v22 * 0.5;
   v33 = v9 - v24 * 0.5;
   v34 = v16 + v20 + v27;
-  if (a5 == 4)
+  if (orientation == 4)
   {
     v35 = v11 + v46 * 0.5;
   }
@@ -248,7 +248,7 @@ LABEL_29:
     v35 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a5 == 4)
+  if (orientation == 4)
   {
     v36 = v18 + v22 * 0.5;
   }
@@ -259,7 +259,7 @@ LABEL_29:
     v36 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a5 != 3)
+  if (orientation != 3)
   {
     v29 = v33;
     v30 = v35;
@@ -271,7 +271,7 @@ LABEL_29:
   v38 = v18 + v22 + v27;
   v39 = v11 + v46 + v25;
   v40 = v18 - v27;
-  if (a5 == 2)
+  if (orientation == 2)
   {
     v41 = v9 + v13 * 0.5;
   }
@@ -281,7 +281,7 @@ LABEL_29:
     v41 = *MEMORY[0x1E695EFF8];
   }
 
-  if (a5 == 2)
+  if (orientation == 2)
   {
     v28 = v16 + v20 * 0.5;
   }
@@ -291,12 +291,12 @@ LABEL_29:
     v39 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a5 != 2)
+  if (orientation != 2)
   {
     v40 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v42 = v9 + v13 * 0.5;
   }
@@ -306,14 +306,14 @@ LABEL_29:
     v42 = v41;
   }
 
-  if (a5 == 1)
+  if (orientation == 1)
   {
     v39 = v37;
     v28 = v16 + v20 * 0.5;
     v40 = v38;
   }
 
-  if (a5 <= 2)
+  if (orientation <= 2)
   {
     v43 = v42;
   }
@@ -323,7 +323,7 @@ LABEL_29:
     v43 = v29;
   }
 
-  if (a5 <= 2)
+  if (orientation <= 2)
   {
     v44 = v28;
   }
@@ -334,7 +334,7 @@ LABEL_29:
     v44 = v31;
   }
 
-  if (a5 <= 2)
+  if (orientation <= 2)
   {
     v45 = v40;
   }
@@ -344,9 +344,9 @@ LABEL_29:
     v45 = v32;
   }
 
-  [a3 setCenter:{v43, v39, v40, v28, v42}];
+  [view setCenter:{v43, v39, v40, v28, v42}];
 
-  [a4 setCenter:{v44, v45}];
+  [footerView setCenter:{v44, v45}];
 }
 
 - (BOOL)_isHeaderTranslucent
@@ -381,9 +381,9 @@ LABEL_29:
   return [(UIView *)footerView isTranslucent];
 }
 
-- (void)setupRotationOrderingKeyboardInAfterRotation:(BOOL)a3
+- (void)setupRotationOrderingKeyboardInAfterRotation:(BOOL)rotation
 {
-  self->_orderKeyboardInAfterRotating = a3;
+  self->_orderKeyboardInAfterRotating = rotation;
   fromOrientation = self->_fromOrientation;
   switch(fromOrientation)
   {
@@ -411,11 +411,11 @@ LABEL_29:
   *&v24.c = vrndaq_f64(*&v24.c);
   *&v24.tx = vrndaq_f64(*&v24.tx);
   v25 = v24;
-  v6 = [objc_opt_class() _transformLayerRotationsAreEnabled];
+  _transformLayerRotationsAreEnabled = [objc_opt_class() _transformLayerRotationsAreEnabled];
   [(UIView *)self->_window bounds];
   width = v9;
   height = v10;
-  if ((v6 & 1) == 0)
+  if ((_transformLayerRotationsAreEnabled & 1) == 0)
   {
     v24 = v25;
     v26 = CGRectApplyAffineTransform(*&v7, &v24);
@@ -428,9 +428,9 @@ LABEL_29:
   v14 = [(UIView *)v13 initWithFrame:?];
   self->_rotatingSnapshotView = v14;
   [(UIView *)v14 setBounds:0.0, 0.0, width, height];
-  v15 = [objc_opt_class() _transformLayerRotationsAreEnabled];
+  _transformLayerRotationsAreEnabled2 = [objc_opt_class() _transformLayerRotationsAreEnabled];
   rotatingSnapshotView = self->_rotatingSnapshotView;
-  if (v15)
+  if (_transformLayerRotationsAreEnabled2)
   {
     [(UIView *)rotatingSnapshotView setAutoresizingMask:18];
   }
@@ -464,10 +464,10 @@ LABEL_29:
     edgeClip = self->_rotationSettings.edgeClip;
     if (edgeClip)
     {
-      v21 = [[UIView alloc] initWithFrame:-width, 0.0, width, height];
-      [(UIView *)v21 setBackgroundColor:+[UIColor blackColor]];
-      [(UIView *)v21 setAutoresizingMask:20];
-      [(UIView *)self->_rotatingSnapshotView addSubview:v21];
+      height = [[UIView alloc] initWithFrame:-width, 0.0, width, height];
+      [(UIView *)height setBackgroundColor:+[UIColor blackColor]];
+      [(UIView *)height setAutoresizingMask:20];
+      [(UIView *)self->_rotatingSnapshotView addSubview:height];
 
       edgeClip = self->_rotationSettings.edgeClip;
       if ((edgeClip & 2) == 0)
@@ -487,10 +487,10 @@ LABEL_25:
       goto LABEL_25;
     }
 
-    v22 = [[UIView alloc] initWithFrame:width, 0.0, width, height];
-    [(UIView *)v22 setBackgroundColor:+[UIColor blackColor]];
-    [(UIView *)v22 setAutoresizingMask:17];
-    [(UIView *)self->_rotatingSnapshotView addSubview:v22];
+    height2 = [[UIView alloc] initWithFrame:width, 0.0, width, height];
+    [(UIView *)height2 setBackgroundColor:+[UIColor blackColor]];
+    [(UIView *)height2 setAutoresizingMask:17];
+    [(UIView *)self->_rotatingSnapshotView addSubview:height2];
 
     edgeClip = self->_rotationSettings.edgeClip;
     if ((edgeClip & 8) == 0)
@@ -505,10 +505,10 @@ LABEL_26:
     }
 
 LABEL_31:
-    v23 = [[UIView alloc] initWithFrame:0.0, -height, width, height];
-    [(UIView *)v23 setBackgroundColor:+[UIColor blackColor]];
-    [(UIView *)v23 setAutoresizingMask:34];
-    [(UIView *)self->_rotatingSnapshotView addSubview:v23];
+    height3 = [[UIView alloc] initWithFrame:0.0, -height, width, height];
+    [(UIView *)height3 setBackgroundColor:+[UIColor blackColor]];
+    [(UIView *)height3 setAutoresizingMask:34];
+    [(UIView *)self->_rotatingSnapshotView addSubview:height3];
 
     if ((self->_rotationSettings.edgeClip & 4) == 0)
     {
@@ -516,10 +516,10 @@ LABEL_31:
     }
 
 LABEL_27:
-    v20 = [[UIView alloc] initWithFrame:0.0, height, width, height];
-    [(UIView *)v20 setBackgroundColor:+[UIColor blackColor]];
-    [(UIView *)v20 setAutoresizingMask:10];
-    [(UIView *)self->_rotatingSnapshotView addSubview:v20];
+    height4 = [[UIView alloc] initWithFrame:0.0, height, width, height];
+    [(UIView *)height4 setBackgroundColor:+[UIColor blackColor]];
+    [(UIView *)height4 setAutoresizingMask:10];
+    [(UIView *)self->_rotatingSnapshotView addSubview:height4];
 
     return;
   }
@@ -737,7 +737,7 @@ LABEL_24:
   [(UIClientRotationContext *)self _positionHeaderView:self->_headerView andFooterView:self->_footerView outsideContentViewForInterfaceOrientation:self->_toOrientation];
 }
 
-- (void)finishFullRotateUsingOnePartAnimation:(BOOL)a3
+- (void)finishFullRotateUsingOnePartAnimation:(BOOL)animation
 {
   if (self->_headerSnapshotViewStart)
   {

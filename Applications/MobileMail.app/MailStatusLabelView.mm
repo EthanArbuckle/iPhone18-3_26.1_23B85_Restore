@@ -1,19 +1,19 @@
 @interface MailStatusLabelView
-- (MailStatusLabelView)initWithFrame:(CGRect)a3;
+- (MailStatusLabelView)initWithFrame:(CGRect)frame;
 - (NSAttributedString)secondaryLabelText;
 - (UILabel)primaryLabel;
 - (UILabel)secondaryLabel;
 - (id)_titleFont;
-- (id)newLabel:(id)a3;
-- (id)preferredPrefixWithStatusInfo:(id)a3;
+- (id)newLabel:(id)label;
+- (id)preferredPrefixWithStatusInfo:(id)info;
 - (void)_updateBarItemTitle;
 - (void)layoutSubviews;
-- (void)setPrimaryLabelText:(id)a3 prefix:(id)a4 animated:(BOOL)a5;
-- (void)setSecondaryLabelText:(id)a3 animated:(BOOL)a4;
-- (void)setShouldShowLargeTitle:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePrimaryLabelAnimated:(BOOL)a3;
-- (void)updateWithStatusInfo:(id)a3;
+- (void)setPrimaryLabelText:(id)text prefix:(id)prefix animated:(BOOL)animated;
+- (void)setSecondaryLabelText:(id)text animated:(BOOL)animated;
+- (void)setShouldShowLargeTitle:(BOOL)title;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePrimaryLabelAnimated:(BOOL)animated;
+- (void)updateWithStatusInfo:(id)info;
 - (void)viewDidMoveToSuperview;
 @end
 
@@ -46,16 +46,16 @@
 
 - (id)_titleFont
 {
-  v2 = [(MailStatusLabelView *)self shouldShowLargeTitle];
+  shouldShowLargeTitle = [(MailStatusLabelView *)self shouldShowLargeTitle];
   v3 = &UIFontTextStyleSubheadline;
-  if (!v2)
+  if (!shouldShowLargeTitle)
   {
     v3 = &UIFontTextStyleCaption1;
   }
 
   v4 = *v3;
   v5 = &UIContentSizeCategoryExtraLarge;
-  if (!v2)
+  if (!shouldShowLargeTitle)
   {
     v5 = &UIContentSizeCategoryLarge;
   }
@@ -68,13 +68,13 @@
 - (void)_updateBarItemTitle
 {
   delegate = self->_delegate;
-  v4 = [(MailStatusLabelView *)self primaryLabel];
-  v5 = [v4 attributedText];
-  v6 = [v5 string];
-  v7 = [(MailStatusLabelView *)self secondaryLabel];
-  v8 = [v7 attributedText];
-  v9 = [v8 string];
-  [(MailStatusBarViewDelegate *)delegate updateBarItemTitle:v6 secondaryTitle:v9];
+  primaryLabel = [(MailStatusLabelView *)self primaryLabel];
+  attributedText = [primaryLabel attributedText];
+  string = [attributedText string];
+  secondaryLabel = [(MailStatusLabelView *)self secondaryLabel];
+  attributedText2 = [secondaryLabel attributedText];
+  string2 = [attributedText2 string];
+  [(MailStatusBarViewDelegate *)delegate updateBarItemTitle:string secondaryTitle:string2];
 
   [(MailStatusLabelView *)self setNeedsLayout];
 }
@@ -107,21 +107,21 @@
     v41 = v6;
     v42 = v5;
     rect = v7;
-    v8 = [(MailStatusLabelView *)self primaryLabel];
-    [v8 sizeToFit];
+    primaryLabel = [(MailStatusLabelView *)self primaryLabel];
+    [primaryLabel sizeToFit];
 
-    v9 = [(MailStatusLabelView *)self secondaryLabel];
-    [v9 sizeToFit];
+    secondaryLabel = [(MailStatusLabelView *)self secondaryLabel];
+    [secondaryLabel sizeToFit];
 
-    v10 = [(MailStatusLabelView *)self primaryLabel];
-    [v10 frame];
+    primaryLabel2 = [(MailStatusLabelView *)self primaryLabel];
+    [primaryLabel2 frame];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(MailStatusLabelView *)self secondaryLabel];
-    [v19 frame];
+    secondaryLabel2 = [(MailStatusLabelView *)self secondaryLabel];
+    [secondaryLabel2 frame];
     v39 = v20;
     v43 = v21;
     v23 = v22;
@@ -140,13 +140,13 @@
     v26 = objc_retainBlock(v44);
     v27 = (v26[2])(v12, v14, v16, v18);
     v28 = (v26[2])(v26, v23, v39, v43, v25);
-    v29 = [(MailStatusLabelView *)self primaryLabel];
-    v30 = [v29 text];
-    [v30 length];
+    primaryLabel3 = [(MailStatusLabelView *)self primaryLabel];
+    text = [primaryLabel3 text];
+    [text length];
 
-    v31 = [(MailStatusLabelView *)self secondaryLabel];
-    v32 = [v31 text];
-    [v32 length];
+    secondaryLabel3 = [(MailStatusLabelView *)self secondaryLabel];
+    text2 = [secondaryLabel3 text];
+    [text2 length];
 
     v46.origin.x = v4;
     v46.size.width = v41;
@@ -167,19 +167,19 @@
     CGRectGetHeight(v48);
     UIRoundToViewScale();
     v36 = v35;
-    v37 = [(MailStatusLabelView *)self primaryLabel];
-    [v37 setFrame:{v27, v34, v16, v18}];
+    primaryLabel4 = [(MailStatusLabelView *)self primaryLabel];
+    [primaryLabel4 setFrame:{v27, v34, v16, v18}];
 
-    v38 = [(MailStatusLabelView *)self secondaryLabel];
-    [v38 setFrame:{v28, v36, v43, v25}];
+    secondaryLabel4 = [(MailStatusLabelView *)self secondaryLabel];
+    [secondaryLabel4 setFrame:{v28, v36, v43, v25}];
   }
 }
 
-- (MailStatusLabelView)initWithFrame:(CGRect)a3
+- (MailStatusLabelView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = MailStatusLabelView;
-  v3 = [(MailStatusLabelView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MailStatusLabelView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -189,76 +189,76 @@
     if (MUISolariumFeatureEnabled())
     {
       [(MailStatusLabelView *)v4 setLayoutMargins:2.0, 0.0, 2.0, 0.0];
-      v5 = [(MailStatusLabelView *)v4 primaryLabel];
-      [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+      primaryLabel = [(MailStatusLabelView *)v4 primaryLabel];
+      [primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v6 = [(MailStatusLabelView *)v4 primaryLabel];
-      [(MailStatusLabelView *)v4 addSubview:v6];
+      primaryLabel2 = [(MailStatusLabelView *)v4 primaryLabel];
+      [(MailStatusLabelView *)v4 addSubview:primaryLabel2];
 
-      v7 = [(MailStatusLabelView *)v4 primaryLabel];
-      [v7 mf_pinToView:v4 usingLayoutMargins:1];
+      primaryLabel3 = [(MailStatusLabelView *)v4 primaryLabel];
+      [primaryLabel3 mf_pinToView:v4 usingLayoutMargins:1];
     }
   }
 
   return v4;
 }
 
-- (void)setPrimaryLabelText:(id)a3 prefix:(id)a4 animated:(BOOL)a5
+- (void)setPrimaryLabelText:(id)text prefix:(id)prefix animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  v9 = [(MailStatusLabelView *)self prefix];
-  if (([v8 isEqualToString:v9] & 1) == 0)
+  animatedCopy = animated;
+  textCopy = text;
+  prefixCopy = prefix;
+  prefix = [(MailStatusLabelView *)self prefix];
+  if (([prefixCopy isEqualToString:prefix] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v10 = [(MailStatusLabelView *)self primaryLabelText];
-  v11 = [v12 isEqualToAttributedString:v10];
+  primaryLabelText = [(MailStatusLabelView *)self primaryLabelText];
+  v11 = [textCopy isEqualToAttributedString:primaryLabelText];
 
   if ((v11 & 1) == 0)
   {
 LABEL_5:
-    [(MailStatusLabelView *)self setPrefix:v8];
-    [(MailStatusLabelView *)self setPrimaryLabelText:v12];
-    [(MailStatusLabelView *)self updatePrimaryLabelAnimated:v5];
+    [(MailStatusLabelView *)self setPrefix:prefixCopy];
+    [(MailStatusLabelView *)self setPrimaryLabelText:textCopy];
+    [(MailStatusLabelView *)self updatePrimaryLabelAnimated:animatedCopy];
   }
 }
 
-- (void)updatePrimaryLabelAnimated:(BOOL)a3
+- (void)updatePrimaryLabelAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = objc_alloc_init(NSMutableAttributedString);
-  v6 = [(MailStatusLabelView *)self prefix];
-  if ([v6 length])
+  prefix = [(MailStatusLabelView *)self prefix];
+  if ([prefix length])
   {
-    v7 = [(MailStatusLabelView *)self primaryLabelText];
+    primaryLabelText = [(MailStatusLabelView *)self primaryLabelText];
 
-    if (v7)
+    if (primaryLabelText)
     {
-      v8 = _EFLocalizedString();
-      v9 = [(MailStatusLabelView *)self prefix];
-      v10 = [(MailStatusLabelView *)self primaryLabelText];
-      v11 = [v10 string];
-      v12 = [NSString localizedStringWithFormat:v8, v9, v11];
+      prefix4 = _EFLocalizedString();
+      prefix2 = [(MailStatusLabelView *)self prefix];
+      primaryLabelText2 = [(MailStatusLabelView *)self primaryLabelText];
+      string = [primaryLabelText2 string];
+      v12 = [NSString localizedStringWithFormat:prefix4, prefix2, string];
 
       v13 = [[NSMutableAttributedString alloc] initWithString:v12];
-      v14 = [(MailStatusLabelView *)self primaryLabelText];
-      v15 = [v14 string];
-      v16 = [v12 rangeOfString:v15];
+      primaryLabelText3 = [(MailStatusLabelView *)self primaryLabelText];
+      string2 = [primaryLabelText3 string];
+      v16 = [v12 rangeOfString:string2];
       v18 = v17;
 
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v19 = [(MailStatusLabelView *)self primaryLabelText];
-        v20 = [v19 length];
+        primaryLabelText4 = [(MailStatusLabelView *)self primaryLabelText];
+        v20 = [primaryLabelText4 length];
 
         if (v20)
         {
-          v21 = [(MailStatusLabelView *)self primaryLabelText];
-          v22 = [v21 attributesAtIndex:0 effectiveRange:0];
+          primaryLabelText5 = [(MailStatusLabelView *)self primaryLabelText];
+          v22 = [primaryLabelText5 attributesAtIndex:0 effectiveRange:0];
 
           if ([v22 count])
           {
@@ -276,14 +276,14 @@ LABEL_5:
   {
   }
 
-  v23 = [(MailStatusLabelView *)self prefix];
-  v24 = [v23 length];
+  prefix3 = [(MailStatusLabelView *)self prefix];
+  v24 = [prefix3 length];
 
   if (v24)
   {
     v25 = [NSAttributedString alloc];
-    v8 = [(MailStatusLabelView *)self prefix];
-    v12 = [v25 initWithString:v8];
+    prefix4 = [(MailStatusLabelView *)self prefix];
+    v12 = [v25 initWithString:prefix4];
     [v5 appendAttributedString:v12];
 LABEL_12:
 
@@ -291,12 +291,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v31 = [(MailStatusLabelView *)self primaryLabelText];
+  primaryLabelText6 = [(MailStatusLabelView *)self primaryLabelText];
 
-  if (v31)
+  if (primaryLabelText6)
   {
-    v8 = [(MailStatusLabelView *)self primaryLabelText];
-    [v5 appendAttributedString:v8];
+    prefix4 = [(MailStatusLabelView *)self primaryLabelText];
+    [v5 appendAttributedString:prefix4];
     goto LABEL_13;
   }
 
@@ -309,10 +309,10 @@ LABEL_14:
   v26 = v5;
   v33 = v26;
   v27 = objc_retainBlock(v32);
-  if (v3)
+  if (animatedCopy)
   {
-    v28 = [(MailStatusLabelView *)self primaryLabel];
-    [UIView transitionWithView:v28 duration:5242880 options:v27 animations:0 completion:0.4];
+    primaryLabel = [(MailStatusLabelView *)self primaryLabel];
+    [UIView transitionWithView:primaryLabel duration:5242880 options:v27 animations:0 completion:0.4];
   }
 
   else
@@ -322,17 +322,17 @@ LABEL_14:
 
   [(MailStatusLabelView *)self _updateBarItemTitle];
   v29 = [v26 length];
-  v30 = [(MailStatusLabelView *)self primaryLabel];
-  [v30 setHidden:v29 == 0];
+  primaryLabel2 = [(MailStatusLabelView *)self primaryLabel];
+  [primaryLabel2 setHidden:v29 == 0];
 }
 
-- (void)setSecondaryLabelText:(id)a3 animated:(BOOL)a4
+- (void)setSecondaryLabelText:(id)text animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(MailStatusLabelView *)self secondaryLabel];
-  v8 = [v7 attributedText];
-  v9 = [v6 isEqualToAttributedString:v8];
+  animatedCopy = animated;
+  textCopy = text;
+  secondaryLabel = [(MailStatusLabelView *)self secondaryLabel];
+  attributedText = [secondaryLabel attributedText];
+  v9 = [textCopy isEqualToAttributedString:attributedText];
 
   if ((v9 & 1) == 0)
   {
@@ -340,10 +340,10 @@ LABEL_14:
     v13 = 3221225472;
     v14 = sub_100132DB8;
     v15 = &unk_10064C660;
-    v16 = self;
-    v17 = v6;
+    selfCopy = self;
+    v17 = textCopy;
     v10 = objc_retainBlock(&v12);
-    if (v4)
+    if (animatedCopy)
     {
       v11 = [(MailStatusLabelView *)self secondaryLabel:v12];
       [UIView transitionWithView:v11 duration:5242880 options:v10 animations:0 completion:0.4];
@@ -351,18 +351,18 @@ LABEL_14:
 
     else
     {
-      [UIView performWithoutAnimation:v10, v12, v13, v14, v15, v16];
+      [UIView performWithoutAnimation:v10, v12, v13, v14, v15, selfCopy];
     }
 
     [(MailStatusLabelView *)self _updateBarItemTitle];
   }
 }
 
-- (void)setShouldShowLargeTitle:(BOOL)a3
+- (void)setShouldShowLargeTitle:(BOOL)title
 {
-  if (self->_shouldShowLargeTitle != a3)
+  if (self->_shouldShowLargeTitle != title)
   {
-    self->_shouldShowLargeTitle = a3;
+    self->_shouldShowLargeTitle = title;
     sub_100132E74(self);
   }
 }
@@ -377,29 +377,29 @@ LABEL_14:
 
 - (NSAttributedString)secondaryLabelText
 {
-  v2 = [(MailStatusLabelView *)self secondaryLabel];
-  v3 = [v2 attributedText];
+  secondaryLabel = [(MailStatusLabelView *)self secondaryLabel];
+  attributedText = [secondaryLabel attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (id)newLabel:(id)a3
+- (id)newLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v5 = objc_alloc_init(UILabel);
-  v6 = [(MailStatusLabelView *)self _titleFont];
-  [v5 setFont:v6];
+  _titleFont = [(MailStatusLabelView *)self _titleFont];
+  [v5 setFont:_titleFont];
 
   [v5 setOpaque:0];
   [v5 setBackgroundColor:0];
-  v7 = v4;
-  if (!v4)
+  v7 = labelCopy;
+  if (!labelCopy)
   {
     v7 = +[UIColor labelColor];
   }
 
   [v5 setTextColor:v7];
-  if (!v4)
+  if (!labelCopy)
   {
   }
 
@@ -413,24 +413,24 @@ LABEL_14:
   return v5;
 }
 
-- (void)updateWithStatusInfo:(id)a3
+- (void)updateWithStatusInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   [(MailStatusLabelView *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MailStatusLabelView updateWithStatusInfo:]", "MailStatusLabelView.m", 186, "0");
 }
 
-- (id)preferredPrefixWithStatusInfo:(id)a3
+- (id)preferredPrefixWithStatusInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [(MailStatusLabelView *)self superview];
+    superview = [(MailStatusLabelView *)self superview];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(MailStatusLabelView *)self delegate];
-      v7 = [v6 statusBarView:v5 preferredPrefixFromStatusInfo:v4];
+      delegate = [(MailStatusLabelView *)self delegate];
+      v7 = [delegate statusBarView:superview preferredPrefixFromStatusInfo:infoCopy];
     }
 
     else
@@ -447,7 +447,7 @@ LABEL_14:
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   sub_100132E74(self);
 

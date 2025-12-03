@@ -1,21 +1,21 @@
 @interface TSCEUnknownFunctionFormulaNode
-- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)a3 children:(id)a4;
-- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)a3 numArgs:(unsigned int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)name children:(id)children;
+- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)name numArgs:(unsigned int)args;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCEUnknownFunctionFormulaNode
 
-- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)a3 numArgs:(unsigned int)a4
+- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)name numArgs:(unsigned int)args
 {
-  v6 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = TSCEUnknownFunctionFormulaNode;
   v11 = [(TSCEFormulaNode *)&v17 initWithNodeType:15];
   if (v11)
   {
-    v12 = objc_msgSend_copy(v6, v7, v8, v9, v10);
+    v12 = objc_msgSend_copy(nameCopy, v7, v8, v9, v10);
     functionName = v11->_functionName;
     v11->_functionName = v12;
 
@@ -23,28 +23,28 @@
     children = v11->super._children;
     v11->super._children = v14;
 
-    v11->_numArgs = a4;
+    v11->_numArgs = args;
   }
 
   return v11;
 }
 
-- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)a3 children:(id)a4
+- (TSCEUnknownFunctionFormulaNode)initWithFunctionName:(id)name children:(id)children
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  childrenCopy = children;
   v26.receiver = self;
   v26.super_class = TSCEUnknownFunctionFormulaNode;
   v12 = [(TSCEFormulaNode *)&v26 initWithNodeType:15];
   if (v12)
   {
-    v13 = objc_msgSend_copy(v6, v8, v9, v10, v11);
+    v13 = objc_msgSend_copy(nameCopy, v8, v9, v10, v11);
     functionName = v12->_functionName;
     v12->_functionName = v13;
 
-    if (v7)
+    if (childrenCopy)
     {
-      v19 = objc_msgSend_mutableCopy(v7, v15, v16, v17, v18);
+      v19 = objc_msgSend_mutableCopy(childrenCopy, v15, v16, v17, v18);
     }
 
     else
@@ -61,7 +61,7 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCEUnknownFunctionFormulaNode;
@@ -74,9 +74,9 @@
   return v4;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  v53 = a6;
+  engineCopy = engine;
   v14 = objc_msgSend_children(self, v10, v11, v12, v13);
   v23 = objc_msgSend_count(v14, v15, v16, v17, v18);
   if (v23)
@@ -84,7 +84,7 @@
     for (i = 0; i != v23; ++i)
     {
       v25 = objc_msgSend_objectAtIndexedSubscript_(v14, v19, i, v21, v22);
-      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v25, v26, a3, a4, a5, v53);
+      objc_msgSend_appendToNodeArray_hostCellRef_symbolTable_calcEngine_(v25, v26, array, ref, table, engineCopy);
     }
   }
 
@@ -101,12 +101,12 @@
     v29 = 0xFFFFFFFFLL;
   }
 
-  TSCEASTUnknownFunctionElement::appendUnknownFunctionElement(a3, functionName, v29);
+  TSCEASTUnknownFunctionElement::appendUnknownFunctionElement(array, functionName, v29);
   v36 = objc_msgSend_whitespaceBefore(self, v32, v33, v34, v35);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v36);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v36);
 
   v41 = objc_msgSend_whitespaceAfter(self, v37, v38, v39, v40);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v41);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v41);
 }
 
 @end

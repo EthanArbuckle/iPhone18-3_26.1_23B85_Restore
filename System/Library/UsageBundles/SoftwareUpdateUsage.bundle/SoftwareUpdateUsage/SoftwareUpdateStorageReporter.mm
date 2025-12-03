@@ -1,6 +1,6 @@
 @interface SoftwareUpdateStorageReporter
 - (id)usageBundleApps;
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4;
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier;
 @end
 
 @implementation SoftwareUpdateStorageReporter
@@ -34,11 +34,11 @@
   return v7;
 }
 
-- (void)usageBundleApp:(id)a3 willDisplaySpecifier:(id *)a4
+- (void)usageBundleApp:(id)app willDisplaySpecifier:(id *)specifier
 {
-  if (a4)
+  if (specifier)
   {
-    [*a4 setProperty:@"com.apple.Preferences" forKey:PSLazyIconAppID];
+    [*specifier setProperty:@"com.apple.Preferences" forKey:PSLazyIconAppID];
   }
 }
 

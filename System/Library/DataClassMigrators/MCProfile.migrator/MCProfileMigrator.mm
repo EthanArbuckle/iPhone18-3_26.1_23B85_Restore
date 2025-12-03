@@ -1,5 +1,5 @@
 @interface MCProfileMigrator
-- (BOOL)_removeFileIfExistsWithFM:(id)a3 path:(id)a4 outError:(id *)a5;
+- (BOOL)_removeFileIfExistsWithFM:(id)m path:(id)path outError:(id *)error;
 - (BOOL)performMigration;
 - (id)_placeholderCloudConfig;
 - (void)_allowGrandfatheredRestrictionsIfNeeded;
@@ -24,7 +24,7 @@
 
   if ([(MCProfileMigrator *)self didRestoreFromBackup])
   {
-    v5 = [(MCProfileMigrator *)self didMigrateBackupFromDifferentDevice];
+    didMigrateBackupFromDifferentDevice = [(MCProfileMigrator *)self didMigrateBackupFromDifferentDevice];
     v6 = MCSystemMetadataFilePath();
     v7 = [NSMutableDictionary dictionaryWithContentsOfFile:v6];
 
@@ -45,15 +45,15 @@
       [v10 writeToFile:v11 atomically:1];
     }
 
-    v12 = v5 == 0;
-    if (v5)
+    v12 = didMigrateBackupFromDifferentDevice == 0;
+    if (didMigrateBackupFromDifferentDevice)
     {
-      v13 = 3;
+      didUpgrade = 3;
     }
 
     else
     {
-      v13 = 2;
+      didUpgrade = 2;
     }
 
     v14 = @"Restore from the same device";
@@ -62,10 +62,10 @@
 
   else
   {
-    v13 = [(MCProfileMigrator *)self didUpgrade];
+    didUpgrade = [(MCProfileMigrator *)self didUpgrade];
     v14 = @"Device erasure";
     v15 = @"Software update";
-    v12 = v13 == 0;
+    v12 = didUpgrade == 0;
   }
 
   if (v12)
@@ -85,16 +85,16 @@
   if (v18)
   {
     v19 = [v18 objectForKeyedSubscript:kCCIsSupervisedKey];
-    v20 = [v19 BOOLValue];
+    bOOLValue = [v19 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue = 0;
   }
 
   v21 = +[NSFileManager defaultManager];
-  if (v13 == 3)
+  if (didUpgrade == 3)
   {
     _DMLogFunc();
     v24 = MCCloudConfigurationDetailsFilePath();
@@ -140,22 +140,22 @@
     v33 = MCLegacyPostSetupAutoInstallProfilePath();
     v44 = v32;
     v34 = [(MCProfileMigrator *)self _removeFileIfExistsWithFM:v21 path:v33 outError:&v44];
-    v35 = v44;
+    _placeholderCloudConfig = v44;
 
     if ((v34 & 1) == 0)
     {
-      v39 = v35;
+      v39 = _placeholderCloudConfig;
       _DMLogFunc();
 
-      v35 = 0;
+      _placeholderCloudConfig = 0;
     }
   }
 
   else
   {
-    if (v13 != 2 || (MCCloudConfigurationDetailsFilePath(), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 fileExistsAtPath:v22 isDirectory:0], v22, (v23 & 1) != 0))
+    if (didUpgrade != 2 || (MCCloudConfigurationDetailsFilePath(), v22 = objc_claimAutoreleasedReturnValue(), v23 = [v21 fileExistsAtPath:v22 isDirectory:0], v22, (v23 & 1) != 0))
     {
-      if (v20)
+      if (bOOLValue)
       {
         goto LABEL_33;
       }
@@ -164,9 +164,9 @@
     }
 
     _DMLogFunc();
-    v35 = [(MCProfileMigrator *)self _placeholderCloudConfig];
+    _placeholderCloudConfig = [(MCProfileMigrator *)self _placeholderCloudConfig];
     v36 = MCCloudConfigurationDetailsFilePath();
-    [v35 MCWriteToBinaryFile:v36];
+    [_placeholderCloudConfig MCWriteToBinaryFile:v36];
 
     MCSendCloudConfigurationDetailsChangedNotification();
   }
@@ -180,9 +180,9 @@ LABEL_33:
   v40[1] = 3221225472;
   v40[2] = sub_1288;
   v40[3] = &unk_41B8;
-  v43 = v13;
+  v43 = didUpgrade;
   v41 = v16;
-  v42 = self;
+  selfCopy = self;
   [v37 shutDownWithCompletion:v40];
 
   return 1;
@@ -344,13 +344,13 @@ LABEL_33:
   [v2 recomputeProfileRestrictionsWithCompletionBlock:&stru_41F8];
 }
 
-- (BOOL)_removeFileIfExistsWithFM:(id)a3 path:(id)a4 outError:(id *)a5
+- (BOOL)_removeFileIfExistsWithFM:(id)m path:(id)path outError:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 fileExistsAtPath:v8])
+  mCopy = m;
+  pathCopy = path;
+  if ([mCopy fileExistsAtPath:pathCopy])
   {
-    v9 = [v7 removeItemAtPath:v8 error:a5];
+    v9 = [mCopy removeItemAtPath:pathCopy error:error];
   }
 
   else

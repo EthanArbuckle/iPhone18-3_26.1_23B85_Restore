@@ -1,18 +1,18 @@
 @interface VFXBtShapeWrapper
-- (VFXBtShapeWrapper)initWithShape:(btCollisionShape *)a3;
+- (VFXBtShapeWrapper)initWithShape:(btCollisionShape *)shape;
 - (void)dealloc;
 @end
 
 @implementation VFXBtShapeWrapper
 
-- (VFXBtShapeWrapper)initWithShape:(btCollisionShape *)a3
+- (VFXBtShapeWrapper)initWithShape:(btCollisionShape *)shape
 {
   v5.receiver = self;
   v5.super_class = VFXBtShapeWrapper;
   result = [(VFXBtShapeWrapper *)&v5 init];
   if (result)
   {
-    result->_collisionShape = a3;
+    result->_collisionShape = shape;
   }
 
   return result;

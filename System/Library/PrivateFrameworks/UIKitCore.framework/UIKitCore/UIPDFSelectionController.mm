@@ -1,29 +1,29 @@
 @interface UIPDFSelectionController
-- (BOOL)shouldTrackAt:(CGPoint)a3;
+- (BOOL)shouldTrackAt:(CGPoint)at;
 - (CGPoint)adjustedPoint;
 - (CGPoint)currentSelectionPoint;
 - (CGPoint)initialSelectionPoint;
 - (CGPoint)selectedPointOffset;
 - (UIPDFSelectionController)init;
-- (void)addSelectionWidget:(id)a3;
-- (void)adjustSelection:(CGPoint)a3;
+- (void)addSelectionWidget:(id)widget;
+- (void)adjustSelection:(CGPoint)selection;
 - (void)clearSelection;
 - (void)dealloc;
-- (void)endTracking:(CGPoint)a3;
+- (void)endTracking:(CGPoint)tracking;
 - (void)extendSelectionToParagraph;
 - (void)hideWidget;
 - (void)layoutSelections;
-- (void)selectionHide:(id)a3;
-- (void)selectionHideFromAncestor:(id)a3;
-- (void)selectionShow:(id)a3;
-- (void)selectionShowToAncestor:(id)a3;
-- (void)setSelectionFor:(CGPoint)a3;
-- (void)startSelectingAt:(CGPoint)a3;
-- (void)startTracking:(CGPoint)a3 andPoint:(CGPoint)a4;
-- (void)startTracking:(CGPoint)a3 showMagnifier:(BOOL *)a4;
+- (void)selectionHide:(id)hide;
+- (void)selectionHideFromAncestor:(id)ancestor;
+- (void)selectionShow:(id)show;
+- (void)selectionShowToAncestor:(id)ancestor;
+- (void)setSelectionFor:(CGPoint)for;
+- (void)startSelectingAt:(CGPoint)at;
+- (void)startTracking:(CGPoint)tracking andPoint:(CGPoint)point;
+- (void)startTracking:(CGPoint)tracking showMagnifier:(BOOL *)magnifier;
 - (void)suspendInstantHighlightMode;
-- (void)tracking:(CGPoint)a3 andPoint:(CGPoint)a4;
-- (void)tracking:(CGPoint)a3 showMagnifier:(BOOL *)a4;
+- (void)tracking:(CGPoint)tracking andPoint:(CGPoint)point;
+- (void)tracking:(CGPoint)tracking showMagnifier:(BOOL *)magnifier;
 @end
 
 @implementation UIPDFSelectionController
@@ -35,13 +35,13 @@
   v2 = [(UIPDFSelectionController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_selectionHideFromAncestor_ name:@"UITextSelectionWillScroll" object:0];
-    [v3 addObserver:v2 selector:sel_selectionShowToAncestor_ name:@"UITextSelectionDidScroll" object:0];
-    [v3 addObserver:v2 selector:sel_selectionHideFromAncestor_ name:@"UITextSelectionWillZoom" object:0];
-    [v3 addObserver:v2 selector:sel_selectionShowToAncestor_ name:@"UITextSelectionDidZoom" object:0];
-    [v3 addObserver:v2 selector:sel_selectionHide_ name:@"UIWindowWillRotateNotification" object:0];
-    [v3 addObserver:v2 selector:sel_selectionShowDelayed_ name:@"UIWindowDidRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_selectionHideFromAncestor_ name:@"UITextSelectionWillScroll" object:0];
+    [defaultCenter addObserver:v2 selector:sel_selectionShowToAncestor_ name:@"UITextSelectionDidScroll" object:0];
+    [defaultCenter addObserver:v2 selector:sel_selectionHideFromAncestor_ name:@"UITextSelectionWillZoom" object:0];
+    [defaultCenter addObserver:v2 selector:sel_selectionShowToAncestor_ name:@"UITextSelectionDidZoom" object:0];
+    [defaultCenter addObserver:v2 selector:sel_selectionHide_ name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_selectionShowDelayed_ name:@"UIWindowDidRotateNotification" object:0];
     v2->_pageView = 0;
     *&v2->_instantModeIsSuspended = 0;
     v2->_needsLayout = 0;
@@ -58,29 +58,29 @@
   [(UIPDFSelectionController *)&v3 dealloc];
 }
 
-- (void)selectionHideFromAncestor:(id)a3
+- (void)selectionHideFromAncestor:(id)ancestor
 {
-  v5 = [a3 object];
+  object = [ancestor object];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(UIView *)self->_pageView isDescendantOfView:v5])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(UIView *)self->_pageView isDescendantOfView:object])
   {
 
-    [(UIPDFSelectionController *)self selectionHide:a3];
+    [(UIPDFSelectionController *)self selectionHide:ancestor];
   }
 }
 
-- (void)selectionShowToAncestor:(id)a3
+- (void)selectionShowToAncestor:(id)ancestor
 {
-  v5 = [a3 object];
+  object = [ancestor object];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(UIView *)self->_pageView isDescendantOfView:v5])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(UIView *)self->_pageView isDescendantOfView:object])
   {
 
-    [(UIPDFSelectionController *)self selectionShow:a3];
+    [(UIPDFSelectionController *)self selectionShow:ancestor];
   }
 }
 
-- (void)selectionHide:(id)a3
+- (void)selectionHide:(id)hide
 {
   self->_hiding = 1;
   if (self->_selectionWidget)
@@ -89,7 +89,7 @@
   }
 }
 
-- (void)selectionShow:(id)a3
+- (void)selectionShow:(id)show
 {
   self->_hiding = 0;
   if (self->_selectionWidget)
@@ -98,15 +98,15 @@
   }
 }
 
-- (void)adjustSelection:(CGPoint)a3
+- (void)adjustSelection:(CGPoint)selection
 {
-  y = a3.y;
-  x = a3.x;
+  y = selection.y;
+  x = selection.x;
   [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:?];
   v42 = v6;
   v43 = v7;
-  v8 = [(UIPDFPageView *)self->_pageView page];
-  [(UIPDFPage *)v8 CGPage];
+  page = [(UIPDFPageView *)self->_pageView page];
+  [(UIPDFPage *)page CGPage];
   if (!self->_rangeMode)
   {
     [(UIPDFSelectionWidget *)self->_selectionWidget selectionRectangle];
@@ -247,17 +247,17 @@ LABEL_10:
 
   else
   {
-    v16 = [(UIPDFPageView *)self->_pageView page];
-    v17 = [(UIPDFPage *)v16 selection];
-    v18 = [(UIPDFSelection *)v17 numberOfRectangles];
-    if (v18)
+    page2 = [(UIPDFPageView *)self->_pageView page];
+    selection = [(UIPDFPage *)page2 selection];
+    numberOfRectangles = [(UIPDFSelection *)selection numberOfRectangles];
+    if (numberOfRectangles)
     {
-      v19 = v18;
+      v19 = numberOfRectangles;
       for (i = 0; i != v19; ++i)
       {
         memset(&v46, 0, sizeof(v46));
         memset(&v45, 0, sizeof(v45));
-        [(UIPDFSelection *)v17 getBounds:&v46 transform:&v45 index:i];
+        [(UIPDFSelection *)selection getBounds:&v46 transform:&v45 index:i];
         origin = v46.origin;
         size = v46.size;
         v44 = v45;
@@ -269,12 +269,12 @@ LABEL_10:
     }
 
     CGPDFSelectionRelease();
-    [(UIPDFPage *)v16 CGPage];
+    [(UIPDFPage *)page2 CGPage];
     IntersectingRect = CGPDFSelectionCreateIntersectingRect();
     if (IntersectingRect)
     {
-      v35 = [[UIPDFSelection alloc] initWithPage:v16 cgSelection:IntersectingRect];
-      [(UIPDFPage *)v16 setSelection:v35];
+      v35 = [[UIPDFSelection alloc] initWithPage:page2 cgSelection:IntersectingRect];
+      [(UIPDFPage *)page2 setSelection:v35];
 
       [(UIPDFSelectionWidget *)self->_selectionWidget remove];
       self->_rangeMode = 0;
@@ -285,10 +285,10 @@ LABEL_10:
     }
   }
 
-  v37 = [[UIPDFSelection alloc] initWithPage:v8 cgSelection:IntersectingRect];
+  v37 = [[UIPDFSelection alloc] initWithPage:page cgSelection:IntersectingRect];
   self->_firstIndex = [(UIPDFSelection *)v37 startIndex];
   self->_lastIndex = [(UIPDFSelection *)v37 endIndex];
-  [(UIPDFPage *)v8 setSelection:v37];
+  [(UIPDFPage *)page setSelection:v37];
 
   CGPDFSelectionRelease();
   [(UIPDFSelectionWidget *)self->_selectionWidget setSelection:[[(UIPDFPageView *)self->_pageView page] selection]];
@@ -296,24 +296,24 @@ LABEL_30:
   [(UIPDFPageView *)self->_pageView setNeedsDisplay];
 }
 
-- (void)addSelectionWidget:(id)a3
+- (void)addSelectionWidget:(id)widget
 {
   v5 = objc_alloc_init(UIPDFTextRangeWidget);
   self->_selectionWidget = v5;
   [(UIPDFTextRangeWidget *)v5 setPageView:self->_pageView];
-  [(UIPDFSelectionWidget *)self->_selectionWidget setSelection:a3];
+  [(UIPDFSelectionWidget *)self->_selectionWidget setSelection:widget];
 
   [(UIPDFSelectionController *)self suspendInstantHighlightMode];
 }
 
-- (void)setSelectionFor:(CGPoint)a3
+- (void)setSelectionFor:(CGPoint)for
 {
   if (!self->_instantHighlightMode)
   {
-    y = a3.y;
-    x = a3.x;
-    v7 = [(UIPDFPageView *)self->_pageView page];
-    [(UIPDFPage *)v7 CGPage];
+    y = for.y;
+    x = for.x;
+    page = [(UIPDFPageView *)self->_pageView page];
+    [(UIPDFPage *)page CGPage];
     [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:x, y];
     v8 = CGPDFSelectionCreateAtPointWithOptions();
     if (v8)
@@ -336,14 +336,14 @@ LABEL_30:
         v9 = CGPDFSelectionCreateAtPointWithOptions();
       }
 
-      v12 = [[UIPDFSelection alloc] initWithPage:v7 cgSelection:v9];
+      v12 = [[UIPDFSelection alloc] initWithPage:page cgSelection:v9];
       CGPDFSelectionRelease();
-      [(UIPDFPage *)v7 setSelection:v12];
+      [(UIPDFPage *)page setSelection:v12];
     }
 
     else
     {
-      [(UIPDFPage *)v7 setSelection:0];
+      [(UIPDFPage *)page setSelection:0];
     }
 
     pageView = self->_pageView;
@@ -354,19 +354,19 @@ LABEL_30:
 
 - (void)extendSelectionToParagraph
 {
-  v3 = [(UIPDFPageView *)self->_pageView page];
-  v4 = [(UIPDFPage *)v3 selection];
-  [(UIPDFSelection *)v4 extendToParagraph];
-  [(UIPDFPage *)v3 setSelection:v4];
+  page = [(UIPDFPageView *)self->_pageView page];
+  selection = [(UIPDFPage *)page selection];
+  [(UIPDFSelection *)selection extendToParagraph];
+  [(UIPDFPage *)page setSelection:selection];
   selectionWidget = self->_selectionWidget;
 
-  [(UIPDFSelectionWidget *)selectionWidget setSelection:v4];
+  [(UIPDFSelectionWidget *)selectionWidget setSelection:selection];
 }
 
 - (void)clearSelection
 {
-  v3 = [(UIPDFPageView *)self->_pageView page];
-  if ([(UIPDFPage *)v3 selection])
+  page = [(UIPDFPageView *)self->_pageView page];
+  if ([(UIPDFPage *)page selection])
   {
     if (self->_selectionWidget)
     {
@@ -381,7 +381,7 @@ LABEL_30:
       *&self->_instantModeIsSuspended = 256;
     }
 
-    [(UIPDFPage *)v3 setSelection:0];
+    [(UIPDFPage *)page setSelection:0];
     pageView = self->_pageView;
 
     [(UIPDFPageView *)pageView setNeedsDisplay];
@@ -397,14 +397,14 @@ LABEL_30:
   }
 }
 
-- (BOOL)shouldTrackAt:(CGPoint)a3
+- (BOOL)shouldTrackAt:(CGPoint)at
 {
   selectionWidget = self->_selectionWidget;
   if (selectionWidget)
   {
     self->_resizingWidget = 0;
     v7 = 0;
-    v5 = [(UIPDFSelectionWidget *)selectionWidget hitTest:&v7 fixedPoint:&self->_preceeds preceeds:a3.x, a3.y];
+    v5 = [(UIPDFSelectionWidget *)selectionWidget hitTest:&v7 fixedPoint:&self->_preceeds preceeds:at.x, at.y];
     if (v5)
     {
       self->_isTracking = 1;
@@ -425,15 +425,15 @@ LABEL_30:
   return v5;
 }
 
-- (void)startSelectingAt:(CGPoint)a3
+- (void)startSelectingAt:(CGPoint)at
 {
-  [(UIPDFSelectionController *)self setSelectionFor:a3.x, a3.y];
+  [(UIPDFSelectionController *)self setSelectionFor:at.x, at.y];
   if (!self->_rangeMode)
   {
-    v4 = [[(UIPDFPageView *)self->_pageView page] selection];
-    if (v4)
+    selection = [[(UIPDFPageView *)self->_pageView page] selection];
+    if (selection)
     {
-      v5 = v4;
+      v5 = selection;
 
       v6 = objc_alloc_init(UIPDFParagraphWidget);
       self->_selectionWidget = v6;
@@ -456,18 +456,18 @@ LABEL_30:
   [(UIView *)pageView setNeedsLayout];
 }
 
-- (void)startTracking:(CGPoint)a3 showMagnifier:(BOOL *)a4
+- (void)startTracking:(CGPoint)tracking showMagnifier:(BOOL *)magnifier
 {
-  y = a3.y;
-  x = a3.x;
+  y = tracking.y;
+  x = tracking.x;
   if (self->_instantHighlightMode)
   {
     self->_cancelled = 0;
-    *a4 = 0;
-    v8 = [(UIPDFPageView *)self->_pageView annotationController];
-    if ([(UIPDFAnnotationController *)v8 willTrackAtPoint:x, y])
+    *magnifier = 0;
+    annotationController = [(UIPDFPageView *)self->_pageView annotationController];
+    if ([(UIPDFAnnotationController *)annotationController willTrackAtPoint:x, y])
     {
-      [(UIPDFAnnotationController *)v8 startTracking:x, y];
+      [(UIPDFAnnotationController *)annotationController startTracking:x, y];
       [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:x, y];
       self->_startPoint.x = v9;
       self->_startPoint.y = v10;
@@ -483,8 +483,8 @@ LABEL_30:
   {
     if (self->_resizingWidget)
     {
-      *a4 = self->_rangeMode;
-      [(UIPDFSelectionWidget *)self->_selectionWidget selectedPointFor:a3.x, a3.y];
+      *magnifier = self->_rangeMode;
+      [(UIPDFSelectionWidget *)self->_selectionWidget selectedPointFor:tracking.x, tracking.y];
       self->_adjustedPoint.x = v11;
       self->_adjustedPoint.y = v12;
       if ([(UIPDFPageView *)self->_pageView delegate])
@@ -501,7 +501,7 @@ LABEL_30:
     {
       self->_rangeMode = ![(UIPDFSelectionController *)self useParagraphMode];
       v13 = ![(UIPDFPageView *)self->_pageView allowHighlighting]&& self->_rangeMode;
-      *a4 = v13;
+      *magnifier = v13;
       [(UIPDFSelectionController *)self startSelectingAt:x, y];
     }
 
@@ -512,20 +512,20 @@ LABEL_30:
   }
 }
 
-- (void)tracking:(CGPoint)a3 showMagnifier:(BOOL *)a4
+- (void)tracking:(CGPoint)tracking showMagnifier:(BOOL *)magnifier
 {
   if (!self->_pageView)
   {
     return;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = tracking.y;
+  x = tracking.x;
   if (!self->_instantHighlightMode)
   {
     if (self->_resizingWidget)
     {
-      [(UIPDFSelectionWidget *)self->_selectionWidget selectedPointFor:a3.x, a3.y];
+      [(UIPDFSelectionWidget *)self->_selectionWidget selectedPointFor:tracking.x, tracking.y];
       self->_adjustedPoint.x = v9;
       self->_adjustedPoint.y = v10;
       [(UIPDFSelectionWidget *)self->_selectionWidget track:x, y];
@@ -535,13 +535,13 @@ LABEL_30:
 
     else
     {
-      [(UIPDFSelectionController *)self setSelectionFor:a3.x, a3.y];
+      [(UIPDFSelectionController *)self setSelectionFor:tracking.x, tracking.y];
       rangeMode = self->_rangeMode;
       if (!rangeMode)
       {
-        v12 = [[(UIPDFPageView *)self->_pageView page] selection];
+        selection = [[(UIPDFPageView *)self->_pageView page] selection];
         selectionWidget = self->_selectionWidget;
-        if (v12)
+        if (selection)
         {
           if (!selectionWidget)
           {
@@ -551,7 +551,7 @@ LABEL_30:
             selectionWidget = self->_selectionWidget;
           }
 
-          [(UIPDFSelectionWidget *)selectionWidget setSelection:v12];
+          [(UIPDFSelectionWidget *)selectionWidget setSelection:selection];
         }
 
         else if (selectionWidget)
@@ -565,7 +565,7 @@ LABEL_30:
       }
     }
 
-    *a4 = rangeMode;
+    *magnifier = rangeMode;
 LABEL_10:
     [(UIView *)self->_pageView setNeedsLayout];
     p_needsLayout = &self->_needsLayout;
@@ -574,8 +574,8 @@ LABEL_10:
 
   if (!self->_cancelled)
   {
-    *a4 = 0;
-    [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pageView annotationController] tracking:a3.x, a3.y];
+    *magnifier = 0;
+    [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pageView annotationController] tracking:tracking.x, tracking.y];
     p_needsLayout = &self->_needsLayout;
     if (self->_needsLayout)
     {
@@ -586,31 +586,31 @@ LABEL_11:
   }
 }
 
-- (void)endTracking:(CGPoint)a3
+- (void)endTracking:(CGPoint)tracking
 {
   if (self->_instantHighlightMode)
   {
     if (!self->_cancelled)
     {
-      y = a3.y;
-      x = a3.x;
-      v6 = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pageView annotationController] madeInstantAnnotation];
+      y = tracking.y;
+      x = tracking.x;
+      madeInstantAnnotation = [(UIPDFAnnotationController *)[(UIPDFPageView *)self->_pageView annotationController] madeInstantAnnotation];
       pageView = self->_pageView;
-      if (v6)
+      if (madeInstantAnnotation)
       {
         [(UIPDFAnnotationController *)[(UIPDFPageView *)pageView annotationController] endTrackingAtPoint:x, y];
       }
 
       else
       {
-        v12 = [(UIPDFPageView *)pageView page];
+        page = [(UIPDFPageView *)pageView page];
         [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:x, y];
-        [(UIPDFPage *)v12 CGPage];
+        [(UIPDFPage *)page CGPage];
         v13 = CGPDFSelectionCreateAtPointWithOptions();
         if (v13)
         {
           v14 = [[UIPDFSelection alloc] initWithPage:[(UIPDFPageView *)self->_pageView page] cgSelection:v13];
-          [(UIPDFPage *)v12 setSelection:v14];
+          [(UIPDFPage *)page setSelection:v14];
 
           selectionWidget = self->_selectionWidget;
           if (selectionWidget)
@@ -635,12 +635,12 @@ LABEL_11:
   {
     if (self->_rangeMode)
     {
-      v8 = [[(UIPDFPageView *)self->_pageView page:a3.x] selection];
-      if (v8)
+      selection = [[(UIPDFPageView *)self->_pageView page:tracking.x] selection];
+      if (selection)
       {
         if (!self->_resizingWidget)
         {
-          v9 = v8;
+          v9 = selection;
           v10 = self->_selectionWidget;
           if (v10)
           {
@@ -675,10 +675,10 @@ LABEL_11:
 
 - (void)suspendInstantHighlightMode
 {
-  v3 = [[(UIPDFPageView *)self->_pageView page] selection];
-  if (v3)
+  selection = [[(UIPDFPageView *)self->_pageView page] selection];
+  if (selection)
   {
-    v4 = v3;
+    v4 = selection;
     self->_resizingWidget = 0;
     self->_rangeMode = 1;
     *&self->_instantModeIsSuspended = 1;
@@ -692,10 +692,10 @@ LABEL_11:
     self->_selectionWidget = v6;
     [(UIPDFTextRangeWidget *)v6 setPageView:self->_pageView];
     [(UIPDFSelectionWidget *)self->_selectionWidget setSelection:v4];
-    v7 = [(UIPDFSelection *)v4 CGSelection];
+    cGSelection = [(UIPDFSelection *)v4 CGSelection];
     self->_firstIndex = 0;
     self->_lastIndex = 0;
-    if (v7)
+    if (cGSelection)
     {
       StartIndex = CGPDFSelectionGetStartIndex();
       EndIndex = CGPDFSelectionGetEndIndex();
@@ -708,22 +708,22 @@ LABEL_11:
   }
 }
 
-- (void)startTracking:(CGPoint)a3 andPoint:(CGPoint)a4
+- (void)startTracking:(CGPoint)tracking andPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UIPDFPageView *)self->_pageView page];
-  [(UIPDFPage *)v9 CGPage];
+  y = point.y;
+  x = point.x;
+  v6 = tracking.y;
+  v7 = tracking.x;
+  page = [(UIPDFPageView *)self->_pageView page];
+  [(UIPDFPage *)page CGPage];
   [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:v7, v6];
   [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:x, y];
   BetweenPoints = CGPDFSelectionCreateBetweenPoints();
   if (BetweenPoints)
   {
-    v11 = [[UIPDFSelection alloc] initWithPage:v9 cgSelection:BetweenPoints];
+    v11 = [[UIPDFSelection alloc] initWithPage:page cgSelection:BetweenPoints];
     CGPDFSelectionRelease();
-    [(UIPDFPage *)v9 setSelection:v11];
+    [(UIPDFPage *)page setSelection:v11];
     selectionWidget = self->_selectionWidget;
     if (selectionWidget)
     {
@@ -742,7 +742,7 @@ LABEL_11:
 
   else
   {
-    [(UIPDFPage *)v9 setSelection:0];
+    [(UIPDFPage *)page setSelection:0];
   }
 
   [(UIView *)self->_pageView setNeedsLayout];
@@ -751,22 +751,22 @@ LABEL_11:
   [(UIPDFPageView *)pageView setNeedsDisplay];
 }
 
-- (void)tracking:(CGPoint)a3 andPoint:(CGPoint)a4
+- (void)tracking:(CGPoint)tracking andPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UIPDFPageView *)self->_pageView page];
-  [(UIPDFPage *)v9 CGPage];
+  y = point.y;
+  x = point.x;
+  v6 = tracking.y;
+  v7 = tracking.x;
+  page = [(UIPDFPageView *)self->_pageView page];
+  [(UIPDFPage *)page CGPage];
   [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:v7, v6];
   [(UIPDFPageView *)self->_pageView convertPointToPDFPageSpace:x, y];
   BetweenPoints = CGPDFSelectionCreateBetweenPoints();
   if (BetweenPoints)
   {
-    v11 = [[UIPDFSelection alloc] initWithPage:v9 cgSelection:BetweenPoints];
+    v11 = [[UIPDFSelection alloc] initWithPage:page cgSelection:BetweenPoints];
     CGPDFSelectionRelease();
-    [(UIPDFPage *)v9 setSelection:v11];
+    [(UIPDFPage *)page setSelection:v11];
     [(UIPDFSelectionWidget *)self->_selectionWidget setSelection:v11];
     [(UIPDFSelectionWidget *)self->_selectionWidget layout];
 

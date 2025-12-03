@@ -1,16 +1,16 @@
 @interface PTRow
 + (id)row;
-+ (id)rowWithTitle:(id)a3 valueGetter:(id)a4 valueSetter:(id)a5;
-+ (id)rowWithTitle:(id)a3 valueKeyPath:(id)a4;
++ (id)rowWithTitle:(id)title valueGetter:(id)getter valueSetter:(id)setter;
++ (id)rowWithTitle:(id)title valueKeyPath:(id)path;
 - (BOOL)isEncodable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PTRow)init;
-- (PTRow)initWithCoder:(id)a3;
+- (PTRow)initWithCoder:(id)coder;
 - (PTRowAction)action;
 - (PTSection)section;
-- (id)childSettingsForKeyPath:(id)a3;
-- (id)conditionFormat:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)childSettingsForKeyPath:(id)path;
+- (id)conditionFormat:(id)format;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)image;
 - (id)title;
 - (id)value;
@@ -20,10 +20,10 @@
 - (void)_sendTitleChanged;
 - (void)_sendValueChanged;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSettings:(id)a3;
-- (void)setValue:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSettings:(id)settings;
+- (void)setValue:(id)value;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation PTRow
@@ -35,28 +35,28 @@
   return v2;
 }
 
-+ (id)rowWithTitle:(id)a3 valueKeyPath:(id)a4
++ (id)rowWithTitle:(id)title valueKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 row];
-  v9 = [v8 staticTitle:v7];
+  pathCopy = path;
+  titleCopy = title;
+  v8 = [self row];
+  v9 = [v8 staticTitle:titleCopy];
 
-  v10 = [v9 valueKeyPath:v6];
+  v10 = [v9 valueKeyPath:pathCopy];
 
   return v10;
 }
 
-+ (id)rowWithTitle:(id)a3 valueGetter:(id)a4 valueSetter:(id)a5
++ (id)rowWithTitle:(id)title valueGetter:(id)getter valueSetter:(id)setter
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 row];
-  v12 = [v11 staticTitle:v10];
+  setterCopy = setter;
+  getterCopy = getter;
+  titleCopy = title;
+  v11 = [self row];
+  v12 = [v11 staticTitle:titleCopy];
 
-  [v12 setValueGetter:v9];
-  [v12 setValueSetter:v8];
+  [v12 setValueGetter:getterCopy];
+  [v12 setValueSetter:setterCopy];
 
   return v12;
 }
@@ -68,9 +68,9 @@
   v2 = [(PTRow *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
   }
 
   return v2;
@@ -90,9 +90,9 @@
   [(PTRow *)&v4 dealloc];
 }
 
-- (id)conditionFormat:(id)a3
+- (id)conditionFormat:(id)format
 {
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:a3 arguments:&v6];
+  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:format arguments:&v6];
   [(PTRow *)self setCondition:v4];
 
   return self;
@@ -135,21 +135,21 @@
   action = self->_action;
   if (action)
   {
-    v3 = action;
+    _defaultAction = action;
   }
 
   else
   {
-    v3 = [(PTRow *)self _defaultAction];
+    _defaultAction = [(PTRow *)self _defaultAction];
   }
 
-  return v3;
+  return _defaultAction;
 }
 
-- (id)childSettingsForKeyPath:(id)a3
+- (id)childSettingsForKeyPath:(id)path
 {
   settings = self->_settings;
-  if (a3)
+  if (path)
   {
     v4 = [(PTSettings *)settings valueForKeyPath:?];
   }
@@ -197,11 +197,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   valueValidatator = self->_valueValidatator;
-  v8 = v4;
+  v8 = valueCopy;
   if (valueValidatator)
   {
     valueValidatator[2]();
@@ -209,7 +209,7 @@ LABEL_6:
 
   else
   {
-    [(PTRow *)self _validatedValue:v4];
+    [(PTRow *)self _validatedValue:valueCopy];
   }
   v6 = ;
   if (self->_valueKeyPath)
@@ -232,49 +232,49 @@ LABEL_6:
   }
 }
 
-- (void)setSettings:(id)a3
+- (void)setSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   settings = self->_settings;
-  if (settings != v5)
+  if (settings != settingsCopy)
   {
-    v7 = v5;
+    v7 = settingsCopy;
     [(PTSettings *)settings removeKeyPathObserver:self];
-    objc_storeStrong(&self->_settings, a3);
+    objc_storeStrong(&self->_settings, settings);
     settings = [(PTSettings *)self->_settings addKeyPathObserver:self];
-    v5 = v7;
+    settingsCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](settings, v5);
+  MEMORY[0x2821F96F8](settings, settingsCopy);
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_settings == a3)
+  pathCopy = path;
+  v7 = pathCopy;
+  if (self->_settings == settings)
   {
-    v8 = v6;
-    if ([v6 isEqualToString:self->_valueKeyPath])
+    v8 = pathCopy;
+    if ([pathCopy isEqualToString:self->_valueKeyPath])
     {
-      v6 = [(PTRow *)self _sendValueChanged];
+      pathCopy = [(PTRow *)self _sendValueChanged];
     }
 
     else if ([v8 isEqualToString:self->_titleKeyPath])
     {
-      v6 = [(PTRow *)self _sendTitleChanged];
+      pathCopy = [(PTRow *)self _sendTitleChanged];
     }
 
     else
     {
-      v6 = [v8 isEqualToString:self->_imageKeyPath];
+      pathCopy = [v8 isEqualToString:self->_imageKeyPath];
       v7 = v8;
-      if (!v6)
+      if (!pathCopy)
       {
         goto LABEL_9;
       }
 
-      v6 = [(PTRow *)self _sendImageChanged];
+      pathCopy = [(PTRow *)self _sendImageChanged];
     }
 
     v7 = v8;
@@ -282,7 +282,7 @@ LABEL_6:
 
 LABEL_9:
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](pathCopy, v7);
 }
 
 - (void)_sendValueChanged
@@ -445,15 +445,15 @@ LABEL_9:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
 
-  else if ([(PTRow *)v4 isMemberOfClass:objc_opt_class()]&& BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualObjects())
+  else if ([(PTRow *)equalCopy isMemberOfClass:objc_opt_class()]&& BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualStrings() && BSEqualObjects())
   {
     v5 = BSEqualObjects();
   }
@@ -468,21 +468,21 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_valueKeyPath];
-  v5 = [v3 appendString:self->_staticTitle];
-  v6 = [v3 appendString:self->_titleKeyPath];
-  v7 = [v3 appendString:self->_imageKeyPath];
-  v8 = [v3 appendObject:self->_condition];
-  v9 = [v3 appendObject:self->_action];
-  v10 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_valueKeyPath];
+  v5 = [builder appendString:self->_staticTitle];
+  v6 = [builder appendString:self->_titleKeyPath];
+  v7 = [builder appendString:self->_imageKeyPath];
+  v8 = [builder appendObject:self->_condition];
+  v9 = [builder appendObject:self->_action];
+  v10 = [builder hash];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setValueKeyPath:self->_valueKeyPath];
   [v4 setStaticTitle:self->_staticTitle];
   [v4 setStaticImage:self->_staticImage];
@@ -497,15 +497,15 @@ LABEL_9:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  [v11 encodeObject:self->_valueKeyPath forKey:@"valueKeyPath"];
-  [v11 encodeObject:self->_staticTitle forKey:@"staticTitle"];
-  [v11 encodeObject:self->_titleKeyPath forKey:@"titleKeyPath"];
-  [v11 encodeObject:self->_imageKeyPath forKey:@"imageKeyPath"];
-  v4 = [(NSPredicate *)self->_condition predicateFormat];
-  v5 = [v4 containsString:@"BLOCKPREDICATE"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_valueKeyPath forKey:@"valueKeyPath"];
+  [coderCopy encodeObject:self->_staticTitle forKey:@"staticTitle"];
+  [coderCopy encodeObject:self->_titleKeyPath forKey:@"titleKeyPath"];
+  [coderCopy encodeObject:self->_imageKeyPath forKey:@"imageKeyPath"];
+  predicateFormat = [(NSPredicate *)self->_condition predicateFormat];
+  v5 = [predicateFormat containsString:@"BLOCKPREDICATE"];
 
   if (v5)
   {
@@ -520,42 +520,42 @@ LABEL_9:
 
   if (os_variant_allows_internal_security_policies())
   {
-    [v11 encodeObject:self->_condition forKey:@"condition"];
+    [coderCopy encodeObject:self->_condition forKey:@"condition"];
   }
 
-  [v11 encodeObject:self->_action forKey:@"action"];
+  [coderCopy encodeObject:self->_action forKey:@"action"];
 }
 
-- (PTRow)initWithCoder:(id)a3
+- (PTRow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
 
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"valueKeyPath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"valueKeyPath"];
     valueKeyPath = v5->_valueKeyPath;
     v5->_valueKeyPath = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"staticTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staticTitle"];
     staticTitle = v5->_staticTitle;
     v5->_staticTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKeyPath"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKeyPath"];
     titleKeyPath = v5->_titleKeyPath;
     v5->_titleKeyPath = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageKeyPath"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageKeyPath"];
     imageKeyPath = v5->_imageKeyPath;
     v5->_imageKeyPath = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     action = v5->_action;
     v5->_action = v14;
 
     if (os_variant_allows_internal_security_policies())
     {
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"condition"];
       condition = v5->_condition;
       v5->_condition = v16;
 

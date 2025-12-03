@@ -1,29 +1,29 @@
 @interface VVVerifier
-- (BOOL)valueForCheckpointKey:(id)a3 exists:(BOOL *)a4;
-- (VVVerifier)initWithAccountDir:(id)a3;
+- (BOOL)valueForCheckpointKey:(id)key exists:(BOOL *)exists;
+- (VVVerifier)initWithAccountDir:(id)dir;
 - (id)_checkpointDictionary;
 - (id)_checkpointDictionaryFilePath;
 - (id)configurationDictionary;
-- (id)humanReadableConfigurationDictionary:(id *)a3;
+- (id)humanReadableConfigurationDictionary:(id *)dictionary;
 - (id)keyDescriptions;
 - (id)readableError;
 - (void)_checkpointDictionaryChanged;
-- (void)_mapFromSourceDictionary:(id)a3 destinationDictionary:(id)a4 inKey:(id)a5 outDescription:(id)a6;
+- (void)_mapFromSourceDictionary:(id)dictionary destinationDictionary:(id)destinationDictionary inKey:(id)key outDescription:(id)description;
 - (void)_saveCheckpointDictionary;
 @end
 
 @implementation VVVerifier
 
-- (VVVerifier)initWithAccountDir:(id)a3
+- (VVVerifier)initWithAccountDir:(id)dir
 {
-  v4 = a3;
+  dirCopy = dir;
   v8.receiver = self;
   v8.super_class = VVVerifier;
   v5 = [(VVVerifier *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(VVVerifier *)v5 setAccountDir:v4];
+    [(VVVerifier *)v5 setAccountDir:dirCopy];
   }
 
   return v6;
@@ -49,11 +49,11 @@
   checkpointDictionary = self->_checkpointDictionary;
   if (!checkpointDictionary)
   {
-    v4 = [(VVVerifier *)self _checkpointDictionaryFilePath];
+    _checkpointDictionaryFilePath = [(VVVerifier *)self _checkpointDictionaryFilePath];
     v5 = +[NSFileManager defaultManager];
-    if ([v5 fileExistsAtPath:v4])
+    if ([v5 fileExistsAtPath:_checkpointDictionaryFilePath])
     {
-      v6 = [[NSMutableDictionary alloc] initWithContentsOfFile:v4];
+      v6 = [[NSMutableDictionary alloc] initWithContentsOfFile:_checkpointDictionaryFilePath];
     }
 
     else
@@ -74,10 +74,10 @@
 {
   if (self->_checkpointDictionary)
   {
-    v3 = [(VVVerifier *)self _checkpointDictionaryFilePath];
+    _checkpointDictionaryFilePath = [(VVVerifier *)self _checkpointDictionaryFilePath];
     checkpointDictionary = self->_checkpointDictionary;
     v13 = 0;
-    v5 = [(NSMutableDictionary *)checkpointDictionary writeToFile:v3 options:268435457 error:&v13];
+    v5 = [(NSMutableDictionary *)checkpointDictionary writeToFile:_checkpointDictionaryFilePath options:268435457 error:&v13];
     v6 = v13;
     if ((v5 & 1) == 0)
     {
@@ -88,7 +88,7 @@
       }
     }
 
-    v8 = [NSURL fileURLWithPath:v3];
+    v8 = [NSURL fileURLWithPath:_checkpointDictionaryFilePath];
     v12 = 0;
     v9 = [v8 setResourceValue:&__kCFBooleanTrue forKey:NSURLIsExcludedFromBackupKey error:&v12];
     v10 = v12;
@@ -105,33 +105,33 @@
   }
 }
 
-- (BOOL)valueForCheckpointKey:(id)a3 exists:(BOOL *)a4
+- (BOOL)valueForCheckpointKey:(id)key exists:(BOOL *)exists
 {
-  v6 = a3;
-  v7 = [(VVVerifier *)self _checkpointDictionary];
-  v8 = [v7 valueForKey:v6];
+  keyCopy = key;
+  _checkpointDictionary = [(VVVerifier *)self _checkpointDictionary];
+  v8 = [_checkpointDictionary valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (a4)
+    if (exists)
     {
-      *a4 = 1;
+      *exists = 1;
     }
 
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
   }
 
   else
   {
-    v9 = 0;
-    if (a4)
+    bOOLValue = 0;
+    if (exists)
     {
-      *a4 = 0;
+      *exists = 0;
     }
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)keyDescriptions
@@ -210,68 +210,68 @@ LABEL_14:
   checkpointDictionary = self->_checkpointDictionary;
   self->_checkpointDictionary = 0;
 
-  v3 = [@"com.apple.visualvoicemail.VVVerifierChanged" UTF8String];
+  uTF8String = [@"com.apple.visualvoicemail.VVVerifierChanged" UTF8String];
 
-  notify_post(v3);
+  notify_post(uTF8String);
 }
 
 - (id)configurationDictionary
 {
-  v2 = [(VVVerifier *)self accountDir];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.voicemail.imap.parameters.plist"];
+  accountDir = [(VVVerifier *)self accountDir];
+  v3 = [accountDir URLByAppendingPathComponent:@"com.apple.voicemail.imap.parameters.plist"];
 
   v4 = [[NSDictionary alloc] initWithContentsOfURL:v3];
 
   return v4;
 }
 
-- (void)_mapFromSourceDictionary:(id)a3 destinationDictionary:(id)a4 inKey:(id)a5 outDescription:(id)a6
+- (void)_mapFromSourceDictionary:(id)dictionary destinationDictionary:(id)destinationDictionary inKey:(id)key outDescription:(id)description
 {
-  v16 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v16 allKeys];
-  v13 = [v12 containsObject:v10];
+  dictionaryCopy = dictionary;
+  destinationDictionaryCopy = destinationDictionary;
+  keyCopy = key;
+  descriptionCopy = description;
+  allKeys = [dictionaryCopy allKeys];
+  v13 = [allKeys containsObject:keyCopy];
 
   if (v13)
   {
-    v14 = [v16 objectForKey:v10];
+    v14 = [dictionaryCopy objectForKey:keyCopy];
     v15 = [NSString stringWithFormat:@"%@", v14];
-    [v9 setObject:v15 forKey:v11];
+    [destinationDictionaryCopy setObject:v15 forKey:descriptionCopy];
   }
 
   else
   {
-    [v9 setObject:&stru_1000F0098 forKey:v11];
+    [destinationDictionaryCopy setObject:&stru_1000F0098 forKey:descriptionCopy];
   }
 }
 
-- (id)humanReadableConfigurationDictionary:(id *)a3
+- (id)humanReadableConfigurationDictionary:(id *)dictionary
 {
-  v5 = [(VVVerifier *)self configurationDictionary];
-  if (v5)
+  configurationDictionary = [(VVVerifier *)self configurationDictionary];
+  if (configurationDictionary)
   {
     v6 = [NSMutableDictionary dictionaryWithCapacity:6];
-    v7 = [v5 objectForKey:@"AccountSettings"];
+    v7 = [configurationDictionary objectForKey:@"AccountSettings"];
     [(VVVerifier *)self _mapFromSourceDictionary:v7 destinationDictionary:v6 inKey:@"name" outDescription:@"Name"];
     [(VVVerifier *)self _mapFromSourceDictionary:v7 destinationDictionary:v6 inKey:@"port" outDescription:@"Port"];
     [(VVVerifier *)self _mapFromSourceDictionary:v7 destinationDictionary:v6 inKey:@"server" outDescription:@"Server"];
-    [(VVVerifier *)self _mapFromSourceDictionary:v5 destinationDictionary:v6 inKey:@"AccountState" outDescription:@"State"];
-    [(VVVerifier *)self _mapFromSourceDictionary:v5 destinationDictionary:v6 inKey:@"BeaconCount" outDescription:@"Beacons"];
-    [(VVVerifier *)self _mapFromSourceDictionary:v5 destinationDictionary:v6 inKey:@"GreetingType" outDescription:@"Greeting"];
-    if (a3)
+    [(VVVerifier *)self _mapFromSourceDictionary:configurationDictionary destinationDictionary:v6 inKey:@"AccountState" outDescription:@"State"];
+    [(VVVerifier *)self _mapFromSourceDictionary:configurationDictionary destinationDictionary:v6 inKey:@"BeaconCount" outDescription:@"Beacons"];
+    [(VVVerifier *)self _mapFromSourceDictionary:configurationDictionary destinationDictionary:v6 inKey:@"GreetingType" outDescription:@"Greeting"];
+    if (dictionary)
     {
-      *a3 = [NSArray arrayWithObjects:@"Name", @"Port", @"Server", @"State", @"Beacons", @"Greeting", 0];
+      *dictionary = [NSArray arrayWithObjects:@"Name", @"Port", @"Server", @"State", @"Beacons", @"Greeting", 0];
     }
   }
 
   else
   {
     v6 = 0;
-    if (a3)
+    if (dictionary)
     {
-      *a3 = 0;
+      *dictionary = 0;
     }
   }
 

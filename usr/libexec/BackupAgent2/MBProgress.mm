@@ -1,8 +1,8 @@
 @interface MBProgress
 - (BOOL)isFinished;
 - (MBProgress)init;
-- (void)addDuration:(double)a3;
-- (void)updateWithDuration:(double)a3 size:(unint64_t)a4;
+- (void)addDuration:(double)duration;
+- (void)updateWithDuration:(double)duration size:(unint64_t)size;
 @end
 
 @implementation MBProgress
@@ -27,21 +27,21 @@
   return current <= total + 0.001 && total + -0.001 <= current;
 }
 
-- (void)addDuration:(double)a3
+- (void)addDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
     sub_10009C100(a2, self);
   }
 
-  self->_total = self->_total + a3;
+  self->_total = self->_total + duration;
 }
 
-- (void)updateWithDuration:(double)a3 size:(unint64_t)a4
+- (void)updateWithDuration:(double)duration size:(unint64_t)size
 {
   current = self->_current;
   p_current = &self->_current;
-  v8 = current + a3;
+  v8 = current + duration;
   *p_current = v8;
   if (v8 > p_current[1] + 0.001)
   {
@@ -51,7 +51,7 @@
   delegate = self->_delegate;
   [(MBProgress *)self percentage];
 
-  [(MBProgressDelegate *)delegate progressUpdatedWithPercentage:a4 size:?];
+  [(MBProgressDelegate *)delegate progressUpdatedWithPercentage:size size:?];
 }
 
 @end

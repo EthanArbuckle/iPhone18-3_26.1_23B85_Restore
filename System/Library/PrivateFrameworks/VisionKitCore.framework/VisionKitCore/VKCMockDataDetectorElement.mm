@@ -1,22 +1,22 @@
 @interface VKCMockDataDetectorElement
-- (VKCMockDataDetectorElement)initWithDictionary:(id)a3;
+- (VKCMockDataDetectorElement)initWithDictionary:(id)dictionary;
 - (_NSRange)characterRange;
 @end
 
 @implementation VKCMockDataDetectorElement
 
-- (VKCMockDataDetectorElement)initWithDictionary:(id)a3
+- (VKCMockDataDetectorElement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = VKCMockDataDetectorElement;
   v5 = [(VKCBaseDataDetectorElement *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:VKCMockResultDataDetectorTypesKey];
+    v6 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultDataDetectorTypesKey];
     v5->_dataDetectorTypes = [v6 unsignedLongLongValue];
 
-    v7 = [v4 objectForKeyedSubscript:VKCMockResultDataDetectorQuadsKey];
+    v7 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultDataDetectorQuadsKey];
     v8 = v7;
     v9 = MEMORY[0x1E695E0F0];
     if (v7)
@@ -31,15 +31,15 @@
     boundingQuads = v5->_boundingQuads;
     v5->_boundingQuads = v11;
 
-    v13 = [v4 objectForKeyedSubscript:VKCMockResultDataDetectorRangeKey];
+    v13 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultDataDetectorRangeKey];
     v14 = [v13 objectForKeyedSubscript:VKCMockResultRangeLocationKey];
-    v15 = [v14 unsignedLongValue];
+    unsignedLongValue = [v14 unsignedLongValue];
 
     v16 = [v13 objectForKeyedSubscript:VKCMockResultRangeLengthKey];
-    v17 = [v16 unsignedLongValue];
+    unsignedLongValue2 = [v16 unsignedLongValue];
 
-    v5->_characterRange.location = v15;
-    v5->_characterRange.length = v17;
+    v5->_characterRange.location = unsignedLongValue;
+    v5->_characterRange.length = unsignedLongValue2;
   }
 
   return v5;

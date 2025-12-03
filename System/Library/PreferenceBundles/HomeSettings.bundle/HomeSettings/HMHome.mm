@@ -6,11 +6,11 @@
 
 - (BOOL)hos_isMyHome
 {
-  v3 = [(HMHome *)self currentUser];
-  v4 = [(HMHome *)self homeAccessControlForUser:v3];
-  v5 = [v4 isAdministrator];
+  currentUser = [(HMHome *)self currentUser];
+  v4 = [(HMHome *)self homeAccessControlForUser:currentUser];
+  isAdministrator = [v4 isAdministrator];
 
-  return v5;
+  return isAdministrator;
 }
 
 @end

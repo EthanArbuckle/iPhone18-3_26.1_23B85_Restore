@@ -1,15 +1,15 @@
 @interface CycleTimelineCollectionViewLayout
 + (Class)invalidationContextClass;
 + (Class)layoutAttributesClass;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
 - (NSString)description;
 - (_TtC24MenstrualCyclesAppPlugin33CycleTimelineCollectionViewLayout)init;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
@@ -18,7 +18,7 @@
 - (NSString)description
 {
   swift_getObjectType();
-  v3 = self;
+  selfCopy = self;
   v4 = sub_29E2C4AE4();
   MEMORY[0x29ED7FCC0](v4);
 
@@ -46,7 +46,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_29E2BA050();
 }
 
@@ -65,13 +65,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_29E2BA69C(x, y, width, height);
 
   if (v8)
@@ -88,14 +88,14 @@
   return v9;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v4 = sub_29E2BCFB4();
   v5 = *(v4 - 8);
   MEMORY[0x2A1C7C4A8](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_29E2BCF44();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_29E2BAC68(v7);
 
   (*(v5 + 8))(v7, v4);
@@ -103,29 +103,29 @@
   return v9;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_29E2BB0B0(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_29E2BB0B0(contextCopy);
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   v8 = sub_29E2BB320(x, y, width, height);
 
   return v8;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  x = a3.x;
-  v5 = self;
+  x = offset.x;
+  selfCopy = self;
   v6 = sub_29E2BBB40(x);
   v8 = v7;
 
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
-  [(CycleTimelineCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:a3.x withScrollingVelocity:a3.y, 0.0, 0.0];
+  [(CycleTimelineCollectionViewLayout *)self targetContentOffsetForProposedContentOffset:offset.x withScrollingVelocity:offset.y, 0.0, 0.0];
   result.y = v4;
   result.x = v3;
   return result;

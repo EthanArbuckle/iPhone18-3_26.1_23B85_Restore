@@ -1,20 +1,20 @@
 @interface TVLNetworkInterface
-- (TVLNetworkInterface)initWithInterfaceType:(unint64_t)a3 interfaceName:(id)a4;
+- (TVLNetworkInterface)initWithInterfaceType:(unint64_t)type interfaceName:(id)name;
 @end
 
 @implementation TVLNetworkInterface
 
-- (TVLNetworkInterface)initWithInterfaceType:(unint64_t)a3 interfaceName:(id)a4
+- (TVLNetworkInterface)initWithInterfaceType:(unint64_t)type interfaceName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = TVLNetworkInterface;
   v7 = [(TVLNetworkInterface *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    v7->_interfaceType = a3;
-    v9 = [v6 copy];
+    v7->_interfaceType = type;
+    v9 = [nameCopy copy];
     interfaceName = v8->_interfaceName;
     v8->_interfaceName = v9;
 

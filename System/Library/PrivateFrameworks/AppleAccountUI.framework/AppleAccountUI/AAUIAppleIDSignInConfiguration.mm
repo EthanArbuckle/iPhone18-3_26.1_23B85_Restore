@@ -1,12 +1,12 @@
 @interface AAUIAppleIDSignInConfiguration
-- (AAUIAppleIDSignInConfiguration)initWithNavController:(id)a3;
+- (AAUIAppleIDSignInConfiguration)initWithNavController:(id)controller;
 @end
 
 @implementation AAUIAppleIDSignInConfiguration
 
-- (AAUIAppleIDSignInConfiguration)initWithNavController:(id)a3
+- (AAUIAppleIDSignInConfiguration)initWithNavController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AAUIAppleIDSignInConfiguration;
   v5 = [(AAUIAppleIDSignInConfiguration *)&v9 init];
@@ -16,7 +16,7 @@
     signInConfiguration = v5->_signInConfiguration;
     v5->_signInConfiguration = v6;
 
-    [(AAUIServiceSignInConfiguration *)v5->_signInConfiguration setNavigationController:v4];
+    [(AAUIServiceSignInConfiguration *)v5->_signInConfiguration setNavigationController:controllerCopy];
   }
 
   return v5;

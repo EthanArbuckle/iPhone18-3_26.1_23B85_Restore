@@ -10,14 +10,14 @@
   v13.receiver = self;
   v13.super_class = TVLatencyColorimeterTrainingView;
   [(TVLatencyColorimeterTrainingView *)&v13 layoutSubviews];
-  v3 = [(TVLatencyColorimeterTrainingView *)self superview];
-  [v3 bounds];
+  superview = [(TVLatencyColorimeterTrainingView *)self superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(TVLatencyColorimeterTrainingView *)self layer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  layer = [(TVLatencyColorimeterTrainingView *)self layer];
+  [layer setFrame:{v5, v7, v9, v11}];
 }
 
 - (id)makeCAPackage

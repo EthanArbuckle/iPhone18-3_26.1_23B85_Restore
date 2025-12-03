@@ -1,9 +1,9 @@
 @interface BMEventTimeElapsingImplementor
 - (BMEventTimeElapsingImplementor)init;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isValidWithContext:(id)context error:(id *)error;
 - (NSDateInterval)dateInterval;
-- (void)setDateInterval:(id)a3;
+- (void)setDateInterval:(id)interval;
 @end
 
 @implementation BMEventTimeElapsingImplementor
@@ -35,31 +35,31 @@
   return v6;
 }
 
-- (void)setDateInterval:(id)a3
+- (void)setDateInterval:(id)interval
 {
-  v4 = a3;
-  v5 = [v4 startDate];
-  [v5 timeIntervalSinceReferenceDate];
+  intervalCopy = interval;
+  startDate = [intervalCopy startDate];
+  [startDate timeIntervalSinceReferenceDate];
   [(BMEventTimeElapsingImplementor *)self setAbsoluteTimestamp:?];
 
-  [v4 duration];
+  [intervalCopy duration];
   v7 = v6;
 
   [(BMEventTimeElapsingImplementor *)self setDuration:v7];
 }
 
-- (BOOL)isValidWithContext:(id)a3 error:(id *)a4
+- (BOOL)isValidWithContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   [(BMEventTimeElapsingImplementor *)self absoluteTimestamp];
   v7 = v6 > 0.0;
-  v8 = [v5 previousEvent];
+  previousEvent = [contextCopy previousEvent];
 
   [(BMEventTimeElapsingImplementor *)self absoluteTimestamp];
   v10 = v9;
-  v11 = [v8 dateInterval];
-  v12 = [v11 endDate];
-  [v12 timeIntervalSinceReferenceDate];
+  dateInterval = [previousEvent dateInterval];
+  endDate = [dateInterval endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v14 = v10 >= v13 && v7;
 
   if (!v14)
@@ -74,9 +74,9 @@
   return v14;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v5 = [(BMEventTimeElapsingImplementor *)self isValidWithContext:a3 error:a4];
+  v5 = [(BMEventTimeElapsingImplementor *)self isValidWithContext:context error:error];
   [(BMEventTimeElapsingImplementor *)self duration];
   return v6 > 0.0 && v5;
 }

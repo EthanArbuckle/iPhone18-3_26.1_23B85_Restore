@@ -1,90 +1,90 @@
 @interface Pass
 + (id)_copyPropertiesForPass;
-+ (id)_dynamicStateInDatabase:(id)a3 forPassPID:(int64_t)a4;
-+ (id)_insertionDictionaryWithPass:(id)a3 passType:(id)a4;
-+ (id)_predicateForPassAnnotationState:(int64_t)a3;
++ (id)_dynamicStateInDatabase:(id)database forPassPID:(int64_t)d;
++ (id)_insertionDictionaryWithPass:(id)pass passType:(id)type;
++ (id)_predicateForPassAnnotationState:(int64_t)state;
 + (id)_propertySettersForDisplayProfile;
 + (id)_propertySettersForGroupingProfile;
 + (id)_propertySettersForPass;
 + (id)_propertySettersForUpdateContext;
-+ (id)_realPassInDatabase:(id)a3 withProperties:(id)a4 values:(const void *)a5 fromPass:(id)a6;
-+ (id)_realPassPredicateForPredicate:(id)a3;
-+ (id)_realPassesInDatabase:(id)a3 states:(id *)a4 predicate:(id)a5 orderedBy:(id)a6;
-+ (id)_updateDictionaryWithDisplayProfile:(id)a3;
-+ (id)_updateDictionaryWithPass:(id)a3;
-+ (id)anyInDatabase:(id)a3 withApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5;
-+ (id)anyInDatabase:(id)a3 withApplicationIdentifier:(id)a4 secureElementIdentifiers:(id)a5;
-+ (id)anyInDatabase:(id)a3 withAssociatedAccountIdentifier:(id)a4;
-+ (id)anyInDatabase:(id)a3 withGroup:(id)a4;
-+ (id)anyInDatabase:(id)a3 withNotificationService:(id)a4;
-+ (id)anyInDatabase:(id)a3 withPassType:(id)a4;
-+ (id)anyInDatabase:(id)a3 withPassType:(id)a4 serialNumber:(id)a5;
-+ (id)anyInDatabase:(id)a3 withPersistentID:(int64_t)a4;
-+ (id)anyInDatabase:(id)a3 withPrimaryAccountIdentifier:(id)a4;
-+ (id)anyInDatabase:(id)a3 withProvisioningCredentialHash:(id)a4;
-+ (id)anyInDatabase:(id)a3 withReaderIdentifier:(id)a4;
-+ (id)anyInDatabase:(id)a3 withTransactionSourcePID:(unint64_t)a4;
-+ (id)anyInDatabase:(id)a3 withUniqueID:(id)a4;
-+ (id)anyInDatabase:(id)a3 withWebService:(id)a4;
-+ (id)anyInDatabase:(id)a3 withWebService:(id)a4 serialNumber:(id)a5;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)candidatePassesInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)dynamicStateInDatabase:(id)a3 forPassUniqueID:(id)a4;
-+ (id)dynamicStatesInDatabase:(id)a3 forPassUniqueIDs:(id)a4;
-+ (id)insertPass:(id)a3 withPassType:(id)a4 webService:(id)a5 transactionService:(id)a6 messageService:(id)a7 daemonPassData:(id)a8 inDatabase:(id)a9;
-+ (id)passPrimaryAccountIdentifiersInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)passSerialNumbersInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)passStylesInDatabase:(id)a3;
-+ (id)passUniqueIDsInDatabase:(id)a3 matchingPredicate:(id)a4;
-+ (id)passesInDatabase:(id)a3 states:(id *)a4 matchingPredicate:(id)a5;
-+ (id)predicateForASCReaderIds:(id)a3;
-+ (id)predicateForGroup:(id)a3;
++ (id)_realPassInDatabase:(id)database withProperties:(id)properties values:(const void *)values fromPass:(id)pass;
++ (id)_realPassPredicateForPredicate:(id)predicate;
++ (id)_realPassesInDatabase:(id)database states:(id *)states predicate:(id)predicate orderedBy:(id)by;
++ (id)_updateDictionaryWithDisplayProfile:(id)profile;
++ (id)_updateDictionaryWithPass:(id)pass;
++ (id)anyInDatabase:(id)database withApplicationIdentifier:(id)identifier secureElementIdentifier:(id)elementIdentifier;
++ (id)anyInDatabase:(id)database withApplicationIdentifier:(id)identifier secureElementIdentifiers:(id)identifiers;
++ (id)anyInDatabase:(id)database withAssociatedAccountIdentifier:(id)identifier;
++ (id)anyInDatabase:(id)database withGroup:(id)group;
++ (id)anyInDatabase:(id)database withNotificationService:(id)service;
++ (id)anyInDatabase:(id)database withPassType:(id)type;
++ (id)anyInDatabase:(id)database withPassType:(id)type serialNumber:(id)number;
++ (id)anyInDatabase:(id)database withPersistentID:(int64_t)d;
++ (id)anyInDatabase:(id)database withPrimaryAccountIdentifier:(id)identifier;
++ (id)anyInDatabase:(id)database withProvisioningCredentialHash:(id)hash;
++ (id)anyInDatabase:(id)database withReaderIdentifier:(id)identifier;
++ (id)anyInDatabase:(id)database withTransactionSourcePID:(unint64_t)d;
++ (id)anyInDatabase:(id)database withUniqueID:(id)d;
++ (id)anyInDatabase:(id)database withWebService:(id)service;
++ (id)anyInDatabase:(id)database withWebService:(id)service serialNumber:(id)number;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)candidatePassesInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)dynamicStateInDatabase:(id)database forPassUniqueID:(id)d;
++ (id)dynamicStatesInDatabase:(id)database forPassUniqueIDs:(id)ds;
++ (id)insertPass:(id)pass withPassType:(id)type webService:(id)service transactionService:(id)transactionService messageService:(id)messageService daemonPassData:(id)data inDatabase:(id)database;
++ (id)passPrimaryAccountIdentifiersInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)passSerialNumbersInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)passStylesInDatabase:(id)database;
++ (id)passUniqueIDsInDatabase:(id)database matchingPredicate:(id)predicate;
++ (id)passesInDatabase:(id)database states:(id *)states matchingPredicate:(id)predicate;
++ (id)predicateForASCReaderIds:(id)ids;
++ (id)predicateForGroup:(id)group;
 + (id)predicateForHasValidNFCPayload;
-+ (id)predicateForIdentityTypes:(id)a3;
-+ (id)predicateForIsCloudKitArchived:(BOOL)a3;
-+ (id)predicateForIsCloudKitSecurelyArchived:(BOOL)a3;
-+ (id)predicateForIsRevoked:(BOOL)a3;
-+ (id)predicateForNFCPayloadState:(unint64_t)a3;
-+ (id)predicateForNotificationService:(id)a3;
++ (id)predicateForIdentityTypes:(id)types;
++ (id)predicateForIsCloudKitArchived:(BOOL)archived;
++ (id)predicateForIsCloudKitSecurelyArchived:(BOOL)archived;
++ (id)predicateForIsRevoked:(BOOL)revoked;
++ (id)predicateForNFCPayloadState:(unint64_t)state;
++ (id)predicateForNotificationService:(id)service;
 + (id)predicateForPassAnnotationStatesInExpiredSection;
 + (id)predicateForPassAnnotationStatesInMainStack;
-+ (id)predicateForPassType:(id)a3;
-+ (id)predicateForPaymentApplicationIdentifier:(id)a3 withSecureElementIdentifier:(id)a4;
-+ (id)predicateForPaymentApplicationIdentifier:(id)a3 withSecureElementIdentifiers:(id)a4;
-+ (id)predicateForPaymentApplicationState:(int64_t)a3;
-+ (id)predicateForPaymentApplicationStates:(id)a3;
-+ (id)predicateForPaymentApplicationSupportsContactlessPayment:(BOOL)a3;
-+ (id)predicateForPaymentApplicationSupportsInAppPayment:(BOOL)a3;
-+ (id)predicateForPaymentCardType:(int64_t)a3;
-+ (id)predicateForPaymentType:(unint64_t)a3;
-+ (id)predicateForPersistentID:(int64_t)a3;
-+ (id)predicateForPrimaryPaymentApplication:(BOOL)a3;
-+ (id)predicateForStyle:(int64_t)a3;
-+ (id)predicateForSupportsDefaultCardSelection:(BOOL)a3;
-+ (id)predicateForSupportsIssuerBinding:(BOOL)a3;
-+ (id)predicateForTransactionSourceWithPID:(unint64_t)a3;
-+ (id)predicateForWebService:(id)a3;
-+ (id)queryWithDatabase:(id)a3 group:(id)a4;
-+ (id)queryWithDatabase:(id)a3 passType:(id)a4;
-+ (id)secureElementCardTypesInDatabase:(id)a3;
-+ (id)unexpiredPassStylesInDatabase:(id)a3;
-+ (id)unexpiredSecureElementCardTypesInDatabase:(id)a3;
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4;
-+ (void)enumerateOrganizationNamesForQuery:(id)a3 withHandler:(id)a4;
-+ (void)enumeratePassSyncabilityPropertiesInDatabase:(id)a3 withHandler:(id)a4;
-+ (void)enumeratePassUniqueIDsAndTypesForQuery:(id)a3 withHandler:(id)a4;
-+ (void)enumeratePassesAndGroupingProfilesForQuery:(id)a3 withHandler:(id)a4;
-+ (void)enumeratePassesForQuery:(id)a3 withHandler:(id)a4;
-+ (void)enumerateUpdateContextsForQuery:(id)a3 withHandler:(id)a4;
-+ (void)passInformationInDatabase:(id)a3 withPassUniqueID:(id)a4 cardType:(int64_t *)a5 accessType:(int64_t *)a6 accessReportingType:(id *)a7 supportedRadioTechnologies:(unint64_t *)a8;
++ (id)predicateForPassType:(id)type;
++ (id)predicateForPaymentApplicationIdentifier:(id)identifier withSecureElementIdentifier:(id)elementIdentifier;
++ (id)predicateForPaymentApplicationIdentifier:(id)identifier withSecureElementIdentifiers:(id)identifiers;
++ (id)predicateForPaymentApplicationState:(int64_t)state;
++ (id)predicateForPaymentApplicationStates:(id)states;
++ (id)predicateForPaymentApplicationSupportsContactlessPayment:(BOOL)payment;
++ (id)predicateForPaymentApplicationSupportsInAppPayment:(BOOL)payment;
++ (id)predicateForPaymentCardType:(int64_t)type;
++ (id)predicateForPaymentType:(unint64_t)type;
++ (id)predicateForPersistentID:(int64_t)d;
++ (id)predicateForPrimaryPaymentApplication:(BOOL)application;
++ (id)predicateForStyle:(int64_t)style;
++ (id)predicateForSupportsDefaultCardSelection:(BOOL)selection;
++ (id)predicateForSupportsIssuerBinding:(BOOL)binding;
++ (id)predicateForTransactionSourceWithPID:(unint64_t)d;
++ (id)predicateForWebService:(id)service;
++ (id)queryWithDatabase:(id)database group:(id)group;
++ (id)queryWithDatabase:(id)database passType:(id)type;
++ (id)secureElementCardTypesInDatabase:(id)database;
++ (id)unexpiredPassStylesInDatabase:(id)database;
++ (id)unexpiredSecureElementCardTypesInDatabase:(id)database;
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins;
++ (void)enumerateOrganizationNamesForQuery:(id)query withHandler:(id)handler;
++ (void)enumeratePassSyncabilityPropertiesInDatabase:(id)database withHandler:(id)handler;
++ (void)enumeratePassUniqueIDsAndTypesForQuery:(id)query withHandler:(id)handler;
++ (void)enumeratePassesAndGroupingProfilesForQuery:(id)query withHandler:(id)handler;
++ (void)enumeratePassesForQuery:(id)query withHandler:(id)handler;
++ (void)enumerateUpdateContextsForQuery:(id)query withHandler:(id)handler;
++ (void)passInformationInDatabase:(id)database withPassUniqueID:(id)d cardType:(int64_t *)type accessType:(int64_t *)accessType accessReportingType:(id *)reportingType supportedRadioTechnologies:(unint64_t *)technologies;
 - (BOOL)deleteFromDatabase;
 - (BOOL)hasAssociatedPeerPaymentAccount;
 - (BOOL)revoked;
 - (BOOL)supportsIssuerBinding;
 - (BOOL)voided;
-- (Pass)initWithPass:(id)a3 passType:(id)a4 webService:(id)a5 transactionService:(id)a6 messageService:(id)a7 daemonPassData:(id)a8 inDatabase:(id)a9;
+- (Pass)initWithPass:(id)pass passType:(id)type webService:(id)service transactionService:(id)transactionService messageService:(id)messageService daemonPassData:(id)data inDatabase:(id)database;
 - (id)_realPass;
-- (id)_updatePassTileDescriptor:(id)a3 groupDescriptor:(id)a4 idx:(unint64_t)a5 previousStates:(id)a6 visitedIdentifiers:(id)a7;
+- (id)_updatePassTileDescriptor:(id)descriptor groupDescriptor:(id)groupDescriptor idx:(unint64_t)idx previousStates:(id)states visitedIdentifiers:(id)identifiers;
 - (id)defaultPaymentApplication;
 - (id)displayProfile;
 - (id)expirationDate;
@@ -92,7 +92,7 @@
 - (id)groupingProfile;
 - (id)messageService;
 - (id)passMessageService;
-- (id)passNotificationServiceForType:(unint64_t)a3;
+- (id)passNotificationServiceForType:(unint64_t)type;
 - (id)passTransactionService;
 - (id)passType;
 - (id)signingDate;
@@ -105,41 +105,41 @@
 - (unint64_t)associatedAccountFeatureIdentifier;
 - (unint64_t)passFlavor;
 - (void)_updateSortingStateIfNecessary;
-- (void)_updateWithMessageService:(id)a3;
-- (void)_updateWithPassMessageService:(id)a3;
-- (void)_updateWithPassTransactionService:(id)a3;
-- (void)_updateWithTransactionService:(id)a3;
-- (void)_updateWithWebService:(id)a3;
-- (void)getPushRegistrationStatus:(unint64_t *)a3 date:(id *)a4;
-- (void)udpateWithIsCloudKitArchived:(BOOL)a3;
-- (void)udpateWithIsCloudKitSecurelyArchived:(BOOL)a3;
-- (void)updateBackgroundColorWithPass:(id)a3;
-- (void)updateLocationsWithPass:(id)a3;
-- (void)updateTallCodeValueWithPass:(id)a3;
-- (void)updateWithAssociatedApplicationIdentifiers:(id)a3;
-- (void)updateWithAssociatedPassTypeIdentifiers:(id)a3;
-- (void)updateWithAssociatedWebDomains:(id)a3;
-- (void)updateWithBeacons:(id)a3;
-- (void)updateWithContactlessActivationGroupingType:(unint64_t)a3;
-- (void)updateWithDaemonPassData:(id)a3;
-- (void)updateWithDefaultPaymentApplication:(id)a3;
-- (void)updateWithGroup:(id)a3;
-- (void)updateWithLastModifiedSource:(int64_t)a3;
-- (void)updateWithLegalAgreements:(id)a3;
-- (void)updateWithNFCPayload:(id)a3;
-- (void)updateWithPass:(id)a3 webService:(id)a4 transactionSevice:(id)a5 messageService:(id)a6 daemonPassData:(id)a7;
-- (void)updateWithPassDisplayProfile:(id)a3;
-- (void)updateWithPassTileDescriptors:(id)a3;
-- (void)updateWithPaymentApplications:(id)a3;
-- (void)updateWithProvisioningMetadata:(id)a3;
-- (void)updateWithPushRegistrationStatus:(int64_t)a3 date:(id)a4;
-- (void)updateWithRelevantDates:(id)a3;
-- (void)updateWithRevocationStatus:(BOOL)a3;
-- (void)updateWithSecureElementPassFields:(id)a3;
-- (void)updateWithShareBundle:(id)a3;
-- (void)updateWithSortingState:(int64_t)a3 forSortingReason:(int64_t)a4;
-- (void)updateWithSupportsIssuerBinding:(BOOL)a3;
-- (void)updateWithTransactionSourcePID:(int64_t)a3;
+- (void)_updateWithMessageService:(id)service;
+- (void)_updateWithPassMessageService:(id)service;
+- (void)_updateWithPassTransactionService:(id)service;
+- (void)_updateWithTransactionService:(id)service;
+- (void)_updateWithWebService:(id)service;
+- (void)getPushRegistrationStatus:(unint64_t *)status date:(id *)date;
+- (void)udpateWithIsCloudKitArchived:(BOOL)archived;
+- (void)udpateWithIsCloudKitSecurelyArchived:(BOOL)archived;
+- (void)updateBackgroundColorWithPass:(id)pass;
+- (void)updateLocationsWithPass:(id)pass;
+- (void)updateTallCodeValueWithPass:(id)pass;
+- (void)updateWithAssociatedApplicationIdentifiers:(id)identifiers;
+- (void)updateWithAssociatedPassTypeIdentifiers:(id)identifiers;
+- (void)updateWithAssociatedWebDomains:(id)domains;
+- (void)updateWithBeacons:(id)beacons;
+- (void)updateWithContactlessActivationGroupingType:(unint64_t)type;
+- (void)updateWithDaemonPassData:(id)data;
+- (void)updateWithDefaultPaymentApplication:(id)application;
+- (void)updateWithGroup:(id)group;
+- (void)updateWithLastModifiedSource:(int64_t)source;
+- (void)updateWithLegalAgreements:(id)agreements;
+- (void)updateWithNFCPayload:(id)payload;
+- (void)updateWithPass:(id)pass webService:(id)service transactionSevice:(id)sevice messageService:(id)messageService daemonPassData:(id)data;
+- (void)updateWithPassDisplayProfile:(id)profile;
+- (void)updateWithPassTileDescriptors:(id)descriptors;
+- (void)updateWithPaymentApplications:(id)applications;
+- (void)updateWithProvisioningMetadata:(id)metadata;
+- (void)updateWithPushRegistrationStatus:(int64_t)status date:(id)date;
+- (void)updateWithRelevantDates:(id)dates;
+- (void)updateWithRevocationStatus:(BOOL)status;
+- (void)updateWithSecureElementPassFields:(id)fields;
+- (void)updateWithShareBundle:(id)bundle;
+- (void)updateWithSortingState:(int64_t)state forSortingReason:(int64_t)reason;
+- (void)updateWithSupportsIssuerBinding:(BOOL)binding;
+- (void)updateWithTransactionSourcePID:(int64_t)d;
 @end
 
 @implementation Pass
@@ -148,17 +148,17 @@
 {
   v3 = objc_autoreleasePoolPush();
   v4 = objc_alloc_init(NSMutableSet);
-  v5 = [a1 _propertySettersForPass];
-  v6 = [v5 allKeys];
-  [v4 addObjectsFromArray:v6];
+  _propertySettersForPass = [self _propertySettersForPass];
+  allKeys = [_propertySettersForPass allKeys];
+  [v4 addObjectsFromArray:allKeys];
 
-  v7 = [a1 _propertySettersForDisplayProfile];
-  v8 = [v7 allKeys];
-  [v4 addObjectsFromArray:v8];
+  _propertySettersForDisplayProfile = [self _propertySettersForDisplayProfile];
+  allKeys2 = [_propertySettersForDisplayProfile allKeys];
+  [v4 addObjectsFromArray:allKeys2];
 
-  v9 = [v4 pk_arrayCopy];
+  pk_arrayCopy = [v4 pk_arrayCopy];
   objc_autoreleasePoolPop(v3);
-  return v9;
+  return pk_arrayCopy;
 }
 
 + (id)_propertySettersForPass
@@ -372,9 +372,9 @@
 - (int64_t)passStyle
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"pass_group.pass_style"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 + (id)_propertySettersForGroupingProfile
@@ -416,24 +416,24 @@
   v4 = [NSString stringWithFormat:@"%@.%@", v3, @"sorting_state"];
 
   v5 = [(SQLiteEntity *)self valueForProperty:v4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v6;
+  return integerValue;
 }
 
 - (BOOL)voided
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"voided"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (id)predicateForPassAnnotationStatesInExpiredSection
 {
-  v3 = [a1 _predicateForPassAnnotationState:1];
+  v3 = [self _predicateForPassAnnotationState:1];
   v8[0] = v3;
-  v4 = [a1 _predicateForPassAnnotationState:4];
+  v4 = [self _predicateForPassAnnotationState:4];
   v8[1] = v4;
   v5 = [NSArray arrayWithObjects:v8 count:2];
   v6 = [SQLiteCompoundPredicate predicateMatchingAnyPredicates:v5];
@@ -450,9 +450,9 @@
   v13 = sub_10000B144;
   v14 = 0;
   v3 = [(SQLiteEntity *)self valueForProperty:@"template"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 <= 12)
+  if (integerValue <= 12)
   {
     v5 = +[Pass _copyPropertiesForPass];
     v8[0] = _NSConcreteStackBlock;
@@ -477,52 +477,52 @@
     return 1;
   }
 
-  v4 = [(Pass *)self associatedAccountIdentifier];
-  if (v4)
+  associatedAccountIdentifier = [(Pass *)self associatedAccountIdentifier];
+  if (associatedAccountIdentifier)
   {
-    v5 = [(SQLiteEntity *)self database];
-    v6 = [Account anyInDatabase:v5 withIdentifier:v4];
+    database = [(SQLiteEntity *)self database];
+    v6 = [Account anyInDatabase:database withIdentifier:associatedAccountIdentifier];
 
     if (v6)
     {
-      v3 = [v6 feature];
+      feature = [v6 feature];
     }
 
     else
     {
-      v3 = 0;
+      feature = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    feature = 0;
   }
 
-  return v3;
+  return feature;
 }
 
 - (BOOL)hasAssociatedPeerPaymentAccount
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"has_associated_peer_payment_account"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3 || objc_opt_class() == a3)
+  if (objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class || objc_opt_class() == class)
   {
     return @"pid";
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"web_service_pid";
   }
 
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"transaction_source_pid";
   }
@@ -530,134 +530,134 @@
   return 0;
 }
 
-+ (void)addJoinClausesForProperty:(id)a3 toJoins:(id)a4
++ (void)addJoinClausesForProperty:(id)property toJoins:(id)joins
 {
-  v11 = a3;
-  v5 = a4;
-  if (([v11 isEqualToString:@"pass_type.identifier"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"pass_type.team_identifier") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"pass_type.identifier_hash"))
+  propertyCopy = property;
+  joinsCopy = joins;
+  if (([propertyCopy isEqualToString:@"pass_type.identifier"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"pass_type.team_identifier") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"pass_type.identifier_hash"))
   {
-    [v5 addObject:@"JOIN pass_type ON pass_type.pid = pass.pass_type_pid"];
+    [joinsCopy addObject:@"JOIN pass_type ON pass_type.pid = pass.pass_type_pid"];
   }
 
-  if ([v11 isEqualToString:@"web_service.service_url"])
+  if ([propertyCopy isEqualToString:@"web_service.service_url"])
   {
-    [v5 addObject:@"LEFT OUTER JOIN web_service ON web_service.pid = pass.web_service_pid"];
+    [joinsCopy addObject:@"LEFT OUTER JOIN web_service ON web_service.pid = pass.web_service_pid"];
   }
 
-  if (([v11 isEqualToString:@"pass_group.group_order"] & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"pass_group.pass_style"))
+  if (([propertyCopy isEqualToString:@"pass_group.group_order"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"pass_group.pass_style"))
   {
-    [v5 addObject:@"JOIN pass_group ON pass_group.pid = pass.group_pid"];
+    [joinsCopy addObject:@"JOIN pass_group ON pass_group.pid = pass.group_pid"];
   }
 
-  if (([v11 isEqualToString:@"payment_application.aid"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.seid") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.state") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.auxiliary_application") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.payment_network_identifier") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.supports_contactless_payment") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.supports_in_app_payment") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.payment_type") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.applet_data_format") & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_application.i") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"whitney.f"))
+  if (([propertyCopy isEqualToString:@"payment_application.aid"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.seid") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.state") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.auxiliary_application") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.payment_network_identifier") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.supports_contactless_payment") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.supports_in_app_payment") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.payment_type") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.applet_data_format") & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_application.i") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"whitney.f"))
   {
-    [v5 addObject:@"JOIN payment_application ON payment_application.pass_pid = pass.pid"];
-    if ([v11 isEqualToString:@"whitney.f"])
+    [joinsCopy addObject:@"JOIN payment_application ON payment_application.pass_pid = pass.pid"];
+    if ([propertyCopy isEqualToString:@"whitney.f"])
     {
-      [v5 addObject:@"JOIN whitney ON whitney.a = payment_application.pid"];
+      [joinsCopy addObject:@"JOIN whitney ON whitney.a = payment_application.pid"];
     }
   }
 
-  if (([v11 isEqualToString:@"payment_automatic_selection_criterion_tci.tci"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"payment_automatic_selection_criterion_reader_id.reader_id") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"associated_reader_id.reader_id"))
+  if (([propertyCopy isEqualToString:@"payment_automatic_selection_criterion_tci.tci"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"payment_automatic_selection_criterion_reader_id.reader_id") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"associated_reader_id.reader_id"))
   {
-    [v5 addObject:@"JOIN payment_automatic_selection_criterion ON payment_automatic_selection_criterion.payment_application_pid = payment_application.pid JOIN payment_automatic_selection_criterion_tci ON payment_automatic_selection_criterion_tci.payment_automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid LEFT JOIN payment_automatic_selection_criterion_reader_id ON payment_automatic_selection_criterion_reader_id.payment_automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid LEFT JOIN associated_reader_id ON associated_reader_id.automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid"];
+    [joinsCopy addObject:@"JOIN payment_automatic_selection_criterion ON payment_automatic_selection_criterion.payment_application_pid = payment_application.pid JOIN payment_automatic_selection_criterion_tci ON payment_automatic_selection_criterion_tci.payment_automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid LEFT JOIN payment_automatic_selection_criterion_reader_id ON payment_automatic_selection_criterion_reader_id.payment_automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid LEFT JOIN associated_reader_id ON associated_reader_id.automatic_selection_criterion_pid = payment_automatic_selection_criterion.pid"];
   }
 
-  if ([v11 isEqualToString:@"pass_notification_service.notification_service_pid"])
+  if ([propertyCopy isEqualToString:@"pass_notification_service.notification_service_pid"])
   {
-    [v5 addObject:@"JOIN pass_notification_service ON (pass_notification_service.pid = pass_transaction_service_pid OR pass_notification_service.pid = pass_message_service_pid)"];
+    [joinsCopy addObject:@"JOIN pass_notification_service ON (pass_notification_service.pid = pass_transaction_service_pid OR pass_notification_service.pid = pass_message_service_pid)"];
   }
 
-  if (([v11 isEqualToString:@"nfc.message"] & 1) != 0 || (objc_msgSend(v11, "isEqualToString:", @"nfc.encryption_public_key") & 1) != 0 || objc_msgSend(v11, "isEqualToString:", @"nfc.a"))
+  if (([propertyCopy isEqualToString:@"nfc.message"] & 1) != 0 || (objc_msgSend(propertyCopy, "isEqualToString:", @"nfc.encryption_public_key") & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"nfc.a"))
   {
-    [v5 addObject:@"LEFT OUTER JOIN nfc ON nfc.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"LEFT OUTER JOIN nfc ON nfc.pass_pid = pass.pid"];
   }
 
-  if ([v11 isEqualToString:@"associated_pass_type_identifier.identifier_hash"])
+  if ([propertyCopy isEqualToString:@"associated_pass_type_identifier.identifier_hash"])
   {
-    [v5 addObject:@"JOIN associated_pass_type_identifier ON associated_pass_type_identifier.pass_pid = pass.pid"];
+    [joinsCopy addObject:@"JOIN associated_pass_type_identifier ON associated_pass_type_identifier.pass_pid = pass.pid"];
   }
 
-  if ([v11 isEqualToString:@"transaction_source.identifier"])
+  if ([propertyCopy isEqualToString:@"transaction_source.identifier"])
   {
-    [v5 addObject:@"LEFT JOIN transaction_source ON transaction_source.pid = pass.transaction_source_pid"];
+    [joinsCopy addObject:@"LEFT JOIN transaction_source ON transaction_source.pid = pass.transaction_source_pid"];
   }
 
   v6 = +[PassAnnotations databaseTable];
-  v7 = [v11 rangeOfString:v6];
+  v7 = [propertyCopy rangeOfString:v6];
   if (v8)
   {
     if (!v7)
     {
       v9 = v8;
-      if ([v11 length] > v8 && objc_msgSend(v11, "characterAtIndex:", v9) == 46)
+      if ([propertyCopy length] > v8 && objc_msgSend(propertyCopy, "characterAtIndex:", v9) == 46)
       {
         v10 = [NSString stringWithFormat:@"JOIN %@ ON %@.%@ = pass.pid", v6, v6, @"pass_pid"];
-        [v5 addObject:v10];
+        [joinsCopy addObject:v10];
       }
     }
   }
 }
 
-+ (id)_insertionDictionaryWithPass:(id)a3 passType:(id)a4
++ (id)_insertionDictionaryWithPass:(id)pass passType:(id)type
 {
-  v5 = a4;
-  v6 = a3;
+  typeCopy = type;
+  passCopy = pass;
   v7 = objc_alloc_init(NSMutableDictionary);
-  v8 = [v6 uniqueID];
-  [v7 setObjectOrNull:v8 forKey:@"unique_id"];
+  uniqueID = [passCopy uniqueID];
+  [v7 setObjectOrNull:uniqueID forKey:@"unique_id"];
 
-  v9 = [v6 serialNumber];
-  [v7 setObjectOrNull:v9 forKey:@"serial_number"];
+  serialNumber = [passCopy serialNumber];
+  [v7 setObjectOrNull:serialNumber forKey:@"serial_number"];
 
-  v10 = [v5 persistentID];
-  [v7 setLongLong:v10 forKey:@"pass_type_pid"];
-  v11 = [v6 groupingID];
-  [v7 setObjectOrNull:v11 forKey:@"grouping_id"];
+  persistentID = [typeCopy persistentID];
+  [v7 setLongLong:persistentID forKey:@"pass_type_pid"];
+  groupingID = [passCopy groupingID];
+  [v7 setObjectOrNull:groupingID forKey:@"grouping_id"];
 
-  v12 = [v6 provisioningCredentialHash];
-  [v7 setObjectOrNull:v12 forKey:@"provisioning_credential_hash"];
+  provisioningCredentialHash = [passCopy provisioningCredentialHash];
+  [v7 setObjectOrNull:provisioningCredentialHash forKey:@"provisioning_credential_hash"];
 
   v13 = +[NSDate date];
   [v7 setObject:v13 forKey:@"ingested_date"];
 
-  v14 = [v6 signingDate];
+  signingDate = [passCopy signingDate];
 
-  [v7 setObjectOrNull:v14 forKey:@"signing_date"];
+  [v7 setObjectOrNull:signingDate forKey:@"signing_date"];
 
   return v7;
 }
 
-+ (id)_updateDictionaryWithPass:(id)a3
++ (id)_updateDictionaryWithPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 organizationName];
-  [v4 setObjectOrNull:v5 forKey:@"organization_name"];
+  organizationName = [passCopy organizationName];
+  [v4 setObjectOrNull:organizationName forKey:@"organization_name"];
 
-  v6 = [v3 expirationDate];
-  [v4 setObjectOrNull:v6 forKey:@"expiration_date"];
+  expirationDate = [passCopy expirationDate];
+  [v4 setObjectOrNull:expirationDate forKey:@"expiration_date"];
 
-  v7 = [v3 sequenceCounter];
-  [v4 setObjectOrNull:v7 forKey:@"sequence_counter"];
+  sequenceCounter = [passCopy sequenceCounter];
+  [v4 setObjectOrNull:sequenceCounter forKey:@"sequence_counter"];
 
-  [v4 setBool:objc_msgSend(v3 forKey:{"isVoided"), @"voided"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"hasStoredValue"), @"has_stored_value"}];
-  [v3 liveRenderType];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"isVoided"), @"voided"}];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"hasStoredValue"), @"has_stored_value"}];
+  [passCopy liveRenderType];
   v8 = PKPassLiveRenderTypeToString();
   [v4 setObjectOrNull:v8 forKey:@"live_render_background_type"];
 
-  [v3 homeKeyLiveRenderType];
+  [passCopy homeKeyLiveRenderType];
   v9 = PKPassHomeKeyLiveRenderTypeToString();
   [v4 setObjectOrNull:v9 forKey:@"f"];
 
-  [v4 setBool:objc_msgSend(v3 forKey:{"supportsCategoryVisualization"), @"b"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"liveRenderingRequiresEnablement"), @"live_rendering_requires_enablement"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"muteReadyForUseNotification"), @"mute_ready_for_use_notification"}];
-  v10 = [v3 userInfo];
-  if ([NSJSONSerialization isValidJSONObject:v10])
+  [v4 setBool:objc_msgSend(passCopy forKey:{"supportsCategoryVisualization"), @"b"}];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"liveRenderingRequiresEnablement"), @"live_rendering_requires_enablement"}];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"muteReadyForUseNotification"), @"mute_ready_for_use_notification"}];
+  userInfo = [passCopy userInfo];
+  if ([NSJSONSerialization isValidJSONObject:userInfo])
   {
-    v11 = [NSJSONSerialization dataWithJSONObject:v10 options:0 error:0];
+    v11 = [NSJSONSerialization dataWithJSONObject:userInfo options:0 error:0];
     [v4 setObjectOrNull:v11 forKey:@"user_info"];
   }
 
@@ -666,190 +666,190 @@
     [v4 setObjectOrNull:0 forKey:@"user_info"];
   }
 
-  v12 = [v3 manifestHash];
-  [v4 setObjectOrNull:v12 forKey:@"manifest_hash"];
+  manifestHash = [passCopy manifestHash];
+  [v4 setObjectOrNull:manifestHash forKey:@"manifest_hash"];
 
-  [v4 setInteger:objc_msgSend(v3 forKey:{"sharingMethod"), @"sharing_method"}];
-  v13 = [v3 sharingURL];
+  [v4 setInteger:objc_msgSend(passCopy forKey:{"sharingMethod"), @"sharing_method"}];
+  sharingURL = [passCopy sharingURL];
   v14 = _SQLValueForURL();
   [v4 setObjectOrNull:v14 forKey:@"sharing_url"];
 
-  v15 = [v3 sharingText];
-  [v4 setObjectOrNull:v15 forKey:@"sharing_text"];
+  sharingText = [passCopy sharingText];
+  [v4 setObjectOrNull:sharingText forKey:@"sharing_text"];
 
-  v16 = [v3 authenticationToken];
-  [v4 setObjectOrNull:v16 forKey:@"authentication_token"];
+  authenticationToken = [passCopy authenticationToken];
+  [v4 setObjectOrNull:authenticationToken forKey:@"authentication_token"];
 
-  [v4 setInteger:objc_msgSend(v3 forKey:{"passType"), @"pass_flavor"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"isCloudKitArchived"), @"is_cloud_kit_archived"}];
-  v17 = [v3 cloudKitMetadata];
-  [v4 setObjectOrNull:v17 forKey:@"cloud_kit_metadata"];
+  [v4 setInteger:objc_msgSend(passCopy forKey:{"passType"), @"pass_flavor"}];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"isCloudKitArchived"), @"is_cloud_kit_archived"}];
+  cloudKitMetadata = [passCopy cloudKitMetadata];
+  [v4 setObjectOrNull:cloudKitMetadata forKey:@"cloud_kit_metadata"];
 
-  [v4 setBool:objc_msgSend(v3 forKey:{"isCloudKitSecurelyArchived"), @"is_cloud_kit_securely_archived"}];
-  v18 = [v3 cloudKitSecureMetadata];
-  [v4 setObjectOrNull:v18 forKey:@"cloud_kit_secure_metadata"];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"isCloudKitSecurelyArchived"), @"is_cloud_kit_securely_archived"}];
+  cloudKitSecureMetadata = [passCopy cloudKitSecureMetadata];
+  [v4 setObjectOrNull:cloudKitSecureMetadata forKey:@"cloud_kit_secure_metadata"];
 
-  v19 = [v3 provisioningCredentialHash];
-  [v4 setObjectOrNull:v19 forKey:@"provisioning_credential_hash"];
+  provisioningCredentialHash = [passCopy provisioningCredentialHash];
+  [v4 setObjectOrNull:provisioningCredentialHash forKey:@"provisioning_credential_hash"];
 
-  [v4 setBool:objc_msgSend(v3 forKey:{"supportsIssuerBinding"), @"supports_issuer_binding"}];
-  v20 = [v3 transferURL];
+  [v4 setBool:objc_msgSend(passCopy forKey:{"supportsIssuerBinding"), @"supports_issuer_binding"}];
+  transferURL = [passCopy transferURL];
   v21 = _SQLValueForURL();
   [v4 setObjectOrNull:v21 forKey:@"transfer_url"];
 
-  v22 = [v3 sellURL];
+  sellURL = [passCopy sellURL];
   v23 = _SQLValueForURL();
   [v4 setObjectOrNull:v23 forKey:@"sell_url"];
 
-  v24 = [v3 upgradeURL];
+  upgradeURL = [passCopy upgradeURL];
   v25 = _SQLValueForURL();
   [v4 setObjectOrNull:v25 forKey:@"h"];
 
-  v26 = [v3 managementURL];
+  managementURL = [passCopy managementURL];
   v27 = _SQLValueForURL();
   [v4 setObjectOrNull:v27 forKey:@"s"];
 
-  v28 = [v3 bagPolicyURL];
+  bagPolicyURL = [passCopy bagPolicyURL];
   v29 = _SQLValueForURL();
   [v4 setObjectOrNull:v29 forKey:@"bag_policy_url"];
 
-  v30 = [v3 orderFoodURL];
+  orderFoodURL = [passCopy orderFoodURL];
   v31 = _SQLValueForURL();
   [v4 setObjectOrNull:v31 forKey:@"order_food_url"];
 
-  v32 = [v3 transitInformationURL];
+  transitInformationURL = [passCopy transitInformationURL];
   v33 = _SQLValueForURL();
   [v4 setObjectOrNull:v33 forKey:@"transit_information_url"];
 
-  v34 = [v3 parkingInformationURL];
+  parkingInformationURL = [passCopy parkingInformationURL];
   v35 = _SQLValueForURL();
   [v4 setObjectOrNull:v35 forKey:@"parking_information_url"];
 
-  v36 = [v3 directionsInformationURL];
+  directionsInformationURL = [passCopy directionsInformationURL];
   v37 = _SQLValueForURL();
   [v4 setObjectOrNull:v37 forKey:@"directions_information_url"];
 
-  v38 = [v3 merchandiseURL];
+  merchandiseURL = [passCopy merchandiseURL];
   v39 = _SQLValueForURL();
   [v4 setObjectOrNull:v39 forKey:@"merchandise_url"];
 
-  v40 = [v3 accessibilityURL];
+  accessibilityURL = [passCopy accessibilityURL];
   v41 = _SQLValueForURL();
   [v4 setObjectOrNull:v41 forKey:@"accessibility_url"];
 
-  v42 = [v3 purchaseParkingURL];
+  purchaseParkingURL = [passCopy purchaseParkingURL];
   v43 = _SQLValueForURL();
   [v4 setObjectOrNull:v43 forKey:@"purchase_parking_url"];
 
-  v44 = [v3 partnerAddOnURL];
+  partnerAddOnURL = [passCopy partnerAddOnURL];
   v45 = _SQLValueForURL();
   [v4 setObjectOrNull:v45 forKey:@"add_on_url"];
 
-  v46 = [v3 purchaseWifiURL];
+  purchaseWifiURL = [passCopy purchaseWifiURL];
   v47 = _SQLValueForURL();
   [v4 setObjectOrNull:v47 forKey:@"i"];
 
-  v48 = [v3 changeSeatURL];
+  changeSeatURL = [passCopy changeSeatURL];
   v49 = _SQLValueForURL();
   [v4 setObjectOrNull:v49 forKey:@"j"];
 
-  v50 = [v3 entertainmentURL];
+  entertainmentURL = [passCopy entertainmentURL];
   v51 = _SQLValueForURL();
   [v4 setObjectOrNull:v51 forKey:@"k"];
 
-  v52 = [v3 purchaseAdditionalBaggageURL];
+  purchaseAdditionalBaggageURL = [passCopy purchaseAdditionalBaggageURL];
   v53 = _SQLValueForURL();
   [v4 setObjectOrNull:v53 forKey:@"m"];
 
-  v54 = [v3 purchaseLoungeAccessURL];
+  purchaseLoungeAccessURL = [passCopy purchaseLoungeAccessURL];
   v55 = _SQLValueForURL();
   [v4 setObjectOrNull:v55 forKey:@"n"];
 
-  v56 = [v3 reportLostBagURL];
+  reportLostBagURL = [passCopy reportLostBagURL];
   v57 = _SQLValueForURL();
   [v4 setObjectOrNull:v57 forKey:@"t"];
 
-  v58 = [v3 trackBagsURL];
+  trackBagsURL = [passCopy trackBagsURL];
   v59 = _SQLValueForURL();
   [v4 setObjectOrNull:v59 forKey:@"w"];
 
-  v60 = [v3 requestWheelchairURL];
+  requestWheelchairURL = [passCopy requestWheelchairURL];
   v61 = _SQLValueForURL();
   [v4 setObjectOrNull:v61 forKey:@"u"];
 
-  v62 = [v3 registerServiceAnimalURL];
+  registerServiceAnimalURL = [passCopy registerServiceAnimalURL];
   v63 = _SQLValueForURL();
   [v4 setObjectOrNull:v63 forKey:@"v"];
 
-  v64 = [v3 contactVenuePhoneNumber];
+  contactVenuePhoneNumber = [passCopy contactVenuePhoneNumber];
   v65 = _SQLValueForURL();
   [v4 setObjectOrNull:v65 forKey:@"contact_venue_phone_number"];
 
-  v66 = [v3 contactVenueEmail];
+  contactVenueEmail = [passCopy contactVenueEmail];
   v67 = _SQLValueForURL();
   [v4 setObjectOrNull:v67 forKey:@"contact_venue_email"];
 
-  v68 = [v3 contactVenueWebsite];
+  contactVenueWebsite = [passCopy contactVenueWebsite];
   v69 = _SQLValueForURL();
   [v4 setObjectOrNull:v69 forKey:@"contact_venue_website"];
 
-  v70 = [v3 transitProviderPhoneNumberURL];
+  transitProviderPhoneNumberURL = [passCopy transitProviderPhoneNumberURL];
   v71 = _SQLValueForURL();
   [v4 setObjectOrNull:v71 forKey:@"p"];
 
-  v72 = [v3 transitProviderEmailURL];
+  transitProviderEmailURL = [passCopy transitProviderEmailURL];
   v73 = _SQLValueForURL();
   [v4 setObjectOrNull:v73 forKey:@"q"];
 
-  v74 = [v3 transitProviderWebsiteURL];
+  transitProviderWebsiteURL = [passCopy transitProviderWebsiteURL];
   v75 = _SQLValueForURL();
   [v4 setObjectOrNull:v75 forKey:@"r"];
 
-  if ([v3 passType] == 1)
+  if ([passCopy passType] == 1)
   {
-    [v4 setInteger:objc_msgSend(v3 forKey:{"cardType"), @"card_type"}];
-    v76 = [v3 primaryAccountIdentifier];
-    [v4 setObjectOrNull:v76 forKey:@"primary_account_identifier"];
+    [v4 setInteger:objc_msgSend(passCopy forKey:{"cardType"), @"card_type"}];
+    primaryAccountIdentifier = [passCopy primaryAccountIdentifier];
+    [v4 setObjectOrNull:primaryAccountIdentifier forKey:@"primary_account_identifier"];
 
-    v77 = [v3 primaryAccountNumberSuffix];
-    [v4 setObjectOrNull:v77 forKey:@"primary_account_suffix"];
+    primaryAccountNumberSuffix = [passCopy primaryAccountNumberSuffix];
+    [v4 setObjectOrNull:primaryAccountNumberSuffix forKey:@"primary_account_suffix"];
 
-    v78 = [v3 sanitizedPrimaryAccountNumber];
-    [v4 setObjectOrNull:v78 forKey:@"sanitized_pan"];
+    sanitizedPrimaryAccountNumber = [passCopy sanitizedPrimaryAccountNumber];
+    [v4 setObjectOrNull:sanitizedPrimaryAccountNumber forKey:@"sanitized_pan"];
 
-    v79 = [v3 sanitizedPrimaryAccountName];
-    [v4 setObjectOrNull:v79 forKey:@"c"];
+    sanitizedPrimaryAccountName = [passCopy sanitizedPrimaryAccountName];
+    [v4 setObjectOrNull:sanitizedPrimaryAccountName forKey:@"c"];
 
-    [v4 setBool:objc_msgSend(v3 forKey:{"supportsDPANNotifications"), @"supports_dpan_notifications"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"supportsFPANNotifications"), @"supports_fpan_notifications"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"supportsDefaultCardSelection"), @"supports_default_card_selection"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"isShellPass"), @"is_shell_pass"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"supportsSerialNumberBasedProvisioning"), @"supports_serial_number_based_provisioning"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"requiresTransferSerialNumberBasedProvisioning"), @"requires_transfer_serial_number_based_provisioning"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"hasAssociatedPeerPaymentAccount"), @"has_associated_peer_payment_account"}];
-    v80 = [v3 associatedAccountServiceAccountIdentifier];
-    [v4 setObjectOrNull:v80 forKey:@"a"];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"supportsDPANNotifications"), @"supports_dpan_notifications"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"supportsFPANNotifications"), @"supports_fpan_notifications"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"supportsDefaultCardSelection"), @"supports_default_card_selection"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"isShellPass"), @"is_shell_pass"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"supportsSerialNumberBasedProvisioning"), @"supports_serial_number_based_provisioning"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"requiresTransferSerialNumberBasedProvisioning"), @"requires_transfer_serial_number_based_provisioning"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"hasAssociatedPeerPaymentAccount"), @"has_associated_peer_payment_account"}];
+    associatedAccountServiceAccountIdentifier = [passCopy associatedAccountServiceAccountIdentifier];
+    [v4 setObjectOrNull:associatedAccountServiceAccountIdentifier forKey:@"a"];
 
-    [v4 setInteger:objc_msgSend(v3 forKey:{"contactlessActivationGroupingType"), @"contactless_activation_grouping_type"}];
-    [v4 setBool:objc_msgSend(v3 forKey:{"isCobranded"), @"cobranded"}];
-    v81 = [v3 issuerCountryCode];
-    [v4 setObjectOrNull:v81 forKey:@"issuer_country_code"];
+    [v4 setInteger:objc_msgSend(passCopy forKey:{"contactlessActivationGroupingType"), @"contactless_activation_grouping_type"}];
+    [v4 setBool:objc_msgSend(passCopy forKey:{"isCobranded"), @"cobranded"}];
+    issuerCountryCode = [passCopy issuerCountryCode];
+    [v4 setObjectOrNull:issuerCountryCode forKey:@"issuer_country_code"];
 
-    v82 = [v3 issuerAdministrativeAreaCode];
-    [v4 setObjectOrNull:v82 forKey:@"d"];
+    issuerAdministrativeAreaCode = [passCopy issuerAdministrativeAreaCode];
+    [v4 setObjectOrNull:issuerAdministrativeAreaCode forKey:@"d"];
 
-    v83 = [v3 identityAccountKeyIdentifier];
-    [v4 setObjectOrNull:v83 forKey:@"g"];
+    identityAccountKeyIdentifier = [passCopy identityAccountKeyIdentifier];
+    [v4 setObjectOrNull:identityAccountKeyIdentifier forKey:@"g"];
 
-    [v4 setInteger:objc_msgSend(v3 forKey:{"identityType"), @"identity_pass_type"}];
-    [v4 setInteger:objc_msgSend(v3 forKey:{"accessType"), @"access_pass_type"}];
-    v84 = [v3 partnerAccountIdentifier];
-    [v4 setObjectOrNull:v84 forKey:@"e"];
+    [v4 setInteger:objc_msgSend(passCopy forKey:{"identityType"), @"identity_pass_type"}];
+    [v4 setInteger:objc_msgSend(passCopy forKey:{"accessType"), @"access_pass_type"}];
+    partnerAccountIdentifier = [passCopy partnerAccountIdentifier];
+    [v4 setObjectOrNull:partnerAccountIdentifier forKey:@"e"];
 
-    v85 = [v3 shippingAddressSeed];
-    [v4 setObjectOrNull:v85 forKey:@"shipping_address_seed"];
+    shippingAddressSeed = [passCopy shippingAddressSeed];
+    [v4 setObjectOrNull:shippingAddressSeed forKey:@"shipping_address_seed"];
 
-    v86 = [v3 originalProvisioningDate];
+    originalProvisioningDate = [passCopy originalProvisioningDate];
     v87 = _SQLValueForDate();
     [v4 setObjectOrNull:v87 forKey:@"original_provisioning_date"];
   }
@@ -857,142 +857,142 @@
   return v4;
 }
 
-+ (id)_updateDictionaryWithDisplayProfile:(id)a3
++ (id)_updateDictionaryWithDisplayProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 backgroundColor];
-  v6 = [v5 string];
-  [v4 setObjectOrNull:v6 forKey:@"background_color"];
+  backgroundColor = [profileCopy backgroundColor];
+  string = [backgroundColor string];
+  [v4 setObjectOrNull:string forKey:@"background_color"];
 
-  v7 = [v3 secondaryBackgroundColor];
-  v8 = [v7 string];
-  [v4 setObjectOrNull:v8 forKey:@"secondary_background_color"];
+  secondaryBackgroundColor = [profileCopy secondaryBackgroundColor];
+  string2 = [secondaryBackgroundColor string];
+  [v4 setObjectOrNull:string2 forKey:@"secondary_background_color"];
 
-  v9 = [v3 foregroundColor];
-  v10 = [v9 string];
-  [v4 setObjectOrNull:v10 forKey:@"foreground_color"];
+  foregroundColor = [profileCopy foregroundColor];
+  string3 = [foregroundColor string];
+  [v4 setObjectOrNull:string3 forKey:@"foreground_color"];
 
-  v11 = [v3 labelColor];
-  v12 = [v11 string];
-  [v4 setObjectOrNull:v12 forKey:@"label_color"];
+  labelColor = [profileCopy labelColor];
+  string4 = [labelColor string];
+  [v4 setObjectOrNull:string4 forKey:@"label_color"];
 
-  v13 = [v3 stripColor];
-  v14 = [v13 string];
-  [v4 setObjectOrNull:v14 forKey:@"strip_color"];
+  stripColor = [profileCopy stripColor];
+  string5 = [stripColor string];
+  [v4 setObjectOrNull:string5 forKey:@"strip_color"];
 
-  [v4 setInteger:objc_msgSend(v3 forKey:{"passStyle"), @"template"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"tallCode"), @"tall_code"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"hasBackgroundImage"), @"has_background_image"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"hasStripImage"), @"has_strip_image"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"supportsAutomaticForegroundVibrancy"), @"supports_automatic_foreground_vibrancy"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"supportsAutomaticLabelVibrancy"), @"supports_automatic_label_vibrancy"}];
-  [v4 setBool:objc_msgSend(v3 forKey:{"suppressesHeaderDarkening"), @"suppress_header_darkening"}];
-  v15 = [v3 footerBackgroundColor];
+  [v4 setInteger:objc_msgSend(profileCopy forKey:{"passStyle"), @"template"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"tallCode"), @"tall_code"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"hasBackgroundImage"), @"has_background_image"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"hasStripImage"), @"has_strip_image"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"supportsAutomaticForegroundVibrancy"), @"supports_automatic_foreground_vibrancy"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"supportsAutomaticLabelVibrancy"), @"supports_automatic_label_vibrancy"}];
+  [v4 setBool:objc_msgSend(profileCopy forKey:{"suppressesHeaderDarkening"), @"suppress_header_darkening"}];
+  footerBackgroundColor = [profileCopy footerBackgroundColor];
 
-  v16 = [v15 string];
-  [v4 setObjectOrNull:v16 forKey:@"footer_background_color"];
+  string6 = [footerBackgroundColor string];
+  [v4 setObjectOrNull:string6 forKey:@"footer_background_color"];
 
   return v4;
 }
 
-- (Pass)initWithPass:(id)a3 passType:(id)a4 webService:(id)a5 transactionService:(id)a6 messageService:(id)a7 daemonPassData:(id)a8 inDatabase:(id)a9
+- (Pass)initWithPass:(id)pass passType:(id)type webService:(id)service transactionService:(id)transactionService messageService:(id)messageService daemonPassData:(id)data inDatabase:(id)database
 {
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = [Pass _insertionDictionaryWithPass:v15 passType:a4];
+  passCopy = pass;
+  serviceCopy = service;
+  transactionServiceCopy = transactionService;
+  messageServiceCopy = messageService;
+  dataCopy = data;
+  databaseCopy = database;
+  v21 = [Pass _insertionDictionaryWithPass:passCopy passType:type];
   v24.receiver = self;
   v24.super_class = Pass;
-  v22 = [(SQLiteEntity *)&v24 initWithPropertyValues:v21 inDatabase:v20];
+  v22 = [(SQLiteEntity *)&v24 initWithPropertyValues:v21 inDatabase:databaseCopy];
 
   if (v22)
   {
-    [(Pass *)v22 updateWithPass:v15 webService:v16 transactionSevice:v17 messageService:v18 daemonPassData:v19];
+    [(Pass *)v22 updateWithPass:passCopy webService:serviceCopy transactionSevice:transactionServiceCopy messageService:messageServiceCopy daemonPassData:dataCopy];
   }
 
   return v22;
 }
 
-+ (id)insertPass:(id)a3 withPassType:(id)a4 webService:(id)a5 transactionService:(id)a6 messageService:(id)a7 daemonPassData:(id)a8 inDatabase:(id)a9
++ (id)insertPass:(id)pass withPassType:(id)type webService:(id)service transactionService:(id)transactionService messageService:(id)messageService daemonPassData:(id)data inDatabase:(id)database
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  v23 = [[a1 alloc] initWithPass:v22 passType:v21 webService:v20 transactionService:v19 messageService:v18 daemonPassData:v17 inDatabase:v16];
+  databaseCopy = database;
+  dataCopy = data;
+  messageServiceCopy = messageService;
+  transactionServiceCopy = transactionService;
+  serviceCopy = service;
+  typeCopy = type;
+  passCopy = pass;
+  v23 = [[self alloc] initWithPass:passCopy passType:typeCopy webService:serviceCopy transactionService:transactionServiceCopy messageService:messageServiceCopy daemonPassData:dataCopy inDatabase:databaseCopy];
 
   return v23;
 }
 
-- (void)updateWithPass:(id)a3 webService:(id)a4 transactionSevice:(id)a5 messageService:(id)a6 daemonPassData:(id)a7
+- (void)updateWithPass:(id)pass webService:(id)service transactionSevice:(id)sevice messageService:(id)messageService daemonPassData:(id)data
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [Pass _updateDictionaryWithPass:v12];
+  passCopy = pass;
+  serviceCopy = service;
+  seviceCopy = sevice;
+  messageServiceCopy = messageService;
+  dataCopy = data;
+  v17 = [Pass _updateDictionaryWithPass:passCopy];
   [(SQLiteEntity *)self setValuesWithDictionary:v17];
 
-  v18 = [v12 displayProfile];
-  v19 = [Pass _updateDictionaryWithDisplayProfile:v18];
+  displayProfile = [passCopy displayProfile];
+  v19 = [Pass _updateDictionaryWithDisplayProfile:displayProfile];
   [(SQLiteEntity *)self setValuesWithDictionary:v19];
 
-  [(Pass *)self _updateWithWebService:v13];
-  [(Pass *)self _updateWithTransactionService:v14];
-  [(Pass *)self _updateWithMessageService:v15];
+  [(Pass *)self _updateWithWebService:serviceCopy];
+  [(Pass *)self _updateWithTransactionService:seviceCopy];
+  [(Pass *)self _updateWithMessageService:messageServiceCopy];
   v20 = objc_autoreleasePoolPush();
-  [(Pass *)self updateLocationsWithPass:v12];
+  [(Pass *)self updateLocationsWithPass:passCopy];
   objc_autoreleasePoolPop(v20);
-  v21 = [v12 embeddedBeacons];
-  [(Pass *)self updateWithBeacons:v21];
+  embeddedBeacons = [passCopy embeddedBeacons];
+  [(Pass *)self updateWithBeacons:embeddedBeacons];
 
-  v22 = [v12 nfcPayload];
-  [(Pass *)self updateWithNFCPayload:v22];
+  nfcPayload = [passCopy nfcPayload];
+  [(Pass *)self updateWithNFCPayload:nfcPayload];
 
-  v23 = [v12 relevantDates];
-  [(Pass *)self updateWithRelevantDates:v23];
+  relevantDates = [passCopy relevantDates];
+  [(Pass *)self updateWithRelevantDates:relevantDates];
 
   [(Pass *)self _updateSortingStateIfNecessary];
-  v24 = [v12 associatedPassTypeIdentifiers];
-  [(Pass *)self updateWithAssociatedPassTypeIdentifiers:v24];
+  associatedPassTypeIdentifiers = [passCopy associatedPassTypeIdentifiers];
+  [(Pass *)self updateWithAssociatedPassTypeIdentifiers:associatedPassTypeIdentifiers];
 
-  [(Pass *)self updateWithDaemonPassData:v16];
-  if ([v12 passType] == 1)
+  [(Pass *)self updateWithDaemonPassData:dataCopy];
+  if ([passCopy passType] == 1)
   {
-    v25 = [v12 secureElementPass];
-    v26 = [v25 paymentApplications];
-    [(Pass *)self updateWithPaymentApplications:v26];
+    secureElementPass = [passCopy secureElementPass];
+    paymentApplications = [secureElementPass paymentApplications];
+    [(Pass *)self updateWithPaymentApplications:paymentApplications];
 
-    v27 = [v25 associatedApplicationIdentifiers];
-    [(Pass *)self updateWithAssociatedApplicationIdentifiers:v27];
+    associatedApplicationIdentifiers = [secureElementPass associatedApplicationIdentifiers];
+    [(Pass *)self updateWithAssociatedApplicationIdentifiers:associatedApplicationIdentifiers];
 
-    v28 = [v25 associatedWebDomains];
-    [(Pass *)self updateWithAssociatedWebDomains:v28];
+    associatedWebDomains = [secureElementPass associatedWebDomains];
+    [(Pass *)self updateWithAssociatedWebDomains:associatedWebDomains];
 
-    v29 = [v25 provisioningMetadata];
-    [(Pass *)self updateWithProvisioningMetadata:v29];
+    provisioningMetadata = [secureElementPass provisioningMetadata];
+    [(Pass *)self updateWithProvisioningMetadata:provisioningMetadata];
 
-    v30 = [v25 legalAgreements];
-    [(Pass *)self updateWithLegalAgreements:v30];
+    legalAgreements = [secureElementPass legalAgreements];
+    [(Pass *)self updateWithLegalAgreements:legalAgreements];
 
-    v31 = [(Pass *)self transactionSourceIdentifier];
-    v32 = [v25 supportsFPANNotifications];
-    if (!v31 && v32)
+    transactionSourceIdentifier = [(Pass *)self transactionSourceIdentifier];
+    supportsFPANNotifications = [secureElementPass supportsFPANNotifications];
+    if (!transactionSourceIdentifier && supportsFPANNotifications)
     {
       v33 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v25 uniqueID];
+        uniqueID = [secureElementPass uniqueID];
         v36 = 138412290;
-        v37 = v34;
+        v37 = uniqueID;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Pass %@ did not have a transaction source, adding one now", &v36, 0xCu);
       }
 
@@ -1002,11 +1002,11 @@
   }
 }
 
-- (void)updateWithPushRegistrationStatus:(int64_t)a3 date:(id)a4
+- (void)updateWithPushRegistrationStatus:(int64_t)status date:(id)date
 {
   v10[0] = @"push_registration_status";
-  v6 = a4;
-  v7 = [NSNumber numberWithInteger:a3];
+  dateCopy = date;
+  v7 = [NSNumber numberWithInteger:status];
   v10[1] = @"push_registration_date";
   v11[0] = v7;
   v8 = _SQLValueForDate();
@@ -1017,25 +1017,25 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v9];
 }
 
-- (void)updateWithLastModifiedSource:(int64_t)a3
+- (void)updateWithLastModifiedSource:(int64_t)source
 {
   v5 = +[NSDate date];
   v7 = _SQLValueForDate();
 
   [(SQLiteEntity *)self setValue:v7 forProperty:@"modified_date"];
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:source];
   [(SQLiteEntity *)self setValue:v6 forProperty:@"modified_source"];
 }
 
-- (void)updateLocationsWithPass:(id)a3
+- (void)updateLocationsWithPass:(id)pass
 {
-  v17 = a3;
-  v4 = [(SQLiteEntity *)self database];
-  v5 = [v17 localLocationsURL];
-  v6 = [LocationSource anyInDatabase:v4 withURL:v5];
+  passCopy = pass;
+  database = [(SQLiteEntity *)self database];
+  localLocationsURL = [passCopy localLocationsURL];
+  v6 = [LocationSource anyInDatabase:database withURL:localLocationsURL];
 
-  v7 = [(SQLiteEntity *)self database];
-  v8 = +[PassLocationSource queryWithDatabase:passPID:locationSourcePID:](PassLocationSource, "queryWithDatabase:passPID:locationSourcePID:", v7, -[SQLiteEntity persistentID](self, "persistentID"), [v6 persistentID]);
+  database2 = [(SQLiteEntity *)self database];
+  v8 = +[PassLocationSource queryWithDatabase:passPID:locationSourcePID:](PassLocationSource, "queryWithDatabase:passPID:locationSourcePID:", database2, -[SQLiteEntity persistentID](self, "persistentID"), [v6 persistentID]);
 
   [v8 deleteAllEntities];
   if (v6)
@@ -1043,146 +1043,146 @@
     [v6 deleteFromDatabase];
   }
 
-  v9 = [v17 localLocationsURL];
+  localLocationsURL2 = [passCopy localLocationsURL];
 
-  if (v9)
+  if (localLocationsURL2)
   {
-    v10 = [v17 localLocationsURL];
-    v11 = [(SQLiteEntity *)self database];
-    v12 = [LocationSource insertLocationSourceWithURL:v10 forPass:self type:0 inDatabase:v11];
+    localLocationsURL3 = [passCopy localLocationsURL];
+    database3 = [(SQLiteEntity *)self database];
+    v12 = [LocationSource insertLocationSourceWithURL:localLocationsURL3 forPass:self type:0 inDatabase:database3];
 
     v13 = [NSSet alloc];
-    v14 = [v17 embeddedLocationsArray];
-    v15 = [v13 initWithArray:v14];
+    embeddedLocationsArray = [passCopy embeddedLocationsArray];
+    v15 = [v13 initWithArray:embeddedLocationsArray];
 
-    v16 = [(SQLiteEntity *)self database];
-    [Location insertLocations:v15 forSource:v12 inDatabase:v16];
+    database4 = [(SQLiteEntity *)self database];
+    [Location insertLocations:v15 forSource:v12 inDatabase:database4];
   }
 }
 
-- (void)updateBackgroundColorWithPass:(id)a3
+- (void)updateBackgroundColorWithPass:(id)pass
 {
-  v8 = [a3 displayProfile];
-  v4 = [v8 backgroundColor];
-  v5 = [v4 string];
-  [(SQLiteEntity *)self setValue:v5 forProperty:@"background_color"];
+  displayProfile = [pass displayProfile];
+  backgroundColor = [displayProfile backgroundColor];
+  string = [backgroundColor string];
+  [(SQLiteEntity *)self setValue:string forProperty:@"background_color"];
 
-  v6 = [v8 secondaryBackgroundColor];
-  v7 = [v6 string];
-  [(SQLiteEntity *)self setValue:v7 forProperty:@"secondary_background_color"];
+  secondaryBackgroundColor = [displayProfile secondaryBackgroundColor];
+  string2 = [secondaryBackgroundColor string];
+  [(SQLiteEntity *)self setValue:string2 forProperty:@"secondary_background_color"];
 }
 
-- (void)updateTallCodeValueWithPass:(id)a3
+- (void)updateTallCodeValueWithPass:(id)pass
 {
-  v5 = [a3 displayProfile];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 tallCode]);
+  displayProfile = [pass displayProfile];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [displayProfile tallCode]);
   [(SQLiteEntity *)self setValue:v4 forProperty:@"tall_code"];
 }
 
-- (void)updateWithNFCPayload:(id)a3
+- (void)updateWithNFCPayload:(id)payload
 {
-  v11 = a3;
-  v4 = [(SQLiteEntity *)self database];
-  v5 = [NFC anyInDatabase:v4 forPassPID:[(SQLiteEntity *)self persistentID]];
+  payloadCopy = payload;
+  database = [(SQLiteEntity *)self database];
+  v5 = [NFC anyInDatabase:database forPassPID:[(SQLiteEntity *)self persistentID]];
 
-  v6 = [(Pass *)self supportsIssuerBinding];
-  if (((v5 == 0) & v6) != 0)
+  supportsIssuerBinding = [(Pass *)self supportsIssuerBinding];
+  if (((v5 == 0) & supportsIssuerBinding) != 0)
   {
-    v7 = 3;
+    payloadState = 3;
   }
 
   else
   {
-    v7 = 0;
+    payloadState = 0;
   }
 
-  if ((v5 == 0) & v6) == 0 && (v6)
+  if ((v5 == 0) & supportsIssuerBinding) == 0 && (supportsIssuerBinding)
   {
-    v8 = [v5 nfcPayload];
-    v7 = [v8 payloadState];
+    nfcPayload = [v5 nfcPayload];
+    payloadState = [nfcPayload payloadState];
   }
 
-  v9 = [(SQLiteEntity *)self database];
-  [NFC deleteEntitiesForPass:self inDatabase:v9];
+  database2 = [(SQLiteEntity *)self database];
+  [NFC deleteEntitiesForPass:self inDatabase:database2];
 
-  if (v11)
+  if (payloadCopy)
   {
-    v10 = [(SQLiteEntity *)self database];
-    [NFC insertOrUpdateNFCPayload:v11 forPass:self computedPayloadState:v7 inDatabase:v10];
+    database3 = [(SQLiteEntity *)self database];
+    [NFC insertOrUpdateNFCPayload:payloadCopy forPass:self computedPayloadState:payloadState inDatabase:database3];
   }
 }
 
-- (void)updateWithRelevantDates:(id)a3
+- (void)updateWithRelevantDates:(id)dates
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self persistentID];
-  v6 = [(SQLiteEntity *)self database];
-  [PassRelevancyDates deleteEntitiesForPassPID:v5 inDatabase:v6];
+  datesCopy = dates;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  [PassRelevancyDates deleteEntitiesForPassPID:persistentID inDatabase:database];
 
-  v7 = [(SQLiteEntity *)self database];
-  [PassRelevancyDates insertPassRelevancyDates:v4 forPassPID:v5 inDatabase:v7];
+  database2 = [(SQLiteEntity *)self database];
+  [PassRelevancyDates insertPassRelevancyDates:datesCopy forPassPID:persistentID inDatabase:database2];
 }
 
-- (void)updateWithBeacons:(id)a3
+- (void)updateWithBeacons:(id)beacons
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self database];
-  [Beacon deleteEntitiesForPass:self inDatabase:v5];
+  beaconsCopy = beacons;
+  database = [(SQLiteEntity *)self database];
+  [Beacon deleteEntitiesForPass:self inDatabase:database];
 
-  v6 = [(SQLiteEntity *)self database];
-  [Beacon insertBeacons:v4 forPass:self inDatabase:v6];
+  database2 = [(SQLiteEntity *)self database];
+  [Beacon insertBeacons:beaconsCopy forPass:self inDatabase:database2];
 }
 
-- (void)_updateWithWebService:(id)a3
+- (void)_updateWithWebService:(id)service
 {
   v4 = _SQLValueForEntity();
   [(SQLiteEntity *)self setValue:v4 forProperty:@"web_service_pid"];
 }
 
-- (void)updateWithPaymentApplications:(id)a3
+- (void)updateWithPaymentApplications:(id)applications
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self database];
-  [PaymentApplication updatePaymentApplications:v4 forPass:self inDatabase:v5];
+  applicationsCopy = applications;
+  database = [(SQLiteEntity *)self database];
+  [PaymentApplication updatePaymentApplications:applicationsCopy forPass:self inDatabase:database];
 }
 
-- (id)_updatePassTileDescriptor:(id)a3 groupDescriptor:(id)a4 idx:(unint64_t)a5 previousStates:(id)a6 visitedIdentifiers:(id)a7
+- (id)_updatePassTileDescriptor:(id)descriptor groupDescriptor:(id)groupDescriptor idx:(unint64_t)idx previousStates:(id)states visitedIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 metadata];
-  v17 = [v16 identifier];
-  if (!v17 || ([v15 containsObject:v17] & 1) != 0 || (v18 = objc_msgSend(v16, "isGroupType"), v13) && (v18 & 1) != 0)
+  descriptorCopy = descriptor;
+  groupDescriptorCopy = groupDescriptor;
+  statesCopy = states;
+  identifiersCopy = identifiers;
+  metadata = [descriptorCopy metadata];
+  identifier = [metadata identifier];
+  if (!identifier || ([identifiersCopy containsObject:identifier] & 1) != 0 || (v18 = objc_msgSend(metadata, "isGroupType"), groupDescriptorCopy) && (v18 & 1) != 0)
   {
     v19 = 0;
   }
 
   else
   {
-    [v15 addObject:v17];
-    v21 = [v14 objectForKeyedSubscript:v17];
-    v22 = [v16 type];
-    if (!v21 || [v21 type] != v22)
+    [identifiersCopy addObject:identifier];
+    v21 = [statesCopy objectForKeyedSubscript:identifier];
+    type = [metadata type];
+    if (!v21 || [v21 type] != type)
     {
-      v23 = [[PKPassTileDescriptorState alloc] initForType:v22];
+      v23 = [[PKPassTileDescriptorState alloc] initForType:type];
 
       v21 = v23;
     }
 
-    v19 = [TileDescriptor insertDescriptor:v12 groupDescriptor:v13 withState:v21 order:a5 forPass:self inDatabase:self->super._database];
+    v19 = [TileDescriptor insertDescriptor:descriptorCopy groupDescriptor:groupDescriptorCopy withState:v21 order:idx forPass:self inDatabase:self->super._database];
   }
 
   return v19;
 }
 
-- (void)updateWithPassTileDescriptors:(id)a3
+- (void)updateWithPassTileDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self persistentID];
-  v6 = [TileDescriptorState statesInDatabase:self->super._database forPassPID:v5];
-  [TileDescriptor deleteEntitiesForPassPID:v5 inDatabase:self->super._database];
+  descriptorsCopy = descriptors;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  v6 = [TileDescriptorState statesInDatabase:self->super._database forPassPID:persistentID];
+  [TileDescriptor deleteEntitiesForPassPID:persistentID inDatabase:self->super._database];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D06D8;
@@ -1192,20 +1192,20 @@
   v11 = objc_alloc_init(NSMutableSet);
   v7 = v11;
   v8 = v6;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [descriptorsCopy enumerateObjectsUsingBlock:v9];
 }
 
-- (void)updateWithSecureElementPassFields:(id)a3
+- (void)updateWithSecureElementPassFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   [SecureElementPassField deleteSecureElementPassFieldsInDatabase:self->super._database forPassPID:[(SQLiteEntity *)self persistentID]];
-  v14 = v4;
-  v5 = [v4 fieldsDictionary];
+  v14 = fieldsCopy;
+  fieldsDictionary = [fieldsCopy fieldsDictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [fieldsDictionary countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1216,11 +1216,11 @@
       {
         if (*v17 != v15)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(fieldsDictionary);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v5 objectForKeyedSubscript:v9];
+        v10 = [fieldsDictionary objectForKeyedSubscript:v9];
         if ([v10 count])
         {
           v11 = 0;
@@ -1236,115 +1236,115 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [fieldsDictionary countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)updateWithShareBundle:(id)a3
+- (void)updateWithShareBundle:(id)bundle
 {
-  if (a3)
+  if (bundle)
   {
-    v4 = a3;
-    v5 = [(SQLiteEntity *)self persistentID];
-    v6 = [v4 shares];
-    [PassShare mergeInShares:v6 forPassPID:v5 inDatabase:self->super._database];
+    bundleCopy = bundle;
+    persistentID = [(SQLiteEntity *)self persistentID];
+    shares = [bundleCopy shares];
+    [PassShare mergeInShares:shares forPassPID:persistentID inDatabase:self->super._database];
 
-    v7 = [v4 entitlements];
+    entitlements = [bundleCopy entitlements];
 
-    [PassEntitlement insertOrUpdatePassEntitlements:v7 forPassPID:v5 inDatabase:self->super._database];
+    [PassEntitlement insertOrUpdatePassEntitlements:entitlements forPassPID:persistentID inDatabase:self->super._database];
   }
 }
 
-- (void)udpateWithIsCloudKitArchived:(BOOL)a3
+- (void)udpateWithIsCloudKitArchived:(BOOL)archived
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:archived];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"is_cloud_kit_archived"];
 }
 
-- (void)udpateWithIsCloudKitSecurelyArchived:(BOOL)a3
+- (void)udpateWithIsCloudKitSecurelyArchived:(BOOL)archived
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:archived];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"is_cloud_kit_securely_archived"];
 }
 
-- (void)updateWithDefaultPaymentApplication:(id)a3
+- (void)updateWithDefaultPaymentApplication:(id)application
 {
   v4 = _SQLValueForEntity();
   [(SQLiteEntity *)self setValue:v4 forProperty:@"pass_default_payment_application_pid"];
 }
 
-- (void)updateWithTransactionSourcePID:(int64_t)a3
+- (void)updateWithTransactionSourcePID:(int64_t)d
 {
-  v4 = [NSNumber numberWithLongLong:a3];
+  v4 = [NSNumber numberWithLongLong:d];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"transaction_source_pid"];
 }
 
-- (void)_updateWithTransactionService:(id)a3
+- (void)_updateWithTransactionService:(id)service
 {
-  v8 = a3;
-  v4 = [(Pass *)self passTransactionService];
-  if (v4)
+  serviceCopy = service;
+  passTransactionService = [(Pass *)self passTransactionService];
+  if (passTransactionService)
   {
-    v5 = v4;
-    [v4 updateWithNotificationService:v8];
+    v5 = passTransactionService;
+    [passTransactionService updateWithNotificationService:serviceCopy];
   }
 
   else
   {
-    v6 = v8;
-    if (!v8)
+    v6 = serviceCopy;
+    if (!serviceCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = [(SQLiteEntity *)self database];
-    v5 = [PassNotificationService insertPassNotificationServiceWithNotificationService:v8 inDatabase:v7];
+    database = [(SQLiteEntity *)self database];
+    v5 = [PassNotificationService insertPassNotificationServiceWithNotificationService:serviceCopy inDatabase:database];
 
     [(Pass *)self _updateWithPassTransactionService:v5];
   }
 
-  v6 = v8;
+  v6 = serviceCopy;
 LABEL_6:
 }
 
-- (void)_updateWithMessageService:(id)a3
+- (void)_updateWithMessageService:(id)service
 {
-  v8 = a3;
-  v4 = [(Pass *)self passMessageService];
-  if (v4)
+  serviceCopy = service;
+  passMessageService = [(Pass *)self passMessageService];
+  if (passMessageService)
   {
-    v5 = v4;
-    [v4 updateWithNotificationService:v8];
+    v5 = passMessageService;
+    [passMessageService updateWithNotificationService:serviceCopy];
   }
 
   else
   {
-    v6 = v8;
-    if (!v8)
+    v6 = serviceCopy;
+    if (!serviceCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = [(SQLiteEntity *)self database];
-    v5 = [PassNotificationService insertPassNotificationServiceWithNotificationService:v8 inDatabase:v7];
+    database = [(SQLiteEntity *)self database];
+    v5 = [PassNotificationService insertPassNotificationServiceWithNotificationService:serviceCopy inDatabase:database];
 
     [(Pass *)self _updateWithPassMessageService:v5];
   }
 
-  v6 = v8;
+  v6 = serviceCopy;
 LABEL_6:
 }
 
-- (void)_updateWithPassTransactionService:(id)a3
+- (void)_updateWithPassTransactionService:(id)service
 {
   v4 = _SQLValueForEntity();
   [(SQLiteEntity *)self setValue:v4 forProperty:@"pass_transaction_service_pid"];
 }
 
-- (void)_updateWithPassMessageService:(id)a3
+- (void)_updateWithPassMessageService:(id)service
 {
   v4 = _SQLValueForEntity();
   [(SQLiteEntity *)self setValue:v4 forProperty:@"pass_message_service_pid"];
@@ -1352,44 +1352,44 @@ LABEL_6:
 
 - (void)_updateSortingStateIfNecessary
 {
-  v3 = [(Pass *)self uniqueID];
-  v4 = [(SQLiteEntity *)self database];
-  v5 = [PassAnnotations anyInDatabase:v4 withPassID:v3];
+  uniqueID = [(Pass *)self uniqueID];
+  database = [(SQLiteEntity *)self database];
+  v5 = [PassAnnotations anyInDatabase:database withPassID:uniqueID];
 
   if (v5)
   {
-    v6 = [v5 passAnnotations];
-    v7 = [v6 isArchived];
+    passAnnotations = [v5 passAnnotations];
+    isArchived = [passAnnotations isArchived];
 
-    if (v7)
+    if (isArchived)
     {
-      v8 = [(Pass *)self pass];
-      v9 = [v8 expirationDate];
+      pass = [(Pass *)self pass];
+      expirationDate = [pass expirationDate];
 
-      if (v9)
+      if (expirationDate)
       {
-        v10 = [v8 isExpired];
+        isExpired = [pass isExpired];
       }
 
       else
       {
-        v10 = [v8 isPastRelevancy];
+        isExpired = [pass isPastRelevancy];
       }
 
-      v11 = v10;
-      if ([v8 isExpired] && objc_msgSend(v8, "passType") == 1)
+      v11 = isExpired;
+      if ([pass isExpired] && objc_msgSend(pass, "passType") == 1)
       {
-        v12 = [v8 secureElementPass];
-        [v12 passActivationState];
+        secureElementPass = [pass secureElementPass];
+        [secureElementPass passActivationState];
       }
 
-      if ((([v8 isVoided] | v11) & 1) == 0 && (objc_msgSend(v8, "isExpiredBasedOnSigningDate") & 1) == 0)
+      if ((([pass isVoided] | v11) & 1) == 0 && (objc_msgSend(pass, "isExpiredBasedOnSigningDate") & 1) == 0)
       {
         v13 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v3;
+          v15 = uniqueID;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Un-archiving updated pass with unique id:%@ since it no longer qualifies for the expired section", &v14, 0xCu);
         }
 
@@ -1399,17 +1399,17 @@ LABEL_6:
   }
 }
 
-- (void)updateWithSortingState:(int64_t)a3 forSortingReason:(int64_t)a4
+- (void)updateWithSortingState:(int64_t)state forSortingReason:(int64_t)reason
 {
-  v7 = [(SQLiteEntity *)self database];
-  v8 = [(Pass *)self uniqueID];
-  v9 = [PassAnnotations anyInDatabase:v7 withPassID:v8];
+  database = [(SQLiteEntity *)self database];
+  uniqueID = [(Pass *)self uniqueID];
+  v9 = [PassAnnotations anyInDatabase:database withPassID:uniqueID];
 
   if (PKExpiredPassesDisabledByUser())
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      a3 = 3;
+      state = 3;
     }
 
     v10 = PKLogFacilityTypeGetObject();
@@ -1418,20 +1418,20 @@ LABEL_6:
     {
       if (v11)
       {
-        if ((a4 - 1) > 6)
+        if ((reason - 1) > 6)
         {
           v12 = @"PKPassSortingReasonUnknown";
         }
 
         else
         {
-          v12 = off_100843F98[a4 - 1];
+          v12 = off_100843F98[reason - 1];
         }
 
         v22 = 134218498;
-        v23 = a3;
+        stateCopy4 = state;
         v24 = 2112;
-        v25 = v12;
+        stateCopy3 = v12;
         v26 = 2048;
         v27 = 1;
 LABEL_22:
@@ -1444,22 +1444,22 @@ LABEL_22:
 
     if (v11)
     {
-      v15 = [(Pass *)self uniqueID];
-      v16 = v15;
-      if ((a4 - 1) > 6)
+      uniqueID2 = [(Pass *)self uniqueID];
+      v16 = uniqueID2;
+      if ((reason - 1) > 6)
       {
         v17 = @"PKPassSortingReasonUnknown";
       }
 
       else
       {
-        v17 = off_100843F98[a4 - 1];
+        v17 = off_100843F98[reason - 1];
       }
 
       v22 = 138413058;
-      v23 = v15;
+      stateCopy4 = uniqueID2;
       v24 = 2048;
-      v25 = a3;
+      stateCopy3 = state;
       v26 = 2112;
       v27 = v17;
       v28 = 2048;
@@ -1479,22 +1479,22 @@ LABEL_28:
   {
     if (v13)
     {
-      v18 = [(Pass *)self uniqueID];
-      v16 = v18;
-      if ((a4 - 1) > 6)
+      uniqueID3 = [(Pass *)self uniqueID];
+      v16 = uniqueID3;
+      if ((reason - 1) > 6)
       {
         v19 = @"PKPassSortingReasonUnknown";
       }
 
       else
       {
-        v19 = off_100843F98[a4 - 1];
+        v19 = off_100843F98[reason - 1];
       }
 
       v22 = 138413058;
-      v23 = v18;
+      stateCopy4 = uniqueID3;
       v24 = 2048;
-      v25 = a3;
+      stateCopy3 = state;
       v26 = 2112;
       v27 = v19;
       v28 = 2048;
@@ -1504,28 +1504,28 @@ LABEL_28:
 
 LABEL_29:
 
-    v20 = [(SQLiteEntity *)self database];
-    v21 = [PassAnnotations insertPassAnnotationsForSortingState:a3 forPass:self inDatabase:v20];
+    database2 = [(SQLiteEntity *)self database];
+    v21 = [PassAnnotations insertPassAnnotationsForSortingState:state forPass:self inDatabase:database2];
 
     goto LABEL_30;
   }
 
   if (v13)
   {
-    if ((a4 - 1) > 6)
+    if ((reason - 1) > 6)
     {
       v14 = @"PKPassSortingReasonUnknown";
     }
 
     else
     {
-      v14 = off_100843F98[a4 - 1];
+      v14 = off_100843F98[reason - 1];
     }
 
     v22 = 134218498;
-    v23 = a3;
+    stateCopy4 = state;
     v24 = 2112;
-    v25 = v14;
+    stateCopy3 = v14;
     v26 = 2048;
     v27 = 0;
     goto LABEL_22;
@@ -1533,156 +1533,156 @@ LABEL_29:
 
 LABEL_23:
 
-  [v9 updateSortingState:a3];
+  [v9 updateSortingState:state];
 LABEL_30:
 }
 
-- (void)updateWithAssociatedApplicationIdentifiers:(id)a3
+- (void)updateWithAssociatedApplicationIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self database];
-  [AssociatedApplicationIdentifier deleteEntitiesForPass:self inDatabase:v5];
+  identifiersCopy = identifiers;
+  database = [(SQLiteEntity *)self database];
+  [AssociatedApplicationIdentifier deleteEntitiesForPass:self inDatabase:database];
 
-  v6 = [(SQLiteEntity *)self database];
-  [AssociatedApplicationIdentifier insertAssociatedApplicationIdentifiers:v4 forPass:self inDatabase:v6];
+  database2 = [(SQLiteEntity *)self database];
+  [AssociatedApplicationIdentifier insertAssociatedApplicationIdentifiers:identifiersCopy forPass:self inDatabase:database2];
 }
 
-- (void)updateWithAssociatedPassTypeIdentifiers:(id)a3
+- (void)updateWithAssociatedPassTypeIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self database];
-  [AssociatedPassTypeIdentifier deleteEntitiesForPass:self inDatabase:v5];
+  identifiersCopy = identifiers;
+  database = [(SQLiteEntity *)self database];
+  [AssociatedPassTypeIdentifier deleteEntitiesForPass:self inDatabase:database];
 
-  v6 = [(SQLiteEntity *)self database];
-  [AssociatedPassTypeIdentifier insertAssociatedPassTypeIdentifiers:v4 forPass:self inDatabase:v6];
+  database2 = [(SQLiteEntity *)self database];
+  [AssociatedPassTypeIdentifier insertAssociatedPassTypeIdentifiers:identifiersCopy forPass:self inDatabase:database2];
 }
 
-- (void)updateWithAssociatedWebDomains:(id)a3
+- (void)updateWithAssociatedWebDomains:(id)domains
 {
-  v4 = a3;
-  v5 = [(SQLiteEntity *)self database];
-  [AssociatedWebDomain deleteEntitiesForPass:self inDatabase:v5];
+  domainsCopy = domains;
+  database = [(SQLiteEntity *)self database];
+  [AssociatedWebDomain deleteEntitiesForPass:self inDatabase:database];
 
-  v6 = [(SQLiteEntity *)self database];
-  [AssociatedWebDomain insertAssociatedWebDomains:v4 forPass:self inDatabase:v6];
+  database2 = [(SQLiteEntity *)self database];
+  [AssociatedWebDomain insertAssociatedWebDomains:domainsCopy forPass:self inDatabase:database2];
 }
 
-- (void)updateWithGroup:(id)a3
+- (void)updateWithGroup:(id)group
 {
   v4 = _SQLValueForEntity();
   [(SQLiteEntity *)self setValue:v4 forProperty:@"group_pid"];
 }
 
-- (void)updateWithRevocationStatus:(BOOL)a3
+- (void)updateWithRevocationStatus:(BOOL)status
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:status];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"revoked"];
 }
 
-- (void)updateWithDaemonPassData:(id)a3
+- (void)updateWithDaemonPassData:(id)data
 {
-  v7 = a3;
+  dataCopy = data;
   if ([(Pass *)self passFlavor]== 1)
   {
-    v4 = sub_100004338(v7);
+    v4 = sub_100004338(dataCopy);
     [(Pass *)self updateWithPassTileDescriptors:v4];
 
-    v5 = sub_1000044D8(v7);
+    v5 = sub_1000044D8(dataCopy);
     [(Pass *)self updateWithSecureElementPassFields:v5];
 
-    v6 = sub_1005AD1B0(v7);
+    v6 = sub_1005AD1B0(dataCopy);
     [(Pass *)self updateWithShareBundle:v6];
   }
 }
 
-- (void)updateWithSupportsIssuerBinding:(BOOL)a3
+- (void)updateWithSupportsIssuerBinding:(BOOL)binding
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:binding];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"supports_issuer_binding"];
 }
 
-- (void)updateWithProvisioningMetadata:(id)a3
+- (void)updateWithProvisioningMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    v4 = a3;
-    v5 = [(SQLiteEntity *)self persistentID];
-    v6 = [(SQLiteEntity *)self database];
-    [PassProvisioningMetadata insertOrUpdateProvisioningMetadata:v4 forPassPID:v5 inDatabase:v6];
+    metadataCopy = metadata;
+    persistentID = [(SQLiteEntity *)self persistentID];
+    database = [(SQLiteEntity *)self database];
+    [PassProvisioningMetadata insertOrUpdateProvisioningMetadata:metadataCopy forPassPID:persistentID inDatabase:database];
   }
 }
 
-- (void)updateWithLegalAgreements:(id)a3
+- (void)updateWithLegalAgreements:(id)agreements
 {
-  v6 = a3;
-  v4 = [(SQLiteEntity *)self persistentID];
-  v5 = [(SQLiteEntity *)self database];
-  if (v6)
+  agreementsCopy = agreements;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  if (agreementsCopy)
   {
-    [PassLegalAgreement bulkInsertOrUpdate:v6 passPID:v4 inDatabase:v5];
+    [PassLegalAgreement bulkInsertOrUpdate:agreementsCopy passPID:persistentID inDatabase:database];
   }
 
   else
   {
-    [PassLegalAgreement deleteForPassPID:v4 inDatabase:v5];
+    [PassLegalAgreement deleteForPassPID:persistentID inDatabase:database];
   }
 }
 
-- (void)updateWithPassDisplayProfile:(id)a3
+- (void)updateWithPassDisplayProfile:(id)profile
 {
-  if (a3)
+  if (profile)
   {
     v4 = [Pass _updateDictionaryWithDisplayProfile:?];
     [(SQLiteEntity *)self setValuesWithDictionary:v4];
   }
 }
 
-- (void)updateWithContactlessActivationGroupingType:(unint64_t)a3
+- (void)updateWithContactlessActivationGroupingType:(unint64_t)type
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:type];
   [(SQLiteEntity *)self setValue:v4 forProperty:@"contactless_activation_grouping_type"];
 }
 
-+ (id)_dynamicStateInDatabase:(id)a3 forPassPID:(int64_t)a4
++ (id)_dynamicStateInDatabase:(id)database forPassPID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithPersistentID:a4 inDatabase:v6];
+  databaseCopy = database;
+  v7 = [[self alloc] initWithPersistentID:d inDatabase:databaseCopy];
   v8 = objc_alloc_init(PassDynamicState);
-  v9 = [PassLiveRender passLiveRenderInDatabase:v6 forPass:v7];
-  v10 = [v9 passLiveRender];
-  [(PassDynamicState *)v8 setLiveRender:v10];
+  v9 = [PassLiveRender passLiveRenderInDatabase:databaseCopy forPass:v7];
+  passLiveRender = [v9 passLiveRender];
+  [(PassDynamicState *)v8 setLiveRender:passLiveRender];
 
   v11 = [PKPassBalanceModel alloc];
-  v12 = [PaymentBalance paymentBalancesInDatabase:v6 forPass:v7];
+  v12 = [PaymentBalance paymentBalancesInDatabase:databaseCopy forPass:v7];
   v13 = [v11 initWithBalances:v12];
   [(PassDynamicState *)v8 setBalanceModel:v13];
 
-  v14 = [PassRelevancyModel anyInDatabase:v6 forPass:v7];
-  v15 = [v14 passRelevancyModel];
-  [(PassDynamicState *)v8 setRelevancyModel:v15];
+  v14 = [PassRelevancyModel anyInDatabase:databaseCopy forPass:v7];
+  passRelevancyModel = [v14 passRelevancyModel];
+  [(PassDynamicState *)v8 setRelevancyModel:passRelevancyModel];
 
-  v16 = [v7 uniqueID];
-  v17 = [UserLegalAgreementConsent userLegalAgreementConsentsForPassUniqueID:v16 inDatabase:v6];
+  uniqueID = [v7 uniqueID];
+  v17 = [UserLegalAgreementConsent userLegalAgreementConsentsForPassUniqueID:uniqueID inDatabase:databaseCopy];
   [(PassDynamicState *)v8 setAgreements:v17];
 
-  v18 = +[PassAssociatedFlight anyInDatabase:forPassPID:](PassAssociatedFlight, "anyInDatabase:forPassPID:", v6, [v7 persistentID]);
-  v19 = +[Flight anyInDatabase:withPID:](Flight, "anyInDatabase:withPID:", v6, [v18 flightPID]);
+  v18 = +[PassAssociatedFlight anyInDatabase:forPassPID:](PassAssociatedFlight, "anyInDatabase:forPassPID:", databaseCopy, [v7 persistentID]);
+  v19 = +[Flight anyInDatabase:withPID:](Flight, "anyInDatabase:withPID:", databaseCopy, [v18 flightPID]);
 
-  v20 = [v19 flight];
-  [(PassDynamicState *)v8 setFlight:v20];
+  flight = [v19 flight];
+  [(PassDynamicState *)v8 setFlight:flight];
 
   return v8;
 }
 
-+ (id)dynamicStateInDatabase:(id)a3 forPassUniqueID:(id)a4
++ (id)dynamicStateInDatabase:(id)database forPassUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 predicateForUniqueID:v7];
-  v10 = [a1 _realPassPredicateForPredicate:v9];
+  v9 = [self predicateForUniqueID:dCopy];
+  v10 = [self _realPassPredicateForPredicate:v9];
 
-  v11 = [a1 queryWithDatabase:v6 predicate:v10];
+  v11 = [self queryWithDatabase:databaseCopy predicate:v10];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1694,8 +1694,8 @@ LABEL_30:
   v15[2] = sub_1000D1D2C;
   v15[3] = &unk_100842FF0;
   v17 = &v19;
-  v18 = a1;
-  v12 = v6;
+  selfCopy = self;
+  v12 = databaseCopy;
   v16 = v12;
   [v11 enumeratePersistentIDsAndProperties:&__NSArray0__struct usingBlock:v15];
   v13 = v20[5];
@@ -1706,15 +1706,15 @@ LABEL_30:
   return v13;
 }
 
-+ (id)dynamicStatesInDatabase:(id)a3 forPassUniqueIDs:(id)a4
++ (id)dynamicStatesInDatabase:(id)database forPassUniqueIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  dsCopy = ds;
   v8 = objc_autoreleasePoolPush();
-  v9 = [a1 predicateForUniqueIDs:v7];
-  v10 = [a1 _realPassPredicateForPredicate:v9];
+  v9 = [self predicateForUniqueIDs:dsCopy];
+  v10 = [self _realPassPredicateForPredicate:v9];
 
-  v11 = [a1 queryWithDatabase:v6 predicate:v10];
+  v11 = [self queryWithDatabase:databaseCopy predicate:v10];
   v12 = objc_alloc_init(NSMutableDictionary);
   v22 = @"unique_id";
   v13 = [NSArray arrayWithObjects:&v22 count:1];
@@ -1723,8 +1723,8 @@ LABEL_30:
   v18[2] = sub_1000D1F44;
   v18[3] = &unk_10083C998;
   v19 = v12;
-  v21 = a1;
-  v14 = v6;
+  selfCopy = self;
+  v14 = databaseCopy;
   v20 = v14;
   v15 = v12;
   [v11 enumeratePersistentIDsAndProperties:v13 usingBlock:v18];
@@ -1735,41 +1735,41 @@ LABEL_30:
   return v16;
 }
 
-+ (id)_realPassPredicateForPredicate:(id)a3
++ (id)_realPassPredicateForPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  predicateCopy = predicate;
+  v5 = predicateCopy;
+  if (predicateCopy)
   {
-    v10[0] = v4;
-    v6 = [a1 predicateForValidStyle];
-    v10[1] = v6;
+    v10[0] = predicateCopy;
+    predicateForValidStyle = [self predicateForValidStyle];
+    v10[1] = predicateForValidStyle;
     v7 = [NSArray arrayWithObjects:v10 count:2];
-    v8 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v7];
+    predicateForValidStyle2 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v7];
   }
 
   else
   {
-    v8 = [a1 predicateForValidStyle];
+    predicateForValidStyle2 = [self predicateForValidStyle];
   }
 
-  return v8;
+  return predicateForValidStyle2;
 }
 
-+ (id)_realPassesInDatabase:(id)a3 states:(id *)a4 predicate:(id)a5 orderedBy:(id)a6
++ (id)_realPassesInDatabase:(id)database states:(id *)states predicate:(id)predicate orderedBy:(id)by
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
+  databaseCopy = database;
+  byCopy = by;
+  predicateCopy = predicate;
   v13 = objc_alloc_init(NSMutableArray);
   context = objc_autoreleasePoolPush();
-  v14 = [a1 _realPassPredicateForPredicate:v12];
+  v14 = [self _realPassPredicateForPredicate:predicateCopy];
 
-  v29 = v11;
-  v15 = [a1 queryWithDatabase:v10 predicate:v14 orderingProperties:v11];
+  v29 = byCopy;
+  v15 = [self queryWithDatabase:databaseCopy predicate:v14 orderingProperties:byCopy];
   v16 = +[PKSecureElement isInFailForward];
   v17 = objc_alloc_init(NSMutableSet);
-  if (a4)
+  if (states)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
   }
@@ -1779,28 +1779,28 @@ LABEL_30:
     v18 = 0;
   }
 
-  v19 = [a1 _copyPropertiesForPass];
+  _copyPropertiesForPass = [self _copyPropertiesForPass];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_1000D22E4;
   v30[3] = &unk_100843018;
   v20 = v17;
   v31 = v20;
-  v35 = a1;
-  v21 = v10;
+  selfCopy = self;
+  v21 = databaseCopy;
   v32 = v21;
   v36 = v16;
   v22 = v13;
   v33 = v22;
   v23 = v18;
   v34 = v23;
-  [v15 enumeratePersistentIDsAndProperties:v19 usingBlock:v30];
+  [v15 enumeratePersistentIDsAndProperties:_copyPropertiesForPass usingBlock:v30];
 
-  if (a4)
+  if (states)
   {
     v24 = [v23 copy];
-    v25 = *a4;
-    *a4 = v24;
+    v25 = *states;
+    *states = v24;
   }
 
   objc_autoreleasePoolPop(context);
@@ -1809,13 +1809,13 @@ LABEL_30:
   return v26;
 }
 
-+ (id)passesInDatabase:(id)a3 states:(id *)a4 matchingPredicate:(id)a5
++ (id)passesInDatabase:(id)database states:(id *)states matchingPredicate:(id)predicate
 {
-  v8 = a3;
-  v9 = a5;
+  databaseCopy = database;
+  predicateCopy = predicate;
   v10 = objc_autoreleasePoolPush();
   v11 = [NSSet alloc];
-  v12 = [a1 _realPassesInDatabase:v8 states:a4 predicate:v9 orderedBy:0];
+  v12 = [self _realPassesInDatabase:databaseCopy states:states predicate:predicateCopy orderedBy:0];
   v13 = [v11 initWithArray:v12];
 
   objc_autoreleasePoolPop(v10);
@@ -1823,13 +1823,13 @@ LABEL_30:
   return v13;
 }
 
-+ (id)passSerialNumbersInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)passSerialNumbersInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _realPassPredicateForPredicate:a4];
+  v8 = [self _realPassPredicateForPredicate:predicate];
   v9 = objc_alloc_init(NSMutableSet);
-  v10 = [a1 queryWithDatabase:v6 predicate:v8];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v8];
   v17 = @"serial_number";
   v11 = [NSArray arrayWithObjects:&v17 count:1];
   v15[0] = _NSConcreteStackBlock;
@@ -1846,13 +1846,13 @@ LABEL_30:
   return v13;
 }
 
-+ (id)passPrimaryAccountIdentifiersInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)passPrimaryAccountIdentifiersInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _realPassPredicateForPredicate:a4];
+  v8 = [self _realPassPredicateForPredicate:predicate];
   v9 = objc_alloc_init(NSMutableSet);
-  v10 = [a1 queryWithDatabase:v6 predicate:v8];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v8];
   v17 = @"primary_account_identifier";
   v11 = [NSArray arrayWithObjects:&v17 count:1];
   v15[0] = _NSConcreteStackBlock;
@@ -1869,13 +1869,13 @@ LABEL_30:
   return v13;
 }
 
-+ (id)passUniqueIDsInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)passUniqueIDsInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _realPassPredicateForPredicate:a4];
+  v8 = [self _realPassPredicateForPredicate:predicate];
   v9 = objc_alloc_init(NSMutableSet);
-  v10 = [a1 queryWithDatabase:v6 predicate:v8];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v8];
   v17 = @"unique_id";
   v11 = [NSArray arrayWithObjects:&v17 count:1];
   v15[0] = _NSConcreteStackBlock;
@@ -1892,17 +1892,17 @@ LABEL_30:
   return v13;
 }
 
-+ (id)passStylesInDatabase:(id)a3
++ (id)passStylesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 predicateForValidStyle];
+  predicateForValidStyle = [self predicateForValidStyle];
   v7 = objc_alloc_init(NSMutableSet);
   v8 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v8 setEntityClass:a1];
-  [(SQLiteQueryDescriptor *)v8 setPredicate:v6];
+  [(SQLiteQueryDescriptor *)v8 setEntityClass:self];
+  [(SQLiteQueryDescriptor *)v8 setPredicate:predicateForValidStyle];
   [(SQLiteQueryDescriptor *)v8 setReturnsDistinctEntities:1];
-  v9 = [[SQLiteQuery alloc] initWithDatabase:v4 descriptor:v8];
+  v9 = [[SQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v8];
   v16 = @"template";
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   v14[0] = _NSConcreteStackBlock;
@@ -1919,23 +1919,23 @@ LABEL_30:
   return v12;
 }
 
-+ (id)unexpiredPassStylesInDatabase:(id)a3
++ (id)unexpiredPassStylesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 predicateForValidStyle];
-  v20[0] = v6;
-  v7 = [a1 predicateForUnexpiredInStack];
-  v20[1] = v7;
+  predicateForValidStyle = [self predicateForValidStyle];
+  v20[0] = predicateForValidStyle;
+  predicateForUnexpiredInStack = [self predicateForUnexpiredInStack];
+  v20[1] = predicateForUnexpiredInStack;
   v8 = [NSArray arrayWithObjects:v20 count:2];
   v9 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
 
   v10 = objc_alloc_init(NSMutableSet);
   v11 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v11 setEntityClass:a1];
+  [(SQLiteQueryDescriptor *)v11 setEntityClass:self];
   [(SQLiteQueryDescriptor *)v11 setPredicate:v9];
   [(SQLiteQueryDescriptor *)v11 setReturnsDistinctEntities:1];
-  v12 = [[SQLiteQuery alloc] initWithDatabase:v4 descriptor:v11];
+  v12 = [[SQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v11];
   v19 = @"template";
   v13 = [NSArray arrayWithObjects:&v19 count:1];
   v17[0] = _NSConcreteStackBlock;
@@ -1952,17 +1952,17 @@ LABEL_30:
   return v15;
 }
 
-+ (id)secureElementCardTypesInDatabase:(id)a3
++ (id)secureElementCardTypesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_autoreleasePoolPush();
   v6 = +[SQLiteBooleanPredicate truePredicate];
   v7 = objc_alloc_init(NSMutableSet);
   v8 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v8 setEntityClass:a1];
+  [(SQLiteQueryDescriptor *)v8 setEntityClass:self];
   [(SQLiteQueryDescriptor *)v8 setPredicate:v6];
   [(SQLiteQueryDescriptor *)v8 setReturnsDistinctEntities:1];
-  v9 = [[SQLiteQuery alloc] initWithDatabase:v4 descriptor:v8];
+  v9 = [[SQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v8];
   v16 = @"card_type";
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   v14[0] = _NSConcreteStackBlock;
@@ -1979,17 +1979,17 @@ LABEL_30:
   return v12;
 }
 
-+ (id)unexpiredSecureElementCardTypesInDatabase:(id)a3
++ (id)unexpiredSecureElementCardTypesInDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_autoreleasePoolPush();
-  v6 = [a1 predicateForUnexpiredInStack];
+  predicateForUnexpiredInStack = [self predicateForUnexpiredInStack];
   v7 = objc_alloc_init(NSMutableSet);
   v8 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v8 setEntityClass:a1];
-  [(SQLiteQueryDescriptor *)v8 setPredicate:v6];
+  [(SQLiteQueryDescriptor *)v8 setEntityClass:self];
+  [(SQLiteQueryDescriptor *)v8 setPredicate:predicateForUnexpiredInStack];
   [(SQLiteQueryDescriptor *)v8 setReturnsDistinctEntities:1];
-  v9 = [[SQLiteQuery alloc] initWithDatabase:v4 descriptor:v8];
+  v9 = [[SQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v8];
   v16 = @"card_type";
   v10 = [NSArray arrayWithObjects:&v16 count:1];
   v14[0] = _NSConcreteStackBlock;
@@ -2006,18 +2006,18 @@ LABEL_30:
   return v12;
 }
 
-+ (id)candidatePassesInDatabase:(id)a3 matchingPredicate:(id)a4
++ (id)candidatePassesInDatabase:(id)database matchingPredicate:(id)predicate
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = objc_autoreleasePoolPush();
-  v8 = [a1 _realPassPredicateForPredicate:a4];
+  v8 = [self _realPassPredicateForPredicate:predicate];
   v9 = objc_alloc_init(NSMutableSet);
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000D33B4;
   v18 = &unk_100843068;
-  v22 = a1;
-  v10 = v6;
+  selfCopy = self;
+  v10 = databaseCopy;
   v19 = v10;
   v11 = v8;
   v20 = v11;
@@ -2035,7 +2035,7 @@ LABEL_30:
 {
   v3 = objc_alloc_init(PDPassUpdateContext);
   v4 = +[Pass _propertySettersForUpdateContext];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D37D8;
@@ -2044,7 +2044,7 @@ LABEL_30:
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -2056,7 +2056,7 @@ LABEL_30:
 {
   v3 = objc_alloc_init(PDPassGroupingProfile);
   v4 = +[Pass _propertySettersForGroupingProfile];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_1000D3958;
@@ -2065,12 +2065,12 @@ LABEL_30:
   v6 = v3;
   v20 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:&v15];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:&v15];
 
   v8 = [(SQLiteEntity *)self valueForProperty:@"pid", v15, v16, v17, v18];
-  v9 = [v8 longLongValue];
-  v10 = [(SQLiteEntity *)self database];
-  v11 = [PassRelevancyDates relevancyDatesForPassPID:v9 inDatabase:v10];
+  longLongValue = [v8 longLongValue];
+  database = [(SQLiteEntity *)self database];
+  v11 = [PassRelevancyDates relevancyDatesForPassPID:longLongValue inDatabase:database];
   [(PDPassGroupingProfile *)v6 setRelevantDates:v11];
 
   v12 = v20;
@@ -2085,9 +2085,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [PassType alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2113,9 +2113,9 @@ LABEL_30:
 - (unint64_t)passFlavor
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"pass_flavor"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (id)webService
@@ -2124,9 +2124,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [WebService alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2151,18 +2151,18 @@ LABEL_30:
 
 - (id)transactionService
 {
-  v2 = [(Pass *)self passTransactionService];
-  v3 = [v2 notificationService];
+  passTransactionService = [(Pass *)self passTransactionService];
+  notificationService = [passTransactionService notificationService];
 
-  return v3;
+  return notificationService;
 }
 
 - (id)messageService
 {
-  v2 = [(Pass *)self passMessageService];
-  v3 = [v2 notificationService];
+  passMessageService = [(Pass *)self passMessageService];
+  notificationService = [passMessageService notificationService];
 
-  return v3;
+  return notificationService;
 }
 
 - (id)passTransactionService
@@ -2171,9 +2171,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [PassNotificationService alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2202,9 +2202,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [PassNotificationService alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2227,24 +2227,24 @@ LABEL_30:
   return v8;
 }
 
-- (id)passNotificationServiceForType:(unint64_t)a3
+- (id)passNotificationServiceForType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v3 = [(Pass *)self passMessageService];
+    passMessageService = [(Pass *)self passMessageService];
   }
 
-  else if (a3)
+  else if (type)
   {
-    v3 = 0;
+    passMessageService = 0;
   }
 
   else
   {
-    v3 = [(Pass *)self passTransactionService];
+    passMessageService = [(Pass *)self passTransactionService];
   }
 
-  return v3;
+  return passMessageService;
 }
 
 - (id)group
@@ -2253,9 +2253,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [Group alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2284,9 +2284,9 @@ LABEL_30:
   if (v3)
   {
     v4 = [PaymentApplication alloc];
-    v5 = [v3 longLongValue];
-    v6 = [(SQLiteEntity *)self database];
-    v7 = [(SQLiteEntity *)v4 initWithPersistentID:v5 inDatabase:v6];
+    longLongValue = [v3 longLongValue];
+    database = [(SQLiteEntity *)self database];
+    v7 = [(SQLiteEntity *)v4 initWithPersistentID:longLongValue inDatabase:database];
   }
 
   else
@@ -2312,24 +2312,24 @@ LABEL_30:
 - (BOOL)revoked
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"revoked"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsIssuerBinding
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"supports_issuer_binding"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)displayProfile
 {
   v3 = objc_alloc_init(PKPassDisplayProfile);
   v4 = +[Pass _propertySettersForDisplayProfile];
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000D40C0;
@@ -2338,7 +2338,7 @@ LABEL_30:
   v6 = v3;
   v13 = v6;
   v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -2346,12 +2346,12 @@ LABEL_30:
   return v6;
 }
 
-+ (void)passInformationInDatabase:(id)a3 withPassUniqueID:(id)a4 cardType:(int64_t *)a5 accessType:(int64_t *)a6 accessReportingType:(id *)a7 supportedRadioTechnologies:(unint64_t *)a8
++ (void)passInformationInDatabase:(id)database withPassUniqueID:(id)d cardType:(int64_t *)type accessType:(int64_t *)accessType accessReportingType:(id *)reportingType supportedRadioTechnologies:(unint64_t *)technologies
 {
-  v13 = a3;
-  v18 = a4;
-  v20 = [a1 predicateForUniqueID:?];
-  v14 = [a1 queryWithDatabase:v13 predicate:v20];
+  databaseCopy = database;
+  dCopy = d;
+  v20 = [self predicateForUniqueID:?];
+  v14 = [self queryWithDatabase:databaseCopy predicate:v20];
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -2379,18 +2379,18 @@ LABEL_30:
   v21[3] = &unk_100843090;
   v23 = &v37;
   v24 = &v33;
-  v16 = v13;
+  v16 = databaseCopy;
   v22 = v16;
   v25 = &v29;
   v26 = v27;
   [v14 enumeratePersistentIDsAndProperties:v15 usingBlock:v21];
 
-  if (a5)
+  if (type)
   {
-    *a5 = v38[3];
+    *type = v38[3];
   }
 
-  if (a6)
+  if (accessType)
   {
     if (PKIsCarKeyPass())
     {
@@ -2402,17 +2402,17 @@ LABEL_30:
       v17 = v34[3];
     }
 
-    *a6 = v17;
+    *accessType = v17;
   }
 
-  if (a7)
+  if (reportingType)
   {
-    *a7 = PKSecureElementAccessPassTypeToString();
+    *reportingType = PKSecureElementAccessPassTypeToString();
   }
 
-  if (a8)
+  if (technologies)
   {
-    *a8 = v30[3];
+    *technologies = v30[3];
   }
 
   _Block_object_dispose(v27, 8);
@@ -2421,7 +2421,7 @@ LABEL_30:
   _Block_object_dispose(&v37, 8);
 }
 
-- (void)getPushRegistrationStatus:(unint64_t *)a3 date:(id *)a4
+- (void)getPushRegistrationStatus:(unint64_t *)status date:(id *)date
 {
   v15 = 0;
   v16 = &v15;
@@ -2444,14 +2444,14 @@ LABEL_30:
   v8[5] = &v9;
   [(SQLiteEntity *)self getValuesForProperties:v7 withApplier:v8];
 
-  if (a3)
+  if (status)
   {
-    *a3 = v16[3];
+    *status = v16[3];
   }
 
-  if (a4)
+  if (date)
   {
-    *a4 = v10[5];
+    *date = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -2461,104 +2461,104 @@ LABEL_30:
 
 - (id)transactionSourceIdentifier
 {
-  v3 = [(SQLiteEntity *)self database];
+  database = [(SQLiteEntity *)self database];
   v4 = [(SQLiteEntity *)self valueForProperty:@"transaction_source_pid"];
-  v5 = +[TransactionSource anyInDatabase:withPersistentID:](TransactionSource, "anyInDatabase:withPersistentID:", v3, [v4 longLongValue]);
-  v6 = [v5 identifier];
+  v5 = +[TransactionSource anyInDatabase:withPersistentID:](TransactionSource, "anyInDatabase:withPersistentID:", database, [v4 longLongValue]);
+  identifier = [v5 identifier];
 
-  return v6;
+  return identifier;
 }
 
-+ (void)enumerateUpdateContextsForQuery:(id)a3 withHandler:(id)a4
++ (void)enumerateUpdateContextsForQuery:(id)query withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _propertySettersForUpdateContext];
-  v9 = [v8 allKeys];
+  handlerCopy = handler;
+  queryCopy = query;
+  _propertySettersForUpdateContext = [self _propertySettersForUpdateContext];
+  allKeys = [_propertySettersForUpdateContext allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000D4860;
   v12[3] = &unk_1008430E0;
-  v14 = v6;
-  v15 = a1;
-  v13 = v8;
-  v10 = v6;
-  v11 = v8;
-  [v7 enumeratePersistentIDsAndProperties:v9 usingBlock:v12];
+  v14 = handlerCopy;
+  selfCopy = self;
+  v13 = _propertySettersForUpdateContext;
+  v10 = handlerCopy;
+  v11 = _propertySettersForUpdateContext;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 }
 
-+ (void)enumerateOrganizationNamesForQuery:(id)a3 withHandler:(id)a4
++ (void)enumerateOrganizationNamesForQuery:(id)query withHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v11 = @"organization_name";
-  v6 = a3;
+  queryCopy = query;
   v7 = [NSArray arrayWithObjects:&v11 count:1];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D4A10;
   v9[3] = &unk_100841A88;
-  v10 = v5;
-  v8 = v5;
-  [v6 enumeratePersistentIDsAndProperties:v7 usingBlock:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [queryCopy enumeratePersistentIDsAndProperties:v7 usingBlock:v9];
 }
 
-+ (void)enumeratePassesAndGroupingProfilesForQuery:(id)a3 withHandler:(id)a4
++ (void)enumeratePassesAndGroupingProfilesForQuery:(id)query withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _propertySettersForGroupingProfile];
-  v9 = [v8 allKeys];
+  queryCopy = query;
+  handlerCopy = handler;
+  _propertySettersForGroupingProfile = [self _propertySettersForGroupingProfile];
+  allKeys = [_propertySettersForGroupingProfile allKeys];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000D4B28;
   v13[3] = &unk_100843108;
-  v14 = v6;
-  v15 = v8;
-  v16 = v7;
-  v17 = a1;
-  v10 = v7;
-  v11 = v8;
-  v12 = v6;
-  [v12 enumeratePersistentIDsAndProperties:v9 usingBlock:v13];
+  v14 = queryCopy;
+  v15 = _propertySettersForGroupingProfile;
+  v16 = handlerCopy;
+  selfCopy = self;
+  v10 = handlerCopy;
+  v11 = _propertySettersForGroupingProfile;
+  v12 = queryCopy;
+  [v12 enumeratePersistentIDsAndProperties:allKeys usingBlock:v13];
 }
 
-+ (void)enumeratePassesForQuery:(id)a3 withHandler:(id)a4
++ (void)enumeratePassesForQuery:(id)query withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _propertySettersForGroupingProfile];
-  v9 = [v8 allKeys];
+  queryCopy = query;
+  handlerCopy = handler;
+  _propertySettersForGroupingProfile = [self _propertySettersForGroupingProfile];
+  allKeys = [_propertySettersForGroupingProfile allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000D4CFC;
   v12[3] = &unk_100843130;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v11 enumeratePersistentIDsAndProperties:v9 usingBlock:v12];
+  v13 = queryCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = queryCopy;
+  [v11 enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 }
 
-+ (void)enumeratePassUniqueIDsAndTypesForQuery:(id)a3 withHandler:(id)a4
++ (void)enumeratePassUniqueIDsAndTypesForQuery:(id)query withHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v11[0] = @"unique_id";
   v11[1] = @"pass_flavor";
-  v6 = a3;
+  queryCopy = query;
   v7 = [NSArray arrayWithObjects:v11 count:2];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000D4EB4;
   v9[3] = &unk_100843158;
-  v10 = v5;
-  v8 = v5;
-  [v6 enumerateProperties:v7 usingBlock:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [queryCopy enumerateProperties:v7 usingBlock:v9];
 }
 
-+ (void)enumeratePassSyncabilityPropertiesInDatabase:(id)a3 withHandler:(id)a4
++ (void)enumeratePassSyncabilityPropertiesInDatabase:(id)database withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a1 queryWithDatabase:a3 predicate:0];
+  handlerCopy = handler;
+  v7 = [self queryWithDatabase:database predicate:0];
   v12[0] = @"unique_id";
   v12[1] = @"pass_flavor";
   v12[2] = @"template";
@@ -2568,46 +2568,46 @@ LABEL_30:
   v10[1] = 3221225472;
   v10[2] = sub_1000D5048;
   v10[3] = &unk_100843158;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [v7 enumerateProperties:v8 usingBlock:v10];
 }
 
-+ (id)anyInDatabase:(id)a3 withPersistentID:(int64_t)a4
++ (id)anyInDatabase:(id)database withPersistentID:(int64_t)d
 {
-  v6 = a3;
-  v7 = [a1 predicateForPersistentID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForPersistentID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withTransactionSourcePID:(unint64_t)a4
++ (id)anyInDatabase:(id)database withTransactionSourcePID:(unint64_t)d
 {
-  v6 = a3;
-  v7 = [a1 predicateForTransactionSourceWithPID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForTransactionSourceWithPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withUniqueID:(id)a4
++ (id)anyInDatabase:(id)database withUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = [a1 predicateForUniqueID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForUniqueID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withReaderIdentifier:(id)a4
++ (id)anyInDatabase:(id)database withReaderIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  databaseCopy = database;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
+  if (identifierCopy)
   {
-    v13 = v7;
+    v13 = identifierCopy;
     v9 = [NSArray arrayWithObjects:&v13 count:1];
   }
 
@@ -2616,8 +2616,8 @@ LABEL_30:
     v9 = 0;
   }
 
-  v10 = [a1 predicateForASCReaderIds:v9];
-  v11 = [a1 anyInDatabase:v6 predicate:v10];
+  v10 = [self predicateForASCReaderIds:v9];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v8)
   {
@@ -2626,130 +2626,130 @@ LABEL_30:
   return v11;
 }
 
-+ (id)anyInDatabase:(id)a3 withProvisioningCredentialHash:(id)a4
++ (id)anyInDatabase:(id)database withProvisioningCredentialHash:(id)hash
 {
-  v6 = a3;
-  v7 = [a1 predicateForProvisioningCredentialHash:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForProvisioningCredentialHash:hash];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withPassType:(id)a4
++ (id)anyInDatabase:(id)database withPassType:(id)type
 {
-  v6 = a3;
-  v7 = [a1 predicateForPassType:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForPassType:type];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withWebService:(id)a4
++ (id)anyInDatabase:(id)database withWebService:(id)service
 {
-  v6 = a3;
-  v7 = [a1 predicateForWebService:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForWebService:service];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withGroup:(id)a4
++ (id)anyInDatabase:(id)database withGroup:(id)group
 {
-  v6 = a3;
-  v7 = [a1 predicateForGroup:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForGroup:group];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withPassType:(id)a4 serialNumber:(id)a5
++ (id)anyInDatabase:(id)database withPassType:(id)type serialNumber:(id)number
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 predicateForPassType:a4];
-  v11 = [a1 predicateForSerialNumber:v8];
+  numberCopy = number;
+  databaseCopy = database;
+  v10 = [self predicateForPassType:type];
+  v11 = [self predicateForSerialNumber:numberCopy];
 
   v12 = [NSArray arrayWithObjects:v10, v11, 0];
 
   v13 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v12];
-  v14 = [a1 anyInDatabase:v9 predicate:v13];
+  v14 = [self anyInDatabase:databaseCopy predicate:v13];
 
   return v14;
 }
 
-+ (id)anyInDatabase:(id)a3 withWebService:(id)a4 serialNumber:(id)a5
++ (id)anyInDatabase:(id)database withWebService:(id)service serialNumber:(id)number
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 predicateForWebService:a4];
-  v11 = [a1 predicateForSerialNumber:v8];
+  numberCopy = number;
+  databaseCopy = database;
+  v10 = [self predicateForWebService:service];
+  v11 = [self predicateForSerialNumber:numberCopy];
 
   v12 = [NSArray arrayWithObjects:v10, v11, 0];
 
   v13 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v12];
-  v14 = [a1 anyInDatabase:v9 predicate:v13];
+  v14 = [self anyInDatabase:databaseCopy predicate:v13];
 
   return v14;
 }
 
-+ (id)anyInDatabase:(id)a3 withNotificationService:(id)a4
++ (id)anyInDatabase:(id)database withNotificationService:(id)service
 {
-  v6 = a3;
-  v7 = [a1 predicateForNotificationService:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForNotificationService:service];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5
++ (id)anyInDatabase:(id)database withApplicationIdentifier:(id)identifier secureElementIdentifier:(id)elementIdentifier
 {
-  v8 = a3;
-  v9 = [a1 predicateForPaymentApplicationIdentifier:a4 withSecureElementIdentifier:a5];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  databaseCopy = database;
+  v9 = [self predicateForPaymentApplicationIdentifier:identifier withSecureElementIdentifier:elementIdentifier];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   return v10;
 }
 
-+ (id)anyInDatabase:(id)a3 withApplicationIdentifier:(id)a4 secureElementIdentifiers:(id)a5
++ (id)anyInDatabase:(id)database withApplicationIdentifier:(id)identifier secureElementIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = [a1 predicateForPaymentApplicationIdentifier:a4 withSecureElementIdentifiers:a5];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  databaseCopy = database;
+  v9 = [self predicateForPaymentApplicationIdentifier:identifier withSecureElementIdentifiers:identifiers];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   return v10;
 }
 
-+ (id)anyInDatabase:(id)a3 withPrimaryAccountIdentifier:(id)a4
++ (id)anyInDatabase:(id)database withPrimaryAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [a1 predicateForPrimaryAccountIdentifier:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForPrimaryAccountIdentifier:identifier];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)anyInDatabase:(id)a3 withAssociatedAccountIdentifier:(id)a4
++ (id)anyInDatabase:(id)database withAssociatedAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 predicateForAssociatedAccountIdentifier:v7];
-  v9 = [a1 anyInDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  identifierCopy = identifier;
+  v8 = [self predicateForAssociatedAccountIdentifier:identifierCopy];
+  v9 = [self anyInDatabase:databaseCopy predicate:v8];
 
   if (v9)
   {
     v10 = v9;
-    v11 = v7;
+    accountIdentifier = identifierCopy;
   }
 
   else
   {
-    v12 = [Account anyInDatabase:v6 withPreviousAccountIdentifier:v7];
-    v11 = [v12 accountIdentifier];
+    v12 = [Account anyInDatabase:databaseCopy withPreviousAccountIdentifier:identifierCopy];
+    accountIdentifier = [v12 accountIdentifier];
 
-    if (v11)
+    if (accountIdentifier)
     {
-      v13 = [a1 predicateForAssociatedAccountIdentifier:v11];
-      v14 = [a1 anyInDatabase:v6 predicate:v13];
+      v13 = [self predicateForAssociatedAccountIdentifier:accountIdentifier];
+      v14 = [self anyInDatabase:databaseCopy predicate:v13];
     }
 
     else
@@ -2763,87 +2763,87 @@ LABEL_30:
   return v10;
 }
 
-+ (id)queryWithDatabase:(id)a3 passType:(id)a4
++ (id)queryWithDatabase:(id)database passType:(id)type
 {
-  v6 = a3;
-  v7 = [a1 predicateForPassType:a4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForPassType:type];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)queryWithDatabase:(id)a3 group:(id)a4
++ (id)queryWithDatabase:(id)database group:(id)group
 {
-  v6 = a3;
-  v7 = [a1 predicateForGroup:a4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self predicateForGroup:group];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
-  v3 = [(SQLiteEntity *)self persistentID];
-  v4 = [(SQLiteEntity *)v2 valueForProperty:@"unique_id"];
-  v5 = [PassLocationSource queryWithDatabase:v2->super._database passPID:v3];
+  selfCopy = self;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  v4 = [(SQLiteEntity *)selfCopy valueForProperty:@"unique_id"];
+  v5 = [PassLocationSource queryWithDatabase:selfCopy->super._database passPID:persistentID];
   [v5 deleteAllEntities];
-  [Beacon deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [NFC deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PaymentApplication deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PaymentMessage deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PaymentBalance deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PassAnnotations deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PassLiveRender deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [PassRelevancyModel deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [AssociatedApplicationIdentifier deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [AssociatedPassTypeIdentifier deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [AssociatedWebDomain deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [ValueAddedServiceTransaction deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  [CategoryVisualizationMagnitude deleteAnyInDatabase:v2->super._database forPassUniqueID:v4];
-  [BalanceReminder deleteAnyInDatabase:v2->super._database forPassIdentifier:v4];
-  [CommutePlanReminder deleteAnyInDatabase:v2->super._database forPassIdentifier:v4];
-  [TileDescriptor deleteEntitiesForPassPID:v3 inDatabase:v2->super._database];
-  [PassShare deletePassShareForPassPID:v3 inDatabase:v2->super._database];
-  [PassEntitlement deletePassEntitlementForPassPID:v3 inDatabase:v2->super._database];
-  [SecureElementPassField deleteSecureElementPassFieldsInDatabase:v2->super._database forPassPID:v3];
-  [PassAuxiliaryRegistrationRequirement deleteAuxiliaryRegistrationRequirementsForPassPID:v3 inDatabase:v2->super._database];
-  [PassTransactionActivitySummary deletePassTransactionActivitySummariesForPassUniqueIdentifier:v4 inDatabase:v2->super._database];
-  [PaymentApplicationUsageSummary deleteUsageSummariesForPassUniqueIdentifier:v4 inDatabase:v2->super._database];
-  [PassProvisioningMetadata deleteProvisioningMetadataForPassPID:v3 inDatabase:v2->super._database];
-  [PassRelevancyDates deleteEntitiesForPassPID:v3 inDatabase:v2->super._database];
-  [PaymentRewardsBalance deleteRewardsBalanceForPass:v2 inDatabase:v2->super._database];
-  [PaymentRewardsRedemption deleteRewardsRedemptionsForPass:v2 inDatabase:v2->super._database];
-  [PaymentOfferEndpointMetadata deleteEntitiesForPassPID:v3 inDatabase:v2->super._database];
-  [UserLegalAgreementConsent deleteForPassUniqueID:v4 inDatabase:v2->super._database];
-  [PassLegalAgreement deleteForPassPID:v3 inDatabase:v2->super._database];
-  [SelectedPaymentOffer deleteAllPaymentOffersForPassPID:v3 inDatabase:v2->super._database];
-  [PaymentOfferConfirmationRecord deleteRecordWithPassUniqueID:v4 inDatabase:v2->super._database];
-  [PassAssociatedFlight deleteEntitiesForPass:v2 inDatabase:v2->super._database];
-  v6 = [(Pass *)v2 passTransactionService];
-  [v6 deleteFromDatabase];
+  [Beacon deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [NFC deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PaymentApplication deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PaymentMessage deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PaymentBalance deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PassAnnotations deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PassLiveRender deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PassRelevancyModel deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [AssociatedApplicationIdentifier deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [AssociatedPassTypeIdentifier deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [AssociatedWebDomain deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [ValueAddedServiceTransaction deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  [CategoryVisualizationMagnitude deleteAnyInDatabase:selfCopy->super._database forPassUniqueID:v4];
+  [BalanceReminder deleteAnyInDatabase:selfCopy->super._database forPassIdentifier:v4];
+  [CommutePlanReminder deleteAnyInDatabase:selfCopy->super._database forPassIdentifier:v4];
+  [TileDescriptor deleteEntitiesForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PassShare deletePassShareForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PassEntitlement deletePassEntitlementForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [SecureElementPassField deleteSecureElementPassFieldsInDatabase:selfCopy->super._database forPassPID:persistentID];
+  [PassAuxiliaryRegistrationRequirement deleteAuxiliaryRegistrationRequirementsForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PassTransactionActivitySummary deletePassTransactionActivitySummariesForPassUniqueIdentifier:v4 inDatabase:selfCopy->super._database];
+  [PaymentApplicationUsageSummary deleteUsageSummariesForPassUniqueIdentifier:v4 inDatabase:selfCopy->super._database];
+  [PassProvisioningMetadata deleteProvisioningMetadataForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PassRelevancyDates deleteEntitiesForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PaymentRewardsBalance deleteRewardsBalanceForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PaymentRewardsRedemption deleteRewardsRedemptionsForPass:selfCopy inDatabase:selfCopy->super._database];
+  [PaymentOfferEndpointMetadata deleteEntitiesForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [UserLegalAgreementConsent deleteForPassUniqueID:v4 inDatabase:selfCopy->super._database];
+  [PassLegalAgreement deleteForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [SelectedPaymentOffer deleteAllPaymentOffersForPassPID:persistentID inDatabase:selfCopy->super._database];
+  [PaymentOfferConfirmationRecord deleteRecordWithPassUniqueID:v4 inDatabase:selfCopy->super._database];
+  [PassAssociatedFlight deleteEntitiesForPass:selfCopy inDatabase:selfCopy->super._database];
+  passTransactionService = [(Pass *)selfCopy passTransactionService];
+  [passTransactionService deleteFromDatabase];
 
-  v7 = [(Pass *)v2 passMessageService];
-  [v7 deleteFromDatabase];
+  passMessageService = [(Pass *)selfCopy passMessageService];
+  [passMessageService deleteFromDatabase];
 
-  v9.receiver = v2;
+  v9.receiver = selfCopy;
   v9.super_class = Pass;
-  LOBYTE(v2) = [(SQLiteEntity *)&v9 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)&v9 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)predicateForPersistentID:(int64_t)a3
++ (id)predicateForPersistentID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForTransactionSourceWithPID:(unint64_t)a3
++ (id)predicateForTransactionSourceWithPID:(unint64_t)d
 {
-  v3 = [NSNumber numberWithUnsignedLongLong:a3];
+  v3 = [NSNumber numberWithUnsignedLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"transaction_source_pid" equalToValue:v3];
 
   return v4;
@@ -2869,11 +2869,11 @@ LABEL_30:
   return v3;
 }
 
-+ (id)predicateForNFCPayloadState:(unint64_t)a3
++ (id)predicateForNFCPayloadState:(unint64_t)state
 {
   v4 = [SQLiteNullPredicate isNotNullPredicateWithProperty:@"nfc.message"];
   v10[0] = v4;
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
+  v5 = [NSNumber numberWithUnsignedInteger:state];
   v6 = [SQLiteComparisonPredicate predicateWithProperty:@"nfc.a" equalToValue:v5];
   v10[1] = v6;
   v7 = [NSArray arrayWithObjects:v10 count:2];
@@ -2882,47 +2882,47 @@ LABEL_30:
   return v8;
 }
 
-+ (id)predicateForWebService:(id)a3
++ (id)predicateForWebService:(id)service
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [service persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"web_service_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentCardType:(int64_t)a3
++ (id)predicateForPaymentCardType:(int64_t)type
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:type];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"card_type" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForNotificationService:(id)a3
++ (id)predicateForNotificationService:(id)service
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [service persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pass_notification_service.notification_service_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentApplicationState:(int64_t)a3
++ (id)predicateForPaymentApplicationState:(int64_t)state
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:state];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.state" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentApplicationStates:(id)a3
++ (id)predicateForPaymentApplicationStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v4 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = statesCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -2952,45 +2952,45 @@ LABEL_30:
   return v11;
 }
 
-+ (id)predicateForPrimaryPaymentApplication:(BOOL)a3
++ (id)predicateForPrimaryPaymentApplication:(BOOL)application
 {
-  v3 = [NSNumber numberWithInt:!a3];
+  v3 = [NSNumber numberWithInt:!application];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.auxiliary_application" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentApplicationSupportsContactlessPayment:(BOOL)a3
++ (id)predicateForPaymentApplicationSupportsContactlessPayment:(BOOL)payment
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:payment];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.supports_contactless_payment" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentApplicationSupportsInAppPayment:(BOOL)a3
++ (id)predicateForPaymentApplicationSupportsInAppPayment:(BOOL)payment
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:payment];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.supports_in_app_payment" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForPaymentType:(unint64_t)a3
++ (id)predicateForPaymentType:(unint64_t)type
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:type];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.payment_type" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForASCReaderIds:(id)a3
++ (id)predicateForASCReaderIds:(id)ids
 {
-  v3 = a3;
-  if (v3)
+  idsCopy = ids;
+  if (idsCopy)
   {
-    v4 = [SQLiteCompoundPredicate predicateWithProperty:@"payment_automatic_selection_criterion_reader_id.reader_id" equalToValues:v3];
-    v5 = [SQLiteCompoundPredicate predicateWithProperty:@"associated_reader_id.reader_id" equalToValues:v3];
+    v4 = [SQLiteCompoundPredicate predicateWithProperty:@"payment_automatic_selection_criterion_reader_id.reader_id" equalToValues:idsCopy];
+    v5 = [SQLiteCompoundPredicate predicateWithProperty:@"associated_reader_id.reader_id" equalToValues:idsCopy];
     v9[0] = v4;
     v9[1] = v5;
     v6 = [NSArray arrayWithObjects:v9 count:2];
@@ -3005,12 +3005,12 @@ LABEL_30:
   return v7;
 }
 
-+ (id)predicateForPaymentApplicationIdentifier:(id)a3 withSecureElementIdentifier:(id)a4
++ (id)predicateForPaymentApplicationIdentifier:(id)identifier withSecureElementIdentifier:(id)elementIdentifier
 {
-  v5 = a4;
-  v6 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.aid" equalToValue:a3];
+  elementIdentifierCopy = elementIdentifier;
+  v6 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.aid" equalToValue:identifier];
   v11[0] = v6;
-  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.seid" equalToValue:v5];
+  v7 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.seid" equalToValue:elementIdentifierCopy];
 
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
@@ -3020,12 +3020,12 @@ LABEL_30:
   return v9;
 }
 
-+ (id)predicateForPaymentApplicationIdentifier:(id)a3 withSecureElementIdentifiers:(id)a4
++ (id)predicateForPaymentApplicationIdentifier:(id)identifier withSecureElementIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.aid" equalToValue:a3];
+  identifiersCopy = identifiers;
+  v6 = [SQLiteComparisonPredicate predicateWithProperty:@"payment_application.aid" equalToValue:identifier];
   v11[0] = v6;
-  v7 = [SQLiteCompoundPredicate predicateWithProperty:@"payment_application.seid" equalToValues:v5];
+  v7 = [SQLiteCompoundPredicate predicateWithProperty:@"payment_application.seid" equalToValues:identifiersCopy];
 
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
@@ -3035,33 +3035,33 @@ LABEL_30:
   return v9;
 }
 
-+ (id)predicateForPassType:(id)a3
++ (id)predicateForPassType:(id)type
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [type persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"pass_type_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForGroup:(id)a3
++ (id)predicateForGroup:(id)group
 {
-  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [a3 persistentID]);
+  v3 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [group persistentID]);
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"group_pid" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForStyle:(int64_t)a3
++ (id)predicateForStyle:(int64_t)style
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:style];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"template" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForIsCloudKitArchived:(BOOL)a3
++ (id)predicateForIsCloudKitArchived:(BOOL)archived
 {
-  if (a3)
+  if (archived)
   {
     v3 = [SQLiteComparisonPredicate predicateWithProperty:@"is_cloud_kit_archived" equalToValue:&__kCFBooleanTrue];
   }
@@ -3079,9 +3079,9 @@ LABEL_30:
   return v3;
 }
 
-+ (id)predicateForIsCloudKitSecurelyArchived:(BOOL)a3
++ (id)predicateForIsCloudKitSecurelyArchived:(BOOL)archived
 {
-  if (a3)
+  if (archived)
   {
     v3 = [SQLiteComparisonPredicate predicateWithProperty:@"is_cloud_kit_securely_archived" equalToValue:&__kCFBooleanTrue];
   }
@@ -3099,9 +3099,9 @@ LABEL_30:
   return v3;
 }
 
-+ (id)predicateForIsRevoked:(BOOL)a3
++ (id)predicateForIsRevoked:(BOOL)revoked
 {
-  if (a3)
+  if (revoked)
   {
     v3 = [SQLiteComparisonPredicate predicateWithProperty:@"revoked" equalToValue:&__kCFBooleanTrue];
   }
@@ -3119,9 +3119,9 @@ LABEL_30:
   return v3;
 }
 
-+ (id)predicateForSupportsIssuerBinding:(BOOL)a3
++ (id)predicateForSupportsIssuerBinding:(BOOL)binding
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:binding];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"supports_issuer_binding" equalToValue:v3];
 
   return v4;
@@ -3129,10 +3129,10 @@ LABEL_30:
 
 + (id)predicateForPassAnnotationStatesInMainStack
 {
-  v3 = [a1 _predicateForPassAnnotationState:0];
-  v4 = [a1 _predicateForPassAnnotationState:{2, v3}];
+  v3 = [self _predicateForPassAnnotationState:0];
+  v4 = [self _predicateForPassAnnotationState:{2, v3}];
   v9[1] = v4;
-  v5 = [a1 _predicateForPassAnnotationState:3];
+  v5 = [self _predicateForPassAnnotationState:3];
   v9[2] = v5;
   v6 = [NSArray arrayWithObjects:v9 count:3];
   v7 = [SQLiteCompoundPredicate predicateMatchingAnyPredicates:v6];
@@ -3140,34 +3140,34 @@ LABEL_30:
   return v7;
 }
 
-+ (id)_predicateForPassAnnotationState:(int64_t)a3
++ (id)_predicateForPassAnnotationState:(int64_t)state
 {
   v4 = +[PassAnnotations databaseTable];
   v5 = [NSString stringWithFormat:@"%@.%@", v4, @"sorting_state"];
 
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:state];
   v7 = [SQLiteComparisonPredicate predicateWithProperty:v5 equalToValue:v6];
 
   return v7;
 }
 
-+ (id)predicateForSupportsDefaultCardSelection:(BOOL)a3
++ (id)predicateForSupportsDefaultCardSelection:(BOOL)selection
 {
-  v3 = [NSNumber numberWithBool:a3];
+  v3 = [NSNumber numberWithBool:selection];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"supports_default_card_selection" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)predicateForIdentityTypes:(id)a3
++ (id)predicateForIdentityTypes:(id)types
 {
-  v3 = a3;
+  typesCopy = types;
   v4 = objc_alloc_init(NSMutableArray);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = typesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -3198,21 +3198,21 @@ LABEL_30:
   return v12;
 }
 
-+ (id)_realPassInDatabase:(id)a3 withProperties:(id)a4 values:(const void *)a5 fromPass:(id)a6
++ (id)_realPassInDatabase:(id)database withProperties:(id)properties values:(const void *)values fromPass:(id)pass
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (!v12)
+  databaseCopy = database;
+  propertiesCopy = properties;
+  passCopy = pass;
+  v13 = passCopy;
+  if (!passCopy)
   {
     v18 = 0;
     goto LABEL_19;
   }
 
-  v14 = [v12 persistentID];
+  persistentID = [passCopy persistentID];
   v15 = +[NSNull null];
-  v16 = [v11 indexOfObject:@"pass_flavor"];
+  v16 = [propertiesCopy indexOfObject:@"pass_flavor"];
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (!v15)
@@ -3226,7 +3226,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v19 = a5[v16];
+  v19 = values[v16];
   v17 = v19;
   if (v19 == v15)
   {
@@ -3236,7 +3236,7 @@ LABEL_9:
   if (!v19)
   {
 LABEL_10:
-    v21 = [v11 indexOfObject:@"pass_type.identifier"];
+    v21 = [propertiesCopy indexOfObject:@"pass_type.identifier"];
     if (v21 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v22 = 0;
@@ -3244,7 +3244,7 @@ LABEL_10:
 
     else
     {
-      v22 = a5[v21];
+      v22 = values[v21];
     }
 
     v23 = v22;
@@ -3255,58 +3255,58 @@ LABEL_10:
       v17 = 0;
     }
 
-    v20 = PKPassTypeForPassTypeIdentifier();
+    integerValue = PKPassTypeForPassTypeIdentifier();
     goto LABEL_16;
   }
 
-  v20 = [v19 integerValue];
+  integerValue = [v19 integerValue];
 LABEL_16:
-  v24 = v20;
+  v24 = integerValue;
 
   v18 = objc_alloc_init([PKPass classForPassType:v24]);
   [v18 setPassType:v24];
-  v25 = [a1 _propertySettersForPass];
-  [a1 applyPropertySetters:v25 toObject:v18 withProperties:v11 values:a5];
+  _propertySettersForPass = [self _propertySettersForPass];
+  [self applyPropertySetters:_propertySettersForPass toObject:v18 withProperties:propertiesCopy values:values];
 
   v26 = objc_alloc_init(PKPassDisplayProfile);
-  v27 = [a1 _propertySettersForDisplayProfile];
-  [a1 applyPropertySetters:v27 toObject:v26 withProperties:v11 values:a5];
+  _propertySettersForDisplayProfile = [self _propertySettersForDisplayProfile];
+  [self applyPropertySetters:_propertySettersForDisplayProfile toObject:v26 withProperties:propertiesCopy values:values];
 
   [v18 setDisplayProfile:v26];
   v28 = objc_autoreleasePoolPush();
-  v29 = [Location locationsInDatabase:v10 forPassPID:v14 withSourceType:0];
+  v29 = [Location locationsInDatabase:databaseCopy forPassPID:persistentID withSourceType:0];
   [v18 setEmbeddedLocationsArray:v29];
 
   objc_autoreleasePoolPop(v28);
-  v30 = [Beacon beaconsInDatabase:v10 forPassPID:v14];
+  v30 = [Beacon beaconsInDatabase:databaseCopy forPassPID:persistentID];
   [v18 setEmbeddedBeacons:v30];
 
-  v31 = [NFC anyInDatabase:v10 forPassPID:v14];
-  v32 = [v31 nfcPayload];
-  [v18 setNFCPayload:v32];
+  v31 = [NFC anyInDatabase:databaseCopy forPassPID:persistentID];
+  nfcPayload = [v31 nfcPayload];
+  [v18 setNFCPayload:nfcPayload];
 
-  v33 = [AssociatedPassTypeIdentifier associatedPassTypeIdentifiersInDatabase:v10 forPassPID:v14];
+  v33 = [AssociatedPassTypeIdentifier associatedPassTypeIdentifiersInDatabase:databaseCopy forPassPID:persistentID];
   [v18 setAssociatedPassTypeIdentifiers:v33];
 
-  v34 = [PassRelevancyDates relevancyDatesForPassPID:v14 inDatabase:v10];
+  v34 = [PassRelevancyDates relevancyDatesForPassPID:persistentID inDatabase:databaseCopy];
   [v18 setRelevantDates:v34];
 
   if (v24 == 1)
   {
-    v35 = [PaymentApplication paymentApplicationsInDatabase:v10 forPassPID:v14];
+    v35 = [PaymentApplication paymentApplicationsInDatabase:databaseCopy forPassPID:persistentID];
     [v18 setPaymentApplications:v35];
 
-    v36 = [AssociatedApplicationIdentifier associatedApplicationIdentifiersInDatabase:v10 forPassPID:v14];
+    v36 = [AssociatedApplicationIdentifier associatedApplicationIdentifiersInDatabase:databaseCopy forPassPID:persistentID];
     [v18 setAssociatedApplicationIdentifiers:v36];
 
-    v37 = [AssociatedWebDomain associatedWebDomainsInDatabase:v10 forPassPID:v14];
+    v37 = [AssociatedWebDomain associatedWebDomainsInDatabase:databaseCopy forPassPID:persistentID];
     [v18 setAssociatedWebDomains:v37];
 
     [v18 setAssociatedAccountFeatureIdentifier:{objc_msgSend(v13, "associatedAccountFeatureIdentifier")}];
-    v38 = [PassProvisioningMetadata provisioningMetadataForPassPID:v14 inDatabase:v10];
+    v38 = [PassProvisioningMetadata provisioningMetadataForPassPID:persistentID inDatabase:databaseCopy];
     [v18 setProvisioningMetadata:v38];
 
-    v39 = [PassLegalAgreement passLegalAgreementsForPassPID:v14 inDatabase:v10];
+    v39 = [PassLegalAgreement passLegalAgreementsForPassPID:persistentID inDatabase:databaseCopy];
     [v18 setLegalAgreements:v39];
   }
 

@@ -1,6 +1,6 @@
 @interface WFStateMachine
 - (BOOL)lock_prepareForInvalidation;
-- (BOOL)transitionToState:(id)a3 withReason:(id)a4;
+- (BOOL)transitionToState:(id)state withReason:(id)reason;
 - (NSArray)stateHistory;
 - (WFStateMachine)init;
 - (id)lock_printedStateHistory;
@@ -12,17 +12,17 @@
 - (void)lock_cancelPendingTimers
 {
   os_unfair_lock_assert_owner(&self->_transitionLock);
-  v3 = [(WFStateMachine *)self timer];
-  if (v3)
+  timer = [(WFStateMachine *)self timer];
+  if (timer)
   {
-    v4 = v3;
-    v5 = [(WFStateMachine *)self timer];
-    v6 = [v5 isCancelled];
+    v4 = timer;
+    timer2 = [(WFStateMachine *)self timer];
+    isCancelled = [timer2 isCancelled];
 
-    if ((v6 & 1) == 0)
+    if ((isCancelled & 1) == 0)
     {
-      v7 = [(WFStateMachine *)self timer];
-      [v7 cancel];
+      timer3 = [(WFStateMachine *)self timer];
+      [timer3 cancel];
     }
   }
 }
@@ -59,8 +59,8 @@
 - (id)lock_printedStateHistory
 {
   os_unfair_lock_assert_owner(&self->_transitionLock);
-  v3 = [(WFStateMachine *)self mutableStateHistory];
-  v4 = [v3 componentsJoinedByString:@" -> "];
+  mutableStateHistory = [(WFStateMachine *)self mutableStateHistory];
+  v4 = [mutableStateHistory componentsJoinedByString:@" -> "];
 
   return v4;
 }
@@ -69,8 +69,8 @@
 {
   os_unfair_lock_assert_owner(&self->_transitionLock);
   [(WFStateMachine *)self lock_cancelPendingTimers];
-  v3 = [(WFStateMachine *)self isInvalidated];
-  if (!v3)
+  isInvalidated = [(WFStateMachine *)self isInvalidated];
+  if (!isInvalidated)
   {
     [(WFStateMachine *)self setInvalidated:1];
     if ([(WFStateMachine *)self blocksTransitionsOnInvalidation])
@@ -80,7 +80,7 @@
     }
   }
 
-  return !v3;
+  return !isInvalidated;
 }
 
 - (NSArray)stateHistory
@@ -92,55 +92,55 @@
   aBlock[3] = &unk_1E7B02158;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(WFStateMachine *)self mutableStateHistory];
-  v5 = [v4 copy];
+  mutableStateHistory = [(WFStateMachine *)self mutableStateHistory];
+  v5 = [mutableStateHistory copy];
 
   v3[2](v3);
 
   return v5;
 }
 
-- (BOOL)transitionToState:(id)a3 withReason:(id)a4
+- (BOOL)transitionToState:(id)state withReason:(id)reason
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  reasonCopy = reason;
   os_unfair_lock_assert_not_owner(&self->_transitionLock);
-  if (!v7)
+  if (!stateCopy)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"WFStateMachine.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFStateMachine.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"state"}];
 
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_29:
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"WFStateMachine.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"transitionReason"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFStateMachine.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"transitionReason"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!reasonCopy)
   {
     goto LABEL_29;
   }
 
 LABEL_3:
   os_unfair_lock_lock(&self->_transitionLock);
-  v9 = [(WFStateMachine *)self currentState];
-  v10 = v9;
-  if (!v9 || ([v9 canTransitionToState:v7] & 1) != 0)
+  currentState = [(WFStateMachine *)self currentState];
+  v10 = currentState;
+  if (!currentState || ([currentState canTransitionToState:stateCopy] & 1) != 0)
   {
-    [(WFStateMachine *)self lock_addTransitionEventToHistoryWithState:v7 reason:v8 valid:1];
+    [(WFStateMachine *)self lock_addTransitionEventToHistoryWithState:stateCopy reason:reasonCopy valid:1];
     [(WFStateMachine *)self lock_cancelPendingTimers];
-    [(WFStateMachine *)self setCurrentState:v7];
+    [(WFStateMachine *)self setCurrentState:stateCopy];
     state.opaque[0] = 0;
     state.opaque[1] = 0;
-    v11 = [(WFStateMachine *)self activity];
-    os_activity_scope_enter(v11, &state);
+    activity = [(WFStateMachine *)self activity];
+    os_activity_scope_enter(activity, &state);
 
     v12 = getWFVoiceShortcutClientLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -150,15 +150,15 @@ LABEL_3:
       v40 = 2112;
       v41 = *&v10;
       v42 = 2112;
-      v43 = v7;
+      v43 = stateCopy;
       v44 = 2112;
-      v45 = v8;
+      v45 = reasonCopy;
       _os_log_impl(&dword_1B1DE3000, v12, OS_LOG_TYPE_DEFAULT, "%s Transitioning from %@ to %@, reason: %@", buf, 0x2Au);
     }
 
-    v13 = v7;
+    v13 = stateCopy;
     v14 = v13;
-    if (v7)
+    if (stateCopy)
     {
       if ([v13 conformsToProtocol:&unk_1F295A270])
       {
@@ -190,14 +190,14 @@ LABEL_19:
         }
 
         v19 = [WFDispatchSourceTimer alloc];
-        v20 = [(WFStateMachine *)self timerQueue];
+        timerQueue = [(WFStateMachine *)self timerQueue];
         v35[0] = MEMORY[0x1E69E9820];
         v35[1] = 3221225472;
         v35[2] = __47__WFStateMachine_transitionToState_withReason___block_invoke;
         v35[3] = &unk_1E7B02158;
         v15 = v14;
         v36 = v15;
-        v21 = [(WFDispatchSourceTimer *)v19 initWithInterval:v20 queue:v35 handler:v17];
+        v21 = [(WFDispatchSourceTimer *)v19 initWithInterval:timerQueue queue:v35 handler:v17];
         timer = self->_timer;
         self->_timer = v21;
 
@@ -221,16 +221,16 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  [(WFStateMachine *)self lock_addTransitionEventToHistoryWithState:v7 reason:v8 valid:0];
+  [(WFStateMachine *)self lock_addTransitionEventToHistoryWithState:stateCopy reason:reasonCopy valid:0];
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v24 = [(WFStateMachine *)self activity];
-  os_activity_scope_enter(v24, &state);
+  activity2 = [(WFStateMachine *)self activity];
+  os_activity_scope_enter(activity2, &state);
 
-  v25 = [(WFStateMachine *)self silentlyDropInvalidTransitions];
+  silentlyDropInvalidTransitions = [(WFStateMachine *)self silentlyDropInvalidTransitions];
   v26 = getWFVoiceShortcutClientLogObject();
   v27 = v26;
-  if (v25)
+  if (silentlyDropInvalidTransitions)
   {
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
@@ -239,32 +239,32 @@ LABEL_19:
       v40 = 2112;
       v41 = *&v10;
       v42 = 2112;
-      v43 = v7;
+      v43 = stateCopy;
       v44 = 2112;
-      v45 = v8;
+      v45 = reasonCopy;
       _os_log_impl(&dword_1B1DE3000, v27, OS_LOG_TYPE_DEBUG, "%s Invalid transition from current state: %@ to new state: %@, reason: %@ (Silently dropping.)", buf, 0x2Au);
     }
   }
 
   else if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
   {
-    v29 = [(WFStateMachine *)self lock_printedStateHistory];
+    lock_printedStateHistory = [(WFStateMachine *)self lock_printedStateHistory];
     *buf = 136316162;
     v39 = "[WFStateMachine transitionToState:withReason:]";
     v40 = 2112;
     v41 = *&v10;
     v42 = 2112;
-    v43 = v7;
+    v43 = stateCopy;
     v44 = 2112;
-    v45 = v8;
+    v45 = reasonCopy;
     v46 = 2112;
-    v47 = v29;
+    v47 = lock_printedStateHistory;
     _os_log_impl(&dword_1B1DE3000, v27, OS_LOG_TYPE_FAULT, "%s Invalid transition from current state: %@ to new state: %@, reason: %@, events: %@", buf, 0x34u);
   }
 
-  v30 = [(WFStateMachine *)self lock_prepareForInvalidation];
+  lock_prepareForInvalidation = [(WFStateMachine *)self lock_prepareForInvalidation];
   os_unfair_lock_unlock(&self->_transitionLock);
-  if (v30)
+  if (lock_prepareForInvalidation)
   {
     [(WFStateMachine *)self invalidate];
   }

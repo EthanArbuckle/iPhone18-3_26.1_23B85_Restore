@@ -1,22 +1,22 @@
 @interface MPModelLibraryImportChangeRequestOperation
-- (BOOL)_isObjectImportable:(id)a3;
-- (id)_modelObjectFromMPMediaItem:(id)a3;
+- (BOOL)_isObjectImportable:(id)importable;
+- (id)_modelObjectFromMPMediaItem:(id)item;
 - (void)execute;
 @end
 
 @implementation MPModelLibraryImportChangeRequestOperation
 
-- (id)_modelObjectFromMPMediaItem:(id)a3
+- (id)_modelObjectFromMPMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(MPAsyncOperation *)self userIdentity];
-  v6 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v5];
+  itemCopy = item;
+  userIdentity = [(MPAsyncOperation *)self userIdentity];
+  v6 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
-  v7 = [(MPAsyncOperation *)self userIdentity];
-  v8 = [v7 accountDSID];
+  userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+  accountDSID = [userIdentity2 accountDSID];
 
   v9 = [MEMORY[0x1E695DFD8] setWithObjects:{@"storeItemAdamID", @"subscriptionStoreItemAdamID", @"storeCloudAlbumID", @"storeSagaID", @"persistentID", @"mediaType", 0}];
-  v10 = [v4 valuesForProperties:v9];
+  v10 = [itemCopy valuesForProperties:v9];
 
   v11 = [v10 objectForKey:@"mediaType"];
   [v11 integerValue];
@@ -31,8 +31,8 @@
   v22[3] = &unk_1E767AFA0;
   v23 = v6;
   v24 = v10;
-  v25 = v8;
-  v16 = v8;
+  v25 = accountDSID;
+  v16 = accountDSID;
   v17 = v10;
   v18 = v6;
   v19 = [(MPIdentifierSet *)v14 initWithSource:@"LibraryImport" modelKind:v15 block:v22];
@@ -102,30 +102,30 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   [v5 setCloudID:{objc_msgSend(v4, "unsignedLongLongValue")}];
 }
 
-- (BOOL)_isObjectImportable:(id)a3
+- (BOOL)_isObjectImportable:(id)importable
 {
-  v3 = a3;
+  importableCopy = importable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = importableCopy;
     if ([v4 hasLoadedValueForKey:@"MPModelPropertySongTitle"])
     {
-      v5 = [v4 title];
-      v6 = [v5 length];
+      title = [v4 title];
+      v6 = [title length];
 
       if (v6)
       {
-        v7 = [v4 album];
-        v8 = v7;
-        if (v7 && [v7 hasLoadedValueForKey:@"MPModelPropertyAlbumTitle"] && (objc_msgSend(v8, "title"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+        album = [v4 album];
+        v8 = album;
+        if (album && [album hasLoadedValueForKey:@"MPModelPropertyAlbumTitle"] && (objc_msgSend(v8, "title"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
         {
-          v11 = [v4 artist];
-          v12 = v11;
-          if (v11 && [v11 hasLoadedValueForKey:@"MPModelPropertyPersonName"])
+          artist = [v4 artist];
+          v12 = artist;
+          if (artist && [artist hasLoadedValueForKey:@"MPModelPropertyPersonName"])
           {
-            v13 = [v12 name];
-            LOBYTE(v6) = [v13 length] != 0;
+            name = [v12 name];
+            LOBYTE(v6) = [name length] != 0;
           }
 
           else
@@ -157,25 +157,25 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy2 = self;
   v92 = *MEMORY[0x1E69E9840];
   if (!self->_operationQueue)
   {
     v3 = objc_alloc_init(MEMORY[0x1E696ADC8]);
-    operationQueue = v2->_operationQueue;
-    v2->_operationQueue = v3;
+    operationQueue = selfCopy2->_operationQueue;
+    selfCopy2->_operationQueue = v3;
 
-    [(NSOperationQueue *)v2->_operationQueue setMaxConcurrentOperationCount:4];
-    [(NSOperationQueue *)v2->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryImportChangeRequestOperation.operationQueue"];
-    v5 = v2->_operationQueue;
-    v6 = [MEMORY[0x1E696AF00] currentThread];
-    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [v6 qualityOfService]);
+    [(NSOperationQueue *)selfCopy2->_operationQueue setMaxConcurrentOperationCount:4];
+    [(NSOperationQueue *)selfCopy2->_operationQueue setName:@"com.apple.MediaPlayer.MPModelLibraryImportChangeRequestOperation.operationQueue"];
+    v5 = selfCopy2->_operationQueue;
+    currentThread = [MEMORY[0x1E696AF00] currentThread];
+    -[NSOperationQueue setQualityOfService:](v5, "setQualityOfService:", [currentThread qualityOfService]);
 
-    v2 = self;
+    selfCopy2 = self;
   }
 
-  v7 = [(MPAsyncOperation *)v2 userIdentity];
-  v33 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v7];
+  userIdentity = [(MPAsyncOperation *)selfCopy2 userIdentity];
+  v33 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
   v85[0] = 0;
   v85[1] = v85;
@@ -189,7 +189,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   v83[3] = __Block_byref_object_copy__30854;
   v83[4] = __Block_byref_object_dispose__30855;
   v84 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(MPModelLibraryImportChangeRequestOperation *)self responseHandler];
+  responseHandler = [(MPModelLibraryImportChangeRequestOperation *)self responseHandler];
   v9 = MEMORY[0x1E696AAE0];
   v79[0] = MEMORY[0x1E69E9820];
   v79[1] = 3221225472;
@@ -197,13 +197,13 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   v79[3] = &unk_1E767D530;
   v81 = v83;
   v82 = v85;
-  v27 = v8;
+  v27 = responseHandler;
   v80 = v27;
   v79[4] = self;
   v31 = [v9 blockOperationWithBlock:v79];
-  v28 = [(MPModelLibraryImportChangeRequest *)self->_request referralObject];
-  v10 = [(MPModelLibraryImportChangeRequest *)self->_request modelObjects];
-  v11 = [(MPModelLibraryImportChangeRequest *)self->_request shouldLibraryAdd];
+  referralObject = [(MPModelLibraryImportChangeRequest *)self->_request referralObject];
+  modelObjects = [(MPModelLibraryImportChangeRequest *)self->_request modelObjects];
+  shouldLibraryAdd = [(MPModelLibraryImportChangeRequest *)self->_request shouldLibraryAdd];
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
@@ -227,9 +227,9 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   v54[2] = __53__MPModelLibraryImportChangeRequestOperation_execute__block_invoke_6;
   v54[3] = &unk_1E767AF28;
   v57 = &v67;
-  v60 = v11;
-  v55 = v10;
-  v56 = self;
+  v60 = shouldLibraryAdd;
+  v55 = modelObjects;
+  selfCopy3 = self;
   v58 = &v61;
   v59 = &v73;
   v26 = v55;
@@ -247,16 +247,16 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   if ([v74[5] count])
   {
     v14 = objc_alloc_init(MPModelLibraryStoreIDsImportChangeRequestOperation);
-    [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setShouldLibraryAdd:v11];
+    [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setShouldLibraryAdd:shouldLibraryAdd];
     [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setMediaLibrary:v33];
     [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setStoreIDs:v74[5]];
-    [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setReferralObject:v28];
+    [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setReferralObject:referralObject];
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __53__MPModelLibraryImportChangeRequestOperation_execute__block_invoke_11;
     v49[3] = &unk_1E767AF78;
     v50 = v30;
-    v51 = self;
+    selfCopy4 = self;
     v52 = v85;
     v53 = v83;
     [(MPModelLibraryStoreIDsImportChangeRequestOperation *)v14 setResponseHandler:v49];
@@ -295,7 +295,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
 
           v20 = *(*(&v45 + 1) + 8 * i);
           v21 = objc_alloc_init(MPModelLibraryGlobalPlaylistImportChangeRequestOperation);
-          [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)v21 setShouldLibraryAdd:v11];
+          [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)v21 setShouldLibraryAdd:shouldLibraryAdd];
           [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)v21 setMediaLibrary:v33];
           [(MPModelLibraryGlobalPlaylistImportChangeRequestOperation *)v21 setGlobalPlaylistID:v20];
           v22 = os_log_create("com.apple.amp.mediaplayer", "Default");
@@ -304,7 +304,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
             *buf = 138543618;
             v88 = v20;
             v89 = 1024;
-            v90 = v11;
+            v90 = shouldLibraryAdd;
             _os_log_impl(&dword_1A238D000, v22, OS_LOG_TYPE_DEFAULT, "MPModelLibraryImportChangeRequestOperation creating operation to add playlist with globalID=%{public}@ to library:%{BOOL}u", buf, 0x12u);
           }
 
@@ -313,7 +313,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
           v39[2] = __53__MPModelLibraryImportChangeRequestOperation_execute__block_invoke_14;
           v39[3] = &unk_1E767AFF0;
           v39[4] = v20;
-          v44 = v11;
+          v44 = shouldLibraryAdd;
           v40 = v30;
           v42 = v85;
           v41 = v33;
@@ -342,7 +342,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
   if ([v62[5] count])
   {
     v25 = objc_alloc_init(MPModelLibraryModelObjectImportChangeRequestOperation);
-    [(MPModelLibraryModelObjectImportChangeRequestOperation *)v25 setShouldLibraryAdd:v11];
+    [(MPModelLibraryModelObjectImportChangeRequestOperation *)v25 setShouldLibraryAdd:shouldLibraryAdd];
     [(MPModelLibraryModelObjectImportChangeRequestOperation *)v25 setMediaLibrary:v33];
     [(MPModelLibraryModelObjectImportChangeRequestOperation *)v25 setObjectsToImport:v62[5]];
     v34[0] = MEMORY[0x1E69E9820];
@@ -350,7 +350,7 @@ void __74__MPModelLibraryImportChangeRequestOperation__modelObjectFromMPMediaIte
     v34[2] = __53__MPModelLibraryImportChangeRequestOperation_execute__block_invoke_29;
     v34[3] = &unk_1E767AF78;
     v35 = v30;
-    v36 = self;
+    selfCopy5 = self;
     v37 = v85;
     v38 = v83;
     [(MPModelLibraryModelObjectImportChangeRequestOperation *)v25 setResponseHandler:v34];

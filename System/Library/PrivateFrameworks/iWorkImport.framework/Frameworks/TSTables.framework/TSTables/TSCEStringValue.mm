@@ -1,58 +1,58 @@
 @interface TSCEStringValue
-+ (id)stringValue:(id)a3;
-+ (id)stringValue:(id)a3 format:(const TSCEFormat *)a4;
-+ (id)stringValue:(id)a3 format:(const TSCEFormat *)a4 isRegex:(BOOL)a5 isCaseSensitiveRegex:(BOOL)a6 isLiteralString:(BOOL)a7;
-- (BOOL)asBoolean:(id)a3;
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (BOOL)asStrictBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
++ (id)stringValue:(id)value;
++ (id)stringValue:(id)value format:(const TSCEFormat *)format;
++ (id)stringValue:(id)value format:(const TSCEFormat *)format isRegex:(BOOL)regex isCaseSensitiveRegex:(BOOL)sensitiveRegex isLiteralString:(BOOL)string;
+- (BOOL)asBoolean:(id)boolean;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (BOOL)asStrictBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
 - (TSCERichTextStorage)rawRichTextStorage;
-- (TSCEStringValue)initWithString:(id)a3;
-- (TSCEStringValue)initWithString:(id)a3 format:(const TSCEFormat *)a4 isRegex:(BOOL)a5 isCaseSensitiveRegex:(BOOL)a6 isLiteralString:(BOOL)a7;
-- (id)asDate:(id)a3;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asNumberWithLocale:(id)a3;
-- (id)asNumberWithLocale:(id)a3 outError:(id *)a4;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
+- (TSCEStringValue)initWithString:(id)string;
+- (TSCEStringValue)initWithString:(id)string format:(const TSCEFormat *)format isRegex:(BOOL)regex isCaseSensitiveRegex:(BOOL)sensitiveRegex isLiteralString:(BOOL)literalString;
+- (id)asDate:(id)date;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asNumberWithLocale:(id)locale;
+- (id)asNumberWithLocale:(id)locale outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
 - (id)asString;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)canonicalKeyStringForLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)canonicalKeyStringForLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCEStringValue
 
-+ (id)stringValue:(id)a3
++ (id)stringValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = [TSCEStringValue alloc];
-  v8 = objc_msgSend_initWithString_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithString_(v4, v5, valueCopy, v6, v7);
 
   return v8;
 }
 
-+ (id)stringValue:(id)a3 format:(const TSCEFormat *)a4
++ (id)stringValue:(id)value format:(const TSCEFormat *)format
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [TSCEStringValue alloc];
-  v9 = objc_msgSend_initWithString_format_(v6, v7, v5, a4, v8);
+  v9 = objc_msgSend_initWithString_format_(v6, v7, valueCopy, format, v8);
 
   return v9;
 }
 
-+ (id)stringValue:(id)a3 format:(const TSCEFormat *)a4 isRegex:(BOOL)a5 isCaseSensitiveRegex:(BOOL)a6 isLiteralString:(BOOL)a7
++ (id)stringValue:(id)value format:(const TSCEFormat *)format isRegex:(BOOL)regex isCaseSensitiveRegex:(BOOL)sensitiveRegex isLiteralString:(BOOL)string
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v11 = a3;
+  stringCopy = string;
+  sensitiveRegexCopy = sensitiveRegex;
+  regexCopy = regex;
+  valueCopy = value;
   v12 = [TSCEStringValue alloc];
-  isLiteralString = objc_msgSend_initWithString_format_isRegex_isCaseSensitiveRegex_isLiteralString_(v12, v13, v11, a4, v9, v8, v7);
+  isLiteralString = objc_msgSend_initWithString_format_isRegex_isCaseSensitiveRegex_isLiteralString_(v12, v13, valueCopy, format, regexCopy, sensitiveRegexCopy, stringCopy);
 
   return isLiteralString;
 }
 
-- (TSCEStringValue)initWithString:(id)a3
+- (TSCEStringValue)initWithString:(id)string
 {
   v4 = 0;
   v5 = 0;
@@ -61,34 +61,34 @@
   v8 = 1;
   v9 = -50266102;
   v10 = 253;
-  return objc_msgSend_initWithString_format_isRegex_isCaseSensitiveRegex_isLiteralString_(self, a2, a3, &v4, 0, 0, 0);
+  return objc_msgSend_initWithString_format_isRegex_isCaseSensitiveRegex_isLiteralString_(self, a2, string, &v4, 0, 0, 0);
 }
 
-- (TSCEStringValue)initWithString:(id)a3 format:(const TSCEFormat *)a4 isRegex:(BOOL)a5 isCaseSensitiveRegex:(BOOL)a6 isLiteralString:(BOOL)a7
+- (TSCEStringValue)initWithString:(id)string format:(const TSCEFormat *)format isRegex:(BOOL)regex isCaseSensitiveRegex:(BOOL)sensitiveRegex isLiteralString:(BOOL)literalString
 {
-  v12 = a3;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = TSCEStringValue;
-  v17 = [(TSCEValue *)&v21 initWithTSCEFormat:a4];
+  v17 = [(TSCEValue *)&v21 initWithTSCEFormat:format];
   if (v17)
   {
-    v18 = objc_msgSend_copy(v12, v13, v14, v15, v16);
+    v18 = objc_msgSend_copy(stringCopy, v13, v14, v15, v16);
     string = v17->_string;
     v17->_string = v18;
 
-    v17->_isRegex = a5;
-    v17->_isCaseSensitiveRegex = a6;
-    v17->_isLiteralString = a7;
+    v17->_isRegex = regex;
+    v17->_isCaseSensitiveRegex = sensitiveRegex;
+    v17->_isLiteralString = literalString;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCEStringValue;
-  v8 = [(TSCEValue *)&v12 copyWithZone:a3];
+  v8 = [(TSCEValue *)&v12 copyWithZone:zone];
   if (v8)
   {
     v9 = objc_msgSend_copy(self->_string, v4, v5, v6, v7);
@@ -103,10 +103,10 @@
   return v8;
 }
 
-- (id)canonicalKeyStringForLocale:(id)a3
+- (id)canonicalKeyStringForLocale:(id)locale
 {
-  v6 = objc_msgSend_asRawString(self, a2, a3, v3, v4);
-  v11 = objc_msgSend_locale(a3, v7, v8, v9, v10);
+  v6 = objc_msgSend_asRawString(self, a2, locale, v3, v4);
+  v11 = objc_msgSend_locale(locale, v7, v8, v9, v10);
   v15 = objc_msgSend_lowercaseStringWithLocale_(v6, v12, v11, v13, v14);
 
   v19 = objc_msgSend_stringByAppendingString_(@"str_", v16, v15, v17, v18);
@@ -114,7 +114,7 @@
   return v19;
 }
 
-- (id)asNumberWithLocale:(id)a3 outError:(id *)a4
+- (id)asNumberWithLocale:(id)locale outError:(id *)error
 {
   v38 = -999;
   TSUDecimal::operator=();
@@ -122,7 +122,7 @@
   {
     string = self->_string;
     v36 = 0;
-    v15 = objc_msgSend_numberValueFromString_locale_outDecimalValue_outValueType_outCurrencyCode_(MEMORY[0x277D81290], v11, string, a3, v37, &v38, &v36);
+    v15 = objc_msgSend_numberValueFromString_locale_outDecimalValue_outValueType_outCurrencyCode_(MEMORY[0x277D81290], v11, string, locale, v37, &v38, &v36);
     v16 = v36;
     if ((v15 & 1) == 0)
     {
@@ -138,9 +138,9 @@
         goto LABEL_11;
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = objc_msgSend_numberError(TSCEError, v11, v17, v12, v13);
+        *error = objc_msgSend_numberError(TSCEError, v11, v17, v12, v13);
       }
     }
   }
@@ -169,13 +169,13 @@ LABEL_11:
   return v31;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asNumber:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asNumber:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 136, 0, "outError pointer is required for this API");
 
@@ -184,7 +184,7 @@ LABEL_11:
 
   v54 = -999;
   TSUDecimal::operator=();
-  v26 = objc_msgSend_locale(a3, v22, v23, v24, v25);
+  v26 = objc_msgSend_locale(number, v22, v23, v24, v25);
   string = self->_string;
   v52 = 0;
   v29 = objc_msgSend_numberValueFromString_locale_outDecimalValue_outValueType_outCurrencyCode_(MEMORY[0x277D81290], v28, string, v26, v53, &v54, &v52);
@@ -203,9 +203,9 @@ LABEL_11:
       goto LABEL_11;
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v30, self, a3, a4, v7);
+      *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v30, self, number, spec, v7);
     }
   }
 
@@ -228,49 +228,49 @@ LABEL_11:
   return v47;
 }
 
-- (id)asDate:(id)a3
+- (id)asDate:(id)date
 {
   v3 = TSUCreateDateFromString();
 
   return v3;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asDate:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asDate:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 174, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_locale(a3, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_locale(date, a2, date, spec, *&index);
   v27 = objc_msgSend_asDate_(self, v23, v22, v24, v25);
   if (!v27)
   {
-    *a6 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v26, self, a3, a4, v7);
+    *error = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v26, self, date, spec, v7);
   }
 
   return v27;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v10, v11);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v13, v8, v12, 190, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  return objc_msgSend_asString(self, a2, a3, a4, *&a5);
+  return objc_msgSend_asString(self, a2, string, spec, *&index);
 }
 
 - (id)asString
@@ -318,61 +318,61 @@ LABEL_11:
   return v61;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asRawString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asRawString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v10, v11);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v13, v8, v12, 224, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16, v17);
   }
 
-  return objc_msgSend_asRawString(self, a2, a3, a4, *&a5);
+  return objc_msgSend_asRawString(self, a2, string, spec, *&index);
 }
 
-- (BOOL)asBoolean:(id)a3
+- (BOOL)asBoolean:(id)boolean
 {
   string = self->_string;
-  v6 = objc_msgSend_falseString(a3, a2, a3, v3, v4);
+  v6 = objc_msgSend_falseString(boolean, a2, boolean, v3, v4);
   LOBYTE(string) = objc_msgSend_compare_options_(string, v7, v6, 1, v8) != 0;
 
   return string;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v11, v12);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v14, v9, v13, 244, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  v20 = objc_msgSend_locale(a3, a2, a3, a4, *&a5);
+  v20 = objc_msgSend_locale(boolean, a2, boolean, spec, *&index);
 
   return objc_msgSend_asBoolean_(self, v19, v20, v21, v22);
 }
 
-- (BOOL)asStrictBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asStrictBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asStrictBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEStringValue asStrictBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEStringValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 254, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_locale(a3, a2, a3, a4, *&a5);
+  v22 = objc_msgSend_locale(boolean, a2, boolean, spec, *&index);
   string = self->_string;
   v28 = objc_msgSend_falseString(v22, v24, v25, v26, v27);
   v31 = objc_msgSend_compare_options_(string, v29, v28, 1, v30);
@@ -391,17 +391,17 @@ LABEL_11:
     return 1;
   }
 
-  v42 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v41, self, a3, a4, v7);
+  v42 = objc_msgSend_typeErrorForValue_context_functionSpec_argumentIndex_(TSCEError, v41, self, boolean, spec, v7);
   v43 = v42;
   result = 0;
-  *a6 = v42;
+  *error = v42;
   return result;
 }
 
-- (id)asNumberWithLocale:(id)a3
+- (id)asNumberWithLocale:(id)locale
 {
   v6 = 0;
-  v4 = objc_msgSend_asNumberWithLocale_outError_(self, a2, a3, &v6, v3);
+  v4 = objc_msgSend_asNumberWithLocale_outError_(self, a2, locale, &v6, v3);
 
   return v4;
 }

@@ -1,10 +1,10 @@
 @interface VUIPlistMediaItem
-- (VUIPlistMediaItem)initWithMediaLibrary:(id)a3 databaseItem:(id)a4 requestedProperties:(id)a5;
-- (VUIPlistMediaItem)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6;
-- (id)_valueForPropertyDescriptor:(id)a3;
+- (VUIPlistMediaItem)initWithMediaLibrary:(id)library databaseItem:(id)item requestedProperties:(id)properties;
+- (VUIPlistMediaItem)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind;
+- (id)_valueForPropertyDescriptor:(id)descriptor;
 - (id)assetType;
 - (id)coverArtImageIdentifier;
-- (id)imageLoadParamsWithImageType:(unint64_t)a3;
+- (id)imageLoadParamsWithImageType:(unint64_t)type;
 - (id)isLocal;
 - (id)previewFrameImageIdentifier;
 - (id)seasonIdentifier;
@@ -16,29 +16,29 @@
 
 @implementation VUIPlistMediaItem
 
-- (VUIPlistMediaItem)initWithMediaLibrary:(id)a3 databaseItem:(id)a4 requestedProperties:(id)a5
+- (VUIPlistMediaItem)initWithMediaLibrary:(id)library databaseItem:(id)item requestedProperties:(id)properties
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
+  itemCopy = item;
+  propertiesCopy = properties;
+  libraryCopy = library;
   v12 = [VUIPlistMediaEntityIdentifier alloc];
-  v13 = [v9 identifier];
-  v14 = -[VUIPlistMediaEntityIdentifier initWithIdentifier:type:](v12, "initWithIdentifier:type:", v13, [v9 type]);
+  identifier = [itemCopy identifier];
+  v14 = -[VUIPlistMediaEntityIdentifier initWithIdentifier:type:](v12, "initWithIdentifier:type:", identifier, [itemCopy type]);
 
   v15 = VUIPlistMediaItemKind();
   v18.receiver = self;
   v18.super_class = VUIPlistMediaItem;
-  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:v11 identifier:v14 requestedProperties:v10 kind:v15];
+  v16 = [(VUIMediaEntity *)&v18 initWithMediaLibrary:libraryCopy identifier:v14 requestedProperties:propertiesCopy kind:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_databaseItem, a4);
+    objc_storeStrong(&v16->_databaseItem, item);
   }
 
   return v16;
 }
 
-- (VUIPlistMediaItem)initWithMediaLibrary:(id)a3 identifier:(id)a4 requestedProperties:(id)a5 kind:(id)a6
+- (VUIPlistMediaItem)initWithMediaLibrary:(id)library identifier:(id)identifier requestedProperties:(id)properties kind:(id)kind
 {
   v7 = MEMORY[0x1E695DF30];
   v8 = *MEMORY[0x1E695D940];
@@ -50,67 +50,67 @@
 
 - (id)coverArtImageIdentifier
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 coverArtURL];
-  v4 = [v3 absoluteString];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  coverArtURL = [databaseItem coverArtURL];
+  absoluteString = [coverArtURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (id)showIdentifier
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 season];
-  v4 = [v3 show];
-  v5 = [v4 identifier];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  season = [databaseItem season];
+  show = [season show];
+  identifier = [show identifier];
 
-  v6 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:v5 type:4];
+  v6 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:identifier type:4];
 
   return v6;
 }
 
 - (id)showTitle
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 season];
-  v4 = [v3 show];
-  v5 = [v4 title];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  season = [databaseItem season];
+  show = [season show];
+  title = [show title];
 
-  return v5;
+  return title;
 }
 
 - (id)seasonNumber
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 season];
-  v4 = [v3 seasonNumber];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  season = [databaseItem season];
+  seasonNumber = [season seasonNumber];
 
-  return v4;
+  return seasonNumber;
 }
 
 - (id)isLocal
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(VUIPlistMediaItem *)self databaseItem];
-  v4 = [v3 downloadState];
-  v5 = [v2 numberWithBool:{objc_msgSend(v4, "isEqualToString:", VUIPlistDatabaseItemDownloadStateDownloaded)}];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  downloadState = [databaseItem downloadState];
+  v5 = [v2 numberWithBool:{objc_msgSend(downloadState, "isEqualToString:", VUIPlistDatabaseItemDownloadStateDownloaded)}];
 
   return v5;
 }
 
-- (id)_valueForPropertyDescriptor:(id)a3
+- (id)_valueForPropertyDescriptor:(id)descriptor
 {
-  v4 = [a3 sourcePropertyNames];
-  v5 = [v4 allObjects];
+  sourcePropertyNames = [descriptor sourcePropertyNames];
+  allObjects = [sourcePropertyNames allObjects];
 
-  if ([v5 count] == 1)
+  if ([allObjects count] == 1)
   {
-    v6 = [v5 firstObject];
-    v7 = [(VUIPlistMediaItem *)self databaseItem];
-    NSSelectorFromString(v6);
+    firstObject = [allObjects firstObject];
+    databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+    NSSelectorFromString(firstObject);
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 valueForKey:v6];
+      v8 = [databaseItem valueForKey:firstObject];
     }
 
     else
@@ -129,38 +129,38 @@
 
 - (id)previewFrameImageIdentifier
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 previewFrameURL];
-  v4 = [v3 absoluteString];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  previewFrameURL = [databaseItem previewFrameURL];
+  absoluteString = [previewFrameURL absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (id)seasonIdentifier
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 season];
-  v4 = [v3 identifier];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  season = [databaseItem season];
+  identifier = [season identifier];
 
-  v5 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:v4 type:5];
+  v5 = [[VUIPlistMediaEntityIdentifier alloc] initWithIdentifier:identifier type:5];
 
   return v5;
 }
 
 - (id)seasonTitle
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 season];
-  v4 = [v3 title];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  season = [databaseItem season];
+  title = [season title];
 
-  return v4;
+  return title;
 }
 
 - (id)assetType
 {
-  v2 = [(VUIPlistMediaItem *)self databaseItem];
-  v3 = [v2 downloadState];
-  v4 = [v3 isEqualToString:VUIPlistDatabaseItemDownloadStateDownloaded];
+  databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+  downloadState = [databaseItem downloadState];
+  v4 = [downloadState isEqualToString:VUIPlistDatabaseItemDownloadStateDownloaded];
 
   if (v4)
   {
@@ -177,37 +177,37 @@
   return [v6 numberWithUnsignedInteger:v5];
 }
 
-- (id)imageLoadParamsWithImageType:(unint64_t)a3
+- (id)imageLoadParamsWithImageType:(unint64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    v8 = [(VUIPlistMediaItem *)self databaseItem];
-    v6 = [v8 previewFrameURL];
+    databaseItem = [(VUIPlistMediaItem *)self databaseItem];
+    previewFrameURL = [databaseItem previewFrameURL];
 
-    v7 = [(VUIPlistMediaItem *)self previewFrameImageIdentifier];
+    previewFrameImageIdentifier = [(VUIPlistMediaItem *)self previewFrameImageIdentifier];
   }
 
   else
   {
-    if (a3)
+    if (type)
     {
       v9 = 0;
-      v6 = 0;
+      previewFrameURL = 0;
       v10 = 0;
       goto LABEL_9;
     }
 
-    v5 = [(VUIPlistMediaItem *)self databaseItem];
-    v6 = [v5 coverArtURL];
+    databaseItem2 = [(VUIPlistMediaItem *)self databaseItem];
+    previewFrameURL = [databaseItem2 coverArtURL];
 
-    v7 = [(VUIPlistMediaItem *)self coverArtImageIdentifier];
+    previewFrameImageIdentifier = [(VUIPlistMediaItem *)self coverArtImageIdentifier];
   }
 
-  v9 = v7;
+  v9 = previewFrameImageIdentifier;
   v10 = 0;
-  if (v6 && v7)
+  if (previewFrameURL && previewFrameImageIdentifier)
   {
-    v10 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:v6 baseImageIdentifier:v7 imageType:a3];
+    v10 = [[VUIPlistMediaEntityImageLoadParams alloc] initWithImageURL:previewFrameURL baseImageIdentifier:previewFrameImageIdentifier imageType:type];
   }
 
 LABEL_9:

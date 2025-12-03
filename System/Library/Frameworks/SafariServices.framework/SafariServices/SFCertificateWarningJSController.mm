@@ -1,5 +1,5 @@
 @interface SFCertificateWarningJSController
-- (SFCertificateWarningJSController)initWithCertificateWarningController:(id)a3;
+- (SFCertificateWarningJSController)initWithCertificateWarningController:(id)controller;
 - (id)bypassFeatureTitleText;
 - (id)bypassFeatureWarningText;
 - (void)bypassFeatureVisitWebsite;
@@ -13,16 +13,16 @@
 
 @implementation SFCertificateWarningJSController
 
-- (SFCertificateWarningJSController)initWithCertificateWarningController:(id)a3
+- (SFCertificateWarningJSController)initWithCertificateWarningController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SFCertificateWarningJSController;
   v5 = [(SFCertificateWarningJSController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_certificateWarningController, v4);
+    objc_storeWeak(&v5->_certificateWarningController, controllerCopy);
     v7 = v6;
   }
 
@@ -83,15 +83,15 @@
 - (id)bypassFeatureWarningText
 {
   WeakRetained = objc_loadWeakRetained(&self->_certificateWarningController);
-  v3 = [WeakRetained warningPageContext];
+  warningPageContext = [WeakRetained warningPageContext];
 
-  v4 = [v3 failingURL];
-  v5 = [v4 host];
+  failingURL = [warningPageContext failingURL];
+  host = [failingURL host];
 
-  [v3 warningCategory];
+  [warningPageContext warningCategory];
   v6 = MEMORY[0x1E696AEC0];
   v7 = _WBSLocalizedString();
-  v8 = [v6 stringWithFormat:v7, v5, @" "];
+  v8 = [v6 stringWithFormat:v7, host, @" "];
 
   return v8;
 }

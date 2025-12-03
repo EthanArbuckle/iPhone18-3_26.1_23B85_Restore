@@ -1,15 +1,15 @@
 @interface ARCServer
-- (BOOL)verifyWithPresentationData:(id)a3 nonce:(int64_t)a4 requestContext:(id)a5 presentationContext:(id)a6 presentationLimit:(int64_t)a7;
+- (BOOL)verifyWithPresentationData:(id)data nonce:(int64_t)nonce requestContext:(id)context presentationContext:(id)presentationContext presentationLimit:(int64_t)limit;
 - (id)getServerPublicKey;
-- (id)respondWithRequestData:(id)a3 error:(id *)a4;
+- (id)respondWithRequestData:(id)data error:(id *)error;
 @end
 
 @implementation ARCServer
 
-- (id)respondWithRequestData:(id)a3 error:(id *)a4
+- (id)respondWithRequestData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  dataCopy = data;
+  selfCopy = self;
   v7 = sub_1C0D7832C();
   v9 = v8;
 
@@ -23,12 +23,12 @@
   return v13;
 }
 
-- (BOOL)verifyWithPresentationData:(id)a3 nonce:(int64_t)a4 requestContext:(id)a5 presentationContext:(id)a6 presentationLimit:(int64_t)a7
+- (BOOL)verifyWithPresentationData:(id)data nonce:(int64_t)nonce requestContext:(id)context presentationContext:(id)presentationContext presentationLimit:(int64_t)limit
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
+  dataCopy = data;
+  contextCopy = context;
+  presentationContextCopy = presentationContext;
+  selfCopy = self;
   v14 = sub_1C0D7832C();
   v16 = v15;
 
@@ -38,8 +38,8 @@
   v20 = sub_1C0D7832C();
   v22 = v21;
 
-  v23 = (v13 + OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server);
-  sub_1C0D11CE4(v14, v16, *&v13->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 72], *&v13->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 80], v31);
+  v23 = (selfCopy + OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server);
+  sub_1C0D11CE4(v14, v16, *&selfCopy->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 72], *&selfCopy->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 80], v31);
   v24 = v23[5];
   v42 = v23[4];
   v43 = v24;
@@ -50,7 +50,7 @@
   v26 = v23[3];
   v40 = v23[2];
   v41 = v26;
-  LOBYTE(v23) = sub_1C0D06CA0(v31, v17, v19, v20, v22, a7, a4);
+  LOBYTE(v23) = sub_1C0D06CA0(v31, v17, v19, v20, v22, limit, nonce);
   sub_1C0CF448C(v20, v22);
   sub_1C0CF448C(v17, v19);
   sub_1C0CF448C(v14, v16);
@@ -77,7 +77,7 @@
   v3 = *&self->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 32];
   v4 = *&self->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 40];
   v5 = *&self->server[OBJC_IVAR____TtC16CryptoKitPrivate9ARCServer_server + 80];
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1C0D12F84(v5, v2, v3, v4);
   v9 = v8;
 

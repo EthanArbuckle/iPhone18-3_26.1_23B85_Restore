@@ -1,28 +1,28 @@
 @interface PLAmbientSuggestionComputeJournalEntryPayload
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4;
-+ (id)payloadAdapterForManagedObject:(id)a3;
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name;
++ (id)payloadAdapterForManagedObject:(id)object;
 + (id)payloadClassID;
 + (id)snapshotSortDescriptors;
 @end
 
 @implementation PLAmbientSuggestionComputeJournalEntryPayload
 
-+ (BOOL)isValidForPersistenceWithObjectDictionary:(id)a3 additionalEntityName:(id)a4
++ (BOOL)isValidForPersistenceWithObjectDictionary:(id)dictionary additionalEntityName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 supportedSuggestionTypes];
-  LOBYTE(a1) = [a1 isValidForPersistenceWithObjectDictionary:v7 additionalEntityName:v6 suggestionTypes:v8];
+  nameCopy = name;
+  dictionaryCopy = dictionary;
+  supportedSuggestionTypes = [self supportedSuggestionTypes];
+  LOBYTE(self) = [self isValidForPersistenceWithObjectDictionary:dictionaryCopy additionalEntityName:nameCopy suggestionTypes:supportedSuggestionTypes];
 
-  return a1;
+  return self;
 }
 
-+ (id)payloadAdapterForManagedObject:(id)a3
++ (id)payloadAdapterForManagedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [PLAmbientSuggestionComputePayloadAdapter alloc];
-  v6 = [a1 supportedSuggestionTypes];
-  v7 = [(PLSuggestionComputePayloadAdapter *)v5 initWithManagedObject:v4 suggestionTypes:v6];
+  supportedSuggestionTypes = [self supportedSuggestionTypes];
+  v7 = [(PLSuggestionComputePayloadAdapter *)v5 initWithManagedObject:objectCopy suggestionTypes:supportedSuggestionTypes];
 
   return v7;
 }
@@ -40,8 +40,8 @@
 + (id)payloadClassID
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 entityName];
-  v4 = [v2 stringWithFormat:@"Ambient%@Compute", v3];
+  entityName = [self entityName];
+  v4 = [v2 stringWithFormat:@"Ambient%@Compute", entityName];
 
   return v4;
 }

@@ -14,7 +14,7 @@
   __chkstk_darwin();
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR____TtC25ActivityDigitalSeparation31ActivityDigitalSeparationFriend_sharingFriend);
-  v9 = self;
+  selfCopy = self;
   result = [v8 UUID];
   if (result)
   {
@@ -45,11 +45,11 @@
   __chkstk_darwin(v4);
   v8 = &v20 - v7;
   v9 = *(&self->super.isa + OBJC_IVAR____TtC25ActivityDigitalSeparation31ActivityDigitalSeparationFriend_sharingFriend);
-  v10 = self;
-  v11 = [v9 displayName];
-  if (v11)
+  selfCopy = self;
+  displayName = [v9 displayName];
+  if (displayName)
   {
-    v12 = v11;
+    v12 = displayName;
     sub_8DE4();
   }
 

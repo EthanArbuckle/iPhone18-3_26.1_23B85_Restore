@@ -1,32 +1,32 @@
 @interface KNRecordingEvent
-- (BOOL)isEqual:(id)a3;
-- (KNRecordingEvent)initWithMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5;
-- (KNRecordingEvent)initWithStartTime:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (KNRecordingEvent)initWithMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track;
+- (KNRecordingEvent)initWithStartTime:(double)time;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)recordingEventByAddingTimeOffset:(double)a3;
+- (id)recordingEventByAddingTimeOffset:(double)offset;
 - (unint64_t)hash;
-- (void)saveToMessage:(void *)a3 archiver:(id)a4;
+- (void)saveToMessage:(void *)message archiver:(id)archiver;
 @end
 
 @implementation KNRecordingEvent
 
-- (KNRecordingEvent)initWithStartTime:(double)a3
+- (KNRecordingEvent)initWithStartTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = KNRecordingEvent;
   result = [(KNRecordingEvent *)&v5 init];
   if (result)
   {
-    result->_startTime = a3;
+    result->_startTime = time;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(KNRecordingEvent, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(KNRecordingEvent, a2, zone);
   objc_msgSend_startTime(self, v5, v6);
 
   return MEMORY[0x2821F9670](v4, sel_initWithStartTime_, v7);
@@ -43,10 +43,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -82,35 +82,35 @@
   return v9;
 }
 
-- (id)recordingEventByAddingTimeOffset:(double)a3
+- (id)recordingEventByAddingTimeOffset:(double)offset
 {
   v5 = objc_msgSend_copy(self, a2, v3);
-  v5[1] = v5[1] + a3;
+  v5[1] = v5[1] + offset;
 
   return v5;
 }
 
-- (KNRecordingEvent)initWithMessage:(const void *)a3 unarchiver:(id)a4 parentEventTrack:(id)a5
+- (KNRecordingEvent)initWithMessage:(const void *)message unarchiver:(id)unarchiver parentEventTrack:(id)track
 {
-  v8 = a4;
-  v9 = a5;
+  unarchiverCopy = unarchiver;
+  trackCopy = track;
   v14.receiver = self;
   v14.super_class = KNRecordingEvent;
   v10 = [(KNRecordingEvent *)&v14 init];
   v12 = v10;
   if (v10)
   {
-    objc_msgSend_loadFromMessage_unarchiver_parentEventTrack_(v10, v11, a3, v8, v9);
+    objc_msgSend_loadFromMessage_unarchiver_parentEventTrack_(v10, v11, message, unarchiverCopy, trackCopy);
   }
 
   return v12;
 }
 
-- (void)saveToMessage:(void *)a3 archiver:(id)a4
+- (void)saveToMessage:(void *)message archiver:(id)archiver
 {
-  objc_msgSend_startTime(self, a2, a3, a4);
-  *(a3 + 4) |= 0x10u;
-  *(a3 + 7) = v5;
+  objc_msgSend_startTime(self, a2, message, archiver);
+  *(message + 4) |= 0x10u;
+  *(message + 7) = v5;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface NTKRichComplicationBaseCircularOpenGaugeImageView
 - (id)bottomView;
 - (int64_t)tritiumUpdateMode;
-- (void)gaugeProvider:(id *)a3 andCenterTextProvider:(id *)a4 fromTemplate:(id)a5;
-- (void)setPaused:(BOOL)a3;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)gaugeProvider:(id *)provider andCenterTextProvider:(id *)textProvider fromTemplate:(id)template;
+- (void)setPaused:(BOOL)paused;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -14,12 +14,12 @@
   bottomImageView = self->_bottomImageView;
   if (!bottomImageView)
   {
-    v4 = [(CDRichComplicationView *)self device];
-    v5 = NTKShowGossamerUI(v4);
+    device = [(CDRichComplicationView *)self device];
+    v5 = NTKShowGossamerUI(device);
 
     v6 = [off_27877BEB0 alloc];
-    v7 = [(CDRichComplicationView *)self device];
-    v8 = [v6 initWithDevice:v7 useAccentColor:v5];
+    device2 = [(CDRichComplicationView *)self device];
+    v8 = [v6 initWithDevice:device2 useAccentColor:v5];
     v9 = self->_bottomImageView;
     self->_bottomImageView = v8;
 
@@ -31,40 +31,40 @@
   return bottomImageView;
 }
 
-- (void)gaugeProvider:(id *)a3 andCenterTextProvider:(id *)a4 fromTemplate:(id)a5
+- (void)gaugeProvider:(id *)provider andCenterTextProvider:(id *)textProvider fromTemplate:(id)template
 {
-  v7 = a5;
-  *a3 = [v7 gaugeProvider];
-  v8 = [v7 centerTextProvider];
+  templateCopy = template;
+  *provider = [templateCopy gaugeProvider];
+  centerTextProvider = [templateCopy centerTextProvider];
 
-  v9 = v8;
-  *a4 = v8;
+  v9 = centerTextProvider;
+  *textProvider = centerTextProvider;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularOpenGaugeImageView;
   [(CDRichComplicationView *)&v5 setPaused:?];
-  [(CDRichComplicationImageView *)self->_bottomImageView setPaused:v3];
+  [(CDRichComplicationImageView *)self->_bottomImageView setPaused:pausedCopy];
 }
 
 - (int64_t)tritiumUpdateMode
 {
-  v3 = [(CDRichComplicationImageView *)self->_bottomImageView tritiumUpdateMode];
-  v4 = v3;
-  if (v3)
+  tritiumUpdateMode = [(CDRichComplicationImageView *)self->_bottomImageView tritiumUpdateMode];
+  v4 = tritiumUpdateMode;
+  if (tritiumUpdateMode)
   {
-    v5 = [v3 integerValue];
-    if (v5 >= 2)
+    integerValue = [tritiumUpdateMode integerValue];
+    if (integerValue >= 2)
     {
-      v6 = 2;
+      tritiumUpdateMode2 = 2;
     }
 
     else
     {
-      v6 = v5;
+      tritiumUpdateMode2 = integerValue;
     }
   }
 
@@ -72,18 +72,18 @@
   {
     v8.receiver = self;
     v8.super_class = NTKRichComplicationBaseCircularOpenGaugeImageView;
-    v6 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
+    tritiumUpdateMode2 = [(CDRichComplicationTemplateView *)&v8 tritiumUpdateMode];
   }
 
-  return v6;
+  return tritiumUpdateMode2;
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationBaseCircularOpenGaugeImageView;
   [(NTKRichComplicationCircularOpenGaugeContentView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CDRichComplicationImageView *)self->_bottomImageView transitionToMonochromeWithFraction:a3];
+  [(CDRichComplicationImageView *)self->_bottomImageView transitionToMonochromeWithFraction:fraction];
 }
 
 - (void)updateMonochromeColor

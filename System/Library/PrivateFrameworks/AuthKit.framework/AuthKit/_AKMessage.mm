@@ -1,31 +1,31 @@
 @interface _AKMessage
-+ (id)messageFromTransportRepresentation:(id)a3;
-+ (unint64_t)typeForMessageWithTransportRepresentation:(id)a3;
++ (id)messageFromTransportRepresentation:(id)representation;
++ (unint64_t)typeForMessageWithTransportRepresentation:(id)representation;
 - (_AKMessage)init;
 - (unint64_t)type;
 @end
 
 @implementation _AKMessage
 
-+ (unint64_t)typeForMessageWithTransportRepresentation:(id)a3
++ (unint64_t)typeForMessageWithTransportRepresentation:(id)representation
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, representation);
   v4 = [location[0] objectForKeyedSubscript:@"aktyp"];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
   _objc_release(v4);
   objc_storeStrong(location, 0);
-  return v5;
+  return unsignedIntegerValue;
 }
 
-+ (id)messageFromTransportRepresentation:(id)a3
++ (id)messageFromTransportRepresentation:(id)representation
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, representation);
   v7 = objc_alloc_init(objc_opt_class());
   v3 = [location[0] mutableCopy];
   v4 = v7[1];
@@ -53,9 +53,9 @@
     v10->_properties = v2;
     _objc_release(properties);
     v7 = +[NSUUID UUID];
-    v6 = [(NSUUID *)v7 UUIDString];
+    uUIDString = [(NSUUID *)v7 UUIDString];
     [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
-    _objc_release(v6);
+    _objc_release(uUIDString);
     _objc_release(v7);
   }
 
@@ -67,9 +67,9 @@
 - (unint64_t)type
 {
   v3 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:@"aktyp"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
   _objc_release(v3);
-  return v4;
+  return unsignedIntegerValue;
 }
 
 @end

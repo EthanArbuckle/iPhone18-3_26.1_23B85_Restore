@@ -1,13 +1,13 @@
 @interface HKUnitPreferenceControllerAccessibility
-- (id)_accessibilityNameForUnit:(id)a3;
-- (id)accessibilityNameForObjectType:(id)a3;
+- (id)_accessibilityNameForUnit:(id)unit;
+- (id)accessibilityNameForObjectType:(id)type;
 @end
 
 @implementation HKUnitPreferenceControllerAccessibility
 
-- (id)accessibilityNameForObjectType:(id)a3
+- (id)accessibilityNameForObjectType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v17 = 0;
   v11 = 0;
   v12 = &v11;
@@ -16,7 +16,7 @@
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
   v10 = MEMORY[0x29EDCA5F8];
-  v5 = v4;
+  v5 = typeCopy;
   AXPerformSafeBlock();
   v6 = v12[5];
 
@@ -43,11 +43,11 @@ uint64_t __74__HKUnitPreferenceControllerAccessibility_accessibilityNameForObjec
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)_accessibilityNameForUnit:(id)a3
+- (id)_accessibilityNameForUnit:(id)unit
 {
-  v3 = a3;
-  v4 = [v3 unitString];
-  v5 = [v4 isEqualToString:@"mi"];
+  unitCopy = unit;
+  unitString = [unitCopy unitString];
+  v5 = [unitString isEqualToString:@"mi"];
 
   if (v5)
   {
@@ -57,8 +57,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v7 = [v3 unitString];
-  v8 = [v7 isEqualToString:@"km"];
+  unitString2 = [unitCopy unitString];
+  v8 = [unitString2 isEqualToString:@"km"];
 
   if (v8)
   {

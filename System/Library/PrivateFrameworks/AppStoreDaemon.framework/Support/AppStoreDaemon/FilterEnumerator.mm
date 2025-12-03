@@ -6,16 +6,16 @@
 
 - (id)nextObject
 {
-  v3 = 0;
+  nextObject = 0;
   do
   {
-    v4 = v3;
-    v3 = [(NSEnumerator *)self->_enumerator nextObject];
+    v4 = nextObject;
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
   }
 
-  while (v3 && ![(NSPredicate *)self->_predicate evaluateWithObject:v3]);
+  while (nextObject && ![(NSPredicate *)self->_predicate evaluateWithObject:nextObject]);
 
-  return v3;
+  return nextObject;
 }
 
 @end

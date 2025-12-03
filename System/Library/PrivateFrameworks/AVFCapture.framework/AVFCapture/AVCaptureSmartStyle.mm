@@ -1,35 +1,35 @@
 @interface AVCaptureSmartStyle
-+ (AVCaptureSmartStyle)styleWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6;
++ (AVCaptureSmartStyle)styleWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias;
 + (id)identityStyle;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVCaptureSmartStyle
 
-+ (AVCaptureSmartStyle)styleWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6
++ (AVCaptureSmartStyle)styleWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias
 {
   v10 = objc_alloc(objc_opt_class());
-  *&v11 = a4;
-  *&v12 = a5;
-  *&v13 = a6;
-  v14 = [v10 _initWithCast:a3 intensity:v11 toneBias:v12 colorBias:v13];
+  *&v11 = intensity;
+  *&v12 = bias;
+  *&v13 = colorBias;
+  v14 = [v10 _initWithCast:cast intensity:v11 toneBias:v12 colorBias:v13];
 
   return v14;
 }
 
-- (id)_initWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6
+- (id)_initWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias
 {
   v15.receiver = self;
   v15.super_class = AVCaptureSmartStyle;
   v10 = [(AVCaptureSmartStyle *)&v15 init];
   if (v10)
   {
-    if (fabsf(a5) <= 1.0)
+    if (fabsf(bias) <= 1.0)
     {
-      if (a4 < 0.0 || a4 > 1.0)
+      if (intensity < 0.0 || intensity > 1.0)
       {
         v11 = MEMORY[0x1E695DF30];
         v12 = *MEMORY[0x1E695D940];
@@ -37,13 +37,13 @@
 
       else
       {
-        if (fabsf(a6) <= 1.0)
+        if (fabsf(colorBias) <= 1.0)
         {
-          v10->_cast = [a3 copy];
-          v10->_intensity = a4;
-          v10->_toneBias = a5;
-          v10->_colorBias = a6;
-          v10->_hash = (a4 * 10000.0) ^ (a5 * 10000.0) ^ (a6 * 10000.0) ^ 0x2710;
+          v10->_cast = [cast copy];
+          v10->_intensity = intensity;
+          v10->_toneBias = bias;
+          v10->_colorBias = colorBias;
+          v10->_hash = (intensity * 10000.0) ^ (bias * 10000.0) ^ (colorBias * 10000.0) ^ 0x2710;
           v10->_version = 1;
           return v10;
         }
@@ -79,9 +79,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -96,12 +96,12 @@ LABEL_7:
       return v5;
     }
 
-    v5 = -[NSString isEqualToString:](-[AVCaptureSmartStyle cast](self, "cast"), "isEqualToString:", [a3 cast]);
+    v5 = -[NSString isEqualToString:](-[AVCaptureSmartStyle cast](self, "cast"), "isEqualToString:", [equal cast]);
     if (v5)
     {
       [(AVCaptureSmartStyle *)self intensity];
       v7 = v6;
-      [a3 intensity];
+      [equal intensity];
       if (v7 != v8)
       {
         goto LABEL_7;
@@ -109,7 +109,7 @@ LABEL_7:
 
       [(AVCaptureSmartStyle *)self toneBias];
       v10 = v9;
-      [a3 toneBias];
+      [equal toneBias];
       if (v10 != v11)
       {
         goto LABEL_7;
@@ -117,14 +117,14 @@ LABEL_7:
 
       [(AVCaptureSmartStyle *)self colorBias];
       v13 = v12;
-      [a3 colorBias];
+      [equal colorBias];
       if (v13 != v14)
       {
         goto LABEL_7;
       }
 
-      v15 = [(AVCaptureSmartStyle *)self version];
-      LOBYTE(v5) = v15 == [a3 version];
+      version = [(AVCaptureSmartStyle *)self version];
+      LOBYTE(v5) = version == [equal version];
     }
   }
 

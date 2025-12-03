@@ -2,15 +2,15 @@
 - (NSString)uniqueName;
 - (_TtC15MapsSuggestions30MapsSuggestionsContactActivity)init;
 - (_TtP15MapsSuggestions38MapsSuggestionsContactActivityDelegate_)contactActivityDelegate;
-- (void)contactActivityEntriesWith:(id)a3;
-- (void)setUniqueName:(id)a3;
+- (void)contactActivityEntriesWith:(id)with;
+- (void)setUniqueName:(id)name;
 @end
 
 @implementation MapsSuggestionsContactActivity
 
-- (void)contactActivityEntriesWith:(id)a3
+- (void)contactActivityEntriesWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1C513DC84(v7, v6);
   sub_1C513EDF0(v7);
 }
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_1C529D72C();
     v6 = v5;

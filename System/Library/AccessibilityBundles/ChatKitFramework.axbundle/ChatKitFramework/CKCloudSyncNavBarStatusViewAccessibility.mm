@@ -1,5 +1,5 @@
 @interface CKCloudSyncNavBarStatusViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -7,12 +7,12 @@
 
 @implementation CKCloudSyncNavBarStatusViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasSwiftField:@"progressView" withSwiftType:"ConstrainedProgressView"];
-  [v3 validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasSwiftField:@"syncStatusLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasInstanceMethod:@"isProgressViewHidden" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasSwiftField:@"progressView" withSwiftType:"ConstrainedProgressView"];
+  [validationsCopy validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasSwiftField:@"syncStatusLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"ChatKit.CKCloudSyncNavBarStatusView" hasInstanceMethod:@"isProgressViewHidden" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
@@ -27,25 +27,25 @@
     [(CKCloudSyncNavBarStatusViewAccessibility *)self _axProgressView];
   }
   v3 = ;
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
   if ([(CKCloudSyncNavBarStatusViewAccessibility *)self _axIsProgressViewHidden])
   {
-    v3 = 0;
+    accessibilityValue = 0;
   }
 
   else
   {
-    v4 = [(CKCloudSyncNavBarStatusViewAccessibility *)self _axProgressView];
-    v3 = [v4 accessibilityValue];
+    _axProgressView = [(CKCloudSyncNavBarStatusViewAccessibility *)self _axProgressView];
+    accessibilityValue = [_axProgressView accessibilityValue];
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
@@ -59,10 +59,10 @@
 
   else
   {
-    v4 = [(CKCloudSyncNavBarStatusViewAccessibility *)self _axProgressView];
-    v5 = [v4 accessibilityTraits];
+    _axProgressView = [(CKCloudSyncNavBarStatusViewAccessibility *)self _axProgressView];
+    accessibilityTraits = [_axProgressView accessibilityTraits];
 
-    return v5;
+    return accessibilityTraits;
   }
 }
 

@@ -1,19 +1,19 @@
 @interface PlayAnnouncementSoundIntentHandler
 - (_TtC23AnnounceIntentExtension34PlayAnnouncementSoundIntentHandler)init;
-- (void)handlePlayAnnouncementSound:(INPlayAnnouncementSoundIntent *)a3 completion:(id)a4;
+- (void)handlePlayAnnouncementSound:(INPlayAnnouncementSoundIntent *)sound completion:(id)completion;
 @end
 
 @implementation PlayAnnouncementSoundIntentHandler
 
-- (void)handlePlayAnnouncementSound:(INPlayAnnouncementSoundIntent *)a3 completion:(id)a4
+- (void)handlePlayAnnouncementSound:(INPlayAnnouncementSoundIntent *)sound completion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = sound;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -28,8 +28,8 @@
   v15[3] = 0;
   v15[4] = &unk_1000175C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  soundCopy = sound;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_100017710, v15);
 }
 

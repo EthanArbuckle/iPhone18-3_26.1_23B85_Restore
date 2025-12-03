@@ -2,18 +2,18 @@
 + (id)sharedInstance;
 - (BOOL)isStreaming;
 - (CSSiriClientBehaviorMonitor)init;
-- (void)fetchCurrentStreamingState:(id)a3;
-- (void)notifyActivateAudioSessionWithReason:(unint64_t)a3;
-- (void)notifyAudioDeviceInfoUpdated:(id)a3;
-- (void)notifyDidStartStreamWithContext:(id)a3 successfully:(BOOL)a4 option:(id)a5 withEventUUID:(id)a6;
-- (void)notifyDidStopStream:(id)a3 withEventUUID:(id)a4;
-- (void)notifyFetchedSiriClientAudioStream:(id)a3 successfully:(BOOL)a4;
-- (void)notifyPreparedSiriClientAudioStream:(id)a3 successfully:(BOOL)a4;
+- (void)fetchCurrentStreamingState:(id)state;
+- (void)notifyActivateAudioSessionWithReason:(unint64_t)reason;
+- (void)notifyAudioDeviceInfoUpdated:(id)updated;
+- (void)notifyDidStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)notifyDidStopStream:(id)stream withEventUUID:(id)d;
+- (void)notifyFetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)notifyPreparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
 - (void)notifyReleaseAudioSession;
-- (void)notifyWillStartStreamWithContext:(id)a3 option:(id)a4 withEventUUID:(id)a5;
-- (void)notifyWillStopStream:(id)a3 reason:(unint64_t)a4 withEventUUID:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)notifyWillStartStreamWithContext:(id)context option:(id)option withEventUUID:(id)d;
+- (void)notifyWillStopStream:(id)stream reason:(unint64_t)reason withEventUUID:(id)d;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CSSiriClientBehaviorMonitor
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)fetchCurrentStreamingState:(id)a3
+- (void)fetchCurrentStreamingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -40,8 +40,8 @@
   block[2] = __58__CSSiriClientBehaviorMonitor_fetchCurrentStreamingState___block_invoke;
   block[3] = &unk_1E865B9C0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -84,17 +84,17 @@ void __58__CSSiriClientBehaviorMonitor_fetchCurrentStreamingState___block_invoke
   return v3;
 }
 
-- (void)notifyAudioDeviceInfoUpdated:(id)a3
+- (void)notifyAudioDeviceInfoUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CSSiriClientBehaviorMonitor_notifyAudioDeviceInfoUpdated___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(queue, v7);
 }
 
@@ -219,7 +219,7 @@ void __56__CSSiriClientBehaviorMonitor_notifyReleaseAudioSession__block_invoke(u
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyActivateAudioSessionWithReason:(unint64_t)a3
+- (void)notifyActivateAudioSessionWithReason:(unint64_t)reason
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -227,7 +227,7 @@ void __56__CSSiriClientBehaviorMonitor_notifyReleaseAudioSession__block_invoke(u
   v4[2] = __68__CSSiriClientBehaviorMonitor_notifyActivateAudioSessionWithReason___block_invoke;
   v4[3] = &unk_1E865CC58;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = reason;
   dispatch_async(queue, v4);
 }
 
@@ -284,20 +284,20 @@ void __68__CSSiriClientBehaviorMonitor_notifyActivateAudioSessionWithReason___bl
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDidStopStream:(id)a3 withEventUUID:(id)a4
+- (void)notifyDidStopStream:(id)stream withEventUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__CSSiriClientBehaviorMonitor_notifyDidStopStream_withEventUUID___block_invoke;
   block[3] = &unk_1E865C778;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = streamCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = streamCopy;
   dispatch_async(queue, block);
 }
 
@@ -349,21 +349,21 @@ void __65__CSSiriClientBehaviorMonitor_notifyDidStopStream_withEventUUID___block
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyWillStopStream:(id)a3 reason:(unint64_t)a4 withEventUUID:(id)a5
+- (void)notifyWillStopStream:(id)stream reason:(unint64_t)reason withEventUUID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  dCopy = d;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__CSSiriClientBehaviorMonitor_notifyWillStopStream_reason_withEventUUID___block_invoke;
   v13[3] = &unk_1E865C7A8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
+  v14 = streamCopy;
+  v15 = dCopy;
+  reasonCopy = reason;
+  v11 = dCopy;
+  v12 = streamCopy;
   dispatch_async(queue, v13);
 }
 
@@ -414,24 +414,24 @@ void __73__CSSiriClientBehaviorMonitor_notifyWillStopStream_reason_withEventUUID
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyDidStartStreamWithContext:(id)a3 successfully:(BOOL)a4 option:(id)a5 withEventUUID:(id)a6
+- (void)notifyDidStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __97__CSSiriClientBehaviorMonitor_notifyDidStartStreamWithContext_successfully_option_withEventUUID___block_invoke;
   block[3] = &unk_1E865B998;
   block[4] = self;
-  v18 = v10;
-  v21 = a4;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = contextCopy;
+  successfullyCopy = successfully;
+  v19 = optionCopy;
+  v20 = dCopy;
+  v14 = dCopy;
+  v15 = optionCopy;
+  v16 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -484,23 +484,23 @@ void __97__CSSiriClientBehaviorMonitor_notifyDidStartStreamWithContext_successfu
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyWillStartStreamWithContext:(id)a3 option:(id)a4 withEventUUID:(id)a5
+- (void)notifyWillStartStreamWithContext:(id)context option:(id)option withEventUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__CSSiriClientBehaviorMonitor_notifyWillStartStreamWithContext_option_withEventUUID___block_invoke;
   v15[3] = &unk_1E865C9C8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = contextCopy;
+  v17 = optionCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = optionCopy;
+  v14 = contextCopy;
   dispatch_async(queue, v15);
 }
 
@@ -553,18 +553,18 @@ void __85__CSSiriClientBehaviorMonitor_notifyWillStartStreamWithContext_option_w
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyPreparedSiriClientAudioStream:(id)a3 successfully:(BOOL)a4
+- (void)notifyPreparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v6 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__CSSiriClientBehaviorMonitor_notifyPreparedSiriClientAudioStream_successfully___block_invoke;
   block[3] = &unk_1E865B970;
-  v11 = a4;
+  successfullyCopy = successfully;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = streamCopy;
+  v8 = streamCopy;
   dispatch_async(queue, block);
 }
 
@@ -626,18 +626,18 @@ void __80__CSSiriClientBehaviorMonitor_notifyPreparedSiriClientAudioStream_succe
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyFetchedSiriClientAudioStream:(id)a3 successfully:(BOOL)a4
+- (void)notifyFetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v6 = a3;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__CSSiriClientBehaviorMonitor_notifyFetchedSiriClientAudioStream_successfully___block_invoke;
   block[3] = &unk_1E865B970;
-  v11 = a4;
+  successfullyCopy = successfully;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = streamCopy;
+  v8 = streamCopy;
   dispatch_async(queue, block);
 }
 
@@ -699,17 +699,17 @@ void __79__CSSiriClientBehaviorMonitor_notifyFetchedSiriClientAudioStream_succes
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CSSiriClientBehaviorMonitor_unregisterObserver___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -719,17 +719,17 @@ void __50__CSSiriClientBehaviorMonitor_unregisterObserver___block_invoke(uint64_
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__CSSiriClientBehaviorMonitor_registerObserver___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -750,9 +750,9 @@ void __48__CSSiriClientBehaviorMonitor_registerObserver___block_invoke(uint64_t 
     queue = v2->_queue;
     v2->_queue = v3;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsHashTable;
 
     v2->_isStreaming = 0;
   }

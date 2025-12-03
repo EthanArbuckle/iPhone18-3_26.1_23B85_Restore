@@ -1,6 +1,6 @@
 @interface DownloadTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (DownloadTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (DownloadTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -10,24 +10,24 @@
 
 @implementation DownloadTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_resumeButton" withType:"UIButton"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_revealButton" withType:"UIButton"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_download" withType:"_SFDownload"];
-  [v3 validateClass:@"DownloadTableViewCell" hasInstanceMethod:@"_updateCellContents" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_cancelButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_resumeButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_revealButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_progressView" withType:"UIProgressView"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_nameLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_statusLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceVariable:@"_download" withType:"_SFDownload"];
+  [validationsCopy validateClass:@"DownloadTableViewCell" hasInstanceMethod:@"_updateCellContents" withFullSignature:{"v", 0}];
 }
 
-- (DownloadTableViewCellAccessibility)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DownloadTableViewCellAccessibility)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = DownloadTableViewCellAccessibility;
-  v4 = [(DownloadTableViewCellAccessibility *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(DownloadTableViewCellAccessibility *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(DownloadTableViewCellAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;
@@ -72,9 +72,9 @@
   if ([v3 _accessibilityViewIsVisible])
   {
     v4 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_progressView"];
-    v5 = [v4 accessibilityLabel];
+    accessibilityLabel = [v4 accessibilityLabel];
     v6 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_progressView"];
-    v17 = [v6 accessibilityValue];
+    accessibilityValue = [v6 accessibilityValue];
     v7 = __UIAXStringForVariables();
   }
 
@@ -90,9 +90,9 @@
   v11 = UIAXFileTypeDescriptionForUTI();
 
   v12 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_nameLabel"];
-  v13 = [v12 accessibilityLabel];
+  accessibilityLabel2 = [v12 accessibilityLabel];
   v14 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_statusLabel"];
-  v18 = [v14 accessibilityLabel];
+  accessibilityLabel3 = [v14 accessibilityLabel];
   v15 = __UIAXStringForVariables();
 
   return v15;
@@ -100,74 +100,74 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_cancelButton"];
-  v5 = [v4 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
 
-  if (v5)
+  if (_accessibilityViewIsVisible)
   {
     v6 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_cancelButton"];
-    v7 = [v6 accessibilityLabel];
+    accessibilityLabel = [v6 accessibilityLabel];
 
-    v8 = [(DownloadTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
+    _privateAccessibilityCustomActions = [(DownloadTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
     v30[0] = MEMORY[0x29EDCA5F8];
     v30[1] = 3221225472;
     v30[2] = __64__DownloadTableViewCellAccessibility_accessibilityCustomActions__block_invoke;
     v30[3] = &unk_29F2D7BE0;
-    v9 = v7;
+    v9 = accessibilityLabel;
     v31 = v9;
-    LOBYTE(v7) = [v8 ax_containsObjectUsingBlock:v30];
+    LOBYTE(accessibilityLabel) = [_privateAccessibilityCustomActions ax_containsObjectUsingBlock:v30];
 
-    if ((v7 & 1) == 0)
+    if ((accessibilityLabel & 1) == 0)
     {
       v10 = objc_alloc(MEMORY[0x29EDC78E0]);
       v11 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_cancelButton"];
-      v12 = [v11 accessibilityLabel];
+      accessibilityLabel2 = [v11 accessibilityLabel];
       v29[0] = MEMORY[0x29EDCA5F8];
       v29[1] = 3221225472;
       v29[2] = __64__DownloadTableViewCellAccessibility_accessibilityCustomActions__block_invoke_2;
       v29[3] = &unk_29F2D7BE0;
       v29[4] = self;
-      v13 = [v10 initWithName:v12 actionHandler:v29];
-      [v3 addObject:v13];
+      v13 = [v10 initWithName:accessibilityLabel2 actionHandler:v29];
+      [array addObject:v13];
     }
   }
 
   v14 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_resumeButton"];
-  v15 = [v14 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible2 = [v14 _accessibilityViewIsVisible];
 
-  if (v15)
+  if (_accessibilityViewIsVisible2)
   {
     v16 = objc_alloc(MEMORY[0x29EDC78E0]);
     v17 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_resumeButton"];
-    v18 = [v17 accessibilityLabel];
+    accessibilityLabel3 = [v17 accessibilityLabel];
     v28[0] = MEMORY[0x29EDCA5F8];
     v28[1] = 3221225472;
     v28[2] = __64__DownloadTableViewCellAccessibility_accessibilityCustomActions__block_invoke_3;
     v28[3] = &unk_29F2D7BE0;
     v28[4] = self;
-    v19 = [v16 initWithName:v18 actionHandler:v28];
-    [v3 addObject:v19];
+    v19 = [v16 initWithName:accessibilityLabel3 actionHandler:v28];
+    [array addObject:v19];
   }
 
   v20 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_revealButton"];
-  v21 = [v20 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible3 = [v20 _accessibilityViewIsVisible];
 
-  if (v21)
+  if (_accessibilityViewIsVisible3)
   {
     v22 = objc_alloc(MEMORY[0x29EDC78E0]);
     v23 = [(DownloadTableViewCellAccessibility *)self safeUIViewForKey:@"_revealButton"];
-    v24 = [v23 accessibilityLabel];
+    accessibilityLabel4 = [v23 accessibilityLabel];
     v27[0] = MEMORY[0x29EDCA5F8];
     v27[1] = 3221225472;
     v27[2] = __64__DownloadTableViewCellAccessibility_accessibilityCustomActions__block_invoke_4;
     v27[3] = &unk_29F2D7BE0;
     v27[4] = self;
-    v25 = [v22 initWithName:v24 actionHandler:v27];
-    [v3 addObject:v25];
+    v25 = [v22 initWithName:accessibilityLabel4 actionHandler:v27];
+    [array addObject:v25];
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __64__DownloadTableViewCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)

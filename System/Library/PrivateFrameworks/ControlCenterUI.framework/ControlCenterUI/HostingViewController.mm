@@ -1,12 +1,12 @@
 @interface HostingViewController
-- (_TtC15ControlCenterUI21HostingViewController)initWithCoder:(id)a3;
-- (_TtC15ControlCenterUI21HostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ControlCenterUI21HostingViewController)initWithCoder:(id)coder;
+- (_TtC15ControlCenterUI21HostingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation HostingViewController
 
-- (_TtC15ControlCenterUI21HostingViewController)initWithCoder:(id)a3
+- (_TtC15ControlCenterUI21HostingViewController)initWithCoder:(id)coder
 {
   result = sub_21EAA94A0();
   __break(1u);
@@ -15,11 +15,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21EA95578();
 }
 
-- (_TtC15ControlCenterUI21HostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ControlCenterUI21HostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

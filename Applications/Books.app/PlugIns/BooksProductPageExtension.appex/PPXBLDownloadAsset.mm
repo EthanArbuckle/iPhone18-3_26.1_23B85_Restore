@@ -1,35 +1,35 @@
 @interface PPXBLDownloadAsset
 - (NSArray)children;
 - (NSString)identifier;
-- (PPXBLDownloadAsset)initWithBLDownloadStatus:(id)a3 isParent:(BOOL)a4;
+- (PPXBLDownloadAsset)initWithBLDownloadStatus:(id)status isParent:(BOOL)parent;
 - (PPXBLDownloadAsset)parent;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)removeFromParent;
 @end
 
 @implementation PPXBLDownloadAsset
 
-- (PPXBLDownloadAsset)initWithBLDownloadStatus:(id)a3 isParent:(BOOL)a4
+- (PPXBLDownloadAsset)initWithBLDownloadStatus:(id)status isParent:(BOOL)parent
 {
-  v4 = a4;
-  v6 = a3;
+  parentCopy = parent;
+  statusCopy = status;
   v26.receiver = self;
   v26.super_class = PPXBLDownloadAsset;
   v7 = [(PPXBLDownloadAsset *)&v26 init];
   if (v7)
   {
-    v8 = [v6 downloadID];
+    downloadID = [statusCopy downloadID];
     downloadID = v7->_downloadID;
-    v7->_downloadID = v8;
+    v7->_downloadID = downloadID;
 
-    v7->_isAudiobook = [v6 isAudiobook];
-    v7->_isParent = v4;
-    if (v4)
+    v7->_isAudiobook = [statusCopy isAudiobook];
+    v7->_isParent = parentCopy;
+    if (parentCopy)
     {
-      v10 = [v6 storePlaylistID];
-      v11 = [v10 stringValue];
+      storePlaylistID = [statusCopy storePlaylistID];
+      stringValue = [storePlaylistID stringValue];
       storeID = v7->_storeID;
-      v7->_storeID = v11;
+      v7->_storeID = stringValue;
 
       v13 = objc_opt_new();
       childAssets = v7->_childAssets;
@@ -38,37 +38,37 @@
 
     else
     {
-      v15 = [v6 storeID];
-      v16 = [v15 longLongValue];
+      storeID = [statusCopy storeID];
+      longLongValue = [storeID longLongValue];
 
-      if (v16)
+      if (longLongValue)
       {
-        childAssets = [v6 storeID];
-        v17 = [childAssets stringValue];
+        childAssets = [statusCopy storeID];
+        stringValue2 = [childAssets stringValue];
         v18 = v7->_storeID;
-        v7->_storeID = v17;
+        v7->_storeID = stringValue2;
       }
 
       else
       {
-        v20 = [v6 permLink];
+        permLink = [statusCopy permLink];
 
-        if (!v20)
+        if (!permLink)
         {
           goto LABEL_7;
         }
 
-        v21 = [v6 permLink];
-        v22 = [NSURL URLWithString:v21];
+        permLink2 = [statusCopy permLink];
+        v22 = [NSURL URLWithString:permLink2];
         permlink = v7->_permlink;
         v7->_permlink = v22;
 
         v24 = v7->_permlink;
         if (v24)
         {
-          v25 = [(NSURL *)v24 identifierFromPermlink];
+          identifierFromPermlink = [(NSURL *)v24 identifierFromPermlink];
           childAssets = v7->_temporaryAssetID;
-          v7->_temporaryAssetID = v25;
+          v7->_temporaryAssetID = identifierFromPermlink;
         }
 
         else
@@ -87,45 +87,45 @@ LABEL_7:
 
 - (NSString)identifier
 {
-  v3 = [(PPXBLDownloadAsset *)self storeID];
-  v4 = v3;
-  if (v3)
+  storeID = [(PPXBLDownloadAsset *)self storeID];
+  v4 = storeID;
+  if (storeID)
   {
-    v5 = v3;
+    temporaryAssetID = storeID;
   }
 
   else
   {
-    v5 = [(PPXBLDownloadAsset *)self temporaryAssetID];
+    temporaryAssetID = [(PPXBLDownloadAsset *)self temporaryAssetID];
   }
 
-  v6 = v5;
+  v6 = temporaryAssetID;
 
   return v6;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v5 = a3;
-  v4 = [(PPXBLDownloadAsset *)self childAssets];
-  [v4 addObject:v5];
+  childCopy = child;
+  childAssets = [(PPXBLDownloadAsset *)self childAssets];
+  [childAssets addObject:childCopy];
 
-  [v5 setParent:self];
+  [childCopy setParent:self];
 }
 
 - (void)removeFromParent
 {
-  v3 = [(PPXBLDownloadAsset *)self parent];
-  v4 = [v3 childAssets];
-  [v4 removeObject:self];
+  parent = [(PPXBLDownloadAsset *)self parent];
+  childAssets = [parent childAssets];
+  [childAssets removeObject:self];
 
   [(PPXBLDownloadAsset *)self setParent:0];
 }
 
 - (NSArray)children
 {
-  v2 = [(PPXBLDownloadAsset *)self childAssets];
-  v3 = [v2 copy];
+  childAssets = [(PPXBLDownloadAsset *)self childAssets];
+  v3 = [childAssets copy];
 
   return v3;
 }

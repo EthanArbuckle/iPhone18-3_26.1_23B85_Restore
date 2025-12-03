@@ -3,9 +3,9 @@
 - (id)inputAccessoryViewBackdropColor;
 - (id)inputAccessoryViewBackdropEffects;
 - (void)_updateBackgroundView;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setEntryViewTraitCollection:(id)a3;
-- (void)setStyle:(int64_t)a3;
+- (void)setBackdropGroupName:(id)name;
+- (void)setEntryViewTraitCollection:(id)collection;
+- (void)setStyle:(int64_t)style;
 @end
 
 @implementation CKMessageEntrySolidBlurBackgroundView
@@ -20,21 +20,21 @@
   return v4;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     [(CKMessageEntrySolidBlurBackgroundView *)self _updateBackgroundView];
   }
 }
 
-- (void)setEntryViewTraitCollection:(id)a3
+- (void)setEntryViewTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (([(UITraitCollection *)self->_entryViewTraitCollection isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_entryViewTraitCollection, a3);
+    objc_storeStrong(&self->_entryViewTraitCollection, collection);
     [(CKMessageEntrySolidBlurBackgroundView *)self _updateBackgroundView];
   }
 }
@@ -42,10 +42,10 @@
 - (void)_updateBackgroundView
 {
   v8 = +[CKUIBehavior sharedBehaviors];
-  v3 = [(CKMessageEntrySolidBlurBackgroundView *)self style];
-  v4 = [(CKMessageEntrySolidBlurBackgroundView *)self contentView];
-  v5 = [(CKMessageEntrySolidBlurBackgroundView *)self entryViewTraitCollection];
-  if (CKMessageEntryViewStyleIsForDarkFullscreenMoment(v3))
+  style = [(CKMessageEntrySolidBlurBackgroundView *)self style];
+  contentView = [(CKMessageEntrySolidBlurBackgroundView *)self contentView];
+  entryViewTraitCollection = [(CKMessageEntrySolidBlurBackgroundView *)self entryViewTraitCollection];
+  if (CKMessageEntryViewStyleIsForDarkFullscreenMoment(style))
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -55,9 +55,9 @@
     [MEMORY[0x1E69DC888] systemBackgroundColor];
   }
   v6 = ;
-  v7 = [v6 resolvedColorForTraitCollection:v5];
-  [v4 setBackgroundColor:v7];
-  if (CKMessageEntryViewStyleIsForReply(v3))
+  v7 = [v6 resolvedColorForTraitCollection:entryViewTraitCollection];
+  [contentView setBackgroundColor:v7];
+  if (CKMessageEntryViewStyleIsForReply(style))
   {
     [v8 replyEntryViewBackagroundAlpha];
   }
@@ -67,39 +67,39 @@
     [v8 entryViewBackgroundAlpha];
   }
 
-  [v4 setAlpha:?];
+  [contentView setAlpha:?];
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_backdropGroupName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     backdropGroupName = self->_backdropGroupName;
     self->_backdropGroupName = v4;
 
-    [(CKMessageEntrySolidBlurBackgroundView *)self _setGroupName:v6];
+    [(CKMessageEntrySolidBlurBackgroundView *)self _setGroupName:nameCopy];
   }
 }
 
 - (id)inputAccessoryViewBackdropColor
 {
-  v2 = [(CKMessageEntrySolidBlurBackgroundView *)self contentView];
-  v3 = [v2 backgroundColor];
-  [v2 alpha];
-  v4 = [v3 colorWithAlphaComponent:?];
+  contentView = [(CKMessageEntrySolidBlurBackgroundView *)self contentView];
+  backgroundColor = [contentView backgroundColor];
+  [contentView alpha];
+  v4 = [backgroundColor colorWithAlphaComponent:?];
 
   return v4;
 }
 
 - (id)inputAccessoryViewBackdropEffects
 {
-  v2 = [(CKMessageEntrySolidBlurBackgroundView *)self backgroundEffects];
-  v3 = v2;
-  if (v2)
+  backgroundEffects = [(CKMessageEntrySolidBlurBackgroundView *)self backgroundEffects];
+  v3 = backgroundEffects;
+  if (backgroundEffects)
   {
-    v4 = v2;
+    v4 = backgroundEffects;
   }
 
   else

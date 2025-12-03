@@ -1,20 +1,20 @@
 @interface PPSSQLiteTimeSeriesIngester
 + (NSCache)databaseConnectionCache;
-+ (id)_stringForSourceNames:(id)a3 metrics:(id)a4 predicate:(id)a5;
-+ (id)cachedDatabaseForURL:(id)a3;
++ (id)_stringForSourceNames:(id)names metrics:(id)metrics predicate:(id)predicate;
++ (id)cachedDatabaseForURL:(id)l;
 + (id)databaseQueue;
-+ (id)filterTimeSeries:(id)a3 withPredicate:(id)a4;
-+ (unint64_t)_hashForStringArray:(id)a3;
-+ (void)cache:(id)a3 willEvictObject:(id)a4;
++ (id)filterTimeSeries:(id)series withPredicate:(id)predicate;
++ (unint64_t)_hashForStringArray:(id)array;
++ (void)cache:(id)cache willEvictObject:(id)object;
 + (void)evicttriggering;
-- (PPSSQLiteTimeSeriesIngester)initWithFilepath:(id)a3;
-- (id)_convertSQLiteDataFromQuery:(id)a3 withMetricDefinitions:(id)a4 error:(id *)a5;
-- (id)_validBaseMetricFromDefinitions:(id)a3;
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4;
-- (id)responseForKey:(id)a3 withinTimeWindow:(id)a4;
+- (PPSSQLiteTimeSeriesIngester)initWithFilepath:(id)filepath;
+- (id)_convertSQLiteDataFromQuery:(id)query withMetricDefinitions:(id)definitions error:(id *)error;
+- (id)_validBaseMetricFromDefinitions:(id)definitions;
+- (id)parseDataForRequest:(id)request outError:(id *)error;
+- (id)responseForKey:(id)key withinTimeWindow:(id)window;
 - (void)dealloc;
-- (void)removeResponseForKey:(id)a3;
-- (void)setResponse:(id)a3 forKey:(id)a4 timeWindow:(id)a5;
+- (void)removeResponseForKey:(id)key;
+- (void)setResponse:(id)response forKey:(id)key timeWindow:(id)window;
 @end
 
 @implementation PPSSQLiteTimeSeriesIngester
@@ -44,7 +44,7 @@ uint64_t __44__PPSSQLiteTimeSeriesIngester_databaseQueue__block_invoke()
   block[1] = 3221225472;
   block[2] = __54__PPSSQLiteTimeSeriesIngester_databaseConnectionCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (databaseConnectionCache_onceToken != -1)
   {
     dispatch_once(&databaseConnectionCache_onceToken, block);
@@ -82,47 +82,47 @@ void __54__PPSSQLiteTimeSeriesIngester_databaseConnectionCache__block_invoke(uin
     +[PPSSQLiteTimeSeriesIngester evicttriggering];
   }
 
-  v4 = [a1 databaseConnectionCache];
-  v5 = [a1 databaseConnectionCache];
+  databaseConnectionCache = [self databaseConnectionCache];
+  databaseConnectionCache2 = [self databaseConnectionCache];
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [MEMORY[0x277D3A128] containerPath];
-  v8 = [v7 stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
+  containerPath = [MEMORY[0x277D3A128] containerPath];
+  v8 = [containerPath stringByAppendingString:@"/Library/PerfPowerTelemetry/"];
   v9 = [v8 stringByAppendingString:@"BackgroundProcessing/"];
   v10 = [v9 stringByAppendingString:@"CurrentBackgroundProcessingDB.BGSQL"];
   v11 = [v6 fileURLWithPath:v10];
-  v12 = [v5 objectForKey:v11];
-  [a1 cache:v4 willEvictObject:v12];
+  v12 = [databaseConnectionCache2 objectForKey:v11];
+  [self cache:databaseConnectionCache willEvictObject:v12];
 }
 
-+ (id)cachedDatabaseForURL:(id)a3
++ (id)cachedDatabaseForURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 databaseConnectionCache];
-  v6 = [v5 objectForKey:v4];
+  lCopy = l;
+  databaseConnectionCache = [self databaseConnectionCache];
+  v6 = [databaseConnectionCache objectForKey:lCopy];
 
   return v6;
 }
 
-+ (void)cache:(id)a3 willEvictObject:(id)a4
++ (void)cache:(id)cache willEvictObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  cacheCopy = cache;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a1 databaseConnectionCache];
+    databaseConnectionCache = [self databaseConnectionCache];
 
-    if (v8 == v6)
+    if (databaseConnectionCache == cacheCopy)
     {
-      v9 = v7;
-      v10 = [a1 databaseQueue];
+      v9 = objectCopy;
+      databaseQueue = [self databaseQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __53__PPSSQLiteTimeSeriesIngester_cache_willEvictObject___block_invoke;
       block[3] = &unk_279A11428;
       v13 = v9;
       v11 = v9;
-      dispatch_async(v10, block);
+      dispatch_async(databaseQueue, block);
     }
   }
 }
@@ -138,16 +138,16 @@ void __53__PPSSQLiteTimeSeriesIngester_cache_willEvictObject___block_invoke(uint
   }
 }
 
-- (PPSSQLiteTimeSeriesIngester)initWithFilepath:(id)a3
+- (PPSSQLiteTimeSeriesIngester)initWithFilepath:(id)filepath
 {
-  v5 = a3;
+  filepathCopy = filepath;
   v11.receiver = self;
   v11.super_class = PPSSQLiteTimeSeriesIngester;
   v6 = [(PPSSQLiteTimeSeriesIngester *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filepath, a3);
+    objc_storeStrong(&v6->_filepath, filepath);
     v8 = objc_opt_new();
     responseCache = v7->_responseCache;
     v7->_responseCache = v8;
@@ -158,13 +158,13 @@ void __53__PPSSQLiteTimeSeriesIngester_cache_willEvictObject___block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [objc_opt_class() databaseQueue];
+  databaseQueue = [objc_opt_class() databaseQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__PPSSQLiteTimeSeriesIngester_dealloc__block_invoke;
   block[3] = &unk_279A11428;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(databaseQueue, block);
 
   v4.receiver = self;
   v4.super_class = PPSSQLiteTimeSeriesIngester;
@@ -194,43 +194,43 @@ void __38__PPSSQLiteTimeSeriesIngester_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeResponseForKey:(id)a3
+- (void)removeResponseForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  responseCache = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
+  [responseCache removeObjectForKey:keyCopy];
 }
 
-- (id)responseForKey:(id)a3 withinTimeWindow:(id)a4
+- (id)responseForKey:(id)key withinTimeWindow:(id)window
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
-  v9 = [v8 objectForKey:v7];
+  windowCopy = window;
+  keyCopy = key;
+  responseCache = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
+  v9 = [responseCache objectForKey:keyCopy];
 
   if (!v9)
   {
-    v10 = 0;
+    firstObject = 0;
     goto LABEL_11;
   }
 
-  v10 = [v9 firstObject];
-  v11 = [v9 lastObject];
-  v12 = [MEMORY[0x277CBEB68] null];
+  firstObject = [v9 firstObject];
+  lastObject = [v9 lastObject];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v11 == v12)
+  if (lastObject == null)
   {
     goto LABEL_11;
   }
 
-  v13 = [v9 lastObject];
-  if (v13)
+  lastObject2 = [v9 lastObject];
+  if (lastObject2)
   {
-    v14 = [v6 startDate];
-    if ([v13 containsDate:v14])
+    startDate = [windowCopy startDate];
+    if ([lastObject2 containsDate:startDate])
     {
-      v15 = [v6 endDate];
-      v16 = [v13 containsDate:v15];
+      endDate = [windowCopy endDate];
+      v16 = [lastObject2 containsDate:endDate];
 
       if (v16)
       {
@@ -242,79 +242,79 @@ void __38__PPSSQLiteTimeSeriesIngester_dealloc__block_invoke(uint64_t a1)
     {
     }
 
-    v10 = 0;
+    firstObject = 0;
   }
 
 LABEL_10:
 
 LABEL_11:
 
-  return v10;
+  return firstObject;
 }
 
-- (void)setResponse:(id)a3 forKey:(id)a4 timeWindow:(id)a5
+- (void)setResponse:(id)response forKey:(id)key timeWindow:(id)window
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v15[0] = v8;
-  v11 = v10;
-  if (!v10)
+  responseCopy = response;
+  keyCopy = key;
+  windowCopy = window;
+  v15[0] = responseCopy;
+  null = windowCopy;
+  if (!windowCopy)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v15[1] = v11;
+  v15[1] = null;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  if (!v10)
+  if (!windowCopy)
   {
   }
 
-  v13 = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
-  [v13 setObject:v12 forKey:v9];
+  responseCache = [(PPSSQLiteTimeSeriesIngester *)self responseCache];
+  [responseCache setObject:v12 forKey:keyCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseDataForRequest:(id)a3 outError:(id *)a4
+- (id)parseDataForRequest:(id)request outError:(id *)error
 {
   v103[2] = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v65 = [v63 subsystem];
-  v64 = [v63 category];
+  requestCopy = request;
+  subsystem = [requestCopy subsystem];
+  category = [requestCopy category];
   v94 = 0;
   v95 = &v94;
   v96 = 0x3032000000;
   v97 = __Block_byref_object_copy__2;
   v98 = __Block_byref_object_dispose__2;
-  v99 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@_Prepare", @"QueryExecution", v65, v64];
+  v99 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@:%@_Prepare", @"QueryExecution", subsystem, category];
   v4 = +[PPSPerformanceProfiler sharedInstance];
   [v4 startProfilingForPhase:v95[5]];
 
-  v62 = [v63 valueFilter];
-  v61 = [v63 timeFilter];
-  if (v61)
+  valueFilter = [requestCopy valueFilter];
+  timeFilter = [requestCopy timeFilter];
+  if (timeFilter)
   {
-    v5 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
-    v6 = [PPSTimestampConverterRegistry converterForFilepath:v5];
+    filepath = [(PPSSQLiteTimeSeriesIngester *)self filepath];
+    v6 = [PPSTimestampConverterRegistry converterForFilepath:filepath];
 
-    v7 = [v61 startDate];
-    [v7 timeIntervalSince1970];
+    startDate = [timeFilter startDate];
+    [startDate timeIntervalSince1970];
     v9 = v8;
 
     [v6 monotonicTimeFromEpochTime:v9];
     v11 = v10;
-    v12 = [v61 endDate];
-    [v12 timeIntervalSince1970];
+    endDate = [timeFilter endDate];
+    [endDate timeIntervalSince1970];
     v14 = v13;
 
     [v6 monotonicTimeFromEpochTime:v14];
     v59 = [PPSPredicateUtilities predicateForStartTimestamp:@"timestamp" endTimestamp:v11 withKeyPath:v15];
-    if (v62)
+    if (valueFilter)
     {
       v16 = MEMORY[0x277CCA920];
-      v103[0] = v62;
+      v103[0] = valueFilter;
       v103[1] = v59;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v103 count:2];
       v60 = [v16 andPredicateWithSubpredicates:v17];
@@ -329,21 +329,21 @@ LABEL_11:
   else
   {
     v59 = 0;
-    v60 = v62;
+    v60 = valueFilter;
   }
 
-  v18 = [v63 metrics];
-  v19 = [v18 allObjects];
+  metrics = [requestCopy metrics];
+  allObjects = [metrics allObjects];
 
-  if (([v19 containsObject:@"timestamp"] & 1) == 0)
+  if (([allObjects containsObject:@"timestamp"] & 1) == 0)
   {
-    v20 = [v19 arrayByAddingObject:@"timestamp"];
+    v20 = [allObjects arrayByAddingObject:@"timestamp"];
 
-    v19 = v20;
+    allObjects = v20;
   }
 
-  v21 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
-  v22 = [PPSOffDeviceIngesterUtilities metricDefinitionsForFilepath:v21 subsystem:v65 category:v64 metricNames:v19];
+  filepath2 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
+  v22 = [PPSOffDeviceIngesterUtilities metricDefinitionsForFilepath:filepath2 subsystem:subsystem category:category metricNames:allObjects];
   v23 = [v22 mutableCopy];
 
   v67 = [MEMORY[0x277CBEB58] set];
@@ -351,7 +351,7 @@ LABEL_11:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v19;
+  obj = allObjects;
   v24 = 0;
   v25 = [obj countByEnumeratingWithState:&v90 objects:v102 count:16];
   if (v25)
@@ -382,16 +382,16 @@ LABEL_11:
           v31 = [v28 rangeOfString:@"_[0-9.]+$" options:1024];
           if (v31 == 0x7FFFFFFFFFFFFFFFLL)
           {
-            v32 = [MEMORY[0x277CBEB68] null];
-            [v23 setObject:v32 forKeyedSubscript:v28];
+            null = [MEMORY[0x277CBEB68] null];
+            [v23 setObject:null forKeyedSubscript:v28];
           }
 
           else
           {
-            v32 = [v28 stringByReplacingCharactersInRange:v31 withString:{v30, &stru_286FFF1D8}];
-            v33 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
-            v34 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:v33 subsystem:v65 category:v64 metricName:v32];
-            [v23 setObject:v34 forKeyedSubscript:v32];
+            null = [v28 stringByReplacingCharactersInRange:v31 withString:{v30, &stru_286FFF1D8}];
+            filepath3 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
+            v34 = [PPSOffDeviceIngesterUtilities metricDefinitionForFilepath:filepath3 subsystem:subsystem category:category metricName:null];
+            [v23 setObject:v34 forKeyedSubscript:null];
           }
         }
       }
@@ -408,25 +408,25 @@ LABEL_11:
   {
     v36 = [obj arrayByAddingObject:@"timestampEnd"];
 
-    v37 = [MEMORY[0x277CBEB68] null];
-    [v23 setObject:v37 forKeyedSubscript:@"timestampEnd"];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [v23 setObject:null2 forKeyedSubscript:@"timestampEnd"];
 
     obj = v36;
   }
 
   v38 = @"ASC";
-  if ([v63 readDirection] == 1)
+  if ([requestCopy readDirection] == 1)
   {
     v39 = @"DESC";
 
     v38 = v39;
   }
 
-  v40 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
-  v41 = [PPSOffDeviceIngesterUtilities allDataSourcesForFilepath:v40 subsystem:v65 category:v64];
+  filepath4 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
+  v41 = [PPSOffDeviceIngesterUtilities allDataSourcesForFilepath:filepath4 subsystem:subsystem category:category];
 
-  v42 = [objc_opt_class() _stringForSourceNames:v41 metrics:obj predicate:v62];
-  if ([(PPSSQLiteTimeSeriesIngester *)self shouldUseCache]&& ([(PPSSQLiteTimeSeriesIngester *)self responseForKey:v42 withinTimeWindow:v61], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
+  v42 = [objc_opt_class() _stringForSourceNames:v41 metrics:obj predicate:valueFilter];
+  if ([(PPSSQLiteTimeSeriesIngester *)self shouldUseCache]&& ([(PPSSQLiteTimeSeriesIngester *)self responseForKey:v42 withinTimeWindow:timeFilter], (v43 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v44 = [objc_opt_class() filterTimeSeries:v43 withPredicate:v59];
   }
@@ -435,8 +435,8 @@ LABEL_11:
   {
     v45 = [[PPSSQLiteEntity alloc] initWithTableNames:v41];
     v46 = [PPSSQLiteQueryDescriptor alloc];
-    v47 = [v35 pps_sqlPredicateForSelect];
-    v48 = -[PPSSQLiteQueryDescriptor initWithEntity:predicate:limitCount:offsetCount:](v46, "initWithEntity:predicate:limitCount:offsetCount:", v45, v47, [v63 limitCount], objc_msgSend(v63, "offsetCount"));
+    pps_sqlPredicateForSelect = [v35 pps_sqlPredicateForSelect];
+    v48 = -[PPSSQLiteQueryDescriptor initWithEntity:predicate:limitCount:offsetCount:](v46, "initWithEntity:predicate:limitCount:offsetCount:", v45, pps_sqlPredicateForSelect, [requestCopy limitCount], objc_msgSend(requestCopy, "offsetCount"));
 
     v101 = @"timestamp";
     v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v101 count:1];
@@ -458,7 +458,7 @@ LABEL_11:
     v81 = __Block_byref_object_copy__2;
     v82 = __Block_byref_object_dispose__2;
     v83 = 0;
-    v51 = [objc_opt_class() databaseQueue];
+    databaseQueue = [objc_opt_class() databaseQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__PPSSQLiteTimeSeriesIngester_parseDataForRequest_outError___block_invoke;
@@ -469,17 +469,17 @@ LABEL_11:
     v70 = v52;
     v71 = obj;
     v76 = &v94;
-    v72 = v65;
-    v73 = v64;
+    v72 = subsystem;
+    v73 = category;
     v77 = &v84;
     v74 = v23;
-    dispatch_sync(v51, block);
+    dispatch_sync(databaseQueue, block);
 
     v53 = v79[5];
     if (v53)
     {
       v43 = 0;
-      *a4 = v53;
+      *error = v53;
     }
 
     else
@@ -487,7 +487,7 @@ LABEL_11:
       v54 = v85[5];
       if (v54 && [(PPSSQLiteTimeSeriesIngester *)self shouldUseCache])
       {
-        [(PPSSQLiteTimeSeriesIngester *)self setResponse:v54 forKey:v42 timeWindow:v61];
+        [(PPSSQLiteTimeSeriesIngester *)self setResponse:v54 forKey:v42 timeWindow:timeFilter];
       }
 
       v55 = +[PPSPerformanceProfiler sharedInstance];
@@ -570,15 +570,15 @@ LABEL_6:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_validBaseMetricFromDefinitions:(id)a3
+- (id)_validBaseMetricFromDefinitions:(id)definitions
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  definitionsCopy = definitions;
+  v4 = [definitionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -588,22 +588,22 @@ LABEL_6:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(definitionsCopy);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v3 objectForKeyedSubscript:{v7, v13}];
-        v9 = [MEMORY[0x277CBEB68] null];
-        v10 = [v8 isEqual:v9];
+        v8 = [definitionsCopy objectForKeyedSubscript:{v7, v13}];
+        null = [MEMORY[0x277CBEB68] null];
+        v10 = [v8 isEqual:null];
 
         if (!v10)
         {
-          v4 = [v3 objectForKeyedSubscript:v7];
+          v4 = [definitionsCopy objectForKeyedSubscript:v7];
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [definitionsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -620,22 +620,22 @@ LABEL_11:
   return v4;
 }
 
-- (id)_convertSQLiteDataFromQuery:(id)a3 withMetricDefinitions:(id)a4 error:(id *)a5
+- (id)_convertSQLiteDataFromQuery:(id)query withMetricDefinitions:(id)definitions error:(id *)error
 {
   v76 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v40 = v7;
-  if (v7)
+  queryCopy = query;
+  definitionsCopy = definitions;
+  v40 = queryCopy;
+  if (queryCopy)
   {
-    v38 = a5;
+    errorCopy = error;
     v43 = objc_opt_new();
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v37 = v8;
-    obj = v8;
+    v37 = definitionsCopy;
+    obj = definitionsCopy;
     v9 = [obj countByEnumeratingWithState:&v71 objects:v75 count:16];
     if (v9)
     {
@@ -729,8 +729,8 @@ LABEL_11:
     v57[2] = 0x3032000000;
     v57[3] = __Block_byref_object_copy__2;
     v57[4] = __Block_byref_object_dispose__2;
-    v21 = [(PPSSQLiteTimeSeriesIngester *)self filepath];
-    v58 = [PPSTimestampConverterRegistry converterForFilepath:v21];
+    filepath = [(PPSSQLiteTimeSeriesIngester *)self filepath];
+    v58 = [PPSTimestampConverterRegistry converterForFilepath:filepath];
 
     v56[0] = 0;
     v56[1] = v56;
@@ -746,18 +746,18 @@ LABEL_11:
     v23 = obj;
     v47 = v23;
     v48 = v40;
-    v49 = self;
+    selfCopy = self;
     v51 = &v65;
     v52 = v56;
     v53 = &v59;
     v54 = v41 & 1;
     v55 = BYTE4(v41) & 1;
-    [v48 enumerateProperties:v43 error:v38 enumerationHandler:v45];
+    [v48 enumerateProperties:v43 error:errorCopy enumerationHandler:v45];
     v24 = v66[5];
     if (v24)
     {
-      v25 = [MEMORY[0x277CBEB68] null];
-      v26 = [v24 isEqual:v25];
+      null = [MEMORY[0x277CBEB68] null];
+      v26 = [v24 isEqual:null];
 
       if ((v26 & 1) == 0)
       {
@@ -786,7 +786,7 @@ LABEL_11:
       }
     }
 
-    v7 = v60[5];
+    queryCopy = v60[5];
 
     _Block_object_dispose(v56, 8);
     _Block_object_dispose(v57, 8);
@@ -794,12 +794,12 @@ LABEL_11:
     _Block_object_dispose(&v59, 8);
     _Block_object_dispose(&v65, 8);
 
-    v8 = v37;
+    definitionsCopy = v37;
   }
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return queryCopy;
 }
 
 uint64_t __87__PPSSQLiteTimeSeriesIngester__convertSQLiteDataFromQuery_withMetricDefinitions_error___block_invoke(uint64_t a1, void *a2, PPSSQLiteRow *a3)
@@ -1075,15 +1075,15 @@ id __87__PPSSQLiteTimeSeriesIngester__convertSQLiteDataFromQuery_withMetricDefin
   return v6;
 }
 
-+ (unint64_t)_hashForStringArray:(id)a3
++ (unint64_t)_hashForStringArray:(id)array
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  arrayCopy = array;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1095,13 +1095,13 @@ id __87__PPSSQLiteTimeSeriesIngester__convertSQLiteDataFromQuery_withMetricDefin
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v6 ^= (v6 << 6) + (v6 >> 2) + 2654435769u + [*(*(&v11 + 1) + 8 * i) hash];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1116,38 +1116,38 @@ id __87__PPSSQLiteTimeSeriesIngester__convertSQLiteDataFromQuery_withMetricDefin
   return v6;
 }
 
-+ (id)_stringForSourceNames:(id)a3 metrics:(id)a4 predicate:(id)a5
++ (id)_stringForSourceNames:(id)names metrics:(id)metrics predicate:(id)predicate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() _hashForStringArray:v8];
+  predicateCopy = predicate;
+  metricsCopy = metrics;
+  namesCopy = names;
+  v10 = [objc_opt_class() _hashForStringArray:metricsCopy];
 
-  v11 = [v7 hash];
+  v11 = [predicateCopy hash];
   v12 = (v11 + (v10 << 6) + (v10 >> 2) + 2654435769u) ^ v10;
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v9 componentsJoinedByString:{@", "}];
+  v14 = [namesCopy componentsJoinedByString:{@", "}];
 
   v15 = [v13 stringWithFormat:@"%@::%lu", v14, v12];
 
   return v15;
 }
 
-+ (id)filterTimeSeries:(id)a3 withPredicate:(id)a4
++ (id)filterTimeSeries:(id)series withPredicate:(id)predicate
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
-  if (!v21)
+  seriesCopy = series;
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
-    v6 = v5;
+    v6 = seriesCopy;
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 filteredTimeSeriesUsingPredicate:v21];
+    v6 = [seriesCopy filteredTimeSeriesUsingPredicate:predicateCopy];
 LABEL_5:
     v7 = v6;
     goto LABEL_6;
@@ -1156,13 +1156,13 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(seriesCopy, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v20 = v5;
-    v10 = v5;
+    v20 = seriesCopy;
+    v10 = seriesCopy;
     v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v11)
     {
@@ -1181,7 +1181,7 @@ LABEL_5:
           v16 = objc_autoreleasePoolPush();
           v17 = objc_opt_class();
           v18 = [v10 objectForKeyedSubscript:v15];
-          v19 = [v17 filterTimeSeries:v18 withPredicate:v21];
+          v19 = [v17 filterTimeSeries:v18 withPredicate:predicateCopy];
 
           [v7 setObject:v19 forKeyedSubscript:v15];
           objc_autoreleasePoolPop(v16);
@@ -1193,7 +1193,7 @@ LABEL_5:
       while (v12);
     }
 
-    v5 = v20;
+    seriesCopy = v20;
   }
 
   else

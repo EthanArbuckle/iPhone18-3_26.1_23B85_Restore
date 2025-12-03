@@ -1,247 +1,247 @@
 @interface BMMessagesContentEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMMessagesContentEvent)initWithCoder:(id)a3;
-- (BMMessagesContentEvent)initWithProto:(id)a3;
-- (BMMessagesContentEvent)initWithProtoData:(id)a3;
-- (BMMessagesContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 conversationId:(id)a7 fromHandle:(id)a8 toHandles:(id)a9 suggestedNickname:(id)a10 suggestedPhotoPath:(id)a11 content:(id)a12 accountIdentifier:(id)a13 accountHandles:(id)a14 accountType:(id)a15 attachment:(id)a16 URL:(id)a17 contentProtection:(id)a18 isNew:(id)a19 isTwoFactorCode:(id)a20 isFromMe:(id)a21 isGroupThread:(id)a22 isJunk:(id)a23 isRead:(id)a24 isPinned:(id)a25 isBusinessChat:(id)a26 tapbackAssociatedMessageID:(id)a27 tapbackType:(id)a28 messageType:(id)a29 messagesService:(id)a30 messageEffect:(id)a31 isKnownSender:(id)a32 conversationUUID:(id)a33;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMMessagesContentEvent)initWithCoder:(id)coder;
+- (BMMessagesContentEvent)initWithProto:(id)proto;
+- (BMMessagesContentEvent)initWithProtoData:(id)data;
+- (BMMessagesContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp conversationId:(id)conversationId fromHandle:(id)handle toHandles:(id)handles suggestedNickname:(id)self0 suggestedPhotoPath:(id)self1 content:(id)self2 accountIdentifier:(id)self3 accountHandles:(id)self4 accountType:(id)self5 attachment:(id)self6 URL:(id)self7 contentProtection:(id)self8 isNew:(id)self9 isTwoFactorCode:(id)code isFromMe:(id)me isGroupThread:(id)thread isJunk:(id)junk isRead:(id)read isPinned:(id)pinned isBusinessChat:(id)chat tapbackAssociatedMessageID:(id)d tapbackType:(id)tapbackType messageType:(id)messageType messagesService:(id)id0 messageEffect:(id)id1 isKnownSender:(id)id2 conversationUUID:(id)id3;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMMessagesContentEvent
 
 - (id)encodeAsProto
 {
-  v2 = [(BMMessagesContentEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMMessagesContentEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMMessagesContentEvent *)self uniqueId];
-  [v3 setUniqueId:v4];
+  uniqueId = [(BMMessagesContentEvent *)self uniqueId];
+  [v3 setUniqueId:uniqueId];
 
-  v5 = [(BMMessagesContentEvent *)self domainId];
-  [v3 setDomainId:v5];
+  domainId = [(BMMessagesContentEvent *)self domainId];
+  [v3 setDomainId:domainId];
 
-  v6 = [(BMMessagesContentEvent *)self personaId];
-  [v3 setPersonaId:v6];
+  personaId = [(BMMessagesContentEvent *)self personaId];
+  [v3 setPersonaId:personaId];
 
   [(BMMessagesContentEvent *)self absoluteTimestamp];
   [v3 setAbsoluteTimestamp:?];
-  v7 = [(BMMessagesContentEvent *)self conversationId];
-  [v3 setConversationId:v7];
+  conversationId = [(BMMessagesContentEvent *)self conversationId];
+  [v3 setConversationId:conversationId];
 
-  v8 = [(BMMessagesContentEvent *)self fromHandle];
-  v9 = [v8 proto];
-  [v3 setFromHandle:v9];
+  fromHandle = [(BMMessagesContentEvent *)self fromHandle];
+  proto = [fromHandle proto];
+  [v3 setFromHandle:proto];
 
-  v10 = [(BMMessagesContentEvent *)self toHandles];
-  v11 = [v10 _pas_mappedArrayWithTransform:&__block_literal_global_39];
+  toHandles = [(BMMessagesContentEvent *)self toHandles];
+  v11 = [toHandles _pas_mappedArrayWithTransform:&__block_literal_global_39];
   v12 = [v11 mutableCopy];
   [v3 setToHandles:v12];
 
-  v13 = [(BMMessagesContentEvent *)self suggestedNickname];
-  [v3 setSuggestedNickname:v13];
+  suggestedNickname = [(BMMessagesContentEvent *)self suggestedNickname];
+  [v3 setSuggestedNickname:suggestedNickname];
 
-  v14 = [(BMMessagesContentEvent *)self suggestedPhotoPath];
-  [v3 setSuggestedPhotoPath:v14];
+  suggestedPhotoPath = [(BMMessagesContentEvent *)self suggestedPhotoPath];
+  [v3 setSuggestedPhotoPath:suggestedPhotoPath];
 
-  v15 = [(BMMessagesContentEvent *)self content];
-  [v3 setContent:v15];
+  content = [(BMMessagesContentEvent *)self content];
+  [v3 setContent:content];
 
-  v16 = [(BMMessagesContentEvent *)self accountIdentifier];
-  [v3 setAccountIdentifier:v16];
+  accountIdentifier = [(BMMessagesContentEvent *)self accountIdentifier];
+  [v3 setAccountIdentifier:accountIdentifier];
 
-  v17 = [(BMMessagesContentEvent *)self accountType];
-  [v3 setAccountType:v17];
+  accountType = [(BMMessagesContentEvent *)self accountType];
+  [v3 setAccountType:accountType];
 
-  v18 = [(BMMessagesContentEvent *)self accountHandles];
-  v19 = [v18 mutableCopy];
+  accountHandles = [(BMMessagesContentEvent *)self accountHandles];
+  v19 = [accountHandles mutableCopy];
   [v3 setAccountHandles:v19];
 
-  v20 = [(BMMessagesContentEvent *)self attachment];
-  v21 = [v20 proto];
-  [v3 setAttachment:v21];
+  attachment = [(BMMessagesContentEvent *)self attachment];
+  proto2 = [attachment proto];
+  [v3 setAttachment:proto2];
 
   v22 = [(BMMessagesContentEvent *)self URL];
-  v23 = [v22 absoluteString];
-  [v3 setUrl:v23];
+  absoluteString = [v22 absoluteString];
+  [v3 setUrl:absoluteString];
 
-  v24 = [(BMMessagesContentEvent *)self contentProtection];
-  [v3 setContentProtection:v24];
+  contentProtection = [(BMMessagesContentEvent *)self contentProtection];
+  [v3 setContentProtection:contentProtection];
 
-  v25 = [(BMMessagesContentEvent *)self isNew];
+  isNew = [(BMMessagesContentEvent *)self isNew];
 
-  if (v25)
+  if (isNew)
   {
-    v26 = [(BMMessagesContentEvent *)self isNew];
-    [v3 setIsNew:{objc_msgSend(v26, "BOOLValue")}];
+    isNew2 = [(BMMessagesContentEvent *)self isNew];
+    [v3 setIsNew:{objc_msgSend(isNew2, "BOOLValue")}];
   }
 
-  v27 = [(BMMessagesContentEvent *)self isTwoFactorCode];
+  isTwoFactorCode = [(BMMessagesContentEvent *)self isTwoFactorCode];
 
-  if (v27)
+  if (isTwoFactorCode)
   {
-    v28 = [(BMMessagesContentEvent *)self isTwoFactorCode];
-    [v3 setIsTwoFactorCode:{objc_msgSend(v28, "BOOLValue")}];
+    isTwoFactorCode2 = [(BMMessagesContentEvent *)self isTwoFactorCode];
+    [v3 setIsTwoFactorCode:{objc_msgSend(isTwoFactorCode2, "BOOLValue")}];
   }
 
-  v29 = [(BMMessagesContentEvent *)self isFromMe];
+  isFromMe = [(BMMessagesContentEvent *)self isFromMe];
 
-  if (v29)
+  if (isFromMe)
   {
-    v30 = [(BMMessagesContentEvent *)self isFromMe];
-    [v3 setIsFromMe:{objc_msgSend(v30, "BOOLValue")}];
+    isFromMe2 = [(BMMessagesContentEvent *)self isFromMe];
+    [v3 setIsFromMe:{objc_msgSend(isFromMe2, "BOOLValue")}];
   }
 
-  v31 = [(BMMessagesContentEvent *)self isGroupThread];
+  isGroupThread = [(BMMessagesContentEvent *)self isGroupThread];
 
-  if (v31)
+  if (isGroupThread)
   {
-    v32 = [(BMMessagesContentEvent *)self isGroupThread];
-    [v3 setIsGroupThread:{objc_msgSend(v32, "BOOLValue")}];
+    isGroupThread2 = [(BMMessagesContentEvent *)self isGroupThread];
+    [v3 setIsGroupThread:{objc_msgSend(isGroupThread2, "BOOLValue")}];
   }
 
-  v33 = [(BMMessagesContentEvent *)self isJunk];
+  isJunk = [(BMMessagesContentEvent *)self isJunk];
 
-  if (v33)
+  if (isJunk)
   {
-    v34 = [(BMMessagesContentEvent *)self isJunk];
-    [v3 setIsJunk:{objc_msgSend(v34, "BOOLValue")}];
+    isJunk2 = [(BMMessagesContentEvent *)self isJunk];
+    [v3 setIsJunk:{objc_msgSend(isJunk2, "BOOLValue")}];
   }
 
-  v35 = [(BMMessagesContentEvent *)self isRead];
+  isRead = [(BMMessagesContentEvent *)self isRead];
 
-  if (v35)
+  if (isRead)
   {
-    v36 = [(BMMessagesContentEvent *)self isRead];
-    [v3 setIsRead:{objc_msgSend(v36, "BOOLValue")}];
+    isRead2 = [(BMMessagesContentEvent *)self isRead];
+    [v3 setIsRead:{objc_msgSend(isRead2, "BOOLValue")}];
   }
 
-  v37 = [(BMMessagesContentEvent *)self isPinned];
+  isPinned = [(BMMessagesContentEvent *)self isPinned];
 
-  if (v37)
+  if (isPinned)
   {
-    v38 = [(BMMessagesContentEvent *)self isPinned];
-    [v3 setIsPinned:{objc_msgSend(v38, "BOOLValue")}];
+    isPinned2 = [(BMMessagesContentEvent *)self isPinned];
+    [v3 setIsPinned:{objc_msgSend(isPinned2, "BOOLValue")}];
   }
 
-  v39 = [(BMMessagesContentEvent *)self isBusinessChat];
+  isBusinessChat = [(BMMessagesContentEvent *)self isBusinessChat];
 
-  if (v39)
+  if (isBusinessChat)
   {
-    v40 = [(BMMessagesContentEvent *)self isBusinessChat];
-    [v3 setIsBusinessChat:{objc_msgSend(v40, "BOOLValue")}];
+    isBusinessChat2 = [(BMMessagesContentEvent *)self isBusinessChat];
+    [v3 setIsBusinessChat:{objc_msgSend(isBusinessChat2, "BOOLValue")}];
   }
 
-  v41 = [(BMMessagesContentEvent *)self tapbackAssociatedMessageID];
+  tapbackAssociatedMessageID = [(BMMessagesContentEvent *)self tapbackAssociatedMessageID];
 
-  if (v41)
+  if (tapbackAssociatedMessageID)
   {
-    v42 = [(BMMessagesContentEvent *)self tapbackAssociatedMessageID];
-    [v3 setTapbackAssociatedMessageID:v42];
+    tapbackAssociatedMessageID2 = [(BMMessagesContentEvent *)self tapbackAssociatedMessageID];
+    [v3 setTapbackAssociatedMessageID:tapbackAssociatedMessageID2];
   }
 
-  v43 = [(BMMessagesContentEvent *)self tapbackType];
+  tapbackType = [(BMMessagesContentEvent *)self tapbackType];
 
-  if (v43)
+  if (tapbackType)
   {
-    v44 = [(BMMessagesContentEvent *)self tapbackType];
-    [v3 setTapbackType:{objc_msgSend(v44, "integerValue")}];
+    tapbackType2 = [(BMMessagesContentEvent *)self tapbackType];
+    [v3 setTapbackType:{objc_msgSend(tapbackType2, "integerValue")}];
   }
 
-  v45 = [(BMMessagesContentEvent *)self messageType];
+  messageType = [(BMMessagesContentEvent *)self messageType];
 
-  if (v45)
+  if (messageType)
   {
-    v46 = [(BMMessagesContentEvent *)self messageType];
-    [v3 setMessageType:v46];
+    messageType2 = [(BMMessagesContentEvent *)self messageType];
+    [v3 setMessageType:messageType2];
   }
 
-  v47 = [(BMMessagesContentEvent *)self messagesService];
+  messagesService = [(BMMessagesContentEvent *)self messagesService];
 
-  if (v47)
+  if (messagesService)
   {
-    v48 = [(BMMessagesContentEvent *)self messagesService];
-    [v3 setMessagesService:v48];
+    messagesService2 = [(BMMessagesContentEvent *)self messagesService];
+    [v3 setMessagesService:messagesService2];
   }
 
-  v49 = [(BMMessagesContentEvent *)self messageEffect];
+  messageEffect = [(BMMessagesContentEvent *)self messageEffect];
 
-  if (v49)
+  if (messageEffect)
   {
-    v50 = [(BMMessagesContentEvent *)self messageEffect];
-    [v3 setMessageEffect:{objc_msgSend(v50, "intValue")}];
+    messageEffect2 = [(BMMessagesContentEvent *)self messageEffect];
+    [v3 setMessageEffect:{objc_msgSend(messageEffect2, "intValue")}];
   }
 
-  v51 = [(BMMessagesContentEvent *)self isKnownSender];
+  isKnownSender = [(BMMessagesContentEvent *)self isKnownSender];
 
-  if (v51)
+  if (isKnownSender)
   {
-    v52 = [(BMMessagesContentEvent *)self isKnownSender];
-    [v3 setIsKnownSender:{objc_msgSend(v52, "BOOLValue")}];
+    isKnownSender2 = [(BMMessagesContentEvent *)self isKnownSender];
+    [v3 setIsKnownSender:{objc_msgSend(isKnownSender2, "BOOLValue")}];
   }
 
-  v53 = [(BMMessagesContentEvent *)self conversationUUID];
+  conversationUUID = [(BMMessagesContentEvent *)self conversationUUID];
 
-  if (v53)
+  if (conversationUUID)
   {
-    v54 = [(BMMessagesContentEvent *)self conversationUUID];
-    [v3 setConversationUUID:v54];
+    conversationUUID2 = [(BMMessagesContentEvent *)self conversationUUID];
+    [v3 setConversationUUID:conversationUUID2];
   }
 
   return v3;
 }
 
-- (BMMessagesContentEvent)initWithUniqueId:(id)a3 domainId:(id)a4 personaId:(id)a5 absoluteTimestamp:(double)a6 conversationId:(id)a7 fromHandle:(id)a8 toHandles:(id)a9 suggestedNickname:(id)a10 suggestedPhotoPath:(id)a11 content:(id)a12 accountIdentifier:(id)a13 accountHandles:(id)a14 accountType:(id)a15 attachment:(id)a16 URL:(id)a17 contentProtection:(id)a18 isNew:(id)a19 isTwoFactorCode:(id)a20 isFromMe:(id)a21 isGroupThread:(id)a22 isJunk:(id)a23 isRead:(id)a24 isPinned:(id)a25 isBusinessChat:(id)a26 tapbackAssociatedMessageID:(id)a27 tapbackType:(id)a28 messageType:(id)a29 messagesService:(id)a30 messageEffect:(id)a31 isKnownSender:(id)a32 conversationUUID:(id)a33
+- (BMMessagesContentEvent)initWithUniqueId:(id)id domainId:(id)domainId personaId:(id)personaId absoluteTimestamp:(double)timestamp conversationId:(id)conversationId fromHandle:(id)handle toHandles:(id)handles suggestedNickname:(id)self0 suggestedPhotoPath:(id)self1 content:(id)self2 accountIdentifier:(id)self3 accountHandles:(id)self4 accountType:(id)self5 attachment:(id)self6 URL:(id)self7 contentProtection:(id)self8 isNew:(id)self9 isTwoFactorCode:(id)code isFromMe:(id)me isGroupThread:(id)thread isJunk:(id)junk isRead:(id)read isPinned:(id)pinned isBusinessChat:(id)chat tapbackAssociatedMessageID:(id)d tapbackType:(id)tapbackType messageType:(id)messageType messagesService:(id)id0 messageEffect:(id)id1 isKnownSender:(id)id2 conversationUUID:(id)id3
 {
-  v77 = a3;
-  v48 = a4;
-  v73 = a4;
-  v49 = a5;
-  v72 = a5;
-  v50 = a7;
-  v38 = a7;
-  v51 = a8;
-  v76 = a8;
-  v71 = a9;
-  v70 = a10;
-  v69 = a11;
-  v75 = a12;
-  v68 = a13;
-  v67 = a14;
-  v66 = a15;
-  v65 = a16;
-  v64 = a17;
-  v63 = a18;
-  v62 = a19;
-  v61 = a20;
-  v60 = a21;
-  v39 = a22;
-  v59 = a23;
-  v40 = a24;
-  v41 = a25;
-  v53 = a26;
-  v42 = a27;
-  v43 = a28;
-  v58 = a29;
-  v57 = a30;
-  v56 = a31;
-  v55 = a32;
-  v54 = a33;
-  if (v77)
+  idCopy = id;
+  domainIdCopy = domainId;
+  domainIdCopy2 = domainId;
+  personaIdCopy = personaId;
+  personaIdCopy2 = personaId;
+  conversationIdCopy = conversationId;
+  conversationIdCopy2 = conversationId;
+  handleCopy = handle;
+  handleCopy2 = handle;
+  handlesCopy = handles;
+  nicknameCopy = nickname;
+  pathCopy = path;
+  contentCopy = content;
+  identifierCopy = identifier;
+  accountHandlesCopy = accountHandles;
+  typeCopy = type;
+  attachmentCopy = attachment;
+  lCopy = l;
+  protectionCopy = protection;
+  newCopy = new;
+  codeCopy = code;
+  meCopy = me;
+  threadCopy = thread;
+  junkCopy = junk;
+  readCopy = read;
+  pinnedCopy = pinned;
+  chatCopy = chat;
+  dCopy = d;
+  tapbackTypeCopy = tapbackType;
+  messageTypeCopy = messageType;
+  serviceCopy = service;
+  effectCopy = effect;
+  senderCopy = sender;
+  iDCopy = iD;
+  if (idCopy)
   {
-    if (v38)
+    if (conversationIdCopy2)
     {
       goto LABEL_3;
     }
@@ -250,7 +250,7 @@
   else
   {
     [BMMessagesContentEvent initWithUniqueId:domainId:personaId:absoluteTimestamp:conversationId:fromHandle:toHandles:suggestedNickname:suggestedPhotoPath:content:accountIdentifier:accountHandles:accountType:attachment:URL:contentProtection:isNew:isTwoFactorCode:isFromMe:isGroupThread:isJunk:isRead:isPinned:isBusinessChat:tapbackAssociatedMessageID:tapbackType:messageType:messagesService:messageEffect:isKnownSender:conversationUUID:];
-    if (v38)
+    if (conversationIdCopy2)
     {
       goto LABEL_3;
     }
@@ -258,12 +258,12 @@
 
   [BMMessagesContentEvent initWithUniqueId:domainId:personaId:absoluteTimestamp:conversationId:fromHandle:toHandles:suggestedNickname:suggestedPhotoPath:content:accountIdentifier:accountHandles:accountType:attachment:URL:contentProtection:isNew:isTwoFactorCode:isFromMe:isGroupThread:isJunk:isRead:isPinned:isBusinessChat:tapbackAssociatedMessageID:tapbackType:messageType:messagesService:messageEffect:isKnownSender:conversationUUID:];
 LABEL_3:
-  if (!v76)
+  if (!handleCopy2)
   {
     [BMMessagesContentEvent initWithUniqueId:domainId:personaId:absoluteTimestamp:conversationId:fromHandle:toHandles:suggestedNickname:suggestedPhotoPath:content:accountIdentifier:accountHandles:accountType:attachment:URL:contentProtection:isNew:isTwoFactorCode:isFromMe:isGroupThread:isJunk:isRead:isPinned:isBusinessChat:tapbackAssociatedMessageID:tapbackType:messageType:messagesService:messageEffect:isKnownSender:conversationUUID:];
   }
 
-  if (!v75)
+  if (!contentCopy)
   {
     [BMMessagesContentEvent initWithUniqueId:domainId:personaId:absoluteTimestamp:conversationId:fromHandle:toHandles:suggestedNickname:suggestedPhotoPath:content:accountIdentifier:accountHandles:accountType:attachment:URL:contentProtection:isNew:isTwoFactorCode:isFromMe:isGroupThread:isJunk:isRead:isPinned:isBusinessChat:tapbackAssociatedMessageID:tapbackType:messageType:messagesService:messageEffect:isKnownSender:conversationUUID:];
   }
@@ -274,48 +274,48 @@ LABEL_3:
   v45 = v44;
   if (v44)
   {
-    objc_storeStrong(&v44->_uniqueId, a3);
-    objc_storeStrong(&v45->_domainId, v48);
-    objc_storeStrong(&v45->_personaId, v49);
-    v45->_absoluteTimestamp = a6;
-    objc_storeStrong(&v45->_conversationId, v50);
-    objc_storeStrong(&v45->_fromHandle, v51);
-    objc_storeStrong(&v45->_toHandles, a9);
-    objc_storeStrong(&v45->_suggestedNickname, a10);
-    objc_storeStrong(&v45->_suggestedPhotoPath, a11);
-    objc_storeStrong(&v45->_content, a12);
-    objc_storeStrong(&v45->_accountIdentifier, a13);
-    objc_storeStrong(&v45->_accountHandles, a14);
-    objc_storeStrong(&v45->_accountType, a15);
-    objc_storeStrong(&v45->_attachment, a16);
-    objc_storeStrong(&v45->_URL, a17);
-    objc_storeStrong(&v45->_contentProtection, a18);
-    objc_storeStrong(&v45->_isNew, a19);
-    objc_storeStrong(&v45->_isTwoFactorCode, a20);
-    objc_storeStrong(&v45->_isFromMe, a21);
-    objc_storeStrong(&v45->_isGroupThread, a22);
-    objc_storeStrong(&v45->_isJunk, a23);
-    objc_storeStrong(&v45->_isRead, a24);
-    objc_storeStrong(&v45->_isPinned, a25);
-    objc_storeStrong(&v45->_isBusinessChat, a26);
-    objc_storeStrong(&v45->_tapbackAssociatedMessageID, a27);
-    objc_storeStrong(&v45->_tapbackType, a28);
-    objc_storeStrong(&v45->_messageType, a29);
-    objc_storeStrong(&v45->_messagesService, a30);
-    objc_storeStrong(&v45->_messageEffect, a31);
-    objc_storeStrong(&v45->_isKnownSender, a32);
-    objc_storeStrong(&v45->_conversationUUID, a33);
+    objc_storeStrong(&v44->_uniqueId, id);
+    objc_storeStrong(&v45->_domainId, domainIdCopy);
+    objc_storeStrong(&v45->_personaId, personaIdCopy);
+    v45->_absoluteTimestamp = timestamp;
+    objc_storeStrong(&v45->_conversationId, conversationIdCopy);
+    objc_storeStrong(&v45->_fromHandle, handleCopy);
+    objc_storeStrong(&v45->_toHandles, handles);
+    objc_storeStrong(&v45->_suggestedNickname, nickname);
+    objc_storeStrong(&v45->_suggestedPhotoPath, path);
+    objc_storeStrong(&v45->_content, content);
+    objc_storeStrong(&v45->_accountIdentifier, identifier);
+    objc_storeStrong(&v45->_accountHandles, accountHandles);
+    objc_storeStrong(&v45->_accountType, type);
+    objc_storeStrong(&v45->_attachment, attachment);
+    objc_storeStrong(&v45->_URL, l);
+    objc_storeStrong(&v45->_contentProtection, protection);
+    objc_storeStrong(&v45->_isNew, new);
+    objc_storeStrong(&v45->_isTwoFactorCode, code);
+    objc_storeStrong(&v45->_isFromMe, me);
+    objc_storeStrong(&v45->_isGroupThread, thread);
+    objc_storeStrong(&v45->_isJunk, junk);
+    objc_storeStrong(&v45->_isRead, read);
+    objc_storeStrong(&v45->_isPinned, pinned);
+    objc_storeStrong(&v45->_isBusinessChat, chat);
+    objc_storeStrong(&v45->_tapbackAssociatedMessageID, d);
+    objc_storeStrong(&v45->_tapbackType, tapbackType);
+    objc_storeStrong(&v45->_messageType, messageType);
+    objc_storeStrong(&v45->_messagesService, service);
+    objc_storeStrong(&v45->_messageEffect, effect);
+    objc_storeStrong(&v45->_isKnownSender, sender);
+    objc_storeStrong(&v45->_conversationUUID, iD);
   }
 
   return v45;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -323,7 +323,7 @@ LABEL_3:
     v8 = __biome_log_for_category();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [BMMessagesContentEvent eventWithData:a4 dataVersion:v8];
+      [BMMessagesContentEvent eventWithData:version dataVersion:v8];
     }
 
     v7 = 0;
@@ -334,18 +334,18 @@ LABEL_3:
 
 - (id)jsonDict
 {
-  v2 = [(BMMessagesContentEvent *)self proto];
-  v3 = [v2 dictionaryRepresentation];
+  proto = [(BMMessagesContentEvent *)self proto];
+  dictionaryRepresentation = [proto dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMMessagesContentEvent *)self jsonDict];
+  jsonDict = [(BMMessagesContentEvent *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -360,63 +360,63 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMMessagesContentEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMMessagesContentEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMMessagesContentEvent)initWithCoder:(id)a3
+- (BMMessagesContentEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMMessagesContentEvent *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BMMessagesContentEvent)initWithProto:(id)a3
+- (BMMessagesContentEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasUniqueId]&& [v5 hasAbsoluteTimestamp]&& [v5 hasConversationId]&& [v5 hasFromHandle]&& ([v5 hasContent]& 1) != 0)
       {
-        v59 = [v5 uniqueId];
-        v58 = [v5 domainId];
-        v57 = [v5 personaId];
+        uniqueId = [v5 uniqueId];
+        domainId = [v5 domainId];
+        personaId = [v5 personaId];
         [v5 absoluteTimestamp];
         v7 = v6;
-        v56 = [v5 conversationId];
+        conversationId = [v5 conversationId];
         v8 = [BMNamedHandle alloc];
-        v34 = [v5 fromHandle];
+        fromHandle = [v5 fromHandle];
         v55 = [(BMNamedHandle *)v8 initWithProto:?];
-        v33 = [v5 toHandles];
-        v54 = [v33 _pas_mappedArrayWithTransform:&__block_literal_global_3];
-        v53 = [v5 suggestedNickname];
-        v52 = [v5 suggestedPhotoPath];
-        v51 = [v5 content];
-        v50 = [v5 accountIdentifier];
-        v49 = [v5 accountHandles];
-        v48 = [v5 accountType];
+        toHandles = [v5 toHandles];
+        v54 = [toHandles _pas_mappedArrayWithTransform:&__block_literal_global_3];
+        suggestedNickname = [v5 suggestedNickname];
+        suggestedPhotoPath = [v5 suggestedPhotoPath];
+        content = [v5 content];
+        accountIdentifier = [v5 accountIdentifier];
+        accountHandles = [v5 accountHandles];
+        accountType = [v5 accountType];
         v9 = [BMContentAttachment alloc];
-        v32 = [v5 attachment];
+        attachment = [v5 attachment];
         v47 = [(BMContentAttachment *)v9 initWithProto:?];
         v31 = [v5 url];
         if (v31)
@@ -431,9 +431,9 @@ LABEL_3:
           v44 = 0;
         }
 
-        v46 = [v5 contentProtection];
-        v30 = [v5 hasIsNew];
-        if (v30)
+        contentProtection = [v5 contentProtection];
+        hasIsNew = [v5 hasIsNew];
+        if (hasIsNew)
         {
           v43 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isNew](v5, "isNew")}];
         }
@@ -443,8 +443,8 @@ LABEL_3:
           v43 = 0;
         }
 
-        v29 = [v5 hasIsTwoFactorCode];
-        if (v29)
+        hasIsTwoFactorCode = [v5 hasIsTwoFactorCode];
+        if (hasIsTwoFactorCode)
         {
           v42 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isTwoFactorCode](v5, "isTwoFactorCode")}];
         }
@@ -454,8 +454,8 @@ LABEL_3:
           v42 = 0;
         }
 
-        v28 = [v5 hasIsFromMe];
-        if (v28)
+        hasIsFromMe = [v5 hasIsFromMe];
+        if (hasIsFromMe)
         {
           v41 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isFromMe](v5, "isFromMe")}];
         }
@@ -465,8 +465,8 @@ LABEL_3:
           v41 = 0;
         }
 
-        v27 = [v5 hasIsGroupThread];
-        if (v27)
+        hasIsGroupThread = [v5 hasIsGroupThread];
+        if (hasIsGroupThread)
         {
           v40 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isGroupThread](v5, "isGroupThread")}];
         }
@@ -476,8 +476,8 @@ LABEL_3:
           v40 = 0;
         }
 
-        v26 = [v5 hasIsJunk];
-        if (v26)
+        hasIsJunk = [v5 hasIsJunk];
+        if (hasIsJunk)
         {
           v39 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isJunk](v5, "isJunk")}];
         }
@@ -487,8 +487,8 @@ LABEL_3:
           v39 = 0;
         }
 
-        v25 = [v5 hasIsRead];
-        if (v25)
+        hasIsRead = [v5 hasIsRead];
+        if (hasIsRead)
         {
           v38 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isRead](v5, "isRead")}];
         }
@@ -498,8 +498,8 @@ LABEL_3:
           v38 = 0;
         }
 
-        v24 = [v5 hasIsPinned];
-        if (v24)
+        hasIsPinned = [v5 hasIsPinned];
+        if (hasIsPinned)
         {
           v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isPinned](v5, "isPinned")}];
         }
@@ -509,8 +509,8 @@ LABEL_3:
           v37 = 0;
         }
 
-        v23 = [v5 hasIsBusinessChat];
-        if (v23)
+        hasIsBusinessChat = [v5 hasIsBusinessChat];
+        if (hasIsBusinessChat)
         {
           v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isBusinessChat](v5, "isBusinessChat")}];
         }
@@ -520,9 +520,9 @@ LABEL_3:
           v36 = 0;
         }
 
-        v45 = [v5 tapbackAssociatedMessageID];
-        v22 = [v5 hasTapbackType];
-        if (v22)
+        tapbackAssociatedMessageID = [v5 tapbackAssociatedMessageID];
+        hasTapbackType = [v5 hasTapbackType];
+        if (hasTapbackType)
         {
           v35 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[NSObject tapbackType](v5, "tapbackType")}];
         }
@@ -532,10 +532,10 @@ LABEL_3:
           v35 = 0;
         }
 
-        v14 = [v5 messageType];
-        v15 = [v5 messagesService];
-        v16 = [v5 hasMessageEffect];
-        if (v16)
+        messageType = [v5 messageType];
+        messagesService = [v5 messagesService];
+        hasMessageEffect = [v5 hasMessageEffect];
+        if (hasMessageEffect)
         {
           v17 = [MEMORY[0x1E696AD98] numberWithInt:{-[NSObject messageEffect](v5, "messageEffect")}];
         }
@@ -545,8 +545,8 @@ LABEL_3:
           v17 = 0;
         }
 
-        v18 = [v5 hasIsKnownSender];
-        if (v18)
+        hasIsKnownSender = [v5 hasIsKnownSender];
+        if (hasIsKnownSender)
         {
           v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[NSObject isKnownSender](v5, "isKnownSender")}];
         }
@@ -556,50 +556,50 @@ LABEL_3:
           v19 = 0;
         }
 
-        v20 = [v5 conversationUUID];
-        self = [(BMMessagesContentEvent *)self initWithUniqueId:v59 domainId:v58 personaId:v57 absoluteTimestamp:v56 conversationId:v55 fromHandle:v54 toHandles:v7 suggestedNickname:v53 suggestedPhotoPath:v52 content:v51 accountIdentifier:v50 accountHandles:v49 accountType:v48 attachment:v47 URL:v44 contentProtection:v46 isNew:v43 isTwoFactorCode:v42 isFromMe:v41 isGroupThread:v40 isJunk:v39 isRead:v38 isPinned:v37 isBusinessChat:v36 tapbackAssociatedMessageID:v45 tapbackType:v35 messageType:v14 messagesService:v15 messageEffect:v17 isKnownSender:v19 conversationUUID:v20];
+        conversationUUID = [v5 conversationUUID];
+        self = [(BMMessagesContentEvent *)self initWithUniqueId:uniqueId domainId:domainId personaId:personaId absoluteTimestamp:conversationId conversationId:v55 fromHandle:v54 toHandles:v7 suggestedNickname:suggestedNickname suggestedPhotoPath:suggestedPhotoPath content:content accountIdentifier:accountIdentifier accountHandles:accountHandles accountType:accountType attachment:v47 URL:v44 contentProtection:contentProtection isNew:v43 isTwoFactorCode:v42 isFromMe:v41 isGroupThread:v40 isJunk:v39 isRead:v38 isPinned:v37 isBusinessChat:v36 tapbackAssociatedMessageID:tapbackAssociatedMessageID tapbackType:v35 messageType:messageType messagesService:messagesService messageEffect:v17 isKnownSender:v19 conversationUUID:conversationUUID];
 
-        if (v18)
+        if (hasIsKnownSender)
         {
         }
 
-        if (v16)
+        if (hasMessageEffect)
         {
         }
 
-        if (v22)
+        if (hasTapbackType)
         {
         }
 
-        if (v23)
+        if (hasIsBusinessChat)
         {
         }
 
-        if (v24)
+        if (hasIsPinned)
         {
         }
 
-        if (v25)
+        if (hasIsRead)
         {
         }
 
-        if (v26)
+        if (hasIsJunk)
         {
         }
 
-        if (v27)
+        if (hasIsGroupThread)
         {
         }
 
-        if (v28)
+        if (hasIsFromMe)
         {
         }
 
-        if (v29)
+        if (hasIsTwoFactorCode)
         {
         }
 
-        if (v30)
+        if (hasIsNew)
         {
         }
 
@@ -607,7 +607,7 @@ LABEL_3:
         {
         }
 
-        v11 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -627,16 +627,16 @@ LABEL_3:
       }
     }
 
-    v11 = 0;
+    selfCopy = 0;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v11;
+  return selfCopy;
 }
 
 BMNamedHandle *__40__BMMessagesContentEvent_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -647,23 +647,23 @@ BMNamedHandle *__40__BMMessagesContentEvent_initWithProto___block_invoke(uint64_
   return v3;
 }
 
-- (BMMessagesContentEvent)initWithProtoData:(id)a3
+- (BMMessagesContentEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBMessagesContentEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBMessagesContentEvent alloc] initWithData:dataCopy];
 
     self = [(BMMessagesContentEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -676,17 +676,17 @@ BMNamedHandle *__40__BMMessagesContentEvent_initWithProto___block_invoke(uint64_
   return v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMessagesContentEvent *)self proto];
-    v7 = [v5 proto];
+    v5 = equalCopy;
+    proto = [(BMMessagesContentEvent *)self proto];
+    proto2 = [v5 proto];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [proto isEqual:proto2];
   }
 
   else
@@ -697,18 +697,18 @@ BMNamedHandle *__40__BMMessagesContentEvent_initWithProto___block_invoke(uint64_
   return v8;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if (self->_uniqueId && self->_conversationId && self->_fromHandle && self->_toHandles && self->_content)
   {
     v7 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else

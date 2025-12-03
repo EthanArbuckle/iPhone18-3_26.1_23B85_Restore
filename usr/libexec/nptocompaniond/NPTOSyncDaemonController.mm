@@ -1,12 +1,12 @@
 @interface NPTOSyncDaemonController
-- (NPTOSyncDaemonController)initWithDeviceControllerClass:(Class)a3;
+- (NPTOSyncDaemonController)initWithDeviceControllerClass:(Class)class;
 - (void)_registerNotifydServices;
 - (void)run;
 @end
 
 @implementation NPTOSyncDaemonController
 
-- (NPTOSyncDaemonController)initWithDeviceControllerClass:(Class)a3
+- (NPTOSyncDaemonController)initWithDeviceControllerClass:(Class)class
 {
   v11.receiver = self;
   v11.super_class = NPTOSyncDaemonController;
@@ -28,14 +28,14 @@
     [(NPTOSyncDaemonController *)v4 _registerNotifydServices];
     if ([(NPTOSyncDaemonController *)v4 _wantsProxyServiceController])
     {
-      v6 = [[NPTOSyncServiceController alloc] initWithService:@"com.apple.private.alloy.photos.proxy" relationship:1 requiresConnectedDevice:1 deviceControllerClass:a3];
+      v6 = [[NPTOSyncServiceController alloc] initWithService:@"com.apple.private.alloy.photos.proxy" relationship:1 requiresConnectedDevice:1 deviceControllerClass:class];
       proxyServiceController = v4->_proxyServiceController;
       v4->_proxyServiceController = v6;
     }
 
     if ([(NPTOSyncDaemonController *)v4 _wantsTinkerServiceController])
     {
-      v8 = [[NPTOSyncServiceController alloc] initWithService:@"com.apple.private.alloy.tinker.photos" relationship:2 requiresConnectedDevice:0 deviceControllerClass:a3];
+      v8 = [[NPTOSyncServiceController alloc] initWithService:@"com.apple.private.alloy.tinker.photos" relationship:2 requiresConnectedDevice:0 deviceControllerClass:class];
       tinkerServiceController = v4->_tinkerServiceController;
       v4->_tinkerServiceController = v8;
     }

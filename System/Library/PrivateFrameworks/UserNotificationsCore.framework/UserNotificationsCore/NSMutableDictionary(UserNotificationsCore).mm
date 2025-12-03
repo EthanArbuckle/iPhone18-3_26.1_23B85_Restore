@@ -16,12 +16,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count])
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 
   else
   {
-    [a1 removeObjectForKey:v6];
+    [self removeObjectForKey:v6];
   }
 }
 
@@ -32,12 +32,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count])
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 
   else
   {
-    [a1 removeObjectForKey:v6];
+    [self removeObjectForKey:v6];
   }
 }
 
@@ -48,12 +48,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 count])
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 
   else
   {
-    [a1 removeObjectForKey:v6];
+    [self removeObjectForKey:v6];
   }
 }
 
@@ -64,12 +64,12 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 length])
   {
-    [a1 setObject:v7 forKey:v6];
+    [self setObject:v7 forKey:v6];
   }
 
   else
   {
-    [a1 removeObjectForKey:v6];
+    [self removeObjectForKey:v6];
   }
 }
 
@@ -93,12 +93,12 @@
     }
 
     v11 = v10;
-    [a1 setObject:? forKey:?];
+    [self setObject:? forKey:?];
   }
 
   else
   {
-    [a1 removeObjectForKey:v8];
+    [self removeObjectForKey:v8];
   }
 }
 
@@ -106,12 +106,12 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKey:?];
+    return [self setObject:? forKey:?];
   }
 
   else
   {
-    return [a1 removeObjectForKey:a4];
+    return [self removeObjectForKey:a4];
   }
 }
 

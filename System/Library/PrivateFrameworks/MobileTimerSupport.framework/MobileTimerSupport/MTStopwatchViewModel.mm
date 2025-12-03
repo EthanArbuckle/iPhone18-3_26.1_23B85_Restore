@@ -1,8 +1,8 @@
 @interface MTStopwatchViewModel
 - (MTStopwatch)getStopwatch;
-- (double)runningTotalForLap:(int64_t)a3;
+- (double)runningTotalForLap:(int64_t)lap;
 - (id)sourceIdentifier;
-- (void)addLap:(double)a3;
+- (void)addLap:(double)lap;
 - (void)clearAllLaps;
 - (void)invalidateDisplayLink;
 - (void)lapLapTimer;
@@ -10,92 +10,92 @@
 - (void)resetLapTimer;
 - (void)resumeLapTimer;
 - (void)startLapTimer;
-- (void)updateStopwatch:(id)a3;
+- (void)updateStopwatch:(id)stopwatch;
 - (void)updateTime;
 - (void)updateWithDisplayLink;
 @end
 
 @implementation MTStopwatchViewModel
 
-- (void)updateStopwatch:(id)a3
+- (void)updateStopwatch:(id)stopwatch
 {
-  v4 = a3;
-  v5 = [(MTStopwatchViewModel *)self viewModel];
-  [v5 updateStopwatch:v4];
+  stopwatchCopy = stopwatch;
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel updateStopwatch:stopwatchCopy];
 }
 
 - (void)updateWithDisplayLink
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 updateWithDisplayLink];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel updateWithDisplayLink];
 }
 
 - (void)invalidateDisplayLink
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 invalidateDisplayLink];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel invalidateDisplayLink];
 }
 
-- (void)addLap:(double)a3
+- (void)addLap:(double)lap
 {
-  v4 = [(MTStopwatchViewModel *)self viewModel];
-  [v4 addLap:a3];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel addLap:lap];
 }
 
 - (void)clearAllLaps
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 clearAllLaps];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel clearAllLaps];
 }
 
 - (void)lapLapTimer
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 lapLapTimer];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel lapLapTimer];
 }
 
 - (void)pauseLapTimer
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 pauseLapTimer];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel pauseLapTimer];
 }
 
 - (void)resetLapTimer
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 resetLapTimer];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel resetLapTimer];
 }
 
 - (void)resumeLapTimer
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 resumeLapTimer];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel resumeLapTimer];
 }
 
 - (void)startLapTimer
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 startLapTimer];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel startLapTimer];
 }
 
 - (MTStopwatch)getStopwatch
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  v3 = [v2 getStopwatch];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  getStopwatch = [viewModel getStopwatch];
 
-  return v3;
+  return getStopwatch;
 }
 
 - (void)updateTime
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  [v2 updateTime];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel updateTime];
 }
 
-- (double)runningTotalForLap:(int64_t)a3
+- (double)runningTotalForLap:(int64_t)lap
 {
-  v4 = [(MTStopwatchViewModel *)self viewModel];
-  [v4 runningTotalForLap:a3];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  [viewModel runningTotalForLap:lap];
   v6 = v5;
 
   return v6;
@@ -103,10 +103,10 @@
 
 - (id)sourceIdentifier
 {
-  v2 = [(MTStopwatchViewModel *)self viewModel];
-  v3 = [v2 sourceIdentifier];
+  viewModel = [(MTStopwatchViewModel *)self viewModel];
+  sourceIdentifier = [viewModel sourceIdentifier];
 
-  return v3;
+  return sourceIdentifier;
 }
 
 @end

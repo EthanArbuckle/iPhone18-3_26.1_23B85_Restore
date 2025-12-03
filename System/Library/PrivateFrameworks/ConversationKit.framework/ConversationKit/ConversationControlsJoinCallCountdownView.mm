@@ -1,7 +1,7 @@
 @interface ConversationControlsJoinCallCountdownView
 - (CGRect)frame;
-- (void)initializeCountdownWithInitialValue:(double)a3 fullValue:(double)a4;
-- (void)setFrame:(CGRect)a3;
+- (void)initializeCountdownWithInitialValue:(double)value fullValue:(double)fullValue;
+- (void)setFrame:(CGRect)frame;
 - (void)startCountdown;
 @end
 
@@ -9,7 +9,7 @@
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsJoinCallCountdownView.frame.getter();
   v4 = v3;
   v6 = v5;
@@ -27,21 +27,21 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   ConversationControlsJoinCallCountdownView.frame.setter();
 }
 
-- (void)initializeCountdownWithInitialValue:(double)a3 fullValue:(double)a4
+- (void)initializeCountdownWithInitialValue:(double)value fullValue:(double)fullValue
 {
-  v6 = self;
-  ConversationControlsJoinCallCountdownView.initializeCountdown(with:fullValue:)(a3, a4);
+  selfCopy = self;
+  ConversationControlsJoinCallCountdownView.initializeCountdown(with:fullValue:)(value, fullValue);
 }
 
 - (void)startCountdown
 {
-  v2 = self;
+  selfCopy = self;
   ConversationControlsJoinCallCountdownView.startCountdown()();
 }
 

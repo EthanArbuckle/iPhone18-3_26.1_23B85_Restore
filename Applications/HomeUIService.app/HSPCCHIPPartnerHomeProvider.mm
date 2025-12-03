@@ -6,14 +6,14 @@
 
 - (id)loadData
 {
-  v3 = [(HSPCDataProvider *)self config];
-  v4 = [v3 matterDeviceSetupRequest];
+  config = [(HSPCDataProvider *)self config];
+  matterDeviceSetupRequest = [config matterDeviceSetupRequest];
 
-  if (v4)
+  if (matterDeviceSetupRequest)
   {
-    v5 = [v4 topology];
-    v6 = [v5 homes];
-    [(HSPCDataProvider *)self setItems:v6];
+    topology = [matterDeviceSetupRequest topology];
+    homes = [topology homes];
+    [(HSPCDataProvider *)self setItems:homes];
 
     [(HSPCDataProvider *)self setLoaded:1];
     v7 = +[NAFuture futureWithNoResult];

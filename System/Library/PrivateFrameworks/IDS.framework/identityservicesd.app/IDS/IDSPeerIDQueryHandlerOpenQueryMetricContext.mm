@@ -1,27 +1,27 @@
 @interface IDSPeerIDQueryHandlerOpenQueryMetricContext
-- (IDSPeerIDQueryHandlerOpenQueryMetricContext)initWithURISet:(id)a3 queryMetric:(id)a4 ktQueryStart:(id)a5 service:(id)a6 uniqueIdentifier:(id)a7;
+- (IDSPeerIDQueryHandlerOpenQueryMetricContext)initWithURISet:(id)set queryMetric:(id)metric ktQueryStart:(id)start service:(id)service uniqueIdentifier:(id)identifier;
 @end
 
 @implementation IDSPeerIDQueryHandlerOpenQueryMetricContext
 
-- (IDSPeerIDQueryHandlerOpenQueryMetricContext)initWithURISet:(id)a3 queryMetric:(id)a4 ktQueryStart:(id)a5 service:(id)a6 uniqueIdentifier:(id)a7
+- (IDSPeerIDQueryHandlerOpenQueryMetricContext)initWithURISet:(id)set queryMetric:(id)metric ktQueryStart:(id)start service:(id)service uniqueIdentifier:(id)identifier
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  setCopy = set;
+  metricCopy = metric;
+  startCopy = start;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v21.receiver = self;
   v21.super_class = IDSPeerIDQueryHandlerOpenQueryMetricContext;
   v17 = [(IDSPeerIDQueryHandlerOpenQueryMetricContext *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_urisWaitingForKTResponse, a3);
-    objc_storeStrong(&v18->_queryMetricToLog, a4);
-    objc_storeStrong(&v18->_ktQueryStart, a5);
-    objc_storeStrong(&v18->_service, a6);
-    objc_storeStrong(&v18->_uniqueIdentifier, a7);
+    objc_storeStrong(&v17->_urisWaitingForKTResponse, set);
+    objc_storeStrong(&v18->_queryMetricToLog, metric);
+    objc_storeStrong(&v18->_ktQueryStart, start);
+    objc_storeStrong(&v18->_service, service);
+    objc_storeStrong(&v18->_uniqueIdentifier, identifier);
   }
 
   return v18;

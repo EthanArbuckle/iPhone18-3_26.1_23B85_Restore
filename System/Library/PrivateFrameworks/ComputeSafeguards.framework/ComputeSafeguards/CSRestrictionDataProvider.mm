@@ -1,13 +1,13 @@
 @interface CSRestrictionDataProvider
-- (BOOL)_isAKnownScenario:(id)a3;
+- (BOOL)_isAKnownScenario:(id)scenario;
 - (CSRestrictionDataProvider)init;
 - (id)_buildScenariosMap;
-- (id)_processesPoliciesDictWithErrors:(id)a3;
-- (id)_processesSetWithErrors:(id)a3;
-- (id)_scenariosDictWithErrors:(id)a3;
-- (id)_templatesByScenarioForProcess:(id)a3 errors:(id)a4;
-- (id)configureRestrictionsFromTemplateDictionary:(id)a3 errors:(id)a4;
-- (void)_templatesByProcessWithErrors:(id)a3;
+- (id)_processesPoliciesDictWithErrors:(id)errors;
+- (id)_processesSetWithErrors:(id)errors;
+- (id)_scenariosDictWithErrors:(id)errors;
+- (id)_templatesByScenarioForProcess:(id)process errors:(id)errors;
+- (id)configureRestrictionsFromTemplateDictionary:(id)dictionary errors:(id)errors;
+- (void)_templatesByProcessWithErrors:(id)errors;
 - (void)loadAllRestrictionsData;
 @end
 
@@ -32,14 +32,14 @@
 
 - (void)loadAllRestrictionsData
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  [(CSRestrictionDataProvider *)self _templatesByProcessWithErrors:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  [(CSRestrictionDataProvider *)self _templatesByProcessWithErrors:array];
 }
 
-- (id)_processesSetWithErrors:(id)a3
+- (id)_processesSetWithErrors:(id)errors
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorsCopy = errors;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,7 +94,7 @@
     v19 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:1];
     v20 = [v14 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:1 userInfo:v19];
 
-    [v4 addObject:v20];
+    [errorsCopy addObject:v20];
   }
 
   else
@@ -111,7 +111,7 @@
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v8 = [v11 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:1 userInfo:v13];
 
-    [v4 addObject:v8];
+    [errorsCopy addObject:v8];
   }
 
   v10 = 0;
@@ -122,10 +122,10 @@ LABEL_18:
   return v10;
 }
 
-- (id)_processesPoliciesDictWithErrors:(id)a3
+- (id)_processesPoliciesDictWithErrors:(id)errors
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorsCopy = errors;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -176,7 +176,7 @@ LABEL_18:
   v14 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
   v15 = [v9 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:1 userInfo:v14];
 
-  [v4 addObject:v15];
+  [errorsCopy addObject:v15];
   v8 = 0;
 LABEL_12:
 
@@ -185,9 +185,9 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)_isAKnownScenario:(id)a3
+- (BOOL)_isAKnownScenario:(id)scenario
 {
-  v3 = [(NSDictionary *)self->_scenarios objectForKey:a3];
+  v3 = [(NSDictionary *)self->_scenarios objectForKey:scenario];
   v4 = v3 != 0;
 
   return v4;
@@ -196,7 +196,7 @@ LABEL_12:
 - (id)_buildScenariosMap
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -216,7 +216,7 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        [v3 setObject:*(*(&v11 + 1) + 8 * i) forKeyedSubscript:{*(*(&v11 + 1) + 8 * i), v11}];
+        [dictionary setObject:*(*(&v11 + 1) + 8 * i) forKeyedSubscript:{*(*(&v11 + 1) + 8 * i), v11}];
       }
 
       v6 = [(NSDictionary *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -227,13 +227,13 @@ LABEL_12:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)_scenariosDictWithErrors:(id)a3
+- (id)_scenariosDictWithErrors:(id)errors
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorsCopy = errors;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -284,7 +284,7 @@ LABEL_12:
   v14 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:1];
   v15 = [v9 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:1 userInfo:v14];
 
-  [v4 addObject:v15];
+  [errorsCopy addObject:v15];
   v8 = 0;
 LABEL_12:
 
@@ -293,25 +293,25 @@ LABEL_12:
   return v8;
 }
 
-- (id)configureRestrictionsFromTemplateDictionary:(id)a3 errors:(id)a4
+- (id)configureRestrictionsFromTemplateDictionary:(id)dictionary errors:(id)errors
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  errorsCopy = errors;
   v33 = objc_alloc_init(CSScenarioRestrictionsAttributesTemplate);
-  v35 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v6;
+  obj = dictionaryCopy;
   v8 = [obj countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v45;
     v37 = *MEMORY[0x277CCA470];
-    v34 = self;
+    selfCopy = self;
     do
     {
       v11 = 0;
@@ -332,10 +332,10 @@ LABEL_12:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v14 = [CSRestrictionFactory restrictionForClass:v13 withProperties:v12 errors:v7];
+              v14 = [CSRestrictionFactory restrictionForClass:v13 withProperties:v12 errors:errorsCopy];
               if (v14)
               {
-                v15 = v35;
+                v15 = array;
                 goto LABEL_21;
               }
 
@@ -354,8 +354,8 @@ LABEL_12:
               v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
               v29 = [v26 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:3 userInfo:v28];
 
-              [v7 addObject:v29];
-              self = v34;
+              [errorsCopy addObject:v29];
+              self = selfCopy;
 LABEL_22:
 
               goto LABEL_23;
@@ -393,7 +393,7 @@ LABEL_22:
 
           v14 = [v22 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:v23 userInfo:v21];
 
-          v15 = v7;
+          v15 = errorsCopy;
 LABEL_21:
           [v15 addObject:v14];
           goto LABEL_22;
@@ -411,7 +411,7 @@ LABEL_21:
         v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
         v13 = [v16 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:2 userInfo:v18];
 
-        [v7 addObject:v13];
+        [errorsCopy addObject:v13];
 LABEL_23:
 
         ++v11;
@@ -425,20 +425,20 @@ LABEL_23:
     while (v30);
   }
 
-  [(CSScenarioRestrictionsAttributesTemplate *)v33 setRestrictions:v35];
+  [(CSScenarioRestrictionsAttributesTemplate *)v33 setRestrictions:array];
   v31 = *MEMORY[0x277D85DE8];
 
   return v33;
 }
 
-- (id)_templatesByScenarioForProcess:(id)a3 errors:(id)a4
+- (id)_templatesByScenarioForProcess:(id)process errors:(id)errors
 {
   v80 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  errorsCopy = errors;
   [MEMORY[0x277CBEB38] dictionary];
-  v56 = v55 = v6;
-  v8 = getCSProcessRestrictions(v6);
+  v56 = v55 = processCopy;
+  v8 = getCSProcessRestrictions(processCopy);
   v9 = v8;
   if (v8)
   {
@@ -508,10 +508,10 @@ LABEL_23:
                         _os_log_debug_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEBUG, "Reading restrictions for scenario: %@ for process: %@", buf, 0x16u);
                       }
 
-                      v25 = CSArrayForKeyWithErrors(v16, v23, v7);
+                      v25 = CSArrayForKeyWithErrors(v16, v23, errorsCopy);
                       if (v25)
                       {
-                        v26 = [(CSRestrictionDataProvider *)self configureRestrictionsFromTemplateDictionary:v25 errors:v7];
+                        v26 = [(CSRestrictionDataProvider *)self configureRestrictionsFromTemplateDictionary:v25 errors:errorsCopy];
                         [v56 setObject:v26 forKeyedSubscript:v23];
                       }
                     }
@@ -535,7 +535,7 @@ LABEL_23:
                       v25 = [v31 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:4 userInfo:v33];
 
                       v12 = 0x277CCA000;
-                      [v7 addObject:v25];
+                      [errorsCopy addObject:v25];
                     }
                   }
 
@@ -557,7 +557,7 @@ LABEL_23:
                     v23 = [v28 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:2 userInfo:v30];
 
                     v12 = 0x277CCA000;
-                    [v7 addObject:v23];
+                    [errorsCopy addObject:v23];
                   }
                 }
 
@@ -588,7 +588,7 @@ LABEL_23:
             v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v78 forKeys:&v77 count:1];
             v16 = [v35 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:2 userInfo:v37];
 
-            [v7 addObject:v16];
+            [errorsCopy addObject:v16];
           }
 
           v14 = v54 + 1;
@@ -607,17 +607,17 @@ LABEL_23:
     v38 = self->_logger;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
-      [(CSRestrictionDataProvider *)v6 _templatesByScenarioForProcess:v38 errors:v39, v40, v41, v42, v43, v44];
+      [(CSRestrictionDataProvider *)processCopy _templatesByScenarioForProcess:v38 errors:v39, v40, v41, v42, v43, v44];
     }
 
     v45 = MEMORY[0x277CCA9B8];
     v66 = *MEMORY[0x277CCA470];
-    v46 = [MEMORY[0x277CCACA8] stringWithFormat:@"Restrictions plist failure for process: %@", v6];
-    v67 = v46;
+    processCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Restrictions plist failure for process: %@", processCopy];
+    v67 = processCopy;
     v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
     v48 = [v45 errorWithDomain:@"CSRestrictionDataProviderErrorDomain" code:1 userInfo:v47];
 
-    [v7 addObject:v48];
+    [errorsCopy addObject:v48];
   }
 
   v49 = *MEMORY[0x277D85DE8];
@@ -625,11 +625,11 @@ LABEL_23:
   return v56;
 }
 
-- (void)_templatesByProcessWithErrors:(id)a3
+- (void)_templatesByProcessWithErrors:(id)errors
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  errorsCopy = errors;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -637,7 +637,7 @@ LABEL_23:
     _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_DEFAULT, "Loading Processes, ExemptProcesses, Scenarios and Restrictions", buf, 2u);
   }
 
-  v7 = [(CSRestrictionDataProvider *)self _processesSetWithErrors:v4];
+  v7 = [(CSRestrictionDataProvider *)self _processesSetWithErrors:errorsCopy];
   processes = self->_processes;
   self->_processes = v7;
 
@@ -646,7 +646,7 @@ LABEL_23:
     [CSRestrictionDataProvider _templatesByProcessWithErrors:?];
   }
 
-  v9 = [(CSRestrictionDataProvider *)self _processesPoliciesDictWithErrors:v4];
+  v9 = [(CSRestrictionDataProvider *)self _processesPoliciesDictWithErrors:errorsCopy];
   processPolicies = self->_processPolicies;
   self->_processPolicies = v9;
 
@@ -655,7 +655,7 @@ LABEL_23:
     [CSRestrictionDataProvider _templatesByProcessWithErrors:?];
   }
 
-  v11 = [(CSRestrictionDataProvider *)self _bandRestrictionsSetForThreshold:95 withErrors:v4];
+  v11 = [(CSRestrictionDataProvider *)self _bandRestrictionsSetForThreshold:95 withErrors:errorsCopy];
   band95Processes = self->_band95Processes;
   self->_band95Processes = v11;
 
@@ -664,7 +664,7 @@ LABEL_23:
     [CSRestrictionDataProvider _templatesByProcessWithErrors:?];
   }
 
-  v13 = [(CSRestrictionDataProvider *)self _bandRestrictionsSetForThreshold:80 withErrors:v4];
+  v13 = [(CSRestrictionDataProvider *)self _bandRestrictionsSetForThreshold:80 withErrors:errorsCopy];
   band80Processes = self->_band80Processes;
   self->_band80Processes = v13;
 
@@ -673,7 +673,7 @@ LABEL_23:
     [CSRestrictionDataProvider _templatesByProcessWithErrors:?];
   }
 
-  v15 = [(CSRestrictionDataProvider *)self _scenariosDictWithErrors:v4];
+  v15 = [(CSRestrictionDataProvider *)self _scenariosDictWithErrors:errorsCopy];
   scenarios = self->_scenarios;
   self->_scenarios = v15;
 
@@ -682,9 +682,9 @@ LABEL_23:
     [CSRestrictionDataProvider _templatesByProcessWithErrors:?];
   }
 
-  v17 = [(CSRestrictionDataProvider *)self _buildScenariosMap];
+  _buildScenariosMap = [(CSRestrictionDataProvider *)self _buildScenariosMap];
   scenariosMap = self->_scenariosMap;
-  self->_scenariosMap = v17;
+  self->_scenariosMap = _buildScenariosMap;
 
   v32 = 0u;
   v33 = 0u;
@@ -706,8 +706,8 @@ LABEL_23:
         }
 
         v24 = *(*(&v30 + 1) + 8 * i);
-        v25 = [(CSRestrictionDataProvider *)self _templatesByScenarioForProcess:v24 errors:v4, v30];
-        [(NSMutableDictionary *)v5 setObject:v25 forKeyedSubscript:v24];
+        v25 = [(CSRestrictionDataProvider *)self _templatesByScenarioForProcess:v24 errors:errorsCopy, v30];
+        [(NSMutableDictionary *)dictionary setObject:v25 forKeyedSubscript:v24];
       }
 
       v21 = [(NSSet *)v19 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -717,8 +717,8 @@ LABEL_23:
   }
 
   restrictionsByProcessForScenario = self->_restrictionsByProcessForScenario;
-  self->_restrictionsByProcessForScenario = v5;
-  v27 = v5;
+  self->_restrictionsByProcessForScenario = dictionary;
+  v27 = dictionary;
 
   v28 = self->_scenariosMap;
   self->_scenariosMap = 0;

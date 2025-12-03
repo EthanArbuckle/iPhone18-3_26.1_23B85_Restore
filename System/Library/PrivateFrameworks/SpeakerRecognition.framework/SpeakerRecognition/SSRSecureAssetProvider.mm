@@ -1,26 +1,26 @@
 @interface SSRSecureAssetProvider
-- (id)_fetchSecureAssetForCommunalDevice:(id)a3;
-- (id)_fetchSecureAssetForNonCommunalDevice:(id)a3 withAsset:(id)a4;
-- (id)_secureAssetWithAssetResourcePathURL:(id)a3 assetFileName:(id)a4 assetVersion:(id)a5;
-- (id)fetchSecureAssetForLocale:(id)a3 withAsset:(id)a4;
+- (id)_fetchSecureAssetForCommunalDevice:(id)device;
+- (id)_fetchSecureAssetForNonCommunalDevice:(id)device withAsset:(id)asset;
+- (id)_secureAssetWithAssetResourcePathURL:(id)l assetFileName:(id)name assetVersion:(id)version;
+- (id)fetchSecureAssetForLocale:(id)locale withAsset:(id)asset;
 @end
 
 @implementation SSRSecureAssetProvider
 
-- (id)_fetchSecureAssetForNonCommunalDevice:(id)a3 withAsset:(id)a4
+- (id)_fetchSecureAssetForNonCommunalDevice:(id)device withAsset:(id)asset
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  assetCopy = asset;
   if ([MEMORY[0x277D018F8] isExclaveHardware])
   {
     v8 = objc_alloc(MEMORY[0x277D01F50]);
     v9 = [MEMORY[0x277D01F48] getBundle:0];
     v10 = [v8 init:v9];
 
-    v11 = [v10 resourcePathURL:v6];
+    v11 = [v10 resourcePathURL:deviceCopy];
     v12 = [MEMORY[0x277D01F48] getAssetFileName:0];
-    v13 = [v10 assetVersion:v6];
+    v13 = [v10 assetVersion:deviceCopy];
     v14 = *MEMORY[0x277D01970];
     v15 = *MEMORY[0x277D01970];
     if (v11)
@@ -65,19 +65,19 @@
       v17 = [(SSRSecureAssetProvider *)self _secureAssetWithAssetResourcePathURL:v11 assetFileName:v12 assetVersion:v13];
     }
 
-    if ([v7 assetVariant] == 2 && objc_msgSend(v7, "assetProvider") == 2)
+    if ([assetCopy assetVariant] == 2 && objc_msgSend(assetCopy, "assetProvider") == 2)
     {
-      v19 = [v7 resourcePath];
-      v20 = v19;
-      if (v19 && v12)
+      resourcePath = [assetCopy resourcePath];
+      v20 = resourcePath;
+      if (resourcePath && v12)
       {
-        v21 = [v7 configVersion];
+        configVersion = [assetCopy configVersion];
 
-        if (v21)
+        if (configVersion)
         {
           v22 = MEMORY[0x277CBEBC0];
-          v23 = [v7 resourcePath];
-          v24 = [v22 URLWithString:v23];
+          resourcePath2 = [assetCopy resourcePath];
+          v24 = [v22 URLWithString:resourcePath2];
 
           v25 = *MEMORY[0x277D01970];
           v26 = *MEMORY[0x277D01970];
@@ -95,9 +95,9 @@
             }
 
             v27 = MEMORY[0x277CBEBC0];
-            v28 = [v7 resourcePath];
-            v29 = [v27 URLWithString:v28];
-            [v7 configVersion];
+            resourcePath3 = [assetCopy resourcePath];
+            v29 = [v27 URLWithString:resourcePath3];
+            [assetCopy configVersion];
             v30 = v34 = v24;
             v31 = [(SSRSecureAssetProvider *)self _secureAssetWithAssetResourcePathURL:v29 assetFileName:v12 assetVersion:v30];
 
@@ -139,19 +139,19 @@
   return v17;
 }
 
-- (id)_fetchSecureAssetForCommunalDevice:(id)a3
+- (id)_fetchSecureAssetForCommunalDevice:(id)device
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if ([MEMORY[0x277D018F8] supportsSecureAssetForSpeakerRecognition])
   {
     v5 = objc_alloc(MEMORY[0x277D01F50]);
     v6 = [MEMORY[0x277D01F48] getBundle:1];
     v7 = [v5 init:v6];
 
-    v8 = [v7 resourcePathURL:v4];
+    v8 = [v7 resourcePathURL:deviceCopy];
     v9 = [MEMORY[0x277D01F48] getAssetFileName:1];
-    v10 = [v7 assetVersion:v4];
+    v10 = [v7 assetVersion:deviceCopy];
     v11 = *MEMORY[0x277D01970];
     v12 = *MEMORY[0x277D01970];
     if (v8)
@@ -207,33 +207,33 @@
   return v14;
 }
 
-- (id)_secureAssetWithAssetResourcePathURL:(id)a3 assetFileName:(id)a4 assetVersion:(id)a5
+- (id)_secureAssetWithAssetResourcePathURL:(id)l assetFileName:(id)name assetVersion:(id)version
 {
   v5 = 0;
-  if (a3 && a4)
+  if (l && name)
   {
     v8 = MEMORY[0x277D01F40];
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
-    v5 = [[v8 alloc] initWithResourcePath:v11 assetFileName:v10 assetVersion:v9 assetHash:0];
+    versionCopy = version;
+    nameCopy = name;
+    lCopy = l;
+    v5 = [[v8 alloc] initWithResourcePath:lCopy assetFileName:nameCopy assetVersion:versionCopy assetHash:0];
   }
 
   return v5;
 }
 
-- (id)fetchSecureAssetForLocale:(id)a3 withAsset:(id)a4
+- (id)fetchSecureAssetForLocale:(id)locale withAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
+  assetCopy = asset;
+  localeCopy = locale;
   if (CSIsCommunalDevice())
   {
-    [(SSRSecureAssetProvider *)self _fetchSecureAssetForCommunalDevice:v7];
+    [(SSRSecureAssetProvider *)self _fetchSecureAssetForCommunalDevice:localeCopy];
   }
 
   else
   {
-    [(SSRSecureAssetProvider *)self _fetchSecureAssetForNonCommunalDevice:v7 withAsset:v6];
+    [(SSRSecureAssetProvider *)self _fetchSecureAssetForNonCommunalDevice:localeCopy withAsset:assetCopy];
   }
   v8 = ;
 

@@ -1,8 +1,8 @@
 @interface PDCLSBackedApplicationEnvironment
 - (PDCLSBackedApplicationEnvironment)init;
-- (id)applicationIdentityForIdentityString:(id)a3;
-- (id)applicationRecordForBundleIdentifier:(id)a3;
-- (id)monitorAppEventsWithDelegate:(id)a3 onQueue:(id)a4;
+- (id)applicationIdentityForIdentityString:(id)string;
+- (id)applicationRecordForBundleIdentifier:(id)identifier;
+- (id)monitorAppEventsWithDelegate:(id)delegate onQueue:(id)queue;
 @end
 
 @implementation PDCLSBackedApplicationEnvironment
@@ -14,9 +14,9 @@
   v2 = [(PDCLSBackedApplicationEnvironment *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     workspace = v2->_workspace;
-    v2->_workspace = v3;
+    v2->_workspace = defaultWorkspace;
 
     v5 = v2;
   }
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (id)applicationRecordForBundleIdentifier:(id)a3
+- (id)applicationRecordForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v9];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v9];
   v5 = v9;
   if (v5)
   {
     v6 = PDC_LOG_CHANNEL_PREFIXPrivacyDisclosureCore();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(PDCLSBackedApplicationEnvironment *)v3 applicationRecordForBundleIdentifier:v5, v6];
+      [(PDCLSBackedApplicationEnvironment *)identifierCopy applicationRecordForBundleIdentifier:v5, v6];
     }
 
     v7 = 0;
@@ -49,20 +49,20 @@
   return v7;
 }
 
-- (id)applicationIdentityForIdentityString:(id)a3
+- (id)applicationIdentityForIdentityString:(id)string
 {
   v3 = MEMORY[0x277CC1E58];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithIdentityString:v4];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithIdentityString:stringCopy];
 
   return v5;
 }
 
-- (id)monitorAppEventsWithDelegate:(id)a3 onQueue:(id)a4
+- (id)monitorAppEventsWithDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PDCApplicationEnvironmentMonitoringHandle alloc] initWithWorkspace:self->_workspace delegate:v7 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v8 = [[PDCApplicationEnvironmentMonitoringHandle alloc] initWithWorkspace:self->_workspace delegate:delegateCopy queue:queueCopy];
 
   [(LSApplicationWorkspace *)self->_workspace addObserver:v8];
 

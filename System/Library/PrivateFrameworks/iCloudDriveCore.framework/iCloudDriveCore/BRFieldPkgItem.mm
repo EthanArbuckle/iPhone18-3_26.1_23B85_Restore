@@ -1,42 +1,42 @@
 @interface BRFieldPkgItem
-- (BOOL)isEqual:(id)a3;
-- (BRFieldPkgItem)initWithPkgItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BRFieldPkgItem)initWithPkgItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsType:(id)a3;
+- (int)StringAsType:(id)type;
 - (unint64_t)hash;
 - (void)clear;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsExecutable:(BOOL)a3;
-- (void)setHasIsWritable:(BOOL)a3;
-- (void)setHasXattrIndex:(BOOL)a3;
-- (void)updateWithPkgItem:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsExecutable:(BOOL)executable;
+- (void)setHasIsWritable:(BOOL)writable;
+- (void)setHasXattrIndex:(BOOL)index;
+- (void)updateWithPkgItem:(id)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldPkgItem
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DIRECTORY"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"DIRECTORY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FILE"])
+  else if ([typeCopy isEqualToString:@"FILE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SYMLINK"])
+  else if ([typeCopy isEqualToString:@"SYMLINK"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"TOMBSTONE"])
+  else if ([typeCopy isEqualToString:@"TOMBSTONE"])
   {
     v4 = 4;
   }
@@ -49,9 +49,9 @@
   return v4;
 }
 
-- (void)setHasIsWritable:(BOOL)a3
+- (void)setHasIsWritable:(BOOL)writable
 {
-  if (a3)
+  if (writable)
   {
     v3 = 8;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsExecutable:(BOOL)a3
+- (void)setHasIsExecutable:(BOOL)executable
 {
-  if (a3)
+  if (executable)
   {
     v3 = 4;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasXattrIndex:(BOOL)a3
+- (void)setHasXattrIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -100,15 +100,15 @@
   v8.receiver = self;
   v8.super_class = BRFieldPkgItem;
   v4 = [(BRFieldPkgItem *)&v8 description];
-  v5 = [(BRFieldPkgItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldPkgItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_type - 1;
   if (v4 >= 4)
   {
@@ -120,19 +120,19 @@
     v5 = off_278500C90[v4];
   }
 
-  [v3 setObject:v5 forKey:@"type"];
+  [dictionary setObject:v5 forKey:@"type"];
 
   path = self->_path;
   if (path)
   {
-    [v3 setObject:path forKey:@"path"];
+    [dictionary setObject:path forKey:@"path"];
   }
 
   has = self->_has;
   if (has)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mtime];
-    [v3 setObject:v14 forKey:@"mtime"];
+    [dictionary setObject:v14 forKey:@"mtime"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -153,48 +153,48 @@ LABEL_8:
   }
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_isWritable];
-  [v3 setObject:v15 forKey:@"isWritable"];
+  [dictionary setObject:v15 forKey:@"isWritable"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isExecutable];
-    [v3 setObject:v8 forKey:@"isExecutable"];
+    [dictionary setObject:v8 forKey:@"isExecutable"];
   }
 
 LABEL_10:
   symlinkContent = self->_symlinkContent;
   if (symlinkContent)
   {
-    [v3 setObject:symlinkContent forKey:@"symlinkContent"];
+    [dictionary setObject:symlinkContent forKey:@"symlinkContent"];
   }
 
   quarantineInfo = self->_quarantineInfo;
   if (quarantineInfo)
   {
-    [v3 setObject:quarantineInfo forKey:@"quarantineInfo"];
+    [dictionary setObject:quarantineInfo forKey:@"quarantineInfo"];
   }
 
   signature = self->_signature;
   if (signature)
   {
-    [v3 setObject:signature forKey:@"signature"];
+    [dictionary setObject:signature forKey:@"signature"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_xattrIndex];
-    [v3 setObject:v12 forKey:@"xattrIndex"];
+    [dictionary setObject:v12 forKey:@"xattrIndex"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   type = self->_type;
-  v12 = v4;
+  v12 = toCopy;
   PBDataWriterWriteInt32Field();
   if (self->_path)
   {
@@ -251,22 +251,22 @@ LABEL_10:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[14] = self->_type;
-  v6 = v4;
+  toCopy = to;
+  toCopy[14] = self->_type;
+  v6 = toCopy;
   if (self->_path)
   {
-    [v4 setPath:?];
-    v4 = v6;
+    [toCopy setPath:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_mtime;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = self->_mtime;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -285,46 +285,46 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 61) = self->_isWritable;
-  *(v4 + 64) |= 8u;
+  *(toCopy + 61) = self->_isWritable;
+  *(toCopy + 64) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
-    *(v4 + 60) = self->_isExecutable;
-    *(v4 + 64) |= 4u;
+    *(toCopy + 60) = self->_isExecutable;
+    *(toCopy + 64) |= 4u;
   }
 
 LABEL_7:
   if (self->_symlinkContent)
   {
     [v6 setSymlinkContent:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_quarantineInfo)
   {
     [v6 setQuarantineInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_signature)
   {
     [v6 setSignature:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = self->_xattrIndex;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = self->_xattrIndex;
+    *(toCopy + 64) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 56) = self->_type;
-  v6 = [(NSString *)self->_path copyWithZone:a3];
+  v6 = [(NSString *)self->_path copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -361,15 +361,15 @@ LABEL_4:
   }
 
 LABEL_5:
-  v9 = [(NSString *)self->_symlinkContent copyWithZone:a3];
+  v9 = [(NSString *)self->_symlinkContent copyWithZone:zone];
   v10 = *(v5 + 48);
   *(v5 + 48) = v9;
 
-  v11 = [(NSData *)self->_quarantineInfo copyWithZone:a3];
+  v11 = [(NSData *)self->_quarantineInfo copyWithZone:zone];
   v12 = *(v5 + 32);
   *(v5 + 32) = v11;
 
-  v13 = [(NSData *)self->_signature copyWithZone:a3];
+  v13 = [(NSData *)self->_signature copyWithZone:zone];
   v14 = *(v5 + 40);
   *(v5 + 40) = v13;
 
@@ -382,21 +382,21 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  if (self->_type != *(v4 + 14))
+  if (self->_type != *(equalCopy + 14))
   {
     goto LABEL_35;
   }
 
   path = self->_path;
-  if (path | *(v4 + 3))
+  if (path | *(equalCopy + 3))
   {
     if (![(NSString *)path isEqual:?])
     {
@@ -404,50 +404,50 @@ LABEL_5:
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_mtime != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_mtime != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0)
+    if ((*(equalCopy + 64) & 8) == 0)
     {
       goto LABEL_35;
     }
 
-    v11 = *(v4 + 61);
+    v11 = *(equalCopy + 61);
     if (self->_isWritable)
     {
-      if ((*(v4 + 61) & 1) == 0)
+      if ((*(equalCopy + 61) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 61))
+    else if (*(equalCopy + 61))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) == 0)
   {
-    if ((*(v4 + 64) & 4) == 0)
+    if ((*(equalCopy + 64) & 4) == 0)
     {
       goto LABEL_14;
     }
@@ -457,34 +457,34 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if ((*(v4 + 64) & 4) == 0)
+  if ((*(equalCopy + 64) & 4) == 0)
   {
     goto LABEL_35;
   }
 
-  v12 = *(v4 + 60);
+  v12 = *(equalCopy + 60);
   if (self->_isExecutable)
   {
-    if ((*(v4 + 60) & 1) == 0)
+    if ((*(equalCopy + 60) & 1) == 0)
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_35;
   }
 
 LABEL_14:
   symlinkContent = self->_symlinkContent;
-  if (symlinkContent | *(v4 + 6) && ![(NSString *)symlinkContent isEqual:?])
+  if (symlinkContent | *(equalCopy + 6) && ![(NSString *)symlinkContent isEqual:?])
   {
     goto LABEL_35;
   }
 
   quarantineInfo = self->_quarantineInfo;
-  if (quarantineInfo | *(v4 + 4))
+  if (quarantineInfo | *(equalCopy + 4))
   {
     if (![(NSData *)quarantineInfo isEqual:?])
     {
@@ -493,7 +493,7 @@ LABEL_14:
   }
 
   signature = self->_signature;
-  if (signature | *(v4 + 5))
+  if (signature | *(equalCopy + 5))
   {
     if (![(NSData *)signature isEqual:?])
     {
@@ -501,10 +501,10 @@ LABEL_14:
     }
   }
 
-  v10 = (*(v4 + 64) & 2) == 0;
+  v10 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_xattrIndex != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_xattrIndex != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
@@ -573,23 +573,23 @@ LABEL_8:
   return v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ (2654435761 * type) ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_type = *(v4 + 14);
-  v6 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  self->_type = *(fromCopy + 14);
+  v6 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(BRFieldPkgItem *)self setPath:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if (v5)
   {
-    self->_mtime = *(v4 + 1);
+    self->_mtime = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
     if ((v5 & 8) == 0)
     {
 LABEL_5:
@@ -602,95 +602,95 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 64) & 8) == 0)
+  else if ((*(fromCopy + 64) & 8) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_isWritable = *(v4 + 61);
+  self->_isWritable = *(fromCopy + 61);
   *&self->_has |= 8u;
-  if ((*(v4 + 64) & 4) != 0)
+  if ((*(fromCopy + 64) & 4) != 0)
   {
 LABEL_6:
-    self->_isExecutable = *(v4 + 60);
+    self->_isExecutable = *(fromCopy + 60);
     *&self->_has |= 4u;
   }
 
 LABEL_7:
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BRFieldPkgItem *)self setSymlinkContent:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BRFieldPkgItem *)self setQuarantineInfo:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BRFieldPkgItem *)self setSignature:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 64) & 2) != 0)
+  if ((*(fromCopy + 64) & 2) != 0)
   {
-    self->_xattrIndex = *(v4 + 2);
+    self->_xattrIndex = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 }
 
-- (BRFieldPkgItem)initWithPkgItem:(id)a3
+- (BRFieldPkgItem)initWithPkgItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(BRFieldPkgItem *)self init];
   v6 = v5;
   if (v5)
   {
-    [(BRFieldPkgItem *)v5 updateWithPkgItem:v4];
+    [(BRFieldPkgItem *)v5 updateWithPkgItem:itemCopy];
   }
 
   return v6;
 }
 
-- (void)updateWithPkgItem:(id)a3
+- (void)updateWithPkgItem:(id)item
 {
-  v7 = a3;
-  -[BRFieldPkgItem setType:](self, "setType:", [v7 type]);
-  v4 = [v7 pathInPackage];
-  [(BRFieldPkgItem *)self setPath:v4];
+  itemCopy = item;
+  -[BRFieldPkgItem setType:](self, "setType:", [itemCopy type]);
+  pathInPackage = [itemCopy pathInPackage];
+  [(BRFieldPkgItem *)self setPath:pathInPackage];
 
-  v5 = [v7 quarantineInfo];
-  [(BRFieldPkgItem *)self setQuarantineInfo:v5];
+  quarantineInfo = [itemCopy quarantineInfo];
+  [(BRFieldPkgItem *)self setQuarantineInfo:quarantineInfo];
 
-  -[BRFieldPkgItem setMtime:](self, "setMtime:", [v7 mtime]);
-  if ([v7 isSymLink])
+  -[BRFieldPkgItem setMtime:](self, "setMtime:", [itemCopy mtime]);
+  if ([itemCopy isSymLink])
   {
-    v6 = [v7 symlinkContent];
-    [(BRFieldPkgItem *)self setSymlinkContent:v6];
+    symlinkContent = [itemCopy symlinkContent];
+    [(BRFieldPkgItem *)self setSymlinkContent:symlinkContent];
   }
 
   else
   {
-    if (![v7 isFile])
+    if (![itemCopy isFile])
     {
       goto LABEL_10;
     }
 
-    if ([v7 mode])
+    if ([itemCopy mode])
     {
       [(BRFieldPkgItem *)self setIsWritable:1];
     }
 
-    if (([v7 mode] & 2) != 0)
+    if (([itemCopy mode] & 2) != 0)
     {
       [(BRFieldPkgItem *)self setIsExecutable:1];
     }
 
-    v6 = [v7 contentSignature];
-    [(BRFieldPkgItem *)self setSignature:v6];
+    symlinkContent = [itemCopy contentSignature];
+    [(BRFieldPkgItem *)self setSignature:symlinkContent];
   }
 
 LABEL_10:

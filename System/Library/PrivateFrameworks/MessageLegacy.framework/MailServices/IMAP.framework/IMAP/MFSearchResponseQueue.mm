@@ -1,5 +1,5 @@
 @interface MFSearchResponseQueue
-- (BOOL)addItem:(id)a3;
+- (BOOL)addItem:(id)item;
 - (BOOL)flush;
 - (MFSearchResponseQueue)init;
 - (void)dealloc;
@@ -22,17 +22,17 @@
   return v3;
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  if ([a3 responseType] == 14)
+  if ([item responseType] == 14)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [a3 searchResults];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    searchResults = [item searchResults];
+    v6 = [searchResults countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -43,25 +43,25 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(searchResults);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) unsignedIntValue];
+          unsignedIntValue = [*(*(&v14 + 1) + 8 * i) unsignedIntValue];
           if ([(NSMutableIndexSet *)self->indexSet count]>= self->limit)
           {
-            v11 = [(NSMutableIndexSet *)self->indexSet firstIndex];
-            if (v11 >= v10)
+            firstIndex = [(NSMutableIndexSet *)self->indexSet firstIndex];
+            if (firstIndex >= unsignedIntValue)
             {
               continue;
             }
 
-            [(NSMutableIndexSet *)self->indexSet removeIndex:v11];
+            [(NSMutableIndexSet *)self->indexSet removeIndex:firstIndex];
           }
 
-          [(NSMutableIndexSet *)self->indexSet addIndex:v10];
+          [(NSMutableIndexSet *)self->indexSet addIndex:unsignedIntValue];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [searchResults countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -77,10 +77,10 @@
   indexSet = self->indexSet;
   if (indexSet)
   {
-    v4 = [(NSMutableIndexSet *)indexSet lastIndex];
-    if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+    lastIndex = [(NSMutableIndexSet *)indexSet lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->indexSet indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->indexSet indexLessThanIndex:i])
       {
         v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:i];
         v9.receiver = self;

@@ -1,17 +1,17 @@
 @interface SFFindOnPageToolbarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation SFFindOnPageToolbarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFFindOnPageToolbar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_SFFindOnPageToolbar" hasInstanceVariable:@"_previousButtonItem" withType:"UIBarButtonItem"];
-  [v3 validateClass:@"_SFFindOnPageToolbar" hasInstanceVariable:@"_nextButtonItem" withType:"UIBarButtonItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFFindOnPageToolbar" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_SFFindOnPageToolbar" hasInstanceVariable:@"_previousButtonItem" withType:"UIBarButtonItem"];
+  [validationsCopy validateClass:@"_SFFindOnPageToolbar" hasInstanceVariable:@"_nextButtonItem" withType:"UIBarButtonItem"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

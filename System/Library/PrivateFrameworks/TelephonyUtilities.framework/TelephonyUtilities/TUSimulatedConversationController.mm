@@ -1,11 +1,11 @@
 @interface TUSimulatedConversationController
 - (TUSimulatedConversationController)init;
-- (TUSimulatedConversationController)initWithDataSource:(id)a3;
-- (void)addRemoteParticipantWithHandle:(id)a3 update:(id)a4 toConversation:(id)a5;
-- (void)createIncomingConversationWithHandles:(id)a3;
+- (TUSimulatedConversationController)initWithDataSource:(id)source;
+- (void)addRemoteParticipantWithHandle:(id)handle update:(id)update toConversation:(id)conversation;
+- (void)createIncomingConversationWithHandles:(id)handles;
 - (void)dealloc;
-- (void)removeRemoteParticipant:(id)a3 fromConversation:(id)a4;
-- (void)updateParticipant:(id)a3 withUpdate:(id)a4 onConversation:(id)a5;
+- (void)removeRemoteParticipant:(id)participant fromConversation:(id)conversation;
+- (void)updateParticipant:(id)participant withUpdate:(id)update onConversation:(id)conversation;
 @end
 
 @implementation TUSimulatedConversationController
@@ -18,16 +18,16 @@
   return v4;
 }
 
-- (TUSimulatedConversationController)initWithDataSource:(id)a3
+- (TUSimulatedConversationController)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = TUSimulatedConversationController;
   v6 = [(TUSimulatedConversationController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -35,45 +35,45 @@
 
 - (void)dealloc
 {
-  v3 = [(TUSimulatedConversationController *)self dataSource];
-  [v3 invalidate];
+  dataSource = [(TUSimulatedConversationController *)self dataSource];
+  [dataSource invalidate];
 
   v4.receiver = self;
   v4.super_class = TUSimulatedConversationController;
   [(TUSimulatedConversationController *)&v4 dealloc];
 }
 
-- (void)updateParticipant:(id)a3 withUpdate:(id)a4 onConversation:(id)a5
+- (void)updateParticipant:(id)participant withUpdate:(id)update onConversation:(id)conversation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUSimulatedConversationController *)self dataSource];
-  [v11 updateParticipant:v10 withUpdate:v9 onConversation:v8];
+  conversationCopy = conversation;
+  updateCopy = update;
+  participantCopy = participant;
+  dataSource = [(TUSimulatedConversationController *)self dataSource];
+  [dataSource updateParticipant:participantCopy withUpdate:updateCopy onConversation:conversationCopy];
 }
 
-- (void)addRemoteParticipantWithHandle:(id)a3 update:(id)a4 toConversation:(id)a5
+- (void)addRemoteParticipantWithHandle:(id)handle update:(id)update toConversation:(id)conversation
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(TUSimulatedConversationController *)self dataSource];
-  [v11 addRemoteParticipantWithHandle:v10 update:v9 toConversation:v8];
+  conversationCopy = conversation;
+  updateCopy = update;
+  handleCopy = handle;
+  dataSource = [(TUSimulatedConversationController *)self dataSource];
+  [dataSource addRemoteParticipantWithHandle:handleCopy update:updateCopy toConversation:conversationCopy];
 }
 
-- (void)removeRemoteParticipant:(id)a3 fromConversation:(id)a4
+- (void)removeRemoteParticipant:(id)participant fromConversation:(id)conversation
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUSimulatedConversationController *)self dataSource];
-  [v8 removeRemoteParticipant:v7 fromConversation:v6];
+  conversationCopy = conversation;
+  participantCopy = participant;
+  dataSource = [(TUSimulatedConversationController *)self dataSource];
+  [dataSource removeRemoteParticipant:participantCopy fromConversation:conversationCopy];
 }
 
-- (void)createIncomingConversationWithHandles:(id)a3
+- (void)createIncomingConversationWithHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(TUSimulatedConversationController *)self dataSource];
-  [v5 createIncomingConversationWithHandles:v4];
+  handlesCopy = handles;
+  dataSource = [(TUSimulatedConversationController *)self dataSource];
+  [dataSource createIncomingConversationWithHandles:handlesCopy];
 }
 
 @end

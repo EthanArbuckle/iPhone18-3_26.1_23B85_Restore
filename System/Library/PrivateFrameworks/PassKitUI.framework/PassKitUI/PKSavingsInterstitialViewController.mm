@@ -1,13 +1,13 @@
 @interface PKSavingsInterstitialViewController
-- (PKSavingsInterstitialViewController)initWithCoder:(id)a3;
-- (PKSavingsInterstitialViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PKSavingsInterstitialViewController)initWithCoder:(id)coder;
+- (PKSavingsInterstitialViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)performAuthenticationWithCompletion:(id)a3;
+- (void)performAuthenticationWithCompletion:(id)completion;
 @end
 
 @implementation PKSavingsInterstitialViewController
 
-- (PKSavingsInterstitialViewController)initWithCoder:(id)a3
+- (PKSavingsInterstitialViewController)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
@@ -16,21 +16,21 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD1A9ABC();
 }
 
-- (void)performAuthenticationWithCompletion:(id)a3
+- (void)performAuthenticationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1BD1B6214(v5, v4);
+  selfCopy = self;
+  sub_1BD1B6214(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (PKSavingsInterstitialViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PKSavingsInterstitialViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

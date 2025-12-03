@@ -1,33 +1,33 @@
 @interface CLRouteAnalyzer
-+ (double)calculateRouteLinearity:(id)a3;
-+ (id)extractRouteCorners:(id)a3;
++ (double)calculateRouteLinearity:(id)linearity;
++ (id)extractRouteCorners:(id)corners;
 @end
 
 @implementation CLRouteAnalyzer
 
-+ (double)calculateRouteLinearity:(id)a3
++ (double)calculateRouteLinearity:(id)linearity
 {
   v230 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (linearity)
   {
-    if ([a3 count] > 9)
+    if ([linearity count] > 9)
     {
       memset(v214, 0, sizeof(v214));
       v216 = 0;
       v217 = 0;
       v215 = xmmword_19BA89490;
       v218 = 0x3FF0000000000000;
-      v219 = a3;
-      sub_19B9CA9C0(v214, [a3 count]);
+      linearityCopy = linearity;
+      sub_19B9CA9C0(v214, [linearity count]);
       *buf = 0;
       sub_19B8F518C(v214, buf);
-      if ([v219 count] >= 2)
+      if ([linearityCopy count] >= 2)
       {
         v10 = 1;
         do
         {
-          v11 = [v219 objectAtIndexedSubscript:v10 - 1];
-          v12 = [v219 objectAtIndexedSubscript:v10];
+          v11 = [linearityCopy objectAtIndexedSubscript:v10 - 1];
+          v12 = [linearityCopy objectAtIndexedSubscript:v10];
           [v11 coordinate];
           v14 = v13;
           [v11 coordinate];
@@ -46,15 +46,15 @@
           ++v10;
         }
 
-        while (v10 < [v219 count]);
+        while (v10 < [linearityCopy count]);
       }
 
       v200 = 0;
       v201 = 0;
       v202 = 0;
-      if ([v219 count] >= 0x28)
+      if ([linearityCopy count] >= 0x28)
       {
-        v21 = [v219 count];
+        v21 = [linearityCopy count];
         v22 = v21;
         if (v21 >= 0x15)
         {
@@ -107,7 +107,7 @@
                 }
 
                 while (v32);
-                if ([v219 count] - 1 > v23)
+                if ([linearityCopy count] - 1 > v23)
                 {
                   v36 = 0;
                   v37 = 0.0;
@@ -117,7 +117,7 @@
                     v40 = *(v214[0] + 8 * v36++ + v24);
                     v37 = v37 + v39 - v40;
                     v41 = v23 + v36;
-                    if (v23 + v36 >= [v219 count] - 1)
+                    if (v23 + v36 >= [linearityCopy count] - 1)
                     {
                       goto LABEL_56;
                     }
@@ -127,9 +127,9 @@
 LABEL_56:
                   if (v32 < v23 && v41 > v23)
                   {
-                    v42 = [v219 objectAtIndexedSubscript:v32];
-                    v43 = [v219 objectAtIndexedSubscript:v23];
-                    v44 = [v219 objectAtIndexedSubscript:v41];
+                    v42 = [linearityCopy objectAtIndexedSubscript:v32];
+                    v43 = [linearityCopy objectAtIndexedSubscript:v23];
+                    v44 = [linearityCopy objectAtIndexedSubscript:v41];
                     v45 = *(v214[0] + v23);
                     v46 = v45 - *(v214[0] + v32);
                     v47 = *(v214[0] + v41) - v45;
@@ -274,7 +274,7 @@ LABEL_56:
         ++v77;
       }
 
-      *buf = [a3 count] - 1;
+      *buf = [linearity count] - 1;
       sub_19B8D8B54(&__p, buf);
       v79 = __p;
       if (v192 - __p == 8)
@@ -288,10 +288,10 @@ LABEL_56:
         v81 = &v79[v80];
         v82 = *v81;
         v83 = v81[1];
-        if (v82 < [a3 count] && v83 < objc_msgSend(a3, "count"))
+        if (v82 < [linearity count] && v83 < objc_msgSend(linearity, "count"))
         {
-          v84 = [a3 objectAtIndexedSubscript:v82];
-          v85 = [a3 objectAtIndexedSubscript:v83];
+          v84 = [linearity objectAtIndexedSubscript:v82];
+          v85 = [linearity objectAtIndexedSubscript:v83];
           if (qword_1EAFE4798 != -1)
           {
             dispatch_once(&qword_1EAFE4798, &unk_1F0E6E598);
@@ -383,7 +383,7 @@ LABEL_106:
         v112 = 20.0;
         v105 = 0.0;
         v104 = 0.0;
-        v113 = a3;
+        linearityCopy3 = linearity;
         do
         {
           v114 = v79[v111];
@@ -392,8 +392,8 @@ LABEL_106:
           v187 = v116 - v114;
           if (v116 - v114 >= 0xA)
           {
-            v117 = [v113 objectAtIndexedSubscript:v114];
-            v118 = [v113 objectAtIndexedSubscript:v116];
+            v117 = [linearityCopy3 objectAtIndexedSubscript:v114];
+            v118 = [linearityCopy3 objectAtIndexedSubscript:v116];
             [v117 coordinate];
             v120 = v119;
             [v117 coordinate];
@@ -426,10 +426,10 @@ LABEL_106:
                 do
                 {
                   v142 = v141 + 5;
-                  if (v141 + 5 < [a3 count])
+                  if (v141 + 5 < [linearity count])
                   {
-                    v143 = [a3 objectAtIndexedSubscript:v141];
-                    v144 = [a3 objectAtIndexedSubscript:v141 + 5];
+                    v143 = [linearity objectAtIndexedSubscript:v141];
+                    v144 = [linearity objectAtIndexedSubscript:v141 + 5];
                     [v143 coordinate];
                     v146 = v145;
                     [v143 coordinate];
@@ -475,11 +475,11 @@ LABEL_106:
                   {
                     v156 = v114;
                     v114 += 5;
-                    if (v156 + 5 < [a3 count] && v156 + 10 < objc_msgSend(a3, "count"))
+                    if (v156 + 5 < [linearity count] && v156 + 10 < objc_msgSend(linearity, "count"))
                     {
-                      v157 = [a3 objectAtIndexedSubscript:v156];
-                      v158 = [a3 objectAtIndexedSubscript:v156 + 5];
-                      v159 = [a3 objectAtIndexedSubscript:v156 + 10];
+                      v157 = [linearity objectAtIndexedSubscript:v156];
+                      v158 = [linearity objectAtIndexedSubscript:v156 + 5];
+                      v159 = [linearity objectAtIndexedSubscript:v156 + 10];
                       [v157 coordinate];
                       v161 = v160;
                       [v157 coordinate];
@@ -527,7 +527,7 @@ LABEL_106:
 
               v177 = fmax(v137 / -60.0 + 1.0, 0.0) * v176 + (1.0 - v176) * fmax(v138 / -120.0 + 1.0, 0.0);
               v178 = pow(v177, 2.2);
-              v113 = a3;
+              linearityCopy3 = linearity;
               if (qword_1EAFE4798 != -1)
               {
                 dispatch_once(&qword_1EAFE4798, &unk_1F0E6E598);
@@ -701,7 +701,7 @@ LABEL_106:
       if (os_log_type_enabled(qword_1EAFE47A0, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349056;
-        *&buf[4] = [a3 count];
+        *&buf[4] = [linearity count];
         _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_DEFAULT, "CLOR,routeLinearity,warning,insufficient samples,%{public}zu", buf, 0xCu);
       }
 
@@ -715,7 +715,7 @@ LABEL_106:
         }
 
         LODWORD(v214[0]) = 134349056;
-        *(v214 + 4) = [a3 count];
+        *(v214 + 4) = [linearity count];
         v7 = _os_log_send_and_compose_impl();
         sub_19B885924("Generic", 1, 0, 2, "+[CLRouteAnalyzer calculateRouteLinearity:]", "CoreLocation: %s\n", v7);
         if (v7 == buf)
@@ -770,13 +770,13 @@ LABEL_27:
   return v6;
 }
 
-+ (id)extractRouteCorners:(id)a3
++ (id)extractRouteCorners:(id)corners
 {
   v179 = *MEMORY[0x1E69E9840];
   __src = 0;
   v159 = 0;
   v160 = 0;
-  if (!a3)
+  if (!corners)
   {
     if (qword_1EAFE4798 != -1)
     {
@@ -817,8 +817,8 @@ LABEL_27:
     goto LABEL_167;
   }
 
-  v3 = a3;
-  if ([a3 count] < 0xA)
+  cornersCopy = corners;
+  if ([corners count] < 0xA)
   {
     if (qword_1EAFE4798 != -1)
     {
@@ -829,7 +829,7 @@ LABEL_27:
     if (os_log_type_enabled(qword_1EAFE47A0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      *&buf[4] = [v3 count];
+      *&buf[4] = [cornersCopy count];
       _os_log_impl(&dword_19B873000, v4, OS_LOG_TYPE_DEFAULT, "CLOR,extractRouteCorners,warning,insufficient samples,%{public}zu", buf, 0xCu);
     }
 
@@ -846,7 +846,7 @@ LABEL_27:
     }
 
     LODWORD(v168[0]) = 134349056;
-    *(v168 + 4) = [v3 count];
+    *(v168 + 4) = [cornersCopy count];
     v6 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "+[CLRouteAnalyzer extractRouteCorners:]", "CoreLocation: %s\n", v6);
     if (v6 == buf)
@@ -857,10 +857,10 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  for (i = 0; i < [v3 count]; ++i)
+  for (i = 0; i < [cornersCopy count]; ++i)
   {
-    v11 = v3;
-    v12 = [v3 objectAtIndexedSubscript:i];
+    v11 = cornersCopy;
+    v12 = [cornersCopy objectAtIndexedSubscript:i];
     if (qword_1EAFE4798 != -1)
     {
       dispatch_once(&qword_1EAFE4798, &unk_1F0E6E598);
@@ -915,7 +915,7 @@ LABEL_27:
       }
     }
 
-    v3 = v11;
+    cornersCopy = v11;
   }
 
   memset(v168, 0, sizeof(v168));
@@ -923,8 +923,8 @@ LABEL_27:
   v170 = 0;
   *v169 = xmmword_19BA89490;
   v171 = 0x3FF0000000000000;
-  v172 = v3;
-  sub_19B9CA9C0(v168, [v3 count]);
+  v172 = cornersCopy;
+  sub_19B9CA9C0(v168, [cornersCopy count]);
   *buf = 0;
   sub_19B8F518C(v168, buf);
   if ([v172 count] >= 2)
@@ -955,7 +955,7 @@ LABEL_27:
     while (v26 < [v172 count]);
   }
 
-  v154 = v3;
+  v154 = cornersCopy;
   __p = 0;
   v156 = 0;
   v157 = 0;

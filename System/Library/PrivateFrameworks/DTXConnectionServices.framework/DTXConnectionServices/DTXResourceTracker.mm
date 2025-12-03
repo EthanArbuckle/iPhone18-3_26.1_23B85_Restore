@@ -2,12 +2,12 @@
 - (DTXResourceTracker)init;
 - (unint64_t)maxChunkSize;
 - (unint64_t)totalSize;
-- (unsigned)acquireSize:(unint64_t)a3;
-- (void)forceAcquireSize:(unint64_t)a3;
-- (void)releaseSize:(unint64_t)a3;
+- (unsigned)acquireSize:(unint64_t)size;
+- (void)forceAcquireSize:(unint64_t)size;
+- (void)releaseSize:(unint64_t)size;
 - (void)resumeLimits;
-- (void)setMaxChunkSize:(unint64_t)a3;
-- (void)setTotalSize:(unint64_t)a3;
+- (void)setMaxChunkSize:(unint64_t)size;
+- (void)setTotalSize:(unint64_t)size;
 - (void)suspendLimits;
 @end
 
@@ -54,7 +54,7 @@
   return v3;
 }
 
-- (void)setTotalSize:(unint64_t)a3
+- (void)setTotalSize:(unint64_t)size
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -62,7 +62,7 @@
   v4[2] = sub_247F44770;
   v4[3] = &unk_278EEE980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_sync(queue, v4);
 }
 
@@ -85,7 +85,7 @@
   return v3;
 }
 
-- (void)setMaxChunkSize:(unint64_t)a3
+- (void)setMaxChunkSize:(unint64_t)size
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -93,11 +93,11 @@
   v4[2] = sub_247F448FC;
   v4[3] = &unk_278EEE980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_sync(queue, v4);
 }
 
-- (unsigned)acquireSize:(unint64_t)a3
+- (unsigned)acquireSize:(unint64_t)size
 {
   v14 = 0;
   v15 = &v14;
@@ -118,7 +118,7 @@
     v9[4] = self;
     v9[5] = &v10;
     v9[6] = &v14;
-    v9[7] = a3;
+    v9[7] = size;
     dispatch_sync(queue, v9);
     if (*(v15 + 24) == 1)
     {
@@ -133,7 +133,7 @@
   return v7;
 }
 
-- (void)forceAcquireSize:(unint64_t)a3
+- (void)forceAcquireSize:(unint64_t)size
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -141,11 +141,11 @@
   v4[2] = sub_247F44B90;
   v4[3] = &unk_278EEE980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_sync(queue, v4);
 }
 
-- (void)releaseSize:(unint64_t)a3
+- (void)releaseSize:(unint64_t)size
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -153,7 +153,7 @@
   v4[2] = sub_247F44C18;
   v4[3] = &unk_278EEE980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = size;
   dispatch_sync(queue, v4);
 }
 

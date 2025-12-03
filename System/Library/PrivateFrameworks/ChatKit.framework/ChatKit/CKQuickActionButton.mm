@@ -1,25 +1,25 @@
 @interface CKQuickActionButton
-- (CKQuickActionButton)initWithInitialState:(unint64_t)a3;
+- (CKQuickActionButton)initWithInitialState:(unint64_t)state;
 - (CKQuickActionButtonAnimationDelegate)animationDelegate;
 - (CKQuickActionButtonDelegate)delegate;
 - (UIEdgeInsets)contentEdgeInsets;
-- (UIEdgeInsets)contentEdgeInsetsForState:(unint64_t)a3;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (UIEdgeInsets)contentEdgeInsetsForState:(unint64_t)state;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)createContextMenu;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_buttonTouchUpInside;
 - (void)_registerForTraitChanges;
-- (void)configureForState:(unint64_t)a3 animated:(BOOL)a4 identifier:(id)a5 wasDeferred:(BOOL)a6;
+- (void)configureForState:(unint64_t)state animated:(BOOL)animated identifier:(id)identifier wasDeferred:(BOOL)deferred;
 - (void)layoutSubviews;
-- (void)setAnimating:(BOOL)a3;
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4;
+- (void)setAnimating:(BOOL)animating;
+- (void)setState:(unint64_t)state animated:(BOOL)animated;
 - (void)updateImageViewFrameForContentEdgeInsets;
 @end
 
 @implementation CKQuickActionButton
 
-- (CKQuickActionButton)initWithInitialState:(unint64_t)a3
+- (CKQuickActionButton)initWithInitialState:(unint64_t)state
 {
   v21.receiver = self;
   v21.super_class = CKQuickActionButton;
@@ -35,14 +35,14 @@
     button = v4->_button;
     v4->_button = v7;
 
-    v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v10 = [v9 isSharedPhotoCollectionsEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isSharedPhotoCollectionsEnabled = [mEMORY[0x1E69A8070] isSharedPhotoCollectionsEnabled];
 
-    if (v10)
+    if (isSharedPhotoCollectionsEnabled)
     {
       v11 = v4->_button;
-      v12 = [(CKQuickActionButton *)v4 createContextMenu];
-      [(UIButton *)v11 setMenu:v12];
+      createContextMenu = [(CKQuickActionButton *)v4 createContextMenu];
+      [(UIButton *)v11 setMenu:createContextMenu];
     }
 
     [(UIButton *)v4->_button addTarget:v4 action:sel__buttonTouchUpInside forControlEvents:64];
@@ -64,9 +64,9 @@
     deferredConfigurationStates = v4->_deferredConfigurationStates;
     v4->_deferredConfigurationStates = v17;
 
-    v4->_state = a3;
-    v19 = [MEMORY[0x1E696AEC0] stringGUID];
-    [(CKQuickActionButton *)v4 configureForState:a3 animated:0 identifier:v19 wasDeferred:0];
+    v4->_state = state;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    [(CKQuickActionButton *)v4 configureForState:state animated:0 identifier:stringGUID wasDeferred:0];
 
     [(CKQuickActionButton *)v4 _registerForTraitChanges];
   }
@@ -76,8 +76,8 @@
 
 - (void)_registerForTraitChanges
 {
-  v3 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-  v6 = [v3 mutableCopy];
+  systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+  v6 = [systemTraitsAffectingColorAppearance mutableCopy];
 
   [v6 addObject:objc_opt_class()];
   v4 = [v6 copy];
@@ -127,7 +127,7 @@ void __47__CKQuickActionButton__registerForTraitChanges__block_invoke(uint64_t a
   [(UIImageView *)imageView setFrame:v12, v18, v16, v10 - (v20 + v21)];
 }
 
-- (UIEdgeInsets)contentEdgeInsetsForState:(unint64_t)a3
+- (UIEdgeInsets)contentEdgeInsetsForState:(unint64_t)state
 {
   v3 = *MEMORY[0x1E69DDCE0];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -140,35 +140,35 @@ void __47__CKQuickActionButton__registerForTraitChanges__block_invoke(uint64_t a
   return result;
 }
 
-- (void)configureForState:(unint64_t)a3 animated:(BOOL)a4 identifier:(id)a5 wasDeferred:(BOOL)a6
+- (void)configureForState:(unint64_t)state animated:(BOOL)animated identifier:(id)identifier wasDeferred:(BOOL)deferred
 {
-  v6 = a6;
-  v7 = a4;
+  deferredCopy = deferred;
+  animatedCopy = animated;
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  if (v6 && IMOSLoggingEnabled())
+  identifierCopy = identifier;
+  if (deferredCopy && IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf.a) = 134218242;
-      *(&buf.a + 4) = a3;
+      *(&buf.a + 4) = state;
       WORD2(buf.b) = 2112;
-      *(&buf.b + 6) = v10;
+      *(&buf.b + 6) = identifierCopy;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Performing deferred state config for state %lu. identifier: %@", &buf, 0x16u);
     }
   }
 
-  v12 = [(CKQuickActionButton *)self currentAnimationIdentifier];
-  if (!v12 || (-[CKQuickActionButton currentAnimationIdentifier](self, "currentAnimationIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isEqualToString:v10], v13, v12, (v14 & 1) != 0))
+  currentAnimationIdentifier = [(CKQuickActionButton *)self currentAnimationIdentifier];
+  if (!currentAnimationIdentifier || (-[CKQuickActionButton currentAnimationIdentifier](self, "currentAnimationIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isEqualToString:identifierCopy], v13, currentAnimationIdentifier, (v14 & 1) != 0))
   {
-    [(CKQuickActionButton *)self setCurrentAnimationIdentifier:v10];
+    [(CKQuickActionButton *)self setCurrentAnimationIdentifier:identifierCopy];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __73__CKQuickActionButton_configureForState_animated_identifier_wasDeferred___block_invoke;
     aBlock[3] = &unk_1E72ED810;
     aBlock[4] = self;
-    aBlock[5] = a3;
+    aBlock[5] = state;
     v15 = _Block_copy(aBlock);
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -176,28 +176,28 @@ void __47__CKQuickActionButton__registerForTraitChanges__block_invoke(uint64_t a
     v44[3] = &unk_1E72EBA18;
     v44[4] = self;
     v16 = _Block_copy(v44);
-    if (v7)
+    if (animatedCopy)
     {
       [(CKQuickActionButton *)self setAnimating:1];
-      if (a3 < 2)
+      if (state < 2)
       {
         v30 = 0;
       }
 
       else
       {
-        if (a3 != 3)
+        if (state != 3)
         {
-          if (a3 == 2)
+          if (state == 2)
           {
-            v17 = [(CKQuickActionButton *)self imageView];
-            [v17 setAlpha:1.0];
+            imageView = [(CKQuickActionButton *)self imageView];
+            [imageView setAlpha:1.0];
 
             v18 = +[CKUIBehavior sharedBehaviors];
-            v19 = [v18 theme];
-            v20 = [v19 quickActionButtonBurstColor];
+            theme = [v18 theme];
+            quickActionButtonBurstColor = [theme quickActionButtonBurstColor];
 
-            v21 = [_TtC7ChatKit21CKMaterialPlatterView materialPlatterViewWithColor:v20];
+            v21 = [_TtC7ChatKit21CKMaterialPlatterView materialPlatterViewWithColor:quickActionButtonBurstColor];
             [(CKMaterialPlatterView *)self->_backgroundView frame];
             [v21 setFrame:?];
             CGAffineTransformMakeScale(&buf, 0.0, 0.0);
@@ -237,7 +237,7 @@ void __47__CKQuickActionButton__registerForTraitChanges__block_invoke(uint64_t a
       v33[2] = __73__CKQuickActionButton_configureForState_animated_identifier_wasDeferred___block_invoke_5;
       v33[3] = &unk_1E72F51F0;
       v33[4] = self;
-      v36 = a3;
+      stateCopy = state;
       v37 = 0x3FD3333333333333;
       v34 = v15;
       v35 = v16;
@@ -261,19 +261,19 @@ LABEL_22:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       LODWORD(buf.a) = 134218242;
-      *(&buf.a + 4) = a3;
+      *(&buf.a + 4) = state;
       WORD2(buf.b) = 2112;
-      *(&buf.b + 6) = v10;
+      *(&buf.b + 6) = identifierCopy;
       _os_log_impl(&dword_19020E000, v26, OS_LOG_TYPE_INFO, "Deferring state config for state %lu. identifier: %@", &buf, 0x16u);
     }
   }
 
-  v27 = [(CKQuickActionButton *)self deferredAnimationIdentifiers];
-  [v27 addObject:v10];
+  deferredAnimationIdentifiers = [(CKQuickActionButton *)self deferredAnimationIdentifiers];
+  [deferredAnimationIdentifiers addObject:identifierCopy];
 
-  v28 = [(CKQuickActionButton *)self deferredConfigurationStates];
-  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v28 setObject:v29 forKey:v10];
+  deferredConfigurationStates = [(CKQuickActionButton *)self deferredConfigurationStates];
+  v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
+  [deferredConfigurationStates setObject:v29 forKey:identifierCopy];
 
 LABEL_23:
 }
@@ -442,72 +442,72 @@ void __73__CKQuickActionButton_configureForState_animated_identifier_wasDeferred
   [v7 animateWithDuration:0 delay:v11 options:v9 animations:v8 completion:v5];
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  v3 = a3;
-  if ([(CKQuickActionButton *)self isAnimating]!= a3)
+  animatingCopy = animating;
+  if ([(CKQuickActionButton *)self isAnimating]!= animating)
   {
-    self->_animating = v3;
-    v5 = [(CKQuickActionButton *)self animationDelegate];
-    v6 = v5;
-    if (v3)
+    self->_animating = animatingCopy;
+    animationDelegate = [(CKQuickActionButton *)self animationDelegate];
+    v6 = animationDelegate;
+    if (animatingCopy)
     {
-      [v5 quickActionButtonAnimationDidBegin:self];
+      [animationDelegate quickActionButtonAnimationDidBegin:self];
     }
 
     else
     {
-      [v5 quickActionButtonAnimationDidEnd:self];
+      [animationDelegate quickActionButtonAnimationDidEnd:self];
     }
   }
 }
 
-- (void)setState:(unint64_t)a3 animated:(BOOL)a4
+- (void)setState:(unint64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  if ([(CKQuickActionButton *)self state]!= a3)
+  animatedCopy = animated;
+  if ([(CKQuickActionButton *)self state]!= state)
   {
-    self->_state = a3;
-    v7 = [MEMORY[0x1E696AEC0] stringGUID];
-    [(CKQuickActionButton *)self configureForState:a3 animated:v4 identifier:v7 wasDeferred:0];
+    self->_state = state;
+    stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
+    [(CKQuickActionButton *)self configureForState:state animated:animatedCopy identifier:stringGUID wasDeferred:0];
   }
 }
 
 - (void)_buttonTouchUpInside
 {
-  v3 = [(CKQuickActionButton *)self delegate];
-  [v3 quickActionButtonWasTapped:self];
+  delegate = [(CKQuickActionButton *)self delegate];
+  [delegate quickActionButtonWasTapped:self];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CKQuickActionButton *)self button];
-  [v8 frame];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  button = [(CKQuickActionButton *)self button];
+  [button frame];
   v15.x = x;
   v15.y = y;
   v9 = CGRectContainsPoint(v16, v15);
 
   if (v9)
   {
-    v10 = [(CKQuickActionButton *)self button];
+    button2 = [(CKQuickActionButton *)self button];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CKQuickActionButton;
-    v10 = [(CKQuickActionButton *)&v13 hitTest:v7 withEvent:x, y];
+    button2 = [(CKQuickActionButton *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
-  v11 = v10;
+  v11 = button2;
 
   return v11;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -519,26 +519,26 @@ void __73__CKQuickActionButton_configureForState_animated_identifier_wasDeferred
   return v4;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DCE28];
-  v6 = a3;
+  interactionCopy = interaction;
   v7 = objc_alloc_init(v5);
   v8 = MEMORY[0x1E69DC728];
-  v9 = [v6 view];
-  [v9 center];
+  view = [interactionCopy view];
+  [view center];
   v11 = v10;
   v13 = v12;
-  v14 = [v6 view];
-  [v14 frame];
+  view2 = [interactionCopy view];
+  [view2 frame];
   v15 = [v8 bezierPathWithArcCenter:1 radius:v11 startAngle:v13 endAngle:CGRectGetWidth(v22) * 0.5 clockwise:{0.0, 6.28318531}];
   [v7 setVisiblePath:v15];
 
   v16 = objc_alloc(MEMORY[0x1E69DD070]);
-  v17 = [v6 view];
+  view3 = [interactionCopy view];
 
-  v18 = [v17 superview];
-  v19 = [v16 initWithView:v18 parameters:v7];
+  superview = [view3 superview];
+  v19 = [v16 initWithView:superview parameters:v7];
 
   return v19;
 }

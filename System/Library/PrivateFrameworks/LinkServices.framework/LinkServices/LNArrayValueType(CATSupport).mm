@@ -8,21 +8,21 @@
 
 - (id)cat_keyPath
 {
-  v1 = [a1 memberValueType];
-  v2 = [v1 cat_keyPath];
+  memberValueType = [self memberValueType];
+  cat_keyPath = [memberValueType cat_keyPath];
 
-  return v2;
+  return cat_keyPath;
 }
 
 - (id)cat_value:()CATSupport
 {
-  v4 = [a3 value];
-  if (v4)
+  value = [a3 value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = value;
     }
 
     else
@@ -42,7 +42,7 @@
   v9[1] = 3221225472;
   v9[2] = __42__LNArrayValueType_CATSupport__cat_value___block_invoke;
   v9[3] = &unk_1E74B0828;
-  v9[4] = a1;
+  v9[4] = self;
   v7 = [v6 if_map:v9];
 
   return v7;
@@ -50,9 +50,9 @@
 
 - (id)cat_dialogType
 {
-  v1 = [a1 memberValueType];
-  v2 = [v1 cat_dialogType];
-  v3 = [v2 stringByAppendingString:@"[]"];
+  memberValueType = [self memberValueType];
+  cat_dialogType = [memberValueType cat_dialogType];
+  v3 = [cat_dialogType stringByAppendingString:@"[]"];
 
   return v3;
 }

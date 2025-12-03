@@ -1,31 +1,31 @@
 @interface CPLayoutMaker
-- (BOOL)column:(id)a3 fits:(id)a4;
-- (void)makeLayouts:(id)a3 from:(id)a4;
+- (BOOL)column:(id)column fits:(id)fits;
+- (void)makeLayouts:(id)layouts from:(id)from;
 @end
 
 @implementation CPLayoutMaker
 
-- (void)makeLayouts:(id)a3 from:(id)a4
+- (void)makeLayouts:(id)layouts from:(id)from
 {
-  [a4 sortUsingSelector:sel_compareTopDescending_];
-  v7 = [a4 count];
+  [from sortUsingSelector:sel_compareTopDescending_];
+  v7 = [from count];
   v8 = v7;
   if (v7)
   {
     v9 = objc_alloc_init(CPLayoutArea);
-    -[CPLayoutArea setHasRotatedCharacters:](v9, "setHasRotatedCharacters:", [a3 hasRotatedCharacters]);
-    [a3 add:v9];
+    -[CPLayoutArea setHasRotatedCharacters:](v9, "setHasRotatedCharacters:", [layouts hasRotatedCharacters]);
+    [layouts add:v9];
 
     v10 = 0;
     do
     {
-      v11 = [a4 objectAtIndex:v10];
+      v11 = [from objectAtIndex:v10];
       if (![(CPLayoutMaker *)self column:v11 fits:v9])
       {
         [(CPChunk *)v9 sortUsingSelector:sel_compareX_];
         v9 = objc_alloc_init(CPLayoutArea);
-        -[CPLayoutArea setHasRotatedCharacters:](v9, "setHasRotatedCharacters:", [a3 hasRotatedCharacters]);
-        [a3 add:v9];
+        -[CPLayoutArea setHasRotatedCharacters:](v9, "setHasRotatedCharacters:", [layouts hasRotatedCharacters]);
+        [layouts add:v9];
       }
 
       [(CPChunk *)v9 add:v11];
@@ -38,16 +38,16 @@
   }
 }
 
-- (BOOL)column:(id)a3 fits:(id)a4
+- (BOOL)column:(id)column fits:(id)fits
 {
-  v6 = [a4 count];
+  v6 = [fits count];
   if (!v6)
   {
     return 1;
   }
 
   v7 = v6;
-  [a3 normalizedBounds];
+  [column normalizedBounds];
   v12 = v8;
   rect1 = v9;
   v13 = v10;
@@ -81,7 +81,7 @@
   while (1)
   {
     v17 = *&v15;
-    [objc_msgSend(a4 childAtIndex:{v16), "normalizedBounds"}];
+    [objc_msgSend(fits childAtIndex:{v16), "normalizedBounds"}];
     v19 = v18;
     y = v20;
     v23 = v22;

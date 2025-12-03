@@ -1,16 +1,16 @@
 @interface AMSCodableResponseDecoder
-- (id)resultFromResult:(id)a3 error:(id *)a4;
+- (id)resultFromResult:(id)result error:(id *)error;
 @end
 
 @implementation AMSCodableResponseDecoder
 
-- (id)resultFromResult:(id)a3 error:(id *)a4
+- (id)resultFromResult:(id)result error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_192C749E0(v5);
+  resultCopy = result;
+  selfCopy = self;
+  sub_192C749E0(resultCopy);
 
-  return v5;
+  return resultCopy;
 }
 
 @end

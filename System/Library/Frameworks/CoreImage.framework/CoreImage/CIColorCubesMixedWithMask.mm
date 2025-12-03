@@ -74,10 +74,10 @@
 
 - (BOOL)_checkInputs
 {
-  v3 = [(NSNumber *)self->inputCubeDimension intValue];
-  if ((v3 - 129) > 0xFFFFFF80)
+  intValue = [(NSNumber *)self->inputCubeDimension intValue];
+  if ((intValue - 129) > 0xFFFFFF80)
   {
-    v4 = v3;
+    v4 = intValue;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -150,12 +150,12 @@
   }
 
   [(CIFilter *)v4 setValue:self->inputCube0Data forKey:@"inputCubeData"];
-  v6 = [(CIFilter *)v4 outputImage];
+  outputImage = [(CIFilter *)v4 outputImage];
   [(CIFilter *)v4 setValue:self->inputCube1Data forKey:@"inputCubeData"];
-  v7 = [(CIFilter *)v4 outputImage];
+  outputImage2 = [(CIFilter *)v4 outputImage];
   v10[0] = @"inputBackgroundImage";
   v10[1] = @"inputMaskImage";
-  v11[0] = v6;
+  v11[0] = outputImage;
   inputMaskImage = self->inputMaskImage;
   if (!inputMaskImage)
   {
@@ -163,7 +163,7 @@
   }
 
   v11[1] = inputMaskImage;
-  return -[CIImage imageByApplyingFilter:withInputParameters:](v7, "imageByApplyingFilter:withInputParameters:", @"CIBlendWithMask", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2]);
+  return -[CIImage imageByApplyingFilter:withInputParameters:](outputImage2, "imageByApplyingFilter:withInputParameters:", @"CIBlendWithMask", [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2]);
 }
 
 @end

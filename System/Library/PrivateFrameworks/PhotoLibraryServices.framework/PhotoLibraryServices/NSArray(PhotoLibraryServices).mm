@@ -14,7 +14,7 @@
 
 - (id)_pl_prettyDescriptionWithIndent:()PhotoLibraryServices
 {
-  if ([a1 count])
+  if ([self count])
   {
     pl_result_with_autoreleasepool();
   }
@@ -30,14 +30,14 @@
 
 - (id)_pl_safeObjectAtIndex:()PhotoLibraryServices
 {
-  if ([a1 count] <= a3)
+  if ([self count] <= a3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [a1 objectAtIndexedSubscript:a3];
+    v5 = [self objectAtIndexedSubscript:a3];
   }
 
   return v5;
@@ -47,13 +47,13 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -64,37 +64,37 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = v4[2](v4, v11);
         if (v12)
         {
-          [v5 setObject:v11 forKey:{v12, v14}];
+          [dictionary setObject:v11 forKey:{v12, v14}];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (id)_pl_groupBy:()PhotoLibraryServices
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -105,31 +105,31 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = v4[2](v4, v11);
         if (v12)
         {
-          v13 = [v5 objectForKey:{v12, v15}];
+          v13 = [dictionary objectForKey:{v12, v15}];
           if (!v13)
           {
             v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            [v5 setObject:v13 forKey:v12];
+            [dictionary setObject:v13 forKey:v12];
           }
 
           [v13 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (uint64_t)_pl_any:()PhotoLibraryServices
@@ -140,8 +140,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -151,7 +151,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (v4[2](v4, *(*(&v10 + 1) + 8 * i)))
@@ -161,7 +161,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -184,8 +184,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -195,7 +195,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -206,7 +206,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -224,16 +224,16 @@ LABEL_11:
 - (id)_pl_flatMap:()PhotoLibraryServices
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__NSArray_PhotoLibraryServices___pl_flatMap___block_invoke;
   v11[3] = &unk_1E75725F0;
-  v6 = v5;
+  v6 = array;
   v12 = v6;
   v13 = v4;
   v7 = v4;
-  [a1 enumerateObjectsUsingBlock:v11];
+  [self enumerateObjectsUsingBlock:v11];
   v8 = v13;
   v9 = v6;
 
@@ -249,8 +249,8 @@ LABEL_11:
   v9[3] = &unk_1E75725C8;
   v10 = v4;
   v5 = v4;
-  v6 = [a1 indexesOfObjectsPassingTest:v9];
-  v7 = [a1 objectsAtIndexes:v6];
+  v6 = [self indexesOfObjectsPassingTest:v9];
+  v7 = [self objectsAtIndexes:v6];
 
   return v7;
 }
@@ -258,12 +258,12 @@ LABEL_11:
 - (id)_pl_map:()PhotoLibraryServices
 {
   v4 = a3;
-  if ([a1 count] > 0x80)
+  if ([self count] > 0x80)
   {
     v6 = v4;
     v7 = MEMORY[0x1E695DF70];
-    v8 = a1;
-    v9 = [[v7 alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+    selfCopy = self;
+    v9 = [[v7 alloc] initWithCapacity:{objc_msgSend(selfCopy, "count")}];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __PLArrayMapSlowPath_block_invoke;
@@ -272,7 +272,7 @@ LABEL_11:
     v10 = v9;
     v15 = v10;
     v11 = v6;
-    [v8 enumerateObjectsUsingBlock:v14];
+    [selfCopy enumerateObjectsUsingBlock:v14];
 
     v12 = v15;
     v5 = v10;
@@ -280,7 +280,7 @@ LABEL_11:
 
   else
   {
-    v5 = PLArrayMapFastPath(a1, v4);
+    v5 = PLArrayMapFastPath(self, v4);
   }
 
   return v5;

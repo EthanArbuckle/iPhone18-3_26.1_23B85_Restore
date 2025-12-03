@@ -1,6 +1,6 @@
 @interface IMDMessageFromStorageMonitor
 + (IMDMessageFromStorageMonitor)sharedStorageMonitor;
-- (void)incomingMessageProcessedWithElapsedTime:(double)a3;
+- (void)incomingMessageProcessedWithElapsedTime:(double)time;
 - (void)showTapToRadarOnSlowDelivery;
 @end
 
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (void)incomingMessageProcessedWithElapsedTime:(double)a3
+- (void)incomingMessageProcessedWithElapsedTime:(double)time
 {
-  v4 = self;
-  sub_22B79C534(a3);
+  selfCopy = self;
+  sub_22B79C534(time);
 }
 
 - (void)showTapToRadarOnSlowDelivery
 {
-  v2 = self;
+  selfCopy = self;
   sub_22B79C910();
 }
 

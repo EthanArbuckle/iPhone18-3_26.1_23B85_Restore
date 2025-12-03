@@ -1,24 +1,24 @@
 @interface MAAutoAssetSetInfoDesire
-- (MAAutoAssetSetInfoDesire)initWithCoder:(id)a3;
-- (id)initForClientAssetSetPolicy:(id)a3 reasonDesired:(id)a4 awaitingDownloadOfDiscovered:(BOOL)a5 withCheckWaitTimeout:(int64_t)a6 withLockWaitTimeout:(int64_t)a7 desiringProgress:(BOOL)a8;
+- (MAAutoAssetSetInfoDesire)initWithCoder:(id)coder;
+- (id)initForClientAssetSetPolicy:(id)policy reasonDesired:(id)desired awaitingDownloadOfDiscovered:(BOOL)discovered withCheckWaitTimeout:(int64_t)timeout withLockWaitTimeout:(int64_t)waitTimeout desiringProgress:(BOOL)progress;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MAAutoAssetSetInfoDesire
 
 - (id)summary
 {
-  v4 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
-  if (v4)
+  clientAssetSetPolicy = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
+  if (clientAssetSetPolicy)
   {
   }
 
   else
   {
-    v5 = [(MAAutoAssetSetInfoDesire *)self desireReason];
+    desireReason = [(MAAutoAssetSetInfoDesire *)self desireReason];
 
-    if (!v5)
+    if (!desireReason)
     {
       v11 = @"byPolicy";
       goto LABEL_13;
@@ -26,31 +26,31 @@
   }
 
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v7 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
-  if (v7)
+  clientAssetSetPolicy2 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
+  if (clientAssetSetPolicy2)
   {
-    v2 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
-    v8 = [v2 summary];
+    clientAssetSetPolicy3 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
+    summary = [clientAssetSetPolicy3 summary];
   }
 
   else
   {
-    v8 = @"N";
+    summary = @"N";
   }
 
-  v9 = [(MAAutoAssetSetInfoDesire *)self desireReason];
-  if (v9)
+  desireReason2 = [(MAAutoAssetSetInfoDesire *)self desireReason];
+  if (desireReason2)
   {
-    v10 = [(MAAutoAssetSetInfoDesire *)self desireReason];
-    v11 = [v6 initWithFormat:@"clientAssetSetPolicy:%@|desireReason:%@", v8, v10];
+    desireReason3 = [(MAAutoAssetSetInfoDesire *)self desireReason];
+    v11 = [v6 initWithFormat:@"clientAssetSetPolicy:%@|desireReason:%@", summary, desireReason3];
   }
 
   else
   {
-    v11 = [v6 initWithFormat:@"clientAssetSetPolicy:%@|desireReason:%@", v8, @"N"];
+    v11 = [v6 initWithFormat:@"clientAssetSetPolicy:%@|desireReason:%@", summary, @"N"];
   }
 
-  if (v7)
+  if (clientAssetSetPolicy2)
   {
   }
 
@@ -150,7 +150,7 @@ LABEL_25:
 
   else
   {
-    v22 = [(MAAutoAssetSetInfoDesire *)self lockWaitTimeoutSecs];
+    lockWaitTimeoutSecs = [(MAAutoAssetSetInfoDesire *)self lockWaitTimeoutSecs];
     v23 = MEMORY[0x1E696AEC0];
     if ([(MAAutoAssetSetInfoDesire *)self awaitDownloadingOfDiscovered])
     {
@@ -172,7 +172,7 @@ LABEL_25:
       v25 = @"N";
     }
 
-    if (v22 == -101)
+    if (lockWaitTimeoutSecs == -101)
     {
       [v23 stringWithFormat:@"%@|awaitDowload:%@|checkSecs:%@, progressDesired:%@", v11, v24, v12, v25, v29];
     }
@@ -187,65 +187,65 @@ LABEL_25:
   return v26;
 }
 
-- (id)initForClientAssetSetPolicy:(id)a3 reasonDesired:(id)a4 awaitingDownloadOfDiscovered:(BOOL)a5 withCheckWaitTimeout:(int64_t)a6 withLockWaitTimeout:(int64_t)a7 desiringProgress:(BOOL)a8
+- (id)initForClientAssetSetPolicy:(id)policy reasonDesired:(id)desired awaitingDownloadOfDiscovered:(BOOL)discovered withCheckWaitTimeout:(int64_t)timeout withLockWaitTimeout:(int64_t)waitTimeout desiringProgress:(BOOL)progress
 {
-  v15 = a3;
-  v16 = a4;
+  policyCopy = policy;
+  desiredCopy = desired;
   v20.receiver = self;
   v20.super_class = MAAutoAssetSetInfoDesire;
   v17 = [(MAAutoAssetSetInfoDesire *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_clientAssetSetPolicy, a3);
-    objc_storeStrong(&v18->_desireReason, a4);
-    v18->_awaitDownloadingOfDiscovered = a5;
-    v18->_checkWaitTimeoutSecs = a6;
-    v18->_lockWaitTimeoutSecs = a7;
-    v18->_downloadProgressDesired = a8;
+    objc_storeStrong(&v17->_clientAssetSetPolicy, policy);
+    objc_storeStrong(&v18->_desireReason, desired);
+    v18->_awaitDownloadingOfDiscovered = discovered;
+    v18->_checkWaitTimeoutSecs = timeout;
+    v18->_lockWaitTimeoutSecs = waitTimeout;
+    v18->_downloadProgressDesired = progress;
   }
 
   return v18;
 }
 
-- (MAAutoAssetSetInfoDesire)initWithCoder:(id)a3
+- (MAAutoAssetSetInfoDesire)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MAAutoAssetSetInfoDesire;
   v5 = [(MAAutoAssetSetInfoDesire *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientAssetSetPolicy"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientAssetSetPolicy"];
     clientAssetSetPolicy = v5->_clientAssetSetPolicy;
     v5->_clientAssetSetPolicy = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desireReason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desireReason"];
     desireReason = v5->_desireReason;
     v5->_desireReason = v8;
 
-    v5->_awaitDownloadingOfDiscovered = [v4 decodeBoolForKey:@"awaitDownloadingOfDiscovered"];
-    v5->_checkWaitTimeoutSecs = [v4 decodeIntegerForKey:@"checkWaitTimeoutSecs"];
-    v5->_lockWaitTimeoutSecs = [v4 decodeIntegerForKey:@"lockWaitTimeoutSecs"];
-    v5->_downloadProgressDesired = [v4 decodeBoolForKey:@"downloadProgressDesired"];
+    v5->_awaitDownloadingOfDiscovered = [coderCopy decodeBoolForKey:@"awaitDownloadingOfDiscovered"];
+    v5->_checkWaitTimeoutSecs = [coderCopy decodeIntegerForKey:@"checkWaitTimeoutSecs"];
+    v5->_lockWaitTimeoutSecs = [coderCopy decodeIntegerForKey:@"lockWaitTimeoutSecs"];
+    v5->_downloadProgressDesired = [coderCopy decodeBoolForKey:@"downloadProgressDesired"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
-  [v6 encodeObject:v4 forKey:@"clientAssetSetPolicy"];
+  coderCopy = coder;
+  clientAssetSetPolicy = [(MAAutoAssetSetInfoDesire *)self clientAssetSetPolicy];
+  [coderCopy encodeObject:clientAssetSetPolicy forKey:@"clientAssetSetPolicy"];
 
-  v5 = [(MAAutoAssetSetInfoDesire *)self desireReason];
-  [v6 encodeObject:v5 forKey:@"desireReason"];
+  desireReason = [(MAAutoAssetSetInfoDesire *)self desireReason];
+  [coderCopy encodeObject:desireReason forKey:@"desireReason"];
 
-  [v6 encodeBool:-[MAAutoAssetSetInfoDesire awaitDownloadingOfDiscovered](self forKey:{"awaitDownloadingOfDiscovered"), @"awaitDownloadingOfDiscovered"}];
-  [v6 encodeInteger:-[MAAutoAssetSetInfoDesire checkWaitTimeoutSecs](self forKey:{"checkWaitTimeoutSecs"), @"checkWaitTimeoutSecs"}];
-  [v6 encodeInteger:-[MAAutoAssetSetInfoDesire lockWaitTimeoutSecs](self forKey:{"lockWaitTimeoutSecs"), @"lockWaitTimeoutSecs"}];
-  [v6 encodeBool:-[MAAutoAssetSetInfoDesire downloadProgressDesired](self forKey:{"downloadProgressDesired"), @"downloadProgressDesired"}];
+  [coderCopy encodeBool:-[MAAutoAssetSetInfoDesire awaitDownloadingOfDiscovered](self forKey:{"awaitDownloadingOfDiscovered"), @"awaitDownloadingOfDiscovered"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSetInfoDesire checkWaitTimeoutSecs](self forKey:{"checkWaitTimeoutSecs"), @"checkWaitTimeoutSecs"}];
+  [coderCopy encodeInteger:-[MAAutoAssetSetInfoDesire lockWaitTimeoutSecs](self forKey:{"lockWaitTimeoutSecs"), @"lockWaitTimeoutSecs"}];
+  [coderCopy encodeBool:-[MAAutoAssetSetInfoDesire downloadProgressDesired](self forKey:{"downloadProgressDesired"), @"downloadProgressDesired"}];
 }
 
 @end

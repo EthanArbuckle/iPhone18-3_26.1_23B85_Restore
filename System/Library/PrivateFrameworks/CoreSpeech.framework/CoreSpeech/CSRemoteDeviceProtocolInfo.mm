@@ -1,8 +1,8 @@
 @interface CSRemoteDeviceProtocolInfo
 + (id)defaultProtocolInfo;
 + (id)localDeviceProtocolInfo;
-- (CSRemoteDeviceProtocolInfo)initWithProtocolVersion:(unint64_t)a3 buildVersion:(id)a4 deviceProductVersion:(id)a5 deviceProductType:(id)a6 deviceCategory:(unint64_t)a7;
-- (CSRemoteDeviceProtocolInfo)initWithXPCObject:(id)a3;
+- (CSRemoteDeviceProtocolInfo)initWithProtocolVersion:(unint64_t)version buildVersion:(id)buildVersion deviceProductVersion:(id)productVersion deviceProductType:(id)type deviceCategory:(unint64_t)category;
+- (CSRemoteDeviceProtocolInfo)initWithXPCObject:(id)object;
 - (OS_xpc_object)xpcObject;
 @end
 
@@ -40,39 +40,39 @@
   return v3;
 }
 
-- (CSRemoteDeviceProtocolInfo)initWithXPCObject:(id)a3
+- (CSRemoteDeviceProtocolInfo)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = CSRemoteDeviceProtocolInfo;
   v5 = [(CSRemoteDeviceProtocolInfo *)&v16 init];
   if (v5)
   {
-    v5->_protocolVersion = xpc_dictionary_get_uint64(v4, "protocolVersion");
-    v5->_deviceCategory = xpc_dictionary_get_uint64(v4, "deviceCategory");
-    v6 = xpc_dictionary_get_value(v4, "buildVersion");
+    v5->_protocolVersion = xpc_dictionary_get_uint64(objectCopy, "protocolVersion");
+    v5->_deviceCategory = xpc_dictionary_get_uint64(objectCopy, "deviceCategory");
+    v6 = xpc_dictionary_get_value(objectCopy, "buildVersion");
 
     if (v6)
     {
-      v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v4, "buildVersion")];
+      v7 = [NSString stringWithUTF8String:xpc_dictionary_get_string(objectCopy, "buildVersion")];
       buildVersion = v5->_buildVersion;
       v5->_buildVersion = v7;
     }
 
-    v9 = xpc_dictionary_get_value(v4, "deviceProductVersion");
+    v9 = xpc_dictionary_get_value(objectCopy, "deviceProductVersion");
 
     if (v9)
     {
-      v10 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v4, "deviceProductVersion")];
+      v10 = [NSString stringWithUTF8String:xpc_dictionary_get_string(objectCopy, "deviceProductVersion")];
       deviceProductVersion = v5->_deviceProductVersion;
       v5->_deviceProductVersion = v10;
     }
 
-    v12 = xpc_dictionary_get_value(v4, "deviceProductType");
+    v12 = xpc_dictionary_get_value(objectCopy, "deviceProductType");
 
     if (v12)
     {
-      v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v4, "deviceProductType")];
+      v13 = [NSString stringWithUTF8String:xpc_dictionary_get_string(objectCopy, "deviceProductType")];
       deviceProductType = v5->_deviceProductType;
       v5->_deviceProductType = v13;
     }
@@ -81,22 +81,22 @@
   return v5;
 }
 
-- (CSRemoteDeviceProtocolInfo)initWithProtocolVersion:(unint64_t)a3 buildVersion:(id)a4 deviceProductVersion:(id)a5 deviceProductType:(id)a6 deviceCategory:(unint64_t)a7
+- (CSRemoteDeviceProtocolInfo)initWithProtocolVersion:(unint64_t)version buildVersion:(id)buildVersion deviceProductVersion:(id)productVersion deviceProductType:(id)type deviceCategory:(unint64_t)category
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  buildVersionCopy = buildVersion;
+  productVersionCopy = productVersion;
+  typeCopy = type;
   v19.receiver = self;
   v19.super_class = CSRemoteDeviceProtocolInfo;
   v16 = [(CSRemoteDeviceProtocolInfo *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_protocolVersion = a3;
-    objc_storeStrong(&v16->_buildVersion, a4);
-    objc_storeStrong(&v17->_deviceProductVersion, a5);
-    objc_storeStrong(&v17->_deviceProductType, a6);
-    v17->_deviceCategory = a7;
+    v16->_protocolVersion = version;
+    objc_storeStrong(&v16->_buildVersion, buildVersion);
+    objc_storeStrong(&v17->_deviceProductVersion, productVersion);
+    objc_storeStrong(&v17->_deviceProductType, type);
+    v17->_deviceCategory = category;
   }
 
   return v17;

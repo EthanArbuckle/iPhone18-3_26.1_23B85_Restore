@@ -1,12 +1,12 @@
 @interface NSNumber
-+ (NSNumber)numberWithCGFloat:(double)a3;
++ (NSNumber)numberWithCGFloat:(double)float;
 @end
 
 @implementation NSNumber
 
-+ (NSNumber)numberWithCGFloat:(double)a3
++ (NSNumber)numberWithCGFloat:(double)float
 {
-  v3 = [[a1 alloc] initWithCGFloat:a3];
+  v3 = [[self alloc] initWithCGFloat:float];
 
   return v3;
 }

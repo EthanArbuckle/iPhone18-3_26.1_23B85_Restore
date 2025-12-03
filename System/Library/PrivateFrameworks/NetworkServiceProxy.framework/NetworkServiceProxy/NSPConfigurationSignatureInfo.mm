@@ -1,56 +1,56 @@
 @interface NSPConfigurationSignatureInfo
 + (void)removeFromPreferences;
 - (BOOL)saveToPreferences;
-- (NSPConfigurationSignatureInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSPConfigurationSignatureInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initFromPreferences;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSPConfigurationSignatureInfo
 
-- (NSPConfigurationSignatureInfo)initWithCoder:(id)a3
+- (NSPConfigurationSignatureInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NSPConfigurationSignatureInfo;
   v5 = [(NSPConfigurationSignatureInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"certificates"];
+    v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"certificates"];
     certificates = v5->_certificates;
     v5->_certificates = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signature"];
     signature = v5->_signature;
     v5->_signature = v8;
 
-    v5->_signatureAlgorithm = [v4 decodeIntForKey:@"signatureAlgorithm"];
+    v5->_signatureAlgorithm = [coderCopy decodeIntForKey:@"signatureAlgorithm"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(NSPConfigurationSignatureInfo *)self certificates];
-  [v6 encodeObject:v4 forKey:@"certificates"];
+  coderCopy = coder;
+  certificates = [(NSPConfigurationSignatureInfo *)self certificates];
+  [coderCopy encodeObject:certificates forKey:@"certificates"];
 
-  v5 = [(NSPConfigurationSignatureInfo *)self signature];
-  [v6 encodeObject:v5 forKey:@"signature"];
+  signature = [(NSPConfigurationSignatureInfo *)self signature];
+  [coderCopy encodeObject:signature forKey:@"signature"];
 
-  [v6 encodeInt:-[NSPConfigurationSignatureInfo signatureAlgorithm](self forKey:{"signatureAlgorithm"), @"signatureAlgorithm"}];
+  [coderCopy encodeInt:-[NSPConfigurationSignatureInfo signatureAlgorithm](self forKey:{"signatureAlgorithm"), @"signatureAlgorithm"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPConfigurationSignatureInfo allocWithZone:?]];
-  v5 = [(NSPConfigurationSignatureInfo *)self certificates];
-  [(NSPConfigurationSignatureInfo *)v4 setCertificates:v5];
+  certificates = [(NSPConfigurationSignatureInfo *)self certificates];
+  [(NSPConfigurationSignatureInfo *)v4 setCertificates:certificates];
 
-  v6 = [(NSPConfigurationSignatureInfo *)self signature];
-  [(NSPConfigurationSignatureInfo *)v4 setSignature:v6];
+  signature = [(NSPConfigurationSignatureInfo *)self signature];
+  [(NSPConfigurationSignatureInfo *)v4 setSignature:signature];
 
   [(NSPConfigurationSignatureInfo *)v4 setSignatureAlgorithm:[(NSPConfigurationSignatureInfo *)self signatureAlgorithm]];
   return v4;
@@ -82,13 +82,13 @@ LABEL_11:
   v5 = *MEMORY[0x1E695E8B8];
   v6 = *MEMORY[0x1E695E8B0];
   _CFPreferencesSetFileProtectionClass();
-  v7 = [v3 encodedData];
-  CFPreferencesSetAppValue(@"NSPSignatureInfo", v7, v4);
+  encodedData = [v3 encodedData];
+  CFPreferencesSetAppValue(@"NSPSignatureInfo", encodedData, v4);
 
-  LODWORD(v7) = CFPreferencesAppSynchronize(v4);
+  LODWORD(encodedData) = CFPreferencesAppSynchronize(v4);
   v8 = nplog_obj();
   v9 = v8;
-  if (!v7)
+  if (!encodedData)
   {
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -169,7 +169,7 @@ LABEL_9:
       if (!v11 || (v11 = [(NSPConfigurationSignatureInfo *)v11 initWithCoder:v5]) != 0)
       {
         self = v11;
-        v10 = self;
+        selfCopy = self;
         goto LABEL_16;
       }
 
@@ -196,7 +196,7 @@ LABEL_9:
       CFRelease(v4);
     }
 
-    v10 = 0;
+    selfCopy = 0;
 LABEL_16:
 
     goto LABEL_17;
@@ -209,11 +209,11 @@ LABEL_16:
     _os_log_impl(&dword_1AE7E2000, v7, OS_LOG_TYPE_INFO, "no saved signature info", buf, 2u);
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_17:
 
   v12 = *MEMORY[0x1E69E9840];
-  return v10;
+  return selfCopy;
 }
 
 @end

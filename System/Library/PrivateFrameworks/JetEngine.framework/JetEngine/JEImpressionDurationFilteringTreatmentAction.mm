@@ -1,19 +1,19 @@
 @interface JEImpressionDurationFilteringTreatmentAction
-- (JEImpressionDurationFilteringTreatmentAction)initWithField:(id)a3 configuration:(id)a4;
-- (id)filteredDurationArray:(id)a3;
-- (id)filteredViewedInfoDetailed:(id)a3;
-- (id)performAction:(id)a3 context:(id)a4;
-- (id)updatedImpression:(id)a3;
+- (JEImpressionDurationFilteringTreatmentAction)initWithField:(id)field configuration:(id)configuration;
+- (id)filteredDurationArray:(id)array;
+- (id)filteredViewedInfoDetailed:(id)detailed;
+- (id)performAction:(id)action context:(id)context;
+- (id)updatedImpression:(id)impression;
 @end
 
 @implementation JEImpressionDurationFilteringTreatmentAction
 
-- (JEImpressionDurationFilteringTreatmentAction)initWithField:(id)a3 configuration:(id)a4
+- (JEImpressionDurationFilteringTreatmentAction)initWithField:(id)field configuration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = JEImpressionDurationFilteringTreatmentAction;
-  v7 = [(JETreatmentAction *)&v15 initWithField:a3 configuration:v6];
+  v7 = [(JETreatmentAction *)&v15 initWithField:field configuration:configurationCopy];
   if (!v7)
   {
 LABEL_12:
@@ -21,7 +21,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"threshold"];
+  v8 = [configurationCopy objectForKeyedSubscript:@"threshold"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -36,7 +36,7 @@ LABEL_12:
   if (v9)
   {
     v7->_durationThreshold = [(JEImpressionDurationFilteringTreatmentAction *)v9 longValue];
-    v10 = [v6 objectForKeyedSubscript:@"filters"];
+    v10 = [configurationCopy objectForKeyedSubscript:@"filters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,12 +63,12 @@ LABEL_13:
   return v9;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = JEImpressionDurationFilteringTreatmentAction;
-  v5 = [(JETreatmentAction *)&v21 performAction:a3 context:a4];
+  v5 = [(JETreatmentAction *)&v21 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -134,11 +134,11 @@ LABEL_13:
   return v7;
 }
 
-- (id)updatedImpression:(id)a3
+- (id)updatedImpression:(id)impression
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
-  v6 = [v4 objectForKeyedSubscript:@"viewedInfo"];
+  impressionCopy = impression;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:impressionCopy];
+  v6 = [impressionCopy objectForKeyedSubscript:@"viewedInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -146,7 +146,7 @@ LABEL_13:
     [v5 setObject:v7 forKeyedSubscript:@"viewedInfo"];
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"viewedInfoDetailed"];
+  v8 = [impressionCopy objectForKeyedSubscript:@"viewedInfoDetailed"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,8 +164,8 @@ LABEL_8:
   }
 
   v11 = [v5 objectForKeyedSubscript:@"viewedInfoDetailed"];
-  v12 = [v11 allKeys];
-  v13 = [v12 count];
+  allKeys = [v11 allKeys];
+  v13 = [allKeys count];
 
   if (v13)
   {
@@ -178,17 +178,17 @@ LABEL_9:
   return v14;
 }
 
-- (id)filteredViewedInfoDetailed:(id)a3
+- (id)filteredViewedInfoDetailed:(id)detailed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v3];
+  detailedCopy = detailed;
+  v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:detailedCopy];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [detailedCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -199,11 +199,11 @@ LABEL_9:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v3 objectForKeyedSubscript:v10];
+        v11 = [detailedCopy objectForKeyedSubscript:v10];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -220,7 +220,7 @@ LABEL_9:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -229,13 +229,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)filteredDurationArray:(id)a3
+- (id)filteredDurationArray:(id)array
 {
   v3 = MEMORY[0x1E696AE18];
   durationThreshold = self->_durationThreshold;
-  v5 = a3;
-  v6 = [v3 predicateWithFormat:@"d >= %ld", durationThreshold];
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  arrayCopy = array;
+  durationThreshold = [v3 predicateWithFormat:@"d >= %ld", durationThreshold];
+  v7 = [arrayCopy filteredArrayUsingPredicate:durationThreshold];
 
   return v7;
 }

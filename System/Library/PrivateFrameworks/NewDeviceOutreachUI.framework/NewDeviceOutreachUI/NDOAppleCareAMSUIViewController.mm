@@ -1,23 +1,23 @@
 @interface NDOAppleCareAMSUIViewController
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5;
-- (NDOAppleCareAMSUIViewController)initWithRequest:(id)a3;
-- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 deeplinkParams:(id)a6;
-- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 url:(id)a6 purchaseBody:(id)a7 deeplinkParams:(id)a8;
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion;
+- (NDOAppleCareAMSUIViewController)initWithRequest:(id)request;
+- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)warranty serialNumber:(id)number source:(id)source deeplinkParams:(id)params;
+- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)warranty serialNumber:(id)number source:(id)source url:(id)url purchaseBody:(id)body deeplinkParams:(id)params;
 - (NDOAppleCareAMSUIViewPresenterProtocol)presenter;
-- (id)_prepareRequestWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 isMultiCall:(BOOL)a6 url:(id)a7 deeplinkParams:(id)a8 purchaseBody:(id)a9;
+- (id)_prepareRequestWithWarranty:(id)warranty serialNumber:(id)number source:(id)source isMultiCall:(BOOL)call url:(id)url deeplinkParams:(id)params purchaseBody:(id)body;
 - (id)loadAMSUIView;
 - (void)loadAMSUIView;
 @end
 
 @implementation NDOAppleCareAMSUIViewController
 
-- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 deeplinkParams:(id)a6
+- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)warranty serialNumber:(id)number source:(id)source deeplinkParams:(id)params
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  paramsCopy = params;
+  sourceCopy = source;
+  numberCopy = number;
+  warrantyCopy = warranty;
   v14 = _NDOLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,20 +26,20 @@
     _os_log_impl(&dword_25BD8D000, v14, OS_LOG_TYPE_DEFAULT, "%s 1", buf, 0xCu);
   }
 
-  v15 = [(NDOAppleCareAMSUIViewController *)self _initWithWarranty:v13 serialNumber:v12 source:v11 isMultiCall:0 url:0 deeplinkParams:v10 purchaseBody:0];
+  v15 = [(NDOAppleCareAMSUIViewController *)self _initWithWarranty:warrantyCopy serialNumber:numberCopy source:sourceCopy isMultiCall:0 url:0 deeplinkParams:paramsCopy purchaseBody:0];
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 url:(id)a6 purchaseBody:(id)a7 deeplinkParams:(id)a8
+- (NDOAppleCareAMSUIViewController)initWithWarranty:(id)warranty serialNumber:(id)number source:(id)source url:(id)url purchaseBody:(id)body deeplinkParams:(id)params
 {
   v26 = *MEMORY[0x277D85DE8];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  paramsCopy = params;
+  bodyCopy = body;
+  urlCopy = url;
+  sourceCopy = source;
+  numberCopy = number;
+  warrantyCopy = warranty;
   v20 = _NDOLogSystem();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -48,32 +48,32 @@
     _os_log_impl(&dword_25BD8D000, v20, OS_LOG_TYPE_DEFAULT, "%s 2", buf, 0xCu);
   }
 
-  v21 = [(NDOAppleCareAMSUIViewController *)self _initWithWarranty:v19 serialNumber:v18 source:v17 isMultiCall:1 url:v16 deeplinkParams:v14 purchaseBody:v15];
+  v21 = [(NDOAppleCareAMSUIViewController *)self _initWithWarranty:warrantyCopy serialNumber:numberCopy source:sourceCopy isMultiCall:1 url:urlCopy deeplinkParams:paramsCopy purchaseBody:bodyCopy];
   v22 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (NDOAppleCareAMSUIViewController)initWithRequest:(id)a3
+- (NDOAppleCareAMSUIViewController)initWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-  v6 = [v5 ams_activeiCloudAccount];
+  requestCopy = request;
+  ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+  ams_activeiCloudAccount = [ams_sharedAccountStore ams_activeiCloudAccount];
 
   v7 = MEMORY[0x277CEE408];
-  v8 = [MEMORY[0x277CEE6D8] bagKeySet];
-  v9 = [MEMORY[0x277CEE6D8] bagSubProfile];
-  v10 = [MEMORY[0x277CEE6D8] bagSubProfileVersion];
-  [v7 registerBagKeySet:v8 forProfile:v9 profileVersion:v10];
+  bagKeySet = [MEMORY[0x277CEE6D8] bagKeySet];
+  bagSubProfile = [MEMORY[0x277CEE6D8] bagSubProfile];
+  bagSubProfileVersion = [MEMORY[0x277CEE6D8] bagSubProfileVersion];
+  [v7 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v11 = [MEMORY[0x277CEE3F8] bagForProfile:@"AppleCare" profileVersion:@"1"];
   v15.receiver = self;
   v15.super_class = NDOAppleCareAMSUIViewController;
-  v12 = [(AMSUIWebViewController *)&v15 initWithBag:v11 account:v6 clientInfo:0];
+  v12 = [(AMSUIWebViewController *)&v15 initWithBag:v11 account:ams_activeiCloudAccount clientInfo:0];
   v13 = v12;
   if (v12)
   {
     [(NDOAppleCareAMSUIViewController *)v12 setIsLoaded:0];
-    [(NDOAppleCareAMSUIViewController *)v13 setAmsUIRequest:v4];
+    [(NDOAppleCareAMSUIViewController *)v13 setAmsUIRequest:requestCopy];
     [(NDOAppleCareAMSUIViewController *)v13 setModalPresentationStyle:3];
     [(AMSUIWebViewController *)v13 setDelegate:v13];
     if (objc_opt_respondsToSelector())
@@ -85,36 +85,36 @@
   return v13;
 }
 
-- (id)_prepareRequestWithWarranty:(id)a3 serialNumber:(id)a4 source:(id)a5 isMultiCall:(BOOL)a6 url:(id)a7 deeplinkParams:(id)a8 purchaseBody:(id)a9
+- (id)_prepareRequestWithWarranty:(id)warranty serialNumber:(id)number source:(id)source isMultiCall:(BOOL)call url:(id)url deeplinkParams:(id)params purchaseBody:(id)body
 {
-  v56 = a6;
+  callCopy = call;
   v74 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v55 = a4;
-  v54 = a5;
-  v14 = a7;
-  v57 = a8;
-  v53 = a9;
+  warrantyCopy = warranty;
+  numberCopy = number;
+  sourceCopy = source;
+  urlCopy = url;
+  paramsCopy = params;
+  bodyCopy = body;
   v15 = _NDOLogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v56];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:callCopy];
     *buf = 136316930;
     *&buf[4] = "[NDOAppleCareAMSUIViewController _prepareRequestWithWarranty:serialNumber:source:isMultiCall:url:deeplinkParams:purchaseBody:]";
     *&buf[12] = 2112;
-    *&buf[14] = v13;
+    *&buf[14] = warrantyCopy;
     *&buf[22] = 2112;
-    v66 = v55;
+    v66 = numberCopy;
     *v67 = 2112;
-    *&v67[2] = v54;
+    *&v67[2] = sourceCopy;
     *&v67[10] = 2112;
     *&v67[12] = v16;
     v68 = 2112;
-    v69 = v14;
+    v69 = urlCopy;
     v70 = 2112;
-    v71 = v57;
+    v71 = paramsCopy;
     v72 = 2112;
-    v73 = v53;
+    v73 = bodyCopy;
     _os_log_impl(&dword_25BD8D000, v15, OS_LOG_TYPE_DEFAULT, "%s: Warranty:%@, sn:%@, source:%@, isMulti:%@ url:%@, deeplinkParams:%@ purchaseBody:%@", buf, 0x52u);
   }
 
@@ -123,26 +123,26 @@
   *&buf[16] = 0x3032000000;
   v66 = __Block_byref_object_copy_;
   *v67 = __Block_byref_object_dispose_;
-  v17 = [v13 agsURL];
-  v18 = v17;
+  agsURL = [warrantyCopy agsURL];
+  v18 = agsURL;
   v19 = @"https://agreements.apple.com/acsales";
-  if (v17)
+  if (agsURL)
   {
-    v19 = v17;
+    v19 = agsURL;
   }
 
   *&v67[8] = v19;
 
-  if (v56)
+  if (callCopy)
   {
-    v20 = v14;
-    if (!v14)
+    agsULURL = urlCopy;
+    if (!urlCopy)
     {
-      v20 = [v13 agsULURL];
+      agsULURL = [warrantyCopy agsULURL];
     }
 
-    objc_storeStrong((*&buf[8] + 40), v20);
-    if (!v14)
+    objc_storeStrong((*&buf[8] + 40), agsULURL);
+    if (!urlCopy)
     {
     }
 
@@ -192,8 +192,8 @@
   {
     v26 = [MEMORY[0x277CCACE0] componentsWithString:*(*&buf[8] + 40)];
     v27 = MEMORY[0x277CCAD18];
-    v28 = [v13 acOfferIdentifier];
-    v52 = [v27 queryItemWithName:@"cid" value:v28];
+    acOfferIdentifier = [warrantyCopy acOfferIdentifier];
+    v52 = [v27 queryItemWithName:@"cid" value:acOfferIdentifier];
 
     v29 = [MEMORY[0x277CCAD18] queryItemWithName:@"callerId" value:@"NewDeviceOutreach"];
     v60[0] = v52;
@@ -218,8 +218,8 @@
       v33 = [MEMORY[0x277CCAB70] requestWithURL:v31];
       [v33 setTimeoutInterval:30.0];
       v34 = objc_opt_new();
-      v35 = [v34 defaultDevice];
-      v36 = [v35 serialNumber];
+      defaultDevice = [v34 defaultDevice];
+      serialNumber = [defaultDevice serialNumber];
 
       v37 = +[NDOAppleCareAMSUIViewController requestProvider];
       v38 = [v37 basicHeadersWithBundleID:0];
@@ -228,27 +228,27 @@
       v39 = [v37 accountHeadersFor:v33 forceReprovisioning:0 avoidUI:0];
       [v33 addAllHeadersFrom:v39];
 
-      v40 = [v13 acOfferIdentifier];
-      v41 = [v33 storeLocaleHeader];
-      v42 = [v37 OASHeadersWithOfferID:v40 serialNumber:v55 primarySerialNumber:v36 currentStoreLocaleHeader:v41];
+      acOfferIdentifier2 = [warrantyCopy acOfferIdentifier];
+      storeLocaleHeader = [v33 storeLocaleHeader];
+      v42 = [v37 OASHeadersWithOfferID:acOfferIdentifier2 serialNumber:numberCopy primarySerialNumber:serialNumber currentStoreLocaleHeader:storeLocaleHeader];
       [v33 addAllHeadersFrom:v42];
 
-      v43 = [&unk_286D758D0 stringValue];
-      [v33 setValue:v43 forHTTPHeaderField:@"oceanVersion"];
+      stringValue = [&unk_286D758D0 stringValue];
+      [v33 setValue:stringValue forHTTPHeaderField:@"oceanVersion"];
 
-      [v33 setValue:v54 forHTTPHeaderField:@"X-source-type"];
-      if (v57)
+      [v33 setValue:sourceCopy forHTTPHeaderField:@"X-source-type"];
+      if (paramsCopy)
       {
-        [v33 setValue:v57 forHTTPHeaderField:@"x-apple-universal"];
+        [v33 setValue:paramsCopy forHTTPHeaderField:@"x-apple-universal"];
       }
 
-      if (v56)
+      if (callCopy)
       {
         [v33 setHTTPMethod:@"POST"];
         [v33 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-        if (v53)
+        if (bodyCopy)
         {
-          v44 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v53 options:0 error:0];
+          v44 = [MEMORY[0x277CCAAA0] dataWithJSONObject:bodyCopy options:0 error:0];
           [v33 setHTTPBody:v44];
         }
       }
@@ -256,32 +256,32 @@
       v45 = _NDOLogSystem();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [v33 headerDescription];
+        headerDescription = [v33 headerDescription];
         *v61 = 136315394;
         v62 = "[NDOAppleCareAMSUIViewController _prepareRequestWithWarranty:serialNumber:source:isMultiCall:url:deeplinkParams:purchaseBody:]";
         v63 = 2112;
-        v64 = v46;
+        v64 = headerDescription;
         _os_log_impl(&dword_25BD8D000, v45, OS_LOG_TYPE_DEFAULT, "%s: AMS Headers: %@", v61, 0x16u);
       }
 
       v47 = _NDOLogSystem();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v33 bodyDescription];
+        bodyDescription = [v33 bodyDescription];
         *v61 = 136315394;
         v62 = "[NDOAppleCareAMSUIViewController _prepareRequestWithWarranty:serialNumber:source:isMultiCall:url:deeplinkParams:purchaseBody:]";
         v63 = 2112;
-        v64 = v48;
+        v64 = bodyDescription;
         _os_log_impl(&dword_25BD8D000, v47, OS_LOG_TYPE_DEFAULT, "%s: AMS Body: %@", v61, 0x16u);
       }
     }
 
     else
     {
-      v36 = _NDOLogSystem();
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+      serialNumber = _NDOLogSystem();
+      if (os_log_type_enabled(serialNumber, OS_LOG_TYPE_ERROR))
       {
-        [NDOAppleCareAMSUIViewController _prepareRequestWithWarranty:v26 serialNumber:v36 source:? isMultiCall:? url:? deeplinkParams:? purchaseBody:?];
+        [NDOAppleCareAMSUIViewController _prepareRequestWithWarranty:v26 serialNumber:serialNumber source:? isMultiCall:? url:? deeplinkParams:? purchaseBody:?];
       }
 
       v33 = 0;
@@ -331,21 +331,21 @@ void __127__NDOAppleCareAMSUIViewController__prepareRequestWithWarranty_serialNu
 {
   v13 = *MEMORY[0x277D85DE8];
   [(NDOAppleCareAMSUIViewController *)self setIsLoaded:1];
-  v3 = [(NDOAppleCareAMSUIViewController *)self amsUIRequest];
+  amsUIRequest = [(NDOAppleCareAMSUIViewController *)self amsUIRequest];
   v4 = _NDOLogSystem();
   v5 = v4;
-  if (v3)
+  if (amsUIRequest)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136315394;
       v10 = "[NDOAppleCareAMSUIViewController loadAMSUIView]";
       v11 = 2112;
-      v12 = v3;
+      v12 = amsUIRequest;
       _os_log_impl(&dword_25BD8D000, v5, OS_LOG_TYPE_DEFAULT, "%s: Loading: %@", &v9, 0x16u);
     }
 
-    v6 = [(AMSUIWebViewController *)self loadRequest:v3];
+    v6 = [(AMSUIWebViewController *)self loadRequest:amsUIRequest];
   }
 
   else
@@ -363,38 +363,38 @@ void __127__NDOAppleCareAMSUIViewController__prepareRequestWithWarranty_serialNu
   return v6;
 }
 
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  actionCopy = action;
   v9 = _NDOLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315650;
     v17 = "[NDOAppleCareAMSUIViewController webViewController:handleDelegateAction:completion:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = controllerCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = actionCopy;
     _os_log_impl(&dword_25BD8D000, v9, OS_LOG_TYPE_DEFAULT, "%s: %@ action: %@", &v16, 0x20u);
   }
 
-  if (v8)
+  if (actionCopy)
   {
-    v10 = [v8 objectForKey:@"status"];
-    v11 = [v10 intValue];
+    v10 = [actionCopy objectForKey:@"status"];
+    intValue = [v10 intValue];
 
-    v12 = v8;
+    v12 = actionCopy;
   }
 
   else
   {
-    v11 = 2;
+    intValue = 2;
   }
 
-  v13 = [(NDOAppleCareAMSUIViewController *)self presenter];
-  [v13 amsUIViewFinishedWithCompletion:v11 params:v8];
+  presenter = [(NDOAppleCareAMSUIViewController *)self presenter];
+  [presenter amsUIViewFinishedWithCompletion:intValue params:actionCopy];
 
   v14 = *MEMORY[0x277D85DE8];
   return 1;

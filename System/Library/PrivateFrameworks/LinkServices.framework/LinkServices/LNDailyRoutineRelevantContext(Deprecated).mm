@@ -6,7 +6,7 @@
 
 - (LNDailyRoutineRelevantCondition)asCondition
 {
-  v1 = -[LNDailyRoutineRelevantCondition initWithSituation:]([LNDailyRoutineRelevantCondition alloc], "initWithSituation:", [a1 situation]);
+  v1 = -[LNDailyRoutineRelevantCondition initWithSituation:]([LNDailyRoutineRelevantCondition alloc], "initWithSituation:", [self situation]);
 
   return v1;
 }

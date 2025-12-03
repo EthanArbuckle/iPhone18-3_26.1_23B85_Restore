@@ -1,14 +1,14 @@
 @interface SpatialPlatterTitleButton
 - (CGSize)intrinsicContentSize;
-- (_TtC7Measure25SpatialPlatterTitleButton)initWithCoder:(id)a3;
-- (_TtC7Measure25SpatialPlatterTitleButton)initWithFrame:(CGRect)a3;
+- (_TtC7Measure25SpatialPlatterTitleButton)initWithCoder:(id)coder;
+- (_TtC7Measure25SpatialPlatterTitleButton)initWithFrame:(CGRect)frame;
 - (void)onButtonTouchDown;
 - (void)onButtonTouchUp;
 @end
 
 @implementation SpatialPlatterTitleButton
 
-- (_TtC7Measure25SpatialPlatterTitleButton)initWithCoder:(id)a3
+- (_TtC7Measure25SpatialPlatterTitleButton)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7Measure25SpatialPlatterTitleButton_touchDownCallback);
   *v3 = 0;
@@ -33,17 +33,17 @@
 
 - (void)onButtonTouchDown
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EB294();
 }
 
 - (void)onButtonTouchUp
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000EB320();
 }
 
-- (_TtC7Measure25SpatialPlatterTitleButton)initWithFrame:(CGRect)a3
+- (_TtC7Measure25SpatialPlatterTitleButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,7 +1,7 @@
 @interface NFRestoreServiceServer
 + (BOOL)checkCurrentuser;
 - (NFRestoreServiceServer)init;
-- (void)runService:(id)a3 callback:(id)a4;
+- (void)runService:(id)service callback:(id)callback;
 @end
 
 @implementation NFRestoreServiceServer
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (void)runService:(id)a3 callback:(id)a4
+- (void)runService:(id)service callback:(id)callback
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  callbackCopy = callback;
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
   Logger = NFLogGetLogger();
   if (Logger)
@@ -51,7 +51,7 @@
       v13 = 43;
     }
 
-    v10(5, "%c[%{public}s %{public}s]:%i Received request to update FW with options : %@", v13, ClassName, Name, 54, v7);
+    v10(5, "%c[%{public}s %{public}s]:%i Received request to update FW with options : %@", v13, ClassName, Name, 54, serviceCopy);
   }
 
   dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -78,7 +78,7 @@
     *&v40[20] = 1024;
     *&v40[22] = 54;
     *&v40[26] = 2112;
-    *&v40[28] = v7;
+    *&v40[28] = serviceCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Received request to update FW with options : %@", buf, 0x2Cu);
   }
 
@@ -111,14 +111,14 @@
   block[1] = 3221225472;
   block[2] = sub_100001610;
   block[3] = &unk_100004218;
-  v26 = v7;
-  v27 = self;
-  v28 = v8;
+  v26 = serviceCopy;
+  selfCopy = self;
+  v28 = callbackCopy;
   v29 = &v33;
   v30 = buf;
   v31 = a2;
-  v21 = v8;
-  v22 = v7;
+  v21 = callbackCopy;
+  v22 = serviceCopy;
   dispatch_async(messageQueue, block);
 
   _Block_object_dispose(&v33, 8);

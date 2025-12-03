@@ -1,19 +1,19 @@
 @interface WFShareSheetWorkflow
-- (WFShareSheetWorkflow)initWithCoder:(id)a3;
-- (WFShareSheetWorkflow)initWithIdentifier:(id)a3 name:(id)a4 glyphCharacter:(unsigned __int16)a5;
+- (WFShareSheetWorkflow)initWithCoder:(id)coder;
+- (WFShareSheetWorkflow)initWithIdentifier:(id)identifier name:(id)name glyphCharacter:(unsigned __int16)character;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIconImage:(CGImage *)a3 scale:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIconImage:(CGImage *)image scale:(double)scale;
 @end
 
 @implementation WFShareSheetWorkflow
 
-- (WFShareSheetWorkflow)initWithCoder:(id)a3
+- (WFShareSheetWorkflow)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeInt32ForKey:@"glyphCharacter"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeInt32ForKey:@"glyphCharacter"];
 
   if (v5)
   {
@@ -27,37 +27,37 @@
 
   if (v8)
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(WFShareSheetWorkflow *)self initWithIdentifier:v5 name:v6 glyphCharacter:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(WFShareSheetWorkflow *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFShareSheetWorkflow *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(WFShareSheetWorkflow *)self name];
-  [v6 encodeObject:v5 forKey:@"name"];
+  name = [(WFShareSheetWorkflow *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v6 encodeInt32:-[WFShareSheetWorkflow glyphCharacter](self forKey:{"glyphCharacter"), @"glyphCharacter"}];
+  [coderCopy encodeInt32:-[WFShareSheetWorkflow glyphCharacter](self forKey:{"glyphCharacter"), @"glyphCharacter"}];
 }
 
-- (void)setIconImage:(CGImage *)a3 scale:(double)a4
+- (void)setIconImage:(CGImage *)image scale:(double)scale
 {
   CGImageRelease(self->_iconImage);
-  self->_iconImage = a3;
-  self->_iconScale = a4;
+  self->_iconImage = image;
+  self->_iconScale = scale;
 
-  CGImageRetain(a3);
+  CGImageRetain(image);
 }
 
 - (void)dealloc
@@ -68,14 +68,14 @@
   [(WFShareSheetWorkflow *)&v3 dealloc];
 }
 
-- (WFShareSheetWorkflow)initWithIdentifier:(id)a3 name:(id)a4 glyphCharacter:(unsigned __int16)a5
+- (WFShareSheetWorkflow)initWithIdentifier:(id)identifier name:(id)name glyphCharacter:(unsigned __int16)character
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  nameCopy = name;
+  v11 = nameCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -83,8 +83,8 @@
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFShareSheetWorkflow.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShareSheetWorkflow.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v11)
     {
@@ -92,8 +92,8 @@
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFShareSheetWorkflow.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShareSheetWorkflow.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -101,7 +101,7 @@ LABEL_3:
   v12 = [(WFShareSheetWorkflow *)&v21 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
@@ -109,7 +109,7 @@ LABEL_3:
     name = v12->_name;
     v12->_name = v15;
 
-    v12->_glyphCharacter = a5;
+    v12->_glyphCharacter = character;
     v17 = v12;
   }
 

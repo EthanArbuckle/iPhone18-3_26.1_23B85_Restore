@@ -1,21 +1,21 @@
 @interface CKInboxViewControllerFactory
-+ (id)inboxViewControllerWithModel:(id)a3;
++ (id)inboxViewControllerWithModel:(id)model;
 @end
 
 @implementation CKInboxViewControllerFactory
 
-+ (id)inboxViewControllerWithModel:(id)a3
++ (id)inboxViewControllerWithModel:(id)model
 {
   v4 = type metadata accessor for InboxModel(0);
   sub_215684A58();
-  v5 = a3;
+  modelCopy = model;
   sub_215692E00();
   v6 = *(v4 + 48);
   v7 = *(v4 + 52);
   v8 = swift_allocObject();
-  *(v8 + 16) = v5;
+  *(v8 + 16) = modelCopy;
   swift_beginAccess();
-  v9 = v5;
+  v9 = modelCopy;
   sub_215692D50();
   swift_endAccess();
   [*(v8 + 16) setDelegate_];

@@ -1,14 +1,14 @@
 @interface DEDPersistence
 + (id)sharedInstance;
-- (BOOL)canProceedWithDevice:(id)a3;
+- (BOOL)canProceedWithDevice:(id)device;
 - (DEDPersistence)init;
-- (id)_indexKeyForBugSession:(id)a3;
+- (id)_indexKeyForBugSession:(id)session;
 - (id)bugSessionIdentifiers;
 - (id)loadSavedBugSessions;
-- (id)loadSavedSessionsFromPlist:(id)a3;
+- (id)loadSavedSessionsFromPlist:(id)plist;
 - (void)loadSavedBugSessions;
-- (void)removeBugSession:(id)a3;
-- (void)updateBugSession:(id)a3;
+- (void)removeBugSession:(id)session;
+- (void)updateBugSession:(id)session;
 - (void)validateSandboxAccess;
 @end
 
@@ -33,25 +33,25 @@ uint64_t __32__DEDPersistence_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canProceedWithDevice:(id)a3
+- (BOOL)canProceedWithDevice:(id)device
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   if (+[DEDUtils isInternalInstall])
   {
-    v5 = [(DEDPersistence *)self userDefaults];
-    v6 = [v5 objectForKey:@"blockDevice"];
+    userDefaults = [(DEDPersistence *)self userDefaults];
+    v6 = [userDefaults objectForKey:@"blockDevice"];
 
     if (v6)
     {
-      v7 = [v4 hashingKey];
-      if ([v6 isEqualToString:v7])
+      hashingKey = [deviceCopy hashingKey];
+      if ([v6 isEqualToString:hashingKey])
       {
         v8 = [(DEDPersistence *)self log];
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v12 = 138543362;
-          v13 = v7;
+          v13 = hashingKey;
           _os_log_impl(&dword_248AD7000, v8, OS_LOG_TYPE_DEFAULT, "should not proceed with device [%{public}@]", &v12, 0xCu);
         }
 
@@ -84,18 +84,18 @@ LABEL_11:
     v4 = os_log_create([v3 loggingSubsystem], "ded-persist");
     [(DEDPersistence *)v2 setLog:v4];
 
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     userDefaults = v2->_userDefaults;
-    v2->_userDefaults = v5;
+    v2->_userDefaults = standardUserDefaults;
   }
 
   return v2;
 }
 
-- (id)loadSavedSessionsFromPlist:(id)a3
+- (id)loadSavedSessionsFromPlist:(id)plist
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:a3];
+  v4 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:plist];
   v5 = MEMORY[0x277CBEB98];
   v6 = [v4 objectForKey:@"sessionIdentifiers"];
   v7 = [v5 setWithArray:v6];
@@ -175,13 +175,13 @@ LABEL_11:
 - (id)loadSavedBugSessions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(DEDPersistence *)self bugSessionIdentifiers];
-  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  bugSessionIdentifiers = [(DEDPersistence *)self bugSessionIdentifiers];
+  v21 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(bugSessionIdentifiers, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = bugSessionIdentifiers;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v4)
   {
@@ -254,9 +254,9 @@ LABEL_12:
   return v17;
 }
 
-- (void)updateBugSession:(id)a3
+- (void)updateBugSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDPersistence *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -264,15 +264,15 @@ LABEL_12:
   }
 
   v6 = objc_alloc(MEMORY[0x277CBEB58]);
-  v7 = [(DEDPersistence *)self bugSessionIdentifiers];
-  v8 = [v6 initWithSet:v7];
+  bugSessionIdentifiers = [(DEDPersistence *)self bugSessionIdentifiers];
+  v8 = [v6 initWithSet:bugSessionIdentifiers];
 
-  v9 = [v4 identifier];
-  [v8 addObject:v9];
+  identifier = [sessionCopy identifier];
+  [v8 addObject:identifier];
 
-  v10 = [(DEDPersistence *)self _indexKeyForBugSession:v4];
+  v10 = [(DEDPersistence *)self _indexKeyForBugSession:sessionCopy];
   v16 = 0;
-  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v16];
+  v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:sessionCopy requiringSecureCoding:1 error:&v16];
 
   v12 = v16;
   if (v12)
@@ -285,15 +285,15 @@ LABEL_12:
   }
 
   userDefaults = self->_userDefaults;
-  v15 = [v8 allObjects];
-  [(NSUserDefaults *)userDefaults setObject:v15 forKey:@"sessionIdentifiers"];
+  allObjects = [v8 allObjects];
+  [(NSUserDefaults *)userDefaults setObject:allObjects forKey:@"sessionIdentifiers"];
 
   [(NSUserDefaults *)self->_userDefaults setObject:v11 forKey:v10];
 }
 
-- (void)removeBugSession:(id)a3
+- (void)removeBugSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDPersistence *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -301,25 +301,25 @@ LABEL_12:
   }
 
   v6 = objc_alloc(MEMORY[0x277CBEB58]);
-  v7 = [(DEDPersistence *)self bugSessionIdentifiers];
-  v8 = [v6 initWithSet:v7];
+  bugSessionIdentifiers = [(DEDPersistence *)self bugSessionIdentifiers];
+  v8 = [v6 initWithSet:bugSessionIdentifiers];
 
-  v9 = [v4 identifier];
-  [v8 removeObject:v9];
+  identifier = [sessionCopy identifier];
+  [v8 removeObject:identifier];
 
-  v10 = [(DEDPersistence *)self _indexKeyForBugSession:v4];
+  v10 = [(DEDPersistence *)self _indexKeyForBugSession:sessionCopy];
 
   [(NSUserDefaults *)self->_userDefaults removeObjectForKey:v10];
   userDefaults = self->_userDefaults;
-  v12 = [v8 allObjects];
-  [(NSUserDefaults *)userDefaults setObject:v12 forKey:@"sessionIdentifiers"];
+  allObjects = [v8 allObjects];
+  [(NSUserDefaults *)userDefaults setObject:allObjects forKey:@"sessionIdentifiers"];
 }
 
-- (id)_indexKeyForBugSession:(id)a3
+- (id)_indexKeyForBugSession:(id)session
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 identifier];
-  v5 = [v3 stringWithFormat:@"bugsession:%@", v4];
+  identifier = [session identifier];
+  v5 = [v3 stringWithFormat:@"bugsession:%@", identifier];
 
   return v5;
 }
@@ -347,20 +347,20 @@ LABEL_12:
 
 - (void)validateSandboxAccess
 {
-  v3 = [(DEDPersistence *)self userDefaults];
-  [v3 setObject:@"Test" forKey:@"test-key"];
+  userDefaults = [(DEDPersistence *)self userDefaults];
+  [userDefaults setObject:@"Test" forKey:@"test-key"];
 
-  v4 = [(DEDPersistence *)self userDefaults];
-  v5 = [v4 objectForKey:@"test-key"];
+  userDefaults2 = [(DEDPersistence *)self userDefaults];
+  v5 = [userDefaults2 objectForKey:@"test-key"];
 
-  LODWORD(v4) = [v5 isEqualToString:v5];
+  LODWORD(userDefaults2) = [v5 isEqualToString:v5];
   v6 = [(DEDPersistence *)self log];
-  v7 = v6;
-  if (v4)
+  userDefaults3 = v6;
+  if (userDefaults2)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(DEDPersistence *)v7 validateSandboxAccess];
+      [(DEDPersistence *)userDefaults3 validateSandboxAccess];
     }
   }
 
@@ -369,11 +369,11 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *v8 = 0;
-      _os_log_impl(&dword_248AD7000, v7, OS_LOG_TYPE_DEFAULT, "Can read from user defaults", v8, 2u);
+      _os_log_impl(&dword_248AD7000, userDefaults3, OS_LOG_TYPE_DEFAULT, "Can read from user defaults", v8, 2u);
     }
 
-    v7 = [(DEDPersistence *)self userDefaults];
-    [v7 removeObjectForKey:@"test-key"];
+    userDefaults3 = [(DEDPersistence *)self userDefaults];
+    [userDefaults3 removeObjectForKey:@"test-key"];
   }
 }
 

@@ -1,47 +1,47 @@
 @interface PXStoryCurationChangeList
-+ (id)changeListByCombiningChangeList:(id)a3 withChangeList:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PXStoryCurationChangeList)initWithPromotedIdentifiers:(id)a3 demotedIdentifiers:(id)a4;
-- (id)changeListByApplyingChangeList:(id)a3;
-- (id)changeListByDemotingIdentifiers:(id)a3;
-- (id)changeListByPromotingIdentifiers:(id)a3;
++ (id)changeListByCombiningChangeList:(id)list withChangeList:(id)changeList;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryCurationChangeList)initWithPromotedIdentifiers:(id)identifiers demotedIdentifiers:(id)demotedIdentifiers;
+- (id)changeListByApplyingChangeList:(id)list;
+- (id)changeListByDemotingIdentifiers:(id)identifiers;
+- (id)changeListByPromotingIdentifiers:(id)identifiers;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PXStoryCurationChangeList
 
-- (id)changeListByApplyingChangeList:(id)a3
+- (id)changeListByApplyingChangeList:(id)list
 {
-  v4 = a3;
-  v5 = [(PXStoryCurationChangeList *)self promotedIdentifiers];
-  v6 = [v5 mutableCopy];
+  listCopy = list;
+  promotedIdentifiers = [(PXStoryCurationChangeList *)self promotedIdentifiers];
+  v6 = [promotedIdentifiers mutableCopy];
 
-  v7 = [(PXStoryCurationChangeList *)self demotedIdentifiers];
-  v8 = [v7 mutableCopy];
+  demotedIdentifiers = [(PXStoryCurationChangeList *)self demotedIdentifiers];
+  v8 = [demotedIdentifiers mutableCopy];
 
-  v9 = [v4 promotedIdentifiers];
-  [v6 unionSet:v9];
+  promotedIdentifiers2 = [listCopy promotedIdentifiers];
+  [v6 unionSet:promotedIdentifiers2];
 
-  v10 = [v4 demotedIdentifiers];
-  [v6 minusSet:v10];
+  demotedIdentifiers2 = [listCopy demotedIdentifiers];
+  [v6 minusSet:demotedIdentifiers2];
 
-  v11 = [v4 promotedIdentifiers];
-  [v8 minusSet:v11];
+  promotedIdentifiers3 = [listCopy promotedIdentifiers];
+  [v8 minusSet:promotedIdentifiers3];
 
-  v12 = [v4 demotedIdentifiers];
+  demotedIdentifiers3 = [listCopy demotedIdentifiers];
 
-  [v8 unionSet:v12];
+  [v8 unionSet:demotedIdentifiers3];
   v13 = [objc_alloc(objc_opt_class()) initWithPromotedIdentifiers:v6 demotedIdentifiers:v8];
 
   return v13;
 }
 
-- (id)changeListByDemotingIdentifiers:(id)a3
+- (id)changeListByDemotingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [PXStoryCurationChangeList alloc];
-  v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
+  v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
 
   v7 = [(PXStoryCurationChangeList *)v5 initWithPromotedIdentifiers:0 demotedIdentifiers:v6];
   v8 = [(PXStoryCurationChangeList *)self changeListByApplyingChangeList:v7];
@@ -49,11 +49,11 @@
   return v8;
 }
 
-- (id)changeListByPromotingIdentifiers:(id)a3
+- (id)changeListByPromotingIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [PXStoryCurationChangeList alloc];
-  v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
+  v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:identifiersCopy];
 
   v7 = [(PXStoryCurationChangeList *)v5 initWithPromotedIdentifiers:v6 demotedIdentifiers:0];
   v8 = [(PXStoryCurationChangeList *)self changeListByApplyingChangeList:v7];
@@ -63,19 +63,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryCurationChangeList *)self promotedIdentifiers];
-  v4 = [v3 hash];
+  promotedIdentifiers = [(PXStoryCurationChangeList *)self promotedIdentifiers];
+  v4 = [promotedIdentifiers hash];
 
-  v5 = [(PXStoryCurationChangeList *)self demotedIdentifiers];
-  v6 = v4 ^ (2 * [v5 hash]);
+  demotedIdentifiers = [(PXStoryCurationChangeList *)self demotedIdentifiers];
+  v6 = v4 ^ (2 * [demotedIdentifiers hash]);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -85,14 +85,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryCurationChangeList *)self promotedIdentifiers];
-      v7 = [(PXStoryCurationChangeList *)v5 promotedIdentifiers];
-      if ([v6 isEqualToSet:v7])
+      v5 = equalCopy;
+      promotedIdentifiers = [(PXStoryCurationChangeList *)self promotedIdentifiers];
+      promotedIdentifiers2 = [(PXStoryCurationChangeList *)v5 promotedIdentifiers];
+      if ([promotedIdentifiers isEqualToSet:promotedIdentifiers2])
       {
-        v8 = [(PXStoryCurationChangeList *)self demotedIdentifiers];
-        v9 = [(PXStoryCurationChangeList *)v5 demotedIdentifiers];
-        v10 = [v8 isEqualToSet:v9];
+        demotedIdentifiers = [(PXStoryCurationChangeList *)self demotedIdentifiers];
+        demotedIdentifiers2 = [(PXStoryCurationChangeList *)v5 demotedIdentifiers];
+        v10 = [demotedIdentifiers isEqualToSet:demotedIdentifiers2];
       }
 
       else
@@ -115,23 +115,23 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXStoryCurationChangeList *)self promotedIdentifiers];
-  v7 = [(PXStoryCurationChangeList *)self demotedIdentifiers];
-  v8 = [v3 initWithFormat:@"<%@: %p, promoted: %@, demoted: %@>", v5, self, v6, v7];
+  promotedIdentifiers = [(PXStoryCurationChangeList *)self promotedIdentifiers];
+  demotedIdentifiers = [(PXStoryCurationChangeList *)self demotedIdentifiers];
+  v8 = [v3 initWithFormat:@"<%@: %p, promoted: %@, demoted: %@>", v5, self, promotedIdentifiers, demotedIdentifiers];
 
   return v8;
 }
 
-- (PXStoryCurationChangeList)initWithPromotedIdentifiers:(id)a3 demotedIdentifiers:(id)a4
+- (PXStoryCurationChangeList)initWithPromotedIdentifiers:(id)identifiers demotedIdentifiers:(id)demotedIdentifiers
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  demotedIdentifiersCopy = demotedIdentifiers;
   v19.receiver = self;
   v19.super_class = PXStoryCurationChangeList;
   v8 = [(PXStoryCurationChangeList *)&v19 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     v10 = v9;
     if (v9)
     {
@@ -146,7 +146,7 @@
     promotedIdentifiers = v8->_promotedIdentifiers;
     v8->_promotedIdentifiers = v11;
 
-    v13 = [v7 copy];
+    v13 = [demotedIdentifiersCopy copy];
     v14 = v13;
     if (v13)
     {
@@ -177,27 +177,27 @@
   return v8;
 }
 
-+ (id)changeListByCombiningChangeList:(id)a3 withChangeList:(id)a4
++ (id)changeListByCombiningChangeList:(id)list withChangeList:(id)changeList
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  listCopy = list;
+  changeListCopy = changeList;
+  v7 = changeListCopy;
+  if (listCopy)
   {
-    if (v6)
+    if (changeListCopy)
     {
-      v8 = [v5 changeListByApplyingChangeList:v6];
+      v8 = [listCopy changeListByApplyingChangeList:changeListCopy];
     }
 
     else
     {
-      v8 = v5;
+      v8 = listCopy;
     }
   }
 
   else
   {
-    v8 = v6;
+    v8 = changeListCopy;
   }
 
   v9 = v8;

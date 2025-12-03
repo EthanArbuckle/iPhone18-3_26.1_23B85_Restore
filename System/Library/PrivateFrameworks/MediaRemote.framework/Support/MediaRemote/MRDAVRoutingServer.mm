@@ -1,107 +1,107 @@
 @interface MRDAVRoutingServer
-- (BOOL)_setPickedRoute:(id)a3 withPassword:(id)a4 options:(unsigned int)a5;
-- (BOOL)_shouldIgnorePortStatusFailureForRouteWithUID:(id)a3 previouslyCachedRouteUID:(id *)a4;
+- (BOOL)_setPickedRoute:(id)route withPassword:(id)password options:(unsigned int)options;
+- (BOOL)_shouldIgnorePortStatusFailureForRouteWithUID:(id)d previouslyCachedRouteUID:(id *)iD;
 - (BOOL)isSilentPrimary;
-- (BOOL)routeIsActiveWithUID:(id)a3;
-- (MRDAVRoutingServer)initWithRoutingDataSource:(id)a3;
-- (MRDAVRoutingServer)initWithRoutingDataSource:(id)a3 hostedRoutingService:(id)a4 systemEndpointController:(id)a5 autoConnectionController:(id)a6 homeServer:(id)a7 avOutputDeviceAuthorizationSession:(id)a8;
+- (BOOL)routeIsActiveWithUID:(id)d;
+- (MRDAVRoutingServer)initWithRoutingDataSource:(id)source;
+- (MRDAVRoutingServer)initWithRoutingDataSource:(id)source hostedRoutingService:(id)service systemEndpointController:(id)controller autoConnectionController:(id)connectionController homeServer:(id)server avOutputDeviceAuthorizationSession:(id)session;
 - (MSVSystemDialog)activeDialog;
 - (id)_createAirPlaySecuritySettings;
-- (id)_descriptionForDiscoveryMode:(unsigned int)a3;
-- (id)_existingKeychainAccountForOutputDevice:(id)a3 password:(id *)a4;
-- (id)_passwordDialogForRouteWithName:(id)a3 usingInputType:(int64_t)a4;
-- (id)_predictGroupLeaderForOutputDeviceIDs:(id)a3 options:(unint64_t)a4 details:(id)a5;
-- (id)_preferredIdentifierForMACAddress:(id)a3 identifier:(id)a4 name:(id)a5;
-- (id)_presentDialogWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 completion:(id)a7;
-- (id)_savedPasswordForOutputDevice:(id)a3;
+- (id)_descriptionForDiscoveryMode:(unsigned int)mode;
+- (id)_existingKeychainAccountForOutputDevice:(id)device password:(id *)password;
+- (id)_passwordDialogForRouteWithName:(id)name usingInputType:(int64_t)type;
+- (id)_predictGroupLeaderForOutputDeviceIDs:(id)ds options:(unint64_t)options details:(id)details;
+- (id)_preferredIdentifierForMACAddress:(id)address identifier:(id)identifier name:(id)name;
+- (id)_presentDialogWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle completion:(id)completion;
+- (id)_savedPasswordForOutputDevice:(id)device;
 - (id)applicationPickedRoutes;
-- (id)clientsForApplicationPickedRoute:(id)a3;
+- (id)clientsForApplicationPickedRoute:(id)route;
 - (id)clientsWithApplicationPickedRoutes;
-- (id)createTransientEndpointForOutputDeviceUID:(id)a3 details:(id)a4;
+- (id)createTransientEndpointForOutputDeviceUID:(id)d details:(id)details;
 - (id)mediaActivityManager;
-- (id)pickableRoutesForCategory:(id)a3;
-- (void)_clearPasswordForOutputDevice:(id)a3;
-- (void)_clientInvalidatedNotification:(id)a3;
-- (void)_failedToConnectToOutputDeviceNotification:(id)a3;
-- (void)_handleAddVirtualOutputDeviceMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleAuthorizationRequest:(id)a3;
-- (void)_handleClearAllAVRoutePasswordsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleClusterErrorStatus:(int)a3 forRoute:(id)a4;
-- (void)_handleCreateDirectEndpointForDevices:(id)a3 fromClient:(id)a4;
-- (void)_handleCreateGroupWithDevices:(id)a3 fromClient:(id)a4;
-- (void)_handleCreateHostedEndpointForDevices:(id)a3 fromClient:(id)a4;
-- (void)_handleDismissAllBannersMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleErrorStatus:(int)a3 forRoute:(id)a4;
-- (void)_handleGetActiveSystemEndpointUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetAirPlaySecuritySettingsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetAirplayStatus:(id)a3 fromClient:(id)a4;
-- (void)_handleGetExternalDeviceMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetExternalScreenTypeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetHostedEndpointForDeviceUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetHostedRoutingXPCEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetOutputContextUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPickableRoutesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetPickedRouteHasVolumeControlMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetRecentAVOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetRecommendRouteCandidatesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetSavedAVRoutePasswordMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGetVirtualOutputDevicesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleGroupDevicesAndSendCommand:(id)a3 fromClient:(id)a4;
-- (void)_handleMigrateFromEndpointToEndpointMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleMigrateFromEndpointToOutputDevicesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleModifyOutputContextMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePauseOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePredictGroupLeader:(id)a3 fromClient:(id)a4;
-- (void)_handlePrepareGroupForPlaybackMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePresentRouteAuthorizationStatusMessage:(id)a3 fromClient:(id)a4;
-- (void)_handlePromptForRouteAuthorizationMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRecommendRouteCandidateMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRemoveFromParentGroup:(id)a3 fromClient:(id)a4;
-- (void)_handleResetOutputContextMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleResumeNowPlayingSession:(id)a3 fromClient:(id)a4;
-- (void)_handleSearchEndpointsForOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSearchEndpointsForRoutingContextUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetApplicationPickedRoutes:(id)a3 fromClient:(id)a4;
-- (void)_handleSetNearbyDevice:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPickedRouteHasVolumeControlMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetPickedRouteMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetRecentAVOutputDeviceUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetRouteDiscoveryModeMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleSetSavedAVRoutePasswordMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleStartNowPlayingSession:(id)a3 fromClient:(id)a4;
-- (void)_handleStopNowPlayingSession:(id)a3 fromClient:(id)a4;
-- (void)_handleUnpickAirPlayRoutesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleUpdateActiveSystemEndpointUIDMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleWillStartPlayingInterruptMessage:(id)a3 fromClient:(id)a4;
+- (id)pickableRoutesForCategory:(id)category;
+- (void)_clearPasswordForOutputDevice:(id)device;
+- (void)_clientInvalidatedNotification:(id)notification;
+- (void)_failedToConnectToOutputDeviceNotification:(id)notification;
+- (void)_handleAddVirtualOutputDeviceMessage:(id)message fromClient:(id)client;
+- (void)_handleAuthorizationRequest:(id)request;
+- (void)_handleClearAllAVRoutePasswordsMessage:(id)message fromClient:(id)client;
+- (void)_handleClusterErrorStatus:(int)status forRoute:(id)route;
+- (void)_handleCreateDirectEndpointForDevices:(id)devices fromClient:(id)client;
+- (void)_handleCreateGroupWithDevices:(id)devices fromClient:(id)client;
+- (void)_handleCreateHostedEndpointForDevices:(id)devices fromClient:(id)client;
+- (void)_handleDismissAllBannersMessage:(id)message fromClient:(id)client;
+- (void)_handleErrorStatus:(int)status forRoute:(id)route;
+- (void)_handleGetActiveSystemEndpointUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetAirPlaySecuritySettingsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetAirplayStatus:(id)status fromClient:(id)client;
+- (void)_handleGetExternalDeviceMessage:(id)message fromClient:(id)client;
+- (void)_handleGetExternalScreenTypeMessage:(id)message fromClient:(id)client;
+- (void)_handleGetHostedEndpointForDeviceUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleGetHostedRoutingXPCEndpointMessage:(id)message fromClient:(id)client;
+- (void)_handleGetOutputContextUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPickableRoutesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetPickedRouteHasVolumeControlMessage:(id)message fromClient:(id)client;
+- (void)_handleGetRecentAVOutputDeviceUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handleGetRecommendRouteCandidatesMessage:(id)message fromClient:(id)client;
+- (void)_handleGetSavedAVRoutePasswordMessage:(id)message fromClient:(id)client;
+- (void)_handleGetVirtualOutputDevicesMessage:(id)message fromClient:(id)client;
+- (void)_handleGroupDevicesAndSendCommand:(id)command fromClient:(id)client;
+- (void)_handleMigrateFromEndpointToEndpointMessage:(id)message fromClient:(id)client;
+- (void)_handleMigrateFromEndpointToOutputDevicesMessage:(id)message fromClient:(id)client;
+- (void)_handleModifyOutputContextMessage:(id)message fromClient:(id)client;
+- (void)_handlePauseOutputDeviceUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handlePredictGroupLeader:(id)leader fromClient:(id)client;
+- (void)_handlePrepareGroupForPlaybackMessage:(id)message fromClient:(id)client;
+- (void)_handlePresentRouteAuthorizationStatusMessage:(id)message fromClient:(id)client;
+- (void)_handlePromptForRouteAuthorizationMessage:(id)message fromClient:(id)client;
+- (void)_handleRecommendRouteCandidateMessage:(id)message fromClient:(id)client;
+- (void)_handleRemoveFromParentGroup:(id)group fromClient:(id)client;
+- (void)_handleResetOutputContextMessage:(id)message fromClient:(id)client;
+- (void)_handleResumeNowPlayingSession:(id)session fromClient:(id)client;
+- (void)_handleSearchEndpointsForOutputDeviceUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handleSearchEndpointsForRoutingContextUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:(id)message fromClient:(id)client;
+- (void)_handleSetApplicationPickedRoutes:(id)routes fromClient:(id)client;
+- (void)_handleSetNearbyDevice:(id)device fromClient:(id)client;
+- (void)_handleSetPickedRouteHasVolumeControlMessage:(id)message fromClient:(id)client;
+- (void)_handleSetPickedRouteMessage:(id)message fromClient:(id)client;
+- (void)_handleSetRecentAVOutputDeviceUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleSetRouteDiscoveryModeMessage:(id)message fromClient:(id)client;
+- (void)_handleSetSavedAVRoutePasswordMessage:(id)message fromClient:(id)client;
+- (void)_handleStartNowPlayingSession:(id)session fromClient:(id)client;
+- (void)_handleStopNowPlayingSession:(id)session fromClient:(id)client;
+- (void)_handleUnpickAirPlayRoutesMessage:(id)message fromClient:(id)client;
+- (void)_handleUpdateActiveSystemEndpointUIDMessage:(id)message fromClient:(id)client;
+- (void)_handleWillStartPlayingInterruptMessage:(id)message fromClient:(id)client;
 - (void)_launchTVClusterSettings;
 - (void)_loadMostRecentlyPicked;
 - (void)_postExternalScreenDidChange;
-- (void)_presentPasswordDialogForRoute:(id)a3 withOptions:(unsigned int)a4;
+- (void)_presentPasswordDialogForRoute:(id)route withOptions:(unsigned int)options;
 - (void)_reevaluateAirplayActive;
 - (void)_registerNotifications;
-- (void)_routingDataSourcePickableRoutesDidChangeNotification:(id)a3;
-- (void)_routingDataSourceRouteStatusDidChangeNotification:(id)a3;
+- (void)_routingDataSourcePickableRoutesDidChangeNotification:(id)notification;
+- (void)_routingDataSourceRouteStatusDidChangeNotification:(id)notification;
 - (void)_saveMostRecentlyPicked;
-- (void)_storePassword:(id)a3 forOutputDevice:(id)a4;
-- (void)_storePassword:(id)a3 forRoute:(id)a4;
+- (void)_storePassword:(id)password forOutputDevice:(id)device;
+- (void)_storePassword:(id)password forRoute:(id)route;
 - (void)_unregisterNotifications;
 - (void)_updateSystemRouteDiscoveryMode;
-- (void)collectDiagnostic:(id)a3;
-- (void)createEndpointForOutputDeviceIDs:(id)a3 details:(id)a4 completion:(id)a5;
+- (void)collectDiagnostic:(id)diagnostic;
+- (void)createEndpointForOutputDeviceIDs:(id)ds details:(id)details completion:(id)completion;
 - (void)dealloc;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
-- (void)outputDeviceAuthorizationSession:(id)a3 didProvideAuthorizationRequest:(id)a4;
-- (void)pickCachedRouteWithUID:(id)a3;
-- (void)postSystemEndpointDeviceChange:(id)a3 type:(int64_t)a4 originClient:(id)a5 handler:(id)a6;
-- (void)removeOutputDeviceUIDsFromParentGroup:(id)a3 details:(id)a4 completion:(id)a5;
-- (void)restoreClientState:(id)a3 handler:(id)a4;
-- (void)restoreClientSystemEndpointWithType:(int64_t)a3 handler:(id)a4;
-- (void)searchEndpointsForOutputDeviceUID:(id)a3 timeout:(double)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)searchEndpointsForRoutingContextUID:(id)a3 timeout:(double)a4 details:(id)a5 completion:(id)a6;
-- (void)setAirplayActive:(BOOL)a3;
-- (void)systemEndpointController:(id)a3 activeSystemEndpointDidChangeForRequest:(id)a4 type:(int64_t)a5;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
+- (void)outputDeviceAuthorizationSession:(id)session didProvideAuthorizationRequest:(id)request;
+- (void)pickCachedRouteWithUID:(id)d;
+- (void)postSystemEndpointDeviceChange:(id)change type:(int64_t)type originClient:(id)client handler:(id)handler;
+- (void)removeOutputDeviceUIDsFromParentGroup:(id)group details:(id)details completion:(id)completion;
+- (void)restoreClientState:(id)state handler:(id)handler;
+- (void)restoreClientSystemEndpointWithType:(int64_t)type handler:(id)handler;
+- (void)searchEndpointsForOutputDeviceUID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion;
+- (void)searchEndpointsForRoutingContextUID:(id)d timeout:(double)timeout details:(id)details completion:(id)completion;
+- (void)setAirplayActive:(BOOL)active;
+- (void)systemEndpointController:(id)controller activeSystemEndpointDidChangeForRequest:(id)request type:(int64_t)type;
 @end
 
 @implementation MRDAVRoutingServer
@@ -117,9 +117,9 @@
   else
   {
     v4 = +[MRUserSettings currentSettings];
-    v5 = [v4 supportMultiplayerHost];
+    supportMultiplayerHost = [v4 supportMultiplayerHost];
 
-    if (v5)
+    if (supportMultiplayerHost)
     {
       LOBYTE(v6) = 0;
     }
@@ -141,9 +141,9 @@
   v22 = 0u;
   v23 = 0u;
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 allClients];
+  allClients = [v3 allClients];
 
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v5 = [allClients countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -155,22 +155,22 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allClients);
         }
 
-        v10 = [*(*(&v20 + 1) + 8 * i) routeDiscoveryMode];
-        if (v10 <= v7)
+        routeDiscoveryMode = [*(*(&v20 + 1) + 8 * i) routeDiscoveryMode];
+        if (routeDiscoveryMode <= v7)
         {
           v7 = v7;
         }
 
         else
         {
-          v7 = v10;
+          v7 = routeDiscoveryMode;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v6 = [allClients countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v6);
@@ -195,37 +195,37 @@
     [(MRDAVRoutingDataSource *)self->_routingDataSource setDiscoveryMode:v7];
   }
 
-  v13 = [(MRDAVRoutingServer *)self discoveryTransaction];
+  discoveryTransaction = [(MRDAVRoutingServer *)self discoveryTransaction];
 
   if (v7)
   {
-    if (!v13)
+    if (!discoveryTransaction)
     {
       v14 = [[MROSTransaction alloc] initWithName:@"com.apple.mediaremoted.MRDAVRoutingServer"];
       [(MRDAVRoutingServer *)self setDiscoveryTransaction:v14];
 
-      v15 = [(MRDAVRoutingServer *)self discoveryTransaction];
+      discoveryTransaction2 = [(MRDAVRoutingServer *)self discoveryTransaction];
       MRRegisterTransaction();
 
       v16 = _MRLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [(MRDAVRoutingServer *)self discoveryTransaction];
+        discoveryTransaction3 = [(MRDAVRoutingServer *)self discoveryTransaction];
         *buf = 138543362;
-        v25 = v17;
+        v25 = discoveryTransaction3;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Discovery enabled. Starting transaction: %{public}@", buf, 0xCu);
       }
     }
   }
 
-  else if (v13)
+  else if (discoveryTransaction)
   {
     v18 = _MRLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(MRDAVRoutingServer *)self discoveryTransaction];
+      discoveryTransaction4 = [(MRDAVRoutingServer *)self discoveryTransaction];
       *buf = 138543362;
-      v25 = v19;
+      v25 = discoveryTransaction4;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Discovery ended. Clearing transaction %{public}@", buf, 0xCu);
     }
 
@@ -236,28 +236,28 @@
 - (void)_reevaluateAirplayActive
 {
   v3 = +[MRUserSettings currentSettings];
-  v4 = [v3 supportMultiplayerHost];
+  supportMultiplayerHost = [v3 supportMultiplayerHost];
 
-  if (v4)
+  if (supportMultiplayerHost)
   {
     v6 = +[MRDMediaRemoteServer server];
-    v5 = [v6 allClients];
-    -[MRDAVRoutingServer setAirplayActive:](self, "setAirplayActive:", [v5 mr_any:&stru_1004BFAC8]);
+    allClients = [v6 allClients];
+    -[MRDAVRoutingServer setAirplayActive:](self, "setAirplayActive:", [allClients mr_any:&stru_1004BFAC8]);
   }
 }
 
-- (MRDAVRoutingServer)initWithRoutingDataSource:(id)a3
+- (MRDAVRoutingServer)initWithRoutingDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(MRDAVHostedRoutingService);
   v6 = +[MRUserSettings currentSettings];
-  v7 = [v6 supportSystemEndpoints];
+  supportSystemEndpoints = [v6 supportSystemEndpoints];
 
-  if (v7)
+  if (supportSystemEndpoints)
   {
     v8 = [MRDAVSystemEndpointController alloc];
-    v9 = [(MRDAVHostedRoutingService *)v5 hostedRoutingController];
-    v10 = [(MRDAVSystemEndpointController *)v8 initWithRoutingController:v9];
+    hostedRoutingController = [(MRDAVHostedRoutingService *)v5 hostedRoutingController];
+    v10 = [(MRDAVSystemEndpointController *)v8 initWithRoutingController:hostedRoutingController];
   }
 
   else
@@ -268,19 +268,19 @@
   v11 = objc_alloc_init(MRDExternalDeviceHomeServer);
   v12 = +[AVOutputDeviceAuthorizationSession sharedAuthorizationSession];
   v13 = +[MRDAutoConnectionController sharedConnectionController];
-  v14 = [(MRDAVRoutingServer *)self initWithRoutingDataSource:v4 hostedRoutingService:v5 systemEndpointController:v10 autoConnectionController:v13 homeServer:v11 avOutputDeviceAuthorizationSession:v12];
+  v14 = [(MRDAVRoutingServer *)self initWithRoutingDataSource:sourceCopy hostedRoutingService:v5 systemEndpointController:v10 autoConnectionController:v13 homeServer:v11 avOutputDeviceAuthorizationSession:v12];
 
   return v14;
 }
 
-- (MRDAVRoutingServer)initWithRoutingDataSource:(id)a3 hostedRoutingService:(id)a4 systemEndpointController:(id)a5 autoConnectionController:(id)a6 homeServer:(id)a7 avOutputDeviceAuthorizationSession:(id)a8
+- (MRDAVRoutingServer)initWithRoutingDataSource:(id)source hostedRoutingService:(id)service systemEndpointController:(id)controller autoConnectionController:(id)connectionController homeServer:(id)server avOutputDeviceAuthorizationSession:(id)session
 {
-  v68 = a3;
-  v67 = a4;
-  v66 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  sourceCopy = source;
+  serviceCopy = service;
+  controllerCopy = controller;
+  connectionControllerCopy = connectionController;
+  serverCopy = server;
+  sessionCopy = session;
   v73.receiver = self;
   v73.super_class = MRDAVRoutingServer;
   v18 = [(MRDAVRoutingServer *)&v73 init];
@@ -302,12 +302,12 @@
   v72 = v22;
   [MRAVLightweightReconnaissanceSession setSearchEndpointsForOutputDeviceUIDImplementation:v71];
   [MRAVOutputContextModification setModifyOutputContextImplementation:&stru_1004BF560];
-  objc_storeStrong(&v22->_routingDataSource, a3);
-  objc_storeStrong(&v22->_hostedRoutingService, a4);
-  objc_storeStrong(&v22->_systemEndpointController, a5);
+  objc_storeStrong(&v22->_routingDataSource, source);
+  objc_storeStrong(&v22->_hostedRoutingService, service);
+  objc_storeStrong(&v22->_systemEndpointController, controller);
   [(MRDAVSystemEndpointController *)v22->_systemEndpointController setDelegate:v22];
-  objc_storeStrong(&v22->_autoConnectionController, a6);
-  objc_storeStrong(&v22->_homeServer, a7);
+  objc_storeStrong(&v22->_autoConnectionController, connectionController);
+  objc_storeStrong(&v22->_homeServer, server);
   v23 = objc_alloc_init(NSMutableSet);
   routeUIDsToIgnorePortStatusFailures = v22->_routeUIDsToIgnorePortStatusFailures;
   v22->_routeUIDsToIgnorePortStatusFailures = v23;
@@ -334,18 +334,18 @@ LABEL_5:
   }
 
   v30 = +[MRUserSettings currentSettings];
-  v31 = [v30 supportRoutingContinuity];
+  supportRoutingContinuity = [v30 supportRoutingContinuity];
 
-  if (v31)
+  if (supportRoutingContinuity)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
   v34 = +[MRUserSettings currentSettings];
-  v35 = [v34 supportMultiplayerHost];
+  supportMultiplayerHost = [v34 supportMultiplayerHost];
 
-  if (v35)
+  if (supportMultiplayerHost)
   {
     v36 = objc_alloc_init(MRDIdleTopologySimplifier);
     topologySimplifier = v22->_topologySimplifier;
@@ -361,9 +361,9 @@ LABEL_6:
   }
 
   v42 = +[MRUserSettings currentSettings];
-  v43 = [v42 useProactivePFSQSender];
+  useProactivePFSQSender = [v42 useProactivePFSQSender];
 
-  if (v43)
+  if (useProactivePFSQSender)
   {
     v44 = objc_alloc_init(MRDProactivePrepareForSetQueueSender);
     proactivePrepareForSetQueueSender = v22->_proactivePrepareForSetQueueSender;
@@ -371,9 +371,9 @@ LABEL_6:
   }
 
   v46 = +[MRUserSettings currentSettings];
-  v47 = [v46 supportRouteRecommendations];
+  supportRouteRecommendations = [v46 supportRouteRecommendations];
 
-  if (v47)
+  if (supportRouteRecommendations)
   {
     v48 = objc_alloc_init(MRDRouteRecommendationController);
     recommendationController = v22->_recommendationController;
@@ -381,24 +381,24 @@ LABEL_6:
   }
 
   v50 = +[MRUserSettings currentSettings];
-  v51 = [v50 showBluePill];
+  showBluePill = [v50 showBluePill];
 
-  if (v51)
+  if (showBluePill)
   {
     v52 = objc_alloc_init(MRDRoutedBackgroundActivityManager);
     routedBackgroundActivityManager = v22->_routedBackgroundActivityManager;
     v22->_routedBackgroundActivityManager = v52;
 
-    v54 = [(MRDRouteRecommendationController *)v22->_recommendationController focusMonitor];
-    [(MRDRoutedBackgroundActivityManager *)v22->_routedBackgroundActivityManager setFocusMonitor:v54];
+    focusMonitor = [(MRDRouteRecommendationController *)v22->_recommendationController focusMonitor];
+    [(MRDRoutedBackgroundActivityManager *)v22->_routedBackgroundActivityManager setFocusMonitor:focusMonitor];
 
     [(MRDRouteRecommendationController *)v22->_recommendationController setRoutedBackgroundActivityManager:v22->_routedBackgroundActivityManager];
   }
 
   v55 = +[MRUserSettings currentSettings];
-  v56 = [v55 donateActiveRoutesToBiome];
+  donateActiveRoutesToBiome = [v55 donateActiveRoutesToBiome];
 
-  if (v56)
+  if (donateActiveRoutesToBiome)
   {
     v57 = objc_alloc_init(MRDActiveMediaRouteBiomeDonor);
     activeMediaRouteDonor = v22->_activeMediaRouteDonor;
@@ -406,16 +406,16 @@ LABEL_6:
   }
 
   v59 = +[MRUserSettings currentSettings];
-  v60 = [v59 carPlayBannersEnabled];
+  carPlayBannersEnabled = [v59 carPlayBannersEnabled];
 
-  if (v60)
+  if (carPlayBannersEnabled)
   {
     v61 = objc_alloc_init(MRDCarPlayRouteRecommendationController);
     carPlayRecommendationController = v22->_carPlayRecommendationController;
     v22->_carPlayRecommendationController = v61;
   }
 
-  [v17 setDelegate:v22];
+  [sessionCopy setDelegate:v22];
   v63 = +[MRDPreemptiveRemoteControlConnectionManager sharedManager];
   preemptiveRemoteControlConnectionManager = v22->_preemptiveRemoteControlConnectionManager;
   v22->_preemptiveRemoteControlConnectionManager = v63;
@@ -444,19 +444,19 @@ LABEL_19:
   [(MRDAVRoutingServer *)&v4 dealloc];
 }
 
-- (void)setAirplayActive:(BOOL)a3
+- (void)setAirplayActive:(BOOL)active
 {
-  if (self->_airplayActive != a3)
+  if (self->_airplayActive != active)
   {
-    self->_airplayActive = a3;
+    self->_airplayActive = active;
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 postNotificationName:@"MRDRoutingServerAirplayActiveDidChange" object:self];
   }
 }
 
-- (id)pickableRoutesForCategory:(id)a3
+- (id)pickableRoutesForCategory:(id)category
 {
-  v3 = [(MRDAVRoutingDataSource *)self->_routingDataSource pickableRoutesForCategory:a3];
+  v3 = [(MRDAVRoutingDataSource *)self->_routingDataSource pickableRoutesForCategory:category];
   v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
   v12 = 0u;
   v13 = 0u;
@@ -477,8 +477,8 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) dictionary];
-        [v4 addObject:v10];
+        dictionary = [*(*(&v12 + 1) + 8 * i) dictionary];
+        [v4 addObject:dictionary];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -490,14 +490,14 @@ LABEL_19:
   return v4;
 }
 
-- (void)pickCachedRouteWithUID:(id)a3
+- (void)pickCachedRouteWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v31 = v4;
+    v31 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Route change requested for AV server's cached routes with UID %{public}@", buf, 0xCu);
   }
 
@@ -520,8 +520,8 @@ LABEL_19:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v21 + 1) + 8 * i) uniqueIdentifier];
-        v12 = [v11 hasPrefix:v4];
+        uniqueIdentifier = [*(*(&v21 + 1) + 8 * i) uniqueIdentifier];
+        v12 = [uniqueIdentifier hasPrefix:dCopy];
 
         if (v12)
         {
@@ -541,7 +541,7 @@ LABEL_19:
   }
 
   v13 = [(MRDAVRoutingDataSource *)self->_routingDataSource pickableRoutesForCategory:0];
-  v14 = v4;
+  v14 = dCopy;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -596,13 +596,13 @@ LABEL_22:
 LABEL_27:
 }
 
-- (BOOL)routeIsActiveWithUID:(id)a3
+- (BOOL)routeIsActiveWithUID:(id)d
 {
   routingDataSource = self->_routingDataSource;
-  v4 = a3;
-  v5 = [(MRDAVRoutingDataSource *)routingDataSource pickedRoute];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [v6 hasPrefix:v4];
+  dCopy = d;
+  pickedRoute = [(MRDAVRoutingDataSource *)routingDataSource pickedRoute];
+  uniqueIdentifier = [pickedRoute uniqueIdentifier];
+  v7 = [uniqueIdentifier hasPrefix:dCopy];
 
   return v7;
 }
@@ -611,13 +611,13 @@ LABEL_27:
 {
   v2 = objc_alloc_init(NSMutableSet);
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 allClients];
+  allClients = [v3 allClients];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v4;
+  v5 = allClients;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -632,8 +632,8 @@ LABEL_27:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) applicationPickedRoutes];
-        [v2 addObjectsFromArray:v10];
+        applicationPickedRoutes = [*(*(&v13 + 1) + 8 * i) applicationPickedRoutes];
+        [v2 addObjectsFromArray:applicationPickedRoutes];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -642,23 +642,23 @@ LABEL_27:
     while (v7);
   }
 
-  v11 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
-- (id)clientsForApplicationPickedRoute:(id)a3
+- (id)clientsForApplicationPickedRoute:(id)route
 {
-  v3 = a3;
+  routeCopy = route;
   v19 = objc_alloc_init(NSMutableArray);
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 allClients];
+  allClients = [v4 allClients];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
+  obj = allClients;
   v21 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v21)
   {
@@ -673,12 +673,12 @@ LABEL_27:
         }
 
         v7 = *(*(&v26 + 1) + 8 * i);
-        v8 = [v7 applicationPickedRoutes];
+        applicationPickedRoutes = [v7 applicationPickedRoutes];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v9 = v8;
+        v9 = applicationPickedRoutes;
         v10 = [v9 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v10)
         {
@@ -693,9 +693,9 @@ LABEL_27:
                 objc_enumerationMutation(v9);
               }
 
-              v14 = [*(*(&v22 + 1) + 8 * j) uniqueIdentifier];
-              v15 = [v3 uniqueIdentifier];
-              v16 = [v14 isEqual:v15];
+              uniqueIdentifier = [*(*(&v22 + 1) + 8 * j) uniqueIdentifier];
+              uniqueIdentifier2 = [routeCopy uniqueIdentifier];
+              v16 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
               if (v16)
               {
@@ -730,13 +730,13 @@ LABEL_16:
 {
   v2 = objc_alloc_init(NSMutableArray);
   v3 = +[MRDMediaRemoteServer server];
-  v4 = [v3 allClients];
+  allClients = [v3 allClients];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = allClients;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -752,12 +752,12 @@ LABEL_16:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 applicationPickedRoutes];
-        if (v11)
+        applicationPickedRoutes = [v10 applicationPickedRoutes];
+        if (applicationPickedRoutes)
         {
-          v12 = v11;
-          v13 = [v10 applicationPickedRoutes];
-          v14 = [v13 count];
+          v12 = applicationPickedRoutes;
+          applicationPickedRoutes2 = [v10 applicationPickedRoutes];
+          v14 = [applicationPickedRoutes2 count];
 
           if (v14)
           {
@@ -775,28 +775,28 @@ LABEL_16:
   return v2;
 }
 
-- (void)restoreClientState:(id)a3 handler:(id)a4
+- (void)restoreClientState:(id)state handler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEntitledFor:0x10000])
+  handlerCopy = handler;
+  if ([state isEntitledFor:0x10000])
   {
-    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:0 handler:v6];
-    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:1 handler:v6];
-    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:2 handler:v6];
-    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:3 handler:v6];
+    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:0 handler:handlerCopy];
+    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:1 handler:handlerCopy];
+    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:2 handler:handlerCopy];
+    [(MRDAVRoutingServer *)self restoreClientSystemEndpointWithType:3 handler:handlerCopy];
   }
 }
 
-- (void)restoreClientSystemEndpointWithType:(int64_t)a3 handler:(id)a4
+- (void)restoreClientSystemEndpointWithType:(int64_t)type handler:(id)handler
 {
   systemEndpointController = self->_systemEndpointController;
   if (systemEndpointController)
   {
-    v7 = a4;
-    v9 = [(MRDAVSystemEndpointController *)systemEndpointController activeOutputDeviceUID:a3];
+    handlerCopy = handler;
+    v9 = [(MRDAVSystemEndpointController *)systemEndpointController activeOutputDeviceUID:type];
     v8 = [[MRUpdateActiveSystemEndpointRequest alloc] initWithOutputDeviceUID:v9 reason:@"Restore"];
     [v8 setChangeType:0];
-    [(MRDAVRoutingServer *)self postSystemEndpointDeviceChange:v8 type:a3 originClient:0 handler:v7];
+    [(MRDAVRoutingServer *)self postSystemEndpointDeviceChange:v8 type:type originClient:0 handler:handlerCopy];
   }
 }
 
@@ -815,224 +815,224 @@ LABEL_16:
   return mediaActivityManager;
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   switch(xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY"))
   {
     case 0x300000000000001uLL:
-      [(MRDAVRoutingServer *)self _handleSetRouteDiscoveryModeMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetRouteDiscoveryModeMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000002uLL:
-      [(MRDAVRoutingServer *)self _handleGetPickableRoutesMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetPickableRoutesMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000003uLL:
-      [(MRDAVRoutingServer *)self _handleSetPickedRouteMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetPickedRouteMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000004uLL:
-      [(MRDAVRoutingServer *)self _handleGetPickedRouteHasVolumeControlMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetPickedRouteHasVolumeControlMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000005uLL:
-      [(MRDAVRoutingServer *)self _handleSetPickedRouteHasVolumeControlMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetPickedRouteHasVolumeControlMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000006uLL:
-      [(MRDAVRoutingServer *)self _handleGetExternalScreenTypeMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetExternalScreenTypeMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000007uLL:
-      [(MRDAVRoutingServer *)self _handleGetSavedAVRoutePasswordMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetSavedAVRoutePasswordMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000008uLL:
-      [(MRDAVRoutingServer *)self _handleSetSavedAVRoutePasswordMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetSavedAVRoutePasswordMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000009uLL:
-      [(MRDAVRoutingServer *)self _handleClearAllAVRoutePasswordsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleClearAllAVRoutePasswordsMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000AuLL:
-      [(MRDAVRoutingServer *)self _handleUnpickAirPlayRoutesMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleUnpickAirPlayRoutesMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000BuLL:
-      [(MRDAVRoutingServer *)self _handleSetApplicationPickedRoutes:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetApplicationPickedRoutes:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000CuLL:
-      [(MRDAVRoutingServer *)self _handleGetAirPlaySecuritySettingsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetAirPlaySecuritySettingsMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000DuLL:
-      [(MRDAVRoutingServer *)self _handleGetHostedRoutingXPCEndpointMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetHostedRoutingXPCEndpointMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000EuLL:
-      [(MRDAVRoutingServer *)self _handleSetRecentAVOutputDeviceUIDMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetRecentAVOutputDeviceUIDMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000000FuLL:
-      [(MRDAVRoutingServer *)self _handleGetRecentAVOutputDeviceUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetRecentAVOutputDeviceUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000010uLL:
-      [(MRDAVRoutingServer *)self _handleGetActiveSystemEndpointUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetActiveSystemEndpointUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000011uLL:
-      [(MRDAVRoutingServer *)self _handleUpdateActiveSystemEndpointUIDMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleUpdateActiveSystemEndpointUIDMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000013uLL:
-      [(MRDAVRoutingServer *)self _handleCreateEndpointWithDevices:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleCreateEndpointWithDevices:xdict fromClient:clientCopy];
       break;
     case 0x300000000000014uLL:
-      [(MRDAVRoutingServer *)self _handlePromptForRouteAuthorizationMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handlePromptForRouteAuthorizationMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000015uLL:
-      [(MRDAVRoutingServer *)self _handlePresentRouteAuthorizationStatusMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handlePresentRouteAuthorizationStatusMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000016uLL:
-      [(MRDAVRoutingServer *)self _handleGetAirplayStatus:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetAirplayStatus:xdict fromClient:clientCopy];
       break;
     case 0x300000000000017uLL:
-      [(MRDAVRoutingServer *)self _handleGroupDevicesAndSendCommand:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGroupDevicesAndSendCommand:xdict fromClient:clientCopy];
       break;
     case 0x300000000000018uLL:
-      [(MRDAVRoutingServer *)self _handleRemoveFromParentGroup:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleRemoveFromParentGroup:xdict fromClient:clientCopy];
       break;
     case 0x300000000000019uLL:
-      [(MRDAVRoutingServer *)self _handlePredictGroupLeader:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handlePredictGroupLeader:xdict fromClient:clientCopy];
       break;
     case 0x30000000000001AuLL:
-      [(MRDAVRoutingServer *)self _handleSetNearbyDevice:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSetNearbyDevice:xdict fromClient:clientCopy];
       break;
     case 0x30000000000001CuLL:
-      [(MRDAVRoutingServer *)self _handleResetOutputContextMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleResetOutputContextMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000001DuLL:
-      [(MRDAVRoutingServer *)self _handleGetExternalDeviceMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetExternalDeviceMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000001EuLL:
-      [(MRDAVRoutingServer *)self _handleAddVirtualOutputDeviceMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleAddVirtualOutputDeviceMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000001FuLL:
-      [(MRDAVRoutingServer *)self _handleGetVirtualOutputDevicesMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetVirtualOutputDevicesMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000020uLL:
-      [(MRDAVRoutingServer *)self _handleCreateGroupWithDevices:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleCreateGroupWithDevices:xdict fromClient:clientCopy];
       break;
     case 0x300000000000021uLL:
-      [(MRDAVRoutingServer *)self _handleCreateDirectEndpointForDevices:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleCreateDirectEndpointForDevices:xdict fromClient:clientCopy];
       break;
     case 0x300000000000022uLL:
-      [(MRDExternalDeviceHomeServer *)self->_homeServer handleXPCMessage:xdict fromClient:v6];
+      [(MRDExternalDeviceHomeServer *)self->_homeServer handleXPCMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000023uLL:
-      [(MRDAVRoutingServer *)self _handleStartNowPlayingSession:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleStartNowPlayingSession:xdict fromClient:clientCopy];
       break;
     case 0x300000000000024uLL:
-      [(MRDAVRoutingServer *)self _handleStopNowPlayingSession:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleStopNowPlayingSession:xdict fromClient:clientCopy];
       break;
     case 0x300000000000025uLL:
-      [(MRDAVRoutingServer *)self _handleGetOutputContextUIDMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetOutputContextUIDMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000026uLL:
-      [(MRDAVRoutingServer *)self _handleMigrateFromEndpointToOutputDevicesMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleMigrateFromEndpointToOutputDevicesMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000027uLL:
-      [(MRDAVRoutingServer *)self _handleMigrateFromEndpointToEndpointMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleMigrateFromEndpointToEndpointMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000028uLL:
-      [(MRDAVRoutingServer *)self _handleModifyOutputContextMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleModifyOutputContextMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000029uLL:
-      [(MRDAVRoutingServer *)self _handleCreateHostedEndpointForDevices:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleCreateHostedEndpointForDevices:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002AuLL:
-      [(MRDAVRoutingServer *)self _handleWillStartPlayingInterruptMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleWillStartPlayingInterruptMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002BuLL:
-      [(MRDAVRoutingServer *)self _handleRecommendRouteCandidateMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleRecommendRouteCandidateMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002CuLL:
-      [(MRDAVRoutingServer *)self _handleGetRecommendRouteCandidatesMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleGetRecommendRouteCandidatesMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002DuLL:
-      [(MRDAVRoutingServer *)self _handleResumeNowPlayingSession:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleResumeNowPlayingSession:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002EuLL:
-      [(MRDAVRoutingServer *)self _handleDismissAllBannersMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleDismissAllBannersMessage:xdict fromClient:clientCopy];
       break;
     case 0x30000000000002FuLL:
-      [(MRDAVRoutingServer *)self _handlePauseOutputDeviceUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handlePauseOutputDeviceUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000030uLL:
-      [(MRDAVRoutingServer *)self _handleSearchEndpointsForOutputDeviceUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSearchEndpointsForOutputDeviceUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000031uLL:
-      [(MRDAVRoutingServer *)self _handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000032uLL:
-      [(MRDAVRoutingServer *)self _handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000033uLL:
-      [(MRDAVRoutingServer *)self _handleSearchEndpointsForRoutingContextUIDMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handleSearchEndpointsForRoutingContextUIDMessage:xdict fromClient:clientCopy];
       break;
     case 0x300000000000034uLL:
-      [(MRDAVRoutingServer *)self _handlePrepareGroupForPlaybackMessage:xdict fromClient:v6];
+      [(MRDAVRoutingServer *)self _handlePrepareGroupForPlaybackMessage:xdict fromClient:clientCopy];
       break;
     default:
       break;
   }
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
   routingDataSource = self->_routingDataSource;
-  v5 = a3;
-  [v5 setSystemDiscoveryMode:{-[MRDAVRoutingDataSource discoveryMode](routingDataSource, "discoveryMode")}];
+  diagnosticCopy = diagnostic;
+  [diagnosticCopy setSystemDiscoveryMode:{-[MRDAVRoutingDataSource discoveryMode](routingDataSource, "discoveryMode")}];
   v6 = MRMediaRemoteCopyDeviceUID();
-  [v5 setLocalReceiverPairingIdentity:v6];
+  [diagnosticCopy setLocalReceiverPairingIdentity:v6];
 
-  v11 = [(MRDAVRoutingServer *)self _createAirPlaySecuritySettings];
-  [v5 setAirplaySecuritySettings:v11];
-  v7 = [(MRDAVSystemEndpointController *)self->_systemEndpointController systemEndpointInfo];
-  [v5 setSystemActiveEndpoints:v7];
+  _createAirPlaySecuritySettings = [(MRDAVRoutingServer *)self _createAirPlaySecuritySettings];
+  [diagnosticCopy setAirplaySecuritySettings:_createAirPlaySecuritySettings];
+  systemEndpointInfo = [(MRDAVSystemEndpointController *)self->_systemEndpointController systemEndpointInfo];
+  [diagnosticCopy setSystemActiveEndpoints:systemEndpointInfo];
 
-  v8 = [(MRDAVSystemEndpointController *)self->_systemEndpointController recentlyDismissedRecommendationsInfo];
-  [v5 setRecentlyDismissedSystemEndpoints:v8];
+  recentlyDismissedRecommendationsInfo = [(MRDAVSystemEndpointController *)self->_systemEndpointController recentlyDismissedRecommendationsInfo];
+  [diagnosticCopy setRecentlyDismissedSystemEndpoints:recentlyDismissedRecommendationsInfo];
 
-  v9 = [(MRDAutoConnectionController *)self->_autoConnectionController autoConnectingEndpoints];
-  [v5 setAutoConnectingEndpoints:v9];
+  autoConnectingEndpoints = [(MRDAutoConnectionController *)self->_autoConnectionController autoConnectingEndpoints];
+  [diagnosticCopy setAutoConnectingEndpoints:autoConnectingEndpoints];
 
-  v10 = [(MRDAutoConnectionController *)self->_autoConnectionController autoConnectedEndpoints];
-  [v5 setAutoConnectedEndpoints:v10];
+  autoConnectedEndpoints = [(MRDAutoConnectionController *)self->_autoConnectionController autoConnectedEndpoints];
+  [diagnosticCopy setAutoConnectedEndpoints:autoConnectedEndpoints];
 
-  [v5 setAutomaticRemoteControlConnections:self->_preemptiveRemoteControlConnectionManager];
-  [(MRDAVHostedRoutingService *)self->_hostedRoutingService collectDiagnostic:v5];
+  [diagnosticCopy setAutomaticRemoteControlConnections:self->_preemptiveRemoteControlConnectionManager];
+  [(MRDAVHostedRoutingService *)self->_hostedRoutingService collectDiagnostic:diagnosticCopy];
 }
 
-- (void)outputDeviceAuthorizationSession:(id)a3 didProvideAuthorizationRequest:(id)a4
+- (void)outputDeviceAuthorizationSession:(id)session didProvideAuthorizationRequest:(id)request
 {
-  v5 = a4;
-  v6 = [v5 status];
-  if (v6 > 5)
+  requestCopy = request;
+  status = [requestCopy status];
+  if (status > 5)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = *(&off_1004BFB00 + v6);
+    v7 = *(&off_1004BFB00 + status);
   }
 
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v46 = v5;
+    v46 = requestCopy;
     v47 = 2114;
     v48 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Received output device authorization request: %{public}@ (status = %{public}@)", buf, 0x16u);
   }
 
-  v9 = [v5 outputDevice];
-  v10 = [v9 name];
-  v11 = [[MRDAVOutputDeviceRoute alloc] initWithAVOutputDevice:v9];
+  outputDevice = [requestCopy outputDevice];
+  name = [outputDevice name];
+  v11 = [[MRDAVOutputDeviceRoute alloc] initWithAVOutputDevice:outputDevice];
   [(MRDAVRoutingServer *)self _postRouteStatusDidChangeNotificationForRoute:v11 newStatus:1];
 
-  v12 = [v5 authorizationTokenType];
-  if ([v12 isEqualToString:AVOutputDeviceAuthorizationTokenTypePIN])
+  authorizationTokenType = [requestCopy authorizationTokenType];
+  if ([authorizationTokenType isEqualToString:AVOutputDeviceAuthorizationTokenTypePIN])
   {
     v13 = 3;
   }
@@ -1042,37 +1042,37 @@ LABEL_16:
     v13 = 1;
   }
 
-  if (v12 != AVOutputDeviceAuthorizationTokenTypePassword)
+  if (authorizationTokenType != AVOutputDeviceAuthorizationTokenTypePassword)
   {
-    [(MRDAVRoutingServer *)self _clearPasswordForOutputDevice:v9];
+    [(MRDAVRoutingServer *)self _clearPasswordForOutputDevice:outputDevice];
 LABEL_11:
     v38[0] = _NSConcreteStackBlock;
     v38[1] = 3221225472;
     v38[2] = sub_10015E03C;
     v38[3] = &unk_1004B68F0;
-    v14 = v10;
+    v14 = name;
     v39 = v14;
-    v15 = v5;
+    v15 = requestCopy;
     v40 = v15;
     v16 = objc_retainBlock(v38);
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_10015E0FC;
     v31[3] = &unk_1004BF5D8;
-    v32 = v9;
+    v32 = outputDevice;
     v33 = v15;
     v34 = v14;
-    v35 = v12;
-    v36 = self;
+    v35 = authorizationTokenType;
+    selfCopy = self;
     v37 = v16;
-    v17 = v9;
+    v17 = outputDevice;
     v18 = v16;
     v19 = objc_retainBlock(v31);
-    v20 = v10;
+    v20 = name;
     v21 = [MRDRouteAuthorizationRequest alloc];
     v22 = [[MRDAVOutputDeviceRoute alloc] initWithAVOutputDevice:v17];
     v23 = v21;
-    v10 = v20;
+    name = v20;
     v24 = [(MRDRouteAuthorizationRequest *)v23 initWithRoute:v22 inputType:v13 responseCallback:v19 cancelCallback:v18];
 
     [(MRDAVRoutingServer *)self _handleAuthorizationRequest:v24];
@@ -1080,7 +1080,7 @@ LABEL_11:
     goto LABEL_16;
   }
 
-  v26 = [(MRDAVRoutingServer *)self _savedPasswordForOutputDevice:v9];
+  v26 = [(MRDAVRoutingServer *)self _savedPasswordForOutputDevice:outputDevice];
   if (!v26)
   {
     goto LABEL_11;
@@ -1090,9 +1090,9 @@ LABEL_11:
   v28 = _MRLogForCategory();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v29 = [v9 name];
+    name2 = [outputDevice name];
     *buf = 138543618;
-    v46 = v29;
+    v46 = name2;
     v47 = 2112;
     v48 = v27;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Authorization request using saved password for %{public}@: %@", buf, 0x16u);
@@ -1102,27 +1102,27 @@ LABEL_11:
   v41[1] = 3221225472;
   v41[2] = sub_10015DFD8;
   v41[3] = &unk_1004B6A98;
-  v42 = v9;
+  v42 = outputDevice;
   v43 = v27;
-  v44 = self;
+  selfCopy2 = self;
   v25 = v27;
-  v30 = v9;
-  [v5 respondWithAuthorizationToken:v25 completionHandler:v41];
+  v30 = outputDevice;
+  [requestCopy respondWithAuthorizationToken:v25 completionHandler:v41];
 
 LABEL_16:
 }
 
-- (void)_handleSetRouteDiscoveryModeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetRouteDiscoveryModeMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  [v6 setRouteDiscoveryMode:{xpc_dictionary_get_uint64(a3, "MRXPC_ROUTE_DISCOVERY_MODE_KEY")}];
+  clientCopy = client;
+  [clientCopy setRouteDiscoveryMode:{xpc_dictionary_get_uint64(message, "MRXPC_ROUTE_DISCOVERY_MODE_KEY")}];
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 displayName];
-    v9 = -[MRDAVRoutingServer _descriptionForDiscoveryMode:](self, "_descriptionForDiscoveryMode:", [v6 routeDiscoveryMode]);
+    displayName = [clientCopy displayName];
+    v9 = -[MRDAVRoutingServer _descriptionForDiscoveryMode:](self, "_descriptionForDiscoveryMode:", [clientCopy routeDiscoveryMode]);
     v10 = 138543618;
-    v11 = v8;
+    v11 = displayName;
     v12 = 2114;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Client %{public}@ changed route discovery mode to %{public}@.", &v10, 0x16u);
@@ -1131,10 +1131,10 @@ LABEL_16:
   [(MRDAVRoutingServer *)self _updateSystemRouteDiscoveryMode];
 }
 
-- (void)_handleGetPickableRoutesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPickableRoutesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  string = xpc_dictionary_get_string(v5, "MRXPC_ROUTE_CATEGORY_KEY");
+  messageCopy = message;
+  string = xpc_dictionary_get_string(messageCopy, "MRXPC_ROUTE_CATEGORY_KEY");
   if (string)
   {
     v7 = [NSString stringWithUTF8String:string];
@@ -1148,26 +1148,26 @@ LABEL_16:
   v10 = v7;
   v8 = [(MRDAVRoutingServer *)self pickableRoutesForCategory:v7];
   v9 = [NSPropertyListSerialization dataWithPropertyList:v8 format:200 options:0 error:0];
-  sub_10001673C(v5, "MRXPC_ROUTES_DATA_KEY", v9, 0);
+  sub_10001673C(messageCopy, "MRXPC_ROUTES_DATA_KEY", v9, 0);
 }
 
-- (void)_handleSetPickedRouteMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPickedRouteMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreatePropertyListFromXPCMessage();
   v9 = MRCreateStringFromXPCMessage();
   v10 = MRCreateStringFromXPCMessage();
-  uint64 = xpc_dictionary_get_uint64(v6, "MRXPC_ROUTE_OPTIONS_KEY");
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_ROUTE_OPTIONS_KEY");
   if (v8)
   {
     v12 = _MRLogForCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 displayName];
+      displayName = [clientCopy displayName];
       v14 = MRMediaRemoteCopySetPickedRouteOptionsDescription();
       *buf = 138543874;
-      v31 = v13;
+      v31 = displayName;
       v32 = 2114;
       v33 = v8;
       v34 = 2114;
@@ -1185,7 +1185,7 @@ LABEL_16:
       v15 = 7;
     }
 
-    sub_10000F9E4(v6, v15);
+    sub_10000F9E4(messageCopy, v15);
   }
 
   else
@@ -1196,10 +1196,10 @@ LABEL_16:
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v7 displayName];
+        displayName2 = [clientCopy displayName];
         v19 = MRMediaRemoteCopySetPickedRouteOptionsDescription();
         *buf = 138543874;
-        v31 = v18;
+        v31 = displayName2;
         v32 = 2114;
         v33 = v9;
         v34 = 2114;
@@ -1228,7 +1228,7 @@ LABEL_16:
       v24 = v10;
       v28 = uint64;
       objc_copyWeak(&v27, &location);
-      v25 = v6;
+      v25 = messageCopy;
       [(MRDAVReconnaissanceSession *)v20 beginSearchWithTimeout:v22 completion:5.0];
 
       objc_destroyWeak(&v27);
@@ -1244,28 +1244,28 @@ LABEL_16:
         sub_1003AAF20();
       }
 
-      sub_10000F9E4(v6, 7u);
+      sub_10000F9E4(messageCopy, 7u);
     }
   }
 }
 
-- (void)_handleGetPickedRouteHasVolumeControlMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetPickedRouteHasVolumeControlMessage:(id)message fromClient:(id)client
 {
-  v13 = a3;
-  v5 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v6 = +[MRDMediaRemoteServer server];
-  v7 = [v6 nowPlayingServer];
+  nowPlayingServer = [v6 nowPlayingServer];
 
-  v8 = [v7 queryExistingPlayerPathForXPCMessage:v13 forClient:v5];
+  v8 = [nowPlayingServer queryExistingPlayerPathForXPCMessage:messageCopy forClient:clientCopy];
 
-  v9 = [v8 originClient];
+  originClient = [v8 originClient];
 
-  if (v9)
+  if (originClient)
   {
-    v10 = [v8 originClient];
-    v11 = [v10 volumeControlCapabilities];
+    originClient2 = [v8 originClient];
+    volumeControlCapabilities = [originClient2 volumeControlCapabilities];
 
-    v12 = v11;
+    v12 = volumeControlCapabilities;
   }
 
   else
@@ -1273,55 +1273,55 @@ LABEL_16:
     v12 = 0;
   }
 
-  sub_10000BEE0(v13, "MRXPC_ROUTE_VOLUME_CONTROL_CAPABILITIES_KEY", 0, v12, 0);
+  sub_10000BEE0(messageCopy, "MRXPC_ROUTE_VOLUME_CONTROL_CAPABILITIES_KEY", 0, v12, 0);
 }
 
-- (void)_handleSetPickedRouteHasVolumeControlMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetPickedRouteHasVolumeControlMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v5 = a4;
+  xdict = message;
+  clientCopy = client;
   v6 = +[MRDMediaRemoteServer server];
-  v7 = [v6 nowPlayingServer];
+  nowPlayingServer = [v6 nowPlayingServer];
 
-  v8 = [v7 queryExistingPlayerPathForXPCMessage:xdict forClient:v5];
+  v8 = [nowPlayingServer queryExistingPlayerPathForXPCMessage:xdict forClient:clientCopy];
 
-  v9 = [v8 originClient];
+  originClient = [v8 originClient];
 
-  if (v9)
+  if (originClient)
   {
     if ([v8 isLocalOrigin])
     {
-      v10 = 2;
+      error = 2;
     }
 
     else
     {
       int64 = xpc_dictionary_get_int64(xdict, "MRXPC_ROUTE_VOLUME_CONTROL_CAPABILITIES_KEY");
-      v12 = [v8 originClient];
-      [v12 setVolumeControlCapabilities:int64];
+      originClient2 = [v8 originClient];
+      [originClient2 setVolumeControlCapabilities:int64];
 
-      v10 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    v10 = [v8 error];
+    error = [v8 error];
   }
 
-  sub_10000F9E4(xdict, v10);
+  sub_10000F9E4(xdict, error);
 }
 
-- (void)_handleGetExternalScreenTypeMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetExternalScreenTypeMessage:(id)message fromClient:(id)client
 {
   routingDataSource = self->_routingDataSource;
-  v5 = a3;
-  sub_10000BEE0(v5, "MRXPC_ROUTE_EXTERNAL_SCREEN_TYPE_KEY", 1, [(MRDAVRoutingDataSource *)routingDataSource externalScreenType], 0);
+  messageCopy = message;
+  sub_10000BEE0(messageCopy, "MRXPC_ROUTE_EXTERNAL_SCREEN_TYPE_KEY", 1, [(MRDAVRoutingDataSource *)routingDataSource externalScreenType], 0);
 }
 
-- (void)_handleGetSavedAVRoutePasswordMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetSavedAVRoutePasswordMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MRCreateStringFromXPCMessage();
   v6 = v5;
   if (v5)
@@ -1331,12 +1331,12 @@ LABEL_16:
 
   v8 = v5;
   v7 = v5;
-  sub_10000BEE0(v4, "MRXPC_ROUTE_PASSWORD_KEY", 3, [v8 UTF8String], 0);
+  sub_10000BEE0(messageCopy, "MRXPC_ROUTE_PASSWORD_KEY", 3, [v8 UTF8String], 0);
 }
 
-- (void)_handleSetSavedAVRoutePasswordMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetSavedAVRoutePasswordMessage:(id)message fromClient:(id)client
 {
-  v7 = a3;
+  messageCopy = message;
   v4 = MRCreateStringFromXPCMessage();
   v5 = MRCreateStringFromXPCMessage();
   if (v4)
@@ -1350,10 +1350,10 @@ LABEL_16:
     v6 = 2;
   }
 
-  sub_10000F9E4(v7, v6);
+  sub_10000F9E4(messageCopy, v6);
 }
 
-- (void)_handleClearAllAVRoutePasswordsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleClearAllAVRoutePasswordsMessage:(id)message fromClient:(id)client
 {
   v4 = _MRLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1437,9 +1437,9 @@ LABEL_16:
   }
 }
 
-- (void)_handleUnpickAirPlayRoutesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleUnpickAirPlayRoutesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1457,15 +1457,15 @@ LABEL_16:
     v7 = 7;
   }
 
-  sub_10000F9E4(v5, v7);
+  sub_10000F9E4(messageCopy, v7);
 }
 
-- (void)_handleSetApplicationPickedRoutes:(id)a3 fromClient:(id)a4
+- (void)_handleSetApplicationPickedRoutes:(id)routes fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  routesCopy = routes;
+  clientCopy = client;
   v7 = MRCreatePropertyListFromXPCMessage();
-  v8 = xpc_dictionary_get_BOOL(v5, "MRXPC_ROUTE_OPTIONS_KEY");
+  v8 = xpc_dictionary_get_BOOL(routesCopy, "MRXPC_ROUTE_OPTIONS_KEY");
   v9 = _MRLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1508,32 +1508,32 @@ LABEL_16:
     while (v13);
   }
 
-  [(MRDAVRoutingServer *)self _setApplicationPickedRoutes:v10 updateRoutes:v8 forClient:v6];
+  [(MRDAVRoutingServer *)self _setApplicationPickedRoutes:v10 updateRoutes:v8 forClient:clientCopy];
 }
 
-- (void)_handleGetAirPlaySecuritySettingsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetAirPlaySecuritySettingsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleGetHostedRoutingXPCEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetHostedRoutingXPCEndpointMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = clientCopy;
+  v9 = messageCopy;
+  v10 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleSetRecentAVOutputDeviceUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSetRecentAVOutputDeviceUIDMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v9 = MRCreateStringFromXPCMessage();
   [NSMutableArray insertObject:"insertObject:atIndex:" atIndex:?];
   v6 = [(NSMutableArray *)self->_mostRecentlyPickedDevices count];
@@ -1554,66 +1554,66 @@ LABEL_16:
   }
 
   [(MRDAVRoutingServer *)self _saveMostRecentlyPicked];
-  sub_10000F9E4(v5, 0);
+  sub_10000F9E4(messageCopy, 0);
 }
 
-- (void)_handleGetRecentAVOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetRecentAVOutputDeviceUIDsMessage:(id)message fromClient:(id)client
 {
   mostRecentlyPickedDevices = self->_mostRecentlyPickedDevices;
-  v5 = a3;
+  messageCopy = message;
   v6 = [NSPropertyListSerialization dataWithPropertyList:mostRecentlyPickedDevices format:200 options:0 error:0];
-  sub_10001673C(v5, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY", v6, 0);
+  sub_10001673C(messageCopy, "MRXPC_OUTPUT_DEVICE_UID_ARRAY_DATA_KEY", v6, 0);
 }
 
-- (void)_handleUpdateActiveSystemEndpointUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleUpdateActiveSystemEndpointUIDMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = messageCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleGetActiveSystemEndpointUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetActiveSystemEndpointUIDsMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = clientCopy;
+  v9 = messageCopy;
+  v10 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleGetHostedEndpointForDeviceUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetHostedEndpointForDeviceUIDMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = clientCopy;
+  v9 = messageCopy;
+  v10 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handlePromptForRouteAuthorizationMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePromptForRouteAuthorizationMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = MRCreateProtobufFromXPCMessage();
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1001602E4;
   v21[3] = &unk_1004BE4C8;
-  v22 = v5;
-  v7 = v5;
+  v22 = messageCopy;
+  v7 = messageCopy;
   v8 = objc_retainBlock(v21);
-  v9 = [v6 inputType];
+  inputType = [v6 inputType];
   v10 = [MRDOutputDeviceRoute alloc];
-  v11 = [v6 route];
-  v12 = [(MRDOutputDeviceRoute *)v10 initWithOutputDevice:v11];
+  route = [v6 route];
+  v12 = [(MRDOutputDeviceRoute *)v10 initWithOutputDevice:route];
 
   v13 = [MRDRouteAuthorizationRequest alloc];
   v16 = _NSConcreteStackBlock;
@@ -1622,270 +1622,270 @@ LABEL_16:
   v19 = &unk_1004B79A0;
   v20 = v8;
   v14 = v8;
-  v15 = [(MRDRouteAuthorizationRequest *)v13 initWithRoute:v12 inputType:v9 responseCallback:v14 cancelCallback:&v16];
+  v15 = [(MRDRouteAuthorizationRequest *)v13 initWithRoute:v12 inputType:inputType responseCallback:v14 cancelCallback:&v16];
   [(MRDAVRoutingServer *)self _handleAuthorizationRequest:v15, v16, v17, v18, v19];
 }
 
-- (void)_handlePresentRouteAuthorizationStatusMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePresentRouteAuthorizationStatusMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v10 = MRCreateProtobufFromXPCMessage();
-  v6 = [v10 status];
+  status = [v10 status];
   v7 = [MRDOutputDeviceRoute alloc];
-  v8 = [v10 route];
-  v9 = [(MRDOutputDeviceRoute *)v7 initWithOutputDevice:v8];
-  [(MRDAVRoutingServer *)self _handleErrorStatus:v6 forRoute:v9];
+  route = [v10 route];
+  v9 = [(MRDOutputDeviceRoute *)v7 initWithOutputDevice:route];
+  [(MRDAVRoutingServer *)self _handleErrorStatus:status forRoute:v9];
 
-  sub_100008278(v5, 0);
+  sub_100008278(messageCopy, 0);
 }
 
-- (void)_handleGetAirplayStatus:(id)a3 fromClient:(id)a4
+- (void)_handleGetAirplayStatus:(id)status fromClient:(id)client
 {
-  v5 = a3;
+  statusCopy = status;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = statusCopy;
+  v7 = statusCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleSetNearbyDevice:(id)a3 fromClient:(id)a4
+- (void)_handleSetNearbyDevice:(id)device fromClient:(id)client
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100160654;
   v5[3] = &unk_1004B6E08;
-  v6 = a3;
-  v4 = v6;
+  deviceCopy = device;
+  v4 = deviceCopy;
   sub_100008278(v4, v5);
 }
 
-- (void)_handleResetOutputContextMessage:(id)a3 fromClient:(id)a4
+- (void)_handleResetOutputContextMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleAddVirtualOutputDeviceMessage:(id)a3 fromClient:(id)a4
+- (void)_handleAddVirtualOutputDeviceMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    sub_100008278(v4, &stru_1004BF620);
+    sub_100008278(messageCopy, &stru_1004BF620);
   }
 }
 
-- (void)_handleGetVirtualOutputDevicesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetVirtualOutputDevicesMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    sub_100008278(v4, &stru_1004BF640);
+    sub_100008278(messageCopy, &stru_1004BF640);
   }
 }
 
-- (void)_handleCreateGroupWithDevices:(id)a3 fromClient:(id)a4
+- (void)_handleCreateGroupWithDevices:(id)devices fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = devicesCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = devicesCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleStartNowPlayingSession:(id)a3 fromClient:(id)a4
+- (void)_handleStartNowPlayingSession:(id)session fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = clientCopy;
+  v9 = sessionCopy;
+  v10 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleStopNowPlayingSession:(id)a3 fromClient:(id)a4
+- (void)_handleStopNowPlayingSession:(id)session fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v7;
-  v9 = v6;
-  v10 = v7;
+  v11 = clientCopy;
+  v9 = sessionCopy;
+  v10 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleResumeNowPlayingSession:(id)a3 fromClient:(id)a4
+- (void)_handleResumeNowPlayingSession:(id)session fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  clientCopy = client;
   v8 = MRCreatePlayerPathFromXPCMessage();
   workerQueue = self->_workerQueue;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v13 = clientCopy;
+  v14 = sessionCopy;
+  v10 = sessionCopy;
   v11 = v8;
-  v12 = v7;
+  v12 = clientCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleGetOutputContextUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetOutputContextUIDMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   if (qword_100529578 != -1)
   {
     sub_1003AB234();
   }
 
-  v6 = v4;
-  v5 = v4;
+  v6 = messageCopy;
+  v5 = messageCopy;
   MRMediaRemoteGetDeviceUIDWithRetryIntervals();
 }
 
-- (void)_handleMigrateFromEndpointToOutputDevicesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleMigrateFromEndpointToOutputDevicesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleMigrateFromEndpointToEndpointMessage:(id)a3 fromClient:(id)a4
+- (void)_handleMigrateFromEndpointToEndpointMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleCreateDirectEndpointForDevices:(id)a3 fromClient:(id)a4
+- (void)_handleCreateDirectEndpointForDevices:(id)devices fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = devicesCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = devicesCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleGroupDevicesAndSendCommand:(id)a3 fromClient:(id)a4
+- (void)_handleGroupDevicesAndSendCommand:(id)command fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = commandCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = commandCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleCreateHostedEndpointForDevices:(id)a3 fromClient:(id)a4
+- (void)_handleCreateHostedEndpointForDevices:(id)devices fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  devicesCopy = devices;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = devicesCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = devicesCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handlePredictGroupLeader:(id)a3 fromClient:(id)a4
+- (void)_handlePredictGroupLeader:(id)leader fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  leaderCopy = leader;
+  clientCopy = client;
   workerQueue = self->_workerQueue;
-  v11 = v6;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v11 = leaderCopy;
+  v12 = clientCopy;
+  v9 = clientCopy;
+  v10 = leaderCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleRemoveFromParentGroup:(id)a3 fromClient:(id)a4
+- (void)_handleRemoveFromParentGroup:(id)group fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  clientCopy = client;
   v8 = MRCreatePropertyListFromXPCMessage();
   v9 = MRCreateRequestDetailsFromXPCMessage();
   if (!v9)
   {
     v10 = [MRRequestDetails alloc];
     v11 = MRRequestDetailsInitiatorInfer;
-    v12 = [v7 bundleIdentifier];
-    v9 = [v10 initWithInitiator:v11 requestID:0 reason:@"RoutingServer.handleRemoveFromParentGroup" userInitiated:0 originatingBundleID:v12];
+    bundleIdentifier = [clientCopy bundleIdentifier];
+    v9 = [v10 initWithInitiator:v11 requestID:0 reason:@"RoutingServer.handleRemoveFromParentGroup" userInitiated:0 originatingBundleID:bundleIdentifier];
   }
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001635CC;
   v14[3] = &unk_1004B6FC0;
-  v15 = v6;
-  v13 = v6;
+  v15 = groupCopy;
+  v13 = groupCopy;
   [(MRDAVRoutingServer *)self removeOutputDeviceUIDsFromParentGroup:v8 details:v9 completion:v14];
 }
 
-- (void)_handleGetExternalDeviceMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetExternalDeviceMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  clientCopy = client;
   if (qword_100529588 != -1)
   {
     sub_1003AB2BC();
   }
 
-  if ([v6 isEntitledFor:0x8000])
+  if ([clientCopy isEntitledFor:0x8000])
   {
-    v7 = v5;
+    v7 = messageCopy;
     xpc_dictionary_handoff_reply();
   }
 
   else
   {
-    sub_100008278(v5, &stru_1004BF7F8);
+    sub_100008278(messageCopy, &stru_1004BF7F8);
   }
 }
 
-- (void)_handleModifyOutputContextMessage:(id)a3 fromClient:(id)a4
+- (void)_handleModifyOutputContextMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleWillStartPlayingInterruptMessage:(id)a3 fromClient:(id)a4
+- (void)_handleWillStartPlayingInterruptMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleRecommendRouteCandidateMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRecommendRouteCandidateMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v6;
+    v14 = messageCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = clientCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] [MRDRRC] _handleRecommendRouteCandidateMessage: %@ fromClient: %@", buf, 0x16u);
   }
 
@@ -1893,29 +1893,29 @@ LABEL_16:
   v10[1] = 3221225472;
   v10[2] = sub_10016403C;
   v10[3] = &unk_1004B6E30;
-  v11 = v6;
-  v12 = self;
-  v9 = v6;
+  v11 = messageCopy;
+  selfCopy = self;
+  v9 = messageCopy;
   sub_100008278(v9, v10);
 }
 
-- (void)_handleGetRecommendRouteCandidatesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetRecommendRouteCandidatesMessage:(id)message fromClient:(id)client
 {
-  v4 = [(MRDRouteRecommendationController *)self->_recommendationController recommender:a3];
+  v4 = [(MRDRouteRecommendationController *)self->_recommendationController recommender:message];
   [v4 requestCurrentContext];
 }
 
-- (void)_handleDismissAllBannersMessage:(id)a3 fromClient:(id)a4
+- (void)_handleDismissAllBannersMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = v6;
+    v11 = messageCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = clientCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] _handleDismissAllBannersMessage: %@ fromClient: %@", buf, 0x16u);
   }
 
@@ -1924,61 +1924,61 @@ LABEL_16:
   v9[2] = sub_10016429C;
   v9[3] = &unk_1004B6E08;
   v9[4] = self;
-  sub_100008278(v6, v9);
+  sub_100008278(messageCopy, v9);
 }
 
-- (void)_handlePauseOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePauseOutputDeviceUIDsMessage:(id)message fromClient:(id)client
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = MRCreatePropertyListFromXPCMessage();
   v6 = MRCreateRequestDetailsFromXPCMessage();
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001643B4;
   v11[3] = &unk_1004B6FC0;
-  v12 = v4;
-  v7 = v4;
+  v12 = messageCopy;
+  v7 = messageCopy;
   v8 = objc_retainBlock(v11);
   v9 = qos_class_self();
   v10 = dispatch_get_global_queue(v9, 0);
   [MRDPauseOutputDevicesRequest pauseOutputDeviceUIDs:v5 details:v6 queue:v10 completion:v8];
 }
 
-- (void)_handleSearchEndpointsForOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSearchEndpointsForOutputDeviceUIDsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)searchEndpointsForOutputDeviceUID:(id)a3 timeout:(double)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)searchEndpointsForOutputDeviceUID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v16 = +[NSDate now];
-  v17 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
+  hostedRoutingController = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
   v18 = [NSMutableString alloc];
-  v19 = [v13 requestID];
-  v20 = [v18 initWithFormat:@"%@<%@>", @"RoutingServer.searchEndpointsForOutputDeviceUID", v19];
+  requestID = [detailsCopy requestID];
+  v20 = [v18 initWithFormat:@"%@<%@>", @"RoutingServer.searchEndpointsForOutputDeviceUID", requestID];
 
-  if (v12)
+  if (dCopy)
   {
-    [(__CFString *)v20 appendFormat:@" for %@", v12];
+    [(__CFString *)v20 appendFormat:@" for %@", dCopy];
   }
 
-  v21 = [v13 label];
+  label = [detailsCopy label];
 
-  if (v21)
+  if (label)
   {
-    v22 = [v13 label];
-    [(__CFString *)v20 appendFormat:@" because %@", v22];
+    label2 = [detailsCopy label];
+    [(__CFString *)v20 appendFormat:@" because %@", label2];
   }
 
-  v44 = v14;
+  v44 = queueCopy;
   v23 = _MRLogForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
@@ -1991,51 +1991,51 @@ LABEL_16:
   v56[1] = 3221225472;
   v56[2] = sub_100164E20;
   v56[3] = &unk_1004BAC98;
-  v24 = v17;
+  v24 = hostedRoutingController;
   v57 = v24;
-  v25 = v12;
+  v25 = dCopy;
   v58 = v25;
   v59 = @"RoutingServer.searchEndpointsForOutputDeviceUID";
-  v26 = v13;
+  v26 = detailsCopy;
   v60 = v26;
   v43 = v16;
   v61 = v43;
-  v27 = v15;
+  v27 = completionCopy;
   v62 = v27;
   v28 = objc_retainBlock(v56);
-  v29 = [v24 availableEndpoints];
+  availableEndpoints = [v24 availableEndpoints];
   v54[0] = _NSConcreteStackBlock;
   v54[1] = 3221225472;
   v54[2] = sub_100165314;
   v54[3] = &unk_1004BECE0;
   v30 = v25;
   v55 = v30;
-  v31 = [v29 msv_firstWhere:v54];
+  v31 = [availableEndpoints msv_firstWhere:v54];
 
   v32 = objc_alloc_init(NSMutableDictionary);
-  v33 = [v26 initiator];
-  [v32 setObject:v33 forKeyedSubscript:MREndpointConnectionReasonUserInfoKey];
+  initiator = [v26 initiator];
+  [v32 setObject:initiator forKeyedSubscript:MREndpointConnectionReasonUserInfoKey];
 
-  v34 = [v26 requestID];
-  [v32 setObject:v34 forKeyedSubscript:MREndpointConnectionCorrelationIDUserInfoKey];
+  requestID2 = [v26 requestID];
+  [v32 setObject:requestID2 forKeyedSubscript:MREndpointConnectionCorrelationIDUserInfoKey];
 
   if (!v31)
   {
     goto LABEL_15;
   }
 
-  v35 = [v31 isConnected];
+  isConnected = [v31 isConnected];
   v36 = _MRLogForCategory();
   v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
-  if (!v35)
+  if (!isConnected)
   {
     if (v37)
     {
-      v42 = [v26 requestID];
+      requestID3 = [v26 requestID];
       *buf = 138543874;
       v64 = @"RoutingServer.searchEndpointsForOutputDeviceUID";
       v65 = 2114;
-      v66 = v42;
+      v66 = requestID3;
       v67 = 2112;
       v68 = @"Found in hostedRouting but not connected";
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -2054,18 +2054,18 @@ LABEL_15:
     v48 = @"RoutingServer.searchEndpointsForOutputDeviceUID";
     v49 = v26;
     v41 = v44;
-    [MRDLightweightReconnaissanceSession searchEndpointsForOutputDeviceUID:v30 timeout:v49 details:v44 queue:v45 completion:a4];
+    [MRDLightweightReconnaissanceSession searchEndpointsForOutputDeviceUID:v30 timeout:v49 details:v44 queue:v45 completion:timeout];
 
     goto LABEL_16;
   }
 
   if (v37)
   {
-    v38 = [v26 requestID];
+    requestID4 = [v26 requestID];
     *buf = 138543874;
     v64 = @"RoutingServer.searchEndpointsForOutputDeviceUID";
     v65 = 2114;
-    v66 = v38;
+    v66 = requestID4;
     v67 = 2112;
     v68 = @"Found in hostedRouting";
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -2085,63 +2085,63 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSendCommandToEachEndpointContainingOutputDeviceUIDsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSendCommandToNewGroupContainingOutputDeviceUIDsMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handleSearchEndpointsForRoutingContextUIDMessage:(id)a3 fromClient:(id)a4
+- (void)_handleSearchEndpointsForRoutingContextUIDMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)_handlePrepareGroupForPlaybackMessage:(id)a3 fromClient:(id)a4
+- (void)_handlePrepareGroupForPlaybackMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   workerQueue = self->_workerQueue;
-  v8 = v5;
-  v7 = v5;
+  v8 = messageCopy;
+  v7 = messageCopy;
   xpc_dictionary_handoff_reply();
 }
 
-- (void)searchEndpointsForRoutingContextUID:(id)a3 timeout:(double)a4 details:(id)a5 completion:(id)a6
+- (void)searchEndpointsForRoutingContextUID:(id)d timeout:(double)timeout details:(id)details completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  detailsCopy = details;
+  completionCopy = completion;
   v13 = +[NSDate now];
   v14 = [NSMutableString alloc];
-  v15 = [v11 requestID];
-  v16 = [v14 initWithFormat:@"%@<%@>", @"RoutingServer.searchEndpointsForRoutingContextUID", v15];
+  requestID = [detailsCopy requestID];
+  v16 = [v14 initWithFormat:@"%@<%@>", @"RoutingServer.searchEndpointsForRoutingContextUID", requestID];
 
-  if (v10)
+  if (dCopy)
   {
-    [v16 appendFormat:@" for %@", v10];
+    [v16 appendFormat:@" for %@", dCopy];
   }
 
-  v17 = [v11 label];
+  label = [detailsCopy label];
 
-  if (v17)
+  if (label)
   {
-    v18 = [v11 label];
-    [v16 appendFormat:@" because %@", v18];
+    label2 = [detailsCopy label];
+    [v16 appendFormat:@" because %@", label2];
   }
 
   v19 = _MRLogForCategory();
@@ -2162,19 +2162,19 @@ LABEL_16:
   v46[1] = 3221225472;
   v46[2] = sub_1001669F8;
   v46[3] = &unk_1004BF900;
-  v20 = v10;
+  v20 = dCopy;
   v47 = v20;
   v48 = @"RoutingServer.searchEndpointsForRoutingContextUID";
-  v21 = v11;
+  v21 = detailsCopy;
   v49 = v21;
   v22 = v13;
   v50 = v22;
   p_buf = &buf;
-  v23 = v12;
+  v23 = completionCopy;
   v51 = v23;
   v24 = objc_retainBlock(v46);
   v25 = [MRBlockGuard alloc];
-  v26 = [v21 requestID];
+  requestID2 = [v21 requestID];
   v27 = &_dispatch_main_q;
   v44[0] = _NSConcreteStackBlock;
   v44[1] = 3221225472;
@@ -2182,7 +2182,7 @@ LABEL_16:
   v44[3] = &unk_1004B6FE8;
   v28 = v24;
   v45 = v28;
-  v29 = [v25 initWithTimeout:v26 reason:&_dispatch_main_q queue:v44 handler:a4];
+  v29 = [v25 initWithTimeout:requestID2 reason:&_dispatch_main_q queue:v44 handler:timeout];
 
   v40[0] = _NSConcreteStackBlock;
   v40[1] = 3221225472;
@@ -2211,64 +2211,64 @@ LABEL_16:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)systemEndpointController:(id)a3 activeSystemEndpointDidChangeForRequest:(id)a4 type:(int64_t)a5
+- (void)systemEndpointController:(id)controller activeSystemEndpointDidChangeForRequest:(id)request type:(int64_t)type
 {
   systemEndpointController = self->_systemEndpointController;
-  v8 = a4;
-  v9 = [v8 outputDeviceUID];
-  v10 = [(MRDAVSystemEndpointController *)systemEndpointController originClientForDeviceUID:v9];
+  requestCopy = request;
+  outputDeviceUID = [requestCopy outputDeviceUID];
+  v10 = [(MRDAVSystemEndpointController *)systemEndpointController originClientForDeviceUID:outputDeviceUID];
 
-  [(MRDAVRoutingServer *)self postSystemEndpointDeviceChange:v8 type:a5 originClient:v10 handler:0];
-  if (a5 == 2)
+  [(MRDAVRoutingServer *)self postSystemEndpointDeviceChange:requestCopy type:type originClient:v10 handler:0];
+  if (type == 2)
   {
     notify_post("com.apple.mediaremote.recommendedSystemEndpointDidChange");
   }
 }
 
-- (void)postSystemEndpointDeviceChange:(id)a3 type:(int64_t)a4 originClient:(id)a5 handler:(id)a6
+- (void)postSystemEndpointDeviceChange:(id)change type:(int64_t)type originClient:(id)client handler:(id)handler
 {
-  v25 = a3;
-  v9 = a5;
-  v10 = a6;
+  changeCopy = change;
+  clientCopy = client;
+  handlerCopy = handler;
   v11 = objc_alloc_init(NSMutableDictionary);
-  v12 = [NSNumber numberWithInteger:a4];
+  v12 = [NSNumber numberWithInteger:type];
   [v11 setObject:v12 forKeyedSubscript:kMRMediaRemoteActiveEndpointTypeUserInfoKey];
 
-  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v25 changeType]);
+  v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [changeCopy changeType]);
   [v11 setObject:v13 forKeyedSubscript:kMRMediaRemoteActiveEndpointChangeTypeUserInfoKey];
 
-  v14 = [v9 activeNowPlayingClient];
-  v15 = [v14 activePlayerClient];
-  v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v15 playbackState]);
+  activeNowPlayingClient = [clientCopy activeNowPlayingClient];
+  activePlayerClient = [activeNowPlayingClient activePlayerClient];
+  v16 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [activePlayerClient playbackState]);
   [v11 setObject:v16 forKeyedSubscript:kMRMediaRemotePlaybackStateUserInfoKey];
 
-  v17 = [v25 reason];
+  reason = [changeCopy reason];
 
-  if (v17)
+  if (reason)
   {
-    v18 = [v25 reason];
-    [v11 setObject:v18 forKeyedSubscript:kMRMediaRemoteActiveEndpointReasonUserInfoKey];
+    reason2 = [changeCopy reason];
+    [v11 setObject:reason2 forKeyedSubscript:kMRMediaRemoteActiveEndpointReasonUserInfoKey];
   }
 
-  v19 = [v25 outputDeviceUID];
+  outputDeviceUID = [changeCopy outputDeviceUID];
 
-  if (v19)
+  if (outputDeviceUID)
   {
-    v20 = [v25 outputDeviceUID];
-    [v11 setObject:v20 forKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
+    outputDeviceUID2 = [changeCopy outputDeviceUID];
+    [v11 setObject:outputDeviceUID2 forKeyedSubscript:kMRAVEndpointOutputDeviceIdentifierUserInfoKey];
   }
 
-  v21 = [v9 playerPath];
+  playerPath = [clientCopy playerPath];
   MRAddPlayerPathToUserInfo();
 
-  v22 = [v9 deviceInfo];
+  deviceInfo = [clientCopy deviceInfo];
   MRAddDeviceInfoToUserInfo();
 
-  [v11 setObject:v25 forKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
+  [v11 setObject:changeCopy forKeyedSubscript:MRUpdateActiveSystemEndpointRequestUserInfoKey];
   v23 = _MRMediaRemoteActiveSystemEndpointDidChangeNotification;
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10, _MRMediaRemoteActiveSystemEndpointDidChangeNotification, v11);
+    handlerCopy[2](handlerCopy, _MRMediaRemoteActiveSystemEndpointDidChangeNotification, v11);
   }
 
   else
@@ -2278,42 +2278,42 @@ LABEL_16:
   }
 }
 
-- (void)_clientInvalidatedNotification:(id)a3
+- (void)_clientInvalidatedNotification:(id)notification
 {
-  v4 = [a3 object];
-  [(MRDAVRoutingServer *)self _setApplicationPickedRoutes:0 updateRoutes:1 forClient:v4];
+  object = [notification object];
+  [(MRDAVRoutingServer *)self _setApplicationPickedRoutes:0 updateRoutes:1 forClient:object];
   [(MRDAVRoutingServer *)self _updateSystemRouteDiscoveryMode];
 }
 
-- (void)_routingDataSourcePickableRoutesDidChangeNotification:(id)a3
+- (void)_routingDataSourcePickableRoutesDidChangeNotification:(id)notification
 {
   v3 = +[MRDMediaRemoteServer server];
   [v3 postClientNotificationNamed:kMRMediaRemotePickableRoutesDidChangeNotification];
 }
 
-- (void)_routingDataSourceRouteStatusDidChangeNotification:(id)a3
+- (void)_routingDataSourceRouteStatusDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"MRDAVRoutingDataSourceAVRouteUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"MRDAVRoutingDataSourceAVRouteUserInfoKey"];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKey:@"MRDAVRoutingDataSourceRouteStatusUserInfoKey"];
-  v9 = [v8 intValue];
+  v8 = [userInfo2 objectForKey:@"MRDAVRoutingDataSourceRouteStatusUserInfoKey"];
+  intValue = [v8 intValue];
 
-  if ((v9 - 1) > 1)
+  if ((intValue - 1) > 1)
   {
-    if (v9)
+    if (intValue)
     {
-      [(MRDAVRoutingServer *)self _handleErrorStatus:v9 forRoute:v6];
+      [(MRDAVRoutingServer *)self _handleErrorStatus:intValue forRoute:v6];
     }
   }
 
   else
   {
-    v10 = [v6 uniqueIdentifier];
-    v11 = [(MRDAVRoutingServer *)self _shouldIgnorePortStatusFailureForRouteWithUID:v10 previouslyCachedRouteUID:0];
+    uniqueIdentifier = [v6 uniqueIdentifier];
+    v11 = [(MRDAVRoutingServer *)self _shouldIgnorePortStatusFailureForRouteWithUID:uniqueIdentifier previouslyCachedRouteUID:0];
 
     if (v11)
     {
@@ -2331,15 +2331,15 @@ LABEL_16:
     }
   }
 
-  self->_mostRecentStatus = v9;
-  [(MRDAVRoutingServer *)self _postRouteStatusDidChangeNotificationForRoute:v6 newStatus:v9];
+  self->_mostRecentStatus = intValue;
+  [(MRDAVRoutingServer *)self _postRouteStatusDidChangeNotificationForRoute:v6 newStatus:intValue];
 }
 
-- (void)_failedToConnectToOutputDeviceNotification:(id)a3
+- (void)_failedToConnectToOutputDeviceNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVOutputContextManagerOutputDeviceKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVOutputContextManagerOutputDeviceKey];
 
   if (v6)
   {
@@ -2351,11 +2351,11 @@ LABEL_16:
     v7 = 0;
   }
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:AVOutputContextManagerFailureReasonKey];
+  userInfo2 = [notificationCopy userInfo];
+  v9 = [userInfo2 objectForKey:AVOutputContextManagerFailureReasonKey];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:AVOutputContextManagerDidFailToConnectToOutputDeviceUserInfoKey];
+  userInfo3 = [notificationCopy userInfo];
+  v11 = [userInfo3 objectForKey:AVOutputContextManagerDidFailToConnectToOutputDeviceUserInfoKey];
 
   v12 = [MRGroupTopologyModificationRequest alloc];
   v13 = objc_opt_class();
@@ -2381,13 +2381,13 @@ LABEL_16:
     v22[3] = &off_1004E0AB8;
     v21[4] = AVOutputContextDeviceConnectionFailureReasonInfraRelayFailed2GHzNetwork;
     v22[4] = &off_1004E0AD0;
-    v18 = 5;
+    intValue = 5;
     v19 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:5];
     v20 = [v19 objectForKey:v9];
 
     if (v20)
     {
-      v18 = [v20 intValue];
+      intValue = [v20 intValue];
     }
 
     if (!v16)
@@ -2404,7 +2404,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v18 = 5;
+  intValue = 5;
   if (v16)
   {
     goto LABEL_12;
@@ -2413,26 +2413,26 @@ LABEL_12:
 LABEL_13:
   if (MSVDeviceIsAppleTV() && [v6 clusterType] == 1 && MRMediaRemoteAVOutputDeviceIsLocalForAirPlay())
   {
-    [(MRDAVRoutingServer *)self _handleClusterErrorStatus:v18 forRoute:v7];
+    [(MRDAVRoutingServer *)self _handleClusterErrorStatus:intValue forRoute:v7];
   }
 
   else
   {
-    [(MRDAVRoutingServer *)self _handleErrorStatus:v18 forRoute:v7];
+    [(MRDAVRoutingServer *)self _handleErrorStatus:intValue forRoute:v7];
   }
 
 LABEL_18:
-  [(MRDAVRoutingServer *)self _postRouteStatusDidChangeNotificationForRoute:v7 newStatus:v18];
+  [(MRDAVRoutingServer *)self _postRouteStatusDidChangeNotificationForRoute:v7 newStatus:intValue];
 }
 
-- (void)_handleAuthorizationRequest:(id)a3
+- (void)_handleAuthorizationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 route];
-  v6 = [v4 inputType];
+  requestCopy = request;
+  route = [requestCopy route];
+  inputType = [requestCopy inputType];
   routingDataSource = self->_routingDataSource;
-  v8 = [v5 uniqueIdentifier];
-  v9 = [(MRDAVRoutingDataSource *)routingDataSource authorizationRequestCallbackForRouteID:v8];
+  uniqueIdentifier = [route uniqueIdentifier];
+  v9 = [(MRDAVRoutingDataSource *)routingDataSource authorizationRequestCallbackForRouteID:uniqueIdentifier];
 
   if (!v9)
   {
@@ -2443,49 +2443,49 @@ LABEL_18:
     }
 
     v12 = self->_routingDataSource;
-    v13 = v5;
-    v14 = [v13 avOutputDevice];
-    v15 = [v14 clusterID];
-    v9 = [(MRDAVRoutingDataSource *)v12 authorizationRequestCallbackForRouteID:v15];
+    v13 = route;
+    avOutputDevice = [v13 avOutputDevice];
+    clusterID = [avOutputDevice clusterID];
+    v9 = [(MRDAVRoutingDataSource *)v12 authorizationRequestCallbackForRouteID:clusterID];
 
     if (!v9)
     {
 LABEL_8:
-      v16 = [(MRDAVRoutingServer *)self activePasswordDialog];
+      activePasswordDialog = [(MRDAVRoutingServer *)self activePasswordDialog];
 
-      v17 = [v5 uniqueIdentifier];
+      uniqueIdentifier2 = [route uniqueIdentifier];
       v31 = 0;
-      v18 = [(MRDAVRoutingServer *)self _shouldIgnorePortStatusFailureForRouteWithUID:v17 previouslyCachedRouteUID:&v31];
+      v18 = [(MRDAVRoutingServer *)self _shouldIgnorePortStatusFailureForRouteWithUID:uniqueIdentifier2 previouslyCachedRouteUID:&v31];
       v9 = v31;
 
-      if (!v16 && (v18 & 1) == 0)
+      if (!activePasswordDialog && (v18 & 1) == 0)
       {
         v19 = _MRLogForCategory();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v5 name];
+          name = [route name];
           *buf = 138543362;
-          v36 = v20;
+          v36 = name;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Prompting user with authorization request route %{public}@", buf, 0xCu);
         }
 
-        v21 = [v5 name];
-        v22 = [(MRDAVRoutingServer *)self _passwordDialogForRouteWithName:v21 usingInputType:v6];
+        name2 = [route name];
+        v22 = [(MRDAVRoutingServer *)self _passwordDialogForRouteWithName:name2 usingInputType:inputType];
 
         v24 = _NSConcreteStackBlock;
         v25 = 3221225472;
         v26 = sub_100167EA0;
         v27 = &unk_1004BF998;
-        v28 = v4;
-        v29 = v5;
-        v30 = self;
+        v28 = requestCopy;
+        v29 = route;
+        selfCopy = self;
         [v22 presentWithCompletion:&v24];
         [(MRDAVRoutingServer *)self setActivePasswordDialog:v22, v24, v25, v26, v27];
 
         goto LABEL_5;
       }
 
-      if (v16)
+      if (activePasswordDialog)
       {
         v23 = _MRLogForCategory();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -2499,7 +2499,7 @@ LABEL_8:
         if (!v18)
         {
 LABEL_20:
-          [v4 cancel];
+          [requestCopy cancel];
           goto LABEL_5;
         }
 
@@ -2517,9 +2517,9 @@ LABEL_20:
   v10 = _MRLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 name];
+    name3 = [route name];
     *buf = 138543362;
-    v36 = v11;
+    v36 = name3;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Handling authorization request with custom callback for route %{public}@", buf, 0xCu);
   }
 
@@ -2527,9 +2527,9 @@ LABEL_20:
   v32[1] = 3221225472;
   v32[2] = sub_100167DC4;
   v32[3] = &unk_1004BF970;
-  v33 = v5;
-  v34 = v4;
-  v9[2](v9, v6, v32);
+  v33 = route;
+  v34 = requestCopy;
+  v9[2](v9, inputType, v32);
 
 LABEL_5:
 }
@@ -2568,24 +2568,24 @@ LABEL_5:
   [v3 removeObserver:self];
 }
 
-- (id)_descriptionForDiscoveryMode:(unsigned int)a3
+- (id)_descriptionForDiscoveryMode:(unsigned int)mode
 {
   v3 = MRMediaRemoteCopyRouteDiscoveryModeDescription();
 
   return v3;
 }
 
-- (id)_passwordDialogForRouteWithName:(id)a3 usingInputType:(int64_t)a4
+- (id)_passwordDialogForRouteWithName:(id)name usingInputType:(int64_t)type
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = MRLocalizedString();
   v7 = MRLocalizedString();
   v8 = MRLocalizedString();
   v9 = objc_alloc_init(MSVSystemDialogOptions);
   [v9 setAlertHeader:v6];
-  v10 = [NSString stringWithFormat:v7, v5];
+  nameCopy = [NSString stringWithFormat:v7, nameCopy];
 
-  [v9 setAlertMessage:v10];
+  [v9 setAlertMessage:nameCopy];
   v11 = MRLocalizedString();
   [v9 setDefaultButtonTitle:v11];
 
@@ -2599,15 +2599,15 @@ LABEL_5:
   v13 = [[MSVSystemDialog alloc] initWithOptions:v9];
   v14 = [[MSVSystemDialogTextField alloc] initWithTitle:v8];
   [v14 setSecure:1];
-  [v14 setKeyboardType:a4];
+  [v14 setKeyboardType:type];
   [v13 addTextField:v14];
 
   return v13;
 }
 
-- (BOOL)_shouldIgnorePortStatusFailureForRouteWithUID:(id)a3 previouslyCachedRouteUID:(id *)a4
+- (BOOL)_shouldIgnorePortStatusFailureForRouteWithUID:(id)d previouslyCachedRouteUID:(id *)iD
 {
-  v6 = a3;
+  dCopy = d;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -2632,7 +2632,7 @@ LABEL_5:
 
         v10 = *(*(&v23 + 1) + 8 * v12);
 
-        v14 = [v6 length];
+        v14 = [dCopy length];
         if (v14 >= [v10 length])
         {
           v15 = v10;
@@ -2640,11 +2640,11 @@ LABEL_5:
 
         else
         {
-          v15 = v6;
+          v15 = dCopy;
         }
 
         v16 = v15;
-        v17 = [v6 length];
+        v17 = [dCopy length];
         if (v17 <= [v10 length])
         {
           v18 = v10;
@@ -2652,7 +2652,7 @@ LABEL_5:
 
         else
         {
-          v18 = v6;
+          v18 = dCopy;
         }
 
         v19 = [v18 containsString:v16];
@@ -2660,10 +2660,10 @@ LABEL_5:
         if (v19)
         {
 
-          if (((a4 != 0) & v19) == 1)
+          if (((iD != 0) & v19) == 1)
           {
             v21 = v10;
-            *a4 = v10;
+            *iD = v10;
           }
 
           v20 = 1;
@@ -2699,9 +2699,9 @@ LABEL_20:
   return v20;
 }
 
-- (void)_handleClusterErrorStatus:(int)a3 forRoute:(id)a4
+- (void)_handleClusterErrorStatus:(int)status forRoute:(id)route
 {
-  v6 = a4;
+  routeCopy = route;
   [(NSDate *)self->_lastClusterConnectionFailureDate timeIntervalSinceNow];
   v8 = v7;
   v10 = v7 > -480.0 && self->_lastClusterConnectionFailureDate != 0;
@@ -2722,7 +2722,7 @@ LABEL_20:
     if (v12)
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = routeCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] Error connecting to cluster member: %{public}@", &buf, 0xCu);
     }
 
@@ -2731,9 +2731,9 @@ LABEL_20:
     self->_lastClusterConnectionFailureDate = v13;
 
     v42 = MRLocalizedString();
-    if ((a3 - 7) <= 2)
+    if ((status - 7) <= 2)
     {
-      v15 = *(&off_1004BFB30 + (a3 - 7));
+      v15 = *(&off_1004BFB30 + (status - 7));
       v16 = MRLocalizedString();
 
       v42 = v16;
@@ -2742,13 +2742,13 @@ LABEL_20:
     v11 = MRLocalizedString();
     v17 = +[NSDate date];
     v18 = +[NSUUID UUID];
-    v19 = [v18 UUIDString];
+    uUIDString = [v18 UUIDString];
 
-    v20 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"Dialog.handleClusterErrorStatus", v19];
+    v20 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"Dialog.handleClusterErrorStatus", uUIDString];
     v21 = v20;
-    if (v6)
+    if (routeCopy)
     {
-      [v20 appendFormat:@" for %@", v6];
+      [v20 appendFormat:@" for %@", routeCopy];
     }
 
     v22 = _MRLogForCategory();
@@ -2775,8 +2775,8 @@ LABEL_20:
     v52[1] = 3221225472;
     v52[2] = sub_100168D0C;
     v52[3] = &unk_1004BF9C0;
-    v53 = v6;
-    v23 = v19;
+    v53 = routeCopy;
+    v23 = uUIDString;
     v54 = v23;
     v41 = v17;
     v55 = v41;
@@ -2840,21 +2840,21 @@ LABEL_20:
   sub_10019E4E8(@"com.apple.TVSettings", v3, &stru_1004BFA08);
 }
 
-- (void)_handleErrorStatus:(int)a3 forRoute:(id)a4
+- (void)_handleErrorStatus:(int)status forRoute:(id)route
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_mostRecentStatus == a3 || ([v6 uniqueIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[MRDAVRoutingServer _shouldIgnorePortStatusFailureForRouteWithUID:previouslyCachedRouteUID:](self, "_shouldIgnorePortStatusFailureForRouteWithUID:previouslyCachedRouteUID:", v8, 0), v8, (v9 & 1) != 0))
+  routeCopy = route;
+  v7 = routeCopy;
+  if (self->_mostRecentStatus == status || ([routeCopy uniqueIdentifier], v8 = objc_claimAutoreleasedReturnValue(), v9 = -[MRDAVRoutingServer _shouldIgnorePortStatusFailureForRouteWithUID:previouslyCachedRouteUID:](self, "_shouldIgnorePortStatusFailureForRouteWithUID:previouslyCachedRouteUID:", v8, 0), v8, (v9 & 1) != 0))
   {
     v10 = _MRLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       mostRecentStatus = self->_mostRecentStatus;
-      v12 = [v7 uniqueIdentifier];
+      uniqueIdentifier = [v7 uniqueIdentifier];
       *buf = 134218242;
-      v27 = mostRecentStatus;
+      statusCopy = mostRecentStatus;
       v28 = 2114;
-      v29 = v12;
+      v29 = uniqueIdentifier;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] AirPlay Error %ld: Ignoring because error for %{public}@ because the status code has not changed and already prompted user.", buf, 0x16u);
     }
 
@@ -2863,26 +2863,26 @@ LABEL_20:
     {
       routeUIDsToIgnorePortStatusFailures = self->_routeUIDsToIgnorePortStatusFailures;
       *buf = 138543362;
-      v27 = routeUIDsToIgnorePortStatusFailures;
+      statusCopy = routeUIDsToIgnorePortStatusFailures;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] RouteUIDs ignored for port status failures: %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v15 = [v7 name];
-    v16 = v15;
+    name = [v7 name];
+    v16 = name;
     v17 = @"<Unknown>";
-    if (v15)
+    if (name)
     {
-      v17 = v15;
+      v17 = name;
     }
 
     v13 = v17;
 
-    v18 = [v7 extendedInfo];
-    v19 = [v18 modelName];
-    [v19 hasPrefix:@"AppleTV"];
+    extendedInfo = [v7 extendedInfo];
+    modelName = [extendedInfo modelName];
+    [modelName hasPrefix:@"AppleTV"];
 
     v20 = MRLocalizedString();
     v21 = MRLocalizedString();
@@ -2892,7 +2892,7 @@ LABEL_20:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v27 = a3;
+      statusCopy = status;
       v28 = 2114;
       v29 = v20;
       v30 = 2114;
@@ -2905,19 +2905,19 @@ LABEL_20:
   }
 }
 
-- (id)_presentDialogWithTitle:(id)a3 message:(id)a4 defaultButtonTitle:(id)a5 alternateButtonTitle:(id)a6 completion:(id)a7
+- (id)_presentDialogWithTitle:(id)title message:(id)message defaultButtonTitle:(id)buttonTitle alternateButtonTitle:(id)alternateButtonTitle completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  completionCopy = completion;
+  alternateButtonTitleCopy = alternateButtonTitle;
+  buttonTitleCopy = buttonTitle;
   v17 = objc_alloc_init(MSVSystemDialogOptions);
-  [v17 setAlertHeader:v12];
-  [v17 setAlertMessage:v13];
-  [v17 setDefaultButtonTitle:v16];
+  [v17 setAlertHeader:titleCopy];
+  [v17 setAlertMessage:messageCopy];
+  [v17 setDefaultButtonTitle:buttonTitleCopy];
 
-  [v17 setAlternateButtonTitle:v15];
+  [v17 setAlternateButtonTitle:alternateButtonTitleCopy];
   [v17 setShowAsTopmost:1];
   [v17 setForceModalAlertAppearance:1];
   [v17 setShowOnLockscreen:1];
@@ -2925,29 +2925,29 @@ LABEL_20:
   v18 = [[MSVSystemDialog alloc] initWithOptions:v17];
   [(MSVSystemDialog *)self->_activePasswordDialog dismiss];
   [(MRDAVRoutingServer *)self setActivePasswordDialog:0];
-  v19 = [(MRDAVRoutingServer *)self activeDialog];
+  activeDialog = [(MRDAVRoutingServer *)self activeDialog];
 
-  if (v19)
+  if (activeDialog)
   {
     v20 = _MRLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v29 = objc_opt_class();
-      v33 = [(MRDAVRoutingServer *)self activeDialog];
+      activeDialog2 = [(MRDAVRoutingServer *)self activeDialog];
       v28 = objc_opt_class();
       [(MRDAVRoutingServer *)self activeDialog];
-      v21 = v32 = v14;
-      v31 = [(MRDAVRoutingServer *)self activeDialog];
-      v30 = [v31 options];
-      [v30 alertHeader];
-      v22 = v34 = v12;
-      v23 = [(MRDAVRoutingServer *)self activeDialog];
-      v24 = [v23 options];
-      v25 = [v24 alertMessage];
+      v21 = v32 = completionCopy;
+      activeDialog3 = [(MRDAVRoutingServer *)self activeDialog];
+      options = [activeDialog3 options];
+      [options alertHeader];
+      v22 = v34 = titleCopy;
+      activeDialog4 = [(MRDAVRoutingServer *)self activeDialog];
+      options2 = [activeDialog4 options];
+      alertMessage = [options2 alertMessage];
       *buf = 138545666;
       v36 = v29;
       v37 = 2048;
-      v38 = self;
+      selfCopy = self;
       v39 = 2114;
       v40 = v28;
       v41 = 2048;
@@ -2955,7 +2955,7 @@ LABEL_20:
       v43 = 2114;
       v44 = v22;
       v45 = 2114;
-      v46 = v25;
+      v46 = alertMessage;
       v47 = 2114;
       v48 = objc_opt_class();
       v49 = 2048;
@@ -2963,35 +2963,35 @@ LABEL_20:
       v51 = 2114;
       v52 = v34;
       v53 = 2114;
-      v54 = v13;
+      v54 = messageCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[AVRoutingServer] <%{public}@: %p> Dismissing active dialog <%{public}@: %p - %{public}@: %{public}@> to present new dialog: <%{public}@: %p - %{public}@: %{public}@>", buf, 0x66u);
 
-      v12 = v34;
-      v14 = v32;
+      titleCopy = v34;
+      completionCopy = v32;
     }
 
-    v26 = [(MRDAVRoutingServer *)self activeDialog];
-    [v26 dismiss];
+    activeDialog5 = [(MRDAVRoutingServer *)self activeDialog];
+    [activeDialog5 dismiss];
   }
 
   [(MRDAVRoutingServer *)self setActiveDialog:v18];
-  [v18 presentWithCompletion:v14];
+  [v18 presentWithCompletion:completionCopy];
 
   return v18;
 }
 
-- (id)_existingKeychainAccountForOutputDevice:(id)a3 password:(id *)a4
+- (id)_existingKeychainAccountForOutputDevice:(id)device password:(id *)password
 {
-  v5 = a3;
-  v6 = [v5 identifyingMACAddress];
-  if ([v6 length] < 6)
+  deviceCopy = device;
+  identifyingMACAddress = [deviceCopy identifyingMACAddress];
+  if ([identifyingMACAddress length] < 6)
   {
-    v10 = 0;
+    lowercaseString = 0;
   }
 
   else
   {
-    [v6 bytes];
+    [identifyingMACAddress bytes];
     HardwareAddressToCString();
     v7 = [NSString stringWithUTF8String:v14];
     v8 = MSVKeychainCopyKeychainValue();
@@ -3002,7 +3002,7 @@ LABEL_20:
       goto LABEL_10;
     }
 
-    v10 = [v7 lowercaseString];
+    lowercaseString = [v7 lowercaseString];
 
     v9 = MSVKeychainCopyKeychainValue();
     if (v9)
@@ -3011,7 +3011,7 @@ LABEL_20:
     }
   }
 
-  v7 = [v5 ID];
+  v7 = [deviceCopy ID];
 
   v11 = MSVKeychainCopyKeychainValue();
   if (v11)
@@ -3020,34 +3020,34 @@ LABEL_20:
     goto LABEL_10;
   }
 
-  v10 = [v5 name];
+  lowercaseString = [deviceCopy name];
 
   v9 = MSVKeychainCopyKeychainValue();
 LABEL_9:
-  v7 = v10;
+  v7 = lowercaseString;
 LABEL_10:
 
-  if (a4)
+  if (password)
   {
     v12 = v9;
-    *a4 = v9;
+    *password = v9;
   }
 
   return v7;
 }
 
-- (id)_savedPasswordForOutputDevice:(id)a3
+- (id)_savedPasswordForOutputDevice:(id)device
 {
   v6 = 0;
-  v3 = [(MRDAVRoutingServer *)self _existingKeychainAccountForOutputDevice:a3 password:&v6];
+  v3 = [(MRDAVRoutingServer *)self _existingKeychainAccountForOutputDevice:device password:&v6];
   v4 = v6;
 
   return v4;
 }
 
-- (void)_clearPasswordForOutputDevice:(id)a3
+- (void)_clearPasswordForOutputDevice:(id)device
 {
-  v3 = [(MRDAVRoutingServer *)self _existingKeychainAccountForOutputDevice:a3 password:0];
+  v3 = [(MRDAVRoutingServer *)self _existingKeychainAccountForOutputDevice:device password:0];
   if (v3)
   {
     v4 = v3;
@@ -3077,25 +3077,25 @@ LABEL_10:
   }
 }
 
-- (BOOL)_setPickedRoute:(id)a3 withPassword:(id)a4 options:(unsigned int)a5
+- (BOOL)_setPickedRoute:(id)route withPassword:(id)password options:(unsigned int)options
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  optionsCopy = options;
+  routeCopy = route;
+  passwordCopy = password;
   routeUIDsToIgnorePortStatusFailures = self->_routeUIDsToIgnorePortStatusFailures;
-  v11 = [v8 uniqueIdentifier];
-  if (v5)
+  uniqueIdentifier = [routeCopy uniqueIdentifier];
+  if (optionsCopy)
   {
-    [(NSMutableSet *)routeUIDsToIgnorePortStatusFailures addObject:v11];
+    [(NSMutableSet *)routeUIDsToIgnorePortStatusFailures addObject:uniqueIdentifier];
   }
 
   else
   {
-    [(NSMutableSet *)routeUIDsToIgnorePortStatusFailures removeObject:v11];
+    [(NSMutableSet *)routeUIDsToIgnorePortStatusFailures removeObject:uniqueIdentifier];
   }
 
   self->_mostRecentStatus = -1;
-  v12 = [(MRDAVRoutingDataSource *)self->_routingDataSource setPickedRoute:v8 withPassword:v9];
+  v12 = [(MRDAVRoutingDataSource *)self->_routingDataSource setPickedRoute:routeCopy withPassword:passwordCopy];
   if (!v12)
   {
     v13 = _MRLogForCategory();
@@ -3110,24 +3110,24 @@ LABEL_10:
 
 - (void)_postExternalScreenDidChange
 {
-  v2 = [(MRDAVRoutingDataSource *)self->_routingDataSource externalScreenType];
+  externalScreenType = [(MRDAVRoutingDataSource *)self->_routingDataSource externalScreenType];
   v3 = +[MRDMediaRemoteServer server];
   v4 = kMRMediaRemoteExternalScreenTypeDidChangeNotification;
   v7 = kMRMediaRemoteExternalScreenTypeUserInfoKey;
-  v5 = [NSNumber numberWithUnsignedInt:v2];
+  v5 = [NSNumber numberWithUnsignedInt:externalScreenType];
   v8 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   [v3 postClientNotificationNamed:v4 userInfo:v6];
 }
 
-- (void)_presentPasswordDialogForRoute:(id)a3 withOptions:(unsigned int)a4
+- (void)_presentPasswordDialogForRoute:(id)route withOptions:(unsigned int)options
 {
-  v6 = a3;
+  routeCopy = route;
   v7 = +[MRDMediaRemoteServer server];
   [v7 postClientNotificationNamed:kMRMediaRemoteWillPresentRouteAuthenticationPromptNotification];
 
-  v8 = [v6 extendedInfo];
-  if ([v8 requiresPIN])
+  extendedInfo = [routeCopy extendedInfo];
+  if ([extendedInfo requiresPIN])
   {
     v9 = 3;
   }
@@ -3137,67 +3137,67 @@ LABEL_10:
     v9 = 1;
   }
 
-  v10 = [v6 name];
-  v11 = [(MRDAVRoutingServer *)self _passwordDialogForRouteWithName:v10 usingInputType:v9];
+  name = [routeCopy name];
+  v11 = [(MRDAVRoutingServer *)self _passwordDialogForRouteWithName:name usingInputType:v9];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100169EF0;
   v13[3] = &unk_1004BFA30;
   v13[4] = self;
-  v14 = v6;
-  v15 = a4;
-  v12 = v6;
+  v14 = routeCopy;
+  optionsCopy = options;
+  v12 = routeCopy;
   [v11 presentWithCompletion:v13];
   [(MRDAVRoutingServer *)self setActivePasswordDialog:v11];
 }
 
-- (void)_storePassword:(id)a3 forRoute:(id)a4
+- (void)_storePassword:(id)password forRoute:(id)route
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 MACAddress];
-  v9 = [v6 uniqueIdentifier];
-  v10 = [v6 name];
+  routeCopy = route;
+  passwordCopy = password;
+  mACAddress = [routeCopy MACAddress];
+  uniqueIdentifier = [routeCopy uniqueIdentifier];
+  name = [routeCopy name];
 
-  v11 = [(MRDAVRoutingServer *)self _preferredIdentifierForMACAddress:v8 identifier:v9 name:v10];
+  v11 = [(MRDAVRoutingServer *)self _preferredIdentifierForMACAddress:mACAddress identifier:uniqueIdentifier name:name];
 
   MSVKeychainSetKeychainValue();
 }
 
-- (void)_storePassword:(id)a3 forOutputDevice:(id)a4
+- (void)_storePassword:(id)password forOutputDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 identifyingMACAddress];
-  v9 = [v6 ID];
-  v10 = [v6 name];
+  deviceCopy = device;
+  passwordCopy = password;
+  identifyingMACAddress = [deviceCopy identifyingMACAddress];
+  v9 = [deviceCopy ID];
+  name = [deviceCopy name];
 
-  v11 = [(MRDAVRoutingServer *)self _preferredIdentifierForMACAddress:v8 identifier:v9 name:v10];
+  v11 = [(MRDAVRoutingServer *)self _preferredIdentifierForMACAddress:identifyingMACAddress identifier:v9 name:name];
 
   MSVKeychainSetKeychainValue();
 }
 
-- (id)_preferredIdentifierForMACAddress:(id)a3 identifier:(id)a4 name:(id)a5
+- (id)_preferredIdentifierForMACAddress:(id)address identifier:(id)identifier name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length] < 6)
+  addressCopy = address;
+  identifierCopy = identifier;
+  nameCopy = name;
+  if ([addressCopy length] < 6)
   {
-    if (v8)
+    if (identifierCopy)
     {
-      v10 = v8;
+      v10 = identifierCopy;
     }
 
     else
     {
-      v10 = v9;
+      v10 = nameCopy;
     }
   }
 
   else
   {
-    [v7 bytes];
+    [addressCopy bytes];
     HardwareAddressToCString();
     v10 = [NSString stringWithUTF8String:v13];
   }
@@ -3275,29 +3275,29 @@ LABEL_10:
   return v9;
 }
 
-- (void)createEndpointForOutputDeviceIDs:(id)a3 details:(id)a4 completion:(id)a5
+- (void)createEndpointForOutputDeviceIDs:(id)ds details:(id)details completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10016A5F4;
   v8[3] = &unk_1004BFA58;
-  v9 = a5;
-  v7 = v9;
-  [MRDCreateEndpointRequest createEndpointWithOutputDeviceUIDs:a3 timeout:a4 details:v8 completion:30.0];
+  completionCopy = completion;
+  v7 = completionCopy;
+  [MRDCreateEndpointRequest createEndpointWithOutputDeviceUIDs:ds timeout:details details:v8 completion:30.0];
 }
 
-- (id)createTransientEndpointForOutputDeviceUID:(id)a3 details:(id)a4
+- (id)createTransientEndpointForOutputDeviceUID:(id)d details:(id)details
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  detailsCopy = details;
   v8 = +[NSDate now];
   v9 = [NSMutableString alloc];
-  v10 = [v7 requestID];
-  v11 = [v9 initWithFormat:@"%@<%@>", @"createTransientEndpointForOutputDeviceUID", v10];
+  requestID = [detailsCopy requestID];
+  v11 = [v9 initWithFormat:@"%@<%@>", @"createTransientEndpointForOutputDeviceUID", requestID];
 
-  if (v6)
+  if (dCopy)
   {
-    [(__CFString *)v11 appendFormat:@" for %@", v6];
+    [(__CFString *)v11 appendFormat:@" for %@", dCopy];
   }
 
   v12 = _MRLogForCategory();
@@ -3308,21 +3308,21 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v13 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
-  v14 = [v13 availableOutputDevices];
+  hostedRoutingController = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
+  availableOutputDevices = [hostedRoutingController availableOutputDevices];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_10016AA3C;
   v33[3] = &unk_1004B8A40;
-  v15 = v6;
+  v15 = dCopy;
   v34 = v15;
-  v16 = [v14 msv_firstWhere:v33];
+  v16 = [availableOutputDevices msv_firstWhere:v33];
   if (v16)
   {
-    v17 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
+    hostedRoutingController2 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
     v43 = v16;
     v18 = [NSArray arrayWithObjects:&v43 count:1];
-    v19 = [v17 makeEndpointWithOutputDevices:v18 options:0];
+    v19 = [hostedRoutingController2 makeEndpointWithOutputDevices:v18 options:0];
   }
 
   else
@@ -3330,24 +3330,24 @@ LABEL_10:
     v19 = 0;
   }
 
-  v20 = [v19 debugName];
+  debugName = [v19 debugName];
 
   v21 = _MRLogForCategory();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v20)
+  if (debugName)
   {
     if (v22)
     {
-      v23 = [v7 requestID];
+      requestID2 = [detailsCopy requestID];
       [v19 debugName];
-      v32 = v7;
+      v32 = detailsCopy;
       v25 = v24 = v8;
       v26 = +[NSDate date];
       [v26 timeIntervalSinceDate:v24];
       *buf = 138544130;
       v36 = @"createTransientEndpointForOutputDeviceUID";
       v37 = 2114;
-      v38 = v23;
+      v38 = requestID2;
       v39 = 2112;
       v40 = v25;
       v41 = 2048;
@@ -3355,19 +3355,19 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds", buf, 0x2Au);
 
       v8 = v24;
-      v7 = v32;
+      detailsCopy = v32;
     }
   }
 
   else if (v22)
   {
-    v28 = [v7 requestID];
+    requestID3 = [detailsCopy requestID];
     v29 = +[NSDate date];
     [v29 timeIntervalSinceDate:v8];
     *buf = 138543874;
     v36 = @"createTransientEndpointForOutputDeviceUID";
     v37 = 2114;
-    v38 = v28;
+    v38 = requestID3;
     v39 = 2048;
     v40 = v30;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -3376,22 +3376,22 @@ LABEL_10:
   return v19;
 }
 
-- (void)removeOutputDeviceUIDsFromParentGroup:(id)a3 details:(id)a4 completion:(id)a5
+- (void)removeOutputDeviceUIDsFromParentGroup:(id)group details:(id)details completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  detailsCopy = details;
+  completionCopy = completion;
   v10 = +[NSDate now];
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   queue = dispatch_queue_create("com.apple.mediaremote.removeFromParentGroup", v11);
 
   v12 = [NSMutableString alloc];
-  v13 = [v8 requestID];
-  v14 = [v12 initWithFormat:@"%@<%@>", @"removeOutputDeviceUIDsFromParentGroup", v13];
+  requestID = [detailsCopy requestID];
+  v14 = [v12 initWithFormat:@"%@<%@>", @"removeOutputDeviceUIDsFromParentGroup", requestID];
 
-  if (v7)
+  if (groupCopy)
   {
-    [v14 appendFormat:@" for %@", v7];
+    [v14 appendFormat:@" for %@", groupCopy];
   }
 
   v15 = _MRLogForCategory();
@@ -3413,23 +3413,23 @@ LABEL_10:
   v48[2] = sub_10016AFBC;
   v48[3] = &unk_1004BFA80;
   p_buf = &buf;
-  v31 = v8;
+  v31 = detailsCopy;
   v49 = v31;
   v28 = v10;
   v50 = v28;
-  v27 = v9;
+  v27 = completionCopy;
   v51 = v27;
   v29 = objc_retainBlock(v48);
   v16 = dispatch_group_create();
   v17 = +[MRDMediaRemoteServer server];
-  v18 = [v17 deviceInfo];
-  v19 = [v18 deviceUID];
+  deviceInfo = [v17 deviceInfo];
+  deviceUID = [deviceInfo deviceUID];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v7;
+  obj = groupCopy;
   v20 = [obj countByEnumeratingWithState:&v44 objects:v54 count:16];
   if (v20)
   {
@@ -3444,7 +3444,7 @@ LABEL_10:
         }
 
         v23 = *(*(&v44 + 1) + 8 * i);
-        if ([v23 isEqualToString:v19])
+        if ([v23 isEqualToString:deviceUID])
         {
           v24 = +[MRAVLocalEndpoint sharedLocalEndpoint];
           dispatch_group_enter(v16);
@@ -3454,7 +3454,7 @@ LABEL_10:
           v41[3] = &unk_1004B69F8;
           v43 = &buf;
           v42 = v16;
-          [v24 removeOutputDeviceFromParentGroup:v19 queue:queue completion:v41];
+          [v24 removeOutputDeviceFromParentGroup:deviceUID queue:queue completion:v41];
         }
 
         else
@@ -3493,18 +3493,18 @@ LABEL_10:
   _Block_object_dispose(&buf, 8);
 }
 
-- (id)_predictGroupLeaderForOutputDeviceIDs:(id)a3 options:(unint64_t)a4 details:(id)a5
+- (id)_predictGroupLeaderForOutputDeviceIDs:(id)ds options:(unint64_t)options details:(id)details
 {
-  v8 = a3;
-  v9 = a5;
+  dsCopy = ds;
+  detailsCopy = details;
   v10 = +[NSDate now];
   v11 = [NSMutableString alloc];
-  v12 = [v9 requestID];
-  v13 = [v11 initWithFormat:@"%@<%@>", @"PredictGroupLeader", v12];
+  requestID = [detailsCopy requestID];
+  v13 = [v11 initWithFormat:@"%@<%@>", @"PredictGroupLeader", requestID];
 
-  if (v8)
+  if (dsCopy)
   {
-    [(__CFString *)v13 appendFormat:@" for %@", v8];
+    [(__CFString *)v13 appendFormat:@" for %@", dsCopy];
   }
 
   v14 = _MRLogForCategory();
@@ -3515,36 +3515,36 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Request: %{public}@", buf, 0xCu);
   }
 
-  v15 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
-  v16 = [v15 availableOutputDevices];
+  hostedRoutingController = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
+  availableOutputDevices = [hostedRoutingController availableOutputDevices];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_10016B654;
   v31[3] = &unk_1004B8A40;
-  v17 = v8;
+  v17 = dsCopy;
   v32 = v17;
-  v18 = [v16 msv_filter:v31];
-  v19 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
-  v20 = [v19 determineGroupLeaderForOutputDevices:v18 options:a4 | 0x3E];
+  v18 = [availableOutputDevices msv_filter:v31];
+  hostedRoutingController2 = [(MRDAVHostedRoutingService *)self->_hostedRoutingService hostedRoutingController];
+  0x3E = [hostedRoutingController2 determineGroupLeaderForOutputDevices:v18 options:options | 0x3E];
 
   v21 = _MRLogForCategory();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v20)
+  if (0x3E)
   {
     if (!v22)
     {
       goto LABEL_11;
     }
 
-    v23 = [v9 requestID];
+    requestID2 = [detailsCopy requestID];
     v24 = +[NSDate date];
     [v24 timeIntervalSinceDate:v10];
     *buf = 138544130;
     v34 = @"PredictGroupLeader";
     v35 = 2114;
-    v36 = v23;
+    v36 = requestID2;
     v37 = 2112;
-    v38 = v20;
+    v38 = 0x3E;
     v39 = 2048;
     v40 = v25;
     v26 = "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds";
@@ -3559,13 +3559,13 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v23 = [v9 requestID];
+    requestID2 = [detailsCopy requestID];
     v24 = +[NSDate date];
     [v24 timeIntervalSinceDate:v10];
     *buf = 138543874;
     v34 = @"PredictGroupLeader";
     v35 = 2114;
-    v36 = v23;
+    v36 = requestID2;
     v37 = 2048;
     v38 = v29;
     v26 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
@@ -3577,7 +3577,7 @@ LABEL_10:
 
 LABEL_11:
 
-  return v20;
+  return 0x3E;
 }
 
 - (MSVSystemDialog)activeDialog

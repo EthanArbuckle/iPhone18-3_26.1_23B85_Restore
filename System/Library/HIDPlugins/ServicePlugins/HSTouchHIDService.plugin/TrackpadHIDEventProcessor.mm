@@ -1,50 +1,50 @@
 @interface TrackpadHIDEventProcessor
-+ (unsigned)nextScrollPhase:(unsigned __int8)a3 anyScroll:(BOOL)a4;
-- (BOOL)isDigitizerCollectionHIDEvent:(id)a3;
++ (unsigned)nextScrollPhase:(unsigned __int8)phase anyScroll:(BOOL)scroll;
+- (BOOL)isDigitizerCollectionHIDEvent:(id)event;
 - (NSDictionary)debugDictionary;
-- (TrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4;
-- (id)createPointingEventWithDeltaX:(double)a3 deltaY:(double)a4 buttonMask:(unsigned int)a5 timestamp:(unint64_t)a6 source:(id)a7;
-- (id)createPointingEventWithDeltaX:(double)a3 deltaY:(double)a4 buttonMask:(unsigned int)a5 timestamp:(unint64_t)a6 source:(id)a7 options:(unsigned int)a8;
-- (id)createScrollEventWithDeltaX:(double)a3 deltaY:(double)a4 deltaZ:(double)a5 options:(unsigned int)a6;
-- (id)handleHIDEvent:(id)a3;
-- (unsigned)updateButtonMask:(unsigned int)a3 source:(id)a4;
+- (TrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type;
+- (id)createPointingEventWithDeltaX:(double)x deltaY:(double)y buttonMask:(unsigned int)mask timestamp:(unint64_t)timestamp source:(id)source;
+- (id)createPointingEventWithDeltaX:(double)x deltaY:(double)y buttonMask:(unsigned int)mask timestamp:(unint64_t)timestamp source:(id)source options:(unsigned int)options;
+- (id)createScrollEventWithDeltaX:(double)x deltaY:(double)y deltaZ:(double)z options:(unsigned int)options;
+- (id)handleHIDEvent:(id)event;
+- (unsigned)updateButtonMask:(unsigned int)mask source:(id)source;
 - (void)_dispatchPointerButtonUpEvent;
 - (void)dealloc;
-- (void)dispatch:(id)a3;
-- (void)dispatchPointingEventWithDeltaX:(int)a3 deltaY:(int)a4 buttonMask:(unsigned int)a5 source:(id)a6;
-- (void)handleConsume:(id)a3;
-- (void)handleContactFrame:(id)a3;
-- (void)handleGetDebugEvent:(id)a3;
-- (void)handleHIDEvents:(id)a3;
-- (void)handlePointerFrame:(id)a3;
-- (void)handlePointerSettings:(id)a3;
-- (void)logButtonState:(unsigned int)a3 fromSource:(id)a4;
-- (void)mergeScrollEvent:(id)a3 with:(id)a4;
-- (void)setHostClickControl:(BOOL)a3;
-- (void)setParserEnabled:(BOOL)a3;
-- (void)updateScrollPhaseFor:(id)a3 anyScroll:(BOOL)a4;
+- (void)dispatch:(id)dispatch;
+- (void)dispatchPointingEventWithDeltaX:(int)x deltaY:(int)y buttonMask:(unsigned int)mask source:(id)source;
+- (void)handleConsume:(id)consume;
+- (void)handleContactFrame:(id)frame;
+- (void)handleGetDebugEvent:(id)event;
+- (void)handleHIDEvents:(id)events;
+- (void)handlePointerFrame:(id)frame;
+- (void)handlePointerSettings:(id)settings;
+- (void)logButtonState:(unsigned int)state fromSource:(id)source;
+- (void)mergeScrollEvent:(id)event with:(id)with;
+- (void)setHostClickControl:(BOOL)control;
+- (void)setParserEnabled:(BOOL)enabled;
+- (void)updateScrollPhaseFor:(id)for anyScroll:(BOOL)scroll;
 @end
 
 @implementation TrackpadHIDEventProcessor
 
-+ (unsigned)nextScrollPhase:(unsigned __int8)a3 anyScroll:(BOOL)a4
++ (unsigned)nextScrollPhase:(unsigned __int8)phase anyScroll:(BOOL)scroll
 {
-  if (a3 > 5u)
+  if (phase > 5u)
   {
     return 0;
   }
 
   else
   {
-    return gNextScrollPhaseForPhase[2 * a3 + a4];
+    return gNextScrollPhaseForPhase[2 * phase + scroll];
   }
 }
 
-- (void)setParserEnabled:(BOOL)a3
+- (void)setParserEnabled:(BOOL)enabled
 {
-  if ([(TrackpadHIDEventProcessor *)self parserEnabled]!= a3)
+  if ([(TrackpadHIDEventProcessor *)self parserEnabled]!= enabled)
   {
-    self->_parserEnabled = a3;
+    self->_parserEnabled = enabled;
     if (![(TrackpadHIDEventProcessor *)self parserEnabled])
     {
       if ([(TrackpadHIDEventProcessor *)self previousButtonState])
@@ -67,11 +67,11 @@
   }
 }
 
-- (void)setHostClickControl:(BOOL)a3
+- (void)setHostClickControl:(BOOL)control
 {
-  if ([(TrackpadHIDEventProcessor *)self hostClickControl]!= a3)
+  if ([(TrackpadHIDEventProcessor *)self hostClickControl]!= control)
   {
-    self->_hostClickControl = a3;
+    self->_hostClickControl = control;
     if ([(TrackpadHIDEventProcessor *)self hostClickControl]&& [(TrackpadHIDEventProcessor *)self deviceButtonState])
     {
       v5 = MTLoggingPlugin();
@@ -97,7 +97,7 @@
   }
 }
 
-- (TrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)a3 deviceType:(unsigned __int8)a4
+- (TrackpadHIDEventProcessor)initWithDeviceID:(unint64_t)d deviceType:(unsigned __int8)type
 {
   v13.receiver = self;
   v13.super_class = TrackpadHIDEventProcessor;
@@ -113,8 +113,8 @@
     buttonHistory = v6->_buttonHistory;
     v6->_buttonHistory = v9;
 
-    v6->_deviceID = a3;
-    v6->_deviceType = a4;
+    v6->_deviceID = d;
+    v6->_deviceType = type;
     v6->_noPointing = MTPreferencesGetAppBooleanValue(@"NoPointing", @"com.apple.MultitouchSupport", 0);
     v6->_hostClickControl = 0;
     v6->_deviceButtonState = 0;
@@ -142,9 +142,9 @@
   [(HSStage *)&v5 dealloc];
 }
 
-- (void)dispatch:(id)a3
+- (void)dispatch:(id)dispatch
 {
-  v4 = a3;
+  dispatchCopy = dispatch;
   v5 = MTLoggingPlugin();
   if (os_signpost_enabled(v5))
   {
@@ -152,22 +152,22 @@
     *buf = 134349314;
     v9 = signpost_begin_time;
     v10 = 2080;
-    ClassName = object_getClassName(v4);
+    ClassName = object_getClassName(dispatchCopy);
     _os_signpost_emit_with_name_impl(&dword_0, v5, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "TrackpadHIDEventProcessor", "%{public, signpost.description:begin_time}llu event=%s", buf, 0x16u);
   }
 
-  [(HSTHIDEventStatistics *)self->_hidStats handleHIDEvents:v4];
+  [(HSTHIDEventStatistics *)self->_hidStats handleHIDEvents:dispatchCopy];
   v7.receiver = self;
   v7.super_class = TrackpadHIDEventProcessor;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:dispatchCopy];
   self->_signpost_begin_time = mach_continuous_time();
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   self->_signpost_begin_time = mach_continuous_time();
-  v5 = v4;
+  v5 = consumeCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -262,14 +262,14 @@
   }
 }
 
-- (void)handleHIDEvents:(id)a3
+- (void)handleHIDEvents:(id)events
 {
   v20 = 0;
   v21 = 0;
   v22 = 0;
-  v14 = a3;
-  v4 = *(v14 + 1);
-  for (i = *(v14 + 2); v4 != i; ++v4)
+  eventsCopy = events;
+  v4 = *(eventsCopy + 1);
+  for (i = *(eventsCopy + 2); v4 != i; ++v4)
   {
     v6 = *v4;
     if (v6)
@@ -324,22 +324,22 @@
     }
   }
 
-  if (v14 + 8 != &v20)
+  if (eventsCopy + 8 != &v20)
   {
-    std::vector<HIDEvent * {__strong}>::__assign_with_size[abi:ne200100]<HIDEvent * {__strong}*,HIDEvent * {__strong}*>((v14 + 8), v20, v21, v21 - v20);
+    std::vector<HIDEvent * {__strong}>::__assign_with_size[abi:ne200100]<HIDEvent * {__strong}*,HIDEvent * {__strong}*>((eventsCopy + 8), v20, v21, v21 - v20);
   }
 
-  [(TrackpadHIDEventProcessor *)self dispatch:v14];
+  [(TrackpadHIDEventProcessor *)self dispatch:eventsCopy];
   v23 = &v20;
   std::vector<HIDEvent * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v23);
 }
 
-- (id)handleHIDEvent:(id)a3
+- (id)handleHIDEvent:(id)event
 {
-  v4 = a3;
-  if ([(TrackpadHIDEventProcessor *)self shouldDispatchEvent:v4])
+  eventCopy = event;
+  if ([(TrackpadHIDEventProcessor *)self shouldDispatchEvent:eventCopy])
   {
-    v7 = v4;
+    v7 = eventCopy;
     v5 = [NSArray arrayWithObjects:&v7 count:1];
   }
 
@@ -351,10 +351,10 @@
   return v5;
 }
 
-- (void)handlePointerSettings:(id)a3
+- (void)handlePointerSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4[1];
+  settingsCopy = settings;
+  v5 = settingsCopy[1];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -369,15 +369,15 @@
   self->_scrollMomentumEnabled = [v5 scrollMomentumEnabled];
   if (v6)
   {
-    v7 = [v6 gestureScrollingEnabled];
+    gestureScrollingEnabled = [v6 gestureScrollingEnabled];
   }
 
   else
   {
-    v7 = 1;
+    gestureScrollingEnabled = 1;
   }
 
-  self->_gestureScrollsEnabled = v7;
+  self->_gestureScrollsEnabled = gestureScrollingEnabled;
   v8 = MTLoggingPlugin();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -388,22 +388,22 @@
     v18 = 2080;
     v19 = "[TrackpadHIDEventProcessor handlePointerSettings:]";
     v20 = 1024;
-    v21 = [(TrackpadHIDEventProcessor *)self scrollMomentumEnabled];
+    scrollMomentumEnabled = [(TrackpadHIDEventProcessor *)self scrollMomentumEnabled];
     v22 = 1024;
-    v23 = [(TrackpadHIDEventProcessor *)self gestureScrollsEnabled];
+    gestureScrollsEnabled = [(TrackpadHIDEventProcessor *)self gestureScrollsEnabled];
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "[HID] [MT] %s%s%s Momentum [enabled:%u] Scroll [enabled:%u]", buf, 0x2Cu);
   }
 
-  v9 = [v5 enable];
-  v10 = v9;
-  if (self->_parserEnabled == v9)
+  enable = [v5 enable];
+  v10 = enable;
+  if (self->_parserEnabled == enable)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v9;
+    v11 = enable;
   }
 
   if ((v11 & 1) == 0 && [(TrackpadHIDEventProcessor *)self previousButtonState])
@@ -426,16 +426,16 @@
   [(TrackpadHIDEventProcessor *)self setParserEnabled:v10];
   v13.receiver = self;
   v13.super_class = TrackpadHIDEventProcessor;
-  [(HSStage *)&v13 handleConsume:v4];
+  [(HSStage *)&v13 handleConsume:settingsCopy];
 }
 
-- (void)handleContactFrame:(id)a3
+- (void)handleContactFrame:(id)frame
 {
-  v5 = a3;
-  [(TrackpadHIDEventProcessor *)self setHostClickControl:*(v5 + 11) & 1];
+  frameCopy = frame;
+  [(TrackpadHIDEventProcessor *)self setHostClickControl:*(frameCopy + 11) & 1];
   if (![(TrackpadHIDEventProcessor *)self hostClickControl])
   {
-    v4 = *(v5 + 124);
+    v4 = *(frameCopy + 124);
     if ((v4 & 0x100000000) != 0 && [(TrackpadHIDEventProcessor *)self deviceButtonState]!= v4)
     {
       [(TrackpadHIDEventProcessor *)self setDeviceButtonState:v4];
@@ -444,77 +444,77 @@
   }
 }
 
-- (void)handlePointerFrame:(id)a3
+- (void)handlePointerFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   if ([(TrackpadHIDEventProcessor *)self parserEnabled]&& ![(TrackpadHIDEventProcessor *)self hostClickControl])
   {
-    [(TrackpadHIDEventProcessor *)self setDeviceButtonState:v4[8]];
-    [(TrackpadHIDEventProcessor *)self dispatchPointingEventWithDeltaX:v4[9] deltaY:v4[10] buttonMask:[(TrackpadHIDEventProcessor *)self deviceButtonState] source:@"Device-Pointer"];
+    [(TrackpadHIDEventProcessor *)self setDeviceButtonState:frameCopy[8]];
+    [(TrackpadHIDEventProcessor *)self dispatchPointingEventWithDeltaX:frameCopy[9] deltaY:frameCopy[10] buttonMask:[(TrackpadHIDEventProcessor *)self deviceButtonState] source:@"Device-Pointer"];
   }
 }
 
-- (void)handleGetDebugEvent:(id)a3
+- (void)handleGetDebugEvent:(id)event
 {
-  v4 = a3;
-  if (!v4)
+  eventCopy = event;
+  if (!eventCopy)
   {
     v7 = +[NSAssertionHandler currentHandler];
     v8 = [NSString stringWithUTF8String:"[TrackpadHIDEventProcessor handleGetDebugEvent:]"];
     [v7 handleFailureInFunction:v8 file:@"TrackpadHIDEventProcessor.mm" lineNumber:261 description:{@"Invalid parameter not satisfying: %@", @"event"}];
   }
 
-  v4[16] = 1;
-  v5 = *(v4 + 3);
-  v6 = [(TrackpadHIDEventProcessor *)self debugDictionary];
-  [v5 addObject:v6];
+  eventCopy[16] = 1;
+  v5 = *(eventCopy + 3);
+  debugDictionary = [(TrackpadHIDEventProcessor *)self debugDictionary];
+  [v5 addObject:debugDictionary];
 
   v9.receiver = self;
   v9.super_class = TrackpadHIDEventProcessor;
-  [(HSStage *)&v9 handleConsume:v4];
+  [(HSStage *)&v9 handleConsume:eventCopy];
 }
 
-- (BOOL)isDigitizerCollectionHIDEvent:(id)a3
+- (BOOL)isDigitizerCollectionHIDEvent:(id)event
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 type] == 11 && objc_msgSend(v4, "integerValueForField:", 720918) == &dword_0 + 1;
+  eventCopy = event;
+  v4 = eventCopy;
+  v5 = eventCopy && [eventCopy type] == 11 && objc_msgSend(v4, "integerValueForField:", 720918) == &dword_0 + 1;
 
   return v5;
 }
 
-- (unsigned)updateButtonMask:(unsigned int)a3 source:(id)a4
+- (unsigned)updateButtonMask:(unsigned int)mask source:(id)source
 {
-  v4 = *&a3;
-  v6 = a4;
-  if ([(TrackpadHIDEventProcessor *)self previousButtonState]== v4)
+  previousButtonState = *&mask;
+  sourceCopy = source;
+  if ([(TrackpadHIDEventProcessor *)self previousButtonState]== previousButtonState)
   {
-    LODWORD(v4) = [(TrackpadHIDEventProcessor *)self previousButtonState];
+    LODWORD(previousButtonState) = [(TrackpadHIDEventProcessor *)self previousButtonState];
   }
 
   else
   {
-    if ((v4 == 0) != ([(TrackpadHIDEventProcessor *)self previousButtonState]!= 0))
+    if ((previousButtonState == 0) != ([(TrackpadHIDEventProcessor *)self previousButtonState]!= 0))
     {
-      v4 = [(TrackpadHIDEventProcessor *)self previousButtonState];
+      previousButtonState = [(TrackpadHIDEventProcessor *)self previousButtonState];
     }
 
-    if (v4 != [(TrackpadHIDEventProcessor *)self previousButtonState])
+    if (previousButtonState != [(TrackpadHIDEventProcessor *)self previousButtonState])
     {
-      [(TrackpadHIDEventProcessor *)self logButtonState:v4 fromSource:v6];
+      [(TrackpadHIDEventProcessor *)self logButtonState:previousButtonState fromSource:sourceCopy];
     }
 
-    [(TrackpadHIDEventProcessor *)self setPreviousButtonState:v4];
+    [(TrackpadHIDEventProcessor *)self setPreviousButtonState:previousButtonState];
   }
 
-  return v4;
+  return previousButtonState;
 }
 
-- (id)createPointingEventWithDeltaX:(double)a3 deltaY:(double)a4 buttonMask:(unsigned int)a5 timestamp:(unint64_t)a6 source:(id)a7 options:(unsigned int)a8
+- (id)createPointingEventWithDeltaX:(double)x deltaY:(double)y buttonMask:(unsigned int)mask timestamp:(unint64_t)timestamp source:(id)source options:(unsigned int)options
 {
-  v9 = *&a5;
-  v13 = a7;
-  if (a3 == 0.0 && a4 == 0.0 && (v14 = [(TrackpadHIDEventProcessor *)self previousButtonState], !a8) && v14 == v9)
+  v9 = *&mask;
+  sourceCopy = source;
+  if (x == 0.0 && y == 0.0 && (v14 = [(TrackpadHIDEventProcessor *)self previousButtonState], !options) && v14 == v9)
   {
     RelativePointerEvent = 0;
   }
@@ -522,26 +522,26 @@
   else
   {
     [(TrackpadHIDEventProcessor *)self previousButtonState];
-    [(TrackpadHIDEventProcessor *)self updateButtonMask:v9 source:v13];
+    [(TrackpadHIDEventProcessor *)self updateButtonMask:v9 source:sourceCopy];
     RelativePointerEvent = IOHIDEventCreateRelativePointerEvent();
   }
 
   return RelativePointerEvent;
 }
 
-- (id)createPointingEventWithDeltaX:(double)a3 deltaY:(double)a4 buttonMask:(unsigned int)a5 timestamp:(unint64_t)a6 source:(id)a7
+- (id)createPointingEventWithDeltaX:(double)x deltaY:(double)y buttonMask:(unsigned int)mask timestamp:(unint64_t)timestamp source:(id)source
 {
-  v7 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:*&a5 deltaY:a6 buttonMask:a7 timestamp:0 source:a3 options:a4];
+  v7 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:*&mask deltaY:timestamp buttonMask:source timestamp:0 source:x options:y];
 
   return v7;
 }
 
-- (void)dispatchPointingEventWithDeltaX:(int)a3 deltaY:(int)a4 buttonMask:(unsigned int)a5 source:(id)a6
+- (void)dispatchPointingEventWithDeltaX:(int)x deltaY:(int)y buttonMask:(unsigned int)mask source:(id)source
 {
-  v6 = *&a5;
-  v10 = a6;
+  v6 = *&mask;
+  sourceCopy = source;
   v11 = objc_opt_new();
-  v12 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:v6 deltaY:mach_absolute_time() buttonMask:v10 timestamp:a3 source:a4];
+  v12 = [(TrackpadHIDEventProcessor *)self createPointingEventWithDeltaX:v6 deltaY:mach_absolute_time() buttonMask:sourceCopy timestamp:x source:y];
   if (v12)
   {
     std::vector<HIDEvent * {__strong}>::push_back[abi:ne200100](v11 + 1, &v12);
@@ -549,14 +549,14 @@
   }
 }
 
-- (id)createScrollEventWithDeltaX:(double)a3 deltaY:(double)a4 deltaZ:(double)a5 options:(unsigned int)a6
+- (id)createScrollEventWithDeltaX:(double)x deltaY:(double)y deltaZ:(double)z options:(unsigned int)options
 {
-  v6 = *&a6;
+  v6 = *&options;
   if ([(TrackpadHIDEventProcessor *)self gestureScrollsEnabled])
   {
-    v11 = [HIDEvent scrollEvent:mach_absolute_time() x:v6 y:a3 z:a4 options:a5];
-    v12 = a4 != 0.0 || a3 != 0.0;
-    v13 = a5 != 0.0 || v12;
+    v11 = [HIDEvent scrollEvent:mach_absolute_time() x:v6 y:x z:y options:z];
+    v12 = y != 0.0 || x != 0.0;
+    v13 = z != 0.0 || v12;
     [(TrackpadHIDEventProcessor *)self updateScrollPhaseFor:v11 anyScroll:v13];
   }
 
@@ -568,13 +568,13 @@
   return v11;
 }
 
-- (void)updateScrollPhaseFor:(id)a3 anyScroll:(BOOL)a4
+- (void)updateScrollPhaseFor:(id)for anyScroll:(BOOL)scroll
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 type] == 6)
+  scrollCopy = scroll;
+  forCopy = for;
+  if ([forCopy type] == 6)
   {
-    [(TrackpadHIDEventProcessor *)self setStdScrollPhase:[TrackpadHIDEventProcessor nextScrollPhase:[(TrackpadHIDEventProcessor *)self stdScrollPhase] anyScroll:v4]];
+    [(TrackpadHIDEventProcessor *)self setStdScrollPhase:[TrackpadHIDEventProcessor nextScrollPhase:[(TrackpadHIDEventProcessor *)self stdScrollPhase] anyScroll:scrollCopy]];
     if ([(TrackpadHIDEventProcessor *)self stdScrollPhase])
     {
       IOHIDEventSetPhase();
@@ -582,30 +582,30 @@
   }
 }
 
-- (void)mergeScrollEvent:(id)a3 with:(id)a4
+- (void)mergeScrollEvent:(id)event with:(id)with
 {
-  v20 = a3;
-  v6 = a4;
-  if ([v20 type] == 6 && objc_msgSend(v6, "type") == 6)
+  eventCopy = event;
+  withCopy = with;
+  if ([eventCopy type] == 6 && objc_msgSend(withCopy, "type") == 6)
   {
-    [v6 doubleValueForField:393216];
+    [withCopy doubleValueForField:393216];
     v8 = v7;
-    [v6 doubleValueForField:393217];
+    [withCopy doubleValueForField:393217];
     v10 = v9;
-    [v6 doubleValueForField:393218];
+    [withCopy doubleValueForField:393218];
     v12 = v11;
-    [v20 doubleValueForField:393216];
+    [eventCopy doubleValueForField:393216];
     v13 = v8;
-    [v20 setDoubleValue:393216 forField:v14 + v13];
-    [v20 doubleValueForField:393217];
+    [eventCopy setDoubleValue:393216 forField:v14 + v13];
+    [eventCopy doubleValueForField:393217];
     *&v10 = v10;
-    [v20 setDoubleValue:393217 forField:v15 + *&v10];
-    [v20 doubleValueForField:393218];
+    [eventCopy setDoubleValue:393217 forField:v15 + *&v10];
+    [eventCopy doubleValueForField:393218];
     v16 = v12;
-    [v20 setDoubleValue:393218 forField:v17 + v16];
+    [eventCopy setDoubleValue:393218 forField:v17 + v16];
     v18 = *&v10 != 0.0 || v13 != 0.0;
     v19 = v16 != 0.0 || v18;
-    [(TrackpadHIDEventProcessor *)self updateScrollPhaseFor:v20 anyScroll:v19];
+    [(TrackpadHIDEventProcessor *)self updateScrollPhaseFor:eventCopy anyScroll:v19];
   }
 }
 
@@ -622,10 +622,10 @@
   [(TrackpadHIDEventProcessor *)self dispatch:v3];
 }
 
-- (void)logButtonState:(unsigned int)a3 fromSource:(id)a4
+- (void)logButtonState:(unsigned int)state fromSource:(id)source
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&state;
+  sourceCopy = source;
   v7 = MTLoggingPlugin();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -641,13 +641,13 @@
     v22 = 1024;
     v23 = v4;
     v24 = 2114;
-    v25 = v6;
+    v25 = sourceCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[HID] [MT] %s%s%s [0x%llX] Button event(mask=%d) was dispatched from %{public}@", buf, 0x3Au);
   }
 
   buttonHistory = self->_buttonHistory;
-  v10 = [NSNumber numberWithUnsignedInt:v4, @"Source", @"ButtonState", v6];
-  v13[1] = v10;
+  sourceCopy = [NSNumber numberWithUnsignedInt:v4, @"Source", @"ButtonState", sourceCopy];
+  v13[1] = sourceCopy;
   v11 = [NSDictionary dictionaryWithObjects:v13 forKeys:&v12 count:2];
   [(HSTCircularBuffer *)buttonHistory appendItem:v11];
 }
@@ -683,11 +683,11 @@
   v10 = [NSNumber numberWithUnsignedChar:[(TrackpadHIDEventProcessor *)self stdScrollPhase]];
   v18[8] = v10;
   v17[9] = @"GenerationStats";
-  v11 = [(HSTHIDEventStatistics *)self->_hidStats stats];
-  v18[9] = v11;
+  stats = [(HSTHIDEventStatistics *)self->_hidStats stats];
+  v18[9] = stats;
   v17[10] = @"ButtonHistory";
-  v12 = [(HSTCircularBuffer *)self->_buttonHistory items];
-  v18[10] = v12;
+  items = [(HSTCircularBuffer *)self->_buttonHistory items];
+  v18[10] = items;
   v13 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:11];
 
   return v13;

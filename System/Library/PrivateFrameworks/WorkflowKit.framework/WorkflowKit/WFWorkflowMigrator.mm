@@ -3,17 +3,17 @@
 + (id)migrationClassesWithDependencies;
 + (id)orderedMigrationClassesWithoutDependencies;
 + (void)initialize;
-+ (void)migrateWorkflowIfNeeded:(id)a3 completion:(id)a4;
++ (void)migrateWorkflowIfNeeded:(id)needed completion:(id)completion;
 + (void)registerAllWorkflowKitMigrationClasses;
-+ (void)registerMigrationClass:(Class)a3;
++ (void)registerMigrationClass:(Class)class;
 @end
 
 @implementation WFWorkflowMigrator
 
 + (id)migrationClassesWithDependencies
 {
-  v2 = [a1 migrationClasses];
-  v3 = [v2 if_compactMap:&__block_literal_global_248];
+  migrationClasses = [self migrationClasses];
+  v3 = [migrationClasses if_compactMap:&__block_literal_global_248];
 
   return v3;
 }
@@ -35,8 +35,8 @@ void *__54__WFWorkflowMigrator_migrationClassesWithDependencies__block_invoke(ui
 + (id)orderedMigrationClassesWithoutDependencies
 {
   v3 = objc_alloc(MEMORY[0x1E695DFA0]);
-  v4 = [a1 migrationClasses];
-  v5 = [v4 if_compactMap:&__block_literal_global_246];
+  migrationClasses = [self migrationClasses];
+  v5 = [migrationClasses if_compactMap:&__block_literal_global_246];
   v6 = [v3 initWithSet:v5];
 
   return v6;
@@ -60,14 +60,14 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
   return v5;
 }
 
-+ (void)migrateWorkflowIfNeeded:(id)a3 completion:(id)a4
++ (void)migrateWorkflowIfNeeded:(id)needed completion:(id)completion
 {
   v70 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v35 = a4;
-  v39 = [a1 orderedMigrationClassesWithoutDependencies];
-  v36 = a1;
-  [a1 migrationClassesWithDependencies];
+  neededCopy = needed;
+  completionCopy = completion;
+  orderedMigrationClassesWithoutDependencies = [self orderedMigrationClassesWithoutDependencies];
+  selfCopy = self;
+  [self migrationClassesWithDependencies];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
@@ -109,15 +109,15 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
               }
 
               v14 = *(*(&v58 + 1) + 8 * i);
-              v15 = [v7 migrationClassDependencies];
-              if ([v15 containsObject:v14])
+              migrationClassDependencies = [v7 migrationClassDependencies];
+              if ([migrationClassDependencies containsObject:v14])
               {
               }
 
               else
               {
-                v16 = [v14 migrationClassDependencies];
-                v17 = [v16 containsObject:v7];
+                migrationClassDependencies2 = [v14 migrationClassDependencies];
+                v17 = [migrationClassDependencies2 containsObject:v7];
 
                 if (!v17)
                 {
@@ -135,7 +135,7 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
         }
 
         [v8 sortUsingComparator:&__block_literal_global_233];
-        [v39 unionOrderedSet:v8];
+        [orderedMigrationClassesWithoutDependencies unionOrderedSet:v8];
 
         v6 = v44 + 1;
       }
@@ -147,14 +147,14 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
     while (v41);
   }
 
-  v18 = v40;
-  v45 = [v40 objectForKey:@"WFWorkflowClientVersion"];
+  v18 = neededCopy;
+  v45 = [neededCopy objectForKey:@"WFWorkflowClientVersion"];
   v42 = objc_opt_new();
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v19 = v39;
+  v19 = orderedMigrationClassesWithoutDependencies;
   v20 = [v19 countByEnumeratingWithState:&v54 objects:v67 count:16];
   if (v20)
   {
@@ -174,8 +174,8 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
         v51 = 0u;
         v52 = 0u;
         v53 = 0u;
-        v25 = [v24 migrationClassDependencies];
-        v26 = [v25 countByEnumeratingWithState:&v50 objects:v66 count:16];
+        migrationClassDependencies3 = [v24 migrationClassDependencies];
+        v26 = [migrationClassDependencies3 countByEnumeratingWithState:&v50 objects:v66 count:16];
         if (v26)
         {
           v27 = v26;
@@ -187,28 +187,28 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
             {
               if (*v51 != v28)
               {
-                objc_enumerationMutation(v25);
+                objc_enumerationMutation(migrationClassDependencies3);
               }
 
               v30 = [v19 indexOfObject:*(*(&v50 + 1) + 8 * v29)];
               if (v30 >= [v19 indexOfObject:v24])
               {
-                v31 = [MEMORY[0x1E696AAA8] currentHandler];
-                [v31 handleFailureInMethod:a2 object:v36 file:@"WFWorkflowMigrator.m" lineNumber:175 description:@"Dependent migration class is either missing or part of a circular dependency."];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"WFWorkflowMigrator.m" lineNumber:175 description:@"Dependent migration class is either missing or part of a circular dependency."];
               }
 
               ++v29;
             }
 
             while (v27 != v29);
-            v27 = [v25 countByEnumeratingWithState:&v50 objects:v66 count:16];
+            v27 = [migrationClassDependencies3 countByEnumeratingWithState:&v50 objects:v66 count:16];
           }
 
           while (v27);
         }
 
-        v18 = v40;
-        if ([v24 workflowNeedsMigration:v40 fromClientVersion:v45])
+        v18 = neededCopy;
+        if ([v24 workflowNeedsMigration:neededCopy fromClientVersion:v45])
         {
           [v42 addObject:v24];
         }
@@ -229,15 +229,15 @@ id __64__WFWorkflowMigrator_orderedMigrationClassesWithoutDependencies__block_in
     block[3] = &unk_1E837ECE0;
     v47 = v18;
     v48 = v42;
-    v33 = v35;
-    v49 = v35;
+    v33 = completionCopy;
+    v49 = completionCopy;
     dispatch_async(v32, block);
   }
 
   else
   {
-    v33 = v35;
-    (*(v35 + 2))(v35, 0, v18, 0);
+    v33 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, v18, 0);
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -308,10 +308,10 @@ uint64_t __57__WFWorkflowMigrator_migrateWorkflowIfNeeded_completion___block_inv
   return v6;
 }
 
-+ (void)registerMigrationClass:(Class)a3
++ (void)registerMigrationClass:(Class)class
 {
-  v4 = [a1 migrationClasses];
-  [v4 addObject:a3];
+  migrationClasses = [self migrationClasses];
+  [migrationClasses addObject:class];
 }
 
 + (id)migrationClasses
@@ -414,7 +414,7 @@ void __38__WFWorkflowMigrator_migrationClasses__block_invoke()
           objc_enumerationMutation(v3);
         }
 
-        [a1 registerMigrationClass:{*(*(&v9 + 1) + 8 * v7++), v9}];
+        [self registerMigrationClass:{*(*(&v9 + 1) + 8 * v7++), v9}];
       }
 
       while (v5 != v7);
@@ -429,10 +429,10 @@ void __38__WFWorkflowMigrator_migrationClasses__block_invoke()
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 registerAllWorkflowKitMigrationClasses];
+    [self registerAllWorkflowKitMigrationClasses];
   }
 }
 

@@ -1,7 +1,7 @@
 @interface MKCompactDeveloperPlaceCardSelectionAccessoryView
 - (id)_createErrorView;
 - (id)_createLoadingView;
-- (id)_createMapItemViewController:(id)a3;
+- (id)_createMapItemViewController:(id)controller;
 @end
 
 @implementation MKCompactDeveloperPlaceCardSelectionAccessoryView
@@ -13,10 +13,10 @@
   return v2;
 }
 
-- (id)_createMapItemViewController:(id)a3
+- (id)_createMapItemViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [[MKCompactDeveloperPlaceCardRemoteUIHostViewController alloc] initWithMapItem:v3];
+  controllerCopy = controller;
+  v4 = [[MKCompactDeveloperPlaceCardRemoteUIHostViewController alloc] initWithMapItem:controllerCopy];
 
   return v4;
 }

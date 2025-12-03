@@ -1,9 +1,9 @@
 @interface ASClientPolicyManager
 - (void)dealloc;
 - (void)policyFailedToUpdate;
-- (void)policyKeyChanged:(id)a3;
+- (void)policyKeyChanged:(id)changed;
 - (void)requestPolicyUpdate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ASClientPolicyManager
@@ -20,8 +20,8 @@
       _os_log_impl(&dword_24A0AC000, v3, v4, "At dealloc time, client policy manager was updating policy.  Reattaining power assertions, just in case", buf, 2u);
     }
 
-    v5 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-    [v5 reattainPowerAssertionsForGroupIdentifier:self->_powerAssertionGroupIdentifier];
+    mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+    [mEMORY[0x277D037B0] reattainPowerAssertionsForGroupIdentifier:self->_powerAssertionGroupIdentifier];
 
     [(ASPolicyManager *)self setUpdatingPolicy:0];
   }
@@ -31,14 +31,14 @@
   [(ASClientPolicyManager *)&v6 dealloc];
 }
 
-- (void)policyKeyChanged:(id)a3
+- (void)policyKeyChanged:(id)changed
 {
   if ([(ASPolicyManager *)self updatingPolicy])
   {
-    v4 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-    v5 = [(ASPolicyManager *)self delegate];
-    v6 = [v5 accountPersistentUUID];
-    [v4 reattainPowerAssertionsForGroupIdentifier:v6];
+    mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+    delegate = [(ASPolicyManager *)self delegate];
+    accountPersistentUUID = [delegate accountPersistentUUID];
+    [mEMORY[0x277D037B0] reattainPowerAssertionsForGroupIdentifier:accountPersistentUUID];
 
     [(ASPolicyManager *)self setUpdatingPolicy:0];
   }
@@ -51,18 +51,18 @@
     _os_log_impl(&dword_24A0AC000, v7, v8, "received notification of new policy key!", v10, 2u);
   }
 
-  v9 = [(ASPolicyManager *)self delegate];
-  [v9 policyManagerUpdatedPolicy:self];
+  delegate2 = [(ASPolicyManager *)self delegate];
+  [delegate2 policyManagerUpdatedPolicy:self];
 }
 
 - (void)policyFailedToUpdate
 {
   if ([(ASPolicyManager *)self updatingPolicy])
   {
-    v3 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-    v4 = [(ASPolicyManager *)self delegate];
-    v5 = [v4 accountPersistentUUID];
-    [v3 reattainPowerAssertionsForGroupIdentifier:v5];
+    mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+    delegate = [(ASPolicyManager *)self delegate];
+    accountPersistentUUID = [delegate accountPersistentUUID];
+    [mEMORY[0x277D037B0] reattainPowerAssertionsForGroupIdentifier:accountPersistentUUID];
 
     [(ASPolicyManager *)self setUpdatingPolicy:0];
   }
@@ -75,18 +75,18 @@
     _os_log_impl(&dword_24A0AC000, v6, v7, "failed to update policy key!", v9, 2u);
   }
 
-  v8 = [(ASPolicyManager *)self delegate];
-  [v8 policyManagerFailedToUpdatePolicy:self];
+  delegate2 = [(ASPolicyManager *)self delegate];
+  [delegate2 policyManagerFailedToUpdatePolicy:self];
 }
 
 - (void)requestPolicyUpdate
 {
   if (![(ASPolicyManager *)self updatingPolicy])
   {
-    v3 = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
-    v4 = [(ASPolicyManager *)self delegate];
-    v5 = [v4 accountPersistentUUID];
-    [v3 dropPowerAssertionsForGroupIdentifier:v5];
+    mEMORY[0x277D037B0] = [MEMORY[0x277D037B0] sharedPowerAssertionManager];
+    delegate = [(ASPolicyManager *)self delegate];
+    accountPersistentUUID = [delegate accountPersistentUUID];
+    [mEMORY[0x277D037B0] dropPowerAssertionsForGroupIdentifier:accountPersistentUUID];
 
     [(ASPolicyManager *)self setUpdatingPolicy:1];
   }
@@ -99,21 +99,21 @@
     _os_log_impl(&dword_24A0AC000, v6, v7, "requesting policy update", v11, 2u);
   }
 
-  v8 = [MEMORY[0x277D07AF0] sharedConnection];
-  v9 = [(ASPolicyManager *)self delegate];
-  v10 = [v9 accountID];
-  [v8 requestPolicyUpdateForAccountID:v10];
+  mEMORY[0x277D07AF0] = [MEMORY[0x277D07AF0] sharedConnection];
+  delegate2 = [(ASPolicyManager *)self delegate];
+  accountID = [delegate2 accountID];
+  [mEMORY[0x277D07AF0] requestPolicyUpdateForAccountID:accountID];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = ASClientPolicyManager;
-  v4 = a3;
-  [(ASPolicyManager *)&v6 setDelegate:v4];
-  v5 = [v4 accountPersistentUUID];
+  delegateCopy = delegate;
+  [(ASPolicyManager *)&v6 setDelegate:delegateCopy];
+  accountPersistentUUID = [delegateCopy accountPersistentUUID];
 
-  [(ASClientPolicyManager *)self setPowerAssertionGroupIdentifier:v5];
+  [(ASClientPolicyManager *)self setPowerAssertionGroupIdentifier:accountPersistentUUID];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface COSRemoteManagementLearnMoreViewController
 + (id)defaultParagraphTextAttributes;
-- (COSRemoteManagementLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (COSRemoteManagementLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_descriptionText;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSRemoteManagementLearnMoreViewController
@@ -19,11 +19,11 @@
   return v3;
 }
 
-- (COSRemoteManagementLearnMoreViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (COSRemoteManagementLearnMoreViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v51.receiver = self;
   v51.super_class = COSRemoteManagementLearnMoreViewController;
-  v4 = [(COSRemoteManagementLearnMoreViewController *)&v51 initWithNibName:a3 bundle:a4];
+  v4 = [(COSRemoteManagementLearnMoreViewController *)&v51 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [UIScrollView alloc];
@@ -39,8 +39,8 @@
     v11 = BPSBackgroundColor();
     [(UIScrollView *)v4->_containerView setBackgroundColor:v11];
 
-    v12 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
-    [v12 addSubview:v4->_containerView];
+    view = [(COSRemoteManagementLearnMoreViewController *)v4 view];
+    [view addSubview:v4->_containerView];
 
     v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     descriptionLabel = v4->_descriptionLabel;
@@ -63,41 +63,41 @@
     v20 = [v19 localizedStringForKey:@"REMOTE_MANAGEMENT_TITLE" value:&stru_10026E598 table:@"Localizable-yorktown"];
     [(COSRemoteManagementLearnMoreViewController *)v4 setTitle:v20];
 
-    v49 = [(UIScrollView *)v4->_containerView leadingAnchor];
-    v50 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
-    v48 = [v50 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48];
+    leadingAnchor = [(UIScrollView *)v4->_containerView leadingAnchor];
+    view2 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v52[0] = v47;
-    v45 = [(UIScrollView *)v4->_containerView trailingAnchor];
-    v46 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
-    v44 = [v46 trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    trailingAnchor = [(UIScrollView *)v4->_containerView trailingAnchor];
+    view3 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v52[1] = v43;
-    v41 = [(UIScrollView *)v4->_containerView topAnchor];
-    v42 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
-    v40 = [v42 topAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    topAnchor = [(UIScrollView *)v4->_containerView topAnchor];
+    view4 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
+    topAnchor2 = [view4 topAnchor];
+    v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v52[2] = v39;
-    v37 = [(UIScrollView *)v4->_containerView bottomAnchor];
-    v38 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
-    v36 = [v38 bottomAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    bottomAnchor = [(UIScrollView *)v4->_containerView bottomAnchor];
+    view5 = [(COSRemoteManagementLearnMoreViewController *)v4 view];
+    bottomAnchor2 = [view5 bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v52[3] = v35;
-    v34 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
-    v33 = [(UIScrollView *)v4->_containerView leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:18.0];
+    leadingAnchor3 = [(UILabel *)v4->_descriptionLabel leadingAnchor];
+    leadingAnchor4 = [(UIScrollView *)v4->_containerView leadingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:18.0];
     v52[4] = v32;
-    v31 = [(UILabel *)v4->_descriptionLabel trailingAnchor];
-    v21 = [(UIScrollView *)v4->_containerView trailingAnchor];
-    v22 = [v31 constraintEqualToAnchor:v21 constant:-18.0];
+    trailingAnchor3 = [(UILabel *)v4->_descriptionLabel trailingAnchor];
+    trailingAnchor4 = [(UIScrollView *)v4->_containerView trailingAnchor];
+    v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-18.0];
     v52[5] = v22;
-    v23 = [(UILabel *)v4->_descriptionLabel topAnchor];
-    v24 = [(UIScrollView *)v4->_containerView topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:57.0];
+    topAnchor3 = [(UILabel *)v4->_descriptionLabel topAnchor];
+    topAnchor4 = [(UIScrollView *)v4->_containerView topAnchor];
+    v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:57.0];
     v52[6] = v25;
-    v26 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
-    v27 = [(UIScrollView *)v4->_containerView bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:-57.0];
+    bottomAnchor3 = [(UILabel *)v4->_descriptionLabel bottomAnchor];
+    bottomAnchor4 = [(UIScrollView *)v4->_containerView bottomAnchor];
+    v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-57.0];
     v52[7] = v28;
     v29 = [NSArray arrayWithObjects:v52 count:8];
     [NSLayoutConstraint activateConstraints:v29];
@@ -106,31 +106,31 @@
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = COSRemoteManagementLearnMoreViewController;
-  [(COSRemoteManagementLearnMoreViewController *)&v12 viewWillAppear:a3];
+  [(COSRemoteManagementLearnMoreViewController *)&v12 viewWillAppear:appear];
   v4 = [UIBarButtonItem alloc];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"DONE" value:&stru_10026E598 table:@"Localizable-yorktown"];
   v7 = [v4 initWithTitle:v6 style:2 target:self action:"controllerDone:"];
 
-  v8 = [(COSRemoteManagementLearnMoreViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [(COSRemoteManagementLearnMoreViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
-  v9 = [(COSRemoteManagementLearnMoreViewController *)self _descriptionText];
-  v10 = v9;
+  _descriptionText = [(COSRemoteManagementLearnMoreViewController *)self _descriptionText];
+  v10 = _descriptionText;
   if (self)
   {
-    [(UILabel *)self->_descriptionLabel setAttributedText:v9];
+    [(UILabel *)self->_descriptionLabel setAttributedText:_descriptionText];
 
     descriptionLabel = self->_descriptionLabel;
   }
 
   else
   {
-    sub_10018B118(v9);
+    sub_10018B118(_descriptionText);
     descriptionLabel = 0;
   }
 
@@ -143,48 +143,48 @@
   v4 = BPSDefaultDetailTextAttributes();
   v5 = BPSDefaultTitleTextAttributes();
   v6 = [[NSAttributedString alloc] initWithString:@"\n" attributes:v4];
-  v7 = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
+  organizationName = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
 
-  if (v7)
+  if (organizationName)
   {
     v8 = [NSMutableAttributedString alloc];
-    v9 = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
-    v10 = [v8 initWithString:v9 attributes:v5];
+    organizationName2 = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
+    v10 = [v8 initWithString:organizationName2 attributes:v5];
     [v3 appendAttributedString:v10];
 
     [v3 appendAttributedString:v6];
   }
 
-  v11 = [(COSRemoteManagementLearnMoreViewController *)self organizationDepartment];
+  organizationDepartment = [(COSRemoteManagementLearnMoreViewController *)self organizationDepartment];
 
-  if (v11)
+  if (organizationDepartment)
   {
     v12 = [NSMutableAttributedString alloc];
-    v13 = [(COSRemoteManagementLearnMoreViewController *)self organizationDepartment];
-    v14 = [v12 initWithString:v13 attributes:v4];
+    organizationDepartment2 = [(COSRemoteManagementLearnMoreViewController *)self organizationDepartment];
+    v14 = [v12 initWithString:organizationDepartment2 attributes:v4];
     [v3 appendAttributedString:v14];
 
     [v3 appendAttributedString:v6];
   }
 
   v15 = objc_opt_new();
-  v16 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddressLine1];
-  [v15 setValue:v16 forKey:CNPostalAddressStreetKey];
+  organizationAddressLine1 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddressLine1];
+  [v15 setValue:organizationAddressLine1 forKey:CNPostalAddressStreetKey];
 
-  v17 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddressLine2];
-  [v15 setValue:v17 forKey:CNPostalAddressSubLocalityKey];
+  organizationAddressLine2 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddressLine2];
+  [v15 setValue:organizationAddressLine2 forKey:CNPostalAddressSubLocalityKey];
 
-  v18 = [(COSRemoteManagementLearnMoreViewController *)self organizationCity];
-  [v15 setValue:v18 forKey:CNPostalAddressCityKey];
+  organizationCity = [(COSRemoteManagementLearnMoreViewController *)self organizationCity];
+  [v15 setValue:organizationCity forKey:CNPostalAddressCityKey];
 
-  v19 = [(COSRemoteManagementLearnMoreViewController *)self organizationRegion];
-  [v15 setValue:v19 forKey:CNPostalAddressStateKey];
+  organizationRegion = [(COSRemoteManagementLearnMoreViewController *)self organizationRegion];
+  [v15 setValue:organizationRegion forKey:CNPostalAddressStateKey];
 
-  v20 = [(COSRemoteManagementLearnMoreViewController *)self organizationZipCode];
-  [v15 setValue:v20 forKey:CNPostalAddressPostalCodeKey];
+  organizationZipCode = [(COSRemoteManagementLearnMoreViewController *)self organizationZipCode];
+  [v15 setValue:organizationZipCode forKey:CNPostalAddressPostalCodeKey];
 
-  v21 = [(COSRemoteManagementLearnMoreViewController *)self organizationCountry];
-  [v15 setValue:v21 forKey:CNPostalAddressCountryKey];
+  organizationCountry = [(COSRemoteManagementLearnMoreViewController *)self organizationCountry];
+  [v15 setValue:organizationCountry forKey:CNPostalAddressCountryKey];
 
   v56 = v15;
   v22 = [CNPostalAddress postalAddressWithDictionaryRepresentation:v15];
@@ -192,16 +192,16 @@
   if (!v22)
   {
 LABEL_9:
-    v25 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
+    organizationAddress = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
 
-    if (!v25)
+    if (!organizationAddress)
     {
       goto LABEL_19;
     }
 
     v26 = objc_opt_new();
-    v27 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
-    v23 = [v26 postalAddressFromString:v27];
+    organizationAddress2 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
+    v23 = [v26 postalAddressFromString:organizationAddress2];
 
     v54 = v5;
     if (v23)
@@ -212,9 +212,9 @@ LABEL_9:
       if (v28)
       {
         v31 = 0;
-        v32 = v28;
+        organizationAddress3 = v28;
 LABEL_15:
-        v33 = [v29 initWithString:v32 attributes:v30];
+        v33 = [v29 initWithString:organizationAddress3 attributes:v30];
         [v3 appendAttributedString:v33];
 
         if (v31)
@@ -235,7 +235,7 @@ LABEL_15:
       v29 = [NSAttributedString alloc];
     }
 
-    v32 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
+    organizationAddress3 = [(COSRemoteManagementLearnMoreViewController *)self organizationAddress];
     v28 = 0;
     v31 = 1;
     goto LABEL_15;
@@ -255,25 +255,25 @@ LABEL_15:
 LABEL_18:
 
 LABEL_19:
-  v34 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportPhone];
+  organizationSupportPhone = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportPhone];
 
-  if (v34)
+  if (organizationSupportPhone)
   {
     v35 = [NSMutableAttributedString alloc];
-    v36 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportPhone];
-    v37 = [v35 initWithString:v36 attributes:v4];
+    organizationSupportPhone2 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportPhone];
+    v37 = [v35 initWithString:organizationSupportPhone2 attributes:v4];
     [v3 appendAttributedString:v37];
 
     [v3 appendAttributedString:v6];
   }
 
-  v38 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportEmail];
+  organizationSupportEmail = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportEmail];
 
-  if (v38)
+  if (organizationSupportEmail)
   {
     v39 = [NSMutableAttributedString alloc];
-    v40 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportEmail];
-    v41 = [v39 initWithString:v40 attributes:v4];
+    organizationSupportEmail2 = [(COSRemoteManagementLearnMoreViewController *)self organizationSupportEmail];
+    v41 = [v39 initWithString:organizationSupportEmail2 attributes:v4];
     [v3 appendAttributedString:v41];
 
     [v3 appendAttributedString:v6];
@@ -281,9 +281,9 @@ LABEL_19:
 
   [v3 appendAttributedString:v6];
   [v3 appendAttributedString:v6];
-  v42 = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
+  organizationName3 = [(COSRemoteManagementLearnMoreViewController *)self organizationName];
 
-  if (v42)
+  if (organizationName3)
   {
     v43 = [NSMutableAttributedString alloc];
     v44 = +[NSBundle mainBundle];
@@ -293,8 +293,8 @@ LABEL_19:
     v47 = v5;
     v49 = v48 = v4;
     v50 = [NSString stringWithFormat:v45, v49];
-    v51 = [objc_opt_class() defaultParagraphTextAttributes];
-    v52 = [v43 initWithString:v50 attributes:v51];
+    defaultParagraphTextAttributes = [objc_opt_class() defaultParagraphTextAttributes];
+    v52 = [v43 initWithString:v50 attributes:defaultParagraphTextAttributes];
     [v3 appendAttributedString:v52];
 
     v4 = v48;

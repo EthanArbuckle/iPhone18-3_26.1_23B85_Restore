@@ -1,60 +1,60 @@
 @interface REDiffOperation
-+ (id)deleteWithItem:(id)a3 atIndex:(int64_t)a4;
-+ (id)insertWithItem:(id)a3 atIndex:(int64_t)a4;
-+ (id)moveWithItem:(id)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5;
-+ (id)reloadWithItem:(id)a3 atIndex:(int64_t)a4;
-- (REDiffOperation)initWithType:(unint64_t)a3 item:(id)a4 toIndex:(int64_t)a5 fromIndex:(int64_t)a6;
++ (id)deleteWithItem:(id)item atIndex:(int64_t)index;
++ (id)insertWithItem:(id)item atIndex:(int64_t)index;
++ (id)moveWithItem:(id)item fromIndex:(int64_t)index toIndex:(int64_t)toIndex;
++ (id)reloadWithItem:(id)item atIndex:(int64_t)index;
+- (REDiffOperation)initWithType:(unint64_t)type item:(id)item toIndex:(int64_t)index fromIndex:(int64_t)fromIndex;
 - (id)description;
 @end
 
 @implementation REDiffOperation
 
-- (REDiffOperation)initWithType:(unint64_t)a3 item:(id)a4 toIndex:(int64_t)a5 fromIndex:(int64_t)a6
+- (REDiffOperation)initWithType:(unint64_t)type item:(id)item toIndex:(int64_t)index fromIndex:(int64_t)fromIndex
 {
-  v11 = a4;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = REDiffOperation;
   v12 = [(REDiffOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_type = a3;
-    objc_storeStrong(&v12->_item, a4);
-    v13->_toIndex = a5;
-    v13->_fromIndex = a6;
+    v12->_type = type;
+    objc_storeStrong(&v12->_item, item);
+    v13->_toIndex = index;
+    v13->_fromIndex = fromIndex;
   }
 
   return v13;
 }
 
-+ (id)reloadWithItem:(id)a3 atIndex:(int64_t)a4
++ (id)reloadWithItem:(id)item atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithType:0 item:v6 toIndex:a4 fromIndex:0x7FFFFFFFFFFFFFFFLL];
+  itemCopy = item;
+  v7 = [[self alloc] initWithType:0 item:itemCopy toIndex:index fromIndex:0x7FFFFFFFFFFFFFFFLL];
 
   return v7;
 }
 
-+ (id)insertWithItem:(id)a3 atIndex:(int64_t)a4
++ (id)insertWithItem:(id)item atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithType:1 item:v6 toIndex:a4 fromIndex:0x7FFFFFFFFFFFFFFFLL];
+  itemCopy = item;
+  v7 = [[self alloc] initWithType:1 item:itemCopy toIndex:index fromIndex:0x7FFFFFFFFFFFFFFFLL];
 
   return v7;
 }
 
-+ (id)deleteWithItem:(id)a3 atIndex:(int64_t)a4
++ (id)deleteWithItem:(id)item atIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithType:2 item:v6 toIndex:0x7FFFFFFFFFFFFFFFLL fromIndex:a4];
+  itemCopy = item;
+  v7 = [[self alloc] initWithType:2 item:itemCopy toIndex:0x7FFFFFFFFFFFFFFFLL fromIndex:index];
 
   return v7;
 }
 
-+ (id)moveWithItem:(id)a3 fromIndex:(int64_t)a4 toIndex:(int64_t)a5
++ (id)moveWithItem:(id)item fromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithType:3 item:v8 toIndex:a5 fromIndex:a4];
+  itemCopy = item;
+  v9 = [[self alloc] initWithType:3 item:itemCopy toIndex:toIndex fromIndex:index];
 
   return v9;
 }
@@ -68,8 +68,8 @@
     if (type == 2)
     {
       v9 = MEMORY[0x277CCACA8];
-      v6 = [(REDiffOperation *)self item];
-      [v9 stringWithFormat:@" Delete %@ (%ld)", v6, -[REDiffOperation fromIndex](self, "fromIndex"), v13];
+      item = [(REDiffOperation *)self item];
+      [v9 stringWithFormat:@" Delete %@ (%ld)", item, -[REDiffOperation fromIndex](self, "fromIndex"), v13];
     }
 
     else
@@ -80,8 +80,8 @@
       }
 
       v7 = MEMORY[0x277CCACA8];
-      v6 = [(REDiffOperation *)self item];
-      [v7 stringWithFormat:@" Move %@ (%ld → %ld)", v6, -[REDiffOperation toIndex](self, "toIndex"), -[REDiffOperation fromIndex](self, "fromIndex")];
+      item = [(REDiffOperation *)self item];
+      [v7 stringWithFormat:@" Move %@ (%ld → %ld)", item, -[REDiffOperation toIndex](self, "toIndex"), -[REDiffOperation fromIndex](self, "fromIndex")];
     }
   }
 
@@ -93,15 +93,15 @@
     }
 
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(REDiffOperation *)self item];
-    [v5 stringWithFormat:@" Insert %@ (%ld)", v6, -[REDiffOperation toIndex](self, "toIndex"), v13];
+    item = [(REDiffOperation *)self item];
+    [v5 stringWithFormat:@" Insert %@ (%ld)", item, -[REDiffOperation toIndex](self, "toIndex"), v13];
   }
 
   else
   {
     v8 = MEMORY[0x277CCACA8];
-    v6 = [(REDiffOperation *)self item];
-    [v8 stringWithFormat:@" Reload %@ (%ld)", v6, -[REDiffOperation toIndex](self, "toIndex"), v13];
+    item = [(REDiffOperation *)self item];
+    [v8 stringWithFormat:@" Reload %@ (%ld)", item, -[REDiffOperation toIndex](self, "toIndex"), v13];
   }
   v4 = ;
 

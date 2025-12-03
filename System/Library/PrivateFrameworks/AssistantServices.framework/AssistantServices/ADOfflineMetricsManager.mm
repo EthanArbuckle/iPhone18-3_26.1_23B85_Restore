@@ -3,9 +3,9 @@
 + (void)_deleteLegacyOfflineMetricsFiles;
 - (ADOfflineMetricsManager)init;
 - (void)deleteAllMetrics;
-- (void)deleteMetricsWithOfflineIdentifier:(id)a3;
-- (void)fetchNextMetricsUsingBlock:(id)a3;
-- (void)insertMetrics:(id)a3;
+- (void)deleteMetricsWithOfflineIdentifier:(id)identifier;
+- (void)fetchNextMetricsUsingBlock:(id)block;
+- (void)insertMetrics:(id)metrics;
 @end
 
 @implementation ADOfflineMetricsManager
@@ -29,9 +29,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)fetchNextMetricsUsingBlock:(id)a3
+- (void)fetchNextMetricsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -40,7 +40,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v4)
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -48,25 +48,25 @@
     v7[2] = sub_10022DFAC;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)deleteMetricsWithOfflineIdentifier:(id)a3
+- (void)deleteMetricsWithOfflineIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADOfflineMetricsManager deleteMetricsWithOfflineIdentifier:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s offlineIdentifier = %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (identifierCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -74,25 +74,25 @@
     v7[2] = sub_10022E1D8;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)insertMetrics:(id)a3
+- (void)insertMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADOfflineMetricsManager insertMetrics:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = metricsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s metrics = %@", buf, 0x16u);
   }
 
-  if (v4)
+  if (metricsCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -100,7 +100,7 @@
     v7[2] = sub_10022E31C;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = metricsCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -135,9 +135,9 @@
 {
   v2 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
   v3 = [v2 URLByAppendingPathComponent:@"SiriMetrics"];
-  v4 = [v3 path];
+  path = [v3 path];
 
-  v5 = [[ADOfflineMetricsMap alloc] initWithPath:v4];
+  v5 = [[ADOfflineMetricsMap alloc] initWithPath:path];
 
   return v5;
 }
@@ -146,12 +146,12 @@
 {
   v2 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
   v3 = [v2 URLByAppendingPathComponent:@"SiriOfflineMetrics.plist"];
-  v4 = [v3 path];
-  v23[0] = v4;
+  path = [v3 path];
+  v23[0] = path;
   v5 = +[ADAudioFileWriter _savedAudioFilesDirectory]_0();
   v6 = [v5 URLByAppendingPathComponent:@"offlineSAMetrics.plist"];
-  v7 = [v6 path];
-  v23[1] = v7;
+  path2 = [v6 path];
+  v23[1] = path2;
   v8 = [NSArray arrayWithObjects:v23 count:2];
 
   v20 = 0u;

@@ -1,29 +1,29 @@
 @interface NSFileManager
 + (NSFileManager)defaultManager;
-- (BOOL)_handleFaultedOutCloudDocFromSource:(id)a3 toDestination:(id)a4 handled:(BOOL *)a5 error:(id *)a6;
+- (BOOL)_handleFaultedOutCloudDocFromSource:(id)source toDestination:(id)destination handled:(BOOL *)handled error:(id *)error;
 - (BOOL)_processCanAccessUbiquityIdentityToken;
 - (BOOL)_processHasUbiquityContainerEntitlement;
 - (BOOL)_processUsesCloudServices;
-- (BOOL)_web_createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5;
-- (BOOL)_web_createFileAtPathWithIntermediateDirectories:(id)a3 contents:(id)a4 attributes:(id)a5 directoryAttributes:(id)a6;
-- (BOOL)_web_createIntermediateDirectoriesForPath_nowarn:(id)a3 attributes:(id)a4;
-- (BOOL)_web_fileExistsAtPath_nowarn:(id)a3 isDirectory:(BOOL *)a4 traverseLink:(BOOL)a5;
-- (BOOL)_web_removeFileOnlyAtPath:(id)a3;
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)_web_createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes;
+- (BOOL)_web_createFileAtPathWithIntermediateDirectories:(id)directories contents:(id)contents attributes:(id)attributes directoryAttributes:(id)directoryAttributes;
+- (BOOL)_web_createIntermediateDirectoriesForPath_nowarn:(id)path_nowarn attributes:(id)attributes;
+- (BOOL)_web_fileExistsAtPath_nowarn:(id)path_nowarn isDirectory:(BOOL *)directory traverseLink:(BOOL)link;
+- (BOOL)_web_removeFileOnlyAtPath:(id)path;
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(unint64_t)options error:(id *)error;
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error;
 - (BOOL)createDirectoryAtPath:(NSString *)path attributes:(NSDictionary *)attributes;
 - (BOOL)createDirectoryAtURL:(NSURL *)url withIntermediateDirectories:(BOOL)createIntermediates attributes:(NSDictionary *)attributes error:(NSError *)error;
 - (BOOL)createFileAtPath:(NSString *)path contents:(NSData *)data attributes:(NSDictionary *)attr;
 - (BOOL)createSymbolicLinkAtURL:(NSURL *)url withDestinationURL:(NSURL *)destURL error:(NSError *)error;
-- (BOOL)directoryCanBeCreatedAtPath:(id)a3;
+- (BOOL)directoryCanBeCreatedAtPath:(id)path;
 - (BOOL)evictUbiquitousItemAtURL:(NSURL *)url error:(NSError *)error;
-- (BOOL)getFileSystemRepresentation:(char *)a3 maxLength:(unint64_t)a4 withPath:(id)a5;
+- (BOOL)getFileSystemRepresentation:(char *)representation maxLength:(unint64_t)length withPath:(id)path;
 - (BOOL)isDeletableFileAtPath:(NSString *)path;
 - (BOOL)isUbiquitousItemAtURL:(NSURL *)url;
 - (BOOL)linkItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError *)error;
 - (BOOL)linkItemAtURL:(NSURL *)srcURL toURL:(NSURL *)dstURL error:(NSError *)error;
 - (BOOL)moveItemAtPath:(NSString *)srcPath toPath:(NSString *)dstPath error:(NSError *)error;
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error;
 - (BOOL)replaceItemAtURL:(NSURL *)originalItemURL withItemAtURL:(NSURL *)newItemURL backupItemName:(NSString *)backupItemName options:(NSFileManagerItemReplacementOptions)options resultingItemURL:(NSURL *)resultingURL error:(NSError *)error;
 - (BOOL)setUbiquitous:(BOOL)flag itemAtURL:(NSURL *)url destinationURL:(NSURL *)destinationURL error:(NSError *)error;
 - (BOOL)startDownloadingUbiquitousItemAtURL:(NSURL *)url error:(NSError *)error;
@@ -42,28 +42,28 @@
 - (NSURL)URLForPublishingUbiquitousItemAtURL:(NSURL *)url expirationDate:(NSDate *)outDate error:(NSError *)error;
 - (NSURL)URLForUbiquityContainerIdentifier:(NSString *)containerIdentifier;
 - (NSURL)containerURLForSecurityApplicationGroupIdentifier:(NSString *)groupIdentifier;
-- (id)_URLForReplacingItemAtURL:(id)a3 error:(id *)a4;
-- (id)_URLForTrashingItemAtURL:(id)a3 create:(BOOL)a4 error:(id *)a5;
-- (id)_displayPathForPath:(id)a3;
+- (id)_URLForReplacingItemAtURL:(id)l error:(id *)error;
+- (id)_URLForTrashingItemAtURL:(id)l create:(BOOL)create error:(id *)error;
+- (id)_displayPathForPath:(id)path;
 - (id)_safeDelegate;
-- (id)_web_pathWithUniqueFilenameForPath:(id)a3;
+- (id)_web_pathWithUniqueFilenameForPath:(id)path;
 - (id)_web_startupVolumeName_nowarn;
-- (id)directoryContentsAtPath:(id)a3 matchingExtension:(id)a4 options:(int64_t)a5 keepExtension:(BOOL)a6 error:(id *)a7;
+- (id)directoryContentsAtPath:(id)path matchingExtension:(id)extension options:(int64_t)options keepExtension:(BOOL)keepExtension error:(id *)error;
 - (id)ubiquityIdentityToken;
-- (void)_performRemoveFileAtPath:(id)a3;
-- (void)_web_backgroundRemoveFileAtPath:(id)a3;
-- (void)_web_backgroundRemoveLeftoverFiles:(id)a3;
+- (void)_performRemoveFileAtPath:(id)path;
+- (void)_web_backgroundRemoveFileAtPath:(id)path;
+- (void)_web_backgroundRemoveLeftoverFiles:(id)files;
 - (void)dealloc;
-- (void)fetchLatestRemoteVersionOfItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)getFileProviderMessageInterfacesForItemAtURL:(id)a3 completionHandler:(id)a4;
+- (void)fetchLatestRemoteVersionOfItemAtURL:(id)l completionHandler:(id)handler;
+- (void)getFileProviderMessageInterfacesForItemAtURL:(id)l completionHandler:(id)handler;
 - (void)getFileProviderServicesForItemAtURL:(NSURL *)url completionHandler:(void *)completionHandler;
-- (void)pauseSyncForUbiquitousItemAtURL:(id)a3 completionHandler:(id)a4;
+- (void)pauseSyncForUbiquitousItemAtURL:(id)l completionHandler:(id)handler;
 - (void)release;
-- (void)resumeSyncForUbiquitousItemAtURL:(id)a3 withBehavior:(int64_t)a4 completionHandler:(id)a5;
+- (void)resumeSyncForUbiquitousItemAtURL:(id)l withBehavior:(int64_t)behavior completionHandler:(id)handler;
 - (void)setDelegate:(id)delegate;
-- (void)synchronouslyGetFileProviderServiceWithName:(id)a3 forItemAtURL:(id)a4 completionHandler:(id)a5;
-- (void)synchronouslyGetFileProviderServicesForItemAtURL:(id)a3 completionHandler:(id)a4;
-- (void)uploadLocalVersionOfUbiquitousItemAtURL:(id)a3 withConflictResolutionPolicy:(int64_t)a4 completionHandler:(id)a5;
+- (void)synchronouslyGetFileProviderServiceWithName:(id)name forItemAtURL:(id)l completionHandler:(id)handler;
+- (void)synchronouslyGetFileProviderServicesForItemAtURL:(id)l completionHandler:(id)handler;
+- (void)uploadLocalVersionOfUbiquitousItemAtURL:(id)l withConflictResolutionPolicy:(int64_t)policy completionHandler:(id)handler;
 @end
 
 @implementation NSFileManager
@@ -75,7 +75,7 @@
   v3[1] = 3221225472;
   v3[2] = __31__NSFileManager_defaultManager__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F318 != -1)
   {
     dispatch_once(&qword_1ED43F318, v3);
@@ -376,8 +376,8 @@ uint64_t __55__NSFileManager__processCanAccessUbiquityIdentityToken__block_invok
   }
 
   v34 = 0;
-  v18 = [(NSURL *)url path];
-  if (!v18)
+  path = [(NSURL *)url path];
+  if (!path)
   {
     v31 = _NSErrorWithFilePath(4, url);
     if (!v31)
@@ -388,9 +388,9 @@ uint64_t __55__NSFileManager__processCanAccessUbiquityIdentityToken__block_invok
     goto LABEL_44;
   }
 
-  v19 = v18;
+  v19 = path;
   v33 = error;
-  v20 = [(NSFileManager *)self contentsOfDirectoryAtPath:v18 error:&v34];
+  v20 = [(NSFileManager *)self contentsOfDirectoryAtPath:path error:&v34];
   memset(&v40, 0, sizeof(v40));
   if ([(NSFileManager *)self getFileSystemRepresentation:v41 maxLength:1024 withPath:v19])
   {
@@ -461,7 +461,7 @@ LABEL_44:
   return v11;
 }
 
-- (id)_URLForReplacingItemAtURL:(id)a3 error:(id *)a4
+- (id)_URLForReplacingItemAtURL:(id)l error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
   v47 = 0;
@@ -470,26 +470,26 @@ LABEL_44:
   v50 = __Block_byref_object_copy__4;
   v51 = __Block_byref_object_dispose__4;
   v52 = 0;
-  if (![a3 fileSystemRepresentation] || !_dirhelper_relative() && (!objc_msgSend(objc_msgSend(a3, "URLByDeletingLastPathComponent"), "fileSystemRepresentation") || !_dirhelper_relative()) || (v6 = objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", __s, 1, 0), (v7 = v6) != 0) && ((*__s = 0, v46 = 0, v8 = *MEMORY[0x1E695DD70], v9 = objc_msgSend(v6, "getResourceValue:forKey:error:", __s, *MEMORY[0x1E695DD70], 0), (objc_msgSend(a3, "getResourceValue:forKey:error:", &v46, v8, 0) & 1) == 0) ? (v10 = objc_msgSend(objc_msgSend(a3, "URLByDeletingLastPathComponent"), "getResourceValue:forKey:error:", &v46, v8, 0)) : (v10 = 1), (v9 & v10) != 1 || (objc_msgSend(*__s, "isEqual:", v46) & 1) == 0))
+  if (![l fileSystemRepresentation] || !_dirhelper_relative() && (!objc_msgSend(objc_msgSend(l, "URLByDeletingLastPathComponent"), "fileSystemRepresentation") || !_dirhelper_relative()) || (v6 = objc_msgSend(MEMORY[0x1E695DFF8], "fileURLWithFileSystemRepresentation:isDirectory:relativeToURL:", __s, 1, 0), (uRLByDeletingLastPathComponent = v6) != 0) && ((*__s = 0, v46 = 0, v8 = *MEMORY[0x1E695DD70], v9 = objc_msgSend(v6, "getResourceValue:forKey:error:", __s, *MEMORY[0x1E695DD70], 0), (objc_msgSend(l, "getResourceValue:forKey:error:", &v46, v8, 0) & 1) == 0) ? (v10 = objc_msgSend(objc_msgSend(l, "URLByDeletingLastPathComponent"), "getResourceValue:forKey:error:", &v46, v8, 0)) : (v10 = 1), (v9 & v10) != 1 || (objc_msgSend(*__s, "isEqual:", v46) & 1) == 0))
   {
-    v7 = 0;
+    uRLByDeletingLastPathComponent = 0;
   }
 
   getpid();
   v11 = sandbox_check();
-  if (!v7 && v11)
+  if (!uRLByDeletingLastPathComponent && v11)
   {
-    v12 = [objc_msgSend(a3 "path")];
+    v12 = [objc_msgSend(l "path")];
     v13 = _amkrtemp();
     if (v13 || (v17 = _NSOpenFileDescriptor(v12, 512, 448), (v17 & 0x80000000) == 0) && (close(v17), (v13 = _amkrtemp()) != 0))
     {
       if (mkdir(v13, 0x1C0u))
       {
-        if (a4)
+        if (error)
         {
           v14 = *__error();
-          v15 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v14, a3, 0, 0, 0);
-          *a4 = v15;
+          v15 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v14, l, 0, 0, 0);
+          *error = v15;
           if (![(NSError *)v15 localizedFailureReason])
           {
             NSLog(@"Foundation called mkdir(%s), it didn't return 0, and errno was set to %i.", v13, v14);
@@ -510,10 +510,10 @@ LABEL_44:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!uRLByDeletingLastPathComponent)
   {
 LABEL_24:
-    v7 = [a3 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
     v16 = [_NSFoundationBundle() localizedStringForKey:@"(A Document Being Saved By %@)" value:&stru_1EEEFDF90 table:@"Document"] != 0;
     goto LABEL_25;
   }
@@ -521,14 +521,14 @@ LABEL_24:
   v16 = 0;
 LABEL_25:
   v46 = 0;
-  if ([v7 getResourceValue:&v46 forKey:*MEMORY[0x1E695DDA8] error:0])
+  if ([uRLByDeletingLastPathComponent getResourceValue:&v46 forKey:*MEMORY[0x1E695DDA8] error:0])
   {
-    v18 = [v46 BOOLValue];
+    bOOLValue = [v46 BOOLValue];
   }
 
   else
   {
-    v18 = 0;
+    bOOLValue = 0;
   }
 
   MainBundle = CFBundleGetMainBundle();
@@ -544,9 +544,9 @@ LABEL_25:
   v40[1] = 3221225472;
   v41 = __49__NSFileManager__URLForReplacingItemAtURL_error___block_invoke;
   v42 = &unk_1E69F3720;
-  v45 = v18;
+  v45 = bOOLValue;
   v43 = &v47;
-  v44 = a4;
+  errorCopy = error;
   if (!v16)
   {
     if ([(NSString *)v21 length]>= 0x41)
@@ -554,7 +554,7 @@ LABEL_25:
       v22 = [(NSString *)v22 substringToIndex:64];
     }
 
-    v30 = [v7 URLByAppendingPathComponent:+[NSString stringWithFormat:](NSString isDirectory:{"stringWithFormat:", @"NSIRD_%@_", v22), 0}];
+    v30 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:+[NSString stringWithFormat:](NSString isDirectory:{"stringWithFormat:", @"NSIRD_%@_", v22), 0}];
     bzero(__s, 0x402uLL);
     [v30 getFileSystemRepresentation:__s maxLength:1018];
     if (v48[5])
@@ -577,12 +577,12 @@ LABEL_25:
       {
         if (v33 != 17)
         {
-          if (!a4)
+          if (!error)
           {
             goto LABEL_64;
           }
 
-          v38 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v33, a3, 0, 0, 0);
+          v38 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v33, l, 0, 0, 0);
           goto LABEL_73;
         }
 
@@ -602,15 +602,15 @@ LABEL_25:
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_64;
     }
 
     v37 = __error();
-    v38 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v37, a3, 0, 0, 0);
+    v38 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(*v37, l, 0, 0, 0);
 LABEL_73:
-    *a4 = v38;
+    *error = v38;
     goto LABEL_64;
   }
 
@@ -647,7 +647,7 @@ LABEL_73:
     }
 
     v26 = v25;
-    v27 = [v7 URLByAppendingPathComponent:v25 isDirectory:1];
+    v27 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v25 isDirectory:1];
 
     v28 = v41(v40, v27);
     v29 = v28;
@@ -662,11 +662,11 @@ LABEL_73:
 
         if (v23 >= 1000)
         {
-          if (a4)
+          if (error)
           {
             v53 = @"NSDebugDescription";
-            v54 = [NSString stringWithFormat:@"Too many temporary directories for %@ in %@", v22, v7];
-            *a4 = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 512, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1]);
+            v54 = [NSString stringWithFormat:@"Too many temporary directories for %@ in %@", v22, uRLByDeletingLastPathComponent];
+            *error = +[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 512, [MEMORY[0x1E695DF20] dictionaryWithObjects:&v54 forKeys:&v53 count:1]);
           }
 
           goto LABEL_64;
@@ -708,10 +708,10 @@ LABEL_49:
   }
 
 LABEL_68:
-  if (a4)
+  if (error)
   {
-    v39 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v28, a3, 0, 0, 0);
-    *a4 = v39;
+    v39 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v28, l, 0, 0, 0);
+    *error = v39;
     if (![(NSError *)v39 localizedFailureReason])
     {
       NSLog(@"Foundation called mkdir(%@), it didn't return 0, and errno was set to %i.", [v27 path], v29);
@@ -785,19 +785,19 @@ uint64_t __49__NSFileManager__URLForReplacingItemAtURL_error___block_invoke_3()
   return result;
 }
 
-- (id)_URLForTrashingItemAtURL:(id)a3 create:(BOOL)a4 error:(id *)a5
+- (id)_URLForTrashingItemAtURL:(id)l create:(BOOL)create error:(id *)error
 {
-  v6 = a4;
+  createCopy = create;
   if (qword_1ED43F3C0 != -1)
   {
     dispatch_once(&qword_1ED43F3C0, &__block_literal_global_650);
   }
 
-  v9 = [(NSFileManager *)self fp_trashURLForItemAtURL:a3 error:0];
+  v9 = [(NSFileManager *)self fp_trashURLForItemAtURL:l error:0];
   v10 = v9;
-  if (!a5 || v9)
+  if (!error || v9)
   {
-    if (v9 && v6 && ![(NSFileManager *)self createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:a5])
+    if (v9 && createCopy && ![(NSFileManager *)self createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:error])
     {
       return 0;
     }
@@ -805,34 +805,34 @@ uint64_t __49__NSFileManager__URLForReplacingItemAtURL_error___block_invoke_3()
 
   else
   {
-    *a5 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
+    *error = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
   }
 
   return v10;
 }
 
-- (id)_displayPathForPath:(id)a3
+- (id)_displayPathForPath:(id)path
 {
   v4 = [NSMutableString stringWithCapacity:512];
-  v5 = [a3 stringByStandardizingPath];
-  if (([v5 isEqualToString:&stru_1EEEFDF90] & 1) == 0)
+  stringByStandardizingPath = [path stringByStandardizingPath];
+  if (([stringByStandardizingPath isEqualToString:&stru_1EEEFDF90] & 1) == 0)
   {
     do
     {
-      if ([v5 isEqualToString:@"/"])
+      if ([stringByStandardizingPath isEqualToString:@"/"])
       {
         break;
       }
 
-      -[NSMutableString insertString:atIndex:](v4, "insertString:atIndex:", [+[NSFileManager defaultManager](NSFileManager displayNameAtPath:"displayNameAtPath:", v5], 0);
-      v5 = [v5 stringByDeletingLastPathComponent];
-      if (([v5 isEqualToString:&stru_1EEEFDF90] & 1) == 0)
+      -[NSMutableString insertString:atIndex:](v4, "insertString:atIndex:", [+[NSFileManager defaultManager](NSFileManager displayNameAtPath:"displayNameAtPath:", stringByStandardizingPath], 0);
+      stringByStandardizingPath = [stringByStandardizingPath stringByDeletingLastPathComponent];
+      if (([stringByStandardizingPath isEqualToString:&stru_1EEEFDF90] & 1) == 0)
       {
         [(NSMutableString *)v4 insertString:@"/" atIndex:0];
       }
     }
 
-    while (![v5 isEqualToString:&stru_1EEEFDF90]);
+    while (![stringByStandardizingPath isEqualToString:&stru_1EEEFDF90]);
   }
 
   if ([(NSString *)v4 isAbsolutePath])
@@ -851,18 +851,18 @@ uint64_t __49__NSFileManager__URLForReplacingItemAtURL_error___block_invoke_3()
   return v4;
 }
 
-- (BOOL)directoryCanBeCreatedAtPath:(id)a3
+- (BOOL)directoryCanBeCreatedAtPath:(id)path
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = [a3 fileSystemRepresentation];
-  if (([objc_msgSend(a3 "stringByDeletingLastPathComponent")] & 1) == 0 || access(v6, 3))
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  if (([objc_msgSend(path "stringByDeletingLastPathComponent")] & 1) == 0 || access(v6, 3))
   {
     return 0;
   }
 
-  if (!mkdir(v4, 0x1FFu))
+  if (!mkdir(fileSystemRepresentation, 0x1FFu))
   {
-    rmdir(v4);
+    rmdir(fileSystemRepresentation);
     return 1;
   }
 
@@ -894,55 +894,55 @@ uint64_t __49__NSFileManager__URLForReplacingItemAtURL_error___block_invoke_3()
   }
 }
 
-- (id)directoryContentsAtPath:(id)a3 matchingExtension:(id)a4 options:(int64_t)a5 keepExtension:(BOOL)a6 error:(id *)a7
+- (id)directoryContentsAtPath:(id)path matchingExtension:(id)extension options:(int64_t)options keepExtension:(BOOL)keepExtension error:(id *)error
 {
-  v8 = a6;
+  keepExtensionCopy = keepExtension;
   v42 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (extension)
   {
     strcpy(__s, ".");
-    if (![(NSFileManager *)self getFileSystemRepresentation:&__s[1] maxLength:1023 withPath:a4])
+    if (![(NSFileManager *)self getFileSystemRepresentation:&__s[1] maxLength:1023 withPath:extension])
     {
       return 0;
     }
 
-    v11 = [a3 fileSystemRepresentation];
+    fileSystemRepresentation = [path fileSystemRepresentation];
     v12 = __s;
     v13 = strlen(__s);
   }
 
   else
   {
-    v11 = [a3 fileSystemRepresentation];
+    fileSystemRepresentation = [path fileSystemRepresentation];
     v12 = 0;
     v13 = 0;
   }
 
   memset(&v41, 0, 512);
   v39 = 0;
-  if (!v11)
+  if (!fileSystemRepresentation)
   {
-    if (a7)
+    if (error)
     {
       v34 = __error();
       v35 = 0;
       v36 = *v34;
 LABEL_34:
-      v16 = 0;
-      *a7 = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v36, v35, 1, @"Folder", 0);
-      return v16;
+      array = 0;
+      *error = _NSErrorWithFilePathErrnoVariantAndExtraUserInfo(v36, v35, 1, @"Folder", 0);
+      return array;
     }
 
     return 0;
   }
 
-  v14 = opendir(v11);
+  v14 = opendir(fileSystemRepresentation);
   if (!v14)
   {
-    if (a7)
+    if (error)
     {
       v36 = *__error();
-      v35 = [NSString stringWithUTF8String:v11];
+      v35 = [NSString stringWithUTF8String:fileSystemRepresentation];
       goto LABEL_34;
     }
 
@@ -950,9 +950,9 @@ LABEL_34:
   }
 
   v15 = v14;
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = [objc_allocWithZone(NSCheapMutableString) init];
-  if (v8)
+  if (keepExtensionCopy)
   {
     v18 = 0;
   }
@@ -965,7 +965,7 @@ LABEL_34:
   if (!readdir_r(v15, &v41, &v39) && v39)
   {
     d_name = v41.d_name;
-    v38 = v16;
+    v38 = array;
     do
     {
       if (v41.d_ino)
@@ -980,13 +980,13 @@ LABEL_34:
 
           if (v13 < v41.d_namlen)
           {
-            if (a5)
+            if (options)
             {
               v21 = CFStringCreateWithFileSystemRepresentation(0, d_name);
               v22 = CFStringCreateWithFileSystemRepresentation(0, v12);
               v23 = d_name;
               v24 = v18;
-              v25 = a5;
+              optionsCopy = options;
               v26 = v12;
               v27 = v17;
               v28 = v22;
@@ -997,10 +997,10 @@ LABEL_34:
               v31 = v28;
               v17 = v27;
               v12 = v26;
-              a5 = v25;
+              options = optionsCopy;
               v18 = v24;
               d_name = v23;
-              v16 = v38;
+              array = v38;
               CFRelease(v31);
               CFRelease(v21);
               if (v30)
@@ -1011,7 +1011,7 @@ LABEL_25:
                 if (v32)
                 {
                   v33 = v32;
-                  [v16 addObject:v32];
+                  [array addObject:v32];
                 }
               }
             }
@@ -1029,7 +1029,7 @@ LABEL_25:
   }
 
   closedir(v15);
-  return v16;
+  return array;
 }
 
 - (NSDirectoryEnumerator)enumeratorAtPath:(NSString *)path
@@ -1111,14 +1111,14 @@ LABEL_25:
   return v3;
 }
 
-- (BOOL)getFileSystemRepresentation:(char *)a3 maxLength:(unint64_t)a4 withPath:(id)a5
+- (BOOL)getFileSystemRepresentation:(char *)representation maxLength:(unint64_t)length withPath:(id)path
 {
-  if (a5)
+  if (path)
   {
-    return [a5 getFileSystemRepresentation:a3 maxLength:a4];
+    return [path getFileSystemRepresentation:representation maxLength:length];
   }
 
-  *a3 = 0;
+  *representation = 0;
   return 0;
 }
 
@@ -1228,9 +1228,9 @@ LABEL_19:
   self->_weakDelegateValue = v5;
 }
 
-- (BOOL)copyItemAtPath:(id)a3 toPath:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)copyItemAtPath:(id)path toPath:(id)toPath options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!path)
   {
     v9 = _CFExecutableLinkedOnOrAfter();
     if (!v9)
@@ -1243,7 +1243,7 @@ LABEL_10:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
   }
 
-  if (!a4)
+  if (!toPath)
   {
     v10 = [NSString stringWithFormat:@"%@: destination path is nil", _NSMethodExceptionProem(self, a2)];
     goto LABEL_10;
@@ -1255,9 +1255,9 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)copyItemAtURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)copyItemAtURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
     v9 = _CFExecutableLinkedOnOrAfter();
     if (!v9)
@@ -1270,7 +1270,7 @@ LABEL_10:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
   }
 
-  if (!a4)
+  if (!rL)
   {
     v10 = [NSString stringWithFormat:@"%@: destination URL is nil", _NSMethodExceptionProem(self, a2)];
     goto LABEL_10;
@@ -1282,17 +1282,17 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_handleFaultedOutCloudDocFromSource:(id)a3 toDestination:(id)a4 handled:(BOOL *)a5 error:(id *)a6
+- (BOOL)_handleFaultedOutCloudDocFromSource:(id)source toDestination:(id)destination handled:(BOOL *)handled error:(id *)error
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (handled)
   {
-    *a5 = 0;
+    *handled = 0;
   }
 
   v10 = _CFURLPromiseCopyPhysicalURL();
   v11 = v10;
-  if (!v10 || v10 == a3)
+  if (!v10 || v10 == source)
   {
     if (!v10)
     {
@@ -1304,7 +1304,7 @@ LABEL_13:
     return 1;
   }
 
-  if ([a3 checkResourceIsReachableAndReturnError:0])
+  if ([source checkResourceIsReachableAndReturnError:0])
   {
     goto LABEL_13;
   }
@@ -1323,9 +1323,9 @@ LABEL_13:
   v15 = 0;
   if (([+[NSFileManager br_movePromisedItemAtURL:"br_movePromisedItemAtURL:toURL:error:"]!= 0)
   {
-    if (a5)
+    if (handled)
     {
-      *a5 = 1;
+      *handled = 1;
     }
 
     goto LABEL_13;
@@ -1350,17 +1350,17 @@ LABEL_13:
   }
 
   v16[0] = @"NSFilePath";
-  v17[0] = [a3 path];
+  v17[0] = [source path];
   v16[1] = @"NSDestinationFilePath";
-  v17[1] = [a4 path];
+  v17[1] = [destination path];
   v17[2] = @"Move";
   v16[2] = @"NSUserStringVariant";
   v16[3] = @"NSUnderlyingError";
   v17[3] = v15;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
-  if (a6)
+  if (error)
   {
-    *a6 = [[NSError alloc] initWithDomain:@"NSCocoaErrorDomain" code:v13 userInfo:v14];
+    *error = [[NSError alloc] initWithDomain:@"NSCocoaErrorDomain" code:v13 userInfo:v14];
   }
 
   CFRelease(v11);
@@ -1387,9 +1387,9 @@ LABEL_9:
   return [(_NSFileManagerBridge *)swiftBridge moveItemAtPath:srcPath toPath:dstPath options:0 error:error];
 }
 
-- (BOOL)moveItemAtURL:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)moveItemAtURL:(id)l toURL:(id)rL options:(unint64_t)options error:(id *)error
 {
-  if (!a3)
+  if (!l)
   {
     v9 = _CFExecutableLinkedOnOrAfter();
     if (!v9)
@@ -1402,7 +1402,7 @@ LABEL_10:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
   }
 
-  if (!a4)
+  if (!rL)
   {
     v10 = [NSString stringWithFormat:@"%@: destination URL is nil", _NSMethodExceptionProem(self, a2)];
     goto LABEL_10;
@@ -1479,18 +1479,18 @@ LABEL_9:
       if ([objc_msgSend(v17[0] "domain")])
       {
         v12 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:{objc_msgSend(v11, "userInfo")}];
-        v13 = [v11 code];
+        code = [v11 code];
       }
 
       else
       {
         v12 = [MEMORY[0x1E695DF90] dictionaryWithObject:v11 forKey:@"NSUnderlyingError"];
-        v13 = 512;
+        code = 512;
       }
 
       [v12 setObject:url forKey:@"NSURL"];
       [v12 setObject:@"Trash" forKey:@"NSUserStringVariant"];
-      v14 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:v13 userInfo:v12];
+      v14 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:code userInfo:v12];
       goto LABEL_14;
     }
   }
@@ -1883,10 +1883,10 @@ uint64_t __62__NSFileManager_setUbiquitous_itemAtURL_destinationURL_error___bloc
     if ((v8 & 1) == 0)
     {
       v9 = v20;
-      v10 = [(NSError *)v20 domain];
-      if (![(NSString *)v10 isEqual:@"NSCocoaErrorDomain"])
+      domain = [(NSError *)v20 domain];
+      if (![(NSString *)domain isEqual:@"NSCocoaErrorDomain"])
       {
-        if ([(NSString *)v10 isEqual:@"NSPOSIXErrorDomain"]&& [(NSError *)v9 code]== 45)
+        if ([(NSString *)domain isEqual:@"NSPOSIXErrorDomain"]&& [(NSError *)v9 code]== 45)
         {
           v27[0] = @"NSUnderlyingError";
           v21 = v9;
@@ -2149,7 +2149,7 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
   return result;
 }
 
-- (void)pauseSyncForUbiquitousItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)pauseSyncForUbiquitousItemAtURL:(id)l completionHandler:(id)handler
 {
   if (qword_1ED43F3C0 != -1)
   {
@@ -2160,19 +2160,19 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
   if (off_1ED43F380)
   {
 
-    v6(a3, a4);
+    v6(l, handler);
   }
 
   else
   {
     v7 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v8 = *(a4 + 2);
+    v8 = *(handler + 2);
 
-    v8(a4, v7);
+    v8(handler, v7);
   }
 }
 
-- (void)resumeSyncForUbiquitousItemAtURL:(id)a3 withBehavior:(int64_t)a4 completionHandler:(id)a5
+- (void)resumeSyncForUbiquitousItemAtURL:(id)l withBehavior:(int64_t)behavior completionHandler:(id)handler
 {
   if (qword_1ED43F3C0 != -1)
   {
@@ -2183,19 +2183,19 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
   if (off_1ED43F388)
   {
 
-    v8(a3, a4, a5);
+    v8(l, behavior, handler);
   }
 
   else
   {
     v9 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v10 = *(a5 + 2);
+    v10 = *(handler + 2);
 
-    v10(a5, v9);
+    v10(handler, v9);
   }
 }
 
-- (void)fetchLatestRemoteVersionOfItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)fetchLatestRemoteVersionOfItemAtURL:(id)l completionHandler:(id)handler
 {
   if (qword_1ED43F3C0 != -1)
   {
@@ -2206,19 +2206,19 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
   if (off_1ED43F390)
   {
 
-    v6(a3, a4);
+    v6(l, handler);
   }
 
   else
   {
     v7 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v8 = *(a4 + 2);
+    v8 = *(handler + 2);
 
-    v8(a4, 0, v7);
+    v8(handler, 0, v7);
   }
 }
 
-- (void)uploadLocalVersionOfUbiquitousItemAtURL:(id)a3 withConflictResolutionPolicy:(int64_t)a4 completionHandler:(id)a5
+- (void)uploadLocalVersionOfUbiquitousItemAtURL:(id)l withConflictResolutionPolicy:(int64_t)policy completionHandler:(id)handler
 {
   if (qword_1ED43F3C0 != -1)
   {
@@ -2229,22 +2229,22 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
   if (off_1ED43F398)
   {
 
-    v8(a3, a4, a5);
+    v8(l, policy, handler);
   }
 
   else
   {
     v9 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v10 = *(a5 + 2);
+    v10 = *(handler + 2);
 
-    v10(a5, 0, v9);
+    v10(handler, 0, v9);
   }
 }
 
-- (void)getFileProviderMessageInterfacesForItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)getFileProviderMessageInterfacesForItemAtURL:(id)l completionHandler:(id)handler
 {
   v9[5] = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: completionHandler is NULL", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v8);
@@ -2261,16 +2261,16 @@ void __74__NSFileManager_URLForPublishingUbiquitousItemAtURL_expirationDate_erro
     v9[1] = 3221225472;
     v9[2] = __80__NSFileManager_getFileProviderMessageInterfacesForItemAtURL_completionHandler___block_invoke;
     v9[3] = &unk_1E69F3848;
-    v9[4] = a4;
-    off_1ED43F3A0(a3, v9);
+    v9[4] = handler;
+    off_1ED43F3A0(l, v9);
   }
 
   else
   {
     v6 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v7 = *(a4 + 2);
+    v7 = *(handler + 2);
 
-    v7(a4, 0, v6);
+    v7(handler, 0, v6);
   }
 }
 
@@ -2394,10 +2394,10 @@ void __71__NSFileManager_getFileProviderServicesForItemAtURL_completionHandler__
   }
 }
 
-- (void)synchronouslyGetFileProviderServicesForItemAtURL:(id)a3 completionHandler:(id)a4
+- (void)synchronouslyGetFileProviderServicesForItemAtURL:(id)l completionHandler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
     v20 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: completionHandler is NULL", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v20);
@@ -2442,10 +2442,10 @@ void __71__NSFileManager_getFileProviderServicesForItemAtURL_completionHandler__
     v21[5] = &v40;
     v21[6] = &v34;
     v21[7] = &v28;
-    off_1ED43F3A8(a3, 1, v21);
+    off_1ED43F3A8(l, 1, v21);
     if (v23[5])
     {
-      (*(a4 + 2))(a4, 0);
+      (*(handler + 2))(handler, 0);
     }
 
     else
@@ -2484,7 +2484,7 @@ void __71__NSFileManager_getFileProviderServicesForItemAtURL_completionHandler__
       }
 
       v18 = [v10 copy];
-      (*(a4 + 2))(a4, v18, 0);
+      (*(handler + 2))(handler, v18, 0);
 
       global_queue = dispatch_get_global_queue(17, 2uLL);
       dispatch_group_notify(v8, global_queue, v29[5]);
@@ -2500,9 +2500,9 @@ void __71__NSFileManager_getFileProviderServicesForItemAtURL_completionHandler__
   else
   {
     v6 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v7 = *(a4 + 2);
+    v7 = *(handler + 2);
 
-    v7(a4, 0, v6);
+    v7(handler, 0, v6);
   }
 }
 
@@ -2526,10 +2526,10 @@ id __84__NSFileManager_synchronouslyGetFileProviderServicesForItemAtURL_completi
   return result;
 }
 
-- (void)synchronouslyGetFileProviderServiceWithName:(id)a3 forItemAtURL:(id)a4 completionHandler:(id)a5
+- (void)synchronouslyGetFileProviderServiceWithName:(id)name forItemAtURL:(id)l completionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!handler)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: completionHandler is NULL", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v14);
@@ -2567,18 +2567,18 @@ id __84__NSFileManager_synchronouslyGetFileProviderServicesForItemAtURL_completi
     v15[4] = &v16;
     v15[5] = &v28;
     v15[6] = &v22;
-    off_1ED43F3B0(a4, a3, 1, v15);
+    off_1ED43F3B0(l, name, 1, v15);
     if (v17[5])
     {
-      (*(a5 + 2))(a5, 0);
+      (*(handler + 2))(handler, 0);
     }
 
     else
     {
       v10 = dispatch_group_create();
       v11 = [NSFileProviderService alloc];
-      v12 = [(NSFileProviderService *)v11 initWithName:a3 endpointCreatingProxy:v29[5] requestFinishedGroup:v10];
-      (*(a5 + 2))(a5, v12, 0);
+      v12 = [(NSFileProviderService *)v11 initWithName:name endpointCreatingProxy:v29[5] requestFinishedGroup:v10];
+      (*(handler + 2))(handler, v12, 0);
 
       global_queue = dispatch_get_global_queue(17, 2uLL);
       dispatch_group_notify(v10, global_queue, v23[5]);
@@ -2593,9 +2593,9 @@ id __84__NSFileManager_synchronouslyGetFileProviderServicesForItemAtURL_completi
   else
   {
     v8 = [NSError errorWithDomain:@"NSCocoaErrorDomain" code:3328 userInfo:0];
-    v9 = *(a5 + 2);
+    v9 = *(handler + 2);
 
-    v9(a5, 0, v8);
+    v9(handler, 0, v8);
   }
 }
 
@@ -2618,7 +2618,7 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   return result;
 }
 
-- (BOOL)_web_createFileAtPathWithIntermediateDirectories:(id)a3 contents:(id)a4 attributes:(id)a5 directoryAttributes:(id)a6
+- (BOOL)_web_createFileAtPathWithIntermediateDirectories:(id)directories contents:(id)contents attributes:(id)attributes directoryAttributes:(id)directoryAttributes
 {
   if ([NSFileManager createFileAtPath:"createFileAtPath:contents:attributes:" contents:? attributes:?])
   {
@@ -2627,48 +2627,48 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
 
   else
   {
-    v11 = -[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](self, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [a3 stringByDeletingLastPathComponent], 1, a6, 0);
+    v11 = -[NSFileManager createDirectoryAtPath:withIntermediateDirectories:attributes:error:](self, "createDirectoryAtPath:withIntermediateDirectories:attributes:error:", [directories stringByDeletingLastPathComponent], 1, directoryAttributes, 0);
     if (v11)
     {
 
-      LOBYTE(v11) = [(NSFileManager *)self createFileAtPath:a3 contents:a4 attributes:a5];
+      LOBYTE(v11) = [(NSFileManager *)self createFileAtPath:directories contents:contents attributes:attributes];
     }
   }
 
   return v11;
 }
 
-- (BOOL)_web_createFileAtPath:(id)a3 contents:(id)a4 attributes:(id)a5
+- (BOOL)_web_createFileAtPath:(id)path contents:(id)contents attributes:(id)attributes
 {
-  v8 = [(NSFileManager *)self createFileAtPath:a3 contents:a4 attributes:?];
+  v8 = [(NSFileManager *)self createFileAtPath:path contents:contents attributes:?];
   if (v8)
   {
-    [(NSFileManager *)self _web_changeFinderAttributes:a5 forFileAtPath:a3];
+    [(NSFileManager *)self _web_changeFinderAttributes:attributes forFileAtPath:path];
   }
 
   return v8;
 }
 
-- (void)_performRemoveFileAtPath:(id)a3
+- (void)_performRemoveFileAtPath:(id)path
 {
   _CFAutoreleasePoolPush();
-  [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:a3, 0];
+  [+[NSFileManager defaultManager](NSFileManager removeItemAtPath:"removeItemAtPath:error:" error:path, 0];
 
   _CFAutoreleasePoolPop();
 }
 
-- (void)_web_backgroundRemoveFileAtPath:(id)a3
+- (void)_web_backgroundRemoveFileAtPath:(id)path
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = 0;
   v11[0] = 0;
   v9 = 0;
-  if (_NSCreateTemporaryFile(a3, v11, &v9, &v10, 0))
+  if (_NSCreateTemporaryFile(path, v11, &v9, &v10, 0))
   {
     v5 = strdup([(NSString *)v11[0] fileSystemRepresentation]);
-    v6 = [a3 fileSystemRepresentation];
+    fileSystemRepresentation = [path fileSystemRepresentation];
     close(v9);
-    rename(v6, v5, v7);
+    rename(fileSystemRepresentation, v5, v7);
     if (!v8)
     {
       v11[0] = [+[NSFileManager defaultManager](NSFileManager stringWithFileSystemRepresentation:"stringWithFileSystemRepresentation:length:" length:v5, strlen(v5)];
@@ -2680,19 +2680,19 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   }
 }
 
-- (BOOL)_web_removeFileOnlyAtPath:(id)a3
+- (BOOL)_web_removeFileOnlyAtPath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = unlink([a3 fileSystemRepresentation]);
+  v4 = unlink([path fileSystemRepresentation]);
   memset(&v7.f_mntonname[392], 0, 32);
-  if (!statfs([a3 fileSystemRepresentation], &v7) && (v7.f_flags & 0x8000) == 0)
+  if (!statfs([path fileSystemRepresentation], &v7) && (v7.f_flags & 0x8000) == 0)
   {
-    v5 = [a3 lastPathComponent];
-    if ([v5 length])
+    lastPathComponent = [path lastPathComponent];
+    if ([lastPathComponent length])
     {
-      if (([v5 isEqualToString:@"/"] & 1) == 0)
+      if (([lastPathComponent isEqualToString:@"/"] & 1) == 0)
       {
-        v4 |= unlink([objc_msgSend(objc_msgSend(a3 "stringByDeletingLastPathComponent")]);
+        v4 |= unlink([objc_msgSend(objc_msgSend(path "stringByDeletingLastPathComponent")]);
       }
     }
   }
@@ -2700,35 +2700,35 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   return v4 == 0;
 }
 
-- (void)_web_backgroundRemoveLeftoverFiles:(id)a3
+- (void)_web_backgroundRemoveLeftoverFiles:(id)files
 {
   v5 = +[NSFileManager defaultManager];
-  v6 = [a3 stringByDeletingLastPathComponent];
-  v7 = [NSString stringWithFormat:@"%@/.tmp%ld", v6, 0];
+  stringByDeletingLastPathComponent = [files stringByDeletingLastPathComponent];
+  v7 = [NSString stringWithFormat:@"%@/.tmp%ld", stringByDeletingLastPathComponent, 0];
   if ([(NSFileManager *)v5 fileExistsAtPath:v7])
   {
     v8 = 1;
     do
     {
       [NSThread detachNewThreadSelector:sel__performRemoveFileAtPath_ toTarget:self withObject:v7];
-      v7 = [NSString stringWithFormat:@"%@/.tmp%ld", v6, v8++];
+      v7 = [NSString stringWithFormat:@"%@/.tmp%ld", stringByDeletingLastPathComponent, v8++];
     }
 
     while ([(NSFileManager *)v5 fileExistsAtPath:v7]);
   }
 }
 
-- (id)_web_pathWithUniqueFilenameForPath:(id)a3
+- (id)_web_pathWithUniqueFilenameForPath:(id)path
 {
-  v3 = [objc_msgSend(a3 "stringByDeletingLastPathComponent")];
+  v3 = [objc_msgSend(path "stringByDeletingLastPathComponent")];
   v4 = +[NSFileManager defaultManager];
   if (![(NSFileManager *)v4 fileExistsAtPath:v3])
   {
     return v3;
   }
 
-  v5 = [v3 lastPathComponent];
-  v6 = [v5 rangeOfString:@"."];
+  lastPathComponent = [v3 lastPathComponent];
+  v6 = [lastPathComponent rangeOfString:@"."];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = 0;
@@ -2737,7 +2737,7 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   else
   {
     v9 = v6;
-    v7 = [v5 substringFromIndex:v6 + 1];
+    v7 = [lastPathComponent substringFromIndex:v6 + 1];
     v3 = [objc_msgSend(v3 "stringByDeletingLastPathComponent")];
   }
 
@@ -2757,42 +2757,42 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   return v8;
 }
 
-- (BOOL)_web_fileExistsAtPath_nowarn:(id)a3 isDirectory:(BOOL *)a4 traverseLink:(BOOL)a5
+- (BOOL)_web_fileExistsAtPath_nowarn:(id)path_nowarn isDirectory:(BOOL *)directory traverseLink:(BOOL)link
 {
-  if (a5)
+  if (link)
   {
-    if (a4)
+    if (directory)
     {
-      *a4 = 0;
+      *directory = 0;
     }
 
-    v8 = [+[NSFileManager defaultManager](NSFileManager destinationOfSymbolicLinkAtPath:"destinationOfSymbolicLinkAtPath:error:" error:a3, 0];
+    v8 = [+[NSFileManager defaultManager](NSFileManager destinationOfSymbolicLinkAtPath:"destinationOfSymbolicLinkAtPath:error:" error:path_nowarn, 0];
     v9 = v8;
     if (v8 && ![(NSString *)v8 isAbsolutePath])
     {
-      v9 = [objc_msgSend(a3 "stringByDeletingLastPathComponent")];
+      v9 = [objc_msgSend(path_nowarn "stringByDeletingLastPathComponent")];
     }
 
     if (v9)
     {
-      v10 = v9;
+      path_nowarnCopy = v9;
     }
 
     else
     {
-      v10 = a3;
+      path_nowarnCopy = path_nowarn;
     }
 
-    v11 = [(NSFileManager *)self attributesOfItemAtPath:v10 error:0];
+    v11 = [(NSFileManager *)self attributesOfItemAtPath:path_nowarnCopy error:0];
     if (v11)
     {
       v12 = [-[NSDictionary objectForKey:](v11 objectForKey:{@"NSFileType", "isEqualToString:", @"NSFileTypeDirectory"}];
       LOBYTE(v11) = 1;
-      if (a4)
+      if (directory)
       {
         if (v12)
         {
-          *a4 = 1;
+          *directory = 1;
         }
       }
     }
@@ -2815,24 +2815,24 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
   return [v2 substringToIndex:v3];
 }
 
-- (BOOL)_web_createIntermediateDirectoriesForPath_nowarn:(id)a3 attributes:(id)a4
+- (BOOL)_web_createIntermediateDirectoriesForPath_nowarn:(id)path_nowarn attributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3 && [a3 length] && objc_msgSend(a3, "isAbsolutePath"))
+  if (path_nowarn && [path_nowarn length] && objc_msgSend(path_nowarn, "isAbsolutePath"))
   {
     v15 = 0;
-    if (-[NSFileManager _web_fileExistsAtPath_nowarn:isDirectory:traverseLink:](self, "_web_fileExistsAtPath_nowarn:isDirectory:traverseLink:", [a3 stringByDeletingLastPathComponent], &v15, 1))
+    if (-[NSFileManager _web_fileExistsAtPath_nowarn:isDirectory:traverseLink:](self, "_web_fileExistsAtPath_nowarn:isDirectory:traverseLink:", [path_nowarn stringByDeletingLastPathComponent], &v15, 1))
     {
       return v15;
     }
 
     else
     {
-      v8 = a3;
-      while (([v8 isEqualToString:@"/"] & 1) == 0)
+      path_nowarnCopy = path_nowarn;
+      while (([path_nowarnCopy isEqualToString:@"/"] & 1) == 0)
       {
-        v8 = [v8 stringByDeletingLastPathComponent];
-        if ([(NSFileManager *)self _web_fileExistsAtPath_nowarn:v8 isDirectory:&v15 traverseLink:1])
+        path_nowarnCopy = [path_nowarnCopy stringByDeletingLastPathComponent];
+        if ([(NSFileManager *)self _web_fileExistsAtPath_nowarn:path_nowarnCopy isDirectory:&v15 traverseLink:1])
         {
           if (!v15)
           {
@@ -2843,14 +2843,14 @@ id __92__NSFileManager_synchronouslyGetFileProviderServiceWithName_forItemAtURL_
         }
       }
 
-      v9 = -[NSMutableString initWithCapacity:]([NSMutableString alloc], "initWithCapacity:", [a3 length]);
-      v10 = [a3 componentsSeparatedByString:@"/"];
+      v9 = -[NSMutableString initWithCapacity:]([NSMutableString alloc], "initWithCapacity:", [path_nowarn length]);
+      v10 = [path_nowarn componentsSeparatedByString:@"/"];
       v11 = [v10 count];
       v12 = 0;
       v13 = v11 - 1;
       if (v11 != 1)
       {
-        while (![(NSString *)v9 isEqualToString:v8])
+        while (![(NSString *)v9 isEqualToString:path_nowarnCopy])
         {
           if (v12)
           {
@@ -2893,7 +2893,7 @@ LABEL_29:
             }
           }
 
-          else if (![(NSFileManager *)self createDirectoryAtPath:v9 withIntermediateDirectories:0 attributes:a4 error:0])
+          else if (![(NSFileManager *)self createDirectoryAtPath:v9 withIntermediateDirectories:0 attributes:attributes error:0])
           {
             break;
           }

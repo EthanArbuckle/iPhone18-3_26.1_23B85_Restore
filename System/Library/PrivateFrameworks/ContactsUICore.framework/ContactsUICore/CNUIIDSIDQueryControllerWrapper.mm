@@ -1,35 +1,35 @@
 @interface CNUIIDSIDQueryControllerWrapper
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 listenerID:(id)a5 queue:(id)a6 completionBlock:(id)a7;
-- (CNUIIDSIDQueryControllerWrapper)initWithController:(id)a3;
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service listenerID:(id)d queue:(id)queue completionBlock:(id)block;
+- (CNUIIDSIDQueryControllerWrapper)initWithController:(id)controller;
 @end
 
 @implementation CNUIIDSIDQueryControllerWrapper
 
-- (CNUIIDSIDQueryControllerWrapper)initWithController:(id)a3
+- (CNUIIDSIDQueryControllerWrapper)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = CNUIIDSIDQueryControllerWrapper;
   v6 = [(CNUIIDSIDQueryControllerWrapper *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)refreshIDStatusForDestinations:(id)a3 service:(id)a4 listenerID:(id)a5 queue:(id)a6 completionBlock:(id)a7
+- (BOOL)refreshIDStatusForDestinations:(id)destinations service:(id)service listenerID:(id)d queue:(id)queue completionBlock:(id)block
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(CNUIIDSIDQueryControllerWrapper *)self controller];
-  v18 = [v17 refreshIDStatusForDestinations:v16 service:v15 listenerID:v14 queue:v13 completionBlock:v12];
+  blockCopy = block;
+  queueCopy = queue;
+  dCopy = d;
+  serviceCopy = service;
+  destinationsCopy = destinations;
+  controller = [(CNUIIDSIDQueryControllerWrapper *)self controller];
+  v18 = [controller refreshIDStatusForDestinations:destinationsCopy service:serviceCopy listenerID:dCopy queue:queueCopy completionBlock:blockCopy];
 
   return v18;
 }

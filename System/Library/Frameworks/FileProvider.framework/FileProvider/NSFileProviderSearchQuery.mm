@@ -1,30 +1,30 @@
 @interface NSFileProviderSearchQuery
 + (id)newSearchContainerItemIdentifier;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFileProviderSearchQuery:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFileProviderSearchQuery:(id)query;
 - (NSArray)csQueryScopes;
-- (NSFileProviderSearchQuery)initWithCoder:(id)a3;
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)a3;
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)a3 alternateItemID:(id)a4;
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemIdentifier:(id)a3 alternateItemIdentifier:(id)a4 providerDomainID:(id)a5 searchContainerItemIdentifier:(id)a6;
-- (NSFileProviderSearchQuery)initWithSpotlightQueryString:(id)a3 searchScope:(id)a4 searchContainerItemIdentifier:(id)a5;
+- (NSFileProviderSearchQuery)initWithCoder:(id)coder;
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)d;
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)d alternateItemID:(id)iD;
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemIdentifier:(id)identifier alternateItemIdentifier:(id)itemIdentifier providerDomainID:(id)d searchContainerItemIdentifier:(id)containerItemIdentifier;
+- (NSFileProviderSearchQuery)initWithSpotlightQueryString:(id)string searchScope:(id)scope searchContainerItemIdentifier:(id)identifier;
 - (NSSet)allowedPathExtensions;
 - (id)allowedContentTypesPredicate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)filenamePredicate;
 - (id)predicate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAllowedContentTypes:(id)a3;
-- (void)setContent:(id)a3;
-- (void)setFilename:(id)a3;
-- (void)setKeyboardLanguage:(id)a3;
-- (void)setProviderDomainID:(id)a3;
-- (void)setScopeFragment:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setSpotlightQueryString:(id)a3;
-- (void)setUserQueryString:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAllowedContentTypes:(id)types;
+- (void)setContent:(id)content;
+- (void)setFilename:(id)filename;
+- (void)setKeyboardLanguage:(id)language;
+- (void)setProviderDomainID:(id)d;
+- (void)setScopeFragment:(id)fragment;
+- (void)setSearchString:(id)string;
+- (void)setSpotlightQueryString:(id)string;
+- (void)setUserQueryString:(id)string;
 @end
 
 @implementation NSFileProviderSearchQuery
@@ -38,15 +38,15 @@
     v31 = [MEMORY[0x1E695DFA8] set];
     v4 = [MEMORY[0x1E695DFA8] set];
     v5 = MEMORY[0x1E695DFA8];
-    v28 = self;
-    v6 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
-    v7 = [v5 setWithSet:v6];
+    selfCopy = self;
+    allowedContentTypes = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+    v7 = [v5 setWithSet:allowedContentTypes];
 
     v30 = [MEMORY[0x1E695DFA8] set];
-    v8 = [v7 anyObject];
-    if (v8)
+    anyObject = [v7 anyObject];
+    if (anyObject)
     {
-      v9 = v8;
+      v9 = anyObject;
       v29 = *MEMORY[0x1E6982C48];
       do
       {
@@ -56,8 +56,8 @@
         if (v10)
         {
           [(NSSet *)v30 addObject:v10];
-          v11 = [v10 tags];
-          v12 = [v11 objectForKey:v29];
+          tags = [v10 tags];
+          v12 = [tags objectForKey:v29];
           [v31 addObjectsFromArray:v12];
 
           v35 = 0u;
@@ -65,8 +65,8 @@
           v33 = 0u;
           v34 = 0u;
           v32 = v10;
-          v13 = [v10 _childTypes];
-          v14 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+          _childTypes = [v10 _childTypes];
+          v14 = [_childTypes countByEnumeratingWithState:&v33 objects:v37 count:16];
           if (v14)
           {
             v15 = v14;
@@ -77,21 +77,21 @@
               {
                 if (*v34 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(_childTypes);
                 }
 
                 v18 = *(*(&v33 + 1) + 8 * i);
-                v19 = [v18 identifier];
-                v20 = [v4 containsObject:v19];
+                identifier = [v18 identifier];
+                v20 = [v4 containsObject:identifier];
 
                 if ((v20 & 1) == 0)
                 {
-                  v21 = [v18 identifier];
-                  [v7 addObject:v21];
+                  identifier2 = [v18 identifier];
+                  [v7 addObject:identifier2];
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v33 objects:v37 count:16];
+              v15 = [_childTypes countByEnumeratingWithState:&v33 objects:v37 count:16];
             }
 
             while (v15);
@@ -100,22 +100,22 @@
           v10 = v32;
         }
 
-        v22 = [v7 anyObject];
+        anyObject2 = [v7 anyObject];
 
-        v9 = v22;
+        v9 = anyObject2;
       }
 
-      while (v22);
+      while (anyObject2);
     }
 
     v23 = [v31 copy];
-    v24 = v28->_cachedExtensions;
-    v28->_cachedExtensions = v23;
+    v24 = selfCopy->_cachedExtensions;
+    selfCopy->_cachedExtensions = v23;
 
-    allowedUTTypes = v28->_allowedUTTypes;
-    v28->_allowedUTTypes = v30;
+    allowedUTTypes = selfCopy->_allowedUTTypes;
+    selfCopy->_allowedUTTypes = v30;
 
-    cachedExtensions = v28->_cachedExtensions;
+    cachedExtensions = selfCopy->_cachedExtensions;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -123,57 +123,57 @@
   return cachedExtensions;
 }
 
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)a3
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 providerDomainID];
+  dCopy = d;
+  identifier = [dCopy identifier];
+  providerDomainID = [dCopy providerDomainID];
 
-  v7 = [(NSFileProviderSearchQuery *)self initWithSearchScopedToItemIdentifier:v5 alternateItemIdentifier:0 providerDomainID:v6 searchContainerItemIdentifier:0];
+  v7 = [(NSFileProviderSearchQuery *)self initWithSearchScopedToItemIdentifier:identifier alternateItemIdentifier:0 providerDomainID:providerDomainID searchContainerItemIdentifier:0];
   return v7;
 }
 
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)a3 alternateItemID:(id)a4
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemID:(id)d alternateItemID:(id)iD
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  dCopy = d;
+  iDCopy = iD;
+  if (iDCopy)
   {
-    if (!v7)
+    if (!dCopy)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"NSFileProviderSearchQuery.m" lineNumber:130 description:@"alternate item id defined without a main id"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NSFileProviderSearchQuery.m" lineNumber:130 description:@"alternate item id defined without a main id"];
     }
 
-    v10 = [v7 providerDomainID];
-    v11 = [v8 providerDomainID];
-    v12 = [v10 isEqual:v11];
+    providerDomainID = [dCopy providerDomainID];
+    providerDomainID2 = [iDCopy providerDomainID];
+    v12 = [providerDomainID isEqual:providerDomainID2];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [v7 providerDomainID];
-      v14 = [v8 providerDomainID];
-      v15 = [v13 isEqual:v14];
+      providerDomainID3 = [dCopy providerDomainID];
+      providerDomainID4 = [iDCopy providerDomainID];
+      v15 = [providerDomainID3 isEqual:providerDomainID4];
 
       if ((v15 & 1) == 0)
       {
-        [(NSFileProviderSearchQuery(NSFileProviderSearch_Private) *)v7 initWithSearchScopedToItemID:v8 alternateItemID:a2, self];
+        [(NSFileProviderSearchQuery(NSFileProviderSearch_Private) *)dCopy initWithSearchScopedToItemID:iDCopy alternateItemID:a2, self];
       }
     }
   }
 
-  v16 = [v7 identifier];
-  v17 = [v8 identifier];
-  v18 = [v7 providerDomainID];
-  v19 = [(NSFileProviderSearchQuery *)self initWithSearchScopedToItemIdentifier:v16 alternateItemIdentifier:v17 providerDomainID:v18 searchContainerItemIdentifier:0];
+  identifier = [dCopy identifier];
+  identifier2 = [iDCopy identifier];
+  providerDomainID5 = [dCopy providerDomainID];
+  v19 = [(NSFileProviderSearchQuery *)self initWithSearchScopedToItemIdentifier:identifier alternateItemIdentifier:identifier2 providerDomainID:providerDomainID5 searchContainerItemIdentifier:0];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -181,57 +181,57 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSFileProviderSearchQuery *)self isEqualToFileProviderSearchQuery:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSFileProviderSearchQuery *)self isEqualToFileProviderSearchQuery:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFileProviderSearchQuery:(id)a3
+- (BOOL)isEqualToFileProviderSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(NSFileProviderSearchQuery *)self shouldPerformServerSearch];
-  if (v5 == [v4 shouldPerformServerSearch])
+  queryCopy = query;
+  shouldPerformServerSearch = [(NSFileProviderSearchQuery *)self shouldPerformServerSearch];
+  if (shouldPerformServerSearch == [queryCopy shouldPerformServerSearch])
   {
-    v6 = [(NSFileProviderSearchQuery *)self shouldPerformThirdPartyServerSearch];
-    if (v6 == [v4 shouldPerformThirdPartyServerSearch])
+    shouldPerformThirdPartyServerSearch = [(NSFileProviderSearchQuery *)self shouldPerformThirdPartyServerSearch];
+    if (shouldPerformThirdPartyServerSearch == [queryCopy shouldPerformThirdPartyServerSearch])
     {
-      v7 = [(NSFileProviderSearchQuery *)self shouldPerformSemanticSearch];
-      if (v7 == [v4 shouldPerformSemanticSearch])
+      shouldPerformSemanticSearch = [(NSFileProviderSearchQuery *)self shouldPerformSemanticSearch];
+      if (shouldPerformSemanticSearch == [queryCopy shouldPerformSemanticSearch])
       {
-        v8 = [(NSFileProviderSearchQuery *)self avoidCoreSpotlightSearch];
-        if (v8 == [v4 avoidCoreSpotlightSearch])
+        avoidCoreSpotlightSearch = [(NSFileProviderSearchQuery *)self avoidCoreSpotlightSearch];
+        if (avoidCoreSpotlightSearch == [queryCopy avoidCoreSpotlightSearch])
         {
-          v9 = [(NSFileProviderSearchQuery *)self trashedItemsMembership];
-          if (v9 == [v4 trashedItemsMembership])
+          trashedItemsMembership = [(NSFileProviderSearchQuery *)self trashedItemsMembership];
+          if (trashedItemsMembership == [queryCopy trashedItemsMembership])
           {
-            v10 = [(NSFileProviderSearchQuery *)self filename];
-            v11 = [v4 filename];
-            if (v10 != v11)
+            filename = [(NSFileProviderSearchQuery *)self filename];
+            filename2 = [queryCopy filename];
+            if (filename != filename2)
             {
-              v12 = [(NSFileProviderSearchQuery *)self filename];
-              v63 = [v4 filename];
-              v64 = v12;
-              if (![v12 isEqual:?])
+              filename3 = [(NSFileProviderSearchQuery *)self filename];
+              filename4 = [queryCopy filename];
+              v64 = filename3;
+              if (![filename3 isEqual:?])
               {
                 v13 = 0;
                 goto LABEL_44;
               }
             }
 
-            v15 = [(NSFileProviderSearchQuery *)self userQueryString];
-            v16 = [v4 userQueryString];
-            if (v15 != v16)
+            userQueryString = [(NSFileProviderSearchQuery *)self userQueryString];
+            userQueryString2 = [queryCopy userQueryString];
+            if (userQueryString != userQueryString2)
             {
-              v17 = [(NSFileProviderSearchQuery *)self userQueryString];
-              v18 = [v4 userQueryString];
-              if (![v17 isEqual:v18])
+              userQueryString3 = [(NSFileProviderSearchQuery *)self userQueryString];
+              userQueryString4 = [queryCopy userQueryString];
+              if (![userQueryString3 isEqual:userQueryString4])
               {
                 v13 = 0;
 LABEL_42:
 
 LABEL_43:
-                if (v10 == v11)
+                if (filename == filename2)
                 {
 LABEL_45:
 
@@ -243,21 +243,21 @@ LABEL_44:
                 goto LABEL_45;
               }
 
-              v60 = v18;
-              v61 = v17;
+              v60 = userQueryString4;
+              v61 = userQueryString3;
             }
 
-            v19 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
-            v20 = [v4 allowedContentTypes];
-            v62 = v19;
-            v21 = v19 == v20;
-            v22 = v20;
+            allowedContentTypes = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+            allowedContentTypes2 = [queryCopy allowedContentTypes];
+            v62 = allowedContentTypes;
+            v21 = allowedContentTypes == allowedContentTypes2;
+            v22 = allowedContentTypes2;
             if (!v21)
             {
-              v23 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
-              v57 = [v4 allowedContentTypes];
-              v58 = v23;
-              if (![v23 isEqual:?])
+              allowedContentTypes3 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+              allowedContentTypes4 = [queryCopy allowedContentTypes];
+              v58 = allowedContentTypes3;
+              if (![allowedContentTypes3 isEqual:?])
               {
                 v13 = 0;
                 v24 = v22;
@@ -265,9 +265,9 @@ LABEL_44:
 LABEL_40:
 
 LABEL_41:
-                v17 = v61;
-                v18 = v60;
-                if (v15 == v16)
+                userQueryString3 = v61;
+                userQueryString4 = v60;
+                if (userQueryString == userQueryString2)
                 {
                   goto LABEL_43;
                 }
@@ -276,17 +276,17 @@ LABEL_41:
               }
             }
 
-            v26 = [(NSFileProviderSearchQuery *)self scopeFragment];
-            v27 = [v4 scopeFragment];
-            v59 = v26;
-            v21 = v26 == v27;
-            v28 = v27;
+            scopeFragment = [(NSFileProviderSearchQuery *)self scopeFragment];
+            scopeFragment2 = [queryCopy scopeFragment];
+            v59 = scopeFragment;
+            v21 = scopeFragment == scopeFragment2;
+            v28 = scopeFragment2;
             if (!v21)
             {
-              v29 = [(NSFileProviderSearchQuery *)self scopeFragment];
-              v53 = [v4 scopeFragment];
-              v54 = v29;
-              if (![v29 isEqual:?])
+              scopeFragment3 = [(NSFileProviderSearchQuery *)self scopeFragment];
+              scopeFragment4 = [queryCopy scopeFragment];
+              v54 = scopeFragment3;
+              if (![scopeFragment3 isEqual:?])
               {
                 v24 = v22;
                 v13 = 0;
@@ -304,18 +304,18 @@ LABEL_39:
               }
             }
 
-            v31 = [(NSFileProviderSearchQuery *)self providerDomainID];
-            v32 = [v4 providerDomainID];
-            v55 = v31;
+            providerDomainID = [(NSFileProviderSearchQuery *)self providerDomainID];
+            providerDomainID2 = [queryCopy providerDomainID];
+            v55 = providerDomainID;
             v56 = v28;
-            v21 = v31 == v32;
-            v33 = v32;
+            v21 = providerDomainID == providerDomainID2;
+            v33 = providerDomainID2;
             if (!v21)
             {
-              v34 = [(NSFileProviderSearchQuery *)self providerDomainID];
-              v49 = [v4 providerDomainID];
-              v50 = v34;
-              if (![v34 isEqual:?])
+              providerDomainID3 = [(NSFileProviderSearchQuery *)self providerDomainID];
+              providerDomainID4 = [queryCopy providerDomainID];
+              v50 = providerDomainID3;
+              if (![providerDomainID3 isEqual:?])
               {
                 v13 = 0;
                 v35 = v55;
@@ -323,38 +323,38 @@ LABEL_39:
               }
             }
 
-            v36 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
-            v51 = [v4 keyboardLanguage];
+            keyboardLanguage = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+            keyboardLanguage2 = [queryCopy keyboardLanguage];
             v52 = v33;
-            if (v36 == v51)
+            if (keyboardLanguage == keyboardLanguage2)
             {
-              v48 = v36;
+              v48 = keyboardLanguage;
             }
 
             else
             {
               v37 = v22;
-              v38 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
-              v46 = [v4 keyboardLanguage];
-              v47 = v38;
-              if (![v38 isEqual:?])
+              keyboardLanguage3 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+              keyboardLanguage4 = [queryCopy keyboardLanguage];
+              v47 = keyboardLanguage3;
+              if (![keyboardLanguage3 isEqual:?])
               {
                 v13 = 0;
                 v22 = v37;
-                v44 = v51;
+                v44 = keyboardLanguage2;
                 v33 = v52;
                 goto LABEL_33;
               }
 
-              v48 = v36;
+              v48 = keyboardLanguage;
               v22 = v37;
               v33 = v52;
             }
 
-            v39 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-            v40 = [v4 scopedToItemIdentifier];
-            v41 = v40;
-            if (v39 == v40)
+            scopedToItemIdentifier = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+            scopedToItemIdentifier2 = [queryCopy scopedToItemIdentifier];
+            v41 = scopedToItemIdentifier2;
+            if (scopedToItemIdentifier == scopedToItemIdentifier2)
             {
 
               v13 = 1;
@@ -362,18 +362,18 @@ LABEL_39:
 
             else
             {
-              v42 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-              [v4 scopedToItemIdentifier];
+              scopedToItemIdentifier3 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+              [queryCopy scopedToItemIdentifier];
               v43 = v45 = v22;
-              v13 = [v42 isEqual:v43];
+              v13 = [scopedToItemIdentifier3 isEqual:v43];
 
               v22 = v45;
               v33 = v52;
             }
 
-            v36 = v48;
-            v44 = v51;
-            if (v48 == v51)
+            keyboardLanguage = v48;
+            v44 = keyboardLanguage2;
+            if (v48 == keyboardLanguage2)
             {
 LABEL_34:
 
@@ -468,54 +468,54 @@ LABEL_10:
   return v17 ^ v16 ^ trashedItemsMembership ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ [(NSString *)self->_alternateScopeToItemIdentifier hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  keyboardLanguage = [(NSFileProviderSearchQuery *)self keyboardLanguage];
   v6 = v4[5];
-  v4[5] = v5;
+  v4[5] = keyboardLanguage;
 
-  v7 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+  scopedToItemIdentifier = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
   v8 = v4[15];
-  v4[15] = v7;
+  v4[15] = scopedToItemIdentifier;
 
-  v9 = [(NSFileProviderSearchQuery *)self alternateScopeToItemIdentifier];
+  alternateScopeToItemIdentifier = [(NSFileProviderSearchQuery *)self alternateScopeToItemIdentifier];
   v10 = v4[6];
-  v4[6] = v9;
+  v4[6] = alternateScopeToItemIdentifier;
 
-  v11 = [(NSFileProviderSearchQuery *)self searchContainerItemIdentifier];
+  searchContainerItemIdentifier = [(NSFileProviderSearchQuery *)self searchContainerItemIdentifier];
   v12 = v4[16];
-  v4[16] = v11;
+  v4[16] = searchContainerItemIdentifier;
 
-  v13 = [(NSFileProviderSearchQuery *)self filename];
-  [v4 setFilename:v13];
+  filename = [(NSFileProviderSearchQuery *)self filename];
+  [v4 setFilename:filename];
 
-  v14 = [(NSFileProviderSearchQuery *)self userQueryString];
-  [v4 setUserQueryString:v14];
+  userQueryString = [(NSFileProviderSearchQuery *)self userQueryString];
+  [v4 setUserQueryString:userQueryString];
 
-  v15 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
-  [v4 setAllowedContentTypes:v15];
+  allowedContentTypes = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+  [v4 setAllowedContentTypes:allowedContentTypes];
 
   [v4 setShouldPerformServerSearch:{-[NSFileProviderSearchQuery shouldPerformServerSearch](self, "shouldPerformServerSearch")}];
   [v4 setShouldPerformThirdPartyServerSearch:{-[NSFileProviderSearchQuery shouldPerformThirdPartyServerSearch](self, "shouldPerformThirdPartyServerSearch")}];
   [v4 setShouldPerformSemanticSearch:{-[NSFileProviderSearchQuery shouldPerformSemanticSearch](self, "shouldPerformSemanticSearch")}];
   [v4 setAvoidCoreSpotlightSearch:{-[NSFileProviderSearchQuery avoidCoreSpotlightSearch](self, "avoidCoreSpotlightSearch")}];
   [v4 setTrashedItemsMembership:{-[NSFileProviderSearchQuery trashedItemsMembership](self, "trashedItemsMembership")}];
-  v16 = [(NSFileProviderSearchQuery *)self scopeFragment];
-  [v4 setScopeFragment:v16];
+  scopeFragment = [(NSFileProviderSearchQuery *)self scopeFragment];
+  [v4 setScopeFragment:scopeFragment];
 
-  v17 = [(NSFileProviderSearchQuery *)self providerDomainID];
-  [v4 setProviderDomainID:v17];
+  providerDomainID = [(NSFileProviderSearchQuery *)self providerDomainID];
+  [v4 setProviderDomainID:providerDomainID];
 
-  v18 = [(NSFileProviderSearchQuery *)self spotlightQueryString];
-  [v4 setSpotlightQueryString:v18];
+  spotlightQueryString = [(NSFileProviderSearchQuery *)self spotlightQueryString];
+  [v4 setSpotlightQueryString:spotlightQueryString];
 
   return v4;
 }
 
-- (NSFileProviderSearchQuery)initWithCoder:(id)a3
+- (NSFileProviderSearchQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v41.receiver = self;
   v41.super_class = NSFileProviderSearchQuery;
   v5 = [(NSFileProviderSearchQuery *)&v41 init];
@@ -524,11 +524,11 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_filename"];
   v7 = *(v5 + 13);
   *(v5 + 13) = v6;
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userQueryString"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userQueryString"];
   v9 = *(v5 + 3);
   *(v5 + 3) = v8;
 
@@ -536,42 +536,42 @@ LABEL_10:
   v11 = objc_opt_class();
   v40 = objc_opt_class();
   v12 = [v10 setWithObjects:v11];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_allowedContentTypes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_allowedContentTypes"];
   v14 = *(v5 + 14);
   *(v5 + 14) = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_keyboardLanguage"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_keyboardLanguage"];
   v16 = *(v5 + 5);
   *(v5 + 5) = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scopedToItemIdentifier"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scopedToItemIdentifier"];
   v18 = *(v5 + 15);
   *(v5 + 15) = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alternateScopeToItemIdentifier"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alternateScopeToItemIdentifier"];
   v20 = *(v5 + 6);
   *(v5 + 6) = v19;
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_searchContainerItemIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_searchContainerItemIdentifier"];
   v22 = *(v5 + 16);
   *(v5 + 16) = v21;
 
   if (*(v5 + 15) && *(v5 + 16))
   {
-    *(v5 + 8) = [v4 decodeBoolForKey:@"_shouldPerformServerSearch"];
-    *(v5 + 9) = [v4 decodeBoolForKey:@"_shouldPerformThirdPartyServerSearch"];
-    *(v5 + 10) = [v4 decodeBoolForKey:@"_shouldPerformSemanticSearch"];
-    *(v5 + 11) = [v4 decodeBoolForKey:@"_avoidCoreSpotlightSearch"];
-    *(v5 + 11) = [v4 decodeIntegerForKey:@"_trashedItemsMembership"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scopeFragment"];
+    *(v5 + 8) = [coderCopy decodeBoolForKey:@"_shouldPerformServerSearch"];
+    *(v5 + 9) = [coderCopy decodeBoolForKey:@"_shouldPerformThirdPartyServerSearch"];
+    *(v5 + 10) = [coderCopy decodeBoolForKey:@"_shouldPerformSemanticSearch"];
+    *(v5 + 11) = [coderCopy decodeBoolForKey:@"_avoidCoreSpotlightSearch"];
+    *(v5 + 11) = [coderCopy decodeIntegerForKey:@"_trashedItemsMembership"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scopeFragment"];
     v24 = *(v5 + 2);
     *(v5 + 2) = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_providerDomainID"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_providerDomainID"];
     v26 = *(v5 + 7);
     *(v5 + 7) = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_spotlightQueryString"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_spotlightQueryString"];
     v28 = *(v5 + 10);
     *(v5 + 10) = v27;
 
@@ -599,60 +599,60 @@ LABEL_11:
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   filename = self->_filename;
-  v5 = a3;
-  [v5 encodeObject:filename forKey:@"_filename"];
-  [v5 encodeObject:self->_userQueryString forKey:@"_userQueryString"];
-  [v5 encodeObject:self->_allowedContentTypes forKey:@"_allowedContentTypes"];
-  [v5 encodeObject:self->_keyboardLanguage forKey:@"_keyboardLanguage"];
-  [v5 encodeObject:self->_scopedToItemIdentifier forKey:@"_scopedToItemIdentifier"];
-  [v5 encodeObject:self->_alternateScopeToItemIdentifier forKey:@"_alternateScopeToItemIdentifier"];
-  [v5 encodeObject:self->_searchContainerItemIdentifier forKey:@"_searchContainerItemIdentifier"];
-  [v5 encodeBool:self->_shouldPerformServerSearch forKey:@"_shouldPerformServerSearch"];
-  [v5 encodeBool:self->_shouldPerformThirdPartyServerSearch forKey:@"_shouldPerformThirdPartyServerSearch"];
-  [v5 encodeBool:self->_shouldPerformSemanticSearch forKey:@"_shouldPerformSemanticSearch"];
-  [v5 encodeBool:self->_avoidCoreSpotlightSearch forKey:@"_avoidCoreSpotlightSearch"];
-  [v5 encodeInteger:self->_trashedItemsMembership forKey:@"_trashedItemsMembership"];
-  [v5 encodeObject:self->_scopeFragment forKey:@"_scopeFragment"];
-  [v5 encodeObject:self->_providerDomainID forKey:@"_providerDomainID"];
-  [v5 encodeObject:self->_spotlightQueryString forKey:@"_spotlightQueryString"];
+  coderCopy = coder;
+  [coderCopy encodeObject:filename forKey:@"_filename"];
+  [coderCopy encodeObject:self->_userQueryString forKey:@"_userQueryString"];
+  [coderCopy encodeObject:self->_allowedContentTypes forKey:@"_allowedContentTypes"];
+  [coderCopy encodeObject:self->_keyboardLanguage forKey:@"_keyboardLanguage"];
+  [coderCopy encodeObject:self->_scopedToItemIdentifier forKey:@"_scopedToItemIdentifier"];
+  [coderCopy encodeObject:self->_alternateScopeToItemIdentifier forKey:@"_alternateScopeToItemIdentifier"];
+  [coderCopy encodeObject:self->_searchContainerItemIdentifier forKey:@"_searchContainerItemIdentifier"];
+  [coderCopy encodeBool:self->_shouldPerformServerSearch forKey:@"_shouldPerformServerSearch"];
+  [coderCopy encodeBool:self->_shouldPerformThirdPartyServerSearch forKey:@"_shouldPerformThirdPartyServerSearch"];
+  [coderCopy encodeBool:self->_shouldPerformSemanticSearch forKey:@"_shouldPerformSemanticSearch"];
+  [coderCopy encodeBool:self->_avoidCoreSpotlightSearch forKey:@"_avoidCoreSpotlightSearch"];
+  [coderCopy encodeInteger:self->_trashedItemsMembership forKey:@"_trashedItemsMembership"];
+  [coderCopy encodeObject:self->_scopeFragment forKey:@"_scopeFragment"];
+  [coderCopy encodeObject:self->_providerDomainID forKey:@"_providerDomainID"];
+  [coderCopy encodeObject:self->_spotlightQueryString forKey:@"_spotlightQueryString"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(NSFileProviderSearchQuery *)self searchContainerItemIdentifier];
-  v6 = [v3 stringWithFormat:@"<%@:%p id:%@", v4, self, v5];
+  searchContainerItemIdentifier = [(NSFileProviderSearchQuery *)self searchContainerItemIdentifier];
+  v6 = [v3 stringWithFormat:@"<%@:%p id:%@", v4, self, searchContainerItemIdentifier];
 
-  v7 = [(NSFileProviderSearchQuery *)self filename];
+  filename = [(NSFileProviderSearchQuery *)self filename];
 
-  if (v7)
+  if (filename)
   {
-    v8 = [(NSFileProviderSearchQuery *)self filename];
-    [v6 appendFormat:@" filename:'%@'", v8];
+    filename2 = [(NSFileProviderSearchQuery *)self filename];
+    [v6 appendFormat:@" filename:'%@'", filename2];
   }
 
-  v9 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+  allowedContentTypes = [(NSFileProviderSearchQuery *)self allowedContentTypes];
 
-  if (v9)
+  if (allowedContentTypes)
   {
-    v10 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
-    [v6 appendFormat:@" uti(s):'%@'", v10];
+    allowedContentTypes2 = [(NSFileProviderSearchQuery *)self allowedContentTypes];
+    [v6 appendFormat:@" uti(s):'%@'", allowedContentTypes2];
   }
 
-  v11 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+  keyboardLanguage = [(NSFileProviderSearchQuery *)self keyboardLanguage];
 
-  if (v11)
+  if (keyboardLanguage)
   {
-    v12 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
-    [v6 appendFormat:@" kb language:'%@'", v12];
+    keyboardLanguage2 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+    [v6 appendFormat:@" kb language:'%@'", keyboardLanguage2];
   }
 
-  v13 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-  v14 = [v13 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
+  scopedToItemIdentifier = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+  v14 = [scopedToItemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
 
   if (v14)
   {
@@ -661,17 +661,17 @@ LABEL_11:
 
   else
   {
-    v15 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-    [v6 appendFormat:@" scope:%@", v15];
+    scopedToItemIdentifier2 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+    [v6 appendFormat:@" scope:%@", scopedToItemIdentifier2];
   }
 
-  v16 = [(NSFileProviderSearchQuery *)self providerDomainID];
+  providerDomainID = [(NSFileProviderSearchQuery *)self providerDomainID];
 
-  if (v16)
+  if (providerDomainID)
   {
-    v17 = [(NSFileProviderSearchQuery *)self providerDomainID];
-    v18 = [v17 fp_obfuscatedFilename];
-    [v6 appendFormat:@" provider:%@", v18];
+    providerDomainID2 = [(NSFileProviderSearchQuery *)self providerDomainID];
+    fp_obfuscatedFilename = [providerDomainID2 fp_obfuscatedFilename];
+    [v6 appendFormat:@" provider:%@", fp_obfuscatedFilename];
   }
 
   [v6 appendFormat:@" trashedItemsMembership:%ld", self->_trashedItemsMembership];
@@ -680,7 +680,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = fp_current_or_default_log();
@@ -695,25 +695,25 @@ LABEL_11:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setUserQueryString:(id)a3
+- (void)setUserQueryString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   userQueryString = self->_userQueryString;
   self->_userQueryString = v4;
 
   MEMORY[0x1EEE66BB8](v4, userQueryString);
 }
 
-- (void)setFilename:(id)a3
+- (void)setFilename:(id)filename
 {
-  v4 = [a3 copy];
+  v4 = [filename copy];
   filename = self->_filename;
   self->_filename = v4;
 
   MEMORY[0x1EEE66BB8](v4, filename);
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = fp_current_or_default_log();
@@ -728,9 +728,9 @@ LABEL_11:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAllowedContentTypes:(id)a3
+- (void)setAllowedContentTypes:(id)types
 {
-  v4 = [a3 copy];
+  v4 = [types copy];
   allowedContentTypes = self->_allowedContentTypes;
   self->_allowedContentTypes = v4;
 
@@ -738,36 +738,36 @@ LABEL_11:
   self->_cachedExtensions = 0;
 }
 
-- (void)setKeyboardLanguage:(id)a3
+- (void)setKeyboardLanguage:(id)language
 {
-  v4 = [a3 copy];
+  v4 = [language copy];
   keyboardLanguage = self->_keyboardLanguage;
   self->_keyboardLanguage = v4;
 
   MEMORY[0x1EEE66BB8](v4, keyboardLanguage);
 }
 
-- (void)setScopeFragment:(id)a3
+- (void)setScopeFragment:(id)fragment
 {
-  v4 = [a3 copy];
+  v4 = [fragment copy];
   scopeFragment = self->_scopeFragment;
   self->_scopeFragment = v4;
 
   MEMORY[0x1EEE66BB8](v4, scopeFragment);
 }
 
-- (void)setProviderDomainID:(id)a3
+- (void)setProviderDomainID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   providerDomainID = self->_providerDomainID;
   self->_providerDomainID = v4;
 
   MEMORY[0x1EEE66BB8](v4, providerDomainID);
 }
 
-- (void)setSpotlightQueryString:(id)a3
+- (void)setSpotlightQueryString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   spotlightQueryString = self->_spotlightQueryString;
   self->_spotlightQueryString = v4;
 
@@ -776,12 +776,12 @@ LABEL_11:
 
 - (id)filenamePredicate
 {
-  v4 = [(NSFileProviderSearchQuery *)self filename];
-  v5 = v4;
-  if (v4 && [v4 length])
+  filename = [(NSFileProviderSearchQuery *)self filename];
+  v5 = filename;
+  if (filename && [filename length])
   {
-    v6 = [(NSFileProviderSearchQuery *)self keyboardLanguage];
-    v7 = FPSpotlightQueryStringForFilename(v5, v6);
+    keyboardLanguage = [(NSFileProviderSearchQuery *)self keyboardLanguage];
+    v7 = FPSpotlightQueryStringForFilename(v5, keyboardLanguage);
     v8 = MEMORY[0x1E696AE18];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -866,7 +866,7 @@ uint64_t __58__NSFileProviderSearchQuery_Predicates__filenamePredicate__block_in
 - (id)allowedContentTypesPredicate
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v4 = [(NSFileProviderSearchQuery *)self allowedPathExtensions];
+  allowedPathExtensions = [(NSFileProviderSearchQuery *)self allowedPathExtensions];
   v5 = self->_allowedUTTypes;
   if ([(NSSet *)v5 count])
   {
@@ -959,30 +959,30 @@ LABEL_14:
 
 - (id)predicate
 {
-  v4 = [(NSFileProviderSearchQuery *)self filenamePredicate];
-  v5 = [(NSFileProviderSearchQuery *)self allowedContentTypesPredicate];
-  v6 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-  v7 = [(NSFileProviderSearchQuery *)self trashedItemsMembership];
-  v8 = [(NSFileProviderSearchQuery *)self scopeFragment];
-  v9 = [(NSFileProviderSearchQuery *)self providerDomainID];
+  filenamePredicate = [(NSFileProviderSearchQuery *)self filenamePredicate];
+  allowedContentTypesPredicate = [(NSFileProviderSearchQuery *)self allowedContentTypesPredicate];
+  scopedToItemIdentifier = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+  trashedItemsMembership = [(NSFileProviderSearchQuery *)self trashedItemsMembership];
+  scopeFragment = [(NSFileProviderSearchQuery *)self scopeFragment];
+  providerDomainID = [(NSFileProviderSearchQuery *)self providerDomainID];
   v10 = MEMORY[0x1E696AE18];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke;
   v18[3] = &unk_1E793DA28;
   v18[4] = self;
-  v19 = v4;
-  v20 = v5;
-  v21 = v6;
+  v19 = filenamePredicate;
+  v20 = allowedContentTypesPredicate;
+  v21 = scopedToItemIdentifier;
   v24 = a2;
-  v25 = v7;
-  v22 = v8;
-  v23 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v6;
-  v14 = v5;
-  v15 = v4;
+  v25 = trashedItemsMembership;
+  v22 = scopeFragment;
+  v23 = providerDomainID;
+  v11 = providerDomainID;
+  v12 = scopeFragment;
+  v13 = scopedToItemIdentifier;
+  v14 = allowedContentTypesPredicate;
+  v15 = filenamePredicate;
   v16 = [v10 predicateWithBlock:v18];
 
   return v16;
@@ -1071,26 +1071,26 @@ uint64_t __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke(uin
 
 + (id)newSearchContainerItemIdentifier
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
-  v3 = [v2 UUIDString];
-  v4 = [@"NSFileProviderSearchContainerItemIdentifier" stringByAppendingPathComponent:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v4 = [@"NSFileProviderSearchContainerItemIdentifier" stringByAppendingPathComponent:uUIDString];
 
   return v4;
 }
 
-- (NSFileProviderSearchQuery)initWithSpotlightQueryString:(id)a3 searchScope:(id)a4 searchContainerItemIdentifier:(id)a5
+- (NSFileProviderSearchQuery)initWithSpotlightQueryString:(id)string searchScope:(id)scope searchContainerItemIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stringCopy = string;
+  scopeCopy = scope;
+  identifierCopy = identifier;
   v12 = [(NSFileProviderSearchQuery *)self init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_spotlightQueryString, a3);
-    if (v10)
+    objc_storeStrong(&v12->_spotlightQueryString, string);
+    if (scopeCopy)
     {
-      v14 = v10;
+      v14 = scopeCopy;
     }
 
     else
@@ -1099,36 +1099,36 @@ uint64_t __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke(uin
     }
 
     objc_storeStrong(&v13->_scopedToItemIdentifier, v14);
-    if (v11)
+    if (identifierCopy)
     {
-      v15 = v11;
+      newSearchContainerItemIdentifier = identifierCopy;
     }
 
     else
     {
-      v15 = [objc_opt_class() newSearchContainerItemIdentifier];
+      newSearchContainerItemIdentifier = [objc_opt_class() newSearchContainerItemIdentifier];
     }
 
     searchContainerItemIdentifier = v13->_searchContainerItemIdentifier;
-    v13->_searchContainerItemIdentifier = v15;
+    v13->_searchContainerItemIdentifier = newSearchContainerItemIdentifier;
   }
 
   return v13;
 }
 
-- (NSFileProviderSearchQuery)initWithSearchScopedToItemIdentifier:(id)a3 alternateItemIdentifier:(id)a4 providerDomainID:(id)a5 searchContainerItemIdentifier:(id)a6
+- (NSFileProviderSearchQuery)initWithSearchScopedToItemIdentifier:(id)identifier alternateItemIdentifier:(id)itemIdentifier providerDomainID:(id)d searchContainerItemIdentifier:(id)containerItemIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  itemIdentifierCopy = itemIdentifier;
+  dCopy = d;
+  containerItemIdentifierCopy = containerItemIdentifier;
   v14 = [(NSFileProviderSearchQuery *)self init];
   v15 = v14;
   if (v14)
   {
-    if (v10)
+    if (identifierCopy)
     {
-      v16 = v10;
+      v16 = identifierCopy;
     }
 
     else
@@ -1137,21 +1137,21 @@ uint64_t __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke(uin
     }
 
     objc_storeStrong(&v14->_scopedToItemIdentifier, v16);
-    objc_storeStrong(&v15->_alternateScopeToItemIdentifier, a4);
-    if (v13)
+    objc_storeStrong(&v15->_alternateScopeToItemIdentifier, itemIdentifier);
+    if (containerItemIdentifierCopy)
     {
-      v17 = v13;
+      newSearchContainerItemIdentifier = containerItemIdentifierCopy;
     }
 
     else
     {
-      v17 = [objc_opt_class() newSearchContainerItemIdentifier];
+      newSearchContainerItemIdentifier = [objc_opt_class() newSearchContainerItemIdentifier];
     }
 
     searchContainerItemIdentifier = v15->_searchContainerItemIdentifier;
-    v15->_searchContainerItemIdentifier = v17;
+    v15->_searchContainerItemIdentifier = newSearchContainerItemIdentifier;
 
-    objc_storeStrong(&v15->_providerDomainID, a5);
+    objc_storeStrong(&v15->_providerDomainID, d);
   }
 
   return v15;
@@ -1159,18 +1159,18 @@ uint64_t __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke(uin
 
 - (NSArray)csQueryScopes
 {
-  v4 = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"] & 1) == 0)
+  scopedToItemIdentifier = [(NSFileProviderSearchQuery *)self scopedToItemIdentifier];
+  v5 = scopedToItemIdentifier;
+  if (scopedToItemIdentifier && ([scopedToItemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"] & 1) == 0)
   {
-    v7 = [(NSFileProviderSearchQuery *)self providerDomainID];
-    if (!v7)
+    providerDomainID = [(NSFileProviderSearchQuery *)self providerDomainID];
+    if (!providerDomainID)
     {
       [(NSFileProviderSearchQuery(NSFileProviderSearch_Internal) *)a2 csQueryScopes];
     }
 
-    v8 = [(NSFileProviderSearchQuery *)self alternateScopeToItemIdentifier];
-    if ([v8 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
+    alternateScopeToItemIdentifier = [(NSFileProviderSearchQuery *)self alternateScopeToItemIdentifier];
+    if ([alternateScopeToItemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"])
     {
       v6 = 0;
     }
@@ -1180,35 +1180,35 @@ uint64_t __50__NSFileProviderSearchQuery_Predicates__predicate__block_invoke(uin
       if (!self->_bundleIdentifier)
       {
         v19 = 0;
-        v9 = [FPProviderDomain providerDomainWithID:v7 cachePolicy:1 error:&v19];
+        v9 = [FPProviderDomain providerDomainWithID:providerDomainID cachePolicy:1 error:&v19];
         v10 = v19;
-        v11 = self;
-        objc_sync_enter(v11);
-        v12 = [v9 topLevelBundleIdentifier];
-        v13 = v12;
-        if (v12)
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        topLevelBundleIdentifier = [v9 topLevelBundleIdentifier];
+        v13 = topLevelBundleIdentifier;
+        if (topLevelBundleIdentifier)
         {
-          v14 = v12;
+          fp_toProviderID = topLevelBundleIdentifier;
         }
 
         else
         {
-          v14 = [v7 fp_toProviderID];
+          fp_toProviderID = [providerDomainID fp_toProviderID];
         }
 
         bundleIdentifier = self->_bundleIdentifier;
-        self->_bundleIdentifier = v14;
+        self->_bundleIdentifier = fp_toProviderID;
 
-        objc_sync_exit(v11);
+        objc_sync_exit(selfCopy);
       }
 
       v6 = objc_opt_new();
-      v16 = FPScopedToIdentifierFragment(self->_bundleIdentifier, v7, v5);
+      v16 = FPScopedToIdentifierFragment(self->_bundleIdentifier, providerDomainID, v5);
       [v6 addObject:v16];
 
-      if (v8)
+      if (alternateScopeToItemIdentifier)
       {
-        v17 = FPScopedToIdentifierFragment(self->_bundleIdentifier, v7, v8);
+        v17 = FPScopedToIdentifierFragment(self->_bundleIdentifier, providerDomainID, alternateScopeToItemIdentifier);
         [v6 addObject:v17];
       }
     }

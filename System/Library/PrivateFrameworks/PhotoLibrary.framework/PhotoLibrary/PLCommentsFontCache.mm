@@ -13,7 +13,7 @@
 - (id)_shortBodyFontDescriptor;
 - (id)_shortCaptionFontDescriptor;
 - (id)_shortSubheadlineFontDescriptor;
-- (void)_contentSizesDidChange:(id)a3;
+- (void)_contentSizesDidChange:(id)change;
 - (void)_invalidateCache;
 - (void)dealloc;
 @end
@@ -23,57 +23,57 @@
 - (UIFont)commentSendButtonFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _emphasizedBodyFontDescriptor];
+  _emphasizedBodyFontDescriptor = [(PLCommentsFontCache *)self _emphasizedBodyFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_emphasizedBodyFontDescriptor size:0.0];
 }
 
 - (UIFont)commentEntryFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _shortBodyFontDescriptor];
+  _shortBodyFontDescriptor = [(PLCommentsFontCache *)self _shortBodyFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_shortBodyFontDescriptor size:0.0];
 }
 
 - (UIFont)commentAttributionNameFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _emphasizedShortCaptionFontDescriptor];
+  _emphasizedShortCaptionFontDescriptor = [(PLCommentsFontCache *)self _emphasizedShortCaptionFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_emphasizedShortCaptionFontDescriptor size:0.0];
 }
 
 - (UIFont)commentAttributionDateFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _shortCaptionFontDescriptor];
+  _shortCaptionFontDescriptor = [(PLCommentsFontCache *)self _shortCaptionFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_shortCaptionFontDescriptor size:0.0];
 }
 
 - (UIFont)commentTextFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _shortSubheadlineFontDescriptor];
+  _shortSubheadlineFontDescriptor = [(PLCommentsFontCache *)self _shortSubheadlineFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_shortSubheadlineFontDescriptor size:0.0];
 }
 
 - (UIFont)likeFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _shortCaptionFontDescriptor];
+  _shortCaptionFontDescriptor = [(PLCommentsFontCache *)self _shortCaptionFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_shortCaptionFontDescriptor size:0.0];
 }
 
 - (UIFont)youLikeFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(PLCommentsFontCache *)self _emphasizedShortCaptionFontDescriptor];
+  _emphasizedShortCaptionFontDescriptor = [(PLCommentsFontCache *)self _emphasizedShortCaptionFontDescriptor];
 
-  return [v2 fontWithDescriptor:v3 size:0.0];
+  return [v2 fontWithDescriptor:_emphasizedShortCaptionFontDescriptor size:0.0];
 }
 
 - (id)_shortBodyFontDescriptor
@@ -161,12 +161,12 @@
   self->__shortBodyFontDescriptor = 0;
 }
 
-- (void)_contentSizesDidChange:(id)a3
+- (void)_contentSizesDidChange:(id)change
 {
   [(PLCommentsFontCache *)self _invalidateCache];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v4 postNotificationName:@"PLCommentsFontCacheDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"PLCommentsFontCacheDidChangeNotification" object:self];
 }
 
 - (void)dealloc
@@ -184,8 +184,8 @@
   v2 = [(PLCommentsFontCache *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__contentSizesDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__contentSizesDidChange_ name:*MEMORY[0x277D76810] object:0];
   }
 
   return v2;

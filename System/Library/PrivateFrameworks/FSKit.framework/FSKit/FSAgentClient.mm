@@ -1,13 +1,13 @@
 @interface FSAgentClient
-- (id)initToUser:(unsigned int)a3;
+- (id)initToUser:(unsigned int)user;
 - (void)dealloc;
-- (void)getNSXPCListenerEndpoint:(id)a3 instanceID:(id)a4 replyHandler:(id)a5;
+- (void)getNSXPCListenerEndpoint:(id)endpoint instanceID:(id)d replyHandler:(id)handler;
 - (void)handleInvalidated;
-- (void)installedExtensions:(id)a3;
-- (void)setInstanceDeathHandler:(id)a3;
+- (void)installedExtensions:(id)extensions;
+- (void)setInstanceDeathHandler:(id)handler;
 - (void)setupHandlers;
-- (void)startExtension:(id)a3 instanceID:(id)a4 replyHandler:(id)a5;
-- (void)stopExtension:(id)a3 instanceID:(id)a4 replyHandler:(id)a5;
+- (void)startExtension:(id)extension instanceID:(id)d replyHandler:(id)handler;
+- (void)stopExtension:(id)extension instanceID:(id)d replyHandler:(id)handler;
 @end
 
 @implementation FSAgentClient
@@ -66,13 +66,13 @@ void __30__FSAgentClient_setupHandlers__block_invoke_3(uint64_t a1)
 
 - (void)handleInvalidated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = _Block_copy(v2->_interruptionHandler);
-  interruptionHandler = v2->_interruptionHandler;
-  v2->_interruptionHandler = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = _Block_copy(selfCopy->_interruptionHandler);
+  interruptionHandler = selfCopy->_interruptionHandler;
+  selfCopy->_interruptionHandler = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v4 = v5;
   if (v5)
   {
@@ -81,7 +81,7 @@ void __30__FSAgentClient_setupHandlers__block_invoke_3(uint64_t a1)
   }
 }
 
-- (id)initToUser:(unsigned int)a3
+- (id)initToUser:(unsigned int)user
 {
   v4 = fskit_std_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
@@ -107,76 +107,76 @@ void __30__FSAgentClient_setupHandlers__block_invoke_3(uint64_t a1)
   [(FSAgentClient *)&v5 dealloc];
 }
 
-- (void)setInstanceDeathHandler:(id)a3
+- (void)setInstanceDeathHandler:(id)handler
 {
-  v6 = a3;
-  v4 = _Block_copy(v6);
+  handlerCopy = handler;
+  v4 = _Block_copy(handlerCopy);
   instanceDeathHandler = self->_instanceDeathHandler;
   self->_instanceDeathHandler = v4;
 
-  [(FSAgentClientDelegate *)self->_delegate setInstanceDeathHandler:v6];
+  [(FSAgentClientDelegate *)self->_delegate setInstanceDeathHandler:handlerCopy];
 }
 
-- (void)installedExtensions:(id)a3
+- (void)installedExtensions:(id)extensions
 {
-  v4 = a3;
+  extensionsCopy = extensions;
   conn = self->_conn;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__FSAgentClient_installedExtensions___block_invoke;
   v8[3] = &unk_278FECE20;
-  v9 = v4;
-  v6 = v4;
+  v9 = extensionsCopy;
+  v6 = extensionsCopy;
   v7 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v8];
   [v7 installedExtensions:v6];
 }
 
-- (void)startExtension:(id)a3 instanceID:(id)a4 replyHandler:(id)a5
+- (void)startExtension:(id)extension instanceID:(id)d replyHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   conn = self->_conn;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __56__FSAgentClient_startExtension_instanceID_replyHandler___block_invoke;
   v14[3] = &unk_278FECE20;
-  v15 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  dCopy = d;
+  extensionCopy = extension;
   v13 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v14];
-  [v13 startExtension:v12 instanceID:v11 replyHandler:v10];
+  [v13 startExtension:extensionCopy instanceID:dCopy replyHandler:v10];
 }
 
-- (void)getNSXPCListenerEndpoint:(id)a3 instanceID:(id)a4 replyHandler:(id)a5
+- (void)getNSXPCListenerEndpoint:(id)endpoint instanceID:(id)d replyHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   conn = self->_conn;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __66__FSAgentClient_getNSXPCListenerEndpoint_instanceID_replyHandler___block_invoke;
   v14[3] = &unk_278FECE20;
-  v15 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  dCopy = d;
+  endpointCopy = endpoint;
   v13 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v14];
-  [v13 getNSXPCListenerEndpoint:v12 instanceID:v11 replyHandler:v10];
+  [v13 getNSXPCListenerEndpoint:endpointCopy instanceID:dCopy replyHandler:v10];
 }
 
-- (void)stopExtension:(id)a3 instanceID:(id)a4 replyHandler:(id)a5
+- (void)stopExtension:(id)extension instanceID:(id)d replyHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   conn = self->_conn;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__FSAgentClient_stopExtension_instanceID_replyHandler___block_invoke;
   v14[3] = &unk_278FECE20;
-  v15 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  dCopy = d;
+  extensionCopy = extension;
   v13 = [(NSXPCConnection *)conn remoteObjectProxyWithErrorHandler:v14];
-  [v13 stopExtension:v12 instanceID:v11 replyHandler:v10];
+  [v13 stopExtension:extensionCopy instanceID:dCopy replyHandler:v10];
 }
 
 @end

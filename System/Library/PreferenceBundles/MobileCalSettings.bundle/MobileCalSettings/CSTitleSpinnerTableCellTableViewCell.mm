@@ -1,14 +1,14 @@
 @interface CSTitleSpinnerTableCellTableViewCell
-- (CSTitleSpinnerTableCellTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (CSTitleSpinnerTableCellTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 @end
 
 @implementation CSTitleSpinnerTableCellTableViewCell
 
-- (CSTitleSpinnerTableCellTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CSTitleSpinnerTableCellTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = CSTitleSpinnerTableCellTableViewCell;
-  v5 = [(CSTitleSpinnerTableCellTableViewCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(CSTitleSpinnerTableCellTableViewCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];

@@ -1,23 +1,23 @@
 @interface FPDocumentAlternateContents
-- (FPDocumentAlternateContents)initWithAlternateContentsDictionary:(id)a3;
-- (id)getAlternateContentsURLWrapperForItemID:(id)a3;
-- (void)dumpToDumper:(id)a3;
-- (void)removeAlternateContentsURLForDocumentWithItemID:(id)a3;
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithItemID:(id)a4;
-- (void)updateWithManagerAlternateContentsDictionary:(id)a3;
+- (FPDocumentAlternateContents)initWithAlternateContentsDictionary:(id)dictionary;
+- (id)getAlternateContentsURLWrapperForItemID:(id)d;
+- (void)dumpToDumper:(id)dumper;
+- (void)removeAlternateContentsURLForDocumentWithItemID:(id)d;
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithItemID:(id)d;
+- (void)updateWithManagerAlternateContentsDictionary:(id)dictionary;
 @end
 
 @implementation FPDocumentAlternateContents
 
-- (FPDocumentAlternateContents)initWithAlternateContentsDictionary:(id)a3
+- (FPDocumentAlternateContents)initWithAlternateContentsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = FPDocumentAlternateContents;
   v5 = [(FPDocumentAlternateContents *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     alternateContentsURLDictionary = v5->_alternateContentsURLDictionary;
     v5->_alternateContentsURLDictionary = v6;
   }
@@ -25,15 +25,15 @@
   return v5;
 }
 
-- (void)updateWithManagerAlternateContentsDictionary:(id)a3
+- (void)updateWithManagerAlternateContentsDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v5 = [dictionaryCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v7 = v5;
@@ -46,11 +46,11 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v4 objectForKeyedSubscript:{v10, v16}];
+        v11 = [dictionaryCopy objectForKeyedSubscript:{v10, v16}];
         v19 = 0;
         v12 = [FPSandboxingURLWrapper wrapperWithURL:v11 extensionClass:"com.apple.fileprovider.read-write" error:&v19];
         v13 = v19;
@@ -64,18 +64,18 @@
           v14 = fp_current_or_default_log();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v11 fp_shortDescription];
-            v17 = [v13 fp_prettyDescription];
+            fp_shortDescription = [v11 fp_shortDescription];
+            fp_prettyDescription = [v13 fp_prettyDescription];
             *buf = v16;
-            v25 = v18;
+            v25 = fp_shortDescription;
             v26 = 2112;
-            v27 = v17;
+            v27 = fp_prettyDescription;
             _os_log_error_impl(&dword_1AAAE1000, v14, OS_LOG_TYPE_ERROR, "[ERROR] couldn't create a URL wrapper for URL %@: %@ - this means iWork forgot to remove the alternate URL", buf, 0x16u);
           }
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v7 = [dictionaryCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v7);
@@ -84,54 +84,54 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAlternateContentsURLWrapper:(id)a3 forDocumentWithItemID:(id)a4
+- (void)setAlternateContentsURLWrapper:(id)wrapper forDocumentWithItemID:(id)d
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(NSMutableDictionary *)v7->_alternateContentsURLDictionary setObject:v8 forKeyedSubscript:v6];
-  objc_sync_exit(v7);
+  wrapperCopy = wrapper;
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_alternateContentsURLDictionary setObject:wrapperCopy forKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (id)getAlternateContentsURLWrapperForItemID:(id)a3
+- (id)getAlternateContentsURLWrapperForItemID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_alternateContentsURLDictionary objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_alternateContentsURLDictionary objectForKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)removeAlternateContentsURLForDocumentWithItemID:(id)a3
+- (void)removeAlternateContentsURLForDocumentWithItemID:(id)d
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableDictionary *)v4->_alternateContentsURLDictionary setObject:0 forKeyedSubscript:v5];
-  objc_sync_exit(v4);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableDictionary *)selfCopy->_alternateContentsURLDictionary setObject:0 forKeyedSubscript:dCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)dumpToDumper:(id)a3
+- (void)dumpToDumper:(id)dumper
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_alternateContentsURLDictionary copy];
+  dumperCopy = dumper;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_alternateContentsURLDictionary copy];
   if ([v6 count])
   {
-    [v4 put:@" + alternate contents\n"];
+    [dumperCopy put:@" + alternate contents\n"];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __44__FPDocumentAlternateContents_dumpToDumper___block_invoke;
     v7[3] = &unk_1E793E860;
-    v8 = v4;
+    v8 = dumperCopy;
     [v6 enumerateKeysAndObjectsUsingBlock:v7];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __44__FPDocumentAlternateContents_dumpToDumper___block_invoke(uint64_t a1, void *a2, void *a3)

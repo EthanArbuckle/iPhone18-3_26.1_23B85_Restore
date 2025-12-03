@@ -1,7 +1,7 @@
 @interface RPNearFieldDaemon
 + (id)sharedNearFieldDaemon;
 - (BOOL)hasCurrentTransaction;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (RPNearFieldDaemon)init;
 - (id)_exportedInterface;
 - (id)_remoteObjectInterface;
@@ -18,10 +18,10 @@
 - (BOOL)hasCurrentTransaction
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v3 = [(RPNearFieldDaemon *)self nearFieldController];
-  v4 = [v3 hasCurrentTransaction];
+  nearFieldController = [(RPNearFieldDaemon *)self nearFieldController];
+  hasCurrentTransaction = [nearFieldController hasCurrentTransaction];
 
-  return v4;
+  return hasCurrentTransaction;
 }
 
 + (id)sharedNearFieldDaemon
@@ -151,36 +151,36 @@
 {
   v3 = CFPrefs_GetInt64() != 0;
   self->_prefEnableDiscovery = v3;
-  v4 = [(RPNearFieldDaemon *)self nearFieldController];
-  [v4 setEnabled:v3];
+  nearFieldController = [(RPNearFieldDaemon *)self nearFieldController];
+  [nearFieldController setEnabled:v3];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v6 = [v5 cuValueForEntitlementNoCache:@"com.apple.rapport.nearfield"];
+  v6 = [connectionCopy cuValueForEntitlementNoCache:@"com.apple.rapport.nearfield"];
   v7 = [v6 isEqual:&__kCFBooleanFalse];
 
   if (v7)
   {
     if (dword_1001D39B8 <= 90 && (dword_1001D39B8 != -1 || _LogCategory_Initialize()))
     {
-      sub_100118218(v5);
+      sub_100118218(connectionCopy);
     }
   }
 
   else
   {
-    v8 = [(RPNearFieldDaemon *)self nearFieldController];
+    nearFieldController = [(RPNearFieldDaemon *)self nearFieldController];
 
-    if (v8)
+    if (nearFieldController)
     {
-      v9 = [(RPNearFieldDaemon *)self nearFieldController];
-      [v9 invalidate];
+      nearFieldController2 = [(RPNearFieldDaemon *)self nearFieldController];
+      [nearFieldController2 invalidate];
     }
 
-    v10 = [[RPNearFieldDaemonController alloc] initWithConnection:v5 dispatchQueue:self->_dispatchQueue];
+    v10 = [[RPNearFieldDaemonController alloc] initWithConnection:connectionCopy dispatchQueue:self->_dispatchQueue];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100057FC4;
@@ -189,24 +189,24 @@
     [(RPNearFieldDaemonController *)v10 setTransactionChangedHandler:v15];
     [(RPNearFieldDaemonController *)v10 setEnabled:self->_prefEnableDiscovery];
     [(RPNearFieldDaemon *)self setNearFieldController:v10];
-    v11 = [(RPNearFieldDaemon *)self _exportedInterface];
-    [v5 setExportedInterface:v11];
+    _exportedInterface = [(RPNearFieldDaemon *)self _exportedInterface];
+    [connectionCopy setExportedInterface:_exportedInterface];
 
-    [v5 setExportedObject:v10];
+    [connectionCopy setExportedObject:v10];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100058044;
     v14[3] = &unk_1001AA970;
     v14[4] = self;
-    [v5 setInvalidationHandler:v14];
-    v12 = [(RPNearFieldDaemon *)self _remoteObjectInterface];
-    [v5 setRemoteObjectInterface:v12];
+    [connectionCopy setInvalidationHandler:v14];
+    _remoteObjectInterface = [(RPNearFieldDaemon *)self _remoteObjectInterface];
+    [connectionCopy setRemoteObjectInterface:_remoteObjectInterface];
 
-    [v5 _setQueue:self->_dispatchQueue];
-    [v5 resume];
+    [connectionCopy _setQueue:self->_dispatchQueue];
+    [connectionCopy resume];
     if (dword_1001D39B8 <= 30 && (dword_1001D39B8 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001181D4(v5);
+      sub_1001181D4(connectionCopy);
     }
   }
 

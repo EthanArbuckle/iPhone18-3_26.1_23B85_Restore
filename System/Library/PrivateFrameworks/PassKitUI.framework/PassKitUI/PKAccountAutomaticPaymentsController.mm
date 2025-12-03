@@ -1,44 +1,44 @@
 @interface PKAccountAutomaticPaymentsController
-- (BOOL)canPerformScheduleAutomaticPaymentsWithPreset:(int64_t)a3 frequency:(int64_t)a4 amount:(id)a5 paymentDate:(id)a6;
-- (PKAccountAutomaticPaymentsController)initWithAccountService:(id)a3 paymentWebService:(id)a4 account:(id)a5 context:(int64_t)a6;
+- (BOOL)canPerformScheduleAutomaticPaymentsWithPreset:(int64_t)preset frequency:(int64_t)frequency amount:(id)amount paymentDate:(id)date;
+- (PKAccountAutomaticPaymentsController)initWithAccountService:(id)service paymentWebService:(id)webService account:(id)account context:(int64_t)context;
 - (PKAccountAutomaticPaymentsControllerDelegate)delegate;
 - (id)_paymentRequest;
 - (id)_paymentSummaryItems;
-- (id)_schedulePaymentRequestWithBankAccount:(id)a3;
-- (id)alertControllerForScheduledDate:(id)a3;
-- (id)firstAutomaticPaymentDateForSelectedDate:(id)a3;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
-- (int64_t)minimumPaymentDayForPreset:(int64_t)a3;
-- (void)_addNewBankAccountIfNecessary:(id)a3;
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4;
-- (void)_performPaymentRequest:(id)a3;
+- (id)_schedulePaymentRequestWithBankAccount:(id)account;
+- (id)alertControllerForScheduledDate:(id)date;
+- (id)firstAutomaticPaymentDateForSelectedDate:(id)date;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
+- (int64_t)minimumPaymentDayForPreset:(int64_t)preset;
+- (void)_addNewBankAccountIfNecessary:(id)necessary;
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion;
+- (void)_performPaymentRequest:(id)request;
 - (void)_resetPaymentConfiguration;
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)performScheduleAutomaticPayments:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)performScheduleAutomaticPayments:(id)payments;
+- (void)preflightWithCompletion:(id)completion;
 @end
 
 @implementation PKAccountAutomaticPaymentsController
 
-- (PKAccountAutomaticPaymentsController)initWithAccountService:(id)a3 paymentWebService:(id)a4 account:(id)a5 context:(int64_t)a6
+- (PKAccountAutomaticPaymentsController)initWithAccountService:(id)service paymentWebService:(id)webService account:(id)account context:(int64_t)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  serviceCopy = service;
+  webServiceCopy = webService;
+  accountCopy = account;
   v25.receiver = self;
   v25.super_class = PKAccountAutomaticPaymentsController;
   v14 = [(PKAccountAutomaticPaymentsController *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_accountService, a3);
-    objc_storeStrong(&v15->_paymentWebService, a4);
-    objc_storeStrong(&v15->_account, a5);
-    v16 = [v13 creditDetails];
-    v17 = [v16 productTimeZone];
+    objc_storeStrong(&v14->_accountService, service);
+    objc_storeStrong(&v15->_paymentWebService, webService);
+    objc_storeStrong(&v15->_account, account);
+    creditDetails = [accountCopy creditDetails];
+    productTimeZone = [creditDetails productTimeZone];
     productTimeZone = v15->_productTimeZone;
-    v15->_productTimeZone = v17;
+    v15->_productTimeZone = productTimeZone;
 
     v19 = objc_alloc(MEMORY[0x1E695DEE8]);
     v20 = [v19 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
@@ -46,8 +46,8 @@
     v15->_productCalendar = v20;
 
     [(NSCalendar *)v15->_productCalendar setTimeZone:v15->_productTimeZone];
-    v15->_featureIdentifier = [v13 feature];
-    v15->_paymentSetupContext = a6;
+    v15->_featureIdentifier = [accountCopy feature];
+    v15->_paymentSetupContext = context;
     v15->_needsPreflight = 1;
     v22 = objc_alloc_init(MEMORY[0x1E696AB78]);
     monthDayFormatter = v15->_monthDayFormatter;
@@ -61,30 +61,30 @@
   return v15;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_needsPreflight)
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69B8400] sharedInstance];
-    v7 = [(PKAccount *)self->_account accountIdentifier];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_invoke;
     v8[3] = &unk_1E8011130;
     objc_copyWeak(&v10, &location);
     v9 = v5;
-    [v6 updatePaymentFundingSourcesForAccountIdentifier:v7 force:1 completion:v8];
+    [mEMORY[0x1E69B8400] updatePaymentFundingSourcesForAccountIdentifier:accountIdentifier force:1 completion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 }
 
@@ -142,18 +142,18 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
   self->_paymentDate = 0;
 }
 
-- (id)_schedulePaymentRequestWithBankAccount:(id)a3
+- (id)_schedulePaymentRequestWithBankAccount:(id)account
 {
   schedulePaymentRequest = self->_schedulePaymentRequest;
   if (!schedulePaymentRequest)
   {
     account = self->_account;
-    v6 = a3;
-    v7 = [(PKAccount *)account schedulePaymentFeatureDescriptor];
-    v8 = [v7 paymentTermsIdentifier];
+    accountCopy = account;
+    schedulePaymentFeatureDescriptor = [(PKAccount *)account schedulePaymentFeatureDescriptor];
+    paymentTermsIdentifier = [schedulePaymentFeatureDescriptor paymentTermsIdentifier];
 
-    v9 = [(PKAccount *)self->_account creditDetails];
-    v10 = [v9 currencyCode];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    currencyCode = [creditDetails currencyCode];
 
     amount = self->_amount;
     if (amount)
@@ -163,15 +163,15 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
 
     else
     {
-      v13 = [MEMORY[0x1E696AB90] notANumber];
-      v12 = PKCurrencyAmountCreate(v13, v10);
+      notANumber = [MEMORY[0x1E696AB90] notANumber];
+      v12 = PKCurrencyAmountCreate(notANumber, currencyCode);
     }
 
-    v29 = v10;
+    v29 = currencyCode;
     v14 = [objc_alloc(MEMORY[0x1E69B83A8]) initWithType:1];
-    v15 = [v6 identifier];
+    identifier = [accountCopy identifier];
 
-    [v14 setIdentifier:v15];
+    [v14 setIdentifier:identifier];
     v16 = [objc_alloc(MEMORY[0x1E69B83E0]) initWithCurrencyAmount:v12 fundingSource:v14];
     v17 = [objc_alloc(MEMORY[0x1E69B83E8]) initWithScheduledPayment:v16];
     v18 = objc_alloc_init(MEMORY[0x1E69B83B0]);
@@ -185,12 +185,12 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
 
     [v18 setFrequency:paymentFrequency];
     [v18 setPreset:paymentPreset];
-    v22 = [(PKAccount *)self->_account creditDetails];
-    v23 = [v22 productTimeZone];
-    [v18 setScheduleTimeZone:v23];
+    creditDetails2 = [(PKAccount *)self->_account creditDetails];
+    productTimeZone = [creditDetails2 productTimeZone];
+    [v18 setScheduleTimeZone:productTimeZone];
 
     [v18 setScheduledDate:self->_paymentDate];
-    [v18 setPaymentTermsIdentifier:v8];
+    [v18 setPaymentTermsIdentifier:paymentTermsIdentifier];
     if (paymentFrequency == 6 && self->_scheduledDay)
     {
       [v18 setScheduledDay:?];
@@ -200,11 +200,11 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
     v24 = objc_alloc_init(MEMORY[0x1E69B84C0]);
     [v24 setScheduledPayments:v17];
     [v24 setScheduleDetails:v18];
-    v25 = [(PKAccount *)self->_account accountIdentifier];
-    [v24 setAccountIdentifier:v25];
+    accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+    [v24 setAccountIdentifier:accountIdentifier];
 
-    v26 = [(PKAccount *)self->_account accountBaseURL];
-    [v24 setBaseURL:v26];
+    accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+    [v24 setBaseURL:accountBaseURL];
 
     v27 = self->_schedulePaymentRequest;
     self->_schedulePaymentRequest = v24;
@@ -219,8 +219,8 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
 {
   v3 = [objc_alloc(MEMORY[0x1E69B8410]) initWithAccount:self->_account peerPaymentAccount:0 peerPaymentPass:0 transferType:1 fundingSources:self->_fundingSources currencyAmount:self->_amount paymentDate:self->_paymentDate objectSettings:0];
   [v3 setConfirmationStyle:0];
-  v4 = [(PKAccountAutomaticPaymentsController *)self _paymentSummaryItems];
-  [v3 setPaymentSummaryItems:v4];
+  _paymentSummaryItems = [(PKAccountAutomaticPaymentsController *)self _paymentSummaryItems];
+  [v3 setPaymentSummaryItems:_paymentSummaryItems];
 
   [v3 setPaymentFrequency:self->_paymentFrequency];
 
@@ -240,19 +240,19 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
     v3 = PKLocalizedFeatureString();
   }
 
-  v4 = [(PKCurrencyAmount *)self->_amount amount];
-  v5 = v4;
-  if (v4)
+  amount = [(PKCurrencyAmount *)self->_amount amount];
+  v5 = amount;
+  if (amount)
   {
-    v6 = v4;
+    zero = amount;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v7 = v6;
+  v7 = zero;
 
   v8 = [MEMORY[0x1E69B8E90] summaryItemWithLabel:v3 amount:v7];
   v11[0] = v8;
@@ -261,10 +261,10 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
   return v9;
 }
 
-- (void)_addNewBankAccountIfNecessary:(id)a3
+- (void)_addNewBankAccountIfNecessary:(id)necessary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  necessaryCopy = necessary;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -284,10 +284,10 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v24 + 1) + 8 * i) identifier];
-        v11 = [v4 identifier];
-        v12 = v10;
-        v13 = v11;
+        identifier = [*(*(&v24 + 1) + 8 * i) identifier];
+        identifier2 = [necessaryCopy identifier];
+        v12 = identifier;
+        v13 = identifier2;
         fundingSources = v13;
         if (v12 == v13)
         {
@@ -331,25 +331,25 @@ void __64__PKAccountAutomaticPaymentsController_preflightWithCompletion___block_
   }
 
   v5 = objc_alloc_init(MEMORY[0x1E69B83A0]);
-  v17 = [(PKAccount *)self->_account accountIdentifier];
-  [(NSArray *)v5 setAccountIdentifier:v17];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [(NSArray *)v5 setAccountIdentifier:accountIdentifier];
 
-  v18 = [v4 bankName];
-  [(NSArray *)v5 setName:v18];
+  bankName = [necessaryCopy bankName];
+  [(NSArray *)v5 setName:bankName];
 
-  -[NSArray setStatus:](v5, "setStatus:", [v4 status]);
-  v19 = [v4 routingNumber];
-  [(NSArray *)v5 setRoutingNumber:v19];
+  -[NSArray setStatus:](v5, "setStatus:", [necessaryCopy status]);
+  routingNumber = [necessaryCopy routingNumber];
+  [(NSArray *)v5 setRoutingNumber:routingNumber];
 
-  v20 = [v4 accountNumber];
-  [(NSArray *)v5 setAccountNumber:v20];
+  accountNumber = [necessaryCopy accountNumber];
+  [(NSArray *)v5 setAccountNumber:accountNumber];
 
   v12 = [objc_alloc(MEMORY[0x1E69B83A8]) initWithType:1];
-  v21 = [v4 identifier];
-  [(NSArray *)v12 setIdentifier:v21];
+  identifier3 = [necessaryCopy identifier];
+  [(NSArray *)v12 setIdentifier:identifier3];
 
-  v22 = [v4 accountSuffix];
-  [(NSArray *)v12 setAccountSuffix:v22];
+  accountSuffix = [necessaryCopy accountSuffix];
+  [(NSArray *)v12 setAccountSuffix:accountSuffix];
 
   [(NSArray *)v12 setFundingDetails:v5];
   v23 = [(NSArray *)self->_fundingSources mutableCopy];
@@ -361,23 +361,23 @@ LABEL_18:
 LABEL_19:
 }
 
-- (id)firstAutomaticPaymentDateForSelectedDate:(id)a3
+- (id)firstAutomaticPaymentDateForSelectedDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_paymentPreset == 1)
+  dateCopy = date;
+  v5 = dateCopy;
+  if (!dateCopy || self->_paymentPreset == 1)
   {
-    v10 = v4;
+    v10 = dateCopy;
     goto LABEL_19;
   }
 
-  v6 = [(PKAccount *)self->_account creditDetails];
-  v7 = [v6 accountSummary];
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
 
   paymentPreset = self->_paymentPreset;
   if (paymentPreset == 3)
   {
-    v9 = [v7 remainingStatementBalance];
+    remainingStatementBalance = [accountSummary remainingStatementBalance];
   }
 
   else
@@ -387,14 +387,14 @@ LABEL_19:
       goto LABEL_10;
     }
 
-    v9 = [v7 remainingMinimumPayment];
+    remainingStatementBalance = [accountSummary remainingMinimumPayment];
   }
 
-  v11 = v9;
-  if (v9)
+  v11 = remainingStatementBalance;
+  if (remainingStatementBalance)
   {
-    v12 = [MEMORY[0x1E696AB90] zero];
-    v13 = [v12 compare:v11] != -1;
+    zero = [MEMORY[0x1E696AB90] zero];
+    v13 = [zero compare:v11] != -1;
 
     goto LABEL_11;
   }
@@ -402,10 +402,10 @@ LABEL_19:
 LABEL_10:
   v13 = 0;
 LABEL_11:
-  v14 = [v7 balanceSummary];
-  v15 = [v14 closingDate];
+  balanceSummary = [accountSummary balanceSummary];
+  closingDate = [balanceSummary closingDate];
 
-  if (v15 && ([v5 compare:v15] != 1 ? (v16 = v13) : (v16 = 0), v16))
+  if (closingDate && ([v5 compare:closingDate] != 1 ? (v16 = v13) : (v16 = 0), v16))
   {
     v17 = [(NSCalendar *)self->_productCalendar dateByAddingUnit:8 value:1 toDate:v5 options:0];
   }
@@ -422,31 +422,31 @@ LABEL_19:
   return v10;
 }
 
-- (id)alertControllerForScheduledDate:(id)a3
+- (id)alertControllerForScheduledDate:(id)date
 {
-  v4 = a3;
-  if (v4 && ([(PKAccount *)self->_account isClosedAndChargedOff]& 1) == 0)
+  dateCopy = date;
+  if (dateCopy && ([(PKAccount *)self->_account isClosedAndChargedOff]& 1) == 0)
   {
-    v6 = [(PKAccount *)self->_account creditDetails];
-    v7 = [v6 accountSummary];
+    creditDetails = [(PKAccount *)self->_account creditDetails];
+    accountSummary = [creditDetails accountSummary];
 
-    v8 = [v7 paymentDueDate];
-    v9 = v8;
-    if (v8 && [v8 compare:v4] == -1)
+    paymentDueDate = [accountSummary paymentDueDate];
+    v9 = paymentDueDate;
+    if (paymentDueDate && [paymentDueDate compare:dateCopy] == -1)
     {
       if (self->_paymentPreset == 2)
       {
-        [v7 remainingMinimumPayment];
+        [accountSummary remainingMinimumPayment];
       }
 
       else
       {
-        [v7 remainingStatementBalance];
+        [accountSummary remainingStatementBalance];
       }
       v10 = ;
       if (v10 && ([MEMORY[0x1E696AB90] zero], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "compare:", v10), v11, v12 == -1))
       {
-        v16 = [(NSDateFormatter *)self->_monthDayFormatter stringFromDate:v4];
+        v16 = [(NSDateFormatter *)self->_monthDayFormatter stringFromDate:dateCopy];
         v13 = PKLocalizedFeatureString();
 
         v17 = [(NSDateFormatter *)self->_monthDayFormatter stringFromDate:v9, v16];
@@ -475,9 +475,9 @@ LABEL_19:
   return v5;
 }
 
-- (int64_t)minimumPaymentDayForPreset:(int64_t)a3
+- (int64_t)minimumPaymentDayForPreset:(int64_t)preset
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((preset & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     return 11;
   }
@@ -488,21 +488,21 @@ LABEL_19:
   }
 }
 
-- (BOOL)canPerformScheduleAutomaticPaymentsWithPreset:(int64_t)a3 frequency:(int64_t)a4 amount:(id)a5 paymentDate:(id)a6
+- (BOOL)canPerformScheduleAutomaticPaymentsWithPreset:(int64_t)preset frequency:(int64_t)frequency amount:(id)amount paymentDate:(id)date
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  v13 = (a4 - 4) > 1 || a3 != 1;
-  v14 = (a4 - 6) >= 2 && v13;
-  v15 = v10 == 0;
-  if (a3 != 1)
+  amountCopy = amount;
+  dateCopy = date;
+  v12 = dateCopy;
+  v13 = (frequency - 4) > 1 || preset != 1;
+  v14 = (frequency - 6) >= 2 && v13;
+  v15 = amountCopy == 0;
+  if (preset != 1)
   {
-    if (a4 != 7)
+    if (frequency != 7)
     {
-      if (v11)
+      if (dateCopy)
       {
-        v18 = [(NSCalendar *)self->_productCalendar component:16 fromDate:v11]> 10;
+        v18 = [(NSCalendar *)self->_productCalendar component:16 fromDate:dateCopy]> 10;
       }
 
       else
@@ -516,11 +516,11 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (v10)
+  if (amountCopy)
   {
-    v16 = [MEMORY[0x1E696AB90] zero];
-    v17 = [v10 amount];
-    v15 = [v16 compare:v17] == -1;
+    zero = [MEMORY[0x1E696AB90] zero];
+    amount = [amountCopy amount];
+    v15 = [zero compare:amount] == -1;
   }
 
   else
@@ -528,7 +528,7 @@ LABEL_19:
     v15 = 0;
   }
 
-  if (a4 == 7)
+  if (frequency == 7)
   {
 LABEL_15:
     v18 = v12 == 0;
@@ -537,7 +537,7 @@ LABEL_15:
 
   v18 = v12 != 0;
 LABEL_18:
-  if (a3)
+  if (preset)
   {
     v19 = v14;
   }
@@ -553,17 +553,17 @@ LABEL_18:
   return v21;
 }
 
-- (void)performScheduleAutomaticPayments:(id)a3
+- (void)performScheduleAutomaticPayments:(id)payments
 {
-  aBlock = a3;
-  v4 = [(PKAccountAutomaticPaymentsController *)self _paymentRequest];
-  if (v4)
+  aBlock = payments;
+  _paymentRequest = [(PKAccountAutomaticPaymentsController *)self _paymentRequest];
+  if (_paymentRequest)
   {
     v5 = _Block_copy(aBlock);
     performScheduleAutomaticPaymentsCompletion = self->_performScheduleAutomaticPaymentsCompletion;
     self->_performScheduleAutomaticPaymentsCompletion = v5;
 
-    [(PKAccountAutomaticPaymentsController *)self _performPaymentRequest:v4];
+    [(PKAccountAutomaticPaymentsController *)self _performPaymentRequest:_paymentRequest];
   }
 
   else if (aBlock)
@@ -572,11 +572,11 @@ LABEL_18:
   }
 }
 
-- (void)_performPaymentRequest:(id)a3
+- (void)_performPaymentRequest:(id)request
 {
   v4 = MEMORY[0x1E69B8B60];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithPaymentRequest:v5];
+  requestCopy = request;
+  v6 = [[v4 alloc] initWithPaymentRequest:requestCopy];
 
   paymentAuthorizationCoordinator = self->_paymentAuthorizationCoordinator;
   self->_paymentAuthorizationCoordinator = v6;
@@ -600,13 +600,13 @@ void __63__PKAccountAutomaticPaymentsController__performPaymentRequest___block_i
   }
 }
 
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69B8468];
-  v8 = a3;
+  signatureCopy = signature;
   v9 = [[v7 alloc] initWithApplePayTrustProtocol:self->_schedulePaymentRequest];
-  [v9 setSignature:v8];
+  [v9 setSignature:signatureCopy];
 
   paymentWebService = self->_paymentWebService;
   account = self->_account;
@@ -615,8 +615,8 @@ void __63__PKAccountAutomaticPaymentsController__performPaymentRequest___block_i
   v13[2] = __102__PKAccountAutomaticPaymentsController__performApplePayTrustSignatureRequestWithSignature_completion___block_invoke;
   v13[3] = &unk_1E801ABF8;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(PKPaymentWebService *)paymentWebService applePayTrustSignatureRequestWithRequest:v9 account:account completion:v13];
 }
 
@@ -713,11 +713,11 @@ void __102__PKAccountAutomaticPaymentsController__performApplePayTrustSignatureR
   [WeakRetained accountAutomaticPaymentsController:*(a1 + 32) didSchedulePayment:*(a1 + 40)];
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_paymentAuthorizationCoordinator == v4)
+  finishCopy = finish;
+  if (self->_paymentAuthorizationCoordinator == finishCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -725,7 +725,7 @@ void __102__PKAccountAutomaticPaymentsController__performApplePayTrustSignatureR
       *buf = 136315394;
       v11 = "[PKAccountAutomaticPaymentsController paymentAuthorizationCoordinatorDidFinish:]";
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "%s %p: paymentAuthorizationCoordinatorDidFinish: callback called.", buf, 0x16u);
     }
 
@@ -736,8 +736,8 @@ void __102__PKAccountAutomaticPaymentsController__performApplePayTrustSignatureR
     v7[1] = 3221225472;
     v7[2] = __81__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
     v7[3] = &unk_1E8010A10;
-    v8 = v4;
-    v9 = self;
+    v8 = finishCopy;
+    selfCopy2 = self;
     dispatch_async(MEMORY[0x1E69E96A0], v7);
   }
 }
@@ -775,21 +775,21 @@ void __81__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinatorD
   *(v4 + 80) = 0;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didUpdateAccountServicePaymentMethod:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didUpdateAccountServicePaymentMethod:(id)method handler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  methodCopy = method;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __117__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinator_didUpdateAccountServicePaymentMethod_handler___block_invoke;
   aBlock[3] = &unk_1E801AC48;
-  v9 = v7;
+  v9 = methodCopy;
   v17 = v9;
-  v18 = self;
-  v10 = v8;
+  selfCopy = self;
+  v10 = handlerCopy;
   v19 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
+  targetDevice = [(PKPaymentWebService *)self->_paymentWebService targetDevice];
   if (objc_opt_respondsToSelector())
   {
     paymentWebService = self->_paymentWebService;
@@ -798,7 +798,7 @@ void __81__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinatorD
     v14[2] = __117__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinator_didUpdateAccountServicePaymentMethod_handler___block_invoke_3;
     v14[3] = &unk_1E801A030;
     v15 = v11;
-    [v12 paymentWebService:paymentWebService deviceMetadataWithFields:123 completion:v14];
+    [targetDevice paymentWebService:paymentWebService deviceMetadataWithFields:123 completion:v14];
   }
 
   else
@@ -871,7 +871,7 @@ void __117__PKAccountAutomaticPaymentsController_paymentAuthorizationCoordinator
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())

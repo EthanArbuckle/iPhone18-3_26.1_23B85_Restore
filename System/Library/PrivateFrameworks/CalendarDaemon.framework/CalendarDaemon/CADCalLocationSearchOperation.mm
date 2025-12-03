@@ -1,16 +1,16 @@
 @interface CADCalLocationSearchOperation
-- (void)configureSearch:(id)a3;
+- (void)configureSearch:(id)search;
 @end
 
 @implementation CADCalLocationSearchOperation
 
-- (void)configureSearch:(id)a3
+- (void)configureSearch:(id)search
 {
-  v3 = a3;
-  [v3 setSearchParticipants:0];
-  [v3 setSearchLocations:1];
-  [v3 setSearchAttendees:0];
-  [v3 setShouldMatchLocationsOnlyForEventSearch:1];
+  searchCopy = search;
+  [searchCopy setSearchParticipants:0];
+  [searchCopy setSearchLocations:1];
+  [searchCopy setSearchAttendees:0];
+  [searchCopy setShouldMatchLocationsOnlyForEventSearch:1];
 }
 
 @end

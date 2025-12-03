@@ -1,9 +1,9 @@
 @interface _OFPageViewControllerContentView
-- (void)_setupPageControl:(id)a3;
+- (void)_setupPageControl:(id)control;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation _OFPageViewControllerContentView
@@ -22,12 +22,12 @@
   [(OFUIView *)&v4 dealloc];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(_OFPageViewControllerContentView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -54,12 +54,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_OFPageViewControllerContentView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -86,13 +86,13 @@
   }
 }
 
-- (void)_setupPageControl:(id)a3
+- (void)_setupPageControl:(id)control
 {
-  [a3 setAutoresizingMask:10];
-  [a3 addTarget:-[OFViewProxy viewControllerProxy](self action:"viewControllerProxy") forControlEvents:{sel__pageControlValueChanged_, 4096}];
-  [a3 setDefersCurrentPageDisplay:1];
+  [control setAutoresizingMask:10];
+  [control addTarget:-[OFViewProxy viewControllerProxy](self action:"viewControllerProxy") forControlEvents:{sel__pageControlValueChanged_, 4096}];
+  [control setDefersCurrentPageDisplay:1];
 
-  [(_OFPageViewControllerContentView *)self addSubview:a3];
+  [(_OFPageViewControllerContentView *)self addSubview:control];
 }
 
 - (void)layoutSubviews
@@ -100,9 +100,9 @@
   v21.receiver = self;
   v21.super_class = _OFPageViewControllerContentView;
   [(OFViewProxy *)&v21 layoutSubviews];
-  v3 = [(OFUIViewController *)[(OFViewProxy *)self viewControllerProxy] usesPageControl];
+  usesPageControl = [(OFUIViewController *)[(OFViewProxy *)self viewControllerProxy] usesPageControl];
   pageControl = self->_pageControl;
-  if (v3)
+  if (usesPageControl)
   {
     if (!pageControl)
     {

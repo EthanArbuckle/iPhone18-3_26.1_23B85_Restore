@@ -1,33 +1,33 @@
 @interface VISWrapper
 - (VISWrapperDelegate)delegate;
 - (int)_updateConfiguration;
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3;
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing;
 - (int)finishProcessing;
 - (int)prepareToProcess;
 - (int)purgeResources;
-- (void)didCompleteRenderingOfBuffer:(__CVBuffer *)a3 withStatus:(int)a4;
+- (void)didCompleteRenderingOfBuffer:(__CVBuffer *)buffer withStatus:(int)status;
 @end
 
 @implementation VISWrapper
 
-- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)a3
+- (int)enqueueBufferForProcessing:(opaqueCMSampleBuffer *)processing
 {
   if (self->_sbpRef)
   {
     if (self->_configuration)
     {
-      if (a3)
+      if (processing)
       {
-        v5 = [(VISWrapper *)self _updateConfiguration];
-        if (v5)
+        _updateConfiguration = [(VISWrapper *)self _updateConfiguration];
+        if (_updateConfiguration)
         {
-          v6 = v5;
+          v6 = _updateConfiguration;
           [VISWrapper enqueueBufferForProcessing:];
         }
 
         else
         {
-          v6 = sbp_gvs_processSampleBuffer(self->_sbpRef, a3);
+          v6 = sbp_gvs_processSampleBuffer(self->_sbpRef, processing);
           if (v6)
           {
             [VISWrapper enqueueBufferForProcessing:];
@@ -63,14 +63,14 @@
   return v6;
 }
 
-- (void)didCompleteRenderingOfBuffer:(__CVBuffer *)a3 withStatus:(int)a4
+- (void)didCompleteRenderingOfBuffer:(__CVBuffer *)buffer withStatus:(int)status
 {
-  v4 = *&a4;
+  v4 = *&status;
   FigSimpleMutexLock();
-  v7 = [(NSMutableArray *)self->_pixelBuffersProcessed indexOfObject:a3];
+  v7 = [(NSMutableArray *)self->_pixelBuffersProcessed indexOfObject:buffer];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_pixelBuffersRendered addObject:a3];
+    [(NSMutableArray *)self->_pixelBuffersRendered addObject:buffer];
 
     FigSimpleMutexUnlock();
   }
@@ -147,7 +147,7 @@
   v5 = [OUTLINED_FUNCTION_16() numberWithUnsignedInt:?];
   OUTLINED_FUNCTION_22();
 
-  v6 = [(VISConfiguration *)self->_configuration inputPixelBufferAttributes];
+  inputPixelBufferAttributes = [(VISConfiguration *)self->_configuration inputPixelBufferAttributes];
   OUTLINED_FUNCTION_22();
 
   DictionaryRepresentation = [(VISConfiguration *)self->_configuration outputPixelBufferAttributes];
@@ -155,9 +155,9 @@
 
   if ([(VISConfiguration *)self->_configuration generatedTransformsOutputDimensionsOverride]>= 1 && ([(VISConfiguration *)self->_configuration generatedTransformsOutputDimensionsOverride]>> 32) >= 1)
   {
-    v8 = [(VISConfiguration *)self->_configuration generatedTransformsOutputDimensionsOverride];
+    generatedTransformsOutputDimensionsOverride = [(VISConfiguration *)self->_configuration generatedTransformsOutputDimensionsOverride];
     v70.height = ([(VISConfiguration *)self->_configuration generatedTransformsOutputDimensionsOverride]>> 32);
-    v70.width = v8;
+    v70.width = generatedTransformsOutputDimensionsOverride;
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v70);
     OUTLINED_FUNCTION_22();
     if (DictionaryRepresentation)
@@ -179,8 +179,8 @@
   v12 = [v11 numberWithInt:{dword_436E0[objc_msgSend(OUTLINED_FUNCTION_14(), "motionBlurShimmerMitigationMethod")]}];
   OUTLINED_FUNCTION_22();
 
-  v13 = [(VISConfiguration *)self->_configuration ispProcessingSession];
-  [v4 setObject:v13 forKeyedSubscript:kFigVideoStabilizationSampleBufferProcessorOption_IspProcessingSession];
+  ispProcessingSession = [(VISConfiguration *)self->_configuration ispProcessingSession];
+  [v4 setObject:ispProcessingSession forKeyedSubscript:kFigVideoStabilizationSampleBufferProcessorOption_IspProcessingSession];
   [OUTLINED_FUNCTION_14() sphereCorrectionEnabled];
   v14 = [OUTLINED_FUNCTION_16() numberWithBool:?];
   OUTLINED_FUNCTION_22();
@@ -217,52 +217,52 @@
   v22 = [v21 numberWithFloat:?];
   OUTLINED_FUNCTION_22();
 
-  v23 = [(VISConfiguration *)self->_configuration distortionCorrectionEnabledPortTypes];
-  v24 = [v23 count];
+  distortionCorrectionEnabledPortTypes = [(VISConfiguration *)self->_configuration distortionCorrectionEnabledPortTypes];
+  v24 = [distortionCorrectionEnabledPortTypes count];
 
   if (v24)
   {
-    v25 = [(VISConfiguration *)self->_configuration distortionCorrectionEnabledPortTypes];
+    distortionCorrectionEnabledPortTypes2 = [(VISConfiguration *)self->_configuration distortionCorrectionEnabledPortTypes];
     OUTLINED_FUNCTION_22();
   }
 
-  v26 = [(VISConfiguration *)self->_configuration distortionCompensationEnabledPortTypes];
-  v27 = [v26 count];
+  distortionCompensationEnabledPortTypes = [(VISConfiguration *)self->_configuration distortionCompensationEnabledPortTypes];
+  v27 = [distortionCompensationEnabledPortTypes count];
 
   if (v27)
   {
-    v28 = [(VISConfiguration *)self->_configuration distortionCompensationEnabledPortTypes];
+    distortionCompensationEnabledPortTypes2 = [(VISConfiguration *)self->_configuration distortionCompensationEnabledPortTypes];
     OUTLINED_FUNCTION_22();
   }
 
-  v29 = [(VISConfiguration *)self->_configuration videoSTFParameters];
+  videoSTFParameters = [(VISConfiguration *)self->_configuration videoSTFParameters];
   OUTLINED_FUNCTION_22();
 
-  v30 = [(VISConfiguration *)self->_configuration videoGreenGhostMitigationParameters];
+  videoGreenGhostMitigationParameters = [(VISConfiguration *)self->_configuration videoGreenGhostMitigationParameters];
   OUTLINED_FUNCTION_22();
 
   [OUTLINED_FUNCTION_14() gpuPriority];
   v31 = [OUTLINED_FUNCTION_16() numberWithInt:?];
   OUTLINED_FUNCTION_22();
 
-  v32 = [(VISConfiguration *)self->_configuration metalCommandQueue];
+  metalCommandQueue = [(VISConfiguration *)self->_configuration metalCommandQueue];
   OUTLINED_FUNCTION_22();
 
   [OUTLINED_FUNCTION_14() metalSubmissionAndCompletionQueuePriority];
   v33 = [OUTLINED_FUNCTION_16() numberWithUnsignedInt:?];
   OUTLINED_FUNCTION_22();
 
-  v34 = [(VISConfiguration *)self->_configuration emitSampleBufferSemaphore];
+  emitSampleBufferSemaphore = [(VISConfiguration *)self->_configuration emitSampleBufferSemaphore];
   OUTLINED_FUNCTION_22();
 
-  v35 = [(VISConfiguration *)self->_configuration sensorIDDict];
+  sensorIDDict = [(VISConfiguration *)self->_configuration sensorIDDict];
   OUTLINED_FUNCTION_22();
 
-  v36 = [(VISConfiguration *)self->_configuration cameraInfoByPortType];
+  cameraInfoByPortType = [(VISConfiguration *)self->_configuration cameraInfoByPortType];
   OUTLINED_FUNCTION_22();
 
   [OUTLINED_FUNCTION_14() horizonCorrectionThreshold];
-  v37 = [v36 numberWithFloat:?];
+  v37 = [cameraInfoByPortType numberWithFloat:?];
   OUTLINED_FUNCTION_22();
 
   [OUTLINED_FUNCTION_14() horizonCorrectionMode];
@@ -297,10 +297,10 @@
   v45 = [OUTLINED_FUNCTION_16() numberWithBool:?];
   OUTLINED_FUNCTION_22();
 
-  v46 = [(VISConfiguration *)self->_configuration smartStyleConfigurationDict];
+  smartStyleConfigurationDict = [(VISConfiguration *)self->_configuration smartStyleConfigurationDict];
   OUTLINED_FUNCTION_22();
 
-  v47 = [v46 numberWithUnsignedLongLong:{objc_msgSend(OUTLINED_FUNCTION_14(), "smartStyleMemoryPoolId")}];
+  v47 = [smartStyleConfigurationDict numberWithUnsignedLongLong:{objc_msgSend(OUTLINED_FUNCTION_14(), "smartStyleMemoryPoolId")}];
   OUTLINED_FUNCTION_22();
 
   [OUTLINED_FUNCTION_14() faceStabilizationEnabled];
@@ -378,13 +378,13 @@ LABEL_35:
     goto LABEL_38;
   }
 
-  v65 = [(VISConfiguration *)self->_configuration cameraExtrinsicMatrix];
+  cameraExtrinsicMatrix = [(VISConfiguration *)self->_configuration cameraExtrinsicMatrix];
 
-  if (v65)
+  if (cameraExtrinsicMatrix)
   {
-    v66 = [(VISConfiguration *)self->_configuration cameraExtrinsicMatrix];
+    cameraExtrinsicMatrix2 = [(VISConfiguration *)self->_configuration cameraExtrinsicMatrix];
     v67 = OUTLINED_FUNCTION_17();
-    v64 = sbp_gvs_setProperty(v67, v68, v66);
+    v64 = sbp_gvs_setProperty(v67, v68, cameraExtrinsicMatrix2);
 
     if (v64)
     {
@@ -510,22 +510,22 @@ LABEL_10:
           return -12786;
         }
 
-        v11 = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
+        outputAttachmentsPixelBufferPools = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
 
-        if (v11)
+        if (outputAttachmentsPixelBufferPools)
         {
           v12 = *(v4 + 48);
-          v13 = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
-          [v12 addEntriesFromDictionary:v13];
+          outputAttachmentsPixelBufferPools2 = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
+          [v12 addEntriesFromDictionary:outputAttachmentsPixelBufferPools2];
         }
 
-        v14 = [(VISConfiguration *)self->_configuration outputAttachmentsAuxAttributes];
+        outputAttachmentsAuxAttributes = [(VISConfiguration *)self->_configuration outputAttachmentsAuxAttributes];
 
-        if (v14)
+        if (outputAttachmentsAuxAttributes)
         {
           v15 = *(v4 + 56);
-          v16 = [(VISConfiguration *)self->_configuration outputAttachmentsAuxAttributes];
-          [v15 addEntriesFromDictionary:v16];
+          outputAttachmentsAuxAttributes2 = [(VISConfiguration *)self->_configuration outputAttachmentsAuxAttributes];
+          [v15 addEntriesFromDictionary:outputAttachmentsAuxAttributes2];
         }
 
         if (*(v4 + 29720))
@@ -554,8 +554,8 @@ LABEL_27:
             v30 = 0u;
             v31 = 0u;
             v32 = 0u;
-            v22 = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
-            v23 = [v22 countByEnumeratingWithState:&v29 objects:v28 count:16];
+            outputAttachmentsPixelBufferPools3 = [(VISConfiguration *)self->_configuration outputAttachmentsPixelBufferPools];
+            v23 = [outputAttachmentsPixelBufferPools3 countByEnumeratingWithState:&v29 objects:v28 count:16];
             if (v23)
             {
               v24 = v23;
@@ -564,12 +564,12 @@ LABEL_27:
               {
                 if (*v30 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(outputAttachmentsPixelBufferPools3);
                 }
 
                 if (!--v24)
                 {
-                  v24 = [v22 countByEnumeratingWithState:&v29 objects:v28 count:16];
+                  v24 = [outputAttachmentsPixelBufferPools3 countByEnumeratingWithState:&v29 objects:v28 count:16];
                   if (!v24)
                   {
                     break;
@@ -596,20 +596,20 @@ LABEL_27:
             [*(v4 + 48) setObject:-[VISConfiguration outputDepthPixelBufferPool](self->_configuration forKeyedSubscript:{"outputDepthPixelBufferPool"), @"OutputBufferDepth"}];
           }
 
-          v17 = [(VISConfiguration *)self->_configuration outputAuxAttributes];
+          outputAuxAttributes = [(VISConfiguration *)self->_configuration outputAuxAttributes];
 
-          if (v17)
+          if (outputAuxAttributes)
           {
-            v18 = [(VISConfiguration *)self->_configuration outputAuxAttributes];
-            [*(v4 + 56) setObject:v18 forKeyedSubscript:@"OutputBufferPrimary"];
+            outputAuxAttributes2 = [(VISConfiguration *)self->_configuration outputAuxAttributes];
+            [*(v4 + 56) setObject:outputAuxAttributes2 forKeyedSubscript:@"OutputBufferPrimary"];
           }
 
-          v19 = [(VISConfiguration *)self->_configuration outputDepthAuxAttributes];
+          outputDepthAuxAttributes = [(VISConfiguration *)self->_configuration outputDepthAuxAttributes];
 
-          if (v19)
+          if (outputDepthAuxAttributes)
           {
-            v20 = [(VISConfiguration *)self->_configuration outputDepthAuxAttributes];
-            [*(v4 + 56) setObject:v20 forKeyedSubscript:@"OutputBufferDepth"];
+            outputDepthAuxAttributes2 = [(VISConfiguration *)self->_configuration outputDepthAuxAttributes];
+            [*(v4 + 56) setObject:outputDepthAuxAttributes2 forKeyedSubscript:@"OutputBufferDepth"];
           }
 
           goto LABEL_27;

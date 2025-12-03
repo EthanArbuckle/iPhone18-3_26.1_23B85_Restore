@@ -1,8 +1,8 @@
 @interface JavaUtilWeakHashMap_Entry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)getKey;
-- (id)setValueWithId:(id)a3;
+- (id)setValueWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -16,20 +16,20 @@
   return [(JavaLangRefReference *)&v3 get];
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   value = self->value_;
-  JreStrongAssign(&self->value_, a3);
+  JreStrongAssign(&self->value_, id);
   return value;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  LODWORD(v5) = [JavaUtilMap_Entry_class_() isInstance:a3];
-  if (v5)
+  LODWORD(getValue) = [JavaUtilMap_Entry_class_() isInstance:equal];
+  if (getValue)
   {
     v6 = JavaUtilMap_Entry_class_();
-    if (a3 && ([v6 isInstance:a3] & 1) == 0)
+    if (equal && ([v6 isInstance:equal] & 1) == 0)
     {
       JreThrowClassCastException();
     }
@@ -39,37 +39,37 @@
     v7 = [(JavaLangRefReference *)&v10 get];
     if (v7)
     {
-      if (a3)
+      if (equal)
       {
-        LODWORD(v5) = [v7 isEqual:{objc_msgSend(a3, "getKey")}];
-        if (!v5)
+        LODWORD(getValue) = [v7 isEqual:{objc_msgSend(equal, "getKey")}];
+        if (!getValue)
         {
-          return v5;
+          return getValue;
         }
 
 LABEL_11:
         value = self->value_;
-        v5 = [a3 getValue];
+        getValue = [equal getValue];
         if (value)
         {
-          LOBYTE(v5) = [value isEqual:v5];
+          LOBYTE(getValue) = [value isEqual:getValue];
         }
 
         else
         {
-          LOBYTE(v5) = v5 == 0;
+          LOBYTE(getValue) = getValue == 0;
         }
 
-        return v5;
+        return getValue;
       }
     }
 
-    else if (a3)
+    else if (equal)
     {
-      if ([a3 getKey])
+      if ([equal getKey])
       {
-        LOBYTE(v5) = 0;
-        return v5;
+        LOBYTE(getValue) = 0;
+        return getValue;
       }
 
       goto LABEL_11;
@@ -78,7 +78,7 @@ LABEL_11:
     JreThrowNullPointerException();
   }
 
-  return v5;
+  return getValue;
 }
 
 - (unint64_t)hash

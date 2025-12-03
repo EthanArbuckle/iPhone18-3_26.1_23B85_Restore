@@ -1,8 +1,8 @@
 @interface DMDRemoveAppOperation
-+ (BOOL)removeAppMetadataForBundleIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)removeAppMetadataForBundleIdentifier:(id)identifier error:(id *)error;
 + (id)whitelistedClassesForRequest;
-+ (void)removeAppWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4;
++ (void)removeAppWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier;
 - (void)waitUntilFinished;
 @end
 
@@ -22,26 +22,26 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3 bundleIdentifier:(id)a4
+- (void)runWithRequest:(id)request bundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[DMDAppController sharedController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100068318;
   v8[3] = &unk_1000CDBD0;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   [v6 setRemovability:0 forBundleIdentifier:v7 completion:v8];
 }
 
-+ (BOOL)removeAppMetadataForBundleIdentifier:(id)a3 error:(id *)a4
++ (BOOL)removeAppMetadataForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -50,7 +50,7 @@
   else
   {
     sub_100086DF8();
-    if (a4)
+    if (error)
     {
       goto LABEL_3;
     }
@@ -59,121 +59,121 @@
   sub_100086E6C();
 LABEL_3:
   v6 = +[DMDAppController sharedController];
-  if (([v6 setVPNUUIDString:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setVPNUUIDString:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100086EE0(v5, a4);
+      sub_100086EE0(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setCellularSliceUUIDString:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setCellularSliceUUIDString:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100086F50(v5, a4);
+      sub_100086F50(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setContentFilterUUIDString:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setContentFilterUUIDString:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100086FC0(v5, a4);
+      sub_100086FC0(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setDNSProxyUUIDString:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setDNSProxyUUIDString:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100087030(v5, a4);
+      sub_100087030(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setRelayUUIDString:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setRelayUUIDString:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000870A0(v5, a4);
+      sub_1000870A0(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setAssociatedDomains:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setAssociatedDomains:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100087110(v5, a4);
+      sub_100087110(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setAssociatedDomainsEnableDirectDownloads:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setAssociatedDomainsEnableDirectDownloads:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100087180(v5, a4);
+      sub_100087180(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setAllowUserToHide:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setAllowUserToHide:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000871F0(v5, a4);
+      sub_1000871F0(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setAllowUserToLock:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setAllowUserToLock:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100087260(v5, a4);
+      sub_100087260(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setConfiguration:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setConfiguration:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000872D0(v5, a4);
+      sub_1000872D0(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 setManagementInformation:0 forBundleIdentifier:v5 error:a4] & 1) == 0)
+  if (([v6 setManagementInformation:0 forBundleIdentifier:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_100087340(v5, a4);
+      sub_100087340(identifierCopy, error);
     }
 
     goto LABEL_42;
   }
 
-  if (([v6 removePersonaMappingForBundleID:v5 error:a4] & 1) == 0)
+  if (([v6 removePersonaMappingForBundleID:identifierCopy error:error] & 1) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      sub_1000873B0(v5, a4);
+      sub_1000873B0(identifierCopy, error);
     }
 
 LABEL_42:
@@ -190,14 +190,14 @@ LABEL_43:
   return v8;
 }
 
-+ (void)removeAppWithBundleIdentifier:(id)a3 completion:(id)a4
++ (void)removeAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (identifierCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -218,22 +218,22 @@ LABEL_3:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v5;
+    v29 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Remove app with bundle identifier: %{public}@", buf, 0xCu);
   }
 
   v9 = +[DMDAppController sharedController];
-  v10 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:v5];
-  v11 = [v10 currentState];
-  if (v11 <= 3)
+  v10 = [DMDAppLifeCycle lifeCycleForBundleIdentifier:identifierCopy];
+  currentState = [v10 currentState];
+  if (currentState <= 3)
   {
-    if ((v11 - 1) < 3)
+    if ((currentState - 1) < 3)
     {
       v14 = DMFAppLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v5;
+        v29 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Cancel app installation with bundle identifier: %{public}@", buf, 0xCu);
       }
 
@@ -241,7 +241,7 @@ LABEL_3:
       v22[1] = 3221225472;
       v22[2] = sub_100068D70;
       v22[3] = &unk_1000CDE60;
-      v23 = v5;
+      v23 = identifierCopy;
       v24 = v9;
       v25 = v7;
       [v24 cancelAppInstallationWithBundleIdentifier:v23 completion:v22];
@@ -250,11 +250,11 @@ LABEL_3:
       goto LABEL_14;
     }
 
-    if (v11)
+    if (currentState)
     {
 LABEL_22:
       v26 = DMFBundleIdentifierErrorKey;
-      v27 = v5;
+      v27 = identifierCopy;
       v16 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       v17 = DMFErrorWithCodeAndUserInfo();
       (v7)[2](v7, v17);
@@ -265,13 +265,13 @@ LABEL_22:
 
   else
   {
-    if ((v11 - 5) < 3)
+    if ((currentState - 5) < 3)
     {
       v12 = DMFAppLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v29 = v5;
+        v29 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Cancel app update with bundle identifier: %{public}@", buf, 0xCu);
       }
 
@@ -279,7 +279,7 @@ LABEL_22:
       v18[1] = 3221225472;
       v18[2] = sub_100068E24;
       v18[3] = &unk_1000CDE60;
-      v19 = v5;
+      v19 = identifierCopy;
       v20 = v9;
       v21 = v7;
       [v20 cancelAppUpdateWithBundleIdentifier:v19 completion:v18];
@@ -290,9 +290,9 @@ LABEL_14:
       goto LABEL_23;
     }
 
-    if (v11 != 4)
+    if (currentState != 4)
     {
-      if (v11 == 8)
+      if (currentState == 8)
       {
         v7[2](v7, 0);
         goto LABEL_23;
@@ -306,11 +306,11 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v29 = v5;
+    v29 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Start uninstalling app with bundle identifier: %{public}@", buf, 0xCu);
   }
 
-  [v9 startUninstallingAppWithBundleIdentifier:v5 completion:v7];
+  [v9 startUninstallingAppWithBundleIdentifier:identifierCopy completion:v7];
 LABEL_23:
 }
 

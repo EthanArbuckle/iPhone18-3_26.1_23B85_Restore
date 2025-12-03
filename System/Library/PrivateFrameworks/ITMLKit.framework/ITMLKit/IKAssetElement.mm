@@ -8,7 +8,7 @@
 - (NSString)serviceID;
 - (NSURL)extrasURL;
 - (NSURL)url;
-- (id)_numberForAttribute:(id)a3;
+- (id)_numberForAttribute:(id)attribute;
 - (int64_t)keyDelivery;
 - (int64_t)type;
 @end
@@ -17,8 +17,8 @@
 
 - (NSURL)url
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"src"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"src"];
 
   if ([v3 length])
   {
@@ -35,8 +35,8 @@
 
 - (int64_t)type
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"type"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"type"];
 
   if ([v3 isEqualToString:@"file"])
   {
@@ -58,8 +58,8 @@
 
 - (int64_t)keyDelivery
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"keyDelivery"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"keyDelivery"];
   v4 = [v3 isEqualToString:@"itunes"];
 
   return v4;
@@ -67,8 +67,8 @@
 
 - (BOOL)infiniteDuration
 {
-  v3 = [(IKViewElement *)self attributes];
-  v4 = [v3 objectForKeyedSubscript:@"type"];
+  attributes = [(IKViewElement *)self attributes];
+  v4 = [attributes objectForKeyedSubscript:@"type"];
   v5 = [v4 isEqualToString:@"hls"];
 
   if (!v5)
@@ -76,33 +76,33 @@
     return 0;
   }
 
-  v6 = [(IKViewElement *)self attributes];
-  v7 = [v6 objectForKeyedSubscript:@"infiniteDuration"];
-  v8 = [v7 ik_attributeBoolValue];
+  attributes2 = [(IKViewElement *)self attributes];
+  v7 = [attributes2 objectForKeyedSubscript:@"infiniteDuration"];
+  ik_attributeBoolValue = [v7 ik_attributeBoolValue];
 
-  return v8;
+  return ik_attributeBoolValue;
 }
 
 - (NSString)actionParams
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"actionParams"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"actionParams"];
 
   return v3;
 }
 
 - (NSString)adamID
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"adamID"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"adamID"];
 
   return v3;
 }
 
 - (NSURL)extrasURL
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"extrasURL"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"extrasURL"];
 
   if ([v3 length])
   {
@@ -119,41 +119,41 @@
 
 - (NSString)bookmarkID
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"bookmarkID"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"bookmarkID"];
 
   return v3;
 }
 
 - (NSString)contentID
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"contentID"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"contentID"];
 
   return v3;
 }
 
 - (NSString)externalID
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"externalID"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"externalID"];
 
   return v3;
 }
 
 - (NSString)serviceID
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"serviceID"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"serviceID"];
 
   return v3;
 }
 
-- (id)_numberForAttribute:(id)a3
+- (id)_numberForAttribute:(id)attribute
 {
-  v4 = a3;
-  v5 = [(IKViewElement *)self attributes];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  attributeCopy = attribute;
+  attributes = [(IKViewElement *)self attributes];
+  v6 = [attributes objectForKeyedSubscript:attributeCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

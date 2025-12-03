@@ -1,19 +1,19 @@
 @interface NRParametersServiceConnection
-- (NRParametersServiceConnection)initWithDeviceIdentifier:(id)a3 dataProtectionClass:(unsigned __int8)a4 options:(id)a5;
+- (NRParametersServiceConnection)initWithDeviceIdentifier:(id)identifier dataProtectionClass:(unsigned __int8)class options:(id)options;
 @end
 
 @implementation NRParametersServiceConnection
 
-- (NRParametersServiceConnection)initWithDeviceIdentifier:(id)a3 dataProtectionClass:(unsigned __int8)a4 options:(id)a5
+- (NRParametersServiceConnection)initWithDeviceIdentifier:(id)identifier dataProtectionClass:(unsigned __int8)class options:(id)options
 {
-  v6 = a4;
+  classCopy = class;
   v63 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  identifierCopy = identifier;
+  optionsCopy = options;
+  if (identifierCopy)
   {
-    v10 = [v8 nrDeviceIdentifier];
-    v11 = NREndpointCopyDictionary(v10, v6);
+    nrDeviceIdentifier = [identifierCopy nrDeviceIdentifier];
+    v11 = NREndpointCopyDictionary(nrDeviceIdentifier, classCopy);
     v12 = v11;
     if (v11)
     {
@@ -25,9 +25,9 @@
       v13 = 0;
     }
 
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (!v14)
+    if (!bOOLValue)
     {
       application_service_quic_using_identity = MEMORY[0x25F873D00]();
       goto LABEL_22;
@@ -39,7 +39,7 @@
     }
 
     v15 = nrCopyClassDIdentity_classDIdentity;
-    if (v6 == 3)
+    if (classCopy == 3)
     {
       if (nrCopyClassCIdentity_onceToken != -1)
       {
@@ -59,18 +59,18 @@
     nw_parameters_set_local_only(application_service_quic_using_identity, 0);
     v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [v19 addObject:@"com.apple.networkrelay.encoded"];
-    v61 = v9;
-    if (v9)
+    v61 = optionsCopy;
+    if (optionsCopy)
     {
-      v9 = [v9 objectForKeyedSubscript:@"AllowsQR"];
+      optionsCopy = [optionsCopy objectForKeyedSubscript:@"AllowsQR"];
     }
 
-    if (([v9 BOOLValue] & 1) == 0)
+    if (([optionsCopy BOOLValue] & 1) == 0)
     {
       [v19 addObject:@"l"];
     }
 
-    if (v6 == 3)
+    if (classCopy == 3)
     {
       [v19 addObject:@"c"];
     }
@@ -92,7 +92,7 @@
         xpc_array_set_string(v24, 0xFFFFFFFFFFFFFFFFLL, "RapportNetworkAgent");
         nw_parameters_set_prohibited_netagent_classes();
 
-        v9 = v61;
+        optionsCopy = v61;
 LABEL_22:
         v62.receiver = self;
         v62.super_class = NRParametersServiceConnection;
@@ -116,7 +116,7 @@ LABEL_22:
           }
         }
 
-        v32 = self;
+        selfCopy = self;
         goto LABEL_30;
       }
 
@@ -178,7 +178,7 @@ LABEL_44:
 
     if (!v37)
     {
-      v32 = 0;
+      selfCopy = 0;
       goto LABEL_30;
     }
   }
@@ -186,11 +186,11 @@ LABEL_44:
   v38 = nrCopyLogObj_2805();
   _NRLogWithArgs(v38, 17, "%s called with null deviceIdentifier", v39, v40, v41, v42, v43, "[NRParametersServiceConnection initWithDeviceIdentifier:dataProtectionClass:options:]");
 
-  v32 = 0;
+  selfCopy = 0;
 LABEL_30:
 
   v33 = *MEMORY[0x277D85DE8];
-  return v32;
+  return selfCopy;
 }
 
 void __86__NRParametersServiceConnection_initWithDeviceIdentifier_dataProtectionClass_options___block_invoke(uint64_t a1, void *a2)

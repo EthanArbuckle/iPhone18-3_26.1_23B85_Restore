@@ -1,15 +1,15 @@
 @interface SFAutoFillInternalFeedbackActivityNotificationViewController
-- (SFAutoFillInternalFeedbackActivityNotificationViewController)initWithDiagnosticsData:(id)a3;
+- (SFAutoFillInternalFeedbackActivityNotificationViewController)initWithDiagnosticsData:(id)data;
 - (SFAutoFillInternalFeedbackActivityNotificationViewControllerDelegate)delegate;
-- (void)_handleThumbsDown:(id)a3;
-- (void)_handleThumbsUp:(id)a3;
+- (void)_handleThumbsDown:(id)down;
+- (void)_handleThumbsUp:(id)up;
 @end
 
 @implementation SFAutoFillInternalFeedbackActivityNotificationViewController
 
-- (SFAutoFillInternalFeedbackActivityNotificationViewController)initWithDiagnosticsData:(id)a3
+- (SFAutoFillInternalFeedbackActivityNotificationViewController)initWithDiagnosticsData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = _WBSLocalizedString();
   v7 = _WBSLocalizedString();
   v13.receiver = self;
@@ -18,7 +18,7 @@
 
   if (v8)
   {
-    objc_storeStrong(&v8->_diagnosticsData, a3);
+    objc_storeStrong(&v8->_diagnosticsData, data);
     v9 = createButton(@"hand.thumbsup", v8, sel__handleThumbsUp_);
     [(SFActivityNotificationViewController *)v8 setLeadingAccessoryView:v9];
 
@@ -31,13 +31,13 @@
   return v8;
 }
 
-- (void)_handleThumbsUp:(id)a3
+- (void)_handleThumbsUp:(id)up
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained autoFillInternalFeedbackActivityNotice:self shouldPresentFeedbackForm:0];
 }
 
-- (void)_handleThumbsDown:(id)a3
+- (void)_handleThumbsDown:(id)down
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained autoFillInternalFeedbackActivityNotice:self shouldPresentFeedbackForm:1];

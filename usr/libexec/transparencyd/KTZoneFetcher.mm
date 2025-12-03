@@ -1,43 +1,43 @@
 @interface KTZoneFetcher
-- (KTZoneFetcher)initWithDeps:(id)a3 zoneHandler:(id)a4 operationQueue:(id)a5 ckFetchScheduler:(id)a6;
+- (KTZoneFetcher)initWithDeps:(id)deps zoneHandler:(id)handler operationQueue:(id)queue ckFetchScheduler:(id)scheduler;
 - (id)createSuccesfulCKFetchDependency;
 - (id)description;
-- (id)newCKFetch:(id)a3;
-- (id)requestSuccessfulCKFetchForManyReasons:(id)a3;
+- (id)newCKFetch:(id)fetch;
+- (id)requestSuccessfulCKFetchForManyReasons:(id)reasons;
 - (void)_onqueueCreateNewCKFetch;
 - (void)cancelAllPending;
 - (void)cancelRequests;
-- (void)inspectErrorForRetryAfter:(id)a3 trigger:(id)a4;
+- (void)inspectErrorForRetryAfter:(id)after trigger:(id)trigger;
 - (void)maybeCreateNewCKFetch;
 - (void)maybeCreateNewCKFetchOnQueue;
 @end
 
 @implementation KTZoneFetcher
 
-- (KTZoneFetcher)initWithDeps:(id)a3 zoneHandler:(id)a4 operationQueue:(id)a5 ckFetchScheduler:(id)a6
+- (KTZoneFetcher)initWithDeps:(id)deps zoneHandler:(id)handler operationQueue:(id)queue ckFetchScheduler:(id)scheduler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  depsCopy = deps;
+  handlerCopy = handler;
+  queueCopy = queue;
+  schedulerCopy = scheduler;
   v23.receiver = self;
   v23.super_class = KTZoneFetcher;
   v14 = [(KTZoneFetcher *)&v23 init];
   if (v14)
   {
     v15 = +[NSUUID UUID];
-    v16 = [v15 UUIDString];
-    [(KTZoneFetcher *)v14 setName:v16];
+    uUIDString = [v15 UUIDString];
+    [(KTZoneFetcher *)v14 setName:uUIDString];
 
     v17 = dispatch_queue_create("KTZoneFetcher", 0);
     [(KTZoneFetcher *)v14 setQueue:v17];
 
-    [(KTZoneFetcher *)v14 setDeps:v10];
-    [(KTZoneFetcher *)v14 setZoneHandler:v11];
-    [(KTZoneFetcher *)v14 setCkFetchScheduler:v13];
-    [(KTZoneFetcher *)v14 setOperationQueue:v12];
-    v18 = [(KTZoneFetcher *)v14 createSuccesfulCKFetchDependency];
-    [(KTZoneFetcher *)v14 setSuccessfulCKFetchDependency:v18];
+    [(KTZoneFetcher *)v14 setDeps:depsCopy];
+    [(KTZoneFetcher *)v14 setZoneHandler:handlerCopy];
+    [(KTZoneFetcher *)v14 setCkFetchScheduler:schedulerCopy];
+    [(KTZoneFetcher *)v14 setOperationQueue:queueCopy];
+    createSuccesfulCKFetchDependency = [(KTZoneFetcher *)v14 createSuccesfulCKFetchDependency];
+    [(KTZoneFetcher *)v14 setSuccessfulCKFetchDependency:createSuccesfulCKFetchDependency];
 
     v19 = +[NSMutableSet set];
     [(KTZoneFetcher *)v14 setInflightCKFetchDependencies:v19];
@@ -53,11 +53,11 @@
 
 - (id)description
 {
-  v3 = [(KTZoneFetcher *)self name];
-  v4 = [(KTZoneFetcher *)self newCKRequests];
-  v5 = [(KTZoneFetcher *)self isCancelled];
-  v6 = [(KTZoneFetcher *)self currentCKFetch];
-  v7 = [NSString stringWithFormat:@"<KTZoneFetcher: %@ newCKRequests: %d isCancelled: %d currentFetch: %@", v3, v4, v5, v6];
+  name = [(KTZoneFetcher *)self name];
+  newCKRequests = [(KTZoneFetcher *)self newCKRequests];
+  isCancelled = [(KTZoneFetcher *)self isCancelled];
+  currentCKFetch = [(KTZoneFetcher *)self currentCKFetch];
+  v7 = [NSString stringWithFormat:@"<KTZoneFetcher: %@ newCKRequests: %d isCancelled: %d currentFetch: %@", name, newCKRequests, isCancelled, currentCKFetch];
 
   return v7;
 }
@@ -72,30 +72,30 @@
 
 - (void)cancelRequests
 {
-  v3 = [(KTZoneFetcher *)self queue];
+  queue = [(KTZoneFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000846A4;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)maybeCreateNewCKFetch
 {
-  v3 = [(KTZoneFetcher *)self queue];
+  queue = [(KTZoneFetcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100084738;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)maybeCreateNewCKFetchOnQueue
 {
-  v3 = [(KTZoneFetcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KTZoneFetcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(KTZoneFetcher *)self newCKRequests])
   {
@@ -107,17 +107,17 @@
     goto LABEL_10;
   }
 
-  v4 = [(KTZoneFetcher *)self currentCKFetch];
-  if (!v4)
+  currentCKFetch = [(KTZoneFetcher *)self currentCKFetch];
+  if (!currentCKFetch)
   {
     goto LABEL_5;
   }
 
-  v5 = v4;
-  v6 = [(KTZoneFetcher *)self currentCKFetch];
-  v7 = [v6 isFinished];
+  v5 = currentCKFetch;
+  currentCKFetch2 = [(KTZoneFetcher *)self currentCKFetch];
+  isFinished = [currentCKFetch2 isFinished];
 
-  if (!v7)
+  if (!isFinished)
   {
 LABEL_10:
     if (qword_10038BDD0 != -1)
@@ -129,7 +129,7 @@ LABEL_10:
     if (os_log_type_enabled(qword_10038BDD8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Not creating a CK fetch: %{public}@", &v10, 0xCu);
     }
   }
@@ -155,38 +155,38 @@ LABEL_5:
 
 - (void)_onqueueCreateNewCKFetch
 {
-  v3 = [(KTZoneFetcher *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KTZoneFetcher *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(KTZoneFetcher *)self successfulCKFetchDependency];
-  v5 = [(KTZoneFetcher *)self createSuccesfulCKFetchDependency];
-  [(KTZoneFetcher *)self setSuccessfulCKFetchDependency:v5];
+  successfulCKFetchDependency = [(KTZoneFetcher *)self successfulCKFetchDependency];
+  createSuccesfulCKFetchDependency = [(KTZoneFetcher *)self createSuccesfulCKFetchDependency];
+  [(KTZoneFetcher *)self setSuccessfulCKFetchDependency:createSuccesfulCKFetchDependency];
 
-  v6 = [(KTZoneFetcher *)self inflightCKFetchDependencies];
-  v38 = v4;
-  [v6 addObject:v4];
+  inflightCKFetchDependencies = [(KTZoneFetcher *)self inflightCKFetchDependencies];
+  v38 = successfulCKFetchDependency;
+  [inflightCKFetchDependencies addObject:successfulCKFetchDependency];
 
-  v36 = [(KTZoneFetcher *)self ckFetchReasons];
+  ckFetchReasons = [(KTZoneFetcher *)self ckFetchReasons];
   v7 = +[NSMutableSet set];
   [(KTZoneFetcher *)self setCkFetchReasons:v7];
 
-  v8 = [v36 allObjects];
-  v9 = [v8 componentsJoinedByString:{@", "}];
+  allObjects = [ckFetchReasons allObjects];
+  v9 = [allObjects componentsJoinedByString:{@", "}];
 
-  v10 = [(KTZoneFetcher *)self deps];
-  v11 = [v10 fetchCloudStorage];
-  v12 = [(KTZoneFetcher *)self deps];
-  v13 = [(KTZoneFetcher *)self zoneHandler];
-  v14 = [(KTZoneFetcher *)self deps];
-  v15 = [v14 dataStore];
-  v16 = [v15 controller];
-  v17 = [v16 backgroundContext];
+  deps = [(KTZoneFetcher *)self deps];
+  fetchCloudStorage = [deps fetchCloudStorage];
+  deps2 = [(KTZoneFetcher *)self deps];
+  zoneHandler = [(KTZoneFetcher *)self zoneHandler];
+  deps3 = [(KTZoneFetcher *)self deps];
+  dataStore = [deps3 dataStore];
+  controller = [dataStore controller];
+  backgroundContext = [controller backgroundContext];
   v37 = v9;
-  v18 = [v11 cloudFetchOperationWithDeps:v12 initialFetch:0 userInteractive:0 reason:v9 zoneHandler:v13 context:v17];
+  v18 = [fetchCloudStorage cloudFetchOperationWithDeps:deps2 initialFetch:0 userInteractive:0 reason:v9 zoneHandler:zoneHandler context:backgroundContext];
 
   [(KTZoneFetcher *)self setCurrentCKFetch:v18];
   [(KTZoneFetcher *)self setNewCKRequests:0];
-  if ([v36 containsObject:off_100381D88])
+  if ([ckFetchReasons containsObject:off_100381D88])
   {
     v19 = v18;
     if (qword_10038BDD0 != -1)
@@ -201,17 +201,17 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "blocking fetch on network reachability/network timeout", buf, 2u);
     }
 
-    v21 = [(KTZoneFetcher *)self currentCKFetch];
-    v22 = [(KTZoneFetcher *)self deps];
-    v23 = [v22 reachabilityTracker];
-    v24 = [v23 reachabilityDependency];
-    [v21 addNullableDependency:v24];
+    currentCKFetch = [(KTZoneFetcher *)self currentCKFetch];
+    deps4 = [(KTZoneFetcher *)self deps];
+    reachabilityTracker = [deps4 reachabilityTracker];
+    reachabilityDependency = [reachabilityTracker reachabilityDependency];
+    [currentCKFetch addNullableDependency:reachabilityDependency];
 
-    v25 = [(KTZoneFetcher *)self currentCKFetch];
-    v26 = [(KTZoneFetcher *)self deps];
-    v27 = [v26 networkTimeout];
-    v28 = [v27 networkTimeoutOperation];
-    [v25 addNullableDependency:v28];
+    currentCKFetch2 = [(KTZoneFetcher *)self currentCKFetch];
+    deps5 = [(KTZoneFetcher *)self deps];
+    networkTimeout = [deps5 networkTimeout];
+    networkTimeoutOperation = [networkTimeout networkTimeoutOperation];
+    [currentCKFetch2 addNullableDependency:networkTimeoutOperation];
 
     v18 = v19;
   }
@@ -222,19 +222,19 @@ LABEL_5:
   v39[3] = &unk_10031E018;
   v39[4] = self;
   v40 = v18;
-  v41 = v36;
-  v29 = v36;
+  v41 = ckFetchReasons;
+  v29 = ckFetchReasons;
   v30 = v18;
   v31 = [NSBlockOperation blockOperationWithBlock:v39];
-  v32 = [(KTZoneFetcher *)self currentCKFetch];
-  [v31 addNullableDependency:v32];
+  currentCKFetch3 = [(KTZoneFetcher *)self currentCKFetch];
+  [v31 addNullableDependency:currentCKFetch3];
 
-  v33 = [(KTZoneFetcher *)self operationQueue];
-  v34 = [(KTZoneFetcher *)self currentCKFetch];
-  [v33 addOperation:v34];
+  operationQueue = [(KTZoneFetcher *)self operationQueue];
+  currentCKFetch4 = [(KTZoneFetcher *)self currentCKFetch];
+  [operationQueue addOperation:currentCKFetch4];
 
-  v35 = [(KTZoneFetcher *)self operationQueue];
-  [v35 addOperation:v31];
+  operationQueue2 = [(KTZoneFetcher *)self operationQueue];
+  [operationQueue2 addOperation:v31];
 }
 
 - (void)cancelAllPending
@@ -244,8 +244,8 @@ LABEL_5:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(KTZoneFetcher *)self inflightCKFetchDependencies];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  inflightCKFetchDependencies = [(KTZoneFetcher *)self inflightCKFetchDependencies];
+  v5 = [inflightCKFetchDependencies countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -256,7 +256,7 @@ LABEL_5:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inflightCKFetchDependencies);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -264,19 +264,19 @@ LABEL_5:
         [v9 cancel];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [inflightCKFetchDependencies countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v10 = [(KTZoneFetcher *)self inflightCKFetchDependencies];
-  [v10 removeAllObjects];
+  inflightCKFetchDependencies2 = [(KTZoneFetcher *)self inflightCKFetchDependencies];
+  [inflightCKFetchDependencies2 removeAllObjects];
 }
 
-- (id)requestSuccessfulCKFetchForManyReasons:(id)a3
+- (id)requestSuccessfulCKFetchForManyReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   if (qword_10038BDD0 != -1)
   {
     sub_10024B604();
@@ -286,16 +286,16 @@ LABEL_5:
   if (os_log_type_enabled(qword_10038BDD8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 allObjects];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    allObjects = [reasonsCopy allObjects];
+    v8 = [allObjects componentsJoinedByString:{@", "}];
     LODWORD(buf) = 138412290;
     *(&buf + 4) = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "triggering a new CK fetch because of reason: %@", &buf, 0xCu);
   }
 
-  v9 = [(KTZoneFetcher *)self deps];
-  v10 = [v9 cloudRecords];
-  v11 = v10 == 0;
+  deps = [(KTZoneFetcher *)self deps];
+  cloudRecords = [deps cloudRecords];
+  v11 = cloudRecords == 0;
 
   if (v11)
   {
@@ -323,15 +323,15 @@ LABEL_5:
     v21 = sub_10008566C;
     v22 = sub_10008567C;
     v23 = 0;
-    v12 = [(KTZoneFetcher *)self queue];
+    queue = [(KTZoneFetcher *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100085684;
     block[3] = &unk_10031A198;
     p_buf = &buf;
     block[4] = self;
-    v17 = v4;
-    dispatch_sync(v12, block);
+    v17 = reasonsCopy;
+    dispatch_sync(queue, block);
 
     v13 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -340,18 +340,18 @@ LABEL_5:
   return v13;
 }
 
-- (id)newCKFetch:(id)a3
+- (id)newCKFetch:(id)fetch
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:fetch];
   v5 = [(KTZoneFetcher *)self requestSuccessfulCKFetchForManyReasons:v4];
 
   return v5;
 }
 
-- (void)inspectErrorForRetryAfter:(id)a3 trigger:(id)a4
+- (void)inspectErrorForRetryAfter:(id)after trigger:(id)trigger
 {
-  v5 = a3;
-  v6 = a4;
+  afterCopy = after;
+  triggerCopy = trigger;
   CKRetryAfterSecondsForError();
   if (v7 != 0.0)
   {
@@ -366,17 +366,17 @@ LABEL_5:
     if (os_log_type_enabled(qword_10038BDD8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v6 name];
+      name = [triggerCopy name];
       v13 = 138412802;
-      v14 = v12;
+      v14 = name;
       v15 = 2048;
       v16 = v8;
       v17 = 2112;
-      v18 = v5;
+      v18 = afterCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CK operation failed, scheduling %@ delay for %.1f seconds: %@", &v13, 0x20u);
     }
 
-    [v6 waitUntil:v9];
+    [triggerCopy waitUntil:v9];
   }
 }
 

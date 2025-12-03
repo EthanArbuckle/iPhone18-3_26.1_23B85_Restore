@@ -9,25 +9,25 @@
 
 - (id)ic_loggingDescriptionIncludingBrackets:()IC
 {
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = v5;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = string;
   if (a3)
   {
-    [v5 appendString:@"<"];
+    [string appendString:@"<"];
   }
 
-  v7 = [a1 recordName];
-  [v6 appendString:v7];
+  recordName = [self recordName];
+  [v6 appendString:recordName];
 
-  v8 = [a1 zoneID];
-  v9 = [v8 ownerName];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CBBF28]];
+  zoneID = [self zoneID];
+  ownerName = [zoneID ownerName];
+  v10 = [ownerName isEqualToString:*MEMORY[0x277CBBF28]];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [a1 zoneID];
-    v12 = [v11 ownerName];
-    [v6 appendFormat:@" %@", v12];
+    zoneID2 = [self zoneID];
+    ownerName2 = [zoneID2 ownerName];
+    [v6 appendFormat:@" %@", ownerName2];
   }
 
   if (a3)
@@ -40,27 +40,27 @@
 
 - (uint64_t)databaseScope
 {
-  v1 = [a1 zoneID];
-  v2 = [v1 databaseScope];
+  zoneID = [self zoneID];
+  databaseScope = [zoneID databaseScope];
 
-  return v2;
+  return databaseScope;
 }
 
 - (uint64_t)ic_isOwnedByCurrentUser
 {
-  v1 = [a1 zoneID];
-  v2 = [v1 ic_isOwnedByCurrentUser];
+  zoneID = [self zoneID];
+  ic_isOwnedByCurrentUser = [zoneID ic_isOwnedByCurrentUser];
 
-  return v2;
+  return ic_isOwnedByCurrentUser;
 }
 
 - (uint64_t)ic_hasEqualRecordNameWithRecordID:()IC
 {
   v4 = a3;
-  v5 = [a1 recordName];
-  v6 = [v4 recordName];
+  recordName = [self recordName];
+  recordName2 = [v4 recordName];
 
-  v7 = [v5 ic_isCaseInsensitiveEqualToString:v6];
+  v7 = [recordName ic_isCaseInsensitiveEqualToString:recordName2];
   return v7;
 }
 

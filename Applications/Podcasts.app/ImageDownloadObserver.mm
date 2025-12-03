@@ -1,10 +1,10 @@
 @interface ImageDownloadObserver
-- (void)notificationFiredWithNote:(id)a3;
+- (void)notificationFiredWithNote:(id)note;
 @end
 
 @implementation ImageDownloadObserver
 
-- (void)notificationFiredWithNote:(id)a3
+- (void)notificationFiredWithNote:(id)note
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

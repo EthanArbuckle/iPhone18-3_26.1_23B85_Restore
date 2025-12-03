@@ -1,28 +1,28 @@
 @interface FullSheetOverlayPageView
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FullSheetOverlayPageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_A1C04();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_A5BA0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_A5BA0(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_A6360();
 }
 

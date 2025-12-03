@@ -1,14 +1,14 @@
 @interface ADStatusConditionsImpl
 + (id)sharedRingBufferLock;
-- (BOOL)isConditionRateLimited:(id)a3 onOperation:(int64_t)a4;
-- (BOOL)operationWithCondition:(id)a3 forType:(int64_t)a4;
-- (id)capped:(id)a3 to:(unint64_t)a4;
+- (BOOL)isConditionRateLimited:(id)limited onOperation:(int64_t)operation;
+- (BOOL)operationWithCondition:(id)condition forType:(int64_t)type;
+- (id)capped:(id)capped to:(unint64_t)to;
 - (id)setupXPCConnection;
 - (void)cleanupExpiredConditionsInBuffer;
-- (void)clearStatusCondition:(id)a3 completionHandler:(id)a4;
-- (void)isStatusConditionRegistered:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5;
+- (void)clearStatusCondition:(id)condition completionHandler:(id)handler;
+- (void)isStatusConditionRegistered:(id)registered bundleIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)resetRateLimitingBuffer;
-- (void)setStatusCondition:(id)a3 completionHandler:(id)a4;
+- (void)setStatusCondition:(id)condition completionHandler:(id)handler;
 @end
 
 @implementation ADStatusConditionsImpl
@@ -36,35 +36,35 @@ uint64_t __46__ADStatusConditionsImpl_sharedRingBufferLock__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setStatusCondition:(id)a3 completionHandler:(id)a4
+- (void)setStatusCondition:(id)condition completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  conditionCopy = condition;
+  handlerCopy = handler;
   if (!MKBDeviceUnlockedSinceBoot())
   {
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_9;
     }
 
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1101 userInfo:0];
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (![(ADStatusConditionsImpl *)self isConditionRateLimited:v6 onOperation:0])
+  if (![(ADStatusConditionsImpl *)self isConditionRateLimited:conditionCopy onOperation:0])
   {
-    v9 = [(ADStatusConditionsImpl *)self setupXPCConnection];
+    setupXPCConnection = [(ADStatusConditionsImpl *)self setupXPCConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __63__ADStatusConditionsImpl_setStatusCondition_completionHandler___block_invoke;
     v18[3] = &unk_278C59DC0;
     v18[4] = self;
-    v10 = v7;
+    v10 = handlerCopy;
     v19 = v10;
-    [v9 setInvalidationHandler:v18];
+    [setupXPCConnection setInvalidationHandler:v18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __63__ADStatusConditionsImpl_setStatusCondition_completionHandler___block_invoke_2;
@@ -72,23 +72,23 @@ LABEL_8:
     v16[4] = self;
     v11 = v10;
     v17 = v11;
-    [v9 setInterruptionHandler:v16];
-    v12 = [v9 remoteObjectProxy];
+    [setupXPCConnection setInterruptionHandler:v16];
+    remoteObjectProxy = [setupXPCConnection remoteObjectProxy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __63__ADStatusConditionsImpl_setStatusCondition_completionHandler___block_invoke_3;
     v13[3] = &unk_278C59DE8;
-    v14 = v9;
+    v14 = setupXPCConnection;
     v15 = v11;
-    v8 = v9;
-    [v12 setStatusCondition:v6 completionHandler:v13];
+    v8 = setupXPCConnection;
+    [remoteObjectProxy setStatusCondition:conditionCopy completionHandler:v13];
 
     goto LABEL_8;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_9:
@@ -151,35 +151,35 @@ void __63__ADStatusConditionsImpl_setStatusCondition_completionHandler___block_i
   [*(a1 + 32) invalidate];
 }
 
-- (void)clearStatusCondition:(id)a3 completionHandler:(id)a4
+- (void)clearStatusCondition:(id)condition completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  conditionCopy = condition;
+  handlerCopy = handler;
   if (!MKBDeviceUnlockedSinceBoot())
   {
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_9;
     }
 
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1101 userInfo:0];
-    v7[2](v7, v8);
+    handlerCopy[2](handlerCopy, v8);
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (![(ADStatusConditionsImpl *)self isConditionRateLimited:v6 onOperation:1])
+  if (![(ADStatusConditionsImpl *)self isConditionRateLimited:conditionCopy onOperation:1])
   {
-    v9 = [(ADStatusConditionsImpl *)self setupXPCConnection];
+    setupXPCConnection = [(ADStatusConditionsImpl *)self setupXPCConnection];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __65__ADStatusConditionsImpl_clearStatusCondition_completionHandler___block_invoke;
     v18[3] = &unk_278C59DC0;
     v18[4] = self;
-    v10 = v7;
+    v10 = handlerCopy;
     v19 = v10;
-    [v9 setInvalidationHandler:v18];
+    [setupXPCConnection setInvalidationHandler:v18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __65__ADStatusConditionsImpl_clearStatusCondition_completionHandler___block_invoke_2;
@@ -187,23 +187,23 @@ LABEL_8:
     v16[4] = self;
     v11 = v10;
     v17 = v11;
-    [v9 setInterruptionHandler:v16];
-    v12 = [v9 remoteObjectProxy];
+    [setupXPCConnection setInterruptionHandler:v16];
+    remoteObjectProxy = [setupXPCConnection remoteObjectProxy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__ADStatusConditionsImpl_clearStatusCondition_completionHandler___block_invoke_3;
     v13[3] = &unk_278C59DE8;
-    v14 = v9;
+    v14 = setupXPCConnection;
     v15 = v11;
-    v8 = v9;
-    [v12 clearStatusCondition:v6 completionHandler:v13];
+    v8 = setupXPCConnection;
+    [remoteObjectProxy clearStatusCondition:conditionCopy completionHandler:v13];
 
     goto LABEL_8;
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
 LABEL_9:
@@ -266,46 +266,46 @@ void __65__ADStatusConditionsImpl_clearStatusCondition_completionHandler___block
   [*(a1 + 32) invalidate];
 }
 
-- (void)isStatusConditionRegistered:(id)a3 bundleIdentifier:(id)a4 completionHandler:(id)a5
+- (void)isStatusConditionRegistered:(id)registered bundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registeredCopy = registered;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   if (MKBDeviceUnlockedSinceBoot())
   {
-    v11 = [(ADStatusConditionsImpl *)self setupXPCConnection];
+    setupXPCConnection = [(ADStatusConditionsImpl *)self setupXPCConnection];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_completionHandler___block_invoke;
     v21[3] = &unk_278C59E10;
-    v12 = v10;
+    v12 = handlerCopy;
     v22 = v12;
-    [v11 setInvalidationHandler:v21];
+    [setupXPCConnection setInvalidationHandler:v21];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_completionHandler___block_invoke_2;
     v19[3] = &unk_278C59E10;
     v13 = v12;
     v20 = v13;
-    [v11 setInterruptionHandler:v19];
-    v14 = [v11 remoteObjectProxy];
+    [setupXPCConnection setInterruptionHandler:v19];
+    remoteObjectProxy = [setupXPCConnection remoteObjectProxy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_completionHandler___block_invoke_3;
     v16[3] = &unk_278C59E38;
-    v17 = v11;
+    v17 = setupXPCConnection;
     v18 = v13;
-    v15 = v11;
-    [v14 isStatusConditionRegistered:v8 bundleIdentifier:v9 completionHandler:v16];
+    v15 = setupXPCConnection;
+    [remoteObjectProxy isStatusConditionRegistered:registeredCopy bundleIdentifier:identifierCopy completionHandler:v16];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ADStatusConditionsErrorDomain" code:-1101 userInfo:0];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, v15);
     goto LABEL_5;
   }
 
@@ -374,22 +374,22 @@ void __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_c
   [*(a1 + 32) invalidate];
 }
 
-- (BOOL)isConditionRateLimited:(id)a3 onOperation:(int64_t)a4
+- (BOOL)isConditionRateLimited:(id)limited onOperation:(int64_t)operation
 {
-  v13 = a3;
+  limitedCopy = limited;
   v14 = @"Clear";
-  if (!a4)
+  if (!operation)
   {
     v14 = @"Set";
   }
 
   ADLOG(@"ADStatusConditions %@ called. Checking rate limiting.", v6, v7, v8, v9, v10, v11, v12, v14);
-  v15 = [objc_opt_class() sharedRingBufferLock];
-  [v15 lock];
+  sharedRingBufferLock = [objc_opt_class() sharedRingBufferLock];
+  [sharedRingBufferLock lock];
   [(ADStatusConditionsImpl *)self cleanupExpiredConditionsInBuffer];
-  v16 = [(ADStatusConditionsImpl *)self operationWithCondition:v13 forType:a4];
+  v16 = [(ADStatusConditionsImpl *)self operationWithCondition:limitedCopy forType:operation];
   v24 = @"CLEAR";
-  if (!a4)
+  if (!operation)
   {
     v24 = @"SET";
   }
@@ -406,15 +406,15 @@ void __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_c
     v25 = 0;
   }
 
-  [v15 unlock];
+  [sharedRingBufferLock unlock];
 
   return v25;
 }
 
-- (BOOL)operationWithCondition:(id)a3 forType:(int64_t)a4
+- (BOOL)operationWithCondition:(id)condition forType:(int64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  conditionCopy = condition;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -435,12 +435,12 @@ void __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_c
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 statusCondition];
-        if ([v12 isEqual:v5])
+        statusCondition = [v11 statusCondition];
+        if ([statusCondition isEqual:conditionCopy])
         {
-          v13 = [v11 operation];
+          operation = [v11 operation];
 
-          if (v13 == a4)
+          if (operation == type)
           {
             v20 = 1;
             goto LABEL_13;
@@ -463,13 +463,13 @@ void __89__ADStatusConditionsImpl_isStatusConditionRegistered_bundleIdentifier_c
   v23[1] = 3221225472;
   v23[2] = __57__ADStatusConditionsImpl_operationWithCondition_forType___block_invoke;
   v23[3] = &unk_278C59E60;
-  v15 = v5;
+  v15 = conditionCopy;
   v24 = v15;
   v16 = [v14 predicateWithBlock:v23];
   [ringBuffer filterUsingPredicate:v16];
   v17 = [ADStatusConditionRateLimitedObject alloc];
   v18 = [MEMORY[0x277CBEAA8] now];
-  v19 = [(ADStatusConditionRateLimitedObject *)v17 init:v15 at:v18 kind:a4];
+  v19 = [(ADStatusConditionRateLimitedObject *)v17 init:v15 at:v18 kind:type];
 
   [ringBuffer addObject:v19];
   v20 = 0;
@@ -495,14 +495,14 @@ uint64_t __57__ADStatusConditionsImpl_operationWithCondition_forType___block_inv
   v4 = ringBuffer;
   ringBuffer = v3;
 
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = MEMORY[0x277CCAC30];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__ADStatusConditionsImpl_cleanupExpiredConditionsInBuffer__block_invoke;
   v9[3] = &unk_278C59E60;
-  v10 = v5;
-  v7 = v5;
+  v10 = date;
+  v7 = date;
   v8 = [v6 predicateWithBlock:v9];
   [ringBuffer filterUsingPredicate:v8];
 }
@@ -517,18 +517,18 @@ BOOL __58__ADStatusConditionsImpl_cleanupExpiredConditionsInBuffer__block_invoke
   return v5 < 86400;
 }
 
-- (id)capped:(id)a3 to:(unint64_t)a4
+- (id)capped:(id)capped to:(unint64_t)to
 {
-  v5 = a3;
-  v6 = [v5 count];
-  if (v6 <= a4)
+  cappedCopy = capped;
+  v6 = [cappedCopy count];
+  if (v6 <= to)
   {
-    v7 = v5;
+    v7 = cappedCopy;
   }
 
   else
   {
-    v7 = [v5 subarrayWithRange:{v6 - a4, a4}];
+    v7 = [cappedCopy subarrayWithRange:{v6 - to, to}];
   }
 
   v8 = v7;
@@ -538,13 +538,13 @@ BOOL __58__ADStatusConditionsImpl_cleanupExpiredConditionsInBuffer__block_invoke
 
 - (void)resetRateLimitingBuffer
 {
-  v4 = [objc_opt_class() sharedRingBufferLock];
-  [v4 lock];
-  v2 = [MEMORY[0x277CBEB18] array];
+  sharedRingBufferLock = [objc_opt_class() sharedRingBufferLock];
+  [sharedRingBufferLock lock];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = ringBuffer;
-  ringBuffer = v2;
+  ringBuffer = array;
 
-  [v4 unlock];
+  [sharedRingBufferLock unlock];
 }
 
 - (id)setupXPCConnection

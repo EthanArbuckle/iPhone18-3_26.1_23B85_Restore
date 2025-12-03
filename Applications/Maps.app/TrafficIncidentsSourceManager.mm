@@ -1,16 +1,16 @@
 @interface TrafficIncidentsSourceManager
 + (id)sharedInstance;
 - (TrafficIncidentsSourceManager)init;
-- (id)_VKTrafficIncidentFeatureForIncidentReport:(id)a3;
+- (id)_VKTrafficIncidentFeatureForIncidentReport:(id)report;
 - (id)cachedIncidentsPersonalizedItems;
-- (id)cachedVKTrafficIncidentFeatureItemsForSelectedRoute:(id)a3;
+- (id)cachedVKTrafficIncidentFeatureItemsForSelectedRoute:(id)route;
 - (id)observers;
-- (void)_addReport:(id)a3;
-- (void)_addVKTrafficIncidentFeatureItemToCache:(id)a3;
+- (void)_addReport:(id)report;
+- (void)_addVKTrafficIncidentFeatureItemToCache:(id)cache;
 - (void)_refreshDataSource;
-- (void)addObserver:(id)a3;
-- (void)incidentsStorageManagerDidAddReport:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)incidentsStorageManagerDidAddReport:(id)report;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TrafficIncidentsSourceManager
@@ -87,7 +87,7 @@
 - (void)_refreshDataSource
 {
   v3 = +[TrafficIncidentsStorageManager sharedInstance];
-  v4 = [v3 visibleReports];
+  visibleReports = [v3 visibleReports];
 
   v5 = objc_alloc_init(NSMutableArray);
   cachedVKTrafficIncidentFeatureItems = self->_cachedVKTrafficIncidentFeatureItems;
@@ -101,7 +101,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v4;
+  v9 = visibleReports;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v10)
   {
@@ -128,8 +128,8 @@
     while (v11);
   }
 
-  v14 = [(TrafficIncidentsSourceManager *)self observers];
-  [v14 incidentsSourceManagerDidUpdate];
+  observers = [(TrafficIncidentsSourceManager *)self observers];
+  [observers incidentsSourceManagerDidUpdate];
 
   v15 = sub_100042750();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -155,43 +155,43 @@
   return observers;
 }
 
-- (void)incidentsStorageManagerDidAddReport:(id)a3
+- (void)incidentsStorageManagerDidAddReport:(id)report
 {
-  v4 = a3;
-  [(TrafficIncidentsSourceManager *)self _addReport:v4];
-  v5 = [(TrafficIncidentsSourceManager *)self observers];
-  [v5 incidentsSourceManagerDidUpdate];
+  reportCopy = report;
+  [(TrafficIncidentsSourceManager *)self _addReport:reportCopy];
+  observers = [(TrafficIncidentsSourceManager *)self observers];
+  [observers incidentsSourceManagerDidUpdate];
 
   v6 = sub_100042750();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = reportCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "TrafficIncidentsSourceManager did update with report %@", &v7, 0xCu);
   }
 }
 
-- (void)_addReport:(id)a3
+- (void)_addReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v5 = +[TrafficIncidentLayoutManager sharedInstance];
-  if ([v5 isIncidentTypeDisplayedOnMap:{objc_msgSend(v4, "incidentType")}])
+  if ([v5 isIncidentTypeDisplayedOnMap:{objc_msgSend(reportCopy, "incidentType")}])
   {
-    v6 = [v4 isHidden];
+    isHidden = [reportCopy isHidden];
 
-    if ((v6 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
-      v7 = [[TrafficIncidentPersonalizedItem alloc] initWithIncidentReport:v4];
+      v7 = [[TrafficIncidentPersonalizedItem alloc] initWithIncidentReport:reportCopy];
       cachedIncidentsPersonalizedItemsLockQueue = self->_cachedIncidentsPersonalizedItemsLockQueue;
       v10 = _NSConcreteStackBlock;
       v11 = 3221225472;
       v12 = sub_100A60F20;
       v13 = &unk_101661A90;
-      v14 = self;
+      selfCopy = self;
       v15 = v7;
       v9 = v7;
       dispatch_sync(cachedIncidentsPersonalizedItemsLockQueue, &v10);
-      [(TrafficIncidentsSourceManager *)self _addVKTrafficIncidentFeatureItemToCache:v4, v10, v11, v12, v13, v14];
+      [(TrafficIncidentsSourceManager *)self _addVKTrafficIncidentFeatureItemToCache:reportCopy, v10, v11, v12, v13, selfCopy];
     }
   }
 
@@ -200,31 +200,31 @@
   }
 }
 
-- (id)_VKTrafficIncidentFeatureForIncidentReport:(id)a3
+- (id)_VKTrafficIncidentFeatureForIncidentReport:(id)report
 {
-  v4 = a3;
-  v5 = +[MKTrafficSupport VKTrafficIncidentTypeForGEOTrafficIncidentType:](MKTrafficSupport, "VKTrafficIncidentTypeForGEOTrafficIncidentType:", [v4 incidentType]);
-  v6 = [v4 mapItemLocation];
-  v7 = [v6 latLng];
-  [v7 lat];
+  reportCopy = report;
+  v5 = +[MKTrafficSupport VKTrafficIncidentTypeForGEOTrafficIncidentType:](MKTrafficSupport, "VKTrafficIncidentTypeForGEOTrafficIncidentType:", [reportCopy incidentType]);
+  mapItemLocation = [reportCopy mapItemLocation];
+  latLng = [mapItemLocation latLng];
+  [latLng lat];
   v9 = v8;
-  v10 = [v4 mapItemLocation];
-  v11 = [v10 latLng];
-  [v11 lng];
+  mapItemLocation2 = [reportCopy mapItemLocation];
+  latLng2 = [mapItemLocation2 latLng];
+  [latLng2 lng];
   v13 = v12;
 
   v14 = [VKUserReportedTrafficIncident alloc];
-  v15 = [v4 uniqueID];
+  uniqueID = [reportCopy uniqueID];
 
-  v16 = [v15 UUIDString];
-  v17 = [v14 initWithIncidentType:v5 uniqueIdentifier:v16 position:self->_selectedRoute onRoute:{v9, v13, 1.79769313e308}];
+  uUIDString = [uniqueID UUIDString];
+  v17 = [v14 initWithIncidentType:v5 uniqueIdentifier:uUIDString position:self->_selectedRoute onRoute:{v9, v13, 1.79769313e308}];
 
   return v17;
 }
 
-- (void)_addVKTrafficIncidentFeatureItemToCache:(id)a3
+- (void)_addVKTrafficIncidentFeatureItemToCache:(id)cache
 {
-  v4 = [(TrafficIncidentsSourceManager *)self _VKTrafficIncidentFeatureForIncidentReport:a3];
+  v4 = [(TrafficIncidentsSourceManager *)self _VKTrafficIncidentFeatureForIncidentReport:cache];
   cachedVKTrafficIncidentFeatureItemsLockQueue = self->_cachedVKTrafficIncidentFeatureItemsLockQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -236,13 +236,13 @@
   dispatch_sync(cachedVKTrafficIncidentFeatureItemsLockQueue, v7);
 }
 
-- (id)cachedVKTrafficIncidentFeatureItemsForSelectedRoute:(id)a3
+- (id)cachedVKTrafficIncidentFeatureItemsForSelectedRoute:(id)route
 {
-  v5 = a3;
-  v25 = v5;
-  if (v5)
+  routeCopy = route;
+  v25 = routeCopy;
+  if (routeCopy)
   {
-    v6 = v5;
+    v6 = routeCopy;
     v33 = 0;
     v34 = &v33;
     v35 = 0x3032000000;
@@ -264,10 +264,10 @@
 
     else
     {
-      objc_storeStrong(&self->_selectedRoute, a3);
+      objc_storeStrong(&self->_selectedRoute, route);
       v8 = +[TrafficIncidentsStorageManager sharedInstance];
-      v9 = [v8 visibleReports];
-      v10 = [v9 copy];
+      visibleReports = [v8 visibleReports];
+      v10 = [visibleReports copy];
 
       v11 = objc_alloc_init(NSMutableArray);
       v30 = 0u;
@@ -332,18 +332,18 @@
   return v23;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(TrafficIncidentsSourceManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(TrafficIncidentsSourceManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(TrafficIncidentsSourceManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(TrafficIncidentsSourceManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 @end

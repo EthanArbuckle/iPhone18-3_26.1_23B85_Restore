@@ -1,11 +1,11 @@
 @interface CMOdometry
-- (CMOdometry)initWithCoder:(id)a3;
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 isDOTBiasChangePossible:(BOOL)a15 isMounted:(BOOL)a16 isZUPT:(BOOL)a17 timestamp:(double)a18;
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 timestamp:(double)a15;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMOdometry)initWithCoder:(id)coder;
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 isDOTBiasChangePossible:(BOOL)self5 isMounted:(BOOL)self6 isZUPT:(BOOL)self7 timestamp:(double)self8;
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 timestamp:(double)self5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)rotateArbitraryToTrueNorth;
 @end
 
@@ -18,39 +18,39 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 isDOTBiasChangePossible:(BOOL)a15 isMounted:(BOOL)a16 isZUPT:(BOOL)a17 timestamp:(double)a18
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 isDOTBiasChangePossible:(BOOL)self5 isMounted:(BOOL)self6 isZUPT:(BOOL)self7 timestamp:(double)self8
 {
   v27.receiver = self;
   v27.super_class = CMOdometry;
-  v25 = [(CMLogItem *)&v27 initWithTimestamp:a18];
+  v25 = [(CMLogItem *)&v27 initWithTimestamp:timestamp];
   if (v25)
   {
-    v25->_deltaPositionX = a3;
-    v25->_deltaPositionY = a4;
-    v25->_deltaPositionZ = a5;
-    v25->_deltaVelocityX = a6;
-    v25->_deltaVelocityY = a7;
-    v25->_deltaVelocityZ = a8;
-    v25->_quaternionX = a9;
-    v25->_quaternionY = a10;
-    v25->_quaternionZ = a11;
-    v25->_quaternionW = a12;
+    v25->_deltaPositionX = x;
+    v25->_deltaPositionY = y;
+    v25->_deltaPositionZ = z;
+    v25->_deltaVelocityX = velocityX;
+    v25->_deltaVelocityY = velocityY;
+    v25->_deltaVelocityZ = velocityZ;
+    v25->_quaternionX = quaternionX;
+    v25->_quaternionY = quaternionY;
+    v25->_quaternionZ = quaternionZ;
+    v25->_quaternionW = w;
     v25->_referenceFrame = 1;
-    v25->_rotationArbitraryToTrueNorth = a13;
-    v25->_staticFlag = a14;
-    v25->_isDOTBiasChangePossible = a15;
-    v25->_isMounted = a16;
-    v25->_isZUPT = a17;
+    v25->_rotationArbitraryToTrueNorth = north;
+    v25->_staticFlag = flag;
+    v25->_isDOTBiasChangePossible = possible;
+    v25->_isMounted = mounted;
+    v25->_isZUPT = t;
   }
 
   return v25;
 }
 
-- (CMOdometry)initWithDeltaPositionX:(id)a3 deltaPositionY:(id)a4 deltaPositionZ:(id)a5 deltaVelocityX:(id)a6 deltaVelocityY:(id)a7 deltaVelocityZ:(id)a8 quaternionX:(id)a9 quaternionY:(id)a10 quaternionZ:(id)a11 quaternionW:(id)a12 rotationArbitraryToTrueNorth:(float)a13 staticFlag:(int64_t)a14 timestamp:(double)a15
+- (CMOdometry)initWithDeltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z deltaVelocityX:(id)velocityX deltaVelocityY:(id)velocityY deltaVelocityZ:(id)velocityZ quaternionX:(id)quaternionX quaternionY:(id)self0 quaternionZ:(id)self1 quaternionW:(id)self2 rotationArbitraryToTrueNorth:(float)self3 staticFlag:(int64_t)self4 timestamp:(double)self5
 {
   BYTE2(v16) = 0;
   LOWORD(v16) = 0;
-  return [CMOdometry initWithDeltaPositionX:"initWithDeltaPositionX:deltaPositionY:deltaPositionZ:deltaVelocityX:deltaVelocityY:deltaVelocityZ:quaternionX:quaternionY:quaternionZ:quaternionW:rotationArbitraryToTrueNorth:staticFlag:isDOTBiasChangePossible:isMounted:isZUPT:timestamp:" deltaPositionY:a3 deltaPositionZ:a4 deltaVelocityX:a5 deltaVelocityY:a6 deltaVelocityZ:a7 quaternionX:a8 quaternionY:a9 quaternionZ:a10 quaternionW:a11 rotationArbitraryToTrueNorth:a12 staticFlag:a14 isDOTBiasChangePossible:v16 isMounted:? isZUPT:? timestamp:?];
+  return [CMOdometry initWithDeltaPositionX:"initWithDeltaPositionX:deltaPositionY:deltaPositionZ:deltaVelocityX:deltaVelocityY:deltaVelocityZ:quaternionX:quaternionY:quaternionZ:quaternionW:rotationArbitraryToTrueNorth:staticFlag:isDOTBiasChangePossible:isMounted:isZUPT:timestamp:" deltaPositionY:x deltaPositionZ:y deltaVelocityX:z deltaVelocityY:velocityX deltaVelocityZ:velocityY quaternionX:velocityZ quaternionY:quaternionX quaternionZ:quaternionY quaternionW:quaternionZ rotationArbitraryToTrueNorth:w staticFlag:flag isDOTBiasChangePossible:v16 isMounted:? isZUPT:? timestamp:?];
 }
 
 - (void)rotateArbitraryToTrueNorth
@@ -157,78 +157,78 @@
   }
 }
 
-- (CMOdometry)initWithCoder:(id)a3
+- (CMOdometry)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CMOdometry;
   v4 = [(CMLogItem *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_deltaPositionX = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionX"];
-    v4->_deltaPositionY = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionY"];
-    v4->_deltaPositionZ = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionZ"];
-    v4->_deltaVelocityX = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityX"];
-    v4->_deltaVelocityY = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityY"];
-    v4->_deltaVelocityZ = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityZ"];
-    v4->_quaternionX = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionX"];
-    v4->_quaternionY = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionY"];
-    v4->_quaternionZ = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionZ"];
-    v4->_quaternionW = [a3 decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionW"];
-    [a3 decodeFloatForKey:@"kCMOdometryCodingKeyReferenceFrame"];
+    v4->_deltaPositionX = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionX"];
+    v4->_deltaPositionY = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionY"];
+    v4->_deltaPositionZ = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaPositionZ"];
+    v4->_deltaVelocityX = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityX"];
+    v4->_deltaVelocityY = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityY"];
+    v4->_deltaVelocityZ = [coder decodeObjectForKey:@"kCMOdometryCodingKeyDeltaVelocityZ"];
+    v4->_quaternionX = [coder decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionX"];
+    v4->_quaternionY = [coder decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionY"];
+    v4->_quaternionZ = [coder decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionZ"];
+    v4->_quaternionW = [coder decodeObjectForKey:@"kCMOdometryCodingKeyQuaternionW"];
+    [coder decodeFloatForKey:@"kCMOdometryCodingKeyReferenceFrame"];
     v4->_referenceFrame = v5;
-    [a3 decodeFloatForKey:@"kCMOdometryCodingKeyRotationArbitraryToTrueNort"];
+    [coder decodeFloatForKey:@"kCMOdometryCodingKeyRotationArbitraryToTrueNort"];
     v4->_rotationArbitraryToTrueNorth = v6;
-    v4->_staticFlag = [objc_msgSend(a3 decodeObjectForKey:{@"kCMOdometryCodingKeyStaticFlag", "integerValue"}];
-    v4->_isDOTBiasChangePossible = [a3 decodeBoolForKey:@"kCMOdometryCodingKeyIsDOTBiasChangePossible"];
-    v4->_isMounted = [a3 decodeBoolForKey:@"kCMOdometryCodingKeyIsMounted"];
-    v4->_isZUPT = [a3 decodeBoolForKey:@"kCMOdometryCodingKeyIsZUPT"];
+    v4->_staticFlag = [objc_msgSend(coder decodeObjectForKey:{@"kCMOdometryCodingKeyStaticFlag", "integerValue"}];
+    v4->_isDOTBiasChangePossible = [coder decodeBoolForKey:@"kCMOdometryCodingKeyIsDOTBiasChangePossible"];
+    v4->_isMounted = [coder decodeBoolForKey:@"kCMOdometryCodingKeyIsMounted"];
+    v4->_isZUPT = [coder decodeBoolForKey:@"kCMOdometryCodingKeyIsZUPT"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CMOdometry;
   [(CMLogItem *)&v7 encodeWithCoder:?];
-  [a3 encodeObject:self->_deltaPositionX forKey:@"kCMOdometryCodingKeyDeltaPositionX"];
-  [a3 encodeObject:self->_deltaPositionY forKey:@"kCMOdometryCodingKeyDeltaPositionY"];
-  [a3 encodeObject:self->_deltaPositionZ forKey:@"kCMOdometryCodingKeyDeltaPositionZ"];
-  [a3 encodeObject:self->_deltaVelocityX forKey:@"kCMOdometryCodingKeyDeltaVelocityX"];
-  [a3 encodeObject:self->_deltaVelocityY forKey:@"kCMOdometryCodingKeyDeltaVelocityY"];
-  [a3 encodeObject:self->_deltaVelocityZ forKey:@"kCMOdometryCodingKeyDeltaVelocityZ"];
-  [a3 encodeObject:self->_quaternionX forKey:@"kCMOdometryCodingKeyQuaternionX"];
-  [a3 encodeObject:self->_quaternionY forKey:@"kCMOdometryCodingKeyQuaternionY"];
-  [a3 encodeObject:self->_quaternionZ forKey:@"kCMOdometryCodingKeyQuaternionZ"];
-  [a3 encodeObject:self->_quaternionW forKey:@"kCMOdometryCodingKeyQuaternionW"];
+  [coder encodeObject:self->_deltaPositionX forKey:@"kCMOdometryCodingKeyDeltaPositionX"];
+  [coder encodeObject:self->_deltaPositionY forKey:@"kCMOdometryCodingKeyDeltaPositionY"];
+  [coder encodeObject:self->_deltaPositionZ forKey:@"kCMOdometryCodingKeyDeltaPositionZ"];
+  [coder encodeObject:self->_deltaVelocityX forKey:@"kCMOdometryCodingKeyDeltaVelocityX"];
+  [coder encodeObject:self->_deltaVelocityY forKey:@"kCMOdometryCodingKeyDeltaVelocityY"];
+  [coder encodeObject:self->_deltaVelocityZ forKey:@"kCMOdometryCodingKeyDeltaVelocityZ"];
+  [coder encodeObject:self->_quaternionX forKey:@"kCMOdometryCodingKeyQuaternionX"];
+  [coder encodeObject:self->_quaternionY forKey:@"kCMOdometryCodingKeyQuaternionY"];
+  [coder encodeObject:self->_quaternionZ forKey:@"kCMOdometryCodingKeyQuaternionZ"];
+  [coder encodeObject:self->_quaternionW forKey:@"kCMOdometryCodingKeyQuaternionW"];
   *&v5 = self->_referenceFrame;
-  [a3 encodeFloat:@"kCMOdometryCodingKeyReferenceFrame" forKey:v5];
+  [coder encodeFloat:@"kCMOdometryCodingKeyReferenceFrame" forKey:v5];
   *&v6 = self->_rotationArbitraryToTrueNorth;
-  [a3 encodeFloat:@"kCMOdometryCodingKeyRotationArbitraryToTrueNort" forKey:v6];
-  [a3 encodeObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", self->_staticFlag), @"kCMOdometryCodingKeyStaticFlag"}];
-  [a3 encodeBool:self->_isDOTBiasChangePossible forKey:@"kCMOdometryCodingKeyIsDOTBiasChangePossible"];
-  [a3 encodeBool:self->_isMounted forKey:@"kCMOdometryCodingKeyIsMounted"];
-  [a3 encodeBool:self->_isZUPT forKey:@"kCMOdometryCodingKeyIsZUPT"];
+  [coder encodeFloat:@"kCMOdometryCodingKeyRotationArbitraryToTrueNort" forKey:v6];
+  [coder encodeObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", self->_staticFlag), @"kCMOdometryCodingKeyStaticFlag"}];
+  [coder encodeBool:self->_isDOTBiasChangePossible forKey:@"kCMOdometryCodingKeyIsDOTBiasChangePossible"];
+  [coder encodeBool:self->_isMounted forKey:@"kCMOdometryCodingKeyIsMounted"];
+  [coder encodeBool:self->_isZUPT forKey:@"kCMOdometryCodingKeyIsZUPT"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CMOdometry;
   v5 = [(CMLogItem *)&v7 copyWithZone:?];
   if (v5)
   {
-    v5[3] = [(NSNumber *)self->_deltaPositionX copyWithZone:a3];
-    v5[4] = [(NSNumber *)self->_deltaPositionY copyWithZone:a3];
-    v5[5] = [(NSNumber *)self->_deltaPositionZ copyWithZone:a3];
-    v5[6] = [(NSNumber *)self->_deltaVelocityX copyWithZone:a3];
-    v5[7] = [(NSNumber *)self->_deltaVelocityY copyWithZone:a3];
-    v5[8] = [(NSNumber *)self->_deltaVelocityZ copyWithZone:a3];
-    v5[9] = [(NSNumber *)self->_quaternionX copyWithZone:a3];
-    v5[10] = [(NSNumber *)self->_quaternionY copyWithZone:a3];
-    v5[11] = [(NSNumber *)self->_quaternionZ copyWithZone:a3];
-    v5[12] = [(NSNumber *)self->_quaternionW copyWithZone:a3];
+    v5[3] = [(NSNumber *)self->_deltaPositionX copyWithZone:zone];
+    v5[4] = [(NSNumber *)self->_deltaPositionY copyWithZone:zone];
+    v5[5] = [(NSNumber *)self->_deltaPositionZ copyWithZone:zone];
+    v5[6] = [(NSNumber *)self->_deltaVelocityX copyWithZone:zone];
+    v5[7] = [(NSNumber *)self->_deltaVelocityY copyWithZone:zone];
+    v5[8] = [(NSNumber *)self->_deltaVelocityZ copyWithZone:zone];
+    v5[9] = [(NSNumber *)self->_quaternionX copyWithZone:zone];
+    v5[10] = [(NSNumber *)self->_quaternionY copyWithZone:zone];
+    v5[11] = [(NSNumber *)self->_quaternionZ copyWithZone:zone];
+    v5[12] = [(NSNumber *)self->_quaternionW copyWithZone:zone];
     v5[13] = self->_referenceFrame;
     *(v5 + 5) = LODWORD(self->_rotationArbitraryToTrueNorth);
     v5[14] = self->_staticFlag;

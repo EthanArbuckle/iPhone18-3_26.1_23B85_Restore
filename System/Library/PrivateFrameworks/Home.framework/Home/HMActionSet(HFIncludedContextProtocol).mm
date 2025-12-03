@@ -12,8 +12,8 @@
   v14 = *MEMORY[0x277D85DE8];
   if (a3 == 3)
   {
-    v3 = [a1 applicationData];
-    v4 = v3;
+    applicationData = [self applicationData];
+    v4 = applicationData;
     v5 = @"HFApplicationDataActionSetShowInHomeDashboard";
     goto LABEL_10;
   }
@@ -38,15 +38,15 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [a1 applicationData];
-  v4 = v3;
+  applicationData = [self applicationData];
+  v4 = applicationData;
   v5 = @"HFApplicationDataActionSetIsFavoriteKey";
 LABEL_10:
-  v9 = [v3 objectForKeyedSubscript:v5];
-  v10 = [v9 BOOLValue];
+  v9 = [applicationData objectForKeyedSubscript:v5];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bOOLValue;
 }
 
 - (BOOL)hf_hasSetForContextType:()HFIncludedContextProtocol
@@ -55,8 +55,8 @@ LABEL_10:
   switch(a3)
   {
     case 3:
-      v3 = [a1 applicationData];
-      v4 = v3;
+      applicationData = [self applicationData];
+      v4 = applicationData;
       v5 = @"HFApplicationDataActionSetShowInHomeDashboard";
       goto LABEL_10;
     case 2:
@@ -70,11 +70,11 @@ LABEL_10:
 
       break;
     case 0:
-      v3 = [a1 applicationData];
-      v4 = v3;
+      applicationData = [self applicationData];
+      v4 = applicationData;
       v5 = @"HFApplicationDataActionSetIsFavoriteKey";
 LABEL_10:
-      v8 = [v3 objectForKeyedSubscript:v5];
+      v8 = [applicationData objectForKeyedSubscript:v5];
       v7 = v8 != 0;
 
       goto LABEL_11;
@@ -104,9 +104,9 @@ LABEL_11:
 
     else if (!a3)
     {
-      if (([a1 hf_isOnForContextType:?] & 1) == 0)
+      if (([self hf_isOnForContextType:?] & 1) == 0)
       {
-        result = [a1 hf_hasSetForContextType:0] ^ 1;
+        result = [self hf_hasSetForContextType:0] ^ 1;
 LABEL_18:
         v10 = *MEMORY[0x277D85DE8];
         return result;
@@ -121,26 +121,26 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if ([a1 hf_hasSetForContextType:?])
+  if ([self hf_hasSetForContextType:?])
   {
     v6 = *MEMORY[0x277D85DE8];
-    v7 = a1;
+    selfCopy2 = self;
     v8 = 3;
   }
 
   else
   {
-    if (![a1 hf_hasSetForContextType:0])
+    if (![self hf_hasSetForContextType:0])
     {
       goto LABEL_17;
     }
 
     v9 = *MEMORY[0x277D85DE8];
-    v7 = a1;
+    selfCopy2 = self;
     v8 = 0;
   }
 
-  return [v7 hf_isOnForContextType:v8];
+  return [selfCopy2 hf_isOnForContextType:v8];
 }
 
 - (id)hf_updateValue:()HFIncludedContextProtocol forContextType:
@@ -150,7 +150,7 @@ LABEL_17:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2080;
     v18 = "[HMActionSet(HFIncludedContextProtocol) hf_updateValue:forContextType:]";
     v19 = 1024;
@@ -173,18 +173,18 @@ LABEL_17:
       goto LABEL_13;
     }
 
-    v8 = [a1 applicationData];
+    applicationData = [self applicationData];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:a3];
     v10 = @"HFApplicationDataActionSetShowInHomeDashboard";
 LABEL_11:
-    HFAppDataSetValueIfChanged(v8, v10, v9);
+    HFAppDataSetValueIfChanged(applicationData, v10, v9);
 
     goto LABEL_13;
   }
 
   if (!a4)
   {
-    v8 = [a1 applicationData];
+    applicationData = [self applicationData];
     v9 = [MEMORY[0x277CCABB0] numberWithBool:a3];
     v10 = @"HFApplicationDataActionSetIsFavoriteKey";
     goto LABEL_11;
@@ -200,7 +200,7 @@ LABEL_13:
   v14[1] = 3221225472;
   v14[2] = __72__HMActionSet_HFIncludedContextProtocol__hf_updateValue_forContextType___block_invoke;
   v14[3] = &unk_277DF2C68;
-  v14[4] = a1;
+  v14[4] = self;
   v11 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v14];
   v12 = *MEMORY[0x277D85DE8];
 

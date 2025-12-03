@@ -1,32 +1,32 @@
 @interface SLBertClassifier
-- (BOOL)_isCharPunctuation:(unsigned __int16)a3;
-- (SLBertClassifier)initWithConfig:(id)a3 error:(id *)a4 locale:(id)a5;
-- (id)_createInputIdsAndRunModel:(id)a3;
-- (id)_normalizeText:(id)a3;
-- (id)_splitOnPunctuation:(id)a3;
-- (id)_wordPieceTokenizer:(id)a3;
-- (id)processInputText:(id)a3;
-- (id)processSpeechPackage:(id)a3;
-- (void)_readVocabFromFile:(id)a3;
+- (BOOL)_isCharPunctuation:(unsigned __int16)punctuation;
+- (SLBertClassifier)initWithConfig:(id)config error:(id *)error locale:(id)locale;
+- (id)_createInputIdsAndRunModel:(id)model;
+- (id)_normalizeText:(id)text;
+- (id)_splitOnPunctuation:(id)punctuation;
+- (id)_wordPieceTokenizer:(id)tokenizer;
+- (id)processInputText:(id)text;
+- (id)processSpeechPackage:(id)package;
+- (void)_readVocabFromFile:(id)file;
 @end
 
 @implementation SLBertClassifier
 
-- (id)_wordPieceTokenizer:(id)a3
+- (id)_wordPieceTokenizer:(id)tokenizer
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  [v5 addObject:@"[CLS]"];
+  tokenizerCopy = tokenizer;
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:@"[CLS]"];
   if (self->_shouldAppendLeadingText)
   {
-    [v5 addObject:@"empty"];
-    [v5 addObject:@"[SEP]"];
+    [array addObject:@"empty"];
+    [array addObject:@"[SEP]"];
   }
 
-  v6 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v22 = v4;
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v22 = tokenizerCopy;
+  v7 = [tokenizerCopy componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   v8 = [(SLBertClassifier *)self _splitOnPunctuation:v7];
 
@@ -41,7 +41,7 @@
     v10 = v9;
     v11 = *v28;
     v23 = *v28;
-    v24 = v5;
+    v24 = array;
     do
     {
       v12 = 0;
@@ -56,7 +56,7 @@
         v13 = *(*(&v27 + 1) + 8 * v12);
         if ([v13 length] <= self->_maxInputCharsPerWord)
         {
-          v14 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           if ([v13 length])
           {
             v15 = 0;
@@ -97,7 +97,7 @@
                 break;
               }
 
-              [v14 addObject:v18];
+              [array2 addObject:v18];
 
               v15 = v17;
               if (v17 >= [v13 length])
@@ -107,15 +107,15 @@
             }
 
 LABEL_22:
-            v5 = v24;
+            array = v24;
             [v24 addObject:self->_unkToken];
           }
 
           else
           {
 LABEL_21:
-            v5 = v24;
-            [v24 addObjectsFromArray:v14];
+            array = v24;
+            [v24 addObjectsFromArray:array2];
           }
 
           v11 = v23;
@@ -124,7 +124,7 @@ LABEL_21:
 
         else
         {
-          [v5 addObject:self->_unkToken];
+          [array addObject:self->_unkToken];
         }
 
         ++v12;
@@ -137,22 +137,22 @@ LABEL_21:
     while (v10);
   }
 
-  [v5 addObject:@"[SEP]"];
+  [array addObject:@"[SEP]"];
   v20 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)_splitOnPunctuation:(id)a3
+- (id)_splitOnPunctuation:(id)punctuation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  punctuationCopy = punctuation;
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = punctuationCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -188,7 +188,7 @@ LABEL_21:
                 if (v12)
                 {
                   v16 = [v10 substringWithRange:{v11, v12}];
-                  [v5 addObject:v16];
+                  [array addObject:v16];
                 }
 
                 goto LABEL_18;
@@ -198,11 +198,11 @@ LABEL_21:
             v14 = [v10 substringWithRange:{v11, v12}];
             if (v14)
             {
-              [v5 addObject:v14];
+              [array addObject:v14];
             }
 
             v15 = [v10 substringWithRange:{v13, 1}];
-            [v5 addObject:v15];
+            [array addObject:v15];
             v11 = v13 + 1;
           }
 
@@ -221,24 +221,24 @@ LABEL_18:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (BOOL)_isCharPunctuation:(unsigned __int16)a3
+- (BOOL)_isCharPunctuation:(unsigned __int16)punctuation
 {
   result = 1;
-  if ((a3 - 33) >= 0xF && ((a3 - 91) > 0x23 || ((1 << (a3 - 91)) & 0xF0000003FLL) == 0))
+  if ((punctuation - 33) >= 0xF && ((punctuation - 91) > 0x23 || ((1 << (punctuation - 91)) & 0xF0000003FLL) == 0))
   {
-    return (a3 - 58) < 7;
+    return (punctuation - 58) < 7;
   }
 
   return result;
 }
 
-- (id)_createInputIdsAndRunModel:(id)a3
+- (id)_createInputIdsAndRunModel:(id)model
 {
   v61[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v61[0] = &unk_2878A77A0;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_maxNumTokens];
   v61[1] = v5;
@@ -261,7 +261,7 @@ LABEL_18:
   v47[2] = __47__SLBertClassifier__createInputIdsAndRunModel___block_invoke;
   v47[3] = &unk_279C0E9E8;
   v47[4] = self;
-  v13 = v4;
+  v13 = modelCopy;
   v48 = v13;
   v14 = v7;
   v49 = v14;
@@ -322,13 +322,13 @@ LABEL_18:
     _os_log_impl(&dword_26754E000, v22, OS_LOG_TYPE_DEFAULT, "%s attnMask: %@", buf, 0x16u);
   }
 
-  v23 = [MEMORY[0x277CBEB38] dictionary];
-  [v23 setObject:v14 forKey:@"minibatch_input_ids"];
-  [v23 setObject:v16 forKey:@"minibatch_attention_mask"];
-  [v23 setObject:v15 forKey:@"minibatch_token_type_ids"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v14 forKey:@"minibatch_input_ids"];
+  [dictionary setObject:v16 forKey:@"minibatch_attention_mask"];
+  [dictionary setObject:v15 forKey:@"minibatch_token_type_ids"];
   v46 = v12;
-  v38 = v23;
-  v24 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:v23 error:&v46];
+  v38 = dictionary;
+  v24 = [objc_alloc(MEMORY[0x277CBFED0]) initWithDictionary:dictionary error:&v46];
   v25 = v46;
 
   bertModel = self->_bertModel;
@@ -339,31 +339,31 @@ LABEL_18:
 
   v40 = v27;
   v39 = [v27 featureValueForName:self->_outputNodeName];
-  v28 = [v39 multiArrayValue];
+  multiArrayValue = [v39 multiArrayValue];
   v29 = SLLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v58 = "[SLBertClassifier _createInputIdsAndRunModel:]";
     v59 = 2112;
-    v60 = v28;
+    v60 = multiArrayValue;
     _os_log_impl(&dword_26754E000, v29, OS_LOG_TYPE_DEFAULT, "%s output: %@", buf, 0x16u);
   }
 
-  v30 = [v28 convert1dMLMultiArrayToNSArray];
-  v31 = [v16 convert1dMLMultiArrayToNSArray];
-  v32 = [v14 convert1dMLMultiArrayToNSArray];
-  v33 = [v15 convert1dMLMultiArrayToNSArray];
+  convert1dMLMultiArrayToNSArray = [multiArrayValue convert1dMLMultiArrayToNSArray];
+  convert1dMLMultiArrayToNSArray2 = [v16 convert1dMLMultiArrayToNSArray];
+  convert1dMLMultiArrayToNSArray3 = [v14 convert1dMLMultiArrayToNSArray];
+  convert1dMLMultiArrayToNSArray4 = [v15 convert1dMLMultiArrayToNSArray];
   v55[0] = @"outputTokens";
   v55[1] = @"attnMask";
   v56[0] = v44;
-  v56[1] = v31;
+  v56[1] = convert1dMLMultiArrayToNSArray2;
   v55[2] = @"inputIds";
   v55[3] = @"tokenTypeIds";
-  v56[2] = v32;
-  v56[3] = v33;
+  v56[2] = convert1dMLMultiArrayToNSArray3;
+  v56[3] = convert1dMLMultiArrayToNSArray4;
   v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:v55 count:4];
-  v35 = [[SLBertClassifierResult alloc] initWithScore:v30 assetVersion:self->_assetVersion extractedFeats:v34];
+  v35 = [[SLBertClassifierResult alloc] initWithScore:convert1dMLMultiArrayToNSArray assetVersion:self->_assetVersion extractedFeats:v34];
 
   v36 = *MEMORY[0x277D85DE8];
 
@@ -443,15 +443,15 @@ void __47__SLBertClassifier__createInputIdsAndRunModel___block_invoke(void *a1, 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_normalizeText:(id)a3
+- (id)_normalizeText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__531;
   v13 = __Block_byref_object_dispose__532;
-  v14 = [v4 lowercaseString];
+  lowercaseString = [textCopy lowercaseString];
   truncationTokenList = self->_truncationTokenList;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -486,44 +486,44 @@ void __35__SLBertClassifier__normalizeText___block_invoke(uint64_t a1, void *a2,
   }
 }
 
-- (void)_readVocabFromFile:(id)a3
+- (void)_readVocabFromFile:(id)file
 {
   v11 = 0;
-  v4 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:a3 encoding:4 error:&v11];
+  v4 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:file encoding:4 error:&v11];
   v5 = v11;
-  v6 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v7 = [v4 componentsSeparatedByCharactersInSet:v6];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v7 = [v4 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
-  v8 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
   vocab = self->_vocab;
-  self->_vocab = v8;
+  self->_vocab = array;
 
   v10 = self->_vocab;
   self->_vocab = v7;
 }
 
-- (id)processInputText:(id)a3
+- (id)processInputText:(id)text
 {
-  v4 = [(SLBertClassifier *)self _normalizeText:a3];
+  v4 = [(SLBertClassifier *)self _normalizeText:text];
   v5 = [(SLBertClassifier *)self _wordPieceTokenizer:v4];
   v6 = [(SLBertClassifier *)self _createInputIdsAndRunModel:v5];
 
   return v6;
 }
 
-- (id)processSpeechPackage:(id)a3
+- (id)processSpeechPackage:(id)package
 {
-  v4 = [SLASRFeatureExtractor getBestSpeechRecognitionTextFromPackage:a3];
+  v4 = [SLASRFeatureExtractor getBestSpeechRecognitionTextFromPackage:package];
   v5 = [(SLBertClassifier *)self processInputText:v4];
 
   return v5;
 }
 
-- (SLBertClassifier)initWithConfig:(id)a3 error:(id *)a4 locale:(id)a5
+- (SLBertClassifier)initWithConfig:(id)config error:(id *)error locale:(id)locale
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  configCopy = config;
+  localeCopy = locale;
   v62.receiver = self;
   v62.super_class = SLBertClassifier;
   v10 = [(SLBertClassifier *)&v62 init];
@@ -537,7 +537,7 @@ void __35__SLBertClassifier__normalizeText___block_invoke(uint64_t a1, void *a2,
     dispatch_once(&SLLogInitIfNeeded_once, &__block_literal_global);
   }
 
-  v11 = [MEMORY[0x277D01778] decodeJsonFromFile:v8];
+  v11 = [MEMORY[0x277D01778] decodeJsonFromFile:configCopy];
   if (!v11)
   {
     v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Missing config for Bert Classifier %@", 0];
@@ -549,17 +549,17 @@ void __35__SLBertClassifier__normalizeText___block_invoke(uint64_t a1, void *a2,
 
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v26 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
       goto LABEL_15;
     }
   }
 
-  if ([v9 containsString:@"en"])
+  if ([localeCopy containsString:@"en"])
   {
     goto LABEL_9;
   }
@@ -573,9 +573,9 @@ void __35__SLBertClassifier__normalizeText___block_invoke(uint64_t a1, void *a2,
   if (!v14)
   {
 LABEL_9:
-    v16 = [v8 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [configCopy stringByDeletingLastPathComponent];
     v17 = [v11 objectForKeyedSubscript:@"vocabFile"];
-    v18 = [v16 stringByAppendingPathComponent:v17];
+    v18 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v17];
 
     v60 = v18;
     [(SLBertClassifier *)v10 _readVocabFromFile:v18];
@@ -638,10 +638,10 @@ LABEL_9:
 
       if (v39)
       {
-        if (a4)
+        if (error)
         {
           v40 = v39;
-          *a4 = v39;
+          *error = v39;
         }
 
         goto LABEL_31;
@@ -664,8 +664,8 @@ LABEL_9:
     v10->_truncationTokenList = v35;
 
     v42 = [v11 objectForKeyedSubscript:@"modelFile"];
-    v59 = v16;
-    v43 = [v16 stringByAppendingPathComponent:v42];
+    v59 = stringByDeletingLastPathComponent;
+    v43 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v42];
 
     v44 = [MEMORY[0x277CBEBC0] fileURLWithPath:v43];
     v45 = objc_alloc_init(MEMORY[0x277CBFF38]);
@@ -678,10 +678,10 @@ LABEL_9:
 
     if (v47)
     {
-      if (a4)
+      if (error)
       {
         v49 = v47;
-        *a4 = v47;
+        *error = v47;
       }
     }
 
@@ -726,10 +726,10 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
 LABEL_15:

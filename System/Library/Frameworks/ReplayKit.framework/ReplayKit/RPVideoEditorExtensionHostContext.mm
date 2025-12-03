@@ -1,28 +1,28 @@
 @interface RPVideoEditorExtensionHostContext
 - (RPVideoEditorHostViewController)hostViewController;
 - (id)extensionObjectProxy;
-- (void)extensionDidFinishWithActivityTypes:(id)a3;
+- (void)extensionDidFinishWithActivityTypes:(id)types;
 @end
 
 @implementation RPVideoEditorExtensionHostContext
 
-- (void)extensionDidFinishWithActivityTypes:(id)a3
+- (void)extensionDidFinishWithActivityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
     _os_log_impl(&dword_23A863000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "RPVideoEditorExtensionHostContext:extensionsDidFinish", v6, 2u);
   }
 
-  v5 = [(RPVideoEditorExtensionHostContext *)self hostViewController];
-  [v5 extensionDidFinishWithActivityTypes:v4];
+  hostViewController = [(RPVideoEditorExtensionHostContext *)self hostViewController];
+  [hostViewController extensionDidFinishWithActivityTypes:typesCopy];
 }
 
 - (id)extensionObjectProxy
 {
-  v2 = [(RPVideoEditorExtensionHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
+  _auxiliaryConnection = [(RPVideoEditorExtensionHostContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_7];
 
   return v3;
 }

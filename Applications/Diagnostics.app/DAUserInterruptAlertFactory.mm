@@ -1,9 +1,9 @@
 @interface DAUserInterruptAlertFactory
 + (id)sharedInstance;
-+ (void)activateAlertForSuiteName:(id)a3 withHandler:(id)a4;
++ (void)activateAlertForSuiteName:(id)name withHandler:(id)handler;
 + (void)reset;
 - (DAUserInterruptAlertFactory)init;
-- (void)activateAlertForSuiteName:(id)a3 withHandler:(id)a4;
+- (void)activateAlertForSuiteName:(id)name withHandler:(id)handler;
 @end
 
 @implementation DAUserInterruptAlertFactory
@@ -20,23 +20,23 @@
   return v3;
 }
 
-+ (void)activateAlertForSuiteName:(id)a3 withHandler:(id)a4
++ (void)activateAlertForSuiteName:(id)name withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedInstance];
-  [v8 activateAlertForSuiteName:v7 withHandler:v6];
+  handlerCopy = handler;
+  nameCopy = name;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance activateAlertForSuiteName:nameCopy withHandler:handlerCopy];
 }
 
 + (void)reset
 {
-  v4 = [a1 sharedInstance];
-  v2 = [v4 alertVisibleLock];
-  [v2 lock];
+  sharedInstance = [self sharedInstance];
+  alertVisibleLock = [sharedInstance alertVisibleLock];
+  [alertVisibleLock lock];
 
-  [v4 setVisibleAlert:0];
-  v3 = [v4 alertVisibleLock];
-  [v3 unlock];
+  [sharedInstance setVisibleAlert:0];
+  alertVisibleLock2 = [sharedInstance alertVisibleLock];
+  [alertVisibleLock2 unlock];
 }
 
 - (DAUserInterruptAlertFactory)init
@@ -54,34 +54,34 @@
   return v2;
 }
 
-- (void)activateAlertForSuiteName:(id)a3 withHandler:(id)a4
+- (void)activateAlertForSuiteName:(id)name withHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
-  [v7 lock];
+  nameCopy = name;
+  handlerCopy = handler;
+  alertVisibleLock = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
+  [alertVisibleLock lock];
 
-  v8 = [(DAUserInterruptAlertFactory *)self visibleAlert];
+  visibleAlert = [(DAUserInterruptAlertFactory *)self visibleAlert];
 
-  if (!v8)
+  if (!visibleAlert)
   {
-    v9 = [[DAUserInterruptAlert alloc] initWithSuiteName:v14 withHandler:v6];
+    v9 = [[DAUserInterruptAlert alloc] initWithSuiteName:nameCopy withHandler:handlerCopy];
     [(DAUserInterruptAlertFactory *)self setVisibleAlert:v9];
 
-    v10 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
-    [v10 unlock];
+    alertVisibleLock2 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
+    [alertVisibleLock2 unlock];
 
-    v11 = [(DAUserInterruptAlertFactory *)self visibleAlert];
-    [v11 activate];
+    visibleAlert2 = [(DAUserInterruptAlertFactory *)self visibleAlert];
+    [visibleAlert2 activate];
 
-    v12 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
-    [v12 lock];
+    alertVisibleLock3 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
+    [alertVisibleLock3 lock];
 
     [(DAUserInterruptAlertFactory *)self setVisibleAlert:0];
   }
 
-  v13 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
-  [v13 unlock];
+  alertVisibleLock4 = [(DAUserInterruptAlertFactory *)self alertVisibleLock];
+  [alertVisibleLock4 unlock];
 }
 
 @end

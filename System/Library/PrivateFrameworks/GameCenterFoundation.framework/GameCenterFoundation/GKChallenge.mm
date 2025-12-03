@@ -1,50 +1,50 @@
 @interface GKChallenge
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)challengeForGame:(id)a3 andPlayer:(id)a4 withAchievement:(id)a5;
-+ (id)challengeForGame:(id)a3 andPlayer:(id)a4 withScore:(id)a5;
-+ (id)challengeForInternalRepresentation:(id)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)stringForState:(int64_t)a3;
-+ (void)getCountOfChallenges:(id)a3;
-+ (void)loadChallengesForGame:(id)a3 receivingPlayer:(id)a4 withCompletionHandler:(id)a5;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)challengeForGame:(id)game andPlayer:(id)player withAchievement:(id)achievement;
++ (id)challengeForGame:(id)game andPlayer:(id)player withScore:(id)score;
++ (id)challengeForInternalRepresentation:(id)representation;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)stringForState:(int64_t)state;
++ (void)getCountOfChallenges:(id)challenges;
++ (void)loadChallengesForGame:(id)game receivingPlayer:(id)player withCompletionHandler:(id)handler;
 + (void)loadReceivedChallengesWithCompletionHandler:(void *)completionHandler;
-+ (void)loadReceivedPendingChallengesWithCompletionHandler:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKChallenge)initWithCoder:(id)a3;
-- (GKChallenge)initWithInternalRepresentation:(id)a3;
++ (void)loadReceivedPendingChallengesWithCompletionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKChallenge)initWithCoder:(id)coder;
+- (GKChallenge)initWithInternalRepresentation:(id)representation;
 - (GKGame)game;
 - (GKPlayer)issuingPlayer;
 - (GKPlayer)receivingPlayer;
 - (NSString)issuingPlayerID;
 - (NSString)receivingPlayerID;
-- (id)infoTextForIssuingPlayer:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)infoTextForIssuingPlayer:(id)player;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)declineWithCompletionHandler:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)issueToPlayers:(id)a3 message:(id)a4;
+- (void)declineWithCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)issueToPlayers:(id)players message:(id)message;
 - (void)issuingPlayerID;
-- (void)loadDetailsWithCompletionHandler:(id)a3;
-- (void)loadUIDetailsWithHandler:(id)a3;
+- (void)loadDetailsWithCompletionHandler:(id)handler;
+- (void)loadUIDetailsWithHandler:(id)handler;
 - (void)receivingPlayerID;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKChallenge
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKChallenge *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKChallenge *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -57,57 +57,57 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKChallenge *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKChallenge *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (GKChallenge)initWithInternalRepresentation:(id)a3
+- (GKChallenge)initWithInternalRepresentation:(id)representation
 {
   v4.receiver = self;
   v4.super_class = GKChallenge;
   return [(GKChallenge *)&v4 init];
 }
 
-- (GKChallenge)initWithCoder:(id)a3
+- (GKChallenge)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
 
   v6 = [(GKChallenge *)self initWithInternalRepresentation:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKChallenge *)self internal];
-  [v4 encodeObject:v5 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKChallenge *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 }
 
-+ (id)stringForState:(int64_t)a3
++ (id)stringForState:(int64_t)state
 {
-  if ((a3 - 1) > 2)
+  if ((state - 1) > 2)
   {
     return @"GKChallengeStateInvalid";
   }
 
   else
   {
-    return off_2785E0B98[a3 - 1];
+    return off_2785E0B98[state - 1];
   }
 }
 
-+ (id)challengeForInternalRepresentation:(id)a3
++ (id)challengeForInternalRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = off_2785DBD08;
 LABEL_5:
-    v5 = [objc_alloc(*v4) initWithInternalRepresentation:v3];
+    v5 = [objc_alloc(*v4) initWithInternalRepresentation:representationCopy];
     goto LABEL_7;
   }
 
@@ -124,19 +124,19 @@ LABEL_7:
   return v5;
 }
 
-+ (id)challengeForGame:(id)a3 andPlayer:(id)a4 withScore:(id)a5
++ (id)challengeForGame:(id)game andPlayer:(id)player withScore:(id)score
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 leaderboardIdentifier];
-  if (!v10 || (v11 = v10, [v9 leaderboardIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_283AFD1E0), v12, v11, v13))
+  gameCopy = game;
+  playerCopy = player;
+  scoreCopy = score;
+  leaderboardIdentifier = [scoreCopy leaderboardIdentifier];
+  if (!leaderboardIdentifier || (v11 = leaderboardIdentifier, [scoreCopy leaderboardIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_283AFD1E0), v12, v11, v13))
   {
-    if (v9)
+    if (scoreCopy)
     {
       v24 = @"score";
-      v25[0] = v9;
+      v25[0] = scoreCopy;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     }
 
@@ -150,17 +150,17 @@ LABEL_7:
   }
 
   v14 = +[GKScoreChallengeInternal internalRepresentation];
-  v15 = [v7 internal];
-  [v14 setGame:v15];
+  internal = [gameCopy internal];
+  [v14 setGame:internal];
 
-  v16 = [v7 bundleIdentifier];
-  [v14 setBundleID:v16];
+  bundleIdentifier = [gameCopy bundleIdentifier];
+  [v14 setBundleID:bundleIdentifier];
 
-  v17 = [v8 internal];
-  [v14 setIssuingPlayer:v17];
+  internal2 = [playerCopy internal];
+  [v14 setIssuingPlayer:internal2];
 
-  v18 = [v9 internal];
-  [v14 setScore:v18];
+  internal3 = [scoreCopy internal];
+  [v14 setScore:internal3];
 
   v19 = [[GKScoreChallenge alloc] initWithInternalRepresentation:v14];
   v20 = *MEMORY[0x277D85DE8];
@@ -168,19 +168,19 @@ LABEL_7:
   return v19;
 }
 
-+ (id)challengeForGame:(id)a3 andPlayer:(id)a4 withAchievement:(id)a5
++ (id)challengeForGame:(id)game andPlayer:(id)player withAchievement:(id)achievement
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 identifier];
-  if (!v10 || (v11 = v10, [v9 identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_283AFD1E0), v12, v11, v13))
+  gameCopy = game;
+  playerCopy = player;
+  achievementCopy = achievement;
+  identifier = [achievementCopy identifier];
+  if (!identifier || (v11 = identifier, [achievementCopy identifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", &stru_283AFD1E0), v12, v11, v13))
   {
-    if (v9)
+    if (achievementCopy)
     {
       v24 = @"achievement";
-      v25[0] = v9;
+      v25[0] = achievementCopy;
       v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     }
 
@@ -194,17 +194,17 @@ LABEL_7:
   }
 
   v14 = +[GKAchievementChallengeInternal internalRepresentation];
-  v15 = [v7 internal];
-  [v14 setGame:v15];
+  internal = [gameCopy internal];
+  [v14 setGame:internal];
 
-  v16 = [v7 bundleIdentifier];
-  [v14 setBundleID:v16];
+  bundleIdentifier = [gameCopy bundleIdentifier];
+  [v14 setBundleID:bundleIdentifier];
 
-  v17 = [v8 internal];
-  [v14 setIssuingPlayer:v17];
+  internal2 = [playerCopy internal];
+  [v14 setIssuingPlayer:internal2];
 
-  v18 = [v9 internal];
-  [v14 setAchievement:v18];
+  internal3 = [achievementCopy internal];
+  [v14 setAchievement:internal3];
 
   v19 = [[GKAchievementChallenge alloc] initWithInternalRepresentation:v14];
   v20 = *MEMORY[0x277D85DE8];
@@ -212,18 +212,18 @@ LABEL_7:
   return v19;
 }
 
-+ (void)getCountOfChallenges:(id)a3
++ (void)getCountOfChallenges:(id)challenges
 {
-  v3 = a3;
+  challengesCopy = challenges;
   v4 = +[GKDaemonProxy proxyForLocalPlayer];
-  v5 = [v4 challengeServicePrivate];
+  challengeServicePrivate = [v4 challengeServicePrivate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__GKChallenge_getCountOfChallenges___block_invoke;
   v7[3] = &unk_2785DFB80;
-  v8 = v3;
-  v6 = v3;
-  [v5 getCountOfChallengesWithHandler:v7];
+  v8 = challengesCopy;
+  v6 = challengesCopy;
+  [challengeServicePrivate getCountOfChallengesWithHandler:v7];
 }
 
 uint64_t __36__GKChallenge_getCountOfChallenges___block_invoke(uint64_t a1)
@@ -237,10 +237,10 @@ uint64_t __36__GKChallenge_getCountOfChallenges___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)loadChallengesForGame:(id)a3 receivingPlayer:(id)a4 withCompletionHandler:(id)a5
++ (void)loadChallengesForGame:(id)game receivingPlayer:(id)player withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  gameCopy = game;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKChallenge.m", 188, "+[GKChallenge loadChallengesForGame:receivingPlayer:withCompletionHandler:]"];
   v9 = [GKDispatchGroup dispatchGroupWithName:v8];
 
@@ -248,11 +248,11 @@ uint64_t __36__GKChallenge_getCountOfChallenges___block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __75__GKChallenge_loadChallengesForGame_receivingPlayer_withCompletionHandler___block_invoke;
   v16[3] = &unk_2785E0AE8;
-  v10 = v6;
+  v10 = gameCopy;
   v17 = v10;
   v11 = v9;
   v18 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v19 = v12;
   [v11 perform:v16];
   if (v12)
@@ -392,15 +392,15 @@ void __75__GKChallenge_loadChallengesForGame_receivingPlayer_withCompletionHandl
   (*(v2 + 16))(v2, v4, v3);
 }
 
-+ (void)loadReceivedPendingChallengesWithCompletionHandler:(id)a3
++ (void)loadReceivedPendingChallengesWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __66__GKChallenge_loadReceivedPendingChallengesWithCompletionHandler___block_invoke;
   v5[3] = &unk_2785DDCB0;
-  v6 = v3;
-  v4 = v3;
+  v6 = handlerCopy;
+  v4 = handlerCopy;
   [GKChallenge loadReceivedChallengesWithCompletionHandler:v5];
 }
 
@@ -456,20 +456,20 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
   }
 }
 
-- (void)issueToPlayers:(id)a3 message:(id)a4
+- (void)issueToPlayers:(id)players message:(id)message
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = a4;
-  v7 = [v22 count];
-  if (!v22 || !v7)
+  playersCopy = players;
+  messageCopy = message;
+  v7 = [playersCopy count];
+  if (!playersCopy || !v7)
   {
-    v15 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"players must be provided to issue a challenge" userInfo:{0, v22}];
+    v15 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"players must be provided to issue a challenge" userInfo:{0, playersCopy}];
     objc_exception_throw(v15);
   }
 
   v8 = +[GKLocalPlayer localPlayer];
-  v9 = [v22 containsObject:v8];
+  v9 = [playersCopy containsObject:v8];
 
   if (v9)
   {
@@ -478,7 +478,7 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
     v23[0] = @"challenge";
     v23[1] = @"players";
     v24[0] = self;
-    v24[1] = v22;
+    v24[1] = playersCopy;
     v23[2] = @"localPlayer";
     v18 = +[GKLocalPlayer localPlayer];
     v24[2] = v18;
@@ -489,23 +489,23 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
     objc_exception_throw(v20);
   }
 
-  if ([v22 count])
+  if ([playersCopy count])
   {
-    [(GKChallenge *)self setMessage:v6];
-    v10 = [v22 _gkMapWithBlock:&__block_literal_global_81];
+    [(GKChallenge *)self setMessage:messageCopy];
+    v10 = [playersCopy _gkMapWithBlock:&__block_literal_global_81];
     v11 = +[GKDaemonProxy proxyForLocalPlayer];
-    v12 = [v11 challengeService];
-    v13 = [(GKChallenge *)self internal];
-    [v12 issueChallenge:v13 toPlayers:v10 handler:&__block_literal_global_84];
+    challengeService = [v11 challengeService];
+    internal = [(GKChallenge *)self internal];
+    [challengeService issueChallenge:internal toPlayers:v10 handler:&__block_literal_global_84];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)declineWithCompletionHandler:(id)a3
+- (void)declineWithCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if ([(GKChallenge *)self state]!= GKChallengeStatePending)
   {
     v10 = MEMORY[0x277CBEAD8];
@@ -520,11 +520,11 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
   }
 
   v5 = +[GKDaemonProxy proxyForLocalPlayer];
-  v6 = [v5 challengeService];
-  v7 = [(GKChallenge *)self internal];
-  v15 = v7;
+  challengeService = [v5 challengeService];
+  internal = [(GKChallenge *)self internal];
+  v15 = internal;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  [v6 abortChallenges:v8 handler:v4];
+  [challengeService abortChallenges:v8 handler:handlerCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -532,9 +532,9 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
 - (GKGame)game
 {
   v3 = [GKGame alloc];
-  v4 = [(GKChallenge *)self internal];
-  v5 = [v4 game];
-  v6 = [(GKGame *)v3 initWithInternalRepresentation:v5];
+  internal = [(GKChallenge *)self internal];
+  game = [internal game];
+  v6 = [(GKGame *)v3 initWithInternalRepresentation:game];
 
   return v6;
 }
@@ -554,17 +554,17 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
       [(GKChallenge *)v4 issuingPlayerID];
     }
 
-    v5 = @"playerID is no longer available";
+    playerID = @"playerID is no longer available";
   }
 
   else
   {
-    v6 = [(GKChallenge *)self internal];
-    v7 = [v6 issuingPlayer];
-    v5 = [v7 playerID];
+    internal = [(GKChallenge *)self internal];
+    issuingPlayer = [internal issuingPlayer];
+    playerID = [issuingPlayer playerID];
   }
 
-  return v5;
+  return playerID;
 }
 
 - (NSString)receivingPlayerID
@@ -582,37 +582,37 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
       [(GKChallenge *)v4 receivingPlayerID];
     }
 
-    v5 = @"playerID is no longer available";
+    playerID = @"playerID is no longer available";
   }
 
   else
   {
-    v6 = [(GKChallenge *)self internal];
-    v7 = [v6 receivingPlayer];
-    v5 = [v7 playerID];
+    internal = [(GKChallenge *)self internal];
+    receivingPlayer = [internal receivingPlayer];
+    playerID = [receivingPlayer playerID];
   }
 
-  return v5;
+  return playerID;
 }
 
 - (GKPlayer)issuingPlayer
 {
-  v2 = [(GKChallenge *)self internal];
-  v3 = [v2 issuingPlayer];
-  v4 = [GKPlayer canonicalizedPlayerForInternal:v3];
+  internal = [(GKChallenge *)self internal];
+  issuingPlayer = [internal issuingPlayer];
+  v4 = [GKPlayer canonicalizedPlayerForInternal:issuingPlayer];
 
   return v4;
 }
 
 - (GKPlayer)receivingPlayer
 {
-  v3 = [(GKChallenge *)self internal];
-  v4 = [v3 receivingPlayer];
-  if (v4)
+  internal = [(GKChallenge *)self internal];
+  receivingPlayer = [internal receivingPlayer];
+  if (receivingPlayer)
   {
-    v5 = [(GKChallenge *)self internal];
-    v6 = [v5 receivingPlayer];
-    v7 = [GKPlayer canonicalizedPlayerForInternal:v6];
+    internal2 = [(GKChallenge *)self internal];
+    receivingPlayer2 = [internal2 receivingPlayer];
+    v7 = [GKPlayer canonicalizedPlayerForInternal:receivingPlayer2];
   }
 
   else
@@ -623,9 +623,9 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
   return v7;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKChallenge;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -636,7 +636,7 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -644,7 +644,7 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKChallenge;
@@ -657,14 +657,14 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
 
   else
   {
-    v8 = [(GKChallenge *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKChallenge *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKChallenge;
@@ -675,18 +675,18 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
 
   else
   {
-    v6 = [(GKChallenge *)self forwardingTargetForSelector:a3];
+    v6 = [(GKChallenge *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -697,7 +697,7 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
       if (v4)
       {
 
-        LOBYTE(v4) = [GKChallengeInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKChallengeInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -710,48 +710,48 @@ void __59__GKChallenge_loadReceivedChallengesWithCompletionHandler___block_invok
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKChallenge *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKChallenge *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKChallenge *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKChallenge *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)loadUIDetailsWithHandler:(id)a3
+- (void)loadUIDetailsWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 
-- (id)infoTextForIssuingPlayer:(id)a3
+- (id)infoTextForIssuingPlayer:(id)player
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  playerCopy = player;
   v5 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings CHALLENGE_DETAIL_GOAL_FORMAT];
-  v6 = [v4 displayNameWithOptions:0];
+  v6 = [playerCopy displayNameWithOptions:0];
 
   v7 = [v3 stringWithFormat:v5, v6];
 
   return v7;
 }
 
-- (void)loadDetailsWithCompletionHandler:(id)a3
+- (void)loadDetailsWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 

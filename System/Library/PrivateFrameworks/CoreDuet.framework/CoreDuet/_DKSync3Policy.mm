@@ -1,26 +1,26 @@
 @interface _DKSync3Policy
 + (BOOL)cloudSyncDisabled;
 + (BOOL)rapportSyncDisabled;
-+ (id)computePolicyDictionaryWithDefaultSyncPolicyDict:(id)a3 syncPolicyOverridesDict:(id)a4 topLevelDefaultsPolicy:(id)a5;
++ (id)computePolicyDictionaryWithDefaultSyncPolicyDict:(id)dict syncPolicyOverridesDict:(id)overridesDict topLevelDefaultsPolicy:(id)policy;
 + (id)computedPolicyDictionary;
-+ (id)configurationPlistForFilename:(id)a3;
++ (id)configurationPlistForFilename:(id)filename;
 + (id)disabledPolicy;
 + (id)policyCache;
 + (id)productVersion;
-+ (id)syncPolicyConfigPathForFilename:(id)a3;
++ (id)syncPolicyConfigPathForFilename:(id)filename;
 + (id)userDefaults;
-+ (void)_possiblyAddToArray:(id)a3 ifTransport:(int64_t)a4 existsInTransports:(int64_t)a5;
-+ (void)addToDictionary:(id)a3 streamNamesToAlwaysSync:(id)a4;
-+ (void)fillPolicyCache:(id)a3 bySplittingPolicyDictionary:(id)a4;
-+ (void)handleDownloadSyncPolicyResponse:(id)a3 data:(id)a4 error:(id)a5;
-+ (void)overrideDictionary:(id)a3 withOverrides:(id)a4;
-+ (void)possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays:(unint64_t)a3;
-- (BOOL)_anyFeaturePropertyValueWithKey:(id)a3 getterBlock:(id)a4;
++ (void)_possiblyAddToArray:(id)array ifTransport:(int64_t)transport existsInTransports:(int64_t)transports;
++ (void)addToDictionary:(id)dictionary streamNamesToAlwaysSync:(id)sync;
++ (void)fillPolicyCache:(id)cache bySplittingPolicyDictionary:(id)dictionary;
++ (void)handleDownloadSyncPolicyResponse:(id)response data:(id)data error:(id)error;
++ (void)overrideDictionary:(id)dictionary withOverrides:(id)overrides;
++ (void)possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays:(unint64_t)days;
+- (BOOL)_anyFeaturePropertyValueWithKey:(id)key getterBlock:(id)block;
 - (_DKSync3Policy)init;
 - (id)description;
 - (uint64_t)periodicSyncCadenceInMinutesMinimumValue;
-- (unint64_t)_maximumPropertyValueWithKey:(id)a3 policies:(id)a4 skipZeroValues:(BOOL)a5;
-- (unint64_t)_minimumPropertyValueWithKey:(id)a3 policies:(id)a4 skipZeroValues:(BOOL)a5;
+- (unint64_t)_maximumPropertyValueWithKey:(id)key policies:(id)policies skipZeroValues:(BOOL)values;
+- (unint64_t)_minimumPropertyValueWithKey:(id)key policies:(id)policies skipZeroValues:(BOOL)values;
 - (unint64_t)minimumTimeBetweenSyncsInSecondsMaximumValue;
 @end
 
@@ -54,27 +54,27 @@
 + (id)computedPolicyDictionary
 {
   v3 = [_DKSync3Policy configurationPlistForFilename:@"Policies/com.apple.coreduet.knowledge.syncPolicies3.plist"];
-  v4 = [a1 userDefaults];
-  v5 = [v4 objectForKey:@"Sync3Policies"];
+  userDefaults = [self userDefaults];
+  v5 = [userDefaults objectForKey:@"Sync3Policies"];
 
-  v6 = [a1 userDefaults];
-  v7 = [v6 objectForKey:@"Sync3Policy"];
+  userDefaults2 = [self userDefaults];
+  v7 = [userDefaults2 objectForKey:@"Sync3Policy"];
 
-  v8 = [a1 computePolicyDictionaryWithDefaultSyncPolicyDict:v3 syncPolicyOverridesDict:v5 topLevelDefaultsPolicy:v7];
+  v8 = [self computePolicyDictionaryWithDefaultSyncPolicyDict:v3 syncPolicyOverridesDict:v5 topLevelDefaultsPolicy:v7];
 
   return v8;
 }
 
-+ (id)computePolicyDictionaryWithDefaultSyncPolicyDict:(id)a3 syncPolicyOverridesDict:(id)a4 topLevelDefaultsPolicy:(id)a5
++ (id)computePolicyDictionaryWithDefaultSyncPolicyDict:(id)dict syncPolicyOverridesDict:(id)overridesDict topLevelDefaultsPolicy:(id)policy
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  overridesDictCopy = overridesDict;
+  policyCopy = policy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 mutableCopy];
+    v11 = [dictCopy mutableCopy];
   }
 
   else
@@ -83,14 +83,14 @@
   }
 
   v12 = v11;
-  v13 = [v8 objectForKeyedSubscript:@"Version"];
+  v13 = [dictCopy objectForKeyedSubscript:@"Version"];
   [v13 floatValue];
   v15 = v14;
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v9 objectForKeyedSubscript:@"Version"];
+    v16 = [overridesDictCopy objectForKeyedSubscript:@"Version"];
     if (!v16 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v16 floatValue], v17 < v15))
     {
       v18 = +[_CDLogging syncChannel];
@@ -104,14 +104,14 @@
 
       if (!+[_DKCloudUtilities isUnitTesting])
       {
-        v20 = [a1 userDefaults];
-        [v20 removeObjectForKey:@"Sync3Policies"];
+        userDefaults = [self userDefaults];
+        [userDefaults removeObjectForKey:@"Sync3Policies"];
       }
 
-      v9 = MEMORY[0x1E695E0F8];
+      overridesDictCopy = MEMORY[0x1E695E0F8];
     }
 
-    if ([v9 count])
+    if ([overridesDictCopy count])
     {
       v21 = +[_CDLogging syncChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -119,12 +119,12 @@
         +[_DKSync3Policy computePolicyDictionaryWithDefaultSyncPolicyDict:syncPolicyOverridesDict:topLevelDefaultsPolicy:];
       }
 
-      [a1 overrideDictionary:v12 withOverrides:v9];
+      [self overrideDictionary:v12 withOverrides:overridesDictCopy];
     }
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [policyCopy count])
   {
     v22 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -132,12 +132,12 @@
       +[_DKSync3Policy computePolicyDictionaryWithDefaultSyncPolicyDict:syncPolicyOverridesDict:topLevelDefaultsPolicy:];
     }
 
-    [a1 overrideDictionary:v12 withOverrides:v10];
-    v23 = [v10 objectForKeyedSubscript:@"StreamNamesToAlwaysSync"];
+    [self overrideDictionary:v12 withOverrides:policyCopy];
+    v23 = [policyCopy objectForKeyedSubscript:@"StreamNamesToAlwaysSync"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v23 count])
     {
-      [a1 addToDictionary:v12 streamNamesToAlwaysSync:v23];
+      [self addToDictionary:v12 streamNamesToAlwaysSync:v23];
     }
   }
 
@@ -153,16 +153,16 @@
   return v24;
 }
 
-+ (void)overrideDictionary:(id)a3 withOverrides:(id)a4
++ (void)overrideDictionary:(id)dictionary withOverrides:(id)overrides
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dictionaryCopy = dictionary;
+  overridesCopy = overrides;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v42 count:16];
+  v7 = [overridesCopy countByEnumeratingWithState:&v28 objects:v42 count:16];
   if (v7)
   {
     v9 = v7;
@@ -176,12 +176,12 @@
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(overridesCopy);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v5 objectForKeyedSubscript:{v13, v25}];
-        v15 = [v6 objectForKeyedSubscript:v13];
+        v14 = [dictionaryCopy objectForKeyedSubscript:{v13, v25}];
+        v15 = [overridesCopy objectForKeyedSubscript:v13];
         if (v14 && ((v16 = *(v11 + 3872), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (v17 = *(v11 + 3872), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
         {
           v18 = *(v11 + 3872);
@@ -192,7 +192,7 @@
             v21 = [v14 mutableCopy];
             [v21 addEntriesFromDictionary:v20];
 
-            [v5 setObject:v21 forKeyedSubscript:v13];
+            [dictionaryCopy setObject:v21 forKeyedSubscript:v13];
             v11 = 0x1E695D000;
           }
 
@@ -214,7 +214,7 @@
               v38 = 2114;
               v39 = v23;
               v40 = 2112;
-              v41 = v5;
+              v41 = dictionaryCopy;
               _os_log_error_impl(&dword_191750000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Ignoring override due to type mismatch for key %{public}@ (%{public}@ vs. %{public}@: %@", buf, 0x34u);
             }
           }
@@ -222,11 +222,11 @@
 
         else
         {
-          [v5 setObject:v15 forKeyedSubscript:v13];
+          [dictionaryCopy setObject:v15 forKeyedSubscript:v13];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v28 objects:v42 count:16];
+      v9 = [overridesCopy countByEnumeratingWithState:&v28 objects:v42 count:16];
     }
 
     while (v9);
@@ -235,17 +235,17 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addToDictionary:(id)a3 streamNamesToAlwaysSync:(id)a4
++ (void)addToDictionary:(id)dictionary streamNamesToAlwaysSync:(id)sync
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v38 = a4;
+  dictionaryCopy = dictionary;
+  syncCopy = sync;
   v37 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = v5;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v7)
   {
@@ -282,7 +282,7 @@
             v45 = 0u;
             v46 = 0u;
             v47 = 0u;
-            v19 = v38;
+            v19 = syncCopy;
             v20 = [v19 countByEnumeratingWithState:&v44 objects:v53 count:16];
             if (v20)
             {
@@ -365,18 +365,18 @@
   v34 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)fillPolicyCache:(id)a3 bySplittingPolicyDictionary:(id)a4
++ (void)fillPolicyCache:(id)cache bySplittingPolicyDictionary:(id)dictionary
 {
   v38 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v5 = a4;
+  cacheCopy = cache;
+  dictionaryCopy = dictionary;
   v26 = objc_opt_new();
   v25 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = v5;
+  v6 = dictionaryCopy;
   v7 = [v6 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v7)
   {
@@ -404,13 +404,13 @@
           if (v15)
           {
             v16 = [[_DKSync3FeaturePolicy alloc] initWithName:v11 properties:v14];
-            [v27 setObject:v16 forKey:v11];
+            [cacheCopy setObject:v16 forKey:v11];
             [v26 addObject:v15];
-            v17 = [v27 objectForKey:v15];
+            v17 = [cacheCopy objectForKey:v15];
             if (!v17)
             {
               v17 = objc_opt_new();
-              [v27 setObject:v17 forKey:v15];
+              [cacheCopy setObject:v17 forKey:v15];
             }
 
             v18 = v17;
@@ -437,7 +437,7 @@
             }
 
             v17 = [[_DKSync3TransportPolicy alloc] initWithName:v11 properties:v14];
-            [v27 setObject:v17 forKey:v11];
+            [cacheCopy setObject:v17 forKey:v11];
             v18 = v25;
             v19 = v11;
           }
@@ -474,9 +474,9 @@ LABEL_14:
     while (v22);
   }
 
-  [v27 setObject:v26 forKey:@"_DKSync3PolicyAllFeatures"];
-  [v27 setObject:v25 forKey:@"_DKSync3PolicyAllTransports"];
-  v23 = [v27 debugDescription];
+  [cacheCopy setObject:v26 forKey:@"_DKSync3PolicyAllFeatures"];
+  [cacheCopy setObject:v25 forKey:@"_DKSync3PolicyAllTransports"];
+  v23 = [cacheCopy debugDescription];
   NSLog(&cfstr_Policycache.isa, v23);
 
   v24 = *MEMORY[0x1E69E9840];
@@ -509,65 +509,65 @@ LABEL_14:
 
 + (BOOL)rapportSyncDisabled
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 objectForKey:@"Sync3Policy"];
+  userDefaults = [self userDefaults];
+  v3 = [userDefaults objectForKey:@"Sync3Policy"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [v3 objectForKeyedSubscript:@"RapportSyncDisabled"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)cloudSyncDisabled
 {
-  v2 = [a1 userDefaults];
-  v3 = [v2 objectForKey:@"Sync3Policy"];
+  userDefaults = [self userDefaults];
+  v3 = [userDefaults objectForKey:@"Sync3Policy"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [v3 objectForKeyedSubscript:@"CloudSyncDisabled"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (void)possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays:(unint64_t)a3
++ (void)possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays:(unint64_t)days
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77___DKSync3Policy_possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays___block_invoke;
   block[3] = &unk_1E7367370;
   v4 = @"com.apple.coreduet.sync-policy.policy-download";
-  v5 = a1;
-  v6 = a3;
+  selfCopy = self;
+  daysCopy = days;
   if (possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays__initialized_0 != -1)
   {
     dispatch_once(&possiblyDownloadSyncPolicyWithPolicyDownloadIntervalInDays__initialized_0, block);
   }
 }
 
-+ (void)handleDownloadSyncPolicyResponse:(id)a3 data:(id)a4 error:(id)a5
++ (void)handleDownloadSyncPolicyResponse:(id)response data:(id)data error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  responseCopy = response;
+  dataCopy = data;
+  errorCopy = error;
+  if (errorCopy)
   {
     v11 = +[_CDLogging syncChannel];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -578,9 +578,9 @@ LABEL_14:
     goto LABEL_5;
   }
 
-  if ([v8 statusCode] != 200)
+  if ([responseCopy statusCode] != 200)
   {
-    if ([v8 statusCode] != 204 && objc_msgSend(v8, "statusCode") != 205 && objc_msgSend(v8, "statusCode") != 404 && objc_msgSend(v8, "statusCode") != 410)
+    if ([responseCopy statusCode] != 204 && objc_msgSend(responseCopy, "statusCode") != 205 && objc_msgSend(responseCopy, "statusCode") != 404 && objc_msgSend(responseCopy, "statusCode") != 410)
     {
       goto LABEL_5;
     }
@@ -592,8 +592,8 @@ LABEL_14:
     }
 
 LABEL_19:
-    v13 = +[_DKSync3Policy userDefaults];
-    v16 = [v13 objectForKey:@"Sync3Policies"];
+    date2 = +[_DKSync3Policy userDefaults];
+    v16 = [date2 objectForKey:@"Sync3Policies"];
     v17 = v16;
     if (v16)
     {
@@ -607,24 +607,24 @@ LABEL_19:
 
     v19 = v18;
 
-    [v13 setValue:v12 forKey:@"Sync3Policies"];
-    v20 = [MEMORY[0x1E695DF00] date];
-    [v13 setValue:v20 forKey:@"CloudSyncPoliciesLastModified"];
+    [date2 setValue:v12 forKey:@"Sync3Policies"];
+    date = [MEMORY[0x1E695DF00] date];
+    [date2 setValue:date forKey:@"CloudSyncPoliciesLastModified"];
 
     if (([v12 isEqualToDictionary:v19] & 1) == 0)
     {
       v21 = +[_DKSync3Policy policyCache];
       [v21 removeAllObjects];
 
-      v22 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v22 postNotificationName:@"_DKSync3PolicyDidChangeNotification" object:a1 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:@"_DKSync3PolicyDidChangeNotification" object:self userInfo:0];
     }
 
     goto LABEL_25;
   }
 
   v23 = 0;
-  v12 = [MEMORY[0x1E696AE40] propertyListWithData:v9 options:0 format:0 error:&v23];
+  v12 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v23];
   v14 = v23;
   if (!v12)
   {
@@ -641,29 +641,29 @@ LABEL_19:
   }
 
 LABEL_5:
-  if ([v8 statusCode] == 304)
+  if ([responseCopy statusCode] == 304)
   {
     v12 = +[_DKSync3Policy userDefaults];
-    v13 = [MEMORY[0x1E695DF00] date];
-    [v12 setValue:v13 forKey:@"CloudSyncPoliciesLastModified"];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [v12 setValue:date2 forKey:@"CloudSyncPoliciesLastModified"];
 LABEL_25:
   }
 }
 
-+ (id)syncPolicyConfigPathForFilename:(id)a3
++ (id)syncPolicyConfigPathForFilename:(id)filename
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
+  filenameCopy = filename;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 pathForResource:v4 ofType:0];
+  v6 = [v5 pathForResource:filenameCopy ofType:0];
 
   return v6;
 }
 
-+ (id)configurationPlistForFilename:(id)a3
++ (id)configurationPlistForFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 syncPolicyConfigPathForFilename:v4];
+  filenameCopy = filename;
+  v5 = [self syncPolicyConfigPathForFilename:filenameCopy];
   if (!v5)
   {
     v6 = +[_CDLogging syncChannel];
@@ -704,12 +704,12 @@ LABEL_9:
   return result;
 }
 
-+ (void)_possiblyAddToArray:(id)a3 ifTransport:(int64_t)a4 existsInTransports:(int64_t)a5
++ (void)_possiblyAddToArray:(id)array ifTransport:(int64_t)transport existsInTransports:(int64_t)transports
 {
-  v7 = a3;
-  if ((a5 & a4) != 0)
+  arrayCopy = array;
+  if ((transports & transport) != 0)
   {
-    v8 = [_DKSyncPeerStatusTracker stringForTransports:a4];
+    v8 = [_DKSyncPeerStatusTracker stringForTransports:transport];
     v9 = +[_DKSync3Policy policyCache];
     v10 = [v9 objectForKey:v8];
     v11 = v10;
@@ -717,7 +717,7 @@ LABEL_9:
     {
       if ((*(v10 + 8) & 1) == 0)
       {
-        [v7 addObject:v10];
+        [arrayCopy addObject:v10];
         goto LABEL_10;
       }
 
@@ -741,16 +741,16 @@ LABEL_10:
   }
 }
 
-- (unint64_t)_minimumPropertyValueWithKey:(id)a3 policies:(id)a4 skipZeroValues:(BOOL)a5
+- (unint64_t)_minimumPropertyValueWithKey:(id)key policies:(id)policies skipZeroValues:(BOOL)values
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  policiesCopy = policies;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v8 = [policiesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
     v10 = v8;
@@ -765,33 +765,33 @@ LABEL_10:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(policiesCopy);
         }
 
-        v15 = [*(*(&v25 + 1) + 8 * i) properties];
-        v16 = [v15 objectForKeyedSubscript:v6];
+        properties = [*(*(&v25 + 1) + 8 * i) properties];
+        v16 = [properties objectForKeyedSubscript:keyCopy];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 unsignedIntegerValue];
-          if (v17 >= v11)
+          unsignedIntegerValue = [v16 unsignedIntegerValue];
+          if (unsignedIntegerValue >= v11)
           {
             v18 = v11;
           }
 
           else
           {
-            v18 = v17;
+            v18 = unsignedIntegerValue;
           }
 
           if (v13)
           {
-            v18 = v17;
+            v18 = unsignedIntegerValue;
           }
 
-          v13 &= v17 == 0 && a5;
-          if (v17 != 0 || !a5)
+          v13 &= unsignedIntegerValue == 0 && values;
+          if (unsignedIntegerValue != 0 || !values)
           {
             v11 = v18;
           }
@@ -806,13 +806,13 @@ LABEL_10:
             *buf = v22;
             v30 = v23;
             v31 = 2114;
-            v32 = v6;
+            v32 = keyCopy;
             _os_log_error_impl(&dword_191750000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Invalid non-number type for key %{public}@", buf, 0x16u);
           }
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v10 = [policiesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v10);
@@ -827,16 +827,16 @@ LABEL_10:
   return v11;
 }
 
-- (unint64_t)_maximumPropertyValueWithKey:(id)a3 policies:(id)a4 skipZeroValues:(BOOL)a5
+- (unint64_t)_maximumPropertyValueWithKey:(id)key policies:(id)policies skipZeroValues:(BOOL)values
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  policiesCopy = policies;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v8 = [policiesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
     v10 = v8;
@@ -851,33 +851,33 @@ LABEL_10:
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(policiesCopy);
         }
 
-        v15 = [*(*(&v25 + 1) + 8 * i) properties];
-        v16 = [v15 objectForKeyedSubscript:v6];
+        properties = [*(*(&v25 + 1) + 8 * i) properties];
+        v16 = [properties objectForKeyedSubscript:keyCopy];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = [v16 unsignedIntegerValue];
-          if (v17 <= v11)
+          unsignedIntegerValue = [v16 unsignedIntegerValue];
+          if (unsignedIntegerValue <= v11)
           {
             v18 = v11;
           }
 
           else
           {
-            v18 = v17;
+            v18 = unsignedIntegerValue;
           }
 
           if (v13)
           {
-            v18 = v17;
+            v18 = unsignedIntegerValue;
           }
 
-          v13 &= v17 == 0 && a5;
-          if (v17 != 0 || !a5)
+          v13 &= unsignedIntegerValue == 0 && values;
+          if (unsignedIntegerValue != 0 || !values)
           {
             v11 = v18;
           }
@@ -892,13 +892,13 @@ LABEL_10:
             *buf = v22;
             v30 = v23;
             v31 = 2114;
-            v32 = v6;
+            v32 = keyCopy;
             _os_log_error_impl(&dword_191750000, v19, OS_LOG_TYPE_ERROR, "%{public}@: Invalid non-number type for key %{public}@", buf, 0x16u);
           }
         }
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v10 = [policiesCopy countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v10);
@@ -913,10 +913,10 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_anyFeaturePropertyValueWithKey:(id)a3 getterBlock:(id)a4
+- (BOOL)_anyFeaturePropertyValueWithKey:(id)key getterBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  blockCopy = block;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -935,7 +935,7 @@ LABEL_10:
           objc_enumerationMutation(v6);
         }
 
-        if (v5[2](v5, *(*(&v12 + 1) + 8 * i)))
+        if (blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * i)))
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
@@ -969,10 +969,10 @@ LABEL_11:
   transportPolicies = self->_transportPolicies;
   if (v3 == 1)
   {
-    v5 = [(NSArray *)self->_transportPolicies firstObject];
-    if (v5)
+    firstObject = [(NSArray *)self->_transportPolicies firstObject];
+    if (firstObject)
     {
-      v6 = v5[9];
+      v6 = firstObject[9];
     }
 
     else
@@ -988,33 +988,33 @@ LABEL_11:
 
 - (uint64_t)periodicSyncCadenceInMinutesMinimumValue
 {
-  v1 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v1;
+    return selfCopy;
   }
 
-  if (![*(a1 + 72) count])
+  if (![*(self + 72) count])
   {
     return 0;
   }
 
-  v2 = [*(v1 + 72) count];
-  v3 = *(v1 + 72);
+  v2 = [*(selfCopy + 72) count];
+  v3 = *(selfCopy + 72);
   if (v2 == 1)
   {
-    v4 = [*(v1 + 72) firstObject];
-    if (v4)
+    firstObject = [*(selfCopy + 72) firstObject];
+    if (firstObject)
     {
-      v1 = v4[10];
+      selfCopy = firstObject[10];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
-    return v1;
+    return selfCopy;
   }
 
   v6 = OUTLINED_FUNCTION_17_2();

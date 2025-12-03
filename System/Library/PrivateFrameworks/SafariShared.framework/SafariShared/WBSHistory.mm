@@ -2,75 +2,75 @@
 + (id)defaultHistoryDatabaseDirectoryURL;
 + (id)historyDatabaseURL;
 + (id)historyDatabaseWriteAheadLogURL;
-+ (id)profileDirectoryURLForProfileID:(id)a3;
++ (id)profileDirectoryURLForProfileID:(id)d;
 + (void)clearExistingSharedHistory;
-- (BOOL)_isStringForUserTypedDomainExpansionInHistory:(id)a3;
-- (BOOL)canRecordRedirectFromVisit:(id)a3 to:(id)a4;
-- (BOOL)hasItemSince:(id)a3;
+- (BOOL)_isStringForUserTypedDomainExpansionInHistory:(id)history;
+- (BOOL)canRecordRedirectFromVisit:(id)visit to:(id)to;
+- (BOOL)hasItemSince:(id)since;
 - (NSArray)allItems;
-- (WBSHistory)initWithDatabaseID:(id)a3;
-- (id)_removeItemForURLString:(id)a3;
-- (id)historyStore:(id)a3 itemForURLString:(id)a4 createIfNeeded:(BOOL)a5;
-- (id)itemForURL:(id)a3;
-- (id)itemForURLString:(id)a3;
-- (id)itemForURLString:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)itemRedirectedFrom:(id)a3 to:(id)a4 origin:(int64_t)a5 date:(id)a6;
-- (id)itemRedirectedFrom:(id)a3 to:(id)a4 origin:(int64_t)a5 date:(id)a6 statusCode:(int64_t)a7;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 origin:(int64_t)a9;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 origin:(int64_t)a9 attributes:(unint64_t)a10;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 statusCode:(int64_t)a9 origin:(int64_t)a10;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 statusCode:(int64_t)a9 origin:(int64_t)a10 attributes:(unint64_t)a11;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 wasHTTPNonGet:(BOOL)a5 wasFailure:(BOOL)a6 increaseVisitCount:(BOOL)a7;
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 wasHTTPNonGet:(BOOL)a5 wasFailure:(BOOL)a6 increaseVisitCount:(BOOL)a7 statusCode:(int64_t)a8;
-- (id)lastVisitForHighLevelDomain:(id)a3;
+- (WBSHistory)initWithDatabaseID:(id)d;
+- (id)_removeItemForURLString:(id)string;
+- (id)historyStore:(id)store itemForURLString:(id)string createIfNeeded:(BOOL)needed;
+- (id)itemForURL:(id)l;
+- (id)itemForURLString:(id)string;
+- (id)itemForURLString:(id)string createIfNeeded:(BOOL)needed;
+- (id)itemRedirectedFrom:(id)from to:(id)to origin:(int64_t)origin date:(id)date;
+- (id)itemRedirectedFrom:(id)from to:(id)to origin:(int64_t)origin date:(id)date statusCode:(int64_t)code;
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count origin:(int64_t)origin;
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count origin:(int64_t)origin attributes:(unint64_t)self0;
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code origin:(int64_t)self0;
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code origin:(int64_t)self0 attributes:(unint64_t)self1;
+- (id)itemVisitedAtURLString:(id)string title:(id)title wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count;
+- (id)itemVisitedAtURLString:(id)string title:(id)title wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code;
+- (id)lastVisitForHighLevelDomain:(id)domain;
 - (unint64_t)numberOfHistoryItems;
-- (void)_addItem:(id)a3 addToStringsForUserTypedDomainExpansions:(BOOL)a4;
-- (void)_addItemToStringsForUserTypedDomainExpansion:(id)a3;
+- (void)_addItem:(id)item addToStringsForUserTypedDomainExpansions:(BOOL)expansions;
+- (void)_addItemToStringsForUserTypedDomainExpansion:(id)expansion;
 - (void)_createHistoryStoreIfNeeded;
-- (void)_dispatchHistoryClearedAfterDate:(id)a3 beforeDate:(id)a4;
-- (void)_dispatchHistoryItemAdded:(id)a3 withVisitOrigin:(int64_t)a4;
-- (void)_dispatchHistoryItemDidChange:(id)a3 byUserInitiatedAction:(BOOL)a4;
-- (void)_dispatchHistoryItemWillChange:(id)a3;
+- (void)_dispatchHistoryClearedAfterDate:(id)date beforeDate:(id)beforeDate;
+- (void)_dispatchHistoryItemAdded:(id)added withVisitOrigin:(int64_t)origin;
+- (void)_dispatchHistoryItemDidChange:(id)change byUserInitiatedAction:(BOOL)action;
+- (void)_dispatchHistoryItemWillChange:(id)change;
 - (void)_dispatchHistoryLoaded;
-- (void)_dispatchHistoryVisitAdded:(id)a3;
+- (void)_dispatchHistoryVisitAdded:(id)added;
 - (void)_loadHistory;
-- (void)_removeItemFromStringsForUserTypedDomainExpansion:(id)a3;
-- (void)_removeItemsInResponseToUserAction:(id)a3 completionHandler:(id)a4;
-- (void)_sendNotification:(id)a3 withItems:(id)a4;
-- (void)_setAttributes:(unint64_t)a3 forVisit:(id)a4;
+- (void)_removeItemFromStringsForUserTypedDomainExpansion:(id)expansion;
+- (void)_removeItemsInResponseToUserAction:(id)action completionHandler:(id)handler;
+- (void)_sendNotification:(id)notification withItems:(id)items;
+- (void)_setAttributes:(unint64_t)attributes forVisit:(id)visit;
 - (void)_unload;
 - (void)_waitUntilHistoryHasLoadedMainThread;
-- (void)addAttributes:(unint64_t)a3 toVisit:(id)a4;
-- (void)addAutocompleteTrigger:(id)a3 forURLString:(id)a4;
-- (void)addTagWithIdentifier:(id)a3 title:(id)a4 toItemAtURL:(id)a5 level:(int64_t)a6 completionHandler:(id)a7;
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)clearHistoryWithCompletionHandler:(id)a3;
-- (void)enumerateItemsAsynchronouslyUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)exportHistoryToFileWithURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchHistoricalHighLevelDomainsWithCompletionHandler:(id)a3;
-- (void)getAllItemsWithCompletionHandler:(id)a3;
-- (void)getAutocompleteTriggersForURLString:(id)a3 completionHandler:(id)a4;
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6;
-- (void)getVisitsCreatedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5;
-- (void)historyLoader:(id)a3 didLoadItems:(id)a4 stringsForUserTypeDomainExpansion:(id)a5;
-- (void)historyLoaderDidFinishLoading:(id)a3;
-- (void)historyStore:(id)a3 didAddVisits:(id)a4;
-- (void)historyStore:(id)a3 didPrepareToDeleteWithDeletionPlan:(id)a4;
-- (void)historyStore:(id)a3 didRemoveHighLevelDomains:(id)a4;
-- (void)historyStore:(id)a3 didRemoveHostnames:(id)a4;
-- (void)historyStore:(id)a3 didRemoveItems:(id)a4;
-- (void)historyStore:(id)a3 didRemoveVisits:(id)a4;
-- (void)historyStoreDidFailDatabaseIntegrityCheck:(id)a3 error:(id)a4 databaseURLs:(id)a5;
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)addAttributes:(unint64_t)attributes toVisit:(id)visit;
+- (void)addAutocompleteTrigger:(id)trigger forURLString:(id)string;
+- (void)addTagWithIdentifier:(id)identifier title:(id)title toItemAtURL:(id)l level:(int64_t)level completionHandler:(id)handler;
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler;
+- (void)clearHistoryWithCompletionHandler:(id)handler;
+- (void)enumerateItemsAsynchronouslyUsingBlock:(id)block completionHandler:(id)handler;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)exportHistoryToFileWithURL:(id)l completionHandler:(id)handler;
+- (void)fetchHistoricalHighLevelDomainsWithCompletionHandler:(id)handler;
+- (void)getAllItemsWithCompletionHandler:(id)handler;
+- (void)getAutocompleteTriggersForURLString:(id)string completionHandler:(id)handler;
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler;
+- (void)getVisitsCreatedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler;
+- (void)historyLoader:(id)loader didLoadItems:(id)items stringsForUserTypeDomainExpansion:(id)expansion;
+- (void)historyLoaderDidFinishLoading:(id)loading;
+- (void)historyStore:(id)store didAddVisits:(id)visits;
+- (void)historyStore:(id)store didPrepareToDeleteWithDeletionPlan:(id)plan;
+- (void)historyStore:(id)store didRemoveHighLevelDomains:(id)domains;
+- (void)historyStore:(id)store didRemoveHostnames:(id)hostnames;
+- (void)historyStore:(id)store didRemoveItems:(id)items;
+- (void)historyStore:(id)store didRemoveVisits:(id)visits;
+- (void)historyStoreDidFailDatabaseIntegrityCheck:(id)check error:(id)error databaseURLs:(id)ls;
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (void)loadHistoryAsynchronouslyIfNeeded;
-- (void)performBlockAfterHistoryHasLoaded:(id)a3;
-- (void)releaseCloudHistory:(id)a3;
-- (void)removeItemsInResponseToUserAction:(id)a3 completionHandler:(id)a4;
-- (void)savePendingChangesBeforeTerminationWithCompletionHandler:(id)a3;
-- (void)setHistoryAgeLimit:(double)a3;
-- (void)updateTitle:(id)a3 forVisit:(id)a4;
-- (void)vacuumHistoryWithCompletionHandler:(id)a3;
+- (void)performBlockAfterHistoryHasLoaded:(id)loaded;
+- (void)releaseCloudHistory:(id)history;
+- (void)removeItemsInResponseToUserAction:(id)action completionHandler:(id)handler;
+- (void)savePendingChangesBeforeTerminationWithCompletionHandler:(id)handler;
+- (void)setHistoryAgeLimit:(double)limit;
+- (void)updateTitle:(id)title forVisit:(id)visit;
+- (void)vacuumHistoryWithCompletionHandler:(id)handler;
 - (void)waitUntilHistoryHasLoaded;
 @end
 
@@ -80,9 +80,9 @@
 {
   if (!self->_historyStore)
   {
-    v4 = [(WBSHistory *)self _createHistoryStore];
+    _createHistoryStore = [(WBSHistory *)self _createHistoryStore];
     historyStore = self->_historyStore;
-    self->_historyStore = v4;
+    self->_historyStore = _createHistoryStore;
 
     v6 = self->_historyStore;
 
@@ -141,7 +141,7 @@
   block[1] = 3221225472;
   block[2] = __32__WBSHistory_historyDatabaseURL__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[WBSHistory historyDatabaseURL]::onceToken != -1)
   {
     dispatch_once(&+[WBSHistory historyDatabaseURL]::onceToken, block);
@@ -180,29 +180,29 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
   +[WBSHistory historyDatabaseURL]::historyURL = v1;
 }
 
-+ (id)profileDirectoryURLForProfileID:(id)a3
++ (id)profileDirectoryURLForProfileID:(id)d
 {
-  v4 = a3;
-  if ([v4 length] && !objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69C8B58]))
+  dCopy = d;
+  if ([dCopy length] && !objc_msgSend(dCopy, "isEqualToString:", *MEMORY[0x1E69C8B58]))
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v6 safari_profileDirectoryURLWithID:v4 createIfNeeded:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    defaultHistoryDatabaseDirectoryURL = [defaultManager safari_profileDirectoryURLWithID:dCopy createIfNeeded:0];
   }
 
   else
   {
-    v5 = [a1 defaultHistoryDatabaseDirectoryURL];
+    defaultHistoryDatabaseDirectoryURL = [self defaultHistoryDatabaseDirectoryURL];
   }
 
-  return v5;
+  return defaultHistoryDatabaseDirectoryURL;
 }
 
 + (id)historyDatabaseWriteAheadLogURL
 {
   {
     v4 = MEMORY[0x1E69C89E8];
-    v5 = [a1 historyDatabaseURL];
-    +[WBSHistory historyDatabaseWriteAheadLogURL]::historyWriteAheadLogURL = [v4 writeAheadLogURLForDatabaseURL:v5];
+    historyDatabaseURL = [self historyDatabaseURL];
+    +[WBSHistory historyDatabaseWriteAheadLogURL]::historyWriteAheadLogURL = [v4 writeAheadLogURLForDatabaseURL:historyDatabaseURL];
   }
 
   v2 = +[WBSHistory historyDatabaseWriteAheadLogURL]::historyWriteAheadLogURL;
@@ -210,9 +210,9 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (WBSHistory)initWithDatabaseID:(id)a3
+- (WBSHistory)initWithDatabaseID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = WBSHistory;
   v6 = [(WBSHistory *)&v21 init];
@@ -226,9 +226,9 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
     v10 = *(v6 + 1);
     *(v6 + 1) = v9;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = *(v6 + 2);
-    *(v6 + 2) = v11;
+    *(v6 + 2) = dictionary;
 
     v13 = dispatch_queue_create("com.apple.SafariShared.WBSHistory.stringsForUserTypedDomainExpansion", 0);
     v14 = *(v6 + 3);
@@ -243,8 +243,8 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
     *(v6 + 7) = v17;
 
     dispatch_suspend(*(v6 + 7));
-    objc_storeStrong(v6 + 10, a3);
-    if (!v5)
+    objc_storeStrong(v6 + 10, d);
+    if (!dCopy)
     {
       objc_storeStrong(&existingSharedHistory, v6);
       objc_storeStrong(v6 + 10, *MEMORY[0x1E69C8B58]);
@@ -256,18 +256,18 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (id)itemForURLString:(id)a3
+- (id)itemForURLString:(id)string
 {
-  v3 = [(WBSHistory *)self itemForURLString:a3 createIfNeeded:0];
+  v3 = [(WBSHistory *)self itemForURLString:string createIfNeeded:0];
 
   return v3;
 }
 
-- (id)itemForURLString:(id)a3 createIfNeeded:(BOOL)a4
+- (id)itemForURLString:(id)string createIfNeeded:(BOOL)needed
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (stringCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -282,8 +282,8 @@ void __32__WBSHistory_historyDatabaseURL__block_invoke(uint64_t a1)
     v11[3] = &unk_1E7FC6820;
     v13 = &v15;
     v11[4] = self;
-    v12 = v6;
-    v14 = a4;
+    v12 = stringCopy;
+    neededCopy = needed;
     dispatch_sync(entriesByURLStringAccessQueue, v11);
     v9 = v16[5];
 
@@ -320,11 +320,11 @@ void __46__WBSHistory_itemForURLString_createIfNeeded___block_invoke(uint64_t a1
   }
 }
 
-- (id)lastVisitForHighLevelDomain:(id)a3
+- (id)lastVisitForHighLevelDomain:(id)domain
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  domainCopy = domain;
+  if (domainCopy)
   {
     v27 = 0;
     v28 = &v27;
@@ -361,16 +361,16 @@ void __46__WBSHistory_itemForURLString_createIfNeeded___block_invoke(uint64_t a1
 
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = [v11 url];
-          v13 = [v12 safari_userVisibleHostWithoutWWWSubdomain];
-          v14 = [v13 isEqualToString:v4];
+          safari_userVisibleHostWithoutWWWSubdomain = [v12 safari_userVisibleHostWithoutWWWSubdomain];
+          v14 = [safari_userVisibleHostWithoutWWWSubdomain isEqualToString:domainCopy];
 
           if (v14)
           {
             if (!v7 || ([v7 visitTime], v16 = v15, objc_msgSend(v11, "lastVisit"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "visitTime"), v19 = v16 > v18, v17, !v19))
             {
-              v20 = [v11 lastVisit];
+              lastVisit = [v11 lastVisit];
 
-              v7 = v20;
+              v7 = lastVisit;
             }
           }
         }
@@ -400,9 +400,9 @@ void __42__WBSHistory_lastVisitForHighLevelDomain___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasItemSince:(id)a3
+- (BOOL)hasItemSince:(id)since
 {
-  v4 = a3;
+  sinceCopy = since;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -413,9 +413,9 @@ void __42__WBSHistory_lastVisitForHighLevelDomain___block_invoke(uint64_t a1)
   block[2] = __27__WBSHistory_hasItemSince___block_invoke;
   block[3] = &unk_1E7FC6870;
   block[4] = self;
-  v9 = v4;
+  v9 = sinceCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = sinceCopy;
   dispatch_sync(entriesByURLStringAccessQueue, block);
   LOBYTE(entriesByURLStringAccessQueue) = *(v12 + 24);
 
@@ -449,13 +449,13 @@ void __27__WBSHistory_hasItemSince___block_invoke_2(uint64_t a1, uint64_t a2, vo
   }
 }
 
-- (void)removeItemsInResponseToUserAction:(id)a3 completionHandler:(id)a4
+- (void)removeItemsInResponseToUserAction:(id)action completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  actionCopy = action;
+  handlerCopy = handler;
+  if ([actionCopy count])
   {
-    [(WBSHistory *)self _removeItemsInResponseToUserAction:v6 completionHandler:v7];
+    [(WBSHistory *)self _removeItemsInResponseToUserAction:actionCopy completionHandler:handlerCopy];
   }
 
   else
@@ -467,25 +467,25 @@ void __27__WBSHistory_hasItemSince___block_invoke_2(uint64_t a1, uint64_t a2, vo
       _os_log_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_INFO, "Empty list of items to remove", v9, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 }
 
-- (void)_removeItemsInResponseToUserAction:(id)a3 completionHandler:(id)a4
+- (void)_removeItemsInResponseToUserAction:(id)action completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   [(WBSHistory *)self _waitUntilHistoryHasLoadedMainThread];
   v6 = dispatch_group_create();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v16;
+  obj = actionCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -501,8 +501,8 @@ void __27__WBSHistory_hasItemSince___block_invoke_2(uint64_t a1, uint64_t a2, vo
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 urlString];
-        v13 = [(WBSHistory *)self _removeItemForURLString:v12];
+        urlString = [v11 urlString];
+        v13 = [(WBSHistory *)self _removeItemForURLString:urlString];
 
         dispatch_group_enter(v6);
         historyStore = self->_historyStore;
@@ -524,8 +524,8 @@ void __27__WBSHistory_hasItemSince___block_invoke_2(uint64_t a1, uint64_t a2, vo
   block[1] = 3221225472;
   block[2] = __67__WBSHistory__removeItemsInResponseToUserAction_completionHandler___block_invoke_2;
   block[3] = &unk_1E7FB7B80;
-  v20 = v17;
-  v15 = v17;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
   dispatch_group_notify(v6, MEMORY[0x1E69E96A0], block);
 }
 
@@ -540,59 +540,59 @@ uint64_t __67__WBSHistory__removeItemsInResponseToUserAction_completionHandler__
   return result;
 }
 
-- (id)itemForURL:(id)a3
+- (id)itemForURL:(id)l
 {
-  v4 = [a3 safari_originalDataAsString];
-  v5 = [(WBSHistory *)self itemForURLString:v4];
+  safari_originalDataAsString = [l safari_originalDataAsString];
+  v5 = [(WBSHistory *)self itemForURLString:safari_originalDataAsString];
 
   return v5;
 }
 
-- (void)addAutocompleteTrigger:(id)a3 forURLString:(id)a4
+- (void)addAutocompleteTrigger:(id)trigger forURLString:(id)string
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v6 length])
+  triggerCopy = trigger;
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v7 = [(WBSHistory *)self itemForURLString:v6];
+    v7 = [(WBSHistory *)self itemForURLString:stringCopy];
     if (v7)
     {
-      [(WBSHistoryStore *)self->_historyStore addAutocompleteTrigger:v8 forItem:v7];
+      [(WBSHistoryStore *)self->_historyStore addAutocompleteTrigger:triggerCopy forItem:v7];
     }
   }
 }
 
-- (void)getAutocompleteTriggersForURLString:(id)a3 completionHandler:(id)a4
+- (void)getAutocompleteTriggersForURLString:(id)string completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 length])
+  stringCopy = string;
+  handlerCopy = handler;
+  if ([stringCopy length])
   {
-    v7 = [(WBSHistory *)self itemForURLString:v8];
+    v7 = [(WBSHistory *)self itemForURLString:stringCopy];
     if (v7)
     {
-      [(WBSHistoryStore *)self->_historyStore getAutocompleteTriggersForItem:v7 completionHandler:v6];
+      [(WBSHistoryStore *)self->_historyStore getAutocompleteTriggersForItem:v7 completionHandler:handlerCopy];
     }
   }
 }
 
-- (void)_addItem:(id)a3 addToStringsForUserTypedDomainExpansions:(BOOL)a4
+- (void)_addItem:(id)item addToStringsForUserTypedDomainExpansions:(BOOL)expansions
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 urlString];
-  if (v7)
+  expansionsCopy = expansions;
+  itemCopy = item;
+  urlString = [itemCopy urlString];
+  if (urlString)
   {
-    v8 = [(WBSHistory *)self _removeItemForURLString:v7];
+    v8 = [(WBSHistory *)self _removeItemForURLString:urlString];
     if (v8)
     {
-      [v6 mergeDataFromItem:v8];
-      [(WBSHistoryStore *)self->_historyStore itemWasReplaced:v8 byItem:v6];
+      [itemCopy mergeDataFromItem:v8];
+      [(WBSHistoryStore *)self->_historyStore itemWasReplaced:v8 byItem:itemCopy];
     }
 
-    if (v4)
+    if (expansionsCopy)
     {
-      [(WBSHistory *)self _addItemToStringsForUserTypedDomainExpansion:v6];
+      [(WBSHistory *)self _addItemToStringsForUserTypedDomainExpansion:itemCopy];
     }
 
     entriesByURLStringAccessQueue = self->_entriesByURLStringAccessQueue;
@@ -601,8 +601,8 @@ uint64_t __67__WBSHistory__removeItemsInResponseToUserAction_completionHandler__
     block[2] = __64__WBSHistory__addItem_addToStringsForUserTypedDomainExpansions___block_invoke;
     block[3] = &unk_1E7FB7DD0;
     block[4] = self;
-    v19 = v7;
-    v20 = v6;
+    v19 = urlString;
+    v20 = itemCopy;
     dispatch_sync(entriesByURLStringAccessQueue, block);
   }
 
@@ -616,11 +616,11 @@ uint64_t __67__WBSHistory__removeItemsInResponseToUserAction_completionHandler__
   }
 }
 
-- (id)_removeItemForURLString:(id)a3
+- (id)_removeItemForURLString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
     v29 = 0;
     v30 = &v29;
@@ -638,13 +638,13 @@ uint64_t __67__WBSHistory__removeItemsInResponseToUserAction_completionHandler__
     v19 = __38__WBSHistory__removeItemForURLString___block_invoke;
     v20 = &unk_1E7FC6898;
     v23 = &v29;
-    v21 = self;
-    v22 = v4;
+    selfCopy = self;
+    v22 = stringCopy;
     v24 = &v25;
     dispatch_sync(entriesByURLStringAccessQueue, &v17);
     if (v30[5])
     {
-      [(WBSHistory *)self _removeItemFromStringsForUserTypedDomainExpansion:v17, v18, v19, v20, v21];
+      [(WBSHistory *)self _removeItemFromStringsForUserTypedDomainExpansion:v17, v18, v19, v20, selfCopy];
       if (!v26[3])
       {
         [(WBSHistory *)self _removeAllVisitedLinks];
@@ -689,11 +689,11 @@ uint64_t __38__WBSHistory__removeItemForURLString___block_invoke(void *a1)
   return result;
 }
 
-- (BOOL)_isStringForUserTypedDomainExpansionInHistory:(id)a3
+- (BOOL)_isStringForUserTypedDomainExpansionInHistory:(id)history
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  historyCopy = history;
+  v5 = historyCopy;
+  if (historyCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -706,7 +706,7 @@ uint64_t __38__WBSHistory__removeItemForURLString___block_invoke(void *a1)
     block[3] = &unk_1E7FC4D50;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = historyCopy;
     dispatch_sync(stringsForUserTypedDomainExpansionAccessQueue, block);
     v7 = *(v13 + 24);
 
@@ -728,12 +728,12 @@ uint64_t __60__WBSHistory__isStringForUserTypedDomainExpansionInHistory___block_
   return result;
 }
 
-- (void)_addItemToStringsForUserTypedDomainExpansion:(id)a3
+- (void)_addItemToStringsForUserTypedDomainExpansion:(id)expansion
 {
-  v4 = a3;
-  v5 = [v4 stringForUserTypedDomainExpansion];
-  v6 = v5;
-  if (v5)
+  expansionCopy = expansion;
+  stringForUserTypedDomainExpansion = [expansionCopy stringForUserTypedDomainExpansion];
+  v6 = stringForUserTypedDomainExpansion;
+  if (stringForUserTypedDomainExpansion)
   {
     stringsForUserTypedDomainExpansionAccessQueue = self->_stringsForUserTypedDomainExpansionAccessQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -741,17 +741,17 @@ uint64_t __60__WBSHistory__isStringForUserTypedDomainExpansionInHistory___block_
     v8[2] = __59__WBSHistory__addItemToStringsForUserTypedDomainExpansion___block_invoke;
     v8[3] = &unk_1E7FB7F10;
     v8[4] = self;
-    v9 = v5;
+    v9 = stringForUserTypedDomainExpansion;
     dispatch_sync(stringsForUserTypedDomainExpansionAccessQueue, v8);
   }
 }
 
-- (void)_removeItemFromStringsForUserTypedDomainExpansion:(id)a3
+- (void)_removeItemFromStringsForUserTypedDomainExpansion:(id)expansion
 {
-  v4 = a3;
-  v5 = [v4 stringForUserTypedDomainExpansion];
-  v6 = v5;
-  if (v5)
+  expansionCopy = expansion;
+  stringForUserTypedDomainExpansion = [expansionCopy stringForUserTypedDomainExpansion];
+  v6 = stringForUserTypedDomainExpansion;
+  if (stringForUserTypedDomainExpansion)
   {
     stringsForUserTypedDomainExpansionAccessQueue = self->_stringsForUserTypedDomainExpansionAccessQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -759,7 +759,7 @@ uint64_t __60__WBSHistory__isStringForUserTypedDomainExpansionInHistory___block_
     v8[2] = __64__WBSHistory__removeItemFromStringsForUserTypedDomainExpansion___block_invoke;
     v8[3] = &unk_1E7FB7F10;
     v8[4] = self;
-    v9 = v5;
+    v9 = stringForUserTypedDomainExpansion;
     dispatch_sync(stringsForUserTypedDomainExpansionAccessQueue, v8);
   }
 }
@@ -820,10 +820,10 @@ uint64_t __34__WBSHistory_numberOfHistoryItems__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -857,7 +857,7 @@ uint64_t __34__WBSHistory_numberOfHistoryItems__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9++));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
@@ -878,20 +878,20 @@ void __39__WBSHistory_enumerateItemsUsingBlock___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)enumerateItemsAsynchronouslyUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)enumerateItemsAsynchronouslyUsingBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   entriesByURLStringAccessQueue = self->_entriesByURLStringAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__WBSHistory_enumerateItemsAsynchronouslyUsingBlock_completionHandler___block_invoke;
   block[3] = &unk_1E7FC68E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
   dispatch_async(entriesByURLStringAccessQueue, block);
 }
 
@@ -911,17 +911,17 @@ void __71__WBSHistory_enumerateItemsAsynchronouslyUsingBlock_completionHandler__
   }
 }
 
-- (void)getAllItemsWithCompletionHandler:(id)a3
+- (void)getAllItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   entriesByURLStringAccessQueue = self->_entriesByURLStringAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6BC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(entriesByURLStringAccessQueue, v7);
 }
 
@@ -932,64 +932,64 @@ void __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke(uint64_t a
   (*(v1 + 16))(v1);
 }
 
-- (void)setHistoryAgeLimit:(double)a3
+- (void)setHistoryAgeLimit:(double)limit
 {
-  if (self->_historyAgeLimit != a3)
+  if (self->_historyAgeLimit != limit)
   {
-    self->_historyAgeLimit = a3;
+    self->_historyAgeLimit = limit;
     [(WBSHistoryStore *)self->_historyStore setHistoryAgeLimit:?];
   }
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 wasHTTPNonGet:(BOOL)a5 wasFailure:(BOOL)a6 increaseVisitCount:(BOOL)a7
+- (id)itemVisitedAtURLString:(id)string title:(id)title wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count
 {
-  v7 = [(WBSHistory *)self itemVisitedAtURLString:a3 title:a4 wasHTTPNonGet:a5 wasFailure:a6 increaseVisitCount:a7 statusCode:0];
+  v7 = [(WBSHistory *)self itemVisitedAtURLString:string title:title wasHTTPNonGet:get wasFailure:failure increaseVisitCount:count statusCode:0];
 
   return v7;
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 wasHTTPNonGet:(BOOL)a5 wasFailure:(BOOL)a6 increaseVisitCount:(BOOL)a7 statusCode:(int64_t)a8
+- (id)itemVisitedAtURLString:(id)string title:(id)title wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
+  countCopy = count;
+  failureCopy = failure;
+  getCopy = get;
+  stringCopy = string;
+  titleCopy = title;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
-  v16 = [(WBSHistory *)self itemVisitedAtURLString:v14 title:v15 timeOfVisit:v11 wasHTTPNonGet:v10 wasFailure:v9 increaseVisitCount:a8 statusCode:0 origin:?];
+  v16 = [(WBSHistory *)self itemVisitedAtURLString:stringCopy title:titleCopy timeOfVisit:getCopy wasHTTPNonGet:failureCopy wasFailure:countCopy increaseVisitCount:code statusCode:0 origin:?];
 
   return v16;
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 origin:(int64_t)a9
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count origin:(int64_t)origin
 {
-  v9 = [(WBSHistory *)self itemVisitedAtURLString:a3 title:a4 timeOfVisit:a6 wasHTTPNonGet:a7 wasFailure:a8 increaseVisitCount:0 statusCode:a5 origin:a9];
+  v9 = [(WBSHistory *)self itemVisitedAtURLString:string title:title timeOfVisit:get wasHTTPNonGet:failure wasFailure:count increaseVisitCount:0 statusCode:visit origin:origin];
 
   return v9;
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 statusCode:(int64_t)a9 origin:(int64_t)a10
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code origin:(int64_t)self0
 {
-  v10 = [(WBSHistory *)self itemVisitedAtURLString:a3 title:a4 timeOfVisit:a6 wasHTTPNonGet:a7 wasFailure:a8 increaseVisitCount:a9 statusCode:a5 origin:a10 attributes:0];
+  v10 = [(WBSHistory *)self itemVisitedAtURLString:string title:title timeOfVisit:get wasHTTPNonGet:failure wasFailure:count increaseVisitCount:code statusCode:visit origin:origin attributes:0];
 
   return v10;
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 origin:(int64_t)a9 attributes:(unint64_t)a10
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count origin:(int64_t)origin attributes:(unint64_t)self0
 {
-  v10 = [(WBSHistory *)self itemVisitedAtURLString:a3 title:a4 timeOfVisit:a6 wasHTTPNonGet:a7 wasFailure:a8 increaseVisitCount:0 statusCode:a5 origin:a9 attributes:a10];
+  v10 = [(WBSHistory *)self itemVisitedAtURLString:string title:title timeOfVisit:get wasHTTPNonGet:failure wasFailure:count increaseVisitCount:0 statusCode:visit origin:origin attributes:attributes];
 
   return v10;
 }
 
-- (id)itemVisitedAtURLString:(id)a3 title:(id)a4 timeOfVisit:(double)a5 wasHTTPNonGet:(BOOL)a6 wasFailure:(BOOL)a7 increaseVisitCount:(BOOL)a8 statusCode:(int64_t)a9 origin:(int64_t)a10 attributes:(unint64_t)a11
+- (id)itemVisitedAtURLString:(id)string title:(id)title timeOfVisit:(double)visit wasHTTPNonGet:(BOOL)get wasFailure:(BOOL)failure increaseVisitCount:(BOOL)count statusCode:(int64_t)code origin:(int64_t)self0 attributes:(unint64_t)self1
 {
-  v12 = a7;
-  v13 = a6;
+  failureCopy = failure;
+  getCopy = get;
   v49 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v40 = a4;
-  if (!v17)
+  stringCopy = string;
+  titleCopy = title;
+  if (!stringCopy)
   {
     v22 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1010,10 +1010,10 @@ void __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke(uint64_t a
   }
 
   [(WBSHistory *)self loadHistoryAsynchronouslyIfNeeded];
-  v20 = [(WBSHistory *)self itemForURLString:v17];
+  v20 = [(WBSHistory *)self itemForURLString:stringCopy];
   if (!v20)
   {
-    if ([(WBSHistoryActivityThrottler *)self->_entryCreationThrottler shouldRecordHistoryVisitAtTime:a5])
+    if ([(WBSHistoryActivityThrottler *)self->_entryCreationThrottler shouldRecordHistoryVisitAtTime:visit])
     {
       v30 = WBS_LOG_CHANNEL_PREFIXHistory();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
@@ -1021,7 +1021,7 @@ void __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke(uint64_t a
         *buf = 141558275;
         v46 = 1752392040;
         v47 = 2117;
-        v48 = v17;
+        v48 = stringCopy;
         _os_log_impl(&dword_1BB6F3000, v30, OS_LOG_TYPE_INFO, "Adding new global history item for %{sensitive, mask.hash}@", buf, 0x16u);
       }
 
@@ -1032,7 +1032,7 @@ void __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke(uint64_t a
       block[2] = __128__WBSHistory_itemVisitedAtURLString_title_timeOfVisit_wasHTTPNonGet_wasFailure_increaseVisitCount_statusCode_origin_attributes___block_invoke;
       block[3] = &unk_1E7FB7DD0;
       block[4] = self;
-      v42 = v17;
+      v42 = stringCopy;
       v21 = v31;
       v43 = v21;
       dispatch_sync(queue, block);
@@ -1045,7 +1045,7 @@ void __47__WBSHistory_getAllItemsWithCompletionHandler___block_invoke(uint64_t a
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138739971;
-      v46 = v17;
+      v46 = stringCopy;
       _os_log_impl(&dword_1BB6F3000, v37, OS_LOG_TYPE_DEFAULT, "Did not create history item for %{sensitive}@ because of excessive history activity requests", buf, 0xCu);
     }
 
@@ -1063,29 +1063,29 @@ LABEL_13:
     *buf = 141558275;
     v46 = 1752392040;
     v47 = 2117;
-    v48 = v17;
+    v48 = stringCopy;
     _os_log_impl(&dword_1BB6F3000, v32, OS_LOG_TYPE_INFO, "Updating global history item %{sensitive, mask.hash}@", buf, 0x16u);
   }
 
-  v33 = [[WBSHistoryVisit alloc] initWithHistoryItem:v21 visitTime:!v12 loadWasSuccesful:v13 wasHTTPNonGet:a10 origin:a11 attributes:a5];
-  v34 = WBSHistoryTruncatePageTitle(v40, 0x200uLL);
+  v33 = [[WBSHistoryVisit alloc] initWithHistoryItem:v21 visitTime:!failureCopy loadWasSuccesful:getCopy wasHTTPNonGet:origin origin:attributes attributes:visit];
+  v34 = WBSHistoryTruncatePageTitle(titleCopy, 0x200uLL);
   [(WBSHistoryVisit *)v33 setTitle:v34];
 
   [v21 wasVisited:v33];
   if (WBSStatusCodeGroupFromStatusCode() || ([MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled] & 1) == 0)
   {
-    [v21 setStatusCode:{a9, queue}];
+    [v21 setStatusCode:{code, queue}];
   }
 
   [(WBSHistory *)self _dispatchHistoryVisitAdded:v33, queue];
   if (v20)
   {
-    [(WBSHistory *)self _dispatchHistoryItemDidChange:v21 byUserInitiatedAction:(a10 - 4) < 0xFFFFFFFFFFFFFFFDLL];
+    [(WBSHistory *)self _dispatchHistoryItemDidChange:v21 byUserInitiatedAction:(origin - 4) < 0xFFFFFFFFFFFFFFFDLL];
   }
 
   else
   {
-    [(WBSHistory *)self _dispatchHistoryItemAdded:v21 withVisitOrigin:a10];
+    [(WBSHistory *)self _dispatchHistoryItemAdded:v21 withVisitOrigin:origin];
   }
 
   historyStore = self->_historyStore;
@@ -1098,19 +1098,19 @@ LABEL_25:
   return v33;
 }
 
-- (id)itemRedirectedFrom:(id)a3 to:(id)a4 origin:(int64_t)a5 date:(id)a6
+- (id)itemRedirectedFrom:(id)from to:(id)to origin:(int64_t)origin date:(id)date
 {
-  v6 = [(WBSHistory *)self itemRedirectedFrom:a3 to:a4 origin:a5 date:a6 statusCode:0];
+  v6 = [(WBSHistory *)self itemRedirectedFrom:from to:to origin:origin date:date statusCode:0];
 
   return v6;
 }
 
-- (id)itemRedirectedFrom:(id)a3 to:(id)a4 origin:(int64_t)a5 date:(id)a6 statusCode:(int64_t)a7
+- (id)itemRedirectedFrom:(id)from to:(id)to origin:(int64_t)origin date:(id)date statusCode:(int64_t)code
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  fromCopy = from;
+  toCopy = to;
+  dateCopy = date;
   ct_green_tea_logger_create_static();
   v15 = getCTGreenTeaOsLogHandle();
   v16 = v15;
@@ -1120,12 +1120,12 @@ LABEL_25:
     _os_log_impl(&dword_1BB6F3000, v16, OS_LOG_TYPE_INFO, "Read Safari history", buf, 2u);
   }
 
-  if ([(WBSHistory *)self canRecordRedirectFromVisit:v12 to:v13])
+  if ([(WBSHistory *)self canRecordRedirectFromVisit:fromCopy to:toCopy])
   {
     [(WBSHistory *)self loadHistoryAsynchronouslyIfNeeded];
-    if (v14)
+    if (dateCopy)
     {
-      [v14 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1134,17 +1134,17 @@ LABEL_25:
     }
 
     v19 = v17;
-    v20 = [(WBSHistoryVisit *)v12 item];
-    v21 = v20 == 0;
+    item = [(WBSHistoryVisit *)fromCopy item];
+    v21 = item == 0;
 
     if (v21)
     {
-      v18 = [(WBSHistory *)self itemVisitedAtURLString:v13 title:0 timeOfVisit:0 wasHTTPNonGet:0 wasFailure:1 increaseVisitCount:a7 statusCode:v19 origin:0];
+      v18 = [(WBSHistory *)self itemVisitedAtURLString:toCopy title:0 timeOfVisit:0 wasHTTPNonGet:0 wasFailure:1 increaseVisitCount:code statusCode:v19 origin:0];
     }
 
-    else if (v13)
+    else if (toCopy)
     {
-      v22 = [(WBSHistory *)self itemForURLString:v13];
+      v22 = [(WBSHistory *)self itemForURLString:toCopy];
       if (v22)
       {
         [(WBSHistory *)self _dispatchHistoryItemWillChange:v22];
@@ -1159,7 +1159,7 @@ LABEL_25:
           *buf = 141558275;
           v40 = 1752392040;
           v41 = 2117;
-          v42 = v13;
+          v42 = toCopy;
           _os_log_impl(&dword_1BB6F3000, v25, OS_LOG_TYPE_INFO, "Synthesizing item for destination of redirect: %{sensitive, mask.hash}@", buf, 0x16u);
         }
 
@@ -1170,41 +1170,41 @@ LABEL_25:
         block[2] = __59__WBSHistory_itemRedirectedFrom_to_origin_date_statusCode___block_invoke;
         block[3] = &unk_1E7FB7DD0;
         block[4] = self;
-        v37 = v13;
+        v37 = toCopy;
         v23 = v26;
         v38 = v23;
         dispatch_sync(entriesByURLStringAccessQueue, block);
         [(WBSHistory *)self _addItemToStringsForUserTypedDomainExpansion:v23];
       }
 
-      v28 = [(WBSHistoryVisit *)v12 item];
-      [(WBSHistory *)self _dispatchHistoryItemWillChange:v28];
-      v18 = [[WBSHistoryVisit alloc] initWithHistoryItem:v23 visitTime:1 loadWasSuccesful:0 wasHTTPNonGet:a5 origin:0 attributes:v19];
-      [v23 wasRedirectedFrom:v12 to:v18];
+      item2 = [(WBSHistoryVisit *)fromCopy item];
+      [(WBSHistory *)self _dispatchHistoryItemWillChange:item2];
+      v18 = [[WBSHistoryVisit alloc] initWithHistoryItem:v23 visitTime:1 loadWasSuccesful:0 wasHTTPNonGet:origin origin:0 attributes:v19];
+      [v23 wasRedirectedFrom:fromCopy to:v18];
       if (WBSStatusCodeGroupFromStatusCode() || ([MEMORY[0x1E69C8880] isStreamlinedCompletionListEnabled] & 1) == 0)
       {
-        [v23 setStatusCode:a7];
+        [v23 setStatusCode:code];
       }
 
       [(WBSHistory *)self _dispatchHistoryVisitAdded:v18];
-      [(WBSHistory *)self _dispatchHistoryItemDidChange:v28 byUserInitiatedAction:(a5 - 4) < 0xFFFFFFFFFFFFFFFDLL];
+      [(WBSHistory *)self _dispatchHistoryItemDidChange:item2 byUserInitiatedAction:(origin - 4) < 0xFFFFFFFFFFFFFFFDLL];
       if (v22)
       {
-        [(WBSHistory *)self _dispatchHistoryItemDidChange:v23 byUserInitiatedAction:(a5 - 4) < 0xFFFFFFFFFFFFFFFDLL];
+        [(WBSHistory *)self _dispatchHistoryItemDidChange:v23 byUserInitiatedAction:(origin - 4) < 0xFFFFFFFFFFFFFFFDLL];
       }
 
       else
       {
-        [(WBSHistory *)self _dispatchHistoryItemAdded:v23 withVisitOrigin:a5];
+        [(WBSHistory *)self _dispatchHistoryItemAdded:v23 withVisitOrigin:origin];
       }
 
-      if ([(WBSHistoryVisit *)v12 didUserInteractWithPage])
+      if ([(WBSHistoryVisit *)fromCopy didUserInteractWithPage])
       {
-        [(WBSHistoryVisit *)v12 setAttributes:[(WBSHistoryVisit *)v12 attributes]| 0x10];
+        [(WBSHistoryVisit *)fromCopy setAttributes:[(WBSHistoryVisit *)fromCopy attributes]| 0x10];
       }
 
       historyStore = self->_historyStore;
-      v48[0] = v12;
+      v48[0] = fromCopy;
       v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
       [(WBSHistoryStore *)historyStore visitsWereModified:v30];
 
@@ -1216,15 +1216,15 @@ LABEL_25:
       v33 = WBS_LOG_CHANNEL_PREFIXHistory();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
-        v34 = [v28 urlString];
+        urlString = [item2 urlString];
         *buf = 141558787;
         v40 = 1752392040;
         v41 = 2117;
-        v42 = v34;
+        v42 = urlString;
         v43 = 2160;
         v44 = 1752392040;
         v45 = 2117;
-        v46 = v13;
+        v46 = toCopy;
         _os_log_impl(&dword_1BB6F3000, v33, OS_LOG_TYPE_INFO, "Recorded redirect from %{sensitive, mask.hash}@ to %{sensitive, mask.hash}@", buf, 0x2Au);
       }
     }
@@ -1243,17 +1243,17 @@ LABEL_25:
 
   else
   {
-    v18 = v12;
+    v18 = fromCopy;
   }
 
   return v18;
 }
 
-- (void)getVisitsCreatedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)getVisitsCreatedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   ct_green_tea_logger_create_static();
   v11 = getCTGreenTeaOsLogHandle();
   v12 = v11;
@@ -1268,44 +1268,44 @@ LABEL_25:
   v16[2] = __69__WBSHistory_getVisitsCreatedAfterDate_beforeDate_completionHandler___block_invoke;
   v16[3] = &unk_1E7FC6910;
   v16[4] = self;
-  v13 = v8;
+  v13 = dateCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = beforeDateCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = handlerCopy;
   v19 = v15;
   [(WBSHistory *)self performBlockAfterHistoryHasLoaded:v16];
 }
 
-- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)a3 beforeDate:(id)a4 onlyFromThisDevice:(BOOL)a5 completionHandler:(id)a6
+- (void)getHighLevelHTTPFamilyDomainsVisitedAfterDate:(id)date beforeDate:(id)beforeDate onlyFromThisDevice:(BOOL)device completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __108__WBSHistory_getHighLevelHTTPFamilyDomainsVisitedAfterDate_beforeDate_onlyFromThisDevice_completionHandler___block_invoke;
   v16[3] = &unk_1E7FC6938;
   v16[4] = self;
-  v17 = v10;
-  v20 = a5;
-  v18 = v11;
-  v19 = v12;
-  v13 = v12;
-  v14 = v11;
-  v15 = v10;
+  v17 = dateCopy;
+  deviceCopy = device;
+  v18 = beforeDateCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = beforeDateCopy;
+  v15 = dateCopy;
   [(WBSHistory *)self performBlockAfterHistoryHasLoaded:v16];
 }
 
-- (BOOL)canRecordRedirectFromVisit:(id)a3 to:(id)a4
+- (BOOL)canRecordRedirectFromVisit:(id)visit to:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 item];
-  v8 = [v7 urlString];
+  visitCopy = visit;
+  toCopy = to;
+  item = [visitCopy item];
+  urlString = [item urlString];
 
-  if ([v8 isEqualToString:v6])
+  if ([urlString isEqualToString:toCopy])
   {
     v9 = WBS_LOG_CHANNEL_PREFIXHistory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -1313,7 +1313,7 @@ LABEL_25:
       v16 = 141558275;
       v17 = 1752392040;
       v18 = 2117;
-      v19 = v6;
+      v19 = toCopy;
       v10 = "Ignoring redirect from %{sensitive, mask.hash}@ to itself";
       v11 = v9;
       v12 = 22;
@@ -1324,7 +1324,7 @@ LABEL_7:
 
   else
   {
-    if ([v5 redirectSourceChainLength] < 0x15)
+    if ([visitCopy redirectSourceChainLength] < 0x15)
     {
       v14 = 1;
       goto LABEL_10;
@@ -1336,11 +1336,11 @@ LABEL_7:
       v16 = 141558787;
       v17 = 1752392040;
       v18 = 2117;
-      v19 = v8;
+      v19 = urlString;
       v20 = 2160;
       v21 = 1752392040;
       v22 = 2117;
-      v23 = v6;
+      v23 = toCopy;
       v10 = "Ignoring redirect from %{sensitive, mask.hash}@ to %{sensitive, mask.hash}@ due to exceeding maximum redirect chain length";
       v11 = v13;
       v12 = 42;
@@ -1354,82 +1354,82 @@ LABEL_10:
   return v14;
 }
 
-- (void)updateTitle:(id)a3 forVisit:(id)a4
+- (void)updateTitle:(id)title forVisit:(id)visit
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 item];
-  if (v8)
+  titleCopy = title;
+  visitCopy = visit;
+  item = [visitCopy item];
+  if (item)
   {
-    v11 = WBSHistoryTruncatePageTitle(v6, 0x200uLL);
+    v11 = WBSHistoryTruncatePageTitle(titleCopy, 0x200uLL);
 
-    v9 = [v7 title];
-    v10 = [v9 isEqualToString:v11];
+    title = [visitCopy title];
+    v10 = [title isEqualToString:v11];
 
     if ((v10 & 1) == 0)
     {
-      [(WBSHistory *)self _dispatchHistoryItemWillChange:v8];
-      [v7 setTitle:?];
-      [v8 _lastVisitTitleMayHaveChanged];
-      [(WBSHistory *)self _dispatchHistoryItemDidChange:v8 byUserInitiatedAction:0];
-      [(WBSHistoryStore *)self->_historyStore visitTitleWasUpdated:v7];
+      [(WBSHistory *)self _dispatchHistoryItemWillChange:item];
+      [visitCopy setTitle:?];
+      [item _lastVisitTitleMayHaveChanged];
+      [(WBSHistory *)self _dispatchHistoryItemDidChange:item byUserInitiatedAction:0];
+      [(WBSHistoryStore *)self->_historyStore visitTitleWasUpdated:visitCopy];
     }
   }
 
   else
   {
-    v11 = v6;
+    v11 = titleCopy;
   }
 }
 
-- (void)_setAttributes:(unint64_t)a3 forVisit:(id)a4
+- (void)_setAttributes:(unint64_t)attributes forVisit:(id)visit
 {
-  v7 = a4;
-  v6 = [v7 item];
-  [(WBSHistory *)self _dispatchHistoryItemWillChange:v6];
-  [v7 setAttributes:a3];
-  [(WBSHistory *)self _dispatchHistoryItemDidChange:v6 byUserInitiatedAction:0];
-  [(WBSHistoryStore *)self->_historyStore visitAttributeWasUpdated:v7 removeAttributes:0 addAttributes:a3];
+  visitCopy = visit;
+  item = [visitCopy item];
+  [(WBSHistory *)self _dispatchHistoryItemWillChange:item];
+  [visitCopy setAttributes:attributes];
+  [(WBSHistory *)self _dispatchHistoryItemDidChange:item byUserInitiatedAction:0];
+  [(WBSHistoryStore *)self->_historyStore visitAttributeWasUpdated:visitCopy removeAttributes:0 addAttributes:attributes];
 }
 
-- (void)addAttributes:(unint64_t)a3 toVisit:(id)a4
+- (void)addAttributes:(unint64_t)attributes toVisit:(id)visit
 {
-  v6 = a4;
-  if (([v6 hasAttributes:a3] & 1) == 0)
+  visitCopy = visit;
+  if (([visitCopy hasAttributes:attributes] & 1) == 0)
   {
-    -[WBSHistory _setAttributes:forVisit:](self, "_setAttributes:forVisit:", [v6 attributes] | a3, v6);
+    -[WBSHistory _setAttributes:forVisit:](self, "_setAttributes:forVisit:", [visitCopy attributes] | attributes, visitCopy);
   }
 }
 
-- (void)addTagWithIdentifier:(id)a3 title:(id)a4 toItemAtURL:(id)a5 level:(int64_t)a6 completionHandler:(id)a7
+- (void)addTagWithIdentifier:(id)identifier title:(id)title toItemAtURL:(id)l level:(int64_t)level completionHandler:(id)handler
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(WBSHistory *)self itemForURL:v14];
+  identifierCopy = identifier;
+  titleCopy = title;
+  lCopy = l;
+  handlerCopy = handler;
+  v16 = [(WBSHistory *)self itemForURL:lCopy];
   if (v16)
   {
     historyStore = self->_historyStore;
-    v26[0] = v12;
+    v26[0] = identifierCopy;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    v25 = v13;
+    v25 = titleCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __77__WBSHistory_addTagWithIdentifier_title_toItemAtURL_level_completionHandler___block_invoke;
     v20[3] = &unk_1E7FC6988;
-    v21 = v12;
-    v24 = v15;
-    v22 = self;
+    v21 = identifierCopy;
+    v24 = handlerCopy;
+    selfCopy = self;
     v23 = v16;
-    [(WBSHistoryStore *)historyStore tagsWithIdentifiers:v18 type:1 level:a6 creatingIfNecessary:1 withTitles:v19 completionHandler:v20];
+    [(WBSHistoryStore *)historyStore tagsWithIdentifiers:v18 type:1 level:level creatingIfNecessary:1 withTitles:v19 completionHandler:v20];
   }
 
   else
   {
-    (*(v15 + 2))(v15, 1, 0);
+    (*(handlerCopy + 2))(handlerCopy, 1, 0);
   }
 }
 
@@ -1498,23 +1498,23 @@ void __77__WBSHistory_addTagWithIdentifier_title_toItemAtURL_level_completionHan
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 completionHandler:(id)a5
+- (void)clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   historyStore = self->_historyStore;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__WBSHistory_clearHistoryVisitsAddedAfterDate_beforeDate_completionHandler___block_invoke;
   v15[3] = &unk_1E7FC69B0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dateCopy;
+  v17 = beforeDateCopy;
+  v18 = handlerCopy;
+  v12 = beforeDateCopy;
+  v13 = dateCopy;
+  v14 = handlerCopy;
   [(WBSHistoryStore *)historyStore clearHistoryVisitsAddedAfterDate:v13 beforeDate:v12 completionHandler:v15];
 }
 
@@ -1533,13 +1533,13 @@ uint64_t __76__WBSHistory_clearHistoryVisitsAddedAfterDate_beforeDate_completion
   return [v3 _dispatchHistoryClearedAfterDate:v4 beforeDate:v5];
 }
 
-- (void)clearHistoryWithCompletionHandler:(id)a3
+- (void)clearHistoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(WBSHistory *)self _waitUntilHistoryHasLoadedMainThread];
-  if (!v4)
+  if (!handlerCopy)
   {
-    v4 = &__block_literal_global_77;
+    handlerCopy = &__block_literal_global_77;
   }
 
   v17 = 0;
@@ -1567,7 +1567,7 @@ uint64_t __76__WBSHistory_clearHistoryVisitsAddedAfterDate_beforeDate_completion
   v12[1] = 3221225472;
   v12[2] = __48__WBSHistory_clearHistoryWithCompletionHandler___block_invoke_4;
   v12[3] = &unk_1E7FC69D8;
-  v7 = v4;
+  v7 = handlerCopy;
   v12[4] = self;
   v13 = v7;
   v14 = &v17;
@@ -1622,26 +1622,26 @@ uint64_t __48__WBSHistory_clearHistoryWithCompletionHandler___block_invoke_5(uin
   return v2();
 }
 
-- (void)vacuumHistoryWithCompletionHandler:(id)a3
+- (void)vacuumHistoryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__WBSHistory_vacuumHistoryWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7FB6F08;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSHistory *)self performBlockAfterHistoryHasLoaded:v6];
 }
 
-- (void)exportHistoryToFileWithURL:(id)a3 completionHandler:(id)a4
+- (void)exportHistoryToFileWithURL:(id)l completionHandler:(id)handler
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v17[0] = 0;
-  v8 = [objc_alloc(MEMORY[0x1E69C88A8]) initWithURL:v6 error:v17];
+  v8 = [objc_alloc(MEMORY[0x1E69C88A8]) initWithURL:lCopy error:v17];
   v9 = v17[0];
   v10 = v9;
   if (v8)
@@ -1661,7 +1661,7 @@ uint64_t __48__WBSHistory_clearHistoryWithCompletionHandler___block_invoke_5(uin
     v14[1] = 3221225472;
     v14[2] = __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invoke;
     v14[3] = &unk_1E7FC6A00;
-    v16 = v7;
+    v16 = handlerCopy;
     v15 = v8;
     [(WBSHistoryStore *)historyStore exportHistory:v15 completionHandler:v14];
   }
@@ -1676,7 +1676,7 @@ uint64_t __48__WBSHistory_clearHistoryWithCompletionHandler___block_invoke_5(uin
       [WBSHistory exportHistoryToFileWithURL:completionHandler:];
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1734,34 +1734,34 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
   [(WBSHistoryStore *)historyStore waitForLoadingToComplete];
 }
 
-- (void)performBlockAfterHistoryHasLoaded:(id)a3
+- (void)performBlockAfterHistoryHasLoaded:(id)loaded
 {
-  block = a3;
+  block = loaded;
   [(WBSHistory *)self loadHistoryAsynchronouslyIfNeeded];
   dispatch_async(self->_waitUntilHistoryHasLoadedQueue, block);
 }
 
-- (void)savePendingChangesBeforeTerminationWithCompletionHandler:(id)a3
+- (void)savePendingChangesBeforeTerminationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   historyStore = self->_historyStore;
-  v6 = v4;
+  v6 = handlerCopy;
   if (historyStore)
   {
-    [(WBSHistoryStore *)historyStore closeWithCompletionHandler:v4];
+    [(WBSHistoryStore *)historyStore closeWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    (*(v4 + 2))(v4);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 }
 
-- (void)historyLoader:(id)a3 didLoadItems:(id)a4 stringsForUserTypeDomainExpansion:(id)a5
+- (void)historyLoader:(id)loader didLoadItems:(id)items stringsForUserTypeDomainExpansion:(id)expansion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  itemsCopy = items;
+  expansionCopy = expansion;
   ct_green_tea_logger_create_static();
   v9 = getCTGreenTeaOsLogHandle();
   v10 = v9;
@@ -1771,7 +1771,7 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
     _os_log_impl(&dword_1BB6F3000, v10, OS_LOG_TYPE_INFO, "Read Safari history", buf, 2u);
   }
 
-  if (v8)
+  if (expansionCopy)
   {
     stringsForUserTypedDomainExpansionAccessQueue = self->_stringsForUserTypedDomainExpansionAccessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1779,7 +1779,7 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
     block[2] = __75__WBSHistory_historyLoader_didLoadItems_stringsForUserTypeDomainExpansion___block_invoke;
     block[3] = &unk_1E7FB7F10;
     block[4] = self;
-    v21 = v8;
+    v21 = expansionCopy;
     dispatch_sync(stringsForUserTypedDomainExpansionAccessQueue, block);
   }
 
@@ -1787,7 +1787,7 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v12 = v7;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v16 objects:v23 count:16];
   if (v13)
   {
@@ -1802,7 +1802,7 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
           objc_enumerationMutation(v12);
         }
 
-        [(WBSHistory *)self _addItem:*(*(&v16 + 1) + 8 * v15++) addToStringsForUserTypedDomainExpansions:v8 == 0, v16];
+        [(WBSHistory *)self _addItem:*(*(&v16 + 1) + 8 * v15++) addToStringsForUserTypedDomainExpansions:expansionCopy == 0, v16];
       }
 
       while (v13 != v15);
@@ -1815,7 +1815,7 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
   [(WBSHistory *)self _dispatchHistoryItemsLoaded:v12];
 }
 
-- (void)historyLoaderDidFinishLoading:(id)a3
+- (void)historyLoaderDidFinishLoading:(id)loading
 {
   ct_green_tea_logger_create_static();
   v4 = getCTGreenTeaOsLogHandle();
@@ -1829,16 +1829,16 @@ void __59__WBSHistory_exportHistoryToFileWithURL_completionHandler___block_invok
   [(WBSHistory *)self _dispatchHistoryLoaded];
 }
 
-- (void)historyStore:(id)a3 didPrepareToDeleteWithDeletionPlan:(id)a4
+- (void)historyStore:(id)store didPrepareToDeleteWithDeletionPlan:(id)plan
 {
-  v5 = a4;
+  planCopy = plan;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__WBSHistory_historyStore_didPrepareToDeleteWithDeletionPlan___block_invoke;
   v7[3] = &unk_1E7FB7F10;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = planCopy;
+  selfCopy = self;
+  v6 = planCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -1928,25 +1928,25 @@ void __62__WBSHistory_historyStore_didPrepareToDeleteWithDeletionPlan___block_in
   }
 }
 
-- (void)_sendNotification:(id)a3 withItems:(id)a4
+- (void)_sendNotification:(id)notification withItems:(id)items
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  notificationCopy = notification;
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v19 = @"WBSHistoryItemsKey";
-    v20[0] = v7;
+    v20[0] = itemsCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __42__WBSHistory__sendNotification_withItems___block_invoke_2;
     v12[3] = &unk_1E7FB7DD0;
-    v13 = v6;
-    v14 = self;
+    v13 = notificationCopy;
+    selfCopy = self;
     v15 = v8;
     v9 = v8;
-    v10 = v6;
+    v10 = notificationCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
   }
 
@@ -1956,9 +1956,9 @@ void __62__WBSHistory_historyStore_didPrepareToDeleteWithDeletionPlan___block_in
     block[1] = 3221225472;
     block[2] = __42__WBSHistory__sendNotification_withItems___block_invoke;
     block[3] = &unk_1E7FB7F10;
-    v17 = v6;
-    v18 = self;
-    v11 = v6;
+    v17 = notificationCopy;
+    selfCopy2 = self;
+    v11 = notificationCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v9 = v17;
   }
@@ -1998,54 +1998,54 @@ void __36__WBSHistory__dispatchHistoryLoaded__block_invoke(uint64_t a1)
   [v2 postNotificationName:@"WBSHistoryWasLoadedNotification" object:v3 userInfo:v5];
 }
 
-- (void)_dispatchHistoryItemAdded:(id)a3 withVisitOrigin:(int64_t)a4
+- (void)_dispatchHistoryItemAdded:(id)added withVisitOrigin:(int64_t)origin
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  addedCopy = added;
   historyStore = self->_historyStore;
-  v11[0] = v6;
+  v11[0] = addedCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [(WBSHistoryStore *)historyStore itemsWereAdded:v8 byUserInitiatedAction:(a4 - 4) < 0xFFFFFFFFFFFFFFFDLL];
+  [(WBSHistoryStore *)historyStore itemsWereAdded:v8 byUserInitiatedAction:(origin - 4) < 0xFFFFFFFFFFFFFFFDLL];
 
-  [(WBSHistory *)self _addVisitedLinkForItemIfNeeded:v6 withVisitOrigin:a4];
-  v10 = v6;
+  [(WBSHistory *)self _addVisitedLinkForItemIfNeeded:addedCopy withVisitOrigin:origin];
+  v10 = addedCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
   [(WBSHistory *)self _sendNotification:@"WBSHistoryItemsWereAddedNotification" withItems:v9];
 }
 
-- (void)_dispatchHistoryItemWillChange:(id)a3
+- (void)_dispatchHistoryItemWillChange:(id)change
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6[0] = v4;
+  changeCopy = change;
+  v6[0] = changeCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(WBSHistory *)self _sendNotification:@"WBSHistoryItemWillChangeNotification" withItems:v5];
 }
 
-- (void)_dispatchHistoryItemDidChange:(id)a3 byUserInitiatedAction:(BOOL)a4
+- (void)_dispatchHistoryItemDidChange:(id)change byUserInitiatedAction:(BOOL)action
 {
-  v4 = a4;
+  actionCopy = action;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changeCopy = change;
   historyStore = self->_historyStore;
-  v11[0] = v6;
+  v11[0] = changeCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-  [(WBSHistoryStore *)historyStore itemsWereModified:v8 byUserInitiatedAction:v4];
+  [(WBSHistoryStore *)historyStore itemsWereModified:v8 byUserInitiatedAction:actionCopy];
 
-  v10 = v6;
+  v10 = changeCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
   [(WBSHistory *)self _sendNotification:@"WBSHistoryItemDidChangeNotification" withItems:v9];
 }
 
-- (void)_dispatchHistoryClearedAfterDate:(id)a3 beforeDate:(id)a4
+- (void)_dispatchHistoryClearedAfterDate:(id)date beforeDate:(id)beforeDate
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
   v12[0] = @"WBSHistoryClearStartDateKey";
   v12[1] = @"WBSHistoryClearEndDateKey";
-  v13[0] = v6;
-  v13[1] = v7;
+  v13[0] = dateCopy;
+  v13[1] = beforeDateCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -2063,27 +2063,27 @@ void __58__WBSHistory__dispatchHistoryClearedAfterDate_beforeDate___block_invoke
   [v2 postNotificationName:@"WBSHistoryWasClearedWithIntervalNotification" object:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-- (void)_dispatchHistoryVisitAdded:(id)a3
+- (void)_dispatchHistoryVisitAdded:(id)added
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  addedCopy = added;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = @"WBSHistoryVisitKey";
-  v8[0] = v4;
+  v8[0] = addedCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  [v5 postNotificationName:@"WBSHistoryVisitWasAddedNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"WBSHistoryVisitWasAddedNotification" object:self userInfo:v6];
 }
 
-- (void)historyStoreDidFailDatabaseIntegrityCheck:(id)a3 error:(id)a4 databaseURLs:(id)a5
+- (void)historyStoreDidFailDatabaseIntegrityCheck:(id)check error:(id)error databaseURLs:(id)ls
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a5;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  lsCopy = ls;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v7 = v5;
+  v7 = lsCopy;
   v8 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v8)
   {
@@ -2098,7 +2098,7 @@ void __58__WBSHistory__dispatchHistoryClearedAfterDate_beforeDate___block_invoke
           objc_enumerationMutation(v7);
         }
 
-        [v6 removeItemAtURL:*(*(&v11 + 1) + 8 * v10++) error:{0, v11}];
+        [defaultManager removeItemAtURL:*(*(&v11 + 1) + 8 * v10++) error:{0, v11}];
       }
 
       while (v8 != v10);
@@ -2109,17 +2109,17 @@ void __58__WBSHistory__dispatchHistoryClearedAfterDate_beforeDate___block_invoke
   }
 }
 
-- (void)historyStore:(id)a3 didAddVisits:(id)a4
+- (void)historyStore:(id)store didAddVisits:(id)visits
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
+  visitsCopy = visits;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v5;
+  v8 = visitsCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -2134,21 +2134,21 @@ void __58__WBSHistory__dispatchHistoryClearedAfterDate_beforeDate___block_invoke
           objc_enumerationMutation(v8);
         }
 
-        v12 = [*(*(&v25 + 1) + 8 * v11) item];
-        v13 = v12;
-        if (v12)
+        item = [*(*(&v25 + 1) + 8 * v11) item];
+        v13 = item;
+        if (item)
         {
-          v14 = [v12 lastVisitOnSynchronizationQueue];
-          v15 = v14 == 0;
+          lastVisitOnSynchronizationQueue = [item lastVisitOnSynchronizationQueue];
+          v15 = lastVisitOnSynchronizationQueue == 0;
 
           if (v15)
           {
-            v16 = v7;
+            v16 = array2;
           }
 
           else
           {
-            v16 = v6;
+            v16 = array;
           }
 
           [v16 addObject:v13];
@@ -2168,13 +2168,13 @@ void __58__WBSHistory__dispatchHistoryClearedAfterDate_beforeDate___block_invoke
   v20[1] = 3221225472;
   v20[2] = __40__WBSHistory_historyStore_didAddVisits___block_invoke;
   v20[3] = &unk_1E7FC5D00;
-  v21 = v6;
-  v22 = self;
+  v21 = array;
+  selfCopy = self;
   v23 = v8;
-  v24 = v7;
-  v17 = v7;
+  v24 = array2;
+  v17 = array2;
   v18 = v8;
-  v19 = v6;
+  v19 = array;
   dispatch_async(MEMORY[0x1E69E96A0], v20);
 }
 
@@ -2233,16 +2233,16 @@ uint64_t __40__WBSHistory_historyStore_didAddVisits___block_invoke(id *a1)
   return result;
 }
 
-- (void)historyStore:(id)a3 didRemoveVisits:(id)a4
+- (void)historyStore:(id)store didRemoveVisits:(id)visits
 {
-  v5 = a4;
+  visitsCopy = visits;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__WBSHistory_historyStore_didRemoveVisits___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = visitsCopy;
+  v6 = visitsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -2258,16 +2258,16 @@ void __43__WBSHistory_historyStore_didRemoveVisits___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"WBSHistoryVisitsWereRemovedFromDatabaseNotification" object:v4 userInfo:v5];
 }
 
-- (void)historyStore:(id)a3 didRemoveItems:(id)a4
+- (void)historyStore:(id)store didRemoveItems:(id)items
 {
-  v5 = a4;
+  itemsCopy = items;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__WBSHistory_historyStore_didRemoveItems___block_invoke;
   v7[3] = &unk_1E7FB7F10;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -2283,55 +2283,55 @@ void __42__WBSHistory_historyStore_didRemoveItems___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"WBSHistoryItemsWereRemovedFromDatabaseNotification" object:v4 userInfo:v5];
 }
 
-- (void)historyStore:(id)a3 didRemoveHostnames:(id)a4
+- (void)historyStore:(id)store didRemoveHostnames:(id)hostnames
 {
-  v5 = a4;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"WBSHistoryDidRemoveHostnamesNotification" object:v5];
+  hostnamesCopy = hostnames;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSHistoryDidRemoveHostnamesNotification" object:hostnamesCopy];
 }
 
-- (void)historyStore:(id)a3 didRemoveHighLevelDomains:(id)a4
+- (void)historyStore:(id)store didRemoveHighLevelDomains:(id)domains
 {
-  v5 = a4;
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"WBSHistoryDidRemoveHighLevelDomainsNotification" object:v5];
+  domainsCopy = domains;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSHistoryDidRemoveHighLevelDomainsNotification" object:domainsCopy];
 }
 
-- (id)historyStore:(id)a3 itemForURLString:(id)a4 createIfNeeded:(BOOL)a5
+- (id)historyStore:(id)store itemForURLString:(id)string createIfNeeded:(BOOL)needed
 {
-  v5 = [(WBSHistory *)self itemForURLString:a4 createIfNeeded:a5];
+  v5 = [(WBSHistory *)self itemForURLString:string createIfNeeded:needed];
 
   return v5;
 }
 
-- (void)initializeCloudHistoryWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)initializeCloudHistoryWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   waitUntilHistoryHasLoadedQueue = self->_waitUntilHistoryHasLoadedQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__WBSHistory_initializeCloudHistoryWithConfiguration_completionHandler___block_invoke;
   block[3] = &unk_1E7FB7CC0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
   dispatch_async(waitUntilHistoryHasLoadedQueue, block);
 }
 
-- (void)releaseCloudHistory:(id)a3
+- (void)releaseCloudHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   waitUntilHistoryHasLoadedQueue = self->_waitUntilHistoryHasLoadedQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__WBSHistory_releaseCloudHistory___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = historyCopy;
+  v6 = historyCopy;
   dispatch_async(waitUntilHistoryHasLoadedQueue, v7);
 }
 
@@ -2360,9 +2360,9 @@ void __42__WBSHistory_historyStore_didRemoveItems___block_invoke(uint64_t a1)
   self->_historyStore = 0;
 }
 
-- (void)fetchHistoricalHighLevelDomainsWithCompletionHandler:(id)a3
+- (void)fetchHistoricalHighLevelDomainsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [MEMORY[0x1E695DFA8] set];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -2371,7 +2371,7 @@ void __42__WBSHistory_historyStore_didRemoveItems___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v6;
   [(WBSHistory *)self enumerateItemsUsingBlock:v7];
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, v6);
 }
 
 void __67__WBSHistory_fetchHistoricalHighLevelDomainsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)

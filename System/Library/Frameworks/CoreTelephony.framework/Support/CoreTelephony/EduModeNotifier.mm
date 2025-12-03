@@ -1,8 +1,8 @@
 @interface EduModeNotifier
-- (EduModeNotifier)initWithRegistry:(shared_ptr<const Registry>)a3 andQueue:(queue)a4 andLogger:(void *)a5;
+- (EduModeNotifier)initWithRegistry:(shared_ptr<const Registry>)registry andQueue:(queue)queue andLogger:(void *)logger;
 - (id).cxx_construct;
 - (void)dumpState;
-- (void)handleiCloudAccountEventSync:(int)a3;
+- (void)handleiCloudAccountEventSync:(int)sync;
 - (void)registerForNotifications;
 - (void)setup;
 - (void)updateEDUModeSync;
@@ -10,13 +10,13 @@
 
 @implementation EduModeNotifier
 
-- (EduModeNotifier)initWithRegistry:(shared_ptr<const Registry>)a3 andQueue:(queue)a4 andLogger:(void *)a5
+- (EduModeNotifier)initWithRegistry:(shared_ptr<const Registry>)registry andQueue:(queue)queue andLogger:(void *)logger
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
+  cntrl = registry.__cntrl_;
+  ptr = registry.__ptr_;
   v24.receiver = self;
   v24.super_class = EduModeNotifier;
-  v8 = [(EduModeNotifier *)&v24 init:a3.__ptr_];
+  v8 = [(EduModeNotifier *)&v24 init:registry.__ptr_];
   v9 = v8;
   if (v8)
   {
@@ -48,7 +48,7 @@
       dispatch_release(fObj);
     }
 
-    v9->fLogger = a4.fObj.fObj;
+    v9->fLogger = queue.fObj.fObj;
     sub_10000501C(&__p, "EDUModeNotifier");
     v15 = v9->fQueue.fObj.fObj;
     v20 = v15;
@@ -129,9 +129,9 @@
   sub_100BE49DC();
 }
 
-- (void)handleiCloudAccountEventSync:(int)a3
+- (void)handleiCloudAccountEventSync:(int)sync
 {
-  if (a3 == 2)
+  if (sync == 2)
   {
     [(EduModeNotifier *)self updateEDUModeSync];
   }

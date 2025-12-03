@@ -1,33 +1,33 @@
 @interface ORCHSchemaORCHVisionPowerState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHVisionPowerState)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHVisionPowerState)initWithJSON:(id)a3;
+- (ORCHSchemaORCHVisionPowerState)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHVisionPowerState)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasThermalMitigationLevel:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasThermalMitigationLevel:(BOOL)level;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHVisionPowerState
 
-- (ORCHSchemaORCHVisionPowerState)initWithDictionary:(id)a3
+- (ORCHSchemaORCHVisionPowerState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ORCHSchemaORCHVisionPowerState;
   v5 = [(ORCHSchemaORCHVisionPowerState *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"blackboardUseCaseProfile"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"blackboardUseCaseProfile"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHVisionPowerState setBlackboardUseCaseProfile:](v5, "setBlackboardUseCaseProfile:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"thermalMitigationLevel"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"thermalMitigationLevel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHVisionPowerState)initWithJSON:(id)a3
+- (ORCHSchemaORCHVisionPowerState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHVisionPowerState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHVisionPowerState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHVisionPowerState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,7 +76,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -91,19 +91,19 @@
       v6 = off_1E78DF640[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"blackboardUseCaseProfile"];
+    [dictionary setObject:v6 forKeyedSubscript:@"blackboardUseCaseProfile"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[ORCHSchemaORCHVisionPowerState thermalMitigationLevel](self, "thermalMitigationLevel")}];
-    [v3 setObject:v7 forKeyedSubscript:@"thermalMitigationLevel"];
+    [dictionary setObject:v7 forKeyedSubscript:@"thermalMitigationLevel"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -132,16 +132,16 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   has = self->_has;
-  v6 = v4[16];
+  v6 = equalCopy[16];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_10;
@@ -150,7 +150,7 @@ LABEL_3:
   if (*&has)
   {
     blackboardUseCaseProfile = self->_blackboardUseCaseProfile;
-    if (blackboardUseCaseProfile != [v4 blackboardUseCaseProfile])
+    if (blackboardUseCaseProfile != [equalCopy blackboardUseCaseProfile])
     {
 LABEL_10:
       v10 = 0;
@@ -158,7 +158,7 @@ LABEL_10:
     }
 
     has = self->_has;
-    v6 = v4[16];
+    v6 = equalCopy[16];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -170,7 +170,7 @@ LABEL_10:
   if (v8)
   {
     thermalMitigationLevel = self->_thermalMitigationLevel;
-    if (thermalMitigationLevel != [v4 thermalMitigationLevel])
+    if (thermalMitigationLevel != [equalCopy thermalMitigationLevel])
     {
       goto LABEL_10;
     }
@@ -182,28 +182,28 @@ LABEL_11:
   return v10;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasThermalMitigationLevel:(BOOL)a3
+- (void)setHasThermalMitigationLevel:(BOOL)level
 {
-  if (a3)
+  if (level)
   {
     v3 = 2;
   }

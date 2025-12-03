@@ -1,9 +1,9 @@
 @interface CollectionAccessoryView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)title;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
@@ -17,17 +17,17 @@
   return v2;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v7 = v6;
   v8 = (self + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_title);
   *v8 = v5;
   v8[1] = v6;
-  v9 = a3;
-  v10 = self;
+  titleCopy = title;
+  selfCopy = self;
 
-  v11 = v10 + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_textComponents;
+  v11 = selfCopy + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_textComponents;
   swift_beginAccess();
   v12 = *(v11 + 1);
   swift_beginAccess();
@@ -37,10 +37,10 @@
   sub_2EB704();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_D3A68(width);
   v7 = v6;
 
@@ -54,11 +54,11 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(self + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_accessoryImageView);
-  v3 = self;
+  selfCopy = self;
   [v2 sizeThatFits:{0.0, 0.0}];
   v5 = v4;
   v7 = v6;
-  [*(v3 + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_textStackView) sizeThatFits:{0.0, 0.0}];
+  [*(selfCopy + OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_textStackView) sizeThatFits:{0.0, 0.0}];
   v9 = v8;
   v11 = v10;
 
@@ -80,7 +80,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_D3C38();
 }
 
@@ -90,12 +90,12 @@
   v6.super_class = type metadata accessor for CollectionAccessoryView();
   v2 = v6.receiver;
   [(CollectionAccessoryView *)&v6 tintColorDidChange];
-  v3 = [v2 tintColor];
-  if (v3)
+  tintColor = [v2 tintColor];
+  if (tintColor)
   {
     v4 = *&v2[OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_titleTextColor];
-    *&v2[OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_titleTextColor] = v3;
-    v5 = v3;
+    *&v2[OBJC_IVAR____TtC16MusicApplication23CollectionAccessoryView_titleTextColor] = tintColor;
+    v5 = tintColor;
     sub_D392C();
   }
 

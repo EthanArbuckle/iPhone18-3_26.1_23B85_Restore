@@ -1,29 +1,29 @@
 @interface BLItemArtworkImage
-- (BLItemArtworkImage)initWithArtworkDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BLItemArtworkImage)initWithArtworkDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)imageSize;
 - (NSURL)URL;
 - (double)imageScale;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)height;
 - (int64_t)width;
 - (unint64_t)hash;
-- (void)_setValue:(id)a3 forKey:(id)a4;
-- (void)setImageKindWithTypeName:(id)a3 variantName:(id)a4;
-- (void)setURL:(id)a3;
+- (void)_setValue:(id)value forKey:(id)key;
+- (void)setImageKindWithTypeName:(id)name variantName:(id)variantName;
+- (void)setURL:(id)l;
 @end
 
 @implementation BLItemArtworkImage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSMutableDictionary *)self->_dictionary mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_imageKind copyWithZone:a3];
+  v8 = [(NSString *)self->_imageKind copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -35,21 +35,21 @@
   v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:@"box-height"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
   [(BLItemArtworkImage *)self imageScale];
   if (v5 > 0.00000011920929)
   {
-    v4 = (v4 / v5);
+    intValue = (intValue / v5);
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)imageScale
@@ -70,21 +70,21 @@
   v3 = [(NSMutableDictionary *)self->_dictionary objectForKey:@"box-width"];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
   [(BLItemArtworkImage *)self imageScale];
   if (v5 > 0.00000011920929)
   {
-    v4 = (v4 / v5);
+    intValue = (intValue / v5);
   }
 
-  return v4;
+  return intValue;
 }
 
 - (NSURL)URL
@@ -110,11 +110,11 @@
   v11.receiver = self;
   v11.super_class = BLItemArtworkImage;
   v4 = [(BLItemArtworkImage *)&v11 description];
-  v5 = [(BLItemArtworkImage *)self imageKind];
-  v6 = [(BLItemArtworkImage *)self width];
-  v7 = [(BLItemArtworkImage *)self height];
+  imageKind = [(BLItemArtworkImage *)self imageKind];
+  width = [(BLItemArtworkImage *)self width];
+  height = [(BLItemArtworkImage *)self height];
   v8 = [(BLItemArtworkImage *)self URL];
-  v9 = [v3 stringWithFormat:@"%@: [%@ %ldx%ld] %@", v4, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"%@: [%@ %ldx%ld] %@", v4, imageKind, width, height, v8];
 
   return v9;
 }
@@ -127,14 +127,14 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [(NSMutableDictionary *)self->_dictionary objectForKey:@"url"];
-    v6 = [v4 valueForProperty:@"url"];
+    v6 = [equalCopy valueForProperty:@"url"];
     v7 = [v5 isEqualToString:v6];
   }
 
@@ -146,15 +146,15 @@
   return v7;
 }
 
-- (BLItemArtworkImage)initWithArtworkDictionary:(id)a3
+- (BLItemArtworkImage)initWithArtworkDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = BLItemArtworkImage;
   v5 = [(BLItemArtworkImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }
@@ -164,47 +164,47 @@
 
 - (CGSize)imageSize
 {
-  v3 = [(BLItemArtworkImage *)self width];
-  v4 = [(BLItemArtworkImage *)self height];
-  v5 = v3;
-  result.height = v4;
+  width = [(BLItemArtworkImage *)self width];
+  height = [(BLItemArtworkImage *)self height];
+  v5 = width;
+  result.height = height;
   result.width = v5;
   return result;
 }
 
-- (void)setImageKindWithTypeName:(id)a3 variantName:(id)a4
+- (void)setImageKindWithTypeName:(id)name variantName:(id)variantName
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 hasSuffix:@"@2x"])
+  nameCopy = name;
+  variantNameCopy = variantName;
+  if ([variantNameCopy hasSuffix:@"@2x"])
   {
     LODWORD(v7) = 2.0;
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
     [(BLItemArtworkImage *)self _setValue:v8 forKey:@"scale"];
 
-    v9 = [v6 substringToIndex:{objc_msgSend(v6, "length") - 3}];
+    v9 = [variantNameCopy substringToIndex:{objc_msgSend(variantNameCopy, "length") - 3}];
 
-    v6 = v9;
+    variantNameCopy = v9;
   }
 
-  v10 = [v11 stringByAppendingFormat:@".%@", v6];
-  [(BLItemArtworkImage *)self setImageKind:v10];
+  variantNameCopy = [nameCopy stringByAppendingFormat:@".%@", variantNameCopy];
+  [(BLItemArtworkImage *)self setImageKind:variantNameCopy];
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(BLItemArtworkImage *)self _setValue:v4 forKey:@"url"];
+  absoluteString = [l absoluteString];
+  [(BLItemArtworkImage *)self _setValue:absoluteString forKey:@"url"];
 }
 
-- (void)_setValue:(id)a3 forKey:(id)a4
+- (void)_setValue:(id)value forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v12;
-  v8 = v6;
+  valueCopy = value;
+  keyCopy = key;
+  v7 = valueCopy;
+  v8 = keyCopy;
   dictionary = self->_dictionary;
-  if (v12)
+  if (valueCopy)
   {
     if (!dictionary)
     {
@@ -212,7 +212,7 @@
       v11 = self->_dictionary;
       self->_dictionary = v10;
 
-      v7 = v12;
+      v7 = valueCopy;
       dictionary = self->_dictionary;
     }
 

@@ -1,11 +1,11 @@
 @interface CRFormContentTypeKeywordBasedPredictor
-+ (BOOL)_shouldPredictContentTypeForLabel:(id)a3 locale:(id)a4;
-+ (id)_keywordMapForPriorityKeywords:(BOOL)a3;
-+ (id)lookupLanguagesForLanguage:(id)a3;
++ (BOOL)_shouldPredictContentTypeForLabel:(id)label locale:(id)locale;
++ (id)_keywordMapForPriorityKeywords:(BOOL)keywords;
++ (id)lookupLanguagesForLanguage:(id)language;
 + (id)supportedLanguages;
 + (id)useKeywordTypes;
-+ (unint64_t)_nonStructuralContentTypeFromType:(unint64_t)a3;
-+ (unint64_t)predictContentTypeWithKeywordMatching:(id)a3 locale:(id)a4 keyword:(id *)a5 withPriorityKeywords:(BOOL)a6;
++ (unint64_t)_nonStructuralContentTypeFromType:(unint64_t)type;
++ (unint64_t)predictContentTypeWithKeywordMatching:(id)matching locale:(id)locale keyword:(id *)keyword withPriorityKeywords:(BOOL)keywords;
 @end
 
 @implementation CRFormContentTypeKeywordBasedPredictor
@@ -81,18 +81,18 @@ void __60__CRFormContentTypeKeywordBasedPredictor_supportedLanguages__block_invo
   [qword_1ED95FD68 addObject:@"unknown"];
 }
 
-+ (id)lookupLanguagesForLanguage:(id)a3
++ (id)lookupLanguagesForLanguage:(id)language
 {
   v13[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  languageCopy = language;
+  v4 = languageCopy;
+  if (!languageCopy)
   {
     v7 = &unk_1F2BF87D0;
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:@"ja"])
+  if ([languageCopy isEqualToString:@"ja"])
   {
     v13[0] = v4;
     v13[1] = @"unknown";
@@ -158,21 +158,21 @@ LABEL_14:
   return v7;
 }
 
-+ (id)_keywordMapForPriorityKeywords:(BOOL)a3
++ (id)_keywordMapForPriorityKeywords:(BOOL)keywords
 {
-  v3 = a3;
+  keywordsCopy = keywords;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__CRFormContentTypeKeywordBasedPredictor__keywordMapForPriorityKeywords___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED95FD70 != -1)
   {
     dispatch_once(&qword_1ED95FD70, block);
   }
 
   v4 = 3;
-  if (v3)
+  if (keywordsCopy)
   {
     v4 = 4;
   }
@@ -373,35 +373,35 @@ void __57__CRFormContentTypeKeywordBasedPredictor_useKeywordTypes__block_invoke(
   qword_1ED95FD88 = v0;
 }
 
-+ (unint64_t)predictContentTypeWithKeywordMatching:(id)a3 locale:(id)a4 keyword:(id *)a5 withPriorityKeywords:(BOOL)a6
++ (unint64_t)predictContentTypeWithKeywordMatching:(id)matching locale:(id)locale keyword:(id *)keyword withPriorityKeywords:(BOOL)keywords
 {
-  v6 = a6;
+  keywordsCopy = keywords;
   v77[3] = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v58 = a4;
+  matchingCopy = matching;
+  localeCopy = locale;
   if (qword_1ED95FD98 != -1)
   {
     dispatch_once(&qword_1ED95FD98, &__block_literal_global_84);
   }
 
-  v52 = v6;
-  v8 = [a1 _keywordMapForPriorityKeywords:v6];
-  v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v58];
+  v52 = keywordsCopy;
+  v8 = [self _keywordMapForPriorityKeywords:keywordsCopy];
+  v9 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:localeCopy];
   v57 = v9;
   if (v9)
   {
-    [v55 lowercaseStringWithLocale:v9];
+    [matchingCopy lowercaseStringWithLocale:v9];
   }
 
   else
   {
-    [v55 lowercaseString];
+    [matchingCopy lowercaseString];
   }
   v56 = ;
-  v10 = [v57 languageCode];
-  v61 = v10;
+  languageCode = [v57 languageCode];
+  v61 = languageCode;
   v11 = &stru_1F2BB4348;
-  if ([v10 isEqualToString:@"zh"])
+  if ([languageCode isEqualToString:@"zh"])
   {
     v48 = &stru_1F2BB4348;
     v12 = &qword_1ED95FDA8;
@@ -410,7 +410,7 @@ void __57__CRFormContentTypeKeywordBasedPredictor_useKeywordTypes__block_invoke(
 
   else
   {
-    v14 = [v10 isEqualToString:@"ja"];
+    v14 = [languageCode isEqualToString:@"ja"];
     v13 = v14;
     if ((v14 & 1) == 0)
     {
@@ -463,8 +463,8 @@ void __57__CRFormContentTypeKeywordBasedPredictor_useKeywordTypes__block_invoke(
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
-        v21 = [a1 lookupLanguagesForLanguage:v19];
-        v22 = [v21 countByEnumeratingWithState:&v66 objects:v75 count:16];
+        _crArrayOfComposedCharacters = [self lookupLanguagesForLanguage:v19];
+        v22 = [_crArrayOfComposedCharacters countByEnumeratingWithState:&v66 objects:v75 count:16];
         if (v22)
         {
           v23 = *v67;
@@ -474,7 +474,7 @@ void __57__CRFormContentTypeKeywordBasedPredictor_useKeywordTypes__block_invoke(
             {
               if (*v67 != v23)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(_crArrayOfComposedCharacters);
               }
 
               v25 = *(*(&v66 + 1) + 8 * j);
@@ -484,13 +484,13 @@ void __57__CRFormContentTypeKeywordBasedPredictor_useKeywordTypes__block_invoke(
 
               if (v28)
               {
-                v41 = [v28 firstObject];
-                v40 = [v41 unsignedIntegerValue];
+                firstObject = [v28 firstObject];
+                unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-                if (a5)
+                if (keyword)
                 {
                   v42 = v26;
-                  *a5 = v26;
+                  *keyword = v26;
                 }
 
 LABEL_61:
@@ -499,7 +499,7 @@ LABEL_61:
               }
             }
 
-            v22 = [v21 countByEnumeratingWithState:&v66 objects:v75 count:16];
+            v22 = [_crArrayOfComposedCharacters countByEnumeratingWithState:&v66 objects:v75 count:16];
             if (v22)
             {
               continue;
@@ -511,17 +511,17 @@ LABEL_61:
 
         if (v47)
         {
-          v21 = [v20 _crArrayOfComposedCharacters];
+          _crArrayOfComposedCharacters = [v20 _crArrayOfComposedCharacters];
           v29 = 5;
         }
 
         else
         {
-          v21 = [v20 componentsSeparatedByString:@" "];
+          _crArrayOfComposedCharacters = [v20 componentsSeparatedByString:@" "];
           v29 = 6;
         }
 
-        v30 = [v21 count];
+        v30 = [_crArrayOfComposedCharacters count];
         if (v30 >= 1)
         {
           if (v30 >= v29)
@@ -537,7 +537,7 @@ LABEL_61:
           v49 = v31;
           do
           {
-            for (k = 0; k + v49 <= [v21 count]; ++k)
+            for (k = 0; k + v49 <= [_crArrayOfComposedCharacters count]; ++k)
             {
               v32 = [v61 isEqualToString:@"ja"] ^ 1;
               if (v49 > 2)
@@ -545,16 +545,16 @@ LABEL_61:
                 LOBYTE(v32) = 1;
               }
 
-              if ((v32 & 1) != 0 || k + v49 == [v21 count])
+              if ((v32 & 1) != 0 || k + v49 == [_crArrayOfComposedCharacters count])
               {
-                v33 = [v21 subarrayWithRange:{k, v49}];
+                v33 = [_crArrayOfComposedCharacters subarrayWithRange:{k, v49}];
                 v26 = [v33 componentsJoinedByString:v48];
 
                 v64 = 0u;
                 v65 = 0u;
                 v62 = 0u;
                 v63 = 0u;
-                v28 = [a1 lookupLanguagesForLanguage:v61];
+                v28 = [self lookupLanguagesForLanguage:v61];
                 v34 = [v28 countByEnumeratingWithState:&v62 objects:v74 count:16];
                 if (v34)
                 {
@@ -573,13 +573,13 @@ LABEL_61:
 
                       if (v38)
                       {
-                        v43 = [v38 firstObject];
-                        v40 = [v43 unsignedIntegerValue];
+                        firstObject2 = [v38 firstObject];
+                        unsignedIntegerValue = [firstObject2 unsignedIntegerValue];
 
-                        if (a5)
+                        if (keyword)
                         {
                           v44 = v26;
-                          *a5 = v26;
+                          *keyword = v26;
                         }
 
                         goto LABEL_61;
@@ -611,10 +611,10 @@ LABEL_61:
     while (v46);
   }
 
-  v40 = !v52;
+  unsignedIntegerValue = !v52;
 LABEL_62:
 
-  return v40;
+  return unsignedIntegerValue;
 }
 
 void __116__CRFormContentTypeKeywordBasedPredictor_predictContentTypeWithKeywordMatching_locale_keyword_withPriorityKeywords___block_invoke()
@@ -628,14 +628,14 @@ void __116__CRFormContentTypeKeywordBasedPredictor_predictContentTypeWithKeyword
   qword_1ED95FDA8 = v2;
 }
 
-+ (BOOL)_shouldPredictContentTypeForLabel:(id)a3 locale:(id)a4
++ (BOOL)_shouldPredictContentTypeForLabel:(id)label locale:(id)locale
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6 || ![CRImageReader languageIsChinese:v6]&& ![CRImageReader languageIsJapanese:v6]&& ![CRImageReader languageIsKorean:v6])
+  labelCopy = label;
+  localeCopy = locale;
+  if (!localeCopy || ![CRImageReader languageIsChinese:localeCopy]&& ![CRImageReader languageIsJapanese:localeCopy]&& ![CRImageReader languageIsKorean:localeCopy])
   {
-    v8 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v9 = [v5 componentsSeparatedByCharactersInSet:v8];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v9 = [labelCopy componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     v10 = [v9 count];
 
     if (v10 > 0x10)
@@ -648,7 +648,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v5 length] <= 0x10)
+  if ([labelCopy length] <= 0x10)
   {
     goto LABEL_8;
   }
@@ -660,7 +660,7 @@ LABEL_9:
   return v7;
 }
 
-+ (unint64_t)_nonStructuralContentTypeFromType:(unint64_t)a3
++ (unint64_t)_nonStructuralContentTypeFromType:(unint64_t)type
 {
   if (qword_1ED95FDB8 != -1)
   {
@@ -668,15 +668,15 @@ LABEL_9:
   }
 
   v4 = qword_1ED95FDB0;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v6 = [v4 objectForKeyedSubscript:v5];
 
   if (v6)
   {
-    a3 = [v6 unsignedIntegerValue];
+    type = [v6 unsignedIntegerValue];
   }
 
-  return a3;
+  return type;
 }
 
 void __76__CRFormContentTypeKeywordBasedPredictor__nonStructuralContentTypeFromType___block_invoke()

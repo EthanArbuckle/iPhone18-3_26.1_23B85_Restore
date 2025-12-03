@@ -1,13 +1,13 @@
 @interface FudInternalConnection
-- (FudInternalConnection)initWithClientIdentifier:(id)a3 handlerQueue:(id)a4 messageHandler:(id)a5;
+- (FudInternalConnection)initWithClientIdentifier:(id)identifier handlerQueue:(id)queue messageHandler:(id)handler;
 - (int64_t)getNextMessageID;
 - (void)dealloc;
-- (void)handleInternalMessage:(id)a3;
+- (void)handleInternalMessage:(id)message;
 @end
 
 @implementation FudInternalConnection
 
-- (FudInternalConnection)initWithClientIdentifier:(id)a3 handlerQueue:(id)a4 messageHandler:(id)a5
+- (FudInternalConnection)initWithClientIdentifier:(id)identifier handlerQueue:(id)queue messageHandler:(id)handler
 {
   v19.receiver = self;
   v19.super_class = FudInternalConnection;
@@ -25,27 +25,27 @@ LABEL_17:
     return 0;
   }
 
-  if (!a3)
+  if (!identifier)
   {
     v18 = @"Can't create connection without client identifier";
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!handler)
   {
     v18 = @"Can't create connection without handler";
     goto LABEL_17;
   }
 
-  if (!a4)
+  if (!queue)
   {
     v18 = @"Can't create connection without handler queue";
     goto LABEL_17;
   }
 
   v14->didStop = 0;
-  v14->clientIdentifier = a3;
-  v15 = _Block_copy(a5);
+  v14->clientIdentifier = identifier;
+  v15 = _Block_copy(handler);
   v14->messageHandler = v15;
   if (!v15)
   {
@@ -61,8 +61,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v14->handlerQueue = a4;
-  dispatch_retain(a4);
+  v14->handlerQueue = queue;
+  dispatch_retain(queue);
   return v14;
 }
 
@@ -100,18 +100,18 @@ dispatch_semaphore_t __78__FudInternalConnection_initWithClientIdentifier_handle
   return v2;
 }
 
-- (void)handleInternalMessage:(id)a3
+- (void)handleInternalMessage:(id)message
 {
   if (self->didStop)
   {
     v8 = @"Dropping message, no longer handling internal messages";
 LABEL_13:
 
-    FudLog(3, v8, a3, v3, v4, v5, v6, v7, v26);
+    FudLog(3, v8, message, v3, v4, v5, v6, v7, v26);
     return;
   }
 
-  if (!a3)
+  if (!message)
   {
     v8 = @"Can't handle NULL msg in notification";
     goto LABEL_13;
@@ -139,7 +139,7 @@ LABEL_13:
         block[1] = 3221225472;
         block[2] = __47__FudInternalConnection_handleInternalMessage___block_invoke;
         block[3] = &unk_2798E37B8;
-        block[4] = a3;
+        block[4] = message;
         block[5] = messageHandler;
         dispatch_sync(handlerQueue, block);
         return;

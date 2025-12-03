@@ -1,16 +1,16 @@
 @interface UISceneActivationConditions
-- (BOOL)_validateCompileTimeIssues:(id *)a3 runTimeIssues:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_validateCompileTimeIssues:(id *)issues runTimeIssues:(id *)timeIssues;
+- (BOOL)isEqual:(id)equal;
 - (NSPredicate)canActivateForTargetContentIdentifierPredicate;
 - (NSPredicate)prefersToActivateForTargetContentIdentifierPredicate;
 - (UIScene)_UIScene;
 - (UISceneActivationConditions)init;
 - (UISceneActivationConditions)initWithCoder:(NSCoder *)aDecoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)_suitabilityForTargetContentIdentifier:(id)a3 errorString:(id *)a4;
+- (int64_t)_suitabilityForTargetContentIdentifier:(id)identifier errorString:(id *)string;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setCanActivateForTargetContentIdentifierPredicate:(NSPredicate *)canActivateForTargetContentIdentifierPredicate;
 - (void)setPrefersToActivateForTargetContentIdentifierPredicate:(NSPredicate *)prefersToActivateForTargetContentIdentifierPredicate;
 @end
@@ -91,8 +91,8 @@
     {
       if (v8)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"UISceneActivationConditions.m" lineNumber:170 description:{@"%@", v8}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneActivationConditions.m" lineNumber:170 description:{@"%@", v8}];
       }
 
       v13 = *(__UILogGetCategoryCachedImpl("UISceneActivationConditions", &setCanActivateForTargetContentIdentifierPredicate____s_category) + 8);
@@ -141,8 +141,8 @@
     {
       if (v8)
       {
-        v14 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v14 handleFailureInMethod:a2 object:self file:@"UISceneActivationConditions.m" lineNumber:189 description:{@"%@", v8}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UISceneActivationConditions.m" lineNumber:189 description:{@"%@", v8}];
       }
 
       v13 = *(__UILogGetCategoryCachedImpl("UISceneActivationConditions", &setPrefersToActivateForTargetContentIdentifierPredicate____s_category) + 8);
@@ -158,10 +158,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_11;
   }
@@ -173,19 +173,19 @@
   }
 
   v6 = [(UISceneActivationConditions *)self hash];
-  if (v6 != [(UISceneActivationConditions *)v4 hash])
+  if (v6 != [(UISceneActivationConditions *)equalCopy hash])
   {
     goto LABEL_10;
   }
 
   prefersPredicate = self->_prefersPredicate;
-  if (prefersPredicate != v4->_prefersPredicate && (!prefersPredicate || ![(NSPredicate *)prefersPredicate isEqual:?]))
+  if (prefersPredicate != equalCopy->_prefersPredicate && (!prefersPredicate || ![(NSPredicate *)prefersPredicate isEqual:?]))
   {
     goto LABEL_10;
   }
 
   canActivatePredicate = self->_canActivatePredicate;
-  if (canActivatePredicate == v4->_canActivatePredicate)
+  if (canActivatePredicate == equalCopy->_canActivatePredicate)
   {
 LABEL_11:
     v9 = 1;
@@ -215,16 +215,16 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_validateCompileTimeIssues:(id *)a3 runTimeIssues:(id *)a4
+- (BOOL)_validateCompileTimeIssues:(id *)issues runTimeIssues:(id *)timeIssues
 {
   v7 = objc_alloc_init(_UITargetContentIdentifierPredicateValidator);
-  v8 = [(UISceneActivationConditions *)self canActivateForTargetContentIdentifierPredicate];
-  v9 = [(_UITargetContentIdentifierPredicateValidator *)v7 validatePredicate:v8 compileTimeIssues:a3 runTimeIssues:a4];
+  canActivateForTargetContentIdentifierPredicate = [(UISceneActivationConditions *)self canActivateForTargetContentIdentifierPredicate];
+  v9 = [(_UITargetContentIdentifierPredicateValidator *)v7 validatePredicate:canActivateForTargetContentIdentifierPredicate compileTimeIssues:issues runTimeIssues:timeIssues];
 
   if (v9)
   {
-    v10 = [(UISceneActivationConditions *)self prefersToActivateForTargetContentIdentifierPredicate];
-    v11 = [(_UITargetContentIdentifierPredicateValidator *)v7 validatePredicate:v10 compileTimeIssues:a3 runTimeIssues:a4];
+    prefersToActivateForTargetContentIdentifierPredicate = [(UISceneActivationConditions *)self prefersToActivateForTargetContentIdentifierPredicate];
+    v11 = [(_UITargetContentIdentifierPredicateValidator *)v7 validatePredicate:prefersToActivateForTargetContentIdentifierPredicate compileTimeIssues:issues runTimeIssues:timeIssues];
   }
 
   else
@@ -235,30 +235,30 @@ LABEL_12:
   return v11;
 }
 
-- (int64_t)_suitabilityForTargetContentIdentifier:(id)a3 errorString:(id *)a4
+- (int64_t)_suitabilityForTargetContentIdentifier:(id)identifier errorString:(id *)string
 {
-  v5 = a3;
-  v6 = [(UISceneActivationConditions *)self prefersToActivateForTargetContentIdentifierPredicate];
-  if ([v6 evaluateWithObject:v5])
+  identifierCopy = identifier;
+  prefersToActivateForTargetContentIdentifierPredicate = [(UISceneActivationConditions *)self prefersToActivateForTargetContentIdentifierPredicate];
+  if ([prefersToActivateForTargetContentIdentifierPredicate evaluateWithObject:identifierCopy])
   {
     v7 = 2;
   }
 
   else
   {
-    v8 = [(UISceneActivationConditions *)self canActivateForTargetContentIdentifierPredicate];
-    v7 = [v8 evaluateWithObject:v5];
+    canActivateForTargetContentIdentifierPredicate = [(UISceneActivationConditions *)self canActivateForTargetContentIdentifierPredicate];
+    v7 = [canActivateForTargetContentIdentifierPredicate evaluateWithObject:identifierCopy];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   canActivatePredicate = self->_canActivatePredicate;
-  v5 = a3;
-  [v5 encodeObject:canActivatePredicate forKey:@"_UISceneActivationConditionsCanActivatePredicate"];
-  [v5 encodeObject:self->_prefersPredicate forKey:@"_UISceneActivationConditionsPrefersPredicate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:canActivatePredicate forKey:@"_UISceneActivationConditionsCanActivatePredicate"];
+  [coderCopy encodeObject:self->_prefersPredicate forKey:@"_UISceneActivationConditionsPrefersPredicate"];
 }
 
 - (UISceneActivationConditions)initWithCoder:(NSCoder *)aDecoder
@@ -283,7 +283,7 @@ LABEL_12:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[UISceneActivationConditions allocWithZone:?]];
   [(UISceneActivationConditions *)v4 setCanActivateForTargetContentIdentifierPredicate:self->_canActivatePredicate];

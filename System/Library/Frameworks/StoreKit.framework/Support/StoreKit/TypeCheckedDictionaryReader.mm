@@ -1,31 +1,31 @@
 @interface TypeCheckedDictionaryReader
-- (TypeCheckedDictionaryReader)initWithDictionary:(id)a3;
-- (id)valueOfClass:(Class)a3 forKey:(id)a4;
-- (id)valueOfClass:(Class)a3 forKeyPath:(id)a4;
+- (TypeCheckedDictionaryReader)initWithDictionary:(id)dictionary;
+- (id)valueOfClass:(Class)class forKey:(id)key;
+- (id)valueOfClass:(Class)class forKeyPath:(id)path;
 @end
 
 @implementation TypeCheckedDictionaryReader
 
-- (TypeCheckedDictionaryReader)initWithDictionary:(id)a3
+- (TypeCheckedDictionaryReader)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = TypeCheckedDictionaryReader;
   v5 = [(TypeCheckedDictionaryReader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dictionary, v4);
+    objc_storeWeak(&v5->_dictionary, dictionaryCopy);
   }
 
   return v6;
 }
 
-- (id)valueOfClass:(Class)a3 forKey:(id)a4
+- (id)valueOfClass:(Class)class forKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_dictionary);
-  v7 = [WeakRetained objectForKeyedSubscript:v5];
+  v7 = [WeakRetained objectForKeyedSubscript:keyCopy];
 
   if (objc_opt_isKindOfClass())
   {
@@ -42,18 +42,18 @@
   return v8;
 }
 
-- (id)valueOfClass:(Class)a3 forKeyPath:(id)a4
+- (id)valueOfClass:(Class)class forKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = [v6 rangeOfString:@"." options:4];
+  pathCopy = path;
+  v7 = [pathCopy rangeOfString:@"." options:4];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(TypeCheckedDictionaryReader *)self valueOfClass:a3 forKey:v6];
+    v8 = [(TypeCheckedDictionaryReader *)self valueOfClass:class forKey:pathCopy];
     goto LABEL_20;
   }
 
   v9 = v7;
-  v10 = [v6 substringToIndex:v7];
+  v10 = [pathCopy substringToIndex:v7];
   WeakRetained = [(NSMutableDictionary *)self->_keyPathCache objectForKeyedSubscript:v10];
   if (!WeakRetained)
   {
@@ -68,10 +68,10 @@
     {
       v16 = v15;
       v27 = 16;
-      v28 = self;
+      selfCopy = self;
       v29 = v9;
-      v30 = a3;
-      v31 = v6;
+      classCopy = class;
+      v31 = pathCopy;
       v17 = *v33;
       v18 = 1;
       while (2)
@@ -95,7 +95,7 @@
           {
 
             v8 = 0;
-            v6 = v31;
+            pathCopy = v31;
             goto LABEL_19;
           }
 
@@ -114,8 +114,8 @@
         break;
       }
 
-      v6 = v31;
-      self = v28;
+      pathCopy = v31;
+      self = selfCopy;
       if ((v18 & 1) == 0)
       {
         goto LABEL_27;
@@ -136,11 +136,11 @@
       keyPathCache = self->_keyPathCache;
     }
 
-    [(NSMutableDictionary *)keyPathCache setObject:WeakRetained forKeyedSubscript:v10, v27, v28, v29, v30];
+    [(NSMutableDictionary *)keyPathCache setObject:WeakRetained forKeyedSubscript:v10, v27, selfCopy, v29, classCopy];
 LABEL_27:
   }
 
-  v12 = [v6 substringFromIndex:{v9 + 1, v27, v28, v29, v30}];
+  v12 = [pathCopy substringFromIndex:{v9 + 1, v27, selfCopy, v29, classCopy}];
   v13 = [WeakRetained objectForKeyedSubscript:v12];
 
   if (objc_opt_isKindOfClass())

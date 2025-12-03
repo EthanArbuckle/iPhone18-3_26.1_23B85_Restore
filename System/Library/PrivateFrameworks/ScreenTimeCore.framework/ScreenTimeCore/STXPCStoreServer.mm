@@ -27,12 +27,12 @@
   v9 = [v7 initForStoreWithURL:v5 usingModelAtURL:v6 options:v4 policy:v8];
   [(STXPCStoreServer *)self setStoreServer:v9];
 
-  v10 = [(STXPCStoreServer *)self storeServer];
-  v11 = [(STXPCStoreServer *)self listener];
-  [v11 setDelegate:v10];
+  storeServer = [(STXPCStoreServer *)self storeServer];
+  listener = [(STXPCStoreServer *)self listener];
+  [listener setDelegate:storeServer];
 
-  v12 = [(STXPCStoreServer *)self storeServer];
-  [v12 startListening];
+  storeServer2 = [(STXPCStoreServer *)self storeServer];
+  [storeServer2 startListening];
 }
 
 @end

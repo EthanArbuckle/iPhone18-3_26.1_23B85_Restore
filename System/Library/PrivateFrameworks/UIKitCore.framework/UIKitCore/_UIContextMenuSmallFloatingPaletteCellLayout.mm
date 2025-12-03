@@ -1,40 +1,40 @@
 @interface _UIContextMenuSmallFloatingPaletteCellLayout
 - (UIShape)contentShape;
 - (_UIContextMenuCellContentView)contentView;
-- (_UIContextMenuSmallFloatingPaletteCellLayout)initWithContentView:(id)a3;
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3;
+- (_UIContextMenuSmallFloatingPaletteCellLayout)initWithContentView:(id)view;
+- (id)preferredIconFontUsingBoldFont:(BOOL)font;
 - (void)_configureSharedFloatingContentViewStyle;
 - (void)installConstraints;
 - (void)removeConstraints;
-- (void)setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4;
+- (void)setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation _UIContextMenuSmallFloatingPaletteCellLayout
 
-- (_UIContextMenuSmallFloatingPaletteCellLayout)initWithContentView:(id)a3
+- (_UIContextMenuSmallFloatingPaletteCellLayout)initWithContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UIContextMenuSmallFloatingPaletteCellLayout;
   v5 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIContextMenuSmallFloatingPaletteCellLayout *)v5 setContentView:v4];
-    v7 = [MEMORY[0x1E695DF70] array];
-    [(_UIContextMenuSmallFloatingPaletteCellLayout *)v6 setManagedConstraints:v7];
+    [(_UIContextMenuSmallFloatingPaletteCellLayout *)v5 setContentView:viewCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    [(_UIContextMenuSmallFloatingPaletteCellLayout *)v6 setManagedConstraints:array];
   }
 
   return v6;
 }
 
-- (id)preferredIconFontUsingBoldFont:(BOOL)a3
+- (id)preferredIconFontUsingBoldFont:(BOOL)font
 {
-  v4 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
-  v5 = [v4 traitCollection];
-  v6 = _UIContextMenuGetPlatformMetrics([v5 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v6 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
   v7 = v6;
-  if (a3)
+  if (font)
   {
     [v6 titleEmphasizedFont];
   }
@@ -44,16 +44,16 @@
     [v6 titleFont];
   }
   v8 = ;
-  v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v5];
+  v9 = [v8 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:traitCollection];
 
   return v9;
 }
 
 - (UIShape)contentShape
 {
-  v2 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
-  v3 = [v2 traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  contentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [v4 menuCornerRadius];
   v6 = [UIShape rectShapeWithCornerRadius:fmax(v5 + -8.0, 8.0)];
@@ -66,14 +66,14 @@
 {
   v78[6] = *MEMORY[0x1E69E9840];
   [(_UIContextMenuSmallFloatingPaletteCellLayout *)self removeConstraints];
-  v74 = [MEMORY[0x1E695DF70] array];
-  v3 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
-  v4 = [v3 labelStackView];
-  [v4 removeFromSuperview];
+  array = [MEMORY[0x1E695DF70] array];
+  contentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
+  labelStackView = [contentView labelStackView];
+  [labelStackView removeFromSuperview];
 
-  v5 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  floatingContentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
 
-  if (!v5)
+  if (!floatingContentView)
   {
     v6 = [_UIFloatingContentView alloc];
     v7 = [(_UIFloatingContentView *)v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -82,76 +82,76 @@
     [(_UIContextMenuSmallFloatingPaletteCellLayout *)self _configureSharedFloatingContentViewStyle];
   }
 
-  v8 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v3 addSubview:v8];
+  floatingContentView2 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [contentView addSubview:floatingContentView2];
 
-  v73 = [v3 iconView];
-  v71 = [v3 titleLabel];
-  v9 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  v68 = self;
-  v10 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
-  v11 = [v10 traitCollection];
-  v12 = [v11 userInterfaceIdiom];
+  iconView = [contentView iconView];
+  titleLabel = [contentView titleLabel];
+  floatingContentView3 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  selfCopy = self;
+  contentView2 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
+  traitCollection = [contentView2 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v69 = _UIContextMenuGetPlatformMetrics(v12);
+  v69 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   [v69 paletteMinimumItemSize];
   v14 = v13;
   v16 = v15;
-  v65 = [v9 topAnchor];
-  v62 = [v3 topAnchor];
-  v60 = [v65 constraintEqualToAnchor:v62 constant:26.0];
+  topAnchor = [floatingContentView3 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:26.0];
   v78[0] = v60;
-  v58 = [v9 bottomAnchor];
-  v57 = [v3 bottomAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57 constant:-46.0];
+  bottomAnchor = [floatingContentView3 bottomAnchor];
+  bottomAnchor2 = [contentView bottomAnchor];
+  v56 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-46.0];
   v78[1] = v56;
-  v55 = [v9 leadingAnchor];
-  v17 = [v3 leadingAnchor];
-  v18 = [v55 constraintEqualToAnchor:v17];
+  leadingAnchor = [floatingContentView3 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v78[2] = v18;
-  v19 = [v9 trailingAnchor];
-  v72 = v3;
-  v20 = [v3 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor = [floatingContentView3 trailingAnchor];
+  v72 = contentView;
+  trailingAnchor2 = [contentView trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v78[3] = v21;
-  v22 = [v9 widthAnchor];
-  v23 = [v22 constraintEqualToConstant:v14];
+  widthAnchor = [floatingContentView3 widthAnchor];
+  v23 = [widthAnchor constraintEqualToConstant:v14];
   v78[4] = v23;
-  v70 = v9;
-  v24 = [v9 heightAnchor];
-  v25 = [v24 constraintEqualToConstant:v16];
+  v70 = floatingContentView3;
+  heightAnchor = [floatingContentView3 heightAnchor];
+  v25 = [heightAnchor constraintEqualToConstant:v16];
   v78[5] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:6];
-  [v74 addObjectsFromArray:v26];
+  [array addObjectsFromArray:v26];
 
-  v27 = v73;
-  if (v73)
+  v27 = iconView;
+  if (iconView)
   {
-    v28 = [v70 contentView];
-    [v28 addSubview:v73];
+    contentView3 = [v70 contentView];
+    [contentView3 addSubview:iconView];
 
-    v63 = [v73 centerYAnchor];
-    v66 = [v70 contentView];
-    v29 = [v66 centerYAnchor];
-    v30 = [v63 constraintEqualToAnchor:v29];
+    centerYAnchor = [iconView centerYAnchor];
+    contentView4 = [v70 contentView];
+    centerYAnchor2 = [contentView4 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v77[0] = v30;
-    v31 = [v73 centerXAnchor];
-    v32 = [v70 contentView];
-    v33 = [v32 centerXAnchor];
-    v34 = [v31 constraintEqualToAnchor:v33];
+    centerXAnchor = [iconView centerXAnchor];
+    contentView5 = [v70 contentView];
+    centerXAnchor2 = [contentView5 centerXAnchor];
+    v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v77[1] = v34;
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:2];
-    v36 = v74;
-    [v74 addObjectsFromArray:v35];
+    v36 = array;
+    [array addObjectsFromArray:v35];
 
     objc_opt_class();
-    v38 = v71;
+    v38 = titleLabel;
     v37 = v72;
     v39 = v70;
     if (objc_opt_isKindOfClass())
     {
-      v40 = v73;
-      v41 = [v40 _currentImage];
+      contentView7 = iconView;
+      _currentImage = [contentView7 _currentImage];
       if (([v72 options] & 4) != 0 && !objc_msgSend(v72, "selectedIconBehavior"))
       {
         if ([v72 isFocused])
@@ -166,147 +166,147 @@
         v53 = ;
         v76 = v53;
         v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
-        v42 = [UIImageSymbolConfiguration configurationWithPaletteColors:v54];
+        centerYAnchor3 = [UIImageSymbolConfiguration configurationWithPaletteColors:v54];
       }
 
       else
       {
-        v42 = 0;
+        centerYAnchor3 = 0;
       }
 
-      [v40 _setOverridingSymbolConfiguration:v42];
+      [contentView7 _setOverridingSymbolConfiguration:centerYAnchor3];
       goto LABEL_11;
     }
   }
 
   else
   {
-    v36 = v74;
-    v38 = v71;
+    v36 = array;
+    v38 = titleLabel;
     v37 = v72;
     v39 = v70;
-    if (v71)
+    if (titleLabel)
     {
       v43 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleCaption1"];
-      [v71 setFont:v43];
+      [titleLabel setFont:v43];
 
-      v44 = [v70 contentView];
-      [v44 addSubview:v71];
+      contentView6 = [v70 contentView];
+      [contentView6 addSubview:titleLabel];
 
-      v42 = [v71 centerYAnchor];
-      v40 = [v70 contentView];
-      v59 = [v40 centerYAnchor];
-      v67 = [v42 constraintEqualToAnchor:v59];
+      centerYAnchor3 = [titleLabel centerYAnchor];
+      contentView7 = [v70 contentView];
+      centerYAnchor4 = [contentView7 centerYAnchor];
+      v67 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
       v75[0] = v67;
-      v61 = [v71 leadingAnchor];
-      v64 = [v70 contentView];
-      v45 = [v64 leadingAnchor];
+      leadingAnchor3 = [titleLabel leadingAnchor];
+      contentView8 = [v70 contentView];
+      leadingAnchor4 = [contentView8 leadingAnchor];
       [v69 paletteItemMinimumHorizontalMargin];
-      v46 = [v61 constraintEqualToAnchor:v45 constant:?];
+      v46 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
       v75[1] = v46;
-      v47 = [v71 trailingAnchor];
-      v48 = [v70 contentView];
-      v49 = [v48 trailingAnchor];
+      trailingAnchor3 = [titleLabel trailingAnchor];
+      contentView9 = [v70 contentView];
+      trailingAnchor4 = [contentView9 trailingAnchor];
       [v69 paletteItemMinimumHorizontalMargin];
-      v51 = [v47 constraintEqualToAnchor:v49 constant:-v50];
+      v51 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v50];
       v75[2] = v51;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:3];
-      v36 = v74;
-      [v74 addObjectsFromArray:v52];
+      v36 = array;
+      [array addObjectsFromArray:v52];
 
-      v41 = v59;
+      _currentImage = centerYAnchor4;
       v39 = v70;
 
-      v38 = v71;
+      v38 = titleLabel;
       v37 = v72;
 
 LABEL_11:
-      v27 = v73;
+      v27 = iconView;
     }
   }
 
   [MEMORY[0x1E69977A0] activateConstraints:v36];
-  [(_UIContextMenuSmallFloatingPaletteCellLayout *)v68 setManagedConstraints:v36];
+  [(_UIContextMenuSmallFloatingPaletteCellLayout *)selfCopy setManagedConstraints:v36];
 }
 
 - (void)removeConstraints
 {
-  v3 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v3 removeFromSuperview];
+  floatingContentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView removeFromSuperview];
 
   v4 = MEMORY[0x1E69977A0];
-  v5 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self managedConstraints];
-  [v4 deactivateConstraints:v5];
+  managedConstraints = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self managedConstraints];
+  [v4 deactivateConstraints:managedConstraints];
 
   managedConstraints = self->_managedConstraints;
   self->_managedConstraints = 0;
 }
 
-- (void)setControlState:(unint64_t)a3 withAnimationCoordinator:(id)a4
+- (void)setControlState:(unint64_t)state withAnimationCoordinator:(id)coordinator
 {
-  self->_controlState = a3;
-  v6 = a4;
-  v7 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v7 setControlState:a3 withAnimationCoordinator:v6];
+  self->_controlState = state;
+  coordinatorCopy = coordinator;
+  floatingContentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView setControlState:state withAnimationCoordinator:coordinatorCopy];
 }
 
 - (void)_configureSharedFloatingContentViewStyle
 {
-  v3 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
-  v4 = [v3 traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  contentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self contentView];
+  traitCollection = [contentView traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v29 = _UIContextMenuGetPlatformMetrics(v5);
-  v6 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  v7 = [v29 itemBackgroundColorProvider];
-  v8 = v7[2](v7, 0, 0);
-  [v6 setBackgroundColor:v8 forState:0];
+  v29 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+  floatingContentView = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  itemBackgroundColorProvider = [v29 itemBackgroundColorProvider];
+  v8 = itemBackgroundColorProvider[2](itemBackgroundColorProvider, 0, 0);
+  [floatingContentView setBackgroundColor:v8 forState:0];
 
-  v9 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  v10 = [v29 itemBackgroundColorProvider];
-  v11 = v10[2](v10, 8, 0);
-  [v9 setBackgroundColor:v11 forState:8];
+  floatingContentView2 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  itemBackgroundColorProvider2 = [v29 itemBackgroundColorProvider];
+  v11 = itemBackgroundColorProvider2[2](itemBackgroundColorProvider2, 8, 0);
+  [floatingContentView2 setBackgroundColor:v11 forState:8];
 
-  v12 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  v13 = [v29 itemBackgroundColorProvider];
-  v14 = v13[2](v13, 1, 0);
-  [v12 setBackgroundColor:v14 forState:1];
+  floatingContentView3 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  itemBackgroundColorProvider3 = [v29 itemBackgroundColorProvider];
+  v14 = itemBackgroundColorProvider3[2](itemBackgroundColorProvider3, 1, 0);
+  [floatingContentView3 setBackgroundColor:v14 forState:1];
 
-  v15 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  v16 = [v29 itemBackgroundColorProvider];
-  v17 = v16[2](v16, 4, 0);
-  [v15 setBackgroundColor:v17 forState:4];
+  floatingContentView4 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  itemBackgroundColorProvider4 = [v29 itemBackgroundColorProvider];
+  v17 = itemBackgroundColorProvider4[2](itemBackgroundColorProvider4, 4, 0);
+  [floatingContentView4 setBackgroundColor:v17 forState:4];
 
-  v18 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  floatingContentView5 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
   v19 = [_UIFocusAnimationConfiguration configurationWithStyle:2];
-  [v18 setFocusAnimationConfiguration:v19];
+  [floatingContentView5 setFocusAnimationConfiguration:v19];
 
-  v20 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v20 setCornerRadius:24.0];
+  floatingContentView6 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView6 setCornerRadius:24.0];
 
-  v21 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v21 setRoundContentWhenDeselected:1];
+  floatingContentView7 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView7 setRoundContentWhenDeselected:1];
 
-  v22 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v22 setClipsContentToBounds:1];
+  floatingContentView8 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView8 setClipsContentToBounds:1];
 
-  v23 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v23 setFocusedSizeIncrease:20.0];
+  floatingContentView9 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView9 setFocusedSizeIncrease:20.0];
 
-  v24 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v24 setShadowOpacity:1 forUserInterfaceStyle:0.3];
+  floatingContentView10 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView10 setShadowOpacity:1 forUserInterfaceStyle:0.3];
 
-  v25 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v25 setUseShadowImage:0];
+  floatingContentView11 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView11 setUseShadowImage:0];
 
-  v26 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v26 setShadowRadius:10.0];
+  floatingContentView12 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView12 setShadowRadius:10.0];
 
-  v27 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v27 setShadowVerticalOffset:10.0];
+  floatingContentView13 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView13 setShadowVerticalOffset:10.0];
 
-  v28 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
-  [v28 setContentMotionRotation:0.0 translation:{0.0, 4.0, 4.0}];
+  floatingContentView14 = [(_UIContextMenuSmallFloatingPaletteCellLayout *)self floatingContentView];
+  [floatingContentView14 setContentMotionRotation:0.0 translation:{0.0, 4.0, 4.0}];
 }
 
 - (_UIContextMenuCellContentView)contentView

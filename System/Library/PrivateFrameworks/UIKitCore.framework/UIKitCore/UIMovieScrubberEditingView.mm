@@ -1,26 +1,26 @@
 @interface UIMovieScrubberEditingView
-- (BOOL)pointInsideLeftHandle:(CGPoint)a3;
-- (BOOL)pointInsideRightHandle:(CGPoint)a3;
+- (BOOL)pointInsideLeftHandle:(CGPoint)handle;
+- (BOOL)pointInsideRightHandle:(CGPoint)handle;
 - (CGRect)_leftHandleRect;
 - (CGRect)_rightHandleRect;
-- (UIMovieScrubberEditingView)initWithFrame:(CGRect)a3;
-- (double)_bounceValueForFraction:(double)a3;
+- (UIMovieScrubberEditingView)initWithFrame:(CGRect)frame;
+- (double)_bounceValueForFraction:(double)fraction;
 - (id)_handleImages;
-- (int)handleForPoint:(CGPoint)a3 hitOffset:(double *)a4;
+- (int)handleForPoint:(CGPoint)point hitOffset:(double *)offset;
 - (void)_updateHandleImages;
 - (void)bounce;
 - (void)layoutSubviews;
-- (void)setEditing:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation UIMovieScrubberEditingView
 
-- (UIMovieScrubberEditingView)initWithFrame:(CGRect)a3
+- (UIMovieScrubberEditingView)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = UIMovieScrubberEditingView;
-  v3 = [(UIView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E695DEC8]);
@@ -89,11 +89,11 @@
   v11 = v10 - (edgeInset + edgeInset);
   remainder.size.width = v11;
   remainder.size.height = v5;
-  v12 = [(UIMovieScrubberEditingView *)self _handleImages];
+  _handleImages = [(UIMovieScrubberEditingView *)self _handleImages];
   v13 = *(MEMORY[0x1E695F058] + 16);
   v19.origin = *MEMORY[0x1E695F058];
   v19.size = v13;
-  v14 = [v12 objectAtIndexedSubscript:0];
+  v14 = [_handleImages objectAtIndexedSubscript:0];
   [v14 size];
   v16 = v15;
   v21.origin.x = v9;
@@ -102,7 +102,7 @@
   v21.size.height = v6;
   CGRectDivide(v21, &v19, &remainder, v16, CGRectMinXEdge);
   [(UIImageView *)self->_leftImageView setFrame:*&v19.origin, *&v19.size];
-  v17 = [v12 objectAtIndexedSubscript:2];
+  v17 = [_handleImages objectAtIndexedSubscript:2];
 
   [v17 size];
   CGRectDivide(remainder, &v19, &remainder, v18, CGRectMaxXEdge);
@@ -121,10 +121,10 @@
   return result;
 }
 
-- (BOOL)pointInsideLeftHandle:(CGPoint)a3
+- (BOOL)pointInsideLeftHandle:(CGPoint)handle
 {
-  y = a3.y;
-  x = a3.x;
+  y = handle.y;
+  x = handle.x;
   [(UIMovieScrubberEditingView *)self _leftHandleRect];
   v9 = x;
   v10 = y;
@@ -146,10 +146,10 @@
   return result;
 }
 
-- (BOOL)pointInsideRightHandle:(CGPoint)a3
+- (BOOL)pointInsideRightHandle:(CGPoint)handle
 {
-  y = a3.y;
-  x = a3.x;
+  y = handle.y;
+  x = handle.x;
   [(UIMovieScrubberEditingView *)self _rightHandleRect];
   v9 = x;
   v10 = y;
@@ -157,10 +157,10 @@
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (int)handleForPoint:(CGPoint)a3 hitOffset:(double *)a4
+- (int)handleForPoint:(CGPoint)point hitOffset:(double *)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(UIMovieScrubberEditingView *)self _leftHandleRect];
   v8 = v7;
   v28 = v9;
@@ -233,7 +233,7 @@
     }
   }
 
-  *a4 = v25;
+  *offset = v25;
   return result;
 }
 
@@ -254,34 +254,34 @@
 
 - (void)_updateHandleImages
 {
-  v9 = [(UIMovieScrubberEditingView *)self _handleImages];
+  _handleImages = [(UIMovieScrubberEditingView *)self _handleImages];
   leftImageView = self->_leftImageView;
-  v4 = [v9 objectAtIndexedSubscript:0];
+  v4 = [_handleImages objectAtIndexedSubscript:0];
   [(UIImageView *)leftImageView setImage:v4];
 
   middleImageView = self->_middleImageView;
-  v6 = [v9 objectAtIndexedSubscript:1];
+  v6 = [_handleImages objectAtIndexedSubscript:1];
   [(UIImageView *)middleImageView setImage:v6];
 
   rightImageView = self->_rightImageView;
-  v8 = [v9 objectAtIndexedSubscript:2];
+  v8 = [_handleImages objectAtIndexedSubscript:2];
   [(UIImageView *)rightImageView setImage:v8];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UIMovieScrubberEditingView *)self _updateHandleImages];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_enabled && self->_editing != a3)
+  if (self->_enabled && self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(UIMovieScrubberEditingView *)self _updateHandleImages];
   }
 }
@@ -304,16 +304,16 @@
   [v7 setTimingFunction:v8];
 
   [v7 setDuration:0.75];
-  v9 = [(UIView *)self->_leftImageView layer];
-  [v9 position];
+  layer = [(UIView *)self->_leftImageView layer];
+  [layer position];
   v11 = v10;
 
-  v12 = [(UIView *)self->_rightImageView layer];
-  [v12 position];
+  layer2 = [(UIView *)self->_rightImageView layer];
+  [layer2 position];
   v14 = v13;
 
-  v15 = [(UIView *)self->_middleImageView layer];
-  [v15 bounds];
+  layer3 = [(UIView *)self->_middleImageView layer];
+  [layer3 bounds];
   v17 = v16;
 
   v18 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:24];
@@ -347,27 +347,27 @@
 
   [v36 setKeyTimes:v18];
   [v36 setValues:v19];
-  v33 = [(UIView *)self->_leftImageView layer];
-  [v33 addAnimation:v36 forKey:0];
+  layer4 = [(UIView *)self->_leftImageView layer];
+  [layer4 addAnimation:v36 forKey:0];
 
   [v5 setKeyTimes:v18];
   [v5 setValues:v20];
-  v34 = [(UIView *)self->_rightImageView layer];
-  [v34 addAnimation:v5 forKey:0];
+  layer5 = [(UIView *)self->_rightImageView layer];
+  [layer5 addAnimation:v5 forKey:0];
 
   [v7 setKeyTimes:v18];
   [v7 setValues:v21];
-  v35 = [(UIView *)self->_middleImageView layer];
-  [v35 addAnimation:v7 forKey:0];
+  layer6 = [(UIView *)self->_middleImageView layer];
+  [layer6 addAnimation:v7 forKey:0];
 }
 
-- (double)_bounceValueForFraction:(double)a3
+- (double)_bounceValueForFraction:(double)fraction
 {
   result = 0.0;
-  if (a3 > 0.0 && a3 < 1.0)
+  if (fraction > 0.0 && fraction < 1.0)
   {
-    v6 = a3 + a3;
-    v7 = cos((a3 + a3 + -0.145) * 11.0);
+    v6 = fraction + fraction;
+    v7 = cos((fraction + fraction + -0.145) * 11.0);
     return v7 * exp((v6 + 0.4) * -3.0) * 120.0;
   }
 

@@ -1,26 +1,26 @@
 @interface FRCFrameDropDetector
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)droppingThreshold;
 - (FRCFrameDropDetector)init;
-- (id)buildInsertionPointListFromInternalTimingList:(id)a3 bailOutCode:(int64_t *)a4;
-- (id)calculateFrameDropInfoFromSortedMetadataList:(id)a3 sortedTimingList:(id)a4;
-- (id)calculateFrameDurationFromSortedTimingList:(id)a3;
-- (id)detectFrameDropsFromFrameMetadataList:(id)a3 frameTimingList:(id)a4;
-- (id)detectFrameDropsFromFrameTimingList:(id)a3;
-- (id)detectFrameDropsFromInternalTimingList:(id)a3;
-- (id)detectSingleFrameDropsFromFrameTimingList:(id)a3;
-- (id)errorWithDescription:(id)a3;
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 metadataList:(id)a4 sloMo:(BOOL)a5 withError:(id *)a6;
-- (id)sortFrameMetadataListInDisplayOrderFromMetadataList:(id)a3;
-- (id)sortFrameTimingListInDisplayOrderFromTimingList:(id)a3;
-- (unint64_t)countNumberOfFramesWithRecipeInMetadataList:(id)a3;
+- (id)buildInsertionPointListFromInternalTimingList:(id)list bailOutCode:(int64_t *)code;
+- (id)calculateFrameDropInfoFromSortedMetadataList:(id)list sortedTimingList:(id)timingList;
+- (id)calculateFrameDurationFromSortedTimingList:(id)list;
+- (id)detectFrameDropsFromFrameMetadataList:(id)list frameTimingList:(id)timingList;
+- (id)detectFrameDropsFromFrameTimingList:(id)list;
+- (id)detectFrameDropsFromInternalTimingList:(id)list;
+- (id)detectSingleFrameDropsFromFrameTimingList:(id)list;
+- (id)errorWithDescription:(id)description;
+- (id)selectFrameInsertionPointsFromTimingList:(id)list metadataList:(id)metadataList sloMo:(BOOL)mo withError:(id *)error;
+- (id)sortFrameMetadataListInDisplayOrderFromMetadataList:(id)list;
+- (id)sortFrameTimingListInDisplayOrderFromTimingList:(id)list;
+- (unint64_t)countNumberOfFramesWithRecipeInMetadataList:(id)list;
 - (void)dealloc;
-- (void)debugPrintFRCFRCFrameBurstyDropInfo:(id)a3;
-- (void)debugPrintFRCFrameInternalTimingInfo:(id)a3;
-- (void)debugPrintFRCFrameMetadataInfo:(id)a3;
-- (void)debugPrintFRCFrameTimingInfo:(id)a3;
-- (void)detectLocationOfBurstyGapsFromBurstyDropList:(id)a3 frameInternalTimingList:(id)a4;
-- (void)detectSingleFrameDropsFromInternalTimingList:(id)a3;
-- (void)scaleNumberOfFramesToInsertFor2xSloMo:(id)a3;
+- (void)debugPrintFRCFRCFrameBurstyDropInfo:(id)info;
+- (void)debugPrintFRCFrameInternalTimingInfo:(id)info;
+- (void)debugPrintFRCFrameMetadataInfo:(id)info;
+- (void)debugPrintFRCFrameTimingInfo:(id)info;
+- (void)detectLocationOfBurstyGapsFromBurstyDropList:(id)list frameInternalTimingList:(id)timingList;
+- (void)detectSingleFrameDropsFromInternalTimingList:(id)list;
+- (void)scaleNumberOfFramesToInsertFor2xSloMo:(id)mo;
 - (void)setPropertiesFromDefaults;
 @end
 
@@ -72,16 +72,16 @@
   }
 }
 
-- (void)debugPrintFRCFrameMetadataInfo:(id)a3
+- (void)debugPrintFRCFrameMetadataInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   puts("[Frame] Curated Time, Original Time, Recipe, Displacement");
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  obj = v3;
+  obj = infoCopy;
   v4 = [obj countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
@@ -115,15 +115,15 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)debugPrintFRCFrameTimingInfo:(id)a3
+- (void)debugPrintFRCFrameTimingInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [infoCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -135,7 +135,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infoCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -147,7 +147,7 @@
         NSLog(&cfstr_3ldPts4f4lldD.isa, v6++, (0 / 0), 0, 0);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [infoCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -156,15 +156,15 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)debugPrintFRCFrameInternalTimingInfo:(id)a3
+- (void)debugPrintFRCFrameInternalTimingInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [infoCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -176,7 +176,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infoCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -190,7 +190,7 @@
         NSLog(&cfstr_3ldPts4f4lldDD.isa, v6++, (0 / 0), 0, 0, 0, 0, 0, 0, [v9 framesToBeDuplicated], objc_msgSend(v9, "frameIsAtBigGap"));
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [infoCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -199,15 +199,15 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)debugPrintFRCFRCFrameBurstyDropInfo:(id)a3
+- (void)debugPrintFRCFRCFrameBurstyDropInfo:(id)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v4 = [infoCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -219,22 +219,22 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infoCopy);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 burstyIdx];
-        v11 = [v9 burstyStart];
-        v12 = [v9 burstyLen];
+        burstyIdx = [v9 burstyIdx];
+        burstyStart = [v9 burstyStart];
+        burstyLen = [v9 burstyLen];
         if (v9)
         {
           [v9 burstyBaseDuration];
         }
 
-        NSLog(&cfstr_3ldBurstyDropI.isa, v6++, v10, v11, v12, 0, 0);
+        NSLog(&cfstr_3ldBurstyDropI.isa, v6++, burstyIdx, burstyStart, burstyLen, 0, 0);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [infoCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -243,21 +243,21 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sortFrameMetadataListInDisplayOrderFromMetadataList:(id)a3
+- (id)sortFrameMetadataListInDisplayOrderFromMetadataList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEA60]);
   sortedMetadataList = self->sortedMetadataList;
   self->sortedMetadataList = v5;
 
-  v7 = [v4 sortedArrayUsingComparator:&__block_literal_global_0];
+  v7 = [listCopy sortedArrayUsingComparator:&__block_literal_global_0];
   v8 = self->sortedMetadataList;
   self->sortedMetadataList = v7;
 
   if (self->_debugPrint)
   {
     NSLog(&cfstr_FrameDropDetec.isa);
-    [(FRCFrameDropDetector *)self debugPrintFRCFrameMetadataInfo:v4];
+    [(FRCFrameDropDetector *)self debugPrintFRCFrameMetadataInfo:listCopy];
     NSLog(&cfstr_FrameDropDetec_0.isa);
     [(FRCFrameDropDetector *)self debugPrintFRCFrameMetadataInfo:self->sortedMetadataList];
   }
@@ -285,17 +285,17 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
   }
 }
 
-- (id)calculateFrameDropInfoFromSortedMetadataList:(id)a3 sortedTimingList:(id)a4
+- (id)calculateFrameDropInfoFromSortedMetadataList:(id)list sortedTimingList:(id)timingList
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  timingListCopy = timingList;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   frameInternalPTSList = self->frameInternalPTSList;
   self->frameInternalPTSList = v8;
 
   memset(&v50, 0, sizeof(v50));
-  v10 = [v7 objectAtIndexedSubscript:0];
+  v10 = [timingListCopy objectAtIndexedSubscript:0];
   v11 = v10;
   if (v10)
   {
@@ -309,20 +309,20 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
 
   memset(&v49, 0, sizeof(v49));
   CMTimeMake(&v49, 0, v50.timescale);
-  v12 = [v7 count];
-  v37 = [v6 count];
+  v12 = [timingListCopy count];
+  v37 = [listCopy count];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v13 = v7;
+  v13 = timingListCopy;
   v38 = [v13 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v38)
   {
     v14 = 0;
     v35 = v12 - 1;
     v36 = *v46;
-    v34 = v6;
+    v34 = listCopy;
     v33 = v13;
     do
     {
@@ -347,15 +347,15 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
         v50 = time;
         if (v14 >= v37)
         {
-          v19 = 0;
-          v18 = 0;
+          sequenceAdjusterDisplacement = 0;
+          sequenceAdjusterRecipe = 0;
         }
 
         else
         {
-          v17 = [v6 objectAtIndexedSubscript:v14];
-          v18 = [v17 sequenceAdjusterRecipe];
-          v19 = [v17 sequenceAdjusterDisplacement];
+          v17 = [listCopy objectAtIndexedSubscript:v14];
+          sequenceAdjusterRecipe = [v17 sequenceAdjusterRecipe];
+          sequenceAdjusterDisplacement = [v17 sequenceAdjusterDisplacement];
         }
 
         if (v14 >= v35)
@@ -386,23 +386,23 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
 
           else
           {
-            v22 = [v6 objectAtIndexedSubscript:v14 + 1];
-            v23 = [v22 sequenceAdjusterRecipe];
-            v24 = [v22 sequenceAdjusterDisplacement];
+            v22 = [listCopy objectAtIndexedSubscript:v14 + 1];
+            sequenceAdjusterRecipe2 = [v22 sequenceAdjusterRecipe];
+            sequenceAdjusterDisplacement2 = [v22 sequenceAdjusterDisplacement];
             v25 = 0;
             v26 = 0;
-            if (v18 && v23)
+            if (sequenceAdjusterRecipe && sequenceAdjusterRecipe2)
             {
-              v27 = v24 - v19;
+              v27 = sequenceAdjusterDisplacement2 - sequenceAdjusterDisplacement;
               v28 = 3;
-              if (v19)
+              if (sequenceAdjusterDisplacement)
               {
                 v28 = 0;
               }
 
               if (v27 >= 2)
               {
-                v25 = v24 - v19 - 1;
+                v25 = sequenceAdjusterDisplacement2 - sequenceAdjusterDisplacement - 1;
               }
 
               else
@@ -410,12 +410,12 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
                 v25 = v28;
               }
 
-              v26 = v27 < 2 && v19 == 0;
-              self->_retimingRecipe = v18;
+              v26 = v27 < 2 && sequenceAdjusterDisplacement == 0;
+              self->_retimingRecipe = sequenceAdjusterRecipe;
             }
 
             v13 = v33;
-            v6 = v34;
+            listCopy = v34;
           }
         }
 
@@ -479,21 +479,21 @@ uint64_t __76__FRCFrameDropDetector_sortFrameMetadataListInDisplayOrderFromMetad
   return v30;
 }
 
-- (id)sortFrameTimingListInDisplayOrderFromTimingList:(id)a3
+- (id)sortFrameTimingListInDisplayOrderFromTimingList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEA60]);
   sortedTimingList = self->sortedTimingList;
   self->sortedTimingList = v5;
 
-  v7 = [v4 sortedArrayUsingComparator:&__block_literal_global_90];
+  v7 = [listCopy sortedArrayUsingComparator:&__block_literal_global_90];
   v8 = self->sortedTimingList;
   self->sortedTimingList = v7;
 
   if (self->_debugPrint)
   {
     NSLog(&cfstr_FrameDropDetec_2.isa);
-    [(FRCFrameDropDetector *)self debugPrintFRCFrameTimingInfo:v4];
+    [(FRCFrameDropDetector *)self debugPrintFRCFrameTimingInfo:listCopy];
     NSLog(&cfstr_FrameDropDetec_3.isa);
     [(FRCFrameDropDetector *)self debugPrintFRCFrameTimingInfo:self->sortedTimingList];
   }
@@ -546,16 +546,16 @@ LABEL_6:
   return v9;
 }
 
-- (id)calculateFrameDurationFromSortedTimingList:(id)a3
+- (id)calculateFrameDurationFromSortedTimingList:(id)list
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   frameInternalPTSList = self->frameInternalPTSList;
   self->frameInternalPTSList = v5;
 
   memset(&timescale, 0, sizeof(timescale));
-  v7 = [v4 objectAtIndexedSubscript:0];
+  v7 = [listCopy objectAtIndexedSubscript:0];
   v8 = v7;
   if (v7)
   {
@@ -571,12 +571,12 @@ LABEL_6:
   CMTimeMake(&v33, 0, timescale.timescale);
   CMTimeMake(&v32, timescale.timescale, timescale.timescale);
   self->minDuration = v32;
-  v9 = [v4 count];
+  v9 = [listCopy count];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = v4;
+  v10 = listCopy;
   v11 = [v10 countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v11)
   {
@@ -677,10 +677,10 @@ LABEL_6:
   return result;
 }
 
-- (id)detectFrameDropsFromInternalTimingList:(id)a3
+- (id)detectFrameDropsFromInternalTimingList:(id)list
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   frameBurstyDropInfoList = self->frameBurstyDropInfoList;
   self->frameBurstyDropInfoList = v5;
@@ -693,7 +693,7 @@ LABEL_6:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v4;
+  v7 = listCopy;
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (!v8)
   {
@@ -831,17 +831,17 @@ LABEL_25:
   return v20;
 }
 
-- (void)detectLocationOfBurstyGapsFromBurstyDropList:(id)a3 frameInternalTimingList:(id)a4
+- (void)detectLocationOfBurstyGapsFromBurstyDropList:(id)list frameInternalTimingList:(id)timingList
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  timingListCopy = timingList;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v5;
-  v7 = [v5 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  obj = listCopy;
+  v7 = [listCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -869,11 +869,11 @@ LABEL_25:
 
         CMTimeConvertScale(&v30, &time, 600, kCMTimeRoundingMethod_QuickTime);
         value = v30.value;
-        v13 = [v11 burstyStart];
-        v14 = [v11 burstyLen];
-        v15 = v14;
-        v16 = v14 - 3;
-        if ((v14 - 3) > 0xC)
+        burstyStart = [v11 burstyStart];
+        burstyLen = [v11 burstyLen];
+        v15 = burstyLen;
+        v16 = burstyLen - 3;
+        if ((burstyLen - 3) > 0xC)
         {
           v17 = 0;
           v18 = -99;
@@ -923,9 +923,9 @@ LABEL_25:
           }
         }
 
-        v18 = v19[v14];
+        v18 = v19[burstyLen];
 LABEL_25:
-        if ((v14 - 1) >= 2)
+        if ((burstyLen - 1) >= 2)
         {
           v20 = v18;
         }
@@ -935,16 +935,16 @@ LABEL_25:
           v20 = 0;
         }
 
-        NSLog(&cfstr_FrameDropDetec_7.isa, v17, v13, v14, v20);
+        NSLog(&cfstr_FrameDropDetec_7.isa, v17, burstyStart, burstyLen, v20);
         if (v20 != -99)
         {
-          v21 = v20 + v13;
-          v22 = [v6 objectAtIndexedSubscript:v21];
+          v21 = v20 + burstyStart;
+          v22 = [timingListCopy objectAtIndexedSubscript:v21];
           [v22 setFramesToBeDuplicated:3];
           [v22 setFrameIsAtBigGap:v15];
           if (v15 == 2)
           {
-            v23 = [v6 objectAtIndexedSubscript:v21 + 1];
+            v23 = [timingListCopy objectAtIndexedSubscript:v21 + 1];
 
             [v23 setFramesToBeDuplicated:2];
             [v23 setFrameIsAtBigGap:2];
@@ -962,11 +962,11 @@ LABEL_25:
             {
               if (v15 == 7)
               {
-                v25 = [v6 objectAtIndexedSubscript:v21 - 1];
+                v25 = [timingListCopy objectAtIndexedSubscript:v21 - 1];
 
                 [v25 setFramesToBeDuplicated:2];
                 [v25 setFrameIsAtBigGap:7];
-                v22 = [v6 objectAtIndexedSubscript:v21 + 1];
+                v22 = [timingListCopy objectAtIndexedSubscript:v21 + 1];
 
                 [v22 setFramesToBeDuplicated:2];
                 [v22 setFrameIsAtBigGap:7];
@@ -975,7 +975,7 @@ LABEL_25:
 
             else
             {
-              v24 = [v6 objectAtIndexedSubscript:v21 + 1];
+              v24 = [timingListCopy objectAtIndexedSubscript:v21 + 1];
 
               [v24 setFramesToBeDuplicated:2];
               [v24 setFrameIsAtBigGap:v15];
@@ -994,20 +994,20 @@ LABEL_25:
   if (self->_debugPrint)
   {
     NSLog(&cfstr_FrameDropDetec_8.isa);
-    [(FRCFrameDropDetector *)self debugPrintFRCFrameInternalTimingInfo:v6];
+    [(FRCFrameDropDetector *)self debugPrintFRCFrameInternalTimingInfo:timingListCopy];
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)detectFrameDropsFromFrameMetadataList:(id)a3 frameTimingList:(id)a4
+- (id)detectFrameDropsFromFrameMetadataList:(id)list frameTimingList:(id)timingList
 {
-  v6 = a3;
-  v7 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:a4];
+  listCopy = list;
+  v7 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:timingList];
   sortedTimingList = self->sortedTimingList;
   self->sortedTimingList = v7;
 
-  v9 = [(FRCFrameDropDetector *)self sortFrameMetadataListInDisplayOrderFromMetadataList:v6];
+  v9 = [(FRCFrameDropDetector *)self sortFrameMetadataListInDisplayOrderFromMetadataList:listCopy];
 
   sortedMetadataList = self->sortedMetadataList;
   self->sortedMetadataList = v9;
@@ -1021,12 +1021,12 @@ LABEL_25:
   return v13;
 }
 
-- (id)detectFrameDropsFromFrameTimingList:(id)a3
+- (id)detectFrameDropsFromFrameTimingList:(id)list
 {
-  v4 = a3;
-  if ([v4 count])
+  listCopy = list;
+  if ([listCopy count])
   {
-    v5 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:v4];
+    v5 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:listCopy];
     sortedTimingList = self->sortedTimingList;
     self->sortedTimingList = v5;
 
@@ -1050,17 +1050,17 @@ LABEL_25:
   return v11;
 }
 
-- (void)detectSingleFrameDropsFromInternalTimingList:(id)a3
+- (void)detectSingleFrameDropsFromInternalTimingList:(id)list
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   memset(&v28, 0, sizeof(v28));
   [(FRCFrameDropDetector *)self droppingThreshold];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v4;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -1157,9 +1157,9 @@ LABEL_25:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)detectSingleFrameDropsFromFrameTimingList:(id)a3
+- (id)detectSingleFrameDropsFromFrameTimingList:(id)list
 {
-  v4 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:a3];
+  v4 = [(FRCFrameDropDetector *)self sortFrameTimingListInDisplayOrderFromTimingList:list];
   sortedTimingList = self->sortedTimingList;
   self->sortedTimingList = v4;
 
@@ -1173,14 +1173,14 @@ LABEL_25:
   return v8;
 }
 
-- (id)buildInsertionPointListFromInternalTimingList:(id)a3 bailOutCode:(int64_t *)a4
+- (id)buildInsertionPointListFromInternalTimingList:(id)list bailOutCode:(int64_t *)code
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (![v6 count])
+  listCopy = list;
+  if (![listCopy count])
   {
     v19 = 0;
-    *a4 = 1;
+    *code = 1;
     goto LABEL_32;
   }
 
@@ -1192,12 +1192,12 @@ LABEL_25:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v9 = v6;
+  v9 = listCopy;
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v10)
   {
     v11 = v10;
-    v29 = v6;
+    v29 = listCopy;
     v12 = 0;
     v13 = 0;
     v14 = *v37;
@@ -1247,7 +1247,7 @@ LABEL_25:
 
     while (v11);
     v18 = v13 - 2;
-    v6 = v29;
+    listCopy = v29;
   }
 
   else
@@ -1261,14 +1261,14 @@ LABEL_25:
     NSLog(&cfstr_FrameDropDetec_9.isa, v12);
   }
 
-  *a4 = 0;
+  *code = 0;
   if (self->_gatingEnabled)
   {
     if (v12 > 17)
     {
       v20 = 2;
 LABEL_30:
-      *a4 = v20;
+      *code = v20;
       v26 = self->insertionPointList;
       self->insertionPointList = 0;
 
@@ -1279,9 +1279,9 @@ LABEL_30:
     if (retimingRecipe == 1000 || retimingRecipe <= 3)
     {
       v23 = [(NSMutableArray *)self->insertionPointList objectAtIndexedSubscript:v18];
-      v24 = [v23 numberOfFramesToInsert];
+      numberOfFramesToInsert = [v23 numberOfFramesToInsert];
 
-      if (v24 < 2)
+      if (numberOfFramesToInsert < 2)
       {
         goto LABEL_28;
       }
@@ -1294,7 +1294,7 @@ LABEL_30:
       v22 = 3;
     }
 
-    *a4 = v22;
+    *code = v22;
     v25 = self->insertionPointList;
     self->insertionPointList = 0;
   }
@@ -1315,15 +1315,15 @@ LABEL_32:
   return v19;
 }
 
-- (void)scaleNumberOfFramesToInsertFor2xSloMo:(id)a3
+- (void)scaleNumberOfFramesToInsertFor2xSloMo:(id)mo
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  moCopy = mo;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [moCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1335,7 +1335,7 @@ LABEL_32:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(moCopy);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setNumberOfFramesToInsert:{(2 * objc_msgSend(*(*(&v9 + 1) + 8 * v7), "numberOfFramesToInsert")) | 1}];
@@ -1343,7 +1343,7 @@ LABEL_32:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [moCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -1352,15 +1352,15 @@ LABEL_32:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)countNumberOfFramesWithRecipeInMetadataList:(id)a3
+- (unint64_t)countNumberOfFramesWithRecipeInMetadataList:(id)list
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1372,7 +1372,7 @@ LABEL_32:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listCopy);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) sequenceAdjusterRecipe])
@@ -1381,7 +1381,7 @@ LABEL_32:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -1396,32 +1396,32 @@ LABEL_32:
   return v6;
 }
 
-- (id)selectFrameInsertionPointsFromTimingList:(id)a3 metadataList:(id)a4 sloMo:(BOOL)a5 withError:(id *)a6
+- (id)selectFrameInsertionPointsFromTimingList:(id)list metadataList:(id)metadataList sloMo:(BOOL)mo withError:(id *)error
 {
-  v7 = a5;
+  moCopy = mo;
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  listCopy = list;
+  metadataListCopy = metadataList;
   v12 = MEMORY[0x277CC08F0];
   self->_numberOfInsertionPoints = 0;
   self->_maximumDuration = *v12;
   v31 = 0;
-  v13 = [v11 count];
-  v14 = [(FRCFrameDropDetector *)self countNumberOfFramesWithRecipeInMetadataList:v11];
+  v13 = [metadataListCopy count];
+  v14 = [(FRCFrameDropDetector *)self countNumberOfFramesWithRecipeInMetadataList:metadataListCopy];
   if (v13 < 1)
   {
     self->_retimingRecipe = 1000;
-    v15 = [(FRCFrameDropDetector *)self detectFrameDropsFromFrameTimingList:v10];
+    v15 = [(FRCFrameDropDetector *)self detectFrameDropsFromFrameTimingList:listCopy];
   }
 
   else if (v14 || !self->_singleDropRecoveryEnabled)
   {
-    v15 = [(FRCFrameDropDetector *)self detectFrameDropsFromFrameMetadataList:v11 frameTimingList:v10];
+    v15 = [(FRCFrameDropDetector *)self detectFrameDropsFromFrameMetadataList:metadataListCopy frameTimingList:listCopy];
   }
 
   else
   {
-    v15 = [(FRCFrameDropDetector *)self detectSingleFrameDropsFromFrameTimingList:v10];
+    v15 = [(FRCFrameDropDetector *)self detectSingleFrameDropsFromFrameTimingList:listCopy];
   }
 
   frameInternalPTSList = self->frameInternalPTSList;
@@ -1432,14 +1432,14 @@ LABEL_32:
   self->insertionPointList = v17;
 
   v19 = self->insertionPointList;
-  if (v7 && v19)
+  if (moCopy && v19)
   {
     [(FRCFrameDropDetector *)self scaleNumberOfFramesToInsertFor2xSloMo:?];
     v19 = self->insertionPointList;
   }
 
   self->_gatingCause = 0;
-  if (a6 && !v19)
+  if (error && !v19)
   {
     v20 = v31;
     if (v31 > 2)
@@ -1447,7 +1447,7 @@ LABEL_32:
       if (v31 == 3)
       {
         v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bail out at frame drop detection (reason: very low frame rate. recipe=%ld)", self->_retimingRecipe];
-        *a6 = [(FRCFrameDropDetector *)self errorWithDescription:v22];
+        *error = [(FRCFrameDropDetector *)self errorWithDescription:v22];
 
         goto LABEL_22;
       }
@@ -1471,7 +1471,7 @@ LABEL_32:
       {
         v21 = @"Bail out at frame drop detection (reason: too many drops detected)";
 LABEL_20:
-        *a6 = [(FRCFrameDropDetector *)self errorWithDescription:v21];
+        *error = [(FRCFrameDropDetector *)self errorWithDescription:v21];
 LABEL_22:
         self->_gatingCause = v20;
       }
@@ -1480,12 +1480,12 @@ LABEL_22:
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = *a6;
+      v24 = *error;
       v25 = logger;
-      v26 = [v24 localizedDescription];
-      v27 = [v26 UTF8String];
+      localizedDescription = [v24 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
       *buf = 136315138;
-      v33 = v27;
+      v33 = uTF8String;
       _os_log_impl(&dword_24A8C8000, v25, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 
@@ -1499,9 +1499,9 @@ LABEL_22:
   return v28;
 }
 
-- (id)errorWithDescription:(id)a3
+- (id)errorWithDescription:(id)description
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:a3 forKey:*MEMORY[0x277CCA450]];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithObject:description forKey:*MEMORY[0x277CCA450]];
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FRC" code:-22006 userInfo:v3];
 
   return v4;

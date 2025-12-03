@@ -1,36 +1,36 @@
 @interface PNRODSchemaPNRODSiriTurnGrainSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithDictionary:(id)a3;
-- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithDictionary:(id)dictionary;
+- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addExecutor:(id)a3;
-- (void)addPlanGeneration:(id)a3;
-- (void)addPlanResolution:(id)a3;
-- (void)addQueryDecoration:(id)a3;
-- (void)addResponseGeneration:(id)a3;
-- (void)addSearch:(id)a3;
-- (void)setHasHasAssistantPerformanceData:(BOOL)a3;
-- (void)setHasHasDictationPerformanceData:(BOOL)a3;
-- (void)setHasHasReliabilityData:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addExecutor:(id)executor;
+- (void)addPlanGeneration:(id)generation;
+- (void)addPlanResolution:(id)resolution;
+- (void)addQueryDecoration:(id)decoration;
+- (void)addResponseGeneration:(id)generation;
+- (void)addSearch:(id)search;
+- (void)setHasHasAssistantPerformanceData:(BOOL)data;
+- (void)setHasHasDictationPerformanceData:(BOOL)data;
+- (void)setHasHasReliabilityData:(BOOL)data;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PNRODSchemaPNRODSiriTurnGrainSummary
 
-- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithDictionary:(id)a3
+- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithDictionary:(id)dictionary
 {
   v122 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v115.receiver = self;
   v115.super_class = PNRODSchemaPNRODSiriTurnGrainSummary;
   v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)&v115 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"turnid"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"turnid"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,21 +38,21 @@
       [(PNRODSchemaPNRODSiriTurnGrainSummary *)v5 setTurnid:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"status"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODSiriTurnGrainSummary setStatus:](v5, "setStatus:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"hasAssistantPerformanceData"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"hasAssistantPerformanceData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PNRODSchemaPNRODSiriTurnGrainSummary setHasAssistantPerformanceData:](v5, "setHasAssistantPerformanceData:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"hasDictationPerformanceData"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"hasDictationPerformanceData"];
     objc_opt_class();
     v89 = v10;
     if (objc_opt_isKindOfClass())
@@ -60,7 +60,7 @@
       -[PNRODSchemaPNRODSiriTurnGrainSummary setHasDictationPerformanceData:](v5, "setHasDictationPerformanceData:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"hasReliabilityData"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"hasReliabilityData"];
     objc_opt_class();
     v88 = v11;
     if (objc_opt_isKindOfClass())
@@ -68,7 +68,7 @@
       -[PNRODSchemaPNRODSiriTurnGrainSummary setHasReliabilityData:](v5, "setHasReliabilityData:", [v11 BOOLValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"srt"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"srt"];
     objc_opt_class();
     v87 = v12;
     if (objc_opt_isKindOfClass())
@@ -77,7 +77,7 @@
       [(PNRODSchemaPNRODSiriTurnGrainSummary *)v5 setSrt:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"launch"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"launch"];
     objc_opt_class();
     v86 = v14;
     if (objc_opt_isKindOfClass())
@@ -86,7 +86,7 @@
       [(PNRODSchemaPNRODSiriTurnGrainSummary *)v5 setLaunch:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"epd"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"epd"];
     objc_opt_class();
     v85 = v16;
     if (objc_opt_isKindOfClass())
@@ -95,7 +95,7 @@
       [(PNRODSchemaPNRODSiriTurnGrainSummary *)v5 setEpd:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"uufr"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"uufr"];
     objc_opt_class();
     v84 = v18;
     if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
     }
 
     v79 = v6;
-    v20 = [v4 objectForKeyedSubscript:@"ttfw"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"ttfw"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -114,10 +114,10 @@
     }
 
     v76 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"queryDecoration"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"queryDecoration"];
     objc_opt_class();
     v83 = v22;
-    v90 = v4;
+    v90 = dictionaryCopy;
     if (objc_opt_isKindOfClass())
     {
       v113 = 0u;
@@ -154,10 +154,10 @@
         while (v25);
       }
 
-      v4 = v90;
+      dictionaryCopy = v90;
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"search"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"search"];
     objc_opt_class();
     v82 = v30;
     v78 = v8;
@@ -197,10 +197,10 @@
         while (v33);
       }
 
-      v4 = v90;
+      dictionaryCopy = v90;
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"planResolution"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"planResolution"];
     objc_opt_class();
     v81 = v38;
     v77 = v9;
@@ -241,7 +241,7 @@
       }
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"responseGeneration"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"responseGeneration"];
     objc_opt_class();
     v80 = v46;
     if (objc_opt_isKindOfClass())
@@ -281,7 +281,7 @@
       }
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"executor"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"executor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -319,10 +319,10 @@
         while (v57);
       }
 
-      v4 = v90;
+      dictionaryCopy = v90;
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"planGeneration"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"planGeneration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -360,10 +360,10 @@
         while (v65);
       }
 
-      v4 = v90;
+      dictionaryCopy = v90;
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"ttaie"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"ttaie"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -371,7 +371,7 @@
       [(PNRODSchemaPNRODSiriTurnGrainSummary *)v5 setTtaie:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"failureInfo"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"failureInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -385,30 +385,30 @@
   return v5;
 }
 
-- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithJSON:(id)a3
+- (PNRODSchemaPNRODSiriTurnGrainSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -422,26 +422,26 @@
 - (id)dictionaryRepresentation
 {
   v113 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_epd)
   {
     v4 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self epd];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dictionaryRepresentation = [v4 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"epd"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"epd"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"epd"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"epd"];
     }
   }
 
   if ([(NSArray *)self->_executors count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v103 = 0u;
     v104 = 0u;
     v105 = 0u;
@@ -461,16 +461,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v103 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v103 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -480,22 +480,22 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"executor"];
+    [dictionary setObject:array forKeyedSubscript:@"executor"];
   }
 
   if (self->_failureInfo)
   {
-    v15 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    failureInfo = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+    dictionaryRepresentation3 = [failureInfo dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"failureInfo"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"failureInfo"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"failureInfo"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"failureInfo"];
     }
   }
 
@@ -503,7 +503,7 @@
   if ((has & 2) != 0)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[PNRODSchemaPNRODSiriTurnGrainSummary hasAssistantPerformanceData](self, "hasAssistantPerformanceData")}];
-    [v3 setObject:v19 forKeyedSubscript:@"hasAssistantPerformanceData"];
+    [dictionary setObject:v19 forKeyedSubscript:@"hasAssistantPerformanceData"];
 
     has = self->_has;
   }
@@ -511,7 +511,7 @@
   if ((has & 4) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[PNRODSchemaPNRODSiriTurnGrainSummary hasDictationPerformanceData](self, "hasDictationPerformanceData")}];
-    [v3 setObject:v20 forKeyedSubscript:@"hasDictationPerformanceData"];
+    [dictionary setObject:v20 forKeyedSubscript:@"hasDictationPerformanceData"];
 
     has = self->_has;
   }
@@ -519,28 +519,28 @@
   if ((has & 8) != 0)
   {
     v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[PNRODSchemaPNRODSiriTurnGrainSummary hasReliabilityData](self, "hasReliabilityData")}];
-    [v3 setObject:v21 forKeyedSubscript:@"hasReliabilityData"];
+    [dictionary setObject:v21 forKeyedSubscript:@"hasReliabilityData"];
   }
 
   if (self->_launch)
   {
-    v22 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    launch = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+    dictionaryRepresentation4 = [launch dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"launch"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"launch"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"launch"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"launch"];
     }
   }
 
   if ([(NSArray *)self->_planGenerations count])
   {
-    v25 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
@@ -560,16 +560,16 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v99 + 1) + 8 * j) dictionaryRepresentation];
-          if (v31)
+          dictionaryRepresentation5 = [*(*(&v99 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation5)
           {
-            [v25 addObject:v31];
+            [array2 addObject:dictionaryRepresentation5];
           }
 
           else
           {
-            v32 = [MEMORY[0x1E695DFB0] null];
-            [v25 addObject:v32];
+            null5 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null5];
           }
         }
 
@@ -579,12 +579,12 @@
       while (v28);
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"planGeneration"];
+    [dictionary setObject:array2 forKeyedSubscript:@"planGeneration"];
   }
 
   if ([(NSArray *)self->_planResolutions count])
   {
-    v33 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v95 = 0u;
     v96 = 0u;
     v97 = 0u;
@@ -604,16 +604,16 @@
             objc_enumerationMutation(v34);
           }
 
-          v39 = [*(*(&v95 + 1) + 8 * k) dictionaryRepresentation];
-          if (v39)
+          dictionaryRepresentation6 = [*(*(&v95 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation6)
           {
-            [v33 addObject:v39];
+            [array3 addObject:dictionaryRepresentation6];
           }
 
           else
           {
-            v40 = [MEMORY[0x1E695DFB0] null];
-            [v33 addObject:v40];
+            null6 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null6];
           }
         }
 
@@ -623,12 +623,12 @@
       while (v36);
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"planResolution"];
+    [dictionary setObject:array3 forKeyedSubscript:@"planResolution"];
   }
 
   if ([(NSArray *)self->_queryDecorations count])
   {
-    v41 = [MEMORY[0x1E695DF70] array];
+    array4 = [MEMORY[0x1E695DF70] array];
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
@@ -648,16 +648,16 @@
             objc_enumerationMutation(v42);
           }
 
-          v47 = [*(*(&v91 + 1) + 8 * m) dictionaryRepresentation];
-          if (v47)
+          dictionaryRepresentation7 = [*(*(&v91 + 1) + 8 * m) dictionaryRepresentation];
+          if (dictionaryRepresentation7)
           {
-            [v41 addObject:v47];
+            [array4 addObject:dictionaryRepresentation7];
           }
 
           else
           {
-            v48 = [MEMORY[0x1E695DFB0] null];
-            [v41 addObject:v48];
+            null7 = [MEMORY[0x1E695DFB0] null];
+            [array4 addObject:null7];
           }
         }
 
@@ -667,12 +667,12 @@
       while (v44);
     }
 
-    [v3 setObject:v41 forKeyedSubscript:@"queryDecoration"];
+    [dictionary setObject:array4 forKeyedSubscript:@"queryDecoration"];
   }
 
   if ([(NSArray *)self->_responseGenerations count])
   {
-    v49 = [MEMORY[0x1E695DF70] array];
+    array5 = [MEMORY[0x1E695DF70] array];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
@@ -692,16 +692,16 @@
             objc_enumerationMutation(v50);
           }
 
-          v55 = [*(*(&v87 + 1) + 8 * n) dictionaryRepresentation];
-          if (v55)
+          dictionaryRepresentation8 = [*(*(&v87 + 1) + 8 * n) dictionaryRepresentation];
+          if (dictionaryRepresentation8)
           {
-            [v49 addObject:v55];
+            [array5 addObject:dictionaryRepresentation8];
           }
 
           else
           {
-            v56 = [MEMORY[0x1E695DFB0] null];
-            [v49 addObject:v56];
+            null8 = [MEMORY[0x1E695DFB0] null];
+            [array5 addObject:null8];
           }
         }
 
@@ -711,12 +711,12 @@
       while (v52);
     }
 
-    [v3 setObject:v49 forKeyedSubscript:@"responseGeneration"];
+    [dictionary setObject:array5 forKeyedSubscript:@"responseGeneration"];
   }
 
   if ([(NSArray *)self->_searchs count])
   {
-    v57 = [MEMORY[0x1E695DF70] array];
+    array6 = [MEMORY[0x1E695DF70] array];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -736,16 +736,16 @@
             objc_enumerationMutation(v58);
           }
 
-          v63 = [*(*(&v83 + 1) + 8 * ii) dictionaryRepresentation];
-          if (v63)
+          dictionaryRepresentation9 = [*(*(&v83 + 1) + 8 * ii) dictionaryRepresentation];
+          if (dictionaryRepresentation9)
           {
-            [v57 addObject:v63];
+            [array6 addObject:dictionaryRepresentation9];
           }
 
           else
           {
-            v64 = [MEMORY[0x1E695DFB0] null];
-            [v57 addObject:v64];
+            null9 = [MEMORY[0x1E695DFB0] null];
+            [array6 addObject:null9];
           }
         }
 
@@ -755,99 +755,99 @@
       while (v60);
     }
 
-    [v3 setObject:v57 forKeyedSubscript:@"search"];
+    [dictionary setObject:array6 forKeyedSubscript:@"search"];
   }
 
   if (self->_srt)
   {
     v65 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self srt];
-    v66 = [v65 dictionaryRepresentation];
-    if (v66)
+    dictionaryRepresentation10 = [v65 dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v66 forKeyedSubscript:@"srt"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"srt"];
     }
 
     else
     {
-      v67 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v67 forKeyedSubscript:@"srt"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"srt"];
     }
   }
 
   if (*&self->_has)
   {
     v68 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[PNRODSchemaPNRODSiriTurnGrainSummary status](self, "status")}];
-    [v3 setObject:v68 forKeyedSubscript:@"status"];
+    [dictionary setObject:v68 forKeyedSubscript:@"status"];
   }
 
   if (self->_ttaie)
   {
-    v69 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
-    v70 = [v69 dictionaryRepresentation];
-    if (v70)
+    ttaie = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+    dictionaryRepresentation11 = [ttaie dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v70 forKeyedSubscript:@"ttaie"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"ttaie"];
     }
 
     else
     {
-      v71 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v71 forKeyedSubscript:@"ttaie"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"ttaie"];
     }
   }
 
   if (self->_ttfw)
   {
-    v72 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
-    v73 = [v72 dictionaryRepresentation];
-    if (v73)
+    ttfw = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+    dictionaryRepresentation12 = [ttfw dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v73 forKeyedSubscript:@"ttfw"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"ttfw"];
     }
 
     else
     {
-      v74 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v74 forKeyedSubscript:@"ttfw"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"ttfw"];
     }
   }
 
   if (self->_turnid)
   {
-    v75 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
-    v76 = [v75 dictionaryRepresentation];
-    if (v76)
+    turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+    dictionaryRepresentation13 = [turnid dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v76 forKeyedSubscript:@"turnid"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"turnid"];
     }
 
     else
     {
-      v77 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v77 forKeyedSubscript:@"turnid"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"turnid"];
     }
   }
 
   if (self->_uufr)
   {
-    v78 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
-    v79 = [v78 dictionaryRepresentation];
-    if (v79)
+    uufr = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+    dictionaryRepresentation14 = [uufr dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v79 forKeyedSubscript:@"uufr"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"uufr"];
     }
 
     else
     {
-      v80 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v80 forKeyedSubscript:@"uufr"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"uufr"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v81 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v81 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -918,28 +918,28 @@ LABEL_10:
   return v15 ^ v19 ^ [(PNRODSchemaPNRODFailureInfo *)self->_failureInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_87;
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
-  v6 = [v4 turnid];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+  turnid2 = [equalCopy turnid];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v7 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
-  if (v7)
+  turnid3 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+  if (turnid3)
   {
-    v8 = v7;
-    v9 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
-    v10 = [v4 turnid];
-    v11 = [v9 isEqual:v10];
+    v8 = turnid3;
+    turnid4 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+    turnid5 = [equalCopy turnid];
+    v11 = [turnid4 isEqual:turnid5];
 
     if (!v11)
     {
@@ -952,7 +952,7 @@ LABEL_10:
   }
 
   has = self->_has;
-  v13 = v4[136];
+  v13 = equalCopy[136];
   if ((*&has & 1) != (v13 & 1))
   {
     goto LABEL_87;
@@ -961,13 +961,13 @@ LABEL_10:
   if (*&has)
   {
     status = self->_status;
-    if (status != [v4 status])
+    if (status != [equalCopy status])
     {
       goto LABEL_87;
     }
 
     has = self->_has;
-    v13 = v4[136];
+    v13 = equalCopy[136];
   }
 
   v15 = (*&has >> 1) & 1;
@@ -979,13 +979,13 @@ LABEL_10:
   if (v15)
   {
     hasAssistantPerformanceData = self->_hasAssistantPerformanceData;
-    if (hasAssistantPerformanceData != [v4 hasAssistantPerformanceData])
+    if (hasAssistantPerformanceData != [equalCopy hasAssistantPerformanceData])
     {
       goto LABEL_87;
     }
 
     has = self->_has;
-    v13 = v4[136];
+    v13 = equalCopy[136];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -997,13 +997,13 @@ LABEL_10:
   if (v17)
   {
     hasDictationPerformanceData = self->_hasDictationPerformanceData;
-    if (hasDictationPerformanceData != [v4 hasDictationPerformanceData])
+    if (hasDictationPerformanceData != [equalCopy hasDictationPerformanceData])
     {
       goto LABEL_87;
     }
 
     has = self->_has;
-    v13 = v4[136];
+    v13 = equalCopy[136];
   }
 
   v19 = (*&has >> 3) & 1;
@@ -1015,15 +1015,15 @@ LABEL_10:
   if (v19)
   {
     hasReliabilityData = self->_hasReliabilityData;
-    if (hasReliabilityData != [v4 hasReliabilityData])
+    if (hasReliabilityData != [equalCopy hasReliabilityData])
     {
       goto LABEL_87;
     }
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self srt];
-  v6 = [v4 srt];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self srt];
+  turnid2 = [equalCopy srt];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
@@ -1033,7 +1033,7 @@ LABEL_10:
   {
     v22 = v21;
     v23 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self srt];
-    v24 = [v4 srt];
+    v24 = [equalCopy srt];
     v25 = [v23 isEqual:v24];
 
     if (!v25)
@@ -1046,20 +1046,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
-  v6 = [v4 launch];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+  turnid2 = [equalCopy launch];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v26 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
-  if (v26)
+  launch = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+  if (launch)
   {
-    v27 = v26;
-    v28 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
-    v29 = [v4 launch];
-    v30 = [v28 isEqual:v29];
+    v27 = launch;
+    launch2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+    launch3 = [equalCopy launch];
+    v30 = [launch2 isEqual:launch3];
 
     if (!v30)
     {
@@ -1071,9 +1071,9 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self epd];
-  v6 = [v4 epd];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self epd];
+  turnid2 = [equalCopy epd];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
@@ -1083,7 +1083,7 @@ LABEL_10:
   {
     v32 = v31;
     v33 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self epd];
-    v34 = [v4 epd];
+    v34 = [equalCopy epd];
     v35 = [v33 isEqual:v34];
 
     if (!v35)
@@ -1096,20 +1096,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
-  v6 = [v4 uufr];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+  turnid2 = [equalCopy uufr];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v36 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
-  if (v36)
+  uufr = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+  if (uufr)
   {
-    v37 = v36;
-    v38 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
-    v39 = [v4 uufr];
-    v40 = [v38 isEqual:v39];
+    v37 = uufr;
+    uufr2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+    uufr3 = [equalCopy uufr];
+    v40 = [uufr2 isEqual:uufr3];
 
     if (!v40)
     {
@@ -1121,20 +1121,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
-  v6 = [v4 ttfw];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+  turnid2 = [equalCopy ttfw];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v41 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
-  if (v41)
+  ttfw = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+  if (ttfw)
   {
-    v42 = v41;
-    v43 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
-    v44 = [v4 ttfw];
-    v45 = [v43 isEqual:v44];
+    v42 = ttfw;
+    ttfw2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+    ttfw3 = [equalCopy ttfw];
+    v45 = [ttfw2 isEqual:ttfw3];
 
     if (!v45)
     {
@@ -1146,20 +1146,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
-  v6 = [v4 queryDecorations];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
+  turnid2 = [equalCopy queryDecorations];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v46 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
-  if (v46)
+  queryDecorations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
+  if (queryDecorations)
   {
-    v47 = v46;
-    v48 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
-    v49 = [v4 queryDecorations];
-    v50 = [v48 isEqual:v49];
+    v47 = queryDecorations;
+    queryDecorations2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
+    queryDecorations3 = [equalCopy queryDecorations];
+    v50 = [queryDecorations2 isEqual:queryDecorations3];
 
     if (!v50)
     {
@@ -1171,20 +1171,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
-  v6 = [v4 searchs];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
+  turnid2 = [equalCopy searchs];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v51 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
-  if (v51)
+  searchs = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
+  if (searchs)
   {
-    v52 = v51;
-    v53 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
-    v54 = [v4 searchs];
-    v55 = [v53 isEqual:v54];
+    v52 = searchs;
+    searchs2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
+    searchs3 = [equalCopy searchs];
+    v55 = [searchs2 isEqual:searchs3];
 
     if (!v55)
     {
@@ -1196,20 +1196,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
-  v6 = [v4 planResolutions];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
+  turnid2 = [equalCopy planResolutions];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v56 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
-  if (v56)
+  planResolutions = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
+  if (planResolutions)
   {
-    v57 = v56;
-    v58 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
-    v59 = [v4 planResolutions];
-    v60 = [v58 isEqual:v59];
+    v57 = planResolutions;
+    planResolutions2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
+    planResolutions3 = [equalCopy planResolutions];
+    v60 = [planResolutions2 isEqual:planResolutions3];
 
     if (!v60)
     {
@@ -1221,20 +1221,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
-  v6 = [v4 responseGenerations];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
+  turnid2 = [equalCopy responseGenerations];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v61 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
-  if (v61)
+  responseGenerations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
+  if (responseGenerations)
   {
-    v62 = v61;
-    v63 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
-    v64 = [v4 responseGenerations];
-    v65 = [v63 isEqual:v64];
+    v62 = responseGenerations;
+    responseGenerations2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
+    responseGenerations3 = [equalCopy responseGenerations];
+    v65 = [responseGenerations2 isEqual:responseGenerations3];
 
     if (!v65)
     {
@@ -1246,20 +1246,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
-  v6 = [v4 executors];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
+  turnid2 = [equalCopy executors];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v66 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
-  if (v66)
+  executors = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
+  if (executors)
   {
-    v67 = v66;
-    v68 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
-    v69 = [v4 executors];
-    v70 = [v68 isEqual:v69];
+    v67 = executors;
+    executors2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
+    executors3 = [equalCopy executors];
+    v70 = [executors2 isEqual:executors3];
 
     if (!v70)
     {
@@ -1271,20 +1271,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
-  v6 = [v4 planGenerations];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
+  turnid2 = [equalCopy planGenerations];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v71 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
-  if (v71)
+  planGenerations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
+  if (planGenerations)
   {
-    v72 = v71;
-    v73 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
-    v74 = [v4 planGenerations];
-    v75 = [v73 isEqual:v74];
+    v72 = planGenerations;
+    planGenerations2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
+    planGenerations3 = [equalCopy planGenerations];
+    v75 = [planGenerations2 isEqual:planGenerations3];
 
     if (!v75)
     {
@@ -1296,20 +1296,20 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
-  v6 = [v4 ttaie];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+  turnid2 = [equalCopy ttaie];
+  if ((turnid != 0) == (turnid2 == 0))
   {
     goto LABEL_86;
   }
 
-  v76 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
-  if (v76)
+  ttaie = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+  if (ttaie)
   {
-    v77 = v76;
-    v78 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
-    v79 = [v4 ttaie];
-    v80 = [v78 isEqual:v79];
+    v77 = ttaie;
+    ttaie2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+    ttaie3 = [equalCopy ttaie];
+    v80 = [ttaie2 isEqual:ttaie3];
 
     if (!v80)
     {
@@ -1321,17 +1321,17 @@ LABEL_10:
   {
   }
 
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
-  v6 = [v4 failureInfo];
-  if ((v5 != 0) == (v6 == 0))
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+  turnid2 = [equalCopy failureInfo];
+  if ((turnid != 0) == (turnid2 == 0))
   {
 LABEL_86:
 
     goto LABEL_87;
   }
 
-  v81 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
-  if (!v81)
+  failureInfo = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+  if (!failureInfo)
   {
 
 LABEL_90:
@@ -1339,10 +1339,10 @@ LABEL_90:
     goto LABEL_88;
   }
 
-  v82 = v81;
-  v83 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
-  v84 = [v4 failureInfo];
-  v85 = [v83 isEqual:v84];
+  v82 = failureInfo;
+  failureInfo2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+  failureInfo3 = [equalCopy failureInfo];
+  v85 = [failureInfo2 isEqual:failureInfo3];
 
   if (v85)
   {
@@ -1356,15 +1356,15 @@ LABEL_88:
   return v86;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v82 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+  toCopy = to;
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
 
-  if (v5)
+  if (turnid)
   {
-    v6 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+    turnid2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1420,11 +1420,11 @@ LABEL_8:
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+  launch = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
 
-  if (v10)
+  if (launch)
   {
-    v11 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+    launch2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1436,19 +1436,19 @@ LABEL_8:
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+  uufr = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
 
-  if (v14)
+  if (uufr)
   {
-    v15 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+    uufr2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+  ttfw = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
 
-  if (v16)
+  if (ttfw)
   {
-    v17 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+    ttfw2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1620,134 +1620,134 @@ LABEL_8:
     while (v45);
   }
 
-  v48 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+  ttaie = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
 
-  if (v48)
+  if (ttaie)
   {
-    v49 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+    ttaie2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+  failureInfo = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
 
-  if (v50)
+  if (failureInfo)
   {
-    v51 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+    failureInfo2 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addPlanGeneration:(id)a3
+- (void)addPlanGeneration:(id)generation
 {
-  v4 = a3;
+  generationCopy = generation;
   planGenerations = self->_planGenerations;
-  v8 = v4;
+  v8 = generationCopy;
   if (!planGenerations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_planGenerations;
-    self->_planGenerations = v6;
+    self->_planGenerations = array;
 
-    v4 = v8;
+    generationCopy = v8;
     planGenerations = self->_planGenerations;
   }
 
-  [(NSArray *)planGenerations addObject:v4];
+  [(NSArray *)planGenerations addObject:generationCopy];
 }
 
-- (void)addExecutor:(id)a3
+- (void)addExecutor:(id)executor
 {
-  v4 = a3;
+  executorCopy = executor;
   executors = self->_executors;
-  v8 = v4;
+  v8 = executorCopy;
   if (!executors)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_executors;
-    self->_executors = v6;
+    self->_executors = array;
 
-    v4 = v8;
+    executorCopy = v8;
     executors = self->_executors;
   }
 
-  [(NSArray *)executors addObject:v4];
+  [(NSArray *)executors addObject:executorCopy];
 }
 
-- (void)addResponseGeneration:(id)a3
+- (void)addResponseGeneration:(id)generation
 {
-  v4 = a3;
+  generationCopy = generation;
   responseGenerations = self->_responseGenerations;
-  v8 = v4;
+  v8 = generationCopy;
   if (!responseGenerations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_responseGenerations;
-    self->_responseGenerations = v6;
+    self->_responseGenerations = array;
 
-    v4 = v8;
+    generationCopy = v8;
     responseGenerations = self->_responseGenerations;
   }
 
-  [(NSArray *)responseGenerations addObject:v4];
+  [(NSArray *)responseGenerations addObject:generationCopy];
 }
 
-- (void)addPlanResolution:(id)a3
+- (void)addPlanResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   planResolutions = self->_planResolutions;
-  v8 = v4;
+  v8 = resolutionCopy;
   if (!planResolutions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_planResolutions;
-    self->_planResolutions = v6;
+    self->_planResolutions = array;
 
-    v4 = v8;
+    resolutionCopy = v8;
     planResolutions = self->_planResolutions;
   }
 
-  [(NSArray *)planResolutions addObject:v4];
+  [(NSArray *)planResolutions addObject:resolutionCopy];
 }
 
-- (void)addSearch:(id)a3
+- (void)addSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   searchs = self->_searchs;
-  v8 = v4;
+  v8 = searchCopy;
   if (!searchs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_searchs;
-    self->_searchs = v6;
+    self->_searchs = array;
 
-    v4 = v8;
+    searchCopy = v8;
     searchs = self->_searchs;
   }
 
-  [(NSArray *)searchs addObject:v4];
+  [(NSArray *)searchs addObject:searchCopy];
 }
 
-- (void)addQueryDecoration:(id)a3
+- (void)addQueryDecoration:(id)decoration
 {
-  v4 = a3;
+  decorationCopy = decoration;
   queryDecorations = self->_queryDecorations;
-  v8 = v4;
+  v8 = decorationCopy;
   if (!queryDecorations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_queryDecorations;
-    self->_queryDecorations = v6;
+    self->_queryDecorations = array;
 
-    v4 = v8;
+    decorationCopy = v8;
     queryDecorations = self->_queryDecorations;
   }
 
-  [(NSArray *)queryDecorations addObject:v4];
+  [(NSArray *)queryDecorations addObject:decorationCopy];
 }
 
-- (void)setHasHasReliabilityData:(BOOL)a3
+- (void)setHasHasReliabilityData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 8;
   }
@@ -1760,9 +1760,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasDictationPerformanceData:(BOOL)a3
+- (void)setHasHasDictationPerformanceData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 4;
   }
@@ -1775,9 +1775,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasAssistantPerformanceData:(BOOL)a3
+- (void)setHasHasAssistantPerformanceData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 2;
   }
@@ -1790,104 +1790,104 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v43.receiver = self;
   v43.super_class = PNRODSchemaPNRODSiriTurnGrainSummary;
-  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:v4];
-  v6 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v43 applySensitiveConditionsPolicy:policyCopy];
+  turnid = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self turnid];
+  v7 = [turnid applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteTurnid];
   }
 
   v9 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self srt];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  v10 = [v9 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteSrt];
   }
 
-  v12 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  launch = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self launch];
+  v13 = [launch applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteLaunch];
   }
 
   v15 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self epd];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  v16 = [v15 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteEpd];
   }
 
-  v18 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  uufr = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self uufr];
+  v19 = [uufr applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteUufr];
   }
 
-  v21 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  ttfw = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttfw];
+  v22 = [ttfw applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteTtfw];
   }
 
-  v24 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
-  v25 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v24 underConditions:v4];
+  queryDecorations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self queryDecorations];
+  v25 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:queryDecorations underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setQueryDecorations:v25];
 
-  v26 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
-  v27 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v26 underConditions:v4];
+  searchs = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self searchs];
+  v27 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:searchs underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setSearchs:v27];
 
-  v28 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
-  v29 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v28 underConditions:v4];
+  planResolutions = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planResolutions];
+  v29 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:planResolutions underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setPlanResolutions:v29];
 
-  v30 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
-  v31 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v30 underConditions:v4];
+  responseGenerations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self responseGenerations];
+  v31 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:responseGenerations underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setResponseGenerations:v31];
 
-  v32 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
-  v33 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v32 underConditions:v4];
+  executors = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self executors];
+  v33 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:executors underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setExecutors:v33];
 
-  v34 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
-  v35 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v34 underConditions:v4];
+  planGenerations = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self planGenerations];
+  v35 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:planGenerations underConditions:policyCopy];
   [(PNRODSchemaPNRODSiriTurnGrainSummary *)self setPlanGenerations:v35];
 
-  v36 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  ttaie = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self ttaie];
+  v37 = [ttaie applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage7)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteTtaie];
   }
 
-  v39 = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  failureInfo = [(PNRODSchemaPNRODSiriTurnGrainSummary *)self failureInfo];
+  v40 = [failureInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage8)
   {
     [(PNRODSchemaPNRODSiriTurnGrainSummary *)self deleteFailureInfo];
   }

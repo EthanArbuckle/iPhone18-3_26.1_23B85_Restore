@@ -6,9 +6,9 @@
 
 - (uint64_t)isEdited
 {
-  if ([a1 originalContentWasUpdated])
+  if ([self originalContentWasUpdated])
   {
-    v2 = [a1 editingMode] == 3;
+    v2 = [self editingMode] == 3;
   }
 
   else
@@ -16,9 +16,9 @@
     v2 = 0;
   }
 
-  v3 = [a1 editedFileURL];
+  editedFileURL = [self editedFileURL];
 
-  return v3 || v2;
+  return editedFileURL || v2;
 }
 
 @end

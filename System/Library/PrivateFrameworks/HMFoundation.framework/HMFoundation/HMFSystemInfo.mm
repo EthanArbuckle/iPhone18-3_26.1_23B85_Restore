@@ -1,5 +1,5 @@
 @interface HMFSystemInfo
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)systemInfo;
 - (BOOL)isMigrating;
 - (BOOL)supportsBLE;
@@ -14,8 +14,8 @@
 - (int64_t)productColor;
 - (int64_t)productPlatform;
 - (int64_t)productVariant;
-- (void)dataSource:(id)a3 didUpdateMigrating:(BOOL)a4;
-- (void)dataSource:(id)a3 didUpdateName:(id)a4;
+- (void)dataSource:(id)source didUpdateMigrating:(BOOL)migrating;
+- (void)dataSource:(id)source didUpdateName:(id)name;
 @end
 
 @implementation HMFSystemInfo
@@ -41,148 +41,148 @@ uint64_t __27__HMFSystemInfo_systemInfo__block_invoke()
 
 - (int64_t)productColor
 {
-  v2 = [(HMFSystemInfo *)self productColorDataSource];
-  v3 = [v2 productColor];
+  productColorDataSource = [(HMFSystemInfo *)self productColorDataSource];
+  productColor = [productColorDataSource productColor];
 
-  return v3;
+  return productColor;
 }
 
 - (int64_t)productPlatform
 {
-  v2 = [(HMFSystemInfo *)self productInfoDataSource];
-  v3 = [v2 productPlatform];
+  productInfoDataSource = [(HMFSystemInfo *)self productInfoDataSource];
+  productPlatform = [productInfoDataSource productPlatform];
 
-  return v3;
+  return productPlatform;
 }
 
 - (int64_t)productClass
 {
-  v2 = [(HMFSystemInfo *)self productInfoDataSource];
-  v3 = [v2 productClass];
+  productInfoDataSource = [(HMFSystemInfo *)self productInfoDataSource];
+  productClass = [productInfoDataSource productClass];
 
-  return v3;
+  return productClass;
 }
 
 - (int64_t)productVariant
 {
-  v2 = [(HMFSystemInfo *)self productInfoDataSource];
-  v3 = [v2 productVariant];
+  productInfoDataSource = [(HMFSystemInfo *)self productInfoDataSource];
+  productVariant = [productInfoDataSource productVariant];
 
-  return v3;
+  return productVariant;
 }
 
 - (HMFSoftwareVersion)softwareVersion
 {
-  v2 = [(HMFSystemInfo *)self softwareVersionDataSource];
-  v3 = [v2 softwareVersion];
+  softwareVersionDataSource = [(HMFSystemInfo *)self softwareVersionDataSource];
+  softwareVersion = [softwareVersionDataSource softwareVersion];
 
-  return v3;
+  return softwareVersion;
 }
 
 - (NSString)modelIdentifier
 {
-  v2 = [(HMFSystemInfo *)self productInfoDataSource];
-  v3 = [v2 modelIdentifier];
+  productInfoDataSource = [(HMFSystemInfo *)self productInfoDataSource];
+  modelIdentifier = [productInfoDataSource modelIdentifier];
 
-  return v3;
+  return modelIdentifier;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [(HMFSystemInfo *)__HMFEmbeddedSystemInfo allocWithZone:a3];
+    return [(HMFSystemInfo *)__HMFEmbeddedSystemInfo allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___HMFSystemInfo;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
 - (NSString)name
 {
-  v2 = [(HMFSystemInfo *)self nameDataSource];
-  v3 = [v2 name];
+  nameDataSource = [(HMFSystemInfo *)self nameDataSource];
+  name = [nameDataSource name];
 
-  return v3;
+  return name;
 }
 
-- (void)dataSource:(id)a3 didUpdateName:(id)a4
+- (void)dataSource:(id)source didUpdateName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  nameCopy = name;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = HMFGetLogIdentifier(v9);
+    v11 = HMFGetLogIdentifier(selfCopy);
     *buf = 138543618;
     v18 = v11;
     v19 = 2112;
-    v20 = v7;
+    v20 = nameCopy;
     _os_log_impl(&dword_22ADEC000, v10, OS_LOG_TYPE_INFO, "%{public}@Updated system name to '%@'", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
   v12 = +[HMFNotificationCenter defaultCenter];
   v15 = @"HMFSystemInfoNameNotificationKey";
-  v16 = v7;
+  v16 = nameCopy;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-  [v12 postNotificationName:@"HMFSystemInfoNameUpdatedNotification" object:v9 userInfo:v13];
+  [v12 postNotificationName:@"HMFSystemInfoNameUpdatedNotification" object:selfCopy userInfo:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)model
 {
-  v2 = [(HMFSystemInfo *)self marketingDataSource];
-  v3 = [v2 model];
+  marketingDataSource = [(HMFSystemInfo *)self marketingDataSource];
+  model = [marketingDataSource model];
 
-  return v3;
+  return model;
 }
 
 - (NSString)regionInfo
 {
-  v2 = [(HMFSystemInfo *)self marketingDataSource];
-  v3 = [v2 regionInfo];
+  marketingDataSource = [(HMFSystemInfo *)self marketingDataSource];
+  regionInfo = [marketingDataSource regionInfo];
 
-  return v3;
+  return regionInfo;
 }
 
 - (NSString)serialNumber
 {
-  v2 = [(HMFSystemInfo *)self serialNumberDataSource];
-  v3 = [v2 serialNumber];
+  serialNumberDataSource = [(HMFSystemInfo *)self serialNumberDataSource];
+  serialNumber = [serialNumberDataSource serialNumber];
 
-  return v3;
+  return serialNumber;
 }
 
 - (BOOL)isMigrating
 {
-  v2 = [(HMFSystemInfo *)self migrationDataSource];
-  v3 = [v2 isMigrating];
+  migrationDataSource = [(HMFSystemInfo *)self migrationDataSource];
+  isMigrating = [migrationDataSource isMigrating];
 
-  return v3;
+  return isMigrating;
 }
 
-- (void)dataSource:(id)a3 didUpdateMigrating:(BOOL)a4
+- (void)dataSource:(id)source didUpdateMigrating:(BOOL)migrating
 {
-  v4 = a4;
+  migratingCopy = migrating;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sourceCopy = source;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = HMFGetLogIdentifier(v8);
-    v11 = HMFBooleanToString(v4);
+    v10 = HMFGetLogIdentifier(selfCopy);
+    v11 = HMFBooleanToString(migratingCopy);
     v14 = 138543618;
     v15 = v10;
     v16 = 2112;
@@ -192,25 +192,25 @@ uint64_t __27__HMFSystemInfo_systemInfo__block_invoke()
 
   objc_autoreleasePoolPop(v7);
   v12 = +[HMFNotificationCenter defaultCenter];
-  [v12 postNotificationName:@"HMFSystemInfoMigratingUpdatedNotification" object:v8 userInfo:0];
+  [v12 postNotificationName:@"HMFSystemInfoMigratingUpdatedNotification" object:selfCopy userInfo:0];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
 - (HMFMACAddress)WiFiInterfaceMACAddress
 {
-  v2 = [(HMFSystemInfo *)self WiFiDataSource];
-  v3 = [v2 WiFiInterfaceMACAddress];
+  wiFiDataSource = [(HMFSystemInfo *)self WiFiDataSource];
+  wiFiInterfaceMACAddress = [wiFiDataSource WiFiInterfaceMACAddress];
 
-  return v3;
+  return wiFiInterfaceMACAddress;
 }
 
 - (BOOL)supportsBLE
 {
-  v2 = [(HMFSystemInfo *)self bluetoothLEDataSource];
-  v3 = [v2 supportsBLE];
+  bluetoothLEDataSource = [(HMFSystemInfo *)self bluetoothLEDataSource];
+  supportsBLE = [bluetoothLEDataSource supportsBLE];
 
-  return v3;
+  return supportsBLE;
 }
 
 @end

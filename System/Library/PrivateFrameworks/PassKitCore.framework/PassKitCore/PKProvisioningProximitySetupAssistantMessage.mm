@@ -1,26 +1,26 @@
 @interface PKProvisioningProximitySetupAssistantMessage
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKProvisioningProximitySetupAssistantMessage)initWithRequestIdentifier:(id)a3 message:(id)a4 conversationIdentifier:(id)a5 isReply:(BOOL)a6;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
+- (PKProvisioningProximitySetupAssistantMessage)initWithRequestIdentifier:(id)identifier message:(id)message conversationIdentifier:(id)conversationIdentifier isReply:(BOOL)reply;
 - (id)description;
 @end
 
 @implementation PKProvisioningProximitySetupAssistantMessage
 
-- (PKProvisioningProximitySetupAssistantMessage)initWithRequestIdentifier:(id)a3 message:(id)a4 conversationIdentifier:(id)a5 isReply:(BOOL)a6
+- (PKProvisioningProximitySetupAssistantMessage)initWithRequestIdentifier:(id)identifier message:(id)message conversationIdentifier:(id)conversationIdentifier isReply:(BOOL)reply
 {
-  v6 = a6;
+  replyCopy = reply;
   v10 = MEMORY[0x1E695DF90];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  conversationIdentifierCopy = conversationIdentifier;
+  messageCopy = message;
+  identifierCopy = identifier;
   v14 = objc_alloc_init(v10);
-  [v14 setObject:v13 forKeyedSubscript:@"requestIdentifier"];
+  [v14 setObject:identifierCopy forKeyedSubscript:@"requestIdentifier"];
 
-  [v14 setObject:v12 forKeyedSubscript:@"content"];
-  [v14 setObject:v11 forKeyedSubscript:@"conversationIdentifier"];
+  [v14 setObject:messageCopy forKeyedSubscript:@"content"];
+  [v14 setObject:conversationIdentifierCopy forKeyedSubscript:@"conversationIdentifier"];
 
-  v15 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+  v15 = [MEMORY[0x1E696AD98] numberWithBool:replyCopy];
   [v14 setObject:v15 forKeyedSubscript:@"isReply"];
 
   v18.receiver = self;
@@ -30,14 +30,14 @@
   return v16;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v14.receiver = self;
   v14.super_class = PKProvisioningProximitySetupAssistantMessage;
-  if ([(PKSharingGenericMessage *)&v14 configureWithContent:v4])
+  if ([(PKSharingGenericMessage *)&v14 configureWithContent:contentCopy])
   {
-    v5 = [v4 PKDictionaryForKey:@"apple"];
+    v5 = [contentCopy PKDictionaryForKey:@"apple"];
     v6 = [v5 PKStringForKey:@"requestIdentifier"];
     requestIdentifier = self->_requestIdentifier;
     self->_requestIdentifier = v6;
@@ -65,8 +65,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   [v3 appendFormat:@"requestIdentifier: '%@'; ", self->_requestIdentifier];
   [v3 appendFormat:@"content: '%@'; ", self->_message];
@@ -80,16 +80,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     if (self)
     {

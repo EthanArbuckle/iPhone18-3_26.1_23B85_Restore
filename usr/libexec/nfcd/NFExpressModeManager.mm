@@ -1,15 +1,15 @@
 @interface NFExpressModeManager
-- (id)appletForIdentifier:(id)a3 filtered:(BOOL)a4 cacheOnly:(BOOL)a5;
-- (void)driverExpressModeEntered:(unsigned __int8)a3;
+- (id)appletForIdentifier:(id)identifier filtered:(BOOL)filtered cacheOnly:(BOOL)only;
+- (void)driverExpressModeEntered:(unsigned __int8)entered;
 - (void)driverFieldEntered;
 - (void)driverFieldExited;
-- (void)driverRequestService:(id)a3;
-- (void)handleAppletInactivityTimeout:(id)a3 atlData:(id)a4 caData:(id)a5;
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4;
-- (void)handleHostCardReaderDetected:(id)a3;
-- (void)handleStepUpEvent:(id)a3 forApplet:(id)a4;
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4 caData:(id)a5;
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4 caData:(id)a5;
+- (void)driverRequestService:(id)service;
+- (void)handleAppletInactivityTimeout:(id)timeout atlData:(id)data caData:(id)caData;
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d;
+- (void)handleHostCardReaderDetected:(id)detected;
+- (void)handleStepUpEvent:(id)event forApplet:(id)applet;
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data caData:(id)caData;
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data caData:(id)caData;
 @end
 
 @implementation NFExpressModeManager
@@ -17,9 +17,9 @@
 - (void)driverFieldExited
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = self;
-  objc_sync_enter(v3);
-  if (v3->_expressModeState == 5)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_expressModeState == 5)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
@@ -39,14 +39,14 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s:%i CLEARING EXPRESS MODE STATE", buf, 0x12u);
     }
 
-    v3->_expressModeState = 0;
-    v3->_expressModeType = 0;
+    selfCopy->_expressModeState = 0;
+    selfCopy->_expressModeType = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  [(NFTimer *)v3->_typeFTransactionTimer stopTimer];
-  [(NFExpressModeManagerDelegate *)v3->_delegate handleFieldChanged:0];
+  [(NFTimer *)selfCopy->_typeFTransactionTimer stopTimer];
+  [(NFExpressModeManagerDelegate *)selfCopy->_delegate handleFieldChanged:0];
 }
 
 - (void)driverFieldEntered
@@ -60,7 +60,7 @@
   dispatch_async(workQueue, block);
 }
 
-- (void)driverExpressModeEntered:(unsigned __int8)a3
+- (void)driverExpressModeEntered:(unsigned __int8)entered
 {
   workQueue = self->_workQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -68,80 +68,80 @@
   v4[2] = sub_10003C584;
   v4[3] = &unk_100315EB8;
   v4[4] = self;
-  v5 = a3;
+  enteredCopy = entered;
   dispatch_async(workQueue, v4);
 }
 
-- (void)driverRequestService:(id)a3
+- (void)driverRequestService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003C97C;
   v7[3] = &unk_100315FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = serviceCopy;
+  v6 = serviceCopy;
   dispatch_async(workQueue, v7);
 }
 
-- (void)handleHostCardReaderDetected:(id)a3
+- (void)handleHostCardReaderDetected:(id)detected
 {
-  v5 = a3;
+  detectedCopy = detected;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003DA94;
   block[3] = &unk_100315F80;
-  v9 = v5;
+  v9 = detectedCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
+  v7 = detectedCopy;
   dispatch_async(workQueue, block);
 }
 
-- (id)appletForIdentifier:(id)a3 filtered:(BOOL)a4 cacheOnly:(BOOL)a5
+- (id)appletForIdentifier:(id)identifier filtered:(BOOL)filtered cacheOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  onlyCopy = only;
+  filteredCopy = filtered;
+  identifierCopy = identifier;
   v9 = +[_NFHardwareManager sharedHardwareManager];
-  v10 = [v9 secureElementWrapper];
-  v11 = v10;
-  v12 = v6 && !self->_factoryTestMode;
+  secureElementWrapper = [v9 secureElementWrapper];
+  v11 = secureElementWrapper;
+  v12 = filteredCopy && !self->_factoryTestMode;
   v13 = v12;
-  if (v5)
+  if (onlyCopy)
   {
-    sub_100258B98(v10, v8, v13, 0);
+    sub_100258B98(secureElementWrapper, identifierCopy, v13, 0);
   }
 
   else
   {
-    sub_100258B60(v10, v8, v13, 0);
+    sub_100258B60(secureElementWrapper, identifierCopy, v13, 0);
   }
   v14 = ;
 
   return v14;
 }
 
-- (void)handleAppletInactivityTimeout:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleAppletInactivityTimeout:(id)timeout atlData:(id)data caData:(id)caData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  objc_sync_enter(v12);
-  if (v12->_expressModeState - 1 > 1)
+  timeoutCopy = timeout;
+  dataCopy = data;
+  caDataCopy = caData;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_expressModeState - 1 > 1)
   {
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     Logger = NFLogGetLogger();
     if (Logger)
     {
       v14 = Logger;
-      Class = object_getClass(v12);
+      Class = object_getClass(selfCopy);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(v12);
+      ClassName = object_getClassName(selfCopy);
       Name = sel_getName(a2);
       v19 = 45;
       if (isMetaClass)
@@ -149,14 +149,14 @@
         v19 = 43;
       }
 
-      v14(5, "%c[%{public}s %{public}s]:%i Express mode state is unexpected: %d", v19, ClassName, Name, 2499, v12->_expressModeState);
+      v14(5, "%c[%{public}s %{public}s]:%i Express mode state is unexpected: %d", v19, ClassName, Name, 2499, selfCopy->_expressModeState);
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v20 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = object_getClass(v12);
+      v21 = object_getClass(selfCopy);
       if (class_isMetaClass(v21))
       {
         v22 = 43;
@@ -167,9 +167,9 @@
         v22 = 45;
       }
 
-      v23 = object_getClassName(v12);
+      v23 = object_getClassName(selfCopy);
       v24 = sel_getName(a2);
-      expressModeState = v12->_expressModeState;
+      expressModeState = selfCopy->_expressModeState;
       *buf = 67110146;
       v30 = v22;
       v31 = 2082;
@@ -186,59 +186,59 @@
 
   else
   {
-    v12->_expressModeState = 3;
+    selfCopy->_expressModeState = 3;
   }
 
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  v26 = [v9 objectForKeyedSubscript:@"applet"];
-  v27 = [v26 identifierAsData];
-  [(NSMutableDictionary *)v12->_caTransactionInfo setObject:v27 forKeyedSubscript:@"AID"];
+  v26 = [timeoutCopy objectForKeyedSubscript:@"applet"];
+  identifierAsData = [v26 identifierAsData];
+  [(NSMutableDictionary *)selfCopy->_caTransactionInfo setObject:identifierAsData forKeyedSubscript:@"AID"];
 
-  if (v11)
+  if (caDataCopy)
   {
-    v28 = [NSNumber numberWithUnsignedChar:v12->_expressModeType];
-    [v11 setObject:v28 forKeyedSubscript:@"expressType"];
+    v28 = [NSNumber numberWithUnsignedChar:selfCopy->_expressModeType];
+    [caDataCopy setObject:v28 forKeyedSubscript:@"expressType"];
   }
 
-  [(NFExpressModeManagerDelegate *)v12->_delegate handleAppletInactivityTimeout:v9 atlData:v10 caData:v11];
+  [(NFExpressModeManagerDelegate *)selfCopy->_delegate handleAppletInactivityTimeout:timeoutCopy atlData:dataCopy caData:caDataCopy];
 }
 
-- (void)handleFelicaStateEvent:(id)a3 appletAID:(id)a4
+- (void)handleFelicaStateEvent:(id)event appletAID:(id)d
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = sub_100036644(self, v6);
+  eventCopy = event;
+  dCopy = d;
+  v7 = sub_100036644(self, dCopy);
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 identifierAsData];
-    [(NSMutableDictionary *)self->_caTransactionInfo setObject:v9 forKeyedSubscript:@"AID"];
+    identifierAsData = [v7 identifierAsData];
+    [(NSMutableDictionary *)self->_caTransactionInfo setObject:identifierAsData forKeyedSubscript:@"AID"];
   }
 
-  v10 = [v12 objectForKeyedSubscript:@"NFServiceProviderID"];
+  v10 = [eventCopy objectForKeyedSubscript:@"NFServiceProviderID"];
 
   if (v10)
   {
-    v11 = [v12 objectForKeyedSubscript:@"NFServiceProviderID"];
+    v11 = [eventCopy objectForKeyedSubscript:@"NFServiceProviderID"];
     [(NSMutableDictionary *)self->_caTransactionInfo setObject:v11 forKeyedSubscript:@"SPID"];
   }
 
-  [(NFExpressModeManagerDelegate *)self->_delegate handleFelicaStateEvent:v12 appletAID:v6];
+  [(NFExpressModeManagerDelegate *)self->_delegate handleFelicaStateEvent:eventCopy appletAID:dCopy];
 }
 
-- (void)handleStepUpEvent:(id)a3 forApplet:(id)a4
+- (void)handleStepUpEvent:(id)event forApplet:(id)applet
 {
-  v14 = a3;
-  v6 = a4;
+  eventCopy = event;
+  appletCopy = applet;
   v7 = +[_NFHardwareManager sharedHardwareManager];
   v8 = v7;
   if (self && self->_expressModeInProgress && (sub_1000E9EEC(v7) & 1) == 0)
   {
     if (sub_100033654(self))
     {
-      v9 = v14;
-      v10 = v6;
+      v9 = eventCopy;
+      v10 = appletCopy;
       workQueue = self->_workQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -256,33 +256,33 @@
 
   else
   {
-    [(NFExpressModeManagerDelegate *)self->_delegate handleStepUpEvent:v14 forApplet:v6];
+    [(NFExpressModeManagerDelegate *)self->_delegate handleStepUpEvent:eventCopy forApplet:appletCopy];
   }
 }
 
-- (void)handleTransactionEndEvent:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleTransactionEndEvent:(id)event atlData:(id)data caData:(id)caData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  eventCopy = event;
+  dataCopy = data;
+  caDataCopy = caData;
+  if (caDataCopy)
   {
     v11 = [NSNumber numberWithUnsignedChar:self->_expressModeType];
-    [v10 setObject:v11 forKeyedSubscript:@"expressType"];
+    [caDataCopy setObject:v11 forKeyedSubscript:@"expressType"];
   }
 
-  v12 = [v8 applet];
+  applet = [eventCopy applet];
 
-  if (v12)
+  if (applet)
   {
-    v13 = [v8 applet];
-    v14 = [v13 identifierAsData];
-    [(NSMutableDictionary *)self->_caTransactionInfo setObject:v14 forKeyedSubscript:@"AID"];
+    applet2 = [eventCopy applet];
+    identifierAsData = [applet2 identifierAsData];
+    [(NSMutableDictionary *)self->_caTransactionInfo setObject:identifierAsData forKeyedSubscript:@"AID"];
   }
 
-  if (v9)
+  if (dataCopy)
   {
-    v15 = [v9 objectForKeyedSubscript:@"State"];
+    v15 = [dataCopy objectForKeyedSubscript:@"State"];
     v16 = [v15 objectForKeyedSubscript:@"SPRaw"];
 
     if (v16)
@@ -291,7 +291,7 @@
       [(NSMutableDictionary *)self->_caTransactionInfo setObject:v17 forKeyedSubscript:@"SPID"];
     }
 
-    v18 = [v9 objectForKeyedSubscript:@"ForceExpressExit"];
+    v18 = [dataCopy objectForKeyedSubscript:@"ForceExpressExit"];
     if (self->_expressModeState - 6 <= 2)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -353,7 +353,7 @@
           v32 = 43;
         }
 
-        v29(5, "%c[%{public}s %{public}s]:%i %{public}@", v32, v75, v77, 2609, v8);
+        v29(5, "%c[%{public}s %{public}s]:%i %{public}@", v32, v75, v77, 2609, eventCopy);
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
@@ -382,7 +382,7 @@
         v89 = 1024;
         v90 = 2609;
         v91 = 2114;
-        v92 = v8;
+        v92 = eventCopy;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i %{public}@", buf, 0x2Cu);
       }
 
@@ -392,7 +392,7 @@
     if (!self->_expressModeInProgress)
     {
 LABEL_77:
-      [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionEndEvent:v8 atlData:v9 caData:v10];
+      [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionEndEvent:eventCopy atlData:dataCopy caData:caDataCopy];
       if (self->_expressModeInProgress)
       {
         self->_didPerformExpressTransaction = 1;
@@ -408,7 +408,7 @@ LABEL_79:
       goto LABEL_80;
     }
 
-    if ([v8 didError] && objc_msgSend(v8, "result") == 61444)
+    if ([eventCopy didError] && objc_msgSend(eventCopy, "result") == 61444)
     {
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v39 = NFLogGetLogger();
@@ -459,7 +459,7 @@ LABEL_79:
 
     else
     {
-      if ([v8 didError] && objc_msgSend(v8, "result") == 61445)
+      if ([eventCopy didError] && objc_msgSend(eventCopy, "result") == 61445)
       {
         v48 = 9;
 LABEL_76:
@@ -467,11 +467,11 @@ LABEL_76:
         goto LABEL_77;
       }
 
-      v49 = [v8 didError];
+      didError = [eventCopy didError];
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
       v50 = NFLogGetLogger();
       v51 = v50;
-      if (v49)
+      if (didError)
       {
         if (v50)
         {
@@ -569,12 +569,12 @@ LABEL_76:
 
   if (self->_expressModeState)
   {
-    if ([v8 didError] && objc_msgSend(v8, "result") == 61444)
+    if ([eventCopy didError] && objc_msgSend(eventCopy, "result") == 61444)
     {
       v38 = 7;
     }
 
-    else if ([v8 didError])
+    else if ([eventCopy didError])
     {
       v38 = 8;
     }
@@ -587,7 +587,7 @@ LABEL_76:
     self->_expressModeState = v38;
   }
 
-  [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionEndEvent:v8 atlData:0 caData:v10];
+  [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionEndEvent:eventCopy atlData:0 caData:caDataCopy];
   v18 = 0;
   if (self->_expressModeInProgress)
   {
@@ -650,11 +650,11 @@ LABEL_80:
 LABEL_91:
 }
 
-- (void)handleTransactionStartEvent:(id)a3 atlData:(id)a4 caData:(id)a5
+- (void)handleTransactionStartEvent:(id)event atlData:(id)data caData:(id)caData
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventCopy = event;
+  dataCopy = data;
+  caDataCopy = caData;
   expressModeState = self->_expressModeState;
   if (expressModeState)
   {
@@ -678,18 +678,18 @@ LABEL_91:
     [(NFTimer *)self->_typeFTransactionTimer startTimer:0.25];
   }
 
-  v13 = [v17 appletIdentifier];
-  v14 = sub_100036644(self, v13);
+  appletIdentifier = [eventCopy appletIdentifier];
+  v14 = sub_100036644(self, appletIdentifier);
   activeApplet = self->_activeApplet;
   self->_activeApplet = v14;
 
-  if (v9)
+  if (caDataCopy)
   {
     v16 = [NSNumber numberWithUnsignedChar:self->_expressModeType];
-    [v9 setObject:v16 forKeyedSubscript:@"expressType"];
+    [caDataCopy setObject:v16 forKeyedSubscript:@"expressType"];
   }
 
-  [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionStartEvent:v17 atlData:v8 caData:v9];
+  [(NFExpressModeManagerDelegate *)self->_delegate handleTransactionStartEvent:eventCopy atlData:dataCopy caData:caDataCopy];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface VUIMediaLibraryUtilities
-+ (id)_sortIndexesForObjects:(id)a3 titleForObjectBlock:(id)a4;
-+ (id)groupingForMediaEntities:(id)a3 groupingKeyPath:(id)a4 groupingSortComparator:(id)a5 performDefaultSort:(BOOL)a6 sortIndexPropertyKey:(id)a7;
++ (id)_sortIndexesForObjects:(id)objects titleForObjectBlock:(id)block;
++ (id)groupingForMediaEntities:(id)entities groupingKeyPath:(id)path groupingSortComparator:(id)comparator performDefaultSort:(BOOL)sort sortIndexPropertyKey:(id)key;
 + (id)mediaItemEntityTypesSortComparator;
-+ (id)sortIndexesForMediaEntities:(id)a3 sortIndexPropertyKey:(id)a4;
++ (id)sortIndexesForMediaEntities:(id)entities sortIndexPropertyKey:(id)key;
 @end
 
 @implementation VUIMediaLibraryUtilities
 
-+ (id)groupingForMediaEntities:(id)a3 groupingKeyPath:(id)a4 groupingSortComparator:(id)a5 performDefaultSort:(BOOL)a6 sortIndexPropertyKey:(id)a7
++ (id)groupingForMediaEntities:(id)entities groupingKeyPath:(id)path groupingSortComparator:(id)comparator performDefaultSort:(BOOL)sort sortIndexPropertyKey:(id)key
 {
-  v7 = a6;
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[VUIMediaEntitiesToGroupsValueTransformer alloc] initWithIdentifierKeyPath:v13];
+  sortCopy = sort;
+  keyCopy = key;
+  comparatorCopy = comparator;
+  pathCopy = path;
+  entitiesCopy = entities;
+  v15 = [[VUIMediaEntitiesToGroupsValueTransformer alloc] initWithIdentifierKeyPath:pathCopy];
 
-  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setGroupsSortComparator:v12];
-  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setPerformDefaultSort:v7];
-  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setSortIndexKeyPath:v11];
+  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setGroupsSortComparator:comparatorCopy];
+  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setPerformDefaultSort:sortCopy];
+  [(VUIMediaEntitiesToGroupsValueTransformer *)v15 setSortIndexKeyPath:keyCopy];
 
-  v16 = [(VUIMediaEntitiesToGroupsValueTransformer *)v15 transformedValue:v14];
+  v16 = [(VUIMediaEntitiesToGroupsValueTransformer *)v15 transformedValue:entitiesCopy];
 
   return v16;
 }
 
-+ (id)sortIndexesForMediaEntities:(id)a3 sortIndexPropertyKey:(id)a4
++ (id)sortIndexesForMediaEntities:(id)entities sortIndexPropertyKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77__VUIMediaLibraryUtilities_sortIndexesForMediaEntities_sortIndexPropertyKey___block_invoke;
   v10[3] = &unk_1E87370F0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [a1 _sortIndexesForObjects:a3 titleForObjectBlock:v10];
+  v11 = keyCopy;
+  v7 = keyCopy;
+  v8 = [self _sortIndexesForObjects:entities titleForObjectBlock:v10];
 
   return v8;
 }
@@ -86,10 +86,10 @@ uint64_t __62__VUIMediaLibraryUtilities_mediaItemEntityTypesSortComparator__bloc
   return v8;
 }
 
-+ (id)_sortIndexesForObjects:(id)a3 titleForObjectBlock:(id)a4
++ (id)_sortIndexesForObjects:(id)objects titleForObjectBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  objectsCopy = objects;
+  blockCopy = block;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -106,19 +106,19 @@ uint64_t __62__VUIMediaLibraryUtilities_mediaItemEntityTypesSortComparator__bloc
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v19 = 1;
-  v7 = [MEMORY[0x1E696AB08] letterCharacterSet];
+  letterCharacterSet = [MEMORY[0x1E696AB08] letterCharacterSet];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__VUIMediaLibraryUtilities__sortIndexesForObjects_titleForObjectBlock___block_invoke;
   v12[3] = &unk_1E8737138;
   v15 = v18;
-  v8 = v6;
+  v8 = blockCopy;
   v14 = v8;
   v16 = &v20;
-  v9 = v7;
+  v9 = letterCharacterSet;
   v13 = v9;
   v17 = &v26;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [objectsCopy enumerateObjectsUsingBlock:v12];
   if (v21[5])
   {
     [v27[5] addObject:?];

@@ -1,20 +1,20 @@
 @interface CTXPCDeviceIdentifierMessage
 + (id)allowedClassesForArguments;
 - (CTDeviceIdentifier)deviceID;
-- (CTXPCDeviceIdentifierMessage)initWithDeviceID:(id)a3;
+- (CTXPCDeviceIdentifierMessage)initWithDeviceID:(id)d;
 @end
 
 @implementation CTXPCDeviceIdentifierMessage
 
-- (CTXPCDeviceIdentifierMessage)initWithDeviceID:(id)a3
+- (CTXPCDeviceIdentifierMessage)initWithDeviceID:(id)d
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = @"deviceID";
-    v13[0] = v4;
+    v13[0] = dCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10.receiver = self;
     v10.super_class = CTXPCDeviceIdentifierMessage;
@@ -34,8 +34,8 @@
 
 - (CTDeviceIdentifier)deviceID
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"deviceID"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"deviceID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,7 +52,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCDeviceIdentifierMessage;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

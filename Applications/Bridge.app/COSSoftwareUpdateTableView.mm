@@ -1,23 +1,23 @@
 @interface COSSoftwareUpdateTableView
-- (double)preferredHeightForWidth:(double)a3;
+- (double)preferredHeightForWidth:(double)width;
 - (id)upToDateManagedText;
 - (id)upToDateText;
-- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)a3 totalDuration:(double)a4;
+- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)duration totalDuration:(double)totalDuration;
 - (void)layoutSubviews;
-- (void)progressTimerFired:(id)a3;
-- (void)setState:(int)a3;
+- (void)progressTimerFired:(id)fired;
+- (void)setState:(int)state;
 @end
 
 @implementation COSSoftwareUpdateTableView
 
-- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)a3 totalDuration:(double)a4
+- (void)displayRevLockBootProgressIndicatorWithElapsedDuration:(double)duration totalDuration:(double)totalDuration
 {
   if (!self->_isDisplayingRevLockBootProgressIndicator)
   {
     [(COSSoftwareUpdateTableView *)self setState:2];
     self->_isDisplayingRevLockBootProgressIndicator = 1;
-    self->_revLockBootProgressIndicatorElapsedDuration = a3;
-    self->_revLockBootProgressIndicatorTotalDuration = a4;
+    self->_revLockBootProgressIndicatorElapsedDuration = duration;
+    self->_revLockBootProgressIndicatorTotalDuration = totalDuration;
     v7 = objc_alloc_init(UILabel);
     updateCompletingLabel = self->_updateCompletingLabel;
     self->_updateCompletingLabel = v7;
@@ -55,12 +55,12 @@
     v22 = self->_progressBar;
     CGAffineTransformMakeScale(&v29, 1.0, 0.75);
     [(UIProgressView *)v22 setTransform:&v29];
-    v23 = [(UIProgressView *)self->_progressBar layer];
+    layer = [(UIProgressView *)self->_progressBar layer];
     [(UIProgressView *)self->_progressBar bounds];
-    [v23 setCornerRadius:v24 * 0.5];
+    [layer setCornerRadius:v24 * 0.5];
 
-    v25 = [(UIProgressView *)self->_progressBar layer];
-    [v25 setMasksToBounds:1];
+    layer2 = [(UIProgressView *)self->_progressBar layer];
+    [layer2 setMasksToBounds:1];
 
     v26 = self->_revLockBootProgressIndicatorElapsedDuration / self->_revLockBootProgressIndicatorTotalDuration;
     *&v26 = v26;
@@ -101,13 +101,13 @@
   return v3;
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
   if (!self->_isDisplayingRevLockBootProgressIndicator)
   {
     v3.receiver = self;
     v3.super_class = COSSoftwareUpdateTableView;
-    [(COSSoftwareUpdateTableView *)&v3 setState:*&a3];
+    [(COSSoftwareUpdateTableView *)&v3 setState:*&state];
   }
 }
 
@@ -129,10 +129,10 @@
     [(COSSoftwareUpdateTableView *)self bounds:0x4030000000000000];
     v9 = v8;
     v11 = v10;
-    v12 = [(UILabel *)self->_updateCompletingLabel text];
-    v13 = [(UILabel *)self->_updateCompletingLabel font];
+    text = [(UILabel *)self->_updateCompletingLabel text];
+    font = [(UILabel *)self->_updateCompletingLabel font];
     v14 = v11 + v5 * -2.0;
-    [v12 _legacy_sizeWithFont:v13 constrainedToSize:{v14, 1.79769313e308}];
+    [text _legacy_sizeWithFont:font constrainedToSize:{v14, 1.79769313e308}];
     v16 = v15;
     v18 = v17;
 
@@ -142,8 +142,8 @@
     v22 = ceilf(v21);
     v23 = (v11 - v20) * 0.5;
     v24 = floorf(v23);
-    v25 = [(UILabel *)self->_updateCompletingLabel font];
-    [v25 ascender];
+    font2 = [(UILabel *)self->_updateCompletingLabel font];
+    [font2 ascender];
     *&v26 = v7 - v26;
     v27 = floorf(*&v26);
 
@@ -158,14 +158,14 @@
   }
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   [(COSSoftwareUpdateTableView *)self layoutIfNeeded];
-  [(COSSoftwareUpdateTableView *)self sizeThatFits:a3, 1.79769313e308];
+  [(COSSoftwareUpdateTableView *)self sizeThatFits:width, 1.79769313e308];
   return v5;
 }
 
-- (void)progressTimerFired:(id)a3
+- (void)progressTimerFired:(id)fired
 {
   v4 = self->_revLockBootProgressIndicatorElapsedDuration + 1.0;
   self->_revLockBootProgressIndicatorElapsedDuration = v4;
@@ -175,7 +175,7 @@
   if (*&v5 >= 1.0)
   {
     LODWORD(v5) = 1.0;
-    [(UIProgressView *)progressBar setProgress:a3, v5];
+    [(UIProgressView *)progressBar setProgress:fired, v5];
     [(NSTimer *)self->_progressTimer invalidate];
     progressTimer = self->_progressTimer;
     self->_progressTimer = 0;
@@ -184,7 +184,7 @@
   else
   {
 
-    [(UIProgressView *)progressBar setProgress:a3];
+    [(UIProgressView *)progressBar setProgress:fired];
   }
 }
 

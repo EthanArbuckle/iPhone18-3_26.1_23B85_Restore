@@ -1,14 +1,14 @@
 @interface SmartHoldingAnalyticsHelper
-- (void)handleCallStatusChangedWithNotification:(id)a3;
+- (void)handleCallStatusChangedWithNotification:(id)notification;
 @end
 
 @implementation SmartHoldingAnalyticsHelper
 
-- (void)handleCallStatusChangedWithNotification:(id)a3
+- (void)handleCallStatusChangedWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003B0FC8(v4);
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_1003B0FC8(notificationCopy);
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface SXComponentInserterManager
 - (NSArray)inserters;
 - (SXComponentInserterManager)init;
-- (void)addInserter:(id)a3;
-- (void)removeInserter:(id)a3;
+- (void)addInserter:(id)inserter;
+- (void)removeInserter:(id)inserter;
 @end
 
 @implementation SXComponentInserterManager
@@ -14,9 +14,9 @@
   v2 = [(SXComponentInserterManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutableInserters = v2->_mutableInserters;
-    v2->_mutableInserters = v3;
+    v2->_mutableInserters = array;
   }
 
   return v2;
@@ -24,8 +24,8 @@
 
 - (NSArray)inserters
 {
-  v2 = [(SXComponentInserterManager *)self mutableInserters];
-  v3 = [v2 copy];
+  mutableInserters = [(SXComponentInserterManager *)self mutableInserters];
+  v3 = [mutableInserters copy];
 
   if (v3)
   {
@@ -42,32 +42,32 @@
   return v4;
 }
 
-- (void)addInserter:(id)a3
+- (void)addInserter:(id)inserter
 {
-  v8 = a3;
-  if (v8)
+  inserterCopy = inserter;
+  if (inserterCopy)
   {
-    v4 = [(SXComponentInserterManager *)self mutableInserters];
-    v5 = [v4 containsObject:v8];
+    mutableInserters = [(SXComponentInserterManager *)self mutableInserters];
+    v5 = [mutableInserters containsObject:inserterCopy];
 
     if (v5)
     {
-      v6 = [(SXComponentInserterManager *)self mutableInserters];
-      [v6 removeObject:v8];
+      mutableInserters2 = [(SXComponentInserterManager *)self mutableInserters];
+      [mutableInserters2 removeObject:inserterCopy];
     }
 
-    v7 = [(SXComponentInserterManager *)self mutableInserters];
-    [v7 addObject:v8];
+    mutableInserters3 = [(SXComponentInserterManager *)self mutableInserters];
+    [mutableInserters3 addObject:inserterCopy];
   }
 }
 
-- (void)removeInserter:(id)a3
+- (void)removeInserter:(id)inserter
 {
-  if (a3)
+  if (inserter)
   {
-    v4 = a3;
-    v5 = [(SXComponentInserterManager *)self mutableInserters];
-    [v5 removeObject:v4];
+    inserterCopy = inserter;
+    mutableInserters = [(SXComponentInserterManager *)self mutableInserters];
+    [mutableInserters removeObject:inserterCopy];
   }
 }
 

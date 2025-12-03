@@ -1,7 +1,7 @@
 @interface MockCMAttitude
 - ($01BB1521EC52D44A8E7628F5261DCEC8)quaternion;
 - (_TtC18AXMotionCuesServer14MockCMAttitude)init;
-- (_TtC18AXMotionCuesServer14MockCMAttitude)initWithCoder:(id)a3;
+- (_TtC18AXMotionCuesServer14MockCMAttitude)initWithCoder:(id)coder;
 @end
 
 @implementation MockCMAttitude
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC18AXMotionCuesServer14MockCMAttitude)initWithCoder:(id)a3
+- (_TtC18AXMotionCuesServer14MockCMAttitude)initWithCoder:(id)coder
 {
   result = sub_32E48();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface DIEncryptionCreator
-+ (id)getPublicKeyWithCertificate:(id)a3 error:(id *)a4;
-- (BOOL)addPublicKeyEntryWithXpcHandler:(id)a3 error:(id *)a4;
-- (BOOL)addSymmetricKeyEntryWithError:(id *)a3;
-- (BOOL)createWithXpcHandler:(id)a3 error:(id *)a4;
++ (id)getPublicKeyWithCertificate:(id)certificate error:(id *)error;
+- (BOOL)addPublicKeyEntryWithXpcHandler:(id)handler error:(id *)error;
+- (BOOL)addSymmetricKeyEntryWithError:(id *)error;
+- (BOOL)createWithXpcHandler:(id)handler error:(id *)error;
 @end
 
 @implementation DIEncryptionCreator
 
-- (BOOL)addSymmetricKeyEntryWithError:(id *)a3
+- (BOOL)addSymmetricKeyEntryWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = [(DIEncryptionFrontend *)self generateAuthTableWithError:?];
@@ -21,10 +21,10 @@
   [(DIEncryptionFrontend *)self getSerializerWithAuthTable:v5];
   if (v19)
   {
-    v7 = [(DIEncryptionCreator *)self createParams];
-    v8 = [v7 mutableSymmetricKey];
+    createParams = [(DIEncryptionCreator *)self createParams];
+    mutableSymmetricKey = [createParams mutableSymmetricKey];
     LODWORD(v23) = 8;
-    crypto::auth_entry_ns::symmetric_key::create(v8, v6, &v23, v18, &v27);
+    crypto::auth_entry_ns::symmetric_key::create(mutableSymmetricKey, v6, &v23, v18, &v27);
 
     if (v29)
     {
@@ -44,7 +44,7 @@
         }
 
         v11 = v26;
-        if (v26 & 1) != 0 || (LOBYTE(v10) = [DIError failWithUnexpected:v23 verboseInfo:v24 error:@"Failed to add symmetric key entry to auth table", a3], (v26))
+        if (v26 & 1) != 0 || (LOBYTE(v10) = [DIError failWithUnexpected:v23 verboseInfo:v24 error:@"Failed to add symmetric key entry to auth table", error], (v26))
         {
           if (v25[640] == 1)
           {
@@ -57,7 +57,7 @@
             v12 = v25[0];
             if ((v25[0] & 1) == 0)
             {
-              LOBYTE(v10) = [DIError failWithUnexpected:v23 verboseInfo:v24 error:@"Failed to update crypto header", a3];
+              LOBYTE(v10) = [DIError failWithUnexpected:v23 verboseInfo:v24 error:@"Failed to update crypto header", error];
             }
 
             LOBYTE(v10) = v12 | v10;
@@ -67,7 +67,7 @@
 
       else
       {
-        LOBYTE(v10) = [DIError failWithUnexpected:*&v16[0] verboseInfo:*(&v16[0] + 1) error:@"Failed to serialize symmetric key to crypto header", a3];
+        LOBYTE(v10) = [DIError failWithUnexpected:*&v16[0] verboseInfo:*(&v16[0] + 1) error:@"Failed to serialize symmetric key to crypto header", error];
       }
 
       if (v17 == 1)
@@ -78,15 +78,15 @@
       goto LABEL_19;
     }
 
-    v13 = [DIError failWithUnexpected:v27 verboseInfo:v28 error:@"Failed to create passphrase auth entry", a3];
+    error = [DIError failWithUnexpected:v27 verboseInfo:v28 error:@"Failed to create passphrase auth entry", error];
   }
 
   else
   {
-    v13 = [DIError failWithUnexpected:v18[0] verboseInfo:v18[1] error:@"Failed to create crypto serializer", a3];
+    error = [DIError failWithUnexpected:v18[0] verboseInfo:v18[1] error:@"Failed to create crypto serializer", error];
   }
 
-  LOBYTE(v10) = v13;
+  LOBYTE(v10) = error;
 LABEL_19:
   if (v19 == 1)
   {
@@ -98,10 +98,10 @@ LABEL_21:
   return v10 & 1;
 }
 
-+ (id)getPublicKeyWithCertificate:(id)a3 error:(id *)a4
++ (id)getPublicKeyWithCertificate:(id)certificate error:(id *)error
 {
-  v5 = a3;
-  v6 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], v5);
+  certificateCopy = certificate;
+  v6 = SecCertificateCreateWithData(*MEMORY[0x277CBECE8], certificateCopy);
   v7 = v6;
   if (v6)
   {
@@ -112,12 +112,12 @@ LABEL_21:
       goto LABEL_6;
     }
 
-    v9 = [DIError nilWithPOSIXCode:22 description:@"public key has an encoding issue or uses an unsupported algorithm" error:a4];
+    v9 = [DIError nilWithPOSIXCode:22 description:@"public key has an encoding issue or uses an unsupported algorithm" error:error];
   }
 
   else
   {
-    v9 = [DIError nilWithPOSIXCode:22 description:@"not a valid DER-encoded X.509 certificate" error:a4];
+    v9 = [DIError nilWithPOSIXCode:22 description:@"not a valid DER-encoded X.509 certificate" error:error];
   }
 
   v8 = v9;
@@ -126,23 +126,23 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)addPublicKeyEntryWithXpcHandler:(id)a3 error:(id *)a4
+- (BOOL)addPublicKeyEntryWithXpcHandler:(id)handler error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(DIEncryptionCreator *)self createParams];
-  v8 = [v7 certificate];
+  handlerCopy = handler;
+  createParams = [(DIEncryptionCreator *)self createParams];
+  certificate = [createParams certificate];
 
-  if (v8)
+  if (certificate)
   {
-    v9 = [(DIEncryptionCreator *)self createParams];
-    v10 = [v9 certificate];
-    v11 = [(DIEncryptionFrontend *)self getCertificateWithCertificatePath:v10 error:a4];
+    createParams2 = [(DIEncryptionCreator *)self createParams];
+    certificate2 = [createParams2 certificate];
+    v11 = [(DIEncryptionFrontend *)self getCertificateWithCertificatePath:certificate2 error:error];
 
     if (v11)
     {
-      v12 = [objc_opt_class() getPublicKeyWithCertificate:v11 error:a4];
-      if (!v12 || (v13 = [(DIEncryptionFrontend *)self generateAuthTableWithError:a4]) == 0)
+      v12 = [objc_opt_class() getPublicKeyWithCertificate:v11 error:error];
+      if (!v12 || (v13 = [(DIEncryptionFrontend *)self generateAuthTableWithError:error]) == 0)
       {
         LOBYTE(self) = 0;
 LABEL_27:
@@ -172,7 +172,7 @@ LABEL_27:
             }
 
             v15 = v33;
-            if (v33 & 1) != 0 || (LOBYTE(self) = [DIError failWithUnexpected:v30 verboseInfo:v31 error:@"Failed to add public key entry to auth table", a4], (v33))
+            if (v33 & 1) != 0 || (LOBYTE(self) = [DIError failWithUnexpected:v30 verboseInfo:v31 error:@"Failed to add public key entry to auth table", error], (v33))
             {
               if (v32[640] == 1)
               {
@@ -185,7 +185,7 @@ LABEL_27:
                 v16 = v32[0];
                 if ((v32[0] & 1) == 0)
                 {
-                  LOBYTE(self) = [DIError failWithUnexpected:v30 verboseInfo:v31 error:@"Failed to update crypto header", a4];
+                  LOBYTE(self) = [DIError failWithUnexpected:v30 verboseInfo:v31 error:@"Failed to update crypto header", error];
                 }
 
                 LOBYTE(self) = v16 | self;
@@ -195,7 +195,7 @@ LABEL_27:
 
           else
           {
-            LOBYTE(self) = [DIError failWithUnexpected:*&v23[0] verboseInfo:*(&v23[0] + 1) error:@"Failed to serialize public key entry to crypto header", a4];
+            LOBYTE(self) = [DIError failWithUnexpected:*&v23[0] verboseInfo:*(&v23[0] + 1) error:@"Failed to serialize public key entry to crypto header", error];
           }
 
           if (v24 == 1)
@@ -206,15 +206,15 @@ LABEL_27:
           goto LABEL_25;
         }
 
-        v20 = [DIError failWithUnexpected:v34 verboseInfo:v35 error:@"Failed to create public key auth entry", a4];
+        error = [DIError failWithUnexpected:v34 verboseInfo:v35 error:@"Failed to create public key auth entry", error];
       }
 
       else
       {
-        v20 = [DIError failWithUnexpected:v25[0] verboseInfo:v25[1] error:@"Failed to create crypto serializer", a4];
+        error = [DIError failWithUnexpected:v25[0] verboseInfo:v25[1] error:@"Failed to create crypto serializer", error];
       }
 
-      LOBYTE(self) = v20;
+      LOBYTE(self) = error;
 LABEL_25:
       if (v26 == 1)
       {
@@ -227,16 +227,16 @@ LABEL_25:
 
   else
   {
-    v17 = [(DIEncryptionCreator *)self createParams];
-    v18 = [v17 publicKey];
+    createParams3 = [(DIEncryptionCreator *)self createParams];
+    publicKey = [createParams3 publicKey];
 
-    if (v18)
+    if (publicKey)
     {
       v30 = 0;
       [(DIEncryptionCreator *)self createParams];
       [objc_claimAutoreleasedReturnValue() publicKey];
-      v19 = [objc_claimAutoreleasedReturnValue() UTF8String];
-      convertHexToBytes(v19, &v30);
+      uTF8String = [objc_claimAutoreleasedReturnValue() UTF8String];
+      convertHexToBytes(uTF8String, &v30);
     }
   }
 
@@ -247,32 +247,32 @@ LABEL_28:
   return self & 1;
 }
 
-- (BOOL)createWithXpcHandler:(id)a3 error:(id *)a4
+- (BOOL)createWithXpcHandler:(id)handler error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DIEncryptionCreator *)self createParams];
-  v8 = [v7 systemKeychainAccount];
+  handlerCopy = handler;
+  createParams = [(DIEncryptionCreator *)self createParams];
+  systemKeychainAccount = [createParams systemKeychainAccount];
 
-  if (!v8)
+  if (!systemKeychainAccount)
   {
-    v12 = [(DIEncryptionCreator *)self createParams];
-    v13 = [v12 mutableSymmetricKey];
+    createParams2 = [(DIEncryptionCreator *)self createParams];
+    mutableSymmetricKey = [createParams2 mutableSymmetricKey];
 
-    if (v13)
+    if (mutableSymmetricKey)
     {
-      v11 = [(DIEncryptionCreator *)self addSymmetricKeyEntryWithError:a4];
+      v11 = [(DIEncryptionCreator *)self addSymmetricKeyEntryWithError:error];
       goto LABEL_21;
     }
 
-    v14 = [(DIEncryptionFrontend *)self flags];
-    v15 = [(DIEncryptionCreator *)self createParams];
-    v16 = [v15 temporaryPassphrase];
+    flags = [(DIEncryptionFrontend *)self flags];
+    createParams3 = [(DIEncryptionCreator *)self createParams];
+    temporaryPassphrase = [createParams3 temporaryPassphrase];
 
-    if (v16)
+    if (temporaryPassphrase)
     {
-      v17 = [(DIEncryptionCreator *)self createParams];
-      v18 = [v17 temporaryPassphrase];
-      v19 = -[DIEncryptionFrontend setPassphrase:error:](self, "setPassphrase:error:", [v18 buf], a4);
+      createParams4 = [(DIEncryptionCreator *)self createParams];
+      temporaryPassphrase2 = [createParams4 temporaryPassphrase];
+      v19 = -[DIEncryptionFrontend setPassphrase:error:](self, "setPassphrase:error:", [temporaryPassphrase2 buf], error);
 
       if (!v19)
       {
@@ -282,28 +282,28 @@ LABEL_28:
       goto LABEL_15;
     }
 
-    v20 = [(DIEncryptionCreator *)self createParams];
-    if ([v20 passphrase])
+    createParams5 = [(DIEncryptionCreator *)self createParams];
+    if ([createParams5 passphrase])
     {
 
       goto LABEL_10;
     }
 
-    v21 = [(DIEncryptionCreator *)self createParams];
-    v22 = [v21 publicKey];
-    if (v22)
+    createParams6 = [(DIEncryptionCreator *)self createParams];
+    publicKey = [createParams6 publicKey];
+    if (publicKey)
     {
     }
 
     else
     {
-      v23 = [(DIEncryptionCreator *)self createParams];
-      v24 = [v23 certificate];
+      createParams7 = [(DIEncryptionCreator *)self createParams];
+      certificate = [createParams7 certificate];
 
-      if (!v24)
+      if (!certificate)
       {
 LABEL_10:
-        if (![(DIEncryptionFrontend *)self addPassphraseEntryWithXpcHandler:v6 flags:v14 usage:1 error:a4])
+        if (![(DIEncryptionFrontend *)self addPassphraseEntryWithXpcHandler:handlerCopy flags:flags usage:1 error:error])
         {
           goto LABEL_20;
         }
@@ -311,18 +311,18 @@ LABEL_10:
     }
 
 LABEL_15:
-    v25 = [(DIEncryptionCreator *)self createParams];
-    v26 = [v25 publicKey];
-    if (v26)
+    createParams8 = [(DIEncryptionCreator *)self createParams];
+    publicKey2 = [createParams8 publicKey];
+    if (publicKey2)
     {
     }
 
     else
     {
-      v27 = [(DIEncryptionCreator *)self createParams];
-      v28 = [v27 certificate];
+      createParams9 = [(DIEncryptionCreator *)self createParams];
+      certificate2 = [createParams9 certificate];
 
-      if (!v28)
+      if (!certificate2)
       {
 LABEL_19:
         v11 = 1;
@@ -330,7 +330,7 @@ LABEL_19:
       }
     }
 
-    if ([(DIEncryptionCreator *)self addPublicKeyEntryWithXpcHandler:v6 error:a4])
+    if ([(DIEncryptionCreator *)self addPublicKeyEntryWithXpcHandler:handlerCopy error:error])
     {
       goto LABEL_19;
     }
@@ -340,9 +340,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = [(DIEncryptionCreator *)self createParams];
-  v10 = [v9 systemKeychainAccount];
-  v11 = [v6 createAndStoreInSystemKeychainWithCreator:self account:v10 error:a4];
+  createParams10 = [(DIEncryptionCreator *)self createParams];
+  systemKeychainAccount2 = [createParams10 systemKeychainAccount];
+  v11 = [handlerCopy createAndStoreInSystemKeychainWithCreator:self account:systemKeychainAccount2 error:error];
 
 LABEL_21:
   return v11;

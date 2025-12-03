@@ -7,8 +7,8 @@
 - (id)wf_titleWithCustomIntentSerializedRepresentation:()WFCustomIntentMigration
 {
   v4 = a3;
-  v5 = [a1 typeIdentifier];
-  if (v5 == 14)
+  typeIdentifier = [self typeIdentifier];
+  if (typeIdentifier == 14)
   {
     v6 = WFINCurrencyAmountFromSerialization(v4, 0, 0);
     v8 = [MEMORY[0x1E696EA80] localizerForLanguage:0];
@@ -27,7 +27,7 @@
 
   else
   {
-    if (v5 != 13)
+    if (typeIdentifier != 13)
     {
       v7 = 0;
       goto LABEL_13;

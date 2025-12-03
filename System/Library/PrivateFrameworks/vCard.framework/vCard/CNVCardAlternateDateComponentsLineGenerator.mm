@@ -1,15 +1,15 @@
 @interface CNVCardAlternateDateComponentsLineGenerator
-- (id)makeLineWithName:(id)a3 value:(id)a4;
+- (id)makeLineWithName:(id)name value:(id)value;
 @end
 
 @implementation CNVCardAlternateDateComponentsLineGenerator
 
-- (id)makeLineWithName:(id)a3 value:(id)a4
+- (id)makeLineWithName:(id)name value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  nameCopy = name;
   objc_opt_class();
-  v8 = v6;
+  v8 = valueCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -34,11 +34,11 @@
   v12 = [(CNVCardDateComponentsFormatter *)v11 altBDAYStringFromDateComponents:v10];
   v17.receiver = self;
   v17.super_class = CNVCardAlternateDateComponentsLineGenerator;
-  v13 = [(CNVCardLineGenerator *)&v17 makeLineWithName:v7 value:v12];
+  v13 = [(CNVCardLineGenerator *)&v17 makeLineWithName:nameCopy value:v12];
 
-  v14 = [v10 calendar];
-  v15 = [v14 calendarIdentifier];
-  [v13 addParameterWithName:@"CALSCALE" value:v15];
+  calendar = [v10 calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  [v13 addParameterWithName:@"CALSCALE" value:calendarIdentifier];
 
   return v13;
 }

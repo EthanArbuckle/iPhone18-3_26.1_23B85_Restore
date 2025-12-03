@@ -1,20 +1,20 @@
 @interface RiverTodayCardCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation RiverTodayCardCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BridgeStoreExtension.RiverTodayCardCollectionViewCell" hasSwiftField:@"labelsView" withSwiftType:"TodayCardLabelsView"];
-  [v3 validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"badgeTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"titleTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"descriptionTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
-  [v3 validateClass:@"BridgeStoreExtension.TodayTransitioningLabelView" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"descriptionLabel" withSwiftType:"DynamicTypeLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BridgeStoreExtension.RiverTodayCardCollectionViewCell" hasSwiftField:@"labelsView" withSwiftType:"TodayCardLabelsView"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"badgeTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"titleTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"descriptionTransitioningContainer" withSwiftType:"TodayTransitioningLabelView"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.TodayTransitioningLabelView" hasSwiftField:@"label" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.TodayCardLabelsView" hasSwiftField:@"descriptionLabel" withSwiftType:"DynamicTypeLabel"];
 }
 
 - (unint64_t)accessibilityTraits

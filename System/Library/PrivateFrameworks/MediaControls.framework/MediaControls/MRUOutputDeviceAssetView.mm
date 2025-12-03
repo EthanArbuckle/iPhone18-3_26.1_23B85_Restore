@@ -1,12 +1,12 @@
 @interface MRUOutputDeviceAssetView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUOutputDeviceAssetView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUOutputDeviceAssetView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setAsset:(id)a3;
-- (void)setGlyphState:(id)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAsset:(id)asset;
+- (void)setGlyphState:(id)state;
+- (void)setStylingProvider:(id)provider;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)updateContentSizeCategory;
 - (void)updateVisibility;
 - (void)updateVisualStyling;
@@ -91,9 +91,9 @@
 
 - (void)updateVisibility
 {
-  v3 = [(MRUOutputDeviceAsset *)self->_asset type];
+  type = [(MRUOutputDeviceAsset *)self->_asset type];
   v4 = 1.0;
-  if (!v3)
+  if (!type)
   {
     v4 = 0.0;
   }
@@ -103,12 +103,12 @@
   [(BSUIEmojiLabelView *)titleLabel setAlpha:v4];
 }
 
-- (MRUOutputDeviceAssetView)initWithFrame:(CGRect)a3
+- (MRUOutputDeviceAssetView)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = MRUOutputDeviceAssetView;
-  v3 = [(MRUOutputDeviceAssetView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUOutputDeviceAssetView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MRUAssetView);
@@ -156,14 +156,14 @@
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 54.0;
   v7 = 54.0 + 8.0;
-  v8 = [MEMORY[0x1E69DB878] mru_volumeTitleFont];
-  [v8 lineHeight];
+  mru_volumeTitleFont = [MEMORY[0x1E69DB878] mru_volumeTitleFont];
+  [mru_volumeTitleFont lineHeight];
   v10 = v9;
 
   if ([(MRUOutputDeviceAsset *)self->_asset type])
@@ -204,52 +204,52 @@
   return result;
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  objc_storeStrong(&self->_asset, a3);
-  v5 = a3;
-  [(MRUAssetView *)self->_assetView setAsset:v5];
+  objc_storeStrong(&self->_asset, asset);
+  assetCopy = asset;
+  [(MRUAssetView *)self->_assetView setAsset:assetCopy];
 
   [(MRUOutputDeviceAssetView *)self updateVisibility];
 
   [(MRUOutputDeviceAssetView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  objc_storeStrong(&self->_title, a3);
-  v5 = a3;
-  [(BSUIEmojiLabelView *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_title, title);
+  titleCopy = title;
+  [(BSUIEmojiLabelView *)self->_titleLabel setText:titleCopy];
 
   [(MRUOutputDeviceAssetView *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_subtitle, a3);
-  v5 = a3;
-  [(UILabel *)self->_subtitleLabel setText:v5];
+  objc_storeStrong(&self->_subtitle, subtitle);
+  subtitleCopy = subtitle;
+  [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
 
   [(MRUOutputDeviceAssetView *)self setNeedsLayout];
 }
 
-- (void)setGlyphState:(id)a3
+- (void)setGlyphState:(id)state
 {
-  objc_storeStrong(&self->_glyphState, a3);
-  v5 = a3;
-  [(MRUAssetView *)self->_assetView setGlyphState:v5];
+  objc_storeStrong(&self->_glyphState, state);
+  stateCopy = state;
+  [(MRUAssetView *)self->_assetView setGlyphState:stateCopy];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUAssetView *)self->_assetView setStylingProvider:v6];
     [(MRUOutputDeviceAssetView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
@@ -257,22 +257,22 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRUOutputDeviceAssetView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRUOutputDeviceAssetView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   subtitleLabel = self->_subtitleLabel;
-  v8 = [(MRUOutputDeviceAssetView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:subtitleLabel traitCollection:v8];
+  traitCollection2 = [(MRUOutputDeviceAssetView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:subtitleLabel traitCollection:traitCollection2];
 }
 
 - (void)updateContentSizeCategory
 {
-  v3 = [MEMORY[0x1E69DB878] mru_volumeTitleFont];
-  [(BSUIEmojiLabelView *)self->_titleLabel setFont:v3];
+  mru_volumeTitleFont = [MEMORY[0x1E69DB878] mru_volumeTitleFont];
+  [(BSUIEmojiLabelView *)self->_titleLabel setFont:mru_volumeTitleFont];
 
-  v4 = [MEMORY[0x1E69DB878] mru_volumeButtonTitleFont];
-  [(UILabel *)self->_subtitleLabel setFont:v4];
+  mru_volumeButtonTitleFont = [MEMORY[0x1E69DB878] mru_volumeButtonTitleFont];
+  [(UILabel *)self->_subtitleLabel setFont:mru_volumeButtonTitleFont];
 }
 
 @end

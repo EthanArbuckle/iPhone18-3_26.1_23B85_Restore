@@ -6,7 +6,7 @@
 
 - (void)onUIPan
 {
-  v2 = self;
+  selfCopy = self;
   REPanGesture.onUIPan()();
 }
 

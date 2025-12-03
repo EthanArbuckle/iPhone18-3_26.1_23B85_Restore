@@ -1,6 +1,6 @@
 @interface CARInstrumentClusterURLController
 - (CARInstrumentClusterURLController)init;
-- (void)fetchInstrumentClusterURLs:(id)a3;
+- (void)fetchInstrumentClusterURLs:(id)ls;
 - (void)invalidate;
 @end
 
@@ -108,9 +108,9 @@ void __41__CARInstrumentClusterURLController_init__block_invoke_73(uint64_t a1, 
   }
 }
 
-- (void)fetchInstrumentClusterURLs:(id)a3
+- (void)fetchInstrumentClusterURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v5 = CarGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,20 +118,20 @@ void __41__CARInstrumentClusterURLController_init__block_invoke_73(uint64_t a1, 
     _os_log_impl(&dword_1C81FC000, v5, OS_LOG_TYPE_DEFAULT, "Received request for cluster urls.", buf, 2u);
   }
 
-  if (v4)
+  if (lsCopy)
   {
-    v6 = [(CARInstrumentClusterURLController *)self connection];
+    connection = [(CARInstrumentClusterURLController *)self connection];
 
-    if (v6)
+    if (connection)
     {
-      v7 = [(CARInstrumentClusterURLController *)self connection];
-      v8 = [v7 remoteTarget];
+      connection2 = [(CARInstrumentClusterURLController *)self connection];
+      remoteTarget = [connection2 remoteTarget];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __64__CARInstrumentClusterURLController_fetchInstrumentClusterURLs___block_invoke;
       v11[3] = &unk_1E82FC148;
-      v12 = v4;
-      [v8 serviceFetchInstrumentClusterURLs:v11];
+      v12 = lsCopy;
+      [remoteTarget serviceFetchInstrumentClusterURLs:v11];
     }
 
     else
@@ -142,7 +142,7 @@ void __41__CARInstrumentClusterURLController_init__block_invoke_73(uint64_t a1, 
         [CARInstrumentClusterURLController fetchInstrumentClusterURLs:v10];
       }
 
-      (*(v4 + 2))(v4, MEMORY[0x1E695E0F0], 0);
+      (*(lsCopy + 2))(lsCopy, MEMORY[0x1E695E0F0], 0);
     }
   }
 
@@ -200,8 +200,8 @@ id __64__CARInstrumentClusterURLController_fetchInstrumentClusterURLs___block_in
     _os_log_impl(&dword_1C81FC000, v3, OS_LOG_TYPE_DEFAULT, "[CARInstrumentClusterURLController] invalidating connection.", v5, 2u);
   }
 
-  v4 = [(CARInstrumentClusterURLController *)self connection];
-  [v4 invalidate];
+  connection = [(CARInstrumentClusterURLController *)self connection];
+  [connection invalidate];
 }
 
 void __64__CARInstrumentClusterURLController_fetchInstrumentClusterURLs___block_invoke_77_cold_1(uint64_t a1, NSObject *a2)

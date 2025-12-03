@@ -1,18 +1,18 @@
 @interface PGGraphPersonRelationshipTagNode
 + (MARelation)personWithTag;
 + (id)filter;
-+ (id)filterWithTag:(unint64_t)a3;
-+ (id)labelForRelationshipTag:(unint64_t)a3;
-+ (id)personWithTagWithConfidence:(double)a3;
++ (id)filterWithTag:(unint64_t)tag;
++ (id)labelForRelationshipTag:(unint64_t)tag;
++ (id)personWithTagWithConfidence:(double)confidence;
 + (id)supportedTagsAsStrings;
-+ (unint64_t)relationshipTagFromString:(id)a3;
++ (unint64_t)relationshipTagFromString:(id)string;
 - (MANodeFilter)uniquelyIdentifyingFilter;
 - (NSArray)localizedSynonyms;
 - (NSString)localizedName;
-- (PGGraphPersonRelationshipTagNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPersonRelationshipTagNode)initWithPersonRelationshipTag:(unint64_t)a3;
+- (PGGraphPersonRelationshipTagNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPersonRelationshipTagNode)initWithPersonRelationshipTag:(unint64_t)tag;
 - (PGGraphPersonRelationshipTagNodeCollection)collection;
-- (id)_localizationKeyForRelationshipTagLabel:(id)a3;
+- (id)_localizationKeyForRelationshipTagLabel:(id)label;
 - (unint64_t)tag;
 @end
 
@@ -20,24 +20,24 @@
 
 - (NSArray)localizedSynonyms
 {
-  v3 = [(PGGraphPersonRelationshipTagNode *)self label];
-  v4 = [(PGGraphPersonRelationshipTagNode *)self _localizationKeyForRelationshipTagLabel:v3];
+  label = [(PGGraphPersonRelationshipTagNode *)self label];
+  v4 = [(PGGraphPersonRelationshipTagNode *)self _localizationKeyForRelationshipTagLabel:label];
 
   v5 = [PGGraphSynonymSupportHelper localizedSynonymsForLocalizationKey:v4];
 
   return v5;
 }
 
-- (id)_localizationKeyForRelationshipTagLabel:(id)a3
+- (id)_localizationKeyForRelationshipTagLabel:(id)label
 {
   v3 = _localizationKeyForRelationshipTagLabel__onceToken;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     dispatch_once(&_localizationKeyForRelationshipTagLabel__onceToken, &__block_literal_global_34406);
   }
 
-  v5 = [_localizationKeyForRelationshipTagLabel__searchKeyByLabel objectForKeyedSubscript:v4];
+  v5 = [_localizationKeyForRelationshipTagLabel__searchKeyByLabel objectForKeyedSubscript:labelCopy];
 
   return v5;
 }
@@ -82,8 +82,8 @@ void __76__PGGraphPersonRelationshipTagNode__localizationKeyForRelationshipTagLa
 
 - (NSString)localizedName
 {
-  v3 = [(PGGraphPersonRelationshipTagNode *)self label];
-  v4 = [(PGGraphPersonRelationshipTagNode *)self _localizationKeyForRelationshipTagLabel:v3];
+  label = [(PGGraphPersonRelationshipTagNode *)self label];
+  v4 = [(PGGraphPersonRelationshipTagNode *)self _localizationKeyForRelationshipTagLabel:label];
 
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:v4 value:v4 table:@"Localizable"];
@@ -101,8 +101,8 @@ void __76__PGGraphPersonRelationshipTagNode__localizationKeyForRelationshipTagLa
 - (MANodeFilter)uniquelyIdentifyingFilter
 {
   v3 = objc_alloc(MEMORY[0x277D22C78]);
-  v4 = [(PGGraphPersonRelationshipTagNode *)self label];
-  v5 = [v3 initWithLabel:v4 domain:305];
+  label = [(PGGraphPersonRelationshipTagNode *)self label];
+  v5 = [v3 initWithLabel:label domain:305];
 
   return v5;
 }
@@ -110,28 +110,28 @@ void __76__PGGraphPersonRelationshipTagNode__localizationKeyForRelationshipTagLa
 - (unint64_t)tag
 {
   v3 = objc_opt_class();
-  v4 = [(PGGraphPersonRelationshipTagNode *)self label];
-  v5 = [v3 relationshipTagFromString:v4];
+  label = [(PGGraphPersonRelationshipTagNode *)self label];
+  v5 = [v3 relationshipTagFromString:label];
 
   return v5;
 }
 
-- (PGGraphPersonRelationshipTagNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPersonRelationshipTagNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a3;
-  v7 = [objc_opt_class() relationshipTagFromString:v6];
+  labelCopy = label;
+  v7 = [objc_opt_class() relationshipTagFromString:labelCopy];
 
   return [(PGGraphPersonRelationshipTagNode *)self initWithPersonRelationshipTag:v7];
 }
 
-- (PGGraphPersonRelationshipTagNode)initWithPersonRelationshipTag:(unint64_t)a3
+- (PGGraphPersonRelationshipTagNode)initWithPersonRelationshipTag:(unint64_t)tag
 {
   v8.receiver = self;
   v8.super_class = PGGraphPersonRelationshipTagNode;
   v4 = [(PGGraphNode *)&v8 init];
   if (v4)
   {
-    v5 = [objc_opt_class() labelForRelationshipTag:a3];
+    v5 = [objc_opt_class() labelForRelationshipTag:tag];
     label = v4->_label;
     v4->_label = v5;
   }
@@ -139,25 +139,25 @@ void __76__PGGraphPersonRelationshipTagNode__localizationKeyForRelationshipTagLa
   return v4;
 }
 
-+ (id)personWithTagWithConfidence:(double)a3
++ (id)personWithTagWithConfidence:(double)confidence
 {
-  v3 = [PGGraphRelationshipTagEdge filterWithConfidence:a3];
-  v4 = [v3 inRelation];
+  v3 = [PGGraphRelationshipTagEdge filterWithConfidence:confidence];
+  inRelation = [v3 inRelation];
 
-  return v4;
+  return inRelation;
 }
 
 + (MARelation)personWithTag
 {
   v2 = +[PGGraphRelationshipTagEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
-+ (id)filterWithTag:(unint64_t)a3
++ (id)filterWithTag:(unint64_t)tag
 {
-  v3 = [a1 labelForRelationshipTag:a3];
+  v3 = [self labelForRelationshipTag:tag];
   v4 = [objc_alloc(MEMORY[0x277D22C78]) initWithLabel:v3 domain:305];
 
   return v4;
@@ -170,88 +170,88 @@ void __76__PGGraphPersonRelationshipTagNode__localizationKeyForRelationshipTagLa
   return v2;
 }
 
-+ (id)labelForRelationshipTag:(unint64_t)a3
++ (id)labelForRelationshipTag:(unint64_t)tag
 {
-  if (a3 > 0xE)
+  if (tag > 0xE)
   {
     return @"Mother";
   }
 
   else
   {
-    return off_278883618[a3];
+    return off_278883618[tag];
   }
 }
 
-+ (unint64_t)relationshipTagFromString:(id)a3
++ (unint64_t)relationshipTagFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Mother"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Mother"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Father"])
+  else if ([stringCopy isEqualToString:@"Father"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Parent"])
+  else if ([stringCopy isEqualToString:@"Parent"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Child"])
+  else if ([stringCopy isEqualToString:@"Child"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Son"])
+  else if ([stringCopy isEqualToString:@"Son"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Daughter"])
+  else if ([stringCopy isEqualToString:@"Daughter"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Brother"])
+  else if ([stringCopy isEqualToString:@"Brother"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Sister"])
+  else if ([stringCopy isEqualToString:@"Sister"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Sibling"])
+  else if ([stringCopy isEqualToString:@"Sibling"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Family"])
+  else if ([stringCopy isEqualToString:@"Family"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"Partner"])
+  else if ([stringCopy isEqualToString:@"Partner"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Friend"])
+  else if ([stringCopy isEqualToString:@"Friend"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Coworker"])
+  else if ([stringCopy isEqualToString:@"Coworker"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"Alumni"])
+  else if ([stringCopy isEqualToString:@"Alumni"])
   {
     v4 = 14;
   }

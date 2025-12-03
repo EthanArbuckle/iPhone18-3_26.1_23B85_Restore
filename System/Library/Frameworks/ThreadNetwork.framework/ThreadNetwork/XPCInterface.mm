@@ -2,7 +2,7 @@
 + (id)CTCSCreateXPCTransportInterface;
 + (id)CTCSExpectedXPCInterfaceClassesForAllActiveDataSetRecords;
 + (id)CTCSGetExpectedClassesForOptionsOverXPCInterface;
-+ (void)CTCSSetExpectedClassesForXPCBrokerInterface:(id)a3;
++ (void)CTCSSetExpectedClassesForXPCBrokerInterface:(id)interface;
 @end
 
 @implementation XPCInterface
@@ -70,35 +70,35 @@ uint64_t __73__XPCInterface_CTCSExpectedXPCInterfaceClassesForAllActiveDataSetRe
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)CTCSSetExpectedClassesForXPCBrokerInterface:(id)a3
++ (void)CTCSSetExpectedClassesForXPCBrokerInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = +[XPCInterface CTCSExpectedXPCInterfaceClassesForAllActiveDataSetRecords];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveAllActiveDataSetRecordsWithActiveFlag_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveListOfPreferredNetworkEntriesInternallyWithCompletion_ipV4NwSignature_ipv6NwSignature_wifiSSID_showCurrentEntry_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerStoreThreadNetworkCredentialActiveDataSet_credentialsDataSet_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerStoreThreadNetworkCredentialActiveDataSetInternally_network_credentialsDataSet_waitForSync_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerStoreCachedAODasPreferredNetwork_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsValidateAODInternally_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerDeletePreferredNetworkWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerCleanKeychainThreadNetworksWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordWithXPANId_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsIsPreferredNetworkForActiveOperationalDataset_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveIsPreferredNetworkAvailable_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerAddPreferredNetworkWithCompletionInternally_extendedPANId_borderAgentID_ipV4NwSignature_ipv6NwSignature_wifiSSID_wifiPassword_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion_extendedPANId_ipV4NwSignature_ipv6NwSignature_wifiSSID_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId_completion_ argumentIndex:0 ofReply:1];
-  [v3 setClasses:v4 forSelector:sel_ctcsUpdatePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordWithUniqueIdentifier_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordForThreadBorderAgent_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveAllActiveDataSetRecordsWithActiveFlag_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerDeleteActiveDataSetRecordForThreadBorderAgent_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveListOfPreferredNetworkEntriesInternallyWithCompletion_ipV4NwSignature_ipv6NwSignature_wifiSSID_showCurrentEntry_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerDeleteActiveDataSetRecordWithUniqueIdentifier_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerStoreThreadNetworkCredentialActiveDataSet_credentialsDataSet_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerStoreThreadNetworkCredentialActiveDataSetInternally_network_credentialsDataSet_waitForSync_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerStoreCachedAODasPreferredNetwork_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsValidateAODInternally_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerDeletePreferredNetworkWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerCleanPreferredAndFrozenThreadNetworksWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerCleanKeychainThreadNetworksWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkWithNoScanWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrievePreferredNetworkInternallyOnMdnsAndSigWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordWithXPANId_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveOrGeneratePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsIsPreferredNetworkForActiveOperationalDataset_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveIsPreferredNetworkAvailable_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerAddPreferredNetworkWithCompletionInternally_extendedPANId_borderAgentID_ipV4NwSignature_ipv6NwSignature_wifiSSID_wifiPassword_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerDeletePreferredNetworkForNetworkSignatureInternallyWithCompletion_extendedPANId_ipV4NwSignature_ipv6NwSignature_wifiSSID_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsServerRetrieveActiveDataSetRecordInternallyWithXPANId_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_ctcsUpdatePreferredNetworkInternallyWithCompletion_ argumentIndex:0 ofReply:1];
 }
 
 + (id)CTCSCreateXPCTransportInterface

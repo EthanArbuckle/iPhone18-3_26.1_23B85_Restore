@@ -1,32 +1,32 @@
 @interface SFTabOverviewItemView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation SFTabOverviewItemView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for TabOverviewItemView();
-  v7 = a4;
+  eventCopy = event;
   v8 = v13.receiver;
-  if ([(SFTabOverviewItemView *)&v13 pointInside:v7 withEvent:x, y])
+  if ([(SFTabOverviewItemView *)&v13 pointInside:eventCopy withEvent:x, y])
   {
     v9 = 1;
-    v10 = v7;
+    v10 = eventCopy;
   }
 
   else
   {
     v11 = *&v8[OBJC_IVAR___SFTabOverviewItemView_thumbnailView];
     [v8 convertPoint:v11 toCoordinateSpace:{x, y, v13.receiver, v13.super_class}];
-    v9 = [v11 pointInside:v7 withEvent:?];
+    v9 = [v11 pointInside:eventCopy withEvent:?];
     v10 = v8;
-    v8 = v7;
+    v8 = eventCopy;
   }
 
   return v9;
@@ -49,8 +49,8 @@
 - (void)tintColorDidChange
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR___SFTabOverviewItemView_tintedSelectionBorderView);
-  v4 = self;
-  v3 = [(SFTabOverviewItemView *)v4 tintColor];
+  selfCopy = self;
+  tintColor = [(SFTabOverviewItemView *)selfCopy tintColor];
   [v2 setBorderColor_];
 }
 

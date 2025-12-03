@@ -1,13 +1,13 @@
 @interface PKAccountWebserviceCustomizePhysicalCardRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebserviceCustomizePhysicalCardRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  informationCopy = information;
   if (self->_baseURL)
   {
     accountIdentifier = self->_accountIdentifier;
@@ -20,7 +20,7 @@
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:4];
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v7 setObject:self->_accountUserAltDSID forKeyedSubscript:@"accountUserAltDSID"];
-      v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v6 queryParameters:v7 appleAccountInformation:v4];
+      v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:self->_baseURL endpointComponents:v6 queryParameters:v7 appleAccountInformation:informationCopy];
       [v8 setHTTPMethod:@"GET"];
       v9 = [v8 copy];
 

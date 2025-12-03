@@ -1,12 +1,12 @@
 @interface CWFNearbyDeviceDiscoveryFilter
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToNDDFilter:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToNDDFilter:(id)filter;
 - (CWFNearbyDeviceDiscoveryFilter)init;
-- (CWFNearbyDeviceDiscoveryFilter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CWFNearbyDeviceDiscoveryFilter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFNearbyDeviceDiscoveryFilter
@@ -37,30 +37,30 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = CWFCorrectEthernetAddressString(self->_receiverMacAddress);
-  [v3 appendFormat:@"receiverMacAddress=%@, ", v4];
+  [string appendFormat:@"receiverMacAddress=%@, ", v4];
 
   v5 = CWFCorrectEthernetAddressString(self->_transmitterMacAddress);
-  [v3 appendFormat:@"transmitterMacAddress=%@, ", v5];
+  [string appendFormat:@"transmitterMacAddress=%@, ", v5];
 
   v6 = CWFCorrectEthernetAddressString(self->_bssid);
-  [v3 appendFormat:@"bssid=%@, ", v6];
+  [string appendFormat:@"bssid=%@, ", v6];
 
-  [v3 appendFormat:@"numReports=%ld, ", self->_numReports];
-  [v3 appendFormat:@"frameType=%ld, ", self->_frameType];
+  [string appendFormat:@"numReports=%ld, ", self->_numReports];
+  [string appendFormat:@"frameType=%ld, ", self->_frameType];
 
-  return v3;
+  return string;
 }
 
-- (BOOL)isEqualToNDDFilter:(id)a3
+- (BOOL)isEqualToNDDFilter:(id)filter
 {
-  v6 = a3;
+  filterCopy = filter;
   receiverMacAddress = self->_receiverMacAddress;
-  v8 = [v6 receiverMacAddress];
-  if (receiverMacAddress != v8)
+  receiverMacAddress = [filterCopy receiverMacAddress];
+  if (receiverMacAddress != receiverMacAddress)
   {
-    if (!self->_receiverMacAddress || ([v6 receiverMacAddress], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_receiverMacAddress || ([filterCopy receiverMacAddress], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_36;
@@ -68,8 +68,8 @@
 
     v3 = v9;
     v10 = self->_receiverMacAddress;
-    v4 = [v6 receiverMacAddress];
-    if (![(NSString *)v10 isEqual:v4])
+    receiverMacAddress2 = [filterCopy receiverMacAddress];
+    if (![(NSString *)v10 isEqual:receiverMacAddress2])
     {
       v11 = 0;
 LABEL_35:
@@ -79,10 +79,10 @@ LABEL_35:
   }
 
   transmitterMacAddress = self->_transmitterMacAddress;
-  v13 = [v6 transmitterMacAddress];
-  if (transmitterMacAddress != v13)
+  transmitterMacAddress = [filterCopy transmitterMacAddress];
+  if (transmitterMacAddress != transmitterMacAddress)
   {
-    if (!self->_transmitterMacAddress || ([v6 transmitterMacAddress], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_transmitterMacAddress || ([filterCopy transmitterMacAddress], (v14 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_33;
@@ -90,10 +90,10 @@ LABEL_35:
 
     v15 = v14;
     v16 = self->_transmitterMacAddress;
-    v17 = [v6 transmitterMacAddress];
+    transmitterMacAddress2 = [filterCopy transmitterMacAddress];
     v18 = v16;
-    v19 = v17;
-    if (([(NSString *)v18 isEqual:v17]& 1) == 0)
+    v19 = transmitterMacAddress2;
+    if (([(NSString *)v18 isEqual:transmitterMacAddress2]& 1) == 0)
     {
 
       v11 = 0;
@@ -105,14 +105,14 @@ LABEL_35:
   }
 
   bssid = self->_bssid;
-  v21 = [v6 bssid];
-  if (bssid == v21)
+  bssid = [filterCopy bssid];
+  if (bssid == bssid)
   {
     numReports = self->_numReports;
-    if (numReports == [v6 numReports])
+    if (numReports == [filterCopy numReports])
     {
       frameType = self->_frameType;
-      v11 = frameType == [v6 frameType];
+      v11 = frameType == [filterCopy frameType];
       goto LABEL_22;
     }
 
@@ -121,7 +121,7 @@ LABEL_21:
 LABEL_22:
     v28 = v33;
 
-    if (transmitterMacAddress == v13)
+    if (transmitterMacAddress == transmitterMacAddress)
     {
       goto LABEL_33;
     }
@@ -134,12 +134,12 @@ LABEL_22:
     goto LABEL_21;
   }
 
-  v31 = v4;
-  v22 = [v6 bssid];
-  if (v22)
+  v31 = receiverMacAddress2;
+  bssid2 = [filterCopy bssid];
+  if (bssid2)
   {
     v23 = self->_bssid;
-    v30 = [v6 bssid];
+    bssid3 = [filterCopy bssid];
     if (([(NSString *)v23 isEqual:?]& 1) == 0)
     {
       v11 = 0;
@@ -147,17 +147,17 @@ LABEL_22:
     }
 
     v24 = self->_numReports;
-    if (v24 == [v6 numReports])
+    if (v24 == [filterCopy numReports])
     {
       v25 = self->_frameType;
-      v11 = v25 == [v6 frameType];
+      v11 = v25 == [filterCopy frameType];
 LABEL_26:
 
-      if (transmitterMacAddress == v13)
+      if (transmitterMacAddress == transmitterMacAddress)
       {
 
-        v4 = v31;
-        if (receiverMacAddress == v8)
+        receiverMacAddress2 = v31;
+        if (receiverMacAddress == receiverMacAddress)
         {
           goto LABEL_36;
         }
@@ -165,15 +165,15 @@ LABEL_26:
         goto LABEL_35;
       }
 
-      v4 = v31;
+      receiverMacAddress2 = v31;
       goto LABEL_33;
     }
   }
 
   v11 = 0;
-  v4 = v31;
+  receiverMacAddress2 = v31;
   v28 = v33;
-  if (transmitterMacAddress != v13)
+  if (transmitterMacAddress != transmitterMacAddress)
   {
 LABEL_32:
   }
@@ -181,7 +181,7 @@ LABEL_32:
 LABEL_33:
 
 LABEL_34:
-  if (receiverMacAddress != v8)
+  if (receiverMacAddress != receiverMacAddress)
   {
     goto LABEL_35;
   }
@@ -191,18 +191,18 @@ LABEL_36:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNearbyDeviceDiscoveryFilter *)self isEqualToNDDFilter:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFNearbyDeviceDiscoveryFilter *)self isEqualToNDDFilter:v5];
   }
 
   return v6;
@@ -221,7 +221,7 @@ LABEL_36:
   return v7 ^ v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFNearbyDeviceDiscoveryFilter allocWithZone:?]];
   [(CWFNearbyDeviceDiscoveryFilter *)v4 setReceiverMacAddress:self->_receiverMacAddress];
@@ -232,42 +232,42 @@ LABEL_36:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   receiverMacAddress = self->_receiverMacAddress;
-  v5 = a3;
-  [v5 encodeObject:receiverMacAddress forKey:@"_receiverMacAddress"];
-  [v5 encodeObject:self->_transmitterMacAddress forKey:@"_transmitterMacAddress"];
-  [v5 encodeObject:self->_bssid forKey:@"_bssid"];
-  [v5 encodeInteger:self->_numReports forKey:@"_numReports"];
-  [v5 encodeInteger:self->_frameType forKey:@"_frameType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:receiverMacAddress forKey:@"_receiverMacAddress"];
+  [coderCopy encodeObject:self->_transmitterMacAddress forKey:@"_transmitterMacAddress"];
+  [coderCopy encodeObject:self->_bssid forKey:@"_bssid"];
+  [coderCopy encodeInteger:self->_numReports forKey:@"_numReports"];
+  [coderCopy encodeInteger:self->_frameType forKey:@"_frameType"];
 }
 
-- (CWFNearbyDeviceDiscoveryFilter)initWithCoder:(id)a3
+- (CWFNearbyDeviceDiscoveryFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CWFNearbyDeviceDiscoveryFilter;
   v5 = [(CWFNearbyDeviceDiscoveryFilter *)&v16 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"_receiverMacAddress"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"_receiverMacAddress"];
     receiverMacAddress = v5->_receiverMacAddress;
     v5->_receiverMacAddress = v7;
 
     v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_transmitterMacAddress"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_transmitterMacAddress"];
     transmitterMacAddress = v5->_transmitterMacAddress;
     v5->_transmitterMacAddress = v10;
 
     v12 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"_bssid"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"_bssid"];
     bssid = v5->_bssid;
     v5->_bssid = v13;
 
-    v5->_numReports = [v4 decodeIntegerForKey:@"_numReports"];
-    v5->_frameType = [v4 decodeIntegerForKey:@"_frameType"];
+    v5->_numReports = [coderCopy decodeIntegerForKey:@"_numReports"];
+    v5->_frameType = [coderCopy decodeIntegerForKey:@"_frameType"];
   }
 
   return v5;

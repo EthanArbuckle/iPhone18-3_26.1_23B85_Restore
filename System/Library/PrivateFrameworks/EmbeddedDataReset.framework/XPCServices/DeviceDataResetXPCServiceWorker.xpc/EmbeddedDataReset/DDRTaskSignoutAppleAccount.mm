@@ -8,14 +8,14 @@
 {
   v2 = dispatch_semaphore_create(0);
   v3 = [[AMSSignOutTask alloc] initWithAccounts:0];
-  v4 = [v3 performTask];
+  performTask = [v3 performTask];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002C20;
   v9[3] = &unk_1000145D8;
   v5 = v2;
   v10 = v5;
-  [v4 addFinishBlock:v9];
+  [performTask addFinishBlock:v9];
   v6 = dispatch_time(0, 60000000000);
   if (dispatch_semaphore_wait(v5, v6))
   {

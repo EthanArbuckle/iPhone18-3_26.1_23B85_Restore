@@ -14,9 +14,9 @@
 {
   v11.receiver = self;
   v11.super_class = PHDoubleLineTableViewCell;
-  v3 = [(PHTableViewCell *)&v11 loadRootViewAndContentViews];
-  v4 = [(PHDoubleLineTableViewCell *)self traitCollection];
-  if ([v4 preferredContentSizeCategoryAllowsMultilineTitleForDoubleLineCells])
+  loadRootViewAndContentViews = [(PHTableViewCell *)&v11 loadRootViewAndContentViews];
+  traitCollection = [(PHDoubleLineTableViewCell *)self traitCollection];
+  if ([traitCollection preferredContentSizeCategoryAllowsMultilineTitleForDoubleLineCells])
   {
     v5 = 0;
   }
@@ -26,17 +26,17 @@
     v5 = 2;
   }
 
-  v6 = [(PHTableViewCell *)self titleLabel];
-  [v6 setNumberOfLines:v5];
+  titleLabel = [(PHTableViewCell *)self titleLabel];
+  [titleLabel setNumberOfLines:v5];
 
-  v7 = [(PHTableViewCell *)self subtitleLabel];
-  [v7 setNumberOfLines:2];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel setNumberOfLines:2];
 
-  v8 = [(PHDoubleLineTableViewCell *)self subtitleLabelTextColor];
-  v9 = [(PHTableViewCell *)self subtitleLabel];
-  [v9 setTextColor:v8];
+  subtitleLabelTextColor = [(PHDoubleLineTableViewCell *)self subtitleLabelTextColor];
+  subtitleLabel2 = [(PHTableViewCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:subtitleLabelTextColor];
 
-  return v3;
+  return loadRootViewAndContentViews;
 }
 
 - (NSDirectionalEdgeInsets)rootViewLayoutMargins
@@ -49,9 +49,9 @@
   v7 = v6;
   v9 = v8;
   v10 = +[UITraitCollection _currentTraitCollection];
-  v11 = [v10 isPreferredContentSizeCategoryAccessible];
+  isPreferredContentSizeCategoryAccessible = [v10 isPreferredContentSizeCategoryAccessible];
 
-  if (v11)
+  if (isPreferredContentSizeCategoryAccessible)
   {
     v12 = v9;
   }
@@ -74,8 +74,8 @@
 - (double)subtitleLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUISubheadlineShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -95,8 +95,8 @@
 - (double)subtitleLabelLastBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIBodyShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -116,8 +116,8 @@
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIBodyShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -144,31 +144,31 @@
 
 - (void)_updateTextColor
 {
-  v3 = [(PHTableViewCell *)self subtitleLabel];
-  v4 = [v3 attributedText];
+  subtitleLabel = [(PHTableViewCell *)self subtitleLabel];
+  attributedText = [subtitleLabel attributedText];
 
-  if (v4)
+  if (attributedText)
   {
-    v5 = [[NSMutableAttributedString alloc] initWithAttributedString:v4];
+    v5 = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
     v6 = [v5 length];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000250F0;
     v14 = &unk_1000B2308;
-    v15 = self;
+    selfCopy = self;
     v16 = v5;
-    v7 = v5;
-    [v7 enumerateAttribute:NSForegroundColorAttributeName inRange:0 options:v6 usingBlock:{0, &v11}];
+    subtitleLabelTextColor = v5;
+    [subtitleLabelTextColor enumerateAttribute:NSForegroundColorAttributeName inRange:0 options:v6 usingBlock:{0, &v11}];
     v8 = [(PHTableViewCell *)self subtitleLabel:v11];
-    [v8 setAttributedText:v7];
+    [v8 setAttributedText:subtitleLabelTextColor];
   }
 
   else
   {
-    v7 = [(PHDoubleLineTableViewCell *)self subtitleLabelTextColor];
-    v9 = [(PHDoubleLineTableViewCell *)self _accessibilityHigherContrastTintColorForColor:v7];
-    v10 = [(PHTableViewCell *)self subtitleLabel];
-    [v10 setTextColor:v9];
+    subtitleLabelTextColor = [(PHDoubleLineTableViewCell *)self subtitleLabelTextColor];
+    v9 = [(PHDoubleLineTableViewCell *)self _accessibilityHigherContrastTintColorForColor:subtitleLabelTextColor];
+    subtitleLabel2 = [(PHTableViewCell *)self subtitleLabel];
+    [subtitleLabel2 setTextColor:v9];
   }
 }
 

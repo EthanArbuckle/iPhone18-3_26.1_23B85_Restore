@@ -17,19 +17,19 @@
 + (BOOL)isWatchApp;
 + (BOOL)isWatchWidget;
 + (HFExecutionEnvironment)sharedInstance;
-+ (id)stringForHFExecutionEnvironmentRunningState:(unint64_t)a3;
++ (id)stringForHFExecutionEnvironmentRunningState:(unint64_t)state;
 + (void)_disablePreferencesCloudBackup;
 - (HFExecutionEnvironment)init;
 - (int64_t)hostProcess;
 - (void)_recordMetricsForAppRunningState;
-- (void)addObserver:(id)a3;
-- (void)dispatchMessageToObserversWithBlock:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)dispatchMessageToObserversWithBlock:(id)block;
 - (void)executionEnvironmentDidBecomeActive;
 - (void)executionEnvironmentDidEnterBackground;
 - (void)executionEnvironmentWillEnterForeground;
 - (void)executionEnvironmentWillResignActive;
-- (void)removeObserver:(id)a3;
-- (void)setRunningState:(unint64_t)a3;
+- (void)removeObserver:(id)observer;
+- (void)setRunningState:(unint64_t)state;
 @end
 
 @implementation HFExecutionEnvironment
@@ -63,9 +63,9 @@ void __40__HFExecutionEnvironment_sharedInstance__block_invoke()
   {
     v2->_runningState = 0;
     v2->_macScreenIsLocked = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v3->_observers;
-    v3->_observers = v4;
+    v3->_observers = weakObjectsHashTable;
 
     if (![(HFExecutionEnvironment *)v3 hostProcess])
     {
@@ -151,7 +151,7 @@ void __40__HFExecutionEnvironment_sharedInstance__block_invoke()
 
 + (BOOL)isShortcuts
 {
-  if ([a1 isMacShortcuts])
+  if ([self isMacShortcuts])
   {
     return 1;
   }
@@ -204,75 +204,75 @@ void __40__HFExecutionEnvironment_sharedInstance__block_invoke()
 
 + (BOOL)isHomeRelatedProcess
 {
-  if ([a1 isHomeApp] & 1) != 0 || (objc_msgSend(a1, "isWatchApp") & 1) != 0 || (objc_msgSend(a1, "isWatchWidget") & 1) != 0 || (objc_msgSend(a1, "isHomeUIService") & 1) != 0 || (objc_msgSend(a1, "isHomeControlService") & 1) != 0 || (objc_msgSend(a1, "isHomeNotification") & 1) != 0 || (objc_msgSend(a1, "isHomeWidget") & 1) != 0 || (objc_msgSend(a1, "isHomeEnergyWidget"))
+  if ([self isHomeApp] & 1) != 0 || (objc_msgSend(self, "isWatchApp") & 1) != 0 || (objc_msgSend(self, "isWatchWidget") & 1) != 0 || (objc_msgSend(self, "isHomeUIService") & 1) != 0 || (objc_msgSend(self, "isHomeControlService") & 1) != 0 || (objc_msgSend(self, "isHomeNotification") & 1) != 0 || (objc_msgSend(self, "isHomeWidget") & 1) != 0 || (objc_msgSend(self, "isHomeEnergyWidget"))
   {
     return 1;
   }
 
-  return [a1 isHomeWidgetInteractive];
+  return [self isHomeWidgetInteractive];
 }
 
 + (BOOL)isHomeWidgetRelatedProcess
 {
-  if ([a1 isHomeWidget] & 1) != 0 || (objc_msgSend(a1, "isHomeEnergyWidget") & 1) != 0 || (objc_msgSend(a1, "isHomeWidgetInteractive"))
+  if ([self isHomeWidget] & 1) != 0 || (objc_msgSend(self, "isHomeEnergyWidget") & 1) != 0 || (objc_msgSend(self, "isHomeWidgetInteractive"))
   {
     return 1;
   }
 
-  return [a1 isWatchWidget];
+  return [self isWatchWidget];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFExecutionEnvironment *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(HFExecutionEnvironment *)self observers];
+  [observers addObject:observerCopy];
 
   v6 = HFLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = observerCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Added execution env observer: %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFExecutionEnvironment *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(HFExecutionEnvironment *)self observers];
+  [observers removeObject:observerCopy];
 
   v6 = HFLogForCategory(8uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = observerCopy;
     _os_log_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_DEFAULT, "Removed execution env observer: %@", &v8, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRunningState:(unint64_t)a3
+- (void)setRunningState:(unint64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_runningState != a3)
+  if (self->_runningState != state)
   {
     v7 = HFLogForCategory(8uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [HFExecutionEnvironment stringForHFExecutionEnvironmentRunningState:a3];
+      v8 = [HFExecutionEnvironment stringForHFExecutionEnvironmentRunningState:state];
       *buf = 138412290;
       v12 = v8;
       _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Running state is now '%@'", buf, 0xCu);
     }
 
-    self->_runningState = a3;
+    self->_runningState = state;
     [(HFExecutionEnvironment *)self _recordMetricsForAppRunningState];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -283,7 +283,7 @@ void __40__HFExecutionEnvironment_sharedInstance__block_invoke()
     goto LABEL_10;
   }
 
-  if (a3 || ([(HFExecutionEnvironment *)self appForegroundStartTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (state || ([(HFExecutionEnvironment *)self appForegroundStartTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
 LABEL_10:
     v9 = *MEMORY[0x277D85DE8];
@@ -556,62 +556,62 @@ void __64__HFExecutionEnvironment_executionEnvironmentDidEnterBackground__block_
 - (void)_recordMetricsForAppRunningState
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HFExecutionEnvironment *)self runningState];
-  if (v3 == 1)
+  runningState = [(HFExecutionEnvironment *)self runningState];
+  if (runningState == 1)
   {
-    v7 = [(HFExecutionEnvironment *)self appForegroundStartTime];
+    appForegroundStartTime = [(HFExecutionEnvironment *)self appForegroundStartTime];
 
-    if (!v7)
+    if (!appForegroundStartTime)
     {
-      v6 = HFLogForCategory(6uLL);
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      date2 = HFLogForCategory(6uLL);
+      if (os_log_type_enabled(date2, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "Expected appForegroundStartTime to be non-nil when entering background so we could record total foreground time. No metrics will be recorded.", buf, 2u);
+        _os_log_error_impl(&dword_20D9BF000, date2, OS_LOG_TYPE_ERROR, "Expected appForegroundStartTime to be non-nil when entering background so we could record total foreground time. No metrics will be recorded.", buf, 2u);
       }
 
       goto LABEL_13;
     }
 
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [(HFExecutionEnvironment *)self appForegroundStartTime];
-    [v8 timeIntervalSinceDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    appForegroundStartTime2 = [(HFExecutionEnvironment *)self appForegroundStartTime];
+    [date timeIntervalSinceDate:appForegroundStartTime2];
     v11 = v10;
 
     [(HFExecutionEnvironment *)self setAppForegroundStartTime:0];
     if (v11 > 1.0)
     {
-      v6 = +[HFHomeKitDispatcher sharedDispatcher];
-      v12 = [v6 allHomesFuture];
+      date2 = +[HFHomeKitDispatcher sharedDispatcher];
+      allHomesFuture = [date2 allHomesFuture];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __58__HFExecutionEnvironment__recordMetricsForAppRunningState__block_invoke;
       v16[3] = &__block_descriptor_40_e29_v24__0__NSArray_8__NSError_16l;
       *&v16[4] = v11;
-      v13 = [v12 addCompletionBlock:v16];
+      v13 = [allHomesFuture addCompletionBlock:v16];
 
 LABEL_13:
     }
   }
 
-  else if (!v3)
+  else if (!runningState)
   {
-    v4 = [(HFExecutionEnvironment *)self appForegroundStartTime];
+    appForegroundStartTime3 = [(HFExecutionEnvironment *)self appForegroundStartTime];
 
-    if (v4)
+    if (appForegroundStartTime3)
     {
       v5 = HFLogForCategory(6uLL);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v15 = [(HFExecutionEnvironment *)self appForegroundStartTime];
+        appForegroundStartTime4 = [(HFExecutionEnvironment *)self appForegroundStartTime];
         *buf = 138412290;
-        v18 = v15;
+        v18 = appForegroundStartTime4;
         _os_log_error_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_ERROR, "Expected appForegroundStartTime to be nil when entering foreground but found value: %@", buf, 0xCu);
       }
     }
 
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [(HFExecutionEnvironment *)self setAppForegroundStartTime:v6];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [(HFExecutionEnvironment *)self setAppForegroundStartTime:date2];
     goto LABEL_13;
   }
 
@@ -673,15 +673,15 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)stringForHFExecutionEnvironmentRunningState:(unint64_t)a3
++ (id)stringForHFExecutionEnvironmentRunningState:(unint64_t)state
 {
   v3 = @"inactive";
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"background";
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -692,18 +692,18 @@ LABEL_11:
   }
 }
 
-- (void)dispatchMessageToObserversWithBlock:(id)a3
+- (void)dispatchMessageToObserversWithBlock:(id)block
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(HFExecutionEnvironment *)self observers];
-  v6 = [v5 allObjects];
+  observers = [(HFExecutionEnvironment *)self observers];
+  allObjects = [observers allObjects];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -716,7 +716,7 @@ LABEL_11:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
@@ -724,7 +724,7 @@ LABEL_11:
         v15[1] = 3221225472;
         v15[2] = __62__HFExecutionEnvironment_dispatchMessageToObserversWithBlock___block_invoke;
         v15[3] = &unk_277DF2AD8;
-        v13 = v4;
+        v13 = blockCopy;
         v15[4] = v12;
         v16 = v13;
         dispatch_async(v10, v15);
@@ -733,7 +733,7 @@ LABEL_11:
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allObjects countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -745,8 +745,8 @@ LABEL_11:
 + (void)_disablePreferencesCloudBackup
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"com.apple.Home.group"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"com.apple.Home.group"];
 
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Library/Preferences/%@.plist", @"com.apple.Home.group"];
   v5 = [v3 URLByAppendingPathComponent:v4];

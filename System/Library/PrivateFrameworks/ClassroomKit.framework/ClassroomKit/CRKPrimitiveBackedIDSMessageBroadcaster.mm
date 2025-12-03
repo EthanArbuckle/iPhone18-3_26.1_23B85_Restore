@@ -1,41 +1,41 @@
 @interface CRKPrimitiveBackedIDSMessageBroadcaster
-+ (id)broadcasterWithIDSPrimitives:(id)a3;
-- (CRKPrimitiveBackedIDSMessageBroadcaster)initWithIDSPrimitives:(id)a3;
-- (void)addBroadcastHandler:(id)a3;
-- (void)beginListeningForMessagesWithCompletion:(id)a3;
-- (void)broadcastMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5;
++ (id)broadcasterWithIDSPrimitives:(id)primitives;
+- (CRKPrimitiveBackedIDSMessageBroadcaster)initWithIDSPrimitives:(id)primitives;
+- (void)addBroadcastHandler:(id)handler;
+- (void)beginListeningForMessagesWithCompletion:(id)completion;
+- (void)broadcastMessage:(id)message senderAppleID:(id)d senderAddress:(id)address;
 @end
 
 @implementation CRKPrimitiveBackedIDSMessageBroadcaster
 
-- (CRKPrimitiveBackedIDSMessageBroadcaster)initWithIDSPrimitives:(id)a3
+- (CRKPrimitiveBackedIDSMessageBroadcaster)initWithIDSPrimitives:(id)primitives
 {
-  v5 = a3;
+  primitivesCopy = primitives;
   v11.receiver = self;
   v11.super_class = CRKPrimitiveBackedIDSMessageBroadcaster;
   v6 = [(CRKPrimitiveBackedIDSMessageBroadcaster *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_IDSPrimitives, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_IDSPrimitives, primitives);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     broadcastHandlers = v7->_broadcastHandlers;
-    v7->_broadcastHandlers = v8;
+    v7->_broadcastHandlers = weakObjectsHashTable;
   }
 
   return v7;
 }
 
-+ (id)broadcasterWithIDSPrimitives:(id)a3
++ (id)broadcasterWithIDSPrimitives:(id)primitives
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIDSPrimitives:v4];
+  primitivesCopy = primitives;
+  v5 = [[self alloc] initWithIDSPrimitives:primitivesCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CRKPrimitiveBackedIDSMessageBroadcaster_broadcasterWithIDSPrimitives___block_invoke;
   v7[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v7[4] = a1;
+  v7[4] = self;
   [v5 beginListeningForMessagesWithCompletion:v7];
 
   return v5;
@@ -54,10 +54,10 @@ void __72__CRKPrimitiveBackedIDSMessageBroadcaster_broadcasterWithIDSPrimitives_
   }
 }
 
-- (void)addBroadcastHandler:(id)a3
+- (void)addBroadcastHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _CRKLogASM_15();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -66,21 +66,21 @@ void __72__CRKPrimitiveBackedIDSMessageBroadcaster_broadcasterWithIDSPrimitives_
     v9 = 138543874;
     v10 = v7;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = handlerCopy;
     _os_log_impl(&dword_243550000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Adding broadcast handler (%{public}@)", &v9, 0x20u);
   }
 
-  v8 = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self broadcastHandlers];
-  [v8 addObject:v4];
+  broadcastHandlers = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self broadcastHandlers];
+  [broadcastHandlers addObject:handlerCopy];
 }
 
-- (void)beginListeningForMessagesWithCompletion:(id)a3
+- (void)beginListeningForMessagesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self IDSPrimitives];
+  iDSPrimitives = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self IDSPrimitives];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWithCompletion___block_invoke;
@@ -91,9 +91,9 @@ void __72__CRKPrimitiveBackedIDSMessageBroadcaster_broadcasterWithIDSPrimitives_
   v7[2] = __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWithCompletion___block_invoke_2;
   v7[3] = &unk_278DC2B68;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 subscribeToMessagesWithHandler:v10 completion:v7];
+  [iDSPrimitives subscribeToMessagesWithHandler:v10 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -157,12 +157,12 @@ void __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWith
   }
 }
 
-- (void)broadcastMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5
+- (void)broadcastMessage:(id)message senderAppleID:(id)d senderAddress:(id)address
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  addressCopy = address;
   v11 = _CRKLogASM_15();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -171,11 +171,11 @@ void __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWith
     *buf = 138544130;
     v25 = v13;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 2114;
-    v29 = v8;
+    v29 = messageCopy;
     v30 = 2114;
-    v31 = v9;
+    v31 = dCopy;
     _os_log_impl(&dword_243550000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ - %p: Broadcasting IDS message. message=%{public}@, sender=%{public}@", buf, 0x2Au);
   }
 
@@ -183,8 +183,8 @@ void __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWith
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v14 = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self broadcastHandlers];
-  v15 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  broadcastHandlers = [(CRKPrimitiveBackedIDSMessageBroadcaster *)self broadcastHandlers];
+  v15 = [broadcastHandlers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v15)
   {
     v16 = v15;
@@ -196,14 +196,14 @@ void __83__CRKPrimitiveBackedIDSMessageBroadcaster_beginListeningForMessagesWith
       {
         if (*v20 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(broadcastHandlers);
         }
 
-        [*(*(&v19 + 1) + 8 * v18++) processMessage:v8 senderAppleID:v9 senderAddress:v10];
+        [*(*(&v19 + 1) + 8 * v18++) processMessage:messageCopy senderAppleID:dCopy senderAddress:addressCopy];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v16 = [broadcastHandlers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v16);

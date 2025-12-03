@@ -2,35 +2,35 @@
 + (CPAudioRoutePolicyManager)sharedInstance;
 - (BOOL)sharePlaySupported;
 - (TURoute)pickedRoute;
-- (void)addObserver:(id)a3 withQueue:(id)a4;
-- (void)routesChangedForRouteController:(id)a3;
-- (void)setPickedRoute:(id)a3;
+- (void)addObserver:(id)observer withQueue:(id)queue;
+- (void)routesChangedForRouteController:(id)controller;
+- (void)setPickedRoute:(id)route;
 - (void)switchToSpeakerRouteIfNecessary;
 @end
 
 @implementation CPAudioRoutePolicyManager
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 pickedRoute];
-  (*((*MEMORY[0x1E69E7D40] & v6->super.isa) + 0x88))(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  pickedRoute = [controllerCopy pickedRoute];
+  (*((*MEMORY[0x1E69E7D40] & selfCopy->super.isa) + 0x88))(pickedRoute);
 }
 
 - (BOOL)sharePlaySupported
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x80);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
   if (v4)
   {
     v5 = v4;
     if ([v4 supportsSharePlay])
     {
-      v6 = [v5 isCarKitRoute];
+      isCarKitRoute = [v5 isCarKitRoute];
 
-      return v6 ^ 1;
+      return isCarKitRoute ^ 1;
     }
 
     else
@@ -62,7 +62,7 @@
 - (TURoute)pickedRoute
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CPAudioRoutePolicyManager__pickedRoute);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 24));
   v4 = *(v2 + 16);
   os_unfair_lock_unlock((v2 + 24));
@@ -70,27 +70,27 @@
   return v4;
 }
 
-- (void)setPickedRoute:(id)a3
+- (void)setPickedRoute:(id)route
 {
-  v5 = a3;
-  v6 = self;
-  CPAudioRoutePolicyManager.pickedRoute.setter(a3);
+  routeCopy = route;
+  selfCopy = self;
+  CPAudioRoutePolicyManager.pickedRoute.setter(route);
 }
 
 - (void)switchToSpeakerRouteIfNecessary
 {
-  v2 = self;
+  selfCopy = self;
   CPAudioRoutePolicyManager.switchToSpeakerRouteIfNecessary()();
 }
 
-- (void)addObserver:(id)a3 withQueue:(id)a4
+- (void)addObserver:(id)observer withQueue:(id)queue
 {
   v7 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x68);
   swift_unknownObjectRetain();
-  v8 = a4;
-  v10 = self;
+  queueCopy = queue;
+  selfCopy = self;
   v9 = v7();
-  (*(*v9 + 160))(a3, v8);
+  (*(*v9 + 160))(observer, queueCopy);
 
   swift_unknownObjectRelease();
 }

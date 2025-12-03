@@ -1,20 +1,20 @@
 @interface MAAutoAssetError
-+ (id)buildError:(int64_t)a3 fromOperation:(id)a4 underlyingError:(id)a5 withDescription:(id)a6;
-+ (id)stringForCode:(int64_t)a3;
-+ (id)summaryForCode:(int64_t)a3 fromOperation:(id)a4;
++ (id)buildError:(int64_t)error fromOperation:(id)operation underlyingError:(id)underlyingError withDescription:(id)description;
++ (id)stringForCode:(int64_t)code;
++ (id)summaryForCode:(int64_t)code fromOperation:(id)operation;
 + (void)mapAutoAssetErrorIndications;
 @end
 
 @implementation MAAutoAssetError
 
-+ (id)stringForCode:(int64_t)a3
++ (id)stringForCode:(int64_t)code
 {
   result = @"MAAutoAssetError";
-  if (a3 > 6500)
+  if (code > 6500)
   {
-    if (a3 <= 6700)
+    if (code <= 6700)
     {
-      switch(a3)
+      switch(code)
       {
         case 6501:
           result = @"NotCurrentlyLocked";
@@ -169,12 +169,12 @@
 
     v4 = 6702;
     v15 = @"NotImplemented";
-    if (a3 != 6801)
+    if (code != 6801)
     {
       v15 = @"MAAutoAssetError";
     }
 
-    if (a3 == 6703)
+    if (code == 6703)
     {
       v6 = @"BlockedSuspendedForSoftwareUpdate";
     }
@@ -185,25 +185,25 @@
     }
 
     v7 = @"BlockedNoNetwork";
-    v8 = a3 == 6702;
+    v8 = code == 6702;
     v9 = @"BlockedRecentUserActivity";
     v10 = 6701;
     goto LABEL_36;
   }
 
-  if (a3 > 6200)
+  if (code > 6200)
   {
-    if (a3 <= 6206)
+    if (code <= 6206)
     {
       v4 = 6203;
       v6 = @"CheckInitiatedNoWait";
       v11 = @"CheckNoWaitNoDownloadedAsset";
-      if (a3 != 6206)
+      if (code != 6206)
       {
         v11 = @"MAAutoAssetError";
       }
 
-      if (a3 == 6205)
+      if (code == 6205)
       {
         v12 = @"SameVersionFound";
       }
@@ -213,24 +213,24 @@
         v12 = v11;
       }
 
-      if (a3 != 6204)
+      if (code != 6204)
       {
         v6 = v12;
       }
 
       v13 = @"NewerVersionRevoked";
       v14 = @"AvailableVersionRevoked";
-      if (a3 != 6203)
+      if (code != 6203)
       {
         v14 = @"MAAutoAssetError";
       }
 
-      if (a3 != 6202)
+      if (code != 6202)
       {
         v13 = v14;
       }
 
-      if (a3 == 6201)
+      if (code == 6201)
       {
         v7 = @"NoVersionFound";
       }
@@ -243,16 +243,16 @@
       goto LABEL_40;
     }
 
-    if (a3 > 6209)
+    if (code > 6209)
     {
       v4 = 6300;
       v5 = @"DownloadPostponed";
-      if (a3 != 6401)
+      if (code != 6401)
       {
         v5 = @"MAAutoAssetError";
       }
 
-      if (a3 == 6301)
+      if (code == 6301)
       {
         v6 = @"NotAwareOfAsset";
       }
@@ -263,7 +263,7 @@
       }
 
       v7 = @"SomeContentNotAvailable";
-      v8 = a3 == 6251;
+      v8 = code == 6251;
       v9 = @"CheckNoWaitNoDownloadedInstance";
       v10 = 6210;
 LABEL_36:
@@ -272,13 +272,13 @@ LABEL_36:
         v9 = @"MAAutoAssetError";
       }
 
-      if (a3 != v10)
+      if (code != v10)
       {
         v7 = v9;
       }
 
 LABEL_40:
-      if (a3 <= v4)
+      if (code <= v4)
       {
         return v7;
       }
@@ -289,7 +289,7 @@ LABEL_40:
       }
     }
 
-    if (a3 == 6209)
+    if (code == 6209)
     {
       v16 = @"NotEnoughSpaceForSetDownload";
     }
@@ -299,7 +299,7 @@ LABEL_40:
       v16 = @"MAAutoAssetError";
     }
 
-    if (a3 == 6208)
+    if (code == 6208)
     {
       v17 = @"CheckTimeoutNoDownloadedAsset";
     }
@@ -309,7 +309,7 @@ LABEL_40:
       v17 = v16;
     }
 
-    if (a3 == 6207)
+    if (code == 6207)
     {
       return @"CheckAttemptedNoDownloadedAsset";
     }
@@ -322,7 +322,7 @@ LABEL_40:
 
   else
   {
-    switch(a3)
+    switch(code)
     {
       case 6101:
         result = @"ResourceUnavailable";
@@ -373,7 +373,7 @@ LABEL_40:
         result = @"CorruptedAtomicEntries";
         break;
       default:
-        if (!a3)
+        if (!code)
         {
           result = @"SUCCESS";
         }
@@ -385,13 +385,13 @@ LABEL_40:
   return result;
 }
 
-+ (id)summaryForCode:(int64_t)a3 fromOperation:(id)a4
++ (id)summaryForCode:(int64_t)code fromOperation:(id)operation
 {
-  v5 = a4;
-  v6 = [MAAutoAssetError stringForCode:a3];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@(%lld)", v5, v6, a3];
+  operationCopy = operation;
+  v6 = [MAAutoAssetError stringForCode:code];
+  code = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@:%@(%lld)", operationCopy, v6, code];
 
-  return v7;
+  return code;
 }
 
 + (void)mapAutoAssetErrorIndications
@@ -733,37 +733,37 @@ void __48__MAAutoAssetError_mapAutoAssetErrorIndications__block_invoke()
   [v162 attributesOfErrorForDomain:@"com.apple.MobileAssetError.AutoAsset" withCode:6801 codeName:v163];
 }
 
-+ (id)buildError:(int64_t)a3 fromOperation:(id)a4 underlyingError:(id)a5 withDescription:(id)a6
++ (id)buildError:(int64_t)error fromOperation:(id)operation underlyingError:(id)underlyingError withDescription:(id)description
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  underlyingErrorCopy = underlyingError;
+  descriptionCopy = description;
+  operationCopy = operation;
   v12 = objc_opt_new();
-  v13 = [MAAutoAssetError summaryForCode:a3 fromOperation:v11];
+  v13 = [MAAutoAssetError summaryForCode:error fromOperation:operationCopy];
 
   v14 = objc_alloc(MEMORY[0x1E696AEC0]);
-  if (v10)
+  if (descriptionCopy)
   {
-    v15 = [v14 initWithFormat:@"[%@] %@", v13, v10];
+    descriptionCopy = [v14 initWithFormat:@"[%@] %@", v13, descriptionCopy];
   }
 
   else
   {
-    v15 = [v14 initWithFormat:@"[%@]", v13, v19];
+    descriptionCopy = [v14 initWithFormat:@"[%@]", v13, v19];
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = descriptionCopy;
+  if (descriptionCopy)
   {
-    [v12 setObject:v15 forKey:*MEMORY[0x1E696A578]];
+    [v12 setObject:descriptionCopy forKey:*MEMORY[0x1E696A578]];
   }
 
-  if (v9)
+  if (underlyingErrorCopy)
   {
-    [v12 setObject:v9 forKey:*MEMORY[0x1E696AA08]];
+    [v12 setObject:underlyingErrorCopy forKey:*MEMORY[0x1E696AA08]];
   }
 
-  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.MobileAssetError.AutoAsset" code:a3 userInfo:v12];
+  v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.MobileAssetError.AutoAsset" code:error userInfo:v12];
 
   return v17;
 }

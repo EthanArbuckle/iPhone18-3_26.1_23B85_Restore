@@ -1,11 +1,11 @@
 @interface SFEditableEffect
-+ (id)platterBackgroundWithReflectionCaptureGroupName:(id)a3;
++ (id)platterBackgroundWithReflectionCaptureGroupName:(id)name;
 + (id)variableBlurToolbarBackground;
-- (BOOL)applyToViews:(id)a3;
+- (BOOL)applyToViews:(id)views;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SFEditableEffect)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -26,7 +26,7 @@
   return (*(&self->super.isa + v3))[2] == 0;
 }
 
-+ (id)platterBackgroundWithReflectionCaptureGroupName:(id)a3
++ (id)platterBackgroundWithReflectionCaptureGroupName:(id)name
 {
   v3 = sub_18BC20BD8();
   v5 = v4;
@@ -44,12 +44,12 @@
   return v2;
 }
 
-- (BOOL)applyToViews:(id)a3
+- (BOOL)applyToViews:(id)views
 {
   sub_18B7B0AC0(0, &qword_1EA9D46F0);
   v4 = sub_18BC20D98();
   swift_beginAccess();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_18BC1E3F8();
   v7 = sub_18B98CBE8(v6, v4);
 
@@ -62,15 +62,15 @@
   return v7 & 1;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   swift_getObjectType();
   v4 = objc_allocWithZone(swift_getObjCClassFromMetadata());
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
   v7 = OBJC_IVAR___SFEditableEffect_layers;
   swift_beginAccess();
-  v8 = *(&v5->super.isa + v7);
+  v8 = *(&selfCopy->super.isa + v7);
   sub_18BC1E3F8();
 
   v9 = OBJC_IVAR___SFEditableEffect_layers;
@@ -82,11 +82,11 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18BC218B8();
     swift_unknownObjectRelease();
@@ -95,7 +95,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = SFEditableEffect.isEqual(_:)(v8);
@@ -109,7 +109,7 @@
   swift_beginAccess();
   _s5LayerVMa();
   sub_18B98EF50(&qword_1EA9D3D88, _s5LayerVMa);
-  v3 = self;
+  selfCopy = self;
   sub_18BC1E3F8();
   v4 = sub_18BC20E88();
 

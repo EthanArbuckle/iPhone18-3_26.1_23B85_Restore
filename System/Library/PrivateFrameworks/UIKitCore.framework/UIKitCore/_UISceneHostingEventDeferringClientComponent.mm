@@ -1,91 +1,91 @@
 @interface _UISceneHostingEventDeferringClientComponent
 - (BOOL)requestEventDeferralForAllFirstResponderChanges;
 - (void)beginObservingNotifications;
-- (void)firstResponderDidChange:(id)a3;
+- (void)firstResponderDidChange:(id)change;
 - (void)invalidate;
 - (void)requestKeyboardFocus;
-- (void)requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:(id)a3;
-- (void)setScene:(id)a3;
+- (void)requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:(id)focus;
+- (void)setScene:(id)scene;
 - (void)stopObservingNotifications;
-- (void)wantsKeyboardEvents:(id)a3;
+- (void)wantsKeyboardEvents:(id)events;
 @end
 
 @implementation _UISceneHostingEventDeferringClientComponent
 
-- (void)setScene:(id)a3
+- (void)setScene:(id)scene
 {
   v4.receiver = self;
   v4.super_class = _UISceneHostingEventDeferringClientComponent;
-  [(FBSSceneComponent *)&v4 setScene:a3];
+  [(FBSSceneComponent *)&v4 setScene:scene];
   [(_UISceneHostingEventDeferringClientComponent *)self beginObservingNotifications];
 }
 
 - (BOOL)requestEventDeferralForAllFirstResponderChanges
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  v4 = [v3 requestEventDeferralForAllFirstResponderChanges];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  requestEventDeferralForAllFirstResponderChanges = [settings requestEventDeferralForAllFirstResponderChanges];
 
-  return v4;
+  return requestEventDeferralForAllFirstResponderChanges;
 }
 
 - (void)requestKeyboardFocus
 {
   v5 = [[_UISceneHostingEventDeferringFocusRequestActionToHost alloc] initWithInfo:0 responder:0];
-  v3 = [(FBSSceneComponent *)self scene];
+  scene = [(FBSSceneComponent *)self scene];
   v4 = [MEMORY[0x1E695DFD8] setWithObject:v5];
-  [v3 sendPrivateActions:v4];
+  [scene sendPrivateActions:v4];
 }
 
 - (void)beginObservingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_wantsKeyboardEvents_ name:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0];
-  [v3 addObserver:self selector:sel_firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_wantsKeyboardEvents_ name:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0];
+  [defaultCenter addObserver:self selector:sel_firstResponderDidChange_ name:@"UIWindowFirstResponderDidChangeNotification" object:0];
 }
 
 - (void)stopObservingNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0];
-  [v3 removeObserver:self name:@"UIWindowFirstResponderDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIRemoteKeyboardsServiceWantsKeyboardFocusWithoutFirstResponderNotification" object:0];
+  [defaultCenter removeObserver:self name:@"UIWindowFirstResponderDidChangeNotification" object:0];
 }
 
-- (void)requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:(id)a3
+- (void)requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:(id)focus
 {
-  v12 = a3;
-  v4 = [v12 _windowHostingScene];
-  v5 = [v4 _FBSScene];
-  v6 = [v5 identityToken];
-  v7 = [(FBSSceneComponent *)self clientScene];
-  v8 = [v7 identityToken];
-  v9 = [v6 isEqual:v8];
+  focusCopy = focus;
+  _windowHostingScene = [focusCopy _windowHostingScene];
+  _FBSScene = [_windowHostingScene _FBSScene];
+  identityToken = [_FBSScene identityToken];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  identityToken2 = [clientScene identityToken];
+  v9 = [identityToken isEqual:identityToken2];
 
-  v10 = v12;
+  v10 = focusCopy;
   if (v9)
   {
-    v11 = [v12 firstResponder];
-    if (v11 && (-[_UISceneHostingEventDeferringClientComponent requestEventDeferralForAllFirstResponderChanges](self, "requestEventDeferralForAllFirstResponderChanges") || ([v11 _wantsTargetOfKeyboardEventDeferringEnvironment] & 1) != 0 || objc_msgSend(v11, "_isHostingRemoteContent")))
+    firstResponder = [focusCopy firstResponder];
+    if (firstResponder && (-[_UISceneHostingEventDeferringClientComponent requestEventDeferralForAllFirstResponderChanges](self, "requestEventDeferralForAllFirstResponderChanges") || ([firstResponder _wantsTargetOfKeyboardEventDeferringEnvironment] & 1) != 0 || objc_msgSend(firstResponder, "_isHostingRemoteContent")))
     {
       [(_UISceneHostingEventDeferringClientComponent *)self requestKeyboardFocus];
     }
 
-    v10 = v12;
+    v10 = focusCopy;
   }
 }
 
-- (void)wantsKeyboardEvents:(id)a3
+- (void)wantsKeyboardEvents:(id)events
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"_UIRemoteKeyboardsHostedWindowUserInfoKey"];
+  userInfo = [events userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"_UIRemoteKeyboardsHostedWindowUserInfoKey"];
 
   [(_UISceneHostingEventDeferringClientComponent *)self requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:v5];
 }
 
-- (void)firstResponderDidChange:(id)a3
+- (void)firstResponderDidChange:(id)change
 {
-  v4 = [a3 object];
-  [(_UISceneHostingEventDeferringClientComponent *)self requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:v4];
+  object = [change object];
+  [(_UISceneHostingEventDeferringClientComponent *)self requestKeyboardFocusFromHostIfWindowFirstResponderIsEligibleForKeyboardFocus:object];
 }
 
 - (void)invalidate

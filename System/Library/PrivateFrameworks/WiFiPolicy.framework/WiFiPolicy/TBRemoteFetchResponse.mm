@@ -1,38 +1,38 @@
 @interface TBRemoteFetchResponse
-+ (id)responseWithResults:(id)a3 tiles:(id)a4 error:(id)a5;
-- (TBRemoteFetchResponse)initWithResults:(id)a3 tiles:(id)a4 error:(id)a5;
++ (id)responseWithResults:(id)results tiles:(id)tiles error:(id)error;
+- (TBRemoteFetchResponse)initWithResults:(id)results tiles:(id)tiles error:(id)error;
 @end
 
 @implementation TBRemoteFetchResponse
 
-+ (id)responseWithResults:(id)a3 tiles:(id)a4 error:(id)a5
++ (id)responseWithResults:(id)results tiles:(id)tiles error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[TBRemoteFetchResponse alloc] initWithResults:v9 tiles:v8 error:v7];
+  errorCopy = error;
+  tilesCopy = tiles;
+  resultsCopy = results;
+  v10 = [[TBRemoteFetchResponse alloc] initWithResults:resultsCopy tiles:tilesCopy error:errorCopy];
 
   return v10;
 }
 
-- (TBRemoteFetchResponse)initWithResults:(id)a3 tiles:(id)a4 error:(id)a5
+- (TBRemoteFetchResponse)initWithResults:(id)results tiles:(id)tiles error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  tilesCopy = tiles;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = TBRemoteFetchResponse;
   v11 = [(TBRemoteFetchResponse *)&v18 init];
   results = v11->_results;
-  v11->_results = v8;
-  v13 = v8;
+  v11->_results = resultsCopy;
+  v13 = resultsCopy;
 
   tiles = v11->_tiles;
-  v11->_tiles = v9;
-  v15 = v9;
+  v11->_tiles = tilesCopy;
+  v15 = tilesCopy;
 
   error = v11->_error;
-  v11->_error = v10;
+  v11->_error = errorCopy;
 
   return v11;
 }

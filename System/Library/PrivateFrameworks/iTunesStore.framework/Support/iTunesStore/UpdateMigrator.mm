@@ -1,14 +1,14 @@
 @interface UpdateMigrator
 + (id)sharedInstance;
-- (BOOL)performMigration:(unint64_t)a3;
+- (BOOL)performMigration:(unint64_t)migration;
 - (UpdateMigrator)init;
 - (void)_loadBagAndPerformMigration;
-- (void)_networkTypeChangedNotification:(id)a3;
+- (void)_networkTypeChangedNotification:(id)notification;
 - (void)_performMigration;
-- (void)_queueMigration:(id)a3;
+- (void)_queueMigration:(id)migration;
 - (void)dealloc;
 - (void)destroyInstance;
-- (void)restoreDemotedBundleIdentifiers:(id)a3 options:(id)a4;
+- (void)restoreDemotedBundleIdentifiers:(id)identifiers options:(id)options;
 @end
 
 @implementation UpdateMigrator
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_10012E860;
   block[3] = &unk_100327170;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100383F08 != -1)
   {
     dispatch_once(&qword_100383F08, block);
@@ -66,28 +66,28 @@
   qword_100383F00 = 0;
 }
 
-- (BOOL)performMigration:(unint64_t)a3
+- (BOOL)performMigration:(unint64_t)migration
 {
-  self->_updateType = a3;
+  self->_updateType = migration;
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v6 &= 2u;
   }
@@ -106,9 +106,9 @@
       goto LABEL_12;
     }
 
-    v7 = [NSString stringWithCString:v9 encoding:4, &v37, v36, v37];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v37, v36, v37];
     free(v9);
-    v35 = v7;
+    v35 = oSLogObject;
     SSFileLog();
   }
 
@@ -130,19 +130,19 @@ LABEL_12:
     v11 = +[SSLogConfig sharedConfig];
   }
 
-  v12 = [v11 shouldLog];
+  shouldLog2 = [v11 shouldLog];
   if ([v11 shouldLogToDisk])
   {
-    v13 = v12 | 2;
+    v13 = shouldLog2 | 2;
   }
 
   else
   {
-    v13 = v12;
+    v13 = shouldLog2;
   }
 
-  v14 = [v11 OSLogObject];
-  if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v11 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v13 &= 2u;
   }
@@ -162,9 +162,9 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    v14 = [NSString stringWithCString:v17 encoding:4, &v37, v36];
+    oSLogObject2 = [NSString stringWithCString:v17 encoding:4, &v37, v36];
     free(v17);
-    v35 = v14;
+    v35 = oSLogObject2;
     SSFileLog();
   }
 
@@ -190,19 +190,19 @@ LABEL_40:
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
+    shouldLog3 = [v27 shouldLog];
     if ([v27 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog3 | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog3;
     }
 
-    v30 = [v27 OSLogObject];
-    if (!os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [v27 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v29 &= 2u;
     }
@@ -223,7 +223,7 @@ LABEL_51:
         return 1;
       }
 
-      v30 = [NSString stringWithCString:v33 encoding:4, &v37, v36];
+      oSLogObject3 = [NSString stringWithCString:v33 encoding:4, &v37, v36];
       free(v33);
       SSFileLog();
     }
@@ -238,19 +238,19 @@ LABEL_28:
     v20 = +[SSLogConfig sharedConfig];
   }
 
-  v21 = [v20 shouldLog];
+  shouldLog4 = [v20 shouldLog];
   if ([v20 shouldLogToDisk])
   {
-    v22 = v21 | 2;
+    v22 = shouldLog4 | 2;
   }
 
   else
   {
-    v22 = v21;
+    v22 = shouldLog4;
   }
 
-  v23 = [v20 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
+  oSLogObject4 = [v20 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
   {
     v22 &= 2u;
   }
@@ -270,9 +270,9 @@ LABEL_28:
       goto LABEL_39;
     }
 
-    v23 = [NSString stringWithCString:v26 encoding:4, &v37, v36];
+    oSLogObject4 = [NSString stringWithCString:v26 encoding:4, &v37, v36];
     free(v26);
-    v35 = v23;
+    v35 = oSLogObject4;
     SSFileLog();
   }
 
@@ -285,29 +285,29 @@ LABEL_39:
   return 1;
 }
 
-- (void)restoreDemotedBundleIdentifiers:(id)a3 options:(id)a4
+- (void)restoreDemotedBundleIdentifiers:(id)identifiers options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  optionsCopy = options;
   v8 = +[SSLogConfig sharedDaemonConfig];
   if (!v8)
   {
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
-  v11 = [v8 OSLogObject];
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v8 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v10 &= 2u;
   }
@@ -319,7 +319,7 @@ LABEL_39:
 
   v12 = objc_opt_class();
   v13 = v12;
-  [v6 componentsJoinedByString:{@", "}];
+  [identifiersCopy componentsJoinedByString:{@", "}];
   v17 = 138412546;
   v18 = v12;
   v20 = v19 = 2112;
@@ -328,17 +328,17 @@ LABEL_39:
 
   if (v14)
   {
-    v11 = [NSString stringWithCString:v14 encoding:4, &v17, v16];
+    oSLogObject = [NSString stringWithCString:v14 encoding:4, &v17, v16];
     free(v14);
     SSFileLog();
 LABEL_11:
   }
 
-  v15 = [[UpdateMigratorPromotionOperation alloc] initWithBundleIdentifiers:v6 options:v7];
+  v15 = [[UpdateMigratorPromotionOperation alloc] initWithBundleIdentifiers:identifiersCopy options:optionsCopy];
   [(UpdateMigrator *)self _queueMigration:v15];
 }
 
-- (void)_networkTypeChangedNotification:(id)a3
+- (void)_networkTypeChangedNotification:(id)notification
 {
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
@@ -346,19 +346,19 @@ LABEL_11:
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v6 &= 2u;
   }
@@ -376,16 +376,16 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v7 = [NSString stringWithCString:v9 encoding:4, &v16, v15, v16];
+    oSLogObject = [NSString stringWithCString:v9 encoding:4, &v16, v15, v16];
     free(v9);
     SSFileLog();
   }
 
 LABEL_12:
   v10 = +[ISNetworkObserver sharedInstance];
-  v11 = [v10 networkType];
+  networkType = [v10 networkType];
 
-  if (v11)
+  if (networkType)
   {
     v12 = +[NSNotificationCenter defaultCenter];
     v13 = ISNetworkTypeChangedNotification;
@@ -404,19 +404,19 @@ LABEL_12:
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v5 &= 2u;
   }
@@ -434,7 +434,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v6 = [NSString stringWithCString:v8 encoding:4, &v17, v15];
+    oSLogObject = [NSString stringWithCString:v8 encoding:4, &v17, v15];
     free(v8);
     SSFileLog();
   }
@@ -477,17 +477,17 @@ LABEL_12:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_queueMigration:(id)a3
+- (void)_queueMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012F988;
   v7[3] = &unk_100327238;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = migrationCopy;
+  v6 = migrationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

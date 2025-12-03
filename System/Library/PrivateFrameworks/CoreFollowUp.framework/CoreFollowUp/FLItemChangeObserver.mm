@@ -1,24 +1,24 @@
 @interface FLItemChangeObserver
-+ (id)observerWithChangeHandler:(id)a3;
++ (id)observerWithChangeHandler:(id)handler;
 - (void)dealloc;
-- (void)setItemChangeHandler:(id)a3;
+- (void)setItemChangeHandler:(id)handler;
 - (void)timerUpdated;
 @end
 
 @implementation FLItemChangeObserver
 
-+ (id)observerWithChangeHandler:(id)a3
++ (id)observerWithChangeHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_alloc_init(FLItemChangeObserver);
-  [(FLItemChangeObserver *)v4 setItemChangeHandler:v3];
+  [(FLItemChangeObserver *)v4 setItemChangeHandler:handlerCopy];
 
   return v4;
 }
 
-- (void)setItemChangeHandler:(id)a3
+- (void)setItemChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _FLLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -33,7 +33,7 @@
     self->_notifyToken = 0;
   }
 
-  v7 = _Block_copy(v4);
+  v7 = _Block_copy(handlerCopy);
   itemChangeObserver = self->_itemChangeObserver;
   self->_itemChangeObserver = v7;
 

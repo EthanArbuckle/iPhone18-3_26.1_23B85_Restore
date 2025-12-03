@@ -1,12 +1,12 @@
 @interface RAPReportViewControllerDelegate
-- (RAPReportViewControllerDelegate)initWithReport:(id)a3 completion:(id)a4 delegate:(id)a5;
-- (RAPReportViewControllerDelegate)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportViewControllerDelegate)initWithReport:(id)report completion:(id)completion delegate:(id)delegate;
+- (RAPReportViewControllerDelegate)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (RAPReportViewControllerProtocol)delegate;
 - (RAPUserInfoPart)userInfoPart;
 - (UIBarButtonItem)sendButtonItem;
 - (void)_send;
 - (void)dealloc;
-- (void)invokeCompletionWithOutcome:(int64_t)a3;
+- (void)invokeCompletionWithOutcome:(int64_t)outcome;
 @end
 
 @implementation RAPReportViewControllerDelegate
@@ -59,15 +59,15 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      v5 = objc_loadWeakRetained(&self->_delegate);
+      selfCopy = objc_loadWeakRetained(&self->_delegate);
     }
 
     else
     {
-      v5 = self;
+      selfCopy = self;
     }
 
-    v6 = v5;
+    v6 = selfCopy;
 
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v6 action:"_send"];
     [v7 setEnabled:{-[RAPReport canCreateSubmittableProblem](self->_report, "canCreateSubmittableProblem")}];
@@ -89,24 +89,24 @@
   return sendButtonItem;
 }
 
-- (void)invokeCompletionWithOutcome:(int64_t)a3
+- (void)invokeCompletionWithOutcome:(int64_t)outcome
 {
   completion = self->_completion;
   if (completion)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    completion[2](completion, WeakRetained, a3);
+    completion[2](completion, WeakRetained, outcome);
   }
 }
 
-- (RAPReportViewControllerDelegate)initWithReport:(id)a3 completion:(id)a4 delegate:(id)a5
+- (RAPReportViewControllerDelegate)initWithReport:(id)report completion:(id)completion delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = [(RAPReportViewControllerDelegate *)self initWithReport:a3 question:0 completion:a4];
+  delegateCopy = delegate;
+  v9 = [(RAPReportViewControllerDelegate *)self initWithReport:report question:0 completion:completion];
   v10 = v9;
   if (v9)
   {
-    v11 = objc_storeWeak(&v9->_delegate, v8);
+    v11 = objc_storeWeak(&v9->_delegate, delegateCopy);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -121,18 +121,18 @@
   return v10;
 }
 
-- (RAPReportViewControllerDelegate)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportViewControllerDelegate)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  reportCopy = report;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = RAPReportViewControllerDelegate;
   v10 = [(RAPReportViewControllerDelegate *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_report, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_report, report);
+    v12 = [completionCopy copy];
     completion = v11->_completion;
     v11->_completion = v12;
   }

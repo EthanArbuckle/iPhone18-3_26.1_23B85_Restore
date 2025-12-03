@@ -1,6 +1,6 @@
 @interface PBFPosterSnapshotDefinition
 + (id)defaultConfigurationDefinitions;
-+ (id)defaultPreviewDefinitionForPreview:(id)a3;
++ (id)defaultPreviewDefinitionForPreview:(id)preview;
 + (id)defaultPreviewDefinitions;
 + (id)editingConfirmationDefinition;
 + (id)gallerySnapshotDefinition;
@@ -10,7 +10,7 @@
 + (id)switcherFloatingLayerSnapshotDefinition;
 + (id)switcherSnapshotDefinition;
 + (id)switcherUnlockedSnapshotDefinition;
-- (PBFPosterSnapshotDefinition)initWithUniqueIdentifier:(id)a3;
+- (PBFPosterSnapshotDefinition)initWithUniqueIdentifier:(id)identifier;
 - (id)description;
 @end
 
@@ -189,7 +189,7 @@ void __52__PBFPosterSnapshotDefinition_osMigrationDefinition__block_invoke()
   return v5;
 }
 
-+ (id)defaultPreviewDefinitionForPreview:(id)a3
++ (id)defaultPreviewDefinitionForPreview:(id)preview
 {
   PFCurrentDeviceClass();
 
@@ -208,60 +208,60 @@ void __52__PBFPosterSnapshotDefinition_osMigrationDefinition__block_invoke()
   return v4;
 }
 
-- (PBFPosterSnapshotDefinition)initWithUniqueIdentifier:(id)a3
+- (PBFPosterSnapshotDefinition)initWithUniqueIdentifier:(id)identifier
 {
   v31[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v26 = 0;
   v25 = 0.0;
   v23 = 0u;
   v24 = 0u;
-  _PBFPosterSnapshotDefinitionAttributesForIdentifier(v4, &v26, &v23);
-  v5 = [MEMORY[0x277D3EDC0] compositeLevelSet];
-  v31[0] = v5;
-  v6 = [MEMORY[0x277D3EDC0] allLevelsExceptFloating];
-  v31[1] = v6;
-  v7 = [MEMORY[0x277D3EDC0] foregroundLevelSet];
-  v31[2] = v7;
-  v8 = [MEMORY[0x277D3EDC0] backgroundLevelSet];
-  v31[3] = v8;
-  v9 = [MEMORY[0x277D3EDC0] floatingLevelSet];
-  v31[4] = v9;
+  _PBFPosterSnapshotDefinitionAttributesForIdentifier(identifierCopy, &v26, &v23);
+  compositeLevelSet = [MEMORY[0x277D3EDC0] compositeLevelSet];
+  v31[0] = compositeLevelSet;
+  allLevelsExceptFloating = [MEMORY[0x277D3EDC0] allLevelsExceptFloating];
+  v31[1] = allLevelsExceptFloating;
+  foregroundLevelSet = [MEMORY[0x277D3EDC0] foregroundLevelSet];
+  v31[2] = foregroundLevelSet;
+  backgroundLevelSet = [MEMORY[0x277D3EDC0] backgroundLevelSet];
+  v31[3] = backgroundLevelSet;
+  floatingLevelSet = [MEMORY[0x277D3EDC0] floatingLevelSet];
+  v31[4] = floatingLevelSet;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:5];
 
-  if ([v4 isEqualToString:PRPosterSnapshotDefinitionIdentifierSwitcherFloatingLayer])
+  if ([identifierCopy isEqualToString:PRPosterSnapshotDefinitionIdentifierSwitcherFloatingLayer])
   {
-    v11 = [MEMORY[0x277D3EDC0] floatingLevelSet];
-    v30 = v11;
+    floatingLevelSet2 = [MEMORY[0x277D3EDC0] floatingLevelSet];
+    v30 = floatingLevelSet2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
 
     v10 = v12;
   }
 
-  if ([v4 isEqualToString:PRPosterSnapshotDefinitionIdentifierSwitcher])
+  if ([identifierCopy isEqualToString:PRPosterSnapshotDefinitionIdentifierSwitcher])
   {
-    v13 = [MEMORY[0x277D3EDC0] floatingLevelSet];
-    v29[0] = v13;
-    v14 = [MEMORY[0x277D3EDC0] allLevelsExceptFloating];
-    v29[1] = v14;
+    floatingLevelSet3 = [MEMORY[0x277D3EDC0] floatingLevelSet];
+    v29[0] = floatingLevelSet3;
+    allLevelsExceptFloating2 = [MEMORY[0x277D3EDC0] allLevelsExceptFloating];
+    v29[1] = allLevelsExceptFloating2;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
 
     v10 = v15;
   }
 
-  if (([v4 isEqualToString:PRPosterSnapshotDefinitionIdentifierGallery] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", PRPosterSnapshotDefinitionIdentifierGalleryWithComplications) & 1) != 0 || objc_msgSend(v4, "isEqualToString:", PRPosterSnapshotDefinitionIdentifierGalleryKeyFrame))
+  if (([identifierCopy isEqualToString:PRPosterSnapshotDefinitionIdentifierGallery] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", PRPosterSnapshotDefinitionIdentifierGalleryWithComplications) & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", PRPosterSnapshotDefinitionIdentifierGalleryKeyFrame))
   {
-    v16 = [MEMORY[0x277D3EDC0] compositeLevelSet];
-    v28 = v16;
+    compositeLevelSet2 = [MEMORY[0x277D3EDC0] compositeLevelSet];
+    v28 = compositeLevelSet2;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
 
     v10 = v17;
   }
 
-  if ([v4 isEqualToString:PRPosterSnapshotDefinitionIdentifierOSMigration])
+  if ([identifierCopy isEqualToString:PRPosterSnapshotDefinitionIdentifierOSMigration])
   {
-    v18 = [MEMORY[0x277D3EDC0] compositeLevelSet];
-    v27 = v18;
+    compositeLevelSet3 = [MEMORY[0x277D3EDC0] compositeLevelSet];
+    v27 = compositeLevelSet3;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
 
     v10 = v19;
@@ -269,28 +269,28 @@ void __52__PBFPosterSnapshotDefinition_osMigrationDefinition__block_invoke()
 
   if (v26 == 1)
   {
-    v20 = [(PRPosterSnapshotDefinition *)self initWithUniqueIdentifier:v4 includeHeaderElements:v23 includesComplications:BYTE1(v23) levelSets:v10 isUnlocked:BYTE2(v23) renderingContent:*(&v23 + 1) renderingMode:v24 previewContent:?];
+    v20 = [(PRPosterSnapshotDefinition *)self initWithUniqueIdentifier:identifierCopy includeHeaderElements:v23 includesComplications:BYTE1(v23) levelSets:v10 isUnlocked:BYTE2(v23) renderingContent:*(&v23 + 1) renderingMode:v24 previewContent:?];
     if (v20)
     {
       v20->_persistenceScale = v25;
     }
 
     self = v20;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   [(PBFPosterSnapshotDefinition *)self persistenceScale];
   if ((BSFloatIsOne() & 1) == 0)
   {
@@ -298,9 +298,9 @@ void __52__PBFPosterSnapshotDefinition_osMigrationDefinition__block_invoke()
     v5 = [v3 appendFloat:@"persistenceScale" withName:?];
   }
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

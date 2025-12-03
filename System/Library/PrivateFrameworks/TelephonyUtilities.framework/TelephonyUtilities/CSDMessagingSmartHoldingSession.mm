@@ -1,48 +1,48 @@
 @interface CSDMessagingSmartHoldingSession
-- (BOOL)isEqual:(id)a3;
-- (CSDMessagingSmartHoldingSession)initWithSmartHoldingSession:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CSDMessagingSmartHoldingSession)initWithSmartHoldingSession:(id)session;
 - (TUSmartHoldingSession)tuSmartHoldingSession;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRequiresUserAttentionReason:(id)a3;
-- (int)StringAsState:(id)a3;
+- (int)StringAsRequiresUserAttentionReason:(id)reason;
+- (int)StringAsState:(id)state;
 - (int)requiresUserAttentionReason;
 - (int)state;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSDMessagingSmartHoldingSession
 
-- (CSDMessagingSmartHoldingSession)initWithSmartHoldingSession:(id)a3
+- (CSDMessagingSmartHoldingSession)initWithSmartHoldingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = CSDMessagingSmartHoldingSession;
   v5 = [(CSDMessagingSmartHoldingSession *)&v22 init];
   if (v5)
   {
-    v6 = [v4 uuid];
-    v7 = [v6 UUIDString];
+    uuid = [sessionCopy uuid];
+    uUIDString = [uuid UUIDString];
     uuid = v5->_uuid;
-    v5->_uuid = v7;
+    v5->_uuid = uUIDString;
 
     *&v5->_has |= 2u;
-    v5->_state = [v4 state];
+    v5->_state = [sessionCopy state];
     *&v5->_has |= 1u;
-    v5->_requiresUserAttentionReason = [v4 requiresUserAttentionReason];
+    v5->_requiresUserAttentionReason = [sessionCopy requiresUserAttentionReason];
     v9 = +[NSMutableArray array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [v4 events];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    events = [sessionCopy events];
+    v11 = [events countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -54,7 +54,7 @@
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(events);
           }
 
           v15 = [[CSDMessagingSmartHoldingEvent alloc] initWithEvent:*(*(&v18 + 1) + 8 * v14)];
@@ -64,7 +64,7 @@
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v12 = [events countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v12);
@@ -80,17 +80,17 @@
 - (TUSmartHoldingSession)tuSmartHoldingSession
 {
   v3 = [NSUUID alloc];
-  v4 = [(CSDMessagingSmartHoldingSession *)self uuid];
-  v5 = [v3 initWithUUIDString:v4];
+  uuid = [(CSDMessagingSmartHoldingSession *)self uuid];
+  v5 = [v3 initWithUUIDString:uuid];
 
-  v6 = [(CSDMessagingSmartHoldingSession *)self state];
+  state = [(CSDMessagingSmartHoldingSession *)self state];
   v7 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(CSDMessagingSmartHoldingSession *)self events];
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  events = [(CSDMessagingSmartHoldingSession *)self events];
+  v9 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -101,20 +101,20 @@
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(events);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) tuSmartHoldingEvent];
-        [v7 addObject:v13];
+        tuSmartHoldingEvent = [*(*(&v16 + 1) + 8 * i) tuSmartHoldingEvent];
+        [v7 addObject:tuSmartHoldingEvent];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [events countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [[TUSmartHoldingSession alloc] initWithUUID:v5 state:v6 events:v7 requiresUserAttentionReason:-[CSDMessagingSmartHoldingSession requiresUserAttentionReason](self hostedOnCurrentDevice:{"requiresUserAttentionReason"), 0}];
+  v14 = [[TUSmartHoldingSession alloc] initWithUUID:v5 state:state events:v7 requiresUserAttentionReason:-[CSDMessagingSmartHoldingSession requiresUserAttentionReason](self hostedOnCurrentDevice:{"requiresUserAttentionReason"), 0}];
 
   return v14;
 }
@@ -132,9 +132,9 @@
   }
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -147,25 +147,25 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Waiting"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Waiting"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DetectingHold"])
+  else if ([stateCopy isEqualToString:@"DetectingHold"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DetectedHold"])
+  else if ([stateCopy isEqualToString:@"DetectedHold"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RequiresUserAttention"])
+  else if ([stateCopy isEqualToString:@"RequiresUserAttention"])
   {
     v4 = 3;
   }
@@ -178,22 +178,22 @@
   return v4;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 - (int)requiresUserAttentionReason
@@ -209,30 +209,30 @@
   }
 }
 
-- (int)StringAsRequiresUserAttentionReason:(id)a3
+- (int)StringAsRequiresUserAttentionReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"NotRequired"])
+  else if ([reasonCopy isEqualToString:@"NotRequired"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"RemoteAgentDetected"])
+  else if ([reasonCopy isEqualToString:@"RemoteAgentDetected"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LanguageUnsupported"])
+  else if ([reasonCopy isEqualToString:@"LanguageUnsupported"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Error"])
+  else if ([reasonCopy isEqualToString:@"Error"])
   {
     v4 = 4;
   }
@@ -250,8 +250,8 @@
   v7.receiver = self;
   v7.super_class = CSDMessagingSmartHoldingSession;
   v3 = [(CSDMessagingSmartHoldingSession *)&v7 description];
-  v4 = [(CSDMessagingSmartHoldingSession *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CSDMessagingSmartHoldingSession *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -304,8 +304,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -336,9 +336,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
@@ -389,29 +389,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v9;
+    [toCopy setUuid:?];
+    toCopy = v9;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 5) = self->_state;
-    *(v4 + 32) |= 2u;
+    *(toCopy + 5) = self->_state;
+    *(toCopy + 32) |= 2u;
   }
 
   if ([(CSDMessagingSmartHoldingSession *)self eventsCount])
   {
     [v9 clearEvents];
-    v5 = [(CSDMessagingSmartHoldingSession *)self eventsCount];
-    if (v5)
+    eventsCount = [(CSDMessagingSmartHoldingSession *)self eventsCount];
+    if (eventsCount)
     {
-      v6 = v5;
+      v6 = eventsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(CSDMessagingSmartHoldingSession *)self eventsAtIndex:i];
@@ -427,10 +427,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -460,7 +460,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addEvents:v13];
 
         v12 = v12 + 1;
@@ -482,16 +482,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 3))
+  if (uuid | *(equalCopy + 3))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -500,22 +500,22 @@
   }
 
   has = self->_has;
-  v7 = *(v4 + 32);
+  v7 = *(equalCopy + 32);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_state != *(v4 + 5))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_state != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_16;
   }
 
   events = self->_events;
-  if (events | *(v4 + 1))
+  if (events | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)events isEqual:?])
     {
@@ -527,10 +527,10 @@ LABEL_16:
     has = self->_has;
   }
 
-  v9 = (*(v4 + 32) & 1) == 0;
+  v9 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_requiresUserAttentionReason != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_requiresUserAttentionReason != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
@@ -570,17 +570,17 @@ LABEL_17:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(CSDMessagingSmartHoldingSession *)self setUuid:?];
   }
 
-  if ((*(v4 + 32) & 2) != 0)
+  if ((*(fromCopy + 32) & 2) != 0)
   {
-    self->_state = *(v4 + 5);
+    self->_state = *(fromCopy + 5);
     *&self->_has |= 2u;
   }
 
@@ -588,7 +588,7 @@ LABEL_17:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -612,9 +612,9 @@ LABEL_17:
     while (v7);
   }
 
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_requiresUserAttentionReason = *(v4 + 4);
+    self->_requiresUserAttentionReason = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 }

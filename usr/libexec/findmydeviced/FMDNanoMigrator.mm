@@ -1,36 +1,36 @@
 @interface FMDNanoMigrator
-- (FMDNanoMigrator)initWithCompanionRegistry:(id)a3 unregisterTokenStore:(id)a4 serverInteractionController:(id)a5;
+- (FMDNanoMigrator)initWithCompanionRegistry:(id)registry unregisterTokenStore:(id)store serverInteractionController:(id)controller;
 - (id)deviceInfoForHostDevice;
 - (id)lastScheduledJanitorDate;
 - (id)unregisterDeviceInfoAdaptors;
 - (void)addObservers;
-- (void)scheduleJanitor:(double)a3;
-- (void)setJanitorScheduledDate:(id)a3;
+- (void)scheduleJanitor:(double)janitor;
+- (void)setJanitorScheduledDate:(id)date;
 - (void)unregisterAccessoriesIfNeeded;
 @end
 
 @implementation FMDNanoMigrator
 
-- (FMDNanoMigrator)initWithCompanionRegistry:(id)a3 unregisterTokenStore:(id)a4 serverInteractionController:(id)a5
+- (FMDNanoMigrator)initWithCompanionRegistry:(id)registry unregisterTokenStore:(id)store serverInteractionController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  registryCopy = registry;
+  storeCopy = store;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = FMDNanoMigrator;
   v11 = [(FMDNanoMigrator *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    [(FMDNanoMigrator *)v11 setRegistry:v8];
-    [(FMDNanoMigrator *)v12 setUnregisterTokenStore:v9];
-    [(FMDNanoMigrator *)v12 setServerInteractionController:v10];
+    [(FMDNanoMigrator *)v11 setRegistry:registryCopy];
+    [(FMDNanoMigrator *)v12 setUnregisterTokenStore:storeCopy];
+    [(FMDNanoMigrator *)v12 setServerInteractionController:controllerCopy];
     [(FMDNanoMigrator *)v12 addObservers];
     objc_initWeak(&location, v12);
     v13 = +[FMSystemInfo sharedInstance];
-    v14 = [v13 isInternalBuild];
+    isInternalBuild = [v13 isInternalBuild];
 
-    if (v14)
+    if (isInternalBuild)
     {
       v15 = [FMPreferencesUtil integerForKey:@"NanoMigratorRetryInterval" inDomain:kFMDNotBackedUpPrefDomain];
       if (v15 <= 0)
@@ -68,9 +68,9 @@
 - (void)unregisterAccessoriesIfNeeded
 {
   v3 = +[FMSystemInfo sharedInstance];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
 
-  if (v4)
+  if (isInternalBuild)
   {
     v5 = [FMPreferencesUtil integerForKey:@"NanoMigratorRetryInterval" inDomain:kFMDNotBackedUpPrefDomain];
     if (v5 <= 0)
@@ -90,8 +90,8 @@
   }
 
   [(FMDNanoMigrator *)self scheduleJanitor:v6];
-  v7 = [(FMDNanoMigrator *)self unregisterDeviceInfoAdaptors];
-  v8 = [v7 count];
+  unregisterDeviceInfoAdaptors = [(FMDNanoMigrator *)self unregisterDeviceInfoAdaptors];
+  v8 = [unregisterDeviceInfoAdaptors count];
   if (v8)
   {
     v9 = v8;
@@ -117,7 +117,7 @@
     v14[3] = &unk_1002CF8C0;
     v14[4] = self;
     *&v14[5] = v6;
-    [v7 enumerateObjectsUsingBlock:v14];
+    [unregisterDeviceInfoAdaptors enumerateObjectsUsingBlock:v14];
   }
 
   else
@@ -144,12 +144,12 @@
   [v3 addObserver:self selector:"deviceDidPair:" name:@"nano.devicedidpair" object:0];
 }
 
-- (void)scheduleJanitor:(double)a3
+- (void)scheduleJanitor:(double)janitor
 {
-  v5 = [(FMDNanoMigrator *)self unregisterTokenStore];
-  v6 = [v5 accessoriesNeedUnregister];
+  unregisterTokenStore = [(FMDNanoMigrator *)self unregisterTokenStore];
+  accessoriesNeedUnregister = [unregisterTokenStore accessoriesNeedUnregister];
 
-  if (a3 <= 0.0 || v6 == 0)
+  if (janitor <= 0.0 || accessoriesNeedUnregister == 0)
   {
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -166,20 +166,20 @@
     }
 
     [(FMDNanoMigrator *)self setJanitorScheduledDate:0];
-    v10 = [(FMDNanoMigrator *)self janitor];
-    [v10 deactivate];
+    janitor = [(FMDNanoMigrator *)self janitor];
+    [janitor deactivate];
   }
 
   else
   {
-    v10 = [(FMDNanoMigrator *)self lastScheduledJanitorDate];
-    [v10 timeIntervalSinceReferenceDate];
+    janitor = [(FMDNanoMigrator *)self lastScheduledJanitorDate];
+    [janitor timeIntervalSinceReferenceDate];
     v12 = v11;
     v13 = +[NSDate date];
     [v13 timeIntervalSinceReferenceDate];
     v15 = v12 - v14;
 
-    v16 = v10;
+    v16 = janitor;
     if (v15 < 60.0)
     {
       v17 = sub_100002880();
@@ -189,7 +189,7 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "FMDNanoMigrator The last scheduled time is too short, rescheduling.", &v22, 2u);
       }
 
-      v16 = [NSDate dateWithTimeIntervalSinceNow:a3];
+      v16 = [NSDate dateWithTimeIntervalSinceNow:janitor];
     }
 
     v18 = sub_100002880();
@@ -203,15 +203,15 @@
     v19 = sub_10017DFC4();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v16 fm_epoch];
+      fm_epoch = [v16 fm_epoch];
       v22 = 134217984;
-      v23 = v20;
+      v23 = fm_epoch;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Watch Migration: scheduling janitor to run %lli", &v22, 0xCu);
     }
 
     [(FMDNanoMigrator *)self setJanitorScheduledDate:v16];
-    v21 = [(FMDNanoMigrator *)self janitor];
-    [v21 schedule:v16 requireClass:1];
+    janitor2 = [(FMDNanoMigrator *)self janitor];
+    [janitor2 schedule:v16 requireClass:1];
   }
 }
 
@@ -219,32 +219,32 @@
 {
   v2 = objc_alloc_init(FMDFMIPUnregisterDeviceInfo);
   v3 = +[FMDSystemConfig sharedInstance];
-  v4 = [v3 deviceUDID];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setUdid:v4];
+  deviceUDID = [v3 deviceUDID];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setUdid:deviceUDID];
 
   v5 = +[FMDSystemConfig sharedInstance];
-  v6 = [v5 internationalMobileEquipmentIdentity];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setImei:v6];
+  internationalMobileEquipmentIdentity = [v5 internationalMobileEquipmentIdentity];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setImei:internationalMobileEquipmentIdentity];
 
   v7 = +[FMDSystemConfig sharedInstance];
-  v8 = [v7 mobileEquipmentIdentifier];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setMeid:v8];
+  mobileEquipmentIdentifier = [v7 mobileEquipmentIdentifier];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setMeid:mobileEquipmentIdentifier];
 
   v9 = +[FMDSystemConfig sharedInstance];
-  v10 = [v9 serialNumber];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setSerialNumber:v10];
+  serialNumber = [v9 serialNumber];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setSerialNumber:serialNumber];
 
   v11 = +[FMDSystemConfig sharedInstance];
-  v12 = [v11 productType];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setProductType:v12];
+  productType = [v11 productType];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setProductType:productType];
 
   v13 = +[FMDSystemConfig sharedInstance];
-  v14 = [v13 productVersion];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setProductVersion:v14];
+  productVersion = [v13 productVersion];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setProductVersion:productVersion];
 
   v15 = +[FMDSystemConfig sharedInstance];
-  v16 = [v15 buildVersion];
-  [(FMDFMIPUnregisterDeviceInfo *)v2 setBuildVersion:v16];
+  buildVersion = [v15 buildVersion];
+  [(FMDFMIPUnregisterDeviceInfo *)v2 setBuildVersion:buildVersion];
 
   [(FMDFMIPUnregisterDeviceInfo *)v2 setDisableContext:7];
 
@@ -254,8 +254,8 @@
 - (id)unregisterDeviceInfoAdaptors
 {
   v3 = +[NSMutableArray array];
-  v4 = [(FMDNanoMigrator *)self registry];
-  v5 = [v4 pairedAccessories];
+  registry = [(FMDNanoMigrator *)self registry];
+  pairedAccessories = [registry pairedAccessories];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -264,7 +264,7 @@
   v10[4] = self;
   v6 = v3;
   v11 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [pairedAccessories enumerateObjectsUsingBlock:v10];
   v7 = v11;
   v8 = v6;
 
@@ -279,14 +279,14 @@
   return v3;
 }
 
-- (void)setJanitorScheduledDate:(id)a3
+- (void)setJanitorScheduledDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   v3 = +[FMDProtectedContextManager sharedManager];
   v4 = v3;
-  if (v6)
+  if (dateCopy)
   {
-    v5 = [v3 saveContext:v6 forContextKey:@"FMDNanoMigratorLastScheduledJanitorDateKey" dataProtectionClass:4];
+    v5 = [v3 saveContext:dateCopy forContextKey:@"FMDNanoMigratorLastScheduledJanitorDateKey" dataProtectionClass:4];
   }
 
   else

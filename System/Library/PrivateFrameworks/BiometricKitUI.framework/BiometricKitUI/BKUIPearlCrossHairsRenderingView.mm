@@ -1,37 +1,37 @@
 @interface BKUIPearlCrossHairsRenderingView
-- (BKUIPearlCrossHairsRenderingView)initWithFrame:(CGRect)a3 device:(id)a4;
+- (BKUIPearlCrossHairsRenderingView)initWithFrame:(CGRect)frame device:(id)device;
 - (BOOL)grayscale;
-- (void)drawRect:(CGRect)a3;
-- (void)setAxis:(BOOL)a3 animated:;
-- (void)setSampleCount:(unint64_t)a3;
-- (void)setState:(unint64_t)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setAxis:(BOOL)axis animated:;
+- (void)setSampleCount:(unint64_t)count;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation BKUIPearlCrossHairsRenderingView
 
-- (BKUIPearlCrossHairsRenderingView)initWithFrame:(CGRect)a3 device:(id)a4
+- (BKUIPearlCrossHairsRenderingView)initWithFrame:(CGRect)frame device:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v109 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  deviceCopy = device;
   v90.receiver = self;
   v90.super_class = BKUIPearlCrossHairsRenderingView;
-  v10 = [(MTKView *)&v90 initWithFrame:v9 device:x, y, width, height];
-  if (v10)
+  height = [(MTKView *)&v90 initWithFrame:deviceCopy device:x, y, width, height];
+  if (height)
   {
     v11 = dispatch_semaphore_create(3);
-    inFlightSemaphore = v10->_inFlightSemaphore;
-    v10->_inFlightSemaphore = v11;
+    inFlightSemaphore = height->_inFlightSemaphore;
+    height->_inFlightSemaphore = v11;
 
-    v10->_time = CACurrentMediaTime();
-    v13 = [v9 newCommandQueue];
-    commandQueue = v10->_commandQueue;
-    v10->_commandQueue = v13;
+    height->_time = CACurrentMediaTime();
+    newCommandQueue = [deviceCopy newCommandQueue];
+    commandQueue = height->_commandQueue;
+    height->_commandQueue = newCommandQueue;
 
-    [(MTLCommandQueue *)v10->_commandQueue setLabel:@"Crosshairs Command Queue"];
+    [(MTLCommandQueue *)height->_commandQueue setLabel:@"Crosshairs Command Queue"];
     v108 = 0;
     v107 = 0;
     v15 = objc_alloc(MEMORY[0x277CF1C80]);
@@ -51,35 +51,35 @@
     LODWORD(v26) = 4.0;
     v27 = [v24 initWithStrokeWeight:&v101 radius:v26 scale:v25 rotation:? translation:?];
     v28 = [objc_alloc(MEMORY[0x277CF1C68]) initWithDefaultPath:v23];
-    [(BKUIPearlCrossHairsRenderingView *)v10 setCrosshairsPathCollection:v28];
+    [(BKUIPearlCrossHairsRenderingView *)height setCrosshairsPathCollection:v28];
 
-    v29 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsPathCollection];
+    crosshairsPathCollection = [(BKUIPearlCrossHairsRenderingView *)height crosshairsPathCollection];
     v84 = v27;
-    [v29 setPath:v27 forKey:@"small"];
+    [crosshairsPathCollection setPath:v27 forKey:@"small"];
 
-    v10->_pathBlendDest = 0.0;
-    v10->_pathBlend = 0.0;
+    height->_pathBlendDest = 0.0;
+    height->_pathBlend = 0.0;
     v30 = objc_alloc_init(BKUIPearlCrossHairsManager);
-    [(BKUIPearlCrossHairsRenderingView *)v10 setCrosshairsInstanceManager:v30];
+    [(BKUIPearlCrossHairsRenderingView *)height setCrosshairsInstanceManager:v30];
 
-    v31 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsPathCollection];
-    v32 = [v31 defaultPath];
-    [v32 clearInstances];
+    crosshairsPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)height crosshairsPathCollection];
+    defaultPath = [crosshairsPathCollection2 defaultPath];
+    [defaultPath clearInstances];
 
-    v33 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsPathCollection];
-    v34 = [v33 defaultPath];
-    v35 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsInstanceManager];
-    v36 = [v35 instanceData];
-    v37 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsInstanceManager];
-    v38 = [v37 springInstances];
-    [v34 appendInstances:v36 count:{objc_msgSend(v38, "count")}];
+    crosshairsPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)height crosshairsPathCollection];
+    defaultPath2 = [crosshairsPathCollection3 defaultPath];
+    crosshairsInstanceManager = [(BKUIPearlCrossHairsRenderingView *)height crosshairsInstanceManager];
+    instanceData = [crosshairsInstanceManager instanceData];
+    crosshairsInstanceManager2 = [(BKUIPearlCrossHairsRenderingView *)height crosshairsInstanceManager];
+    springInstances = [crosshairsInstanceManager2 springInstances];
+    [defaultPath2 appendInstances:instanceData count:{objc_msgSend(springInstances, "count")}];
 
     v39 = objc_alloc(MEMORY[0x277CF1C78]);
-    v40 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsPathCollection];
+    crosshairsPathCollection4 = [(BKUIPearlCrossHairsRenderingView *)height crosshairsPathCollection];
     __asm { FMOV            V9.2S, #1.0 }
 
-    v42 = [v39 initWithCollection:v40 device:v9 viewRatio:_D9];
-    [(BKUIPearlCrossHairsRenderingView *)v10 setCrosshairsData:v42];
+    v42 = [v39 initWithCollection:crosshairsPathCollection4 device:deviceCopy viewRatio:_D9];
+    [(BKUIPearlCrossHairsRenderingView *)height setCrosshairsData:v42];
 
     v101 = 0u;
     v102 = 0u;
@@ -141,29 +141,29 @@
     LODWORD(v53) = 4.0;
     v54 = [v52 initWithPoints:v98 colors:v96 count:6 strokeWeight:0 pattern:&v92 rotation:v53 scale:? translation:?];
     v55 = [objc_alloc(MEMORY[0x277CF1C68]) initWithDefaultPath:v54];
-    [(BKUIPearlCrossHairsRenderingView *)v10 setCheckMarkPathCollection:v55];
+    [(BKUIPearlCrossHairsRenderingView *)height setCheckMarkPathCollection:v55];
 
-    v56 = [(BKUIPearlCrossHairsRenderingView *)v10 checkMarkPathCollection];
-    [v56 setPath:v51 forKey:@"half1"];
+    checkMarkPathCollection = [(BKUIPearlCrossHairsRenderingView *)height checkMarkPathCollection];
+    [checkMarkPathCollection setPath:v51 forKey:@"half1"];
 
-    v57 = [(BKUIPearlCrossHairsRenderingView *)v10 checkMarkPathCollection];
-    [v57 setPath:v48 forKey:@"half0"];
+    checkMarkPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)height checkMarkPathCollection];
+    [checkMarkPathCollection2 setPath:v48 forKey:@"half0"];
 
-    v58 = [(BKUIPearlCrossHairsRenderingView *)v10 checkMarkPathCollection];
-    [v58 setPath:v45 forKey:@"none"];
+    checkMarkPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)height checkMarkPathCollection];
+    [checkMarkPathCollection3 setPath:v45 forKey:@"none"];
 
     v59 = objc_alloc(MEMORY[0x277CF1C78]);
-    v60 = [(BKUIPearlCrossHairsRenderingView *)v10 checkMarkPathCollection];
-    v61 = [v59 initWithCollection:v60 device:v9 viewRatio:_D9];
-    [(BKUIPearlCrossHairsRenderingView *)v10 setCheckMarkData:v61];
+    checkMarkPathCollection4 = [(BKUIPearlCrossHairsRenderingView *)height checkMarkPathCollection];
+    v61 = [v59 initWithCollection:checkMarkPathCollection4 device:deviceCopy viewRatio:_D9];
+    [(BKUIPearlCrossHairsRenderingView *)height setCheckMarkData:v61];
 
     v62 = objc_alloc(MEMORY[0x277CBEB18]);
-    v63 = [(BKUIPearlCrossHairsRenderingView *)v10 checkMarkData];
-    v64 = [(BKUIPearlCrossHairsRenderingView *)v10 crosshairsData];
-    v65 = [v62 initWithObjects:{v63, v64, 0}];
+    checkMarkData = [(BKUIPearlCrossHairsRenderingView *)height checkMarkData];
+    crosshairsData = [(BKUIPearlCrossHairsRenderingView *)height crosshairsData];
+    v65 = [v62 initWithObjects:{checkMarkData, crosshairsData, 0}];
 
-    v66 = [objc_alloc(MEMORY[0x277CF1C88]) initWithMTKView:v10 dataCollection:v65];
-    [(BKUIPearlCrossHairsRenderingView *)v10 setRenderer:v66];
+    v66 = [objc_alloc(MEMORY[0x277CF1C88]) initWithMTKView:height dataCollection:v65];
+    [(BKUIPearlCrossHairsRenderingView *)height setRenderer:v66];
 
     matrix_ortho();
     v85 = v68;
@@ -192,75 +192,75 @@
     v89 = *&v95;
     v81 = *&v92;
     v83 = *&v93;
-    v76 = [(BKUIPearlCrossHairsRenderingView *)v10 renderer];
-    [v76 setProjectionMatrix:{v81, v83, v86, v89}];
+    renderer = [(BKUIPearlCrossHairsRenderingView *)height renderer];
+    [renderer setProjectionMatrix:{v81, v83, v86, v89}];
   }
 
   v77 = *MEMORY[0x277D85DE8];
-  return v10;
+  return height;
 }
 
 - (BOOL)grayscale
 {
-  v2 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-  v3 = [v2 grayscale];
+  crosshairsInstanceManager = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  grayscale = [crosshairsInstanceManager grayscale];
 
-  return v3;
+  return grayscale;
 }
 
-- (void)setSampleCount:(unint64_t)a3
+- (void)setSampleCount:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = BKUIPearlCrossHairsRenderingView;
-  [(MTKView *)&v5 setSampleCount:a3];
-  v4 = [(BKUIPearlCrossHairsRenderingView *)self renderer];
-  [v4 createPipelineStates];
+  [(MTKView *)&v5 setSampleCount:count];
+  renderer = [(BKUIPearlCrossHairsRenderingView *)self renderer];
+  [renderer createPipelineStates];
 }
 
-- (void)setAxis:(BOOL)a3 animated:
+- (void)setAxis:(BOOL)axis animated:
 {
-  v4 = a3;
+  axisCopy = axis;
   *self->_axis = v3;
-  v6 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  crosshairsInstanceManager = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
   v7 = *self->_axis;
-  v8 = v6;
-  if (v4)
+  v8 = crosshairsInstanceManager;
+  if (axisCopy)
   {
-    [v6 setTarget:*&v7];
+    [crosshairsInstanceManager setTarget:*&v7];
   }
 
   else
   {
-    [v6 setValue:*&v7];
+    [crosshairsInstanceManager setValue:*&v7];
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (!a3)
+  if (!state)
   {
     v5 = 0.0;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = 1.0;
 LABEL_5:
-    v6 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-    [v6 setSpringsStates:a3];
+    crosshairsInstanceManager = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+    [crosshairsInstanceManager setSpringsStates:state];
 
     self->_pathBlendDest = v5;
   }
 
-  self->_state = a3;
+  self->_state = state;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v51.receiver = self;
   v51.super_class = BKUIPearlCrossHairsRenderingView;
-  [(BKUIPearlCrossHairsRenderingView *)&v51 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(BKUIPearlCrossHairsRenderingView *)&v51 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   inFlightSemaphore = self->_inFlightSemaphore;
   v5 = dispatch_time(0, 1000000000);
   if (dispatch_semaphore_wait(inFlightSemaphore, v5))
@@ -268,8 +268,8 @@ LABEL_5:
     return;
   }
 
-  v6 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v6 setLabel:@"Crosshairs Command Buffer"];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer setLabel:@"Crosshairs Command Buffer"];
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x3032000000;
@@ -281,95 +281,95 @@ LABEL_5:
   v48[2] = __45__BKUIPearlCrossHairsRenderingView_drawRect___block_invoke;
   v48[3] = &unk_278D0A3D8;
   v48[4] = v49;
-  v47 = v6;
-  [v6 addCompletedHandler:v48];
+  v47 = commandBuffer;
+  [commandBuffer addCompletedHandler:v48];
   pathBlend = self->_pathBlend;
   pathBlendDest = self->_pathBlendDest;
   v9 = pathBlend + (pathBlendDest - pathBlend) * (6.0 / [(MTKView *)self preferredFramesPerSecond]);
   self->_pathBlend = v9;
-  v10 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-  [v10 setTarget:*self->_axis];
+  crosshairsInstanceManager = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  [crosshairsInstanceManager setTarget:*self->_axis];
 
-  v11 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-  [v11 update:CACurrentMediaTime() - self->_time];
+  crosshairsInstanceManager2 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  [crosshairsInstanceManager2 update:CACurrentMediaTime() - self->_time];
 
   self->_time = CACurrentMediaTime();
-  v12 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsData];
-  v13 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-  v14 = [v13 instanceData];
-  v15 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
-  v16 = [v15 springInstances];
-  [v12 updateInstanceBufferWithData:v14 count:{objc_msgSend(v16, "count")}];
+  crosshairsData = [(BKUIPearlCrossHairsRenderingView *)self crosshairsData];
+  crosshairsInstanceManager3 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  instanceData = [crosshairsInstanceManager3 instanceData];
+  crosshairsInstanceManager4 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsInstanceManager];
+  springInstances = [crosshairsInstanceManager4 springInstances];
+  [crosshairsData updateInstanceBufferWithData:instanceData count:{objc_msgSend(springInstances, "count")}];
 
-  v46 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsData];
-  v17 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
-  v18 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
-  v19 = [v18 defaultPath];
-  v20 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
-  v21 = [v20 paths];
-  v22 = [v21 objectForKeyedSubscript:@"small"];
+  crosshairsData2 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsData];
+  crosshairsPathCollection = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
+  crosshairsPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
+  defaultPath = [crosshairsPathCollection2 defaultPath];
+  crosshairsPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
+  paths = [crosshairsPathCollection3 paths];
+  v22 = [paths objectForKeyedSubscript:@"small"];
   *&v23 = self->_pathBlend;
-  v24 = [v17 blendPath:v19 withPath:v22 byAmount:v23];
-  v25 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
-  v26 = [v25 defaultPath];
-  [v46 updateControlPointBufferWithData:v24 count:{objc_msgSend(v26, "controlPointsCount")}];
+  v24 = [crosshairsPathCollection blendPath:defaultPath withPath:v22 byAmount:v23];
+  crosshairsPathCollection4 = [(BKUIPearlCrossHairsRenderingView *)self crosshairsPathCollection];
+  defaultPath2 = [crosshairsPathCollection4 defaultPath];
+  [crosshairsData2 updateControlPointBufferWithData:v24 count:{objc_msgSend(defaultPath2, "controlPointsCount")}];
 
   v27 = self->_pathBlend * self->_pathBlend;
   if (v27 >= 0.3)
   {
     if (v27 >= 0.35)
     {
-      v28 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-      v29 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-      v30 = [v29 paths];
-      v31 = [v30 objectForKeyedSubscript:@"half1"];
-      v32 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-      v33 = [v32 defaultPath];
+      checkMarkPathCollection = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+      checkMarkPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+      paths2 = [checkMarkPathCollection2 paths];
+      v31 = [paths2 objectForKeyedSubscript:@"half1"];
+      checkMarkPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+      defaultPath3 = [checkMarkPathCollection3 defaultPath];
       *&v37 = fminf(fmaxf((v27 + -0.35) / 0.65, 0.0), 1.0);
-      [v28 blendPath:v31 withPath:v33 byAmount:v37];
+      [checkMarkPathCollection blendPath:v31 withPath:defaultPath3 byAmount:v37];
       goto LABEL_8;
     }
 
-    v28 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v29 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v30 = [v29 paths];
-    v31 = [v30 objectForKeyedSubscript:@"half0"];
-    v32 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v33 = [v32 paths];
-    v34 = [v33 objectForKeyedSubscript:@"half1"];
+    checkMarkPathCollection = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    checkMarkPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    paths2 = [checkMarkPathCollection2 paths];
+    v31 = [paths2 objectForKeyedSubscript:@"half0"];
+    checkMarkPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    defaultPath3 = [checkMarkPathCollection3 paths];
+    v34 = [defaultPath3 objectForKeyedSubscript:@"half1"];
     *&v36 = fminf(fmaxf((v27 + -0.3) / 0.05, 0.0), 1.0);
-    [v28 blendPath:v31 withPath:v34 byAmount:v36];
+    [checkMarkPathCollection blendPath:v31 withPath:v34 byAmount:v36];
   }
 
   else
   {
-    v28 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v29 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v30 = [v29 paths];
-    v31 = [v30 objectForKeyedSubscript:@"none"];
-    v32 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-    v33 = [v32 paths];
-    v34 = [v33 objectForKeyedSubscript:@"half0"];
+    checkMarkPathCollection = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    checkMarkPathCollection2 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    paths2 = [checkMarkPathCollection2 paths];
+    v31 = [paths2 objectForKeyedSubscript:@"none"];
+    checkMarkPathCollection3 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+    defaultPath3 = [checkMarkPathCollection3 paths];
+    v34 = [defaultPath3 objectForKeyedSubscript:@"half0"];
     *&v35 = fminf(fmaxf(v27 / 0.3, 0.0), 1.0);
-    [v28 blendPath:v31 withPath:v34 byAmount:v35];
+    [checkMarkPathCollection blendPath:v31 withPath:v34 byAmount:v35];
   }
 
 LABEL_8:
-  v38 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkData];
-  v39 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-  v40 = [v39 controlPointState];
-  v41 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
-  v42 = [v41 defaultPath];
-  [v38 updateControlPointBufferWithData:v40 count:{objc_msgSend(v42, "controlPointsCount")}];
+  checkMarkData = [(BKUIPearlCrossHairsRenderingView *)self checkMarkData];
+  checkMarkPathCollection4 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+  controlPointState = [checkMarkPathCollection4 controlPointState];
+  checkMarkPathCollection5 = [(BKUIPearlCrossHairsRenderingView *)self checkMarkPathCollection];
+  defaultPath4 = [checkMarkPathCollection5 defaultPath];
+  [checkMarkData updateControlPointBufferWithData:controlPointState count:{objc_msgSend(defaultPath4, "controlPointsCount")}];
 
-  v43 = [(MTKView *)self currentRenderPassDescriptor];
-  if (v43)
+  currentRenderPassDescriptor = [(MTKView *)self currentRenderPassDescriptor];
+  if (currentRenderPassDescriptor)
   {
-    v44 = [(BKUIPearlCrossHairsRenderingView *)self renderer];
-    [v44 renderWithCommandBuffer:v47];
+    renderer = [(BKUIPearlCrossHairsRenderingView *)self renderer];
+    [renderer renderWithCommandBuffer:v47];
 
-    v45 = [(MTKView *)self currentDrawable];
-    [v47 presentDrawable:v45];
+    currentDrawable = [(MTKView *)self currentDrawable];
+    [v47 presentDrawable:currentDrawable];
   }
 
   [v47 commit];

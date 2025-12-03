@@ -1,14 +1,14 @@
 @interface IKJSDeviceSettings
 - (CGSize)screen;
 - (IKAppDeviceConfig)deviceConfig;
-- (IKJSDeviceSettings)initWithAppContext:(id)a3 deviceConfig:(id)a4;
+- (IKJSDeviceSettings)initWithAppContext:(id)context deviceConfig:(id)config;
 - (IKJSRestrictions)restrictions;
 - (NSString)language;
 - (NSString)name;
 - (NSString)preferredVideoFormat;
 - (NSString)preferredVideoPreviewFormat;
 - (NSString)storefrontCountryCode;
-- (id)_formatStringForVideoFormat:(unint64_t)a3;
+- (id)_formatStringForVideoFormat:(unint64_t)format;
 - (id)asPrivateIKJSDeviceSettings;
 - (void)dealloc;
 @end
@@ -19,39 +19,39 @@
 {
   if ([(IKJSDeviceSettings *)self conformsToProtocol:&unk_2867037F8])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (IKJSDeviceSettings)initWithAppContext:(id)a3 deviceConfig:(id)a4
+- (IKJSDeviceSettings)initWithAppContext:(id)context deviceConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = IKJSDeviceSettings;
-  v8 = [(IKJSObject *)&v18 initWithAppContext:v6];
+  v8 = [(IKJSObject *)&v18 initWithAppContext:contextCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_deviceConfig, v7);
+    objc_storeWeak(&v8->_deviceConfig, configCopy);
     v10 = +[IKJSRestrictions restrictionsDidChangeNotificationName];
     if ([v10 length])
     {
       objc_initWeak(&location, v9);
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __54__IKJSDeviceSettings_initWithAppContext_deviceConfig___block_invoke;
       v15[3] = &unk_27979A088;
       objc_copyWeak(&v16, &location);
-      v12 = [v11 addObserverForName:v10 object:0 queue:0 usingBlock:v15];
+      v12 = [defaultCenter addObserverForName:v10 object:0 queue:0 usingBlock:v15];
       restrictionDidChangeToken = v9->_restrictionDidChangeToken;
       v9->_restrictionDidChangeToken = v12;
 
@@ -98,8 +98,8 @@ void __54__IKJSDeviceSettings_initWithAppContext_deviceConfig___block_invoke_2(u
 {
   if (self->_restrictionDidChangeToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_restrictionDidChangeToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_restrictionDidChangeToken];
   }
 
   v4.receiver = self;
@@ -109,10 +109,10 @@ void __54__IKJSDeviceSettings_initWithAppContext_deviceConfig___block_invoke_2(u
 
 - (NSString)name
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 name];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  name = [currentDevice name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)language
@@ -123,14 +123,14 @@ void __54__IKJSDeviceSettings_initWithAppContext_deviceConfig___block_invoke_2(u
   v10 = __Block_byref_object_copy__18;
   v11 = __Block_byref_object_dispose__18;
   v12 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__IKJSDeviceSettings_language__block_invoke;
   v6[3] = &unk_279799028;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -155,14 +155,14 @@ void __30__IKJSDeviceSettings_language__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__18;
   v11 = __Block_byref_object_dispose__18;
   v12 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__IKJSDeviceSettings_storefrontCountryCode__block_invoke;
   v6[3] = &unk_279799028;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -185,14 +185,14 @@ void __43__IKJSDeviceSettings_storefrontCountryCode__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__IKJSDeviceSettings_preferredVideoFormat__block_invoke;
   v6[3] = &unk_279799028;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = [(IKJSDeviceSettings *)self _formatStringForVideoFormat:v8[3]];
   _Block_object_dispose(&v7, 8);
@@ -212,14 +212,14 @@ void __42__IKJSDeviceSettings_preferredVideoFormat__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__IKJSDeviceSettings_preferredVideoPreviewFormat__block_invoke;
   v6[3] = &unk_279799028;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = [(IKJSDeviceSettings *)self _formatStringForVideoFormat:v8[3]];
   _Block_object_dispose(&v7, 8);
@@ -241,14 +241,14 @@ void __49__IKJSDeviceSettings_preferredVideoPreviewFormat__block_invoke(uint64_t
   v13 = 0;
   v14 = 0;
   v12 = &unk_254A77479;
-  v3 = [(IKJSObject *)self appContext];
+  appContext = [(IKJSObject *)self appContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __28__IKJSDeviceSettings_screen__block_invoke;
   v8[3] = &unk_279799028;
   v8[4] = self;
   v8[5] = &v9;
-  [v3 evaluateDelegateBlockSync:v8];
+  [appContext evaluateDelegateBlockSync:v8];
 
   v4 = v10[4];
   v5 = v10[5];
@@ -272,21 +272,21 @@ void __28__IKJSDeviceSettings_screen__block_invoke(uint64_t a1)
 - (IKJSRestrictions)restrictions
 {
   v3 = [IKJSRestrictions alloc];
-  v4 = [(IKJSObject *)self appContext];
-  v5 = [(IKJSObject *)v3 initWithAppContext:v4];
+  appContext = [(IKJSObject *)self appContext];
+  v5 = [(IKJSObject *)v3 initWithAppContext:appContext];
 
   return v5;
 }
 
-- (id)_formatStringForVideoFormat:(unint64_t)a3
+- (id)_formatStringForVideoFormat:(unint64_t)format
 {
   v3 = @"SD";
-  if (a3 != 1)
+  if (format != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (format)
   {
     return v3;
   }

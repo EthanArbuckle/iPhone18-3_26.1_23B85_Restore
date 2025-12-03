@@ -1,46 +1,46 @@
 @interface UIAlertControllerVisualStyle
-+ (void)positionContentsOfAlertController:(id)a3 alertContentView:(id)a4 availableSpaceView:(id)a5 visualStyle:(id)a6 updatableConstraints:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)positionContentsOfAlertController:(id)controller alertContentView:(id)view availableSpaceView:(id)spaceView visualStyle:(id)style updatableConstraints:(id)constraints;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)collectionViewOutsetSize;
 - (CGSize)contentShadowOffset;
 - (CGSize)minimumActionContentSize;
 - (UIAlertControllerVisualStyle)init;
 - (UIEdgeInsets)actionImageMarginForAction;
 - (UIEdgeInsets)actionSequenceEdgeInsets;
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (UIEdgeInsets)textFieldContentInset;
 - (UIWindow)window;
 - (double)_labelHorizontalInsets;
 - (double)_scaledMarginAboveDetailMessageFirstBaseline;
 - (double)_scaledMarginAboveMessageLabelFirstBaseline;
-- (double)_scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:(id)a3 titleText:(id)a4;
+- (double)_scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:(id)view titleText:(id)text;
 - (double)_scaledMarginBelowDetailMessage;
 - (double)_scaledMarginBelowLastLabelLastBaseline;
 - (double)_scaledMarginBelowMessageLabelLastBaseline;
 - (double)_scaledMarginBelowTitleLabelLastBaseline;
-- (double)_scaledMessageSafeBaselineHeightInAlertControllerView:(id)a3;
-- (double)_scaledSafeBaselineHeightForLabelFont:(id)a3 inAlertControllerView:(id)a4;
-- (double)_scaledTitleLabelSafeBaselineHeightInAlertControllerView:(id)a3;
+- (double)_scaledMessageSafeBaselineHeightInAlertControllerView:(id)view;
+- (double)_scaledSafeBaselineHeightForLabelFont:(id)font inAlertControllerView:(id)view;
+- (double)_scaledTitleLabelSafeBaselineHeightInAlertControllerView:(id)view;
 - (double)accessibilityWidth;
-- (double)actionSpacingForHorizontalLayout:(BOOL)a3;
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4;
+- (double)actionSpacingForHorizontalLayout:(BOOL)layout;
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth;
 - (double)contentCornerRadius;
 - (double)contentHorizontalMargin;
 - (double)contentVerticalMargin;
-- (double)maximumHeightForDisplayOnScreen:(id)a3;
+- (double)maximumHeightForDisplayOnScreen:(id)screen;
 - (double)textFieldCornerRadius;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultActionFont;
-- (id)dimmingViewForAlertController:(id)a3;
+- (id)dimmingViewForAlertController:(id)controller;
 - (id)preferredActionFont;
 - (id)regularActionFont;
 - (id)titleLabelFont;
 - (void)_reloadInterfaceActionVisualStyle;
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5;
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5;
-- (void)setDescriptor:(id)a3;
-- (void)setForcedInterfaceIdiom:(int64_t)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state;
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state;
+- (void)setDescriptor:(id)descriptor;
+- (void)setForcedInterfaceIdiom:(int64_t)idiom;
+- (void)setTraitCollection:(id)collection;
 @end
 
 @implementation UIAlertControllerVisualStyle
@@ -54,10 +54,10 @@
   if (v2)
   {
     v2->_forcedInterfaceIdiom = -1;
-    v4 = [objc_opt_self() mainScreen];
-    v5 = [v4 traitCollection];
+    mainScreen = [objc_opt_self() mainScreen];
+    traitCollection = [mainScreen traitCollection];
     traitCollection = v3->_traitCollection;
-    v3->_traitCollection = v5;
+    v3->_traitCollection = traitCollection;
 
     [(UIAlertControllerVisualStyle *)v3 _reloadInterfaceActionVisualStyle];
   }
@@ -65,20 +65,20 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
-    v8 = [(UIAlertControllerVisualStyle *)self traitCollection];
-    v9 = [v7 traitCollection];
-    if ([v8 isEqual:v9])
+    v7 = equalCopy;
+    traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+    traitCollection2 = [v7 traitCollection];
+    if ([traitCollection isEqual:traitCollection2])
     {
-      v10 = [(UIAlertControllerVisualStyle *)self descriptor];
-      v11 = [v7 descriptor];
-      v6 = [v10 isEqual:v11];
+      descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+      descriptor2 = [v7 descriptor];
+      v6 = [descriptor isEqual:descriptor2];
     }
 
     else
@@ -95,59 +95,59 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  v7 = [descriptor copyWithZone:zone];
   v8 = v5[1];
   v5[1] = v7;
 
-  v9 = [(UIAlertControllerVisualStyle *)self traitCollection];
-  v10 = [v9 copyWithZone:a3];
+  traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+  v10 = [traitCollection copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
   return v5;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   if (![(UITraitCollection *)self->_traitCollection isEqual:?])
   {
-    objc_storeStrong(&self->_traitCollection, a3);
+    objc_storeStrong(&self->_traitCollection, collection);
     [(UIAlertControllerVisualStyle *)self _reloadInterfaceActionVisualStyle];
   }
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   if (![(UIAlertControllerDescriptor *)self->_descriptor isEqual:?])
   {
-    objc_storeStrong(&self->_descriptor, a3);
+    objc_storeStrong(&self->_descriptor, descriptor);
     [(UIAlertControllerVisualStyle *)self _reloadInterfaceActionVisualStyle];
   }
 }
 
-- (void)setForcedInterfaceIdiom:(int64_t)a3
+- (void)setForcedInterfaceIdiom:(int64_t)idiom
 {
-  if (self->_forcedInterfaceIdiom != a3)
+  if (self->_forcedInterfaceIdiom != idiom)
   {
-    self->_forcedInterfaceIdiom = a3;
+    self->_forcedInterfaceIdiom = idiom;
     [(UIAlertControllerVisualStyle *)self _reloadInterfaceActionVisualStyle];
   }
 }
 
 - (void)_reloadInterfaceActionVisualStyle
 {
-  v3 = [(UIAlertControllerVisualStyle *)self traitCollection];
-  v4 = v3;
+  traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+  v4 = traitCollection;
   forcedInterfaceIdiom = self->_forcedInterfaceIdiom;
   if (forcedInterfaceIdiom != -1)
   {
-    v6 = [v3 _traitCollectionByReplacingNSIntegerValue:forcedInterfaceIdiom forTraitToken:0x1EFE32398];
+    v6 = [traitCollection _traitCollectionByReplacingNSIntegerValue:forcedInterfaceIdiom forTraitToken:0x1EFE32398];
 
     v4 = v6;
   }
@@ -198,8 +198,8 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (id)titleLabelFont
 {
-  v2 = [(UIAlertControllerVisualStyle *)self traitCollection];
-  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline" compatibleWithTraitCollection:v2];
+  traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+  v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline" compatibleWithTraitCollection:traitCollection];
 
   return v3;
 }
@@ -211,13 +211,13 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
     return 0.0;
   }
 
-  v3 = [(UIAlertControllerVisualStyle *)self window];
-  v4 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(v3);
+  window = [(UIAlertControllerVisualStyle *)self window];
+  v4 = _accessibilityMaximumWidthWhenUsingAccessibilitySizes(window);
 
   return v4;
 }
 
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth
 {
   if (_UISolariumEnabled())
   {
@@ -228,14 +228,14 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return result;
 }
 
-- (double)maximumHeightForDisplayOnScreen:(id)a3
+- (double)maximumHeightForDisplayOnScreen:(id)screen
 {
-  [a3 _applicationFrame];
+  [screen _applicationFrame];
 
   return CGRectGetHeight(*&v3);
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -248,37 +248,37 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return result;
 }
 
-+ (void)positionContentsOfAlertController:(id)a3 alertContentView:(id)a4 availableSpaceView:(id)a5 visualStyle:(id)a6 updatableConstraints:(id)a7
++ (void)positionContentsOfAlertController:(id)controller alertContentView:(id)view availableSpaceView:(id)spaceView visualStyle:(id)style updatableConstraints:(id)constraints
 {
-  v21 = a4;
-  v9 = a5;
+  viewCopy = view;
+  spaceViewCopy = spaceView;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a6;
-  v12 = [v10 array];
-  v13 = [v21 centerXAnchor];
-  v14 = [v9 safeAreaLayoutGuide];
-  v15 = [v14 centerXAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
-  [v12 addObject:v16];
+  styleCopy = style;
+  array = [v10 array];
+  centerXAnchor = [viewCopy centerXAnchor];
+  safeAreaLayoutGuide = [spaceViewCopy safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v16 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v16];
 
-  LODWORD(v13) = [v11 shouldCenterVertically];
-  if (v13)
+  LODWORD(centerXAnchor) = [styleCopy shouldCenterVertically];
+  if (centerXAnchor)
   {
-    v17 = [v21 centerYAnchor];
-    v18 = [v9 safeAreaLayoutGuide];
-    v19 = [v18 centerYAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
-    [v12 addObject:v20];
+    centerYAnchor = [viewCopy centerYAnchor];
+    safeAreaLayoutGuide2 = [spaceViewCopy safeAreaLayoutGuide];
+    centerYAnchor2 = [safeAreaLayoutGuide2 centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v20];
   }
 
-  [MEMORY[0x1E69977A0] activateConstraints:v12];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
 }
 
 - (id)defaultActionFont
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
   v3 = [UIInterfaceActionViewState _nullViewStateForActionType:0];
-  v4 = [v2 actionTitleLabelFontForViewState:v3];
+  v4 = [interfaceActionVisualStyle actionTitleLabelFontForViewState:v3];
 
   return v4;
 }
@@ -317,7 +317,7 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return result;
 }
 
-- (id)dimmingViewForAlertController:(id)a3
+- (id)dimmingViewForAlertController:(id)controller
 {
   v3 = [UIView alloc];
   v4 = [(UIView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -351,8 +351,8 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (UIEdgeInsets)actionSequenceEdgeInsets
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v2 actionSequenceEdgeInsets];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle actionSequenceEdgeInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -371,24 +371,24 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (id)regularActionFont
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  v3 = [v2 defaultConcreteActionTitleLabelRegularFont];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  defaultConcreteActionTitleLabelRegularFont = [interfaceActionVisualStyle defaultConcreteActionTitleLabelRegularFont];
 
-  return v3;
+  return defaultConcreteActionTitleLabelRegularFont;
 }
 
 - (id)preferredActionFont
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  v3 = [v2 defaultConcreteActionTitleLabelPreferredFont];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  defaultConcreteActionTitleLabelPreferredFont = [interfaceActionVisualStyle defaultConcreteActionTitleLabelPreferredFont];
 
-  return v3;
+  return defaultConcreteActionTitleLabelPreferredFont;
 }
 
 - (CGSize)minimumActionContentSize
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v2 minimumActionContentSize];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle minimumActionContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -401,8 +401,8 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)contentHorizontalMargin
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v2 contentMargin];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle contentMargin];
   v4 = v3;
 
   return v4;
@@ -410,8 +410,8 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)contentVerticalMargin
 {
-  v2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v2 contentMargin];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle contentMargin];
   v4 = v3;
 
   return v4;
@@ -419,12 +419,12 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (UIEdgeInsets)actionImageMarginForAction
 {
-  v3 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v3 verticalImageContentSpacing];
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle verticalImageContentSpacing];
   v5 = v4;
 
-  v6 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v6 horizontalImageContentSpacing];
+  interfaceActionVisualStyle2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle2 horizontalImageContentSpacing];
   v8 = v7;
 
   v9 = v5;
@@ -438,22 +438,22 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return result;
 }
 
-- (void)configureAttributesForTitleLabel:(id)a3 classificationLabel:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForTitleLabel:(id)label classificationLabel:(id)classificationLabel actionViewState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v11 configureAttributesForTitleLabel:v10 classificationLabel:v9 actionViewState:v8];
+  stateCopy = state;
+  classificationLabelCopy = classificationLabel;
+  labelCopy = label;
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle configureAttributesForTitleLabel:labelCopy classificationLabel:classificationLabelCopy actionViewState:stateCopy];
 }
 
-- (void)configureAttributesForImageView:(id)a3 imageProperty:(id)a4 actionViewState:(id)a5
+- (void)configureAttributesForImageView:(id)view imageProperty:(id)property actionViewState:(id)state
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v11 configureAttributesForImageView:v10 imageProperty:v9 actionViewState:v8];
+  stateCopy = state;
+  propertyCopy = property;
+  viewCopy = view;
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle configureAttributesForImageView:viewCopy imageProperty:propertyCopy actionViewState:stateCopy];
 }
 
 - (double)_labelHorizontalInsets
@@ -468,16 +468,16 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return result;
 }
 
-- (double)_scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:(id)a3 titleText:(id)a4
+- (double)_scaledMarginAboveTitleLabelFirstBaselineInAlertControllerView:(id)view titleText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIAlertControllerVisualStyle *)self titleLabelFont];
+  viewCopy = view;
+  textCopy = text;
+  titleLabelFont = [(UIAlertControllerVisualStyle *)self titleLabelFont];
   [(UIAlertControllerVisualStyle *)self marginAboveTitleLabelFirstBaseline];
-  [v8 _scaledValueForValue:?];
+  [titleLabelFont _scaledValueForValue:?];
   v10 = v9;
 
-  v11 = v7;
+  v11 = textCopy;
   if ([v11 length])
   {
     v12 = +[UILabel _tooBigChars];
@@ -485,7 +485,7 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
     if (v13 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(UIAlertControllerVisualStyle *)self _scaledTitleLabelSafeBaselineHeightInAlertControllerView:v6];
+      [(UIAlertControllerVisualStyle *)self _scaledTitleLabelSafeBaselineHeightInAlertControllerView:viewCopy];
       if (v10 < v14)
       {
         v10 = v14;
@@ -500,34 +500,34 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
   return v10;
 }
 
-- (double)_scaledSafeBaselineHeightForLabelFont:(id)a3 inAlertControllerView:(id)a4
+- (double)_scaledSafeBaselineHeightForLabelFont:(id)font inAlertControllerView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
+  viewCopy = view;
+  fontCopy = font;
   CTFontGetLanguageAwareOutsets();
-  [v6 ascender];
+  [fontCopy ascender];
 
-  UICeilToViewScale(v5);
+  UICeilToViewScale(viewCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (double)_scaledTitleLabelSafeBaselineHeightInAlertControllerView:(id)a3
+- (double)_scaledTitleLabelSafeBaselineHeightInAlertControllerView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIAlertControllerVisualStyle *)self titleLabelFont];
-  [(UIAlertControllerVisualStyle *)self _scaledSafeBaselineHeightForLabelFont:v5 inAlertControllerView:v4];
+  viewCopy = view;
+  titleLabelFont = [(UIAlertControllerVisualStyle *)self titleLabelFont];
+  [(UIAlertControllerVisualStyle *)self _scaledSafeBaselineHeightForLabelFont:titleLabelFont inAlertControllerView:viewCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (double)_scaledMessageSafeBaselineHeightInAlertControllerView:(id)a3
+- (double)_scaledMessageSafeBaselineHeightInAlertControllerView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIAlertControllerVisualStyle *)self messageLabelFont];
-  [(UIAlertControllerVisualStyle *)self _scaledSafeBaselineHeightForLabelFont:v5 inAlertControllerView:v4];
+  viewCopy = view;
+  messageLabelFont = [(UIAlertControllerVisualStyle *)self messageLabelFont];
+  [(UIAlertControllerVisualStyle *)self _scaledSafeBaselineHeightForLabelFont:messageLabelFont inAlertControllerView:viewCopy];
   v7 = v6;
 
   return v7;
@@ -535,9 +535,9 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginBelowTitleLabelLastBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self titleLabelFont];
+  titleLabelFont = [(UIAlertControllerVisualStyle *)self titleLabelFont];
   [(UIAlertControllerVisualStyle *)self marginBelowTitleLabelLastBaseline];
-  [v3 _scaledValueForValue:?];
+  [titleLabelFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -545,9 +545,9 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginAboveMessageLabelFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self messageLabelFont];
+  messageLabelFont = [(UIAlertControllerVisualStyle *)self messageLabelFont];
   [(UIAlertControllerVisualStyle *)self marginAboveMessageLabelFirstBaseline];
-  [v3 _scaledValueForValue:?];
+  [messageLabelFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -555,9 +555,9 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginBelowMessageLabelLastBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self messageLabelFont];
+  messageLabelFont = [(UIAlertControllerVisualStyle *)self messageLabelFont];
   [(UIAlertControllerVisualStyle *)self marginBelowMessageLabelLastBaseline];
-  [v3 _scaledValueForValue:?];
+  [messageLabelFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -565,9 +565,9 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginBelowLastLabelLastBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self titleLabelFont];
+  titleLabelFont = [(UIAlertControllerVisualStyle *)self titleLabelFont];
   [(UIAlertControllerVisualStyle *)self marginBelowLastLabelLastBaseline];
-  [v3 _scaledValueForValue:?];
+  [titleLabelFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -575,9 +575,9 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginAboveDetailMessageFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self _detailMessageFont];
+  _detailMessageFont = [(UIAlertControllerVisualStyle *)self _detailMessageFont];
   [(UIAlertControllerVisualStyle *)self _marginAboveDetailMessageFirstBaseline];
-  [v3 _scaledValueForValue:?];
+  [_detailMessageFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
@@ -585,23 +585,23 @@ id __65__UIAlertControllerVisualStyle__reloadInterfaceActionVisualStyle__block_i
 
 - (double)_scaledMarginBelowDetailMessage
 {
-  v3 = [(UIAlertControllerVisualStyle *)self _detailMessageFont];
+  _detailMessageFont = [(UIAlertControllerVisualStyle *)self _detailMessageFont];
   [(UIAlertControllerVisualStyle *)self _marginBelowDetailMessage];
-  [v3 _scaledValueForValue:?];
+  [_detailMessageFont _scaledValueForValue:?];
   v5 = v4;
 
   return v5;
 }
 
-- (double)actionSpacingForHorizontalLayout:(BOOL)a3
+- (double)actionSpacingForHorizontalLayout:(BOOL)layout
 {
-  v3 = a3;
-  v5 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  v6 = [v5 groupViewState];
+  layoutCopy = layout;
+  interfaceActionVisualStyle = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  groupViewState = [interfaceActionVisualStyle groupViewState];
 
-  v7 = [v6 copyWithVerticalLayoutAxis:!v3];
-  v8 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
-  [v8 actionSpacingForGroupViewState:v7];
+  v7 = [groupViewState copyWithVerticalLayoutAxis:!layoutCopy];
+  interfaceActionVisualStyle2 = [(UIAlertControllerVisualStyle *)self interfaceActionVisualStyle];
+  [interfaceActionVisualStyle2 actionSpacingForGroupViewState:v7];
   v10 = v9;
 
   return v10;

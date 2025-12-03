@@ -1,13 +1,13 @@
 @interface SUCoreScanParam
 - (SUCoreScanParam)init;
-- (SUCoreScanParam)initWithCoder:(id)a3;
-- (SUCoreScanParam)initWithDescriptor:(id)a3 withFallbackDescriptor:(id)a4;
-- (SUCoreScanParam)initWithMajorPrimaryDescriptor:(id)a3 majorSecondaryDescriptor:(id)a4 minorPrimaryDescriptor:(id)a5 minorSecondaryDescriptor:(id)a6;
-- (SUCoreScanParam)initWithNote:(id)a3;
-- (SUCoreScanParam)initWithResult:(int64_t)a3 withError:(id)a4;
+- (SUCoreScanParam)initWithCoder:(id)coder;
+- (SUCoreScanParam)initWithDescriptor:(id)descriptor withFallbackDescriptor:(id)fallbackDescriptor;
+- (SUCoreScanParam)initWithMajorPrimaryDescriptor:(id)descriptor majorSecondaryDescriptor:(id)secondaryDescriptor minorPrimaryDescriptor:(id)primaryDescriptor minorSecondaryDescriptor:(id)minorSecondaryDescriptor;
+- (SUCoreScanParam)initWithNote:(id)note;
+- (SUCoreScanParam)initWithResult:(int64_t)result withError:(id)error;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreScanParam
@@ -54,115 +54,115 @@
   return v3;
 }
 
-- (SUCoreScanParam)initWithResult:(int64_t)a3 withError:(id)a4
+- (SUCoreScanParam)initWithResult:(int64_t)result withError:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v8 = [(SUCoreScanParam *)self init];
   v9 = v8;
   if (v8)
   {
     v8->_type = 1;
-    v8->_resultCode = a3;
-    objc_storeStrong(&v8->_error, a4);
+    v8->_resultCode = result;
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;
 }
 
-- (SUCoreScanParam)initWithDescriptor:(id)a3 withFallbackDescriptor:(id)a4
+- (SUCoreScanParam)initWithDescriptor:(id)descriptor withFallbackDescriptor:(id)fallbackDescriptor
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  fallbackDescriptorCopy = fallbackDescriptor;
   v9 = [(SUCoreScanParam *)self init];
   v10 = v9;
   if (v9)
   {
     v9->_type = 2;
-    objc_storeStrong(&v9->_descriptor, a3);
-    objc_storeStrong(&v10->_fallbackDescriptor, a4);
+    objc_storeStrong(&v9->_descriptor, descriptor);
+    objc_storeStrong(&v10->_fallbackDescriptor, fallbackDescriptor);
   }
 
   return v10;
 }
 
-- (SUCoreScanParam)initWithMajorPrimaryDescriptor:(id)a3 majorSecondaryDescriptor:(id)a4 minorPrimaryDescriptor:(id)a5 minorSecondaryDescriptor:(id)a6
+- (SUCoreScanParam)initWithMajorPrimaryDescriptor:(id)descriptor majorSecondaryDescriptor:(id)secondaryDescriptor minorPrimaryDescriptor:(id)primaryDescriptor minorSecondaryDescriptor:(id)minorSecondaryDescriptor
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  descriptorCopy = descriptor;
+  secondaryDescriptorCopy = secondaryDescriptor;
+  primaryDescriptorCopy = primaryDescriptor;
+  minorSecondaryDescriptorCopy = minorSecondaryDescriptor;
   v15 = [(SUCoreScanParam *)self init];
   v16 = v15;
   if (v15)
   {
     v15->_type = 3;
-    objc_storeStrong(&v15->_majorPrimaryDescriptor, a3);
-    objc_storeStrong(&v16->_majorSecondaryDescriptor, a4);
-    objc_storeStrong(&v16->_minorPrimaryDescriptor, a5);
-    objc_storeStrong(&v16->_minorSecondaryDescriptor, a6);
+    objc_storeStrong(&v15->_majorPrimaryDescriptor, descriptor);
+    objc_storeStrong(&v16->_majorSecondaryDescriptor, secondaryDescriptor);
+    objc_storeStrong(&v16->_minorPrimaryDescriptor, primaryDescriptor);
+    objc_storeStrong(&v16->_minorSecondaryDescriptor, minorSecondaryDescriptor);
   }
 
   return v16;
 }
 
-- (SUCoreScanParam)initWithNote:(id)a3
+- (SUCoreScanParam)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v6 = [(SUCoreScanParam *)self init];
   v7 = v6;
   if (v6)
   {
     v6->_type = 4;
-    objc_storeStrong(&v6->_note, a3);
+    objc_storeStrong(&v6->_note, note);
   }
 
   return v7;
 }
 
-- (SUCoreScanParam)initWithCoder:(id)a3
+- (SUCoreScanParam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = SUCoreScanParam;
   v5 = [(SUCoreScanParam *)&v27 init];
   if (v5)
   {
-    v5->_resultCode = [v4 decodeInt64ForKey:@"resultCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error"];
-    v7 = [MEMORY[0x277D643F8] sharedCore];
-    v8 = [v7 buildError:v5->_resultCode underlying:0 description:v6];
+    v5->_resultCode = [coderCopy decodeInt64ForKey:@"resultCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error"];
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v8 = [mEMORY[0x277D643F8] buildError:v5->_resultCode underlying:0 description:v6];
     error = v5->_error;
     v5->_error = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"descriptor"];
     descriptor = v5->_descriptor;
     v5->_descriptor = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fallbackDescriptor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallbackDescriptor"];
     fallbackDescriptor = v5->_fallbackDescriptor;
     v5->_fallbackDescriptor = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"majorPrimaryDescriptor"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"majorPrimaryDescriptor"];
     majorPrimaryDescriptor = v5->_majorPrimaryDescriptor;
     v5->_majorPrimaryDescriptor = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"majorSecondaryDescriptor"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"majorSecondaryDescriptor"];
     majorSecondaryDescriptor = v5->_majorSecondaryDescriptor;
     v5->_majorSecondaryDescriptor = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minorPrimaryDescriptor"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minorPrimaryDescriptor"];
     minorPrimaryDescriptor = v5->_minorPrimaryDescriptor;
     v5->_minorPrimaryDescriptor = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minorSecondaryDescriptor"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minorSecondaryDescriptor"];
     minorSecondaryDescriptor = v5->_minorSecondaryDescriptor;
     v5->_minorSecondaryDescriptor = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"note"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"note"];
     note = v5->_note;
     v5->_note = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"additionalInfo"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"additionalInfo"];
     additionalInfo = v5->_additionalInfo;
     v5->_additionalInfo = v24;
   }
@@ -170,38 +170,38 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SUCoreScanParam resultCode](self forKey:{"resultCode"), @"resultCode"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SUCoreScanParam resultCode](self forKey:{"resultCode"), @"resultCode"}];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
-  v6 = [(SUCoreScanParam *)self error];
-  v15 = [v5 initWithFormat:@"%@", v6];
+  error = [(SUCoreScanParam *)self error];
+  v15 = [v5 initWithFormat:@"%@", error];
 
-  [v4 encodeObject:v15 forKey:@"error"];
-  v7 = [(SUCoreScanParam *)self descriptor];
-  [v4 encodeObject:v7 forKey:@"descriptor"];
+  [coderCopy encodeObject:v15 forKey:@"error"];
+  descriptor = [(SUCoreScanParam *)self descriptor];
+  [coderCopy encodeObject:descriptor forKey:@"descriptor"];
 
-  v8 = [(SUCoreScanParam *)self fallbackDescriptor];
-  [v4 encodeObject:v8 forKey:@"fallbackDescriptor"];
+  fallbackDescriptor = [(SUCoreScanParam *)self fallbackDescriptor];
+  [coderCopy encodeObject:fallbackDescriptor forKey:@"fallbackDescriptor"];
 
-  v9 = [(SUCoreScanParam *)self majorPrimaryDescriptor];
-  [v4 encodeObject:v9 forKey:@"majorPrimaryDescriptor"];
+  majorPrimaryDescriptor = [(SUCoreScanParam *)self majorPrimaryDescriptor];
+  [coderCopy encodeObject:majorPrimaryDescriptor forKey:@"majorPrimaryDescriptor"];
 
-  v10 = [(SUCoreScanParam *)self majorSecondaryDescriptor];
-  [v4 encodeObject:v10 forKey:@"majorSecondaryDescriptor"];
+  majorSecondaryDescriptor = [(SUCoreScanParam *)self majorSecondaryDescriptor];
+  [coderCopy encodeObject:majorSecondaryDescriptor forKey:@"majorSecondaryDescriptor"];
 
-  v11 = [(SUCoreScanParam *)self minorPrimaryDescriptor];
-  [v4 encodeObject:v11 forKey:@"minorPrimaryDescriptor"];
+  minorPrimaryDescriptor = [(SUCoreScanParam *)self minorPrimaryDescriptor];
+  [coderCopy encodeObject:minorPrimaryDescriptor forKey:@"minorPrimaryDescriptor"];
 
-  v12 = [(SUCoreScanParam *)self minorSecondaryDescriptor];
-  [v4 encodeObject:v12 forKey:@"minorSecondaryDescriptor"];
+  minorSecondaryDescriptor = [(SUCoreScanParam *)self minorSecondaryDescriptor];
+  [coderCopy encodeObject:minorSecondaryDescriptor forKey:@"minorSecondaryDescriptor"];
 
-  v13 = [(SUCoreScanParam *)self note];
-  [v4 encodeObject:v13 forKey:@"note"];
+  note = [(SUCoreScanParam *)self note];
+  [coderCopy encodeObject:note forKey:@"note"];
 
-  v14 = [(SUCoreScanParam *)self additionalInfo];
-  [v4 encodeObject:v14 forKey:@"additionalInfo"];
+  additionalInfo = [(SUCoreScanParam *)self additionalInfo];
+  [coderCopy encodeObject:additionalInfo forKey:@"additionalInfo"];
 }
 
 - (id)description
@@ -213,22 +213,22 @@
   {
     if (type == 1)
     {
-      v13 = [(SUCoreScanParam *)self resultCode];
-      v14 = [(SUCoreScanParam *)self error];
-      v15 = [(SUCoreScanParam *)self additionalInfo];
-      v11 = [v5 initWithFormat:@"\n[>>>\n                   resultCode: %ld\n                        error: %@\n               additionalInfo: %@\n<<<]", v13, v14, v15];
+      resultCode = [(SUCoreScanParam *)self resultCode];
+      error = [(SUCoreScanParam *)self error];
+      additionalInfo = [(SUCoreScanParam *)self additionalInfo];
+      v11 = [v5 initWithFormat:@"\n[>>>\n                   resultCode: %ld\n                        error: %@\n               additionalInfo: %@\n<<<]", resultCode, error, additionalInfo];
 
       goto LABEL_13;
     }
 
     if (type == 2)
     {
-      v6 = [(SUCoreScanParam *)self descriptor];
-      v7 = [v6 summary];
-      v8 = [(SUCoreScanParam *)self fallbackDescriptor];
-      v9 = [v8 summary];
-      v10 = [(SUCoreScanParam *)self additionalInfo];
-      v11 = [v5 initWithFormat:@"\n[>>>\n                   descriptor: %@\n           fallbackDescriptor: %@\n               additionalInfo: %@\n<<<]", v7, v9, v10];
+      descriptor = [(SUCoreScanParam *)self descriptor];
+      summary = [descriptor summary];
+      fallbackDescriptor = [(SUCoreScanParam *)self fallbackDescriptor];
+      summary2 = [fallbackDescriptor summary];
+      additionalInfo2 = [(SUCoreScanParam *)self additionalInfo];
+      v11 = [v5 initWithFormat:@"\n[>>>\n                   descriptor: %@\n           fallbackDescriptor: %@\n               additionalInfo: %@\n<<<]", summary, summary2, additionalInfo2];
 
 LABEL_11:
       goto LABEL_12;
@@ -239,16 +239,16 @@ LABEL_11:
 
   if (type == 3)
   {
-    v6 = [(SUCoreScanParam *)self majorPrimaryDescriptor];
-    v7 = [v6 summary];
-    v8 = [(SUCoreScanParam *)self majorSecondaryDescriptor];
-    v9 = [v8 summary];
-    v16 = [(SUCoreScanParam *)self minorPrimaryDescriptor];
-    v17 = [v16 summary];
-    v18 = [(SUCoreScanParam *)self minorSecondaryDescriptor];
-    v19 = [v18 summary];
-    v20 = [(SUCoreScanParam *)self additionalInfo];
-    v11 = [v5 initWithFormat:@"\n[>>>\n       majorPrimaryDescriptor: %@\n     majorSecondaryDescriptor: %@\n       minorPrimaryDescriptor: %@\n     minorSecondaryDescriptor: %@\n               additionalInfo: %@\n<<<]", v7, v9, v17, v19, v20];
+    descriptor = [(SUCoreScanParam *)self majorPrimaryDescriptor];
+    summary = [descriptor summary];
+    fallbackDescriptor = [(SUCoreScanParam *)self majorSecondaryDescriptor];
+    summary2 = [fallbackDescriptor summary];
+    minorPrimaryDescriptor = [(SUCoreScanParam *)self minorPrimaryDescriptor];
+    summary3 = [minorPrimaryDescriptor summary];
+    minorSecondaryDescriptor = [(SUCoreScanParam *)self minorSecondaryDescriptor];
+    summary4 = [minorSecondaryDescriptor summary];
+    additionalInfo3 = [(SUCoreScanParam *)self additionalInfo];
+    v11 = [v5 initWithFormat:@"\n[>>>\n       majorPrimaryDescriptor: %@\n     majorSecondaryDescriptor: %@\n       minorPrimaryDescriptor: %@\n     minorSecondaryDescriptor: %@\n               additionalInfo: %@\n<<<]", summary, summary2, summary3, summary4, additionalInfo3];
 
     goto LABEL_11;
   }
@@ -260,9 +260,9 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v6 = [(SUCoreScanParam *)self note];
-  v12 = [(SUCoreScanParam *)self additionalInfo];
-  v11 = [v5 initWithFormat:@"\n[>>>\n          note: %@\nadditionalInfo: %@\n<<<]", v6, v12];
+  descriptor = [(SUCoreScanParam *)self note];
+  additionalInfo4 = [(SUCoreScanParam *)self additionalInfo];
+  v11 = [v5 initWithFormat:@"\n[>>>\n          note: %@\nadditionalInfo: %@\n<<<]", descriptor, additionalInfo4];
 
 LABEL_12:
 LABEL_13:
@@ -273,62 +273,62 @@ LABEL_13:
 - (id)summary
 {
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"resultCode:%ld", -[SUCoreScanParam resultCode](self, "resultCode")];
-  v4 = [(SUCoreScanParam *)self error];
+  error = [(SUCoreScanParam *)self error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [(SUCoreScanParam *)self error];
-    v6 = [v5 description];
+    error2 = [(SUCoreScanParam *)self error];
+    v6 = [error2 description];
     v7 = [v3 stringByAppendingFormat:@", errorDesc:%@", v6];
 
     v3 = v7;
   }
 
-  v8 = [(SUCoreScanParam *)self descriptor];
-  if (v8)
+  descriptor = [(SUCoreScanParam *)self descriptor];
+  if (descriptor)
   {
 
 LABEL_6:
-    v10 = [(SUCoreScanParam *)self descriptor];
-    v11 = [v10 summary];
-    v12 = [(SUCoreScanParam *)self fallbackDescriptor];
-    v13 = [v12 summary];
-    v14 = [v3 stringByAppendingFormat:@", descriptor:%@, fallbackDescriptor:%@", v11, v13];
+    descriptor2 = [(SUCoreScanParam *)self descriptor];
+    summary = [descriptor2 summary];
+    fallbackDescriptor = [(SUCoreScanParam *)self fallbackDescriptor];
+    summary2 = [fallbackDescriptor summary];
+    v14 = [v3 stringByAppendingFormat:@", descriptor:%@, fallbackDescriptor:%@", summary, summary2];
 
     v3 = v14;
     goto LABEL_7;
   }
 
-  v9 = [(SUCoreScanParam *)self fallbackDescriptor];
+  fallbackDescriptor2 = [(SUCoreScanParam *)self fallbackDescriptor];
 
-  if (v9)
+  if (fallbackDescriptor2)
   {
     goto LABEL_6;
   }
 
 LABEL_7:
-  v15 = [(SUCoreScanParam *)self majorPrimaryDescriptor];
-  if (v15 || ([(SUCoreScanParam *)self majorSecondaryDescriptor], (v15 = objc_claimAutoreleasedReturnValue()) != 0) || ([(SUCoreScanParam *)self minorPrimaryDescriptor], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  majorPrimaryDescriptor = [(SUCoreScanParam *)self majorPrimaryDescriptor];
+  if (majorPrimaryDescriptor || ([(SUCoreScanParam *)self majorSecondaryDescriptor], (majorPrimaryDescriptor = objc_claimAutoreleasedReturnValue()) != 0) || ([(SUCoreScanParam *)self minorPrimaryDescriptor], (majorPrimaryDescriptor = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_11:
-    v16 = [(SUCoreScanParam *)self majorPrimaryDescriptor];
-    v17 = [v16 summary];
-    v18 = [(SUCoreScanParam *)self majorSecondaryDescriptor];
-    v19 = [v18 summary];
-    v20 = [(SUCoreScanParam *)self minorPrimaryDescriptor];
-    v21 = [v20 summary];
-    v22 = [(SUCoreScanParam *)self minorSecondaryDescriptor];
-    v23 = [v22 summary];
-    v24 = [v3 stringByAppendingFormat:@", majorPrimaryDescriptor:%@, majorSecondaryDescriptor:%@, minorPrimaryDescriptor:%@, minorSecondaryDescriptor:%@", v17, v19, v21, v23];
+    majorPrimaryDescriptor2 = [(SUCoreScanParam *)self majorPrimaryDescriptor];
+    summary3 = [majorPrimaryDescriptor2 summary];
+    majorSecondaryDescriptor = [(SUCoreScanParam *)self majorSecondaryDescriptor];
+    summary4 = [majorSecondaryDescriptor summary];
+    minorPrimaryDescriptor = [(SUCoreScanParam *)self minorPrimaryDescriptor];
+    summary5 = [minorPrimaryDescriptor summary];
+    minorSecondaryDescriptor = [(SUCoreScanParam *)self minorSecondaryDescriptor];
+    summary6 = [minorSecondaryDescriptor summary];
+    v24 = [v3 stringByAppendingFormat:@", majorPrimaryDescriptor:%@, majorSecondaryDescriptor:%@, minorPrimaryDescriptor:%@, minorSecondaryDescriptor:%@", summary3, summary4, summary5, summary6];
 
     v3 = v24;
     goto LABEL_12;
   }
 
-  v26 = [(SUCoreScanParam *)self minorSecondaryDescriptor];
+  minorSecondaryDescriptor2 = [(SUCoreScanParam *)self minorSecondaryDescriptor];
 
-  if (v26)
+  if (minorSecondaryDescriptor2)
   {
     goto LABEL_11;
   }

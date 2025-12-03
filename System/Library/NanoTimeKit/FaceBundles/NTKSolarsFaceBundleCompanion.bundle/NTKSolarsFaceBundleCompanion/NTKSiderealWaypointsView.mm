@@ -1,29 +1,29 @@
 @interface NTKSiderealWaypointsView
-- (NTKSiderealWaypointsView)initWithFrame:(CGRect)a3 orbitDiameter:(double)a4 dialDiameter:(double)a5 waypoints:(id)a6;
-- (id)_newSeparatorLineForWaypoint:(id)a3;
+- (NTKSiderealWaypointsView)initWithFrame:(CGRect)frame orbitDiameter:(double)diameter dialDiameter:(double)dialDiameter waypoints:(id)waypoints;
+- (id)_newSeparatorLineForWaypoint:(id)waypoint;
 - (id)_newWaypointView;
 - (void)_updateSeparatorLines;
-- (void)setWaypoints:(id)a3;
+- (void)setWaypoints:(id)waypoints;
 @end
 
 @implementation NTKSiderealWaypointsView
 
-- (NTKSiderealWaypointsView)initWithFrame:(CGRect)a3 orbitDiameter:(double)a4 dialDiameter:(double)a5 waypoints:(id)a6
+- (NTKSiderealWaypointsView)initWithFrame:(CGRect)frame orbitDiameter:(double)diameter dialDiameter:(double)dialDiameter waypoints:(id)waypoints
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  waypointsCopy = waypoints;
   v39.receiver = self;
   v39.super_class = NTKSiderealWaypointsView;
-  v14 = [(NTKSiderealWaypointsView *)&v39 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(NTKSiderealWaypointsView *)&v39 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    v14->_orbitDiameter = a4;
-    v14->_dialDiameter = a5;
-    v14->_waypointDiameter = 3.5;
+    height->_orbitDiameter = diameter;
+    height->_dialDiameter = dialDiameter;
+    height->_waypointDiameter = 3.5;
     v16 = [UIView alloc];
     [(NTKSiderealWaypointsView *)v15 bounds];
     v17 = [v16 initWithFrame:?];
@@ -33,17 +33,17 @@
     [(UIView *)v15->_orbitContainerView setAlpha:0.25];
     [(UIView *)v15->_orbitContainerView setOpaque:0];
     [(UIView *)v15->_orbitContainerView setUserInteractionEnabled:0];
-    v19 = [(UIView *)v15->_orbitContainerView layer];
-    [v19 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v15->_orbitContainerView layer];
+    [layer setAllowsGroupOpacity:1];
 
-    v20 = [(UIView *)v15->_orbitContainerView layer];
-    [v20 setAllowsGroupBlending:1];
+    layer2 = [(UIView *)v15->_orbitContainerView layer];
+    [layer2 setAllowsGroupBlending:1];
 
-    v21 = [(UIView *)v15->_orbitContainerView layer];
-    [v21 setCompositingFilter:kCAFilterScreenBlendMode];
+    layer3 = [(UIView *)v15->_orbitContainerView layer];
+    [layer3 setCompositingFilter:kCAFilterScreenBlendMode];
 
     [(NTKSiderealWaypointsView *)v15 addSubview:v15->_orbitContainerView];
-    v22 = [[NTKBezierPathView alloc] initWithFrame:{0.0, 0.0, a4, a4}];
+    v22 = [[NTKBezierPathView alloc] initWithFrame:{0.0, 0.0, diameter, diameter}];
     [v22 bounds];
     v23 = [UIBezierPath bezierPathWithOvalInRect:?];
     [v23 setLineWidth:1.0];
@@ -83,18 +83,18 @@
     [(UIView *)v15->_orbitContainerView center];
     [(UIView *)v35 setCenter:?];
     [(UIView *)v15->_orbitContainerView addSubview:v15->_waypointContainerView];
-    [(NTKSiderealWaypointsView *)v15 setWaypoints:v13];
+    [(NTKSiderealWaypointsView *)v15 setWaypoints:waypointsCopy];
   }
 
   return v15;
 }
 
-- (void)setWaypoints:(id)a3
+- (void)setWaypoints:(id)waypoints
 {
-  v14 = a3;
-  objc_storeStrong(&self->_waypoints, a3);
-  v5 = [(UIView *)self->_waypointContainerView subviews];
-  [v5 makeObjectsPerformSelector:"removeFromSuperview"];
+  waypointsCopy = waypoints;
+  objc_storeStrong(&self->_waypoints, waypoints);
+  subviews = [(UIView *)self->_waypointContainerView subviews];
+  [subviews makeObjectsPerformSelector:"removeFromSuperview"];
 
   v17 = 0u;
   v18 = 0u;
@@ -117,15 +117,15 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(NTKSiderealWaypointsView *)self _newWaypointView];
+        _newWaypointView = [(NTKSiderealWaypointsView *)self _newWaypointView];
         orbitDiameter = self->_orbitDiameter;
         [(NTKSiderealWaypointsView *)self bounds];
         CLKRectGetCenter();
         [v11 degree];
         CLKDegreesToRadians();
         NTKPointOnCircle();
-        [v12 setCenter:?];
-        [(UIView *)self->_waypointContainerView addSubview:v12];
+        [_newWaypointView setCenter:?];
+        [(UIView *)self->_waypointContainerView addSubview:_newWaypointView];
 
         v10 = v10 + 1;
       }
@@ -189,8 +189,8 @@
 - (id)_newWaypointView
 {
   v3 = [[UIView alloc] initWithFrame:{0.0, 0.0, self->_waypointDiameter, self->_waypointDiameter}];
-  v4 = [v3 layer];
-  [v4 setCornerRadius:self->_waypointDiameter * 0.5];
+  layer = [v3 layer];
+  [layer setCornerRadius:self->_waypointDiameter * 0.5];
 
   v5 = [UIColor colorWithRed:0.8 green:0.941176471 blue:1.0 alpha:1.0];
   [v3 setBackgroundColor:v5];
@@ -198,9 +198,9 @@
   return v3;
 }
 
-- (id)_newSeparatorLineForWaypoint:(id)a3
+- (id)_newSeparatorLineForWaypoint:(id)waypoint
 {
-  v4 = a3;
+  waypointCopy = waypoint;
   v5 = +[UIBezierPath bezierPath];
   [(NTKSiderealWaypointsView *)self bounds];
   CLKRectGetCenter();
@@ -208,7 +208,7 @@
   dialDiameter = self->_dialDiameter;
   [(NTKSiderealWaypointsView *)self bounds];
   CLKRectGetCenter();
-  [v4 degree];
+  [waypointCopy degree];
 
   CLKDegreesToRadians();
   NTKPointOnCircle();

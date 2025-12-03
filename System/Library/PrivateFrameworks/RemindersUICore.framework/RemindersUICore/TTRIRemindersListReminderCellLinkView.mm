@@ -1,20 +1,20 @@
 @interface TTRIRemindersListReminderCellLinkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithFrame:(CGRect)a3;
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithMetadata:(id)a3;
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)a3;
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)a3 URL:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithFrame:(CGRect)frame;
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithMetadata:(id)metadata;
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)properties;
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)properties URL:(id)l;
 @end
 
 @implementation TTRIRemindersListReminderCellLinkView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  [(TTRIRemindersListReminderCellLinkView *)v3 maximumLayoutSize];
+  selfCopy = self;
+  [(TTRIRemindersListReminderCellLinkView *)selfCopy maximumLayoutSize];
   v5 = v4;
   v7 = v6;
-  v14.receiver = v3;
+  v14.receiver = selfCopy;
   v14.super_class = type metadata accessor for TTRIRemindersListReminderCellLinkView();
   [(LPLinkView *)&v14 sizeThatFits:v5, v7];
   v9 = v8;
@@ -27,33 +27,33 @@
   return result;
 }
 
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithMetadata:(id)a3
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithMetadata:(id)metadata
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)a3
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)properties
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)a3 URL:(id)a4
+- (_TtC15RemindersUICore37TTRIRemindersListReminderCellLinkView)initWithPresentationProperties:(id)properties URL:(id)l
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CE5EA20);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v12 - v6;
-  if (a4)
+  if (l)
   {
     sub_21DBF546C();
     v8 = sub_21DBF54CC();

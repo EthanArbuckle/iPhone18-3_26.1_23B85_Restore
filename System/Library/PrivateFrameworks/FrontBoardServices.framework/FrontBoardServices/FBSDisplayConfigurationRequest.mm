@@ -1,16 +1,16 @@
 @interface FBSDisplayConfigurationRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)logicalScale;
 - (CGSize)nativePixelSize;
 - (FBSDisplayConfigurationRequest)init;
-- (FBSDisplayConfigurationRequest)initWithCoder:(id)a3;
-- (FBSDisplayConfigurationRequest)initWithXPCDictionary:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (FBSDisplayConfigurationRequest)initWithCoder:(id)coder;
+- (FBSDisplayConfigurationRequest)initWithXPCDictionary:(id)dictionary;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSDisplayConfigurationRequest
@@ -31,29 +31,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [off_1E76BC9C8 builder];
-  v4 = [v3 appendInteger:self->_overscanCompensation];
-  v5 = [v3 appendCGSize:{self->_nativePixelSize.width, self->_nativePixelSize.height}];
-  v6 = [v3 appendCGFloat:self->_pointScale];
-  v7 = [v3 appendDouble:self->_refreshRate];
-  v8 = [v3 appendBool:self->_disableFrameDoubling];
-  v9 = [v3 appendInteger:self->_hdrMode];
-  v10 = [v3 appendCGSize:{self->_logicalScale.width, self->_logicalScale.height}];
-  v11 = [v3 hash];
+  builder = [off_1E76BC9C8 builder];
+  v4 = [builder appendInteger:self->_overscanCompensation];
+  v5 = [builder appendCGSize:{self->_nativePixelSize.width, self->_nativePixelSize.height}];
+  v6 = [builder appendCGFloat:self->_pointScale];
+  v7 = [builder appendDouble:self->_refreshRate];
+  v8 = [builder appendBool:self->_disableFrameDoubling];
+  v9 = [builder appendInteger:self->_hdrMode];
+  v10 = [builder appendCGSize:{self->_logicalScale.width, self->_logicalScale.height}];
+  v11 = [builder hash];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [off_1E76BC9C0 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [off_1E76BC9C0 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   overscanCompensation = self->_overscanCompensation;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __42__FBSDisplayConfigurationRequest_isEqual___block_invoke;
   v40[3] = &unk_1E76BD908;
-  v7 = v4;
+  v7 = equalCopy;
   v41 = v7;
   v8 = [v5 appendInteger:overscanCompensation counterpart:v40];
   v38[0] = MEMORY[0x1E69E9820];
@@ -109,7 +109,7 @@
   return v21;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   result = [(FBSDisplayConfigurationRequest *)[FBSMutableDisplayConfigurationRequest allocWithZone:?]];
   *(result + 7) = self->_overscanCompensation;
@@ -122,14 +122,14 @@
   return result;
 }
 
-- (FBSDisplayConfigurationRequest)initWithCoder:(id)a3
+- (FBSDisplayConfigurationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FBSDisplayConfigurationRequest *)self init];
   if (v5)
   {
-    v5->_overscanCompensation = [v4 decodeInt64ForKey:@"overscanCompensation"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nativePixelSize"];
+    v5->_overscanCompensation = [coderCopy decodeInt64ForKey:@"overscanCompensation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nativePixelSize"];
     v7 = v6;
     if (v6)
     {
@@ -142,13 +142,13 @@
       v5->_nativePixelSize = *MEMORY[0x1E695F060];
     }
 
-    [v4 decodeFloatForKey:@"pointScale"];
+    [coderCopy decodeFloatForKey:@"pointScale"];
     v5->_pointScale = v9;
-    [v4 decodeDoubleForKey:@"refreshRate"];
+    [coderCopy decodeDoubleForKey:@"refreshRate"];
     v5->_refreshRate = v10;
-    v5->_disableFrameDoubling = [v4 decodeBoolForKey:@"disableFrameDoubling"];
-    v5->_hdrMode = [v4 decodeInt64ForKey:@"hdrMode"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logicalScale"];
+    v5->_disableFrameDoubling = [coderCopy decodeBoolForKey:@"disableFrameDoubling"];
+    v5->_hdrMode = [coderCopy decodeInt64ForKey:@"hdrMode"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logicalScale"];
     v12 = v11;
     if (v11)
     {
@@ -165,13 +165,13 @@
   return v5;
 }
 
-- (FBSDisplayConfigurationRequest)initWithXPCDictionary:(id)a3
+- (FBSDisplayConfigurationRequest)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(FBSDisplayConfigurationRequest *)self init];
   if (v5)
   {
-    v6 = xpc_dictionary_get_value(v4, [@"overscanCompensation" UTF8String]);
+    v6 = xpc_dictionary_get_value(dictionaryCopy, [@"overscanCompensation" UTF8String]);
     v7 = v6;
     v8 = MEMORY[0x1E69E9EB0];
     if (v6)
@@ -189,9 +189,9 @@
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   if (xdict)
   {
     if (self->_overscanCompensation != -1)
@@ -205,32 +205,32 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSDisplayConfigurationRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSDisplayConfigurationRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSDisplayConfigurationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSDisplayConfigurationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSDisplayConfigurationRequest *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSDisplayConfigurationRequest *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__FBSDisplayConfigurationRequest_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E76BCD60;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v7 = v11;
   v8 = v6;

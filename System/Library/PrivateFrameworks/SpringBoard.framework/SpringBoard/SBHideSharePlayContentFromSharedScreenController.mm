@@ -9,28 +9,28 @@
 - (double)_coverSheetWindowLevel;
 - (id)_pipViewControllerToHide;
 - (id)_systemNotesWindow;
-- (id)acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)a3;
-- (void)_addAssertion:(id)a3;
+- (id)acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)reason;
+- (void)_addAssertion:(id)assertion;
 - (void)_pipViewControllerToHide;
-- (void)_removeAssertion:(id)a3;
+- (void)_removeAssertion:(id)assertion;
 - (void)_resolveHidingBehavior;
-- (void)_startHidingViewControllerFromClonedDisplaysIfNeeded:(id)a3;
-- (void)_startHidingWindowFromClonedDisplaysIfNeeded:(id)a3;
+- (void)_startHidingViewControllerFromClonedDisplaysIfNeeded:(id)needed;
+- (void)_startHidingWindowFromClonedDisplaysIfNeeded:(id)needed;
 - (void)_startObservingForActiveHideAssertionIfNeeded;
-- (void)_startTrackingPresentable:(id)a3;
-- (void)_startTrackingTransientOverlayViewController:(id)a3;
-- (void)_stopHidingViewControllerFromClonedDisplaysIfNeeded:(id)a3;
-- (void)_stopHidingWindowFromClonedDisplaysIfNeeded:(id)a3;
+- (void)_startTrackingPresentable:(id)presentable;
+- (void)_startTrackingTransientOverlayViewController:(id)controller;
+- (void)_stopHidingViewControllerFromClonedDisplaysIfNeeded:(id)needed;
+- (void)_stopHidingWindowFromClonedDisplaysIfNeeded:(id)needed;
 - (void)_stopObservingForActiveHideAssertionIfNeeded;
-- (void)_stopTrackingPresentable:(id)a3;
-- (void)_stopTrackingTransientOverlayViewController:(id)a3;
-- (void)_windowVisibilityDidChange:(id)a3;
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
+- (void)_stopTrackingPresentable:(id)presentable;
+- (void)_stopTrackingTransientOverlayViewController:(id)controller;
+- (void)_windowVisibilityDidChange:(id)change;
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
 - (void)dealloc;
-- (void)mousePointerManager:(id)a3 hardwarePointingDeviceAttachedDidChange:(BOOL)a4;
-- (void)transientOverlayPresentationManager:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5;
-- (void)transientOverlayPresentationManager:(id)a3 willPresentViewController:(id)a4;
+- (void)mousePointerManager:(id)manager hardwarePointingDeviceAttachedDidChange:(BOOL)change;
+- (void)transientOverlayPresentationManager:(id)manager didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation;
+- (void)transientOverlayPresentationManager:(id)manager willPresentViewController:(id)controller;
 @end
 
 @implementation SBHideSharePlayContentFromSharedScreenController
@@ -42,24 +42,24 @@
   v2 = [(SBHideSharePlayContentFromSharedScreenController *)&v11 init];
   if (v2)
   {
-    v3 = [SBApp bannerManager];
-    [v3 addTransitionObserver:v2];
+    bannerManager = [SBApp bannerManager];
+    [bannerManager addTransitionObserver:v2];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel__handleControlCenterDidPresent name:@"SBControlCenterDidPresentNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleControlCenterDidPresent name:@"SBControlCenterDidPresentNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__handleControlCenterWillDismiss name:@"SBControlCenterWillDismissNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleControlCenterWillDismiss name:@"SBControlCenterWillDismissNotification" object:0];
 
     v6 = +[SBDraggingSystemManager sharedInstance];
     [v6 addObserver:v2];
 
-    v7 = [SBApp mousePointerManager];
-    [v7 addObserver:v2];
+    mousePointerManager = [SBApp mousePointerManager];
+    [mousePointerManager addObserver:v2];
 
     v8 = +[SBWorkspace mainWorkspace];
-    v9 = [v8 transientOverlayPresentationManager];
-    [v9 addObserver:v2];
+    transientOverlayPresentationManager = [v8 transientOverlayPresentationManager];
+    [transientOverlayPresentationManager addObserver:v2];
   }
 
   return v2;
@@ -67,48 +67,48 @@
 
 - (void)dealloc
 {
-  v3 = [SBApp bannerManager];
-  [v3 removeTransitionObserver:self];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager removeTransitionObserver:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:@"SBControlCenterDidPresentNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBControlCenterDidPresentNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:@"SBControlCenterWillDismissNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"SBControlCenterWillDismissNotification" object:0];
 
   v6 = +[SBDraggingSystemManager sharedInstance];
   [v6 removeObserver:self];
 
-  v7 = [SBApp mousePointerManager];
-  [v7 removeObserver:self];
+  mousePointerManager = [SBApp mousePointerManager];
+  [mousePointerManager removeObserver:self];
 
   v8 = +[SBWorkspace mainWorkspace];
-  v9 = [v8 transientOverlayPresentationManager];
-  [v9 removeObserver:self];
+  transientOverlayPresentationManager = [v8 transientOverlayPresentationManager];
+  [transientOverlayPresentationManager removeObserver:self];
 
   v10.receiver = self;
   v10.super_class = SBHideSharePlayContentFromSharedScreenController;
   [(SBHideSharePlayContentFromSharedScreenController *)&v10 dealloc];
 }
 
-- (id)acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)a3
+- (id)acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBHideSharePlayContentFromSharedScreenController *)a2 acquireHideSharePlayContentFromClonedDisplaysAssertionForReason:?];
   }
 
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277CF0CE8]);
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePlayContentFromClonedDisplaysAssertionForReason___block_invoke;
   v14 = &unk_2783A9070;
   objc_copyWeak(&v15, &location);
-  v9 = [v6 initWithIdentifier:v8 forReason:v5 invalidationBlock:&v11];
+  v9 = [v6 initWithIdentifier:uUIDString forReason:reasonCopy invalidationBlock:&v11];
 
   [(SBHideSharePlayContentFromSharedScreenController *)self _addAssertion:v9, v11, v12, v13, v14];
   objc_destroyWeak(&v15);
@@ -124,12 +124,12 @@ void __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePla
   [WeakRetained _removeAssertion:v3];
 }
 
-- (void)_windowVisibilityDidChange:(id)a3
+- (void)_windowVisibilityDidChange:(id)change
 {
-  v4 = [a3 object];
+  object = [change object];
   cloneTerminatingWindow = self->_cloneTerminatingWindow;
 
-  if (v4 != cloneTerminatingWindow)
+  if (object != cloneTerminatingWindow)
   {
 
     [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
@@ -143,20 +143,20 @@ void __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePla
   if (v142)
   {
     [(SBHideSharePlayContentFromSharedScreenController *)self _startObservingForActiveHideAssertionIfNeeded];
-    v3 = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
+    _pipViewControllerToHide = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
     LODWORD(v136) = [(SBHideSharePlayContentFromSharedScreenController *)self _isPipViewControllerToHideOnMainDisplay];
   }
 
   else
   {
     [(SBHideSharePlayContentFromSharedScreenController *)self _stopObservingForActiveHideAssertionIfNeeded];
-    v3 = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
+    _pipViewControllerToHide = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
     LODWORD(v136) = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_pipViewControllerBeingHiddenWithDisableUpdateMask);
   v5 = WeakRetained;
-  if (WeakRetained && WeakRetained != v3)
+  if (WeakRetained && WeakRetained != _pipViewControllerToHide)
   {
     [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingViewControllerFromClonedDisplaysIfNeeded:WeakRetained];
   }
@@ -164,20 +164,20 @@ void __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePla
   v139 = v5;
   if (v142)
   {
-    v6 = [(NSHashTable *)self->_trackedPresentables allObjects];
+    allObjects = [(NSHashTable *)self->_trackedPresentables allObjects];
   }
 
   else
   {
-    v6 = 0;
+    allObjects = 0;
   }
 
-  v141 = v3;
+  v141 = _pipViewControllerToHide;
   v173 = 0u;
   v174 = 0u;
   v171 = 0u;
   v172 = 0u;
-  obj = v6;
+  obj = allObjects;
   v7 = [obj countByEnumeratingWithState:&v171 objects:v181 count:16];
   if (!v7)
   {
@@ -201,12 +201,12 @@ void __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePla
 
       v11 = *(*(&v171 + 1) + 8 * i);
       v12 = UIViewControllerFromPresentable();
-      v13 = [v12 view];
-      v14 = [v13 window];
+      view = [v12 view];
+      window = [view window];
 
-      v15 = [v14 windowScene];
+      windowScene = [window windowScene];
       v16 = objc_opt_class();
-      v17 = v15;
+      v17 = windowScene;
       if (v16)
       {
         if (objc_opt_isKindOfClass())
@@ -227,8 +227,8 @@ void __116__SBHideSharePlayContentFromSharedScreenController_acquireHideSharePla
 
       v19 = v18;
 
-      v20 = [v11 requesterIdentifier];
-      if (([v20 isEqualToString:@"com.apple.ConversationKit"] & 1) == 0)
+      requesterIdentifier = [v11 requesterIdentifier];
+      if (([requesterIdentifier isEqualToString:@"com.apple.ConversationKit"] & 1) == 0)
       {
 
 LABEL_24:
@@ -236,15 +236,15 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v21 = [v11 requestIdentifier];
-      v22 = [v21 hasPrefix:@"com.apple.conversationController"];
+      requestIdentifier = [v11 requestIdentifier];
+      v22 = [requestIdentifier hasPrefix:@"com.apple.conversationController"];
 
       if (!v22)
       {
         goto LABEL_24;
       }
 
-      [v14 windowLevel];
+      [window windowLevel];
       v24 = v23;
       [(SBHideSharePlayContentFromSharedScreenController *)self _coverSheetWindowLevel];
       v146 |= v24 < v25;
@@ -271,12 +271,12 @@ LABEL_32:
 
   if (v142)
   {
-    v26 = [(NSHashTable *)self->_trackedTransientOverlays allObjects];
+    allObjects2 = [(NSHashTable *)self->_trackedTransientOverlays allObjects];
   }
 
   else
   {
-    v26 = 0;
+    allObjects2 = 0;
   }
 
   HIDWORD(v136) = v9;
@@ -284,7 +284,7 @@ LABEL_32:
   v170 = 0u;
   v167 = 0u;
   v168 = 0u;
-  v145 = v26;
+  v145 = allObjects2;
   v27 = [v145 countByEnumeratingWithState:&v167 objects:v180 count:16];
   if (v27)
   {
@@ -301,12 +301,12 @@ LABEL_32:
           objc_enumerationMutation(v145);
         }
 
-        v33 = [*(*(&v167 + 1) + 8 * j) view];
-        v34 = [v33 window];
+        view2 = [*(*(&v167 + 1) + 8 * j) view];
+        window2 = [view2 window];
 
-        v35 = [v34 windowScene];
+        windowScene2 = [window2 windowScene];
         v36 = objc_opt_class();
-        v37 = v35;
+        v37 = windowScene2;
         if (v36)
         {
           if (objc_opt_isKindOfClass())
@@ -327,13 +327,13 @@ LABEL_32:
 
         v39 = v38;
 
-        [v34 windowLevel];
+        [window2 windowLevel];
         v41 = v40;
         [(SBHideSharePlayContentFromSharedScreenController *)self _coverSheetWindowLevel];
         v30 |= v41 < v42;
-        v43 = [v39 isMainDisplayWindowScene];
+        isMainDisplayWindowScene = [v39 isMainDisplayWindowScene];
 
-        v29 |= v43;
+        v29 |= isMainDisplayWindowScene;
         if (v30 & 1) != 0 && (v29)
         {
           v29 = 1;
@@ -370,56 +370,56 @@ LABEL_52:
     v44 = 1;
   }
 
-  v45 = [SBApp windowSceneManager];
-  v46 = [v45 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v140 = v46;
-  if ([v46 count] != 1)
+  v140 = connectedWindowScenes;
+  if ([connectedWindowScenes count] != 1)
   {
     v49 = 0;
-    LOBYTE(v48) = 0;
+    LOBYTE(embeddedDisplayWindowScene) = 0;
     v50 = *MEMORY[0x277D76EF0];
     goto LABEL_70;
   }
 
-  v47 = [v46 anyObject];
-  LODWORD(v48) = [v47 isMainDisplayWindowScene];
+  anyObject = [connectedWindowScenes anyObject];
+  LODWORD(embeddedDisplayWindowScene) = [anyObject isMainDisplayWindowScene];
 
-  v49 = v44 & v48;
+  v49 = v44 & embeddedDisplayWindowScene;
   v50 = *MEMORY[0x277D76EF0];
-  if (!v48)
+  if (!embeddedDisplayWindowScene)
   {
 LABEL_70:
     v60 = v141;
     goto LABEL_78;
   }
 
-  v51 = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
-  v52 = [v51 view];
-  v53 = [v52 window];
+  _pipViewControllerToHide2 = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
+  view3 = [_pipViewControllerToHide2 view];
+  window3 = [view3 window];
 
   if ((v138 | v29))
   {
     v54 = v50;
     if (v138)
     {
-      v55 = [(NSHashTable *)self->_trackedPresentables anyObject];
+      anyObject2 = [(NSHashTable *)self->_trackedPresentables anyObject];
       v56 = UIViewControllerFromPresentable();
-      v57 = [v56 view];
-      v58 = [v57 window];
-      [v58 windowLevel];
+      view4 = [v56 view];
+      window4 = [view4 window];
+      [window4 windowLevel];
       v54 = v59;
 
-      v46 = v140;
+      connectedWindowScenes = v140;
     }
 
     v60 = v141;
     if (v29)
     {
-      v61 = [(NSHashTable *)self->_trackedTransientOverlays anyObject];
-      v62 = [v61 view];
-      v63 = [v62 window];
-      [v63 windowLevel];
+      anyObject3 = [(NSHashTable *)self->_trackedTransientOverlays anyObject];
+      view5 = [anyObject3 view];
+      window5 = [view5 window];
+      [window5 windowLevel];
       v50 = v64;
     }
 
@@ -433,19 +433,19 @@ LABEL_70:
       v65 = v50 + 0.01;
     }
 
-    LOBYTE(v48) = v146 | v30;
+    LOBYTE(embeddedDisplayWindowScene) = v146 | v30;
     if (((v146 | v30) & 1) == 0 && ((v137 ^ 1) & 1) == 0)
     {
-      [v53 windowLevel];
+      [window3 windowLevel];
       if (v54 >= v66)
       {
-        LOBYTE(v48) = 1;
+        LOBYTE(embeddedDisplayWindowScene) = 1;
       }
 
       else
       {
-        [v53 windowLevel];
-        LOBYTE(v48) = v50 >= v67;
+        [window3 windowLevel];
+        LOBYTE(embeddedDisplayWindowScene) = v50 >= v67;
       }
     }
   }
@@ -454,34 +454,34 @@ LABEL_70:
   {
     if (self->_isControlCenterFullyPresentedOnMainDisplay)
     {
-      v68 = [SBApp windowSceneManager];
-      v48 = [v68 embeddedDisplayWindowScene];
+      windowSceneManager2 = [SBApp windowSceneManager];
+      embeddedDisplayWindowScene = [windowSceneManager2 embeddedDisplayWindowScene];
 
-      v69 = [v48 controlCenterController];
-      v70 = [v69 _controlCenterWindow];
-      [v70 windowLevel];
+      controlCenterController = [embeddedDisplayWindowScene controlCenterController];
+      _controlCenterWindow = [controlCenterController _controlCenterWindow];
+      [_controlCenterWindow windowLevel];
       v72 = v71;
 
       v65 = v72 + 0.001;
-      LOBYTE(v48) = 0;
+      LOBYTE(embeddedDisplayWindowScene) = 0;
     }
 
     else if (v137)
     {
-      v73 = [(SBHideSharePlayContentFromSharedScreenController *)self _systemNotesWindow];
-      [v73 windowLevel];
+      _systemNotesWindow = [(SBHideSharePlayContentFromSharedScreenController *)self _systemNotesWindow];
+      [_systemNotesWindow windowLevel];
       v75 = v74;
 
-      [v53 windowLevel];
+      [window3 windowLevel];
       v77 = v76;
       v65 = v76 + -0.001;
-      v78 = [(SBHideSharePlayContentFromSharedScreenController *)self _systemNotesWindow];
-      LODWORD(v48) = (v75 >= v77) & ~[v78 isHidden];
+      _systemNotesWindow2 = [(SBHideSharePlayContentFromSharedScreenController *)self _systemNotesWindow];
+      LODWORD(embeddedDisplayWindowScene) = (v75 >= v77) & ~[_systemNotesWindow2 isHidden];
     }
 
     else
     {
-      LOBYTE(v48) = 0;
+      LOBYTE(embeddedDisplayWindowScene) = 0;
       v65 = v50;
     }
 
@@ -516,7 +516,7 @@ LABEL_78:
 
   if (v49)
   {
-    v82 = v48;
+    v82 = embeddedDisplayWindowScene;
   }
 
   else
@@ -529,18 +529,18 @@ LABEL_78:
   {
     if (!cloneTerminatingWindow)
     {
-      v84 = [v46 anyObject];
-      v85 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v84];
+      anyObject4 = [connectedWindowScenes anyObject];
+      v85 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:anyObject4];
       v86 = self->_cloneTerminatingWindow;
       self->_cloneTerminatingWindow = v85;
 
       [(UIWindow *)self->_cloneTerminatingWindow setUserInteractionEnabled:0];
-      v87 = [(UIWindow *)self->_cloneTerminatingWindow layer];
-      [v87 setAllowsHitTesting:0];
+      layer = [(UIWindow *)self->_cloneTerminatingWindow layer];
+      [layer setAllowsHitTesting:0];
 
       v88 = self->_cloneTerminatingWindow;
-      v89 = [MEMORY[0x277D75348] clearColor];
-      [(UIWindow *)v88 setBackgroundColor:v89];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [(UIWindow *)v88 setBackgroundColor:clearColor];
 
       [(UIWindow *)self->_cloneTerminatingWindow setWindowLevel:v79];
       [(UIWindow *)self->_cloneTerminatingWindow setHidden:0];
@@ -550,29 +550,29 @@ LABEL_78:
         cloneTerminatingLayer = self->_cloneTerminatingLayer;
         self->_cloneTerminatingLayer = v90;
 
-        v92 = [(UIWindow *)self->_cloneTerminatingWindow layer];
-        v93 = [v92 superlayer];
+        layer2 = [(UIWindow *)self->_cloneTerminatingWindow layer];
+        superlayer = [layer2 superlayer];
 
-        if (v93)
+        if (superlayer)
         {
           do
           {
-            v94 = [v92 superlayer];
+            superlayer2 = [layer2 superlayer];
 
-            v95 = [v94 superlayer];
+            v94Superlayer = [superlayer2 superlayer];
 
-            v92 = v94;
+            layer2 = superlayer2;
           }
 
-          while (v95);
+          while (v94Superlayer);
         }
 
         else
         {
-          v94 = v92;
+          superlayer2 = layer2;
         }
 
-        [v94 addSublayer:self->_cloneTerminatingLayer];
+        [superlayer2 addSublayer:self->_cloneTerminatingLayer];
       }
 
       cloneTerminatingWindow = self->_cloneTerminatingWindow;
@@ -588,8 +588,8 @@ LABEL_114:
       v166 = 0u;
       v163 = 0u;
       v164 = 0u;
-      v109 = [(NSHashTable *)self->_trackedPresentables allObjects];
-      v110 = [v109 countByEnumeratingWithState:&v163 objects:v179 count:16];
+      allObjects3 = [(NSHashTable *)self->_trackedPresentables allObjects];
+      v110 = [allObjects3 countByEnumeratingWithState:&v163 objects:v179 count:16];
       if (!v110)
       {
         goto LABEL_125;
@@ -603,27 +603,27 @@ LABEL_114:
         {
           if (*v164 != v112)
           {
-            objc_enumerationMutation(v109);
+            objc_enumerationMutation(allObjects3);
           }
 
           v114 = *(*(&v163 + 1) + 8 * k);
-          v115 = [v114 requesterIdentifier];
-          if ([v115 isEqualToString:@"com.apple.ConversationKit"])
+          requesterIdentifier2 = [v114 requesterIdentifier];
+          if ([requesterIdentifier2 isEqualToString:@"com.apple.ConversationKit"])
           {
-            v116 = [v114 requestIdentifier];
-            v117 = [v116 hasPrefix:@"com.apple.conversationController"];
+            requestIdentifier2 = [v114 requestIdentifier];
+            v117 = [requestIdentifier2 hasPrefix:@"com.apple.conversationController"];
 
             if (!v117)
             {
               continue;
             }
 
-            v115 = UIViewControllerFromPresentable();
-            [(SBHideSharePlayContentFromSharedScreenController *)self _startHidingViewControllerFromClonedDisplaysIfNeeded:v115];
+            requesterIdentifier2 = UIViewControllerFromPresentable();
+            [(SBHideSharePlayContentFromSharedScreenController *)self _startHidingViewControllerFromClonedDisplaysIfNeeded:requesterIdentifier2];
           }
         }
 
-        v111 = [v109 countByEnumeratingWithState:&v163 objects:v179 count:16];
+        v111 = [allObjects3 countByEnumeratingWithState:&v163 objects:v179 count:16];
         if (!v111)
         {
 LABEL_125:
@@ -635,8 +635,8 @@ LABEL_125:
             v162 = 0u;
             v159 = 0u;
             v160 = 0u;
-            v104 = [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask allObjects];
-            v132 = [v104 countByEnumeratingWithState:&v159 objects:v178 count:16];
+            allObjects4 = [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask allObjects];
+            v132 = [allObjects4 countByEnumeratingWithState:&v159 objects:v178 count:16];
             v100 = v139;
             if (v132)
             {
@@ -649,13 +649,13 @@ LABEL_125:
                 {
                   if (*v160 != v134)
                   {
-                    objc_enumerationMutation(v104);
+                    objc_enumerationMutation(allObjects4);
                   }
 
                   [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingWindowFromClonedDisplaysIfNeeded:*(*(&v159 + 1) + 8 * m)];
                 }
 
-                v133 = [v104 countByEnumeratingWithState:&v159 objects:v178 count:16];
+                v133 = [allObjects4 countByEnumeratingWithState:&v159 objects:v178 count:16];
               }
 
               while (v133);
@@ -669,12 +669,12 @@ LABEL_125:
 
           else
           {
-            v104 = [MEMORY[0x277D75DA0] allWindowsIncludingInternalWindows:0 onlyVisibleWindows:1];
+            allObjects4 = [MEMORY[0x277D75DA0] allWindowsIncludingInternalWindows:0 onlyVisibleWindows:1];
             v155 = 0u;
             v156 = 0u;
             v157 = 0u;
             v158 = 0u;
-            v119 = [v104 countByEnumeratingWithState:&v155 objects:v177 count:16];
+            v119 = [allObjects4 countByEnumeratingWithState:&v155 objects:v177 count:16];
             if (v119)
             {
               v120 = v119;
@@ -686,13 +686,13 @@ LABEL_125:
                 {
                   if (*v156 != v121)
                   {
-                    objc_enumerationMutation(v104);
+                    objc_enumerationMutation(allObjects4);
                   }
 
                   v123 = *(*(&v155 + 1) + 8 * v122);
-                  v124 = [(UIWindow *)v123 windowScene];
+                  windowScene3 = [(UIWindow *)v123 windowScene];
                   v125 = objc_opt_class();
-                  v126 = v124;
+                  v126 = windowScene3;
                   if (v125)
                   {
                     if (objc_opt_isKindOfClass())
@@ -713,8 +713,8 @@ LABEL_125:
 
                   v128 = v127;
 
-                  v129 = [v128 isMainDisplayWindowScene];
-                  if (v129 && v123 != self->_cloneTerminatingWindow && ([(UIWindow *)v123 windowLevel], v130 >= v79))
+                  isMainDisplayWindowScene2 = [v128 isMainDisplayWindowScene];
+                  if (isMainDisplayWindowScene2 && v123 != self->_cloneTerminatingWindow && ([(UIWindow *)v123 windowLevel], v130 >= v79))
                   {
                     [(SBHideSharePlayContentFromSharedScreenController *)self _startHidingWindowFromClonedDisplaysIfNeeded:v123];
                   }
@@ -728,7 +728,7 @@ LABEL_125:
                 }
 
                 while (v120 != v122);
-                v131 = [v104 countByEnumeratingWithState:&v155 objects:v177 count:16];
+                v131 = [allObjects4 countByEnumeratingWithState:&v155 objects:v177 count:16];
                 v120 = v131;
               }
 
@@ -764,8 +764,8 @@ LABEL_125:
   v154 = 0u;
   v151 = 0u;
   v152 = 0u;
-  v98 = [(NSHashTable *)self->_viewControllersWithDisableUpdateMasks allObjects];
-  v99 = [v98 countByEnumeratingWithState:&v151 objects:v176 count:16];
+  allObjects5 = [(NSHashTable *)self->_viewControllersWithDisableUpdateMasks allObjects];
+  v99 = [allObjects5 countByEnumeratingWithState:&v151 objects:v176 count:16];
   v100 = v139;
   if (v99)
   {
@@ -777,13 +777,13 @@ LABEL_125:
       {
         if (*v152 != v102)
         {
-          objc_enumerationMutation(v98);
+          objc_enumerationMutation(allObjects5);
         }
 
         [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingViewControllerFromClonedDisplaysIfNeeded:*(*(&v151 + 1) + 8 * n)];
       }
 
-      v101 = [v98 countByEnumeratingWithState:&v151 objects:v176 count:16];
+      v101 = [allObjects5 countByEnumeratingWithState:&v151 objects:v176 count:16];
     }
 
     while (v101);
@@ -793,8 +793,8 @@ LABEL_125:
   v150 = 0u;
   v147 = 0u;
   v148 = 0u;
-  v104 = [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask allObjects];
-  v105 = [v104 countByEnumeratingWithState:&v147 objects:v175 count:16];
+  allObjects4 = [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask allObjects];
+  v105 = [allObjects4 countByEnumeratingWithState:&v147 objects:v175 count:16];
   if (v105)
   {
     v106 = v105;
@@ -805,13 +805,13 @@ LABEL_125:
       {
         if (*v148 != v107)
         {
-          objc_enumerationMutation(v104);
+          objc_enumerationMutation(allObjects4);
         }
 
         [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingWindowFromClonedDisplaysIfNeeded:*(*(&v147 + 1) + 8 * ii)];
       }
 
-      v106 = [v104 countByEnumeratingWithState:&v147 objects:v175 count:16];
+      v106 = [allObjects4 countByEnumeratingWithState:&v147 objects:v175 count:16];
     }
 
     while (v106);
@@ -825,13 +825,13 @@ LABEL_155:
   if (!self->_isObservingPIPWindowLevelsAndVisibility)
   {
     self->_isObservingPIPWindowLevelsAndVisibility = 1;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__windowVisibilityDidChange_ name:*MEMORY[0x277D77278] object:0];
-    [v4 addObserver:self selector:sel__windowVisibilityDidChange_ name:*MEMORY[0x277D77288] object:0];
-    [v4 addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetWillPresentNotification" object:0];
-    [v4 addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetDidPresentNotification" object:0];
-    [v4 addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetWillDismissNotification" object:0];
-    [v4 addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetDidDismissNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowVisibilityDidChange_ name:*MEMORY[0x277D77278] object:0];
+    [defaultCenter addObserver:self selector:sel__windowVisibilityDidChange_ name:*MEMORY[0x277D77288] object:0];
+    [defaultCenter addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetWillPresentNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetDidPresentNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetWillDismissNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__resolveHidingBehavior name:@"SBCoverSheetDidDismissNotification" object:0];
   }
 }
 
@@ -840,19 +840,19 @@ LABEL_155:
   if (self->_isObservingPIPWindowLevelsAndVisibility)
   {
     self->_isObservingPIPWindowLevelsAndVisibility = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D77278] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D77288] object:0];
-    [v4 removeObserver:self name:@"SBCoverSheetWillPresentNotification" object:0];
-    [v4 removeObserver:self name:@"SBCoverSheetDidDismissNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D77278] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D77288] object:0];
+    [defaultCenter removeObserver:self name:@"SBCoverSheetWillPresentNotification" object:0];
+    [defaultCenter removeObserver:self name:@"SBCoverSheetDidDismissNotification" object:0];
   }
 }
 
-- (void)_addAssertion:(id)a3
+- (void)_addAssertion:(id)assertion
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     if (!self->_activeAssertions)
     {
@@ -865,31 +865,31 @@ LABEL_155:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "acquiring hide SharePlay content from cloned displays assertion %{public}@", &v8, 0xCu);
     }
 
-    [(NSMutableSet *)self->_activeAssertions addObject:v4];
+    [(NSMutableSet *)self->_activeAssertions addObject:assertionCopy];
   }
 
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)_removeAssertion:(id)a3
+- (void)_removeAssertion:(id)assertion
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  assertionCopy = assertion;
+  if (assertionCopy)
   {
     v5 = SBLogInCallPresentation();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543362;
-      v8 = v4;
+      v8 = assertionCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "removing hide SharePlay content from cloned displays assertion %{public}@", &v7, 0xCu);
     }
 
-    [(NSMutableSet *)self->_activeAssertions removeObject:v4];
+    [(NSMutableSet *)self->_activeAssertions removeObject:assertionCopy];
   }
 
   if (![(NSMutableSet *)self->_activeAssertions count])
@@ -901,19 +901,19 @@ LABEL_155:
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  [(SBHideSharePlayContentFromSharedScreenController *)self _startTrackingPresentable:v8];
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  [(SBHideSharePlayContentFromSharedScreenController *)self _startTrackingPresentable:presentableCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke;
   v11[3] = &unk_2783B6F60;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  [v9 animateAlongsideTransition:0 completion:v11];
+  v12 = presentableCopy;
+  v10 = presentableCopy;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v11];
 }
 
 uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke(uint64_t a1, void *a2)
@@ -930,17 +930,17 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
   return result;
 }
 
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v8 = a4;
+  presentableCopy = presentable;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_willDismissPresentable_withTransitionCoordinator_userInfo___block_invoke;
   v10[3] = &unk_2783B6F60;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [a5 animateAlongsideTransition:0 completion:v10];
+  v11 = presentableCopy;
+  v9 = presentableCopy;
+  [coordinator animateAlongsideTransition:0 completion:v10];
 }
 
 uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_willDismissPresentable_withTransitionCoordinator_userInfo___block_invoke(uint64_t a1, void *a2)
@@ -957,32 +957,32 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
   return result;
 }
 
-- (void)_startTrackingPresentable:(id)a3
+- (void)_startTrackingPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   trackedPresentables = self->_trackedPresentables;
-  v8 = v4;
+  v8 = presentableCopy;
   if (!trackedPresentables)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_trackedPresentables;
-    self->_trackedPresentables = v6;
+    self->_trackedPresentables = weakObjectsHashTable;
 
-    v4 = v8;
+    presentableCopy = v8;
     trackedPresentables = self->_trackedPresentables;
   }
 
-  [(NSHashTable *)trackedPresentables addObject:v4];
+  [(NSHashTable *)trackedPresentables addObject:presentableCopy];
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)_stopTrackingPresentable:(id)a3
+- (void)_stopTrackingPresentable:(id)presentable
 {
-  v4 = a3;
+  presentableCopy = presentable;
   v5 = UIViewControllerFromPresentable();
   [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingViewControllerFromClonedDisplaysIfNeeded:v5];
 
-  [(NSHashTable *)self->_trackedPresentables removeObject:v4];
+  [(NSHashTable *)self->_trackedPresentables removeObject:presentableCopy];
   if (![(NSHashTable *)self->_trackedPresentables count])
   {
     trackedPresentables = self->_trackedPresentables;
@@ -1018,13 +1018,13 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 
 - (BOOL)_isPipViewControllerToHideOnMainDisplay
 {
-  v2 = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  _pipViewControllerToHide = [(SBHideSharePlayContentFromSharedScreenController *)self _pipViewControllerToHide];
+  view = [_pipViewControllerToHide view];
+  window = [view window];
+  windowScene = [window windowScene];
 
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = windowScene;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -1045,18 +1045,18 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 
   v9 = v8;
 
-  v10 = [v9 isMainDisplayWindowScene];
-  return v10;
+  isMainDisplayWindowScene = [v9 isMainDisplayWindowScene];
+  return isMainDisplayWindowScene;
 }
 
 - (id)_systemNotesWindow
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
   v4 = +[SBWorkspace mainWorkspace];
   v5 = [v4 pipControllerForType:1];
-  v6 = [v5 _leadingWindowForWindowScene:v3];
+  v6 = [v5 _leadingWindowForWindowScene:embeddedDisplayWindowScene];
 
   return v6;
 }
@@ -1064,9 +1064,9 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 - (BOOL)_isCoverSheetVisible
 {
   v2 = +[SBCoverSheetPresentationManager sharedInstanceIfExists];
-  v3 = [v2 isVisible];
+  isVisible = [v2 isVisible];
 
-  return v3;
+  return isVisible;
 }
 
 - (BOOL)_isCoverSheetFullyPresented
@@ -1089,67 +1089,67 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 - (double)_coverSheetWindowLevel
 {
   v2 = +[SBCoverSheetPresentationManager sharedInstanceIfExists];
-  v3 = [v2 coverSheetWindow];
-  [v3 windowLevel];
+  coverSheetWindow = [v2 coverSheetWindow];
+  [coverSheetWindow windowLevel];
   v5 = v4;
 
   return v5;
 }
 
-- (void)_startHidingViewControllerFromClonedDisplaysIfNeeded:(id)a3
+- (void)_startHidingViewControllerFromClonedDisplaysIfNeeded:(id)needed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && ![(NSHashTable *)self->_viewControllersWithDisableUpdateMasks containsObject:v4])
+  neededCopy = needed;
+  if (neededCopy && ![(NSHashTable *)self->_viewControllersWithDisableUpdateMasks containsObject:neededCopy])
   {
     viewControllersWithDisableUpdateMasks = self->_viewControllersWithDisableUpdateMasks;
     if (!viewControllersWithDisableUpdateMasks)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_viewControllersWithDisableUpdateMasks;
-      self->_viewControllersWithDisableUpdateMasks = v6;
+      self->_viewControllersWithDisableUpdateMasks = weakObjectsHashTable;
 
       viewControllersWithDisableUpdateMasks = self->_viewControllersWithDisableUpdateMasks;
     }
 
-    [(NSHashTable *)viewControllersWithDisableUpdateMasks addObject:v4];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || [v4 wantsDisableUpdateClonedDuringSharePlay])
+    [(NSHashTable *)viewControllersWithDisableUpdateMasks addObject:neededCopy];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || [neededCopy wantsDisableUpdateClonedDuringSharePlay])
     {
-      v8 = [v4 viewIfLoaded];
-      v9 = [v8 layer];
+      viewIfLoaded = [neededCopy viewIfLoaded];
+      layer = [viewIfLoaded layer];
 
-      [v9 setDisableUpdateMask:{objc_msgSend(v9, "disableUpdateMask") | 0x10}];
+      [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") | 0x10}];
       v10 = SBLogInCallPresentation();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543362;
-        v12 = v4;
+        v12 = neededCopy;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Started hiding %{public}@ from cloned display", &v11, 0xCu);
       }
     }
   }
 }
 
-- (void)_stopHidingViewControllerFromClonedDisplaysIfNeeded:(id)a3
+- (void)_stopHidingViewControllerFromClonedDisplaysIfNeeded:(id)needed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    if ([(NSHashTable *)self->_viewControllersWithDisableUpdateMasks containsObject:v4])
+    if ([(NSHashTable *)self->_viewControllersWithDisableUpdateMasks containsObject:neededCopy])
     {
-      [(NSHashTable *)self->_viewControllersWithDisableUpdateMasks removeObject:v4];
-      if ((objc_opt_respondsToSelector() & 1) == 0 || [v4 wantsDisableUpdateClonedDuringSharePlay])
+      [(NSHashTable *)self->_viewControllersWithDisableUpdateMasks removeObject:neededCopy];
+      if ((objc_opt_respondsToSelector() & 1) == 0 || [neededCopy wantsDisableUpdateClonedDuringSharePlay])
       {
-        v5 = [v4 viewIfLoaded];
-        v6 = [v5 layer];
+        viewIfLoaded = [neededCopy viewIfLoaded];
+        layer = [viewIfLoaded layer];
 
-        [v6 setDisableUpdateMask:{objc_msgSend(v6, "disableUpdateMask") & 0xFFFFFFEFLL}];
+        [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") & 0xFFFFFFEFLL}];
         v7 = SBLogInCallPresentation();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v10 = 138543362;
-          v11 = v4;
+          v11 = neededCopy;
           _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Stopped hiding %{public}@ from cloned display", &v10, 0xCu);
         }
       }
@@ -1164,62 +1164,62 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 
   WeakRetained = objc_loadWeakRetained(&self->_pipViewControllerBeingHiddenWithDisableUpdateMask);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == neededCopy)
   {
     objc_storeWeak(&self->_pipViewControllerBeingHiddenWithDisableUpdateMask, 0);
   }
 }
 
-- (void)_startHidingWindowFromClonedDisplaysIfNeeded:(id)a3
+- (void)_startHidingWindowFromClonedDisplaysIfNeeded:(id)needed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && ![(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask containsObject:v4])
+  neededCopy = needed;
+  if (neededCopy && ![(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask containsObject:neededCopy])
   {
     windowsBeingHiddenWithDisableUpdateMask = self->_windowsBeingHiddenWithDisableUpdateMask;
     if (!windowsBeingHiddenWithDisableUpdateMask)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_windowsBeingHiddenWithDisableUpdateMask;
-      self->_windowsBeingHiddenWithDisableUpdateMask = v6;
+      self->_windowsBeingHiddenWithDisableUpdateMask = weakObjectsHashTable;
 
       windowsBeingHiddenWithDisableUpdateMask = self->_windowsBeingHiddenWithDisableUpdateMask;
     }
 
-    [(NSHashTable *)windowsBeingHiddenWithDisableUpdateMask addObject:v4];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || [v4 wantsDisableUpdateClonedDuringSharePlay])
+    [(NSHashTable *)windowsBeingHiddenWithDisableUpdateMask addObject:neededCopy];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || [neededCopy wantsDisableUpdateClonedDuringSharePlay])
     {
-      v8 = [v4 layer];
-      [v8 setDisableUpdateMask:{objc_msgSend(v8, "disableUpdateMask") | 0x10}];
+      layer = [neededCopy layer];
+      [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") | 0x10}];
       v9 = SBLogInCallPresentation();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = v4;
+        v11 = neededCopy;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Started hiding %{public}@ from cloned display", &v10, 0xCu);
       }
     }
   }
 }
 
-- (void)_stopHidingWindowFromClonedDisplaysIfNeeded:(id)a3
+- (void)_stopHidingWindowFromClonedDisplaysIfNeeded:(id)needed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  neededCopy = needed;
+  if (neededCopy)
   {
-    if ([(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask containsObject:v4])
+    if ([(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask containsObject:neededCopy])
     {
-      [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask removeObject:v4];
-      if ((objc_opt_respondsToSelector() & 1) == 0 || [v4 wantsDisableUpdateClonedDuringSharePlay])
+      [(NSHashTable *)self->_windowsBeingHiddenWithDisableUpdateMask removeObject:neededCopy];
+      if ((objc_opt_respondsToSelector() & 1) == 0 || [neededCopy wantsDisableUpdateClonedDuringSharePlay])
       {
-        v5 = [v4 layer];
-        [v5 setDisableUpdateMask:{objc_msgSend(v5, "disableUpdateMask") & 0xFFFFFFEFLL}];
+        layer = [neededCopy layer];
+        [layer setDisableUpdateMask:{objc_msgSend(layer, "disableUpdateMask") & 0xFFFFFFEFLL}];
         v6 = SBLogInCallPresentation();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v8 = 138543362;
-          v9 = v4;
+          v9 = neededCopy;
           _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Stopped hiding %{public}@ from cloned display", &v8, 0xCu);
         }
       }
@@ -1235,22 +1235,22 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 
 - (BOOL)_deviceHasDaemonSceneThatShouldBeShared
 {
-  v3 = [(SBHideSharePlayContentFromSharedScreenController *)self _canShareDaemonScenes];
-  if (v3)
+  _canShareDaemonScenes = [(SBHideSharePlayContentFromSharedScreenController *)self _canShareDaemonScenes];
+  if (_canShareDaemonScenes)
   {
     if ([(SBHideSharePlayContentFromSharedScreenController *)self _deviceHasDaemonSceneThatShouldBeSharedIfPossible])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_canShareDaemonScenes) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = SBSIsSystemApertureAvailable();
+      LOBYTE(_canShareDaemonScenes) = SBSIsSystemApertureAvailable();
     }
   }
 
-  return v3;
+  return _canShareDaemonScenes;
 }
 
 - (BOOL)_canShareDaemonScenes
@@ -1268,13 +1268,13 @@ uint64_t __124__SBHideSharePlayContentFromSharedScreenController_bannerManager_w
 
 - (BOOL)_deviceHasDaemonSceneThatShouldBeSharedIfPossible
 {
-  v3 = [SBApp mousePointerManager];
-  v4 = ([v3 isHardwarePointingDeviceAttached] & 1) != 0 || self->_numberOfActiveDragSessions > 0;
+  mousePointerManager = [SBApp mousePointerManager];
+  v4 = ([mousePointerManager isHardwarePointingDeviceAttached] & 1) != 0 || self->_numberOfActiveDragSessions > 0;
 
   return v4;
 }
 
-- (void)mousePointerManager:(id)a3 hardwarePointingDeviceAttachedDidChange:(BOOL)a4
+- (void)mousePointerManager:(id)manager hardwarePointingDeviceAttachedDidChange:(BOOL)change
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x277D85DD0];
@@ -1293,44 +1293,44 @@ void __112__SBHideSharePlayContentFromSharedScreenController_mousePointerManager
   [WeakRetained _resolveHidingBehavior];
 }
 
-- (void)transientOverlayPresentationManager:(id)a3 willPresentViewController:(id)a4
+- (void)transientOverlayPresentationManager:(id)manager willPresentViewController:(id)controller
 {
-  [(SBHideSharePlayContentFromSharedScreenController *)self _startTrackingTransientOverlayViewController:a4];
+  [(SBHideSharePlayContentFromSharedScreenController *)self _startTrackingTransientOverlayViewController:controller];
 
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)transientOverlayPresentationManager:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5
+- (void)transientOverlayPresentationManager:(id)manager didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation
 {
-  [(SBHideSharePlayContentFromSharedScreenController *)self _stopTrackingTransientOverlayViewController:a4];
+  [(SBHideSharePlayContentFromSharedScreenController *)self _stopTrackingTransientOverlayViewController:controller];
 
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)_startTrackingTransientOverlayViewController:(id)a3
+- (void)_startTrackingTransientOverlayViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   trackedTransientOverlays = self->_trackedTransientOverlays;
-  v8 = v4;
+  v8 = controllerCopy;
   if (!trackedTransientOverlays)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_trackedTransientOverlays;
-    self->_trackedTransientOverlays = v6;
+    self->_trackedTransientOverlays = weakObjectsHashTable;
 
-    v4 = v8;
+    controllerCopy = v8;
     trackedTransientOverlays = self->_trackedTransientOverlays;
   }
 
-  [(NSHashTable *)trackedTransientOverlays addObject:v4];
+  [(NSHashTable *)trackedTransientOverlays addObject:controllerCopy];
   [(SBHideSharePlayContentFromSharedScreenController *)self _resolveHidingBehavior];
 }
 
-- (void)_stopTrackingTransientOverlayViewController:(id)a3
+- (void)_stopTrackingTransientOverlayViewController:(id)controller
 {
-  v4 = a3;
-  [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingViewControllerFromClonedDisplaysIfNeeded:v4];
-  [(NSHashTable *)self->_trackedTransientOverlays removeObject:v4];
+  controllerCopy = controller;
+  [(SBHideSharePlayContentFromSharedScreenController *)self _stopHidingViewControllerFromClonedDisplaysIfNeeded:controllerCopy];
+  [(NSHashTable *)self->_trackedTransientOverlays removeObject:controllerCopy];
 
   if (![(NSHashTable *)self->_trackedTransientOverlays count])
   {
@@ -1349,8 +1349,8 @@ void __112__SBHideSharePlayContentFromSharedScreenController_mousePointerManager
 
 - (void)_pipViewControllerToHide
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBHideSharePlayContentFromSharedScreenController.m" lineNumber:389 description:@"Instance should respond to protocol method"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBHideSharePlayContentFromSharedScreenController.m" lineNumber:389 description:@"Instance should respond to protocol method"];
 }
 
 @end

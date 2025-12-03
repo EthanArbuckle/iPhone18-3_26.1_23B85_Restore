@@ -1,32 +1,32 @@
 @interface DMTEnrollmentStatusViewModel
-+ (id)detailTextWithOrganizationName:(id)a3 organizationType:(int64_t)a4 localizedDeviceClass:(id)a5;
-+ (id)statusMessageForEnrollmentState:(int64_t)a3 networkName:(id)a4;
-- (DMTEnrollmentStatusViewModel)initWithCoder:(id)a3;
-- (DMTEnrollmentStatusViewModel)initWithOrganizationName:(id)a3 organizationType:(int64_t)a4 localizedDeviceClass:(id)a5 enrollmentState:(int64_t)a6 networkName:(id)a7;
-- (void)encodeWithCoder:(id)a3;
++ (id)detailTextWithOrganizationName:(id)name organizationType:(int64_t)type localizedDeviceClass:(id)class;
++ (id)statusMessageForEnrollmentState:(int64_t)state networkName:(id)name;
+- (DMTEnrollmentStatusViewModel)initWithCoder:(id)coder;
+- (DMTEnrollmentStatusViewModel)initWithOrganizationName:(id)name organizationType:(int64_t)type localizedDeviceClass:(id)class enrollmentState:(int64_t)state networkName:(id)networkName;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DMTEnrollmentStatusViewModel
 
-- (DMTEnrollmentStatusViewModel)initWithOrganizationName:(id)a3 organizationType:(int64_t)a4 localizedDeviceClass:(id)a5 enrollmentState:(int64_t)a6 networkName:(id)a7
+- (DMTEnrollmentStatusViewModel)initWithOrganizationName:(id)name organizationType:(int64_t)type localizedDeviceClass:(id)class enrollmentState:(int64_t)state networkName:(id)networkName
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  nameCopy = name;
+  classCopy = class;
+  networkNameCopy = networkName;
   v23.receiver = self;
   v23.super_class = DMTEnrollmentStatusViewModel;
   v15 = [(DMTEnrollmentStatusViewModel *)&v23 init];
   if (v15)
   {
-    v16 = [objc_opt_class() titleWithLocalizedDeviceClass:v13];
+    v16 = [objc_opt_class() titleWithLocalizedDeviceClass:classCopy];
     title = v15->_title;
     v15->_title = v16;
 
-    v18 = [objc_opt_class() detailTextWithOrganizationName:v12 organizationType:a4 localizedDeviceClass:v13];
+    v18 = [objc_opt_class() detailTextWithOrganizationName:nameCopy organizationType:type localizedDeviceClass:classCopy];
     detailText = v15->_detailText;
     v15->_detailText = v18;
 
-    v20 = [objc_opt_class() statusMessageForEnrollmentState:a6 networkName:v14];
+    v20 = [objc_opt_class() statusMessageForEnrollmentState:state networkName:networkNameCopy];
     statusMessage = v15->_statusMessage;
     v15->_statusMessage = v20;
   }
@@ -34,28 +34,28 @@
   return v15;
 }
 
-- (DMTEnrollmentStatusViewModel)initWithCoder:(id)a3
+- (DMTEnrollmentStatusViewModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = DMTEnrollmentStatusViewModel;
   v5 = [(DMTEnrollmentStatusViewModel *)&v16 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"title"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"title"];
     title = v5->_title;
     v5->_title = v7;
 
     objc_storeStrong(&v5->_title, v7);
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"detailText"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"detailText"];
     detailText = v5->_detailText;
     v5->_detailText = v10;
 
     objc_storeStrong(&v5->_detailText, v10);
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"statusMessage"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"statusMessage"];
     statusMessage = v5->_statusMessage;
     v5->_statusMessage = v13;
 
@@ -65,39 +65,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DMTEnrollmentStatusViewModel *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(DMTEnrollmentStatusViewModel *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(DMTEnrollmentStatusViewModel *)self detailText];
-  [v4 encodeObject:v6 forKey:@"detailText"];
+  detailText = [(DMTEnrollmentStatusViewModel *)self detailText];
+  [coderCopy encodeObject:detailText forKey:@"detailText"];
 
-  v7 = [(DMTEnrollmentStatusViewModel *)self statusMessage];
-  [v4 encodeObject:v7 forKey:@"statusMessage"];
+  statusMessage = [(DMTEnrollmentStatusViewModel *)self statusMessage];
+  [coderCopy encodeObject:statusMessage forKey:@"statusMessage"];
 }
 
-+ (id)detailTextWithOrganizationName:(id)a3 organizationType:(int64_t)a4 localizedDeviceClass:(id)a5
++ (id)detailTextWithOrganizationName:(id)name organizationType:(int64_t)type localizedDeviceClass:(id)class
 {
-  v7 = a3;
-  v8 = DMTDetailTextAddingDeviceBodyFor(a5);
-  v9 = DMTFormattedEnrollmentOrganizationNameFrom(v7);
+  nameCopy = name;
+  v8 = DMTDetailTextAddingDeviceBodyFor(class);
+  v9 = DMTFormattedEnrollmentOrganizationNameFrom(nameCopy);
 
-  v10 = DMTLocalizedOrganizationMarketingNameForOrganizationType(a4);
+  v10 = DMTLocalizedOrganizationMarketingNameForOrganizationType(type);
   v11 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v8 validFormatSpecifiers:@"%@%@" error:0, v9, v10];
 
   return v11;
 }
 
-+ (id)statusMessageForEnrollmentState:(int64_t)a3 networkName:(id)a4
++ (id)statusMessageForEnrollmentState:(int64_t)state networkName:(id)name
 {
-  v5 = a4;
-  v6 = v5;
+  nameCopy = name;
+  v6 = nameCopy;
   v7 = &stru_285B54748;
-  if (a3 <= 6)
+  if (state <= 6)
   {
-    switch(a3)
+    switch(state)
     {
       case 4:
         v8 = DMTBundle();
@@ -121,9 +121,9 @@
     goto LABEL_15;
   }
 
-  if (a3 != 7)
+  if (state != 7)
   {
-    if (a3 == 8)
+    if (state == 8)
     {
       v8 = DMTBundle();
       v9 = v8;
@@ -132,7 +132,7 @@
 
     else
     {
-      if (a3 != 9)
+      if (state != 9)
       {
         goto LABEL_17;
       }
@@ -145,7 +145,7 @@
     goto LABEL_15;
   }
 
-  v11 = [v5 length];
+  v11 = [nameCopy length];
   v8 = DMTBundle();
   v9 = v8;
   if (!v11)

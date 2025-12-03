@@ -1,20 +1,20 @@
 @interface Core_Audio_Driver_Service_Client
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (Core_Audio_Driver_Service_Client)init;
 - (id).cxx_construct;
 - (id)deferred_driver_loaded:(NSObject  *){objcproto17OS_dispatch_queue} reply:(id)&&;
-- (id)get_lazy_connection:(shared_ptr<Driver_File>)a3;
+- (id)get_lazy_connection:(shared_ptr<Driver_File>)get_lazy_connection;
 - (id)init_with_driver_service_undertaker:(shared_ptr<std::function<void)(std::shared_ptr<Driver_File>;
-- (int)load_driver:(shared_ptr<Driver_File>)a3 driver_endpoint:(id *)a4;
+- (int)load_driver:(shared_ptr<Driver_File>)load_driver driver_endpoint:(id *)driver_endpoint;
 - (shared_ptr<Driver_File>)driver_file;
 - (shared_ptr<std::function<void)driver_service_undertaker;
 - (uint64_t)connect_to_driver_service:;
-- (void)connect_to_driver_service:(shared_ptr<Driver_File>)a3;
+- (void)connect_to_driver_service:(shared_ptr<Driver_File>)connect_to_driver_service;
 - (void)dealloc;
-- (void)deferred_driver_loaded:(id)a3 reply:(id)a4;
+- (void)deferred_driver_loaded:(id)deferred_driver_loaded reply:(id)reply;
 - (void)invalidate;
 - (void)send_endpoint_to_driver_service;
-- (void)setDriver_file:(shared_ptr<Driver_File>)a3;
+- (void)setDriver_file:(shared_ptr<Driver_File>)driver_file;
 - (void)setDriver_service_undertaker:(shared_ptr<std::function<void)(std::shared_ptr<Driver_File>;
 - (void)tell_driver_service_to_exit;
 @end
@@ -54,10 +54,10 @@
   return self;
 }
 
-- (void)setDriver_file:(shared_ptr<Driver_File>)a3
+- (void)setDriver_file:(shared_ptr<Driver_File>)driver_file
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *driver_file.__ptr_;
+  v3 = *(driver_file.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -120,58 +120,58 @@
   return result;
 }
 
-- (void)deferred_driver_loaded:(id)a3 reply:(id)a4
+- (void)deferred_driver_loaded:(id)deferred_driver_loaded reply:(id)reply
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(Core_Audio_Driver_Service_Client *)self delegate];
-  if (v8)
+  deferred_driver_loadedCopy = deferred_driver_loaded;
+  replyCopy = reply;
+  delegate = [(Core_Audio_Driver_Service_Client *)self delegate];
+  if (delegate)
   {
     [(Core_Audio_Driver_Service_Client *)self queue];
-    v9 = v8;
-    v10 = v6;
+    v9 = delegate;
+    v10 = deferred_driver_loadedCopy;
     v11 = v13;
     operator new();
   }
 
-  v7[2](v7, 0);
+  replyCopy[2](replyCopy, 0);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
 - (id)deferred_driver_loaded:(NSObject  *){objcproto17OS_dispatch_queue} reply:(id)&&
 {
-  v4 = a1;
-  v2 = *a1;
+  selfCopy = self;
+  v2 = *self;
   if (v2)
   {
-    [v2 deferred_driver_loaded:*(a1 + 8)];
+    [v2 deferred_driver_loaded:*(self + 8)];
   }
 
-  return std::unique_ptr<HALS_RemotePlugInRegistrar::CreateExtrinsicDriverEntryPoint(void)::$_0::operator() const(NSString *,NSXPCConnection *)::{lambda(void)#1},std::default_delete<HALS_RemotePlugInRegistrar::CreateExtrinsicDriverEntryPoint(void)::$_0::operator() const(NSString *,NSXPCConnection *)::{lambda(void)#1}>>::~unique_ptr[abi:ne200100](&v4);
+  return std::unique_ptr<HALS_RemotePlugInRegistrar::CreateExtrinsicDriverEntryPoint(void)::$_0::operator() const(NSString *,NSXPCConnection *)::{lambda(void)#1},std::default_delete<HALS_RemotePlugInRegistrar::CreateExtrinsicDriverEntryPoint(void)::$_0::operator() const(NSString *,NSXPCConnection *)::{lambda(void)#1}>>::~unique_ptr[abi:ne200100](&selfCopy);
 }
 
 - (void)invalidate
 {
-  v7 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
-  if (v7)
+  connection_to_driver_service = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
+  if (connection_to_driver_service)
   {
-    [v7 invalidate];
+    [connection_to_driver_service invalidate];
   }
 
-  v3 = [(Core_Audio_Driver_Service_Client *)self connection_from_driver_service];
-  v4 = v3;
-  if (v3)
+  connection_from_driver_service = [(Core_Audio_Driver_Service_Client *)self connection_from_driver_service];
+  v4 = connection_from_driver_service;
+  if (connection_from_driver_service)
   {
-    [v3 invalidate];
+    [connection_from_driver_service invalidate];
   }
 
-  v5 = [(Core_Audio_Driver_Service_Client *)self listener];
-  v6 = v5;
-  if (v5)
+  listener = [(Core_Audio_Driver_Service_Client *)self listener];
+  v6 = listener;
+  if (listener)
   {
-    [v5 invalidate];
+    [listener invalidate];
   }
 }
 
@@ -192,19 +192,19 @@
   [v4 exit_service];
 }
 
-- (int)load_driver:(shared_ptr<Driver_File>)a3 driver_endpoint:(id *)a4
+- (int)load_driver:(shared_ptr<Driver_File>)load_driver driver_endpoint:(id *)driver_endpoint
 {
-  ptr = a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
-  v18 = *a3.__ptr_;
+  ptr = load_driver.__ptr_;
+  v5 = *(load_driver.__ptr_ + 1);
+  v18 = *load_driver.__ptr_;
   v19 = v5;
-  cntrl = a3.__cntrl_;
+  cntrl = load_driver.__cntrl_;
   if (v5)
   {
     atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v6 = [(Core_Audio_Driver_Service_Client *)self get_lazy_connection:&v18, a3.__cntrl_, a4];
+  driver_endpoint = [(Core_Audio_Driver_Service_Client *)self get_lazy_connection:&v18, load_driver.__cntrl_, driver_endpoint];
   if (v19)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v19);
@@ -219,7 +219,7 @@
   v15[4] = &v17;
   v8 = v7;
   v16 = v8;
-  v9 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  v9 = [driver_endpoint synchronousRemoteObjectProxyWithErrorHandler:v15];
 
   v10 = **ptr;
   v11 = *(*ptr + 8);
@@ -235,15 +235,15 @@
   return v12;
 }
 
-- (id)get_lazy_connection:(shared_ptr<Driver_File>)a3
+- (id)get_lazy_connection:(shared_ptr<Driver_File>)get_lazy_connection
 {
-  ptr = a3.__ptr_;
+  ptr = get_lazy_connection.__ptr_;
   queue[42] = *MEMORY[0x1E69E9840];
-  [(Core_Audio_Driver_Service_Client *)self queue:a3.__ptr_];
-  v5 = self;
+  [(Core_Audio_Driver_Service_Client *)self queue:get_lazy_connection.__ptr_];
+  selfCopy = self;
   v7 = *ptr;
   v6 = *(ptr + 1);
-  v11[0] = v5;
+  v11[0] = selfCopy;
   v11[1] = v7;
   v12 = v6;
   if (v6)
@@ -263,24 +263,24 @@
   }
 
   AMCP::Utility::Dispatch_Queue::~Dispatch_Queue(queue);
-  v8 = [(Core_Audio_Driver_Service_Client *)v5 connection_to_driver_service];
+  connection_to_driver_service = [(Core_Audio_Driver_Service_Client *)selfCopy connection_to_driver_service];
   v9 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return connection_to_driver_service;
 }
 
-- (void)connect_to_driver_service:(shared_ptr<Driver_File>)a3
+- (void)connect_to_driver_service:(shared_ptr<Driver_File>)connect_to_driver_service
 {
-  ptr = a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
-  v20 = *a3.__ptr_;
+  ptr = connect_to_driver_service.__ptr_;
+  v5 = *(connect_to_driver_service.__ptr_ + 1);
+  v20 = *connect_to_driver_service.__ptr_;
   v21 = v5;
   if (v5)
   {
     atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  [(Core_Audio_Driver_Service_Client *)self setDriver_file:&v20, a3.__cntrl_];
+  [(Core_Audio_Driver_Service_Client *)self setDriver_file:&v20, connect_to_driver_service.__cntrl_];
   if (v21)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v21);
@@ -289,52 +289,52 @@
   v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:*(*ptr + 32)];
   [(Core_Audio_Driver_Service_Client *)self setConnection_to_driver_service:v6];
 
-  v7 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
-  [v7 uniquify];
+  connection_to_driver_service = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
+  [connection_to_driver_service uniquify];
 
   v8 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F599D2B8];
-  v9 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
-  [v9 setRemoteObjectInterface:v8];
+  connection_to_driver_service2 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
+  [connection_to_driver_service2 setRemoteObjectInterface:v8];
 
-  v10 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
-  [v10 setExportedObject:self];
+  connection_to_driver_service3 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
+  [connection_to_driver_service3 setExportedObject:self];
 
-  v11 = self;
+  selfCopy = self;
   aBlock = MEMORY[0x1E69E9820];
   v23 = 3321888768;
   v24 = ___ZZ62__Core_Audio_Driver_Service_Client_connect_to_driver_service__ENK3__2cvU13block_pointerFvvEEv_block_invoke;
   v25 = &__block_descriptor_40_ea8_32c75_ZTSKZ62__Core_Audio_Driver_Service_Client_connect_to_driver_service__E3__2_e5_v8__0l;
-  v12 = v11;
+  v12 = selfCopy;
   v26 = v12;
   v13 = _Block_copy(&aBlock);
 
-  v14 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
-  [v14 setInvalidationHandler:v13];
+  connection_to_driver_service4 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
+  [connection_to_driver_service4 setInvalidationHandler:v13];
 
-  v15 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
+  connection_to_driver_service5 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
   aBlock = MEMORY[0x1E69E9820];
   v23 = 3321888768;
   v24 = ___ZZ62__Core_Audio_Driver_Service_Client_connect_to_driver_service__ENK3__3cvU13block_pointerFvvEEv_block_invoke;
   v25 = &__block_descriptor_40_ea8_32c75_ZTSKZ62__Core_Audio_Driver_Service_Client_connect_to_driver_service__E3__3_e5_v8__0l;
-  v16 = v15;
+  v16 = connection_to_driver_service5;
   v26 = v16;
   v17 = _Block_copy(&aBlock);
 
-  v18 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
-  [v18 setInterruptionHandler:v17];
+  connection_to_driver_service6 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
+  [connection_to_driver_service6 setInterruptionHandler:v17];
 
-  v19 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
-  [v19 resume];
+  connection_to_driver_service7 = [(Core_Audio_Driver_Service_Client *)v12 connection_to_driver_service];
+  [connection_to_driver_service7 resume];
 
   [(Core_Audio_Driver_Service_Client *)v12 send_endpoint_to_driver_service];
 }
 
 - (uint64_t)connect_to_driver_service:
 {
-  v1 = *a1;
-  v3 = a1[2];
-  v2 = a1[3];
-  v6 = a1;
+  v1 = *self;
+  v3 = self[2];
+  v2 = self[3];
+  selfCopy = self;
   v7 = v3;
   v8 = v2;
   if (v2)
@@ -354,40 +354,40 @@
     std::__shared_weak_count::__release_shared[abi:ne200100](v8);
   }
 
-  return std::unique_ptr<-[Core_Audio_Driver_Service_Client connect_to_driver_service:]::$_2::operator() const(void)::{lambda(void)#1},std::default_delete<-[Core_Audio_Driver_Service_Client connect_to_driver_service:]::$_2::operator() const(void)::{lambda(void)#1}>>::~unique_ptr[abi:ne200100](&v6);
+  return std::unique_ptr<-[Core_Audio_Driver_Service_Client connect_to_driver_service:]::$_2::operator() const(void)::{lambda(void)#1},std::default_delete<-[Core_Audio_Driver_Service_Client connect_to_driver_service:]::$_2::operator() const(void)::{lambda(void)#1}>>::~unique_ptr[abi:ne200100](&selfCopy);
 }
 
 - (void)send_endpoint_to_driver_service
 {
   v8 = 1;
-  v3 = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
+  connection_to_driver_service = [(Core_Audio_Driver_Service_Client *)self connection_to_driver_service];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3321888768;
   v7[2] = __67__Core_Audio_Driver_Service_Client_send_endpoint_to_driver_service__block_invoke;
   v7[3] = &__block_descriptor_40_ea8_32c80_ZTSKZ67__Core_Audio_Driver_Service_Client_send_endpoint_to_driver_service_E3__0_e17_v16__0__NSError_8l;
   v7[4] = &v8;
-  v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v7];
+  v4 = [connection_to_driver_service synchronousRemoteObjectProxyWithErrorHandler:v7];
 
-  v5 = [(Core_Audio_Driver_Service_Client *)self endpoint];
+  endpoint = [(Core_Audio_Driver_Service_Client *)self endpoint];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3321888768;
   v6[2] = __67__Core_Audio_Driver_Service_Client_send_endpoint_to_driver_service__block_invoke_11;
   v6[3] = &__block_descriptor_40_ea8_32c80_ZTSKZ67__Core_Audio_Driver_Service_Client_send_endpoint_to_driver_service_E3__1_e8_v12__0B8l;
   v6[4] = &v8;
-  [v4 set_driver_service_client_endpoint:v5 reply:v6];
+  [v4 set_driver_service_client_endpoint:endpoint reply:v6];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F599A658];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  [v5 setInterruptionHandler:&__block_literal_global_4135];
-  [v5 setInvalidationHandler:&__block_literal_global_8];
-  [v5 resume];
-  [(Core_Audio_Driver_Service_Client *)self setConnection_from_driver_service:v5];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&__block_literal_global_4135];
+  [connectionCopy setInvalidationHandler:&__block_literal_global_8];
+  [connectionCopy resume];
+  [(Core_Audio_Driver_Service_Client *)self setConnection_from_driver_service:connectionCopy];
 
   return 1;
 }
@@ -455,14 +455,14 @@
   v2 = [(Core_Audio_Driver_Service_Client *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     v4 = *(v2 + 3);
-    *(v2 + 3) = v3;
+    *(v2 + 3) = anonymousListener;
 
     [*(v2 + 3) setDelegate:v2];
-    v5 = [*(v2 + 3) endpoint];
+    endpoint = [*(v2 + 3) endpoint];
     v6 = *(v2 + 4);
-    *(v2 + 4) = v5;
+    *(v2 + 4) = endpoint;
 
     [*(v2 + 3) resume];
     AMCP::Utility::Dispatch_Queue::Dispatch_Queue(obj, "driver host connection queue");

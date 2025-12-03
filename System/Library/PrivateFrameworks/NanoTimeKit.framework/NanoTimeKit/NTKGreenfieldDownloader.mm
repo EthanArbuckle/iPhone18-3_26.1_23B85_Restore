@@ -1,32 +1,32 @@
 @interface NTKGreenfieldDownloader
-- (BOOL)_copyFileFromURL:(id)a3;
-- (NTKGreenfieldDownloader)initWithWatchFaceURL:(id)a3;
+- (BOOL)_copyFileFromURL:(id)l;
+- (NTKGreenfieldDownloader)initWithWatchFaceURL:(id)l;
 - (id)_downloadURL;
 - (id)_downloadedFolderURL;
-- (int64_t)_greenfieldErrorFromURLSessionError:(int64_t)a3;
+- (int64_t)_greenfieldErrorFromURLSessionError:(int64_t)error;
 - (void)cancelDownload;
 - (void)downloadCleanUp;
-- (void)downloadWithCompletionBlock:(id)a3;
+- (void)downloadWithCompletionBlock:(id)block;
 @end
 
 @implementation NTKGreenfieldDownloader
 
-- (NTKGreenfieldDownloader)initWithWatchFaceURL:(id)a3
+- (NTKGreenfieldDownloader)initWithWatchFaceURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = NTKGreenfieldDownloader;
   v6 = [(NTKGreenfieldDownloader *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_remoteWatchFaceURL, a3);
+    objc_storeStrong(&v6->_remoteWatchFaceURL, l);
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v8 initWithFormat:@"%@.watchface", v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v10 = [v8 initWithFormat:@"%@.watchface", uUID];
 
-    v11 = [(NTKGreenfieldDownloader *)v7 _downloadedFolderURL];
-    v12 = [v11 URLByAppendingPathComponent:v10];
+    _downloadedFolderURL = [(NTKGreenfieldDownloader *)v7 _downloadedFolderURL];
+    v12 = [_downloadedFolderURL URLByAppendingPathComponent:v10];
     downloadedFileURL = v7->_downloadedFileURL;
     v7->_downloadedFileURL = v12;
   }
@@ -58,11 +58,11 @@ void __47__NTKGreenfieldDownloader__downloadedFolderURL__block_invoke()
 
 - (id)_downloadURL
 {
-  v2 = [(NSURL *)self->_remoteWatchFaceURL lastPathComponent];
-  if (v2)
+  lastPathComponent = [(NSURL *)self->_remoteWatchFaceURL lastPathComponent];
+  if (lastPathComponent)
   {
     v3 = [MEMORY[0x277CBEBC0] URLWithString:@"https://watch-app.cdn-apple.com/A/com.apple.watchfaces/production/_defaultZone"];
-    v4 = [v3 URLByAppendingPathComponent:v2];
+    v4 = [v3 URLByAppendingPathComponent:lastPathComponent];
 
     v5 = [v4 URLByAppendingPathComponent:@"WatchFaceFile"];
   }
@@ -75,30 +75,30 @@ void __47__NTKGreenfieldDownloader__downloadedFolderURL__block_invoke()
   return v5;
 }
 
-- (void)downloadWithCompletionBlock:(id)a3
+- (void)downloadWithCompletionBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKGreenfieldDownloader *)self _downloadURL];
+  blockCopy = block;
+  _downloadURL = [(NTKGreenfieldDownloader *)self _downloadURL];
   v6 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v5;
+    v22 = _downloadURL;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Downloading file from url: %@", buf, 0xCu);
   }
 
-  if (v5)
+  if (_downloadURL)
   {
-    v7 = [MEMORY[0x277CCAD30] sharedSession];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __55__NTKGreenfieldDownloader_downloadWithCompletionBlock___block_invoke;
     v17[3] = &unk_278782910;
-    v18 = v5;
-    v19 = self;
-    v20 = v4;
-    v8 = [v7 downloadTaskWithURL:v18 completionHandler:v17];
+    v18 = _downloadURL;
+    selfCopy = self;
+    v20 = blockCopy;
+    v8 = [mEMORY[0x277CCAD30] downloadTaskWithURL:v18 completionHandler:v17];
     downloadTask = self->_downloadTask;
     self->_downloadTask = v8;
 
@@ -113,8 +113,8 @@ void __47__NTKGreenfieldDownloader__downloadedFolderURL__block_invoke()
       [(NTKGreenfieldDownloader *)self downloadWithCompletionBlock:v10, v11, v12, v13, v14, v15, v16];
     }
 
-    v7 = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:10];
-    (*(v4 + 2))(v4, 0, v7);
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCA9B8] greenfield_addWatchFaceErrorWithCode:10];
+    (*(blockCopy + 2))(blockCopy, 0, mEMORY[0x277CCAD30]);
   }
 }
 
@@ -287,9 +287,9 @@ void __42__NTKGreenfieldDownloader_downloadCleanUp__block_invoke(uint64_t a1)
   *(*v3 + 2) = 0;
 }
 
-- (int64_t)_greenfieldErrorFromURLSessionError:(int64_t)a3
+- (int64_t)_greenfieldErrorFromURLSessionError:(int64_t)error
 {
-  if ((a3 + 1010) >= 0xB)
+  if ((error + 1010) >= 0xB)
   {
     return 4;
   }
@@ -300,12 +300,12 @@ void __42__NTKGreenfieldDownloader_downloadCleanUp__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_copyFileFromURL:(id)a3
+- (BOOL)_copyFileFromURL:(id)l
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(NTKGreenfieldDownloader *)self _downloadedFolderURL];
-  v7 = [v5 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:0];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _downloadedFolderURL = [(NTKGreenfieldDownloader *)self _downloadedFolderURL];
+  v7 = [defaultManager createDirectoryAtURL:_downloadedFolderURL withIntermediateDirectories:1 attributes:0 error:0];
 
   if ((v7 & 1) == 0)
   {
@@ -318,7 +318,7 @@ void __42__NTKGreenfieldDownloader_downloadCleanUp__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (([v5 copyItemAtURL:v4 toURL:self->_downloadedFileURL error:0] & 1) == 0)
+  if (([defaultManager copyItemAtURL:lCopy toURL:self->_downloadedFileURL error:0] & 1) == 0)
   {
     v9 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -329,7 +329,7 @@ void __42__NTKGreenfieldDownloader_downloadCleanUp__block_invoke(uint64_t a1)
     goto LABEL_11;
   }
 
-  if (([v5 removeItemAtURL:v4 error:0] & 1) == 0)
+  if (([defaultManager removeItemAtURL:lCopy error:0] & 1) == 0)
   {
     v9 = _NTKLoggingObjectForDomain(43, "NTKLoggingDomainGreenfield");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))

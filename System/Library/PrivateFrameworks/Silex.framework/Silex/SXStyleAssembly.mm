@@ -1,27 +1,27 @@
 @interface SXStyleAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXStyleAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F53E79A0 factory:&__block_literal_global_99];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F53E79A0 factory:&__block_literal_global_99];
 
-  v6 = [v3 publicContainer];
-  v7 = [v6 registerProtocol:&unk_1F54051D8 factory:&__block_literal_global_51_0];
+  publicContainer2 = [registryCopy publicContainer];
+  v7 = [publicContainer2 registerProtocol:&unk_1F54051D8 factory:&__block_literal_global_51_0];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerProtocol:&unk_1F53C5C48 factory:&__block_literal_global_59_20];
+  publicContainer3 = [registryCopy publicContainer];
+  v9 = [publicContainer3 registerProtocol:&unk_1F53C5C48 factory:&__block_literal_global_59_20];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerProtocol:&unk_1F53EAA10 factory:&__block_literal_global_104_2];
+  publicContainer4 = [registryCopy publicContainer];
+  v11 = [publicContainer4 registerProtocol:&unk_1F53EAA10 factory:&__block_literal_global_104_2];
 
-  v13 = [v3 publicContainer];
+  publicContainer5 = [registryCopy publicContainer];
 
-  v12 = [v13 registerProtocol:&unk_1F53E5F18 factory:&__block_literal_global_111_2];
+  v12 = [publicContainer5 registerProtocol:&unk_1F53E5F18 factory:&__block_literal_global_111_2];
 }
 
 SXDocumentStyleRenderer *__34__SXStyleAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2)

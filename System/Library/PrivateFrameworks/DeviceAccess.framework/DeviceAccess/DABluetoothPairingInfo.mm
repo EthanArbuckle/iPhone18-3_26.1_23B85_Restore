@@ -1,16 +1,16 @@
 @interface DABluetoothPairingInfo
-- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)a3 pairedCTKD:(BOOL)a4 appConfirmsAuth:(BOOL)a5 pairingRequired:(BOOL)a6;
-- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)a3 pairingType:(int64_t)a4;
-- (DABluetoothPairingInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)identifier pairedCTKD:(BOOL)d appConfirmsAuth:(BOOL)auth pairingRequired:(BOOL)required;
+- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)identifier pairingType:(int64_t)type;
+- (DABluetoothPairingInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DABluetoothPairingInfo
 
-- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)a3 pairingType:(int64_t)a4
+- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)identifier pairingType:(int64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = DABluetoothPairingInfo;
   v8 = [(DABluetoothPairingInfo *)&v13 init];
@@ -18,9 +18,9 @@
   if (v8)
   {
     v8->_accept = 0;
-    objc_storeStrong(&v8->_bluetoothIdentifier, a3);
+    objc_storeStrong(&v8->_bluetoothIdentifier, identifier);
     passkey = v9->_passkey;
-    v9->_pairingType = a4;
+    v9->_pairingType = type;
     v9->_passkey = 0;
 
     v11 = v9;
@@ -29,9 +29,9 @@
   return v9;
 }
 
-- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)a3 pairedCTKD:(BOOL)a4 appConfirmsAuth:(BOOL)a5 pairingRequired:(BOOL)a6
+- (DABluetoothPairingInfo)initWithBluetoothIdentifier:(id)identifier pairedCTKD:(BOOL)d appConfirmsAuth:(BOOL)auth pairingRequired:(BOOL)required
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = DABluetoothPairingInfo;
   v12 = [(DABluetoothPairingInfo *)&v17 init];
@@ -39,34 +39,34 @@
   if (v12)
   {
     v12->_accept = 0;
-    objc_storeStrong(&v12->_bluetoothIdentifier, a3);
+    objc_storeStrong(&v12->_bluetoothIdentifier, identifier);
     passkey = v13->_passkey;
     v13->_pairingType = 0;
     v13->_passkey = 0;
 
-    v13->_pairedWithCTKD = a4;
-    v13->_appConfirmsAuth = a5;
-    v13->_pairingRequired = a6;
+    v13->_pairedWithCTKD = d;
+    v13->_appConfirmsAuth = auth;
+    v13->_pairingRequired = required;
     v15 = v13;
   }
 
   return v13;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_accept)
   {
-    xpc_dictionary_set_BOOL(v4, "btPA", 1);
+    xpc_dictionary_set_BOOL(objectCopy, "btPA", 1);
   }
 
-  v6 = [(NSNumber *)self->_passkey intValue];
-  if (v6)
+  intValue = [(NSNumber *)self->_passkey intValue];
+  if (intValue)
   {
-    xpc_dictionary_set_int64(v5, "btPk", v6);
+    xpc_dictionary_set_int64(v5, "btPk", intValue);
   }
 
   pairingType = self->_pairingType;
@@ -91,9 +91,9 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -136,9 +136,9 @@
   return v11;
 }
 
-- (DABluetoothPairingInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (DABluetoothPairingInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v5 = a3;
+  objectCopy = object;
   if (!self || !CUXPCDecodeBool() || CUXPCDecodeSInt64RangedEx() == 5)
   {
     goto LABEL_11;
@@ -153,7 +153,7 @@
   else if (v6 == 5)
   {
 LABEL_11:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -166,10 +166,10 @@ LABEL_11:
   passkey = self->_passkey;
   self->_passkey = v7;
 
-  v9 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v9;
+  return selfCopy;
 }
 
 @end

@@ -7,18 +7,18 @@
 - (id)description
 {
   v3 = new_JavaLangStringBuilder_init();
-  v4 = [(OrgApacheLuceneSearchSpansSpans *)self getClass];
-  if ([v4 isAnonymousClass])
+  getClass = [(OrgApacheLuceneSearchSpansSpans *)self getClass];
+  if ([getClass isAnonymousClass])
   {
-    v5 = [v4 getName];
+    getName = [getClass getName];
   }
 
   else
   {
-    v5 = [v4 getSimpleName];
+    getName = [getClass getSimpleName];
   }
 
-  [(JavaLangStringBuilder *)v3 appendWithNSString:v5];
+  [(JavaLangStringBuilder *)v3 appendWithNSString:getName];
   v6 = -[JavaLangStringBuilder appendWithNSString:](v3, "appendWithNSString:", @"(doc=");
   if (!v6 || ([v6 appendWithInt:{-[OrgApacheLuceneSearchSpansSpans docID](self, "docID")}], (v7 = -[JavaLangStringBuilder appendWithNSString:](v3, "appendWithNSString:", @",start=")) == 0) || (objc_msgSend(v7, "appendWithInt:", -[OrgApacheLuceneSearchSpansSpans startPosition](self, "startPosition")), (v8 = -[JavaLangStringBuilder appendWithNSString:](v3, "appendWithNSString:", @",end=")) == 0))
   {

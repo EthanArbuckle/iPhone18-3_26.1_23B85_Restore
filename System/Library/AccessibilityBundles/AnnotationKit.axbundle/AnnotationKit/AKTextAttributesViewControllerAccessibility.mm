@@ -1,24 +1,24 @@
 @interface AKTextAttributesViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)createRowAlignmentCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAddAlignmentLabels:(id)a3;
+- (void)_axAddAlignmentLabels:(id)labels;
 @end
 
 @implementation AKTextAttributesViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKSegmentedCtrl"];
-  [v3 validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"createRowAlignmentCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"segmentAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"tagForSegment:" withFullSignature:{"q", "Q", 0}];
-  [v3 validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"presetFontController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"currentFontFamilyName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKFontListController" hasInstanceMethod:@"fonts" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKSegmentedCtrl"];
+  [validationsCopy validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"createRowAlignmentCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"segmentAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"AKSegmentedCtrl" hasInstanceMethod:@"tagForSegment:" withFullSignature:{"q", "Q", 0}];
+  [validationsCopy validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"presetFontController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKTextAttributesViewController" hasInstanceMethod:@"currentFontFamilyName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKFontListController" hasInstanceMethod:@"fonts" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -33,23 +33,23 @@
   [(AKTextAttributesViewControllerAccessibility *)self _axAddAlignmentLabels:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = AKTextAttributesViewControllerAccessibility;
-  v8 = [(AKTextAttributesViewControllerAccessibility *)&v22 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(AKTextAttributesViewControllerAccessibility *)&v22 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   v9 = [(AKTextAttributesViewControllerAccessibility *)self safeValueForKey:@"presetFontController"];
   v10 = [v9 safeValueForKey:@"fonts"];
   v11 = __UIAccessibilityCastAsClass();
 
-  v12 = [v7 row];
+  v12 = [pathCopy row];
   if (v12 < [v11 count])
   {
     objc_opt_class();
-    v13 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+    v13 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
     v14 = __UIAccessibilityCastAsClass();
 
     v15 = [(AKTextAttributesViewControllerAccessibility *)self safeValueForKey:@"currentFontFamilyName"];
@@ -57,8 +57,8 @@
     v17 = *MEMORY[0x29EDC7F70];
     if (v14 && v15)
     {
-      v18 = [v14 familyName];
-      v19 = [v18 containsString:v16];
+      familyName = [v14 familyName];
+      v19 = [familyName containsString:v16];
 
       v20 = *MEMORY[0x29EDC7FC0];
       if ((v19 & 1) == 0)
@@ -75,11 +75,11 @@
   return v8;
 }
 
-- (void)_axAddAlignmentLabels:(id)a3
+- (void)_axAddAlignmentLabels:(id)labels
 {
-  v11 = a3;
-  v3 = [v11 contentView];
-  v4 = [v3 _accessibilityFindSubviewDescendant:&__block_literal_global];
+  labelsCopy = labels;
+  contentView = [labelsCopy contentView];
+  v4 = [contentView _accessibilityFindSubviewDescendant:&__block_literal_global];
 
   v5 = [v4 safeUnsignedIntegerForKey:@"segmentCount"];
   if (v5)
@@ -148,7 +148,7 @@ uint64_t __69__AKTextAttributesViewControllerAccessibility__axAddAlignmentLabels
   objc_opt_class();
   v6.receiver = self;
   v6.super_class = AKTextAttributesViewControllerAccessibility;
-  v3 = [(AKTextAttributesViewControllerAccessibility *)&v6 createRowAlignmentCell];
+  createRowAlignmentCell = [(AKTextAttributesViewControllerAccessibility *)&v6 createRowAlignmentCell];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v7 == 1)

@@ -1,18 +1,18 @@
 @interface FRNewsSettingsController
 + (BOOL)isBackgroundRefreshEnabled;
 + (BOOL)isSubscribed;
-+ (id)specifierForDownloadSettingWithTarget:(id)a3;
-+ (void)setSubtitleForAutomaticDownloadsSpecifier:(id)a3;
++ (id)specifierForDownloadSettingWithTarget:(id)target;
++ (void)setSubtitleForAutomaticDownloadsSpecifier:(id)specifier;
 - (BOOL)isUserSignedIntoICloud;
 - (FRNewsSettingsController)init;
-- (id)localizedStringResourceWithKey:(id)a3;
+- (id)localizedStringResourceWithKey:(id)key;
 - (id)offlineModeSubscriberGroupDescription;
 - (id)specifiers;
 - (void)cancelAction;
 - (void)reloadSpecifiersOnMain;
 - (void)routeToNewsSubscription;
-- (void)setShowStoriesFromFavorites:(id)a3 specifier:(id)a4;
-- (void)setValue:(id)a3 forSpecifier:(id)a4;
+- (void)setShowStoriesFromFavorites:(id)favorites specifier:(id)specifier;
+- (void)setValue:(id)value forSpecifier:(id)specifier;
 - (void)showCombinedPrivacyPane;
 - (void)showGameCenterPrivacyScreen;
 - (void)showSportsSyncingPrivacyScreen;
@@ -54,9 +54,9 @@
 + (BOOL)isBackgroundRefreshEnabled
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 backgroundRefreshStatus];
+  backgroundRefreshStatus = [v2 backgroundRefreshStatus];
 
-  if (v3 != &dword_0 + 2)
+  if (backgroundRefreshStatus != &dword_0 + 2)
   {
     return 0;
   }
@@ -73,17 +73,17 @@
     v6 = &__kCFBooleanTrue;
   }
 
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-+ (id)specifierForDownloadSettingWithTarget:(id)a3
++ (id)specifierForDownloadSettingWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"AUTOMATIC_DOWNLOADS_LINK_TITLE" value:&stru_10EF0 table:@"Localizable"];
-  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:v4 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:targetCopy set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v7 setIdentifier:@"AUTOMATIC_DOWNLOADS_LINK"];
   if (+[FRNewsSettingsController isSubscribed])
@@ -91,7 +91,7 @@
     [v7 setObject:NSClassFromString(@"PSSubtitleDisclosureTableCell") forKeyedSubscript:PSCellClassKey];
     v8 = +[NSProcessInfo processInfo];
     v9 = &__kCFBooleanFalse;
-    if (([v8 isLowPowerModeEnabled] & 1) == 0 && objc_msgSend(a1, "isBackgroundRefreshEnabled"))
+    if (([v8 isLowPowerModeEnabled] & 1) == 0 && objc_msgSend(self, "isBackgroundRefreshEnabled"))
     {
       v9 = &__kCFBooleanTrue;
     }
@@ -144,9 +144,9 @@
     v7 = [[PSSystemPolicyForApp alloc] initWithBundleIdentifier:@"com.apple.news"];
     [(FRNewsSettingsController *)self setAppPolicy:v7];
 
-    v8 = [(FRNewsSettingsController *)self appPolicy];
-    v9 = [v8 specifiers];
-    v102 = [v9 mutableCopy];
+    appPolicy = [(FRNewsSettingsController *)self appPolicy];
+    specifiers = [appPolicy specifiers];
+    v102 = [specifiers mutableCopy];
 
     v10 = NewsCoreUserDefaults();
     v11 = +[FRNewsSettingsController isSubscribed];
@@ -154,7 +154,7 @@
     v13 = [v10 objectForKey:FCOfflineModeFeatureFlagEnabledKey];
 
     v100 = v10;
-    v101 = self;
+    selfCopy = self;
     if (v13 && ![v10 BOOLForKey:v12])
     {
       v26 = [NSBundle bundleForClass:objc_opt_class()];
@@ -174,9 +174,9 @@
 
       [v102 addObject:v25];
       v32 = +[UIDevice currentDevice];
-      v33 = [v32 userInterfaceIdiom];
+      userInterfaceIdiom = [v32 userInterfaceIdiom];
 
-      if (!v33)
+      if (!userInterfaceIdiom)
       {
         v34 = [PSSpecifier groupSpecifierWithID:@"Download Audio"];
         v35 = [NSBundle bundleForClass:objc_opt_class()];
@@ -201,9 +201,9 @@
 
       if (v11)
       {
-        v17 = [(FRNewsSettingsController *)self offlineModeSubscriberGroupDescription];
+        offlineModeSubscriberGroupDescription = [(FRNewsSettingsController *)self offlineModeSubscriberGroupDescription];
         v18 = PSFooterTextGroupKey;
-        [v16 setProperty:v17 forKey:PSFooterTextGroupKey];
+        [v16 setProperty:offlineModeSubscriberGroupDescription forKey:PSFooterTextGroupKey];
 
         v19 = v102;
         [v102 addObject:v16];
@@ -310,18 +310,18 @@
       [v65 setProperty:@"showSportsSyncingPrivacyScreen" forKey:PSFooterHyperlinkViewActionKey];
       v19 = v102;
       [v102 addObject:v65];
-      v70 = [(FRNewsSettingsController *)self sportsSyncManager];
-      v71 = [v70 specifier];
-      [v102 addObject:v71];
+      sportsSyncManager = [(FRNewsSettingsController *)self sportsSyncManager];
+      specifier = [sportsSyncManager specifier];
+      [v102 addObject:specifier];
 
       objc_initWeak(buf, self);
-      v72 = [(FRNewsSettingsController *)self sportsSyncManager];
+      sportsSyncManager2 = [(FRNewsSettingsController *)self sportsSyncManager];
       v103[0] = _NSConcreteStackBlock;
       v103[1] = 3221225472;
       v103[2] = sub_5C30;
       v103[3] = &unk_10B38;
       objc_copyWeak(&v104, buf);
-      [v72 prepareWithCompletion:v103];
+      [sportsSyncManager2 prepareWithCompletion:v103];
       v18 = v99;
 
       objc_destroyWeak(&v104);
@@ -357,7 +357,7 @@
 
     v85 = [NSBundle bundleForClass:objc_opt_class()];
     v86 = [v85 localizedStringForKey:@"PRIVACY_TITLE" value:&stru_10EF0 table:@"Localizable"];
-    v87 = [PSSpecifier preferenceSpecifierNamed:v86 target:v101 set:0 get:0 detail:0 cell:13 edit:0];
+    v87 = [PSSpecifier preferenceSpecifierNamed:v86 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v87 setButtonAction:"showCombinedPrivacyPane"];
     [v87 setProperty:&__kCFBooleanTrue forKey:v96];
@@ -372,28 +372,28 @@
     [v83 addObject:v95];
     [v83 addObject:v87];
     [v83 addObject:v90];
-    v93 = *&v101->PSListController_opaque[v97];
-    *&v101->PSListController_opaque[v97] = v83;
+    v93 = *&selfCopy->PSListController_opaque[v97];
+    *&selfCopy->PSListController_opaque[v97] = v83;
 
-    v3 = *&v101->PSListController_opaque[v97];
+    v3 = *&selfCopy->PSListController_opaque[v97];
   }
 
   return v3;
 }
 
-- (void)setValue:(id)a3 forSpecifier:(id)a4
+- (void)setValue:(id)value forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  [(FRNewsSettingsController *)self setPreferenceValue:v7 specifier:v6];
-  [v6 setObject:v7 forKeyedSubscript:PSValueKey];
+  specifierCopy = specifier;
+  valueCopy = value;
+  [(FRNewsSettingsController *)self setPreferenceValue:valueCopy specifier:specifierCopy];
+  [specifierCopy setObject:valueCopy forKeyedSubscript:PSValueKey];
 
   [(FRNewsSettingsController *)self reloadSpecifiers];
 }
 
-+ (void)setSubtitleForAutomaticDownloadsSpecifier:(id)a3
++ (void)setSubtitleForAutomaticDownloadsSpecifier:(id)specifier
 {
-  v51 = a3;
+  specifierCopy = specifier;
   v3 = NewsCoreUserDefaults();
   v4 = FCAutomaticDownloadsEnabledKey;
   v52 = v3;
@@ -563,9 +563,9 @@ LABEL_26:
 
   v35 = [v25 count];
   v36 = +[NSProcessInfo processInfo];
-  v37 = [v36 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v36 isLowPowerModeEnabled];
 
-  if (v37)
+  if (isLowPowerModeEnabled)
   {
     v38 = [NSBundle bundleForClass:objc_opt_class()];
     v39 = v38;
@@ -576,7 +576,7 @@ LABEL_46:
     goto LABEL_47;
   }
 
-  if (([a1 isBackgroundRefreshEnabled] & 1) == 0)
+  if (([self isBackgroundRefreshEnabled] & 1) == 0)
   {
     v38 = [NSBundle bundleForClass:objc_opt_class()];
     v39 = v38;
@@ -608,7 +608,7 @@ LABEL_46:
 
   v46 = [v25 componentsJoinedByString:{@", "}];
 LABEL_47:
-  [v51 setObject:v46 forKeyedSubscript:PSTableCellSubtitleTextKey];
+  [specifierCopy setObject:v46 forKeyedSubscript:PSTableCellSubtitleTextKey];
 }
 
 - (void)showSportsSyncingPrivacyScreen
@@ -628,18 +628,18 @@ LABEL_47:
 - (BOOL)isUserSignedIntoICloud
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 isUserSignedInToiCloud];
+  isUserSignedInToiCloud = [v2 isUserSignedInToiCloud];
 
-  return v3;
+  return isUserSignedInToiCloud;
 }
 
-- (void)setShowStoriesFromFavorites:(id)a3 specifier:(id)a4
+- (void)setShowStoriesFromFavorites:(id)favorites specifier:(id)specifier
 {
-  v6 = a4;
+  specifierCopy = specifier;
   v27.receiver = self;
   v27.super_class = FRNewsSettingsController;
-  v7 = a3;
-  v8 = [(FRNewsSettingsController *)&v27 readPreferenceValue:v6];
+  favoritesCopy = favorites;
+  v8 = [(FRNewsSettingsController *)&v27 readPreferenceValue:specifierCopy];
   v9 = [(FRNewsSettingsController *)self localizedStringResourceWithKey:@"Restrict Stories in Today"];
   v10 = [NSURL URLWithString:@"prefs://root=News"];
   v24[0] = _NSConcreteStackBlock;
@@ -649,12 +649,12 @@ LABEL_47:
   v24[4] = self;
   v11 = v8;
   v25 = v11;
-  v12 = v6;
+  v12 = specifierCopy;
   v26 = v12;
   [(FRNewsSettingsController *)self pe_registerUndoActionName:v9 associatedDeepLink:v10 undoAction:v24];
 
-  [(FRNewsSettingsController *)self setPreferenceValue:v7 specifier:v12];
-  LODWORD(v9) = [v7 BOOLValue];
+  [(FRNewsSettingsController *)self setPreferenceValue:favoritesCopy specifier:v12];
+  LODWORD(v9) = [favoritesCopy BOOLValue];
 
   if (v9)
   {
@@ -663,7 +663,7 @@ LABEL_47:
     v15 = [v14 localizedStringForKey:@"RESTRICT_STORIES_ALERT_DESCRIPTION" value:&stru_10EF0 table:@"Localizable"];
 
     v16 = +[UIDevice currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    userInterfaceIdiom = [v16 userInterfaceIdiom];
 
     [v13 setPrompt:v15];
     v18 = [NSBundle bundleForClass:objc_opt_class()];
@@ -672,7 +672,7 @@ LABEL_47:
 
     v20 = [NSBundle bundleForClass:objc_opt_class()];
     v21 = v20;
-    if (v17)
+    if (userInterfaceIdiom)
     {
       v22 = [v20 localizedStringForKey:@"RESTRICT_STORIES_ALERT_TITLE_IPAD" value:&stru_10EF0 table:@"Localizable"];
       [v13 setTitle:v22];
@@ -734,9 +734,9 @@ LABEL_47:
 - (id)offlineModeSubscriberGroupDescription
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == &dword_4 + 2)
+  if (userInterfaceIdiom == &dword_4 + 2)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -744,7 +744,7 @@ LABEL_47:
     goto LABEL_7;
   }
 
-  if (v3 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -752,7 +752,7 @@ LABEL_47:
     goto LABEL_7;
   }
 
-  if (!v3)
+  if (!userInterfaceIdiom)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = v4;
@@ -774,17 +774,17 @@ LABEL_11:
   return v7;
 }
 
-- (id)localizedStringResourceWithKey:(id)a3
+- (id)localizedStringResourceWithKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  v9 = [v8 bundleURL];
-  v10 = [v6 initWithKey:v3 table:0 locale:v7 bundleURL:v9];
+  bundleURL2 = [v8 bundleURL];
+  v10 = [v6 initWithKey:keyCopy table:0 locale:v7 bundleURL:bundleURL2];
 
   return v10;
 }

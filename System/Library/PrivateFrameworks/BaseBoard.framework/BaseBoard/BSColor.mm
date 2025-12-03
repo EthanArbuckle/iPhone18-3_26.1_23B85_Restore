@@ -1,8 +1,8 @@
 @interface BSColor
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToColor:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToColor:(id)color;
 - (CGColor)CGColor;
 - (NSString)description;
 - (id)membersForCoder;
@@ -14,10 +14,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global_14);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global_14);
   }
 }
 
@@ -31,13 +31,13 @@ void __21__BSColor_initialize__block_invoke(uint64_t a1, void *a2)
   [v4 addSupportedCoding:v3];
 }
 
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v10 = objc_alloc_init(BSColor);
-  v10->_red = a3;
-  v10->_green = a4;
-  v10->_blue = a5;
-  v10->_alpha = a6;
+  v10->_red = red;
+  v10->_green = green;
+  v10->_blue = blue;
+  v10->_alpha = alpha;
 
   return v10;
 }
@@ -53,37 +53,37 @@ void __21__BSColor_initialize__block_invoke(uint64_t a1, void *a2)
 - (CGColor)CGColor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_colorRef)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_colorRef)
   {
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v4 = DeviceRGB;
     if (DeviceRGB)
     {
-      v5 = *&v2->_blue;
-      v7[0] = *&v2->_red;
+      v5 = *&selfCopy->_blue;
+      v7[0] = *&selfCopy->_red;
       v7[1] = v5;
-      v2->_colorRef = CGColorCreate(DeviceRGB, v7);
+      selfCopy->_colorRef = CGColorCreate(DeviceRGB, v7);
       CGColorSpaceRelease(v4);
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_colorRef;
+  return selfCopy->_colorRef;
 }
 
-- (BOOL)isEqualToColor:(id)a3
+- (BOOL)isEqualToColor:(id)color
 {
-  v4 = a3;
-  v5 = [BSEqualsBuilder builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  colorCopy = color;
+  v5 = [BSEqualsBuilder builderWithObject:colorCopy ofExpectedClass:objc_opt_class()];
   red = self->_red;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __26__BSColor_isEqualToColor___block_invoke;
   v28[3] = &unk_1E72CB470;
-  v7 = v4;
+  v7 = colorCopy;
   v29 = v7;
   v8 = [v5 appendCGFloat:v28 counterpart:red];
   green = self->_green;
@@ -214,9 +214,9 @@ void __21__BSColor_initialize__block_invoke(uint64_t a1, void *a2)
   v5 = [v3 appendFloat:@"g" withName:2 decimalPrecision:self->_green];
   v6 = [v3 appendFloat:@"b" withName:2 decimalPrecision:self->_blue];
   v7 = [v3 appendFloat:@"a" withName:2 decimalPrecision:self->_alpha];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (unint64_t)hash
@@ -231,11 +231,11 @@ void __21__BSColor_initialize__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BSColor *)self isEqualToColor:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BSColor *)self isEqualToColor:equalCopy];
 
   return v5;
 }

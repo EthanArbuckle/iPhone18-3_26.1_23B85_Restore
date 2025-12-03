@@ -1,24 +1,24 @@
 @interface AVAssetPlanner
-+ ($82E0105DD906C456CCB81C580993A964)segmentBoundaryGuidelinesForVideoCodecType:(SEL)a3 videoEncoderSpecification:(id)a4;
-+ (BOOL)validateIntermediateFileDirectory:(id)a3 forSessionName:(id)a4 failureReason:(id *)a5;
-- (AVAssetPlanner)initWithIntermediateFileDirectory:(id)a3 sessionName:(id)a4;
-- (BOOL)hasTrackPlanExecutorForTrack:(int)a3;
-- (BOOL)planTrack:(id)a3 withSegmentsGeneratedBy:(id)a4;
-- (id)buildAssemblyComposition:(id *)a3;
++ ($82E0105DD906C456CCB81C580993A964)segmentBoundaryGuidelinesForVideoCodecType:(SEL)type videoEncoderSpecification:(id)specification;
++ (BOOL)validateIntermediateFileDirectory:(id)directory forSessionName:(id)name failureReason:(id *)reason;
+- (AVAssetPlanner)initWithIntermediateFileDirectory:(id)directory sessionName:(id)name;
+- (BOOL)hasTrackPlanExecutorForTrack:(int)track;
+- (BOOL)planTrack:(id)track withSegmentsGeneratedBy:(id)by;
+- (id)buildAssemblyComposition:(id *)composition;
 - (id)makeFreshIncrementalState;
-- (id)makeIncrementalStateByResumptionOrStartFresh:(id *)a3;
+- (id)makeIncrementalStateByResumptionOrStartFresh:(id *)fresh;
 - (void)dealloc;
-- (void)executePlanWithCompletionHandler:(id)a3;
-- (void)saveIncrementalState:(id *)a3;
+- (void)executePlanWithCompletionHandler:(id)handler;
+- (void)saveIncrementalState:(id *)state;
 - (void)writeSegmentsInTracks;
 @end
 
 @implementation AVAssetPlanner
 
-- (AVAssetPlanner)initWithIntermediateFileDirectory:(id)a3 sessionName:(id)a4
+- (AVAssetPlanner)initWithIntermediateFileDirectory:(id)directory sessionName:(id)name
 {
   v10 = 0;
-  if (![AVAssetPlanner validateIntermediateFileDirectory:a3 forSessionName:a4 failureReason:&v10])
+  if (![AVAssetPlanner validateIntermediateFileDirectory:directory forSessionName:name failureReason:&v10])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
   }
@@ -28,8 +28,8 @@
   v7 = [(AVAssetPlanner *)&v9 init];
   if (v7)
   {
-    v7->_sessionSegmentFileDirectory = [a3 copy];
-    v7->_sessionName = [a4 copy];
+    v7->_sessionSegmentFileDirectory = [directory copy];
+    v7->_sessionName = [name copy];
     v7->_sessionMutex = FigSimpleMutexCreate();
     v7->_writingSessionStarted = 0;
   }
@@ -51,7 +51,7 @@
   [(AVAssetPlanner *)&v4 dealloc];
 }
 
-- (BOOL)hasTrackPlanExecutorForTrack:(int)a3
+- (BOOL)hasTrackPlanExecutorForTrack:(int)track
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -74,7 +74,7 @@
           objc_enumerationMutation(trackPlanExecutors);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v8) assemblyTrackID] == a3)
+        if ([*(*(&v10 + 1) + 8 * v8) assemblyTrackID] == track)
         {
           LOBYTE(v5) = 1;
           return v5;
@@ -98,7 +98,7 @@
   return v5;
 }
 
-- (BOOL)planTrack:(id)a3 withSegmentsGeneratedBy:(id)a4
+- (BOOL)planTrack:(id)track withSegmentsGeneratedBy:(id)by
 {
   FigSimpleMutexLock();
   if (self->_writingSessionStarted)
@@ -107,7 +107,7 @@
     v7 = v10;
   }
 
-  else if (-[AVAssetPlanner hasTrackPlanExecutorForTrack:](self, "hasTrackPlanExecutorForTrack:", [a3 assemblyTrackID]))
+  else if (-[AVAssetPlanner hasTrackPlanExecutorForTrack:](self, "hasTrackPlanExecutorForTrack:", [track assemblyTrackID]))
   {
     [AVAssetPlanner planTrack:? withSegmentsGeneratedBy:?];
     v7 = v9;
@@ -120,7 +120,7 @@
       self->_trackPlanExecutors = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
 
-    [(NSMutableArray *)self->_trackPlanExecutors addObject:[AVAssetTrackPlanExecutor executorForTrackPlan:a3 segmentWritingCallbackBlock:a4]];
+    [(NSMutableArray *)self->_trackPlanExecutors addObject:[AVAssetTrackPlanExecutor executorForTrackPlan:track segmentWritingCallbackBlock:by]];
     v7 = 0;
   }
 
@@ -128,7 +128,7 @@
   return v7 == 0;
 }
 
-- (void)executePlanWithCompletionHandler:(id)a3
+- (void)executePlanWithCompletionHandler:(id)handler
 {
   v11 = 0;
   FigSimpleMutexLock();
@@ -149,7 +149,7 @@ LABEL_10:
   }
 
   objc_initWeak(&location, self);
-  self->_completionHandlerBlock = [a3 copy];
+  self->_completionHandlerBlock = [handler copy];
   self->_writingSessionStarted = 1;
   self->_incrementalState = [(AVAssetPlanner *)self makeIncrementalStateByResumptionOrStartFresh:&v11];
   if (!v11)
@@ -175,7 +175,7 @@ LABEL_11:
   FigSimpleMutexUnlock();
   if (v11)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 }
 
@@ -291,7 +291,7 @@ LABEL_19:
   self->_trackPlanExecutors = 0;
 }
 
-- (id)buildAssemblyComposition:(id *)a3
+- (id)buildAssemblyComposition:(id *)composition
 {
   v61 = *MEMORY[0x1E69E9840];
   v58 = 0;
@@ -307,14 +307,14 @@ LABEL_19:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v6 = [(AVAssetPlannerIncrementalState *)self->_incrementalState trackStates];
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v48 objects:v60 count:16];
-  obj = v6;
+  trackStates = [(AVAssetPlannerIncrementalState *)self->_incrementalState trackStates];
+  v7 = [(NSArray *)trackStates countByEnumeratingWithState:&v48 objects:v60 count:16];
+  obj = trackStates;
   if (v7)
   {
     v26 = *v49;
     v8 = MEMORY[0x1E6960CC0];
-    v23 = a3;
+    compositionCopy = composition;
     do
     {
       v9 = 0;
@@ -328,14 +328,14 @@ LABEL_19:
 
         v10 = *(*(&v48 + 1) + 8 * v9);
         v11 = -[AVMutableComposition addMutableTrackWithMediaType:preferredTrackID:](v28, "addMutableTrackWithMediaType:preferredTrackID:", [v10 mediaType], objc_msgSend(v10, "assemblyTrackID"));
-        v12 = [v10 segmentStates];
+        segmentStates = [v10 segmentStates];
         v27 = v9;
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v29 = v12;
-        v13 = [v12 countByEnumeratingWithState:&v44 objects:v59 count:16];
+        v29 = segmentStates;
+        v13 = [segmentStates countByEnumeratingWithState:&v44 objects:v59 count:16];
         if (v13)
         {
           v14 = *v45;
@@ -349,7 +349,7 @@ LABEL_19:
               }
 
               v16 = *(*(&v44 + 1) + 8 * i);
-              v17 = [v16 segmentURL];
+              segmentURL = [v16 segmentURL];
               memset(&v43, 0, sizeof(v43));
               if (v16)
               {
@@ -366,7 +366,7 @@ LABEL_19:
               *&start.start.value = *v8;
               start.start.epoch = *(v8 + 16);
               CMTimeRangeMake(&v43, &start.start, &duration);
-              v18 = [AVAsset assetWithURL:v17];
+              v18 = [AVAsset assetWithURL:segmentURL];
               duration.value = 0;
               *&duration.timescale = &duration;
               duration.epoch = 0x3052000000;
@@ -374,7 +374,7 @@ LABEL_19:
               v39 = __Block_byref_object_dispose__10;
               v40 = 0;
               dispatch_group_enter(v5);
-              v19 = [v10 mediaType];
+              mediaType = [v10 mediaType];
               v36[0] = MEMORY[0x1E69E9820];
               v36[1] = 3221225472;
               v36[2] = __43__AVAssetPlanner_buildAssemblyComposition___block_invoke;
@@ -382,14 +382,14 @@ LABEL_19:
               v36[6] = &duration;
               v36[4] = v5;
               v36[5] = &v52;
-              [(AVAsset *)v18 loadTracksWithMediaType:v19 completionHandler:v36];
+              [(AVAsset *)v18 loadTracksWithMediaType:mediaType completionHandler:v36];
               dispatch_group_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
               v58 = v53[5];
               v20 = *(*&duration.timescale + 40);
               if (v58 || (v21 = *(*&duration.timescale + 40)) == 0)
               {
                 _Block_object_dispose(&duration, 8);
-                a3 = v23;
+                composition = compositionCopy;
                 goto LABEL_25;
               }
 
@@ -427,7 +427,7 @@ LABEL_19:
 
       while (v27 + 1 != v25);
       v7 = [(NSArray *)obj countByEnumeratingWithState:&v48 objects:v60 count:16];
-      a3 = v23;
+      composition = compositionCopy;
     }
 
     while (v7);
@@ -439,10 +439,10 @@ LABEL_25:
     dispatch_release(v5);
   }
 
-  if (a3 && v58)
+  if (composition && v58)
   {
     v28 = 0;
-    *a3 = v58;
+    *composition = v58;
   }
 
   _Block_object_dispose(&v52, 8);
@@ -471,7 +471,7 @@ void __43__AVAssetPlanner_buildAssemblyComposition___block_invoke(void *a1, void
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = +[AVAssetPlannerIncrementalState emptyState];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [v3 setSessionName:self->_sessionName];
   v13 = 0u;
   v14 = 0u;
@@ -492,7 +492,7 @@ void __43__AVAssetPlanner_buildAssemblyComposition___block_invoke(void *a1, void
           objc_enumerationMutation(trackPlanExecutors);
         }
 
-        [v4 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "makeFreshState:", self->_sessionSegmentFileDirectory)}];
+        [array addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * i), "makeFreshState:", self->_sessionSegmentFileDirectory)}];
       }
 
       v7 = [(NSMutableArray *)trackPlanExecutors countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -501,14 +501,14 @@ void __43__AVAssetPlanner_buildAssemblyComposition___block_invoke(void *a1, void
     while (v7);
   }
 
-  [v3 setTrackStates:v4];
+  [v3 setTrackStates:array];
   return v3;
 }
 
-- (id)makeIncrementalStateByResumptionOrStartFresh:(id *)a3
+- (id)makeIncrementalStateByResumptionOrStartFresh:(id *)fresh
 {
   v11 = 0;
-  v5 = [(AVAssetPlanner *)self makeFreshIncrementalState];
+  makeFreshIncrementalState = [(AVAssetPlanner *)self makeFreshIncrementalState];
   v6 = [(NSURL *)self->_sessionSegmentFileDirectory URLByAppendingPathComponent:@"AVAssetPlannerState.plist"];
   v7 = +[AVAssetPlannerIncrementalState fromDictionary:error:](AVAssetPlannerIncrementalState, "fromDictionary:error:", [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v6], &v11);
   v8 = v11;
@@ -520,22 +520,22 @@ void __43__AVAssetPlanner_buildAssemblyComposition___block_invoke(void *a1, void
   v9 = v7;
   if (!v7)
   {
-    return v5;
+    return makeFreshIncrementalState;
   }
 
-  if (([v5 resumableBy:v7] & 1) == 0)
+  if (([makeFreshIncrementalState resumableBy:v7] & 1) == 0)
   {
     [AVAssetPlanner makeIncrementalStateByResumptionOrStartFresh:?];
     v8 = v12;
 LABEL_5:
     v9 = 0;
-    *a3 = v8;
+    *fresh = v8;
   }
 
   return v9;
 }
 
-- (void)saveIncrementalState:(id *)a3
+- (void)saveIncrementalState:(id *)state
 {
   v12 = 0;
   v5 = [(NSURL *)self->_sessionSegmentFileDirectory URLByAppendingPathComponent:@"AVAssetPlannerState.plist"];
@@ -555,20 +555,20 @@ LABEL_5:
 
   if (!v9 || ((v10 = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")], v8 = v12, v10) ? (v11 = v12 == 0) : (v11 = 0), !v11))
   {
-    *a3 = v8;
+    *state = v8;
   }
 
   FigSimpleMutexUnlock();
 }
 
-+ (BOOL)validateIntermediateFileDirectory:(id)a3 forSessionName:(id)a4 failureReason:(id *)a5
++ (BOOL)validateIntermediateFileDirectory:(id)directory forSessionName:(id)name failureReason:(id *)reason
 {
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v18 = 0;
-  v9 = [v8 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"path"), &v18}];
-  v10 = [v8 isWritableFileAtPath:{objc_msgSend(a3, "path")}];
+  v9 = [defaultManager fileExistsAtPath:objc_msgSend(directory isDirectory:{"path"), &v18}];
+  v10 = [defaultManager isWritableFileAtPath:{objc_msgSend(directory, "path")}];
   v11 = @"intermediate file directory is nil";
-  if (a3)
+  if (directory)
   {
     v11 = @"intermediate file directory does not exists";
     if (v9)
@@ -576,9 +576,9 @@ LABEL_5:
       v11 = v18 ? @"intermediate file directory is not a writable" : @"intermediate file directory is not a directory";
       if ((v18 & v10) == 1)
       {
-        v12 = [a3 URLByAppendingPathComponent:@"AVAssetPlannerState.plist"];
+        v12 = [directory URLByAppendingPathComponent:@"AVAssetPlannerState.plist"];
         v17 = 0;
-        if ([v8 fileExistsAtPath:objc_msgSend(v12 isDirectory:{"path"), &v17}])
+        if ([defaultManager fileExistsAtPath:objc_msgSend(v12 isDirectory:{"path"), &v17}])
         {
           if (v17)
           {
@@ -597,7 +597,7 @@ LABEL_5:
               goto LABEL_13;
             }
 
-            if (([a4 isEqual:{objc_msgSend(v14, "sessionName")}] & 1) == 0)
+            if (([name isEqual:{objc_msgSend(v14, "sessionName")}] & 1) == 0)
             {
               v11 = @"intermediate file directory has a planner incremental state file with a different session name";
               goto LABEL_13;
@@ -611,13 +611,13 @@ LABEL_5:
   }
 
 LABEL_13:
-  *a5 = v11;
+  *reason = v11;
   return v11 == 0;
 }
 
-+ ($82E0105DD906C456CCB81C580993A964)segmentBoundaryGuidelinesForVideoCodecType:(SEL)a3 videoEncoderSpecification:(id)a4
++ ($82E0105DD906C456CCB81C580993A964)segmentBoundaryGuidelinesForVideoCodecType:(SEL)type videoEncoderSpecification:(id)specification
 {
-  v7 = AVOSTypeForString(a4);
+  v7 = AVOSTypeForString(specification);
   v9 = 0;
   retstr->var0 = 0;
   retstr->var1 = **&MEMORY[0x1E6960C88];

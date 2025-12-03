@@ -1,23 +1,23 @@
 @interface OKWidgetOpusView
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetOpusView)initWithWidget:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetOpusView)initWithWidget:(id)widget;
 - (void)_loadDocumentIfNeeded;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setSettingUrl:(id)a3;
+- (void)setSettingUrl:(id)url;
 @end
 
 @implementation OKWidgetOpusView
 
-- (OKWidgetOpusView)initWithWidget:(id)a3
+- (OKWidgetOpusView)initWithWidget:(id)widget
 {
   v4.receiver = self;
   v4.super_class = OKWidgetOpusView;
-  result = [(OKWidgetViewProxy *)&v4 initWithWidget:a3];
+  result = [(OKWidgetViewProxy *)&v4 initWithWidget:widget];
   if (result)
   {
     result->_url = 0;
@@ -68,7 +68,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetOpusView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"url";
@@ -79,7 +79,7 @@
   return v2;
 }
 
-- (void)setSettingUrl:(id)a3
+- (void)setSettingUrl:(id)url
 {
   url = self->_url;
   if (url)
@@ -88,7 +88,7 @@
     self->_url = 0;
   }
 
-  self->_url = a3;
+  self->_url = url;
 }
 
 - (void)_loadDocumentIfNeeded
@@ -141,11 +141,11 @@ uint64_t __41__OKWidgetOpusView__loadDocumentIfNeeded__block_invoke(uint64_t res
   return result;
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v6.receiver = self;
   v6.super_class = OKWidgetOpusView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForDisplay:display];
   if (v4)
   {
     [(OKWidgetOpusView *)self _loadDocumentIfNeeded];
@@ -154,11 +154,11 @@ uint64_t __41__OKWidgetOpusView__loadDocumentIfNeeded__block_invoke(uint64_t res
   return v4;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v6.receiver = self;
   v6.super_class = OKWidgetOpusView;
-  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:a3];
+  v4 = [(OKWidgetViewProxy *)&v6 prepareForWarmup:warmup];
   if (v4)
   {
     [(OKWidgetOpusView *)self _loadDocumentIfNeeded];
@@ -167,11 +167,11 @@ uint64_t __41__OKWidgetOpusView__loadDocumentIfNeeded__block_invoke(uint64_t res
   return v4;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
   v8.receiver = self;
   v8.super_class = OKWidgetOpusView;
-  v4 = [(OKWidgetViewProxy *)&v8 prepareForUnload:a3];
+  v4 = [(OKWidgetViewProxy *)&v8 prepareForUnload:unload];
   if (v4)
   {
     document = self->_document;
@@ -211,12 +211,12 @@ void __37__OKWidgetOpusView_prepareForUnload___block_invoke(uint64_t a1, int a2)
   }
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v7[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetOpusView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetOpusView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetOpusView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetOpusView", "objectForKeyedSubscript:", @"prototype"}];
   v5 = *MEMORY[0x277CD4618];
   v6[0] = *MEMORY[0x277CD4620];
   v6[1] = v5;

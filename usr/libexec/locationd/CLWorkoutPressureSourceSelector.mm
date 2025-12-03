@@ -1,11 +1,11 @@
 @interface CLWorkoutPressureSourceSelector
-- (CLWorkoutPressureSourceSelector)initWithBuffer:(void *)a3 andContextManager:(id)a4;
-- (NotificationData)prepareStepCountUpdate:(SEL)a3;
+- (CLWorkoutPressureSourceSelector)initWithBuffer:(void *)buffer andContextManager:(id)manager;
+- (NotificationData)prepareStepCountUpdate:(SEL)update;
 - (id).cxx_construct;
-- (void)computeCompanionPressureOffsetData:(double)a3;
-- (void)feedStepCountElevationForOnDeviceStartTime:(double)a3 withLastSigElevEndTime:(double)a4;
+- (void)computeCompanionPressureOffsetData:(double)data;
+- (void)feedStepCountElevationForOnDeviceStartTime:(double)time withLastSigElevEndTime:(double)endTime;
 - (void)resetCompanionPressureOffsetData;
-- (void)selectSourceForOnDeviceStartTime:(double)a3;
+- (void)selectSourceForOnDeviceStartTime:(double)time;
 @end
 
 @implementation CLWorkoutPressureSourceSelector
@@ -18,7 +18,7 @@
   }
 }
 
-- (CLWorkoutPressureSourceSelector)initWithBuffer:(void *)a3 andContextManager:(id)a4
+- (CLWorkoutPressureSourceSelector)initWithBuffer:(void *)buffer andContextManager:(id)manager
 {
   v21.receiver = self;
   v21.super_class = CLWorkoutPressureSourceSelector;
@@ -26,7 +26,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_dataBuffer = a3;
+    v6->_dataBuffer = buffer;
     [(CLWorkoutPressureSourceSelector *)v6 resetCompanionPressureOffsetData];
     v7->_isSourceOnDevice = 1;
     v20 = 0;
@@ -35,7 +35,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7->_workoutContextManager = a4;
+      v7->_workoutContextManager = manager;
     }
 
     else
@@ -69,7 +69,7 @@
   return v7;
 }
 
-- (void)selectSourceForOnDeviceStartTime:(double)a3
+- (void)selectSourceForOnDeviceStartTime:(double)time
 {
   dataBuffer = self->_dataBuffer;
   v5 = dataBuffer[67];
@@ -81,7 +81,7 @@
   else
   {
     v11 = 0;
-    v12 = a3 + -20.48;
+    v12 = time + -20.48;
     do
     {
       v14 = *v8;
@@ -90,14 +90,14 @@
       {
         atomic_fetch_add_explicit(&v13->__shared_owners_, 1uLL, memory_order_relaxed);
         v15 = *(v14 + 8);
-        v16 = v15 < a3 && v15 > v12;
+        v16 = v15 < time && v15 > v12;
         sub_100008080(v13);
       }
 
       else
       {
         v17 = *(v14 + 8);
-        v16 = v17 < a3 && v17 > v12;
+        v16 = v17 < time && v17 > v12;
       }
 
       v8 += 2;
@@ -118,7 +118,7 @@
   self->_isSourceOnDevice = v19;
 }
 
-- (void)feedStepCountElevationForOnDeviceStartTime:(double)a3 withLastSigElevEndTime:(double)a4
+- (void)feedStepCountElevationForOnDeviceStartTime:(double)time withLastSigElevEndTime:(double)endTime
 {
   [(CLWorkoutPressureSourceSelector *)self selectSourceForOnDeviceStartTime:?];
   p_isSourceOnDevice = &self->_isSourceOnDevice;
@@ -134,7 +134,7 @@
 
   if (*(self->_dataBuffer + 6 * v8 + 5))
   {
-    [(CLWorkoutPressureSourceSelector *)self computeCompanionPressureOffsetData:a3];
+    [(CLWorkoutPressureSourceSelector *)self computeCompanionPressureOffsetData:time];
     if (self->_isSourceOnDevice || self->_companionPressureOffsetData.__engaged_)
     {
       v9 = self->_dataBuffer + 48 * v8;
@@ -156,7 +156,7 @@
               break;
             }
 
-            if (*(v15 + 8) > a4)
+            if (*(v15 + 8) > endTime)
             {
               v47 = 0u;
               v48 = 0u;
@@ -191,7 +191,7 @@ LABEL_27:
           }
 
           atomic_fetch_add_explicit(&v16->__shared_owners_, 1uLL, memory_order_relaxed);
-          if (*(v15 + 8) > a4)
+          if (*(v15 + 8) > endTime)
           {
             v47 = 0u;
             v48 = 0u;
@@ -313,7 +313,7 @@ LABEL_14:
     {
       v27 = *p_isSourceOnDevice;
       *buf = 134218240;
-      *&buf[4] = a3;
+      *&buf[4] = time;
       *&buf[12] = 1024;
       *&buf[14] = v27;
       _os_log_impl(dword_100000000, v26, OS_LOG_TYPE_ERROR, "#altimeter,feed step count elevation,no data in buffer,timestamp,%f,onDevice,%d", buf, 0x12u);
@@ -326,7 +326,7 @@ LABEL_14:
   }
 }
 
-- (void)computeCompanionPressureOffsetData:(double)a3
+- (void)computeCompanionPressureOffsetData:(double)data
 {
   p_isSourceOnDevice = &self->_isSourceOnDevice;
   if (self->_isSourceOnDevice)
@@ -428,7 +428,7 @@ LABEL_14:
       {
         v27 = *p_isSourceOnDevice;
         v35 = 134218240;
-        v36 = a3;
+        dataCopy = data;
         v37 = 1024;
         v38 = v27;
         _os_log_impl(dword_100000000, v26, OS_LOG_TYPE_ERROR, "#altimeter,compute companion pressure offset,no data in buffer,timestamp,%f,onDevice,%d", &v35, 0x12u);
@@ -442,7 +442,7 @@ LABEL_14:
   }
 }
 
-- (NotificationData)prepareStepCountUpdate:(SEL)a3
+- (NotificationData)prepareStepCountUpdate:(SEL)update
 {
   v5 = *a4.var0;
   v6 = *(*a4.var0 + 8);

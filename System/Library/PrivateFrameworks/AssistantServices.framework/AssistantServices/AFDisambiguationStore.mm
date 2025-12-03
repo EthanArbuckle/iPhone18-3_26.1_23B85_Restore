@@ -1,19 +1,19 @@
 @interface AFDisambiguationStore
 - (id)_store;
-- (id)infoForIdentifier:(id)a3;
+- (id)infoForIdentifier:(id)identifier;
 - (void)reset;
-- (void)saveInfo:(id)a3 forIdentifier:(id)a4;
+- (void)saveInfo:(id)info forIdentifier:(id)identifier;
 @end
 
 @implementation AFDisambiguationStore
 
-- (void)saveInfo:(id)a3 forIdentifier:(id)a4
+- (void)saveInfo:(id)info forIdentifier:(id)identifier
 {
-  v9 = a3;
-  v6 = [a4 base64EncodedStringWithOptions:0];
-  if (v9)
+  infoCopy = info;
+  v6 = [identifier base64EncodedStringWithOptions:0];
+  if (infoCopy)
   {
-    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+    v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:infoCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -21,17 +21,17 @@
     v7 = 0;
   }
 
-  v8 = [(AFDisambiguationStore *)self _store];
-  [v8 setData:v7 forKey:v6 inKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
+  _store = [(AFDisambiguationStore *)self _store];
+  [_store setData:v7 forKey:v6 inKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
 }
 
-- (id)infoForIdentifier:(id)a3
+- (id)infoForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AFDisambiguationStore *)self _store];
-  v6 = [v4 base64EncodedStringWithOptions:0];
+  identifierCopy = identifier;
+  _store = [(AFDisambiguationStore *)self _store];
+  v6 = [identifierCopy base64EncodedStringWithOptions:0];
 
-  v7 = [v5 dataForKey:v6 inKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
+  v7 = [_store dataForKey:v6 inKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
 
   if (v7)
   {
@@ -50,8 +50,8 @@
 
 - (void)reset
 {
-  v2 = [(AFDisambiguationStore *)self _store];
-  [v2 resetKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
+  _store = [(AFDisambiguationStore *)self _store];
+  [_store resetKnowledgeStoreWithName:@"com.apple.siri.disambiguation"];
 }
 
 - (id)_store

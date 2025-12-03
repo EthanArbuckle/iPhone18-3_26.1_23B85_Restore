@@ -2,7 +2,7 @@
 + (Class)incomingMessageClass;
 + (unint64_t)command;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandSetCodeSignMapping)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandSetCodeSignMapping)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (NSString)identifier;
 - (id)info;
 - (id)options;
@@ -40,31 +40,31 @@
   v25 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
   v4 = gCodeSigningMapping;
-  v5 = [(MCMCommandSetCodeSignMapping *)self info];
-  v6 = [(MCMCommandSetCodeSignMapping *)self identifier];
-  v7 = [(MCMCommandSetCodeSignMapping *)self options];
+  info = [(MCMCommandSetCodeSignMapping *)self info];
+  identifier = [(MCMCommandSetCodeSignMapping *)self identifier];
+  options = [(MCMCommandSetCodeSignMapping *)self options];
   v22 = 0;
-  v8 = [v4 processCodeSigningInfo:v5 identifier:v6 options:v7 error:&v22];
+  v8 = [v4 processCodeSigningInfo:info identifier:identifier options:options error:&v22];
   v9 = v22;
 
   if (v8 && [v8 count])
   {
     v10 = objc_alloc_init(MCMResultPromise);
-    v11 = [v8 allObjects];
-    v12 = [(MCMCommand *)self context];
-    v13 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:v11 removeAllCodeSignInfo:0 context:v12 resultPromise:v10];
+    allObjects = [v8 allObjects];
+    context = [(MCMCommand *)self context];
+    v13 = [MCMCommandOperationDelete commandForOperationDeleteWithContainerIdentities:allObjects removeAllCodeSignInfo:0 context:context resultPromise:v10];
 
     [v13 execute];
-    v14 = [(MCMResultPromise *)v10 result];
-    v15 = [v14 error];
+    result = [(MCMResultPromise *)v10 result];
+    error = [result error];
 
-    if (v15)
+    if (error)
     {
       v16 = container_log_handle_for_category();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v15;
+        v24 = error;
         _os_log_error_impl(&dword_1DF2C3000, v16, OS_LOG_TYPE_ERROR, "Failed to destroy container(s) during setCodeSigningMapping; error = %@", buf, 0xCu);
       }
     }
@@ -89,8 +89,8 @@
   }
 
   v19 = v18;
-  v20 = [(MCMCommand *)self resultPromise];
-  [v20 completeWithResult:v19];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v19];
 
   objc_autoreleasePoolPop(v3);
   v21 = *MEMORY[0x1E69E9840];
@@ -99,34 +99,34 @@
 - (BOOL)preflightClientAllowed
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMCommand *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 isAllowedToAccessCodesignMapping];
+  context = [(MCMCommand *)self context];
+  clientIdentity = [context clientIdentity];
+  isAllowedToAccessCodesignMapping = [clientIdentity isAllowedToAccessCodesignMapping];
 
   v5 = *MEMORY[0x1E69E9840];
-  return v4;
+  return isAllowedToAccessCodesignMapping;
 }
 
-- (MCMCommandSetCodeSignMapping)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandSetCodeSignMapping)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v18.receiver = self;
   v18.super_class = MCMCommandSetCodeSignMapping;
-  v9 = [(MCMCommand *)&v18 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v18 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 identifier];
+    identifier = [messageCopy identifier];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = identifier;
 
-    v12 = [v8 options];
+    options = [messageCopy options];
     options = v9->_options;
-    v9->_options = v12;
+    v9->_options = options;
 
-    v14 = [v8 info];
+    info = [messageCopy info];
     info = v9->_info;
-    v9->_info = v14;
+    v9->_info = info;
   }
 
   v16 = *MEMORY[0x1E69E9840];

@@ -1,8 +1,8 @@
 @interface NDOACCoverageDetails
 - (BOOL)hasTheftAndLoss;
 - (NSString)coverageLabel;
-- (void)setCoverageLabel:(id)a3;
-- (void)setHasTheftAndLoss:(BOOL)a3;
+- (void)setCoverageLabel:(id)label;
+- (void)setHasTheftAndLoss:(BOOL)loss;
 @end
 
 @implementation NDOACCoverageDetails
@@ -26,7 +26,7 @@
   return v5;
 }
 
-- (void)setCoverageLabel:(id)a3
+- (void)setCoverageLabel:(id)label
 {
   v4 = sub_25BD797B8();
   v6 = v5;
@@ -37,11 +37,11 @@
   v7[1] = v6;
 }
 
-- (void)setHasTheftAndLoss:(BOOL)a3
+- (void)setHasTheftAndLoss:(BOOL)loss
 {
   v5 = OBJC_IVAR___NDOACCoverageDetails_hasTheftAndLoss;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = loss;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface SUUILibraryItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)storeItemIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -10,20 +10,20 @@
 
 - (NSNumber)storeItemIdentifier
 {
-  v2 = [(SUUILibraryItem *)self storeIdentifier];
-  v3 = [v2 itemIdentifier];
+  storeIdentifier = [(SUUILibraryItem *)self storeIdentifier];
+  itemIdentifier = [storeIdentifier itemIdentifier];
 
-  return v3;
+  return itemIdentifier;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_storeFlavorIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_storeFlavorIdentifier copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(SUUIStoreIdentifier *)self->_storeIdentifier copyWithZone:a3];
+  v8 = [(SUUIStoreIdentifier *)self->_storeIdentifier copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
@@ -43,22 +43,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SUUILibraryItem *)self storeItemIdentifier];
-  v4 = [v3 hash];
+  storeItemIdentifier = [(SUUILibraryItem *)self storeItemIdentifier];
+  v4 = [storeItemIdentifier hash];
   v5 = [(NSString *)self->_storeFlavorIdentifier hash]^ v4;
   v6 = [(SUUIStoreIdentifier *)self->_storeIdentifier hash];
 
   return v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (v5 == objc_opt_class() && (storeIdentifier = self->_storeIdentifier) != 0 && (storeIdentifier == v4[1] || [(SUUIStoreIdentifier *)storeIdentifier isEqual:?]))
+  if (v5 == objc_opt_class() && (storeIdentifier = self->_storeIdentifier) != 0 && (storeIdentifier == equalCopy[1] || [(SUUIStoreIdentifier *)storeIdentifier isEqual:?]))
   {
     storeFlavorIdentifier = self->_storeFlavorIdentifier;
-    if (storeFlavorIdentifier == v4[2])
+    if (storeFlavorIdentifier == equalCopy[2])
     {
       v6 = 1;
     }

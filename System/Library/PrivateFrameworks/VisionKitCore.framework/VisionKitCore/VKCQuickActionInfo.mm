@@ -1,20 +1,20 @@
 @interface VKCQuickActionInfo
-+ (id)quickActionInfoFromActionInfoButton:(id)a3;
++ (id)quickActionInfoFromActionInfoButton:(id)button;
 - (id)linearizedElements;
 - (void)performDefaultAction;
 @end
 
 @implementation VKCQuickActionInfo
 
-+ (id)quickActionInfoFromActionInfoButton:(id)a3
++ (id)quickActionInfoFromActionInfoButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v4 = objc_opt_class();
-  v5 = VKDynamicCast(v4, v3);
+  v5 = VKDynamicCast(v4, buttonCopy);
   v6 = objc_opt_class();
-  v7 = VKDynamicCast(v6, v3);
+  v7 = VKDynamicCast(v6, buttonCopy);
   v8 = objc_opt_class();
-  v9 = VKDynamicCast(v8, v3);
+  v9 = VKDynamicCast(v8, buttonCopy);
 
   if (v9)
   {
@@ -37,26 +37,26 @@ LABEL_2:
     }
 
     v10 = objc_alloc_init(VKCQuickActionInfo);
-    v11 = [v7 text];
-    [(VKCQuickActionInfo *)v10 setText:v11];
+    text = [v7 text];
+    [(VKCQuickActionInfo *)v10 setText:text];
 
-    v12 = [v7 image];
-    [(VKCQuickActionInfo *)v10 setImage:v12];
+    image = [v7 image];
+    [(VKCQuickActionInfo *)v10 setImage:image];
 
-    v13 = [v7 defaultAction];
-    [(VKCQuickActionInfo *)v10 setDefaultAction:v13];
+    defaultAction = [v7 defaultAction];
+    [(VKCQuickActionInfo *)v10 setDefaultAction:defaultAction];
 
-    v14 = [v7 correlationIdentifier];
-    [(VKCQuickActionInfo *)v10 setCorrelationIdentifier:v14];
+    correlationIdentifier = [v7 correlationIdentifier];
+    [(VKCQuickActionInfo *)v10 setCorrelationIdentifier:correlationIdentifier];
 
     -[VKCQuickActionInfo setQuickActionType:](v10, "setQuickActionType:", [v7 quickActionType]);
-    v15 = [v7 representedElement];
-    -[VKCQuickActionInfo setDataDetectorTypes:](v10, "setDataDetectorTypes:", [v15 dataDetectorTypes]);
+    representedElement = [v7 representedElement];
+    -[VKCQuickActionInfo setDataDetectorTypes:](v10, "setDataDetectorTypes:", [representedElement dataDetectorTypes]);
 
     [(VKCQuickActionInfo *)v10 setActionInfoButton:v7];
-    v16 = [v7 menu];
-    v17 = [v16 children];
-    v18 = [v17 vk_compactMap:&__block_literal_global_260];
+    menu = [v7 menu];
+    children = [menu children];
+    v18 = [children vk_compactMap:&__block_literal_global_260];
     [(VKCQuickActionInfo *)v10 setChildren:v18];
   }
 
@@ -68,14 +68,14 @@ LABEL_7:
 - (id)linearizedElements
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(VKCQuickActionInfo *)self children];
+  children = [(VKCQuickActionInfo *)self children];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__VKCQuickActionInfo_linearizedElements__block_invoke;
   v7[3] = &unk_1E7BE5FD0;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -89,8 +89,8 @@ void __40__VKCQuickActionInfo_linearizedElements__block_invoke(uint64_t a1, void
 
 - (void)performDefaultAction
 {
-  v2 = [(VKCQuickActionInfo *)self actionInfoButton];
-  [v2 performDefaultElementAction];
+  actionInfoButton = [(VKCQuickActionInfo *)self actionInfoButton];
+  [actionInfoButton performDefaultElementAction];
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface SFClient
 - (SFClient)init;
-- (id)syncRemoteProxyWithError:(id *)a3;
+- (id)syncRemoteProxyWithError:(id *)error;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateAssertionWithIdentifier:(id)a3;
-- (void)activityStateWithCompletion:(id)a3;
-- (void)appleIDInfoWithCompletion:(id)a3;
-- (void)broadwayPresentCardWithCode:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)clearXPCHelperImageCacheWithCompletion:(id)a3;
-- (void)contactHandlesForShortHashData:(id)a3 completion:(id)a4;
-- (void)contactIDForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5;
+- (void)activateAssertionWithIdentifier:(id)identifier;
+- (void)activityStateWithCompletion:(id)completion;
+- (void)appleIDInfoWithCompletion:(id)completion;
+- (void)broadwayPresentCardWithCode:(id)code options:(id)options completion:(id)completion;
+- (void)clearXPCHelperImageCacheWithCompletion:(id)completion;
+- (void)contactHandlesForShortHashData:(id)data completion:(id)completion;
+- (void)contactIDForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion;
 - (void)dealloc;
-- (void)displayNameForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5;
-- (void)displayStringForContactIdentifier:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5;
-- (void)displayStringForContactIdentifierSync:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5;
+- (void)displayNameForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion;
+- (void)displayStringForContactIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier completion:(id)completion;
+- (void)displayStringForContactIdentifierSync:(id)sync deviceIdentifier:(id)identifier completion:(id)completion;
 - (void)ensureSyncXPCStarted;
-- (void)findContact:(id)a3 completion:(id)a4;
-- (void)findContact:(id)a3 skipIfContactBlocked:(BOOL)a4 completion:(id)a5;
-- (void)getDeviceAssets:(id)a3 completion:(id)a4;
-- (void)getPairedWatchWristStateWithCompletionHandler:(id)a3;
-- (void)getPeopleSuggestions:(id)a3 completion:(id)a4;
-- (void)getProblemFlagsWithCompletionHandler:(id)a3;
-- (void)hashManagerControl:(id)a3 completion:(id)a4;
+- (void)findContact:(id)contact completion:(id)completion;
+- (void)findContact:(id)contact skipIfContactBlocked:(BOOL)blocked completion:(id)completion;
+- (void)getDeviceAssets:(id)assets completion:(id)completion;
+- (void)getPairedWatchWristStateWithCompletionHandler:(id)handler;
+- (void)getPeopleSuggestions:(id)suggestions completion:(id)completion;
+- (void)getProblemFlagsWithCompletionHandler:(id)handler;
+- (void)hashManagerControl:(id)control completion:(id)completion;
 - (void)invalidate;
-- (void)monitorPairedWatchWristStateWithCompletionHandler:(id)a3;
-- (void)openSetupURL:(id)a3 completion:(id)a4;
-- (void)pairedWatchWristStateChanged:(int64_t)a3;
-- (void)preventExitForLocaleReason:(id)a3;
-- (void)reenableProxCardType:(unsigned __int8)a3 completion:(id)a4;
-- (void)repairDevice:(id)a3 flags:(unsigned int)a4 completion:(id)a5;
-- (void)retriggerProximityPairing:(id)a3;
-- (void)retriggerProximitySetup:(id)a3;
-- (void)setAudioRoutingScore:(int)a3 completion:(id)a4;
-- (void)setupDevice:(id)a3 home:(id)a4 completion:(id)a5;
-- (void)showDevicePickerWithInfo:(id)a3 completion:(id)a4;
-- (void)startProxCardTransactionWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)subCredentialPresentCardWithParams:(id)a3 completion:(id)a4;
-- (void)testContinuityKeyboardBegin:(BOOL)a3;
-- (void)triggerHomeKitDeviceDetectedWithURL:(id)a3 completion:(id)a4;
-- (void)triggerProximityAutoFillDetectedWithURL:(id)a3 completion:(id)a4;
-- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)a3;
+- (void)monitorPairedWatchWristStateWithCompletionHandler:(id)handler;
+- (void)openSetupURL:(id)l completion:(id)completion;
+- (void)pairedWatchWristStateChanged:(int64_t)changed;
+- (void)preventExitForLocaleReason:(id)reason;
+- (void)reenableProxCardType:(unsigned __int8)type completion:(id)completion;
+- (void)repairDevice:(id)device flags:(unsigned int)flags completion:(id)completion;
+- (void)retriggerProximityPairing:(id)pairing;
+- (void)retriggerProximitySetup:(id)setup;
+- (void)setAudioRoutingScore:(int)score completion:(id)completion;
+- (void)setupDevice:(id)device home:(id)home completion:(id)completion;
+- (void)showDevicePickerWithInfo:(id)info completion:(id)completion;
+- (void)startProxCardTransactionWithOptions:(unint64_t)options completion:(id)completion;
+- (void)subCredentialPresentCardWithParams:(id)params completion:(id)completion;
+- (void)testContinuityKeyboardBegin:(BOOL)begin;
+- (void)triggerHomeKitDeviceDetectedWithURL:(id)l completion:(id)completion;
+- (void)triggerProximityAutoFillDetectedWithURL:(id)l completion:(id)completion;
+- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)completion;
 @end
 
 @implementation SFClient
@@ -92,24 +92,24 @@
 
 - (void)invalidate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  syncXPCCnx = v2->_syncXPCCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syncXPCCnx = selfCopy->_syncXPCCnx;
   if (syncXPCCnx)
   {
     [(NSXPCConnection *)syncXPCCnx invalidate];
-    v4 = v2->_syncXPCCnx;
-    v2->_syncXPCCnx = 0;
+    v4 = selfCopy->_syncXPCCnx;
+    selfCopy->_syncXPCCnx = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  dispatchQueue = v2->_dispatchQueue;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __22__SFClient_invalidate__block_invoke;
   block[3] = &unk_1E788B198;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -142,9 +142,9 @@
   }
 }
 
-- (void)activateAssertionWithIdentifier:(id)a3
+- (void)activateAssertionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/activateAssertionWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -154,9 +154,9 @@
   v8[1] = 3221225472;
   v8[2] = __44__SFClient_activateAssertionWithIdentifier___block_invoke;
   v8[3] = &unk_1E788A658;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -201,9 +201,9 @@ void __44__SFClient_activateAssertionWithIdentifier___block_invoke(uint64_t a1)
   [v6 activateAssertionWithIdentifier:*(a1 + 32)];
 }
 
-- (void)activityStateWithCompletion:(id)a3
+- (void)activityStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/activityStateWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -214,8 +214,8 @@ void __44__SFClient_activateAssertionWithIdentifier___block_invoke(uint64_t a1)
   v8[2] = __40__SFClient_activityStateWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -234,9 +234,9 @@ void __40__SFClient_activityStateWithCompletion___block_invoke(uint64_t a1)
   [v3 activityStateWithCompletion:*(a1 + 40)];
 }
 
-- (void)appleIDInfoWithCompletion:(id)a3
+- (void)appleIDInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/appleIDInfoWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -247,8 +247,8 @@ void __40__SFClient_activityStateWithCompletion___block_invoke(uint64_t a1)
   v8[2] = __38__SFClient_appleIDInfoWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -261,10 +261,10 @@ void __38__SFClient_appleIDInfoWithCompletion___block_invoke(uint64_t a1)
   [v2 appleIDInfoWithCompletion:*(a1 + 40)];
 }
 
-- (void)subCredentialPresentCardWithParams:(id)a3 completion:(id)a4
+- (void)subCredentialPresentCardWithParams:(id)params completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/subCredentialPresentCardWithParams", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -274,11 +274,11 @@ void __38__SFClient_appleIDInfoWithCompletion___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __58__SFClient_subCredentialPresentCardWithParams_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = paramsCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = paramsCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -297,17 +297,17 @@ void __58__SFClient_subCredentialPresentCardWithParams_completion___block_invoke
   [v3 subCredentialPresentCardWithParams:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)clearXPCHelperImageCacheWithCompletion:(id)a3
+- (void)clearXPCHelperImageCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__SFClient_clearXPCHelperImageCacheWithCompletion___block_invoke;
   v7[3] = &unk_1E788B210;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -324,11 +324,11 @@ void __51__SFClient_clearXPCHelperImageCacheWithCompletion___block_invoke(uint64
   [v3 clearXPCHelperImageCacheWithCompletion:*(a1 + 40)];
 }
 
-- (void)broadwayPresentCardWithCode:(id)a3 options:(id)a4 completion:(id)a5
+- (void)broadwayPresentCardWithCode:(id)code options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/broadwayPresentCardWithCode", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -339,12 +339,12 @@ void __51__SFClient_clearXPCHelperImageCacheWithCompletion___block_invoke(uint64
   v16[2] = __59__SFClient_broadwayPresentCardWithCode_options_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = codeCopy;
+  v18 = optionsCopy;
+  v19 = completionCopy;
+  v13 = optionsCopy;
+  v14 = codeCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -363,10 +363,10 @@ void __59__SFClient_broadwayPresentCardWithCode_options_completion___block_invok
   [v3 broadwayPresentCardWithCode:*(a1 + 40) options:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)contactHandlesForShortHashData:(id)a3 completion:(id)a4
+- (void)contactHandlesForShortHashData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/contactHandlesForShortHashData", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -376,11 +376,11 @@ void __59__SFClient_broadwayPresentCardWithCode_options_completion___block_invok
   block[1] = 3221225472;
   block[2] = __54__SFClient_contactHandlesForShortHashData_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = dataCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = dataCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -399,11 +399,11 @@ void __54__SFClient_contactHandlesForShortHashData_completion___block_invoke(uin
   [v3 contactHandlesForShortHashData:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)contactIDForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5
+- (void)contactIDForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/contactIDForEmailHash", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -414,12 +414,12 @@ void __54__SFClient_contactHandlesForShortHashData_completion___block_invoke(uin
   v16[2] = __55__SFClient_contactIDForEmailHash_phoneHash_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = hashCopy;
+  v18 = phoneHashCopy;
+  v19 = completionCopy;
+  v13 = phoneHashCopy;
+  v14 = hashCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -438,11 +438,11 @@ void __55__SFClient_contactIDForEmailHash_phoneHash_completion___block_invoke(ui
   [v3 contactIDForEmailHash:*(a1 + 40) phoneHash:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)displayNameForEmailHash:(id)a3 phoneHash:(id)a4 completion:(id)a5
+- (void)displayNameForEmailHash:(id)hash phoneHash:(id)phoneHash completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hashCopy = hash;
+  phoneHashCopy = phoneHash;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/displayNameForEmailHash", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -453,12 +453,12 @@ void __55__SFClient_contactIDForEmailHash_phoneHash_completion___block_invoke(ui
   v16[2] = __57__SFClient_displayNameForEmailHash_phoneHash_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = hashCopy;
+  v18 = phoneHashCopy;
+  v19 = completionCopy;
+  v13 = phoneHashCopy;
+  v14 = hashCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -477,11 +477,11 @@ void __57__SFClient_displayNameForEmailHash_phoneHash_completion___block_invoke(
   [v3 displayNameForEmailHash:*(a1 + 40) phoneHash:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)displayStringForContactIdentifier:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5
+- (void)displayStringForContactIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/displayStringForContactIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -492,12 +492,12 @@ void __57__SFClient_displayNameForEmailHash_phoneHash_completion___block_invoke(
   v16[2] = __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = identifierCopy;
+  v18 = deviceIdentifierCopy;
+  v19 = completionCopy;
+  v13 = deviceIdentifierCopy;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -516,11 +516,11 @@ void __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completio
   [v3 displayStringForContactIdentifier:*(a1 + 40) deviceIdentifier:*(a1 + 48) completion:*(a1 + 56)];
 }
 
-- (void)displayStringForContactIdentifierSync:(id)a3 deviceIdentifier:(id)a4 completion:(id)a5
+- (void)displayStringForContactIdentifierSync:(id)sync deviceIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  syncCopy = sync;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/displayStringForContactIdentifierSync", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -531,12 +531,12 @@ void __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completio
   v13 = v14;
   if (v12)
   {
-    [v12 displayStringForContactIdentifier:v8 deviceIdentifier:v9 completion:v10];
+    [v12 displayStringForContactIdentifier:syncCopy deviceIdentifier:identifierCopy completion:completionCopy];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v13);
   }
 
   os_activity_scope_leave(&state);
@@ -544,9 +544,9 @@ void __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completio
 
 - (void)ensureSyncXPCStarted
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_syncXPCCnx)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_syncXPCCnx)
   {
     v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F1DAEB40];
     v4 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -555,37 +555,37 @@ void __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completio
     [v3 setClasses:v6 forSelector:sel_getPeopleSuggestions_completion_ argumentIndex:0 ofReply:1];
 
     v7 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.SharingServices" options:0];
-    syncXPCCnx = v2->_syncXPCCnx;
-    v2->_syncXPCCnx = v7;
+    syncXPCCnx = selfCopy->_syncXPCCnx;
+    selfCopy->_syncXPCCnx = v7;
 
-    [(NSXPCConnection *)v2->_syncXPCCnx _setQueue:v2->_dispatchQueue];
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx _setQueue:selfCopy->_dispatchQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __32__SFClient_ensureSyncXPCStarted__block_invoke;
     v10[3] = &unk_1E788B198;
-    v10[4] = v2;
-    [(NSXPCConnection *)v2->_syncXPCCnx setInterruptionHandler:v10];
+    v10[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setInterruptionHandler:v10];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __32__SFClient_ensureSyncXPCStarted__block_invoke_2;
     v9[3] = &unk_1E788B198;
-    v9[4] = v2;
-    [(NSXPCConnection *)v2->_syncXPCCnx setInvalidationHandler:v9];
-    [(NSXPCConnection *)v2->_syncXPCCnx setRemoteObjectInterface:v3];
-    [(NSXPCConnection *)v2->_syncXPCCnx resume];
+    v9[4] = selfCopy;
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setInvalidationHandler:v9];
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx setRemoteObjectInterface:v3];
+    [(NSXPCConnection *)selfCopy->_syncXPCCnx resume];
     if (gLogCategory_SFClient <= 10 && (gLogCategory_SFClient != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)findContact:(id)a3 completion:(id)a4
+- (void)findContact:(id)contact completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/findContact", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -596,10 +596,10 @@ void __74__SFClient_displayStringForContactIdentifier_deviceIdentifier_completio
   block[2] = __35__SFClient_findContact_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = contactCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = contactCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -612,10 +612,10 @@ void __35__SFClient_findContact_completion___block_invoke(uint64_t a1)
   [v2 findContact:*(a1 + 40) skipIfContactBlocked:1 completion:*(a1 + 48)];
 }
 
-- (void)findContact:(id)a3 skipIfContactBlocked:(BOOL)a4 completion:(id)a5
+- (void)findContact:(id)contact skipIfContactBlocked:(BOOL)blocked completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contactCopy = contact;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/findContact", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -626,11 +626,11 @@ void __35__SFClient_findContact_completion___block_invoke(uint64_t a1)
   v14[2] = __56__SFClient_findContact_skipIfContactBlocked_completion___block_invoke;
   v14[3] = &unk_1E788E128;
   v14[4] = self;
-  v15 = v8;
-  v17 = a4;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = contactCopy;
+  blockedCopy = blocked;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = contactCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
@@ -643,20 +643,20 @@ void __56__SFClient_findContact_skipIfContactBlocked_completion___block_invoke(u
   [v2 findContact:*(a1 + 40) skipIfContactBlocked:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (void)getDeviceAssets:(id)a3 completion:(id)a4
+- (void)getDeviceAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__SFClient_getDeviceAssets_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = assetsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = assetsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -667,20 +667,20 @@ void __39__SFClient_getDeviceAssets_completion___block_invoke(uint64_t a1)
   [v2 getDeviceAssets:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)getPeopleSuggestions:(id)a3 completion:(id)a4
+- (void)getPeopleSuggestions:(id)suggestions completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__SFClient_getPeopleSuggestions_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v12 = v6;
-  v13 = v7;
+  v12 = suggestionsCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = suggestionsCopy;
+  v10 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -697,9 +697,9 @@ void __44__SFClient_getPeopleSuggestions_completion___block_invoke(uint64_t a1)
   [v3 getPeopleSuggestions:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)getPairedWatchWristStateWithCompletionHandler:(id)a3
+- (void)getPairedWatchWristStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/getPairedWatchWristStateWithCompletionHandler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -710,8 +710,8 @@ void __44__SFClient_getPeopleSuggestions_completion___block_invoke(uint64_t a1)
   v8[2] = __58__SFClient_getPairedWatchWristStateWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -724,9 +724,9 @@ void __58__SFClient_getPairedWatchWristStateWithCompletionHandler___block_invoke
   [v2 getPairedWatchWristStateWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)monitorPairedWatchWristStateWithCompletionHandler:(id)a3
+- (void)monitorPairedWatchWristStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/monitorPairedWatchWristStateWithCompletionHandler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -737,8 +737,8 @@ void __58__SFClient_getPairedWatchWristStateWithCompletionHandler___block_invoke
   v8[2] = __62__SFClient_monitorPairedWatchWristStateWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -756,9 +756,9 @@ void __62__SFClient_monitorPairedWatchWristStateWithCompletionHandler___block_in
   [v5 beginMonitoringPairedWatchWristState];
 }
 
-- (void)getProblemFlagsWithCompletionHandler:(id)a3
+- (void)getProblemFlagsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/getProblemFlagsWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -769,8 +769,8 @@ void __62__SFClient_monitorPairedWatchWristStateWithCompletionHandler___block_in
   v8[2] = __49__SFClient_getProblemFlagsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -789,10 +789,10 @@ void __49__SFClient_getProblemFlagsWithCompletionHandler___block_invoke(uint64_t
   [v3 getProblemFlagsWithCompletionHandler:*(a1 + 40)];
 }
 
-- (void)hashManagerControl:(id)a3 completion:(id)a4
+- (void)hashManagerControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/hashManagerControl", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -802,11 +802,11 @@ void __49__SFClient_getProblemFlagsWithCompletionHandler___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __42__SFClient_hashManagerControl_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = controlCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = controlCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -825,10 +825,10 @@ void __42__SFClient_hashManagerControl_completion___block_invoke(uint64_t a1)
   [v3 hashManagerControl:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)openSetupURL:(id)a3 completion:(id)a4
+- (void)openSetupURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/openSetupURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -839,10 +839,10 @@ void __42__SFClient_hashManagerControl_completion___block_invoke(uint64_t a1)
   block[2] = __36__SFClient_openSetupURL_completion___block_invoke;
   block[3] = &unk_1E788A570;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = lCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = lCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -855,9 +855,9 @@ void __36__SFClient_openSetupURL_completion___block_invoke(uint64_t a1)
   [v2 openSetupURL:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)preventExitForLocaleReason:(id)a3
+- (void)preventExitForLocaleReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/preventExitForLocaleReason", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -868,8 +868,8 @@ void __36__SFClient_openSetupURL_completion___block_invoke(uint64_t a1)
   v8[2] = __39__SFClient_preventExitForLocaleReason___block_invoke;
   v8[3] = &unk_1E788A658;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = reasonCopy;
+  v7 = reasonCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -882,9 +882,9 @@ void __39__SFClient_preventExitForLocaleReason___block_invoke(uint64_t a1)
   [v2 preventExitForLocaleReason:*(a1 + 40)];
 }
 
-- (void)reenableProxCardType:(unsigned __int8)a3 completion:(id)a4
+- (void)reenableProxCardType:(unsigned __int8)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/reenableProxCardType", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -895,9 +895,9 @@ void __39__SFClient_preventExitForLocaleReason___block_invoke(uint64_t a1)
   block[2] = __44__SFClient_reenableProxCardType_completion___block_invoke;
   block[3] = &unk_1E788B9E8;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = completionCopy;
+  typeCopy = type;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -916,10 +916,10 @@ void __44__SFClient_reenableProxCardType_completion___block_invoke(uint64_t a1)
   [v3 reenableProxCardType:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)repairDevice:(id)a3 flags:(unsigned int)a4 completion:(id)a5
+- (void)repairDevice:(id)device flags:(unsigned int)flags completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  completionCopy = completion;
   v10 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/repairDevice", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -929,12 +929,12 @@ void __44__SFClient_reenableProxCardType_completion___block_invoke(uint64_t a1)
   v14[1] = 3221225472;
   v14[2] = __42__SFClient_repairDevice_flags_completion___block_invoke;
   v14[3] = &unk_1E788EAB8;
-  v18 = a4;
-  v15 = v8;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
-  v13 = v8;
+  flagsCopy = flags;
+  v15 = deviceCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = deviceCopy;
   dispatch_async(dispatchQueue, v14);
 
   os_activity_scope_leave(&state);
@@ -958,9 +958,9 @@ void __42__SFClient_repairDevice_flags_completion___block_invoke(uint64_t a1)
   [v3 repairDevice:*(a1 + 32) flags:*(a1 + 56) completion:*(a1 + 48)];
 }
 
-- (void)retriggerProximityPairing:(id)a3
+- (void)retriggerProximityPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/retriggerProximityPairing", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -971,8 +971,8 @@ void __42__SFClient_repairDevice_flags_completion___block_invoke(uint64_t a1)
   v8[2] = __38__SFClient_retriggerProximityPairing___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = pairingCopy;
+  v7 = pairingCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -991,9 +991,9 @@ void __38__SFClient_retriggerProximityPairing___block_invoke(uint64_t a1)
   [v3 retriggerProximityPairing:*(a1 + 40)];
 }
 
-- (void)retriggerProximitySetup:(id)a3
+- (void)retriggerProximitySetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/retriggerProximitySetup", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1004,8 +1004,8 @@ void __38__SFClient_retriggerProximityPairing___block_invoke(uint64_t a1)
   v8[2] = __36__SFClient_retriggerProximitySetup___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = setupCopy;
+  v7 = setupCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -1024,9 +1024,9 @@ void __36__SFClient_retriggerProximitySetup___block_invoke(uint64_t a1)
   [v3 retriggerProximitySetup:*(a1 + 40)];
 }
 
-- (void)setAudioRoutingScore:(int)a3 completion:(id)a4
+- (void)setAudioRoutingScore:(int)score completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/setAudioRoutingScore", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1037,9 +1037,9 @@ void __36__SFClient_retriggerProximitySetup___block_invoke(uint64_t a1)
   block[2] = __44__SFClient_setAudioRoutingScore_completion___block_invoke;
   block[3] = &unk_1E788EAE0;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = completionCopy;
+  scoreCopy = score;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1058,11 +1058,11 @@ void __44__SFClient_setAudioRoutingScore_completion___block_invoke(uint64_t a1)
   [v3 setAudioRoutingScore:*(a1 + 48) completion:*(a1 + 40)];
 }
 
-- (void)setupDevice:(id)a3 home:(id)a4 completion:(id)a5
+- (void)setupDevice:(id)device home:(id)home completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  homeCopy = home;
+  completionCopy = completion;
   v11 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/setupDevice", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1073,12 +1073,12 @@ void __44__SFClient_setAudioRoutingScore_completion___block_invoke(uint64_t a1)
   v16[2] = __40__SFClient_setupDevice_home_completion___block_invoke;
   v16[3] = &unk_1E788C3C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = deviceCopy;
+  v18 = homeCopy;
+  v19 = completionCopy;
+  v13 = homeCopy;
+  v14 = deviceCopy;
+  v15 = completionCopy;
   dispatch_async(dispatchQueue, v16);
 
   os_activity_scope_leave(&state);
@@ -1099,10 +1099,10 @@ void __40__SFClient_setupDevice_home_completion___block_invoke(uint64_t a1)
   [v3 setupDevice:v4 homeIdentifier:v5 completion:*(a1 + 56)];
 }
 
-- (void)showDevicePickerWithInfo:(id)a3 completion:(id)a4
+- (void)showDevicePickerWithInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/showDevicePickerWithInfo", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1112,11 +1112,11 @@ void __40__SFClient_setupDevice_home_completion___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __48__SFClient_showDevicePickerWithInfo_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = infoCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = infoCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1135,7 +1135,7 @@ void __48__SFClient_showDevicePickerWithInfo_completion___block_invoke(uint64_t 
   [v3 showDevicePickerWithInfo:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (id)syncRemoteProxyWithError:(id *)a3
+- (id)syncRemoteProxyWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -1143,20 +1143,20 @@ void __48__SFClient_showDevicePickerWithInfo_completion___block_invoke(uint64_t 
   v12 = __Block_byref_object_copy__8;
   v13 = __Block_byref_object_dispose__8;
   v14 = 0;
-  v4 = self;
-  objc_sync_enter(v4);
-  syncXPCCnx = v4->_syncXPCCnx;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syncXPCCnx = selfCopy->_syncXPCCnx;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __37__SFClient_syncRemoteProxyWithError___block_invoke;
   v8[3] = &unk_1E788C320;
   v8[4] = &v9;
   v6 = [(NSXPCConnection *)syncXPCCnx synchronousRemoteObjectProxyWithErrorHandler:v8];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  if (a3 && !v6)
+  if (error && !v6)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -1164,7 +1164,7 @@ void __48__SFClient_showDevicePickerWithInfo_completion___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)testContinuityKeyboardBegin:(BOOL)a3
+- (void)testContinuityKeyboardBegin:(BOOL)begin
 {
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/testContinuityKeyboardBegin", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
@@ -1176,7 +1176,7 @@ void __48__SFClient_showDevicePickerWithInfo_completion___block_invoke(uint64_t 
   v7[2] = __40__SFClient_testContinuityKeyboardBegin___block_invoke;
   v7[3] = &unk_1E788B700;
   v7[4] = self;
-  v8 = a3;
+  beginCopy = begin;
   dispatch_async(dispatchQueue, v7);
   os_activity_scope_leave(&state);
 }
@@ -1188,10 +1188,10 @@ void __40__SFClient_testContinuityKeyboardBegin___block_invoke(uint64_t a1)
   [v2 testContinuityKeyboardBegin:*(a1 + 40)];
 }
 
-- (void)triggerHomeKitDeviceDetectedWithURL:(id)a3 completion:(id)a4
+- (void)triggerHomeKitDeviceDetectedWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/triggerHomeKitDeviceDetectedWithURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1201,11 +1201,11 @@ void __40__SFClient_testContinuityKeyboardBegin___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __59__SFClient_triggerHomeKitDeviceDetectedWithURL_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = lCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = lCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1224,10 +1224,10 @@ void __59__SFClient_triggerHomeKitDeviceDetectedWithURL_completion___block_invok
   [v3 triggerHomeKitDeviceDetectedWithURL:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)triggerProximityAutoFillDetectedWithURL:(id)a3 completion:(id)a4
+- (void)triggerProximityAutoFillDetectedWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/triggerProximityAutoFillDetectedWithURL", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1237,11 +1237,11 @@ void __59__SFClient_triggerHomeKitDeviceDetectedWithURL_completion___block_invok
   block[1] = 3221225472;
   block[2] = __63__SFClient_triggerProximityAutoFillDetectedWithURL_completion___block_invoke;
   block[3] = &unk_1E788C3E8;
-  v13 = v6;
-  v14 = v7;
+  v13 = lCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = lCopy;
+  v11 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1260,9 +1260,9 @@ void __63__SFClient_triggerProximityAutoFillDetectedWithURL_completion___block_i
   [v3 triggerProximityAutoFillDetectedWithURL:*(a1 + 40) completion:*(a1 + 48)];
 }
 
-- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)a3
+- (void)wifiPasswordSharingAvailabilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/wifiPasswordSharingAvailabilityWithCompletion", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1273,8 +1273,8 @@ void __63__SFClient_triggerProximityAutoFillDetectedWithURL_completion___block_i
   v8[2] = __58__SFClient_wifiPasswordSharingAvailabilityWithCompletion___block_invoke;
   v8[3] = &unk_1E788B210;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
   os_activity_scope_leave(&state);
@@ -1293,9 +1293,9 @@ void __58__SFClient_wifiPasswordSharingAvailabilityWithCompletion___block_invoke
   [v3 wifiPasswordSharingAvailabilityWithCompletion:*(a1 + 40)];
 }
 
-- (void)startProxCardTransactionWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)startProxCardTransactionWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFClient/startProxCardTransactionWithOptions", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1311,9 +1311,9 @@ void __58__SFClient_wifiPasswordSharingAvailabilityWithCompletion___block_invoke
   block[2] = __59__SFClient_startProxCardTransactionWithOptions_completion___block_invoke;
   block[3] = &unk_1E788D658;
   block[4] = self;
-  v11 = v6;
-  v12 = a3;
-  v9 = v6;
+  v11 = completionCopy;
+  optionsCopy = options;
+  v9 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
   os_activity_scope_leave(&state);
@@ -1343,7 +1343,7 @@ uint64_t __59__SFClient_startProxCardTransactionWithOptions_completion___block_i
   return result;
 }
 
-- (void)pairedWatchWristStateChanged:(int64_t)a3
+- (void)pairedWatchWristStateChanged:(int64_t)changed
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1351,7 +1351,7 @@ uint64_t __59__SFClient_startProxCardTransactionWithOptions_completion___block_i
   v4[2] = __41__SFClient_pairedWatchWristStateChanged___block_invoke;
   v4[3] = &unk_1E788B260;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = changed;
   dispatch_async(dispatchQueue, v4);
 }
 
@@ -1449,8 +1449,8 @@ void __41__SFClient_pairedWatchWristStateChanged___block_invoke(uint64_t a1)
             [SFClient _interrupted];
           }
 
-          v9 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-          [v9 activateAssertionWithIdentifier:v8];
+          remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+          [remoteObjectProxy activateAssertionWithIdentifier:v8];
 
           ++v7;
         }
